@@ -1,208 +1,122 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48B41E1DF6;
-	Thu,  5 Jun 2025 15:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52AF18A6B0
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Jun 2025 15:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749137766; cv=none; b=HWqJzSDF/UgRYXnjHubQS0ZKYdPBMNw8+w/UUr57sQLe7CdcqLf9guDCI8Tsjwh1vXlvYqlMH8RDR2Pghi03P5J9eURR4JqkCZbvFys0iWsiqeyZh6nYvJyxkR8QV0MgYADxjxesuENtO1Sx6wTUgndR7vg/+2giZfepMvM6Szk=
+	t=1749137952; cv=none; b=RV5tbY/gjxsuEEUxqRs6JY6qjVmgiNr4P+8NvqsfU7hb4EaaLmxRiD0cX8zeR9QMDi8iifAt2TiY7B2RJl7fWLu7fd9s9I+MKMa3ZI95BYNLS9au59voCnBvB2Hc75mgh35glu2f0D2T858unsehanSHokT0J/MxYZxhj+uNbm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749137766; c=relaxed/simple;
-	bh=XTDVuWHZiwRdzVPPepxoTiBt9p9p090JYaunojvs75E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fdzUlLTLGxGNZ6se4cixV515aCptrJbhBlpj50/+JsusAzfOsE9ycf+4IMiyYvKL0bzoLgJr2IrD+FOTeOFSDdzM6hKXmfEp3iiC3wa5LxdWQ15osE3/ECRNcvHHAkOgs783G/BkpsiwlH4a8rLvPEOP7m6nDb1ly0BWbfTW72Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ghCui132; arc=none smtp.client-ip=209.85.222.179
+	s=arc-20240116; t=1749137952; c=relaxed/simple;
+	bh=+qIlnSp7EiFAhKFCDXrhEBigcDZxUNAAcEp3C3jjn1E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TbC98gh4S03J0GxmAQ00nvVvF0Dv1sF1ED5T16HNDChI6/jWah4XZyUjvzHu+nZtXJ48UFcNdFOWf+xOi/EchPekD8J7ZWNdXvE8OUmcEVS9qQQ7H2MBFPBYy4FSeDDV3ZzQA40agu8qnUZm0r8dGLeoxSl8yUvMmzal0hcnY8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V7iNpE5Y; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ghCui132"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7d0a47f6692so120991485a.1;
-        Thu, 05 Jun 2025 08:36:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V7iNpE5Y"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b26ed911f4cso153745a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Jun 2025 08:39:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749137764; x=1749742564; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1749137949; x=1749742749; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/0q7FonkhKnZrhgheKOu3mqlvKG0pa4njRzoaCLwotc=;
-        b=ghCui132aChXE4NVrOMzuzHOipbt0cheSuMrlKzZwYYRjFNuuk9CTtJwCz7Uk8HZEO
-         mJwdmU3avTyiex2cNyZvC0UpW3Nr1ixXZ+1slNt4tR/f4051wCEj0F5L0HA93pTngQ/X
-         H7CneOMJYMoExPJ2aDs6AUxvzTQJNGZ0w3VIpodG/9KOoKtTrqDsnjkdC4kZtJVadooK
-         fHe4/L+15hPLXRDYR24qbuTHO7o+q0qPHJpm8YCAEiccYqddZQ/ZVY0xJAvioj3v1zqs
-         tw2AEqFp6atxMDSuCu3p6kWlzLv4FQABMbl40SbcAdPIz127D2V2iPZqimpLCPvu/xGg
-         vJOQ==
+        bh=DPrb9czhCVuLvR+8zO/z5PUZmMcTZy9y8M1FA9QO8JI=;
+        b=V7iNpE5YCG+5ae8k1qXhi242Q7PoQ1km/YX0kxVUIlwUHysYthYArjX9bQoGSYi1GZ
+         dVzH0AtuezZC2STKBcRlEHj17O05A2lqAE4E+g2Wn9qOojvbFPP0OQhTQJ1P4OFWV6Jo
+         e3bFqGlAzBkhpBMAMXZlRrekcYzUpRJY9DC7X+7J7WoKTl0O4Cs+YEaHQNO5l2G/dtYj
+         fDsog0G545eeQCEefu4qiNZIonqQDzsZOY/oHIWyh8Hl5zMzW+AqTcLlXF1AQWq7wj4k
+         RetUr5nDUAzJtfNMxcJ8RgmMrDNDLb2H/36F65NH2lZIhCRL/H4GM0EPZAmsVoWkGPI5
+         90dA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749137764; x=1749742564;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1749137949; x=1749742749;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/0q7FonkhKnZrhgheKOu3mqlvKG0pa4njRzoaCLwotc=;
-        b=qLMvjAgOjxCVuDj4qp2MwqpYGFQk9uLd09UOAEzvaDbx7mAzGj0iHivUYJokxXtHbW
-         KQyMDUpsoB4YR3K9uoh/Yq3OG9osfKbIlsTCDUCnqTz62tv0dBJTWBYwxGF07zMTN/83
-         5pJeFsOIlbAG/qZrA+gJWiAVjw1+J5auQK4k57DVYpXNSaiXuY/oQRBY8PvnRLBMKo2y
-         b/v/xZto3j/j+2WxPuq3Epz1AF7eOOW/TNsvearL5HPKXgngm3Iw/vRE3BCoi/qC3xj4
-         OlmA70oWT5bCBF90RXPr3pJ6qTpV3pwfA45TSl3XOYNMAav5uxif5a3vim4VxUUYp3u8
-         unYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLjRu1JpabrPJjvKrymRar59lw1aT4FoPBKaWMrF3C35bgfl/hlCzRCDfbKEHDm5EnuHwUydaGc/uFexo=@vger.kernel.org, AJvYcCXgLH+rkChEIXpjcTG2lSkzHhmgH8QsUfu4UKXWU7mMfoo2wJu1WFCVaoUlHkXmQm4DI9FjQEu64emDlsgTh5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKqmKE4jO8QqWea/6xiJM2yZsxFEUORx1w5U1+24kAhFAdzFno
-	CaysoOm9NaYspME8Ge0eu+VjyaNMGhKuRx73P25z3gMPNw7O+kOfGF4G
-X-Gm-Gg: ASbGncsSucTzkFOiRW/kXZaZp8CSd6PGJ17ZFUrxQa88gAt5gVCU+cSm1BHIcC3A5fq
-	d/Ke477j/aodTqXwQt+HendOANsewsEIp6jVqoJgtQ4FclBD3Ai9jh6nOWeOwNzWOgvtz+HhTM3
-	45p5ElCMj6bgZPgGLw8eb73FXoTgvsJd3lW0/7TjAu4ysmXkbroYeoWQ/ir5f+9FBfD22Zoi1YC
-	ynKvk2OEn7hGZDe+4CQXd46Rq9ZL4aS5EWSdmxahjpPf+SGHgVIX0mZe/BQ4OperuSTtbuBcvi+
-	SMtfVB9NZP9D4Ptfnm0jGw1GZjMuxBu5TmJGnt2xVg1DiLFtFHl+xgdfEJ53JNI7jeruzYGptiw
-	N5IjXOo+I/0PjiLX51SIiyTbNHVA2aBI2js8ti8T+WrVoA/GBUM+U
-X-Google-Smtp-Source: AGHT+IEKM15yMlZ3fIsFtxEWpOJO4JB5Ecxk9IxQdKCg8ODboARmI46Au4V0WWk2cv1n+LRn0pAZ8A==
-X-Received: by 2002:a05:620a:440a:b0:7d2:23c7:e7af with SMTP id af79cd13be357-7d2298d6eb9mr1385385a.37.1749137763553;
-        Thu, 05 Jun 2025 08:36:03 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d09a0e35absm1282148985a.3.2025.06.05.08.36.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jun 2025 08:36:03 -0700 (PDT)
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 286FA120006B;
-	Thu,  5 Jun 2025 11:36:02 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 05 Jun 2025 11:36:02 -0400
-X-ME-Sender: <xms:YrlBaHtu_hho5oScTaTfmhodnDyiOGmBGmFO_iHAp8fQ9cCCLIF3eA>
-    <xme:YrlBaIeo8QZxu-i8-MbphRN8eeP_ZVsAAmXMO2s5e-ibWWih9MfoMklJXOPFUo8BC
-    UVpl6non58CUEOoXg>
-X-ME-Received: <xmr:YrlBaKxjIngVfVxFBqLQKE4NS8PqWYp59U9bGI2EQinKT5zQEEgh7UtknQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdefkedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
-    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
-    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
-    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
-    mhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    eprggtohhurhgsohhtsehnvhhiughirgdrtghomhdprhgtphhtthhopehjghhgseiiihgv
-    phgvrdgtrgdprhgtphhtthhopegrsgguihgvlhdrjhgrnhhulhhguhgvsehgmhgrihhlrd
-    gtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehl
-    hihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnh
-    efpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:YrlBaGNkpFuGhk3Q4Y6oZIxqWjN91VHTbAd0_IQw1gc8mC9GW4E_kQ>
-    <xmx:YrlBaH90t1hVaZIKzB32csfBVTD68dtkREKtPKxWeBTJe0ofAzbeqg>
-    <xmx:YrlBaGVQwaAzmutsVh_ZO-R53DMp-m5sshSu8ZzhbTA5DD3NeoZIVA>
-    <xmx:YrlBaIeKQ0YuSAdFg7A51CIjEDlJ-SKt7OZ1PP6kAuzObFkks4Itqg>
-    <xmx:YrlBaFcSXGhXfJUEPy2vtT56VpehRRKXMsNDBH4VKy6waqkHCtR6qkht>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Jun 2025 11:36:01 -0400 (EDT)
-Date: Thu, 5 Jun 2025 08:35:59 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>, dakr@kernel.org,
-	lyude@redhat.com, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-	Petr Tesarik <petr@tesarici.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sui Jingfeng <sui.jingfeng@linux.dev>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Michael Kelley <mhklinux@outlook.com>
-Subject: Re: [PATCH 1/2] rust: add initial scatterlist bindings
-Message-ID: <aEG5X7FduqFvgXxH@Mac.home>
-References: <20250528221525.1705117-1-abdiel.janulgue@gmail.com>
- <20250528221525.1705117-2-abdiel.janulgue@gmail.com>
- <20250529004550.GB192517@ziepe.ca>
- <DA9JTYA0EQU8.26M0ZX80FOBWY@nvidia.com>
+        bh=DPrb9czhCVuLvR+8zO/z5PUZmMcTZy9y8M1FA9QO8JI=;
+        b=UApBqf8iF5SBDiHSs6X83mJxtRiNcSUzAzkBao9uCeOlXXXTa1WTHAtRwPvU48BC2z
+         OzbDYq18cVd5Lg88AsxOPIDDr45bFjNlAX51jN2ekoQEBeyltS3ZaEYZSB2AV25VTSZ2
+         z2gGOkkCc3ou5dEnYZv5k5VYrpNHpZQLo8dsWp65d4g380rRopWCnxUZnUl9ZaOq1X+i
+         RoQtE+viYcP/JTAH4dz4vsStaQm9xzE4EsTd10lPA2UdvzctjsiyV0odR/icHajTFb3k
+         OT+RcJGNn5w+p4lZ4d4sb8VCvz62o+NzthgB3OG16YkZ7PctvZTnriJ+SjefuvLDywWy
+         ePfg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6ZHdCm3fdsdiwJZw64H8Ya50qS/dBQqCQiEMnocsbOlFrPS0pnJCToRNK29Iyri1S6lMjdTXNIBaHQaXlwA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1hRCehAFovF4EqZNXPY25RfPfYARcNA0fGHOrjD9SeaURpaqp
+	Qi8tf0fvPLBel+xkFm1VzITIxJ0YnAlTlAfP3bMBKfNuea5QHsLyeXrDsF0UDI81SWglgYk/7+N
+	DY96sx986932s+SKEJxZRODlI0/iTZXE=
+X-Gm-Gg: ASbGncv9WgJPdTWs5iswJH8neg4BsFOQCR1RrxSBkcPbbxaR6WI9iLECaL0uORlsZOA
+	OAQGyG3mvDatUvfIktLm4bQArnjL7vpQDqIpjYmq8ycQZJucQVC/yTO08HLP1yQtd550/7Pdpaz
+	8iK0HLzF7V9vH1i3hJQEvKAB7QqhhnHDPo
+X-Google-Smtp-Source: AGHT+IHptJ80PMmgYhgPdfvYn9vXZ7tnhmPS8lnUEJvyfMx7DdQ1nocPMb6P5owsuqXedkhDWUisDMQL6aRY+3Kg/ps=
+X-Received: by 2002:a17:90b:17c2:b0:311:e8cc:4250 with SMTP id
+ 98e67ed59e1d1-31347a2b73emr37045a91.3.1749137948874; Thu, 05 Jun 2025
+ 08:39:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DA9JTYA0EQU8.26M0ZX80FOBWY@nvidia.com>
+References: <20250529184547.1447995-1-ttabi@nvidia.com> <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
+ <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
+ <CANiq72ncoP6oDbKEes7Lz_K6FAz-MZY1aZNAdsYK8Sz-pwyUDQ@mail.gmail.com>
+ <7f644a70cc0c91bb42badd1ac747518843bb1ef7.camel@nvidia.com>
+ <CANiq72mLEFV6iEX43=+d+5P8g9HT+Wip7eTBgPgqXQ--=dQxWQ@mail.gmail.com>
+ <874ffd400b0632cff99b618661adffe472abbf8d.camel@nvidia.com>
+ <2025060508-spool-twistable-66af@gregkh> <7faac30f75f2ba651995d9667c463706b61ffca5.camel@nvidia.com>
+ <2025060511-surcharge-overfill-a721@gregkh>
+In-Reply-To: <2025060511-surcharge-overfill-a721@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 5 Jun 2025 17:38:56 +0200
+X-Gm-Features: AX0GCFuzka808buCOccyoiQP3yr1t-TubBjuU9kzIhvusX5cDtyi8fOUI9GshCQ
+Message-ID: <CANiq72khbkdS625Bcb1iX1EbUwo1iQOLVoke698SUm9BA3PgYw@mail.gmail.com>
+Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Cc: Timur Tabi <ttabi@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	"dakr@kernel.org" <dakr@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 30, 2025 at 11:02:02PM +0900, Alexandre Courbot wrote:
-> On Thu May 29, 2025 at 9:45 AM JST, Jason Gunthorpe wrote:
-> > On Thu, May 29, 2025 at 01:14:05AM +0300, Abdiel Janulgue wrote:
-> >> +impl SGEntry<Unmapped> {
-> >> +    /// Set this entry to point at a given page.
-> >> +    pub fn set_page(&mut self, page: &Page, length: u32, offset: u32) {
-> >> +        let c: *mut bindings::scatterlist = self.0.get();
-> >> +        // SAFETY: according to the `SGEntry` invariant, the scatterlist pointer is valid.
-> >> +        // `Page` invariant also ensures the pointer is valid.
-> >> +        unsafe { bindings::sg_set_page(c, page.as_ptr(), length, offset) };
-> >> +    }
-> >> +}
-> >
-> > Wrong safety statement. sg_set_page captures the page.as_ptr() inside
-> > the C datastructure so the caller must ensure it holds a reference on
-> > the page while it is contained within the scatterlist.
-> >
-> > Which this API doesn't force to happen.
-> >
-> > Most likely for this to work for rust you have to take a page
-> > reference here and ensure the page reference is put back during sg
-> > destruction. A typical normal pattern would 'move' the reference from
-> > the caller into the scatterlist.
-> 
-> As Jason mentioned, we need to make sure that the backing pages don't get
-> dropped while the `SGTable` is alive. The example provided unfortunately fails
-> to do that:
-> 
->     let sgt = SGTable::alloc_table(4, GFP_KERNEL)?;
->     let sgt = sgt.init(|iter| {
->         for sg in iter {
->             sg.set_page(&Page::alloc_page(GFP_KERNEL)?, PAGE_SIZE as u32, 0);
->         }
->         Ok(())
->     })?;
-> 
-> Here the allocated `Page`s are dropped immediately after their address is
-> written by `set_page`, giving the device access to memory that may now be used
-> for completely different purposes. As long as the `SGTable` exists, the memory
-> it points to must not be released or reallocated in any way.
-> 
+On Thu, Jun 5, 2025 at 5:21=E2=80=AFPM gregkh@linuxfoundation.org
+<gregkh@linuxfoundation.org> wrote:
+>
+> And I'm saying "don't use dbg!()" :)
 
-Late to the party, but seems to me the main problem here is that we
-cannot pass a reference to .set_page(), note that there is some work
-that would change the Rust struct Page from a `*mut page` to a
-`page`[0], and then we can impl Ownable[1] and AlwaysRefCounted for
-`Page`, if that's done, then I believe the correct parameter for
-set_page() would be an ARef<Page>.
+You likely know all this, but in case it helps to clarify the
+discussion: `dbg!` is only meant for temporary code, i.e. so it
+shouldn't be used (in the sense of committing into Git).
 
-The Rust `Page` right now is a owning pointer, which can be only used in
-very simple cases. I think it's better that we improve that first.
-Another idea is keeping `Page` a `Ownable` type, but wrapping `folio` as
-refcounted (i.e. impl AlwaysRefCounted). 
+That is, it is a development tool, unlike `pr_dbg!`.
 
-Hmm... after reading more on the following discussion, seems the current
-plan is to let SGTable own the pages? That looks reasonable for now, but
-one day or another we will need to face this page/folio reference issue.
+It is also fairly different in interface: it is meant to be trivial to
+use, taking and returning a single expression (essentially). That
+means you can even use it within other expressions, without having to
+deal with formatting etc. For instance, if you have some code like:
 
-[0]: https://lore.kernel.org/rust-for-linux/20250202-rust-page-v1-0-e3170d7fe55e@asahilina.net/
-[1]: https://lore.kernel.org/rust-for-linux/20250502-unique-ref-v10-0-25de64c0307f@pm.me/
+    let x =3D f() + g();
 
-Regards,
-Boqun
+Then you can temporarily "inject" it there:
 
-> To that effect, we could simply store the `Page`s into the `SGTable`, but that
-> would cover only one of the many ways they can be constructed. For instance we
-> may want to share a `VVec` with a device and this just won't allow doing it.
-> 
-> So we need a way to keep the provider of the pages alive into the `SGTable`,
-> while also having a convenient way to get its list of pages. Here is rough idea
-> for doing this, it is very crude and probably not bulletproof but hopefully it
-> can constitute a start.
-> 
-[..]
+    let x =3D dbg!(f()) + dbg!(g());
+
+To get an output like:
+
+    [example.rs:10:13] f() =3D 42
+    [example.rs:10:25] g() =3D 43
+
+That is also why we picked `pr_info!` instead of higher levels, since
+if you use `dbg!`, it is because you really want to see the output in
+the log (and we perhaps could use a lower level, for that matter).
+
+Now, we could look into changing its output to be something that looks
+more like a usual print, of course. On the other hand, making it very
+visible/different than the rest of the kernel log is also the point.
+
+I hope that explains why I think we shouldn't just do exactly what
+`pr_dbg!()` does.
+
+Cheers,
+Miguel
