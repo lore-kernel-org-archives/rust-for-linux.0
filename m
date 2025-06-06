@@ -1,100 +1,127 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA6F28A1E1
-	for <rust-for-linux@vger.kernel.org>; Fri,  6 Jun 2025 15:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA05A28937F;
+	Fri,  6 Jun 2025 16:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749225020; cv=none; b=LDJ4ZwSlQy1PF8WmmwiFlGr44KDjGkgf/+hLMmTdurc8yAkU646/8w2Ks2LGL27M+Zxh//qhkF0N+l+9gxdQw9yRWB6xIBxfxkOC2gb9KuLkY70J3F2y6GkWhYfnyjzf+J8aE4rDc/hT0pborxB7JU8MnnF4SfaWhBaGi2joih8=
+	t=1749225604; cv=none; b=pC72WFmPudjiyv8RTvNtypd2bxj8FPlU4FwLqMd4qgFEGRdY9syQTDsiOzBOUu9Za5blsQ/k4TQ3UDWMEK7Atgf3oZuXb6mtgc7FPuOWD//bX7l6e7ka0P7TLMTdbDQ/786QoCNFMYvbNVY3vNx0PU9ej1+6V7ms1WlOS7Swp0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749225020; c=relaxed/simple;
-	bh=jx6nXHGHc4yHdSNmU0ev73z39fZHAhg+IXevp32JFmg=;
+	s=arc-20240116; t=1749225604; c=relaxed/simple;
+	bh=0dJFOIZZI3h9+CUlJttgkI830u/vDy1QTXEgLX9l6xU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eDkaJYOzzVw0ZFbhhjfCa6+VjZbSGTWMCAhTHLQLloJQprfE/EQRcmnnb1xr06+kxQk55iwddMHsI0CoMk8/SnYGuD2QYbhyLMMAJIZm2OFEvU4oLM0bkkuAnqf7BwWYUnF7LaxKfYw1qrn2HTFhzBL0T4jT3RXrnqLTjrpwSSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bd0XS/2A; arc=none smtp.client-ip=209.85.216.47
+	 To:Cc:Content-Type; b=sQ8YSrjtWrQhtuNgt0II0BODNcf4AvzgGWaf/T/VDBBPtgQYeWJncS3yJ014q0RMfnxN/rrHYXJkCLtXQlnxyZr0eWHKozYFlpV1Sv9wQOzM7XoZFXQkag9LyqTdwaqDeJJM47qjdQuU8+TKWk+3RT1OP5gzIf3iB9yfNz0LTHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k9UA2sTy; arc=none smtp.client-ip=209.85.222.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bd0XS/2A"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-312efc384fcso286280a91.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 06 Jun 2025 08:50:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k9UA2sTy"
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-87dfe906a87so733435241.0;
+        Fri, 06 Jun 2025 09:00:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749225019; x=1749829819; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749225601; x=1749830401; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=klCY5ed5cC9h1ZzzNuMlN4/awVq/FYKZDsMu9PaXee0=;
-        b=Bd0XS/2AowoYiGDXehHsZ64W2FzxujopnyPNIbUxDko2jfhMNGZeyyKxka5hmMutBp
-         CaaO4LrF38Xqa6VEhxfzd79nXJ6yq8ZPbzsZPX4I6cgnQMMt6LKMT9+ruEO0+8D0wXrG
-         +zj6W5f5uHJ3Zwzfv0OcXw8umal+lsOH+fviuqL68OryNctBRE8lYmJISwlgX3rvJ1NK
-         N6Zh0uwBv8FUe8axMDRI3gD8qjNfPg+XKWWodJi2zNBWIeUcS1quptdXqBFqGHp1n9em
-         7HR6i1WQU5RUo2TnuDbTVzk4w6sSEhqHrnABcfr4GeqJDP5YkpNSpwe55QU/tBh17JJd
-         dM0g==
+        bh=0dJFOIZZI3h9+CUlJttgkI830u/vDy1QTXEgLX9l6xU=;
+        b=k9UA2sTygpXiiMr5DZFITuw3wrV2wyh1PV5Yt0arRjCOfauVccM6aD5By2zsT/fN0N
+         SV/1ygvXF4P+GfcNShRLDauYsoN0v4aa2H+pVFo7TiCEAKJk8A2fbv5Nbk/J1iAxacl8
+         3TwaulPXZgj/rs0sy7mKTbDbYQxzctBYXxZq7DmaRJ+df1XWi1M4VTZM9dyzCueA+UEF
+         Sb2CYBiejgdqd4sdhBqfKbKXAeQKSUqn+Wh3L7lt/Is7vw3S5/CF2bzWEHiD9H+7G/Xx
+         unqEZROhsikJC3bASkMfTTUOzBRLIhXIYypufeq50fMdcS80V+QEszoQ9t44mRbaPZqO
+         Hmnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749225019; x=1749829819;
+        d=1e100.net; s=20230601; t=1749225601; x=1749830401;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=klCY5ed5cC9h1ZzzNuMlN4/awVq/FYKZDsMu9PaXee0=;
-        b=mP8MwsIGjmJ8s3ilUHMbi0eKWse8iWwWx4LxWF23dWtx96L2BwolEoQiR8J30yRzol
-         YUaALHJ6CTgrFgaTumdYDwnhejjgeaRXsmXa+T9/k198eD9Wenf8L2rfF1si/cblZaUj
-         1kPNKbRgvHni7ap8S8To8O6I4vjBYBmhcBNZ5YTZ+AdtKue0o5MJav2gZr9cg9gIbb4Z
-         b2xzlO7qQEnGKoExfCA3twtTU5F4Q+6kjdJLEzs7fkE+6Bs96neIU8yeefyEQRsHf0qt
-         Yq1rw15Wq4NHkeqV2o7fdmdExMB5dD1LAlLluEsO4m88NdupZ1XgQ8UAkFjkSGQbTlVq
-         Yp9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVkf/NNstoghEbC8Ed5VPJCwxiH5EPkkhYc7moNSIlRATyeyJpfULgwLkS7P/+uuqLBPs3c0JhKnHv8/7wZ+Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTP4WM1EjpQErKHM0txCtme06qcZsLmILvyB7omTzOciqm2/qe
-	ot3zgN5ujThJvDxg4u3YlApCYvlelclAFrlPS8kbJ0QbHHd372wveOGnVJDqg4U74B3m4u9qYzj
-	OGsOri+PaFRnOr4aJ0GcuZ0RIIZOk/+Q=
-X-Gm-Gg: ASbGncuqDWcmZGN2YxuzufW8LZViN0OWu42SwTsHdXJacvayW7r7GKxiU7wq4crFSIJ
-	P3yK+/b1G+xhpbIUBmgGNPPFCsw52DZQV4WuTA3NVNkXP1CYXrqGLAz0hEap4AQ1R1OnfToTKKs
-	ufur+OwjUD0JSgWvbZ67kJghJVQ1E29z7o
-X-Google-Smtp-Source: AGHT+IHkSzBQsQfJEAT+dVFDO4yjOMWTgvl5O616QchVTlR6oc99O4FuIFIpSo6ortV7t4EtYkgAoGO6c8wW46u1TRQ=
-X-Received: by 2002:a17:90b:1b51:b0:311:a314:c2c9 with SMTP id
- 98e67ed59e1d1-3134708fe96mr2181559a91.1.1749225018789; Fri, 06 Jun 2025
- 08:50:18 -0700 (PDT)
+        bh=0dJFOIZZI3h9+CUlJttgkI830u/vDy1QTXEgLX9l6xU=;
+        b=rawh2I2m9UuUM00VicD74gh0cU0n9mvlFf6BTLHaGGCrnBOqrTcnI+Nh/nkcXUkNvG
+         9bAq5+ufsXjG7xfG5M4+rnMSYkxXEOGL21ZevV4MHJJHnomFOQgh2iAAXks59jhVRvpV
+         ePGvyg+4kbiNbygNnm6JIrVVfe71GONiHCn1yPVej12oeaA1a3ro5DF5leWoNjUv/T1w
+         rg4qfUrWqyXg3O9M5G96SrmWyhWEUS4wksBN/tJok4GzyzfE3e4klbWQbLwzDcICuxzN
+         Hww7FmXIbAiOwPIvmpHK0w2Ag4aoGmwk37Y3q4BYys9l/bz39FqfOGHy7P6W3jYFSnqL
+         Q7oA==
+X-Forwarded-Encrypted: i=1; AJvYcCU44jj+nuY1rIPBX7dFr1euhg7eMUd9vMRJOe4iCkYAspkfDUAUNKArrUSEfdgNlgbM3AhiDedQVy9INAHe@vger.kernel.org, AJvYcCU8B0V93UQGqgTBYItprKoeSPgB4EAjCsSlbfXEOMxerWSPvN6XvEveLZxpd9/+DWjzKCEY5xER5de9EA==@vger.kernel.org, AJvYcCUsCM6NEp/TXluanTlqcrRHfeZMm4GTi3uCx5b87e6oAQDy9C3iEZX93vUPztzsWGXA8td6tc7qjgm7@vger.kernel.org, AJvYcCWPLbf+5zzuVTa2KizUCJkeBXI7PeBjiek1lYDBIgHesd6Qv56nNaW0VYiCq9jom0vuIKNQ9Hp/VD0nrvjRrA4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycjXjK4VXyqlVbrNT+/mYE7IAh2n947280rtG5xHpNHTzkNsac
+	1WZTs6BI5Vsl5kHXCYQuWQNzlyC6qrEHtmgEp868dbVZdjj12G52Rfp5tlMOqUv0qZsRCU2/bMA
+	xw2QhrqHZHxEAaPhG55XrY75czpxL/o0=
+X-Gm-Gg: ASbGnctifktE0K3uvnVbVLUiIj772e7/+yzF4fZ10L5xC4z5u4amOfmhFkMu5Yvk/VL
+	/n1HkCDcuWxNoTMJbmLLSiaPYv0HU/FbtzTQ4idnwnQMFUTsmaMTbVUGBwJZBTBlQtet+RcX3b9
+	oo1JSMNT5chgNOzzdHAFqH4r/ojwm61Q==
+X-Google-Smtp-Source: AGHT+IGIT8pKAwvT3E053ka5rCKmDZMWVRQ8M3uHmHMzX5aPj1CCrXxaJlYwiNxduBr8mvHv8BvYl+bYAcSqHDeOWjo=
+X-Received: by 2002:a05:6102:fa7:b0:4e2:ecd8:a1a with SMTP id
+ ada2fe7eead31-4e7728cd536mr3574282137.4.1749225601602; Fri, 06 Jun 2025
+ 09:00:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529184547.1447995-1-ttabi@nvidia.com> <CANiq72mqPRMXG3mR+wmGd8M61rWfti1JN7Bgke-TOMtTzFWagw@mail.gmail.com>
- <0602b06ba5fbd640b6db50165688c026911ed7b3.camel@nvidia.com>
- <CANiq72ncoP6oDbKEes7Lz_K6FAz-MZY1aZNAdsYK8Sz-pwyUDQ@mail.gmail.com>
- <7f644a70cc0c91bb42badd1ac747518843bb1ef7.camel@nvidia.com>
- <CANiq72mLEFV6iEX43=+d+5P8g9HT+Wip7eTBgPgqXQ--=dQxWQ@mail.gmail.com>
- <874ffd400b0632cff99b618661adffe472abbf8d.camel@nvidia.com>
- <2025060508-spool-twistable-66af@gregkh> <7faac30f75f2ba651995d9667c463706b61ffca5.camel@nvidia.com>
-In-Reply-To: <7faac30f75f2ba651995d9667c463706b61ffca5.camel@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 6 Jun 2025 17:50:04 +0200
-X-Gm-Features: AX0GCFs0HDo4SXA2VvtlOBn7vLQyn-f9SBrdsFyTswBlVNiXusy_PxN4qHQ9O1c
-Message-ID: <CANiq72mVntfr6e8+KWvCBL1KhgG51JQsG3dDe5QfyfFqkY+MXA@mail.gmail.com>
-Subject: Re: [PATCH] rust: introduce sfile macro for easier code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "ojeda@kernel.org" <ojeda@kernel.org>, 
-	"dakr@kernel.org" <dakr@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+References: <20250605161956.3658374-1-igor.korotin.linux@gmail.com>
+ <20250605162726.3659792-1-igor.korotin@yahoo.com> <aELyEqg0GrkC8oZY@pollux>
+ <CAG7QV91AWpOk7VUcE-B1MLkEQPDB0Y=zsBOBf6MhHVYh1aEGQA@mail.gmail.com>
+ <2025060635-unleveled-drowsily-a192@gregkh> <ce134894-f33e-4810-97ab-76270438fff7@kernel.org>
+In-Reply-To: <ce134894-f33e-4810-97ab-76270438fff7@kernel.org>
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+Date: Fri, 6 Jun 2025 16:59:49 +0100
+X-Gm-Features: AX0GCFvSY0Jr_aDmFg6bKOfCHKOl-4OvqCPqVnrQ__eHQ2WfgIUMY8esXLD5Y0I
+Message-ID: <CAG7QV91opwxQ=VH4A_4f8NdopW9zFuw8EnknRX1YrTpMSw5AiA@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] rust: driver: Add ACPI id table support to Adapter trait
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Igor Korotin <igor.korotin@yahoo.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, "Rafael J . Wysocki" <rafael@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	devicetree@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Len Brown <lenb@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Hung <alex.hung@amd.com>, Tamir Duberstein <tamird@gmail.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 5, 2025 at 5:02=E2=80=AFPM Timur Tabi <ttabi@nvidia.com> wrote:
+On Fri, Jun 6, 2025 at 4:39=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
-> But I am excited about the *possibility* that we can make everyone happy =
-with my code.
+> On 6/6/25 5:29 PM, Greg Kroah-Hartman wrote:
+> > On Fri, Jun 06, 2025 at 03:26:13PM +0100, Igor Korotin wrote:
+> >> On Fri, Jun 6, 2025 at 2:50=E2=80=AFPM Danilo Krummrich <dakr@kernel.o=
+rg> wrote:
+> >>> However, I don't understand why we need this and the subsequent
+> >>> is_acpi_device_node() and is_of_node() checks.
+> >>
+> >> The idea is to avoid unnecessary table lookups when both OF and ACPI
+> >> match tables are present. If we already know the fwnode type, these
+> >> simple pointer comparisons (is_acpi_device_node() / is_of_node()) let
+> >> us skip the irrelevant match function.
+> >>
+> >> Those checks are cheap (just pointer comparisons), while
+> >> acpi_match_device() and of_match_device() iterate over tables.
+> >>
+> >> So yeah, it=E2=80=99s a bit ugly, but it can save some CPU cycles duri=
+ng enumeration.
+> >
+> > You have loads of CPU cycles during enumeration, keep things simple
+> > first, only attempt to optimize things later on if it is actually
+> > measureable.
+>
+> I'm fine either way, I don't expect much value in optimizing this and at =
+the
+> same time I don't see doing it adds significant complexity either.
+>
+> If Greg prefers not to have this optimization to begin with, let's go wit=
+hout
+> it please.
 
-Another possibility to consider is outputting the last N characters,
-possibly without the `.rs` nor the column number, which gives us also
-the chance to fix the size for the line number too, e.g.
+I'm ok with this as well. Will remove those checks. I assume that I
+don't need to align with `FwNode` abstractions in that case. Also I'll
+drop `is_of_node` rust helper in v3.
 
-    [  rust/kernel/lib:1   ]
-    [l/sync/lock/mutex:12  ]
-    [ova-core/firmware:123 ]
-    [gpu/nova-core/gpu:1234]
+Thanks for the review and your comments, guys
 
-But this is a compromise solution, and sometimes it is just better to
-provide 2 different solutions.
-
-Cheers,
-Miguel
+Cheers
+Igor
