@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE3A24EF6B;
-	Fri,  6 Jun 2025 08:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E409A2857C2;
+	Fri,  6 Jun 2025 08:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749197480; cv=none; b=N9DDOqmrsJ+cxYjgjZSI5TgVTfMKheS85B3jyFh/bxPcHvreorOlaJOQsvio3Uai6JacR/IJNLEPmPWBmRd0RzS4C6rxZThDsC68cDxZyOwPdZRI9wHYNGtXfY2k2+tsgBuAH3xPg0XkN4l+PRurI4XYuFMIfQi3hYpT6OiXQT8=
+	t=1749197569; cv=none; b=u1E6FqqkHH9bDUwufc8kEym4kc/m11q12Z3XwZ/ZU3aV3aXwYIKK8ckTc+cGzBQmx9gJtcaphcAn9ywU2auWPkTIlWCOSOkmWc2hl8cBYsRoduN7G+FDoTzwJBVpxtezNq0dSFxfFeuMtpfHEB7+Dybo0eN/5/nrcEMxS9rgTM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749197480; c=relaxed/simple;
-	bh=ND77xMVcFqeXe20NboWW0w2himlLjNgVxCRvLH5ylDA=;
+	s=arc-20240116; t=1749197569; c=relaxed/simple;
+	bh=VlqTV4+xXtbihYWvuELF0s4cfdGlf+PlWTqQpnCJ048=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=HuqwO5hlTipuLpH0C9c4Bty26xBcpW40i8wIyNmvvV4LPAGYhUdPf/qZBc5MuZDLYk8MKJTN4g4MPWD9ZKMr8tTYJDwHlttW3wAyvGj1wxD/NHMiCWBG7VX2K7sjlXygLHLAkTws2hbJ80XktdGkZViJAu/oBoEcl5P1CHGG9QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cj4pu86+; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=TvJBwvaiuAf4gUYiPJ4lcopPI1wy5GQA0Ns9KLspjTn3sbxXxiTO8s0vdzV9F6h7o4Ae6lr4jLKAaYT3KYVF3qx5Xl1WMG6WsRwaSf+qUuxf3JGBY3EoO5aDRwlpCAgm1g2gQ5RDNC48SVEh8cI5LBsNqspoCCb8NhrnqeUVBuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0gW1xyw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cj4pu86+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854E5C4CEEB;
-	Fri,  6 Jun 2025 08:11:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0gW1xyw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC50C4CEEF;
+	Fri,  6 Jun 2025 08:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749197480;
-	bh=ND77xMVcFqeXe20NboWW0w2himlLjNgVxCRvLH5ylDA=;
+	s=k20201202; t=1749197568;
+	bh=VlqTV4+xXtbihYWvuELF0s4cfdGlf+PlWTqQpnCJ048=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=cj4pu86+AMWCo54oNH4Pvp+0tWHoIclkHKDmjxZirsjSHKcfhsNxMbU80aU/1wo8t
-	 53NjEOedMoJS7nhcrS0yT4SPtmGD57MILhpCIzRqNv0gxW5XZFcJHPtKjh55e2Qioy
-	 7oG3IZB5PLYrKWCTuxz/CxkyqwspR11EmFNSDzm3DHDr+rQ0NAPCJTklDhWpU1WdZ4
-	 PK2oTdjgJk2OAlz/twb1gPG5z4W6x7jWpdN4DgY3Y3WMnOhlNLsampM4q5PgfpFMax
-	 CJcaItV7pzGFeh1dGXToOOCUVqv/cghi7W+v4s0Gy1q4T3WT68Vx2tiuHfuuoUI8d9
-	 aBjnADTPSgOTA==
+	b=L0gW1xywgZ6oiBJLJtIa3zKdz8sbgU6PkRfs3tij7k3wme1kA/uYdUthXs/WyBIho
+	 po7j1xKcfdVCj4uLGL47zLXsmsaHhcgAzWX783Nd6Lr86J2fu+MfYVX0iLpDRvs0DL
+	 iFBhHgISXlumPnnT2gJaxztLXd+hH94nBoc4lnAao3tRKfSmhxjoukicETn1nNmNfp
+	 qpTRny7dBMoEWMnvOYgSh3y79rN68OjEtQkrUfZVrz1VLfJ0WZhuM9uEI8+nkMTZO6
+	 cR9zxZtjbHKrTIL3veJA/LqZ5QeSGTmvMocddnLLfLPzHh0SW0DgZMXgIY7Pdk0DKC
+	 07GlnkaPlKZ8Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,110 +34,97 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Jun 2025 10:11:13 +0200
-Message-Id: <DAFAR5SUQSU9.OSLB2UAXE9DY@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Yury Norov"
- <yury.norov@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Vincent Guittot" <vincent.guittot@linaro.org>, <linux-pm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: cpumask: Validate CPU number in set() and clear()
+Date: Fri, 06 Jun 2025 10:12:42 +0200
+Message-Id: <DAFASAX0B837.1YDWHXPFR3JCT@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <llvm@lists.linux.dev>, "Ralf Jung" <post@ralfj.de>
+Subject: Re: [PATCH v4 1/3] rust: add UnsafePinned type
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, "Viresh Kumar"
- <viresh.kumar@linaro.org>
+To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Sky" <sky@sky9.dev>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, =?utf-8?q?Gerald_Wisb=C3=B6ck?=
+ <gerald.wisboeck@feather.ink>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
+ <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>
 X-Mailer: aerc 0.20.1
-References: <8b5fc7889a7aacbd9f1f7412c99f02c736bde190.1749183428.git.viresh.kumar@linaro.org> <aEJwm16HSwCyt7aB@Mac.home>
-In-Reply-To: <aEJwm16HSwCyt7aB@Mac.home>
+References: <20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com>
+ <20250511-rust_unsafe_pinned-v4-1-a86c32e47e3d@gmail.com>
+ <1553eea9-9ced-410a-b6e7-886e11e2edba@gmail.com>
+ <DAES0YHHTRQS.3EGLTCPLP3SK3@kernel.org>
+ <63f92378-dde9-4bee-b2ae-b994052e8fd0@gmail.com>
+In-Reply-To: <63f92378-dde9-4bee-b2ae-b994052e8fd0@gmail.com>
 
-On Fri Jun 6, 2025 at 6:37 AM CEST, Boqun Feng wrote:
-> On Fri, Jun 06, 2025 at 09:47:28AM +0530, Viresh Kumar wrote:
->> The C `cpumask_{set|clear}_cpu()` APIs emit a warning when given an
->> invalid CPU number - but only if `CONFIG_DEBUG_PER_CPU_MAPS=3Dy` is set.
+On Thu Jun 5, 2025 at 7:57 PM CEST, Christian Schrefl wrote:
+> On 05.06.25 7:30 PM, Benno Lossin wrote:
+>> On Thu Jun 5, 2025 at 7:03 PM CEST, Christian Schrefl wrote:
+>>> On 11.05.25 8:21 PM, Christian Schrefl wrote:
+>>>> +/// This type provides a way to opt-out of typical aliasing rules;
+>>>> +/// specifically, `&mut UnsafePinned<T>` is not guaranteed to be a un=
+ique pointer.
+>>>> +///
+>>>> +/// However, even if you define your type like `pub struct Wrapper(Un=
+safePinned<...>)`, it is still
+>>>> +/// very risky to have an `&mut Wrapper` that aliases anything else. =
+Many functions that work
+>>>> +/// generically on `&mut T` assume that the memory that stores `T` is=
+ uniquely owned (such as
+>>>> +/// `mem::swap`). In other words, while having aliasing with `&mut Wr=
+apper` is not immediate
+>>>> +/// Undefined Behavior, it is still unsound to expose such a mutable =
+reference to code you do not
+>>>> +/// control! Techniques such as pinning via [`Pin`](core::pin::Pin) a=
+re needed to ensure soundness.
+>>>> +///
+>>>> +/// Similar to [`UnsafeCell`], [`UnsafePinned`] will not usually show=
+ up in
+>>>> +/// the public API of a library. It is an internal implementation det=
+ail of libraries that need to
+>>>> +/// support aliasing mutable references.
+>>>> +///
+>>>> +/// Further note that this does *not* lift the requirement that share=
+d references must be read-only!
+>>>> +/// Use [`UnsafeCell`] for that.
+>>>
+>>> The upstream rust PR [0] that changes this was just merged. So now `Uns=
+afePinned` includes
+>>> `UnsafeCell` semantics. It's probably best to also change this in the k=
+ernel docs.
+>>> Though it's still the case that removing the guarantee is simpler than =
+adding it back later,
+>>> so let me know what you all think.
 >>=20
->> Meanwhile, `cpumask_weight()` only considers CPUs up to `nr_cpu_ids`,
->> which can cause inconsistencies: a CPU number greater than `nr_cpu_ids`
->> may be set in the mask, yet the weight calculation won't reflect it.
->>=20
->> This leads to doctest failures when `nr_cpu_ids < 4`, as the test tries
->> to set CPUs 2 and 3:
->>=20
->>   rust_doctest_kernel_cpumask_rs_0.location: rust/kernel/cpumask.rs:180
->>   rust_doctest_kernel_cpumask_rs_0: ASSERTION FAILED at rust/kernel/cpum=
-ask.rs:190
->>=20
->> Fix this by validating the CPU number in the Rust `set()` and `clear()`
->> methods to prevent out-of-bounds modifications.
->>=20
+>> Depends on how "stable" this decision is. I haven't followed the
+>> discussion, but given that this once changed to the "non-backwards"
+>> compatible case it feels permanent.
 >
-> Thanks for the quick fix!
->
-> While this can fix the current problem, but it's not a good solution for
-> the long run. Because outside a test, we should never use an arbitrary
-> i32 as a cpu number (we usually get it from smp_processor_id(), or
-> something else). So the `< nr_cpu_ids` testing is not necessary in
-> normal use cases.
->
-> We should instead provide a wrapper for cpu id:
->
->     /// # Invariants
->     ///
->     /// The number is always in [0..nr_cpu_ids) range.
->     pub struct CpuId(i32);
->
-> and
->
->     impl CpuId {
->         /// # Safety
-> 	/// Callers must ensure `i` is a valid cpu id (i.e. 0 <=3D i <
-> 	/// nr_cpu_ids).
->         pub unsafe fn from_i32_unchecked(i: i32) -> Self {
-> 	    // INVARIANT: The function safety guarantees `i` is a valid
-> 	    // cpu id.
-> 	    CpuId(id);
-> 	}
->
-> 	pub fn from_i32(i: i32) -> Option<Self> {
-> 	    if i < 0 || i >=3D nr_cpu_ids {
-> 	        None
-> 	    } else {
-> 	        // SAFETY: `i` has just been checked as a valid cpu id.
-> 	        Some(unsafe { Self::from_i32_unchecked(i) })
-> 	    }
-> 	}
->
-> 	pub fn current() -> Self {
-> 	    // SAFETY: smp_processor_id() always return valid cpu id.
-> 	    unsafe { Self::from_i32_unchecked(smp_processor_id()) }
-> 	}
->     }
->
-> All `Cpumask` functions then take `CpuId` instead of `i32` as the
-> parameter. Needless to say if we were to have a cpumask_next() wrapper,
-> the return value will be `CpuId` (or `Option<CpuId>`), i.e. if a bit was
-> set in a cpumask, then it must represent a correct cpu id.
->
-> Make sense?
+> It seems pretty permanent, from what I understand its hard to
+> define the exact semantics `UnsafePinned` without `UnsafeCell`
+> in a way that is sound and because of some interactions with
+> `Pin::deref` it would have some backwards compatibility issues.
+> See this comment by Ralf on github [1].
 
-Just to make sure, the `nr_cpu_ids` stays constant, right?
+Oh yeah that seems like a done deal.
 
->> @@ -101,10 +108,16 @@ pub fn set(&mut self, cpu: u32) {
->>      /// This mismatches kernel naming convention and corresponds to the=
- C
->>      /// function `__cpumask_clear_cpu()`.
->>      #[inline]
->> -    pub fn clear(&mut self, cpu: i32) {
->> +    pub fn clear(&mut self, cpu: i32) -> Result {
->> +        // SAFETY: It is safe to read `nr_cpu_ids`.
->> +        if unsafe { cpu as u32 >=3D bindings::nr_cpu_ids } {
+> [1]: https://github.com/rust-lang/rust/pull/137043#discussion_r1973978597
 >
-> You probably want to check whether `bindings::nr_cpu_ids` can be
-> accessible if NR_CPUS =3D=3D 1 or CONFIG_FORCE_NR_CPUS=3Dy, because then
-> nr_cpu_ids is a macro definition.
+>>=20
+>> How close is it to stabilization?
+>>=20
+>> If it's close-ish, then I'd suggest we change this to reflect the new
+>> semantics. If not, then we should leave it as-is.
+>
+> It's pretty new, I'm not sure how long it's going to stay in nightly,
+> but it's probably going to be quite some time.
+>
+> I wouldn't change it if it would already be in the kernel, but I think
+> its probably good to add the current state of the feature. This
+> would also reduce the difference between docs and implementation.
 
-Just define a helper function?
+Makes sense, I agree with changing it. Thanks for your work!
 
 ---
 Cheers,
