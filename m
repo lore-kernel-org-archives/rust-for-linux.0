@@ -1,210 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C6283FE8;
-	Fri,  6 Jun 2025 08:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589B025F793
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Jun 2025 09:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749198207; cv=none; b=ToYeiA/GGkP8Bzkea8Qm7bw4R5Wuz9BCJ26H3everY5J1ZLFJLeF/WfSmGCcIv5sF+Ce4Wb79tRPZJ81dqo/799+F4vXBwaISaY2/8+ZFbZd7D7Y3oBIsT+tuUpcz10V/44+hMQjqhFUbAXTdz98qq0n8pXBUugBh195I9Z3x4s=
+	t=1749200423; cv=none; b=TO7HSzhETecO1dQGxgq8oZawiL2v+3JUyeH82BGExL3zqLGP0Fb5sIiXUDUUGC22wrjHlQlJiwUoGFLNTjwsFyUZHadzsHmuO6N+LEh/+b0XWEuiPF0DRc+Cdrn9VGYnHSFHrWoNHeLTzWG3abtptLiYxEm3UHlMAN9PsSnH+H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749198207; c=relaxed/simple;
-	bh=bsYHtf5b4C44wDgODtFnGNiDjj3Z49qfjun+qgAfums=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ZY7ONeyXIPrewXRqMuSXVoMHrUiLPcLOwkiPF0G/50dreAPmn2e84c0h2kDFizBuUoi9dU69p4czKjhPv4evV7CpBCRwrhuLuni2Z3QWHa17DTMIte/hVJ6OV93On3QSffHk5Z/Rp0bDC+iQdXIWvIyDU8E9+5lB0hAXVm4Lmrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jU3UCF8h; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749200423; c=relaxed/simple;
+	bh=/eAfRKkG8umOInYvuV8Ox5HGkToOXh0S4FrQTBYSvyQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Y5vfRgii0RgStxlxUAhJCy/rQCeowlLEND1b7MxN5PC/JI8VFy6kWzFEh75nEu6JPtz9orhM3easUR8Y8S3qA4xkW89OkuZavafY+3R50BnTR4Pa+mfpdErDoZRheFOwNlggsU4j8jNz4TL4H6aOo5lw5kZRmhKYEUnOjOw1WEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JjREHAPf; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jU3UCF8h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA201C4CEEF;
-	Fri,  6 Jun 2025 08:23:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749198207;
-	bh=bsYHtf5b4C44wDgODtFnGNiDjj3Z49qfjun+qgAfums=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=jU3UCF8hjBtyswtbu2HXUSW0AhCKK32leobGmercq5FqMnU39mBQHkJk/kMJhpAox
-	 jKyL8RxAc1x3E42ahOs1QHYBAabHwy4aPEFYB0rUmC9PTj7ATyrqcYnDvKN6t4qaD3
-	 SbprgECYDzgh8O/AykSOm6FnJtXt8F7E90YD2XTQz4qb4s/PztIG1+mv4hHCwyMslu
-	 IHWzHrOJMfBe7DSLJ58iNIEwQ/KwQRRcZtlMzxxCTcr7HToxVulXQkKl9nxQImIVdv
-	 ldy9N0oSU/D11oM/rWn/IAraTjsnNkNOdQPn237M23gx/W2WfmoYPd2MdFcVQTRRcJ
-	 t3awzc5x4fq3w==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JjREHAPf"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-451ecc3be97so7317375e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 06 Jun 2025 02:00:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749200419; x=1749805219; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5PC5oMgoZ+UFSPHr55ppMv4d7kRuQFao40OCKHLwKl8=;
+        b=JjREHAPfKYRGWGxqGODL4We4LZkBxVTp2vT/lu8JFm0oeYuiVyVCwnU/FWJFY/3ngw
+         xxpdtorNYBP1MFgIUXclTVcWKCcxG4i1wYtiUK56dCgCVAe3GHHjnYCTTtohXfVaUHv1
+         iqtBO5gByfdZvCTfNd5KUXum9IVIXIoM9hK8QNPkoKkVMcjRTPpF3g7arFlOOojx/Wj+
+         9NaT42Xp7e8YCXPRBHMwyz6zakJmpb8ORrEXREgraHH5InfUqz4Ey3FoPX/z5r2GS6r3
+         om6y2P67yRM6C4rKkI10dSFElAzJALRIh8rR+OfH7cRrdVcLeChxJsJFFuv7JGe5rF0Q
+         yWdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749200419; x=1749805219;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5PC5oMgoZ+UFSPHr55ppMv4d7kRuQFao40OCKHLwKl8=;
+        b=VNuvPi9zw2wmpSvXmE+8awCWw+87x28AS5zcJGh8Q2wtYocQDFat4n7HC0yj2R9UvP
+         9Gw/j5NUSz+CueV4YsHVcEABQuGYcLtoJaH/4NeP/Le/T9HTeFw02ibGFN9k7+uXj34v
+         f3GHsPfYAUhpzi7fRB1XQtr5RXflTdG5fcVFZjGyKSu88bSGT1qPeADusb0rAo7N+xxJ
+         MceubkVzzsz3DwPUUxhmo9g6Wtj0qm7jeexCoVD/v11mdW+GTjDYmoBUCNTgWGiLYVO8
+         hRoF4tQA2cO8lLddpFeBAnw8UoNOSgmuVWx8tbJw8THql5yUTe9R10YyEpsFdSmCpmjy
+         239A==
+X-Forwarded-Encrypted: i=1; AJvYcCXapiEBkbnnAy7uD3oMle87BtC69xn/Q6HUULiq3+UNwJvV7IvMKzFFM5g00xdq/oqtsYF42rlDzvhT1XwE8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqLpuTimxzgZkG801TyVY/B5edjy7BGqreQsnvn9bPjWR/ofHg
+	0keBTJL2EDU9REi5DY0F9wZKSYQrkR590/L1hrsDtc06FKGlyI46byXcZzvnRD04fNNA7eZ58Ga
+	CRq2Cm3qIM9BPGL+mqw==
+X-Google-Smtp-Source: AGHT+IH/QYbvsS/U9rVKnUtVrlndHv1MOMIqsNE73OS3DtORTGUsobRwG7K0tQKguV825pTOaG1xyT76+ZRfs+s=
+X-Received: from wmsr2.prod.google.com ([2002:a05:600c:8b02:b0:450:da87:cebb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c177:b0:450:cac5:45e7 with SMTP id 5b1f17b1804b1-45201417bfbmr24715585e9.1.1749200419659;
+ Fri, 06 Jun 2025 02:00:19 -0700 (PDT)
+Date: Fri, 6 Jun 2025 09:00:17 +0000
+In-Reply-To: <20250603205416.49281-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Jun 2025 10:23:21 +0200
-Message-Id: <DAFB0GKSGPSF.24BE695LGC28Z@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, =?utf-8?q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>
-Subject: Re: [PATCH] rust: types: add FOREIGN_ALIGN to ForeignOwnable
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Tamir Duberstein" <tamird@gmail.com>, "Viresh Kumar"
- <viresh.kumar@linaro.org>
-X-Mailer: aerc 0.20.1
-References: <20250605-pointed-to-v1-1-ee1e262912cc@kernel.org>
-In-Reply-To: <20250605-pointed-to-v1-1-ee1e262912cc@kernel.org>
+References: <20250603205416.49281-1-dakr@kernel.org> <20250603205416.49281-2-dakr@kernel.org>
+Message-ID: <aEKuIRI6UvgCZ-z5@google.com>
+Subject: Re: [PATCH 1/3] rust: completion: implement initial abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
+	tmgross@umich.edu, chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 
-The title should probably also mention that it removes `PointedTo`.=20
+On Tue, Jun 03, 2025 at 10:48:50PM +0200, Danilo Krummrich wrote:
+> Implement a minimal abstraction for the completion synchronization
+> primitive.
+> 
+> This initial abstraction only adds complete_all() and
+> wait_for_completion(), since that is what is required for the subsequent
+> Devres patch.
+> 
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Juri Lelli <juri.lelli@redhat.com>
+> Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ben Segall <bsegall@google.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Valentin Schneider <vschneid@redhat.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-On Thu Jun 5, 2025 at 9:55 PM CEST, Andreas Hindborg wrote:
-> The current implementation of `ForeignOwnable` is leaking the type of the
-> opaque pointer to consumers of the API. This allows consumers of the opaq=
-ue
-> pointer to rely on the information that can be extracted from the pointer
-> type.
->
-> To prevent this, change the API to the version suggested by Maira
-> Canal (link below): Remove `ForeignOwnable::PointedTo` in favor of a
-> constant, which specifies the alignment of the pointers returned by
-> `into_foreign`.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Suggested-by: Ma=C3=ADra Canal <mcanal@igalia.com>
-> Link: https://lore.kernel.org/r/20240309235927.168915-3-mcanal@igalia.com
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-A couple nits and documentation review below, with those fixed:
-
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-> ---
->  rust/kernel/alloc/kbox.rs | 40 ++++++++++++++++++++++------------------
->  rust/kernel/miscdevice.rs | 10 +++++-----
->  rust/kernel/pci.rs        |  2 +-
->  rust/kernel/platform.rs   |  2 +-
->  rust/kernel/sync/arc.rs   | 23 ++++++++++++-----------
->  rust/kernel/types.rs      | 46 +++++++++++++++++++++--------------------=
------
->  rust/kernel/xarray.rs     |  8 ++++----
->  7 files changed, 66 insertions(+), 65 deletions(-)
->
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index c386ff771d50..97f45bc4d74f 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -398,70 +398,74 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags)=
- -> Result<Self, E>
->      }
->  }
-> =20
-> -// SAFETY: The `into_foreign` function returns a pointer that is well-al=
-igned.
-> +// SAFETY: The pointer returned by `into_foreign` comes from a well alig=
-ned
-> +// pointer to `T`.
->  unsafe impl<T: 'static, A> ForeignOwnable for Box<T, A>
->  where
->      A: Allocator,
->  {
-> -    type PointedTo =3D T;
-> +    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<T>();
->      type Borrowed<'a> =3D &'a T;
->      type BorrowedMut<'a> =3D &'a mut T;
-> =20
-> -    fn into_foreign(self) -> *mut Self::PointedTo {
-> -        Box::into_raw(self)
-> +    fn into_foreign(self) -> *mut crate::ffi::c_void {
-
-How about we import the prelude, then you can just write `*mut c_void`
-everywhere instead of having to write `crate::ffi` all the time.
-
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index c7af0aa48a0a..6603079b05af 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -140,10 +140,9 @@ pub struct Arc<T: ?Sized> {
->      _p: PhantomData<ArcInner<T>>,
->  }
-> =20
-> -#[doc(hidden)]
->  #[pin_data]
->  #[repr(C)]
-> -pub struct ArcInner<T: ?Sized> {
-> +struct ArcInner<T: ?Sized> {
-
-I agree with this change, but let's mention it in the commit message.
-
->      refcount: Opaque<bindings::refcount_t>,
->      data: T,
->  }
-
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 22985b6f6982..025c619a2195 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -21,15 +21,11 @@
->  ///
->  /// # Safety
->  ///
-> -/// Implementers must ensure that [`into_foreign`] returns a pointer whi=
-ch meets the alignment
-> -/// requirements of [`PointedTo`].
-> -///
-> -/// [`into_foreign`]: Self::into_foreign
-> -/// [`PointedTo`]: Self::PointedTo
-> +/// Implementers must ensure that [`Self::into_foreign`] return pointers=
- with alignment that is an
-
-s/return/returns/
-
-> +/// integer multiple of [`Self::FOREIGN_ALIGN`].
-
-I would just write "returns pointers aligned to [`Self::FOREIGN_ALIGN`]".
-
->  pub unsafe trait ForeignOwnable: Sized {
-> -    /// Type used when the value is foreign-owned. In practical terms on=
-ly defines the alignment of
-> -    /// the pointer.
-> -    type PointedTo;
-> +    /// The alignment of pointers returned by `into_foreign`.
-> +    const FOREIGN_ALIGN: usize;
-> =20
->      /// Type used to immutably borrow a value that is currently foreign-=
-owned.
->      type Borrowed<'a>;
-> @@ -39,18 +35,17 @@ pub unsafe trait ForeignOwnable: Sized {
-> =20
->      /// Converts a Rust-owned object to a foreign-owned one.
->      ///
-> -    /// # Guarantees
-
-Why remove this section? I think we should streamline it, (make it use
-bullet points, shorten the sentences etc). We can keep the paragraph you
-wrote below as normal docs.
-
-> -    ///
-> -    /// The return value is guaranteed to be well-aligned, but there are=
- no other guarantees for
-> -    /// this pointer. For example, it might be null, dangling, or point =
-to uninitialized memory.
-> -    /// Using it in any way except for [`ForeignOwnable::from_foreign`],=
- [`ForeignOwnable::borrow`],
-> -    /// [`ForeignOwnable::try_from_foreign`] can result in undefined beh=
-avior.
-> +    /// The foreign representation is a pointer to void. The minimum ali=
-gnment of the returned
-> +    /// pointer is [`Self::FOREIGN_ALIGN`]. There are no other guarantee=
-s for this pointer. For
-> +    /// example, it might be invalid, dangling or pointing to uninitiali=
-zed memory. Using it in any
-> +    /// way except for [`from_foreign`], [`try_from_foreign`], [`borrow`=
-], or [`borrow_mut`] can
-> +    /// result in undefined behavior.
->      ///
->      /// [`from_foreign`]: Self::from_foreign
->      /// [`try_from_foreign`]: Self::try_from_foreign
->      /// [`borrow`]: Self::borrow
->      /// [`borrow_mut`]: Self::borrow_mut
-> -    fn into_foreign(self) -> *mut Self::PointedTo;
-> +    fn into_foreign(self) -> *mut crate::ffi::c_void;
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
