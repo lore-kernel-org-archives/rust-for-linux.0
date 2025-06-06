@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E409A2857C2;
-	Fri,  6 Jun 2025 08:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64C6283FE8;
+	Fri,  6 Jun 2025 08:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749197569; cv=none; b=u1E6FqqkHH9bDUwufc8kEym4kc/m11q12Z3XwZ/ZU3aV3aXwYIKK8ckTc+cGzBQmx9gJtcaphcAn9ywU2auWPkTIlWCOSOkmWc2hl8cBYsRoduN7G+FDoTzwJBVpxtezNq0dSFxfFeuMtpfHEB7+Dybo0eN/5/nrcEMxS9rgTM0=
+	t=1749198207; cv=none; b=ToYeiA/GGkP8Bzkea8Qm7bw4R5Wuz9BCJ26H3everY5J1ZLFJLeF/WfSmGCcIv5sF+Ce4Wb79tRPZJ81dqo/799+F4vXBwaISaY2/8+ZFbZd7D7Y3oBIsT+tuUpcz10V/44+hMQjqhFUbAXTdz98qq0n8pXBUugBh195I9Z3x4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749197569; c=relaxed/simple;
-	bh=VlqTV4+xXtbihYWvuELF0s4cfdGlf+PlWTqQpnCJ048=;
+	s=arc-20240116; t=1749198207; c=relaxed/simple;
+	bh=bsYHtf5b4C44wDgODtFnGNiDjj3Z49qfjun+qgAfums=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=TvJBwvaiuAf4gUYiPJ4lcopPI1wy5GQA0Ns9KLspjTn3sbxXxiTO8s0vdzV9F6h7o4Ae6lr4jLKAaYT3KYVF3qx5Xl1WMG6WsRwaSf+qUuxf3JGBY3EoO5aDRwlpCAgm1g2gQ5RDNC48SVEh8cI5LBsNqspoCCb8NhrnqeUVBuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0gW1xyw; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=ZY7ONeyXIPrewXRqMuSXVoMHrUiLPcLOwkiPF0G/50dreAPmn2e84c0h2kDFizBuUoi9dU69p4czKjhPv4evV7CpBCRwrhuLuni2Z3QWHa17DTMIte/hVJ6OV93On3QSffHk5Z/Rp0bDC+iQdXIWvIyDU8E9+5lB0hAXVm4Lmrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jU3UCF8h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0gW1xyw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC50C4CEEF;
-	Fri,  6 Jun 2025 08:12:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jU3UCF8h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA201C4CEEF;
+	Fri,  6 Jun 2025 08:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749197568;
-	bh=VlqTV4+xXtbihYWvuELF0s4cfdGlf+PlWTqQpnCJ048=;
+	s=k20201202; t=1749198207;
+	bh=bsYHtf5b4C44wDgODtFnGNiDjj3Z49qfjun+qgAfums=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=L0gW1xywgZ6oiBJLJtIa3zKdz8sbgU6PkRfs3tij7k3wme1kA/uYdUthXs/WyBIho
-	 po7j1xKcfdVCj4uLGL47zLXsmsaHhcgAzWX783Nd6Lr86J2fu+MfYVX0iLpDRvs0DL
-	 iFBhHgISXlumPnnT2gJaxztLXd+hH94nBoc4lnAao3tRKfSmhxjoukicETn1nNmNfp
-	 qpTRny7dBMoEWMnvOYgSh3y79rN68OjEtQkrUfZVrz1VLfJ0WZhuM9uEI8+nkMTZO6
-	 cR9zxZtjbHKrTIL3veJA/LqZ5QeSGTmvMocddnLLfLPzHh0SW0DgZMXgIY7Pdk0DKC
-	 07GlnkaPlKZ8Q==
+	b=jU3UCF8hjBtyswtbu2HXUSW0AhCKK32leobGmercq5FqMnU39mBQHkJk/kMJhpAox
+	 jKyL8RxAc1x3E42ahOs1QHYBAabHwy4aPEFYB0rUmC9PTj7ATyrqcYnDvKN6t4qaD3
+	 SbprgECYDzgh8O/AykSOm6FnJtXt8F7E90YD2XTQz4qb4s/PztIG1+mv4hHCwyMslu
+	 IHWzHrOJMfBe7DSLJ58iNIEwQ/KwQRRcZtlMzxxCTcr7HToxVulXQkKl9nxQImIVdv
+	 ldy9N0oSU/D11oM/rWn/IAraTjsnNkNOdQPn237M23gx/W2WfmoYPd2MdFcVQTRRcJ
+	 t3awzc5x4fq3w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,98 +34,177 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Jun 2025 10:12:42 +0200
-Message-Id: <DAFASAX0B837.1YDWHXPFR3JCT@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <llvm@lists.linux.dev>, "Ralf Jung" <post@ralfj.de>
-Subject: Re: [PATCH v4 1/3] rust: add UnsafePinned type
+Date: Fri, 06 Jun 2025 10:23:21 +0200
+Message-Id: <DAFB0GKSGPSF.24BE695LGC28Z@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, =?utf-8?q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>
+Subject: Re: [PATCH] rust: types: add FOREIGN_ALIGN to ForeignOwnable
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Sky" <sky@sky9.dev>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, =?utf-8?q?Gerald_Wisb=C3=B6ck?=
- <gerald.wisboeck@feather.ink>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
- <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
+ Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Tamir Duberstein" <tamird@gmail.com>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>
 X-Mailer: aerc 0.20.1
-References: <20250511-rust_unsafe_pinned-v4-0-a86c32e47e3d@gmail.com>
- <20250511-rust_unsafe_pinned-v4-1-a86c32e47e3d@gmail.com>
- <1553eea9-9ced-410a-b6e7-886e11e2edba@gmail.com>
- <DAES0YHHTRQS.3EGLTCPLP3SK3@kernel.org>
- <63f92378-dde9-4bee-b2ae-b994052e8fd0@gmail.com>
-In-Reply-To: <63f92378-dde9-4bee-b2ae-b994052e8fd0@gmail.com>
+References: <20250605-pointed-to-v1-1-ee1e262912cc@kernel.org>
+In-Reply-To: <20250605-pointed-to-v1-1-ee1e262912cc@kernel.org>
 
-On Thu Jun 5, 2025 at 7:57 PM CEST, Christian Schrefl wrote:
-> On 05.06.25 7:30 PM, Benno Lossin wrote:
->> On Thu Jun 5, 2025 at 7:03 PM CEST, Christian Schrefl wrote:
->>> On 11.05.25 8:21 PM, Christian Schrefl wrote:
->>>> +/// This type provides a way to opt-out of typical aliasing rules;
->>>> +/// specifically, `&mut UnsafePinned<T>` is not guaranteed to be a un=
-ique pointer.
->>>> +///
->>>> +/// However, even if you define your type like `pub struct Wrapper(Un=
-safePinned<...>)`, it is still
->>>> +/// very risky to have an `&mut Wrapper` that aliases anything else. =
-Many functions that work
->>>> +/// generically on `&mut T` assume that the memory that stores `T` is=
- uniquely owned (such as
->>>> +/// `mem::swap`). In other words, while having aliasing with `&mut Wr=
-apper` is not immediate
->>>> +/// Undefined Behavior, it is still unsound to expose such a mutable =
-reference to code you do not
->>>> +/// control! Techniques such as pinning via [`Pin`](core::pin::Pin) a=
-re needed to ensure soundness.
->>>> +///
->>>> +/// Similar to [`UnsafeCell`], [`UnsafePinned`] will not usually show=
- up in
->>>> +/// the public API of a library. It is an internal implementation det=
-ail of libraries that need to
->>>> +/// support aliasing mutable references.
->>>> +///
->>>> +/// Further note that this does *not* lift the requirement that share=
-d references must be read-only!
->>>> +/// Use [`UnsafeCell`] for that.
->>>
->>> The upstream rust PR [0] that changes this was just merged. So now `Uns=
-afePinned` includes
->>> `UnsafeCell` semantics. It's probably best to also change this in the k=
-ernel docs.
->>> Though it's still the case that removing the guarantee is simpler than =
-adding it back later,
->>> so let me know what you all think.
->>=20
->> Depends on how "stable" this decision is. I haven't followed the
->> discussion, but given that this once changed to the "non-backwards"
->> compatible case it feels permanent.
+The title should probably also mention that it removes `PointedTo`.=20
+
+On Thu Jun 5, 2025 at 9:55 PM CEST, Andreas Hindborg wrote:
+> The current implementation of `ForeignOwnable` is leaking the type of the
+> opaque pointer to consumers of the API. This allows consumers of the opaq=
+ue
+> pointer to rely on the information that can be extracted from the pointer
+> type.
 >
-> It seems pretty permanent, from what I understand its hard to
-> define the exact semantics `UnsafePinned` without `UnsafeCell`
-> in a way that is sound and because of some interactions with
-> `Pin::deref` it would have some backwards compatibility issues.
-> See this comment by Ralf on github [1].
-
-Oh yeah that seems like a done deal.
-
-> [1]: https://github.com/rust-lang/rust/pull/137043#discussion_r1973978597
+> To prevent this, change the API to the version suggested by Maira
+> Canal (link below): Remove `ForeignOwnable::PointedTo` in favor of a
+> constant, which specifies the alignment of the pointers returned by
+> `into_foreign`.
 >
->>=20
->> How close is it to stabilization?
->>=20
->> If it's close-ish, then I'd suggest we change this to reflect the new
->> semantics. If not, then we should leave it as-is.
->
-> It's pretty new, I'm not sure how long it's going to stay in nightly,
-> but it's probably going to be quite some time.
->
-> I wouldn't change it if it would already be in the kernel, but I think
-> its probably good to add the current state of the feature. This
-> would also reduce the difference between docs and implementation.
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Suggested-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> Link: https://lore.kernel.org/r/20240309235927.168915-3-mcanal@igalia.com
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Makes sense, I agree with changing it. Thanks for your work!
+A couple nits and documentation review below, with those fixed:
 
----
-Cheers,
-Benno
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+> ---
+>  rust/kernel/alloc/kbox.rs | 40 ++++++++++++++++++++++------------------
+>  rust/kernel/miscdevice.rs | 10 +++++-----
+>  rust/kernel/pci.rs        |  2 +-
+>  rust/kernel/platform.rs   |  2 +-
+>  rust/kernel/sync/arc.rs   | 23 ++++++++++++-----------
+>  rust/kernel/types.rs      | 46 +++++++++++++++++++++--------------------=
+-----
+>  rust/kernel/xarray.rs     |  8 ++++----
+>  7 files changed, 66 insertions(+), 65 deletions(-)
+>
+> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> index c386ff771d50..97f45bc4d74f 100644
+> --- a/rust/kernel/alloc/kbox.rs
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -398,70 +398,74 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags)=
+ -> Result<Self, E>
+>      }
+>  }
+> =20
+> -// SAFETY: The `into_foreign` function returns a pointer that is well-al=
+igned.
+> +// SAFETY: The pointer returned by `into_foreign` comes from a well alig=
+ned
+> +// pointer to `T`.
+>  unsafe impl<T: 'static, A> ForeignOwnable for Box<T, A>
+>  where
+>      A: Allocator,
+>  {
+> -    type PointedTo =3D T;
+> +    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<T>();
+>      type Borrowed<'a> =3D &'a T;
+>      type BorrowedMut<'a> =3D &'a mut T;
+> =20
+> -    fn into_foreign(self) -> *mut Self::PointedTo {
+> -        Box::into_raw(self)
+> +    fn into_foreign(self) -> *mut crate::ffi::c_void {
+
+How about we import the prelude, then you can just write `*mut c_void`
+everywhere instead of having to write `crate::ffi` all the time.
+
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index c7af0aa48a0a..6603079b05af 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -140,10 +140,9 @@ pub struct Arc<T: ?Sized> {
+>      _p: PhantomData<ArcInner<T>>,
+>  }
+> =20
+> -#[doc(hidden)]
+>  #[pin_data]
+>  #[repr(C)]
+> -pub struct ArcInner<T: ?Sized> {
+> +struct ArcInner<T: ?Sized> {
+
+I agree with this change, but let's mention it in the commit message.
+
+>      refcount: Opaque<bindings::refcount_t>,
+>      data: T,
+>  }
+
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index 22985b6f6982..025c619a2195 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -21,15 +21,11 @@
+>  ///
+>  /// # Safety
+>  ///
+> -/// Implementers must ensure that [`into_foreign`] returns a pointer whi=
+ch meets the alignment
+> -/// requirements of [`PointedTo`].
+> -///
+> -/// [`into_foreign`]: Self::into_foreign
+> -/// [`PointedTo`]: Self::PointedTo
+> +/// Implementers must ensure that [`Self::into_foreign`] return pointers=
+ with alignment that is an
+
+s/return/returns/
+
+> +/// integer multiple of [`Self::FOREIGN_ALIGN`].
+
+I would just write "returns pointers aligned to [`Self::FOREIGN_ALIGN`]".
+
+>  pub unsafe trait ForeignOwnable: Sized {
+> -    /// Type used when the value is foreign-owned. In practical terms on=
+ly defines the alignment of
+> -    /// the pointer.
+> -    type PointedTo;
+> +    /// The alignment of pointers returned by `into_foreign`.
+> +    const FOREIGN_ALIGN: usize;
+> =20
+>      /// Type used to immutably borrow a value that is currently foreign-=
+owned.
+>      type Borrowed<'a>;
+> @@ -39,18 +35,17 @@ pub unsafe trait ForeignOwnable: Sized {
+> =20
+>      /// Converts a Rust-owned object to a foreign-owned one.
+>      ///
+> -    /// # Guarantees
+
+Why remove this section? I think we should streamline it, (make it use
+bullet points, shorten the sentences etc). We can keep the paragraph you
+wrote below as normal docs.
+
+> -    ///
+> -    /// The return value is guaranteed to be well-aligned, but there are=
+ no other guarantees for
+> -    /// this pointer. For example, it might be null, dangling, or point =
+to uninitialized memory.
+> -    /// Using it in any way except for [`ForeignOwnable::from_foreign`],=
+ [`ForeignOwnable::borrow`],
+> -    /// [`ForeignOwnable::try_from_foreign`] can result in undefined beh=
+avior.
+> +    /// The foreign representation is a pointer to void. The minimum ali=
+gnment of the returned
+> +    /// pointer is [`Self::FOREIGN_ALIGN`]. There are no other guarantee=
+s for this pointer. For
+> +    /// example, it might be invalid, dangling or pointing to uninitiali=
+zed memory. Using it in any
+> +    /// way except for [`from_foreign`], [`try_from_foreign`], [`borrow`=
+], or [`borrow_mut`] can
+> +    /// result in undefined behavior.
+>      ///
+>      /// [`from_foreign`]: Self::from_foreign
+>      /// [`try_from_foreign`]: Self::try_from_foreign
+>      /// [`borrow`]: Self::borrow
+>      /// [`borrow_mut`]: Self::borrow_mut
+> -    fn into_foreign(self) -> *mut Self::PointedTo;
+> +    fn into_foreign(self) -> *mut crate::ffi::c_void;
