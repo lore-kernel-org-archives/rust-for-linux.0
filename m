@@ -1,217 +1,181 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0111AC44D;
-	Fri,  6 Jun 2025 17:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94D71E501C;
+	Fri,  6 Jun 2025 19:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749229841; cv=none; b=VCodB4mv5IQeGOQOZG/01HWPGM8g3KSYufO5vnuo5m+MH8R99eY/oFGKqAiQF5e/44NC+abQjMnH/VY1XmuFlQDaAx2RxJAs88CtSOc4WadE1i13Qm27eQomLSpzHeJtesMhKE/eUgdDanWRmIM/6r56E68ZFtPozE1nq/C1vpI=
+	t=1749238449; cv=none; b=oOSWdNLbd9ETmpW1DBbdP2EHD6Gl3T5eZ+dSlhiniqCaGHmL7gwiQTgl4C5RCbJoM+GG0UnP6BoO2RAmEC0XPWN4btEuwZ2iu523+rxzoaWvyBFHH+gaA9cMacjEpjF7bVAppAcrr4AX6dq9i1VLHW2ehniH1/ACny5Lp9pgpQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749229841; c=relaxed/simple;
-	bh=BSMddBCJ41Ilbd2FWYJhzQ/QPewb+Wq1Q5rcDoc8ck8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CU2rb5DoIFSqnC57b3xM6evKxsDvWkug7w1bCYNcG7xnLP2K8Weq9Hf5LS42VnVyEnFlAQsx2WJvKmnH1EmHxHry+Q1lAMeSdBPXUA8FN8OkbOz3fa5gHfoGO1dp4nrKJ09ljHDDYmjcAuTioW9g/fyNYtEDzYbhDU0OY9HFNls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UrjCs8N7; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749238449; c=relaxed/simple;
+	bh=H3LG70DDFkrvPWOnWEJJh55HhE/5hyND70bmc+t70E0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=AdpZqvC+3HI6NoIcsxVt3Rs8NK2S9LU1CBRWD8ywocnI0S8W8wHXIaGLIyh2LYo+ukBenGuqk+pqfbU0tt7TR4cwGYWMWH6Nn3iqG4bdxK0miG7HmV/mVs/IwnW6sfpqp4EgDixUmyQI3611WCDdPO5920VUT8z6KVWzq5+i4qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGQGSI4e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UrjCs8N7"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450cf0120cdso22105445e9.2;
-        Fri, 06 Jun 2025 10:10:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749229838; x=1749834638; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gV0kqico3uMlw+LKBx7wC9FFLyMg8FZyPDHUacfhBv0=;
-        b=UrjCs8N7e8KVUXXDtGD04wil/po2PON+tKzBosKjvYzF1m60xwrEPfd7NMJRj9ftoL
-         IRoBlmLz4vn+kFAKyXHWMDnsaomSaRirM+7YjIQO1XfCZsJ1dD43PY4QQv5xZiZDEGxV
-         YVpFSgK+BiUVPi2o4D+C9oAEHWUTb0CZl6Cwtmhlu1b2quwJgVLmnZICoMETVWiiYka3
-         CeJI2YlQ48D8iY+fz3cCm/ochDLndj8sERvoOAWvnUJa+jaf/2KOddtf82eIJpH8x3js
-         rqJSyyWrcoZI9+ivQmrm0xtjui6z8S0tmW+iSlJ9fDu9QnztHK5nDa/IV8CU6VmP1hih
-         VfFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749229838; x=1749834638;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gV0kqico3uMlw+LKBx7wC9FFLyMg8FZyPDHUacfhBv0=;
-        b=ffWOAjxXWnpUUQnFXHSKFZNE5lmiXRwoAxNFajR9NyT7YpP0J+vYvs55WUFRriIGPr
-         Cv1DHNnlerjL6FuU7fXjszoRDOtqGLWUB3YzG8nw73zQUe4dyxERzp1nGahpGC35yXuS
-         rXIXo1xZkSOaojvdlb6dBk1XMcKKwUFJS+bJmsf0AghGXhyGkjIg42maVmfOxc904WeA
-         ISbKG4FCq2BuYH+4CtSc8IQN34b6mpk7M6rPEaCVngNSkEpbC3aS6sY9jaQwkRYAlSqX
-         qXgxjpBAIWF+pdLuMGL0Dy2NiC/ig06LhSBM8QH0r3QpXAT7DzoCFNFD67b/D1xXzhWz
-         T2Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCUyC4O6iwQ78tS0ohaAC/GZLzRGeyjegDu6NFo0LwRd4ypDbitfshNoLX6ZdIIs3OI46iY8qixmsoYt@vger.kernel.org, AJvYcCWRptTS+ChKDxiGDJqxDP1wAUnL3V24SQrCe5aQXWh5E+vZOMwUvWvQbe3HC/RC3fRJXuWbEuNPpvsvsro3@vger.kernel.org, AJvYcCWly/+smI9y4RVHTHFz8CpgCvUd/VSfcj/VcseGbRXMVwGxG+0NBFUCQEdvO1CkGZ9ah4s5ho220G6Gb3N/hk4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9BkSDifl9H/r/2I+iqPSqy0XdxhEkwMt09qysA36j/gNAypnd
-	vQDcJ3gkO7YqtQRVudLTIL7hxuQ1j1+DqF4TVAFC8BvTu+oK7+De0pFj
-X-Gm-Gg: ASbGncv13fzuFMisNgdWDXGeI05mmJvb+b9Ci09/N8Ioq9HjkRvBupLIqy/3pBcbsO/
-	rU+sxGKiACca1OT94XG29E+R7aMmxH8ubCg4mejAXMR5SVU1uX1T4KwL9MnBi5mOtkBflN1JEom
-	RsWhXAU3iWvaC09/bj+XIr1T97v79DtOvbtGBNJI1kpJKnMRQ+423nYKoEVknudiQkQsLXtYjrV
-	doJRTYjk0lDOhnpYWf0uO0bzUNAzIVgSCLRHDW+Gv8Dpfb8F9YizSopK2W6U1/kAkZ9Avxv4j97
-	cLTpeWGs3dwqvVy1DND6tXfiSrZgnCB/G3u5LXpb9eTksMC19Ihcnh7ME8XHrulGWfit1ezDw+K
-	1tZXnbbrJDpN0
-X-Google-Smtp-Source: AGHT+IGre1DzsJsOknujs9mDOmhMZQMaGS4A0WKDhGwFd4n2uetUZU5P4xfB3pK5rJjYQ/YrR6WQ0A==
-X-Received: by 2002:a05:6000:25c2:b0:3a3:648d:aa84 with SMTP id ffacd0b85a97d-3a5319b8ac6mr4174578f8f.5.1749229837424;
-        Fri, 06 Jun 2025 10:10:37 -0700 (PDT)
-Received: from igor-korotin-Precision-Tower-3620.. ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4526e0563cesm29798395e9.1.2025.06.06.10.10.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Jun 2025 10:10:37 -0700 (PDT)
-Sender: Igor Korotin <igorkor.3vium@gmail.com>
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	rafael@kernel.org,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	lenb@kernel.org,
-	wedsonaf@gmail.com,
-	viresh.kumar@linaro.org,
-	alex.hung@amd.com,
-	dingxiangfei2009@gmail.com
-Subject: [PATCH v3 4/4] samples: rust: add ACPI match table example to platform driver
-Date: Fri,  6 Jun 2025 18:10:33 +0100
-Message-ID: <20250606171033.3882079-1-igor.korotin.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
-References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGQGSI4e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D4EC4CEEB;
+	Fri,  6 Jun 2025 19:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749238449;
+	bh=H3LG70DDFkrvPWOnWEJJh55HhE/5hyND70bmc+t70E0=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=HGQGSI4edQTuDIM8ShM02brnAcb4Zhl+/8yPBdkt5dNWpORwpxKMbpYd4FzA3MsIQ
+	 XWa+rZJem7lHlTNNvQ0zi8hU89b4xz4P+/9gMNJG/ZZ5Wfx8R/TnA2NGssGy9kxPVZ
+	 R1OaF3lfpzxTC6BBRL78W188XvdDndClcaB3HyoEm+RDaDvowc/Dl4d0RAKfgIMOGG
+	 mBjXSMxPygHFjT8jNrtS5BNtNQA0AvI3nhE0BmZ1RRa11ghoPCu+22/ENB7b/4n/+g
+	 Q40ms7sHhyeIqI3AwFPQLua2kTxvM/Gepykk38FUzv5tNRxy02+9yI6ZnAQxiKm3jh
+	 kXdAwknIhhdpg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Jun 2025 21:34:04 +0200
+Message-Id: <DAFP9ZRENV0S.ON0XKIXIAEKY@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Viresh Kumar" <viresh.kumar@linaro.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Vincent Guittot"
+ <vincent.guittot@linaro.org>, <linux-pm@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: cpumask: Validate CPU number in set() and clear()
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <8b5fc7889a7aacbd9f1f7412c99f02c736bde190.1749183428.git.viresh.kumar@linaro.org> <aEJwm16HSwCyt7aB@Mac.home> <DAFAR5SUQSU9.OSLB2UAXE9DY@kernel.org> <aELugDefiviXZjx6@Mac.home>
+In-Reply-To: <aELugDefiviXZjx6@Mac.home>
 
-Extend the Rust sample platform driver to probe using device/driver name
-matching, OF ID table matching, or ACPI ID table matching.
+On Fri Jun 6, 2025 at 3:34 PM CEST, Boqun Feng wrote:
+> On Fri, Jun 06, 2025 at 10:11:13AM +0200, Benno Lossin wrote:
+>> On Fri Jun 6, 2025 at 6:37 AM CEST, Boqun Feng wrote:
+>> > On Fri, Jun 06, 2025 at 09:47:28AM +0530, Viresh Kumar wrote:
+>> >> The C `cpumask_{set|clear}_cpu()` APIs emit a warning when given an
+>> >> invalid CPU number - but only if `CONFIG_DEBUG_PER_CPU_MAPS=3Dy` is s=
+et.
+>> >>=20
+>> >> Meanwhile, `cpumask_weight()` only considers CPUs up to `nr_cpu_ids`,
+>> >> which can cause inconsistencies: a CPU number greater than `nr_cpu_id=
+s`
+>> >> may be set in the mask, yet the weight calculation won't reflect it.
+>> >>=20
+>> >> This leads to doctest failures when `nr_cpu_ids < 4`, as the test tri=
+es
+>> >> to set CPUs 2 and 3:
+>> >>=20
+>> >>   rust_doctest_kernel_cpumask_rs_0.location: rust/kernel/cpumask.rs:1=
+80
+>> >>   rust_doctest_kernel_cpumask_rs_0: ASSERTION FAILED at rust/kernel/c=
+pumask.rs:190
+>> >>=20
+>> >> Fix this by validating the CPU number in the Rust `set()` and `clear(=
+)`
+>> >> methods to prevent out-of-bounds modifications.
+>> >>=20
+>> >
+>> > Thanks for the quick fix!
+>> >
+>> > While this can fix the current problem, but it's not a good solution f=
+or
+>> > the long run. Because outside a test, we should never use an arbitrary
+>> > i32 as a cpu number (we usually get it from smp_processor_id(), or
+>> > something else). So the `< nr_cpu_ids` testing is not necessary in
+>> > normal use cases.
+>> >
+>> > We should instead provide a wrapper for cpu id:
+>> >
+>> >     /// # Invariants
+>> >     ///
+>> >     /// The number is always in [0..nr_cpu_ids) range.
+>> >     pub struct CpuId(i32);
+>> >
+>> > and
+>> >
+>> >     impl CpuId {
+>> >         /// # Safety
+>> > 	/// Callers must ensure `i` is a valid cpu id (i.e. 0 <=3D i <
+>> > 	/// nr_cpu_ids).
+>> >         pub unsafe fn from_i32_unchecked(i: i32) -> Self {
+>> > 	    // INVARIANT: The function safety guarantees `i` is a valid
+>> > 	    // cpu id.
+>> > 	    CpuId(id);
+>> > 	}
+>> >
+>> > 	pub fn from_i32(i: i32) -> Option<Self> {
+>> > 	    if i < 0 || i >=3D nr_cpu_ids {
+>> > 	        None
+>> > 	    } else {
+>> > 	        // SAFETY: `i` has just been checked as a valid cpu id.
+>> > 	        Some(unsafe { Self::from_i32_unchecked(i) })
+>> > 	    }
+>> > 	}
+>> >
+>> > 	pub fn current() -> Self {
+>> > 	    // SAFETY: smp_processor_id() always return valid cpu id.
+>> > 	    unsafe { Self::from_i32_unchecked(smp_processor_id()) }
+>> > 	}
+>> >     }
+>> >
+>> > All `Cpumask` functions then take `CpuId` instead of `i32` as the
+>> > parameter. Needless to say if we were to have a cpumask_next() wrapper=
+,
+>> > the return value will be `CpuId` (or `Option<CpuId>`), i.e. if a bit w=
+as
+>> > set in a cpumask, then it must represent a correct cpu id.
+>> >
+>> > Make sense?
+>>=20
+>> Just to make sure, the `nr_cpu_ids` stays constant, right?
+>>=20
+>
+> Sort of. I believe the value won't be changed once the kernel boots, in
+> most cases (modulo NR_CPUS=3D1 or CONFIG_FORCE_NR_CPUS=3Dy), it's a
+> read-mostly variable not a constant, and the value gets set by either a
+> kernel command line or how many CPUs the kernel actually detect at boot
+> time. See:
+>
+> https://github.com/Rust-for-Linux/linux/blob/rust-next/kernel/smp.c#L995:=
+w
 
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+It's allowed to increase, but if it ever decreases, the invariant of
+`CpuId` will be wrong (ie it's not *invariant* :).
+
+>> >> @@ -101,10 +108,16 @@ pub fn set(&mut self, cpu: u32) {
+>> >>      /// This mismatches kernel naming convention and corresponds to =
+the C
+>> >>      /// function `__cpumask_clear_cpu()`.
+>> >>      #[inline]
+>> >> -    pub fn clear(&mut self, cpu: i32) {
+>> >> +    pub fn clear(&mut self, cpu: i32) -> Result {
+>> >> +        // SAFETY: It is safe to read `nr_cpu_ids`.
+>> >> +        if unsafe { cpu as u32 >=3D bindings::nr_cpu_ids } {
+>> >
+>> > You probably want to check whether `bindings::nr_cpu_ids` can be
+>> > accessible if NR_CPUS =3D=3D 1 or CONFIG_FORCE_NR_CPUS=3Dy, because th=
+en
+>> > nr_cpu_ids is a macro definition.
+>>=20
+>> Just define a helper function?
+>>=20
+>
+> Maybe, but it is then "a variable read" vs "a FFI function call" if we
+> want to check every time in clear()/set(), of course if we only check it
+> in CpuId::from_i32() mentioned above, the performance impact shouldn't
+> be observable, because we won't call that method often.
+
+Sure, you could also have a rust function that is inlined that does the
+two different checks depending on the config.
+
+> Either, I was just pointing out the current fix may cause build errors.
+
+Yeah that should be fixed.
+
 ---
- samples/rust/rust_driver_platform.rs | 96 +++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
-
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index e3992e7a71e9..be7c311dca07 100644
---- a/samples/rust/rust_driver_platform.rs
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -17,10 +17,104 @@ struct SampleDriver {
-     [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
- );
- 
-+// ACPI match table test
-+//
-+// This demonstrates how to test an ACPI-based Rust platform driver using QEMU
-+// with a custom SSDT.
-+//
-+// Steps:
-+//
-+// 1. **Create an SSDT source file** (`ssdt.dsl`) with the following content:
-+//
-+//     ```asl
-+//     DefinitionBlock ("", "SSDT", 2, "TEST", "VIRTACPI", 0x00000001)
-+//     {
-+//         Scope (\_SB)
-+//         {
-+//             Device (T432)
-+//             {
-+//                 Name (_HID, "TEST4321")  // ACPI hardware ID to match
-+//                 Name (_UID, 1)
-+//                 Name (_STA, 0x0F)        // Device present, enabled
-+//                 Name (_CRS, ResourceTemplate ()
-+//                 {
-+//                     Memory32Fixed (ReadWrite, 0xFED00000, 0x1000)
-+//                 })
-+//             }
-+//         }
-+//     }
-+//     ```
-+//
-+// 2. **Compile the table**:
-+//
-+//     ```sh
-+//     iasl -tc ssdt.dsl
-+//     ```
-+//
-+//     This generates `ssdt.aml`
-+//
-+// 3. **Run QEMU** with the compiled AML file:
-+//
-+//     ```sh
-+//     qemu-system-x86_64 -m 512M \
-+//         -enable-kvm \
-+//         -kernel path/to/bzImage \
-+//         -append "root=/dev/sda console=ttyS0" \
-+//         -hda rootfs.img \
-+//         -serial stdio \
-+//         -acpitable file=ssdt.aml
-+//     ```
-+//
-+//     Requirements:
-+//     - The `rust_driver_platform` must be present either:
-+//         - built directly into the kernel (`bzImage`), or
-+//         - available as a `.ko` file and loadable from `rootfs.img`
-+//
-+// 4. **Verify it worked** by checking `dmesg`:
-+//
-+//     ```
-+//     rust_driver_platform TEST4321:00: Probed with info: '0'.
-+//     ```
-+//
-+// This demonstrates ACPI table matching using a custom ID in QEMU with a minimal SSDT
-+
-+kernel::acpi_device_table!(
-+    ACPI_TABLE,
-+    MODULE_ACPI_TABLE,
-+    <SampleDriver as platform::Driver>::IdInfo,
-+    [(acpi::DeviceId::new(c_str!("TEST4321")), Info(0))]
-+);
-+
-+/// OF/ACPI match tables for Platform Driver implementation
-+///
-+/// The platform::Driver requires declaration of both OF_ID_TABLE and
-+/// ACPI_ID_TABLE, but if driver is not going to use either of them
-+/// it can implement one of them or both as None.
-+///
-+/// # Example:
-+///
-+/// ```ignore
-+/// impl platform::Driver for SampleDriver {
-+///     type IdInfo = ();
-+///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-+///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-+///
-+///     fn probe(
-+///         pdev: &platform::Device<Core>,
-+///         _info: Option<&Self::IdInfo>,
-+///     ) -> Result<Pin<KBox<Self>>> {
-+///         dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-+///
-+///         let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
-+///
-+///         Ok(drvdata.into())
-+///     }
-+/// }
-+/// ```
- impl platform::Driver for SampleDriver {
-     type IdInfo = Info;
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
--    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
- 
-     fn probe(
-         pdev: &platform::Device<Core>,
--- 
-2.43.0
-
+Cheers,
+Benno
