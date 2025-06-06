@@ -1,144 +1,503 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D104D1A274;
-	Fri,  6 Jun 2025 13:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5FE171C9
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Jun 2025 14:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749218313; cv=none; b=Mhj4gms/BeC6LHl7OSWoP3J+zrkhA4mcz38q/b3Uz2lPrYz7wee/rnjv3CfID2IVuz+PcK//OQ27aJYtyONlpztbGFLLxMjRx8sVLyjPKR59wSswL8PaPsdnQaUrzIHsnUAgxuhOxdLg69+qD9KWrLhiI41J7lWSE5Sr4Lv/qSg=
+	t=1749218898; cv=none; b=gV22M42Hh8U0KC44vCLuYkhWDO8crpIrfzS2W2rsDt5n6UUpv9XH0NKKA4WUzQAgD2ceoknWD74DogpdonGfr5LIVD6lw3UVlZc2Pm9JH3aKisfgOE4IcnZXaYPizNqbHgGtezAMoBiS800z7mQs3k7jPO1v9WMB8dHHGJY3OZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749218313; c=relaxed/simple;
-	bh=QyO94pd4hlnn9BKqJzgyhfcD8waNKskd+/HKP0CvpQg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ww8mU6cV9K1o3AopT1xdtfxLqa/LzXlCfSYy6+BROokUDewQrjyEJcHpFTcxlXJsnUhwD6WcbSfnuh/AdO6NbImBS3VxLTYSeKTLJhZwzB0FFfbtPldyGNh8w5OEENiYXdTR65j4zGXchPV/oMdGRdrPFiE1LdRKMykwBDjaiTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=boD0tZeV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749218898; c=relaxed/simple;
+	bh=wthOag1sm5nU4GXRcSPL17HJQFHnh+gJbmk4KahBEjU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=EsjT8pWLWacmY80PsprEHfv3Kpz04y1S3fK3AtkIAo639Ca5FH7C51GkBJz9b+fgLXtDjhe0NhHaWQd/NpVECqr/Unrxbd58heCgIwScKswh9WBV4NtFsjmJatvSGntVB56ng/NDlffvUN9WLhPf1cYrBVwhMStBD4fRGqh6t3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=OcDUG8+o; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="boD0tZeV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC28FC4CEEB;
-	Fri,  6 Jun 2025 13:58:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749218311;
-	bh=QyO94pd4hlnn9BKqJzgyhfcD8waNKskd+/HKP0CvpQg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=boD0tZeVz5UtG9+im6UihIJ+Z3HQVXLzuovQCa76Atf/9RHJd0Xy0unwT4wwKsQ+U
-	 IazlNovBJ4GSG7qM8+lXg86bB8VuD/12OnlxwVm1uCwbqBrW8OttMdBn3MyTyCX/+F
-	 KsHnXp2ftgx8rT65KtGmXpExDfPqjsWx6xc3RgjumuBb/LaoUAk/zru1lJg7Qa6BH+
-	 haVxJHJCz808MLSPhmGUjOeyNUDeirD4ekFhd9PA8NGB7Q8ySMFMP0l+yE63y4hZ92
-	 tw7ECnLbyvsMHl7sAIwFFTQzZXWhDhNbR+/zRiPCYRTyi9x6oOfMNjL1liJCxEvdGs
-	 fkfa4ID5MlTLA==
-Date: Fri, 6 Jun 2025 15:58:24 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-acpi@vger.kernel.org, devicetree@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Hung <alex.hung@amd.com>, Tamir Duberstein <tamird@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>
-Subject: Re: [PATCH v2 5/5] samples: rust: add ACPI match table example to
- platform driver
-Message-ID: <aEL0AGBZqDp1lMFe@pollux>
-References: <20250605161956.3658374-1-igor.korotin.linux@gmail.com>
- <20250605165231.3663810-1-igor.korotin.linux@gmail.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="OcDUG8+o"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250606140809euoutp019bfdde00f80fb4f4d4846713bdb1d65a~GeU-VfNUa0102201022euoutp01Q
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Jun 2025 14:08:09 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250606140809euoutp019bfdde00f80fb4f4d4846713bdb1d65a~GeU-VfNUa0102201022euoutp01Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1749218889;
+	bh=bBhDO8zSdUXt9NYlkunjU4em2Hqfqu0XOindhBrcoTc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=OcDUG8+oIpQoYcgz6PzSyiucceUr7OkxWSJFGw1xVsuPMIZA4GVtzcR4R40kAVapF
+	 mcjdY/p+8DhvOvnQVQpSod96c/+HE5c90h6Lliy8cAZA07O8PmsKCSY7QQJhIJCGH7
+	 dEhg4vi8UEuQR+gENWhHlBAnPlET672WYDjht+Po=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250606140808eucas1p155936501c7e0d1da1b2ba7d85e71a18a~GeU_tgXBa0375003750eucas1p1C;
+	Fri,  6 Jun 2025 14:08:08 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250606140807eusmtip16476b184f66b219739281a59673e9ff8~GeU9qr1yA2361423614eusmtip1c;
+	Fri,  6 Jun 2025 14:08:07 +0000 (GMT)
+Message-ID: <b1c4792e-f997-4eba-a8ed-d2e3f76e3fdd@samsung.com>
+Date: Fri, 6 Jun 2025 16:08:07 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250605165231.3663810-1-igor.korotin.linux@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/6] pwm: Add Rust driver for T-HEAD TH1520 SoC
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+	Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+	Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
+	Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+	Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, Guo Ren
+	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
+	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <q6dkihyfosi3k4mtrvyff54nbsjpovmujdbmoqhapo7daznpja@of2p5gtmcq2m>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250606140808eucas1p155936501c7e0d1da1b2ba7d85e71a18a
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250524211521eucas1p1929a51901c91d1a37e9f4c2da86ff7b0
+X-EPHeader: CA
+X-CMS-RootMailID: 20250524211521eucas1p1929a51901c91d1a37e9f4c2da86ff7b0
+References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
+	<CGME20250524211521eucas1p1929a51901c91d1a37e9f4c2da86ff7b0@eucas1p1.samsung.com>
+	<20250524-rust-next-pwm-working-fan-for-sending-v1-2-bdd2d5094ff7@samsung.com>
+	<q6dkihyfosi3k4mtrvyff54nbsjpovmujdbmoqhapo7daznpja@of2p5gtmcq2m>
 
-On Thu, Jun 05, 2025 at 05:52:31PM +0100, Igor Korotin wrote:
-> Extend the Rust sample platform driver to probe using device/driver name
-> matching, OF ID table matching, or ACPI ID table matching.
+
+
+On 6/5/25 12:39, Uwe Kleine-König wrote:
+> Hello,
 > 
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> ---
->  samples/rust/rust_driver_platform.rs | 40 +++++++++++++++++++++++++++-
->  1 file changed, 39 insertions(+), 1 deletion(-)
+> I don't speak Rust, so please double-check all my feedback if it really
+> applies.
+
+No problem, appreciate your time and experience with PWM subsystem !
+
 > 
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> index e3992e7a71e9..ee0780c1d6ae 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -17,10 +17,48 @@ struct SampleDriver {
->      [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
->  );
->  
-> +kernel::acpi_device_table!(
-> +    ACPI_TABLE,
-> +    MODULE_ACPI_TABLE,
-> +    <SampleDriver as platform::Driver>::IdInfo,
-> +    [(acpi::DeviceId::new(c_str!("TEST4321")), Info(0))]
-
-Can you please explain add a comment explaining how to make this probe? In the
-cover letter you mention:
-
-"Tested using QEMU with a custom SSDT that creates an ACPI device matching the
-sample Rust platform driver."
-
-> +);
-> +
-> +/// OF/ACPI match tables for Platform Driver implementation
-> +///
-> +/// The platform::Driver requires declaration of both OF_ID_TABLE and
-> +/// ACPI_ID_TABLE, but if driver is not going to use either of them
-> +/// it can implement one of them or both as None.
-> +///
-> +/// # Example:
-> +///
-> +///```
-> +/// impl platform::Driver for SampleDriver {
-> +///     type IdInfo = Info;
-> +///     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-> +///     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-> +///
-> +///     fn probe(
-> +///         pdev: &platform::Device<Core>,
-> +///         info: Option<&Self::IdInfo>,
-> +///     ) -> Result<Pin<KBox<Self>>> {
-> +///         dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-> +///
-> +///         if let Some(info) = info {
-> +///             dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-> +///         }
-> +///
-> +///         let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
-> +///
-> +///         Ok(drvdata.into())
-> +///     }
-> +/// }
-> +///```
-
-I assume you want to make clear that both the ACPI and OF table are optional;
-not sure of that's required given their type is Option<...>. But I'm fine having
-this additional comment and example.
-
-Please make sure that it compiles though and remove everything unnecessary from
-probe() please.
-
-> +
->  impl platform::Driver for SampleDriver {
->      type IdInfo = Info;
->      const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-> -    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
->  
->      fn probe(
->          pdev: &platform::Device<Core>,
-> -- 
-> 2.43.0
+> On Sat, May 24, 2025 at 11:14:56PM +0200, Michal Wilczynski wrote:
+>> Introduce a PWM driver for the T-HEAD TH1520 SoC written in Rust. It
+>> utilizes the Rust PWM abstractions added in the previous commit.
+>>
+>> The driver implements the standard PwmOps for the PWM framework,
+>> supporting configuration of period, duty cycle, and polarity for the
+>> TH1520's PWM channels. It uses devm managed resources for the PWM chip
+>> itself and Rust DevRes for I/O memory. Clock management is handled using
+>> Rust's RAII pattern.
+>>
+>> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+>> ---
+>>  MAINTAINERS               |   1 +
+>>  drivers/pwm/Kconfig       |   6 +
+>>  drivers/pwm/Makefile      |   1 +
+>>  drivers/pwm/pwm_th1520.rs | 272 ++++++++++++++++++++++++++++++++++++++++++++++
+>>  4 files changed, 280 insertions(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 2b080e8f3d873b1e401b3a2fe1207c224c4591fc..0cfac73aea65076c5ccb50a25ea686fb86b472b8 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -20986,6 +20986,7 @@ F:	drivers/mailbox/mailbox-th1520.c
+>>  F:	drivers/net/ethernet/stmicro/stmmac/dwmac-thead.c
+>>  F:	drivers/pinctrl/pinctrl-th1520.c
+>>  F:	drivers/pmdomain/thead/
+>> +F:	drivers/pwm/pwm_th1520.rs
+>>  F:	include/dt-bindings/clock/thead,th1520-clk-ap.h
+>>  F:	include/dt-bindings/power/thead,th1520-power.h
+>>  F:	include/linux/firmware/thead/thead,th1520-aon.h
+>> diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+>> index b5bd5c13b3a5e5a575a0fbfb2e285f5665b7a671..796fcd8343b7c8e30f62edc2e0fecf0e9b1ae20e 100644
+>> --- a/drivers/pwm/Kconfig
+>> +++ b/drivers/pwm/Kconfig
+>> @@ -684,6 +684,12 @@ config PWM_TEGRA
+>>  	  To compile this driver as a module, choose M here: the module
+>>  	  will be called pwm-tegra.
+>>  
+>> +config PWM_TH1520_RUST
+>> +	tristate "TH1520 PWM support (Rust)"
+>> +	depends on RUST_PWM_ABSTRACTIONS
+>> +	help
+>> +	  Generic PWM framework driver for TH1520 SoC.
+>> +
+>>  config PWM_TIECAP
+>>  	tristate "ECAP PWM support"
+>>  	depends on ARCH_OMAP2PLUS || ARCH_DAVINCI_DA8XX || ARCH_KEYSTONE || ARCH_K3 || COMPILE_TEST
+>> diff --git a/drivers/pwm/Makefile b/drivers/pwm/Makefile
+>> index 539e0def3f82fcb866ab83a0346a15f7efdd7127..6890f860ada6f1a6ed43dd3a3a9584cd2fa877f3 100644
+>> --- a/drivers/pwm/Makefile
+>> +++ b/drivers/pwm/Makefile
+>> @@ -70,3 +70,4 @@ obj-$(CONFIG_PWM_TWL_LED)	+= pwm-twl-led.o
+>>  obj-$(CONFIG_PWM_VISCONTI)	+= pwm-visconti.o
+>>  obj-$(CONFIG_PWM_VT8500)	+= pwm-vt8500.o
+>>  obj-$(CONFIG_PWM_XILINX)	+= pwm-xilinx.o
+>> +obj-$(CONFIG_PWM_TH1520_RUST)	+= pwm_th1520.o
+>> diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..4665e293e8d0bdc1a62a4e295cdaf4d47b3dd134
+>> --- /dev/null
+>> +++ b/drivers/pwm/pwm_th1520.rs
+>> @@ -0,0 +1,272 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +// Copyright (c) 2025 Samsung Electronics Co., Ltd.
+>> +// Author: Michal Wilczynski <m.wilczynski@samsung.com>
+>> +
+>> +//! Rust T-HEAD TH1520 PWM driver
+>> +use kernel::{c_str, clk::Clk, device, io::mem::IoMem, of, platform, prelude::*, pwm, time};
+>> +
+>> +const MAX_PWM_NUM: u32 = 6;
+>> +
+>> +const fn th1520_pwm_chn_base(n: u32) -> u32 {
+>> +    n * 0x20
+>> +}
+>> +const fn th1520_pwm_ctrl(n: u32) -> u32 {
+>> +    th1520_pwm_chn_base(n) + 0x00
+>> +}
+>> +const fn th1520_pwm_per(n: u32) -> u32 {
+>> +    th1520_pwm_chn_base(n) + 0x08
+>> +}
+>> +const fn th1520_pwm_fp(n: u32) -> u32 {
+>> +    th1520_pwm_chn_base(n) + 0x0c
+>> +}
+>> +
+>> +const PWM_START: u32 = 1 << 0;
+>> +const PWM_CFG_UPDATE: u32 = 1 << 2;
+>> +const PWM_CONTINUOUS_MODE: u32 = 1 << 5;
+>> +const PWM_FPOUT: u32 = 1 << 8;
+>> +const PWM_INFACTOUT: u32 = 1 << 9;
+>> +
+>> +struct Th1520PwmChipData {
+>> +    clk: Clk,
+>> +    iomem: kernel::devres::Devres<IoMem<0>>,
+>> +}
+>> +
+>> +impl Th1520PwmChipData {
+>> +    fn _config(
+>> +        &self,
+>> +        hwpwm: u32,
+>> +        duty_ns: u64,
+>> +        period_ns: u64,
+>> +        target_polarity: pwm::Polarity,
 > 
+> Why "target_polarity"? duty_ns and period_ns also don't contain
+> "target_"?
+
+You're right, that was an inconsistent name. I've since re-worked the
+driver to use the modern waveform API as you suggested in the other
+thread. In the new version, this function no longer exists, and the new
+round_waveform_tohw op takes a &pwm::Waveform parameter, which resolves
+this naming issue. Thank you for pointing it out.
+
+> 
+>> +    ) -> Result<u32> {
+>> +        let regs = self.iomem.try_access().ok_or_else(|| {
+>> +            pr_err!("PWM-{}: Failed to access I/O memory in _config\n", hwpwm);
+>> +            EBUSY
+>> +        })?;
+>> +
+>> +        // Calculate cycle values
+>> +        let rate_hz_u64 = self.clk.rate().as_hz() as u64;
+>> +
+>> +        if duty_ns > period_ns {
+>> +            pr_err!(
+>> +                "PWM-{}: Duty {}ns > period {}ns\n",
+>> +                hwpwm,
+>> +                duty_ns,
+>> +                period_ns
+>> +            );
+>> +            return Err(EINVAL);
+>> +        }
+>> +        if period_ns == 0 {
+>> +            pr_err!("PWM-{}: Period is zero\n", hwpwm);
+>> +            return Err(EINVAL);
+>> +        }
+> 
+> You don't need to check for period_ns == 0 explicitly. This case then
+> hits period_cycle == 0 below.
+> 
+>> +
+>> +        let mut period_cycle = mul_div_u64(period_ns, rate_hz_u64, time::NSEC_PER_SEC as u64);
+> 
+> if period_ns is big and rate_hz_u64 > NSEC_PER_SEC this might overflow.
+> 
+> Typically refuse to probe if rate_hz_u64 > NSEC_PER_SEC and call
+> clk_rate_exclusive_get().
+> 
+>> +        if period_cycle > u32::MAX as u64 {
+>> +            period_cycle = u32::MAX as u64;
+>> +        }
+>> +        if period_cycle == 0 {
+>> +            pr_err!(
+>> +                "PWM-{}: Calculated period_cycle is zero, not allowed by HW\n",
+>> +                hwpwm
+>> +            );
+>> +            return Err(EINVAL);
+>> +        }
+>> +
+>> +        let mut duty_cycle = mul_div_u64(duty_ns, rate_hz_u64, time::NSEC_PER_SEC as u64);
+>> +        if duty_cycle > u32::MAX as u64 {
+>> +            duty_cycle = u32::MAX as u64;
+>> +        }
+>> +
+>> +        let mut base_ctrl_val = PWM_INFACTOUT | PWM_CONTINUOUS_MODE;
+>> +        if target_polarity == pwm::Polarity::Normal {
+>> +            // FPOUT=1 for Normal
+>> +            base_ctrl_val |= PWM_FPOUT;
+>> +        } else {
+>> +            // Inversed, FPOUT=0
+>> +            base_ctrl_val &= !PWM_FPOUT;
+>> +        }
+>> +        regs.try_write32(base_ctrl_val, th1520_pwm_ctrl(hwpwm) as usize)?;
+>> +        pr_debug!(
+>> +            "PWM-{}: _config: Initial CTRL write (polarity, mode): 0x{:x}\n",
+>> +            hwpwm,
+>> +            base_ctrl_val
+>> +        );
+>> +
+>> +        // Write period and duty registers
+>> +        regs.try_write32(period_cycle as u32, th1520_pwm_per(hwpwm) as usize)?;
+>> +        regs.try_write32(duty_cycle as u32, th1520_pwm_fp(hwpwm) as usize)?;
+>> +        pr_debug!(
+>> +            "PWM-{}: _config: Period_cyc={}, Duty_cyc={}\n",
+>> +            hwpwm,
+>> +            period_cycle,
+>> +            duty_cycle
+>> +        );
+>> +
+>> +        // Apply period/duty by toggling CFG_UPDATE from 0 to 1.
+>> +        // The `base_ctrl_val` (just written to HW) has CFG_UPDATE=0. Now set it.
+>> +        let ctrl_val_for_update = base_ctrl_val | PWM_CFG_UPDATE;
+>> +        regs.try_write32(ctrl_val_for_update, th1520_pwm_ctrl(hwpwm) as usize)?;
+>> +        pr_debug!(
+>> +            "PWM-{}: _config: CTRL write with CFG_UPDATE: 0x{:x}\n",
+>> +            hwpwm,
+>> +            ctrl_val_for_update
+>> +        );
+>> +
+>> +        Ok(ctrl_val_for_update)
+>> +    }
+>> +
+>> +    fn _enable(&self, hwpwm: u32, ctrl_val_after_config: u32) -> Result {
+>> +        let regs = self.iomem.try_access().ok_or_else(|| {
+>> +            pr_err!("PWM-{}: Failed to access I/O memory in _enable\n", hwpwm);
+>> +            EBUSY
+>> +        })?;
+>> +
+>> +        // ctrl_val_after_config already has mode, polarity, and CFG_UPDATE correctly set.
+>> +        // Now add the START bit. START bit auto-clears.
+>> +        let ctrl_to_start = ctrl_val_after_config | PWM_START;
+>> +        regs.try_write32(ctrl_to_start, th1520_pwm_ctrl(hwpwm) as usize)?;
+>> +        pr_debug!(
+>> +            "PWM-{}: _enable: CTRL write with START: 0x{:x}\n",
+>> +            hwpwm,
+>> +            ctrl_to_start
+>> +        );
+>> +        Ok(())
+>> +    }
+>> +
+>> +    fn _disable(&self, hwpwm: u32) -> Result<()> {
+>> +        let regs = self.iomem.try_access().ok_or_else(|| {
+>> +            pr_err!("PWM-{}: Failed to access I/O memory in _disable\n", hwpwm);
+>> +            EINVAL
+>> +        })?;
+>> +
+>> +        let mut ctrl_val = regs.try_read32(th1520_pwm_ctrl(hwpwm) as usize)?;
+>> +        pr_debug!("PWM-{}: _disable: Read CTRL: 0x{:x}\n", hwpwm, ctrl_val);
+>> +
+>> +        // Ensure CFG_UPDATE is 0 before updating duty (Limitation #4)
+>> +        if (ctrl_val & PWM_CFG_UPDATE) != 0 {
+>> +            ctrl_val &= !PWM_CFG_UPDATE;
+>> +            regs.try_write32(ctrl_val, th1520_pwm_ctrl(hwpwm) as usize)?;
+>> +            pr_debug!(
+>> +                "PWM-{}: _disable: Cleared CFG_UPDATE, wrote CTRL: 0x{:x}\n",
+>> +                hwpwm,
+>> +                ctrl_val
+>> +            );
+>> +        }
+>> +
+>> +        // Set duty cycle to 0
+>> +        regs.try_write32(0, th1520_pwm_fp(hwpwm) as usize)?;
+>> +        pr_debug!("PWM-{}: _disable: Wrote 0 to DUTY (FP) register\n", hwpwm);
+>> +
+>> +        // Apply the 0% duty by toggling CFG_UPDATE from 0 to 1
+>> +        // Use the ctrl_val that has CFG_UPDATE cleared (or was already clear)
+>> +        ctrl_val |= PWM_CFG_UPDATE;
+>> +        regs.try_write32(ctrl_val, th1520_pwm_ctrl(hwpwm) as usize)?;
+>> +        pr_debug!(
+>> +            "PWM-{}: _disable: Set CFG_UPDATE, wrote CTRL: 0x{:x}\n",
+>> +            hwpwm,
+>> +            ctrl_val
+>> +        );
+>> +
+>> +        Ok(())
+>> +    }
+>> +}
+>> +
+>> +impl pwm::PwmOps for Th1520PwmChipData {
+>> +    // This driver implements get_state
+> 
+> I don't spot the get_state implementation?!
+
+That's a good catch, thank you. You are correct, the comment was ahead
+of the implementation in this RFC version. My intention was to keep the
+initial patch focused. I have now added the full get_state
+implementation for v2.
+
+> 
+>> +    fn apply(
+>> +        pwm_chip_ref: &mut pwm::Chip,
+>> +        pwm_dev: &mut pwm::Device,
+>> +        target_state: &pwm::State,
+> 
+> In C code I like these variables be called "chip", "pwm" and "state"
+> respectively. Is that possible here, too?
+
+Absolutely. That makes sense for consistency with the C codebase. In the
+new waveform based version, I've ensured the PwmOps parameters are named
+simply chip, pwm to align with standard practice.
+
+> 
+>> +    ) -> Result {
+>> +        let data: &Th1520PwmChipData = pwm_chip_ref.get_drvdata().ok_or(EINVAL)?;
+>> +        let hwpwm = pwm_dev.hwpwm();
+>> +
+>> +        if !target_state.enabled() {
+>> +            if pwm_dev.state().enabled() {
+>> +                data._disable(hwpwm)?;
+>> +            }
+>> +
+>> +            return Ok(());
+>> +        }
+>> +
+>> +        // Configure period, duty, and polarity.
+>> +        // This function also latches period/duty with CFG_UPDATE.
+>> +        // It returns the control value that was written with CFG_UPDATE set.
+>> +        let ctrl_val_after_config = data._config(
+>> +            hwpwm,
+>> +            target_state.duty_cycle(),
+>> +            target_state.period(),
+>> +            target_state.polarity(),
+>> +        )?;
+>> +
+>> +        // Enable by setting START bit if it wasn't enabled before this apply call
+>> +        if !pwm_dev.state().enabled() {
+>> +            data._enable(hwpwm, ctrl_val_after_config)?;
+>> +        }
+>> +
+>> +        Ok(())
+>> +    }
+>> +}
+>> +
+>> +impl Drop for Th1520PwmChipData {
+>> +    fn drop(&mut self) {
+>> +        self.clk.disable_unprepare();
+>> +    }
+>> +}
+>> +
+>> +fn mul_div_u64(a: u64, b: u64, c: u64) -> u64 {
+>> +    if c == 0 {
+>> +        return 0;
+>> +    }
+>> +    a.wrapping_mul(b) / c
+>> +}
+> 
+> Is this save if a * b > U64_MAX? I would have expected such a function
+> to already exist in generic code.
+
+You're right, thank you. The wrapping_mul is unsafe due to the overflow
+risk you pointed out.
+
+The ideal solution would be to use the kernel's own mul_u64_u64_div_u64
+helper function.
+
+Rust maintainers: This binding doesn't seem to be available yet. Would a
+preparatory patch introducing a minimal rust/kernel/math.rs with  only
+this binding be the best way to proceed? It seems like a useful utility
+for more than just this driver.
+
+> 
+>> +static TH1520_PWM_OPS: pwm::PwmOpsVTable = pwm::create_pwm_ops::<Th1520PwmChipData>();
+>> +
+>> +struct Th1520PwmPlatformDriver;
+>> +
+>> +kernel::of_device_table!(
+>> +    OF_TABLE,
+>> +    MODULE_OF_TABLE,
+>> +    <Th1520PwmPlatformDriver as platform::Driver>::IdInfo,
+>> +    [(of::DeviceId::new(c_str!("thead,th1520-pwm")), ())]
+>> +);
+>> +
+>> +impl platform::Driver for Th1520PwmPlatformDriver {
+>> +    type IdInfo = ();
+>> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
+>> +
+>> +    fn probe(
+>> +        pdev: &platform::Device<device::Core>,
+>> +        _id_info: Option<&Self::IdInfo>,
+>> +    ) -> Result<Pin<KBox<Self>>> {
+>> +        let resource = pdev.resource(0).ok_or(ENODEV)?;
+>> +        let iomem = pdev.ioremap_resource(&resource)?;
+>> +
+>> +        let clk = Clk::get(pdev.as_ref(), None)?;
+>> +
+>> +        clk.prepare_enable()?;
+> 
+> Is there something like devm_clk_get_enabled() such that the drop
+> function becomes redundant?
+
+I've reviewed the current clk.rs abstractions that were recently merged,
+and while they provide Clk::get() (which is refcounted), a combined
+devm_clk_get_enabled() doesn't exist yet. Because of this, the driver
+must manually call enable and disable. I've achieved it through Rust
+RAII.
+
+> 
+>> +        let driver_data = KBox::new(Th1520PwmChipData { clk, iomem }, GFP_KERNEL)?;
+>> +        let pwm_chip = pwm::devm_chip_alloc(pdev.as_ref(), MAX_PWM_NUM, 0)?;
+>> +
+>> +        let result = pwm::devm_chip_add(pdev.as_ref(), pwm_chip, &TH1520_PWM_OPS);
+>> +        if result.is_err() {
+>> +            pr_err!("Failed to add PWM chip: {:?}\n", result);
+>> +            return Err(EIO);
+>> +        }
+>> +
+>> +        pwm_chip.set_drvdata(driver_data);
+>> +        pr_info!("T-HEAD TH1520 PWM probed correctly\n");
+> 
+> Please degrade to pr_debug. Each driver emitting a message is an
+> annoyance.
+> 
+>> +        Ok(KBox::new(Self, GFP_KERNEL)?.into())
+>> +    }
+>> +}
+>> +
+>> +kernel::module_platform_driver! {
+>> +    type: Th1520PwmPlatformDriver,
+>> +    name: "pwm_th1520",
+>> +    author: "Michal Wilczynski",
+>> +    description: "T-HEAD TH1520 PWM driver",
+>> +    license: "GPL v2",
+>> +}
+> 
+> Best regards
+> Uwe
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
