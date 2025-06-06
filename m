@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94D71E501C;
-	Fri,  6 Jun 2025 19:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5200BA38
+	for <rust-for-linux@vger.kernel.org>; Fri,  6 Jun 2025 19:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749238449; cv=none; b=oOSWdNLbd9ETmpW1DBbdP2EHD6Gl3T5eZ+dSlhiniqCaGHmL7gwiQTgl4C5RCbJoM+GG0UnP6BoO2RAmEC0XPWN4btEuwZ2iu523+rxzoaWvyBFHH+gaA9cMacjEpjF7bVAppAcrr4AX6dq9i1VLHW2ehniH1/ACny5Lp9pgpQU=
+	t=1749238492; cv=none; b=jn5JvSBI1xqhRHsrGxLYO/vQ9UTjp1Zc3KUMZ7TtuIZ8BvypRnAK3sTpvgmNZq6TuYE37l5FILUKj/DlYJxyTuKAfx+WTKQxQXOl7WpGV60qfDdiQKxDUMyAyc90StOfeiqvs77v5afA2yb27nOZAiojROcK56HwPtWTZbeP7QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749238449; c=relaxed/simple;
-	bh=H3LG70DDFkrvPWOnWEJJh55HhE/5hyND70bmc+t70E0=;
+	s=arc-20240116; t=1749238492; c=relaxed/simple;
+	bh=bx48aEfwR+fn1MJpawARdstji2mLJDCq/NMl37XNBQM=;
 	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=AdpZqvC+3HI6NoIcsxVt3Rs8NK2S9LU1CBRWD8ywocnI0S8W8wHXIaGLIyh2LYo+ukBenGuqk+pqfbU0tt7TR4cwGYWMWH6Nn3iqG4bdxK0miG7HmV/mVs/IwnW6sfpqp4EgDixUmyQI3611WCDdPO5920VUT8z6KVWzq5+i4qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGQGSI4e; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=o7Og+ypmB3nMMHGLRZk8CcSRzTpqQ1nSzIQyxTeDKcdAMvJburli9qOf6617zfRwRrzppIhG7PFksPu+4JxgO4GUWkI+nCgNv1WFG1upc53b2l/q/V2B22EfStW3u4fG6n01s0T4pgS27tcLl/KAF4HphH277UYMi7w83zCC0P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmD9g+vp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGQGSI4e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D4EC4CEEB;
-	Fri,  6 Jun 2025 19:34:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmD9g+vp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C386C4CEEB;
+	Fri,  6 Jun 2025 19:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749238449;
-	bh=H3LG70DDFkrvPWOnWEJJh55HhE/5hyND70bmc+t70E0=;
+	s=k20201202; t=1749238492;
+	bh=bx48aEfwR+fn1MJpawARdstji2mLJDCq/NMl37XNBQM=;
 	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=HGQGSI4edQTuDIM8ShM02brnAcb4Zhl+/8yPBdkt5dNWpORwpxKMbpYd4FzA3MsIQ
-	 XWa+rZJem7lHlTNNvQ0zi8hU89b4xz4P+/9gMNJG/ZZ5Wfx8R/TnA2NGssGy9kxPVZ
-	 R1OaF3lfpzxTC6BBRL78W188XvdDndClcaB3HyoEm+RDaDvowc/Dl4d0RAKfgIMOGG
-	 mBjXSMxPygHFjT8jNrtS5BNtNQA0AvI3nhE0BmZ1RRa11ghoPCu+22/ENB7b/4n/+g
-	 Q40ms7sHhyeIqI3AwFPQLua2kTxvM/Gepykk38FUzv5tNRxy02+9yI6ZnAQxiKm3jh
-	 kXdAwknIhhdpg==
+	b=GmD9g+vplpo/1uS0IlrouFU5KtUQSQMwUXsFQbZGFcYTPAcKOBNjta0n5laRip5y0
+	 79Pthm+HlCWDSb4bDLTqw5suGRW8voO7RxKJM9xXNNxvJjhfCm07owsLdDfk2rg/+R
+	 i8GEshQ1OexUUAyKWci3yiUwJ3mcD31o7TNEEangBc0ZKVe4DL5xOLj9QO7XQE9cYF
+	 JcUDqL8UFIDEBN7DeXxuEpYqDDEmPC5dFKc4K6TzZ12zClsTzmq0zJRBlWoReHxway
+	 +vqMNs04VWe16xgsCLIUDhhULTcC9hrHtvn9g52xz98bKKzcgkngfMYW+t00H5y3Lu
+	 fTBEkf6+sDoRA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,148 +34,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 06 Jun 2025 21:34:04 +0200
-Message-Id: <DAFP9ZRENV0S.ON0XKIXIAEKY@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "Viresh Kumar" <viresh.kumar@linaro.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Yury Norov" <yury.norov@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Vincent Guittot"
- <vincent.guittot@linaro.org>, <linux-pm@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: cpumask: Validate CPU number in set() and clear()
+Date: Fri, 06 Jun 2025 21:34:48 +0200
+Message-Id: <DAFPAJVGHFAT.DI2E2NA94KM8@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <a.hindborg@kernel.org>,
+ <alex.gaynor@gmail.com>, <ojeda@kernel.org>
+Cc: <aliceryhl@google.com>, <bjorn3_gh@protonmail.com>,
+ <boqun.feng@gmail.com>, <dakr@kernel.org>, <gary@garyguo.net>,
+ <rust-for-linux@vger.kernel.org>, <tmgross@umich.edu>, <tamird@gmail.com>
+Subject: Re: [PATCH v1] rust: time: Fix compile error in impl_has_hr_timer
+ macro
 From: "Benno Lossin" <lossin@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <8b5fc7889a7aacbd9f1f7412c99f02c736bde190.1749183428.git.viresh.kumar@linaro.org> <aEJwm16HSwCyt7aB@Mac.home> <DAFAR5SUQSU9.OSLB2UAXE9DY@kernel.org> <aELugDefiviXZjx6@Mac.home>
-In-Reply-To: <aELugDefiviXZjx6@Mac.home>
+References: <20250606020505.3186533-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20250606020505.3186533-1-fujita.tomonori@gmail.com>
 
-On Fri Jun 6, 2025 at 3:34 PM CEST, Boqun Feng wrote:
-> On Fri, Jun 06, 2025 at 10:11:13AM +0200, Benno Lossin wrote:
->> On Fri Jun 6, 2025 at 6:37 AM CEST, Boqun Feng wrote:
->> > On Fri, Jun 06, 2025 at 09:47:28AM +0530, Viresh Kumar wrote:
->> >> The C `cpumask_{set|clear}_cpu()` APIs emit a warning when given an
->> >> invalid CPU number - but only if `CONFIG_DEBUG_PER_CPU_MAPS=3Dy` is s=
-et.
->> >>=20
->> >> Meanwhile, `cpumask_weight()` only considers CPUs up to `nr_cpu_ids`,
->> >> which can cause inconsistencies: a CPU number greater than `nr_cpu_id=
-s`
->> >> may be set in the mask, yet the weight calculation won't reflect it.
->> >>=20
->> >> This leads to doctest failures when `nr_cpu_ids < 4`, as the test tri=
-es
->> >> to set CPUs 2 and 3:
->> >>=20
->> >>   rust_doctest_kernel_cpumask_rs_0.location: rust/kernel/cpumask.rs:1=
-80
->> >>   rust_doctest_kernel_cpumask_rs_0: ASSERTION FAILED at rust/kernel/c=
-pumask.rs:190
->> >>=20
->> >> Fix this by validating the CPU number in the Rust `set()` and `clear(=
-)`
->> >> methods to prevent out-of-bounds modifications.
->> >>=20
->> >
->> > Thanks for the quick fix!
->> >
->> > While this can fix the current problem, but it's not a good solution f=
-or
->> > the long run. Because outside a test, we should never use an arbitrary
->> > i32 as a cpu number (we usually get it from smp_processor_id(), or
->> > something else). So the `< nr_cpu_ids` testing is not necessary in
->> > normal use cases.
->> >
->> > We should instead provide a wrapper for cpu id:
->> >
->> >     /// # Invariants
->> >     ///
->> >     /// The number is always in [0..nr_cpu_ids) range.
->> >     pub struct CpuId(i32);
->> >
->> > and
->> >
->> >     impl CpuId {
->> >         /// # Safety
->> > 	/// Callers must ensure `i` is a valid cpu id (i.e. 0 <=3D i <
->> > 	/// nr_cpu_ids).
->> >         pub unsafe fn from_i32_unchecked(i: i32) -> Self {
->> > 	    // INVARIANT: The function safety guarantees `i` is a valid
->> > 	    // cpu id.
->> > 	    CpuId(id);
->> > 	}
->> >
->> > 	pub fn from_i32(i: i32) -> Option<Self> {
->> > 	    if i < 0 || i >=3D nr_cpu_ids {
->> > 	        None
->> > 	    } else {
->> > 	        // SAFETY: `i` has just been checked as a valid cpu id.
->> > 	        Some(unsafe { Self::from_i32_unchecked(i) })
->> > 	    }
->> > 	}
->> >
->> > 	pub fn current() -> Self {
->> > 	    // SAFETY: smp_processor_id() always return valid cpu id.
->> > 	    unsafe { Self::from_i32_unchecked(smp_processor_id()) }
->> > 	}
->> >     }
->> >
->> > All `Cpumask` functions then take `CpuId` instead of `i32` as the
->> > parameter. Needless to say if we were to have a cpumask_next() wrapper=
-,
->> > the return value will be `CpuId` (or `Option<CpuId>`), i.e. if a bit w=
-as
->> > set in a cpumask, then it must represent a correct cpu id.
->> >
->> > Make sense?
->>=20
->> Just to make sure, the `nr_cpu_ids` stays constant, right?
->>=20
+On Fri Jun 6, 2025 at 4:05 AM CEST, FUJITA Tomonori wrote:
+> Fix a compile error in the `impl_has_hr_timer!` macro as follows:
 >
-> Sort of. I believe the value won't be changed once the kernel boots, in
-> most cases (modulo NR_CPUS=3D1 or CONFIG_FORCE_NR_CPUS=3Dy), it's a
-> read-mostly variable not a constant, and the value gets set by either a
-> kernel command line or how many CPUs the kernel actually detect at boot
-> time. See:
+> error[E0599]: no method named cast_mut found for raw pointer *mut Foo in =
+the current scope
 >
-> https://github.com/Rust-for-Linux/linux/blob/rust-next/kernel/smp.c#L995:=
-w
-
-It's allowed to increase, but if it ever decreases, the invariant of
-`CpuId` will be wrong (ie it's not *invariant* :).
-
->> >> @@ -101,10 +108,16 @@ pub fn set(&mut self, cpu: u32) {
->> >>      /// This mismatches kernel naming convention and corresponds to =
-the C
->> >>      /// function `__cpumask_clear_cpu()`.
->> >>      #[inline]
->> >> -    pub fn clear(&mut self, cpu: i32) {
->> >> +    pub fn clear(&mut self, cpu: i32) -> Result {
->> >> +        // SAFETY: It is safe to read `nr_cpu_ids`.
->> >> +        if unsafe { cpu as u32 >=3D bindings::nr_cpu_ids } {
->> >
->> > You probably want to check whether `bindings::nr_cpu_ids` can be
->> > accessible if NR_CPUS =3D=3D 1 or CONFIG_FORCE_NR_CPUS=3Dy, because th=
-en
->> > nr_cpu_ids is a macro definition.
->>=20
->> Just define a helper function?
->>=20
+> The `container_of!` macro already returns a mutable pointer when used
+> in a `*mut T` context so the `.cast_mut()` method is not available.
 >
-> Maybe, but it is then "a variable read" vs "a FFI function call" if we
-> want to check every time in clear()/set(), of course if we only check it
-> in CpuId::from_i32() mentioned above, the performance impact shouldn't
-> be observable, because we won't call that method often.
+> Fixes: 74d6a606c2b3 ("rust: retain pointer mut-ness in `container_of!`")
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Sure, you could also have a rust function that is inlined that does the
-two different checks depending on the config.
-
-> Either, I was just pointing out the current fix may cause build errors.
-
-Yeah that should be fixed.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
 Benno
+
+> ---
+>  rust/kernel/time/hrtimer.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
