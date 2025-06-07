@@ -1,106 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D3C1CFBA;
-	Sat,  7 Jun 2025 06:29:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CBC1362
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Jun 2025 10:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749277762; cv=none; b=soQ1nLam8xr/j3e/zuKPMgo75gNwRsxYjED1ArvgJO5Y+QiOsu9weUOCWoglfAXGIeljsJ1d2/EQ9hkOwYITXYwWVKSOWXvTiVJkoAhC3EknRV9fSyl6lcmWe++Ko8L9dYVZ4LlDW2PXcbMZrIkjAPP7f93CEdagSROLFTJnzhI=
+	t=1749291445; cv=none; b=TyvpaKEGRfGv3SX/lq1iQv5nRQok7C5+GTdyJFxm7TnznhOAbZjPjzoSrVQWkaY+IvI5Gs67cQIMytTlaCEEjJXKaU9XOPXODAQM4sa376t0NmnO6rYiX4y+xeT/gmjiAsWx6jvy4EI6paDkJ6AUdEMB/1jxsQGehI+23WCJP/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749277762; c=relaxed/simple;
-	bh=KhvKf0Okp3+QNBDD1wYxSwtwa9jnFP0ZRb0MhxFICkI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PeE0O/bIKGHTD/cH4kkgbNPfa0fPRPhp5MSqNOcvYcEMtT67bsbQJGieReXJak63xt9BaKgIoGOdnEB8spfAQFEyAeCPHaFCzfs+9TniE18scxH/m5IeuQ00o7C65oWd/evJcZwxK43+7rr2wdvRMST5TjqrdC3CJ1JAdfuN9hA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=no19+9x/; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1749291445; c=relaxed/simple;
+	bh=wX71PJ8DANoRqqYNprxNaXYVwzH6hRJQZimd2sdDAJU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iVkRVjutc8SBtWjFUz06o5Gpv+awDrQwQR09tpMlhUzAc0a8wtmKo58d5NNF1VI/IB6EEKobe7n7uqJlYU3LzTjXqikQQmE+LjIeD7w8jFlRKmuAcvykLi9pWmpbXzH4UXy9FuNHL6OBPlL7gxiv7a9yTMk6ZC5IhXgV3FGFJw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U1Iklpz2; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="no19+9x/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749277761; x=1780813761;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KhvKf0Okp3+QNBDD1wYxSwtwa9jnFP0ZRb0MhxFICkI=;
-  b=no19+9x/smLMeEg9UWKTMN14yOPnm+TohXyjoBGXTHnOZW848Jsz0m/D
-   kUvqmYcA8Au0ExBd+ru30GSsAzhL3kkVSF+CJc23XmKsqq4BGSCYQ9jSX
-   nSm0cZGRrVSQfNYVDJ6V3CsNFTXSeAr2WdHYsWIBhaOeThsU3DKxv1A7I
-   Ot6a5lU0ntRujDaWXPMGYQTaVefwVJM1Yz0dstFXS7gJ9pmSPUSr/3RUv
-   J0XZOurSxw9bGzM5EvctWOHJnpQcWToCIVyPu/Zh2mBjfW2PwR7XvYrtl
-   JS806qox96C/yaevWEnqJYJ/2lmyCNqCpnl34rHA+M5eWDNRPoYFr0HZz
-   g==;
-X-CSE-ConnectionGUID: DX6FVW1XRjqRxpexeCefcg==
-X-CSE-MsgGUID: A+rlKyuRRbSAMyPYLsljJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11456"; a="62467108"
-X-IronPort-AV: E=Sophos;i="6.16,217,1744095600"; 
-   d="scan'208";a="62467108"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2025 23:29:21 -0700
-X-CSE-ConnectionGUID: jSw2Kz1UTMKFrurAeGYqiw==
-X-CSE-MsgGUID: fzAZ/6riTQ+nfI23zMxFBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,217,1744095600"; 
-   d="scan'208";a="146534373"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 06 Jun 2025 23:29:16 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uNn3J-0005VN-0f;
-	Sat, 07 Jun 2025 06:29:13 +0000
-Date: Sat, 7 Jun 2025 14:28:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, rafael@kernel.org,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, lenb@kernel.org,
-	wedsonaf@gmail.com, viresh.kumar@linaro.org, alex.hung@amd.com,
-	dingxiangfei2009@gmail.com
-Subject: Re: [PATCH v3 3/4] rust: platform: Add ACPI match table support to
- `Driver` trait
-Message-ID: <202506071640.KIUrSBGt-lkp@intel.com>
-References: <20250606170905.3881900-1-igor.korotin.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U1Iklpz2"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-311f6be42f1so487199a91.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Jun 2025 03:17:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749291443; x=1749896243; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qwG2LkuALRhKyfu82NgxSjdDng0PdRvNn4dzqxWU/uQ=;
+        b=U1Iklpz2cBmex+kUXjkcWKxstAO6Q0mdXuJVUTFBeirUNhlLJHrDU61obKKhvQCw5n
+         EIRSPOIA0JuEsuMR9i5pDKHGD0vr5uMZ0NWFmJx/mQyH2LLQBAWClJwbjyTa+4SlzB8y
+         kAo+AGJtiN6DKXl3PTv3lGPb4spavgacWYwaK7+wtMqCQyuqqFL7EgbvBXFWE2LGY37y
+         TV6mDkgOQ4Rm4nzsY1l9yrApEKVecCqdRF4HilURBZMMVFGO1Ognp17a5KFTZ+M7kytl
+         7babtHTAS85nMpf9QvPio/w/RTISbTwN8ruKN0/92e0OyZVLUvwF0nbcA2q3UkwKkeLD
+         WQcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749291443; x=1749896243;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qwG2LkuALRhKyfu82NgxSjdDng0PdRvNn4dzqxWU/uQ=;
+        b=vJet5TGwxVXqJnnmCTale7tRmCM6hnG6Elyk68sMd4J3vW/sbR9TE2uaZMJmXD/jhb
+         AM5OrYzA0u6WCJigfSkQ9XUTb/pKo07co5kf6bce/VuAk7E0uc1+uApl+fn3XgkC6sQb
+         Shxdvv4x/d6KQLlOhqd9a1bK/oZDgMzNwUNwJQ6lDsSDdIaQQemOqk0N6bGXN0y2CQCy
+         imHla/QLFjR237jLYmMDZyqfEinBWTQofdpuWeskVsPm0WgK/ifNxapjxcqLdRRktHSK
+         s7DwNRFnQCzwSYCrGvBvx1xtvN17ebs3A9pFfS+s0HOaTosLMllAyuMWqb1W/XODKwHv
+         EmtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWlII5mB/6et0em4bFssggmqtwAXBjkVzGybwBrWnisGdmofMLobvYtmSfXAGK8ADG4wPBmYt9m4ISIZ0sa1A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx15Alz/WmCd0Sg1MX8vm6UC04ABOC0e8ZyYqy1G5gf98MKhI3O
+	m1AsAkotWD1/XCoMio0kVNNsC1ySqAZ3CET1p9B+ieTjhROHXMRYvQkPyIDLeHPDy2OwqVUvJBo
+	Fyr4CH9gdbV2KkoYF1W0K23pz6Mxr70g=
+X-Gm-Gg: ASbGnctAMwMK4PPgsv4AeZeJz2y8cVGwOu0Uk3wR2zzjzrVr7+7U1RG//5VKEEG5Fgz
+	AjOxiyRVY1VPVyz2G/eS6C5/9Rpu2ETfdxLpvhEQX1vcqUBdbWFd+oySZI0GIx4Pbvt1fbGaRDX
+	VrWBfuvVcjVSVQTnlWLhy5tb/V2NNbHLPq+G06zhjNtAw=
+X-Google-Smtp-Source: AGHT+IHBOMIcL9CvqfLOJPhSVm7V94Y9yW9E29q/yh+FrR/OyZ4PRM/dDuPued6+/sjbr2FnQdSKkwbQnTHASx0VlTE=
+X-Received: by 2002:a17:90b:4f4a:b0:310:8d79:dfe4 with SMTP id
+ 98e67ed59e1d1-31347505422mr3600327a91.4.1749291443247; Sat, 07 Jun 2025
+ 03:17:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250606170905.3881900-1-igor.korotin.linux@gmail.com>
+References: <20250603195426.2360773-1-ttabi@nvidia.com> <CANiq72nGZusApAFztsZOoLhRWJYEMmRY6XfAC89e4-dW6snC8Q@mail.gmail.com>
+ <ecc4bb6c582bb99c17b4795d80d2556e98e590f9.camel@nvidia.com>
+In-Reply-To: <ecc4bb6c582bb99c17b4795d80d2556e98e590f9.camel@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 7 Jun 2025 12:17:10 +0200
+X-Gm-Features: AX0GCFs74tS74YRZ_K-68J9MR33DxWBnIQBhu3bBv88ATOV3NWSkZIVHjAWI8PE
+Message-ID: <CANiq72mWq5x2zr8CKXw3mchPMhy0gxHAd8cmCwe0bfaRBW03Og@mail.gmail.com>
+Subject: Re: [PATCH] [v2] rust: introduce sfile macro for succinct code tracing
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
+	"lossin@kernel.org" <lossin@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Igor,
+On Sat, Jun 7, 2025 at 12:11=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrote=
+:
+>
+> I don't understand why, when I use "&FILE[start..]", this compiles as inl=
+ine:
+>
+>         pr_err!("{}:{}\n", sfile!(), line!());
+>
+> but this doesn't:
+>
+>         const SFILE: &'static str =3D sfile!();
+>
+> It seems to me that the second line is "more const" than the first line, =
+if that makes any sense.
 
-kernel test robot noticed the following build errors:
+The second call is in a const context, the first is just a normal
+line. So the second must be a constant expression, which is a big
+restriction on what you can write there, but the first doesn't require
+that.
 
-[auto build test ERROR on 9857af0fcff385c75433f2162c30c62eb912ef6d]
+Hmm... Perhaps you are thinking that the compiler (or optimizer)
+should know that it all resolves to a constant, and thus it should
+allow it anyway.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Igor-Korotin/rust-acpi-add-acpi-DeviceId-abstraction/20250607-011123
-base:   9857af0fcff385c75433f2162c30c62eb912ef6d
-patch link:    https://lore.kernel.org/r/20250606170905.3881900-1-igor.korotin.linux%40gmail.com
-patch subject: [PATCH v3 3/4] rust: platform: Add ACPI match table support to `Driver` trait
-config: x86_64-buildonly-randconfig-001-20250607 (https://download.01.org/0day-ci/archive/20250607/202506071640.KIUrSBGt-lkp@intel.com/config)
-compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250607/202506071640.KIUrSBGt-lkp@intel.com/reproduce)
+However, constant evaluation doesn't work like that, i.e. even if some
+expressions may happen to be able to be evaluated at compile-time, it
+doesn't make them constant expressions.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506071640.KIUrSBGt-lkp@intel.com/
+It is similar to how C++'s `constexpr` works, if you have done that.
+The languages keep expanding what can be done within const contexts
+over time, but it is not based on whether a given instance could be.
 
-All errors (new ones prefixed by >>):
+(One place where we do use "this particular case must be X" kind of
+logic is `build_assert!`).
 
->> error[E0425]: cannot find value `ACPI_TABLE` in this scope
-   --> rust/doctests_kernel_generated.rs:3527:71
-   |
-   3527 |      const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
-   |                                                                       ^^^^^^^^^^ not found in this scope
+> You mean you don't like [PATCH][V2]?  I've been doing that for 20 years, =
+and this is the first time
+> anyone's complained.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sorry, I should have said "ideally" there too, since I intended it
+mostly as a suggestion like the one in parenthesis. Neither of those
+are blockers, of course, and we regularly take different styles of
+patches. The `--base` thing is more "important" (useful).
+
+Cheers,
+Miguel
