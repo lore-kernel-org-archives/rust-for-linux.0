@@ -1,122 +1,89 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CBC1362
-	for <rust-for-linux@vger.kernel.org>; Sat,  7 Jun 2025 10:17:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5842A15D1
+	for <rust-for-linux@vger.kernel.org>; Sat,  7 Jun 2025 10:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749291445; cv=none; b=TyvpaKEGRfGv3SX/lq1iQv5nRQok7C5+GTdyJFxm7TnznhOAbZjPjzoSrVQWkaY+IvI5Gs67cQIMytTlaCEEjJXKaU9XOPXODAQM4sa376t0NmnO6rYiX4y+xeT/gmjiAsWx6jvy4EI6paDkJ6AUdEMB/1jxsQGehI+23WCJP/4=
+	t=1749291603; cv=none; b=Fe+fD1lFIkKstqm3fW6xQnhbLQ+nN6c72SW93uc7jcIf4EXdyMemqC9KEU56hYgskiY8HefCGYr92IwE6LMmREYOd82MDiYAheag6nQcJYQ4bgGXp2eMkByDYW2ArCALiKbnv+XbY5RwaG3a3t82pJ8XvpVZZpGEFsbIknPTM98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749291445; c=relaxed/simple;
-	bh=wX71PJ8DANoRqqYNprxNaXYVwzH6hRJQZimd2sdDAJU=;
+	s=arc-20240116; t=1749291603; c=relaxed/simple;
+	bh=i/Bwj+64Ou/EmaOR0WHSzBohn48Qje1LGFiUwUnbNOo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iVkRVjutc8SBtWjFUz06o5Gpv+awDrQwQR09tpMlhUzAc0a8wtmKo58d5NNF1VI/IB6EEKobe7n7uqJlYU3LzTjXqikQQmE+LjIeD7w8jFlRKmuAcvykLi9pWmpbXzH4UXy9FuNHL6OBPlL7gxiv7a9yTMk6ZC5IhXgV3FGFJw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U1Iklpz2; arc=none smtp.client-ip=209.85.216.47
+	 To:Cc:Content-Type; b=A0R7mAUEa3n6NEMLXQHIZuZsbuBMpKMT+59yPQgypX4JokXXCd0bHiIHLLisaqE3A11zhfrI3HG9SPElf/csivmGPelUAVkQyLJVYLhZCrVOtd0bKDyeoi2K+uMvm1gMFE2btUales/tEidIPnHb4/4v7HQ3zcEI40YvOfAiSQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lFgzg29s; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U1Iklpz2"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-311f6be42f1so487199a91.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 07 Jun 2025 03:17:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lFgzg29s"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-235a6b89dfaso5082495ad.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 07 Jun 2025 03:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749291443; x=1749896243; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749291601; x=1749896401; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qwG2LkuALRhKyfu82NgxSjdDng0PdRvNn4dzqxWU/uQ=;
-        b=U1Iklpz2cBmex+kUXjkcWKxstAO6Q0mdXuJVUTFBeirUNhlLJHrDU61obKKhvQCw5n
-         EIRSPOIA0JuEsuMR9i5pDKHGD0vr5uMZ0NWFmJx/mQyH2LLQBAWClJwbjyTa+4SlzB8y
-         kAo+AGJtiN6DKXl3PTv3lGPb4spavgacWYwaK7+wtMqCQyuqqFL7EgbvBXFWE2LGY37y
-         TV6mDkgOQ4Rm4nzsY1l9yrApEKVecCqdRF4HilURBZMMVFGO1Ognp17a5KFTZ+M7kytl
-         7babtHTAS85nMpf9QvPio/w/RTISbTwN8ruKN0/92e0OyZVLUvwF0nbcA2q3UkwKkeLD
-         WQcg==
+        bh=i/Bwj+64Ou/EmaOR0WHSzBohn48Qje1LGFiUwUnbNOo=;
+        b=lFgzg29s5JO9QeZs+kAJ1/7ngAmaJh952mMk9fvmCHUMyB1OuLhr8S+2l4Reuc4WZ4
+         0f+2olTefqsLhOXAS6H+gPEX39vV9qfu4LmPVR41m6u99LYhkcUnOYnIxviRwr4OEALq
+         WwFFZpyX84E9EuV/4g8o7jPcM5LeAk0tpsgAyql9n945pYfQUG5+KK/nBs0OPtgk+N/s
+         64ik2jCMma3K8RPKR/nTNH1BpdOpzyot1a6X7MdE6P+ndtXeUjGhdvc8xPVbKmE6sLox
+         fj4NctZtJDg4gm8+H+tOUOhAIknLW2uJPMgzJNSlGGmRSYVggVrkMT5KsVwkwvW+Uoth
+         NMEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749291443; x=1749896243;
+        d=1e100.net; s=20230601; t=1749291601; x=1749896401;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qwG2LkuALRhKyfu82NgxSjdDng0PdRvNn4dzqxWU/uQ=;
-        b=vJet5TGwxVXqJnnmCTale7tRmCM6hnG6Elyk68sMd4J3vW/sbR9TE2uaZMJmXD/jhb
-         AM5OrYzA0u6WCJigfSkQ9XUTb/pKo07co5kf6bce/VuAk7E0uc1+uApl+fn3XgkC6sQb
-         Shxdvv4x/d6KQLlOhqd9a1bK/oZDgMzNwUNwJQ6lDsSDdIaQQemOqk0N6bGXN0y2CQCy
-         imHla/QLFjR237jLYmMDZyqfEinBWTQofdpuWeskVsPm0WgK/ifNxapjxcqLdRRktHSK
-         s7DwNRFnQCzwSYCrGvBvx1xtvN17ebs3A9pFfS+s0HOaTosLMllAyuMWqb1W/XODKwHv
-         EmtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWlII5mB/6et0em4bFssggmqtwAXBjkVzGybwBrWnisGdmofMLobvYtmSfXAGK8ADG4wPBmYt9m4ISIZ0sa1A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx15Alz/WmCd0Sg1MX8vm6UC04ABOC0e8ZyYqy1G5gf98MKhI3O
-	m1AsAkotWD1/XCoMio0kVNNsC1ySqAZ3CET1p9B+ieTjhROHXMRYvQkPyIDLeHPDy2OwqVUvJBo
-	Fyr4CH9gdbV2KkoYF1W0K23pz6Mxr70g=
-X-Gm-Gg: ASbGnctAMwMK4PPgsv4AeZeJz2y8cVGwOu0Uk3wR2zzjzrVr7+7U1RG//5VKEEG5Fgz
-	AjOxiyRVY1VPVyz2G/eS6C5/9Rpu2ETfdxLpvhEQX1vcqUBdbWFd+oySZI0GIx4Pbvt1fbGaRDX
-	VrWBfuvVcjVSVQTnlWLhy5tb/V2NNbHLPq+G06zhjNtAw=
-X-Google-Smtp-Source: AGHT+IHBOMIcL9CvqfLOJPhSVm7V94Y9yW9E29q/yh+FrR/OyZ4PRM/dDuPued6+/sjbr2FnQdSKkwbQnTHASx0VlTE=
-X-Received: by 2002:a17:90b:4f4a:b0:310:8d79:dfe4 with SMTP id
- 98e67ed59e1d1-31347505422mr3600327a91.4.1749291443247; Sat, 07 Jun 2025
- 03:17:23 -0700 (PDT)
+        bh=i/Bwj+64Ou/EmaOR0WHSzBohn48Qje1LGFiUwUnbNOo=;
+        b=OUrXGDBCPxJ/2NofCxMtlJLlM7dD75BczicwRc/wdqrDXXK8UVlLPg0uYp48qqryPJ
+         IR0JqcObw7c2Xq61QzWP2po95TrOUnOsQruzHFit7u2gzbMEvevGfSoqTuDcMPnb3FOi
+         VCh0qDAdlkFf7BX9oniVW2Rqu1m/Jeow2VtkCj7AnjDIxBJBTXox5ajHSAoSmEW+Wh+o
+         BZOcdyqrzaCmO44W+0WMaXpKjlqgxYCl6lrKTQnXsQojLQOpC7bOnGLNaOuKMBd8397m
+         OfnY/Lxcot7hyB5C3MJTWvHYrdQBRzchIRuKaS8GJswpHo0MUFehinfsSELtwt0O5LMD
+         MfZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWuIaX+enZuwQgfZv6CVuBkL87qW5BrTqUt019w1UAYX/5gzE7vjQ2AKPwqFwp16yvGzdz7I6AvmO2SuRg0RQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlC7MmJa+c2L1RVI4Y4iW7WJ2l33EuENO4oN6XXYhJtb3OxvPV
+	DBBsMBOw/B3fj94fvXvwvn5e9r4rFxsWQ2no/OMQjILtjzeVYk+u9OfmxdzMtlqDT6inktD7MFO
+	b4p6yE5Pl68ueCdECl7oQ6jGCJxQBZBjWgaED
+X-Gm-Gg: ASbGncsuTjje/hUW5QT4nOMgunQcr9ezsNUgtQN41110Q2/Vn8OiT/9sq6vCjtXnVFH
+	UI7zOR0qzSPaFJFEKkkvlGZYj4UhYGnyM3p0+XrlHSgu+e3Pz2qybQqzMPWOzEla7bQdZDHdF45
+	BGBh8Q4iBY1lDvi0hxnQxqJrFZDjLqY2VuZ7PfRutQEYie/bfnlkwHdg==
+X-Google-Smtp-Source: AGHT+IE3TSE1lOjC+YMtOvsYDOqvucB7yz5YEtW9PuPWOP06gAYO6PEPAQ55YqqlJk0oCy+iz1pnXDKYnDwPnZDEU4M=
+X-Received: by 2002:a17:902:dac5:b0:235:91a:45 with SMTP id
+ d9443c01a7336-236040916b9mr28397205ad.14.1749291601557; Sat, 07 Jun 2025
+ 03:20:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250603195426.2360773-1-ttabi@nvidia.com> <CANiq72nGZusApAFztsZOoLhRWJYEMmRY6XfAC89e4-dW6snC8Q@mail.gmail.com>
- <ecc4bb6c582bb99c17b4795d80d2556e98e590f9.camel@nvidia.com>
-In-Reply-To: <ecc4bb6c582bb99c17b4795d80d2556e98e590f9.camel@nvidia.com>
+References: <20250606020505.3186533-1-fujita.tomonori@gmail.com>
+ <CANiq72mJwEm5aMCsrKAhD2e9p+ZyrL3d+4zOswM53k1pbDyyfQ@mail.gmail.com> <20250607.063617.455813499811073744.fujita.tomonori@gmail.com>
+In-Reply-To: <20250607.063617.455813499811073744.fujita.tomonori@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 7 Jun 2025 12:17:10 +0200
-X-Gm-Features: AX0GCFs74tS74YRZ_K-68J9MR33DxWBnIQBhu3bBv88ATOV3NWSkZIVHjAWI8PE
-Message-ID: <CANiq72mWq5x2zr8CKXw3mchPMhy0gxHAd8cmCwe0bfaRBW03Og@mail.gmail.com>
-Subject: Re: [PATCH] [v2] rust: introduce sfile macro for succinct code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	"lossin@kernel.org" <lossin@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Date: Sat, 7 Jun 2025 12:19:47 +0200
+X-Gm-Features: AX0GCFsv79nHtx20kWJ-wFwdiKvhXWMnTp6UWfNlbuzpsxnjqGBHWHAIfEywPHg
+Message-ID: <CANiq72kJ0aoa8p7y4hvp21SbKSCkANm7ZNM-1pW-OJO6jh8-NQ@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: time: Fix compile error in impl_has_hr_timer macro
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org, 
+	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dakr@kernel.org, gary@garyguo.net, lossin@kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, tamird@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 7, 2025 at 12:11=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrote=
-:
+On Fri, Jun 6, 2025 at 11:36=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> I don't understand why, when I use "&FILE[start..]", this compiles as inl=
-ine:
->
->         pr_err!("{}:{}\n", sfile!(), line!());
->
-> but this doesn't:
->
->         const SFILE: &'static str =3D sfile!();
->
-> It seems to me that the second line is "more const" than the first line, =
-if that makes any sense.
+> The commit was merged into mainline in the pull request for
+> v6.16. Isn't there no stable kernel version that this should be
+> backported to?
 
-The second call is in a const context, the first is just a normal
-line. So the second must be a constant expression, which is a big
-restriction on what you can write there, but the first doesn't require
-that.
-
-Hmm... Perhaps you are thinking that the compiler (or optimizer)
-should know that it all resolves to a constant, and thus it should
-allow it anyway.
-
-However, constant evaluation doesn't work like that, i.e. even if some
-expressions may happen to be able to be evaluated at compile-time, it
-doesn't make them constant expressions.
-
-It is similar to how C++'s `constexpr` works, if you have done that.
-The languages keep expanding what can be done within const contexts
-over time, but it is not based on whether a given instance could be.
-
-(One place where we do use "this particular case must be X" kind of
-logic is `build_assert!`).
-
-> You mean you don't like [PATCH][V2]?  I've been doing that for 20 years, =
-and this is the first time
-> anyone's complained.
-
-Sorry, I should have said "ideally" there too, since I intended it
-mostly as a suggestion like the one in parenthesis. Neither of those
-are blockers, of course, and we regularly take different styles of
-patches. The `--base` thing is more "important" (useful).
+Yeah, you are right, sorry. I guess I wrote that thinking about the
+hrtimer commit, not the other one.
 
 Cheers,
 Miguel
