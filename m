@@ -1,141 +1,167 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2699F1F4192;
-	Sat,  7 Jun 2025 20:19:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D6413A26D;
+	Sat,  7 Jun 2025 22:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749327580; cv=none; b=jF65looRofnuHMA3ns7evAC82OtnRuy5t9xsh5RBL2SZ/ELkDpChHZKtdWra1ypa9WqHbLAnbndvGVssMHCel2fQ+0STE/43Rf3NZISrIWiaCg6pVRW4UhxflT+HpWz+YVLhu949SVDDmzj04FTV25a67LF4n1ICbFEgzO5K0SY=
+	t=1749335522; cv=none; b=G0SMrE7UpmqeobLd1ns7cdNHNxsdMtuUFh/ifI0hbGkaZIKOwYVvnGQEi4mf1SZALm2Ey7eBReTyrPedg9sTPRBHpJejGgqjwLRGqPgNrMy9g4S1B1MkgOmUilLlsVPbtBUB2xAy2L7V02Re9xXPWWMd0gw4iR/3zhUItEdv1JA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749327580; c=relaxed/simple;
-	bh=fF6oAYruo67B8ANaWdEygvjygHRwVNWqO77vnfX3Ou4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KULbfLg0yCwNgqYfXenV1qUcEAZCqCjl94iPDqMJbwPtxBmnhPzW5ZURCUvkJp6jKG9+lRuTz1fSOR+cid3+cqaWqDklS7LsCmfwWrHBPQ53sEQLDtDZgdSKXRG7sG9C7eIbkgKz3/PgOXC2/VSmHTeqC3Llv99z3FaDYKAY/2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fV9kZ4kI; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749335522; c=relaxed/simple;
+	bh=5J7Fr5rmwhfz0NSkqMCXhDC603RLUuOSgyDTh8OvDo8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=FVk3w7UZUBA5B4VM4uqFyYN6tJu/UMWT/xTCKdbI5eKCs4ecYsThmFfvp52sJ/yYa6RsNhEJLWTitq+zwIUGFmZdMO0nAXGfvqvM0SQYUbo0ZLJYKnNExxnd09LMor2+dO7ujynOSy/RZ51Ub/dqvV1xk+VY8xtis8eMyMq20Hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UcObktIt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fV9kZ4kI"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a50fc819f2so2468564f8f.2;
-        Sat, 07 Jun 2025 13:19:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749327575; x=1749932375; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c2LwqptFTMBLVEe+Jaa58kLLDLdto2SH/hE0L4GQVKo=;
-        b=fV9kZ4kIUfBxTyGjZhZU+DEsO2cL+C8zgUB1sCqJgR0KneVm3PiQ+pxwySqY5zW11g
-         Vxelcf6jOI3VIsHDvd7eBvoLLAClxLVG+epAxEEUnH1KdJV2G3k3AY1JxQeXCC6CNTie
-         BQQE+wg2aqwMHbfbOZ2VLzvAH+EstKi0C6fTclTE4tD+h/bBizYd4pjxQU21u44fCuYU
-         aVP17GCvYfMsNiz25StvdXHrrR8n0oOAJTQ8VPC68c9C9zDzdeIUzTsQvUsaDY1lFmyq
-         7LLInL2ZHOJ7MhGvAAv29OtiiA+FmjLqOzukWofKXyci3/C2JnIEeunaS5Ech6vSpMnr
-         uGaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749327575; x=1749932375;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=c2LwqptFTMBLVEe+Jaa58kLLDLdto2SH/hE0L4GQVKo=;
-        b=gQRjZOk8xPqPK0Ddd/wAHH4rU3VT+IMd8EmWt5ufsbfd0laX90+YAUEMb8FLQWEpjM
-         Hsh34t9VDpbf8uvHU6tK/guVLJvnd90ddc4vKQlAseOSKDuZTVau07Ux99rtAlnHpo8S
-         bMiTBF/zcgLaEhh8QY9zGK0bddCY/9R7OILDGqIRquBhd9N8eZdm42n7Qs/x1TBT3Pvz
-         VIlVb7to8OLalqla2KFWMj4Mtwbjs1xFET0ZTSX5Iuxcsd6LrREc88x4dNA5SAXwNfmS
-         mYZ/3E/1K7dhAETFZln9wdSRAn7f15aWQ/mEPJlNDePJ0xIWB1ulBOtsDSs9qPJQSa1G
-         3CjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7mVQojvSpWlY5kJL+4tQ6DxM7+lcuAdLb/tLxbQxIo1lX2LVcOV5oVOkgh779a4jS09f/aUvDuW5qx+E=@vger.kernel.org, AJvYcCXBSZRS+Sa1sivZ0FcYbgeCzn20+VwI5V/BbWYWQzbZjGir2pzagB3Ku6ms+feQ4z5KkzEc9RlJGI21SES+X/Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2nAeb4Gx8jKpZNMa6KXJ6rWUEfFKXkV+czGLKiLwaJ8yPF2xn
-	UOn4K10M2WLmfYrfAXD9gGu3IOJKyxiC6j95Uj0c1bxyzkXYgRhnVzd3qSeS3Q==
-X-Gm-Gg: ASbGnctZfXOKD0L8gZ/V3MLO7UDM2I7GCccbrewF1qLV9TX9tFcyN60DFbwcV6QAP7A
-	Rv2n3Dfhpr6YAcbbcl4UHLWQqZa9DY6n7H3Ys0WkVU6dr7iaHvTuqRe9jhMXtzQ4htWh1rNY5s6
-	d3iw294m3a0DcfGSg6lnSoSPcQ23cpGpCrXMqoUO/n/h7lVm+uNRPmvpXr4Z8RRBoK8WK0BgKbT
-	P8PH4ZnWU04AAf6vrTFA6t6GIVvE+yZqM66JWb1WDAmXuw/BUoVaTr6ZarAHsFlBPHy1dxJl3hw
-	tR7NlbVEQ+8MLtt/576bHD079mcHrxwGyCq5BHnwcScLPWHbENBLbGUoH//EK6uSE0geq5gaWDg
-	=
-X-Google-Smtp-Source: AGHT+IHH9rmwvl7Wb9dgNPZAPnF6qB1mJnqPAIkbYsZsAFDGCtYqCfc21JdHm9DR/dFoxlM7K5Svyg==
-X-Received: by 2002:a5d:64e7:0:b0:3a4:e65d:5d8c with SMTP id ffacd0b85a97d-3a531caf984mr7084221f8f.40.1749327575256;
-        Sat, 07 Jun 2025 13:19:35 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:3372::1ad1? ([2001:871:22a:3372::1ad1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a532435771sm5568784f8f.63.2025.06.07.13.19.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Jun 2025 13:19:34 -0700 (PDT)
-Message-ID: <489c795a-ad6e-47b9-9443-aa315d59a74c@gmail.com>
-Date: Sat, 7 Jun 2025 22:19:34 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UcObktIt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0138C4CEE4;
+	Sat,  7 Jun 2025 22:31:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749335522;
+	bh=5J7Fr5rmwhfz0NSkqMCXhDC603RLUuOSgyDTh8OvDo8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=UcObktItjCit5VFA4KSOkbOERQbktODTW2MzonUHi/suWmgarWyx7C+od4gGp93SC
+	 4rqXf81xH27HKcyCD3nSjDRS4MnzqSUyIB3CgyK86IdDsYYgJuPGvOfpC7QQDnJjOP
+	 FYQ07lV40viTOA9Fm+xSoCO6NDT1V2Sls4beSLLuu6UqfkUJKlHlFnO2W4eYEq6L5m
+	 IuKmgx9ZxtinITZ/xbBquJ0Ml/GsirnKne8HE4UV716v/HRvDan37MovfJSccNok5n
+	 vtF3lWVaKZOvaFnzZM+iemShIVnZ655hdkGNLLTdw81NIMyOupanFG7qbK5QNSQAur
+	 3GcSldViHtT8A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: add `assert_sync` function
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20250607-assert_sync-v1-1-b18261da83e2@gmail.com>
- <CANiq72m04yAwxtMbctCpiDpYzoMHpiDagEJsvHHJCZNJXyJ5KQ@mail.gmail.com>
-Content-Language: en-US, de-DE
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <CANiq72m04yAwxtMbctCpiDpYzoMHpiDagEJsvHHJCZNJXyJ5KQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Sun, 08 Jun 2025 00:31:58 +0200
+Message-Id: <DAGNOQOY3B3X.MQD616P04I3U@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] rust: add `assert_sync` function
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250607-assert_sync-v1-1-b18261da83e2@gmail.com>
+ <DAGEZCRR61A0.30H1MJQXW4CV5@kernel.org>
+ <2531463d-fa6e-430c-a3a6-b179654cfbbe@gmail.com>
+ <DAGI57J7WBD0.2BOT553TRIXH8@kernel.org>
+ <407f04ff-b313-4629-bbdd-f25df14f44da@gmail.com>
+In-Reply-To: <407f04ff-b313-4629-bbdd-f25df14f44da@gmail.com>
 
-On 07.06.25 7:29 PM, Miguel Ojeda wrote:
-> On Sat, Jun 7, 2025 at 3:02 PM Christian Schrefl
-> <chrisi.schrefl@gmail.com> wrote:
->>
->> +/// Asserts that the given type is [`Sync`]. This check is done at compile time and does nothing
->> +/// at runtime.
-> 
-> I would split the second sentence into its own paragraph, so that the
-> "short description" isn't long.
+On Sat Jun 7, 2025 at 9:20 PM CEST, Christian Schrefl wrote:
+> On 07.06.25 8:11 PM, Benno Lossin wrote:
+>> On Sat Jun 7, 2025 at 5:54 PM CEST, Christian Schrefl wrote:
+>>> On 07.06.25 5:42 PM, Benno Lossin wrote:
+>>>> On Sat Jun 7, 2025 at 3:02 PM CEST, Christian Schrefl wrote:
+>>>>> - Add `assert_send` as well.
+>>>>
+>>>> Sounds like a good idea.
+>>>
+>>> Should I already add this in V2 for this series?
+>>=20
+>> If you want to then sure, but we can also wait until we have a use-case.
+>> Also, let's finish the discussion about the macro idea below.
+>>=20
+>>>>> +///     assert_sync::<i32>(); // Succeeds because `i32` is Sync
+>>>>> +///     // assert_sync::<NotThreadSafe>(); // Fails because `NotThre=
+adSafe` is not `Sync`.
+>>>>
+>>>> Can you split this into two examples and mark the failing one with
+>>>> `compile_fail`?
+>>>
+>>> I've tried it with `compile_fail` and it didn't work, I think
+>>> that's not supported in (kernel) doc tests yet.=20
+>>=20
+>> Hmm, I thought that this worked... @Miguel any idea?
+>>=20
+>>>> We also could provide a macro similar to [1].
+>>>>
+>>>> [1]: https://docs.rs/static_assertions/latest/static_assertions/
+>>>
+>>> You mean the `assert_impl_*!` macros?
+>>=20
+>> Yes, but the others might also be useful from time to time.
+>> >> That might make sense, with macros we would not need to write
+>>> a const block to ensure its not executed at runtime (although
+>>> it's probably optimized out anyways).
+>>=20
+>> It 100% will be optimized out.
+>>=20
+>>> It would also mean that we won't need a assert for every Trait, which
+>>> seems nice. So a macro sounds pretty good to me.
+>>=20
+>> It depends, the macro impl needs to define its own function, which might
+>> be inefficient if one uses it a lot. But there is no way to be generic
+>> over traits, so there is no other way.
+>>=20
+>> Let's see what the others think.
+>
+> The error messages in the macro are slightly worse:
+> error[E0277]: `*mut ()` cannot be shared between threads safely
+>    --> rust/kernel/compile_assert.rs:40:18
+>     |
+> 40  | assert_impl_all!(NotThreadSafe: Sync); // Fails because `NotThreadS=
+afe` is not `Sync`
+>     |                  ^^^^^^^^^^^^^ `*mut ()` cannot be shared between t=
+hreads safely
+>     |
+>     =3D help: within `PhantomData<*mut ()>`, the trait `Sync` is not impl=
+emented for `*mut ()`, which is required by `PhantomData<*mut ()>: Sync`
+> note: required because it appears within the type `PhantomData<*mut ()>`
+>    --> /home/chrisi/.rustup/toolchains/1.78-x86_64-unknown-linux-gnu/lib/=
+rustlib/src/rust/library/core/src/marker.rs:740:12
+>     |
+> 740 | pub struct PhantomData<T: ?Sized>;
+>     |            ^^^^^^^^^^^
+> note: required by a bound in `assert_impl`
+>    --> rust/kernel/compile_assert.rs:34:48
+>     |
+> 34  |             const fn assert_impl<T: ?Sized $(+ $trait)+>() {}
+>     |                                                ^^^^^^ required by t=
+his bound in `assert_impl`
+> ...
+> 40  | assert_impl_all!(NotThreadSafe: Sync); // Fails because `NotThreadS=
+afe` is not `Sync`
+>     | ------------------------------------- in this macro invocation
+>     =3D note: this error originates in the macro `assert_impl_all` (in Ni=
+ghtly builds, run with -Z macro-backtrace for more info)
+>
+> error: aborting due to 1 previous error
+>
+> compared to the function:
+>
+> error[E0277]: `*mut ()` cannot be shared between threads safely
+>    --> rust/kernel/compile_assert.rs:28:31
+>     |
+> 28  | const _: () =3D { assert_sync::<NotThreadSafe>() };
+>     |                               ^^^^^^^^^^^^^ `*mut ()` cannot be sha=
+red between threads safely
+>     |
+>     =3D help: within `PhantomData<*mut ()>`, the trait `Sync` is not impl=
+emented for `*mut ()`, which is required by `PhantomData<*mut ()>: Sync`
+> note: required because it appears within the type `PhantomData<*mut ()>`
+>    --> /home/chrisi/.rustup/toolchains/1.78-x86_64-unknown-linux-gnu/lib/=
+rustlib/src/rust/library/core/src/marker.rs:740:12
+>     |
+> 740 | pub struct PhantomData<T: ?Sized>;
+>     |            ^^^^^^^^^^^
+> note: required by a bound in `assert_sync`
+>    --> rust/kernel/compile_assert.rs:26:38
+>     |
+> 26  | pub const fn assert_sync<T: ?Sized + Sync>() {}
+>     |                                      ^^^^ required by this bound in=
+ `assert_sync`
+>
+> I guess I'll keep it as a function for now.
 
-Alright.
+Can we improve this by using a proc-macro instead and manipulating the
+span? I honestly don't think the error is too bad.
 
-> 
->> +/// Note that this is only intended to avoid regressions and for sanity checks.
-> 
-> Hmm... I am not sure about this sentence. A macro may want to call
-> this to ensure something that is required for safety, for instance. Is
-> that the "sanity check" part? In any case, it sounds like the sentence
-> could be read as "this is not reliable for "other" things apart from
-> just sanity checks", which may be confusing.
-> 
-> Could we perhaps clarify?
-
-I added this because for some reason I was convinced that it would
-be possible to cause post-monomorphization errors with this, but I 
-not realize that's not a thing. I guess I'll just drop this sentence.
-
->> +/// # Examples
->> +/// ```
-> 
-> Please add a newline between these.> 
->> +///
->> +///
-> 
-> These newlines should be removed, otherwise they will be rendered.
-> 
->> +/// // Do the assertion in a const block to make sure it won't be executed at runtime.
->> +/// const _:() = {
->> +///     assert_sync::<i32>(); // Succeeds because `i32` is Sync
-> 
-> `Sync` and please use a period at the end. Also, I would suggest
-> following our usual style and putting it at the top, i.e.
-> 
->     // Succeeds because `i32` is `Sync`.
->     assert_sync::<i32>();
-> 
->> +///
->> +/// ```
-> 
-> This one can be removed too.
-
-Fixed these
-
-Cheers
-Christian
+---
+Cheers,
+Benno
