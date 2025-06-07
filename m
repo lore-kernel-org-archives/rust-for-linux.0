@@ -1,66 +1,63 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DC4221FA0;
-	Sat,  7 Jun 2025 12:07:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEE6F9C0;
+	Sat,  7 Jun 2025 13:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749298078; cv=none; b=f+P4zQgEy8/+GKyAWSav3rIRA8SwsvGLfkeuhp2ZZ9QzZSQgIMCo85j2F7o+ZeL+TzOYYIa0B36Jc++4Vg+UaZ55bUH94K0RtcyIYCN1OHZFmSKP09urriToLrpB3nZKlFx7P4zmr2HtGGgRXwk2y6PUA92YmDK/LLMIV0NJK9w=
+	t=1749301353; cv=none; b=At7Ds9CwcDoN1Qb3Kp0xJmYRx4pRqDO6G/DJSZmMGcWQuxqUj6UlrQPfYg2Cn06r2BIf5m/SGviZu//VtkUZJpU36r5WgPWRBFn2nGMDWaRfmcNliezL1XGwvCYz/9l2bZTGFddnGx7km4G3v56GvHZ7rkmMSdnnX0UrlkZ/4E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749298078; c=relaxed/simple;
-	bh=DZa3JdiBu214uY9Tt/JtVOPrAsMdXuGUNMm9XNgGI3o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sEPE4R0EcOkCbvAJgk5VOzFLEzUUWjPGDUnJFrIe38zG3oCUDkbtmE5wZD/uNfsjSlxZvJr/c9Z/wTofbQU1rJ24feYEY+/acBYTsTddP2OdS+J286VpNsR0OXyCd2XEKqDG6TRbyPU3TTAFyHPHUlG0K3YFMdl22FhfrIRM1dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iT1p9kch; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1749301353; c=relaxed/simple;
+	bh=7KlOu1vZhR+nl/hj2RRC9lpKz151DKQmGM/ILIo0hSE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aygtDR/Dj6uSUSC/i4Ug8Cop26Ma91cI0Oqjukg+aKSn0upPIWSLpv0thkfQMqjs39MvEgPiXEz6JXSXLK8B7/tTO9kR67Worjrb8WBBt4YMBhWM14kMtI0rCCyXGj26SX0Bql16LwoEOISaIko3IJfMQ8o46RfQmwROXicraj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Chz7oiJg; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iT1p9kch"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-442e9c00bf4so23855835e9.3;
-        Sat, 07 Jun 2025 05:07:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Chz7oiJg"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4530921461aso372625e9.0;
+        Sat, 07 Jun 2025 06:02:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749298074; x=1749902874; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=07TVQMLxCVF1Rat4olwfbCqsRTrqGNZ3C/Ht2jMQZbM=;
-        b=iT1p9kchtH0VEYrq1zNA8HAC4b1nXYrlaonCWRsaqSm8UxLe6ADOi8bVxJTrHpEyEw
-         PIk12j2M0lpRlqm8+erhSgctTsxz9B+vgRtDrmgvOIeNCezaNiDrkiN8K/bOyEkKWy+E
-         6K4ZK1Gxk3Zhwwjie48WI2nsg+AImE9VSpOO1SxB6XXOcDSFPOjtpWhmcn2+yFeHo+rc
-         VufuDxbfHZSNnpNtMVBMfYUgcxie4wFpMH8tC+zq8V6xQhUyKCVzazdCjgv6crXn1Z8U
-         XvzT7bC0oqRcOtXqFsIYtTe9eHgK1mNRcabJkKV7TCkRq2ei1OSKxIPtWSgBNjBVLo53
-         Qb/Q==
+        d=gmail.com; s=20230601; t=1749301350; x=1749906150; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PQuHizt0r759ehkPwWbyMhSbtHXbf70UVrsqp16PUuE=;
+        b=Chz7oiJg0lzKB+GU4IAmYTAQhtrnljrnl3d0OolhYjn8gdnxrpYYItrOiHHkNeW/Dx
+         oykRHhPbWR3eix76qsFcaCKK+LHI8xlRwN1MiRc59+k7Qk+82RfGzFH5pxZdMYsfukym
+         +JWD8F7zyvniep1D+jZUHGuaglR0P3jfg44YdCCARhms0+kz8R8LpvXRKeTaS+9XGUTM
+         MONXfiXLPiKF+LtYvyeN3SRi4Ip9SiHo9ElJiIMCBLe87e8u5daQqBnZg9TfWunwrzHX
+         bgkQPxYgySzljS02ii4vs2zSM8ZNhyFNWAWojL9hGy7ypxR9fz/ibmo75gPXi0JEeftk
+         z/2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749298074; x=1749902874;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=07TVQMLxCVF1Rat4olwfbCqsRTrqGNZ3C/Ht2jMQZbM=;
-        b=Raef2wAL5eipmDfMadVyawuRT4xQlV3Xgf9jgUqthU8KkhBF+9/spoNqpzSZi/FrJl
-         pBMLHKzi5/NQhqHtqIpjqu5Hp+q71IrLP5XVJa77QQybM/T1vvRg6DPtret9j/SuSUCe
-         tiLeLBDe9FbqbQmXIKehRiqAmDVGgtAKJBQ1Sz3v1n+tWmt+5fY9113WN4y7VhBJ2MzV
-         bCpT0wXo/PygdxTRUgjYmz7GPf/7ySF3aXR4qTq0nBSFJ3fwmmP5GZta5j2oHWWvHvFf
-         PY34y8yZclK8CY3PLGHi15Mf1Nn5DoNzbP5MHtpERpwqhg1XH8W+G8wsaWuFnoUUua1s
-         Sesg==
-X-Forwarded-Encrypted: i=1; AJvYcCWY+z6h2FKBHBGIeRfPH8akjmQS5pcgNw+nWSpa4llJThltAeDeb8XT2UxCc9nTuNxOKHNH9cLQ4TMR2dYvQ6Q=@vger.kernel.org, AJvYcCXr1M62pjvQO7D2lnF3tRKm+loab4dm2G9vCF4mgt64LsswNF49J/L7Zkimf1shgqXWkoR0Bjt5ctv30DA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHwHYrhzv7J0CFZjC7iFAWstjDpz5LC/8IG3FHeNMqbpBLmg9I
-	hgj2HT9f93KFgYU/pzJ+2w+3jobXqckWCQaVsw2axblsSMVCJMYx+vF5LhhHlQ==
-X-Gm-Gg: ASbGncuPG7DtSfd0ReoGUNqR27ll70BOGF0lShvkAjVJA/Tjdln8KPcczb1L1+yMbjv
-	O1VQJnG9DTvVzDshwQH6ofV3/C1mMCAWJTHVCpcUruDgawVucpRwKdGuSP6FQvndLIjLQisZL8M
-	PsGC6Nb58aA9KxCGD1yyU5FaNwbulNeMD/e1IhZg9xRBa4+uuw6teqvwir4UE7Nfq5hRYAY7YWF
-	ShWZAhZTqRYIEj2R9ucu2ZVAeK9b4WhT3rZsMXfH5h8/KRMyT+EvsgjH6eoSHRF8SxgwynxA8Js
-	IGOc9zwd8pPtaXoxShrJ5hbCSUTq4NpyWtMHz3HA
-X-Google-Smtp-Source: AGHT+IE7n4gjCOE3epBBVqjFinYJFlGKFod+74ExHLrgD548M10Dcn8f9XkH9neTz2BOYCEzP2ucSA==
-X-Received: by 2002:a05:6000:2204:b0:3a4:eecd:f4d2 with SMTP id ffacd0b85a97d-3a5319b5aafmr5912572f8f.38.1749298074265;
-        Sat, 07 Jun 2025 05:07:54 -0700 (PDT)
-Received: from [10.0.1.160] ([2001:871:22a:3372::171c])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3a532462d93sm4538965f8f.91.2025.06.07.05.07.53
+        d=1e100.net; s=20230601; t=1749301350; x=1749906150;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PQuHizt0r759ehkPwWbyMhSbtHXbf70UVrsqp16PUuE=;
+        b=XGg+qS7YxNGuUvL9MkeY/MTb6HKU5dtBVUfopyOF9xtneZ60lUOCqCgkr4EnIgZwgd
+         huTqedWJ80vw6jaNglsbXz+gobJgQKpeXal0h3UcW/cjnE+opwXXACd7gu0NSUMKyt/O
+         2kmwsICuDZXxVHmpW9YycHcizcowZiPKUm9qtFDNHRsGRgKT+Ol7YTcdSlhT7fZ85A2B
+         2F3c9Msr2kBcS1dWwz2eLwXWY7G0xAPyIKppj9Ujya9Qp98wPKwqzQipBctd89Zw+pPa
+         dsmyYXp+EdTpEAwSGtJeDXBLkVx5Z6sRLbgYmvNZQqvgl1O6kOuuIeihRI8bypKn0NqI
+         HvkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDe2Bk0Ck33gm0wt4SBWm26O+8S8LNYQGAiRr4qs5cnc0Pf2wbtstfA8L0rOY+uSTKlrFkycUWOFJdvSDE6Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLX9ba49/JCeDegEmgUfDfjTP5/baiJTeMRfcq/im/8H6dl1d6
+	kcLfI4EJZoVZm3Z7MJY3pfZSDz3R5rM4zcdpIK+gdz1W2oDTqroHANna
+X-Gm-Gg: ASbGncvaYLLOa67YOwkQQp0JQ9KZMNQK4XaNfq7l2TVGQnK+8uTEDHa16ZrtxvUWpYC
+	nBJ6T2mqG33Z0scCNs3/CVrnF7VbFNIJUyeJLjNSD5nzNEfagdp0/xfKB1nOxiyfJ5woTYITedn
+	8lUvH2wu5zqdw7sZnQUCX3uq18pBqiiBGt7TDqmnnV1j3Xh+/aZMOp2B0FwaVVjv2AhhPwDZr97
+	LTyYav3fAU5TZ1k0tJkySqTFeDP4XII1SKFQLkACcxkc2GnFHICVFJj8Kz433WKVOhxgKJ2PgUf
+	NRz+WWN7AB8PXymV0AJpzmn/aZf8Nhhfk18XPAc=
+X-Google-Smtp-Source: AGHT+IHDRKzjxB04nIpSXygVB6fmNQla6ulscaXnS6kK/z0JoonFUKtFHPK867QTrCbc4HXkzQuR3w==
+X-Received: by 2002:a05:600c:1c25:b0:43c:f81d:34 with SMTP id 5b1f17b1804b1-45201437847mr68835795e9.9.1749301349590;
+        Sat, 07 Jun 2025 06:02:29 -0700 (PDT)
+Received: from [10.0.1.50] ([2001:871:22a:3372::171c])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3a53244d15asm4686593f8f.66.2025.06.07.06.02.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Jun 2025 05:07:53 -0700 (PDT)
+        Sat, 07 Jun 2025 06:02:29 -0700 (PDT)
 From: Christian Schrefl <chrisi.schrefl@gmail.com>
-Date: Sat, 07 Jun 2025 14:07:32 +0200
-Subject: [PATCH v5 3/3] rust: miscdevice: adjust the `rust_misc_device`
- sample to use `Data`.
+Date: Sat, 07 Jun 2025 15:02:14 +0200
+Subject: [PATCH] rust: add `assert_sync` function
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -69,241 +66,99 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250607-b4-rust_miscdevice_registrationdata-v5-3-b77b5b7aab5b@gmail.com>
-References: <20250607-b4-rust_miscdevice_registrationdata-v5-0-b77b5b7aab5b@gmail.com>
-In-Reply-To: <20250607-b4-rust_miscdevice_registrationdata-v5-0-b77b5b7aab5b@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
+Message-Id: <20250607-assert_sync-v1-1-b18261da83e2@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAFU4RGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDMwNz3cRioI6S+OLKvGRdM6O0lJRk00SDxJRkJaCOgqLUtMwKsGnRsbW
+ 1AKKjSCpdAAAA
+X-Change-ID: 20250607-assert_sync-62fddc5a0adc
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lee Jones <lee@kernel.org>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Benno Lossin <lossin@kernel.org>, Benno Lossin <lossin@kernel.org>
-Cc: =?utf-8?q?Gerald_Wisb=C3=B6ck?= <gerald.wisboeck@feather.ink>, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
  Christian Schrefl <chrisi.schrefl@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749298070; l=7426;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749301348; l=2538;
  i=chrisi.schrefl@gmail.com; s=20250119; h=from:subject:message-id;
- bh=DZa3JdiBu214uY9Tt/JtVOPrAsMdXuGUNMm9XNgGI3o=;
- b=2SATMg4MDJOQ/ZrVtcO+nSGqVdznYIlzFz+Zz9lQ1Ay2W/0s39ZXGXHcQA0aMx9Meyd4KTq6g
- LXUkgO90jQaCpCB8vzC8qclaZHknMwDmA0ssUunouiIMVEYknKwHaAb
+ bh=7KlOu1vZhR+nl/hj2RRC9lpKz151DKQmGM/ILIo0hSE=;
+ b=MjGhfiWMEflXnqwsYpzJX0UNJgIPIXO4f7w80fYZRYJ06pCvKUMxGKhPGqz1TtWwVMwu9LqZF
+ d5hdvQnvzDMANA7VOXdjkJCPF86OcI++tyiRViPnW6VMwEyu6nEwz8d
 X-Developer-Key: i=chrisi.schrefl@gmail.com; a=ed25519;
  pk=EIyitYCrzxWlybrqoGqiL2jyvO7Vp9X40n0dQ6HE4oU=
 
-Add a second mutex to the `RustMiscDevice``, which is shared between all
-instances of the device using an `Arc` and the `Data` of
-`MiscDeviceRegistration`.
+Adds a new file `compile_assert.rs` for asserts during compile time and
+add the `assert_sync` function to this file.
 
-This is mostly to demonstrate the capability to share data in this way.
+This will be used in `miscdevice` to avoid regression in case a `: Send`
+bound falsely gets dropped in the future.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Link: https://lore.kernel.org/rust-for-linux/20250530-b4-rust_miscdevice_registrationdata-v4-0-d313aafd7e59@gmail.com/T/#mdf3328834ce1d136daf836c9e089b5a8627a6d53
 Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
 ---
- samples/rust/rust_misc_device.rs | 116 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 109 insertions(+), 7 deletions(-)
+For now I've only added the function.
 
-diff --git a/samples/rust/rust_misc_device.rs b/samples/rust/rust_misc_device.rs
-index c0b912920d6c4b60e747d9d298900ad64df67339..7519ff6a79985e8bdbb7f4c79d8a6ebf160ef8cc 100644
---- a/samples/rust/rust_misc_device.rs
-+++ b/samples/rust/rust_misc_device.rs
-@@ -18,6 +18,8 @@
- //! #define RUST_MISC_DEV_HELLO _IO('|', 0x80)
- //! #define RUST_MISC_DEV_GET_VALUE _IOR('|', 0x81, int)
- //! #define RUST_MISC_DEV_SET_VALUE _IOW('|', 0x82, int)
-+//! #define RUST_MISC_DEV_GET_SHARED_VALUE _IOR('|', 0x83, int)
-+//! #define RUST_MISC_DEV_SET_SHARED_VALUE _IOW('|', 0x84, int)
- //!
- //! int main() {
- //!   int value, new_value;
-@@ -86,6 +88,62 @@
- //!     return -1;
- //!   }
- //!
-+//!   value++;
-+//!
-+//!   // Set shared value to something different
-+//!   printf("Submitting new shared value (%d)\n", value);
-+//!   ret = ioctl(fd, RUST_MISC_DEV_SET_SHARED_VALUE, &value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to submit new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   // Close the device file
-+//!   printf("Closing /dev/rust-misc-device\n");
-+//!   close(fd);
-+//!
-+//!   // Open the device file again
-+//!   printf("Opening /dev/rust-misc-device again for reading\n");
-+//!   fd = open("/dev/rust-misc-device", O_RDWR);
-+//!   if (fd < 0) {
-+//!     perror("open");
-+//!     return errno;
-+//!   }
-+//!
-+//!   // Ensure new value was applied
-+//!   printf("Fetching new value\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_GET_SHARED_VALUE, &new_value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to fetch the new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   if (value != new_value) {
-+//!     printf("Failed: Committed and retrieved values are different (%d - %d)\n",
-+//!            value, new_value);
-+//!     close(fd);
-+//!     return -1;
-+//!   }
-+//!
-+//!   value = 0;
-+//!   // Ensure non-shared value is still 0
-+//!   printf("Fetching new value\n");
-+//!   ret = ioctl(fd, RUST_MISC_DEV_GET_VALUE, &new_value);
-+//!   if (ret < 0) {
-+//!     perror("ioctl: Failed to fetch the new value");
-+//!     close(fd);
-+//!     return errno;
-+//!   }
-+//!
-+//!   if (value != new_value) {
-+//!     printf("Failed: Committed and retrieved values are different (%d - %d)\n",
-+//!            value, new_value);
-+//!     close(fd);
-+//!     return -1;
-+//!   }
-+//!
- //!   // Close the device file
- //!   printf("Closing /dev/rust-misc-device\n");
- //!   close(fd);
-@@ -105,7 +163,7 @@
-     miscdevice::{MiscDevice, MiscDeviceOptions, MiscDeviceRegistration},
-     new_mutex,
-     prelude::*,
--    sync::Mutex,
-+    sync::{Arc, Mutex},
-     types::ARef,
-     uaccess::{UserSlice, UserSliceReader, UserSliceWriter},
- };
-@@ -113,6 +171,8 @@
- const RUST_MISC_DEV_HELLO: u32 = _IO('|' as u32, 0x80);
- const RUST_MISC_DEV_GET_VALUE: u32 = _IOR::<i32>('|' as u32, 0x81);
- const RUST_MISC_DEV_SET_VALUE: u32 = _IOW::<i32>('|' as u32, 0x82);
-+const RUST_MISC_DEV_GET_SHARED_VALUE: u32 = _IOR::<i32>('|' as u32, 0x83);
-+const RUST_MISC_DEV_SET_SHARED_VALUE: u32 = _IOW::<i32>('|' as u32, 0x84);
- 
- module! {
-     type: RustMiscDeviceModule,
-@@ -137,7 +197,10 @@ fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-         };
- 
-         try_pin_init!(Self {
--            _miscdev <- MiscDeviceRegistration::register(options, ()),
-+            _miscdev <- MiscDeviceRegistration::register(
-+                options,
-+                Arc::pin_init(new_mutex!(Inner { value: 0_i32 }), GFP_KERNEL)?
-+            ),
-         })
-     }
- }
-@@ -148,8 +211,9 @@ struct Inner {
- 
- #[pin_data(PinnedDrop)]
- struct RustMiscDevice {
-+    shared: Arc<Mutex<Inner>>,
-     #[pin]
--    inner: Mutex<Inner>,
-+    unique: Mutex<Inner>,
-     dev: ARef<Device>,
- }
- 
-@@ -157,7 +221,7 @@ struct RustMiscDevice {
- impl MiscDevice for RustMiscDevice {
-     type Ptr = Pin<KBox<Self>>;
- 
--    type Data = ();
-+    type Data = Arc<Mutex<Inner>>;
- 
-     fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Self>>> {
-         let dev = ARef::from(misc.device());
-@@ -167,7 +231,8 @@ fn open(_file: &File, misc: &MiscDeviceRegistration<Self>) -> Result<Pin<KBox<Se
-         KBox::try_pin_init(
-             try_pin_init! {
-                 RustMiscDevice {
--                    inner <- new_mutex!( Inner{ value: 0_i32 } ),
-+                    shared: misc.data().clone(),
-+                    unique <- new_mutex!(Inner { value: 0_i32 }),
-                     dev: dev,
-                 }
-             },
-@@ -183,6 +248,12 @@ fn ioctl(me: Pin<&RustMiscDevice>, _file: &File, cmd: u32, arg: usize) -> Result
-         match cmd {
-             RUST_MISC_DEV_GET_VALUE => me.get_value(UserSlice::new(arg, size).writer())?,
-             RUST_MISC_DEV_SET_VALUE => me.set_value(UserSlice::new(arg, size).reader())?,
-+            RUST_MISC_DEV_GET_SHARED_VALUE => {
-+                me.get_shared_value(UserSlice::new(arg, size).writer())?
-+            }
-+            RUST_MISC_DEV_SET_SHARED_VALUE => {
-+                me.set_shared_value(UserSlice::new(arg, size).reader())?
-+            }
-             RUST_MISC_DEV_HELLO => me.hello()?,
-             _ => {
-                 dev_err!(me.dev, "-> IOCTL not recognised: {}\n", cmd);
-@@ -204,7 +275,7 @@ fn drop(self: Pin<&mut Self>) {
- impl RustMiscDevice {
-     fn set_value(&self, mut reader: UserSliceReader) -> Result<isize> {
-         let new_value = reader.read::<i32>()?;
--        let mut guard = self.inner.lock();
-+        let mut guard = self.unique.lock();
- 
-         dev_info!(
-             self.dev,
-@@ -217,7 +288,38 @@ fn set_value(&self, mut reader: UserSliceReader) -> Result<isize> {
-     }
- 
-     fn get_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
--        let guard = self.inner.lock();
-+        let guard = self.unique.lock();
-+        let value = guard.value;
-+
-+        // Free-up the lock and use our locally cached instance from here
-+        drop(guard);
-+
-+        dev_info!(
-+            self.dev,
-+            "-> Copying data to userspace (value: {})\n",
-+            &value
-+        );
-+
-+        writer.write::<i32>(&value)?;
-+        Ok(0)
-+    }
-+
-+    fn set_shared_value(&self, mut reader: UserSliceReader) -> Result<isize> {
-+        let new_value = reader.read::<i32>()?;
-+        let mut guard = self.shared.lock();
-+
-+        dev_info!(
-+            self.dev,
-+            "-> Copying data from userspace (value: {})\n",
-+            new_value
-+        );
-+
-+        guard.value = new_value;
-+        Ok(0)
-+    }
-+
-+    fn get_shared_value(&self, mut writer: UserSliceWriter) -> Result<isize> {
-+        let guard = self.shared.lock();
-         let value = guard.value;
- 
-         // Free-up the lock and use our locally cached instance from here
+Some things that might make sense to do as well:
+- Move `static_assert` into `compile_assert.rs`.
+- Add `assert_sync` to prelude.
+- Add `assert_send` as well.
+- Use these asserts in various places around the kernel. (I'm not sure
+where it would make sense)
+---
+ rust/kernel/compile_assert.rs | 24 ++++++++++++++++++++++++
+ rust/kernel/lib.rs            |  1 +
+ 2 files changed, 25 insertions(+)
 
+diff --git a/rust/kernel/compile_assert.rs b/rust/kernel/compile_assert.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..2a99de1ba919dc3952d7a1585869567a44106b44
+--- /dev/null
++++ b/rust/kernel/compile_assert.rs
+@@ -0,0 +1,24 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Compile-time asserts.
++
++/// Asserts that the given type is [`Sync`]. This check is done at compile time and does nothing
++/// at runtime.
++///
++/// Note that this is only intended to avoid regressions and for sanity checks.
++///
++/// # Examples
++/// ```
++/// # use kernel::compile_assert::assert_sync;
++/// # use kernel::types::NotThreadSafe;
++///
++///
++/// // Do the assertion in a const block to make sure it won't be executed at runtime.
++/// const _:() = {
++///     assert_sync::<i32>(); // Succeeds because `i32` is Sync
++///     // assert_sync::<NotThreadSafe>(); // Fails because `NotThreadSafe` is not `Sync`.
++/// };
++///
++/// ```
++#[inline(always)]
++pub const fn assert_sync<T: ?Sized + Sync>() {}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 7e227b52b4d8ff23d39d5cc9ad3ab57132c448d0..e1630e5079b2436eda6f8b71225bd5371af337b4 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -56,6 +56,7 @@
+ pub mod block;
+ #[doc(hidden)]
+ pub mod build_assert;
++pub mod compile_assert;
+ pub mod cred;
+ pub mod device;
+ pub mod device_id;
+
+---
+base-commit: 7a17bbc1d952057898cb0739e60665908fbb8c72
+change-id: 20250607-assert_sync-62fddc5a0adc
+
+Best regards,
 -- 
-2.49.0
+Christian Schrefl <chrisi.schrefl@gmail.com>
 
