@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A811367;
-	Sun,  8 Jun 2025 07:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6172713C3CD;
+	Sun,  8 Jun 2025 07:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749368480; cv=none; b=afLDjjGToBearoiZqQc4e54JRC3+R8jx2jVIRCy27tNhBTAWT8tYP2loPQvkKMTwDhg+4eGBpbqTcW+fvYWYqwumx9ykZJMYNRY/ZWUDzUswOmMu81ttCjiMsdOkhQzhMLzZ8TSRDCYIjBpEFPNp3Cc5y/2bGj0/vp4ke2pkB3g=
+	t=1749368887; cv=none; b=uF0TD2kug1vk0yjb92JU+dsieogjk+XFC9mQi5xZbmx5TAau0ScNg3aNan82SjWZxrHgl/dbfAuWAkp3V2AMQqD7bBAXqAvpyNyNnlYhTtLw3bq/l+W86gZ639Ub7ySshdsoXILM0RY3iofRFp6ZdTkjRWKnqixL2FSw6vZWQ1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749368480; c=relaxed/simple;
-	bh=Ae/Eq0mvumW6wbNzTIN5amb/zidt0s9bSkgBMomJ9fc=;
+	s=arc-20240116; t=1749368887; c=relaxed/simple;
+	bh=tM0oOS9dnX2Vm7tlGZiHwOnO7xNgAeQDpdXG5G/CX2Q=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=scDP3AIok83Yv0gsmcHV3VbybgYjxLaT2iUc4B1H7+8uQpZaRk5bbFV/u5xyZv0Ax4jDk/t6i/m9aMqSrOXd/OOwdhM+Ph3OAeTRxkuhFyJTxRdJ8pV5pGrQoEUMdO2N0QrOVhYj6gE3V57BxtfcxIqLTlmn7yYvFhHVSVfj0Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFrXyjgh; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Re1JO+DDaFcia628+Ok50NR4YH2E/VLrdB4OCpDgixX05dAn2c9rnOIvFvCplmMGYygSMGb9RvW6Ba28u32R2cZFBthrVYJYZKMhpZwnCUGb5wmtO5Abynr2kcvJefaHx4MPqtVnA0UOJbJApbBGbb0BdrT2Q9kQO9CSzZ9cC1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eQjIx3t+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFrXyjgh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4995C4CEEF;
-	Sun,  8 Jun 2025 07:41:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eQjIx3t+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB51CC4CEEE;
+	Sun,  8 Jun 2025 07:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749368480;
-	bh=Ae/Eq0mvumW6wbNzTIN5amb/zidt0s9bSkgBMomJ9fc=;
+	s=k20201202; t=1749368886;
+	bh=tM0oOS9dnX2Vm7tlGZiHwOnO7xNgAeQDpdXG5G/CX2Q=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=dFrXyjghQ8Gq3gCZBdUIL1+0FoPdUQU0/OwG5RMjMlths9AEONwAwKSa00Y4Ok9lr
-	 RXdjvV0u8mw57ddmOWl0iNBTD9hwPqQu56ZMTSudSP68NhF9qot9ncC0zLhOEVJX0a
-	 4qDpdz0JLvGDQ7XjP4KdRgSjaen6HBF6H8RtxWqJVadjfdmDEn7fTlTCN2F4NRiVtY
-	 Pv9wgT0u2a9rTl0NrLEBmRdxTVHadzxAd5DrKOtWO7qWy3n9MFayjiaEgwY7PQYbpn
-	 raQCU0pReC2s+8ZndaNQQuimTD8jqAq18LSOsUAXZx5/rLS+NWguhvQptX3O92e99l
-	 j/jjbGPmnoPFw==
+	b=eQjIx3t+KYMrCoq5Hz9vypRHXYoAm/k1QHzKcdfEWKRWaWLLNaEcWak9ms08d69Y4
+	 zh/NaJZs9q7zaSOkChwInR6i20o1LkXI7cdCt9lbN09xmgnhxYs8AI/uDI6MnXY4LQ
+	 C9V4IRG3zLBDf+UMZP+mAOgvP4hfNqwt0Jh588Zy82hpS4mK+XaP/65bsh1KbPELpx
+	 lyTrbY1TATkiDQ0uJhxYFRBz9SD5njDpQue9cL6vsX/B7U3rhbJQiKYuEbs+5vFGoC
+	 h5amQaPzH/3dA/KDqdG/lIyl6bRx9RJwOut+7N48bAjk9DbjaOxgSr8NpNHx7X15Go
+	 +maZf2ZacNT1g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,42 +34,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 08 Jun 2025 09:41:15 +0200
-Message-Id: <DAGZDB274O7S.1WW1Y530WRYVY@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: add `assert_sync` function
+Date: Sun, 08 Jun 2025 09:48:00 +0200
+Message-Id: <DAGZIHBVBI6Z.32401TQB5MNTL@kernel.org>
+Cc: <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <dakr@kernel.org>, <lenb@kernel.org>,
+ <wedsonaf@gmail.com>, <viresh.kumar@linaro.org>, <alex.hung@amd.com>,
+ <dingxiangfei2009@gmail.com>
+Subject: Re: [PATCH v3 1/4] rust: acpi: add `acpi::DeviceId` abstraction
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Christian Schrefl" <chrisi.schrefl@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+To: "Igor Korotin" <igor.korotin.linux@gmail.com>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <rafael@kernel.org>, <gregkh@linuxfoundation.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-acpi@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250607-assert_sync-v1-1-b18261da83e2@gmail.com>
- <DAGEZCRR61A0.30H1MJQXW4CV5@kernel.org>
- <2531463d-fa6e-430c-a3a6-b179654cfbbe@gmail.com>
- <DAGI57J7WBD0.2BOT553TRIXH8@kernel.org>
- <407f04ff-b313-4629-bbdd-f25df14f44da@gmail.com>
- <DAGNOQOY3B3X.MQD616P04I3U@kernel.org>
- <eba1cfdd-3756-4f8e-a2b2-e15b8b8b4a18@gmail.com>
-In-Reply-To: <eba1cfdd-3756-4f8e-a2b2-e15b8b8b4a18@gmail.com>
+References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
+ <20250606170641.3881401-1-igor.korotin.linux@gmail.com>
+In-Reply-To: <20250606170641.3881401-1-igor.korotin.linux@gmail.com>
 
-On Sun Jun 8, 2025 at 1:38 AM CEST, Christian Schrefl wrote:
-> I don't see any point in paying the compile time hit for a proc macro.
->
-> The Error is not that bad, just a bit worse. I just don't really see the
-> point since this is only really need for marker traits and realistically
-> only for `Send` and `Sync`. Also the macro would create a function
-> definition for every invocation which would be a (very) small compile tim=
-e
-> hit. So I think that we should just add the `Send` and `Sync` functions f=
-or
-> now and reconsider changing to a macro once/if more than these two is
-> actually needed.=20
+On Fri Jun 6, 2025 at 7:06 PM CEST, Igor Korotin wrote:
+> +impl DeviceId {
+> +    const ACPI_ID_LEN: usize =3D 16;
+> +
+> +    /// Create a new device id from an ACPI 'id' string.
+> +    pub const fn new(id: &'static CStr) -> Self {
+> +        assert!(id.len() <=3D Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+> +        let src =3D id.as_bytes_with_nul();
+> +        // Replace with `bindings::acpi_device_id::default()` once stabi=
+lized for `const`.
+> +        // SAFETY: FFI type is valid to be zero-initialized.
+> +        let mut acpi: bindings::acpi_device_id =3D unsafe { core::mem::z=
+eroed() };
 
-Sounds good.
+This can be made safe using this series:
+
+    https://lore.kernel.org/all/20250523145125.523275-1-lossin@kernel.org
 
 ---
 Cheers,
 Benno
+
+> +        let mut i =3D 0;
+> +        while i < src.len() {
+> +            acpi.id[i] =3D src[i];
+> +            i +=3D 1;
+> +        }
+> +
+> +        Self(acpi)
+> +    }
+> +}
