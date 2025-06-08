@@ -1,129 +1,127 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F173FC2
-	for <rust-for-linux@vger.kernel.org>; Sun,  8 Jun 2025 17:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AD1193402
+	for <rust-for-linux@vger.kernel.org>; Sun,  8 Jun 2025 19:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749404424; cv=none; b=irj1c19QORT34AU8Fme14Y9bqTriZ+0Q8KfGDmnI1djZi6/V/azmvg4ZwYdBlmjcGIh7FuliXwVRPfs6kqkoLV/yqT2KLAO5su1qUFifIwTf6AwUPOSKLDpYo/iVxHNx+XUsgZ3ldJOtvpOePHj49ZrxMGH79c019KovP4xuMtI=
+	t=1749412715; cv=none; b=QVWvHIo8ReISsemp512pMT/nv1UpKINrryZByW8EdG0x5vhoSxmChz7i0YhLSY7wD1dPtTnV8KBm+U/P7zEBLZB5L6ZYua/SxLZZRqJdG2YL2YuKOOf7X4nIkI0ag44gbr3E9YCGnYYNf+1H8M49DI5D+mInmyVU/1BQty1+MJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749404424; c=relaxed/simple;
-	bh=oMumIAWvqFCTfMbfetAORGpnQGZd3T0K/Fd+HtidrxM=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=biPvtvendqrWfisKYD5tq50MWwCH9uGI9vzpaKDfnSkrHrf4AT89zUsAyAG1rvnLjd7wqaI1xNSXlfyYVAhCTvztBMLWe6MOO8s6rstAy83JC2PvR4v9CX1GVu1MOThSxjXw95OVx9Ecj2Fa/ppLsINqjkjwzISLfrj9sGIQCws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ng1ZzgqQ; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749412715; c=relaxed/simple;
+	bh=BLmXJzTM5ia8opzo1LdCoiOFsDBXD+MPSBLR8pplt3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XYKdqzULzw8/2w/SdnmSf6kThcpXoeW9Dpx7oxfqpRN/UC+5NL3h9AopE9hZ2HxTl5AD2cmWjeEdxr1XJdn4HD/8Lz3k8itZITc2AlQ7l0YoiqEt3hfnApKuJpFHk3lNk8Mso4yznqIv/eXuLf/ETceVoAxyfQGmoBkpKx0SrcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com; spf=none smtp.mailfrom=pdp7.com; dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b=o0zl0a5W; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pdp7.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ng1ZzgqQ"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7d38cfa9773so103749085a.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 08 Jun 2025 10:40:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b="o0zl0a5W"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-747ef5996edso2711584b3a.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 08 Jun 2025 12:58:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749404422; x=1750009222; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:feedback-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=spK3Dw/CDHh1g8ikCokO6njmP9oEAxms+o5epaUzk8I=;
-        b=Ng1ZzgqQyJ9NQ0X8JGUmGsTf8QJjOOkXNmNU+Gv3vGBsc1KoEHx3QNSJW+BQ9kfIA8
-         B/PeoNczMrGX16vmig7Jes4LQ9OJc+oXl1Nm9gHTONEQoZbDzJAHqOkFJCdOivrFO8Ts
-         iIaodYU/lgIlDGg1LqjGcYUCY0keKCrmKw//wS0zUcwgowvTX9cjwDnbrJJratOfuMiD
-         gLyGRyMd2bkfm4YmBw0aZWFuqU5dtd+7iGXL9eo5wVjhAlpQ/wHpbRBNzKWGvVOJhXwp
-         lB9U/PL6TJoZZSib6puSqbXsawmAXd063aUG9J28bQmboFqb8agSLg1e/1ZAZbaLIKsP
-         ShBQ==
+        d=pdp7-com.20230601.gappssmtp.com; s=20230601; t=1749412713; x=1750017513; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=SO/TiV/eetgiNfMpNbC5+xBYaQpqY6ayGmPuNTPhj0k=;
+        b=o0zl0a5W2JtCxMthNz0mlEdGoO5932iXTBqqEUQTXIn/7roxnt/UGnc6klhq1fFad/
+         oh7W4Kfc/lihWp2q1xXCxz6M8WnvrPn+3mzQNG7uUh3CLd8VhRVNxFg3FjF3/S7mHZaP
+         016iZkVXqfash9pU937ZpNr9TXAgRSGtp+LqVRHn3qrM5L79k+vD5A4LggEFd5JlMJ1t
+         Ma6f6aCvL4G14LkjX19k5u506at6hU4ZIUR5LwndFX9CH2frP2Ah4X2Hk4C5idOU2ydl
+         JHsRt0OhOdMQDdmzJ16QSRhHgh+OwFXY0QAQt5+r+X+s41FLNwT5zbxpjGSPt8Tj1ODE
+         0Gcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749404422; x=1750009222;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=spK3Dw/CDHh1g8ikCokO6njmP9oEAxms+o5epaUzk8I=;
-        b=Bu6EaMpGgbs/kU8jU5Rwh1LZUXwAZyEpd8XwFY8XHDHB1Of8x/2BbmjNolCPykHWOd
-         u9HBKGF0YRlJlT3p+WMvZy5wD6I8Y0u/L/OvEMgs99DWCkMXBbdh9jBCYTS9eQepXofz
-         piHHUQS001atCN69rfeogkbRASgkFh6od7hgRx+/IXJJDEzilkxVl3REWGianpQEt2UV
-         OrjWzDrr0MC00hppqf+AmE2KUapTA6YtXJQNevxqEjSTEXn8PH082hudSSLkuCxy7Nez
-         VYzVJ5kL4rL9Juz7KwAbLnBxokioSHlQOyoWVCjuSDV8YD39jvCn3o7y12b/dvZ71E3/
-         eysg==
-X-Gm-Message-State: AOJu0YyeHP3jrCGoTSClcQPoUwOylO06yiFTbR/3MR8i08a+Ur3PLMrU
-	XFS7wkH+y8/7nJHxzO7ZWPSl8lBty8UHkY3OWPrsqvfcrv+S1lEYPX7CphUoTQ==
-X-Gm-Gg: ASbGnctj6GHdFOMat1/kbTbl0MONVJErwNztBtgzmrefSjhkk91unGs+fRtpFT0aXyk
-	ooP154kij2MLFFJEPhwUthv+9FgsnyPa0DjqV+GlWJFhqNovNyWxW8to9fl9lxnYc+8+0JTvEUz
-	IQE1Ewc0H1zm+3U5l2eiXyniiO8fZjCnp9b5QyzEA7bMHDKTX9mLKTsBDeJulFEz1WABMTc9SCa
-	rYNvKx6LugNyM+4GCNxNhnCXZ4c7+RaVFky+fMJXooDQ96FUh/XxKU1OAHEZPOrjWrevg0ZtV3Q
-	Zt9SFuMRjbQikH/U+ZPZinsZ3S+S7RPQLLVgb/YY3/mXaOs2uM1l8iQs/feqzkIEFDpc5vTaaIo
-	kjcawNABvgbvYeLoeFOnwW4/AtEV7DEpiQE/KvswUQw==
-X-Google-Smtp-Source: AGHT+IHInq9OcVgndwsg8jG21SZB8mBvFFhuCuMPmpP6YEpv2lAhlbgRBNITPoVQvyI7K5fQX2Mlew==
-X-Received: by 2002:a05:620a:25c7:b0:7cd:3b02:b6e4 with SMTP id af79cd13be357-7d229851a29mr1666832985a.1.1749404421782;
-        Sun, 08 Jun 2025 10:40:21 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a61116bc94sm45663101cf.23.2025.06.08.10.40.21
+        d=1e100.net; s=20230601; t=1749412713; x=1750017513;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SO/TiV/eetgiNfMpNbC5+xBYaQpqY6ayGmPuNTPhj0k=;
+        b=VEXgkgqBZ/I9uVgQ3dTwhYcV1OXSKXKDB6vKLTnYJi7FwvmuEgigJAzjyUBblOjmKP
+         S6UZeEXwLI8WzgDyTEzafKWDscmDqxNpvNYGV2HKUuNDkkJBQ9/nWcDbnmevTmT1kCg6
+         Gu3YgIkBccKu/j4YNg2IVF3kD1rmV1A9VneJA2xbjBFWs+AJY+P7xJDQgDY0xU8JHb4F
+         eq1Uy1dOx8cO67uvB716EELBMFsVaHm07UUXM0bZ0rr/NCd7YbsRJu/2+Aqq53i1Oc0r
+         DxusczOsC6q7A8jqn5zQlyX7K4VRlbQOTo+6Z8GaPPGRyC2afjiVv0yAAGkxLxVL+1PD
+         yYKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8dMPID2PwjhIWYiXnmbD05NtCp2IOrXmCr8NsSHtNE2KypdtrbHd1xGVO2QIRdM0Z5geO2Go1JxHytkpR6g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNFF0W5B9H8bcu4THTlZIgVm7Rsg5YkgLXN6HQ2kQtuQGQqZ6W
+	KF9Gc/OBTd1rn1gUlOE83rKqZp7+q8pecwCxu1vYgc2N8n2PC2l0RAu6RkrOdWrg/yM=
+X-Gm-Gg: ASbGncuX/tiT5C7HX9QYoLaVT4826TAthQdv0qwkthwI+uid7q1CKaRxQtf3rRuFGlj
+	c8r/ONzpCV1JtxlxPtwWb1UFkIjV9V9G0DsWPErVs3P5d2l8Guth13KpWvW2bVwiq3cW1Ahss/+
+	J0NNJou/8FcFERtKWICTrFvH9thI0WyHAD8JVPXkj2gfGErPDPJ6V83WO7uarnuyx/mN4VFwLUB
+	GcaTwZWHFt3mYK7VNf38fBhsDnEnGGgR3uQ7r3iCTWt/xTB9gV6h9uguWAs+kLRXE8Zetd1X0z+
+	VgdJKMCbAVcdcEpkXncqu3MvRgZG2gxn
+X-Google-Smtp-Source: AGHT+IFbXbhXFIU9zLa+fXurTHgYmeXx2QZmDu603fA5wHw0+5DeqF3jW9IscpN1oxDbST4x8Tn+iw==
+X-Received: by 2002:a05:6300:6c03:b0:21f:54aa:2004 with SMTP id adf61e73a8af0-21f54aa2170mr4488578637.2.1749412712968;
+        Sun, 08 Jun 2025 12:58:32 -0700 (PDT)
+Received: from x1 ([97.120.245.255])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2f5ee73e2asm3467343a12.29.2025.06.08.12.58.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Jun 2025 10:40:21 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E0CEC1200043;
-	Sun,  8 Jun 2025 13:40:20 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Sun, 08 Jun 2025 13:40:20 -0400
-X-ME-Sender: <xms:BMtFaKpeN0tsBA0EDdtNZF8RekvfdwVDfjMkhN5PJloT1Zyr1O3qMw>
-    <xme:BMtFaIomTr6yAjFnxfHeoc2K7I6WtU3NFc0Qpyq115EY6iZ3kLbTmQZ8TVCOllPK_
-    cn9PS6h6C-Mbw_Gxw>
-X-ME-Received: <xmr:BMtFaPO8fmhwSMXNZLs6BgQTcgC03tY7EHdnFQFvrcWXmqGqhSMzRdKoFw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdekudeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvuf
-    fkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosgho
-    qhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefhveegtd
-    ehuddtvdeiueeludeileekgeduheeihffhtdduudeiieeuueejvefgteenucffohhmrghi
-    nhepghhoohhglhgvrdgtohhmpdhgihhthhhusgdrtghomhdpiigslhhotghkpghruhhsth
-    drrhhsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhep
-    sghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtie
-    egqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhi
-    gihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:BMtFaJ4xoIp72TODajoitmHC5vWJrVHdmQ7CyYR37GKipnxnH5jYdQ>
-    <xmx:BMtFaJ7YtPBbqcbxEwgVuFr5ncOz3KdcTPpqg3S-mlspAZO5B0w3SQ>
-    <xmx:BMtFaJjLLC653H8nVibzb7z2jk7vW4FA0qalSZYyD30OELMQ54lVPA>
-    <xmx:BMtFaD7RutpNwBvWsBQFztKPxPnJRG_Mdkrs5KmoVRmFKFJ3SsPa-w>
-    <xmx:BMtFaEKYYasrtcINVq6Fpo67gn-VXAENAIzLGI8Ea_Y1UWFdbtdX7b4h>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 8 Jun 2025 13:40:19 -0400 (EDT)
-Date: Sun, 8 Jun 2025 10:40:16 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux <rust-for-linux@vger.kernel.org>
-Subject: Open Meeting at Jun 11
-Message-ID: <aEXLAPOV_FrH7Q5C@tardis.local>
-References: <CANiq72mE=-LmMg=nrMdtF6i_JUscDU6GFZgNve9xtvUs76DnwA@mail.gmail.com>
- <ZPyqLJ62B2GZg6BA@boqun-archlinux>
- <ZUk14802ZWGpR2iM@boqun-archlinux>
- <Za_9bJxeyW0pddKL@boqun-archlinux>
- <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
- <ZlX_KOjdd65k9Jkw@boqun-archlinux>
- <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
- <Z1ClkseCwaEXS6GE@boqun-archlinux>
- <Z6IvhjRFU9R32jHV@Mac.home>
- <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
+        Sun, 08 Jun 2025 12:58:32 -0700 (PDT)
+Date: Sun, 8 Jun 2025 12:58:30 -0700
+From: Drew Fustini <drew@pdp7.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH RFC 0/6] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+Message-ID: <aEXrZvpTD30a5OhT@x1>
+References: <CGME20250524211519eucas1p218997c69b98b14d3af2eb6bf4e9d3187@eucas1p2.samsung.com>
+ <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
+ <aDJGgLZ9tITwGBxq@x1>
+ <b5f4af17-05ef-453d-8f04-283590ae5b87@samsung.com>
+ <DA5YY0YF28GO.3DONTQDLY6VBD@kernel.org>
+ <aEXBH5r05FkTxpV+@x1>
+ <CANiq72k-FmZe3P_y6FjmiqXViqLKXkDqHY1-KLfmgwAe98oBAQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <67f43ca0.0c0a0220.a75ba.35cb@mx.google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72k-FmZe3P_y6FjmiqXViqLKXkDqHY1-KLfmgwAe98oBAQ@mail.gmail.com>
 
-Hi all,
+On Sun, Jun 08, 2025 at 07:14:18PM +0200, Miguel Ojeda wrote:
+> On Sun, Jun 8, 2025 at 6:58 PM Drew Fustini <drew@pdp7.com> wrote:
+> >
+> > I'm not sure if that bindgen warning matters?
+> 
+> If you don't see the `FromBytesWithNulError` error, then it should be
+> fine, but I would recommend using a newer version anyway.
+> 
+> I hope that helps.
+> 
+> Cheers,
+> Miguel
 
-As I learned my lesson last time, we are using a more reliable meeting
-link for the upcoming open meeting:
+Thanks for the quick response. I seemed to have updated it with:
 
-	https://meet.google.com/cik-xrih-wij
+ cargo install bindgen-cli
 
-Please join us at Wednesday (Jun 11, 2025) 18:00 UTC. This time, the
-meeting will include a presentation from Vitaly Wool on the work of Rust
-zblock implementation [1]. See you guys there!
+And it seems Linux is now happy :)
 
-[1]: https://github.com/vwool/linux-mm/blob/zblock_rust1/mm/zblock_rust.rs
+ $ make LLVM=1 rustavailable
+ Rust is available!
 
-Regards,
-Boqun
+-Drew
