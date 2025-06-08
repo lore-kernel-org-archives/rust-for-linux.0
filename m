@@ -1,140 +1,162 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBD5635;
-	Sun,  8 Jun 2025 11:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8952116F2;
+	Sun,  8 Jun 2025 12:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749383398; cv=none; b=slyiielvLoO259mkxhE/PFwcWjIsEiFGoMZQc+oT1KrDiXQ9WveB518DbhtR70nMVLUzV/U9qYgN5TPWZiVK367fl58Sks4Vsfb/H9XmXUeffn94Rx2rusSMPOUFvxFBq7NEQaeqf0n4lg+rAluHh4Fy/LOn2jx5J1glMw0DW9c=
+	t=1749387275; cv=none; b=RNamoSbbo9Qo7e1I8C14ercg/DazrG0xz47gD+VcNp5xu9Nap98FvxgiN7YFSgIBJtazJQNds5F+NQ5/eB7yMRiv2YubzCADLjJx5Ezu+4x4tE02bQZWiyWf9kEeq6+QSu/BIc2jbMqCstwg1qE3apUVqndvDnEYHp1f3Osz7+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749383398; c=relaxed/simple;
-	bh=k6pMNcwV0zxTMuLsmCGwWquM4fEvZLtbEk4eKhiRONQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GFqRsJkxGCHmQdKu5YQIWfKCuHd3lnHutIOX3SifyEzaB8sq/1fbNAlN1AeS3yR6j5jFLumpFOEZwC5imWT0FQOTjSRGiol7S1akZVh+Y8vx7Qnqg2sLYYxFreKy998rIdabMzewS0zYwwmTorn23GMYy4QNbmkYYX2ElpEwcXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsUeEJpp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749387275; c=relaxed/simple;
+	bh=1p7zaM7CArX14ghEI9wMRgoNT3CmuZgRCQKTevPJZmA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sb9SXgw/Cedcg27lKRzxodZUGLvYBlUm3f6to4qhHGIBryZAOm/nEg+INh3lzvAh6z8IvSAoM9m3XJnvtbVCs6YY1reolKRZ0t4FrplpYR5hnMLdVBeQUeOpjXUgO39VTPHJzflR3KYUdrRhk+/X6PIduiyHUH7xja01/vnIiEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oX8zuHYf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsUeEJpp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EE6C4CEEF;
-	Sun,  8 Jun 2025 11:49:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oX8zuHYf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F2DC4CEEE;
+	Sun,  8 Jun 2025 12:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749383398;
-	bh=k6pMNcwV0zxTMuLsmCGwWquM4fEvZLtbEk4eKhiRONQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DsUeEJpporxG7D8uvJL18YxmvfWj5oqQQvnKklpFH9LArRfX3mFn9LiDoER1CM07+
-	 zspwxAPN4jXk1ksVZxU2aRxpMw6aNOgZFMkedArITPji7C3rWSOKHKqSFzkp2pKi/a
-	 JtKfaSqdLFBslT/dhFAWGSgvcdIbsvyBLHssE1Kc3gvUTKVtz/7+1i0rhcllCZp/4s
-	 4WWMeziGPgtP4ZnD1ePOhMEi9G2Li2yX3drm72nYqxC0R3NAyPlVDeZAJDkbep7shP
-	 Lds+5op+ZqjojKQA0BTErTvWzlOkFG3t0kVaE2FG7wVJX2B4HMnbik/TLFxNTfae+/
-	 vfVXbjF8sR4gg==
-Date: Sun, 8 Jun 2025 13:49:51 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, rafael@kernel.org,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
-	viresh.kumar@linaro.org, alex.hung@amd.com,
-	dingxiangfei2009@gmail.com, Igor Korotin <igorkor.3vium@gmail.com>
-Subject: Re: [PATCH v3 2/4] rust: driver: Add ACPI id table support to
- Adapter trait
-Message-ID: <aEV43zxZmWvDgKES@pollux>
-References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
- <20250606170817.3881748-1-igor.korotin.linux@gmail.com>
- <DAGZNG518T0C.1PXOK55IXHZOF@kernel.org>
- <aEVqgUtflBCzZi1X@pollux>
- <DAH4KX3Y3M3P.3B82LSVWU172Q@kernel.org>
+	s=k20201202; t=1749387274;
+	bh=1p7zaM7CArX14ghEI9wMRgoNT3CmuZgRCQKTevPJZmA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=oX8zuHYfRiJX0wK0ZQ2u36FthA41Kejeao+mLV1V6XRrfF4b0R5hiWw6X4pLDZvat
+	 MXMVC96aPEdyTO8rBFY05wNY4SVwOF/BMnTVoJMr+/DCEIUOPNWvxCfWHD/WKizM4U
+	 kpG22hoHrbPm2EWXWa+aLPQnI6XpSRHmkjfcmmQjR8hc2l/A1oACjmmsC5tZkZuzH0
+	 Xswd7ZSPy0R31lq4jWTiUDThHNZXaIbPwEt5giNY6UY7/7qibpNrMFjRlvVOO3KOqK
+	 SvaPAigswqRBevET9gk0g9OqdtHEtduXOH9Z8eWTrs+6/sS05T5v3UVulXOv6/5l3k
+	 o8LSUsAxbeEWg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	alex.gaynor@gmail.com,
+	lossin@kernel.org,
+	aliceryhl@google.com,
+	dakr@kernel.org,
+	gregkh@linuxfoundation.org,
+	boqun.feng@gmail.com,
+	igor.korotin.linux@gmail.com,
+	walmeida@microsoft.com,
+	anisse@astier.eu,
+	gary@garyguo.net,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.15 03/10] rust: module: place cleanup_module() in .exit.text section
+Date: Sun,  8 Jun 2025 08:54:20 -0400
+Message-Id: <20250608125427.933430-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250608125427.933430-1-sashal@kernel.org>
+References: <20250608125427.933430-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DAH4KX3Y3M3P.3B82LSVWU172Q@kernel.org>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.15.1
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 08, 2025 at 01:46:17PM +0200, Benno Lossin wrote:
-> On Sun Jun 8, 2025 at 12:48 PM CEST, Danilo Krummrich wrote:
-> > On Sun, Jun 08, 2025 at 09:54:30AM +0200, Benno Lossin wrote:
-> >> On Fri Jun 6, 2025 at 7:08 PM CEST, Igor Korotin wrote:
-> >> > @@ -141,6 +141,38 @@ pub trait Adapter {
-> >> >      /// The type holding driver private data about each device id supported by the driver.
-> >> >      type IdInfo: 'static;
-> >> >  
-> >> > +    /// The [`acpi::IdTable`] of the corresponding driver
-> >> > +    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>>;
-> >> > +
-> >> > +    /// Returns the driver's private data from the matching entry in the [`acpi::IdTable`], if any.
-> >> > +    ///
-> >> > +    /// If this returns `None`, it means there is no match with an entry in the [`acpi::IdTable`].
-> >> > +    #[cfg(CONFIG_ACPI)]
-> >> > +    fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> > +        let table = Self::acpi_id_table()?;
-> >> > +
-> >> > +        // SAFETY:
-> >> > +        // - `table` has static lifetime, hence it's valid for read,
-> >> > +        // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
-> >> > +        let raw_id = unsafe { bindings::acpi_match_device(table.as_ptr(), dev.as_raw()) };
-> >> > +
-> >> > +        if raw_id.is_null() {
-> >> > +            None
-> >> > +        } else {
-> >> > +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-> >> > +            // does not add additional invariants, so it's safe to transmute.
-> >> > +            let id = unsafe { &*raw_id.cast::<acpi::DeviceId>() };
-> >> > +
-> >> > +            Some(table.info(<acpi::DeviceId as crate::device_id::RawDeviceId>::index(id)))
-> >> > +        }
-> >> > +    }
-> >> > +
-> >> > +    #[cfg(not(CONFIG_ACPI))]
-> >> > +    #[allow(missing_docs)]
-> >> 
-> >> I think we should change this to one single definition and do
-> >> 
-> >>     if cfg!(not(CONFIG_ACPI)) {
-> >>         return None;
-> >>     }
-> >>     /* body from above */
-> >> 
-> >> In a single function instead.
-> >
-> > Generally, that's fine, but in this case I'd rather keep it as it is for
-> > consistency with the rest of the file.
-> 
-> Then let's also change the OF bindings in this file to that style :)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Fine for me.
+[ Upstream commit 249c3a0e53acefc2b06d3b3e1fc28fb2081f878d ]
 
-@Igor: If you do so, please do it in a seaparate patch.
+Place cleanup_module() in .exit.text section. Currently,
+cleanup_module() is likely placed in the .text section. It's
+inconsistent with the layout of C modules, where cleanup_module() is
+placed in .exit.text.
 
-> >> > +    fn acpi_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> > +        None
-> >> > +    }
-> >> > +
-> >> >      /// The [`of::IdTable`] of the corresponding driver.
-> >> >      fn of_id_table() -> Option<of::IdTable<Self::IdInfo>>;
-> >> >  
-> >> > @@ -178,6 +210,11 @@ fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> >      /// If this returns `None`, it means that there is no match in any of the ID tables directly
-> >> >      /// associated with a [`device::Device`].
-> >> >      fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-> >> > +        let id = Self::acpi_id_info(dev);
-> >> > +        if id.is_some() {
-> >> > +            return id;
-> >> > +        }
-> >> 
-> >> Is a driver only going to have one id_info? Or is there some kind of
-> >> precedence?
-> >
-> > A driver potentially has lots of them, but the device is only matching a single
-> > entry in one of the driver's ID tables and hence a single ID info.
-> 
-> Ah so if `of_id_info` and `acpi_id_info` return `Some(_)`, then both
-> values are the same?
+[ Boqun asked for an example of how the section changed to be
+  put in the log. Tomonori provided the following examples:
 
-No, if one of them returns Some(_), the other one will always return None. Or
-phrased differently, the first match will always be the only match.
+    C module:
+
+      $ objdump -t ~/build/x86/drivers/block/loop.o|grep clean
+      0000000000000000 l     O .exit.data    0000000000000008 __UNIQUE_ID___addressable_cleanup_module412
+      0000000000000000 g     F .exit.text    000000000000009c cleanup_module
+
+    Rust module without this patch:
+
+      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
+      00000000000002b0 g     F .text         00000000000000c6 cleanup_module
+      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+
+    Rust module with this patch:
+
+      $ objdump -t ~/build/x86/samples/rust/rust_minimal.o|grep clean
+      0000000000000000 g     F .exit.text    00000000000000c6 cleanup_module
+      0000000000000000 g     O .exit.data    0000000000000008 _R...___UNIQUE_ID___addressable_cleanup_module
+
+  - Miguel ]
+
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20250308044506.14458-1-fujita.tomonori@gmail.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+**YES**
+
+This commit should be backported to stable kernel trees.
+
+**Analysis:**
+
+This commit adds a single line `#[link_section = ".exit.text"]` to the
+`cleanup_module()` function in `rust/macros/module.rs`, making Rust
+modules consistent with C modules by placing cleanup code in the
+`.exit.text` section instead of the default `.text` section.
+
+**Key factors supporting backporting:**
+
+1. **Consistency fix**: The commit aligns Rust module behavior with
+   established C module conventions. From examining
+   `/home/sasha/linux/include/linux/init.h:56`, C modules use `#define
+   __exit __section(".exit.text")` to place cleanup functions in
+   `.exit.text`.
+
+2. **Minimal and contained**: This is an extremely small change - adding
+   just one line to specify the link section. The risk of regression is
+   essentially zero.
+
+3. **Follows established pattern**: This commit mirrors Similar Commit
+   #1 which was marked "YES" for backporting. That commit placed
+   `init_module()` in `.init.text` for consistency with C modules, and
+   this commit does the same for `cleanup_module()` with `.exit.text`.
+
+4. **Correctness improvement**: The current code places
+   `cleanup_module()` in `.text` while the corresponding C code uses
+   `.exit.text`. This inconsistency could affect tools that rely on
+   standard kernel module section layouts.
+
+5. **Low risk, clear benefit**: The change has no functional impact on
+   module operation but improves kernel consistency and correctness. The
+   commit message includes clear examples showing the section placement
+   before and after the fix.
+
+The commit follows the stable tree criteria of being an important
+correctness fix with minimal risk, similar to the approved Similar
+Commit #1 that addressed the same inconsistency for `init_module()`.
+
+ rust/macros/module.rs | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 2f66107847f78..44e5cb108cea7 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -278,6 +278,7 @@ mod __module_init {{
+                     #[cfg(MODULE)]
+                     #[doc(hidden)]
+                     #[no_mangle]
++                    #[link_section = \".exit.text\"]
+                     pub extern \"C\" fn cleanup_module() {{
+                         // SAFETY:
+                         // - This function is inaccessible to the outside due to the double
+-- 
+2.39.5
+
