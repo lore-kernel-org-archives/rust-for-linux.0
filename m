@@ -1,82 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61761F542A;
-	Sun,  8 Jun 2025 07:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D88213AA2F;
+	Sun,  8 Jun 2025 10:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749369587; cv=none; b=jfSW/oQB7uWFNijAb3w0JI2m+fDJzQambVTJaK5MW/ZvuAdHurDFvWSUwUMZ7NEHmoTi00Ev391yGg/7KtAJ6H9dlWN2zRZjRHauXPOfatzFkRgwgJg4oZRJZCvXik6HfVkrkTweO3lGAUHRquK9Ar0Fg/KbR3JUZw6Gf9RoI8s=
+	t=1749379383; cv=none; b=B1iHIx3xKwQrdA9BM66x7V5UVp6/6U1aNUIcJIYF9hDKVw4Y/0y5lVFyJJMl5rMAkJzGt/yCwNUOT83oQvuigfqJYSLO2e70UzZph+/cOPHoWDe2tvAG6tHp4xVcdXkW+1XeqpJV7b1O/8eRgsYNPrwNyRUWlv2/qeVT8HQhuzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749369587; c=relaxed/simple;
-	bh=YDoe8vwFjSHkBbnBtX3/l9OTifg0Duht1C8iyQl2lK0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=Jh/DjHIB6jky1g8X7ekyMwPL7nwH0P4DGPG2ZpF6H7adUDJ3HfxVbpPNxUP5IzR8pkMgzGC3dgxV50BYmR71kkjFmvf9Db1uyFUb8MMsFYgxvvBxE7jFItJ5Ty8p3aBUP/t9npwmM5m1BWF3Qn3EATMeBM5kT/ChAVnO4ZglIN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOHy7Rn3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749379383; c=relaxed/simple;
+	bh=IZis6emlWrEmjsjf57puJXxO84axvdnHEGFmX6HRIy4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VaP0X5eE2x++AFd/Bry6B1zYJtec/8JKdYeXCebcisa/92MkoMF011clMolGHrYNdVY6e3NI/ScVBtaHTq0z3aZJUhKlJHti5SgXoaNc41R4eCZdfxMyNDxwpaQ5uyJ+zuGsafECoyhJ+rgEouRqe9BSsBTziZAdmKlx0lEAKM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cURS+zMN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOHy7Rn3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7819CC4CEEE;
-	Sun,  8 Jun 2025 07:59:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cURS+zMN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5928FC4CEEE;
+	Sun,  8 Jun 2025 10:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749369587;
-	bh=YDoe8vwFjSHkBbnBtX3/l9OTifg0Duht1C8iyQl2lK0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=VOHy7Rn3If7xQ+cT7p0hyLF/o8gq9dFlN8vS6ZqbCCHot9fyAcGZxtTHwUOkUfnwZ
-	 P/L3HpNBQ0n8qq+6z0M8eW+QPCWkD++pl7Pa6xSXn+4eB/1ZQUjRVWVwckxQgExorK
-	 clNG4eghDirShYruI0Nd1onsnxUQskovZ34BTymfy29HLDJydmTCzryDgq1Qs+o6eg
-	 V1wmSn+GE5L4TGh4HEtytzm08N1sbcp3ZUzXTc7KOXs7gxIMC/5q6SK4fIe+GUZPCk
-	 af91HzylrZmrsa3kw9MS/XUlSEGv9ScD5ch1thAzH5sxiJ7ogXQwcGGZZK50wEeLXC
-	 /vVK2rYQn8Lxg==
+	s=k20201202; t=1749379382;
+	bh=IZis6emlWrEmjsjf57puJXxO84axvdnHEGFmX6HRIy4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cURS+zMNjLbct3bzWrK4N2GY+KlYJXKu70Z6+PI8xwq05QpGS12Br/cmg4qcdi6m7
+	 CISBBLfHo2T/Gy44OjZpALLQ1T5AZUjxUcH14w+BIfhl4mUkFy6dAuBy8i8LQR1vHF
+	 SqqSpNXdn7Nd7MEXA0O0GFZSIJLd6v/Df3R18IMZXKCJZGdExg+VEaBuRo4U0ADVLQ
+	 /kb6tgtS6FvRNFfqrLto5TEvLqe9mihF5Hi+dI4XdbuHYfHtPG1lg55RrIGWnqH8/f
+	 XDbKZsxFAiLpV1Jq2NTDNrA7Vo03e/NCWsBvck8t9lpy//LGays3hYaDdRs8nFTtp4
+	 FQxhNZrJs7E9g==
+Date: Sun, 8 Jun 2025 12:42:55 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Igor Korotin <igor.korotin.linux@gmail.com>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, rafael@kernel.org,
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
+	viresh.kumar@linaro.org, alex.hung@amd.com,
+	dingxiangfei2009@gmail.com
+Subject: Re: [PATCH v3 1/4] rust: acpi: add `acpi::DeviceId` abstraction
+Message-ID: <aEVpL8wIfGDZRyUN@pollux>
+References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
+ <20250606170641.3881401-1-igor.korotin.linux@gmail.com>
+ <DAGZIHBVBI6Z.32401TQB5MNTL@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 08 Jun 2025 09:59:42 +0200
-Message-Id: <DAGZRFQ2YFFV.1OJBPD71DJ0BX@kernel.org>
-Subject: Re: [PATCH v4] rust: doc: Clean up formatting in io.rs
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Sai Vishnu M" <saivishnu725@gmail.com>,
- <rust-for-linux@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <gregkh@linuxfoundation.org>, <daniel.almeida@collabora.com>,
- <me@kloenk.dev>
-X-Mailer: aerc 0.20.1
-References: <20250602164923.48893-2-saivishnu725@gmail.com>
-In-Reply-To: <20250602164923.48893-2-saivishnu725@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAGZIHBVBI6Z.32401TQB5MNTL@kernel.org>
 
-On Mon Jun 2, 2025 at 6:49 PM CEST, Sai Vishnu M wrote:
-> From: Sai Vishnu M <saivishnu725@gmail.com>
->
-> Removed reference to internal variables in the comment of `IoMem`
-> This avoids using private variable names in public documentation.
->
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes:  https://github.com/Rust-for-Linux/linux/issues/1167
-> Signed-off-by: Sai Vishnu M <saivishnu725@gmail.com>
+On Sun, Jun 08, 2025 at 09:48:00AM +0200, Benno Lossin wrote:
+> On Fri Jun 6, 2025 at 7:06 PM CEST, Igor Korotin wrote:
+> > +impl DeviceId {
+> > +    const ACPI_ID_LEN: usize = 16;
+> > +
+> > +    /// Create a new device id from an ACPI 'id' string.
+> > +    pub const fn new(id: &'static CStr) -> Self {
+> > +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+> > +        let src = id.as_bytes_with_nul();
+> > +        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
+> > +        // SAFETY: FFI type is valid to be zero-initialized.
+> > +        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
+> 
+> This can be made safe using this series:
+> 
+>     https://lore.kernel.org/all/20250523145125.523275-1-lossin@kernel.org
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
----
-Cheers,
-Benno
-
-> ---
-> v1: Used backticks instead of `@` for parameters
-> link: https://lore.kernel.org/rust-for-linux/20250530123129.31505-2-saivi=
-shnu725@gmail.com/
-> v2: removed reference to the variable entirely.
-> link: https://lore.kernel.org/rust-for-linux/20250601164939.5306-2-saivis=
-hnu725@gmail.com/
-> v3: Moved chanelog to commit message. Used the proper parent commit.
-> link: https://lore.kernel.org/rust-for-linux/20250602083119.17752-2-saivi=
-shnu725@gmail.com/
-> v4: Fixed the patch format with the same commit changes
-> ---
->  rust/kernel/io.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Indeed, I did not mention this though since I think this series should not
+depend on the one above. They'll land through different trees and the
+improvement can still be made later on.
