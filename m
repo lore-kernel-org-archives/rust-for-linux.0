@@ -1,81 +1,52 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5F2253920
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 11:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C7042A9D;
+	Mon,  9 Jun 2025 11:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749467942; cv=none; b=bZNMv0LjPlxF6NRHQwzJTXlO4devnn4Fu3YY1fBqZNcnLvbH5Qv4FyN02Ai4X6oGrxlfaiOl/NRk4sChLpAvVEuyR5jPZNHA2JDDNmXoiUU01BMu3+YtYA6y9/1mBSnp+IMgUJp79koSoGb1z4XwoOuXwuFOJM+Q8Xb58+elrW4=
+	t=1749469631; cv=none; b=TRI5jhyaZyUMC6Qj669dgjSvYkdy5koFaHJJVIBtTn0AYjZxEDsfCffpbBBF6PfGileG08IETJ9peAs+ON06lxoeJOCb9JNaryA7/IZ/sbF4JYlueR92EF47hy2S0KN5UmLeOBNVwIMz47TEG8OVJmMTxN8GNBrNTbKaYjWuorU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749467942; c=relaxed/simple;
-	bh=7dJNhIAlm6Mfp4Lc5SIAFLEuSWj3N1nwqD7MqG6nlVU=;
+	s=arc-20240116; t=1749469631; c=relaxed/simple;
+	bh=buO5PB98t7ItquVg1z9ulKzig9nWCwyDK2VeW+eHhBg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=usicYIMAzmBn1GHH9nFkBXqNLyKD7r5fP/4KB638WvzTQGoWq9gEQwKpGqVo2STU0p/gRu+Y8Ms8R/QJgsWmc22tgL+CsBni4001/05zO5FohQez9Wev443jbf3MGlDyKsK2LAgPha6pgabx+L6FNbJtzu0qbamvt5h//cuDKDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cYVgTyLk; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=gwdpet9l7enpc1o8OrbOaFXRlqSTTfd7ObQdhGM9+hEeyWnfIcho3RyimrtiMgOauPW/61ASr63A0iif3qyytchBmcQ3fdtUTuyYanCaJT21EiVCHXu8bV3NxTb/sYgIPAGquOqlqr6ODlZ0DX6lLTx/vIhrF+5zxRcDbSDrIQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgnwGBvE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cYVgTyLk"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-742c3d06de3so4720012b3a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Jun 2025 04:19:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749467940; x=1750072740; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uJTBDYi3mfhW0vSHbVTVLXWBoTdoqifrr26dHjhiXOY=;
-        b=cYVgTyLkAWRFeEv8oS0hly4+o3FYqaf3atkTQSJVuoLGU5D/pCFrwpC1rHakhnj7He
-         y3N1hbU+f2bYWsLZdFdm1f7+Gw3WpRYDpc2g/rnu4q13W0IPkUCMNqTjWIeFPd6jlw6l
-         ztrzh7guz1XuBnZSxhJOY+KZnj02Tc0p6HFHgb2daqXhVpgmKQB7MgII4sp/9lKaapsS
-         uz0Ny9dAWRXYx7sS6TZ8szojUfxi/Upmd4I6/tc7WR8h/9Hf0mQWxGXn2mzxgGczxfSn
-         UkPqXXNgzUkCgWabq+yXBOIeq80v69ccInLyvP9l+CA26CR48bY6ZSX/WSVU33mz9nkC
-         4Pug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749467940; x=1750072740;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uJTBDYi3mfhW0vSHbVTVLXWBoTdoqifrr26dHjhiXOY=;
-        b=tZlq/P3zHsLLyjJQ7/q2qGUlxg5wyInS58cO8wTtK79QhSJbXjvbAvIh2mVtafTuer
-         Oc8SoWFDH8S4EJ+AB113INuvjUlVr3SX+uq3kmxsWpYROJpBynT7uoRAVV2eFmOOyhIo
-         AD4i8sSfn+TZY2YBV66h1PQfG5arCEWeusEb5N0RRyOx/iMuk2m8pgDiP9x7tIYC704Y
-         QDw1JPbn0oEZLeSM27qgqN5OFYyO6wXiE7ELCH+1o9S/J5C7WylKWlvPv7v1YP7gV5wZ
-         5SLK/TTLv0VI/WfMOIgORpBruhqC2D3xI+1dcueP7wcBB+fnjmHP9NU48aN5hZDp+sQo
-         7wZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpj/WGsd6hETf1Wys9F86WAP0l2axBKQTYOSe/Kt8bmeidDMr6FtL+/86qxWodhobv9DdfgpHwZ9aboRFriQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfkpJn0DJPQ9Vnc5xQ56Sx2v11/Z5rq4epT9XxAQFBE15pGq04
-	is5nnSG+0ukkqCTNcA4hTDIMKLzsuBYc2Mli9xTYUy1ECxJmsUof1YrBZVrc3O7qrjs=
-X-Gm-Gg: ASbGncuAI4VtJE8NhqQujlSvYP75WtBvgYemTDVn4ynNYBrxsfZK84Qadfg3k9v/qW6
-	NewH1XdXqSmOjcnpiEtyCaDqG5aaYvE0fs3Hn6NrcXfha+R8hSiiD6gGZZD+4EJO3UAd+mz6qvx
-	3PEDxN5UMB30prbHNaDN9cJ3RPxTd2G4Zxaikuj9h17D9n8jqxxa2Z1lhulbUr2Rb0tAcmuWP7I
-	94dsbRSBF5/qJw1hA2Wl5SONMsB197k/2bZpTSlkt8RIkjbGALgz0uyM150/3lvtG2FbxwhujfX
-	9FWZFhsWuBI+MSvfQIJeGh5Y9iXU6L/kJE0DkjOitAJVMP3jb6vB
-X-Google-Smtp-Source: AGHT+IFhybAqxujM1b9MvWlhlvkWqi5+9H9O5A+kb+hxy81eoKki3xjJHw6zvFwLj8OPRGAC3kwPHQ==
-X-Received: by 2002:a05:6a21:6da8:b0:209:251d:47d2 with SMTP id adf61e73a8af0-21ee689ffd5mr15835949637.11.1749467940462;
-        Mon, 09 Jun 2025 04:19:00 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2f5f66a96csm5105536a12.47.2025.06.09.04.18.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jun 2025 04:18:59 -0700 (PDT)
-Date: Mon, 9 Jun 2025 16:48:57 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Boqun Feng <boqun.feng@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgnwGBvE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00763C4CEEB;
+	Mon,  9 Jun 2025 11:47:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749469629;
+	bh=buO5PB98t7ItquVg1z9ulKzig9nWCwyDK2VeW+eHhBg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TgnwGBvEpG0AiZ5eLmLGmU8qfw7a8ViPqusbpmrHUA3lxthvOn7YDXul8VLRfdlCR
+	 mCYaETqOchaq5Jvysz83johT75uPcKPFRnotj4CTGIWhXSIcCb3QXkq2ZP6oytRu/F
+	 JSeiq790YJs91KfuLbKcJ2LUgIyriWjTdVcoj6+b9p2Ogxi7lIsASumdYk5MC6RqwY
+	 mf3lxKYYzZuCjXOBK97c/Tq4dVgNL5aAdsDvmDwzV1drh7uORr7doOkcxlOMCDSEHh
+	 azotAKksoGcsfuVolyhfWMZf8rutJzosm7+3nbzRW3aVAi29WQQhv7ceMyRE1jG5Cu
+	 IdqfdwdBg4qVA==
+Date: Mon, 9 Jun 2025 13:47:03 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>,
-	Yury Norov <yury.norov@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 1/2] rust: cpu: Introduce CpuId abstraction
-Message-ID: <20250609111857.ijvagblorxtq7d2n@vireshk-i7>
-References: <cover.1749463570.git.viresh.kumar@linaro.org>
- <f10910c7585f5556869ea6f34b64d4136b8d5581.1749463570.git.viresh.kumar@linaro.org>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Benno Lossin <lossin@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+Message-ID: <aEbJt0YSc3-60OBY@pollux>
+References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
+ <20250608-topics-tyr-request_irq-v4-3-81cb81fb8073@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,65 +55,151 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f10910c7585f5556869ea6f34b64d4136b8d5581.1749463570.git.viresh.kumar@linaro.org>
+In-Reply-To: <20250608-topics-tyr-request_irq-v4-3-81cb81fb8073@collabora.com>
 
-On 09-06-25, 16:21, Viresh Kumar wrote:
-> This adds abstraction for representing a CPU identifier.
+On Sun, Jun 08, 2025 at 07:51:08PM -0300, Daniel Almeida wrote:
+> +/// // This is running in process context.
+> +/// fn register_irq(handler: Handler, dev: &platform::Device<Bound>) -> Result<Arc<Registration<Handler>>> {
+> +///     let registration = dev.irq_by_index(0, flags::SHARED, c_str!("my-device"), handler)?;
+> +///
+> +///     // You can have as many references to the registration as you want, so
+> +///     // multiple parts of the driver can access it.
+> +///     let registration = Arc::pin_init(registration, GFP_KERNEL)?;
+> +///
+> +///     // The handler may be called immediately after the function above
+> +///     // returns, possibly in a different CPU.
+> +///
+> +///     {
+> +///         // The data can be accessed from the process context too.
+> +///         registration.handler().0.fetch_add(1, Ordering::Relaxed);
+> +///     }
+
+Why the extra scope?
+
+> +///
+> +///     Ok(registration)
+> +/// }
+> +///
+> +/// # Ok::<(), Error>(())
+> +///```
+> +///
+> +/// # Invariants
+> +///
+> +/// * We own an irq handler using `&self` as its private data.
+> +///
+> +#[pin_data]
+> +pub struct Registration<T: Handler + 'static> {
+> +    inner: Devres<RegistrationInner>,
+> +
+> +    #[pin]
+> +    handler: T,
+> +
+> +    /// Pinned because we need address stability so that we can pass a pointer
+> +    /// to the callback.
+> +    #[pin]
+> +    _pin: PhantomPinned,
+> +}
+> +
+> +impl<T: Handler + 'static> Registration<T> {
+> +    /// Registers the IRQ handler with the system for the given IRQ number.
+> +    pub(crate) fn register<'a>(
+
+I think we should call this Registration::new() instead. Except for
+MiscDeviceRegistration, which is representing not *only* a registration, all
+other Registration types just use new() and it'd be nice to be consistent.
+
+> +        dev: &'a Device<Bound>,
+> +        irq: u32,
+> +        flags: Flags,
+> +        name: &'static CStr,
+> +        handler: T,
+> +    ) -> impl PinInit<Self, Error> + 'a {
+> +        let closure = move |slot: *mut Self| {
+> +            // SAFETY: The slot passed to pin initializer is valid for writing.
+> +            unsafe {
+> +                slot.write(Self {
+> +                    inner: Devres::new(
+> +                        dev,
+> +                        RegistrationInner {
+> +                            irq,
+> +                            cookie: slot.cast(),
+> +                        },
+> +                        GFP_KERNEL,
+> +                    )?,
+> +                    handler,
+> +                    _pin: PhantomPinned,
+> +                })
+> +            };
+> +
+> +            // SAFETY:
+> +            // - The callbacks are valid for use with request_irq.
+> +            // - If this succeeds, the slot is guaranteed to be valid until the
+> +            // destructor of Self runs, which will deregister the callbacks
+> +            // before the memory location becomes invalid.
+> +            let res = to_result(unsafe {
+> +                bindings::request_irq(
+> +                    irq,
+> +                    Some(handle_irq_callback::<T>),
+> +                    flags.into_inner() as usize,
+> +                    name.as_char_ptr(),
+> +                    slot.cast(),
+> +                )
+> +            });
+> +
+> +            if res.is_err() {
+> +                // SAFETY: We are returning an error, so we can destroy the slot.
+> +                unsafe { core::ptr::drop_in_place(&raw mut (*slot).handler) };
+> +            }
+> +
+> +            res
+> +        };
+> +
+> +        // SAFETY:
+> +        // - if this returns Ok, then every field of `slot` is fully
+> +        // initialized.
+> +        // - if this returns an error, then the slot does not need to remain
+> +        // valid.
+> +        unsafe { pin_init_from_closure(closure) }
+
+Can't we use try_pin_init!() instead, move request_irq() into the initializer of
+RegistrationInner and initialize inner last?
+
+> +    }
+> +
+> +    /// Returns a reference to the handler that was registered with the system.
+> +    pub fn handler(&self) -> &T {
+> +        &self.handler
+> +    }
+> +
+> +    /// Wait for pending IRQ handlers on other CPUs.
+> +    ///
+> +    /// This will attempt to access the inner [`Devres`] container.
+> +    pub fn try_synchronize(&self) -> Result {
+> +        let inner = self.inner.try_access().ok_or(ENODEV)?;
+> +        inner.synchronize();
+> +        Ok(())
+> +    }
+> +
+> +    /// Wait for pending IRQ handlers on other CPUs.
+> +    pub fn synchronize(&self, dev: &Device<Bound>) -> Result {
+> +        let inner = self.inner.access(dev)?;
+> +        inner.synchronize();
+> +        Ok(())
+> +    }
+> +}
+> +
+> +/// # Safety
+> +///
+> +/// This function should be only used as the callback in `request_irq`.
+> +unsafe extern "C" fn handle_irq_callback<T: Handler>(
+> +    _irq: i32,
+> +    ptr: *mut core::ffi::c_void,
+> +) -> core::ffi::c_uint {
+> +    // SAFETY: `ptr` is a pointer to Registration<T> set in `Registration::new`
+> +    let data = unsafe { &*(ptr as *const Registration<T>) };
+> +    T::handle_irq(&data.handler).into_inner()
+> +}
 > 
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  rust/kernel/cpu.rs | 102 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 102 insertions(+)
-
-Boqun,
-
-Should I implement CpuId::current() like this ? Will fold this into
-1/2, if it looks okay.
-
-diff --git a/rust/helpers/cpu.c b/rust/helpers/cpu.c
-new file mode 100644
-index 000000000000..61d0387c8cf3
---- /dev/null
-+++ b/rust/helpers/cpu.c
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/smp.h>
-+
-+unsigned int rust_helper_smp_processor_id(void)
-+{
-+       return smp_processor_id();
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0f1b5d115985..16fa9bca5949 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -13,6 +13,7 @@
- #include "build_assert.c"
- #include "build_bug.c"
- #include "clk.c"
-+#include "cpu.c"
- #include "cpufreq.c"
- #include "cpumask.c"
- #include "cred.c"
-diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-index da53f04da495..b093d22ccbd9 100644
---- a/rust/kernel/cpu.rs
-+++ b/rust/kernel/cpu.rs
-@@ -94,6 +94,12 @@ pub fn from_u32(id: u32) -> Option<Self> {
-     pub fn as_u32(&self) -> u32 {
-         self.0
-     }
-+
-+    /// Returns the ID of the CPU this code is currently running on.
-+    pub fn current() -> Self {
-+        // SAFETY: smp_processor_id() always return valid cpu id.
-+        unsafe { Self::from_u32_unchecked(bindings::smp_processor_id()) }
-+    }
- }
-
- impl From<CpuId> for u32 {
-
--- 
-viresh
+> -- 
+> 2.49.0
+> 
