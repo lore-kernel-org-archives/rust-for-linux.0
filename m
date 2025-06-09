@@ -1,125 +1,243 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BD2382;
-	Mon,  9 Jun 2025 12:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A8C12E7E;
+	Mon,  9 Jun 2025 12:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749470501; cv=none; b=YL4R5CQV8Nn7wqT/KQZISUr15Aa21tIj8FTC5JqpJ5OqTnnkxOcB46UWMoNO3ZlxLC1lUyJ99lOS3YxUEPz4rM1SbB1KcdBFRfLlMq2NV6vQZP/H+mjVX+tzszezcLXDlJ0wDMojn6lrNFeaVanywq32/iI2/uKS+4pe4dyOVE8=
+	t=1749471748; cv=none; b=njdeXtuVaxRbycSqa/xMLawnpqjyZJqYwgj8htPDH+5K2VtF76qN+FCJX63jFmIjh9hDfM0FgNtZ91uWLSY0RZLSXFgLnQsvll/jdBwIfJZrrWdZAwHrveRixRHEQ8FvEGS2U9jwdYezo33PAvDAp33KjaB103zJHZZXCoLy+ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749470501; c=relaxed/simple;
-	bh=RBxOTcJhhrzt0ZnnH+TLqSQVWbFPgWTR/L/+mnlC9SE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J7c5Aw58ZFBKKWWGYHVWhhgFTpMSFKVwPaw7ordo6CaOTGb1NJhDN3QfcqrPqUQWbyoWifvIQVGXRIznW0IQGhbdMX21Xp1+36VPc5zbNapEumfQQ8odB621dahiRgplLEGrZnWpmTsk1lUvzm/3szAypOTf0o5bFu1DAz+kuKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LJYKg4lq; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1749471748; c=relaxed/simple;
+	bh=FhUb+ZXql8dArcka8IrDv/E1OATdkq2BGb4ry+i1JHI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NCK2Z2uknNQqkTNykPhhiKeTq0NXJDG4K5Dog0fLTqyqGDMAxH9BU9D7yNnG1BHNOIvDXyg7KQaIxPlJZ86U/XMSnmTYtC2EJ8/1Hc/OWboiTw8554GiQhPnQPT5DMjAv3fLd/rbaR4UXeBHVNN5RFCv3/Z2ofnyGw9zi1bZM18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAz8l2W/; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LJYKg4lq"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-313862d48e7so180616a91.1;
-        Mon, 09 Jun 2025 05:01:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAz8l2W/"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-742c73f82dfso3290758b3a.2;
+        Mon, 09 Jun 2025 05:22:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749470499; x=1750075299; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CJ3pVORQnKMkcdSsnA9ZmKrDQqlQt1ksdLlFD2rYdGU=;
-        b=LJYKg4lqkG+kJFLb1qj1+A6lITAus7jzyy42RFrrnmJPkFzFLJv3xvi5JwGHL67Pbj
-         CZ31j8mQYXqOfcuP1ke6nyIrohbY1AVeDx/IJEHg4qhEglR+5mLX4CHGgus+VfD5kJ6d
-         SLRptSrNDhMWGRGwwY4rQMBbOOgBp6nUGUK8CY69xPc964PWZ1P+t/wSb2gtRYqSMMTC
-         VFjXBiQmNoaTyjrd9HMDmSC6BRGFlWjiNnEdiDnxp+5/ZlMSCRrm7GnjzsCgnq0DArKE
-         s+TLvHMpt9Orauq8/XB+/vmPWkbj8e119FE0xV7lglLBL5K5MfN7wbG3n5VcrHKLapcN
-         9m9Q==
+        d=gmail.com; s=20230601; t=1749471747; x=1750076547; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YBch+ffur1O0Rgja7qluq4MVSQH3W827o3L8nkl80n0=;
+        b=SAz8l2W/P47BMU9FJxDsE51sBska+Ba/5HFbVW3fqGXTur4aoCl20ZpSoxNakGkIXb
+         +V8vb2A/phyHCFqQLt8Deqjun5s7VNEyVLlbrF8IHVpN9ZHqW7KVVcpElZgYBM+CDFqB
+         1dinPfqoJlqE2RGmOiHxUPFuc+JLeH37KaLPwaJt2MwMvQhMoHpAW0cnyAM4ZqiopL/o
+         VFtsVQc+cS5d8o2+SqzwqxuAJJmROs9YpOjPU+rQ+VO0mBY9WF4bCnzM8uCASVniH4Qz
+         lFcuGB2z5ti6+b7AwKeK/mcOmnFj6D0vNXky9aiydKJUYOtiVFTcvuNJi1pRvVRMKpMv
+         NUDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749470499; x=1750075299;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CJ3pVORQnKMkcdSsnA9ZmKrDQqlQt1ksdLlFD2rYdGU=;
-        b=n8xnAidFyGRgE2MdB/JdLQW0KGRECMBKorFjoenVOrs+uGj3nVL5e/STH/xXSzebfZ
-         dOzOQ2IH1OGNbjiSHegO8a2Dpbt34mIe44Y6rmX9/KzD0mxWzAqDpHMjOz0nKR9XnPz2
-         CzMdV5TytdonDHxTR7AUzK8L8csTXYu8Oj+fgBv+sfCFVksE619IFfPw+siCJv9PBbCy
-         HSysbfKhGhdIgy31AXrqIZk8o8XtVgQ5wAEGKA9Ki6wuty95ufK5AiDV+Zm+VVS1+q/g
-         IQuEiz0mXBk4hCAiYy19CSCUs82o8pdsW9p+Oz0olQcFuJz/Vseuddz3i/r2rllEC6Ky
-         2SUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUVv3ydvFx+nuKhU9zTB5gpG2QdZWoUaD+oONyuj8R5jNDQQm4VeRbeS6LhIusM4XWjEXVpdCTOLO0Z9Ro=@vger.kernel.org, AJvYcCUZcX3pdF5QO3vEnBLnYGTjdPr3tk2u59XZB3IG79AemIcmmUKjgySFhRBwT8M5vKo/4hW9lHGHez1e08r+1SI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3aM0ucpQ5tp+eoHwx/Du/SKOzZ00FkeVsh0FCUCB5AzyswZie
-	Q7AxBojiGL0v1gWaQiK+qfHBBKfriireVfbI+EvqliGEUxGd/TOJVPnvRddpp3i3G/kvKzkvQIq
-	hCSG5TYeD0MLlVWco3/xzn5t0TwsRI84=
-X-Gm-Gg: ASbGncvTu+Y1nRL1ye0/NB3hRO9iIyq1GeTZe4WXxfl87jB7kc3gQ4mznrYeGIXVxuX
-	6gOc3XzjgkGspgij+0dXcUVNqFzGBEtZFEXbTkhxGXQllhRPUlAMS3pyZPErwQGtS3Rf91ZymHC
-	I/x5kvNVs++pskmMHzmkQeQ3Fhr9QJvX2pw/y1DDRMBsE=
-X-Google-Smtp-Source: AGHT+IFDiooCewoAVyrc9USV6CJWO5M7EqUq5QVYDljr877OMz/OE3d9DxXhO6iXunBKqXCi59uyl7U8gEm4usO3tYo=
-X-Received: by 2002:a17:90b:3a87:b0:312:db8:dbd3 with SMTP id
- 98e67ed59e1d1-3134e422457mr5734745a91.6.1749470499127; Mon, 09 Jun 2025
- 05:01:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749471747; x=1750076547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YBch+ffur1O0Rgja7qluq4MVSQH3W827o3L8nkl80n0=;
+        b=CPzimJW8/oT3J76d+WQTsPJj0/PMUVfUjzmiq4FgEmOlyHhjASuwyIy6xQPjIRk/ub
+         ifVPeooAizcumzckhrDIq8IhvFlcxzniuZyY6jgdcOf2UEGGcW9ZHWzsJQQASwWGhqOn
+         h96pcItcXxBoSzCt4ek/MhXw3mt0/du/kgBwbeY+SNA3YdN92DbEyCxigfZx7RDT56YM
+         sLZqVyroAl9iHy2TpjObFxbvngOElEUzlIhTVwskzKNGSWwGqs9H21NUbGCrD9I/N6Kz
+         hh+yQ7FBQBAB/SZ0PeTPvQpbKX8bmCiTFqLGFB9itOi/CbJbEY9/Dmk1xXXAuwLPFOAZ
+         2pPg==
+X-Forwarded-Encrypted: i=1; AJvYcCX2qEYFtXaF12HmpqmZswq10Galj21tL7Dqwp2LYX98u9CBMnI58wVvBN0/endXk7ArAGk5kJieHCyoaPw=@vger.kernel.org, AJvYcCX7Tk2jn5RnJPC+NhGijemn+D3AszblPBzdybUgoNRD3Veo81N0chHTCLxvCAg+GUP7ClwnJAv9FdVrIyejsIc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuufwIrNJl1xZbXv5TD+tN7PS7gucYQ32F0+cwin9HaMe4rppd
+	S37aZJ3feOX+X/0NVZLycMLQkXtQtJz3rfgs3DZa8k1jzipnxq18nrIo
+X-Gm-Gg: ASbGncsKWPLaT7gM+3jDhXKXQox29OCd212csZKYJYcrSbwd9uITrrSHJiei5VLIZxi
+	arBI++m0bk5HjehuBnTu7m57kSzXaZDbgg9C6dGh+M0HIn1JU8xKvRZGNCXtdAe4H+8+B8KCjAF
+	KrpO/6CAfWFvPPZ2Qh2IHaMOI46WSV1a4KoQb91tuugOvb8GQHU+mF9Co1GBHjs7I4ne0jJI71K
+	6rP52YgOUY2kk0UefqkiFmTeSntYIFZXvirWn4phkWVTMxH/61YKu5INju9kIoEojiPwzE0tk88
+	YiPDJ3JxYqeho6miA83ZmDVw+qdhbf9a1jBfWwVpZmnknocT+lYJSoa2Ffwvznyl4kKjaSj8
+X-Google-Smtp-Source: AGHT+IFN/6jpjwnUWAnmieziowXquVGyIPIEOCFl8zdXOz/2r+NiQoJ5BLmsN49W1/EDBbcGUv3y0g==
+X-Received: by 2002:a05:6a21:6e41:b0:21f:62e7:cd08 with SMTP id adf61e73a8af0-21f62e7ce8dmr5864666637.8.1749471746484;
+        Mon, 09 Jun 2025 05:22:26 -0700 (PDT)
+Received: from pop-os.. ([201.49.69.163])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2f5f7827c0sm5170285a12.62.2025.06.09.05.22.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 05:22:26 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: rafael@kernel.org,
+	viresh.kumar@linaro.org,
+	dakr@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	mcgrof@kernel.org,
+	russ.weight@linux.dev,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	leitao@debian.org,
+	gregkh@linuxfoundation.org,
+	david.m.ertman@intel.com,
+	ira.weiny@intel.com,
+	leon@kernel.org,
+	fujita.tomonori@gmail.com,
+	tamird@gmail.com,
+	igor.korotin.linux@gmail.com,
+	walmeida@microsoft.com,
+	anisse@astier.eu
+Cc: linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	trintaeoitogc@gmail.com
+Subject: [PATCH] rust: module: remove deprecated author key
+Date: Mon,  9 Jun 2025 09:22:00 -0300
+Message-Id: <20250609122200.179307-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1749463570.git.viresh.kumar@linaro.org> <f10910c7585f5556869ea6f34b64d4136b8d5581.1749463570.git.viresh.kumar@linaro.org>
-In-Reply-To: <f10910c7585f5556869ea6f34b64d4136b8d5581.1749463570.git.viresh.kumar@linaro.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Jun 2025 14:01:27 +0200
-X-Gm-Features: AX0GCFvEXDEQo6kuyaEeGMJWPKY1Qd-vTj3E9Kxvzj4d0Y6fTnapDlXdd8jIRm0
-Message-ID: <CANiq72=WpuGELzLbH-fxdOeJy9fiDFwatz6ynERDh=HP2z2MBw@mail.gmail.com>
-Subject: Re: [PATCH V2 1/2] rust: cpu: Introduce CpuId abstraction
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Yury Norov <yury.norov@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 9, 2025 at 12:51=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
->
-> +/// Represents a CPU identifier as a wrapper around an `u32`.
+Commit 38559da6afb2 ("rust: module: introduce `authors` key") introduced
+a new `authors` key to support multiple module authors, while keeping
+the old `author` key for backward compatibility.
 
-[`u32`]
+Now that all in-tree modules have migrated to `authors`, remove:
+1. The deprecated `author` key support from the module macro
+2. Legacy `author` entries from remaining modules
 
-> +/// # Invariants
-> +///
-> +/// The CPU ID must always lie within the range `[0, nr_cpu_ids())`.
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ drivers/cpufreq/rcpufreq_dt.rs        | 2 +-
+ drivers/gpu/drm/nova/nova.rs          | 2 +-
+ drivers/gpu/nova-core/nova_core.rs    | 2 +-
+ rust/kernel/firmware.rs               | 2 +-
+ rust/macros/module.rs                 | 6 ------
+ samples/rust/rust_configfs.rs         | 2 +-
+ samples/rust/rust_driver_auxiliary.rs | 2 +-
+ 7 files changed, 6 insertions(+), 12 deletions(-)
 
-I think we can simplify to "ID lies", i.e. "must always" is not needed
-(but we use it elsewhere form time to time, though we may end up
-cleaning those too).
+diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
+index 94ed81644fe1..bdf4b844de42 100644
+--- a/drivers/cpufreq/rcpufreq_dt.rs
++++ b/drivers/cpufreq/rcpufreq_dt.rs
+@@ -220,7 +220,7 @@ fn probe(
+ module_platform_driver! {
+     type: CPUFreqDTDriver,
+     name: "cpufreq-dt",
+-    author: "Viresh Kumar <viresh.kumar@linaro.org>",
++    authors: ["Viresh Kumar <viresh.kumar@linaro.org>"],
+     description: "Generic CPUFreq DT driver",
+     license: "GPL v2",
+ }
+diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
+index 902876aa14d1..64fd670e99e1 100644
+--- a/drivers/gpu/drm/nova/nova.rs
++++ b/drivers/gpu/drm/nova/nova.rs
+@@ -12,7 +12,7 @@
+ kernel::module_auxiliary_driver! {
+     type: NovaDriver,
+     name: "Nova",
+-    author: "Danilo Krummrich",
++    authors: ["Danilo Krummrich"],
+     description: "Nova GPU driver",
+     license: "GPL v2",
+ }
+diff --git a/drivers/gpu/nova-core/nova_core.rs b/drivers/gpu/nova-core/nova_core.rs
+index 618632f0abcc..f405d7a99c28 100644
+--- a/drivers/gpu/nova-core/nova_core.rs
++++ b/drivers/gpu/nova-core/nova_core.rs
+@@ -13,7 +13,7 @@
+ kernel::module_pci_driver! {
+     type: driver::NovaCore,
+     name: "NovaCore",
+-    author: "Danilo Krummrich",
++    authors: ["Danilo Krummrich"],
+     description: "Nova Core GPU driver",
+     license: "GPL v2",
+     firmware: [],
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index 2494c96e105f..ed2fc20cba9b 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -181,7 +181,7 @@ unsafe impl Sync for Firmware {}
+ /// module! {
+ ///    type: MyModule,
+ ///    name: "module_firmware_test",
+-///    author: "Rust for Linux",
++///    authors: ["Rust for Linux"],
+ ///    description: "module_firmware! test module",
+ ///    license: "GPL",
+ /// }
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 2ddd2eeb2852..5dd276a2e5cb 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -94,7 +94,6 @@ struct ModuleInfo {
+     type_: String,
+     license: String,
+     name: String,
+-    author: Option<String>,
+     authors: Option<Vec<String>>,
+     description: Option<String>,
+     alias: Option<Vec<String>>,
+@@ -108,7 +107,6 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+         const EXPECTED_KEYS: &[&str] = &[
+             "type",
+             "name",
+-            "author",
+             "authors",
+             "description",
+             "license",
+@@ -134,7 +132,6 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+             match key.as_str() {
+                 "type" => info.type_ = expect_ident(it),
+                 "name" => info.name = expect_string_ascii(it),
+-                "author" => info.author = Some(expect_string(it)),
+                 "authors" => info.authors = Some(expect_string_array(it)),
+                 "description" => info.description = Some(expect_string(it)),
+                 "license" => info.license = expect_string_ascii(it),
+@@ -179,9 +176,6 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
+     // Rust does not allow hyphens in identifiers, use underscore instead.
+     let ident = info.name.replace('-', "_");
+     let mut modinfo = ModInfoBuilder::new(ident.as_ref());
+-    if let Some(author) = info.author {
+-        modinfo.emit("author", &author);
+-    }
+     if let Some(authors) = info.authors {
+         for author in authors {
+             modinfo.emit("author", &author);
+diff --git a/samples/rust/rust_configfs.rs b/samples/rust/rust_configfs.rs
+index 60ddbe62cda3..af04bfa35cb2 100644
+--- a/samples/rust/rust_configfs.rs
++++ b/samples/rust/rust_configfs.rs
+@@ -14,7 +14,7 @@
+ module! {
+     type: RustConfigfs,
+     name: "rust_configfs",
+-    author: "Rust for Linux Contributors",
++    authors: ["Rust for Linux Contributors"],
+     description: "Rust configfs sample",
+     license: "GPL",
+ }
+diff --git a/samples/rust/rust_driver_auxiliary.rs b/samples/rust/rust_driver_auxiliary.rs
+index 3e15e6d002bb..abf3d55ed249 100644
+--- a/samples/rust/rust_driver_auxiliary.rs
++++ b/samples/rust/rust_driver_auxiliary.rs
+@@ -114,7 +114,7 @@ fn init(module: &'static kernel::ThisModule) -> impl PinInit<Self, Error> {
+ module! {
+     type: SampleModule,
+     name: "rust_driver_auxiliary",
+-    author: "Danilo Krummrich",
++    authors: ["Danilo Krummrich"],
+     description: "Rust auxiliary driver",
+     license: "GPL v2",
+ }
+-- 
+2.34.1
 
-> +/// ## Examples
-
-Single `#`.
-
-> +    pub unsafe fn from_i32_unchecked(id: i32) -> Self {
-
-Why do we need the `i32` versions?
-
-Is it just for `bios_limit_callback`? If so, I would just convert there.
-
-From a quick look at the C side, it seems that could be an `u32` -- I
-am not suggesting to change the C side now since we don't want to
-complicate the fix, but perhaps something to consider in the future,
-assuming there is no reason to have a signed integer there (e.g. an
-unsigned integer is used in the policy struct).
-
-Relatedly, why isn't that callback's type `c_int` on the Rust side?
-
-I also opened a "good first issue" for a docs bit:
-https://github.com/Rust-for-Linux/linux/issues/1169. I can open one
-for the C FFI types if you think it should be changed.
-
-Finally, can we add a `debug_assert!()` on the `_unchecked()` variant,
-since it is something we can easily check?
-
-Thanks!
-
-Cheers,
-Miguel
