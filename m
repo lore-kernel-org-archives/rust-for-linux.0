@@ -1,65 +1,66 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173B6253F14
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 10:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEB4253931
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 10:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749466283; cv=none; b=ZSiSNn9hPC6w6j642WYVHz8nYaq563ojH6ODvg7ptZoERIElXLPL6UQM7PlbyBttyPR/POK55/T6Gs/4onN0oUOmzum94J3TKGYTTszI7AHPP1fHPtehGQkGo+yLvMvyAsnmutGQzi9EYdfcEFV3CbdJg2d72V8BrP6D6gJXSyA=
+	t=1749466290; cv=none; b=ov/+wAh2GuBdRfA7KhzWlnSLlvGZKeHe/UdyWrJMGm0QuKnb74rCgEiFT+lI6XYM1CpocDzbp7Zy4dwrwgBLDk79YEeR2SFRZjrcWXgn/XwN6vQBYBR15RIp9mM1Hgpxgh+ggvr/0gH/nM6S2L580yykCmeC3BMLFi/s37uZU3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749466283; c=relaxed/simple;
-	bh=XrghL7Anp61mSscRnEBfEyNV90p7S5EayNDGXNwRoKM=;
+	s=arc-20240116; t=1749466290; c=relaxed/simple;
+	bh=vAskjpcH6vhWvyjCt+ZEhpMlamDmGUA5e29hvqCXjn8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dNvUM6/mwt0qoF8qj9UNu2e2UtzKwvuA7bFyxhw3V1H9Kb1TxFNDl6WUEdGOkweiPRmpquABt5gO/90hgCOWIy4+gEz+kmvCkaZBv7qvMPaWRend93giaHH6cv9z2GsFEHsUp9N5mUEvjuYXbVJf726MiVmbwiAbxQF3uCJPeAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sWjUeL6j; arc=none smtp.client-ip=209.85.210.175
+	 MIME-Version:Content-Type; b=fAVrPa9YihhMW0DYZHFB13X1hWe/7h+k2MLBBOq5yQ1fvqvUfQ5gVDRd8zVazq9sVQGwfMjaVbVdz3324FaDODGhB30vZSbbYqkNuzFEt/c2bSFQZERaDkyZBPeptQNOw94SiakT18FEAV+dq+IBlkD/rWW4Y+UqKClMYjNrgp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HM1pz/Jq; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sWjUeL6j"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-747fba9f962so3463452b3a.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Jun 2025 03:51:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HM1pz/Jq"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b2f1032e1c4so3852470a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Jun 2025 03:51:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749466281; x=1750071081; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1749466287; x=1750071087; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mc2uNagszMlJu32uWlAF6xHcdKDRl2wpqVFIK+wVb70=;
-        b=sWjUeL6jfMPgbYey0A/YKhqDevz8E9ohG6GeId94nsgdmAGqeLu3XkxAMTl20HlPOD
-         XTeYsCV6x5+sVBxJ7D2M1vNsZe/rYmBztnzHVqwfHuxvNgpSXC689ULP7HZJVEAMElNR
-         3EgxUp0aYJ4lEzPDKVLVqTsOE8QxJHTbAVY1xpcF87p+7exYXiWhi0CLJfVea29fUVrB
-         G0Y0Tnwh8LCMovW36DL8raEGjru/R0woGI+dle2Ux7a/FQNmEbav1dXTd1E5TLuLLAUL
-         n9c54+M9AiaKlU6lfFN8TmjOOEGZFO2DRAsh4kOQ4i+Nr6uUP+bA2KjVnRqoYf+XJ/wd
-         V9PQ==
+        bh=IuJVGUTIF3T1jhhXzS1OPftMs4dFph12eMR9dmfddLo=;
+        b=HM1pz/JqFD34hUkNs9KAfv8Wp5AaueM238vC3jBBLhJzireguYxP0LyQJyc0AWzSmM
+         8iC8xQ6gixr21Nb+hci6ua2qFrVfGKoCaQcSr5+4FKpCj6CgS2jCRV5oq/3L538LFmxY
+         PkT5QYd/RYYvM/kCGU4DF9tw7umzwZUxiyRFWEHNHxg5/LmJfsDcRQnr6dQq3sDud5gS
+         tyhoH0721SnbegN6oSBQ0+HjrlhQ6X3DjdtqqzYVj6Z87TvX5MS4F8Eg9xGSTcUoQqBB
+         gC0y0G87V+xf2aIx4twvjW2ILV4x0jyJU0fJofRPVoqHtQJJyXkWY9CrRuwZdJXMeJ00
+         abng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749466281; x=1750071081;
+        d=1e100.net; s=20230601; t=1749466287; x=1750071087;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mc2uNagszMlJu32uWlAF6xHcdKDRl2wpqVFIK+wVb70=;
-        b=pj1H1TECQ6KhS8dYbM4+phITKN7ifs9Ht1PYYjokOz+kQlVaibmjr2aj29ed62Kkk+
-         P/W7IjoZ1k9DFFs8PXdKkzOSdwN0Bai9JQoooRath5mMnxGjWL4ZN7Qg6L8PVWMsGgRt
-         ttR9na3mFyD0rojaROwqPYhngnIKq3VW9kTDg/igvk6bZMP63/PitBprX21qK8XzlzD5
-         1HNMY+2wuVMM8zz7RhW81ne95TfeTpXVUKLVpXFla4wM++89jGkhmGRWq910vRsQz2zR
-         TsxLSHzFO1ocV7/M53dpvA9dsyrjwZVccrVccHZkJF7KF6ygHxAyD3ZsV7L8N5Vmwgyt
-         UFkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUstfQsVztIUmBXxzFMOIRGWuC6CKBQPDnRtVxOsKExBuzoBqtz9vo2w9lL9+Q22MzoQAE2IBK+gBHnI9INAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIdPCDAxIXGgz7and4c9HKLxGSK+mnbxXtGC03VkbA5oo1jtO4
-	PdV3cMzFhytf7l0cs2qP3CYJmQJxgkFasGDAsVNJ/MbsTeRmoYoAW7vgqb4ZIAtdSGc=
-X-Gm-Gg: ASbGncsIU3ytWktLnd2Gl6L1ipWmIFbGVWMkNCdldRifGEBALUq05UEXH9nXpjVAz5a
-	vUFjaXsitVg3n+/Hb99nGYSE/75k3sNtJ03j8PsQodJjVcXQ6mPYTkWGF2+qWFYrcD0/sKaqpcc
-	0qovvlIJn3STSg8+RFXSk/EweFDPzNlPoOGK5OVbr/QM4qqdK8WBwaycknX8Lgw6K+r4/+a9Erv
-	TRejCE//i9o4C7g6i48Q6jBNRbi88is983maNNjy4B3R5MVyBxgSDIVjyy2E81OZLkFQXXSALgt
-	0PaU+bxnseyb+S03zuocOKwbxZXDKEyJFxAZJzM5DxPs2Svlcwr4CEn0xhyC3l8=
-X-Google-Smtp-Source: AGHT+IG6kaISh+EtPBIg/Q3w1tVj/21ta5hFi8682AcPrVymf61ekN9kwGXxyVoMkvT4Ut7edFYNMQ==
-X-Received: by 2002:a05:6a00:94a0:b0:746:2217:5863 with SMTP id d2e1a72fcca58-74839af6c88mr8878390b3a.6.1749466281380;
-        Mon, 09 Jun 2025 03:51:21 -0700 (PDT)
+        bh=IuJVGUTIF3T1jhhXzS1OPftMs4dFph12eMR9dmfddLo=;
+        b=viAv7KnxQJtwDEq1JdCE1Njimi0HpX4xs+mAu2QiPKCqjo1qCkCBUPRfXuNIwUW131
+         60mcRQqqa9TQkZWavvAN+bxWm/04a/c/zoZVKi34iB7taipOCTZNPBUu0Gc0fzFxIBrk
+         ZTBQ4uqfyQhRRp1Rn+u++t+8GmkMaT64AM2uxBp+/TQIomewrf1IVlEDjUusEklhaB/Z
+         Tc/ENDCKyUiLGlVOLnEAlPoy2hOqj1T1KzF2sTx2SWqL736gDWYxZhQY7Qv4/54oD+/y
+         mjnquVmSTnWFNxXNHw92muYjZiuJtBmENYqF3veCa+ormQdOULU816BQbFJZ9ZUR7qso
+         VAyA==
+X-Forwarded-Encrypted: i=1; AJvYcCWnP4/WjZfVCVsVCwZ5ZaKa3fG2FcdLuOtM69TMaK9F4q3ZE+89dkYi2JrxKpmLQealFL5s6UrdNu3EMd3Ahg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbSS/ulSEuVcpbDvaTxGTxrvnL4raCSEKEyhncO3jQmdU8HSb0
+	Rhj7k8jGIrGy8oIcONps/5+6deRzNBrrsGRpcPTgX/Z+pqWVfXXmiazTEGHWfj6wyJ8=
+X-Gm-Gg: ASbGncuhuPZ8w+2Dujb9ayd/R0Zf1qfteKH/wwz2PhKBjEdztDIaU4QK4YKQR4rIRqS
+	pE6YDGCwG4OZ8CqLquELJNo8ZGgi0+WWMxNu0SzPQs2tnpO9Hs8EjVYKlMsq2hNBAOdWAVHepxT
+	teM859F4gG7Ae+ed0Rg64gzI4RX90MGHSj81HwtbnYsNRpEOKuByMWfdl3wg/WJil6Jt5msMJri
+	i6hJSf6ubE/pA0wNiR3I/M3IukZqeVB5dXwFmwRJAz6NlNB4ibeg+EjJLJ6kuBIsH/vLcVuB29O
+	kMhEuhKcmZT9Vf0l2OQn53UASyNSSgjEU56S//N411WATwD5f0o+WPX/YOGMUVI=
+X-Google-Smtp-Source: AGHT+IFtddb8Pk9oUlMiGk2PgHCrKtzyED4YhZOR2BDPpcARAojukNT+Ds8TpBuI/KoJwfjdjeGaCQ==
+X-Received: by 2002:a17:90b:58d0:b0:311:df4b:4b94 with SMTP id 98e67ed59e1d1-313472c4cf2mr22335820a91.4.1749466287046;
+        Mon, 09 Jun 2025 03:51:27 -0700 (PDT)
 Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b0bd815sm5625169b3a.109.2025.06.09.03.51.20
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31349f352b0sm5434927a91.18.2025.06.09.03.51.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jun 2025 03:51:20 -0700 (PDT)
+        Mon, 09 Jun 2025 03:51:26 -0700 (PDT)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Boqun Feng <boqun.feng@gmail.com>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
@@ -70,15 +71,15 @@ To: Boqun Feng <boqun.feng@gmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Yury Norov <yury.norov@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>,
 	rust-for-linux@vger.kernel.org,
+	linux-pm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH V2 1/2] rust: cpu: Introduce CpuId abstraction
-Date: Mon,  9 Jun 2025 16:21:05 +0530
-Message-Id: <f10910c7585f5556869ea6f34b64d4136b8d5581.1749463570.git.viresh.kumar@linaro.org>
+Subject: [PATCH V2 2/2] rust: Use CpuId in place of raw CPU numbers
+Date: Mon,  9 Jun 2025 16:21:06 +0530
+Message-Id: <8d9bcd481f58eaf8aabc15408971264a5b18172e.1749463570.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1749463570.git.viresh.kumar@linaro.org>
 References: <cover.1749463570.git.viresh.kumar@linaro.org>
@@ -88,129 +89,264 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This adds abstraction for representing a CPU identifier.
+Use the newly defined `CpuId` abstraction instead of raw CPU numbers.
 
+This also fixes a doctest failure for configurations where `nr_cpu_ids <
+4`.
+
+The C `cpumask_{set|clear}_cpu()` APIs emit a warning when given an
+invalid CPU number — but only if `CONFIG_DEBUG_PER_CPU_MAPS=y` is set.
+
+Meanwhile, `cpumask_weight()` only considers CPUs up to `nr_cpu_ids`,
+which can cause inconsistencies: a CPU number greater than `nr_cpu_ids`
+may be set in the mask, yet the weight calculation won't reflect it.
+
+This leads to doctest failures when `nr_cpu_ids < 4`, as the test tries
+to set CPUs 2 and 3:
+
+  rust_doctest_kernel_cpumask_rs_0.location: rust/kernel/cpumask.rs:180
+  rust_doctest_kernel_cpumask_rs_0: ASSERTION FAILED at rust/kernel/cpumask.rs:190
+
+Fixes: 8961b8cb3099 ("rust: cpumask: Add initial abstractions")
+Reported-by: Miguel Ojeda <ojeda@kernel.org>
+Closes: https://lore.kernel.org/rust-for-linux/CANiq72k3ozKkLMinTLQwvkyg9K=BeRxs1oYZSKhJHY-veEyZdg@mail.gmail.com/
+Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
+Closes: https://lore.kernel.org/all/87qzzy3ric.fsf@kernel.org/
 Suggested-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- rust/kernel/cpu.rs | 102 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 102 insertions(+)
+ drivers/cpufreq/rcpufreq_dt.rs |  4 +--
+ rust/kernel/cpu.rs             |  4 +--
+ rust/kernel/cpufreq.rs         | 27 ++++++++++++------
+ rust/kernel/cpumask.rs         | 51 ++++++++++++++++++++++++----------
+ 4 files changed, 59 insertions(+), 27 deletions(-)
 
+diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
+index 94ed81644fe1..43c87d0259b6 100644
+--- a/drivers/cpufreq/rcpufreq_dt.rs
++++ b/drivers/cpufreq/rcpufreq_dt.rs
+@@ -26,9 +26,9 @@ fn find_supply_name_exact(dev: &Device, name: &str) -> Option<CString> {
+ }
+ 
+ /// Finds supply name for the CPU from DT.
+-fn find_supply_names(dev: &Device, cpu: u32) -> Option<KVec<CString>> {
++fn find_supply_names(dev: &Device, cpu: cpu::CpuId) -> Option<KVec<CString>> {
+     // Try "cpu0" for older DTs, fallback to "cpu".
+-    let name = (cpu == 0)
++    let name = (cpu.as_u32() == 0)
+         .then(|| find_supply_name_exact(dev, "cpu0"))
+         .flatten()
+         .or_else(|| find_supply_name_exact(dev, "cpu"))?;
 diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-index 10c5c3b25873..0b545dbf5c83 100644
+index 0b545dbf5c83..da53f04da495 100644
 --- a/rust/kernel/cpu.rs
 +++ b/rust/kernel/cpu.rs
-@@ -6,6 +6,108 @@
+@@ -119,9 +119,9 @@ fn from(id: CpuId) -> Self {
+ /// Callers must ensure that the CPU device is not used after it has been unregistered.
+ /// This can be achieved, for example, by registering a CPU hotplug notifier and removing
+ /// any references to the CPU device within the notifier's callback.
+-pub unsafe fn from_cpu(cpu: u32) -> Result<&'static Device> {
++pub unsafe fn from_cpu(cpu: CpuId) -> Result<&'static Device> {
+     // SAFETY: It is safe to call `get_cpu_device()` for any CPU.
+-    let ptr = unsafe { bindings::get_cpu_device(cpu) };
++    let ptr = unsafe { bindings::get_cpu_device(cpu.into()) };
+     if ptr.is_null() {
+         return Err(ENODEV);
+     }
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index b0a9c6182aec..1cb9c6c8cd4b 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -10,6 +10,7 @@
  
- use crate::{bindings, device::Device, error::Result, prelude::ENODEV};
+ use crate::{
+     clk::Hertz,
++    cpu::CpuId,
+     cpumask,
+     device::{Bound, Device},
+     devres::Devres,
+@@ -465,8 +466,9 @@ fn as_mut_ref(&mut self) -> &mut bindings::cpufreq_policy {
  
-+/// Returns the maximum number of possible CPUs in the current system configuration.
-+#[inline]
-+pub fn nr_cpu_ids() -> u32 {
-+    #[cfg(any(NR_CPUS_1, CONFIG_FORCE_NR_CPUS))]
-+    {
-+        bindings::NR_CPUS
-+    }
+     /// Returns the primary CPU for the [`Policy`].
+     #[inline]
+-    pub fn cpu(&self) -> u32 {
+-        self.as_ref().cpu
++    pub fn cpu(&self) -> CpuId {
++        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
++        unsafe { CpuId::from_u32_unchecked(self.as_ref().cpu) }
+     }
+ 
+     /// Returns the minimum frequency for the [`Policy`].
+@@ -525,7 +527,7 @@ pub fn generic_suspend(&mut self) -> Result {
+     #[inline]
+     pub fn generic_get(&self) -> Result<u32> {
+         // SAFETY: By the type invariant, the pointer stored in `self` is valid.
+-        Ok(unsafe { bindings::cpufreq_generic_get(self.cpu()) })
++        Ok(unsafe { bindings::cpufreq_generic_get(self.cpu().into()) })
+     }
+ 
+     /// Provides a wrapper to the register with energy model using the OPP core.
+@@ -678,9 +680,9 @@ fn clear_data<T: ForeignOwnable>(&mut self) -> Option<T> {
+ struct PolicyCpu<'a>(&'a mut Policy);
+ 
+ impl<'a> PolicyCpu<'a> {
+-    fn from_cpu(cpu: u32) -> Result<Self> {
++    fn from_cpu(cpu: CpuId) -> Result<Self> {
+         // SAFETY: It is safe to call `cpufreq_cpu_get` for any valid CPU.
+-        let ptr = from_err_ptr(unsafe { bindings::cpufreq_cpu_get(cpu) })?;
++        let ptr = from_err_ptr(unsafe { bindings::cpufreq_cpu_get(cpu.into()) })?;
+ 
+         Ok(Self(
+             // SAFETY: The `ptr` is guaranteed to be valid and remains valid for the lifetime of
+@@ -1218,7 +1220,10 @@ extern "C" fn adjust_perf_callback(
+         target_perf: usize,
+         capacity: usize,
+     ) {
+-        if let Ok(mut policy) = PolicyCpu::from_cpu(cpu) {
++        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
++        let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
 +
-+    #[cfg(not(any(NR_CPUS_1, CONFIG_FORCE_NR_CPUS)))]
-+    // SAFETY: `nr_cpu_ids` is a valid global provided by the kernel.
-+    unsafe {
-+        bindings::nr_cpu_ids
-+    }
-+}
++        if let Ok(mut policy) = PolicyCpu::from_cpu(cpu_id) {
+             T::adjust_perf(&mut policy, min_perf, target_perf, capacity);
+         }
+     }
+@@ -1263,7 +1268,10 @@ extern "C" fn target_intermediate_callback(
+ 
+     /// Driver's `get` callback.
+     extern "C" fn get_callback(cpu: u32) -> kernel::ffi::c_uint {
+-        PolicyCpu::from_cpu(cpu).map_or(0, |mut policy| T::get(&mut policy).map_or(0, |f| f))
++        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
++        let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
 +
-+/// The CPU ID.
-+///
-+/// Represents a CPU identifier as a wrapper around an `u32`.
-+///
-+/// # Invariants
-+///
-+/// The CPU ID must always lie within the range `[0, nr_cpu_ids())`.
-+///
-+/// ## Examples
-+///
-+/// ```
-+/// use kernel::cpu::CpuId;
-+///
-+/// let cpu = 0;
-+///
-+/// // SAFETY: 0 is always a valid CPU number.
-+/// let id = unsafe { CpuId::from_u32_unchecked(cpu) };
-+///
-+/// assert_eq!(id.as_u32(), cpu);
-+/// assert!(CpuId::from_i32(0).is_some());
-+/// assert!(CpuId::from_i32(-1).is_none());
-+/// ```
-+#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-+pub struct CpuId(u32);
++        PolicyCpu::from_cpu(cpu_id).map_or(0, |mut policy| T::get(&mut policy).map_or(0, |f| f))
+     }
+ 
+     /// Driver's `update_limit` callback.
+@@ -1278,8 +1286,11 @@ extern "C" fn update_limits_callback(ptr: *mut bindings::cpufreq_policy) {
+     ///
+     /// SAFETY: Called from C. Inputs must be valid pointers.
+     extern "C" fn bios_limit_callback(cpu: i32, limit: *mut u32) -> kernel::ffi::c_int {
++        // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
++        let cpu_id = unsafe { CpuId::from_i32_unchecked(cpu) };
 +
-+impl CpuId {
-+    /// Creates a new [`CpuId`] from the given `id` without checking bounds.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `id` is a valid CPU ID (i.e., `0 <= id < nr_cpu_ids()`).
-+    #[inline]
-+    pub unsafe fn from_i32_unchecked(id: i32) -> Self {
-+        // INVARIANT: The function safety guarantees `id` is a valid CPU id.
-+        Self(id as u32)
-+    }
-+
-+    /// Creates a new [`CpuId`] from the given `id`, checking that it is valid.
-+    pub fn from_i32(id: i32) -> Option<Self> {
-+        if id < 0 || id as u32 >= nr_cpu_ids() {
-+            None
-+        } else {
-+            // SAFETY: `id` has just been checked as a valid CPU ID.
-+            Some(unsafe { Self::from_i32_unchecked(id) })
-+        }
-+    }
-+
-+    /// Creates a new [`CpuId`] from the given `id` without checking bounds.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that `id` is a valid CPU ID (i.e., `0 <= id < nr_cpu_ids()`).
-+    #[inline]
-+    pub unsafe fn from_u32_unchecked(id: u32) -> Self {
-+        // INVARIANT: The function safety guarantees `id` is a valid CPU id.
-+        Self(id)
-+    }
-+
-+    /// Creates a new [`CpuId`] from the given `id`, checking that it is valid.
-+    pub fn from_u32(id: u32) -> Option<Self> {
-+        if id >= nr_cpu_ids() {
-+            None
-+        } else {
-+            // SAFETY: `id` has just been checked as a valid CPU ID.
-+            Some(unsafe { Self::from_u32_unchecked(id) })
-+        }
-+    }
-+
-+    /// Returns CPU number.
-+    #[inline]
-+    pub fn as_u32(&self) -> u32 {
-+        self.0
-+    }
-+}
-+
-+impl From<CpuId> for u32 {
-+    fn from(id: CpuId) -> Self {
-+        id.as_u32()
-+    }
-+}
-+
-+impl From<CpuId> for i32 {
-+    fn from(id: CpuId) -> Self {
-+        id.as_u32() as i32
-+    }
-+}
-+
- /// Creates a new instance of CPU's device.
+         from_result(|| {
+-            let mut policy = PolicyCpu::from_cpu(cpu as u32)?;
++            let mut policy = PolicyCpu::from_cpu(cpu_id)?;
+ 
+             // SAFETY: `limit` is guaranteed by the C code to be valid.
+             T::bios_limit(&mut policy, &mut (unsafe { *limit })).map(|()| 0)
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index c90bfac9346a..11ddd43edcb5 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -6,6 +6,7 @@
+ 
+ use crate::{
+     alloc::{AllocError, Flags},
++    cpu::CpuId,
+     prelude::*,
+     types::Opaque,
+ };
+@@ -35,9 +36,10 @@
  ///
- /// # Safety
+ /// ```
+ /// use kernel::bindings;
++/// use kernel::cpu::CpuId;
+ /// use kernel::cpumask::Cpumask;
+ ///
+-/// fn set_clear_cpu(ptr: *mut bindings::cpumask, set_cpu: u32, clear_cpu: i32) {
++/// fn set_clear_cpu(ptr: *mut bindings::cpumask, set_cpu: CpuId, clear_cpu: CpuId) {
+ ///     // SAFETY: The `ptr` is valid for writing and remains valid for the lifetime of the
+ ///     // returned reference.
+ ///     let mask = unsafe { Cpumask::as_mut_ref(ptr) };
+@@ -90,9 +92,9 @@ pub fn as_raw(&self) -> *mut bindings::cpumask {
+     /// This mismatches kernel naming convention and corresponds to the C
+     /// function `__cpumask_set_cpu()`.
+     #[inline]
+-    pub fn set(&mut self, cpu: u32) {
++    pub fn set(&mut self, cpu: CpuId) {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to `__cpumask_set_cpu`.
+-        unsafe { bindings::__cpumask_set_cpu(cpu, self.as_raw()) };
++        unsafe { bindings::__cpumask_set_cpu(cpu.into(), self.as_raw()) };
+     }
+ 
+     /// Clear `cpu` in the cpumask.
+@@ -101,19 +103,19 @@ pub fn set(&mut self, cpu: u32) {
+     /// This mismatches kernel naming convention and corresponds to the C
+     /// function `__cpumask_clear_cpu()`.
+     #[inline]
+-    pub fn clear(&mut self, cpu: i32) {
++    pub fn clear(&mut self, cpu: CpuId) {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to
+         // `__cpumask_clear_cpu`.
+-        unsafe { bindings::__cpumask_clear_cpu(cpu, self.as_raw()) };
++        unsafe { bindings::__cpumask_clear_cpu(cpu.into(), self.as_raw()) };
+     }
+ 
+     /// Test `cpu` in the cpumask.
+     ///
+     /// Equivalent to the kernel's `cpumask_test_cpu` API.
+     #[inline]
+-    pub fn test(&self, cpu: i32) -> bool {
++    pub fn test(&self, cpu: CpuId) -> bool {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to `cpumask_test_cpu`.
+-        unsafe { bindings::cpumask_test_cpu(cpu, self.as_raw()) }
++        unsafe { bindings::cpumask_test_cpu(cpu.into(), self.as_raw()) }
+     }
+ 
+     /// Set all CPUs in the cpumask.
+@@ -178,21 +180,40 @@ pub fn copy(&self, dstp: &mut Self) {
+ /// The following example demonstrates how to create and update a [`CpumaskVar`].
+ ///
+ /// ```
++/// use kernel::cpu::CpuId;
+ /// use kernel::cpumask::CpumaskVar;
+ ///
+ /// let mut mask = CpumaskVar::new_zero(GFP_KERNEL).unwrap();
+ ///
+ /// assert!(mask.empty());
+-/// mask.set(2);
+-/// assert!(mask.test(2));
+-/// mask.set(3);
+-/// assert!(mask.test(3));
+-/// assert_eq!(mask.weight(), 2);
++/// let mut count = 0;
++///
++/// let cpu2 = CpuId::from_u32(2);
++/// if let Some(cpu) = cpu2 {
++///     mask.set(cpu);
++///     assert!(mask.test(cpu));
++///     count += 1;
++/// }
++///
++/// let cpu3 = CpuId::from_u32(3);
++/// if let Some(cpu) = cpu3 {
++///     mask.set(cpu);
++///     assert!(mask.test(cpu));
++///     count += 1;
++/// }
++///
++/// assert_eq!(mask.weight(), count);
+ ///
+ /// let mask2 = CpumaskVar::try_clone(&mask).unwrap();
+-/// assert!(mask2.test(2));
+-/// assert!(mask2.test(3));
+-/// assert_eq!(mask2.weight(), 2);
++///
++/// if let Some(cpu) = cpu2 {
++///     assert!(mask2.test(cpu));
++/// }
++///
++/// if let Some(cpu) = cpu3 {
++///     assert!(mask2.test(cpu));
++/// }
++/// assert_eq!(mask2.weight(), count);
+ /// ```
+ pub struct CpumaskVar {
+     #[cfg(CONFIG_CPUMASK_OFFSTACK)]
 -- 
 2.31.1.272.g89b43f80a514
 
