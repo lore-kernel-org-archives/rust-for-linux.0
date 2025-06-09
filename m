@@ -1,135 +1,120 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EB120F069;
-	Sun,  8 Jun 2025 22:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749423481; cv=pass; b=Vx/ihC05Zu2lcM8HIX5mNnFRiMPoJrTAZZuIGnZc76oQWZo8RbFlHJrhZBx1hbD7gkRm+dhkw2I7cxArKc5Wx48PBYQ3Nclk84AnxKNat0F0haAgGPThFTQpXp49J/CQWDjttZPaFeTMWvKmBTYJ/qH+sPw3aDrVkOtxPtQrvp4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749423481; c=relaxed/simple;
-	bh=CkCQ/sC8APhLpnw/J5o2x0EMAxl/8BjS9udEH3fE3Og=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=orIIK2aXI4NXFR9awkLfW/0twKn3FqkLSguiF027VlQUdkcKOlouE5Yt8O8gxTVvZV33cnCn+RWGTxzaEO440RY04ubkSguKfL3dbY9QtDOdke0pSmMBZwUt7zOjEarMDYmHiOzhJYQfzeYQUoiZIId95wC2kLYNuHYcbMPuj2M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=RrH6Tee0; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB611FC3;
+	Mon,  9 Jun 2025 01:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749431095; cv=none; b=dPBH2egrzIq0B819WOv2LZts1GZACopRjuhr5R0UfOoPFkJdpwlh1ZXF5jeR1kqq4iqvvZSwpc+RqHuE0xTnhLXCNMukJn+Flk8yFQX+i8DK36tHVkPxf1lftE6wgKtnFyFNy4RXrj3EYJ4+xAi6Mp2SrVl8wvTPsB+gmUjdJPU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749431095; c=relaxed/simple;
+	bh=PqFx+ehS4nlPd3jSAmPpzks9zf+GnwOrYtwQiEFaktA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j6Y8MNuIbvcDrg++dUBx17IsaEWVLBsN08AA8lob3ruAT8WzDQo2gMlMy6vrCc+hKxLaxKaT3LuIgmj6Tlbh9h2UZXXNTgAB7Bpk18bQPULoTuSJ67acq9PN87jya3v8uPWOlZXFSbTCzWiXNasa6KB9FAsc/ApYkYR3W8eQn84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VVFt0ZDl; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="RrH6Tee0"
-ARC-Seal: i=1; a=rsa-sha256; t=1749423463; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Xp0OclK6eEHNmxKsFxFz9e1nl3REcWmdWlaI56tFB5vp5dkmarxLaVowtil94jYvexlmyfzx6PvNjX9gGF+fCLZKS7RN0OnfPSkHYEw4sqGIubHiI3PEIbKltXaPTUmxMI9J1GQMRcO1iuld+iOIqFvcOaaVvHzlrYHCqCDx6RQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1749423463; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=2s63SOE1NoYXN+GdFgykz83zv7+aivrpcY1WlxZbQwU=; 
-	b=Y7dw1cayq5RePppcr5KUw9dAT1qndkuXwgUMWsbA6pVhGA1ZE1k+Bvs1gvqfdiyzZ4k05nV6i2iC5kE/HLRkkUA6uddNH0Q2DWw1p0I3aCSnxivOA2WJkShZgONtznuwtQHpLIaRT9DeevvofcEN+rB5yUT9SQ7uOJnd7gbxt1o=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749423463;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=2s63SOE1NoYXN+GdFgykz83zv7+aivrpcY1WlxZbQwU=;
-	b=RrH6Tee0jSphoDTgSjhySl+j8U5G/+EJtOkXKNdq7g2zTpvv9eZDnvNIJ9yEHkHz
-	S6dDG8wpcq00dN67VbQZownvErV0ksHBUbO5Z4K2nVXboDhX4b0ekjTIb0s+l/slKz9
-	b+5u9nX5Bb6vlG7pbR8YNGlZCzq7ZgyjOYSTIjg0=
-Received: by mx.zohomail.com with SMTPS id 1749423460299953.9085347616196;
-	Sun, 8 Jun 2025 15:57:40 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Sun, 08 Jun 2025 19:51:11 -0300
-Subject: [PATCH v4 6/6] rust: pci: add irq accessors
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VVFt0ZDl"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-235e1d710d8so46389375ad.1;
+        Sun, 08 Jun 2025 18:04:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749431093; x=1750035893; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fvXnrkBGZ288qQ2hBdLfgL2bkdoVrtsdri+R3jNXWXk=;
+        b=VVFt0ZDltxOQOqGLRJcJ3FyXTOkJ8YKfqiu+htxWuCRxR6+6Q/1ir7q2CehMLeqOUz
+         w1fXS7pXpGyIHX8mZF0CYTWSK+7lOmUC5zEtyU91y7Jc29D0w6ReY2gjOSvSqJzx88vB
+         UgkRp6pmTjcLqyvxV0/LaItaPF7ot+i9sEi3wDFg1OHqnnN8rvAvEmuYfN6wCgfanfeo
+         PkoBZKGNDNhHzaXpdZkQOmCOs6xBP3l2ZleNDVedwwjYYZ+zsIbgI5Xt2SLe0ulFnok1
+         n2/HR60Y3q8JqmxhbuMSam0cENwSSYKI/avxYvuabRkd1prHe409q9JPNJmybJwrTOWh
+         gNXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749431093; x=1750035893;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fvXnrkBGZ288qQ2hBdLfgL2bkdoVrtsdri+R3jNXWXk=;
+        b=a24l/MDyskHJldPWTPkkOIkuQcdbR0q95ZAbUFN+Ssq7nUepiYp7GsIpdkSQ6xearA
+         6Gtr+H0cc8dqmb5Ljldi3/A2agx5KMumfWis0+S/GBAOUSQ94S+L1m+N+Xm2CJpi2tZK
+         lJrOcweRUVZcKhnrz/DxXCsmqcO5QPbceisHEVmpcA9BREWk+jcFZy2TkOSPtkH+Tf2S
+         GMLFUO3A6jqRxqC1+bChkqJ97MYdvUZ5QPV9fR2RTCY/7KAN0CAqfkVQhrEF7IFiA05O
+         YXsDwNtwQOZxHCaosbg4as9PW/8kZlh8+yy1kqCTu8jJS6Jo9wZQ60F19SueVqXbrEW4
+         wMig==
+X-Forwarded-Encrypted: i=1; AJvYcCVsaGt4+WRY+RR5XcTkw+5PCg5kWpTOfu+XZL9K2BN/P7jcQpCEsnj/J+rduLQLJV6PKcNQWkBkYMysrV52E1E=@vger.kernel.org, AJvYcCWk9Jw89D9u+qMI9c3bsFYNicqLTZV8APEtN03h3UP2ZtIM3UbKYqS5FbwIMKRqyyB219YT5pr4waETMK4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzCbfJxrp+H/R/VtcKOvgvdMrppj7kg4AWCeRpBlZJyEg1cU/R
+	Pp+SeI5IW8V04HsLiGFW8v4v7mOE3g7ye2zOYXJMRZVOGrW46F2aP5lu
+X-Gm-Gg: ASbGncvb18RQvUpsIBY3/gViKvBJ+d3O68BnTpuRTURfqXOs7aCPqhb1/Twik9h4Plk
+	m7iySucYCYRzvopFj99I1c8LCnrDwODET3ZFvyh84QxfcWw6TKzx8EEqrWzNIQwS/JP2cYPm/6Z
+	qmAb/vHYcqnv1kzptz1eMGSIDNjxD2Y7nkCVc3M9GIhef0rU50sLei8AHzG+tmyDX9+AojU/LX0
+	vf+wbB67QWmnhWfvt1hOTi92gmbzfSet8pih5ZHU7abNKvsOsZDc79at11t/wzeutJcLXz17izU
+	j5l96wstLRm2n6kbgZDVQ3F1J8a9yuTQ6dJhz/+cy6Z2c4qKPGAkUelPO+Swfnd8aAAPRwsqVRg
+	kYMT5zQGe9tIuviXQ1lhoKvYB/V5x
+X-Google-Smtp-Source: AGHT+IFrSiK91aIxAJLr0HkuoM1VwNzpqPNyJSrhhGAewGmTM1Sdtl8tM2xs37aqyGerbzUiVpI/OA==
+X-Received: by 2002:a17:902:ced0:b0:224:24d3:6103 with SMTP id d9443c01a7336-23601d7129bmr172249585ad.35.1749431092807;
+        Sun, 08 Jun 2025 18:04:52 -0700 (PDT)
+Received: from bee.. (p4138183-ipxg22701hodogaya.kanagawa.ocn.ne.jp. [153.129.206.183])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2f5f6683b1sm3652201a12.50.2025.06.08.18.04.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Jun 2025 18:04:52 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	ojeda@kernel.org
+Cc: aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	frederic@kernel.org,
+	gary@garyguo.net,
+	jstultz@google.com,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	sboyd@kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu
+Subject: [PATCH v3 0/3] rust: time: Introduce typed clock sources and generalize Instant
+Date: Mon,  9 Jun 2025 10:04:10 +0900
+Message-ID: <20250609010415.3302835-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250608-topics-tyr-request_irq-v4-6-81cb81fb8073@collabora.com>
-References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
-In-Reply-To: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-pci@vger.kernel.org, Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
+Content-Transfer-Encoding: 8bit
 
-These accessors can be used to retrieve a irq::Registration or a
-irq::ThreadedRegistration from a pci device.
+This patch series introduces a type-safe abstraction over clock
+sources. The goal is to remove the need for runtime clock selection
+(via ClockId) and instead leverage Rust's type system to statically
+associate the Instant type with a specific clock.
 
-These accessors ensure that only valid IRQ lines can ever be registered.
+This approach enables compile-time enforcement of clock correctness
+across the APIs of Instant type.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/pci.rs | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+v3:
+- rebased on 6.16-rc1
+v2: https://lore.kernel.org/rust-for-linux/20250504042436.237756-1-fujita.tomonori@gmail.com/
+- removed most of changes to hrtimer code 
+v1: https://lore.kernel.org/rust-for-linux/20250413105629.162349-1-fujita.tomonori@gmail.com/
 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 8435f8132e38129ccc3495e7c4d3237fcaa97ad9..c690fa1c739c937324e902e61e68df238dbd733b 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -395,6 +395,32 @@ pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
-     }
- }
- 
-+macro_rules! gen_irq_accessor {
-+    ($(#[$meta:meta])* $fn_name:ident, $reg_type:ident, $handler_trait:ident) => {
-+        $(#[$meta])*
-+        pub fn $fn_name<T: crate::irq::$handler_trait + 'static>(
-+            &self,
-+            index: u32,
-+            flags: crate::irq::flags::Flags,
-+            name: &'static crate::str::CStr,
-+            handler: T,
-+        ) -> Result<impl PinInit<crate::irq::$reg_type<T>, crate::error::Error> + '_> {
-+            // SAFETY: `self.as_raw` returns a valid pointer to a `struct pci_dev`.
-+            let irq = unsafe { crate::bindings::pci_irq_vector(self.as_raw(), index) };
-+            if irq < 0 {
-+                return Err(crate::error::Error::from_errno(irq));
-+            }
-+            Ok(crate::irq::$reg_type::<T>::register(
-+                self.as_ref(),
-+                irq as u32,
-+                flags,
-+                name,
-+                handler,
-+            ))
-+        }
-+    };
-+}
-+
- impl Device<device::Bound> {
-     /// Mapps an entire PCI-BAR after performing a region-request on it. I/O operation bound checks
-     /// can be performed on compile time for offsets (plus the requested type size) < SIZE.
-@@ -413,6 +439,15 @@ pub fn iomap_region_sized<const SIZE: usize>(
-     pub fn iomap_region(&self, bar: u32, name: &CStr) -> Result<Devres<Bar>> {
-         self.iomap_region_sized::<0>(bar, name)
-     }
-+
-+    gen_irq_accessor!(
-+        /// Returns a [`kernel::irq::Registration`] for the IRQ vector at the given index.
-+        irq_by_index, Registration, Handler
-+    );
-+    gen_irq_accessor!(
-+        /// Returns a [`kernel::irq::ThreadedRegistration`] for the IRQ vector at the given index.
-+        threaded_irq_by_index, ThreadedRegistration, ThreadedHandler
-+    );
- }
- 
- impl Device<device::Core> {
+FUJITA Tomonori (3):
+  rust: time: Replace ClockId enum with ClockSource trait
+  rust: time: Make Instant generic over ClockSource
+  rust: time: Add ktime_get() to ClockSource trait
 
+ rust/helpers/helpers.c      |   1 +
+ rust/helpers/time.c         |  18 ++++
+ rust/kernel/time.rs         | 201 ++++++++++++++++++++++--------------
+ rust/kernel/time/hrtimer.rs |   6 +-
+ 4 files changed, 148 insertions(+), 78 deletions(-)
+ create mode 100644 rust/helpers/time.c
+
+
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
 -- 
-2.49.0
+2.43.0
 
