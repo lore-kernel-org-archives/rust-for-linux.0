@@ -1,82 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D6921D3DF;
-	Mon,  9 Jun 2025 19:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE66223710
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 21:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749498939; cv=none; b=dS+Yuh6rv37/Z5gMJuh3tQqBT2Jqu3Tb+nLYgxjtEKxye/THUjw19dwR2f3VQL7Cjy8VEWHzQNd62tJF86Twkja573BdUwmvBSOQG8hU5WyPduvl9zhrC8fAdZM+UdGvf8IRmTIfWDQHPqK77MeQ1aJxgiLVV+0eCdSTTmA9lw0=
+	t=1749506128; cv=none; b=E7BccncYkae1/4pyLvVLBhVL/DzSyhMzJW0gwmPSLtUceSy+xy1x2avhhpFOnqCknNcB8tC5NPwoo/z4KtWlwdzS6SbD6vUoBXEno4bKbXjfDjAuiVrW4RExVUho5n+D2VJwJSL721xsjxkmmNmaptDBQrhxVDk4/tDZPOVpydI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749498939; c=relaxed/simple;
-	bh=Fja1OBNVBuvxKS0DeYB80jh5t24e4Ji9SmWPYh1wcCo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=W/kG7dTcef0ylc7le3vsrmQnNQi77561J4PFJ0CY2fDNRId7Hw/rxWUUxFi2yXtCq/qcyUX3BCipin9vTGL5eFwI/PGXak2q1wrepuJRdBXOIe20VW8X0Np9/SSExrhHmOPtma5OKcuRFExjZjOgLbQx7zX/QvScvcbU//4lb/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ShQPwaPB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749506128; c=relaxed/simple;
+	bh=90T6ejJVsDBvxIbRYg9P0PhiOGWoRm1F4hXTbYJcEBo=;
+	h=From:Date:Subject:MIME-Version:Message-Id:To:Cc:Content-Type:
+	 References; b=C9T0n4NrPr8PsICSNcQ7/D23NzsGXPpsyUKu9JNGIZj7sJP+DSVyw7CcTnBm9Nox7EQHzZCFtWQmedcEyee/y6y2NZQTNgh6XSpVM28pnEyDLwYwB6eTn9/xicd59V1xf74WiZAWgZtlqwsX0hjafP2vxHdkTj3uldpgcjyG44A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tnFFEMCg; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ShQPwaPB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB626C4CEEB;
-	Mon,  9 Jun 2025 19:55:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749498939;
-	bh=Fja1OBNVBuvxKS0DeYB80jh5t24e4Ji9SmWPYh1wcCo=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=ShQPwaPBoyGjmFpdxYyMqPI7DWlrFG3/q7cDHSWrkafVFMyfToG5B8x/jLKk+55LR
-	 2LMjhIf5p//HTDxwL/TSj9XYZINsSj009SyoOTthPvUAo9v9wVzp0fNoIr9xfLD+c5
-	 bUT0pTCBOopJv+LnZ91KI6/p0IGhJmLXHlVmFgg/EVB4mCmNt8r4zJlrdyx7VbkP6h
-	 MVaghy4T6DJ2QNj3tZjvESyh0pdGLxv4+bH9hpBNv3v7KRgkvatb5xrDB9ozCGgGFb
-	 lINDcCZ8I5gyusawKxQucG500/YDDmHiR53ZV1hHtcGz/aJq0YIVqwGgZl/EntH8Pa
-	 2/ZWlt2JRQUyQ==
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tnFFEMCg"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250609215524euoutp015549a46fff98be96bec0145ace0eff31~Hfo0LX_WQ0678006780euoutp01X
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 21:55:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250609215524euoutp015549a46fff98be96bec0145ace0eff31~Hfo0LX_WQ0678006780euoutp01X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1749506124;
+	bh=6FDigIrzvT9N27pIlfQrnhaWXpE1+J7Dii4QKfGowac=;
+	h=From:Date:Subject:To:Cc:References:From;
+	b=tnFFEMCgSqvFuTxqBx/lY7egFQTq6LvfnB8BBbuJutlSIveTzKUZQAG1eOXcSB4kl
+	 cVnyUiNsoEVtyQQ9ujD93s2cSXejnNZzdHAzKlVGRQ1x01QerDcVBWReFvxApzVqIU
+	 dTygi89ikLezO+oTCA2dXbhz861cEbfGsF6cQaHM=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9~HfozB2_zh0459404594eucas1p2N;
+	Mon,  9 Jun 2025 21:55:23 +0000 (GMT)
+Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
+	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250609215522eusmtip243b4c206faaf6705a2082bfe335359c7~HfoyeJlhe2095520955eusmtip2Y;
+	Mon,  9 Jun 2025 21:55:22 +0000 (GMT)
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+Date: Mon, 09 Jun 2025 23:53:19 +0200
+Subject: [PATCH] rust: math: Add KernelMathExt trait with a mul_div helper
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Jun 2025 21:55:35 +0200
-Message-Id: <DAI9M3GOQI87.305YXSFANUO4G@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: pin-init: examples, tests: use `ignore` instead
- of conditionally compiling tests
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250605155258.573391-1-lossin@kernel.org>
-In-Reply-To: <20250605155258.573391-1-lossin@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250609-math-rust-v1-v1-1-285fac00031f@samsung.com>
+X-B4-Tracking: v=1; b=H4sIAM5XR2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+	vPSU3UzU4B8JSMDI1MDMwNL3dzEkgzdotLiEt0yQ90UY0sLS1ND01Rjo1QloJaCotS0zAqwcdG
+	xtbUA8S9/B14AAAA=
+X-Change-ID: 20250609-math-rust-v1-d3989515e32e
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Benno Lossin
+	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
+	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,  Danilo Krummrich
+	<dakr@kernel.org>,  Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,  Michal
+	Wilczynski <m.wilczynski@samsung.com>
+X-Mailer: b4 0.15-dev
+X-CMS-MailID: 20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9
+X-EPHeader: CA
+X-CMS-RootMailID: 20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9
+References: <CGME20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9@eucas1p2.samsung.com>
 
-On Thu Jun 5, 2025 at 5:52 PM CEST, Benno Lossin wrote:
-> Change `#[cfg(cond)]` to `#[cfg_attr(not(cond), ignore)]` on tests.
->
-> Ignoring tests instead of disabling them still makes them appear in the
-> test list, but with `ignored`. It also still compiles the code in those
-> cases.
->
-> Some tests still need to be ignore, because they use types that are not
-> present when the condition is false. For example the condition is
-> `feature =3D std` and then it uses `std::thread::Thread`.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://lore.kernel.org/all/aDC9y829vZZBzZ2p@google.com
-> Link: https://github.com/Rust-for-Linux/pin-init/pull/58/commits/b004dd8e=
-64d4cbe219a4eff0d25f0a5f5bc750ca
-> Signed-off-by: Benno Lossin <lossin@kernel.org>
-> ---
->
-> Depends on https://lore.kernel.org/all/20250523125424.192843-3-lossin@ker=
-nel.org
->
-> ---
->  rust/pin-init/examples/pthread_mutex.rs | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+The PWM subsystem and other kernel modules often need to perform a
+64 by 64-bit multiplication followed by a 64-bit division. Performing
+this naively in Rust risks overflow on the intermediate multiplication.
+The kernel provides the C helper 'mul_u64_u64_div_u64' for this exact
+purpose.
 
-Applied to pin-init-next -- thanks everyone!
+Introduce a safe Rust wrapper for this function to make it available to
+Rust drivers.
+
+Following feedback from the mailing list [1], this functionality is
+provided via a 'KernelMathExt' extension trait. This allows for
+idiomatic, method style calls (e.g. val.mul_div()) and provides a
+scalable pattern for adding helpers for other integer types in the
+future.
+
+The safe wrapper is named 'mul_div' and not 'mul_u64_u64_div_u64' [2]
+because its behavior differs from the underlying C function. The C
+helper traps on a division by zero, whereas this safe wrapper returns
+`None`, thus exhibiting different and safer behavior.
+
+This is required for the Rust PWM TH1520 driver [3].
+
+[1] - https://lore.kernel.org/all/DAFQ19RBBSQL.3OGUXOQ0PA9YH@kernel.org/
+[2] - https://lore.kernel.org/all/CANiq72kVvLogBSVKz0eRg6V4LDB1z7b-6y1WPLSQfXXLW7X3cw@mail.gmail.com/
+[3] - https://lore.kernel.org/all/20250524-rust-next-pwm-working-fan-for-sending-v1-2-bdd2d5094ff7@samsung.com/
+
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+---
+ rust/kernel/lib.rs  |  1 +
+ rust/kernel/math.rs | 34 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 6b4774b2b1c37f4da1866e993be6230bc6715841..d652c92633b82525f37e5cd8a040d268e0c191d1 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -85,6 +85,7 @@
+ #[cfg(CONFIG_KUNIT)]
+ pub mod kunit;
+ pub mod list;
++pub mod math;
+ pub mod miscdevice;
+ pub mod mm;
+ #[cfg(CONFIG_NET)]
+diff --git a/rust/kernel/math.rs b/rust/kernel/math.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89e23f9266117dcf96561fbf13b1c66a4851b48
+--- /dev/null
++++ b/rust/kernel/math.rs
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) 2025 Samsung Electronics Co., Ltd.
++// Author: Michal Wilczynski <m.wilczynski@samsung.com>
++
++//! Safe wrappers for kernel math helpers.
++//!
++//! This module provides safe, idiomatic Rust wrappers for C functions, whose
++//! FFI bindings are auto-generated in the `bindings` crate.
++
++use crate::bindings;
++
++/// An extension trait that provides access to kernel math helpers on primitive integer types.
++pub trait KernelMathExt: Sized {
++    /// Multiplies self by `multiplier and divides by divisor.
++    ///
++    /// This wrapper around the kernel's `mul_u64_u64_div_u64` C helper ensures that no
++    /// overflow occurs during the intermediate multiplication.
++    ///
++    /// # Returns
++    /// * Some(result) if the division is successful.
++    /// * None if the divisor is zero.
++    fn mul_div(self, multiplier: Self, divisor: Self) -> Option<Self>;
++}
++
++impl KernelMathExt for u64 {
++    fn mul_div(self, multiplier: u64, divisor: u64) -> Option<u64> {
++        if divisor == 0 {
++            return None;
++        }
++        // SAFETY: The C function `mul_u64_u64_div_u64` is safe to call because the divisor
++        // is guaranteed to be non-zero. The FFI bindings use `u64`, matching our types.
++        Some(unsafe { bindings::mul_u64_u64_div_u64(self, multiplier, divisor) })
++    }
++}
 
 ---
-Cheers,
-Benno
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250609-math-rust-v1-d3989515e32e
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
+
