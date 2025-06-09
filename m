@@ -1,119 +1,158 @@
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285011547D2;
-	Mon,  9 Jun 2025 14:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC1625E456;
+	Mon,  9 Jun 2025 14:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749478030; cv=none; b=pCsSrU1lhLlkRt0oavDDby0OJwPoAbetxlz0rDA+iYsONp2jNA8Oivbkl+n1BVIClsYUQOBsX2Mp6Aj8rlHM8nKWDpYPMyKxCZDLlE+y6flYebi6vOY8vaQdmFHDDAUBPGwPXv+1CZNPOyPLdRKDeBgmycv96uL0LPtvOwHp/Lw=
+	t=1749480280; cv=none; b=r4n0VFsOTzEj6p0RSiwcwaMzMaKb7x4mjG6rZFCY/watcWaxGSdYo8ht8Gj+JFNiLcxYiQ0zGu4v/0snattZR3x6+x4pehNI0KTyZCpDNVjAm3Z+sXVFbCtzjDmgyxm//ykUKagXT2icHEo+DEp/gk200fXMmqJcu4MyZZkGR6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749478030; c=relaxed/simple;
-	bh=hKR7+ajhuSlOyH7j2iFRCSEbWtE6DkgGdy/ZRTO5PvI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EA3fsknUovE7Emt+CDkvtsVbDx3Zh3QTz7sMKVw1MyvkyY+r7n2OC4/J7P93aiyoMoTYnHKaXuelaCtloxHNBRNQX9Pjf808kNWjgfT8iJXybsKZ4MXoEUVxgc0Bux3EzUJclT5S0mDOGk4fIu8JVb+3Io0/84ohx2cyjVYxmEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ib7JYYMP; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749480280; c=relaxed/simple;
+	bh=HEwGfrYE+2z+Z0Xje7AAWmPnND3J6qC5RIA57A8gRIY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=gTICUXwsmG51pd0KtWSqK5mobH4yVyjyKSATcGz9goNngBVXVhDOOs8s0fg0g7c7znxQeeCs1T8YDa9oPnZo7V+8bwjrwCOEV2IOLktih9Xq9og8y1JV2/JqQ4gjGNGdI15u0ZIDKrR06IPgUnTTOjEY6IUSwH71KBVURxT24oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DiBDwxpl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ib7JYYMP"
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2e999729ccbso2861330fac.2;
-        Mon, 09 Jun 2025 07:07:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749478028; x=1750082828; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=afG0/kl8HRSNgTfY07WBqZftxaFWWI+8Ts2aM7Cdogo=;
-        b=Ib7JYYMP7LP9DCiDoDAiyHBwqRieiCYVLr1IQgjGALsgiKl+nyRhGcsgT+wdaWXmJL
-         0ZkJE0nIzquL759fjy75mWHBLHByu3rQlIbMAwjJvbCSJ/s4P9y0oCoqyosLCoz3nv4g
-         e0enKEvELP7bOJTczb9g0eKlanU7c/JcvCPO0ZFT9KyfXk/FRpR2t2iSPoK1QGcox7OL
-         NqR3CCBjqEQ8ClnW4BG9F5nJtyXU1s6RFo1nhGsEFzUxh19a4Be9sGLGtbviFSPtt6Iz
-         doxQod2gtiK1YmGuOxCkXxRbm8Inll5JFkCGd7RO0lLH1Ojtu2j7WNK7P/iNiktGwlWk
-         tKOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749478028; x=1750082828;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=afG0/kl8HRSNgTfY07WBqZftxaFWWI+8Ts2aM7Cdogo=;
-        b=CKNYmP0D/RuaZHeajohGofL7Uf3XRMAG4cMxfaHQvVKQNCRvfzHjz4qsE3XZaQYB6u
-         3Q/FENSrrCTex5fzDQWa/UqtQ8Bdq+0TvxPM+UWSIf715pOSXQ9wXwkSAN5WIyow7jFG
-         /GsOlqfVT1uIzX9hy1kV3DbmNVsJXoDkEGak9SfDNCEJdeP/cR73hr3i9IPo3481PtyQ
-         1OijQCyrAzkuAClSU97/7LwVfdywfq9/yR1y447ojy8Px0R1QGaElJ4QzcthgKFe5CyQ
-         K+Z5wc3NfOsgkx5yvQWgBnw62fmBlbX5VdQlPJA+emTJiZB9FXKVRC+SSNFCiirHFRRw
-         vSqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUxgjWMvqMQ07EQpHCVGDzzL/Y1Vah+wsvoBRDKKcVu7QnefXXzrKO0o/MSHFuZAWtcv9LsWU+t8rlF@vger.kernel.org, AJvYcCVggiApVkXFMp6aD7yAw7RAKNMup56MZzKLyKe7RY3/cKJiMmEPKiB9+ozabxMWDO31zWfYERRveigsUBRnHTk=@vger.kernel.org, AJvYcCWpbm7UJvaGUg1mY2gUF/XRyiLc91i07BcQSVePgA5NRWGOfbvODz8z5gsk1R9nCgn58DM3IW+0BKhxCL9m@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfmppyqqGUiYYwvwUE9U++2UR0CHbPrERa4G8eSdIIhMJ3C3pr
-	VW9tXgivoYedlm6mt6dwsY4g0DfgP+RI0QPikDNdJfX0vtPHzx/kjmhhIvArWK7Ug1vu7UHU8vW
-	qYxHIee9yF68za0ErYRiE+VoVOiBJCiQ=
-X-Gm-Gg: ASbGncumygkjABTfFgROWTy55ihO2VbxHyf44LjL1X7HkA7Zr59j0Iblc3wU0Q5h3qs
-	W5aIbYTTLH+bJ1KYghNn7qw+TKboYqIEtv8kltJduKqlDhFhrnTEvMpKw/8jcNSrQOG6/BCUuv5
-	h3nVfZZ26z1duGENupCf37CXU80NflmhTUKcpoasGF
-X-Google-Smtp-Source: AGHT+IFMIV6U/igIlpB2ppK59kvRoIdscUJqew6GIJircIlEAiWY4uTovmhUmkBLtQPxTPuE4nyg2BFG5tS4OB9pPc8=
-X-Received: by 2002:a05:6870:a7a2:b0:2e9:7e3:933f with SMTP id
- 586e51a60fabf-2ea00684093mr7039729fac.3.1749478027948; Mon, 09 Jun 2025
- 07:07:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DiBDwxpl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA15C4CEEB;
+	Mon,  9 Jun 2025 14:44:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749480279;
+	bh=HEwGfrYE+2z+Z0Xje7AAWmPnND3J6qC5RIA57A8gRIY=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=DiBDwxplqBP0kvNlqjxNelsdkgej+76ey6F3qsOhSG+fRJ9j1JaF9aqelNGGYWFsM
+	 LqtVLvjJl5dC3EZG/9ezL09/xTGoch0tsYMydCFaoxUdc9WeMzqSM8vvMeuGctz/QZ
+	 YDh2Ge6QAsdhk2jlWt0ni1l4QrEw+AcgosXAH2DCw6qQSvsjdsUF+Gm/C9BW3sQwLm
+	 35cWar+BY8NsGWCZcTE49scImlFCnBWKiHPgKex+RWXx2P8Hz9Gk/pxRQXkfCr6JoD
+	 lNE9gWUk9Yrs/U71tKPlIuzedkyxTmFILBUMw4Eo4iudukuozCAED70h5DF6xJ1tLE
+	 W2GNdbCjLqnsQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Jun 2025 16:44:33 +0200
+Message-Id: <DAI2ZYFSORPD.3LJ9L234S6LZ2@kernel.org>
+Cc: <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <rafael@kernel.org>,
+ <gregkh@linuxfoundation.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <lenb@kernel.org>, <wedsonaf@gmail.com>,
+ <viresh.kumar@linaro.org>, <alex.hung@amd.com>,
+ <dingxiangfei2009@gmail.com>
+Subject: Re: [PATCH v3 2/4] rust: driver: Add ACPI id table support to
+ Adapter trait
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
 References: <20250606170341.3880941-1-igor.korotin.linux@gmail.com>
- <20250606170817.3881748-1-igor.korotin.linux@gmail.com> <DAGZNG518T0C.1PXOK55IXHZOF@kernel.org>
- <aEVqgUtflBCzZi1X@pollux> <DAH4KX3Y3M3P.3B82LSVWU172Q@kernel.org>
- <aEV43zxZmWvDgKES@pollux> <CAJxaTdNZEdK21mFPu2kTJPa7aQ+PpnkwFVdEP5MCt6w+bD0wXA@mail.gmail.com>
- <CANiq72=rerpj_Ut0x7dDb0O8dEh9SHaF1HVyyfMM83hz--QCJg@mail.gmail.com> <CAG7QV91u4rVgAqDjKAofupASSk9q0uRKNtsrHg7Q6KExRMkFog@mail.gmail.com>
-In-Reply-To: <CAG7QV91u4rVgAqDjKAofupASSk9q0uRKNtsrHg7Q6KExRMkFog@mail.gmail.com>
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-Date: Mon, 9 Jun 2025 15:06:56 +0100
-X-Gm-Features: AX0GCFvuwUvErfOYrgAzHxM0-sxRU7s6mm5moyKumxFcZp5T9Z7y7tnWeLeM7Kk
-Message-ID: <CAJxaTdMFp0WAB3BBDPUztVvTtDGUt9=KyHTDpDOgAZ4ZEk2XUw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] rust: driver: Add ACPI id table support to Adapter trait
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Len Brown <lenb@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Alex Hung <alex.hung@amd.com>, Xiang Fei Ding <dingxiangfei2009@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+ <20250606170817.3881748-1-igor.korotin.linux@gmail.com>
+ <DAGZNG518T0C.1PXOK55IXHZOF@kernel.org> <aEVqgUtflBCzZi1X@pollux>
+ <DAH4KX3Y3M3P.3B82LSVWU172Q@kernel.org> <aEV43zxZmWvDgKES@pollux>
+ <CAJxaTdNZEdK21mFPu2kTJPa7aQ+PpnkwFVdEP5MCt6w+bD0wXA@mail.gmail.com>
+In-Reply-To: <CAJxaTdNZEdK21mFPu2kTJPa7aQ+PpnkwFVdEP5MCt6w+bD0wXA@mail.gmail.com>
 
-> <igor.korotin.linux@gmail.com> wrote:
-> >
-> > Let me know if this pattern is acceptable. To my opinion it is not much
-> > different from the original 2 functions conditioned by #[cfg] and
-> > requires some nasty changes.
+On Mon Jun 9, 2025 at 3:09 PM CEST, Igor Korotin wrote:
+> On Sun, Jun 8, 2025 at 12:50=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>> On Sun, Jun 08, 2025 at 01:46:17PM +0200, Benno Lossin wrote:
+>> > On Sun Jun 8, 2025 at 12:48 PM CEST, Danilo Krummrich wrote:
+>> > > On Sun, Jun 08, 2025 at 09:54:30AM +0200, Benno Lossin wrote:
+>> > >> On Fri Jun 6, 2025 at 7:08 PM CEST, Igor Korotin wrote:
+>> > >> > @@ -141,6 +141,38 @@ pub trait Adapter {
+>> > >> >      /// The type holding driver private data about each device i=
+d supported by the driver.
+>> > >> >      type IdInfo: 'static;
+>> > >> >
+>> > >> > +    /// The [`acpi::IdTable`] of the corresponding driver
+>> > >> > +    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>>;
+>> > >> > +
+>> > >> > +    /// Returns the driver's private data from the matching entr=
+y in the [`acpi::IdTable`], if any.
+>> > >> > +    ///
+>> > >> > +    /// If this returns `None`, it means there is no match with =
+an entry in the [`acpi::IdTable`].
+>> > >> > +    #[cfg(CONFIG_ACPI)]
+>> > >> > +    fn acpi_id_info(dev: &device::Device) -> Option<&'static Sel=
+f::IdInfo> {
+>> > >> > +        let table =3D Self::acpi_id_table()?;
+>> > >> > +
+>> > >> > +        // SAFETY:
+>> > >> > +        // - `table` has static lifetime, hence it's valid for r=
+ead,
+>> > >> > +        // - `dev` is guaranteed to be valid while it's alive, a=
+nd so is `pdev.as_ref().as_raw()`.
+>> > >> > +        let raw_id =3D unsafe { bindings::acpi_match_device(tabl=
+e.as_ptr(), dev.as_raw()) };
+>> > >> > +
+>> > >> > +        if raw_id.is_null() {
+>> > >> > +            None
+>> > >> > +        } else {
+>> > >> > +            // SAFETY: `DeviceId` is a `#[repr(transparent)` wra=
+pper of `struct of_device_id` and
+>> > >> > +            // does not add additional invariants, so it's safe =
+to transmute.
+>> > >> > +            let id =3D unsafe { &*raw_id.cast::<acpi::DeviceId>(=
+) };
+>> > >> > +
+>> > >> > +            Some(table.info(<acpi::DeviceId as crate::device_id:=
+:RawDeviceId>::index(id)))
+>> > >> > +        }
+>> > >> > +    }
+>> > >> > +
+>> > >> > +    #[cfg(not(CONFIG_ACPI))]
+>> > >> > +    #[allow(missing_docs)]
+>> > >>
+>> > >> I think we should change this to one single definition and do
+>> > >>
+>> > >>     if cfg!(not(CONFIG_ACPI)) {
+>> > >>         return None;
+>> > >>     }
+>> > >>     /* body from above */
+>> > >>
+>> > >> In a single function instead.
+>> > >
+>> > > Generally, that's fine, but in this case I'd rather keep it as it is=
+ for
+>> > > consistency with the rest of the file.
+>> >
+>> > Then let's also change the OF bindings in this file to that style :)
+>>
+>> Fine for me.
+>>
+>> @Igor: If you do so, please do it in a seaparate patch.
 >
-> In general, the more local a `cfg` can be made, the better, because we
-> can share more, e.g. the docs and signature.
+> That's definitely not possible with `if cfg!(not(CONFIG_ACPI))`
+> because it is a runtime condition and it breaks compilation in case
+> either `CONFIG_OF` or `CONFIG_ACPI` is not set, the Rust compiler
+> can't find `of_match_device`/`acpi_match_device` because in that case
+> they are defined as `static inline` and are not parsed by bindgen.
 >
-> But maybe in this case it doesn't work -- what would be the "nasty
-> changes" required?
+> Alternatively the following pattern works:
+>
+>     fn foo() {
+>         #[cfg(not(CONFIG_ACPI))] {
+>             None
+>         }
+>
+>         #[cfg(CONFIG_ACPI)] {
+>              // some logic.
+>         }
+>     }
 
-In particular on this example:
-    fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-        #[cfg(not(CONFIG_OF))] {
-            None
-        }
+We might want to add a `cfg_if!` macro that expands to this.
 
-        #[cfg(CONFIG_OF))] {
-            // the rest of logic
-        }
-    }
+> Also the argument `dev` of `both of_id_info` and `acpi_id_info`  must be
+> renamed into `_dev` to mark it as unused in case CONFIG_ACPI/CONFIG_OF
+> is off and the argument is not used.
 
-The `dev` is marked as unused if `CONFIG_OF` is not set. So we have 3 options:
-1. rename it to `_dev`. This is nasty to my opinion, because it is misleading.
-2. add #[alloc(unused_variables)] on top of it. Also not good since it
-will suppress
-all other possible unused_variables as well.
-3. The third option is `let _ = dev;` in `#[cfg(not(CONFIG_OF))]`
-section. I came to
-it while I was writing this reply. This looks like the best option of
-three in my opinion.
+You can add a `let _ =3D dev;` in the `not` "branch".
 
-Thanks
-Igor
+---
+Cheers,
+Benno
