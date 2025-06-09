@@ -1,273 +1,360 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F608207A20;
-	Mon,  9 Jun 2025 16:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749486204; cv=none; b=k2qjvSQBrCchI0wBKyYNPrwhpzDxJZW+rUHmdjjOKfuRsgYMMyJVOJQ8i7abIsUANj3muz4sXrpdEwec5xShcMUDlj/b+0QfI+QIBYGIiNB4wTOPnUFS4F7P4AbYgp4PdMIL6Y/NxIEWv+Aodf/reDlfTTM1jzdWeIWXbPjxjUg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749486204; c=relaxed/simple;
-	bh=MBQzkw1Cd/Wfl8vUu2Ms/EOYU7qa3+zJyoskuNovfKc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SHCDkA5xGUbSA0UQwUB1KQzhLAM6fbhDNYOPoFllOCj95ENLSyScD/+cgelV8TbOhQ/BsQeh+L6qCEzjTliIwMd81bgCjKJrDvebzCZsFu7zwiaWusehQ9Kz6hMFTvkkRnu1CvVnHgehLtWULCSwW3GLWSJNdFBcJDz4JuNTfkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=koizrgei; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5D821579F;
+	Mon,  9 Jun 2025 16:25:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749486318; cv=pass; b=h5uuehR/fjt5yqd7mJoLqCRz8M/bk4dFo6vcDHPObgVs//SFCot5r/Xw0LZaM1z+ZEVq1KWn3XoCjEnn4NCCKn7T1zQTPUWIKPC/PreDQ0rO6j0CbSbsq7aE50qndqgmYQf7zzqjbcVEUgr4fr2i/FH8TIyLSY1nC+uRybGPSnM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749486318; c=relaxed/simple;
+	bh=BH/AFH2sSVWQsK1efnNK1sKRL1sE/k1CKi5k+6t1RaI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=aIApu5v2wTjAINK9cYam2bG3FcRNxDyPCckPySZ/xqTbuhs7XQvJ58w7p0JeUsZ5YOutf+gj4UxOoohYYfsQTu7DUSXnXKfwpkn4gf2FuNWzTmpFAJFmbq87FjiJJIVguoAimmyn9v1Firmtb098Zd9lJI1+kcAIwZGq8xk2T0o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LRhwpuJN; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="koizrgei"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-31306794b30so845372a91.2;
-        Mon, 09 Jun 2025 09:23:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749486201; x=1750091001; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=MBQzkw1Cd/Wfl8vUu2Ms/EOYU7qa3+zJyoskuNovfKc=;
-        b=koizrgeic98S9GF929eEg1wl6tEpaHVznCXK4x3UJArhZIsHgiMCMZXlInnMRXVpNI
-         AMozY2kNYiVZt8G7x3O5lTTYrd0B4sncBIkNWBaInpSOdMGJc10YLg5GFhWa4fX1yjkM
-         d0QUsKo1iXvP7PZ1H0FXLC2/PB4ZeCTe9WkwI4oWJm6Mm04QYSOTo/SeSckQGT01pmmJ
-         CbQXlQPoqlOO/i37M+J3nvEJ3KL6/VORTndmNdugoeXiDWXWhWtQVHZeX959h5bf+zDg
-         3H7dyIfMK4xYBUPoE+A5C++5emNSsPqd+xLBrGBnjdXvv3PWjm1GoBFlMKTEFl4me3LS
-         DiwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749486201; x=1750091001;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MBQzkw1Cd/Wfl8vUu2Ms/EOYU7qa3+zJyoskuNovfKc=;
-        b=s9B1LAmyISPsFlk36WTYMmls1ye6CFlwenIzFJl7IUUUtVJ+uHTIRq2FMh6qrhPtT5
-         4CUX9B/bLRH2cSxzMKRXlYsI6FdC8Vh/byqKlNhjbERTVFdAiMcOH1LmJlMVnZhVTsGa
-         K23B8R8E2Ox7zeXNTZnf54UO/Vi2T9xm+vNtU5IVQfHlIhWT1ReP/8Yv87cKNPRW3zgi
-         t3E3uYxQRfnLqiQNTf+hOXpXFhqPr5j3yG6DmT05Bdyn2SvT1E9HHj7B3lo4019vNwnj
-         oqH5FFjV5tYvMUUPJhZsOaMY2uHF5RNZLwJbjER+o5xC3Xaj/QZxnucVfMg5Lat8ukHp
-         w1PA==
-X-Forwarded-Encrypted: i=1; AJvYcCXSKUIsAf3vwJw5BXMSyYegKmh3nqGn7GeGX9Lu9TNIbWZfUcZRtqtsfOT3eymb43UxlQzQCq54T5EFFWM=@vger.kernel.org, AJvYcCXW3S47/9vVI3axgfBadPHKlBRAauVGpWcoRG6ma6qJt8VZPLBiHxHzsf6LxcuoOQgj5zAcJf+uavZpNDjsgrw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUrwsYWGldOCw0GuXGmJMgyKX6uLrMV+Q8SdDU7syXVjy2dasW
-	aq89W6euozQWsDZYgp1ya59r7iJaqFSVuMqRa19g0v2KeXIu6BeUiS/MgyLa9d8t/KxkgQiMAIK
-	lEi7Nd6ZEQ3O+A/hN8LgCD2UdajKUBB0=
-X-Gm-Gg: ASbGncvTzarGgHWLpGGJpIw26ZvAWe0xcc9e5DWTV7NgSag8eFG+mu35C2QKBxHEtKV
-	bgrTdog/GoYJcd+hhevh+ZUxMnG8H9V0C3SfzfCHL/L5amtsv8sx89TY6jud9gkGa9i4YIsoBVr
-	imTG5IMtfSnZhPjE/H8rykLRV4+/731H2hm/kseYn17No=
-X-Google-Smtp-Source: AGHT+IFEFD2dn3Ea+74SdjizL+UpUO2bGStyWyI05OtJSF/D+VbekAzAc9HBNc1B0Dh7BP+hlqJN5oXutu7xIdqs+MI=
-X-Received: by 2002:a17:90b:3c89:b0:310:cf92:7899 with SMTP id
- 98e67ed59e1d1-31347506b75mr7366339a91.3.1749486201437; Mon, 09 Jun 2025
- 09:23:21 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LRhwpuJN"
+ARC-Seal: i=1; a=rsa-sha256; t=1749486299; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=OAmaJU/UqlK4qLOX2XrvesDQsN7dkouIy4sYze84pYBc9fv4cncUOkvVo/5As1x17esr59GIFElZ36TYmq4Xly0UQhTpkUBVGfXbmUGrWFa9M/Fh3Rhi6q13EUFmlVeF1NW1chYCBLakodOGpK7rGdRxWCgue9qccKLKgIOhzOc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1749486299; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=P0MMfzUdGCfaFTyAjkNQ8nuesuK8uFLeUs3/8X2xeqs=; 
+	b=ZXZ+OOw+t+eaKc038SXspzRSB6epVAhHcuXebg6Z0AzXCdSmbShUwPeXpJBe119h++mIsw1OyxwBgBa/Telwc093/DvqTzOfzV3TM43g3um3OnMid2O1XPySZvYkY8EyMoGVzl10qcmlTNl3MKeJopO9/UIehJ62kGcRtlMalU0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749486299;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=P0MMfzUdGCfaFTyAjkNQ8nuesuK8uFLeUs3/8X2xeqs=;
+	b=LRhwpuJNLrdYKbH0QiDNIm2K31CAQ8dcOEMsqpBGyn1CQrnDnC4xagKeeZsN0Niz
+	gDsBOsDRlrlgjB0BoE61LYidzgXnh0pza68AeeFb8t0Yc0wxXO7wt5j4iNC6Qgmg2u6
+	PRLA4KvAkkeNCjwUMtaqEwlUCRYnkVTUHPJBPBbg=
+Received: by mx.zohomail.com with SMTPS id 1749486296923500.60919773970306;
+	Mon, 9 Jun 2025 09:24:56 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250609-topics-tyr-regulator-v4-1-b4fdcf1385a7@collabora.com>
-In-Reply-To: <20250609-topics-tyr-regulator-v4-1-b4fdcf1385a7@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 9 Jun 2025 18:23:08 +0200
-X-Gm-Features: AX0GCFtrteg0jvvOwqF6B1ZuynuTK626j9OUulYVRJtax2wjbAIJC9Hod8lZkyY
-Message-ID: <CANiq72kcF-CqUwvCBRt5FjX2Yrj517UYjXHA9Sf7-Xevsy=2Kw@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: regulator: add a bare minimum regulator abstraction
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Boris Brezillon <boris.brezillon@collabora.com>, 
-	Sebastian Reichel <sebastian.reichel@collabora.com>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: multipart/mixed; boundary="000000000000939bc1063725ffb3"
-
---000000000000939bc1063725ffb3
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v4 4/6] rust: irq: add support for threaded IRQs and
+ handlers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aEbTOhdfmYmhPiiS@pollux>
+Date: Mon, 9 Jun 2025 13:24:40 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Benno Lossin <lossin@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <5B3865E5-E343-4B5D-9BF7-7B9086AA9857@collabora.com>
+References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
+ <20250608-topics-tyr-request_irq-v4-4-81cb81fb8073@collabora.com>
+ <aEbTOhdfmYmhPiiS@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Mon, Jun 9, 2025 at 5:34=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Add a bare minimum regulator abstraction to be used by Rust drivers.
-> This abstraction adds a small subset of the regulator API, which is
-> thought to be sufficient for the drivers we have now.
+Hi Danilo,
 
-For future versions, or at apply time, please see the attached diff
-for some documentation fixes (mostly) -- please check with
-`--ignore-space-change`, since some indentation fixes can hide other
-changes.
+> On 9 Jun 2025, at 09:27, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Sun, Jun 08, 2025 at 07:51:09PM -0300, Daniel Almeida wrote:
+>> +/// Callbacks for a threaded IRQ handler.
+>> +pub trait ThreadedHandler: Sync {
+>> +    /// The actual handler function. As usual, sleeps are not =
+allowed in IRQ
+>> +    /// context.
+>> +    fn handle_irq(&self) -> ThreadedIrqReturn;
+>> +
+>> +    /// The threaded handler function. This function is called from =
+the irq
+>> +    /// handler thread, which is automatically created by the =
+system.
+>> +    fn thread_fn(&self) -> IrqReturn;
+>> +}
+>> +
+>> +impl<T: ?Sized + ThreadedHandler + Send> ThreadedHandler for Arc<T> =
+{
+>> +    fn handle_irq(&self) -> ThreadedIrqReturn {
+>> +        T::handle_irq(self)
+>> +    }
+>> +
+>> +    fn thread_fn(&self) -> IrqReturn {
+>> +        T::thread_fn(self)
+>> +    }
+>> +}
+>=20
+> In case you intend to be consistent with the function pointer names in
+> request_threaded_irq(), it'd need to be handler() and thread_fn(). But =
+I don't
+> think there's a need for that, both aren't really nice for names of =
+trait
+> methods.
+>=20
+> What about irq::Handler::handle() and irq::Handler::handle_threaded() =
+for
+> instance?
+>=20
+> Alternatively, why not just
+>=20
+> trait Handler {
+>   fn handle(&self);
+> }
+>=20
+> trait ThreadedHandler {
+>   fn handle(&self);
+> }
+>=20
+> and then we ask for `T: Handler + ThreadedHandler`.
 
-Most should be self-explanatory, but if there is something that you
-think should not be done, please let me know of course.
+Sure, I am totally OK with renaming things, but IIRC I've tried  Handler =
++
+ThreadedHandler in the past and found it to be problematic. I don't =
+recall why,
+though, so maybe it's worth another attempt.
 
-Thanks!
+>=20
+>> +
+>> +impl<T: ?Sized + ThreadedHandler, A: Allocator> ThreadedHandler for =
+Box<T, A> {
+>> +    fn handle_irq(&self) -> ThreadedIrqReturn {
+>> +        T::handle_irq(self)
+>> +    }
+>> +
+>> +    fn thread_fn(&self) -> IrqReturn {
+>> +        T::thread_fn(self)
+>> +    }
+>> +}
+>> +
+>> +/// A registration of a threaded IRQ handler for a given IRQ line.
+>> +///
+>> +/// Two callbacks are required: one to handle the IRQ, and one to =
+handle any
+>> +/// other work in a separate thread.
+>> +///
+>> +/// The thread handler is only called if the IRQ handler returns =
+`WakeThread`.
+>> +///
+>> +/// # Examples
+>> +///
+>> +/// The following is an example of using `ThreadedRegistration`. It =
+uses a
+>> +/// [`AtomicU32`](core::sync::AtomicU32) to provide the interior =
+mutability.
+>> +///
+>> +/// ```
+>> +/// use core::sync::atomic::AtomicU32;
+>> +/// use core::sync::atomic::Ordering;
+>> +///
+>> +/// use kernel::prelude::*;
+>> +/// use kernel::device::Bound;
+>> +/// use kernel::irq::flags;
+>> +/// use kernel::irq::ThreadedIrqReturn;
+>> +/// use kernel::irq::ThreadedRegistration;
+>> +/// use kernel::irq::IrqReturn;
+>> +/// use kernel::platform;
+>> +/// use kernel::sync::Arc;
+>> +/// use kernel::sync::SpinLock;
+>> +/// use kernel::alloc::flags::GFP_KERNEL;
+>> +/// use kernel::c_str;
+>> +///
+>> +/// // Declare a struct that will be passed in when the interrupt =
+fires. The u32
+>> +/// // merely serves as an example of some internal data.
+>> +/// struct Data(AtomicU32);
+>> +///
+>> +/// // [`handle_irq`] takes &self. This example illustrates interior
+>> +/// // mutability can be used when share the data between process =
+context and IRQ
+>> +/// // context.
+>> +///
+>> +/// type Handler =3D Data;
+>> +///
+>> +/// impl kernel::irq::request::ThreadedHandler for Handler {
+>> +///     // This is executing in IRQ context in some CPU. Other CPUs =
+can still
+>> +///     // try to access to data.
+>> +///     fn handle_irq(&self) -> ThreadedIrqReturn {
+>> +///         self.0.fetch_add(1, Ordering::Relaxed);
+>> +///
+>> +///         // By returning `WakeThread`, we indicate to the system =
+that the
+>> +///         // thread function should be called. Otherwise, return
+>> +///         // ThreadedIrqReturn::Handled.
+>> +///         ThreadedIrqReturn::WakeThread
+>> +///     }
+>> +///
+>> +///     // This will run (in a separate kthread) if and only if =
+`handle_irq`
+>> +///     // returns `WakeThread`.
+>> +///     fn thread_fn(&self) -> IrqReturn {
+>> +///         self.0.fetch_add(1, Ordering::Relaxed);
+>> +///
+>> +///         IrqReturn::Handled
+>> +///     }
+>> +/// }
+>> +///
+>> +/// // This is running in process context.
+>> +/// fn register_threaded_irq(handler: Handler, dev: =
+&platform::Device<Bound>) -> Result<Arc<ThreadedRegistration<Handler>>> =
+{
+>> +///     let registration =3D dev.threaded_irq_by_index(0, =
+flags::SHARED, c_str!("my-device"), handler)?;
+>=20
+> This doesn't compile (yet). I think this should be a "raw" example, =
+i.e. the
+> function should take an IRQ number.
+>=20
+> The example you sketch up here is for =
+platform::Device::threaded_irq_by_index().
 
-Cheers,
-Miguel
+Yes, I originally had an example along the lines of what you mentioned. =
+Except
+that with the changes in register() from pub to pub(crate) they stopped
+compiling.
 
---000000000000939bc1063725ffb3
-Content-Type: text/x-patch; charset="US-ASCII"; name="docfixes.diff"
-Content-Disposition: attachment; filename="docfixes.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mbpau7ap0>
-X-Attachment-Id: f_mbpau7ap0
+I am not sure how the doctest to kunit machinery works, but I was =
+expecting
+tests to have access to everything within the module they're defined in, =
+but
+this is apparently not the case.
 
-ZGlmZiAtLWdpdCBhL3J1c3Qva2VybmVsL3JlZ3VsYXRvci5ycyBiL3J1c3Qva2VybmVsL3JlZ3Vs
-YXRvci5ycwppbmRleCAzMzhmYzY1M2MzMmIuLjBiYWY3NjNhMDk4ZSAxMDA2NDQKLS0tIGEvcnVz
-dC9rZXJuZWwvcmVndWxhdG9yLnJzCisrKyBiL3J1c3Qva2VybmVsL3JlZ3VsYXRvci5ycwpAQCAt
-MTMsNyArMTMsNyBAQAogLy8hIFJlZ3VsYXRvcnMgYXJlIG1vZGVsZWQgaW4gUnVzdCB3aXRoIGEg
-Y29sbGVjdGlvbiBvZiBzdGF0ZXMuIEVhY2ggc3RhdGUgbWF5CiAvLyEgZW5mb3JjZSBhIGdpdmVu
-IGludmFyaWFudCwgYW5kIHRoZXkgbWF5IGNvbnZlcnQgYmV0d2VlbiBlYWNoIG90aGVyIHdoZXJl
-IGFwcGxpY2FibGUuCiAvLyEKLS8vISBTZWUgW2BWb2x0YWdlIGFuZCBjdXJyZW50IHJlZ3VsYXRv
-ciBBUElgXSgiaHR0cHM6Ly9kb2NzLmtlcm5lbC5vcmcvZHJpdmVyLWFwaS9yZWd1bGF0b3IuaHRt
-bCIpCisvLyEgU2VlIFtWb2x0YWdlIGFuZCBjdXJyZW50IHJlZ3VsYXRvciBBUEldKGh0dHBzOi8v
-ZG9jcy5rZXJuZWwub3JnL2RyaXZlci1hcGkvcmVndWxhdG9yLmh0bWwpCiAvLyEgZm9yIG1vcmUg
-aW5mb3JtYXRpb24uCiAKIHVzZSBjcmF0ZTo6ewpAQCAtNzIsNiArNzIsNyBAQCBpbXBsIElzRW5h
-YmxlZCBmb3IgRHluYW1pYyB7fQogcHViIHN0cnVjdCBFcnJvcjxTdGF0ZTogUmVndWxhdG9yU3Rh
-dGUgKyAnc3RhdGljPiB7CiAgICAgLy8vIFRoZSBlcnJvciB0aGF0IG9jY3VycmVkLgogICAgIHB1
-YiBlcnJvcjoga2VybmVsOjplcnJvcjo6RXJyb3IsCisKICAgICAvLy8gVGhlIHJlZ3VsYXRvciB0
-aGF0IGNhdXNlZCB0aGUgZXJyb3IsIHNvIHRoYXQgdGhlIG9wZXJhdGlvbiBtYXkgYmUgcmV0cmll
-ZC4KICAgICBwdWIgcmVndWxhdG9yOiBSZWd1bGF0b3I8U3RhdGU+LAogfQpAQCAtODAsNyArODEs
-NyBAQCBwdWIgc3RydWN0IEVycm9yPFN0YXRlOiBSZWd1bGF0b3JTdGF0ZSArICdzdGF0aWM+IHsK
-IC8vLwogLy8vICMgRXhhbXBsZXMKIC8vLwotLy8vIEVuYWJsaW5nIGEgcmVndWxhdG9yOgorLy8v
-ICMjIEVuYWJsaW5nIGEgcmVndWxhdG9yCiAvLy8KIC8vLyBUaGlzIGV4YW1wbGUgdXNlcyBbYFJl
-Z3VsYXRvcjxFbmFibGVkPmBdLCB3aGljaCBpcyBzdWl0YWJsZSBmb3IgZHJpdmVycyB0aGF0CiAv
-Ly8gZW5hYmxlIGEgcmVndWxhdG9yIGF0IHByb2JlIHRpbWUgYW5kIGxlYXZlIHRoZW0gb24gdW50
-aWwgdGhlIGRldmljZSBpcwpAQCAtOTUsMzcgKzk2LDQwIEBAIHB1YiBzdHJ1Y3QgRXJyb3I8U3Rh
-dGU6IFJlZ3VsYXRvclN0YXRlICsgJ3N0YXRpYz4gewogLy8vICMgdXNlIGtlcm5lbDo6ZGV2aWNl
-OjpEZXZpY2U7CiAvLy8gIyB1c2Uga2VybmVsOjpyZWd1bGF0b3I6OntNaWNyb3ZvbHQsIFJlZ3Vs
-YXRvciwgRGlzYWJsZWQsIEVuYWJsZWR9OwogLy8vIGZuIGVuYWJsZShkZXY6ICZEZXZpY2UsIG1p
-bl91djogTWljcm92b2x0LCBtYXhfdXY6IE1pY3Jvdm9sdCkgLT4gUmVzdWx0IHsKLS8vLyAgICAv
-LyBPYnRhaW4gYSByZWZlcmVuY2UgdG8gYSAoZmljdGl0aW91cykgcmVndWxhdG9yLgotLy8vICAg
-IGxldCByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEaXNhYmxlZD4gPSBSZWd1bGF0b3I6OjxEaXNhYmxl
-ZD46OmdldChkZXYsIGNfc3RyISgidmNjIikpPzsKLS8vLwotLy8vICAgIC8vIFRoZSB2b2x0YWdl
-IGNhbiBiZSBzZXQgYmVmb3JlIGVuYWJsaW5nIHRoZSByZWd1bGF0b3IgaWYgbmVlZGVkLCBlLmcu
-OgotLy8vICAgIHJlZ3VsYXRvci5zZXRfdm9sdGFnZShtaW5fdXYsIG1heF91dik/OwotLy8vCi0v
-Ly8gICAgLy8gVGhlIHNhbWUgYXBwbGllcyBmb3IgYGdldF92b2x0YWdlKClgLCBpLmUuOgotLy8v
-ICAgIGxldCB2b2x0YWdlOiBNaWNyb3ZvbHQgPSByZWd1bGF0b3IuZ2V0X3ZvbHRhZ2UoKT87Ci0v
-Ly8KLS8vLyAgICAvLyBFbmFibGVzIHRoZSByZWd1bGF0b3IsIGNvbnN1bWluZyB0aGUgcHJldmlv
-dXMgdmFsdWUuCi0vLy8gICAgLy8KLS8vLyAgICAvLyBGcm9tIG5vdyBvbiwgdGhlIHJlZ3VsYXRv
-ciBpcyBrbm93biB0byBiZSBlbmFibGVkIGJlY2F1c2Ugb2YgdGhlIHR5cGUKLS8vLyAgICAvLyBg
-RW5hYmxlZGAuCi0vLy8gICAgLy8KLS8vLyAgICAvLyBJZiB0aGlzIG9wZXJhdGlvbiBmYWlscywg
-dGhlIGBFcnJvcmAgd2lsbCBjb250YWluIHRoZSByZWd1bGF0b3IKLS8vLyAgICAvLyByZWZlcmVu
-Y2UsIHNvIHRoYXQgdGhlIG9wZXJhdGlvbiBtYXkgYmUgcmV0cmllZC4KLS8vLyAgICBsZXQgcmVn
-dWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPSByZWd1bGF0b3IudHJ5X2ludG9fZW5hYmxlZCgp
-Lm1hcF9lcnIofGVycm9yfCBlcnJvci5lcnJvcik/OwotLy8vCi0vLy8gICAgLy8gVGhlIHZvbHRh
-Z2UgY2FuIGFsc28gYmUgc2V0IGFmdGVyIGVuYWJsaW5nIHRoZSByZWd1bGF0b3IsIGUuZy46Ci0v
-Ly8gICAgcmVndWxhdG9yLnNldF92b2x0YWdlKG1pbl91diwgbWF4X3V2KT87Ci0vLy8KLS8vLyAg
-ICAvLyBUaGUgc2FtZSBhcHBsaWVzIGZvciBgZ2V0X3ZvbHRhZ2UoKWAsIGkuZS46Ci0vLy8gICAg
-bGV0IHZvbHRhZ2U6IE1pY3Jvdm9sdCA9IHJlZ3VsYXRvci5nZXRfdm9sdGFnZSgpPzsKLS8vLwot
-Ly8vICAgIC8vIERyb3BwaW5nIGFuIGVuYWJsZWQgcmVndWxhdG9yIHdpbGwgZGlzYWJsZSBpdC4g
-VGhlIHJlZmNvdW50IHdpbGwgYmUKLS8vLyAgICAvLyBkZWNyZW1lbnRlZC4KLS8vLyAgICBkcm9w
-KHJlZ3VsYXRvcik7Ci0vLy8gICAgLy8gLi4uCi0vLy8gICAgIyBPazo6PCgpLCBFcnJvcj4oKCkp
-CisvLy8gICAgIC8vIE9idGFpbiBhIHJlZmVyZW5jZSB0byBhIChmaWN0aXRpb3VzKSByZWd1bGF0
-b3IuCisvLy8gICAgIGxldCByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEaXNhYmxlZD4gPSBSZWd1bGF0
-b3I6OjxEaXNhYmxlZD46OmdldChkZXYsIGNfc3RyISgidmNjIikpPzsKKy8vLworLy8vICAgICAv
-LyBUaGUgdm9sdGFnZSBjYW4gYmUgc2V0IGJlZm9yZSBlbmFibGluZyB0aGUgcmVndWxhdG9yIGlm
-IG5lZWRlZCwgZS5nLjoKKy8vLyAgICAgcmVndWxhdG9yLnNldF92b2x0YWdlKG1pbl91diwgbWF4
-X3V2KT87CisvLy8KKy8vLyAgICAgLy8gVGhlIHNhbWUgYXBwbGllcyBmb3IgYGdldF92b2x0YWdl
-KClgLCBpLmUuOgorLy8vICAgICBsZXQgdm9sdGFnZTogTWljcm92b2x0ID0gcmVndWxhdG9yLmdl
-dF92b2x0YWdlKCk/OworLy8vCisvLy8gICAgIC8vIEVuYWJsZXMgdGhlIHJlZ3VsYXRvciwgY29u
-c3VtaW5nIHRoZSBwcmV2aW91cyB2YWx1ZS4KKy8vLyAgICAgLy8KKy8vLyAgICAgLy8gRnJvbSBu
-b3cgb24sIHRoZSByZWd1bGF0b3IgaXMga25vd24gdG8gYmUgZW5hYmxlZCBiZWNhdXNlIG9mIHRo
-ZSB0eXBlCisvLy8gICAgIC8vIGBFbmFibGVkYC4KKy8vLyAgICAgLy8KKy8vLyAgICAgLy8gSWYg
-dGhpcyBvcGVyYXRpb24gZmFpbHMsIHRoZSBgRXJyb3JgIHdpbGwgY29udGFpbiB0aGUgcmVndWxh
-dG9yCisvLy8gICAgIC8vIHJlZmVyZW5jZSwgc28gdGhhdCB0aGUgb3BlcmF0aW9uIG1heSBiZSBy
-ZXRyaWVkLgorLy8vICAgICBsZXQgcmVndWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPQorLy8v
-ICAgICAgICAgcmVndWxhdG9yLnRyeV9pbnRvX2VuYWJsZWQoKS5tYXBfZXJyKHxlcnJvcnwgZXJy
-b3IuZXJyb3IpPzsKKy8vLworLy8vICAgICAvLyBUaGUgdm9sdGFnZSBjYW4gYWxzbyBiZSBzZXQg
-YWZ0ZXIgZW5hYmxpbmcgdGhlIHJlZ3VsYXRvciwgZS5nLjoKKy8vLyAgICAgcmVndWxhdG9yLnNl
-dF92b2x0YWdlKG1pbl91diwgbWF4X3V2KT87CisvLy8KKy8vLyAgICAgLy8gVGhlIHNhbWUgYXBw
-bGllcyBmb3IgYGdldF92b2x0YWdlKClgLCBpLmUuOgorLy8vICAgICBsZXQgdm9sdGFnZTogTWlj
-cm92b2x0ID0gcmVndWxhdG9yLmdldF92b2x0YWdlKCk/OworLy8vCisvLy8gICAgIC8vIERyb3Bw
-aW5nIGFuIGVuYWJsZWQgcmVndWxhdG9yIHdpbGwgZGlzYWJsZSBpdC4gVGhlIHJlZmNvdW50IHdp
-bGwgYmUKKy8vLyAgICAgLy8gZGVjcmVtZW50ZWQuCisvLy8gICAgIGRyb3AocmVndWxhdG9yKTsK
-Ky8vLworLy8vICAgICAvLyAuLi4KKy8vLworLy8vICAgICBPaygoKSkKIC8vLyB9Ci0vLy9gYGAK
-Ky8vLyBgYGAKIC8vLwogLy8vIEEgbW9yZSBjb25jaXNlIHNob3J0Y3V0IGlzIGF2YWlsYWJsZSBm
-b3IgZW5hYmxpbmcgYSByZWd1bGF0b3IuIFRoaXMgaXMKIC8vLyBlcXVpdmFsZW50IHRvIGByZWd1
-bGF0b3JfZ2V0X2VuYWJsZSgpYDoKQEAgLTEzNiw0MCArMTQwLDQ0IEBAIHB1YiBzdHJ1Y3QgRXJy
-b3I8U3RhdGU6IFJlZ3VsYXRvclN0YXRlICsgJ3N0YXRpYz4gewogLy8vICMgdXNlIGtlcm5lbDo6
-ZGV2aWNlOjpEZXZpY2U7CiAvLy8gIyB1c2Uga2VybmVsOjpyZWd1bGF0b3I6OntNaWNyb3ZvbHQs
-IFJlZ3VsYXRvciwgRW5hYmxlZH07CiAvLy8gZm4gZW5hYmxlKGRldjogJkRldmljZSwgbWluX3V2
-OiBNaWNyb3ZvbHQsIG1heF91djogTWljcm92b2x0KSAtPiBSZXN1bHQgewotLy8vICAgIC8vIE9i
-dGFpbiBhIHJlZmVyZW5jZSB0byBhIChmaWN0aXRpb3VzKSByZWd1bGF0b3IgYW5kIGVuYWJsZSBp
-dC4KLS8vLyAgICBsZXQgcmVndWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPSBSZWd1bGF0b3I6
-OjxFbmFibGVkPjo6Z2V0KGRldiwgY19zdHIhKCJ2Y2MiKSk/OwotLy8vCi0vLy8gICAgLy8gRHJv
-cHBpbmcgYW4gZW5hYmxlZCByZWd1bGF0b3Igd2lsbCBkaXNhYmxlIGl0LiBUaGUgcmVmY291bnQg
-d2lsbCBiZQotLy8vICAgIC8vIGRlY3JlbWVudGVkLgotLy8vICAgIGRyb3AocmVndWxhdG9yKTsK
-LS8vLyAgICAvLyAuLi4KLS8vLyAgICAjIE9rOjo8KCksIEVycm9yPigoKSkKKy8vLyAgICAgLy8g
-T2J0YWluIGEgcmVmZXJlbmNlIHRvIGEgKGZpY3RpdGlvdXMpIHJlZ3VsYXRvciBhbmQgZW5hYmxl
-IGl0LgorLy8vICAgICBsZXQgcmVndWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPSBSZWd1bGF0
-b3I6OjxFbmFibGVkPjo6Z2V0KGRldiwgY19zdHIhKCJ2Y2MiKSk/OworLy8vCisvLy8gICAgIC8v
-IERyb3BwaW5nIGFuIGVuYWJsZWQgcmVndWxhdG9yIHdpbGwgZGlzYWJsZSBpdC4gVGhlIHJlZmNv
-dW50IHdpbGwgYmUKKy8vLyAgICAgLy8gZGVjcmVtZW50ZWQuCisvLy8gICAgIGRyb3AocmVndWxh
-dG9yKTsKKy8vLworLy8vICAgICAvLyAuLi4KKy8vLworLy8vICAgICBPaygoKSkKIC8vLyB9CiAv
-Ly8gYGBgCiAvLy8KLS8vLyBEaXNhYmxpbmcgYSByZWd1bGF0b3I6CisvLy8gIyMgRGlzYWJsaW5n
-IGEgcmVndWxhdG9yCiAvLy8KLS8vL2BgYAorLy8vIGBgYAogLy8vICMgdXNlIGtlcm5lbDo6cHJl
-bHVkZTo6KjsKIC8vLyAjIHVzZSBrZXJuZWw6OmRldmljZTo6RGV2aWNlOwogLy8vICMgdXNlIGtl
-cm5lbDo6cmVndWxhdG9yOjp7UmVndWxhdG9yLCBFbmFibGVkLCBEaXNhYmxlZH07CiAvLy8gZm4g
-ZGlzYWJsZShkZXY6ICZEZXZpY2UsIHJlZ3VsYXRvcjogUmVndWxhdG9yPEVuYWJsZWQ+KSAtPiBS
-ZXN1bHQgewotLy8vICAgIC8vIFdlIGNhbiBhbHNvIGRpc2FibGUgYW4gZW5hYmxlZCByZWd1bGF0
-b3Igd2l0aG91dCByZWxpcXVpbnNoaW5nIG91cgotLy8vICAgIC8vIHJlZmNvdW50OgotLy8vICAg
-IC8vCi0vLy8gICAgLy8gSWYgdGhpcyBvcGVyYXRpb24gZmFpbHMsIHRoZSBgRXJyb3JgIHdpbGwg
-Y29udGFpbiB0aGUgcmVndWxhdG9yCi0vLy8gICAgLy8gcmVmZXJlbmNlLCBzbyB0aGF0IHRoZSBv
-cGVyYXRpb24gbWF5IGJlIHJldHJpZWQuCi0vLy8gICAgbGV0IHJlZ3VsYXRvcjogUmVndWxhdG9y
-PERpc2FibGVkPiA9IHJlZ3VsYXRvci50cnlfaW50b19kaXNhYmxlZCgpLm1hcF9lcnIofGVycm9y
-fCBlcnJvci5lcnJvcik/OwotLy8vCi0vLy8gICAgLy8gVGhlIHJlZmNvdW50IHdpbGwgYmUgZGVj
-cmVtZW50ZWQgd2hlbiBgcmVndWxhdG9yYCBpcyBkcm9wcGVkLgotLy8vICAgIGRyb3AocmVndWxh
-dG9yKTsKLS8vLyAgICAvLyAuLi4KLS8vLyAgICAjIE9rOjo8KCksIEVycm9yPigoKSkKKy8vLyAg
-ICAgLy8gV2UgY2FuIGFsc28gZGlzYWJsZSBhbiBlbmFibGVkIHJlZ3VsYXRvciB3aXRob3V0IHJl
-bGlxdWluc2hpbmcgb3VyCisvLy8gICAgIC8vIHJlZmNvdW50OgorLy8vICAgICAvLworLy8vICAg
-ICAvLyBJZiB0aGlzIG9wZXJhdGlvbiBmYWlscywgdGhlIGBFcnJvcmAgd2lsbCBjb250YWluIHRo
-ZSByZWd1bGF0b3IKKy8vLyAgICAgLy8gcmVmZXJlbmNlLCBzbyB0aGF0IHRoZSBvcGVyYXRpb24g
-bWF5IGJlIHJldHJpZWQuCisvLy8gICAgIGxldCByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEaXNhYmxl
-ZD4gPQorLy8vICAgICAgICAgcmVndWxhdG9yLnRyeV9pbnRvX2Rpc2FibGVkKCkubWFwX2Vycih8
-ZXJyb3J8IGVycm9yLmVycm9yKT87CisvLy8KKy8vLyAgICAgLy8gVGhlIHJlZmNvdW50IHdpbGwg
-YmUgZGVjcmVtZW50ZWQgd2hlbiBgcmVndWxhdG9yYCBpcyBkcm9wcGVkLgorLy8vICAgICBkcm9w
-KHJlZ3VsYXRvcik7CisvLy8KKy8vLyAgICAgLy8gLi4uCisvLy8KKy8vLyAgICAgT2soKCkpCiAv
-Ly8gfQogLy8vIGBgYAogLy8vCi0vLy8KLS8vLyBVc2luZyBgUmVndWxhdG9yPER5bmFtaWM+YDoK
-Ky8vLyAjIyBVc2luZyBbYFJlZ3VsYXRvcjxEeW5hbWljPmBdCiAvLy8KIC8vLyBUaGlzIGV4YW1w
-bGUgbWltaWNzIHRoZSBiZWhhdmlvciBvZiB0aGUgQyBBUEksIHdoZXJlIHRoZSB1c2VyIGlzIGlu
-CiAvLy8gY29udHJvbCBvZiB0aGUgZW5hYmxlZCByZWZlcmVuY2UgY291bnQuIFRoaXMgaXMgdXNl
-ZnVsIGZvciBkcml2ZXJzIHRoYXQKQEAgLTE4MiwzMyArMTkwLDMzIEBAIHB1YiBzdHJ1Y3QgRXJy
-b3I8U3RhdGU6IFJlZ3VsYXRvclN0YXRlICsgJ3N0YXRpYz4gewogLy8vICMgdXNlIGtlcm5lbDo6
-Y19zdHI7CiAvLy8gIyB1c2Uga2VybmVsOjpkZXZpY2U6OkRldmljZTsKIC8vLyAjIHVzZSBrZXJu
-ZWw6OnJlZ3VsYXRvcjo6e1JlZ3VsYXRvciwgRHluYW1pY307Ci0vLy8KIC8vLyBzdHJ1Y3QgUHJp
-dmF0ZURhdGEgewogLy8vICAgICByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEeW5hbWljPiwKIC8vLyB9
-CiAvLy8KIC8vLyAvLyBBIGZpY3RpY3Rpb3VzIHByb2JlIGZ1bmN0aW9uIHRoYXQgb2J0YWlucyBh
-IHJlZ3VsYXRvciBhbmQgc2V0cyBpdCB1cC4KIC8vLyBmbiBwcm9iZShkZXY6ICZEZXZpY2UsIGRh
-dGE6ICZtdXQgUHJpdmF0ZURhdGEpIC0+IFJlc3VsdDxQcml2YXRlRGF0YT4gewotLy8vICAgIC8v
-IE9idGFpbiBhIHJlZmVyZW5jZSB0byBhIChmaWN0aXRpb3VzKSByZWd1bGF0b3IuCi0vLy8gICAg
-bGV0IG11dCByZWd1bGF0b3IgPSBSZWd1bGF0b3I6OjxEeW5hbWljPjo6Z2V0KGRldiwgY19zdHIh
-KCJ2Y2MiKSk/OwotLy8vICAgIC8vIEVuYWJsZSB0aGUgcmVndWxhdG9yLiBUaGUgdHlwZSBpcyBz
-dGlsbCBgUmVndWxhdG9yPER5bmFtaWM+YC4KLS8vLyAgICByZWd1bGF0b3IuZW5hYmxlKCk/Owot
-Ly8vCi0vLy8gICBPayhQcml2YXRlRGF0YSB7Ci0vLy8gICAgICAgcmVndWxhdG9yLAotLy8vICAg
-fSkKKy8vLyAgICAgLy8gT2J0YWluIGEgcmVmZXJlbmNlIHRvIGEgKGZpY3RpdGlvdXMpIHJlZ3Vs
-YXRvci4KKy8vLyAgICAgbGV0IG11dCByZWd1bGF0b3IgPSBSZWd1bGF0b3I6OjxEeW5hbWljPjo6
-Z2V0KGRldiwgY19zdHIhKCJ2Y2MiKSk/OworLy8vCisvLy8gICAgIC8vIEVuYWJsZSB0aGUgcmVn
-dWxhdG9yLiBUaGUgdHlwZSBpcyBzdGlsbCBgUmVndWxhdG9yPER5bmFtaWM+YC4KKy8vLyAgICAg
-cmVndWxhdG9yLmVuYWJsZSgpPzsKKy8vLworLy8vICAgICBPayhQcml2YXRlRGF0YSB7IHJlZ3Vs
-YXRvciB9KQogLy8vIH0KIC8vLwogLy8vIC8vIEEgZmljdGljdGlvdXMgZnVuY3Rpb24gdGhhdCBp
-bmRpY2F0ZXMgdGhhdCB0aGUgZGV2aWNlIGlzIGdvaW5nIHRvIGJlIHVzZWQuCiAvLy8gZm4gb3Bl
-bihkZXY6ICZEZXZpY2UsIGRhdGE6ICZtdXQgUHJpdmF0ZURhdGEpIC0+IFJlc3VsdCB7CiAvLy8g
-ICAgIC8vIEluY3JlYXNlIHRoZSBgZW5hYmxlZGAgcmVmZXJlbmNlIGNvdW50LgogLy8vICAgICBk
-YXRhLnJlZ3VsYXRvci5lbmFibGUoKT87CisvLy8KIC8vLyAgICAgT2soKCkpCiAvLy8gfQogLy8v
-CiAvLy8gZm4gY2xvc2UoZGV2OiAmRGV2aWNlLCBkYXRhOiAmbXV0IFByaXZhdGVEYXRhKSAtPiBS
-ZXN1bHQgewotLy8vICAgIC8vIERlY3JlYXNlIHRoZSBgZW5hYmxlZGAgcmVmZXJlbmNlIGNvdW50
-LgotLy8vICAgIGRhdGEucmVndWxhdG9yLmRpc2FibGUoKT87CisvLy8gICAgIC8vIERlY3JlYXNl
-IHRoZSBgZW5hYmxlZGAgcmVmZXJlbmNlIGNvdW50LgorLy8vICAgICBkYXRhLnJlZ3VsYXRvci5k
-aXNhYmxlKCk/OworLy8vCiAvLy8gICAgIE9rKCgpKQogLy8vIH0KIC8vLwpAQCAtMjIxLDEzICsy
-MjksMTQgQEAgcHViIHN0cnVjdCBFcnJvcjxTdGF0ZTogUmVndWxhdG9yU3RhdGUgKyAnc3RhdGlj
-PiB7CiAvLy8gICAgIC8vIHRvIGBlbmFibGUoKWAgYW5kIGBkaXNhYmxlZCgpYCBhcmUgYmFsYW5j
-ZWQgYmVmb3JlIHRoaXMgcG9pbnQuCiAvLy8gICAgIE9rKCgpKQogLy8vIH0KLS8vLwotLy8vCiAv
-Ly8gYGBgCisvLy8KIC8vLyAjIEludmFyaWFudHMKIC8vLwogLy8vIC0gYGlubmVyYCBpcyBhIG5v
-bi1udWxsIHdyYXBwZXIgb3ZlciBhIHBvaW50ZXIgdG8gYSBgc3RydWN0Ci0vLy8gICByZWd1bGF0
-b3JgIG9idGFpbmVkIGZyb20gW2ByZWd1bGF0b3JfZ2V0KClgXShodHRwczovL2RvY3Mua2VybmVs
-Lm9yZy9kcml2ZXItYXBpL3JlZ3VsYXRvci5odG1sI2MucmVndWxhdG9yX2dldCkuCisvLy8gICBy
-ZWd1bGF0b3JgIG9idGFpbmVkIGZyb20gW2ByZWd1bGF0b3JfZ2V0KClgXS4KKy8vLworLy8vIFtg
-cmVndWxhdG9yX2dldCgpYF06IGh0dHBzOi8vZG9jcy5rZXJuZWwub3JnL2RyaXZlci1hcGkvcmVn
-dWxhdG9yLmh0bWwjYy5yZWd1bGF0b3JfZ2V0CiBwdWIgc3RydWN0IFJlZ3VsYXRvcjxTdGF0ZSA9
-IER5bmFtaWM+CiB3aGVyZQogICAgIFN0YXRlOiBSZWd1bGF0b3JTdGF0ZSArICdzdGF0aWMsCkBA
-IC0zNzksNyArMzg4LDcgQEAgZm4gZHJvcCgmbXV0IHNlbGYpIHsKIC8vLyBBIHZvbHRhZ2UgaW4g
-bWljcm92b2x0cy4KIC8vLwogLy8vIFRoZSBleHBsaWNpdCB0eXBlIGlzIHVzZWQgdG8gYXZvaWQg
-Y29uZnVzaW9uIHdpdGggb3RoZXIgbXVsdGlwbGVzIG9mIHRoZQotLy8vIHZvbHQsIHdoaWNoIGNh
-biBiZSBkZXNhc3Ryb3VzLgorLy8vIHZvbHQsIHdoaWNoIGNhbiBiZSBkaXNhc3Ryb3VzLgogI1ty
-ZXByKHRyYW5zcGFyZW50KV0KICNbZGVyaXZlKENvcHksIENsb25lLCBQYXJ0aWFsRXEsIEVxKV0K
-IHB1YiBzdHJ1Y3QgTWljcm92b2x0KHB1YiBpMzIpOwo=
---000000000000939bc1063725ffb3--
+>=20
+>> +///
+>> +///     // You can have as many references to the registration as =
+you want, so
+>> +///     // multiple parts of the driver can access it.
+>> +///     let registration =3D Arc::pin_init(registration, =
+GFP_KERNEL)?;
+>> +///
+>> +///     // The handler may be called immediately after the function =
+above
+>> +///     // returns, possibly in a different CPU.
+>> +///
+>> +///     {
+>> +///         // The data can be accessed from the process context =
+too.
+>> +///         registration.handler().0.fetch_add(1, =
+Ordering::Relaxed);
+>> +///     }
+>=20
+> Why the extra scope?
+
+There used to be a lock here instead of AtomicU32. This extra scope was =
+there to drop it.
+
+It=E2=80=99s gone now so there=E2=80=99s no reason to have the extra =
+scope indeed.
+
+>=20
+>> +///
+>> +///     Ok(registration)
+>> +/// }
+>> +///
+>> +///
+>> +/// # Ok::<(), Error>(())
+>> +///```
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// * We own an irq handler using `&self` as its private data.
+>> +///
+>> +#[pin_data]
+>> +pub struct ThreadedRegistration<T: ThreadedHandler + 'static> {
+>> +    inner: Devres<RegistrationInner>,
+>> +
+>> +    #[pin]
+>> +    handler: T,
+>> +
+>> +    /// Pinned because we need address stability so that we can pass =
+a pointer
+>> +    /// to the callback.
+>> +    #[pin]
+>> +    _pin: PhantomPinned,
+>> +}
+>=20
+> Most of the code in this file is a duplicate of the non-threaded =
+registration.
+>=20
+> I think this would greatly generalize with specialization and an =
+HandlerInternal
+> trait.
+>=20
+> Without specialization I think we could use enums to generalize.
+>=20
+> The most trivial solution would be to define the Handler trait as
+>=20
+> trait Handler {
+>   fn handle(&self);
+>   fn handle_threaded(&self) {};
+> }
+>=20
+> but that's pretty dodgy.
+
+A lot of the comments up until now have touched on somehow having =
+threaded and
+non-threaded versions implemented together. I personally see no problem =
+in
+having things duplicated here, because I think it's easier to reason =
+about what
+is going on this way. Alice has expressed a similar view in a previous =
+iteration.
+
+Can you expand a bit more on your suggestion? Perhaps there's a clean =
+way to do
+it (without macros and etc), but so far I don't see it.
+
+>=20
+>> +impl<T: ThreadedHandler + 'static> ThreadedRegistration<T> {
+>> +    /// Registers the IRQ handler with the system for the given IRQ =
+number.
+>> +    pub(crate) fn register<'a>(
+>> +        dev: &'a Device<Bound>,
+>> +        irq: u32,
+>> +        flags: Flags,
+>> +        name: &'static CStr,
+>> +        handler: T,
+>> +    ) -> impl PinInit<Self, Error> + 'a {
+>=20
+> What happens if `dev`  does not match `irq`? The caller is responsible =
+to only
+> provide an IRQ number that was obtained from this device.
+>=20
+> This should be a safety requirement and a type invariant.
+
+This iteration converted register() from pub to pub(crate). The idea was =
+to
+force drivers to use the accessors. I assumed this was enough to make =
+the API
+safe, as the few users in the kernel crate (i.e.: so far platform and =
+pci)
+could be manually checked for correctness.
+
+To summarize my point, there is still the possibility of misusing this =
+from the
+kernel crate itself, but that is no longer possible from a driver's
+perspective.
+
+=E2=80=94 Daniel
+
