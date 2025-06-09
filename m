@@ -1,235 +1,229 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2050.outbound.protection.outlook.com [40.107.94.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7083597B
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 22:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749508605; cv=fail; b=d2ZAnX1sCbeoX4nYh/+PAQWapOTCjyzyGjgEpsKK0Zr2Fet1hRZ+/voItHdeeIYvupDupkOzZxuTXpT+JskG1hyTWET3Q2n83jhPRYkRV78qN9TZ0KvjFALh0CunO2/Yetd4DqQONUgSxjoGMOLo9EwbVpe9kQCt8s+6bA+R4zA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749508605; c=relaxed/simple;
-	bh=dFmYF0eqeao4H0ldOygQKQoTuomXj1ezvHLco60lkbs=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uoVoLEM6TmJtlWVD7odGW2BisQ7i07WGzHLsOBiJs2LhN9z+qO1t1e0hKs5Yscp3o5358/P16uG3k/2HO78Ig0+5m/csO4j8yDjtR/ipvwQztKByeULZbui9dHNVfSgX+QDmSYO+iQzrwVb58wuyTB31aHV8QjffUP/4IQ0tKko=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=U0SRcwJ+; arc=fail smtp.client-ip=40.107.94.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E674454652;
+	Mon,  9 Jun 2025 22:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749509195; cv=none; b=XxZZMq4Msn7LaMbSasmyJzYe2V3Fzi3ZfSRrFYzuj3B5ek3BeWuI8lh3PVqGoe/pOvDXbNW7NWt1n8I+GbROX9MFbd5MV4q6hsEQuA4ih5gb39E4HzXVuArwP3wQ5rPQwa1keUs9kXzeQ0gbE8AdRhmhoA1knk2Qtongam5cS8Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749509195; c=relaxed/simple;
+	bh=IEqm1JdCJmQGuOAMdzOGJLauECy2w663mdnt4zkoHAQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RlbhkyJB7tpdjgEM8M2Ya2HTCSDo8J/2B3Xae9WlcUpX1iwbg5RB4ybtcfBIhxHKLjLnwim3yC7N/vPfAHLIV9WLogHHfRuxSkF8DD2ckRKbu5g3lZUje0k+aCd5Q+p2EHQUZ72T18WzgnarUxmMx4C4gwqv3sm4fZDutwESnQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EnMMdYtQ; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="U0SRcwJ+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LDdYTOqUClBwTrMWipNbFyB2rtVZjW96lmeUdawI7sVtlPYQeO0+gYZxTWKe8YHJNPJ1Wp6NaqwLYCxT1O9kEtSp+CzalsjwYewB3xaht7W8tvLyH7u6ZBc9I5LGFid54UvY7GIHBElvRWqIXCuROWUwihrr3HITzh55//Lns1aPeLOKDjzhabpBOY6OhzKrurlE+SzsXzrar9cwM4C7RX0bXAgO0RRFQPj59sKIkAbd8sBybVFpCUkzgDo075eMO95d+fieDYFWiHmTlXQv6M/+w6O+5bcK5Kl6judaT8+7Y+ZDD2ErA0J+PXq4lsW+8iJTr783Bo8llg8DaPVzYw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oh1aV5mikjiNcgv3vEr1Y2Z7/Biql9tASWPyd7SuVzQ=;
- b=C/i7rwbbzKy19kchecJe/9mKoQBrh+CZR0fXawybvC83iUEGXZT/ic/vHXqaM0osaJA+t/KH8djrXDojz30gT/bNEMcGev9bRDrRDCml3E9X6sTbwyUpMLB1eDd/Je31fJhSc/hmuPiX0iAygmpo0GWD0iJaWsFN1NFDNTUtGbjhPnVBB0aUqiDrW+h5wtzBEJOuzDQUTNl70bzRxkt+OjMqHAhfSbJTJNRyY1rIyI9iicwIId72A1iWeQ7q7p56pyET7e6Yz0seSF2iXL3hRSIs0Xmjhlu5U/qUVhhJHGhxTMSI1Wy2wKKnO0ueLrE0YHZzqwt4/FKQm60ShmV7Ow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oh1aV5mikjiNcgv3vEr1Y2Z7/Biql9tASWPyd7SuVzQ=;
- b=U0SRcwJ+bdmptKB/OmGxR8EaQyh571/gBLTmx7Vc+V77zgaHXvLCQ/lUMmMfroz4kIjOp8rB972F6x2cbQq4FAMQxsam8Mw1mYSqoJdRaHFqf3tPhxtvtlgxa8Z2nBxVHOKxdhAukeTcGmNnetD9+33nV6jy/GhtnvelKUU+4YO5Rqyy8HY5VRgOXrWGLYFcNt8ESiiX+//uTe/EBd5F4RYKDHPUUJCpnmpC1DH4CyFKyXBw5th6F+TXDotEb6vZxTfwfNgdBHqRTYFxzCoxaBnIAT46+D+lKsavxZaUPYy2smgiT7p7pZfbCUpEXhA4ECCrOE2HkR+9X1vltwZ6FQ==
-Received: from BN0PR07CA0016.namprd07.prod.outlook.com (2603:10b6:408:141::21)
- by BL1PR12MB5779.namprd12.prod.outlook.com (2603:10b6:208:392::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.40; Mon, 9 Jun
- 2025 22:36:39 +0000
-Received: from BL6PEPF0001AB4C.namprd04.prod.outlook.com
- (2603:10b6:408:141:cafe::bd) by BN0PR07CA0016.outlook.office365.com
- (2603:10b6:408:141::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8792.35 via Frontend Transport; Mon,
- 9 Jun 2025 22:36:39 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0001AB4C.mail.protection.outlook.com (10.167.242.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8835.15 via Frontend Transport; Mon, 9 Jun 2025 22:36:38 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 9 Jun 2025
- 15:36:20 -0700
-Received: from ttabi.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Mon, 9 Jun
- 2025 15:36:19 -0700
-From: Timur Tabi <ttabi@nvidia.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
-	<rust-for-linux@vger.kernel.org>
-Subject: [PATCH v3] rust: introduce sfile macro for succinct code tracing
-Date: Mon, 9 Jun 2025 17:36:06 -0500
-Message-ID: <20250609223606.2897030-1-ttabi@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EnMMdYtQ"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7d098f7bd77so549518285a.0;
+        Mon, 09 Jun 2025 15:46:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749509193; x=1750113993; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=V5UGBtq13GxPtnNntFLWLuUNWSuRazB9K2mUu5fyq/A=;
+        b=EnMMdYtQzyrGIkXfAjksPNVV58qWUhO/HQH33C+ukjy79/M/Ibu8ieDNix8OIO/bmP
+         1jC83hij98FekEJ3hNiTdZuht5iNKgSgQVKRTyiPTJ6F9CRUOoI1tGPh3cLtoWqwQkbj
+         V7rMf7eJ6xJW0a5zopMZusgB3ad38igPBmh5BASveYUDWVKKWfvji6TB6JCD8mHNw98M
+         A2BJw5RfFgjBXZOqhhWimO0ekaQygaP0KzcOrFA4Z5L8rn1juEXRcV86MgUP8pvn6q5G
+         xnoPXiMX4yyKlXtkY1hke5+1ZZmpfibngBCMeuS9+EaJxoqkgEeszmV3gK804yKvEte1
+         S9xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749509193; x=1750113993;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V5UGBtq13GxPtnNntFLWLuUNWSuRazB9K2mUu5fyq/A=;
+        b=r+Ai3Y5527IcrqSIzvGYqVzNqMbsfL1cOMa7w2UCiQiD+0Vef0RUpqeWQYbsA2TTif
+         8/2GN/R6Cq98pwsl+iUEeqj/YojV71b8WXoGli/lkqmmUwa6TOj63rV1FP5ZthqqlSh9
+         y2jQGnRgpNLwjWz4540wnFu6iADrl7qSvBvTZss1e3PreBW8O19YNY80r/AgptcaJSgg
+         bT/kjTf3obLPgTYvaRJDvw4Y1GiqXAXN1x8gGS2+TqWXRITJjFyBB9NrrCLxa8bLB5N7
+         Ef50qsmEkGxR8Upe/ll/s3tDZZ1OcQtv27lNost3dndX6jqcY6A2dVG0GAj2wGnstNW3
+         qVWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUE1KlHjE7sjcNlZ5SVO2v/bkgFQwcRc6LFJNdgMQp6Ju4zE9EEguVZyEQqCDWnZ04fBgtAC4EpeHV+@vger.kernel.org, AJvYcCWE/cPPoUPwNq30Wodp700dOHU+ynuUc/VSMKo0xRS+6Gnz8JUw6h/6c8aZCqIub3b3mhEfpTspnqckzsXgcME=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqiACz5JreikEulMJ5RxbK/2JoSP5/BvMpNPqfK+WXX310nFFg
+	gGnzwe3KFErWCy7ThY9n89nRXTEFJszfCMEaBK6HecuVkisA4IZYHP9D
+X-Gm-Gg: ASbGncu5xGVv1WfS6VI4J6ucxfqeRgL3wv7cFFak6E7PlNzloAy7GvRyK8ur2m75S+1
+	HStqYd/xHh6+KBFjXfJuYu6EcgWT3T4lLRKva50sLMQ+ikGZmwxRcJsJjLxGN7nYCQJfuUujal8
+	8i/w/lX3V2mA239xv3xg1NclyNR1e9jZRqcAa7SzmVwXpSfK8osc0djaw9X0m0PA+qB9VwxhKVt
+	fcnO9qN7P5k6FWdorlm1ufdDacP5/0pho5bn3S/v7kEZkvX9bZ3OZP+BMtkJgvazPw7HEROAjlE
+	1I1JgREv+ZVzIK/satqPEfKC7oLuL/XkxZSMWVsU4FhP+2rQ519W2fcn2C9detxr0SCAFXax8Tu
+	f85RAOUJBMGknfIGFbt84mqIQ4f7din1XPMYzfa2cNMGTB1Voyw96
+X-Google-Smtp-Source: AGHT+IENOpjPB1yljzfiMwwSApPRUkLli1+qtSLEn+wxBrXU5IyRAiAyOKuFF67UnXoHNcSDCEwJLg==
+X-Received: by 2002:a05:620a:4405:b0:7ce:ed0e:423c with SMTP id af79cd13be357-7d39d8a98c1mr206503185a.9.1749509192780;
+        Mon, 09 Jun 2025 15:46:32 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d250f64b80sm600930285a.23.2025.06.09.15.46.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 15:46:32 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9CB111200043;
+	Mon,  9 Jun 2025 18:46:31 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 09 Jun 2025 18:46:31 -0400
+X-ME-Sender: <xms:R2RHaDFX-ayTKY_XEAtPlRZLaUJcmcTzMNqXxYt5tMIOMw2ZbL2Qhw>
+    <xme:R2RHaAVCotEba3hJ6wiE7eELRHOlN9cNpkq0idcja6IhRYZ5l-G79l5j5_Y7grJlA
+    AmDgu-D6WnfWHcCSA>
+X-ME-Received: <xmr:R2RHaFLyYjOrAK9AajBPQlvBK38jrTtlHgECn4abbmDU9j_ozl9mBvgLZI8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdelleduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfh
+    rhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtoh
+    hmqeenucggtffrrghtthgvrhhnpeeggeeukeeghfevudektdevjeehhfekffevueefudei
+    vdelteeltdekheejgfeiveenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgv
+    shhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehhe
+    ehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+    pdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplh
+    hinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    rhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhhkmhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhu
+    gidqrghrtghhsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurg
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghi
+    lhdrtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprh
+    gtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhn
+    fegpghhhsehprhhothhonhhmrghilhdrtghomh
+X-ME-Proxy: <xmx:R2RHaBFFUoumlD9FVwR97VsnRb_VGE5ZjMU2O_H7o1alcLDtmh6-Tw>
+    <xmx:R2RHaJVyBOKURSgIPW_MM4HpqdtbuOrjj2f8vRhRXqQz_Bz6n5bsfQ>
+    <xmx:R2RHaMNDGZOUKtvkKEOaibtuuXJlhTBJb_R3RMYe2Rna5oYj4Dvm_A>
+    <xmx:R2RHaI2dBFkwHzWUnlTwZ93d9ieuVEvXRJI2eOsDr0qkFL8cJraYOA>
+    <xmx:R2RHaOWPMJkRRQo2mlVml8cuv0Ggdgy91zrVbjFfdtJApm9qDyX-HE-k>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Jun 2025 18:46:31 -0400 (EDT)
+From: Boqun Feng <boqun.feng@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev,
+	linux-arch@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Thomas Gleixner" <tglx@linutronix.de>
+Subject: [PATCH v4 00/10] LKMM generic atomics in Rust 
+Date: Mon,  9 Jun 2025 15:46:05 -0700
+Message-Id: <20250609224615.27061-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4C:EE_|BL1PR12MB5779:EE_
-X-MS-Office365-Filtering-Correlation-Id: 22d8a663-a5f2-4bbd-bb6f-08dda7a6197e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2CzZCmis60LPDEBiVFAT6RVVnjSFOckDbDo6Ybx3UPOJ1ihtPVuXGssQqsS1?=
- =?us-ascii?Q?hXvqb/gzuPCCPLSZxgtPUvnkb1U5ven/QZNvf2Pj1J0KRjCZ3m+JMH1MHZ6q?=
- =?us-ascii?Q?MpRiop/WDK8E5c/9Q0EnKv5uhHb5rH7je2wmxPx2kCqwTFHEyF4RI72LF4Xe?=
- =?us-ascii?Q?91G+Z9roMlRkp/oIpl5Wzh1CibFJhaRh76pBFkE4qKcB6vGAooqATFtHaMOZ?=
- =?us-ascii?Q?SjrzK6GHDrJ5hhB86AK4x9EEHz7OERPom3r36ryp32d9vdaKG52Fkx3ZEO3m?=
- =?us-ascii?Q?gx5aAhN8Ep29DcnQNXeNDXE19PNw2YfMoLYmD9yhKvVk+EimTGsGFH30aCdP?=
- =?us-ascii?Q?7TI2+Qvh2/UmASeOYnQO4GNXKqBNhuB+gSnJDMXo+1UR1a9e78LUxWTf+8nk?=
- =?us-ascii?Q?z6i9YKKdZ6QDRvY3np3Um9tNHcZqq6Thv7GdKkEDqHcezwdeb3yYF2zjMRDH?=
- =?us-ascii?Q?qtk85Rnl3g6R6VUcMA5Vgh9EfHYXrlPrqfEOeFDKZRLVNJrcFe8dj40lxo+t?=
- =?us-ascii?Q?LoVFxuZEF6jSQpWyWI3bFEM32xWwtJw5LSxM2M85tSzH5X6PaHPQRmaZzfyD?=
- =?us-ascii?Q?/tsiKIV4yBFD1R8PcQkSMESfiif5ObqvUfwn2LSQ2/+2dWm9uvUOgB+aMzbY?=
- =?us-ascii?Q?5dqdqPlFpI44K+stQVlJY1W2AulbHTJIkA1p/PzXqEbNlTgDED5hApbW5h0c?=
- =?us-ascii?Q?EnPvAmkt51ZsG0v0a8OL50lIJAQ4vsSY6GWtaInkfWcm63S+/hVTOv05JX8q?=
- =?us-ascii?Q?q2B7/gwQI0yD96MakT5PjNKFIMQm0M7zDSUU+YDn0E/bkobkatpSUavCtnkT?=
- =?us-ascii?Q?wk3dVVuNM4ZasS5gh997TUVRQ/Ht7fNMnJ7l7jB7hv4nESVRCW06Fn7lwWrZ?=
- =?us-ascii?Q?bDnHyT4KA+FGV5JjuEEoeOe42iEsOLeO8xmQfeESfl7l+dWrIIHd4amZAuQz?=
- =?us-ascii?Q?M4fOVHvZXffyouVRI6twLF5sWa0enerxsEU/PhdmuSWxlZCc7VSQ9Fi8Xwfi?=
- =?us-ascii?Q?WO/u6Ysmkk5czyJ8EG06+qO99/RT7kST3W4yniPCO1Jupenudk3DfD+ER89I?=
- =?us-ascii?Q?d+nSfmiCrRhUf5hmNHYJU6uZeCABg7L1lXRfMIbF/za9wHnR3mzy+CAmLADv?=
- =?us-ascii?Q?q3I/Qf6NEC6cF8pKNyoXWPuiHsZSiOa9TquTXz+3vVeoSo/g9jre6NUDfQHE?=
- =?us-ascii?Q?lWUVv6JrlAcgg4O4+Sb3MdLEq2hS1xPhPkaN9jShmU9DEiZfoBRmJ5384oDB?=
- =?us-ascii?Q?3kWdIRPe6RigwRLmjI3Skg+ncG4Y3Esm/S2WUkHJFqzEG0T7rfJWmOw6y/Vp?=
- =?us-ascii?Q?MRIbyuVQE5A5BSSOvnoEQ/M5EpPm3MG0FkVEuZLnMOiqkvI0YlQuJOTKJGog?=
- =?us-ascii?Q?rULFuNfzGp6TeG1Mmy9QKrMX9K1OLNoSL4KlzZPa7rxbKpGyopCP4laiTH4H?=
- =?us-ascii?Q?naYEwGThXY/9F88cOhSbX1pocqZVnANzVpykOHxoKpWE+sV9FmJFSl7uLSrA?=
- =?us-ascii?Q?mg8NvnTLZFms/j0O2fdhi6wPB3eWptm4U8YH?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 22:36:38.9182
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22d8a663-a5f2-4bbd-bb6f-08dda7a6197e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4C.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5779
 
-Introduce the sfile (short file) macro that returns the stem of
-the current source file filename.
+Hi,
 
-Rust provides a file!() macro that is similar to C's __FILE__ predefined
-macro.  Unlike __FILE__, however, file!() returns a full path, which is
-klunky when used for debug traces such as
+v4 for LKMM atomics in Rust, you can find the previous versions:
 
-	pr_info!("{}:{}\n", file!(), line!());
+v3: https://lore.kernel.org/rust-for-linux/20250421164221.1121805-1-boqun.feng@gmail.com/
+v2: https://lore.kernel.org/rust-for-linux/20241101060237.1185533-1-boqun.feng@gmail.com/
+v1: https://lore.kernel.org/rust-for-linux/20240612223025.1158537-1-boqun.feng@gmail.com/
+wip: https://lore.kernel.org/rust-for-linux/20240322233838.868874-1-boqun.feng@gmail.com/
 
-sfile!() can be used in situations instead, to provide a more compact
-print.  For example, if file!() returns "rust/kernel/print.rs", sfile!()
-returns just "print".
+The reason of providing our own LKMM atomics is because memory model
+wise Rust native memory model is not guaranteed to work with LKMM and
+having only one memory model throughout the kernel is always better for
+reasoning.
 
-The macro avoids str::rfind() because currently, that function is not
-const.  The compiler emits a call to memrchr, even when called on string
-literals.  Instead, the macro implements its own versions of rfind(),
-allowing the compiler to generate the slice at compile time.
 
-The macro also uses some unsafe functions in order to avoid indexing
-into a str, which is necessary to fully support const contexts.
+I haven't gotten any review from last version but I got a few feedbacks
+during Rust-for-Linux weekly meeting. I trimmed two more patches to make
+the current series easier to review, the current version includes:
 
-Signed-off-by: Timur Tabi <ttabi@nvidia.com>
----
- rust/kernel/print.rs | 66 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 66 insertions(+)
+* Generic atomic support of i32, i64, u32, u64, isize and usize on:
+  * load() and store()
+  * xchg() and cmpxchg()
+  * add() and fetch_add()
 
-diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-index 9783d960a97a..5b0c36481e95 100644
---- a/rust/kernel/print.rs
-+++ b/rust/kernel/print.rs
-@@ -423,3 +423,69 @@ macro_rules! pr_cont (
-         $crate::print_macro!($crate::print::format_strings::CONT, true, $($arg)*)
-     )
- );
-+/// Returns the index of the last occurrence of `needle` in `haystack`, or zero.
-+///
-+/// Identical to [`str::rfind()`], but unlike that function, this one is const.
-+/// That is, the compiler can inline it when called with a string literal.
-+#[inline]
-+pub const fn rfind_const(haystack: &str, needle: char) -> Option<usize> {
-+    let bytes = haystack.as_bytes();
-+    let mut i = haystack.len();
-+    while i > 0 {
-+        i -= 1;
-+        if bytes[i] == needle as u8 {
-+            return Some(i);
-+        }
-+    }
-+    None
-+}
-+
-+/// Returns just the base filename of the current file.
-+///
-+/// This differs from the built-in [`file!()`] macro, which returns the full
-+/// path of the current file.
-+///
-+/// Using the base filename gives you more succinct logging prints.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::sfile
-+/// pr_err!("{}:{}\n", sfile!(), line!());
-+/// ```
-+#[macro_export]
-+macro_rules! sfile {
-+    () => {{
-+        use kernel::print::rfind_const;
-+
-+        const FILE: &str = file!();
-+
-+        // [`.as_bytes()`] does not support non-ASCII filenames
-+        assert!(FILE.is_ascii());
-+
-+        let start = match rfind_const(FILE, '/') {
-+            Some(slash) => slash + 1,
-+            None => 0,
-+        };
-+        let end = match rfind_const(FILE, '.') {
-+            Some(dot) => dot,
-+            None => FILE.len(),
-+        };
-+
-+        // The following code the equivalent of &FILE[start..start+len],
-+        // except that it allows for const contexts.  For example,
-+        //   const SFILE: &'static str = sfile!();
-+
-+        let base_ptr: *const u8 = FILE.as_ptr();
-+
-+        // SAFETY: We know that `start` is <= the length of FILE, because FILE
-+        // never ends in a slash.
-+        let ptr: *const u8 = unsafe { base_ptr.add(start) };
-+        // SAFETY: We also know that `end` < the length of FILE.
-+        // If `end` < `start`, this will generate a compiler error.
-+        let slice = unsafe { core::slice::from_raw_parts(ptr, end - start) };
-+        // SAFETY: We know that the slice is valid UTF-8, because we checked
-+        // that FILE is ASCII (via is_ascii() above).
-+        unsafe { core::str::from_utf8_unchecked(slice) }
-+    }};
-+}
+* Atomic pointer support on:
+  * load() and store()
+  * xchg() and cmpxchg()
 
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-prerequisite-patch-id: 4bfda16a333b9f00a139050b7c6875922961a15d
+* Barrier and ordering support.
+
+Any missing functionality can of course be added in a later patch. There
+are some use cases based on these API can be found at:
+
+	git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git rust-atomic-dev
+
+for example, RCU protected pointers and AtomicFlag.
+
+I think the current version is ready to merge (modulo some documentation
+improvement), and I would like to postpone small implementation
+improvement because we are seeing growing usages of atomics in Rust
+side. It's better to merge the API first so that we can clean up and
+help new users.
+
+But I do have one question about how to route the patch, basically I
+have three options:
+
+* via tip, I can send a pull request to Ingo at -rc4 or -rc5.
+
+* via rust-next, I can send a pull request to Miguel at -rc4 or -rc5.
+
+* via my own tree or atomic (Peter if you remember, we do have an atomic
+  group in kernel.org and I can create a shared tree under that group),
+  I can send a pull request to Linus for 6.17 merge window.
+
+Please advise.
+
+Regards,
+Boqun
+
+Boqun Feng (10):
+  rust: Introduce atomic API helpers
+  rust: sync: Add basic atomic operation mapping framework
+  rust: sync: atomic: Add ordering annotation types
+  rust: sync: atomic: Add generic atomics
+  rust: sync: atomic: Add atomic {cmp,}xchg operations
+  rust: sync: atomic: Add the framework of arithmetic operations
+  rust: sync: atomic: Add Atomic<u{32,64}>
+  rust: sync: atomic: Add Atomic<{usize,isize}>
+  rust: sync: atomic: Add Atomic<*mut T>
+  rust: sync: Add memory barriers
+
+ MAINTAINERS                               |    4 +-
+ rust/helpers/atomic.c                     | 1038 +++++++++++++++++++++
+ rust/helpers/barrier.c                    |   18 +
+ rust/helpers/helpers.c                    |    2 +
+ rust/kernel/sync.rs                       |    2 +
+ rust/kernel/sync/atomic.rs                |  176 ++++
+ rust/kernel/sync/atomic/generic.rs        |  524 +++++++++++
+ rust/kernel/sync/atomic/ops.rs            |  199 ++++
+ rust/kernel/sync/atomic/ordering.rs       |   94 ++
+ rust/kernel/sync/barrier.rs               |   67 ++
+ scripts/atomic/gen-atomics.sh             |    1 +
+ scripts/atomic/gen-rust-atomic-helpers.sh |   65 ++
+ 12 files changed, 2189 insertions(+), 1 deletion(-)
+ create mode 100644 rust/helpers/atomic.c
+ create mode 100644 rust/helpers/barrier.c
+ create mode 100644 rust/kernel/sync/atomic.rs
+ create mode 100644 rust/kernel/sync/atomic/generic.rs
+ create mode 100644 rust/kernel/sync/atomic/ops.rs
+ create mode 100644 rust/kernel/sync/atomic/ordering.rs
+ create mode 100644 rust/kernel/sync/barrier.rs
+ create mode 100755 scripts/atomic/gen-rust-atomic-helpers.sh
+
 -- 
-2.43.0
+2.39.5 (Apple Git-154)
 
