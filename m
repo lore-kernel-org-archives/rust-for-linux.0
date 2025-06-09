@@ -1,537 +1,273 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77917CA5A;
-	Mon,  9 Jun 2025 15:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749483257; cv=pass; b=A2qSQKJ7CPW/YtVYqWFnn9qzmqUJsHqcuKbOKIs4BG3OHtZ+BxaXvr+M7qfGPl1vUA528gJ29suXrpYIJicxWzmAcGNoJfsGeRMBvGUORLAYLzld7jNi9Jb/rnYezRIs/mX+a/iyEA24Rj5tib9k6qiRhFY9QQ8leGVJ8ycUEQk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749483257; c=relaxed/simple;
-	bh=1BqzNPxMt9/gkbcje/zlXSLeq4wK6DFQDIBKbIQdUmc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mllQfL3FrXj75dRPheKHSLLOWHqW+zkni7Gw6JZHQrU99YUlYWzfRfGhFzps1wNAY7I2lvN3er6zCIKSKbeG6OgNa05RLIcLTx8uf/+DAYR/ycxPYxKboZbxfdn0u9b/MJgDSAi1etzHUBWcxziRNrMCSz1Fszs+OUBsyjaEEgs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=DO1qxVD8; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F608207A20;
+	Mon,  9 Jun 2025 16:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749486204; cv=none; b=k2qjvSQBrCchI0wBKyYNPrwhpzDxJZW+rUHmdjjOKfuRsgYMMyJVOJQ8i7abIsUANj3muz4sXrpdEwec5xShcMUDlj/b+0QfI+QIBYGIiNB4wTOPnUFS4F7P4AbYgp4PdMIL6Y/NxIEWv+Aodf/reDlfTTM1jzdWeIWXbPjxjUg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749486204; c=relaxed/simple;
+	bh=MBQzkw1Cd/Wfl8vUu2Ms/EOYU7qa3+zJyoskuNovfKc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SHCDkA5xGUbSA0UQwUB1KQzhLAM6fbhDNYOPoFllOCj95ENLSyScD/+cgelV8TbOhQ/BsQeh+L6qCEzjTliIwMd81bgCjKJrDvebzCZsFu7zwiaWusehQ9Kz6hMFTvkkRnu1CvVnHgehLtWULCSwW3GLWSJNdFBcJDz4JuNTfkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=koizrgei; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="DO1qxVD8"
-ARC-Seal: i=1; a=rsa-sha256; t=1749483222; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=aFnVZlnK3FbmJfw0XCCibnWYty2xX0+jqlOI5Hrhn23NvteJBeFBOr5XPlhgACpEsNdEMh93D0zfJArzePlesx/VrhXw4O5kzQcFC+pynJIgTTsRuOv2pdeO5ssSz/KSSqS2Qmv0tWeMr0fv6KJt0sxE879Wa7RUHzI8/VsKYno=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1749483222; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=5jEa0sa6+DP0Fzqbkr5XEmDbgA41/sJSoK2RJXNgpno=; 
-	b=Cb7BSSXPpgY5LbTxneXLHjequA0vT4jRjHCTA2yyowRmAObII/RPQDW+r0y3igjOLj53YBw4YrkO5+/CEvDZ/45QFXh//ktUo5B5Uv4cAQe0gpTdZsCzyFQ23ep8tXbGnCkWocxY+ukOkmuI0s5h3F1vZgDdnq4kgu0+Fw2dw7w=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749483222;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
-	bh=5jEa0sa6+DP0Fzqbkr5XEmDbgA41/sJSoK2RJXNgpno=;
-	b=DO1qxVD83qSG7gY02yxUIRQXVwZm7KATcmvCQU17K/rQRdLFENcpfDbSOxrBKC4j
-	wxPHMUlDq7AgF6tQqlJuujWQO7KP07Dd1e0gtl33EBFnLxQy6zxo8MIEPLsMHHi5+1t
-	cA0LttMGtmVKwoDGZqDmO9yayrXsq+yX9vjJpP1s=
-Received: by mx.zohomail.com with SMTPS id 174948322052335.94351856109415;
-	Mon, 9 Jun 2025 08:33:40 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Mon, 09 Jun 2025 12:32:38 -0300
-Subject: [PATCH v4] rust: regulator: add a bare minimum regulator
- abstraction
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="koizrgei"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-31306794b30so845372a91.2;
+        Mon, 09 Jun 2025 09:23:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749486201; x=1750091001; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=MBQzkw1Cd/Wfl8vUu2Ms/EOYU7qa3+zJyoskuNovfKc=;
+        b=koizrgeic98S9GF929eEg1wl6tEpaHVznCXK4x3UJArhZIsHgiMCMZXlInnMRXVpNI
+         AMozY2kNYiVZt8G7x3O5lTTYrd0B4sncBIkNWBaInpSOdMGJc10YLg5GFhWa4fX1yjkM
+         d0QUsKo1iXvP7PZ1H0FXLC2/PB4ZeCTe9WkwI4oWJm6Mm04QYSOTo/SeSckQGT01pmmJ
+         CbQXlQPoqlOO/i37M+J3nvEJ3KL6/VORTndmNdugoeXiDWXWhWtQVHZeX959h5bf+zDg
+         3H7dyIfMK4xYBUPoE+A5C++5emNSsPqd+xLBrGBnjdXvv3PWjm1GoBFlMKTEFl4me3LS
+         DiwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749486201; x=1750091001;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MBQzkw1Cd/Wfl8vUu2Ms/EOYU7qa3+zJyoskuNovfKc=;
+        b=s9B1LAmyISPsFlk36WTYMmls1ye6CFlwenIzFJl7IUUUtVJ+uHTIRq2FMh6qrhPtT5
+         4CUX9B/bLRH2cSxzMKRXlYsI6FdC8Vh/byqKlNhjbERTVFdAiMcOH1LmJlMVnZhVTsGa
+         K23B8R8E2Ox7zeXNTZnf54UO/Vi2T9xm+vNtU5IVQfHlIhWT1ReP/8Yv87cKNPRW3zgi
+         t3E3uYxQRfnLqiQNTf+hOXpXFhqPr5j3yG6DmT05Bdyn2SvT1E9HHj7B3lo4019vNwnj
+         oqH5FFjV5tYvMUUPJhZsOaMY2uHF5RNZLwJbjER+o5xC3Xaj/QZxnucVfMg5Lat8ukHp
+         w1PA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSKUIsAf3vwJw5BXMSyYegKmh3nqGn7GeGX9Lu9TNIbWZfUcZRtqtsfOT3eymb43UxlQzQCq54T5EFFWM=@vger.kernel.org, AJvYcCXW3S47/9vVI3axgfBadPHKlBRAauVGpWcoRG6ma6qJt8VZPLBiHxHzsf6LxcuoOQgj5zAcJf+uavZpNDjsgrw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUrwsYWGldOCw0GuXGmJMgyKX6uLrMV+Q8SdDU7syXVjy2dasW
+	aq89W6euozQWsDZYgp1ya59r7iJaqFSVuMqRa19g0v2KeXIu6BeUiS/MgyLa9d8t/KxkgQiMAIK
+	lEi7Nd6ZEQ3O+A/hN8LgCD2UdajKUBB0=
+X-Gm-Gg: ASbGncvTzarGgHWLpGGJpIw26ZvAWe0xcc9e5DWTV7NgSag8eFG+mu35C2QKBxHEtKV
+	bgrTdog/GoYJcd+hhevh+ZUxMnG8H9V0C3SfzfCHL/L5amtsv8sx89TY6jud9gkGa9i4YIsoBVr
+	imTG5IMtfSnZhPjE/H8rykLRV4+/731H2hm/kseYn17No=
+X-Google-Smtp-Source: AGHT+IFEFD2dn3Ea+74SdjizL+UpUO2bGStyWyI05OtJSF/D+VbekAzAc9HBNc1B0Dh7BP+hlqJN5oXutu7xIdqs+MI=
+X-Received: by 2002:a17:90b:3c89:b0:310:cf92:7899 with SMTP id
+ 98e67ed59e1d1-31347506b75mr7366339a91.3.1749486201437; Mon, 09 Jun 2025
+ 09:23:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250609-topics-tyr-regulator-v4-1-b4fdcf1385a7@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAJX+RmgC/4XOQW7DIBCF4atErIsFg41JV71H1cUYxjESNtHgW
- o0i3704m0itqi7fYr7576IQRyri9XQXTFssMS91tC8n4SdcLiRjqFuAgk4ZsHLN1+iLXG8smS6
- fCdfMktxwdqN1VoVe1NMr0xi/Huz7R90j51muExM+MdBnbaHTfQO9MxaklgGXSKnBNFMM+OZzS
- jhkxsbn+WCnWOq32yN2gwP/p2s7VK8ILTqrB7I/zKNtM0+o0+YPyFSo9R561YaR/C9o3/dvx9p
- yR0wBAAA=
-X-Change-ID: 20250326-topics-tyr-regulator-e8b98f6860d7
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Sebastian Reichel <sebastian.reichel@collabora.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
+References: <20250609-topics-tyr-regulator-v4-1-b4fdcf1385a7@collabora.com>
+In-Reply-To: <20250609-topics-tyr-regulator-v4-1-b4fdcf1385a7@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 9 Jun 2025 18:23:08 +0200
+X-Gm-Features: AX0GCFtrteg0jvvOwqF6B1ZuynuTK626j9OUulYVRJtax2wjbAIJC9Hod8lZkyY
+Message-ID: <CANiq72kcF-CqUwvCBRt5FjX2Yrj517UYjXHA9Sf7-Xevsy=2Kw@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: regulator: add a bare minimum regulator abstraction
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Boris Brezillon <boris.brezillon@collabora.com>, 
+	Sebastian Reichel <sebastian.reichel@collabora.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000939bc1063725ffb3"
 
-Add a bare minimum regulator abstraction to be used by Rust drivers.
-This abstraction adds a small subset of the regulator API, which is
-thought to be sufficient for the drivers we have now.
+--000000000000939bc1063725ffb3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Regulators provide the power needed by many hardware blocks and thus are
-likely to be needed by a lot of drivers.
+On Mon, Jun 9, 2025 at 5:34=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> Add a bare minimum regulator abstraction to be used by Rust drivers.
+> This abstraction adds a small subset of the regulator API, which is
+> thought to be sufficient for the drivers we have now.
 
-It was tested on rk3588, where it was used to power up the "mali"
-regulator in order to power up the GPU.
+For future versions, or at apply time, please see the attached diff
+for some documentation fixes (mostly) -- please check with
+`--ignore-space-change`, since some indentation fixes can hide other
+changes.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
-Changes in v4:
-- Rewrote the abstraction to use typestates as per the suggestions by
-  Benno and Alex.
-- Introduced the `Dynamic` state.
-- Added more examples.
-- Fixed some broken docs.
-- Link to v3: https://lore.kernel.org/r/20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com
+Most should be self-explanatory, but if there is something that you
+think should not be done, please let me know of course.
 
-Changes in v3:
-- Rebased on rust-next
-- Added examples to showcase the API
-- Fixed some rendering issues in the docs
-- Exposed {get|set}_voltage for both Regulator and EnabledRegulator
-- Derived Clone, Copy, PartialEq and Eq for Microvolt
-- Link to v2: https://lore.kernel.org/r/20250326-topics-tyr-regulator-v2-1-c0ea6a861be6@collabora.com
+Thanks!
 
-Resend v2:
-  - cc Regulator maintainers
-Changes from v1:
-  - Rebased on rust-next
-  - Split the design into two types as suggested by Alice Ryhl.
-  - Modify the docs to highlight how users can use kernel::types::Either
-    or an enum to enable and disable the regulator at runtime.
-  - Link to v1: https://lore.kernel.org/rust-for-linux/20250219162517.278362-1-daniel.almeida@collabora.com/
----
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/lib.rs              |   2 +
- rust/kernel/regulator.rs        | 385 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 388 insertions(+)
+Cheers,
+Miguel
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index ab37e1d35c70d52e69b754bf855bc19911d156d8..e14cce03338ef5f6a09a23fd41ca47b8c913fa65 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -31,6 +31,7 @@
- #include <linux/poll.h>
- #include <linux/property.h>
- #include <linux/refcount.h>
-+#include <linux/regulator/consumer.h>
- #include <linux/sched.h>
- #include <linux/security.h>
- #include <linux/slab.h>
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 28007be98fbad0e875d7e5345e164e2af2c5da32..c8fd7e4e036e9e5b6958acf0dcfa952b916a3d48 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -86,6 +86,8 @@
- pub mod prelude;
- pub mod print;
- pub mod rbtree;
-+#[cfg(CONFIG_REGULATOR)]
-+pub mod regulator;
- pub mod revocable;
- pub mod security;
- pub mod seq_file;
-diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..338fc653c32b49e630ecb6a320ac26aea973cd64
---- /dev/null
-+++ b/rust/kernel/regulator.rs
-@@ -0,0 +1,385 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Regulator abstractions, providing a standard kernel interface to control
-+//! voltage and current regulators.
-+//!
-+//! The intention is to allow systems to dynamically control regulator power
-+//! output in order to save power and prolong battery life. This applies to both
-+//! voltage regulators (where voltage output is controllable) and current sinks
-+//! (where current limit is controllable).
-+//!
-+//! C header: [`include/linux/regulator/consumer.h`](srctree/include/linux/regulator/consumer.h)
-+//!
-+//! Regulators are modeled in Rust with a collection of states. Each state may
-+//! enforce a given invariant, and they may convert between each other where applicable.
-+//!
-+//! See [`Voltage and current regulator API`]("https://docs.kernel.org/driver-api/regulator.html")
-+//! for more information.
-+
-+use crate::{
-+    bindings,
-+    device::Device,
-+    error::{from_err_ptr, to_result, Result},
-+    prelude::*,
-+};
-+
-+use core::{marker::PhantomData, ptr::NonNull};
-+
-+mod private {
-+    pub trait Sealed {}
-+
-+    impl Sealed for super::Enabled {}
-+    impl Sealed for super::Disabled {}
-+    impl Sealed for super::Dynamic {}
-+}
-+
-+/// A trait representing the different states a [`Regulator`] can be in.
-+pub trait RegulatorState: private::Sealed {}
-+
-+/// A state where the [`Regulator`] is known to be enabled.
-+pub struct Enabled;
-+
-+/// A state where this [`Regulator`] handle has not specifically asked for the
-+/// underlying regulator to be enabled. This means that this reference does not
-+/// own an `enable` reference count, but the regulator may still be on.
-+pub struct Disabled;
-+
-+/// A state that models the C API. The [`Regulator`] can be either enabled or
-+/// disabled, and the user is in control of the reference count. This is also
-+/// the default state.
-+///
-+/// Use [`Regulator::is_enabled`] to check the regulator's current state.
-+pub struct Dynamic;
-+
-+impl RegulatorState for Enabled {}
-+impl RegulatorState for Disabled {}
-+impl RegulatorState for Dynamic {}
-+
-+/// A trait that abstracts the conversion of a [`Regulator`] to an enabled state.
-+pub trait TryIntoEnabled: RegulatorState {}
-+impl TryIntoEnabled for Disabled {}
-+
-+/// A trait that abstracts the conversion of a [`Regulator`] to a disabled state.
-+pub trait TryIntoDisabled: RegulatorState {}
-+impl TryIntoDisabled for Enabled {}
-+
-+/// A trait that abstracts the ability to check if a [`Regulator`] is enabled.
-+pub trait IsEnabled: RegulatorState {}
-+impl IsEnabled for Disabled {}
-+impl IsEnabled for Dynamic {}
-+
-+/// An error that can occur when trying to convert a [`Regulator`] between states.
-+pub struct Error<State: RegulatorState + 'static> {
-+    /// The error that occurred.
-+    pub error: kernel::error::Error,
-+    /// The regulator that caused the error, so that the operation may be retried.
-+    pub regulator: Regulator<State>,
-+}
-+
-+/// A `struct regulator` abstraction.
-+///
-+/// # Examples
-+///
-+/// Enabling a regulator:
-+///
-+/// This example uses [`Regulator<Enabled>`], which is suitable for drivers that
-+/// enable a regulator at probe time and leave them on until the device is
-+/// removed or otherwise shutdown.
-+///
-+/// These users can store [`Regulator<Enabled>`] directly in their driver's
-+/// private data struct.
-+///
-+/// ```
-+/// # use kernel::prelude::*;
-+/// # use kernel::c_str;
-+/// # use kernel::device::Device;
-+/// # use kernel::regulator::{Microvolt, Regulator, Disabled, Enabled};
-+/// fn enable(dev: &Device, min_uv: Microvolt, max_uv: Microvolt) -> Result {
-+///    // Obtain a reference to a (fictitious) regulator.
-+///    let regulator: Regulator<Disabled> = Regulator::<Disabled>::get(dev, c_str!("vcc"))?;
-+///
-+///    // The voltage can be set before enabling the regulator if needed, e.g.:
-+///    regulator.set_voltage(min_uv, max_uv)?;
-+///
-+///    // The same applies for `get_voltage()`, i.e.:
-+///    let voltage: Microvolt = regulator.get_voltage()?;
-+///
-+///    // Enables the regulator, consuming the previous value.
-+///    //
-+///    // From now on, the regulator is known to be enabled because of the type
-+///    // `Enabled`.
-+///    //
-+///    // If this operation fails, the `Error` will contain the regulator
-+///    // reference, so that the operation may be retried.
-+///    let regulator: Regulator<Enabled> = regulator.try_into_enabled().map_err(|error| error.error)?;
-+///
-+///    // The voltage can also be set after enabling the regulator, e.g.:
-+///    regulator.set_voltage(min_uv, max_uv)?;
-+///
-+///    // The same applies for `get_voltage()`, i.e.:
-+///    let voltage: Microvolt = regulator.get_voltage()?;
-+///
-+///    // Dropping an enabled regulator will disable it. The refcount will be
-+///    // decremented.
-+///    drop(regulator);
-+///    // ...
-+///    # Ok::<(), Error>(())
-+/// }
-+///```
-+///
-+/// A more concise shortcut is available for enabling a regulator. This is
-+/// equivalent to `regulator_get_enable()`:
-+///
-+/// ```
-+/// # use kernel::prelude::*;
-+/// # use kernel::c_str;
-+/// # use kernel::device::Device;
-+/// # use kernel::regulator::{Microvolt, Regulator, Enabled};
-+/// fn enable(dev: &Device, min_uv: Microvolt, max_uv: Microvolt) -> Result {
-+///    // Obtain a reference to a (fictitious) regulator and enable it.
-+///    let regulator: Regulator<Enabled> = Regulator::<Enabled>::get(dev, c_str!("vcc"))?;
-+///
-+///    // Dropping an enabled regulator will disable it. The refcount will be
-+///    // decremented.
-+///    drop(regulator);
-+///    // ...
-+///    # Ok::<(), Error>(())
-+/// }
-+/// ```
-+///
-+/// Disabling a regulator:
-+///
-+///```
-+/// # use kernel::prelude::*;
-+/// # use kernel::device::Device;
-+/// # use kernel::regulator::{Regulator, Enabled, Disabled};
-+/// fn disable(dev: &Device, regulator: Regulator<Enabled>) -> Result {
-+///    // We can also disable an enabled regulator without reliquinshing our
-+///    // refcount:
-+///    //
-+///    // If this operation fails, the `Error` will contain the regulator
-+///    // reference, so that the operation may be retried.
-+///    let regulator: Regulator<Disabled> = regulator.try_into_disabled().map_err(|error| error.error)?;
-+///
-+///    // The refcount will be decremented when `regulator` is dropped.
-+///    drop(regulator);
-+///    // ...
-+///    # Ok::<(), Error>(())
-+/// }
-+/// ```
-+///
-+///
-+/// Using `Regulator<Dynamic>`:
-+///
-+/// This example mimics the behavior of the C API, where the user is in
-+/// control of the enabled reference count. This is useful for drivers that
-+/// might call enable and disable to manage the `enable` reference count at
-+/// runtime, perhaps as a result of `open()` and `close()` calls or whatever
-+/// other driver-specific or subsystem-specific hooks.
-+///
-+/// ```
-+/// # use kernel::prelude::*;
-+/// # use kernel::c_str;
-+/// # use kernel::device::Device;
-+/// # use kernel::regulator::{Regulator, Dynamic};
-+///
-+/// struct PrivateData {
-+///     regulator: Regulator<Dynamic>,
-+/// }
-+///
-+/// // A fictictious probe function that obtains a regulator and sets it up.
-+/// fn probe(dev: &Device, data: &mut PrivateData) -> Result<PrivateData> {
-+///    // Obtain a reference to a (fictitious) regulator.
-+///    let mut regulator = Regulator::<Dynamic>::get(dev, c_str!("vcc"))?;
-+///    // Enable the regulator. The type is still `Regulator<Dynamic>`.
-+///    regulator.enable()?;
-+///
-+///   Ok(PrivateData {
-+///       regulator,
-+///   })
-+/// }
-+///
-+/// // A fictictious function that indicates that the device is going to be used.
-+/// fn open(dev: &Device, data: &mut PrivateData) -> Result {
-+///     // Increase the `enabled` reference count.
-+///     data.regulator.enable()?;
-+///     Ok(())
-+/// }
-+///
-+/// fn close(dev: &Device, data: &mut PrivateData) -> Result {
-+///    // Decrease the `enabled` reference count.
-+///    data.regulator.disable()?;
-+///     Ok(())
-+/// }
-+///
-+/// fn remove(dev: &Device, data: PrivateData) -> Result {
-+///     // `PrivateData` is dropped here, which will drop the
-+///     // `Regulator<Dynamic>` in turn.
-+///     //
-+///     // The reference that was obtained by `regulator_get()` will be
-+///     // released, but it is up to the user to make sure that the number of calls
-+///     // to `enable()` and `disabled()` are balanced before this point.
-+///     Ok(())
-+/// }
-+///
-+///
-+/// ```
-+/// # Invariants
-+///
-+/// - `inner` is a non-null wrapper over a pointer to a `struct
-+///   regulator` obtained from [`regulator_get()`](https://docs.kernel.org/driver-api/regulator.html#c.regulator_get).
-+pub struct Regulator<State = Dynamic>
-+where
-+    State: RegulatorState + 'static,
-+{
-+    inner: NonNull<bindings::regulator>,
-+    _phantom: PhantomData<State>,
-+}
-+
-+impl<T: RegulatorState + 'static> Regulator<T> {
-+    /// Sets the voltage for the regulator.
-+    ///
-+    /// This can be used to ensure that the device powers up cleanly.
-+    pub fn set_voltage(&self, min_uv: Microvolt, max_uv: Microvolt) -> Result {
-+        // SAFETY: Safe as per the type invariants of `Regulator`.
-+        to_result(unsafe {
-+            bindings::regulator_set_voltage(self.inner.as_ptr(), min_uv.0, max_uv.0)
-+        })
-+    }
-+
-+    /// Gets the current voltage of the regulator.
-+    pub fn get_voltage(&self) -> Result<Microvolt> {
-+        // SAFETY: Safe as per the type invariants of `Regulator`.
-+        let voltage = unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) };
-+        if voltage < 0 {
-+            Err(kernel::error::Error::from_errno(voltage))
-+        } else {
-+            Ok(Microvolt(voltage))
-+        }
-+    }
-+
-+    fn get_internal(dev: &Device, name: &CStr) -> Result<Regulator<T>> {
-+        // SAFETY: It is safe to call `regulator_get()`, on a device pointer
-+        // received from the C code.
-+        let inner = from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_ptr()) })?;
-+
-+        // SAFETY: We can safely trust `inner` to be a pointer to a valid
-+        // regulator if `ERR_PTR` was not returned.
-+        let inner = unsafe { NonNull::new_unchecked(inner) };
-+
-+        Ok(Self {
-+            inner,
-+            _phantom: PhantomData,
-+        })
-+    }
-+
-+    fn enable_internal(&mut self) -> Result {
-+        // SAFETY: Safe as per the type invariants of `Regulator`.
-+        to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
-+    }
-+
-+    fn disable_internal(&mut self) -> Result {
-+        // SAFETY: Safe as per the type invariants of `Regulator`.
-+        to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })
-+    }
-+}
-+
-+impl Regulator<Disabled> {
-+    /// Obtains a [`Regulator`] instance from the system.
-+    pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
-+        Regulator::get_internal(dev, name)
-+    }
-+}
-+
-+impl Regulator<Enabled> {
-+    /// Obtains a [`Regulator`] instance from the system and enables it.
-+    ///
-+    /// This is equivalent to calling `regulator_get_enable()` in the C API.
-+    pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
-+        Regulator::<Disabled>::get_internal(dev, name)?
-+            .try_into_enabled()
-+            .map_err(|error| error.error)
-+    }
-+}
-+
-+impl Regulator<Dynamic> {
-+    /// Obtains a [`Regulator`] instance from the system. The current state of
-+    /// the regulator is unknown and it is up to the user to manage the enabled
-+    /// reference count.
-+    ///
-+    /// This closely mimics the behavior of the C API and can be used to
-+    /// dynamically manage the enabled reference count at runtime.
-+    pub fn get(dev: &Device, name: &CStr) -> Result<Self> {
-+        Regulator::get_internal(dev, name)
-+    }
-+
-+    /// Increases the `enabled` reference count.
-+    pub fn enable(&mut self) -> Result {
-+        self.enable_internal()
-+    }
-+
-+    /// Decreases the `enabled` reference count.
-+    pub fn disable(&mut self) -> Result {
-+        self.disable_internal()
-+    }
-+}
-+
-+impl<T: TryIntoEnabled> Regulator<T> {
-+    /// Attempts to convert the regulator to an enabled state.
-+    pub fn try_into_enabled(mut self) -> Result<Regulator<Enabled>, Error<T>> {
-+        self.enable_internal()
-+            .map(|()| Regulator {
-+                inner: self.inner,
-+                _phantom: PhantomData,
-+            })
-+            .map_err(|error| Error {
-+                error,
-+                regulator: self,
-+            })
-+    }
-+}
-+
-+impl<T: TryIntoDisabled> Regulator<T> {
-+    /// Attempts to convert the regulator to a disabled state.
-+    pub fn try_into_disabled(mut self) -> Result<Regulator<Disabled>, Error<T>> {
-+        self.disable_internal()
-+            .map(|()| Regulator {
-+                inner: self.inner,
-+                _phantom: PhantomData,
-+            })
-+            .map_err(|error| Error {
-+                error,
-+                regulator: self,
-+            })
-+    }
-+}
-+
-+impl<T: IsEnabled> Regulator<T> {
-+    /// Checks if the regulator is enabled.
-+    pub fn is_enabled(&self) -> bool {
-+        // SAFETY: Safe as per the type invariants of `Regulator`.
-+        unsafe { bindings::regulator_is_enabled(self.inner.as_ptr()) != 0 }
-+    }
-+}
-+
-+impl<T: RegulatorState + 'static> Drop for Regulator<T> {
-+    fn drop(&mut self) {
-+        if core::any::TypeId::of::<T>() == core::any::TypeId::of::<Enabled>() {
-+            // SAFETY: By the type invariants, we know that `self` owns a
-+            // reference on the enabled refcount, so it is safe to relinquish it
-+            // now.
-+            unsafe { bindings::regulator_disable(self.inner.as_ptr()) };
-+        }
-+        // SAFETY: By the type invariants, we know that `self` owns a reference,
-+        // so it is safe to relinquish it now.
-+        unsafe { bindings::regulator_put(self.inner.as_ptr()) };
-+    }
-+}
-+
-+/// A voltage in microvolts.
-+///
-+/// The explicit type is used to avoid confusion with other multiples of the
-+/// volt, which can be desastrous.
-+#[repr(transparent)]
-+#[derive(Copy, Clone, PartialEq, Eq)]
-+pub struct Microvolt(pub i32);
+--000000000000939bc1063725ffb3
+Content-Type: text/x-patch; charset="US-ASCII"; name="docfixes.diff"
+Content-Disposition: attachment; filename="docfixes.diff"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mbpau7ap0>
+X-Attachment-Id: f_mbpau7ap0
 
----
-base-commit: edc5e6e019c99b529b3d1f2801d5cce9924ae79b
-change-id: 20250326-topics-tyr-regulator-e8b98f6860d7
-
-Best regards,
--- 
-Daniel Almeida <daniel.almeida@collabora.com>
-
+ZGlmZiAtLWdpdCBhL3J1c3Qva2VybmVsL3JlZ3VsYXRvci5ycyBiL3J1c3Qva2VybmVsL3JlZ3Vs
+YXRvci5ycwppbmRleCAzMzhmYzY1M2MzMmIuLjBiYWY3NjNhMDk4ZSAxMDA2NDQKLS0tIGEvcnVz
+dC9rZXJuZWwvcmVndWxhdG9yLnJzCisrKyBiL3J1c3Qva2VybmVsL3JlZ3VsYXRvci5ycwpAQCAt
+MTMsNyArMTMsNyBAQAogLy8hIFJlZ3VsYXRvcnMgYXJlIG1vZGVsZWQgaW4gUnVzdCB3aXRoIGEg
+Y29sbGVjdGlvbiBvZiBzdGF0ZXMuIEVhY2ggc3RhdGUgbWF5CiAvLyEgZW5mb3JjZSBhIGdpdmVu
+IGludmFyaWFudCwgYW5kIHRoZXkgbWF5IGNvbnZlcnQgYmV0d2VlbiBlYWNoIG90aGVyIHdoZXJl
+IGFwcGxpY2FibGUuCiAvLyEKLS8vISBTZWUgW2BWb2x0YWdlIGFuZCBjdXJyZW50IHJlZ3VsYXRv
+ciBBUElgXSgiaHR0cHM6Ly9kb2NzLmtlcm5lbC5vcmcvZHJpdmVyLWFwaS9yZWd1bGF0b3IuaHRt
+bCIpCisvLyEgU2VlIFtWb2x0YWdlIGFuZCBjdXJyZW50IHJlZ3VsYXRvciBBUEldKGh0dHBzOi8v
+ZG9jcy5rZXJuZWwub3JnL2RyaXZlci1hcGkvcmVndWxhdG9yLmh0bWwpCiAvLyEgZm9yIG1vcmUg
+aW5mb3JtYXRpb24uCiAKIHVzZSBjcmF0ZTo6ewpAQCAtNzIsNiArNzIsNyBAQCBpbXBsIElzRW5h
+YmxlZCBmb3IgRHluYW1pYyB7fQogcHViIHN0cnVjdCBFcnJvcjxTdGF0ZTogUmVndWxhdG9yU3Rh
+dGUgKyAnc3RhdGljPiB7CiAgICAgLy8vIFRoZSBlcnJvciB0aGF0IG9jY3VycmVkLgogICAgIHB1
+YiBlcnJvcjoga2VybmVsOjplcnJvcjo6RXJyb3IsCisKICAgICAvLy8gVGhlIHJlZ3VsYXRvciB0
+aGF0IGNhdXNlZCB0aGUgZXJyb3IsIHNvIHRoYXQgdGhlIG9wZXJhdGlvbiBtYXkgYmUgcmV0cmll
+ZC4KICAgICBwdWIgcmVndWxhdG9yOiBSZWd1bGF0b3I8U3RhdGU+LAogfQpAQCAtODAsNyArODEs
+NyBAQCBwdWIgc3RydWN0IEVycm9yPFN0YXRlOiBSZWd1bGF0b3JTdGF0ZSArICdzdGF0aWM+IHsK
+IC8vLwogLy8vICMgRXhhbXBsZXMKIC8vLwotLy8vIEVuYWJsaW5nIGEgcmVndWxhdG9yOgorLy8v
+ICMjIEVuYWJsaW5nIGEgcmVndWxhdG9yCiAvLy8KIC8vLyBUaGlzIGV4YW1wbGUgdXNlcyBbYFJl
+Z3VsYXRvcjxFbmFibGVkPmBdLCB3aGljaCBpcyBzdWl0YWJsZSBmb3IgZHJpdmVycyB0aGF0CiAv
+Ly8gZW5hYmxlIGEgcmVndWxhdG9yIGF0IHByb2JlIHRpbWUgYW5kIGxlYXZlIHRoZW0gb24gdW50
+aWwgdGhlIGRldmljZSBpcwpAQCAtOTUsMzcgKzk2LDQwIEBAIHB1YiBzdHJ1Y3QgRXJyb3I8U3Rh
+dGU6IFJlZ3VsYXRvclN0YXRlICsgJ3N0YXRpYz4gewogLy8vICMgdXNlIGtlcm5lbDo6ZGV2aWNl
+OjpEZXZpY2U7CiAvLy8gIyB1c2Uga2VybmVsOjpyZWd1bGF0b3I6OntNaWNyb3ZvbHQsIFJlZ3Vs
+YXRvciwgRGlzYWJsZWQsIEVuYWJsZWR9OwogLy8vIGZuIGVuYWJsZShkZXY6ICZEZXZpY2UsIG1p
+bl91djogTWljcm92b2x0LCBtYXhfdXY6IE1pY3Jvdm9sdCkgLT4gUmVzdWx0IHsKLS8vLyAgICAv
+LyBPYnRhaW4gYSByZWZlcmVuY2UgdG8gYSAoZmljdGl0aW91cykgcmVndWxhdG9yLgotLy8vICAg
+IGxldCByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEaXNhYmxlZD4gPSBSZWd1bGF0b3I6OjxEaXNhYmxl
+ZD46OmdldChkZXYsIGNfc3RyISgidmNjIikpPzsKLS8vLwotLy8vICAgIC8vIFRoZSB2b2x0YWdl
+IGNhbiBiZSBzZXQgYmVmb3JlIGVuYWJsaW5nIHRoZSByZWd1bGF0b3IgaWYgbmVlZGVkLCBlLmcu
+OgotLy8vICAgIHJlZ3VsYXRvci5zZXRfdm9sdGFnZShtaW5fdXYsIG1heF91dik/OwotLy8vCi0v
+Ly8gICAgLy8gVGhlIHNhbWUgYXBwbGllcyBmb3IgYGdldF92b2x0YWdlKClgLCBpLmUuOgotLy8v
+ICAgIGxldCB2b2x0YWdlOiBNaWNyb3ZvbHQgPSByZWd1bGF0b3IuZ2V0X3ZvbHRhZ2UoKT87Ci0v
+Ly8KLS8vLyAgICAvLyBFbmFibGVzIHRoZSByZWd1bGF0b3IsIGNvbnN1bWluZyB0aGUgcHJldmlv
+dXMgdmFsdWUuCi0vLy8gICAgLy8KLS8vLyAgICAvLyBGcm9tIG5vdyBvbiwgdGhlIHJlZ3VsYXRv
+ciBpcyBrbm93biB0byBiZSBlbmFibGVkIGJlY2F1c2Ugb2YgdGhlIHR5cGUKLS8vLyAgICAvLyBg
+RW5hYmxlZGAuCi0vLy8gICAgLy8KLS8vLyAgICAvLyBJZiB0aGlzIG9wZXJhdGlvbiBmYWlscywg
+dGhlIGBFcnJvcmAgd2lsbCBjb250YWluIHRoZSByZWd1bGF0b3IKLS8vLyAgICAvLyByZWZlcmVu
+Y2UsIHNvIHRoYXQgdGhlIG9wZXJhdGlvbiBtYXkgYmUgcmV0cmllZC4KLS8vLyAgICBsZXQgcmVn
+dWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPSByZWd1bGF0b3IudHJ5X2ludG9fZW5hYmxlZCgp
+Lm1hcF9lcnIofGVycm9yfCBlcnJvci5lcnJvcik/OwotLy8vCi0vLy8gICAgLy8gVGhlIHZvbHRh
+Z2UgY2FuIGFsc28gYmUgc2V0IGFmdGVyIGVuYWJsaW5nIHRoZSByZWd1bGF0b3IsIGUuZy46Ci0v
+Ly8gICAgcmVndWxhdG9yLnNldF92b2x0YWdlKG1pbl91diwgbWF4X3V2KT87Ci0vLy8KLS8vLyAg
+ICAvLyBUaGUgc2FtZSBhcHBsaWVzIGZvciBgZ2V0X3ZvbHRhZ2UoKWAsIGkuZS46Ci0vLy8gICAg
+bGV0IHZvbHRhZ2U6IE1pY3Jvdm9sdCA9IHJlZ3VsYXRvci5nZXRfdm9sdGFnZSgpPzsKLS8vLwot
+Ly8vICAgIC8vIERyb3BwaW5nIGFuIGVuYWJsZWQgcmVndWxhdG9yIHdpbGwgZGlzYWJsZSBpdC4g
+VGhlIHJlZmNvdW50IHdpbGwgYmUKLS8vLyAgICAvLyBkZWNyZW1lbnRlZC4KLS8vLyAgICBkcm9w
+KHJlZ3VsYXRvcik7Ci0vLy8gICAgLy8gLi4uCi0vLy8gICAgIyBPazo6PCgpLCBFcnJvcj4oKCkp
+CisvLy8gICAgIC8vIE9idGFpbiBhIHJlZmVyZW5jZSB0byBhIChmaWN0aXRpb3VzKSByZWd1bGF0
+b3IuCisvLy8gICAgIGxldCByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEaXNhYmxlZD4gPSBSZWd1bGF0
+b3I6OjxEaXNhYmxlZD46OmdldChkZXYsIGNfc3RyISgidmNjIikpPzsKKy8vLworLy8vICAgICAv
+LyBUaGUgdm9sdGFnZSBjYW4gYmUgc2V0IGJlZm9yZSBlbmFibGluZyB0aGUgcmVndWxhdG9yIGlm
+IG5lZWRlZCwgZS5nLjoKKy8vLyAgICAgcmVndWxhdG9yLnNldF92b2x0YWdlKG1pbl91diwgbWF4
+X3V2KT87CisvLy8KKy8vLyAgICAgLy8gVGhlIHNhbWUgYXBwbGllcyBmb3IgYGdldF92b2x0YWdl
+KClgLCBpLmUuOgorLy8vICAgICBsZXQgdm9sdGFnZTogTWljcm92b2x0ID0gcmVndWxhdG9yLmdl
+dF92b2x0YWdlKCk/OworLy8vCisvLy8gICAgIC8vIEVuYWJsZXMgdGhlIHJlZ3VsYXRvciwgY29u
+c3VtaW5nIHRoZSBwcmV2aW91cyB2YWx1ZS4KKy8vLyAgICAgLy8KKy8vLyAgICAgLy8gRnJvbSBu
+b3cgb24sIHRoZSByZWd1bGF0b3IgaXMga25vd24gdG8gYmUgZW5hYmxlZCBiZWNhdXNlIG9mIHRo
+ZSB0eXBlCisvLy8gICAgIC8vIGBFbmFibGVkYC4KKy8vLyAgICAgLy8KKy8vLyAgICAgLy8gSWYg
+dGhpcyBvcGVyYXRpb24gZmFpbHMsIHRoZSBgRXJyb3JgIHdpbGwgY29udGFpbiB0aGUgcmVndWxh
+dG9yCisvLy8gICAgIC8vIHJlZmVyZW5jZSwgc28gdGhhdCB0aGUgb3BlcmF0aW9uIG1heSBiZSBy
+ZXRyaWVkLgorLy8vICAgICBsZXQgcmVndWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPQorLy8v
+ICAgICAgICAgcmVndWxhdG9yLnRyeV9pbnRvX2VuYWJsZWQoKS5tYXBfZXJyKHxlcnJvcnwgZXJy
+b3IuZXJyb3IpPzsKKy8vLworLy8vICAgICAvLyBUaGUgdm9sdGFnZSBjYW4gYWxzbyBiZSBzZXQg
+YWZ0ZXIgZW5hYmxpbmcgdGhlIHJlZ3VsYXRvciwgZS5nLjoKKy8vLyAgICAgcmVndWxhdG9yLnNl
+dF92b2x0YWdlKG1pbl91diwgbWF4X3V2KT87CisvLy8KKy8vLyAgICAgLy8gVGhlIHNhbWUgYXBw
+bGllcyBmb3IgYGdldF92b2x0YWdlKClgLCBpLmUuOgorLy8vICAgICBsZXQgdm9sdGFnZTogTWlj
+cm92b2x0ID0gcmVndWxhdG9yLmdldF92b2x0YWdlKCk/OworLy8vCisvLy8gICAgIC8vIERyb3Bw
+aW5nIGFuIGVuYWJsZWQgcmVndWxhdG9yIHdpbGwgZGlzYWJsZSBpdC4gVGhlIHJlZmNvdW50IHdp
+bGwgYmUKKy8vLyAgICAgLy8gZGVjcmVtZW50ZWQuCisvLy8gICAgIGRyb3AocmVndWxhdG9yKTsK
+Ky8vLworLy8vICAgICAvLyAuLi4KKy8vLworLy8vICAgICBPaygoKSkKIC8vLyB9Ci0vLy9gYGAK
+Ky8vLyBgYGAKIC8vLwogLy8vIEEgbW9yZSBjb25jaXNlIHNob3J0Y3V0IGlzIGF2YWlsYWJsZSBm
+b3IgZW5hYmxpbmcgYSByZWd1bGF0b3IuIFRoaXMgaXMKIC8vLyBlcXVpdmFsZW50IHRvIGByZWd1
+bGF0b3JfZ2V0X2VuYWJsZSgpYDoKQEAgLTEzNiw0MCArMTQwLDQ0IEBAIHB1YiBzdHJ1Y3QgRXJy
+b3I8U3RhdGU6IFJlZ3VsYXRvclN0YXRlICsgJ3N0YXRpYz4gewogLy8vICMgdXNlIGtlcm5lbDo6
+ZGV2aWNlOjpEZXZpY2U7CiAvLy8gIyB1c2Uga2VybmVsOjpyZWd1bGF0b3I6OntNaWNyb3ZvbHQs
+IFJlZ3VsYXRvciwgRW5hYmxlZH07CiAvLy8gZm4gZW5hYmxlKGRldjogJkRldmljZSwgbWluX3V2
+OiBNaWNyb3ZvbHQsIG1heF91djogTWljcm92b2x0KSAtPiBSZXN1bHQgewotLy8vICAgIC8vIE9i
+dGFpbiBhIHJlZmVyZW5jZSB0byBhIChmaWN0aXRpb3VzKSByZWd1bGF0b3IgYW5kIGVuYWJsZSBp
+dC4KLS8vLyAgICBsZXQgcmVndWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPSBSZWd1bGF0b3I6
+OjxFbmFibGVkPjo6Z2V0KGRldiwgY19zdHIhKCJ2Y2MiKSk/OwotLy8vCi0vLy8gICAgLy8gRHJv
+cHBpbmcgYW4gZW5hYmxlZCByZWd1bGF0b3Igd2lsbCBkaXNhYmxlIGl0LiBUaGUgcmVmY291bnQg
+d2lsbCBiZQotLy8vICAgIC8vIGRlY3JlbWVudGVkLgotLy8vICAgIGRyb3AocmVndWxhdG9yKTsK
+LS8vLyAgICAvLyAuLi4KLS8vLyAgICAjIE9rOjo8KCksIEVycm9yPigoKSkKKy8vLyAgICAgLy8g
+T2J0YWluIGEgcmVmZXJlbmNlIHRvIGEgKGZpY3RpdGlvdXMpIHJlZ3VsYXRvciBhbmQgZW5hYmxl
+IGl0LgorLy8vICAgICBsZXQgcmVndWxhdG9yOiBSZWd1bGF0b3I8RW5hYmxlZD4gPSBSZWd1bGF0
+b3I6OjxFbmFibGVkPjo6Z2V0KGRldiwgY19zdHIhKCJ2Y2MiKSk/OworLy8vCisvLy8gICAgIC8v
+IERyb3BwaW5nIGFuIGVuYWJsZWQgcmVndWxhdG9yIHdpbGwgZGlzYWJsZSBpdC4gVGhlIHJlZmNv
+dW50IHdpbGwgYmUKKy8vLyAgICAgLy8gZGVjcmVtZW50ZWQuCisvLy8gICAgIGRyb3AocmVndWxh
+dG9yKTsKKy8vLworLy8vICAgICAvLyAuLi4KKy8vLworLy8vICAgICBPaygoKSkKIC8vLyB9CiAv
+Ly8gYGBgCiAvLy8KLS8vLyBEaXNhYmxpbmcgYSByZWd1bGF0b3I6CisvLy8gIyMgRGlzYWJsaW5n
+IGEgcmVndWxhdG9yCiAvLy8KLS8vL2BgYAorLy8vIGBgYAogLy8vICMgdXNlIGtlcm5lbDo6cHJl
+bHVkZTo6KjsKIC8vLyAjIHVzZSBrZXJuZWw6OmRldmljZTo6RGV2aWNlOwogLy8vICMgdXNlIGtl
+cm5lbDo6cmVndWxhdG9yOjp7UmVndWxhdG9yLCBFbmFibGVkLCBEaXNhYmxlZH07CiAvLy8gZm4g
+ZGlzYWJsZShkZXY6ICZEZXZpY2UsIHJlZ3VsYXRvcjogUmVndWxhdG9yPEVuYWJsZWQ+KSAtPiBS
+ZXN1bHQgewotLy8vICAgIC8vIFdlIGNhbiBhbHNvIGRpc2FibGUgYW4gZW5hYmxlZCByZWd1bGF0
+b3Igd2l0aG91dCByZWxpcXVpbnNoaW5nIG91cgotLy8vICAgIC8vIHJlZmNvdW50OgotLy8vICAg
+IC8vCi0vLy8gICAgLy8gSWYgdGhpcyBvcGVyYXRpb24gZmFpbHMsIHRoZSBgRXJyb3JgIHdpbGwg
+Y29udGFpbiB0aGUgcmVndWxhdG9yCi0vLy8gICAgLy8gcmVmZXJlbmNlLCBzbyB0aGF0IHRoZSBv
+cGVyYXRpb24gbWF5IGJlIHJldHJpZWQuCi0vLy8gICAgbGV0IHJlZ3VsYXRvcjogUmVndWxhdG9y
+PERpc2FibGVkPiA9IHJlZ3VsYXRvci50cnlfaW50b19kaXNhYmxlZCgpLm1hcF9lcnIofGVycm9y
+fCBlcnJvci5lcnJvcik/OwotLy8vCi0vLy8gICAgLy8gVGhlIHJlZmNvdW50IHdpbGwgYmUgZGVj
+cmVtZW50ZWQgd2hlbiBgcmVndWxhdG9yYCBpcyBkcm9wcGVkLgotLy8vICAgIGRyb3AocmVndWxh
+dG9yKTsKLS8vLyAgICAvLyAuLi4KLS8vLyAgICAjIE9rOjo8KCksIEVycm9yPigoKSkKKy8vLyAg
+ICAgLy8gV2UgY2FuIGFsc28gZGlzYWJsZSBhbiBlbmFibGVkIHJlZ3VsYXRvciB3aXRob3V0IHJl
+bGlxdWluc2hpbmcgb3VyCisvLy8gICAgIC8vIHJlZmNvdW50OgorLy8vICAgICAvLworLy8vICAg
+ICAvLyBJZiB0aGlzIG9wZXJhdGlvbiBmYWlscywgdGhlIGBFcnJvcmAgd2lsbCBjb250YWluIHRo
+ZSByZWd1bGF0b3IKKy8vLyAgICAgLy8gcmVmZXJlbmNlLCBzbyB0aGF0IHRoZSBvcGVyYXRpb24g
+bWF5IGJlIHJldHJpZWQuCisvLy8gICAgIGxldCByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEaXNhYmxl
+ZD4gPQorLy8vICAgICAgICAgcmVndWxhdG9yLnRyeV9pbnRvX2Rpc2FibGVkKCkubWFwX2Vycih8
+ZXJyb3J8IGVycm9yLmVycm9yKT87CisvLy8KKy8vLyAgICAgLy8gVGhlIHJlZmNvdW50IHdpbGwg
+YmUgZGVjcmVtZW50ZWQgd2hlbiBgcmVndWxhdG9yYCBpcyBkcm9wcGVkLgorLy8vICAgICBkcm9w
+KHJlZ3VsYXRvcik7CisvLy8KKy8vLyAgICAgLy8gLi4uCisvLy8KKy8vLyAgICAgT2soKCkpCiAv
+Ly8gfQogLy8vIGBgYAogLy8vCi0vLy8KLS8vLyBVc2luZyBgUmVndWxhdG9yPER5bmFtaWM+YDoK
+Ky8vLyAjIyBVc2luZyBbYFJlZ3VsYXRvcjxEeW5hbWljPmBdCiAvLy8KIC8vLyBUaGlzIGV4YW1w
+bGUgbWltaWNzIHRoZSBiZWhhdmlvciBvZiB0aGUgQyBBUEksIHdoZXJlIHRoZSB1c2VyIGlzIGlu
+CiAvLy8gY29udHJvbCBvZiB0aGUgZW5hYmxlZCByZWZlcmVuY2UgY291bnQuIFRoaXMgaXMgdXNl
+ZnVsIGZvciBkcml2ZXJzIHRoYXQKQEAgLTE4MiwzMyArMTkwLDMzIEBAIHB1YiBzdHJ1Y3QgRXJy
+b3I8U3RhdGU6IFJlZ3VsYXRvclN0YXRlICsgJ3N0YXRpYz4gewogLy8vICMgdXNlIGtlcm5lbDo6
+Y19zdHI7CiAvLy8gIyB1c2Uga2VybmVsOjpkZXZpY2U6OkRldmljZTsKIC8vLyAjIHVzZSBrZXJu
+ZWw6OnJlZ3VsYXRvcjo6e1JlZ3VsYXRvciwgRHluYW1pY307Ci0vLy8KIC8vLyBzdHJ1Y3QgUHJp
+dmF0ZURhdGEgewogLy8vICAgICByZWd1bGF0b3I6IFJlZ3VsYXRvcjxEeW5hbWljPiwKIC8vLyB9
+CiAvLy8KIC8vLyAvLyBBIGZpY3RpY3Rpb3VzIHByb2JlIGZ1bmN0aW9uIHRoYXQgb2J0YWlucyBh
+IHJlZ3VsYXRvciBhbmQgc2V0cyBpdCB1cC4KIC8vLyBmbiBwcm9iZShkZXY6ICZEZXZpY2UsIGRh
+dGE6ICZtdXQgUHJpdmF0ZURhdGEpIC0+IFJlc3VsdDxQcml2YXRlRGF0YT4gewotLy8vICAgIC8v
+IE9idGFpbiBhIHJlZmVyZW5jZSB0byBhIChmaWN0aXRpb3VzKSByZWd1bGF0b3IuCi0vLy8gICAg
+bGV0IG11dCByZWd1bGF0b3IgPSBSZWd1bGF0b3I6OjxEeW5hbWljPjo6Z2V0KGRldiwgY19zdHIh
+KCJ2Y2MiKSk/OwotLy8vICAgIC8vIEVuYWJsZSB0aGUgcmVndWxhdG9yLiBUaGUgdHlwZSBpcyBz
+dGlsbCBgUmVndWxhdG9yPER5bmFtaWM+YC4KLS8vLyAgICByZWd1bGF0b3IuZW5hYmxlKCk/Owot
+Ly8vCi0vLy8gICBPayhQcml2YXRlRGF0YSB7Ci0vLy8gICAgICAgcmVndWxhdG9yLAotLy8vICAg
+fSkKKy8vLyAgICAgLy8gT2J0YWluIGEgcmVmZXJlbmNlIHRvIGEgKGZpY3RpdGlvdXMpIHJlZ3Vs
+YXRvci4KKy8vLyAgICAgbGV0IG11dCByZWd1bGF0b3IgPSBSZWd1bGF0b3I6OjxEeW5hbWljPjo6
+Z2V0KGRldiwgY19zdHIhKCJ2Y2MiKSk/OworLy8vCisvLy8gICAgIC8vIEVuYWJsZSB0aGUgcmVn
+dWxhdG9yLiBUaGUgdHlwZSBpcyBzdGlsbCBgUmVndWxhdG9yPER5bmFtaWM+YC4KKy8vLyAgICAg
+cmVndWxhdG9yLmVuYWJsZSgpPzsKKy8vLworLy8vICAgICBPayhQcml2YXRlRGF0YSB7IHJlZ3Vs
+YXRvciB9KQogLy8vIH0KIC8vLwogLy8vIC8vIEEgZmljdGljdGlvdXMgZnVuY3Rpb24gdGhhdCBp
+bmRpY2F0ZXMgdGhhdCB0aGUgZGV2aWNlIGlzIGdvaW5nIHRvIGJlIHVzZWQuCiAvLy8gZm4gb3Bl
+bihkZXY6ICZEZXZpY2UsIGRhdGE6ICZtdXQgUHJpdmF0ZURhdGEpIC0+IFJlc3VsdCB7CiAvLy8g
+ICAgIC8vIEluY3JlYXNlIHRoZSBgZW5hYmxlZGAgcmVmZXJlbmNlIGNvdW50LgogLy8vICAgICBk
+YXRhLnJlZ3VsYXRvci5lbmFibGUoKT87CisvLy8KIC8vLyAgICAgT2soKCkpCiAvLy8gfQogLy8v
+CiAvLy8gZm4gY2xvc2UoZGV2OiAmRGV2aWNlLCBkYXRhOiAmbXV0IFByaXZhdGVEYXRhKSAtPiBS
+ZXN1bHQgewotLy8vICAgIC8vIERlY3JlYXNlIHRoZSBgZW5hYmxlZGAgcmVmZXJlbmNlIGNvdW50
+LgotLy8vICAgIGRhdGEucmVndWxhdG9yLmRpc2FibGUoKT87CisvLy8gICAgIC8vIERlY3JlYXNl
+IHRoZSBgZW5hYmxlZGAgcmVmZXJlbmNlIGNvdW50LgorLy8vICAgICBkYXRhLnJlZ3VsYXRvci5k
+aXNhYmxlKCk/OworLy8vCiAvLy8gICAgIE9rKCgpKQogLy8vIH0KIC8vLwpAQCAtMjIxLDEzICsy
+MjksMTQgQEAgcHViIHN0cnVjdCBFcnJvcjxTdGF0ZTogUmVndWxhdG9yU3RhdGUgKyAnc3RhdGlj
+PiB7CiAvLy8gICAgIC8vIHRvIGBlbmFibGUoKWAgYW5kIGBkaXNhYmxlZCgpYCBhcmUgYmFsYW5j
+ZWQgYmVmb3JlIHRoaXMgcG9pbnQuCiAvLy8gICAgIE9rKCgpKQogLy8vIH0KLS8vLwotLy8vCiAv
+Ly8gYGBgCisvLy8KIC8vLyAjIEludmFyaWFudHMKIC8vLwogLy8vIC0gYGlubmVyYCBpcyBhIG5v
+bi1udWxsIHdyYXBwZXIgb3ZlciBhIHBvaW50ZXIgdG8gYSBgc3RydWN0Ci0vLy8gICByZWd1bGF0
+b3JgIG9idGFpbmVkIGZyb20gW2ByZWd1bGF0b3JfZ2V0KClgXShodHRwczovL2RvY3Mua2VybmVs
+Lm9yZy9kcml2ZXItYXBpL3JlZ3VsYXRvci5odG1sI2MucmVndWxhdG9yX2dldCkuCisvLy8gICBy
+ZWd1bGF0b3JgIG9idGFpbmVkIGZyb20gW2ByZWd1bGF0b3JfZ2V0KClgXS4KKy8vLworLy8vIFtg
+cmVndWxhdG9yX2dldCgpYF06IGh0dHBzOi8vZG9jcy5rZXJuZWwub3JnL2RyaXZlci1hcGkvcmVn
+dWxhdG9yLmh0bWwjYy5yZWd1bGF0b3JfZ2V0CiBwdWIgc3RydWN0IFJlZ3VsYXRvcjxTdGF0ZSA9
+IER5bmFtaWM+CiB3aGVyZQogICAgIFN0YXRlOiBSZWd1bGF0b3JTdGF0ZSArICdzdGF0aWMsCkBA
+IC0zNzksNyArMzg4LDcgQEAgZm4gZHJvcCgmbXV0IHNlbGYpIHsKIC8vLyBBIHZvbHRhZ2UgaW4g
+bWljcm92b2x0cy4KIC8vLwogLy8vIFRoZSBleHBsaWNpdCB0eXBlIGlzIHVzZWQgdG8gYXZvaWQg
+Y29uZnVzaW9uIHdpdGggb3RoZXIgbXVsdGlwbGVzIG9mIHRoZQotLy8vIHZvbHQsIHdoaWNoIGNh
+biBiZSBkZXNhc3Ryb3VzLgorLy8vIHZvbHQsIHdoaWNoIGNhbiBiZSBkaXNhc3Ryb3VzLgogI1ty
+ZXByKHRyYW5zcGFyZW50KV0KICNbZGVyaXZlKENvcHksIENsb25lLCBQYXJ0aWFsRXEsIEVxKV0K
+IHB1YiBzdHJ1Y3QgTWljcm92b2x0KHB1YiBpMzIpOwo=
+--000000000000939bc1063725ffb3--
