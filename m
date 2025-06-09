@@ -1,162 +1,227 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE66223710
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 21:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745F2224257
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 22:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749506128; cv=none; b=E7BccncYkae1/4pyLvVLBhVL/DzSyhMzJW0gwmPSLtUceSy+xy1x2avhhpFOnqCknNcB8tC5NPwoo/z4KtWlwdzS6SbD6vUoBXEno4bKbXjfDjAuiVrW4RExVUho5n+D2VJwJSL721xsjxkmmNmaptDBQrhxVDk4/tDZPOVpydI=
+	t=1749506990; cv=none; b=P7fU4cWXgr9TKfYhxi9BjeEBKo9ck233svgMV2KTCvLCTPMEyNVUzRitK5wDCZFdEqOO0vcE7YN6UUBrRBJoi6ljpyWCRU20PfMPY74PxpO1PGIWQgZU7yrfqQg/Uq+udmF3f+q39dm/C1VpWhjY02alKCajhpZUTRUbZPv3Xuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749506128; c=relaxed/simple;
-	bh=90T6ejJVsDBvxIbRYg9P0PhiOGWoRm1F4hXTbYJcEBo=;
-	h=From:Date:Subject:MIME-Version:Message-Id:To:Cc:Content-Type:
-	 References; b=C9T0n4NrPr8PsICSNcQ7/D23NzsGXPpsyUKu9JNGIZj7sJP+DSVyw7CcTnBm9Nox7EQHzZCFtWQmedcEyee/y6y2NZQTNgh6XSpVM28pnEyDLwYwB6eTn9/xicd59V1xf74WiZAWgZtlqwsX0hjafP2vxHdkTj3uldpgcjyG44A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tnFFEMCg; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1749506990; c=relaxed/simple;
+	bh=FNpQEWBDwyXEagWhUdVdgd4CDdreeQKyCibBUA0RLwg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1HIBEL05lGkC+SW0Vrry3Sdq+JCwsB9bHifXPAzPqSU+eJsD2rePXff7UESUfs5bk+xOrddgSObdwwzidCmTPkzaksXLVm5PIvtg9oNzIdIpMTitCClgX+sgYr/5OTRde/0u9rizO9dgTGt/LRE0BZutLp7hAPwav6UxOidkOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com; spf=none smtp.mailfrom=pdp7.com; dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b=Vln5kUvI; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pdp7.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tnFFEMCg"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250609215524euoutp015549a46fff98be96bec0145ace0eff31~Hfo0LX_WQ0678006780euoutp01X
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Jun 2025 21:55:24 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250609215524euoutp015549a46fff98be96bec0145ace0eff31~Hfo0LX_WQ0678006780euoutp01X
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1749506124;
-	bh=6FDigIrzvT9N27pIlfQrnhaWXpE1+J7Dii4QKfGowac=;
-	h=From:Date:Subject:To:Cc:References:From;
-	b=tnFFEMCgSqvFuTxqBx/lY7egFQTq6LvfnB8BBbuJutlSIveTzKUZQAG1eOXcSB4kl
-	 cVnyUiNsoEVtyQQ9ujD93s2cSXejnNZzdHAzKlVGRQ1x01QerDcVBWReFvxApzVqIU
-	 dTygi89ikLezO+oTCA2dXbhz861cEbfGsF6cQaHM=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9~HfozB2_zh0459404594eucas1p2N;
-	Mon,  9 Jun 2025 21:55:23 +0000 (GMT)
-Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
-	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250609215522eusmtip243b4c206faaf6705a2082bfe335359c7~HfoyeJlhe2095520955eusmtip2Y;
-	Mon,  9 Jun 2025 21:55:22 +0000 (GMT)
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Mon, 09 Jun 2025 23:53:19 +0200
-Subject: [PATCH] rust: math: Add KernelMathExt trait with a mul_div helper
+	dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b="Vln5kUvI"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2352e3db62cso45230285ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Jun 2025 15:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pdp7-com.20230601.gappssmtp.com; s=20230601; t=1749506987; x=1750111787; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aXUrxDWDE1rz5GW1/FGYZyrQqnRIMW5wSQ+qWnYbv8k=;
+        b=Vln5kUvIPrZdzjaks/7fN/NQHnZl41fDDD0sqlbHFHdhLx8kpfxnY7F2rTCuK/3JeZ
+         eNdKwuuTgauR5Tgm7hFB2B0RecEXSyvBKNcd8irZkt9oC4XLNLawVUvjaQo66ZuOf8a9
+         oI4Ks0n1gLfAuhGTtTWcjEkFH//4w1F8CbtzfByrbY5uZGd7RbgA6ew2Jl/u7RGq2saE
+         ukfx5vtvGZjn6CJPlm6ncJG0nYFdpMudjSV/0dNPQWPkpw3mf6XZU7ht0cCK0x1GrYUX
+         dBV4x1NvT3n9jC6VPG0Jguoj30KDM2JwzgK0EgfVmv1NnQfb/maWg9jrCQbrMYj1H2St
+         6fYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749506987; x=1750111787;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aXUrxDWDE1rz5GW1/FGYZyrQqnRIMW5wSQ+qWnYbv8k=;
+        b=aihnli1AraPowlxD5L1TR+8V8a+O7jurvKyIp92Gm4c699USw7kdqmb6io/U65Ucht
+         KRJqWwigfnbe5SXQcAHC6hDW6XmLijJ3SsbORVk7QpHmEFXj59mRNHo9tzNmAavvXLa8
+         ydxhNcSG7JKRybC3cL/+QS1dtBEUGvgb3sirS8bI8jSQdCncL6EZNQZl6KHMLDmuMHXf
+         wGUIaGE1LSN9N/0CwIPYlnSSjFQeDWnpHc8DtGHcnXMnrXBd28zepLcXajCU0rmIhTsU
+         iA7CZuux41ix8S4C+Yfs4cuHvOYqF4GW/PZY+o+9HWjsC5Ru56oA7tgRR00YDYnsTTik
+         aikg==
+X-Forwarded-Encrypted: i=1; AJvYcCWg+TMJG1fX0r3fiqghP8n90idbJ92atgT07TaK2w3xmYUUJUCgHIulpM+s/HnKn35bMyHuwO9eBwIkiY0K9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxlcqx6Dl61CLBf2J2n5pJmppM0ElPVkxaLfjkt6mfbf/G2/aJY
+	8GMpq/c3VbdQKCsbRO/VeXPUMuEkPfbf4VpO0F03kbtyH+Gr59YmtroPYhEkuzbp5BA=
+X-Gm-Gg: ASbGnctZMAHpNZ4hQxe/Vc7JetVnYpW8nGeB8Jj/htMfq0ZFbNkjepC8U8BNwiafSqv
+	hVuZD2vkycwCnhmjLHuEWkc6HDZ6QWi91f0aImuAlni2Ys+BVeP9SW4xW/rXR+eVRQK8sjke1dK
+	N6Ez7bvytVV6ky58DIH0qMx9zIOM3/0TkcVuZDAFETzT8/M3ydw1/1GGMGv8CW6pyYj7Q8OBHKu
+	fv/z/TJ1csocJ+dAiqjiNkEeMpoE3PWoinHyeaDc3/4X3wtXe6jbE4jjGMBP6HfY+rHyEP160ZL
+	Vrwp24X88o7ojLGjo6m7HPeDuInNh7qHFvTyzoc38pelCl5rH92bBiLYuqt+KhC1nojne7sjEg=
+	=
+X-Google-Smtp-Source: AGHT+IEmC2cH56sY2Qaxupk/vYIkWpD0/7VSc7N28TaMH7rVO1PkIEtaUHkk3Y4nHUVSyRzLwMzWGg==
+X-Received: by 2002:a17:902:e888:b0:234:8a4a:ada5 with SMTP id d9443c01a7336-23638390915mr2466705ad.37.1749506987465;
+        Mon, 09 Jun 2025 15:09:47 -0700 (PDT)
+Received: from x1 (97-120-245-201.ptld.qwest.net. [97.120.245.201])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3134b13ba47sm6079708a91.40.2025.06.09.15.09.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 15:09:46 -0700 (PDT)
+Date: Mon, 9 Jun 2025 15:09:45 -0700
+From: Drew Fustini <drew@pdp7.com>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH RFC 5/6] riscv: dts: thead: Add PVT node
+Message-ID: <aEdbqSjpHyHx54UF@x1>
+References: <20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com>
+ <CGME20250524211525eucas1p244963b69e0531c95a9052e4a7a1d1e01@eucas1p2.samsung.com>
+ <20250524-rust-next-pwm-working-fan-for-sending-v1-5-bdd2d5094ff7@samsung.com>
+ <aDVxDJi0KkWXiPCK@x1>
+ <61eecafb-8ad1-4306-88cb-a032eefb2e48@samsung.com>
+ <aDyOyg6eqDEFg2ua@x1>
+ <9e8a12db-236d-474c-b110-b3be96edf057@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250609-math-rust-v1-v1-1-285fac00031f@samsung.com>
-X-B4-Tracking: v=1; b=H4sIAM5XR2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
-	vPSU3UzU4B8JSMDI1MDMwNL3dzEkgzdotLiEt0yQ90UY0sLS1ND01Rjo1QloJaCotS0zAqwcdG
-	xtbUA8S9/B14AAAA=
-X-Change-ID: 20250609-math-rust-v1-d3989515e32e
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Benno Lossin
-	<lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,  Alice Ryhl
-	<aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,  Danilo Krummrich
-	<dakr@kernel.org>,  Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,  Michal
-	Wilczynski <m.wilczynski@samsung.com>
-X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9
-X-EPHeader: CA
-X-CMS-RootMailID: 20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9
-References: <CGME20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9@eucas1p2.samsung.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9e8a12db-236d-474c-b110-b3be96edf057@samsung.com>
 
-The PWM subsystem and other kernel modules often need to perform a
-64 by 64-bit multiplication followed by a 64-bit division. Performing
-this naively in Rust risks overflow on the intermediate multiplication.
-The kernel provides the C helper 'mul_u64_u64_div_u64' for this exact
-purpose.
+On Mon, Jun 09, 2025 at 08:49:57PM +0200, Michal Wilczynski wrote:
+> 
+> 
+> On 6/1/25 19:32, Drew Fustini wrote:
+> > On Sun, Jun 01, 2025 at 09:50:52AM +0200, Michal Wilczynski wrote:
+> >>
+> >>
+> >> On 5/27/25 10:00, Drew Fustini wrote:
+> >>> On Sat, May 24, 2025 at 11:14:59PM +0200, Michal Wilczynski wrote:
+> >>>> Add PVT DT node for thermal sensor.
+> >>>>
+> >>>> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+> >>>> ---
+> >>>>  arch/riscv/boot/dts/thead/th1520.dtsi | 11 +++++++++++
+> >>>>  1 file changed, 11 insertions(+)
+> >>>>
+> >>>> diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
+> >>>> index f24e12d7259fabcfbdc2dfa966d759db06684ab4..faf5c3aaf209b24cd99ddc377a88e08a8cce24fe 100644
+> >>>> --- a/arch/riscv/boot/dts/thead/th1520.dtsi
+> >>>> +++ b/arch/riscv/boot/dts/thead/th1520.dtsi
+> >>>> @@ -648,6 +648,17 @@ padctrl_aosys: pinctrl@fffff4a000 {
+> >>>>  			thead,pad-group = <1>;
+> >>>>  		};
+> >>>>  
+> >>>> +		pvt: pvt@fffff4e000 {
+> >>>> +			compatible = "moortec,mr75203";
+> >>>> +			reg = <0xff 0xfff4e000 0x0 0x80>,
+> >>>> +			      <0xff 0xfff4e080 0x0 0x100>,
+> >>>> +			      <0xff 0xfff4e180 0x0 0x680>,
+> >>>> +			      <0xff 0xfff4e800 0x0 0x600>;
+> >>>> +			reg-names = "common", "ts", "pd", "vm";
+> >>>> +			clocks = <&aonsys_clk>;
+> >>>> +			#thermal-sensor-cells = <1>;
+> >>>> +		};
+> >>>> +
+> >>>>  		gpio@fffff52000 {
+> >>>>  			compatible = "snps,dw-apb-gpio";
+> >>>>  			reg = <0xff 0xfff52000 0x0 0x1000>;
+> >>>>
+> >>>> -- 
+> >>>> 2.34.1
+> >>>>
+> >>>
+> >>> I found that on my lpi4a that boot while hang after applying this patch.
+> >>> I think that it is related to clocks as boot finished okay when using
+> >>> clk_ignore_unused on the kernel cmdline. Do you happen have that in your
+> >>> kernel cmdline?
+> >>>
+> >>> I need to investigate further to understand which clocks are causing the
+> >>> problem.
+> >>>
+> >>> Thanks,
+> >>> Drew
+> >>>
+> >>
+> >> Thanks for your earlier message. I've investigated, and you were right
+> >> about the clocks – the specific one causing the hang is CLK_CPU2AON_X2H.
+> > 
+> > Thanks for tracking down the clk causing the hang. I can confirm that
+> > this fixes the boot hang:
+> > 
+> > diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
+> > index ebfb1d59401d..4d0179b8c17c 100644
+> > --- a/drivers/clk/thead/clk-th1520-ap.c
+> > +++ b/drivers/clk/thead/clk-th1520-ap.c
+> > @@ -792,7 +792,7 @@ static CCU_GATE(CLK_AON2CPU_A2X, aon2cpu_a2x_clk, "aon2cpu-a2x", axi4_cpusys2_ac
+> >                 0x134, BIT(8), 0);
+> >  static CCU_GATE(CLK_X2X_CPUSYS, x2x_cpusys_clk, "x2x-cpusys", axi4_cpusys2_aclk_pd,
+> >                 0x134, BIT(7), 0);
+> > -static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd, 0x138, BIT(8), 0);
+> > +static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd, 0x138, BIT(8), CLK_IGNORE_UNUSED);
+> >  static CCU_GATE(CLK_CPU2PERI_X2H, cpu2peri_x2h_clk, "cpu2peri-x2h", axi4_cpusys2_aclk_pd,
+> >                 0x140, BIT(9), CLK_IGNORE_UNUSED);
+> >  static CCU_GATE(CLK_PERISYS_APB1_HCLK, perisys_apb1_hclk, "perisys-apb1-hclk", perisys_ahb_hclk_pd,
+> > 
+> >>
+> >> This appears to be an AHB bus clock required for CPU access to the AON
+> >> domain. My proposed solution is to make the pvt node a child of a new
+> >> parent bus node in the Device Tree. This new "AON bus" node would then
+> >> explicitly request and manage CLK_CPU2AON_X2H, ensuring it's enabled
+> >> when its children are accessed.
+> >>
+> >> What are your thoughts on this approach?
+> > 
+> > I think that is a good approach. The alternative would be to just add
+> > CLK_IGNORE_UNUSED like above. I've done it before but it is a bit of a
+> > hack.
+> 
+> I've followed up on the idea of creating a parent bus node. My attempt
+> using simple-pm-bus ran into a couple of significant issues that suggest
+> it's not the correct path.
+> 
+> First, the TRM doesn't seem to specify an address range for this bus.
+> The range I used in my test was only for the PVT controller itself,
+> which would be an incorrect abstraction in the device tree.
+> 
+> Second, simple-pm-bus requires its child nodes to use the PM runtime API
+> (pm_runtime_resume_and_get, etc.). Forcing this on consumer drivers like
+> the PVT sensor seems like an inappropriate dependency.
+> 
+> Additionally, I discovered that the PWM driver has a similar problem,
+> silently failing because another clock, CLK_PERISYS_APB1_HCLK, is not
+> enabled.
+> 
+> The most correct solution likely involves refactoring the clock parent
+> relationships in clk-th1520-ap.c. However, as a more immediate and less
+> invasive fix, I propose we apply the CLK_IGNORE_UNUSED flag for both
+> CLK_CPU2AON_X2H and CLK_PERISYS_APB1_HCLK in the v2 patch. This will fix
+> the boot hang and the PWM issue while we consider the larger clock
+> driver changes separately.
+> 
+> Does that sound like a reasonable plan for the v2 series?
 
-Introduce a safe Rust wrapper for this function to make it available to
-Rust drivers.
+Yes, I think that sounds like a good plan. I am okay with adding
+CLK_IGNORE_UNUSED for CLK_CPU2AON_X2H and CLK_PERISYS_APB1_HCLK until a
+better solution is found.
 
-Following feedback from the mailing list [1], this functionality is
-provided via a 'KernelMathExt' extension trait. This allows for
-idiomatic, method style calls (e.g. val.mul_div()) and provides a
-scalable pattern for adding helpers for other integer types in the
-future.
+I like the idea of revisting the parent relationships in the driver. I
+added CLK_IGNORE_UNUSED to several clocks in order to fix boot hangs
+when I removed clk_ignore_unused from the kernel cmdline. However, I
+don't think that I addressed the root cause.
 
-The safe wrapper is named 'mul_div' and not 'mul_u64_u64_div_u64' [2]
-because its behavior differs from the underlying C function. The C
-helper traps on a division by zero, whereas this safe wrapper returns
-`None`, thus exhibiting different and safer behavior.
-
-This is required for the Rust PWM TH1520 driver [3].
-
-[1] - https://lore.kernel.org/all/DAFQ19RBBSQL.3OGUXOQ0PA9YH@kernel.org/
-[2] - https://lore.kernel.org/all/CANiq72kVvLogBSVKz0eRg6V4LDB1z7b-6y1WPLSQfXXLW7X3cw@mail.gmail.com/
-[3] - https://lore.kernel.org/all/20250524-rust-next-pwm-working-fan-for-sending-v1-2-bdd2d5094ff7@samsung.com/
-
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
----
- rust/kernel/lib.rs  |  1 +
- rust/kernel/math.rs | 34 ++++++++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+)
-
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 6b4774b2b1c37f4da1866e993be6230bc6715841..d652c92633b82525f37e5cd8a040d268e0c191d1 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -85,6 +85,7 @@
- #[cfg(CONFIG_KUNIT)]
- pub mod kunit;
- pub mod list;
-+pub mod math;
- pub mod miscdevice;
- pub mod mm;
- #[cfg(CONFIG_NET)]
-diff --git a/rust/kernel/math.rs b/rust/kernel/math.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..b89e23f9266117dcf96561fbf13b1c66a4851b48
---- /dev/null
-+++ b/rust/kernel/math.rs
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (c) 2025 Samsung Electronics Co., Ltd.
-+// Author: Michal Wilczynski <m.wilczynski@samsung.com>
-+
-+//! Safe wrappers for kernel math helpers.
-+//!
-+//! This module provides safe, idiomatic Rust wrappers for C functions, whose
-+//! FFI bindings are auto-generated in the `bindings` crate.
-+
-+use crate::bindings;
-+
-+/// An extension trait that provides access to kernel math helpers on primitive integer types.
-+pub trait KernelMathExt: Sized {
-+    /// Multiplies self by `multiplier and divides by divisor.
-+    ///
-+    /// This wrapper around the kernel's `mul_u64_u64_div_u64` C helper ensures that no
-+    /// overflow occurs during the intermediate multiplication.
-+    ///
-+    /// # Returns
-+    /// * Some(result) if the division is successful.
-+    /// * None if the divisor is zero.
-+    fn mul_div(self, multiplier: Self, divisor: Self) -> Option<Self>;
-+}
-+
-+impl KernelMathExt for u64 {
-+    fn mul_div(self, multiplier: u64, divisor: u64) -> Option<u64> {
-+        if divisor == 0 {
-+            return None;
-+        }
-+        // SAFETY: The C function `mul_u64_u64_div_u64` is safe to call because the divisor
-+        // is guaranteed to be non-zero. The FFI bindings use `u64`, matching our types.
-+        Some(unsafe { bindings::mul_u64_u64_div_u64(self, multiplier, divisor) })
-+    }
-+}
-
----
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20250609-math-rust-v1-d3989515e32e
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
-
+Thanks,
+Drew
+.
