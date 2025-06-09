@@ -1,281 +1,146 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED4022B8D2;
-	Mon,  9 Jun 2025 22:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D91D22A7E1;
+	Mon,  9 Jun 2025 23:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749509209; cv=none; b=VsUCeftIEW3oJ7gv9V2VOnu/IJVtvBuY6VuWwc/zceepJdPoIGl0bFeqCdB8u2wS3cPTI2Kl9vJWC7syMrVaTrJimolWBfwsOSZvh11kB6YD6klnshpkM8SUrHrBkRfv+SuXTxbXBdyC77Fq016tRZ3mSMVWudc2nXkoB4IB23Q=
+	t=1749511400; cv=none; b=mQ2mTT7eVu6gzuL5SqibMxeVKJi40yWR7uWfjVUnDH2WLeOstTZ84PVhm4Z37bm9BMCnsmyi40jAAIN7k/HEp3gWOWy9xdDtDoSxA5SQ7dkj91MbeMO4tu6i/ROMIxg/0+YANyBvfZXj0ymyevtHY8YrEhMsuWCCOJ1VeGjrUC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749509209; c=relaxed/simple;
-	bh=Anqrl5cWjcAsA5b2G9jSaTOPpHxzWAGMmgi9KYl1kyU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=luZD7iGML5UvGQFjW7HUlz2SCKt209+pw0DgapUbtXE7IqZEwk9YwxPn7xz+Npkmpjwi6P0n1ZvIjhnJE+cMzr/LhPQjXR5oonkv3pPGPSQbJQD1tdX0fRbr05k2kkR9JTpxgYmfPpoWRT6rLwfOoYXnUo4bAo1R1FWZUvbXsZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FSeWAeB3; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749511400; c=relaxed/simple;
+	bh=SodzVzd/dy3fVY28H5PbgVki2bKFD3jp9tNeLI1aFg8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j0LYJ4PSSQ5/o7SzKQ/jJeaDRxKhbK/z1dUlgXvo3ghLm1nnXqb8xbDXDrrRldEVwTM76pYHYpQYHZZx5dUSPeFGyDTtR8ZUBRKXoG/aB5jUR3V/AnDLIFEJkeQ2BUTcMlCs6zRB3gQmgFIwPzqrncylgnOiVQJ2JVJq5IWMARo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AJ+ckFfk; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FSeWAeB3"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6f8a70fe146so92811376d6.0;
-        Mon, 09 Jun 2025 15:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749509206; x=1750114006; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=aVh/Q3YvKlU1Rq5I19BJ7b1z8f+dcy4cBENHfBypeho=;
-        b=FSeWAeB36kHbQ5kUiAQC6TsgMU6FFkrreMltHhtS3fLBPyLxEvsUJKxVf/Iq+2jb8g
-         l0Y5osKE4SdAAvVVr5aMr7JmMzk11C1pBwarLbHawEcS8YnYJ8DEM/C0ZPMSzzvF7aYz
-         +F4Eu4g5cqo/CpS3Yb24uPWqiGZCG6L1ddBTG0nmxV8Lz+qsBrKV17W4webKPtesHpry
-         SVh/Z+ppV/zBTI/0KWFohHqoIkY5/SoQpz1yM9sRL/1t8XGhWp1p7SHL6e5HDy1X+Jji
-         7CxYO4GZOT/aHiM7GDM7yo9bCqnIe7p1FqcKJQRRd4mHjFFEs8stxoQAScdG4m0MzmWU
-         78zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749509206; x=1750114006;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aVh/Q3YvKlU1Rq5I19BJ7b1z8f+dcy4cBENHfBypeho=;
-        b=nKpvU1yRDonosAzTSqeElhFmGvw81AilQ+RkuLb1/2cYeGCV8cFn7k1IRXtn8OzCEB
-         rwfSjkpgdqb/KZ+aVlcIJDLTmP2trma7eC3PeE+LP7oqZhxykFuVNnKSotbL0peJruMR
-         l6EZezf++g+Hz7uIGKKGYV4x8B0Yz7T6+fl7fF7m76WeOp1rdyezoxy5D+mVB6zatHY/
-         ie+ciKs7i1KTlBLdmO1kBmoKNtZ67CEMBBH+J0Skz2PNVQv/fGnjf9dfJ1YqIHJCDglR
-         m2eOUKt0p7IEqSRiqKEk4+XFho2O96FirPGHWf910uXiC1O4DrkSP70gH4TrHgEmRhdU
-         SNSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJNCaDpFs1nAoh1d4np8Hk3iaOGLzeY9KKgRqF2CFaOtEXB36ayvPseuMnn1f8rY2NnlfwJT3Bn0wl@vger.kernel.org, AJvYcCWL6RH1Tzm95GrBLmiQVHA7psy52nDnKBklMFpNXZbZhsCwoY05gKSXN6HLwbEGymRK13AQfFQBroNThBSPvYk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRsNgtgbsqSu89fS3JYhKAtRh3CXKUKKBUCdVLQLxYSe4qfLHN
-	4Py8fB2dplKnPvDLrN2gQTL48zuo/WXLq6pUjLctDI0ZwbYhGMVQeU4A
-X-Gm-Gg: ASbGncuRPnM8goSMC15M4nhotgdK8dxEWXAzyGO1bo274Jl1baP2w3vaTsLzAqp9pTs
-	xKNpuC80YWAE+0/2jAilor4nJ8dK7sFysj2Yv2aSu6AVMT7yajpOgG8gJR16QK/0HIb7Ha9KwIB
-	6hBAJGUxrMP7KLq7GOy9cf8apCmXl5XNCIOxkbNXFEA1sw6D2XmWlYdML42Ke8tNKqC6xL4uWl3
-	7LCHJc4Ct8QXWcQkIoeOhV9gm7dvPisnCnL2klhuq93310zBs/p2sUIplHV+YlqbGEGc97EYOjC
-	lLavmENw/goh1NW++NNHqNq0gadjwGztrwfGvnTx9r57yw+AZJ0ANcmdLk3PtcynLGMy5Aycaev
-	SgyWXWxXYmDOJufIv8a7T3UwPBc1H9lFTSHUaSWduP/p6dspkc2Wf
-X-Google-Smtp-Source: AGHT+IFumn8OwjYXPgXZ16qqTX9xz1gY58UxpowoDVxCsQHRJ60EJ7bd/NwPv4mxtLSYcvshs3G6lQ==
-X-Received: by 2002:a05:6214:268f:b0:6fa:c46c:6f9e with SMTP id 6a1803df08f44-6fb08fd9af0mr224426906d6.5.1749509206360;
-        Mon, 09 Jun 2025 15:46:46 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb09ab8479sm57902056d6.20.2025.06.09.15.46.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Jun 2025 15:46:45 -0700 (PDT)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 657911200043;
-	Mon,  9 Jun 2025 18:46:45 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 09 Jun 2025 18:46:45 -0400
-X-ME-Sender: <xms:VWRHaGfeuqfaTsfEhV_LpIrhNyhzWKIiN45quFjZGSHxgsoEeOokVA>
-    <xme:VWRHaANYS-9EPbydHD-sjzoKVt34TxIx4xdw3zOl4XRap0KOk_5WipJtbwYlkDWYH
-    PIlE5V6JBHphOOr-w>
-X-ME-Received: <xmr:VWRHaHiDS0jJsZHUtb43CKAzQVGBTatYnWPpWIa-Rzo0us8VKnuSJGYk2OA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdelleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhephffvvefufffkofgjfhgggfestdekredtredttden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeegleejiedthedvheeggfejveefjeejkefgveff
-    ieeujefhueeigfegueehgeeggfenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrd
-    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkhhmmheslhhishhtshdrlhhinh
-    hugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhu
-    nhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguh
-    hordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgt
-    ohhm
-X-ME-Proxy: <xmx:VWRHaD82yCfh5OywHAYF_VLdNfBB6XPS_yuSEXXKrign0aaeMeYFIA>
-    <xmx:VWRHaCt3U7HVb8WCTNR2JVSZ6u-hf5HicdNfWEzX2o84sGmcxpFGKQ>
-    <xmx:VWRHaKH7JCT23_b6qRlIcAnwlIu9UaEazUyWv6Ujxa6ldBf8VF2IzQ>
-    <xmx:VWRHaBNb26YqM8H4lX32N5KlrCzPiH_P0sfa4azgTtdYAGvFLEZ3SA>
-    <xmx:VWRHaPOlbZcKXJKD4ln61UjpxP5bWNkTnJjEIqs6iMkaUXzysTAYSpwm>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 9 Jun 2025 18:46:44 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev,
-	linux-arch@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AJ+ckFfk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749511399; x=1781047399;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SodzVzd/dy3fVY28H5PbgVki2bKFD3jp9tNeLI1aFg8=;
+  b=AJ+ckFfklbYOcRSSHa9CJbuejjYAm/0tfyBq2sUlCBFixGWiNUOpdwOc
+   KlXPPLdhW1wppLwRe2SVUU0EsFygP5pu0YM8o7xbOtLkLTUfeJdw3GFA7
+   8cdgzS8SzOkkMbG6VU0rUIjW20DQR9dp7YPdhN5L1Hn7eIcesPayfpMJV
+   tFpYcP9vQ0lGcYpAXsSw92BSRBHmKOxbF/0IO1NnlmmL8cMeJy2AfxwnC
+   uJ5eNmiab6Bc4GgCBUiYJCyqGbHc+1PJGlCRxBIRA9IC2J5whYOatceGr
+   0sOobPubCg7iDjbGbEivvQy7tlVAWiBY7N7x8CC31pGpbOzkSxEvGswyJ
+   Q==;
+X-CSE-ConnectionGUID: shDW8hzWQoufCutvJaLAQQ==
+X-CSE-MsgGUID: pZU3OM03QAGFi59/PHqFTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11459"; a="51594766"
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="51594766"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2025 16:23:18 -0700
+X-CSE-ConnectionGUID: hvrmWd1WTxiZ4LdyJauPwg==
+X-CSE-MsgGUID: tm1WvLkSQJefGulOu2XGfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,223,1744095600"; 
+   d="scan'208";a="151654521"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 09 Jun 2025 16:23:12 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uOlpd-0007VJ-36;
+	Mon, 09 Jun 2025 23:23:09 +0000
+Date: Tue, 10 Jun 2025 07:22:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Thomas Gleixner" <tglx@linutronix.de>
-Subject: [PATCH v4 10/10] rust: sync: Add memory barriers
-Date: Mon,  9 Jun 2025 15:46:15 -0700
-Message-Id: <20250609224615.27061-11-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250609224615.27061-1-boqun.feng@gmail.com>
-References: <20250609224615.27061-1-boqun.feng@gmail.com>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Benno Lossin <lossin@kernel.org>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v4 6/6] rust: pci: add irq accessors
+Message-ID: <202506100619.ZG8fk4Yz-lkp@intel.com>
+References: <20250608-topics-tyr-request_irq-v4-6-81cb81fb8073@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250608-topics-tyr-request_irq-v4-6-81cb81fb8073@collabora.com>
 
-Memory barriers are building blocks for concurrent code, hence provide
-a minimal set of them.
+Hi Daniel,
 
-The compiler barrier, barrier(), is implemented in inline asm instead of
-using core::sync::atomic::compiler_fence() because memory models are
-different: kernel's atomics are implemented in inline asm therefore the
-compiler barrier should be implemented in inline asm as well. Also it's
-currently only public to the kernel crate until there's a reasonable
-driver usage.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/helpers/barrier.c      | 18 ++++++++++
- rust/helpers/helpers.c      |  1 +
- rust/kernel/sync.rs         |  1 +
- rust/kernel/sync/barrier.rs | 67 +++++++++++++++++++++++++++++++++++++
- 4 files changed, 87 insertions(+)
- create mode 100644 rust/helpers/barrier.c
- create mode 100644 rust/kernel/sync/barrier.rs
+[auto build test ERROR on e271ed52b344ac02d4581286961d0c40acc54c03]
 
-diff --git a/rust/helpers/barrier.c b/rust/helpers/barrier.c
-new file mode 100644
-index 000000000000..cdf28ce8e511
---- /dev/null
-+++ b/rust/helpers/barrier.c
-@@ -0,0 +1,18 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <asm/barrier.h>
-+
-+void rust_helper_smp_mb(void)
-+{
-+	smp_mb();
-+}
-+
-+void rust_helper_smp_wmb(void)
-+{
-+	smp_wmb();
-+}
-+
-+void rust_helper_smp_rmb(void)
-+{
-+	smp_rmb();
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0e7e7b388062..928eca7fbbb4 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -9,6 +9,7 @@
- 
- #include "atomic.c"
- #include "auxiliary.c"
-+#include "barrier.c"
- #include "blk.c"
- #include "bug.c"
- #include "build_assert.c"
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index b620027e0641..c7c0e552bafe 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -11,6 +11,7 @@
- 
- mod arc;
- pub mod atomic;
-+pub mod barrier;
- mod condvar;
- pub mod lock;
- mod locked_by;
-diff --git a/rust/kernel/sync/barrier.rs b/rust/kernel/sync/barrier.rs
-new file mode 100644
-index 000000000000..36a5c70e6716
---- /dev/null
-+++ b/rust/kernel/sync/barrier.rs
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Memory barriers.
-+//!
-+//! These primitives have the same semantics as their C counterparts: and the precise definitions of
-+//! semantics can be found at [`LKMM`].
-+//!
-+//! [`LKMM`]: srctree/tools/memory-mode/
-+
-+/// A compiler barrier.
-+///
-+/// An explicic compiler barrier function that prevents the compiler from moving the memory
-+/// accesses either side of it to the other side.
-+pub(crate) fn barrier() {
-+    // By default, Rust inline asms are treated as being able to access any memory or flags, hence
-+    // it suffices as a compiler barrier.
-+    //
-+    // SAFETY: An empty asm block should be safe.
-+    unsafe {
-+        core::arch::asm!("");
-+    }
-+}
-+
-+/// A full memory barrier.
-+///
-+/// A barrier function that prevents both the compiler and the CPU from moving the memory accesses
-+/// either side of it to the other side.
-+pub fn smp_mb() {
-+    if cfg!(CONFIG_SMP) {
-+        // SAFETY: `smp_mb()` is safe to call.
-+        unsafe {
-+            bindings::smp_mb();
-+        }
-+    } else {
-+        barrier();
-+    }
-+}
-+
-+/// A write-write memory barrier.
-+///
-+/// A barrier function that prevents both the compiler and the CPU from moving the memory write
-+/// accesses either side of it to the other side.
-+pub fn smp_wmb() {
-+    if cfg!(CONFIG_SMP) {
-+        // SAFETY: `smp_wmb()` is safe to call.
-+        unsafe {
-+            bindings::smp_wmb();
-+        }
-+    } else {
-+        barrier();
-+    }
-+}
-+
-+/// A read-read memory barrier.
-+///
-+/// A barrier function that prevents both the compiler and the CPU from moving the memory read
-+/// accesses either side of it to the other side.
-+pub fn smp_rmb() {
-+    if cfg!(CONFIG_SMP) {
-+        // SAFETY: `smp_rmb()` is safe to call.
-+        unsafe {
-+            bindings::smp_rmb();
-+        }
-+    } else {
-+        barrier();
-+    }
-+}
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-irq-add-irq-module/20250609-065947
+base:   e271ed52b344ac02d4581286961d0c40acc54c03
+patch link:    https://lore.kernel.org/r/20250608-topics-tyr-request_irq-v4-6-81cb81fb8073%40collabora.com
+patch subject: [PATCH v4 6/6] rust: pci: add irq accessors
+config: x86_64-randconfig-005-20250610 (https://download.01.org/0day-ci/archive/20250610/202506100619.ZG8fk4Yz-lkp@intel.com/config)
+compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250610/202506100619.ZG8fk4Yz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506100619.ZG8fk4Yz-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   ***
+   *** Rust bindings generator 'bindgen' < 0.69.5 together with libclang >= 19.1
+   *** may not work due to a bug (https://github.com/rust-lang/rust-bindgen/pull/2824),
+   *** unless patched (like Debian's).
+   ***   Your bindgen version:  0.65.1
+   ***   Your libclang version: 20.1.2
+   ***
+   ***
+   *** Please see Documentation/rust/quick-start.rst for details
+   *** on how to set up the Rust support.
+   ***
+>> error[E0425]: cannot find function `pci_irq_vector` in crate `crate::bindings`
+   --> rust/kernel/pci.rs:409:49
+   |
+   409 |               let irq = unsafe { crate::bindings::pci_irq_vector(self.as_raw(), index) };
+   |                                                   ^^^^^^^^^^^^^^ not found in `crate::bindings`
+   ...
+   443 | /     gen_irq_accessor!(
+   444 | |         /// Returns a [`kernel::irq::Registration`] for the IRQ vector at the given index.
+   445 | |         irq_by_index, Registration, Handler
+   446 | |     );
+   | |_____- in this macro invocation
+   |
+   = note: this error originates in the macro `gen_irq_accessor` (in Nightly builds, run with -Z macro-backtrace for more info)
+--
+>> error[E0425]: cannot find function `pci_irq_vector` in crate `crate::bindings`
+   --> rust/kernel/pci.rs:409:49
+   |
+   409 |               let irq = unsafe { crate::bindings::pci_irq_vector(self.as_raw(), index) };
+   |                                                   ^^^^^^^^^^^^^^ not found in `crate::bindings`
+   ...
+   447 | /     gen_irq_accessor!(
+   448 | |         /// Returns a [`kernel::irq::ThreadedRegistration`] for the IRQ vector at the given index.
+   449 | |         threaded_irq_by_index, ThreadedRegistration, ThreadedHandler
+   450 | |     );
+   | |_____- in this macro invocation
+   |
+   = note: this error originates in the macro `gen_irq_accessor` (in Nightly builds, run with -Z macro-backtrace for more info)
+
 -- 
-2.39.5 (Apple Git-154)
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
