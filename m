@@ -1,91 +1,119 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34A5242D74
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 21:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9757D202C5A;
+	Tue, 10 Jun 2025 21:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749589858; cv=none; b=FCNbup6R9+AnUZt47k/2ozglMj0XiIRDnYFeml4DG3M0jC/45IokUhlchgmD1OyjqcEvAw4Xny+O7Ib5/EtFwUF5v6havCTKR0l7SHM2+cgzvx9yY+/76Ab9FMeVBHOoWjgZ0aO8KBh5pJKHOhFrIrp4xWce91uemSP6ZrkBF1w=
+	t=1749590599; cv=none; b=gUXHm0vu+4BT/3iwIwtkmsBpnzFr040rVoMJuLJNrGc5ZeWzrtbfN8M/HyR9ug9Y6NvDP4pUPZ/b8gWzF2/ttWKxyVzWvJAjUXN2AcG3ofscMZ1sn69aeqkODODYvD3+sPg9VMdtw30lEptEas7Ez54sfdMx3PPZGo20fATX2R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749589858; c=relaxed/simple;
-	bh=xopTrHZYYeehT8ed1EQVkbTxnWFxQKA3lyNFS+FgNus=;
+	s=arc-20240116; t=1749590599; c=relaxed/simple;
+	bh=IuRrlH8f0+L+EWs5x0H1jHsNYnXVQbeYgLVtkUWCLzs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QXyeZtWt8bJmbGHqr8R0uj+Olf3iwI651JWXf4u7mVJq0bNGnooSgYHhBRy3/eogfYTvU1ZNBLKS+CM1yXB2AaZGX4R+hP0Kg+STfmA0x6cNZFQhL5XxC9euGS82SvZKXXvlLfVBK0WOlxizXjkuJg3yHMSEFzbdGE1/Kx6OE4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com; spf=none smtp.mailfrom=pdp7.com; dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b=Tq2s4Hys; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pdp7.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=oKMjRyEfa0jK79PFvKwiYxaAyK7nAD5fYagVHGfMHXw7+X6HQdzF0hh2opmZTeUzq25GLIkKfwQ7OzQ9R4uggGvFaHVrndb/xrfK4lmYYuRjVwWzxgwi8P2G6jSQcxf/mmIK9Nf2gebKKKW3GKc4p//pUKRgr41F+u4JxUMTK3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AF91vbhx; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b="Tq2s4Hys"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso4881943b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 14:10:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AF91vbhx"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a5903bceffso76883441cf.3;
+        Tue, 10 Jun 2025 14:23:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pdp7-com.20230601.gappssmtp.com; s=20230601; t=1749589856; x=1750194656; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749590596; x=1750195396; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6z/2eKNf3fRnG2uPVmiQPHVorfwCzVQ+3VGe9Xlb1rw=;
-        b=Tq2s4HysD8o3z14wQk/nD3Otc/LcaeJmXPDJ20DppUPzeCh1hKg+/I5PhcuHjyF/co
-         QHiJ1Ok1vRf+fvvTmDifJXc5VjbLUGf2Ck7iHKOW1eupiwiabezBoItzmrtGQ8wHz52Y
-         115O+c+MegTVeI0O7VXnSXGnaty6RaX6eWXo4sRXX/hu8BSbhn6AnLDWduDYsAkqfCTG
-         9OBbsnYrQ5k93jpCg6aZHbVcxJaQMRTW6+q2uZZfwNHZy8iN28aACalYP+mwUEiTjviE
-         9vkPQVqfPcmvmj2s4svyEru0J/TyhA4SLyWwNhrh6VpR6Z5Atn8jo+7JtpDOA1HWx4n5
-         I0/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749589856; x=1750194656;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6z/2eKNf3fRnG2uPVmiQPHVorfwCzVQ+3VGe9Xlb1rw=;
-        b=I4Y6ISPpB2rMQG5qe3I9eV2i2OM2EuPCWqCL13q7i4m66gdtgfDao64CbzFEgqawHo
-         Ng9Gq/6VCJBmTtSNiDqo6Tg1f5TkZ9l4c2CyxPL+jXjuepI5vNtf3P1CaiHvqKfIAYuT
-         9g/VfeinbwOiQh5CgLHbT6VFWUVj1vtYqk+S+As4nQfQ3H6nCF+bovMWIY09aLpIUyvu
-         Zg+tOHUFvrgqIeUpvE0MG4PqqPpxPYDk5EGW+dh7dVD+pHBcrmB1pLodG255Rt2n8oRz
-         /3W9H7oHZV5wBoHZS7Ghkb8RcR0dpNX8vm0248b5FTcsWxw8Vyp8Os9rTveEedIZGjaq
-         LFPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVj6avyKSmhc0BaLS1lVHFBzwgRo9CDoTxHBP4dGBymUJPud/LZt3PHk9KXhhZoAihz3ON7REnDZdGZcSvFpA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQv4DrWkr167JgCJnmR+ASnqEmwtrSpo1p9rpF6GPHKbMmT0SL
-	EuGnfV7YGZa1fjANqGJNMjjhAsaVJLJAq3T1GuWixYI2oKeaEEzsKPVQHVW7pQ3LvUU=
-X-Gm-Gg: ASbGncvCRpgwQJ5IZthNFWV+ejuPX+4uOOK0Yu9ptJ3ip0hr4SYeeX7xBssCASgYPRf
-	yQHrEpaZOJ3MCSujhnWTlYuzvlG7kFoz/Bg47tdR+/Ic4/Vxs0jHuKb+fHiu4uOwZWzi5Y++VXc
-	WEqZCK1DXOD06ZlajVm9EorjwPKT7Aoc9/XiZp/E2MG8yumORipILFL0qOVp860vC2bwm+8rRT8
-	pgzfCAAR5X16K5WlesWIm3h9Zz1ueMeO/MPul4vkaU/sOgH86ZiGxYUVkfAZ6r0jJZqKnFsqibE
-	Wv2rURQIJ1//mZUdrtPoByt5VArTyPYkQJWufQbHgVm/L13fpgS9Jc6SvkhL9kkW8SCs/ETqng=
-	=
-X-Google-Smtp-Source: AGHT+IEwLiXrZcnfbq3Tv7L10VDTAaWuwBouaxEsiIQvsla3HLyJ0NW+H5r5c64jx5IdZukdlDUpIQ==
-X-Received: by 2002:a05:6a00:23c8:b0:742:a334:466a with SMTP id d2e1a72fcca58-7486cbd86f3mr1332331b3a.12.1749589855939;
-        Tue, 10 Jun 2025 14:10:55 -0700 (PDT)
-Received: from x1 (97-120-245-201.ptld.qwest.net. [97.120.245.201])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b083ac7sm7858957b3a.82.2025.06.10.14.10.54
+        bh=s4QQQuFpaDk14/cZrTJuJecarJD8XRFsV/RDktzG3Tc=;
+        b=AF91vbhxAmKoETFO3+Zr0Wko5QG3fH27LFnifHHPahrbwZNIAz/EsSqQEY7udXCU2T
+         R/4cMhX70gyzOKo98zZ0P4T39Pi4dux8GIroAWJN2zDuCGPoAdfHQpTC+ocTdfaaJLxU
+         dAO0pZo72BocyqhffdvTSbJVQkbXeM3fB+6EJHIsZe7n/0W2oRnj6iBGXO/kRfc1jSQX
+         3Kh3ggPFIQ4eIxD7ztYUqtC983B07AYY86zRxVyj2JfK7uAirbtoBfIxD8xKerX45oHr
+         t68OgkYZ4au05utmvy2AoZ97YVBe7vc/oCDvPknK/j+WJCMyFIzH2N1VjXGvK2jEIIqi
+         uLpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749590596; x=1750195396;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s4QQQuFpaDk14/cZrTJuJecarJD8XRFsV/RDktzG3Tc=;
+        b=Ld34LNRGJD2rwYDYOtwSnTVGeDj6MwLz4Rlp7w7t5re8oEYOGHFTRFotJVagyPmaDo
+         yQsn9uwMZ6oyCtizUm1HGoKR2K6mmD61i6zuIk0VzmtVl8eZEldduXvssFoxj/e6G+DC
+         HsufbXU9jzCpePnGUaf1ID44qOxYv/NVogAo3Grup5Wz7myXNtpg377F8maGbyIHffX3
+         14ChViDonPj6QOpxsOqN86AzJLlSYM3F0M40SIKvU0a2nOzBZRlT+0b8tsGHkjIcrQyq
+         Cc7BQj93mqcVhJ3kXg7KGr/o2p+VyGCCo1Wvxf/rN2ZcxeGQ35hj3/XI1qqqGn4dxfYi
+         Dv0w==
+X-Forwarded-Encrypted: i=1; AJvYcCUM+pXsbCS/M48VHfXKqBJpLDI6mWxgUp4nmmp7eb20Y+MI2La5pqsc3IwsLFPGvdAEZ3RM8j5mstSds8kttx8=@vger.kernel.org, AJvYcCVi48P6wtiJnNRsAgYrnZBpCP/VWx1E2lCkAJkY5lyKLwdlRec2ahRowNaCgRNUVb19IUVwogBlNA7++oQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweSp+EGl/jvE53GnCSznZaBuD34NUbf6TaZxx1wTUy9dDeXLjN
+	u/MDe5Qw77fAhjg6k+QlP++5vbFOrB2DSB+W+IZtBlgwDFkAOCYbR3aH
+X-Gm-Gg: ASbGncvGs61uTXXcRBpm6kWEpPvuOhY/ecGf2FTK2AWS1kkxMhwtgfwLyG6Vlc5xJdj
+	WRg0OuuylPU+ToD4h9BQ9PGIAkPkg/cZSnzUapgWnVARZbfqH6Krr/H7c5LzCVafK86e845fv9n
+	qF6j/b6MeDQp8NMtbHc6wOl7bpSZfdmv33XilOuY5zxvCv2ngI74FGnRH49ePqTu3Jzx3NeTYlw
+	M9wRofgeqSvhhx/6fOUKi8osQfhlWUFyp1gUTvb3uTYrioUBARnQkAqaWW9/nWkzLENkxkMl85x
+	aVWpAeyQkuKoQQ/bxDW/tHVU+bJ+/y3F/jmY1mtPeWNOt0+bn2LqHVWUILnVUP2X2myysHnWe7C
+	OsRH4BaQ7Zde+9z3vy+ZpQUsWhZv/qErttb/Pi1iHy1nlnOp/7qkW
+X-Google-Smtp-Source: AGHT+IGXwxZ2/+37QbUoUjwBnIjMrRRvsh+Q8aWmtzOu1FLR13nFkXNqETmMmtxwsBqRWTU2nK0S9w==
+X-Received: by 2002:a05:6214:1307:b0:6f5:40d5:e51 with SMTP id 6a1803df08f44-6fb2c3255e3mr14836006d6.11.1749590596361;
+        Tue, 10 Jun 2025 14:23:16 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb09b1cb9dsm72132226d6.70.2025.06.10.14.23.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 14:10:55 -0700 (PDT)
-Date: Tue, 10 Jun 2025 14:10:53 -0700
-From: Drew Fustini <drew@pdp7.com>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+        Tue, 10 Jun 2025 14:23:15 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4C9961200068;
+	Tue, 10 Jun 2025 17:23:15 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Tue, 10 Jun 2025 17:23:15 -0400
+X-ME-Sender: <xms:Q6JIaKAcKM668ElxPhaO3QQwyP9vIIZYR_wuVGaQTIzq-OVmIPv29A>
+    <xme:Q6JIaEgMQjyqxEdCsDbgTmpegUMerIKqsiWg5_QNoORAvTAhwHS_76a5RfrROPu75
+    7VeCzbKSpsE7Lx-HQ>
+X-ME-Received: <xmr:Q6JIaNlC6LiYDLxxfrkvRhKNYHD1LvD97eAnA72NWCJHFM-_dldpMM5h1A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduuddvjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedukedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhirhgvshhhrdhkuhhmrghrsehlihhnrg
+    hrohdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghp
+    thhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrg
+    ihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
+    nhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
+    dprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdr
+    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhh
+    hlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:Q6JIaIzY4nlXartlEa7Umdn-dDZNsXzTDMniltatBNnWB_lLdOEM9Q>
+    <xmx:Q6JIaPS_d_lnkwzlXStu4AQJxkT9Vt9OsqxxRdksBtF0Iv-RtWRj3g>
+    <xmx:Q6JIaDaPSNyDBnSCB24LYWX0IQn4Cne0f5D3aTBsizTKksJ4IxhGnA>
+    <xmx:Q6JIaIQP9UcdLQt7tAW4mf3T3BRi_lQiyPbY-hop8Xr_booBy5mwlA>
+    <xmx:Q6JIaBAAqZ3Y-LiWuaYPSqJ3GNGmKcUaxJ0SmRejTopbODhB_b7-RTR5>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 10 Jun 2025 17:23:14 -0400 (EDT)
+Date: Tue, 10 Jun 2025 14:23:13 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v2 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-Message-ID: <aEifXZnLxKd2wa0w@x1>
-References: <CGME20250610125330eucas1p2a573627ca8f124fe11e725c2d75bdcc9@eucas1p2.samsung.com>
- <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
+	Danilo Krummrich <dakr@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Yury Norov <yury.norov@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 3/3] rust: cpu: Add CpuId::current() to retrieve
+ current CPU ID
+Message-ID: <aEiiQSTe-U1q0fOL@tardis.local>
+References: <cover.1749554685.git.viresh.kumar@linaro.org>
+ <a2e12436661fca452de5c417242328ed6f413511.1749554685.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -94,89 +122,97 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
+In-Reply-To: <a2e12436661fca452de5c417242328ed6f413511.1749554685.git.viresh.kumar@linaro.org>
 
-On Tue, Jun 10, 2025 at 02:52:48PM +0200, Michal Wilczynski wrote:
-> This patch series introduces Rust support for the T-HEAD TH1520 PWM
-> controller and demonstrates its use for fan control on the Sipeed Lichee
-> Pi 4A board.
+On Tue, Jun 10, 2025 at 06:51:58PM +0530, Viresh Kumar wrote:
+> Introduce `CpuId::current()`, a constructor that wraps the C function
+> `raw_smp_processor_id()` to retrieve the current CPU identifier without
+> guaranteeing stability.
 > 
-> The primary goal of this patch series is to introduce a basic set of
-> Rust abstractions for the Linux PWM subsystem. As a first user and
-> practical demonstration of these abstractions, the series also provides
-> a functional PWM driver for the T-HEAD TH1520 SoC. This allows control
-> of its PWM channels and ultimately enables temperature controlled fan
-> support for the Lichee Pi 4A board. This work aims to explore the use of
-> Rust for PWM drivers and lay a foundation for potential future
-> Rust based PWM drivers.
+> This function should be used only when the caller can ensure that
+> the CPU ID won't change unexpectedly due to preemption or migration.
 > 
-> The core of this series is a new rust/kernel/pwm.rs module that provides
-> abstractions for writing PWM chip provider drivers in Rust. This has
-> been significantly reworked from v1 based on extensive feedback. The key
-> features of the new abstraction layer include:
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> ---
+>  MAINTAINERS            |  1 +
+>  rust/helpers/cpu.c     |  8 ++++++++
+>  rust/helpers/helpers.c |  1 +
+>  rust/kernel/cpu.rs     | 10 ++++++++++
+>  4 files changed, 20 insertions(+)
+>  create mode 100644 rust/helpers/cpu.c
 > 
->  - Ownership and Lifetime Management: The pwm::Chip wrapper is managed
->    by ARef, correctly tying its lifetime to its embedded struct device
->    reference counter. Chip registration is handled by a pwm::Registration
->    RAII guard, which guarantees that pwmchip_add is always paired with
->    pwmchip_remove, preventing resource leaks.
-> 
->  - Modern and Safe API: The PwmOps trait is now based on the modern
->    waveform API (round_waveform_tohw, write_waveform, etc.) as recommended
->    by the subsystem maintainer. It is generic over a driver's
->    hardware specific data structure, moving all unsafe serialization logic
->    into the abstraction layer and allowing drivers to be written in 100%
->    safe Rust.
-> 
->  - Ergonomics: The API provides safe, idiomatic wrappers for other PWM
->    types (State, Args, Device, etc.) and uses standard kernel error
->    handling patterns.
-> 
-> The series is structured as follows:
->  - Rust PWM Abstractions: The new safe abstraction layer.
->  - TH1520 PWM Driver: A new Rust driver for the TH1520 SoC, built on
->    top of the new abstractions.
->  - Clock Fix: A necessary fix to the TH1520 clock driver to ensure bus
->    clocks remain enabled.
->  - Device Tree Bindings & Nodes: The remaining patches add the necessary
->    DT bindings and nodes for the TH1520 PWM controller, a thermal
->    sensor, and the PWM fan configuration for the Lichee Pi 4A board.
-> 
-> Testing:
-> Tested on the TH1520 SoC. The fan works correctly. The duty/period
-> calculaties are correct. Fan starts slow when the chip is not hot and
-> gradually increases the speed when PVT reports higher temperatures.
-> 
-> The patches are based on mainline, with some dependencies which are not
-> merged yet - platform Io support [1] and math wrapper [2].
-> 
-> Reference repository with all the patches together can be found on
-> github [3].
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index a92290fffa16..4255186784c4 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -6254,6 +6254,7 @@ F:	include/linux/cpuhotplug.h
+>  F:	include/linux/smpboot.h
+>  F:	kernel/cpu.c
+>  F:	kernel/smpboot.*
+> +F:	rust/helper/cpu.c
+>  F:	rust/kernel/cpu.rs
+>  
+>  CPU IDLE TIME MANAGEMENT FRAMEWORK
+> diff --git a/rust/helpers/cpu.c b/rust/helpers/cpu.c
+> new file mode 100644
+> index 000000000000..824e0adb19d4
+> --- /dev/null
+> +++ b/rust/helpers/cpu.c
+> @@ -0,0 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/smp.h>
+> +
+> +unsigned int rust_helper_raw_smp_processor_id(void)
+> +{
+> +	return raw_smp_processor_id();
+> +}
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 0f1b5d115985..16fa9bca5949 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -13,6 +13,7 @@
+>  #include "build_assert.c"
+>  #include "build_bug.c"
+>  #include "clk.c"
+> +#include "cpu.c"
+>  #include "cpufreq.c"
+>  #include "cpumask.c"
+>  #include "cred.c"
+> diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
+> index 7549594fad7f..a946c8a9d1a2 100644
+> --- a/rust/kernel/cpu.rs
+> +++ b/rust/kernel/cpu.rs
+> @@ -102,6 +102,16 @@ pub fn from_u32(id: u32) -> Option<Self> {
+>      pub fn as_u32(&self) -> u32 {
+>          self.0
+>      }
+> +
+> +    /// Returns the ID of the CPU the code is currently running on.
+> +    ///
+> +    /// The returned value is considered unstable because it may change
+> +    /// unexpectedly due to preemption or CPU migration. It should only be
+> +    /// used when the context ensures that the task remains on the same CPU.
 
-I'm trying to build your rust-next-pwm-working-fan-for-sending-v4 branch
-but I get this error:
+I would also add "or the users could use a stale (yet valid) CPU ID",
+because there are such usages in kernel arleady, e.g.
+kvm_pmu_probe_armpmu() in arch/arm64/kvm/pmu-emul.c.
 
-$ make W=1 LLVM=1 ARCH=riscv -j16
-  CALL    scripts/checksyscalls.sh
-.pylintrc: warning: ignored by one of the .gitignore files
-  UPD     include/generated/utsversion.h
-  CC      init/version-timestamp.o
-  KSYMS   .tmp_vmlinux0.kallsyms.S
-  AS      .tmp_vmlinux0.kallsyms.o
-  LD      .tmp_vmlinux1
-ld.lld: error: undefined symbol: rust_build_error
-    referenced by pwm_th1520.4789668fc0b4e501-cgu.0
-                  drivers/pwm/pwm_th1520.o:(<pwm_th1520::Th1520PwmDriverData as kernel::pwm::PwmOps>::get_state) in archive vmlinux.a
-    referenced by pwm_th1520.4789668fc0b4e501-cgu.0
-                  drivers/pwm/pwm_th1520.o:(<pwm_th1520::Th1520PwmDriverData as kernel::pwm::PwmOps>::write_waveform) in archive vmlinux.a
-    referenced by pwm_th1520.4789668fc0b4e501-cgu.0
-                  drivers/pwm/pwm_th1520.o:(<pwm_th1520::Th1520PwmDriverData as kernel::pwm::PwmOps>::write_waveform) in archive vmlinux.a
-make[2]: *** [scripts/Makefile.vmlinux:91: vmlinux] Error 1
-make[1]: *** [/home/pdp7/linux/Makefile:1241: vmlinux] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
+With that, feel free to add:
 
-I've uploaded the config to:
-https://gist.github.com/pdp7/e2c34dd7e4349a54bd67b53254bd3a22
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-Thanks,
-Drew
+Regards,
+Boqun
+
+> +    pub fn current() -> Self {
+> +        // SAFETY: raw_smp_processor_id() always returns a valid CPU ID.
+> +        unsafe { Self::from_u32_unchecked(bindings::raw_smp_processor_id()) }
+> +    }
+>  }
+>  
+>  impl From<CpuId> for u32 {
+> -- 
+> 2.31.1.272.g89b43f80a514
+> 
