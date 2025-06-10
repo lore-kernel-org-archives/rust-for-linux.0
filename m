@@ -1,41 +1,41 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A2223909F;
-	Tue, 10 Jun 2025 20:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF3F12D758;
+	Tue, 10 Jun 2025 21:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749588794; cv=pass; b=m7uH32qQKmQouAer/eqPDYDsAl9zqZgbIyK32YcCtzu7CLdFLuvJ9zJ2fczLXgRQ/OVtCFVR2bAjh2jEQA5YHG1HUVOx6dYUMBgW4VEoZGSId81vYyM/sy6LK91YW0zIRdDWjc9GTmkJ0wfq+w/rs1NcFn/7kFzoOw57uiA26N8=
+	t=1749589559; cv=pass; b=JaLVBk9Ln/BvzBurRR6hboKWMw4mifrqT6XXoSa4Oqt+22aDgOBd+WwKRalNLVvzdlHfoR4nwfHUJFQkq85Ubh1pjT9qO3mNA9+V0SkI3UPtjqM5KXHiYmIa/0O6mg3EfEY3pEi+AgIW8edukOnPu4Q5cdFAMAlGyZYyFWORE4Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749588794; c=relaxed/simple;
-	bh=8BwPVmK64VFnrIhMKkDZ+DxVV442z8pfMi1pRltCTAE=;
+	s=arc-20240116; t=1749589559; c=relaxed/simple;
+	bh=C60YJLduDuc01tBceJmWT3yEUtG8WGPsNw6ujSLEUCY=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=KAG66KxKE9sdNkyY5U6PM6YT4sgTYcgqk3N7cq8EUoc5Em59LpKJgpWVq47JBa7snjFz3GxDJ6DJa6dGQu4Zqi9x5VG4/oCt8H2QI2WxCktyLikXE2OP58+oABgRmbE49v6PG20YgrpvAYfIV0NKv7JGI6j6s6h1K4cmZYULeVY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=lBK5Ym3F; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=CDBqndi/onh31AGaY8JguT4pCoktPAc6R96eDHBY+wobOZ1IlL+vlBYKneE/WOYVo1+nBVq9B4YFuNEM45KyRyXSCouqPPZp1pPgQQxvX3UqGbTXNeHCL4GI3ypoYshm3zhh2Dt9xhBMztGGMl5pInJQeJTj+ESpiFmvcsRVnUs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=jiixBKlK; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="lBK5Ym3F"
-ARC-Seal: i=1; a=rsa-sha256; t=1749588771; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="jiixBKlK"
+ARC-Seal: i=1; a=rsa-sha256; t=1749589487; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=AJGQRUHWBoJMr/xavwTXREsyQRIFay5qtRHGXq1D1XdrFQ/VfPTb2jvac4c/QKXowe+JYI246noHcUBMhdAHXiU4bP7WRtpTfg1xfR0fT9QvdDRR8HXavsHz8yEY0oztH6/LwIBbh+DjkWxHhNJ5diMiqMm39aXGOfPF62S2YHo=
+	b=C9EUicvI7hg3PnYyeqe81d1BAthSGjVJF9hYZaZ1C4voWLpsGrX+2SpLmnAE46kvBOBC6f8LSJ1oMohTvhfwyMNN1BKUT3WVMZ3nicq1OtrHEG6UrbOmoDhJfTT3R9fg9xCJnfR1yYOJX5RS8yo3LgExmdUUuHihHe1EoNHoEwI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1749588771; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=8ohbf0fVC2bweHQzX/NMFiOeF906+iaMjeRr67c5dI8=; 
-	b=ACKcKvZqV6gRXNll5SIUjJxCj23gSNkczoRTuz4D1vsQ1g8T8s3w4MSo6VQMrqGSfAdujiFvXN9OFMjrbSfI8vyGIJ6aPRLGSAoOWS+GZ/hmRH/VHYEMbNop4wqSYMc6AFvFCSWN0hMf81k0ngbUL3z3x8bYDdAxPnDhCn9sLhs=
+	t=1749589487; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=C60YJLduDuc01tBceJmWT3yEUtG8WGPsNw6ujSLEUCY=; 
+	b=N1L+sFiSHN6NSLlM4Zy8nO7qV+KICpm3Ko0zuCW4v5bi7Fc9coFrTsYQQqt8p9lrlhBUmAgMpZaVkd0A0PKRV2cXltbKZFHxzV7o18uQzoO/5bYjnsTsE/VZXwb8ZU6L1sqdw6VPvHsVEetNYugGUpOSDVATbZB+Q4JPv6RdHz4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749588771;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1749589487;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=8ohbf0fVC2bweHQzX/NMFiOeF906+iaMjeRr67c5dI8=;
-	b=lBK5Ym3FgAOfv22C+sDEn2e3yJywZJhB8CdO3Yt3oJfvi5ukS/+kTIQnD2J5W9Ea
-	+XfP8mR8/MiWeNmgYqnA9MzOQdMHRXEw87x642vSfCEfymWiYtlyfy8riW4le9cre8L
-	+k41ME7FsMNP2kWcztwjLictoYwfqBkPlxBl94pw=
-Received: by mx.zohomail.com with SMTPS id 1749588770444499.07877296780373;
-	Tue, 10 Jun 2025 13:52:50 -0700 (PDT)
+	bh=C60YJLduDuc01tBceJmWT3yEUtG8WGPsNw6ujSLEUCY=;
+	b=jiixBKlKyR5C9o8SSpwuoWU40JTQoxDG1mlDTxvBUL/g/+on87nvqkZoe0GrUw3y
+	PkSYGrnYuCQJfpsbj2Bfgz92ifS7e/Tku3Ds8kxfKeBPuQIYU8ROXbTeVdHLMRw2m4m
+	flnwBJh6Ua4H8SAk4yaTXkTGi6He4bME40AXHYdE=
+Received: by mx.zohomail.com with SMTPS id 1749589485855606.0438954014338;
+	Tue, 10 Jun 2025 14:04:45 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,10 +44,10 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v6] rust: kernel: add support for bits/genmask macros
+Subject: Re: [PATCH v2 2/2] rust: drm: Add GPUVM abstraction
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CANiq72nHzEN9D2yEkXNAWGySQADtUCW_V0YtpnCvHG=nxdeDCQ@mail.gmail.com>
-Date: Tue, 10 Jun 2025 17:52:34 -0300
+In-Reply-To: <aAj7gAzFVRX3dN7L@pollux>
+Date: Tue, 10 Jun 2025 18:04:29 -0300
 Cc: Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
@@ -57,74 +57,76 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
  Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Lyude Paul <lyude@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
  linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ Asahi Lina <lina@asahilina.net>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <79427200-D82D-4EC8-BE6A-A1964DACEB5C@collabora.com>
-References: <20250610-topic-panthor-rs-genmask-v6-1-50fa1a981bc1@collabora.com>
- <CANiq72nHzEN9D2yEkXNAWGySQADtUCW_V0YtpnCvHG=nxdeDCQ@mail.gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Message-Id: <5DADCFE7-B292-4387-A91D-B9CFD062942A@collabora.com>
+References: <20250422-gpuvm-v2-0-44d4fc25e411@collabora.com>
+ <20250422-gpuvm-v2-2-44d4fc25e411@collabora.com>
+ <aAgHGuzCZzh7YPz2@cassiopeiae>
+ <DBB3E8CE-19AA-437D-AF54-BF23763B254F@collabora.com>
+ <aAj7gAzFVRX3dN7L@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
-Hi Miguel,
+Hi Danilo,
 
-> On 10 Jun 2025, at 15:08, Miguel Ojeda =
-<miguel.ojeda.sandonis@gmail.com> wrote:
+> The lock might be held already by the driver or by TTM when things are =
+called
+> from TTM callbacks.
 >=20
-> On Tue, Jun 10, 2025 at 4:16=E2=80=AFPM Daniel Almeida
-> <daniel.almeida@collabora.com> wrote:
->>=20
->> +use crate::build_assert;
+> This is why GPUVM never takes locks by itself, but asserts that the =
+correct lock
+> is held.
 >=20
-> You can include the prelude instead.
->=20
->> +            (1 as $ty) .checked_shl(n)
->=20
-> Formatting.
->=20
->> +        pub fn $unbounded_name(n: u32) -> $ty {
->=20
-> We may want to have a comment inside here to remind ourselves to
-> forward the call to the standard library one when available (1.87.0).
->=20
->> +        /// Creates a compile-time contiguous bitmask for the given =
-range by
->> +        /// validating the range at runtime.
->=20
-> I may be confused by what you are trying to do here, but how are these
-> `checked` and `unbounded` ones compile-time?
+> I think we really want to get proof by the driver by providing lock =
+guard
+> references.
 
-This is wrong indeed, thanks for catching that.
+Can=E2=80=99t we add a lock to our Rust GpuVmBo type?
 
->=20
-> Also, you can probably simplify the macro `impl` calls by removing
-> parameters by using `paste!`, e.g.
->=20
->    let high =3D ::kernel::macros::paste!([<checked_bit_ =
-$ty>])(range.end)?;
+This is already supported by the C code, since it asks driver to either =
+provide
+a custom lock _or_ use the bo's resv. So what I am suggesting here is =
+the
+former, except that said lock would be transparently managed by our Rust =
+GPUVM
+abstraction.
 
-I personally find paste=E2=80=99s syntax a bit hard to read, but sure, I =
-have nothing against this.
+By using our own lock, we forbid drivers from introducing races.
 
->=20
->> base-commit: cf25bc61f8aecad9b0c45fe32697e35ea4b13378
->=20
-> This is a fairly old base now (the patch does not apply cleanly).
+Another option is to also require a(nother) Guard when mutating the BO's =
+VA
+list, but I find this a bit cumbersome for a couple of reasons:
 
-Sorry about that.=20
+a) It's proving a bit difficult to provide said Guard for the interval =
+tree
+itself,
 
-Anyways, let's see if others are happy with the direction this patch is =
-now
-taking. I will rebase on the next iteration :)
+b) This will appear in all functions where the lock should be taken, =
+which
+pollutes the API quite a bit.
 
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
->=20
+c) Having "either a custom lock or the resv lock" sounds a bit =
+confusing.
+Handling this transparently in Rust makes the API easier to use (and =
+harder to
+misuse)
 
-=E2=80=94 Daniel=
+=E2=80=94 Daniel
+
+
+
