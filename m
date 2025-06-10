@@ -1,127 +1,212 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6552F236424
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 17:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B9A244693;
+	Tue, 10 Jun 2025 17:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749578080; cv=none; b=rR4/fJ7t0wiX3A67DvCfmt6QlaixohkFU8Kim54yMarvxU4HnC7sNl50yIpWWvB4SiPNesmIFcV3R8LI+pCDM+ope6X9bPq8DhUYiCmb9CKnQpn/StcYUVR9Usqbs5E4r6CTYHd4zmQvV3LcsgLmTsNTSe8vvc32HAox9eoobwE=
+	t=1749578317; cv=none; b=sSop+0WgtyjVar5YUBV4INfNsbkutfBG7X9onkr6C5ZFuSm12Hmfezhs84kxtFk6SCInpeYj+mZHq5xW3wKRx4C3GWovjgkcjlWbsWWw1OLS29HbOFyckM9NzozbQazT3W1Wwf/2wGHOF3YcAetzgTLzgNHBOiIKQOJrq5nNdfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749578080; c=relaxed/simple;
-	bh=ianbddjc1XphHcmE63ieTxfCE+wZXczp2Z2tA7s+ncI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XGe+aD5WSWidmVIQCXENzBaaJ9nWUCBjAAlQZbijG8gHJpV+7ltgzmns20X06/tizD1ASsevRv3n6H9ZxlXcHBxkutasIzrv1Wng2vJyz1E9gAJqhk0Vsaq7zWbIuPQ/JeP3hK9reeqpWKbI5FWbTj5CMvrQzoDuK1Zq9e1J04Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uXURicik; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1749578317; c=relaxed/simple;
+	bh=WFSJOtGCy5DLWDZOUk7n++u9oB7z1T3ZkJpFtiZCWDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZSxnT713gduBs/y7RerXG1TY/HoVnUaAfmvgh4228pPIg6+rYhemNhIx5mAYtfvzrSqIb0mKNQ3/aUhmqJPwgPOspTm2yzwT7LLE00moZxzcSgzQZMm/6Pd8yPpkKbzcnJDxrxd/kqyYvp9NECGt9jFmhryR4suAVMBNgPc76lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aLp5WiJV; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uXURicik"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-601a67c6e61so1211a12.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 10:54:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aLp5WiJV"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6facacf521eso61204516d6.3;
+        Tue, 10 Jun 2025 10:58:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749578077; x=1750182877; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YvAr7sx4/tHhlSv2OBT4UQtf2qLWNKlOCp57zbBnAu4=;
-        b=uXURicikAGRGi5ED+h0XUyNe/NN3IGokxjk/fwpqdip/usl9gykAF9RN6bEDYAGCry
-         NLGQCpy0h5NiArb1wmP8aD7lMiyIZiu+dxCQIfOZnVHeaf457ySB5Wv8uI4LMWIqOkVM
-         6XiGu3ImwXkoyNSa1KRhk8j6EKVW6g94pc9k7iE6fD082zrOqh4hoWa3IpZx0MxTrN4b
-         4uSPbO96lbDAxHhL+nePr+HIJNXT7/a3i7/IBGIHD+MV5W1Bs7xrQzWdTKuqaKVdllay
-         sEhOlyVlS1TQdynhZuOXp+VZTQRPBTzgKqlCytvfNfXgxOw8tdPUcygXHiUXMNBRr2Hx
-         E5WQ==
+        d=gmail.com; s=20230601; t=1749578314; x=1750183114; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RFKC/VZAsPOtc+J1pi0LsDxSLSLhC1cMgwlK+mG2rRo=;
+        b=aLp5WiJVVZA4fAEhrJJTblPVRK3aAK/Gzv/V2Xo2XCLAr+wNVfaHxNFUuW+FRC621Q
+         P+opv3ieolhaAEnLS8QQuutzV2Etz8i6pOnwMkjF3XyvJBZPJjSA3M4bKD4VSU9veP6r
+         eNzMPGeWLpw+jLw16NHxAVLytTTFMRln+0c4Ub3rjrssPuU8/opI83QP/lKZjH4JpEM0
+         kbOz0qmbCnH4CORTIexpwh0sHDw5tqqNLyEPqqqSnbp3cJpG8ABkkyLxdLfa5wfPQz0t
+         fr8J5WBKBF1P9yAj/xtLA/x8j4t/PSK7w9pd+krFRhcxqV1+icIJkkuR5bGD2JXIl/Ro
+         OluA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749578077; x=1750182877;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YvAr7sx4/tHhlSv2OBT4UQtf2qLWNKlOCp57zbBnAu4=;
-        b=bPxHcFK15cgD11TuW+2xm1wfL9QkO7LekAkQdY8mbXBnZJBtl7vXksH50Hj31JlWif
-         c5ptQAOmoqSoFwQsCQBr3M3egpoK/qANq5S8xpmQK2Zm8/Re0PmHEAu2De0si9Epd0ev
-         RM4/5RxqTEy30u0G4uk4oJ+uQ679E1U1R1hXJ3CQ39up1Of4z6ksFkYNoTBFtxC8piPP
-         nCCYmWz/lJsPfwvZR9KLvuiz9koz5Y6zpBpM+4HlKLfjo7GANF/5bf46/8fp3yuImRtP
-         NtdPczlHnqnhXeygyfgLZGJg4twKP2v04PxW1XuuZwPQbKo9YX03taUzux7AZopxXqdV
-         mExQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUA3//Nth6Wp8zQrBmLJuvJcGc1bWSORKYYllzdcwb8ZeR69kNnzwXUpJVxfh7Ps/nEFmaLV0LknZlAWKcuZw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxH4tIPV9G/4qMvFejnWsmQMicfBRMcu/O9U0fsyH4HnY8oFaT5
-	/M0iebSwbBmuPDvs7EVVmCk1431RZjgmCh2K3rIwfdgJGWnZ/PoNatYAYt3ooZFmoCeJPLlxMCN
-	S/IpM+OW6kD8xJMr23ScrN+cRWLCojNezER6OcC5E
-X-Gm-Gg: ASbGncvLr016fcGCyK7zIMTZMeUYWb682YJijuwD6EKTdxIdjPmbxgU5SWCJuOZIH1q
-	oursHB/3Mh98nNMJTcbXrOGtzVwS0fCuX3tlMAn70APRrLSW5ONWeeEnbkU7k8AT6e9hsxcvOAv
-	ozO6ncXsgfqbTZSdHMo8ORHTf17U7oNUHFvLCeBtrqK1HwIKJiBAF00kDSQGMBUrVLM/E/dHRCh
-	A==
-X-Google-Smtp-Source: AGHT+IGK1Te+JNjSV+u4fxDZ3o1EB1kPJBHXmCjp5m53KFUwoTCOg7xxR8lGIvrTaVAiwmQuC+BOHR7+06qqyjZG0jU=
-X-Received: by 2002:a05:6402:b9c:b0:607:efee:369a with SMTP id
- 4fb4d7f45d1cf-6084442442bmr15031a12.4.1749578076490; Tue, 10 Jun 2025
- 10:54:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749578314; x=1750183114;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RFKC/VZAsPOtc+J1pi0LsDxSLSLhC1cMgwlK+mG2rRo=;
+        b=ZNLFJNhC5UrV+vFNTUXDPo7zlnP3XPQcoN4CD/8yCghJiuoZhTLENiQ4XPPMT9k19L
+         g2eQEtrCK4aKP1wOEcR4nAuL5HdgyDmvIeqqSMKgh/io+q0oRKedoKLa0SVb7cIGT3cB
+         bpg8q8wMX048amXNhXTuNzILBXFy3RPZKC97OAjiu2eQHuIHpDxKKVSZRDt9dt5n2dPT
+         10zbUmWiIFnaC3/pCO7iLcxtHyC07YbiB2zedcgcAYwn8xpg6uqUWxFCpKrJtq5O7QLN
+         N4Oix2FHsMQKtSgk/9hVcfAOreYG/a8tv/BmtGUCWV3UjsOLDrULRazo6g/JSa9U+ml5
+         nhkA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQg71USRtV7P0EK8cReWqyd3ZeVl4HgfIgv1GmCCzFM0+2RJNn/xunkVKBddSbxlXH31E2MYSQLOkC@vger.kernel.org, AJvYcCVLPpXKNIt4exQn7C//SwXbA80qJSxfi0PdUe3QlZUxaug4ZGYdjqrP1NhnAthhz6g7ffGmWyEGHPQV//yAuxc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqciNXTIOSxUomKH7HznvxfY3PDA7nRBfuBmzhMn72ak7VLorF
+	ufVW059K7eXjiU1tVfOznHi2vHlcHmkloV+577m4MbwfgLqRLIhsvoSk
+X-Gm-Gg: ASbGncstxlxYdhBhnOTvXnfYELeBQry5YE84vlCZa3zqZk8gtzErWyxaUfTIqxMjGrn
+	EAFzsuRewzLZsq1UB5VeT1L6H5h4Ow9P1zpPD9wayPNQpmEVP7f7KTxfsq7PojMrIdRZzw4+n66
+	Fz1slaUvYiTtYKoFtBllMT6uCGL5RcB3HGUemxmGNn9YH/4badXriPvD62zjqIa8/zetMJE4ICK
+	KzKPhhf8uvEIY2EMw4r1o4v/PJCbL7uxvUNkPCFI3y5iLzBLYcd7a/Qq2CjcpUAhKWeWt/1JAQD
+	hIlJigVj/WI5YrddVPS4jyTTesx8+yNGkIIe+jDDWVCHcOQmOmaQbpmpTdPvBcoeTJZ98M+lVsp
+	DVn81+cGpMiZinpfr+YPuB1nmAlZGwfBvwmHPDAIMAam55v33oedabG/xxq3jwSw=
+X-Google-Smtp-Source: AGHT+IE1ZgmFQqI16FjmhRw0PUqrqN2GZWUt9lHT730+lp5RjXgeKiNOIijStPhoRxTKPLxmV0rguA==
+X-Received: by 2002:a05:6214:da5:b0:6ed:df6:cdcd with SMTP id 6a1803df08f44-6fb2c36a381mr5736416d6.21.1749578314169;
+        Tue, 10 Jun 2025 10:58:34 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d250f64bacsm732339885a.17.2025.06.10.10.58.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 10:58:33 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B85001200043;
+	Tue, 10 Jun 2025 13:58:32 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Tue, 10 Jun 2025 13:58:32 -0400
+X-ME-Sender: <xms:SHJIaPQQI9zvh93RJUdRYS_Vf2bTAbjq8qZNXTFDgJuRD98uJs_Z_g>
+    <xme:SHJIaAyMD7098r8q6arLE7prWGPuyg3o8JwOsiZ-ldU3t1kHDonPDfY_cfVHoVFBn
+    _fsDOzL1cs0jWFvKA>
+X-ME-Received: <xmr:SHJIaE3B4fHOZePCc-g2Yrw7-QiDHFNbBGvv-I-bGQUCDsd6iQq0fMzCgTzkOA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduuddtjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedviedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlkhhmmheslhhishhtshdrlhhinhhugidruggvvhdprhgt
+    phhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgr
+    hihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhord
+    hnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:SHJIaPDnqQ5S_PkjW9IUVx-6hgS8ecikaaPuOyyIVBlZI1yxDd31Uw>
+    <xmx:SHJIaIglPRK0z-iPm-tuomEHtOTTYTAcu5T1BJgYD12YWeYHA8K60w>
+    <xmx:SHJIaDrHB74s9SNhoHtO1eb10T6C-QceOugS7UP6HkfZVgW9vwkU9Q>
+    <xmx:SHJIaDiBY046MUqKFF91MjbxinoZTrvFbF3VAKDI_0emvKgG4lR3gQ>
+    <xmx:SHJIaLQhx354PsPkGJRoPwWfFegPMSQOF7CI-MfwHtBk8_OM1w94oe35>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 10 Jun 2025 13:58:30 -0400 (EDT)
+Date: Tue, 10 Jun 2025 10:58:30 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v4 03/10] rust: sync: atomic: Add ordering annotation
+ types
+Message-ID: <aEhyRhb71dIXzqSu@tardis.local>
+References: <20250609224615.27061-1-boqun.feng@gmail.com>
+ <20250609224615.27061-4-boqun.feng@gmail.com>
+ <DAIQG9ALK4QC.2P2C2MC4U9YVX@kernel.org>
+ <aEhrzxltkdnub_bR@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aC5XDi7SaDJeUaAC@google.com> <aC7DVewqqWIKetmk@pollux>
- <aC8uNmrLUSS8sxHU@google.com> <2025052201-return-reprogram-add9@gregkh>
- <aC9krUYJmJqu0xVR@cassiopeiae> <2025052330-reverence-slideshow-d498@gregkh>
- <aDBC__rflS8625Vb@cassiopeiae> <aDCrufEjtJeGjO6z@google.com>
- <aDG6t-HdZSuWyPGo@pollux.localdomain> <aDWkGmcUBVHl7QmM@google.com> <aDWnCsVvlnpmYxUz@cassiopeiae>
-In-Reply-To: <aDWnCsVvlnpmYxUz@cassiopeiae>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Tue, 10 Jun 2025 10:54:24 -0700
-X-Gm-Features: AX0GCFsWyX3EaA5GxRfrgpq61a-WCT0s04HVyWUG5Kb_ijfZycvo0GUAd9G8RlQ
-Message-ID: <CAGSQo02XEuHGJ8YMvBp=S=3sWt=0R-wEkdkTp7aEsnaCBEB1wg@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aEhrzxltkdnub_bR@tardis.local>
 
-I'm going to try to rework the patch based on the feedback here, and
-have a few things I want to check on to reduce cycling:
+On Tue, Jun 10, 2025 at 10:30:55AM -0700, Boqun Feng wrote:
+[...]
+> > > +/// Describes the exact memory ordering of an `impl` [`All`].
+> > > +pub enum OrderingDesc {
+> > 
+> > Why not name this `Ordering`?
+> > 
+> 
+> I was trying to avoid having an `Ordering` enum in a `ordering` mod.
+> Also I want to save the name "Ordering" for the generic type parameter
+> of an atomic operation, e.g.
+> 
+>     pub fn xchg<Ordering: ALL>(..)
+> 
+> this enum is more of an internal implementation detail, and users should
+> not use this enum directly, so I would like to avoid potential
+> confusion.
+> 
+> I have played a few sealed trait tricks on my end, but seems I cannot
+> achieve:
+> 
+> 1) `OrderingDesc` is only accessible in the atomic mod.
+> 2) `All` is only impl-able in the atomic mod, while it can be used as a
+> trait bound outside kernel crate.
+> 
+> Maybe there is a trick I'm missing?
+> 
 
-1. Every approach described in this thread will result in the creation
-APIs (create a root dir, create a subdir, create a file) being
-fallible (returns `Result<>`) because they use `Arc` in the
-implementation which fundamentally allocates. I previously got the
-feedback that the debugfs API should have no possibility of handleable
-errors. This would *not* mean that we were signaling the errors out of
-the raw debugfs bindings into Rust, but Rust would be able to detect
-`Arc` allocation failures unless you really want me to be hiding
-allocation failures (I could theoretically do this by generating a
-dummy object on allocation failure, but this would add complexity and
-seems questionable).
-2. If we're not using borrowing to statically prevent entries from
-outliving their parents, there are two possible semantics for what to
-do when an entry *does* outlive its parent:
-  a. The parent doesn't actually get `debugfs_remove` called until all
-its child objects have left scope too. This can be accomplished by
-just having a `_parent: Option<Arc<Entry>>` in each `Entry` structure.
-  b. We get ghost objects, e.g. the child object is still around, but
-it is somehow able to discover that its `dentry` pointer is no longer
-valid and avoids trying to use it. The best solution I have to this is
-to again maintain an optional parent `Arc`, but also have `Entry` hold
-an additional refcount member. When you want to create a subdir, a
-file in a directory, or delete any of those, you'd walk the spine of
-parents, trying to claim the extra refcount on everything. Once you've
-got it, you can safely delete yourself or create a subdirectory or
-file. Then, whoever is last out of the extra refcount (either the
-owning object or someone holding a reference while they perform an
-operation on themselves) can try to clean up, again by claiming the
-spine above them.
-3. If we're not supporting `leak` or lifetime-based `File` anymore,
-then I don't think my method of attaching data is needed anymore. It
-was complex primarily in order to support statically enforced
-lifetimes on dirs/subdirs/files, and several of the tricks I was using
-don't work without a lifetime on the `File` type. Instead, I'll make
-it so that `File` objects can attach a `ForeignOwnable`, with the
-expected common cases being either `&'static MyData` or `Arc<MyData>`.
+Something like this seems to work:
 
-Unless I get additional feedback, I'm currently implementing 2-a,
-using `ForeignOwnable` based attachments of data to files, and
-returning `Result` where the only actual failure possibility is
-allocation failure.
+    pub(super) mod private {
+        /// Describes the exact memory ordering of an `impl` [`All`].
+        pub enum Ordering {
+            /// Relaxed ordering.
+            Relaxed,
+            /// Acquire ordering.
+            Acquire,
+            /// Release ordering.
+            Release,
+            /// Fully-ordered.
+            Full,
+        }
+    
+        pub trait HasOrderingDesc {
+            /// Describes the exact memory ordering.
+            const ORDERING: Ordering;
+        }
+    }
+
+    /// The trait bound for annotating operations that should support all orderings.
+    pub trait All: private::HasOrderingDesc { }
+
+    impl private::HasOrderingDesc for Relaxed {
+        const ORDERING: private::Ordering = private::Ordering::Relaxed;
+    }
+
+the trick is to seal the enum and the trait together.
+
+Regards,
+Boqun
+
+> > > +    /// Relaxed ordering.
+> > > +    Relaxed,
+> > > +    /// Acquire ordering.
+> > > +    Acquire,
+> > > +    /// Release ordering.
+> > > +    Release,
+> > > +    /// Fully-ordered.
+> > > +    Full,
+> > > +}
+> > > +
+> > > +/// The trait bound for annotating operations that should support all orderings.
+> > > +pub trait All {
+> > > +    /// Describes the exact memory ordering.
+> > > +    const ORDER: OrderingDesc;
+> > 
+> > And then here: `ORDERING`.
+> 
+[..]
