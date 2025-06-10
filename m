@@ -1,91 +1,81 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C06B284B33;
-	Tue, 10 Jun 2025 11:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0B822B8B8;
+	Tue, 10 Jun 2025 11:58:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749555436; cv=none; b=PSSazpOgQwMWAfQ4Ljp132AOdjRmPMSfH1MF39U6lQ3YcqoinD2UkR1sPk/jHloeqCyNLrMyEHTr/WLHXrDJIsUg3IWLV1Bsh2/d+Ox1s/iCEgLiZjt3LrvD02JfsmEY+fS7a//EGLSbhxsdZ68jsdRAy1htE9FXaa9ISH5VVWM=
+	t=1749556696; cv=none; b=dPI1j1so08sz0NTNa7IKA+6hJ6pZE5+HkF2d/5/rTLFt3dd8NoXBqrUmE6IbVDF0j6LIiHwqmq+Flr8+3MrHogSfJVcGKIwdS26pjzEvGrTDBXjNykmqffU1G0YkiZwzh9toHEMJ7W5mNWvWKQJCvKsUpS3vyMTZFeQoq8a9CIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749555436; c=relaxed/simple;
-	bh=Rl7gmhD68pvqAuq1oLbdvzcfcB7ehPXp9x+J0gUw+fA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=My6+L5AjVqpj4QBkZY/byHuJitvPpyuzP0MEHlXakC0RsTXWW4hOwSSicF40MUPbyYH8VOaDDtcoiII4kcGjbCei9vcSw51rPYjb1+MLB3XKKzjgdIq+8KBYvXY7hLnyNHKur2IJ5Lc/JJOxiFSDXyGQ7FxUtZPPGIgT7VqtCbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UFc1rpd1; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749556696; c=relaxed/simple;
+	bh=eMS2F2tvzjR9NHy0MJLKrY8BTnZRB2PUODIxvpPm3c8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=mz4UCK5MC8IXwr6qosjazlI31NRWp8MKVRIn6mH/+wxir6jaBRM2x/sYd60FvP6Aj+2W/jkq1k5iVBoXAOVjXXHIVCPTnJKIEJEJ/0OFFpa8e+jpSRubYFdXWTBPSpULlcwMoRXJLA6DNW44eSOH+5W31Vki/LhQFVDqEcr/st0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D8W3FB3a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UFc1rpd1"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2363bd24891so694555ad.3;
-        Tue, 10 Jun 2025 04:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749555434; x=1750160234; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rl7gmhD68pvqAuq1oLbdvzcfcB7ehPXp9x+J0gUw+fA=;
-        b=UFc1rpd1lkhKrucPlt5c26VKWx5ThwhCFx0E4VZMqQeDmB2Pq9JaqXVWDqquSlTVOf
-         8PQ2HT/LQSzKHo5EtXHNi9dpFcKfYWd6PRupdS81XxaOyPMYnKslK0pWkRguA2N4ZqsP
-         JSPeUGO0tA766TduE1rVK6eHkuI4Z3Eq6FEuhpJk2mAok01fIkMNDpZ7Y9kYeaGNTjht
-         Dj7rZlTydCIdeAMVP67wDQODBJgIfsDKkCHPhsqNYvNyy/rd+yNwy+bfNyRgFXYVJAZw
-         ErFvZfLVlzGCWD2BRTs/mlzQU709zg63NTVMCUv+nCOUKkolXcL/S+KDgFBB6JMYOGgH
-         ew/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749555434; x=1750160234;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rl7gmhD68pvqAuq1oLbdvzcfcB7ehPXp9x+J0gUw+fA=;
-        b=jsXNormlN6G/gVr4gnwHgrWPCjxz3l9aVo5xyosv4lB2bfxvSb6/0u+NbKWksSbngd
-         UrNhNe9WJ2wt+HeglT8Zy13irSxme02aXz5MYP8exuxCxDZY+x3K8zcC5mLGk3iDKkTm
-         lzJ6ZWBCErkE47QJ58sANQPJ2fKGdcV6pETCTAoNNnix2RC+SgYDVxDCx0V2cFwdXEAi
-         VkXaHlbIWm3ZbufEU+xmP0Xjvbb+OzPUbtU/pnEu+uFciEkOUz+tsgtCAZVZcqfqCid0
-         un0DHlHtxFqbBd1GUZ2v/pAFQPVyjXkNMsLBFPd8HcRN5ZG7cBCN2JYFk7JqLoN62MYj
-         wmpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUcKpRl33QvsTxGDIoBN5pq2LUXnjNLEV5omOzQfmTeZWP9JKgRf6KqIQlw9ezXJJwli6Ch3Q5XnBsXmYtiwyk=@vger.kernel.org, AJvYcCVT5ka70VxJdXjIbl2r1X8MsUQpEAPQ3Nbv3IzN8lMEejMHRx90/O5Ki4aJcJ39JZJNox4Macr1SCEP@vger.kernel.org, AJvYcCX6m31F6t09lKk0x0dLTjscGdAnQH0TEvDRbOX1djMHBVjeDIwPhgsPSNBuahGFxiehAdviVBmTOLlmpDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCZb3TSkCgnLjdozq60aTg8F+fq1+U/0RhqbK+efdGdLxNOLBa
-	WA8ShRdiDMvmqAjdPXSSIXaeeBtPMNtPa74JcKWOJDN7A2926Vvd7VkQa+KHEPAH4qsTHAV/OgW
-	vqvptXl0rKEol+yO4lcx+VvfzuWw6k1w=
-X-Gm-Gg: ASbGncvTcDCRW9Hv/hz4EtcYLQ1lwYxQ79HR/7k8aHYz5S3JcLscyklUK3rUXgbZ7Iv
-	FGA6YtJogcD83RinHm/xwmPKgViezBknXsyuAUOa3z3b6aXa5FMKnPEfV04gFzjfK/c+yM2+rwn
-	hGiDZnQId18dI6vfRpQEPaQT8oyOs2Pba820Ywiz2Z+48=
-X-Google-Smtp-Source: AGHT+IFfuQ7vMN6M8ZvhnQLxwH8KNArPOlKCobbwxMJm3CCS6PtixmtxNtAsnC9Q9jpXqWWOz2VR+IGLAcqe0lsnDF4=
-X-Received: by 2002:a17:90b:3a87:b0:312:db8:dbd3 with SMTP id
- 98e67ed59e1d1-3134e422457mr7738333a91.6.1749555434300; Tue, 10 Jun 2025
- 04:37:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D8W3FB3a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA00C4CEED;
+	Tue, 10 Jun 2025 11:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749556696;
+	bh=eMS2F2tvzjR9NHy0MJLKrY8BTnZRB2PUODIxvpPm3c8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=D8W3FB3a90bmJyfCeS1dkwvE95gdVpuAVt+LPfzRDvBAFgoI93ijGCTGNfN2mk4bR
+	 L1CvQGj4f4lgPrZ+QWn0f/tAm3yhBStFQF8S4iE3od9BZqknP7eRJFGpEqU807PBdS
+	 otzCFpI5LnwF5naPm5Gno/r6M/acj2LQRyyK5puiwK9wgMWineDeCy1l7bi9gFcOCZ
+	 9mUEdBmCXwDKKGjqpbMKDRBDcShmLdQiz+EBJR5NSTagecNbvW/JXgr3bI4aHdpuIA
+	 M0fY5RMN9aAtDWw/KeKl9oOT/cIOyZRzG9bEe3yZnuI7yCjzQ5fvhli+P3a7HNUmHo
+	 e0D/nZCHJ+5dA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno Lossin" <lossin@kernel.org>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,  "Bjorn
+ Helgaas" <bhelgaas@google.com>,  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>,  "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki" <rafael@kernel.org>,
+  "Tamir Duberstein" <tamird@gmail.com>,  "Viresh Kumar"
+ <viresh.kumar@linaro.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-pci@vger.kernel.org>,
+  =?utf-8?Q?Ma=C3=ADra?=
+ Canal <mcanal@igalia.com>
+Subject: Re: [PATCH v2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+In-Reply-To: <CANiq72kYdtozcN1U1yGhi_orh-OVO2xp3=wQPAhwgx=wTi-neA@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Tue, 10 Jun 2025 13:37:02 +0200")
+References: <20250610-pointed-to-v2-1-fad8f92cf1e5@kernel.org>
+	<ABpacmV2zqpdR5tk6NDHTg9kbssxZOay4JLvHJWs6pS0swz_krftwuUN8k_SABP04TF1k1Z4uW4IH29D2Qb5OA==@protonmail.internalid>
+	<CANiq72kYdtozcN1U1yGhi_orh-OVO2xp3=wQPAhwgx=wTi-neA@mail.gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 10 Jun 2025 13:58:05 +0200
+Message-ID: <871prr24he.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610-pointed-to-v2-1-fad8f92cf1e5@kernel.org>
-In-Reply-To: <20250610-pointed-to-v2-1-fad8f92cf1e5@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Jun 2025 13:37:02 +0200
-X-Gm-Features: AX0GCFvrBYeRkqsyvCDMs82Yt861o90yEZsxAJ_1-2gnoBEMGVP26IUEfqd8g5M
-Message-ID: <CANiq72kYdtozcN1U1yGhi_orh-OVO2xp3=wQPAhwgx=wTi-neA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Tamir Duberstein <tamird@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 10, 2025 at 1:32=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+
+> On Tue, Jun 10, 2025 at 1:32=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> - Replace qualified path with `use` for `crate::ffi::c_void`.
 >
-> - Replace qualified path with `use` for `crate::ffi::c_void`.
+> Hmm... I think parts of the patch still use the qualified path?
 
-Hmm... I think parts of the patch still use the qualified path?
+Yea, sorry. I just changed the kbox file where Benno pointed this out. I
+can change the rest of the places as well.
 
-Cheers,
-Miguel
+
+Best regards,
+Andreas Hindborg
+
+
+
