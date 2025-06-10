@@ -1,243 +1,230 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332B61A8401;
-	Tue, 10 Jun 2025 09:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2AD22172F;
+	Tue, 10 Jun 2025 09:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749546443; cv=none; b=rr0wTi8Faswhbc9H/uHHpSMU1/ixq4TI44LH10aeL32nTEOGdDdSuWAQ53048ycLonzee71106EdSnDXjtoIQhdWjbT/vvB3O75wTm5YdpBb8Dgx7z3K/eSqrdstI1t7akvy/1IVLiO/sWv0iU/UDBggQ1B8vSCyayG9PBUolwI=
+	t=1749547659; cv=none; b=Sz0WhbDEeWLop5rKMAgPQ9OoourymyeW4b90plTsg+Q3VFAM+SyoIJdgiglDfgq29AsJXyZmbT7eMGbZw8rcZbCOf7rap/GSQf8Oz4zXhyp+NJUDIslrKz7mfBqUmb1xbUwtFSnie4DqEC4GRWibmGLH5IuGYCxBqVV0qf7FSrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749546443; c=relaxed/simple;
-	bh=ZM+zxGI1u4LejkqbNmMVUbYQhbNCdSBHsu5mm84RMCc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=gNHd2VrUF3S+2w/yGGPS03fl1zJDVMUy8kk1Juf6nefpjqW7/AulSN19ZmyLLg0gHsYHq8DQVWevqsp9Lnt/d6M3wRZVXZVAD/CU10+3trYayMvSY+jcBo5/YeZXkMBF4WOXD2Le81nkyIkPTZOQMY968It5EfaIDhekj4WLLDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Se/+7llQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749547659; c=relaxed/simple;
+	bh=ZqzZXwBienY7zE2X7UrzBwvmMt1YWhqjZH4WMRWX/Zo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S646/lJgC+sURd8Lm+6OvVwm4n3MzCf1LvM8FAWLnumnhDZkYCUnt0235Gh9of4Kr73fPkZVo5ZMa2NyyKKdONfOth2tbQ+FoFnQPcTmynr+o+oRCNKYWhu8st7sZwKLFcPjDxeARaLLueGZ85tstsshWEd3D0QrIX7AyTB4o/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AyRXYHiW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Se/+7llQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE6FC4CEED;
-	Tue, 10 Jun 2025 09:07:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AyRXYHiW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630E1C4CEED;
+	Tue, 10 Jun 2025 09:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749546442;
-	bh=ZM+zxGI1u4LejkqbNmMVUbYQhbNCdSBHsu5mm84RMCc=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Se/+7llQ0ATlcHDQPW8Un4LmPpQBtOpj/S+vklbEe9q30T1FRfq1kbOAC+s/Yw0+o
-	 3O2Cx+K36+7wH3bXy9JJEjMR4Dom12fJqucj6ZiNldNtTC6w3rutuj56gu6jAlvPyi
-	 NNFvrcqM24SVa2Ti/i8yEn4yaUUdWXBTH7N1iZjDwkQr2nCym9uGJOqEFjrYIXx1/z
-	 EfULQVfL+KBj2WNz1VEz+5+K+McvIRcMafcJvGJlhsx8Gu7tejk7f0Zno/eTm7j/7o
-	 j3bPt3hx90SNqy1U2Q/FdAob7qn0pf2LEfoYJZjE02MXKDJ1IrVQhIH1tmYKk3C6jb
-	 kHML1rWytJzDg==
+	s=k20201202; t=1749547659;
+	bh=ZqzZXwBienY7zE2X7UrzBwvmMt1YWhqjZH4WMRWX/Zo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AyRXYHiWAEcp+X0pY5kz+1POSUUq2ems/XitGiLQs2i7z1GICUOyZzcPKeEYJOFfi
+	 XPYiIQXtSWVXOBNHDRewq1DowMlebBIJCeOYo8RJf2yHWhCtS4lxvPVst6jqxQ4X+n
+	 qJEyfIDVygKPARuYxlqqOsKOA5Fnu6dn1gGposASs03Yw1yLvXmdwhTCz01qoGVnm5
+	 e+eA26om9KAtz8ez/ultTGmP+z/F+gX0ta8mAqwOQKbU06bfjBc2o1Di/F3bd1rZtc
+	 qIUqSuJ3EmEQyJWlk5q/Gen4EDNepQplZZfF+fjlmp+5Q3rFQ011FW2hmtsTNsCY9d
+	 6eUZtWUUzJeUA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Bjorn Helgaas" <bhelgaas@google.com>,
+  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,  "Greg
+ Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki" <rafael@kernel.org>,
+  "Tamir Duberstein" <tamird@gmail.com>,  "Viresh Kumar"
+ <viresh.kumar@linaro.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-pci@vger.kernel.org>,
+  =?utf-8?Q?Ma=C3=ADra?=
+ Canal <mcanal@igalia.com>
+Subject: Re: [PATCH] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+In-Reply-To: <DAFB0GKSGPSF.24BE695LGC28Z@kernel.org> (Benno Lossin's message
+	of "Fri, 06 Jun 2025 10:23:21 +0200")
+References: <20250605-pointed-to-v1-1-ee1e262912cc@kernel.org>
+	<WubHJPtx9Uu0qugeELZ2ooYWKq4KDj7r8P7k4i_QhgOP53MWk1V3XHH4Ztmzp42zMwHSntslAbfpLFY9AhjfxQ==@protonmail.internalid>
+	<DAFB0GKSGPSF.24BE695LGC28Z@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 10 Jun 2025 11:27:28 +0200
+Message-ID: <87sek82bgf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Jun 2025 11:07:16 +0200
-Message-Id: <DAIQG9ALK4QC.2P2C2MC4U9YVX@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
- Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
-Subject: Re: [PATCH v4 03/10] rust: sync: atomic: Add ordering annotation
- types
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
- <linux-arch@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250609224615.27061-1-boqun.feng@gmail.com>
- <20250609224615.27061-4-boqun.feng@gmail.com>
-In-Reply-To: <20250609224615.27061-4-boqun.feng@gmail.com>
 
-On Tue Jun 10, 2025 at 12:46 AM CEST, Boqun Feng wrote:
-> Preparation for atomic primitives. Instead of a suffix like _acquire, a
-> method parameter along with the corresponding generic parameter will be
-> used to specify the ordering of an atomic operations. For example,
-> atomic load() can be defined as:
+Hi Benno,
+
+"Benno Lossin" <lossin@kernel.org> writes:
+
+> The title should probably also mention that it removes `PointedTo`.
 >
-> 	impl<T: ...> Atomic<T> {
-> 	    pub fn load<O: AcquireOrRelaxed>(&self, _o: O) -> T { ... }
-> 	}
+> On Thu Jun 5, 2025 at 9:55 PM CEST, Andreas Hindborg wrote:
+>> The current implementation of `ForeignOwnable` is leaking the type of the
+>> opaque pointer to consumers of the API. This allows consumers of the opa=
+que
+>> pointer to rely on the information that can be extracted from the pointer
+>> type.
+>>
+>> To prevent this, change the API to the version suggested by Maira
+>> Canal (link below): Remove `ForeignOwnable::PointedTo` in favor of a
+>> constant, which specifies the alignment of the pointers returned by
+>> `into_foreign`.
+>>
+>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>> Suggested-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+>> Link: https://lore.kernel.org/r/20240309235927.168915-3-mcanal@igalia.com
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-> and acquire users would do:
+> A couple nits and documentation review below, with those fixed:
 >
-> 	let r =3D x.load(Acquire);
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
 >
-> relaxed users:
+>> ---
+>>  rust/kernel/alloc/kbox.rs | 40 ++++++++++++++++++++++------------------
+>>  rust/kernel/miscdevice.rs | 10 +++++-----
+>>  rust/kernel/pci.rs        |  2 +-
+>>  rust/kernel/platform.rs   |  2 +-
+>>  rust/kernel/sync/arc.rs   | 23 ++++++++++++-----------
+>>  rust/kernel/types.rs      | 46 +++++++++++++++++++++-------------------=
+------
+>>  rust/kernel/xarray.rs     |  8 ++++----
+>>  7 files changed, 66 insertions(+), 65 deletions(-)
+>>
+>> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+>> index c386ff771d50..97f45bc4d74f 100644
+>> --- a/rust/kernel/alloc/kbox.rs
+>> +++ b/rust/kernel/alloc/kbox.rs
+>> @@ -398,70 +398,74 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags=
+) -> Result<Self, E>
+>>      }
+>>  }
+>>
+>> -// SAFETY: The `into_foreign` function returns a pointer that is well-a=
+ligned.
+>> +// SAFETY: The pointer returned by `into_foreign` comes from a well ali=
+gned
+>> +// pointer to `T`.
+>>  unsafe impl<T: 'static, A> ForeignOwnable for Box<T, A>
+>>  where
+>>      A: Allocator,
+>>  {
+>> -    type PointedTo =3D T;
+>> +    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<T>();
+>>      type Borrowed<'a> =3D &'a T;
+>>      type BorrowedMut<'a> =3D &'a mut T;
+>>
+>> -    fn into_foreign(self) -> *mut Self::PointedTo {
+>> -        Box::into_raw(self)
+>> +    fn into_foreign(self) -> *mut crate::ffi::c_void {
 >
-> 	let r =3D x.load(Relaxed);
+> How about we import the prelude, then you can just write `*mut c_void`
+> everywhere instead of having to write `crate::ffi` all the time.
+
+OK.
+
 >
-> doing the following:
+>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+>> index c7af0aa48a0a..6603079b05af 100644
+>> --- a/rust/kernel/sync/arc.rs
+>> +++ b/rust/kernel/sync/arc.rs
+>> @@ -140,10 +140,9 @@ pub struct Arc<T: ?Sized> {
+>>      _p: PhantomData<ArcInner<T>>,
+>>  }
+>>
+>> -#[doc(hidden)]
+>>  #[pin_data]
+>>  #[repr(C)]
+>> -pub struct ArcInner<T: ?Sized> {
+>> +struct ArcInner<T: ?Sized> {
 >
-> 	let r =3D x.load(Release);
+> I agree with this change, but let's mention it in the commit message.
+
+Right.
+
 >
-> will cause a compiler error.
+>>      refcount: Opaque<bindings::refcount_t>,
+>>      data: T,
+>>  }
 >
-> Compared to suffixes, it's easier to tell what ordering variants an
-> operation has, and it also make it easier to unify the implementation of
-> all ordering variants in one method via generic. The `IS_RELAXED` and
-> `ORDER` associate consts are for generic function to pick up the
-> particular implementation specified by an ordering annotation.
+>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> index 22985b6f6982..025c619a2195 100644
+>> --- a/rust/kernel/types.rs
+>> +++ b/rust/kernel/types.rs
+>> @@ -21,15 +21,11 @@
+>>  ///
+>>  /// # Safety
+>>  ///
+>> -/// Implementers must ensure that [`into_foreign`] returns a pointer wh=
+ich meets the alignment
+>> -/// requirements of [`PointedTo`].
+>> -///
+>> -/// [`into_foreign`]: Self::into_foreign
+>> -/// [`PointedTo`]: Self::PointedTo
+>> +/// Implementers must ensure that [`Self::into_foreign`] return pointer=
+s with alignment that is an
 >
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> s/return/returns/
 
-Looks good, I got a few comments on the details below.
+Thanks.
 
-> ---
->  rust/kernel/sync/atomic.rs          |  3 +
->  rust/kernel/sync/atomic/ordering.rs | 94 +++++++++++++++++++++++++++++
->  2 files changed, 97 insertions(+)
->  create mode 100644 rust/kernel/sync/atomic/ordering.rs
 >
-> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> index 65e41dba97b7..9fe5d81fc2a9 100644
-> --- a/rust/kernel/sync/atomic.rs
-> +++ b/rust/kernel/sync/atomic.rs
-> @@ -17,3 +17,6 @@
->  //! [`LKMM`]: srctree/tools/memory-mode/
-> =20
->  pub mod ops;
-> +pub mod ordering;
-> +
-> +pub use ordering::{Acquire, Full, Relaxed, Release};
-> diff --git a/rust/kernel/sync/atomic/ordering.rs b/rust/kernel/sync/atomi=
-c/ordering.rs
-> new file mode 100644
-> index 000000000000..14cda8c5d1b1
-> --- /dev/null
-> +++ b/rust/kernel/sync/atomic/ordering.rs
-> @@ -0,0 +1,94 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Memory orderings.
-> +//!
-> +//! The semantics of these orderings follows the [`LKMM`] definitions an=
-d rules.
-> +//!
-> +//! - [`Acquire`] and [`Release`] are similar to their counterpart in Ru=
-st memory model.
-> +//! - [`Full`] means "fully-ordered", that is:
-> +//!   - It provides ordering between all the preceding memory accesses a=
-nd the annotated operation.
-> +//!   - It provides ordering between the annotated operation and all the=
- following memory accesses.
-> +//!   - It provides ordering between all the preceding memory accesses a=
-nd all the fllowing memory
-> +//!     accesses.
-> +//!   - All the orderings are the same strong as a full memory barrier (=
-i.e. `smp_mb()`).
+>> +/// integer multiple of [`Self::FOREIGN_ALIGN`].
+>
+> I would just write "returns pointers aligned to [`Self::FOREIGN_ALIGN`]".
 
-s/strong/strength/ ?
+OK.
 
-> +//! - [`Relaxed`] is similar to the counterpart in Rust memory model, ex=
-cept that dependency
-> +//!   orderings are also honored in [`LKMM`]. Dependency orderings are d=
-escribed in "DEPENDENCY
-> +//!   RELATIONS" in [`LKMM`]'s [`explanation`].
-> +//!
-> +//! [`LKMM`]: srctree/tools/memory-model/
-> +//! [`explanation`]: srctree/tools/memory-model/Documentation/explanatio=
-n.txt
-> +
-> +/// The annotation type for relaxed memory ordering.
-> +pub struct Relaxed;
-> +
-> +/// The annotation type for acquire memory ordering.
-> +pub struct Acquire;
-> +
-> +/// The annotation type for release memory ordering.
-> +pub struct Release;
-> +
-> +/// The annotation type for fully-order memory ordering.
-> +pub struct Full;
+>
+>>  pub unsafe trait ForeignOwnable: Sized {
+>> -    /// Type used when the value is foreign-owned. In practical terms o=
+nly defines the alignment of
+>> -    /// the pointer.
+>> -    type PointedTo;
+>> +    /// The alignment of pointers returned by `into_foreign`.
+>> +    const FOREIGN_ALIGN: usize;
+>>
+>>      /// Type used to immutably borrow a value that is currently foreign=
+-owned.
+>>      type Borrowed<'a>;
+>> @@ -39,18 +35,17 @@ pub unsafe trait ForeignOwnable: Sized {
+>>
+>>      /// Converts a Rust-owned object to a foreign-owned one.
+>>      ///
+>> -    /// # Guarantees
+>
+> Why remove this section? I think we should streamline it, (make it use
+> bullet points, shorten the sentences etc). We can keep the paragraph you
+> wrote below as normal docs.
 
-Is this ordering only ever used in combination with itself? (Since you
-don't have a `FullOrAcquire` trait)
+Not sure exactly what you are going for here. How is this:
 
-> +
-> +/// The trait bound for operations that only support relaxed ordering.
-> +pub trait RelaxedOnly: AcquireOrRelaxed + ReleaseOrRelaxed + All {}
-> +
-> +impl RelaxedOnly for Relaxed {}
-> +
-> +/// The trait bound for operations that only support acquire or relaxed =
-ordering.
-> +pub trait AcquireOrRelaxed: All {
-> +    /// Describes whether an ordering is relaxed or not.
-> +    const IS_RELAXED: bool =3D false;
-> +}
-> +
-> +impl AcquireOrRelaxed for Acquire {}
-> +
-> +impl AcquireOrRelaxed for Relaxed {
-> +    const IS_RELAXED: bool =3D true;
-> +}
-> +
-> +/// The trait bound for operations that only support release or relaxed =
-ordering.
-> +pub trait ReleaseOrRelaxed: All {
-> +    /// Describes whether an ordering is relaxed or not.
-> +    const IS_RELAXED: bool =3D false;
-> +}
-> +
-> +impl ReleaseOrRelaxed for Release {}
-> +
-> +impl ReleaseOrRelaxed for Relaxed {
-> +    const IS_RELAXED: bool =3D true;
-> +}
-> +
-> +/// Describes the exact memory ordering of an `impl` [`All`].
-> +pub enum OrderingDesc {
 
-Why not name this `Ordering`?
+  Converts a Rust-owned object to a foreign-owned one.
 
-> +    /// Relaxed ordering.
-> +    Relaxed,
-> +    /// Acquire ordering.
-> +    Acquire,
-> +    /// Release ordering.
-> +    Release,
-> +    /// Fully-ordered.
-> +    Full,
-> +}
-> +
-> +/// The trait bound for annotating operations that should support all or=
-derings.
-> +pub trait All {
-> +    /// Describes the exact memory ordering.
-> +    const ORDER: OrderingDesc;
+  The foreign representation is a pointer to void.
 
-And then here: `ORDERING`.
+  # Guarantees
 
----
-Cheers,
-Benno
+  - Minimum alignment of returned pointer is [`Self::FOREIGN_ALIGN`].
 
-> +}
-> +
-> +impl All for Relaxed {
-> +    const ORDER: OrderingDesc =3D OrderingDesc::Relaxed;
-> +}
-> +
-> +impl All for Acquire {
-> +    const ORDER: OrderingDesc =3D OrderingDesc::Acquire;
-> +}
-> +
-> +impl All for Release {
-> +    const ORDER: OrderingDesc =3D OrderingDesc::Release;
-> +}
-> +
-> +impl All for Full {
-> +    const ORDER: OrderingDesc =3D OrderingDesc::Full;
-> +}
+  There are no other guarantees for this pointer. For example, it might be =
+invalid, dangling
+  or pointing to uninitialized memory. Using it in any way except for [`fro=
+m_foreign`],
+  [`try_from_foreign`], [`borrow`], or [`borrow_mut`] can result in undefin=
+ed behavior.
+
+
+
+Best regards,
+Andreas Hindborg
+
 
