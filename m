@@ -1,102 +1,128 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C718828F503;
-	Tue, 10 Jun 2025 12:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD2B299923;
+	Tue, 10 Jun 2025 12:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749558544; cv=none; b=i4FAmXUIevhjQCKMrs0wPsTvMxvuxc1bs2MeSb7ZF6ohCl4qBjI26d1DDol8Qi/mLQgHzJ50tQj0tGxl8BrPLWfbNt8lMsoUirIqVRxTKlK49QcA/26Gdf8LNvM/I79xt/usS9vqwGTsWkClbhaMjtltvIG4a36ztz3Cbsqjd40=
+	t=1749559067; cv=none; b=IMkbkoB1uGNm0Q/+AmylUVXQ2SW85H5PhjmhFUzHnmWwZzfdEv/Fq84ZGT5FHK9dmDfVTLizbXBlLBK9ohCfmExHsTVhs2hMIdfcaV5rF6achcWckjN2qXTmKvkmMixkvVvfQDeU7g20tm6PX6BZEPQQJPpHkIXEGXIPYnryP2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749558544; c=relaxed/simple;
-	bh=2UbnsN/0HzJVFD9xlg8jO4RD2i/2zdrcJP360HZf1sg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BpERMqeefHJ9OHHHssrTmmAT0dls984l8JE8Wy8udoY6L6UMDOJNomXe8wbqFtdSlnzvm/FkbyAOAK9mOynI+p7lOiC5EX6148GIbG1FSC46ewvRkXe6JOaKyOc++FC+1xw3L2SJnAbR8OqWJa5rHoGvXLDwtqVjuodKorhxXKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fqXFtLY7; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1749559067; c=relaxed/simple;
+	bh=XmJMk1hfrUZqF1m2NlC+hcdw8EIJOMQVVA2Itp1gGcE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GSYdgGzTodgSkx1mIsy+5ViptO4LzSBOF1MX+6OIzL7E4DfzSqb+ZBcH7s3ylx2l/gDOGeTh6OJ8vvhaUsjaN4kuHWC8Q2MLFG++yxvG86M1K+QaxJTRAnZn/yRFRQpMcJsFsB50vCDIlzV6erOfcJbalWK2QfOd+H2fxdTlIZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cfZ7yYJe; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fqXFtLY7"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-313290ea247so796561a91.3;
-        Tue, 10 Jun 2025 05:29:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cfZ7yYJe"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-742c7a52e97so4557788b3a.3;
+        Tue, 10 Jun 2025 05:37:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749558542; x=1750163342; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1749559065; x=1750163865; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2UbnsN/0HzJVFD9xlg8jO4RD2i/2zdrcJP360HZf1sg=;
-        b=fqXFtLY74Fe3HLxwrSUeUv1xQdLX8JoFsCoj2qXezKhexfg2pVcPGcLrGXtgD8l980
-         FvqLxvPPQ8W/A7Ped3TklzHRAWoiocGC4zpE7Irih56I9SKEpBdq9Y4u0/WvUhWKI2xU
-         tJiH6d4fdUPfQA7xTg/qUiDeKvGmOO5AbtrimJ3J/SuQgM7ylN9uuj/tcjasuP2bvf7K
-         ci4uDT0dE4sNAaj0jGUydWDErvL0viF6hq334JQNubUQOCPnlQoDBkVDmt1bO4rAx0P6
-         Dy5P2bsvUfyX3lpeYBRIA7r0SzSIk+aPA0DzJ0Ut7E/Otttg2oDNNGkffgnqNN4/G+su
-         ubpA==
+        bh=jRQOPbrVNqSVVdbbGZatVj1/1oRXPCI6nL+WDn+7b74=;
+        b=cfZ7yYJeLnNPtIRcJ7h6PhYT5HJtxrOjpUiKsuYbjFThR/2VYz6g5cCKrN7GGjmGDM
+         Ldz3kNlHaj76VBbN62KW2T44v53p39i8i0U3BKGHvrLsybPuTyhWwMiQ3tX+7L0KPagX
+         AzQcYFYJKouBJPLXzZAnd5MdjszULU6d1PLxC7fy0kqCjZzHh0QFxXBlY8jXKObjPw3v
+         hxQiWqWNOjr0XsmuzzRYAuQya830uEAlMyK2fqrEaalFejaWHn1oTRZrUNjnACSWke6v
+         r0ePSyiSZAGhkbv5zf/36SVlPhq8jUlQLbegC/4tEucYhbKhYcGdzgbQGpmAEJRonENj
+         5Wkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749558542; x=1750163342;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1749559065; x=1750163865;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2UbnsN/0HzJVFD9xlg8jO4RD2i/2zdrcJP360HZf1sg=;
-        b=mXvWEq8Gcj8fV7Z0xvXxO1AGbzvTs1fWZg3Ji+j/gm36XKo9h1OdQ2G4FbwR4uD3+a
-         SwdlQRU3t+BYFM5E7zugMj1WD83UPTM9Mwhpym6GPmmR6Typm9MZP2gtMp40VRkBBmk9
-         aSZe1uuYw3aIZ76CzGtiywnCJhq0YUsDPYPwbHuBo8cHMDdJr+7EEnhr4Yr3FtiMRLEp
-         Uk+fGgmXHrkRxSBsxlttJiZ0n4zQKSbUC5MD1HJN3raxjZtKDCsrwhSvx/KwniKXHeRe
-         enQ1FuGFa9Nk2TB2SrhkDT9iaBUBZUp82UYtyn0BYekLblD4vm+Cs1A/6Sfc+xJ+0tHJ
-         WGIA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4/He7tT2vND9UWu4Gx5Zu7s+tFWtxpoVFssGxonsgLgMYXpW/cMQjr1UUYw9CRSSmmEe5cx7TSFj0VEwcO24=@vger.kernel.org, AJvYcCV+Mz1r6wvTWuD+/i5vxBWAVqJ8tnR9MCPYiKnli4MM4cc7Hkjh2sv+iWAopT6tJaAcFk1XhY93xjky@vger.kernel.org, AJvYcCXKXxTRKCimEnM8ZI5pKK1Dy+aOFKIFOSG5o3yWAt4/8H8MbVX0mgIFzd7ZQiOTMNP856Daw5NNJD35DVU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNglMIfelzUGtPuzKvAuujtkg7jeOI67lVACzIXi8x7zMgibg8
-	z6iTyUQ8pnIEwf/4YoMS7vG4lnpBG3JqNs2w5AA84Oe7x/oinRbqtAg5sVW2R7YyVpSyjG69oBV
-	jurrShsAkj6GGVN+jJAmLB4xcCC0gRo8=
-X-Gm-Gg: ASbGnctZgVAhD1vehpXpAMZO0raMhYNYmT1TGWu2Oo9nfy1U02LhD8jnnb9XQr4U5wZ
-	TJBtLMWPas77g3o54go0qy25UvE4lf3/tvjp4eOtgC33qgPQhg9dA1rfEIE1CHg/4wW3Rf/SfcI
-	rgRlLyiYFYnApkcMSknS5fp6SFHy4EVKqNqX+EJC2izAI=
-X-Google-Smtp-Source: AGHT+IGKJQK2v6FM0o5IGKEscQY3VpiTZYOi6jXZ0deKyklBQPXuPdbcZh/CoYwKmI+Zc2LZCYY1j8Z4rnonUI10r5A=
-X-Received: by 2002:a17:90b:53cf:b0:312:e9d:3fff with SMTP id
- 98e67ed59e1d1-3134e2da3c9mr8566788a91.1.1749558541925; Tue, 10 Jun 2025
- 05:29:01 -0700 (PDT)
+        bh=jRQOPbrVNqSVVdbbGZatVj1/1oRXPCI6nL+WDn+7b74=;
+        b=bp9gU9z4YeoKa4Kj7VbZe5d2KNkeqvbUK0dO70s0o1pdQms+OsisrrIi+6+gD3n34Y
+         yotN7TFIo7qyD7gcBFUclv6gSd2WlBT7iqqvgy0pX61Bc544ITOraw7p+ZYz6LglVJDc
+         2iuFpGkQEyYODblPXB/mEO7fDPzika0QJ4rF0YywGyjh1JmoX0hFgyUUUVxI3S4H8X9/
+         YNeaTwlqgSIAe1ZcJ7bDwUwQc4zGmEAL8wZdJWHHEEERd6PRqVp1jBBQWuxPYrPv3neZ
+         cVLuV/1qHGygEh62yYs4Z4ltxVfXvWAKNjXq0WCLxlZMi2eFQAgnbhZtOn9KhKXkCu3w
+         cx1g==
+X-Forwarded-Encrypted: i=1; AJvYcCUEMUTJc0Te9O6kjJaycgE7Be89X3ooW/rKcyvnvABNtFniAccnsuncnUmpRnrZdVoCZVTl+mvIvOqyfmk=@vger.kernel.org, AJvYcCXGFjwSS/pRcXvvJqKRPyp0sw92oQVi00pjfRaXTgAg5ffmsFS2zIIzLjbHrNX26yTOdG//EirL7XE=@vger.kernel.org, AJvYcCXZbucCidw4BoBi/3KN5FOIvKDwgW0AGHjRWUH9UqL0E+XCkBZnUdNmYFk+h7qfqErJ5i7Tn/ZnceV3TVhN5lQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyltr8s2WkDKex6Q3FANelAa1PJePO/RrT3RNQFP3/2uexc3I7E
+	g7b6UPZtNhciHK1ZSJqjZmuvQGtRlIJwIoYyZiddVWE5ufJQTlkkG58t
+X-Gm-Gg: ASbGncvYeoMaw0WwZG6wj+5RSB+UMPc33wgcYzNXFzHtniL6fwAtK6mGovkT58IrFIB
+	jrE7dsMxVG9E1gqajg1fSYoG5qF4M6ClKxeLt04SVfaUsC+qPxhxAdE/8jBJ91lbe5qBCEiaHS2
+	slg3JAHCOVKxvu9E1u7sY0D0RmYupkgXVyI5adiR+oQ5mkONnQl+PC5Mr/Iu4tKSW6XNbm/7w/d
+	5qJekyPvP5XyIOJ9ltuua7VW1IwHBbG2pWLKUqrj+9WhTbOzqMvDuw0SCttQ94RoNWlv+BDFydH
+	frZKTi0G7LPionZhJjusMN8KfvwPWh2wEpztR0b6F9KQYC4kocw16hE/ccrMjw==
+X-Google-Smtp-Source: AGHT+IHMtYtVG5PabZhuHRmGJDtif89AiGbDOj70nrBza0cLJnhQteMI3FHrOV9iM3nIwFTlh0+ugw==
+X-Received: by 2002:a05:6a00:13a4:b0:736:5725:59b4 with SMTP id d2e1a72fcca58-74827e51491mr24120722b3a.3.1749559065038;
+        Tue, 10 Jun 2025 05:37:45 -0700 (PDT)
+Received: from pop-os.. ([201.49.69.163])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b0e9d36sm7318995b3a.157.2025.06.10.05.37.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 05:37:44 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	airlied@gmail.com,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	anisse@astier.eu,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	david.m.ertman@intel.com,
+	dri-devel@lists.freedesktop.org,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	igor.korotin.linux@gmail.com,
+	ira.weiny@intel.com,
+	leitao@debian.org,
+	leon@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	lossin@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mcgrof@kernel.org,
+	mripard@kernel.org,
+	nouveau@lists.freedesktop.org,
+	ojeda@kernel.org,
+	rafael@kernel.org,
+	russ.weight@linux.dev,
+	rust-for-linux@vger.kernel.org,
+	simona@ffwll.ch,
+	tamird@gmail.com,
+	tmgross@umich.edu,
+	trintaeoitogc@gmail.com,
+	tzimmermann@suse.de,
+	viresh.kumar@linaro.org,
+	walmeida@microsoft.com
+Subject: Re: [PATCH] rust: module: remove deprecated author key
+Date: Tue, 10 Jun 2025 09:37:31 -0300
+Message-Id: <20250610123731.194853-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <CANiq72kORZjTe3tPEBueDi57TGF7KfxgTSw4Tn0DQeK_X5hi5A@mail.gmail.com>
+References: <CANiq72kORZjTe3tPEBueDi57TGF7KfxgTSw4Tn0DQeK_X5hi5A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610-pointed-to-v2-1-fad8f92cf1e5@kernel.org>
- <ABpacmV2zqpdR5tk6NDHTg9kbssxZOay4JLvHJWs6pS0swz_krftwuUN8k_SABP04TF1k1Z4uW4IH29D2Qb5OA==@protonmail.internalid>
- <CANiq72kYdtozcN1U1yGhi_orh-OVO2xp3=wQPAhwgx=wTi-neA@mail.gmail.com> <871prr24he.fsf@kernel.org>
-In-Reply-To: <871prr24he.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Jun 2025 14:28:48 +0200
-X-Gm-Features: AX0GCFsUeLNISdH1VBrQM4vnuNs7e3EdSLQvU8l0WJ9OFeQ0M33QThRkcxjaYO4
-Message-ID: <CANiq72kxN45+U9VA8mrPtzYG0xdomehO5A==CX+79iJFJ0edeg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Tamir Duberstein <tamird@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 10, 2025 at 1:58=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> Yea, sorry. I just changed the kbox file where Benno pointed this out. I
-> can change the rest of the places as well.
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrotes:
+> On Tue, Jun 10, 2025 at 12:12 PM Benno Lossin <lossin@kernel.org> wrote:
+> >
+> > Hmm, I guess a checkpatch lint fits better then?
+> 
+> Yeah, that would work.
+> 
+> Probably for the C side too -- from a quick grep I don't see it.
+Maybe, after this patch we can make a checkpatch change for check the `authors`
+key (and MODULE_AUTHOR for C side), and throw a WARN if the author is a name
+(not a url, or "rust for linux") and don't have a email address. 
 
-No worries!
+Unless you guys tell me otherwise, I guess this is not so priority.
 
-If they are new cases, then I would use the unqualified ones (which
-are also in the prelude now), since we are trying to more towards that
-(commit 3d5bef5d47c3 ("rust: add C FFI types to the prelude")).
+Thanks,
+Guilherme
 
-That way we have fewer to clean later on.
-
-Thanks!
-
-Cheers,
-Miguel
