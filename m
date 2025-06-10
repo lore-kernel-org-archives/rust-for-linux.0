@@ -1,109 +1,113 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA7021C184
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 08:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86ECC281532
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 08:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749545273; cv=none; b=rqjuM5edtfziZKH1WSoS6wlJ+fp3lDnxuaoGhc5OsRzUnGwV9CpEe3aCR9ejnca4JPPHKJ5PWDfSeYYugtHK9LepEuMZOqiKhkPdSxPQnSoAHKG37qzu+nhlzEX70dQW1V0TdZHkGbZhS+3hbNyr+DuH+aIcnDl8CVh8Pc/GP7o=
+	t=1749545340; cv=none; b=H7cnQKHsfEbpixZ1bXsxHGXA4dUzyjDyTHzf0li6dZPMg64Eqe5+4VfYPAZg/0q9heufHEd0S7zV2+pSXzDAq0AxOL1Ik4JIDc5YrIMNAefPAlN1GcLS3V7QB5mhFyWClb9jy66XIzg2yDwuBJKPCMxZnU02p/CzuSREvOSRZuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749545273; c=relaxed/simple;
-	bh=RfCn68tGpv/HdE58tpTxF3SjBDourcUufGzDddvGG/M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HxQ3tnANXX7DK3aSsxv4xtZWx2b+mhvRh0TxnWRF2fM0fzhXma3N1PFVaEf0jYYrjykzkaIbx8KG2Z8q3fifpczccmUlSxpUgyS6vJciznxetoWr3nzdoO8+yoPHCvF6KTU54KuX/bK97UR2YYH76X8uX2cUfvFP3IpijeNZ1IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RKk+BVK3; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749545340; c=relaxed/simple;
+	bh=EuO+QvTzMIbD4nlEx22zLgg2q/soEO7BzVlioZGxJjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ctnl/KzvmlJTQtIdNm7LNo9omLT+12SA9sba4ca0uPllHFb29AEwgJV+GpOOGILz0qO2G8aaJTC45mS4O0dNgwhZu0bpPJJwWtX9Yy3seoaVPP/aW1oZfAjhbACRceg5/ptatZ2IV5iof4bdZQ73pblYd48buNGTuN93x3R6Pbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CF3C4YHr; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKk+BVK3"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-312efc384fcso851147a91.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 01:47:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CF3C4YHr"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b2f62bbb5d6so2561106a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 01:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749545271; x=1750150071; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9d8xy80fLAo9cKJtXStDd79jQ0x3fb2bZojCsSVVH2U=;
-        b=RKk+BVK3RT+6MwHUVQ1IJstw89WdhfCLAsujsxZ7lF8yvU5ve8rmCNcdkEREP6u5Zt
-         qBCsNQ/iQGBqT5SbvPsO7xuPO3gjJS6lyO7UXWG0rgObvJ6hWpZPH7VGLICLXLU7Co80
-         pU9lCgQIVtsL4fZQ9NWnV/mwW8SYwApYfJHjEoy80ap5LdgpSOFC6U2cmgDvWwF5a6ul
-         jBQxMhieWJ7lcFJ5HYn5gUrMlwjcAUEIo0unHnir52Z4hynp0+tyFs6wvan3U6EYjsMk
-         VATma86w0YLoxVrl6vX8/4aHNAGmuZr9rsJuOpcopYomGzrlvzJCSjMFeuQ3/3DvJvDt
-         QKEw==
+        d=linaro.org; s=google; t=1749545338; x=1750150138; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ss4LNvAJAPZOSbZItGbwVQM6kPBhRe2N8akCDyuKIIY=;
+        b=CF3C4YHrIilEg1/vLZgBY8wMeXGTqgB1+OIiQNA7saiRzr3VdIDz+4JXGn/nrg6a7b
+         e6YNhkp1cEaQy1zdMvj8KHretMFPGbZIt9JqHnbb38qOazY64TlWnChybJ45RUJ2MFR3
+         p2uqCR7VkwBh/PQZub6J9i1zmQoynGuypVhkjoFK4uZpbF1z5vFxEUnX4S+xs1+EDg0e
+         oJbd35CAsa3Ci5opC70qHMualml1K5EoNE3JCGyvyY+92bf4bynag/lCFNcwTymS4wti
+         nRa8OdsvkBUavXWf1qPNFz5gw2YzwCt82+eBcCXlEJKQ4MECIUGVm+jify+6ti/Ltj9I
+         /37A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749545271; x=1750150071;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9d8xy80fLAo9cKJtXStDd79jQ0x3fb2bZojCsSVVH2U=;
-        b=e7lL8RWy23+Z80ZFI+8pPvN5rdhlRYJcXTyYAT2PfAZ6DmkotXz/KJEGTus+JQKBhk
-         9HThPJqsBheZmQrLs2n4hAa0P32wIH9Q+ltMThK9sxeBYzBBf5eJ7CCrdY5pOgUmjaPW
-         6Bct7ouQCRDxwn5oxVhBx7hFXD8zIGLAijNfC+UtufN+OqsdoyDC1LhlTAvt9xWRY2E/
-         NyhTgvDyvGzBR0UCfAb00A8K9p/9HLgHbZRAwQYVZ97oRgE0GQj//LASBqgXjBLBcIaP
-         oE85J7vEkoRKDwAVKK6M0e7wP2JkrGvdI1Gyow4tTk32lMwfwhRssf/tja9PicirieSX
-         R1bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXn0YR5ktg8atx1aQqYzBCLzv39iMCEDIZPhjumJSFCwCzcXMyQDdyMyjP0wzYnS6KVJz/7Eh7Chl+9UY8ChQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCd7gxqlcd1lnYRnWJswJNhvCPMWBlSyOK3rLqC6AFUy8/HKKS
-	h5AARskt04UXaTbrS7uaQrdMVyTwfbIDCtxA6T9A8emfY0EteTeWw/CwQ/7s5aaBfPW1OI4BIzd
-	+x98j+m+EH0mcO09Umh3NMBOU/QeSQNU=
-X-Gm-Gg: ASbGncswW8RXRwKB6dUbHwC78wAch5OYtLl3ro5hF82DCnvGaoZB+yWlu9NeYwl3YCb
-	AeqCJcLcAKq8GesA9UFhTWYFN8X2BRIHa/y27MwKgQ1bahH78KAJ64jsw0HH6SZ1lxe902vatgM
-	x5VBGkP31xRRi+s5OAHPJ+3n2ZxD7pZqiH6+Dn+9MoJvcP0ViVRXWVtg==
-X-Google-Smtp-Source: AGHT+IET4kTnn7eKZgH+x96ImmQD4PJCUrAkPPfq7k710u5F3g+OyOj8aQ40PtFLUrYSPo08qAeI2sNhsA3jAmzzijM=
-X-Received: by 2002:a17:90b:1b51:b0:311:a314:c2c9 with SMTP id
- 98e67ed59e1d1-3134708fe96mr9006366a91.1.1749545271353; Tue, 10 Jun 2025
- 01:47:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749545338; x=1750150138;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ss4LNvAJAPZOSbZItGbwVQM6kPBhRe2N8akCDyuKIIY=;
+        b=gbd/jnL3JXn3B/iCLU4KvP64YJVOGcE0ANppvqNDS+XdDRk679xXzQwxl0MgU9KAO5
+         DG3+ok/I+AhpigAxLIrjMn1BWR2Sjo3wOcNE2NVEBVjzgjgY7Mchh9Loy5xLCRB08OvG
+         MKBe8OfZJyWIH0IqJCYElar5c8LxT3IxonZfrIllDKvXZZNj+5a/nH+U+YGlo2nHkrTh
+         xYPLMOrS2KESN/vULgKAtH7M7huyHITJuc2Olc5q2qNwhHGcTTBfKs6tjy/kbAlvUwFl
+         lKFz7VDXE9BY/hFKehibJ9NUHypkDdhKkkkE6TOErDrBXN661tOlrh26hE8qMfRWoWR1
+         ST1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVehGCqAKiTzFKW3y6AgCIVrPAd/TiM0YDSt3x9HpWzdKM42par1WSbdcWex5snj+IQD3PnXtxy27Ggwy4joA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9I6U35Shwxo6lfARjYGWolOojJ1dTz3FhXhKsQn//KCJG0Q/K
+	rzlyfeQbfaWrLjip7ZXsCdZDHlBYuyN60tWCglS13Ue+ykxQ14nP0qmQG0TxKUZzBoE=
+X-Gm-Gg: ASbGncs/OAh9ubYmbOzYxlg/Xk6+NMAt5W30QFjhiA53fZfGVC8bW48IO9CMRBkAcu8
+	rb8u8N3/2C2H8rtRbMAK2WjOkN+G4pIzfyzvhVEQVgJAmvaSwQq7UPnX8Yot8owypIU0qObbDFZ
+	1wiOSM0ynx1bj55aZ6sJgbCaPncx55qNsI2dKhbVrQLP1AmFZIHbDiOKE6O52Qg3YjpJLK8fDxj
+	zZEDFHhDx0VCCSimdYjOCm3bFl9T1zh0Yn/lzNawuz73xixvAFlghsEnVEw3fb2JMTDxzO1jStO
+	JcZegvqAXWTl2MfcpdvUmZVqzRWjVWUDyz0CzdZqFYluaZ9IHPwMoVG9roEYRAM=
+X-Google-Smtp-Source: AGHT+IEDPYsFbgp89aPfICx0Umrk6sbupHuAqIkEb+dotEFpfbA1SSwxKzTRtF7vXJvPanU3+ClKOQ==
+X-Received: by 2002:a17:90b:2d4e:b0:311:afd1:745b with SMTP id 98e67ed59e1d1-313472e8c6dmr24276920a91.11.1749545337791;
+        Tue, 10 Jun 2025 01:48:57 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31349fc373esm6836882a91.32.2025.06.10.01.48.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Jun 2025 01:48:57 -0700 (PDT)
+Date: Tue, 10 Jun 2025 14:18:55 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>, Nishanth Menon <nm@ti.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH] rust: Use consistent "# Examples" heading style in
+ rustdoc
+Message-ID: <20250610084855.bofpldcq7d6kurim@vireshk-i7>
+References: <70994d1b172b998aa83c9a87b81858806ddfa1bb.1749530212.git.viresh.kumar@linaro.org>
+ <CANiq72mhyBOjzmvmUDfgFBoRqO_aaS-CL-ct3vmJ56HoJAsV4A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250609223606.2897030-1-ttabi@nvidia.com>
-In-Reply-To: <20250609223606.2897030-1-ttabi@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Jun 2025 10:47:39 +0200
-X-Gm-Features: AX0GCFvKz09K4N8cDozkxFZBVlIFSySFt-g1uVQLYd9uJgBJkBrtLtLNiihShFQ
-Message-ID: <CANiq72kKamUJTJX7PxmSdZWCWwFHsOoXakjRzmmX4+eQ679ajw@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: introduce sfile macro for succinct code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72mhyBOjzmvmUDfgFBoRqO_aaS-CL-ct3vmJ56HoJAsV4A@mail.gmail.com>
 
-On Tue, Jun 10, 2025 at 12:36=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrot=
-e:
->
-> +/// Returns the index of the last occurrence of `needle` in `haystack`, =
-or zero.
+On 10-06-25, 10:34, Miguel Ojeda wrote:
+> Note that `##` is not necessarily wrong, it depends on the intended
+> header level. Top-level headers use `#`, second level is `##`, and so
+> on.
+> 
+> (In particular, it shouldn't be used as a hack to get smaller font
+> size in the rendered form).
+> 
+> So, for instance, in the `workqueue.rs` one in this patch, the example
+> is likely intended to be a subsection of the "safe API" section, not
+> an example of everything, so I don't think that one should change.
 
-Please provide examples (which double as tests) for new functions, and
-possibly tests, especially for this kind that can easily be tested.
+Thanks for catching that.
 
-> +/// That is, the compiler can inline it when called with a string litera=
-l.
-
-That is not really what `const` means. I would suggest just removing
-this sentence, since we shouldn't explain `const` in every `const fn`.
-
-> +/// ```
-> +/// use kernel::sfile
-> +/// pr_err!("{}:{}\n", sfile!(), line!());
-> +/// ```
-
-This doesn't build, since it is missing a semicolon.
-
-As I mentioned in v2, examples are built and ran -- please do so
-before submitting a patch:
-
-    https://docs.kernel.org/rust/testing.html
-
-> prerequisite-patch-id: 4bfda16a333b9f00a139050b7c6875922961a15d
-
-Which prerequisite?
-
-Thanks!
-
-Cheers,
-Miguel
+-- 
+viresh
