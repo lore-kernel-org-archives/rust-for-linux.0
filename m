@@ -1,94 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1FD1A5BA8
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 08:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCA922157B;
+	Tue, 10 Jun 2025 08:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749544264; cv=none; b=nPy1pBzZgJK4xTCwuwZ43CxsGR8UDrvjcB0/H+EObs7aIhqfaEj1grq6ecLS8m6pzMmb+T6bryrXrdtTBvIlQYZS21uNWP3g3OEnQ+jwshwZgo3wet0Qs0gUfVj1iSletSNwk7EINvv7VFWHN+3wF6j2MHgqIrVARssWHEVBl+8=
+	t=1749544501; cv=none; b=C9PA6tex5tnTsk0YMf+L+wiFQSwzWRIsdV8JK/UtJCElsHjUpA16LTBsW1PCLwnzo4vHoZX7jx3b9DvvYNTT8uvldfGfFXVCZpnydbWTDs36qfmriuiVw4/R+3HXQS8YeL90I6Dy4UO46JCzIUlMqKk/UYU17KRplZ/w8hD5ti4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749544264; c=relaxed/simple;
-	bh=LsIVeIWb7pIngAiyePoe7VpozlNTvMGrUfblRiWMPFI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Subject:From:
-	 References:In-Reply-To; b=afrmdxSHSrtVdjfa95VqODUKnpGt8kY4f1xOLzbpo3hLsl2FsxbgHIwdcFcBUy1WUcsz7REbIOfgB7EDIpi478lJ4fb1nTMLHk1jeUcWqmMy0fsK/McE6jcMFxSzaTgpt28qZJmxCieq/1eleaKZpW885RVsyFU3WIOT7uFC/P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WlCetvVq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749544501; c=relaxed/simple;
+	bh=AKMt5bOqhnoUm7/yUiDXZGax3MVDPIxJL5bYGkHzERI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=irPZuhaq1RxOVZRNo4vUEh/x7LOkBjqkyjviVdoFQ4/bVDFh+TmpYC1Y0Ke8GB9jevyX90wFY2Sj3cvMnrLNnKW4IlfV1J4immTaJP/xwRuefSHEgkCoLrmMSvn1BpK7mUNeURwHePkaRRpjgiQyjAMG0LJO3BEcnWWl52rwywc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WM5yE3KD; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlCetvVq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262AEC4CEEF;
-	Tue, 10 Jun 2025 08:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749544264;
-	bh=LsIVeIWb7pIngAiyePoe7VpozlNTvMGrUfblRiWMPFI=;
-	h=Date:To:Subject:From:References:In-Reply-To:From;
-	b=WlCetvVqL+2HazeT2uI9kdFxjRe25FYC/3+jYkjWXwdAr25FMp/9K+yZMaXjBWW8k
-	 XqzEMRsXx65PpQ7W1UnPfXoAn0LWjKSbJzM8Bt7E0/JXNKWJYZuROYBdedx+wJL5+V
-	 NIl4GbW7sxwIMigOomLD8efAvm4iu+KrcaTodFy2iW6jN/cGA5vvIC20ILNjF2ohOZ
-	 NiX9HzFN8zDcgyzJKNC7OWNZjJUFOEVVD9aZ1W6FMjrIWNfJIXT3I0mL68VseGClsP
-	 1L9k7CG4vOEuyWqx2mTysSNueXMNhGEaCk2RqM6te2G+Pi503HVLaSesG+/wl7DS5B
-	 5S3PyQOIXLYXA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WM5yE3KD"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3138e64fc73so188094a91.2;
+        Tue, 10 Jun 2025 01:35:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749544500; x=1750149300; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AKMt5bOqhnoUm7/yUiDXZGax3MVDPIxJL5bYGkHzERI=;
+        b=WM5yE3KDuMTi0aRvwuFycTaclSzCED0mbjoPQsD22AgrNpMSBd5kd6b0TwxpbS6AaA
+         x6S3LU3NCB4lY0eNsU+dKMFkBZIRgTOCS0RDmOkTlGT3ReRh/BxwZ62o5VS8arc+Tevo
+         0d+upa62AD3RaVRM2JW4ZEfFHfAEFj6A9tJHYnhAu0T0h2M1mZe+ptKXhGHQWDJrfm9D
+         dpNFuxEyyiDyn4xw60m4Tj50Kgy7z9tj/gsxQi+J0b1Lwyw/p+WZcD7CgOB7od9L6771
+         jix6+pJVAAYT8vWeJX5/6OCDVR2lED2HcogWm4+TX0rVOnhwTleyfflDLoDag372O72E
+         WXzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749544500; x=1750149300;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AKMt5bOqhnoUm7/yUiDXZGax3MVDPIxJL5bYGkHzERI=;
+        b=pnx08ExgWNS2Vnph4jZQOYSfG6AHQEKpblM8hOorNxVno5EcegC8qiJiOesv8hMeH7
+         yFiZ8dhg2KMv5CGu02ueIW9Ta5jwr3cPh399KY5nJ8VD30M4pWqmNwJFZxujvjuZT5Q/
+         5/vztv5dcQr2lDrCw/VwDHfznt7ISW8mtUTzvBTCXpBZKb60iWobRp3f4Q+fHCUMtXeD
+         pNxtoYhVr4ljyPkFwq+WoJHcfRhjTyRIyDFX1m4lRGeZrmasZWYriDCk21XILyDxmS14
+         78tS+O/qTt3AqfSDHjwW8IouUzRr1pUSBV/+6+O3oClFK9NCYmse00CZXqNIq5dWaZ56
+         lxpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVih8oeqD02KbKo1LUCC5DVozv59S6gZtLSjrvlPXHOklU7EqMN24UR5W17g+QoiP71tKol1Hm3IFo9jA==@vger.kernel.org, AJvYcCWE2Nt9C6DkikSZKJtVKeE4bHXySHhaaQOXPBBz7pKwHR9szMyNh6hD5K1LHWk8XHiZJzzTxKUSr6XAHuL8PMQ=@vger.kernel.org, AJvYcCWPs7/w3WndJelDmKiSTdiv89huZ9a491HQZLSXsK6myYm+MTU8p2W6TN0KVkQOgKwFiNBS1vw540Qm8KLl@vger.kernel.org, AJvYcCWyaJe4P59BGBX2F4wM1kY1rTQVI0zLcXIUASuSL1keWLdvJyVMEL2gpwKhbcjkM6hIu3hUBsXv7p8=@vger.kernel.org, AJvYcCXCUYE15Ib2OQ54vdber+dtRehdi9wTV+CdH1yMbz+v4pYOmdlpsgltu+CIccP2JrvkmNXA4mPXI1JG@vger.kernel.org, AJvYcCXxwU9a5nKb+VrPSuUzO15IFgQcRmQFrS4AcV8zv32AqwWuECxflHvh5c/3X3Yv4AjEjbZ3UrYecHR9@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywu5rmambIqMuCVa6Ho/VkJONQZz7A+R0Fr0OlHvCy6D2vCR3PB
+	zHFTf3X/Zw38Okkgs9D9auSPXtDtPxFAMvo6SFItbhT5pxXy/JznTnFZwqe2CeW7w9eCK00vCQw
+	1L7QvSjb0aoRSzLsT6gx0FKGm5/JAn3I=
+X-Gm-Gg: ASbGncuvKEvveuClKrwIwnoa3kTdhD+iHDQx/u1RLKr72uSAlLJNM2TTap6GnVG+GWy
+	I298fbW/cOsYVPbByW4cZglko8xkJJUiWzOhZ+Kf2aozjYzwbXqI/7mPD40JHFOfuMXz/DoZKRL
+	JEeYBZBXvRBK0TFEdUeJ3wye1Az01FgmEEP9CAtnJBjH4=
+X-Google-Smtp-Source: AGHT+IG9o8l5nJqI45FrwDH7Khv7XoEw96OrQqnf6E/rj5r8N91+BEKWod7OyjPnRZjArPU77UU87Z94T1+rv+17SlU=
+X-Received: by 2002:a17:90a:d006:b0:311:e9a6:332e with SMTP id
+ 98e67ed59e1d1-3134ded1839mr9033972a91.0.1749544499647; Tue, 10 Jun 2025
+ 01:34:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <70994d1b172b998aa83c9a87b81858806ddfa1bb.1749530212.git.viresh.kumar@linaro.org>
+In-Reply-To: <70994d1b172b998aa83c9a87b81858806ddfa1bb.1749530212.git.viresh.kumar@linaro.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Jun 2025 10:34:47 +0200
+X-Gm-Features: AX0GCFuW4nKJxDOyQjzaKLJqfQBe7ZqYmgxa6VoP-kHbDElCPzAeYxEw-DuKrag
+Message-ID: <CANiq72mhyBOjzmvmUDfgFBoRqO_aaS-CL-ct3vmJ56HoJAsV4A@mail.gmail.com>
+Subject: Re: [PATCH] rust: Use consistent "# Examples" heading style in rustdoc
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Nishanth Menon <nm@ti.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Jun 2025 10:31:01 +0200
-Message-Id: <DAIPOI4SKL6U.RY7HCY76AYOR@kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>,
- "aliceryhl@google.com" <aliceryhl@google.com>, "dakr@kernel.org"
- <dakr@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: introduce sfile macro for succinct code
- tracing
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250609223606.2897030-1-ttabi@nvidia.com>
- <14dce552-c69a-460a-a54e-924423ab569b@nvidia.com>
- <35ca9fa086626f11ea65eb25acaf22fadbbe8710.camel@nvidia.com>
-In-Reply-To: <35ca9fa086626f11ea65eb25acaf22fadbbe8710.camel@nvidia.com>
 
-On Tue Jun 10, 2025 at 5:40 AM CEST, Timur Tabi wrote:
-> On Mon, 2025-06-09 at 19:33 -0700, John Hubbard wrote:
->> > +/// Returns the index of the last occurrence of `needle` in `haystack=
-`, or zero.
->> > +///
->> > +/// Identical to [`str::rfind()`], but unlike that function, this one=
- is const.
->> > +/// That is, the compiler can inline it when called with a string lit=
-eral.
->> > +#[inline]
->> > +pub const fn rfind_const(haystack: &str, needle: char) -> Option<usiz=
-e> {
->> > +=C2=A0=C2=A0=C2=A0 let bytes =3D haystack.as_bytes();
->>=20
->> Silly nit: "bytes" is just adding an unnecessary variable that also has
->> a non-informative name. Just delete it...
->>=20
->> > +=C2=A0=C2=A0=C2=A0 let mut i =3D haystack.len();
->> > +=C2=A0=C2=A0=C2=A0 while i > 0 {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i -=3D 1;
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if bytes[i] =3D=3D needle =
-as u8 {
->>=20
->> ...and write the above line accordingly:
->>=20
->> 	if haystack.as_bytes()[i] =3D=3D needle as u8 {
->>=20
->>=20
->> Yes?
+On Tue, Jun 10, 2025 at 6:38=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
 >
-> I find my version to be easier to read.  I like using temporary local var=
-iables to keep my code
-> cleaner.
->
-> If I post a v4, I can try to come up with a better name.
+> Some modules previously used `## Examples` or `# Example`, which deviates
+> from the preferred `# Examples` style.
 
-You can just reuse haystack:
+Note that `##` is not necessarily wrong, it depends on the intended
+header level. Top-level headers use `#`, second level is `##`, and so
+on.
 
-    let haystack =3D haystack.as_bytes();
+(In particular, it shouldn't be used as a hack to get smaller font
+size in the rendered form).
 
----
+So, for instance, in the `workqueue.rs` one in this patch, the example
+is likely intended to be a subsection of the "safe API" section, not
+an example of everything, so I don't think that one should change.
+
+Thanks!
+
 Cheers,
-Benno
+Miguel
