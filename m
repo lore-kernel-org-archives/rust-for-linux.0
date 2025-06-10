@@ -1,212 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4102719DF41
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 08:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA7021C184
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 08:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749545129; cv=none; b=Yn1JQ/aGtpDqf7xiUEF1KwwlHb9M1sLb3PwdNWCZyOL3r3Y6IozLjwbr+oSzyNCHoYsAgp6B99L7P8cR/xhfTy+xYhC03wnPKs6Nq5jq2qtdeGPI2L50MdWOBk9hoecW4JHMucGzCFKce5Gqt0wTpvPjWnMj23LYM4qIt5hbVKA=
+	t=1749545273; cv=none; b=rqjuM5edtfziZKH1WSoS6wlJ+fp3lDnxuaoGhc5OsRzUnGwV9CpEe3aCR9ejnca4JPPHKJ5PWDfSeYYugtHK9LepEuMZOqiKhkPdSxPQnSoAHKG37qzu+nhlzEX70dQW1V0TdZHkGbZhS+3hbNyr+DuH+aIcnDl8CVh8Pc/GP7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749545129; c=relaxed/simple;
-	bh=4PmH4n3TdedzO5FGXvKX/af0LajGxn2EwMKyF9Bmgnc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=S4OiYeJV5wAmnsqNakTOdf6T94dxLDojYWvikzLEQkSEyYp7VyCdhcF9P2+vIw5I6HBTG5VFoNg9wytTVCubTvbIa08DzD6xCoNc88gk/KK7E/aIiGo8DQCRQYSUW7J1Cb6rI2PDCLa0RzhJGWiNBLAe2OiZXkgNhSy1WwN4Mh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7HaC/mo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749545273; c=relaxed/simple;
+	bh=RfCn68tGpv/HdE58tpTxF3SjBDourcUufGzDddvGG/M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HxQ3tnANXX7DK3aSsxv4xtZWx2b+mhvRh0TxnWRF2fM0fzhXma3N1PFVaEf0jYYrjykzkaIbx8KG2Z8q3fifpczccmUlSxpUgyS6vJciznxetoWr3nzdoO8+yoPHCvF6KTU54KuX/bK97UR2YYH76X8uX2cUfvFP3IpijeNZ1IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RKk+BVK3; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7HaC/mo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE39BC4CEEF;
-	Tue, 10 Jun 2025 08:45:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749545128;
-	bh=4PmH4n3TdedzO5FGXvKX/af0LajGxn2EwMKyF9Bmgnc=;
-	h=Date:Subject:From:To:References:In-Reply-To:From;
-	b=E7HaC/mooLjPRGqG6se3xr1y2tBu4e3XjChaJwGCWww7K0U2iSCIQK7kG9Dl2uBMH
-	 oK3iIzhJE32mbBu4dMm/UuGsN8P716A/WqcIlRD3brRPtGFUOGqWA2Z5LkWF5MQ8pT
-	 NXTegYRETWBVAvfL6mYVJUzfsk9rl9lViT6T4pBXI0ad4U4NVvIaDtyFDFW0JE7sGL
-	 pkiITj/d/GGBup0oTxRX2zooMxKXcW4sADGCuExGiUTPpRqvc7D6U1z+t+IcPLJkpi
-	 BXdftlUKDM05ESmTJzXDv6pp4jxcJ9ViuRIrB7xxm00ZGT5Fmk5OegYEWezte94mxB
-	 0azkUXmx3ltSA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKk+BVK3"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-312efc384fcso851147a91.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 01:47:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749545271; x=1750150071; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9d8xy80fLAo9cKJtXStDd79jQ0x3fb2bZojCsSVVH2U=;
+        b=RKk+BVK3RT+6MwHUVQ1IJstw89WdhfCLAsujsxZ7lF8yvU5ve8rmCNcdkEREP6u5Zt
+         qBCsNQ/iQGBqT5SbvPsO7xuPO3gjJS6lyO7UXWG0rgObvJ6hWpZPH7VGLICLXLU7Co80
+         pU9lCgQIVtsL4fZQ9NWnV/mwW8SYwApYfJHjEoy80ap5LdgpSOFC6U2cmgDvWwF5a6ul
+         jBQxMhieWJ7lcFJ5HYn5gUrMlwjcAUEIo0unHnir52Z4hynp0+tyFs6wvan3U6EYjsMk
+         VATma86w0YLoxVrl6vX8/4aHNAGmuZr9rsJuOpcopYomGzrlvzJCSjMFeuQ3/3DvJvDt
+         QKEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749545271; x=1750150071;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9d8xy80fLAo9cKJtXStDd79jQ0x3fb2bZojCsSVVH2U=;
+        b=e7lL8RWy23+Z80ZFI+8pPvN5rdhlRYJcXTyYAT2PfAZ6DmkotXz/KJEGTus+JQKBhk
+         9HThPJqsBheZmQrLs2n4hAa0P32wIH9Q+ltMThK9sxeBYzBBf5eJ7CCrdY5pOgUmjaPW
+         6Bct7ouQCRDxwn5oxVhBx7hFXD8zIGLAijNfC+UtufN+OqsdoyDC1LhlTAvt9xWRY2E/
+         NyhTgvDyvGzBR0UCfAb00A8K9p/9HLgHbZRAwQYVZ97oRgE0GQj//LASBqgXjBLBcIaP
+         oE85J7vEkoRKDwAVKK6M0e7wP2JkrGvdI1Gyow4tTk32lMwfwhRssf/tja9PicirieSX
+         R1bg==
+X-Forwarded-Encrypted: i=1; AJvYcCXn0YR5ktg8atx1aQqYzBCLzv39iMCEDIZPhjumJSFCwCzcXMyQDdyMyjP0wzYnS6KVJz/7Eh7Chl+9UY8ChQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCd7gxqlcd1lnYRnWJswJNhvCPMWBlSyOK3rLqC6AFUy8/HKKS
+	h5AARskt04UXaTbrS7uaQrdMVyTwfbIDCtxA6T9A8emfY0EteTeWw/CwQ/7s5aaBfPW1OI4BIzd
+	+x98j+m+EH0mcO09Umh3NMBOU/QeSQNU=
+X-Gm-Gg: ASbGncswW8RXRwKB6dUbHwC78wAch5OYtLl3ro5hF82DCnvGaoZB+yWlu9NeYwl3YCb
+	AeqCJcLcAKq8GesA9UFhTWYFN8X2BRIHa/y27MwKgQ1bahH78KAJ64jsw0HH6SZ1lxe902vatgM
+	x5VBGkP31xRRi+s5OAHPJ+3n2ZxD7pZqiH6+Dn+9MoJvcP0ViVRXWVtg==
+X-Google-Smtp-Source: AGHT+IET4kTnn7eKZgH+x96ImmQD4PJCUrAkPPfq7k710u5F3g+OyOj8aQ40PtFLUrYSPo08qAeI2sNhsA3jAmzzijM=
+X-Received: by 2002:a17:90b:1b51:b0:311:a314:c2c9 with SMTP id
+ 98e67ed59e1d1-3134708fe96mr9006366a91.1.1749545271353; Tue, 10 Jun 2025
+ 01:47:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Jun 2025 10:45:25 +0200
-Message-Id: <DAIPZJ4YMJOI.2HYMHADQG1YER@kernel.org>
-Subject: Re: [PATCH v3] rust: introduce sfile macro for succinct code
- tracing
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Timur Tabi" <ttabi@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.1
+MIME-Version: 1.0
 References: <20250609223606.2897030-1-ttabi@nvidia.com>
 In-Reply-To: <20250609223606.2897030-1-ttabi@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Jun 2025 10:47:39 +0200
+X-Gm-Features: AX0GCFvKz09K4N8cDozkxFZBVlIFSySFt-g1uVQLYd9uJgBJkBrtLtLNiihShFQ
+Message-ID: <CANiq72kKamUJTJX7PxmSdZWCWwFHsOoXakjRzmmX4+eQ679ajw@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: introduce sfile macro for succinct code tracing
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue Jun 10, 2025 at 12:36 AM CEST, Timur Tabi wrote:
-> Introduce the sfile (short file) macro that returns the stem of
-> the current source file filename.
+On Tue, Jun 10, 2025 at 12:36=E2=80=AFAM Timur Tabi <ttabi@nvidia.com> wrot=
+e:
 >
-> Rust provides a file!() macro that is similar to C's __FILE__ predefined
-> macro.  Unlike __FILE__, however, file!() returns a full path, which is
-> klunky when used for debug traces such as
->
-> 	pr_info!("{}:{}\n", file!(), line!());
->
-> sfile!() can be used in situations instead, to provide a more compact
-> print.  For example, if file!() returns "rust/kernel/print.rs", sfile!()
-> returns just "print".
->
-> The macro avoids str::rfind() because currently, that function is not
-> const.  The compiler emits a call to memrchr, even when called on string
-> literals.  Instead, the macro implements its own versions of rfind(),
-> allowing the compiler to generate the slice at compile time.
->
-> The macro also uses some unsafe functions in order to avoid indexing
-> into a str, which is necessary to fully support const contexts.
->
-> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
-> ---
->  rust/kernel/print.rs | 66 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 66 insertions(+)
->
-> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
-> index 9783d960a97a..5b0c36481e95 100644
-> --- a/rust/kernel/print.rs
-> +++ b/rust/kernel/print.rs
-> @@ -423,3 +423,69 @@ macro_rules! pr_cont (
->          $crate::print_macro!($crate::print::format_strings::CONT, true, =
-$($arg)*)
->      )
->  );
 > +/// Returns the index of the last occurrence of `needle` in `haystack`, =
 or zero.
-> +///
-> +/// Identical to [`str::rfind()`], but unlike that function, this one is=
- const.
+
+Please provide examples (which double as tests) for new functions, and
+possibly tests, especially for this kind that can easily be tested.
+
 > +/// That is, the compiler can inline it when called with a string litera=
 l.
 
-The last sentence is incorrect. The compiler can always inline the
-function. `const` means that the function can be called from const
-evaluation such as in constant or static definitions, const blocks etc.
+That is not really what `const` means. I would suggest just removing
+this sentence, since we shouldn't explain `const` in every `const fn`.
 
-I would just remove the second sentence.
-
-Another difference between this and `str::rfind` is that `str::rfind`
-takes an `impl Pattern` and not a char. Additionally, I presume that
-`str::rfind` is more efficiently implemented (as it's more complex, see
-[1], but I didn't benchmark the two versions :).
-
-[1]: https://doc.rust-lang.org/src/core/str/pattern.rs.html#478
-
-> +#[inline]
-> +pub const fn rfind_const(haystack: &str, needle: char) -> Option<usize> =
-{
-> +    let bytes =3D haystack.as_bytes();
-> +    let mut i =3D haystack.len();
-> +    while i > 0 {
-> +        i -=3D 1;
-> +        if bytes[i] =3D=3D needle as u8 {
-> +            return Some(i);
-> +        }
-> +    }
-> +    None
-> +}
-
-This function should not be in this module, `str.rs` is probably a
-better place for it.
-
-> +
-> +/// Returns just the base filename of the current file.
-> +///
-> +/// This differs from the built-in [`file!()`] macro, which returns the =
-full
-> +/// path of the current file.
-> +///
-> +/// Using the base filename gives you more succinct logging prints.
-
-I would remove this sentence or replace it with something like "Useful
-for succinct logging purposes.".
-
-> +///
-> +/// # Examples
-> +///
 > +/// ```
 > +/// use kernel::sfile
 > +/// pr_err!("{}:{}\n", sfile!(), line!());
 > +/// ```
-> +#[macro_export]
-> +macro_rules! sfile {
-> +    () =3D> {{
-> +        use kernel::print::rfind_const;
 
-Please don't use `use` in macros.
+This doesn't build, since it is missing a semicolon.
 
-> +
-> +        const FILE: &str =3D file!();
+As I mentioned in v2, examples are built and ran -- please do so
+before submitting a patch:
 
-Instead use absolute paths: `::core::file!()`.
+    https://docs.kernel.org/rust/testing.html
 
-> +
-> +        // [`.as_bytes()`] does not support non-ASCII filenames
-> +        assert!(FILE.is_ascii());
-
-Also here.
-
-> +
-> +        let start =3D match rfind_const(FILE, '/') {
-
-And here `::kernel::print::rfind_const` (more below).
-
-> +            Some(slash) =3D> slash + 1,
-> +            None =3D> 0,
-> +        };
-> +        let end =3D match rfind_const(FILE, '.') {
-> +            Some(dot) =3D> dot,
-> +            None =3D> FILE.len(),
-> +        };
-> +
-> +        // The following code the equivalent of &FILE[start..start+len],
-> +        // except that it allows for const contexts.  For example,
-> +        //   const SFILE: &'static str =3D sfile!();
-> +
-> +        let base_ptr: *const u8 =3D FILE.as_ptr();
-> +
-> +        // SAFETY: We know that `start` is <=3D the length of FILE, beca=
-use FILE
-> +        // never ends in a slash.
-
-I don't think that we should rely on that fact for unsafe code.
-
-There is another argument for `start <=3D length`: when `rfind_const`
-returns `Some(res)`, then `res < length`.
-
-> +        let ptr: *const u8 =3D unsafe { base_ptr.add(start) };
-> +        // SAFETY: We also know that `end` < the length of FILE.
-> +        // If `end` < `start`, this will generate a compiler error.
-
-No it won't generate a compiler error if used like in the example, it
-will panic at runtime.
-
-Maybe we should make this macro return a const block?
-
----
-Cheers,
-Benno
-
-> +        let slice =3D unsafe { core::slice::from_raw_parts(ptr, end - st=
-art) };
-> +        // SAFETY: We know that the slice is valid UTF-8, because we che=
-cked
-> +        // that FILE is ASCII (via is_ascii() above).
-> +        unsafe { core::str::from_utf8_unchecked(slice) }
-> +    }};
-> +}
->
-> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
 > prerequisite-patch-id: 4bfda16a333b9f00a139050b7c6875922961a15d
 
+Which prerequisite?
+
+Thanks!
+
+Cheers,
+Miguel
