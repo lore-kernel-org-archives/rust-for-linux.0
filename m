@@ -1,178 +1,212 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1B127FD6E
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 08:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4102719DF41
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 08:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749544780; cv=none; b=nTw0VsUrWsSkGGDglCgQGOyj2IKik2MEPmi3JREXAwGX3CRWcEI84XTnnObrB2GQi7BQw/JH0cmh5IS4uDucL1LxyZT5dYw2j8EPFIP41bOxdOyWCwUtQ6gz5NDfATBM6sowXDScb51uLXS6RNbErCS9tK0fs0KOKDK4rtBO1jA=
+	t=1749545129; cv=none; b=Yn1JQ/aGtpDqf7xiUEF1KwwlHb9M1sLb3PwdNWCZyOL3r3Y6IozLjwbr+oSzyNCHoYsAgp6B99L7P8cR/xhfTy+xYhC03wnPKs6Nq5jq2qtdeGPI2L50MdWOBk9hoecW4JHMucGzCFKce5Gqt0wTpvPjWnMj23LYM4qIt5hbVKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749544780; c=relaxed/simple;
-	bh=lSzyyorNQWpUeJdFSnWOJ/JyzIC1ctxhHa98E077uwo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jj23u/uUD+DKrcYF2ufQ3v0evy6pItyt11x2Y/seIJjJT6HKF2FjPvEIdKSmFgFnK7bAqEOe+jnhS3ezpmnxTbLA2x5236qrFIX9kTv4VFwZXlV7hJXNaWpDhwNspbdeUBpGtc6n3WxmLcEdbw7UDSARY79iGvCLNhRf2uEkml8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QEI1+w1O; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1749545129; c=relaxed/simple;
+	bh=4PmH4n3TdedzO5FGXvKX/af0LajGxn2EwMKyF9Bmgnc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=S4OiYeJV5wAmnsqNakTOdf6T94dxLDojYWvikzLEQkSEyYp7VyCdhcF9P2+vIw5I6HBTG5VFoNg9wytTVCubTvbIa08DzD6xCoNc88gk/KK7E/aIiGo8DQCRQYSUW7J1Cb6rI2PDCLa0RzhJGWiNBLAe2OiZXkgNhSy1WwN4Mh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7HaC/mo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QEI1+w1O"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3138e64b42aso1595897a91.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 01:39:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749544777; x=1750149577; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FOP1cXECrwk9qwKzMvL7cnfwsmHYTvlIaJnjJpXTWtw=;
-        b=QEI1+w1O3T/TwtvaJ1OOy2yvIL2Zy2s4Rajc94mQzUlEx5rtRo7CuKpH5ePtkbOYMm
-         kn77GeX58FywTS/t5XE0ROXIvdJ1ais/dDizQC9+Z8fS+GV+wOsg0OeU+u1mPCVubBW5
-         NbAjNuNAHTAt9yPnYLZeTBh5iAF1vw+i3cZufdoxVAQTXNfml8aKUO63L+RhgbUlQ7JV
-         EXmC9BFzIQeDwruDvVQsYcan8KHtpZQDeCutymlBWyxJBxEDYDD10nxAOD9n0deFjNFq
-         7ZsoEIAM6Dc3fv92VFRnqKtw+vuWHQnmeYb5N6YYRM54RRaH3cKbMZ3EeYYFA6U7lw6I
-         SeAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749544777; x=1750149577;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FOP1cXECrwk9qwKzMvL7cnfwsmHYTvlIaJnjJpXTWtw=;
-        b=kdSlFcZbYmE+n5iW93+ZZIPWRB/D2MRiLGYZV2LQZtS/JuX3F2aCAlHjVbUCumQpVV
-         9jBbQUl9yvGzWJCzIfKpJmU++iVcpEAd3Oj3tEd2IGEOwYvrb/fMCRfGJnD+LpmQog8A
-         swqjAzGgp0EFae1rm6ZnqFo8YQSnij8ROe24iUPkE4gFTXwwIFZGfdBkqLSEejrKBK2f
-         fQ9BKkAlX9uhzqhN7n0ue4aJMzpruDnuBnoto/GlzGcGfF9Zim5Fe0Vw1eKVWoiEFS3u
-         7gGE+muj9dO+w8Wf77z+ipsBBvG9sBfX55UYCCCIztNg59+fwBBFIn2PIVLjkTdg3r6Y
-         8xNg==
-X-Forwarded-Encrypted: i=1; AJvYcCUFyKdFeFRR3OPuT+E+v727W3k9aaesKMnyXVFnIP6+gWCwiIteDEO6UefTvtzBbFLgMYk2KY2A21hzSuRidw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrYJq/gh1jgHkCbS6IM3sZ3uBzk+mPwVItRG1Zp+c/8b+/uEbE
-	dvyDwPExb9/B1dl18sUb/iZGB5bSvyZmGzPiVx8VIRYthq+sPuH3Qk39JIuescxvhHI=
-X-Gm-Gg: ASbGnctcOx2lCe8wOE/qlB83lMY6cR4iB4Wo+Kwq/NI0EscHO5mPGgIWYPMkCNPtv7a
-	XkGDQXB5xW6LhpI53z1Jvct+TJ0rvIHovrKb8LnorO7spBppSfWFzHW8JA2ouohBNWpc1n0Mj3K
-	7A23/k35GuGnTB2wcD4pTr9gJ4KyP14DXR83maskkT7jSzRpsvp+CFxQ5hVmrea2wpGygaOp1Zd
-	WHFr+QUrmBLcYR5u24WPNZBFuUqBf5lQ8W8GvTLWAEybBYDa12tIS7+QZI7dYDkeRmGHpQ+58ba
-	/4UFWU3hhvoy8VHjIvgm+n3V2Zkci9mjfn6HDSksbCDNDLwoIn5aJ1uljH84xjJiOXrrj6xVfA=
-	=
-X-Google-Smtp-Source: AGHT+IFtinTUgR+n9j8q/WN69RN6/ZoHZHEpAWwz2j7iqmWGwSG/25yxSAVk6NLQzVc422or5a/dtQ==
-X-Received: by 2002:a17:90b:4988:b0:312:959:dc3c with SMTP id 98e67ed59e1d1-313a154205fmr2570637a91.10.1749544776780;
-        Tue, 10 Jun 2025 01:39:36 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236032fc9d2sm66389185ad.113.2025.06.10.01.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 01:39:36 -0700 (PDT)
-Date: Tue, 10 Jun 2025 14:09:33 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Yury Norov <yury.norov@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V2 1/2] rust: cpu: Introduce CpuId abstraction
-Message-ID: <20250610083933.2xwl5wz4drs4mgk4@vireshk-i7>
-References: <cover.1749463570.git.viresh.kumar@linaro.org>
- <f10910c7585f5556869ea6f34b64d4136b8d5581.1749463570.git.viresh.kumar@linaro.org>
- <20250609111857.ijvagblorxtq7d2n@vireshk-i7>
- <aEbp_X8PpU9XzQU9@Mac.home>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7HaC/mo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE39BC4CEEF;
+	Tue, 10 Jun 2025 08:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749545128;
+	bh=4PmH4n3TdedzO5FGXvKX/af0LajGxn2EwMKyF9Bmgnc=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=E7HaC/mooLjPRGqG6se3xr1y2tBu4e3XjChaJwGCWww7K0U2iSCIQK7kG9Dl2uBMH
+	 oK3iIzhJE32mbBu4dMm/UuGsN8P716A/WqcIlRD3brRPtGFUOGqWA2Z5LkWF5MQ8pT
+	 NXTegYRETWBVAvfL6mYVJUzfsk9rl9lViT6T4pBXI0ad4U4NVvIaDtyFDFW0JE7sGL
+	 pkiITj/d/GGBup0oTxRX2zooMxKXcW4sADGCuExGiUTPpRqvc7D6U1z+t+IcPLJkpi
+	 BXdftlUKDM05ESmTJzXDv6pp4jxcJ9ViuRIrB7xxm00ZGT5Fmk5OegYEWezte94mxB
+	 0azkUXmx3ltSA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aEbp_X8PpU9XzQU9@Mac.home>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Jun 2025 10:45:25 +0200
+Message-Id: <DAIPZJ4YMJOI.2HYMHADQG1YER@kernel.org>
+Subject: Re: [PATCH v3] rust: introduce sfile macro for succinct code
+ tracing
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Timur Tabi" <ttabi@nvidia.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250609223606.2897030-1-ttabi@nvidia.com>
+In-Reply-To: <20250609223606.2897030-1-ttabi@nvidia.com>
 
-On 09-06-25, 07:04, Boqun Feng wrote:
-> I think you can keep this as a separate patch for the ease of review.
-> And I just realize that we should use raw_smp_processor_id() because
-> the current API only support an unstable cpuid read. For a stable cpuid
-> read, we need some lifetime description of the return value to make sure
-> it doesn't outlive the scope that guarantees the cpuid is stable. Well,
-> the user can still use the unstable CpuId and ensure the scope provides
-> the cpuid stability (see comments of smp_processor_id()), it's just
-> CpuId::current() doesn't need to guarantee that.
- 
-> We need mention that the result is an unstable one, and refer to the
-> raw_smp_processor_id() in include/linux/smp.h (we probably also want to
-> fix the typo there, i.e. s/raw_processor_id/raw_smp_processor_id, while
-> we are at it). Also it's worth mentioning that if the context between
-> CpuId::current() and use of the return value indeed guarantee cpuid
-> stability, the users can treat it as a stable one.
+On Tue Jun 10, 2025 at 12:36 AM CEST, Timur Tabi wrote:
+> Introduce the sfile (short file) macro that returns the stem of
+> the current source file filename.
+>
+> Rust provides a file!() macro that is similar to C's __FILE__ predefined
+> macro.  Unlike __FILE__, however, file!() returns a full path, which is
+> klunky when used for debug traces such as
+>
+> 	pr_info!("{}:{}\n", file!(), line!());
+>
+> sfile!() can be used in situations instead, to provide a more compact
+> print.  For example, if file!() returns "rust/kernel/print.rs", sfile!()
+> returns just "print".
+>
+> The macro avoids str::rfind() because currently, that function is not
+> const.  The compiler emits a call to memrchr, even when called on string
+> literals.  Instead, the macro implements its own versions of rfind(),
+> allowing the compiler to generate the slice at compile time.
+>
+> The macro also uses some unsafe functions in order to avoid indexing
+> into a str, which is necessary to fully support const contexts.
+>
+> Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+> ---
+>  rust/kernel/print.rs | 66 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 66 insertions(+)
+>
+> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+> index 9783d960a97a..5b0c36481e95 100644
+> --- a/rust/kernel/print.rs
+> +++ b/rust/kernel/print.rs
+> @@ -423,3 +423,69 @@ macro_rules! pr_cont (
+>          $crate::print_macro!($crate::print::format_strings::CONT, true, =
+$($arg)*)
+>      )
+>  );
+> +/// Returns the index of the last occurrence of `needle` in `haystack`, =
+or zero.
+> +///
+> +/// Identical to [`str::rfind()`], but unlike that function, this one is=
+ const.
+> +/// That is, the compiler can inline it when called with a string litera=
+l.
 
-Thanks. How about this:
+The last sentence is incorrect. The compiler can always inline the
+function. `const` means that the function can be called from const
+evaluation such as in constant or static definitions, const blocks etc.
 
-Subject: [PATCH] rust: cpu: Add CpuId::current() to retrieve current CPU ID
+I would just remove the second sentence.
 
-Introduce `CpuId::current()`, a constructor that wraps the C function
-`raw_smp_processor_id()` to retrieve the current CPU identifier without
-guaranteeing stability.
+Another difference between this and `str::rfind` is that `str::rfind`
+takes an `impl Pattern` and not a char. Additionally, I presume that
+`str::rfind` is more efficiently implemented (as it's more complex, see
+[1], but I didn't benchmark the two versions :).
 
-This function should be used only when the caller can ensure that
-the CPU ID won't change unexpectedly due to preemption or migration.
+[1]: https://doc.rust-lang.org/src/core/str/pattern.rs.html#478
 
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> +#[inline]
+> +pub const fn rfind_const(haystack: &str, needle: char) -> Option<usize> =
+{
+> +    let bytes =3D haystack.as_bytes();
+> +    let mut i =3D haystack.len();
+> +    while i > 0 {
+> +        i -=3D 1;
+> +        if bytes[i] =3D=3D needle as u8 {
+> +            return Some(i);
+> +        }
+> +    }
+> +    None
+> +}
+
+This function should not be in this module, `str.rs` is probably a
+better place for it.
+
+> +
+> +/// Returns just the base filename of the current file.
+> +///
+> +/// This differs from the built-in [`file!()`] macro, which returns the =
+full
+> +/// path of the current file.
+> +///
+> +/// Using the base filename gives you more succinct logging prints.
+
+I would remove this sentence or replace it with something like "Useful
+for succinct logging purposes.".
+
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::sfile
+> +/// pr_err!("{}:{}\n", sfile!(), line!());
+> +/// ```
+> +#[macro_export]
+> +macro_rules! sfile {
+> +    () =3D> {{
+> +        use kernel::print::rfind_const;
+
+Please don't use `use` in macros.
+
+> +
+> +        const FILE: &str =3D file!();
+
+Instead use absolute paths: `::core::file!()`.
+
+> +
+> +        // [`.as_bytes()`] does not support non-ASCII filenames
+> +        assert!(FILE.is_ascii());
+
+Also here.
+
+> +
+> +        let start =3D match rfind_const(FILE, '/') {
+
+And here `::kernel::print::rfind_const` (more below).
+
+> +            Some(slash) =3D> slash + 1,
+> +            None =3D> 0,
+> +        };
+> +        let end =3D match rfind_const(FILE, '.') {
+> +            Some(dot) =3D> dot,
+> +            None =3D> FILE.len(),
+> +        };
+> +
+> +        // The following code the equivalent of &FILE[start..start+len],
+> +        // except that it allows for const contexts.  For example,
+> +        //   const SFILE: &'static str =3D sfile!();
+> +
+> +        let base_ptr: *const u8 =3D FILE.as_ptr();
+> +
+> +        // SAFETY: We know that `start` is <=3D the length of FILE, beca=
+use FILE
+> +        // never ends in a slash.
+
+I don't think that we should rely on that fact for unsafe code.
+
+There is another argument for `start <=3D length`: when `rfind_const`
+returns `Some(res)`, then `res < length`.
+
+> +        let ptr: *const u8 =3D unsafe { base_ptr.add(start) };
+> +        // SAFETY: We also know that `end` < the length of FILE.
+> +        // If `end` < `start`, this will generate a compiler error.
+
+No it won't generate a compiler error if used like in the example, it
+will panic at runtime.
+
+Maybe we should make this macro return a const block?
+
 ---
- rust/helpers/cpu.c     |  8 ++++++++
- rust/helpers/helpers.c |  1 +
- rust/kernel/cpu.rs     | 10 ++++++++++
- 3 files changed, 19 insertions(+)
- create mode 100644 rust/helpers/cpu.c
+Cheers,
+Benno
 
-diff --git a/rust/helpers/cpu.c b/rust/helpers/cpu.c
-new file mode 100644
-index 000000000000..824e0adb19d4
---- /dev/null
-+++ b/rust/helpers/cpu.c
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/smp.h>
-+
-+unsigned int rust_helper_raw_smp_processor_id(void)
-+{
-+	return raw_smp_processor_id();
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0f1b5d115985..16fa9bca5949 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -13,6 +13,7 @@
- #include "build_assert.c"
- #include "build_bug.c"
- #include "clk.c"
-+#include "cpu.c"
- #include "cpufreq.c"
- #include "cpumask.c"
- #include "cred.c"
-diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-index fbc47d2814df..fd2240fe6e2d 100644
---- a/rust/kernel/cpu.rs
-+++ b/rust/kernel/cpu.rs
-@@ -99,6 +99,16 @@ pub fn from_u32(id: u32) -> Option<Self> {
-     pub fn as_u32(&self) -> u32 {
-         self.0
-     }
-+
-+    /// Returns the ID of the CPU the code is currently running on.
-+    ///
-+    /// The returned value is considered unstable because it may change
-+    /// unexpectedly due to preemption or CPU migration. It should only be
-+    /// used when the context ensures that the task remains on the same CPU.
-+    pub fn current() -> Self {
-+        // SAFETY: raw_smp_processor_id() always returns a valid CPU ID.
-+        unsafe { Self::from_u32_unchecked(bindings::raw_smp_processor_id()) }
-+    }
- }
- 
- impl From<CpuId> for u32 {
+> +        let slice =3D unsafe { core::slice::from_raw_parts(ptr, end - st=
+art) };
+> +        // SAFETY: We know that the slice is valid UTF-8, because we che=
+cked
+> +        // that FILE is ASCII (via is_ascii() above).
+> +        unsafe { core::str::from_utf8_unchecked(slice) }
+> +    }};
+> +}
+>
+> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+> prerequisite-patch-id: 4bfda16a333b9f00a139050b7c6875922961a15d
 
--- 
-viresh
