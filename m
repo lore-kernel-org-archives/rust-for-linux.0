@@ -1,172 +1,91 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27F32DCC17
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 12:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC35F29A9E1;
+	Tue, 10 Jun 2025 12:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749560026; cv=none; b=fDZ53S89iZ5yJvbY9inruBBPbv/64uwbliZZlFELgM1EMO1pAVq2bfdjJ4fs9uPyPIXTblBaI+XIhHO7ef1ww0P5zpJDogJjoGCdcGNcZIZxGYfDtLBlapRs0X6t3bvf7enCZ+KLZYVyZu1ZhCbcdclge3ySBZg0Z1ylL6baRYA=
+	t=1749560163; cv=none; b=c/nBUtBmob7Zs/xyYEM8nt8LNHPzF2welh6qMRbavR1fXbDAr9UjjijSB8wNnwr0aFVHlbPTAIEeXIH7RtEMdDrl/bcD3AMqvFwQSG3OC+295Y8Qauvd7SNlel3Bgp44Fhc3rWPapoKh9RurTgheqgVUobLJUhZbCizAyuaBTIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749560026; c=relaxed/simple;
-	bh=pQpdhYmfxqh3Yfxmei5sPv11PaCzGkgZVRufLVaDNj8=;
-	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=FxI2/La7HGapamyjNxLStgr2SXVhGgZitX8zbW19gnm+8gZDv99hlUuIzQkHjrg9B9w09yQv55r32ji3oxG+lzpOODjoQht0sqD9roXsOiG1A7VUI1elY3N2HuR9ucuCpeyrW9l65DmDdIWl7PVFeu+YiXySJpRvQLO0jfFE6uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=mWM8bADX; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1749560163; c=relaxed/simple;
+	bh=ymdmRNA1an7znV7VwE8aKDdd9upCMjadrk7wwCN+JS0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=XIW2jolqGctnmyLh2WQc3+AO90rwPXRU5jap0AVVfr6fUR5sTWcj5Qkiz7kUR+yWi0GjT5ZqQsL6HLH/R4jCkYkXlMwgqYsqcncz+wBqt+wUbRyFaNH7eApX9jH3PswsMVpUrZxtz9xCAkfC4YT1ovRTd4hIPX684+JmcgCcGHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGzKdesq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="mWM8bADX"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250610125340euoutp0106787eb20a3eb40caa447462eba2f831~Hr5HCbJSo1187711877euoutp01l
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 12:53:40 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250610125340euoutp0106787eb20a3eb40caa447462eba2f831~Hr5HCbJSo1187711877euoutp01l
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1749560020;
-	bh=Thc/4MnT4r5I8ag38cbivyQhpbuX345C1nEB0lzCSSU=;
-	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=mWM8bADXn63hFahBoMnLO4Nh8lbMIvj0dudd/rnnA83EXTAyJQwTChmCJyI5vWmnl
-	 z8diroM9ZP/8YQVyhGN87PKA3wuqYD+a0IlZzxe5r7pyEu4OkCY1wcQQN0oj3KsNwU
-	 6RCT+5LlVw5bewT/ERQ5xcu4qAbWy2eqOwOmxsZk=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250610125340eucas1p2288ca1486b0d4a94abceafe9eaf6718d~Hr5GgtAUY2070520705eucas1p2i;
-	Tue, 10 Jun 2025 12:53:40 +0000 (GMT)
-Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
-	[106.210.136.40]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250610125338eusmtip12ae44043145e908a3b5b8fca4249dab0~Hr5FVRFhG0074100741eusmtip1u;
-	Tue, 10 Jun 2025 12:53:38 +0000 (GMT)
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Tue, 10 Jun 2025 14:52:55 +0200
-Subject: [PATCH v2 7/7] riscv: dts: thead: Add PWM fan and thermal control
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGzKdesq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB62C4CEEF;
+	Tue, 10 Jun 2025 12:55:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749560162;
+	bh=ymdmRNA1an7znV7VwE8aKDdd9upCMjadrk7wwCN+JS0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=iGzKdesqdm1MrpyWKVIbnnnTO2O5kjtU0RWXuPsX72qmoBIf1+QGRaRjgZ2tudgyJ
+	 r066JMd+OFmUd03hH7AREG3eFtPRIYeT5fffPBhRHTDNsYzZrn6GSXuoczYlB+tFEM
+	 Xv83cl923uHkQY0nVAc6FsJLFl6Xy4uunqWmjZpzls9Pcz/9aoH+/TifQuZ8u0DNrI
+	 nrPNp24G+J/OqKYjScTqVdrdyOBtof8CkpfQeM/WEzZpnj9R7LbpZfTUgnHFRF9Fse
+	 9ejaWmya7EgYDDrJ7BRajiE9GTVPe8gd8UDUzd+NxnZW5xx5LIyQvYxetZHzMia4dg
+	 ACzOo9EY8FAwQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250610-rust-next-pwm-working-fan-for-sending-v2-7-753e2955f110@samsung.com>
-In-Reply-To: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,  Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,  Michal
-	Wilczynski <m.wilczynski@samsung.com>, Drew Fustini <drew@pdp7.com>,  Guo
-	Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,  Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
-	<conor+dt@kernel.org>,  Paul Walmsley <paul.walmsley@sifive.com>,  Palmer
-	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,  Alexandre
-	Ghiti <alex@ghiti.fr>,  Marek Szyprowski <m.szyprowski@samsung.com>,  Benno
-	Lossin <lossin@kernel.org>,  Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20250610125340eucas1p2288ca1486b0d4a94abceafe9eaf6718d
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250610125340eucas1p2288ca1486b0d4a94abceafe9eaf6718d
-X-EPHeader: CA
-X-CMS-RootMailID: 20250610125340eucas1p2288ca1486b0d4a94abceafe9eaf6718d
-References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
-	<CGME20250610125340eucas1p2288ca1486b0d4a94abceafe9eaf6718d@eucas1p2.samsung.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Jun 2025 14:55:55 +0200
+Message-Id: <DAIVBBJADWNR.1LLZJ6YWV8IN2@kernel.org>
+Cc: <a.hindborg@kernel.org>, <airlied@gmail.com>, <alex.gaynor@gmail.com>,
+ <aliceryhl@google.com>, <anisse@astier.eu>, <bjorn3_gh@protonmail.com>,
+ <boqun.feng@gmail.com>, <dakr@kernel.org>, <david.m.ertman@intel.com>,
+ <dri-devel@lists.freedesktop.org>, <fujita.tomonori@gmail.com>,
+ <gary@garyguo.net>, <gregkh@linuxfoundation.org>,
+ <igor.korotin.linux@gmail.com>, <ira.weiny@intel.com>, <leitao@debian.org>,
+ <leon@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>, <maarten.lankhorst@linux.intel.com>,
+ <mcgrof@kernel.org>, <mripard@kernel.org>, <nouveau@lists.freedesktop.org>,
+ <ojeda@kernel.org>, <rafael@kernel.org>, <russ.weight@linux.dev>,
+ <rust-for-linux@vger.kernel.org>, <simona@ffwll.ch>, <tamird@gmail.com>,
+ <tmgross@umich.edu>, <tzimmermann@suse.de>, <viresh.kumar@linaro.org>,
+ <walmeida@microsoft.com>
+Subject: Re: [PATCH] rust: module: remove deprecated author key
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Guilherme Giacomo Simoes" <trintaeoitogc@gmail.com>,
+ <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <CANiq72kORZjTe3tPEBueDi57TGF7KfxgTSw4Tn0DQeK_X5hi5A@mail.gmail.com> <20250610123731.194853-1-trintaeoitogc@gmail.com>
+In-Reply-To: <20250610123731.194853-1-trintaeoitogc@gmail.com>
 
-Add Device Tree nodes to enable a PWM controlled fan and it's associated
-thermal management for the Lichee Pi 4A board.
+On Tue Jun 10, 2025 at 2:37 PM CEST, Guilherme Giacomo Simoes wrote:
+> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrotes:
+>> On Tue, Jun 10, 2025 at 12:12=E2=80=AFPM Benno Lossin <lossin@kernel.org=
+> wrote:
+>> >
+>> > Hmm, I guess a checkpatch lint fits better then?
+>>=20
+>> Yeah, that would work.
+>>=20
+>> Probably for the C side too -- from a quick grep I don't see it.
+> Maybe, after this patch we can make a checkpatch change for check the `au=
+thors`
+> key (and MODULE_AUTHOR for C side), and throw a WARN if the author is a n=
+ame
+> (not a url, or "rust for linux") and don't have a email address.=20
 
-This enables temperature-controlled active cooling for the Lichee Pi 4A
-board based on SoC temperature.
+Most other authors fields that don't list explicit names use "Rust for
+Linux Contributors", so we should probably scan for that instead.
 
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+But I think that we should no longer add any author fields using that.
+Things with that are from way back in the day (when RfL was still out of
+tree) where many people contributed to a single file, hence the use of
+that phrase.
+
+> Unless you guys tell me otherwise, I guess this is not so priority.
+
+Yeah this isn't high priority. We can just make this into a
+good-first-issue, then someone can eventually pick it up.
+
 ---
- arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts | 67 +++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
-
-diff --git a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-index 4020c727f09e8e2286fdc7fecd79dbd8eba69556..c58c2085ca92a3234f1350500cedae4157f0c35f 100644
---- a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-+++ b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-@@ -28,9 +28,76 @@ aliases {
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
-+
-+	thermal-zones {
-+		cpu-thermal {
-+			polling-delay = <1000>;
-+			polling-delay-passive = <1000>;
-+			thermal-sensors = <&pvt 0>;
-+
-+			trips {
-+				fan_config0: fan-trip0 {
-+					temperature = <39000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config1: fan-trip1 {
-+					temperature = <50000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config2: fan-trip2 {
-+					temperature = <60000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+			};
-+
-+			cooling-maps {
-+				map-active-0 {
-+					cooling-device = <&fan 1 1>;
-+					trip = <&fan_config0>;
-+				};
-+
-+				map-active-1 {
-+					cooling-device = <&fan 2 2>;
-+					trip = <&fan_config1>;
-+				};
-+
-+				map-active-2 {
-+					cooling-device = <&fan 3 3>;
-+					trip = <&fan_config2>;
-+				};
-+			};
-+		};
-+	};
-+
-+	fan: pwm-fan {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&fan_pins>;
-+		compatible = "pwm-fan";
-+		#cooling-cells = <2>;
-+		pwms = <&pwm 1 10000000 0>;
-+		cooling-levels = <0 66 196 255>;
-+	};
-+
- };
- 
- &padctrl0_apsys {
-+	fan_pins: fan-0 {
-+		pwm1-pins {
-+			pins = "GPIO3_3"; /* PWM1 */
-+			function = "pwm";
-+			bias-disable;
-+			drive-strength = <25>;
-+			input-disable;
-+			input-schmitt-disable;
-+			slew-rate = <0>;
-+		};
-+	};
-+
- 	uart0_pins: uart0-0 {
- 		tx-pins {
- 			pins = "UART0_TXD";
-
--- 
-2.34.1
-
+Cheers,
+Benno
