@@ -1,182 +1,438 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2047.outbound.protection.outlook.com [40.107.94.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAE121A43C
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 03:40:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749526846; cv=fail; b=lPdAGPqTbkvsOd8V10sRfJz8t1NoTK20mt00N1CxbEfcMTKmoXtS9K5bpDG11pRvI9f8mtmpabm1/38O8SZUj9GZ/xJN3sLUBihtfzBHQ2zTiqbGbEnNyFewzypfHMgWCg0V1gBVvjUd9hOrarNu6QgT4m1IvyRYjmR7CBWbZ2k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749526846; c=relaxed/simple;
-	bh=j/N0Pf0pnYJ/Q4jZVAglKkp2DQfaRKSgjPsDfpAtAbM=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AQabfKWKO69ibiZ1/hkcbl7O0QN7gVrnhPqYfGBU0P6dAFxeZjJaBf7i2Dv/rV+Z6t41kVb4GTy7CGeJs7YNXuhyUkTiblvMPXCI1BIXu7aGC2KDCdkq4JyVGQco4Vg+1m+o+6sJsw8PkRMiUDSGkL4pe3BhcAinXNSV/sAPUas=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BuRdbwxg; arc=fail smtp.client-ip=40.107.94.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8A51F8AC5
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 04:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749530289; cv=none; b=Xz+25pRvqbLqZnkTtbvHM8iYW71+1k4M4c8ISLAlPWfkUXhWtjc5hYFGEH/gsQAbR6UtNHz63v2sVQUBaVwfdv7nq9VVJZcMOaNg58NtMPZoOmk4zKPsucKTsH+rd8YtyDPpioo3ICdfssHI75iDVArf8gQ9GOKE3EoEy27CK9k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749530289; c=relaxed/simple;
+	bh=NmhdJ/ddA04MjThhtcZDld1AI0fRvypZGx6pPho3sSg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DXNHwY07BGXdDFEFdRRnnj+O8Ifl86049qKNT+MrZFv1quDU6zyB57ZDATcvB6o10FM6Pl1oVbAfKp/x0z/Z+913cVlpmSnE1eplX/TGyj2Sy5T4KQEZ0Z8d5V/pIQ7ewHLlXHt6ikNgc6n2gVicIwGqrEzvQqAwp6+AZ4dLWrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cIMqDYsW; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BuRdbwxg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tc0AWF1Ex+ZIZH+QezNXfUlZn+zcx5enNC/utXJ3iersPh/C4csixywXRHn9Sd2ho7l1XlwkkLFhFTARh3ek/bh0g/uVy2g7j10bxPrPdDXYb3OB+8hMDDN5vXkghb54JDkR3ml+K5uN09vXqm0NhYSLFg6iQpTx5BmYOjVhh/0rS6uB+x8YLEvirUlQtkXCtZzAQDGN+66jnonc1OeoWjqcLcFhk5i9HGYKiuVPMHTYwYuIw9JRqefWOJm81oXXkbNpdtjr9NTRkTsNPvRYuiaJ/2k6lwIL4tNQd8r+wOROUEy5M1hsCITrJk0wTf74yCmvnRo/ZRjeU3nlrdXtEA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j/N0Pf0pnYJ/Q4jZVAglKkp2DQfaRKSgjPsDfpAtAbM=;
- b=vjSp2Ysbxyz5bNtMXS0BbI+5gEiT3A3TQwffuECk4B/xkXUZg1oRWJyBjXDCk/6am1Y8MYJQ0xoyvrhUkk3VFZGscrDLXefUCTSCAjzFR8rZowOGVh5i8CXHrYpxBBbmWonJoBM7uJWLvcq/p6CW9R9jhHJQODOLiAgSNTbDg5IugL3z1UhDh9mvin4l1IPooM+3cZm/Jebr0Wxqs1Y6UIx3MbI0DOeN/LKcmSdyKpsQxFoMKgX9MyUj/z+7otVqgW3nASNFrlCTcjnHcSRz0DnMF0LP53Di8ZEtyextTGouemTjLJI+XftVFR3M1TnpG753j/2pEsnvms9d+mbNAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j/N0Pf0pnYJ/Q4jZVAglKkp2DQfaRKSgjPsDfpAtAbM=;
- b=BuRdbwxgNCntx5fPOZZr5hOgFgM9Z6K0940V/01I4dpLK74I65KWTkHs0k+NwvftF2V9W2+jtaVYAMO5oeukNqFrQ1n5JfnMIgybnJCCmPOO5l3sQSjOcn7b8jWrXKzgfgKZIbv8Av0R+EEN/AGbLYtlD6XVMxY0sdNBYJIywy001b18ZjaS/day4vREICm7tafgOMiAEJaSAE74fT1LD8/h9EfQDB1sMi0VW8fl9RcBkOz4wukS0wIqGi4T80zdau0P4QNCSCijjgztt1gq1b4HFTBDX0QzNktYeg1J6eNv12TNGo+cY4Dq5ngdvoLsK9Pk7ucnEA3cb0+RNjZfew==
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com (2603:10b6:930:31::20)
- by DS7PR12MB9550.namprd12.prod.outlook.com (2603:10b6:8:24e::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8792.38; Tue, 10 Jun
- 2025 03:40:39 +0000
-Received: from CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56]) by CY5PR12MB6526.namprd12.prod.outlook.com
- ([fe80::e420:4e37:166:9c56%5]) with mapi id 15.20.8792.034; Tue, 10 Jun 2025
- 03:40:39 +0000
-From: Timur Tabi <ttabi@nvidia.com>
-To: "ojeda@kernel.org" <ojeda@kernel.org>, "aliceryhl@google.com"
-	<aliceryhl@google.com>, "lossin@kernel.org" <lossin@kernel.org>,
-	"dakr@kernel.org" <dakr@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: introduce sfile macro for succinct code tracing
-Thread-Topic: [PATCH v3] rust: introduce sfile macro for succinct code tracing
-Thread-Index: AQHb2Y76GidriUYRM02FngySpVCBwLP7rPaAgAASyYA=
-Date: Tue, 10 Jun 2025 03:40:39 +0000
-Message-ID: <35ca9fa086626f11ea65eb25acaf22fadbbe8710.camel@nvidia.com>
-References: <20250609223606.2897030-1-ttabi@nvidia.com>
-	 <14dce552-c69a-460a-a54e-924423ab569b@nvidia.com>
-In-Reply-To: <14dce552-c69a-460a-a54e-924423ab569b@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR12MB6526:EE_|DS7PR12MB9550:EE_
-x-ms-office365-filtering-correlation-id: b5a60d39-6705-4a28-0c8b-08dda7d091ba
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?Y3M2VlliNFFSZWpVR1U2ZUZRRTVtNWFJb2RrcU1ZaS9RVHBQUms2bFBKSFVm?=
- =?utf-8?B?c0wwU1ovUGNYTlJhOWdsVWFIZjU1bnhDWG9TNkttcitSZFR6VldUU1h4cWtO?=
- =?utf-8?B?T3B0M3VnZXhLcGlzaUlzbTdmbHhOc2M5enRmZ1Zvb2lLWUtMSkloc2tRMDlo?=
- =?utf-8?B?MGc4RXJROVdrYnpoN1lDU0V4K1ZBQTdtaEtMeVN0SmZWdEQveVR0d2ZuaXQy?=
- =?utf-8?B?RXJONFBqQlUyZkNvSXhpQ1NHUVkxVG5vbVVHclE5SXNjR1JuV3lrdERlTzZK?=
- =?utf-8?B?V2pwMHZ6TnV4YkY3RFRMQmczZnYremsvc2JGUmpnVlp0ZUNocXU4WThYZUlJ?=
- =?utf-8?B?T1ZZeWwrWkNjZUJWR1RRYjAvemZqeXVFNGk3TTRCRFJyQlJaUlUwNWtna0ZW?=
- =?utf-8?B?TUtvRDMycmEyZ0c5R1pIQ1c0Y0pKU2tvbElFUlhHZVZYbzZPNE9JSVZOK1JW?=
- =?utf-8?B?aVZxYTBkL2U0OU1ITnVMSEY3anl0Nm9TQUY0NjB2d3krZGVqYlpLT1BkUjBK?=
- =?utf-8?B?WEdoRFhFTU9Nakl2RWROY0tIM0dicVQxOG1sMTdzb05vZ1pyWWR5dHc3ZzJm?=
- =?utf-8?B?bkp3bUFJWjdSVmpSUzVNck5aSUZRcjhKanFONkpSQXBvenlmUVZhbDJZUTZ2?=
- =?utf-8?B?b1RUQ2J1NU01VXNqV2ZTSTBwRDRFT1VscU1FSTgrTG1ML0w4OHljWUNDNUEx?=
- =?utf-8?B?a04xUFB4am8vaWFReFlKcHkyQ1JRK3BtSVhsWGR2WHRyOTJKeDhjZjBLU1JF?=
- =?utf-8?B?bUtTcmlPV0JzV1NLNm5rcitiK216dFVFbzE4WnNHZEl2VUJHK0ZtT2dsc3cv?=
- =?utf-8?B?Um9kUGNhcFlOeGRNdHFSWWZLUmZPczN5MngycUFnWERacVlWZEJJU3R6R3Jy?=
- =?utf-8?B?aUkzaHQrWm9zTHRVbGtXRE5rTHFNMnNGdFpDakl4ZVpEbkFkbTIxYi9Zd2Ux?=
- =?utf-8?B?anZVYjZvcjFLL3JWdFBoeWRkMkhJWEd4RjRzNDJFWVRrTWR4dXlPQWo4MDdk?=
- =?utf-8?B?OHhmVExBVnRkRm1KYkxEUlJsazdZWC8waExneHV0NjF2cE5YUndmdDNiY2py?=
- =?utf-8?B?RnJpUVN1R3YyWTRJZ1J3RXVuNzBIUWpGZXJDa1pBVFZwOGY2cjEvV0paVGx5?=
- =?utf-8?B?UFNNTUFaNDlua0ZVMzYzUm0yUG1VN0RCalIrZmJCMHZlMVREUHlzdk5JS0xk?=
- =?utf-8?B?Y0hQRzQ2UGtVa2tZTVZDQU5mUTNSaU9xQ3JaY3M1SnlnSmlhN2hEWmJFR29G?=
- =?utf-8?B?cndHSlYvUlo3MkxGRkEzOFM1SE4rOHQzaUtLWXRtZjIrMlZKdWhSZ3VQRDFU?=
- =?utf-8?B?TU1NdEVzdGttNklkWDY3R0ZMUVlGZnFlampITmhVb0xsNDJpeEo2Rld3d0JV?=
- =?utf-8?B?bkVoVk95bkEvNU94Q3lzcFRIOEN3ZjdUVnpCWEd2MWdVYUZRWHBEVXp0S2N4?=
- =?utf-8?B?L213aytMNjhGNGFXT1VEN09jQUxud0ZScHZzd1RtVnc3Y1hOODhqR0ZwaXJu?=
- =?utf-8?B?dlM2T0JBc0g5VHJhR3V1ZU54Z29rWS9xM3NuUVZJL0dYdnZxZnVhZHBxQjV3?=
- =?utf-8?B?Yzc0MXRrV0FKckFXRmhyNWRjTWNzUkRiOG56TFFYNU05NTduUEFDaFJTeXp5?=
- =?utf-8?B?Z1NPNGNGUkxEd0x6VEpMOExWUFdPeWs2b3I1R2RDVDJZSEtsZk9UNkRKbHBU?=
- =?utf-8?B?M2cxNVgxdnZYdmRMQUNITTZkeUZiK3pZeE1jRUxiWG8wVGlWZmp2SllFbjIv?=
- =?utf-8?B?MzFJZS9Ma084SW41bS85RTFmNzhOb1VhNHpMN3FUbnZWQ0VGaGVNVnhaSnBu?=
- =?utf-8?B?RlU1RkMrZG12cjJ0V1lDMUJUU1JrYlVBQ0NiTmJHWjd6eU5HNUNzS1dVTjI3?=
- =?utf-8?B?dGVHVnBJNjBSSm5RVEQ1QkRvZXRITmZKdGgyWEdSaldOR2ovSnJLOWJLamc1?=
- =?utf-8?B?bUxuVnpsRkc4MmJ5VUVDbmVKN2lEZGlmNDFpMkQ3dk5BYXBhaHF3bTd0M3gw?=
- =?utf-8?Q?PhHibB4lcj4h/RutSdlgP3Cpkoy9Kk=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR12MB6526.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NW81WGUySkpTakxpTWcwVFFlVC9Ed3dFckxmOTBhTUFxdWtPTHlJaVpTSU1r?=
- =?utf-8?B?REhNQ1VTeE83SVNPdkhhWVphTmM1czZDOEozSWEyd1ZSNG1uNjJoYU1EeVMw?=
- =?utf-8?B?dmo4MXhGZFhQRlJtcnZrSDk2TzlSRk1HSXAraVJLVkQxcjRBYzNvR0lsWGV0?=
- =?utf-8?B?ck84dU43M2JiR1NvRG83eDc0VFBTTG5VT1VITjFUOU8rODBjMERPMGxHakM1?=
- =?utf-8?B?V3d2Mk5SMUJWVEJkMW1Zb1JJa3hIRUZSekl6N3dvRmZIM092TS9kWDRlaE9D?=
- =?utf-8?B?WVgxSHVkcnpDbkdsNDhBblIxQWQ3Y25pMEdJclJEdVk0ZjNmSDJrTXlrWVBM?=
- =?utf-8?B?SGZrZGRoYktzeGdscWh1dHR6SWYrcjFONms1dmcxaCs4T3lCcUxEUkN6b2hC?=
- =?utf-8?B?TlZBNFowMitNcGZJak9iNnZwdWFlY2pXMG5ubU5XMEVGYlQ1eStOemdyNVQr?=
- =?utf-8?B?KzNLNEVxblFiMVlsWnVKZDVnUllYR1NlcXUzUHd4TVh4ZVpMV3IwdHoxaTZx?=
- =?utf-8?B?dUNLRGxkLzVYRkxGZ1JDb3l0amJPQWsrN1pLaklEbkxrbHYyQzB6aFBEbzEz?=
- =?utf-8?B?NFJaeUhiNXp2QS9HT1hGbGozVmZrYVZjRk5kV1I0WHBqT0NnUE5SS1psL05E?=
- =?utf-8?B?N09HSXdYUUVzZnN0VkQzRU8rRTRFTnVzelhvWnBJNndraDZ5K2tjRVRrc0xH?=
- =?utf-8?B?UjIxQ2JNcVh4QzJmTzd1NzNYWm54RUxBcFdhM2VmbHZSUllSbDJIbnRPZ3pp?=
- =?utf-8?B?ek0zNlJHd01sTlh5d0FjTUViNnRPUExkblNCbzBqa3I4OXJRZ1RiSjVWTVNU?=
- =?utf-8?B?YWNBRzVYUHNUNmRFMzI1TmJCVW1jck9KdEVhR1VHbGdCMnArcVRvOUUzTHda?=
- =?utf-8?B?YVI1WFRPMmd1Mk9JL0hRblBzL3BaTlJ0WFhHcmh2alI5bUZTUUg0Vk81NFpM?=
- =?utf-8?B?dVZyb2w1NXRxbE9tOEkxUmZUZW9lUXJScitzRTk4cGxaM3p5YmdsYkRmUko4?=
- =?utf-8?B?TTQ2MDVPUGtCTEUyWkNVVUJwckFDR2UyckxGZURyMDNkQjQ0c2w5UkVTRDdP?=
- =?utf-8?B?UFdNZ3hDV3FvZ25LcDgyQjZUeWJvQ3NlNWhsRHc2Q0F4WkhEeE92ekVYanJ5?=
- =?utf-8?B?S3ZVYlN3TzBXTlp6ci9yNDZpaTV2K0J2QkJ6YTFBTHhRcE9DMXFma1hnSkFl?=
- =?utf-8?B?MnlEWWxWOE1VY2JaUE5yNnpITlhxaDJvRFV1VDBySDFWWFNVb2hYRTU0TXdW?=
- =?utf-8?B?NHBXQzMvbW11cCsvNi95NnFaWUVlaVphb2VWQWlObWRFdWdTVUpSVHhEZWpv?=
- =?utf-8?B?VExocVNvcmFxQmQ3THZVcFhwZmdVeXpwSmRnMkxXdU9uWlJYd3lMYzFicTg3?=
- =?utf-8?B?ZEVQS2ZLVDRpSlRndW1SOVp3d1BRNi83T3RTU1g5RkFFbWh2aGw3R0RldTdh?=
- =?utf-8?B?QWlCRnh4K0Zyb0ZFbjFGQ0FCbDZSNUU4MFNMRGx0U3ZTQ245NEhTV1BJVi8y?=
- =?utf-8?B?UjVqVnVRSnRQcVBtVVlua0hNY1dXRzlLTHgrdHdYWVUwM2d4bmRZcWM3NitT?=
- =?utf-8?B?akpHNkx3UWZRdGZyWVViUGZDQVliZ2kxQkE0ZFZCQWF5MjFTMVdlODZRaDQ1?=
- =?utf-8?B?K25MWWNZWFhrYThFc2dvUEJLVFdkckdiVGkvcFZqTHNZa1FOZDRiZUlhSzNV?=
- =?utf-8?B?NXUvanJUK3dxN2I3QWdHUmNudjZxeklTbWVtblNzQTlGZGtLWTlDTzhXR1hv?=
- =?utf-8?B?V2NFaHVNSHZEYXRDRGVMQ2M4cDVwcE5hR3N5VjVGOWgzOFFJNFRXaHNPRjFu?=
- =?utf-8?B?U2ozQWJ3R2QrWjBoQXB3V1pCWmVPdjlEOVhUS1FjejdiMGdrVndXZm4yNXlo?=
- =?utf-8?B?N3hKb3BrYS9tWmVVaGdYWWpOc0R0blkzSTgwQTVWbHloZ2xhSWxSaFNhRnJr?=
- =?utf-8?B?dzUraWJoYWd5YnRFNTE3Tm1HT0wrNXJrMVkxVG52MXhQd1FCdjFoNmptaEx4?=
- =?utf-8?B?VTBwOGRGQVA0UTVLcjVmeU0vVmJwNVBJVlJhUlhja2hzN2ZhT29rNVBQYTlX?=
- =?utf-8?B?UTNIbDJEVEFGVm5lMnQzWS81bDNFdkMwcG83VTA0eWtlMGRhcy9qTEZUbC8y?=
- =?utf-8?Q?Y2P/04NEguhkvYIhpWYudqeax?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A230CE344505E646B673F2A82FF98F60@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cIMqDYsW"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-74849e33349so1642109b3a.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 09 Jun 2025 21:38:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1749530287; x=1750135087; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EOmEa242izJ9/bhxzxxZ9yeRYv/F/pcNvQXgz4tu4ME=;
+        b=cIMqDYsW/MNnkUcAnjUMe48ozWdlkFWFYC6Q6aFVS8Ig/g+XiRrBP3NI/YR3svEx2M
+         ZRTr1/ol/gRxZKRPMDFfwsr3tSnCxYoBlkTDTb7ED+HJLVHegGiUKsyxnt5wCbIbrMEH
+         IxvIxwQqBIAY314UTS4lYB1DzkD9gYq6QhwLoA1Ik/YaXpk56ux9yBKKsT4VM0/FJCWA
+         00a7Jttt7eK90T/Fx4QwegIwylVCiT1/1OJxJ5fwKKVsHo1t0R/ToqQYIhV6ATWNsZXw
+         /U0tci3MDRixdyTchdDsrZKTp1COXmMYTV7CqY3927DhOma+0ddWp5OnF2kfyUJ2FHQi
+         x6OA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749530287; x=1750135087;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EOmEa242izJ9/bhxzxxZ9yeRYv/F/pcNvQXgz4tu4ME=;
+        b=MVoqTBgqg7NjVdBxMg5ZBlVqlrv9VebAF/T87YWtLp3uzy0RuQwqTwwV5W8lixIU6+
+         XUCSHBL1SU1N4Dk8pCTJeCC3/ROfSxPh3hGDEykScWPVSvQ4Roz9UySCed9S055xchgM
+         BRLTu+VNDnQ/pAutkkIyPCcVMyv892NktiVkrOBoSWmFlBwF7fvdXc/2e9XQNOVytX6X
+         djExr48jSLexUigfKCK68LPIdePZb/MVTbq5HleCzV/l5TjlayJ+7Yc/pLbVifGTkWtw
+         0IhDiNehth465iAgvA8KU8fOGBTKaIMCsFxVUXL7v22vM14yGHaGnxG8zl72ep/seKpZ
+         vWLA==
+X-Forwarded-Encrypted: i=1; AJvYcCU4NfiuodyOjnTfzfsOVShQ1vU8KZN/rq868WTKhx/aOUyOMn328VoyD71Ks2pf/z++iwxkB/fW1Tz8U19pIw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ0A6nghgazySSliRKy5fKXppwWj0Cjjs1rliicIhK1GW89FBa
+	DgoAbuU4c9/+F1TJacg+jThcff/NZIdnZXtf3x3Y/q1Zpfma6chzc0Z0FLXlQQZLdGE=
+X-Gm-Gg: ASbGncuLNt4VLtloZNqunnRNyIdw+P/e09TtWt4pMzgKUayGAa0YKCZsWkSwZ0DMLZL
+	8qsr7Rsm+9JAHmtbYu7Jy9Qv1YZnGOzbcx995hBr08cKwGgA/xwZm6dIFH2BcxWzz1/DHZ9OmSX
+	Pg4Mc5GeXjZTzBSE80HVqc2rU9UhOMx32wcbifeGh96mE56JiMiEVJZKvAnaHIuwY1LbVJR7Yqr
+	kq16tkdK8vy1wlNYrggHy74Vghsz6PgLegwgtzgo2FphIp+1mAsi6FxO4s/Lqogrdf48HEOYmjZ
+	r+HbPxcGNy5Xuq1CywG571SoxeVuIwwx81Zrqtzp6/SqetQevd4QUO5sy+zgUc8=
+X-Google-Smtp-Source: AGHT+IFnumFN5YrH9SMLJGmJpHdBIrELYFHIVkETeYy9y2eyxYkz9cRqU/nNBhslMEsPJdrH40v3PA==
+X-Received: by 2002:a05:6a00:228c:b0:746:31d1:f7d0 with SMTP id d2e1a72fcca58-74861845fabmr1441742b3a.9.1749530286574;
+        Mon, 09 Jun 2025 21:38:06 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7482b0c0635sm6520120b3a.123.2025.06.09.21.38.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Jun 2025 21:38:05 -0700 (PDT)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Nishanth Menon <nm@ti.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>,
+	linux-block@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH] rust: Use consistent "# Examples" heading style in rustdoc
+Date: Tue, 10 Jun 2025 10:07:46 +0530
+Message-Id: <70994d1b172b998aa83c9a87b81858806ddfa1bb.1749530212.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR12MB6526.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b5a60d39-6705-4a28-0c8b-08dda7d091ba
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2025 03:40:39.6258
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EdXkAc7AeyHQzaRvqvMj7gWVfOYJfGD6u2cSy/wTd6wSOhtLJHL9dlfnuyH3ENVFBoE5aycOPwFP7/h9AWp1YA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9550
+Content-Transfer-Encoding: 8bit
 
-T24gTW9uLCAyMDI1LTA2LTA5IGF0IDE5OjMzIC0wNzAwLCBKb2huIEh1YmJhcmQgd3JvdGU6DQo+
-ID4gKy8vLyBSZXR1cm5zIHRoZSBpbmRleCBvZiB0aGUgbGFzdCBvY2N1cnJlbmNlIG9mIGBuZWVk
-bGVgIGluIGBoYXlzdGFja2AsIG9yIHplcm8uDQo+ID4gKy8vLw0KPiA+ICsvLy8gSWRlbnRpY2Fs
-IHRvIFtgc3RyOjpyZmluZCgpYF0sIGJ1dCB1bmxpa2UgdGhhdCBmdW5jdGlvbiwgdGhpcyBvbmUg
-aXMgY29uc3QuDQo+ID4gKy8vLyBUaGF0IGlzLCB0aGUgY29tcGlsZXIgY2FuIGlubGluZSBpdCB3
-aGVuIGNhbGxlZCB3aXRoIGEgc3RyaW5nIGxpdGVyYWwuDQo+ID4gKyNbaW5saW5lXQ0KPiA+ICtw
-dWIgY29uc3QgZm4gcmZpbmRfY29uc3QoaGF5c3RhY2s6ICZzdHIsIG5lZWRsZTogY2hhcikgLT4g
-T3B0aW9uPHVzaXplPiB7DQo+ID4gK8KgwqDCoCBsZXQgYnl0ZXMgPSBoYXlzdGFjay5hc19ieXRl
-cygpOw0KPiANCj4gU2lsbHkgbml0OiAiYnl0ZXMiIGlzIGp1c3QgYWRkaW5nIGFuIHVubmVjZXNz
-YXJ5IHZhcmlhYmxlIHRoYXQgYWxzbyBoYXMNCj4gYSBub24taW5mb3JtYXRpdmUgbmFtZS4gSnVz
-dCBkZWxldGUgaXQuLi4NCj4gDQo+ID4gK8KgwqDCoCBsZXQgbXV0IGkgPSBoYXlzdGFjay5sZW4o
-KTsNCj4gPiArwqDCoMKgIHdoaWxlIGkgPiAwIHsNCj4gPiArwqDCoMKgwqDCoMKgwqAgaSAtPSAx
-Ow0KPiA+ICvCoMKgwqDCoMKgwqDCoCBpZiBieXRlc1tpXSA9PSBuZWVkbGUgYXMgdTggew0KPiAN
-Cj4gLi4uYW5kIHdyaXRlIHRoZSBhYm92ZSBsaW5lIGFjY29yZGluZ2x5Og0KPiANCj4gCWlmIGhh
-eXN0YWNrLmFzX2J5dGVzKClbaV0gPT0gbmVlZGxlIGFzIHU4IHsNCj4gDQo+IA0KPiBZZXM/DQoN
-CkkgZmluZCBteSB2ZXJzaW9uIHRvIGJlIGVhc2llciB0byByZWFkLiAgSSBsaWtlIHVzaW5nIHRl
-bXBvcmFyeSBsb2NhbCB2YXJpYWJsZXMgdG8ga2VlcCBteSBjb2RlDQpjbGVhbmVyLg0KDQpJZiBJ
-IHBvc3QgYSB2NCwgSSBjYW4gdHJ5IHRvIGNvbWUgdXAgd2l0aCBhIGJldHRlciBuYW1lLg0K
+Use a consistent `# Examples` heading in rustdoc across the codebase.
+
+Some modules previously used `## Examples` or `# Example`, which deviates
+from the preferred `# Examples` style.
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ rust/kernel/block/mq.rs  |  2 +-
+ rust/kernel/clk.rs       |  6 +++---
+ rust/kernel/configfs.rs  |  2 +-
+ rust/kernel/cpufreq.rs   |  8 ++++----
+ rust/kernel/cpumask.rs   |  4 ++--
+ rust/kernel/devres.rs    |  4 ++--
+ rust/kernel/firmware.rs  |  4 ++--
+ rust/kernel/opp.rs       | 16 ++++++++--------
+ rust/kernel/pci.rs       |  4 ++--
+ rust/kernel/platform.rs  |  2 +-
+ rust/kernel/sync.rs      |  2 +-
+ rust/kernel/workqueue.rs |  2 +-
+ rust/pin-init/src/lib.rs |  2 +-
+ 13 files changed, 29 insertions(+), 29 deletions(-)
+
+diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
+index fb0f393c1cea..831445d37181 100644
+--- a/rust/kernel/block/mq.rs
++++ b/rust/kernel/block/mq.rs
+@@ -53,7 +53,7 @@
+ //! [`GenDiskBuilder`]: gen_disk::GenDiskBuilder
+ //! [`GenDiskBuilder::build`]: gen_disk::GenDiskBuilder::build
+ //!
+-//! # Example
++//! # Examples
+ //!
+ //! ```rust
+ //! use kernel::{
+diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+index 6041c6d07527..34a19bc99990 100644
+--- a/rust/kernel/clk.rs
++++ b/rust/kernel/clk.rs
+@@ -12,7 +12,7 @@
+ ///
+ /// Represents a frequency in hertz, wrapping a [`c_ulong`] value.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// ```
+ /// use kernel::clk::Hertz;
+@@ -95,7 +95,7 @@ mod common_clk {
+     /// Instances of this type are reference-counted. Calling [`Clk::get`] ensures that the
+     /// allocation remains valid for the lifetime of the [`Clk`].
+     ///
+-    /// ## Examples
++    /// # Examples
+     ///
+     /// The following example demonstrates how to obtain and configure a clock for a device.
+     ///
+@@ -266,7 +266,7 @@ fn drop(&mut self) {
+     /// Instances of this type are reference-counted. Calling [`OptionalClk::get`] ensures that the
+     /// allocation remains valid for the lifetime of the [`OptionalClk`].
+     ///
+-    /// ## Examples
++    /// # Examples
+     ///
+     /// The following example demonstrates how to obtain and configure an optional clock for a
+     /// device. The code functions correctly whether or not the clock is available.
+diff --git a/rust/kernel/configfs.rs b/rust/kernel/configfs.rs
+index 34d0bea4f9a5..92cc39a2f7ca 100644
+--- a/rust/kernel/configfs.rs
++++ b/rust/kernel/configfs.rs
+@@ -17,7 +17,7 @@
+ //!
+ //! C header: [`include/linux/configfs.h`](srctree/include/linux/configfs.h)
+ //!
+-//! # Example
++//! # Examples
+ //!
+ //! ```ignore
+ //! use kernel::alloc::flags;
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index b0a9c6182aec..944814b1bd60 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -201,7 +201,7 @@ fn from(index: TableIndex) -> Self {
+ /// The callers must ensure that the `struct cpufreq_frequency_table` is valid for access and
+ /// remains valid for the lifetime of the returned reference.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to read a frequency value from [`Table`].
+ ///
+@@ -317,7 +317,7 @@ fn deref(&self) -> &Self::Target {
+ ///
+ /// This is used by the CPU frequency drivers to build a frequency table dynamically.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to create a CPU frequency table.
+ ///
+@@ -394,7 +394,7 @@ pub fn to_table(mut self) -> Result<TableBox> {
+ /// The callers must ensure that the `struct cpufreq_policy` is valid for access and remains valid
+ /// for the lifetime of the returned reference.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to create a CPU frequency table.
+ ///
+@@ -832,7 +832,7 @@ fn register_em(_policy: &mut Policy) {
+ 
+ /// CPU frequency driver Registration.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to register a cpufreq driver.
+ ///
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index c90bfac9346a..0f2dd11d8e6a 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -29,7 +29,7 @@
+ /// The callers must ensure that the `struct cpumask` is valid for access and
+ /// remains valid for the lifetime of the returned reference.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to update a [`Cpumask`].
+ ///
+@@ -173,7 +173,7 @@ pub fn copy(&self, dstp: &mut Self) {
+ /// The callers must ensure that the `struct cpumask_var_t` is valid for access and remains valid
+ /// for the lifetime of [`CpumaskVar`].
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to create and update a [`CpumaskVar`].
+ ///
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 0f79a2ec9474..3644c604d4a7 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -42,7 +42,7 @@ struct DevresInner<T> {
+ /// [`Devres`] users should make sure to simply free the corresponding backing resource in `T`'s
+ /// [`Drop`] implementation.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// ```no_run
+ /// # use kernel::{bindings, c_str, device::{Bound, Device}, devres::Devres, io::{Io, IoRaw}};
+@@ -192,7 +192,7 @@ pub fn new_foreign_owned(dev: &Device<Bound>, data: T, flags: Flags) -> Result {
+     /// An error is returned if `dev` does not match the same [`Device`] this [`Devres`] instance
+     /// has been created with.
+     ///
+-    /// # Example
++    /// # Examples
+     ///
+     /// ```no_run
+     /// # #![cfg(CONFIG_PCI)]
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index 2494c96e105f..e209b5af297c 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -139,7 +139,7 @@ unsafe impl Sync for Firmware {}
+ /// Typically, such contracts would be enforced by a trait, however traits do not (yet) support
+ /// const functions.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// ```
+ /// # mod module_firmware_test {
+@@ -261,7 +261,7 @@ const fn push_internal(mut self, bytes: &[u8]) -> Self {
+     /// Append path components to the [`ModInfoBuilder`] instance. Paths need to be separated
+     /// with [`ModInfoBuilder::new_entry`].
+     ///
+-    /// # Example
++    /// # Examples
+     ///
+     /// ```
+     /// use kernel::firmware::ModInfoBuilder;
+diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+index a566fc3e7dcb..5f404c4181ad 100644
+--- a/rust/kernel/opp.rs
++++ b/rust/kernel/opp.rs
+@@ -103,7 +103,7 @@ fn to_c_str_array(names: &[CString]) -> Result<KVec<*const u8>> {
+ ///
+ /// Represents voltage in microvolts, wrapping a [`c_ulong`] value.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// ```
+ /// use kernel::opp::MicroVolt;
+@@ -128,7 +128,7 @@ fn from(volt: MicroVolt) -> Self {
+ ///
+ /// Represents power in microwatts, wrapping a [`c_ulong`] value.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// ```
+ /// use kernel::opp::MicroWatt;
+@@ -153,7 +153,7 @@ fn from(power: MicroWatt) -> Self {
+ ///
+ /// The associated [`OPP`] is automatically removed when the [`Token`] is dropped.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to create an [`OPP`] dynamically.
+ ///
+@@ -202,7 +202,7 @@ fn drop(&mut self) {
+ /// Rust abstraction for the C `struct dev_pm_opp_data`, used to define operating performance
+ /// points (OPPs) dynamically.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to create an [`OPP`] with [`Data`].
+ ///
+@@ -254,7 +254,7 @@ fn freq(&self) -> Hertz {
+ 
+ /// [`OPP`] search options.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// Defines how to search for an [`OPP`] in a [`Table`] relative to a frequency.
+ ///
+@@ -326,7 +326,7 @@ fn drop(&mut self) {
+ ///
+ /// Rust abstraction for the C `struct dev_pm_opp_config`.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to set OPP property-name configuration for a [`Device`].
+ ///
+@@ -569,7 +569,7 @@ extern "C" fn config_regulators(
+ ///
+ /// Instances of this type are reference-counted.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to get OPP [`Table`] for a [`Cpumask`] and set its
+ /// frequency.
+@@ -1011,7 +1011,7 @@ fn drop(&mut self) {
+ ///
+ /// A reference to the [`OPP`], &[`OPP`], isn't refcounted by the Rust code.
+ ///
+-/// ## Examples
++/// # Examples
+ ///
+ /// The following example demonstrates how to get [`OPP`] corresponding to a frequency value and
+ /// configure the device with it.
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 8435f8132e38..2c2ed347c72a 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -100,7 +100,7 @@ extern "C" fn remove_callback(pdev: *mut bindings::pci_dev) {
+ 
+ /// Declares a kernel module that exposes a single PCI driver.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ ///```ignore
+ /// kernel::module_pci_driver! {
+@@ -194,7 +194,7 @@ macro_rules! pci_device_table {
+ 
+ /// The PCI driver trait.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ ///```
+ /// # use kernel::{bindings, device::Core, pci};
+diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+index 5b21fa517e55..f8c0d79445fa 100644
+--- a/rust/kernel/platform.rs
++++ b/rust/kernel/platform.rs
+@@ -120,7 +120,7 @@ macro_rules! module_platform_driver {
+ ///
+ /// Drivers must implement this trait in order to get a platform driver registered.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ ///```
+ /// # use kernel::{bindings, c_str, device::Core, of, platform};
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 36a719015583..a38ea4419758 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -39,7 +39,7 @@ impl LockClassKey {
+     /// Initializes a dynamically allocated lock class key. In the common case of using a
+     /// statically allocated lock class key, the static_lock_class! macro should be used instead.
+     ///
+-    /// # Example
++    /// # Examples
+     /// ```
+     /// # use kernel::c_str;
+     /// # use kernel::alloc::KBox;
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index d092112d843f..8c27786dc8f0 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -26,7 +26,7 @@
+ //!  * The [`WorkItemPointer`] trait is implemented for the pointer type that points at a something
+ //!    that implements [`WorkItem`].
+ //!
+-//! ## Example
++//! # Examples
+ //!
+ //! This example defines a struct that holds an integer and can be scheduled on the workqueue. When
+ //! the struct is executed, it will print the integer. Since there is only one `work_struct` field,
+diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+index 9ab34036e6bc..c5f395b44ec8 100644
+--- a/rust/pin-init/src/lib.rs
++++ b/rust/pin-init/src/lib.rs
+@@ -953,7 +953,7 @@ macro_rules! try_init {
+ /// Asserts that a field on a struct using `#[pin_data]` is marked with `#[pin]` ie. that it is
+ /// structurally pinned.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// This will succeed:
+ /// ```
+-- 
+2.31.1.272.g89b43f80a514
+
