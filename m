@@ -1,88 +1,84 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FCB296161
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 13:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F35E246BB8;
+	Tue, 10 Jun 2025 13:28:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749561738; cv=none; b=PdfYS8I5XhXF4hikePQDc/AjcBHJbnRP+wIyxG/VrRxn3wv1SFU5EYEwbWTtzHA3KxMm2RSMKy8EWFCdUqaydDJyPNjbp5U0R1/NkL/sNf2f2/FVZ3B1DwDEFM9Tf7/XdDy4zyJ3jpbqNh9PXNl5CJ0IL5zvHpjpa2+Lrin+ZoU=
+	t=1749562116; cv=none; b=jC4PpoqM/C1FzOTYTirBPdaZUo+Ug4E2IWQNeQj3WldUNjqw1pteNJPGHx56XgePsUiG2KYI/Ix2sy8849BeBkBEaTYGrqU9E7CK4DzgDHtS9XDjHTcQbaMZqkD30vFAHjBECdoCKE4SXH83U1nBeFvv4Ik7XXGfOfAbA9gtx0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749561738; c=relaxed/simple;
-	bh=1trWxBrPAl76fxmsb+oeXOY/Ya77z6kO/+mfRMr7pEk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j4ziJOJSOfbfg6mqRpXYrxpab1qtAMUS2H4PnuVKsHIbIHD2kRXSMqoadv5FisOKMi73BSCx9dOn4o6ZaodgZK8SWkowxTLLQGYn+bckzqJR0RPijf/5YS7Gi+2dWPZ5kjTJRXFbT0UFXL2FHP6d9T3VNf9zzYNWodb2W/gpD40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jKH0vpCC; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1749562116; c=relaxed/simple;
+	bh=ZnvW/ur2cRumoOW+Z41lcoKXGfI7D1zXFJb7rEZC/dg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kuIfQFfnfuQKcfZbj59erFpZDCbvM9FwypngZx50BCus6uBr6GlDovyWJBktXUJ34m3vQi+cRPZSjUNQrlT2g6FVVNu+I9Fv7ElVUewanSEmMScO2rL+tcFxV27nGg7gD8SNXaqDKWny97+qNrAoW9iFXt22GPe8wApL0qY2z8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XKfo8rz6; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jKH0vpCC"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-236192f8770so18096215ad.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 06:22:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XKfo8rz6"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-31329098ae8so4355882a91.1;
+        Tue, 10 Jun 2025 06:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749561736; x=1750166536; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=klAB2ncfCtZERTrAyu2rbSFj1iTvAJjUvwJYS5sgM+0=;
-        b=jKH0vpCCz1raMyiXndi0YUU1kk+gY6N0QddxJQcXVjSlJPaF3Kl8P4TMkDwBwhXOL+
-         q5BBbgf7nwcEfUSz+wTQN6DbhNgn4hlPPxlonagpKqDYnsH9EZb0AdFXrIU2ClNBJMvc
-         cPSDpn2NorLzXmwwE8u3zv02pKsYr5szWPHjXkdQVAq1JQyS2C6+GRJlZsd5RvsJevng
-         5M4jKx82hQHNFM2YTY/UtFDULCTJxadoAqFUHMzALiKIatuMQIyHLv14Pn1SwiMs7TSL
-         J6mbblxZE+Eh50BlJhv1fP8NzKzaVJcJdmc+VXdSxV7lZcqpwFbxkFjoUlIz5XF59fhy
-         b4Xg==
+        d=gmail.com; s=20230601; t=1749562114; x=1750166914; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fpy0w6GneocGH76sUucfKrbNpBWjT4Y6KY3kCrIzHE0=;
+        b=XKfo8rz6gXoUQmbRnMci8+HApnzm/tUnInaUAwcb8bTib99lygmH/QA1LUtz6NPYwI
+         rh7NWSQg7IS7dQ53yRJ+Q8PCnQzqCJ5hItlmVghkEab0cLzeJ4fRpV9TaVkf9e/QZUMD
+         +v1RmN5f/CGqs8GQD2RetPdSnHG1RV10rFweF22DvYMF/zeKuNmHsA+Qq7zfeWzGtqT+
+         AvtA7OgLlnVH/qQdjUWTyRDMfOvOeSfYhHAmDW2voG5v6J2CUx/8SiDC5nS8PstSzTyF
+         empa0e6QjEs/jf66IPtYmVlOgHGezS34kSFXPxBOEnQeQ1/3m4+8QvsCJT5tRo5Lcvbx
+         In/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749561736; x=1750166536;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=klAB2ncfCtZERTrAyu2rbSFj1iTvAJjUvwJYS5sgM+0=;
-        b=YC3FddNgJ/1pVlVYGaoN7nniWJwsFgBqolSWIsDqxUS+jWnWgGseC/l7OKzotaGiPE
-         Jd/sLtCoJwaF+vC6GgW/1sgiwba9LBwwB5dKcCoERkjsrL8nTFNQMFAud/QC69ksXmjf
-         ZJ+j3K2m1yxk1cIuxUfz0eLAG0UgrT1pUXaQZCiN2pM1JrmxMiVf7NlzQ++twmkggRz6
-         QZDb4PcptAeTj6Y8Y4CHEWdmF+pwmRarsRDgrCnpnI/7+b0n3oAymT27dEcuop+uuOn7
-         docaKS0k5fuCVUSzfHvz0h1H1JHVcQzsWxFDtoD21BIpHx3NIClx+0I0I8JQEpnD3klc
-         CIvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWkV2ByU5mZizofQtT/M4QrZaM1jCv+xm9+kaRk8DolD0JfFhQbNrt/7H3Gg6FkT7X1ClSoFXzBWAeXZAzfgg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX+5qQDBlZTAK++EBwyxQi/BTyWCsuCPW8JudqXD781o6CE29H
-	+yZsEliTdL3AOZFC/51V05AjB6ixOg39Qd8py/4sYUepL73Da7eYHbjeVSxUKrT4bVw=
-X-Gm-Gg: ASbGnctb1nCsEEd7zEjUhyGGUQPm6Cr1iqqid+eraenk2vzsBZ+MD0d6KoVJN0r1yBb
-	wcfV6nHWA4Cx0ARwD8c93uQY7TPrEvbBP6K6lQZWlXQNdOjNqO/hEFhr6iV9gNCPVBXs4W8JRJS
-	BY0xVSUNlRJMtwV+QRP4q6J5lo0ruPyTob3Ec2HaAz7zD/1b7+viXoBXwQ53Y1CBlIuaDjfI9TJ
-	ZKWFPJ8+xdFFVRH6fzDD3TRoj+0/52nv6sahu2Vl+/hK28radOvlZQFvqaopryE9s5pXMDCPjwO
-	9VdkxI0z3Jyz+iVBq4mQcr0uk/0SiscqhGXjXw2hfqwv31569hKThzzhghXQMnliRRVuCwHv8Q=
-	=
-X-Google-Smtp-Source: AGHT+IEqVq8mQti3tRT+eBtluesPlLE/oLnB08dp/lHegWMkSJCFxjWNMm/J+IaFVS/OPUwi9sABqw==
-X-Received: by 2002:a17:902:ccd0:b0:236:15b7:62e3 with SMTP id d9443c01a7336-23635bb9896mr50735745ad.9.1749561735859;
-        Tue, 10 Jun 2025 06:22:15 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-236034061f3sm71537895ad.179.2025.06.10.06.22.14
+        d=1e100.net; s=20230601; t=1749562114; x=1750166914;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fpy0w6GneocGH76sUucfKrbNpBWjT4Y6KY3kCrIzHE0=;
+        b=OQy+xYh8zNAT3l78zKAOQ3My8pJYWs+0qmR2napIBSwzoGtTQOS/6NLU23d3jUc3PP
+         KlIwkiXeienp5j+eoNnQdIa2BhBG0pDo2OJ8Z2UgSEwM7egQNoQO/+MJHw8TVkpM61QZ
+         za+9ECEy7wkXiGIKeU2s0po+tprrt9RqKxuP9ysDLy+26GFG/cOcNy7Osva7Zo6l/PAN
+         4jdszeCLT86IU5Y00UdXTH9TuaYiAtANNd3WDHFwrsaalBPkhFyQfVHEMnER9328J4FI
+         +hFAaxQeQcnS92kcMg0s9Roj0luQfDWx1cNV/1H4qOvBEs0AG7Q/YfiBIve2ZfWdRKee
+         ACMA==
+X-Forwarded-Encrypted: i=1; AJvYcCV9Fhcbp4FQmogyzN6oLl9zGhGgyL3TJX6DCAv3L9sQptBT2Eu5HD9WXylrJn3MBGekZjV/ErP3MI5j3Qt8mV0=@vger.kernel.org, AJvYcCWlWbGFo6aeHJL5PVccN7dOmt/wi2cwU4jIWDEuyJFfIB74MGJJeFf2PvdTEHV7qiHu3Y1xgyBFbVD2vgE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywa/G2IBNiKxW6LEAuIlrABlNE+DJh9htIfnfRE46jDYJ45gOI2
+	lpdDDnb80JDsUFbs6vfvYfONR18VoBQ1+uGRtCanK0PrDseElnJIgldQ
+X-Gm-Gg: ASbGncu2Y8Q/s2FxUR9MfIzzvp4hn8ZHH9gNfuwJkxKzH9HcAELcttQ6y594J8QWpxa
+	YJWQ3kxgJnrmzbZM7SZuAaHdaGuePNs0A86CoZBTTo429gL2PqIazVEmcFQ3TvQHi24y837LFOJ
+	B0hn1FV2zd2Do2raUMt6r1wz/q/UDwngVODfnZpkkL6ix7jbzDgij0MCDk1mdkoQFmqC1XD8rxD
+	dMg3wZQkzRQg0qsSgAgd3Y9d6jKy5dARbnKcXd1IUTMaYp7ahhy1oB6cN3xNVmtYwt2cLl4tAR/
+	kZLvXo5ma9Bualgw4/u2lni6eBO9PnX71FwXGA7mv2o864r9K05OqcUeB9OeI56DEB80peujhBW
+	g1hetKSMS+cwkrIYLcviyiAZtRjuW5zf0FeEub1x6tkDJDw==
+X-Google-Smtp-Source: AGHT+IG+2BvfQptVbBSlcvPomMbcjCUmgOLj297ddTY/Eofvew4SN9EdfAXX8CPExVbGOyLjJdPF+A==
+X-Received: by 2002:a17:90b:2dc6:b0:310:8d73:bb27 with SMTP id 98e67ed59e1d1-3139e055dd9mr4939257a91.13.1749562114114;
+        Tue, 10 Jun 2025 06:28:34 -0700 (PDT)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3134b128050sm7969276a91.25.2025.06.10.06.28.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 06:22:15 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Boqun Feng <boqun.feng@gmail.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Yury Norov <yury.norov@gmail.com>,
+        Tue, 10 Jun 2025 06:28:33 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	ojeda@kernel.org
+Cc: aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	frederic@kernel.org,
+	gary@garyguo.net,
+	jstultz@google.com,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	lyude@redhat.com,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V3 3/3] rust: cpu: Add CpuId::current() to retrieve current CPU ID
-Date: Tue, 10 Jun 2025 18:51:58 +0530
-Message-Id: <a2e12436661fca452de5c417242328ed6f413511.1749554685.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1749554685.git.viresh.kumar@linaro.org>
-References: <cover.1749554685.git.viresh.kumar@linaro.org>
+	sboyd@kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu
+Subject: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and Delta
+Date: Tue, 10 Jun 2025 22:28:18 +0900
+Message-ID: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -91,82 +87,71 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce `CpuId::current()`, a constructor that wraps the C function
-`raw_smp_processor_id()` to retrieve the current CPU identifier without
-guaranteeing stability.
+Convert hrtimer to use `Instant` and `Delta`; remove the use of
+`Ktime` from the hrtimer code, which was originally introduced as a
+temporary workaround.
 
-This function should be used only when the caller can ensure that
-the CPU ID won't change unexpectedly due to preemption or migration.
+hrtimer uses either an `Instant` or a `Delta` as its expiration value,
+depending on the mode specified at creation time. This patchset
+replaces `HrTimerMode` enum with a trait-based abstraction and
+associates each mode with either an `Instant` or a `Delta`. By
+leveraging Rust's type system, this change enables `HrTimer` to be
+statically associated with a specific `HrTimerMode`, the corresponding
+`Instant` or `Delta`, and a `ClockSource`.
 
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- MAINTAINERS            |  1 +
- rust/helpers/cpu.c     |  8 ++++++++
- rust/helpers/helpers.c |  1 +
- rust/kernel/cpu.rs     | 10 ++++++++++
- 4 files changed, 20 insertions(+)
- create mode 100644 rust/helpers/cpu.c
+The `impl_has_hr_timer` macro is extended to allow specifying the
+`HrTimerMode`. In the following example, it guarantees that the
+`start()` method for `Foo` only accepts `Instant<Monotonic>`. Using a
+`Delta` or an `Instant` with a different clock source will result in a
+compile-time error:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a92290fffa16..4255186784c4 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6254,6 +6254,7 @@ F:	include/linux/cpuhotplug.h
- F:	include/linux/smpboot.h
- F:	kernel/cpu.c
- F:	kernel/smpboot.*
-+F:	rust/helper/cpu.c
- F:	rust/kernel/cpu.rs
- 
- CPU IDLE TIME MANAGEMENT FRAMEWORK
-diff --git a/rust/helpers/cpu.c b/rust/helpers/cpu.c
-new file mode 100644
-index 000000000000..824e0adb19d4
---- /dev/null
-+++ b/rust/helpers/cpu.c
-@@ -0,0 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/smp.h>
-+
-+unsigned int rust_helper_raw_smp_processor_id(void)
-+{
-+	return raw_smp_processor_id();
-+}
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0f1b5d115985..16fa9bca5949 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -13,6 +13,7 @@
- #include "build_assert.c"
- #include "build_bug.c"
- #include "clk.c"
-+#include "cpu.c"
- #include "cpufreq.c"
- #include "cpumask.c"
- #include "cred.c"
-diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-index 7549594fad7f..a946c8a9d1a2 100644
---- a/rust/kernel/cpu.rs
-+++ b/rust/kernel/cpu.rs
-@@ -102,6 +102,16 @@ pub fn from_u32(id: u32) -> Option<Self> {
-     pub fn as_u32(&self) -> u32 {
-         self.0
-     }
-+
-+    /// Returns the ID of the CPU the code is currently running on.
-+    ///
-+    /// The returned value is considered unstable because it may change
-+    /// unexpectedly due to preemption or CPU migration. It should only be
-+    /// used when the context ensures that the task remains on the same CPU.
-+    pub fn current() -> Self {
-+        // SAFETY: raw_smp_processor_id() always returns a valid CPU ID.
-+        unsafe { Self::from_u32_unchecked(bindings::raw_smp_processor_id()) }
-+    }
- }
- 
- impl From<CpuId> for u32 {
+struct Foo {
+    #[pin]
+    timer: HrTimer<Self>,
+}
+
+impl_has_hr_timer! {
+    impl HasHrTimer<Self> for Foo {
+        mode : AbsoluteMode<Monotonic>,
+        field : self.timer
+    }
+}
+
+This design eliminates runtime mismatches between expires types and
+clock sources, and enables stronger type-level guarantees throughout
+hrtimer.
+
+This patchset can be applied on top of the typed clock sources patchset (v4):
+
+https://lore.kernel.org/lkml/20250610093258.3435874-1-fujita.tomonori@gmail.com/
+
+v3
+- allow optional trailing comma for the field entry in impl_has_hr_timer! macro
+v2: https://lore.kernel.org/lkml/20250609102418.3345792-1-fujita.tomonori@gmail.com/
+- rebased on 6.16-rc1
+- change impl_has_hr_timer! macro format
+- remove define_hrtimer_mode! macro
+- drop patch to change Delta's methods to take &self instead of self
+- add patch to rename Delta's methods from as_* to into_*
+v1: https://lore.kernel.org/lkml/20250504045959.238068-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (5):
+  rust: time: Rename Delta's methods from as_* to into_*
+  rust: time: Replace HrTimerMode enum with trait-based mode types
+  rust: time: Add HrTimerExpires trait
+  rust: time: Make HasHrTimer generic over HrTimerMode
+  rust: time: Remove Ktime in hrtimer
+
+ rust/kernel/time.rs                 |  19 +-
+ rust/kernel/time/hrtimer.rs         | 281 ++++++++++++++++++----------
+ rust/kernel/time/hrtimer/arc.rs     |   8 +-
+ rust/kernel/time/hrtimer/pin.rs     |   8 +-
+ rust/kernel/time/hrtimer/pin_mut.rs |   8 +-
+ rust/kernel/time/hrtimer/tbox.rs    |   8 +-
+ 6 files changed, 218 insertions(+), 114 deletions(-)
+
+
+base-commit: 8bffa361fb76742eb953ca024a9363c6e9357d65
 -- 
-2.31.1.272.g89b43f80a514
+2.43.0
 
