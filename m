@@ -1,97 +1,115 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084582206BF
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 09:49:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C44E28B4FD;
+	Tue, 10 Jun 2025 09:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749548995; cv=none; b=WVpNWipFGohOWShb4QGNNKXNdyxKQSe6SYJJ7YzBazbpIo1M8AhsNnVfDo5e4/oX3IQ/ySU1KanlkYxcp6iOHdxjMYpF10Tjj9BoGUFWiCf02+D2BDrzcJd9bGd5fksGS4LGz9sLfrz8tk0/pFyQIjaqYEc7WudIUo90/ZELp50=
+	t=1749549493; cv=none; b=lmdPNz8Lqasz3YKDlh4hQszgRE7mMBbMuADyRTSrnj44Umo+u6hoL3FnfGFMcukZ/V7eTjBqYoHkNnyeNATenkKL6zA4cA1EFM/ICcViz65eb0ybpqbqA8uQ4OHewb/prTk8wc83GZ4kUdrXOAszlX+cYYB4/3E3O9w9RtBynAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749548995; c=relaxed/simple;
-	bh=UZCtpml3axhy4S0Kw9a2Zpy0I7ArytglQm2qT4TgfiI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BakUchmKS+VTx5FWWq5/SnKwH8rXuCypZDy1geARmdDxmD4FgADfie6WGuYzyjJ7iAjPg7iZAGocWfIqVOES2/z4CvLjCTT+SVPDrQhSPEan9xDN0FqFdjWWxf/6SEc9CQWS8c/B1gy7yJeunbrdT/TA0XDIKS6DPeWwDGgFzYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V8FcqMPu; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749549493; c=relaxed/simple;
+	bh=LvjZWTxkoJjdq6mNR3PqdVpVlqtMMxO1dSyjw1hqIEc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=SC1sbrIPm/hi6FD/Mw/boTOLIgMc/slQRtRU8iXvACpFvPY+HxaKjdi4O4kSEQv48ft4o5vd4vM8V55KGRApx2L5XalAuTN/04Q9NNQDGEeJtcaKHJQV1jNNNy/GEqTiMM+cZ6eHkvrGWRSEOGgamKu9haPMby+ujTuO1xBp3P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCglwtz2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V8FcqMPu"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-31384c8ba66so402924a91.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 02:49:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749548993; x=1750153793; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UZCtpml3axhy4S0Kw9a2Zpy0I7ArytglQm2qT4TgfiI=;
-        b=V8FcqMPuf7p+gcne4PoZe12SWdjWdn6dC3B3GgDy+gtHWRdkg47Sdk8a0f15Ie9XBw
-         /bMqDhiGujP7yQ0RlGvDsxGiVmkvoSXZdwb/iqov3ACj0bwVlCcZT8X7S2y5278NBFhj
-         I1MvF4PGa/6GD/8oIeRchwVkszMfjG+wrU08YLJ799CcGHG0IRgHN45SyevwA0uzUxzo
-         JQiGdC1eb7YAhrFBotrJU4u/SPSeSeQJHsRG+9wqjubYUkrKcU2vhpIK9MxZL+tga32v
-         WMHITaJpM6+Fy+s6sGT5jFJLzo98Q/n+q6nqIp8K5IIx0cxGNslKHMP8eaxRQrGbSF05
-         2KNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749548993; x=1750153793;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UZCtpml3axhy4S0Kw9a2Zpy0I7ArytglQm2qT4TgfiI=;
-        b=E3xXzT1VHbodyiLyImmGQw5o1KFYVr1OUxCt4bmOlBlv/AMb1bQgFCiIF4pfIaJhw2
-         22COJwjC6AeWBARAN1vwk9z/tUS/5rA5DjHge3YPVp3ZekjLNAcMW+4E28Xk6WOz4i58
-         kxsTCRim4bH47v3UZccvAySwuJDMM2UdnK14SpFPwkl2GdpBMd4jMkaa7I7N+vXUtJHE
-         8dHAF4ZXt2vc8JyJG8m0Hh272Fyy6AJkRetlLu5PtaDBROaHtRq6ISoa+dDU2CGy+fbG
-         bl5tNEajBmCMDG2r7Jwl+Ffo7+fNZspLoAKjd0bnEyMCM8r8YmD63z50fq2kmhE7tEAB
-         LUNg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJB2myq9zFXDl35NejLXi/G73AO6TBzqvZ6ZNS9ZVNFc16jjK7HrgiHHxwx38lxYMcEUpaNhChlWwUZDnH8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykQUkVG+rLzUZ1R4JX0GISuf/d3Y6DuoXqRmVHpiqbqE9SKEdg
-	0tuxtW7BsZpamgYrmSeJ/Rpy41ancJud3PeiV/aLvgcJPVvmjF5BPqhD6KRXbAoMgHky+HaVqtf
-	tmHeMc/2LFPETnl7oBcSO+JJg9fPPMwI=
-X-Gm-Gg: ASbGnctQyjo0Psnfy96wcc6Y9JgJzLALXQfrXpTANx1z3aXEmju1lk7mdxwd3lJCM2e
-	fmkm33stMae4JmFec3DIuZIFtSpWAHBompKHLEACoaxX8zhSYrMbNEgfxgSj6/TgU18jk3hOrfM
-	0JHpxkEa9FAde2VVqt6dzstArUAb3u2tvU3VgM8/YAe/U=
-X-Google-Smtp-Source: AGHT+IEs4DaQuMWszjV080nzP9eynMXAqhW+T2tT1Cog/BE7mgtCv9/cFophK9EX1fEryCq06qnikMfvQHC38qd/Cwg=
-X-Received: by 2002:a17:90b:3890:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-3134753c519mr8491794a91.5.1749548993320; Tue, 10 Jun 2025
- 02:49:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCglwtz2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D04C4CEEF;
+	Tue, 10 Jun 2025 09:58:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749549492;
+	bh=LvjZWTxkoJjdq6mNR3PqdVpVlqtMMxO1dSyjw1hqIEc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=FCglwtz2hrf8dzbUZ8iQ9kWAncwhQ/PaJYnGSUAll7aI/78jgYWgUJt3+Pnn6+RD/
+	 oUqFmjn3ylB4L14cUtnVVn5HZnkXTr3CDOw60R2qMfIOtzTiZGKAs0+TbvuYMWCNJ6
+	 NqsPL8Xk2ochKmB3Jg5Ikm4Gyq7hEjOnWZfEWrsQXoa2mkRm3X2MaeaIxAeoWOorsx
+	 KlWSxtMoJKPZ0fKBnihQ/3giYj+jZ2O5l2A6qB1C5VXawJobp/lIcHjNRAAP+2t/kt
+	 RjUNR06X4x1qVDxBGl0yNbxDrxJDBGXn/eAmGC/QH0UijSppwY0bCDYm1Y+L9T8NZQ
+	 Pw6LnMQJVqMIw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250606020505.3186533-1-fujita.tomonori@gmail.com>
- <CANiq72mJwEm5aMCsrKAhD2e9p+ZyrL3d+4zOswM53k1pbDyyfQ@mail.gmail.com>
- <2w_xemXUO2dSUIMi71vfN-naCZx1PE9R9ka68JgQUmrvl8J2lm7iV787DsNgkc9ZDfhGP9maoqYqf8WRy8Hmcw==@protonmail.internalid>
- <CANiq72n7SgO26P5kFuA1AnnzmUW7q2_7FtH+nUxjoxjjcMeD5w@mail.gmail.com> <87cybc3v65.fsf@kernel.org>
-In-Reply-To: <87cybc3v65.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 10 Jun 2025 11:49:40 +0200
-X-Gm-Features: AX0GCFv3itf40DYDl11Eq2JxlmhJtoNrBdUkVc34k9yM9eEPeYpWO_nIYAM5tBM
-Message-ID: <CANiq72n-+FKrWmbtwoKn1n90Mw+wyQJKUrGUa7opsuNYbts-tQ@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: time: Fix compile error in impl_has_hr_timer macro
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: alex.gaynor@gmail.com, ojeda@kernel.org, aliceryhl@google.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	gary@garyguo.net, lossin@kernel.org, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu, tamird@gmail.com, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Jun 2025 11:58:07 +0200
+Message-Id: <DAIRJ71UP655.2NF13FJSA0G68@kernel.org>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
+ Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Tamir Duberstein" <tamird@gmail.com>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Subject: Re: [PATCH] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250605-pointed-to-v1-1-ee1e262912cc@kernel.org>
+ <WubHJPtx9Uu0qugeELZ2ooYWKq4KDj7r8P7k4i_QhgOP53MWk1V3XHH4Ztmzp42zMwHSntslAbfpLFY9AhjfxQ==@protonmail.internalid> <DAFB0GKSGPSF.24BE695LGC28Z@kernel.org> <87sek82bgf.fsf@kernel.org>
+In-Reply-To: <87sek82bgf.fsf@kernel.org>
 
-On Tue, Jun 10, 2025 at 9:36=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Tue Jun 10, 2025 at 11:27 AM CEST, Andreas Hindborg wrote:
+> Hi Benno,
 >
-> Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+> "Benno Lossin" <lossin@kernel.org> writes:
+>
+>> The title should probably also mention that it removes `PointedTo`.
 
-Thanks!
+Just making sure that you saw this.
 
-> You want to take it directly in the rust fixes PR?
+>> On Thu Jun 5, 2025 at 9:55 PM CEST, Andreas Hindborg wrote:
+>>>  pub unsafe trait ForeignOwnable: Sized {
+>>> -    /// Type used when the value is foreign-owned. In practical terms =
+only defines the alignment of
+>>> -    /// the pointer.
+>>> -    type PointedTo;
+>>> +    /// The alignment of pointers returned by `into_foreign`.
+>>> +    const FOREIGN_ALIGN: usize;
+>>>
+>>>      /// Type used to immutably borrow a value that is currently foreig=
+n-owned.
+>>>      type Borrowed<'a>;
+>>> @@ -39,18 +35,17 @@ pub unsafe trait ForeignOwnable: Sized {
+>>>
+>>>      /// Converts a Rust-owned object to a foreign-owned one.
+>>>      ///
+>>> -    /// # Guarantees
+>>
+>> Why remove this section? I think we should streamline it, (make it use
+>> bullet points, shorten the sentences etc). We can keep the paragraph you
+>> wrote below as normal docs.
+>
+> Not sure exactly what you are going for here. How is this:
+>
+>
+>   Converts a Rust-owned object to a foreign-owned one.
+>
+>   The foreign representation is a pointer to void.
+>
+>   # Guarantees
+>
+>   - Minimum alignment of returned pointer is [`Self::FOREIGN_ALIGN`].
+>
+>   There are no other guarantees for this pointer. For example, it might b=
+e invalid, dangling
+>   or pointing to uninitialized memory. Using it in any way except for [`f=
+rom_foreign`],
+>   [`try_from_foreign`], [`borrow`], or [`borrow_mut`] can result in undef=
+ined behavior.
 
-Yeah, since it is a fix, or what do you mean?
+Maybe even move this paragraph above the `Guarantees` section and change
+the beginning of it to "Aside from the guarantees listed below, there
+are no other..."?
 
-I guess there is no rush given there is no in-tree user, so you could
-pick it in your -next one, but perhaps someone else wants to start
-using it in another branch?
+Otherwise looks good!
 
+---
 Cheers,
-Miguel
+Benno
