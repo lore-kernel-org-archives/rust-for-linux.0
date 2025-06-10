@@ -1,337 +1,127 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AF52441A0;
-	Tue, 10 Jun 2025 17:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6552F236424
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 17:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749576661; cv=none; b=WobC6vks8MD4n/gHHAlMSQrEC4JRU+pvAH6z6U45Q4t/HGPSAF8kwlCLsV30G0BYdN4dAwwO5aDzB/npsd4w58IwpBPsymDDIMg5Tp5Y0/9hPskSCmEtrUp1tvxCkT5vWUvDEEXeaO/vVWsw6Z4CgUelGXD4zGYjkCY0LYAmpNY=
+	t=1749578080; cv=none; b=rR4/fJ7t0wiX3A67DvCfmt6QlaixohkFU8Kim54yMarvxU4HnC7sNl50yIpWWvB4SiPNesmIFcV3R8LI+pCDM+ope6X9bPq8DhUYiCmb9CKnQpn/StcYUVR9Usqbs5E4r6CTYHd4zmQvV3LcsgLmTsNTSe8vvc32HAox9eoobwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749576661; c=relaxed/simple;
-	bh=0NiHXbG4vYgb34rXAoH4moQ99hl+z8icp5lnTGEVaII=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cUaYWNjUzfEXyEJDK3VTTcCPOUf5nIvFtaNQ1Qx+ceSKollu0x6ZWNaB7/oO9Mu1hoeBby1i76mhN7vh/X2vcuTdJnLsGDWPkfkJbUEq+AOWNIEXjCoAsCptxc/nrGsadoWusbeotYiYIFhz8dpVDMqE1+YywVuWOGtBDCoe0MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mi2A7RU/; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749578080; c=relaxed/simple;
+	bh=ianbddjc1XphHcmE63ieTxfCE+wZXczp2Z2tA7s+ncI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XGe+aD5WSWidmVIQCXENzBaaJ9nWUCBjAAlQZbijG8gHJpV+7ltgzmns20X06/tizD1ASsevRv3n6H9ZxlXcHBxkutasIzrv1Wng2vJyz1E9gAJqhk0Vsaq7zWbIuPQ/JeP3hK9reeqpWKbI5FWbTj5CMvrQzoDuK1Zq9e1J04Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uXURicik; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mi2A7RU/"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6fb1be9ba89so21260386d6.2;
-        Tue, 10 Jun 2025 10:30:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uXURicik"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-601a67c6e61so1211a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 10:54:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749576658; x=1750181458; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UJdykh2EXzW6mCPNCtZcUijMyr6QYBWb9z7jw/427yo=;
-        b=mi2A7RU//ltoZb0UTWAbabpaCRI9D6B7O5uI9iPX3Bpcah1tW/HQszR0Ir9eDbYeQd
-         GLNU48tcjavQzZI1L3r5bqBVamu0SHmCfaGPgMpCNn3oMTZ1Y9HC+p5BwhzalJCs3uw1
-         GkeKIkM90ml3s7Ce8nwkiPUBTAlV4fka9d8WFcKrET9V2OtdeQt9mkCfW17vguduNSzz
-         BUCxVwlm8go+qGa4/qhahCjzNmrhkxNO79MxD6JaaeRmImanZcn/GRLCVxp11bXrHlxQ
-         RJGl8mwcMGFWFQzVvAwK3UACL+OmvPw6Gebsh6bYLzmhExHLC6ba0g5pFpgHiCvpfQCm
-         v3Uw==
+        d=google.com; s=20230601; t=1749578077; x=1750182877; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YvAr7sx4/tHhlSv2OBT4UQtf2qLWNKlOCp57zbBnAu4=;
+        b=uXURicikAGRGi5ED+h0XUyNe/NN3IGokxjk/fwpqdip/usl9gykAF9RN6bEDYAGCry
+         NLGQCpy0h5NiArb1wmP8aD7lMiyIZiu+dxCQIfOZnVHeaf457ySB5Wv8uI4LMWIqOkVM
+         6XiGu3ImwXkoyNSa1KRhk8j6EKVW6g94pc9k7iE6fD082zrOqh4hoWa3IpZx0MxTrN4b
+         4uSPbO96lbDAxHhL+nePr+HIJNXT7/a3i7/IBGIHD+MV5W1Bs7xrQzWdTKuqaKVdllay
+         sEhOlyVlS1TQdynhZuOXp+VZTQRPBTzgKqlCytvfNfXgxOw8tdPUcygXHiUXMNBRr2Hx
+         E5WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749576658; x=1750181458;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UJdykh2EXzW6mCPNCtZcUijMyr6QYBWb9z7jw/427yo=;
-        b=h3nY0gY34oN+iW5lScvoR6uD9w0JO3q9oH8bQGNtyJtxn6ogHRnmemCqF7iIZj+4ce
-         SlZwY2rzGbY4chhfWf+vvJQ3/h4qlXNOmpxlxN7iu0sF25Dzz6CVv3wbBho+YAfepgiW
-         vFLfE6Sg/rRfbcWIpxumfEi6Ii0sx3RNDlfItuyBw+EWnwIAu2Jeu0ZTxL+EzSyNISwF
-         ULKxmXIZK8wy6g6EW8yzynXdJSzaKfVde5nZrCcCD+eieTkDQW8T2UQAO+JIiS4zsU1s
-         NZik+BtkxVAqQ0kIPRFEQLs5sCMyi/EZEUriQTVGlgy01q1mD2+ph8fcyoGAWRLjDrfe
-         bkeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUC0LtKGwwxoYPx7ZbaGfExw8TY1dOVWiNzKzQYOgwgisgQ2F8KRjWXV1sC8ykm4NbcsBeIn3EjQy9B@vger.kernel.org, AJvYcCWgKPei/o/QjcSWYPTCYfwzXYA5Tj5GxIHUFgGa8ByKr3BccR0FJxq2XpfnXz7qE6aa88tJTZk/MyyAVfyFH1s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoWsl/Ie8loY9mNSp0LzjXOUhSNSan4PETW282/LQHne7oKXFz
-	bGXpeQIkhnC9+oghw1KKg9HfdaZJPvUFSJH/rZV+fLpdVEd7jglREZlv
-X-Gm-Gg: ASbGncsp14vs/EEjhbTd934Io/A0DuPch6Mu2fc3cw45Xp741bs5sqCT+ZPgsDeZV4l
-	qZL448te64M1LMuk7SagadOXp8Qj56p0J5HfIfYgQ2diGJDpBvf0pq8qhnFrv18EOJGIePplWrx
-	E3mFN0B50udtmHhiCS/mvM1Z1QCHRKx7X0BhgSfGO+WybK64KWZJ8Y9fT+aaZ+2fQ3lrrPl7LDu
-	VWiYmaZ21Lg0/4YI2/hDSnbe2WRfF38yg18ww+Rz6LpigQLxZ2425hPHUV6xirlvzm3O2MLJaeW
-	CY7dkf/1JIhQMqRjd6DpnSoI6Bngj4wPyM+iToTtKxJVIZ0sedpbGTz6qu7oPo5zH42pgDiZxRI
-	yTZtnbDsfg6W0MuqjGrY3+fqUEYiVM8MqEoix3Q4ekfcsTVbzIHWGTy88Xn3w7AA=
-X-Google-Smtp-Source: AGHT+IGeesgQ5STX3VBjTboY2m69/yDnUInxC81+kPGTrT4lMFU1EFCkk1W39S/XN0uHx1OdE8hWAw==
-X-Received: by 2002:a05:6214:2249:b0:6fa:c81a:6230 with SMTP id 6a1803df08f44-6fb2c32dd04mr3967336d6.12.1749576658310;
-        Tue, 10 Jun 2025 10:30:58 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb09ab9595sm69151066d6.6.2025.06.10.10.30.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 10:30:57 -0700 (PDT)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0D9BA1200068;
-	Tue, 10 Jun 2025 13:30:57 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Tue, 10 Jun 2025 13:30:57 -0400
-X-ME-Sender: <xms:0GtIaHB6Vr7mjToj7PrcMCK9OiM_1Orfw8q-3HLYPCJppAWQvEhrhA>
-    <xme:0GtIaNjdCARYN74EEBH3aUJGajYLai2_KWYCIcJVMduy-oYIM0nSzphtAShiHEA6e
-    xdFlE142PBjE2FBiw>
-X-ME-Received: <xmr:0GtIaCndlnnuX-PbRx-KjKBl1o8XzKOhe_2_EIVUAX5IS8yKgWAM3npYRA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduuddtgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedviedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlkhhmmheslhhishhtshdrlhhinhhugidruggvvhdprhgt
-    phhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgr
-    hihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhord
-    hnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:0GtIaJxsngQY-Wo97-J4weFuu2li-Rk-PhtWI_5liMIwmczLZDkSJA>
-    <xmx:0GtIaMQqHPFytiFA8z4PiryLpxM-KYy4OX6mIY2v9f0Vf2cdGJI6zA>
-    <xmx:0GtIaMbpAN37rvx4sbuv16QVHY1ssjJHPXKiYc_y-cg3THQNk6IK7A>
-    <xmx:0GtIaNT-kJQOzSft0Y9H44tfX1zDeiyWZDc4cFfuk7jS08PxlrJ4aw>
-    <xmx:0WtIaCDFz1L5yRdSwEpquOmtDJ6e5-zuYpGGeQD5ciY0a3PRhy-KAYHH>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 Jun 2025 13:30:56 -0400 (EDT)
-Date: Tue, 10 Jun 2025 10:30:55 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v4 03/10] rust: sync: atomic: Add ordering annotation
- types
-Message-ID: <aEhrzxltkdnub_bR@tardis.local>
-References: <20250609224615.27061-1-boqun.feng@gmail.com>
- <20250609224615.27061-4-boqun.feng@gmail.com>
- <DAIQG9ALK4QC.2P2C2MC4U9YVX@kernel.org>
+        d=1e100.net; s=20230601; t=1749578077; x=1750182877;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YvAr7sx4/tHhlSv2OBT4UQtf2qLWNKlOCp57zbBnAu4=;
+        b=bPxHcFK15cgD11TuW+2xm1wfL9QkO7LekAkQdY8mbXBnZJBtl7vXksH50Hj31JlWif
+         c5ptQAOmoqSoFwQsCQBr3M3egpoK/qANq5S8xpmQK2Zm8/Re0PmHEAu2De0si9Epd0ev
+         RM4/5RxqTEy30u0G4uk4oJ+uQ679E1U1R1hXJ3CQ39up1Of4z6ksFkYNoTBFtxC8piPP
+         nCCYmWz/lJsPfwvZR9KLvuiz9koz5Y6zpBpM+4HlKLfjo7GANF/5bf46/8fp3yuImRtP
+         NtdPczlHnqnhXeygyfgLZGJg4twKP2v04PxW1XuuZwPQbKo9YX03taUzux7AZopxXqdV
+         mExQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUA3//Nth6Wp8zQrBmLJuvJcGc1bWSORKYYllzdcwb8ZeR69kNnzwXUpJVxfh7Ps/nEFmaLV0LknZlAWKcuZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxH4tIPV9G/4qMvFejnWsmQMicfBRMcu/O9U0fsyH4HnY8oFaT5
+	/M0iebSwbBmuPDvs7EVVmCk1431RZjgmCh2K3rIwfdgJGWnZ/PoNatYAYt3ooZFmoCeJPLlxMCN
+	S/IpM+OW6kD8xJMr23ScrN+cRWLCojNezER6OcC5E
+X-Gm-Gg: ASbGncvLr016fcGCyK7zIMTZMeUYWb682YJijuwD6EKTdxIdjPmbxgU5SWCJuOZIH1q
+	oursHB/3Mh98nNMJTcbXrOGtzVwS0fCuX3tlMAn70APRrLSW5ONWeeEnbkU7k8AT6e9hsxcvOAv
+	ozO6ncXsgfqbTZSdHMo8ORHTf17U7oNUHFvLCeBtrqK1HwIKJiBAF00kDSQGMBUrVLM/E/dHRCh
+	A==
+X-Google-Smtp-Source: AGHT+IGK1Te+JNjSV+u4fxDZ3o1EB1kPJBHXmCjp5m53KFUwoTCOg7xxR8lGIvrTaVAiwmQuC+BOHR7+06qqyjZG0jU=
+X-Received: by 2002:a05:6402:b9c:b0:607:efee:369a with SMTP id
+ 4fb4d7f45d1cf-6084442442bmr15031a12.4.1749578076490; Tue, 10 Jun 2025
+ 10:54:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DAIQG9ALK4QC.2P2C2MC4U9YVX@kernel.org>
+References: <aC5XDi7SaDJeUaAC@google.com> <aC7DVewqqWIKetmk@pollux>
+ <aC8uNmrLUSS8sxHU@google.com> <2025052201-return-reprogram-add9@gregkh>
+ <aC9krUYJmJqu0xVR@cassiopeiae> <2025052330-reverence-slideshow-d498@gregkh>
+ <aDBC__rflS8625Vb@cassiopeiae> <aDCrufEjtJeGjO6z@google.com>
+ <aDG6t-HdZSuWyPGo@pollux.localdomain> <aDWkGmcUBVHl7QmM@google.com> <aDWnCsVvlnpmYxUz@cassiopeiae>
+In-Reply-To: <aDWnCsVvlnpmYxUz@cassiopeiae>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 10 Jun 2025 10:54:24 -0700
+X-Gm-Features: AX0GCFsWyX3EaA5GxRfrgpq61a-WCT0s04HVyWUG5Kb_ijfZycvo0GUAd9G8RlQ
+Message-ID: <CAGSQo02XEuHGJ8YMvBp=S=3sWt=0R-wEkdkTp7aEsnaCBEB1wg@mail.gmail.com>
+Subject: Re: [PATCH v5 4/4] rust: samples: Add debugfs sample
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jun 10, 2025 at 11:07:16AM +0200, Benno Lossin wrote:
-> On Tue Jun 10, 2025 at 12:46 AM CEST, Boqun Feng wrote:
-> > Preparation for atomic primitives. Instead of a suffix like _acquire, a
-> > method parameter along with the corresponding generic parameter will be
-> > used to specify the ordering of an atomic operations. For example,
-> > atomic load() can be defined as:
-> >
-> > 	impl<T: ...> Atomic<T> {
-> > 	    pub fn load<O: AcquireOrRelaxed>(&self, _o: O) -> T { ... }
-> > 	}
-> >
-> > and acquire users would do:
-> >
-> > 	let r = x.load(Acquire);
-> >
-> > relaxed users:
-> >
-> > 	let r = x.load(Relaxed);
-> >
-> > doing the following:
-> >
-> > 	let r = x.load(Release);
-> >
-> > will cause a compiler error.
-> >
-> > Compared to suffixes, it's easier to tell what ordering variants an
-> > operation has, and it also make it easier to unify the implementation of
-> > all ordering variants in one method via generic. The `IS_RELAXED` and
-> > `ORDER` associate consts are for generic function to pick up the
-> > particular implementation specified by an ordering annotation.
-> >
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> 
-> Looks good, I got a few comments on the details below.
-> 
+I'm going to try to rework the patch based on the feedback here, and
+have a few things I want to check on to reduce cycling:
 
-Thanks for taking a look!
+1. Every approach described in this thread will result in the creation
+APIs (create a root dir, create a subdir, create a file) being
+fallible (returns `Result<>`) because they use `Arc` in the
+implementation which fundamentally allocates. I previously got the
+feedback that the debugfs API should have no possibility of handleable
+errors. This would *not* mean that we were signaling the errors out of
+the raw debugfs bindings into Rust, but Rust would be able to detect
+`Arc` allocation failures unless you really want me to be hiding
+allocation failures (I could theoretically do this by generating a
+dummy object on allocation failure, but this would add complexity and
+seems questionable).
+2. If we're not using borrowing to statically prevent entries from
+outliving their parents, there are two possible semantics for what to
+do when an entry *does* outlive its parent:
+  a. The parent doesn't actually get `debugfs_remove` called until all
+its child objects have left scope too. This can be accomplished by
+just having a `_parent: Option<Arc<Entry>>` in each `Entry` structure.
+  b. We get ghost objects, e.g. the child object is still around, but
+it is somehow able to discover that its `dentry` pointer is no longer
+valid and avoids trying to use it. The best solution I have to this is
+to again maintain an optional parent `Arc`, but also have `Entry` hold
+an additional refcount member. When you want to create a subdir, a
+file in a directory, or delete any of those, you'd walk the spine of
+parents, trying to claim the extra refcount on everything. Once you've
+got it, you can safely delete yourself or create a subdirectory or
+file. Then, whoever is last out of the extra refcount (either the
+owning object or someone holding a reference while they perform an
+operation on themselves) can try to clean up, again by claiming the
+spine above them.
+3. If we're not supporting `leak` or lifetime-based `File` anymore,
+then I don't think my method of attaching data is needed anymore. It
+was complex primarily in order to support statically enforced
+lifetimes on dirs/subdirs/files, and several of the tricks I was using
+don't work without a lifetime on the `File` type. Instead, I'll make
+it so that `File` objects can attach a `ForeignOwnable`, with the
+expected common cases being either `&'static MyData` or `Arc<MyData>`.
 
-> > ---
-> >  rust/kernel/sync/atomic.rs          |  3 +
-> >  rust/kernel/sync/atomic/ordering.rs | 94 +++++++++++++++++++++++++++++
-> >  2 files changed, 97 insertions(+)
-> >  create mode 100644 rust/kernel/sync/atomic/ordering.rs
-> >
-> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> > index 65e41dba97b7..9fe5d81fc2a9 100644
-> > --- a/rust/kernel/sync/atomic.rs
-> > +++ b/rust/kernel/sync/atomic.rs
-> > @@ -17,3 +17,6 @@
-> >  //! [`LKMM`]: srctree/tools/memory-mode/
-> >  
-> >  pub mod ops;
-> > +pub mod ordering;
-> > +
-> > +pub use ordering::{Acquire, Full, Relaxed, Release};
-> > diff --git a/rust/kernel/sync/atomic/ordering.rs b/rust/kernel/sync/atomic/ordering.rs
-> > new file mode 100644
-> > index 000000000000..14cda8c5d1b1
-> > --- /dev/null
-> > +++ b/rust/kernel/sync/atomic/ordering.rs
-> > @@ -0,0 +1,94 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Memory orderings.
-> > +//!
-> > +//! The semantics of these orderings follows the [`LKMM`] definitions and rules.
-> > +//!
-> > +//! - [`Acquire`] and [`Release`] are similar to their counterpart in Rust memory model.
-> > +//! - [`Full`] means "fully-ordered", that is:
-> > +//!   - It provides ordering between all the preceding memory accesses and the annotated operation.
-> > +//!   - It provides ordering between the annotated operation and all the following memory accesses.
-> > +//!   - It provides ordering between all the preceding memory accesses and all the fllowing memory
-> > +//!     accesses.
-> > +//!   - All the orderings are the same strong as a full memory barrier (i.e. `smp_mb()`).
-> 
-> s/strong/strength/ ?
-> 
-
-Good catch.
-
-> > +//! - [`Relaxed`] is similar to the counterpart in Rust memory model, except that dependency
-> > +//!   orderings are also honored in [`LKMM`]. Dependency orderings are described in "DEPENDENCY
-> > +//!   RELATIONS" in [`LKMM`]'s [`explanation`].
-> > +//!
-> > +//! [`LKMM`]: srctree/tools/memory-model/
-> > +//! [`explanation`]: srctree/tools/memory-model/Documentation/explanation.txt
-> > +
-> > +/// The annotation type for relaxed memory ordering.
-> > +pub struct Relaxed;
-> > +
-> > +/// The annotation type for acquire memory ordering.
-> > +pub struct Acquire;
-> > +
-> > +/// The annotation type for release memory ordering.
-> > +pub struct Release;
-> > +
-> > +/// The annotation type for fully-order memory ordering.
-> > +pub struct Full;
-> 
-> Is this ordering only ever used in combination with itself? (Since you
-> don't have a `FullOrAcquire` trait)
-> 
-
-Yes, `Full` is an ordering that is stronger than `Acquire`.
-
-> > +
-> > +/// The trait bound for operations that only support relaxed ordering.
-> > +pub trait RelaxedOnly: AcquireOrRelaxed + ReleaseOrRelaxed + All {}
-> > +
-> > +impl RelaxedOnly for Relaxed {}
-> > +
-> > +/// The trait bound for operations that only support acquire or relaxed ordering.
-> > +pub trait AcquireOrRelaxed: All {
-> > +    /// Describes whether an ordering is relaxed or not.
-> > +    const IS_RELAXED: bool = false;
-> > +}
-> > +
-> > +impl AcquireOrRelaxed for Acquire {}
-> > +
-> > +impl AcquireOrRelaxed for Relaxed {
-> > +    const IS_RELAXED: bool = true;
-> > +}
-> > +
-> > +/// The trait bound for operations that only support release or relaxed ordering.
-> > +pub trait ReleaseOrRelaxed: All {
-> > +    /// Describes whether an ordering is relaxed or not.
-> > +    const IS_RELAXED: bool = false;
-> > +}
-> > +
-> > +impl ReleaseOrRelaxed for Release {}
-> > +
-> > +impl ReleaseOrRelaxed for Relaxed {
-> > +    const IS_RELAXED: bool = true;
-> > +}
-> > +
-> > +/// Describes the exact memory ordering of an `impl` [`All`].
-> > +pub enum OrderingDesc {
-> 
-> Why not name this `Ordering`?
-> 
-
-I was trying to avoid having an `Ordering` enum in a `ordering` mod.
-Also I want to save the name "Ordering" for the generic type parameter
-of an atomic operation, e.g.
-
-    pub fn xchg<Ordering: ALL>(..)
-
-this enum is more of an internal implementation detail, and users should
-not use this enum directly, so I would like to avoid potential
-confusion.
-
-I have played a few sealed trait tricks on my end, but seems I cannot
-achieve:
-
-1) `OrderingDesc` is only accessible in the atomic mod.
-2) `All` is only impl-able in the atomic mod, while it can be used as a
-trait bound outside kernel crate.
-
-Maybe there is a trick I'm missing?
-
-> > +    /// Relaxed ordering.
-> > +    Relaxed,
-> > +    /// Acquire ordering.
-> > +    Acquire,
-> > +    /// Release ordering.
-> > +    Release,
-> > +    /// Fully-ordered.
-> > +    Full,
-> > +}
-> > +
-> > +/// The trait bound for annotating operations that should support all orderings.
-> > +pub trait All {
-> > +    /// Describes the exact memory ordering.
-> > +    const ORDER: OrderingDesc;
-> 
-> And then here: `ORDERING`.
-
-Make sense, thanks!
-
-Regards,
-Boqun
-
-> 
-> ---
-> Cheers,
-> Benno
-> 
-> > +}
-> > +
-> > +impl All for Relaxed {
-> > +    const ORDER: OrderingDesc = OrderingDesc::Relaxed;
-> > +}
-> > +
-> > +impl All for Acquire {
-> > +    const ORDER: OrderingDesc = OrderingDesc::Acquire;
-> > +}
-> > +
-> > +impl All for Release {
-> > +    const ORDER: OrderingDesc = OrderingDesc::Release;
-> > +}
-> > +
-> > +impl All for Full {
-> > +    const ORDER: OrderingDesc = OrderingDesc::Full;
-> > +}
-> 
+Unless I get additional feedback, I'm currently implementing 2-a,
+using `ForeignOwnable` based attachments of data to files, and
+returning `Result` where the only actual failure possibility is
+allocation failure.
