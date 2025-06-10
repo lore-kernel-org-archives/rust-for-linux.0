@@ -1,133 +1,77 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE2B29A308;
-	Tue, 10 Jun 2025 13:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AF519CD0E;
+	Tue, 10 Jun 2025 13:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749562137; cv=none; b=NwQXY1MyLNkPvlDAgFsuTd6ASBuTdBr4AR4WpVd2xBRFkpnMSOLszSyG+bjgnsPy5T77czfcXVtz/9sD3nPjYFPsmmjTaUPPcwerIwmahul+4XbZGs2L0hZ3VeEJKPm6ppGzaSDb8ci5Eq8M56opk2AbZ/NedDKvVYmZsaDuHxc=
+	t=1749563090; cv=none; b=RsxvS3QKS7VAhGqTItxfbW8h7P2l3ofOo7EwjO+4ncwgBSIP62+9A4c5z8lwrC5Hwzm1Fmus1wnlv63bMfltBMGI0KxRcWne31Q4glVCNcccvD7mqhaocMi7U3Z2VsSPFockouBWexoqG2eZKm1Q1CLVwy1dQ9J4jW9HwvxoudQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749562137; c=relaxed/simple;
-	bh=Pbs46PP7pCs0MPmMt4GjuzpYwD4EEpd9XRag3zkhwz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWCxCIH/PawYXqrG80xThsuwhjRSm1bRNSt7XVhtR/wMsbNZ18CKtitHjO7ec71x6JOGCgrGUwHffSVxKMgeUd2fOHuvaD4IuSsJMkgbabcXfS1p4HUbeqJATomxxecTK+74P9s/u+kjjYPsDCpHb8urmu62juyai/9ls/v9AOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IHkasFH8; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749563090; c=relaxed/simple;
+	bh=weAdd0vuOTRXXeJOnmvc/uNNIePdWDoD10O9Jk90+GY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ceo5cRKrYHtfv7KjkHcZi4PT8BLBGI/QGxWkt6glIVK6bSjL8fvccb/ivUIOimxnZas1bDH1FtMp0Bfol9Gq+pplIiAFegacJ/b3hL8F3zbq0WoGouXYI9RFy7ceMJB8t6B3nVVBT0wkrryZc7AMu6Re+Ztkp6Qks6/0LUz+D+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlgVpsFm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IHkasFH8"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-311ef4fb43dso4091982a91.3;
-        Tue, 10 Jun 2025 06:28:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749562135; x=1750166935; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rc7nHsumEdn2KQbBdNMRcYljio2yurEvUWZ/Mli9glE=;
-        b=IHkasFH8EeqMqaMk9qtkC8fFMRek7KSbLdLFPSbhoOmyHub+WFDToi02bZGKxiLH2j
-         xQZv36QpgkITrOmrrkdWjhKGNjb21M5NkAiU25+rQi/YrVVixDZDnaqD+jUzKSZtnggs
-         LfCcd6muj8nHqr9iSa2S67rcCDN1hEpAFxDomKOHT9Mv5f8rV7vvhXx7N2qompXDob0r
-         td7iV24xLcbiqKK7wT13XAIOLbnz9m1e2Q/f9iyaO38C+HWwU43oWdnChE2ABtAo+wqF
-         PT50Whrw5QZBOqo6GWul4lTnZSxwnXvIXrJ9yOzwHkljzEdFjzWSpyyv+RtJnK3hER6h
-         Gnag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749562135; x=1750166935;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Rc7nHsumEdn2KQbBdNMRcYljio2yurEvUWZ/Mli9glE=;
-        b=iWUbJpb7/ksvMXh8yTuCMHOqjxkXdVAVbfT0K7aM55WDoicB+UhskoCEF4tljT1ldt
-         UAwnWL4+n9CRsuf/P4mMt4oO5q7OodFBU1fv6Gv9+Qg/6vhN88Q3VABBhFsKNDJ2Ke59
-         qVlg8QaYIUkfSxl3EJCDB5kF8L/vYTbVNmx4zV+FezXLWzOkmR5Lg1iIazIQoO/yjs0y
-         qItpY4Ee5XViWtGuFUHy36+HV2Fe9pUsSlnmwSbWYFNHbv46dzQiFOK5N++0/4PaIWNX
-         vikdWiT3SvyZHM8Gifby+owoGyHbz97hWLw3CiQBWGomXgjbuinlqF0i1q9kAg7fitV4
-         /EPw==
-X-Forwarded-Encrypted: i=1; AJvYcCVubI/PQqVTHHlv4/RFb97ln1xA5+FjmZkQivqWMTOfJ2mBa2aK05PdKviS5B0eg64J9Y+TUy3rQyRjAR7RjDQ=@vger.kernel.org, AJvYcCW0L26esseLGlnMNNV3OreMK0Xx0gaa3XvfXRsnJptwj5mLhIQe2zISiBrx+1j61GYC3/vE4z/NU1LgLzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzE6PXrQgll4YeZIoUeSGph8JUvmOMcLNmCLNBE3RozqkORoSxl
-	SS+QvCcpq06d/Ed7S5zFO5VYAlzDatG6Li/+4E1Z5SQJ8Nu56Hnlqw/E
-X-Gm-Gg: ASbGncvcpY7QjZEGSVIOn2W/6/nZRwGR8kQTfVn8LDtRydRWu1t68ammxNTOG8VVgP0
-	R2XskMwruSR0hdWscEaEHR6q5elROfsDquzSle9CzRV2OaCKR9o++yb1vHq3FD7h8GkWp9aNF46
-	yT0zs7AXdD49wlNvHGfYlOmrPzV/DpOMvK/0DVMhNFzOCiCUXZJ44I+Y30UNoHYPUK7oXX/NCbt
-	bT7DtkwnPvopu5zEyB1gaOFgjPL9KoU3mUuOkeo0DK6m8SMuEXGTITz5v2Zg2xLbc1DccyfPw/H
-	japmnWzbN7oRXCF9gEw87nVRUUCajSFTIy8jFcugzeLx44SCoJWHQc4lOfESnakwa03yPfIkqoa
-	19ySUbmcRBpIuH8hRAKyRpaeYmYCVBgsfM8E=
-X-Google-Smtp-Source: AGHT+IH05u7IrcuH6+zYZ6wKHxWG1GUKhxIN/0VozpeD8CoD4qo2bsTIZEoKXL8TztGrvj2P8iY7Zw==
-X-Received: by 2002:a17:90b:3d90:b0:312:ffdc:42b2 with SMTP id 98e67ed59e1d1-3134767f220mr20724915a91.23.1749562135168;
-        Tue, 10 Jun 2025 06:28:55 -0700 (PDT)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3134b128050sm7969276a91.25.2025.06.10.06.28.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 06:28:54 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	ojeda@kernel.org
-Cc: aliceryhl@google.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	frederic@kernel.org,
-	gary@garyguo.net,
-	jstultz@google.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	sboyd@kernel.org,
-	tglx@linutronix.de,
-	tmgross@umich.edu
-Subject: [PATCH v3 5/5] rust: time: Remove Ktime in hrtimer
-Date: Tue, 10 Jun 2025 22:28:23 +0900
-Message-ID: <20250610132823.3457263-6-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
-References: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlgVpsFm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA33DC4CEED;
+	Tue, 10 Jun 2025 13:44:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749563089;
+	bh=weAdd0vuOTRXXeJOnmvc/uNNIePdWDoD10O9Jk90+GY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nlgVpsFmUr9XRMtbWhwlFjG9Nv+DdMW6s3qNX42ami0uaIgU8Phf4Vlbowg2K+H21
+	 p+G4kVZTyylVwtv41syM45ek5MW4V7KipS9jo0YDQT5/Zuq69cEebaubISc5ewF7ZY
+	 +PIsfNpWWfocsN3PpCvDYZ2IJdpZ1o3oD5Vxi+zvoERuzJUMqfQAHCbCVANTH3a2aw
+	 qhUmElhabJsp9v0naWN90O9h8jwPMn1a9YE/M1NYe0aONPEFju5UyXiMfyLhs+t/Ow
+	 8ZhZLfYH6d3kldsSK32Opt7KfIX71E+yq9R2V6LmDPt7IariLkt/W6TwszVEwxYpqk
+	 abcz5/DdB9f7Q==
+Message-ID: <df637115-e0ce-45ae-a9b6-817ea7454bce@kernel.org>
+Date: Tue, 10 Jun 2025 15:44:44 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] change blanket impls for `[Pin]Init` and add one for
+ `Result<T, E>`
+To: Benno Lossin <lossin@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+ Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Jens Axboe <axboe@kernel.dk>, Fiona Behrens <me@kloenk.dev>,
+ Christian Schrefl <chrisi.schrefl@gmail.com>, linux-block@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250529081027.297648-1-lossin@kernel.org>
+ <20250529081027.297648-2-lossin@kernel.org>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250529081027.297648-2-lossin@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Remove the use of `Ktime` from the hrtimer code, which was originally
-introduced as a temporary workaround. The hrtimer has now been fully
-converted to use the `Instant` and `Delta` types instead.
+On 5/29/25 10:10 AM, Benno Lossin wrote:
+> Remove the error from the blanket implementations `impl<T, E> Init<T, E>
+> for T` (and also for `PinInit`). Add implementations for `Result<T, E>`.
+> 
+> This allows one to easily construct (un)conditional failing
+> initializers. It also improves the compatibility with APIs that do not
+> use pin-init, because users can supply a `Result<T, E>` to a  function
+> taking an `impl PinInit<T, E>`.
+> 
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://github.com/Rust-for-Linux/pin-init/pull/62/commits/58612514b256c6f4a4a0718be25298410e67387a
+> [ Also fix a compile error in block. - Benno ]
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> ---
+> 
+> This patch is also needed by Danilo for initializing `Devres`
+> ergonomically.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/time/hrtimer.rs | 16 ----------------
- 1 file changed, 16 deletions(-)
-
-diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 4ca153f8fce6..3980a7c5f7db 100644
---- a/rust/kernel/time/hrtimer.rs
-+++ b/rust/kernel/time/hrtimer.rs
-@@ -72,22 +72,6 @@
- use core::marker::PhantomData;
- use pin_init::PinInit;
- 
--/// A Rust wrapper around a `ktime_t`.
--// NOTE: Ktime is going to be removed when hrtimer is converted to Instant/Delta.
--#[repr(transparent)]
--#[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord)]
--pub struct Ktime {
--    inner: bindings::ktime_t,
--}
--
--impl Ktime {
--    /// Returns the number of nanoseconds.
--    #[inline]
--    pub fn to_ns(self) -> i64 {
--        self.inner
--    }
--}
--
- /// A timer backed by a C `struct hrtimer`.
- ///
- /// # Invariants
--- 
-2.43.0
-
+For this purpose, can you please provide me with a signed tag for this one
+please? Otherwise I can also add the explicit `Infallible` generics in a few
+places until next cycle.
