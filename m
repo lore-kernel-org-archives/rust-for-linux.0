@@ -1,144 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45602777F9;
-	Wed, 11 Jun 2025 12:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07C027C144;
+	Wed, 11 Jun 2025 12:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749643718; cv=none; b=dEkYOXAI14APbXApiBJg/+Vbene9G2zp3mbuG+KQdQ9ZIe53Cw/nhH/P99enl8SGvtrcE8B3u4GNmGaTbkdCVGUVtyPDAIG4+fCBmsgr9wCdyV7ZjxJGzYH87IKig7idT0NFucuJXKYj2RtzmHa4ZzsdtFFY/jP7uFYP9IH5t5c=
+	t=1749644078; cv=none; b=j/CaWHhSq4AHnijxufar/wpdMfsBV7o91D77sNlbIRDSHI7JBTIe5Fu4h4FIxICNq3wsPKi71ByfPTweg23gC5XZWrR70mg5y6bHnhYB7KPx2adBBlJlauTEVWK70AhbnVRV4OJvnuwzmKTuFqkPngjuxmc+ZnXQNwO7UEdbYZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749643718; c=relaxed/simple;
-	bh=AnIiuo8BIh5hjVnofxK+qJ7JMiLRx8UmXZqyBno9Lv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=siWRoiS24gQAXvHFgfvhucxPCEH5J7UOTrz5KvFTdneW7FvTJvEDcdii+uRMxB/yRtRqlnni6CPoMjYz9K5xNhljS3PU8DQ/ejdc1mX0zLpm79sjEXvbVL9HgZynOiaQSbFxH7OD9w9s3/7hxc3nL3WODA/u4Dypju5WbqHfUm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wu7T6Ezs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749644078; c=relaxed/simple;
+	bh=FJ1AHEgMmhRXu6CGnQHlc/GRmFKNYpmO4gT7upoqODo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=X1oWY2vZDV33IuZ6GL6EgUXm9aPIGY+2jIYZy647t3AaKu3/EQGOyTI0rthHTLooHpKuy78Kuhmbmgnd4RyjQRRIHifVKoMqicJSlExD9jTlrE+Fg9KyFuA0HPL2nuRhhxnUF9lHABzNtS+j0jiHvKKTBouN6tf1Ub30/kI2IU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Edv1PjRq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wu7T6Ezs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DDBC4CEEE;
-	Wed, 11 Jun 2025 12:08:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Edv1PjRq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CA4C4CEEE;
+	Wed, 11 Jun 2025 12:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749643718;
-	bh=AnIiuo8BIh5hjVnofxK+qJ7JMiLRx8UmXZqyBno9Lv0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wu7T6EzsDP3hw85m+kw487h0aX/by7owc5icNs8fS3XI90yYgAP6DpsJA/Y/et4zV
-	 UUo1Vumm5U/Znx2Tqr9dlWz9bl/sRE27B7g6OlxEdNtfmlBAV+3styJ23XlldwDwLX
-	 IO58CaqW/tCIxWEaJ9SRYN6gpZu1wuNF+FCrc1efFLF82/Hi7dYx9K+XYa3y+Lw87+
-	 SG70TW5hs1+FDQaisn5yvymCBjFYZrOU8QdHqWUV4014c3NffZsSEHfu3rJDBL0cxR
-	 Plhn+fevcmqECIw24pnOXQnxHJFy+QY+mwdE+yh6BghIPBDwuZP7xUFtot9HgKmfX5
-	 4qFjA+b9n5yIA==
-Date: Wed, 11 Jun 2025 14:08:31 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 3/9] rust: device: Move property_present() to FwNode
-Message-ID: <aElxv3hRIc6Z_7jg@cassiopeiae>
-References: <20250611102908.212514-1-remo@buenzli.dev>
- <20250611102908.212514-4-remo@buenzli.dev>
+	s=k20201202; t=1749644078;
+	bh=FJ1AHEgMmhRXu6CGnQHlc/GRmFKNYpmO4gT7upoqODo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Edv1PjRqitKqfWC53D9UEbG5O7XatWHfY7eu+CVCezYUjI3iBlpiUxBWy9hpBq1Hi
+	 O1ZCBbV56G1rRrHGu22LJh5nGSOp5lyHWsjC6T287wv7lwRVjbRyjPOfLiZXH1LltK
+	 cARMxYQmV/wbB3nmtlqA9Akubigyrr7gNIu1LFSWDfi+mvit8EIB0rCMQgGta+L5Hn
+	 r43JxzN/IgcIkVdtPJnrFYuDYgwzqrMhshnPiaFdKb3jZSFZITCXcER5VXNDIVr1A/
+	 qeJrKq6C14kg1z1G0WmqEcuqy4UISfjKibFRO1t6myCj0+5+fZJcZS7YS616khN/Ak
+	 4vv72X4cGTt5g==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Bjorn Helgaas" <bhelgaas@google.com>,
+  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,  "Greg
+ Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki" <rafael@kernel.org>,
+  "Tamir Duberstein" <tamird@gmail.com>,  "Viresh Kumar"
+ <viresh.kumar@linaro.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-pci@vger.kernel.org>,
+  =?utf-8?Q?Ma=C3=ADra?=
+ Canal <mcanal@igalia.com>
+Subject: Re: [PATCH v2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+In-Reply-To: <DAJOKFHW96XZ.2ANYSSFQO03ZL@kernel.org> (Benno Lossin's message
+	of "Wed, 11 Jun 2025 13:51:21 +0200")
+References: <20250610-pointed-to-v2-1-fad8f92cf1e5@kernel.org>
+	<HCd56HpzAlpsTZWbmM8R3IN8MCXWW-kpIjIt_K1D8ZFN6DLqIGmpNRJdle94PGpHYS86rmmhCPci9TajHZCCrw==@protonmail.internalid>
+	<DAIV6MJAJ5R0.3TZ4IC2KO9MOL@kernel.org> <87v7p3znz6.fsf@kernel.org>
+	<CAH5fLgi3B_Wyz2OzBLhHHgWrg7hboyFUcQe-+GUrrvXiX9di=w@mail.gmail.com>
+	<GHUD6hpYDty0s_oTLGC6owDPKqrNepeGOL9F-XlvY6G50K8Zptjp4f8kVVnyoTjf-E_0QVeHfmUUvcN-p1i24Q==@protonmail.internalid>
+	<DAJHVMM9DND0.2FM0FJYN0XEFV@kernel.org> <87jz5izhg3.fsf@kernel.org>
+	<WXoNAlTJvpteJEAZ3TkYKk2QWHBC0oID8Dy3AHGxLEwiZwBPdSLZB4MpdbObLtFvqiN9re3q6OQpiua2uiv1Hw==@protonmail.internalid>
+	<DAJOKFHW96XZ.2ANYSSFQO03ZL@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Wed, 11 Jun 2025 14:14:25 +0200
+Message-ID: <878qlyzd9a.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250611102908.212514-4-remo@buenzli.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-(+Viresh, FYI)
+"Benno Lossin" <lossin@kernel.org> writes:
 
-On Wed, Jun 11, 2025 at 12:29:02PM +0200, Remo Senekowitsch wrote:
-> The new FwNode abstraction will be used for accessing all device
-> properties.
-> 
-> It would be possible to duplicate the methods on the device itself, but
-> since some of the methods on Device would have different type sigatures
-> as the ones on FwNode, this would only lead to inconsistency and
-> confusion. For this reason, property_present is removed from Device and
-> existing users are updated.
-> 
-> Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> ---
->  drivers/cpufreq/rcpufreq_dt.rs | 3 ++-
->  rust/kernel/device.rs          | 7 -------
->  rust/kernel/device/property.rs | 7 +++++++
->  3 files changed, 9 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-> index 94ed81644fe1c..4eb240dc9fdc8 100644
-> --- a/drivers/cpufreq/rcpufreq_dt.rs
-> +++ b/drivers/cpufreq/rcpufreq_dt.rs
-> @@ -20,7 +20,8 @@
->  /// Finds exact supply name from the OF node.
->  fn find_supply_name_exact(dev: &Device, name: &str) -> Option<CString> {
->      let prop_name = CString::try_from_fmt(fmt!("{}-supply", name)).ok()?;
-> -    dev.property_present(&prop_name)
-> +    dev.fwnode()?
-> +        .property_present(&prop_name)
->          .then(|| CString::try_from_fmt(fmt!("{name}")).ok())
->          .flatten()
->  }
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> index b69f03a7f8d30..241a395d529a1 100644
-> --- a/rust/kernel/device.rs
-> +++ b/rust/kernel/device.rs
-> @@ -6,7 +6,6 @@
->  
->  use crate::{
->      bindings,
-> -    str::CStr,
->      types::{ARef, Opaque},
->  };
->  use core::{fmt, marker::PhantomData, ptr};
-> @@ -219,12 +218,6 @@ pub fn fwnode(&self) -> Option<&property::FwNode> {
->          // defined as a `#[repr(transparent)]` wrapper around `fwnode_handle`.
->          Some(unsafe { &*fwnode_handle.cast() })
->      }
-> -
-> -    /// Checks if property is present or not.
-> -    pub fn property_present(&self, name: &CStr) -> bool {
-> -        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-> -        unsafe { bindings::device_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-> -    }
->  }
->  
->  // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
-> diff --git a/rust/kernel/device/property.rs b/rust/kernel/device/property.rs
-> index 03850b7bb8087..50c61aa056e6b 100644
-> --- a/rust/kernel/device/property.rs
-> +++ b/rust/kernel/device/property.rs
-> @@ -8,6 +8,7 @@
->  
->  use crate::{
->      bindings,
-> +    str::CStr,
->      types::{ARef, Opaque},
->  };
->  
-> @@ -55,6 +56,12 @@ unsafe fn from_raw(raw: *mut bindings::fwnode_handle) -> ARef<Self> {
->      pub(crate) fn as_raw(&self) -> *mut bindings::fwnode_handle {
->          self.0.get()
->      }
-> +
-> +    /// Checks if property is present or not.
-> +    pub fn property_present(&self, name: &CStr) -> bool {
-> +        // SAFETY: By the invariant of `CStr`, `name` is null-terminated.
-> +        unsafe { bindings::fwnode_property_present(self.as_raw().cast_const(), name.as_char_ptr()) }
-> +    }
->  }
->  
->  // SAFETY: Instances of `FwNode` are always reference-counted.
-> -- 
-> 2.49.0
-> 
+> On Wed Jun 11, 2025 at 12:43 PM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
+>>
+>>> On Tue Jun 10, 2025 at 4:15 PM CEST, Alice Ryhl wrote:
+>>>> On Tue, Jun 10, 2025 at 4:10=E2=80=AFPM Andreas Hindborg <a.hindborg@k=
+ernel.org> wrote:
+>>>>>
+>>>>> "Benno Lossin" <lossin@kernel.org> writes:
+>>>>>
+>>>>> > On Tue Jun 10, 2025 at 1:30 PM CEST, Andreas Hindborg wrote:
+>>>>> >> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>>>>> >> index 22985b6f6982..0ccef6b5a20a 100644
+>>>>> >> --- a/rust/kernel/types.rs
+>>>>> >> +++ b/rust/kernel/types.rs
+>>>>> >> @@ -21,15 +21,11 @@
+>>>>> >>  ///
+>>>>> >>  /// # Safety
+>>>>> >>  ///
+>>>>> >> -/// Implementers must ensure that [`into_foreign`] returns a poin=
+ter which meets the alignment
+>>>>> >> -/// requirements of [`PointedTo`].
+>>>>> >> -///
+>>>>> >> -/// [`into_foreign`]: Self::into_foreign
+>>>>> >> -/// [`PointedTo`]: Self::PointedTo
+>>>>> >> +/// Implementers must ensure that [`Self::into_foreign`] returns =
+pointers aligned to
+>>>>> >> +/// [`Self::FOREIGN_ALIGN`].
+>>>>> >>  pub unsafe trait ForeignOwnable: Sized {
+>>>>> >> -    /// Type used when the value is foreign-owned. In practical t=
+erms only defines the alignment of
+>>>>> >> -    /// the pointer.
+>>>>> >> -    type PointedTo;
+>>>>> >> +    /// The alignment of pointers returned by `into_foreign`.
+>>>>> >> +    const FOREIGN_ALIGN: usize;
+>>>>> >>
+>>>>> >>      /// Type used to immutably borrow a value that is currently f=
+oreign-owned.
+>>>>> >>      type Borrowed<'a>;
+>>>>> >> @@ -39,18 +35,20 @@ pub unsafe trait ForeignOwnable: Sized {
+>>>>> >>
+>>>>> >>      /// Converts a Rust-owned object to a foreign-owned one.
+>>>>> >>      ///
+>>>>> >> +    /// The foreign representation is a pointer to void. Aside fr=
+om the guarantees listed below,
+>>>>> >
+>>>>> > I feel like this reads better:
+>>>>> >
+>>>>> > s/guarantees/ones/
+>>>>> >
+>>>>> >> +    /// there are no other guarantees for this pointer. For examp=
+le, it might be invalid, dangling
+>>>>> >
+>>>>> > We should also mention that it could be null. (or is that assumption
+>>>>> > wrong?)
+>>>>>
+>>>>> It is probably not going to be null, but it is allowed to. I can add =
+it.
+>>>>>
+>>>>> The list does not claim to be exhaustive, and a null pointer is just a
+>>>>> special case of an invalid pointer.
+>>>>
+>>>> We probably should not allow null pointers. If we do, then
+>>>> try_from_foreign does not make sense.
+>>>
+>>> That's a good point. Then let's add that as a safety requirement for the
+>>> trait.
+>>
+>> I disagree. It does not matter for the safety of the trait.
+>>
+>> From the point of the user, the pointer is opaque and can be any value.
+>> In fact, one could do a safe implementation where the returned value is
+>> a key into some mapping structure. Probably not super fast, but the user
+>> should not care.
+>
+> Then we'll have to remove `try_from_foreign`.
+
+Oh, I see. OK, it is a safety requirement. Should I just add it to this pat=
+ch?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
