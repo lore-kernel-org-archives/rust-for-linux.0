@@ -1,91 +1,48 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FB12222BF;
-	Wed, 11 Jun 2025 17:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AB4224AFB;
+	Wed, 11 Jun 2025 17:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749664110; cv=none; b=po57G+7hhnyxO+1edlvuDN5jJfjvrQoZGESksa+/aAqKQd+YFAxFqOtEjTOYsDQ3gN3UPeW9H0EYmPCv2NYS+/vDr/AoZip5AOnpOxEuXt62b/eLFZef5yFS4jx7gfKzKq+CJfCv/D3BpoxSguWDSHfbzfAXFKjAqn0QIIZoaWc=
+	t=1749664126; cv=none; b=ToU6s89YGhw7q+nyAjm9t82L8aORUkf1f+yo8IIaEsQaNPvQ/nrXYhjq/PXq6b+FduJuIs8R3R2+w+5OVmDNq9xK/nT3za2o+Uqc8IW9cPVmT82ejmzrFeQPFiQ4qfQ0twbLVnBfbX22Ob/kK73yvNHa8aS7pmaMaG/tBSYrcuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749664110; c=relaxed/simple;
-	bh=kdiPdMh5+sRzNgtYRKj/S0sAtUte5v+zpvWVg0DO3wo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mv4wyTSPNILOqSNPxZ1PmLgyendbjmIVa97yp0yf94erd+W9rFmgRgs8wrVuCJj0/iWplB+qRO4KOdGek1sZ7tIq/j+iuDskyAp8AXWU/NxHVp/2F/zckzSggGHVmkaVNiCeHTbumB3v2haGYPgH8LNXsVPV1xGFAT7GYaEkm8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWzVMf6s; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749664126; c=relaxed/simple;
+	bh=mdRke/n+h17oYcItjGEfC78XXHJJ+uUBj3fjyng+SNc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PRY0E4YOtY5XMprFxClljJBQy0qr7wH5c7/ZDkRVK48TePxewSC+DR43cK9hA6vLracbdT/+gluLk3an5+hMANCT2u4HHHM4e561RIS0HMbtbDmULMMVfmvizQyG5AedPMNDrloMj1H6CVqzueYYfpASiO32C93HM7zdmFiui2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rrO/KZ4X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWzVMf6s"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a503d9ef59so128832f8f.3;
-        Wed, 11 Jun 2025 10:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749664106; x=1750268906; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/5X6IDTVHTHpEsUSABa7MSKK8TKkDRNQdpFJlmd5FHY=;
-        b=OWzVMf6s6ieIQYLHaHb6ghg7Xx8IL2sFjoZGw798cylsvbkontJo7bpzQVrFEu4Yuq
-         iTOT/c2TIUt4xopwrqKsSA/oWVFA7D/4FGth21PIq2mDpzWfjdbZatc5dda/Q+KZQ/zK
-         r4kapflS0SPVyP2rn55Ki32gFjFcPAqYPnOH/Cy3LGATKlNxM+2LCU2/0Q+yQQJ/bfAm
-         x8YGJ/gy+Mnm3VidenQ9BgX12kRBpkJUcb8u+Gng6KL/QpH3Q6C3w19FiOIle2/f+OfW
-         PAQA2a88e/0ox4kX4XUrN84pLHq8NYxgubVDFizKWUAsbwj9iRpfbCRz9RYK6Y2O1lwO
-         rZYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749664106; x=1750268906;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/5X6IDTVHTHpEsUSABa7MSKK8TKkDRNQdpFJlmd5FHY=;
-        b=YyZKE8/duq5Ok8fAQSy0YXB/WkBtcpJFtV35/64JiWv2oIb/PB/J41HeqenyLf/xiF
-         SpS9rs4OWHKXbRBxl2hZhsiS0mJlBJ0cv8t1W6xoFZ/YNNhNiAKQo8dzMMFWILsLBzUe
-         GDTyRLYXvOCmIeColvvKuUmQX046nTlH2dMQkvV3vLWLXOttHd2ZoWFXbo3SXbziIGUe
-         7FMnkq0XWGUiDJlLy5yjIT1wQyIZQQ3v2K+9TeczYLhV0KZkiAhZQcd6DT9fOIAD4WvH
-         +V0mddy3eJm4zOpaOBl2/F2Ksrt7ShQAoldGMrYIPXRBtltjNXHC32/KrGRKf+jqW46C
-         AKrg==
-X-Forwarded-Encrypted: i=1; AJvYcCVK4+34hZQUGvJmneRwXv9FBnZiBpBoJDctJhGhFRkT5xl0AlK2a6x+b6kmzZwkPhyO8BSsQzR6y0y/@vger.kernel.org, AJvYcCWCbYsyzcbBKWh4VEKShGTNE3gxa48CMCR5HsQKU93CPBle70oWfdBG7NXW1ObG7AoV1yg/wZeEiMdOGx/5PoQ=@vger.kernel.org, AJvYcCXK6NtMT+L48jUDnWJ6UQ/ILzALnMiziVrNbHuoXn0R4G3tRD1uZ6rHNB94rFYrUm2o8FkKZz5lNq5iO9n1@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGDo4yqCngu++yQKtuzL8PH8TpySugk7bX4twkvd5f3p36cyh0
-	HD3eOJ0fYwPDYtbBqcca4Kg1xspxPHOHS/SL9mQvZX5Sn9f4ek56w4pv
-X-Gm-Gg: ASbGncssNsoINbtMNvNRcNp0B8QZUrAafeVBXzOP6MJIHWdWlxeIU3lLtdwp0qVBk0Y
-	hIp5pmcFzdNMNYo4e2rI8Fp0Jf4OH96rToCQXGQKofckH+UbxHqlFfi5X/uEnNkiW7feORHKUkt
-	rSrgSFOn53w7AP7SFyBiacuX8BUdMLU0g8DLKPwq5xJtPPH8iHZAvYMT4ZNSTH+gxMfrSAVdb0f
-	X+GFhWY9US2ZYjmVKd2yNbo9i90VtogdqaGOxVufF64z1bgiDI903QTmUacGMr7FJh464nDjUNQ
-	InqCTGKe2FAcnZ9GGf+Vlh+aLiyoTaF+aBqbiwqylBAK0Dge6YPNjQS2ky7aaz77U0531mgvUbd
-	PaBM0ExYNGHQJkkRiGEK2YcVavlaK84S//jRF
-X-Google-Smtp-Source: AGHT+IEWahY4VTUQyB9OJcRC6ofG32cyzKi87gxJN/O8EUIgzlNL+d8o1qKXe//gLU6r8J4BUQxjGg==
-X-Received: by 2002:a5d:5f8b:0:b0:3a4:dd16:b287 with SMTP id ffacd0b85a97d-3a5586c9e06mr3087427f8f.19.1749664106429;
-        Wed, 11 Jun 2025 10:48:26 -0700 (PDT)
-Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532522a5f3sm29567945e9.38.2025.06.11.10.48.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 10:48:25 -0700 (PDT)
-Sender: Igor Korotin <igorkor.3vium@gmail.com>
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rrO/KZ4X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E188C4CEE3;
+	Wed, 11 Jun 2025 17:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749664126;
+	bh=mdRke/n+h17oYcItjGEfC78XXHJJ+uUBj3fjyng+SNc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rrO/KZ4XSxJbHYQfTB0C4g9pwyzSug6su284OKjlNblW79itf1yPSYJyA01pQLF0T
+	 Tq8wIYuz/fZWQO8tJhcN5AqyvVX9LpEbExyuT5nobgKw6OgBuTF1tAHbVr4AIgdDWC
+	 tzqYzAkr6+Us+CIEBIZ57iNZBSJLXf1girT0sH4gtcfbr8K2U+/eOzedDOfhnhEGQw
+	 wpfWF7O4QQqs+p/cKAefzXO59RScFa7NHd8P+UEdMZZae5XlxWGchZn+zHfzaY/xut
+	 2MxPMtXfWGH7ets7OBE8+HGRuGvN+F9vQW2l/FnozvW+hHrVQUsbiCyoteZtwqF9M2
+	 LMYrjNSgAnl+A==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: boqun.feng@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
 	gary@garyguo.net,
 	bjorn3_gh@protonmail.com,
 	benno.lossin@proton.me,
 	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	lenb@kernel.org,
-	wedsonaf@gmail.com,
-	viresh.kumar@linaro.org,
-	alex.hung@amd.com,
-	dingxiangfei2009@gmail.com
-Subject: [PATCH v5 2/6] rust: driver: Consolidate `Adapter::of_id_info` methods using `#[cfg]`
-Date: Wed, 11 Jun 2025 18:46:18 +0100
-Message-ID: <20250611174618.802570-1-igor.korotin.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250611174034.801460-1-igor.korotin.linux@gmail.com>
-References: <20250611174034.801460-1-igor.korotin.linux@gmail.com>
+	aliceryhl@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH] rust: devres: do not dereference to the internal Revocable
+Date: Wed, 11 Jun 2025 19:48:25 +0200
+Message-ID: <20250611174827.380555-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -94,73 +51,89 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Refactor the `of_id_info` methods in the `Adapter` trait to reduce
-duplication. Previously, the method had two versions selected
-via `#[cfg(...)]` and `#[cfg(not(...))]`. This change merges them into a
-single method by using `#[cfg]` blocks within the method body.
+We can't expose direct access to the internal Revocable, since this
+allows users to directly revoke the internal Revocable without Devres
+having the chance to synchronize with the devres callback -- we have to
+guarantee that the internal Revocable has been fully revoked before
+the device is fully unbound.
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+Hence, remove the corresponding Deref implementation and, instead,
+provide indirect accessors for the internal Revocable.
+
+Note that we can still support Devres::revoke() by implementing the
+required synchronization (which would be almost identical to the
+synchronization in Devres::drop()).
+
+Fixes: 76c01ded724b ("rust: add devres abstraction")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- rust/kernel/driver.rs | 40 +++++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+This patch is based on [1].
 
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index ec9166cedfa7..cb62b75a0c0e 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -147,30 +147,32 @@ pub trait Adapter {
-     /// Returns the driver's private data from the matching entry in the [`of::IdTable`], if any.
-     ///
-     /// If this returns `None`, it means there is no match with an entry in the [`of::IdTable`].
--    #[cfg(CONFIG_OF)]
-     fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
--        let table = Self::of_id_table()?;
-+        #[cfg(not(CONFIG_OF))]
-+        {
-+            let _ = dev;
-+            return None;
-+        }
+[1] https://lore.kernel.org/lkml/20250603205416.49281-1-dakr@kernel.org/
+---
+ rust/kernel/devres.rs | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
+
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index dedb39d83cbe..d8bdf2bdb879 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -12,13 +12,11 @@
+     error::{Error, Result},
+     ffi::c_void,
+     prelude::*,
+-    revocable::Revocable,
+-    sync::{Arc, Completion},
++    revocable::{Revocable, RevocableGuard},
++    sync::{rcu, Arc, Completion},
+     types::ARef,
+ };
  
--        // SAFETY:
--        // - `table` has static lifetime, hence it's valid for read,
--        // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
--        let raw_id = unsafe { bindings::of_match_device(table.as_ptr(), dev.as_raw()) };
-+        #[cfg(CONFIG_OF)]
-+        {
-+            let table = Self::of_id_table()?;
- 
--        if raw_id.is_null() {
--            None
--        } else {
--            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
--            // does not add additional invariants, so it's safe to transmute.
--            let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
-+            // SAFETY:
-+            // - `table` has static lifetime, hence it's valid for read,
-+            // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
-+            let raw_id = unsafe { bindings::of_match_device(table.as_ptr(), dev.as_raw()) };
- 
--            Some(table.info(<of::DeviceId as crate::device_id::RawDeviceId>::index(id)))
--        }
--    }
-+            if raw_id.is_null() {
-+                None
-+            } else {
-+                // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-+                // does not add additional invariants, so it's safe to transmute.
-+                let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
- 
--    #[cfg(not(CONFIG_OF))]
--    #[allow(missing_docs)]
--    fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
--        None
-+                Some(table.info(<of::DeviceId as crate::device_id::RawDeviceId>::index(id)))
-+            }
-+        }
+-use core::ops::Deref;
+-
+ #[pin_data]
+ struct DevresInner<T> {
+     dev: ARef<Device>,
+@@ -228,15 +226,22 @@ pub fn access<'a>(&'a self, dev: &'a Device<Bound>) -> Result<&'a T> {
+         // SAFETY: `dev` being the same device as the device this `Devres` has been created for
+         // proves that `self.0.data` hasn't been revoked and is guaranteed to not be revoked as
+         // long as `dev` lives; `dev` lives at least as long as `self`.
+-        Ok(unsafe { self.deref().access() })
++        Ok(unsafe { self.0.data.access() })
      }
+-}
  
-     /// Returns the driver's private data from the matching entry of any of the ID tables, if any.
+-impl<T> Deref for Devres<T> {
+-    type Target = Revocable<T>;
++    /// [`Devres`] accessor for [`Revocable::try_access`].
++    pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
++        self.0.data.try_access()
++    }
++
++    /// [`Devres`] accessor for [`Revocable::try_access_with`].
++    pub fn try_access_with<R, F: FnOnce(&T) -> R>(&self, f: F) -> Option<R> {
++        self.0.data.try_access_with(f)
++    }
+ 
+-    fn deref(&self) -> &Self::Target {
+-        &self.0.data
++    /// [`Devres`] accessor for [`Revocable::try_access_with_guard`].
++    pub fn try_access_with_guard<'a>(&'a self, guard: &'a rcu::Guard) -> Option<&'a T> {
++        self.0.data.try_access_with_guard(guard)
+     }
+ }
+ 
+@@ -244,7 +249,7 @@ impl<T> Drop for Devres<T> {
+     fn drop(&mut self) {
+         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
+         // anymore, hence it is safe not to wait for the grace period to finish.
+-        if unsafe { self.revoke_nosync() } {
++        if unsafe { self.0.data.revoke_nosync() } {
+             // We revoked `self.0.data` before the devres action did, hence try to remove it.
+             if !DevresInner::remove_action(&self.0) {
+                 // We could not remove the devres action, which means that it now runs concurrently,
+
+base-commit: d0ba9ee1c7319e6bbc1f205aff8e31ebb547b571
 -- 
-2.43.0
+2.49.0
 
