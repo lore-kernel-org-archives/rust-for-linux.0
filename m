@@ -1,174 +1,902 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9151F257449;
-	Wed, 11 Jun 2025 21:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A4F7262C
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 21:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749678025; cv=none; b=JtvDNWcfUOLZZwWiYZT+b1jgvN5qzmw8UHr4fJYSVe2IKfrLm/J55AolO6+4Zk2ijkj/vArQUIGhhBmv9Cr5M+M8Dyi93DnNDQ1jIJW27gPWOWctxse9l7gJTJ0AXcBMJHGhGnb6KFoM6BnvZ9+LTmARYi+l+p0HOa+KfbmDNQI=
+	t=1749679114; cv=none; b=KCzDhP08mciV3Hx7+iwjr03VAk7USCAFlKSM1W8MP8oerxEKJjKO8oCz4POe0vSRxb3d09lgukrh2Kn1fg0whOw218GXv75lwiBvEoKcAmcOXXPphNUWQdlYkhtP+wYFd6BFftJ8QJYlNU40uD+w1WSFAHuNxTgLUZidBei0bac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749678025; c=relaxed/simple;
-	bh=f3ULnqeUNCfguIS7uPKUYOKOX1OGzPpp858gNE9M2lY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ScjWMI4z21y9bAnyyx3mo8X0tyLUgvQCVH556Q5s4px8BTUXePmee6RmzrLxZDG383hNxrxmFasQ4UflZk0EpYuT8DzqoO/kUQA+U1ycOPEC0p8C+ZZCgFWrYTAshPyaQ+kCDGJT666H2plojJU1i3J4KitFsa5lBnEOGokZkrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0dwj1x7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749679114; c=relaxed/simple;
+	bh=xXcB4WixjV+HhNYGJV4DDIxr4DJGrm25nSfUgslP9KU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IdOVBveDM1cxRdbvzqFSsqqVe/6Axb7gKw3FkfRVUzipDseiiLqAqh2AJCEVvnnt5FtBGB8hPoWNLTGJch4UofuX78V1SpWL22MCJC5XM73z5ojjoO6uN8ZRNSxBvXBWh4lwOAxpTNQEhLBlOIOJsnZQWAnHF0DQuHGnkWo2f6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CgPhPIvq; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0dwj1x7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF79C4CEE3;
-	Wed, 11 Jun 2025 21:40:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749678025;
-	bh=f3ULnqeUNCfguIS7uPKUYOKOX1OGzPpp858gNE9M2lY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o0dwj1x75a/82eYbOmWFC/GxTSmvzPMQLtuzvRP7ESlPfavuaKCBQ3WHwMzlpArAU
-	 jEDm8ALPOQ9CSvT06RBPrxka6hfcuVHK/3/H6bUzZ3wwQv54FJirrHWCYXfXmtuGjc
-	 FOakJWLO6hMFtFwjjXKtdTXgrFTswNtU8QwkKXdslWCLSp4UoZf8RHm5o8HOxeUKUs
-	 17wSEKBKdUht1t6yVaMVKw4YC9G/2InSkyICk0y7i1u9GNTNxGx+NjciR2Zi9I2JrB
-	 InHV82NTpE7HmGYlIIQWCNI/3I1OzzhfatbDgbZucAup92/F5OUOZp0mcaOWtzONMA
-	 mue/MGwPQTqig==
-Date: Wed, 11 Jun 2025 23:40:22 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>, 
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v2 2/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
-Message-ID: <fya3ewoofrazpwh725ms4yaw6faq6txjyhxkr7hpl5i4az2iq2@fvfpisv6hjml>
-References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
- <CGME20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d@eucas1p1.samsung.com>
- <20250610-rust-next-pwm-working-fan-for-sending-v2-2-753e2955f110@samsung.com>
- <jbm3qvowi5vskhnjyqlp3xek36gzzqjt35m66eayxi6lmi525t@iefevopxjl53>
- <1d9bba9e-0f30-4039-812e-60b160271e6b@samsung.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CgPhPIvq"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43edecbfb46so2153515e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 14:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749679109; x=1750283909; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XuQTZi5K+ZCrv4JVa3MnjTmQmuUoG5q4pz2ZnEj/4bg=;
+        b=CgPhPIvq9jHk58KDi6TTNGDne3GLOivHbPNMAIOTcqmjaJPtLpA9RUh274QON9ndq8
+         XE6v+g2UD+0Hw/+spIhS7YdU7AsfMo+SJXG7CULsLVlhbrbotWeTP2yV1p6P8tLhc70A
+         UKdO1+HplH+64fgmgI5Lh4WC6MLBkr2XgDWd+dVm9maY80FklyHTpWUgx+GaQSa8zwrf
+         84Z0hX+Q+5MBCWW9jkvs77nxAzY07tlLVktjJElYQkad24d90iqHxUa/Dw+bbsGxvTvh
+         YYDMOCmZ5ozegOYDX5lQ6x0vdjP2nvB3KcZTnujWKTbEv+QYnQiU+ozQAuYpj3ZerAZv
+         sRRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749679109; x=1750283909;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XuQTZi5K+ZCrv4JVa3MnjTmQmuUoG5q4pz2ZnEj/4bg=;
+        b=m+4b7QrdIRznTRGP4wcCLFDzzFnlXdhky0rOSUDy/HVtme2MFaax9TC+aczMRPQKq+
+         UbUbTAwgyWZLA7fMGovGvZ4F7te5hAhbGStPwM+JcbGfZmZtEfB2mNolXTy7wLMAuv7t
+         gnB9QydEcABc+1tFsCyXtb089CTjAhvkJ5vUz60hFu6vghWktiqpa5p2YW1D+UkNi+Sm
+         7F7Mv28rs8FzD2sONLE4wz3eYNK5gtGje7jij7NutN5Hv6oU92Ddi1NUQxXpfsmpZx2H
+         LXfgyB40rpL8DSsaYV/hHNQjIgJVlHLSnS4Pk9BWLlVOwtmqsaUB8oupbf/h7QF0qmUv
+         NbSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkE+ySflLptfTg9gqxvbDG+l6uNGXfoH79Wn1xZqCjT8rZORKiTircXDYj776JMUSjitbmKrksg4r1DopovQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRLsqwT5e/pFUh4GHThGATPcCVO1P0LBJbvYux5pQGMCaXo5AB
+	Q51IofWMPQ5EVUu2O7mb0jApcENM3YeLHQRW6Lsm7kuj2wuJOStuFgQ9lhxejkHYMnTlb0wef9F
+	nBIxQQgIX0XVjG14MEwpitmmzOwgNGbkhLP0e1nBP
+X-Gm-Gg: ASbGnctluRVFc66MW4pSoUXCVRYfG3DDVviU/7M2VImgc9b+w6ncLgarJ+3ms5a+4go
+	UIff4ReRxiQZgJDvkqX7ArVXmEoO8Z3XN3b1o3qUsH76g0Xn0ApocCdEus0A1XLM56o9Kn1JKaP
+	R4XTH8/uLfCu2CfUUjKF5nfI750FTvesnxA5fvMBhvNVF0oXZFCxlVCO8=
+X-Google-Smtp-Source: AGHT+IGwOZJDcidlpNrR3237OzC1O9YqpdGsHAktyPfwbeBOrMOEFnzB1rFNkKSSHStzvXE02qD4xyoqgv7OWxuGkrw=
+X-Received: by 2002:a05:600c:1d0a:b0:450:d3b9:4b96 with SMTP id
+ 5b1f17b1804b1-4532b8c65e2mr14328245e9.13.1749679108812; Wed, 11 Jun 2025
+ 14:58:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jsn4mudgmd7iaf66"
-Content-Disposition: inline
-In-Reply-To: <1d9bba9e-0f30-4039-812e-60b160271e6b@samsung.com>
-
-
---jsn4mudgmd7iaf66
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
+References: <20250611194840.877308-1-bqe@google.com> <20250611194840.877308-4-bqe@google.com>
+In-Reply-To: <20250611194840.877308-4-bqe@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 11 Jun 2025 23:58:16 +0200
+X-Gm-Features: AX0GCFuhB2O0BRCjTt7enSb19WwA2majxvyvUDtT6_EsG2GlPKfxAGDw3WBYeAU
+Message-ID: <CAH5fLgi1GBqDHvMh30fbxVUjnTETLXthpK6eGLJA0Vh_TZRnsQ@mail.gmail.com>
+Subject: Re: [PATCH v12 3/5] rust: add bitmap API.
+To: Burak Emir <bqe@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 2/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
-MIME-Version: 1.0
 
-Hello Michal,
+On Wed, Jun 11, 2025 at 9:48=E2=80=AFPM Burak Emir <bqe@google.com> wrote:
+>
+> Provides an abstraction for C bitmap API and bitops operations.
+>
+> This commit enables a Rust implementation of an Android Binder
+> data structure from commit 15d9da3f818c ("binder: use bitmap for faster
+> descriptor lookup"), which can be found in drivers/android/dbitmap.h.
+> It is a step towards upstreaming the Rust port of Android Binder driver.
+>
+> We follow the C Bitmap API closely in naming and semantics, with
+> a few differences that take advantage of Rust language facilities
+> and idioms:
+>
+>   * We leverage Rust type system guarantees as follows:
+>
+>     * all (non-atomic) mutating operations require a &mut reference which
+>       amounts to exclusive access.
+>
+>     * the Bitmap type implements Send. This enables transferring
+>       ownership between threads and is needed for Binder.
+>
+>     * the Bitmap type implements Sync, which enables passing shared
+>       references &Bitmap between threads. Atomic operations can be
+>       used to safely modify from multiple threads (interior
+>       mutability), though without ordering guarantees.
+>
+>   * The Rust API uses `{set,clear}_bit` vs `{set,clear}_bit_atomic` as
+>     names, which differs from the C naming convention which uses
+>     set_bit for atomic vs __set_bit for non-atomic.
+>
+>   * we include enough operations for the API to be useful, but not all
+>     operations are exposed yet in order to avoid dead code. The missing
+>     ones can be added later.
+>
+>   * We follow the C API closely with a fine-grained approach to safety:
+>
+>     * Low-level bit-ops get a safe API with bounds checks. Calling with
+>       an out-of-bounds arguments to {set,clear}_bit becomes a no-op and
+>       get logged as errors.
+>
+>     * We introduce a RUST_BITMAP_HARDENED config, which
+>       causes invocations with out-of-bounds arguments to panic.
+>
+>     * methods correspond to find_* C methods tolerate out-of-bounds
+>       since the C implementation does. Also here, we log out-of-bounds
+>       arguments as errors and panic in RUST_BITMAP_HARDENED mode.
+>
+>     * We add a way to "borrow" bitmaps from C in Rust, to make C bitmaps
+>       that were allocated in C directly usable in Rust code (`CBitmap`).
+>
+>   * the Rust API is optimized to represent the bitmap inline if it would
+>     fit into a pointer. This saves allocations which is
+>     relevant in the Binder use case.
+>
+> The underlying C bitmap is *not* exposed, and must never be exposed
+> (except in tests). Exposing the representation of the owned bitmap would
+> lose static guarantees.
+>
+> An alternative route of vendoring an existing Rust bitmap package was
+> considered but suboptimal overall. Reusing the C implementation is
+> preferable for a basic data structure like bitmaps. It enables Rust
+> code to be a lot more similar and predictable with respect to C code
+> that uses the same data structures and enables the use of code that
+> has been tried-and-tested in the kernel, with the same performance
+> characteristics whenever possible.
+>
+> We use the `usize` type for sizes and indices into the bitmap,
+> because Rust generally always uses that type for indices and lengths
+> and it will be more convenient if the API accepts that type. This means
+> that we need to perform some casts to/from u32 and usize, since the C
+> headers use unsigned int instead of size_t/unsigned long for these
+> numbers in some places.
+>
+> Adds new MAINTAINERS section BITMAP API [RUST].
+>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Suggested-by: Yury Norov <yury.norov@gmail.com>
+> Signed-off-by: Burak Emir <bqe@google.com>
+> ---
+>  MAINTAINERS                |   7 +
+>  rust/kernel/bitmap.rs      | 582 +++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs         |   1 +
+>  security/Kconfig.hardening |  10 +
+>  4 files changed, 600 insertions(+)
+>  create mode 100644 rust/kernel/bitmap.rs
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 04d6727e944c..565eaa015d9e 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -4127,6 +4127,13 @@ S:       Maintained
+>  F:     rust/helpers/bitmap.c
+>  F:     rust/helpers/cpumask.c
+>
+> +BITMAP API [RUST]
+> +M:     Alice Ryhl <aliceryhl@google.com>
+> +M:     Burak Emir <bqe@google.com>
+> +R:     Yury Norov <yury.norov@gmail.com>
+> +S:     Maintained
+> +F:     rust/kernel/bitmap.rs
+> +
+>  BITOPS API
+>  M:     Yury Norov <yury.norov@gmail.com>
+>  R:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+> new file mode 100644
+> index 000000000000..1fe72ca980ac
+> --- /dev/null
+> +++ b/rust/kernel/bitmap.rs
+> @@ -0,0 +1,582 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2025 Google LLC.
+> +
+> +//! Rust API for bitmap.
+> +//!
+> +//! C headers: [`include/linux/bitmap.h`](srctree/include/linux/bitmap.h=
+).
+> +
+> +use crate::alloc::{AllocError, Flags};
+> +use crate::bindings;
+> +#[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+> +use crate::pr_err;
+> +use core::ptr::NonNull;
+> +
+> +/// Represents a C bitmap. Wraps underlying C bitmap API.
+> +///
+> +/// # Invariants
+> +///
+> +/// Must reference a `[c_ulong]` long enough to fit `data.len()` bits.
+> +#[cfg_attr(CONFIG_64BIT, repr(align(8)))]
+> +#[cfg_attr(not(CONFIG_64BIT), repr(align(4)))]
+> +pub struct CBitmap {
+> +    data: [()],
+> +}
 
-On Wed, Jun 11, 2025 at 10:04:54PM +0200, Michal Wilczynski wrote:
-> On 6/11/25 08:58, Uwe Kleine-K=F6nig wrote:
-> > On Tue, Jun 10, 2025 at 02:52:50PM +0200, Michal Wilczynski wrote:
-> > Some comments use 2 and other 3 slashes. Does this have any semantic?
->=20
-> Yes, they have a semantic difference. /// denotes a documentation
-> comment that is processed by rustdoc to generate documentation, while //
-> is a regular implementation comment. The compiler is configured to
-> require documentation for public items (like structs and functions),
-> which is why /// is used on the struct definition.
+I wonder if we should just call this type Bitmap?
 
-ok, thanks.
+> +
+> +/// SAFETY: All methods that take immutable references are either atomic=
+ or read-only.
+> +unsafe impl Sync for CBitmap {}
 
-> >> +        let period_ns =3D (period_cycles as u64)
-> >> +            .mul_div(time::NSEC_PER_SEC as u64, rate_hz as u64)
-> >> +            .unwrap_or(0);
-> >=20
-> > What does .unwrap_or(0) do? You need to round up in this mul_div
-> > operation.
->=20
-> The .unwrap_or(0) is to handle the case where the mul_div helper returns
-> None, which can happen if the divisor (rate_hz) is zero. In that case,
+You don't have any fields wrapping C types anymore, so this has no effect.
 
-It can *only* happen if rate_hz is zero? If we had
-clk_rate_exclusive_get() we could rely on rate_hz being non-zero.
+> +
+> +impl CBitmap {
+> +    /// Borrows a C bitmap.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// * `ptr` holds a non-null address of an initialized array of `uns=
+igned long`
+> +    ///   that is large enough to hold `nbits` bits.
+> +    /// * the array must not be freed for the lifetime of this [`CBitmap=
+`]
+> +    /// * concurrent access only happens through atomic operations
+> +    pub unsafe fn from_raw<'a>(ptr: *const usize, nbits: usize) -> &'a C=
+Bitmap {
+> +        let data: *const [()] =3D core::ptr::slice_from_raw_parts(ptr.ca=
+st(), nbits);
+> +        // INVARIANT: `data` references an initialized array that can ho=
+ld `nbits` bits.
+> +        // SAFETY:
+> +        // The caller guarantees that `data` (derived from `ptr` and `nb=
+its`)
+> +        // points to a valid, initialized, and appropriately sized memor=
+y region
+> +        // that will not be freed for the lifetime 'a.
+> +        // We are casting `*const [()]` to `*const CBitmap`. The `CBitma=
+p`
+> +        // struct is a ZST with a `data: [()]` field. This means its lay=
+out
+> +        // is compatible with a slice of `()`, and effectively it's a "t=
+hin pointer"
+> +        // (its size is 0 and alignment is 1). The `slice_from_raw_parts=
+`
+> +        // function correctly encodes the length (number of bits, not el=
+ements)
+> +        // into the metadata of the fat pointer. Therefore, dereferencin=
+g this
+> +        // pointer as `&CBitmap` is safe given the caller's guarantees.
+> +        unsafe { &*(data as *const CBitmap) }
+> +    }
+> +
+> +    /// Borrows a C bitmap exclusively.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// * `ptr` holds a non-null address of an initialized array of `uns=
+igned long`
+> +    ///   that is large enough to hold `nbits` bits.
+> +    /// * the array must not be freed for the lifetime of this [`CBitmap=
+`]
+> +    /// * no concurrent access may happen.
+> +    pub unsafe fn from_raw_mut<'a>(ptr: *mut usize, nbits: usize) -> &'a=
+ mut CBitmap {
+> +        let data: *mut [()] =3D core::ptr::slice_from_raw_parts_mut(ptr.=
+cast(), nbits);
+> +        // INVARIANT: `data` references an initialized array that can ho=
+ld `nbits` bits.
+> +        // SAFETY:
+> +        // The caller guarantees that `data` (derived from `ptr` and `nb=
+its`)
+> +        // points to a valid, initialized, and appropriately sized memor=
+y region
+> +        // that will not be freed for the lifetime 'a.
+> +        // Furthermore, the caller guarantees no concurrent access will =
+happen,
+> +        // which upholds the exclusivity requirement for a mutable refer=
+ence.
+> +        // Similar to `from_raw`, casting `*mut [()]` to `*mut CBitmap` =
+is
+> +        // safe because `CBitmap` is a ZST with a `data: [()]` field,
+> +        // making its layout compatible with a slice of `()`.
+> +        unsafe { &mut *(data as *mut CBitmap) }
+> +    }
+> +
+> +    /// Returns a raw pointer to the backing [`Bitmap`].
+> +    pub fn as_ptr(&self) -> *const usize {
+> +        self as *const CBitmap as *const usize
+> +    }
+> +
+> +    /// Returns a mutable raw pointer to the backing [`Bitmap`].
+> +    pub fn as_mut_ptr(&mut self) -> *mut usize {
+> +        self as *mut CBitmap as *mut usize
+> +    }
+> +
+> +    /// Returns length of this [`CBitmap`].
+> +    #[expect(clippy::len_without_is_empty)]
+> +    pub fn len(&self) -> usize {
+> +        self.data.len()
+> +    }
+> +}
+> +
+> +/// Holds either a pointer to array of `unsigned long` or a small bitmap=
+.
+> +#[repr(C)]
+> +union BitmapRepr {
+> +    bitmap: usize,
+> +    ptr: NonNull<usize>,
+> +}
+> +
+> +macro_rules! bitmap_assert {
+> +    ($cond:expr, $($arg:tt)+) =3D> {
+> +        #[cfg(CONFIG_RUST_BITMAP_HARDENED)]
+> +        assert!($cond, $($arg)*);
+> +    }
+> +}
+> +
+> +macro_rules! bitmap_assert_return {
+> +    ($cond:expr, $($arg:tt)+) =3D> {
+> +        #[cfg(CONFIG_RUST_BITMAP_HARDENED)]
+> +        assert!($cond, $($arg)*);
+> +
+> +        #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+> +        if !($cond) {
+> +            pr_err!($($arg)*);
+> +            return
+> +        }
+> +    }
+> +}
+> +
+> +/// Represents an owned bitmap.
+> +///
+> +/// Wraps underlying C bitmap API. See [`CBitmap`] for available
+> +/// methods.
+> +///
+> +/// # Examples
+> +///
+> +/// Basic usage
+> +///
+> +/// ```
+> +/// use kernel::alloc::flags::GFP_KERNEL;
+> +/// use kernel::bitmap::Bitmap;
+> +///
+> +/// let mut b =3D Bitmap::new(16, GFP_KERNEL)?;
+> +///
+> +/// assert_eq!(16, b.len());
+> +/// for i in 0..16 {
+> +///     if i % 4 =3D=3D 0 {
+> +///       b.set_bit(i);
+> +///     }
+> +/// }
+> +/// assert_eq!(Some(0), b.next_bit(0));
+> +/// assert_eq!(Some(1), b.next_zero_bit(0));
+> +/// assert_eq!(Some(4), b.next_bit(1));
+> +/// assert_eq!(Some(5), b.next_zero_bit(4));
+> +/// assert_eq!(Some(12), b.last_bit());
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +///
+> +/// # Invariants
+> +///
+> +/// * `nbits` is `<=3D i32::MAX` and never changes.
+> +/// * if `nbits <=3D bindings::BITS_PER_LONG`, then `repr` is a `usize`.
+> +/// * otherwise, `repr` holds a non-null pointer to an initialized
+> +///   array of `unsigned long` that is large enough to hold `nbits` bits=
+.
+> +pub struct Bitmap {
+> +    /// Representation of bitmap.
+> +    repr: BitmapRepr,
+> +    /// Length of this bitmap. Must be `<=3D i32::MAX`.
+> +    nbits: usize,
+> +}
+> +
+> +impl core::ops::Deref for Bitmap {
+> +    type Target =3D CBitmap;
+> +
+> +    fn deref(&self) -> &CBitmap {
+> +        let ptr =3D if self.nbits <=3D bindings::BITS_PER_LONG as _ {
 
-> the period  becomes 0. The mul_div helper is introduced in this commit
-> [1].
->=20
-> [1] - https://lore.kernel.org/all/20250609-math-rust-v1-v1-1-285fac00031f=
-@samsung.com/
->=20
-> >=20
-> >> +        let period_cycles =3D wf
-> >> +            .period_length_ns
-> >> +            .mul_div(rate_hz as u64, time::NSEC_PER_SEC as u64)
-> >> +            .ok_or(EINVAL)?;
-> >=20
-> > If period_length_ns is BIG, pick the biggest possible period_cycles
-> > value, not EINVAL.
->=20
-> In this case EINVAL mean the function would return EINVAL not
-> 'period_cycles' =3D EINVAL. This won't happen here since
-> time::NSEC_PER_SEC is a constant, so this won't return None. This is not
-> checking for overflow.
+You can define a local constant with the right size to avoid these casts:
+const BITS_PER_LONG: usize =3D bindings::BITS_PER_LONG as usize;
 
-OK, so this is only there to please the rust compiler, right?
+> +            // SAFETY: Bitmap is represented inline.
+> +            unsafe { core::ptr::addr_of!(self.repr.bitmap) }
+> +        } else {
+> +            // SAFETY: Bitmap is represented as array of `unsigned long`=
+.
+> +            unsafe { self.repr.ptr.as_ptr() }
+> +        };
+> +
+> +        // SAFETY: We got the right pointer and invariants of [`Bitmap`]=
+ hold.
+> +        // An inline bitmap is treated like an array with single element=
+.
+> +        unsafe { CBitmap::from_raw(ptr, self.nbits) }
+> +    }
+> +}
+> +
+> +impl core::ops::DerefMut for Bitmap {
+> +    fn deref_mut(&mut self) -> &mut CBitmap {
+> +        let ptr =3D if self.nbits <=3D bindings::BITS_PER_LONG as _ {
+> +            // SAFETY: Bitmap is represented inline.
+> +            unsafe { core::ptr::addr_of_mut!(self.repr.bitmap) }
+> +        } else {
+> +            // SAFETY: Bitmap is represented as array of `unsigned long`=
+.
+> +            unsafe { self.repr.ptr.as_mut() }
+> +        };
+> +
+> +        // SAFETY: We got the right pointer and invariants of [`Bitmap`]=
+ hold.
+> +        // An inline bitmap is treated like an array with single element=
+.
+> +        unsafe { CBitmap::from_raw_mut(ptr, self.nbits) }
+> +    }
+> +}
+> +
+> +/// Enable ownership transfer to other threads.
+> +///
+> +/// SAFETY: We own the underlying bitmap representation.
+> +unsafe impl Send for Bitmap {}
+> +
+> +/// Enable unsynchronized concurrent access to [`Bitmap`] through shared=
+ references.
+> +///
+> +/// SAFETY: `deref()` will return a reference to a [`CBitmap`] which is =
+Sync. Its methods
+> +/// that take immutable references are either atomic or read-only.
+> +unsafe impl Sync for Bitmap {}
+> +
+> +impl Drop for Bitmap {
+> +    fn drop(&mut self) {
+> +        if self.nbits <=3D bindings::BITS_PER_LONG as _ {
+> +            return;
+> +        }
+> +        // SAFETY: `self.ptr` was returned by the C `bitmap_zalloc`.
+> +        //
+> +        // INVARIANT: there is no other use of the `self.ptr` after this
+> +        // call and the value is being dropped so the broken invariant i=
+s
+> +        // not observable on function exit.
+> +        unsafe { bindings::bitmap_free(self.repr.ptr.as_ptr()) };
+> +    }
+> +}
+> +
+> +impl Bitmap {
+> +    /// Constructs a new [`Bitmap`].
+> +    ///
+> +    /// Fails with [`AllocError`] when the [`Bitmap`] could not be alloc=
+ated. This
+> +    /// includes the case when `nbits` is greater than `i32::MAX`.
+> +    #[inline]
+> +    pub fn new(nbits: usize, flags: Flags) -> Result<Self, AllocError> {
+> +        if nbits <=3D bindings::BITS_PER_LONG as _ {
+> +            return Ok(Bitmap {
+> +                repr: BitmapRepr { bitmap: 0 },
+> +                nbits,
+> +            });
+> +        }
+> +        if nbits > i32::MAX.try_into().unwrap() {
+> +            return Err(AllocError);
+> +        }
+> +        let nbits_u32 =3D u32::try_from(nbits).unwrap();
+> +        // SAFETY: `bindings::BITS_PER_LONG < nbits` and `nbits <=3D i32=
+::MAX`.
+> +        let ptr =3D unsafe { bindings::bitmap_zalloc(nbits_u32, flags.as=
+_raw()) };
+> +        let ptr =3D NonNull::new(ptr).ok_or(AllocError)?;
+> +        // INVARIANT: `ptr` returned by C `bitmap_zalloc` and `nbits` ch=
+ecked.
+> +        Ok(Bitmap {
+> +            repr: BitmapRepr { ptr },
+> +            nbits,
+> +        })
+> +    }
+> +
+> +    /// Returns length of this [`Bitmap`].
+> +    #[allow(clippy::len_without_is_empty)]
+> +    #[inline]
+> +    pub fn len(&self) -> usize {
+> +        self.nbits
+> +    }
+> +}
+> +
+> +impl CBitmap {
+> +    /// Set bit with index `index`.
+> +    ///
+> +    /// ATTENTION: `set_bit` is non-atomic, which differs from the namin=
+g
+> +    /// convention in C code. The corresponding C function is `__set_bit=
+`.
+> +    ///
+> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and `index` is gre=
+ater than
+> +    /// or equal to `self.nbits`, does nothing.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and `index` is =
+greater than
+> +    /// or equal to `self.nbits`.
+> +    #[inline]
+> +    pub fn set_bit(&mut self, index: usize) {
+> +        bitmap_assert_return!(
+> +            index < self.len(),
+> +            "Bit `index` must be < {}, was {}",
+> +            self.len(),
+> +            index
+> +        );
+> +        // SAFETY: Bit `index` is within bounds.
+> +        unsafe { bindings::__set_bit(index, self.as_mut_ptr()) };
+> +    }
+> +
+> +    /// Set bit with index `index`, atomically.
+> +    ///
+> +    /// This is a relaxed atomic operation (no implied memory barriers).
+> +    ///
+> +    /// ATTENTION: The naming convention differs from C, where the corre=
+sponding
+> +    /// function is called `set_bit`.
+> +    ///
+> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and `index` is gre=
+ater than
+> +    /// or equal to `self.len()`, does nothing.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and `index` is =
+greater than
+> +    /// or equal to `self.len()`.
+> +    #[inline]
+> +    pub fn set_bit_atomic(&self, index: usize) {
+> +        bitmap_assert_return!(
+> +            index < self.len(),
+> +            "Bit `index` must be < {}, was {}",
+> +            self.len(),
+> +            index
+> +        );
+> +        // SAFETY: `index` is within bounds and the caller has ensured t=
+hat
+> +        // there is no mix of non-atomic and atomic operations.
+> +        unsafe { bindings::set_bit(index, self.as_ptr() as *mut usize) }=
+;
+> +    }
+> +
+> +    /// Clear `index` bit.
+> +    ///
+> +    /// ATTENTION: `clear_bit` is non-atomic, which differs from the nam=
+ing
+> +    /// convention in C code. The corresponding C function is `__clear_b=
+it`.
+> +    ///
+> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and `index` is gre=
+ater than
+> +    /// or equal to `self.len()`, does nothing.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and `index` is =
+greater than
+> +    /// or equal to `self.len()`.
+> +    #[inline]
+> +    pub fn clear_bit(&mut self, index: usize) {
+> +        bitmap_assert_return!(
+> +            index < self.len(),
+> +            "Bit `index` must be < {}, was {}",
+> +            self.len(),
+> +            index
+> +        );
+> +        // SAFETY: `index` is within bounds.
+> +        unsafe { bindings::__clear_bit(index, self.as_mut_ptr()) };
+> +    }
+> +
+> +    /// Clear `index` bit, atomically.
+> +    ///
+> +    /// This is a relaxed atomic operation (no implied memory barriers).
+> +    ///
+> +    /// ATTENTION: The naming convention differs from C, where the corre=
+sponding
+> +    /// function is called `clear_bit`.
+> +    ///
+> +    /// If CONFIG_RUST_BITMAP_HARDENED is not enabled and `index` is gre=
+ater than
+> +    /// or equal to `self.len()`, does nothing.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// Panics if CONFIG_RUST_BITMAP_HARDENED is enabled and `index` is =
+greater than
+> +    /// or equal to `self.len()`.
+> +    #[inline]
+> +    pub fn clear_bit_atomic(&self, index: usize) {
+> +        bitmap_assert_return!(
+> +            index < self.len(),
+> +            "Bit `index` must be < {}, was {}",
+> +            self.len(),
+> +            index
+> +        );
+> +        // SAFETY: `index` is within bounds and the caller has ensured t=
+hat
+> +        // there is no mix of non-atomic and atomic operations.
+> +        unsafe { bindings::clear_bit(index, self.as_ptr() as *mut usize)=
+ };
+> +    }
+> +
+> +    /// Copy `src` into this [`Bitmap`] and set any remaining bits to ze=
+ro.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
+> +    /// use kernel::bitmap::Bitmap;
+> +    ///
+> +    /// let mut long_bitmap =3D Bitmap::new(256, GFP_KERNEL)?;
+> +    //
+> +    /// assert_eq!(None, long_bitmap.last_bit());
+> +    //
+> +    /// let mut short_bitmap =3D Bitmap::new(16, GFP_KERNEL)?;
+> +    //
+> +    /// short_bitmap.set_bit(7);
+> +    /// long_bitmap.copy_and_extend(&short_bitmap);
+> +    /// assert_eq!(Some(7), long_bitmap.last_bit());
+> +    ///
+> +    /// # Ok::<(), AllocError>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn copy_and_extend(&mut self, src: &Bitmap) {
+> +        let len =3D core::cmp::min(src.nbits, self.len());
+> +        // SAFETY: access to `self` and `src` is within bounds.
+> +        unsafe {
+> +            bindings::bitmap_copy_and_extend(
+> +                self.as_mut_ptr(),
+> +                src.as_ptr(),
+> +                len as u32,
+> +                self.len() as u32,
+> +            )
+> +        };
+> +    }
+> +
+> +    /// Finds last set bit.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::alloc::{AllocError, flags::GFP_KERNEL};
+> +    /// use kernel::bitmap::Bitmap;
+> +    ///
+> +    /// let bitmap =3D Bitmap::new(64, GFP_KERNEL)?;
+> +    ///
+> +    /// match bitmap.last_bit() {
+> +    ///     Some(idx) =3D> {
+> +    ///         pr_info!("The last bit has index {idx}.\n");
+> +    ///     }
+> +    ///     None =3D> {
+> +    ///         pr_info!("All bits in this bitmap are 0.\n");
+> +    ///     }
+> +    /// }
+> +    /// # Ok::<(), AllocError>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn last_bit(&self) -> Option<usize> {
+> +        // SAFETY: `_find_next_bit` access is within bounds due to invar=
+iant.
+> +        let index =3D unsafe { bindings::_find_last_bit(self.as_ptr(), s=
+elf.len()) };
+> +        if index >=3D self.len() {
+> +            None
+> +        } else {
+> +            Some(index)
+> +        }
+> +    }
+> +
+> +    /// Finds next set bit, starting from `start`.
+> +    /// Returns `None` if `start` is greater of equal than `self.nbits`.
+> +    #[inline]
 
-> >=20
-> >> +        if period_cycles > u32::MAX as u64 {
->=20
-> In here I could pick period_cycles =3D u32::MAX.
+The html docs look better if you include a newline:
 
-indeed.
+/// Finds next set bit, starting from `start`.
+///
+/// Returns `None` if `start` is greater of equal than `self.nbits`.
 
-> >=20
-> >> +        iomap.write32(ctrl, th1520_pwm_ctrl(hwpwm));
-> >> +        iomap.write32(wfhw.period_cycles, th1520_pwm_per(hwpwm));
-> >> +        iomap.write32(wfhw.duty_cycles, th1520_pwm_fp(hwpwm));
-> >> +        iomap.write32(wfhw.ctrl_val | PWM_CFG_UPDATE, th1520_pwm_ctrl=
-(hwpwm));
-> >> +
-> >> +        if !was_enabled {
-> >> +            iomap.write32(wfhw.ctrl_val | PWM_START, th1520_pwm_ctrl(=
-hwpwm));
-> >=20
-> > Can this be combined with the above write?
->=20
-> Per the TH1520 peripheral manual [2] (chapter 6.6.2.1), the PWM_START bit
-> should only be asserted when enabling the PWM for the first time, not
-> during a reconfiguration of an alreadyrunning channel. The separate if
-> statement is there to handle this specific hardware requirement.
+> +    pub fn next_bit(&self, start: usize) -> Option<usize> {
+> +        bitmap_assert!(
+> +            start < self.len(),
+> +            "`start` must be < {} was {}",
+> +            self.len(),
+> +            start
+> +        );
+> +        // SAFETY: `_find_next_bit` tolerates out-of-bounds arguments an=
+d returns a
+> +        // value larger than or equal to `self.len()` in that case.
+> +        let index =3D unsafe { bindings::_find_next_bit(self.as_ptr(), s=
+elf.len(), start) };
+> +        if index >=3D self.len() {
+> +            None
+> +        } else {
+> +            Some(index)
+> +        }
+> +    }
+> +
+> +    /// Finds next zero bit, starting from `start`.
+> +    /// Returns `None` if `start` is greater than or equal to `self.len(=
+)`.
+> +    #[inline]
+> +    pub fn next_zero_bit(&self, start: usize) -> Option<usize> {
+> +        bitmap_assert!(
+> +            start < self.len(),
+> +            "`start` must be < {} was {}",
+> +            self.len(),
+> +            start
+> +        );
+> +        // SAFETY: `_find_next_zero_bit` tolerates out-of-bounds argumen=
+ts and returns a
+> +        // value larger than or equal to `self.len()` in that case.
+> +        let index =3D unsafe { bindings::_find_next_zero_bit(self.as_ptr=
+(), self.len(), start) };
+> +        if index >=3D self.len() {
+> +            None
+> +        } else {
+> +            Some(index)
+> +        }
+> +    }
+> +}
+> +
+> +use macros::kunit_tests;
+> +
+> +#[kunit_tests(rust_kernel_bitmap)]
+> +mod tests {
+> +    use super::*;
+> +    use kernel::alloc::flags::GFP_KERNEL;
+> +
+> +    #[test]
+> +    fn cbitmap_borrow() {
+> +        let fake_c_bitmap: [usize; 2] =3D [0, 0];
+> +        // SAFETY: `fake_c_bitmap` is an array of expected length.
+> +        let b =3D unsafe {
+> +            CBitmap::from_raw(
+> +                core::ptr::addr_of!(fake_c_bitmap) as *const usize,
 
-Yeah, I wondered if you could simplify that to (well, or make it a bit
-faster at least) using:
+You can just do fake_c_bitmap.as_ptr()
 
-	ctrl_val =3D wfhw.ctrl_val | PWM_CFG_UPDATE;
-        if !was_enabled {
-		ctrl_val |=3D PWM_START;
-	}
-	=09
-        iomap.write32(ctrl_val, th1520_pwm_ctrl(hwpwm));
+> +                2 * bindings::BITS_PER_LONG as usize,
+> +            )
+> +        };
+> +        assert_eq!(2 * bindings::BITS_PER_LONG as usize, b.len());
+> +        assert_eq!(None, b.next_bit(0));
+> +    }
+> +
+> +    #[test]
+> +    fn cbitmap_copy() {
+> +        let fake_c_bitmap: usize =3D 0xFF;
+> +        // SAFETY: `fake_c_bitmap` can be used as one-element array of e=
+xpected length.
+> +        let b =3D unsafe { CBitmap::from_raw(core::ptr::addr_of!(fake_c_=
+bitmap), 8) };
+> +        assert_eq!(8, b.len());
+> +        assert_eq!(None, b.next_zero_bit(0));
+> +    }
+> +
+> +    #[test]
+> +    fn bitmap_new() {
+> +        let b =3D Bitmap::new(0, GFP_KERNEL).unwrap();
+> +        assert_eq!(0, b.len());
+> +
+> +        let b =3D Bitmap::new(3, GFP_KERNEL).unwrap();
+> +        assert_eq!(3, b.len());
+> +
+> +        let b =3D Bitmap::new(1024, GFP_KERNEL).unwrap();
+> +        assert_eq!(1024, b.len());
+> +
+> +        // Requesting too large values results in [`AllocError`].
+> +        let b =3D Bitmap::new(1 << 31, GFP_KERNEL);
+> +        assert!(b.is_err());
+> +    }
+> +
+> +    #[test]
+> +    fn bitmap_set_clear_find() {
+> +        let mut b =3D Bitmap::new(128, GFP_KERNEL).unwrap();
+> +
+> +        // Zero-initialized
+> +        assert_eq!(None, b.next_bit(0));
+> +        assert_eq!(Some(0), b.next_zero_bit(0));
+> +        assert_eq!(None, b.last_bit());
+> +
+> +        b.set_bit(17);
+> +
+> +        assert_eq!(Some(17), b.next_bit(0));
+> +        assert_eq!(Some(17), b.next_bit(17));
+> +        assert_eq!(None, b.next_bit(18));
+> +        assert_eq!(Some(17), b.last_bit());
+> +
+> +        b.set_bit(107);
+> +
+> +        assert_eq!(Some(17), b.next_bit(0));
+> +        assert_eq!(Some(17), b.next_bit(17));
+> +        assert_eq!(Some(107), b.next_bit(18));
+> +        assert_eq!(Some(107), b.last_bit());
+> +
+> +        b.clear_bit(17);
+> +
+> +        assert_eq!(Some(107), b.next_bit(0));
+> +        assert_eq!(Some(107), b.last_bit());
+> +    }
+> +
+> +    #[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+> +    #[test]
+> +    fn bitmap_out_of_bounds() {
+> +        let mut b =3D Bitmap::new(128, GFP_KERNEL).unwrap();
+> +
+> +        b.set_bit(2048);
+> +        b.set_bit_atomic(2048);
+> +        b.clear_bit(2048);
+> +        b.clear_bit_atomic(2048);
+> +        assert_eq!(None, b.next_bit(2048));
+> +        assert_eq!(None, b.next_zero_bit(2048));
+> +        assert_eq!(None, b.last_bit());
+> +    }
+> +
+> +    #[cfg(CONFIG_RUST_BITMAP_HARDENED)]
+> +    #[test]
+> +    #[should_panic]
+> +    fn bitmap_out_of_bounds() {
 
-Best regards
-Uwe
+I don't think we have #[should_panic] support in Rust KUnit yet.
 
---jsn4mudgmd7iaf66
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhJ98QACgkQj4D7WH0S
-/k4EkAgAhvwWW2nW8s8HaHEbsyoN1pxYS7AKIL2TIYDDDBwv/sOyrGxBNnfAHzTM
-2q8GZHrItPF3FwFOlf3OTK2aGKGNVH9YWL/uHKOdI/TFTq9YcFG/u/N+InLEugDY
-Hha0aNG2NG4Rd9mpvhxTz9I7a4U+CsGkDsXrqLPyBo5zwce83fVw/u6NEpY8VtVx
-GsHEJnOeL6BWhitn4QIt17CaJ/woggVwpr/qQ2TFPrYwD2hYFV1SH0oCBK/MRA7i
-nO+qS6g3GzNbxJTuUI8gxXESv1hzbKdfhCuzePY0tD2NcnZtZ3SAEE/LRrcyIy4E
-3OKJxYMmd2fQ27KRqV3aobmlMGliEQ==
-=jsDl
------END PGP SIGNATURE-----
-
---jsn4mudgmd7iaf66--
+> +        let mut b =3D Bitmap::new(128, GFP_KERNEL).unwrap();
+> +
+> +        b.set_bit(2048);
+> +    }
+> +
+> +    #[test]
+> +    fn bitmap_copy_and_extend() {
+> +        let mut long_bitmap =3D Bitmap::new(256, GFP_KERNEL).unwrap();
+> +
+> +        long_bitmap.set_bit(3);
+> +        long_bitmap.set_bit(200);
+> +
+> +        let mut short_bitmap =3D Bitmap::new(32, GFP_KERNEL).unwrap();
+> +
+> +        short_bitmap.set_bit(17);
+> +
+> +        long_bitmap.copy_and_extend(&short_bitmap);
+> +
+> +        // Previous bits have been cleared.
+> +        assert_eq!(Some(17), long_bitmap.next_bit(0));
+> +        assert_eq!(Some(17), long_bitmap.last_bit());
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index de07aadd1ff5..8c4161cd82ac 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -38,6 +38,7 @@
+>  pub use ffi;
+>
+>  pub mod alloc;
+> +pub mod bitmap;
+>  #[cfg(CONFIG_BLOCK)]
+>  pub mod block;
+>  #[doc(hidden)]
+> diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
+> index 3fe9d7b945c4..d77a39aef554 100644
+> --- a/security/Kconfig.hardening
+> +++ b/security/Kconfig.hardening
+> @@ -324,6 +324,16 @@ config LIST_HARDENED
+>
+>           If unsure, say N.
+>
+> +config RUST_BITMAP_HARDENED
+> +       bool "Check integrity of bitmap Rust API"
+> +       depends on RUST
+> +       help
+> +         Enables additional assertions in the Rust Bitmap API to catch
+> +         arguments that are not guaranteed to result in an immediate acc=
+ess
+> +         fault.
+> +
+> +         If unsure, say N.
+> +
+>  config BUG_ON_DATA_CORRUPTION
+>         bool "Trigger a BUG when data corruption is detected"
+>         select LIST_HARDENED
+> --
+> 2.50.0.rc1.591.g9c95f17f64-goog
+>
