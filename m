@@ -1,205 +1,112 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EBD1DF73C;
-	Wed, 11 Jun 2025 16:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D183220C47A;
+	Wed, 11 Jun 2025 16:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749658360; cv=none; b=dfTv895E47PUh2ycr1JvUlt3jkKubOlhdTutN+I88CYWb7Z0biqDe/CYRM4yehfAnOMido3K3EI79cbV9fwrtdS3jXgNjtMHvXZdPdD7+xQx3AnXIcvm+sEL2fPW8D9cC6jKmTZGUeTApg2Bt5o5OgUmz3KV6msjg3wAFLg/Wdw=
+	t=1749660931; cv=none; b=mQl+Mw7pNQJ3DOeKYykuP9vsPqJ6Bz4aAYqCEmDoQBHD1BQSdZ4Gsd/KNpR1zw64fSfub9RxsTKymbt8YIYqNO1QjCdbSbH3iionopYfOdQsc8Qm4kwYkbJeUREluIkBb8KOCo2Aptj865yHR+wB+RuyYj8j2omi4qXZlLBGZOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749658360; c=relaxed/simple;
-	bh=ETANpm6EqFC2Vwo5F2XSqEIz4CNyxVCGrz3gt1R8QEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QNLyYdDZ/bhOHS0D5+FnEYaOmojkl/5JYhCqYtzH61bueCWCfWUQxEnccTV23atHNktfp3gTs1vxWFd3wv6TmOsAn7WuCoXtWU+XxDQ29jADC3PkTDj2J00P8tE+7KzT3NB9Tw+VNZE1HmS9gmMLTZvbIg706MQZgvBB5zyzl2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i0a6hxOe; arc=none smtp.client-ip=209.85.160.180
+	s=arc-20240116; t=1749660931; c=relaxed/simple;
+	bh=KyNFKemnRNzyt/7LqR30HwimFe7KXWQY+EiWh5tmzaI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=D9+PHVmv0nWs/SInC6xJbw5TlhHksoiztcWVCbpEJlxFbkEpoKlInrBpQ6LKrOtSPxGmg1PO3K+DD33cu+R3y8qqmS3JNE7IQ7mDZIG1lMOjGbpktb0rqgGYv8X3QOOhSTQEIbzvZGmI2QGTfeTMSYWrrN49Aj43X+TF1SgteHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ax2uLJxY; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0a6hxOe"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4772f48f516so11546361cf.1;
-        Wed, 11 Jun 2025 09:12:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ax2uLJxY"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-31306794b30so13681a91.2;
+        Wed, 11 Jun 2025 09:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749658356; x=1750263156; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1749660929; x=1750265729; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cOqaKfMnsTaXLoIm60AN8TWGnnOtqMk25sFNi2p2JVQ=;
-        b=i0a6hxOe0OkpB+adoCqMvueO6zPtfiWNWZhMzuF37LtHi3wVrD3lUnQCBoFtsI00GX
-         81VekkmrLv3MHtISF8Q4W0Y/4ouFG0eAGowK1D6LSYd3OS8nps2TiMOkOF3Bfe+v+sKl
-         PCwkg57ZTREUlex0cRWLmsLKGvEDGiXd/vPa9aGqKuYpKCOvpPKbFBIFFXPJCl7yMZ3i
-         U/TCoALos1xPh5JesXhxWOAwf6DjrU1am2/dha7zB/RFhUIDF3mkrzfUqwuyXonds8zy
-         xfVo8lRYUafmuh32m28iPe6x+iGFE1ifq6u3vHum+uOd6uP8OXKrRephqSwvzJUlyE48
-         zwfw==
+        bh=KyNFKemnRNzyt/7LqR30HwimFe7KXWQY+EiWh5tmzaI=;
+        b=ax2uLJxYAzt3Xjjj45zhdd1k6hVad+uIXzoXOd4oaS/Wj+oRBdMKvHcZhiQamAWm1Y
+         JBhyNrv4diEF57pyX+CmM+ax7i4JeT5aQVtQ03dpdpDOitxT/apLYXnmtulOpeg8Hb+V
+         2PZWla/msdl0E6CRfk11xSit25l5hV0Hk0bLzIBCtnBDI7nNR27qaI1cAS084tENZ7LV
+         12TzxJrUwz9TIDFMmJtEpviQ0+H/dZPzAcDGfx9g0wKvb1BiX0j13GcwQrbY3OYocsbD
+         UT3uV08DJ+daDoaE92+VCh1mAO2f60HFKwhmqsvybYhQOR991vnlrnrOiNyBjUGS3qn3
+         Z9NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749658356; x=1750263156;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1749660929; x=1750265729;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cOqaKfMnsTaXLoIm60AN8TWGnnOtqMk25sFNi2p2JVQ=;
-        b=SR81NLkg/P0XvRAB9y7FivxSqA2SgW/PdJT/A9f6yisEVV/nC0d1V0vpTsB79QGaTE
-         EeYJFMnWPVcLfFgb5B4fj2BPVe7EeDBqrprLP/p7oL2e7Xjl/mfOJFIc/jH13fYchk0X
-         TLZFYNQ5R0mkv/J/nQ+5odxFTXHyF+PRqwhEJ1rNJWkglrgcLf3BM7adnwcw3rFsuCnb
-         jMsmpr+o0lbark4YjNCTbsDV6X80Hkjm91sRq7130pUn0s8+X5gWr0XLMg2ZCpOGpxvI
-         aofFpGs47hDVTj3Yy3MWH7yNGkhesYigM8XcCEJwX2UFwcQxJDXjcPOSrAm90Y2H7spH
-         ATAw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/57Frjf3ydYGm4UDXvzJpf0TYxZk3otKJe+HGKKH4d1ZxRRhJIBQdwnEpiwyBUBamu8STydCMCWM=@vger.kernel.org, AJvYcCV7Iy0If3jWuJdJME0b6i/1aILjBRxVmRNeFpy4IrtuDFwTzcDM+cmmt2rXKp8z1mOHUI6sj6v4UzuJDwg=@vger.kernel.org, AJvYcCWDjxs8CzQF8jwLEDadXERbRuFv38GBVC8UZ9t32iuHLL0FxJv5aCiI930qqJz9Piwuy0S623k6wSVirODZiXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAwrkPcie37c5R5yrOSRRHx4Xyl7l/uKwt1WhicCQGJ5mXZD7S
-	fmOGf+wd2quxCT14d1/c69Jwjjw/Pf2U/88oStEz94+8FG0JWKBIjKbp
-X-Gm-Gg: ASbGncuFiyzKX2wG9qKuR01dSvNZ4VbJBX6iVrm6ppvkx1UIKNHebvof+v49MBsYdBJ
-	a3f9gD4mHtC89hew7pDyLbGJRWbtKDiQKuPs6g06I6sj9egDg2QuEOfTLHjB/PmUWXcm/puS5qp
-	xIYY/fSU58pJRE6r5k2hYCjp+FlGq/FVddqPh8hhMqRJhTFPdHJVeq3gFySmakgz3aDQdhCp7dG
-	YpuXdNfW5hpKR3RPjmFj7/iTfU22HNLl8gwRLT/S29Y7KCkf4hrdO9kJfQ0q2u02iGQ0rfXWW0e
-	4QS9trxEfypHaNEt2BKooRPPYKNXm8Zpsr24o9lso7nltjUyabh+9SW48ukvkPvCq52UdDVybSQ
-	Oyoc7xhSyforcyoS9G/2HoWhtVBUBu1GBpFBVUqzXq9ITzOkNwqFv
-X-Google-Smtp-Source: AGHT+IEMe8vZfIrYIwqDYE+r9WByE2MjWdEkrIHqjZbdRs6+a7OSfT547V0gOiWhYRsRip/9k9doxg==
-X-Received: by 2002:a05:622a:40cb:b0:4a6:f4ca:68e4 with SMTP id d75a77b69052e-4a713cc71a7mr68712471cf.13.1749658356097;
-        Wed, 11 Jun 2025 09:12:36 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a6f3f76489sm65762301cf.13.2025.06.11.09.12.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 09:12:35 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 1654A1200043;
-	Wed, 11 Jun 2025 12:12:35 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 11 Jun 2025 12:12:35 -0400
-X-ME-Sender: <xms:8qpJaPRvPezLPDtHsufFcxiybXeO-M0Xr-CBxRSedeZWlWiKrxU-Ug>
-    <xme:8qpJaAz_o919iftO5SHWP3bMoCFBmoSclibdJ_iuRgLpOZdzU2O6xQcHpLOEYWzka
-    p3mBsg5_JGZrDf2Mg>
-X-ME-Received: <xmr:8qpJaE24aDTD7k1gOQqlhwrDOrPiS2_1Iv9LRysUC9NgT83tQofuR4Pprw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduvdeifecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddu
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhepieffjeehjeeludekfeeikefgteevjeeitdev
-    kefghfetkedvieejfeegtdffvefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
-    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
-    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
-    rghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgtphhtth
-    hopehvihhrvghshhdrkhhumhgrrheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprhgr
-    fhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslhhinhhuthhroh
-    hnihigrdguvgdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdp
-    rhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgi
-    drghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
-    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
-    gtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:8qpJaPASC1h95X96Q_ckIG60TlcdPVkotussSHusFTRp5Hp9OFxTsg>
-    <xmx:86pJaIh0PkE69P7nBdMxFJbP2nTdODKMghM9nlexi4CHNoUXWGsmIA>
-    <xmx:86pJaDpqkMIda32lafDX6N7dyy6FE-SfU9i5kcPl-SoedMdFfV2DFQ>
-    <xmx:86pJaDjoAkNV33JMpTQKe9s_IZNxCchDqSWIwY2OUOC-bSC28OZGTQ>
-    <xmx:86pJaLT8L9HTgLTSanbkRVJE3Mw45QC5MKVbr96yi-TfSqjpJUJLh7K7>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Jun 2025 12:12:34 -0400 (EDT)
-Date: Wed, 11 Jun 2025 09:12:33 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Yury Norov <yury.norov@gmail.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 2/3] rust: Use CpuId in place of raw CPU numbers
-Message-ID: <aEmq8fs1fHSB3z4i@tardis.local>
-References: <cover.1749554685.git.viresh.kumar@linaro.org>
- <e790f17123beb45c6a811135ec3df8f0bd761c0e.1749554685.git.viresh.kumar@linaro.org>
+        bh=KyNFKemnRNzyt/7LqR30HwimFe7KXWQY+EiWh5tmzaI=;
+        b=aoQEIOZih06cb2wiG451/dgMVi2pDIVSSICE7r+wl71+atzPjCWppefsjzqBqqkD7G
+         MK/dZ12DjVa6sfE8i/6alN0sgaZskUeqvcO0tuPjWgKdfC12xe+n4+X7HEupfwrLPPU6
+         JllUsSpjDZZNikDDSXK6vV1WJWi0Ch1kxNMOavzlfRGwTS8qXC7HTmd46g8qRFpnbpCP
+         LZUrIQ8AubzmhmdF5s9kJsDQqdmawgbLnudDlvR5LgqCn/+XrsjXOtY30Vlkx70tQe6d
+         thGPYbZ7SVc3yS8uyALx70eEvrGdkGGGyG6kPFC7efa1Jpp/Y8QxOTiBU2HPsa8I0xZd
+         qsLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUXD03ifCHIo+n3O7YAdAPmDjQQEaB3NpI+avZ3uA4J5/Pf/oGunsk4vQ9Teaw41mEbO/iSnjKLPX+C@vger.kernel.org, AJvYcCVSyDt9w7vVrRTreCfcoV3Iv7VxMA6PISVkkOhIZNh1oGjiEkjwhCDmZsdSLNYR61jLGLy/ur7UwwOm@vger.kernel.org, AJvYcCVZkHgKSj5vyi0EurTOxVWoJ2L4Rj86NpzNChiNqfzHlmAC7uT5YNnQlbuTVwZkqiWtrhGDfw9QaRsz@vger.kernel.org, AJvYcCX9JgSUXQhKG12I86l6yikpEENDdE0qRbKGzbyIjChyzvln2+BfxGHWuT7n1U67LJB8colagOFE9Qfgjhhu@vger.kernel.org, AJvYcCXRthceYES5Z4TzhsLhsvfA0vatEQLE580smTvFJ2QL81AZCCMBFNNg21x0239NGh2dwlSKFV8HVhCqvcbTrF4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe3/UOr7OGcdKgsStV1OfTGxrQrN4hDC6HpjvhE0FszdSOzezf
+	+z/b7yAP/R2TLj6e/+TYk60LJ3qi/4l6RdR7DqSnu73CTF+2ON5K/4CKbK2dX0k3TZPkToj0FOf
+	Nk8Ylf79qj2nobDsjBLVVlo7Ud3PiY4s=
+X-Gm-Gg: ASbGncsHKpW92O2HI1mVEv0Y0MV6MK+ljAIxfTOIxZOcBtsOxEINuCrkInpE0VA+6u7
+	kX7RF/CaWIZOl+7w47q2Mms1ki0HJR83RehpHftQbO4ObHo1eYEXXNqYh2tjYFRiG3TH8W7alXk
+	2KYIo4bMyBztgaThUEx6ICclgv4hWDFcPA1nnbb4fns4c=
+X-Google-Smtp-Source: AGHT+IE8o2IorCuFcUqW3Dxq8LkFc4fMvAMKwf+dTmyr9FxnqdwSW1OMco+JDmkRZVwCnFY7SBpojWZ8MSza5Nch4Qw=
+X-Received: by 2002:a17:90b:1dcb:b0:311:a314:c2c9 with SMTP id
+ 98e67ed59e1d1-313af0f9611mr2302611a91.1.1749660929073; Wed, 11 Jun 2025
+ 09:55:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <e790f17123beb45c6a811135ec3df8f0bd761c0e.1749554685.git.viresh.kumar@linaro.org>
+References: <CGME20250610125330eucas1p2a573627ca8f124fe11e725c2d75bdcc9@eucas1p2.samsung.com>
+ <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
+ <aEifXZnLxKd2wa0w@x1> <6ca6016e-3b17-48a0-ad8d-bb05317aa100@samsung.com>
+In-Reply-To: <6ca6016e-3b17-48a0-ad8d-bb05317aa100@samsung.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 11 Jun 2025 18:55:15 +0200
+X-Gm-Features: AX0GCFtO16UWgR7wAnoHoWp6WjbNacZo98Lk-lDtKNRkXYeSnMBe-Yw1GCMYPlU
+Message-ID: <CANiq72=88Aa-Fe0b6XiSfsOq0mM3jUw_e+DxpRRQdrdtWFJHsA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Drew Fustini <drew@pdp7.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 10, 2025 at 06:51:57PM +0530, Viresh Kumar wrote:
-> Use the newly defined `CpuId` abstraction instead of raw CPU numbers.
-> 
-> This also fixes a doctest failure for configurations where `nr_cpu_ids <
-> 4`.
-> 
-> The C `cpumask_{set|clear}_cpu()` APIs emit a warning when given an
-> invalid CPU number - but only if `CONFIG_DEBUG_PER_CPU_MAPS=y` is set.
-> 
-> Meanwhile, `cpumask_weight()` only considers CPUs up to `nr_cpu_ids`,
-> which can cause inconsistencies: a CPU number greater than `nr_cpu_ids`
-> may be set in the mask, yet the weight calculation won't reflect it.
-> 
-> This leads to doctest failures when `nr_cpu_ids < 4`, as the test tries
-> to set CPUs 2 and 3:
-> 
->   rust_doctest_kernel_cpumask_rs_0.location: rust/kernel/cpumask.rs:180
->   rust_doctest_kernel_cpumask_rs_0: ASSERTION FAILED at rust/kernel/cpumask.rs:190
-> 
-> Fixes: 8961b8cb3099 ("rust: cpumask: Add initial abstractions")
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://lore.kernel.org/rust-for-linux/CANiq72k3ozKkLMinTLQwvkyg9K=BeRxs1oYZSKhJHY-veEyZdg@mail.gmail.com/
-> Reported-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Closes: https://lore.kernel.org/all/87qzzy3ric.fsf@kernel.org/
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+On Wed, Jun 11, 2025 at 5:14=E2=80=AFPM Michal Wilczynski
+<m.wilczynski@samsung.com> wrote:
+>
+> The kernel config option that is different on my setup is:
+> CONFIG_RUST_BUILD_ASSERT_ALLOW=3Dy
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Yeah, code must work with `CONFIG_RUST_BUILD_ASSERT_ALLOW=3Dn` -- the
+config is an escape hatch just in case a user toolchain cannot build
+the code for some reason.
 
-One nit below..
+In other words, if a `build_assert!` is triggered, then that is a bug
+(likely in new callers misusing an API, but it could also be in the
+callees, of course).
 
-> ---
->  drivers/cpufreq/rcpufreq_dt.rs |  4 +--
->  rust/kernel/cpu.rs             |  4 +--
->  rust/kernel/cpufreq.rs         | 27 ++++++++++++------
->  rust/kernel/cpumask.rs         | 51 ++++++++++++++++++++++++----------
->  4 files changed, 59 insertions(+), 27 deletions(-)
-> 
-> diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-> index 94ed81644fe1..43c87d0259b6 100644
-> --- a/drivers/cpufreq/rcpufreq_dt.rs
-> +++ b/drivers/cpufreq/rcpufreq_dt.rs
-> @@ -26,9 +26,9 @@ fn find_supply_name_exact(dev: &Device, name: &str) -> Option<CString> {
->  }
->  
->  /// Finds supply name for the CPU from DT.
-> -fn find_supply_names(dev: &Device, cpu: u32) -> Option<KVec<CString>> {
-> +fn find_supply_names(dev: &Device, cpu: cpu::CpuId) -> Option<KVec<CString>> {
->      // Try "cpu0" for older DTs, fallback to "cpu".
-> -    let name = (cpu == 0)
-> +    let name = (cpu.as_u32() == 0)
->          .then(|| find_supply_name_exact(dev, "cpu0"))
->          .flatten()
->          .or_else(|| find_supply_name_exact(dev, "cpu"))?;
-> diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-> index 6a3aecb12468..7549594fad7f 100644
-> --- a/rust/kernel/cpu.rs
-> +++ b/rust/kernel/cpu.rs
-> @@ -127,9 +127,9 @@ fn from(id: CpuId) -> Self {
->  /// Callers must ensure that the CPU device is not used after it has been unregistered.
->  /// This can be achieved, for example, by registering a CPU hotplug notifier and removing
->  /// any references to the CPU device within the notifier's callback.
-> -pub unsafe fn from_cpu(cpu: u32) -> Result<&'static Device> {
-> +pub unsafe fn from_cpu(cpu: CpuId) -> Result<&'static Device> {
->      // SAFETY: It is safe to call `get_cpu_device()` for any CPU.
-> -    let ptr = unsafe { bindings::get_cpu_device(cpu) };
-> +    let ptr = unsafe { bindings::get_cpu_device(cpu.into()) };
+We may eventually remove it, or perhaps invert its meaning so that
+`allmodconfig` doesn't enable it, which is how I guess you ended up
+with it, right?
 
+I hope that helps.
 
-I generally found that `u32::from(cpu)` is more clear than `cpu.into()`,
-but it's up to you. Same for the rest of `cpu.into()` cases.
-
-Regards,
-Boqun
-
->      if ptr.is_null() {
->          return Err(ENODEV);
->      }
-[...]
+Cheers,
+Miguel
