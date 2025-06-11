@@ -1,65 +1,42 @@
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79E62417F9;
-	Wed, 11 Jun 2025 20:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DE02AE66
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 21:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749674224; cv=none; b=n0mVyn2GvVbX0OZRK+4hDMZoXaQ7pcMHPU4SxY2pCRmfYDQ40H5g7Pkz0/1v/HEtOcA/9R5SRQIyJ1Vb/P9aAExg6SZ2UM3kl9yadlNKt5DpHehq9SeV2lb53V6ohnBsY9YHAiKUxrpkY0qAGf/OmknXy02srSrjJZc+VDFEafI=
+	t=1749676566; cv=none; b=Ou1rZN6VRhqDJt/A6HetjIh7L028KNIdK3GoK15HBIqw2BcEtLomM68EXnMPEHhYLYvSH7PNqo/xSDhRSN3gUgyZUGC7TevfhxqI0GKD8e3Y0b+gLZ1CPovH5zxob00tZIMO606KPJPd1KGA6xNDky4mXzO1/zqd85ENlWVk9Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749674224; c=relaxed/simple;
-	bh=1jbOlYyWsSoJxJHBsx3sUCKjzmm3R5e/MzunKmtDyiI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ceZpOpqma0mO57aq4cE4mshxBXFvl/YJUtEIDGA57Kpn2e5SgqKwRhUk9TKGtdWqhvGQZFfWfZEZott5FnBkNeRIj5YD7xct1lfVdEpXKnYiG/pKIL1nWG7wBv8Jg31u35GDGmebHk0F6Z50SFnRRLWqzpMX8AXfKth08CY0t3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f+Lsdt3A; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749676566; c=relaxed/simple;
+	bh=34l1hncorS8+nkL26ZB/15dqnRBpVywFqIADeqMlHMU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:In-Reply-To:
+	 Content-Type:References; b=vCkhu6IRsmREofBUyalXdZqXwwY8NT1FJPlYVNPuIkwwOb9jwd+sa6usMWETWbOhd0nL3sJcA/ni/xVejGF5BFW40iWZ/EztB/69KbfJdXIwDWvZhdEXba6Tn4DHRdTLIEd290I8E3M1yJvyBzsR6cPj5ZagIWscd/XWN+N1P+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=bp0W74Lh; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f+Lsdt3A"
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-73502b47f24so199240a34.3;
-        Wed, 11 Jun 2025 13:37:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749674222; x=1750279022; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1jbOlYyWsSoJxJHBsx3sUCKjzmm3R5e/MzunKmtDyiI=;
-        b=f+Lsdt3AMubXsr4xsNjHFpepYW9cJEwkRI4n5vrxZOqSKMJC6YlQIc8kdBGzeQJTiI
-         461iUPVLj7IyzRu3T9qCnm/EAq8JYcP16tTOHmGzVFq5VOKpzMC45vGK+w2+4rSykVSk
-         f/x4GTQz1AchpC2ob41Ggded0djHbl/McpF9Gyq+jc1Fc5rrFL+3g/Fwi3L6oqIhJCGW
-         VFO8zrP4knMgrelvC4o4yCeQh66T2WSRABm/Z178GKbypN/zrcw5uxMHNM7MRiZ35Dyi
-         HqmvTzequMJA8FglBO008esvfRt23gc+U244EbcAtmLTvsZ00OBc5ltN/3NDz8o1zHFN
-         Nr9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749674222; x=1750279022;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1jbOlYyWsSoJxJHBsx3sUCKjzmm3R5e/MzunKmtDyiI=;
-        b=mvdp30PqPsn2gmVj/nTK4kQuawyIAk+9dqTqeeT8lMAIujJRNF7Aw579ewwPW2QX8g
-         qieDawE0n2DdXWl7/3nQyOUeUXr489Ab2/GknUO6f9GKRQRwM4YdyfarokLAm2SkWv/W
-         VRDs0uGRbFIaln6P3oZmJGS5bWFajAmEs4NaPTfYaF7wJOPxZht9wK9Qjm3QW+R7EDlf
-         KLoZMqSvKDxqZv1WGEqnIGufIczirDnahKpnJ7z/8FmxtDjRFuRyOiD6hWr5yjqPcbE4
-         OBcd/MZQ4lyprk/pJikh5mWofCI6tPtnpvkgW8sCXI+UiC6Iy7fM8ouegORLYF57IByq
-         qLzw==
-X-Forwarded-Encrypted: i=1; AJvYcCUJLpWoEBowRZLHI0qOyIL0uExgStIMSBP/3K8EQtcOkr1XaDpxHFBGnBQWH5L5bo1Hq8cXsCql3eRgHUU=@vger.kernel.org, AJvYcCX/RI9Cs97L07SHGjQE5exj9Ai7gpWd+GcdsW1L96CBruyDHpUIDgLkXq0aWWvv1LTb9ZiF/VpSQLZE/0oXt4U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI/XSUUc7MSbMRCgudb/bt7bgikhYz6Lmjuck3zjm+t3V3CwdD
-	yKEM4oZG2knjQUOGR/ZjNi8nS9fOkMxacKqqBfSlZbPkhfBq1+ItMOO86TYJQErH
-X-Gm-Gg: ASbGncsVzuCrhCWrIrTAUGAwfIX8gFpGKWNczmV6/UHWJ+N5ItjOjilrwgmF1WUwag7
-	RiSOULezQtVrlaupt1p1dIorjKMgH9YiDvNNCRkHedyOYQ8aBRu8jksODCMuQcmIieoDLwEyBoh
-	EhytZtgs+Oxw3rvIBjWn+f+J/Pn60zPqqWbgnAHno5fU3XRpC9xpH1AipNliT1OfNZI8RiEYAZ+
-	zxM4+83kA4iS75CD7cXq9yhQjgc1onJts80s/oSxvt38iKA/lDsjVDlIW5nOQf73nrgsmiM44Ea
-	U/bX1bNjonsp3BW2p5L9AW0kevogDazU6UxO9azPp66iPlOf+FHSOKjHx33umLo+fKW6Rboqk9I
-	XQHpj5XblwkLB9OVgVd/nYBaUPpEQyz8EwQ==
-X-Google-Smtp-Source: AGHT+IErJ8NJhf6Vhrhca1yGF8W4XUxxLs7Fto+rdniokphJ1xX6Qj+ipzubz99cxUXgc5ub6Oyxbg==
-X-Received: by 2002:a05:6830:4d87:b0:72b:ae42:3530 with SMTP id 46e09a7af769-73a169625d0mr128032a34.15.1749674221686;
-        Wed, 11 Jun 2025 13:37:01 -0700 (PDT)
-Received: from [192.168.86.39] (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a16c96873sm16985a34.48.2025.06.11.13.36.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 13:37:01 -0700 (PDT)
-Message-ID: <baf577bd-61d8-4ab4-b815-70b2e989baf6@gmail.com>
-Date: Wed, 11 Jun 2025 15:36:54 -0500
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="bp0W74Lh"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250611211602euoutp027014a412af419d49fd8b7057148c038d~IGZBAKOdK0516105161euoutp02E
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 21:16:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250611211602euoutp027014a412af419d49fd8b7057148c038d~IGZBAKOdK0516105161euoutp02E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1749676562;
+	bh=gJSx6fFWCab1L0dG4hF/wx4spo5Eingwx2AqpslewPk=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=bp0W74LhifQr+oDb85bFPnIvLOvQj11U4xNBK2Ctc3WQbNvMXWHlyVld+paX8aOnx
+	 jHUXOFqS4Gqc31gj9khxT2dS4yO5XFKlDvzNkeeaiVcPU7iuznz807UwDsOtlRhIGI
+	 wMx6yzURpEnZd1OPa2nu1tm7/icJkWPXwRhDOr4M=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250611211600eucas1p13784b73e9c0257e670846320bca0a2f9~IGY-b_FYG1491714917eucas1p1X;
+	Wed, 11 Jun 2025 21:16:00 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250611211558eusmtip17a546ce3e5256d611175ed66f1a5dc7a~IGY8xpr_31879718797eusmtip1c;
+	Wed, 11 Jun 2025 21:15:57 +0000 (GMT)
+Message-ID: <02e480b9-68eb-47e7-97f5-54e49d259f84@samsung.com>
+Date: Wed, 11 Jun 2025 23:15:57 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -67,32 +44,64 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/3] rust: add suppord for dynamic debug
-To: jbaron@akamai.com, jim.cromie@gmail.com, daniel.almeida@collabora.com,
- acourbot@nvidia.com, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, gregkh@linuxfoundation.org,
- rafael@kernel.org, rostedt@goodmis.org
-Cc: viresh.kumar@linaro.org, lina+kernel@asahilina.net, tamird@gmail.com,
- jubalh@iodoru.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250611202952.1670168-1-andrewjballance@gmail.com>
+Subject: Re: [PATCH v2 2/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
+	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
+	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
 Content-Language: en-US
-From: Andrew Ballance <andrewjballance@gmail.com>
-In-Reply-To: <20250611202952.1670168-1-andrewjballance@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <1d9bba9e-0f30-4039-812e-60b160271e6b@samsung.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250611211600eucas1p13784b73e9c0257e670846320bca0a2f9
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
+X-EPHeader: CA
+X-CMS-RootMailID: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
+References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
+	<CGME20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d@eucas1p1.samsung.com>
+	<20250610-rust-next-pwm-working-fan-for-sending-v2-2-753e2955f110@samsung.com>
+	<jbm3qvowi5vskhnjyqlp3xek36gzzqjt35m66eayxi6lmi525t@iefevopxjl53>
+	<1d9bba9e-0f30-4039-812e-60b160271e6b@samsung.com>
 
-On 6/11/25 3:29 PM, Andrew Ballance wrote:
-> This uses the module_path! macro to get the module name, which will not
-> be exactly the same as the c version if a kernel module contains multiple
-> rust modules. e.g. it might be "kernel_module_name::rust_module_name".
-> this does give a more accurate description of where the print statement
-> is located but it exactly what the c version does.
-oops. typo.
-is *not* exactly what the c version does.
 
-Best Regards
-Andrew Ballance
 
+On 6/11/25 22:04, Michal Wilczynski wrote:
+> 
+> 
+> On 6/11/25 08:58, Uwe Kleine-König wrote:
+>> Hello,
+>>
+>>
+>> What does .unwrap_or(0) do? You need to round up in this mul_div
+>> operation.
+
+Yeah and I'm thinking that the helper needs to be updated or new one
+added like mul_div_round_up, to do the rounding
+
+> 
+> The .unwrap_or(0) is to handle the case where the mul_div helper returns
+> None, which can happen if the divisor (rate_hz) is zero. In that case,
+> the period  becomes 0. The mul_div helper is introduced in this commit
+> [1].
+> 
+> [1] - https://lore.kernel.org/all/20250609-math-rust-v1-v1-1-285fac00031f@samsung.com/
+> 
+
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
