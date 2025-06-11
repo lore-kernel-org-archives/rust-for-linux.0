@@ -1,71 +1,71 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987611C8632
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 21:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4D246769
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 21:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749677543; cv=none; b=WXexxsv+zTeNBZXRdspnpWuW2vy+f3NTjm1s0JSZvOViE8NzetEWfqFFIVRKRFqDSeH3nWl++xlneHi4B/KOQmYzgiHZsY3shfXvaNzMmKUlG6TTrRz1vTx14KZ495MfNGcCYfrs10SaJbZOW3hK8fBdYNiqSsmjfs+6fkI+HJ4=
+	t=1749677919; cv=none; b=PsDieJwz5ks8BbD832oyxwWTTv0LBz/djzY1YpiavQbeQUpymf/GHfQzpPzASNOecHplo81J+dVnfZCHgxMdABNQDs31oh/i3Hc4IK8aNug3zhdpR4NJtDBnHOxnLJ06LvTldN4K4CzK66K+b2gRgnCobhGk4DbyCLmMQ9ZoNGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749677543; c=relaxed/simple;
-	bh=YupYUQilP0QxXHIjzGZlm4sAbHNJPvh2Hh0qSV+u4k4=;
+	s=arc-20240116; t=1749677919; c=relaxed/simple;
+	bh=abwOXp0UsdJR4D9ILB106oi7Q9bX3i+w0YcE694rjtM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LpPb2cNWnmJoj0ZIUbuoxnlwAsFIbobS1ES3A6gir5oYSctMwXbO6pZV8xy7z9UBhAYq+nNGeRP/oqwBu5HexYgI7DuXcsnEJaRohcZvUuGlQBco1HYFHtmqomg5nk8b/BM7/CpJZ4KDiyTLRhURfoAU7hzabroos/nZLWyDM4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ckv7/wFP; arc=none smtp.client-ip=209.85.128.45
+	 To:Cc:Content-Type; b=BPQDrzTGtl+1UoaQSgxczdsChCdpxfUBvBQp6bzlXQKvDcsV556A5BpjoVhDOdELAMLRDR7sT++inJpqSyGlllYOhKMcsJPHH9DaWhhtCpKXYK3N4Amtieh1RWQGkEfsYlJVj1VUpDx8OreBwhkiqDTDi8k1bY5pVRAAyNkI7jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z0prTqdT; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ckv7/wFP"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43edecbfb46so2038165e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 14:32:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z0prTqdT"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-450cfb79177so1273295e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 14:38:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749677540; x=1750282340; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749677916; x=1750282716; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=spsEjP8qEOdvTfxDRozqzSsaxiwtL4VXiPFQ4J66DNw=;
-        b=Ckv7/wFPkcIrxv8mBbLcOgRuhgtPjPHl+LpCZUhGZI4/WQp1IawDQKv1WH9NBLgVqW
-         jz08US0aqUnmPfNerUq8l2v+btxgghBP+oQZ8t1WOo7NlXI0R/CiJA13QRas/anoPGjz
-         J763JruCxfE6mM4PSuAhDdQELSaIIhlDABXXqnFzV7HWIY6b+7oimqS6DXVFeqr6jvj5
-         1ah7lvQOcyPHOr0bwKHpf1V7TGPzY6F+vWek7O8p1Ti8ekTLWMU041InOrh0G4p6WD4x
-         CYVrD4TwtJIlHMYS4B+bfj6I+lC01Y12q9lVE9WczZaCTwpm6NnkFAla8VIJAdeXPIXQ
-         wC5g==
+        bh=n/5ar9QXlIyiBU/c1loFvues+d0iCU3bkGxECwh2V9g=;
+        b=Z0prTqdTsvene1KUs/rw5rrYVWRZsNk/s0y6jyRadUaBcgUQFGYeqXqIpQLuHAVUKW
+         dkbhIMkVWntWldu30ysXH/XDUjEjsL+bnez8O82odmzuCeK2hsjrFe5Iyilg5780Clzf
+         XHnmaMj1Wkt7HfYTLS8jX1E4pjKkJmW0ZLJy3tzWt8cDNEVt8v68KZYdOAC1vXiOTfRm
+         3vTr6siG1MCLEOrLf10BjhiqA1MrrhCkMYmHNS8eRily0z6wbYRd7QfIIEFgW6ZWsgIY
+         J60T8jAbkZ40owH5eFAhyd8uyvHA62QDAQWwa2SZ2wV0b4U2SjCzjxEIQSIIH4sYGHlt
+         1ggA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749677540; x=1750282340;
+        d=1e100.net; s=20230601; t=1749677916; x=1750282716;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=spsEjP8qEOdvTfxDRozqzSsaxiwtL4VXiPFQ4J66DNw=;
-        b=tpY59czVu6UgmxLXPYIksrCNA4wMkUGDxwmck3ipQTjamfKAwEvGZ4uCI6VzuhWz5+
-         anYBQTJKTEjRaURDZxsyI0fooEfHSkuqfa3tJZTKTyiA42ksNpPUyovSffc4+AEUy7Hv
-         0NR77gcjr5o6Puru4YFf+FYXjy2RLNRKjc5tS69TmWST4V02ADgvl/d3uS+0B1tQXTTI
-         71f15ptJBEUVHcNMwDUkIocML3argZTsaaeoMwAso4Rrapi4IICkDFs1bs3oDLGAfJSU
-         B/BcKZOo2GLGOdq5LsWZbe8sast7+BFKX5Spv8YeAOKsio0fIA438a5GhWOwc8cLpG84
-         zjPw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0FnobTe81a3pwFd714aElJ/0QHrHCaVIQ5jHkK4EIKD74+7Pm+oSTTZkswrb0MG9FaLchNm8Z/0QrmJpWBA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVcMtVDp9+kHQ0b/WOAwCh0U5eEwfJ5bXwIqvbipXes9Z0GRwm
-	1RpwzcIiQi0QSO1Up7jo8d8IpzKaMvlN5lnf9LBKfeKQmzfn/KzSZrlPlZuHLdn5lDIu42z8XWD
-	fBSg/L2Hc7/fmU+NbEapOtqUPL4CCB+ddjxXXWmOn
-X-Gm-Gg: ASbGncumuF67uOw+sn6OFfHRxa/cYRR27vLpUB5XUDgWdwuaOGMvh1hP/W0EGfSppxJ
-	aicalhQBBr9f3pdsUnKJZzuq/UK65Kbika65avxvl216A17gOdOXshX2zvSJxALPhxdlZd2+YMf
-	zroG27psYj9C6UwV2NrLAQYgaHfhxmNhDr6+n5SDzqilDP+E+32S55SpU=
-X-Google-Smtp-Source: AGHT+IEVHVP3cU2A9uR1QbwmVLTk0uCabA4E3xKpPhc0gkg9XOaInY/OR3X/oP1yc4WJjUGEewZOobYz8P6AWX+7CP0=
-X-Received: by 2002:a05:600c:1d0a:b0:450:d3b9:4b96 with SMTP id
- 5b1f17b1804b1-4532b8c65e2mr13895795e9.13.1749677539877; Wed, 11 Jun 2025
- 14:32:19 -0700 (PDT)
+        bh=n/5ar9QXlIyiBU/c1loFvues+d0iCU3bkGxECwh2V9g=;
+        b=GKV//SQFUqh8zhIrPRBtvV0EBT6csltxdujRJqnP0+c4uGyES03LvmLxGw9O3V5Niw
+         2IDcEpR/jOBsVXTpg0eqwAt9Ryr0LIP7SYq6UUfbUwQG5jkshwJ+6dSIpccrVicvvZB8
+         1iL55omoMg0qB8xuF+d/MO7z7Kcd8r51ey4GYd5rMIHL8mPX9edx7em/erMd/nARFCj2
+         dZbzSYgK1+8D6MRRy3biyFXOw0vfmc4DZlCVvsgA8feVMzdrxHJhnpw8IMIVivc3VTEn
+         TXdjAUr8EJk2EKwq+BVlVXTQDLwRT2rc/aX/wnYEMVO+QgrDm/OnbnAgt7DQi9KvKR7G
+         jbaw==
+X-Forwarded-Encrypted: i=1; AJvYcCWB+ByXuABYINc7umUwBukhZAxtmo+ZYgx+zay69xK1uJ7RwRnW0bdD6SbUCV5kmJBrtbmuTUJk2zs++FnRbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNB+yDJmPj25qxwEz9wPkdbDSapFUblp6GfXMqYclnekxrXSrg
+	xy2HwBDrvoerY7r09iJbnGtUETX6kmZt8K6W9C7utNBHUt8oN4uMAQ19JKpHkIbfRYAyozZ4vMb
+	rg4SxoO0zpbODe1KnokmQ//EQpM8RHk9WNRN3B+i3
+X-Gm-Gg: ASbGncsoSNNlKLRnN44FDJPgIy/yzwAX4KLXAGXZPFAeSBLZbaoag9u7f/6jSAm3dRi
+	YglpCwQIxqrVJFmcl8yN9cc+gjBoy+V/sYBRFshSQSOcnk1jJIoXaH1/MnQKYTnF/iDiufnke1P
+	kNVB+ulkeO1dg2l25PmlWO00OBhCDIK/elEsCwUhhv/YSP
+X-Google-Smtp-Source: AGHT+IHHSpGnOkmwiZUhWn5tR19FPasvkAF9uSu8jBeCBhPrOha3D1g6d+vqysm61mf9cwIZSb6yKNKhiFY/0zz3ckc=
+X-Received: by 2002:a05:6000:230f:b0:3a5:39be:c926 with SMTP id
+ ffacd0b85a97d-3a560759d44mr726868f8f.32.1749677915566; Wed, 11 Jun 2025
+ 14:38:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250611202952.1670168-1-andrewjballance@gmail.com> <20250611202952.1670168-2-andrewjballance@gmail.com>
-In-Reply-To: <20250611202952.1670168-2-andrewjballance@gmail.com>
+References: <20250611202952.1670168-1-andrewjballance@gmail.com> <20250611202952.1670168-3-andrewjballance@gmail.com>
+In-Reply-To: <20250611202952.1670168-3-andrewjballance@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 11 Jun 2025 23:32:06 +0200
-X-Gm-Features: AX0GCFu3JIhASEbKWApyPZ901XhH3tEKz1_inQTURtY-R1efLtqeP2Vjn9Q4Cfo
-Message-ID: <CAH5fLghOp4+P5SVMAoNbxwjf9HASRRU11SErJary7SZ0qrB-HA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/3] rust: static jump: add support for nested arguments
+Date: Wed, 11 Jun 2025 23:38:22 +0200
+X-Gm-Features: AX0GCFttGEw3V80GdhYdzCwIxKhxUWpWnqO2fdzYtI8uhl6GYiu-70__QWoreMw
+Message-ID: <CAH5fLggTL9Ej8rcakd-gDz+h0dZhA1PRzxf+76EjxotOBJW7fg@mail.gmail.com>
+Subject: Re: [RFC PATCH 2/3] rust: device add support for dynamic debug to pr_debug!
 To: Andrew Ballance <andrewjballance@gmail.com>
 Cc: jbaron@akamai.com, jim.cromie@gmail.com, daniel.almeida@collabora.com, 
 	acourbot@nvidia.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
@@ -81,70 +81,258 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Jun 11, 2025 at 10:30=E2=80=AFPM Andrew Ballance
 <andrewjballance@gmail.com> wrote:
 >
-> allows for nested arguments to be used with the static_branch macro.
-> e.g. `outer.inner.key` can now be accessed by the macro
+> adds support for dynamic debug for the pr_debug macro.
 >
 > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
 > ---
->  rust/kernel/jump_label.rs | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/print.rs            | 167 +++++++++++++++++++++++++++++++-
+>  2 files changed, 164 insertions(+), 4 deletions(-)
 >
-> diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
-> index 4e974c768dbd..4ea3cbb340ff 100644
-> --- a/rust/kernel/jump_label.rs
-> +++ b/rust/kernel/jump_label.rs
-> @@ -19,9 +19,9 @@
->  /// The macro must be used with a real static key defined by C.
->  #[macro_export]
->  macro_rules! static_branch_unlikely {
-> -    ($key:path, $keytyp:ty, $field:ident) =3D> {{
-> +    ($key:path, $keytyp:ty, $field:ident $(.$field_cont:ident)*) =3D> {{
-
-I think this can be:
-($key:path, $keytyp:ty, $($field:ident).+) =3D> {{
-
-this means "one or more identifiers separated by dots.
-
->          let _key: *const $keytyp =3D ::core::ptr::addr_of!($key);
-> -        let _key: *const $crate::bindings::static_key_false =3D ::core::=
-ptr::addr_of!((*_key).$field);
-> +        let _key: *const $crate::bindings::static_key_false =3D ::core::=
-ptr::addr_of!((*_key).$field$(.$field_cont)*);
->          let _key: *const $crate::bindings::static_key =3D _key.cast();
->
->          #[cfg(not(CONFIG_JUMP_LABEL))]
-> @@ -30,7 +30,7 @@ macro_rules! static_branch_unlikely {
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index bc494745f67b..e05e9ce5d887 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -46,6 +46,7 @@
+>  #include <linux/cred.h>
+>  #include <linux/device/faux.h>
+>  #include <linux/dma-mapping.h>
+> +#include <linux/dynamic_debug.h>
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+>  #include <linux/file.h>
+> diff --git a/rust/kernel/print.rs b/rust/kernel/print.rs
+> index 9783d960a97a..4f0d79804d23 100644
+> --- a/rust/kernel/print.rs
+> +++ b/rust/kernel/print.rs
+> @@ -371,13 +371,15 @@ macro_rules! pr_info (
+>  ///
+>  /// Use this level for debug messages.
+>  ///
+> -/// Equivalent to the kernel's [`pr_debug`] macro, except that it doesn'=
+t support dynamic debug
+> -/// yet.
+> +/// Equivalent to the kernel's [`pr_debug`] macro.
+> +///
+> +/// This has support for [`dynamic debug`].
+>  ///
+>  /// Mimics the interface of [`std::print!`]. See [`core::fmt`] and
+>  /// [`std::format!`] for information about the formatting syntax.
+>  ///
+>  /// [`pr_debug`]: https://docs.kernel.org/core-api/printk-basics.html#c.=
+pr_debug
+> +/// [`dynamic debug`]: https://docs.kernel.org/admin-guide/dynamic-debug=
+-howto.html
+>  /// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
+>  /// [`std::format!`]: https://doc.rust-lang.org/std/macro.format.html
+>  ///
+> @@ -390,8 +392,18 @@ macro_rules! pr_info (
+>  #[doc(alias =3D "print")]
+>  macro_rules! pr_debug (
+>      ($($arg:tt)*) =3D> (
+> -        if cfg!(debug_assertions) {
+> -            $crate::print_macro!($crate::print::format_strings::DEBUG, f=
+alse, $($arg)*)
+> +        #[cfg(any(DYNAMIC_DEBUG_MODULE, CONFIG_DYNAMIC_DEBUG))]
+> +        {
+> +            if cfg!(debug_assertions) {
+> +                $crate::dynamic_pr_debug_unlikely!($($arg)*);
+> +            }
+> +        }
+> +
+> +        #[cfg(not(any(DYNAMIC_DEBUG_MODULE, CONFIG_DYNAMIC_DEBUG)))]
+> +        {
+> +            if cfg!(debug_assertions) {
+> +                $crate::print_macro!($crate::print::format_strings::DEBU=
+G, false, $($arg)*)
+> +            }
 >          }
->
->          #[cfg(CONFIG_JUMP_LABEL)]
-> -        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field,=
- false }
-> +        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field$=
-(.$field_cont)*, false }
->      }};
->  }
->  pub use static_branch_unlikely;
-> @@ -46,14 +46,14 @@ macro_rules! static_branch_unlikely {
->  #[doc(hidden)]
->  #[cfg(CONFIG_JUMP_LABEL)]
->  macro_rules! arch_static_branch {
-> -    ($key:path, $keytyp:ty, $field:ident, $branch:expr) =3D> {'my_label:=
- {
-> +    ($key:path, $keytyp:ty, $field:ident $(.$field_cont:ident)*, $branch=
-:expr) =3D> {'my_label: {
->          $crate::asm!(
->              include!(concat!(env!("OBJTREE"), "/rust/kernel/generated_ar=
-ch_static_branch_asm.rs"));
->              l_yes =3D label {
->                  break 'my_label true;
->              },
->              symb =3D sym $key,
-> -            off =3D const ::core::mem::offset_of!($keytyp, $field),
-> +            off =3D const ::core::mem::offset_of!($keytyp, $field$(.$fie=
-ld_cont)*),
->              branch =3D const $crate::jump_label::bool_to_int($branch),
->          );
->
+>      )
+>  );
+> @@ -423,3 +435,150 @@ macro_rules! pr_cont (
+>          $crate::print_macro!($crate::print::format_strings::CONT, true, =
+$($arg)*)
+>      )
+>  );
+> +
+> +/// all of the code that is used for dynamic debug for pr_debug!
+> +/// this is public but hidden. This code should only be called
+> +/// by the `pr_debug!` or `dev_dbg!` macros.
+> +#[cfg(CONFIG_DYNAMIC_DEBUG_CORE)]
+> +#[doc(hidden)]
+> +pub mod dynamic_debug {
+> +
+> +    pub use bindings::_ddebug;
+> +
+> +    use crate::c_str;
+> +    use core::fmt;
+> +    use kernel::str::CStr;
+> +
+> +    /// a wrapper around the C `struct _ddebug`.
+> +    /// this is public but hidden.
+> +    ///
+> +    /// # Invariants
+> +    ///  - this is always static mut.
+> +    ///  - this is always located in the "__dyndbg" section.
+> +    ///  - this has the same layout as `_ddebug`.
+> +    #[repr(transparent)]
+> +    pub struct _Ddebug {
+> +        pub inner: bindings::_ddebug,
+> +    }
+> +
+> +    impl _Ddebug {
+> +        pub const fn new_unlikely(
+> +            modname: &'static CStr,
+> +            function: &'static CStr,
+> +            filename: &'static CStr,
+> +            format: &'static CStr,
+> +            line_num: u32,
+> +        ) -> Self {
+> +            // rust does not have support for c like bit fields. so
+> +            // do some bit fiddling to set the line, class and flags var=
+ibles
+> +            let class: u32 =3D bindings::_DPRINTK_CLASS_DFLT << 18;
+> +            let flags: u32 =3D bindings::_DPRINTK_FLAGS_NONE << 24;
+> +            let bit_fields: u32 =3D line_num | class | flags;
+> +
+> +            let arr: [u8; 4] =3D bit_fields.to_ne_bytes();
+> +            let bits =3D bindings::__BindgenBitfieldUnit::new(arr);
+> +
+> +            #[cfg(CONFIG_JUMP_LABEL)]
+> +            {
+> +                Self {
+> +                    inner: bindings::_ddebug {
+> +                        modname: modname.as_char_ptr(),
+> +                        function: function.as_char_ptr(),
+> +                        filename: filename.as_char_ptr(),
+> +                        format: format.as_char_ptr(),
+> +                        _bitfield_align_1: [],
+> +                        _bitfield_1: bits,
+> +                        // SAFETY: STATIC_KEY_INIT_FALSE is initialized =
+as zero
+> +                        key: unsafe { core::mem::zeroed() },
+
+Please define a STATIC_KEY_INIT_FALSE constant in
+rust/kernel/jump_label.rs and refer to it. You can use mem::zeroed()
+in the definition of the constant.
+
+> +                    },
+> +                }
+> +            }
+> +
+> +            #[cfg(not(CONFIG_JUMP_LABEL))]
+> +            {
+> +                Self {
+> +                    inner: bindings::_ddebug {
+> +                        modname: modname.as_char_ptr(),
+> +                        function: function.as_char_ptr(),
+> +                        filename: filename.as_char_ptr(),
+> +                        format: format.as_char_ptr(),
+> +                        _bitfield_align_1: [],
+> +                        _bitfield_1: bits,
+> +                        __bindgen_padding_0: 0,
+> +                    },
+> +                }
+> +            }
+> +        }
+> +    }
+> +
+> +    /// a wrapper function around the c function `__dynamic_pr_debug`.
+> +    /// # Safety
+> +    /// - descriptor must be a valid reference to a `static mut` _Ddebug
+> +    pub unsafe fn dynamic_pr_debug(descriptor: &mut _Ddebug, args: fmt::=
+Arguments<'_>) {
+> +        // SAFETY:
+> +        // - "%pA" is null terminated and is the format for rust printin=
+g
+> +        // - descriptor.inner is a valid _ddebug
+> +        unsafe {
+> +            bindings::__dynamic_pr_debug(
+> +                &raw mut descriptor.inner,
+> +                c_str!("%pA").as_char_ptr(),
+> +                (&raw const args).cast::<ffi::c_void>(),
+> +            );
+> +        }
+> +    }
+> +
+> +    /// macro for dynamic debug equilant to the C `pr_debug` macro
+
+typo
+
+> +    #[doc(hidden)]
+> +    #[macro_export]
+> +    macro_rules! dynamic_pr_debug_unlikely {
+> +        ($($f:tt)*) =3D> {{
+> +            use $crate::c_str;
+> +            use $crate::str::CStr;
+> +            use $crate::print::dynamic_debug::{_ddebug, _Ddebug};
+> +
+> +            const MOD_NAME: &CStr =3D c_str!(module_path!());
+> +            // right now rust does not have a function! macro. so, hard =
+code this to be
+> +            // the name of the macro that is printing
+> +            // TODO:
+> +            // replace this once either a function! macro exists
+> +            // or core::any::type_name becomes const
+> +            const FN_NAME: &CStr =3D c_str!("pr_debug!");
+> +            const FILE_NAME: &CStr =3D c_str!(file!());
+> +            const MESSAGE: &CStr =3D c_str!(stringify!($($f)*));
+> +            const LINE: u32 =3D line!();
+> +
+> +            #[link_section =3D "__dyndbg"]
+> +            static mut DEBUG_INFO: _Ddebug =3D
+> +                _Ddebug::new_unlikely(MOD_NAME, FN_NAME, FILE_NAME, MESS=
+AGE, LINE);
+> +
+> +            // SAFETY:
+> +            // - this is reading from a `static mut` variable
+> +            // - key.dd_key_false is a valid static key
+> +            let should_print: bool =3D unsafe {
+> +                #[cfg(CONFIG_JUMP_LABEL)]
+> +                {
+> +                    $crate::jump_label::static_branch_unlikely!(
+> +                        DEBUG_INFO,
+> +                        _Ddebug,
+> +                        inner.key.dd_key_false
+> +                    )
+> +                }
+> +                #[cfg(not(CONFIG_JUMP_LABEL))]
+> +                {
+> +                    // gets the _DPRINTK_FLAGS_PRINT bit
+> +                    DEBUG_INFO.inner.flags() & 1 !=3D 0
+> +                }
+> +            };
+> +
+> +            if should_print {
+> +                // SAFETY: `&mut DEBUG_INFO` is a valid reference to a s=
+tatic mut _Ddebug
+
+No, we can't use mutable references like this. In Rust, the real
+meaning of &mut is exclusive, not mutable. (And the real meaning of &
+is shared.) We don't have exclusive access to the DEBUG_INFO static
+here - the access is shared, so we must use &_ references instead of
+&mut _ references here.
+
+Note that by using Opaque, it's possible to mutate the value even if
+it's behind a &_ reference.
+#[repr(transparent)]
+pub struct _Ddebug {
+    pub inner: Opaque<bindings::_ddebug>,
+}
+and then you can do DEBUG_INFO.inner.get() to obtain a mutable raw
+pointer to the contents.
+
+> +                unsafe {
+> +                    $crate::print::dynamic_debug::dynamic_pr_debug(
+> +                        &mut DEBUG_INFO,
+> +                        format_args!($($f)*)
+> +                    );
+> +                }
+> +            }
+> +        }};
+> +    }
+> +}
 > --
 > 2.49.0
 >
