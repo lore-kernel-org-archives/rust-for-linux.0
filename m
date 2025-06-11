@@ -1,74 +1,74 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F481A7AF7
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 18:55:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623D4283C8C
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 19:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749668126; cv=none; b=BhF4Y7d/88EUY9VA0ehp9wF7DGDshLw98D1+3UBd0ceXR7V405R3rGKtzugVxQaJGOzah2TY9UxKxtgdd3yEdmSJ0SuBwjzgzwuvaa8FtClMTkgjSpO44uL6hPwPKdrC9e62KMtuSd4DhVmVNECUQZD1tGrx/Toy56leCqDbtaQ=
+	t=1749670607; cv=none; b=JNVSv/8SWNXRbo/Fnwd+hPHzADrF9hLydGQud7mJ0lcD9HJ/1r793ISzFsZREL5D70FPGleCultyOIpxlgj79/0ptNnI9BQqk+B7jfFhS4u+taFXQaNk23V+mJBY56Kpq+2l0UkuSIqLOJ/6ZrxRaSngiHIP4iiZ4Eokz6NwbfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749668126; c=relaxed/simple;
-	bh=wp8HZyLOC3rXTiPmHjUFoTJefTT1msqGjMmKBtHfquk=;
+	s=arc-20240116; t=1749670607; c=relaxed/simple;
+	bh=FRd5Pca7J/f+Rrh/WDUQUYH4N+OoqdWEDRYIieG9g68=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cciwg2/bnEXOuefR9SZBdjydlxSHdFNEQlZGNR4bP3MGk0392pXJugYCpK7ijZQjvY33pNnI6Gfn06HbLPBSqtL3/NdD0MzHT8FGT0nkakmYAfgm1zq93P71c/NpW3wjyiUlXz6X9TYGKTA0Xf2mdp0g+WVmTt3OHIh0e9Olzjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HIM5Fk3v; arc=none smtp.client-ip=209.85.160.52
+	 To:Cc:Content-Type; b=jS/Oh8C94Pz8qNi34U6+R3nJtjhP/8+owhtpnpb0qvARSzTDo1SmSmEPSPsEYt/uXxAO9NlI4uMY+3d9NWaXWY5XpzRJ4lpr5UDUSpVNg393I+D+Xs4TM/5o+9DZrDTt54nrtNJ8SJBFwLbq8ofoXKGb9fjI9a61U4Q6HAkG0bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZRtR+Fe3; arc=none smtp.client-ip=209.85.160.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HIM5Fk3v"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2ea08399ec8so75143fac.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 11:55:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZRtR+Fe3"
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2e41064e247so69608fac.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 12:36:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749668124; x=1750272924; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1749670602; x=1750275402; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=beC8Z65uROnyx1+hT6aGH8wiIbVvPAr55ja+xnQ3O4M=;
-        b=HIM5Fk3vfRKh0lxCSAZeVDgIoHJVM+bp/0GwwlZ5JlZfDvUw9kxmQQ6TtVu3iTHQXv
-         uj1kTSGyOsdtRdPsdVzWTMKH/R0Ttwc93jaJHlVD7etAsGOGEr7RwdNL7VAJVuESDmVM
-         MzIWEnd1oIFAFn/J/mdcN6sEdVmCeAt+2XnBemqfn0lHukY/nscSvKzeUzhGJ8aJmYam
-         SvO/LxpU/HZbufUNbUuBRHJPq18szAnvypoxY1hV+/Y+7BPsnimA8EhcIsX6uWhsJEM7
-         n2khs4yOxMoTj5jf8RzAxMMP/nGNFIs+t6+YNHJDtSdrDiec3zXkB2ctVs7Dt8pSm6s3
-         E/vw==
+        bh=FRd5Pca7J/f+Rrh/WDUQUYH4N+OoqdWEDRYIieG9g68=;
+        b=ZRtR+Fe3HGuSlgGH3VtaS0jW/rbxnNvNLADsIE+zLfegoHWEeWNzu5rsYk6AXahF6K
+         w15Z5kQ0Y/zsWKpsZEPGrhpaA9pn8E4onu/zGzCqrWcfZT4iKjdKqwAeZKqiW5Mq3g+J
+         TuEDpW3Ur8y+6HKULNvWz86R61qY1IqMwF45vh0eS3oyOG6fFFkKHY+lgHYZoCjudPJV
+         v9oRTUgZ11zn6hmXiKU1oOBsr90CkN8A5z3wUvOqp+pD4y4cpNXMDQq8GfmQmHoFm5el
+         gWeUfOIOmeDC2LWYfYBWxGMgfhN4hFm2YE8PYUCL0CHSy5AgLJAp3EUC81BJQ3vN5eZz
+         B9Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749668124; x=1750272924;
+        d=1e100.net; s=20230601; t=1749670602; x=1750275402;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=beC8Z65uROnyx1+hT6aGH8wiIbVvPAr55ja+xnQ3O4M=;
-        b=XgaPjcMxDLx+kthufBMDxMYvJIitjjHR5FftoJLjEFHSoC195bJtYM9mSmwhkmzUi2
-         1CXp3VaYj26UUCU3d2Lr7JOMrmerkFPiXvUrxhygwQVvUrjtqqfd5ce5urHAToQXorxj
-         0KyZkiCowCUYFo2i2L5FEZZYz+RBA6uHXNDhiFbUYFLqVPwkmEsHJqTSRGDX1gt8dc+K
-         IaOAsFPeIGZc7+J42PA3cC24m/gIBzJ/8P9DY02KWziLEvp8qduhFpbyfgxoePL3YsKR
-         M5P/t61QJ8Hx3xkEtQjuRHHoTyEGJ1jt3tKk1r5T+1dENf18r46DBjc46ldyZOWKIWZ6
-         3Rdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJpVcJUfv8YudeUdpRLVagm4yCC4WIVnj6B0S+ZEHElUQ1okqZQ4IZ/4kJR9RZ6MWk2ypVn0u6pMi9fq8mBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2JvOB1bsHzTye9BmTehB98oQvJdTy+csyz5sAursfVRHyO0cs
-	xTW2Da85BMgvTcTctif5NxzAQDH8fiooPmjO1x//xwKRm3G/Z/mlfQ1zzx63Ll8WeGa5adrnPti
-	o8umvCCxK4h4UgvejCWog2socv99/7yWweNVBcWvV
-X-Gm-Gg: ASbGncvJGa/SAt8tjjSS3GeSzcNq8RKqNV8cuai9Q6SmeRo1oDoKOrXoF+Su/y/f8oN
-	So5O9mP/5TijVmVLjA0FStgvJ9lpx/ItUz35sircamFZyo5ZSokfCyBzrz4ZM31e2nD59IfaFvH
-	HOuWKE15TpG305szdOusxDktq/0LXsjUncf6j7Pf8sq45974YI8EmTkgdmzqKJHNoWkcmYd8ZX2
-	g==
-X-Google-Smtp-Source: AGHT+IFm5koQ1am9XzCkDYWSKKHdTnpCmDx3ukx8uUs89uQXT6FQEXhC8vQNZ/zb7P0GTM6dRbspZekaaZ+IVXid7JU=
-X-Received: by 2002:a05:6870:9a21:b0:2a3:832e:5492 with SMTP id
- 586e51a60fabf-2ea96e50019mr2720181fac.25.1749668123822; Wed, 11 Jun 2025
- 11:55:23 -0700 (PDT)
+        bh=FRd5Pca7J/f+Rrh/WDUQUYH4N+OoqdWEDRYIieG9g68=;
+        b=E0hYH+/4DWg+Gk9CjSljZ5qY47b30Pl3IVPOrW3Ip7RiST5Ft0HDhfuALYvdeVv4uX
+         gPJiqk9G1/bL60p8Q19ETjADRKcqdYnXn/tpoimW+urNW6u49nXjJWqbS6qoptar9osa
+         3ORrzhRPABddT33v60reWp8Exl4e0LO47FgEgatEp+MUh6qQsAxlcqbi969wXHD8ftW0
+         XENXsN9cpL9YRTjeJlNliBo8AkAG42CGikNQ77+dzZHW0Ousc0urSrHsBO0pdaWs0W/O
+         0jplnp21kiHiH7Ms7A+kC6hPZJMpdfP0S1QO/ZhhxO+83Uh6Z+EuBpCrHJG184WfNExj
+         fzNA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEBcLLAMGasFdn48adFgB+2af2x93CyLeIQp96UeNkYIL2E/jHNI/TkZ+Ep6G5Dhzf82bvZIv4DHLLNu9EbQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfh49f4Yp9cZJFxEoJSLJQfViglN3otb5a8klgWlxJVWE8GqzP
+	38Yitxt3HbgxFSms2sJdQjx4DILZR65IuBYktbC/+rn4e8+JRTtnzv6rRaT6sNPETt5ZuKWjDeA
+	Hc5JqoffdeVqW4gwllTgRBX/6sbKHt/vlJE+9gwEs
+X-Gm-Gg: ASbGncveQD0LExK4OIV3RMz3Jy3v4Blwv2IN5iJnfnMSvwyqfZhNokxSOM6qqvIDAXc
+	hWDQ+cBtfFE+pLrlTIuRyV5yFWmqsNVau5UWm153Tu3jjepEcCIP0eBQOnFvpfnMamwuGGUQd5H
+	nlz8mtuL6N+gcWBJ3k6RhjFh47S9syu4tD3m63KXQXE9qnx4QInbCPtb93zDoS2NmkNuJPCiH8V
+	A==
+X-Google-Smtp-Source: AGHT+IHhX/J0KgTBqTFodOiUoIOZLLvskczxvrkU8jA+rrpxEq+8GIz7VrHt1fqC3oToKkknmx1PVZC1oRVO50e0z3g=
+X-Received: by 2002:a05:6871:2b0c:b0:2cc:3523:9cd5 with SMTP id
+ 586e51a60fabf-2eab6fa5f8amr84101fac.17.1749670602224; Wed, 11 Jun 2025
+ 12:36:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602135231.1615281-1-bqe@google.com> <20250602135231.1615281-5-bqe@google.com>
- <pXt1ZkjyScL3fnnuyw12MHGyxxDunKpUjhGl_tL4kg8FpobamrUohmzQyqMxtCPfgbUmmPl4ZE6wco8Yqs6aLD5jLTD5ZL-zeNo8wk0uKUM=@protonmail.com>
-In-Reply-To: <pXt1ZkjyScL3fnnuyw12MHGyxxDunKpUjhGl_tL4kg8FpobamrUohmzQyqMxtCPfgbUmmPl4ZE6wco8Yqs6aLD5jLTD5ZL-zeNo8wk0uKUM=@protonmail.com>
+References: <20250602133653.1606388-1-bqe@google.com> <20250602133653.1606388-5-bqe@google.com>
+ <aD2118mMOs8CZyGa@yury> <CANiq72k7wnHsd6jrckkZtRpwbTPE+5ikbCw=_RexuRvwBSp-Rg@mail.gmail.com>
+In-Reply-To: <CANiq72k7wnHsd6jrckkZtRpwbTPE+5ikbCw=_RexuRvwBSp-Rg@mail.gmail.com>
 From: Burak Emir <bqe@google.com>
-Date: Wed, 11 Jun 2025 20:55:12 +0200
-X-Gm-Features: AX0GCFusngWoMukaoowA3Y9KxP77OHDb2fRjiDbystdMuSVSbnZshuD95D1DnoM
-Message-ID: <CACQBu=UqBHD6XfVbjGfc+0i93TLJNrrHCrzHuzkd=vVU8H+RVQ@mail.gmail.com>
-Subject: Re: [PATCH v11 4/5] rust: add find_bit_benchmark_rust module.
-To: Pekka Ristola <pekkarr@protonmail.com>
+Date: Wed, 11 Jun 2025 21:36:30 +0200
+X-Gm-Features: AX0GCFuGeRjnvrLzoxm0k2luQ-ZeSCWV_imHjgZMV5WADOuB2TB360to4jKqdKA
+Message-ID: <CACQBu=X69A+XxMd5iqT3DgYpQ4Xx_z3GVouuyd3atUiKZKkw2g@mail.gmail.com>
+Subject: Re: [PATCH v10 4/5] rust: add find_bit_benchmark_rust module.
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -77,62 +77,51 @@ Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>,
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
 	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Carlos LLama <cmllamas@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
+	Pekka Ristola <pekkarr@protonmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 5, 2025 at 11:37=E2=80=AFPM Pekka Ristola <pekkarr@protonmail.c=
-om> wrote:
+Thanks all for the review & comments.
+
+On Mon, Jun 2, 2025 at 4:44=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> On Monday, June 2nd, 2025 at 16.53, Burak Emir <bqe@google.com> wrote:
-[...]
-> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> > index f9051ab610d5..3f826a73bdbf 100644
-> > --- a/lib/Kconfig.debug
-> > +++ b/lib/Kconfig.debug
-> > @@ -2605,6 +2605,19 @@ config FIND_BIT_BENCHMARK
+> On Mon, Jun 2, 2025 at 4:32=E2=80=AFPM Yury Norov <yury.norov@gmail.com> =
+wrote:
 > >
-> >         If unsure, say N.
+> > > +const BITMAP_LEN: usize =3D 4096 * 8 * 10;
+> > > +// Reciprocal of the fraction of bits that are set in sparse bitmap.
+> > > +const SPARSENESS: usize =3D 500;
 > >
-> > +config FIND_BIT_BENCHMARK_RUST
-> > +     tristate "Test find_bit functions in Rust"
-> > +     depends on CONFIG_RUST
+> > Is there any simple mechanism to keep C and rust sizes synced? (If no,
+> > not a big deal to redefine them.)
 >
-> The `CONFIG_` prefix should be removed.
+> One may pick them from C (possibly with a `RUST_HELPER_*` if needed).
+> If they are non-trivial macros, then using an `enum` instead of a
+> `#define` on the C side is also an alternative.
 
-Done.
+I'd prefer not to move these to a header file and define RUST_HELPER and su=
+ch.
+I'd prefer if test & benchmark code was somewhat contained (although I
+agree it would be nice to keep the two definitions in sync).
 
-[...]
-> > diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
-> > index 28c11e400d1e..9fefb2473099 100644
-> > --- a/rust/kernel/bitmap.rs
-> > +++ b/rust/kernel/bitmap.rs
-> > @@ -252,6 +252,20 @@ pub fn new(nbits: usize, flags: Flags) -> Result<S=
-elf, AllocError> {
-> >      pub fn len(&self) -> usize {
-> >          self.nbits
-> >      }
-> > +
-> > +    /// Fills this `Bitmap` with random bits.
-> > +    #[cfg(CONFIG_FIND_BIT_BENCHMARK_RUST)]
-> > +    pub fn fill_random(&mut self) {
-> > +        // SAFETY: `self.as_mut_ptr` points to either an array of the
-> > +        // appropriate length or one usize.
-> > +        unsafe {
-> > +            bindings::get_random_bytes(
-> > +                self.as_mut_ptr() as *mut ffi::c_void,
-> > +                usize::div_ceil(self.nbits, bindings::BITS_PER_LONG as=
- usize)
-> > +                    * bindings::BITS_PER_LONG as usize,
+> > What is the name policy for rust? Maybe a more human-readable name
+> > would work better here?
 >
-> I think the second argument to `get_random_bytes` should be in bytes, not
-> bits. So it should be multiplied by "bytes per long", not "bits per long"=
-.
+> Up to the maintainers, and generally the same as for C. In the global
+> Rust samples and things like that we have `rust` in the name since
+> they are Rust samples after all, but there is no need to say `rust` or
+> `module` in actual modules etc. unless there is a reason for it.
+>
+> I hope that helps!
 
-Thanks for catching this. At least I had memory safety in mind when I
-overflowed the buffer (facepalm)!
-Fixed.
+I renamed the module struct to `Benchmark` now and made the "name" the
+same as the file name.
+So the _rust suffix is there because the rust file really corresponds
+to the C file.
+In this particular case, I think it does help to see how it relates to
+the C file.
 
 Cheers,
--- Burak
+- Burak
