@@ -1,99 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3BD286D45;
-	Wed, 11 Jun 2025 13:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E18F35897;
+	Wed, 11 Jun 2025 13:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749648542; cv=none; b=B0DrGeZztynpEETvXyejm6c5N2Vov4RfQmJhQPFzeIaxDXPA34n1XpEx5oyGaHFeKnCYl/6rZ166/XYmTw1xEQZpdVKuKnTYCE3S6tUsUMmGC+9FZ340SvFa5/uUp8jhZ40x2eGIazE7YpmpvQDddCtNb0MVxqd8VUknj3nJM0E=
+	t=1749648687; cv=none; b=iaKfl/B8rjVHhgDu+2tWuXot3IJTeH0XHUbBQM3RIdQnsWDTSlxKRXTxqgJQ2GcpFOeAZyNliZm7AAkqSpQzN8FOYM1usuwK7fXe6a1gXmg7vZMyduv122uTpDpTcoRiCHCj7Zuf8t3hzbL9lP4XXulR/wGyLSOmdFfetIqK0EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749648542; c=relaxed/simple;
-	bh=RClr3x0WNuSzf2ZubOLtWGjnZaITNyNPnDjjvfXlAiE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mnZWEN6Xq/QfdDYPBqRp1fNGp7Wzb844xl7wfe6EE0yGwHBF/c8JgdLDSV6pcvbxKlCcbmhOdrEVuP6b6+GeTg3+f5LiXbRxKdQ+R46wZWpMnmWNIG15g842cVG33S/+k+h4zx/d+lQUmJ/gw8ZSHPHg+NzNNmhXyUH0FiXXsGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hCpfIroU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749648687; c=relaxed/simple;
+	bh=PRa45XHRyBZTLzhuAprRop3kJMcOBLwjBiDC1TfDrp0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RVl3F3tQ4tYsNBMS3QJviojSWshcjQwjdixwfyaQpPTVueHQWrSZknHIGaOlga+Z5Dp4aoJeM684j2KtiKDeuw8cyXCw3ckVnLm1PmJXjbH4GSmCgoPgnyiBQp3NBl2aI1XjcV0byU43CvA+kLrACAE388auaqhjZe+bPANxbE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nT61unBB; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hCpfIroU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75377C4CEEE;
-	Wed, 11 Jun 2025 13:28:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749648541;
-	bh=RClr3x0WNuSzf2ZubOLtWGjnZaITNyNPnDjjvfXlAiE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hCpfIroUSDomqKWzgRniCxFLoGglynZVDJ50MwjJxbeGhOkqqUQWQcJn5UowuQ07E
-	 8nkTyV0TuzRJDSAQTpjmgpUAjQKFw/320QBultivGDJP52FKuNElnUbV9DRvjMITyH
-	 Q1FWnHRgHsxODGZqXgU3ihX6fKMz/6USBfa2srVfnEc51jYdtCAlDGmBHxOn1axdpM
-	 wzmp5KIovoiE1jXglpwbuN0cPN8eYkoSVImYg5ITC25ae+BcnxnYomdSdF24iAnFqX
-	 9nkELSuKEZXuWbGnr5pUQmJORqabdR6FtbguEE9HPfIFt3+jI+vZvmeN2rMzBVXnk5
-	 4Qw/WXGeXLXIA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Benno Lossin" <lossin@kernel.org>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada"
- <masahiroy@kernel.org>,  "Nathan Chancellor" <nathan@kernel.org>,  "Luis
- Chamberlain" <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,
-  "Nicolas Schier" <nicolas.schier@linux.dev>,  "Trevor Gross"
- <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v12 2/3] rust: add parameter support to the `module!` macro
-In-Reply-To: <CANiq72kJtA3L3ja9ff7GuNUD8YW=Zd9bMycjMupgSaaaU_uufw@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Wed, 11 Jun 2025 14:36:01 +0200")
-References: <20250506-module-params-v3-v12-0-c04d80c8a2b1@kernel.org>
-	<20250506-module-params-v3-v12-2-c04d80c8a2b1@kernel.org>
-	<D9PW1NI2S6FV.8LA53J87VCML@kernel.org> <87plfazi13.fsf@kernel.org>
-	<87wm9ixy8n.fsf@kernel.org>
-	<lCbs63S4-QAb6tcnRuG7iQ6JIDnB5VbSqfCplFN7QmvJBXURj2IWSiowJPLH-OfOlWFITmU9XMqBE66e_07hYQ==@protonmail.internalid>
-	<CANiq72kJtA3L3ja9ff7GuNUD8YW=Zd9bMycjMupgSaaaU_uufw@mail.gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 11 Jun 2025 15:28:46 +0200
-Message-ID: <87o6uuxv8x.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nT61unBB"
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-553644b8f56so6387574e87.1;
+        Wed, 11 Jun 2025 06:31:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749648683; x=1750253483; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=by0JqHx34YNkgxgVF7BPRx6qQXycEbtV2xtHdw17AjI=;
+        b=nT61unBB7HEaAnN6ln5NwuHGoFuVOZOCDP+LsxO58fuf+2XBJ9+uAXGbuB5qGS7ytJ
+         DLbj+gdW209Y0+IE1FTLp5SZbI5MShngIpnQ1rZpjviQZn7ZmL3oeUl4Kbda0JnqskLE
+         YYGa9Vs0biZKEFReV5pFYunRYlDmtwmALPxOBnWdcI3tUYKlL6d4wFEhTTs88f2YDLYy
+         Saec2OA4aeyohZi5G0dQn3dCkDhak0UjZ0EqSDaZWdWaig8Wivb2LessszQXCPGVi6Vr
+         sSXgWd39xdEutecaPeHNDz7Y72/P9pUTmTQ/QW/wx0izs/XoG/xbl2DQWJaJ2nWvcXmh
+         3O2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749648683; x=1750253483;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=by0JqHx34YNkgxgVF7BPRx6qQXycEbtV2xtHdw17AjI=;
+        b=sd7ZePgDX7Qa3v/wUdK0GZ2BguyPa2OjpkhSB19lAfgOYdMiEe+TqsqqOSq0W08lSl
+         qGVsDbaPZI69Dwtzn9tFzBCpOd/H75fTlYwrGN0s5rdNYlUtf6kJ/F+JtwR7PNQSJZsF
+         +CuPcGcEEUTGf0lJOWfQ+yZ22NJ44h5zg9FWKChmh2V5k1o9osKVNX0/iiq9Cd6lixbR
+         uSRhP8adHxY5Mfb4aHV8Gt/5Z9VlK9uXvn7RKWwuFe5Z9HCCRqChTekf/tXNNfV1mZj9
+         3KACmpcw/9Xq1sjjneXAcFSRbSh7Mf+F30hIcB1LqVI3NWk3A0aic6hKQYOoV2A6vvdv
+         dcFA==
+X-Forwarded-Encrypted: i=1; AJvYcCV28bTH7E8vzYn/SZK/JIes0NjQNxftPPc+vlc9/XMPGLoD0aBTAny32oZfrGj9r99sgcq847HD@vger.kernel.org, AJvYcCWWLYkVAalHk/8+s7wbxitykKKPA0zRO6HiN4oLR/41pDcbIjclDOaeU2Ok46//4Tq/WDHD+e7Hz7H1sIE=@vger.kernel.org, AJvYcCWvjQzg2SKUt8RND9kovSGvsDrwbRBuKoEmAe7OpbBhjsMcjarJMDXYKqq3mT3Sa+2e2kFOLCYQpxmZdNNDDqM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxU3daWXrbbJlB6eRNXerRpN9YI+Ja82OAixmnLzRQ6amjF+LfT
+	lrh7enR40qt/FHO+T3AjwXghrGusFWsZvY3OrSIWh3MgV4Rgi6TCneyDK0ZFMp0moFTLahOYuBX
+	0+/bFkHsJwHjJikoWwrr2TZgsoWnZH1o=
+X-Gm-Gg: ASbGncvp/g+bxiP/FQn4y6+3jzcra6hXdQyO+mSXtfxvbDLEHJZu8ZkaKFGcnGmZlFU
+	i3dxs8JcoumQc6OmAToGmpmwwyYz+WlVlETvobQKz/Qv1P9NW6UZGX5gESEuLkaPMwm2G7vWKll
+	xS1oSAnd2ppUm7UlLnkrrK2W7Lq8S5XIiMUVDL1zEUal5ScyIR6GXGp/+4RKg=
+X-Google-Smtp-Source: AGHT+IEDPWyfJNtGTu4LypSaugkwIwqz2/qnaItV9jD0VPbgjbjAa2W2Tl+OD/G9iuaydAxR42mAP7rdnWAmqEma1yk=
+X-Received: by 2002:a05:6512:3089:b0:550:dee7:54b5 with SMTP id
+ 2adb3069b0e04-5539c171886mr1139842e87.41.1749648683215; Wed, 11 Jun 2025
+ 06:31:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com> <CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com>
+In-Reply-To: <CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 11 Jun 2025 09:30:46 -0400
+X-Gm-Features: AX0GCFtT1DHjt0sfo9S71NUi0h0ys836XgvRmUssTQNIwrVYzCc2sCzzIIu5zYw
+Message-ID: <CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com>
+Subject: Re: [PATCH] rust: cast to the proper type
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
-
-> On Wed, Jun 11, 2025 at 2:24=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
->>
->> So either we need to `#[allow(missing_docs)]` or just add the line back.=
- What do you prefer?
+On Wed, Jun 11, 2025 at 7:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> Do you mean if you remove the `concat!` too, right?
+> On Wed, Jun 11, 2025 at 12:28=E2=80=AFPM Tamir Duberstein <tamird@gmail.c=
+om> wrote:
+> >
+> > Use the ffi type rather than the resolved underlying type.
+> >
+> > Fixes: f20fd5449ada ("rust: core abstractions for network PHY drivers")
+>
+> Does this need to be backported? If not, I wouldn't include a Fixes tag.
 
-Yes, all of it.
+I'm fine with omitting it. I wanted to leave a breadcrumb to the
+commit that introduced the current code.
 
 >
-> It would need to be `expect`, but I think even an
-> `expect(missing_docs)` is not really useful vs. having some docs.
+> > +            DuplexMode::Full =3D> bindings::DUPLEX_FULL,
+> > +            DuplexMode::Half =3D> bindings::DUPLEX_HALF,
+> > +            DuplexMode::Unknown =3D> bindings::DUPLEX_UNKNOWN,
+> > +        } as crate::ffi::c_int;
 >
-> But another question is: if the docs are not useful, should an item be
-> hidden to begin with?
+> This file imports the prelude, so this can just be c_int without the
+> crate::ffI:: path.
 
-That is probably the best solution, yes.
+This has come up a few times now; should we consider denying
+unused_qualifications?
 
-> (By the way, that one is `rustc`, not Clippy)
-
-Right.
-
-
-Best regards,
-Andreas Hindborg
-
-
+https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/static.UN=
+USED_QUALIFICATIONS.html
