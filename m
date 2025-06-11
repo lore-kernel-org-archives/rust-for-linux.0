@@ -1,218 +1,110 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9757D202C5A;
-	Tue, 10 Jun 2025 21:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0551714AC
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 02:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749590599; cv=none; b=gUXHm0vu+4BT/3iwIwtkmsBpnzFr040rVoMJuLJNrGc5ZeWzrtbfN8M/HyR9ug9Y6NvDP4pUPZ/b8gWzF2/ttWKxyVzWvJAjUXN2AcG3ofscMZ1sn69aeqkODODYvD3+sPg9VMdtw30lEptEas7Ez54sfdMx3PPZGo20fATX2R4=
+	t=1749608313; cv=none; b=Nl1Oz3/dra+l61piYbt3x/5Pdu/47fl9rdaREnCN/1bbZlBCEMInZN4+kXpjjU8c0brmKuXfv8I3N5bo2qclIsXAjobPpfrSNcsCgQxYCzRroM5TcRavkJpBvF+izkA9daUKaaBO5AScUDHoFiOxZjMkTcqRe86a9JTCHV3xLsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749590599; c=relaxed/simple;
-	bh=IuRrlH8f0+L+EWs5x0H1jHsNYnXVQbeYgLVtkUWCLzs=;
+	s=arc-20240116; t=1749608313; c=relaxed/simple;
+	bh=A1VFeAvhgOC1yMtN7yIyjPHN3d7Ti6ibq7gtPR6jl6U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oKMjRyEfa0jK79PFvKwiYxaAyK7nAD5fYagVHGfMHXw7+X6HQdzF0hh2opmZTeUzq25GLIkKfwQ7OzQ9R4uggGvFaHVrndb/xrfK4lmYYuRjVwWzxgwi8P2G6jSQcxf/mmIK9Nf2gebKKKW3GKc4p//pUKRgr41F+u4JxUMTK3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AF91vbhx; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=UURn4pO0dW4im/CTHF91GSDmFC274KYKnXh1ABDz6nGaUsNpgqfInbhrGhWXDPvVb1VCuFwu/XwvwOfupBH8tryyczwTcctKbUFvFrKgIVVijSNbkkZ0H42q7CxHuaa/ciKlYTrnOAsE/R4SB6tWiGHgpL9IMwLeboZCCE0N5Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WrwnM+C5; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AF91vbhx"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a5903bceffso76883441cf.3;
-        Tue, 10 Jun 2025 14:23:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WrwnM+C5"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3135f3511bcso3376902a91.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Jun 2025 19:18:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749590596; x=1750195396; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s4QQQuFpaDk14/cZrTJuJecarJD8XRFsV/RDktzG3Tc=;
-        b=AF91vbhxAmKoETFO3+Zr0Wko5QG3fH27LFnifHHPahrbwZNIAz/EsSqQEY7udXCU2T
-         R/4cMhX70gyzOKo98zZ0P4T39Pi4dux8GIroAWJN2zDuCGPoAdfHQpTC+ocTdfaaJLxU
-         dAO0pZo72BocyqhffdvTSbJVQkbXeM3fB+6EJHIsZe7n/0W2oRnj6iBGXO/kRfc1jSQX
-         3Kh3ggPFIQ4eIxD7ztYUqtC983B07AYY86zRxVyj2JfK7uAirbtoBfIxD8xKerX45oHr
-         t68OgkYZ4au05utmvy2AoZ97YVBe7vc/oCDvPknK/j+WJCMyFIzH2N1VjXGvK2jEIIqi
-         uLpg==
+        d=linaro.org; s=google; t=1749608311; x=1750213111; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BVzPT+QBa+W+93Jw6CnS8ATXdFQx76rd+QJAPEuwELM=;
+        b=WrwnM+C5gS3K6h39OPo0xbroKtmYSKvrQTB8inA/cHMPjFxA3/Xck8+dz0nAQEJcpj
+         nGH9hzS50hH1T+xQSupeRsZYD8+oIRHJs4vPOGiDwBfgU1GMR/EyUj6IW5MuvruIRqIm
+         20y4n4U1P2yHs3FgcMTKFEqEjgyXAOVVb+AxKcGPM8CXffSCTYXvlmcoO6XjtXhhTxjk
+         o3ZaAvX57KMGbHD6WwSZicKwQlExmARUZ2inZLRABHBV/KnhOjJlOAmakrD5ruhlXpPt
+         0Qi09WfF6G2hrRkqAX13zrpxstKI+Sii3ilY5p4X9Kk7GftAWgvb5K6jx6muolQUQlhj
+         hFgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749590596; x=1750195396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=s4QQQuFpaDk14/cZrTJuJecarJD8XRFsV/RDktzG3Tc=;
-        b=Ld34LNRGJD2rwYDYOtwSnTVGeDj6MwLz4Rlp7w7t5re8oEYOGHFTRFotJVagyPmaDo
-         yQsn9uwMZ6oyCtizUm1HGoKR2K6mmD61i6zuIk0VzmtVl8eZEldduXvssFoxj/e6G+DC
-         HsufbXU9jzCpePnGUaf1ID44qOxYv/NVogAo3Grup5Wz7myXNtpg377F8maGbyIHffX3
-         14ChViDonPj6QOpxsOqN86AzJLlSYM3F0M40SIKvU0a2nOzBZRlT+0b8tsGHkjIcrQyq
-         Cc7BQj93mqcVhJ3kXg7KGr/o2p+VyGCCo1Wvxf/rN2ZcxeGQ35hj3/XI1qqqGn4dxfYi
-         Dv0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUM+pXsbCS/M48VHfXKqBJpLDI6mWxgUp4nmmp7eb20Y+MI2La5pqsc3IwsLFPGvdAEZ3RM8j5mstSds8kttx8=@vger.kernel.org, AJvYcCVi48P6wtiJnNRsAgYrnZBpCP/VWx1E2lCkAJkY5lyKLwdlRec2ahRowNaCgRNUVb19IUVwogBlNA7++oQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweSp+EGl/jvE53GnCSznZaBuD34NUbf6TaZxx1wTUy9dDeXLjN
-	u/MDe5Qw77fAhjg6k+QlP++5vbFOrB2DSB+W+IZtBlgwDFkAOCYbR3aH
-X-Gm-Gg: ASbGncvGs61uTXXcRBpm6kWEpPvuOhY/ecGf2FTK2AWS1kkxMhwtgfwLyG6Vlc5xJdj
-	WRg0OuuylPU+ToD4h9BQ9PGIAkPkg/cZSnzUapgWnVARZbfqH6Krr/H7c5LzCVafK86e845fv9n
-	qF6j/b6MeDQp8NMtbHc6wOl7bpSZfdmv33XilOuY5zxvCv2ngI74FGnRH49ePqTu3Jzx3NeTYlw
-	M9wRofgeqSvhhx/6fOUKi8osQfhlWUFyp1gUTvb3uTYrioUBARnQkAqaWW9/nWkzLENkxkMl85x
-	aVWpAeyQkuKoQQ/bxDW/tHVU+bJ+/y3F/jmY1mtPeWNOt0+bn2LqHVWUILnVUP2X2myysHnWe7C
-	OsRH4BaQ7Zde+9z3vy+ZpQUsWhZv/qErttb/Pi1iHy1nlnOp/7qkW
-X-Google-Smtp-Source: AGHT+IGXwxZ2/+37QbUoUjwBnIjMrRRvsh+Q8aWmtzOu1FLR13nFkXNqETmMmtxwsBqRWTU2nK0S9w==
-X-Received: by 2002:a05:6214:1307:b0:6f5:40d5:e51 with SMTP id 6a1803df08f44-6fb2c3255e3mr14836006d6.11.1749590596361;
-        Tue, 10 Jun 2025 14:23:16 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb09b1cb9dsm72132226d6.70.2025.06.10.14.23.15
+        d=1e100.net; s=20230601; t=1749608311; x=1750213111;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BVzPT+QBa+W+93Jw6CnS8ATXdFQx76rd+QJAPEuwELM=;
+        b=mWmi+MmjS89E1848yyBZvH8WxJbsEvLgThtKgQ+XgDsX3XpnF28H7IRip8X2KRqV5l
+         d38WC3itK/cEjc8xU+pjElSiYZdQJC8a/mRNVPbAeDWLjUXdWZ9qMszzfnDV4ujgOeGR
+         PhAtaiCVx74DTyyY/HiSE1qUrEM3mprs9MRCEW+Hr84v0xvo28G/OJqNt5nuk1yFVBQF
+         olAwh4gkXs8ciwJMsP8CiVyDf9ceBq7AIC4jzF6WLd/UP+2YK2IRMsNEtVzBLvIMavup
+         sXxf3ERzUEyzR5yTnSisT59OW1Y+UDduAUcF6emnQBjs8u4DxZosaYwULzs5Chu2sl1v
+         7Zjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVp7sEy+02fAKBUV91EtPGE7V2L9Y+E6X+rztzg/LNDq97u/c2ZBHmni5C7cyy0wws2iXoAI+UOCzoUSbR5EQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaIAKpeGWVoYguZ0DckOiQQbCvE0fLyrJA8vwP3xigguVUPK0e
+	7QtBVeJl9AGRgw3/30tg3cXcCUNjo5cXBR3CJdlkjhz4x/gIYaloQhT44q9yvL3GM3c=
+X-Gm-Gg: ASbGncvIsNJ1dpsov5cAWfcmamAoZ0bEMk1X1ary1rJAO1tLG6ZetJDcqlvcbaA16Pc
+	nAoYu5C23go7YqfCjIaggRfc729ERj+lE/qwlJAqfL8yE35+qBG2ShuJcUATUyL4Yr9yzPUYJQ9
+	KgEY/R7yc8/X3xrjtGTMxhVHDJpV83PiPMzltXO9TH+qOmUyEinx5SZIN476maTeLo82EKAsIya
+	TOero5dlJvt+InMwfTMX00KfbjN3jDkbKTEQiFsDBTNCxFzaOdq7g/4SirC8DOA6YGQCA2CzffO
+	W3oTkXrWKzaVudI7jzoHdli2v5LzsaxPZM+WiQpk3mytZPW4x7FiP/nxp4MLP8wGd/Ri8gQSAQ=
+	=
+X-Google-Smtp-Source: AGHT+IExhs5eYhf6tHwalRmCPZodGm+T8pYXC1tEHKyqqYin+EC/fkXPzgbCpRMDAYA8+l44SvhlXw==
+X-Received: by 2002:a17:90b:1dcf:b0:311:d28a:73ef with SMTP id 98e67ed59e1d1-313b1ef5898mr1307915a91.10.1749608311204;
+        Tue, 10 Jun 2025 19:18:31 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-313b2141e6asm256489a91.42.2025.06.10.19.18.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Jun 2025 14:23:15 -0700 (PDT)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4C9961200068;
-	Tue, 10 Jun 2025 17:23:15 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Tue, 10 Jun 2025 17:23:15 -0400
-X-ME-Sender: <xms:Q6JIaKAcKM668ElxPhaO3QQwyP9vIIZYR_wuVGaQTIzq-OVmIPv29A>
-    <xme:Q6JIaEgMQjyqxEdCsDbgTmpegUMerIKqsiWg5_QNoORAvTAhwHS_76a5RfrROPu75
-    7VeCzbKSpsE7Lx-HQ>
-X-ME-Received: <xmr:Q6JIaNlC6LiYDLxxfrkvRhKNYHD1LvD97eAnA72NWCJHFM-_dldpMM5h1A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduuddvjecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedukedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhirhgvshhhrdhkuhhmrghrsehlihhnrg
-    hrohdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghp
-    thhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrg
-    ihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
-    nhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
-    dprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdr
-    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhh
-    hlsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:Q6JIaIzY4nlXartlEa7Umdn-dDZNsXzTDMniltatBNnWB_lLdOEM9Q>
-    <xmx:Q6JIaPS_d_lnkwzlXStu4AQJxkT9Vt9OsqxxRdksBtF0Iv-RtWRj3g>
-    <xmx:Q6JIaDaPSNyDBnSCB24LYWX0IQn4Cne0f5D3aTBsizTKksJ4IxhGnA>
-    <xmx:Q6JIaIQP9UcdLQt7tAW4mf3T3BRi_lQiyPbY-hop8Xr_booBy5mwlA>
-    <xmx:Q6JIaBAAqZ3Y-LiWuaYPSqJ3GNGmKcUaxJ0SmRejTopbODhB_b7-RTR5>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 Jun 2025 17:23:14 -0400 (EDT)
-Date: Tue, 10 Jun 2025 14:23:13 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
+        Tue, 10 Jun 2025 19:18:30 -0700 (PDT)
+Date: Wed, 11 Jun 2025 07:48:28 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Benno Lossin <lossin@kernel.org>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Trevor Gross <tmgross@umich.edu>, Yury Norov <yury.norov@gmail.com>,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	Yury Norov <yury.norov@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 3/3] rust: cpu: Add CpuId::current() to retrieve
- current CPU ID
-Message-ID: <aEiiQSTe-U1q0fOL@tardis.local>
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH V3 0/3] rust: Introduce CpuId and fix cpumask doctest
+Message-ID: <20250611021828.fbdyugkxz4axz67b@vireshk-i7>
 References: <cover.1749554685.git.viresh.kumar@linaro.org>
- <a2e12436661fca452de5c417242328ed6f413511.1749554685.git.viresh.kumar@linaro.org>
+ <CANiq72mWAP5ZuOGTXZ1=zTOR_Y2YuqV2i8PberOeWOkx3VL0ew@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <a2e12436661fca452de5c417242328ed6f413511.1749554685.git.viresh.kumar@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mWAP5ZuOGTXZ1=zTOR_Y2YuqV2i8PberOeWOkx3VL0ew@mail.gmail.com>
 
-On Tue, Jun 10, 2025 at 06:51:58PM +0530, Viresh Kumar wrote:
-> Introduce `CpuId::current()`, a constructor that wraps the C function
-> `raw_smp_processor_id()` to retrieve the current CPU identifier without
-> guaranteeing stability.
+On 10-06-25, 19:10, Miguel Ojeda wrote:
+> On Tue, Jun 10, 2025 at 3:22 PM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> >
+> > Here is another attempt at fixing the cpumask doctest. This series creates a new
+> > abstraction `CpuId`, which is used to write a cleaner cpumask example which
+> > doesn't fail in those corner cases.
+> >
+> > Rebased over v6.16-rc1 + [1].
 > 
-> This function should be used only when the caller can ensure that
-> the CPU ID won't change unexpectedly due to preemption or migration.
-> 
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  MAINTAINERS            |  1 +
->  rust/helpers/cpu.c     |  8 ++++++++
->  rust/helpers/helpers.c |  1 +
->  rust/kernel/cpu.rs     | 10 ++++++++++
->  4 files changed, 20 insertions(+)
->  create mode 100644 rust/helpers/cpu.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index a92290fffa16..4255186784c4 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6254,6 +6254,7 @@ F:	include/linux/cpuhotplug.h
->  F:	include/linux/smpboot.h
->  F:	kernel/cpu.c
->  F:	kernel/smpboot.*
-> +F:	rust/helper/cpu.c
->  F:	rust/kernel/cpu.rs
->  
->  CPU IDLE TIME MANAGEMENT FRAMEWORK
-> diff --git a/rust/helpers/cpu.c b/rust/helpers/cpu.c
-> new file mode 100644
-> index 000000000000..824e0adb19d4
-> --- /dev/null
-> +++ b/rust/helpers/cpu.c
-> @@ -0,0 +1,8 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/smp.h>
-> +
-> +unsigned int rust_helper_raw_smp_processor_id(void)
-> +{
-> +	return raw_smp_processor_id();
-> +}
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 0f1b5d115985..16fa9bca5949 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -13,6 +13,7 @@
->  #include "build_assert.c"
->  #include "build_bug.c"
->  #include "clk.c"
-> +#include "cpu.c"
->  #include "cpufreq.c"
->  #include "cpumask.c"
->  #include "cred.c"
-> diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
-> index 7549594fad7f..a946c8a9d1a2 100644
-> --- a/rust/kernel/cpu.rs
-> +++ b/rust/kernel/cpu.rs
-> @@ -102,6 +102,16 @@ pub fn from_u32(id: u32) -> Option<Self> {
->      pub fn as_u32(&self) -> u32 {
->          self.0
->      }
-> +
-> +    /// Returns the ID of the CPU the code is currently running on.
-> +    ///
-> +    /// The returned value is considered unstable because it may change
-> +    /// unexpectedly due to preemption or CPU migration. It should only be
-> +    /// used when the context ensures that the task remains on the same CPU.
+> Given this is growing, should we apply something trivial right away as
+> a fix meanwhile? Or are you planning to send this as a fix during the
+> -rcs?
 
-I would also add "or the users could use a stale (yet valid) CPU ID",
-because there are such usages in kernel arleady, e.g.
-kvm_pmu_probe_armpmu() in arch/arm64/kvm/pmu-emul.c.
+Yeah, I am planning to send this for rc2 or rc3.
 
-With that, feel free to add:
-
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-
-Regards,
-Boqun
-
-> +    pub fn current() -> Self {
-> +        // SAFETY: raw_smp_processor_id() always returns a valid CPU ID.
-> +        unsafe { Self::from_u32_unchecked(bindings::raw_smp_processor_id()) }
-> +    }
->  }
->  
->  impl From<CpuId> for u32 {
-> -- 
-> 2.31.1.272.g89b43f80a514
-> 
+-- 
+viresh
