@@ -1,212 +1,119 @@
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABADB2857CF;
-	Wed, 11 Jun 2025 13:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620C228313D;
+	Wed, 11 Jun 2025 13:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749649064; cv=none; b=jIydv1zJOVsT+gvY4KkcuVHSWyZMLFG6tT5V/OZ/IbsebJG6KIXoVa+SjKLhfhBGvFRmiipmMuooiag3uCFSJYqiBrEN0TEgMif86OnwmCJ6iijRGHqlAx+JgKq2izrMtg5esO69OfkF2PtVbZmR9RGMiZayxsaKnwVjvbFbDXo=
+	t=1749649309; cv=none; b=OVwERmcRRuRwrEEWGv/8nYkb+tv7E5dAmfop+8OOl1lOIRkL0t1Kr5k+zO1mJxggC8EyHnFJEHMxTrjhl0LY9HaoKL7h5XLYEC20TzbJTEdmO54i8AM8II/gvTikbNsDSHXrn2kFniYbiYWpDbIcJQCY1TO4ap4Kdj6JLE/i72E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749649064; c=relaxed/simple;
-	bh=LlinO4DQVDm6Z0yBVcBfYI1ybTL41BszC99Grakd+uA=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iLQ4NzLqVjlz3C+BJ6A8r5oIQTuSSIRkribiaXKG8326jo/MDYunA9Vdcab98qTQ4tD1OMvAAhG0vA+uFdP/iAL7U+/yU5wZERA+YSjEreUEvDWG1VDd2DWC9eX97+m5Lc4MBe38sNcGRppnGHGF+tYHVLIgVUAM1UNOjRNnnHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bHRXq1JY4z6DB2C;
-	Wed, 11 Jun 2025 21:37:15 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 83C221405E2;
-	Wed, 11 Jun 2025 21:37:39 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 11 Jun
- 2025 15:37:38 +0200
-Date: Wed, 11 Jun 2025 14:37:37 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Alistair Francis <alistair@alistair23.me>
-CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lukas@wunner.de>, <linux-pci@vger.kernel.org>, <bhelgaas@google.com>,
-	<rust-for-linux@vger.kernel.org>, <akpm@linux-foundation.org>,
-	<boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>,
-	<wilfred.mallawa@wdc.com>, <aliceryhl@google.com>, <ojeda@kernel.org>,
-	<alistair23@gmail.com>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
-	<gary@garyguo.net>, <alex.gaynor@gmail.com>, <benno.lossin@proton.me>
-Subject: Re: [RFC v2 00/20] lib: Rust implementation of SPDM
-Message-ID: <20250611143737.00005e21@huawei.com>
-In-Reply-To: <20250227030952.2319050-1-alistair@alistair23.me>
-References: <20250227030952.2319050-1-alistair@alistair23.me>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1749649309; c=relaxed/simple;
+	bh=5CPIta//OIfi7E2RQgeAtFIUjj8BnZCSHKeRNJshDxE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i2dsHx2bmun4jdNP92T32D0lWtDm81s8AawMp/+CZWAjOcjr+DiDmLOuDM+6HyJBvhYJAAlAPW4TTijNC+2bUqyqwIgoloPwXKnVhiZW/Z+RZ8FGG/JXh0s3RwmBVRl1xQqmt1vd8x04htStOyLGrIvNXmznugcZDqzGDwByXlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qb0ENliX; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qb0ENliX"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32ac42bb4e4so56677701fa.0;
+        Wed, 11 Jun 2025 06:41:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749649305; x=1750254105; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Ir2YHhI5icEEUJqFEqEjRdjWeihU0t9X/FXt8UGUXs=;
+        b=Qb0ENliXo36+vI60AwTFyLRYfAfhxtuwJFXIGmcFLVvJOWhbs8lyT6ZYRPh4893YWW
+         CeqT7nZMZ7jGmJboh5IwPxKtJUs9hxVYUApSC6uNgdjVFb7esmtssblCiP/A8CL1PxXq
+         Jr7TrmV9ikESd3drzenorkYtVeRMNCRqf3BghOTlFPDEyKBbG1twFgHxpWq2Fzqq/Ylh
+         +pJDX4jEwnOTMWn0BrOkXFDceohrCAO1C0aDwzpNyjbNZozGBTMlcz28R9Ot93pz+/P5
+         5vPvJGeLvJsk7u3JdcTuxGdT8M56Kuu3lKE9epCyVHhYrCUS+0f3yl8A/lnD6+Irewfz
+         xqdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749649305; x=1750254105;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8Ir2YHhI5icEEUJqFEqEjRdjWeihU0t9X/FXt8UGUXs=;
+        b=Jt38IXiZJditU/oeMHWe4C0JZr9UX3Du6HnGvxykPFQV4KZtpI70VMuwmcqVBQ90OH
+         J4Kyo8hA8tSjN6ChKKvCW4IkVh/TTgfn4ygpXMhn3y4q7T5RmZv+RbX2m+8uYaA1NYTf
+         XYVXPk3NtIq9y2ZO4jijrHTBtKvh0d8Cp3I4JFsQvnq/l5CUVEZa0+ZGfD/jwS3OyS9/
+         xQUBjqnKdin4kNto1YdqgJD6v7l0oDz7Suawyr/IkVY3f3T4ZpCfpppGU2o/VS75Y3Ff
+         7Tc6BMFuSvAjdq7q8kpZiD7VXxMymky164y/OYkl8zpO/qF35byI09UUSsEnMqEh5Lsb
+         5tsg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpQ/UiW2KM19UWXsUqEsB+BRFxXdGzxYTi0nff9jDaVRdTNcWuMhlwnTrjlZ0WB8sKmZ8jzKB1@vger.kernel.org, AJvYcCWvx6Fe0up1TifdgzmkBcbjo74PctsNi7lNbkhPD+9Aq3WfdEQyGbnKwi+aT2Gl1znUGu8Ip9SAtsJo6QA=@vger.kernel.org, AJvYcCXQv1FPfl3KyNhIYmzVJlLxh3dRweidss+QEanEIjQJuLOs5YzqZGjljdrCJ+GYVeXos9WBwwvdRLIaizdRfhE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP3ZWLmrYAmeUP9zgOuw2NuKxU1zcG2hVNPIKxMQYsbyC1Dxcp
+	jsqdLMKz6iO77dwhutLB/K5H6vfQY0A6BtXDUg2SDpQwyEa6O9fsq59kGZEqhzO61hq6n6a5zWv
+	qP3SSw+gfH4aI5uPK0uairS9ZwMTIKx4=
+X-Gm-Gg: ASbGncuCl5RIOkvjHESjExje0i5S/pZRzDhpZLws8OmBuvA8I2VHWuCluJzs8VyWSna
+	/AaZ+pXq8xSxfLtGRjB5/RHb3ktvkNOm91PZZX0js3Cb2Jc2ZuBaTFSv6J+Q/SA3idiFouX8wCh
+	OMuptmQcwih2S3m0crqY2N9IXeBWqt2OvT5PJ2jFYgukQYoiteaM4k2033REk=
+X-Google-Smtp-Source: AGHT+IH4voYTlvScEcvM38QDI51s/Z6ehlRPqNx5tA+HVkb8hgrbjjGhiFyoSkHhaGtW8D4JkSMgqcOYL5I5SMWDJOc=
+X-Received: by 2002:a2e:6e0b:0:b0:32a:6e20:7cd0 with SMTP id
+ 38308e7fff4ca-32b21d5ba79mr6934421fa.17.1749649305306; Wed, 11 Jun 2025
+ 06:41:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- frapeml500008.china.huawei.com (7.182.85.71)
+References: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com>
+ <CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com> <CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com>
+In-Reply-To: <CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 11 Jun 2025 09:41:08 -0400
+X-Gm-Features: AX0GCFuEQfv3tdhKCmauxf0FnkQeICkCfWltHEObS8fPan6shTasxe1ab7BvVAs
+Message-ID: <CAJ-ks9kZZEWXSHX95=QrNXaQvEc-T1cTPTaB3mCjT2coGzpwUg@mail.gmail.com>
+Subject: Re: [PATCH] rust: cast to the proper type
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 27 Feb 2025 13:09:32 +1000
-Alistair Francis <alistair@alistair23.me> wrote:
+On Wed, Jun 11, 2025 at 9:30=E2=80=AFAM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> On Wed, Jun 11, 2025 at 7:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
+ wrote:
+> >
+> > On Wed, Jun 11, 2025 at 12:28=E2=80=AFPM Tamir Duberstein <tamird@gmail=
+.com> wrote:
+> > >
+> > > Use the ffi type rather than the resolved underlying type.
+> > >
+> > > Fixes: f20fd5449ada ("rust: core abstractions for network PHY drivers=
+")
+> >
+> > Does this need to be backported? If not, I wouldn't include a Fixes tag=
+.
+>
+> I'm fine with omitting it. I wanted to leave a breadcrumb to the
+> commit that introduced the current code.
+>
+> >
+> > > +            DuplexMode::Full =3D> bindings::DUPLEX_FULL,
+> > > +            DuplexMode::Half =3D> bindings::DUPLEX_HALF,
+> > > +            DuplexMode::Unknown =3D> bindings::DUPLEX_UNKNOWN,
+> > > +        } as crate::ffi::c_int;
+> >
+> > This file imports the prelude, so this can just be c_int without the
+> > crate::ffI:: path.
+>
+> This has come up a few times now; should we consider denying
+> unused_qualifications?
+>
+> https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/static.=
+UNUSED_QUALIFICATIONS.html
 
-> Security Protocols and Data Models (SPDM) [1] is used for authentication,
-> attestation and key exchange. SPDM is generally used over a range of
-> transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
-> 
-> From the kernels perspective SPDM is used to authenticate and attest devices.
-> In this threat model a device is considered untrusted until it can be verified
-> by the kernel and userspace using SPDM. As such SPDM data is untrusted data
-> that can be mallicious.
-> 
-> The SPDM specification is also complex, with the 1.2.1 spec being almost 200
-> pages and the 1.3.0 spec being almost 250 pages long.
-> 
-> As such we have the kernel parsing untrusted responses from a complex
-> specification, which sounds like a possible exploit vector. This is the type
-> of place where Rust excels!
-> 
-> This series implements a SPDM requester in Rust.
-> 
-> This is very similar to Lukas' implementation [2]. This series includes patches
-> and files from Lukas' C SPDM implementation, which isn't in mainline.
-> 
-> This is a standalone series and doesn't depend on Lukas' implementation, although
-> we do still rely on Lukas' crypto preperation patches, not all of which are
-> upstream yet.
-> 
-> To help with maintaining compatibility it's designed in a way to match Lukas'
-> design and the state struct stores the same information, although in a Rust
-> struct instead of the original C one.
-> 
-> This series doesn't expose the data to userspace (except for a single sysfs
-> bool) to avoid the debate about how to do that. I'm planning to do that in
-> the future though.
-> 
-> This series is based on the latest rust-next tree.
-> 
-> This seris depends on the Untrusted abstraction work [4].
-> 
-> This seris also depends on the recent bindgen support for static inlines  [5].
-> 
-> The entire tree can be seen here: https://github.com/alistair23/linux/tree/alistair/spdm-rust
-> 
-> based-on: https://lore.kernel.org/rust-for-linux/20240925205244.873020-1-benno.lossin@proton.me/
-> based-on: https://lore.kernel.org/rust-for-linux/20250107035058.818539-1-alistair@alistair23.me/
-
-Hi Alastair,
-
-I've completely failed to find time to actually pick up enough rust to review
-this :(  Also failed to find anyone else who has the rust skills and enough of
-the background.
-
-Ideally I'll get up to speed at some point, but in the meantime wanted to revisit
-the question of whether we want to go this way from day 1 rather than trying to
-deal with C version and later this?
-
-What's your current thoughts?  I know Lukas mentioned he was going to spin a
-new version shortly (in one of the TSM threads) so are we waiting on that?
-
-For now I'm going to take this off my review queue. Sorry!
-
-Jonathan
-
-
-
-> 
-> 1: https://www.dmtf.org/standards/spdm
-> 2: https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
-> 3: https://github.com/l1k/linux/commits/spdm-future/
-> 4: https://lore.kernel.org/rust-for-linux/20240925205244.873020-1-benno.lossin@proton.me/
-> 5: https://lore.kernel.org/rust-for-linux/20250107035058.818539-1-alistair@alistair23.me/
-> 
-> v2:
->  - Drop support for Rust and C implementations
->  - Include patches from Lukas to reduce series deps
->  - Large code cleanups based on more testing
->  - Support support for authentication
-> 
-> Alistair Francis (12):
->   lib: rspdm: Initial commit of Rust SPDM
->   lib: rspdm: Support SPDM get_version
->   lib: rspdm: Support SPDM get_capabilities
->   lib: rspdm: Support SPDM negotiate_algorithms
->   lib: rspdm: Support SPDM get_digests
->   lib: rspdm: Support SPDM get_certificate
->   crypto: asymmetric_keys - Load certificate parsing early in boot
->   KEYS: Load keyring and certificates early in boot
->   PCI/CMA: Support built in X.509 certificates
->   lib: rspdm: Support SPDM certificate validation
->   rust: allow extracting the buffer from a CString
->   lib: rspdm: Support SPDM challenge
-> 
-> Jonathan Cameron (1):
->   PCI/CMA: Authenticate devices on enumeration
-> 
-> Lukas Wunner (7):
->   X.509: Make certificate parser public
->   X.509: Parse Subject Alternative Name in certificates
->   X.509: Move certificate length retrieval into new helper
->   certs: Create blacklist keyring earlier
->   PCI/CMA: Validate Subject Alternative Name in certificates
->   PCI/CMA: Reauthenticate devices on reset and resume
->   PCI/CMA: Expose in sysfs whether devices are authenticated
-> 
->  Documentation/ABI/testing/sysfs-devices-spdm |   31 +
->  MAINTAINERS                                  |   14 +
->  certs/blacklist.c                            |    4 +-
->  certs/system_keyring.c                       |    4 +-
->  crypto/asymmetric_keys/asymmetric_type.c     |    2 +-
->  crypto/asymmetric_keys/x509_cert_parser.c    |    9 +
->  crypto/asymmetric_keys/x509_loader.c         |   38 +-
->  crypto/asymmetric_keys/x509_parser.h         |   40 +-
->  crypto/asymmetric_keys/x509_public_key.c     |    2 +-
->  drivers/pci/Kconfig                          |   13 +
->  drivers/pci/Makefile                         |    4 +
->  drivers/pci/cma.asn1                         |   41 +
->  drivers/pci/cma.c                            |  272 +++++
->  drivers/pci/doe.c                            |    5 +-
->  drivers/pci/pci-driver.c                     |    1 +
->  drivers/pci/pci-sysfs.c                      |    3 +
->  drivers/pci/pci.c                            |   12 +-
->  drivers/pci/pci.h                            |   15 +
->  drivers/pci/pcie/err.c                       |    3 +
->  drivers/pci/probe.c                          |    1 +
->  drivers/pci/remove.c                         |    1 +
->  include/keys/asymmetric-type.h               |    2 +
->  include/keys/x509-parser.h                   |   55 +
->  include/linux/oid_registry.h                 |    3 +
->  include/linux/pci-doe.h                      |    4 +
->  include/linux/pci.h                          |   16 +
->  include/linux/spdm.h                         |   39 +
->  lib/Kconfig                                  |   16 +
->  lib/Makefile                                 |    2 +
->  lib/rspdm/Makefile                           |   11 +
->  lib/rspdm/consts.rs                          |  135 +++
->  lib/rspdm/lib.rs                             |  180 +++
->  lib/rspdm/req-sysfs.c                        |   97 ++
->  lib/rspdm/state.rs                           | 1037 ++++++++++++++++++
->  lib/rspdm/sysfs.rs                           |   28 +
->  lib/rspdm/validator.rs                       |  489 +++++++++
->  rust/bindgen_static_functions                |    5 +
->  rust/bindings/bindings_helper.h              |    7 +
->  rust/kernel/error.rs                         |    3 +
->  rust/kernel/str.rs                           |    5 +
->  40 files changed, 2587 insertions(+), 62 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-devices-spdm
->  create mode 100644 drivers/pci/cma.asn1
->  create mode 100644 drivers/pci/cma.c
->  create mode 100644 include/keys/x509-parser.h
->  create mode 100644 include/linux/spdm.h
->  create mode 100644 lib/rspdm/Makefile
->  create mode 100644 lib/rspdm/consts.rs
->  create mode 100644 lib/rspdm/lib.rs
->  create mode 100644 lib/rspdm/req-sysfs.c
->  create mode 100644 lib/rspdm/state.rs
->  create mode 100644 lib/rspdm/sysfs.rs
->  create mode 100644 lib/rspdm/validator.rs
-> 
-
+I should point out also that every reference to crate::ffi::c_int in
+this file is fully qualified, so I think this should be a separate
+change.
