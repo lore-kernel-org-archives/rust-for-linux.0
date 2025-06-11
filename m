@@ -1,228 +1,212 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F3F28A71D;
-	Wed, 11 Jun 2025 13:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABADB2857CF;
+	Wed, 11 Jun 2025 13:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749648920; cv=none; b=uuJgs6tXA03kTZBJvDv6gcV+ah0iAdbE9CWjf+cbmSFkMWH2Zsnkxu8XHn3OjZG9K/3Xrmb/CIMFjmXOTKyjwNdsPrIwl6dK7TKTmv5Gc247d4YKe0FE+LkRJSqHJLxOMxgEc+Gjvtzlx9V2wzf+AP89WPZ9YxPwOddWOkgrTS8=
+	t=1749649064; cv=none; b=jIydv1zJOVsT+gvY4KkcuVHSWyZMLFG6tT5V/OZ/IbsebJG6KIXoVa+SjKLhfhBGvFRmiipmMuooiag3uCFSJYqiBrEN0TEgMif86OnwmCJ6iijRGHqlAx+JgKq2izrMtg5esO69OfkF2PtVbZmR9RGMiZayxsaKnwVjvbFbDXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749648920; c=relaxed/simple;
-	bh=hkFr+Bx51wr83EaGtiwARjlngiHTI7OKLDw5jUc9D7I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pSrcE3FJdcOygE78OQFYgVgucjgZ1wV90IdDtsS1DK+rhRVQkZQNKfQ9eQAGeXb0NO/QuWs2zQS8x5k34YMnyBtISVyTsvrFf2sIIBe172gtMed28ozr7XHHcq9fkVwXDmzAqwKcOvqw0F3TdqfCi6OFa5XEssJSsOqRdE4fNXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QDuEvEK+; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QDuEvEK+"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b2eeada3df1so22484a12.1;
-        Wed, 11 Jun 2025 06:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749648916; x=1750253716; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T7+YJEMDJ36thuIfANjb3mLZl0V1QkdkPulFRUlEhRc=;
-        b=QDuEvEK+drMX51ldkME7a350gCa0isJtAl7LiDVUDvkpnGK4P9ifnkib8AjzxteCbo
-         7Kw9aDyEvT/7jpknkDECjMiJqxFAaJaSMKuNYjyemwmYqkmojfO9qMqclsLyXlhardWB
-         rnFRGSUoRebqwN5hDyUJeoSR4rfcXeFGLB7OSo6JuxuZn+gdtsTLT0F+HSi+5YCcR2hc
-         5Z+QG5nonthmkGJW8E/8mH5wdfATVRbdHLydMjoeDzNqAN4jc9kw1S6yHJX9PE1vN1CT
-         KkHIYwYs4AdGQXZyeFX98dspySN3MzQulCnlwRDEsIqqJsF9IImtl/Wu/xrK6eQjU7mp
-         iiPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749648916; x=1750253716;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T7+YJEMDJ36thuIfANjb3mLZl0V1QkdkPulFRUlEhRc=;
-        b=pkNPki4mE9pTS/Dj7SewWKkylZ2p/oTY39483MADVbDYLPB3mgM/vGQvcD2izV2Eiw
-         kYl/tAuc85A5BZphnG/L2RxQvYiGh73RTZHGTvbEjJD9p8oEC8sPnj7LLxmTGlvYKTw6
-         x0mReUqlCBCOMBgD4Sm24f1y5WKRV9PbTIeAdNb/8fO/x+cZPlc1BhxsDkdxunIPyAeb
-         ac1NGoSr8dYk3ED5Nb/Y/WkJgqJFGAomP0pDIOs8aO3jrWOHmFndEn7IOb6muo94O0QR
-         uum3rUgtJ1WOWA+AyXrgFy8LrbRlvWb16m+8MwWx8Hw5mgbeIzvXdrpiii+Up37dcQmT
-         ncxA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0T7wKRAe9/Ge637F1rbqRM7x+tMbIiDfDe3UGxfU9Uv9ZO8+Fkj97qK70bdOsAQinN/wZOMohB+9Tiqf3Xa8=@vger.kernel.org, AJvYcCUYtjkjCSc7xjtFwcrfZZfcRtCGvEdcTQGhZe4gsAsN1zaLvwuetmkYJMcGJ6Mo/MxMokxr/HqB2KvrPfQh@vger.kernel.org, AJvYcCVCuMERZGkB5WDaGUJWliYVfCLNfb5B4Un4fhR1ucgfJFuWUDVAkjG/+KMprEO3ODDYmrnbYEjdE7z9@vger.kernel.org, AJvYcCWcs9w2FfyugTOh9hO4otx1/+6yDHjBUkpdVAV5Z+qYtN687rNGxD/tTzOrbEFn68xqf3zzlHRGgKCD@vger.kernel.org, AJvYcCXw2kzBJ2F677sdG5PZLEBiJypTzeYWMW3ULeCTp9rU8aGZuRYnT3U1kJH+uLgCWL1hh+dmIm9e0FkA@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywd6l4fE81GhuyFy73D4uVDQ7NCcm+CsvFfsuB/oZ7FFgpz9xat
-	ve9Jr5WBXuI2eHLd8pPWtLXXiZT+Y8CKi/ewiH6Cqj6Cj3KsBRDO4vAI4RFCBnA44UifHaJS28A
-	Hf2fIo2Ub7bNHnSO8oY+9/ZT6k1PBQJI=
-X-Gm-Gg: ASbGncvrE2GUw8JN+0dV9XehRFwo99cEBz0alM0aKycOsBg76R925WYBoQFw2YNALWv
-	ZoDcyUiI7fX1mT8vUlPQxq5TaPOVdop0VgSU9q85+zagMD9im4p4DdDyDaroTNRPHrFgPb3kgMo
-	CuepyNW6aViI1kBJWIeids15X/ZEeUUjGCkQpDIIMECG4=
-X-Google-Smtp-Source: AGHT+IGbJpFZ+Qk6FvdsQn7PW78XJk+bb1d1PTP/d+zpCYzn/eIeprshnIC7HU+/be04GHkcxAD23HE18OQvHrvC4pg=
-X-Received: by 2002:a17:90b:2f8b:b0:313:14b5:2521 with SMTP id
- 98e67ed59e1d1-313af1e1bfdmr2041537a91.5.1749648916482; Wed, 11 Jun 2025
- 06:35:16 -0700 (PDT)
+	s=arc-20240116; t=1749649064; c=relaxed/simple;
+	bh=LlinO4DQVDm6Z0yBVcBfYI1ybTL41BszC99Grakd+uA=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iLQ4NzLqVjlz3C+BJ6A8r5oIQTuSSIRkribiaXKG8326jo/MDYunA9Vdcab98qTQ4tD1OMvAAhG0vA+uFdP/iAL7U+/yU5wZERA+YSjEreUEvDWG1VDd2DWC9eX97+m5Lc4MBe38sNcGRppnGHGF+tYHVLIgVUAM1UNOjRNnnHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4bHRXq1JY4z6DB2C;
+	Wed, 11 Jun 2025 21:37:15 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 83C221405E2;
+	Wed, 11 Jun 2025 21:37:39 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 11 Jun
+ 2025 15:37:38 +0200
+Date: Wed, 11 Jun 2025 14:37:37 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Alistair Francis <alistair@alistair23.me>
+CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lukas@wunner.de>, <linux-pci@vger.kernel.org>, <bhelgaas@google.com>,
+	<rust-for-linux@vger.kernel.org>, <akpm@linux-foundation.org>,
+	<boqun.feng@gmail.com>, <bjorn3_gh@protonmail.com>,
+	<wilfred.mallawa@wdc.com>, <aliceryhl@google.com>, <ojeda@kernel.org>,
+	<alistair23@gmail.com>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+	<gary@garyguo.net>, <alex.gaynor@gmail.com>, <benno.lossin@proton.me>
+Subject: Re: [RFC v2 00/20] lib: Rust implementation of SPDM
+Message-ID: <20250611143737.00005e21@huawei.com>
+In-Reply-To: <20250227030952.2319050-1-alistair@alistair23.me>
+References: <20250227030952.2319050-1-alistair@alistair23.me>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CGME20250610125332eucas1p2da441aa44760236527afc82495af95d1@eucas1p2.samsung.com>
- <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
- <20250610-rust-next-pwm-working-fan-for-sending-v2-1-753e2955f110@samsung.com>
-In-Reply-To: <20250610-rust-next-pwm-working-fan-for-sending-v2-1-753e2955f110@samsung.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 11 Jun 2025 15:35:04 +0200
-X-Gm-Features: AX0GCFucCUfitmsrkVpmEkyboIYu-vqz9Ti13iybORi8Z5Q-FoT6_3kpjtnZoMo
-Message-ID: <CANiq72mW2ZsBh8WxY26Knh=FxxPHWK_ikbS9iZip2qRLJAXiNg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] rust: Add basic PWM abstractions
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, 
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-Hi Michal,
+On Thu, 27 Feb 2025 13:09:32 +1000
+Alistair Francis <alistair@alistair23.me> wrote:
 
-Some docs-only/nits quick review for future versions and other
-patches. Some may apply multiple times.
+> Security Protocols and Data Models (SPDM) [1] is used for authentication,
+> attestation and key exchange. SPDM is generally used over a range of
+> transports, such as PCIe, MCTP/SMBus/I3C, ATA, SCSI, NVMe or TCP.
+> 
+> From the kernels perspective SPDM is used to authenticate and attest devices.
+> In this threat model a device is considered untrusted until it can be verified
+> by the kernel and userspace using SPDM. As such SPDM data is untrusted data
+> that can be mallicious.
+> 
+> The SPDM specification is also complex, with the 1.2.1 spec being almost 200
+> pages and the 1.3.0 spec being almost 250 pages long.
+> 
+> As such we have the kernel parsing untrusted responses from a complex
+> specification, which sounds like a possible exploit vector. This is the type
+> of place where Rust excels!
+> 
+> This series implements a SPDM requester in Rust.
+> 
+> This is very similar to Lukas' implementation [2]. This series includes patches
+> and files from Lukas' C SPDM implementation, which isn't in mainline.
+> 
+> This is a standalone series and doesn't depend on Lukas' implementation, although
+> we do still rely on Lukas' crypto preperation patches, not all of which are
+> upstream yet.
+> 
+> To help with maintaining compatibility it's designed in a way to match Lukas'
+> design and the state struct stores the same information, although in a Rust
+> struct instead of the original C one.
+> 
+> This series doesn't expose the data to userspace (except for a single sysfs
+> bool) to avoid the debate about how to do that. I'm planning to do that in
+> the future though.
+> 
+> This series is based on the latest rust-next tree.
+> 
+> This seris depends on the Untrusted abstraction work [4].
+> 
+> This seris also depends on the recent bindgen support for static inlines  [5].
+> 
+> The entire tree can be seen here: https://github.com/alistair23/linux/tree/alistair/spdm-rust
+> 
+> based-on: https://lore.kernel.org/rust-for-linux/20240925205244.873020-1-benno.lossin@proton.me/
+> based-on: https://lore.kernel.org/rust-for-linux/20250107035058.818539-1-alistair@alistair23.me/
 
-On Tue, Jun 10, 2025 at 2:54=E2=80=AFPM Michal Wilczynski
-<m.wilczynski@samsung.com> wrote:
->
-> +//! This module provides safe Rust abstractions for working with the Lin=
-ux
-> +//! kernel's PWM subsystem, leveraging types generated by `bindgen`
-> +//! from `<linux/pwm.h>` and `drivers/pwm/core.c`.
+Hi Alastair,
 
-The second part we typically do with a "C header" reference to
-`srctree/...` which will get rendered as clickable link to the file
-(please check other files to see how it is usually done).
+I've completely failed to find time to actually pick up enough rust to review
+this :(  Also failed to find anyone else who has the rust skills and enough of
+the background.
 
-I would also simplify, e.g. typically abstractions try to be safe, and
-the bindings typically come from `bindgen`, so I would just say e.g.
+Ideally I'll get up to speed at some point, but in the meantime wanted to revisit
+the question of whether we want to go this way from day 1 rather than trying to
+deal with C version and later this?
 
-    //! PWM subsystem abstractions.
-    //!
-    //! C header: ...
+What's your current thoughts?  I know Lukas mentioned he was going to spin a
+new version shortly (in one of the TSM threads) so are we waiting on that?
 
-What types are you using from `drivers/pwm/core.c`, by the way?
+For now I'm going to take this off my review queue. Sorry!
 
-> +use crate::{
-> +    bindings,
-> +    device::{self, Bound},
-> +    error::{self, to_result, Result},
-> +    prelude::*,
-> +    str::CStr,
-> +    types::{ARef, AlwaysRefCounted, ForeignOwnable, Opaque},
-> +};
+Jonathan
 
-At least a couple of these already come from the prelude.
 
-> +/// Maximum size for the hardware-specific waveform representation buffe=
-r.
-> +/// From C: #define WFHWSIZE 20
 
-This would be rendered as a single paragraph, so I would split it into
-two by adding a newline in between.
+> 
+> 1: https://www.dmtf.org/standards/spdm
+> 2: https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
+> 3: https://github.com/l1k/linux/commits/spdm-future/
+> 4: https://lore.kernel.org/rust-for-linux/20240925205244.873020-1-benno.lossin@proton.me/
+> 5: https://lore.kernel.org/rust-for-linux/20250107035058.818539-1-alistair@alistair23.me/
+> 
+> v2:
+>  - Drop support for Rust and C implementations
+>  - Include patches from Lukas to reduce series deps
+>  - Large code cleanups based on more testing
+>  - Support support for authentication
+> 
+> Alistair Francis (12):
+>   lib: rspdm: Initial commit of Rust SPDM
+>   lib: rspdm: Support SPDM get_version
+>   lib: rspdm: Support SPDM get_capabilities
+>   lib: rspdm: Support SPDM negotiate_algorithms
+>   lib: rspdm: Support SPDM get_digests
+>   lib: rspdm: Support SPDM get_certificate
+>   crypto: asymmetric_keys - Load certificate parsing early in boot
+>   KEYS: Load keyring and certificates early in boot
+>   PCI/CMA: Support built in X.509 certificates
+>   lib: rspdm: Support SPDM certificate validation
+>   rust: allow extracting the buffer from a CString
+>   lib: rspdm: Support SPDM challenge
+> 
+> Jonathan Cameron (1):
+>   PCI/CMA: Authenticate devices on enumeration
+> 
+> Lukas Wunner (7):
+>   X.509: Make certificate parser public
+>   X.509: Parse Subject Alternative Name in certificates
+>   X.509: Move certificate length retrieval into new helper
+>   certs: Create blacklist keyring earlier
+>   PCI/CMA: Validate Subject Alternative Name in certificates
+>   PCI/CMA: Reauthenticate devices on reset and resume
+>   PCI/CMA: Expose in sysfs whether devices are authenticated
+> 
+>  Documentation/ABI/testing/sysfs-devices-spdm |   31 +
+>  MAINTAINERS                                  |   14 +
+>  certs/blacklist.c                            |    4 +-
+>  certs/system_keyring.c                       |    4 +-
+>  crypto/asymmetric_keys/asymmetric_type.c     |    2 +-
+>  crypto/asymmetric_keys/x509_cert_parser.c    |    9 +
+>  crypto/asymmetric_keys/x509_loader.c         |   38 +-
+>  crypto/asymmetric_keys/x509_parser.h         |   40 +-
+>  crypto/asymmetric_keys/x509_public_key.c     |    2 +-
+>  drivers/pci/Kconfig                          |   13 +
+>  drivers/pci/Makefile                         |    4 +
+>  drivers/pci/cma.asn1                         |   41 +
+>  drivers/pci/cma.c                            |  272 +++++
+>  drivers/pci/doe.c                            |    5 +-
+>  drivers/pci/pci-driver.c                     |    1 +
+>  drivers/pci/pci-sysfs.c                      |    3 +
+>  drivers/pci/pci.c                            |   12 +-
+>  drivers/pci/pci.h                            |   15 +
+>  drivers/pci/pcie/err.c                       |    3 +
+>  drivers/pci/probe.c                          |    1 +
+>  drivers/pci/remove.c                         |    1 +
+>  include/keys/asymmetric-type.h               |    2 +
+>  include/keys/x509-parser.h                   |   55 +
+>  include/linux/oid_registry.h                 |    3 +
+>  include/linux/pci-doe.h                      |    4 +
+>  include/linux/pci.h                          |   16 +
+>  include/linux/spdm.h                         |   39 +
+>  lib/Kconfig                                  |   16 +
+>  lib/Makefile                                 |    2 +
+>  lib/rspdm/Makefile                           |   11 +
+>  lib/rspdm/consts.rs                          |  135 +++
+>  lib/rspdm/lib.rs                             |  180 +++
+>  lib/rspdm/req-sysfs.c                        |   97 ++
+>  lib/rspdm/state.rs                           | 1037 ++++++++++++++++++
+>  lib/rspdm/sysfs.rs                           |   28 +
+>  lib/rspdm/validator.rs                       |  489 +++++++++
+>  rust/bindgen_static_functions                |    5 +
+>  rust/bindings/bindings_helper.h              |    7 +
+>  rust/kernel/error.rs                         |    3 +
+>  rust/kernel/str.rs                           |    5 +
+>  40 files changed, 2587 insertions(+), 62 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-devices-spdm
+>  create mode 100644 drivers/pci/cma.asn1
+>  create mode 100644 drivers/pci/cma.c
+>  create mode 100644 include/keys/x509-parser.h
+>  create mode 100644 include/linux/spdm.h
+>  create mode 100644 lib/rspdm/Makefile
+>  create mode 100644 lib/rspdm/consts.rs
+>  create mode 100644 lib/rspdm/lib.rs
+>  create mode 100644 lib/rspdm/req-sysfs.c
+>  create mode 100644 lib/rspdm/state.rs
+>  create mode 100644 lib/rspdm/sysfs.rs
+>  create mode 100644 lib/rspdm/validator.rs
+> 
 
-In addition, please use code spans (i.e. backquotes) where possible.
-
-> +/// PWM polarity. Mirrors `enum pwm_polarity`.
-
-We don't link consistently C types, but if you wanted, you could link
-them (either `srctree/` link to a file or a docs.kernel.org to a
-concrete C item if it is rendered there -- either is fine).
-
-(Eventually we want to have an automatic way to do so, similar to
-intra-doc links)
-
-> +    /// Normal polarity (duty cycle defines the high period of the signa=
-l)
-
-Please end sentences/docs with a period.
-
-> +    Normal,
-> +    /// Inversed polarity (duty cycle defines the low period of the sign=
-al)
-
-I suggest a newline between these.
-
-> +impl From<bindings::pwm_polarity> for Polarity {
-> +    fn from(polarity: bindings::pwm_polarity) -> Self {
-> +        match polarity {
-> +            bindings::pwm_polarity_PWM_POLARITY_NORMAL =3D> Polarity::No=
-rmal,
-> +            bindings::pwm_polarity_PWM_POLARITY_INVERSED =3D> Polarity::=
-Inversed,
-> +            _ =3D> Polarity::Normal,
-> +        }
-> +    }
-> +}
-
-Should this be fallible? i.e. should the default case be an error / is
-the C enum expected to have any other value ?
-
-(I have no context, so this may be all expected, of course)
-
-> +/// Represents a PWM waveform configuration. Mirrors struct pwm_waveform=
-.
-
-Code span.
-
-> +    /// Duration the PWM signal is in its "active" state during one peri=
-od,
-> +    /// in nanoseconds. For a typical "normal" polarity configuration wh=
-ere active is high,
-> +    /// this represents the high time of the signal.
-> +    pub duty_length_ns: u64,
-
-The first paragraph of an item is the "short description", i.e. it
-acts as a title when it gets rendered in item lists. So it should be
-short if possible. For instance, here I would add a new paragraph
-between the two sentences.
-
-(Ditto for other cases).
-
-> +    /// This type must be `Copy`, `Default`, and fit within `WFHW_MAX_SI=
-ZE`.
-
-Please use intra-doc links wherever possible, e.g. [`Copy`] and
-[`WFHW_MAX_SIZE`] (assuming they work).
-
-> +    /// # Safety
-> +    /// C-callback. Pointers from C must be valid.
-
-Please add a newline between these to match the usual style. Also,
-"C-callback" is not a precondition, so I would move it outside the
-safety section (above), unless you want to restrict C to be the only
-one calling this or things like that (in which case I would clarify).
-
-> +    unsafe extern "C" fn read_waveform_callback(
-> +        c: *mut bindings::pwm_chip,
-> +        p: *mut bindings::pwm_device,
-> +        wh: *mut core::ffi::c_void,
-
-Please avoid `core::ffi::` -- nowadays you should be able to just
-write e.g. `c_void`, and that will get you the `kernel::ffi::` one
-(https://docs.kernel.org/rust/coding-guidelines.html#c-ffi-types).
-
-> +    ) -> i32 {
-
-Unless the C side uses an explicitly `s32`, which as far as I can see
-it doesn't in this case, please use `c_int` instead (i.e. please match
-the C signatures in callbacks, even if they happen to resolve to that
-type).
-
-Finally, in another patch I noticed the `author` key -- we are trying
-to move to the `authors` (plural) one, so please use that one.
-
-Thanks!
-
-Cheers,
-Miguel
