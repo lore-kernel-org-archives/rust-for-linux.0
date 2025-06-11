@@ -1,107 +1,89 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DE02AE66
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 21:16:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D89221294;
+	Wed, 11 Jun 2025 21:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749676566; cv=none; b=Ou1rZN6VRhqDJt/A6HetjIh7L028KNIdK3GoK15HBIqw2BcEtLomM68EXnMPEHhYLYvSH7PNqo/xSDhRSN3gUgyZUGC7TevfhxqI0GKD8e3Y0b+gLZ1CPovH5zxob00tZIMO606KPJPd1KGA6xNDky4mXzO1/zqd85ENlWVk9Q0=
+	t=1749677231; cv=none; b=Lh+huGkWUTcCB92T9lHwSm2Xy2R9Ec/P4qhe858UCYOMYIsw+bO3dPOOqcZyrS4RlCyXbHFfhEkUxklZhNVam9nObbz2o852Cs+AXL1IX2hPTblDhIA9pgf5h1FBK3NsGMd9OHRV+BmjrVCMQaPQO68dVeZXYW+w2kckJz60DiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749676566; c=relaxed/simple;
-	bh=34l1hncorS8+nkL26ZB/15dqnRBpVywFqIADeqMlHMU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:In-Reply-To:
-	 Content-Type:References; b=vCkhu6IRsmREofBUyalXdZqXwwY8NT1FJPlYVNPuIkwwOb9jwd+sa6usMWETWbOhd0nL3sJcA/ni/xVejGF5BFW40iWZ/EztB/69KbfJdXIwDWvZhdEXba6Tn4DHRdTLIEd290I8E3M1yJvyBzsR6cPj5ZagIWscd/XWN+N1P+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=bp0W74Lh; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1749677231; c=relaxed/simple;
+	bh=jUy8QAn0m9tzE07JAe76z+1J1MVw/EYMYYDN9ar6REQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Q7ti/pnSqM2K760TpcL8naYOlLHys6Qckh4bEbPBh4kHRWwbN0Zj9vRBNXv84cb5FytS0vTasP0klUIBAyyPUmFj+78HU8wFcRl3+WKPB+Gh/qol0xB9fwtF5nx0AvCoKl3AVvMiFaEr0/YsilOmq0QAyK+j4pmQCEeJVEm3/ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElwcDGOa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="bp0W74Lh"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250611211602euoutp027014a412af419d49fd8b7057148c038d~IGZBAKOdK0516105161euoutp02E
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 21:16:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250611211602euoutp027014a412af419d49fd8b7057148c038d~IGZBAKOdK0516105161euoutp02E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1749676562;
-	bh=gJSx6fFWCab1L0dG4hF/wx4spo5Eingwx2AqpslewPk=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=bp0W74LhifQr+oDb85bFPnIvLOvQj11U4xNBK2Ctc3WQbNvMXWHlyVld+paX8aOnx
-	 jHUXOFqS4Gqc31gj9khxT2dS4yO5XFKlDvzNkeeaiVcPU7iuznz807UwDsOtlRhIGI
-	 wMx6yzURpEnZd1OPa2nu1tm7/icJkWPXwRhDOr4M=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250611211600eucas1p13784b73e9c0257e670846320bca0a2f9~IGY-b_FYG1491714917eucas1p1X;
-	Wed, 11 Jun 2025 21:16:00 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250611211558eusmtip17a546ce3e5256d611175ed66f1a5dc7a~IGY8xpr_31879718797eusmtip1c;
-	Wed, 11 Jun 2025 21:15:57 +0000 (GMT)
-Message-ID: <02e480b9-68eb-47e7-97f5-54e49d259f84@samsung.com>
-Date: Wed, 11 Jun 2025 23:15:57 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElwcDGOa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F4EC4CEE3;
+	Wed, 11 Jun 2025 21:27:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749677230;
+	bh=jUy8QAn0m9tzE07JAe76z+1J1MVw/EYMYYDN9ar6REQ=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ElwcDGOaoP8xjRrx1iWqhxRB0GclLdep88yUuSevxWZwQBpHqH4j0PGTqedCv44oO
+	 NafBTlU4LtgTqF5BZ6cAu+mziQtJk7ZMzn4SRdwjVy/vWyOGMsSBf9tZsaXoMpXwMp
+	 yJyZwx7dfo/AESHwHFJxJVR2iisk2Hs8d2m3aZhO6D75KyKwsSlETHFuLVIam9Rjrj
+	 L9bA3HbGDIorLGCfKinr5e/tMvFlnNUdW9tEUDD24vh3w8lk2I+IzpBZTGde9yJRQ1
+	 yHuVCUbCa9Ye0V44ziD5Uv4F9Xl7G7K+JW6CqFSKHuhN0ALuet1h/lfrWerNJQ4pvD
+	 u94pz5Q88JWqQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
-	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
-	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
-	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
-	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-Content-Language: en-US
-In-Reply-To: <1d9bba9e-0f30-4039-812e-60b160271e6b@samsung.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250611211600eucas1p13784b73e9c0257e670846320bca0a2f9
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
-X-EPHeader: CA
-X-CMS-RootMailID: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
-References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
-	<CGME20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d@eucas1p1.samsung.com>
-	<20250610-rust-next-pwm-working-fan-for-sending-v2-2-753e2955f110@samsung.com>
-	<jbm3qvowi5vskhnjyqlp3xek36gzzqjt35m66eayxi6lmi525t@iefevopxjl53>
-	<1d9bba9e-0f30-4039-812e-60b160271e6b@samsung.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Jun 2025 23:27:06 +0200
+Message-Id: <DAK0T99XTJ22.2FTHQGST9Y8IC@kernel.org>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Jens Axboe"
+ <axboe@kernel.dk>, "Fiona Behrens" <me@kloenk.dev>, "Christian Schrefl"
+ <chrisi.schrefl@gmail.com>, <linux-block@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] change blanket impls for `[Pin]Init` and add one
+ for `Result<T, E>`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250529081027.297648-1-lossin@kernel.org>
+ <20250529081027.297648-2-lossin@kernel.org>
+ <df637115-e0ce-45ae-a9b6-817ea7454bce@kernel.org>
+In-Reply-To: <df637115-e0ce-45ae-a9b6-817ea7454bce@kernel.org>
 
+On Tue Jun 10, 2025 at 3:44 PM CEST, Danilo Krummrich wrote:
+> On 5/29/25 10:10 AM, Benno Lossin wrote:
+>> Remove the error from the blanket implementations `impl<T, E> Init<T, E>
+>> for T` (and also for `PinInit`). Add implementations for `Result<T, E>`.
+>>=20
+>> This allows one to easily construct (un)conditional failing
+>> initializers. It also improves the compatibility with APIs that do not
+>> use pin-init, because users can supply a `Result<T, E>` to a  function
+>> taking an `impl PinInit<T, E>`.
+>>=20
+>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>> Link: https://github.com/Rust-for-Linux/pin-init/pull/62/commits/5861251=
+4b256c6f4a4a0718be25298410e67387a
+>> [ Also fix a compile error in block. - Benno ]
+>> Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> ---
+>>=20
+>> This patch is also needed by Danilo for initializing `Devres`
+>> ergonomically.
+>
+> For this purpose, can you please provide me with a signed tag for this on=
+e
+> please? Otherwise I can also add the explicit `Infallible` generics in a =
+few
+> places until next cycle.
 
+I rebased `pin-init-next` to have these two commits as the first two and
+will create a tag a bit later in the cycle when I'm sure that they are
+stable.
 
-On 6/11/25 22:04, Michal Wilczynski wrote:
-> 
-> 
-> On 6/11/25 08:58, Uwe Kleine-König wrote:
->> Hello,
->>
->>
->> What does .unwrap_or(0) do? You need to round up in this mul_div
->> operation.
-
-Yeah and I'm thinking that the helper needs to be updated or new one
-added like mul_div_round_up, to do the rounding
-
-> 
-> The .unwrap_or(0) is to handle the case where the mul_div helper returns
-> None, which can happen if the divisor (rate_hz) is zero. In that case,
-> the period  becomes 0. The mul_div helper is introduced in this commit
-> [1].
-> 
-> [1] - https://lore.kernel.org/all/20250609-math-rust-v1-v1-1-285fac00031f@samsung.com/
-> 
-
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+---
+Cheers,
+Benno
