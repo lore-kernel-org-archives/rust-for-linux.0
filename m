@@ -1,107 +1,109 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3555A26AD9;
-	Thu, 12 Jun 2025 00:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0998FA944;
+	Thu, 12 Jun 2025 00:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749689341; cv=none; b=li7Bf19WlkLKqey3sN7hU1x9X79ONvI0YmbdCSzYWWQ+uYV9qNOC97AwiUwRUwFO2gvqw+Wo73+f5/52v+Zxcl3pZygT5zqs2eSyyB5bVmUDzCldUI0NmDjZEyyCdh+IupqUTn1YlQCbJ5wW7ZHKoKMGClXoNU2mOrZKvjEx9f4=
+	t=1749689731; cv=none; b=Ex60NIP8GQFQ9xVLftAFr26dHktTjpq8y91uBAgrPZKWjOxT27UmKvJKfzqkkZw2HvNkoauKhtMgt3zCg7GrRaglGlwbpEP9wezvpU+d4moeXVcMxd5MNhpnBEMZwt3Qqlk0ANL3nbLzS0EewP99k/ig+izyUHmKkTTmKA6IV9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749689341; c=relaxed/simple;
-	bh=/yHgCp2Nj87O1+hE+z6Wjjusqd4RBegdP1jqfyeqfZQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=f7Ajf8XQKXHo+LYowz8n6uH5HjuW7uI0Wg1mSu6xhry1W3AszhtH/hrrAODhTYJ4jDFlA3CRf2oeszkZmwuXdLm/QTykx2ftqbRSAqimvxcrRj15zenaEeP5bmbHUEKeeMACI4Cb7Y9B6R5mzoX20yXHGxv46mzR06aw67zyzlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AvEqefY6; arc=none smtp.client-ip=209.85.210.179
+	s=arc-20240116; t=1749689731; c=relaxed/simple;
+	bh=02rlLGtfxeXHjsHmWjbMyFw3FRgqWLoxQIh0j2d8ovw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L6uUlOuVofEMhTkCebrZmgaYaGGtnKt4pX4zek72fItMCaFxPyWsGThrOXrC+9nZ+CzxcclNmQ08UytSwElyPyrtGzxXKIcP/JXhdYg92vXEx0dF33LvIrEdw+ureEHX1aly07joRbkB7uLc+l18hPTM1Jg+2rXXgDKJTDw5SaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UwZys+z8; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AvEqefY6"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7376dd56f8fso597399b3a.2;
-        Wed, 11 Jun 2025 17:48:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UwZys+z8"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32addf54a01so4086531fa.3;
+        Wed, 11 Jun 2025 17:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749689339; x=1750294139; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BnVzuSAi+VGLwZqj+6jW2zhew4ye4rLcStPcRTu5cuk=;
-        b=AvEqefY6MTyPCo3kGuYo4Vk3HH30915VAkCroEvsJ5rG/gSzWdiLXjzXqJwNmWr/jY
-         Ir8T6hVkyoC46zx775XQxQu1Wu7uv6iEkhbrKC3lYs5HKC7BoqNeFEBsZ1zpukV4d3gY
-         CW3N8R92oOLDS4pFFP04BpdlIw0owQWBCeLinoojfEQBBsbQErRAlqKidJaeLxMvAslN
-         bVUIOpaUyAVSOCMh+LugAlbGPoqbAinPLWEiWm9W6e1saLtnxjQNqJv8EEQS0QI1DZvc
-         1gvOgfYS+5AiJRZcUBqd5RHhR3oXpd0O0XsQh0mmV3Yp2TELUh/dhHNJ+CyD5c6kyUeT
-         thTw==
+        d=gmail.com; s=20230601; t=1749689728; x=1750294528; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=02rlLGtfxeXHjsHmWjbMyFw3FRgqWLoxQIh0j2d8ovw=;
+        b=UwZys+z8Kdm8iMj27LntxT9mlaJiTKPb6LrDyO728mmF31Ge2Y3Esdv8/gzmntXUTF
+         y/1PFTAciFx5Iy4m87o6YlscZ1qrIFtG08/R7F83A2Um6cbkMaa2yQTEkUU0QeopFOJ7
+         1FTYtHLXI2BdBkSb8vjg5aRTP4imE8ezMqgziMdFVSKOu/WXBPREbODAcd0hrX9ys/Iw
+         C674Ge+mqjEG6wV10HlW5SrbtD9lfP4KguM51zuHvNNcF3IRhfinOhFAl703JZjeGY7S
+         Rix+HL+5F45B+AIS2HstYySBxfjuRAaapMLAcI9SFP9pqh/wqUbYUxyU0ggenY7j+ag/
+         yo2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749689339; x=1750294139;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=BnVzuSAi+VGLwZqj+6jW2zhew4ye4rLcStPcRTu5cuk=;
-        b=dC0rYjzTjm2xc8WDUlZiXzHMc4ZJYD6H324xOYy1ndCJ2FmeL4f2ZJO/sGFJEXzFlX
-         6N6+ukl+ugmaAsYpuT18uYHWm7D62H4GCT6lDdwkWNj49MrfqX8y6TmTgggBHRBN8KiZ
-         5YzHSbsag2Ed/0S21DsqolLAISPxQJ9b/0tQVr3WggrJGlKC2qse4M94Fh8N0ysYBeNT
-         mf8L/Otp8L18Iae+INVeloQvnEyAq8jI0jeB9wMgjU8KNHIjCmr7y2vQck4eedMB+0bw
-         PL0xgmAV68FzLoxcntc0+FmrFfArwUZRE81wIwEaCkflJ4le+j+cd2Uqy47NP5R7k66N
-         eKpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVvMZB94hx1NirGvCa/yzRZNe8gQYFw7a2lwMKDzC1OxHOOQHhsWT8/ovUKqwir3TE7+kta+pR3@vger.kernel.org, AJvYcCXWeq2PzHvqTsnl5gVZHRbpvCNLQjNfqw5WRFKw+S2DWh7rQ/ouBITNbkvYZS/oTV23nSmfmsZm5TFkOJg=@vger.kernel.org, AJvYcCXpK57Yknzna9a02iFlohd/CP7B5LYsF/2blwFW0N+zk0ON+3NW6jT1wRMGptNQjwflQTxKNfoyB/TBGK5Iug0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxioXv4f0VzU6RXMJM0fJDmXdhIxEy6IOhmBKfLqxgwVbgeo58L
-	WUXXDm29uhsOOQkQCmuKxXGRQgWFgfiKMFjRL9HKNH6xucgbvTRA+FyR
-X-Gm-Gg: ASbGncurzeyEN3B+pva9lPVH/ZjwmpuDj/KPg8+lTboqG2BFrXZR4uvZWHkch3vwYzJ
-	9+9s8h8+pp67Z39kgmtTwJ9gFM+1MwONFewxJ4KMg1IBDPZNKBRbXzsYm+wUsScr8lhFd+qn6yg
-	sZ16CUae0BPi/UfHA9qPcw3xtri3iMvpnGN2L4zgq/XNyUdVh8ud83kPEC0GlYZ2IQvSmPwSvVX
-	8d2GvEqZmJEMyXac7VyQY7x6FV05MzT2mNH4g0Ld1g/QP5dkboLmXfsqkum/ksBNE+OHIylnTsm
-	eFUF+jhjVgVmES+4JE9/QilUcuW9/jurWJwaiTcTJOvS7mzqFoneUK8IHgiCrKeaGoycHMzS0WX
-	NgcW71E1W+8D6wRatqGnx/9oSWI6XuiscX+VyPRwB
-X-Google-Smtp-Source: AGHT+IHkUbqDLQgmErzS/Fm0ohtqpYCXxdJOooNkrwjZOfmDhJCFlgfY+aV1we6nOyEVcpq2KHK6mw==
-X-Received: by 2002:a05:6a20:2587:b0:21f:53e4:1930 with SMTP id adf61e73a8af0-21f86725dfemr7996776637.22.1749689339308;
-        Wed, 11 Jun 2025 17:48:59 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-748809ebb8bsm195364b3a.126.2025.06.11.17.48.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 17:48:59 -0700 (PDT)
-Date: Thu, 12 Jun 2025 09:48:53 +0900 (JST)
-Message-Id: <20250612.094853.1245231705823615660.fujita.tomonori@gmail.com>
-To: tamird@gmail.com
-Cc: aliceryhl@google.com, fujita.tomonori@gmail.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, dakr@kernel.org, davem@davemloft.net,
- andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: cast to the proper type
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAJ-ks9kZZEWXSHX95=QrNXaQvEc-T1cTPTaB3mCjT2coGzpwUg@mail.gmail.com>
-References: <CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com>
-	<CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com>
-	<CAJ-ks9kZZEWXSHX95=QrNXaQvEc-T1cTPTaB3mCjT2coGzpwUg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1749689728; x=1750294528;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=02rlLGtfxeXHjsHmWjbMyFw3FRgqWLoxQIh0j2d8ovw=;
+        b=sB4M7ffr5LkNtDDpz+hG8av0l/ApPTvJRP9XKDF9PwqZ1VD+xwwg12JmSE1rYKYGWk
+         qwJ00QJ1TSHNM5v1B0p/emSPdJx1kVyDgmBwjdRyG/STiIO68etAnCgKPSBeot/W6ApH
+         r7Z/O+Y+81R8W8EX+00x0F9tmV8c/+4Ec4PMgclxubDHGfcWtCHF2dytrj7fl2ZCi1Fs
+         VRqASo5/8M0M1pyKFUGVcr5S9j5tFvQwWi9JMALh8RN5/gL7wfOb8lTdPq/NxfJEtBbS
+         1WS20gTxl23e+b3qRt9GqVB/JK55YhHilkxM4E4DFmiMx8snjqEDd7W+uA88SZkSgSKz
+         G99g==
+X-Forwarded-Encrypted: i=1; AJvYcCUZZz8lKg8flCrd5tXVWD1JMAEa2tUjsivPmp7timdPRgXGCG4msDYitcHu52osyWe7lY/DK4J83Dk+Sw8=@vger.kernel.org, AJvYcCWaNGdnyVEhtI0gpn6+PqKF7dvBskKE1nys1rH2L+y+TMd2PjwsqirI9alQ6SKNfNtLEF51yTVPIc91F+7KoS0=@vger.kernel.org, AJvYcCXXVVGohg3pR8HtASJw5SjgqRkiucTlvV2LhpUd793x/O12ga5achxUY6+5r9MfaILyAIDaypdt@vger.kernel.org
+X-Gm-Message-State: AOJu0YyC+B89i6mEt/cRDLazhJxeTlvKH5VsmqV7pWSpae9X5NyQN2ij
+	RcjJLjOeJmPrqZDPuXsV2bifN7095FjPQpw4x+UP7kztDBhr9y/TdvKJIoSbr6xs7+i9DEx3cxB
+	bet5Z39kN470p8m0ykpN1ngm26g12jwY=
+X-Gm-Gg: ASbGncttIo3hJ2kBQeF7RWRdAZK348fOsDNAsZ8cDE6AU+HXdJjdG++HIB2wjRDDuHI
+	3g/p/HvNXBrF0G/u0Cxwx8S5s3dgmkWo9A6lfIgS4+VHClYaoOFVorX4v+c3RPkzeDzkLS79caV
+	mkW+7vKxntgbEd/oIp0JS9bkAkJ398v7MV7DL6kEbOYEufvQ0NYOXctAERVAS5GxAOYKFKv68eo
+	/Ph
+X-Google-Smtp-Source: AGHT+IEAjTVQc6gCBaN+fyy4OxpD8eXGujSQWQti4N6wm9Vu2YEJ5M4XkfBoxRQlrm4CA8G+lruEUOfQ0KMesp+X37I=
+X-Received: by 2002:a05:651c:40d4:b0:32b:35e6:bc05 with SMTP id
+ 38308e7fff4ca-32b35e6ced6mr186141fa.32.1749689727738; Wed, 11 Jun 2025
+ 17:55:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com>
+ <CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com>
+ <CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com> <20250612.094805.256395171864740471.fujita.tomonori@gmail.com>
+In-Reply-To: <20250612.094805.256395171864740471.fujita.tomonori@gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 11 Jun 2025 20:54:51 -0400
+X-Gm-Features: AX0GCFtVbFawFEU3xKRhoK3eY3Dg6SyO8rvlkK_xWlCOPkYVxO4bSRJBZ8lWlUE
+Message-ID: <CAJ-ks9nXwBMNcZLK1uJB=qJk8KsOF7q8nYZC6qANboxmT8qFFA@mail.gmail.com>
+Subject: Re: [PATCH] rust: cast to the proper type
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: aliceryhl@google.com, tmgross@umich.edu, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	dakr@kernel.org, davem@davemloft.net, andrew@lunn.ch, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Jun 2025 09:41:08 -0400
-Tamir Duberstein <tamird@gmail.com> wrote:
+On Wed, Jun 11, 2025 at 8:48=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> On Wed, 11 Jun 2025 09:30:46 -0400
+> Tamir Duberstein <tamird@gmail.com> wrote:
+>
+> > On Wed, Jun 11, 2025 at 7:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
+m> wrote:
+> >>
+> >> On Wed, Jun 11, 2025 at 12:28=E2=80=AFPM Tamir Duberstein <tamird@gmai=
+l.com> wrote:
+> >> >
+> >> > Use the ffi type rather than the resolved underlying type.
+> >> >
+> >> > Fixes: f20fd5449ada ("rust: core abstractions for network PHY driver=
+s")
+> >>
+> >> Does this need to be backported? If not, I wouldn't include a Fixes ta=
+g.
+> >
+> > I'm fine with omitting it. I wanted to leave a breadcrumb to the
+> > commit that introduced the current code.
+>
+> I also don't think this tag is necessary because this is not a bug
+> fix. And since this tag points to the file's initial commit, I don't
+> think it's particularly useful.
 
->> > > +            DuplexMode::Full => bindings::DUPLEX_FULL,
->> > > +            DuplexMode::Half => bindings::DUPLEX_HALF,
->> > > +            DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN,
->> > > +        } as crate::ffi::c_int;
->> >
->> > This file imports the prelude, so this can just be c_int without the
->> > crate::ffI:: path.
->>
->> This has come up a few times now; should we consider denying
->> unused_qualifications?
->>
->> https://doc.rust-lang.org/stable/nightly-rustc/rustc_lint/builtin/static.UNUSED_QUALIFICATIONS.html
-> 
-> I should point out also that every reference to crate::ffi::c_int in
-> this file is fully qualified, so I think this should be a separate
-> change.
-
-I can take care of this file.
-
-Thanks,
+Would you be OK stripping the tag on apply, or would you like me to send v2=
+?
