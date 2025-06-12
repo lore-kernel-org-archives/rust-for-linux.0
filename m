@@ -1,122 +1,112 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A4226C384;
-	Thu, 12 Jun 2025 15:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0326A29898B;
+	Thu, 12 Jun 2025 15:25:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749740856; cv=none; b=GRYB+ntnilkCgBM8Zqjjgu5QRJqasvJDq1EoxYxoxQjXIVXWAMnQHGrvwKWtYJ3RBEhf8XNxqVngniatbb6t3pn+48oScls/mU9gdrhikBglyVPFnAkPpHxJoanipZ+T/+kNjU2xd8BWvjDSdjFIlU9ppPfJELbZMVASS9cJdaw=
+	t=1749741914; cv=none; b=kd8KlzeH+qakzlmDpMq6KcbJKdXJqU2MjADAYp2RFMYj27c5jhTmExkCIA27/Zy+09JI+34yiWH9MXiOvKoj68sBFBGByW5RapY8Wcd98ACbLwZeaoEZpSTV/WLCOGwj1uLU3F/EVhcrl1egx099XxN/BjVLYz/pAmS4ZebGH58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749740856; c=relaxed/simple;
-	bh=BVuC3mymEtzbIUWUMz53Sp+ev75716vh8tVokNmdTBM=;
+	s=arc-20240116; t=1749741914; c=relaxed/simple;
+	bh=C7a86Yhj5m8oAToWQsghVy7t7t+w/IFoVAVKpwf8HyA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BARcZRa5zYBSKvYJeuLgUDWd74Hvy3ohtTWXLO5My7g6ZwFgm/fYp4cIW+uSQQW6IFFxZgsoJRsbiwF2NPnf5VgegmiqD8xIx2LMpfGTxSlek4l6E81uBMWobAoXGD8Evyy12pG2ne1dxFH9SxfR82RbSmriE/YHWqcQZvi7IXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AVJxt+6r; arc=none smtp.client-ip=209.85.222.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=KxW0zMozBIoqapZM77zYrjFvz9MGroxflMszerBX46FDDnAqU0PGf3P3SIFAm2VAUg/EBfb9wkNH41gib9S64PncR03WD6gcvFwFcxJ0Y6nBDKnkFjsu1No+M9zN/U5IHtMpKTbPyip8vumP/jrX1PlEMpJfiE+Ct0S4CgA8LYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YxpHCNIl; arc=none smtp.client-ip=209.85.219.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AVJxt+6r"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7d098f7bd77so116898285a.0;
-        Thu, 12 Jun 2025 08:07:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YxpHCNIl"
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e819aa98db9so728024276.3;
+        Thu, 12 Jun 2025 08:25:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749740850; x=1750345650; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749741912; x=1750346712; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ak1LLtwfOBZwskRiUyNHNLlsyugdrztZNAWM/dn6MRU=;
-        b=AVJxt+6rZw1Ep6SFLAOVAlbWi9KOSCELSaYpHYM/h0QENjU7BUOsxcjU5e8YpVEQ8P
-         mXFUSo4m+fzXC31VUVBQPGfLV65tq0mSP2wcx6vH7PsaNyHa81ks3qIchlYZjCTcdHfu
-         eKYNHLqbT6Kvyn1bEo3il2bq4bOfLFvwIohhTfBU/WAVP563NhEa/9j2e06fmykWKGPM
-         zcXTrW2cvJbJ1SmJI8Tzq8dqYeAKWJeM/4XuKRGc+vwrEWTdogkIkfNIA5JOrF82UM95
-         JN/JB70vfQQLQn2IJLI2nE3y5xtTezFOYvZTO2f3BQji8ESpWFMwYEJ1RJjhptW+d0A8
-         ds7g==
+        bh=r46XBy+QkGdSMo1M9nVj1rp34sDjOp5zH0JQOJTyWS0=;
+        b=YxpHCNIlF97yTbn9jLC4mqhT9umaOc1a0LG4xyIr8wHm2B2951wEKAhxdO2ctnQocD
+         gnzzC2xrBdvg5NUOl/iZHzNMjhObqoZLoIrBzC7VCtFXZeZ+hFJjrBP+9IT5dYJjPLYx
+         5MqPCHqLnjhWsINAV8YLBClh5Lu3105bsM4InhMtg9jwDpX5tN33sXYZxR9RYjV69Df8
+         WDsagvKwJ2I42+SW7S5BFHjGaAs+k7dtqzTWB+xOUt27mVghAIZknV+5Cni5Qxf5CDJw
+         bwm0GGWjIVHv8OfFq0ORGoluT2zyiGbus1ppYqmM6RJdy4uv0ODXuDZXwexI+WVvHErg
+         9pWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749740850; x=1750345650;
+        d=1e100.net; s=20230601; t=1749741912; x=1750346712;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ak1LLtwfOBZwskRiUyNHNLlsyugdrztZNAWM/dn6MRU=;
-        b=FvH/B5zUdQDac9WE9S7+dpopuOefiZPhQ1h8k7k1q8ygRopPFqbhWu/J+q/skiM6qm
-         MdQkTun24wRX8h1HJ17j9yAYGVPvULUdzsTxLRwiX8btUcnlu1IEvKhdZW4mu6Tluc4y
-         I6V/EJCPUEoUoSA+oRkTTDWGq6xKKhgGcgY7fEx2vgMJ3pu1cGfZfqaUuZlIr3pSncRQ
-         yV7Qb6BjGZDccBy7F4zdMnGYXYBZIbJLgxbx+ZFBVb4E2+31/+c5Z3vsBJSszUaiKZrb
-         PzumfKFGdQhQ3VCG+w/ToO/xHFlmtd51VESjRTQS3f7MWXYCIffR7gl8mzqPTNypvyXF
-         CzHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBvLPlBWKf/DLNrvW5gqbowwYMOzfQ1WcgnezJjdaCsbfNvW1f0ZibJgMR83NGnyjJxgVnyRFb7TUlK5EGPPw=@vger.kernel.org, AJvYcCXSy4vN+pVKwr+S4+JD/bE7KLrewF2d/blCf4nxERHm2eJWD6O7hwKCsuNFsNTgleEZhiQaW5Ouf9nrV3k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6yY+9X1If5I0QmTkxMXOqV6V5e5yrluC7vop8+0kLgkMkw4L9
-	z8VWraKqWnykQGtcz+dz2CEfalHCHMq/qpoc3XM0vAXcSS28HqRGIC5Vix4Azw==
-X-Gm-Gg: ASbGncsD33DafiajOFJ9ircuoGPg5TuopsjEvZwLUvSUI7dfH+lXACnLKrgC7KDR0D8
-	f/MtCmasR+EEXXgsBhdoCwVUcAFPgfech/dVQCh0Y36GXQWsmEGG9Kew69DcCr5lBoC4LHx6KYN
-	yyw2p8wZz5aPN5UzL9DtzyAc7PrUwdgc4dVJQZIcZLcyLGH216aFqy+/vI7zp+HSYl3TdvV6S+1
-	bXdY5RZ/2rRWd/3bfJhfjXKQCLQEMncpVsmPZ/edXUL2GFOXnypaF3B79gS4oK4AEfSyhhWIIRr
-	BVPYAakX1g/tIoB9l7MsWvC+XwJGYM/PgXQmMrwBonQ0PlyvbDbS6+R0Qqssp7Ax1l3z613TyCV
-	NOetDUz1fuJHv7fwORo6ZhSbrEVJzfB33XxUW1LLLYd6OPL1bqxpH
-X-Google-Smtp-Source: AGHT+IEWKSZx6VTctdm5flg6YAMB36hqq32ZNEDxmUm3MgkF6Ea8BVoTaEKdXSFIYzRhM3toOK+vxg==
-X-Received: by 2002:a05:620a:9518:b0:7d2:26b4:9a91 with SMTP id af79cd13be357-7d3b2d767demr440353885a.2.1749740850284;
-        Thu, 12 Jun 2025 08:07:30 -0700 (PDT)
+        bh=r46XBy+QkGdSMo1M9nVj1rp34sDjOp5zH0JQOJTyWS0=;
+        b=aGlYz3S1Z7ssgPNPN+Aw8yRMT8C8Cu3xErCxkOHFBSdwR++mV3xGA0BxXtYehh+tqo
+         R3DZWEq1bIyCdFCPeSNtqPm92GVo6dqBI75pcp6+OPMtFg1Kq31jdz37KDkGX2/sfDBD
+         WY8YzVysZwAGheWgI03cSmBCy2sQJXM53g+mFhMsYNpvK0m3cTPMaxEgNOCetE2AIduw
+         B46xYFI+gb3XYSa6lv7zYgIybb5HByUWjjvRyuIHztJDRm0JCBOwOVf9pAyogR4QmI9d
+         Aiz3xAFYjL8qk436GXxTnR+rjWhB2YgEtw6c2Pa81L4FB8j+w9GfhlhdmkWO3reU00K/
+         53WA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQxna5vSJhpmaWX0Uy8xNby3yT0t8tspYz/9X/KC+CLhUwHP8ERvCeHqR+609aI4lNnlNs8EJRHeDKZ2fAMvA=@vger.kernel.org, AJvYcCW8maIDOEFms8TWoozoVeLZfnatOH1o2GjR1JkNN5z6F1llN3lmJPMgVLdLXy83n3TTDih8QkRQvE0hdeA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUwiVa54fI6r+isSHn0p9Re6pWtsFiSb0f/VKL8rhm2aVsrDXv
+	mM7oKD0Xw4ELKWRcrA2gi2inMlZ9vY6NgsGhoo+jzgZ8Bl+uov/fxwTWJQ78iA==
+X-Gm-Gg: ASbGncu6qpN9QqYng1ra0OTnNDuNLzVgEpNaeaK+lAX5kaI5ExBLfmZdkyRZQHKIzZ6
+	YOo0uJXcVzUfDdiwla0OLystUpKlhxgZvtin6OI9fqoYTX+9FQ/TmrWFpWYMktcB6Ax/1jOCeyj
+	plgMBuge1OjaXYGH+7fFNeBap3qFf25GcPJTdyMSUjBl7gVlp+QHU8wEZ3Smb2xdfu/Jy/bWFIz
+	x7zEkBOwc00+LGkk/Dc6GqaBKNnqQwoccmyipO8OCGyOTbfSXmqLw14O/rPzf56fuiXywKcj3H/
+	eXvkZ6bPRv0fT8Fs/Cpa5ZnD4AflHgurqKiMdrS5SPsYSUec2Pri9TqI0Ac9I5X1e+ADcPOGZZ0
+	QH0zxJiaGLxx8PeUHD38ocrmBwfleWLtserPGiFeyQHaX9ewv4bRl
+X-Google-Smtp-Source: AGHT+IEgQn2ULLvewzT0FRnyIp4vuTqYKiY3bdRt4hXPx8AJzOuNN7bjf+FUMEGeWYszvdvCgntL6w==
+X-Received: by 2002:a05:6214:cce:b0:6fa:fc96:d10a with SMTP id 6a1803df08f44-6fb3d2b2084mr1096636d6.27.1749741899634;
+        Thu, 12 Jun 2025 08:24:59 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8eaccc4sm50231485a.74.2025.06.12.08.07.29
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35b20fc8sm11301856d6.10.2025.06.12.08.24.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jun 2025 08:07:29 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 181D01200068;
-	Thu, 12 Jun 2025 11:07:29 -0400 (EDT)
+        Thu, 12 Jun 2025 08:24:59 -0700 (PDT)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CB6871200043;
+	Thu, 12 Jun 2025 11:24:58 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 12 Jun 2025 11:07:29 -0400
-X-ME-Sender: <xms:MO1KaDgHMEhzVqJlxjRbGTXEXxba_2qIWf9aziNlqYslBuHKbBIICQ>
-    <xme:MO1KaAB_hWLwQ_KumJ9goIyJTHl87nDGHJeoV1QZvQQbv-hbn9Cjd73UXTi7KVseK
-    j8DwPJNENniuMWQgQ>
-X-ME-Received: <xmr:MO1KaDFrUe4Ns8hrcz79ANJs6xQ4RjzbYopnsXhnYAPv_Iqbn3chdQh1LIM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduheefkecutefuodetggdotefrod
+  by phl-compute-12.internal (MEProxy); Thu, 12 Jun 2025 11:24:58 -0400
+X-ME-Sender: <xms:SvFKaAunp1UeEn64kuH43XeQALy8baCkbQfxwc8Auyt2vZdgdi1UwA>
+    <xme:SvFKaNcdkOiLtuKJCb5gJGEuCItNHaK3o3bitKR7vw5E6hWIBkbPExa5m3RPchXqx
+    UdhXfYl4cQjm8g6ag>
+X-ME-Received: <xmr:SvFKaLw2wGs_z-9nszOZxO7xwANsvtC0Gw6ETMeKXeIfgntKZVfpxH-APSI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugdduheegvdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
     hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
     necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvhedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprggtohhurhgsohhtsehnvhhiughirgdrtg
-    homhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegr
-    lhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrg
-    hrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgr
-    ihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthho
-    pehtmhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepuggrkhhrsehkvghrnh
-    gvlhdrohhrgh
-X-ME-Proxy: <xmx:Me1KaAQWCDPz59Di9vz5U0N7B10kWFcUgfBUHSaSuaYRWrDPAGDxhg>
-    <xmx:Me1KaAy8LP5ECCWuA5HrBXqqBuQqGMr4JwYSc-CpMHn3FCregyUwBA>
-    <xmx:Me1KaG519a0LAZhG7fNKhrZEThmGhIkE5KsbPgZMF2oy0NiZe-j-Gg>
-    <xmx:Me1KaFxlCbEIwqzjbg901zjDvebFIzJjneViKSvTbXkr3wyENdQ0tw>
-    <xmx:Me1KaAidkRMYTHUUSt0MLjkxQgk755O_1_iwQspLEApSUd7t61Y08YXn>
+    drtghomheqnecuggftrfgrthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdet
+    heduudejvdektdekfeegvddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
+    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
+    rghmvgdpnhgspghrtghpthhtohepudehpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlihhn
+    uhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrh
+    ihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohht
+    ohhnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhoth
+    honhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:SvFKaDOiN1QykfXWJJGrfA41ePZBvCG3p0DlKqrFGtQhQFqLK1I2mA>
+    <xmx:SvFKaA-msdQhIpIP3GnNH8ElDhn0lbSJ2ajVAlrv9aWVDxlDLxL9zg>
+    <xmx:SvFKaLXKj8O9RQCLST2j7D6-j9PBVyPWfo3KgYSfWxfLUkVyoa84AA>
+    <xmx:SvFKaJd-0bt1-cbbcW9pgF7Tvp_Qok964NSqhyflA6CaE51bsU_d8w>
+    <xmx:SvFKaCdd093rbJ_SAO7iq9KRXV8MJkW-z0cK0hPyW5wTgLXVbx8kgMDw>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 12 Jun 2025 11:07:28 -0400 (EDT)
-Date: Thu, 12 Jun 2025 08:07:27 -0700
+ 12 Jun 2025 11:24:58 -0400 (EDT)
+Date: Thu, 12 Jun 2025 08:24:57 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Benno Lossin <lossin@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v5 04/23] rust: add new `num` module with `PowerOfTwo`
- type
-Message-ID: <aErtL6yxLu3Azbsm@tardis.local>
-References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
- <20250612-nova-frts-v5-4-14ba7eaf166b@nvidia.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, chrisi.schrefl@gmail.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/3] rust: devres: fix race in Devres::drop()
+Message-ID: <aErxSYp0AsHGWt0E@tardis.local>
+References: <20250603205416.49281-1-dakr@kernel.org>
+ <20250603205416.49281-4-dakr@kernel.org>
+ <aD-EiRChuScS5TK-@tardis.local>
+ <aEAWwnyP4zwwrccX@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -125,238 +115,148 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250612-nova-frts-v5-4-14ba7eaf166b@nvidia.com>
+In-Reply-To: <aEAWwnyP4zwwrccX@pollux>
 
-On Thu, Jun 12, 2025 at 11:01:32PM +0900, Alexandre Courbot wrote:
-> Introduce the `num` module, featuring the `PowerOfTwo` unsigned wrapper
-> that guarantees (at build-time or runtime) that a value is a power of
-> two.
+On Wed, Jun 04, 2025 at 11:49:54AM +0200, Danilo Krummrich wrote:
+> On Tue, Jun 03, 2025 at 04:26:01PM -0700, Boqun Feng wrote:
+> > On Tue, Jun 03, 2025 at 10:48:52PM +0200, Danilo Krummrich wrote:
+> > > In Devres::drop() we first remove the devres action and then drop the
+> > > wrapped device resource.
+> > > 
+> > > The design goal is to give the owner of a Devres object control over when
+> > > the device resource is dropped, but limit the overall scope to the
+> > > corresponding device being bound to a driver.
+> > > 
+> > > However, there's a race that was introduced with commit 8ff656643d30
+> > > ("rust: devres: remove action in `Devres::drop`"), but also has been
+> > > (partially) present from the initial version on.
+> > > 
+> > > In Devres::drop(), the devres action is removed successfully and
+> > > subsequently the destructor of the wrapped device resource runs.
+> > > However, there is no guarantee that the destructor of the wrapped device
+> > > resource completes before the driver core is done unbinding the
+> > > corresponding device.
+> > > 
+> > > If in Devres::drop(), the devres action can't be removed, it means that
+> > > the devres callback has been executed already, or is still running
+> > > concurrently. In case of the latter, either Devres::drop() wins revoking
+> > > the Revocable or the devres callback wins revoking the Revocable. If
+> > > Devres::drop() wins, we (again) have no guarantee that the destructor of
+> > > the wrapped device resource completes before the driver core is done
+> > > unbinding the corresponding device.
+> > > 
+> > > Depending on the specific device resource, this can potentially lead to
+> > > user-after-free bugs.
+> > > 
+> > 
+> > This all sounds reasonable, one question though: it seems to me the
+> > problem exists only for the device resources that expect the device
+> > being bounded, so hypothetically if the device resources can be
+> > programmed against unbound devices, then the current behavior should be
+> > fine?
 > 
-> Such a property is often useful to maintain. In the context of the
-> kernel, powers of two are often used to align addresses or sizes up and
-> down, or to create masks. These operations are provided by this type.
+> I don't think that such device resources exist from a semantical point of view.
 > 
-> It is introduced to be first used by the nova-core driver.
+> We always have to guarantee that a driver released the device resources once the
+> corresponding device is unbound from the driver.
 > 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
->  rust/kernel/lib.rs |   1 +
->  rust/kernel/num.rs | 173 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 174 insertions(+)
+> However, there certainly are differences between how fatal it is if we don't do
+> so.
 > 
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 6b4774b2b1c37f4da1866e993be6230bc6715841..2955f65da1278dd4cba1e4272ff178b8211a892c 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -89,6 +89,7 @@
->  pub mod mm;
->  #[cfg(CONFIG_NET)]
->  pub mod net;
-> +pub mod num;
->  pub mod of;
->  #[cfg(CONFIG_PM_OPP)]
->  pub mod opp;
-> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..ee0f67ad1a89e69f5f8d2077eba5541b472e7d8a
-> --- /dev/null
-> +++ b/rust/kernel/num.rs
-> @@ -0,0 +1,173 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Numerical and binary utilities for primitive types.
-> +
-> +use crate::build_assert;
-> +use core::borrow::Borrow;
-> +use core::fmt::Debug;
-> +use core::hash::Hash;
-> +use core::ops::Deref;
-> +
-> +/// An unsigned integer which is guaranteed to be a power of 2.
-> +#[derive(Debug, Clone, Copy)]
-> +#[repr(transparent)]
-> +pub struct PowerOfTwo<T>(T);
-> +
-> +macro_rules! power_of_two_impl {
-> +    ($($t:ty),+) => {
-> +        $(
-> +            impl PowerOfTwo<$t> {
-> +                /// Validates that `v` is a power of two at build-time, and returns it wrapped into
-> +                /// `PowerOfTwo`.
-> +                ///
-> +                /// A build error is triggered if `v` cannot be asserted to be a power of two.
-> +                ///
-> +                /// # Examples
-> +                ///
-> +                /// ```
-> +                /// use kernel::num::PowerOfTwo;
-> +                ///
-> +                /// let v = PowerOfTwo::<u32>::new(256);
-> +                /// assert_eq!(v.value(), 256);
-> +                /// ```
-> +                #[inline(always)]
-> +                pub const fn new(v: $t) -> Self {
+> Complementing your example below, if we for instance fail to release a memory
+> region in time, a subsequent driver probing the device may fail requesting the
+> corresponding region.
+> 
+> > For example, in your case, you want free_irq() to happen before
+> > the device becomes unbound, which is of course reasonable, but it sounds
+> > more like a design choice (or what device model we want to use), because
+> > hypothetically you can program an irq that still works even if the
+> > device is unbound, no?
+> 
+> You can, just like for every other registration (e.g. class devices, such as
+> misc device), but it's sub-optimal, since then we could not treat the
+> registering device of the registration as &Device<Bound>, which allows direct
+> access to device resources with Devres::access(). Please see also [1] and [2].
+> 
+> We have two (safe and correct) ways to access device resources, one is the
+> runtime checked access through Revocable::try_access() (which implies the RCU
+> read-side critical section and atomic check); the other one is the compile-time
+> checked access through providing a &Device<Bound> as cookie for directy access
+> without runtime overhead.
+> 
+> Wherever possible, we want to enable the latter, which means that registrations
+> need to be properly guarded.
+> 
+> [1] https://lore.kernel.org/lkml/20250530142447.166524-6-dakr@kernel.org/
+> [2] https://lore.kernel.org/lkml/20250530142447.166524-7-dakr@kernel.org/
+> 
 
-Then this function should be unsafe, because an invalid `v` can create
-an invalid PowerOfTwo.
+Thanks for the explanation, and sorry I'm a bit late for the response. I
+was trying to find a place that we should document this, how about the
+diff below:
 
-> +                    build_assert!(v.count_ones() == 1);
-> +                    Self(v)
-> +                }
-> +
-> +                /// Validates that `v` is a power of two at runtime, and returns it wrapped into
-> +                /// `PowerOfTwo`.
-> +                ///
-> +                /// `None` is returned if `v` was not a power of two.
-> +                ///
-> +                /// # Examples
-> +                ///
-> +                /// ```
-> +                /// use kernel::num::PowerOfTwo;
-> +                ///
-> +                /// assert_eq!(PowerOfTwo::<u32>::try_new(16).unwrap().value(), 16);
-> +                /// assert_eq!(PowerOfTwo::<u32>::try_new(15), None);
-> +                /// ```
-> +                #[inline(always)]
-> +                pub const fn try_new(v: $t) -> Option<Self> {
-> +                    match v.count_ones() {
-> +                        1 => Some(Self(v)),
-> +                        _ => None,
-> +                    }
-> +                }
-> +
-> +                /// Returns the value of this instance.
-> +                ///
-> +                /// It is guaranteed to be a power of two.
-> +                ///
-> +                /// # Examples
-> +                ///
-> +                /// ```
-> +                /// use kernel::num::PowerOfTwo;
-> +                ///
-> +                /// let v = PowerOfTwo::<u32>::new(256);
-> +                /// assert_eq!(v.value(), 256);
-> +                /// ```
-> +                #[inline(always)]
-> +                pub const fn value(&self) -> $t {
-> +                    self.0
-> +                }
-> +
-> +                /// Returns the mask corresponding to `self.value() - 1`.
-> +                #[inline(always)]
-> +                pub const fn mask(&self) -> $t {
-> +                    self.0.wrapping_sub(1)
-> +                }
-> +
-> +                /// Aligns `self` down to `alignment`.
-> +                ///
-> +                /// # Examples
-> +                ///
-> +                /// ```
-> +                /// use kernel::num::PowerOfTwo;
-> +                ///
-> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_down(0x4fff), 0x4000);
-> +                /// ```
-> +                #[inline(always)]
-> +                pub const fn align_down(self, value: $t) -> $t {
+------------
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 0f79a2ec9474..c8b9754e411b 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -31,7 +31,8 @@ struct DevresInner<T> {
+ /// manage their lifetime.
+ ///
+ /// [`Device`] bound resources should be freed when either the resource goes out of scope or the
+-/// [`Device`] is unbound respectively, depending on what happens first.
++/// [`Device`] is unbound respectively, depending on what happens first. And if the resource goes
++/// out of scope first, [`Device`] unbinding will wait until the resource being freed.
+ ///
+ /// To achieve that [`Devres`] registers a devres callback on creation, which is called once the
+ /// [`Device`] is unbound, revoking access to the encapsulated resource (see also [`Revocable`]).
 
-I'm late to party, but could we instead implement:
-
-    pub const fn round_down<i32>(value: i32, shift: i32) -> i32 {
-        value & !((1 << shift) - 1)
-    }
-
-    pub const fn round_up<i32>(value: i32, shift: i32) -> i32 {
-        let mask = (1 << shift) - 1;
-        value.wrapping_add(mask) & !mask
-    }
-
-? It's much harder to pass an invalid alignment with this.
 
 Regards,
 Boqun
 
-> +                    value & !self.mask()
-> +                }
-> +
-> +                /// Aligns `value` up to `self`.
-> +                ///
-> +                /// Wraps around to `0` if the requested alignment pushes the result above the
-> +                /// type's limits.
-> +                ///
-> +                /// # Examples
-> +                ///
-> +                /// ```
-> +                /// use kernel::num::PowerOfTwo;
-> +                ///
-> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_up(0x4fff), 0x5000);
-> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_up(0x4000), 0x4000);
-> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_up(0x0), 0x0);
-> +                /// assert_eq!(PowerOfTwo::<u16>::new(0x100).align_up(0xffff), 0x0);
-> +                /// ```
-> +                #[inline(always)]
-> +                pub const fn align_up(self, value: $t) -> $t {
-> +                    self.align_down(value.wrapping_add(self.mask()))
-> +                }
-> +            }
-> +        )+
-> +    };
-> +}
-> +
-> +power_of_two_impl!(usize, u8, u16, u32, u64, u128);
-> +
-> +impl<T> Deref for PowerOfTwo<T> {
-> +    type Target = T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.0
-> +    }
-> +}
-> +
-> +impl<T> PartialEq for PowerOfTwo<T>
-> +where
-> +    T: PartialEq,
-> +{
-> +    fn eq(&self, other: &Self) -> bool {
-> +        self.0 == other.0
-> +    }
-> +}
-> +
-> +impl<T> Eq for PowerOfTwo<T> where T: Eq {}
-> +
-> +impl<T> PartialOrd for PowerOfTwo<T>
-> +where
-> +    T: PartialOrd,
-> +{
-> +    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
-> +        self.0.partial_cmp(&other.0)
-> +    }
-> +}
-> +
-> +impl<T> Ord for PowerOfTwo<T>
-> +where
-> +    T: Ord,
-> +{
-> +    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
-> +        self.0.cmp(&other.0)
-> +    }
-> +}
-> +
-> +impl<T> Hash for PowerOfTwo<T>
-> +where
-> +    T: Hash,
-> +{
-> +    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
-> +        self.0.hash(state);
-> +    }
-> +}
-> +
-> +impl<T> Borrow<T> for PowerOfTwo<T> {
-> +    fn borrow(&self) -> &T {
-> +        &self.0
-> +    }
-> +}
-> 
-> -- 
-> 2.49.0
-> 
+> > Again this sounds reasonable to me, just want to check my understanding
+> > here.
+> > 
+> > Regards,
+> > Boqun
+> > 
+> > > In order to fix this, implement the following logic.
+> > > 
+> > > In the devres callback, we're always good when we get to revoke the
+> > > device resource ourselves, i.e. Revocable::revoke() returns true.
+> > > 
+> > > If Revocable::revoke() returns false, it means that Devres::drop(),
+> > > concurrently, already drops the device resource and we have to wait for
+> > > Devres::drop() to signal that it finished dropping the device resource.
+> > > 
+> > > Note that if we hit the case where we need to wait for the completion of
+> > > Devres::drop() in the devres callback, it means that we're actually
+> > > racing with a concurrent Devres::drop() call, which already started
+> > > revoking the device resource for us. This is rather unlikely and means
+> > > that the concurrent Devres::drop() already started doing our work and we
+> > > just need to wait for it to complete it for us. Hence, there should not
+> > > be any additional overhead from that.
+> > > 
+> > > (Actually, for now it's even better if Devres::drop() does the work for
+> > > us, since it can bypass the synchronize_rcu() call implied by
+> > > Revocable::revoke(), but this goes away anyways once I get to implement
+> > > the split devres callback approach, which allows us to first flip the
+> > > atomics of all registered Devres objects of a certain device, execute a
+> > > single synchronize_rcu() and then drop all revocable objects.)
+> > > 
+> > > In Devres::drop() we try to revoke the device resource. If that is *not*
+> > > successful, it means that the devres callback already did and we're good.
+> > > 
+> > > Otherwise, we try to remove the devres action, which, if successful,
+> > > means that we're good, since the device resource has just been revoked
+> > > by us *before* we removed the devres action successfully.
+> > > 
+> > > If the devres action could not be removed, it means that the devres
+> > > callback must be running concurrently, hence we signal that the device
+> > > resource has been revoked by us, using the completion.
+> > > 
+> > > This makes it safe to drop a Devres object from any task and at any point
+> > > of time, which is one of the design goals.
+> > > 
+> > [...]
