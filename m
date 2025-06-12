@@ -1,521 +1,288 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2065.outbound.protection.outlook.com [40.107.244.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C47244691;
-	Thu, 12 Jun 2025 13:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749733916; cv=none; b=U88M7hQ4Fitl6RrolnfTPKbfF16Zdu2YR9b5TKBSyVZrSrtLYyeQPieY2AzujsJB4ARE+SxGIpVFSBP+0Yd5Ne74iXdc9LiAGujaxK0VETLzB8wUq+L9F0bohA06hdm9rbvZBl0Xw9XlyuaqP11B+DorOrKXzSwuAUgQhC72Dng=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749733916; c=relaxed/simple;
-	bh=BXkpKmZpMVHv98W9CJXaqaPiDhcl2UYnE2vDmUznyoQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ahwaVj+oVadXB4i/Y87TjM443Nghu2R8NUKyFft2Te8m8pLhLdXwlBG/DeSpAxt+KYAzKu/N1tDvzvPlDO74p0rSAv/aLApZx2fLrcLha8+Rfz6PIdEMY00pv/TaISRC2joZWgJXXEaIeWLpM15E0pWMsRq2YHXDsY/mc85RH1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DaGf76Ci; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021912744D;
+	Thu, 12 Jun 2025 13:17:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749734229; cv=fail; b=Y3GEMdL1IjAgMmMKk8AnVNrDl84uF4hTa1lQHa2+u0IjNMJQT23/fJCnQ13ZsgmYoH+QCMxo0S4pxMp+pIbh6vau5fK0JiiqpHoPpsB1KalHIUvRpglqoXcdigWIe80XdmM63w+d7XVN2p5HztPDqjcdzW/rLV2sUtbRWFQ3ALk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749734229; c=relaxed/simple;
+	bh=++TMVCoEUUpm/5ubIi2W8byUoe+ZAN/0i7IuIjgfYlM=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=eNr1j0EQSg8NfjMc8pyZVOqKJc7bSAAumGeVqHrhpnmYoDnCg9HKEPG6FYovkQ/mC/zrOqTqs2WRzGjmy+z6EFioo3FRxl6CiaffaFQTCDZyN1WdslGPo8KQ5geUbPL+cU/J6ZumgtxzVT+VB6bXh341flC4TiGlyMqWYhVEcOQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=tqyo5ocX; arc=fail smtp.client-ip=40.107.244.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DaGf76Ci"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C63C4CEEA;
-	Thu, 12 Jun 2025 13:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749733916;
-	bh=BXkpKmZpMVHv98W9CJXaqaPiDhcl2UYnE2vDmUznyoQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=DaGf76Cim6AlFDud5GHGa3TuaX3FWe3suNpaVrp/Ki6bH6cl0yHltTRIhKPO6h0Jv
-	 NDB1G2bWi5Kp66MoIbu1jk8VraYBQziq7HUP950dDuxkQ0zZAwjLm1b4xnxabeTs5r
-	 p/cRLD2hdaKt2Tv6zPjmeo0gg+tuLNcEjKmIWRNM5PRKdsdZFdkj9SD/P01K6yDmjw
-	 XmXYswpv0tPm22FbBed037sGqtiPCeIuPwXorWPNXd803P6DS63xLWcdf0uejYHoh5
-	 tHuI2LAKMX6K9uB9SwU+OD7nj8/NPVlqWInp8EnM8VxIeHTlBbDm9wWhu8TmevUy4l
-	 WJRCAxhafYfYw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 12 Jun 2025 15:09:43 +0200
-Subject: [PATCH v3 1/2] rust: types: add FOREIGN_ALIGN to ForeignOwnable
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="tqyo5ocX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=o4JUU7o5NkXNr0IKT+iOsKITGAY1XHuZg2qnUmNk3F2ljJRfaqRzjBmhGaRzJPeOf82yn8dNOcNP7kjIfrttOYzjD0jWMFPwqP5X26tnU+U/7NGF1LMStmB/TxVJDKpbhyzgUf+/+eQP4QIgsaFzy3XJBfNHDYbjFF6KeC7BztzH3sEN94H6h5Rrq0UjUIfWAkxBRupP4qg8YT43GVeUtHBn2Ybze+oy8nUp62eKk0H80t5GSEvEab+eHdRPMCksnwIhfKZY735Lm47liYhRjriaCbFmmWT7F8KxgyDMsxzYJB1kDBfZ6T5LeI8LNSVS+Zp9VnbSL+34woMDjIs6ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5fcm/YWa50LLuqeX3NojHdhKZHzebGUk68NUc0XhMyQ=;
+ b=BqUzZ7IoWWpEpg8IGvQnnMxboW5ce2CuJPHJywOAj6i9MOjBW91aKNx8s02AFnjO26LeaWB6RYhRwdUca4KUFo0nObeYkRIfIdoBDptDpkRdp700GKtiQrs/P5WAwgRy+z2MS3fHIfvZuunDwT8CLB3Vz9iLAdh+DEIrTyfL6b5kollmZhjq3P61wcn4zs6AHq67PEkbBcd3Lu7zyvR33M4lk0cEw8QRZonUup3gmNOBR+bMsE6swl3gAO4UqhSHm4seXTKwAP3aW9pHV7JqnGppLal5/ZFfZxSbujHc0jAsRwPVy1PW62ik65+3S9rD4WNuXtb/DSY+3Y9I+etROA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5fcm/YWa50LLuqeX3NojHdhKZHzebGUk68NUc0XhMyQ=;
+ b=tqyo5ocXOhbnz5zEGOaQiXpjizgBX9aiPVpuuqnWKeITLGsIfIPUQJda6xlmPQ9+1y3PK+tA+jHVoWMp40rkZmTYrr3zeXYsiCkbaQAbQo+gjK9684OXJiJBlvBr1pbjixdi+Zmqq9T6gaKuafEMgQvKdqOgk+U0IV/9Q7H9nq6mS6MCuMEewj/0Q5JjWFc+yHzCwua1Dgzbun5SbKYLxAkn3KSwM0VK1tUCQBJwoTjbin6LXsp2bFCS6Sh2TDFj2rsnGOV+cab0ec053e7ArXVUGAUDhN0VZYt57IQDNiyvGXFaQFj85KHhhFfF8GN6V63FTZ99ekcKOwNiaUnZ1Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MW3PR12MB4460.namprd12.prod.outlook.com (2603:10b6:303:2f::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Thu, 12 Jun
+ 2025 13:17:05 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8835.018; Thu, 12 Jun 2025
+ 13:17:05 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Jun 2025 22:17:01 +0900
+Message-Id: <DAKL0KOWUB1G.1DSJPRWFYC43O@nvidia.com>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v4 04/20] rust: add new `num` module with useful integer
+ operations
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Benno Lossin" <lossin@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
+ <20250521-nova-frts-v4-4-05dfd4f39479@nvidia.com>
+ <DA82KFLNAOG7.R7YT4BHCLNZQ@kernel.org>
+ <DA88YHU4AZT7.B8JGZHW9P9L9@nvidia.com>
+ <DA8GTD7LT7KO.1A3LBQGEQTCEW@kernel.org>
+ <DAC2L6ZKR6U2.WOMERUJIOENK@nvidia.com>
+ <DAD9TNUBUGPN.1ED519FYR29U4@kernel.org>
+ <DADB6892Z31G.12LB1BVSGTEAQ@nvidia.com>
+ <DADKDQ1KGJJP.3T20P9V1D2PO1@kernel.org>
+In-Reply-To: <DADKDQ1KGJJP.3T20P9V1D2PO1@kernel.org>
+X-ClientProxiedBy: TYAPR01CA0224.jpnprd01.prod.outlook.com
+ (2603:1096:404:11e::20) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250612-pointed-to-v3-1-b009006d86a1@kernel.org>
-References: <20250612-pointed-to-v3-0-b009006d86a1@kernel.org>
-In-Reply-To: <20250612-pointed-to-v3-0-b009006d86a1@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Tamir Duberstein <tamird@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>, 
- =?utf-8?q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19953;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=BXkpKmZpMVHv98W9CJXaqaPiDhcl2UYnE2vDmUznyoQ=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBoStGa3pbJyOJaVAPlewZVD//hAQHEygrqfYq8a
- REKgMcY6DWJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaErRmgAKCRDhuBo+eShj
- dzLKEAC6xbDY9wkOy/Wyrlos9+ttX3BocZrVuKUfeNiaElYpvWicYqXYLe8lS43YFEqnclvuBIn
- 9U2Ug998G4UxeAiBE0OZiXSP8Dhl5GXvNqqaOyGIvZyeyqEBE5dbJp5bEEANWh+235McfyMh47W
- hamMQk6ggtGJnksqLVLPrdWnisfvL2l/dyK/FBJ+EV/BdjlXYvVa3TgpyYj8KZVD3zmpYVGs7yC
- z0+JlQ4I6+QU1udZfENvfHp3/scG6KPtLnP1urFTbkFJGI/veN9/eFRCOyTFROL+qjqeMpomwC7
- yGsPiZ1Dsmax0NIqWXtJw+V6nft6kDcrJTxZWTaZF02PTWvTZMg2s9BGIKkfOITzUWGuoVQvybM
- N6bt9hmWj/ROj5xdGNSPncBi/ZEMB2sER96zhaoueUJePkD1Dn9tvtoPH3RJR+ecrIYNlh9jgGR
- l/Y3cOGcicHNXiDO3+Gsx3NcCHmx5anWJ5HC9uzCKmDuQirla2O/pjQHqjHE0J4SzN5UsEoD71Z
- nsztXd6xUc3a+tl8bZWBYw8HqO1sGpwaR6zBj97cFcMlXpTMkSPWJbRPu9EbXX8rOGdo+rLHo5X
- 1AD/+Fz0aRt6DI6UrD0aVUF6VCqLx9x41UAjs7T/vkTKU3lYz9PV9NrZMuzg1kkGJDLeq5z3xiU
- cM4NalO/vXRnfUA==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MW3PR12MB4460:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42b90022-1f3e-4da6-2f07-08dda9b36cdd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aDRTRUUybUdSVDNjaW4zSHZJZFBwc1g2QmVLaThGMVh2OWhZa2JwMmh3OFlk?=
+ =?utf-8?B?MjhKbEFTM1RzTko5Yk1xdGtma0dNR1BnOFVoQmM0c3JIczNFa1ArN3Byc29h?=
+ =?utf-8?B?NW90eURDM3c2cHlTb1l2MXhkSis5KzJQNG1INVQxU1QzWXNOZDk3aWx2S3lI?=
+ =?utf-8?B?cnFrV01hRGJSMXdqK2NSRmp5ckp1Q2ZmY2xMUE1tV2hHVHVJSU0vTElzMVRy?=
+ =?utf-8?B?U2QxcXltS1NtcVJBS2RhY2V0Mjd2K1kvY1Nlc0R1QU5YYk0wNmlOaVptQjBr?=
+ =?utf-8?B?SVBLdnpITDJwYnpNQ0VHTmd3eEI2UVYzSFVuQnh4RnlCbVRuUkdkVG1DeGND?=
+ =?utf-8?B?eEdiL0dQTTk3N1VpR1dwK0dPSThidm52MEljVHU3ZHRxbG11RW13U20wdnJw?=
+ =?utf-8?B?bzJLR0tLaUtqSURnVnBlbkEzeDh0cm1HSWh4UFZISStHdzluK3o3UGQ4S0lP?=
+ =?utf-8?B?MjU4KytZdjJVc3JoYzVKbWtsa3JySUNLbGIzMFQ3QmZzTnh1aytHckRydXhR?=
+ =?utf-8?B?ek5iMm5Ddk9GcThqZDNYQVBCNWFpN2h4b1RoOU5oN3RGTnR5cXJHaGJzU1Yw?=
+ =?utf-8?B?bGhscHd3UzRKNnVNS2hYdkhJYjZhbEtFNHJ4Z1A3Vzg4TVY3ckdHQ0NIQkhk?=
+ =?utf-8?B?UzNwKzQvOEczOENCSUFjQ1UvUTV1VnNSM3htZHpQNVJyMlJERUVrSklESHda?=
+ =?utf-8?B?b1J2RGo4bFI0dWpyQTYwLzMzeTRjYlJNL2pvb2VPMEVyd2ZZK3Z5a3FOaHJT?=
+ =?utf-8?B?S1U2UUhvaWlYTU9XVTdhNmQwOFhIVlczTzJJSHdpaEtkNEFPa3JBWjVSN250?=
+ =?utf-8?B?eGFIaEJwankxcXBvLzdYS3pSRytxdW96ejJoZjA2OTRqbWUrczAwdmZNaTRu?=
+ =?utf-8?B?S2dYTjFuY1I5bSt4TnIvWjlrbjkxWnhHa3VkeXUwNDcyN2E1Vk1jbEVTWFBw?=
+ =?utf-8?B?TFZnTjhRYVdiTFJZbTF6OHFiRlRRa1hlQ2Fra1RjbmJUNnp2R2kyYVp3U1Iv?=
+ =?utf-8?B?WHV4QzBpYzRiWWxGaUdoRVRmcGkySG1qdlRlZWtGcy83WXF5VzkxNzFteWM1?=
+ =?utf-8?B?blZBUk9KT3kxQ003dmNReU5hRXJEbTdyNVRqTk0wSW44SWpaZ2VRSFFDR2N5?=
+ =?utf-8?B?RVRzYkRoZDd1M0ZwcFptRGMvTnlLR1dSeXhJL3ZQaWVkSHl0em8xQytuTEM0?=
+ =?utf-8?B?WURiUHhtS2h4aVBJd0hDRlhpamxlazcxR0puNVlQVFM0NXNCVk1kZTdBd2xz?=
+ =?utf-8?B?WkxSZG1CcVpXTkFBVy9CeklKV1BHdnI4UzhvVGVwNjlqTVpEVCtsbjE1c2c3?=
+ =?utf-8?B?SlptZ2hOTkdsTzA4cGluZ3grOGhueTZJQm40MTVvaWNzT21pQ1d1b2ZjbU5t?=
+ =?utf-8?B?ejBkV3ZFTUZVQmFiVGZWcU1tUHVadzNwdmRpUmR3STFGUG1naUJXRm5Wekg3?=
+ =?utf-8?B?K1VHUTkxMmxkMVVFS2k5aGh3UkpNVE4yR3NoUStsUW43WFlrZHhGem5ZOWtB?=
+ =?utf-8?B?c2hDS2hCMGlWTkQ3VzVmMUgwQVA3VDhPNDRvQ045Z2c2UDBJbEZIMWlCa005?=
+ =?utf-8?B?bCtwMkZscm8za1F2MlBra3lKOWlPTEdXeWs2c1B0WTBKbGNNV2JjUW5lcFNB?=
+ =?utf-8?B?R3poakxKa2Rrb2VqeVgvcGk1RU5UWUJYekdGbGtlaUQrNG5TRk0rQlNLV1F0?=
+ =?utf-8?B?VzB2c1E2YUUxMEdUeVZyMUVtUHNyNDdVL2pSQmhPVzMzVTkzRkhoclFQS0s3?=
+ =?utf-8?B?OWhsbnVLYllqd0s4dDBPcWlYaTNJVkxLbnl6aTczYTdtQTVneFV1S05MWU4v?=
+ =?utf-8?B?anFKaVBocVk5d21RS0dwYXFWWmgvd01XdEhFcGdMY3pxaXdYQ0h5UzFqZGVo?=
+ =?utf-8?B?S2xvSEZWVFh4UnZGNnZNRENHUWtKaFlMV3RLOC9pYm5Lb3R1Wm12RkFhMWVi?=
+ =?utf-8?B?SXFtTUJnYllXSzFSN3J5ZDY0Q1lnOURLZHZVL0FWNi9KT0hSN1JpQkJZd1Ev?=
+ =?utf-8?B?RDg3bWRpWXJ3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?TzdrdC9aS2h0YXhBb2VILzlqN3VUTG9hT1FNVkVpVkpraENjOFRCbGJhNjhE?=
+ =?utf-8?B?dHVGRFRwTXJFQm1MdFRRdFVtRDZRaE5QRi9FL1pzejk1S09vNHJQVUFGYTNS?=
+ =?utf-8?B?K2drdUdBTXo2ZGtGbFBIS0p0YVBaaWIwVXJvUTVOTE82cVBXQ3pUN1k3TEQy?=
+ =?utf-8?B?L3BQK1RUaGZZaVFObW55ajJMd1RaOTIxVGpha3A3Qi9oTDRWdlgwUzBYZVZs?=
+ =?utf-8?B?MlZ1SFlhVFk0c0s1ZmVLWEhIOWlVWExYQ2MzeTlacmFxd0owMTRLTTdJRXF1?=
+ =?utf-8?B?cFcxZ1NYWmkwNDIvcTczUFR3M1lTb3A1dVkzRS9Qd1dXVGhjdm9MUWtBTUFt?=
+ =?utf-8?B?QjVFNG1vKzBuYkNBNk10dlZhSzRiL2RTcWlrZTlwTW1RQzZNbTkvS2F2Q1g0?=
+ =?utf-8?B?dmhPRFlEbExPNWF4UXo5Qi9XRE1NNkh2Q2dkbFJTOVN6Q1pVQ0ZEc24wSGV1?=
+ =?utf-8?B?aHZiTWpMZDV4eEp0N2c4bm5tTUpWWDZFeURMOThqOExlcXBPOGN1MUtiYVlw?=
+ =?utf-8?B?bU5MNGVDRmg5RkNoWmlVTS8wc25qZ1VjWDV4emNKMTN2RVB1MmJTOFlCWEpR?=
+ =?utf-8?B?dDRUeWRiVmFSdmw5WnNBaExMMWppSCsrRTJ6UVg0N29RRnY1d3p3TVZBUzhW?=
+ =?utf-8?B?WW9NNDRRYVhpVWVRbjJWYUc2Q0tURVhPQ1prUU9QVFVDNko3MTVzQ09VRkhO?=
+ =?utf-8?B?Y2hMdit3T2Fkb1o0bzlYeVBIUitMT3lxV0h2eFZFSktSQ1JsSGR0REVUclo5?=
+ =?utf-8?B?alAwREVibXJia0JUOVQxK21mTHFNekVuT1BTNWg2Zml4czdwSURZa0tGZVk0?=
+ =?utf-8?B?RU1ZK0RsaU9mSkgzaGdsTVFER1lzS2cwbC9LVWJZTVZlbTFpWnkyTVRHa1Ex?=
+ =?utf-8?B?RlZqQ2o4aVAvd0xwY0pDN1REWTlXUXB3bUpYOExPRmFmVWhnOXpLZ0pVMG5a?=
+ =?utf-8?B?QmZqMXZlRyswRTdIVnR2Uy8rRXVWeWp5V3RGYlp6dDd0cUVldHFLTnd2ZXp2?=
+ =?utf-8?B?enlzdUt1aGtYQSt6WDFvc2JtZ3RKSnV5SnNMcVFKTWdKRGNycFNEa2VjTU03?=
+ =?utf-8?B?bHI0YkFUbkp2Y3AvY01lbHNGbzBEMFBQcDM0c2d4K2hkYlpvREswMWNPN20z?=
+ =?utf-8?B?TGVWNFdzaWhGWndEUExlRTlDK2t1cUIxa1Vsb0ZNM1NuN01mclpQdWNxZXZV?=
+ =?utf-8?B?R05ERk1FMkVvNnBIcXlnOFJ0SUdBNHFaa2IwREZQbHEwMVNYbFl3WVl3OUph?=
+ =?utf-8?B?VjlHNCt6ZE50WXQ0R21VK1FBNlJDL2V4Ny84UEo0cGVwVTVXVlprYWMycUtP?=
+ =?utf-8?B?L2QyNTBtS2tKbUxQUTFGUVc2YkY1UWc4ZDJhWXRreUhDSjc2Q2F1akNJTnpy?=
+ =?utf-8?B?S1VhWUkzenNseUJoa25jVWJBcitBeVpCTTdjYkh4TlZMSnpuandOM1NrOCty?=
+ =?utf-8?B?d0xTemJidjdkOHc0cURIMklueXNFRkJmWG54S1dEMEYvSm9MYUdYNGFGYUJW?=
+ =?utf-8?B?cHhoMkZTbGgya0FRNU1udnJNc2dJeXJKZ2VVOE40Z25qMjErK21DTEpIUFFr?=
+ =?utf-8?B?bUR2VzNXaUtYaWtCcmkwUnorNEtrdHIrM2ZrRFdpRUw3c0tRalUxcHFZcGRw?=
+ =?utf-8?B?dnpsOVNzYmxJU0l4ejU2WlE5TGdwOFR6cjVmT1hkVjc3RithTWdxTFFiMkdB?=
+ =?utf-8?B?U2Y3eU1DZEpMeldoV2R3T05PS2FsT2JJNHgyWmJMUnovLzh3WDd5di9BZ2pz?=
+ =?utf-8?B?eC9OUmpabCtBM2JKSTl5MjZwdDQ2YU12YzVnYjgyTzJDMUVJdWpFK0JFbUFG?=
+ =?utf-8?B?YVY2ajR1aUg0Q29MVEY0ZmV2ZllnODNac3lRZXdDZUxjanYvMURqSXEvcnNn?=
+ =?utf-8?B?MVZ3Qy8xTmp4WVlNdmpPQjBRd3VzTXBSaVpnM2dHdXdYWlhwWVhBL0tZZzhl?=
+ =?utf-8?B?U1didmNhYlpLREkxOVVCVlM5TW5pSlFPNVdBR1RUV0pTeEVBa1M2RjlKQ2FZ?=
+ =?utf-8?B?a3BKU1NkQlRWNTQra2xGNEZhMFFGcnhxanhHYXBZRUZMZHlGZ3k0aHlTbVFX?=
+ =?utf-8?B?bUhhbGN4bmw1blZlUE5tc2EzY3l3OUNrUk1NU0Rnc1F6YTlMQWtOSE5WU2JY?=
+ =?utf-8?B?RHlqZWlIUEF4OU0rbXg1WHdraHphWnRIbFY4WDQybytqb21DNlRLb2dBT0Zt?=
+ =?utf-8?Q?Wdiklg+f1VXPa4fbNCj/AHxGFtjnUuMyjPsw8nNo3REH?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42b90022-1f3e-4da6-2f07-08dda9b36cdd
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 13:17:04.9243
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2Q2lfSBcQTtBmkNk0tgtDgeTdqWv1i7duStT/tuaGPzSNDqtXVtiTqoBEfZMWXjghAkvo1gwqGv/TtufkZmWhA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4460
 
-The current implementation of `ForeignOwnable` is leaking the type of the
-opaque pointer to consumers of the API. This allows consumers of the opaque
-pointer to rely on the information that can be extracted from the pointer
-type.
+On Wed Jun 4, 2025 at 4:18 PM JST, Benno Lossin wrote:
+> On Wed Jun 4, 2025 at 2:05 AM CEST, Alexandre Courbot wrote:
+>> On Wed Jun 4, 2025 at 8:02 AM JST, Benno Lossin wrote:
+>>> On Mon Jun 2, 2025 at 3:09 PM CEST, Alexandre Courbot wrote:
+>>>> On Thu May 29, 2025 at 4:27 PM JST, Benno Lossin wrote:
+>>>>> On Thu May 29, 2025 at 3:18 AM CEST, Alexandre Courbot wrote:
+>>>>>> On Thu May 29, 2025 at 5:17 AM JST, Benno Lossin wrote:
+>>>>>>> On Wed May 21, 2025 at 8:44 AM CEST, Alexandre Courbot wrote:
+>>>>>>>> +    /// Align `self` up to `alignment`.
+>>>>>>>> +    ///
+>>>>>>>> +    /// `alignment` must be a power of 2 for accurate results.
+>>>>>>>> +    ///
+>>>>>>>> +    /// Wraps around to `0` if the requested alignment pushes the=
+ result above the type's limits.
+>>>>>>>> +    ///
+>>>>>>>> +    /// # Examples
+>>>>>>>> +    ///
+>>>>>>>> +    /// ```
+>>>>>>>> +    /// use kernel::num::NumExt;
+>>>>>>>> +    ///
+>>>>>>>> +    /// assert_eq!(0x4fffu32.align_up(0x1000), 0x5000);
+>>>>>>>> +    /// assert_eq!(0x4000u32.align_up(0x1000), 0x4000);
+>>>>>>>> +    /// assert_eq!(0x0u32.align_up(0x1000), 0x0);
+>>>>>>>> +    /// assert_eq!(0xffffu16.align_up(0x100), 0x0);
+>>>>>>>> +    /// assert_eq!(0x4fffu32.align_up(0x0), 0x0);
+>>>>>>>> +    /// ```
+>>>>>>>> +    fn align_up(self, alignment: Self) -> Self;
+>>>>>>>
+>>>>>>> Isn't this `next_multiple_of` [1] (it also allows non power of 2
+>>>>>>> inputs).
+>>>>>>>
+>>>>>>> [1]: https://doc.rust-lang.org/std/primitive.u32.html#method.next_m=
+ultiple_of
+>>>>>>
+>>>>>> It is, however the fact that `next_multiple_of` works with non power=
+s of
+>>>>>> two also means it needs to perform a modulo operation. That operatio=
+n
+>>>>>> might well be optimized away by the compiler, but ACAICT we have no =
+way
+>>>>>> of proving it will always be the case, hence the always-optimal
+>>>>>> implementation here.
+>>>>>
+>>>>> When you use a power of 2 constant, then I'm very sure that it will g=
+et
+>>>>> optimized [1]. Even with non-powers of 2, you don't get a division [2=
+].
+>>>>> If you find some code that is not optimized, then sure add a custom
+>>>>> function.
+>>>>>
+>>>>> [1]: https://godbolt.org/z/57M9e36T3
+>>>>> [2]: https://godbolt.org/z/9P4P8zExh
+>>>>
+>>>> That's impressive and would definitely work well with a constant. But
+>>>> when the value is not known at compile-time, the division does occur
+>>>> unfortunately: https://godbolt.org/z/WK1bPMeEx
+>>>>
+>>>> So I think we will still need a kernel-optimized version of these
+>>>> alignment functions.
+>>>
+>>> Hmm what exactly is the use-case for a variable align amount? Could you
+>>> store it in const generics?
+>>
+>> Say you have an IOMMU with support for different pages sizes, the size
+>> of a particular page can be decided at runtime.
+>>
+>>>
+>>> If not, there are also these two variants that are more efficient:
+>>>
+>>> * option: https://godbolt.org/z/ecnb19zaM
+>>> * unsafe: https://godbolt.org/z/EqTaGov71
+>>>
+>>> So if the compiler can infer it from context it still optimizes it :)
+>>
+>> I think the `Option` (and subsequent `unwrap`) is something we want to
+>> avoid on such a common operation.
+>
+> Makes sense.
+>
+>>> But yeah to be extra sure, you need your version. By the way, what
+>>> happens if `align` is not a power of 2 in your version?
+>>
+>> It will just return `(self + (self - 1)) & (alignment - 1)`, which will
+>> likely be a value you don't want.
+>
+> So wouldn't it be better to make users validate that they gave a
+> power-of-2 alignment?
+>
+>> So yes, for this particular operation we would prefer to only use powers
+>> of 2 as inputs - if we can ensure that then it solves most of our
+>> problems (can use `next_multiple_of`, no `Option`, etc).
+>>
+>> Maybe we can introduce a new integer type that, similarly to `NonZero`,
+>> guarantees that the value it stores is a power of 2? Users with const
+>> values (90+% of uses) won't see any difference, and if working with a
+>> runtime-generated value we will want to validate it anyway...
+>
+> I like this idea. But it will mean that we have to have a custom
+> function that is either standalone and const or in an extension trait :(
+> But for this one we can use the name `align_up` :)
+>
+> Here is a cool idea for the implementation: https://godbolt.org/z/x6navM5=
+WK
 
-To prevent this, change the API to the version suggested by Maira
-Canal (link below): Remove `ForeignOwnable::PointedTo` in favor of a
-constant, which specifies the alignment of the pointers returned by
-`into_foreign`.
-
-With this change, `ArcInner` no longer needs `pub` visibility, so change it
-to private.
-
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Suggested-by: Maíra Canal <mcanal@igalia.com>
-Link: https://lore.kernel.org/r/20240309235927.168915-3-mcanal@igalia.com
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/alloc/kbox.rs | 41 +++++++++++++++++++++++------------------
- rust/kernel/miscdevice.rs | 10 +++++-----
- rust/kernel/pci.rs        |  2 +-
- rust/kernel/platform.rs   |  2 +-
- rust/kernel/sync/arc.rs   | 24 +++++++++++++-----------
- rust/kernel/types.rs      | 45 ++++++++++++++++++++++-----------------------
- rust/kernel/xarray.rs     |  9 +++++----
- 7 files changed, 70 insertions(+), 63 deletions(-)
-
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index c386ff771d50..bffe72f44cb3 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -15,6 +15,7 @@
- use core::ptr::NonNull;
- use core::result::Result;
- 
-+use crate::ffi::c_void;
- use crate::init::InPlaceInit;
- use crate::types::ForeignOwnable;
- use pin_init::{InPlaceWrite, Init, PinInit, ZeroableOption};
-@@ -398,70 +399,74 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
-     }
- }
- 
--// SAFETY: The `into_foreign` function returns a pointer that is well-aligned.
-+// SAFETY: The pointer returned by `into_foreign` comes from a well aligned
-+// pointer to `T`.
- unsafe impl<T: 'static, A> ForeignOwnable for Box<T, A>
- where
-     A: Allocator,
- {
--    type PointedTo = T;
-+    const FOREIGN_ALIGN: usize = core::mem::align_of::<T>();
-     type Borrowed<'a> = &'a T;
-     type BorrowedMut<'a> = &'a mut T;
- 
--    fn into_foreign(self) -> *mut Self::PointedTo {
--        Box::into_raw(self)
-+    fn into_foreign(self) -> *mut c_void {
-+        Box::into_raw(self).cast()
-     }
- 
--    unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
-+    unsafe fn from_foreign(ptr: *mut c_void) -> Self {
-         // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
-         // call to `Self::into_foreign`.
--        unsafe { Box::from_raw(ptr) }
-+        unsafe { Box::from_raw(ptr.cast()) }
-     }
- 
--    unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> &'a T {
-+    unsafe fn borrow<'a>(ptr: *mut c_void) -> &'a T {
-         // SAFETY: The safety requirements of this method ensure that the object remains alive and
-         // immutable for the duration of 'a.
--        unsafe { &*ptr }
-+        unsafe { &*ptr.cast() }
-     }
- 
--    unsafe fn borrow_mut<'a>(ptr: *mut Self::PointedTo) -> &'a mut T {
-+    unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> &'a mut T {
-+        let ptr = ptr.cast();
-         // SAFETY: The safety requirements of this method ensure that the pointer is valid and that
-         // nothing else will access the value for the duration of 'a.
-         unsafe { &mut *ptr }
-     }
- }
- 
--// SAFETY: The `into_foreign` function returns a pointer that is well-aligned.
-+// SAFETY: The pointer returned by `into_foreign` comes from a well aligned
-+// pointer to `T`.
- unsafe impl<T: 'static, A> ForeignOwnable for Pin<Box<T, A>>
- where
-     A: Allocator,
- {
--    type PointedTo = T;
-+    const FOREIGN_ALIGN: usize = core::mem::align_of::<T>();
-     type Borrowed<'a> = Pin<&'a T>;
-     type BorrowedMut<'a> = Pin<&'a mut T>;
- 
--    fn into_foreign(self) -> *mut Self::PointedTo {
-+    fn into_foreign(self) -> *mut c_void {
-         // SAFETY: We are still treating the box as pinned.
--        Box::into_raw(unsafe { Pin::into_inner_unchecked(self) })
-+        Box::into_raw(unsafe { Pin::into_inner_unchecked(self) }).cast()
-     }
- 
--    unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
-+    unsafe fn from_foreign(ptr: *mut c_void) -> Self {
-         // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
-         // call to `Self::into_foreign`.
--        unsafe { Pin::new_unchecked(Box::from_raw(ptr)) }
-+        unsafe { Pin::new_unchecked(Box::from_raw(ptr.cast())) }
-     }
- 
--    unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> Pin<&'a T> {
-+    unsafe fn borrow<'a>(ptr: *mut c_void) -> Pin<&'a T> {
-         // SAFETY: The safety requirements for this function ensure that the object is still alive,
-         // so it is safe to dereference the raw pointer.
-         // The safety requirements of `from_foreign` also ensure that the object remains alive for
-         // the lifetime of the returned value.
--        let r = unsafe { &*ptr };
-+        let r = unsafe { &*ptr.cast() };
- 
-         // SAFETY: This pointer originates from a `Pin<Box<T>>`.
-         unsafe { Pin::new_unchecked(r) }
-     }
- 
--    unsafe fn borrow_mut<'a>(ptr: *mut Self::PointedTo) -> Pin<&'a mut T> {
-+    unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> Pin<&'a mut T> {
-+        let ptr = ptr.cast();
-         // SAFETY: The safety requirements for this function ensure that the object is still alive,
-         // so it is safe to dereference the raw pointer.
-         // The safety requirements of `from_foreign` also ensure that the object remains alive for
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index f33c13c3ff97..9b46c3f7ac65 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -217,7 +217,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         // type.
-         //
-         // SAFETY: The open call of a file can access the private data.
--        unsafe { (*raw_file).private_data = ptr.into_foreign().cast() };
-+        unsafe { (*raw_file).private_data = ptr.into_foreign() };
- 
-         0
-     }
-@@ -228,7 +228,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-     /// must be associated with a `MiscDeviceRegistration<T>`.
-     unsafe extern "C" fn release(_inode: *mut bindings::inode, file: *mut bindings::file) -> c_int {
-         // SAFETY: The release call of a file owns the private data.
--        let private = unsafe { (*file).private_data }.cast();
-+        let private = unsafe { (*file).private_data };
-         // SAFETY: The release call of a file owns the private data.
-         let ptr = unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) };
- 
-@@ -272,7 +272,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-     /// `file` must be a valid file that is associated with a `MiscDeviceRegistration<T>`.
-     unsafe extern "C" fn ioctl(file: *mut bindings::file, cmd: c_uint, arg: c_ulong) -> c_long {
-         // SAFETY: The ioctl call of a file can access the private data.
--        let private = unsafe { (*file).private_data }.cast();
-+        let private = unsafe { (*file).private_data };
-         // SAFETY: Ioctl calls can borrow the private data of the file.
-         let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
- 
-@@ -297,7 +297,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-         arg: c_ulong,
-     ) -> c_long {
-         // SAFETY: The compat ioctl call of a file can access the private data.
--        let private = unsafe { (*file).private_data }.cast();
-+        let private = unsafe { (*file).private_data };
-         // SAFETY: Ioctl calls can borrow the private data of the file.
-         let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
- 
-@@ -318,7 +318,7 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-     /// - `seq_file` must be a valid `struct seq_file` that we can write to.
-     unsafe extern "C" fn show_fdinfo(seq_file: *mut bindings::seq_file, file: *mut bindings::file) {
-         // SAFETY: The release call of a file owns the private data.
--        let private = unsafe { (*file).private_data }.cast();
-+        let private = unsafe { (*file).private_data };
-         // SAFETY: Ioctl calls can borrow the private data of the file.
-         let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-         // SAFETY:
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 8435f8132e38..0b4b52804250 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -89,7 +89,7 @@ extern "C" fn probe_callback(
-     extern "C" fn remove_callback(pdev: *mut bindings::pci_dev) {
-         // SAFETY: The PCI bus only ever calls the remove callback with a valid pointer to a
-         // `struct pci_dev`.
--        let ptr = unsafe { bindings::pci_get_drvdata(pdev) }.cast();
-+        let ptr = unsafe { bindings::pci_get_drvdata(pdev) };
- 
-         // SAFETY: `remove_callback` is only ever called after a successful call to
-         // `probe_callback`, hence it's guaranteed that `ptr` points to a valid and initialized
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 5b21fa517e55..4e37c5ab014d 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -79,7 +79,7 @@ extern "C" fn probe_callback(pdev: *mut bindings::platform_device) -> kernel::ff
- 
-     extern "C" fn remove_callback(pdev: *mut bindings::platform_device) {
-         // SAFETY: `pdev` is a valid pointer to a `struct platform_device`.
--        let ptr = unsafe { bindings::platform_get_drvdata(pdev) }.cast();
-+        let ptr = unsafe { bindings::platform_get_drvdata(pdev) };
- 
-         // SAFETY: `remove_callback` is only ever called after a successful call to
-         // `probe_callback`, hence it's guaranteed that `ptr` points to a valid and initialized
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index c7af0aa48a0a..e7488bf055ef 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -19,6 +19,7 @@
- use crate::{
-     alloc::{AllocError, Flags, KBox},
-     bindings,
-+    ffi::c_void,
-     init::InPlaceInit,
-     try_init,
-     types::{ForeignOwnable, Opaque},
-@@ -140,10 +141,9 @@ pub struct Arc<T: ?Sized> {
-     _p: PhantomData<ArcInner<T>>,
- }
- 
--#[doc(hidden)]
- #[pin_data]
- #[repr(C)]
--pub struct ArcInner<T: ?Sized> {
-+struct ArcInner<T: ?Sized> {
-     refcount: Opaque<bindings::refcount_t>,
-     data: T,
- }
-@@ -372,20 +372,22 @@ pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
-     }
- }
- 
--// SAFETY: The `into_foreign` function returns a pointer that is well-aligned.
-+// SAFETY: The pointer returned by `into_foreign` comes from a well aligned
-+// pointer to `ArcInner<T>`.
- unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
--    type PointedTo = ArcInner<T>;
-+    const FOREIGN_ALIGN: usize = core::mem::align_of::<ArcInner<T>>();
-+
-     type Borrowed<'a> = ArcBorrow<'a, T>;
-     type BorrowedMut<'a> = Self::Borrowed<'a>;
- 
--    fn into_foreign(self) -> *mut Self::PointedTo {
--        ManuallyDrop::new(self).ptr.as_ptr()
-+    fn into_foreign(self) -> *mut c_void {
-+        ManuallyDrop::new(self).ptr.as_ptr().cast()
-     }
- 
--    unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
-+    unsafe fn from_foreign(ptr: *mut c_void) -> Self {
-         // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
-         // call to `Self::into_foreign`.
--        let inner = unsafe { NonNull::new_unchecked(ptr) };
-+        let inner = unsafe { NonNull::new_unchecked(ptr.cast::<ArcInner<T>>()) };
- 
-         // SAFETY: By the safety requirement of this function, we know that `ptr` came from
-         // a previous call to `Arc::into_foreign`, which guarantees that `ptr` is valid and
-@@ -393,17 +395,17 @@ unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self {
-         unsafe { Self::from_inner(inner) }
-     }
- 
--    unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> ArcBorrow<'a, T> {
-+    unsafe fn borrow<'a>(ptr: *mut c_void) -> ArcBorrow<'a, T> {
-         // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
-         // call to `Self::into_foreign`.
--        let inner = unsafe { NonNull::new_unchecked(ptr) };
-+        let inner = unsafe { NonNull::new_unchecked(ptr.cast::<ArcInner<T>>()) };
- 
-         // SAFETY: The safety requirements of `from_foreign` ensure that the object remains alive
-         // for the lifetime of the returned value.
-         unsafe { ArcBorrow::new(inner) }
-     }
- 
--    unsafe fn borrow_mut<'a>(ptr: *mut Self::PointedTo) -> ArcBorrow<'a, T> {
-+    unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> ArcBorrow<'a, T> {
-         // SAFETY: The safety requirements for `borrow_mut` are a superset of the safety
-         // requirements for `borrow`.
-         unsafe { Self::borrow(ptr) }
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 22985b6f6982..c156808a78d3 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -2,6 +2,7 @@
- 
- //! Kernel types.
- 
-+use crate::ffi::c_void;
- use core::{
-     cell::UnsafeCell,
-     marker::{PhantomData, PhantomPinned},
-@@ -21,15 +22,10 @@
- ///
- /// # Safety
- ///
--/// Implementers must ensure that [`into_foreign`] returns a pointer which meets the alignment
--/// requirements of [`PointedTo`].
--///
--/// [`into_foreign`]: Self::into_foreign
--/// [`PointedTo`]: Self::PointedTo
-+/// - Implementations must satisfy the guarantees of [`Self::into_foreign`].
- pub unsafe trait ForeignOwnable: Sized {
--    /// Type used when the value is foreign-owned. In practical terms only defines the alignment of
--    /// the pointer.
--    type PointedTo;
-+    /// The alignment of pointers returned by `into_foreign`.
-+    const FOREIGN_ALIGN: usize;
- 
-     /// Type used to immutably borrow a value that is currently foreign-owned.
-     type Borrowed<'a>;
-@@ -39,18 +35,20 @@ pub unsafe trait ForeignOwnable: Sized {
- 
-     /// Converts a Rust-owned object to a foreign-owned one.
-     ///
-+    /// The foreign representation is a pointer to void. Aside from the guarantees listed below,
-+    /// there are no other guarantees for this pointer. For example, it might be invalid, dangling
-+    /// or pointing to uninitialized memory. Using it in any way except for [`from_foreign`],
-+    /// [`try_from_foreign`], [`borrow`], or [`borrow_mut`] can result in undefined behavior.
-+    ///
-     /// # Guarantees
-     ///
--    /// The return value is guaranteed to be well-aligned, but there are no other guarantees for
--    /// this pointer. For example, it might be null, dangling, or point to uninitialized memory.
--    /// Using it in any way except for [`ForeignOwnable::from_foreign`], [`ForeignOwnable::borrow`],
--    /// [`ForeignOwnable::try_from_foreign`] can result in undefined behavior.
-+    /// - Minimum alignment of returned pointer is [`Self::FOREIGN_ALIGN`].
-     ///
-     /// [`from_foreign`]: Self::from_foreign
-     /// [`try_from_foreign`]: Self::try_from_foreign
-     /// [`borrow`]: Self::borrow
-     /// [`borrow_mut`]: Self::borrow_mut
--    fn into_foreign(self) -> *mut Self::PointedTo;
-+    fn into_foreign(self) -> *mut c_void;
- 
-     /// Converts a foreign-owned object back to a Rust-owned one.
-     ///
-@@ -60,7 +58,7 @@ pub unsafe trait ForeignOwnable: Sized {
-     /// must not be passed to `from_foreign` more than once.
-     ///
-     /// [`into_foreign`]: Self::into_foreign
--    unsafe fn from_foreign(ptr: *mut Self::PointedTo) -> Self;
-+    unsafe fn from_foreign(ptr: *mut c_void) -> Self;
- 
-     /// Tries to convert a foreign-owned object back to a Rust-owned one.
-     ///
-@@ -72,7 +70,7 @@ pub unsafe trait ForeignOwnable: Sized {
-     /// `ptr` must either be null or satisfy the safety requirements for [`from_foreign`].
-     ///
-     /// [`from_foreign`]: Self::from_foreign
--    unsafe fn try_from_foreign(ptr: *mut Self::PointedTo) -> Option<Self> {
-+    unsafe fn try_from_foreign(ptr: *mut c_void) -> Option<Self> {
-         if ptr.is_null() {
-             None
-         } else {
-@@ -95,7 +93,7 @@ unsafe fn try_from_foreign(ptr: *mut Self::PointedTo) -> Option<Self> {
-     ///
-     /// [`into_foreign`]: Self::into_foreign
-     /// [`from_foreign`]: Self::from_foreign
--    unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> Self::Borrowed<'a>;
-+    unsafe fn borrow<'a>(ptr: *mut c_void) -> Self::Borrowed<'a>;
- 
-     /// Borrows a foreign-owned object mutably.
-     ///
-@@ -123,23 +121,24 @@ unsafe fn try_from_foreign(ptr: *mut Self::PointedTo) -> Option<Self> {
-     /// [`from_foreign`]: Self::from_foreign
-     /// [`borrow`]: Self::borrow
-     /// [`Arc`]: crate::sync::Arc
--    unsafe fn borrow_mut<'a>(ptr: *mut Self::PointedTo) -> Self::BorrowedMut<'a>;
-+    unsafe fn borrow_mut<'a>(ptr: *mut c_void) -> Self::BorrowedMut<'a>;
- }
- 
--// SAFETY: The `into_foreign` function returns a pointer that is dangling, but well-aligned.
-+// SAFETY: The pointer returned by `into_foreign` comes from a well aligned
-+// pointer to `()`.
- unsafe impl ForeignOwnable for () {
--    type PointedTo = ();
-+    const FOREIGN_ALIGN: usize = core::mem::align_of::<()>();
-     type Borrowed<'a> = ();
-     type BorrowedMut<'a> = ();
- 
--    fn into_foreign(self) -> *mut Self::PointedTo {
-+    fn into_foreign(self) -> *mut c_void {
-         core::ptr::NonNull::dangling().as_ptr()
-     }
- 
--    unsafe fn from_foreign(_: *mut Self::PointedTo) -> Self {}
-+    unsafe fn from_foreign(_: *mut c_void) -> Self {}
- 
--    unsafe fn borrow<'a>(_: *mut Self::PointedTo) -> Self::Borrowed<'a> {}
--    unsafe fn borrow_mut<'a>(_: *mut Self::PointedTo) -> Self::BorrowedMut<'a> {}
-+    unsafe fn borrow<'a>(_: *mut c_void) -> Self::Borrowed<'a> {}
-+    unsafe fn borrow_mut<'a>(_: *mut c_void) -> Self::BorrowedMut<'a> {}
- }
- 
- /// Runs a cleanup function/closure when dropped.
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 75719e7bb491..a49d6db28845 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -7,9 +7,10 @@
- use crate::{
-     alloc, bindings, build_assert,
-     error::{Error, Result},
-+    ffi::c_void,
-     types::{ForeignOwnable, NotThreadSafe, Opaque},
- };
--use core::{iter, marker::PhantomData, mem, pin::Pin, ptr::NonNull};
-+use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
- use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
- 
- /// An array which efficiently maps sparse integer indices to owned objects.
-@@ -101,7 +102,7 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self> {
-         })
-     }
- 
--    fn iter(&self) -> impl Iterator<Item = NonNull<T::PointedTo>> + '_ {
-+    fn iter(&self) -> impl Iterator<Item = NonNull<c_void>> + '_ {
-         let mut index = 0;
- 
-         // SAFETY: `self.xa` is always valid by the type invariant.
-@@ -179,7 +180,7 @@ fn from(value: StoreError<T>) -> Self {
- impl<'a, T: ForeignOwnable> Guard<'a, T> {
-     fn load<F, U>(&self, index: usize, f: F) -> Option<U>
-     where
--        F: FnOnce(NonNull<T::PointedTo>) -> U,
-+        F: FnOnce(NonNull<c_void>) -> U,
-     {
-         // SAFETY: `self.xa.xa` is always valid by the type invariant.
-         let ptr = unsafe { bindings::xa_load(self.xa.xa.get(), index) };
-@@ -230,7 +231,7 @@ pub fn store(
-         gfp: alloc::Flags,
-     ) -> Result<Option<T>, StoreError<T>> {
-         build_assert!(
--            mem::align_of::<T::PointedTo>() >= 4,
-+            T::FOREIGN_ALIGN >= 4,
-             "pointers stored in XArray must be 4-byte aligned"
-         );
-         let new = value.into_foreign();
-
--- 
-2.47.2
-
-
+Yeah that's close to what I had in mind. Actually, we can also define
+`align_up` and `align_down` within this new type, and these methods can
+now be const since they are not implemented via a trait!
