@@ -1,129 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7132192EC;
-	Thu, 12 Jun 2025 11:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A0A23A566
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 11:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749726937; cv=none; b=EC7RZsdg2S0HVUZXH90K9dEDh/s1B4DqUJ9Q+fkV8zCQp+AgnXyQ+EIstMfUzZQ4rM5UruJPfBGkzPYmYHID6rUsoo4F7w8syiVDHAcAKLzckUf6YRIrA4SbAGD6dAJl/bjWx9fEpS7Ly/f3mBrcniG7N46NErUREz7sQd+ztsA=
+	t=1749727064; cv=none; b=SV9xHsutbFJraQ70K2E91RAaLyz8uvSw2vDQd8fPlWMV1vwyB8sk6IIiU5FLSikDq3GDt5bKsiAQkQgH/KuITPfS+6+MEEdut+RywaIb3BxAh8bQ6pHs5oCMJ6kr1UjayJq+QuBXKwJZM+JKbc3yf6M28OkrOvjhBd16t2ahw5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749726937; c=relaxed/simple;
-	bh=M072i+LZ+YXLZum52dXBwK5mFDPq+4NU2quKw4f6fi4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=KaoxdZuEk/Me9/R3ftJKe7HOtdPbNK6pee9IdlIEAi800zX/i5iP86KTlPvjnhv5XqE1CUR0WSlZrxbnmaHLCOaJz+q3Qx3ABa9F9q5kN730456ZMPioxRoiRWbulWKB3xD04BXjwhQ/I0yfAHY/MWbZWdJRqAwU/kIfoxO28K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N5HsfpQW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749727064; c=relaxed/simple;
+	bh=YQXP9ZTmEnpO/V8Ax1Tfe6HMTJO7Usy68xzxP270YZY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Gl7F2cYx73fhpH5ziQqq/aM2S+q72Z/03kK/H/2kh3DnniQ3nFImofXXlFi/hmLxIizTDNjrj/F/sJwzq3EGCawMhfKeHVDCspkQprH1ePowxZTn48t0Pk6RbhOLwhNEDSgu2UNw/bLTfGpEEO7+pV2dhFz18lmSlSmf2C6Ivew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SUFO41ba; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N5HsfpQW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18ECC4CEEA;
-	Thu, 12 Jun 2025 11:15:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749726937;
-	bh=M072i+LZ+YXLZum52dXBwK5mFDPq+4NU2quKw4f6fi4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=N5HsfpQWJAI1f2eZZmiAYy8aO17u1fQ6GjJEYEGBT/2ao8JADzWh6Xn8C1nZcd61l
-	 uajirQLnBoCHwTwFmhRCblAG11JtMqPRZc8kmuNyPyPbwuFSQ4WlYv17crKmexfc5V
-	 DmCcjbDb9cf4VwPYi+Z0MBwLid36spKp/qCn0m9YSVPTmnZejrK2Zz3gOSLdfn0tqx
-	 g/ckI7ebRADbQLy7dApHWZJVQ8p2m6CNRLJNO6LHauCENWV0Nq2XMlFHP9EuvKLq1X
-	 VrQ8hgba6GNARDMDQZ0rKPsKDpJc8+obaKQn0K/i1gExln18EEdoNh1cfdfwJTwGfF
-	 p646fTXN2O4Mw==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SUFO41ba"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a5058f9ef4so267741f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 04:17:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749727061; x=1750331861; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WWCjrcd9+LCf2SHBy1SQcJnNDjHYTxYoSHc0kBSop/k=;
+        b=SUFO41baVi7JOWfeLBeP/KCCwHrxJG9XK186pRe8dVNnd6QpsoF3aXEf4qOTMQJjcM
+         aQ7AslpBdozATTVgKdOUtAPXDGUoxvAbY2u+JJcZ4TZioDj+0xr4+9/DcduR6sqweXBx
+         g8JeCKeftyx8x58CsZ2E1cydY94L2k77qa3Sif5hCo8L2CZr+t0mCuIxUtso/sP5rNMb
+         PQZjfRkbhE/mz8YVhKa9We+u208XJI9jWQwanfb3q8ORvBVuiTzY5Mz5rivAi2iSQPpL
+         PMKHxmtM+8Fl3OCu171mSDFuN4SDM5/OuN2b9rClEHbJCAE0TUMiuJBctT/K1JpdnMCP
+         B/yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749727061; x=1750331861;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WWCjrcd9+LCf2SHBy1SQcJnNDjHYTxYoSHc0kBSop/k=;
+        b=aRbfra9vloQg0oIXYaaGhqd5OnvPo0+wP/nkpV1NevxmHti+OJKv8D/ekJcSVySouL
+         lV/wCLsUs7vHkGutEpMiq/2vBBjnqGiXmleRjSbdZYFIcmct7/b/dvUVkm47M6eBTBea
+         hzLWqp4lOqMN8OCdwVffnigGKkI/37EHCq6NBD6q9OIyz20xPjaFeI8zgXg5OIKjQD3g
+         8n4iuTVqSVGnPC8SWTwMX5zZHOxrruSqeOdfz5qoU/HsJwWTQpOc/kjtnFEMhgCsSbsj
+         VEsgZTSe9FLcDMQ+j3K0gYK0IHjD8wY5P4tPgtSPMnsgCAjwC3XJoxWZ9ZbKq60D8ozj
+         a3Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCW0IPB4COCQdT4xlWd5imLbhOtiUoUE2w4m67sUAX+GU8rkM0ZWPucSxxKCU3lilyeVNN1T6fjAE8pGkZTIsg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOZc49T5+1zlQupmRP4KyLAU5l1/b2YBYYLgkFVFgxP8T+v0ux
+	4u7JbTXhKqNI7WQIU0az1z2rBWo5UfqOTCdM8ShWqYzVXQ0RV+BFfRzG7+rltzwCGi5Sm20gWWy
+	szPT+cct7awVCF7y+uA==
+X-Google-Smtp-Source: AGHT+IEDxKboKPgtyGNZMmesEeLEHvcND2xWZoB+Q5kc7pMP20fHVmKJV/iw4WtUihxxHwIosyiKPPJWRPzAwOw=
+X-Received: from wmtf7.prod.google.com ([2002:a05:600c:8b47:b0:451:4d6b:5b7e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:248a:b0:3a5:2dae:9710 with SMTP id ffacd0b85a97d-3a5586b2143mr5503229f8f.25.1749727061402;
+ Thu, 12 Jun 2025 04:17:41 -0700 (PDT)
+Date: Thu, 12 Jun 2025 11:17:33 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Jun 2025 13:15:31 +0200
-Message-Id: <DAKIFJF2G8J1.16M76708TDL8M@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <chrisi.schrefl@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Peter
- Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>,
- "Vincent Guittot" <vincent.guittot@linaro.org>, "Dietmar Eggemann"
- <dietmar.eggemann@arm.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Ben
- Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>, "Valentin
- Schneider" <vschneid@redhat.com>
-Subject: Re: [PATCH 1/3] rust: completion: implement initial abstraction
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250603205416.49281-1-dakr@kernel.org>
- <20250603205416.49281-2-dakr@kernel.org>
- <DAKEM192U5RZ.3D00TOR520LRY@kernel.org> <aEqtexr4WwfU7rIP@pollux>
- <DAKHYVHNSO30.3SICBU2MAW9UL@kernel.org> <aEq0tA7yuBPxTSXq@pollux>
-In-Reply-To: <aEq0tA7yuBPxTSXq@pollux>
+X-B4-Tracking: v=1; b=H4sIAE23SmgC/x2MWwqAIBAArxL73YLZk64SfZittVAaKhGEd0/6H
+ JiZFwJ5pgBj8YKnmwM7m6EqC9C7shshr5lBCtmKrpKYJafVchBe0aN250k2Yq8HuTS9akVtILe XJ8PP/53mlD7uPtR6ZwAAAA==
+X-Change-Id: 20250612-revocable-ptr-comment-7c82b47a503f
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1934; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=YQXP9ZTmEnpO/V8Ax1Tfe6HMTJO7Usy68xzxP270YZY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoSrdO0RaLtCZ6zWObIkO4UIaAlB1wmNG5P/gT2
+ B4wnHaKWmWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaEq3TgAKCRAEWL7uWMY5
+ RncHD/9/0qFx/KzjcDNBCLv8rjqQEl0/XqhhaxwRVUvuhD1zD5qC48QhQD6CDKR8LkeumIIOEql
+ CauMZqKuZgxVGzEn2yfFvfU0s/Uj0TZMPnAKCsMSc9YRY25s61CyQUHLfSNhqL7rDs2J8FIOUlP
+ JDefDSxQSf2Pr+Tf5sh+9txPzGsO+f9387g5E268Q1/+5/6afQitMXOzgim7YKrhgMnfxkD5lWV
+ 1Qz4dITpWNrvlAYMEjbm1IQkGj6CRaB7rrWN8tErG+B/6R0TcL1/baOln739np13gJz8FVbHub8
+ /zXN7Z0nyaQYfeKGgWcSw42JNLhq1bGXuyWkVUl8NCZZuL7SmKImGlmty6Pt3el5rr35ra2sdYq
+ jT0uVeRI3UF5zYx38xdjWI2v+qX6DIhjQ96WQm4+qE8JIwd4Kc1E9ZWvaCUHN5Lbc/A5QAMyk57
+ /asNVhJi1dMYG40rnwtvT9d1stT9oRovLHZbg+eSIwHCMpWksmO19LppNWjqcw7WWccWAnzLFNH
+ tGu2Tqz9qrucPWcR4/joT/1TUQSgOQNo4V6JcOr/XoLqPIIqbvfu4mUJ4NUD0+owajXZUrqL1L7
+ GRqEvnmC43gww2sK0dvg0xbF+rpFbeJ9wg0CfROQczG6zZoSvvkZajYpCHKndyc2Pvkzwl6oEeE oq5Nyq6cPbaVmzg==
+X-Mailer: b4 0.14.2
+Message-ID: <20250612-revocable-ptr-comment-v1-1-db36785877f6@google.com>
+Subject: [PATCH] revocable: rust: document why &T is not used in RevocableGuard
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Marcelo Moreira <marcelomoreira1905@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Jun 12, 2025 at 1:06 PM CEST, Danilo Krummrich wrote:
-> On Thu, Jun 12, 2025 at 12:53:45PM +0200, Benno Lossin wrote:
->> On Thu Jun 12, 2025 at 12:35 PM CEST, Danilo Krummrich wrote:
->> > On Thu, Jun 12, 2025 at 10:15:55AM +0200, Benno Lossin wrote:
->> >> On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
->> >> > +    /// Signal all tasks waiting on this completion.
->> >> > +    ///
->> >> > +    /// This method wakes up all tasks waiting on this completion;=
- after this operation the
->> >> > +    /// completion is permanently done.
->> >> > +    pub fn complete_all(&self) {
->> >> > +        // SAFETY: `self.as_raw()` is a pointer to a valid `struct=
- completion`.
->> >> > +        unsafe { bindings::complete_all(self.as_raw()) };
->> >> > +    }
->> >> > +
->> >> > +    /// Wait for completion of a task.
->> >> > +    ///
->> >> > +    /// This method waits for the completion of a task; it is not =
-interruptible and there is no
->> >> > +    /// timeout.
->> >>=20
->> >> Another thing that we should document is weather this function return=
-s
->> >> immediately when `complete_all` was already called in the past.
->> >
->> > The details are all documented in [1], which is also linked in the mod=
-ule
->> > documentation of this file.
->> >
->> > [1] https://docs.kernel.org/scheduler/completion.html
->>=20
->> I dislike that we don't have the docs right there on the function.
->> Following that link, there is also a lot of other stuff there that don't
->> apply to Rust (eg initializing completions, and the
->> wait_for_completion*() variants).
->>=20
->> After a bit of reading, I found the part that I was looking for (by
->> searching for `complete_all`...):
->>=20
->>     A thread that wants to signal that the conditions for continuation h=
-ave
->>     been achieved calls `complete()` to signal exactly one of the waiter=
-s
->>     that it can continue:
->>    =20
->>     ```c
->>     void complete(struct completion *done)
->>     ```
->>    =20
->>     ... or calls `complete_all()` to signal all current and future waite=
-rs:
->>    =20
->>     ```c
->>     void complete_all(struct completion *done)
->>     ```
->>=20
->> Let's just put this information on the `complete_all` function.
->
-> It's already there, no?
->
-> "after this operation the completion is permanently done"
+When a reference appears in a function argument, the reference is
+assumed to be valid for the entire duration of that function call; this
+is called a stack protector [1]. Because of that, custom pointer types
+whose destructor may invalidate the pointee (i.e. they are more similar
+to Box<T> than &T) cannot internally use a reference, and must instead
+use a raw pointer.
 
-The phrasing in the C docs seems more obvious to me "signal to all
-current and future waiters". The "permanently done" part is a bit
-ambiguous to me.
+This issue is something that is often missed during unsafe review. For
+examples, see [2] and [3]. To ensure that people don't try to simplify
+RevocableGuard by changing the raw pointer to a reference, add a comment
+to that effect.
+
+Link: https://perso.crans.org/vanille/treebor/protectors.html [1]
+Link: https://users.rust-lang.org/t/unsafe-code-review-semi-owning-weak-rwlock-t-guard/95706 [2]
+Link: https://lore.kernel.org/all/aEqdur4JTFa1V20U@google.com/ [3]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/revocable.rs | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+index db4aa46bb1216d18868dcbdcb0b7033a757306b1..5dd7c5a24809ac372cf600b1cf92c455901e42d6 100644
+--- a/rust/kernel/revocable.rs
++++ b/rust/kernel/revocable.rs
+@@ -221,6 +221,10 @@ fn drop(self: Pin<&mut Self>) {
+ ///
+ /// The RCU read-side lock is held while the guard is alive.
+ pub struct RevocableGuard<'a, T> {
++    // This can't use the `&'a T` type because references that appear in function arguments must
++    // not become dangling during the execution of the function, which can happen if the
++    // `RevocableGuard` is passed as a function argument and then dropped during execution of the
++    // function.
+     data_ref: *const T,
+     _rcu_guard: rcu::Guard,
+     _p: PhantomData<&'a ()>,
 
 ---
-Cheers,
-Benno
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250612-revocable-ptr-comment-7c82b47a503f
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
