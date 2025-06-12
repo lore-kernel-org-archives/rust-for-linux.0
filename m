@@ -1,112 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BEA23A99F;
-	Thu, 12 Jun 2025 11:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB3A1442F4;
+	Thu, 12 Jun 2025 11:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749727702; cv=none; b=lIBQ4Nyan9N9EjemE2PSGDNO4axECkK18IQyxbRDgdknvd/CNuTvv9rPdBwwgQ9vTQk4lUcv8hXqz4KoSfRaMxX7QYeBnMsb0+sINvr9LnSrQFW8k7vV1hOPBYyG9SN5bFUYGWzHblFoIFta3ZCCBdH1n1fLl21FNGGCxikCTJU=
+	t=1749729111; cv=none; b=EnibaDNu/IL3YTmHE4YDPpBeWH87naLe7XhoDMbAZAaMs4BLP/lvA4WkHQmvqIkIT1RRbTgzvdQC5qKSEXGc7I/Ks4Wz5IxCJAMVI0+z6qzh8eUiREI/4N4x3+V37lE7AECtOm/sVYSKNJOFtQJa5SFei+r8xJYJOi3K4GYMYIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749727702; c=relaxed/simple;
-	bh=1/KbsW/gcwjCdnVYU77jL7Kaf1eUU9AWH51RP/DsUQE=;
+	s=arc-20240116; t=1749729111; c=relaxed/simple;
+	bh=PdDzwXq5efcwhoojhVqsKxNYcVXXyqdpXYauJg8SHrY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pk8vUe0sUy8anqfL9JNVm+j+z9HmDpDyV0qw5xVqgEg0r2n0UWI4Rfz7fFfQk7+V+lAwFpusslnWwcUweRZ7Nu4cpfp6fgrIK2VvOOrK5HVewD9olKatTnXGSP5gTIkvYPW1ZPMF9ZZfIzQewO1nSk3xH3WrtTKqIs+wqxLAtqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYrqXgYV; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=Szzdybs0vsksuC0dRtAhjKNktJcB4RX4sKkOx/xv30zgPKLUxWqmpEomsRHwfacerSEZVPUUqYp6QM5xZCxOUIv2NanUgV70xxXlVZZBuTGS4ABJb+6bLKYhRMJUHI5Paot4ICt6qwCWYuzK4kVzP7ZG5vL8/sE55i/NHrJd7oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y4lWnG5u; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYrqXgYV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64715C4CEEA;
-	Thu, 12 Jun 2025 11:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749727701;
-	bh=1/KbsW/gcwjCdnVYU77jL7Kaf1eUU9AWH51RP/DsUQE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eYrqXgYVg/6rW0J77/BEZVRGVNILH3fR6PM2dPrN9Reato9AQSBEY5GWZ6oAF1vEy
-	 aKL3HfK9/2bHOxTv2iBVWlx828A78Vt5U0vfeLUxMj6u02qf3vO37KRN5mw8YNWvTf
-	 f8+xgFUbwrf2+2q2czoapzoYUQzm1Z7YHMIScm0Fh9CSD9dR/vHju4jhPGEB8bbkYo
-	 ty+Kb+JsjmW1Gvvfqsk8pxlleI92lpm0J8R+sUCXFbE0nN7NtxDKngLHu6ZW7lF4zo
-	 PvfI+xPnGrNsj9ScNdDXwXKajY+YvnLqZ2UU8frKDS6hqMLlTsJszy42qb9Aw7dKkB
-	 /RWi404/Q2LiA==
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-735b9d558f9so242169a34.2;
-        Thu, 12 Jun 2025 04:28:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU4nb1cIa4WaBG0aPKW6FSc4QGKGsUVZYNqZBee6hWTDUxs9CwSKilN6kQhXy3irK4CDUdDr9DFog==@vger.kernel.org, AJvYcCV+pyWmeENxYUy6kAR/vxJgGlTxJzd50eUUktTG/XLRVuE/Ch6cVHK8CMUNEvg8+JiEddpAYo1BFPMlpXW9IaM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTpwHrTVLEq2QPzsTdgpjPwFnuNg918gcokj1y4dom8/DHlzhM
-	Bsl9L+MQ5vGiue885lIjWVhD+954+I0hqHdH7/TdEYO57ZHdmAg30Y8CAet8u79CzrAwRmnsvO0
-	LKKcPSjj6//VXyWvOh9AJ8ehEs1s4BmU=
-X-Google-Smtp-Source: AGHT+IF+BjTKeLo0Qwww4FDhCePZuXScWeqju5su8oE4tZpEFob0L7ljXvWTrQ00j9O10rbSuKbS2ZeKUTmnxoA4Nzs=
-X-Received: by 2002:a05:6808:18a5:b0:3f9:2fdc:ee93 with SMTP id
- 5614622812f47-40a5d14dc02mr4977325b6e.30.1749727700627; Thu, 12 Jun 2025
- 04:28:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y4lWnG5u"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-313756c602fso131300a91.3;
+        Thu, 12 Jun 2025 04:51:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749729109; x=1750333909; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PdDzwXq5efcwhoojhVqsKxNYcVXXyqdpXYauJg8SHrY=;
+        b=Y4lWnG5uBtNIkztbKAfFPLgt48pJhuTTeWSItwuRC0UOM5QZ28isMsBUUihcOKoJ+g
+         24/YMJruzU6xTA4tK19o4nuijOouQCsP7nfN/O5j2u5n9S4p4YcXNl8U18hccuMHjkeN
+         gyGYlVd29CR6VQCGNmkje2UjcvwlyhEGYM/H8IjhWrbQBDKchkNwO4IKEI9hB6hB3NBK
+         /UaAuI5VT4EWvHxb5/h9FnvckisUQGfZjyzg80WglRL6U3GPmV/nyQBLOw+zDK8PfkcO
+         K96xyt4FRyLynerQGH22U9f74FmZHC+Sic4AFIZ/I7y+wrjAY99zT0PCqHlwI0sxungW
+         gAXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749729109; x=1750333909;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PdDzwXq5efcwhoojhVqsKxNYcVXXyqdpXYauJg8SHrY=;
+        b=K7XUjl7qqTIaz/ahG7segNo9zMJ/2gBvPSaMa6zkWzgrAHimgeOyjXzwG1qDv/BAsT
+         FeSfF/0P30/NLQ9L3CHu6VMMY0gaAU+216DE+9CtEXKlOplRu33y16zhFxL70kVsq/IV
+         123lWzafA9Rmjs12zMdD1CzgzM+pH4GwwSRrr211UJqel1XEbYassaHuy8R0u26du890
+         3PFKNkz28dzAFPXpDIWaJIXG6RYT6dTwDrWwwB1mfgFGyfPS78x137XzUsV+kC5SzIdx
+         Q9MpdmuInceF4EVz1eu5Offm1P7fAXL28nf4Yg/P3YkRfNrnAln9VYB1o6Pxcdikwfrw
+         vvng==
+X-Forwarded-Encrypted: i=1; AJvYcCUFqFplsiuSMCgikXhbNv1Pw0PEKBbmM9dB8ibSfF/lFfNAE2/zmEfFj1JGQ3WkaI3VmsaTjzV94JBs1ek=@vger.kernel.org, AJvYcCUo8U0oGxfq0oJ7lcuzU/ItIeiAMaX82jKhAAiOzJN94KBIen14M12CiPb7WvVmiwlRx/CeIN7FDgVPa8Db6wQ=@vger.kernel.org, AJvYcCVFrgUHL3sWTYmjiPj4TEr4x35tSTZHX48I19bWmCrlC2hxrdKCgCZeOPZwh1063zeQgGxBgLlAA1g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYfnfvANETjUoar1EmrczeNPQi4zaaJRIqaF3G1P/FDt++nBac
+	qR8qnnZMNtKNgntOQWuwiO3bu/M29oXxZfalFPf/fIHBmay0Ki7eX8ZKXO1fPef2wHI4PNIXgDH
+	QLmRGamWfSJnwwehTnp1QMzoNKVvg0HA=
+X-Gm-Gg: ASbGncsbqytzDoClDt0tem3CT7osY/z5oG/7h5rZLtchFg8SLss9ihQkjY+plMOHQ1y
+	21e/OiqMzF2yirhOXStry2OOZd0nYsQcmoI0ZG5eFIL75YV21JAmXapTSWl0X05LQXxa633o6BP
+	u52Hyf/FJ2kge5CKUUgiLYVPSb2PkgxuzmIcdIVXc4cec=
+X-Google-Smtp-Source: AGHT+IH7THszr02geeayihPmfwjMV6SGbVO16iehszdy4de7QDOCkC+RAYCpDksbfEQmD+yJ1XW+OU5DT6T8YKP/lfo=
+X-Received: by 2002:a17:90b:3a86:b0:311:e8cc:4250 with SMTP id
+ 98e67ed59e1d1-313af235741mr3849605a91.3.1749729109591; Thu, 12 Jun 2025
+ 04:51:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250612104446.hhwn24f3nkasyefa@vireshk-i7>
-In-Reply-To: <20250612104446.hhwn24f3nkasyefa@vireshk-i7>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 12 Jun 2025 13:28:08 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0it5nNwJkyhy_9MoK+RLQ3fcGEjEjEZYVcFYBbB4xiZ7Q@mail.gmail.com>
-X-Gm-Features: AX0GCFuAtzvTmjOCp9H9SNay_96NVnTAvW4_kqmajBT3gkaNrNNJ49iD9MTo_EU
-Message-ID: <CAJZ5v0it5nNwJkyhy_9MoK+RLQ3fcGEjEjEZYVcFYBbB4xiZ7Q@mail.gmail.com>
-Subject: Re: [GIT PULL] cpufreq/arm fixes for 6.16-rc
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
-	rust-for-linux@vger.kernel.org
+References: <20250612104253.10413-1-abhinav.ogl@gmail.com>
+In-Reply-To: <20250612104253.10413-1-abhinav.ogl@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 12 Jun 2025 13:51:37 +0200
+X-Gm-Features: AX0GCFuuEiFXuG9m5B4w8TQVGIVEkX8OwIZ3GxfOrh5kNvLiPuGk1EGTbyzD1mQ
+Message-ID: <CANiq72kReki1=sbKhurkj-WVt47h4u=rz4Jn0RjmeB1wgPGtug@mail.gmail.com>
+Subject: Re: [PATCH v2] rust : Update the bios_limit_callback to use the C FFI
+ types #1170
+To: Abhinav Ananthu <abhinav.ogl@gmail.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Viresh,
+On Thu, Jun 12, 2025 at 12:43=E2=80=AFPM Abhinav Ananthu <abhinav.ogl@gmail=
+.com> wrote:
+>
+> Update the `bios_limit_callback` function to use `c_int` and `c_uint` typ=
+es,
+> which match the C ABI for the corresponding callback function. These type=
+s are
+> imported from the prelude.
+>
+> This change ensures the Rust function signature exactly matches its expec=
+ted
+> C counterpart, avoiding potential issues with type mismatches in the FFI
+> boundary.
+>
+> Reported-by: Miguel Ojeda <ojeda@kernel.org>
+> Closes: https://lore.kernel.org/rust-for-linux/CANiq72=3DWpuGELzLbH-fxdOe=
+Jy9fiDFwatz6ynERDh=3DHP2z2MBw@mail.gmail.com/.
+> Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
 
-On Thu, Jun 12, 2025 at 12:44=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.=
-org> wrote:
->
-> Hi Rafael,
->
-> The following changes since commit 19272b37aa4f83ca52bdf9c16d5d81bdd13544=
-94:
->
->   Linux 6.16-rc1 (2025-06-08 13:44:43 -0700)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git tags/cpufr=
-eq-arm-fixes-6.16-rc
->
-> for you to fetch changes up to c7f005f70d22cd5613cac30bf6d34867189e36a9:
->
->   rust: cpu: Add CpuId::current() to retrieve current CPU ID (2025-06-12 =
-10:31:28 +0530)
->
-> ----------------------------------------------------------------
-> CPUFreq fixes for 6.16-rc
->
-> - Implement CpuId rust abstraction and use it to fix doctest failure
->   (Viresh Kumar).
-> - Minor cleanups in the `# Safety` sections for cpufreq abstractions
->   (Viresh Kumar).
->
-> ----------------------------------------------------------------
-> Viresh Kumar (4):
->       cpufreq: Convert `/// SAFETY` lines to `# Safety` sections
->       rust: cpu: Introduce CpuId abstraction
->       rust: Use CpuId in place of raw CPU numbers
->       rust: cpu: Add CpuId::current() to retrieve current CPU ID
->
->  MAINTAINERS                    |   1 +
->  drivers/cpufreq/rcpufreq_dt.rs |   4 ++--
->  rust/helpers/cpu.c             |   8 +++++++
->  rust/helpers/helpers.c         |   1 +
->  rust/kernel/cpu.rs             | 125 +++++++++++++++++++++++++++++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
->  rust/kernel/cpufreq.rs         | 173 +++++++++++++++++++++++++++++++++++=
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------=
-------------------------
->  rust/kernel/cpumask.rs         |  51 ++++++++++++++++++++++++++++-------=
------
->  7 files changed, 299 insertions(+), 64 deletions(-)
->  create mode 100644 rust/helpers/cpu.c
->
-> --
+This seems to be a duplicate email.
 
-Pulled and added to linux-pm.git/fixes, thanks!
+Cheers,
+Miguel
