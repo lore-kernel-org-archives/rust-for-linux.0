@@ -1,166 +1,214 @@
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2082.outbound.protection.outlook.com [40.107.243.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C9F2D1F61
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 19:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749756611; cv=none; b=fwAyPBtrMNyVvBM2/RzfWQpxmzC16pyVfEJyGFZrpf0ch5m8iS75HTH1JESU5re4kzQuLhvPdPysDNxsDrPCUbYd2TSOyhg+yTZiOFn9mNoU83GSlYoSqhq6S5h0JJ+Rtmh6Zp4fOh7uHl2c3EO+5uMdvOF/qYCHcttBNWcOXiE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749756611; c=relaxed/simple;
-	bh=CcqpGh9z/Ce+MNF5QoPH82IVpEGXPfDNl6fTwAvAo8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZWuIo7zbXzAHfoZsSHxPeT42lJuKcKnV2jHOBy/NsYcIs5FeGQ4hskGHs0GtALuDEkUSvW5Ib8vEDoQfGHZB706LKUwPU+WopTqiuSIcA9y1DiaDtn+nAh6Yyw08qGao5aFtdQr6LIscT+fSBJdvgC04nIzsLBeMi0DyWsQDYAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dc7mnbZh; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50AE1442E8;
+	Thu, 12 Jun 2025 20:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749758424; cv=fail; b=amfpjuPbY1BT6CjUyG1d8EmebPhpYU5xSxP12/wX8LDX6fsSp+PJhp4JLfRVIVdYGHsXhzvXZzuPKDscfxuWBUXAv4cTYuAj7x52v3RPKtp4VF0AyHidlLNGYAtxmZ+7PZYNToBJxioPn5vp27OL3MqmIW0g7YNgRgh0Q2S+Cb8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749758424; c=relaxed/simple;
+	bh=39qn9y7ePAIcQ7+dazTP1p2OxABujGkyKOP/iKiBkqA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=He/vuCR0Uwmd7JxJY/+G8cg8puOANrN9eBPC8mpFJlUzsLmhca5/xJgG51w7OV9YvDMbCb2Hu/FfNJofvO43RpnTFFTEzqfO4B08JWBYRJYkzIoV8cGpUWT9Q5oiBQ7PTp16qOZjbcNoKLS/qhGwlfR4JPcZe6k/13klDLRmpcA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=WvqxjchO; arc=fail smtp.client-ip=40.107.243.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dc7mnbZh"
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2d4e91512b4so768393fac.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 12:30:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749756609; x=1750361409; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sKGZf29zeJuTyr5Er/hAccheguB+TsnTj7N2LnaeJXc=;
-        b=Dc7mnbZhB0y8AsINbXkeX0aZ/+laLYoQe5dPsHePUJp9RaYtNKduvzRJBg/nLmD1jW
-         V+5lf8ahh1T6NUEfs+JkGhggReb8ZC5+A5vj4j6wmpUv5uGnHlBlaw3vIj0rhwwKHTVe
-         14nYeJwVfZyGa4ltV4A4BRJaelvs5msobzmdSHPt97+X4xjUzoObIUnISK1I558apz9r
-         T8eUXTYoqwwpcXHjUlkXoNwLh7ksUe0dejKKP3m8ELMHpXnMdVt+asLyRdNxb/R74QDY
-         jsd9iRe29m/wtfVsD0Wyp88aRUtvNzgup6E5mldWlWRXqTHMAkoUJzCfN9XYMoWPLRBg
-         BmNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749756609; x=1750361409;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sKGZf29zeJuTyr5Er/hAccheguB+TsnTj7N2LnaeJXc=;
-        b=dcZizKaC1lmYhipSTligY+dP0diMXnKYztwkPQJE6RE8wG3QdDiOe4EB3HkZ0EziDo
-         gNQhaK1fNsfzMK1g9lefI3PvLrJ+/SocXQJcr7G2Dq0sKvsNnVhAHMSuv1EyMKVox1Bp
-         pTpbV06NPa/iLUsf78DVRuzMvKyO10YgVpcx69IJUMLlImp5J7lQ4QHDhQk7BRnZ9CyQ
-         q2kdu1MMhSQimlQXBIUx9YbTaCpOhpuCptE8DJySInll7VPOkZcPZL7GBh1ln9t163nn
-         GyqoiPj079lLZWSTJeBbL5yp+sGdhJ1eK6h0sgKIJJu7ET588g5D4Tld6gib+V0toXOI
-         vbzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVN/sUS5a4pN64N36AOnNloumbYAD7UrhRICIIY7JuOVdhSFvCVEXblgUddcnClsWR8kvirbErJlFsKynv8yw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg+Mho3e1NzmIBHSxxyx+kGS4IxbztCoYeCaWknaXbvejldlHD
-	69dUq56gKMpEsyNnrZSx8mIyyIDztsw8PWbn6Yd1VncProKSueK7g72fHb7X7+DOS3x9XTKvjC4
-	Ee5En3fmlOJOvvsdyGkkfZwnqbmWJu/4=
-X-Gm-Gg: ASbGncscyUU6fKrg6UlWV3ViTf4Jfh1wq8pEw8NYfTCBX8RnCeJf5fiVTrvZccA6uNY
-	eppi+Yr9yuE5Q64YmGJKtzIiit9JrXhl1ZMbFRKDEVv7N3Rr7zGSVW28sAIVflArj0+EWa5/JF2
-	cr4dncJSzHkft5qDAFVBm2GUgOaKVT/F9S7LtEkJufFzJnEDAWLIyIHrHkvDnTYbIYyw==
-X-Google-Smtp-Source: AGHT+IFmsq9sEI1DwWDfzQEZyfKZ6sKyH+yEuzi6AEoCYzQdb4LIZMRoqB1ychnI0//y4/XN6kS72Ohg4umywUsq2f0=
-X-Received: by 2002:a05:6870:459d:b0:29e:27b6:bea5 with SMTP id
- 586e51a60fabf-2ead510a294mr204968fac.25.1749756608683; Thu, 12 Jun 2025
- 12:30:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="WvqxjchO"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y2TJsAl6kIHDn9yFoNFsJtWHsnCkZlWij2L/JhbI9NP4w60GlHV2PTGm0usF8pCPxQNvp2oGYZafR5OBsZGJQYHPLDFjLQMBIRjPwt2Zmf7ao0XakcpmyNt9yRiv0MLNekuROgWMZi8l+AhR7oxcjGi4GJJmV5KEsfSwsSyJm1GWWXWLkNzumCwofi3Nory4D18ZS3146FMB6f1f/JFY7BKhIocO6c6TXAyOeroPuIidEubwEJtvjS5KwUx5766f9WonLzJRLQeuxvn9/SEM5/T+9j0LB9JAVYanV5RsICKjM09yaIdqkUiuksUPnJnv3JqnkQBCoydlmCz4D1nxjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YheRLQg20VPmXEKDd+fhP14H/yp8urqQolgJ0YXCfqA=;
+ b=gdOWCerVASGVm3IYvqU5gIge4mydxzjWiFm14gflGekzZkMCgNsjDu7h3q3lOb5azXcw9qrUpn0w5cKrYCvqmCytsm/gsWo9KjJCeli4RA8v6fENw8KEC8H3zgAErd4hhQJXaBMYSjvCybMZPxNnfF2nj6Vn22vcvF0PJpo8uQPSppwi//1oFkFy8py/XMDZIg9sv9I6s+Yud1qokniQfnEE0eUUqC5jh5L3RsE9Rm8s1SZNyW5zFU/qkqpcS/Pz5sGqIq52PtyYSJNECu/6tOaAwL+DzKKHtCha2F9YkfcT5irwEHK86HPfSMZ+qCuI3kmCBufRteFNGUh4Y6ohmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YheRLQg20VPmXEKDd+fhP14H/yp8urqQolgJ0YXCfqA=;
+ b=WvqxjchOG1HCta8F/rLJyGe0DhURbf6B1vjzQcNCPtBh0izFeqNDD983IBu7sRZrCdRs6jKnuNozLmswmMp4P3TWqdgtPShfvWHUiiX/IwZlKwjviujMvdn6COy1ZIutIqwsBzl5zivVjCHqUP/3FwfxDC167FowarymX94wftGvvGQFQi6wutukdvDIB8yIsLY8ZpEfii5g6ZPlA0A3s9qHcTnh25b1C4D2/+pYNLdhKytPYST6Xe3qBgTo4YmErYTrzkWP3Z2mUsLJTCoBRLJOjEUmDG1Kt0SzlIgs/ts4eo1enM/vuqAV0EvaEz9W9nHvf0E3KK+Hr9uU04OHrg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
+ by PH7PR12MB5831.namprd12.prod.outlook.com (2603:10b6:510:1d6::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Thu, 12 Jun
+ 2025 20:00:16 +0000
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4%4]) with mapi id 15.20.8792.035; Thu, 12 Jun 2025
+ 20:00:15 +0000
+Message-ID: <f8d9af76-fc1d-4f7a-8dfb-a0606e44c56b@nvidia.com>
+Date: Thu, 12 Jun 2025 13:00:12 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 04/23] rust: add new `num` module with `PowerOfTwo`
+ type
+To: Boqun Feng <boqun.feng@gmail.com>, Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Benno Lossin <lossin@kernel.org>, Ben Skeggs <bskeggs@nvidia.com>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
+ <20250612-nova-frts-v5-4-14ba7eaf166b@nvidia.com>
+ <aErtL6yxLu3Azbsm@tardis.local>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <aErtL6yxLu3Azbsm@tardis.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0220.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f::15) To LV2PR12MB5968.namprd12.prod.outlook.com
+ (2603:10b6:408:14f::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602232842.144304-1-marcelomoreira1905@gmail.com>
- <20250602232842.144304-4-marcelomoreira1905@gmail.com> <DAKFP38LXT84.QN50NZ2QB4WU@kernel.org>
-In-Reply-To: <DAKFP38LXT84.QN50NZ2QB4WU@kernel.org>
-From: Marcelo Moreira <marcelomoreira1905@gmail.com>
-Date: Thu, 12 Jun 2025 16:29:57 -0300
-X-Gm-Features: AX0GCFuv3CuGZGgFXqgtoeVvFBARV_ILL3PpMLlKpk0s2y3xseDEjs6AETefSSY
-Message-ID: <CAPZ3m_ie+0+mcdKdVsZgbzLBZyf=9YvmyNUSCX7ehMhaJF_Baw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] rust: revocable: split revoke_internal into revoke
- and revoke_nosync
-To: Benno Lossin <lossin@kernel.org>
-Cc: dakr@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linuxfoundation.org, 
-	~lkcamp/patches@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|PH7PR12MB5831:EE_
+X-MS-Office365-Filtering-Correlation-Id: a7efdc74-cf43-484b-e5fb-08dda9ebbfa9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RWdFS1g0TTkwUHlYbStONlhPYWpDNURRdzVXUitGb2VhOHVIL0VmZ3RzWHBK?=
+ =?utf-8?B?SGFMTjhKRUVOYXVOTHRqZGVKTnEva2FFU3JuNDA0OTBjZmJNYS9jVTNFRnRF?=
+ =?utf-8?B?eXRQSnNCd3FWZjduL2RuSzB4RlVuV3BuQkRZNy8vOVdTY2VGQUVjbUN5ZjEy?=
+ =?utf-8?B?cXZzbkZsaUI2ZzNzalFOYW1yT2l2TTJOYTFycEpTS25qaHFrZTUrNFZ0TERz?=
+ =?utf-8?B?RDNtK1B6L0F6M1Q3Ui94SitZNlg1emRmSER6RUExZ1Q1aDdoQnliWUhwSld5?=
+ =?utf-8?B?YVBpZVJER0Voa3Y1NjVJMFpjUEhUMG55ZlM3a1dST1lUZ0NteGZkd2FJSlBs?=
+ =?utf-8?B?MG1vV0dpQ2lCZVZMbWVRYUNGL2lwa055aXgzY2JzOGQ1eWRBUWhRQXdCVi90?=
+ =?utf-8?B?b05lY2M1Tlo3V1VsOHl3MkZqZDB3OEtOc2t2MmxTZXVDRVFLaWVGOEVQMnRs?=
+ =?utf-8?B?ck5ueUJiRFpSMnVleTMxYzhWdXNJMVVhWlJEbC80NHFORUpSYmZ3amdUcE1k?=
+ =?utf-8?B?VHN3U1I2b3A0b0tNRE1HWkIzcDVlU1JxVTFIRi9lQlZobEdpcFRDMXlnNlNE?=
+ =?utf-8?B?UU84dVBwc1FYYlVhQzlNU0JhYmJlNWpHT0N0OTU4WlIvOXA3eG9nV1hVVm5Y?=
+ =?utf-8?B?NDhSNkpEZlI4OXgyTlUwTUNvS0h1VzBPclJWdFJwUUZaLzM0TXJXSXk5SjMx?=
+ =?utf-8?B?emZlWWlIYTU2Qks4M0Rwb1VaTGtreDU2Znc1ZEN3YlFwU09vVCtDM1N5UFJT?=
+ =?utf-8?B?VENib1BBeGRzM2sxbkQyVkw2bmZnTFpBT3hwYnkrd2ltVGxadTNRVENZem1a?=
+ =?utf-8?B?M2M4V0FmQ3BvMUtkeDJpNjJoQXliejZITlIrek8vN25KdGRPQUFtRDZnYjRM?=
+ =?utf-8?B?TEMrSVRPZUZZZkJDMTBVUWRRK2cvMW0wZlloQXhRSFRQdXI3SVlPNlpTMndz?=
+ =?utf-8?B?WlpldlpJUFVZSm9WOXExekkycWNGOEJORHhuZW8rQ29zTG9Hc1BOd0pXcXpK?=
+ =?utf-8?B?VzZhOHpLZndhdVZEdUpNNkhjZ0lhSVlmdWhvQ041ZkJqYUFDQ0ZnZGpsMjh1?=
+ =?utf-8?B?bEV6d3pHKy9yakhoQ1dUVWxrUWFQb2YxOTVveCtJTTRxTzN1eEFSUzRjRkZB?=
+ =?utf-8?B?RFRyU3V5bTJJOFVzaXRObS9NUUJiWTNEZHptcmR4dVhpL0RxMkVqMmh0NVFF?=
+ =?utf-8?B?am85ZGpsYVdnaWhBV1VWUDQvM3BEK2U3UzBYMHZGRHJ3bitXQWhudXVHTzVW?=
+ =?utf-8?B?aGd0TGRFNTVBN3NFdU55eWZTWkN5ditWbEpXYmlKMjMzL251UzU1R1d0dDds?=
+ =?utf-8?B?SHJqMHZnT3lCd1N6bjBtaTJVeW1JNjdNRzQrblE3QzRDVkNWZE1ORE8rYTNE?=
+ =?utf-8?B?ZUlTY2FkTkNUUGJtcGNEZVV2WE83cEV4Wks2WDgyQWFRSmRzazR5ZDFzR2lq?=
+ =?utf-8?B?YVE4dHdwSlBrblpmR2RmSTRFNkMwWDdZKzFRYncwdGtLSzk3eW9KY1lGZWk2?=
+ =?utf-8?B?dFFsK0hGU2o4dXpad0I3MGFlcnk0dXBnRnhValV4NUpSdnBYTnhWNXE3bEph?=
+ =?utf-8?B?WVJSVE5lV3JBbFlCUkV3VnlNSitCOU03TFpHeDFTdnVZYTJ0RDJneTJoK0ZS?=
+ =?utf-8?B?VUN6TG1oSTgzUmFBUE9UOWliYnE5cE9nMmk4MTJOK1N3RFd2Rm5yTGFmU1Fp?=
+ =?utf-8?B?NGFhd3VyYjlhRzloQVVWU2x5aDg5UEw5eU53MUUyQm92dVZydlN0aU5Dekcx?=
+ =?utf-8?B?TTVMaDZDSUxONTkxbDJWMkFKcHdLTVk1Vy94RC9zOXJFWm1seXhaUC9ZRU0y?=
+ =?utf-8?B?YW1VQTcvbGNuM0dCZUw0Y2dXYUdrS1BiQ1pSNVBlVDltem1udG5SaGZhczdw?=
+ =?utf-8?B?ZTBJcm1WcWJuU2FtSmt5ajVmV1g5cXZzQ3I4QjJlVTRxZlZGSDNWeEZoRDNK?=
+ =?utf-8?Q?SmXx5rW3Zx8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Q1FxYzVYYmlqVW5sclRBV2ZVUlNkM3hzMG1NTFlIQ2R6WDN1amlZR1J5TVpl?=
+ =?utf-8?B?eGpqK2pYMVNqYXRsWmxKdlNBVjV5bXA3dk9NVURHSzFBZ1hxbEtPdlZUTDdx?=
+ =?utf-8?B?TmErMkRobGE0S3c3K2VQMUJOQ2pPcWpoQU1ycm8vRkpWdDdEalY0VzNsZmg3?=
+ =?utf-8?B?YjhJZk5odWxtMHY4NkNXMStUcTRtbmNMNXNoK2J6SHErUXZxRmNzN0U4Unkv?=
+ =?utf-8?B?ZVpUeWd6TE9MTWVtV0JEOXNrdzZQcjdkcXpXbTBSVFd2QWlpQTVQQ3kwcmdr?=
+ =?utf-8?B?VzFQRzZQR1I4c3Y4TmIyRnIvYURvTzlPMnNQNEd6N2QrY3Zub0ZraDdBNXVw?=
+ =?utf-8?B?OU13ditybzdOUkhkNnFlN1BIUXorU3JYd2ZyUlIzNktwNjdWejZrYXBLZ2xa?=
+ =?utf-8?B?VFMyT0R4RFZZQ2tvdlFMU2FaREhXbmFPczJBbmJJZTNPRmc3MC9zSnNIblVt?=
+ =?utf-8?B?eDNQOVJKTEZDUGdjU2ZybmhLZkZVMUJ6b2puakVJUTIyOFdKa3RINlRSaTFu?=
+ =?utf-8?B?T0E0YXV1N3QwbDFHZzZUUWNkRE45aVI1WmFjNElCeURYK1c5UHJMc0pOOFN4?=
+ =?utf-8?B?dHIzWk8zVjNOQm5PS0VHalBocEZGcnZ0NjVPY0JISnNnSmZsYTBVWDV4cWtK?=
+ =?utf-8?B?YlRIMFRVWCtRMldjZ2thSTV2cmRxMERpL1d4RXRiWDgzNDlIZzVQaTJ5TGhu?=
+ =?utf-8?B?aWJRSm9WVkR3SzYxNjNlRlZsL1dBRkZhdmtFVUtOR3MxdkYyWXFBaFhWRDNC?=
+ =?utf-8?B?dkxPbWNjMnc1YW1MNUU3NjlOWmpjSis4VlRva2phdWk5Nk9zTE1HQVlOUFY2?=
+ =?utf-8?B?NmdTOWFwOVBqRGYyZ0t4aWhyN0d3YzNYOU5rVDBwWVNnakYwenBYY0VWSm9x?=
+ =?utf-8?B?SkhBZlFSeWxDUWxsN3BUNStudEZ0YzJPTnFWWTYycTB4YnVQNXBEK3RwZXlX?=
+ =?utf-8?B?RFhwUVRYSU9aWW0xeUg1aGNFUm1VQjB6WGQ4eGxrWi9IRENzYnBWekhHdFgx?=
+ =?utf-8?B?SFNUZDFSVUJmZk1TWlRZcmpKbWV1ZUgzdU5hTElTcGoybnNWWU80cDNCcS85?=
+ =?utf-8?B?Y3RtVm1zajRWTy92YTJLYjJyS2JSQnlDbWY3TUxqdC8xZGFmekhGb1ZPdGxi?=
+ =?utf-8?B?OFBEaGEvUFN4Ry9JRlBjNHBPYmtiSlhseHE5dVVPdVplKzZqR29JREhZejRQ?=
+ =?utf-8?B?MENQUk9hajF0V1RpOUlWSER1TFVrVE13a2htTUg4Z3hxQWdMdnptc24rUUNI?=
+ =?utf-8?B?TC85WWw1bTdxdlVlVDVlZHoyOTRVK3JaQ2pqTUJ5OGRic0lKNVhaODFsYlNL?=
+ =?utf-8?B?TnFuOXZtQzMzU1UyQ0owTTlvRjdlOEpiOFMwY0pMbG5JVnkrNm11WG1VL1dI?=
+ =?utf-8?B?QzRVb0piNnB4ZCtYS0o1aGZMeHdLVWRhYUwxNDhUWHdnZ2dGL2EzNkE2QmxZ?=
+ =?utf-8?B?ajcvVmMybExKSWZzaDJWNUczVS83SmFVWi9GYXRpeEU5elNNNHRrSFZuZXZu?=
+ =?utf-8?B?WUhkM0p1bjd1RmdVekcxNXpiUGtOdFFsVkk2N25ySENGNVRsZjluOTVBLzhF?=
+ =?utf-8?B?N0xCRDlGNm92V1I3WEhPL2ZtdWYwL1o5UFBxV3FnbnpFL2R4MVdaazJNTUZ4?=
+ =?utf-8?B?MFZRTkdZNXpVUXZCUjlpdjZSc3pDTktYcFRWbENma2dzS3dVZlZ0WWhUVWVE?=
+ =?utf-8?B?c0JGNXVYWGZYTFFyMngvMEdjazgxY1Z4Z1doVnhLeWVUMVBwS0Q0bHBQK3dN?=
+ =?utf-8?B?c0w3WEFCbEF1SXM2aXN4bXFuVm51cGkrYnBFM3B1c1Z6a2tsa096emkrczZ1?=
+ =?utf-8?B?YmxTQVVJbWhreFBNeEt0NnNKRHRxQUdGSFE2emZzZUdEUm1iN1ozUUdZdnU1?=
+ =?utf-8?B?U1FrRUhXSEJGVzBJSnVaQTRtMnk5VUwrN3h0TjZZZ0NJNkRYb3d4NWwveHF6?=
+ =?utf-8?B?cmZBaUlGTDJrbVpTVytJYlFwNW9FQ0FxVWpHL1gyYjFnVCtsYkFycG5TTGJ2?=
+ =?utf-8?B?NEVCUWJYaFY0TVphazZhSVQ1ZzYzSDdjSXlxTHh6WVFpWndEc0ZFZWJUWXRa?=
+ =?utf-8?B?Q1MwVnk0czhWNlVjR3NIWk8zUHBNaUxYdkF5VzB5cklmWjV0QTIwOXFxQzFt?=
+ =?utf-8?Q?ui35t7aQa/YhTU3keb+B1AWz1?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a7efdc74-cf43-484b-e5fb-08dda9ebbfa9
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 20:00:15.7508
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QVIfdjfw11QGpXberpYMy54uGbEbIoL5TKlIN78sie2ciPfJaC5SUz/JxRr3wCqe7bn4FMhJyR+qjW2wZo3M1w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5831
 
-Em qui., 12 de jun. de 2025 =C3=A0s 06:07, Benno Lossin <lossin@kernel.org>=
- escreveu:
->
-> On Tue Jun 3, 2025 at 1:26 AM CEST, Marcelo Moreira wrote:
-> > This commit refactors the revocation mechanism by removing the generic
-> > `revoke_internal` function. Its logic is now directly integrated into
-> > two distinct public functions: `revoke()` and `revoke_nosync()`.
-> >
-> > `revoke_nosync()` is an `unsafe` function that requires the caller to
-> > guarantee no concurrent users, thus avoiding an RCU grace period.
-> > `revoke()` is a safe function that internally waits for the RCU grace
-> > period to ensure all concurrent accesses have completed before dropping
-> > the wrapped object.
-> >
-> > This change improves API clarity and simplifies associated `SAFETY`
-> > comments by making the synchronization behavior explicit in the functio=
-n
-> > signatures.
-> >
-> > Suggested-by: Benno Lossin <lossin@kernel.org>
-> > Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> > Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
->
-> One comment below, with that fixed:
->
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
->
-> > ---
-> >  rust/kernel/revocable.rs | 38 +++++++++++++++-----------------------
-> >  1 file changed, 15 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> > index 43cc9bdc94f4..daf22e3a7d20 100644
-> > --- a/rust/kernel/revocable.rs
-> > +++ b/rust/kernel/revocable.rs
-> > @@ -126,22 +126,6 @@ pub fn try_access_with_guard<'a>(&'a self, _guard:=
- &'a rcu::Guard) -> Option<&'a
-> >          }
-> >      }
-> >
-> > -    /// # Safety
-> > -    ///
-> > -    /// Callers must ensure that there are no more concurrent users of=
- the revocable object.
-> > -    unsafe fn revoke_internal<const SYNC: bool>(&self) {
-> > -        if self.is_available.swap(false, Ordering::Relaxed) {
-> > -            if SYNC {
-> > -                // SAFETY: Just an FFI call, there are no further requ=
-irements.
-> > -                unsafe { bindings::synchronize_rcu() };
-> > -            }
-> > -
-> > -            // SAFETY: We know `self.data` is valid because only one C=
-PU can succeed the
-> > -            // `compare_exchange` above that takes `is_available` from=
- `true` to `false`.
-> > -            unsafe { drop_in_place(self.data.get()) };
-> > -        }
-> > -    }
-> > -
-> >      /// Revokes access to and drops the wrapped object.
-> >      ///
-> >      /// Access to the object is revoked immediately to new callers of =
-[`Revocable::try_access`],
-> > @@ -151,10 +135,12 @@ unsafe fn revoke_internal<const SYNC: bool>(&self=
-) {
-> >      ///
-> >      /// Callers must ensure that there are no more concurrent users of=
- the revocable object.
-> >      pub unsafe fn revoke_nosync(&self) {
-> > -        // SAFETY: By the safety requirement of this function, the cal=
-ler ensures that nobody is
-> > -        // accessing the data anymore and hence we don't have to wait =
-for the grace period to
-> > -        // finish.
-> > -        unsafe { self.revoke_internal::<false>() }
-> > +        if self.is_available.swap(false, Ordering::Relaxed) {
-> > +            // SAFETY: `Self::data` is valid for writes because of `Se=
-lf`'s type invariants,
-> > +            // as `Self::is_available` is false due to the atomic swap=
-, and by the safety
->
-> Please also use `self.data`/`self.is_available` here (& below) instead
-> of `Self::`.
+On 6/12/25 8:07 AM, Boqun Feng wrote:
+> On Thu, Jun 12, 2025 at 11:01:32PM +0900, Alexandre Courbot wrote:
+...
+>> +                #[inline(always)]
+>> +                pub const fn align_down(self, value: $t) -> $t {
+> 
+> I'm late to party, but could we instead implement:
+> 
+>     pub const fn round_down<i32>(value: i32, shift: i32) -> i32 {
+>         value & !((1 << shift) - 1)
+>     }
+> 
+>     pub const fn round_up<i32>(value: i32, shift: i32) -> i32 {
+>         let mask = (1 << shift) - 1;
+>         value.wrapping_add(mask) & !mask
+>     }
 
-ok, Thanks! :D
+Just a naming concern here.
 
-Cheers,
-Marcelo Moreira
+The function name, and the "shift" argument is extremely odd there.
+And that's because it is re-inventing the concept of align_down()
+and align_up(), but with a misleading name and a hard to understand
+"shift" argument.
+
+If you are "rounding" to a power of two, that's normally called
+alignment, at least in kernel code. And if you are rounding to the
+nearest...integer, for example, that's rounding.
+
+But "rounding" with a "shift" argument? That's a little too 
+creative! :) 
+
+> 
+> ? It's much harder to pass an invalid alignment with this.
+
+Hopefully we can address argument validation without blowing up
+the usual naming conventions.
+
+
+thanks,
+-- 
+John Hubbard
+
