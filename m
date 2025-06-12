@@ -1,120 +1,167 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63659143736;
-	Thu, 12 Jun 2025 04:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC02E1EB3D
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 05:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749700972; cv=none; b=RI3izXpu0jY6zx57pDA6M7Hs7kWByI58pvhm7gD5TgG0F4eQ/y0pgLGD5Bc0nne5eOFT539iDSlCmWEAR3kmY+3WEaPDYaRWll+pW4TpIm01ETpa0+Q1xGgw5eWR75+pBiG9L6aLOLKfTY7h9w3lgG4Iv+Bt+ozBfZtChIDt2k0=
+	t=1749704483; cv=none; b=pmf+yw+V9T9jnHGiaBpJ9jdRKJV4bFu4E9fWqppvKY+MqTNzI/SUgSUftAp57NXHV0MdSFTm8FF+JURKxkJpHH2V3M8AQi+eZufV957XyRoRnlGFAMLThp8dsUrUkAL76g/AcLWDx6xYVSzmfIWHbGKkKCDUr/5HVz4iWyZ4tSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749700972; c=relaxed/simple;
-	bh=lIEDox2si9aWnHQhhVwH7AAcHQL6E2cr1kTYuwCid6I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eoWx+7v8xWW6ZjEK8ypmh0PCH7IXD3PyR+OHPWVisgysIusfVsb98KgeuDzzKxvASQPUSN8iWiT0MRg2N6Hsmml6m9ukOi7abIBhZD0LaW96bpvlVg9KszS6FotCEDO1g1P0W9CMzkIIiQ3qhWQVnc0rXaxiQKcTDLshpJWc/NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8MMkvvu; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749704483; c=relaxed/simple;
+	bh=9pHjVMGg2ruxdwaHtiPTktq8Zbd4RUe/LdD/4hfxsW8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZkiQTMk6KnTwbcWPq1qWRckOt0rydQZoxKVPqjC1+hlRqwBR7BtnLxoieDb4mEr9gbYryqC+JrpShD0g2OJorF7mD+9qiyhGwlisRnQ5PjBeR8u1eyIgYmgL5/FYVedpg/mzah9WJp27AwEG2+qqKxiMI477k19XiqLODMIsfDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=viLNnXJn; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8MMkvvu"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-730580b0de8so855026a34.1;
-        Wed, 11 Jun 2025 21:02:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="viLNnXJn"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-234bfe37cccso7117715ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 22:01:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749700970; x=1750305770; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=W0mjarcmxyrPycEDkdSsleCaF/YzWa1TNh36qHpVsnY=;
-        b=d8MMkvvubEWaTo9EAIxFRYTFeuU127rdNOI3EB0tcIpX6a0HGdwuXrEQnHlsXxnSLw
-         fJbqDXrkYqwotpZz0ROpy5ZBqeVZqUN4CGgvbBkhdlusQ2/vLGKmHagfx4pXvzL+zioq
-         mmAK4lWj2qjA66kCjOxgHRZ2V7SQQC4CQ4faz0b42ZEtGRKcERxgC8w0TwH/Dh4NdoMr
-         4dWZdmEA0csOZ3m0P6VeQqEy2N+qXK2d/S1HLCT4USMGPzDgv7fitjyxsnPvEkciIsao
-         DxZh72bH8TUUqTkBAol4wn74DhNu3LeNWvnpkfn4sPWIkZas81ms6JHaSp9VhlnVW4TY
-         vwww==
+        d=linaro.org; s=google; t=1749704481; x=1750309281; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ta897ANnsOKw/3ZrDJN+Z/Yd5TG55/Y0TTXdSO5Wgwo=;
+        b=viLNnXJngWrQpc05n6uWOIH+yg1CAoaDc7rhmN8TZqE/BcUNz5fRkH4TA/7J10XIU4
+         bLlDIsTEezVSVLmDgi//cx0s+pPkgNEhlQzceBU4QKLmDFk3SMpc260bVNjkSta4LU9j
+         oW3Tl/sK/FxI+fYwQfhQwXXLWXOKxkRPAh+fIKInhaOW580yODdPTF1+yxwLZUfNpv9W
+         y/CW6bdwqbeEbs5+k9h74F4eqlEMl9aGleAYQltTPbJy0mZhaCObpnWxEr9t+ASzXm4e
+         L1LZKeFoccFh76AoUCGp2BjsfKQRG+au3B7knpxKzDlf8EU9ytWTgNLDPzZ6PFhrBrn9
+         2aLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749700970; x=1750305770;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W0mjarcmxyrPycEDkdSsleCaF/YzWa1TNh36qHpVsnY=;
-        b=aDWiiDnFSi5gIIS6CviCjz/Y2fRZYiT6SJ5IEEGMuxssvapmlkCRIJMUiQLgHzXoAu
-         0TCTKuE2QdfYL7dpN1aHJkhJjmKQuDwjm65+dGJWnVDtdj9sdfuZqtH9wmfqfX2insBd
-         bChbO+jKRIAwA8zEIy/S9EM7FHB8W6md/2BcLLn1GwXhi9JBaHOnra5cQAdaWdtiLA22
-         vFE7+PmaJi52f4qeu756jRPZLJoRD3LkZ/I+2SfCufWnDbeMTMBQsNmWm8Jmboyyz0T3
-         jYH6Fd11+VNvKSd+zHz7CEOCMcpqXDu0BoissZyW+kj3JUc1j7XZRP443nfVQhJLwIuu
-         O1Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUUPFeSl+DKQyjpscXGhTEZghA/AoeFagC5ei0PsWS7xakmlFPUmFo1eFrmd7zgfCHriUaj8ZGTcFhaASTa1lE=@vger.kernel.org, AJvYcCXGDi8y7eeY8Cl/62wR9hqnvvJH8Zeh4KnpvXzKaLI9eYBi9HQO6hqZPhLg8bqnxASXsSCSagXZxxvzGrM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzC/eYk4BdDCe6KssdmIqpYuj8XeP904rZro2Mw9CrADAAcvMmI
-	AzOwUcJaBWvg0dFg+92frfw2qO64I1vi9FrWtcNVcSZ/+yGK3H0W9AfH
-X-Gm-Gg: ASbGnctDK+igDfH6GZPsQAqp6wZXP6EKDgHFYJcXfS5l8eBVUQA0ADHrP2LOGmLSzel
-	u81+Ljv9J3a+a6GYc3VpTdq3N63afpDo9L8W/EGm7kw1DW86nBl3mzUeZkjJi6tQVb8Su5kT1Mw
-	EYfygeKTXwGqTStFHhbXnplLUJ/4z4WAla04m83suE5tUUpDzTGRP4TU2OlaCmMy7zVuUfhGIyw
-	nEyJrvDI82RZmN/Jf+BpdZuNQ+JtR/0Yw0qe79+C+HJivvVJQanZ/KPBOj/WUSuUGX0F/QZ1iSR
-	UkhKX5/WxReJMCI7MXoZweuG9OINUbUMI1HkC8DLf2Af+K1hKFc93uMOEK0QzgcsOuVhVy4xSYP
-	d4WcRgX2dDqWkZUQr82Yw84N923ppN35/yA==
-X-Google-Smtp-Source: AGHT+IEG5LMC3U0VLmxul/USdQsOfKZQtPUB6pR2Z6QPiaZEH+d8dKvUsjlBs2rPJQZUZEaLNYH4DQ==
-X-Received: by 2002:a05:6830:7207:b0:723:7853:8791 with SMTP id 46e09a7af769-73a143add19mr934555a34.0.1749700970287;
-        Wed, 11 Jun 2025 21:02:50 -0700 (PDT)
-Received: from [192.168.86.39] (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a16c9d67bsm146579a34.58.2025.06.11.21.02.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Jun 2025 21:02:49 -0700 (PDT)
-Message-ID: <2c9504c3-2498-4b59-8e26-0911a8be8e96@gmail.com>
-Date: Wed, 11 Jun 2025 23:02:45 -0500
+        d=1e100.net; s=20230601; t=1749704481; x=1750309281;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ta897ANnsOKw/3ZrDJN+Z/Yd5TG55/Y0TTXdSO5Wgwo=;
+        b=QKptK6WepDymB+NJp+SDuSryairAnEEYu7QqaR70oDfAInOhHxfXr9Wf1O5Hk0dnkm
+         yyZD5RINq1sn4Hs6ZOWENHkfBqxI8FMZjDsD7XmaXxQ+585ow4m+1shsZlaovuRfJxG0
+         ecOkzTvZju1ld5ZhCIwbmL1bG31R2i1cFuxRA1ra4ACQsLgNQKosfYvQT4XC9WSJrD+N
+         NmBzOgsMuqaZPH4a5CIScsyxRbIMNq68vEhmOJlc/nTwvwWD7sQkRfsLZHULjSrqGDju
+         BR23YBuIOlgNGIJ2qovXZXl98JJ2RTL0vpPWT3tetrfGHw4acaJwwYJMgSMOFuQJMRDP
+         rtqw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWRcyTGGfiS/cLuFgDdhb5VljBBIByjTenMY7aH2oKa1JlEVSL1ROeskb9ffOfrkhfVekPJKnXqK3L5mAb+A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkXb4duBKDCYY1OLkMhih+FPMjOrR7fqxAuP/u84BnI4RoZhFO
+	JV1T1XileTtVc3kwJlY5eYWxxIDfOeacJPJkf9FqivPm41NYbkFo6XkKwlI2oSHvbHeZ5fENPlF
+	L4daL
+X-Gm-Gg: ASbGnct8rD+FHnXavSnV3V+MG2BEkc27MW+f+BzZ7y0Mz5ULDDVMrnGRNbVyICbXKmU
+	AF/O4pcKC4RAH8YcGMU2/MeU+xGL6C9lWYs7u0bvGJi0mAkwRU1LHMfejp9zM1shTKxZFfieQzI
+	2Wq8AHYb4Sk8NWS6pZoSIKDVdldXKRfowh7iVp7muMKqWinmuq21j42zdEED1lP9ytmbPZz2Cy0
+	HXN6dTl9f3v/GZHjSDWilMdjT+cRVMycY1bMrMCPiVb+qJ/e7n/7sxYgqnPb8eICesw3EKKbNDQ
+	wynZIzPgUYqft3rPVHpFtkdO31TiVJwiEPmPhWBI0PBstKJ2zA4epiBI3NGcxH5Y7NZKIEV0Uw=
+	=
+X-Google-Smtp-Source: AGHT+IHFd17mtrnTaIfhEeysW8IO5ia6VXlIvrfEaCUzdPUvSOMJM3AaKiJKr973WWitYYB9zcOAZA==
+X-Received: by 2002:a17:902:ef0c:b0:234:986c:66f9 with SMTP id d9443c01a7336-2364ca0c6e4mr33957475ad.22.1749704480788;
+        Wed, 11 Jun 2025 22:01:20 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e6d9c45sm4698395ad.140.2025.06.11.22.01.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 22:01:20 -0700 (PDT)
+Date: Thu, 12 Jun 2025 10:31:17 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 2/3] rust: Use CpuId in place of raw CPU numbers
+Message-ID: <20250612050117.3oi6belkf5lrreoh@vireshk-i7>
+References: <cover.1749554685.git.viresh.kumar@linaro.org>
+ <e790f17123beb45c6a811135ec3df8f0bd761c0e.1749554685.git.viresh.kumar@linaro.org>
+ <aEmq8fs1fHSB3z4i@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/3] rust: device add support for dynamic debug to
- pr_debug!
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: jbaron@akamai.com, jim.cromie@gmail.com, daniel.almeida@collabora.com,
- acourbot@nvidia.com, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
- dakr@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
- rostedt@goodmis.org, viresh.kumar@linaro.org, lina+kernel@asahilina.net,
- tamird@gmail.com, jubalh@iodoru.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250611202952.1670168-1-andrewjballance@gmail.com>
- <20250611202952.1670168-3-andrewjballance@gmail.com>
- <CAH5fLggTL9Ej8rcakd-gDz+h0dZhA1PRzxf+76EjxotOBJW7fg@mail.gmail.com>
-Content-Language: en-US
-From: Andrew Ballance <andrewjballance@gmail.com>
-In-Reply-To: <CAH5fLggTL9Ej8rcakd-gDz+h0dZhA1PRzxf+76EjxotOBJW7fg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aEmq8fs1fHSB3z4i@tardis.local>
 
-On 6/11/25 4:38 PM, Alice Ryhl wrote:
-> Please define a STATIC_KEY_INIT_FALSE constant in
-> rust/kernel/jump_label.rs and refer to it. You can use mem::zeroed()
-> in the definition of the constant.
+On 11-06-25, 09:12, Boqun Feng wrote:
+> I generally found that `u32::from(cpu)` is more clear than `cpu.into()`,
+> but it's up to you. Same for the rest of `cpu.into()` cases.
 
-Will do for the v2.
+Updated as:
 
-> No, we can't use mutable references like this. In Rust, the real
-> meaning of &mut is exclusive, not mutable. (And the real meaning of &
-> is shared.) We don't have exclusive access to the DEBUG_INFO static
-> here - the access is shared, so we must use &_ references instead of
-> &mut _ references here.
-> 
-> Note that by using Opaque, it's possible to mutate the value even if
-> it's behind a &_ reference.
-> #[repr(transparent)]
-> pub struct _Ddebug {
->      pub inner: Opaque<bindings::_ddebug>,
-> }
-> and then you can do DEBUG_INFO.inner.get() to obtain a mutable raw
-> pointer to the contents.
-> 
+diff --git a/rust/kernel/cpu.rs b/rust/kernel/cpu.rs
+index 7549594fad7f..abc780d7a8ec 100644
+--- a/rust/kernel/cpu.rs
++++ b/rust/kernel/cpu.rs
+@@ -129,7 +129,7 @@ fn from(id: CpuId) -> Self {
+ /// any references to the CPU device within the notifier's callback.
+ pub unsafe fn from_cpu(cpu: CpuId) -> Result<&'static Device> {
+     // SAFETY: It is safe to call `get_cpu_device()` for any CPU.
+-    let ptr = unsafe { bindings::get_cpu_device(cpu.into()) };
++    let ptr = unsafe { bindings::get_cpu_device(u32::from(cpu)) };
+     if ptr.is_null() {
+         return Err(ENODEV);
+     }
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+index ea6106db5c29..11b03e9d7e89 100644
+--- a/rust/kernel/cpufreq.rs
++++ b/rust/kernel/cpufreq.rs
+@@ -527,7 +527,7 @@ pub fn generic_suspend(&mut self) -> Result {
+     #[inline]
+     pub fn generic_get(&self) -> Result<u32> {
+         // SAFETY: By the type invariant, the pointer stored in `self` is valid.
+-        Ok(unsafe { bindings::cpufreq_generic_get(self.cpu().into()) })
++        Ok(unsafe { bindings::cpufreq_generic_get(u32::from(self.cpu())) })
+     }
+ 
+     /// Provides a wrapper to the register with energy model using the OPP core.
+@@ -682,7 +682,7 @@ fn clear_data<T: ForeignOwnable>(&mut self) -> Option<T> {
+ impl<'a> PolicyCpu<'a> {
+     fn from_cpu(cpu: CpuId) -> Result<Self> {
+         // SAFETY: It is safe to call `cpufreq_cpu_get` for any valid CPU.
+-        let ptr = from_err_ptr(unsafe { bindings::cpufreq_cpu_get(cpu.into()) })?;
++        let ptr = from_err_ptr(unsafe { bindings::cpufreq_cpu_get(u32::from(cpu)) })?;
+ 
+         Ok(Self(
+             // SAFETY: The `ptr` is guaranteed to be valid and remains valid for the lifetime of
+diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
+index 11ddd43edcb5..19c607709b5f 100644
+--- a/rust/kernel/cpumask.rs
++++ b/rust/kernel/cpumask.rs
+@@ -94,7 +94,7 @@ pub fn as_raw(&self) -> *mut bindings::cpumask {
+     #[inline]
+     pub fn set(&mut self, cpu: CpuId) {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to `__cpumask_set_cpu`.
+-        unsafe { bindings::__cpumask_set_cpu(cpu.into(), self.as_raw()) };
++        unsafe { bindings::__cpumask_set_cpu(u32::from(cpu), self.as_raw()) };
+     }
+ 
+     /// Clear `cpu` in the cpumask.
+@@ -106,7 +106,7 @@ pub fn set(&mut self, cpu: CpuId) {
+     pub fn clear(&mut self, cpu: CpuId) {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to
+         // `__cpumask_clear_cpu`.
+-        unsafe { bindings::__cpumask_clear_cpu(cpu.into(), self.as_raw()) };
++        unsafe { bindings::__cpumask_clear_cpu(i32::from(cpu), self.as_raw()) };
+     }
+ 
+     /// Test `cpu` in the cpumask.
+@@ -115,7 +115,7 @@ pub fn clear(&mut self, cpu: CpuId) {
+     #[inline]
+     pub fn test(&self, cpu: CpuId) -> bool {
+         // SAFETY: By the type invariant, `self.as_raw` is a valid argument to `cpumask_test_cpu`.
+-        unsafe { bindings::cpumask_test_cpu(cpu.into(), self.as_raw()) }
++        unsafe { bindings::cpumask_test_cpu(i32::from(cpu), self.as_raw()) }
+     }
+ 
+     /// Set all CPUs in the cpumask.
 
-Unfortunately, static_branch_unlikely does not work with keys contained
-within a Opaque, because it uses offset_of and sym. I can create a macro
-specifically for dealing with Opaque::<type_that_contains_a_static_key>
-because I imagine that many uses of static branch will end up wrapped
-in an Opaque.
-
-Best regards,
-Andrew Ballance
+-- 
+viresh
