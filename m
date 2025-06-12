@@ -1,93 +1,163 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675AF20B7EA
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 08:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62DF1C3039
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 09:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749718722; cv=none; b=rPR5VGh7wNvmRhKarLCOB4CqaEzW87d8HbxSSJ/MeLMLdvNIhVCM3Om6Zs4GT57Np+/HO9Qnz/O3W10NwCiQ7WNUZ3lpUzHMC7mUQaevxJ71JFr8NfC2PTaS4wH27OhGmEEAW8gvfZWfnykzMkprccjKEqJLR5Bim41gkxFFGlQ=
+	t=1749718944; cv=none; b=UDZjvxytweHuyoMhP85zDc6EDEZjjjceVzmxYV47eq2kVtkuIXwZ1vnQN36ahp29oCfkUniaf7sZjEpj3V8keMr1THwjjiJ+z6CD7Xg70fIBn2ZBKH5YmsgXA/vPJEW561NB8e46XCfDjzr5XB+kNWw13q4ZPsvGztHfugVPQro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749718722; c=relaxed/simple;
-	bh=YSXaTgjeKpKHJ7HT93oBk+FgRuAlNw+PeElQP4LI3y4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Psl37Sa6U546JotqSOLqOojJz+FoVgO33ybwdz+AH7JLPXFD2xCVRJxTHDvHSFxxHp+q/fGSbijg4HCPmrqUChHR/8GyT/AtdmUM3oV1L6kjaqGwDkOkMLej1UAWdf4knVSL1HP62Wf/efatj31HYtE93PGq85v9Fkes5ZT3oC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3aq8tH+A; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1749718944; c=relaxed/simple;
+	bh=nKxS74oUG6fCAAPYA3x069XaPvrvlgU55YBXgNSCqAQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=eHHNS8oV/SHG7xzQoddl7thjMHjXzm993LSxdsZLQtMMtykEOYVtRoZdA4g7GPL9YfoR5scWOvVTvon+NSMTqqzqEJVnW/t+GWIdi7xGcrCKiIS81Zu5qMEhOy+lcsuRxHiSbJ89/rLHgRuYqO0TkXhSptoDWJj+9/A+tnml3AI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0dHCdcW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3aq8tH+A"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-450d244bfabso5463345e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 01:58:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749718719; x=1750323519; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=91dJEkwkMLKiySKIEldfXQRqk4IyakL0amgtdeUw2Qs=;
-        b=3aq8tH+AqAhDEb4qQljlfMaWuEou1Gsib+xVCmsTSiQwvUQzRjipUl4agNQ5Fv8EGr
-         WST3I/5VIVCYIKVl0VIQvMSCcgtdISMIlrr1g0gJipy8KUuE6QQ6WaYAYNx2n5USvcM2
-         ffKevN3claOC6VdjWgQKMKKIVodozwoYCy578+0U3EDqq6bz5iVKin53D3aR/F49/cI3
-         gEoSxMIq2che+oR+pldlTOsOTc5erOvYe2uPCyJDy/BBG92dsUPk/Hle1ECI8VYyYQGk
-         SUKDebkGW4PPLZHmcBM1raRH0efJ1+Dih4RNw9fifWoANTIlDImO0itVMvjXAgBrmbm0
-         4Cvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749718719; x=1750323519;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=91dJEkwkMLKiySKIEldfXQRqk4IyakL0amgtdeUw2Qs=;
-        b=rF2ty2l58ZdszVGbvF1vCQfy6SG/npxIbD/+xoFPCHqfWi8Q/CVtNhJjLTX4+VjKAv
-         bXL6klRyQBLtjyOWXyoh9WcvFxmzXukNipWf3yGAjBhdAf5fv9gi7uLZhk9QsyAHr+XG
-         TJjxVqHRLzzoznaFTbMTR3WT5TFEpYERpDNXyJusteCejLh76N+c2lpuW34Na8pwnH3M
-         RtVs4Z0XIJMRK4m+zL130FkE2KbZ+YcCq/lS4edzph9rsc3qMFr0hHF/B5OXNn+nLIDe
-         OVIinkiEwvtW0HL4zpfNmmh7kzD9siJFcp9kX2qSqMlozvBvjcmQDC2afee8LosulpD9
-         HBDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUS8oC24p7+D15LoThiNdBHBgWIG67dS/o2OWCcaxzpvAUpZqnTxYKj8PXoEJORH0EZG5zZKgtaC+QbhoqvMw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKUCBu99cJ6WMOJ6bs+LNLyaFtK7+OyXTbtDvouKO3UdseEGg5
-	m34zc1pt2OvpagBI+EZVJy8kME5j4GPaX2OdgGMh515YEwc5yhQEaHz6TFb2/6hKQD39hWhv0JX
-	6DjgvkTFZX5e3GRFwVQ==
-X-Google-Smtp-Source: AGHT+IHVCdZNs0nb0GD5dnugUwcB8P4Ww6VOM+q297qZtr+Qk4se15dACah+S2N8jEozkc9qWTE8gVGBAOnO7j8=
-X-Received: from wmbji3.prod.google.com ([2002:a05:600c:a343:b0:442:fa3c:8612])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:358b:b0:43d:ac5:11e8 with SMTP id 5b1f17b1804b1-4532d33d8ebmr18618375e9.21.1749718718932;
- Thu, 12 Jun 2025 01:58:38 -0700 (PDT)
-Date: Thu, 12 Jun 2025 08:58:36 +0000
-In-Reply-To: <20250611194840.877308-5-bqe@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0dHCdcW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086F2C4CEEA;
+	Thu, 12 Jun 2025 09:02:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749718944;
+	bh=nKxS74oUG6fCAAPYA3x069XaPvrvlgU55YBXgNSCqAQ=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=X0dHCdcWMCkYLRdBDndRWoG5KHlHePbzLJ3sJitDdcX+oomeU/3858lyjpcUzbmcl
+	 Fz7ODRwV1qXiTuvw7jndHEWIIWSz6ODHXa0vzoa/W6RhkM6vh0oEgrpI9X5QdGu2a5
+	 fAgdE23fNL6oZdvkNqUp4STWL54ENJfqfsAuVOUxF1R3vS2Q/+SX63OYRCPNmQbdKB
+	 NpSNmoxvfcrYdpqeKOMBbN20p7j3G6x3ttAVC1AoJ3fDKkVVCxa2ueN2jfI64vOg3T
+	 8uZ4/CDX2t3wUxkF0xakvk7a9F27agdflO/MmIdTTEGmI3nPf5ntM9ShVD6ghGd37L
+	 PbXqFHjd8Ao+Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250611194840.877308-1-bqe@google.com> <20250611194840.877308-5-bqe@google.com>
-Message-ID: <aEqWvIffNhh6Kzp8@google.com>
-Subject: Re: [PATCH v12 4/5] rust: add find_bit_benchmark_rust module.
-From: Alice Ryhl <aliceryhl@google.com>
-To: Burak Emir <bqe@google.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, Carlos LLama <cmllamas@google.com>, 
-	Pekka Ristola <pekkarr@protonmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Jun 2025 11:02:21 +0200
+Message-Id: <DAKFLKX7HS7W.29I8XUZP8L1KN@kernel.org>
+Subject: Re: [PATCH v4 1/3] rust: revocable: update write invariant and fix
+ safety comments
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>, <dakr@kernel.org>,
+ <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ <~lkcamp/patches@lists.sr.ht>
+X-Mailer: aerc 0.20.1
+References: <20250602232842.144304-1-marcelomoreira1905@gmail.com>
+ <20250602232842.144304-2-marcelomoreira1905@gmail.com>
+In-Reply-To: <20250602232842.144304-2-marcelomoreira1905@gmail.com>
 
-On Wed, Jun 11, 2025 at 07:48:37PM +0000, Burak Emir wrote:
-> +    let mut bitmap = Bitmap::new(BITMAP_LEN, GFP_KERNEL).expect("alloc sparse bitmap failed");
-> +    let nbits = BITMAP_LEN / SPARSENESS;
-> +    for _i in 0..nbits {
-> +        // SAFETY: BITMAP_LEN fits in 32 bits.
-> +        let bit: usize =
-> +            unsafe { bindings::__get_random_u32_below(BITMAP_LEN.try_into().unwrap()) as _ };
+On Tue Jun 3, 2025 at 1:26 AM CEST, Marcelo Moreira wrote:
+> This commit clarifies the write invariant of the `Revocable` type and
+> updates associated `SAFETY` comments. The write invariant now precisely
+> states that `data` is valid for writes after `is_available` transitions
+> from true to false, provided no thread holding an RCU read-side lock
+> (acquired before the change) still has access to `data`.
+>
+> The `SAFETY` comment in `try_access_with_guard` is updated to reflect
+> this invariant, and the `PinnedDrop` `drop` implementation's `SAFETY`
+> comment is refined to clearly state the guarantees provided by the `&mut =
+Self`
+> context regarding exclusive access and `data`'s validity for dropping.
+>
+> Reported-by: Benno Lossin <lossin@kernel.org>
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1160
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
 
-This safety comment argues why the .unwrap() will not result in a panic,
-but it should instead argue why the call to __get_random_u32_below() is
-okay. I guess that it's because __get_random_u32_below() is always safe
-to call?
+I would have done this change after the other two, since then you can
+change all the safety comments here, but if Danilo is fine with doing it
+this way, then you can leave it this way.
 
-I'm not a big fan of these .try_into().unwrap() conversions. I would
-probably just have written `BITMAP_LEN as u32`. But I know that this is
-a point of disagreement with other Rust maintainers.
+The changes are almost perfect now, just some small formatting changes
+below. With those fixed, you may add:
 
-Alice
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+> ---
+>  rust/kernel/revocable.rs | 20 +++++++++++++++-----
+>  1 file changed, 15 insertions(+), 5 deletions(-)
+>
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> index 1e5a9d25c21b..d14f9052f1ac 100644
+> --- a/rust/kernel/revocable.rs
+> +++ b/rust/kernel/revocable.rs
+> @@ -61,6 +61,15 @@
+>  /// v.revoke();
+>  /// assert_eq!(add_two(&v), None);
+>  /// ```
+> +///
+> +/// # Invariants
+> +///
+> +/// - `data` is valid for reads in two cases:
+> +///   - while `is_available` is true, or
+> +///   - while the RCU read-side lock is taken and it was acquired while =
+`is_available` was `true`.
+> +/// - `data` is valid for writes when `is_available` was atomically chan=
+ged from `true` to `false`
+> +///   and no thread that has access to `data` is holding an RCU read-sid=
+e lock that was acquired prior to
+> +///   the change in `is_available`.
+>  #[pin_data(PinnedDrop)]
+>  pub struct Revocable<T> {
+>      is_available: AtomicBool,
+> @@ -115,8 +124,8 @@ pub fn try_access(&self) -> Option<RevocableGuard<'_,=
+ T>> {
+>      /// object.
+>      pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -=
+> Option<&'a T> {
+>          if self.is_available.load(Ordering::Relaxed) {
+> -            // SAFETY: Since `self.is_available` is true, data is initia=
+lised and has to remain
+> -            // valid because the RCU read side lock prevents it from bei=
+ng dropped.
+> +            // SAFETY: `Self::data` is valid for reads because of `Self`=
+'s type invariants,
+
+s/Self::data/self.data/
+
+> +            // as `Self::is_available` is true and `_guard` holds the RC=
+U read-side lock
+
+s/Self::is_available/self.is_available/
+
+Missing `.` at the end.
+
+>              Some(unsafe { &*self.data.get() })
+>          } else {
+>              None
+> @@ -176,9 +185,10 @@ fn drop(self: Pin<&mut Self>) {
+>          // SAFETY: We are not moving out of `p`, only dropping in place
+>          let p =3D unsafe { self.get_unchecked_mut() };
+>          if *p.is_available.get_mut() {
+> -            // SAFETY: We know `self.data` is valid because no other CPU=
+ has changed
+> -            // `is_available` to `false` yet, and no other CPU can do it=
+ anymore because this CPU
+> -            // holds the only reference (mutable) to `self` now.
+> +            // SAFETY: `Self::data` is valid for writes because of `Self=
+`'s type invariants,
+
+s/Self::data/self.data/
+
+> +            // and because this `PinnedDrop` context (having `&mut Self`=
+) guarantees exclusive access,
+> +            // ensuring no other thread can concurrently access or revok=
+e `data`.
+> +            // This ensures `data` is valid for `drop_in_place`.
+
+This last sentence is not needed. Instead, we should mention that since
+this is a `drop` function, we're only called once, so it's fine to call
+drop (since that also is only allowed to be called once).
+
+---
+Cheers,
+Benno
+
+>              unsafe { drop_in_place(p.data.get()) };
+>          }
+>      }
+
