@@ -1,151 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4E329C32B;
-	Thu, 12 Jun 2025 16:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519A72F4337;
+	Thu, 12 Jun 2025 16:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749745065; cv=none; b=OuniCBh1vwhvtg/10VbwAMyGDT6+aoboqhoqpowHvzNB40Rr/wLB8m6KovPv2MoJOzzA16xppq+Fnslsu/0Q919FO0I2M74GbtTWa/QO7RUveIM9Ci1Vcu5h/dmxqsDm+rcEnGP6+5/TLeVBp21w2WW6npNOMpI6x7FEIoVRibs=
+	t=1749745218; cv=none; b=gYXj1zE3D+zxvFajwxrQELih6eIjakZIkJga35TP1AlrpPtQmPTx/z/zEQh9zL+GA3gLA28hFk+XZ1bXPcqk8+AqbC8NxSkNH4GICZnysMJw+pI7byiylqI4UrImf3Y4rnejIJ8ZoTnRvOWwrIF6eQMfm357Ka2SFGeKYgqgWs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749745065; c=relaxed/simple;
-	bh=P4GkkwYbWhmeh9csBqgTZ7uqaf+uAYctZ+HQnsHZM2A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=FY/aGfjWDYIkPG1UfJY2uZFsWpuuYFM+xp8Njax0oeZjcMJvr4wQgDJmg2+CrPIv8xeqVKZalk3y+8gLrIdjQRJeo+MPWg9GoPmzDo/72sWVgoTHfXkmQ/pZ60nj8f9OGK2DEd4Z6TgvPBepGD87JVMb2JB+SDXAH+Tjchm/5ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c1SUe28k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749745218; c=relaxed/simple;
+	bh=Exbz9bEFkUebfba+VJlIAq8RWt6MqPSbghPlez9tlrk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JYW1xA2nCvawqWmcVz5WLA1H5XCqd8cyzYrAa1tYL5UKwokHmKqs2EG0uyCQqBlcTQi+oa/Bs7FsioSomJQCm+/PsVbivFNl6tD82Eagaf8uwS8fKzCpkC31ztgA96cwOxKGo/jpWQGnSrpA/dg8GShn9ZogU/ac9P0aDlJjJRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHkLtVUU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c1SUe28k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F9DC4CEF8;
-	Thu, 12 Jun 2025 16:17:41 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHkLtVUU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1098C4CEEE;
+	Thu, 12 Jun 2025 16:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749745064;
-	bh=P4GkkwYbWhmeh9csBqgTZ7uqaf+uAYctZ+HQnsHZM2A=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=c1SUe28kWHoENEz7zJJWNdOCkDzVJ0gX5wNQllCms2F9d6UA/5iMwgh/2ZisCw3Ig
-	 iF2vdcPkN7qmXV4DRZHGsLqDCyz6QyAWlc5r7xfgbhA52uMZzkar3I2NMFrR77l4G9
-	 RMLofZsvxyxChA2TVLjahHNx2+kbY+6nUKMDWVELUbrK9HYcgv9UtIp3pG4HDLG2nK
-	 7P77E6WBT6B2ku7nXOBteVpz96VixU5cwYebEITcusCWIP/r9Dh+kLNLsTeHdkbesh
-	 ASyyLVivCyXXBO+5fqjBE55THBu4OvEFa5LT621WgP+vB2M/BpuTgDQQSyMMd+TL9A
-	 EGup12qZ+6H0g==
+	s=k20201202; t=1749745215;
+	bh=Exbz9bEFkUebfba+VJlIAq8RWt6MqPSbghPlez9tlrk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tHkLtVUUXDvGPsKDVj59OX6bUq18Jv8y7VFQ03dNLTxRQBIKPamF485hsi9kbCKHT
+	 +wdJsbLDw7RhcH845So/upy4bnCpUIkBEiZOVUpS0lT25pZmqhULv29W9XFWYBiAnx
+	 M9T4DG36Mo0BnceqDwNP9Nox3ekWo4sQHUbT1i+H6uQTh4vZvSyLcE6chmpDENi474
+	 PoHsGf9R6rccME0lQ7nZG7TDgcacT89+M8OoDYoh0KO1SDTED6/izxE/bixrdBi2G/
+	 GiQ/I2482ByHNdRdMHURwJxAKorFfx/h7kN2QUyBi+fZFlAe495Ry8QsB0k3hLcclW
+	 /PVafb4VbpWyw==
+Date: Thu, 12 Jun 2025 18:20:10 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] rust: revocable: support fallible PinInit types
+Message-ID: <aEr-OnKiL5MKzur2@cassiopeiae>
+References: <20250612145145.12143-1-dakr@kernel.org>
+ <20250612145145.12143-2-dakr@kernel.org>
+ <DAKO8MMSCUE4.1WVR6SBADGP8W@kernel.org>
+ <aEr5FNDaueo5SG5R@cassiopeiae>
+ <DAKOUVS4YP4L.3I6FD9JKN02EU@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Jun 2025 18:17:40 +0200
-Message-Id: <DAKOUVS4YP4L.3I6FD9JKN02EU@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/4] rust: revocable: support fallible PinInit types
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250612145145.12143-1-dakr@kernel.org>
- <20250612145145.12143-2-dakr@kernel.org>
- <DAKO8MMSCUE4.1WVR6SBADGP8W@kernel.org> <aEr5FNDaueo5SG5R@cassiopeiae>
-In-Reply-To: <aEr5FNDaueo5SG5R@cassiopeiae>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAKOUVS4YP4L.3I6FD9JKN02EU@kernel.org>
 
-On Thu Jun 12, 2025 at 5:58 PM CEST, Danilo Krummrich wrote:
-> On Thu, Jun 12, 2025 at 05:48:36PM +0200, Benno Lossin wrote:
->> On Thu Jun 12, 2025 at 4:51 PM CEST, Danilo Krummrich wrote:
->> > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
->> > index fa1fd70efa27..41b8fe374af6 100644
->> > --- a/rust/kernel/revocable.rs
->> > +++ b/rust/kernel/revocable.rs
->> > @@ -82,8 +82,11 @@ unsafe impl<T: Sync + Send> Sync for Revocable<T> {=
-}
->> > =20
->> >  impl<T> Revocable<T> {
->> >      /// Creates a new revocable instance of the given data.
->> > -    pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
->> > -        pin_init!(Self {
->> > +    pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, Err=
-or>
->> > +    where
->> > +        Error: From<E>,
->>=20
->> I don't think we need this bound as you don't use it in the function
->> body.
->
-> I think it's needed by try_pin_init!() below, no?
->
-> Without it I get the compilation error in [1].
->
->> > +    {
->> > +        try_pin_init!(Self {
->> >              is_available: AtomicBool::new(true),
->> >              data <- Opaque::pin_init(data),
->> >          })
+On Thu, Jun 12, 2025 at 06:17:40PM +0200, Benno Lossin wrote:
+> On Thu Jun 12, 2025 at 5:58 PM CEST, Danilo Krummrich wrote:
+> > On Thu, Jun 12, 2025 at 05:48:36PM +0200, Benno Lossin wrote:
+> >> On Thu Jun 12, 2025 at 4:51 PM CEST, Danilo Krummrich wrote:
+> >> > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> >> > index fa1fd70efa27..41b8fe374af6 100644
+> >> > --- a/rust/kernel/revocable.rs
+> >> > +++ b/rust/kernel/revocable.rs
+> >> > @@ -82,8 +82,11 @@ unsafe impl<T: Sync + Send> Sync for Revocable<T> {}
+> >> >  
+> >> >  impl<T> Revocable<T> {
+> >> >      /// Creates a new revocable instance of the given data.
+> >> > -    pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
+> >> > -        pin_init!(Self {
+> >> > +    pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, Error>
+> >> > +    where
+> >> > +        Error: From<E>,
+> >> 
+> >> I don't think we need this bound as you don't use it in the function
+> >> body.
+> >
+> > I think it's needed by try_pin_init!() below, no?
+> >
+> > Without it I get the compilation error in [1].
+> >
+> >> > +    {
+> >> > +        try_pin_init!(Self {
+> >> >              is_available: AtomicBool::new(true),
+> >> >              data <- Opaque::pin_init(data),
+> >> >          })
+> 
+> Does it work with this?
+> 
+>     try_pin_init!(Self {
+>         is_available: AtomicBool::new(true),
+>         data <- Opaque::pin_init(data),
+>     }? E)
 
-Does it work with this?
-
-    try_pin_init!(Self {
-        is_available: AtomicBool::new(true),
-        data <- Opaque::pin_init(data),
-    }? E)
-
----
-Cheers,
-Benno
-
->>=20
->
-> [1]
->
-> error[E0277]: `?` couldn't convert the error to `error::Error`
->   --> rust/kernel/revocable.rs:87:9
->    |
-> 87 | /         try_pin_init!(Self {
-> 88 | |             is_available: AtomicBool::new(true),
-> 89 | |             data <- Opaque::pin_init(data),
-> 90 | |         })
->    | |          ^
->    | |          |
->    | |__________this can't be annotated with `?` because it has type `Res=
-ult<_, E>`
->    |            the trait `core::convert::From<E>` is not implemented for=
- `error::Error`
->    |
->    =3D note: the question mark operation (`?`) implicitly performs a conv=
-ersion on the error value using the `From` trait
->    =3D note: required for `core::result::Result<revocable::Revocable<T>::=
-new::__InitOk, error::Error>` to implement `core::ops::FromResidual<core::r=
-esult::Result<core::convert::Infallible, E>>`
->    =3D note: this error originates in the macro `$crate::__init_internal`=
- which comes from the expansion of the macro `try_pin_init` (in Nightly bui=
-lds, run with -Z macro-backtrace for more info)
-> help: consider introducing a `where` clause, but there might be an altern=
-ative better way to express this requirement
->    |
-> 83 | impl<T> Revocable<T> where error::Error: core::convert::From<E> {
->    |                      ++++++++++++++++++++++++++++++++++++++++++
->
-> error[E0277]: the trait bound `impl PinInit<Revocable<T>, Error>: PinInit=
-<Revocable<T>, E>` is not satisfied
->   --> rust/kernel/revocable.rs:85:48
->    |
-> 85 |     pub fn new<E>(data: impl PinInit<T, E>) -> impl PinInit<Self, E>
->    |                                                ^^^^^^^^^^^^^^^^^^^^^=
- the trait `pin_init::PinInit<revocable::Revocable<T>, E>` is not implement=
-ed for `impl pin_init::PinInit<revocable::Revocable<T>, error::Error>`
->    |
->    =3D help: the following other types implement trait `pin_init::PinInit=
-<T, E>`:
->              `core::result::Result<T, E>` implements `pin_init::PinInit<T=
-, E>`
->              `pin_init::ChainInit<I, F, T, E>` implements `pin_init::PinI=
-nit<T, E>`
->              `pin_init::ChainPinInit<I, F, T, E>` implements `pin_init::P=
-inInit<T, E>`
->              `pin_init::__internal::AlwaysFail<T>` implements `pin_init::=
-PinInit<T, ()>`
->    =3D note: the full name for the type has been written to 'kernel.long-=
-type-441004638990533407.txt'
->    =3D note: consider using `--verbose` to print the full type name to th=
-e console
-
+Yes, it does -- thanks!
