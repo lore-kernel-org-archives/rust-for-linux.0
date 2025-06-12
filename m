@@ -1,109 +1,105 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0998FA944;
-	Thu, 12 Jun 2025 00:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FA7847B
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 01:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749689731; cv=none; b=Ex60NIP8GQFQ9xVLftAFr26dHktTjpq8y91uBAgrPZKWjOxT27UmKvJKfzqkkZw2HvNkoauKhtMgt3zCg7GrRaglGlwbpEP9wezvpU+d4moeXVcMxd5MNhpnBEMZwt3Qqlk0ANL3nbLzS0EewP99k/ig+izyUHmKkTTmKA6IV9w=
+	t=1749692273; cv=none; b=rki0QAq3fzkCrYASvS/GVEl0KcBm4kzT95uQhekL/bUjrr8hPHAvihLby/bPh+3ymZG9S15NAuOBBKs0XexluvnzojHxEByAuj7lSaPz6ut1tyhiq8ZQ47GYCS/cZ822I0QKqwQuGIJpH5/mIOj5kdUH8gKE/54ALMU40xPjzZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749689731; c=relaxed/simple;
-	bh=02rlLGtfxeXHjsHmWjbMyFw3FRgqWLoxQIh0j2d8ovw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L6uUlOuVofEMhTkCebrZmgaYaGGtnKt4pX4zek72fItMCaFxPyWsGThrOXrC+9nZ+CzxcclNmQ08UytSwElyPyrtGzxXKIcP/JXhdYg92vXEx0dF33LvIrEdw+ureEHX1aly07joRbkB7uLc+l18hPTM1Jg+2rXXgDKJTDw5SaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UwZys+z8; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749692273; c=relaxed/simple;
+	bh=EmgxiCslSolMNCzBUoL4OQg87GsLep/G3Phn9Wkt9NY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SmAyJH5+Kkpx+ISqg4IIVph7FWN7q+Qn1BzTHSVFhIYh6j/aKsXmu9w0bTe8b8clp+/029JESfXvvUhuU781mU/jvmDSOmYQGmcCgmTY1kKRHChrgqjDt/5mV5qHQwyHe7rChK06kT4TAgaTU0K3Qg4bK+B2HcnRQcSOuR1jT18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oJAampAh; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UwZys+z8"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32addf54a01so4086531fa.3;
-        Wed, 11 Jun 2025 17:55:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oJAampAh"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-742c27df0daso392025b3a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 18:37:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749689728; x=1750294528; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=02rlLGtfxeXHjsHmWjbMyFw3FRgqWLoxQIh0j2d8ovw=;
-        b=UwZys+z8Kdm8iMj27LntxT9mlaJiTKPb6LrDyO728mmF31Ge2Y3Esdv8/gzmntXUTF
-         y/1PFTAciFx5Iy4m87o6YlscZ1qrIFtG08/R7F83A2Um6cbkMaa2yQTEkUU0QeopFOJ7
-         1FTYtHLXI2BdBkSb8vjg5aRTP4imE8ezMqgziMdFVSKOu/WXBPREbODAcd0hrX9ys/Iw
-         C674Ge+mqjEG6wV10HlW5SrbtD9lfP4KguM51zuHvNNcF3IRhfinOhFAl703JZjeGY7S
-         Rix+HL+5F45B+AIS2HstYySBxfjuRAaapMLAcI9SFP9pqh/wqUbYUxyU0ggenY7j+ag/
-         yo2Q==
+        d=linaro.org; s=google; t=1749692271; x=1750297071; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=acl3HM/gy65MT7QW59o4rGkPJzPE8ycfLTpRSNc4cWU=;
+        b=oJAampAhEhpA5cLdKflyLUxnNCqwBAg8wUsGafqBw8d+YGc1yhVYqM6FyrLl7bLTOJ
+         VyEQEtnZaDYwsuGtYqegu9ln278lZUhJqeTE+jNhjouFSKht7RcxtaTEZo3v084MtRi9
+         SNp/ujiepiAhJ1QFsCgtPUPJcSo+eZdKDDqp41b0UNkWAtB4Wt5zgVItMYWeSkbFlYH1
+         aovtexlvaeiMQ8sz3XZYMWcOZyTdwtz/rJovSBEYIX5W19VeOcZgd1Z1/6wC3WAi7ZMt
+         jDAaTRek7jOC+HVs84xyqHHHqdWFU01t9o8kIXvpMsqdrq2dHKlZm9sxtf9uxahvx5tn
+         kxag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749689728; x=1750294528;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=02rlLGtfxeXHjsHmWjbMyFw3FRgqWLoxQIh0j2d8ovw=;
-        b=sB4M7ffr5LkNtDDpz+hG8av0l/ApPTvJRP9XKDF9PwqZ1VD+xwwg12JmSE1rYKYGWk
-         qwJ00QJ1TSHNM5v1B0p/emSPdJx1kVyDgmBwjdRyG/STiIO68etAnCgKPSBeot/W6ApH
-         r7Z/O+Y+81R8W8EX+00x0F9tmV8c/+4Ec4PMgclxubDHGfcWtCHF2dytrj7fl2ZCi1Fs
-         VRqASo5/8M0M1pyKFUGVcr5S9j5tFvQwWi9JMALh8RN5/gL7wfOb8lTdPq/NxfJEtBbS
-         1WS20gTxl23e+b3qRt9GqVB/JK55YhHilkxM4E4DFmiMx8snjqEDd7W+uA88SZkSgSKz
-         G99g==
-X-Forwarded-Encrypted: i=1; AJvYcCUZZz8lKg8flCrd5tXVWD1JMAEa2tUjsivPmp7timdPRgXGCG4msDYitcHu52osyWe7lY/DK4J83Dk+Sw8=@vger.kernel.org, AJvYcCWaNGdnyVEhtI0gpn6+PqKF7dvBskKE1nys1rH2L+y+TMd2PjwsqirI9alQ6SKNfNtLEF51yTVPIc91F+7KoS0=@vger.kernel.org, AJvYcCXXVVGohg3pR8HtASJw5SjgqRkiucTlvV2LhpUd793x/O12ga5achxUY6+5r9MfaILyAIDaypdt@vger.kernel.org
-X-Gm-Message-State: AOJu0YyC+B89i6mEt/cRDLazhJxeTlvKH5VsmqV7pWSpae9X5NyQN2ij
-	RcjJLjOeJmPrqZDPuXsV2bifN7095FjPQpw4x+UP7kztDBhr9y/TdvKJIoSbr6xs7+i9DEx3cxB
-	bet5Z39kN470p8m0ykpN1ngm26g12jwY=
-X-Gm-Gg: ASbGncttIo3hJ2kBQeF7RWRdAZK348fOsDNAsZ8cDE6AU+HXdJjdG++HIB2wjRDDuHI
-	3g/p/HvNXBrF0G/u0Cxwx8S5s3dgmkWo9A6lfIgS4+VHClYaoOFVorX4v+c3RPkzeDzkLS79caV
-	mkW+7vKxntgbEd/oIp0JS9bkAkJ398v7MV7DL6kEbOYEufvQ0NYOXctAERVAS5GxAOYKFKv68eo
-	/Ph
-X-Google-Smtp-Source: AGHT+IEAjTVQc6gCBaN+fyy4OxpD8eXGujSQWQti4N6wm9Vu2YEJ5M4XkfBoxRQlrm4CA8G+lruEUOfQ0KMesp+X37I=
-X-Received: by 2002:a05:651c:40d4:b0:32b:35e6:bc05 with SMTP id
- 38308e7fff4ca-32b35e6ced6mr186141fa.32.1749689727738; Wed, 11 Jun 2025
- 17:55:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749692271; x=1750297071;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=acl3HM/gy65MT7QW59o4rGkPJzPE8ycfLTpRSNc4cWU=;
+        b=E3Z3GBsco0GarZT6Mf+5VAHJ3CgY0/QyfjN+r+sXHQc2aYGlQcUB51umdCiFc/64TR
+         nZpYePfp9hNhmczmS9Mg1/30QcmMgNcc62/qiHCXuI9mTWuTyZv4xoFrvzEujZ9qECWB
+         7PjGliw6a4t/1q/477QKi3N9pfbuNrLMjZF6MOQdBgpBjiLT0O67XMMBt0JKE+gXFrRf
+         1mmYjmNKOtI9Mqt3sSH5JKJ/PgWezdtZ/lxGBFf1oFTb1VCFKJZDqfusskhK4DgMtVTK
+         w6ZoDHaZnr4XhRDoFQ9G20EjT6C2fA4F53N+NNI2YZz3Zvi3Qhfa/42ax5K/Bb54Escc
+         NDVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUspF3HOEDY2nMVLXtsFPi78VjZwuA511WIv2bnDCUWzG4Rzjs4NyC2ejkWkYLdi++jrQLvAUUbRqwFE+MUEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu/J8JqGf1CCSefULQwDBrTmXHhwrJmvrgSt0d6v2EnFf6aluF
+	ORGX0Lk7ieZPSme90X6zmm7mmngeUzBaNPPhPaJUwJQRMbq/Q5YHsoDKWgqtg7jQ0CY=
+X-Gm-Gg: ASbGncuo9yFJJuJDw9jOzWvnaC/Amjx49xrxM5wfOx8cpZhinuwde1dXXBUadbSZudS
+	0DVvQgi5+ZvExbnguD3rLWBJoGbfZTj2yM5Vs70BvUxdWArmNVl4jXM2aZ2zsWsheSMeO19sBcJ
+	2BrRt0uc0TcXww+N2gUhfo7SobJ5QAoU/7gRSSyDUP7jCoAnW7O8KwjjuGM+kStZ3UFe/jez4rc
+	OExTSaKUgEXtCnijsCo0biAoRqSs9qGEpDtzMUkoiCfVMCV1iFBcyfIRFxWqbxqOBClewMhQbCw
+	YH1Y0SnNarKucrP02NHF+xWE1gthe7VhJMCMapRY75N0CTULvFFVic0NhTKAGgg=
+X-Google-Smtp-Source: AGHT+IGQb69oSvUbCWxUQ9pS4E1eHVQjsTTq/cBES45AIlrmrVW+OEfUjBX2qBwDqZa2fbH9zp5fXA==
+X-Received: by 2002:a05:6300:6b0d:b0:21f:97f3:d4c2 with SMTP id adf61e73a8af0-21f97f3d6f9mr1549747637.16.1749692271459;
+        Wed, 11 Jun 2025 18:37:51 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fd611e4dbsm261228a12.12.2025.06.11.18.37.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Jun 2025 18:37:50 -0700 (PDT)
+Date: Thu, 12 Jun 2025 07:07:46 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: Convert `/// SAFETY` lines to `# Safety`
+ sections
+Message-ID: <20250612013746.psicbrobklub6xvy@vireshk-i7>
+References: <4823a58093c6dfa20df62b5c18da613621b9716e.1749554599.git.viresh.kumar@linaro.org>
+ <CANiq72mP7tGzZM_f2gRSVcBw5a5Y7vMM3eOSvuAOK=yJeEmFBg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com>
- <CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com>
- <CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com> <20250612.094805.256395171864740471.fujita.tomonori@gmail.com>
-In-Reply-To: <20250612.094805.256395171864740471.fujita.tomonori@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 11 Jun 2025 20:54:51 -0400
-X-Gm-Features: AX0GCFtVbFawFEU3xKRhoK3eY3Dg6SyO8rvlkK_xWlCOPkYVxO4bSRJBZ8lWlUE
-Message-ID: <CAJ-ks9nXwBMNcZLK1uJB=qJk8KsOF7q8nYZC6qANboxmT8qFFA@mail.gmail.com>
-Subject: Re: [PATCH] rust: cast to the proper type
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, tmgross@umich.edu, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	dakr@kernel.org, davem@davemloft.net, andrew@lunn.ch, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mP7tGzZM_f2gRSVcBw5a5Y7vMM3eOSvuAOK=yJeEmFBg@mail.gmail.com>
 
-On Wed, Jun 11, 2025 at 8:48=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Wed, 11 Jun 2025 09:30:46 -0400
-> Tamir Duberstein <tamird@gmail.com> wrote:
->
-> > On Wed, Jun 11, 2025 at 7:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.co=
-m> wrote:
-> >>
-> >> On Wed, Jun 11, 2025 at 12:28=E2=80=AFPM Tamir Duberstein <tamird@gmai=
-l.com> wrote:
-> >> >
-> >> > Use the ffi type rather than the resolved underlying type.
-> >> >
-> >> > Fixes: f20fd5449ada ("rust: core abstractions for network PHY driver=
-s")
-> >>
-> >> Does this need to be backported? If not, I wouldn't include a Fixes ta=
-g.
+On 11-06-25, 13:46, Miguel Ojeda wrote:
+> On Tue, Jun 10, 2025 at 1:23 PM Viresh Kumar <viresh.kumar@linaro.org> wrote:
 > >
-> > I'm fine with omitting it. I wanted to leave a breadcrumb to the
-> > commit that introduced the current code.
->
-> I also don't think this tag is necessary because this is not a bug
-> fix. And since this tag points to the file's initial commit, I don't
-> think it's particularly useful.
+> > Replace `/// SAFETY` comments in doc comments with proper `# Safety`
+> > sections, as per rustdoc conventions.
+> >
+> > Also mark the C FFI callbacks as `unsafe` to correctly reflect their
+> > safety requirements.
+> 
+> +1 I guess the Clippy lint triggered when writing the section, right?
 
-Would you be OK stripping the tag on apply, or would you like me to send v2=
-?
+Yes.
+
+-- 
+viresh
