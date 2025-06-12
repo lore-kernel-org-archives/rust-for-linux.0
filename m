@@ -1,105 +1,133 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FA7847B
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 01:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073C17DA7F
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 01:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749692273; cv=none; b=rki0QAq3fzkCrYASvS/GVEl0KcBm4kzT95uQhekL/bUjrr8hPHAvihLby/bPh+3ymZG9S15NAuOBBKs0XexluvnzojHxEByAuj7lSaPz6ut1tyhiq8ZQ47GYCS/cZ822I0QKqwQuGIJpH5/mIOj5kdUH8gKE/54ALMU40xPjzZA=
+	t=1749692537; cv=none; b=DJ3dhErpg+HZepl/DGNd9p4Gjsf8ZOHXiU7yYGWrqVU6EbV3CjsXMNeDON5Cm3MPnia67iqeZ0Wy/Cqa7QmVF+kLf/vJeK0SIbOpn6xxCc9UFTQcWr+dgLEKnaLOX+kwBQqrJXSfqqOlksPNq6y2VHXQhb4ySdgIG5bYqgS1mLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749692273; c=relaxed/simple;
-	bh=EmgxiCslSolMNCzBUoL4OQg87GsLep/G3Phn9Wkt9NY=;
+	s=arc-20240116; t=1749692537; c=relaxed/simple;
+	bh=yekqGRUYYLfu4rmZNRUCu0QzvWyE3YgMNmc+9ucJ2S0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SmAyJH5+Kkpx+ISqg4IIVph7FWN7q+Qn1BzTHSVFhIYh6j/aKsXmu9w0bTe8b8clp+/029JESfXvvUhuU781mU/jvmDSOmYQGmcCgmTY1kKRHChrgqjDt/5mV5qHQwyHe7rChK06kT4TAgaTU0K3Qg4bK+B2HcnRQcSOuR1jT18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oJAampAh; arc=none smtp.client-ip=209.85.210.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=N2k0xuqNo5BSvuhDOuZZUD70yPFTf/ZZNKrZkvvTowj6oEBqCW5zijuHbiga8L0NeXNODWdfPrPZiMCyjZU7lpTRDcSvq1AlFODgFNvfx8H1WfoWVWfCVIbMGJZa59wg9x8axKWJ7hlmhgyzWYFVXYEc3A24eVvSNNlGqc7scOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aS8zANfF; arc=none smtp.client-ip=209.85.214.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oJAampAh"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-742c27df0daso392025b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 18:37:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aS8zANfF"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-234c5b57557so4141745ad.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 18:42:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749692271; x=1750297071; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=acl3HM/gy65MT7QW59o4rGkPJzPE8ycfLTpRSNc4cWU=;
-        b=oJAampAhEhpA5cLdKflyLUxnNCqwBAg8wUsGafqBw8d+YGc1yhVYqM6FyrLl7bLTOJ
-         VyEQEtnZaDYwsuGtYqegu9ln278lZUhJqeTE+jNhjouFSKht7RcxtaTEZo3v084MtRi9
-         SNp/ujiepiAhJ1QFsCgtPUPJcSo+eZdKDDqp41b0UNkWAtB4Wt5zgVItMYWeSkbFlYH1
-         aovtexlvaeiMQ8sz3XZYMWcOZyTdwtz/rJovSBEYIX5W19VeOcZgd1Z1/6wC3WAi7ZMt
-         jDAaTRek7jOC+HVs84xyqHHHqdWFU01t9o8kIXvpMsqdrq2dHKlZm9sxtf9uxahvx5tn
-         kxag==
+        d=linaro.org; s=google; t=1749692535; x=1750297335; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6GMTYoO/hH1xieNN1bEgiAsAF7Z3yvr8fWaDaLPOgs0=;
+        b=aS8zANfFOoewlnHoxS75gB9a2NKvfc3aVwtpEuYLvBRkUgLVdbajvUugYuQnlpiNgX
+         O1vKvdtO31ytv5O8Mpv6Revr0jOt5r0H3cQboSyBx5UpHSu2FM7rNHau145oNwt24JgM
+         SuPLRI3E8lOxkoeS5jsYVmwIEgpwgtHa1VWEqgKk7D5ZtMSX3gB4Cqk71BJhAsNiyXN7
+         dX0Z3h29YqnKsTl0q3Gv+PLrMWZF6BXjyYldCXIP9LmhSs6CdjrHtCVjTwZqVrkYp5S5
+         W+ktguZtboDEG+3XOVE7id4b+mzh+bJz//xjj3N8qzHy7CnlD4GLKsYG5jWbJ4wm3aZo
+         dfNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749692271; x=1750297071;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=acl3HM/gy65MT7QW59o4rGkPJzPE8ycfLTpRSNc4cWU=;
-        b=E3Z3GBsco0GarZT6Mf+5VAHJ3CgY0/QyfjN+r+sXHQc2aYGlQcUB51umdCiFc/64TR
-         nZpYePfp9hNhmczmS9Mg1/30QcmMgNcc62/qiHCXuI9mTWuTyZv4xoFrvzEujZ9qECWB
-         7PjGliw6a4t/1q/477QKi3N9pfbuNrLMjZF6MOQdBgpBjiLT0O67XMMBt0JKE+gXFrRf
-         1mmYjmNKOtI9Mqt3sSH5JKJ/PgWezdtZ/lxGBFf1oFTb1VCFKJZDqfusskhK4DgMtVTK
-         w6ZoDHaZnr4XhRDoFQ9G20EjT6C2fA4F53N+NNI2YZz3Zvi3Qhfa/42ax5K/Bb54Escc
-         NDVw==
-X-Forwarded-Encrypted: i=1; AJvYcCUspF3HOEDY2nMVLXtsFPi78VjZwuA511WIv2bnDCUWzG4Rzjs4NyC2ejkWkYLdi++jrQLvAUUbRqwFE+MUEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu/J8JqGf1CCSefULQwDBrTmXHhwrJmvrgSt0d6v2EnFf6aluF
-	ORGX0Lk7ieZPSme90X6zmm7mmngeUzBaNPPhPaJUwJQRMbq/Q5YHsoDKWgqtg7jQ0CY=
-X-Gm-Gg: ASbGncuo9yFJJuJDw9jOzWvnaC/Amjx49xrxM5wfOx8cpZhinuwde1dXXBUadbSZudS
-	0DVvQgi5+ZvExbnguD3rLWBJoGbfZTj2yM5Vs70BvUxdWArmNVl4jXM2aZ2zsWsheSMeO19sBcJ
-	2BrRt0uc0TcXww+N2gUhfo7SobJ5QAoU/7gRSSyDUP7jCoAnW7O8KwjjuGM+kStZ3UFe/jez4rc
-	OExTSaKUgEXtCnijsCo0biAoRqSs9qGEpDtzMUkoiCfVMCV1iFBcyfIRFxWqbxqOBClewMhQbCw
-	YH1Y0SnNarKucrP02NHF+xWE1gthe7VhJMCMapRY75N0CTULvFFVic0NhTKAGgg=
-X-Google-Smtp-Source: AGHT+IGQb69oSvUbCWxUQ9pS4E1eHVQjsTTq/cBES45AIlrmrVW+OEfUjBX2qBwDqZa2fbH9zp5fXA==
-X-Received: by 2002:a05:6300:6b0d:b0:21f:97f3:d4c2 with SMTP id adf61e73a8af0-21f97f3d6f9mr1549747637.16.1749692271459;
-        Wed, 11 Jun 2025 18:37:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1749692535; x=1750297335;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6GMTYoO/hH1xieNN1bEgiAsAF7Z3yvr8fWaDaLPOgs0=;
+        b=f8xgQB0/5fOBw4f08TV/a1rFSNmzP6sCf5zjJZN9hiO+3WaiAUz4wFFEP+Sen+djFF
+         XDvVE5AHkyN8NwbnQ9D127I4ps8NXphvT91G7nKPYUKJ4XrlhdJUOxH0bW2A+fHclfNx
+         WbZ64uzhI0EcGL6oRgc/X8Q6PN84bSMWYE4SYFrQHSHanitZNOeURcT45DJ+37Ap5oGa
+         jhWwNDql92AddV1G82lMHiSOBTEP4uI1NY/IMZWOSmLD/oUc6Y6/ClMPxmJmO1MChBWA
+         et8I2gSauEtb/tTnuO/fLj+M+9dnk1nht6zHAcLK42wWQeB9JnlOoBtj7mb66bniSnL2
+         aRHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUvya++kUDEVZxwSpctZ+ePf5vu6pUSLZx0x6/XTwdFJY47ehfjNoOeoK0VTD3TsVTAMtpN31zbhKiRYYVHgg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiEKFMuKqQ+9vDw1XdAcnaILmKrxDr6rM0u6bgVM1LnzXjJWcq
+	FlKMe+qxKjQkyYkpLDn0GE1w5A/WUB+jt4nfZS52cuer0JKZXTTz397qlrrNtoFG9js=
+X-Gm-Gg: ASbGncvCr5x9b6MtDCv2mCf8cOpW8WccgplD2TtwrQi5Ritb3+56o4qcIMGYbHU4BPk
+	qi1aYmRbp36OHr6ukD5LHGZY9oai/kfF33460x1psmmiX4pfVrjTC08xfQ4Yle3hWMorS+oi476
+	cU7u/KxXblMKmUBmsorXUvPA4Di443J2IE6u2MkzML/O6lIIwmlDEIXOT44mXtJZiNaC7RgRhMm
+	GyvKO/kb0BrIrTQSOCtgBw9Bx9ycx+fs97O2+BlwUMn30FMTfxFyO9qf1vYXQJgN84G0XCHpGw4
+	c1CXvG1en2qha7R401SsHF0fnZ1lw691TOH8c/YjKsISHo50giIF9h8cw9+Yeyo=
+X-Google-Smtp-Source: AGHT+IEYQuQrQ9pSkTkNr1pxDJTIIU0K6qyK009mvjKSvoQj1EO38HYFTD6dT0wcT093olcResSw9Q==
+X-Received: by 2002:a17:903:2346:b0:234:d2fb:2d13 with SMTP id d9443c01a7336-2364c8d1932mr20654285ad.18.1749692535270;
+        Wed, 11 Jun 2025 18:42:15 -0700 (PDT)
 Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fd611e4dbsm261228a12.12.2025.06.11.18.37.50
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2364e7195c0sm2365445ad.209.2025.06.11.18.42.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 18:37:50 -0700 (PDT)
-Date: Thu, 12 Jun 2025 07:07:46 +0530
+        Wed, 11 Jun 2025 18:42:14 -0700 (PDT)
+Date: Thu, 12 Jun 2025 07:12:10 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+To: Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] cpufreq: Convert `/// SAFETY` lines to `# Safety`
- sections
-Message-ID: <20250612013746.psicbrobklub6xvy@vireshk-i7>
-References: <4823a58093c6dfa20df62b5c18da613621b9716e.1749554599.git.viresh.kumar@linaro.org>
- <CANiq72mP7tGzZM_f2gRSVcBw5a5Y7vMM3eOSvuAOK=yJeEmFBg@mail.gmail.com>
+	Breno Leitao <leitao@debian.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Yury Norov <yury.norov@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>, Nishanth Menon <nm@ti.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>,
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH V2] rust: Use consistent "# Examples" heading style in
+ rustdoc
+Message-ID: <20250612014210.bcp2p6ww5ofvy6zh@vireshk-i7>
+References: <ddd5ce0ac20c99a72a4f1e4322d3de3911056922.1749545815.git.viresh.kumar@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72mP7tGzZM_f2gRSVcBw5a5Y7vMM3eOSvuAOK=yJeEmFBg@mail.gmail.com>
+In-Reply-To: <ddd5ce0ac20c99a72a4f1e4322d3de3911056922.1749545815.git.viresh.kumar@linaro.org>
 
-On 11-06-25, 13:46, Miguel Ojeda wrote:
-> On Tue, Jun 10, 2025 at 1:23 PM Viresh Kumar <viresh.kumar@linaro.org> wrote:
-> >
-> > Replace `/// SAFETY` comments in doc comments with proper `# Safety`
-> > sections, as per rustdoc conventions.
-> >
-> > Also mark the C FFI callbacks as `unsafe` to correctly reflect their
-> > safety requirements.
+On 10-06-25, 14:33, Viresh Kumar wrote:
+> Use a consistent `# Examples` heading in rustdoc across the codebase.
 > 
-> +1 I guess the Clippy lint triggered when writing the section, right?
+> Some modules previously used `## Examples` (even when they should be
+> available as top-level headers), while others used `# Example`, which
+> deviates from the preferred `# Examples` style.
+> 
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+> Acked-by: Benno Lossin <lossin@kernel.org>
+> ---
+> V1->V2:
+> - Don't change the header level for the example in workqueue.rs.
+> - Update the commit log accordingly.
+> - Add Ack from Benno.
+> 
+>  rust/kernel/block/mq.rs  |  2 +-
+>  rust/kernel/clk.rs       |  6 +++---
+>  rust/kernel/configfs.rs  |  2 +-
+>  rust/kernel/cpufreq.rs   |  8 ++++----
+>  rust/kernel/cpumask.rs   |  4 ++--
+>  rust/kernel/devres.rs    |  4 ++--
+>  rust/kernel/firmware.rs  |  4 ++--
+>  rust/kernel/opp.rs       | 16 ++++++++--------
+>  rust/kernel/pci.rs       |  4 ++--
+>  rust/kernel/platform.rs  |  2 +-
+>  rust/kernel/sync.rs      |  2 +-
+>  rust/kernel/workqueue.rs |  2 +-
+>  rust/pin-init/src/lib.rs |  2 +-
+>  13 files changed, 29 insertions(+), 29 deletions(-)
 
-Yes.
+Miguel,
+
+If you are okay, I can also take this via the PM tree along with my other rust
+fixes for next rc.
 
 -- 
 viresh
