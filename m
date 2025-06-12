@@ -1,195 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0890618DB2A;
-	Thu, 12 Jun 2025 08:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EFF215F72
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 08:14:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749716014; cv=none; b=u/GJbui3PDBvl8T0M8d3D7Aunk4evCgCXDyWjffZFQ6dDcv2PA2+g2npY3FrybJCgzmkMIrls8AngT8ANk6/+Vbc4vfh+03UNSowCNyaqQvpAN/MV7Asefbdp1JjiUcUgXCOBvqffrf0zIfSfrbLyXJvBR/JwtmjPhCpFtBCiAM=
+	t=1749716059; cv=none; b=ZwpvujXftJqZLp6tPF5Kca9EMEr+IpGDhQniZv0RgWP3wa17oZQZzlR5MrZliAwDSt1tNK1ZZRZFl1vMxZky/KkWMNO4mX7LCUXNq7CW/JWjbrBfLwok1lJlQb0cBpLKAT+l9oCmLNfKcBuUwaUodlC1nBZvyYAwIT/9sS7jNuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749716014; c=relaxed/simple;
-	bh=nDMS9g+Bk/QeVRgWt7heX7r7uo+JtLzV4PyG8up0zxk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=Q+/A1DO94yYaAU8ZyVTgLGhlOfDCPoe5M8u1I7LRGIYAT7C8J1SCWmHlwFv9NREoD4jkah/LVGNOButV+3hcq1DfHHf65BfXgbexrJIRUl4rQiVmhujoHpOJGgNR9e+UwIk6kylJyJ3fbHF5FmeOBC0KfFbqsrseGjb/zOXCjfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOBfFPAk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749716059; c=relaxed/simple;
+	bh=t6OQBoKn4ugcADw2zlqfCSNZogwvqWRRtXHkaQJmL8M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=JkLiGmhjv3xcYYy3kC8ENuL68jokZIfX4bwssn7exQCh5SnIyjf2A3XTSLvBRrZdWCU2Eb0UxUyhh0ub8V8qFmdhb8NAf3mf0AEKnLmnhO937o1R4knc1rl05eIoIE7TEHhM+tZr7P3N1cUyTayPL/vDgiRz3b39KTCxS8sPq9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=IS4jiy/q; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOBfFPAk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74B1C4CEF0;
-	Thu, 12 Jun 2025 08:13:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749716013;
-	bh=nDMS9g+Bk/QeVRgWt7heX7r7uo+JtLzV4PyG8up0zxk=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=UOBfFPAkqn0/5Qa8ozLrbc6kw5oNKd9Ls0uO1HhhhBOMhj2zxZTuuVJjIQqX94DBx
-	 +KgVinLXMZvTf0PLPZaXlLuH5nyLfMFuwoClSslkNl7UxSljNMpjdjlw6UEevXj72Y
-	 n9hkmKOExgvActWN43YnGocNlRH1Gzip2fBravrXYHid1jKtYEaxCzndzkQWqxskda
-	 WUwDSGGY1wsmyOaBFiMwDUZXnlHrbdE1iS+YWdKNPKbL6kEJchz5Gz6SEfsWACpUFO
-	 tmRWELy6CPa3kjRBDZGNuH2y8YQEHAwoUUXQ1qdCxjjy4aOU+Ne9jeDlol+t8X7/qn
-	 mDWnnSYD2Cikg==
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="IS4jiy/q"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250612081416euoutp01cef3b99e9db2c02ff6d39f71b8c4e781~IPXuP6oqF2482024820euoutp01X
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 08:14:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250612081416euoutp01cef3b99e9db2c02ff6d39f71b8c4e781~IPXuP6oqF2482024820euoutp01X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1749716056;
+	bh=/VOe1tEPEUiWf+yiC0MtudUMPxShLqsFiTfwLc2Ert0=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=IS4jiy/qFsRCS3Gg9TZjyHnrCsU66P75Itwnb4oQ494v95PikpmcOTXnh/3YRDwCM
+	 OXCBoeCvNH+FEbvDAWbQSbFq1PJ1PE/9cOww+3FgZocmukDVpD7OQCJkCltMsabXXt
+	 TiHRv0LjcuyEr0jTLVE5OzEhqptX3yoqfhjGaQMo=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250612081415eucas1p229fc20aa3f3252e93349c606f4a8dbd2~IPXtmCWFa0599605996eucas1p2p;
+	Thu, 12 Jun 2025 08:14:15 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250612081414eusmtip158dc80f809c9f48925cc69e56d3e5521~IPXsaMu1q2395823958eusmtip1O;
+	Thu, 12 Jun 2025 08:14:14 +0000 (GMT)
+Message-ID: <d1523586-82ca-4863-964f-331718bb1f0e@samsung.com>
+Date: Thu, 12 Jun 2025 10:14:13 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Jun 2025 10:13:29 +0200
-Message-Id: <DAKEK5YPNCAU.3LQGI98GGG4KF@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <chrisi.schrefl@gmail.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] rust: devres: fix race in Devres::drop()
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250603205416.49281-1-dakr@kernel.org>
- <20250603205416.49281-4-dakr@kernel.org>
-In-Reply-To: <20250603205416.49281-4-dakr@kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
+	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
+	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <jbm3qvowi5vskhnjyqlp3xek36gzzqjt35m66eayxi6lmi525t@iefevopxjl53>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250612081415eucas1p229fc20aa3f3252e93349c606f4a8dbd2
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
+X-EPHeader: CA
+X-CMS-RootMailID: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
+References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
+	<CGME20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d@eucas1p1.samsung.com>
+	<20250610-rust-next-pwm-working-fan-for-sending-v2-2-753e2955f110@samsung.com>
+	<jbm3qvowi5vskhnjyqlp3xek36gzzqjt35m66eayxi6lmi525t@iefevopxjl53>
 
-On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
-> In Devres::drop() we first remove the devres action and then drop the
-> wrapped device resource.
->
-> The design goal is to give the owner of a Devres object control over when
-> the device resource is dropped, but limit the overall scope to the
-> corresponding device being bound to a driver.
->
-> However, there's a race that was introduced with commit 8ff656643d30
-> ("rust: devres: remove action in `Devres::drop`"), but also has been
-> (partially) present from the initial version on.
->
-> In Devres::drop(), the devres action is removed successfully and
-> subsequently the destructor of the wrapped device resource runs.
-> However, there is no guarantee that the destructor of the wrapped device
-> resource completes before the driver core is done unbinding the
-> corresponding device.
->
-> If in Devres::drop(), the devres action can't be removed, it means that
-> the devres callback has been executed already, or is still running
-> concurrently. In case of the latter, either Devres::drop() wins revoking
-> the Revocable or the devres callback wins revoking the Revocable. If
-> Devres::drop() wins, we (again) have no guarantee that the destructor of
-> the wrapped device resource completes before the driver core is done
-> unbinding the corresponding device.
 
-I don't understand the exact sequence of events here. Here is what I got
-from your explanation:
 
-* the driver created a `Devres<T>` associated to their device.
-* their physical device gets disconnected and thus the driver core
-  starts unbinding the device.
-* simultaneously, the driver drops the `Devres<T>` (eg because the
-  driver initiated the physical removal)
-* now `devres_callback` is being called from both `Devres::Drop` (which
-  calls `Devres::remove_action`) and from the driver core.
-* they both call `inner.data.revoke()`, but only one wins, in our
-  example `Devres::drop`.
-* but now the driver core has finished running `devres_callback` and
-  finalizes unbinding the device, even though the `Devres` still exists
-  though is almost done being dropped.
+On 6/11/25 08:58, Uwe Kleine-König wrote:
+> Hello,
+> 
+> Huh, if you do the newstyle stuff, .get_state() is wrong. It's either
+> .round_waveform_tohw() + .round_waveform_fromhw() + .read_waveform() +
+> .write_waveform() or .apply() + .get_state(), but don't mix these.
 
-I don't see a race here. Also the `dev: ARef<Device>` should keep the
-device alive until the `Devres` is dropped, no?
+In the process of implementing the full "newstyle" waveform API as you
+suggested, I discovered a hardware limitation. After writing new values
+to the period and duty cycle registers, reading them back does not
+return the programmed values, which makes it impossible to reliably
+report the current hardware state.
 
-> Depending on the specific device resource, this can potentially lead to
-> user-after-free bugs.
->
-> In order to fix this, implement the following logic.
->
-> In the devres callback, we're always good when we get to revoke the
-> device resource ourselves, i.e. Revocable::revoke() returns true.
->
-> If Revocable::revoke() returns false, it means that Devres::drop(),
-> concurrently, already drops the device resource and we have to wait for
-> Devres::drop() to signal that it finished dropping the device resource.
->
-> Note that if we hit the case where we need to wait for the completion of
-> Devres::drop() in the devres callback, it means that we're actually
-> racing with a concurrent Devres::drop() call, which already started
-> revoking the device resource for us. This is rather unlikely and means
-> that the concurrent Devres::drop() already started doing our work and we
-> just need to wait for it to complete it for us. Hence, there should not
-> be any additional overhead from that.
->
-> (Actually, for now it's even better if Devres::drop() does the work for
-> us, since it can bypass the synchronize_rcu() call implied by
-> Revocable::revoke(), but this goes away anyways once I get to implement
-> the split devres callback approach, which allows us to first flip the
-> atomics of all registered Devres objects of a certain device, execute a
-> single synchronize_rcu() and then drop all revocable objects.)
->
-> In Devres::drop() we try to revoke the device resource. If that is *not*
-> successful, it means that the devres callback already did and we're good.
->
-> Otherwise, we try to remove the devres action, which, if successful,
-> means that we're good, since the device resource has just been revoked
-> by us *before* we removed the devres action successfully.
->
-> If the devres action could not be removed, it means that the devres
-> callback must be running concurrently, hence we signal that the device
-> resource has been revoked by us, using the completion.
->
-> This makes it safe to drop a Devres object from any task and at any point
-> of time, which is one of the design goals.
->
-> Fixes: 8ff656643d30 ("rust: devres: remove action in `Devres::drop`") [1]
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Closes: https://lore.kernel.org/lkml/aD64YNuqbPPZHAa5@google.com/
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/devres.rs | 33 ++++++++++++++++++++++++++-------
->  1 file changed, 26 insertions(+), 7 deletions(-)
+This appears to be a known quirk of the hardware, as the reference C
+driver from T-HEAD [1] also omits the .get_state callback, likely for
+the same reason.
 
-> @@ -161,7 +166,12 @@ fn remove_action(this: &Arc<Self>) {
->          //         `DevresInner::new`.
->          let inner =3D unsafe { Arc::from_raw(ptr) };
-> =20
-> -        inner.data.revoke();
-> +        if !inner.data.revoke() {
-> +            // If `revoke()` returns false, it means that `Devres::drop`=
- already started revoking
-> +            // `inner.data` for us. Hence we have to wait until `Devres:=
-:drop()` signals that it
-> +            // completed revoking `inner.data`.
-> +            inner.revoke.wait_for_completion();
-> +        }
->      }
->  }
-> =20
-> @@ -232,6 +242,15 @@ fn deref(&self) -> &Self::Target {
-> =20
->  impl<T> Drop for Devres<T> {
->      fn drop(&mut self) {
-> -        DevresInner::remove_action(&self.0);
-> +        // SAFETY: When `drop` runs, it is guaranteed that nobody is acc=
-essing the revocable data
-> +        // anymore, hence it is safe not to wait for the grace period to=
- finish.
-> +        if unsafe { self.revoke_nosync() } {
-> +            // We revoked `self.0.data` before the devres action did, he=
-nce try to remove it.
-> +            if !DevresInner::remove_action(&self.0) {
+Given this, would it be acceptable to provide a write-only driver? My
+proposed solution would be to omit the .read_waveform() and
+.round_waveform_fromhw() implementations from my PwmOps trait. This
+would mean the driver can correctly set the PWM state, but attempting to
+read it back via sysfs would fail (e.g., with -EOPNOTSUPP), reflecting
+the hardware's capability.
 
-Shouldn't this not be inverted? (ie 's/!//')
+Does this sound like a reasonable approach to you?
 
-Otherwise this will return `true`, get negated and we don't run the code
-below and the `inner.data.revoke()` in `devres_callback` will return
-`false` which will get negated and thus it will never return.
+[1] - https://github.com/revyos/thead-kernel/blob/lpi4a/drivers/pwm/pwm-light.c
 
----
-Cheers,
-Benno
+> 
+>> +        let data: &Self = chip.drvdata().ok_or(EINVAL)?;
+>> +        let hwpwm = pwm.hwpwm();
+>> +        let iomem_guard = data.iomem.access(parent_dev)?;
+>> +        let iomap = iomem_guard.deref();
+>> +        let ctrl = iomap.read32(th1520_pwm_ctrl(hwpwm));
+>> +        let period_cycles = iomap.read32(th1520_pwm_per(hwpwm));
+>> +        let duty_cycles = iomap.read32(th1520_pwm_fp(hwpwm));
+>> +
+>> +        state.set_enabled(duty_cycles != 0);
+>> +
+>> +        let rate_hz = data.clk.rate().as_hz();
+>> +        let period_ns = (period_cycles as u64)
+>> +            .mul_div(time::NSEC_PER_SEC as u64, rate_hz as u64)
+>> +            .unwrap_or(0);
 
-> +                // We could not remove the devres action, which means th=
-at it now runs concurrently,
-> +                // hence signal that `self.0.data` has been revoked succ=
-essfully.
-> +                self.0.revoke.complete_all();
-> +            }
-> +        }
->      }
->  }
+> Best regards
+> Uwe
 
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
