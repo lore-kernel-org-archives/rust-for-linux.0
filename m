@@ -1,188 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F6A234971;
-	Thu, 12 Jun 2025 11:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7D1239E92;
+	Thu, 12 Jun 2025 11:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749726343; cv=none; b=ELiBgyTCT7bgNHpI01z7nILYPPKc/YKVeMLsXbj9c222DqLzvaUsukKJvrK5VlEGwpuBfuYIj9CF/u6MB08jjDJSvg8Sq2xu4iCdM610oqo3o8V+u2NJg1MI3rFSvZRupgV26teE8ApJaH4wuS5OCV5fVoyDmN0f4yGbdScFI7Y=
+	t=1749726396; cv=none; b=f3NWvI4BFtGGIGv96ZAXQIMppB+FuPV88b3KGSWUbjnijxH88fySGYU01en+KWZN+heOKf05vNTSP8XaqnbLKECd8qWKowaaAsNhvh3Tgi9rraGUOBaHx4piWlLM+MWJlJTGvU0DEI9xk+TeYDKmE3bz/u1rqpHbdJ4L+OrR7rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749726343; c=relaxed/simple;
-	bh=nLSFvNhhkH/i0AW4xZZyeVQQGE39E68tSVlCKIweu8U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=qecp6fc5ByBtxrjn44cgLbaxqJj9dK2td29uwJYb8QxJMBys4JsNVc/md1AxIQ7hAi4yPMzrbSZv4jLKtgW20wi9qIflLb3POXlDinLbtu9l5sdP3WMVcsTHfpUMs/o4Dj/n9omeE9+UiH6nLS0w5r0D4e7Im/WzrDWSUxCrOXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qDdWQQHx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749726396; c=relaxed/simple;
+	bh=CX/SJ6p2PC4ePksVeP0bGJ7+lohsdUHkw9p8R2H3Ufs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HBKViFZgQcpCqTz9YkRVL0pwmCf+B5hQOGnG0o2RJjB9+nZrBR6h9gWVxBmS6Hwnh6JMw477IU86cG5o0hPgaCfl2A9IskfwYUSe8akKjs2Nu/7r3hYL7y2+Hhc71tT6lXmGPZ9hVBTg2nOaRHcXDdDhZzAL+kRc5A8tJYcg28c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8w5btC+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qDdWQQHx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DCAC4CEEA;
-	Thu, 12 Jun 2025 11:05:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8w5btC+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840AAC4CEEA;
+	Thu, 12 Jun 2025 11:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749726342;
-	bh=nLSFvNhhkH/i0AW4xZZyeVQQGE39E68tSVlCKIweu8U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qDdWQQHxflEwGgvLGrA7yFYTJaUyXMY2fWh33EJgxUQf54sqNCRzWvq76JLo+wqKI
-	 wi3//16+vXlwMPBe+pMBxdCoW1pvfstM/90sFC6bYA4GKXJ/DLO/RZxmYHp9Lno0w+
-	 2R937/rFXe/6yomj5pTMk1Gf1JtK2KJ4KfIspUApGy4+FMb0U0+QsZ1bRhrt14Bc3h
-	 fBgKSF5Qnm0sXp8MqYuolV1Z1evNWPWq5k7aTJd+f3igWa3/8h9n/DO2UJvUXfWCap
-	 d/WkhRasnbpjeKRrIuV4W1x2gm694q5S79rMhRutgVESoT516W6GsN0lhDFbFaINY/
-	 uS4LAnQAnBqOA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <benno.lossin@proton.me>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Masahiro Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor"
- <nathan@kernel.org>,  "Luis Chamberlain" <mcgrof@kernel.org>,  "Danilo
- Krummrich" <dakr@kernel.org>,  "Nicolas Schier"
- <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,  "Adam
- Bratschi-Kaye" <ark.email@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-kbuild@vger.kernel.org>,  "Petr
- Pavlu" <petr.pavlu@suse.com>,  "Sami Tolvanen" <samitolvanen@google.com>,
-  "Daniel Gomez" <da.gomez@samsung.com>,  "Simona Vetter"
- <simona.vetter@ffwll.ch>,  "Greg KH" <gregkh@linuxfoundation.org>,  "Fiona
- Behrens" <me@kloenk.dev>,  "Daniel Almeida"
- <daniel.almeida@collabora.com>,  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v12 2/3] rust: add parameter support to the `module!` macro
-In-Reply-To: <DAKE43J2GFVF.18KWPFWPZKDM@kernel.org> (Benno Lossin's message of
-	"Thu, 12 Jun 2025 09:52:30 +0200")
-References: <20250506-module-params-v3-v12-0-c04d80c8a2b1@kernel.org>
-	<20250506-module-params-v3-v12-2-c04d80c8a2b1@kernel.org>
-	<D9PW1NI2S6FV.8LA53J87VCML@kernel.org> <87plfazi13.fsf@kernel.org>
-	<V29kiTfRcPU-AK3Dk6vAhU4ERR2auWVQO6PRp1TJrOmq3AgagkEMmShjxYAQSx9IkfVtHEVwhYM93UQQhiElJA==@protonmail.internalid>
-	<DAKE43J2GFVF.18KWPFWPZKDM@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 12 Jun 2025 13:05:31 +0200
-Message-ID: <87ikl1xls4.fsf@kernel.org>
+	s=k20201202; t=1749726396;
+	bh=CX/SJ6p2PC4ePksVeP0bGJ7+lohsdUHkw9p8R2H3Ufs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a8w5btC+atZJrFVZ2nyZfr4+HxCVdpaQ4Cg98xepzMKVDR4E/sGpyF/nUCZMfjfva
+	 j3Re4i6p/Cpf/rJxDMIK/Z8rQIGwHGH6wHVSscq1J4Mq/5Dcsli4ltdcGk7jt+UfX9
+	 fWgO7jzM5e/arjAW3OGpdOljFmN/kQ6ttdYxgq2NNB412PKTyvaInrUxMsQi/XeZ2C
+	 lBIPhh/TgknjyhpC5SOJVPWBwK1bDcJaSL1Xw0gR2YZLptw6FLgxYlZ3WA8rD2xu4G
+	 s9Ck+UYEEPAMxpi+LXit2IlkuinaqctK6qUK+gBseyxaNHOyLDkLDyohU8cNisIFbX
+	 h/a+wtCkLYBUQ==
+Date: Thu, 12 Jun 2025 13:06:28 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	chrisi.schrefl@gmail.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>
+Subject: Re: [PATCH 1/3] rust: completion: implement initial abstraction
+Message-ID: <aEq0tA7yuBPxTSXq@pollux>
+References: <20250603205416.49281-1-dakr@kernel.org>
+ <20250603205416.49281-2-dakr@kernel.org>
+ <DAKEM192U5RZ.3D00TOR520LRY@kernel.org>
+ <aEqtexr4WwfU7rIP@pollux>
+ <DAKHYVHNSO30.3SICBU2MAW9UL@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAKHYVHNSO30.3SICBU2MAW9UL@kernel.org>
 
-"Benno Lossin" <lossin@kernel.org> writes:
+On Thu, Jun 12, 2025 at 12:53:45PM +0200, Benno Lossin wrote:
+> On Thu Jun 12, 2025 at 12:35 PM CEST, Danilo Krummrich wrote:
+> > On Thu, Jun 12, 2025 at 10:15:55AM +0200, Benno Lossin wrote:
+> >> On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
+> >> > +    /// Signal all tasks waiting on this completion.
+> >> > +    ///
+> >> > +    /// This method wakes up all tasks waiting on this completion; after this operation the
+> >> > +    /// completion is permanently done.
+> >> > +    pub fn complete_all(&self) {
+> >> > +        // SAFETY: `self.as_raw()` is a pointer to a valid `struct completion`.
+> >> > +        unsafe { bindings::complete_all(self.as_raw()) };
+> >> > +    }
+> >> > +
+> >> > +    /// Wait for completion of a task.
+> >> > +    ///
+> >> > +    /// This method waits for the completion of a task; it is not interruptible and there is no
+> >> > +    /// timeout.
+> >> 
+> >> Another thing that we should document is weather this function returns
+> >> immediately when `complete_all` was already called in the past.
+> >
+> > The details are all documented in [1], which is also linked in the module
+> > documentation of this file.
+> >
+> > [1] https://docs.kernel.org/scheduler/completion.html
+> 
+> I dislike that we don't have the docs right there on the function.
+> Following that link, there is also a lot of other stuff there that don't
+> apply to Rust (eg initializing completions, and the
+> wait_for_completion*() variants).
+> 
+> After a bit of reading, I found the part that I was looking for (by
+> searching for `complete_all`...):
+> 
+>     A thread that wants to signal that the conditions for continuation have
+>     been achieved calls `complete()` to signal exactly one of the waiters
+>     that it can continue:
+>     
+>     ```c
+>     void complete(struct completion *done)
+>     ```
+>     
+>     ... or calls `complete_all()` to signal all current and future waiters:
+>     
+>     ```c
+>     void complete_all(struct completion *done)
+>     ```
+> 
+> Let's just put this information on the `complete_all` function.
 
-> On Wed Jun 11, 2025 at 12:31 PM CEST, Andreas Hindborg wrote:
->> "Benno Lossin" <lossin@kernel.org> writes:
->>> On Tue May 6, 2025 at 3:02 PM CEST, Andreas Hindborg wrote:
->>>> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
->>>> index a3ee27e29a6f..16d300ad3d3b 100644
->>>> --- a/rust/macros/helpers.rs
->>>> +++ b/rust/macros/helpers.rs
->>>> @@ -10,6 +10,17 @@ pub(crate) fn try_ident(it: &mut token_stream::Into=
-Iter) -> Option<String> {
->>>>      }
->>>>  }
->>>>
->>>> +pub(crate) fn try_sign(it: &mut token_stream::IntoIter) -> Option<cha=
-r> {
->>>> +    let peek =3D it.clone().next();
->>>> +    match peek {
->>>> +        Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D '-' =
-=3D> {
->>>
->>> Should we also allow a leading `+`?
->>
->> I would argue no, because rust literals cannot start with `+`.
->
-> Makes sense.
->
->>>> +            let _ =3D it.next();
->>>> +            Some(punct.as_char())
->>>> +        }
->>>> +        _ =3D> None,
->>>> +    }
->>>> +}
->>>> +
->>>>  pub(crate) fn try_literal(it: &mut token_stream::IntoIter) -> Option<=
-String> {
->>>>      if let Some(TokenTree::Literal(literal)) =3D it.next() {
->>>>          Some(literal.to_string())
->>>> @@ -86,3 +97,17 @@ pub(crate) fn function_name(input: TokenStream) -> =
-Option<Ident> {
->>>>      }
->>>>      None
->>>>  }
->>>> +
->>>> +/// Parse a token stream of the form `expected_name: "value",` and re=
-turn the
->>>> +/// string in the position of "value".
->>>> +///
->>>> +/// # Panics
->>>> +///
->>>> +/// - On parse error.
->>>> +pub(crate) fn expect_string_field(it: &mut token_stream::IntoIter, ex=
-pected_name: &str) -> String {
->>>> +    assert_eq!(expect_ident(it), expected_name);
->>>> +    assert_eq!(expect_punct(it), ':');
->>>> +    let string =3D expect_string(it);
->>>> +    assert_eq!(expect_punct(it), ',');
->>>
->>> This won't allow omitting the trailing comma.
->>
->> This is in line with the rest of the module macro.
->
-> Then we should change that:
->
->     https://github.com/Rust-for-Linux/linux/issues/1172
->
->>>> +    string
->>>> +}
->>>
->>> [...]
->>>
->>>> @@ -186,33 +336,35 @@ pub(crate) fn module(ts: TokenStream) -> TokenSt=
-ream {
->>>>      let info =3D ModuleInfo::parse(&mut it);
->>>>
->>>>      let mut modinfo =3D ModInfoBuilder::new(info.name.as_ref());
->>>> -    if let Some(author) =3D info.author {
->>>> -        modinfo.emit("author", &author);
->>>> +    if let Some(author) =3D &info.author {
->>>> +        modinfo.emit("author", author);
->>>>      }
->>>> -    if let Some(authors) =3D info.authors {
->>>> +    if let Some(authors) =3D &info.authors {
->>>>          for author in authors {
->>>> -            modinfo.emit("author", &author);
->>>> +            modinfo.emit("author", author);
->>>>          }
->>>>      }
->>>> -    if let Some(description) =3D info.description {
->>>> -        modinfo.emit("description", &description);
->>>> +    if let Some(description) =3D &info.description {
->>>> +        modinfo.emit("description", description);
->>>>      }
->>>>      modinfo.emit("license", &info.license);
->>>> -    if let Some(aliases) =3D info.alias {
->>>> +    if let Some(aliases) =3D &info.alias {
->>>>          for alias in aliases {
->>>> -            modinfo.emit("alias", &alias);
->>>> +            modinfo.emit("alias", alias);
->>>>          }
->>>>      }
->>>> -    if let Some(firmware) =3D info.firmware {
->>>> +    if let Some(firmware) =3D &info.firmware {
->>>>          for fw in firmware {
->>>> -            modinfo.emit("firmware", &fw);
->>>> +            modinfo.emit("firmware", fw);
->>>
->>> I don't like that you have to change all of these.
->>
->> Why not? If I was to write this code in the first place, I would have
->> used a reference rather than pass by value.
->
-> That's fine, but do it in a separate commit then.
+It's already there, no?
 
-OK, I can do that =F0=9F=91=8D
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+"after this operation the completion is permanently done"
