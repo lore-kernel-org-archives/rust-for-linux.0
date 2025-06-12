@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FCF17A2EA;
-	Thu, 12 Jun 2025 11:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7132192EC;
+	Thu, 12 Jun 2025 11:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749726652; cv=none; b=Bi9zFm7uZla1dPSWviB2HASddwAXSkn6tZJpPHDt2pW2/eO3imsJ3YtRphlWZB7/TV+TixG1xpqbCkanPtkZw9jytYut/0ZBeM+N+h7TDAtmU7ivml/sPfg0eulnJtfMLem1WYcPSkAJbmA20u9HQWi6CcDOdFJaHnGuW6zEKvE=
+	t=1749726937; cv=none; b=EC7RZsdg2S0HVUZXH90K9dEDh/s1B4DqUJ9Q+fkV8zCQp+AgnXyQ+EIstMfUzZQ4rM5UruJPfBGkzPYmYHID6rUsoo4F7w8syiVDHAcAKLzckUf6YRIrA4SbAGD6dAJl/bjWx9fEpS7Ly/f3mBrcniG7N46NErUREz7sQd+ztsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749726652; c=relaxed/simple;
-	bh=KOsYsfHPzJUa01W4Ouw+7CCGtCRvFtwxmvmgsXHNiaw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=iLy99jjLRYaXeHEcZkopYlQWT9Y6Pbyjl0Ei5OkzjMP4RXcC06eSPasufqrg+li5oCwi6RvDJpm5OzXzzkb90eLDcIMzcSw2lXFbdNCQfIbaoq8A7GMcrNfu8OwUa3zf4hf/rfUKZD5LhXdDFhwgPC7yQlk3pAywA+5zfbVmInk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gr6J8A1I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749726937; c=relaxed/simple;
+	bh=M072i+LZ+YXLZum52dXBwK5mFDPq+4NU2quKw4f6fi4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=KaoxdZuEk/Me9/R3ftJKe7HOtdPbNK6pee9IdlIEAi800zX/i5iP86KTlPvjnhv5XqE1CUR0WSlZrxbnmaHLCOaJz+q3Qx3ABa9F9q5kN730456ZMPioxRoiRWbulWKB3xD04BXjwhQ/I0yfAHY/MWbZWdJRqAwU/kIfoxO28K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N5HsfpQW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gr6J8A1I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867C6C4CEED;
-	Thu, 12 Jun 2025 11:10:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N5HsfpQW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18ECC4CEEA;
+	Thu, 12 Jun 2025 11:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749726652;
-	bh=KOsYsfHPzJUa01W4Ouw+7CCGtCRvFtwxmvmgsXHNiaw=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=gr6J8A1I+Dxj5CkYzHtj1Ftyd5kY+Wb7p/XBZtdOwnozGEVsMia7fIGsm577/dD6c
-	 gT+v+MAnAl1YRAuCO+uprc3Ip5GevSCD3fdy1MH8yLt7qRVvpU8IUuR5H7In2XoNIV
-	 Fpojgv9osfgcqnhTgYPa+sC//cdety58sOOFnD6N4ubPNUFcZjijLCd8k7n4df9JbU
-	 e4Xf2vuFRCm6ezspk6nsdWyU/TybGh2hHF38bRe6jg9fQIkiZ7uIezqWTNv0B8wz+h
-	 c+oVqNy5WPv9kRexn3u8P7UDEn1uJfJnGJIGcUb0zcbx9TiA1PsAA40nJscmRl0H6j
-	 9e/pUF+ekFi7A==
+	s=k20201202; t=1749726937;
+	bh=M072i+LZ+YXLZum52dXBwK5mFDPq+4NU2quKw4f6fi4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=N5HsfpQWJAI1f2eZZmiAYy8aO17u1fQ6GjJEYEGBT/2ao8JADzWh6Xn8C1nZcd61l
+	 uajirQLnBoCHwTwFmhRCblAG11JtMqPRZc8kmuNyPyPbwuFSQ4WlYv17crKmexfc5V
+	 DmCcjbDb9cf4VwPYi+Z0MBwLid36spKp/qCn0m9YSVPTmnZejrK2Zz3gOSLdfn0tqx
+	 g/ckI7ebRADbQLy7dApHWZJVQ8p2m6CNRLJNO6LHauCENWV0Nq2XMlFHP9EuvKLq1X
+	 VrQ8hgba6GNARDMDQZ0rKPsKDpJc8+obaKQn0K/i1gExln18EEdoNh1cfdfwJTwGfF
+	 p646fTXN2O4Mw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,90 +34,95 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Jun 2025 13:10:48 +0200
-Message-Id: <DAKIBXCX5OZ1.2ACJKVK1K4TER@kernel.org>
-To: "Michal Wilczynski" <m.wilczynski@samsung.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Marek Szyprowski" <m.szyprowski@samsung.com>,
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] rust: math: Add KernelMathExt trait with a mul_div
- helper
+Date: Thu, 12 Jun 2025 13:15:31 +0200
+Message-Id: <DAKIFJF2G8J1.16M76708TDL8M@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <chrisi.schrefl@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Ingo Molnar" <mingo@redhat.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>,
+ "Vincent Guittot" <vincent.guittot@linaro.org>, "Dietmar Eggemann"
+ <dietmar.eggemann@arm.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Ben
+ Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>, "Valentin
+ Schneider" <vschneid@redhat.com>
+Subject: Re: [PATCH 1/3] rust: completion: implement initial abstraction
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <CGME20250609215523eucas1p22f6d7d84b403badfb77af7df973b97a9@eucas1p2.samsung.com> <20250609-math-rust-v1-v1-1-285fac00031f@samsung.com> <DAICPWRW9TCE.356EEFQOHYWFN@kernel.org> <86f1ca2b-ccd1-4470-a05d-47497f3bf2f5@samsung.com>
-In-Reply-To: <86f1ca2b-ccd1-4470-a05d-47497f3bf2f5@samsung.com>
+References: <20250603205416.49281-1-dakr@kernel.org>
+ <20250603205416.49281-2-dakr@kernel.org>
+ <DAKEM192U5RZ.3D00TOR520LRY@kernel.org> <aEqtexr4WwfU7rIP@pollux>
+ <DAKHYVHNSO30.3SICBU2MAW9UL@kernel.org> <aEq0tA7yuBPxTSXq@pollux>
+In-Reply-To: <aEq0tA7yuBPxTSXq@pollux>
 
-On Thu Jun 12, 2025 at 1:00 PM CEST, Michal Wilczynski wrote:
-> On 6/10/25 00:21, Benno Lossin wrote:
->> On Mon Jun 9, 2025 at 11:53 PM CEST, Michal Wilczynski wrote:
->>> +    /// * None if the divisor is zero.
->>> +    fn mul_div(self, multiplier: Self, divisor: Self) -> Option<Self>;
->>> +}
->>> +
->>> +impl KernelMathExt for u64 {
+On Thu Jun 12, 2025 at 1:06 PM CEST, Danilo Krummrich wrote:
+> On Thu, Jun 12, 2025 at 12:53:45PM +0200, Benno Lossin wrote:
+>> On Thu Jun 12, 2025 at 12:35 PM CEST, Danilo Krummrich wrote:
+>> > On Thu, Jun 12, 2025 at 10:15:55AM +0200, Benno Lossin wrote:
+>> >> On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
+>> >> > +    /// Signal all tasks waiting on this completion.
+>> >> > +    ///
+>> >> > +    /// This method wakes up all tasks waiting on this completion;=
+ after this operation the
+>> >> > +    /// completion is permanently done.
+>> >> > +    pub fn complete_all(&self) {
+>> >> > +        // SAFETY: `self.as_raw()` is a pointer to a valid `struct=
+ completion`.
+>> >> > +        unsafe { bindings::complete_all(self.as_raw()) };
+>> >> > +    }
+>> >> > +
+>> >> > +    /// Wait for completion of a task.
+>> >> > +    ///
+>> >> > +    /// This method waits for the completion of a task; it is not =
+interruptible and there is no
+>> >> > +    /// timeout.
+>> >>=20
+>> >> Another thing that we should document is weather this function return=
+s
+>> >> immediately when `complete_all` was already called in the past.
+>> >
+>> > The details are all documented in [1], which is also linked in the mod=
+ule
+>> > documentation of this file.
+>> >
+>> > [1] https://docs.kernel.org/scheduler/completion.html
 >>=20
->> Can you also implement this for the other types that have a
->> `mul_..._div` function in the kernel?
+>> I dislike that we don't have the docs right there on the function.
+>> Following that link, there is also a lot of other stuff there that don't
+>> apply to Rust (eg initializing completions, and the
+>> wait_for_completion*() variants).
+>>=20
+>> After a bit of reading, I found the part that I was looking for (by
+>> searching for `complete_all`...):
+>>=20
+>>     A thread that wants to signal that the conditions for continuation h=
+ave
+>>     been achieved calls `complete()` to signal exactly one of the waiter=
+s
+>>     that it can continue:
+>>    =20
+>>     ```c
+>>     void complete(struct completion *done)
+>>     ```
+>>    =20
+>>     ... or calls `complete_all()` to signal all current and future waite=
+rs:
+>>    =20
+>>     ```c
+>>     void complete_all(struct completion *done)
+>>     ```
+>>=20
+>> Let's just put this information on the `complete_all` function.
 >
-> +Uwe
+> It's already there, no?
 >
-> Hi Benno,
->
-> Thank you for the review and feedback on the patch.
->
-> Regarding your suggestion to implement the trait for other types, I've
-> taken a closer look at the existing kernel helpers (e.g., in
-> lib/math/div64.c). My finding is that while some signed division helpers
-> exist, there don't appear to be standard, exported mul_sX_sX_div_sX
-> functions that are direct equivalents of the u64 version. This makes the
-> generic trait idea less broadly applicable than I initially hoped.
->
-> Furthermore, a more significant issue has come to my attention regarding
-> the u64 C function itself. The x86-specific static inline implementation
-> uses assembly that triggers a #DE (Divide Error) exception if the final
-> quotient overflows the 64-bit result. This would lead to a kernel panic.
->
-> /*
->  * Will generate an #DE when the result doesn't fit u64, could fix with a=
-n
->  * __ex_table[] entry when it becomes an issue.
->  */
-> static inline u64 mul_u64_u64_div_u64(...)
->
-> Given that a direct FFI binding would expose this potentially panicking
-> behavior to safe Rust, I am now reconsidering if binding this function
-> is the right approach.
->
-> Perhaps this should be handled in pure Rust. For my specific case with
-> the PWM driver, it's likely that a simple checked_mul would be
-> sufficient. In practice, many drivers use this function for calculations
-> like the following, where one of the multiplicands is not a full 64-bit
-> value:
-> wf->duty_offset_ns =3D DIV64_U64_ROUND_UP((u64)wfhw->duty_offset_cnt * NS=
-EC_PER_SEC,
->                                         ddata->clk_rate_hz);
->
-> In this common pattern, the intermediate multiplication often does not
-> risk overflowing a u64. Using checked_mul would be completely safe and
-> avoid the FFI complexity and the overflow risk entirely.
->
-> Given these points, do you still think pursuing the general-purpose
-> KernelMathExt trait via an FFI wrapper is the desired direction? Or
-> would you prefer that I pivot to a simpler, safer, pure-Rust approach
-> using checked_mul directly within the PWM driver where it is needed?
+> "after this operation the completion is permanently done"
 
-My understanding was that your use-case required the multiplication &
-division operation to work even if `a * b` would overflow and only the
-division by `c` would bring it back into u64 range. If you don't need
-that, then I would just use `checked_mul` as it is much simpler.
-
-We can always reintroduce a `KernelMathExt` trait later when the need
-arises.
+The phrasing in the C docs seems more obvious to me "signal to all
+current and future waiters". The "permanently done" part is a bit
+ambiguous to me.
 
 ---
 Cheers,
