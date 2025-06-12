@@ -1,116 +1,120 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9B61DAC95
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 03:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63659143736;
+	Thu, 12 Jun 2025 04:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749698024; cv=none; b=Swv1HYmHofKDR78NXCMOHfv5uHvrB0JlP1U1Him/zFPe0svoP0cMS9ksDBvuF2tdL5LrJOiHXWwMd9MCZq8j1AtqZBpIwUifsyDvYPu0fv752n+16ft/FqZtXMfHVn1tVM8Oal+CoCc9tU0KqnH5RCd0bKOK+/exFpGZ8FBgomo=
+	t=1749700972; cv=none; b=RI3izXpu0jY6zx57pDA6M7Hs7kWByI58pvhm7gD5TgG0F4eQ/y0pgLGD5Bc0nne5eOFT539iDSlCmWEAR3kmY+3WEaPDYaRWll+pW4TpIm01ETpa0+Q1xGgw5eWR75+pBiG9L6aLOLKfTY7h9w3lgG4Iv+Bt+ozBfZtChIDt2k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749698024; c=relaxed/simple;
-	bh=wipVe6P4oFp3pGcagZmYLUGTje+r9xdGOuVBYiEo2Xs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J6+KdpmnJTpJqhAYdxdbOVTO5L5i7HZgGmZcTasFCsZKy9ICBviTFw0WHSe06lu1249MuwaH+byPoDH3rPHR0V/dBjoB6GkP+uklB6Egz9tsKppyA4dQ3VBYpr28dIq3TrXFFExl6ZZhE+xMQB6dXZkHHDR9OVQ0EFSOVoIksbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GCRGhldj; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1749700972; c=relaxed/simple;
+	bh=lIEDox2si9aWnHQhhVwH7AAcHQL6E2cr1kTYuwCid6I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eoWx+7v8xWW6ZjEK8ypmh0PCH7IXD3PyR+OHPWVisgysIusfVsb98KgeuDzzKxvASQPUSN8iWiT0MRg2N6Hsmml6m9ukOi7abIBhZD0LaW96bpvlVg9KszS6FotCEDO1g1P0W9CMzkIIiQ3qhWQVnc0rXaxiQKcTDLshpJWc/NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8MMkvvu; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GCRGhldj"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-747abb3cd0bso1180836b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Jun 2025 20:13:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8MMkvvu"
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-730580b0de8so855026a34.1;
+        Wed, 11 Jun 2025 21:02:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1749698022; x=1750302822; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qh9i9vpk+Guo8j4fjmcragl7ZrjyqLwr0bzeHQ2yACE=;
-        b=GCRGhldjaPrLZS+HBcr0ogcZKsT8/N0+i3Aw7DSwNuiMFQEIw+9qagiMrrJk80CzbZ
-         T6ehZ66csI+aKQCtFkC5Z5Qpz6r2yoCTtAjUdNxK6bSOHDnyIS8I4FDdgBp4vxISa3AF
-         aL1+weOMKIUeVs7phtbC5MkH3gyNJEI/n67JFB/xrx6ceIGPBnKGffCj2kEL/quptIfH
-         P3kOs13RUvtafVZbvVfkveKydX0YGAXv6hlMJdsaCGy9aLjklWzDWTzjKdcfoxJ3F4ch
-         TMJXe4UuMnStVAiLQakFWkgtCh4ZBMrLZsx4/MvfwqSLHOvIvqDG6Q1p1oomFX0DkcTL
-         6m3Q==
+        d=gmail.com; s=20230601; t=1749700970; x=1750305770; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W0mjarcmxyrPycEDkdSsleCaF/YzWa1TNh36qHpVsnY=;
+        b=d8MMkvvubEWaTo9EAIxFRYTFeuU127rdNOI3EB0tcIpX6a0HGdwuXrEQnHlsXxnSLw
+         fJbqDXrkYqwotpZz0ROpy5ZBqeVZqUN4CGgvbBkhdlusQ2/vLGKmHagfx4pXvzL+zioq
+         mmAK4lWj2qjA66kCjOxgHRZ2V7SQQC4CQ4faz0b42ZEtGRKcERxgC8w0TwH/Dh4NdoMr
+         4dWZdmEA0csOZ3m0P6VeQqEy2N+qXK2d/S1HLCT4USMGPzDgv7fitjyxsnPvEkciIsao
+         DxZh72bH8TUUqTkBAol4wn74DhNu3LeNWvnpkfn4sPWIkZas81ms6JHaSp9VhlnVW4TY
+         vwww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749698022; x=1750302822;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qh9i9vpk+Guo8j4fjmcragl7ZrjyqLwr0bzeHQ2yACE=;
-        b=OlNmonMtcDdDrkPlCnCcf9C38BnO8XWOLdFLr+jpluTsSzlsPBt/d6wIbFEphaNi+3
-         7cQuRDPT+rKFTG3ggQ4Wh/OiD7+KOYARup813J6fDRXpFaEZCR4AUMF9XXIzz3B0/1yS
-         +9L0WVdg7WCQOdaEy7XMWEs7WKgbMXSr/Y9RqmolfRhPuqvccfx+SRk4kgmWH7GpSJnH
-         /omqVnPJJ3OE1zF8gyonrgrbmIejdkkALdNogUlyJotwVUG/ss4NU+WpuatEjVW73g/G
-         XT+rnUfI5ERq8EZJjhAQ5vNcdwBJ8jRBMFjnEFEjirFDCGfTAauUROyjVz8wgBToI3LP
-         mvzA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMKiDqP4EQeLd/36P9Q+K8TAgxbV1tbSmNmfTQtTDVv2OgZxu1iTrlQpjT2jLZ+UHVBUafH8adEdq2JyamJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfDx4Zc4nQ34RyD2hGTyKfidA9M1LmIRoxVQ/OqPAeo59gOgsg
-	2J35EZHJqf1em6zVos8IMSuKi/sg7lcCHKTfN3EZosy6VMroLvNTdDYd/NxbwHLaTUA=
-X-Gm-Gg: ASbGnctHTW/EI9+kimeuv8yqJPyCBx1rYwm1txQ1102ba3vfB3al52aStQtqoB/gTZt
-	H+yM7mt90Rtt36ppFCFb3+wqSJ5MdLKXDcoFX3bjkazUJcVKYZUQIMp3NpOd+lFYJW+OlbQpPA3
-	iju1TjPZdCZlf2sw4BJsETWSl5pDB0w9Ci2dNlHmcuJZbDvSPME7bpB2gxhoZKWAm+lQ1UgKrgv
-	MASQ5D1gudNlXwGTZzOcjPGBKLL86RhIwtkLVrQomaRxiFiiBV8BFR4Gjz0yG8QW5E8Hwe7mmDK
-	IrfeO9XMVKb0j7mdwM36sI3BBrMoRtKZYeJbq0q5uTv9TaoZDWrLYLmN7Hk5nfFMGwKk5aVxYw=
-	=
-X-Google-Smtp-Source: AGHT+IEx4FtddVmCwIprRBbPQw/iieDTdTOeoPd+4mASwm8d54DrSHbf3paRrZHlzISXauRykvkroA==
-X-Received: by 2002:a05:6300:6d0e:b0:215:d64d:412e with SMTP id adf61e73a8af0-21f99106bdamr1479819637.20.1749698021896;
-        Wed, 11 Jun 2025 20:13:41 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fd611ecb2sm352591a12.16.2025.06.11.20.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Jun 2025 20:13:41 -0700 (PDT)
-Date: Thu, 12 Jun 2025 08:43:38 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Remo Senekowitsch <remo@buenzli.dev>, Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 3/9] rust: device: Move property_present() to FwNode
-Message-ID: <20250612031338.rlkwize5xw6nr22g@vireshk-i7>
-References: <20250611102908.212514-1-remo@buenzli.dev>
- <20250611102908.212514-4-remo@buenzli.dev>
- <aElxv3hRIc6Z_7jg@cassiopeiae>
+        d=1e100.net; s=20230601; t=1749700970; x=1750305770;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W0mjarcmxyrPycEDkdSsleCaF/YzWa1TNh36qHpVsnY=;
+        b=aDWiiDnFSi5gIIS6CviCjz/Y2fRZYiT6SJ5IEEGMuxssvapmlkCRIJMUiQLgHzXoAu
+         0TCTKuE2QdfYL7dpN1aHJkhJjmKQuDwjm65+dGJWnVDtdj9sdfuZqtH9wmfqfX2insBd
+         bChbO+jKRIAwA8zEIy/S9EM7FHB8W6md/2BcLLn1GwXhi9JBaHOnra5cQAdaWdtiLA22
+         vFE7+PmaJi52f4qeu756jRPZLJoRD3LkZ/I+2SfCufWnDbeMTMBQsNmWm8Jmboyyz0T3
+         jYH6Fd11+VNvKSd+zHz7CEOCMcpqXDu0BoissZyW+kj3JUc1j7XZRP443nfVQhJLwIuu
+         O1Dw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUPFeSl+DKQyjpscXGhTEZghA/AoeFagC5ei0PsWS7xakmlFPUmFo1eFrmd7zgfCHriUaj8ZGTcFhaASTa1lE=@vger.kernel.org, AJvYcCXGDi8y7eeY8Cl/62wR9hqnvvJH8Zeh4KnpvXzKaLI9eYBi9HQO6hqZPhLg8bqnxASXsSCSagXZxxvzGrM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC/eYk4BdDCe6KssdmIqpYuj8XeP904rZro2Mw9CrADAAcvMmI
+	AzOwUcJaBWvg0dFg+92frfw2qO64I1vi9FrWtcNVcSZ/+yGK3H0W9AfH
+X-Gm-Gg: ASbGnctDK+igDfH6GZPsQAqp6wZXP6EKDgHFYJcXfS5l8eBVUQA0ADHrP2LOGmLSzel
+	u81+Ljv9J3a+a6GYc3VpTdq3N63afpDo9L8W/EGm7kw1DW86nBl3mzUeZkjJi6tQVb8Su5kT1Mw
+	EYfygeKTXwGqTStFHhbXnplLUJ/4z4WAla04m83suE5tUUpDzTGRP4TU2OlaCmMy7zVuUfhGIyw
+	nEyJrvDI82RZmN/Jf+BpdZuNQ+JtR/0Yw0qe79+C+HJivvVJQanZ/KPBOj/WUSuUGX0F/QZ1iSR
+	UkhKX5/WxReJMCI7MXoZweuG9OINUbUMI1HkC8DLf2Af+K1hKFc93uMOEK0QzgcsOuVhVy4xSYP
+	d4WcRgX2dDqWkZUQr82Yw84N923ppN35/yA==
+X-Google-Smtp-Source: AGHT+IEG5LMC3U0VLmxul/USdQsOfKZQtPUB6pR2Z6QPiaZEH+d8dKvUsjlBs2rPJQZUZEaLNYH4DQ==
+X-Received: by 2002:a05:6830:7207:b0:723:7853:8791 with SMTP id 46e09a7af769-73a143add19mr934555a34.0.1749700970287;
+        Wed, 11 Jun 2025 21:02:50 -0700 (PDT)
+Received: from [192.168.86.39] (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-73a16c9d67bsm146579a34.58.2025.06.11.21.02.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Jun 2025 21:02:49 -0700 (PDT)
+Message-ID: <2c9504c3-2498-4b59-8e26-0911a8be8e96@gmail.com>
+Date: Wed, 11 Jun 2025 23:02:45 -0500
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aElxv3hRIc6Z_7jg@cassiopeiae>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/3] rust: device add support for dynamic debug to
+ pr_debug!
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: jbaron@akamai.com, jim.cromie@gmail.com, daniel.almeida@collabora.com,
+ acourbot@nvidia.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu,
+ dakr@kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org,
+ rostedt@goodmis.org, viresh.kumar@linaro.org, lina+kernel@asahilina.net,
+ tamird@gmail.com, jubalh@iodoru.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250611202952.1670168-1-andrewjballance@gmail.com>
+ <20250611202952.1670168-3-andrewjballance@gmail.com>
+ <CAH5fLggTL9Ej8rcakd-gDz+h0dZhA1PRzxf+76EjxotOBJW7fg@mail.gmail.com>
+Content-Language: en-US
+From: Andrew Ballance <andrewjballance@gmail.com>
+In-Reply-To: <CAH5fLggTL9Ej8rcakd-gDz+h0dZhA1PRzxf+76EjxotOBJW7fg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 11-06-25, 14:08, Danilo Krummrich wrote:
-> (+Viresh, FYI)
+On 6/11/25 4:38 PM, Alice Ryhl wrote:
+> Please define a STATIC_KEY_INIT_FALSE constant in
+> rust/kernel/jump_label.rs and refer to it. You can use mem::zeroed()
+> in the definition of the constant.
 
-Thanks Danilo.
+Will do for the v2.
 
-> On Wed, Jun 11, 2025 at 12:29:02PM +0200, Remo Senekowitsch wrote:
-> > The new FwNode abstraction will be used for accessing all device
-> > properties.
-> > 
-> > It would be possible to duplicate the methods on the device itself, but
-> > since some of the methods on Device would have different type sigatures
-> > as the ones on FwNode, this would only lead to inconsistency and
-> > confusion. For this reason, property_present is removed from Device and
-> > existing users are updated.
-> > 
-> > Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
-> > ---
-> >  drivers/cpufreq/rcpufreq_dt.rs | 3 ++-
-> >  rust/kernel/device.rs          | 7 -------
-> >  rust/kernel/device/property.rs | 7 +++++++
-> >  3 files changed, 9 insertions(+), 8 deletions(-)
+> No, we can't use mutable references like this. In Rust, the real
+> meaning of &mut is exclusive, not mutable. (And the real meaning of &
+> is shared.) We don't have exclusive access to the DEBUG_INFO static
+> here - the access is shared, so we must use &_ references instead of
+> &mut _ references here.
+> 
+> Note that by using Opaque, it's possible to mutate the value even if
+> it's behind a &_ reference.
+> #[repr(transparent)]
+> pub struct _Ddebug {
+>      pub inner: Opaque<bindings::_ddebug>,
+> }
+> and then you can do DEBUG_INFO.inner.get() to obtain a mutable raw
+> pointer to the contents.
+> 
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Unfortunately, static_branch_unlikely does not work with keys contained
+within a Opaque, because it uses offset_of and sym. I can create a macro
+specifically for dealing with Opaque::<type_that_contains_a_static_key>
+because I imagine that many uses of static branch will end up wrapped
+in an Opaque.
 
--- 
-viresh
+Best regards,
+Andrew Ballance
