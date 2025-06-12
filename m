@@ -1,80 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F3918DB2A;
-	Thu, 12 Jun 2025 08:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385E21AA1E4
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 08:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749718173; cv=none; b=RNNRgYhqOmLmBykbs7Z0jrjCjwzztECcH1aif1BCkFPqt1bdoRlNL0tnDwZKkXX1kLQNA6aI1C2Y75+1kwzNDF+ePQvNGUXC5Bb1mZdq14+I1fJReQreUc++Hms5jYKVcUj9KbPk2x06pZ6chLASjLhz9VyI2E7gSiNgGfqurv0=
+	t=1749718200; cv=none; b=OO07k3zDnrYHJSUke/oNTvrY8ANACDOOfznBmWMeIE1+o5kcHmG0POdZBT/qdKDz4GQ2cD/w33+FsmX7WzfaIINLn9DR/C79vM0yq3m0DGUTyrG3wJmAWDVPVyryujQq38+wdXhW9jjgXtYFwuu6sP3H9KFVUjO6rUtTYJxqjGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749718173; c=relaxed/simple;
-	bh=WtcGkG4SPQLs+jDi9qM+USKYU9A+fu0BSpj4CY+8pdc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=kHeFHMwGnTLVTCtiwDq6crNfnNEcKTrr41a4TvFxatTRi8K7CNJ97GOWxqWGraHxTWD21oqEquRqX8AA+/DsALwKJAVt/LfLxfGYs4DljH7LUCp2V1b8Pq86yZCw5BjvYkRGiHPq50cFxc/xj/ByTLTH3dZd8T7plJ7vVUDHJTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rcFhOE+V; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749718200; c=relaxed/simple;
+	bh=Tz31FWc8ZSU6ldYx49dpHsfPC5cmR3+X/nnw+nZkGvk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m1d41/ZH0mHCEGjNsqHZl4zU+OvgwRSVLNKo3YevbTyLGcscYvj7gpW0AlD3o2r7+4Xpi+v2cOgpPCslnjdY0y4RkpNZjS5iDKBzfRj9mzxTVJbFRlk5OLim4TYuq5drn5WjXtlygAhkYXH43H0Fz1fOA4X4OrVL2XWmy1Cc/lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JGDmFSSC; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcFhOE+V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1BAC4CEEE;
-	Thu, 12 Jun 2025 08:49:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749718172;
-	bh=WtcGkG4SPQLs+jDi9qM+USKYU9A+fu0BSpj4CY+8pdc=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=rcFhOE+VlqvcSa3cAMvGxCDzadS9emHxxzQU0wT9fsrSp0giFfJd5Aow0KJTWNdzW
-	 H9/sokcRQ2DGBWphMwdqOpNt6wCAYSRVqh0KSz1RO3Yz+mN7lOkm2QE71nrVGsuv5y
-	 zrvTxKDm4bdD8wyY1eUuL/YFI8lNDqudfVEofCyjZHjGUsnlRipcIJsMOH+nouawZW
-	 MeP2bJ7AcC2Y7CZsP0iswke6zC+UiK8f3g9//DkkcgEx0KXXvavogHjE26FcEAGg7K
-	 26etePuoBWMxk7PSt7VP/PHX/Hn2/PoF1dg1RQBdLZ1C6SVGs6KPmw8r1+k7ySjqJA
-	 yQp0ZwPXSt3RA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JGDmFSSC"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-451d54214adso5332455e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 01:49:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749718197; x=1750322997; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IuVAAh36fkRqoU5+WrRN9V7KcWrda8Rt/Pe6BIRVzcs=;
+        b=JGDmFSSCSzqgimlwTAhwIlay4LeQ/ypez+MZ8tzllXwICqZT8KKb5jfVv0XwI5K+t5
+         POFQ24In6PA05H0BCeMTUAtwZP7d/kzTI+5SC5vwFFUyRC+M4chQ92hIOUb/M8H0qFwR
+         dUT2a8vo2Z5fQ0LjlKyfMOIndQbhxXHC3ZC7Z5ljBzgWaDCVYN2l2LYYgHyvdSmNsoEO
+         kq2nLjhVD4LmgwRxGqa363MQOoE/8gp5wDcn01TijMxKJ5b9PNyCUuUrYp1D4V5pOYI+
+         Mg/7Fx7kQZm+fHL6ZN6fKS5BcoKV7xTbjsgwOnrCcmhWt0jsTYjw+Nty66grcZxuMRBw
+         n8gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749718197; x=1750322997;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IuVAAh36fkRqoU5+WrRN9V7KcWrda8Rt/Pe6BIRVzcs=;
+        b=sXgs+G5tMXxaBoq+H/AhxP1mQtwfBdTK3JENflj25qrFGCnx9WbW2+cfjf6IgM4FaH
+         SnsqLDr91F0hLNWvVwtGCFKWuDf6MWWTDTntilzO6/WmWFAnGS2ikCLLs4/0iELfXYbx
+         6hKfce7il7JKKZkwUsRr3GglPbrv4vFB94V3wl99oJvEEvoVqi5tuAzqSY0SNJZ+rJgs
+         bTxWZaUHw4ckItgWjn++tsqHOBz859qDvpMlsQUfb5GI1W6FMpWgiCWXS6dSvAIOy3wP
+         TGKpnYA/SrMb2T41NWg+UVSBP7TrlrlrOrE+NlvufDAk4LeYEHB+gbUkn8nPG6/730qO
+         oM/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXNgqFTemF3BbvZFWb8gtaIu+Smt64vbuvNc3CIX5vIRvAUACNDqjnISOdpioW5+yE9ReiwEK1oWHkZ6weMlA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+nfB9zZTl947n8KlvmkPdfUBUzc96NVqhDtjxUHBKrBuz4sNj
+	U3EPlNS7HNKkcnC5HleqPogL8LOIAMvYjF37mOsY+a1/DgIhi22QRWWSkKQvNDBI49spWjAQkGb
+	oGn60Sy7ALd+DNeed2fwORtzvYBAHQ3NHNayRj/EW
+X-Gm-Gg: ASbGncvXy/VA/K0OGHZhN18aC1QxwqNnt54CQTjA8C/hpSgGoYbCkKH6dmLgGtx09dQ
+	9Af9PH1pRNYPFx8Xk2qMOI1emwK/uxKVcRoB1soBfLobPpxmwa11YkTxrROJiW2rE2n5zMNvJpH
+	KjvleNLu1WIxAvVdOVZlDwez9ZAO+mDbNujSpqlVFTatEONSLY/rMngyemIjHw0eoxOwcG5l/y1
+	RJGJJf4Vz6L
+X-Google-Smtp-Source: AGHT+IHm7NginZE5oMnjujYEo6jg+R4PPqVdxx630Yf+odjyFRxGpbvJieAtccV/DmBp6q1if19zXlSexyIS2kSKvgI=
+X-Received: by 2002:a5d:64c9:0:b0:3a3:652d:1638 with SMTP id
+ ffacd0b85a97d-3a5586e9619mr5350282f8f.48.1749718197373; Thu, 12 Jun 2025
+ 01:49:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250611194840.877308-1-bqe@google.com> <20250611194840.877308-4-bqe@google.com>
+ <CAH5fLgi1GBqDHvMh30fbxVUjnTETLXthpK6eGLJA0Vh_TZRnsQ@mail.gmail.com> <CACQBu=W4PziG3Fsnzqu_wu-vgBThktD7FcEJ-vOhOMhNDz8h3g@mail.gmail.com>
+In-Reply-To: <CACQBu=W4PziG3Fsnzqu_wu-vgBThktD7FcEJ-vOhOMhNDz8h3g@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 12 Jun 2025 10:49:45 +0200
+X-Gm-Features: AX0GCFvPCLH4mUb2i-_l7Sq7OF8j6-HxDtqlJsvNUK2C-bZxtlXbyZ5Jsfy0DRU
+Message-ID: <CAH5fLghV4gYWMyscY2y+TwwqMW_497Sg0sj_HuzNH4nB_5u6Bg@mail.gmail.com>
+Subject: Re: [PATCH v12 3/5] rust: add bitmap API.
+To: Burak Emir <bqe@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Jun 2025 10:49:28 +0200
-Message-Id: <DAKFBPWTNSL4.28PA3G5BAIB8T@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: devres: do not dereference to the internal
- Revocable
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250611174827.380555-1-dakr@kernel.org>
-In-Reply-To: <20250611174827.380555-1-dakr@kernel.org>
 
-On Wed Jun 11, 2025 at 7:48 PM CEST, Danilo Krummrich wrote:
-> We can't expose direct access to the internal Revocable, since this
-> allows users to directly revoke the internal Revocable without Devres
-> having the chance to synchronize with the devres callback -- we have to
-> guarantee that the internal Revocable has been fully revoked before
-> the device is fully unbound.
+On Thu, Jun 12, 2025 at 10:47=E2=80=AFAM Burak Emir <bqe@google.com> wrote:
 >
-> Hence, remove the corresponding Deref implementation and, instead,
-> provide indirect accessors for the internal Revocable.
+> On Wed, Jun 11, 2025 at 11:58=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > On Wed, Jun 11, 2025 at 9:48=E2=80=AFPM Burak Emir <bqe@google.com> wro=
+te:
+> [...]
+> > > diff --git a/rust/kernel/bitmap.rs b/rust/kernel/bitmap.rs
+> > > new file mode 100644
+> > > index 000000000000..1fe72ca980ac
+> > > --- /dev/null
+> > > +++ b/rust/kernel/bitmap.rs
+> > > @@ -0,0 +1,582 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +
+> > > +// Copyright (C) 2025 Google LLC.
+> > > +
+> > > +//! Rust API for bitmap.
+> > > +//!
+> > > +//! C headers: [`include/linux/bitmap.h`](srctree/include/linux/bitm=
+ap.h).
+> > > +
+> > > +use crate::alloc::{AllocError, Flags};
+> > > +use crate::bindings;
+> > > +#[cfg(not(CONFIG_RUST_BITMAP_HARDENED))]
+> > > +use crate::pr_err;
+> > > +use core::ptr::NonNull;
+> > > +
+> > > +/// Represents a C bitmap. Wraps underlying C bitmap API.
+> > > +///
+> > > +/// # Invariants
+> > > +///
+> > > +/// Must reference a `[c_ulong]` long enough to fit `data.len()` bit=
+s.
+> > > +#[cfg_attr(CONFIG_64BIT, repr(align(8)))]
+> > > +#[cfg_attr(not(CONFIG_64BIT), repr(align(4)))]
+> > > +pub struct CBitmap {
+> > > +    data: [()],
+> > > +}
+> >
+> > I wonder if we should just call this type Bitmap?
+> >
 >
-> Note that we can still support Devres::revoke() by implementing the
-> required synchronization (which would be almost identical to the
-> synchronization in Devres::drop()).
->
-> Fixes: 76c01ded724b ("rust: add devres abstraction")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> OK. I am renaming the other type to OwnedBitmap then.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+Just thinking a bit more about naming ... how about calling it
+BitmapVec? Rust generally uses the terminology "Vec" to refer to
+arrays whose size is not known at compile-time, and "Array" when the
+size is known. Then, if we eventually add another type for declaring
+fixed-size bitmaps in Rust, that type can be BitmapArray (that's the
+type you'll want in a global).
 
----
-Cheers,
-Benno
-
-> ---
-> This patch is based on [1].
->
-> [1] https://lore.kernel.org/lkml/20250603205416.49281-1-dakr@kernel.org/
-> ---
->  rust/kernel/devres.rs | 27 ++++++++++++++++-----------
->  1 file changed, 16 insertions(+), 11 deletions(-)
+Alice
