@@ -1,58 +1,58 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328D123E320
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 19:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C9F2D1F61
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 19:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749756178; cv=none; b=OjhHi8CcynNZ4/8lgb2K43zB3GgrqcZHrUZswpBjUhG7fysSGp22l2FIiwZnJog1DufC2b58Dg1OWKkCnw/me1iLHKGUB49jiSi2gjMHP7AmDeZYR3UI1G8G8O7CUjTWm55NHD1XDDs8KVd4I6IAh8bNfmQV7poOMuwsm2cxUfA=
+	t=1749756611; cv=none; b=fwAyPBtrMNyVvBM2/RzfWQpxmzC16pyVfEJyGFZrpf0ch5m8iS75HTH1JESU5re4kzQuLhvPdPysDNxsDrPCUbYd2TSOyhg+yTZiOFn9mNoU83GSlYoSqhq6S5h0JJ+Rtmh6Zp4fOh7uHl2c3EO+5uMdvOF/qYCHcttBNWcOXiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749756178; c=relaxed/simple;
-	bh=n+Yw3Mdq9XrJB0xtDS1RduOftH/giQ76nPPdgGJ14OI=;
+	s=arc-20240116; t=1749756611; c=relaxed/simple;
+	bh=CcqpGh9z/Ce+MNF5QoPH82IVpEGXPfDNl6fTwAvAo8Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JcJejjwEl0Ldg5PnxWPpReKm0mKHvXFa+TrRHk+PwV85qQxav260KPvTrgAskExokFMjQhk/2wWuAjTuxWum6nudC8Bd0SA9CQTV4OgzWMJkYASmloTAj+il7tg1liH01Xc84B/SJEBY8bh9hZMjaKuqEqbSIPvhm3tEIBVQcRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SDC6/0qw; arc=none smtp.client-ip=209.85.167.171
+	 To:Cc:Content-Type; b=ZWuIo7zbXzAHfoZsSHxPeT42lJuKcKnV2jHOBy/NsYcIs5FeGQ4hskGHs0GtALuDEkUSvW5Ib8vEDoQfGHZB706LKUwPU+WopTqiuSIcA9y1DiaDtn+nAh6Yyw08qGao5aFtdQr6LIscT+fSBJdvgC04nIzsLBeMi0DyWsQDYAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dc7mnbZh; arc=none smtp.client-ip=209.85.160.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SDC6/0qw"
-Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-407a5b577f8so372559b6e.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 12:22:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dc7mnbZh"
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2d4e91512b4so768393fac.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 12:30:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749756176; x=1750360976; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749756609; x=1750361409; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nC++g9v4EmLHnilNICBRuJnxGRlHqhCvyDrR5A5MKVU=;
-        b=SDC6/0qwejtyoKm5ix903WNnUZOWLcR4DUXNIo1wA+KlEPuhL7yUrmkBPkaD7skru/
-         Foh9SZ7zNoO/q8EBJjtnGA1S5PM5k9FNgjvkARs+tMcDi0Voqc2sSvpSMFbdljNfGXKl
-         swgFC6aHLAcmt/DaEpdgVwFJe6p45nO+KTtcBxpxDYMe0nQN3D5AxBCy3Udmozfmkpum
-         8VzplvGp+N1Wm1b1BxdEHkXK9XSErzJ6IB3JQouvAagGmYfFll2FI2aS7fA7nK5UmNZe
-         8KWnaD7TCeONneIsm8Xl/Z8CPNIxGVvfUdiCQ5mZOayyQ0mYDj26Jkuh7MGn+FGgZ7Ld
-         GthQ==
+        bh=sKGZf29zeJuTyr5Er/hAccheguB+TsnTj7N2LnaeJXc=;
+        b=Dc7mnbZhB0y8AsINbXkeX0aZ/+laLYoQe5dPsHePUJp9RaYtNKduvzRJBg/nLmD1jW
+         V+5lf8ahh1T6NUEfs+JkGhggReb8ZC5+A5vj4j6wmpUv5uGnHlBlaw3vIj0rhwwKHTVe
+         14nYeJwVfZyGa4ltV4A4BRJaelvs5msobzmdSHPt97+X4xjUzoObIUnISK1I558apz9r
+         T8eUXTYoqwwpcXHjUlkXoNwLh7ksUe0dejKKP3m8ELMHpXnMdVt+asLyRdNxb/R74QDY
+         jsd9iRe29m/wtfVsD0Wyp88aRUtvNzgup6E5mldWlWRXqTHMAkoUJzCfN9XYMoWPLRBg
+         BmNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749756176; x=1750360976;
+        d=1e100.net; s=20230601; t=1749756609; x=1750361409;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nC++g9v4EmLHnilNICBRuJnxGRlHqhCvyDrR5A5MKVU=;
-        b=reubO+3YL8jgrUzmuLL+YDKgBx20k3WdGK6I/kGNlIIDihxYLdtiSKzhNmzSkqdefI
-         rJxsyqOpDJcmE/dADJ2xdeKfLzpNvTa9LIlfuPWbyxiiEVBPesX/SUfrMK0FYTToQqtD
-         +eqcc4t9I6bMvAjcrJbzPzkWSkUpWbHU7D8awkhL8VRVjjtRL70C0eFwe1W/srm2bS8k
-         DJzWiMZdaxnU+g9yPHBBpqmMKCOTNE9/7tShA5AsyW9KXOUHit7sCTXMA61GKTBxpXOZ
-         gCcmuesZvOo51vM8idsMs4q0JpycxUanK3B5RI6TFxOB6UVCabp/UzcVfNHtoEZ4ezye
-         Stjg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBtP4G7TC/xDTkDeeKtgjULPDtREsc8u5rLPEHLlTj1Jr70jl5p02Zl0XwfG92gEy5vgujljUw/lHHG4NHeg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQS94wP4n8ZCafGDXENQaK1YyQjDDwdqPPVHf7FNfX2qOHkpbh
-	xaRqwDxFlf5Ma0UdopfNmWlufgyDQnRQIVagy4swDKrn7ulkG1NmZHwRZGZneLZVTepXjdUwnxn
-	yY6CNW36uPAdPZNLcxPkDTyu+Zoxudx0=
-X-Gm-Gg: ASbGncsXX3ab1KNhufL1YLgonJDm13iV5t4bTXTD1Ro6VWywq2iPiZxfW9je6ZMK6Wv
-	a8aPDQaGfMeWChOT7LAjAhh9IBjpOKVisxL7NhkHUDpVGwMWp578WAGotWMJE4WvdvdUVHrfUsY
-	xdPvD02HHOj5sJk9+x7/wklpHc7aIjAbp07HVju2PMzqj+81uRv4EvrGc=
-X-Google-Smtp-Source: AGHT+IFbTWjVrpjIYx07OvUtNCsIrGROXN4nHpRJec6tJa5NEAmV26b26XANJFeg1aLV/bGbroY6kmsRHchtj6FToQE=
-X-Received: by 2002:a05:6808:220b:b0:3f6:a476:f7d3 with SMTP id
- 5614622812f47-40a71e25e46mr458801b6e.9.1749756176182; Thu, 12 Jun 2025
- 12:22:56 -0700 (PDT)
+        bh=sKGZf29zeJuTyr5Er/hAccheguB+TsnTj7N2LnaeJXc=;
+        b=dcZizKaC1lmYhipSTligY+dP0diMXnKYztwkPQJE6RE8wG3QdDiOe4EB3HkZ0EziDo
+         gNQhaK1fNsfzMK1g9lefI3PvLrJ+/SocXQJcr7G2Dq0sKvsNnVhAHMSuv1EyMKVox1Bp
+         pTpbV06NPa/iLUsf78DVRuzMvKyO10YgVpcx69IJUMLlImp5J7lQ4QHDhQk7BRnZ9CyQ
+         q2kdu1MMhSQimlQXBIUx9YbTaCpOhpuCptE8DJySInll7VPOkZcPZL7GBh1ln9t163nn
+         GyqoiPj079lLZWSTJeBbL5yp+sGdhJ1eK6h0sgKIJJu7ET588g5D4Tld6gib+V0toXOI
+         vbzw==
+X-Forwarded-Encrypted: i=1; AJvYcCVN/sUS5a4pN64N36AOnNloumbYAD7UrhRICIIY7JuOVdhSFvCVEXblgUddcnClsWR8kvirbErJlFsKynv8yw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg+Mho3e1NzmIBHSxxyx+kGS4IxbztCoYeCaWknaXbvejldlHD
+	69dUq56gKMpEsyNnrZSx8mIyyIDztsw8PWbn6Yd1VncProKSueK7g72fHb7X7+DOS3x9XTKvjC4
+	Ee5En3fmlOJOvvsdyGkkfZwnqbmWJu/4=
+X-Gm-Gg: ASbGncscyUU6fKrg6UlWV3ViTf4Jfh1wq8pEw8NYfTCBX8RnCeJf5fiVTrvZccA6uNY
+	eppi+Yr9yuE5Q64YmGJKtzIiit9JrXhl1ZMbFRKDEVv7N3Rr7zGSVW28sAIVflArj0+EWa5/JF2
+	cr4dncJSzHkft5qDAFVBm2GUgOaKVT/F9S7LtEkJufFzJnEDAWLIyIHrHkvDnTYbIYyw==
+X-Google-Smtp-Source: AGHT+IFmsq9sEI1DwWDfzQEZyfKZ6sKyH+yEuzi6AEoCYzQdb4LIZMRoqB1ychnI0//y4/XN6kS72Ohg4umywUsq2f0=
+X-Received: by 2002:a05:6870:459d:b0:29e:27b6:bea5 with SMTP id
+ 586e51a60fabf-2ead510a294mr204968fac.25.1749756608683; Thu, 12 Jun 2025
+ 12:30:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,14 +60,14 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250602232842.144304-1-marcelomoreira1905@gmail.com>
- <20250602232842.144304-2-marcelomoreira1905@gmail.com> <DAKFLKX7HS7W.29I8XUZP8L1KN@kernel.org>
-In-Reply-To: <DAKFLKX7HS7W.29I8XUZP8L1KN@kernel.org>
+ <20250602232842.144304-4-marcelomoreira1905@gmail.com> <DAKFP38LXT84.QN50NZ2QB4WU@kernel.org>
+In-Reply-To: <DAKFP38LXT84.QN50NZ2QB4WU@kernel.org>
 From: Marcelo Moreira <marcelomoreira1905@gmail.com>
-Date: Thu, 12 Jun 2025 16:22:44 -0300
-X-Gm-Features: AX0GCFs-KHNkn6iQmM-_ZG4Sw0v0a9nw3i0Cb9_z09davBQquehFrRyEgrkN7gU
-Message-ID: <CAPZ3m_hQF+ZHdfWTVZ3Z3dJoMu37Q8YcSecKi=fv1s3dw6UTSA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] rust: revocable: update write invariant and fix
- safety comments
+Date: Thu, 12 Jun 2025 16:29:57 -0300
+X-Gm-Features: AX0GCFuv3CuGZGgFXqgtoeVvFBARV_ILL3PpMLlKpk0s2y3xseDEjs6AETefSSY
+Message-ID: <CAPZ3m_ie+0+mcdKdVsZgbzLBZyf=9YvmyNUSCX7ehMhaJF_Baw@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] rust: revocable: split revoke_internal into revoke
+ and revoke_nosync
 To: Benno Lossin <lossin@kernel.org>
 Cc: dakr@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
 	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linuxfoundation.org, 
@@ -75,140 +75,92 @@ Cc: dakr@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Em qui., 12 de jun. de 2025 =C3=A0s 06:02, Benno Lossin <lossin@kernel.org>=
+Em qui., 12 de jun. de 2025 =C3=A0s 06:07, Benno Lossin <lossin@kernel.org>=
  escreveu:
 >
 > On Tue Jun 3, 2025 at 1:26 AM CEST, Marcelo Moreira wrote:
-> > This commit clarifies the write invariant of the `Revocable` type and
-> > updates associated `SAFETY` comments. The write invariant now precisely
-> > states that `data` is valid for writes after `is_available` transitions
-> > from true to false, provided no thread holding an RCU read-side lock
-> > (acquired before the change) still has access to `data`.
+> > This commit refactors the revocation mechanism by removing the generic
+> > `revoke_internal` function. Its logic is now directly integrated into
+> > two distinct public functions: `revoke()` and `revoke_nosync()`.
 > >
-> > The `SAFETY` comment in `try_access_with_guard` is updated to reflect
-> > this invariant, and the `PinnedDrop` `drop` implementation's `SAFETY`
-> > comment is refined to clearly state the guarantees provided by the `&mu=
-t Self`
-> > context regarding exclusive access and `data`'s validity for dropping.
+> > `revoke_nosync()` is an `unsafe` function that requires the caller to
+> > guarantee no concurrent users, thus avoiding an RCU grace period.
+> > `revoke()` is a safe function that internally waits for the RCU grace
+> > period to ensure all concurrent accesses have completed before dropping
+> > the wrapped object.
 > >
-> > Reported-by: Benno Lossin <lossin@kernel.org>
-> > Closes: https://github.com/Rust-for-Linux/linux/issues/1160
+> > This change improves API clarity and simplifies associated `SAFETY`
+> > comments by making the synchronization behavior explicit in the functio=
+n
+> > signatures.
+> >
 > > Suggested-by: Benno Lossin <lossin@kernel.org>
 > > Suggested-by: Danilo Krummrich <dakr@kernel.org>
 > > Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
 >
-> I would have done this change after the other two, since then you can
-> change all the safety comments here, but if Danilo is fine with doing it
-> this way, then you can leave it this way.
->
-
-ok, I'll wait for Danilo's answer :)
-
-> The changes are almost perfect now, just some small formatting changes
-> below. With those fixed, you may add:
+> One comment below, with that fixed:
 >
 > Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-ok :)
-
 >
 > > ---
-> >  rust/kernel/revocable.rs | 20 +++++++++++++++-----
-> >  1 file changed, 15 insertions(+), 5 deletions(-)
+> >  rust/kernel/revocable.rs | 38 +++++++++++++++-----------------------
+> >  1 file changed, 15 insertions(+), 23 deletions(-)
 > >
 > > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> > index 1e5a9d25c21b..d14f9052f1ac 100644
+> > index 43cc9bdc94f4..daf22e3a7d20 100644
 > > --- a/rust/kernel/revocable.rs
 > > +++ b/rust/kernel/revocable.rs
-> > @@ -61,6 +61,15 @@
-> >  /// v.revoke();
-> >  /// assert_eq!(add_two(&v), None);
-> >  /// ```
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// - `data` is valid for reads in two cases:
-> > +///   - while `is_available` is true, or
-> > +///   - while the RCU read-side lock is taken and it was acquired whil=
-e `is_available` was `true`.
-> > +/// - `data` is valid for writes when `is_available` was atomically ch=
-anged from `true` to `false`
-> > +///   and no thread that has access to `data` is holding an RCU read-s=
-ide lock that was acquired prior to
-> > +///   the change in `is_available`.
-> >  #[pin_data(PinnedDrop)]
-> >  pub struct Revocable<T> {
-> >      is_available: AtomicBool,
-> > @@ -115,8 +124,8 @@ pub fn try_access(&self) -> Option<RevocableGuard<'=
-_, T>> {
-> >      /// object.
-> >      pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard)=
- -> Option<&'a T> {
-> >          if self.is_available.load(Ordering::Relaxed) {
-> > -            // SAFETY: Since `self.is_available` is true, data is init=
-ialised and has to remain
-> > -            // valid because the RCU read side lock prevents it from b=
-eing dropped.
-> > +            // SAFETY: `Self::data` is valid for reads because of `Sel=
-f`'s type invariants,
->
-> s/Self::data/self.data/
-
-ok
-
->
-> > +            // as `Self::is_available` is true and `_guard` holds the =
-RCU read-side lock
->
-> s/Self::is_available/self.is_available/
-
-ok
-
->
-> Missing `.` at the end.
-
-ok, and sorry for this hehe . . .
-
->
-> >              Some(unsafe { &*self.data.get() })
-> >          } else {
-> >              None
-> > @@ -176,9 +185,10 @@ fn drop(self: Pin<&mut Self>) {
-> >          // SAFETY: We are not moving out of `p`, only dropping in plac=
-e
-> >          let p =3D unsafe { self.get_unchecked_mut() };
-> >          if *p.is_available.get_mut() {
-> > -            // SAFETY: We know `self.data` is valid because no other C=
-PU has changed
-> > -            // `is_available` to `false` yet, and no other CPU can do =
-it anymore because this CPU
-> > -            // holds the only reference (mutable) to `self` now.
+> > @@ -126,22 +126,6 @@ pub fn try_access_with_guard<'a>(&'a self, _guard:=
+ &'a rcu::Guard) -> Option<&'a
+> >          }
+> >      }
+> >
+> > -    /// # Safety
+> > -    ///
+> > -    /// Callers must ensure that there are no more concurrent users of=
+ the revocable object.
+> > -    unsafe fn revoke_internal<const SYNC: bool>(&self) {
+> > -        if self.is_available.swap(false, Ordering::Relaxed) {
+> > -            if SYNC {
+> > -                // SAFETY: Just an FFI call, there are no further requ=
+irements.
+> > -                unsafe { bindings::synchronize_rcu() };
+> > -            }
+> > -
+> > -            // SAFETY: We know `self.data` is valid because only one C=
+PU can succeed the
+> > -            // `compare_exchange` above that takes `is_available` from=
+ `true` to `false`.
+> > -            unsafe { drop_in_place(self.data.get()) };
+> > -        }
+> > -    }
+> > -
+> >      /// Revokes access to and drops the wrapped object.
+> >      ///
+> >      /// Access to the object is revoked immediately to new callers of =
+[`Revocable::try_access`],
+> > @@ -151,10 +135,12 @@ unsafe fn revoke_internal<const SYNC: bool>(&self=
+) {
+> >      ///
+> >      /// Callers must ensure that there are no more concurrent users of=
+ the revocable object.
+> >      pub unsafe fn revoke_nosync(&self) {
+> > -        // SAFETY: By the safety requirement of this function, the cal=
+ler ensures that nobody is
+> > -        // accessing the data anymore and hence we don't have to wait =
+for the grace period to
+> > -        // finish.
+> > -        unsafe { self.revoke_internal::<false>() }
+> > +        if self.is_available.swap(false, Ordering::Relaxed) {
 > > +            // SAFETY: `Self::data` is valid for writes because of `Se=
 lf`'s type invariants,
+> > +            // as `Self::is_available` is false due to the atomic swap=
+, and by the safety
 >
-> s/Self::data/self.data/
->
-> > +            // and because this `PinnedDrop` context (having `&mut Sel=
-f`) guarantees exclusive access,
-> > +            // ensuring no other thread can concurrently access or rev=
-oke `data`.
-> > +            // This ensures `data` is valid for `drop_in_place`.
->
-> This last sentence is not needed. Instead, we should mention that since
-> this is a `drop` function, we're only called once, so it's fine to call
-> drop (since that also is only allowed to be called once).
->
+> Please also use `self.data`/`self.is_available` here (& below) instead
+> of `Self::`.
 
-ok, I thought of something like:
-
-// SAFETY: `self.data` is valid for writes because of `Self`'s type invaria=
-nts.
-// The `&mut Self` context guarantees exclusive access and a single
-call to `drop`,
-// making `self.data` valid for `drop_in_place`.
-
-
-Thanks Benno! (^_^)b
+ok, Thanks! :D
 
 Cheers,
 Marcelo Moreira
