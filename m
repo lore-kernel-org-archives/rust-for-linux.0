@@ -1,131 +1,234 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A0A23A566
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 11:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526F0229B38
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 11:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749727064; cv=none; b=SV9xHsutbFJraQ70K2E91RAaLyz8uvSw2vDQd8fPlWMV1vwyB8sk6IIiU5FLSikDq3GDt5bKsiAQkQgH/KuITPfS+6+MEEdut+RywaIb3BxAh8bQ6pHs5oCMJ6kr1UjayJq+QuBXKwJZM+JKbc3yf6M28OkrOvjhBd16t2ahw5I=
+	t=1749727428; cv=none; b=X/H5wfhbaoV9TeKDwblRnYx82IvdxSZ8HR9fdcL8JxDEOYxIvWg5lTFbJi+m84oQs8mkj+mEWGlIpeGkICQ3e2qZ/Hd/nEL32lZKivujqT9NjVjiWuOxHtwWRbecRq1NIMpeSd6DRmQC8sLuRiE5T7e9x4kHlPWXuLVOnT8Zev0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749727064; c=relaxed/simple;
-	bh=YQXP9ZTmEnpO/V8Ax1Tfe6HMTJO7Usy68xzxP270YZY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Gl7F2cYx73fhpH5ziQqq/aM2S+q72Z/03kK/H/2kh3DnniQ3nFImofXXlFi/hmLxIizTDNjrj/F/sJwzq3EGCawMhfKeHVDCspkQprH1ePowxZTn48t0Pk6RbhOLwhNEDSgu2UNw/bLTfGpEEO7+pV2dhFz18lmSlSmf2C6Ivew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SUFO41ba; arc=none smtp.client-ip=209.85.221.73
+	s=arc-20240116; t=1749727428; c=relaxed/simple;
+	bh=YsJ6rEnNPS+8TR3CqwwWLYLczfYwYURpGBH4PNaP/Hg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DjsttFOK75lLcqyPxU4krrj+iTQVEddTKsGOv3bMFZ4XmKFnUw/wd1/Vu6KbeQLdr5v/fvvv6I5tTZdScVw0Gmv4Uk/VWbzk+jgediwJzIzK0F786k7ZHzqqOa3tYeEV+Iq9uq90d+t0CmZJHsT+jhrGMizkrib60svm6e4UPn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rq6Bff2d; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SUFO41ba"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a5058f9ef4so267741f8f.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 04:17:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rq6Bff2d"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-451d7b50815so6657095e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 04:23:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749727061; x=1750331861; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WWCjrcd9+LCf2SHBy1SQcJnNDjHYTxYoSHc0kBSop/k=;
-        b=SUFO41baVi7JOWfeLBeP/KCCwHrxJG9XK186pRe8dVNnd6QpsoF3aXEf4qOTMQJjcM
-         aQ7AslpBdozATTVgKdOUtAPXDGUoxvAbY2u+JJcZ4TZioDj+0xr4+9/DcduR6sqweXBx
-         g8JeCKeftyx8x58CsZ2E1cydY94L2k77qa3Sif5hCo8L2CZr+t0mCuIxUtso/sP5rNMb
-         PQZjfRkbhE/mz8YVhKa9We+u208XJI9jWQwanfb3q8ORvBVuiTzY5Mz5rivAi2iSQPpL
-         PMKHxmtM+8Fl3OCu171mSDFuN4SDM5/OuN2b9rClEHbJCAE0TUMiuJBctT/K1JpdnMCP
-         B/yA==
+        d=google.com; s=20230601; t=1749727425; x=1750332225; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=voVo8I9QxBGtkmzh70LjWyku2Zrwfval80U+5bI7i/E=;
+        b=rq6Bff2dkI2W9BsRMu4nrSpdvjSeL4x/k9azam2DNIxBwS22FwsMQdPzhl2Ar80oUf
+         sExzn3BpAZ6dftQKHnKerbe2X69e/kW7l6Fo7GXbew8t/eUeK68oT+D7rXAFFNGzlhtd
+         7eiYvduYlvNcO1DE5qEJNMwEfJppEj9JHumxyvNRjhba0xZIq//BJXlZu6JJfyJZO7rp
+         0q3axj98TDKE4l4TLuICmYCmsrHqJS/43iQj7OFg6RHzYJrURakhu/udAttxtKiy3fLF
+         bht7y1nIAokyOwIiiF0u4crYbKWc4HHerj7UH7QSDNBlE1oCZh9YoDzxSbNqs1XZNeYq
+         DEQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749727061; x=1750331861;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WWCjrcd9+LCf2SHBy1SQcJnNDjHYTxYoSHc0kBSop/k=;
-        b=aRbfra9vloQg0oIXYaaGhqd5OnvPo0+wP/nkpV1NevxmHti+OJKv8D/ekJcSVySouL
-         lV/wCLsUs7vHkGutEpMiq/2vBBjnqGiXmleRjSbdZYFIcmct7/b/dvUVkm47M6eBTBea
-         hzLWqp4lOqMN8OCdwVffnigGKkI/37EHCq6NBD6q9OIyz20xPjaFeI8zgXg5OIKjQD3g
-         8n4iuTVqSVGnPC8SWTwMX5zZHOxrruSqeOdfz5qoU/HsJwWTQpOc/kjtnFEMhgCsSbsj
-         VEsgZTSe9FLcDMQ+j3K0gYK0IHjD8wY5P4tPgtSPMnsgCAjwC3XJoxWZ9ZbKq60D8ozj
-         a3Mg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0IPB4COCQdT4xlWd5imLbhOtiUoUE2w4m67sUAX+GU8rkM0ZWPucSxxKCU3lilyeVNN1T6fjAE8pGkZTIsg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOZc49T5+1zlQupmRP4KyLAU5l1/b2YBYYLgkFVFgxP8T+v0ux
-	4u7JbTXhKqNI7WQIU0az1z2rBWo5UfqOTCdM8ShWqYzVXQ0RV+BFfRzG7+rltzwCGi5Sm20gWWy
-	szPT+cct7awVCF7y+uA==
-X-Google-Smtp-Source: AGHT+IEDxKboKPgtyGNZMmesEeLEHvcND2xWZoB+Q5kc7pMP20fHVmKJV/iw4WtUihxxHwIosyiKPPJWRPzAwOw=
-X-Received: from wmtf7.prod.google.com ([2002:a05:600c:8b47:b0:451:4d6b:5b7e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:248a:b0:3a5:2dae:9710 with SMTP id ffacd0b85a97d-3a5586b2143mr5503229f8f.25.1749727061402;
- Thu, 12 Jun 2025 04:17:41 -0700 (PDT)
-Date: Thu, 12 Jun 2025 11:17:33 +0000
+        d=1e100.net; s=20230601; t=1749727425; x=1750332225;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=voVo8I9QxBGtkmzh70LjWyku2Zrwfval80U+5bI7i/E=;
+        b=Zy5bs5RmT5PtafHVLwhWUn9WmBMOInrzI2H1uS78cwTRnPUSZVYrmN27+s3LDB5gsE
+         T7cMiRNUyZi5DIY+yNXJrWjxaXKoZXibemJSjWwaPp8oFH6pHskV/lKCqDt3Vax8xuwX
+         Mxn/xlRje9OPe/S48S4z/IKYAvMUSEntXOZJsD0cxoW8/DYbCYQI/Id2rOAqDgGQDIwz
+         VxvN+x0u43YFFpeq/abYmEWSk1NkkX1evqr3La4wuJHDXw1hMDhfCpqbmQNxSdv5VBws
+         EXkt63Ahw4yE5sWD3eRHcNvPQ48NqSolX9brxHs1VekBuFci4/btXkq0eQ64AcbXUX+b
+         aV9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUgcea2jdfsPMFegjMIKaARkLfIwe9TEd4G5VIEY1s4yBUoUSb9SM6RzDIAmsgGY8amkn9SSCxH6W9ayBhU9g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWv+emJtmkWRjVXIAPOTG4hcGi5ouSlPGF0dQE+PWB2/1Ao7bg
+	WyQwFOJYwVBk8jhtqPqu0A+wfHsTjhELveTbpi0Owmbng4fxnEnN+GCqfZkSHu3r/accNlXdbnz
+	lSvTSzi8vxzmyMIF2GxNzo+UCegUw3b0ycOYCEo+R
+X-Gm-Gg: ASbGncvtK7Dh9Y76pXGHDpasZPTK1tR8szwe45pYghylxneorGAcmAc1fNra7HG6fRp
+	+UA12tUxpVQxX0bi5zA22cubJYOrGFeAMfzPTVMMb0FVuYm45SwvqSbnngUDpD+j6W2QpxyR4Se
+	s2VSd18/iF8v0j5VFG3JcJRs9TZIOLZ36q6HR8STpBH5LTFxrnFkh0Jy2Xn+vwl+x8fERcsZ/YK
+	w==
+X-Google-Smtp-Source: AGHT+IHjfHB6y71K2hC5Ih2R5CHYh4ILWbUdAgtXcI2ldvwQBCDT8/0wF1Iz+BMUuAjD5RFmos4CpMmLLSdnWI0AvEI=
+X-Received: by 2002:a05:600c:5246:b0:441:d4e8:76cd with SMTP id
+ 5b1f17b1804b1-4532b939503mr32287595e9.29.1749727424476; Thu, 12 Jun 2025
+ 04:23:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAE23SmgC/x2MWwqAIBAArxL73YLZk64SfZittVAaKhGEd0/6H
- JiZFwJ5pgBj8YKnmwM7m6EqC9C7shshr5lBCtmKrpKYJafVchBe0aN250k2Yq8HuTS9akVtILe XJ8PP/53mlD7uPtR6ZwAAAA==
-X-Change-Id: 20250612-revocable-ptr-comment-7c82b47a503f
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1934; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=YQXP9ZTmEnpO/V8Ax1Tfe6HMTJO7Usy68xzxP270YZY=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoSrdO0RaLtCZ6zWObIkO4UIaAlB1wmNG5P/gT2
- B4wnHaKWmWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaEq3TgAKCRAEWL7uWMY5
- RncHD/9/0qFx/KzjcDNBCLv8rjqQEl0/XqhhaxwRVUvuhD1zD5qC48QhQD6CDKR8LkeumIIOEql
- CauMZqKuZgxVGzEn2yfFvfU0s/Uj0TZMPnAKCsMSc9YRY25s61CyQUHLfSNhqL7rDs2J8FIOUlP
- JDefDSxQSf2Pr+Tf5sh+9txPzGsO+f9387g5E268Q1/+5/6afQitMXOzgim7YKrhgMnfxkD5lWV
- 1Qz4dITpWNrvlAYMEjbm1IQkGj6CRaB7rrWN8tErG+B/6R0TcL1/baOln739np13gJz8FVbHub8
- /zXN7Z0nyaQYfeKGgWcSw42JNLhq1bGXuyWkVUl8NCZZuL7SmKImGlmty6Pt3el5rr35ra2sdYq
- jT0uVeRI3UF5zYx38xdjWI2v+qX6DIhjQ96WQm4+qE8JIwd4Kc1E9ZWvaCUHN5Lbc/A5QAMyk57
- /asNVhJi1dMYG40rnwtvT9d1stT9oRovLHZbg+eSIwHCMpWksmO19LppNWjqcw7WWccWAnzLFNH
- tGu2Tqz9qrucPWcR4/joT/1TUQSgOQNo4V6JcOr/XoLqPIIqbvfu4mUJ4NUD0+owajXZUrqL1L7
- GRqEvnmC43gww2sK0dvg0xbF+rpFbeJ9wg0CfROQczG6zZoSvvkZajYpCHKndyc2Pvkzwl6oEeE oq5Nyq6cPbaVmzg==
-X-Mailer: b4 0.14.2
-Message-ID: <20250612-revocable-ptr-comment-v1-1-db36785877f6@google.com>
-Subject: [PATCH] revocable: rust: document why &T is not used in RevocableGuard
+MIME-Version: 1.0
+References: <20250603205416.49281-1-dakr@kernel.org> <20250603205416.49281-2-dakr@kernel.org>
+ <DAKE8OYKXUWH.1NRVGV5IKW7I9@kernel.org>
+In-Reply-To: <DAKE8OYKXUWH.1NRVGV5IKW7I9@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Marcelo Moreira <marcelomoreira1905@gmail.com>, 
+Date: Thu, 12 Jun 2025 13:23:29 +0200
+X-Gm-Features: AX0GCFvg6RMKsP0uZ5MO2JZ7BZWnOprlzLsuZ4KlUrS0Oike2SOx1MVOlnQegKU
+Message-ID: <CAH5fLgicAeLOnNUm-gMytYe5NmmMvwbWtXBUhWM5w7vY_BUnYw@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: completion: implement initial abstraction
+To: Benno Lossin <lossin@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@kernel.org, tmgross@umich.edu, chrisi.schrefl@gmail.com, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When a reference appears in a function argument, the reference is
-assumed to be valid for the entire duration of that function call; this
-is called a stack protector [1]. Because of that, custom pointer types
-whose destructor may invalidate the pointee (i.e. they are more similar
-to Box<T> than &T) cannot internally use a reference, and must instead
-use a raw pointer.
+On Thu, Jun 12, 2025 at 9:58=E2=80=AFAM Benno Lossin <lossin@kernel.org> wr=
+ote:
+>
+> On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
+> > Implement a minimal abstraction for the completion synchronization
+> > primitive.
+> >
+> > This initial abstraction only adds complete_all() and
+> > wait_for_completion(), since that is what is required for the subsequen=
+t
+> > Devres patch.
+> >
+> > Cc: Ingo Molnar <mingo@redhat.com>
+> > Cc: Peter Zijlstra <peterz@infradead.org>
+> > Cc: Juri Lelli <juri.lelli@redhat.com>
+> > Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> > Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> > Cc: Steven Rostedt <rostedt@goodmis.org>
+> > Cc: Ben Segall <bsegall@google.com>
+> > Cc: Mel Gorman <mgorman@suse.de>
+> > Cc: Valentin Schneider <vschneid@redhat.com>
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>
+> I have a couple comments on the documentation, but the rest seems good.
+> So with those fixed:
+>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+>
+> > ---
+> >  rust/bindings/bindings_helper.h |   1 +
+> >  rust/helpers/completion.c       |   8 +++
+> >  rust/helpers/helpers.c          |   1 +
+> >  rust/kernel/sync.rs             |   2 +
+> >  rust/kernel/sync/completion.rs  | 111 ++++++++++++++++++++++++++++++++
+> >  5 files changed, 123 insertions(+)
+> >  create mode 100644 rust/helpers/completion.c
+> >  create mode 100644 rust/kernel/sync/completion.rs
+> >
+> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
+elper.h
+> > index a5a6fb45d405..9da3fe89295c 100644
+> > --- a/rust/bindings/bindings_helper.h
+> > +++ b/rust/bindings/bindings_helper.h
+> > @@ -17,6 +17,7 @@
+> >  #include <linux/blk_types.h>
+> >  #include <linux/blkdev.h>
+> >  #include <linux/clk.h>
+> > +#include <linux/completion.h>
+> >  #include <linux/configfs.h>
+> >  #include <linux/cpu.h>
+> >  #include <linux/cpufreq.h>
+> > diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
+> > new file mode 100644
+> > index 000000000000..b2443262a2ae
+> > --- /dev/null
+> > +++ b/rust/helpers/completion.c
+> > @@ -0,0 +1,8 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +#include <linux/completion.h>
+> > +
+> > +void rust_helper_init_completion(struct completion *x)
+> > +{
+> > +     init_completion(x);
+> > +}
+> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> > index 805307018f0e..7a5c520be8cb 100644
+> > --- a/rust/helpers/helpers.c
+> > +++ b/rust/helpers/helpers.c
+> > @@ -13,6 +13,7 @@
+> >  #include "build_assert.c"
+> >  #include "build_bug.c"
+> >  #include "clk.c"
+> > +#include "completion.c"
+> >  #include "cpufreq.c"
+> >  #include "cpumask.c"
+> >  #include "cred.c"
+> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> > index 36a719015583..c23a12639924 100644
+> > --- a/rust/kernel/sync.rs
+> > +++ b/rust/kernel/sync.rs
+> > @@ -10,6 +10,7 @@
+> >  use pin_init;
+> >
+> >  mod arc;
+> > +pub mod completion;
+> >  mod condvar;
+> >  pub mod lock;
+> >  mod locked_by;
+> > @@ -17,6 +18,7 @@
+> >  pub mod rcu;
+> >
+> >  pub use arc::{Arc, ArcBorrow, UniqueArc};
+> > +pub use completion::Completion;
+> >  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
+> >  pub use lock::global::{global_lock, GlobalGuard, GlobalLock, GlobalLoc=
+kBackend, GlobalLockedBy};
+> >  pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
+> > diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completi=
+on.rs
+> > new file mode 100644
+> > index 000000000000..4ec4c2aa73a5
+> > --- /dev/null
+> > +++ b/rust/kernel/sync/completion.rs
+> > @@ -0,0 +1,111 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Completion support.
+> > +//!
+> > +//! Reference: <https://docs.kernel.org/scheduler/completion.html>
+> > +//!
+> > +//! C header: [`include/linux/completion.h`](srctree/include/linux/com=
+pletion.h)
+> > +
+> > +use crate::{bindings, prelude::*, types::Opaque};
+> > +
+> > +/// Synchronization primitive to signal when a certain task has been c=
+ompleted.
+> > +///
+> > +/// The [`Completion`] synchronization primitive signales when a certa=
+in task has been completed by
+> > +/// waking up other tasks that can queue themselves up to wait for the=
+ [`Completion`] to be
+>
+> s/can queue themselves/have been queued/
+>
+> > +/// completed.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// use kernel::sync::{Arc, Completion};
+> > +/// use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkI=
+tem};
+> > +///
+> > +/// #[pin_data]
+> > +/// struct MyTask {
+> > +///     #[pin]
+> > +///     work: Work<MyTask>,
+>
+> Can we maybe add a dummy value like `Mutex<i32>` here that the task
+> changes, so we can print the value of it below (after waiting for the
+> task)?
 
-This issue is something that is often missed during unsafe review. For
-examples, see [2] and [3]. To ensure that people don't try to simplify
-RevocableGuard by changing the raw pointer to a reference, add a comment
-to that effect.
+If there's something incorrect in the docs, sure, let's fix it. But
+since this is supposed to land as a part of a fix, perhaps it would be
+best to have the work of making these docs perfect be a follow-up that
+can land in the usual merge window?
 
-Link: https://perso.crans.org/vanille/treebor/protectors.html [1]
-Link: https://users.rust-lang.org/t/unsafe-code-review-semi-owning-weak-rwlock-t-guard/95706 [2]
-Link: https://lore.kernel.org/all/aEqdur4JTFa1V20U@google.com/ [3]
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/revocable.rs | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-index db4aa46bb1216d18868dcbdcb0b7033a757306b1..5dd7c5a24809ac372cf600b1cf92c455901e42d6 100644
---- a/rust/kernel/revocable.rs
-+++ b/rust/kernel/revocable.rs
-@@ -221,6 +221,10 @@ fn drop(self: Pin<&mut Self>) {
- ///
- /// The RCU read-side lock is held while the guard is alive.
- pub struct RevocableGuard<'a, T> {
-+    // This can't use the `&'a T` type because references that appear in function arguments must
-+    // not become dangling during the execution of the function, which can happen if the
-+    // `RevocableGuard` is passed as a function argument and then dropped during execution of the
-+    // function.
-     data_ref: *const T,
-     _rcu_guard: rcu::Guard,
-     _p: PhantomData<&'a ()>,
-
----
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20250612-revocable-ptr-comment-7c82b47a503f
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+Alice
