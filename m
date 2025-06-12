@@ -1,84 +1,144 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC28238C09;
-	Thu, 12 Jun 2025 10:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160E91F8753;
+	Thu, 12 Jun 2025 10:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749725679; cv=none; b=MYEM3AYWbKRQGOdjvOZQyLxnHzvYn7CSWwL1XwEsDzumW9ScePl97yudC1ERCsR8o+DY8Ka7P64HsNSzKxxNOD6xa9p0vO/UYnAGidXqmfwIhPxOqgaRKD5rK9H5N8nPt7Q8NoGjVTUmeS3tR1gBuAje4c5mevYFC03toPzwGAY=
+	t=1749725947; cv=none; b=qi4tfnW3QwLadL7TUFMZD7/HAw+0sYMcux+dJMMvcmb6WBBCjjlFHGVEgn16GYvdROczdDNvHMo4phg31enB46SXWK0U7XPqiuMyyLr7HC3AD3D2oQjbAr7lxCkqZh8o8OsrQgY1D3d7ke7jfBV/0V8OWTRSVpnK2EXaqvmMZyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749725679; c=relaxed/simple;
-	bh=Svf2SlshRf4K2I3bpqEV/6RweQo/oo8/RGNKpTG7qDs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bc9BEEL9VtCw8mxmeXyByYr9LXFyu+6BiFHa/uCJFpN79e/po5yVByOfMCR3c1cv1UK40EFyU6s6TRqjL/IHZBWiFWQccVAoDkC0yYq1oEm3VO88bqW61bzkzLRVQrRNm8KsgVYYIMKnHOoAxz/LBGoYJbcGI7aKJDuhIBla+SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wl7wNucj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749725947; c=relaxed/simple;
+	bh=vMAHfjlbjHixSu0ohBbA7Gb1WT9CoTHqU3ZgKBp+b1k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=QA7w9g0Lkn4E+PRIDMPcVyzDJxvshMd5W5ii7pqn8uxUylmxzy/vdlFfIBlYArF1HYN1S/xjm5b86da9MTZDFzWDDwUZ8wGCzfupjsAsjsazdDRWxMpDkGvX76VrNYhfBHYp6KAkWhme3zo6FRAGjRSqHdW67WN0fpwZSQKfncg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ul7CbOTm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wl7wNucj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBADCC4CEEA;
-	Thu, 12 Jun 2025 10:54:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ul7CbOTm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73FBC4CEEA;
+	Thu, 12 Jun 2025 10:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749725677;
-	bh=Svf2SlshRf4K2I3bpqEV/6RweQo/oo8/RGNKpTG7qDs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Wl7wNucjTNCstmT8lp0PPGX2AAqsrSfFv41JrNffe3eBnZlkiDeRDpgKVI5QWRn1f
-	 4LvzOizaTV6LTjwMAahzYTkouypLbCtX6MLiD7iWkEcFLbA5GgL0584ayTrOwyJy6q
-	 GZ0xDOOQvhagfMadU4IYifKGs8zn3dPIPt8DF1KHuXLEae/LN+WkKdo6gqQMgRRlAm
-	 0f40dVGAP/11T/OPQxjpMxL4/bnqJaNlUSnxCSLfCzpVK4/67JqW4Qhg3BxNGkU7kS
-	 UbFl4M6f2XJNpOAydXw/LO3zQXI6Bfab6qpFBLT14W+LFIOz/aoKNyZcRNHjTfqYdW
-	 erTQ3cyOhT+Tg==
-Message-ID: <6e97aa79-6d6f-497f-96d2-7568d6516682@kernel.org>
-Date: Thu, 12 Jun 2025 12:54:31 +0200
+	s=k20201202; t=1749725946;
+	bh=vMAHfjlbjHixSu0ohBbA7Gb1WT9CoTHqU3ZgKBp+b1k=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Ul7CbOTmVY4o107i+RctimItI8ys3hweW9W3pUlYP3CUBmoFtP6vPxvFrs6sk8x85
+	 jLJmb20rQO0pT0itvAzoQe1Zt+oGY8ckLtPmKz380DZImoEiX8GAMFSVkx2lh/QHJT
+	 Bmq7e+N1r9q6Z+wfXWJkWsNxQUcN8L+7l8hSOiu6H1jYkJo/8QRczM51DyWxb+OL+X
+	 icJGwrDzXA7txgNgrU3v1ZI0/8DYVXyMWWRrgq1XPWMAzBmvLdYdYJjPVPmrXdt8/m
+	 bNjsJW49DM89EBrZuemDVYXLDqaDoq+OChl76EHQyavwONPfVDTuanoJoFMkSmu2x4
+	 5XrGMjGju5sjg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 18/20] gpu: nova-core: add types for patching firmware
- binaries
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
- Joel Fernandes <joelagnelf@nvidia.com>, Timur Tabi <ttabi@nvidia.com>,
- Alistair Popple <apopple@nvidia.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-References: <20250521-nova-frts-v4-0-05dfd4f39479@nvidia.com>
- <20250521-nova-frts-v4-18-05dfd4f39479@nvidia.com>
- <aEAf3GUUz5oxnuk9@cassiopeiae> <DAKDETL7I95F.31L41GTLYNBWO@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DAKDETL7I95F.31L41GTLYNBWO@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 12 Jun 2025 12:59:02 +0200
+Message-Id: <DAKI2X0JAMD8.3763Z96W10VZP@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <chrisi.schrefl@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/3] rust: devres: fix race in Devres::drop()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250603205416.49281-1-dakr@kernel.org>
+ <20250603205416.49281-4-dakr@kernel.org>
+ <DAKEK5YPNCAU.3LQGI98GGG4KF@kernel.org> <aEqrY3fEWGKl8rf2@pollux>
+In-Reply-To: <aEqrY3fEWGKl8rf2@pollux>
 
-On 6/12/25 9:19 AM, Alexandre Courbot wrote:
-> On Wed Jun 4, 2025 at 7:28 PM JST, Danilo Krummrich wrote:
->> If we can't patch them when the object is created, i.e. in
->> FirmwareDmaObject::new(), I think we should take self by value in
->> FirmwareDmaObject::patch_signature() and return a SignedFirmwareDmaObject (which
->> can just be a transparent wrapper) instead in order to let the type system prove
->> that we did not forget to call patch_signature().
-> 
-> This one is a bit tricky. Signature patching is actually optional,
-> depending on whether there are signatures present at all (it might not
-> be the case on development setups). So involving the type system here
-> would require storing the result in an enum, and then match that enum
-> later in order to do the same thing in both cases - load the binary
-> as-is.
-> 
-> So I guess I would rather leave this one as it currently is, unless
-> there is a better way I haven't thought about?
+On Thu Jun 12, 2025 at 12:26 PM CEST, Danilo Krummrich wrote:
+> On Thu, Jun 12, 2025 at 10:13:29AM +0200, Benno Lossin wrote:
+>> On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
+>> > In Devres::drop() we first remove the devres action and then drop the
+>> > wrapped device resource.
+>> >
+>> > The design goal is to give the owner of a Devres object control over w=
+hen
+>> > the device resource is dropped, but limit the overall scope to the
+>> > corresponding device being bound to a driver.
+>> >
+>> > However, there's a race that was introduced with commit 8ff656643d30
+>> > ("rust: devres: remove action in `Devres::drop`"), but also has been
+>> > (partially) present from the initial version on.
+>> >
+>> > In Devres::drop(), the devres action is removed successfully and
+>> > subsequently the destructor of the wrapped device resource runs.
+>> > However, there is no guarantee that the destructor of the wrapped devi=
+ce
+>> > resource completes before the driver core is done unbinding the
+>> > corresponding device.
+>> >
+>> > If in Devres::drop(), the devres action can't be removed, it means tha=
+t
+>> > the devres callback has been executed already, or is still running
+>> > concurrently. In case of the latter, either Devres::drop() wins revoki=
+ng
+>> > the Revocable or the devres callback wins revoking the Revocable. If
+>> > Devres::drop() wins, we (again) have no guarantee that the destructor =
+of
+>> > the wrapped device resource completes before the driver core is done
+>> > unbinding the corresponding device.
+>>=20
+>> I don't understand the exact sequence of events here. Here is what I got
+>> from your explanation:
+>>=20
+>> * the driver created a `Devres<T>` associated to their device.
+>> * their physical device gets disconnected and thus the driver core
+>>   starts unbinding the device.
+>> * simultaneously, the driver drops the `Devres<T>` (eg because the
+>>   driver initiated the physical removal)
+>> * now `devres_callback` is being called from both `Devres::Drop` (which
+>>   calls `Devres::remove_action`) and from the driver core.
+>> * they both call `inner.data.revoke()`, but only one wins, in our
+>>   example `Devres::drop`.
+>> * but now the driver core has finished running `devres_callback` and
+>>   finalizes unbinding the device, even though the `Devres` still exists
+>>   though is almost done being dropped.
+>
+> Your "almost done being dropped" is close, actually Devres::drop() may or=
+ may
+> not be done calling Revocable::revoke(), i.e. drop_in_place() of the data=
+.
+>
+> CPU0						CPU1
+>
+> Devres::drop() {				devres_callback() {
+> 	self.data.revoke() {				this.data.revoke() {
+> 		is_available.swap() =3D=3D true
+> 								is_available.swap =3D=3D false
+> 							}
+> 						}
+>
+> 						// [...]
+> 						// driver fully unbound
+> 		drop_in_place() {
+> 			pci_iounmap()
+> 			pci_release_region()
+> 		}
+> 	}
+> }
 
-In the end the idea is to ensure that we can't forget to call patch_signature(), 
-so even if it's optional we could do what I mentioned above, just that 
-patch_signature() might be a noop?
+Ahh I missed that the splitting point could be inside of `revoke`.
+
+What are those `pci_iounmap` and `pci_release_region` calls? Ah maybe
+they are from a `T` that expects the driver to still be bound when it is
+being dropped? That would make a lot of sense.
+
+If I'm correct, do you mind adding the above example execution to the
+commit message? Including the information that the type `T` is allowed
+to expect that the driver is still bound while being dropped. That would
+make it obvious to me what the issue is.
+
+> This means that we have to ensure that the revoke() in Devres::drop() is
+> completed before devres_callback() completes, in case they race.
+
+Agreed :)
+
+---
+Cheers,
+Benno
