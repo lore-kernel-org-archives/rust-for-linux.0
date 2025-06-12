@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2701A2C27;
-	Thu, 12 Jun 2025 07:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D178F221F06;
+	Thu, 12 Jun 2025 07:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749714757; cv=none; b=foKKwFZ4/8AQYFLS60UDWq19gwrZJbesLVScs4sPlg+yzicHipzMUv7FLxcpzTCVlMiA1wHIovsBBEq5txkFxuR/KIITaATzczSWzssBziO05vsIugInQLlNPHibvdcilMBk6yMBT1Xk+FJBXepx5fdjZ0iN3fv166HsFG64uuo=
+	t=1749715119; cv=none; b=S07VwD3DuqAj1MOobR/2Bpc092jCkI1GD0WVBoQReGirbHwvnnY1MVGuzSFrc+l/qhotuVB3NLD5KxIW4gQPYP2WzRjKkpWyvQuIcUz1bI4SYJVjRN4nCqf0o1Y0xzwRBMvorXqrr9GrUvynhbWdK7UZj33irdE6A9BZipkj1aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749714757; c=relaxed/simple;
-	bh=XDYpiXL0YgJGP5OYcuDOmZzd3y95TyZawtDgvIGv3Gs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=XhfzyyeVer++Nf8DgBkBtdaw9BDE6gFRe4wBEEStkTF0mGfYZRmvVEhGtw+orFCAgFEZCZfsVS2YD2tBYnnzt+58xtfXdAjmVbzRdzy8MlZq6GjSrf7OOJnw+vvepCkHv5yhPHV94DwxUB9I+O2r1M7ThLV2D1gtthmtUQJDjYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvsXXCC7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749715119; c=relaxed/simple;
+	bh=Q/fYqZCvH9dT1Qvc5roNWpHv8H4YBjizUbKKbXxx11I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=DnIl9bgroFP3diB8NpFrCYp7OcLNacwsiFQjhn0t+UDWxabTyJe+JxkitD78sBZFyypFc2B6oeP8PQCz7mF15vXrLs5pVGh9iQW9p8TBazX+uI/j47zctoRNrFcH0JnJnYGVpMZS2m+lEJ030uBzzIGpk/27lyjZXQkWosnwmHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTsLG0eZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvsXXCC7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46155C4CEEA;
-	Thu, 12 Jun 2025 07:52:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTsLG0eZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DB0C4CEEA;
+	Thu, 12 Jun 2025 07:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749714756;
-	bh=XDYpiXL0YgJGP5OYcuDOmZzd3y95TyZawtDgvIGv3Gs=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nvsXXCC7wOvekjkL2fqe1+gNHcZZJhVlIQxY9H25drq6mmIufm+EmSvAWgj1BfViE
-	 DTS8nrp86IfrxVCimYwZKtpefyALf6a8m66g62CNdZ7fYxryw9kJFVPIpeIPOzDwxm
-	 ffa6Nu8+pM/YNuFiIm9oyAr5yJECdktEpbgRi/B84Bk/Dno6C/5BQiT4Q4jKIsm+On
-	 rty18bxoRCafn3iXIuUjGDpboVfiHmoVzaSDc0zCAA5g6Itrhy+qeS81ijraDDmr0n
-	 p3x3Wrjcynk3X1mL9qV2v7vSmi6QLEYqLp7tHdcKmbGEfzgNHjUUGNk6D6a0cF7ET5
-	 gZXZVUvyJWRug==
+	s=k20201202; t=1749715116;
+	bh=Q/fYqZCvH9dT1Qvc5roNWpHv8H4YBjizUbKKbXxx11I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QTsLG0eZARQyzjAzzffX1z6L/BruEuDhao1qMkFTSqh5eJ6sHgGMNhdPdsdyn8hT4
+	 J+k2FSKs8qu9S+fJfVzbpkCrYHvKmKNUKnO8kj00OsW16PRZthqRgT6Z7ISJcMH8yS
+	 bigENnkvXEEZp+iYcYQXhwSplS5tMEFDYwlLu6XzSc/IZEkmgv8VVYw5y14qTe/X5/
+	 kAAstWdrzMP1q8o0YCxOZzdsI1Zq3kBlSh+sdUa1NOjjEwsPejj6mzuETPw1/E9nzr
+	 fExfmoBgtBTSwFvyqa9ifnGlLQ1Lc0xGEKVvhiUKCAa5NpWscRN8ec+9xjTZvOXf4W
+	 aTSpumwlDDyoA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,153 +34,272 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Jun 2025 09:52:30 +0200
-Message-Id: <DAKE43J2GFVF.18KWPFWPZKDM@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>, "Alice
- Ryhl" <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
- <nicolas.schier@linux.dev>, "Trevor Gross" <tmgross@umich.edu>, "Adam
- Bratschi-Kaye" <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
- "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
- <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
- Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v12 2/3] rust: add parameter support to the `module!`
- macro
+Date: Thu, 12 Jun 2025 09:58:30 +0200
+Message-Id: <DAKE8OYKXUWH.1NRVGV5IKW7I9@kernel.org>
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
+ <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <chrisi.schrefl@gmail.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>, "Juri
+ Lelli" <juri.lelli@redhat.com>, "Vincent Guittot"
+ <vincent.guittot@linaro.org>, "Dietmar Eggemann"
+ <dietmar.eggemann@arm.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Ben
+ Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>, "Valentin
+ Schneider" <vschneid@redhat.com>
+Subject: Re: [PATCH 1/3] rust: completion: implement initial abstraction
 X-Mailer: aerc 0.20.1
-References: <20250506-module-params-v3-v12-0-c04d80c8a2b1@kernel.org>
- <20250506-module-params-v3-v12-2-c04d80c8a2b1@kernel.org>
- <D9PW1NI2S6FV.8LA53J87VCML@kernel.org> <87plfazi13.fsf@kernel.org>
-In-Reply-To: <87plfazi13.fsf@kernel.org>
+References: <20250603205416.49281-1-dakr@kernel.org>
+ <20250603205416.49281-2-dakr@kernel.org>
+In-Reply-To: <20250603205416.49281-2-dakr@kernel.org>
 
-On Wed Jun 11, 2025 at 12:31 PM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Tue May 6, 2025 at 3:02 PM CEST, Andreas Hindborg wrote:
->>> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
->>> index a3ee27e29a6f..16d300ad3d3b 100644
->>> --- a/rust/macros/helpers.rs
->>> +++ b/rust/macros/helpers.rs
->>> @@ -10,6 +10,17 @@ pub(crate) fn try_ident(it: &mut token_stream::IntoI=
-ter) -> Option<String> {
->>>      }
->>>  }
->>> =20
->>> +pub(crate) fn try_sign(it: &mut token_stream::IntoIter) -> Option<char=
-> {
->>> +    let peek =3D it.clone().next();
->>> +    match peek {
->>> +        Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D '-' =
-=3D> {
->>
->> Should we also allow a leading `+`?
+On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
+> Implement a minimal abstraction for the completion synchronization
+> primitive.
 >
-> I would argue no, because rust literals cannot start with `+`.
-
-Makes sense.
-
->>> +            let _ =3D it.next();
->>> +            Some(punct.as_char())
->>> +        }
->>> +        _ =3D> None,
->>> +    }
->>> +}
->>> +
->>>  pub(crate) fn try_literal(it: &mut token_stream::IntoIter) -> Option<S=
-tring> {
->>>      if let Some(TokenTree::Literal(literal)) =3D it.next() {
->>>          Some(literal.to_string())
->>> @@ -86,3 +97,17 @@ pub(crate) fn function_name(input: TokenStream) -> O=
-ption<Ident> {
->>>      }
->>>      None
->>>  }
->>> +
->>> +/// Parse a token stream of the form `expected_name: "value",` and ret=
-urn the
->>> +/// string in the position of "value".
->>> +///
->>> +/// # Panics
->>> +///
->>> +/// - On parse error.
->>> +pub(crate) fn expect_string_field(it: &mut token_stream::IntoIter, exp=
-ected_name: &str) -> String {
->>> +    assert_eq!(expect_ident(it), expected_name);
->>> +    assert_eq!(expect_punct(it), ':');
->>> +    let string =3D expect_string(it);
->>> +    assert_eq!(expect_punct(it), ',');
->>
->> This won't allow omitting the trailing comma.
+> This initial abstraction only adds complete_all() and
+> wait_for_completion(), since that is what is required for the subsequent
+> Devres patch.
 >
-> This is in line with the rest of the module macro.
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Juri Lelli <juri.lelli@redhat.com>
+> Cc: Vincent Guittot <vincent.guittot@linaro.org>
+> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Cc: Ben Segall <bsegall@google.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Valentin Schneider <vschneid@redhat.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Then we should change that:
+I have a couple comments on the documentation, but the rest seems good.
+So with those fixed:
 
-    https://github.com/Rust-for-Linux/linux/issues/1172
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
->>> +    string
->>> +}
->>
->> [...]
->>
->>> @@ -186,33 +336,35 @@ pub(crate) fn module(ts: TokenStream) -> TokenStr=
-eam {
->>>      let info =3D ModuleInfo::parse(&mut it);
->>> =20
->>>      let mut modinfo =3D ModInfoBuilder::new(info.name.as_ref());
->>> -    if let Some(author) =3D info.author {
->>> -        modinfo.emit("author", &author);
->>> +    if let Some(author) =3D &info.author {
->>> +        modinfo.emit("author", author);
->>>      }
->>> -    if let Some(authors) =3D info.authors {
->>> +    if let Some(authors) =3D &info.authors {
->>>          for author in authors {
->>> -            modinfo.emit("author", &author);
->>> +            modinfo.emit("author", author);
->>>          }
->>>      }
->>> -    if let Some(description) =3D info.description {
->>> -        modinfo.emit("description", &description);
->>> +    if let Some(description) =3D &info.description {
->>> +        modinfo.emit("description", description);
->>>      }
->>>      modinfo.emit("license", &info.license);
->>> -    if let Some(aliases) =3D info.alias {
->>> +    if let Some(aliases) =3D &info.alias {
->>>          for alias in aliases {
->>> -            modinfo.emit("alias", &alias);
->>> +            modinfo.emit("alias", alias);
->>>          }
->>>      }
->>> -    if let Some(firmware) =3D info.firmware {
->>> +    if let Some(firmware) =3D &info.firmware {
->>>          for fw in firmware {
->>> -            modinfo.emit("firmware", &fw);
->>> +            modinfo.emit("firmware", fw);
->>
->> I don't like that you have to change all of these.
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/completion.c       |   8 +++
+>  rust/helpers/helpers.c          |   1 +
+>  rust/kernel/sync.rs             |   2 +
+>  rust/kernel/sync/completion.rs  | 111 ++++++++++++++++++++++++++++++++
+>  5 files changed, 123 insertions(+)
+>  create mode 100644 rust/helpers/completion.c
+>  create mode 100644 rust/kernel/sync/completion.rs
 >
-> Why not? If I was to write this code in the first place, I would have
-> used a reference rather than pass by value.
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index a5a6fb45d405..9da3fe89295c 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -17,6 +17,7 @@
+>  #include <linux/blk_types.h>
+>  #include <linux/blkdev.h>
+>  #include <linux/clk.h>
+> +#include <linux/completion.h>
+>  #include <linux/configfs.h>
+>  #include <linux/cpu.h>
+>  #include <linux/cpufreq.h>
+> diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
+> new file mode 100644
+> index 000000000000..b2443262a2ae
+> --- /dev/null
+> +++ b/rust/helpers/completion.c
+> @@ -0,0 +1,8 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/completion.h>
+> +
+> +void rust_helper_init_completion(struct completion *x)
+> +{
+> +	init_completion(x);
+> +}
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 805307018f0e..7a5c520be8cb 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -13,6 +13,7 @@
+>  #include "build_assert.c"
+>  #include "build_bug.c"
+>  #include "clk.c"
+> +#include "completion.c"
+>  #include "cpufreq.c"
+>  #include "cpumask.c"
+>  #include "cred.c"
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 36a719015583..c23a12639924 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -10,6 +10,7 @@
+>  use pin_init;
+> =20
+>  mod arc;
+> +pub mod completion;
+>  mod condvar;
+>  pub mod lock;
+>  mod locked_by;
+> @@ -17,6 +18,7 @@
+>  pub mod rcu;
+> =20
+>  pub use arc::{Arc, ArcBorrow, UniqueArc};
+> +pub use completion::Completion;
+>  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
+>  pub use lock::global::{global_lock, GlobalGuard, GlobalLock, GlobalLockB=
+ackend, GlobalLockedBy};
+>  pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
+> diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completion=
+.rs
+> new file mode 100644
+> index 000000000000..4ec4c2aa73a5
+> --- /dev/null
+> +++ b/rust/kernel/sync/completion.rs
+> @@ -0,0 +1,111 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Completion support.
+> +//!
+> +//! Reference: <https://docs.kernel.org/scheduler/completion.html>
+> +//!
+> +//! C header: [`include/linux/completion.h`](srctree/include/linux/compl=
+etion.h)
+> +
+> +use crate::{bindings, prelude::*, types::Opaque};
+> +
+> +/// Synchronization primitive to signal when a certain task has been com=
+pleted.
+> +///
+> +/// The [`Completion`] synchronization primitive signales when a certain=
+ task has been completed by
+> +/// waking up other tasks that can queue themselves up to wait for the [=
+`Completion`] to be
 
-That's fine, but do it in a separate commit then.
+s/can queue themselves/have been queued/
 
->> Can't you just take a
->> `&[Parameter]` argument in `emit_params` instead of the whole
->> `ModuleInfo` struct?
->
-> I don't think that is a nice solution. I would have to pass the name
-> field as well, increasing the number of parameters to the function.
+> +/// completed.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::sync::{Arc, Completion};
+> +/// use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkIte=
+m};
+> +///
+> +/// #[pin_data]
+> +/// struct MyTask {
+> +///     #[pin]
+> +///     work: Work<MyTask>,
 
-Ah right makes sense.
+Can we maybe add a dummy value like `Mutex<i32>` here that the task
+changes, so we can print the value of it below (after waiting for the
+task)?
+
+> +///     #[pin]
+> +///     done: Completion,
+> +/// }
+> +///
+> +/// impl_has_work! {
+> +///     impl HasWork<Self> for MyTask { self.work }
+> +/// }
+> +///
+> +/// impl MyTask {
+> +///     fn new() -> Result<Arc<Self>> {
+> +///         let this =3D Arc::pin_init(pin_init!(MyTask {
+> +///             work <- new_work!("MyTask::work"),
+> +///             done <- Completion::new(),
+> +///         }), GFP_KERNEL)?;
+> +///
+> +///         let _ =3D workqueue::system().enqueue(this.clone());
+> +///
+> +///         Ok(this)
+> +///     }
+> +///
+> +///     fn wait_for_completion(&self) {
+> +///         self.done.wait_for_completion();
+> +///
+> +///         pr_info!("Completion: task complete\n");
+> +///     }
+> +/// }
+> +///
+> +/// impl WorkItem for MyTask {
+> +///     type Pointer =3D Arc<MyTask>;
+> +///
+> +///     fn run(this: Arc<MyTask>) {
+> +///         // process this task
+> +///         this.done.complete_all();
+> +///     }
+> +/// }
+> +///
+> +/// let task =3D MyTask::new()?;
+> +/// task.wait_for_completion();
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +#[pin_data]
+> +pub struct Completion {
+> +    #[pin]
+> +    inner: Opaque<bindings::completion>,
+> +}
+> +
+> +impl Completion {
+> +    /// Create an initializer for a new [`Completion`].
+> +    pub fn new() -> impl PinInit<Self> {
+> +        pin_init!(Self {
+> +            inner <- Opaque::ffi_init(|slot: *mut bindings::completion| =
+{
+> +                // SAFETY: `slot` is a valid pointer to an uninitialized=
+ `struct completion`.
+> +                unsafe { bindings::init_completion(slot) };
+> +            }),
+> +        })
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut bindings::completion {
+> +        self.inner.get()
+> +    }
+> +
+> +    /// Signal all tasks waiting on this completion.
+> +    ///
+> +    /// This method wakes up all tasks waiting on this completion; after=
+ this operation the
+> +    /// completion is permanently done.
+> +    pub fn complete_all(&self) {
+> +        // SAFETY: `self.as_raw()` is a pointer to a valid `struct compl=
+etion`.
+> +        unsafe { bindings::complete_all(self.as_raw()) };
+> +    }
+> +
+> +    /// Wait for completion of a task.
+> +    ///
+> +    /// This method waits for the completion of a task; it is not interr=
+uptible and there is no
+
+I personally would write:
+
+s/waits for/blocks on/
+
+But if `wait` is the more common kernel term then let's go with your
+version instead.
+
+> +    /// timeout.
+
+I would mention the `complete_all` method above.
+
+> +    pub fn wait_for_completion(&self) {
+> +        // SAFETY: `self.as_raw()` is a pointer to a valid `struct compl=
+etion`.
+> +        unsafe { bindings::wait_for_completion(self.as_raw()) };
+> +    }
+> +}
+> +
+> +// SAFETY: `Completion` is safe to be send to any task.
+> +unsafe impl Send for Completion {}
+> +
+> +// SAFETY: `Completion` is safe to be accessed concurrently.
+> +unsafe impl Sync for Completion {}
+
+Please move these to the struct definition, that way one can more easily
+see them when looking at the code.
 
 ---
 Cheers,
