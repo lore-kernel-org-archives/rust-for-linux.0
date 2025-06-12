@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB171DFE20
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 07:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2701A2C27;
+	Thu, 12 Jun 2025 07:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749714226; cv=none; b=hbJyiL7B2Oa/uDrbmJfLG4vc2C9uHpwYfVwjp8rWmC/16sTXz3EnhTYJ6E/W7LlOjiL1WCtvXf987FdHJcmmcz2uWOhOE2OALRWJzrWRJvQHdl/TlaO6fDzimp1l3HKylDbBLR05NEmFfk15u1a/5Icsr2PnOOFxB/f4oCh/Ous=
+	t=1749714757; cv=none; b=foKKwFZ4/8AQYFLS60UDWq19gwrZJbesLVScs4sPlg+yzicHipzMUv7FLxcpzTCVlMiA1wHIovsBBEq5txkFxuR/KIITaATzczSWzssBziO05vsIugInQLlNPHibvdcilMBk6yMBT1Xk+FJBXepx5fdjZ0iN3fv166HsFG64uuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749714226; c=relaxed/simple;
-	bh=9nfAPjIsOC2qWLBaD4H4yv6D5TeRHAgZD/2yLTMEv8M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=tt6TPJDnzta5L30UGx7bqiOiUY9SV5iPF9nSvjbMXAyhoIahXjvVpFgdiHxTX15QLNR5Ceal3oSXLgHPZGlaUj6VOLGMU3+xaPkfZ1smdqtPeeAnjDUOBj1U/9JZRJMtRV2p6eLRnO73ihjtlfs3zCNINZJWgcUU5MYjCa/FXdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lVFdss0m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749714757; c=relaxed/simple;
+	bh=XDYpiXL0YgJGP5OYcuDOmZzd3y95TyZawtDgvIGv3Gs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=XhfzyyeVer++Nf8DgBkBtdaw9BDE6gFRe4wBEEStkTF0mGfYZRmvVEhGtw+orFCAgFEZCZfsVS2YD2tBYnnzt+58xtfXdAjmVbzRdzy8MlZq6GjSrf7OOJnw+vvepCkHv5yhPHV94DwxUB9I+O2r1M7ThLV2D1gtthmtUQJDjYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nvsXXCC7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lVFdss0m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B79C4CEEA;
-	Thu, 12 Jun 2025 07:43:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nvsXXCC7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46155C4CEEA;
+	Thu, 12 Jun 2025 07:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749714226;
-	bh=9nfAPjIsOC2qWLBaD4H4yv6D5TeRHAgZD/2yLTMEv8M=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=lVFdss0m5Rk7uTCR816uvfCHVXeWsvCR+pgCbVvU5zdH20jUpPnJ/uLoVmjH5Ys5t
-	 qrCe2mgy26k1yCoNCQNFzSxAvJp9q615Hfw4r7DEbl8x26gd7SoNgx3cJFI8gpHrSf
-	 +FIC67O6YcALi0tCTGbatofTxVfEUawA1zAxP4Z18nkLLqdFIM6Gd7tzfCVXgiL3df
-	 qTQ4kowAXiVnKgYQFdJETFm27S8QSi4gbFhgtbTN265Gipw3KHVMKylrrd0FVu1hDK
-	 nWKfn1CM7jt5UQCPcgY9WLARg8fTxo5lHoNA1D+Q2jZEbJhWLPt6WfnNCL93Rweh40
-	 1346aZcEC2H4Q==
+	s=k20201202; t=1749714756;
+	bh=XDYpiXL0YgJGP5OYcuDOmZzd3y95TyZawtDgvIGv3Gs=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=nvsXXCC7wOvekjkL2fqe1+gNHcZZJhVlIQxY9H25drq6mmIufm+EmSvAWgj1BfViE
+	 DTS8nrp86IfrxVCimYwZKtpefyALf6a8m66g62CNdZ7fYxryw9kJFVPIpeIPOzDwxm
+	 ffa6Nu8+pM/YNuFiIm9oyAr5yJECdktEpbgRi/B84Bk/Dno6C/5BQiT4Q4jKIsm+On
+	 rty18bxoRCafn3iXIuUjGDpboVfiHmoVzaSDc0zCAA5g6Itrhy+qeS81ijraDDmr0n
+	 p3x3Wrjcynk3X1mL9qV2v7vSmi6QLEYqLp7tHdcKmbGEfzgNHjUUGNk6D6a0cF7ET5
+	 gZXZVUvyJWRug==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,58 +34,154 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Jun 2025 09:43:42 +0200
-Message-Id: <DAKDXCX8JJVP.2MG7OCAEY73MR@kernel.org>
-To: "Abhinav Ananthu" <abhinav.ogl@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH] cpufreq: rust: Use C FFI types in bios_limit_callback
+Date: Thu, 12 Jun 2025 09:52:30 +0200
+Message-Id: <DAKE43J2GFVF.18KWPFWPZKDM@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
+ <nicolas.schier@linux.dev>, "Trevor Gross" <tmgross@umich.edu>, "Adam
+ Bratschi-Kaye" <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
+ Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v12 2/3] rust: add parameter support to the `module!`
+ macro
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250612060929.28773-1-abhinav.ogl@gmail.com>
-In-Reply-To: <20250612060929.28773-1-abhinav.ogl@gmail.com>
+References: <20250506-module-params-v3-v12-0-c04d80c8a2b1@kernel.org>
+ <20250506-module-params-v3-v12-2-c04d80c8a2b1@kernel.org>
+ <D9PW1NI2S6FV.8LA53J87VCML@kernel.org> <87plfazi13.fsf@kernel.org>
+In-Reply-To: <87plfazi13.fsf@kernel.org>
 
-On Thu Jun 12, 2025 at 8:09 AM CEST, Abhinav Ananthu wrote:
-> Update the bios_limit_callback function to use C FFI-compatible types
-> (kernel::ffi::c_int and kernel::ffi::c_uint) for its parameters and retur=
-n
-> value. This ensures ABI compatibility with the corresponding C callback
-> signature.
+On Wed Jun 11, 2025 at 12:31 PM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>> On Tue May 6, 2025 at 3:02 PM CEST, Andreas Hindborg wrote:
+>>> diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
+>>> index a3ee27e29a6f..16d300ad3d3b 100644
+>>> --- a/rust/macros/helpers.rs
+>>> +++ b/rust/macros/helpers.rs
+>>> @@ -10,6 +10,17 @@ pub(crate) fn try_ident(it: &mut token_stream::IntoI=
+ter) -> Option<String> {
+>>>      }
+>>>  }
+>>> =20
+>>> +pub(crate) fn try_sign(it: &mut token_stream::IntoIter) -> Option<char=
+> {
+>>> +    let peek =3D it.clone().next();
+>>> +    match peek {
+>>> +        Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D '-' =
+=3D> {
+>>
+>> Should we also allow a leading `+`?
 >
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://lore.kernel.org/rust-for-linux/CANiq72=3DWpuGELzLbH-fxdOe=
-Jy9fiDFwatz6ynERDh=3DHP2z2MBw@mail.gmail.com/.
-> Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
-> ---
->  rust/kernel/cpufreq.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-> index b0a9c6182aec..7ef2f64d8f34 100644
-> --- a/rust/kernel/cpufreq.rs
-> +++ b/rust/kernel/cpufreq.rs
-> @@ -1277,7 +1277,7 @@ extern "C" fn update_limits_callback(ptr: *mut bind=
-ings::cpufreq_policy) {
->      /// Driver's `bios_limit` callback.
->      ///
->      /// SAFETY: Called from C. Inputs must be valid pointers.
-> -    extern "C" fn bios_limit_callback(cpu: i32, limit: *mut u32) -> kern=
-el::ffi::c_int {
-> +    extern "C" fn bios_limit_callback(cpu: kernel::ffi::c_int, limit: *m=
-ut kernel::ffi::c_uint) -> kernel::ffi::c_int {
+> I would argue no, because rust literals cannot start with `+`.
 
-This file imports the kernel's prelude, so you should be able to just
-use `c_int` and `c_uint` instead of their qualified names.
+Makes sense.
+
+>>> +            let _ =3D it.next();
+>>> +            Some(punct.as_char())
+>>> +        }
+>>> +        _ =3D> None,
+>>> +    }
+>>> +}
+>>> +
+>>>  pub(crate) fn try_literal(it: &mut token_stream::IntoIter) -> Option<S=
+tring> {
+>>>      if let Some(TokenTree::Literal(literal)) =3D it.next() {
+>>>          Some(literal.to_string())
+>>> @@ -86,3 +97,17 @@ pub(crate) fn function_name(input: TokenStream) -> O=
+ption<Ident> {
+>>>      }
+>>>      None
+>>>  }
+>>> +
+>>> +/// Parse a token stream of the form `expected_name: "value",` and ret=
+urn the
+>>> +/// string in the position of "value".
+>>> +///
+>>> +/// # Panics
+>>> +///
+>>> +/// - On parse error.
+>>> +pub(crate) fn expect_string_field(it: &mut token_stream::IntoIter, exp=
+ected_name: &str) -> String {
+>>> +    assert_eq!(expect_ident(it), expected_name);
+>>> +    assert_eq!(expect_punct(it), ':');
+>>> +    let string =3D expect_string(it);
+>>> +    assert_eq!(expect_punct(it), ',');
+>>
+>> This won't allow omitting the trailing comma.
+>
+> This is in line with the rest of the module macro.
+
+Then we should change that:
+
+    https://github.com/Rust-for-Linux/linux/issues/1172
+
+>>> +    string
+>>> +}
+>>
+>> [...]
+>>
+>>> @@ -186,33 +336,35 @@ pub(crate) fn module(ts: TokenStream) -> TokenStr=
+eam {
+>>>      let info =3D ModuleInfo::parse(&mut it);
+>>> =20
+>>>      let mut modinfo =3D ModInfoBuilder::new(info.name.as_ref());
+>>> -    if let Some(author) =3D info.author {
+>>> -        modinfo.emit("author", &author);
+>>> +    if let Some(author) =3D &info.author {
+>>> +        modinfo.emit("author", author);
+>>>      }
+>>> -    if let Some(authors) =3D info.authors {
+>>> +    if let Some(authors) =3D &info.authors {
+>>>          for author in authors {
+>>> -            modinfo.emit("author", &author);
+>>> +            modinfo.emit("author", author);
+>>>          }
+>>>      }
+>>> -    if let Some(description) =3D info.description {
+>>> -        modinfo.emit("description", &description);
+>>> +    if let Some(description) =3D &info.description {
+>>> +        modinfo.emit("description", description);
+>>>      }
+>>>      modinfo.emit("license", &info.license);
+>>> -    if let Some(aliases) =3D info.alias {
+>>> +    if let Some(aliases) =3D &info.alias {
+>>>          for alias in aliases {
+>>> -            modinfo.emit("alias", &alias);
+>>> +            modinfo.emit("alias", alias);
+>>>          }
+>>>      }
+>>> -    if let Some(firmware) =3D info.firmware {
+>>> +    if let Some(firmware) =3D &info.firmware {
+>>>          for fw in firmware {
+>>> -            modinfo.emit("firmware", &fw);
+>>> +            modinfo.emit("firmware", fw);
+>>
+>> I don't like that you have to change all of these.
+>
+> Why not? If I was to write this code in the first place, I would have
+> used a reference rather than pass by value.
+
+That's fine, but do it in a separate commit then.
+
+>> Can't you just take a
+>> `&[Parameter]` argument in `emit_params` instead of the whole
+>> `ModuleInfo` struct?
+>
+> I don't think that is a nice solution. I would have to pass the name
+> field as well, increasing the number of parameters to the function.
+
+Ah right makes sense.
 
 ---
 Cheers,
 Benno
-
->          from_result(|| {
->              let mut policy =3D PolicyCpu::from_cpu(cpu as u32)?;
-> =20
-
