@@ -1,234 +1,112 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526F0229B38
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 11:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BEA23A99F;
+	Thu, 12 Jun 2025 11:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749727428; cv=none; b=X/H5wfhbaoV9TeKDwblRnYx82IvdxSZ8HR9fdcL8JxDEOYxIvWg5lTFbJi+m84oQs8mkj+mEWGlIpeGkICQ3e2qZ/Hd/nEL32lZKivujqT9NjVjiWuOxHtwWRbecRq1NIMpeSd6DRmQC8sLuRiE5T7e9x4kHlPWXuLVOnT8Zev0=
+	t=1749727702; cv=none; b=lIBQ4Nyan9N9EjemE2PSGDNO4axECkK18IQyxbRDgdknvd/CNuTvv9rPdBwwgQ9vTQk4lUcv8hXqz4KoSfRaMxX7QYeBnMsb0+sINvr9LnSrQFW8k7vV1hOPBYyG9SN5bFUYGWzHblFoIFta3ZCCBdH1n1fLl21FNGGCxikCTJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749727428; c=relaxed/simple;
-	bh=YsJ6rEnNPS+8TR3CqwwWLYLczfYwYURpGBH4PNaP/Hg=;
+	s=arc-20240116; t=1749727702; c=relaxed/simple;
+	bh=1/KbsW/gcwjCdnVYU77jL7Kaf1eUU9AWH51RP/DsUQE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DjsttFOK75lLcqyPxU4krrj+iTQVEddTKsGOv3bMFZ4XmKFnUw/wd1/Vu6KbeQLdr5v/fvvv6I5tTZdScVw0Gmv4Uk/VWbzk+jgediwJzIzK0F786k7ZHzqqOa3tYeEV+Iq9uq90d+t0CmZJHsT+jhrGMizkrib60svm6e4UPn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rq6Bff2d; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=pk8vUe0sUy8anqfL9JNVm+j+z9HmDpDyV0qw5xVqgEg0r2n0UWI4Rfz7fFfQk7+V+lAwFpusslnWwcUweRZ7Nu4cpfp6fgrIK2VvOOrK5HVewD9olKatTnXGSP5gTIkvYPW1ZPMF9ZZfIzQewO1nSk3xH3WrtTKqIs+wqxLAtqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYrqXgYV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rq6Bff2d"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-451d7b50815so6657095e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Jun 2025 04:23:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1749727425; x=1750332225; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=voVo8I9QxBGtkmzh70LjWyku2Zrwfval80U+5bI7i/E=;
-        b=rq6Bff2dkI2W9BsRMu4nrSpdvjSeL4x/k9azam2DNIxBwS22FwsMQdPzhl2Ar80oUf
-         sExzn3BpAZ6dftQKHnKerbe2X69e/kW7l6Fo7GXbew8t/eUeK68oT+D7rXAFFNGzlhtd
-         7eiYvduYlvNcO1DE5qEJNMwEfJppEj9JHumxyvNRjhba0xZIq//BJXlZu6JJfyJZO7rp
-         0q3axj98TDKE4l4TLuICmYCmsrHqJS/43iQj7OFg6RHzYJrURakhu/udAttxtKiy3fLF
-         bht7y1nIAokyOwIiiF0u4crYbKWc4HHerj7UH7QSDNBlE1oCZh9YoDzxSbNqs1XZNeYq
-         DEQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749727425; x=1750332225;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=voVo8I9QxBGtkmzh70LjWyku2Zrwfval80U+5bI7i/E=;
-        b=Zy5bs5RmT5PtafHVLwhWUn9WmBMOInrzI2H1uS78cwTRnPUSZVYrmN27+s3LDB5gsE
-         T7cMiRNUyZi5DIY+yNXJrWjxaXKoZXibemJSjWwaPp8oFH6pHskV/lKCqDt3Vax8xuwX
-         Mxn/xlRje9OPe/S48S4z/IKYAvMUSEntXOZJsD0cxoW8/DYbCYQI/Id2rOAqDgGQDIwz
-         VxvN+x0u43YFFpeq/abYmEWSk1NkkX1evqr3La4wuJHDXw1hMDhfCpqbmQNxSdv5VBws
-         EXkt63Ahw4yE5sWD3eRHcNvPQ48NqSolX9brxHs1VekBuFci4/btXkq0eQ64AcbXUX+b
-         aV9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUgcea2jdfsPMFegjMIKaARkLfIwe9TEd4G5VIEY1s4yBUoUSb9SM6RzDIAmsgGY8amkn9SSCxH6W9ayBhU9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWv+emJtmkWRjVXIAPOTG4hcGi5ouSlPGF0dQE+PWB2/1Ao7bg
-	WyQwFOJYwVBk8jhtqPqu0A+wfHsTjhELveTbpi0Owmbng4fxnEnN+GCqfZkSHu3r/accNlXdbnz
-	lSvTSzi8vxzmyMIF2GxNzo+UCegUw3b0ycOYCEo+R
-X-Gm-Gg: ASbGncvtK7Dh9Y76pXGHDpasZPTK1tR8szwe45pYghylxneorGAcmAc1fNra7HG6fRp
-	+UA12tUxpVQxX0bi5zA22cubJYOrGFeAMfzPTVMMb0FVuYm45SwvqSbnngUDpD+j6W2QpxyR4Se
-	s2VSd18/iF8v0j5VFG3JcJRs9TZIOLZ36q6HR8STpBH5LTFxrnFkh0Jy2Xn+vwl+x8fERcsZ/YK
-	w==
-X-Google-Smtp-Source: AGHT+IHjfHB6y71K2hC5Ih2R5CHYh4ILWbUdAgtXcI2ldvwQBCDT8/0wF1Iz+BMUuAjD5RFmos4CpMmLLSdnWI0AvEI=
-X-Received: by 2002:a05:600c:5246:b0:441:d4e8:76cd with SMTP id
- 5b1f17b1804b1-4532b939503mr32287595e9.29.1749727424476; Thu, 12 Jun 2025
- 04:23:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYrqXgYV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64715C4CEEA;
+	Thu, 12 Jun 2025 11:28:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749727701;
+	bh=1/KbsW/gcwjCdnVYU77jL7Kaf1eUU9AWH51RP/DsUQE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eYrqXgYVg/6rW0J77/BEZVRGVNILH3fR6PM2dPrN9Reato9AQSBEY5GWZ6oAF1vEy
+	 aKL3HfK9/2bHOxTv2iBVWlx828A78Vt5U0vfeLUxMj6u02qf3vO37KRN5mw8YNWvTf
+	 f8+xgFUbwrf2+2q2czoapzoYUQzm1Z7YHMIScm0Fh9CSD9dR/vHju4jhPGEB8bbkYo
+	 ty+Kb+JsjmW1Gvvfqsk8pxlleI92lpm0J8R+sUCXFbE0nN7NtxDKngLHu6ZW7lF4zo
+	 PvfI+xPnGrNsj9ScNdDXwXKajY+YvnLqZ2UU8frKDS6hqMLlTsJszy42qb9Aw7dKkB
+	 /RWi404/Q2LiA==
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-735b9d558f9so242169a34.2;
+        Thu, 12 Jun 2025 04:28:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU4nb1cIa4WaBG0aPKW6FSc4QGKGsUVZYNqZBee6hWTDUxs9CwSKilN6kQhXy3irK4CDUdDr9DFog==@vger.kernel.org, AJvYcCV+pyWmeENxYUy6kAR/vxJgGlTxJzd50eUUktTG/XLRVuE/Ch6cVHK8CMUNEvg8+JiEddpAYo1BFPMlpXW9IaM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTpwHrTVLEq2QPzsTdgpjPwFnuNg918gcokj1y4dom8/DHlzhM
+	Bsl9L+MQ5vGiue885lIjWVhD+954+I0hqHdH7/TdEYO57ZHdmAg30Y8CAet8u79CzrAwRmnsvO0
+	LKKcPSjj6//VXyWvOh9AJ8ehEs1s4BmU=
+X-Google-Smtp-Source: AGHT+IF+BjTKeLo0Qwww4FDhCePZuXScWeqju5su8oE4tZpEFob0L7ljXvWTrQ00j9O10rbSuKbS2ZeKUTmnxoA4Nzs=
+X-Received: by 2002:a05:6808:18a5:b0:3f9:2fdc:ee93 with SMTP id
+ 5614622812f47-40a5d14dc02mr4977325b6e.30.1749727700627; Thu, 12 Jun 2025
+ 04:28:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250603205416.49281-1-dakr@kernel.org> <20250603205416.49281-2-dakr@kernel.org>
- <DAKE8OYKXUWH.1NRVGV5IKW7I9@kernel.org>
-In-Reply-To: <DAKE8OYKXUWH.1NRVGV5IKW7I9@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 12 Jun 2025 13:23:29 +0200
-X-Gm-Features: AX0GCFvg6RMKsP0uZ5MO2JZ7BZWnOprlzLsuZ4KlUrS0Oike2SOx1MVOlnQegKU
-Message-ID: <CAH5fLgicAeLOnNUm-gMytYe5NmmMvwbWtXBUhWM5w7vY_BUnYw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: completion: implement initial abstraction
-To: Benno Lossin <lossin@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org, rafael@kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@kernel.org, tmgross@umich.edu, chrisi.schrefl@gmail.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>
+References: <20250612104446.hhwn24f3nkasyefa@vireshk-i7>
+In-Reply-To: <20250612104446.hhwn24f3nkasyefa@vireshk-i7>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 12 Jun 2025 13:28:08 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0it5nNwJkyhy_9MoK+RLQ3fcGEjEjEZYVcFYBbB4xiZ7Q@mail.gmail.com>
+X-Gm-Features: AX0GCFuAtzvTmjOCp9H9SNay_96NVnTAvW4_kqmajBT3gkaNrNNJ49iD9MTo_EU
+Message-ID: <CAJZ5v0it5nNwJkyhy_9MoK+RLQ3fcGEjEjEZYVcFYBbB4xiZ7Q@mail.gmail.com>
+Subject: Re: [GIT PULL] cpufreq/arm fixes for 6.16-rc
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Linux PM <linux-pm@vger.kernel.org>, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 12, 2025 at 9:58=E2=80=AFAM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> On Tue Jun 3, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
-> > Implement a minimal abstraction for the completion synchronization
-> > primitive.
-> >
-> > This initial abstraction only adds complete_all() and
-> > wait_for_completion(), since that is what is required for the subsequen=
-t
-> > Devres patch.
-> >
-> > Cc: Ingo Molnar <mingo@redhat.com>
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Cc: Juri Lelli <juri.lelli@redhat.com>
-> > Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> > Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> > Cc: Steven Rostedt <rostedt@goodmis.org>
-> > Cc: Ben Segall <bsegall@google.com>
-> > Cc: Mel Gorman <mgorman@suse.de>
-> > Cc: Valentin Schneider <vschneid@redhat.com>
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->
-> I have a couple comments on the documentation, but the rest seems good.
-> So with those fixed:
->
-> Reviewed-by: Benno Lossin <lossin@kernel.org>
->
-> > ---
-> >  rust/bindings/bindings_helper.h |   1 +
-> >  rust/helpers/completion.c       |   8 +++
-> >  rust/helpers/helpers.c          |   1 +
-> >  rust/kernel/sync.rs             |   2 +
-> >  rust/kernel/sync/completion.rs  | 111 ++++++++++++++++++++++++++++++++
-> >  5 files changed, 123 insertions(+)
-> >  create mode 100644 rust/helpers/completion.c
-> >  create mode 100644 rust/kernel/sync/completion.rs
-> >
-> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
-elper.h
-> > index a5a6fb45d405..9da3fe89295c 100644
-> > --- a/rust/bindings/bindings_helper.h
-> > +++ b/rust/bindings/bindings_helper.h
-> > @@ -17,6 +17,7 @@
-> >  #include <linux/blk_types.h>
-> >  #include <linux/blkdev.h>
-> >  #include <linux/clk.h>
-> > +#include <linux/completion.h>
-> >  #include <linux/configfs.h>
-> >  #include <linux/cpu.h>
-> >  #include <linux/cpufreq.h>
-> > diff --git a/rust/helpers/completion.c b/rust/helpers/completion.c
-> > new file mode 100644
-> > index 000000000000..b2443262a2ae
-> > --- /dev/null
-> > +++ b/rust/helpers/completion.c
-> > @@ -0,0 +1,8 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <linux/completion.h>
-> > +
-> > +void rust_helper_init_completion(struct completion *x)
-> > +{
-> > +     init_completion(x);
-> > +}
-> > diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> > index 805307018f0e..7a5c520be8cb 100644
-> > --- a/rust/helpers/helpers.c
-> > +++ b/rust/helpers/helpers.c
-> > @@ -13,6 +13,7 @@
-> >  #include "build_assert.c"
-> >  #include "build_bug.c"
-> >  #include "clk.c"
-> > +#include "completion.c"
-> >  #include "cpufreq.c"
-> >  #include "cpumask.c"
-> >  #include "cred.c"
-> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> > index 36a719015583..c23a12639924 100644
-> > --- a/rust/kernel/sync.rs
-> > +++ b/rust/kernel/sync.rs
-> > @@ -10,6 +10,7 @@
-> >  use pin_init;
-> >
-> >  mod arc;
-> > +pub mod completion;
-> >  mod condvar;
-> >  pub mod lock;
-> >  mod locked_by;
-> > @@ -17,6 +18,7 @@
-> >  pub mod rcu;
-> >
-> >  pub use arc::{Arc, ArcBorrow, UniqueArc};
-> > +pub use completion::Completion;
-> >  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
-> >  pub use lock::global::{global_lock, GlobalGuard, GlobalLock, GlobalLoc=
-kBackend, GlobalLockedBy};
-> >  pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
-> > diff --git a/rust/kernel/sync/completion.rs b/rust/kernel/sync/completi=
-on.rs
-> > new file mode 100644
-> > index 000000000000..4ec4c2aa73a5
-> > --- /dev/null
-> > +++ b/rust/kernel/sync/completion.rs
-> > @@ -0,0 +1,111 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Completion support.
-> > +//!
-> > +//! Reference: <https://docs.kernel.org/scheduler/completion.html>
-> > +//!
-> > +//! C header: [`include/linux/completion.h`](srctree/include/linux/com=
-pletion.h)
-> > +
-> > +use crate::{bindings, prelude::*, types::Opaque};
-> > +
-> > +/// Synchronization primitive to signal when a certain task has been c=
-ompleted.
-> > +///
-> > +/// The [`Completion`] synchronization primitive signales when a certa=
-in task has been completed by
-> > +/// waking up other tasks that can queue themselves up to wait for the=
- [`Completion`] to be
->
-> s/can queue themselves/have been queued/
->
-> > +/// completed.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// use kernel::sync::{Arc, Completion};
-> > +/// use kernel::workqueue::{self, impl_has_work, new_work, Work, WorkI=
-tem};
-> > +///
-> > +/// #[pin_data]
-> > +/// struct MyTask {
-> > +///     #[pin]
-> > +///     work: Work<MyTask>,
->
-> Can we maybe add a dummy value like `Mutex<i32>` here that the task
-> changes, so we can print the value of it below (after waiting for the
-> task)?
+Hi Viresh,
 
-If there's something incorrect in the docs, sure, let's fix it. But
-since this is supposed to land as a part of a fix, perhaps it would be
-best to have the work of making these docs perfect be a follow-up that
-can land in the usual merge window?
+On Thu, Jun 12, 2025 at 12:44=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.=
+org> wrote:
+>
+> Hi Rafael,
+>
+> The following changes since commit 19272b37aa4f83ca52bdf9c16d5d81bdd13544=
+94:
+>
+>   Linux 6.16-rc1 (2025-06-08 13:44:43 -0700)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git tags/cpufr=
+eq-arm-fixes-6.16-rc
+>
+> for you to fetch changes up to c7f005f70d22cd5613cac30bf6d34867189e36a9:
+>
+>   rust: cpu: Add CpuId::current() to retrieve current CPU ID (2025-06-12 =
+10:31:28 +0530)
+>
+> ----------------------------------------------------------------
+> CPUFreq fixes for 6.16-rc
+>
+> - Implement CpuId rust abstraction and use it to fix doctest failure
+>   (Viresh Kumar).
+> - Minor cleanups in the `# Safety` sections for cpufreq abstractions
+>   (Viresh Kumar).
+>
+> ----------------------------------------------------------------
+> Viresh Kumar (4):
+>       cpufreq: Convert `/// SAFETY` lines to `# Safety` sections
+>       rust: cpu: Introduce CpuId abstraction
+>       rust: Use CpuId in place of raw CPU numbers
+>       rust: cpu: Add CpuId::current() to retrieve current CPU ID
+>
+>  MAINTAINERS                    |   1 +
+>  drivers/cpufreq/rcpufreq_dt.rs |   4 ++--
+>  rust/helpers/cpu.c             |   8 +++++++
+>  rust/helpers/helpers.c         |   1 +
+>  rust/kernel/cpu.rs             | 125 +++++++++++++++++++++++++++++++++++=
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  rust/kernel/cpufreq.rs         | 173 +++++++++++++++++++++++++++++++++++=
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------=
+------------------------
+>  rust/kernel/cpumask.rs         |  51 ++++++++++++++++++++++++++++-------=
+-----
+>  7 files changed, 299 insertions(+), 64 deletions(-)
+>  create mode 100644 rust/helpers/cpu.c
+>
+> --
 
-Alice
+Pulled and added to linux-pm.git/fixes, thanks!
