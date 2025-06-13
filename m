@@ -1,96 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721022727EF;
-	Fri, 13 Jun 2025 08:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9457A2C375F;
+	Fri, 13 Jun 2025 09:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749804620; cv=none; b=Bq2HspuM8EzZesJuTo3JIiLLiMyHVx+fBP7SpfSlNH8ixwRczagX2Se2GkjurE0z/bIR864tVoVYSvdCzW8zo2lljb08V4bB8rLGT7ngr9EVfh2M+Hg6s3e/KVCKEfE4bO5YZ9ZRrbLBsZ28I9eEDR9bYLdAGVsDNpmvQnEGPd0=
+	t=1749807922; cv=none; b=gXUqN5U+ioMF9vR+JEnDAVasspmIIh0nfSh6O8EkoX50zA0beKWO70rrhgT86mi/46YsugK8nPx4HiBgDYkmT8Ufg+PnLmdAv+hwLKGxj1W/vmzd21mZRiJkKFJ7ZEsxYGl84Aqrd6zzyP0EUt0zGri0SwIXLSvOXae9JWQvYz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749804620; c=relaxed/simple;
-	bh=eCo/L6P/lgVu+jHfJMyorLu6Y9nvXk/E/NCtlMoCn2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZiktWQe1B2eEUTd7F8/WfUiDDA7umY6sgc3p0FsWRJDTrrtJg6khvk4XO7f79n/wHqkhq1gVa6y917INfhc3WD6LYMIkfblXRJRy0z0GMnwfl++Z1dt+6tEhP9M7Kltb7pUsSRRcGCUdlPp2N6A1pudihJsFKcWT2NBn0C4haZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIBCLUxD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749807922; c=relaxed/simple;
+	bh=2bAxLZdmW+dB6hgjHfQTeJYs5D2kkGbxxoTra19Jy04=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hqc+aRuvnctxVwb410d16WzeIOTPNN2kuqmC3OC2p54Mk+/kvZM5mw8c0NDUld1TY6cRC5gpiEMv17b0qcNDR+KZbxO5ocHGAJfN/L/xQMYAfQAoJX6sqPVB5fo3lJFBdDgNEgpOlDTXfDc1p8bsXfv91gopS5MbIqFsLT46+bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iEsrf4HL; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIBCLUxD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34D3C4CEE3;
-	Fri, 13 Jun 2025 08:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749804620;
-	bh=eCo/L6P/lgVu+jHfJMyorLu6Y9nvXk/E/NCtlMoCn2k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZIBCLUxDuDg0GoH2XX9bzbW0PoVGYuEIZz8QDuTtS28tmTHIkGbIWFn5SrtbelRQT
-	 1LPwLu4iq4Gdz3KT8FtEhAfAWORb/MZAPSwyKUk9oRzhPdH/E+Gw48+wtVAja0fjjS
-	 HjVEq2xut2/oBRpOddOoDLn17mnM4h3xbGUvfTS2cAa2camZu98bveQnqWVi4+zwof
-	 xOtrQ7mxDHXFViyNJlO4Ix5z9JiU6EQl2LX1nwEUJHnE7DeJEZZz52OH0UPDkU+/+Z
-	 eRv7Tk+j7WxrzJjfFfwEnzSMl2ES2liUMs3SxCay7QlS3jkNVkUkQOQskOrbMfMIAD
-	 KMBKfGlS99roA==
-Date: Fri, 13 Jun 2025 10:50:14 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Remo Senekowitsch <remo@buenzli.dev>
-Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 0/9] More Rust bindings for device property reads
-Message-ID: <aEvmRmQwX7Vb8Y_3@pollux>
-References: <20250611102908.212514-1-remo@buenzli.dev>
- <aEtjONTgqDikCoB6@cassiopeiae>
- <DAL8LI3LMET9.3LW0J9JED1EZG@buenzli.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iEsrf4HL"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5534f3722caso2269894e87.0;
+        Fri, 13 Jun 2025 02:45:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749807917; x=1750412717; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oxrGh0fCLnQwX4nzD6CTGfjfOhrw6Z6qm6oKUUOWy6s=;
+        b=iEsrf4HL//j5UXUqUNl8z7hwoQQoXzsJSph8cF8Fxeg0leH7tU7aVy+DdCZCH9/+KD
+         KbL4RAWarGUCSBSmRtOrRGcG03E0RZ2NvhQexojSAQn14X84+w3nDbN7LKvyFc+gKGtd
+         oZ/2zNpqmIzQRKF/taXxz5FnrBPFgdKCee6Hurdm3JIeIMLK5WkU+9dMJGxqRY0JWx7o
+         txIqJDUsdKMqKJ49sDZeVmLDerwC7twVzdrihAAa4bH5hBaPIat/KwQtSXmPUi8yQhNw
+         I293HwRsTBNq417Kf3Cy5OxCeB5si1No8HwJcyr1hCK/sesy+kVdrVCbPt4CsC9h3Jgu
+         aTYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749807917; x=1750412717;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oxrGh0fCLnQwX4nzD6CTGfjfOhrw6Z6qm6oKUUOWy6s=;
+        b=NVYLWYsSHxBQoXYJZ8iOZXm9y2DhsJFnqSKVqm5uVWykU0+KXmECTKKaR71BV46Q18
+         j94j9KdgGObTeNF2Hsq69/fKWLcZf7uV3TTFZ4qcj1Iime+otmXhgucQFGYk+a7oFBzo
+         mvYwQoGasjCO/NZpW/9mN6UwtG00O4G1/Pz5RDI6v7r7FAHJBrxNsrHCs2xAMdymgOqg
+         3fcnATJqdUOkUH7m058ieAfhuHHxtim+p+12k86/cNHLXuykgGK7gsUhMp2da4H1U6sD
+         N24YKZWMP1EcHhlHijM9m/v+7P1YMozH9gc+xBpE35kSscTsSDa9ue57JQz/F7bsyOJb
+         E17g==
+X-Forwarded-Encrypted: i=1; AJvYcCUhPkL4RzEbcMlvTDNNWu1pimcHgzt/xBuWhTl4gI3P070GXdjQ+++gLN6+pJXzmnYF3PJR2HTET2aa0r/gYMY=@vger.kernel.org, AJvYcCVRsyw5jHReG6PLH1iat+WCRqTHRV6vKypZPRl6A4cP3xRZjc85QvgVf416hsdvQ3jWW46cFIbCNqkL8AE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTWRwr7bfuZXZHP15UzYf+M33ppWfBnXzXk95/rWEvlvRClw55
+	JJ6XDCOIVNVQsCKwdOx6jAnhrZ+AgLGA/FChfdETsSuhNMmlzii2i+cO
+X-Gm-Gg: ASbGncuPskoDELSbkVO+gXBgSJalIgftORRtyQVTcBfkRqZAaSWPxB6I0QdUE6h/bZZ
+	o2x4NgfZw9+FFJ27Qpj7r2PzFlNIoD9zphKZjy7kpr7fj/yGGoRFBsiso8FBbqhRjE4QWFMcbFe
+	QJjwEU6s/LLxIUErUf5rTvmot46ZJQ7E/COMBxRDoBk/yfFmWzBn0/O7ospPsOBfDc4gh0cQT55
+	xEFp+3PkN29prLlfzvgzDa1y78JtxK6pPfktesgnhkDOCvJmSIv5Oq934MJV0Ij4qK0zvBZ0WAw
+	JDZp7+7N8BI9OpfnXgM/joT928QO3j8kCiR0XQm2TQQvjOTDdY8BYhY0xVbVWuwpel5W7AIQjXy
+	ozVUrV/z+ikuzX4YLRQO7phe1QI9GHYuVwQGHniY=
+X-Google-Smtp-Source: AGHT+IHiJOoevlgKdwDSnmotX6IPm3Uj1/yrY7CfWWn7/KrZu7vk47zHN6lD4iwOK4EjOUhVQcIvWQ==
+X-Received: by 2002:a05:6512:114e:b0:553:2f61:58eb with SMTP id 2adb3069b0e04-553af96f227mr619887e87.49.1749807916268;
+        Fri, 13 Jun 2025 02:45:16 -0700 (PDT)
+Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ac1f7799sm381819e87.229.2025.06.13.02.45.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Jun 2025 02:45:15 -0700 (PDT)
+Message-ID: <0b71832f-f3a9-4109-baa1-f29a8327d872@gmail.com>
+Date: Fri, 13 Jun 2025 12:45:14 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DAL8LI3LMET9.3LW0J9JED1EZG@buenzli.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] rust: dma: add as_slice/write functions for
+ CoherentAllocation
+To: Alexandre Courbot <acourbot@nvidia.com>, dakr@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ Petr Tesarik <petr@tesarici.cz>, Andrew Morton <akpm@linux-foundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Sui Jingfeng <sui.jingfeng@linux.dev>, Randy Dunlap <rdunlap@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+References: <20250602085444.1925053-1-abdiel.janulgue@gmail.com>
+ <20250602085444.1925053-4-abdiel.janulgue@gmail.com>
+ <DAC2ILD2DSIZ.3TF8W39X5DDH8@nvidia.com>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <DAC2ILD2DSIZ.3TF8W39X5DDH8@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 13, 2025 at 09:45:47AM +0200, Remo Senekowitsch wrote:
-> On Fri Jun 13, 2025 at 1:31 AM CEST, Danilo Krummrich wrote:
-> > On Wed, Jun 11, 2025 at 12:28:59PM +0200, Remo Senekowitsch wrote:
-> >> Remo Senekowitsch (9):
-> >>   rust: device: Create FwNode abstraction for accessing device
-> >>     properties
-> >>   rust: device: Enable accessing the FwNode of a Device
-> >>   rust: device: Move property_present() to FwNode
-> >>   rust: device: Enable printing fwnode name and path
-> >>   rust: device: Introduce PropertyGuard
-> >>   rust: device: Implement accessors for firmware properties
-> >>   samples: rust: platform: Add property read examples
-> >
-> > Applied to driver-core-testing, thanks!
-> >
-> > Once the patches passed 0-day testing they will be merged into driver-core-next.
-> >
-> >>   rust: device: Add child accessor and iterator
-> >>   rust: device: Add property_get_reference_args
-> >
-> > I did drop those two patches for now, because:
-> >
-> >   (1) They're basically dead code.
-> >
-> >   (2) It seems that FwNode::property_get_reference_args() leaks a struct
-> >       fwnode_handle reference. property_get_reference_args() explicitly says
-> >       that the caller is responsible "for calling fwnode_handle_put() on the
-> >       returned @args->fwnode pointer", which doesn't seem to happen.
-> >
-> > Can you please fix the leak and resend those two patches with an additional one
-> > that adds a sample usage of the introduced methods to the platform sample
-> > driver?
+On 02/06/2025 16:05, Alexandre Courbot wrote:
+> On Mon Jun 2, 2025 at 5:53 PM JST, Abdiel Janulgue wrote:
+>> Add unsafe accessors for the region for reading or writing large
+>> blocks of data.
+>>
+>> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 > 
-> Alright, thanks. I suppose that should be a new patch series, with a new
-> title and starting at v1 ..?
+> A couple remaining nits/questions below, but FWIW:
+> 
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+>> +
+>> +    /// Writes data to the region starting from `offset`. `offset` is in units of `T`, not the
+>> +    /// number of bytes.
+> 
+> Reading this sentence it occured to me that `offset` may be ambiguous
+> here, as in my mind it rings as being in bytes unit. How about using
+> `index` throughout the file?
 
-Yes, that's fine. Please make sure to mention that it's a follow-up of this
-series (ideally with a link).
+Thanks! I don't have any strong opinion about this, I think it's enough 
+that the subsequent paragraph makes it clear that the unit is in bytes 
+unit? In any case, this could this be updated later after the merge?
+
+>> +    /// ```
+>> +    pub unsafe fn write(&self, src: &[T], offset: usize) -> Result {
+> 
+> Can this function be written by leveraging `as_slice_mut` and
+> `clone_from_slice`?
+
+using `slice::clone_from_slice` would enforce the length of the coherent 
+allocation to be always the same as src data. Not sure if that is what 
+we want. Also, instead of just a straight memcpy, this would go through 
+a 2-step layer (a call to `slice::from_raw_parts_mut` and then the 
+`slice::clone_from_slice` itself)?.
+
+
+Regards,
+Abdiel
