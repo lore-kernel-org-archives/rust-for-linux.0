@@ -1,58 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEBD79F5;
-	Fri, 13 Jun 2025 12:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F36A54670;
+	Fri, 13 Jun 2025 12:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749819026; cv=none; b=WoMwG0ICzgHu0NGkMx4pbhw/lIXCub1Qf/lWuacOdQlMwi5fuk085LDhydg3OdlgmNIl6aHcPfIYsA6WQYYxa/UfQ1pe+ey4E0J2ktrbtpP6EtpvADb/ZsbLxqLgSgYT312J6DweJAykBtAYYzOwCKYGtv/TvVzhtvmufdpy9w4=
+	t=1749819232; cv=none; b=azv7nqu8Xclr+NYRZIL2jlj0X5Q8JvfHlyQMc3OQ5M+qWg9BHozJR8WpCXsGbbQKEvzIbSL2GAD5PgAjZXDLkOwaIM3DXeQiAaBIFjmq5pl4T5RPX0pvDKSBDmZNLG/16lTNPTgx0C7fGEVCeDdo/A9rIk2yOP64+M3Kzg9kl7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749819026; c=relaxed/simple;
-	bh=79WqwjURJrzcM8vb/SrEx49AYycjsLMAMZFEZGKyt8U=;
+	s=arc-20240116; t=1749819232; c=relaxed/simple;
+	bh=9NILGPi+IgsNtn81oQYyesjFnsHS92zOjt5H9tpm4W4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WhGeVtfX7O78nZwc7GI21xeMF7rSkavPiBF/XkKn3wSUHagJDsAtdC1yZRNBFE/iMlQ99MckgvO+JCRU9zvMOJ0GTxfvfhAEZgXDPgcKvvsJ6mch2idBvKDzYa5rbiOFsaV+SN4IPmkO7AvQJvMFKruXr2ME5jsGlRDh7lyCV6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cEulPce0; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YgUV7WoJYtYn1BcSzdxpsyiIjiDAeE+cGQQUxPYTR0jAv+Jz0NJOVxEM9FIg4F22OMb8AFN6IgFnOjRh8If/GTwbePZzZnDgq2YtEZBwwynWKHOWgR3IQ2U78kByZKdDNlRZcxLWk99pOOdTo1tftLid/AEqb0XjOUI4xYQEh2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0RVRQl8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cEulPce0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55CFC4CEE3;
-	Fri, 13 Jun 2025 12:50:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0RVRQl8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9940DC4CEE3;
+	Fri, 13 Jun 2025 12:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749819025;
-	bh=79WqwjURJrzcM8vb/SrEx49AYycjsLMAMZFEZGKyt8U=;
+	s=k20201202; t=1749819231;
+	bh=9NILGPi+IgsNtn81oQYyesjFnsHS92zOjt5H9tpm4W4=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=cEulPce0chfJ/48f3xl++id2UE+66hPqoI/OwP4GXDX1qDNutroMdTPltj5gZAzNY
-	 BKSXlPQRTjYbLZjJkM/VUTcD62fQOjAqYuENIvXb+pFlPhE2VLMsNKPxM0t4NPacXp
-	 09IayyOwye8v9t0ujUPnQeFP82iuXgJdXs03fbfkHinzC3RvMUu0jUW7MegSx8oJo+
-	 kJhBbYUWO6BVJh8yNhHp1RKOjl3sSx4JqKlD2b6Kj40UI4hpbbbfWw2d8G+P7kwSEu
-	 FJ91hmg6iD5XK6M25MVyhtgva6tT2jTyRKhSOTCoivULEcYqkIoUhe6fnOqIdT/qKZ
-	 s/AcHZQchhbAg==
+	b=m0RVRQl8cpn/vhBcA5bbs+XJt5w1gkbye0vIjR3iei/AbcVq7md2bmYkOWjXT8Ffg
+	 Kuod1g3bSdyhlGPqfpmlOth0iU5bxSebpLlXyq7JhxpgVVln9n+n8cKBMCauhjPx+7
+	 bAX6PX5FgWOhK4tIHzcNUQorZaXeXZ5vd5pdYeVDfXAzARVQcpLbOP71l9SD9W2ugZ
+	 ZwyVP2uy9OyzMt94KQzCJ6NXQIdFUME2F/FcFJj+4ggyq1ravIXSDENoNpzG3b11yY
+	 naauGWtr7HIzpOgG7cvPDSbYSUl8R0wvpWQqYBsUCPUDKiMDr9kDkdmpKlZiuUAYYm
+	 KgCNLWYnWTroA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>
-Cc: <acourbot@nvidia.com>,  <dakr@kernel.org>,  "Miguel Ojeda"
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Danilo Krummrich" <dakr@kernel.org>,  "Miguel Ojeda"
  <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
  <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
  =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno Lossin" <benno.lossin@proton.me>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Valentin Obst" <kernel@valentinobst.de>,
-  <linux-kernel@vger.kernel.org>,  "Marek Szyprowski"
- <m.szyprowski@samsung.com>,  "Robin Murphy" <robin.murphy@arm.com>,
-  <airlied@redhat.com>,  <rust-for-linux@vger.kernel.org>,
-  <iommu@lists.linux.dev>,  "Petr Tesarik" <petr@tesarici.cz>,  "Andrew
- Morton" <akpm@linux-foundation.org>,  "Herbert Xu"
- <herbert@gondor.apana.org.au>,  "Sui Jingfeng" <sui.jingfeng@linux.dev>,
-  "Randy Dunlap" <rdunlap@infradead.org>,  "Michael Kelley"
- <mhklinux@outlook.com>
-Subject: Re: [PATCH v4 1/3] rust: dma: clarify wording and be consistent in
- `coherent` nomenclature
-In-Reply-To: <20250602085444.1925053-2-abdiel.janulgue@gmail.com> (Abdiel
-	Janulgue's message of "Mon, 02 Jun 2025 11:53:11 +0300")
-References: <20250602085444.1925053-1-abdiel.janulgue@gmail.com>
-	<9MKxKNA6QF7sSvlvmOX-7hZHeRN1N-Qm1EKm3nhZFgJLsmZAKhIrzu1ZeRy1w-4f7ZZGUEHhxLLILrq05UpOKA==@protonmail.internalid>
-	<20250602085444.1925053-2-abdiel.janulgue@gmail.com>
+ <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Bjorn Helgaas" <bhelgaas@google.com>,
+  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,  "Greg
+ Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Rafael J. Wysocki" <rafael@kernel.org>,
+  "Tamir Duberstein" <tamird@gmail.com>,  "Viresh Kumar"
+ <viresh.kumar@linaro.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] rust: types: require
+ `ForeignOwnable::into_foreign` return non-null
+In-Reply-To: <DAKN1HO7WUXY.QS098VXTDICU@kernel.org> (Benno Lossin's message of
+	"Thu, 12 Jun 2025 16:52:15 +0200")
+References: <20250612-pointed-to-v3-0-b009006d86a1@kernel.org>
+	<20250612-pointed-to-v3-2-b009006d86a1@kernel.org>
+	<ftVceLHmGCX4uHfwZ7aGMOkv5d4ALLIYrsQarySS4pU1gDD6qnxOY3rArV9Kp0tazReT-IfOQGGpK-jNthUKkA==@protonmail.internalid>
+	<DAKN1HO7WUXY.QS098VXTDICU@kernel.org>
 User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Fri, 13 Jun 2025 14:49:02 +0200
-Message-ID: <87y0tvbydd.fsf@kernel.org>
+Date: Fri, 13 Jun 2025 14:53:42 +0200
+Message-ID: <87sek3by5l.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,17 +59,37 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
+"Benno Lossin" <lossin@kernel.org> writes:
 
-> In the kernel, `consistent` and `coherent` are used interchangeably for the
-> region described in this api. Stick with `coherent` nomenclature
-> to show that dma_alloc_coherent() is being used, in addition to improving
-> the clarity in the DMA mapping attributes documentation.
+> On Thu Jun 12, 2025 at 3:09 PM CEST, Andreas Hindborg wrote:
+>> The intended implementations of `ForeignOwnable` will not return null
+>> pointers from `into_foreign`, as this would render the implementation of
+>> `try_from_foreign` useless. Current users of `ForeignOwnable` rely on
+>> `into_foreign` returning non-null pointers. So require `into_foreign` to
+>> return non-null pointers.
+>>
+>> Suggested-by: Benno Lossin <lossin@kernel.org>
+>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/kernel/types.rs | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> index c156808a78d3..63a2559a545f 100644
+>> --- a/rust/kernel/types.rs
+>> +++ b/rust/kernel/types.rs
+>> @@ -43,6 +43,7 @@ pub unsafe trait ForeignOwnable: Sized {
+>>      /// # Guarantees
+>>      ///
+>>      /// - Minimum alignment of returned pointer is [`Self::FOREIGN_ALIGN`].
+>> +    /// - The returned pointer is not null.
 >
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> This also needs to be mentioned in the `Safety` section of this trait.
+> Alternatively you can put "Implementers must ensure the guarantees on
+> [`into_foreign`] are upheld." or similar.
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Which is exactly what I did :)
 
 
 Best regards,
