@@ -1,118 +1,97 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEA4221555;
-	Fri, 13 Jun 2025 15:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9912046A6;
+	Fri, 13 Jun 2025 15:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749829890; cv=none; b=TdGY+F7hHLx6WMAsaLw8sa7w+rIGmYcMVwtD9lCbL1Us51GGdVbrjNn/6eX4vo/XWdejBCYwdKn7nEOvZpPVnX0shiDIYoHhYds4pnRP9ntvUtlcEQINP7/7GVopRhaRucl+BY82s2BytoS2iGHDEbJ/9Obl/70XTkyUsBJ2CX0=
+	t=1749830052; cv=none; b=l+NO/gwNgtjgdtfUcho+Go18M/09fEUcpPGxf5/ztrAt6lwd6CKZHf2AI5SqxWnVYv3wAd0//nAiryFn/7X3FKnNits/I+4DgGOmRadHtWElJqkyeq2TX38vC5M2fbRi38tTxP37JB1H9fD8GOtErVJEK9EYjMXdEv+xTfruukM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749829890; c=relaxed/simple;
-	bh=c4wwjySIvlE7LwxsLOn8GKJp5V2/5xXu72WI0PKQ4k8=;
+	s=arc-20240116; t=1749830052; c=relaxed/simple;
+	bh=F1JnVw0p0/51zuxC+hsf+LFfBL2DoEB/4Xq9imp2Vs8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CnWz+TKJfjqwf7ACYcxtJ0Y4wWEbQ4rWopUyKSoLZdfo7bzY5BJK0FmWUdDK/wMyZ4n5DgUUHAgDAlBrarkAW7O35C/7vV65wPUFXEy0Worioe6oznWRFnvLQjXFJOiSoV/KXQ8wfaNqP6kZpb2ihm0dU4vt5PzfnQ9NUzM07JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UxxZf7BT; arc=none smtp.client-ip=209.85.214.174
+	 To:Cc:Content-Type; b=qzAtTw6JFBOd6z+kMT2s/eVN75nGWRREkthrsVJlCmuJd71eODYbRB9yPhiiBoSDFOKGg37fJuicWaoi8GoPBXN/1cDytDooe/JUQJI5uQpbAGHmAF5XQx2rbfS7sle+ta2G1k07L8l4VwbTijoNSi2eAEJC+rmqAzS+O+Qw2rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a7Mp/0+k; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UxxZf7BT"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2363bd24891so2817995ad.3;
-        Fri, 13 Jun 2025 08:51:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a7Mp/0+k"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-312a806f002so293796a91.3;
+        Fri, 13 Jun 2025 08:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749829888; x=1750434688; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1749830050; x=1750434850; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c4wwjySIvlE7LwxsLOn8GKJp5V2/5xXu72WI0PKQ4k8=;
-        b=UxxZf7BT6Hox1Qnw+4qO+R2ooJaXbGG3SwbGvREoNEkQzwABmHOlNwl0NcW1VsMlVq
-         2tSXPsALPwrKTfgD1UdlwTyQMjcGvLSh9EKJsHw9kYnfRrKaIpzxEDpnK3e4HJ2ETyeB
-         UIR0jSM7/Qk+/keht53zsVN7/ppFxT/hFMnyAiqzJsLacsJneBkTSegeTTISoY0g+u2g
-         fOyCyd03hXPYwGSpgxFXsbw5sDPslOAktSiQQEYOZr5gXCO6IWoUXKNdeoeW8fUYeOXt
-         Nrg4SsB3KXu8T9smWoxAo3roKLxbnNZ4/KWIkbkXL8OKn+gpJxIMWjXwWqPv5zgmejaE
-         Pjvw==
+        bh=F1JnVw0p0/51zuxC+hsf+LFfBL2DoEB/4Xq9imp2Vs8=;
+        b=a7Mp/0+kGrVIhz+rxPUTcEQrpY8ZkD9ccB+xbXDY9My9r51EOW6o9d+lNGVTwIfeDQ
+         VUT2B6qLiFLzLwqfm8YA8MOcx6SGuQc7i2a7hki54XlQ1UM0AyUww33OF6WuzYkowF00
+         D9cO+BxRGQJHrl8AjQexZPl+6MbfNL3/QiKyUADNiZ1fDcGzQwuz7fswgsAH+TPSobEN
+         +RFgvlv4ujjKTh1CsmAuFssT0lhCuVCPUl1QW1aJPB7owh5hLHkUAYKInmKrQnfJNZwd
+         Dr2+El01EQzSjye6Sj6KwsQ905e8pN7Ay7iTTe/2ohAo5Sju0ARcxF8HB9ua6wkQZ9lv
+         M6LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749829888; x=1750434688;
+        d=1e100.net; s=20230601; t=1749830050; x=1750434850;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=c4wwjySIvlE7LwxsLOn8GKJp5V2/5xXu72WI0PKQ4k8=;
-        b=vxtOTbF0ELoq8yviLmH3B3BH0s9EbFW/8yKCjZhqElARfpt8/7Cubqw41jcvtcDVkQ
-         sH3qPQFsARqRN9yVUQ/YSlZ5HU9y3yLp4otRmWmHcxRzt0d4zPaErtJyoeoo/Jwk21F4
-         IgGaxexaMGOFwZkwcertMxcb18WBMlUQQuVOQCFfrz6m82NKV3tZ1txC0i9fhWgFpjug
-         cZ5j5PCckNZgGEU5vbJNbtoNJdmTRwiqXHbzpNcs4k56lpr9iZzFS7oxaeoIpooDdmW5
-         8kY//FdR/39rybT6hfU0Bw/kg3m65OcXvT44rEFCnwRh9pYC9QyuaEABwULcKUOBn598
-         WeZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUW2lqRuG/IPORfBf27OhLy0Zw/JuhWyhJFdjKIa4o9XOp5FVYB647Nq/MMyqrK7V0mZZC1fpZjMQ9187k=@vger.kernel.org, AJvYcCUowynwehk5mZ65h1Dw6GxbBuzyiKkgt9VTXdFveMD8iW8jafNzda/yPH0xGSRagZBYtJPG0m/MwLvmgfEpPXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfKZzYkWWB/TkXguUZZJXHINtNTfsb6RqrGQoNV/N8eqEgRvp5
-	XlYnhhUw4iWLVWsofemC1dmIIp/mfX1qAMIkr9mgH8Iv2IuimmiplFBxLqjKqaVN2mkLLH35YTB
-	WN+ZlMZ6c66pL2RsDIJiBKfH2Sl86xM4=
-X-Gm-Gg: ASbGnct1tTD5Gz/UnZs5DGGD+jNZ6w9htTJswvqmylj3dj1ww/xUwTJ7oRUexmj0DqX
-	AuL80XY2481mskNSofRZkGNJDltP0344h0db1/dW5sGn+RZBhmtG8V5Qgnug9nh0UHRoMGsCVEE
-	1X9RD1I7lY9NLjYWKNB0KdKRoLw9kjHKW12XHBDh5a8ZQ=
-X-Google-Smtp-Source: AGHT+IHcPHYF94iRui/o4iCfw3hVlEAnn10MC+QUOtJfKBbbEt+l8sh4CVj6CXIMMJyZzu080k4/5V0scs/4oVMDiWM=
-X-Received: by 2002:a17:902:d2c5:b0:234:ef42:5d52 with SMTP id
- d9443c01a7336-2366b202b0fmr133035ad.6.1749829887880; Fri, 13 Jun 2025
- 08:51:27 -0700 (PDT)
+        bh=F1JnVw0p0/51zuxC+hsf+LFfBL2DoEB/4Xq9imp2Vs8=;
+        b=nvLsWymRLazGFnNPeCPY3GkThYLqpOEkqfCwxTMfQ6iFXWR4SSjnBGCFV49x/nkVSb
+         ws6rM1vqciqVPgzyxxiCwYCwRo8WK+cz5ldbyAWh67q9Is1EqWBiHyDuKQU0fJaFUGft
+         FW8mvumt+nIyTs4DeLbHjCcNR2mC13SUxM+S9LRyPYiiWx1kY3e6HxDnaq7FS/6pjAZV
+         nRaDBLFcpTzghSt1/FEZiDmeRfXtzxJJCg9m62w+0lNIjJlmlWyvzPAMValzfy7Kg2m9
+         Emt1giODosq6iG1Ja6w0sGQAXTMSZod9tTlorV0iJbYAf1eS/kK7DKHytuMdKEJmMUMC
+         ZPXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXssqckI9asF1WrZZ+3s/afpr4EIpO9coj5B8p4SYnfDrsxchN6aybWk98MEjFyYUT99LCg3OWro0aDr8=@vger.kernel.org, AJvYcCVcNbOpT8TvEOZwEtgJiEoRS72mDmMzzTNbIyspHutuLQbVbuPKiXcqy9IKRXsGPip/43IR2RA/KU4GrenC3UI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmP16iosWvuTdsN3OkKk045sM6x3Px/cg230zJI4JCm+1ZVkoo
+	QEZrXD/E7d0GVXLJV/CJaW+CaSpbr1TtLC2o/2BmQszQ//v6VtSJXHYz9d5nQYPsCLVMET7ImAe
+	HWZmEsUItAabG7vXVpgFRwAzxJHK292U=
+X-Gm-Gg: ASbGncusyXDIGdPDzk+gcFlte/9Eeir1iepMVVl4vvhhexekfYlnM4DJ7ZP6Y0XBkyV
+	4zd18oo4ZFJJjWZeiSTc/1Xab8SFHq57U1OebtXb7AyJ+o/clt8H3YQQJ8KdP9TYsAyZhJm15Qc
+	8PsO6xQgby2XLNYenhdMR8sf7XZs1n5mitBQW8tRS8gQo=
+X-Google-Smtp-Source: AGHT+IEutSGhzrVzZp353DQsvucoRhfU9Pb9eKBmICJwzNO/eIqSsKoJ9xbqFNRSpRh941H1RajsZFy9JNia6i0i1HE=
+X-Received: by 2002:a17:90b:43:b0:312:25dd:1c8b with SMTP id
+ 98e67ed59e1d1-313f1c77faamr121787a91.2.1749830050438; Fri, 13 Jun 2025
+ 08:54:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250612121817.1621-1-dakr@kernel.org> <20250612121817.1621-2-dakr@kernel.org>
-In-Reply-To: <20250612121817.1621-2-dakr@kernel.org>
+References: <20250612121817.1621-1-dakr@kernel.org> <20250612121817.1621-3-dakr@kernel.org>
+In-Reply-To: <20250612121817.1621-3-dakr@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 13 Jun 2025 17:51:15 +0200
-X-Gm-Features: AX0GCFuyedTR1iv9KApMX6o7VMeHD0a1tKeFY0C-NXSDraSK_3YKR9RF1Z2Lr0I
-Message-ID: <CANiq72kpiGQCs=XJjqZn8pgXaRXfKxopGBvGVwOXn91Nit-W8w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] rust: completion: implement initial abstraction
+Date: Fri, 13 Jun 2025 17:53:57 +0200
+X-Gm-Features: AX0GCFuWyLCVdATo6M3ik_x21S8Y1NYHfUwmkMyJqdnnsONzWmYGNZz6toH3roc
+Message-ID: <CANiq72kfO6qM=14Fx__DFTvdKJrn_sT26QVyK_NFEkdvunW4HQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] rust: revocable: indicate whether `data` has been
+ revoked already
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
 	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
 	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org, 
 	aliceryhl@google.com, tmgross@umich.edu, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Benno Lossin <lossin@kernel.org>
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Thu, Jun 12, 2025 at 2:18=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
 wrote:
 >
-> Implement a minimal abstraction for the completion synchronization
-> primitive.
+> Return a boolean from Revocable::revoke() and Revocable::revoke_nosync()
+> to indicate whether the data has been revoked already.
 >
-> This initial abstraction only adds complete_all() and
-> wait_for_completion(), since that is what is required for the subsequent
-> Devres patch.
+> Return true if the data hasn't been revoked yet (i.e. this call revoked
+> the data), false otherwise.
 >
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Juri Lelli <juri.lelli@redhat.com>
-> Cc: Vincent Guittot <vincent.guittot@linaro.org>
-> Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Ben Segall <bsegall@google.com>
-> Cc: Mel Gorman <mgorman@suse.de>
-> Cc: Valentin Schneider <vschneid@redhat.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 > Reviewed-by: Benno Lossin <lossin@kernel.org>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-This is part of a fix, so it is a bit of an edge case, but it is just
-the bits Danilo needs, so as long as nobody in the Cc list above
-complains:
-
 Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-> +/// The [`Completion`] synchronization primitive signales when a certain=
- task has been completed by
-
-signals
+It could help those reading the Git log later on to mention the use
+case comes with the next commit (i.e. the "why").
 
 Cheers,
 Miguel
