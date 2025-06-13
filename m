@@ -1,197 +1,103 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236FF1E0DE8;
-	Fri, 13 Jun 2025 10:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEAD02D3238;
+	Fri, 13 Jun 2025 10:31:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749809975; cv=none; b=F08a1sUof3QoWObKddXyCA+9XesIiGl+rhh0yRw/3E8kQzINypta7pGVuG4t+bHsqWhgGH0ppSdu7n+cJLQIOVjwYZM7jm7e6QY4/lOx5LiJhJYh02T4f8L5uzwrpP5YdGJK+3bk2wyJ0U1qtAdQ2S6xF+II02kwk+UX704INhs=
+	t=1749810715; cv=none; b=T0yThhAl1adp3MxWObS1vxe43/H1W6cF7JrKFcS/O7ZBCY6VE/bNR1TByCU0uYj8N4GoR85DfFgyuc38kRXRCdt98errQmcYw+nTROsi8M8EGTAVkE2R/h59ITCek3Jxf0/CJS9wUUzL++g1125pcn7SkMI0cKeb8h6YIleBFVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749809975; c=relaxed/simple;
-	bh=vG5VPJHwBrHvFMVg43CkcMXHNb8KegOopXpaTYM4A5I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pm6LBQEmqN8H0pDKDq86jQCtyCnOqaPYAMULGw6cMY8nMqdIJ+kbU1kKgLRb6SI3nD7Md1B9vAOF3I5WFlnw94cZCfzqohnkM2vgmPjGrBynRppj2hJEmH/2FqP9OwxNNHQn62hyIXUeuyHJ45WrdYU+uvGmLiR5OU8cO6iQOA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZSwq20OJ; arc=none smtp.client-ip=209.85.215.173
+	s=arc-20240116; t=1749810715; c=relaxed/simple;
+	bh=Jo2S1Vhmz+DHyBwpm2/Wakx8tkEoQUYYmyKwEmiczVc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=hbJ2E3kPaJOYwcUqRqnMhadFRTQFNHOkbcBCBg9+1xJdo8DGhVDFW6yB0fgLkyw+GzbypOSNVg/ybptL/oztlNls9jIe0x/Z8TjVlHw1gHC5tQ6WjdOU9Qachr+Hal59uSFShczDh4hJlh88f2TFae89VWaYa+XmdnpT6GGDa08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B76Sqbjv; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSwq20OJ"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b26d7ddbfd7so2203909a12.0;
-        Fri, 13 Jun 2025 03:19:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B76Sqbjv"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-30c416cdcc0so16486211fa.2;
+        Fri, 13 Jun 2025 03:31:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749809973; x=1750414773; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1TZ09B9fF9qt3C3sRYNWKIJIgwZYwxaDL2K655BrwcY=;
-        b=ZSwq20OJ0/aN9J7C24GzgH99HlHFXZFtoYLghootWwMBcLmsFaBpLPlq9u2BpfrnTF
-         DN5mVigGZ0muNSgvyTbHIyVoBq6HYzoasOjD3SmVBrKnujuDLlW90HjkRaXNrFxWqxrs
-         MIggTVq5qGonoxqsKCB3Cy3TiXMqjDYp/gmhVfGJJ8Ow0pxtAmJcSjPFIcaW4TsKPWTi
-         rmFQPDOSKXvgGcDP+a/D5JZBRTM0lZ6IEnUeTDSx67LujIWghFdxRdXnvYuNauuky/zA
-         AHQKGTyig2R8QVvrE+t+WX8YTd/ucAM1sY381/gJ4UASRCa2/F0pk/3xN1T6AJlqrQcC
-         elTQ==
+        d=gmail.com; s=20230601; t=1749810712; x=1750415512; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qFr8LwPYLDgF3kaOI6zifGZaMW4ZcZipWwfZcZc5XZU=;
+        b=B76SqbjvGuUztFvEC3+Lax67vR0xtVZJoerpgY1ljk59lPI4d3dWdwzmqUCYtN5i/M
+         iqJsAPPwGEIBjSCcojF27Y/gdznp7w2yuQGoOGXEApMKrxg3NQgOM6xUdxhY0e3Cv6+P
+         X1RmVqATrOrYYrV3u2JqDQS8A4aRt2FHhJE4k7dWVToKRvdJ4ByMlBqISt76Rg5/om3g
+         vicV5vrWzq91r+sdLVmhvOOXLB06LlKDF/MZS43Bq4HfNhaw0FyWD2wfi6MicgUpUjSl
+         LtjYP1tnDS/8Cnm11P1Rp5lYHm5Qm8E2mHz0zjbJ+y37q8+oV68vOIXiVlJ+TeUsxcrs
+         3GZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749809973; x=1750414773;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1TZ09B9fF9qt3C3sRYNWKIJIgwZYwxaDL2K655BrwcY=;
-        b=m0EK5w3ikkPeB76TJWV9WajWUAnrGKzDwlX0PGvC97Inkj20ayQ9RAgHYMIkPUP02g
-         s8sHqijkTVIWTUE/ru0g2At7ICDuJXzvSOv3OR/OlAAFr37F6PX5CKD5FYnZCtJpXRaA
-         3ibj6SHRSLkXpIAwtreTeU+xtztJFedEEtS76fyVXeD7him5oBrba+HjMtQmTFucwovK
-         z57l4wYSvsCXTFIxrIOPXljD3+z7tZAhTUWXZmaIUnstyweruXZ0uz10pUF5lRL85T1H
-         bt7XZOFn8KeqtBAzXjXjDMY2dQk7oY0Rz4rb6FEptrF/soAQOgsmu8s9oYgHPKlOI0Sc
-         3NUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNWsSdCqAbAv4UvIWrhfBF3rRc+3sbpVGNE9ALoMZrjL06vPI7MoubiPneCycYvDsB+ZAUFx16x5O6eTsGBcQ=@vger.kernel.org, AJvYcCVwpoh/XQAFob8C7SKaEp25VUx+EiDSuTHcPzi6BFd0h9AZfjuZ04d09p46wIzrneAoEExP9QcbmgI=@vger.kernel.org, AJvYcCXxUGLB+PggVY7Ee0BY1nPUzSpU0KRRHv3YiYi/EOsvzB7bXhliN31W2LiW4YoxYf0WbMP+V/auPb+ciyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKrDO1oe0GPfiAGbQmcXByU0lq5VEJEshHMV1RV3YvYIlrbFOo
-	Fk8VdHBJPn2urmpnwDKcD+ioeq+gNzHg5auJ34aZ5IrVSCP3Cc7aYyURyAcrfrE9wMI=
-X-Gm-Gg: ASbGncs+VtaZKMeKD3bzqS1vrJfP4r9zfYddcOq/G6zA0zfN+qpyRYDyWyY9mgaGmMt
-	hfzH1PXI/SvqDyLZXLZKR1YgvIvCSmSGJ23HhZnS8haMDiX/ZYZoaRa4EpldrY9/b3Uo+Jv1Dwg
-	vRd3zI7zR8e9YG+vulsNaYT8NCIPRsAnQCRrSALkRY6UPS+ElLo8aCJykopFif0pPvBekdYNwFn
-	Ms/RDpi7tJHE6SQn92WA1Kmqy7L5CEQnTds7zil11TprCMGV9Js97taP2D3uBo4cEGK9z0das1z
-	XlkpsCHdHMaChMOnH8/PkkFeIpy6l5MU8x3qaLCRvtCe5ScOm+J8xpO0MFzSnkUD
-X-Google-Smtp-Source: AGHT+IHnrhBynvQl4izswdqX0FGr2tTEWxmV7V8m/R0CNjLpc+6kxSaRl0OBDyyoeTl8M6wMWU7Cfw==
-X-Received: by 2002:a05:6a21:3982:b0:215:e60b:3bd3 with SMTP id adf61e73a8af0-21facf11c33mr4300123637.29.1749809973179;
-        Fri, 13 Jun 2025 03:19:33 -0700 (PDT)
-Received: from pop-os.. ([2401:4900:1c96:fdb4:b26c:8198:a171:6fa6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-748900d24bbsm1214044b3a.169.2025.06.13.03.19.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Jun 2025 03:19:32 -0700 (PDT)
-From: Abhinav Ananthu <abhinav.ogl@gmail.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abhinav Ananthu <abhinav.ogl@gmail.com>
-Subject: [PATCH v3] rust: cpufreq: Ensure C ABI compatibility in all unsafe
-Date: Fri, 13 Jun 2025 15:48:16 +0530
-Message-Id: <20250613101815.18092-1-abhinav.ogl@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1749810712; x=1750415512;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qFr8LwPYLDgF3kaOI6zifGZaMW4ZcZipWwfZcZc5XZU=;
+        b=Thv4xscUDqLqwGM+1/m4709q1wY+4dLQtWjh/8vwg1mPlY1RyC9h56AJQfaEk9geQr
+         Cu9xYqTeSY/VP6BkQT009u/994JzMfkc0KUyAggBu+cfn5uQJbxt2uNcOVaQt5aaoMWe
+         bq3PIe/QUurUmbqBtRSFQ9gcSePMwNvUJQnsnYIMYLVVKtAHarwq8sQu5n7LLgpZG+3L
+         9LKc4by6l+8lpesyRfNnjOfH0ifRbdwAtlRBwvjKCJPtV6KZAaNNN3YzLIQr/e401oKu
+         u5H+u9gMuAxsvVRZ7SbTiGNqWWXIck5Htg/VHQkwdhZwML2cOELzflGHAIPNh/gPiRRH
+         azsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+qw9jIbwqT2uJFV5LaIylPeO9i62vagyz07VpXK66w9EczO2y0OuxkjR5LxPbgSHGqtcH+T3k2tQ8lawAZ+M=@vger.kernel.org, AJvYcCWChJCVNdP+irOGUKFDTATsToNaKMAcK5TgygES1fyp/V5otiUHMn+1IscLonSyN77a+5ozsAkaHXVwFzk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlkGM0TAh7qgQEdaBEaABz7Z9j0neeeRoYIqk9kGIMkPaAVhLm
+	lTLftdz1FCKLgwwgzww68oE5RNsluc4k8GIQ8RCBv+EIspTWQDUjqptxYtSIapYF
+X-Gm-Gg: ASbGnctYwbfcCVHx1LKdm+pVrIuVmKvWeDzUVSFGqBQ4xhtgiuQNScnHHbISXebKFjN
+	gCl8HN1Eq+LEUF4fKdo9p0PdruZ91I+NDaHIWE0OxehbJ3wDvsS7BzrENJWAIKTWcRgbIl7MSiM
+	rqBqmjQC6wjioUplKJd5F7CBOn4OSf8l+kxEkJ73UxsxYv8kAkSpIJrJSvoDlkwSUJ8dfy/exVU
+	RocYjFmoJAHXooSBJt/TE1FAUNV9cCcXbKcninRlgQmmWB4Y5FWSrAWZfNUu032f3Ow8BoivUmq
+	DrUZQjTpblAt6WnchuViJdZ/kysgFM0cFLtemuyGtjQyPZPc0IXoEzNNbUvZoap5FG93pLViYmE
+	KRQcSfpokboV62CeId0FsXstRP5M37SMnW/P4WA0=
+X-Google-Smtp-Source: AGHT+IFRFFHwGOays8LaUCDYJXNXCmkVUhd04lr0fFAv7SLkPad+uB9OtTwn3owIn4pP4b0UsMJj7Q==
+X-Received: by 2002:a2e:be9f:0:b0:32b:3cf5:7358 with SMTP id 38308e7fff4ca-32b3eb6edc0mr7716691fa.28.1749810711440;
+        Fri, 13 Jun 2025 03:31:51 -0700 (PDT)
+Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32b33189c36sm4876741fa.76.2025.06.13.03.31.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Jun 2025 03:31:50 -0700 (PDT)
+Message-ID: <2d269d74-6151-4871-95a3-08089111358d@gmail.com>
+Date: Fri, 13 Jun 2025 13:31:50 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] rust: dma: add as_slice/write functions for
+ CoherentAllocation
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>, dakr@kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>,
+ open list <linux-kernel@vger.kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+ Petr Tesarik <petr@tesarici.cz>, Andrew Morton <akpm@linux-foundation.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Sui Jingfeng <sui.jingfeng@linux.dev>, Randy Dunlap <rdunlap@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>
+References: <20250602085444.1925053-1-abdiel.janulgue@gmail.com>
+ <20250602085444.1925053-4-abdiel.janulgue@gmail.com>
+ <DAC2ILD2DSIZ.3TF8W39X5DDH8@nvidia.com>
+ <0b71832f-f3a9-4109-baa1-f29a8327d872@gmail.com>
+Content-Language: en-US
+In-Reply-To: <0b71832f-f3a9-4109-baa1-f29a8327d872@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Update all `unsafe extern "C"` callback functions in the cpufreq module to
-use `kernel::ffi` types (`c_int`, `c_uint`, etc.) instead of Rust-native
-types like `i32`, `u32`, or `usize`.
 
-This change ensures that all Rust callbacks have signatures that are
-ABI-compatible with their corresponding C counterparts, which is critical
-for FFI correctness and safety.
+On 13/06/2025 12:45, Abdiel Janulgue wrote:
+> that the subsequent paragraph makes it clear that the unit is in bytes 
+> unit? 
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1170
-Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
----
- rust/kernel/cpufreq.rs | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
-
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index 11b03e9d7e89..481a6d2dc362 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -1207,8 +1207,8 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn target_callback(
-         ptr: *mut bindings::cpufreq_policy,
--        target_freq: u32,
--        relation: u32,
-+        target_freq: c_uint,
-+        relation: c_uint,
-     ) -> kernel::ffi::c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-@@ -1226,7 +1226,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn target_index_callback(
-         ptr: *mut bindings::cpufreq_policy,
--        index: u32,
-+        index: c_uint,
-     ) -> kernel::ffi::c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-@@ -1249,7 +1249,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn fast_switch_callback(
-         ptr: *mut bindings::cpufreq_policy,
--        target_freq: u32,
-+        target_freq: c_uint,
-     ) -> kernel::ffi::c_uint {
-         // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-         // lifetime of `policy`.
-@@ -1263,10 +1263,10 @@ impl<T: Driver> Registration<T> {
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
-     unsafe extern "C" fn adjust_perf_callback(
--        cpu: u32,
--        min_perf: usize,
--        target_perf: usize,
--        capacity: usize,
-+        cpu: c_uint,
-+        min_perf: c_ulong,
-+        target_perf: c_ulong,
-+        capacity: c_ulong,
-     ) {
-         // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
-         let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
-@@ -1284,7 +1284,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn get_intermediate_callback(
-         ptr: *mut bindings::cpufreq_policy,
--        index: u32,
-+        index: c_uint,
-     ) -> kernel::ffi::c_uint {
-         // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-         // lifetime of `policy`.
-@@ -1305,7 +1305,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn target_intermediate_callback(
-         ptr: *mut bindings::cpufreq_policy,
--        index: u32,
-+        index: c_uint,
-     ) -> kernel::ffi::c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-@@ -1325,7 +1325,7 @@ impl<T: Driver> Registration<T> {
-     /// # Safety
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
--    unsafe extern "C" fn get_callback(cpu: u32) -> kernel::ffi::c_uint {
-+    unsafe extern "C" fn get_callback(cpu: c_uint) -> kernel::ffi::c_uint {
-         // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
-         let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
- 
-@@ -1351,7 +1351,7 @@ impl<T: Driver> Registration<T> {
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
-     /// - The pointer arguments must be valid pointers.
--    unsafe extern "C" fn bios_limit_callback(cpu: i32, limit: *mut u32) -> kernel::ffi::c_int {
-+    unsafe extern "C" fn bios_limit_callback(cpu: c_int, limit: *mut c_uint) -> kernel::ffi::c_int {
-         // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
-         let cpu_id = unsafe { CpuId::from_i32_unchecked(cpu) };
- 
-@@ -1371,7 +1371,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn set_boost_callback(
-         ptr: *mut bindings::cpufreq_policy,
--        state: i32,
-+        state: c_int,
-     ) -> kernel::ffi::c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
--- 
-2.34.1
-
+Sorry, I mean *not* in bytes unit.
