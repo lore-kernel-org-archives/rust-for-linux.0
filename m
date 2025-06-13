@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DBF2900BF
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Jun 2025 23:28:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534A428FAB5
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Jun 2025 23:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749857323; cv=none; b=mPabOicsn96z5+FEieHl9yCyZ9QaOVcTp4OoRD8Cz42TmSZlQDjtyaBn3wDqZcCbZzTkApt3pN5lFBdxZr+nChgB1fTnfLaL5Sv+Oki2EUDPwR+wGRoFCTLhUn8LeNRCUC4/9CFqnEugFIxigaOUEE8qjtbk7VPsriPMcNnn20k=
+	t=1749857331; cv=none; b=RY2cVXb+4A6ULqEHW5iHdMqqka+xIno1/LxqQHsTUPgEWcfcbTg5izEHcAAxEP/Isn8h+nGgLYKcKRbRo4+u2bujmJaE1PQzWKrCeJKvq/aF3VIz0BRILlGWmdvdHnA1ZkdeFLBX/C2bCIrsLvqFqut88ewlRl97yCINj4lWdw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749857323; c=relaxed/simple;
-	bh=l/M1UVzH6GWd3CpAMU3Yz7OGvGlcaM3uAKFWiU0fTLg=;
+	s=arc-20240116; t=1749857331; c=relaxed/simple;
+	bh=n9umnjaNSBSHX0GHX2P8zsGPIAl95NZy7G30H4N3fao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMs/Q5aTLh2HO/aZghDYlOUiDezavGnBA7L3GOUKG7UnEQFVNjxgjzW0HsBI2XaafwTuQFpWoFeVk30xCHa6R/oar7m5LBytgIlCfPTiQ/05n12aVlcDNMgkEs78EYC8kXT3vZxGDewHjABu/pU6jpodHfxG2xhH5CBR/Kom2rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UDrCfFbS; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=Nk7T2+BrAUr3iTggFqtVoIafpcRrDWmrgGA5A2CoQQi6iBrzOjhPe6wioOOL9K7yH5omjLHfosvmWEtY+7ISfq7GgRbrNMKL2dtaI/9N6LOM3DyfxIS4wBNDXugtA2keNafeCJiMuSL0Vq80IsGpvK/8vpfcpjflo5oe48Im9ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TD00vcz3; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UDrCfFbS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TD00vcz3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749857320;
+	s=mimecast20190719; t=1749857328;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QSufGI8KxAD3MnOJ3Xozd5Wl4+LtdDR1VBG6GTMimng=;
-	b=UDrCfFbSsw3bDDavZRvHM5H9TI803PsQeV9WeUmzsbTRxVZASK6MtLUF/EcIQkn7diLVMY
-	5zSsHt+cgVCEPHyjm9SONgzfpBG5yF/XrTCcbVy087L0C6ld5qadDMiDWsZnNFC33Et9oL
-	V3luJqEks9C2TY8oZHaXaadjsvD4BFk=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=vE7a8Rvyx3n5Nss6xlhGQkT2GVTsPwwys36P7pqKvnI=;
+	b=TD00vcz3POt5QAissD/WepKgIrgPaF9q8mAFvYuif/ZT6ScIiISpO2EimzveZSJA1SDqti
+	fa8lbrv7MlA6C+CRAUKgRHI4/HyeH7uPQaUyqRZNuXf0SB/9AeDQTanetJ0H7EPx7xIphx
+	9Px3/teJHnxlgeCEkTwD2JH6bo744Yw=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-654-aWHPd8MQPk6qTzo0SMQnUA-1; Fri,
- 13 Jun 2025 19:28:37 -0400
-X-MC-Unique: aWHPd8MQPk6qTzo0SMQnUA-1
-X-Mimecast-MFC-AGG-ID: aWHPd8MQPk6qTzo0SMQnUA_1749857315
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-557-HS3fditTOY6RYgI0mO9AuA-1; Fri,
+ 13 Jun 2025 19:28:42 -0400
+X-MC-Unique: HS3fditTOY6RYgI0mO9AuA-1
+X-Mimecast-MFC-AGG-ID: HS3fditTOY6RYgI0mO9AuA_1749857320
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 508AE195608D;
-	Fri, 13 Jun 2025 23:28:35 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D386E195608E;
+	Fri, 13 Jun 2025 23:28:39 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.64.52])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A02218002B5;
-	Fri, 13 Jun 2025 23:28:31 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B4B14180045B;
+	Fri, 13 Jun 2025 23:28:35 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -61,9 +61,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v5 6/7] rust: hrtimer: Add HrTimer::raw_cb_time()
-Date: Fri, 13 Jun 2025 19:22:27 -0400
-Message-ID: <20250613232754.451450-7-lyude@redhat.com>
+Subject: [PATCH v5 7/7] rust: hrtimer: Add forward_now() to HrTimer and HrTimerCallbackContext
+Date: Fri, 13 Jun 2025 19:22:28 -0400
+Message-ID: <20250613232754.451450-8-lyude@redhat.com>
 In-Reply-To: <20250613232754.451450-1-lyude@redhat.com>
 References: <20250613232754.451450-1-lyude@redhat.com>
 Precedence: bulk
@@ -75,78 +75,113 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-This is a simple private unsafe wrapper for retrieving the current time
-according to the hrtimer_clock_base struct for a given timer. This will be
-used for implementing functions such as forward_now(), which rely on
-retrieving the current time from the hrtimer's clock base.
+Using the HrTimer::raw_time_cb() function, we can now add an equivalent to
+hrtimer_forward_now() to both HrTimer and HrTimerCallbackContext.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
 V2:
-- Convert safety comment to invariant comment in from_raw()
-- Add raw_clock_base() and implement clock_base() on HrTimer<T> as well
+* Change from Ktime to Delta
+* Make sure that forward_now() takes a mutable reference to the timer
+  struct
+* Reword this to point out that we're adding forward_now() to both callback
+  context and mutable timer reference
+* Rename interval to duration
 
 V4:
-- Drop HrTimerClockBase entirely, reword commit as this is now about adding
-  raw_cb_time()
+* Fix rust documentation for HrTimerCallbackContext (forgot to update both
+  forward_now() declarations)
+* Use Pin<&mut Self> for context-less forward.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/time.rs         |  1 -
- rust/kernel/time/hrtimer.rs | 27 +++++++++++++++++++++++++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ rust/kernel/time/hrtimer.rs | 58 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 57 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index eed77297d58a6..27ee78070d72e 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -209,7 +209,6 @@ pub(crate) fn into_nanos(self) -> i64 {
-     /// # Safety
-     ///
-     /// The caller promises that `nanos` is in the range from 0 to `KTIME_MAX`.
--    #[expect(unused)]
-     #[inline]
-     pub(crate) unsafe fn from_nanos(nanos: i64) -> Self {
-         debug_assert!(nanos >= 0);
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 4a8416fbd187d..79d86e1099a1e 100644
+index 79d86e1099a1e..0908359b0550a 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -193,6 +193,33 @@ unsafe fn raw_forward(self_ptr: *mut Self, now: HrTimerInstant<T>, interval: Del
-         }
+@@ -201,7 +201,6 @@ unsafe fn raw_forward(self_ptr: *mut Self, now: HrTimerInstant<T>, interval: Del
+     /// - The caller must ensure that the `hrtimer_clock_base` cannot possibly change in the context
+     ///   this function is being called in. This means either exclusive access to `self_ptr` is
+     ///   required, or we must be from within the timer callback context of `self_ptr`.
+-    #[expect(unused)]
+     unsafe fn raw_cb_time(self_ptr: *const Self) -> HrTimerInstant<T>
+     where
+         T: HasHrTimer<T>,
+@@ -243,6 +242,44 @@ pub fn forward(self: Pin<&mut Self>, now: HrTimerInstant<T>, interval: Delta) ->
+         //   exclusive access to it - fulfilling the requirements of the C API.
+         unsafe { Self::raw_forward(self.get_unchecked_mut(), now, interval) }
      }
- 
-+    /// Retrieve the current time according to the `struct hrtimer_clock_base` for `self_ptr`.
++
++    /// Conditionally forward the timer.
 +    ///
-+    /// # Safety
-+    ///
-+    /// - `self_ptr` must point to a valid `Self`.
-+    /// - The caller must ensure that the `hrtimer_clock_base` cannot possibly change in the context
-+    ///   this function is being called in. This means either exclusive access to `self_ptr` is
-+    ///   required, or we must be from within the timer callback context of `self_ptr`.
-+    #[expect(unused)]
-+    unsafe fn raw_cb_time(self_ptr: *const Self) -> HrTimerInstant<T>
++    /// This is a variant of [`forward()`](Self::forward) that uses an interval after the current
++    /// time of the base clock for the [`HrTimer`].
++    pub fn forward_now(self: Pin<&mut Self>, interval: Delta) -> u64
 +    where
 +        T: HasHrTimer<T>,
 +    {
-+        // SAFETY: We're guaranteed `self_ptr` points to a valid `Self` by our safety contract.
-+        let clock_base = unsafe { (*Self::raw_get(self_ptr)).base };
++        // SAFETY: `self` is a mutable reference, guaranteeing it is both a valid pointer to Self
++        // and that we also have exclusive access to `self`.
++        let now = unsafe { Self::raw_cb_time(&*self.as_ref()) };
 +
-+        // SAFETY: The C API guarantees that `get_time` is initialized to a valid function pointer
-+        // for as long as we expose hrtimers to users.
-+        let get_time_fn = unsafe { (*clock_base).get_time.unwrap_unchecked() };
-+
-+        // SAFETY:
-+        // - get_time_fn() returns a ktime_t, so we're guaranteed its return value is between `0`
-+        //   and `KTIME_MAX`.
-+        // - get_time_fn() itself has no special requirements.
-+        unsafe { Instant::from_nanos(get_time_fn()) }
++        self.forward(now, interval)
 +    }
 +
-     /// Conditionally forward the timer.
-     ///
-     /// If the timer expires after `now`, this function does nothing and returns 0. If the timer
++    /// Return the time expiry for this [`HrTimer`].
++    ///
++    /// This value should only be used as a snapshot, as the actual expiry time could change after
++    /// this function is called.
++    pub fn expires(&self) -> HrTimerInstant<T>
++    where
++        T: HasHrTimer<T>,
++    {
++        // SAFETY: `self` is an immutable reference and thus always points to a valid `HrTimer`.
++        let c_timer_ptr = unsafe { HrTimer::raw_get(self) };
++
++        // SAFETY:
++        // - `node.expires` is a ktime_t, so it must be within the range of `0` to `KTIME_MAX`.
++        // - There's no actual locking here, a racy read is fine and expected
++        unsafe {
++            Instant::from_nanos(
++                // This `read_volatile` is intended to correspond to a READ_ONCE call.
++                // FIXME(read_once): Replace with `read_once` when available on the Rust side.
++                core::ptr::read_volatile(&raw const ((*c_timer_ptr).node.expires)),
++            )
++        }
++    }
+ }
+ 
+ /// Implemented by pointer types that point to structs that contain a [`HrTimer`].
+@@ -702,6 +739,25 @@ pub fn forward(&mut self, now: HrTimerInstant<T>, interval: Delta) -> u64
+         // - By our type invariants, `self.0` always points to a valid `HrTimer<T>`
+         unsafe { HrTimer::<T>::raw_forward(self.0.as_ptr(), now, interval) }
+     }
++
++    /// Conditionally forward the timer.
++    ///
++    /// This is a variant of [`HrTimerCallbackContext::forward()`] that uses an interval after the
++    /// current time of the base clock for the [`HrTimer`].
++    pub fn forward_now(&mut self, duration: Delta) -> u64
++    where
++        T: HasHrTimer<T>,
++    {
++        self.forward(
++            // SAFETY:
++            // - We're guaranteed `self.0` points to a valid `HrTimer<T>` instance by type
++            //   invariants.
++            // - We're guaranteed to be within the context of the timer callback by our type
++            //   invariants.
++            unsafe { HrTimer::<T>::raw_cb_time(self.0.as_ptr()) },
++            duration,
++        )
++    }
+ }
+ 
+ /// Use to implement the [`HasHrTimer<T>`] trait.
 -- 
 2.49.0
 
