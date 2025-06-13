@@ -1,263 +1,96 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB760253935
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Jun 2025 08:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721022727EF;
+	Fri, 13 Jun 2025 08:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749802510; cv=none; b=j3kqjOgBda0MtqAPaxjQ7+E98L6NH2vrC9OJIzvP1DLY58NBHgHnmS0GUQlbuqKUEqDRCDEeY+uaWGdn+adSZqJ6FoysZMRQ7tSikUv0FoTDnmqYcvUCzbxZDhtxXcheWLyypX2Y0PUc1ZMA5UziDFXO8nDBm96Zc6yYVAkkmNo=
+	t=1749804620; cv=none; b=Bq2HspuM8EzZesJuTo3JIiLLiMyHVx+fBP7SpfSlNH8ixwRczagX2Se2GkjurE0z/bIR864tVoVYSvdCzW8zo2lljb08V4bB8rLGT7ngr9EVfh2M+Hg6s3e/KVCKEfE4bO5YZ9ZRrbLBsZ28I9eEDR9bYLdAGVsDNpmvQnEGPd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749802510; c=relaxed/simple;
-	bh=wIxj3oq0BbDjgxZYXMXYi2smNI190+iLTmpLeB22VMY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GZchh5Pb7Gn/orHvje2yqUQ05jlRrJz7QBGhSaSzGqghGow42Zo8g4u78TtvmJL+dm1wgA/K30Bw9a7STkm7jyU/2QjxqCpCpg7Q+njWDmGopcwkoKALf7ckSu4HYApmNATBBmjPp8eOPaYDMyatzxO81bzvGzv47q3K/EPQZq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BV12kbOC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QFJ4IO6A; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=scyAcm+7; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vQ6/rwl+; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1749804620; c=relaxed/simple;
+	bh=eCo/L6P/lgVu+jHfJMyorLu6Y9nvXk/E/NCtlMoCn2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZiktWQe1B2eEUTd7F8/WfUiDDA7umY6sgc3p0FsWRJDTrrtJg6khvk4XO7f79n/wHqkhq1gVa6y917INfhc3WD6LYMIkfblXRJRy0z0GMnwfl++Z1dt+6tEhP9M7Kltb7pUsSRRcGCUdlPp2N6A1pudihJsFKcWT2NBn0C4haZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIBCLUxD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BV12kbOC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QFJ4IO6A";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="scyAcm+7";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vQ6/rwl+"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EA71E2171F;
-	Fri, 13 Jun 2025 08:15:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749802507; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FODD+2MAZ9rNqbOirkbflnipzwZLncv/5cLpjyg0ruw=;
-	b=BV12kbOCPiV2/xDJhsuaK61JZdOKRFak9dCce/UjlwpAAwv4WO1sOiUorE2WSODsXFZky8
-	UdSoxHI7/97zE2FxwTbjO8/f8xe07w6m7Iy/n46aG+RkTUZgbKeXzVAGc9u4qISxLSN2al
-	TFoXVTVJMwdpdLptYRXauuFEDQPzgho=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749802507;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FODD+2MAZ9rNqbOirkbflnipzwZLncv/5cLpjyg0ruw=;
-	b=QFJ4IO6Ary8SnCVqccwNccFC1nmxGHY6sBg7Z9DCuQxISY1jlprYHw5QD0thsBdOPEZvaK
-	/tzoZDzM7xFB8JBw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=scyAcm+7;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="vQ6/rwl+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749802506; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FODD+2MAZ9rNqbOirkbflnipzwZLncv/5cLpjyg0ruw=;
-	b=scyAcm+75Vzt2R7ML5pyHlrq///ArIA4EOpZ3KwwVTTo2qgTTuYLmuLGrMwZUoEIVcXPKj
-	JWHFMMe8dFCQ1OLJv4g5qXYW3gVo1dnQ4n7j0iem4+TfCq0VegGIQ/TFD5mUKXmThjndLa
-	7ovBVq93wKOPK+9NUWLmOKJH2SohJpw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749802506;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FODD+2MAZ9rNqbOirkbflnipzwZLncv/5cLpjyg0ruw=;
-	b=vQ6/rwl+OwGzYZcBY/aBO9j3bX4rkFntKSwYplbi0qLAKHXvG4E/PMxXz7m9W5Il6zQ93z
-	i8TSWioCftqxfnBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 419FD13782;
-	Fri, 13 Jun 2025 08:15:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oOlxDgreS2ieJgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 13 Jun 2025 08:15:06 +0000
-Message-ID: <fa5f9e9c-09f6-4f92-8f6d-4e057f9fc5a9@suse.de>
-Date: Fri, 13 Jun 2025 10:15:05 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIBCLUxD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34D3C4CEE3;
+	Fri, 13 Jun 2025 08:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749804620;
+	bh=eCo/L6P/lgVu+jHfJMyorLu6Y9nvXk/E/NCtlMoCn2k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZIBCLUxDuDg0GoH2XX9bzbW0PoVGYuEIZz8QDuTtS28tmTHIkGbIWFn5SrtbelRQT
+	 1LPwLu4iq4Gdz3KT8FtEhAfAWORb/MZAPSwyKUk9oRzhPdH/E+Gw48+wtVAja0fjjS
+	 HjVEq2xut2/oBRpOddOoDLn17mnM4h3xbGUvfTS2cAa2camZu98bveQnqWVi4+zwof
+	 xOtrQ7mxDHXFViyNJlO4Ix5z9JiU6EQl2LX1nwEUJHnE7DeJEZZz52OH0UPDkU+/+Z
+	 eRv7Tk+j7WxrzJjfFfwEnzSMl2ES2liUMs3SxCay7QlS3jkNVkUkQOQskOrbMfMIAD
+	 KMBKfGlS99roA==
+Date: Fri, 13 Jun 2025 10:50:14 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v8 0/9] More Rust bindings for device property reads
+Message-ID: <aEvmRmQwX7Vb8Y_3@pollux>
+References: <20250611102908.212514-1-remo@buenzli.dev>
+ <aEtjONTgqDikCoB6@cassiopeiae>
+ <DAL8LI3LMET9.3LW0J9JED1EZG@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 9/9] drm/vkms: convert to use faux_device
-To: =?UTF-8?B?Sm9zw6kgRXhww7NzaXRv?= <jose.exposito89@gmail.com>,
- Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Jonathan.Cameron@huawei.com,
- airlied@gmail.com, aleksander.lobakin@intel.com,
- andriy.shevchenko@linux.intel.com, bhelgaas@google.com, broonie@kernel.org,
- dakr@kernel.org, dri-devel@lists.freedesktop.org, hamohammed.sa@gmail.com,
- lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, louis.chauvet@bootlin.com, lukas@wunner.de,
- lyude@redhat.com, maarten.lankhorst@linux.intel.com, mairacanal@riseup.net,
- melissa.srw@gmail.com, mripard@kernel.org, quic_zijuhu@quicinc.com,
- rafael@kernel.org, robin.murphy@arm.com, rust-for-linux@vger.kernel.org,
- simona@ffwll.ch
-References: <2025022643-scouting-petticoat-492b@gregkh>
- <20250311172054.2903-1-jose.exposito89@gmail.com>
- <2025031218-oxidize-backing-e278@gregkh>
- <Z9LqHcj4n7Dd8A-H@phenom.ffwll.local> <Z9MT23hgX2c21xNA@fedora>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <Z9MT23hgX2c21xNA@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,ffwll.ch];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,huawei.com,gmail.com,intel.com,linux.intel.com,google.com,kernel.org,lists.freedesktop.org,vger.kernel.org,bootlin.com,wunner.de,redhat.com,riseup.net,quicinc.com,arm.com,ffwll.ch];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	R_RATELIMIT(0.00)[to_ip_from(RLj8h91xihsixaeeztgm33n4sq)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,bootlin.com:email]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: EA71E2171F
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -3.01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAL8LI3LMET9.3LW0J9JED1EZG@buenzli.dev>
 
-Hi
+On Fri, Jun 13, 2025 at 09:45:47AM +0200, Remo Senekowitsch wrote:
+> On Fri Jun 13, 2025 at 1:31 AM CEST, Danilo Krummrich wrote:
+> > On Wed, Jun 11, 2025 at 12:28:59PM +0200, Remo Senekowitsch wrote:
+> >> Remo Senekowitsch (9):
+> >>   rust: device: Create FwNode abstraction for accessing device
+> >>     properties
+> >>   rust: device: Enable accessing the FwNode of a Device
+> >>   rust: device: Move property_present() to FwNode
+> >>   rust: device: Enable printing fwnode name and path
+> >>   rust: device: Introduce PropertyGuard
+> >>   rust: device: Implement accessors for firmware properties
+> >>   samples: rust: platform: Add property read examples
+> >
+> > Applied to driver-core-testing, thanks!
+> >
+> > Once the patches passed 0-day testing they will be merged into driver-core-next.
+> >
+> >>   rust: device: Add child accessor and iterator
+> >>   rust: device: Add property_get_reference_args
+> >
+> > I did drop those two patches for now, because:
+> >
+> >   (1) They're basically dead code.
+> >
+> >   (2) It seems that FwNode::property_get_reference_args() leaks a struct
+> >       fwnode_handle reference. property_get_reference_args() explicitly says
+> >       that the caller is responsible "for calling fwnode_handle_put() on the
+> >       returned @args->fwnode pointer", which doesn't seem to happen.
+> >
+> > Can you please fix the leak and resend those two patches with an additional one
+> > that adds a sample usage of the introduced methods to the platform sample
+> > driver?
+> 
+> Alright, thanks. I suppose that should be a new patch series, with a new
+> title and starting at v1 ..?
 
-Am 13.03.25 um 18:20 schrieb José Expósito:
-> On Thu, Mar 13, 2025 at 03:22:21PM +0100, Simona Vetter wrote:
->> On Wed, Mar 12, 2025 at 07:22:07AM +0100, Greg KH wrote:
->>> On Tue, Mar 11, 2025 at 06:20:53PM +0100, José Expósito wrote:
->>>> Hi everyone,
->>>>
->>>>> On Tue, Feb 25, 2025 at 02:51:40PM +0100, Louis Chauvet wrote:
->>>>>>
->>>>>> Le 25/02/2025 à 12:41, Thomas Zimmermann a écrit :
->>>>>>> Hi
->>>>>>>
->>>>>>> Am 10.02.25 um 15:37 schrieb Louis Chauvet:
->>>>>>>> On 10/02/25 - 13:30, Greg Kroah-Hartman wrote:
->>>>>>>>> The vkms driver does not need to create a platform device, as there is
->>>>>>>>> no real platform resources associated it,  it only did so because it was
->>>>>>>>> simple to do that in order to get a device to use for resource
->>>>>>>>> management of drm resources.  Change the driver to use the faux device
->>>>>>>>> instead as this is NOT a real platform device.
->>>>>>>>>
->>>>>>>>> Cc: Louis Chauvet <louis.chauvet@bootlin.com>
->>>>>>>>> Cc: Haneen Mohammed <hamohammed.sa@gmail.com>
->>>>>>>>> Cc: Simona Vetter <simona@ffwll.ch>
->>>>>>>>> Cc: Melissa Wen <melissa.srw@gmail.com>
->>>>>>>>> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
->>>>>>>>> Cc: Maxime Ripard <mripard@kernel.org>
->>>>>>>>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->>>>>>>>> Cc: David Airlie <airlied@gmail.com>
->>>>>>>>> Cc: dri-devel@lists.freedesktop.org
->>>>>>>>> Reviewed-by: Lyude Paul <lyude@redhat.com>
->>>>>>>>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>>>>> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
->>>>>>>
->>>>>>>> Tested-by: Louis Chauvet <louis.chauvet@bootlin.com>
->>>>>>>> Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
->>>>>>>>
->>>>>>>> Thanks for the modification, it seems to work.
->>>>>>> Should this patch be merged through DRM trees? drm-misc-next is at
->>>>>>> v6.14-rc4 and has struct faux_device.
->>>>>> Hi,
->>>>>>
->>>>>> I was not aware the faux-device was merged, as it is a new feature, I
->>>>>> expected it to reach drm-misc-next on 6.15-rc1.
->>>>> I added it to Linus's tree just so that DRM could get these changes into
->>>>> their tree now :)
->>>>>
->>>>>> I plan to merge [1] today/tomorrow (well tested with platform_device), and
->>>>>> then I will submit an updated version of this patch (only trivial conflicts,
->>>>>> but never tested with multiple VKMS devices).
->>>>>>
->>>>>> [1]:https://lore.kernel.org/all/20250218101214.5790-1-jose.exposito89@gmail.com/
->>>>> Great, thanks!
->>>>>
->>>>> greg k-h
->>>> Testing this patch again as part of some IGT tests I'm working on,
->>>> I noticed that, applying this patch on top of the latest drm-misc-next
->>>> triggers a warning at drivers/gpu/drm/drm_gem.c:571, in
->>>> drm_gem_get_pages():
->>>>
->>>>      if (WARN_ON(!obj->filp))
->>>>              return ERR_PTR(-EINVAL);
->>> I don't see how the faux bus change would have anything to do with a
->>> filp as that's not related as far as I can tell.  But I don't know the
->>> drm layer at all, where does that filp come from?
->> Yeah that filp is the shmem file that backs gem bo. That's very far away
->> from anything device/driver related datastrctures. If this is a new
->> failure due to the aux bux conversion then it would be really surprising.
-> Agreed, I find it surprising, but reverting the patch removes the warning.
->
-> It's most likely an issue on my side, but I decided to double check just
-> in case someone else is also seeing this warning.
-
-Any news on this issue?
-
-Best regards
-Thomas
-
->
-> Jose
->
->> -Sima
->>
->> -- 
->> Simona Vetter
->> Software Engineer, Intel Corporation
->> http://blog.ffwll.ch
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+Yes, that's fine. Please make sure to mention that it's a follow-up of this
+series (ideally with a link).
