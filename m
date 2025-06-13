@@ -1,218 +1,207 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2075.outbound.protection.outlook.com [40.107.244.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71241A3155;
-	Fri, 13 Jun 2025 13:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749822307; cv=none; b=Ilm/qHgQ83qWnA3SUWNuFMNABsjnPRoVp879U4gwVkiJY5z/3SXCvo/u9DTP+bXTPRHmWCpL6IISGfY4bRLerqtV0VEOOADyyxYB2y1Q+K1gSfpf/PuXSn7cK8SSHYouuktWf6+9tT5/ybKlwrS7K0pzrcrKgBCOEZgPLSkrPq4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749822307; c=relaxed/simple;
-	bh=1Hy3ujJXBqxV9lfXBO++FN2/fZmpMCZpJfkWT5aJ4iQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mq6MJV7h8jHvpCJITHYfiwMuGfxpxUyDfSAmFq6dpGl5x+aKDAsN4IKNT+rDTV+3wjagnCh24vZiBpiA6qdWlu9m4iNKQhgsm3kRYk8/ZiawVrAL0EMqRszQ6OzYaK6Is7h5fWHpmztUeJSLhBL2PycWb/E0zbk/ouLwW/XV8jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TtLf8G8H; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48884409;
+	Fri, 13 Jun 2025 13:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1749822385; cv=fail; b=Tg0MX0M5zKy1s9aKD9bvlfngnQc3CpiSD1qEbTC5HauDtVVlWuu1EL0ivyuMLBBxuRzu5nXW8HewLV3dLyyD2G5v5TNmNUMal9zb+amX2TO075a8kmDmlUNRqKK8UMJKYxj6RkHxHp9Dk+wdEZE6lDR8TyXTx5I4qkLHmu6hbLI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1749822385; c=relaxed/simple;
+	bh=BJJ8nWtMJrU7XHidYnupbwT0fLnLSfonJ4XTQYzBwQk=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=jDGSXVOUnJLm+zAcaewnIpz8gKoPaYGwubguMwinrPSKPBQfS7Qo4VlAAcYzZ6u//mtxuOlJNe4bnnGD/kxfTUhjdrEOzrSkIWHjetvt2et0Vp3Woerbn5hREC8nhP1m0P/gbQMEgj4njZV/pwcWSym4837uMAfBhQTKd5DeNoY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eneAJfyn; arc=fail smtp.client-ip=40.107.244.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TtLf8G8H"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a54700a463so1471816f8f.1;
-        Fri, 13 Jun 2025 06:45:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749822304; x=1750427104; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f7KlnwZB+CxVWmAEV673+n7G11D71TLYbf9q51R/jMw=;
-        b=TtLf8G8H93S0R19lPo51vLv23ecS9k9HLiG5fRfu7hZ9ODrUqS7IfI17rH8oiuGXS9
-         pRMry3wXAhMwpWMF4WlFSGjFXh4rxhBptuf3BdZXZNhZQ8UtBppv2yQhB1kaR/2O+2Rp
-         RjAN5r1aJBLMoc9k5E9o11W6KNJfw4J9uKYo09zjz+Cac9KPhMUy9a4T4vA8vDgoc4YD
-         veTK8VLD26cSj3PUj2rgF4qjZDRg/Qw1XF/rRpgBqFTVW5ch3jfRbEuyFFwNxV3a0Vh9
-         YFp/TpU/l2zvGA56teePduwujP+LjoRyMELmdO1RrslygP9eXeO1TXGnWe4C667Sw9Du
-         U35Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749822304; x=1750427104;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f7KlnwZB+CxVWmAEV673+n7G11D71TLYbf9q51R/jMw=;
-        b=S+3NsdqO1pxNmB0p52+T0RQvc+GY9PE7d15TQpvS1HjwB2DCfEt+I/NnOzLKPqQ32u
-         Jl9IPHS164/dgINbgvdYCWzJUFis5jghNnAaIIbK/5UJVNISDWlY2L/7Axcbqi+6s2G9
-         XZoWC3Zxp5zXD8TqggT8l9RjrhmUCrWKrm1dvINOpa5Kt2DjDsp5dk2UPdLrjuRqlOBO
-         ereUAOFh4id8yDhYaMDi9KJtbq0QTTmWJbsn9+Fk5/DXCQ46KJzQ6Hw5cEClLgc2afDT
-         dGNZZqL3czZCrTgX4oxz5JYWrrFx4OnwCm2D+HVoi1j434omOi+FHoAoKMdvaqd/YpYm
-         +HGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUa7l8XtW+tOXjyKSipzyYrQmcEknHIYepHk3xQpXfIZpSJg9dQ+n86mnmBa0l86ImVWqVnWEmJjIVI73cNwGo=@vger.kernel.org, AJvYcCV2ZNiB1Dx/pQbVpdiFf/11dd5oxalCwiwMq5ZgrDYpDr07oJDC3b28JTLNMLBmUrqoqTPromjK4F9Q2Td8@vger.kernel.org, AJvYcCV58KiDiVQAqLmq11uqz3DBLbXzGz+VMKCUP9m2SqIaL91hhQ38el3dKzB31GrIn0xpSVa+1uwu52+c@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxty8eWnOabCLD9m2f7n3dpiPHAtC9fob8JH0oLOjkDqO+pg0ns
-	8E36Efxc1GvvZw6omsi6HS/upKzc61+7ygylvht8j9OCjauEKzOt8CX3
-X-Gm-Gg: ASbGncshRpMxe910ljlkQi2drDF9eaptxHNLiD5WWiSyTWIwVWHiZZL0CR/4edXaxo+
-	oMco4YgREuSa0lM+Hjf3KYM4kbkMgYSip0uSKzo32/ySOWK1Z0SrwgQxDmJRggihYVoDaPfygD1
-	tR2AaA0YhpgfK7FKjrp0yq3a5AAuIszcz8kWqjHaRE3s0guoG4FHV5maUTtvZ3m5JueQHXX9o4r
-	31G/8GE9Vqv+f4UTH+CgsYMUrjRryjakLYz/gAqHk1ztLZuJofRsOPUB/0kqvHdUQNR3l0Q5YiF
-	otVBq2xu4vtQ63ozw5rSaM4zgPwjc+k0BKGW5q68PMljxMc1/no/gFoKhdheFeCRo0UdH7nyOJ7
-	e7JToA4uqNtU00r9m27YiEnWLZUA84Cdh/Xke
-X-Google-Smtp-Source: AGHT+IEWNniUs4P1E63VohfXQE6EU3JoQMNOoUU+QZyzKBx9d/Dwe+o27BZFGaemVFzQxWfkceM/fg==
-X-Received: by 2002:a05:6000:40c9:b0:3a5:1220:36d4 with SMTP id ffacd0b85a97d-3a56d83462bmr1058582f8f.22.1749822303897;
-        Fri, 13 Jun 2025 06:45:03 -0700 (PDT)
-Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4532e232e0asm51752975e9.14.2025.06.13.06.45.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Jun 2025 06:45:03 -0700 (PDT)
-Sender: Igor Korotin <igorkor.3vium@gmail.com>
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	rafael@kernel.org,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	lenb@kernel.org,
-	wedsonaf@gmail.com,
-	viresh.kumar@linaro.org,
-	alex.hung@amd.com,
-	dingxiangfei2009@gmail.com
-Subject: [PATCH v6 3/6] rust: driver: Add ACPI id table support to Adapter trait
-Date: Fri, 13 Jun 2025 14:43:01 +0100
-Message-ID: <20250613134301.1231229-1-igor.korotin.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250613133517.1229722-1-igor.korotin.linux@gmail.com>
-References: <20250613133517.1229722-1-igor.korotin.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eneAJfyn"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bGKsKAWtDHInbQGATxrD2bdO9qy0oGTTQouygzhPevdnRlIYlrQNPJ2Ke6ZP3vzVGvi9Qv7nYvetDXaA6ke/TXs/0uDgzo0aJjaC3RccBSCFxs7JbT7AloP3aKvWIS8p9FpKUulLG1wru617xx6P2WmjPUxdPruu9lFRGWbkqgKC3yCE/rGYuw4FL8pNJk9JRTSRNpIcDktZw70dGkJdC078LXJ7AvJff4C+kEzvpImAWwPbBtr7rJv4SqjEHPR0MRZ27HOOL7Kx+6nPq/yjcLJgqgtOkX9Q84qSnpWt3rDG/oSNR09n/213hf9hz92zJLTvB2+kbeVIbX2kHC11Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OVm3QyF6Ojy9i14b1IUrheuKsKZqCtO5euFblzTW1R8=;
+ b=U9qjKb6fi2a6UU2NBYzfi3C7sfrl9xjyCrXracH6B71lggW0io0cI52Gc+Fsok/aYYpR8jKgK4lrvGh8RH15IhN8dW0zDZegVvPaJnSR55Pe4z6xQXhHQ9ANpb17qdqHl0WCT9gpvciqobtpAc+0ydG/PrjhQhZujrTJeBfJLq5D2iMC/ongZmmeM1NDAMbens3tZBqi+TG9dxVGzfuk/rkKZEIFMT0+ap2D6yccOQxKpqDiQPdgX3X9SxEzT+FBGJtHc6Smmd9HF5O3xydxWkaDF9ayKtJtgUqqnJIMBGrszvoZTJcUMJCrZtmBzpy6wPkzw/GmjifnIueQ25zoKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OVm3QyF6Ojy9i14b1IUrheuKsKZqCtO5euFblzTW1R8=;
+ b=eneAJfynFhipxd4e4BkMKpqxPZZ1PIXAzvynkCczU+RPvblguB+ndaYhtYIM42qNyWVKVrOYc41407GBHHlicqIskn5QIWWfaRsvx7htZY54NRCVovKF4lWgwC87+WGtkP5O5CEeGs3Xzj6ScL54fWTPd0mM5nvQ4/U+6HhPFC8Kr1PSVBQNMn5Ak+/2/wCkjNCO7VDvla1m34IC1x/fKvHlJ5q7IcHkU85Fqgfi29kbhppXwBP/Ki1UiHUPhhPRsd92THdyX6IMv6+JSUQyg4hBVYZ85AoTpxW8dWmEklAkkvmxXgj1VybKWDHKWPXqjaNgBpdLIlYuXgW2qvRCzw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ0PR12MB7458.namprd12.prod.outlook.com (2603:10b6:a03:48d::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.18; Fri, 13 Jun
+ 2025 13:46:21 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8835.018; Fri, 13 Jun 2025
+ 13:46:20 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH v2 0/4] rust: a few common Borrow/BorrowMut implementations
+Date: Fri, 13 Jun 2025 22:46:07 +0900
+Message-Id: <20250613-borrow_impls-v2-0-6120e1958199@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJ8rTGgC/13MSwrCMBSF4a2UOzaSRyvVkfuQInnc2As2KYlEp
+ XTvxjpz+B843wIZE2GGU7NAwkKZYqghdw3YUYcbMnK1QXLZ8U4JZmJK8Xmlab5n1juPXnmLeFR
+ QL3NCT6+Nuwy1R8qPmN6bXsR3/UEH/gcVwThDYTWaVvbOtOdQyJHe2zjBsK7rB1rtT4ypAAAA
+X-Change-ID: 20250531-borrow_impls-8dfef3fcee93
+To: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Alexandre Courbot <acourbot@nvidia.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: TYCP301CA0021.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:381::18) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB7458:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb2526d0-adf8-41a4-3551-08ddaa80add4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|10070799003|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aVhlenNMVGZRN1JhUmc4SFQrK2tTek5xZnBZMmNtWXBwNEJxQ0ttN1Z5N1Av?=
+ =?utf-8?B?ZDhUSkd1UzdnNmFUUTNVVU9MMkNKM1RUcmgrM2F4TmM1SGlqVWVSWEhaWWs3?=
+ =?utf-8?B?V3RTWjZPNjY4aTdCSFR5Q0lOcmJLQU9KamgzcHJndVhHMWt6bXYrUGljdnQz?=
+ =?utf-8?B?MlRUVVZVckNRa0JwVC9mUVoxYjJlSFJZbmZkdVhVdUNLUFk5WVFNeng2bHYw?=
+ =?utf-8?B?MmtvZFZXcW1HU3dBcmdBTXJBbWhudjlXVHJFamppZG5makpTaUx6cHFna1I2?=
+ =?utf-8?B?akJZM2IvRGUzemRVeUpJU21naVdOZmdtUjZLK3A2bmsxNmg1djhEWmpRUmI1?=
+ =?utf-8?B?SUJnRHZ5U2lvTytsUGhhZ2FZUkY4YzVBQlJQa0d2U3VQbldSOVFJajk3VnQw?=
+ =?utf-8?B?M05qOFJ0TkZ5aGc0U2xKSS94eDR3VlByT0YxUHJNRmVvYUFpVEdJbkxkam9s?=
+ =?utf-8?B?NUZjbE9jOWpESW1pYUZlTDFlVldDT2ZrK2lyd1Vzd0YveUNaSHZWMHdzamwr?=
+ =?utf-8?B?VEJyQnFyblNpOUo1cVc2MGtoQktsdkxiYjJkbndnNlF6MGUxaDZLRE9oRGlN?=
+ =?utf-8?B?Sm9xemdiZjRjS2FZK0NrdmNSTm50cXFzdWNhc3hpYUlSVVQ5SzhyQWFxd2k4?=
+ =?utf-8?B?djgvZ0RJeTh3cmY2cHR3Y0RURzErTlJCMEtESnVqVmVKclhRMGR2aUFMK1c4?=
+ =?utf-8?B?bFZ2VWJreTNIb2k2ckZjajJ4K3o2Sm1WMXdSd0pFc0phNUcxNUQ0eUl3MVlo?=
+ =?utf-8?B?MzZlRkhHaGpwQkRUSzhqSkhNVENjYWVJc1RxRGdLbFlaUkkwbjFSZW5OVC9R?=
+ =?utf-8?B?OFVnVUxNUWhaWWlyWjNWSUg2ZHFMTmJhQVJISFh6YVo3MDQ1MVYzM0xwWkd5?=
+ =?utf-8?B?MEJaeUJvQ3gwYldWdmNwWGtqYzdQMGl6SmRUdHlXQTFvRC9qam9kRk14dVY1?=
+ =?utf-8?B?dEYrbjZyaEkyQWZ5UTd4SGNPZ1B1YTNPWG90M21FQTZNYmk0eUkzdGJGeVhN?=
+ =?utf-8?B?YlJDVnlaYzVTbnJNV1BNMlhpMkR2aEdRZ2E0eEJjNy9NNDBjQzlpejRVVWlK?=
+ =?utf-8?B?Q2NUWUNaTTdQMUYzUng3ZjRTNDlsV0x3aHZzTDVTUFZIOEhOenBNalowZVJ4?=
+ =?utf-8?B?K0lYU0dYa2NORVVRNjZDaGdibWJBYXJ1WHhTQmgvdDlNa0dVcEc0c3QvaDB6?=
+ =?utf-8?B?NXVHMnlWUFBvNUNzMXJ5a0lJMmZiRkdTL3RzY3lqTmVsa2NhNXVSRndjNHlK?=
+ =?utf-8?B?Y0FXQnpYL2U4cnl4VHRYOU4vcGd6ZVBNdE02bFhYMytVQTNCay92R0d3aVFx?=
+ =?utf-8?B?cHBsdDBnbndxZTAyc1BhdzF5RndwTk9DL3ppVDIrUnFXajhuc1VqZVlhZkpt?=
+ =?utf-8?B?c0ZrandGRDZHcEJhMnJiMFRuVlZDcFJ4Wk8weFBZbDNkZnBRSDVWbGQ5TDlz?=
+ =?utf-8?B?V1krQVFLd2g5ZmVYRUJCU3ZqdnRHSnluUVJvRXVmenlSMFpWb2dCRnFldWQz?=
+ =?utf-8?B?YnhYYmthL2U0UFVoMUhLajd2NUQ2QVd4cjY2QzhLREtEamJVaVR0cXhmUzA0?=
+ =?utf-8?B?a1ErVXRxa1oxUUVyTDFycFV6QWFsS0srZ3FHaWlsUG9pdlRycU9peUtaQkJ0?=
+ =?utf-8?B?cDV1aU5NRmtCQ09pdkIxNmhTN2dOdUVoTGtVZ3ZHdnozZkZTTksrQjluK0JT?=
+ =?utf-8?B?clI5b2I3NEQzcm1lQXluTFJYVndCUk1GdENiSElpTVJqVjBkbXpsSU9Zd3ZD?=
+ =?utf-8?B?TnFySTlTN3Rjb0p6dm1hWEFYYmJGTDFTQmNndFFRajZNM1Ryb1RCWG5Qa254?=
+ =?utf-8?B?VTllSWl5SlZXaWxrSWJETDFiZlpWN0J0VEg4ellaZ2Vua2t4VFc5Kzh4a3gv?=
+ =?utf-8?B?YlZxMzFacWtFaWZDQWJndEVUYUlXU28raElUT1dCNTUvd0Z5dnptL2hWb3Q5?=
+ =?utf-8?B?UXlGQzBJaXRuTXUxYWhnMkV4V3pEWkwxRVVGRS9YY0JhRks1UmdSQzN3SjVW?=
+ =?utf-8?B?aXYxa21vdXJ3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(10070799003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U1huQU4vODFYVmwwa3ZUalczUFY2RkNuQlVVWlZ2VEVUU1RkemtTL1RtSTQ4?=
+ =?utf-8?B?Z0VRaHFNU1VqU3dVV3JaczY4cGlBV05MMjM3WVRXL1dtNTZkeFdnZm5EQkN5?=
+ =?utf-8?B?WGFwYjJVNVZTVklwQmRJQmk3K0JqOXMvTWZzTkQzSW9EU1ZsYmJpbVlEZUF4?=
+ =?utf-8?B?SmNjVzhQdXBla3I4NDNSak80L3hZUG1lSUNqOUJaVVVwdFRJdmhraHYxd0ZC?=
+ =?utf-8?B?M1doMTB0aFlnNk5wY3BhNXJQUnBFV2RrUW9SU0I3NHU2SDd2dUc0NmJ6bG1Z?=
+ =?utf-8?B?MjNLZUZGUXlmUjBSR1VsRWdyOGFNalI4d3llbXg3bXNMdnVGQ0JRZzAzZzVz?=
+ =?utf-8?B?QitQY3hFLyticEMrUWZjVWVFTWdzcjNvcWdiVitVQXNQbDNxYUlzOFlzUGF6?=
+ =?utf-8?B?TUtrSWtQY3F3KzZlU3RtMkdMZDB6bUJaKzFrd0VwRTZWcTJYVmcreG5hV3hG?=
+ =?utf-8?B?NTN4eHh5UG5nYkhmbWl2YUs4R2tCeHZGTzVUWW9GZmNKeWhJTnRJT1IyS1ZQ?=
+ =?utf-8?B?U09EV01lekZMd0NxVFhob2hZTjAzWGMzTk1hRWNxakZqNGsrS3M2dHQrdFho?=
+ =?utf-8?B?R0J2TksvMjdaVkJXQXg3aHZhSnRRVmVRSDdoZ3NmTVFVTU9MODdScEhNdi9B?=
+ =?utf-8?B?RDFCbUx6NXFIbTFZOFhGYUpVdzZRMjNtcFlEb1NobnllYmhLOEFzZkx2eFIw?=
+ =?utf-8?B?dUhKdEFFOXA1NEJFd1dNQjU2SzFqU2svSmd2dzJtSzB5OFFPL1pUdFBDTVc1?=
+ =?utf-8?B?MTBoOUxRbm45cWI3SG8ycGt2Yk1NWjdsZ3krVDVTQXFKL1RhVjZqQXAwTkNL?=
+ =?utf-8?B?ekRScnJHNndmN2MyR1IxUW4wQjVPUm5vOU00MmlRMFFHOUFjM2hVcGRrZVc1?=
+ =?utf-8?B?c3BMTnZRT3h4bjVEbWlDNVorU3VnYVVjNU1pbnhla1ZkQzNZWnZLUnZGWkNS?=
+ =?utf-8?B?eWxuS3dUZjRrc0xnKy9YbldYdHZPZ3c0Uko1S1ZtdFliR1JKNEtDZDkyR1pR?=
+ =?utf-8?B?V0VqYVlJQ1MxOW9jUDhiUHg3QTlzZHdSWVZvSlo4emZrbGMyalRSMlhvbVh0?=
+ =?utf-8?B?MENXam1NZGZMdnIwWjE3eE0vaFIrMFM1TXFlUVhOTlFaWitPaGpJRytxcThV?=
+ =?utf-8?B?WEI1WDhwRzRKdVBsTXVtVU9vTFZUN1VhN0NpaGtVQ3hTalQ2L0M5dmovOEg1?=
+ =?utf-8?B?L0ZFZmFoL1l2VWFQbHplamwrN1lVdWRucFIzYTlKaTZ5bzlTeFF3YmVxcmRV?=
+ =?utf-8?B?WmxwZDV6VWg2Tm5janYzNVpPVmpXOEZqTmxYenhLSHhyVDFialhrVHVKcU1K?=
+ =?utf-8?B?WklOM0dVQnF2VTdpWWc1RFBkOEd1eG9naUFXRlpCSU45ek9tMnFqVlZVNGhW?=
+ =?utf-8?B?dnJxMFhLYXB2Si8zQTlubjJxeGpwNEdsUUYyVnRoSW5POTE2RGIxU2xhQmYv?=
+ =?utf-8?B?U25ISEJ4MmFNeHpPbUhOZ0d0akFpVW9IaHA0YktmQTR4RUlOYmtDL0RJS21S?=
+ =?utf-8?B?L2EwMjczSE5uK0JoNVJPNHp6a2d6SE5PbGFnSmRqY0VjYXc2ZUFJQmpzTEFR?=
+ =?utf-8?B?dS9wSUR5Vy9OZGQ2bGltRmZ6enlEbzdMZFIrYkhVbWxtR3JoQ2psNW5TcGJO?=
+ =?utf-8?B?c0xpRWMwTStrR3lBL0pWRzZNVi9OVlFXZjhvMUNOei91QmdzVFlVYS9QNHNl?=
+ =?utf-8?B?dG5IejRleW5CQXMvNEtWemk4dTA0dmNmK1VmMHFOTXpZNjNKcU00V3RKZWY4?=
+ =?utf-8?B?NWdlbnRKUkFpYVFsV3pnR0hYaittaXcrZzY5V3pkRFFkbXZVektPZjVUbFJH?=
+ =?utf-8?B?TGhaS2twYXcvV0Z0ZWF1K2EyalFmV2N3VERrTFVSaWgxQnk4bityZ2I5R3ZT?=
+ =?utf-8?B?NXRXK0tIbW9oL0s3ZjZZNTN4S2VaaGcydGVwSjk3N3ViRjl6SWRoNzJuT1l0?=
+ =?utf-8?B?TG0rNlJIdHMvUnNlQ1hmcEl6akZybHJKYnp3Q1dZd1hKNllYRkJaTDc1Ni9P?=
+ =?utf-8?B?YjVMNFM5TzA1UjNiSVZGT1NHMHZrem5iLzhTaDhEdXArc3orN09aRkdNMFNa?=
+ =?utf-8?B?QzAyK2M4TUlEeTFOdVhzT0ZnTk5XVWM0MHVHRm9vcUhIQTZCbGwxYTdvK1kz?=
+ =?utf-8?B?QVBUY1N4aVAxbVZhMkhmaVpoTGgrdWhnNm0yNkpOd0Y5UkdvdzZBZ2Y1L2ZL?=
+ =?utf-8?Q?aEUc5Y3lZBTwjYIj8reTzD9xkQWmIvjeCQmmLkgUNQ7d?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb2526d0-adf8-41a4-3551-08ddaa80add4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2025 13:46:20.8077
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EipSqPHgu/kBEkv7H8xz8EdOzJR+GlE1Y/70tA45ZKzsDWOrBbJXG2aYra6Bp/kk/NmU57eThClrYM56GSXXWQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7458
 
-Extend the `Adapter` trait to support ACPI device identification.
+The Borrow trait has multiple uses, one of them being to store either an
+owned value or a reference to it inside a generic container. This series
+adds these implementations for `Box`, `Arc`, `Vec`, and `CString`. I
+came across the need for this while experimenting with the scatterlist
+abstraction series [1].
 
-This mirrors the existing Open Firmware (OF) support (`of_id_table`) and
-enables Rust drivers to match and retrieve ACPI-specific device data
-when `CONFIG_ACPI` is enabled.
+This second revision adds examples to each impl block as requested. I am
+personally not quite convinced that they are needed, as they just
+illustrate the basic usage of `Borrow`, but have added them to this
+revision so we can decide whether we want them or not.
 
-To avoid breaking compilation, a stub implementation of `acpi_id_table()`
-is added to the Platform adapter; the full implementation will be provided
-in a subsequent patch.
+[1] https://lore.kernel.org/rust-for-linux/DA9JTYA0EQU8.26M0ZX80FOBWY@nvidia.com/
 
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/driver.rs           | 41 ++++++++++++++++++++++++++++++++-
- rust/kernel/platform.rs         |  6 ++++-
- 3 files changed, 46 insertions(+), 2 deletions(-)
+Changes in v2:
+- Rebase on top of v6.16-rc1.
+- Improve commit messages. (thanks Benno!)
+- Add examples on each impl block.
+- Link to v1: https://lore.kernel.org/r/20250601-borrow_impls-v1-0-e1caeb428db4@nvidia.com
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index bc494745f67b..dfb2dd500ef6 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -28,6 +28,7 @@
-  */
- #include <linux/hrtimer_types.h>
- 
-+#include <linux/acpi.h>
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index cb62b75a0c0e..8389c122a047 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -6,7 +6,7 @@
- //! register using the [`Registration`] class.
- 
- use crate::error::{Error, Result};
--use crate::{device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
-+use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
- use core::pin::Pin;
- use pin_init::{pin_data, pinned_drop, PinInit};
- 
-@@ -141,6 +141,40 @@ pub trait Adapter {
-     /// The type holding driver private data about each device id supported by the driver.
-     type IdInfo: 'static;
- 
-+    /// The [`acpi::IdTable`] of the corresponding driver
-+    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>>;
-+
-+    /// Returns the driver's private data from the matching entry in the [`acpi::IdTable`], if any.
-+    ///
-+    /// If this returns `None`, it means there is no match with an entry in the [`acpi::IdTable`].
-+    fn acpi_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-+        #[cfg(not(CONFIG_ACPI))]
-+        {
-+            let _ = dev;
-+            return None;
-+        }
-+
-+        #[cfg(CONFIG_ACPI)]
-+        {
-+            let table = Self::acpi_id_table()?;
-+
-+            // SAFETY:
-+            // - `table` has static lifetime, hence it's valid for read,
-+            // - `dev` is guaranteed to be valid while it's alive, and so is `pdev.as_ref().as_raw()`.
-+            let raw_id = unsafe { bindings::acpi_match_device(table.as_ptr(), dev.as_raw()) };
-+
-+            if raw_id.is_null() {
-+                None
-+            } else {
-+                // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-+                // does not add additional invariants, so it's safe to transmute.
-+                let id = unsafe { &*raw_id.cast::<acpi::DeviceId>() };
-+
-+                Some(table.info(<acpi::DeviceId as crate::device_id::RawDeviceId>::index(id)))
-+            }
-+        }
-+    }
-+
-     /// The [`of::IdTable`] of the corresponding driver.
-     fn of_id_table() -> Option<of::IdTable<Self::IdInfo>>;
- 
-@@ -180,6 +214,11 @@ fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-     /// If this returns `None`, it means that there is no match in any of the ID tables directly
-     /// associated with a [`device::Device`].
-     fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-+        let id = Self::acpi_id_info(dev);
-+        if id.is_some() {
-+            return id;
-+        }
-+
-         let id = Self::of_id_info(dev);
-         if id.is_some() {
-             return id;
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 5b21fa517e55..5923d29a0511 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,7 +5,7 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    bindings, container_of, device, driver,
-+    acpi, bindings, container_of, device, driver,
-     error::{to_result, Result},
-     of,
-     prelude::*,
-@@ -94,6 +94,10 @@ impl<T: Driver + 'static> driver::Adapter for Adapter<T> {
-     fn of_id_table() -> Option<of::IdTable<Self::IdInfo>> {
-         T::OF_ID_TABLE
-     }
-+
-+    fn acpi_id_table() -> Option<acpi::IdTable<Self::IdInfo>> {
-+        None
-+    }
- }
- 
- /// Declares a kernel module that exposes a single platform driver.
+---
+Alexandre Courbot (4):
+      rust: alloc: implement `Borrow` and `BorrowMut` for `Vec`
+      rust: sync: implement `Borrow` and `BorrowMut` for `Arc` types
+      rust: alloc: implement `Borrow` and `BorrowMut` for `KBox`
+      rust: str: implement `Borrow` and `BorrowMut` for `CString`
+
+ rust/kernel/alloc/kbox.rs | 61 ++++++++++++++++++++++++++++++++++
+ rust/kernel/alloc/kvec.rs | 57 ++++++++++++++++++++++++++++++++
+ rust/kernel/str.rs        | 49 +++++++++++++++++++++++++++
+ rust/kernel/sync/arc.rs   | 84 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 250 insertions(+), 1 deletion(-)
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250531-borrow_impls-8dfef3fcee93
+
+Best regards,
 -- 
-2.43.0
+Alexandre Courbot <acourbot@nvidia.com>
 
