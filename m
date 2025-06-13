@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6648F6C
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Jun 2025 23:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA74328F50F
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Jun 2025 23:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749857295; cv=none; b=pSGWHskx0ioCxksTR1wQVDodW3rdu1NLF/HuNhpmENcuzZGTe9un+amXhe5Ix6UNmX97Hl3+BTcxPY/tuuRsa8kaX87WPWxyKNuRTpip1D/Nm1c6rYX94zMJsQxxqCv8GCgF2PumpNBVRUao7akUPqiwRZtbD2RBTT4n97JzSxY=
+	t=1749857303; cv=none; b=uV+GMPPmqQWXm113qzgbS+Sdqk7NgFc0z/fPRG1XxFjsTzE3fE34itHNCQgRG0tO5yHI9IRYV+gjaxn6weFbd1VA89oJmHqwleDKPsV+uhqugbuXw+SbVTcsjRIKzV7jDrZ7pVx99omwi2g0zg/7vuVW9BC30QwGNQRSFkq+pRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749857295; c=relaxed/simple;
-	bh=6xwBQ8XFSwXpWFSAxeZ7Jy8x94+usvMvfj6eVa6OR6M=;
+	s=arc-20240116; t=1749857303; c=relaxed/simple;
+	bh=8XiIjEW6y+FYCoQtlFbJR03Sv5z6zfVq8WvMhyt1wQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebFkQOG0mTprcqWWvURRBkTVZLDj4yY0QE60+dSqa+hBe6LtV3H7ecBGBoN6cBeKkjctG1KWl3ieJS7L4dm7qbn5Rzyjmab50sp6kF64p98MbZyaKrsxyVzT58iGgSKmyCpE25sARwmK//3fO/qmf1Cd6IaE/p+Z0p3QeiC+B/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TRFzixCg; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=TSdorjC9/xAI5x9f25eN20OVsg/w/o80TeFgd1F0uo0eWuvRUhquSvF9cZkbNCmyqMMCBmjuYKe8f+k+OMvl5iVG7bJ3HNIZe6pny7iIEnIrzLBKveVpiV3V7v2/c93hFdWsSa46LmOc97b8JyIL2ETxuPO43Hm6LlMrxrGOnrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gbobq49g; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TRFzixCg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gbobq49g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749857293;
+	s=mimecast20190719; t=1749857301;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Sd5OvAnSvV+D6OhpTlfHjUIhs7V1jSP69SJuBda5Kmc=;
-	b=TRFzixCgzpJhEk7T/mhbc7XuI3Zrc/JeqPVCI25n+StgqNXQ2k9yy9f3H6z/pQC5q6Fliv
-	60sA+Vk8ibHUGi96CexLoQcAkFxP/Jko+4vJCSBJZxaV85LCL6SO9tj6k3ghDN6DFQWlF1
-	GMA6BQsbVorPTR+KaIEIGoENg36wBTE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=CaLWenPoKrGEWobEA9tdmUNkYJSHZWMZCQooqzz26nY=;
+	b=Gbobq49gJ7OBm0xMAGKdJY2tu6UXPvUPqt/acNEw41ZDdMkzBz2w4T019irOaORVf8oSrr
+	2vogOoncWvISRlSYFBKoB8+WEXWlrojXH0RFVe/rLdAVJ2GNsBiS+4ZTCMZDBdMRSJppBL
+	A2JNTVxEz/KSskSGdZAeyQWb/N9zBfs=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-614-sb4txEUMNx2eJP1DD2mfXQ-1; Fri,
- 13 Jun 2025 19:28:08 -0400
-X-MC-Unique: sb4txEUMNx2eJP1DD2mfXQ-1
-X-Mimecast-MFC-AGG-ID: sb4txEUMNx2eJP1DD2mfXQ_1749857286
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-XjnabceyPtqWcpf3NGiW_g-1; Fri,
+ 13 Jun 2025 19:28:17 -0400
+X-MC-Unique: XjnabceyPtqWcpf3NGiW_g-1
+X-Mimecast-MFC-AGG-ID: XjnabceyPtqWcpf3NGiW_g_1749857295
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA41F1956089;
-	Fri, 13 Jun 2025 23:28:05 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BEF501800281;
+	Fri, 13 Jun 2025 23:28:15 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.64.52])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7E9EE180045B;
-	Fri, 13 Jun 2025 23:28:01 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9ECE5180035C;
+	Fri, 13 Jun 2025 23:28:11 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@kernel.org>,
@@ -61,9 +61,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v5 1/7] rust: hrtimer: Document the return value for HrTimerHandle::cancel()
-Date: Fri, 13 Jun 2025 19:22:22 -0400
-Message-ID: <20250613232754.451450-2-lyude@redhat.com>
+Subject: [PATCH v5 3/7] rust: hrtimer: Add HrTimer::raw_forward() and forward()
+Date: Fri, 13 Jun 2025 19:22:24 -0400
+Message-ID: <20250613232754.451450-4-lyude@redhat.com>
 In-Reply-To: <20250613232754.451450-1-lyude@redhat.com>
 References: <20250613232754.451450-1-lyude@redhat.com>
 Precedence: bulk
@@ -75,33 +75,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Just a drive-by fix I noticed: we don't actually document what the return
-value from cancel() does, so do that.
+Within the hrtimer API there are quite a number of functions that can only
+be safely called from one of two contexts:
+
+* When we have exclusive access to the hrtimer and the timer is not active.
+* When we're within the hrtimer's callback context as it is being executed.
+
+This commit adds bindings for hrtimer_forward() for the first such context,
+along with HrTimer::raw_forward() for later use in implementing the
+hrtimer_forward() in the latter context.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 
 ---
 V4:
-* Reword to "Returns `true` if the timer was running."
+* Fix the safety contract for raw_forward()
+* Require Pin<&mut Self>, not &mut self
+* Drop incorrect UniquePin example
+* Rewrite documentation a bit (re: Andreas)
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/time/hrtimer.rs | 2 ++
- 1 file changed, 2 insertions(+)
+ rust/kernel/time/hrtimer.rs | 48 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
 diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-index 3980a7c5f7dbe..294f257ef5c5a 100644
+index c775d7abdf5ce..6fdd54e3328c5 100644
 --- a/rust/kernel/time/hrtimer.rs
 +++ b/rust/kernel/time/hrtimer.rs
-@@ -324,6 +324,8 @@ pub unsafe trait HrTimerHandle {
-     /// Note that the timer might be started by a concurrent start operation. If
-     /// so, the timer might not be in the **stopped** state when this function
-     /// returns.
+@@ -168,6 +168,54 @@ pub(crate) unsafe fn raw_cancel(this: *const Self) -> bool {
+         // handled on the C side.
+         unsafe { bindings::hrtimer_cancel(c_timer_ptr) != 0 }
+     }
++
++    /// Forward the timer expiry for a given timer pointer.
 +    ///
-+    /// Returns `true` if the timer was running.
-     fn cancel(&mut self) -> bool;
++    /// # Safety
++    ///
++    /// - `self_ptr` must point to a valid `Self`.
++    /// - The caller must either have exclusive access to the data pointed at by `self_ptr`, or be
++    ///   within the context of the timer callback.
++    #[inline]
++    unsafe fn raw_forward(self_ptr: *mut Self, now: HrTimerInstant<T>, interval: Delta) -> u64
++    where
++        T: HasHrTimer<T>,
++    {
++        // SAFETY:
++        // * The C API requirements for this function are fulfilled by our safety contract.
++        // * `self_ptr` is guaranteed to point to a valid `Self` via our safety contract
++        unsafe {
++            bindings::hrtimer_forward(
++                Self::raw_get(self_ptr),
++                now.into_nanos(),
++                interval.into_nanos(),
++            )
++        }
++    }
++
++    /// Conditionally forward the timer.
++    ///
++    /// If the timer expires after `now`, this function does nothing and returns 0. If the timer
++    /// expired at or before `now`, this function forwards the timer by `interval` until the timer
++    /// expires after `now` and then returns the number of times the timer was forwarded by
++    /// `interval`.
++    ///
++    /// This function is mainly useful for timer types which can provide exclusive access to the
++    /// timer when the timer is not running. For forwarding the timer from within the timer callback
++    /// context, see [`HrTimerCallbackContext::forward()`].
++    ///
++    /// Returns the number of overruns that occurred as a result of the timer expiry change.
++    pub fn forward(self: Pin<&mut Self>, now: HrTimerInstant<T>, interval: Delta) -> u64
++    where
++        T: HasHrTimer<T>,
++    {
++        // SAFETY:
++        // - `raw_forward` does not move `self`.
++        // - Self is a mutable reference and thus always points to a valid `HrTimer`
++        // - The only way that we could hold a mutable reference to `HrTimer<T>` is if we have
++        //   exclusive access to it - fulfilling the requirements of the C API.
++        unsafe { Self::raw_forward(self.get_unchecked_mut(), now, interval) }
++    }
  }
  
+ /// Implemented by pointer types that point to structs that contain a [`HrTimer`].
 -- 
 2.49.0
 
