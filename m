@@ -1,207 +1,208 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA0F2E62A7;
-	Sat, 14 Jun 2025 17:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824B519C546
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Jun 2025 17:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749922315; cv=none; b=I9RoPfL5eAdIzoRWiz0r0dWf8Qx9Eq0hSzpmICewlqts+370tnfXVTZYqRsO8WHLvulKZ5+jSv1A86gfmHNgbfVou2yoV9WEuF+iPcg1c2oz008m9uSil6X2Oacn4wYBKSfyCaO3Xh/d24ltOp6MeRfy4dMgWPtzyzn+XP1OiYo=
+	t=1749922978; cv=none; b=eJKav36RA2IFDjG6sQbX2NPud/okvRatVXK2nkIpwezHsSXNFzRcsc52ViBKPsn4BTzZ38vktzWJ5fC2o334a4q0s6uLR3hMe6CLebs+0D9IWQy8UYoYCMp9Xd0nNt7dD0yRrPEa1GmpGAeKF1WqJZMaaqugqyrm9p2hfCmj98E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749922315; c=relaxed/simple;
-	bh=qzEVLCJ4y0TCHDNIu6cFpnAWeTkMTFjZRghPtMz66K8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HUW4T5IMl/bLMDiLAlaDmzJ9v/sQvYv6T23qsyWFja35qEKdR4fXt+A/gh5KnrzssYyYb6UmQRktXm9do+mH944o/jEcoZFex/fjUtJ/x4phqUeK3rNq0e7ov01yaEq+5eIudGLkJPLodolUrUfEB5aDhXLs5L5qt4CqddWs0ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GdVNSVPY; arc=none smtp.client-ip=209.85.222.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1749922978; c=relaxed/simple;
+	bh=Q5pLQ6oIBIQ+Hqd/WY1ApEmlO+DYAGnBVH0C4rdWSsk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BdC1IdwT4+U1TP8e5SBAL37J6hZMdrSpm/aGJnxUFE1FoajcknWnFmDSWn/wigdRlvPzwQNjLK8wVeBo+APzh3Wm/g/f36ox9tUDNLgd6bGfim64TgqLvEXn1B6UcqRAD4k01HjUw7VvRZ6XNxLGQq+l+byMWcGsz7tdKE9Zmn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (3072-bit key) header.d=posteo.net header.i=@posteo.net header.b=Mbx+YeAb; arc=none smtp.client-ip=185.67.36.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GdVNSVPY"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7d098f7bd77so336981185a.0;
-        Sat, 14 Jun 2025 10:31:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1749922313; x=1750527113; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9vAD1Oo4GIgsQJodLIxN5GNTdvfpBs5Y2Vi4v397QZQ=;
-        b=GdVNSVPYDEWO6cnxnK24UMRCNhAze0rZQM/qtZEpYZVkBEENA1j+050yM48VTrSXXd
-         48RV5RZRSI5ugTI/kF+kdf0mb+joxuQAmFaEDQrq4dHAx4jUh3rvEtEaKRG2n1OpJ36q
-         WxRvMDpexavebT2VgGbSGdu4gTF4E9BmZz3bpwCVgWVN7GvLOR9u/mCJxfEQ2k+QPhu8
-         8RUSvR+xL74Uu+rwlD+3/TIEDLG61jw5dfO2ria3slPvz9wMbwl5MpNwmWBK5CVlHPnW
-         MysqUwQ7J02nldKqaNWW8Hzjj+K/4zWnpbgvoYaaowZ0p5oyXSUFCaYuLO5JGkNqlsk5
-         bwKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749922313; x=1750527113;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9vAD1Oo4GIgsQJodLIxN5GNTdvfpBs5Y2Vi4v397QZQ=;
-        b=mP4zxnE334WFN/07n1X/YLu+Ki5SWGBH0xZpEaVdKnvatfLf3NydLWs7adR+3apStv
-         Y0Q8FGfOzA1b5zBPjzWIZsWbgDGGGIMISgPYBKS1MmWBVEnj1WlfCZq7n9z2f1qfrGkz
-         q08nIbsmH8Exzvsjs8l+rjeu7ShLEi88dqab8FPcE/lWYQqk4ZpYwAow1DSmzTm6TcI3
-         TWkOcKc83PnU6ONSqKuXxrEIfgKfcZVP0XINOF/RACKNARwgGaMK4fJGD3VHkW6raSn8
-         Odw/G+Rd9XRPf5RNTTjFf1I7Niu+9tqWLcrAt++nYWksKaPSkvURnDSdQZnriyjNTtzS
-         Qj9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXkVDLGzFkU2IoyeqnhX/NiK4Jo4t2L8+faa+CN0pM05LUY4c+hoefEHOzSgYWvtEnclpkLplQmwudBdPmcQIs=@vger.kernel.org, AJvYcCXoG4PNcIwksqh5P+5Xca2fLX451R7RUnqfB4GfuIlOOljrkmeT/I6TJhiRE+cd5Kvo61lKwIZ+s4OQwNU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyx5rh3obWbldoHoCoItFOLe1S3Fc3o71hMgvG17vyceKLAk0F8
-	F2oZomCBVZCS+MTC6/jOiVIsUIZ0lOQiBSNNN4b4RpJD3dNMZyZVSSoB
-X-Gm-Gg: ASbGnct1mtBiGlzp/oLztVAVM24AZTk4yUZ/a97RR6mXOfXRuDkDpiw9VHV8W3Lq+Fn
-	4G9Ko+SbxRX2Gx3oYIznXli16CCRNB1RvOD5crEzUK2zVYLzs8n/hKf95+BfOi/QKj7G9B6rL1n
-	2ydZlNduEk5G5IISKoqTwwKBnle5MJN/4PqAF4TIzY7QAS5vM/8/5zxUrsFDX3eOVNBVZkFI/CO
-	PEZUYl2WiGe1jsngXeB4HocGY2Vzzk6S7zgOHhvUpeBPrgiSgh6iErl3bxBGQJwC68SwDzJdMiT
-	tutQ88jWZcPLI9j5mophWZz2RxVyjUYLriQJXi2VphvaCur1SzcxfneI6N57/Pnj5/xggy/nQnt
-	DQEwB1qPGrcEUmr8nxX8K/ktfd+pZHgRFZm1cZyLJs/kiGytavHBoWhNWvJQ9Mi0=
-X-Google-Smtp-Source: AGHT+IHWbXpaW0xQ8j3ub+miaPu23oUlnOGgckN1dXQ5JdCeAoLpuWN7nPvDlT0D04EFcpHoWTBq2g==
-X-Received: by 2002:a05:620a:c4c:b0:7c0:af6d:a52a with SMTP id af79cd13be357-7d3c686ccf1mr615595885a.26.1749922312672;
-        Sat, 14 Jun 2025 10:31:52 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8ece837sm315191785a.79.2025.06.14.10.31.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Jun 2025 10:31:52 -0700 (PDT)
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9AAB71200043;
-	Sat, 14 Jun 2025 13:31:51 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Sat, 14 Jun 2025 13:31:51 -0400
-X-ME-Sender: <xms:B7JNaALbphz8h8WwKiUCQdyMfGLK8128zaxxKmGulrkaZPyAdYvblw>
-    <xme:B7JNaAIonQXfZpzu3ihyYXOzraU3oXmXXhf4hKZRFCixel4-p9rtbR_YHgUcLxaex
-    YHN4CQ8vOppjnppwQ>
-X-ME-Received: <xmr:B7JNaAstFCv3qXjz7_iMHX1CbApHaVF63wVuShqALpDU4f4WHolkTKmR3g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvudegfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
-    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
-    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvhedpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtoheprggtohhurhgsohhtsehnvhhiughirgdrtg
-    homhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegr
-    lhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrg
-    hrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgr
-    ihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthho
-    pehtmhhgrhhoshhssehumhhitghhrdgvughupdhrtghpthhtohepuggrkhhrsehkvghrnh
-    gvlhdrohhrgh
-X-ME-Proxy: <xmx:B7JNaNZ7Fs0cWSwJTnBpxyC6017SCCSK54R6dN2bPoCzQzX1HGe3Rw>
-    <xmx:B7JNaHbCYH9QSNvhCPgjcxPDufAr9Ah_6aS9wLpMbwHynjQsJVX7BQ>
-    <xmx:B7JNaJBsl0SqeeNXa0IuPwIYbYvSquTyFEJipBKaWQ-_tu8ssz8nEw>
-    <xmx:B7JNaNYqYKe6wznY-CIYskbHH-cA1_tz3bAfac15m8wZ8rkU8D8ikg>
-    <xmx:B7JNaPpNZ8RNs8B0-hobud1ykDb-wQjKcTMF2RseMG5IxJnxKgeCHMSo>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Jun 2025 13:31:51 -0400 (EDT)
-Date: Sat, 14 Jun 2025 10:31:50 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Benno Lossin <lossin@kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v5 04/23] rust: add new `num` module with `PowerOfTwo`
- type
-Message-ID: <aE2xq_ikyUZ0JwCR@Mac.home>
-References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
- <20250612-nova-frts-v5-4-14ba7eaf166b@nvidia.com>
+	dkim=pass (3072-bit key) header.d=posteo.net header.i=@posteo.net header.b="Mbx+YeAb"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 39D43240101
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Jun 2025 19:42:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net;
+	s=1984.ea087b; t=1749922972;
+	bh=Q5pLQ6oIBIQ+Hqd/WY1ApEmlO+DYAGnBVH0C4rdWSsk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=Mbx+YeAbIfUeKzSAmOCa7pWbWViUWalkcwc2Gy70WGbp1Haf6Bd18EM7xXO93HcaV
+	 wpijaYW0juehpt6F7c3mhlZb7PPKXfrk04Uz8Jq28ln51Ns7IpeiX+x54ZPjVs5TrF
+	 dMYJhwC2Wr9+Q0Zgn8jEF5B393PKEwQi/kBb/QPQGE4kAPdrJf0B1BFCHFkQ0+npH1
+	 8bbXHKD1C50cJ6JhMb9JHaRm/veJ3y6fX3kk+h4cXnh4NmSxqBEIladhrfnib2QKNH
+	 wtV1B7bYJvKRRNRlXFcYb+R0Ooj1aGwlCXMqRrPHhTva9tZ4MJjE3RbxtAMUhG56Tf
+	 USkAPDnmGu8Q2xDnMTT5fqLLFqCuxcprQmWAVtgFcoc4236haDYPMC6JGITVee6p5Y
+	 0kJzJLZ0nHXbCVIqpv+Iul0gseZnGw25c5OgD6pICYZyKkLlonvf65AGz6JG4insmk
+	 eU1RO7/5MXNDFtgb1fPN10l17s8t6o3zfLnlTQuUlOYtambwLqE
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4bKNrn5jBPz6trs;
+	Sat, 14 Jun 2025 19:42:49 +0200 (CEST)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Eunsoo Eun <ewhk9887@gmail.com>
+Cc: rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Eunsoo
+ Eun <naturale@hufs.ac.kr>,  Benno Lossin <benno.lossin@proton.me>
+Subject: Re: [PATCH 1/2] rust: macros: allow optional trailing comma in module!
+In-Reply-To: <20250614081312.763606-1-ewhk9887@gmail.com>
+References: <20250614081312.763606-1-ewhk9887@gmail.com>
+Date: Sat, 14 Jun 2025 17:42:27 +0000
+Message-ID: <87zfeamd8c.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250612-nova-frts-v5-4-14ba7eaf166b@nvidia.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 12, 2025 at 11:01:32PM +0900, Alexandre Courbot wrote:
-[...]
-> +/// An unsigned integer which is guaranteed to be a power of 2.
-> +#[derive(Debug, Clone, Copy)]
-> +#[repr(transparent)]
-> +pub struct PowerOfTwo<T>(T);
-> +
-[...]
-> +impl<T> Deref for PowerOfTwo<T> {
+Eunsoo Eun <ewhk9887@gmail.com> writes:
 
-Why do we need `impl Deref` (and the `impl Borrow` below)? A similar
-concept `NonZero` in std doesn't impl them as well.
+> From: Eunsoo Eun <naturale@hufs.ac.kr>
+>
+> Make the `module!` macro syntax more flexible by allowing an optional
+> trailing comma after the last field. This makes it consistent with
+> Rust=E2=80=99s general syntax patterns where trailing commas are allowed =
+in
+> structs, arrays, and other comma-separated lists.
+>
+> For example, these are now all valid:
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         license: "GPL"  // No trailing comma
+>     }
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         license: "GPL",  // With trailing comma
+>     }
+>
+> This change also allows optional trailing commas in array fields like
+> `authors`, `alias`, and `firmware`:
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         authors: ["Author 1", "Author 2"],  // No trailing comma
+>         license: "GPL"
+>     }
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         authors: ["Author 1", "Author 2",], // With trailing comma
+>         license: "GPL"
+>     }
+>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1172
+> Signed-off-by: Eunsoo Eun <naturale@hufs.ac.kr>
+> ---
+>  rust/macros/concat_idents.rs |  9 ++++++++
+>  rust/macros/module.rs        | 42 ++++++++++++++++++++++++++++++------
+>  2 files changed, 45 insertions(+), 6 deletions(-)
+>
+> diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
+> index 7e4b450f3a50..c139e1658b4a 100644
+> --- a/rust/macros/concat_idents.rs
+> +++ b/rust/macros/concat_idents.rs
+> @@ -17,6 +17,15 @@ pub(crate) fn concat_idents(ts: TokenStream) -> TokenS=
+tream {
+>      let a =3D expect_ident(&mut it);
+>      assert_eq!(expect_punct(&mut it), ',');
+>      let b =3D expect_ident(&mut it);
+> +=20=20=20=20
 
-> +    type Target = T;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.0
+We have some whitespaces here ^
+
+> +    // Check for optional trailing comma
+> +    if let Some(TokenTree::Punct(punct)) =3D it.clone().next() {
+> +        if punct.as_char() =3D=3D ',' {
+> +            // Consume the trailing comma
+> +            it.next();
+> +        }
 > +    }
-> +}
-> +
-> +impl<T> PartialEq for PowerOfTwo<T>
+> +=20=20=20=20
 
-Any reason you want to impl these manually instead of deriving? For
-`NonZero`, the std wants to impl these traits only for
-`ZeroablePrimitive` types, but we don't have a similar trait here.
+Whitespaces also here ^.
 
+Maybe you can add a new helper function for this one?
 
-Explaining the above in the comments is much appreciated.
+>      assert!(it.next().is_none(), "only two idents can be concatenated");
+>      let res =3D Ident::new(&format!("{a}{b}"), b.span());
+>      TokenStream::from_iter([TokenTree::Ident(res)])
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index 2ddd2eeb2852..d37492457be5 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -13,10 +13,27 @@ fn expect_string_array(it: &mut token_stream::IntoIte=
+r) -> Vec<String> {
+>      while let Some(val) =3D try_string(&mut it) {
+>          assert!(val.is_ascii(), "Expected ASCII string");
+>          values.push(val);
+> -        match it.next() {
+> -            Some(TokenTree::Punct(punct)) =3D> assert_eq!(punct.as_char(=
+), ','),
+> -            None =3D> break,
+> -            _ =3D> panic!("Expected ',' or end of array"),
+> +
+> +        // Check for optional trailing comma
+> +        match it.clone().next() {
 
-Regards,
-Boqun
+We might be able to do something like this here,
+   let next_token =3D it.clone().next();
+   match next_token {
+         ...
 
-> +where
-> +    T: PartialEq,
-> +{
-> +    fn eq(&self, other: &Self) -> bool {
-> +        self.0 == other.0
-> +    }
-> +}
+> +            Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D ',' =
+=3D> {
+> +                // Consume the comma
+> +                it.next();
+> +                // Check if there's another string after the comma
+> +                if it.clone().next().is_none() {
+> +                    // Trailing comma at end of array is allowed
+> +                    break;
+> +                }
+
+Lose this, and let it check naturally?
+
+> +            }
+> +            Some(TokenTree::Literal(_)) =3D> {
+> +                // Next item is a string literal, comma was required
+> +                panic!("Expected ',' between array elements");
+> +            }
+> +            None =3D> {
+> +                // End of array, no comma needed
+> +                break;
+> +            }
+> +            Some(_) =3D> panic!("Expected ',' or end of array"),
+>          }
+>      }
+>      values
+> @@ -143,9 +160,22 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+>                  _ =3D> panic!("Unknown key \"{key}\". Valid keys are: {E=
+XPECTED_KEYS:?}."),
+>              }
+>=20=20
+> -            assert_eq!(expect_punct(it), ',');
+> -
+>              seen_keys.push(key);
 > +
-> +impl<T> Eq for PowerOfTwo<T> where T: Eq {}
-> +
-> +impl<T> PartialOrd for PowerOfTwo<T>
-> +where
-> +    T: PartialOrd,
-> +{
-> +    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
-> +        self.0.partial_cmp(&other.0)
-> +    }
-> +}
-> +
-> +impl<T> Ord for PowerOfTwo<T>
-> +where
-> +    T: Ord,
-> +{
-> +    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
-> +        self.0.cmp(&other.0)
-> +    }
-> +}
-> +
-> +impl<T> Hash for PowerOfTwo<T>
-> +where
-> +    T: Hash,
-> +{
-> +    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
-> +        self.0.hash(state);
-> +    }
-> +}
-> +
-> +impl<T> Borrow<T> for PowerOfTwo<T> {
-> +    fn borrow(&self) -> &T {
-> +        &self.0
-> +    }
-> +}
-> 
-> -- 
-> 2.49.0
-> 
+> +            // Check for optional trailing comma
+> +            match it.clone().next() {
+> +                Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D =
+',' =3D> {
+> +                    // Consume the comma
+> +                    it.next();
+> +                }
+> +                Some(TokenTree::Ident(_)) =3D> {
+> +                    // Next item is an identifier, comma was required
+> +                    panic!("Expected ',' between module properties");
+> +                }
+> +                _ =3D> {
+> +                    // End of input or closing brace, comma is optional
+> +                }
+> +            }
+>          }
+>=20=20
+>          expect_end(it);
