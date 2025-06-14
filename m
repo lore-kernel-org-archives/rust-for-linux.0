@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6851F941;
-	Sat, 14 Jun 2025 18:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6F727713;
+	Sat, 14 Jun 2025 19:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749927219; cv=none; b=MN4ACfzPJkBfNgi1R8/wIZvA3+N/AW2tZDtkjXmou+RXebJIBBP2pBOHlVGZSKom+El/dSlbseIbJ6H7PfSDddsHAPj0YvwRma2rnCdwpSRtDcuDk4mnYciKi7vPchFfudvFapdJzYKFuFoThZX38n4Aho1Xp1GzD5fLEh/If+A=
+	t=1749928203; cv=none; b=RfC5iljkAm0BraHFsw5dfqj+C76yJYPdv1+KJKRm7PTqQ5QitbKOLHa8LRcDjT55W8/tEPUx9h16Ydan61IdrhQeooImQ2bEvLNZmjJguBPFaY84n0gwkjOG5UHNFQ2kgp8pBSBPiikirRtaPfqwEz2DCpgV6Ldp7Qy0XVPcw/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749927219; c=relaxed/simple;
-	bh=vaspYYUdyipuilwzgjC/E308IR/28hvnXzZCjErcA3o=;
+	s=arc-20240116; t=1749928203; c=relaxed/simple;
+	bh=bjhQYBIAmrs9fPgWYClOvqQFEvjW34DMUYRym/0xXuk=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=lK4/0bOef1celYgnJirN4GtkzayogloQKlpCAtMN6Fw2q2/n0XUZBA/YdFxbNIlcOTIPkyDUl2XBiqDOzabl3HN/7uicAuAUv4mj6XttBHA3wW6t1pCFHSB90bU/YpZy2iUp7bK8QPJ6sXeCGdKrpMvV1FsOgI6DIw+D/RrWyFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBCFT29I; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=SV+i/sviqTqf3uJRxii998BclLKURNDlMtu3vhxDB9j7Sjgy1LRXslXgw0ZNeVOXlldesaV/LhFecpN45qgrhSPr+OkYCfyGu5RkoGOPRjBg2n6Yv9WFMrxlG3MGwdBNmhNzWR+vk/LeWYF2emRg+F9lJZVy5Tj87QRo0FyR740=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LmgLRGRg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBCFT29I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3DCC4CEEB;
-	Sat, 14 Jun 2025 18:53:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LmgLRGRg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB087C4CEEB;
+	Sat, 14 Jun 2025 19:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749927219;
-	bh=vaspYYUdyipuilwzgjC/E308IR/28hvnXzZCjErcA3o=;
+	s=k20201202; t=1749928203;
+	bh=bjhQYBIAmrs9fPgWYClOvqQFEvjW34DMUYRym/0xXuk=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=fBCFT29In6dOJhN/DyGpjDvLKzjrLuaLJ76P/0y8PrxpsZnf7jZAnAAFqtE+Vl2YB
-	 ssQVqtmIXvRryo6ziSgHRRTm8T0owQn/D+VG3PZcQTPWpmSJECxlDAGWwTKXsDrCX2
-	 XAKn14xuXmqNS/XgZogFbefPf17OHV/nkhKSCq38+CfnJ4eFrgLFS1AbD+QdL8QPGa
-	 nbCJmhxv0r5JCt8eLpSQabPnIDOnuJudErVzOKr25wlXrAhMQFKjZrUG6v7XbGYA3O
-	 1AadWRLc+QnYavOUw4SM8P2ovLpicaBx1sjugUzPu3RzwB8zGsz2G0G7qSnDXnXC9b
-	 YHP7U1YsEmQlA==
+	b=LmgLRGRgImgkAbFP5aE23D9Mnm25p09TaVKJ9zqT+zbRd3MKgHb7Z1K9dmP9jqwC7
+	 yV/6kDzAOmkgICrDQwt9aswCEqh4DgkTQov3DVkY1ESAJy4psz0tc6oIBGD3VtVZa7
+	 bKff5WGCyT7PrORS7yrPCnnp+zoaxJ0+l5JLGDzOtm9jahYAzXGetAf7o1onU1fGV4
+	 dlgPTqsZPmfy3JwO2MOQC/CnRaFbB7/F306yttjk7itM4l+ak5pssywcfBpjHnEs0Q
+	 p2H4lsDM0zXPW2QVuAkKYPpDxRc3i1nSshFwsNlqdAkJLJo1Fq8kRpcq8RQEu03S6C
+	 iFvRSyLgxgbug==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,68 +34,258 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 14 Jun 2025 20:53:34 +0200
-Message-Id: <DAMHFC5U1496.25GQJSFU53PRD@kernel.org>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Tamir Duberstein" <tamird@gmail.com>, "Viresh Kumar"
- <viresh.kumar@linaro.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] rust: types: require
- `ForeignOwnable::into_foreign` return non-null
+Date: Sat, 14 Jun 2025 21:09:57 +0200
+Message-Id: <DAMHRVOA2T1Q.OM6T75HPFO60@kernel.org>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v5 04/23] rust: add new `num` module with `PowerOfTwo`
+ type
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>
 X-Mailer: aerc 0.20.1
-References: <20250612-pointed-to-v3-0-b009006d86a1@kernel.org>
- <20250612-pointed-to-v3-2-b009006d86a1@kernel.org>
- <ftVceLHmGCX4uHfwZ7aGMOkv5d4ALLIYrsQarySS4pU1gDD6qnxOY3rArV9Kp0tazReT-IfOQGGpK-jNthUKkA==@protonmail.internalid> <DAKN1HO7WUXY.QS098VXTDICU@kernel.org> <87sek3by5l.fsf@kernel.org>
-In-Reply-To: <87sek3by5l.fsf@kernel.org>
+References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
+ <20250612-nova-frts-v5-4-14ba7eaf166b@nvidia.com>
+In-Reply-To: <20250612-nova-frts-v5-4-14ba7eaf166b@nvidia.com>
 
-On Fri Jun 13, 2025 at 2:53 PM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->
->> On Thu Jun 12, 2025 at 3:09 PM CEST, Andreas Hindborg wrote:
->>> The intended implementations of `ForeignOwnable` will not return null
->>> pointers from `into_foreign`, as this would render the implementation o=
-f
->>> `try_from_foreign` useless. Current users of `ForeignOwnable` rely on
->>> `into_foreign` returning non-null pointers. So require `into_foreign` t=
-o
->>> return non-null pointers.
->>>
->>> Suggested-by: Benno Lossin <lossin@kernel.org>
->>> Suggested-by: Alice Ryhl <aliceryhl@google.com>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>>  rust/kernel/types.rs | 1 +
->>>  1 file changed, 1 insertion(+)
->>>
->>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->>> index c156808a78d3..63a2559a545f 100644
->>> --- a/rust/kernel/types.rs
->>> +++ b/rust/kernel/types.rs
->>> @@ -43,6 +43,7 @@ pub unsafe trait ForeignOwnable: Sized {
->>>      /// # Guarantees
->>>      ///
->>>      /// - Minimum alignment of returned pointer is [`Self::FOREIGN_ALI=
-GN`].
->>> +    /// - The returned pointer is not null.
->>
->> This also needs to be mentioned in the `Safety` section of this trait.
->> Alternatively you can put "Implementers must ensure the guarantees on
->> [`into_foreign`] are upheld." or similar.
->
-> Which is exactly what I did :)
+On Thu Jun 12, 2025 at 4:01 PM CEST, Alexandre Courbot wrote:
+> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..ee0f67ad1a89e69f5f8d2077e=
+ba5541b472e7d8a
+> --- /dev/null
+> +++ b/rust/kernel/num.rs
+> @@ -0,0 +1,173 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Numerical and binary utilities for primitive types.
+> +
+> +use crate::build_assert;
+> +use core::borrow::Borrow;
+> +use core::fmt::Debug;
+> +use core::hash::Hash;
+> +use core::ops::Deref;
+> +
+> +/// An unsigned integer which is guaranteed to be a power of 2.
+> +#[derive(Debug, Clone, Copy)]
+> +#[repr(transparent)]
 
-Ah didn't look at the first patch again, then it's fine :)
+Let's add a `# Safety` section with the invariant that `T` is a power of
+2.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+Maybe we should even have an `Int` trait for the different integer types
+that we constrain `T` to.
+
+> +pub struct PowerOfTwo<T>(T);
+> +
+> +macro_rules! power_of_two_impl {
+> +    ($($t:ty),+) =3D> {
+> +        $(
+> +            impl PowerOfTwo<$t> {
+> +                /// Validates that `v` is a power of two at build-time, =
+and returns it wrapped into
+> +                /// `PowerOfTwo`.
+> +                ///
+> +                /// A build error is triggered if `v` cannot be asserted=
+ to be a power of two.
+> +                ///
+> +                /// # Examples
+> +                ///
+> +                /// ```
+> +                /// use kernel::num::PowerOfTwo;
+> +                ///
+> +                /// let v =3D PowerOfTwo::<u32>::new(256);
+> +                /// assert_eq!(v.value(), 256);
+> +                /// ```
+> +                #[inline(always)]
+> +                pub const fn new(v: $t) -> Self {
+> +                    build_assert!(v.count_ones() =3D=3D 1);
+> +                    Self(v)
+> +                }
+
+We also probably want an `unsafe new_unchecked(v: $t) -> Self`. It can
+still use a `debug_assert!` to verify the value.
+
+> +
+> +                /// Validates that `v` is a power of two at runtime, and=
+ returns it wrapped into
+> +                /// `PowerOfTwo`.
+> +                ///
+> +                /// `None` is returned if `v` was not a power of two.
+> +                ///
+> +                /// # Examples
+> +                ///
+> +                /// ```
+> +                /// use kernel::num::PowerOfTwo;
+> +                ///
+> +                /// assert_eq!(PowerOfTwo::<u32>::try_new(16).unwrap().v=
+alue(), 16);
+> +                /// assert_eq!(PowerOfTwo::<u32>::try_new(15), None);
+> +                /// ```
+> +                #[inline(always)]
+> +                pub const fn try_new(v: $t) -> Option<Self> {
+> +                    match v.count_ones() {
+> +                        1 =3D> Some(Self(v)),
+> +                        _ =3D> None,
+> +                    }
+> +                }
+> +
+> +                /// Returns the value of this instance.
+> +                ///
+> +                /// It is guaranteed to be a power of two.
+> +                ///
+> +                /// # Examples
+> +                ///
+> +                /// ```
+> +                /// use kernel::num::PowerOfTwo;
+> +                ///
+> +                /// let v =3D PowerOfTwo::<u32>::new(256);
+> +                /// assert_eq!(v.value(), 256);
+> +                /// ```
+> +                #[inline(always)]
+> +                pub const fn value(&self) -> $t {
+
+Since this type is `Copy`, we should use `self` here instead of `&self`.
+
+
+Why not add
+
+    if !self.0.is_power_of_two() {
+        unsafe { ::core::hint::unreachable_unchecked() }
+    }
+
+here?
+
+> +                    self.0
+> +                }
+> +
+> +                /// Returns the mask corresponding to `self.value() - 1`=
+.
+> +                #[inline(always)]
+> +                pub const fn mask(&self) -> $t {
+> +                    self.0.wrapping_sub(1)
+
+And then use `self.value()` here instead?
+
+(we could even use `self.value() - 1`, since the optimizer can remove
+the overflow check: https://godbolt.org/z/nvGaozGMW but wrapping_sub is
+fine. The optimizations will most likely be more useful in other
+arithmetic with `.value()`)
+
+> +                }
+> +
+> +                /// Aligns `self` down to `alignment`.
+> +                ///
+> +                /// # Examples
+> +                ///
+> +                /// ```
+> +                /// use kernel::num::PowerOfTwo;
+> +                ///
+> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_down=
+(0x4fff), 0x4000);
+> +                /// ```
+> +                #[inline(always)]
+> +                pub const fn align_down(self, value: $t) -> $t {
+> +                    value & !self.mask()
+> +                }
+> +
+> +                /// Aligns `value` up to `self`.
+> +                ///
+> +                /// Wraps around to `0` if the requested alignment pushe=
+s the result above the
+> +                /// type's limits.
+> +                ///
+> +                /// # Examples
+> +                ///
+> +                /// ```
+> +                /// use kernel::num::PowerOfTwo;
+> +                ///
+> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_up(0=
+x4fff), 0x5000);
+> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_up(0=
+x4000), 0x4000);
+> +                /// assert_eq!(PowerOfTwo::<u32>::new(0x1000).align_up(0=
+x0), 0x0);
+> +                /// assert_eq!(PowerOfTwo::<u16>::new(0x100).align_up(0x=
+ffff), 0x0);
+> +                /// ```
+> +                #[inline(always)]
+> +                pub const fn align_up(self, value: $t) -> $t {
+> +                    self.align_down(value.wrapping_add(self.mask()))
+> +                }
+> +            }
+> +        )+
+> +    };
+> +}
+> +
+> +power_of_two_impl!(usize, u8, u16, u32, u64, u128);
+> +
+> +impl<T> Deref for PowerOfTwo<T> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.0
+> +    }
+> +}
+> +
+> +impl<T> PartialEq for PowerOfTwo<T>
+> +where
+> +    T: PartialEq,
+> +{
+> +    fn eq(&self, other: &Self) -> bool {
+> +        self.0 =3D=3D other.0
+> +    }
+> +}
+> +
+> +impl<T> Eq for PowerOfTwo<T> where T: Eq {}
+> +
+> +impl<T> PartialOrd for PowerOfTwo<T>
+> +where
+> +    T: PartialOrd,
+> +{
+> +    fn partial_cmp(&self, other: &Self) -> Option<core::cmp::Ordering> {
+> +        self.0.partial_cmp(&other.0)
+> +    }
+> +}
+> +
+> +impl<T> Ord for PowerOfTwo<T>
+> +where
+> +    T: Ord,
+> +{
+> +    fn cmp(&self, other: &Self) -> core::cmp::Ordering {
+> +        self.0.cmp(&other.0)
+> +    }
+> +}
+> +
+> +impl<T> Hash for PowerOfTwo<T>
+> +where
+> +    T: Hash,
+> +{
+> +    fn hash<H: core::hash::Hasher>(&self, state: &mut H) {
+> +        self.0.hash(state);
+> +    }
+> +}
+
+Can't these traits also be implemented using the derive macros?
 
 ---
 Cheers,
 Benno
+
+> +
+> +impl<T> Borrow<T> for PowerOfTwo<T> {
+> +    fn borrow(&self) -> &T {
+> +        &self.0
+> +    }
+> +}
+
