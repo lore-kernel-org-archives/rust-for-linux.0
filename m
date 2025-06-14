@@ -1,208 +1,132 @@
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824B519C546
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Jun 2025 17:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50502E11DD
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Jun 2025 18:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749922978; cv=none; b=eJKav36RA2IFDjG6sQbX2NPud/okvRatVXK2nkIpwezHsSXNFzRcsc52ViBKPsn4BTzZ38vktzWJ5fC2o334a4q0s6uLR3hMe6CLebs+0D9IWQy8UYoYCMp9Xd0nNt7dD0yRrPEa1GmpGAeKF1WqJZMaaqugqyrm9p2hfCmj98E=
+	t=1749924077; cv=none; b=k3XqJHFl4YhOTdBp4W30Xk4Igl36gi7I3XGuAFR0IdEVr5JjGoAB6Poa5WiCmIhx38Yn04MiyRdtKxyW54CxRMc7mkERlP39CKfHZ53039dG7PTgD7q1HY8wVPwoEoN/lYz8y7p1qgdPIKif8ruQXo5TKcODqWrBIa/VKcWUY/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749922978; c=relaxed/simple;
-	bh=Q5pLQ6oIBIQ+Hqd/WY1ApEmlO+DYAGnBVH0C4rdWSsk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BdC1IdwT4+U1TP8e5SBAL37J6hZMdrSpm/aGJnxUFE1FoajcknWnFmDSWn/wigdRlvPzwQNjLK8wVeBo+APzh3Wm/g/f36ox9tUDNLgd6bGfim64TgqLvEXn1B6UcqRAD4k01HjUw7VvRZ6XNxLGQq+l+byMWcGsz7tdKE9Zmn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (3072-bit key) header.d=posteo.net header.i=@posteo.net header.b=Mbx+YeAb; arc=none smtp.client-ip=185.67.36.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1749924077; c=relaxed/simple;
+	bh=EwbLN1mOerPaBF/4Z7x4v769ihgHL1QM1dAvLidiH00=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=K0hF6aGGD19VqwOEt7QJsQ21Hxv5MkOMagif3bGb0w6CXuXFPaWkRW7+ltgDsk9ZVs9bzFoPAcQGWgJsS/QQo/QgaXEn1alSOR2ihd8LMy3v8vmZfics68OeGIysZC0YHtP7/HpHnqR6LcmnNYUgukBFi01oMh8VOtMDP6yQVpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJ2OwZs5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=posteo.net header.i=@posteo.net header.b="Mbx+YeAb"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 39D43240101
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Jun 2025 19:42:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net;
-	s=1984.ea087b; t=1749922972;
-	bh=Q5pLQ6oIBIQ+Hqd/WY1ApEmlO+DYAGnBVH0C4rdWSsk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=Mbx+YeAbIfUeKzSAmOCa7pWbWViUWalkcwc2Gy70WGbp1Haf6Bd18EM7xXO93HcaV
-	 wpijaYW0juehpt6F7c3mhlZb7PPKXfrk04Uz8Jq28ln51Ns7IpeiX+x54ZPjVs5TrF
-	 dMYJhwC2Wr9+Q0Zgn8jEF5B393PKEwQi/kBb/QPQGE4kAPdrJf0B1BFCHFkQ0+npH1
-	 8bbXHKD1C50cJ6JhMb9JHaRm/veJ3y6fX3kk+h4cXnh4NmSxqBEIladhrfnib2QKNH
-	 wtV1B7bYJvKRRNRlXFcYb+R0Ooj1aGwlCXMqRrPHhTva9tZ4MJjE3RbxtAMUhG56Tf
-	 USkAPDnmGu8Q2xDnMTT5fqLLFqCuxcprQmWAVtgFcoc4236haDYPMC6JGITVee6p5Y
-	 0kJzJLZ0nHXbCVIqpv+Iul0gseZnGw25c5OgD6pICYZyKkLlonvf65AGz6JG4insmk
-	 eU1RO7/5MXNDFtgb1fPN10l17s8t6o3zfLnlTQuUlOYtambwLqE
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4bKNrn5jBPz6trs;
-	Sat, 14 Jun 2025 19:42:49 +0200 (CEST)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Eunsoo Eun <ewhk9887@gmail.com>
-Cc: rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,  Eunsoo
- Eun <naturale@hufs.ac.kr>,  Benno Lossin <benno.lossin@proton.me>
-Subject: Re: [PATCH 1/2] rust: macros: allow optional trailing comma in module!
-In-Reply-To: <20250614081312.763606-1-ewhk9887@gmail.com>
-References: <20250614081312.763606-1-ewhk9887@gmail.com>
-Date: Sat, 14 Jun 2025 17:42:27 +0000
-Message-ID: <87zfeamd8c.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJ2OwZs5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F48C4CEEB;
+	Sat, 14 Jun 2025 18:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749924076;
+	bh=EwbLN1mOerPaBF/4Z7x4v769ihgHL1QM1dAvLidiH00=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=pJ2OwZs5fdsNswAPEj/pJexHTC7+ts+Iq1Q0WtGA8UpyArQO/0z8tsFhYCliSeCmV
+	 ALHLYWbbbc36ntNfeitHFnnAJaOm1RFlFAOFnfN2JSmrrz1bTX5E8Kj9o+BttadIPq
+	 GHt5PjwcuUh6icXpJCUJ33K4L9vRAis+95KGCGcqw6cnF8ETYnWCYeUKbsW6t46ALX
+	 k83bAeS/aiildNbihJr08XxiZ7oNiylOgnDWNORWZrXhn2hvoDabXLi53Q3Qblkgg4
+	 yJhzLPzAzwo6dkRyTZyx1xI1y9n8LrlasbrBoU0eYHzXjB0jcoNbBlt+ShjF/aMtIR
+	 WGoq+hL8PgkDQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 14 Jun 2025 20:01:13 +0200
+Message-Id: <DAMGB9H9NV06.11M9CU65BVLXG@kernel.org>
+Subject: Re: [PATCH v3] rust: introduce sfile macro for succinct code
+ tracing
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Timur Tabi" <ttabi@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>,
+ "aliceryhl@google.com" <aliceryhl@google.com>, "dakr@kernel.org"
+ <dakr@kernel.org>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250609223606.2897030-1-ttabi@nvidia.com>
+ <DAIPZJ4YMJOI.2HYMHADQG1YER@kernel.org>
+ <96ee11ca8f198892b35fc07c72ebdbb06095544e.camel@nvidia.com>
+In-Reply-To: <96ee11ca8f198892b35fc07c72ebdbb06095544e.camel@nvidia.com>
 
-Eunsoo Eun <ewhk9887@gmail.com> writes:
-
-> From: Eunsoo Eun <naturale@hufs.ac.kr>
+On Sat Jun 14, 2025 at 12:46 AM CEST, Timur Tabi wrote:
+> On Tue, 2025-06-10 at 10:45 +0200, Benno Lossin wrote:
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 So=
+me(slash) =3D> slash + 1,
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 No=
+ne =3D> 0,
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let end =3D match rfind_co=
+nst(FILE, '.') {
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 So=
+me(dot) =3D> dot,
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 No=
+ne =3D> FILE.len(),
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 };
+>> > +
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // The following code the =
+equivalent of &FILE[start..start+len],
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // except that it allows f=
+or const contexts.=C2=A0 For example,
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 //=C2=A0=C2=A0 const SFILE=
+: &'static str =3D sfile!();
+>> > +
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let base_ptr: *const u8 =
+=3D FILE.as_ptr();
+>> > +
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // SAFETY: We know that `s=
+tart` is <=3D the length of FILE, because FILE
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 // never ends in a slash.
+>>=20
+>> I don't think that we should rely on that fact for unsafe code.
+>>=20
+>> There is another argument for `start <=3D length`: when `rfind_const`
+>> returns `Some(res)`, then `res < length`.
 >
-> Make the `module!` macro syntax more flexible by allowing an optional
-> trailing comma after the last field. This makes it consistent with
-> Rust=E2=80=99s general syntax patterns where trailing commas are allowed =
-in
-> structs, arrays, and other comma-separated lists.
+> The problem is the +1:
 >
-> For example, these are now all valid:
+>     let start =3D match ::kernel::str::rfind_const(FILE, '/') {
+>         Some(slash) =3D> slash + 1,
+>         None =3D> 0,
+>     };
 >
->     module! {
->         type: MyModule,
->         name: "mymodule",
->         license: "GPL"  // No trailing comma
->     }
+> `start` is the first character *after* the slash.  If FILE ever did end i=
+n a slash, then `start`
+> would point past the end of the string.  That didn't seem to cause a prob=
+lem when I tested it, but
+> technically my code just assumes it's true.
 >
->     module! {
->         type: MyModule,
->         name: "mymodule",
->         license: "GPL",  // With trailing comma
->     }
+> I could add another assertion:
 >
-> This change also allows optional trailing commas in array fields like
-> `authors`, `alias`, and `firmware`:
+>             assert!(start < FILE.len());
 >
->     module! {
->         type: MyModule,
->         name: "mymodule",
->         authors: ["Author 1", "Author 2"],  // No trailing comma
->         license: "GPL"
->     }
+> If I set FILE to "HELLO\", this causes a compiler error:
 >
->     module! {
->         type: MyModule,
->         name: "mymodule",
->         authors: ["Author 1", "Author 2",], // With trailing comma
->         license: "GPL"
->     }
+> 178 |         pr_info!("{}:{}\n", sfile!(), line!());
+>     |                             ^^^^^^^^ the evaluated program panicked=
+ at 'assertion failed:
+> start < FILE.len()', drivers/gpu/nova-core/gpu.rs:178:29
 >
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1172
-> Signed-off-by: Eunsoo Eun <naturale@hufs.ac.kr>
-> ---
->  rust/macros/concat_idents.rs |  9 ++++++++
->  rust/macros/module.rs        | 42 ++++++++++++++++++++++++++++++------
->  2 files changed, 45 insertions(+), 6 deletions(-)
+> or even:
 >
-> diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
-> index 7e4b450f3a50..c139e1658b4a 100644
-> --- a/rust/macros/concat_idents.rs
-> +++ b/rust/macros/concat_idents.rs
-> @@ -17,6 +17,15 @@ pub(crate) fn concat_idents(ts: TokenStream) -> TokenS=
-tream {
->      let a =3D expect_ident(&mut it);
->      assert_eq!(expect_punct(&mut it), ',');
->      let b =3D expect_ident(&mut it);
-> +=20=20=20=20
+>             assert!(start < end);
+>
+> This code is only ever supposed on be used on ASCII filenames, which can =
+never end in a slash.
+>
+> I could do something like this:
+>
+>             let start =3D match ::kernel::str::rfind_const(FILE, '/') {
+>                 Some(slash) if slash =3D=3D FILE.len() =3D> slash,
+>                 Some(slash) =3D> slash + 1,
+>                 None =3D> 0,
+>             };
+>
+> But I don't think this is useful. =20
 
-We have some whitespaces here ^
+Let's use an assert, since it shouldn't happen in practice. We need to
+assert it though for the unsafe code to be correct.
 
-> +    // Check for optional trailing comma
-> +    if let Some(TokenTree::Punct(punct)) =3D it.clone().next() {
-> +        if punct.as_char() =3D=3D ',' {
-> +            // Consume the trailing comma
-> +            it.next();
-> +        }
-> +    }
-> +=20=20=20=20
-
-Whitespaces also here ^.
-
-Maybe you can add a new helper function for this one?
-
->      assert!(it.next().is_none(), "only two idents can be concatenated");
->      let res =3D Ident::new(&format!("{a}{b}"), b.span());
->      TokenStream::from_iter([TokenTree::Ident(res)])
-> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> index 2ddd2eeb2852..d37492457be5 100644
-> --- a/rust/macros/module.rs
-> +++ b/rust/macros/module.rs
-> @@ -13,10 +13,27 @@ fn expect_string_array(it: &mut token_stream::IntoIte=
-r) -> Vec<String> {
->      while let Some(val) =3D try_string(&mut it) {
->          assert!(val.is_ascii(), "Expected ASCII string");
->          values.push(val);
-> -        match it.next() {
-> -            Some(TokenTree::Punct(punct)) =3D> assert_eq!(punct.as_char(=
-), ','),
-> -            None =3D> break,
-> -            _ =3D> panic!("Expected ',' or end of array"),
-> +
-> +        // Check for optional trailing comma
-> +        match it.clone().next() {
-
-We might be able to do something like this here,
-   let next_token =3D it.clone().next();
-   match next_token {
-         ...
-
-> +            Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D ',' =
-=3D> {
-> +                // Consume the comma
-> +                it.next();
-> +                // Check if there's another string after the comma
-> +                if it.clone().next().is_none() {
-> +                    // Trailing comma at end of array is allowed
-> +                    break;
-> +                }
-
-Lose this, and let it check naturally?
-
-> +            }
-> +            Some(TokenTree::Literal(_)) =3D> {
-> +                // Next item is a string literal, comma was required
-> +                panic!("Expected ',' between array elements");
-> +            }
-> +            None =3D> {
-> +                // End of array, no comma needed
-> +                break;
-> +            }
-> +            Some(_) =3D> panic!("Expected ',' or end of array"),
->          }
->      }
->      values
-> @@ -143,9 +160,22 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
->                  _ =3D> panic!("Unknown key \"{key}\". Valid keys are: {E=
-XPECTED_KEYS:?}."),
->              }
->=20=20
-> -            assert_eq!(expect_punct(it), ',');
-> -
->              seen_keys.push(key);
-> +
-> +            // Check for optional trailing comma
-> +            match it.clone().next() {
-> +                Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D =
-',' =3D> {
-> +                    // Consume the comma
-> +                    it.next();
-> +                }
-> +                Some(TokenTree::Ident(_)) =3D> {
-> +                    // Next item is an identifier, comma was required
-> +                    panic!("Expected ',' between module properties");
-> +                }
-> +                _ =3D> {
-> +                    // End of input or closing brace, comma is optional
-> +                }
-> +            }
->          }
->=20=20
->          expect_end(it);
+---
+Cheers,
+Benno
