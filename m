@@ -1,63 +1,207 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2242E7648;
-	Sat, 14 Jun 2025 18:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F812E7626;
+	Sat, 14 Jun 2025 18:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749924622; cv=none; b=UO1Azn+CWD2MinR7ypPy2G+oCwaNipt6/Z9tNbjC9x4nZCtR7H6Cen1QMF2/8qZGJ4RuJYig/bhJ4qv/HfCWF5m3ibGMtKGUl7TRPV+ilmdakX+zGhD2UxocmVq7JZqtj1Al/YrxgJT9yaXKSQMYWOlhUelbKgY+0N4WkW6G/QQ=
+	t=1749924927; cv=none; b=cdaesJ75bROPnYBxX+AYU5AWa/fwpBe3yV/SGvzYIcqIJ3WkxaIdejQUxJ0UaohoRwDHQWgphA60LC5oc6Bb/Oz+QrAY67ol+l3AbopVYITF+LTBUYAT4FsHY1/RjpQz6AnFeJ2Lza3gPBsB+2eEbFjs0orYfH8HbcXTkZ8GKH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749924622; c=relaxed/simple;
-	bh=FHh45ILD5svi+ELzeEk1u8q9WosFDgK9rivXkzMrLNY=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=NXPlWxyvMQlbXHF93OqEX4FELQIU5qcxilC6eegSmiQIeM43nUoqiY1j7gsI1arTSEVjqWQJllr1joHen+d4l/uwWKJLsUP32HvxlURX/sHwJhbTBfSU5gLF+4h5xPa5CIvkY0l6bDTEVz3k/46pgWvECoLPsg/Vw1LQapXV9xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HkCYzoDj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749924927; c=relaxed/simple;
+	bh=hP+WRwN6pCkW1c53+y6PCRIZplyK8iIirUqkqpATSdc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=Joqkm+Hi45GUM4EUMoYor9T3HCEv/Vc5xx6N0OFSh/qL5HTRHikYKtgVNK80o1h/gQ1ZZo/fcNAajhZni3JZ4fjs9y9+csUVDYy9UtuFIpO7IEu7QeiMRj9TxT4J7gkoShIBpz1nOOVBfogmRedg8OqsSmn7wwRn7Pw5hLYY8uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RfXC7D3c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HkCYzoDj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56210C4CEEB;
-	Sat, 14 Jun 2025 18:10:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RfXC7D3c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF907C4CEEB;
+	Sat, 14 Jun 2025 18:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749924622;
-	bh=FHh45ILD5svi+ELzeEk1u8q9WosFDgK9rivXkzMrLNY=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=HkCYzoDj5FvvEU8R9NX6b8jCa/OE6fvJjTRiF6Ij79xc+03BFOiSDmOm/zjGpNEaV
-	 BlgbhcO5QmW8r3go+z+61BWMGdvXt+sdTB4RscGnuVXhJJSmeTEGc/+DYa+0qbriXr
-	 TUDe1rF1XqPwuA3kIkphYNH+Ur2HyFgR/FcXbmIN8zbuH5qP5TcDwH/WjwKxq1P5gW
-	 54XUApYkTFkPqrfu3fJj72M4wRK0UdlKDtB6KtHtOL1zpS9OR2WuS/fRF5mezuaGpu
-	 Iz3JdVz9/l9vg+c5BdAp8oH71d3RJKQMEWi12zDxOxx/EZzHS1PQqrSI6mlP+6I6iO
-	 HlRqBOUVU2C0Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD7B380AAD0;
-	Sat, 14 Jun 2025 18:10:52 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust fixes for 6.16
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20250614093653.1431306-1-ojeda@kernel.org>
-References: <20250614093653.1431306-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20250614093653.1431306-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.16
-X-PR-Tracked-Commit-Id: 5b2d595efbfc9c46823bdb9ef11e1f9fa46adf9d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 588adb24b757d5d9a438056ac0347d8b3ac38dde
-Message-Id: <174992465161.1140315.14423855215288352110.pr-tracker-bot@kernel.org>
-Date: Sat, 14 Jun 2025 18:10:51 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20201202; t=1749924926;
+	bh=hP+WRwN6pCkW1c53+y6PCRIZplyK8iIirUqkqpATSdc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RfXC7D3cjcOuRXOFNSIEdDzG/E9CjefrNQNb4MnMvgItM3GqNfPUHHMgdGy3pbWYd
+	 Eeln4Rz5OYAAC+H6uMJoiTXTepRjrtkq7hcRyJoCdI7OegDzsJSdoi4uvrl4AZa9EM
+	 AaHACRYNDlHolh6QK9+nDywlTtbm0FvZe+dM0zrMJMyzUXfqTLPWbO43KMq0CAgrd9
+	 FG/0fm8dCIDIdu/V4stgh3xPOTuSs+3Ehwfcmym1RS/2j86ietEGD30oiN996xBqO0
+	 yJXzNIrxv1UfTLY+ue3lC21wW5fcXeD+2tmfZ8FnaxORjcUh8nGQ7T267IMeBkXLL6
+	 5/r0cQTc7YE1g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 14 Jun 2025 20:15:24 +0200
+Message-Id: <DAMGM426FUU1.2IESY59SPIIHN@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Eunsoo Eun" <ewhk9887@gmail.com>, <rust-for-linux@vger.kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, "Eunsoo Eun" <naturale@hufs.ac.kr>,
+ "Benno Lossin" <benno.lossin@proton.me>
+Subject: Re: [PATCH 1/2] rust: macros: allow optional trailing comma in
+ module!
+X-Mailer: aerc 0.20.1
+References: <20250614081312.763606-1-ewhk9887@gmail.com>
+In-Reply-To: <20250614081312.763606-1-ewhk9887@gmail.com>
 
-The pull request you sent on Sat, 14 Jun 2025 11:36:53 +0200:
+I didn't get the second patch advertised in the subject, did something
+go wrong when sending the patch?
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.16
+On Sat Jun 14, 2025 at 10:13 AM CEST, Eunsoo Eun wrote:
+> From: Eunsoo Eun <naturale@hufs.ac.kr>
+>
+> Make the `module!` macro syntax more flexible by allowing an optional
+> trailing comma after the last field. This makes it consistent with
+> Rust=E2=80=99s general syntax patterns where trailing commas are allowed =
+in
+> structs, arrays, and other comma-separated lists.
+>
+> For example, these are now all valid:
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         license: "GPL"  // No trailing comma
+>     }
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         license: "GPL",  // With trailing comma
+>     }
+>
+> This change also allows optional trailing commas in array fields like
+> `authors`, `alias`, and `firmware`:
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         authors: ["Author 1", "Author 2"],  // No trailing comma
+>         license: "GPL"
+>     }
+>
+>     module! {
+>         type: MyModule,
+>         name: "mymodule",
+>         authors: ["Author 1", "Author 2",], // With trailing comma
+>         license: "GPL"
+>     }
+>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1172
+> Signed-off-by: Eunsoo Eun <naturale@hufs.ac.kr>
+> ---
+>  rust/macros/concat_idents.rs |  9 ++++++++
+>  rust/macros/module.rs        | 42 ++++++++++++++++++++++++++++++------
+>  2 files changed, 45 insertions(+), 6 deletions(-)
+>
+> diff --git a/rust/macros/concat_idents.rs b/rust/macros/concat_idents.rs
+> index 7e4b450f3a50..c139e1658b4a 100644
+> --- a/rust/macros/concat_idents.rs
+> +++ b/rust/macros/concat_idents.rs
+> @@ -17,6 +17,15 @@ pub(crate) fn concat_idents(ts: TokenStream) -> TokenS=
+tream {
+>      let a =3D expect_ident(&mut it);
+>      assert_eq!(expect_punct(&mut it), ',');
+>      let b =3D expect_ident(&mut it);
+> +   =20
+> +    // Check for optional trailing comma
+> +    if let Some(TokenTree::Punct(punct)) =3D it.clone().next() {
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/588adb24b757d5d9a438056ac0347d8b3ac38dde
+Please avoid cloning the iterator, as that is inefficient. Instead use
+`peekable()` to create an iterator with a `peek` function.
 
-Thank you!
+> +        if punct.as_char() =3D=3D ',' {
+> +            // Consume the trailing comma
+> +            it.next();
+> +        }
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+This allows any kind of trailing token in concat_idents, but only a
+comma should be allowed.
+
+> +    }
+> +   =20
+>      assert!(it.next().is_none(), "only two idents can be concatenated");
+>      let res =3D Ident::new(&format!("{a}{b}"), b.span());
+>      TokenStream::from_iter([TokenTree::Ident(res)])
+> diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+> index 2ddd2eeb2852..d37492457be5 100644
+> --- a/rust/macros/module.rs
+> +++ b/rust/macros/module.rs
+> @@ -13,10 +13,27 @@ fn expect_string_array(it: &mut token_stream::IntoIte=
+r) -> Vec<String> {
+>      while let Some(val) =3D try_string(&mut it) {
+>          assert!(val.is_ascii(), "Expected ASCII string");
+>          values.push(val);
+> -        match it.next() {
+> -            Some(TokenTree::Punct(punct)) =3D> assert_eq!(punct.as_char(=
+), ','),
+> -            None =3D> break,
+> -            _ =3D> panic!("Expected ',' or end of array"),
+> +
+> +        // Check for optional trailing comma
+> +        match it.clone().next() {
+
+Please avoid cloning the iterator, as that is inefficient. Instead use
+`peekable()` to create an iterator with a `peek` function.
+
+> +            Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D ',' =
+=3D> {
+> +                // Consume the comma
+> +                it.next();
+> +                // Check if there's another string after the comma
+> +                if it.clone().next().is_none() {
+> +                    // Trailing comma at end of array is allowed
+> +                    break;
+> +                }
+> +            }
+> +            Some(TokenTree::Literal(_)) =3D> {
+> +                // Next item is a string literal, comma was required
+> +                panic!("Expected ',' between array elements");
+> +            }
+> +            None =3D> {
+> +                // End of array, no comma needed
+> +                break;
+> +            }
+> +            Some(_) =3D> panic!("Expected ',' or end of array"),
+>          }
+>      }
+>      values
+> @@ -143,9 +160,22 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+>                  _ =3D> panic!("Unknown key \"{key}\". Valid keys are: {E=
+XPECTED_KEYS:?}."),
+>              }
+> =20
+> -            assert_eq!(expect_punct(it), ',');
+> -
+>              seen_keys.push(key);
+> +
+> +            // Check for optional trailing comma
+> +            match it.clone().next() {
+> +                Some(TokenTree::Punct(punct)) if punct.as_char() =3D=3D =
+',' =3D> {
+> +                    // Consume the comma
+> +                    it.next();
+> +                }
+> +                Some(TokenTree::Ident(_)) =3D> {
+> +                    // Next item is an identifier, comma was required
+> +                    panic!("Expected ',' between module properties");
+> +                }
+> +                _ =3D> {
+> +                    // End of input or closing brace, comma is optional
+
+This also could be a new opening group or other punctuation, which would
+be wrong.
+
+---
+Cheers,
+Benno
+
+> +                }
+> +            }
+>          }
+> =20
+>          expect_end(it);
+
