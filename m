@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C522F32;
-	Sat, 14 Jun 2025 19:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194ED1E8320;
+	Sat, 14 Jun 2025 19:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749928576; cv=none; b=b2rUXMryZQMcQShIQRPpD3SrNx5rTAhvuJ2QNUDzTzGBZcI8EudZ1OtdwxN2yzl1Fv3zT4sgbI/tVulcnNzDt9q1e5TIvWRFemFyPPEWd0pyRhEO+I2UI9wUmXsd+wZGoRk5mHIPZY8A3qGy1Uvopi5yRW2LswovYmtLUbiM9Ic=
+	t=1749928800; cv=none; b=sits5ETD7N2l1EmUDoPUoNt6cgwAZc8MVHidQGA3TN5DXF7eiEW73lGPNHEg6dGq5ahiMP0BbwMYqeXb9bIvzHP34+H0F9oRxL2CQOoWNEQrZye2cr849QPOB234xay+3XBBVNyeL5MYSLvkzNEEeWapU5yZGGsOFp9OtEppYKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749928576; c=relaxed/simple;
-	bh=mmw5jhQLybady/7202hcLfn6hRFOBIqOFwgpzfoEdeM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=PWYZQn9CeoSXrmQ01aP0ULAfrEv8ttEgSPg/A5qER7V0Ck3ujlFq8U2Hc+py+LhkLIsOVh6hDHbpGhtP8tryShjmRBFgYWyOCC2Ibp17Li5B0RmLDTAviu1M4sfsuCmYPMRYH1Ck/6ABt/N0PMLoIsHfey6br253nciTJ1npK/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoFx9wZI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1749928800; c=relaxed/simple;
+	bh=y8wvN7Ze41xq4819gNmA1YqK19V+uOiKkEvHcd8/b8w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=lFrSE/0f8FPlXrm/wnewDssSNFIa+2k/1Gz+XIu6WlidMq/GNCJjRS7mXtN8ibE4qeRs4sGqBf1ys9oVSsv4WE6KWCRXDZthJrF4LOsp3sfozMq5fpzKPoO4EbBLt0GQK1Yo+KOzGbSREwBwfWSnuVVG/0z1/JsP3Q1M/TI9dRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EV8GX80o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoFx9wZI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53CBC4CEEB;
-	Sat, 14 Jun 2025 19:16:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EV8GX80o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547F6C4CEEB;
+	Sat, 14 Jun 2025 19:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749928576;
-	bh=mmw5jhQLybady/7202hcLfn6hRFOBIqOFwgpzfoEdeM=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=SoFx9wZIX1OI9wd6nGUhXheiyY3QdZlbZ5z9TdQnx/xnbda1R3j25z3Nw40owzddy
-	 sMJQkYY4+YLU1fR0J18xYq8lnNWpVYFyHOTv0vxd3MuzST8R2Yek+uqsTiG8XbZPBP
-	 FlHTc+UpfhnSQJCMh8kfuViz3RP/pYNAUPqRmZc0dlVS0h2m5nuDcRwRinM5GtW/fl
-	 mQaOu/dnKu1bdoLNXl3IhS2dd5zYxzyRAt+7pypC3XOBm1KyhhCXx1NBK0o6uT2IBX
-	 aWetXBQrRQPG56TW0XcXI9XGkLdPnaubFbcXR+i43tPVV2RqzNim1dlAxuo3OabiDI
-	 s8c/+6H60H07Q==
+	s=k20201202; t=1749928799;
+	bh=y8wvN7Ze41xq4819gNmA1YqK19V+uOiKkEvHcd8/b8w=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=EV8GX80oaZhYAQqhKuRFGMGKyfQQbb97D0q6I8fv+VkEO5Hw+UHjeqEUw78z7AIXM
+	 f/lStb3DGLnwW7aGQ5jBJ2kIPB+2M2T0XHjcn7b4bwuDtTY2YdxJKzEN4UUXjUSZNy
+	 JsflvpSpOZCZAiDiIfVZJuFvhKC1lcaGgH/iTOtvquwwcNY7g0DS3cEBgpNkHCoOJS
+	 sn4fRMc7WV2PQdXYNMmaY0dTNHfpEuVX/i8ofX7R85LaZIG1i3AvE69/d1UapMmITo
+	 GBdhMXwDEhqI3bAgbdWb45LlyNk2eLjLiPEgnCJ1nJtJ8Hu2Hhur+cUErk9NEKmGsU
+	 Tl2FqGqryTuRA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,89 +34,134 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 14 Jun 2025 21:16:10 +0200
-Message-Id: <DAMHWN6ML8A1.2AUE4UWR58KR2@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v5 05/23] rust: num: add the `fls` operation
+Date: Sat, 14 Jun 2025 21:19:55 +0200
+Message-Id: <DAMHZIN35QQ9.3N5WSB58J4WG9@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/4] rust: alloc: implement `Borrow` and `BorrowMut`
+ for `Vec`
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
 X-Mailer: aerc 0.20.1
-References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
- <20250612-nova-frts-v5-5-14ba7eaf166b@nvidia.com>
-In-Reply-To: <20250612-nova-frts-v5-5-14ba7eaf166b@nvidia.com>
+References: <20250613-borrow_impls-v2-0-6120e1958199@nvidia.com>
+ <20250613-borrow_impls-v2-1-6120e1958199@nvidia.com>
+In-Reply-To: <20250613-borrow_impls-v2-1-6120e1958199@nvidia.com>
 
-On Thu Jun 12, 2025 at 4:01 PM CEST, Alexandre Courbot wrote:
-> Add an equivalent to the `fls` (Find Last Set bit) C function to Rust
-> unsigned types.
-
-Have you tried to upstream this?
-
-> It is to be first used by the nova-core driver.
+On Fri Jun 13, 2025 at 3:46 PM CEST, Alexandre Courbot wrote:
+> Implement `Borrow<[T]>` and `BorrowMut<[T]>` for `Vec<T>`. This allows
+> `Vec<T>` to be used in generic APIs asking for types implementing those
+> traits. `[T; N]` and `&mut [T]` also implement those traits allowing
+> users to use either owned, borrowed and heap-owned values.
 >
+> The implementation leverages `as_slice` and `as_mut_slice`.
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+
+One comment below, with that fixed:
+
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
 > ---
->  rust/kernel/num.rs | 31 +++++++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
+>  rust/kernel/alloc/kvec.rs | 57 +++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 57 insertions(+)
 >
-> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
-> index ee0f67ad1a89e69f5f8d2077eba5541b472e7d8a..934afe17719f789c569dbd545=
-34adc2e26fe59f2 100644
-> --- a/rust/kernel/num.rs
-> +++ b/rust/kernel/num.rs
-> @@ -171,3 +171,34 @@ fn borrow(&self) -> &T {
->          &self.0
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index 1a0dd852a468ccda6ea1b521bc1e7dbc8d7fc79c..3f368d4a67683ac5a0ff87d7d=
+f33a3bb640ced59 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -8,6 +8,7 @@
+>      AllocError, Allocator, Box, Flags,
+>  };
+>  use core::{
+> +    borrow::{Borrow, BorrowMut},
+>      fmt,
+>      marker::PhantomData,
+>      mem::{ManuallyDrop, MaybeUninit},
+> @@ -890,6 +891,62 @@ fn deref_mut(&mut self) -> &mut [T] {
 >      }
 >  }
-> +
-> +macro_rules! impl_fls {
-> +    ($($t:ty),+) =3D> {
-> +        $(
-> +            ::kernel::macros::paste! {
-> +            /// Find Last Set Bit: return the 1-based index of the last =
-(i.e. most significant) set
-> +            /// bit in `v`.
-> +            ///
-> +            /// Equivalent to the C `fls` function.
-> +            ///
-> +            /// # Examples
-> +            ///
-> +            /// ```
-> +            /// use kernel::num::fls_u32;
-> +            ///
-> +            /// assert_eq!(fls_u32(0x0), 0);
-> +            /// assert_eq!(fls_u32(0x1), 1);
-> +            /// assert_eq!(fls_u32(0x10), 5);
-> +            /// assert_eq!(fls_u32(0xffff), 16);
-> +            /// assert_eq!(fls_u32(0x8000_0000), 32);
-> +            /// ```
-> +            #[inline(always)]
-> +            pub const fn [<fls_ $t>](v: $t) -> u32 {
+> =20
+> +/// Allows `Vec<T>` to be used as a `Borrow<[T]>`.
 
-Can we name this `find_last_set_bit_ $t`? When the upstream function
-lands, we should also rename this one.
+I personally would vote against this first line description here. I
+don't think that it will show up in a summary view of rust doc (since
+trait impls don't appear in searches or module overviews). Additionally,
+this first sentence seems like this kind of comment:
+
+    // call `foo`:
+    foo();
+
+So let's just remove it and directly start with the examples :)
+
+Also for the other cases.
 
 ---
 Cheers,
 Benno
 
-> +                $t::BITS - v.leading_zeros()
-> +            }
-> +            }
-> +        )+
-> +    };
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// # use core::borrow::Borrow;
+> +/// struct Foo<B: Borrow<[u32]>>(B);
+> +///
+> +/// // Owned array.
+> +/// let foo_array =3D Foo([1, 2, 3]);
+> +///
+> +/// // Owned vector.
+> +/// let foo_vec =3D Foo(KVec::from_elem(0, 3, GFP_KERNEL)?);
+> +///
+> +/// let arr =3D [1, 2, 3];
+> +/// // Borrowed slice from `arr`.
+> +/// let foo_borrowed =3D Foo(&arr[..]);
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +impl<T, A> Borrow<[T]> for Vec<T, A>
+> +where
+> +    A: Allocator,
+> +{
+> +    fn borrow(&self) -> &[T] {
+> +        self.as_slice()
+> +    }
 > +}
 > +
-> +impl_fls!(usize, u8, u16, u32, u64, u128);
+> +/// Allows `Vec<T>` to be used as a `BorrowMut<[T]>`.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// # use core::borrow::BorrowMut;
+> +/// struct Foo<B: BorrowMut<[u32]>>(B);
+> +///
+> +/// // Owned array.
+> +/// let foo_array =3D Foo([1, 2, 3]);
+> +///
+> +/// // Owned vector.
+> +/// let foo_vec =3D Foo(KVec::from_elem(0, 3, GFP_KERNEL)?);
+> +///
+> +/// let mut arr =3D [1, 2, 3];
+> +/// // Borrowed slice from `arr`.
+> +/// let foo_borrowed =3D Foo(&mut arr[..]);
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +impl<T, A> BorrowMut<[T]> for Vec<T, A>
+> +where
+> +    A: Allocator,
+> +{
+> +    fn borrow_mut(&mut self) -> &mut [T] {
+> +        self.as_mut_slice()
+> +    }
+> +}
+> +
+>  impl<T: Eq, A> Eq for Vec<T, A> where A: Allocator {}
+> =20
+>  impl<T, I: SliceIndex<[T]>, A> Index<I> for Vec<T, A>
 
