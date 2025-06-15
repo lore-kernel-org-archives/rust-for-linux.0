@@ -1,157 +1,192 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C36266F1D
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Jun 2025 18:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A63C1DE8B3;
+	Sun, 15 Jun 2025 20:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750010612; cv=none; b=q2HjbG6gud7+C33tPi5YlaTRl5J3PHqwVUCjpTzR4Mxfo35Scwmhtw3W01He5B0wqwVZHT7y8kdUeINA2ZS4H5NlXZniCAkUkVFgsgvCw98M2Pb+fbhr4V9r3xCIg1hHgDiGaRur9twgEXOL7eEs9w8d1xOKdB1sEItbi6flG4U=
+	t=1750020117; cv=none; b=iDx0KEixg4Q4tesCNK4tezhOlYzFViVtNFlHf5DYsYtBT7/u/XJAJl6BauCZafyLGAC1lZqKKQf7pwitWLygKhNVP0rBlU71FTkhQGCyZXatjtGwJ0GqmEVboB66ogPkdKZARETz1wVlso2vH/39V7EEpir8hQs8kJ1PW9s0QKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750010612; c=relaxed/simple;
-	bh=Ki+Rg72ZPSx0d8X68EYpD4TuBAbsUU/QkelWzIu8l9w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u7EMNrJkaWs8Z6tz7zaUFpOXI9Yx1yvdyxi0K+I7/hEhBjD4E34x0+TptgAgIUJk5QGzXPoJ9LTjdx2wInvWEv0BLxJWsGdh2uF9QugBTojo3XJoh3fUL9R0D4SVXDIriVkuQ6PXs/fK0R/9pxrSp6IAXgyci7mK3bAHov5lse8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com; spf=none smtp.mailfrom=pdp7.com; dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b=DDf57dHe; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pdp7.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pdp7.com
+	s=arc-20240116; t=1750020117; c=relaxed/simple;
+	bh=a4gyRtdEznwSU6cfA3mXkQrTb8MEPimItIe4DbY/b/s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Bf/Q/KWXUCGENMO4mT3wFlNjtzIePebsh+CTSLEjOLEmSXt2xJblee7V5bbIZXspbhlL7W6sLZN1TSqel9q9AruJTcEgKy9wKn5To8+ro/1oIn7tAT7YDkCuoTB6rX+fTL2JtomhN68AeP5JSSpviO3WnFVY/4/8U6mFtbHxC9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOH9mKX7; arc=none smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pdp7-com.20230601.gappssmtp.com header.i=@pdp7-com.20230601.gappssmtp.com header.b="DDf57dHe"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-747fc77bb2aso2825855b3a.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Jun 2025 11:03:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOH9mKX7"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32ac42bb4e4so34195381fa.0;
+        Sun, 15 Jun 2025 13:41:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pdp7-com.20230601.gappssmtp.com; s=20230601; t=1750010610; x=1750615410; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3x1mZR75wgxhPUeoS08uV2B3ZSN0hsffb3DgZbseGCk=;
-        b=DDf57dHer0I337g3/efBF3o733zQOlm74AvZORJeWThnRuhi2KOMN0n90r7kaFjGD0
-         wSBaaySZqN7LlsKhCNoFD9Ul16FYJJfP3kmOBZ9i9QO3WDQUE5uurj8p6m5G5sl+b1WG
-         ucp019rxiB7kxU96WeefUBrQYIH2tlGrpTAtWCHstgvfMWHTwMZDJiib8c5xSV/L+Rpv
-         DF4D+VJdnvm4WNLOL8N5XdQ8oAMWvjIuFsec8vuXrT2pVOmGhVKLWAvCXOQ1X35LGOlS
-         cbi2Q8F6/rTUdfISGXFgalSbHGe7EGvgd/QterGb7lmJDvFOBcjxNEETc3LIVbL2GoNd
-         NIQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750010610; x=1750615410;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750020114; x=1750624914; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3x1mZR75wgxhPUeoS08uV2B3ZSN0hsffb3DgZbseGCk=;
-        b=KFXG37KYnTgP5ztz8BpYHG4H6miGUBE/aqt36Hjh86r0q2iJXYrFgLyQpe5qNHs02d
-         gsSAdKB4h5500ABmzLPhuCXGOSncC/K/g+9nzftLe55f0fXAF5ZFbm3mKKmM01rNc7Cm
-         S8rG1Maje4ZCvq6v6KAbKkFFAm7i9kIq6Vexn9yTEIhHIIs0kuY4cbyMe7LPcCNTEebU
-         BT3bdJKnePKJcUvR/0b3FwlE26wKRgYcx+fLyU/VZd61zcRFXq44g5QQYYlh31oXo2AR
-         YwUEIwBOkf6zDPyZ2yOm/zKYnSQ2RWssYSdE06BpSWbf/PPg5unt4UOAiZL3PqvAxjKd
-         uJoA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/FWy23bhem1aymAZSnhFhbb3QYNcm1p4fqM4fwhjVOTEOS6LR1pJ8EDNjCEKvMXEFieG/GpY69bIvtZPLFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHjOUr+6/LkJBwwiWK+5n8J0NhhlpdN1bjz4fktD3aWBtptJVd
-	cKwqdyE2Q86BX3p1UEfcTtYGo8hz3FPfxqv7oZ9Tgh44vC5wpk7KKv/XP3a7fEvizWA=
-X-Gm-Gg: ASbGncv9IeYX9emSaXNRmqeChYaazMGdaknuZL66nMCRxhXXqlUpwQlTTf6tZ9bVzQW
-	i/Eu8sobkBhrULaBG1QsGxJS8cHn35wrhK132TE+n9nojo2iGZY5bsw2aa5lc8oVZVaNZ42j4xU
-	w9AYU+HT4EQKoocL5TUBH33fWVK0c44xA+rlIdHOhUIs2AqG9aavwPGl5+AOpdqtnRjl60Qg4v1
-	X4n0+UOWVuhZhLMrLdIZ+0tMrorMF84bi2bNXPsq3j4o8ylgZk/je1TwINMQnc9iKS5KpdgxJ4s
-	EEut5u2ofq2QwRzJsvGk2AaAW1Uj8GkWcFKid9rvvO0/vSEmREztUGy40dNooiD5kjh2ysdfRoN
-	HrI3J0KCo
-X-Google-Smtp-Source: AGHT+IFpIn7TT0AiybQDiWVZF1Z4qdpPM6E8iz2nG1KaTGZ1pllTxFamD1VdBv+3cD8hZVxtHssjLQ==
-X-Received: by 2002:a05:6a21:8dc6:b0:1f5:9208:3ad6 with SMTP id adf61e73a8af0-21fbd5e0f1amr10461747637.41.1750010610502;
-        Sun, 15 Jun 2025 11:03:30 -0700 (PDT)
-Received: from x1 (97-120-245-201.ptld.qwest.net. [97.120.245.201])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fe168987esm5294629a12.57.2025.06.15.11.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Jun 2025 11:03:30 -0700 (PDT)
-Date: Sun, 15 Jun 2025 11:03:28 -0700
-From: Drew Fustini <drew@pdp7.com>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v2 3/7] clk: thead: Mark essential bus clocks as
- CLK_IGNORE_UNUSED
-Message-ID: <aE8K8LjHsc/gTobD@x1>
-References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
- <CGME20250610125334eucas1p25545871cc703378afed320da70c2d2f3@eucas1p2.samsung.com>
- <20250610-rust-next-pwm-working-fan-for-sending-v2-3-753e2955f110@samsung.com>
+        bh=m8tUEHrU+aAiCA1wzd/2v+KwHHK/16tsTm7dd1xb+Qw=;
+        b=gOH9mKX7RycUlzhO7U+MdAkiUFx58GZOpJTAPsXvRl2+hb2L+qgXqkApg4/aTnO6bi
+         FLx6hBm3wDSi2vGVpPeTPo5Gu0hzLjxAGWnP3TOVzB/BKiD6ldyYb/DgPddGTZrEy8RQ
+         5Gbo2ChmUCzSs6XDPv3wxS+ETp2KU7Dzkvac2o/i8t8Khcv7ZlfPKdiSug4uA+MdXI0A
+         06vm9ynKfZGUqArnQOxgMx0rzrJUEikSENafDTPm8UP5u3Xvh4hFBv14nuJFEZHxfHw5
+         pCC0OBHRo/m+kEw+aPoX8Q+eiCsR0YUlig0roHTFkn8q85TIEipnT2WsNx3pfJPCWOcH
+         abbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750020114; x=1750624914;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m8tUEHrU+aAiCA1wzd/2v+KwHHK/16tsTm7dd1xb+Qw=;
+        b=Srao99apaGx55OAHPMCVx22STgxqBp7F7nStobWZOZGAnsf6qL/gClz3a/4LnCMuIO
+         CXbThHKvHRPATwoTsPozZBrj5rlQ3eqm2g/uyfiLpg+4jvo73/sLFpF5Vv3O+qSQTwM0
+         UTcv6yZ7D31+YXuOt5hOv/LiDWY0oFzgp/SAzQNghyhJIzf7m5TUloDKYqhZMh1mlcfc
+         eeHChFR1NmtpSfnKhvm+qSDXpKlS3vcgnMy0j/TGtxbfkDB9SKhoBmDpWsZxMTQG7kgk
+         tK3PCaNY5X0Y1d2uWFafcbOXd8INZ0803G/xvUowUgS+9S5unjtyKmcZ9VVHvHnl0YAN
+         P/Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGzcyhSK4VaUjx/VqJ+OjDPOEf0bpHRZZ/WnQRdLdC7RkmfH+Z+7Yy+t5fR3TIW4QvfoFRzMLvi+gWMlBp@vger.kernel.org, AJvYcCVCFey7PtXPa33QEDTQZfGbM+YE/Q7d21xk3Dy3dKkv2cN1lfAMtDiSI73Hg/Xiizetgrt5cuW/fV22@vger.kernel.org, AJvYcCW4K787SXjJlZ1crxnyDmDXijPRVm6QmtZBHYVvEt9VpSkxQNnOVSVH6a8BgmVRrwafOYae1PO2dP7f@vger.kernel.org, AJvYcCW8zjFdV8dodHghcEMde/5aGoKsEIUigB5WaURFgKOlEp2j8o6gUbtj5U2mdBZ4azTnNQ1lr+NB@vger.kernel.org, AJvYcCWu6dxmMWxLrJZek2hlxjmyHAxJzGFSCXMT9jRblNJn9puAs54E4YBZc2fbllhXh/VUzNVRVz13r52riFmp@vger.kernel.org, AJvYcCXRj0D2ceSyj0aaqgeCCYRpfVQiKaWWSj42/8xf03DL5ORhSqo016F/lklgDlb6u3xN44iKUJ3aKre1ZqM=@vger.kernel.org, AJvYcCXvcWRGPESO98hPKmWc1BCjwny9VohD9sTPKPiS3HtrTSVNz3CEZKY/8Uu1CBobmvaSCeteq97J3Pf1fwJzp0EK@vger.kernel.org, AJvYcCXxpqgfl0myLRXY1WGqeWHVm0tkBh0hTfI2V2tGa6d37ZxOZ6MLdBgPyupzT/VWUhnsBRIHG7QHN9swDRwHsZk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPC24ZMGdId1eMXAe6Xjnznr14A6BRW9lDT+OCYUlzG9TVoPPa
+	4MqWoO4FtLPr4j9uhr3VuYzWHBIYWlzK9FSDFM29oQM+cD/ONlTLo5jv+YlAY4VqYiXaE7s498l
+	QTEYpHxLB4hq52NlWkE8X8ayuiKvBAcU=
+X-Gm-Gg: ASbGnctJT+ocTEKoM242H3DSen76/sHTd2slTCBzDotWBE+l6smcSHcBSqlrSuvpLw+
+	HfYXErO9vpk5QY+sMYXtKvKVgR7bL3kl1T2nVZgyNNMH9n1nqzgJLJpq/hIGnfoYr5+qAGECB9B
+	EgXyiH3eU/fhyEmfSW+E92A7a1t7tnWsDDhtYCrHf77l0RoqHusB4K8AxNQBZOYJbaY8HIAB10O
+	cfMLg==
+X-Google-Smtp-Source: AGHT+IF17qm+FSbVV14Pg7FJ215dDeNSyp0hu+3UB0vAUnPJ/I/b7hzjcOF97wvz/4vYu6TXyZ0HeK2zzMOU3xxjgxE=
+X-Received: by 2002:a05:651c:507:b0:32b:3cf5:2ff3 with SMTP id
+ 38308e7fff4ca-32b4a5a5c9cmr14597681fa.22.1750020113944; Sun, 15 Jun 2025
+ 13:41:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250610-rust-next-pwm-working-fan-for-sending-v2-3-753e2955f110@samsung.com>
+References: <20250611-ptr-as-ptr-v11-0-ce5b41c6e9c6@gmail.com> <CANiq72m1ZWxPgCda1C-8X5XOvEq9Z9JfJZqhU4ZUzZ64=N+2fQ@mail.gmail.com>
+In-Reply-To: <CANiq72m1ZWxPgCda1C-8X5XOvEq9Z9JfJZqhU4ZUzZ64=N+2fQ@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Sun, 15 Jun 2025 16:41:17 -0400
+X-Gm-Features: AX0GCFsBQDbpDdusKYtZ8m3QzN_wjkIx6XFjpQUGjjmQDdCD-7AoaM2XitZK-IE
+Message-ID: <CAJ-ks9=eWA-CCJn32cVQZhBnz=dgjPTt6av0Uw2m+_nfRXYcbA@mail.gmail.com>
+Subject: Re: [PATCH v11 0/6] rust: reduce `as` casts, enable related lints
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Benno Lossin <lossin@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, 
+	linux-block@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 10, 2025 at 02:52:51PM +0200, Michal Wilczynski wrote:
-> Probing peripherals in the AON and PERI domains, such as the PVT thermal
-> sensor and the PWM controller, can lead to boot hangs or unresponsive
-> devices on the LPi4A board. The root cause is that their parent bus
-> clocks ('CLK_CPU2AON_X2H' and the 'CLK_PERISYS_APB' clocks) are
-> automatically gated by the kernel's power-saving mechanisms when the bus
-> is perceived as idle.
-> 
-> Alternative solutions were investigated, including modeling the parent
-> bus in the Device Tree with 'simple-pm-bus' or refactoring the clock
-> driver's parentage. The 'simple-pm-bus' approach is not viable due to
-> the lack of defined bus address ranges in the hardware manual and its
-> creation of improper dependencies on the 'pm_runtime' API for consumer
-> drivers.
-> 
-> Therefore, applying the'`CLK_IGNORE_UNUSED' flag directly to the
-> essential bus clocks is the most direct and targeted fix. This prevents
-> the kernel from auto-gating these buses and ensures peripherals remain
-> accessible.
-> 
-> This change fixes the boot hang associated with the PVT sensor and
-> resolves the functional issues with the PWM controller.
-> 
-> [1] - https://lore.kernel.org/all/9e8a12db-236d-474c-b110-b3be96edf057@samsung.com/
-> 
-> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> ---
->  drivers/clk/thead/clk-th1520-ap.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/clk/thead/clk-th1520-ap.c b/drivers/clk/thead/clk-th1520-ap.c
-> index ebfb1d59401d05443716eb0029403b01775e8f73..cf7f6bd428a0faa4611b3fc61edbbc6690e565d9 100644
-> --- a/drivers/clk/thead/clk-th1520-ap.c
-> +++ b/drivers/clk/thead/clk-th1520-ap.c
-> @@ -792,11 +792,12 @@ static CCU_GATE(CLK_AON2CPU_A2X, aon2cpu_a2x_clk, "aon2cpu-a2x", axi4_cpusys2_ac
->  		0x134, BIT(8), 0);
->  static CCU_GATE(CLK_X2X_CPUSYS, x2x_cpusys_clk, "x2x-cpusys", axi4_cpusys2_aclk_pd,
->  		0x134, BIT(7), 0);
-> -static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd, 0x138, BIT(8), 0);
-> +static CCU_GATE(CLK_CPU2AON_X2H, cpu2aon_x2h_clk, "cpu2aon-x2h", axi_aclk_pd,
-> +		0x138, BIT(8), CLK_IGNORE_UNUSED);
->  static CCU_GATE(CLK_CPU2PERI_X2H, cpu2peri_x2h_clk, "cpu2peri-x2h", axi4_cpusys2_aclk_pd,
->  		0x140, BIT(9), CLK_IGNORE_UNUSED);
->  static CCU_GATE(CLK_PERISYS_APB1_HCLK, perisys_apb1_hclk, "perisys-apb1-hclk", perisys_ahb_hclk_pd,
-> -		0x150, BIT(9), 0);
-> +		0x150, BIT(9), CLK_IGNORE_UNUSED);
->  static CCU_GATE(CLK_PERISYS_APB2_HCLK, perisys_apb2_hclk, "perisys-apb2-hclk", perisys_ahb_hclk_pd,
->  		0x150, BIT(10), CLK_IGNORE_UNUSED);
->  static CCU_GATE(CLK_PERISYS_APB3_HCLK, perisys_apb3_hclk, "perisys-apb3-hclk", perisys_ahb_hclk_pd,
-> 
-> -- 
-> 2.34.1
-> 
+On Fri, Jun 13, 2025 at 2:14=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Wed, Jun 11, 2025 at 12:23=E2=80=AFPM Tamir Duberstein <tamird@gmail.c=
+om> wrote:
+> >
+> > This series depends on "rust: retain pointer mut-ness in
+> > `container_of!`"[1].
+>
+> Not anymore! :)
+>
+> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>
+> Thanks for rebasing, Tamir, I appreciate it.
+>
+> This has a bunch of hits in configfs, cpufreq and Nova [1]. I guess
+> you built without those enabled.
+>
+> Could you please fix those? Since this affects other maintainers that
+> we need to ask the Acked-by to, let's try to at least give them the
+> final state.
 
-I'm okay with fixing it this way for now and revisiting the parent
-relationships later.
+Oops, I missed this email! I will send v12 shortly with these fixed.
+Is there an easy way to enable all the relevant rust configs?
 
-Reviewed-by: Drew Fustini <drew@pdp7.com>
+>
+> Thanks!
+>
+> Cheers,
+> Miguel
+>
+> [1]
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:429:9
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:467:9
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:479:9
+>
+> warning: `as` casting between raw pointers without changing their constne=
+ss
+>    --> rust/kernel/configfs.rs:564:48
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:721:39
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:764:35
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:783:35
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:764:35
+>
+> warning: reference as raw pointer
+>    --> rust/kernel/configfs.rs:783:35
+>
+> warning: using `as _` conversion
+>    --> rust/kernel/cpufreq.rs:650:45
+>
+> warning: `as` casting between raw pointers without changing their constne=
+ss
+>    --> rust/kernel/cpufreq.rs:650:45
+>
+> warning: using `as _` conversion
+>   --> drivers/gpu/nova-core/driver.rs:22:64
+>
+> warning: casts from `u8` to `u32` can be expressed infallibly using `From=
+`
+>    --> drivers/gpu/nova-core/regs/macros.rs:267:26
+>
+> warning: casts from `u8` to `u32` can be expressed infallibly using `From=
+`
+>    --> drivers/gpu/nova-core/regs/macros.rs:267:26
+>
+> warning: casts from `u8` to `u32` can be expressed infallibly using `From=
+`
+>    --> drivers/gpu/nova-core/regs/macros.rs:267:26
+>
+> warning: casts from `u8` to `u32` can be expressed infallibly using `From=
+`
+>    --> drivers/gpu/nova-core/regs/macros.rs:267:26
+>
+> warning: casts from `u8` to `u32` can be expressed infallibly using `From=
+`
+>    --> drivers/gpu/nova-core/regs/macros.rs:267:26
+>
+> warning: casts from `u8` to `u32` can be expressed infallibly using `From=
+`
+>   --> drivers/gpu/nova-core/regs.rs:35:65
