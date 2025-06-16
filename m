@@ -1,99 +1,198 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352B62BF017;
-	Mon, 16 Jun 2025 14:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750084090; cv=pass; b=apcdMDMmxWLgStdgAosbYydTZB2zt+vaKmHDS4Sh3yHHGGjSS+5p01qQFSTlaWZjDFLyrxqej2TAlfj8fbRZejoJxA1ItcJp6jBKtc19rducgjp3I4VrB8HvWbbVS5z71ghHJknuGutOCT//79cUEHAZTot8EnC7D+eQMZ1vSCs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750084090; c=relaxed/simple;
-	bh=0pRvbSGRt3AQQuVD8byNb+NP8wTfFRltOpXxdOxPygM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=uyU85zrLHx6AQT1Iexlul2L88i3rg00GLVVDlW/glUIAPt2RLzIrJk9Jye5jpaSQQa/FWnS3tl8LpvRIEIUfUWnyG4NOZwHoSBIo1EFABCELcwUVnZd2yZRQtXGhnlfA8hE6wb/MtJ0UJh4CWg4s9KvdDnoVumSF8OgXjfEU6oU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=R1iM/nD5; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7232BF003;
+	Mon, 16 Jun 2025 14:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750084147; cv=none; b=YljKy6A0ogc6IncVAQpQ2xOUGDSgF8rZJxMYrxvZbL4OkXnBsNKEqeuJx4jwgFz2n/Kzaha8M6zwxm0z2TPzMbqO7V83LCGO3vHpPIjvZN3QhfWYE2QG3DJ/YKdG/1cM0OUwP7F62iejh1wGMRog0wKzCBVtcCGnTyQ5YDfZLFc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750084147; c=relaxed/simple;
+	bh=4P26GOQA8MQN5s/zE9CQooJ124LCrLhGQy9yaCpz2xU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hctdIGgcOuB++qpkxjpWnfreviFuL+NomPmf3i8Ipt3VGacaAvKeVX380ao9aTj7IhH8fqF9C5r/GCUC9POvjUee4Lv0ocznOKMzcI3jYUOVwOw0Ma3mXY5YV0aYfSzXUeaRlCZG4DT2AzypduWnvtWoORVzvoq4Stc1o5XuEG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FE9hraOY; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="R1iM/nD5"
-ARC-Seal: i=1; a=rsa-sha256; t=1750084062; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=gUuvqIuNqTbaW3jIsupm/x6BMKSjBN8V1Qa+R8EKU3M18KmEX9z5l8aD436t03tc3F0JKiudq1IFqrqwi9Bit2JejojbKdoEE3attzfN5+CYKdGkLZEjVpqJr6gHqybL0GwoKHrykiACwYi9HuP2tOXQmTmZ2QGGID71KCgGqmA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1750084062; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=F8bXUy3Bo9HR5kOOZmrCShKyAkBT2AWqhHDEKbHnNPE=; 
-	b=mxPmI9wpM/PUKBeCYO8dIAqwYgS0vGRTqC45B8FYJj8uAXlSg8nNDD6lC8fDEcpEprS+Z5WojWVeTipVSZdNMX5sSkhyaNNe/YyCznTVET/YOeMwgEZycUsO43slXAJjPWzHG6Z5iLRdlKNQFSLpBcNzzlJ+vsfMPmmudJqDRJ0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750084062;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=F8bXUy3Bo9HR5kOOZmrCShKyAkBT2AWqhHDEKbHnNPE=;
-	b=R1iM/nD5R9vmIB5/xoH98JZa5lYGfY7NrMwwoFYAj4nXDPcqCj+IihBscWDkX8Sh
-	jY1sm0kVdOBwcj/AxsD1KYhQVQPLw4EhyQ7RJztAhbm/KqWbQKqs0EXuauL/FcIV+ow
-	CcVPUV7JJeIVbkqXE6ZvS6U+gWGjUr9B0hlkcLe8=
-Received: by mx.zohomail.com with SMTPS id 1750084061109357.29402544373875;
-	Mon, 16 Jun 2025 07:27:41 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FE9hraOY"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7d0a47f6692so512014485a.1;
+        Mon, 16 Jun 2025 07:29:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750084144; x=1750688944; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tXs83xwhiYrmq+eKnpfAiFlKZMz75qErwtfGw3cAu+E=;
+        b=FE9hraOYSZxdjLB5IZ7YZKWUtWRVSJwxhUPsAH0p27E9Zz/ukA8J/9EPf/StcyC34a
+         TVnT1FPBrPNjivQwHhSBYistkNJV2A/EoTOxGiXTKWssEWeh4kTsrJCHyv05byd0QKJ1
+         YZ9ZAuaFFTOZdVDkbdxb2f/YAwo05IVQgSkGxy2EuyhTjyBZi3Yw5PRs+v5hk5JXmGct
+         ndamW659Z+kXLnyYnv8iYjXyc7XhJaWuiCqq7PvYene0Buhr/pBi+ZC9Ri5w64mGvb6y
+         SKQHO/9PLG8JNlniBHjkCtex2Y7Dtb0NYBK0M4Q6N0wy5Vq+AncR5r7lk8o4n4VmMTWu
+         YwsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750084144; x=1750688944;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tXs83xwhiYrmq+eKnpfAiFlKZMz75qErwtfGw3cAu+E=;
+        b=rCPjUNmSTMUVjqEYmqo5ZzelpTE2UkwJMFZBV6/HXWyexjbFLQDI0MyYCTwU6FVTH0
+         4Fgw7pP+upvFJ4xkFdCl2HhWoH76Jrh3LLkVnEtVJ56iK8pty/atoc8Hq/4COlryTRRj
+         fswUlLNhlb3HOltrKjFFXehaU7XbMrpIdijVcQvBruDZV1qsDm2jXfC0Ecbe+MOa2iLK
+         O3jukTjtXgqhj2pPwH5d96Hzz0urO9U3luE77OIvpQZoevA8QUXioyTIqHOqwNi/59ZT
+         37CU/lv/qMuoGgwARW7cGOIC+rHWYqD1Xvmm1GNhnXpDANhnHDfFmIj0rlEzyHwk6fH2
+         3eew==
+X-Forwarded-Encrypted: i=1; AJvYcCW5s5Zq1+HB7KCIlGp0Tw7qX3dm5qXg/iFZSoBVPTFSN7xlQ7RkTCmO5rnt76jsEzi+zhkZ2a7edaXdKLjpIjw=@vger.kernel.org, AJvYcCWjNG3lpvGAKKTU/AYCaZDpBpoYgNQY4Ls4rP7yQDXywfPYbMHAjtlHJpR5koR3Xab1JYGyVk19yPwJo6Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcYSlR/qVNS3/jpEvaLbRsEq8Q8CXE9knF08bzpUYcFH8pebqs
+	VtI8+dikhyEKOuFk8I0FI6eJ5/qNXND4I+7kQfG3MR4CV47XioiUaznTd3Xw+w==
+X-Gm-Gg: ASbGnctcv7PIldaHaZuJRmiCSxenuIc00q+InFFs5kCeZThM+A8KvNTEcm8nR5WIzMQ
+	CZ1a5SBdXAwEzdD0VryILCd+LA5hv3QkUXjmTD55ynWusp9gfojr7xV7JgeSY9IW0Ln/hG208/s
+	S+8edqWN4hmz2YWewFRqraoRnsMKkHWFEBWdpO6GT8DZoOCxpK8FhK4TNGTbJiexOtpQi+i4ExQ
+	CzT3IxKx8HztHGJOszV2a6PoXsTfjRyX9F38GJOPrgMxjFnmvMWu5URoO97F0v40bH0pgudUZ7Z
+	LXV9hLXVzAURxr2XTJQyjEiVfZJJW/rMrbkDRGeDiipRR2T2G2EljfhSmg7uG4Wl9dpBczsT793
+	roeKyW9JnV9DGQYR5BYdzmjB5em+dAZWumhJZwWyjsvOpQtGLr/BY
+X-Google-Smtp-Source: AGHT+IE0y8nlE8gjg2CjUhKeJMAMKvy8aVt0/Q5/nXAp9UnDGnLtaJKoQnNbLh7zC+B/7p71Htp5sQ==
+X-Received: by 2002:a05:620a:4690:b0:7cd:3f01:7c83 with SMTP id af79cd13be357-7d3c6ced959mr1360298385a.39.1750084144342;
+        Mon, 16 Jun 2025 07:29:04 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8ee3f72sm532144785a.94.2025.06.16.07.29.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 07:29:03 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4FAF71200068;
+	Mon, 16 Jun 2025 10:29:03 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Mon, 16 Jun 2025 10:29:03 -0400
+X-ME-Sender: <xms:LypQaMyQuRlEjsQgCy090fy20s59ftwM7NwnmDgxb10BSAjsBGpRiQ>
+    <xme:LypQaAQLIFicsdxfkUmQfN_g-GyI6IZt-cnhE7ctsV7hTYuMJUA1i0oWP1CAJE5oV
+    ZBOk_YtKjCOlaPEUw>
+X-ME-Received: <xmr:LypQaOWgmuaz8TijMwjZhlYyxBvsetCY-cPWYDsvwIwm-8trl3vS4qvMTA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvieekvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedugedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtoh
+    hllhgrsghorhgrrdgtohhmpdhrtghpthhtoheprggtohhurhgsohhtsehnvhhiughirgdr
+    tghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehg
+    rghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmh
+    grihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdr
+    mhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:LypQaKirY0qkZeh1I0qzCqGCfCBC29E_1j2oig6gUFLwdLD9DHqZrg>
+    <xmx:LypQaODKzGOdnzCKdFpgRJtQU6X5UH108iUw4j9mHyHTenaMBscNpw>
+    <xmx:LypQaLI93kOxkI48BatObmEY0omkIVJ_a6Ds0VJLaljzKgH7OWoAZw>
+    <xmx:LypQaFDCwz-L3SWFItJojZQlqSTzAu8ULybzQoixDiAJC3PHSp6Pcw>
+    <xmx:LypQaOxoXpG42crWP_r_S6NQ0uj3mPLJMSLgfVpdP4RJU2qOPveVCPgz>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 16 Jun 2025 10:29:02 -0400 (EDT)
+Date: Mon, 16 Jun 2025 07:29:01 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6] rust: kernel: add support for bits/genmask macros
+Message-ID: <aFAqLYBMHkC_X-dr@Mac.home>
+References: <20250610-topic-panthor-rs-genmask-v6-1-50fa1a981bc1@collabora.com>
+ <DAMAPVAI3V8X.N8SAQD6KOO1Q@nvidia.com>
+ <9578ECFC-6C59-40E3-9340-A426E8D2328A@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v4] rust: regulator: add a bare minimum regulator
- abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <db5fd836-6fa2-41eb-841c-98cd54f21687@sirena.org.uk>
-Date: Mon, 16 Jun 2025 11:27:25 -0300
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Sebastian Reichel <sebastian.reichel@collabora.com>,
- Liam Girdwood <lgirdwood@gmail.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6A5766B8-EF9A-41EA-AE55-D29C5184A9DB@collabora.com>
-References: <20250609-topics-tyr-regulator-v4-1-b4fdcf1385a7@collabora.com>
- <DAN57NVEBNIF.270U4DKHZC13P@nvidia.com>
- <db5fd836-6fa2-41eb-841c-98cd54f21687@sirena.org.uk>
-To: Mark Brown <broonie@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9578ECFC-6C59-40E3-9340-A426E8D2328A@collabora.com>
 
-Mark,
+On Mon, Jun 16, 2025 at 11:14:58AM -0300, Daniel Almeida wrote:
+> Hi,
+> 
+[...]
+> >> +        }
+> >> +
+> >> +        /// Computes `1 << n` by performing a compile-time assertion that `n` is
+> >> +        /// in bounds.
+> >> +        ///
+> >> +        /// This version is the default and should be used if `n` is known at
+> >> +        /// compile time.
+> >> +        #[inline]
+> >> +        pub const fn $const_name(n: u32) -> $ty {
+> >> +            build_assert!(n < <$ty>::BITS);
+> >> +            1 as $ty << n
+> >> +        }
+> >> +    };
+> >> +}
+> >> +
+> >> +impl_bit_fn!(checked_bit_u64, unbounded_bit_u64, bit_u64, u64);
+> >> +impl_bit_fn!(checked_bit_u32, unbounded_bit_u32, bit_u32, u32);
+> >> +impl_bit_fn!(checked_bit_u16, unbounded_bit_u16, bit_u16, u16);
+> >> +impl_bit_fn!(checked_bit_u8, unbounded_bit_u8, bit_u8, u8);
+> >> +
+> >> +macro_rules! impl_genmask_fn {
+> >> +    (
+> >> +        $ty:ty, $checked_bit:ident, $bit:ident, $genmask:ident, $genmask_checked:ident, $genmask_unbounded:ident,
+> >> +        $(#[$genmask_ex:meta])*
+> >> +    ) => {
+> >> +        /// Creates a compile-time contiguous bitmask for the given range by
+> >> +        /// validating the range at runtime.
+> >> +        ///
+> >> +        /// Returns [`None`] if the range is invalid, i.e.: if the start is
+> >> +        /// greater than or equal to the end.
+> >> +        #[inline]
+> >> +        pub fn $genmask_checked(range: Range<u32>) -> Option<$ty> {
+> >> +            if range.start >= range.end || range.end > <$ty>::BITS {
+> >> +                return None;
+> >> +            }
+> > 
+> > From this check I assumed that you interpret `range` as non-inclusive,
+> > since `range.end == 32` is valid on u32...
+> > 
+> >> +            let high = $checked_bit(range.end)?;
+> > 
+> > ... however IIUC `checked_bit` will return `None` here in such a case.
+> > Should the argument be `range.end - 1`?
+> > 
+> > Your examples do seem to interpret the range as inclusive though, so
+> > probably the check should be `|| range.end >= <$ty>::BITS`. But that
+> > triggers the question, is it ok to use `Range` that way, when its
+> > documentation specifically states that it is bounded exclusively above?
+> > We could use `RangeInclusive` to match the semantics, which would
+> > require us to write the ranges as `0..=7`. At least it is clear that the
+> > upper bound is inclusive.
+> 
+> Sorry, the idea was to indeed interpret a..b as inclusive. I specifically
 
-The current patch implements different strategies to handle regulators. =
-By
-=E2=80=98dynamic regulator=E2=80=99 he means the one that implements the =
-current C
-behavior.
+Please don't do this.
 
-> I'm not sure what you mean by a "dynamic regulator" here but as
-> previously outlined we currently take a very conservative approach and
-> don't do things without being explicitly told to do so since getting
-> things wrong can result in physical damage to the system.
->=20
-> Please delete unneeded context from mails when replying.  Doing this
-> makes it much easier to find your reply in the message, helping ensure
-> it won't be missed by people scrolling through the irrelevant quoted
-> material.
+> thought we'd suprise a lot of people if we deviated from the way genmask works
+> in C. In other words, I assumed a lot of people would write a..b, when what
+> they meant is a..=b.
+> 
 
-Ok, no worries, this current version of the binding is already =
-implemented as
-you said, so we won=E2=80=99t have any problems there.
+We should tell/educate people to do the right thing, if a..b is not
+inclusive in Rust, then we should treat them as non-inclusive in Rust
+kernel code. Otherwise you create confusion for no reason. My assumption
+is that most people will ask "what's the right way to do this" first
+instead of replicating the old way.
 
-=E2=80=94 Daniel=
+Regards,
+Boqun
+
+> > 
+[...]
