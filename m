@@ -1,293 +1,109 @@
-Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60607E1
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 07:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5751F3B8A
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 08:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750059106; cv=none; b=jUlRSg17SgsmIC2IdZgf7aHUaEpxedwh2Azv1lFdZGibfc0pFzfe6Wgcz8y3RmqsEPgFWS5pdeu9haDTC0cCAfmvg5rKZm7E3ejdQrZFgoy+0bhofokhk4EAp/1RgT5EN2XIocNJEtaM2BUFPBlWW3EcgJrT4x/OvEu70Y2gE3M=
+	t=1750061049; cv=none; b=HxWzq44ZEQ/Zp3/L2fD92tCDiLTYR7x03RN9N01vizSq9r3wKE8dLrFy1YfEadoqKyeq3CXB3ZopZg8+NWRcDEIy/Tk6ckAEI4CSYwKiZ2OkvuJk8UoK5wmt6VRt1/rXNh4V9I/4qjp1Zm6WBblxWRBMV2wXIScxQwjBEtwpF2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750059106; c=relaxed/simple;
-	bh=ee5HiIoIsa3WDFCUyUGDDZltzjB7Oew/byuJhXXlAlI=;
+	s=arc-20240116; t=1750061049; c=relaxed/simple;
+	bh=f1PYGjMBDRYf08ilo6nO6r65U87ulrrDAGAp9xwJARk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nSfrxKtpBdsBKChkNVn40UrCAYC+m3lHZ5hMcqnwEU3rSC0UqkxVoCxLZsh96esZSlMH4mY4ip5GoR9d3h4dgicDyJphJwSHFB4L1h/xSUAqWDpVJXQ+gRb0LXqlqZTBJZz5ytryhMVNlI0sU/G6Qg9Js20wTqqPpTeV+wi+MgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=DC1i+2um; arc=none smtp.client-ip=209.85.166.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+	 To:Cc:Content-Type; b=WDc+x6mCWLSScDkdNEHewBvviP/4HMuzYvb+1qG8wbl4X6VcLIMdThS9rgEA1TBVtIxB0yWXAcXihXn0R3MHuD2FyDD0skoetbOfhVKMXwp5GU37Pbs86c2jENpB8HBV2Znn9RgEUAEcwQNhKUXDPyMWp9rYxMEimHVEXsTABvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z56rYfB/; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="DC1i+2um"
-Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-3dc8265b9b5so39526315ab.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 00:31:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z56rYfB/"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a365a6804eso2916461f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 01:04:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1750059103; x=1750663903; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750061046; x=1750665846; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EQxXH/0dmAKUHVoHoL5MncVmJUg8FbHf/SfAogCBA2o=;
-        b=DC1i+2umUVfKRl3dV5GPu22ngrs1sm0QAx+hY6GxzRuTxJz2aEVXBVY21zCsxxxAb3
-         xQ7OnZYKqww37y7xbgOG9IasDUprZUWYFUg0EZ4MElZo6BmPrlMHfFMz5ewViqQiXtWr
-         /+kx131zxEmT0q/ZfGhXZmZzXXUWLkGa88xBOnl1w1EhoTa9j0IhgDRIKQKB+e2cHZaE
-         +dJ//AYrH56dqdU2azxMFshlEHAKGit9qUbhCcCEVP/Tbj5P5zE1/M4AtQ7TENXxPDBt
-         Wsj+Oref7Aunzg2G6havYh6dekCCPT/Diu8Z8ZalOmwWyhPA2KJHD+yvV/aEF/B2yHpy
-         yAcA==
+        bh=f1PYGjMBDRYf08ilo6nO6r65U87ulrrDAGAp9xwJARk=;
+        b=Z56rYfB/6DT74qaitagzv+993Q7uW7YWuqJ3iBr36WuY0NU+vutvNNc8Z6Mptbt5Th
+         6Q7n9WEuxpJ7vs+DvI66CwGFvYiUFLNhdhDxI1fY0H7jzjB66KHO6h/1mx25/XrYULrm
+         7NgvLqjxQx3hPxg4dlMS85JgljMIIPXZeHC8hDUHh9G9jazgHPAkioikTVh1FBnfSiV9
+         4BkPWMHF8wPlWKhRRP/C0Bkp/6RytYTB4I59QI0MD9msz37BtNQOuP+kwo5yjTHAHBBq
+         17tSItj17hu/Agc3XSrAUdc+8Q3mWv3y1RU6g1F2Le9fCkyOpEJ93rSZx4oD6W6gaGnD
+         L5+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750059103; x=1750663903;
+        d=1e100.net; s=20230601; t=1750061046; x=1750665846;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EQxXH/0dmAKUHVoHoL5MncVmJUg8FbHf/SfAogCBA2o=;
-        b=xLVCurJaxmmOR5wCMwdgobQlKcx8NuUuijirzzzal8mUTR/ehIwv8PyI6ZTIfFCW/T
-         6HeML7htarxFt9uqYaFMncrTVu2Fg6CdMJ2ObaKRaTk0e3NsFT8oDauCixsbO79q9vDI
-         DfIQP/BjP2gkzrobTy2rTEvrWF6s1O1GWwnuomSsO7I4P8jJcraG0Ee4pjN42A820mgp
-         yQvzwS6haRL9NN3LzExZadvUcTdI6mPQGQZzrinupOrt/HZSDcRG6o+76nSQ0oG0DA0R
-         3o0dvMVwFjdwau+CqagoUHQyoou0zE3yH1JZXp61lIZr2GypY0gElF027SIihqSTU99m
-         xoXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURu3lawMuYX5zXnUXpwxKvmJbRfpc6Zg5fwxEtsDCWbOC9TYKU7wvv0NXxq/CMFR/xhn6g+UgtzPD4iNakGg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEaEJRO61HAVZTmFH3dN0pW3VBFZtrP79WLg8pvOauHHPW3Jq+
-	lwr6mCd/ueK2Yz4s59vfnm4HMt/A4WrbXbYitGitiuKparq6EdXcsowFl6SKBIq5tmksIWKwBBQ
-	CyRfczzi10AKUzy2m6CIDRxMmaX/QSlAmqoz17t8pPw==
-X-Gm-Gg: ASbGncu4WLhwZpl41IWApW0SgP9xZFw9RIpIAJkxykTfAjm5/P2pOjZXSyfURo7a+oU
-	UBv/izkdP10Nh715aXY6jmC5oTLGoWqNR0Y47Bog5cFhXE6hVgGrZF3REYD+K09aMTm/01w53ZA
-	FttlyVHxFkeb5XgWaFHBS9lapei3w1GTcry/z/HwcjrPgoiQ==
-X-Google-Smtp-Source: AGHT+IEjHI16GxKyLasfzKkpzXfv5K8fdxEJHSmO2c+vsZ5EW3jLub+wreQ1LSFrfqb50SzP3xXNNY/tkYcEG9qkkXQ=
-X-Received: by 2002:a05:6e02:1445:b0:3dc:87c7:a5b5 with SMTP id
- e9e14a558f8ab-3de07c2710fmr92538565ab.3.1750059102855; Mon, 16 Jun 2025
- 00:31:42 -0700 (PDT)
+        bh=f1PYGjMBDRYf08ilo6nO6r65U87ulrrDAGAp9xwJARk=;
+        b=tMjwx+/FjAGO2dGywVP60+u2ntetdUof4h+imiptfzDn0y8MQea6+aMmOKS2tkw8d/
+         XWpELVMKS+7YXeX9CBYIHi16phsvVxDFWbxcMxiyGzxof2g+9NR1vWGX9hUWHtFOvpzc
+         4AoCTgzaozJzYnGFJO9aspKgoZA8fIBQQKHjH+mkpGZqcjDvMpAYfzEYusDtyMrGNkEf
+         pe07HTELkm4ftNRTyVoQdYCcf8+N0MhzvWxKuYy6QRUkTQqfthnUPOTBAlB9Qx4R2O9m
+         1YwYHC08fSxKmorAKgvbOwHC5RvocAFEBL9lrPklj7lyJGo6fA0NkQjgOjWnUD28+/gQ
+         u3Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCXnFmxxvKtbD5tgshNncH/vlfUOssO4gWmU4elRl8YM48aJH7/F7Ruvpy3Wml1kgUt+P7QckG790Et8CeTCLw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHLC+w11gQ4GgekzCXqlMOZZwrePasXZsHV9+g96Te0A28yaLo
+	/44J4vs/Bn0siVZy8q6+LWAHUfwi+SAR1WOPdC/DEltX4DXsJENGOj9XuqeV5yun8tWsWvifQZr
+	LOyIo2p31jwwlx2XaC2KIcyJFre8Ub2TlFjRZ4sY1
+X-Gm-Gg: ASbGnctUU34yCSbYVczFJX7iGI7fCKHqU/3rrqkf36CydTqJcGw/0ojbb1sleJmnZeN
+	8wTZy3543af0WCqOfN8EQe6WAU7YUKxvmGBkffCWogjipSDoozr1YMTWvtfCaib8dpVZuOPd9R6
+	MhRhkqhEFQAkQLrm0zbEvxPsGDS0wXjG8miCiU4rD8aaD3YAgAZDZs9r4=
+X-Google-Smtp-Source: AGHT+IFJNYnGY++zKK9ezz4GBc7LrhfZRQuFSNzgJFJ9/LkEAc06KUhMt33Oo5LPfwTK3+h2aideyFG6HmImWi9Q2XQ=
+X-Received: by 2002:a5d:5846:0:b0:3a4:eef5:dece with SMTP id
+ ffacd0b85a97d-3a5723a3729mr6989355f8f.35.1750061045848; Mon, 16 Jun 2025
+ 01:04:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250604-v5_user_cfi_series-v17-0-4565c2cf869f@rivosinc.com> <20250604-v5_user_cfi_series-v17-15-4565c2cf869f@rivosinc.com>
-In-Reply-To: <20250604-v5_user_cfi_series-v17-15-4565c2cf869f@rivosinc.com>
-From: Zong Li <zong.li@sifive.com>
-Date: Mon, 16 Jun 2025 15:31:31 +0800
-X-Gm-Features: AX0GCFv07zIy78CxiGqhmmuXUJ1bc3WRbaeMC8WS8lGUU29aYh3F-BEq_8IQZZA
-Message-ID: <CANXhq0pRXX_OMW2g2ui-k7Z_ZT+5a8Sra8oE28nBh5B9K2L5bQ@mail.gmail.com>
-Subject: Re: [PATCH v17 15/27] riscv/traps: Introduce software check exception
- and uprobe handling
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org
+References: <20250514105734.3898411-1-andrewjballance@gmail.com>
+In-Reply-To: <20250514105734.3898411-1-andrewjballance@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 16 Jun 2025 10:03:53 +0200
+X-Gm-Features: AX0GCFuzgZ7WEl16NbBTVWyiSxMdvM6mQ36bWXoU4zjT-XrCROgztLnIerofDY4
+Message-ID: <CAH5fLgjgtLQMaAZxufttzoVCJpAfTifn6VWwKZ7Q6vAOOvG+ug@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] rust: add support for port io
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: dakr@kernel.org, a.hindborg@kernel.org, airlied@gmail.com, 
+	akpm@linux-foundation.org, alex.gaynor@gmail.com, 
+	andriy.shevchenko@linux.intel.com, arnd@arndb.de, benno.lossin@proton.me, 
+	bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	daniel.almeida@collabora.com, fujita.tomonori@gmail.com, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, kwilczynski@kernel.org, me@kloenk.dev, 
+	ojeda@kernel.org, raag.jadav@intel.com, rafael@kernel.org, simona@ffwll.ch, 
+	tmgross@umich.edu, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 5, 2025 at 1:17=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> wr=
-ote:
+On Wed, May 14, 2025 at 12:58=E2=80=AFPM Andrew Ballance
+<andrewjballance@gmail.com> wrote:
 >
-> zicfiss / zicfilp introduces a new exception to priv isa `software check
-> exception` with cause code =3D 18. This patch implements software check
-> exception.
+> currently the rust `Io` type maps to the c read{b, w, l, q}/write{b, w, l=
+, q}
+> functions and have no support for port io. this can be a problem for pci:=
+:Bar
+> because the pointer returned by pci_iomap can be either PIO or MMIO [0].
 >
-> Additionally it implements a cfi violation handler which checks for code
-> in xtval. If xtval=3D2, it means that sw check exception happened because=
- of
-> an indirect branch not landing on 4 byte aligned PC or not landing on
-> `lpad` instruction or label value embedded in `lpad` not matching label
-> value setup in `x7`. If xtval=3D3, it means that sw check exception happe=
-ned
-> because of mismatch between link register (x1 or x5) and top of shadow
-> stack (on execution of `sspopchk`).
+> this patch series splits the `Io` type into `Io`, and `MMIo`. `Io` can be
+> used to access PIO or MMIO. `MMIo` can only access memory mapped IO but
+> might, depending on the arch, be faster than `Io`. and updates pci::Bar,
+> so that it is generic over Io and, a user can optionally give a compile
+> time hint about the type of io.
 >
-> In case of cfi violation, SIGSEGV is raised with code=3DSEGV_CPERR.
-> SEGV_CPERR was introduced by x86 shadow stack patches.
->
-> To keep uprobes working, handle the uprobe event first before reporting
-> the CFI violation in software-check exception handler. Because when the
-> landing pad is activated, if the uprobe point is set at the lpad
-> instruction at the beginning of a function, the system triggers a softwar=
-e
-> -check exception instead of an ebreak exception due to the exception
-> priority, then uprobe can't work successfully.
->
-> Co-developed-by: Zong Li <zong.li@sifive.com>
-> Reviewed-by: Zong Li <zong.li@sifive.com>
-> Signed-off-by: Zong Li <zong.li@sifive.com>
-> Signed-off-by: Deepak Gupta <debug@rivosinc.com>
-> ---
->  arch/riscv/include/asm/asm-prototypes.h |  1 +
->  arch/riscv/include/asm/entry-common.h   |  2 ++
->  arch/riscv/kernel/entry.S               |  3 ++
->  arch/riscv/kernel/traps.c               | 51 +++++++++++++++++++++++++++=
-++++++
->  4 files changed, 57 insertions(+)
->
-> diff --git a/arch/riscv/include/asm/asm-prototypes.h b/arch/riscv/include=
-/asm/asm-prototypes.h
-> index cd627ec289f1..5a27cefd7805 100644
-> --- a/arch/riscv/include/asm/asm-prototypes.h
-> +++ b/arch/riscv/include/asm/asm-prototypes.h
-> @@ -51,6 +51,7 @@ DECLARE_DO_ERROR_INFO(do_trap_ecall_u);
->  DECLARE_DO_ERROR_INFO(do_trap_ecall_s);
->  DECLARE_DO_ERROR_INFO(do_trap_ecall_m);
->  DECLARE_DO_ERROR_INFO(do_trap_break);
-> +DECLARE_DO_ERROR_INFO(do_trap_software_check);
->
->  asmlinkage void handle_bad_stack(struct pt_regs *regs);
->  asmlinkage void do_page_fault(struct pt_regs *regs);
-> diff --git a/arch/riscv/include/asm/entry-common.h b/arch/riscv/include/a=
-sm/entry-common.h
-> index b28ccc6cdeea..34ed149af5d1 100644
-> --- a/arch/riscv/include/asm/entry-common.h
-> +++ b/arch/riscv/include/asm/entry-common.h
-> @@ -40,4 +40,6 @@ static inline int handle_misaligned_store(struct pt_reg=
-s *regs)
->  }
->  #endif
->
-> +bool handle_user_cfi_violation(struct pt_regs *regs);
-> +
->  #endif /* _ASM_RISCV_ENTRY_COMMON_H */
-> diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-> index 978115567bca..8d25837a9384 100644
-> --- a/arch/riscv/kernel/entry.S
-> +++ b/arch/riscv/kernel/entry.S
-> @@ -474,6 +474,9 @@ SYM_DATA_START_LOCAL(excp_vect_table)
->         RISCV_PTR do_page_fault   /* load page fault */
->         RISCV_PTR do_trap_unknown
->         RISCV_PTR do_page_fault   /* store page fault */
-> +       RISCV_PTR do_trap_unknown /* cause=3D16 */
-> +       RISCV_PTR do_trap_unknown /* cause=3D17 */
-> +       RISCV_PTR do_trap_software_check /* cause=3D18 is sw check except=
-ion */
->  SYM_DATA_END_LABEL(excp_vect_table, SYM_L_LOCAL, excp_vect_table_end)
->
->  #ifndef CONFIG_MMU
-> diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-> index 8ff8e8b36524..64388370e1ad 100644
-> --- a/arch/riscv/kernel/traps.c
-> +++ b/arch/riscv/kernel/traps.c
-> @@ -354,6 +354,57 @@ void do_trap_ecall_u(struct pt_regs *regs)
->
->  }
->
-> +#define CFI_TVAL_FCFI_CODE     2
-> +#define CFI_TVAL_BCFI_CODE     3
-> +/* handle cfi violations */
-> +bool handle_user_cfi_violation(struct pt_regs *regs)
-> +{
-> +       unsigned long tval =3D csr_read(CSR_TVAL);
-> +       bool is_fcfi =3D (tval =3D=3D CFI_TVAL_FCFI_CODE && cpu_supports_=
-indirect_br_lp_instr());
-> +       bool is_bcfi =3D (tval =3D=3D CFI_TVAL_BCFI_CODE && cpu_supports_=
-shadow_stack());
-> +
-> +       /*
-> +        * Handle uprobe event first. The probe point can be a valid targ=
-et
-> +        * of indirect jumps or calls, in this case, forward cfi violatio=
-n
-> +        * will be triggered instead of breakpoint exception.
-> +        */
-> +       if (is_fcfi && probe_breakpoint_handler(regs))
-> +               return true;
+> Link: https://docs.kernel.org/6.11/driver-api/pci/pci.html#c.pci_iomap [0=
+]
 
-Hi  Deepak,
-Sorry for missing something earlier. I think we would like to clear
-sstatus.SPELP in the uprobe handling case. For example:
+This series seems to try and solve parts of the same problems as
+Daniel's patchset:
+https://lore.kernel.org/rust-for-linux/20250603-topics-tyr-platform_iomem-v=
+9-0-a27e04157e3e@collabora.com/#r
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index c2ea999c1167..e8492bb57e09 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -349,8 +349,10 @@ bool handle_user_cfi_violation(struct pt_regs *regs)
-        bool is_fcfi =3D (tval =3D=3D CFI_TVAL_FCFI_CODE &&
-cpu_supports_indirect_br_lp_instr());
-        bool is_bcfi =3D (tval =3D=3D CFI_TVAL_BCFI_CODE &&
-cpu_supports_shadow_stack());
+We should probably align these two patchsets so that they do not add
+incompatible abstractions for the same thing.
 
--       if (is_fcfi && probe_breakpoint_handler(regs))
-+       if (is_fcfi && probe_breakpoint_handler(regs)) {
-+               regs->status =3D regs->status & ~SR_ELP;
-                return true;
-+       }
-
-        if (is_fcfi || is_bcfi) {
-                do_trap_error(regs, SIGSEGV, SEGV_CPERR, regs->epc,
-
-
-When a user mode CFI violation occurs, the ELP state should be 1, and
-the system traps into supervisor mode. During this trap, sstatus.SPELP
-is set to 1, and the ELP state is reset to 0. If we don=E2=80=99t clear
-sstatus.SPELP, the ELP state will become 1 again after executing the
-sret instruction. As a result, the system might trigger another
-forward CFI violation upon executing the next instruction in the user
-program, unless it happens to be a lpad instruction.
-
-The previous patch was tested on QEMU, but QEMU does not set the
-sstatus.SPELP bit to 1 when a forward CFI violation occurs. Therefore,
-I suspect that QEMU might also require some fixes.
-
-Thanks
-
-> +
-> +       if (is_fcfi || is_bcfi) {
-> +               do_trap_error(regs, SIGSEGV, SEGV_CPERR, regs->epc,
-> +                             "Oops - control flow violation");
-> +               return true;
-> +       }
-> +
-> +       return false;
-> +}
-> +
-> +/*
-> + * software check exception is defined with risc-v cfi spec. Software ch=
-eck
-> + * exception is raised when:-
-> + * a) An indirect branch doesn't land on 4 byte aligned PC or `lpad`
-> + *    instruction or `label` value programmed in `lpad` instr doesn't
-> + *    match with value setup in `x7`. reported code in `xtval` is 2.
-> + * b) `sspopchk` instruction finds a mismatch between top of shadow stac=
-k (ssp)
-> + *    and x1/x5. reported code in `xtval` is 3.
-> + */
-> +asmlinkage __visible __trap_section void do_trap_software_check(struct p=
-t_regs *regs)
-> +{
-> +       if (user_mode(regs)) {
-> +               irqentry_enter_from_user_mode(regs);
-> +
-> +               /* not a cfi violation, then merge into flow of unknown t=
-rap handler */
-> +               if (!handle_user_cfi_violation(regs))
-> +                       do_trap_unknown(regs);
-> +
-> +               irqentry_exit_to_user_mode(regs);
-> +       } else {
-> +               /* sw check exception coming from kernel is a bug in kern=
-el */
-> +               die(regs, "Kernel BUG");
-> +       }
-> +}
-> +
->  #ifdef CONFIG_MMU
->  asmlinkage __visible noinstr void do_page_fault(struct pt_regs *regs)
->  {
->
-> --
-> 2.43.0
->
+Alice
