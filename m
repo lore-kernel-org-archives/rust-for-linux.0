@@ -1,95 +1,131 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D7D1EB9FA;
-	Mon, 16 Jun 2025 21:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012672101B3;
+	Mon, 16 Jun 2025 22:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750109325; cv=none; b=BkLa/v8xHin+VaUdF6kHD1JBzs70+Y8rKfk0S5k760ByKmfbMyS/hb4eiG904EEKZpDFUV2KwjZxJEhkfGFfAgszIZTccfS9VgR13XgDGLuIP2Il0VDMuYIyYmwJTy5naRkMG6YrWc7NRAy56hXHnax8dByZTWOozmAq1Flt7/U=
+	t=1750111651; cv=none; b=ludy17a3MBC+f5NFHgt8MvFclaPcxEK5poEoTSD8oojif8TVtWOl49qLsXvdWSyjU6zehg8vMHOVO/56kVxtjU2ZwKIWpwI9SFG4vx7ca31tDeCl2SrIpDcPyhmca74iuO9QKElqqvhfXyj1ld//KC5PFC/SnuR1xGm0aVmlSko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750109325; c=relaxed/simple;
-	bh=tHvZkL3b841MNEO9/DdSITMV0vDLxLNrNJMk62HpFVE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h+Lk41FImRm9lyTFhSgLbWPrZgBMbviOYApa2Hfjfr5TjQfBGflPM0JlTg7YnKuXkf7taeYye7ZYzDwbxdmmXgRxSGtYGlcEnoCutQP9BZuT1seHdhZ1iZLN2XbUhekZnY5THHYnhXeHesHNphb0qQlwpBmsFT5EMOHHeDbAlYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lBaKC4ZL; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1750111651; c=relaxed/simple;
+	bh=wN3fJ3bslNOW3YouETZ3bRRiDOdmMsDF1u435WJYNkw=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=H+AOul3/C0YilIlj4gebSu2rMzIoRMKm+w6SiILjBEhl0TeS4YLvb/efxSFlb/nHsONEC+Arokiyemr7bhiEiMexUAFsld2MGaWEX+p6WFgUcRjBHgloq7UvboWrDzpLP5qR2at0PRjYd/Hodcrx+1jB6BgIbhSywcdKAQZm53w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZPo0tJUS; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lBaKC4ZL"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-312a806f002so833881a91.3;
-        Mon, 16 Jun 2025 14:28:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZPo0tJUS"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-311bd8ce7e4so4161013a91.3;
+        Mon, 16 Jun 2025 15:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750109324; x=1750714124; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tHvZkL3b841MNEO9/DdSITMV0vDLxLNrNJMk62HpFVE=;
-        b=lBaKC4ZLcwVOMgjqjL8DaTg/eNgYnAWsY1N2tz7bV9c0HUWVeRgQRk0OXmwVn+br/d
-         EkgzZ0tfym4B6nF2jmvyoqQ+OS2n9TnqSIqSKZXz9MmCcVUmF+J6JCQ5jjOEJbuvQvKH
-         02FvbCwG+QULBi2h6rkUHVsg3aZHnON5RgijJvnGEfIXWiLLMSgghuZjBfzs2tUu2mZv
-         3HDKFksxPapJ+3qDW8sOVM0b9SlhIckCBqNa8jaU+QTg2eyuQ8x0JkDZRb58faMMDk+f
-         MfLUjQH1BXXi2BLmJWibjBiVwj6HNTD72kEQBnfY6V9csknVLLW+E8pnjy3UMzj7uLzB
-         /BiQ==
+        d=gmail.com; s=20230601; t=1750111649; x=1750716449; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OMNKrTCU3N44LQI4tDmEyYcaZ5N4AMgvqT5+x59K2lw=;
+        b=ZPo0tJUSKR6n1s5d8XUBXndJo3qtgFk9KWh7+q7YVb/dhnyW8BlbY9wtrPB3xCqaTq
+         RuN7n6dMGGR+r2PNfhftqgwgm3Rfxh0xEOlD+O8JbgjA7cTzVUQ+aGjUprlsRv5FVzN/
+         ZevGMGw8zIK2jX7iB96MZvW+mbtutlsDmnltudkhH6eIiopQIKQ8vBkYQbF09oPBmC3t
+         IUOMeCmHIkiqBoDdhXCJ+8hebw41hgTsEgeR7DuuLJfxQAiAr27b79uGJRl6xwblCvH6
+         MdzLKSzRHDGRL+jZR6umJ/AQ9JaK/AYcvrYGT0e4MItiE80nVtydrRJs6TejEE920dvb
+         zz3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750109324; x=1750714124;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tHvZkL3b841MNEO9/DdSITMV0vDLxLNrNJMk62HpFVE=;
-        b=vg0Zwh8doM8wBRw/V4e+bzFcX+ekI4WtC5ODMoGqUAWAVdZ8ZZ3b5XLf7jcD2FSxiY
-         XEmdvwWkA6hgcBcKB3RPIGKZKuPUiiTY/O5c0yePImkTwQvhZIeKQGYd0P4KKonvP5WM
-         nnUQIlo7OYAUNtSUaXeMG/QbxfowrHllusSEztf1GbXCCeg6o6lzYb2BafTEpGg1runH
-         tiilBZL13wbNzXNdoGzrIkG7g3rGjoHoPlz+iT1rqGqSQmKkykNAQjkpWSwyPii2kDUv
-         8F0v9lgatnr2zoKJcMq/FKdmjIJuwmK4dfUxywK3VKkdgR5MRNSi3kJxAYkq3VJBNUX/
-         Ww5g==
-X-Forwarded-Encrypted: i=1; AJvYcCU3OLIih02rVfW9DTVFmKEHwRu80So1XiKtXqhgEK/sw5eBHpoxI4p/G90mTOJ7+VKHmbRaJhUodW45j3//mA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8XthJx7lcd9qVYu77wrv6xpwnWgwX/uIhNJG70kYpamg0ttOp
-	jw6MHKzmosetC4ed/czf8wLi3rPshOBl9GetA3FgGdiyy6l7W/ZdzbHWSJXeXGtcjjiQbFqrKWp
-	uFARLS1W7pGXBRU192ZXIeMS1pmsKtOW/ob4M
-X-Gm-Gg: ASbGncuc8OCKsKi4AkFX+zQ/Zini9icQ3LbpGp/ogWM3Z4gneOnQzibxm5/76LbZO61
-	HTjgfS48vF7d1/KUeFkOZ4ML4EbmTmftUTi79m2QxTxfq9aJlQF2ObmlZ1/DOVOR2qz5lvPMB+b
-	dR8WmWs7OJ3dMev2yDyhB7G+74DhxhgGRdfMwFsAmAPSI=
-X-Google-Smtp-Source: AGHT+IFpeYpl22BIjz3gujyrkdt7SBYSAPG2/B7ertdSdDyvPD9lzSXyH4tJedlNbF4lFCbNR5qtS+JKwgj6IfoWHPA=
-X-Received: by 2002:a17:90a:ec84:b0:311:e9a6:332e with SMTP id
- 98e67ed59e1d1-313f1b312d5mr6208943a91.0.1750109323846; Mon, 16 Jun 2025
- 14:28:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750111649; x=1750716449;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OMNKrTCU3N44LQI4tDmEyYcaZ5N4AMgvqT5+x59K2lw=;
+        b=We3NhYK9BPQJXHVo2fkmGLUr8HEKSsudDN3oIo0LetnYVFzEgIL7Ia5SQhmk6Ei3V6
+         xicSgw2ROqoj1/I5d6rt7vj5c12gcT8H3cI+lwJ713Rz1/jq0HiFhSHyHT9Q7tfK+LDM
+         o9kfbXoUod9sIO0XdokSq1au+qucjuQlYhu/yACWGFrJyvokXGJ7yCF5XjhpSy935B3D
+         Nn02eHq/ANS6AYjiUhpS3BRGZNWU3anos6iBIrlNrZqVbk+8ds7klJDIEp3NrkjI7RCG
+         T3qPDsIl3jKeWZa+XtkH1fxgCBherz2FdJlLNIIWDM21/Lx8eyLoCHvDk5KsUFVtjPMz
+         MR2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWYiHLqeUVJ2pBQQx+7uJ/qkZenX1A1p+Zu8/fr9jBZwWzE1HPv8Gic46oy69pf9BLbU7mPmlfrJr3qwYY=@vger.kernel.org, AJvYcCWmGFsj4RA4EknWU4DM6Xesltmz6IqqcPfmHpXjXrZIG6R51+KQh53yiln+Qw7UM0N9zVHUkhnnWTPl2sB+Icc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yygg9Aa9LSvlnAgXd0gwN62nn+avOk1Ql7HJiAYXSz1c90AgJim
+	ZUC5N3vA6BBuI8sdDvjzUyCEKNFxp6Jx36vXXJfk/OJltccxuNtAn34G
+X-Gm-Gg: ASbGnct1c6GP1nghCGwLLMNnDUib5Q+710zMuA0QpWt7VIdMootBiB9cSpXnmTQQ8Yq
+	wuvjoaLL4pmgf6XtwHVxOu0nso2OjQ9lekuR4RcMFKcTpumJEEq7e43GyFsorqxa5Uj5pxilRaY
+	JYqteVNNGKbwoxdKBG8bTwEDP0YSKdgR9m82nwjvF7tdLp0VEfGKZCqXzxlhXc5V0X5YciI+Uo9
+	wfqyOEX62IGHhfwhk1m3rsJ2GUkZAtOvFcvMaxjdU1EXZCGHf6Q4GQR49cWNd4Nkj7CegeR7vEg
+	0My4ZZ41sA2TxOA8NpgHZudyj2TxNKi1J+SFwI4CInV4uo+GO7VJMabkLUlX379Ib2QOW/Jynr0
+	ISdWUZGzY7cf/4cEbW7JlBbY2sWmJYEqg4HJbVMOx
+X-Google-Smtp-Source: AGHT+IEpQiNrHn/T5dRpABVwX2QtylkZ9Zpgirhva1ZQQQIhFYIt2YFPzX1hgvm069tnkuYijbOTaQ==
+X-Received: by 2002:a17:90b:5847:b0:312:1dc9:9f67 with SMTP id 98e67ed59e1d1-313f1c7c54amr17254783a91.2.1750111649162;
+        Mon, 16 Jun 2025 15:07:29 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2366e4d6653sm47110685ad.71.2025.06.16.15.07.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Jun 2025 15:07:28 -0700 (PDT)
+Date: Tue, 17 Jun 2025 07:07:08 +0900 (JST)
+Message-Id: <20250617.070708.74052163124048514.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: alex.gaynor@gmail.com, ojeda@kernel.org, aliceryhl@google.com,
+ anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+ dakr@kernel.org, frederic@kernel.org, gary@garyguo.net,
+ jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org,
+ lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org,
+ tglx@linutronix.de, tmgross@umich.edu
+Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
+ Delta
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
+References: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250616153604.49418-1-boqun.feng@gmail.com> <20250616153604.49418-3-boqun.feng@gmail.com>
-In-Reply-To: <20250616153604.49418-3-boqun.feng@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 16 Jun 2025 23:28:31 +0200
-X-Gm-Features: AX0GCFtsVkSsb9r-Et1SiuSY4RT6eaG72b8XtmUQN8OOVG598eWPzfBSVVitO-g
-Message-ID: <CANiq72mES+dPBuhsdh0-hJcV69AO74j6W5vhCeo+yV5S-Zp+yg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: task: Add Rust version of might_sleep()
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com, 
-	fujita.tomonori@gmail.com, mingo@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 16, 2025 at 5:36=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> +/// Equivalent to the C side [`might_sleep()`], this function serves as
+On Tue, 10 Jun 2025 22:28:18 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-I am always pleased to see intra-doc links, but wouldn't this one
-point to the Rust item? :) i.e. we need to add the link, right?
+> Convert hrtimer to use `Instant` and `Delta`; remove the use of
+> `Ktime` from the hrtimer code, which was originally introduced as a
+> temporary workaround.
+> 
+> hrtimer uses either an `Instant` or a `Delta` as its expiration value,
+> depending on the mode specified at creation time. This patchset
+> replaces `HrTimerMode` enum with a trait-based abstraction and
+> associates each mode with either an `Instant` or a `Delta`. By
+> leveraging Rust's type system, this change enables `HrTimer` to be
+> statically associated with a specific `HrTimerMode`, the corresponding
+> `Instant` or `Delta`, and a `ClockSource`.
+> 
+> The `impl_has_hr_timer` macro is extended to allow specifying the
+> `HrTimerMode`. In the following example, it guarantees that the
+> `start()` method for `Foo` only accepts `Instant<Monotonic>`. Using a
+> `Delta` or an `Instant` with a different clock source will result in a
+> compile-time error:
+> 
+> struct Foo {
+>     #[pin]
+>     timer: HrTimer<Self>,
+> }
+> 
+> impl_has_hr_timer! {
+>     impl HasHrTimer<Self> for Foo {
+>         mode : AbsoluteMode<Monotonic>,
+>         field : self.timer
+>     }
+> }
+> 
+> This design eliminates runtime mismatches between expires types and
+> clock sources, and enables stronger type-level guarantees throughout
+> hrtimer.
+> 
+> This patchset can be applied on top of the typed clock sources patchset (v4):
+> 
+> https://lore.kernel.org/lkml/20250610093258.3435874-1-fujita.tomonori@gmail.com/
 
-I would normally ask for an example of typical usage, but do we have
-some good C docs on that already that we could link otherwise?
+Andreas, whenever you get a chance, could you create a
+timekeeping-next branch and merge the typed clock sources patchset and
+this?
 
-Thanks!
+That would make it easier for me to work on top of them.
 
-Cheers,
-Miguel
+Thanks a lot for the review!
