@@ -1,96 +1,82 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10630.protonmail.ch (mail-10630.protonmail.ch [79.135.106.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936DF2980BF
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 10:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6126E2E7F35
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 11:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750070996; cv=none; b=YBTHk5zzJtyeQ6/3r80Xvgux0BhPX0awoGyrdHAZ2UGv978TPN518XEpL6jBiv9+jmEvQgKmPoazfhp/gPLS/82a6A5nRXX2EkThBHdhyL6RQG2BTGQV5SSVxLJ81CCq0BlEY4j9bhebpdU4vXtXIhIJwScXFteuidCPz3Sk4/I=
+	t=1750074230; cv=none; b=YeBPbhEuztw42LYRYg61uSSjLr08CMw09vMQfFcMub6XoF40QsfX0BMymYpTVgs9WxHVE6iVpWORnhZWdoNwmBBKIPOWmLeTSAfVUl4ExO6h6KicM+dlD6U1QBPgpcpCEAeoGWYXw9YoATm2tfNp1/mLESZVnVOYTmEnxdNL2fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750070996; c=relaxed/simple;
-	bh=fgAbH+bqMDdFSxa5Nsg900AieTB/XPyHcssZQxwzQvc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kt8DR9IFCU9giHu3Sg9dA1wwLti0T973Z28owBKBUWUt8PqOI9QAqeFWGoo7EvMI5ilLuJQ9+8UhkF4I0Lhrops/IHSIlydlrhrd5R63chZ5a2j0eMqPdBZXjn+vin2ajnuxghQ+/auIi0yJzw92Vlbnh8BN0f6k5g6eTveSCZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OBcnlKMa; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750074230; c=relaxed/simple;
+	bh=w+aGyaHQbUooXMEC4LmcTYpand8db+ES07IoksrJl70=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nUTo1A7H+kM2QUB8tA2Hzw8hDeXqZMA/G2COwAPAZh3hkhzGY0McRfb9KsUNKXJ0IVEVcVwHKfRVa/Kq9nl2yHJojfYfnowicBfug15oVJNiC8TMW4EC/COZqbLuhSWllsBvM4HS02WCQ9648wPuxKN4PRTDFfVRqz9FEadzoiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=q7AvfoGN; arc=none smtp.client-ip=79.135.106.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OBcnlKMa"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-453398e90e9so21367855e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 03:49:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750070993; x=1750675793; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=noASFFqKv9QR1JcSSNjGq2HTnkr+7eqAct6g0x+3TVU=;
-        b=OBcnlKMaqNC2WOlTeGBmZbP1DYtdgWbUgbvF446lFQZV+9M1F/mYJPw4jjhK0i38hT
-         2sLxaBiWaGUUL+azGAhFL7zgpJvqn5g74oULrWoFX3gtf6CISW11jNPRkOtgJ+YL5dAV
-         wcgQ5dlzJw/fuWqug4MpRYDfVU5sujAiDB6TiwUhrIvrO1xrTmZyr4YPQ2NwiKQ5YRze
-         KvuBYvuveubzHWWKXUJ7PnnhsfMTrwNTDAfrznQCyInKOh0+ZV4HaaBwgJ3B/QLcHB8W
-         JuLA/mbHQAsZoeDgxrt8BoBZ/4AlYLfflvevd0kKUgd3Wvk9BMSTxul1yaTSB53Njf9V
-         BfPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750070993; x=1750675793;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=noASFFqKv9QR1JcSSNjGq2HTnkr+7eqAct6g0x+3TVU=;
-        b=H800oJifUHG06gls0Ed9ZfWEdTSmPNj7xZ41HKxiMUGineIn6V9d2IkDUjWRGBav21
-         vu3wvcxmjy/BTpUw5gOdjvqi2gsMmx4ZfjLk1xBl0+ItyfmUmx6DvZGCFWXLtqOVtPUn
-         SkI6owizD/xw8Xc6IvyrzN2rG2xEXJogaQqQDDrAiZSPZXIC2fAEAsd7vE7Vze7nZR6s
-         UT73pa2kfzz4+tiHFv8fOyEi2W6ob8uZvJP0IXBKqq1jfTbabXqj95TyF+CfXDrp1epA
-         mvTD3/8ZEn/OFBeO7IcSETy5GOrIPmCIMIUkBBMXfkEe+ujJHtk/SD90hB+TRliZd5c5
-         NSeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWzUHgLxoUBMVS3/ewsiIhH30/KC3309R8NjBL4svJlQMTghY+ajSb6joClOrZ3pIaiXDWC/7uDNvTwsB0ZEw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcFtZQxPAqj2gZbHU96S49FnRR3KqMdsp7xKEa3wrSI5CisOim
-	HDRXACXMwXnmaNls3RH3dNunS2Kc9rJbKuKHycWSXdAM8mgkRvZaspC85FP7cjQLoID10aOx0nP
-	WxkPU5H++SgVWS+hxpvznUWe7vMDsVoWb8qq1tIm0
-X-Gm-Gg: ASbGncu/cZ446QSaVtmyMbfXCoGaM4nV4VC4AAGQACN5H3Ia35QvJ006Nw5i47V40Dw
-	X8W20kdnLkbF+8/0UWm1rhLtgIjqUBs7ASieR7ji4vwO/9XpHP+1ATkmBMcivIWLXIGBNHrkMV/
-	tNtE9QP3S3UtaooZ4bXSkp73lf+EEjuyj1dQ8FYyMl0S8cWd8s3tzPbjI=
-X-Google-Smtp-Source: AGHT+IF5tKVn0HH4+Er7S+XZNod2FyfrS9dHKNqy5QhSTc4SSiK6Xgx8ZEz8Nlngk9yhomQM63HB2J6yh0gSTliC484=
-X-Received: by 2002:a05:6000:188b:b0:3a4:ef0d:e614 with SMTP id
- ffacd0b85a97d-3a572e79d24mr7089351f8f.33.1750070992846; Mon, 16 Jun 2025
- 03:49:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="q7AvfoGN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1750074220; x=1750333420;
+	bh=jrgVndXu5XzRaBU2/sAHMIDj16KJ7vE+lXdcz2gWtsY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
+	b=q7AvfoGNY9B1sFvnRaWSugsK9UCD1scmwdYUz7kzQZ84PprVOPIQazGHH95e95LFd
+	 uy3BikelYfK3oO1LkG8ipRU4EHF8MeYX3Eu2zK2nwOvOE74nKopXG9x8Knqnepz9op
+	 lkpoQZkIYU5DSSO9iKH0+b/lWXG/Pk+6F9FngZ3hg8Be2quFFmYXhP+kU+NiRluoyR
+	 8ct1b/hB4rQvGmwVYZV3MCZp6SXvYGEXYDx6rMl7g5qgUTqU//zDSKxtKdQmZ9HBsw
+	 Sxhb6gi0b9TgsIDvR1RSBdi8dPnthIl9ML16VO7suvZ0NwuhiWv5VF7uXh7/KJ0H8w
+	 e3o1TEaM7TkiA==
+Date: Mon, 16 Jun 2025 11:43:34 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v10 1/5] rust: types: Add Ownable/Owned types
+Message-ID: <aFADYBIYqQjMx118@mango>
+In-Reply-To: <87zffvz65x.fsf@kernel.org>
+References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <d6hUddIgwZqRCgQQQV7L2VG4idnic0hOdWqt67Itt_xixs1RI25dMrPZRMyoIe2W_FS4eL6X66J_iclD2aUA0Q==@protonmail.internalid> <20250502-unique-ref-v10-1-25de64c0307f@pm.me> <87zffvz65x.fsf@kernel.org>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 9f7f1b56034ded4ee6841ab627ffb89fe8ac5524
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250611194840.877308-1-bqe@google.com> <20250611194840.877308-4-bqe@google.com>
-In-Reply-To: <20250611194840.877308-4-bqe@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 16 Jun 2025 12:49:40 +0200
-X-Gm-Features: AX0GCFuTb5n8MBWBEa5YiiJmxDs0pB6vkofAmmHr2Oh2WDSvt3-JtKcoydHZXtM
-Message-ID: <CAH5fLgiMCZuaCSYRDLCpZjaa=EZ=Zaw4y54zDED-7ox9K9++2g@mail.gmail.com>
-Subject: Re: [PATCH v12 3/5] rust: add bitmap API.
-To: Burak Emir <bqe@google.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 11, 2025 at 9:48=E2=80=AFPM Burak Emir <bqe@google.com> wrote:
-> +impl core::ops::DerefMut for Bitmap {
-> +    fn deref_mut(&mut self) -> &mut CBitmap {
-> +        let ptr =3D if self.nbits <=3D bindings::BITS_PER_LONG as _ {
-> +            // SAFETY: Bitmap is represented inline.
-> +            unsafe { core::ptr::addr_of_mut!(self.repr.bitmap) }
-> +        } else {
-> +            // SAFETY: Bitmap is represented as array of `unsigned long`=
-.
-> +            unsafe { self.repr.ptr.as_mut() }
+On 250502 1157, Andreas Hindborg wrote:
+> > +
+> > +impl<T: Ownable> Owned<T> {
+> > +    /// Creates a new instance of [`Owned`].
+> > +    ///
+> > +    /// It takes over ownership of the underlying object.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// Callers must ensure that the underlying object is acquired and=
+ can be considered owned by
+> > +    /// Rust.
+>=20
+>=20
+> This part "the underlying object is acquired" is unclear to me. How about=
+:
+>=20
+>   Callers must ensure that *ownership of* the underlying object has been
+>   acquired. That is, the object can be considered owned by the caller.
+>=20
+>=20
 
-Nit: You want NonNull::as_mut_ptr() here.
+Yes, made me think about the phrasing, too. But the main point is, that the
+object must be considered to be owned by the `Owned<T>` after the function
+call, no?
 
-Alice
+So maybe:
+
+   Callers must ensure that ownership of the underlying object can be
+   transfered to the `Owned<T>` and must consider it to be transfered
+   after the function call. This usually implies that the object
+   most not be accessed through `ptr` anymore.
+
