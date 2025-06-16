@@ -1,120 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1952F1AC88A;
-	Mon, 16 Jun 2025 06:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCEB3208
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 07:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750056791; cv=none; b=QpZS9dn4h6oAgPnFjvAJcaEkNzT9t0DaZPfKB7UDl10Fne63VX6fZHewcr2WCWRDLhHlrX6acMlBih8Lwn1ghiIxGC8ziW9i2x7wMLFoOemGI7s1KzBzfrG9kO5MgObJFyqfhZs/TzSBNWrwQrDUGchDxIE5DBV7DCaQCmgWHGc=
+	t=1750058140; cv=none; b=qDASWEs6Nui4Ldrl8JJlE/Wb1frBPfgxIk/s9sgm5QdvU9bxC9QT2HACzAGi1wme3wskkXJhwmehIvNswd7WcN0WCfvUqYD0paMOHXShdPfyvRc4ACtsugOobi8fSCdILTVaqdFM2ZWiJd9vxBKPvOCEtzrnhDPvAZFYTfRx2oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750056791; c=relaxed/simple;
-	bh=Qfmr62EJG482Y98uXnZ0DUADLOxBA9j0CZv+N0ryPJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ezszMWeQG0N1tkv8F96Wf0pkRKcMDIoXBuHildQiaG+cK2qCiwfbIm9kRXUb7KJV0ivKPF0Z0yCfNt/64yjQot5AIo0F3bpxhThhqXw5ovYfiUqu0N/ZUJpqIXcTFdgfyQx6UV+amKDrZJIlNoO3W55WOS2srcCH09r3ba8SAUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oUxWq/Kn; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750058140; c=relaxed/simple;
+	bh=XlzTWIS75+l6at5NogEHyv+JNSYzRylm5Id0QSKt+SU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=b++5wlrC2GlyELQ2UsFgP/PvR0BG/f7ByN8cMHn1x20izCjKdiol/NWd2NMVO/KtLdKGBr4lLboUuAZHs6u1MAP9Q6QPzbJhPPkaXVtNa2dgi0Mc2NLA17f0u/E3U/2J1FRtB6PUNXZyNGFVp/AHX4Q0BhaOrcqVrtoxpNNWcKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AW7HlJ/N; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oUxWq/Kn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516E3C4CEEA;
-	Mon, 16 Jun 2025 06:53:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AW7HlJ/N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA76DC4CEEA;
+	Mon, 16 Jun 2025 07:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750056790;
-	bh=Qfmr62EJG482Y98uXnZ0DUADLOxBA9j0CZv+N0ryPJc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oUxWq/KnldbiR/TxJ0fzYjMtotL6MHBUiLQSObTGmjtJLlQhqm53uC0mdw9phQxoM
-	 0gy4gtpKPPZcko4q2k8bozIQjCoIsK4/ejzd2/ZUEiaWZxxqp8eo0Hu47AnQ9TpXvj
-	 qZpZu/5rNNxg4eEQX6gFZLtACX1xxepWTMvxTW1q7mdshN+4lUcgf2IsMZ5znaogsE
-	 D27kpe/2dLeTcIm/Y/xem4Yrv3oGqWByf2Y5nZLyGPY4XHFCKvQMH1NvlcTLKlwUO1
-	 cAw3x9gULotD0fnvW2soIHheICiasZAq0ZtKenDlx/GB+nLy6gwrki+ZhwefNmHRT9
-	 3IMzivRNHBCWA==
-Message-ID: <2ecee1b5-4d95-47ea-935f-3ba93d35d2ff@kernel.org>
-Date: Mon, 16 Jun 2025 08:53:02 +0200
+	s=k20201202; t=1750058139;
+	bh=XlzTWIS75+l6at5NogEHyv+JNSYzRylm5Id0QSKt+SU=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=AW7HlJ/N3qiq9GztNMbDo91FZgXjT/H6OPUosNp/DFUKLCxZijj+NMU9/m2tif3jW
+	 uIcCewr6keHB2+caq3WrU2ndlJMpwXVe2VYiLB6e8/kCin+iKVXT66wmH3+o+AN4e1
+	 xFRgfivOBLO9g2rsdxmf90GOgoqBubGjoi08K3UFy/DOlhetZy9w8EhhwZ0rtCb3IU
+	 g4QUHldjF+JYFaB35E7HTUZtogxI2DZlX4gs4/ruWTjc3EkS1SKbjSF7dcGhT819qt
+	 FHdUisgASxTzBsBwirfEME+tWzovaWbodmzyUwFpW+X/jvRjwzgboVSfV2/+l2FwMi
+	 BZIP5ZENE8i+A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/7] dt-bindings: pwm: thead: Add T-HEAD TH1520 PWM
- controller
-To: Michal Wilczynski <m.wilczynski@samsung.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
- devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
- <CGME20250610125336eucas1p2ea5eaa740364b6db5007e0849465402d@eucas1p2.samsung.com>
- <20250610-rust-next-pwm-working-fan-for-sending-v2-4-753e2955f110@samsung.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20250610-rust-next-pwm-working-fan-for-sending-v2-4-753e2955f110@samsung.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Mon, 16 Jun 2025 09:15:36 +0200
+Message-Id: <DANRU0TC3F11.30DUO1LQZUE42@kernel.org>
+To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
+Cc: <dakr@kernel.org>, <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ <~lkcamp/patches@lists.sr.ht>
+Subject: Re: [PATCH v4 1/3] rust: revocable: update write invariant and fix
+ safety comments
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250602232842.144304-1-marcelomoreira1905@gmail.com>
+ <20250602232842.144304-2-marcelomoreira1905@gmail.com>
+ <DAKFLKX7HS7W.29I8XUZP8L1KN@kernel.org>
+ <CAPZ3m_hQF+ZHdfWTVZ3Z3dJoMu37Q8YcSecKi=fv1s3dw6UTSA@mail.gmail.com>
+ <DAMGEMZF6UC9.1YB4QHDZIW5PS@kernel.org>
+ <CAPZ3m_jqnGJtOxff2cJre_qFLyOehbhZ+XVvE0BjzFv7ADqOAg@mail.gmail.com>
+ <CANiq72kmjEEsBjbmJ1rN-OYA7Tt7N_0j6mEB0=DPK9ng7uyuDA@mail.gmail.com>
+ <CAPZ3m_gGOy2XsiVaVbbAivwO0JBpgqMke68LV4OD+i2L1Z5PEw@mail.gmail.com>
+In-Reply-To: <CAPZ3m_gGOy2XsiVaVbbAivwO0JBpgqMke68LV4OD+i2L1Z5PEw@mail.gmail.com>
 
-On 10/06/2025 14:52, Michal Wilczynski wrote:
-> Add the Device Tree binding documentation for the T-HEAD
-> TH1520 SoC PWM controller.
-> 
-> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> ---
+On Mon Jun 16, 2025 at 2:36 AM CEST, Marcelo Moreira wrote:
+> Em dom., 15 de jun. de 2025 =C3=A0s 05:38, Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> escreveu:
+>>
+>> On Sun, Jun 15, 2025 at 1:12=E2=80=AFAM Marcelo Moreira
+>> <marcelomoreira1905@gmail.com> wrote:
+>> >
+>> > what about:
+>> >
+>> > // SAFETY: `self.data` is valid for writes because of `Self`'s type in=
+variants.
+>> > // The `&mut Self` context guarantees exclusive access, meaning no oth=
+er
+>> > // thread can concurrently access `data`.
+>> > //
+>> > // - `drop_in_place` is valid to call because `drop` is only called on=
+ce.
+>> > unsafe { drop_in_place(p.data.get()) };
+>> >
+>> > I'm not sure if the line break in the comment is okay...
+>>
+>> Benno likely meant to use bullet points for each one, rather than a
+>> bullet point after a paragraph.
+>>
+>> If you do e.g.
+>>
+>>     git grep -A5 '// SAFETY:$' -- rust/kernel
+>>
+>> you will find examples of that.
+>
+> Cool! Thanks for the command Miguel =3DD it helped a lot.
+>
+> I'm ready to send like this:
+>
+> // SAFETY:
+> // - `self.data` is valid for writes because of `Self`'s type invariants.
+> // - The `&mut Self` context guarantees exclusive access, meaning no othe=
+r
+> //    thread can concurrently access `data`.
+       ^ spurious space here,
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This argument is actually an extension of the previous one.
 
-Best regards,
-Krzysztof
+> // - `drop_in_place` is valid to call because `drop` is only called once.
+
+This phrasing feels a bit weird to me, but I can't put my finger on what
+exactly...
+
+> unsafe { drop_in_place(p.data.get()) };
+
+How about:
+
+// - `self.data` is valid for writes because of `Self`'s type invariants:
+//   `&mut Self` guarantees exclusive access, thus no other thread can conc=
+urrently access `data`.
+// - this function is a drop function, thus this code is at most executed o=
+nce.
+
+---
+Cheers,
+Benno
