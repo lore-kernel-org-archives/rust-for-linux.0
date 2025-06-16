@@ -1,435 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5072877C5;
-	Mon, 16 Jun 2025 13:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D212E06C3
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 13:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750080387; cv=none; b=IIzp+pWHQYdZMkFhSt9JGi7ycl5EVYzBfnH+W3ccDl0G+gb+wvcMW9GgZPfu4bvjOmjiXpR1HJ/L6hP/qAi4l9MK8G4aDUDDMMQK1A5IWRv/cRhypuLaROSKqm+4qQLhlJ0CTpVfeKubPO0yLmz372uCQdk/vy6QQpXj2jlEovU=
+	t=1750080805; cv=none; b=RmlVcRxEmqJHK4nPrGDyEul3PWOvC1FZdSDR8+BIr+9kxxBtg+ZAqWZrajbCa/sAQHohWFMSu5pbS/KzUHo48TP7I3TutS0s096XxM0yuOcPNQe+D71L7ZF6gN0HGZbpXC7L/0ivPM8Xqa7RjcnF/L5MTM9fUXvd49jotwfqq+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750080387; c=relaxed/simple;
-	bh=bsIMENmfiGwVNughGF1+CFgnbpU5HmIuIzJX6r2w+QQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Z6gCifDpZlmuQIZ78TN/0oJQQCxv5m1RF8/M3/JnKvmNxoxV229nGOXy2yqDDnm8j57D7LWO1o88moquLizhyiHog5PUJ6SFCP72I7HtT5xoHAF5XI7yoKomhBeGyFquuODl1HVle7CZlNuqeGcwhRBrC7ZaanCalJ4kqsHNy5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biNVG4xM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750080805; c=relaxed/simple;
+	bh=h61zvk86mIy6HFIKb44/uFTca5tTMXV0Nl9/b3obT20=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CudieebF4FrhoofRP5wAWqJ4beHhRKbRNtBAsJrnN8PXrrM/u7Nnlb2xXqLwNxDarIyZANyk55gRpB6aPagFqOPHf/PLtQBOohodcLOnYRh1LS2cmyfgvQCfW9JQFtN+JkdC+IJz3+TjCGz7WEoo43GGMIWjpqClFDXUNJGLrw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=01dFRPvR; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biNVG4xM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70689C4CEF0;
-	Mon, 16 Jun 2025 13:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750080387;
-	bh=bsIMENmfiGwVNughGF1+CFgnbpU5HmIuIzJX6r2w+QQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=biNVG4xME3Kp6hbTQq1Nn8ZMO87lZ2fgSnxLPK2ES9Hr4wYfye2Uj4isdJRSofoT1
-	 5YZPgQgnfV8fz5fjwKyMnzBkkGUJkzMHWqpnsEz/QC6dBa8kL6vrWjd4XwOI0B4cHM
-	 fpudcGuughJJTrJ9J/znp37JJ/d3YT++Bo0bk8+sFTbBOWfupGjY0HlX6eNlXaaVh3
-	 GHgo3sdSMU/bEa/movVSrcNQldFL9jpIlLYjH85fVbdSke3YEoNc2VU9LXaQ0IUZrN
-	 xAJDSzB3Wh37tB9MCgoHbZkTDyD+7lfUm8av2rKmNSQYfG+An1/kffV1ZaBuXTrTUw
-	 HwapCPJxmC4ww==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 16 Jun 2025 15:23:55 +0200
-Subject: [PATCH 5/9] rnull: enable configuration via `configfs`
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="01dFRPvR"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so39137305e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 06:33:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750080800; x=1750685600; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+6b4Beq/LXHyQVf4U43/pXx65WWNeVARph73idBSy/s=;
+        b=01dFRPvRfjuiD/kMP6K9WP1ziaLZSfdzf4KDPxS0sYi3lY9NFi780B/ohCVUM2mxuc
+         secpGGeHJzmOOOQ0lb3N++T5OVfyZ/QweF0Uil238b7sqWzcytNWtv2ZTTvNLvA62Vjc
+         gZ4+ilK2nuGkmEpJIh9vUzODYF1LkKdAu9RxKzbzSTPSsbZANNSLYLx5gKpjapef5z0s
+         bRhh6nzG4I2BESq8DjX7+N5c/L6fFTrWXA5kad4IvTEQZeSN1Fha9EyVnkAAZQVdEcfH
+         393/Fmtg7luiVx/+dHFL6bdI/vqtRgNPahyULOFvjiYZh23EU1gBrR77XTUCmyTn3dTs
+         tI2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750080800; x=1750685600;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+6b4Beq/LXHyQVf4U43/pXx65WWNeVARph73idBSy/s=;
+        b=HgGtWy7Rc0dqnVjtW0JLGAlX8+D2RJF5QA2WNiPr7Z+Rci65qZSY1CKdffg96ACk4h
+         UFG0K6sl0oGRmBkiVZRLKln47PLGMeIzEUFHePa8fjEHLATfx2vmp1+od0WU9EbwCpbS
+         3El8uVWeE3XYNwoinECuPH16gRQjeA3+r2qtTWwRnIHExseO1bu1sRo9wMpq+eyTW/5C
+         mmFHdIBX5zkshyzoSavjsJ7mAjd8Rt4S84TSdxpiRTN9u3tqFkSv1JL/JKduWeL2KbmS
+         VI7mStBilvkHJWqk5u3uBA7JCwY3jEJ/6ZrFOzyIXd6Ftxt3kekkTcrCROwxpY2XavHK
+         ib0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWXxCtJbdwg7BM2023Z74wZMiYPprcIkUxgJQ+xJy3JLyuYJAtOY6Be6ATwXSCUmosuO51Frvtww9s4vyL03A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwacEo74QnohwXDGVOd2NsWDRYxEffJpL07J9MvVRcCZqzDv9dc
+	PtbXKXbroDmQnysxTQ/HauvxfR6g8nYL0rDd5FzLd0TxRNvgAsNKxh/KZcKgW4JTYYWwOLjLovg
+	DY1sr1Hf15Taji+A2g2FHqFMbz6aCM5y9AYNnB14D
+X-Gm-Gg: ASbGncsArOi0yFOJhAK2/38pcixs8bouNBkpGD5ZdaSqdU4l/N74/BSIPh9uN/N7PTM
+	qymbWlxWe+mKA417DBiMDjN3OMwkb8gQc38u3h2ITwBURj+++/9px8d2nyids2SBeIhFl03jZKQ
+	H5w1aszBxGrTgXlFUqUwbDsGBW5zO9jqFyttGaK+9mHzYQ
+X-Google-Smtp-Source: AGHT+IHoHIQWUh1tsB7VdpSgBe+HOR1+wnpYotOSJnim3yodaLfcWb+HX61Di4FQcFN8L/suGwt1uoWH/7fAgVfvJZs=
+X-Received: by 2002:a05:600c:1d9e:b0:453:7bd:2e30 with SMTP id
+ 5b1f17b1804b1-4533cac455fmr88605775e9.29.1750080800258; Mon, 16 Jun 2025
+ 06:33:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250616-rnull-up-v6-16-v1-5-a4168b8e76b2@kernel.org>
-References: <20250616-rnull-up-v6-16-v1-0-a4168b8e76b2@kernel.org>
-In-Reply-To: <20250616-rnull-up-v6-16-v1-0-a4168b8e76b2@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10856;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=bsIMENmfiGwVNughGF1+CFgnbpU5HmIuIzJX6r2w+QQ=;
- b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBoUBsOtuEuLxNkwhtiH7zfUfQrdgMsWPBmpIzOv
- /xKW+PFFL6JAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaFAbDgAKCRDhuBo+eShj
- dwVKEACU0Y1gFSPvPyu4UBbnLSI/2k3g7k9qpRY04jrzVq+hTSzBvUiNkAcZMQFrySNtN3WCdXL
- Y8MC9KYioTEUnnhzkctwsQmxeptUeC4uY/2w9igbrLvIxDQTlQC0CJXLc2QEOfLCsKx/Xby/LAE
- /0MHkfmZWnQc7mfAMdkW6QWID5lkdOXZpZwIC+61VRJFznzD+0pkIIGKg5U+AAS+LU8ZDATssTb
- q8iacQmZrrSMuycZeiZmrVUirrDHWGiF9h87Umvq9kfT9k3rc54B1SXJ4VtbtWq3SxBb8t1f5YM
- RIged9wdossTSEjagefxVBrePra2UOZgXHh9CX3R02Oisan2oGUu8i0Muk/6VNtautSzdEYVROt
- i4AntLVuJbSRMuubkvhQN5V80QXtyu8U+UtA3/NRvrwcPcv8qk58xtxUHbJY0SQjeXKovx9G4K7
- +JDonZotB+FbP1UgwHVfCVcoNhaU6NTtI2/I7tJZzMMyvCTkx9x4qBo36vsiyn5gKQIB12VZIeE
- +bCCrM9c47TmLzpV7VNWdTKyWhLREaqa7tEaEu4wa0aQJItzXseFEDfI57wK2SrLv1300IceKd+
- X+WjotY1DhSjw1RlpzIfUdyRzBksvNyh39JvM4unajw7F4eUxdzvCVoZzjy9s/5nK9fnxcSA1oi
- xY4SXcA8Y4fpEuQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
+ <20250608-topics-tyr-request_irq-v4-4-81cb81fb8073@collabora.com>
+ <aEbTOhdfmYmhPiiS@pollux> <5B3865E5-E343-4B5D-9BF7-7B9086AA9857@collabora.com>
+ <aEckTQ2F-s1YfUdu@pollux.localdomain>
+In-Reply-To: <aEckTQ2F-s1YfUdu@pollux.localdomain>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 16 Jun 2025 15:33:06 +0200
+X-Gm-Features: AX0GCFugHkgwu-8fmEBsdYNx2iQ--FaKirwILvqXSQM0todMUtf7WPLfkCI54O0
+Message-ID: <CAH5fLgj+za85ajgNwJepoa7PSFkMm+3J2wJJVJ24m6YZoFVmVw@mail.gmail.com>
+Subject: Re: [PATCH v4 4/6] rust: irq: add support for threaded IRQs and handlers
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Allow rust null block devices to be configured and instantiated via
-`configfs`.
+On Mon, Jun 9, 2025 at 8:13=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> On Mon, Jun 09, 2025 at 01:24:40PM -0300, Daniel Almeida wrote:
+> > > On 9 Jun 2025, at 09:27, Danilo Krummrich <dakr@kernel.org> wrote:
+> > >> +#[pin_data]
+> > >> +pub struct ThreadedRegistration<T: ThreadedHandler + 'static> {
+> > >> +    inner: Devres<RegistrationInner>,
+> > >> +
+> > >> +    #[pin]
+> > >> +    handler: T,
+> > >> +
+> > >> +    /// Pinned because we need address stability so that we can pas=
+s a pointer
+> > >> +    /// to the callback.
+> > >> +    #[pin]
+> > >> +    _pin: PhantomPinned,
+> > >> +}
+> > >
+> > > Most of the code in this file is a duplicate of the non-threaded regi=
+stration.
+> > >
+> > > I think this would greatly generalize with specialization and an Hand=
+lerInternal
+> > > trait.
+> > >
+> > > Without specialization I think we could use enums to generalize.
+> > >
+> > > The most trivial solution would be to define the Handler trait as
+> > >
+> > > trait Handler {
+> > >   fn handle(&self);
+> > >   fn handle_threaded(&self) {};
+> > > }
+> > >
+> > > but that's pretty dodgy.
+> >
+> > A lot of the comments up until now have touched on somehow having threa=
+ded and
+> > non-threaded versions implemented together. I personally see no problem=
+ in
+> > having things duplicated here, because I think it's easier to reason ab=
+out what
+> > is going on this way. Alice has expressed a similar view in a previous =
+iteration.
+> >
+> > Can you expand a bit more on your suggestion? Perhaps there's a clean w=
+ay to do
+> > it (without macros and etc), but so far I don't see it.
+>
+> I think with specialization it'd be trivial to generalize, but this isn't
+> stable yet. The enum approach is probably unnecessarily complicated, so I=
+ agree
+> to leave it as it is.
+>
+> Maybe a comment that this can be generalized once we get specialization w=
+ould be
+> good?
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- drivers/block/rnull/Kconfig      |   2 +-
- drivers/block/rnull/configfs.rs  | 220 +++++++++++++++++++++++++++++++++++++++
- drivers/block/rnull/rnull.rs     |  58 ++++++-----
- rust/kernel/block/mq/gen_disk.rs |   2 +-
- 4 files changed, 253 insertions(+), 29 deletions(-)
+Specialization is really far out. I don't think we should try to take
+it into account when designing things today. I think that the
+duplication in this case is perfectly acceptable and trying to
+deduplicate makes things too hard to read.
 
-diff --git a/drivers/block/rnull/Kconfig b/drivers/block/rnull/Kconfig
-index 6dc5aff96bf4..7bc5b376c128 100644
---- a/drivers/block/rnull/Kconfig
-+++ b/drivers/block/rnull/Kconfig
-@@ -4,7 +4,7 @@
- 
- config BLK_DEV_RUST_NULL
- 	tristate "Rust null block driver (Experimental)"
--	depends on RUST
-+	depends on RUST && CONFIGFS_FS
- 	help
- 	  This is the Rust implementation of the null block driver. Like
- 	  the C version, the driver allows the user to create virutal block
-diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-new file mode 100644
-index 000000000000..315e04fbf14f
---- /dev/null
-+++ b/drivers/block/rnull/configfs.rs
-@@ -0,0 +1,220 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use super::{NullBlkDevice, THIS_MODULE};
-+use core::fmt::Write;
-+use kernel::{
-+    block::mq::gen_disk::{GenDisk, GenDiskBuilder},
-+    c_str,
-+    configfs::{self, AttributeOperations},
-+    configfs_attrs, new_mutex,
-+    page::PAGE_SIZE,
-+    prelude::*,
-+    str::CString,
-+    sync::Mutex,
-+};
-+use pin_init::PinInit;
-+
-+pub(crate) fn subsystem() -> impl PinInit<kernel::configfs::Subsystem<Config>, Error> {
-+    let item_type = configfs_attrs! {
-+        container: configfs::Subsystem<Config>,
-+        data: Config,
-+        child: DeviceConfig,
-+        attributes: [
-+            features: 0,
-+        ],
-+    };
-+
-+    kernel::configfs::Subsystem::new(c_str!("rnull"), item_type, try_pin_init!(Config {}))
-+}
-+
-+#[pin_data]
-+pub(crate) struct Config {}
-+
-+#[vtable]
-+impl AttributeOperations<0> for Config {
-+    type Data = Config;
-+
-+    fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+        let mut writer = kernel::str::BufferWriter::new(page)?;
-+        writer.write_str("blocksize,size,rotational\n")?;
-+        Ok(writer.pos())
-+    }
-+}
-+
-+#[vtable]
-+impl configfs::GroupOperations for Config {
-+    type Child = DeviceConfig;
-+
-+    fn make_group(
-+        &self,
-+        name: &CStr,
-+    ) -> Result<impl PinInit<configfs::Group<DeviceConfig>, Error>> {
-+        let item_type = configfs_attrs! {
-+            container: configfs::Group<DeviceConfig>,
-+            data: DeviceConfig,
-+            attributes: [
-+                // Named for compatibility with C null_blk
-+                power: 0,
-+                blocksize: 1,
-+                rotational: 2,
-+                size: 3,
-+            ],
-+        };
-+
-+        Ok(configfs::Group::new(
-+            name.try_into()?,
-+            item_type,
-+            // TODO: cannot coerce new_mutex!() to impl PinInit<_, Error>, so put mutex inside
-+            try_pin_init!( DeviceConfig {
-+                data <- new_mutex!( DeviceConfigInner {
-+                    powered: false,
-+                    block_size: 4096,
-+                    rotational: false,
-+                    disk: None,
-+                    capacity_mib: 4096,
-+                    name: name.try_into()?,
-+                }),
-+            }),
-+        ))
-+    }
-+}
-+
-+#[pin_data]
-+pub(crate) struct DeviceConfig {
-+    #[pin]
-+    data: Mutex<DeviceConfigInner>,
-+}
-+
-+#[pin_data]
-+struct DeviceConfigInner {
-+    powered: bool,
-+    name: CString,
-+    block_size: u32,
-+    rotational: bool,
-+    capacity_mib: u64,
-+    disk: Option<GenDisk<NullBlkDevice>>,
-+}
-+
-+#[vtable]
-+impl configfs::AttributeOperations<0> for DeviceConfig {
-+    type Data = DeviceConfig;
-+
-+    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+        let mut writer = kernel::str::BufferWriter::new(page)?;
-+
-+        if this.data.lock().powered {
-+            writer.write_fmt(fmt!("1\n"))?;
-+        } else {
-+            writer.write_fmt(fmt!("0\n"))?;
-+        }
-+
-+        Ok(writer.pos())
-+    }
-+
-+    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-+        let power_op: bool = core::str::from_utf8(page)?
-+            .trim()
-+            .parse::<u8>()
-+            .map_err(|_| kernel::error::code::EINVAL)?
-+            != 0;
-+
-+        let mut guard = this.data.lock();
-+
-+        if !guard.powered && power_op {
-+            guard.disk = Some(NullBlkDevice::new(
-+                &guard.name,
-+                guard.block_size,
-+                guard.rotational,
-+                guard.capacity_mib,
-+            )?);
-+            guard.powered = true;
-+        } else if guard.powered && !power_op {
-+            drop(guard.disk.take());
-+            guard.powered = false;
-+        }
-+
-+        Ok(())
-+    }
-+}
-+
-+#[vtable]
-+impl configfs::AttributeOperations<1> for DeviceConfig {
-+    type Data = DeviceConfig;
-+
-+    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+        let mut writer = kernel::str::BufferWriter::new(page)?;
-+        writer.write_fmt(fmt!("{}\n", this.data.lock().block_size))?;
-+        Ok(writer.pos())
-+    }
-+
-+    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-+        if this.data.lock().powered {
-+            return Err(EBUSY);
-+        }
-+
-+        let text = core::str::from_utf8(page)?.trim();
-+        let value = text
-+            .parse::<u32>()
-+            .map_err(|_| kernel::error::code::EINVAL)?;
-+
-+        GenDiskBuilder::validate_block_size(value)?;
-+        this.data.lock().block_size = value;
-+        Ok(())
-+    }
-+}
-+
-+#[vtable]
-+impl configfs::AttributeOperations<2> for DeviceConfig {
-+    type Data = DeviceConfig;
-+
-+    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+        let mut writer = kernel::str::BufferWriter::new(page)?;
-+
-+        if this.data.lock().rotational {
-+            writer.write_fmt(fmt!("1\n"))?;
-+        } else {
-+            writer.write_fmt(fmt!("0\n"))?;
-+        }
-+
-+        Ok(writer.pos())
-+    }
-+
-+    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-+        if this.data.lock().powered {
-+            return Err(EBUSY);
-+        }
-+
-+        this.data.lock().rotational = core::str::from_utf8(page)?
-+            .trim()
-+            .parse::<u8>()
-+            .map_err(|_| kernel::error::code::EINVAL)?
-+            != 0;
-+
-+        Ok(())
-+    }
-+}
-+
-+#[vtable]
-+impl configfs::AttributeOperations<3> for DeviceConfig {
-+    type Data = DeviceConfig;
-+
-+    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-+        let mut writer = kernel::str::BufferWriter::new(page)?;
-+        writer.write_fmt(fmt!("{}\n", this.data.lock().capacity_mib))?;
-+        Ok(writer.pos())
-+    }
-+
-+    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-+        if this.data.lock().powered {
-+            return Err(EBUSY);
-+        }
-+
-+        let text = core::str::from_utf8(page)?.trim();
-+        let value = text
-+            .parse::<u64>()
-+            .map_err(|_| kernel::error::code::EINVAL)?;
-+
-+        this.data.lock().capacity_mib = value;
-+        Ok(())
-+    }
-+}
-diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-index d07e76ae2c13..d09bc77861e4 100644
---- a/drivers/block/rnull/rnull.rs
-+++ b/drivers/block/rnull/rnull.rs
-@@ -1,28 +1,26 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- //! This is a Rust implementation of the C null block driver.
--//!
--//! Supported features:
--//!
--//! - blk-mq interface
--//! - direct completion
--//! - block size 4k
--//!
--//! The driver is not configurable.
-+
-+mod configfs;
- 
- use kernel::{
-     alloc::flags,
--    block::mq::{
-+    block::{
-         self,
--        gen_disk::{self, GenDisk},
--        Operations, TagSet,
-+        mq::{
-+            self,
-+            gen_disk::{self, GenDisk},
-+            Operations, TagSet,
-+        },
-     },
-     error::Result,
--    new_mutex, pr_info,
-+    pr_info,
-     prelude::*,
--    sync::{Arc, Mutex},
-+    sync::Arc,
-     types::ARef,
- };
-+use pin_init::PinInit;
- 
- module! {
-     type: NullBlkModule,
-@@ -35,33 +33,39 @@
- #[pin_data]
- struct NullBlkModule {
-     #[pin]
--    _disk: Mutex<GenDisk<NullBlkDevice>>,
-+    configfs_subsystem: kernel::configfs::Subsystem<configfs::Config>,
- }
- 
- impl kernel::InPlaceModule for NullBlkModule {
-     fn init(_module: &'static ThisModule) -> impl PinInit<Self, Error> {
-         pr_info!("Rust null_blk loaded\n");
- 
--        // Use a immediately-called closure as a stable `try` block
--        let disk = /* try */ (|| {
--            let tagset = Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
--
--            gen_disk::GenDiskBuilder::new()
--                .capacity_sectors(4096 << 11)
--                .logical_block_size(4096)?
--                .physical_block_size(4096)?
--                .rotational(false)
--                .build(format_args!("rnullb{}", 0), tagset)
--        })();
--
-         try_pin_init!(Self {
--            _disk <- new_mutex!(disk?, "nullb:disk"),
-+            configfs_subsystem <- configfs::subsystem(),
-         })
-     }
- }
- 
- struct NullBlkDevice;
- 
-+impl NullBlkDevice {
-+    fn new(
-+        name: &CStr,
-+        block_size: u32,
-+        rotational: bool,
-+        capacity_mib: u64,
-+    ) -> Result<GenDisk<Self>> {
-+        let tagset = Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
-+
-+        gen_disk::GenDiskBuilder::new()
-+            .capacity_sectors(capacity_mib << (20 - block::SECTOR_SHIFT))
-+            .logical_block_size(block_size)?
-+            .physical_block_size(block_size)?
-+            .rotational(rotational)
-+            .build(fmt!("{}", name.to_str()?), tagset)
-+    }
-+}
-+
- #[vtable]
- impl Operations for NullBlkDevice {
-     #[inline(always)]
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index a04b709514ac..34f13e9b286f 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -46,7 +46,7 @@ pub fn rotational(mut self, rotational: bool) -> Self {
- 
-     /// Validate block size by verifying that it is between 512 and `PAGE_SIZE`,
-     /// and that it is a power of two.
--    fn validate_block_size(size: u32) -> Result {
-+    pub fn validate_block_size(size: u32) -> Result {
-         if !(512..=bindings::PAGE_SIZE as u32).contains(&size) || !size.is_power_of_two() {
-             Err(error::code::EINVAL)
-         } else {
+> > >> +impl<T: ThreadedHandler + 'static> ThreadedRegistration<T> {
+> > >> +    /// Registers the IRQ handler with the system for the given IRQ=
+ number.
+> > >> +    pub(crate) fn register<'a>(
+> > >> +        dev: &'a Device<Bound>,
+> > >> +        irq: u32,
+> > >> +        flags: Flags,
+> > >> +        name: &'static CStr,
+> > >> +        handler: T,
+> > >> +    ) -> impl PinInit<Self, Error> + 'a {
+> > >
+> > > What happens if `dev`  does not match `irq`? The caller is responsibl=
+e to only
+> > > provide an IRQ number that was obtained from this device.
+> > >
+> > > This should be a safety requirement and a type invariant.
+> >
+> > This iteration converted register() from pub to pub(crate). The idea wa=
+s to
+> > force drivers to use the accessors. I assumed this was enough to make t=
+he API
+> > safe, as the few users in the kernel crate (i.e.: so far platform and p=
+ci)
+> > could be manually checked for correctness.
+> >
+> > To summarize my point, there is still the possibility of misusing this =
+from the
+> > kernel crate itself, but that is no longer possible from a driver's
+> > perspective.
+>
+> Correct, you made Registration::new() crate private, such that drivers ca=
+n't
+> access it anymore. But that doesn't make the function safe by itself. It'=
+s still
+> unsafe to be used from platform::Device and pci::Device.
+>
+> While that's fine, we can't ignore it and still have to add the correspon=
+ding
+> safety requirements to Registration::new().
+>
+> I think there is a way to make this interface safe as well -- this is als=
+o
+> something that Benno would be great to have a look at.
+>
+> I'm thinking of something like
+>
+>         /// # Invariant
+>         ///
+>         /// `=C4=9Brq` is the number of an interrupt source of `dev`.
+>         struct IrqRequest<'a> {
+>            dev: &'a Device<Bound>,
+>            irq: u32,
+>         }
+>
+> and from the caller you could create an instance like this:
+>
+>         // INVARIANT: [...]
+>         let req =3D IrqRequest { dev, irq };
+>
+> I'm not sure whether this needs an unsafe constructor though.
 
--- 
-2.47.2
+The API you shared would definitely work. It pairs the irq number with
+the device it matches. Yes, I would probably give it an unsafe
+constructor, but I imagine that most methods that return an irq number
+could be changed to just return this type so that drivers do not need
+to use said unsafe.
 
-
+Alice
