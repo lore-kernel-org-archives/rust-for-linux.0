@@ -1,76 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B806D19DF7A;
-	Mon, 16 Jun 2025 20:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C3E1E51EE;
+	Mon, 16 Jun 2025 20:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750104230; cv=none; b=TuhFo1wAIWDlpZVYOKBGqeiahzTb9DltAppDtV5PRNpluL9+OT4kG4sm4j/CP1VkvrOBcmmbTHahcKOppM8S7hUnE3moS9mdbxCUNqKfBKU+9gN6D6b3PuchMTwa4ZDvoM+Hhvkkakgf0J05dprTRndwI+1XtU3wxmFTnbOPAoY=
+	t=1750104488; cv=none; b=Lx3vhQ+u5ogDtQwwhDM36LhEQkYzz+rLKrO4J6zpC5yEw2w3/tZw4rkTVFtp5ua/BFjuIFlYtrMfNFUnZYe29GIrwht87stUkFmB4p+lfS1SEoVVEnZy/K8KMroe0De4UV3WhicjEHbjBQy5CF8b7r9KGaLTagW0lu+LfJg6TxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750104230; c=relaxed/simple;
-	bh=JGrS1c9ZdMeBoubO6dQIr+rlJWSwYE9f3Ait9kKN8dE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qNsmx7bl5krOHSbRRdfDXVpz8pNC9eJB2GmceZOfPbQVXitAKA2cf8mXlEjj4L0/te4A5L2VCU+PRnL48kMjR9E18IIGTqmskxAz+pNobOTUFcBR01PRAGqLGEjtY92Rkagky8bA3AwXS3n1zpaIlyE9UwynRuGXiPbcku2TWbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJtVAMvs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750104488; c=relaxed/simple;
+	bh=o/g8EGefqFf+8sl7JVh9ggpmVhN8LB8JxDlCidNJnNA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cJFcd93f83RNfbGyazW33ZNn8UTuFldYJXI2UENbNq9fn3aZ0N46SpsGQEY09Y2A7FCBK5W5rfx4lHXMpnozBKeWJz/TUtJ6mwsbJCFpCjL3hMDbK++9KJxKcXIcl/oPVmaClBk32WjU9WQGdewIIijWxS1hi/Fb/7f2VSA8fLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RqeQFSxU; arc=none smtp.client-ip=209.85.217.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJtVAMvs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D5FC4CEEA;
-	Mon, 16 Jun 2025 20:03:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750104230;
-	bh=JGrS1c9ZdMeBoubO6dQIr+rlJWSwYE9f3Ait9kKN8dE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bJtVAMvsJUl0P4ra2MFaqGVdnZ9utODvPyoEd9oF1U4KupAs+4q1FaM+ZbI7BgBwq
-	 AQ75D0hO7PUMk3GqWagTlVNsGhUdENwZl3Wve7tcHz1g8Dc/RWAGC7W8LPLAhgb7aT
-	 WwYHCa7r6/C+KZGCO7To73OrmBTxCyyvSpN2er+wxuY7uskytRJ16iULtAo2g0YNot
-	 Mklcb8sjcIgz5RHoDEJm4Ro6KFpT9b42UvPNG0leqbg3klSqxSyDeASy+6d1H8KJBa
-	 jj0Jf2yYxovMZDMNxJ472UNnGWs2qJvPlIAAbTpeXiHIWS/0+Z0tQ7STGRD3N0OfY9
-	 iujzIqjMeTg9Q==
-Date: Mon, 16 Jun 2025 22:03:43 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, rafael@kernel.org,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
-	viresh.kumar@linaro.org, alex.hung@amd.com,
-	dingxiangfei2009@gmail.com
-Subject: Re: [PATCH v6 1/6] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <aFB4n-0_gTc3CAf4@pollux>
-References: <20250613133517.1229722-1-igor.korotin.linux@gmail.com>
- <20250613133842.1230254-1-igor.korotin.linux@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RqeQFSxU"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-4e7e044e9b6so180850137.1;
+        Mon, 16 Jun 2025 13:08:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750104486; x=1750709286; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=o/g8EGefqFf+8sl7JVh9ggpmVhN8LB8JxDlCidNJnNA=;
+        b=RqeQFSxUtnfkzEbxQGJTBz6XGwcou0kdtTxTh9CRbXVF2/SjJL0qHqvJ8S3MUl2c1O
+         MZQUcWDSGTLt7keL0ktovjfw45gkA+3glLmZ1elXVmAKk63O7CfDNBhHyx+3atNiTm3O
+         /xHqbf6M+qs/SoEx+n9FVacWAiKcI776rGybkP7vK8WoAyBha02nC9h5scLp4tuwGycH
+         5JVX8GLudjkDxrhUPVCFpqOYb96ngCYuRuYjqu+venmukEj9qHAh1DoEF/1lP3VSQPyA
+         N4wmgtJbKdTcHuD4C64DP1cyyBPUB7pA0z1ljhmKBDBfTSRX3uUNOUNNBZsKPkNVs5Y0
+         QcJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750104486; x=1750709286;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=o/g8EGefqFf+8sl7JVh9ggpmVhN8LB8JxDlCidNJnNA=;
+        b=spYWZDjJjA0p9bX5p6SexyzjFHBnc9k3Cb8iKoHN0gFaXvkOuPSozWHLk03S/j/K5F
+         GrmGTtpBNA77vAr3zyYi080+37vggfxM6swX/s9XnLHWKoZ66xe7UwbVJQ2dNnOVBUwN
+         oElEx/KyY9JjHaJ9j0bwKBxrrA+qdmbr3VyZGeT7h4nnrt9t2raOgEv5JD8C7qR0l3fy
+         b39cW1ZR/epJonnVpeX91LFD6RhMgd5ZxrRUEG/wGXKnBbJ//SkYqceXuYFOlCa6zZ/t
+         GxoeBLAyUTpurYaqfZeFdR7GGNTwrvs0L9NzIsRyDYV5dncDX6u3JPQgm+OdsO9A1CgI
+         602g==
+X-Forwarded-Encrypted: i=1; AJvYcCUE9zgTFJX15W/wIFMjmeujhwTuv/d8xwSr+MfEAc29LQ6ssTIvMaRw5EyUcIfO2tR5qWDux8pX4ZESMIQ=@vger.kernel.org, AJvYcCVDCLadENPFzhsEvL0rxAxEBfTza9gJJCZzraaTnV+muHVMwJx368Ns7Boaq498nBm+Dp1YfaInl+stEcNlRsA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6ZX3DSuARiK2b63buQRBsbDrcdeytvnZuPwUHG2vZntiool+y
+	vpjb+zNvGaNJ2bR5wNVkg9EkJ85q4OtDSCuxkb9G9yeA5sWt2xdCkB3xSzhs5ESRQ42r/XpBQ0u
+	9vQeilWbJx/NcqGLjQhSqJUy69NWoevQ=
+X-Gm-Gg: ASbGncuob6cH2alPoVqE3zbHoZ6ErjLf8MM7E71RhyXOqPN4oN7whQOVqyJw/BWGTz8
+	d/9yYitLShJzGTGQwT2MFaZGFBZDA3nSnnJPEgotGJf4b81ry+QpEMvzelVgxGar/tCymexwvDF
+	mqoeC7vyypICbs/OAp8fpFo873uTbaThAZIzXdtptN5bDtTsfGnjrTv+k=
+X-Google-Smtp-Source: AGHT+IEkfLCiF0Z6CQt1ppE73blvXDR6Sn3UX4Ge/PsK02XDB/stZ+aPV7xk1UMpTrx76BV/CUvPzMqLUjPEYhD/rG4=
+X-Received: by 2002:a05:6102:32c5:b0:4de:ece4:d260 with SMTP id
+ ada2fe7eead31-4e7f6145a63mr2267392137.3.1750104485714; Mon, 16 Jun 2025
+ 13:08:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250613133842.1230254-1-igor.korotin.linux@gmail.com>
+References: <20250615072042.133290-1-christiansantoslima21@gmail.com> <CANiq72mnxRquFmjoJemb=3LSq+ZdUfs9J+HXTwM6AavprsVNUg@mail.gmail.com>
+In-Reply-To: <CANiq72mnxRquFmjoJemb=3LSq+ZdUfs9J+HXTwM6AavprsVNUg@mail.gmail.com>
+From: Christian <christiansantoslima21@gmail.com>
+Date: Mon, 16 Jun 2025 17:07:54 -0300
+X-Gm-Features: AX0GCFvfd3sus9vgnOYwRZ7JhguYdIFZRLNxbBsWrdihP62PfqSgcUSv7GwXyjM
+Message-ID: <CABm2a9fVSGm+WWjdkAmJHUH9eH=Qx5efORKxyJtt0HnQrs0QHQ@mail.gmail.com>
+Subject: Re: [PATCH v7] rust: transmute: Add methods for FromBytes trait
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jun 13, 2025 at 02:38:42PM +0100, Igor Korotin wrote:
-> +impl DeviceId {
-> +    const ACPI_ID_LEN: usize = 16;
-> +
-> +    /// Create a new device id from an ACPI 'id' string.
-> +    pub const fn new(id: &'static CStr) -> Self {
-> +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+Hi, Miguel
 
-Please use build_assert!() for this check.
+> Please start with something like "Add methods ... and ... They are
+> useful to ...", i.e. the idea is to try to explain the "what" and the
+> "why" (what is being added, and why is it being added).
 
-> +        let src = id.as_bytes_with_nul();
-> +        // Replace with `bindings::acpi_device_id::default()` once stabilized for `const`.
-> +        // SAFETY: FFI type is valid to be zero-initialized.
-> +        let mut acpi: bindings::acpi_device_id = unsafe { core::mem::zeroed() };
-> +        let mut i = 0;
-> +        while i < src.len() {
-> +            acpi.id[i] = src[i];
-> +            i += 1;
-> +        }
-> +
-> +        Self(acpi)
-> +    }
-> +}
+I see, sorry.
+
+> > Signed-off-by: Every2 <christiansantoslima21@gmail.com>
+>
+> The previous version used your name in the SoB -- is this expected?
+
+Not at all, I checked and my git config was messy. In the next patch
+everything should be fine. Thanks for the feedback
+
+> Can we do the cast earlier and then use `.is_aligned()` instead?
+
+Of course.
+
+> Also, since this is inside a macro, we should try to avoid assuming
+> anything about the caller's code, so please use `::core` instead of
+> `core`.
+
+I noticed that core is used in other places, is it worth using as
+default dependency since other people use it and reduce verbosity of
+the code?
+
+> Also, this is still missing safety comments on top of a couple
+> `unsafe` blocks (pointed out in an earlier version). Are you building
+> with `make ..... CLIPPY=1`?
+
+No, but I'll activate it now, Thanks for the valuable feedback!
+
+Cheers,
+Christian
