@@ -1,102 +1,93 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10E32BEFED;
-	Mon, 16 Jun 2025 21:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D7D1EB9FA;
+	Mon, 16 Jun 2025 21:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750109025; cv=none; b=HfjUOW34u1Xq/MCEyqES6ndG8Cdcnt4KnHNEUH9NzkIasvqKMbrGwmn8qtUte17pPP5PlgEsWTRz54kgU777vrkMjeI2E0LGzTFx3f7waFOSa8fxv/6pF22OI9K6BHYdnSJGbhekfgePmkzeNX2h5GQuKEudiNRnznkhDfvAo1g=
+	t=1750109325; cv=none; b=BkLa/v8xHin+VaUdF6kHD1JBzs70+Y8rKfk0S5k760ByKmfbMyS/hb4eiG904EEKZpDFUV2KwjZxJEhkfGFfAgszIZTccfS9VgR13XgDGLuIP2Il0VDMuYIyYmwJTy5naRkMG6YrWc7NRAy56hXHnax8dByZTWOozmAq1Flt7/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750109025; c=relaxed/simple;
-	bh=d95uYNA+qHBnKVR/s9FPPkJ8oxqbnwmVAa9sGVJwP+I=;
+	s=arc-20240116; t=1750109325; c=relaxed/simple;
+	bh=tHvZkL3b841MNEO9/DdSITMV0vDLxLNrNJMk62HpFVE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y42PYHrRMFIXrzn8AvWa0xRPygUkYD+MCkawrJ2/fZ2tjPRQ7LFRJJBnhHUrs1lUDmriLAsW7iv71UIPOZbXReH+8MPV1P7vQsfc50rlN88oOgqgZRp+cZXmsumB4lT6r+uPywPkvsr9sLFkRnx4qa5CsoPMyx4Iqp9cE6qTeC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PQo3fQwM; arc=none smtp.client-ip=209.85.214.169
+	 To:Cc:Content-Type; b=h+Lk41FImRm9lyTFhSgLbWPrZgBMbviOYApa2Hfjfr5TjQfBGflPM0JlTg7YnKuXkf7taeYye7ZYzDwbxdmmXgRxSGtYGlcEnoCutQP9BZuT1seHdhZ1iZLN2XbUhekZnY5THHYnhXeHesHNphb0qQlwpBmsFT5EMOHHeDbAlYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lBaKC4ZL; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PQo3fQwM"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-234a45e69c8so3562435ad.2;
-        Mon, 16 Jun 2025 14:23:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lBaKC4ZL"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-312a806f002so833881a91.3;
+        Mon, 16 Jun 2025 14:28:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750109023; x=1750713823; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750109324; x=1750714124; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=d95uYNA+qHBnKVR/s9FPPkJ8oxqbnwmVAa9sGVJwP+I=;
-        b=PQo3fQwM7OGdaEYLdz1BjDlKwLbJhBKMUV4qlTGwzm3xElq/uSBI0fejf42OM2tgax
-         XnuoBc1SULVgTQ+zStYUtoL+GOT4wToLJrZzxObWAXpOg/h09A+D81vFL03b41OO2+9R
-         W0x+qpNPjhdg7YYgHiU72FwzQwoC+bMxnVpMb2ywd5ogZG+Qlf+EgSBCLZ6AbDF7vxOr
-         doWG9uAcmekv3fYLPXJU8geOpmHa9ZWlm7wYdMyXG3NRYupwjN8bSAhPmIGZy7c4v2kr
-         M/5AaLFLKXmmxr9AOsreWoqVKGgPwp71gtrbPMetyIs/BNi3fF3yMNVneoeJIaFjsLsR
-         5/0g==
+        bh=tHvZkL3b841MNEO9/DdSITMV0vDLxLNrNJMk62HpFVE=;
+        b=lBaKC4ZLcwVOMgjqjL8DaTg/eNgYnAWsY1N2tz7bV9c0HUWVeRgQRk0OXmwVn+br/d
+         EkgzZ0tfym4B6nF2jmvyoqQ+OS2n9TnqSIqSKZXz9MmCcVUmF+J6JCQ5jjOEJbuvQvKH
+         02FvbCwG+QULBi2h6rkUHVsg3aZHnON5RgijJvnGEfIXWiLLMSgghuZjBfzs2tUu2mZv
+         3HDKFksxPapJ+3qDW8sOVM0b9SlhIckCBqNa8jaU+QTg2eyuQ8x0JkDZRb58faMMDk+f
+         MfLUjQH1BXXi2BLmJWibjBiVwj6HNTD72kEQBnfY6V9csknVLLW+E8pnjy3UMzj7uLzB
+         /BiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750109023; x=1750713823;
+        d=1e100.net; s=20230601; t=1750109324; x=1750714124;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=d95uYNA+qHBnKVR/s9FPPkJ8oxqbnwmVAa9sGVJwP+I=;
-        b=Eq4dN+HwsghXCWxu77orUX188uDo7QpqAbLvbBdzeHmdYcpYr+UOa88NXs9j5mkBqz
-         8ofCCllxuROFCAf2LVOeHS0tmP7mklmZRQFZMHxj1NB8aQXpdQMp1DaussfLCK+qx610
-         bDDcQv+P8lJ5flthufXwvo6XsC/4oe7+zLK1M8/jxlrF9PJjhLYW9mC2sUzyUAYZVvLt
-         crPWpGKE8jS6xoiEpHP207rU350YaKVOP1151+hY5JhZ8laBtOaJ/bkedS2hm2Ux+Sxc
-         3N5AlUpbHI+lQDVQ98FZX3Tb5B664rC2xl6eN14qiPWiGxnQlr7cis39IIoc1ytuvYXP
-         otJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZDpoSER3fL6HBrL4LR6BVkzVRgPFHi8IcX+WNxFBMZDkAZG5bfX0UOYd3t/tIYqGkw0xA9X256pP+gOo=@vger.kernel.org, AJvYcCUthTtGursGJP1zAxK6O8CCFMOcTiEJknrB2dqTzrZTAQy8jgqqZ0Y6ZBmdjsrZi+qgvUHofIGlFi4hAseq+s8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyt44fSNtxBugraXObwlHdThBn76326ahaqOcRxuJy3R8FkcLdV
-	1U7OJXwJVDO3aeQOuJ5etYi3C0WveW7JY+zZejqTULAwjBzJFoS4H3PONo4PezD3J6Zg86NILxI
-	qgIc+pv8eFSsUqd7UkFLbMPW78XZIJ4A=
-X-Gm-Gg: ASbGncvxwXSUl1bJtRgcjVdtn5mkwMTfpjM6IV3ShOxssb4gVFLyxnn4ye6am+3vlEO
-	njShLvLUoc5ljXtq6PjiVaoHZ+9jLtjZZzXOyubo4IEjAS1WtBUiLzbKhxfZfdyvbMLpqZPCXx8
-	bEdLnfDUgm5XCOnU2gRy/l+Z3gOet2su0KLaaKNT8AVnU=
-X-Google-Smtp-Source: AGHT+IGTCVFlE+jAZCqa1TImuqxuuHFlZFaIUVaOzy6TS2kVGm3wib1sMfeHG9Uc6JYsZfAqIfMyIXuOxZnmzFI3nis=
-X-Received: by 2002:a17:902:d2cc:b0:235:ed02:2866 with SMTP id
- d9443c01a7336-2368eca476dmr6350155ad.4.1750109023104; Mon, 16 Jun 2025
- 14:23:43 -0700 (PDT)
+        bh=tHvZkL3b841MNEO9/DdSITMV0vDLxLNrNJMk62HpFVE=;
+        b=vg0Zwh8doM8wBRw/V4e+bzFcX+ekI4WtC5ODMoGqUAWAVdZ8ZZ3b5XLf7jcD2FSxiY
+         XEmdvwWkA6hgcBcKB3RPIGKZKuPUiiTY/O5c0yePImkTwQvhZIeKQGYd0P4KKonvP5WM
+         nnUQIlo7OYAUNtSUaXeMG/QbxfowrHllusSEztf1GbXCCeg6o6lzYb2BafTEpGg1runH
+         tiilBZL13wbNzXNdoGzrIkG7g3rGjoHoPlz+iT1rqGqSQmKkykNAQjkpWSwyPii2kDUv
+         8F0v9lgatnr2zoKJcMq/FKdmjIJuwmK4dfUxywK3VKkdgR5MRNSi3kJxAYkq3VJBNUX/
+         Ww5g==
+X-Forwarded-Encrypted: i=1; AJvYcCU3OLIih02rVfW9DTVFmKEHwRu80So1XiKtXqhgEK/sw5eBHpoxI4p/G90mTOJ7+VKHmbRaJhUodW45j3//mA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8XthJx7lcd9qVYu77wrv6xpwnWgwX/uIhNJG70kYpamg0ttOp
+	jw6MHKzmosetC4ed/czf8wLi3rPshOBl9GetA3FgGdiyy6l7W/ZdzbHWSJXeXGtcjjiQbFqrKWp
+	uFARLS1W7pGXBRU192ZXIeMS1pmsKtOW/ob4M
+X-Gm-Gg: ASbGncuc8OCKsKi4AkFX+zQ/Zini9icQ3LbpGp/ogWM3Z4gneOnQzibxm5/76LbZO61
+	HTjgfS48vF7d1/KUeFkOZ4ML4EbmTmftUTi79m2QxTxfq9aJlQF2ObmlZ1/DOVOR2qz5lvPMB+b
+	dR8WmWs7OJ3dMev2yDyhB7G+74DhxhgGRdfMwFsAmAPSI=
+X-Google-Smtp-Source: AGHT+IFpeYpl22BIjz3gujyrkdt7SBYSAPG2/B7ertdSdDyvPD9lzSXyH4tJedlNbF4lFCbNR5qtS+JKwgj6IfoWHPA=
+X-Received: by 2002:a17:90a:ec84:b0:311:e9a6:332e with SMTP id
+ 98e67ed59e1d1-313f1b312d5mr6208943a91.0.1750109323846; Mon, 16 Jun 2025
+ 14:28:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250615072042.133290-1-christiansantoslima21@gmail.com>
- <CANiq72mnxRquFmjoJemb=3LSq+ZdUfs9J+HXTwM6AavprsVNUg@mail.gmail.com>
- <CABm2a9fVSGm+WWjdkAmJHUH9eH=Qx5efORKxyJtt0HnQrs0QHQ@mail.gmail.com>
- <CANiq72=s6Ugqrf5Ot6fJOMyCug2XyvKpjFCzya_Mr5iBkpitLA@mail.gmail.com> <CABm2a9e+XJsess6XY5ukz8vav30ADcmBrufmek+Bd-TNJpR2aQ@mail.gmail.com>
-In-Reply-To: <CABm2a9e+XJsess6XY5ukz8vav30ADcmBrufmek+Bd-TNJpR2aQ@mail.gmail.com>
+References: <20250616153604.49418-1-boqun.feng@gmail.com> <20250616153604.49418-3-boqun.feng@gmail.com>
+In-Reply-To: <20250616153604.49418-3-boqun.feng@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 16 Jun 2025 23:23:30 +0200
-X-Gm-Features: AX0GCFtT-gKuoP083LhJniF8uXA9-2rFn2pMTJ_mxVkBeIFy0Ly57UElPki82Zw
-Message-ID: <CANiq72kY=sSnhzYPRo3Zuj-7RjULMpRfCBYfoDDCpCHttX-3-A@mail.gmail.com>
-Subject: Re: [PATCH v7] rust: transmute: Add methods for FromBytes trait
-To: Christian <christiansantoslima21@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
-	richard120310@gmail.com
+Date: Mon, 16 Jun 2025 23:28:31 +0200
+X-Gm-Features: AX0GCFtsVkSsb9r-Et1SiuSY4RT6eaG72b8XtmUQN8OOVG598eWPzfBSVVitO-g
+Message-ID: <CANiq72mES+dPBuhsdh0-hJcV69AO74j6W5vhCeo+yV5S-Zp+yg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: task: Add Rust version of might_sleep()
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, mingo@redhat.com, 
+	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
+	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com, 
+	fujita.tomonori@gmail.com, mingo@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 16, 2025 at 11:11=E2=80=AFPM Christian
-<christiansantoslima21@gmail.com> wrote:
+On Mon, Jun 16, 2025 at 5:36=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
 >
-> I mean, using something like `use core::mem;` globally since we use a
-> lot of core stuff and so, it would make the code less verbose just
-> importing size_of, align_of and etc.
+> +/// Equivalent to the C side [`might_sleep()`], this function serves as
 
-Do you mean adding some more `core` bits to the `kernel` prelude?
-Yeah, we are always considering which ones to add -- if you want to
-propose particular ones, then it can be discussed of course. Perhaps
-in Zulip?
+I am always pleased to see intra-doc links, but wouldn't this one
+point to the Rust item? :) i.e. we need to add the link, right?
 
-However, since these are macros, unless we get a proper custom prelude
-feature in the compiler (which we requested a long time ago), we
-probably want to still to refer to everything in full, even if it is
-in the `kernel` prelude.
+I would normally ask for an example of typical usage, but do we have
+some good C docs on that already that we could link otherwise?
 
 Thanks!
 
