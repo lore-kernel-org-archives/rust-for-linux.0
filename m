@@ -1,41 +1,41 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59642BF012;
-	Mon, 16 Jun 2025 14:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DDD800;
+	Mon, 16 Jun 2025 14:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750085007; cv=pass; b=CSEdarrwJZOz6DcFUgbDb/vxIfra/qY0J5SUQhDXy8tWTkG8rnBz4HtCQxT2jmxIo9lhN502fegt4YwtIPPNH1ZHj078NXaojn9GoQiO2T7nR3reFrHxj2mQGGLmFWsv8csvlLT6TfCNqH5YhfuHKRuWefdOq0b6RKUisOXRTyM=
+	t=1750085159; cv=pass; b=UG6jb5j2D/Tb92sSQGkic1yr1dnqy4ahYBO8IfJXpQNf42paDqcOt81onoy3FcMXV7PGYt9ZKA+h+WOkfiHk5BUc0zmHVWT/MbDWIJw6NxtVfBKeYUDiV7J4j7qihb4iucaXS52r7mbNXd4y+49X6HR8cTQ3Rr+FwlLnZFugNVQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750085007; c=relaxed/simple;
-	bh=pP1xiFra15VE0xcoJZoV/ZTiyyuP/s1T6tuRzjmNIVk=;
+	s=arc-20240116; t=1750085159; c=relaxed/simple;
+	bh=1JyUBZa8RyOxC1jZqL4pHwGDCZdl9cPHYBUvbGcntZ4=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=pRNlkkDrveg5ZLi7QMuIRvweMsb/C3j9v1rrlAp3Kllb6GvJHoxF4T9xsrbYxuOQ0TMo72te4TXjTOnKzHqfM7k1L5Llo00tCX9GB5giCNu2le9KtP7ZG0DkRz7QoIa1IsURqTTIS0wms9SYkiif8dXheT7Ae372XhtVj0R4QoU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V0OXg2VW; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=utPlAm798gcqyPn39oMAESq2O4WRolyNfiVtknVfqphZYMux2mQGBYWQco6xd9Ve//3v0YAHz8tt2TtI9TXu0td1RvSaqyd67hx4BHmbkv3CT3dOZINpnj/glo9BgQSapwv2ufs0NUlCGiLcJ7waVDyztOLMTwR5Gm3Lng/YXMU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=XNPSDV2v; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V0OXg2VW"
-ARC-Seal: i=1; a=rsa-sha256; t=1750084979; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="XNPSDV2v"
+ARC-Seal: i=1; a=rsa-sha256; t=1750085139; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=O103MT88nytMHJ8xqzCbEgWuBW+ZKSCvaLVUCBhi9NIxK6kTL/wNAbIK1xtxocnqXfqJRFalIl3cl5mJEjdEm2OmyArYbuhQljpcrKT19ChpYNJsSYSCvTffIGOpGqcRhaoSC2qX3AAydJtJQhI2Onu3UojtDtzfB/uVE4c+7y0=
+	b=aB9+sWJPt+RPD15x7pQUhBvMUlW1TUmE1covY2qF4KS/g7/rS8FChAsgzkApELKO8rWVKM1a+0UnA5Cd4a9j6dVbtJTsabdd1uqZpI28yS1tC8tTVGZY/34gNmPYuggJB9zweRj0l/Yu+P+v9K6Z2P3P3kFPN6udhJoLS30s6Rc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1750084979; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=pP1xiFra15VE0xcoJZoV/ZTiyyuP/s1T6tuRzjmNIVk=; 
-	b=LNOyLEPUDykDzgHOrwpBnliufaSLe9sTNCpO+CMAbbGAfSCgzX82a6x0CoQGqdWPfwxdLDS/1auP3rBTBC35rzMmybrSeQrCt7ERptPO6XTbfTGc6V/ZW2zPKVYGRB3aUij3vfAsrIGXNltWO7pXw5ye3/howfuCxrpcLVoYhwk=
+	t=1750085139; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1JyUBZa8RyOxC1jZqL4pHwGDCZdl9cPHYBUvbGcntZ4=; 
+	b=RcWCWLLNVuzg2V5H5i0xyp/8PNKmTyEIVUFh+BI3B67MVERJcLu7dthwNR54Y//WCSmUPnDAIG6dOxAa9TXmfyGS6HBILpDdGiMsQQuwODo+WOF322ZVMRwKtByhZJgtRzTLKjurF0UxXuLQclXv0XsuEev0gm3U9wZm5s//g8U=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750084979;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750085139;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=pP1xiFra15VE0xcoJZoV/ZTiyyuP/s1T6tuRzjmNIVk=;
-	b=V0OXg2VWwB37OxJmQRQtsr5i/HFRhFLNRtb7dPq2XaffkIhh4f+AF49vq9HbqCDF
-	K1YT/XqMWxquneJ06B/QgZOs55rgBTBYmcinQCihhJnVA+ps8J+q0w0JiW9eWOEiHI6
-	oj3wP+ua5Lo+PQNJ8gIT9YPyHazVRuKYnanH9O+k=
-Received: by mx.zohomail.com with SMTPS id 1750084978404609.7770321053222;
-	Mon, 16 Jun 2025 07:42:58 -0700 (PDT)
+	bh=1JyUBZa8RyOxC1jZqL4pHwGDCZdl9cPHYBUvbGcntZ4=;
+	b=XNPSDV2vumsY2TOlb6dl+LqXxFDRAzDxyB80l8F/qNBjEAw521OkrrUEz+Ua1PUt
+	DUQVRVUd9rmIjWO+JbUh6kvoD+5zGK5fMcQXtmgHIs09+7Prmd29UfD8F/PcxhgMvGT
+	4UbguzvGV7X8wv50zOI4v9PjtXHzXU1+TBjFzQiw=
+Received: by mx.zohomail.com with SMTPS id 1750085136480843.106553204945;
+	Mon, 16 Jun 2025 07:45:36 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -46,8 +46,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
 Subject: Re: [PATCH v6] rust: kernel: add support for bits/genmask macros
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aFAqLYBMHkC_X-dr@Mac.home>
-Date: Mon, 16 Jun 2025 11:42:43 -0300
+In-Reply-To: <D29BB87C-356E-4885-8308-456028AE3B6F@collabora.com>
+Date: Mon, 16 Jun 2025 11:45:21 -0300
 Cc: Alexandre Courbot <acourbot@nvidia.com>,
  Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
@@ -61,41 +61,51 @@ Cc: Alexandre Courbot <acourbot@nvidia.com>,
  linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <D29BB87C-356E-4885-8308-456028AE3B6F@collabora.com>
+Message-Id: <D12DC02A-E1EE-47F1-86AF-C25C492FA3D4@collabora.com>
 References: <20250610-topic-panthor-rs-genmask-v6-1-50fa1a981bc1@collabora.com>
  <DAMAPVAI3V8X.N8SAQD6KOO1Q@nvidia.com>
  <9578ECFC-6C59-40E3-9340-A426E8D2328A@collabora.com>
  <aFAqLYBMHkC_X-dr@Mac.home>
+ <D29BB87C-356E-4885-8308-456028AE3B6F@collabora.com>
 To: Boqun Feng <boqun.feng@gmail.com>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
-Hi Boqun,
 
+
+> On 16 Jun 2025, at 11:42, Daniel Almeida =
+<daniel.almeida@collabora.com> wrote:
 >=20
-> We should tell/educate people to do the right thing, if a..b is not
-> inclusive in Rust, then we should treat them as non-inclusive in Rust
-> kernel code. Otherwise you create confusion for no reason. My =
+> Hi Boqun,
+>=20
+>>=20
+>> We should tell/educate people to do the right thing, if a..b is not
+>> inclusive in Rust, then we should treat them as non-inclusive in Rust
+>> kernel code. Otherwise you create confusion for no reason. My =
 assumption
-> is that most people will ask "what's the right way to do this" first
-> instead of replicating the old way.
+>> is that most people will ask "what's the right way to do this" first
+>> instead of replicating the old way.
+>>=20
+>> Regards,
+>> Boqun
+>>=20
 >=20
-> Regards,
-> Boqun
+> This is just my opinion, of course:
 >=20
-
-This is just my opinion, of course:
-
-I _hardly_ believe this will be the case. When people see genmask and =
+> I _hardly_ believe this will be the case. When people see genmask and =
 two
-numbers, they expect the range to be inclusive, full stop (at least =
+> numbers, they expect the range to be inclusive, full stop (at least =
 IMHO). That's how it has
-worked for decades, so it=E2=80=99s only natural to expect this behavior =
-to transfer over.
-
-However, I do understand and agree with your point, and I will change =
+> worked for decades, so it=E2=80=99s only natural to expect this =
+behavior to transfer over.
+>=20
+> However, I do understand and agree with your point, and I will change =
 the
-implementation here to comply. Perhaps we can use some markdown to alert =
-users?
+> implementation here to comply. Perhaps we can use some markdown to =
+alert users?
+>=20
+> =E2=80=94 Daniel
 
-=E2=80=94 Daniel=
+Or better yet, perhaps we should only support a..=3Db.
+
+=E2=80=94 Daniel=20=
