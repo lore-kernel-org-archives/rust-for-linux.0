@@ -1,116 +1,131 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D0320C48C;
-	Mon, 16 Jun 2025 17:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7835E2BEFE1;
+	Mon, 16 Jun 2025 18:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750096722; cv=none; b=NOgFoO0nYLVl+gcT2ybsp2foyD74K/87W6K8Z+8n9ZuHtwaS+qFYPHLjBHULH+lJ+dkYQ0Jxn3xX3ee5N4CCy7RnqcmlSJNd2BYhQDQj1AstnN2WUKDn8bUxl/ubLFEJSTfIW9z6mrpkQM0XommHEgTSVd+T0o4/RU60/vkpC9s=
+	t=1750096979; cv=none; b=DwmC/H7JQa5DBRJ8KqykEYiQsZRtbZkzsE5pWQYLbiwHYK88uDtjRU4PK3KvruA53NxS3bCExFlwva0U61dLiOUTabLH0uSA+hbw7S6stUCuXHaX9w8Jba9ufqnXWEPk2tYMQDA7GEaiWIHPvoMtR/JOr9XNkc5nlzJP3p/tUt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750096722; c=relaxed/simple;
-	bh=WUnBXy4UGJ7CwPKoJusYFc+9qxb9HkzRV/5y40X2gsY=;
+	s=arc-20240116; t=1750096979; c=relaxed/simple;
+	bh=6yUTkefeTXoNZBMekMGpt/PwWgtvlHjAzWKqXD+3A/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rQ6hWy1PmjHuvfm98O/PCTzlNuxy89reN9oayLoIu/JWZMC/FcGIIVB2SnlgzX4vf8srlmITYc9kBLSPCcEakK/IEPviGoGNEn5iYt9rO/6BSVrjeoEUq4AJXBLmsj+oOwtIvdwK30Mm1tdc3aifkKORicRSEjcYTSn8BcI1u2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XOGr2INU; arc=none smtp.client-ip=209.85.222.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYOuovrq0/mVXFH4AtyT9ZAfMVeOGibXzFtLA/0fCBBSk8QMrkW/vSIgXSN+VsIgZSnqTGro0zIXutDppdNSnqXSMP+21h7yLUEMujstDCWX710hyFo1yo6anXDOKRP3EXt8OhuAoPmW5QklUfIiQb5ydfJpyFlRuZwQm+afz5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bk8iZJVp; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XOGr2INU"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7d3dd14a7edso63765285a.2;
-        Mon, 16 Jun 2025 10:58:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bk8iZJVp"
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7d09ab17244so460028385a.0;
+        Mon, 16 Jun 2025 11:02:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750096719; x=1750701519; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750096976; x=1750701776; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y5pazrYyWEz4eIxfaDRY6bcXW1uRUfVgIN+9zpzgkI8=;
-        b=XOGr2INUoPLH998Olg0pkz4PID4HWwmq6pUF6EWMBzJnLqMou32ARAsHGQtGYiNMvi
-         GcEQbOIgccvaLTjZk9BmtG6M4LZHck6JC2AgI6oSfRVOO5xgLtm682th8PZ/3RngGp39
-         jJxmysfGi70tbfRn+47jyLxNJ+bdfHPM4QeAqEIatBQD0rJfoYIEmE830Q+FPEGtYRto
-         Be2yFGaAR8qiLdcT40oWkgI12clqu7TjvPZDaD2Vh/hCd6yTA9EqaSL6XJY4tkTa7XKh
-         HEBAI6AXDY3Cloc+sbHQ68qxwwIbJe8SdEg58uMQE+mfTB1A0KGr6LRNR8M7AGpFGCHz
-         w6Rg==
+        bh=ybMxdbRrl/ibpCOC1Rvao0WN9rIAFVzyfz1M+Vl9BXg=;
+        b=Bk8iZJVpGSkSlqPl3XCPzzUMXvz+ObUhmpVyP+OW9FtQHFpOhrzH+gJmc6xqND27F0
+         k9yZ4PEHLUReSDA28M5LZmj135+w6vzlvM5uCF/guieqbO2i9ae0qIfXHp4cHPqgr1L4
+         aXVir1U2quMJXkpff4VgQGHSG3V/LB+gad3Iwanv+szDyFI+NAf9Q1tDJyhe0fAdBcpX
+         xVaK07lDPuoBUkI/V0T4SZXhLUKpea2pY1uyA2ZOO3KtsBBDotehEaHYSqf304ZZcibF
+         Mt5AJJp09ZPvpx1CHicOXMJqYiHykLPAm52OdwS7XZGmItvA6oxtua+y0uZhFk+S7dEC
+         8nRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750096719; x=1750701519;
+        d=1e100.net; s=20230601; t=1750096976; x=1750701776;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y5pazrYyWEz4eIxfaDRY6bcXW1uRUfVgIN+9zpzgkI8=;
-        b=p0qu59zvA/eYpGgoXgb9TVNZbWMN5+lTDTGBKeTkPzj03CEdJuqFTTpVfuwSkswb4j
-         SrtvFw8WqWt7a+W8d8bcFZF2YcB6enp3EuFX/fJNqgqlAQpoCkq85UKiOR6aqs2l1Zdy
-         Xr6gn2XNejxq1JG1y9dK6CT/cVKij/fZyXHrko/i0F6vCc1eI1obhxWVoHMgRUo9TbNB
-         tkJPI6Uj/dz7pmfi4l0H+/+Kr7zFHQbtaKRWhCAbcFlMRRUKw2YNEydr9Nna84uSbWLx
-         rQhfIzmMUmh/3LQLfVOTMugZrpIHedp1b1AY2ezb8xJdnXjxHFNG45cDV0MhgOwTF1Lr
-         7Mow==
-X-Forwarded-Encrypted: i=1; AJvYcCX9MfIXbpw3GTXxsrL9MSTeSSyhmokh7rJp38NH7eQy2rz2HvM5PP0kbs57f2rCWTtfOT4kJtNRxkFBkEKUbg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQHEp97jlYZjz1zmSa7a0cg5Km89lmfPmLYiHwg8c67Dqe0y+G
-	Sq27hQQI/hnR27RZ0yde0aANGe92bOAdsL80MMWOpCsIwQHSPXXLn5/h
-X-Gm-Gg: ASbGncufCwZ9XAQ0fh8r1ps37UsjOoL/v1xpQHSI9fRR4UVDscOQIT1dgtr8Z0Tavlp
-	+vpztIcIujp3gdE1jQRP1G9jdT+XcRo9nZyFqyFXmZtLse1EbSeKnhwkunweNbiUiKEkeNPuKTQ
-	uRrTor9u3hV0aUay5rrAz9Bkw29zUJ3lcTQDoRjXA+XCFGGGIggCCjNJFqjiPwS22MvakPdMPxh
-	g0ZT+Z5qqbUHPhGYNVvqjNMWyITvpcI6Bqu4waz44DNex9Nc7OwUstK+EH6lKVywcYzPKQJ7pe9
-	D2YMUWIXqqHT55ZMORFW5IT3xWjYAkjtMvy0r+P7x3WAo0jbITGsuPAMWZLhhvjwJxTn3OsFKTK
-	1okjP0cF3j8QrFE0we+CbsqNa+K56CF/UhHLLjHh0Gig/X3CXSK28js4SQ6VrKsM=
-X-Google-Smtp-Source: AGHT+IGUnExjV+TU1sVdKTKpNzo6ZBjTDtNUv+IqWfF8lBXQ6aqVqPYcM3WlbfXjYmVVFlcF8AS50Q==
-X-Received: by 2002:a05:620a:bd5:b0:7d3:9012:75c4 with SMTP id af79cd13be357-7d3c6ceedfamr1540536385a.44.1750096719425;
-        Mon, 16 Jun 2025 10:58:39 -0700 (PDT)
+        bh=ybMxdbRrl/ibpCOC1Rvao0WN9rIAFVzyfz1M+Vl9BXg=;
+        b=LjSFFsohh16rTFcWW88MlsV1c3KmpW4nqCHBKD3S0nrRHXFdtkhMpxZS8K5tYuqqyi
+         NB9HutKWC4ANIb/gWW0Xdj+JBYJDHnaUiDhzoe/EyngXSyC6Yn4x6p8e3b6BH/Y1loGI
+         SloFlnH6RPFXuZ0j0L1iE6IVYtoZdnqi/p/mEKNPYlm6KGK70eZfnfLhBRYkd4kBoqlM
+         WTqKJ83ZtpUGUp7hXX61m9qhyaB4aEJqrBgyl4LdD2s2Tx7dkkPWIzYUSXn4c7WN4HxW
+         Dki1BpXsVnkUg0N7e2BGJl9D54aRFR42Zsj6QfbcjD0d7w6/XM6fXjRGbk9pgk0JYy0p
+         HKoA==
+X-Forwarded-Encrypted: i=1; AJvYcCVEUs6mBlZHCMALZuIB3cMFkv7djr9NmS3MoiXIgEmj4pRYzAHJ+NsxB+qgO68vlr4I2u1vVzVqrgZnQVg2gqQ=@vger.kernel.org, AJvYcCWtv+tvx62ll8z0XbX7H/ojQ2RvcyOGZew6SYSf+a8tbt7+90XIkB4tDzGWN9iXKwqpI/vXCMVdWKnr/gA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziFesrtlT3PDw9W7/JtdEbNEZCnNZYJmc7u+/6mEKyKfm9JosN
+	TYHAk5YK7WZbNUDjSGxmnSUhXCOz2C7QBiEEpWafp4je4BgmOsx42Zsy
+X-Gm-Gg: ASbGncuztnjmyg0vFoPMNn3T6l/g/hqE3Go7TqKAxYw2iGJzjPbPyUkEd279SE1AmJG
+	37w7qFmxRpxBDU8z5tO5zyxUeaY9OkJ9l0DOudbVuMjH7tMQ+5QOMb/yV/s+HAgZg94tdwz/YZX
+	101wLT/Z9n2mxEEPy9t6KhRcAjPs90pz+TxKvnMhzRyZVvxvZWDfdRkMFq7kR1D/pKABR8fm/0J
+	2M4QA2WuWik8Qi9cQvQ14vdK4UjVuWWc2sgRY+Kfsoecs0dmeUfb34/ErAz2z4V4WREqd8xA784
+	9LAWMyJv27TMYltIKfSI2Bd0E6+C17cprXQitE+wXt1doND8z0Y61xEBvCoHnmIAMG+6fKs3FtC
+	2bB5PFQC/hoSyZl41g7FlIUmtJ4SASIWNmJWFzSLpqfg9mHGS1GHy
+X-Google-Smtp-Source: AGHT+IEEmzfHT2BF+rrwv+RVnuvxCBqsm0JHqvIqlQATlmYcugX2ub+fihFoixaIv/1qGP+tWRN4Uw==
+X-Received: by 2002:a05:620a:3725:b0:7d0:a1c9:65a7 with SMTP id af79cd13be357-7d3c6c0d336mr1636279985a.6.1750096976265;
+        Mon, 16 Jun 2025 11:02:56 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8eb80c7sm554991485a.61.2025.06.16.10.58.38
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3b8eacbbcsm555097585a.53.2025.06.16.11.02.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Jun 2025 10:58:38 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 583231200043;
-	Mon, 16 Jun 2025 13:58:38 -0400 (EDT)
+        Mon, 16 Jun 2025 11:02:55 -0700 (PDT)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 277D31200043;
+	Mon, 16 Jun 2025 14:02:55 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 16 Jun 2025 13:58:38 -0400
-X-ME-Sender: <xms:TltQaFSnk3C7iPaiIKAD2RL68L_p-9IFJfs-juIaHJX1Ih4fPpq9bg>
-    <xme:TltQaOzSmfhNKTzM3KaPd33iGcNo44lWg-LncrzstqZrz5rPvfYjDFPTURYiBj1Mb
-    HVRbCizBvDJta50Bg>
-X-ME-Received: <xmr:TltQaK0u7x2MoHvpZtXJF3YrYtYYFDYJLs2N5Xb1paBJu77IaYr7QW4KiA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvjedvgecutefuodetggdotefrod
+  by phl-compute-01.internal (MEProxy); Mon, 16 Jun 2025 14:02:55 -0400
+X-ME-Sender: <xms:T1xQaABgcyl2RZEAwhimtj1iBJ8KTIGF5fM6GWdn5nZKHIxhUP_BGw>
+    <xme:T1xQaCj8VRaWgyLzaV0VGDUIihyQOvbeCnSbbtj8uueVpRx5Q7MjjOaUbCFZgKTdG
+    gyz_C7nMYDFcCYbjQ>
+X-ME-Received: <xmr:T1xQaDmlaN86M1W-pi7-N8UA0fVliMn3PqX5vQdYCBJgWtEzgIEX80n9kg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddvjedvhecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdortddttddv
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
     necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhepiedtfeevhfetkeelgfethfegleekfeffledv
-    vefhheeukedtvefhtedtvdetvedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
     hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
     ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
-    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhho
-    uggvpehsmhhtphhouhhtpdhrtghpthhtohepfihorhhksehonhhurhhoiihkrghnrdguvg
-    hvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtohepthhhrghtshhlhihuuggvsehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgih
-    nhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrg
-    hilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphht
-    thhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhope
-    hlohhsshhinheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:TltQaNC5JfWmqiiGf3KD4NyYZWgrub08VyarnU0IpnH8kZB6S_OR-g>
-    <xmx:TltQaOjBBC53ZmXd0UDEQkYUFZ1ji0sqfDeAKk0QIpm5r-pEbQlTSA>
-    <xmx:TltQaBqcA1EZab0yZaMfGt-FAx8natUMhMJ24RPjuCCjnTwZyJP7iQ>
-    <xmx:TltQaJhkXqMr-ypQ0JfZ2RN_3d9h59khoKovlCUKDPytZtWyaVoU7Q>
-    <xmx:TltQaJQxYvJ_ze-XIUlYh13MNLb5H2AK6sXBM2MM-w2II-xn75cY1uk2>
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeefgedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepjhhovghlrghgnhgvlhhfsehnvhhiughirg
+    drtghomhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgt
+    phhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhsthdqfh
+    horhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhl
+    gieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrrghlmhgv
+    ihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehmihhnghhosehrvgguhh
+    grthdrtghomhdprhgtphhtthhopehjuhhrihdrlhgvlhhlihesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:T1xQaGz7bie_oC7XErID_YPsf7Ly5PP8XS5hjj4kV8TwtX_k1zfXuQ>
+    <xmx:T1xQaFTZ9ytc_FsLSM0QRzP_N72Clmo9betLUSIaF4DTRDdC1TrYEQ>
+    <xmx:T1xQaBadHxiYtUGp9SGn4FSDbVlnF5KL7lz14cwdSNl8MJ6QEScMVA>
+    <xmx:T1xQaOQ3fQMAyyK8AGG379E_v4cZuWNTwbNu769-kJP_gnUCbrAC9A>
+    <xmx:T1xQaPBwaEMMeRKKkpRtIt5PwatO4sXeXqqVa_DJqIFaXrhw4zuKb3-c>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 16 Jun 2025 13:58:37 -0400 (EDT)
-Date: Mon, 16 Jun 2025 10:58:36 -0700
+ 16 Jun 2025 14:02:54 -0400 (EDT)
+Date: Mon, 16 Jun 2025 11:02:53 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: onur-ozkan <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, thatslyude@gmail.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Lyude Paul <lyude@redhat.com>,
+	rust-for-linux@vger.kernel.org,	Thomas Gleixner <tglx@linutronix.de>,
+ linux-kernel@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: Re: [PATCH] Add `ww_mutex` support & abstraction for Rust tree
-Message-ID: <aFBbTMMTHrgHwVFJ@Mac.home>
-References: <20250616162448.31641-1-work@onurozkan.dev>
+	Danilo Krummrich <dakr@kernel.org>,	David Woodhouse <dwmw@amazon.co.uk>,
+ Jens Axboe <axboe@kernel.dk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	NeilBrown <neilb@suse.de>,	Caleb Sander Mateos <csander@purestorage.com>,
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [RFC RESEND v10 03/14] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <aFBcTePC-iXqRuXq@Mac.home>
+References: <20250527222254.565881-1-lyude@redhat.com>
+ <20250527222254.565881-4-lyude@redhat.com>
+ <20250528091023.GY39944@noisy.programming.kicks-ass.net>
+ <683721f1.050a0220.80421.29ff@mx.google.com>
+ <20250616175447.GA900755@joelnvbox>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -119,162 +134,48 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250616162448.31641-1-work@onurozkan.dev>
+In-Reply-To: <20250616175447.GA900755@joelnvbox>
 
-Hi,
+On Mon, Jun 16, 2025 at 01:54:47PM -0400, Joel Fernandes wrote:
+[..]
+> > > 
+> > > Your SOB is placed wrong, should be below Boqun's. This way it gets
+> > > lost.
+> > > 
+> > > Also, is there effort planned to fully remove the save/restore variant?
+> > > As before, my main objection is adding variants with overlapping
+> > > functionality while not cleaning up the pre-existing code.
+> > > 
+> > 
+> > My plan is to map local_irq_disable() to local_interrupt_disable() and
+> > keep local_irq_save() as it is. That is, local_irq_disable() is the
+> > auto-pilot version and local_irq_save/restore() is the manual version.
+> > The reason is that I can see more "creative" (i.e. unpaired) usage of
+> > local_irq_save/restore(), and maybe someone would like to keep them.
+> > Thoughts?
+> 
+> My thought is it is better to keep them separate at first, let
+> local_interrupt_disable() stabilize with a few users, then convert the
+> callers (possibly with deprecation warnings with checkpatch), and then remove
+> the old API.
+> 
 
-Thanks for the patch.
+No objection to doing it slowly ;-) My point was more about the plan is
+to replace local_irq_disable() with local_interrupt_disable() other than
+replacing local_irq_save() with local_interrupt_disable().
+local_irq_save() will still be available for "power users" if they care
+about precise control of irq disabling. But it's not necessary to be
+done at the moment.
 
-[Add Rust and Locking]
+> That appears lowest risk and easier transition.
+> 
 
-Could you please cc more people and lists for the next version? You
-can find that information via `scripts/get_maintainer.pl` or the
-"LOCKING PRIMITIVES" and "RUST" sections in MAINTAINERS file in the
-kernel source.
-
-Some comments from a quick look:
-
-On Mon, Jun 16, 2025 at 07:24:48PM +0300, onur-ozkan wrote:
-[...]
-> +/// Implementation of C side `ww_class`.
-> +///
-> +/// Represents a group of mutexes that can participate in deadlock avoidance together.
-> +/// All mutexes that might be acquired together should use the same class.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::sync::lock::ww_mutex::WwClass;
-> +/// use kernel::c_str;
-> +///
-> +/// let _wait_die_class = unsafe { WwClass::new(c_str!("graphics_buffers"), true) };
-> +/// let _wound_wait_class = unsafe { WwClass::new(c_str!("memory_pools"), false) };
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +#[repr(transparent)]
-> +pub struct WwClass(Opaque<bindings::ww_class>);
-> +
-> +// SAFETY: `WwClass` can be shared between threads.
-> +unsafe impl Sync for WwClass {}
-> +
-> +impl WwClass {
-> +    /// Creates `WwClass` that wraps C side `ww_class`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that the returned `WwClass` is not moved or freed
-
-You can make WwClass #[pin_data] & !Unpin as well.
-
-> +    /// while any `WwMutex` instances using this class exist.
-> +    pub unsafe fn new(name: &'static CStr, is_wait_die: bool) -> Self {
-> +        Self(Opaque::new(bindings::ww_class {
-> +            stamp: bindings::atomic_long_t { counter: 0 },
-> +            acquire_name: name.as_char_ptr(),
-> +            mutex_name: name.as_char_ptr(),
-> +            is_wait_die: is_wait_die as u32,
-> +
-> +            // `lock_class_key` doesn't have any value
-> +            acquire_key: bindings::lock_class_key {},
-> +            mutex_key: bindings::lock_class_key {},
-> +        }))
-> +    }
-> +}
-> +
-> +/// Implementation of C side `ww_acquire_ctx`.
-> +///
-> +/// An acquire context is used to group multiple mutex acquisitions together
-> +/// for deadlock avoidance. It must be used when acquiring multiple mutexes
-> +/// of the same class.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::sync::lock::ww_mutex::{WwClass, WwAcquireCtx, WwMutex};
-> +/// use kernel::alloc::KBox;
-> +/// use kernel::c_str;
-> +///
-> +/// let class = unsafe { WwClass::new(c_str!("my_class"), false) };
-> +///
-> +/// // Create mutexes
-> +/// let mutex1 = unsafe { KBox::pin_init(WwMutex::new(1u32, &class), GFP_KERNEL).unwrap() };
-> +/// let mutex2 = unsafe { KBox::pin_init(WwMutex::new(2u32, &class), GFP_KERNEL).unwrap() };
-> +///
-> +/// // Create acquire context for deadlock avoidance
-> +/// let mut ctx = KBox::pin_init(
-> +///     unsafe { WwAcquireCtx::new(&class) },
-> +///     GFP_KERNEL
-> +/// ).unwrap();
-> +///
-> +/// // Acquire multiple locks safely
-> +/// let guard1 = mutex1.as_ref().lock(Some(&ctx)).unwrap();
-> +/// let guard2 = mutex2.as_ref().lock(Some(&ctx)).unwrap();
-> +///
-> +/// // Mark acquisition phase as complete
-> +/// ctx.as_mut().done();
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +#[pin_data(PinnedDrop)]
-> +pub struct WwAcquireCtx {
-> +    #[pin]
-> +    inner: Opaque<bindings::ww_acquire_ctx>,
-> +    #[pin]
-> +    _pin: PhantomPinned,
-> +}
-> +
-> +// SAFETY: `WwAcquireCtx` is safe to send between threads when not in use.
-> +unsafe impl Send for WwAcquireCtx {}
-> +
-> +impl WwAcquireCtx {
-> +    /// Initializes `Self` with calling C side `ww_acquire_init` inside.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that the `ww_class` remains valid for the lifetime
-> +    /// of this context.
-
-You can make the type system check this for you by:
-
-    pub struct WwAcquireCtx<'a> {
-        #[pin]
-        inner: Opaque<bindings::ww_acquire_ctx>,
-        #[pin]
-        _pin: PhantomPinned,
-        _p: PhantomData<&'a WwClass>
-    }
-
-and
-
-    impl<'ctx> WwAcquireCtx<'ctx> {
-        pub fn new<'class: 'ctx>(ww_class: &'class WwClass) -> impl PinInit<Self> {
-	    ...
-	}
-    }
-
-the lifetime of the reference on WwClass should outlive the lifetime of
-WwAcquireCtx.
-
-Similar for WwMutex. BUT all the existing ww_classes are static,
-alternatively, you can make Ww{AcquireCtx,Mutex}::new() take a `&'static
-WwClass`.
+Agreed. Thanks for looking into this.
 
 Regards,
 Boqun
 
-> +    pub unsafe fn new(ww_class: &WwClass) -> impl PinInit<Self> {
-> +        let raw_ptr = ww_class.0.get();
-> +
-> +        pin_init!(WwAcquireCtx {
-> +            inner <- Opaque::ffi_init(|slot: *mut bindings::ww_acquire_ctx| {
-> +                // SAFETY: The caller guarantees that `ww_class` remains valid.
-> +                unsafe {
-> +                    bindings::ww_acquire_init(slot, raw_ptr)
-> +                }
-> +            }),
-> +            _pin: PhantomPinned,
-> +        })
-> +    }
-> +
-[...]
+> thanks,
+> 
+>  - Joel
+> 
