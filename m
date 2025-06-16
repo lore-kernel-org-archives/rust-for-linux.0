@@ -1,216 +1,123 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D212E06C3
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 13:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56022877C2;
+	Mon, 16 Jun 2025 13:43:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750080805; cv=none; b=RmlVcRxEmqJHK4nPrGDyEul3PWOvC1FZdSDR8+BIr+9kxxBtg+ZAqWZrajbCa/sAQHohWFMSu5pbS/KzUHo48TP7I3TutS0s096XxM0yuOcPNQe+D71L7ZF6gN0HGZbpXC7L/0ivPM8Xqa7RjcnF/L5MTM9fUXvd49jotwfqq+c=
+	t=1750081421; cv=none; b=TvXZvReWzKHBUz1P5n7IgPOrs2Kl8Zwfy3POLr/M8O2FRZHrk3sDojfsaHxwLkinwEqecWb6X2HetTXuTx11W0OFcOGmzJ6LkqYv7elBkgoyQCnCrqp4g5Y2JYiOIo8G1JyDS2Yv15Nnjdrk7NasUrVDhRfmulrTcdl3lqV0jUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750080805; c=relaxed/simple;
-	bh=h61zvk86mIy6HFIKb44/uFTca5tTMXV0Nl9/b3obT20=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CudieebF4FrhoofRP5wAWqJ4beHhRKbRNtBAsJrnN8PXrrM/u7Nnlb2xXqLwNxDarIyZANyk55gRpB6aPagFqOPHf/PLtQBOohodcLOnYRh1LS2cmyfgvQCfW9JQFtN+JkdC+IJz3+TjCGz7WEoo43GGMIWjpqClFDXUNJGLrw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=01dFRPvR; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750081421; c=relaxed/simple;
+	bh=fZ1eh8wNphknetjgbS9kIkHdBLVSvB3bGOQQSPb1rYA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VMRvwttBbyJp5N/XOrNXj4YbsoyiCrnTVWgxa5rSGQCwE0CpI0NrCe3wSNmEOyExjhAElzQr5E6LsDFgoj/lDN9Ijm0D9buslIW97jJkXW7C3uE0PyK8ZauUhGXVkOiU8HU+aL8mAw61mvZxwau3v+VWw3wmOmDWqwiw592h9Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPjbSuU1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="01dFRPvR"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-451d41e1ad1so39137305e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 06:33:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750080800; x=1750685600; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+6b4Beq/LXHyQVf4U43/pXx65WWNeVARph73idBSy/s=;
-        b=01dFRPvRfjuiD/kMP6K9WP1ziaLZSfdzf4KDPxS0sYi3lY9NFi780B/ohCVUM2mxuc
-         secpGGeHJzmOOOQ0lb3N++T5OVfyZ/QweF0Uil238b7sqWzcytNWtv2ZTTvNLvA62Vjc
-         gZ4+ilK2nuGkmEpJIh9vUzODYF1LkKdAu9RxKzbzSTPSsbZANNSLYLx5gKpjapef5z0s
-         bRhh6nzG4I2BESq8DjX7+N5c/L6fFTrWXA5kad4IvTEQZeSN1Fha9EyVnkAAZQVdEcfH
-         393/Fmtg7luiVx/+dHFL6bdI/vqtRgNPahyULOFvjiYZh23EU1gBrR77XTUCmyTn3dTs
-         tI2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750080800; x=1750685600;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+6b4Beq/LXHyQVf4U43/pXx65WWNeVARph73idBSy/s=;
-        b=HgGtWy7Rc0dqnVjtW0JLGAlX8+D2RJF5QA2WNiPr7Z+Rci65qZSY1CKdffg96ACk4h
-         UFG0K6sl0oGRmBkiVZRLKln47PLGMeIzEUFHePa8fjEHLATfx2vmp1+od0WU9EbwCpbS
-         3El8uVWeE3XYNwoinECuPH16gRQjeA3+r2qtTWwRnIHExseO1bu1sRo9wMpq+eyTW/5C
-         mmFHdIBX5zkshyzoSavjsJ7mAjd8Rt4S84TSdxpiRTN9u3tqFkSv1JL/JKduWeL2KbmS
-         VI7mStBilvkHJWqk5u3uBA7JCwY3jEJ/6ZrFOzyIXd6Ftxt3kekkTcrCROwxpY2XavHK
-         ib0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWXxCtJbdwg7BM2023Z74wZMiYPprcIkUxgJQ+xJy3JLyuYJAtOY6Be6ATwXSCUmosuO51Frvtww9s4vyL03A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwacEo74QnohwXDGVOd2NsWDRYxEffJpL07J9MvVRcCZqzDv9dc
-	PtbXKXbroDmQnysxTQ/HauvxfR6g8nYL0rDd5FzLd0TxRNvgAsNKxh/KZcKgW4JTYYWwOLjLovg
-	DY1sr1Hf15Taji+A2g2FHqFMbz6aCM5y9AYNnB14D
-X-Gm-Gg: ASbGncsArOi0yFOJhAK2/38pcixs8bouNBkpGD5ZdaSqdU4l/N74/BSIPh9uN/N7PTM
-	qymbWlxWe+mKA417DBiMDjN3OMwkb8gQc38u3h2ITwBURj+++/9px8d2nyids2SBeIhFl03jZKQ
-	H5w1aszBxGrTgXlFUqUwbDsGBW5zO9jqFyttGaK+9mHzYQ
-X-Google-Smtp-Source: AGHT+IHoHIQWUh1tsB7VdpSgBe+HOR1+wnpYotOSJnim3yodaLfcWb+HX61Di4FQcFN8L/suGwt1uoWH/7fAgVfvJZs=
-X-Received: by 2002:a05:600c:1d9e:b0:453:7bd:2e30 with SMTP id
- 5b1f17b1804b1-4533cac455fmr88605775e9.29.1750080800258; Mon, 16 Jun 2025
- 06:33:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPjbSuU1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C1CC4CEEA;
+	Mon, 16 Jun 2025 13:43:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750081420;
+	bh=fZ1eh8wNphknetjgbS9kIkHdBLVSvB3bGOQQSPb1rYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XPjbSuU14xto+sqSHH8NF5VTqrn/1Hrl2/q2aaOd1A4le6Pmsc7Qy9VEscsuVvlKN
+	 JUIs9Lgnx3MZGHDE3tG4ifPa4tu05TVF3UvFIWn7UxYW6io3auQC+19viueCxaK6Gy
+	 Ox5BltIC9g9iPtzYHOS93/2CiGBd8tMK/jt7OFpzlqY8NtpQKO3V23SY3Oe/acp0d0
+	 XQP4iYjJYlNchS836OOYXQQ3czqwDCv0jsWKQ/+f6jeur5QB0BDWVI50bTEhnc9P/M
+	 Qf61+LfnWAjxqQQ+ikJk1Ln082Gze9KtwU7cnsfVoFMHKT8zVVlADHmpAOMlWRmKG+
+	 Cf6p5OBhDbceg==
+Date: Mon, 16 Jun 2025 15:43:34 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Benno Lossin <lossin@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 4/6] rust: irq: add support for threaded IRQs and
+ handlers
+Message-ID: <aFAfhsuvEQFOd4MJ@pollux>
+References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
+ <20250608-topics-tyr-request_irq-v4-4-81cb81fb8073@collabora.com>
+ <aEbTOhdfmYmhPiiS@pollux>
+ <5B3865E5-E343-4B5D-9BF7-7B9086AA9857@collabora.com>
+ <aEckTQ2F-s1YfUdu@pollux.localdomain>
+ <CAH5fLgj+za85ajgNwJepoa7PSFkMm+3J2wJJVJ24m6YZoFVmVw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
- <20250608-topics-tyr-request_irq-v4-4-81cb81fb8073@collabora.com>
- <aEbTOhdfmYmhPiiS@pollux> <5B3865E5-E343-4B5D-9BF7-7B9086AA9857@collabora.com>
- <aEckTQ2F-s1YfUdu@pollux.localdomain>
-In-Reply-To: <aEckTQ2F-s1YfUdu@pollux.localdomain>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 16 Jun 2025 15:33:06 +0200
-X-Gm-Features: AX0GCFugHkgwu-8fmEBsdYNx2iQ--FaKirwILvqXSQM0todMUtf7WPLfkCI54O0
-Message-ID: <CAH5fLgj+za85ajgNwJepoa7PSFkMm+3J2wJJVJ24m6YZoFVmVw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/6] rust: irq: add support for threaded IRQs and handlers
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgj+za85ajgNwJepoa7PSFkMm+3J2wJJVJ24m6YZoFVmVw@mail.gmail.com>
 
-On Mon, Jun 9, 2025 at 8:13=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> On Mon, Jun 09, 2025 at 01:24:40PM -0300, Daniel Almeida wrote:
-> > > On 9 Jun 2025, at 09:27, Danilo Krummrich <dakr@kernel.org> wrote:
-> > >> +#[pin_data]
-> > >> +pub struct ThreadedRegistration<T: ThreadedHandler + 'static> {
-> > >> +    inner: Devres<RegistrationInner>,
-> > >> +
-> > >> +    #[pin]
-> > >> +    handler: T,
-> > >> +
-> > >> +    /// Pinned because we need address stability so that we can pas=
-s a pointer
-> > >> +    /// to the callback.
-> > >> +    #[pin]
-> > >> +    _pin: PhantomPinned,
-> > >> +}
-> > >
-> > > Most of the code in this file is a duplicate of the non-threaded regi=
-stration.
-> > >
-> > > I think this would greatly generalize with specialization and an Hand=
-lerInternal
-> > > trait.
-> > >
-> > > Without specialization I think we could use enums to generalize.
-> > >
-> > > The most trivial solution would be to define the Handler trait as
-> > >
-> > > trait Handler {
-> > >   fn handle(&self);
-> > >   fn handle_threaded(&self) {};
-> > > }
-> > >
-> > > but that's pretty dodgy.
+On Mon, Jun 16, 2025 at 03:33:06PM +0200, Alice Ryhl wrote:
+> On Mon, Jun 9, 2025 at 8:13 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> > I think with specialization it'd be trivial to generalize, but this isn't
+> > stable yet. The enum approach is probably unnecessarily complicated, so I agree
+> > to leave it as it is.
 > >
-> > A lot of the comments up until now have touched on somehow having threa=
-ded and
-> > non-threaded versions implemented together. I personally see no problem=
- in
-> > having things duplicated here, because I think it's easier to reason ab=
-out what
-> > is going on this way. Alice has expressed a similar view in a previous =
-iteration.
+> > Maybe a comment that this can be generalized once we get specialization would be
+> > good?
+> 
+> Specialization is really far out. I don't think we should try to take
+> it into account when designing things today. I think that the
+> duplication in this case is perfectly acceptable and trying to
+> deduplicate makes things too hard to read.
+
+As mentioned above, I agree with the latter. But I think leaving a note that
+this could be deduplicated rather easily with specialization probably doesn't
+hurt?
+
+> > I'm thinking of something like
 > >
-> > Can you expand a bit more on your suggestion? Perhaps there's a clean w=
-ay to do
-> > it (without macros and etc), but so far I don't see it.
->
-> I think with specialization it'd be trivial to generalize, but this isn't
-> stable yet. The enum approach is probably unnecessarily complicated, so I=
- agree
-> to leave it as it is.
->
-> Maybe a comment that this can be generalized once we get specialization w=
-ould be
-> good?
-
-Specialization is really far out. I don't think we should try to take
-it into account when designing things today. I think that the
-duplication in this case is perfectly acceptable and trying to
-deduplicate makes things too hard to read.
-
-> > >> +impl<T: ThreadedHandler + 'static> ThreadedRegistration<T> {
-> > >> +    /// Registers the IRQ handler with the system for the given IRQ=
- number.
-> > >> +    pub(crate) fn register<'a>(
-> > >> +        dev: &'a Device<Bound>,
-> > >> +        irq: u32,
-> > >> +        flags: Flags,
-> > >> +        name: &'static CStr,
-> > >> +        handler: T,
-> > >> +    ) -> impl PinInit<Self, Error> + 'a {
-> > >
-> > > What happens if `dev`  does not match `irq`? The caller is responsibl=
-e to only
-> > > provide an IRQ number that was obtained from this device.
-> > >
-> > > This should be a safety requirement and a type invariant.
+> >         /// # Invariant
+> >         ///
+> >         /// `ěrq` is the number of an interrupt source of `dev`.
+> >         struct IrqRequest<'a> {
+> >            dev: &'a Device<Bound>,
+> >            irq: u32,
+> >         }
 > >
-> > This iteration converted register() from pub to pub(crate). The idea wa=
-s to
-> > force drivers to use the accessors. I assumed this was enough to make t=
-he API
-> > safe, as the few users in the kernel crate (i.e.: so far platform and p=
-ci)
-> > could be manually checked for correctness.
+> > and from the caller you could create an instance like this:
 > >
-> > To summarize my point, there is still the possibility of misusing this =
-from the
-> > kernel crate itself, but that is no longer possible from a driver's
-> > perspective.
->
-> Correct, you made Registration::new() crate private, such that drivers ca=
-n't
-> access it anymore. But that doesn't make the function safe by itself. It'=
-s still
-> unsafe to be used from platform::Device and pci::Device.
->
-> While that's fine, we can't ignore it and still have to add the correspon=
-ding
-> safety requirements to Registration::new().
->
-> I think there is a way to make this interface safe as well -- this is als=
-o
-> something that Benno would be great to have a look at.
->
-> I'm thinking of something like
->
->         /// # Invariant
->         ///
->         /// `=C4=9Brq` is the number of an interrupt source of `dev`.
->         struct IrqRequest<'a> {
->            dev: &'a Device<Bound>,
->            irq: u32,
->         }
->
-> and from the caller you could create an instance like this:
->
->         // INVARIANT: [...]
->         let req =3D IrqRequest { dev, irq };
->
-> I'm not sure whether this needs an unsafe constructor though.
+> >         // INVARIANT: [...]
+> >         let req = IrqRequest { dev, irq };
+> >
+> > I'm not sure whether this needs an unsafe constructor though.
+> 
+> The API you shared would definitely work. It pairs the irq number with
+> the device it matches. Yes, I would probably give it an unsafe
+> constructor, but I imagine that most methods that return an irq number
+> could be changed to just return this type so that drivers do not need
+> to use said unsafe.
 
-The API you shared would definitely work. It pairs the irq number with
-the device it matches. Yes, I would probably give it an unsafe
-constructor, but I imagine that most methods that return an irq number
-could be changed to just return this type so that drivers do not need
-to use said unsafe.
+Driver don't need to use unsafe already. It's only the IRQ accessors in this
+patch series (in platform.rs and pci.rs) that are affected.
 
-Alice
+Let's also keep those accessors, from a driver perspective it's much nicer to
+have an API like this, i.e.
+
+	// `irq` is an `irq::Registration`
+	let irq = pdev.threaded_irq_by_name()?
+
+vs.
+
+	// `req` is an `IrqRequest`.
+	let req = pdev.irq_by_name()?;
+
+	// `irq` is an `irq::Registration`
+	let irq = irq::ThreadedRegistration::new(req)?;
