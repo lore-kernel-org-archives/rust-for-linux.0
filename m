@@ -1,99 +1,112 @@
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870EF2EB5A9
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 11:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FAF2E4243
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 12:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750075021; cv=none; b=mW6NsjmpTeWC4ySCtWbmV4jY7JFAByLA5cgLnKglxi+o5S3uYhgImEENRg1xW6jgGtqk9Gq+/d5S0jpRL8QHLhm5YKH38IjvmlAWzcTHpFsh6B3Y0Vx/sOPAtxIY2LbMnQeLnMUaTk2XiLV3itzAQ957gWu5zUvdGlcdZ/MmYtg=
+	t=1750076039; cv=none; b=mFODgdxSun7aoEp1W41QCdxuzjQgEyu+qY/f6FzhaWmJf8t4CvYtlJPGaZa74IwtJyt6zflbktawXOYVIFQHZ7o6mzpF1aMC5I6Fv2llzT+INUo0JMlMLQeagMT9DDXvXayvXz7xnEFsfZGA0XjHXv5Q3fQOPXofeY/RqB1StYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750075021; c=relaxed/simple;
-	bh=EhgfHlpYtA1MNSF+q2GiTzeyjq3nuOPTsda5ZaDFAqU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iFthKKtmhtfAf38k/3CRQZVQQ7bJJunozqGc2Hn9zx/pmS9j0PP0z+bBAgzerW6YfGiv0DgoXaOVZOLhpyBIjvGhC4OKIsZVOEKPWi4/uuA4fBeVNBHE8+26Pjorhrmot7f18UHo9luECngB5Ufd1ZlTakLZ8nLvNzx/fdMVFdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=P4u/Ut02; arc=none smtp.client-ip=109.224.244.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1750076039; c=relaxed/simple;
+	bh=I+7zHqlcUgl5RQ5alAtZZ1LmERnzYAgseVjcxK+zizk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TaBS6QxjBzqe1Y9XuGlsKNt6GX19VGowIoJFZVoKNt2eO8qkuQf76RZjbDpWfR7kGRMi83tsiu+4lNI9EckgJq5jd1jO4JLUCI0Rm+SPNfzGaXjODnJF3gQEzoQf8aFX5cgQGTiC3QAhwIeNK+F0ry7WabHou1RHpIDCZuBjtBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SqW6QiCy; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="P4u/Ut02"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1750075011; x=1750334211;
-	bh=w6GZhjSddy4eR4E78ib6Xk7D+h/hNv5radSD+voC61Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector:List-Unsubscribe:List-Unsubscribe-Post;
-	b=P4u/Ut02t+oS4HAB84+RW0VCBeXFm5uuMZ+k5StP5XtDtml+THyhExWXt3iCdQS0A
-	 S6ITwE1S63ZW42653lV7hZn3yzI/Rwnq82oFCnEJ4cNKmM2JaOEhx1kmbzTlWvit9K
-	 gdkAID53F1e5gqMnpOgKeekwGOXPMnxBtkcqpo59uwBT8K6b1XFTng3fjrceEu3PD+
-	 4dGzC/7sHSetAuRqFiIk2ENPZb4Cp6eUHs+7r92F2G8BaPzaNrA2ARvvzGWvescezG
-	 f9C81v1HQW2wfkPTPUbW06f1yuFKQL2YGjljZoccHpdx3195GeyyLlL2HVbvn/PMan
-	 koXThDJiB46FA==
-Date: Mon, 16 Jun 2025 11:56:47 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 2/5] rust: Rename AlwaysRefCounted to RefCounted
-Message-ID: <aFAGeu5FwaEEUZD8@mango>
-In-Reply-To: <aBStYylT7wy9JiDx@google.com>
-References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <20250502-unique-ref-v10-2-25de64c0307f@pm.me> <aBStYylT7wy9JiDx@google.com>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 2eda56265984c79b38f85539f8985a4131d807fe
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SqW6QiCy"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a582e09144so341719f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Jun 2025 05:13:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750076036; x=1750680836; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8RhKiRlCCs0IRZurAump6WGQZLFAsTIozbu73EzZAuE=;
+        b=SqW6QiCyiTMh8CIqdYR78QGHYQByaDlhzWwt12V0QBxTuo4Pma+EtBxS+9GVcx6PzM
+         AmFNLWciX0G2AhvgKEygPR1Boyv2W1z1w4vozf5H4NxBggcsr3ViCGC5+t2JEm8z0jvq
+         uP5aYUoT4inbcr47MrK+lHX4VyZ94blkSNa1abPVbYdoQnH2CW7kkYUMWH440jQCW+4h
+         a3tSHNj08FqFO0K5LxfW9ktQNO4aObeDfywvMRtg6BTqzyUK6k9vE5cjbZCLIEx1oYyS
+         IvcnLjylA3rFzB4NWTp0/1kNy9eXZ4YTKrhkeD9JySl97S3l6B7KkUELEWXmN9c+ecIX
+         mS4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750076036; x=1750680836;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8RhKiRlCCs0IRZurAump6WGQZLFAsTIozbu73EzZAuE=;
+        b=kVg/cXP0tqB5BokHfr0sxe+3RmfLN5CXHNmEK2kWb/K8azJCdVaNQZ9AiRVvA5uuOu
+         7KXdz5L4J3OIC8/ujMD3KTMm1AalxzSbzQwmPZNRgxZjr59u03KaypCR47hEfPEGpYFU
+         x7SR1Gl3jfsG8E4Wm7pZVOSfpGJN9pu24uv7Me/GzmEhciNNyIn3N3qifo4F3sENGHM/
+         /uzXBz0j/trdj3vgq/qZiUW8EPI0C6L0zG4nAekAziu4LSwMOFkpsxquXb0yVs9qfryp
+         WfoouK67tWHtdAg4hL/icxFNRoqgXFvkWlYSP2aFR4Mjgg39K2zqQwj/F/9bDjiVnZfr
+         z5nw==
+X-Forwarded-Encrypted: i=1; AJvYcCVooE60qBjAskcdUtMxMRQ7kAPhz/BxwLWkVaO8FkY8shTU2Nu7pM1+XRLkur/LwA+t7WqIwcpEvZKhHprR4w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YygeZGD8fktMSJzfDf0QmBY8gdVjnekysR1mblLCw1jaB/Vbskk
+	4KkqFRCYTlY0R92T8ZyhAO6vUUx1Kys75vMfPifsOuJKTbQuOFfVbV9rfIwpn1pp0HfK+nhfHF0
+	l+WGeGm5gd9sUTmJB9CaReqZzU4XSRKkWY7TLaKMj
+X-Gm-Gg: ASbGncsfTrYORLaUQToMUsaBh7sGlH0QXqTXwZLyEe9R1kS15mVv5oROn3u404+FP7z
+	9hpwSSQ92iGUk6BnNxCs+f41UpTGU4ewseczlzv+j0lVTDc69MIZI5IvDj3mKjip5AXXT19TXcG
+	NQ2lujnl3e0RfaTG/JT9H+ZfSM+fURTcPLqy7liWoQZSLv
+X-Google-Smtp-Source: AGHT+IFyjKifnw4nJRdSku3PfjoVUiF1cHVDjz4vD9go7tk98USfWK5+Su8jtqkQ7OhDV/5ugWmX3JcVAUGW2BHxuXo=
+X-Received: by 2002:a05:6000:2308:b0:3a5:25e0:ab53 with SMTP id
+ ffacd0b85a97d-3a5723a399cmr7284379f8f.32.1750076036156; Mon, 16 Jun 2025
+ 05:13:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250502-unique-ref-v10-0-25de64c0307f@pm.me> <20250502-unique-ref-v10-2-25de64c0307f@pm.me>
+ <aBStYylT7wy9JiDx@google.com> <aFAGeu5FwaEEUZD8@mango>
+In-Reply-To: <aFAGeu5FwaEEUZD8@mango>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 16 Jun 2025 14:13:44 +0200
+X-Gm-Features: AX0GCFulNDKTw_W_UJNLS2CnL1V2yleJgmKBT2DpUiM6GmIfGgzrQi0qgZyZLdY
+Message-ID: <CAH5fLgh4H8mVjjPT3ya9Seop+xnzrwMEfSWF7eEcT3e16oV5FQ@mail.gmail.com>
+Subject: Re: [PATCH v10 2/5] rust: Rename AlwaysRefCounted to RefCounted
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina@asahilina.net>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 250502 1132, Alice Ryhl wrote:
-> On Fri, May 02, 2025 at 09:02:37AM +0000, Oliver Mangold wrote:
-> > AlwaysRefCounted will become a marker trait to indicate that it is allo=
-wed
-> > to obtain an ARef<T> from a `&T`, which cannot be allowed for types whi=
-ch
-> > are also Ownable.
+On Mon, Jun 16, 2025 at 1:56=E2=80=AFPM Oliver Mangold <oliver.mangold@pm.m=
+e> wrote:
+>
+> On 250502 1132, Alice Ryhl wrote:
+> > On Fri, May 02, 2025 at 09:02:37AM +0000, Oliver Mangold wrote:
+> > > AlwaysRefCounted will become a marker trait to indicate that it is al=
+lowed
+> > > to obtain an ARef<T> from a `&T`, which cannot be allowed for types w=
+hich
+> > > are also Ownable.
+> > >
+> > > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> > > Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > >
-> > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
->=20
-> >  // SAFETY: All instances of `Request<T>` are reference counted. This
-> > -// implementation of `AlwaysRefCounted` ensure that increments to the =
-ref count
-> > +// implementation of `RefCounted` ensure that increments to the ref co=
-unt
-> >  // keeps the object alive in memory at least until a matching referenc=
-e count
-> >  // decrement is executed.
->=20
-> It looks like "keeps" now fits on the previous line. I would reflow all
-> text in this patch.
+> > >  // SAFETY: All instances of `Request<T>` are reference counted. This
+> > > -// implementation of `AlwaysRefCounted` ensure that increments to th=
+e ref count
+> > > +// implementation of `RefCounted` ensure that increments to the ref =
+count
+> > >  // keeps the object alive in memory at least until a matching refere=
+nce count
+> > >  // decrement is executed.
+> >
+> > It looks like "keeps" now fits on the previous line. I would reflow all
+> > text in this patch.
+>
+> Say, this means you have a tool to do that automatically for you? I'm doi=
+ng
+> it by hand currently.
 
-Say, this means you have a tool to do that automatically for you? I'm doing
-it by hand currently.
+In vim you can do it by selecting the text and typing gq.
 
-> > +/// An extension to RefCounted, which declares that it is allowed to c=
-onvert
-> > +/// from a shared reference `&T` to an owned reference [`ARef<T>`].
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that no safety invariants are violated by=
- upgrading an `&T`
-> > +/// to an [`ARef<T>`]. In particular that implies [`AlwaysRefCounted`]=
- and [`Ownable`]
-> > +/// cannot be implemented for the same type, as this would allow to vi=
-olate the uniqueness
-> > +/// guarantee of [`Owned<T>`] by derefencing it into an `&T` and obtai=
-ning an [`ARef`] from that.
-> > +pub unsafe trait AlwaysRefCounted: RefCounted {}
->=20
-> Adding a new trait should not happen in a commit called "rename X to Y".
-> Consider renaming this patch to "split AlwaysRefCounted into two traits"
-> or similar.
-
-Sure. Will do.
-
-Oliver
-
+Alice
