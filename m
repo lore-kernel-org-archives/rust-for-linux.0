@@ -1,109 +1,100 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0E32F432A
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 14:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF0B2E54D3;
+	Tue, 17 Jun 2025 14:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750169331; cv=none; b=tMgkvr5FQO6FyQLlltzHm69AGwNP4dPqvQ9c2ClVsYVW+nopmTPTjedh/0/U9cVaI88u17AUhXdwAvbF6xBNYFUTWJAIKzSTQPpP76AOdlWCZY9ES3pFIdmLXfw/Tf3pBHcNRE3ai6aK+aisbjt8fYCRzD9hkISK7Jfkgf77R9c=
+	t=1750169488; cv=none; b=RJnmB73N9vHvxG6TvV09MJvvG6Z2KjOpMoDsm8QiSGvBBRqyb2JymdyxBR/Tzt259a+ttREoa3S/ubD28JBAIeVfM+FekE3ybT90oJXZcsAr74STFtmS8KPRm21YDXYPgilHKM/konXo8mxAcbB92bmW4Bg6hmKw99q0jZj1Mu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750169331; c=relaxed/simple;
-	bh=N+2CmuFEvaFrCFvEiZxIZGe87T5yZ+GUUMGzk60ZImg=;
-	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=ouP1/GXldzOatfqqO9eiTAb8HgCrsyR5/BDg2r8tHfElXBkIXVlZ/GRfT4HfquQoEdSvgkRwWBggOqwfBCi5l0zyPqXq0k7jU6JleJS/8E0ZSyEIAw8J3249MLV6wUVpZ69FY0JAdeRRtEWGWEA2Qnu+9/LBfPdywxVZejFHC4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=NLt0IGUr; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="NLt0IGUr"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250617140845euoutp0179b3ce2c753cca8a565dc5b6e4428673~J2bqVVgws2970029700euoutp01i
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 14:08:45 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250617140845euoutp0179b3ce2c753cca8a565dc5b6e4428673~J2bqVVgws2970029700euoutp01i
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1750169325;
-	bh=ZbpbiGCkq+bc/Hnq9ouJryKcDkGL17+XHPFX3q85en0=;
-	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=NLt0IGUrkhdCV21WBpKsTA+V+/CN/O93MjfOgOr0bNGbC3rtHkEJnpr12fg3zmxun
-	 8abHfrba09p+IeXYopaAJ8d7L6TzS66R+eq2TVjFV2UEqDyJxk/9iYIZ9HPX0ZTuFE
-	 vwesuei4g24HKVPGHXVu9GNyZjblpkDtm5K7pEa0=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250617140844eucas1p2ec26280d366f9cdb4c7846cb2690196a~J2bpr16ft2865928659eucas1p2h;
-	Tue, 17 Jun 2025 14:08:44 +0000 (GMT)
-Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
-	[106.210.136.40]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250617140843eusmtip151df0a7a6e746e98a4069d02c042c444~J2bohODD92540625406eusmtip1O;
-	Tue, 17 Jun 2025 14:08:43 +0000 (GMT)
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Tue, 17 Jun 2025 16:07:31 +0200
-Subject: [PATCH v3 8/9] riscv: dts: thead: Add PVT node
+	s=arc-20240116; t=1750169488; c=relaxed/simple;
+	bh=8hWn08TVxi6nt+yOHQco8htVd+VJW89Ty/tb+h0FAWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WTpqZcNOBW8Ru+8TFHR7yH8MKBAVCg+fhomUnAwMm12hQpTZpkFiwnSEZYFaOikqgQ2cRM55URjllAf4r3y/eR4JVykms8Hosuh5vjz8/h2mL9NQRAVKhK3Z79QKE1V6cFfCPUn4z6/DtaRqnJBbi/+dsM30FxOWMbH/jc4EUsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass smtp.mailfrom=goodmis.org; arc=none smtp.client-ip=216.40.44.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=goodmis.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=goodmis.org
+Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AAFF21003EA;
+	Tue, 17 Jun 2025 14:11:21 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf03.hostedemail.com (Postfix) with ESMTPA id EA9736000B;
+	Tue, 17 Jun 2025 14:11:14 +0000 (UTC)
+Date: Tue, 17 Jun 2025 10:11:20 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, Daniel
+ Almeida <daniel.almeida@collabora.com>, Ingo Molnar <mingo@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Will Deacon
+ <will@kernel.org>, Waiman Long <longman@redhat.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, David
+ Woodhouse <dwmw@amazon.co.uk>, Jens Axboe <axboe@kernel.dk>, Sebastian
+ Andrzej Siewior <bigeasy@linutronix.de>, NeilBrown <neilb@suse.de>, Caleb
+ Sander Mateos <csander@purestorage.com>, Ryo Takakura
+ <ryotkkr98@gmail.com>, K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [RFC RESEND v10 03/14] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <20250617101120.7c946656@gandalf.local.home>
+In-Reply-To: <20250527222254.565881-4-lyude@redhat.com>
+References: <20250527222254.565881-1-lyude@redhat.com>
+	<20250527222254.565881-4-lyude@redhat.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250617-rust-next-pwm-working-fan-for-sending-v3-8-1cca847c6f9f@samsung.com>
-In-Reply-To: <20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,  Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,  Michal
-	Wilczynski <m.wilczynski@samsung.com>, Drew Fustini <drew@pdp7.com>,  Guo
-	Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,  Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
-	<conor+dt@kernel.org>,  Paul Walmsley <paul.walmsley@sifive.com>,  Palmer
-	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,  Alexandre
-	Ghiti <alex@ghiti.fr>,  Marek Szyprowski <m.szyprowski@samsung.com>,  Benno
-	Lossin <lossin@kernel.org>,  Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20250617140844eucas1p2ec26280d366f9cdb4c7846cb2690196a
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250617140844eucas1p2ec26280d366f9cdb4c7846cb2690196a
-X-EPHeader: CA
-X-CMS-RootMailID: 20250617140844eucas1p2ec26280d366f9cdb4c7846cb2690196a
-References: <20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com>
-	<CGME20250617140844eucas1p2ec26280d366f9cdb4c7846cb2690196a@eucas1p2.samsung.com>
+X-Stat-Signature: htncteuttkzwxctxcewje7ky5ojwunj1
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: EA9736000B
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX191AI3waoI7kPuJd6QW3xXci6eqEX5WyfE=
+X-HE-Tag: 1750169474-160759
+X-HE-Meta: U2FsdGVkX19IO9TtLFKVfjxlKj7qi+gPSxhlEdfuSkv7pW1CDk4ZrvExk3X1Vq58BvA6w7kNOz/SbFQ175reXw1CYYswZ9zgyQt6WjtwRMeFcHyVjMW/5O3Y8WrQnP3JabQp3te4WaIodqAZH4f4tng2P15nwhlM7Mb0gXjCUu5v78oq6UHb6I7F308prDJku4bPYnWqvoKj9SMCQlhSiyC0klBXUBtDnJON9EhyMrqYv0eTGgl+PmRmqQKeIxnFKInIDRcQp0FP+6PPxty+Ivrms2ghSMZVPCWh9dIfv5HPPL6pXWrCstHaQWQ/qU9LXdvfQ5LHVOdvGKgLTvzGEk+ZXbUPBb4R
 
-Add PVT DT node for thermal sensor.
+On Tue, 27 May 2025 18:21:44 -0400
+Lyude Paul <lyude@redhat.com> wrote:
 
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
----
- arch/riscv/boot/dts/thead/th1520.dtsi | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+> +static inline void local_interrupt_enable(void)
+> +{
+> +	int new_count;
+> +
+> +	new_count = hardirq_disable_exit();
+> +
+> +	if ((new_count & HARDIRQ_DISABLE_MASK) == 0) {
+> +		unsigned long flags;
+> +
+> +		flags = raw_cpu_read(local_interrupt_disable_state.flags);
+> +		local_irq_restore(flags);
+> +		/*
+> +		 * TODO: re-read preempt count can be avoided, but it needs
+> +		 * should_resched() taking another parameter as the current
+> +		 * preempt count
+> +		 */
+> +#ifdef PREEMPTION
+> +		if (should_resched(0))
+> +			__preempt_schedule();
+> +#endif
+> +	}
+> +}
 
-diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
-index 26996422e1efe5d2dde68819c2cec1c3fa782a23..bef30780034e06b07aa29b27b0225ea891a4b531 100644
---- a/arch/riscv/boot/dts/thead/th1520.dtsi
-+++ b/arch/riscv/boot/dts/thead/th1520.dtsi
-@@ -669,6 +669,17 @@ padctrl_aosys: pinctrl@fffff4a000 {
- 			thead,pad-group = <1>;
- 		};
- 
-+		pvt: pvt@fffff4e000 {
-+			compatible = "moortec,mr75203";
-+			reg = <0xff 0xfff4e000 0x0 0x80>,
-+			      <0xff 0xfff4e080 0x0 0x100>,
-+			      <0xff 0xfff4e180 0x0 0x680>,
-+			      <0xff 0xfff4e800 0x0 0x600>;
-+			reg-names = "common", "ts", "pd", "vm";
-+			clocks = <&aonsys_clk>;
-+			#thermal-sensor-cells = <1>;
-+		};
-+
- 		gpio@fffff52000 {
- 			compatible = "snps,dw-apb-gpio";
- 			reg = <0xff 0xfff52000 0x0 0x1000>;
+I'm confused to why the should_resched() is needed? We are handling
+interrupts right? The hardirq_disable_exit() will set preempt_count to zero
+before we enable interrupts. When the local_irq_restore() enables interrupts
+again, if there's an interrupt pending it will trigger then. If the
+interrupt sets NEED_RESCHED, when it returns from the interrupt handler, it
+will see preempt_count as zero, right?
 
--- 
-2.34.1
+If it does, then it will call schedule before it gets back to this code.
 
+-- Steve
