@@ -1,139 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9997B2CCDE;
-	Tue, 17 Jun 2025 14:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B601FBCA1;
+	Tue, 17 Jun 2025 14:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750171270; cv=none; b=d0KAOAvHaM4wIjVryUoZ6qsFaiHnMremXbdi2KGdR95OO6Z3d+/YjO8kxXIrerNNUPyHm5fYQZDDeclSH/wCKg91m1SUSMLmW5Z9xlf79nF3cBZQrJLWQrgUsfNe8p/qPzPLUTjScXcEEHJUfiqjo1VGdqRtdBgqiKwAAxU0zSU=
+	t=1750171347; cv=none; b=ktD8IYw2t05766lTraLgKGqBRzCwFtWH5I8p+7uaFl2rfHcGsBcz58q+cebN5kK0Cbzmu8xZ8+0L6e4fKYjaOh8mrCz/ryQ0o7CreprJbJhnmGBM+C7oX7LqYoReA4zn5YGlbv3XhOdlQ668h792ZNFGDa0fdzJrT/WmVmJPIk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750171270; c=relaxed/simple;
-	bh=XdJb0Fw4Rr6pT0ZoN+vrT8BJNFqp2n7RZt9bLdoicy0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcCjAhgg0L38niekZ8SEGzwmokzFOZhik6zFX4v9WIA+cQdIhBqStlANqZmvRg5Sh+RkBPVU8J3Nwe0/nWO98zHLas07iBkOq4Vj5kdK3i9pX1xie+Hs3nftcQ8IT6pH/dlLJINo3Kf25133l94S8yaO3YRq+CnammmOIrWxvJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dSTCRk8U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750171347; c=relaxed/simple;
+	bh=fNcSuy6mjod55+BJBgV8ppeEmpno8yVJC+hLbUnEixw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EMa5BmQ4e7nA//t8Vr98xKTSdTDldx5zdwbXNB8z5V//MSqk7191g8+KGz2B7sbsE0dk7bQVWARxb+oJ7r2NTy0oUqNM0oXx7nXkZ/Nh4mQPzRyQRKks+c6FmJMiwx1sRgPDKK5k4g84zgA4wc46wQUfZTWpyChH8o3r80+ISAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZOzcn3au; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dSTCRk8U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD93C4CEE3;
-	Tue, 17 Jun 2025 14:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750171269;
-	bh=XdJb0Fw4Rr6pT0ZoN+vrT8BJNFqp2n7RZt9bLdoicy0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dSTCRk8Uwi677vKg6k6lOAWXdtA+M+meFSVzjlFArZ9bvcH54PzhYbqd7CJlg63T/
-	 xJ0+p8rTVazZ6/wO72ITTYo2jiM5Tbugln+L3yIBtD9EBCyLvlK3Uf+wo/ABwAm3Vy
-	 fPAoXHXkEsLyBw49G9HKJjcjV6mofeyhQa4lbM/8mb3sWMomcQgyA7/LvkGC8yKDG9
-	 odnD5n9ZIAUz+x2GSLx7JB/j6pW2RBIQtlbDvHkin8zrtZV/xYDMLS6fmj6g31qdWG
-	 HZkv+V2DMP0ZzeS0iAymfIqkXqCiWdwpzWqjTJXdU4eV1g/aaKOhKSpv5Kz+VAmX7Z
-	 jrf/zUgEtABtw==
-Date: Tue, 17 Jun 2025 16:41:00 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 3/9] rust: pwm: Add driver operations trait and
- registration support
-Message-ID: <aFF-fNOOEzoiomFu@pollux>
-References: <20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com>
- <CGME20250617140838eucas1p2a31af5a73297580c2421263c1c6ba700@eucas1p2.samsung.com>
- <20250617-rust-next-pwm-working-fan-for-sending-v3-3-1cca847c6f9f@samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZOzcn3au"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2351227b098so48299675ad.2;
+        Tue, 17 Jun 2025 07:42:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750171345; x=1750776145; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zhitsEOASgGAtxaxB/j5JePPGlaChK9WXa39VI0hE9s=;
+        b=ZOzcn3auiGgOjMMffSoUbha+dhOMW6M3w3Tt6U/i6ZNXT/29UDevYFptBQE3JeYt/k
+         paTTCNWOtm4BYWw+2ITmUH+4uclFQTlrsbW+wYP6snYi4vE9OrYF1ek9arUi9rNa41Ge
+         xnq6kXbanpFq9EIlwHof5hs7RCvpWZI6k7z16ySoiqIu7ZZ9xLjw5USCxSVmIUMeIVhr
+         ihFV89xu/UIf0wPGlbqIdawjBGv9kjbHCQ8RffyZ3vdTNEnaayHhLVmsWJODO5o1lqwV
+         OHhpfxE6J+u70Imrl4NRKhbVQ7ykE5ZE5CQGIM01+xS6SpGN4gQjb38rz35shSGz1auJ
+         Pd4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750171345; x=1750776145;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zhitsEOASgGAtxaxB/j5JePPGlaChK9WXa39VI0hE9s=;
+        b=bWEG2n64GCX6dEAvgv4fneHptdak9rGPIYoujvVUNtYIN3pikIuPUAMnE5oByiGbeN
+         w8ZgAHD1JyJfx0nQx7i9UrLGxZTDJ5Tk7DTqaUMaN9T7gLR1PLEiDkY1iT0Nqb4HJJU2
+         2G9gEA0ElOF2sGDiZnMNA69vF6STQAddfN8VOG1BuHx/QylRi7aO5nVy6HRPRVsaD73I
+         euWXxUqRg9716zcXCAXRI1TdVzZpEtnOJHlLW7tbYeB6V9Ucr1uLegqLnWPqHHb/v69m
+         J4DBCmrPOo3rX1gfBOsMIG3zfwqu2LQJOlQhKavxB1wmR442UkJTpSyfou7ezXaEWtau
+         oWTw==
+X-Forwarded-Encrypted: i=1; AJvYcCWmJqXHcdl7B7U6pmXLqOBCl08/ZhNqC9XgvyIWhb5uXqbYHKdJAVRSL1W2nZQ3mZCGGhUNDhcwNk9tuzfMvTM=@vger.kernel.org, AJvYcCXpzL1+gO6p3iTMbjiNGPu/ia2pOmd5LbM3RMeLAPm0cT2vqean8sGLOhGO23z250s6Q12c4JwIjFaxmp0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywyy8MZ48PKzVFX8AvH6YU+dTjrTfEUIyXRnpPT3ImxAXPOUqVU
+	dL33ajFQFcZef3qOixdRwh70+lbwC+WNLFQxUqQCP6BCS9SH5TVmSFiS
+X-Gm-Gg: ASbGnctbiRWc4bgjrzjFt3jv81rfncLZdntoWG9g0CZfYryvgsBfvnvXcLWzrZRc27S
+	PwM7Afk5qJHliK/zJTO+VHeSCdYsE0Eo+7ANdzUrWlTGiEGzzcs80kVJ5ad23i6VSyl+yxr75BY
+	1DaZHSKM/ipR0bHsxP/nV/6wBRW7mJqa9Y3+pD3rEUXYOqA10Qdyw+0wwg1AJ4oFSdC0Qeo42s4
+	hIEjM2tSV3OIBsqak4r9C7Ia5AMnIjLpxXZeqpRnpqEauydGYU/nhMfKSchQqJ4LaZX3bB6Boj9
+	V9IzvRyBw9hOt8vylQt3DHCjMxsoMqUubpK68Q/saoGSf1RjS9GwBD8NZzMEdXkPb2kBAdjQclT
+	o10Dj63Uq1jKptRYUN8/r8b7WePYfW2YzUoU=
+X-Google-Smtp-Source: AGHT+IGTbuCPn1famd0j2uz2PSBkfgzFkuhoMqWl+yapHxOEbK6XV8oILDvGW8DFNl8vtFwg9p9kTQ==
+X-Received: by 2002:a17:90b:4cce:b0:312:639:a058 with SMTP id 98e67ed59e1d1-313f1d96ee5mr21003436a91.27.1750171344684;
+        Tue, 17 Jun 2025 07:42:24 -0700 (PDT)
+Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-313c1c5feebsm12029828a91.41.2025.06.17.07.42.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 07:42:24 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org,
+	alex.gaynor@gmail.com,
+	ojeda@kernel.org
+Cc: aliceryhl@google.com,
+	anna-maria@linutronix.de,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@kernel.org,
+	frederic@kernel.org,
+	gary@garyguo.net,
+	jstultz@google.com,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	lyude@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	sboyd@kernel.org,
+	tglx@linutronix.de,
+	tmgross@umich.edu
+Subject: [PATCH v1 0/2] rust: time: Add fsleep()
+Date: Tue, 17 Jun 2025 23:41:53 +0900
+Message-ID: <20250617144155.3903431-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250617-rust-next-pwm-working-fan-for-sending-v3-3-1cca847c6f9f@samsung.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 17, 2025 at 04:07:26PM +0200, Michal Wilczynski wrote:
-> +/// Manages the registration of a PWM chip, ensuring `pwmchip_remove` is called on drop.
-> +pub struct Registration {
-> +    chip: ManuallyDrop<ARef<Chip>>,
+Add wrapper for fsleep() function.
 
-Why is this ManuallyDrop when you call ManuallyDrop::drop(&mut self.chip) as
-the last thing in Registration::drop()?
+The first patch renames from the Delta's methods as_micros_ceil() and
+as_millis() to into_micros_ceil() and into_millis() respectively to
+maintain consistency with the other function names. I think that the
+commit 2ed94606a0fe ("rust: time: Rename Delta's methods from as_* to
+into_*"), wasn't applied as expected, due to the conflict with the
+commit 1b7bbd597527 ("rust: time: Avoid 64-bit integer division on
+32-bit architectures").
 
-I think you don't need ManuallyDrop here.
+The second patch is effectively a resend of a previous patch in the
+iopoll patchset. The last post was:
 
-> +}
-> +
-> +impl Registration {
-> +    /// Registers a PWM chip (obtained via `Chip::new`) with the PWM subsystem.
-> +    ///
-> +    /// Takes an [`ARef<Chip>`]. On `Drop` of the returned `Registration` object,
-> +    /// `pwmchip_remove` is called for the chip.
-> +    pub fn new(chip: ARef<Chip>, ops_vtable: &'static PwmOpsVTable) -> Result<Self> {
+[PATCH v15 5/6] rust: time: Add wrapper for fsleep() function
 
-For the reason mentioned in [1] this should either return Result<Devres<Self>>
-or just Result, if you use Devres::new_foreign_owned() (see also [2]).
+https://lore.kernel.org/lkml/20250423192857.199712-6-fujita.tomonori@gmail.com/
 
-In case of the latter, the Registration instance is automatically dropped once
-the parent device is unbound.
+This patch has already been reviewed by many developers. It was not
+merged previously due to issues with 64-bit division on 32-bit
+architectures. A patch addressing the division issue has already been
+merged, so this patch can now be merged as well.
 
-If you go with the first, you can drop the Devres<Registration> (and hence the
-inner Registration) at any arbitrary point of time, but Devres will still
-gurarantee that the inner Registration is dropped once the parent device is
-unbound, i.e. it can't out-live driver unbind.
 
-This guarantees that the &Device<Bound> instance you provide in the callbacks
-below is guaranteed to be valid.
+FUJITA Tomonori (2):
+  rust: time: Rename Delta's as_micros_ceil and as_millis
+  rust: time: Add wrapper for fsleep() function
 
-[1] https://lore.kernel.org/lkml/aFF7qqlexxh540FW@pollux/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/drm/driver.rs#n134
+ rust/helpers/time.c       |  6 +++++
+ rust/kernel/time.rs       |  5 ++--
+ rust/kernel/time/delay.rs | 49 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 58 insertions(+), 2 deletions(-)
+ create mode 100644 rust/kernel/time/delay.rs
 
-> +        // Get the raw C pointer from ARef<Chip>.
-> +        let c_chip_ptr = chip.as_raw().cast::<bindings::pwm_chip>();
-> +
-> +        // SAFETY: `c_chip_ptr` is valid (guaranteed by ARef existing).
-> +        // `ops_vtable.as_raw()` provides a valid `*const bindings::pwm_ops`.
-> +        // `bindings::__pwmchip_add` preconditions (valid pointers, ops set on chip) are met.
-> +        unsafe {
-> +            (*c_chip_ptr).ops = ops_vtable.as_raw();
-> +            to_result(bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()))?;
-> +        }
 
-Please split this up into separate unsafe blocks.
+base-commit: 994393295c89711531583f6de8f296a30b0d944a
+-- 
+2.43.0
 
-> +        Ok(Registration {
-> +            chip: ManuallyDrop::new(chip),
-> +        })
-> +    }
-> +}
-> +
-> +impl Drop for Registration {
-> +    fn drop(&mut self) {
-> +        let chip = &**self.chip;
-> +        let chip_raw: *mut bindings::pwm_chip = chip.as_raw();
-> +
-> +        // SAFETY: `chip_raw` points to a chip that was successfully registered via `Self::new`.
-> +        // `bindings::pwmchip_remove` is the correct C function to unregister it.
-> +        unsafe {
-> +            bindings::pwmchip_remove(chip_raw);
-> +            ManuallyDrop::drop(&mut self.chip); // Drops the ARef<Chip>
-> +        }
-
-Same here, but I don't think ManuallyDrop is needed anyways.
-
-> +    }
-> +}
