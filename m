@@ -1,60 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBF02EF64C;
-	Tue, 17 Jun 2025 14:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27571F4CAE;
+	Tue, 17 Jun 2025 14:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750170547; cv=none; b=cjpRvdj861QU3/OsIKT7eT0anUe4GZ4w0JUP/qgzCQc8wiqe8UI1ERs6W+L1U0sPFqAFkrtd3JoKBKfxlhXCF3Z6RinyjCCm7eHeS27QVefFtroklZPxfuQPDESUKUfZ7ODUuJuty6cKND8I6i5s3LXEBHEu33nZQ0lMOl8cuzU=
+	t=1750170855; cv=none; b=THenKxwq4cEOfRuUlTLQzMRUfG+tcpt/69xL8PCJJ0OGb4JAHDdsJEtcZnz0xOJA7rELivr5l5r98JknjmB1dBFn6yMh2+oVTOPfs9zLCZmLwyqQbrS5yHDz9CUSAMzAb+oGYyoBhyXMR3tCCg1SPizLzQTmx9bsaqH1DmDVT+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750170547; c=relaxed/simple;
-	bh=vZuBZ/NNaKoHy+qHAglUSSdmBK5dd29+q/mxOIMvh84=;
+	s=arc-20240116; t=1750170855; c=relaxed/simple;
+	bh=vkyVZ89rEugsgiK7V1jYcH+faW7cMWHmpzby7nKLUrc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lbfiW+6lt2teaHVK3a08jiI6xGwKwksil5nJWAAdK6riJREuluq531YVQF0MDowRyXntdXJlhUepxej0Hgf4Iwh/Ch+E5zP1vMW8WcYSkfjDSDw10KTT7+VdDchq0ipAkWc2FqchpDUMtTKUsYL1QsKT9yPzrRvyKdVks8Sw7/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L/GWc64G; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=XcXrZS5Ot76VE1IRwvXM4Y/VP+mfP7n+bHhfKDRlp2+hdGu0rZy2D7YEjWM4T3kIFXPU0vVo2T+DdGRVdFJQo4QvbNp2JPNWRmgBQt06EXrRja7am2TYlwOfC2lrqS5ZLYKxHJYmlr9nWmcNyMfOyy+w8qabgtlNZt4SoSYpzxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=abKF208p; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L/GWc64G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32DEDC4CEF0;
-	Tue, 17 Jun 2025 14:29:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750170546;
-	bh=vZuBZ/NNaKoHy+qHAglUSSdmBK5dd29+q/mxOIMvh84=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L/GWc64G66Vuy5MgIrXBzCYErB5Q2I4uR6gECe1Ix4gejac53fgNL0sH1c8CJT0to
-	 6sjnxKkIY+Dri1NME9ng3skoSb3aY1Dl/QO5iBKhpiu3I5ZXcEN6QCShKJ+IJiDcdg
-	 pZuMNQNboqoWmYKwXjSDQ4FBATBhR0Lf62okWNDqSM2p/sThGwKZ2wXQpjfXKL/k3M
-	 HpAyrH3KIIWMEbSNmcFPl/ySUzyQdWoWE2IE2SLpd7PAdXiY7H5/kp6eQePJG9vAJ6
-	 Q1mRvt/WLKfuGDD9hj9JgXH73VqCZG3zjS18jmr/QyYUs+co+jKbMoOJdjTlLwxW89
-	 1UHDRfg7kjKrA==
-Date: Tue, 17 Jun 2025 16:28:58 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="abKF208p"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6fac1c60e19so70879506d6.1;
+        Tue, 17 Jun 2025 07:34:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750170853; x=1750775653; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qtu+Y/oXIqQeAyDIwMqtulQfjbzEg3VKimiWJlihB/M=;
+        b=abKF208pppdMxHRG+7FU+MaoRpjjZ0G0BjKbWE537t2Bmze9F9jpZDdGwdqvsMSqh4
+         zsctmYSo/bxfDggO6MthlopqeORZXjzcGM5gJrWRkRRB/HORRz/nnIPWS/d6QazwZkrY
+         4UV4nTPmhXKQuBGrNxSqYThCLMj7syokS2gG/omjLypyTosMU1qw66O/Kq9PkSjVwDGr
+         aDLVNlX9S438X7/pcozHb/fzKRTOJHZq8w2s//ZihIl/eJmTSRiZ1Hlnd52l9dj3Rqlz
+         Xi/S0+CxRkEN+Mb6mL/2IgG8LDoGp1PsocK4iiZvTVRMyfUR6mq0q/K12H5AdTLGYsCk
+         BhYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750170853; x=1750775653;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qtu+Y/oXIqQeAyDIwMqtulQfjbzEg3VKimiWJlihB/M=;
+        b=ghadpEixAgRw2XfvEXfIsQYSN1+Y40bjzUzNCtaUgdXTH712AC9XrwvEGeulQ15Hsj
+         BU2N2TWRSWafCA0/SY7AHaBzKyBUZpSJbhQURA/SJ+HHJsY9VtE7tFFR8PDH10eYTDar
+         H4qVPZbnRM6Rd71arygjQk/XOyluvp02Mxja8U6xFbssI7P+yLeEg8doRp6roZCSjTSz
+         OC0Qz0ovBysaT1xIon38hYdTYzizE74u0JvAHRB1ErK8CDwG0TtitJ4lBqPS+JZowA3n
+         sBhTap5zkAw3vtxPe5gobtrmOYEHeHDsYFwoz+E4IqWqSDl1+FUrGPbRsKB3ADDWnNgD
+         agCw==
+X-Forwarded-Encrypted: i=1; AJvYcCVe3ai2ZahB20S5oDlp1JbvKwWjB1Y/NTZdGbFgeyJr2lnQhtkXIkWxFLhE6EIRf8DaA5MO5+rhfwrTMv8FaVc=@vger.kernel.org, AJvYcCVwOvzWzLegyYP7IrhZI77/zNmk+YQNhJWKpxcX+S/LSX4JLNXLyJDIfoyxEMSdWj+VCVJTkCIkU4b1iPE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytNNtB1Cz407kIy1w9Li5LoKc2AYRDGhxxDZkS6MD3AuNzLr2P
+	IqeGyRFjrpS44uJ4aXWde6lF/bATEpSV+c0XmYR5vTeT/e4DtkoG8xdC
+X-Gm-Gg: ASbGncuBTMf1SVyhPqLULdjZXiPmU/kp14LrTfq+bslxBrSqK09YhNX542oyTRN7o0h
+	D5W+Wk/OT0OIbxHSlrUIJE9d2k83ArvwKDuE5jRjKVVE1BTEHNLEr+aelmbViotzcnoilTE+hKa
+	3rEJP6PPhmqMoZGnmqj13J1vxAsAdmNro1Ln2nGnD9yb2HvOizTaRr0iVz432ux964GEJFj3OaW
+	tXTRiJQ40OXZIHTHqNmUFBEegmWIgBjU8t2VLWAJ297dpLj+il2hgbF+v2gTf7TTWt0S+Xrb6j9
+	LL7hnQ94P9rReSeq9kN1dMO0aqXQC3Rsk+jlZ4yXi2RuEIboLbUKFEUJPqHETlps/coAw/xuDaM
+	CMmzYlqq41Vq7CnRXpBg+UexZ2I0k05QwoU8NpGGN2Nd9Jw4xyIwG
+X-Google-Smtp-Source: AGHT+IH1zyNMnttx1Bi0Q+pP4QqmSyitxELiw9qLRz7y2keLnFHL0zn6RxkzodMMHqSrKS5aXYWEAg==
+X-Received: by 2002:a05:6214:5504:b0:6f5:1192:ccdf with SMTP id 6a1803df08f44-6fb46d61b3emr195981916d6.6.1750170852700;
+        Tue, 17 Jun 2025 07:34:12 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35b20eefsm63198126d6.4.2025.06.17.07.34.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 07:34:12 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 83D201200068;
+	Tue, 17 Jun 2025 10:34:11 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 17 Jun 2025 10:34:11 -0400
+X-ME-Sender: <xms:43xRaL2JHcN5_oivyoB-pxbMitx5ACVpQwJxEc3GYm2560DNze-Paw>
+    <xme:43xRaKGPhcV8cEsFdrFKUeSpnFUObWWule7wHtxxSCOAAgMzNSMOZsAwnZnZ8u9EC
+    WtFGhuHyePt4uc5_A>
+X-ME-Received: <xmr:43xRaL4ltRbwuilpXsU1frFBqL2rMRhRsVKok-_fLBC477qD1qQQ-PiWbA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdegfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecu
+    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
+    homheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieev
+    tdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihht
+    hidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrg
+    hilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeeffedpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtoheprhhoshhtvgguthesghhoohgumhhishdrohhrgh
+    dprhgtphhtthhopehlhihuuggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehruhhs
+    thdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    htghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhdrrg
+    hlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtphhtthhopehmihhnghhosehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdroh
+    hrghdprhgtphhtthhopehjuhhrihdrlhgvlhhlihesrhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:43xRaA0yFT_7sm1CQYMP4L3UdFGEEGV2vpKgBdbYwa-R9cdPcy2lQA>
+    <xmx:43xRaOHBPY0BUou9PuOpOEy7KlnF-3PkYHlKLUyzYTJINSvD8myiVQ>
+    <xmx:43xRaB9Pzvmx3hXM-WHvAfzQIjm1YRy-RAmg1wPFWCL8VZYcaf0igg>
+    <xmx:43xRaLkbH_13RJSmVWA8OfZ8KnSeYh4KiVJnztUk2pkhnOhkL_ePPQ>
+    <xmx:43xRaKHQY74Y8NYolLJFyUeOU1-_eegapcHJkpJJEzRjmhTJW5RN-FH8>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Jun 2025 10:34:10 -0400 (EDT)
+Date: Tue, 17 Jun 2025 07:34:10 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Ingo Molnar <mingo@redhat.com>,	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,	Will Deacon <will@kernel.org>,
+ Waiman Long <longman@redhat.com>,	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v3 4/9] pwm: Add Rust driver for T-HEAD TH1520 SoC
-Message-ID: <aFF7qqlexxh540FW@pollux>
-References: <20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com>
- <CGME20250617140839eucas1p2d13775f8e6d34a516e93d3b426d5fb16@eucas1p2.samsung.com>
- <20250617-rust-next-pwm-working-fan-for-sending-v3-4-1cca847c6f9f@samsung.com>
+	Danilo Krummrich <dakr@kernel.org>,	David Woodhouse <dwmw@amazon.co.uk>,
+ Jens Axboe <axboe@kernel.dk>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	NeilBrown <neilb@suse.de>,	Caleb Sander Mateos <csander@purestorage.com>,
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>
+Subject: Re: [RFC RESEND v10 03/14] irq & spin_lock: Add counted interrupt
+ disabling/enabling
+Message-ID: <aFF84rW5fNXrnwC8@Mac.home>
+References: <20250527222254.565881-1-lyude@redhat.com>
+ <20250527222254.565881-4-lyude@redhat.com>
+ <20250617101120.7c946656@gandalf.local.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,120 +131,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250617-rust-next-pwm-working-fan-for-sending-v3-4-1cca847c6f9f@samsung.com>
+In-Reply-To: <20250617101120.7c946656@gandalf.local.home>
 
-On Tue, Jun 17, 2025 at 04:07:27PM +0200, Michal Wilczynski wrote:
-> +    fn write_waveform(
-> +        chip: &mut pwm::Chip,
-> +        pwm: &mut pwm::Device,
+On Tue, Jun 17, 2025 at 10:11:20AM -0400, Steven Rostedt wrote:
+> On Tue, 27 May 2025 18:21:44 -0400
+> Lyude Paul <lyude@redhat.com> wrote:
+> 
+> > +static inline void local_interrupt_enable(void)
+> > +{
+> > +	int new_count;
+> > +
+> > +	new_count = hardirq_disable_exit();
+> > +
+> > +	if ((new_count & HARDIRQ_DISABLE_MASK) == 0) {
+> > +		unsigned long flags;
+> > +
+> > +		flags = raw_cpu_read(local_interrupt_disable_state.flags);
+> > +		local_irq_restore(flags);
+> > +		/*
+> > +		 * TODO: re-read preempt count can be avoided, but it needs
+> > +		 * should_resched() taking another parameter as the current
+> > +		 * preempt count
+> > +		 */
+> > +#ifdef PREEMPTION
+> > +		if (should_resched(0))
+> > +			__preempt_schedule();
+> > +#endif
+> > +	}
+> > +}
+> 
+> I'm confused to why the should_resched() is needed? We are handling
+> interrupts right? The hardirq_disable_exit() will set preempt_count to zero
+> before we enable interrupts. When the local_irq_restore() enables interrupts
+> again, if there's an interrupt pending it will trigger then. If the
+> interrupt sets NEED_RESCHED, when it returns from the interrupt handler, it
+> will see preempt_count as zero, right?
+> 
 
-I think you can't hand out mutable references here. This would allow things like
-mem::swap(), which I think are not valid on those structures.
+Because the new local_interrupt_{disable, enable}() participate the
+preempt count game as well, for example, __raw_spin_lock_irq_disable()
+doesn't call an additional preempt_disable() and
+__raw_spin_unlock_irq_enable() doesn't call preempt_enable(). And the
+following can happen:
 
-> +        wfhw: &Self::WfHw,
-> +        parent_dev: &Device<Bound>,
-> +    ) -> Result {
-> +        let data: &Self = chip.drvdata().ok_or(EINVAL)?;
-> +        let hwpwm = pwm.hwpwm();
-> +        let iomem_guard = data.iomem.access(parent_dev)?;
+	spin_lock(a);
+	// preemption is disabled.
+	<interrupted and set need_resched>
 
-Technically, this isn't a guard, hence would't call it that way.
+	spin_lock_irq_disable(b);
 
-> +        let iomap = iomem_guard.deref();
-> +        let was_enabled = pwm.state().enabled();
-> +
-> +        if !wfhw.enabled {
-> +            if was_enabled {
-> +                iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-> +                iomap.try_write32(0, th1520_pwm_fp(hwpwm))?;
-> +                iomap.try_write32(wfhw.ctrl_val | PWM_CFG_UPDATE, th1520_pwm_ctrl(hwpwm))?;
-> +            }
-> +            return Ok(());
-> +        }
-> +
-> +        iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
-> +        iomap.try_write32(wfhw.period_cycles, th1520_pwm_per(hwpwm))?;
-> +        iomap.try_write32(wfhw.duty_cycles, th1520_pwm_fp(hwpwm))?;
-> +        iomap.try_write32(wfhw.ctrl_val | PWM_CFG_UPDATE, th1520_pwm_ctrl(hwpwm))?;
+	spin_unlock(a);
+	spin_unlock_irq_enable(b):
+	  local_interrupt_enable():
+	  // need to check should_resched, otherwise preemption won't
+	  // happen.
 
-None of the offsets are known at compile time? :(
+Regards,
+Boqun
 
-> +
-> +        // The `PWM_START` bit must be written in a separate, final transaction, and
-> +        // only when enabling the channel from a disabled state.
-> +        if !was_enabled {
-> +            iomap.try_write32(wfhw.ctrl_val | PWM_START, th1520_pwm_ctrl(hwpwm))?;
-> +        }
-> +
-> +        dev_dbg!(
-> +            chip.device(),
-> +            "PWM-{}: Wrote (per: {}, duty: {})",
-> +            hwpwm,
-> +            wfhw.period_cycles,
-> +            wfhw.duty_cycles,
-> +        );
-> +
-> +        Ok(())
-> +    }
-> +}
-
-<snip>
-
-> +impl platform::Driver for Th1520PwmPlatformDriver {
-> +    type IdInfo = ();
-> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-> +
-> +    fn probe(
-> +        pdev: &platform::Device<Core>,
-> +        _id_info: Option<&Self::IdInfo>,
-> +    ) -> Result<Pin<KBox<Self>>> {
-> +        let dev = pdev.as_ref();
-> +        let resource = pdev.resource(0).ok_or(ENODEV)?;
-> +        let iomem = pdev.ioremap_resource_sized::<TH1520_PWM_REG_SIZE>(resource)?;
-> +        let clk = Clk::get(pdev.as_ref(), None)?;
-> +
-> +        clk.prepare_enable()?;
-> +
-> +        // TODO: Get exclusive ownership of the clock to prevent rate changes.
-> +        // The Rust equivalent of `clk_rate_exclusive_get()` is not yet available.
-> +        // This should be updated once it is implemented.
-> +        let rate_hz = clk.rate().as_hz();
-> +        if rate_hz == 0 {
-> +            dev_err!(dev, "Clock rate is zero\n");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if rate_hz > time::NSEC_PER_SEC as usize {
-> +            dev_err!(
-> +                dev,
-> +                "Clock rate {} Hz is too high, not supported.\n",
-> +                rate_hz
-> +            );
-> +            return Err(ERANGE);
-> +        }
-> +
-> +        let chip = pwm::Chip::new(dev, MAX_PWM_NUM, 0)?;
-> +
-> +        let drvdata = KBox::new(Th1520PwmDriverData { iomem, clk }, GFP_KERNEL)?;
-> +        chip.set_drvdata(drvdata);
-> +
-> +        let registration = pwm::Registration::new(chip, &TH1520_PWM_OPS)?;
-> +
-> +        Ok(KBox::new(
-> +            Th1520PwmPlatformDriver {
-> +                _registration: registration,
-> +            },
-> +            GFP_KERNEL,
-> +        )?
-> +        .into())
-
-Here you are setting up the registration for the correct lifetime, however
-drivers could extend the lifetime of the registration arbitrarily, which would
-break the guarantee of the &Device<Bound> we rely on in the callbacks above
-(e.g. write_waveform()).
-
-Hence, pwm::Registration's lifetime has to be controlled by Devres. I'll also
-add a corresponding comment in your registration patch.
-
-> +    }
-> +}
+> If it does, then it will call schedule before it gets back to this code.
+> 
+> -- Steve
