@@ -1,58 +1,58 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369B8236457;
-	Tue, 17 Jun 2025 15:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5480C2ED868;
+	Tue, 17 Jun 2025 16:27:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750174137; cv=none; b=tzwK0r3UyJ3YxuSsyH/6m4fUvEPwZXn4cqQjaM/lsrL4CgXY2W+KEecEVfHDow9S+W0CnoLs1s9Btfcj7e1e6vMA5nuAkeiPiH4fmCVVm1W37PbEM91VCBeKdxBf56EMz9drkUcziZsGhxbAwCuUx1Wg/mWn6MEIIevH2JviZ/E=
+	t=1750177623; cv=none; b=m4bqxc9wxFAhhP7uXKpYUDpAAqC7VghSbo9nnPPtEX8t/qlLHpD+G3Y4A1u5HtRWmXc0mJrbkoigp70o5VczfJiRfk8OGs3Nt1IRGRv7MR8gb/SdgjUuj6eRwPtP3NupiweO6daQpH1QYlGBdv0yHEJPJERYw0YMd99ezBn7oGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750174137; c=relaxed/simple;
-	bh=TdGRs5iTXAhHxPcxu4PNEeCbPjsBGuk+HPcu/c1kMr0=;
+	s=arc-20240116; t=1750177623; c=relaxed/simple;
+	bh=F51JDOYIn5h9dNZW6ihjN280RdHMlDIc7Gr1e38ZgJY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r/TWjeDPSmPduFNd/ehbqKCH71DIiqBbFZIKaDUqjXz4E1ISoRHF8KO8fUW/m+c0PZVyBqiizk6k/SE7xuc0+Mp0bXMbFAESQgkRMS5H+vFHZSqfybJTwB39Me92xcgeYLJ7qV1OfO9Yc2MUf/2yFsx/PcL0dEjZE746zF1yJDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KRk8J4cG; arc=none smtp.client-ip=209.85.216.52
+	 To:Cc:Content-Type; b=iyFgA5vNndzDJi4GUw0mxpUg1QAwIHiTyfVKNaPubbax78v78vsMI9zUIptJ6c1o6swh0lg4Egj9urvIXeqDvT6nH3o2it+gEAzNogpDgCTMXQEaBlm8Lh0439lWOMyxkC+NrqywHMFPn8An9Ko1QDarFCSys5vLX+ssp2eV8Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffZawkpg; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRk8J4cG"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-313290ea247so1107950a91.3;
-        Tue, 17 Jun 2025 08:28:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffZawkpg"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-313fab41fd5so703418a91.1;
+        Tue, 17 Jun 2025 09:27:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750174135; x=1750778935; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750177621; x=1750782421; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/Jl/bvQTlSEM9wNIbLl4lqqqlObXLJdt8Y58R9WCaRY=;
-        b=KRk8J4cGoLKkbUZ+sj8yT/2V5UofFQBLrTIfLsWak8bp3q3vbil/dRrQ987n28li/C
-         x3jTqJy4ROzKZJ9UoZLHQL81ywOh4V425l2lsqkXMzcNn3gMMfs0v9rYLLw7wZu62lmf
-         F4ylUImuJVPjz7OCFKCdzvo6Ehy4X/jXXQyd55OTrktaUmoMgMSomUTRFTkKe1jAgLqi
-         1H2t75MvPqYtVOxiooLIuhAaLxVgPCbis3CpFzv3XHjEMsMtHJeyxDkaHoTjMM1e18sY
-         rcTUKHj3MO9vTk4EITtVtryhOxZZ8Cu6JU5cGO9X0QTZlUskHwEVnAjEECeJKP/jvMJL
-         ltdA==
+        bh=F51JDOYIn5h9dNZW6ihjN280RdHMlDIc7Gr1e38ZgJY=;
+        b=ffZawkpg/vy84fBqI0wJR9Q6ANdsi+rgHq0RR3YnW7Li0NkH8ZPKpyBMqPSw71RtaY
+         ffTq81wwK4+AFRWyAKUIXaETTgvChs/l6NjXBlCry2TkQSGG7TGHc1/lOYpBz8ECfuwV
+         6e2PZCrO3ed8X9FtaGuOIsQAtLQWKIzHvb8f17x58dqJGlVWZqOizR7WQDrniNQ9BO/m
+         t2ggFdv7tNE2GWEAp3kKWm4Y74RDz+BEUz1esYd2Z0l9OkyAXk+zL94GhfBZX9iptXfY
+         Sguax4WSQsFXXg8UzDRDcS1MzWgkwwhmX6mdmbUUBrzf6kMTUxC6lUyFOKmq3QoVj4CI
+         +jZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750174135; x=1750778935;
+        d=1e100.net; s=20230601; t=1750177621; x=1750782421;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/Jl/bvQTlSEM9wNIbLl4lqqqlObXLJdt8Y58R9WCaRY=;
-        b=OOa3aNHU5fPrVbP8cgVOQP1SwiLmwYVnq5Q0lqOV6FwhNoF32yJPRNOYBnKxtjkC3k
-         m4nL4GoGSvpZxttV8FgiylhVYKMftLO1hZEHwuBkGWNlQbLPzxP7i8ioK4MSKW1QyOLM
-         sKTdcH1v7SypjIFbqWRz7+CFSjQfnjlr5KR76dPRAdi4PT2hMbAmMlSC8FfgfBf0O9W8
-         68GO5Ju7hDZ/zc6CVhVdMRrQCwZ0SidplQpA3i+E6C1XcOi7rCFcIHE6Ln06gvWOZaHn
-         75shGMRtLlM0GE57ZEAqTev6t8tfn2gJeudyoVEtGGDvlXkIqVLYCspROY92lZwqB35a
-         Y6kg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOflcZtoHJZteBQEm1IcR69PCSm3/c7Xm49+7fdvfs4GDOrOPnwYZAw15fb8Oqb1N2lteCm5n78qM465KbVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwV/VEbZucdKHy0XoUBpdjTE9gn6LJtiwloMjPzXlIFKHpJAeXV
-	6WVor8IVPpB2xxBs78C3c6tpUhh8pithA2LTMe6ZAX8alwqrEE/ONqYHdgP9QGJNhI88yNV2lH1
-	o6ouG93Fj1XWOCm3m4uYYQS0pp/EkKhI=
-X-Gm-Gg: ASbGncuT09QZCfJlbMuxd3ye4pGkz3cdKxnElv3ABeHaVeMUijuHKtHIDNoPznv7ATy
-	X+SwTNNMkirKHpN4rCwwG322UmeWBz232bDVdff+iX+520tGk7HUIHMeP4FCu3zpk89fnh2UO/P
-	OUmBNZRuoSFGbBdwLGy9GgbHaQjeJXuDl2uEb12RWq0oI=
-X-Google-Smtp-Source: AGHT+IHz7EHSJNK8P0mXt11Gy3Vb93D7esc/bn47cDuavJY+nxH+F+vwX6BkXRQVgsSgHW7lKSMrgZgLjA69fuKXA9A=
-X-Received: by 2002:a17:90b:2509:b0:314:2d38:3e4d with SMTP id
- 98e67ed59e1d1-3142d383ef1mr730281a91.3.1750174135384; Tue, 17 Jun 2025
- 08:28:55 -0700 (PDT)
+        bh=F51JDOYIn5h9dNZW6ihjN280RdHMlDIc7Gr1e38ZgJY=;
+        b=oL9hAq/Qa2AwxzhNTW4ntwO4ssTyKQo9nTLOroQBi7ntgG9mN1hRwOttOKE4p2GUAk
+         +1uvRy/jA7J30Pr6X/BfGH1euCEj5roBNSUEUwheQiAKIMcdm+lpsxqzre+DD804by7c
+         jFznilNttqrMPZ9ga9QBqfAuURVGM4kDplRV0FvLPb63Cd/9b7iM+v34IrQtuVDXfjIR
+         VwzwopsjpUyD+t1NmEHxaJtNXjScH3AL8Aq2MO3oeZnDLcq9DwTrRibBJeRiI7DRVQA0
+         5vCpCHTfRRW1r6xJniaAae+kdDHJ7WJefBH3R0rzYfDGfQ3jRHlj3Ks3pKYVjD3aKeib
+         9c/A==
+X-Forwarded-Encrypted: i=1; AJvYcCV3/HsFFSWNCKuH1KydK3Rabu9dsQ0jKPMCfSU8zhAgi7Oe8mshBfuLCFivBLC7/2P15K1F/IX9k6ER/vbcuTM=@vger.kernel.org, AJvYcCWhsM8z2xVwxIK20cWqX5Y8PsA/2VGhhX44DXLleF2/GqaU+CdRQtL3ORXvGCyGCPgm6pFWNEGZ7Ky+JUU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzK8XDomnuuZH37f+ZZwKgx1cHLKWSDrTV3HA/VeYkNTrpaA1Jx
+	lpJ7dxgLXy7MXcrJRBMzz8YznayCk1iuv+/CE5Vfi4whMOd1soTQkc0rOCpgHfrESo3R6FZd0Fk
+	X0rCY5gQ4ele50kKNPGf1vJcw2ASMlFk=
+X-Gm-Gg: ASbGncsRHGri7Q/aqTKuWZgHeY1+yF7s2fRiMY39xHuHqSxpvm4uA36kZB7GCu/T7oJ
+	K38mORavyZnnad5h3VktBwQ0U2BAgmQOR7Xi3EsIMEX33BNwa9zl7dJtXUZs4uI6pKn5D197YQ1
+	oW6HPScNk35lw3VAH2F2+QL/w2+XDOM6sWY7weN4S7Z74=
+X-Google-Smtp-Source: AGHT+IHcmb9NQChH3GIvkatRmyIxieky9J1mXG02lOTxM9Rt4noubdb3rJ2E/Oa0yJDcdsTQeB8KKdY9GuqMZVoqA/I=
+X-Received: by 2002:a17:90b:4b4b:b0:313:151a:8653 with SMTP id
+ 98e67ed59e1d1-313f1de63b5mr7729221a91.8.1750177621484; Tue, 17 Jun 2025
+ 09:27:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,18 +60,18 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250616153604.49418-1-boqun.feng@gmail.com> <20250616153604.49418-2-boqun.feng@gmail.com>
- <CANiq72mZV3Ezxb4FvDdMvn=O+ReUPBx9usUahLgwTKKCFD_+cA@mail.gmail.com> <aFFwumsjuAEIJVUF@Mac.home>
-In-Reply-To: <aFFwumsjuAEIJVUF@Mac.home>
+ <CANiq72mZV3Ezxb4FvDdMvn=O+ReUPBx9usUahLgwTKKCFD_+cA@mail.gmail.com> <aFE0pjPsuB0gBgvT@google.com>
+In-Reply-To: <aFE0pjPsuB0gBgvT@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Jun 2025 17:28:41 +0200
-X-Gm-Features: AX0GCFuptDR3g5HiZbpjFL-Mr5gbSNrFwDaY5tm0p7QAQA_x53XmbZs1C5Ik4g8
-Message-ID: <CANiq72k+d3FzM8O7R9_WrpU3o3RygpGAS3S0Z5wPZsvC3k6=WA@mail.gmail.com>
+Date: Tue, 17 Jun 2025 18:26:46 +0200
+X-Gm-Features: AX0GCFtCj839nTFDnIwha9xYGkw6_-6Cxy9wRtrEveDCzdYvTNQAJma8Z_zymNc
+Message-ID: <CANiq72=mQ+JCGsfhADR6NYeyA1qrNFWfs8ke4GVEHeWX3o9jUA@mail.gmail.com>
 Subject: Re: [PATCH v3 1/2] rust: Introduce file_from_location()
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, mingo@redhat.com, 
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
+	a.hindborg@samsung.com, tmgross@umich.edu, dakr@kernel.org, mingo@redhat.com, 
 	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
 	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
 	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com, 
@@ -79,39 +79,17 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 17, 2025 at 3:42=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Tue, Jun 17, 2025 at 11:26=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >
-> Will do, one thing though: the comment lines seem to wrap at 78 or 80
-> chars, so do other lines for conditional features in rust/kernel/lib.rs.
-> However I believe in Rust code we use 100 chars text width, any
-> particular reason that I should keep these new lines the same (wrapping
-> at 80 characters)? Otherwise I will make the new lines wrap at 100.
+> We will need to coordinate with
+> https://github.com/rust-lang/rust/pull/142579
 
-We have both styles, so up to you.
+Upstream Rust just closed it rejecting the change, so no change (so
+far) needed for this patch.
 
-It would have been nice to at least know already if `rustfmt` would
-eventually land on 80 or 100 for this, even if the automatically
-wrapping is not stable :(
-
-> Sure, will do, but I'm afraid there is only case, unless I misunderstood
-> you:
-
-I meant the "If `file_with_nul()` is not available" vs. the available
-one (since it is mentioned in the docs already).
-
-> /// use kernel::file_from_location;
-
-I would hide this line, since it is a single import of the item itself.
-
-> ///     pr_info!("{}\n", file_from_location(caller));
-
-I would suggest adding a comment on top of this line mentioning the
-output it could potentially show, e.g.
-
-    // Output: ...
-
-Thanks for this!
+It would be nice to know if they feel the signature will stay
+reasonably stable now -- we can ask them tomorrow.
 
 Cheers,
 Miguel
