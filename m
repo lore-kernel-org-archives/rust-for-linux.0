@@ -1,74 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8072F28FA9E;
-	Tue, 17 Jun 2025 08:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638F9D2FB;
+	Tue, 17 Jun 2025 08:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750147707; cv=none; b=duTwxAMSaW400TuxVmzgqBfkcfCZdg2UQeo8tS9SSypEIHoobM75ePMZUivRIMTR4Z83jxOY3X54PQNo5J2gzp+brp94ZF0sEhYfSkaJhFd3fCojr0W0WQtQhYsR0aS+u9fMccf84muGzRWqi8gNUCwzRIp06r6Rb+kQaFkgEdU=
+	t=1750148048; cv=none; b=arKWYsv2Hug6p9jpBdtTgsXlNoIYBhOaxX7x34dN+5DagXkPKq9YwvNo5muQUYSuVAEatlAQKhCg6pkLk/jlAFYLxfJv7in3jw1mcU5IzZjzu5tdI0abebaHLjgu342Afdh/9GMwTt5LIn4Fc6+d//FP2MGuKNdvGqcs3eMejkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750147707; c=relaxed/simple;
-	bh=VRMaUDETe6ZIVApAGqRg9acRfkODjIcR6Fz/uyGEimk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TCWrqqBB5KxTFfZQnLI+Q+2aZMlfbezALVBiCnDubU+4k6pY3I2ZGaORiaGlCsxxElj3OfSTONLmcCfMJ3HJ4+PQba94Oz64S9YPEG8P5/CH4A+0bEONvsstc60XsQlyGPXTk77g/PduzyAC513mof/uWXGm/YdeZthHy8PSa3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bp9CshIc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750148048; c=relaxed/simple;
+	bh=k/E4tuvDIfwhOgujXNxrjLQos1RXOfrBVSIIOpcuDMA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YIu0lc+2BN+GjbWaxdCC9BmlmP1/6QqcV1LM2aUf7h8i9K6tScFRhfQNakKdt3FeSXjsSNCt5eGQ8IVZ8F7kw0ttZDfwRxIYC8o/Cd/v7MY/uJN1LmH3YTvY395inGQ6x1DwIJAoDJc3TSCn20PLzY2uYwINmnvnSdeOxSeVLdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WLmC+v3t; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bp9CshIc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612F6C4CEE3;
-	Tue, 17 Jun 2025 08:08:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750147707;
-	bh=VRMaUDETe6ZIVApAGqRg9acRfkODjIcR6Fz/uyGEimk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bp9CshIc9H7RhpRBRZBtyIrCqCEoI8B+ZXV6e5PRj70ZxN5d1nI8JAum4ljdDiFcT
-	 256mr1K86U/XE6GXOEz/t88tnho7YL0UKNtUGnYHS0y2e2Sjw/E87yRRWdeYPaH+4x
-	 wGP64iuqCL5bmsNKTvH5XX/ZMWHmqrdRSdr4IuLGI8YQjwwCSAMZb4l5tBhl+nxg2c
-	 o0XhsdTN8D12iMtxyrd+yLhdw+u9H4pb1eCFGx53Ie5CrVhiNH+Q2u8HagcA36C1li
-	 TG7g8S4mznllqjTkj8u69S3c6BUDQfg7NcA8QJExu3aSRUguODSoaFA1FHrrVHTPiG
-	 n1G30HCMuY5SA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Johannes Thumshirn" <Johannes.Thumshirn@wdc.com>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
- Lossin"
- <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross"
- <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,  "Jens Axboe"
- <axboe@kernel.dk>,  "linux-block@vger.kernel.org"
- <linux-block@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>,  "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 9/9] rnull: add soft-irq completion support
-In-Reply-To: <2399a39e-a4e5-4f19-a5c7-2582b584e9d7@wdc.com> (Johannes
-	Thumshirn's message of "Mon, 16 Jun 2025 13:56:16 +0000")
-References: <20250616-rnull-up-v6-16-v1-0-a4168b8e76b2@kernel.org>
-	<20250616-rnull-up-v6-16-v1-9-a4168b8e76b2@kernel.org>
-	<5Mb2NxReiXPkSFjrUdLfq-5bzuvoWJyGLqgZlnc05SLScI4ezIlnWZ--jl6zZeCBNEG4KkuUQxDp2qt8GiwTsw==@protonmail.internalid>
-	<2399a39e-a4e5-4f19-a5c7-2582b584e9d7@wdc.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 17 Jun 2025 10:08:17 +0200
-Message-ID: <87bjqmbxji.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WLmC+v3t"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-234eaea2e4eso5047995ad.0;
+        Tue, 17 Jun 2025 01:14:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750148046; x=1750752846; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ar0/P5Kw1m8fmFtjiCxao5il/3/x8AeYn4OHNHEjEZ8=;
+        b=WLmC+v3t30iSBC12BS1tgkStYDfIWCOhgEvBRzTtNNTuQhvU78A6Fo3rhhFql7im/s
+         TOiON0eJbahB0YDv0gvEHde3zUBpTDDVtaK0I8wpY0lvQn5/vWxls+C5vZGEkMZQLUCh
+         axO3S/5wfyokoA/mjpSrhikqOHwY6xXHRYHQWmlHEZWOmQdCn1OMqHoA5NzQuDcqPOsI
+         +pycA2dHphLm780/jtyWUZ6XfDPO2DwNpBUieDx8de6YfqV44Co9OkOmA/kOTdFblR3Y
+         RvD488EvmheCF1rPmCSb4jK6SvVVc7EKg1C5MNEvdMUxqSFFtl1KxRIzlsLL1Y08pSr7
+         kMyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750148046; x=1750752846;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ar0/P5Kw1m8fmFtjiCxao5il/3/x8AeYn4OHNHEjEZ8=;
+        b=bUKLO86T/b64TLiGNXHsBJKfi+WcF+qk5PMsScHQDWr3qkGVVhPnncr49VMUDvDZ96
+         bZiXOjgRRS4dD67aqvgBglSOoL+wxBNMdhvQELJybf/Suwixx4Y+zbyCLyyLteQEk+5U
+         2faYG1yGhiwXXoF6tk3y7rLx69M+Gk7z2OFF774EBJuTlrTIaW+Xau+d0KfMOmsZCHN0
+         Idm7gzRqN/xkfx1QlEq1rNSjzlfoRNvkLhWGMrP+p4pV5GH0VPr1YSs4CgawGgedULFo
+         uVQP/lpfE/2E587ntR1ynGX8oSP8sfOuH9tY4M3yPVRH7BLfE3jBvkLwCq/fc03vGOO7
+         b9Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmn+XMdxwiL7YpD6FnorUbvCufGKdKyJlNruDLW+IMmIcAssttJ60csRNx0CcdPeGD4BPcnrQ+C5sG/1UZvDs=@vger.kernel.org, AJvYcCVFNjz92a5BlMX5rPmylHTcQrHtIowz3dS6zqPh2V3hmf03TnLrY7xKTQfS7Dem9R20BMuHsF9bsqZVO8c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXr/QHcdNwAQlIONS0T3SVJ5/vm2ELh0KkmDmfp/hdspiUFwDY
+	baP7D6Tiun3Ns/sQlyq0W1fn32YrOMwlCYWoVFRrNv3mbnrjpJgAr/bbFiIG7eA13drMX0526SX
+	O3F7jDrraxWH/T+IdspdoMcnMOnlweS8=
+X-Gm-Gg: ASbGncuW35tYw8ew3+kHXTCipTJMGLa40+yBMBKbLp3L9wbbAqro2H4ZTktx4Bp9R+n
+	19FA1woFKmE6gfcCvpHaDah4NNfQ3kZ5/PoRZq3Kia7/yVa0LVbsIkpvo2QcdNe2ssDE6nTkkhm
+	S0PFmRAj1AMwkS9cICIu42XJEFUeiF3Eivxv1ImHzVY44k33pJxdu5DQ==
+X-Google-Smtp-Source: AGHT+IEwXsaJz09g0M+sCi5MGJqpAP6O4Bn6uzXPyB5z8CD7Hpnlz/4qj935HZY40/z1/cUf2R/60T30fjbq8FhVwMA=
+X-Received: by 2002:a17:902:d48d:b0:234:d14c:50ff with SMTP id
+ d9443c01a7336-2366b00ba59mr65090025ad.6.1750148046614; Tue, 17 Jun 2025
+ 01:14:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250614081312.763606-1-ewhk9887@gmail.com> <DAMGM426FUU1.2IESY59SPIIHN@kernel.org>
+In-Reply-To: <DAMGM426FUU1.2IESY59SPIIHN@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 17 Jun 2025 10:13:54 +0200
+X-Gm-Features: AX0GCFsiKreLRYvHVJ996TB9IOhASLP3kCM0tIA-R3RP27FVCr0UYyKJ8YfeNNY
+Message-ID: <CANiq72=egnqm_uY6F0t0t69ToTpREYfENwjVZqUPqi01m0hRZg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: macros: allow optional trailing comma in module!
+To: Benno Lossin <lossin@kernel.org>
+Cc: Eunsoo Eun <ewhk9887@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Eunsoo Eun <naturale@hufs.ac.kr>, 
+	Benno Lossin <benno.lossin@proton.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Johannes Thumshirn" <Johannes.Thumshirn@wdc.com> writes:
-
-> On 16.06.25 15:28, Andreas Hindborg wrote:
->> rnull currently only supports direct completion. Add option for completing
->> requests across CPU nodes via soft IRQ or IPMI.
+On Sat, Jun 14, 2025 at 8:16=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
 >
-> No idea about the Rust stuff but I think you ment IPI not IPMI.
+> I didn't get the second patch advertised in the subject, did something
+> go wrong when sending the patch?
 
-Absolutely, thanks! Sneaky little M got in there.
+It seems the series is somehow broken:
 
+    https://lore.kernel.org/rust-for-linux/CANiq72=3DQUbe-koU-BEhEJ1-7AafC0=
+kGcG6HOhiVaR1TWqPoLFg@mail.gmail.com/
 
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers,
+Miguel
