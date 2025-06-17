@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A771FF60A
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 07:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F95428EA63
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 07:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750144722; cv=none; b=THxDnVgWHmrbWn7JVzA1fxtPGtjdF6BjPzwvgzQv6cYEESSzKJ8mtsFSyvTbAZkdvzzTu4bkJ6FCSR0AfABfX/4zvjmHve3pgWAz3xYj4xb/AfjHfzuSwKpaKepf1xCB7s3INpYQv24Dnm5vmUL7bZj6pdUjPUqGvrubdyofqRk=
+	t=1750145352; cv=none; b=OflXgI/QHslhTRSMmeMW/JsYt/ofn0SzLyVh9h9YLtdTy+zL014FkrhCArbch3jMI9qX0uh0KVL6hGG1SKFLse4QkHwMM2qqgOWCphqzAtNJt0CcuZuFjReSY6Y8mTvX+s1ILhSfaTwlisIBHsgSZ2CXcoE8kURy9ye5YLDSua4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750144722; c=relaxed/simple;
-	bh=9R65Cbrq4SwmKcv4zIYmfXLUL/XNfrP+SMWhdTE92JQ=;
+	s=arc-20240116; t=1750145352; c=relaxed/simple;
+	bh=OoBPqS700VKLhoWeJZ3k26URr/7ax4pu0e/mY9XEK+o=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=EdE+1K+owEwy7RcrTlC7VAbgj1JTFqiWMSqjECK7/YSGcXid5uW04zASb6N/rwfcTxqZDXuhTGkFnhSkJvHR1sXkNPOl13rb6D0f5xJeKEqEGQSZI5GNsk3lDsFOVCXYf++vNqBWYOEeCOO3e+zJbFGWRK23+t5/8VzgDmZXnfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6WHBRDe; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Bpn7VQpdo/UZTyZB0ixQonta9nx3uhzh1OGNzTP9VSH+plMJKVR7CdYrAPRWejk0Klpq1fx5XYS0c7+oVCoVa3T1nVwdrrLf9A30OwqkIsfHkG/EL3JTsyeJF8vorxKBI8BKP1NO+2H5ySRB1vibJe+f5IUMSM3wd7FzaViwVUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pyhY1bEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6WHBRDe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89190C4CEE3;
-	Tue, 17 Jun 2025 07:18:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pyhY1bEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7463C4CEED;
+	Tue, 17 Jun 2025 07:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750144722;
-	bh=9R65Cbrq4SwmKcv4zIYmfXLUL/XNfrP+SMWhdTE92JQ=;
+	s=k20201202; t=1750145351;
+	bh=OoBPqS700VKLhoWeJZ3k26URr/7ax4pu0e/mY9XEK+o=;
 	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=N6WHBRDeO+QEePqEYwy/ti8wiYaoSmChdlfAu1FeF0w0vjQMssHoLbE7kILvAoCZk
-	 EFTvs8/3AM+tUD+8LtoLqY3J593fZ+urA4y0FnkpZ3BrkE5IwJi4zvggkaManW2l+6
-	 YAma3l132VvcAdcWB/AsOfxExyMiQ3CXvusH2zGknqiVK3gkYWfNHvgdmFOBZ79dTv
-	 S3QGpsoIclav5wzd6phDj2yJZ6Oopv+hNmdWMFvqJ5iUDav73YXDvPvZO33ucpii2j
-	 43az3J3ta0EbArlId+GjkVZajBEommcxt2jSmQyLurzOz/UPe8tl8G5Lwfrjv4lLw1
-	 BCMheFoKTAlNQ==
+	b=pyhY1bEPmqBSP029O2JjZqpTOH+ulJNVShSpIf7UJSV/2/rPedDrvQkr0WkmsJuue
+	 ZqWTpnKKNh/m/u4lTUskDypCvqWf3jpc16RGrK68IzNYkOP080Vpk882WfsU0qbopW
+	 nxg0nsHcBzQpzwL0bNfZnRDvAMYXIziBysxe3iSg5ag+f1zzFlWSsuNLVPQhlWRGvC
+	 +lxrMNRcyvmXHZcae+P/rUkmRgu6lCW+kzn/vHIob0agcbRgE++xKVfAOr+jLGY90k
+	 rdkj3iXGlrkDSJf2JqWfs4iIwDilLAIjNYql9si55Lzk4XTV7dqBwDLxrk9sRZDXqe
+	 a/9OX1Hzx/3OQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,58 +34,98 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Jun 2025 09:18:38 +0200
-Message-Id: <DAOMIWBZXFO9.U353H8NWTLC5@kernel.org>
-Subject: Re: [PATCH v4 1/3] rust: revocable: update write invariant and fix
- safety comments
+Date: Tue, 17 Jun 2025 09:29:08 +0200
+Message-Id: <DAOMQXNTLSGR.U0QOV8BU1I5V@kernel.org>
+Subject: Re: [PATCH v4] rust: introduce sfile macro for succinct code
+ tracing
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, <dakr@kernel.org>,
- <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <skhan@linuxfoundation.org>,
- <linux-kernel-mentees@lists.linuxfoundation.org>,
- <~lkcamp/patches@lists.sr.ht>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Timur Tabi"
+ <ttabi@nvidia.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250602232842.144304-1-marcelomoreira1905@gmail.com>
- <20250602232842.144304-2-marcelomoreira1905@gmail.com>
- <DAKFLKX7HS7W.29I8XUZP8L1KN@kernel.org>
- <CAPZ3m_hQF+ZHdfWTVZ3Z3dJoMu37Q8YcSecKi=fv1s3dw6UTSA@mail.gmail.com>
- <DAMGEMZF6UC9.1YB4QHDZIW5PS@kernel.org>
- <CAPZ3m_jqnGJtOxff2cJre_qFLyOehbhZ+XVvE0BjzFv7ADqOAg@mail.gmail.com>
- <CANiq72kmjEEsBjbmJ1rN-OYA7Tt7N_0j6mEB0=DPK9ng7uyuDA@mail.gmail.com>
- <CAPZ3m_gGOy2XsiVaVbbAivwO0JBpgqMke68LV4OD+i2L1Z5PEw@mail.gmail.com>
- <DANRU0TC3F11.30DUO1LQZUE42@kernel.org>
- <CAPZ3m_gBEBfnCHtcFoga=HEi_acr6-eJ1a71VgrZDJbfrCz=0A@mail.gmail.com>
-In-Reply-To: <CAPZ3m_gBEBfnCHtcFoga=HEi_acr6-eJ1a71VgrZDJbfrCz=0A@mail.gmail.com>
+References: <20250616193433.2643407-1-ttabi@nvidia.com>
+ <CANiq72=cDk5rVEiAoudaQZUhNL_rne1EEjSEfiNuo_gkL3HOZw@mail.gmail.com>
+In-Reply-To: <CANiq72=cDk5rVEiAoudaQZUhNL_rne1EEjSEfiNuo_gkL3HOZw@mail.gmail.com>
 
-On Tue Jun 17, 2025 at 4:49 AM CEST, Marcelo Moreira wrote:
-> Em seg., 16 de jun. de 2025 =C3=A0s 04:15, Benno Lossin <lossin@kernel.or=
-g> escreveu:
->> How about:
->>
->> // - `self.data` is valid for writes because of `Self`'s type invariants=
-:
->> //   `&mut Self` guarantees exclusive access, thus no other thread can c=
-oncurrently access `data`.
->> // - this function is a drop function, thus this code is at most execute=
-d once.
+On Mon Jun 16, 2025 at 11:03 PM CEST, Miguel Ojeda wrote:
+> On Mon, Jun 16, 2025 at 9:35=E2=80=AFPM Timur Tabi <ttabi@nvidia.com> wro=
+te:
+>> +#[macro_export]
+>> +macro_rules! sfile {
+>> +    () =3D> {{
+>> +        const {
 >
-> Ok! =3D)
+> Could we avoid the double block?
+
+We should be able to.
+
+>> +            let start =3D match ::kernel::str::rfind_const(FILE, '/') {
+>> +                Some(slash) =3D> slash + 1,
+>> +                None =3D> 0,
+>> +            };
+>> +            let end =3D match ::kernel::str::rfind_const(FILE, '.') {
+>> +                Some(dot) =3D> dot,
+>> +                None =3D> FILE.len(),
+>> +            };
 >
-> I thought about using "so" instead of the first "thus" so I wouldn't
-> have to repeat the use of "thus" so many times.
+> I wonder if we should just panic if they are not found. Maybe I am not
+> creative enough, but do you have in mind a use case for either?
 
-I personally don't care about repeating those "filler" words in safety
-documentation. The clearer it is the better :)
+Sounds like a good idea.
 
-> Final version:
-> // - `self.data` is valid for writes because of `Self`'s type invariants:
-> //   `&mut Self` guarantees exclusive access, so no other thread can
-> concurrently access `data`.
-> // - this function is a drop function, thus this code is at most executed=
- once.
+> We already remove some cases anyway with the `assert!` below, so it is
+> not usable in every case anyway.
 
-That is fine too.
+>> +            let ptr: *const u8 =3D unsafe { base_ptr.add(start) };
+>
+> Benno: do you want here (and above) qualified calls too? (I would move
+> everything to a `const fn` though -- please see below)
+
+Yeah we should do that. Some of my macros don't do it (eg use `Ok` and
+`Err` without qualifying them), but we should make all macros always
+exclusively use absolute paths for everything. (`Ok` and `Err` are
+probably never going to be different ones in scope, but you never know)
+
+@Timur for this case, you can qualify the call like this:
+
+    let ptr =3D unsafe { <*const ::core::primitives::u8>::add(base_ptr, sta=
+rt) };
+
+Maybe the stdlib should have a re-export of `*const` and `*mut` in
+primitives...
+
+> I would just call both pointers `p`, by the way. No need to keep the
+> base one around.
+>
+>> +            // that FILE is ASCII (via is_ascii() above).
+>
+> `FILE`, `is_ascii()`
+>
+>> +/// Returns the index of the last occurrence of `needle` in `haystack`,=
+ or None.
+>
+> [`None`]
+>
+>> +/// use kernel::print::rfind_const;
+>
+> Consider hiding this one too.
+>
+>> +/// let l =3D rfind_const("when will then be now?", 'l');
+>> +/// assert!(l =3D=3D Some(8));
+>
+> Please add an example for the `None` case too.
+>
+> Finally, should we put most of this logic in a `const fn` too for the
+> usual benefits (docs and tests)? Then the macro would just be
+> essentially a const `basename(file!())` call, possibly fallible, and
+> you can even avoid having all those qualified calls :)
+
+A function sounds like a good idea.
+
+But I don't see the value in the macro being fallible. Then the macro is
+less convenient to use. The function can be fallible, but then the macro
+should use `Result::expect()`.
 
 ---
 Cheers,
