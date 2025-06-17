@@ -1,208 +1,106 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEBDD2E54D5
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 19:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A34F2EFD83;
+	Tue, 17 Jun 2025 20:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750189391; cv=none; b=RgTG7p1A0j/FVYaRgUszUZOGhNiuWp5kvY0kakL6kx5y4vqnrrULZr6v9nTULd9oA+TzQFHcKBxe1TJFSLeik/QYTlqJK5s/KZ/OC1L08X2dFd85eWngIzMukVzf4aGoTEooe0KOTI20wC6q+o2sEvbnFWAq/O80o25Q9LOjObE=
+	t=1750191253; cv=none; b=r8HAK2PjjYPEY9PBF/MFG+gOCQvQtM5wbcRnWG0WnDkfxH16V8wQ6kKavVGYOJucPhtbY/tD7xcLPZY9825sbSwronREB24gCYSXp8y2p4CBQ5Hdprd8HwkmYu7KOIOxb4TJKfh4MQjtktEwxs4/xLUgo/Bc4xLdtjISkEJvbu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750189391; c=relaxed/simple;
-	bh=l7SzB8NO+rrP5k4367W9aS0ArpEC+aDkSTC3pfTFz30=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=XDWPiLdnogVAvfOPJrjO2t1SsW7f2ENDiSSWS5GOSm0wIwGS4GfdEYuZBRBHJXZmr8W8hgFOC6orqgSQlvsdsbx/+eDsVwltN/JR/MYSHTAw+Bt8lKsE1Nta2WnIVwtgNIAcQe4oMHK5Xgywo4L78UPCiXCsjturmSzueUNBUn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=tQn+1aMb; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1750191253; c=relaxed/simple;
+	bh=oLvbT+kATQP0niwsl8Ion+MRezBTBGDHphjSJvl1ykY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pzU4iYfXcevn3gVSaFvcJNSQMJJSvEow4yAylwCNE9kRWwGq9kqL6hoM2yeCn2AKB8Z6E07L/2c5IkwvlNmuAv3oJE2RiSOgYONGxfnsKRgGCRRwCRpQ0lEUS1uvOjqDwyY61arLRANMdohsi5WRLtEBTT7D7pyKq23utJNtzjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/ViDK5R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="tQn+1aMb"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250617194308euoutp0100f15fffd0e43a7540bd226e4eb05fcf~J6-nMbxyQ2516125161euoutp01V
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 19:43:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250617194308euoutp0100f15fffd0e43a7540bd226e4eb05fcf~J6-nMbxyQ2516125161euoutp01V
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1750189388;
-	bh=SsrrapZlggFpVYw95Drc6h8mJo8KmYhpbhG7VYywjIs=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=tQn+1aMbwyFepAeZyTjCE0hzZXQjkbcCqJBGARftZbkUFKJLWTc9EfdDMG3TezNAh
-	 DIlbOcm9eVbr72Cc5FNc0HMpIvgf9sldMIsyFi1JfXTsCWsUDcCuEV/qJQQp0PfA/q
-	 NJT7rOLr+MUFVmvLKM0BTaZbJfXq8aja9MxXgRbc=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250617194306eucas1p118ec57136b8265b7e13aeb1ea93a14b7~J6-l2QnM52077420774eucas1p1s;
-	Tue, 17 Jun 2025 19:43:06 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250617194305eusmtip14ca5682a8b9fab2b3547be7105427287~J6-kraHC01904619046eusmtip1_;
-	Tue, 17 Jun 2025 19:43:05 +0000 (GMT)
-Message-ID: <98d6b8e5-4694-44df-9ba0-33e6c00d8183@samsung.com>
-Date: Tue, 17 Jun 2025 21:43:05 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/ViDK5R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBC7C4CEE3;
+	Tue, 17 Jun 2025 20:14:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750191252;
+	bh=oLvbT+kATQP0niwsl8Ion+MRezBTBGDHphjSJvl1ykY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=S/ViDK5R04yKbjdvPIPz4/BNAf4yzkDlToY5S8CwWpHwbVWDHzCK7ZAe4tJnURvr0
+	 hc4QS5ZPDiWFMK6ZLA2fCwKb5EZvmgftWSgtQfSWND9d5fQzMXCP23ffUMbVaQNjxl
+	 mh7AuPF3M5CYBbZQTApdJ3HFvcRXvSCfmfdSh2S+/Yz0csJJJLP0FdI69cHs/DsmDl
+	 AktoECLMXQrAhCD1PQ1BYBrYdxD9PMqmS1DKajFz8/qhaC9TVy4dGfttH7hfbUr4of
+	 zM1sI/P5V5Ze5oIhU3z9Ayj+MKPcyZaiKZ+J80LXdYYrZ7hhkMNW5Tm+o9N4z9D21m
+	 gUAR1B/HPXD0g==
+Date: Tue, 17 Jun 2025 22:14:04 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Benno Lossin <lossin@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	Lyude Paul <lyude@redhat.com>,
+	Shirish Baskaran <sbaskaran@nvidia.com>
+Subject: Re: [PATCH v5 00/23] nova-core: run FWSEC-FRTS to perform first
+ stage of GSP initialization
+Message-ID: <aFHMjEt7KrjClom_@pollux>
+References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] pwm: Add Rust driver for T-HEAD TH1520 SoC
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Drew Fustini <drew@pdp7.com>, Guo Ren
-	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
-	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
-	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, Benno
-	Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <aFF7qqlexxh540FW@pollux>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250617194306eucas1p118ec57136b8265b7e13aeb1ea93a14b7
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250617140839eucas1p2d13775f8e6d34a516e93d3b426d5fb16
-X-EPHeader: CA
-X-CMS-RootMailID: 20250617140839eucas1p2d13775f8e6d34a516e93d3b426d5fb16
-References: <20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com>
-	<CGME20250617140839eucas1p2d13775f8e6d34a516e93d3b426d5fb16@eucas1p2.samsung.com>
-	<20250617-rust-next-pwm-working-fan-for-sending-v3-4-1cca847c6f9f@samsung.com>
-	<aFF7qqlexxh540FW@pollux>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
 
+On Thu, Jun 12, 2025 at 11:01:28PM +0900, Alexandre Courbot wrote:
+> Hi everyone,
+> 
+> The feedback on v4 has been (hopefully) addressed. I guess the main
+> remaining unknown is the direction of the `num` module ; for this
+> iteration, following the received feedback I have eschewed the extension
+> trait and implemented the alignment functions as methods of the new
+> `PowerOfTwo` type. This has the benefit of making it impossible to call
+> them with undesirable (i.e. non-power of two) values. The `fls` function
+> is now provided as a series of const functions for each supported type,
+> generated by a macro.
+> 
+> It feels like the `num` module could be its own series though, so if
+> there is still discussion about it, I can also extract it and implement
+> the functionality we need in nova-core as local helper functions until
+> it gets merged at its own pace.
+> 
+> As previously, this series only successfully probes Ampere GPUs, but
+> support for other generations is on the way.
+> 
+> Upon successful probe, the driver will display the range of the WPR2
+> region constructed by FWSEC-FRTS with debug priority:
+> 
+>   [   95.436000] NovaCore 0000:01:00.0: WPR2: 0xffc00000-0xffce0000
+>   [   95.436002] NovaCore 0000:01:00.0: GPU instance built
+> 
+> This series is based on v6.16-rc1 with no other dependencies.
+> 
+> There are bits of documentation still missing, these are addressed by
+> Joel in his own documentation patch series [1]. I'll also double-check
+> and send follow-up patches if anything is still missing after that.
+> 
+> [1] https://lore.kernel.org/rust-for-linux/20250503040802.1411285-1-joelagnelf@nvidia.com/
 
+I think this series collected quite a few TODOs to follow up on once the
+corresponding abstractions are in place, etc. This is fine and expected.
 
-On 6/17/25 16:28, Danilo Krummrich wrote:
-> On Tue, Jun 17, 2025 at 04:07:27PM +0200, Michal Wilczynski wrote:
->> +    fn write_waveform(
->> +        chip: &mut pwm::Chip,
->> +        pwm: &mut pwm::Device,
-> 
-> I think you can't hand out mutable references here. This would allow things like
-> mem::swap(), which I think are not valid on those structures.
-> 
->> +        wfhw: &Self::WfHw,
->> +        parent_dev: &Device<Bound>,
->> +    ) -> Result {
->> +        let data: &Self = chip.drvdata().ok_or(EINVAL)?;
->> +        let hwpwm = pwm.hwpwm();
->> +        let iomem_guard = data.iomem.access(parent_dev)?;
-> 
-> Technically, this isn't a guard, hence would't call it that way.
-> 
->> +        let iomap = iomem_guard.deref();
->> +        let was_enabled = pwm.state().enabled();
->> +
->> +        if !wfhw.enabled {
->> +            if was_enabled {
->> +                iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
->> +                iomap.try_write32(0, th1520_pwm_fp(hwpwm))?;
->> +                iomap.try_write32(wfhw.ctrl_val | PWM_CFG_UPDATE, th1520_pwm_ctrl(hwpwm))?;
->> +            }
->> +            return Ok(());
->> +        }
->> +
->> +        iomap.try_write32(wfhw.ctrl_val, th1520_pwm_ctrl(hwpwm))?;
->> +        iomap.try_write32(wfhw.period_cycles, th1520_pwm_per(hwpwm))?;
->> +        iomap.try_write32(wfhw.duty_cycles, th1520_pwm_fp(hwpwm))?;
->> +        iomap.try_write32(wfhw.ctrl_val | PWM_CFG_UPDATE, th1520_pwm_ctrl(hwpwm))?;
-> 
-> None of the offsets are known at compile time? :(
+However, I think we should list those things in a central place, e.g. our TODO
+list, in order to make it easier to follow up.
 
-Sadly they are computed based on runtime parameter hwpwm, so Rust can't
-guarantee correctness during compilation :-(.
+Additionally, it might get us more contributors who might be interested in
+following up on those things.
 
-Thank you for your other feedback, appreciate it !
-
-> 
->> +
->> +        // The `PWM_START` bit must be written in a separate, final transaction, and
->> +        // only when enabling the channel from a disabled state.
->> +        if !was_enabled {
->> +            iomap.try_write32(wfhw.ctrl_val | PWM_START, th1520_pwm_ctrl(hwpwm))?;
->> +        }
->> +
->> +        dev_dbg!(
->> +            chip.device(),
->> +            "PWM-{}: Wrote (per: {}, duty: {})",
->> +            hwpwm,
->> +            wfhw.period_cycles,
->> +            wfhw.duty_cycles,
->> +        );
->> +
->> +        Ok(())
->> +    }
->> +}
-> 
-> <snip>
-> 
->> +impl platform::Driver for Th1520PwmPlatformDriver {
->> +    type IdInfo = ();
->> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
->> +
->> +    fn probe(
->> +        pdev: &platform::Device<Core>,
->> +        _id_info: Option<&Self::IdInfo>,
->> +    ) -> Result<Pin<KBox<Self>>> {
->> +        let dev = pdev.as_ref();
->> +        let resource = pdev.resource(0).ok_or(ENODEV)?;
->> +        let iomem = pdev.ioremap_resource_sized::<TH1520_PWM_REG_SIZE>(resource)?;
->> +        let clk = Clk::get(pdev.as_ref(), None)?;
->> +
->> +        clk.prepare_enable()?;
->> +
->> +        // TODO: Get exclusive ownership of the clock to prevent rate changes.
->> +        // The Rust equivalent of `clk_rate_exclusive_get()` is not yet available.
->> +        // This should be updated once it is implemented.
->> +        let rate_hz = clk.rate().as_hz();
->> +        if rate_hz == 0 {
->> +            dev_err!(dev, "Clock rate is zero\n");
->> +            return Err(EINVAL);
->> +        }
->> +
->> +        if rate_hz > time::NSEC_PER_SEC as usize {
->> +            dev_err!(
->> +                dev,
->> +                "Clock rate {} Hz is too high, not supported.\n",
->> +                rate_hz
->> +            );
->> +            return Err(ERANGE);
->> +        }
->> +
->> +        let chip = pwm::Chip::new(dev, MAX_PWM_NUM, 0)?;
->> +
->> +        let drvdata = KBox::new(Th1520PwmDriverData { iomem, clk }, GFP_KERNEL)?;
->> +        chip.set_drvdata(drvdata);
->> +
->> +        let registration = pwm::Registration::new(chip, &TH1520_PWM_OPS)?;
->> +
->> +        Ok(KBox::new(
->> +            Th1520PwmPlatformDriver {
->> +                _registration: registration,
->> +            },
->> +            GFP_KERNEL,
->> +        )?
->> +        .into())
-> 
-> Here you are setting up the registration for the correct lifetime, however
-> drivers could extend the lifetime of the registration arbitrarily, which would
-> break the guarantee of the &Device<Bound> we rely on in the callbacks above
-> (e.g. write_waveform()).
-> 
-> Hence, pwm::Registration's lifetime has to be controlled by Devres. I'll also
-> add a corresponding comment in your registration patch.
-> 
->> +    }
->> +}
-> 
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+@Alex: Can you please add such a list?
