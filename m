@@ -1,99 +1,76 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512878528E;
-	Tue, 17 Jun 2025 08:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C218528E;
+	Tue, 17 Jun 2025 08:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750147540; cv=none; b=BbJ8tDt/lwzpkwTCzL7MJ21FNIMDoSOob93tzCyWnuLaeiLXPQuFbpHQ+aIVDVC3VoaGVUa+zdrC2HEliRBTxRHzh/ELZo/ych9PosNeQVd/eikJyK+VCqX588g21yvh04RFYLUpGPSlpBjw8SHToiYYUcCDoic+p/Ii07DwH9I=
+	t=1750147591; cv=none; b=YQ6rE8Msl6rj+QUj6VEwOECByV/d3Nn234V8NRZlXIxJ8xz64oD9Sp6ukLRn7qnpJRgQzZIxCRvDpcGSgJJzL/GopBd5sW0j3vq8QEG5kG4KK2eeYQhR9Hv9HJdWjf0UAChHjD+Vd+g/qw5Nxd5mESZr6DzGLEBCjsTfy/vBMLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750147540; c=relaxed/simple;
-	bh=hTMkAnOpO3h9kFAXwJeSt50xEMbiPiKvCACkDl+q/V8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tBibdwjvv7PKK47c9MzvdurYuFkN/5NrGdFV3xpyBL3Aol1ClbAVkFptwuiWi/KYm1R+wkQ1LsO7uwqHpf1EiK5Lre2374/Uc0APNFeBHV/+qO9DdFjdmnGFK3NMGNskRY3a5pvuZrkc/d1ruUDn32uS8tHajtV1eKW1DDbtDwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lgtb6/qk; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750147591; c=relaxed/simple;
+	bh=hsFwxEVO9Rp0Gs4tjiiIcsWBbo6X8OFvvzR0VNqpiiU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UrcpHCa/LNrUbGM4wxzeWsE9y6IvKPAFcDDMLn/87iJ/PdEIoMstNJaEwNAtfFMiF4VnGVLCFBCcQrfvHBjtExoKfVJZzSNEk0xD6gpewnUIRf5ROAp/1hMd35tx3U1sFMc3qO5cJxjJvLj6/qh5fCr+M5SjZt0p7L2UiLmJSUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2yX50OH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lgtb6/qk"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3138e64fc73so881368a91.2;
-        Tue, 17 Jun 2025 01:05:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750147538; x=1750752338; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hTMkAnOpO3h9kFAXwJeSt50xEMbiPiKvCACkDl+q/V8=;
-        b=Lgtb6/qknzoXnVAx0MV/1Zxf5v7fbB2zneKfindTMYl9ni4EflwFP4MnwaabDKmrey
-         XMIFOhAHqtcf5Z0tU8zdg3xMVgb8Mi+lG7VhPU4RDb+NeqAkLUKxx4sqrbPK2jMa7WT7
-         txLw+J0/tVE1bxY+/MJ56asOz9sBXb7WFyDWAGQpCeH8laVT2Z6QMD7BYbtoRy2RvhMs
-         gwfnowVNC46vSXOC0zAgdOPGSucMvo6PZE8PCbPpnt/roOe+JfT0bS0jEy0eOL6AkJQU
-         gRMzReUJyMs7YPzFKjUkB4NlowgJd6YDzILIB+I2aDZwRYrZox/FPRNC349DrNi0S39S
-         lc5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750147538; x=1750752338;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hTMkAnOpO3h9kFAXwJeSt50xEMbiPiKvCACkDl+q/V8=;
-        b=wmDatlTeulTMgtF7BwKbV3n8dyzn3j/ixpIITVsUyldBp1eK0xInnpvx70j7M8KPJq
-         VXX6KyoeJsD5JLLqkqdYKJiBkX0IhDVH/B+r3qQoRrcAzoOR+0NE9CqKYsC8hP3rK+OO
-         TrRbD9l4bnqTZkawsnL18ZOyQ0xSAinseHcgsH74Lcuq4RRIDkThA5do7TYwow/9nU2Y
-         r+0ImdyxfjKMTsHbRT6U1T7V7fTM/ZTzBAh7XWNxVy1z100DieTf0LswD1Q7EwpDDaD0
-         ADlnYlcfd0UEpmpte8tL48OHv4LtOqk+5nltRMfXRSsZBXhtFVmL/hbcq2EQR3IFedaZ
-         sMyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUuRaL6cje+qdecoRDmz2T5DdbOJyu1naK1jCTtoWszZT7/c+WFMEeplDgVbN2GrBIwGD4XL80ePP921s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQzGxQ9mIeqaKZEaDHf6pPl0Urv4FizdxRnv8Q8SifkGuYHyCq
-	AS0wnJqqLfHhcEGAUXXbWZaDiak7IgFJPWc5uw/RGRTI7XN6HfaRgQvrlDv9bcum7d+TBvidjfk
-	hPtwOomR/cevxPClhuf3fDglN7Dm7hts=
-X-Gm-Gg: ASbGncsWPHK3nI2jT40+UNCmA3eVM7e+8OeyAxjdpBsnkfMFstFBmoL+aSnmsySEklv
-	kO0JQwxtXkP4fkdXOwNNfKF/PbOfWMeI6YsJARpTb+uY3PcPwHY85u2UDgjypwGaeVgy7ADEF+0
-	g3td6Eyn5x6myqsquWN+c5BxFOdEfEua6ZYJo8p+MTMvs=
-X-Google-Smtp-Source: AGHT+IHZKDHyodVHty8ntGGnSDjjROJbytSqRsyWC6kcBmpcm10w2HC8W8rlgeb/Bl7t7NWLgU2VNeoYX0K44zRR1GI=
-X-Received: by 2002:a17:90a:ec84:b0:311:e9a6:332e with SMTP id
- 98e67ed59e1d1-313f1b312d5mr7013845a91.0.1750147538432; Tue, 17 Jun 2025
- 01:05:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2yX50OH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA55C4CEE3;
+	Tue, 17 Jun 2025 08:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750147591;
+	bh=hsFwxEVO9Rp0Gs4tjiiIcsWBbo6X8OFvvzR0VNqpiiU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=B2yX50OHXwC3QrONRJkmgryA8PQSWj2BCJoMDBrTI6mic0Zw2zlJtthXHEfXWmUEq
+	 GiM+1dNtOvWk4WNmiF+u3A9K9+AiNMLZnf7j0OhbeRtif/sYHmPEqodJahcFFqnrGO
+	 00wUSYsRXDRpyu0+ergQHnNcPL8YqFfYLZwdSYuRDQeapyOanq55Acq2Eja/WeqWho
+	 w/IxKl783DptNutv4ldwFs1UOXV3CmbOzFR59FA/2QHtAhy9LmWmBusvTmN7PW2vYX
+	 pYBUyrVGSRClFCjlJ7RBgomgtjgGDMeZNFqWP+mC+T8KwfbXcJCfd0wWZsEnWDCUGY
+	 k8kJysveo10CQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Cc: <alex.gaynor@gmail.com>,  <ojeda@kernel.org>,  <aliceryhl@google.com>,
+  <anna-maria@linutronix.de>,  <bjorn3_gh@protonmail.com>,
+  <boqun.feng@gmail.com>,  <dakr@kernel.org>,  <frederic@kernel.org>,
+  <gary@garyguo.net>,  <jstultz@google.com>,
+  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
+  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
+  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
+Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
+ Delta
+In-Reply-To: <20250617.070708.74052163124048514.fujita.tomonori@gmail.com>
+	(FUJITA Tomonori's message of "Tue, 17 Jun 2025 07:07:08 +0900")
+References: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
+	<x6cfHAZF-ehcf0crhi8-LYfHLBA7_viOPFSkYml-7j6p6eCL4t-UjrA--fwTbUq1UFX6J7g5igyE2caiXLJNVw==@protonmail.internalid>
+	<20250617.070708.74052163124048514.fujita.tomonori@gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 17 Jun 2025 10:06:21 +0200
+Message-ID: <87h60ebxmq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250614081312.763606-1-ewhk9887@gmail.com> <20250614081312.763606-2-ewhk9887@gmail.com>
-In-Reply-To: <20250614081312.763606-2-ewhk9887@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Jun 2025 10:05:25 +0200
-X-Gm-Features: AX0GCFsFaxv42nHmuQTqqoetT119TRzHdkOJWzvWUay70mcy60hGGbsUDFuH5zc
-Message-ID: <CANiq72=QUbe-koU-BEhEJ1-7AafC0kGcG6HOhiVaR1TWqPoLFg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] spi: spi-pci1xxxx: Drop MSI-X usage as unsupported by
- DMA engine
-To: Eunsoo Eun <ewhk9887@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Thangaraj Samynathan <thangaraj.s@microchip.com>, Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sat, Jun 14, 2025 at 10:14=E2=80=AFAM Eunsoo Eun <ewhk9887@gmail.com> wr=
-ote:
+Hi Fujita,
+
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+
+> Andreas, whenever you get a chance, could you create a
+> timekeeping-next branch and merge the typed clock sources patchset and
+> this?
 >
-> From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+> That would make it easier for me to work on top of them.
 >
-> Removes MSI-X from the interrupt request path, as the DMA engine used by
-> the SPI controller does not support MSI-X interrupts.
->
-> Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-> Link: https://patch.msgid.link/20250612023059.71726-1-thangaraj.s@microch=
-ip.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Thanks a lot for the review!
 
-For some reason this came as a "1/2" patch in the same email thread as
-a Rust one, and that got things confusing. This patch looks
-spurious/bogus, i.e. it is already in mainline, and it is not authored
-nor signed by you, and it is not even numbered as "2/2".
+I will let you know when I publish timekeeping-next, probably this week.
+I applied the patches, but they are currently going through my own
+testing.
 
-Do you know what happened?
 
-Thanks!
+Best regards,
+Andreas Hindborg
 
-Cheers,
-Miguel
+
