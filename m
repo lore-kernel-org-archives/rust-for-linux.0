@@ -1,95 +1,182 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5480C2ED868;
-	Tue, 17 Jun 2025 16:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B382DFF1B;
+	Tue, 17 Jun 2025 16:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750177623; cv=none; b=m4bqxc9wxFAhhP7uXKpYUDpAAqC7VghSbo9nnPPtEX8t/qlLHpD+G3Y4A1u5HtRWmXc0mJrbkoigp70o5VczfJiRfk8OGs3Nt1IRGRv7MR8gb/SdgjUuj6eRwPtP3NupiweO6daQpH1QYlGBdv0yHEJPJERYw0YMd99ezBn7oGQ=
+	t=1750178001; cv=none; b=nZHnaFczDx+eFc/j3FGefDxWjti48ALEOQp+xl4xMyUffMhG5qSo61tYYKvwYHCLZ1auUM/ZHVi5oHPsuapwqtI8MULlYtm8e+iZC/WYpUF/QQ80fw7tVdWg1ew5ll0vKcldAWBebBcUD3cfuXVV/wBGq6F1Jb73wulcfOk1maU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750177623; c=relaxed/simple;
-	bh=F51JDOYIn5h9dNZW6ihjN280RdHMlDIc7Gr1e38ZgJY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iyFgA5vNndzDJi4GUw0mxpUg1QAwIHiTyfVKNaPubbax78v78vsMI9zUIptJ6c1o6swh0lg4Egj9urvIXeqDvT6nH3o2it+gEAzNogpDgCTMXQEaBlm8Lh0439lWOMyxkC+NrqywHMFPn8An9Ko1QDarFCSys5vLX+ssp2eV8Xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ffZawkpg; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750178001; c=relaxed/simple;
+	bh=D4zqKCNVSdpYD1YROivJ0iKR8RbuS0zFHwcD2L/OpL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=boNCLcwkK9+rnRqj0jADF+4+JFaO9woIEJYHHo4tT9chUWfqvVu8g/89Zs6qrRsyHh2YRFZO6Hfjjnxf2a2MPTHbf8E0izqqvBAIP3+0tM/PZR8eYSd4zhu5nY2ejqrnAMCwqUJYghrygOY/g38uHVV8pGGxngRDe+gu/MbbK+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIz1PzBz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ffZawkpg"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-313fab41fd5so703418a91.1;
-        Tue, 17 Jun 2025 09:27:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750177621; x=1750782421; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F51JDOYIn5h9dNZW6ihjN280RdHMlDIc7Gr1e38ZgJY=;
-        b=ffZawkpg/vy84fBqI0wJR9Q6ANdsi+rgHq0RR3YnW7Li0NkH8ZPKpyBMqPSw71RtaY
-         ffTq81wwK4+AFRWyAKUIXaETTgvChs/l6NjXBlCry2TkQSGG7TGHc1/lOYpBz8ECfuwV
-         6e2PZCrO3ed8X9FtaGuOIsQAtLQWKIzHvb8f17x58dqJGlVWZqOizR7WQDrniNQ9BO/m
-         t2ggFdv7tNE2GWEAp3kKWm4Y74RDz+BEUz1esYd2Z0l9OkyAXk+zL94GhfBZX9iptXfY
-         Sguax4WSQsFXXg8UzDRDcS1MzWgkwwhmX6mdmbUUBrzf6kMTUxC6lUyFOKmq3QoVj4CI
-         +jZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750177621; x=1750782421;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=F51JDOYIn5h9dNZW6ihjN280RdHMlDIc7Gr1e38ZgJY=;
-        b=oL9hAq/Qa2AwxzhNTW4ntwO4ssTyKQo9nTLOroQBi7ntgG9mN1hRwOttOKE4p2GUAk
-         +1uvRy/jA7J30Pr6X/BfGH1euCEj5roBNSUEUwheQiAKIMcdm+lpsxqzre+DD804by7c
-         jFznilNttqrMPZ9ga9QBqfAuURVGM4kDplRV0FvLPb63Cd/9b7iM+v34IrQtuVDXfjIR
-         VwzwopsjpUyD+t1NmEHxaJtNXjScH3AL8Aq2MO3oeZnDLcq9DwTrRibBJeRiI7DRVQA0
-         5vCpCHTfRRW1r6xJniaAae+kdDHJ7WJefBH3R0rzYfDGfQ3jRHlj3Ks3pKYVjD3aKeib
-         9c/A==
-X-Forwarded-Encrypted: i=1; AJvYcCV3/HsFFSWNCKuH1KydK3Rabu9dsQ0jKPMCfSU8zhAgi7Oe8mshBfuLCFivBLC7/2P15K1F/IX9k6ER/vbcuTM=@vger.kernel.org, AJvYcCWhsM8z2xVwxIK20cWqX5Y8PsA/2VGhhX44DXLleF2/GqaU+CdRQtL3ORXvGCyGCPgm6pFWNEGZ7Ky+JUU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzK8XDomnuuZH37f+ZZwKgx1cHLKWSDrTV3HA/VeYkNTrpaA1Jx
-	lpJ7dxgLXy7MXcrJRBMzz8YznayCk1iuv+/CE5Vfi4whMOd1soTQkc0rOCpgHfrESo3R6FZd0Fk
-	X0rCY5gQ4ele50kKNPGf1vJcw2ASMlFk=
-X-Gm-Gg: ASbGncsRHGri7Q/aqTKuWZgHeY1+yF7s2fRiMY39xHuHqSxpvm4uA36kZB7GCu/T7oJ
-	K38mORavyZnnad5h3VktBwQ0U2BAgmQOR7Xi3EsIMEX33BNwa9zl7dJtXUZs4uI6pKn5D197YQ1
-	oW6HPScNk35lw3VAH2F2+QL/w2+XDOM6sWY7weN4S7Z74=
-X-Google-Smtp-Source: AGHT+IHcmb9NQChH3GIvkatRmyIxieky9J1mXG02lOTxM9Rt4noubdb3rJ2E/Oa0yJDcdsTQeB8KKdY9GuqMZVoqA/I=
-X-Received: by 2002:a17:90b:4b4b:b0:313:151a:8653 with SMTP id
- 98e67ed59e1d1-313f1de63b5mr7729221a91.8.1750177621484; Tue, 17 Jun 2025
- 09:27:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIz1PzBz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A29C4CEF1;
+	Tue, 17 Jun 2025 16:33:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750178001;
+	bh=D4zqKCNVSdpYD1YROivJ0iKR8RbuS0zFHwcD2L/OpL8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LIz1PzBzebeAd+/tDjDgnCiSkeGDg6nio65KqXEjJABtem5BBu8bfq0AvAOS2l0DN
+	 fR/rsmoZ/ISn4BjDo+mcPMHMHZGbyocq8EN55SX3iSr7s423IG11i4ZNxxRIrEaiAH
+	 8MMtVraOED3V6dWoyeX4V8EqlpsUSZ37dRAIg+KZgTZqCMjPtXQ8N0uNjJKT48MVo7
+	 xW+x3ej9sPA0uf3ophgULjaQcAf0fXoozVvbzxjawegrmJQrmwx8b3gPNkJmn0s/3A
+	 h5KySjhvIOh0nSUboQjAacLT/uHjrlMkVdmMmCaB2vA+KAiEJ1LM8EERhK4yEII7X4
+	 oPeT2BXLdI1jQ==
+Date: Tue, 17 Jun 2025 18:33:13 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Benno Lossin <lossin@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>, Ben Skeggs <bskeggs@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	Lyude Paul <lyude@redhat.com>
+Subject: Re: [PATCH v5 15/23] gpu: nova-core: add falcon register definitions
+ and base code
+Message-ID: <aFGYyXS21tZFdldX@pollux>
+References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
+ <20250612-nova-frts-v5-15-14ba7eaf166b@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250616153604.49418-1-boqun.feng@gmail.com> <20250616153604.49418-2-boqun.feng@gmail.com>
- <CANiq72mZV3Ezxb4FvDdMvn=O+ReUPBx9usUahLgwTKKCFD_+cA@mail.gmail.com> <aFE0pjPsuB0gBgvT@google.com>
-In-Reply-To: <aFE0pjPsuB0gBgvT@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 17 Jun 2025 18:26:46 +0200
-X-Gm-Features: AX0GCFtCj839nTFDnIwha9xYGkw6_-6Cxy9wRtrEveDCzdYvTNQAJma8Z_zymNc
-Message-ID: <CANiq72=mQ+JCGsfhADR6NYeyA1qrNFWfs8ke4GVEHeWX3o9jUA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: Introduce file_from_location()
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@samsung.com, tmgross@umich.edu, dakr@kernel.org, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, 
-	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com, 
-	fujita.tomonori@gmail.com, mingo@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250612-nova-frts-v5-15-14ba7eaf166b@nvidia.com>
 
-On Tue, Jun 17, 2025 at 11:26=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> We will need to coordinate with
-> https://github.com/rust-lang/rust/pull/142579
+On Thu, Jun 12, 2025 at 11:01:43PM +0900, Alexandre Courbot wrote:
+> +    /// Perform a DMA write according to `load_offsets` from `dma_handle` into the falcon's
+> +    /// `target_mem`.
+> +    ///
+> +    /// `sec` is set if the loaded firmware is expected to run in secure mode.
+> +    fn dma_wr(
+> +        &self,
+> +        bar: &Bar0,
+> +        dma_handle: bindings::dma_addr_t,
 
-Upstream Rust just closed it rejecting the change, so no change (so
-far) needed for this patch.
+I think we should pass &F from dma_load() rather than the raw handle.
 
-It would be nice to know if they feel the signature will stay
-reasonably stable now -- we can ask them tomorrow.
+<snip>
 
-Cheers,
-Miguel
+> +fn select_core_ga102<E: FalconEngine>(bar: &Bar0) -> Result {
+> +    let bcr_ctrl = regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, E::BASE);
+> +    if bcr_ctrl.core_select() != PeregrineCoreSelect::Falcon {
+> +        regs::NV_PRISCV_RISCV_BCR_CTRL::default()
+> +            .set_core_select(PeregrineCoreSelect::Falcon)
+> +            .write(bar, E::BASE);
+> +
+> +        util::wait_on(Duration::from_millis(10), || {
+
+As agreed, can you please add a brief comment to justify the timeout?
+
+> +            let r = regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, E::BASE);
+> +            if r.valid() {
+> +                Some(())
+> +            } else {
+> +                None
+> +            }
+> +        })?;
+> +    }
+> +
+> +    Ok(())
+> +}
+> +
+> +fn signature_reg_fuse_version_ga102(
+> +    dev: &device::Device,
+> +    bar: &Bar0,
+> +    engine_id_mask: u16,
+> +    ucode_id: u8,
+> +) -> Result<u32> {
+> +    // The ucode fuse versions are contained in the FUSE_OPT_FPF_<ENGINE>_UCODE<X>_VERSION
+> +    // registers, which are an array. Our register definition macros do not allow us to manage them
+> +    // properly, so we need to hardcode their addresses for now.
+
+Sounds like a TODO?
+
+> +
+> +    // Each engine has 16 ucode version registers numbered from 1 to 16.
+> +    if ucode_id == 0 || ucode_id > 16 {
+> +        dev_err!(dev, "invalid ucode id {:#x}", ucode_id);
+> +        return Err(EINVAL);
+> +    }
+> +
+> +    // Base address of the FUSE registers array corresponding to the engine.
+> +    let reg_fuse_base = if engine_id_mask & 0x0001 != 0 {
+> +        regs::NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION::OFFSET
+> +    } else if engine_id_mask & 0x0004 != 0 {
+> +        regs::NV_FUSE_OPT_FPF_NVDEC_UCODE1_VERSION::OFFSET
+> +    } else if engine_id_mask & 0x0400 != 0 {
+> +        regs::NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION::OFFSET
+> +    } else {
+> +        dev_err!(dev, "unexpected engine_id_mask {:#x}", engine_id_mask);
+> +        return Err(EINVAL);
+> +    };
+> +
+> +    // Read `reg_fuse_base[ucode_id - 1]`.
+> +    let reg_fuse_version =
+> +        bar.read32(reg_fuse_base + ((ucode_id - 1) as usize * core::mem::size_of::<u32>()));
+> +
+> +    Ok(fls_u32(reg_fuse_version))
+> +}
+> +
+> +fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) -> Result {
+> +    regs::NV_PFALCON2_FALCON_BROM_PARAADDR::default()
+> +        .set_value(params.pkc_data_offset)
+> +        .write(bar, E::BASE);
+> +    regs::NV_PFALCON2_FALCON_BROM_ENGIDMASK::default()
+> +        .set_value(params.engine_id_mask as u32)
+> +        .write(bar, E::BASE);
+> +    regs::NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID::default()
+> +        .set_ucode_id(params.ucode_id)
+> +        .write(bar, E::BASE);
+> +    regs::NV_PFALCON2_FALCON_MOD_SEL::default()
+> +        .set_algo(FalconModSelAlgo::Rsa3k)
+> +        .write(bar, E::BASE);
+> +
+> +    Ok(())
+> +}
+> +
+> +pub(super) struct Ga102<E: FalconEngine>(PhantomData<E>);
+> +
+> +impl<E: FalconEngine> Ga102<E> {
+> +    pub(super) fn new() -> Self {
+> +        Self(PhantomData)
+> +    }
+> +}
+> +
+> +impl<E: FalconEngine> FalconHal<E> for Ga102<E> {
+> +    fn select_core(&self, _falcon: &Falcon<E>, bar: &Bar0) -> Result {
+> +        select_core_ga102::<E>(bar)
+> +    }
+> +
+> +    fn signature_reg_fuse_version(
+> +        &self,
+> +        falcon: &Falcon<E>,
+> +        bar: &Bar0,
+> +        engine_id_mask: u16,
+> +        ucode_id: u8,
+> +    ) -> Result<u32> {
+> +        signature_reg_fuse_version_ga102(&falcon.dev, bar, engine_id_mask, ucode_id)
+> +    }
+> +
+> +    fn program_brom(&self, _falcon: &Falcon<E>, bar: &Bar0, params: &FalconBromParams) -> Result {
+> +        program_brom_ga102::<E>(bar, params)
+> +    }
+
+Why are those two separate functions?
