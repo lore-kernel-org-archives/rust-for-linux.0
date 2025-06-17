@@ -1,73 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A107228F924;
-	Tue, 17 Jun 2025 11:43:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906ED2DF3E9
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 11:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750160587; cv=none; b=HDkJlC6Li+vuRtJUVydsFyXVV88i/vhs5VyJ8/QINrPHJJNkwgoJFM2rOdG8hnD7RfJoWOPV9kKWBYUyHEgfd8w+4XKc0S71PQ38CUDW6cfTYyYlRX9juT0h64HYLwAp1gWrUwJzycE20bbmkH7HKAw5Z/h8vevYHG0s3+Lkwbc=
+	t=1750161367; cv=none; b=CAp2SHPNcq6RGSSeo08O+5y6w0EYbAe58Q0mRSC09cOFH4xFxieO5ut7/PLnhCXlBanrWyx7SYAbsQvSudy60JfYalBmHj/04q5FE9eNwAvBriBnkRYJ7nLITuY5kKkHgAp+9bNvbV5pKN1q3bcRuLpDXpweac5F0d8sg+sOpT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750160587; c=relaxed/simple;
-	bh=fJyV/yZ/kHBRzJi++Q3MTQqta+dcB7P3QNrNIXUGmC0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=A72RSc6ZOodU156IPwx6+Jx/Hs+IhlUQSwCINe+BF9o2YNcyf0neB5175s8yo9nc5g8J+hHresGMoRAb6npOvIq4aXQkEfn2xrGfRSnXzLSVODCyoul1uqx6VdfCRTEcv0bFW/9E1zJcZcU+iO8Qcien2YYXFNN4Tm75Df+9mDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d6pc2tIS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750161367; c=relaxed/simple;
+	bh=spf/OGWq9rNYwhtnFTQUzUHQXPQ8m2LBqxJ8x0nCh68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=ljQUajdlfmlVCNQuvj2lyjfBSWJaxC9ejmdN+Xkon/Tx9mNnqfRqpWyiJiq5BMICLd3rCLXX2vOAJSlKO3Qp3Dsvo5L5HK14KqvsJec7QH//ww4V+rSnoiQmwnwb3fIbpc5A71puDfLWKvvNhOku6a0LdcyBc1iNjH96pybB0iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=hk3/aRhf; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d6pc2tIS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E747EC4CEED;
-	Tue, 17 Jun 2025 11:43:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750160586;
-	bh=fJyV/yZ/kHBRzJi++Q3MTQqta+dcB7P3QNrNIXUGmC0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=d6pc2tIS8n0X5frCa971hjJQovU+W9l3yJYvpN+nHUNJCUZsoJA5Vro5aXUV2T1MO
-	 hlBqdt3tTcIrFHQGde6zxMIfms2AcWqgOBGmbMl7gxnrylHbkSqY+UC25GhKBzepkr
-	 Jej0Tcfyu6NaeAiA03RQ1UR73jLTdFmpDOAN4xJN4xHknnxxSis7h93Ghx2yhW19NM
-	 mWLsE6hc0o1K7To//9AZdtmI7wKaZm0lpt7qLZQBf8ouoP/h4ztFB43AKQavtmI2if
-	 OyNvSbjoXWGJowDpfX0Ui9wMx2ignqdG0HrPX5vd65fAoY+wZsg6T3jnFITz9io443
-	 ZxzhuOBC+63dA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>
-Cc: <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  "Boqun Feng" <boqun.feng@gmail.com>,  "FUJITA Tomonori"
- <fujita.tomonori@gmail.com>,  "Frederic Weisbecker" <frederic@kernel.org>,
-  "Thomas Gleixner" <tglx@linutronix.de>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "John Stultz" <jstultz@google.com>,  "Stephen
- Boyd" <sboyd@kernel.org>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex
- Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  "Benno Lossin" <lossin@kernel.org>,
-  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v5 1/7] rust: hrtimer: Document the return value for
- HrTimerHandle::cancel()
-In-Reply-To: <20250613232754.451450-2-lyude@redhat.com> (Lyude Paul's message
-	of "Fri, 13 Jun 2025 19:22:22 -0400")
-References: <20250613232754.451450-1-lyude@redhat.com>
-	<-Nb6vjPZHPOAEBAwisXtc65Q3aL6WCStAZtDqTYk2YGfzexdwDyMVz0SdWR1P5gsSRnCNK2J_upQVlrn6JYjrw==@protonmail.internalid>
-	<20250613232754.451450-2-lyude@redhat.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 17 Jun 2025 13:35:20 +0200
-Message-ID: <87ecvia9dz.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="hk3/aRhf"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250617115558euoutp01fdbb1923e7f567d71c628b7d6e5e77c7~J0nuFDCDE0580205802euoutp01C
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 11:55:58 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250617115558euoutp01fdbb1923e7f567d71c628b7d6e5e77c7~J0nuFDCDE0580205802euoutp01C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1750161358;
+	bh=oofikVxRsBxHxPSDdlnvLJyVhdL+RF7rzHi6wUMuvQs=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=hk3/aRhfplI0MimyM+0Ny2W5f3hpPbZ//3yhhymz2n67YIKDfT3D3KCZ2wiRiOJ7x
+	 iR2hztlhHdIbLNoFSk5f7oeOHipEVMXkbWJ04oYrtS/1qML0eCIb9xeIW1IVjbbN22
+	 ENbXparJC5pyBqD0Dfc75BwwVviBUUsgvb8Bcm1s=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250617115557eucas1p1fe0dc838ed601d75fe7deba27d312aa7~J0ntgrNum2233822338eucas1p1l;
+	Tue, 17 Jun 2025 11:55:57 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250617115556eusmtip1a9ce151263637f622a84b2312a20b25d~J0nsOwoz40555305553eusmtip1i;
+	Tue, 17 Jun 2025 11:55:56 +0000 (GMT)
+Message-ID: <b1c7c305-fad9-4161-b627-b5c1db9cb0ee@samsung.com>
+Date: Tue, 17 Jun 2025 13:55:55 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
+	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
+	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <5aam5ff3m24yzsqdh7w2zplccuwmmr2no7jhgmdnxggmhpo4hl@r6iawlw7f42m>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250617115557eucas1p1fe0dc838ed601d75fe7deba27d312aa7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
+X-EPHeader: CA
+X-CMS-RootMailID: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
+References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
+	<CGME20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d@eucas1p1.samsung.com>
+	<20250610-rust-next-pwm-working-fan-for-sending-v2-2-753e2955f110@samsung.com>
+	<jbm3qvowi5vskhnjyqlp3xek36gzzqjt35m66eayxi6lmi525t@iefevopxjl53>
+	<d1523586-82ca-4863-964f-331718bb1f0e@samsung.com>
+	<5aam5ff3m24yzsqdh7w2zplccuwmmr2no7jhgmdnxggmhpo4hl@r6iawlw7f42m>
 
-"Lyude Paul" <lyude@redhat.com> writes:
 
-> Just a drive-by fix I noticed: we don't actually document what the return
-> value from cancel() does, so do that.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+On 6/12/25 22:36, Uwe Kleine-König wrote:
+> Hello Michael,
+> 
+> On Thu, Jun 12, 2025 at 10:14:13AM +0200, Michal Wilczynski wrote:
+>> On 6/11/25 08:58, Uwe Kleine-König wrote:
+>>> Huh, if you do the newstyle stuff, .get_state() is wrong. It's either
+>>> .round_waveform_tohw() + .round_waveform_fromhw() + .read_waveform() +
+>>> .write_waveform() or .apply() + .get_state(), but don't mix these.
+>>
+>> In the process of implementing the full "newstyle" waveform API as you
+>> suggested, I discovered a hardware limitation. After writing new values
+>> to the period and duty cycle registers, reading them back does not
+>> return the programmed values, which makes it impossible to reliably
+>> report the current hardware state.
+>>
+>> This appears to be a known quirk of the hardware, as the reference C
+>> driver from T-HEAD [1] also omits the .get_state callback, likely for
+>> the same reason.
+> 
+> Do you read complete non-sense or e.g. the old configuration until
+> the current period ends?
+> 
+> I guess would be that .get_state wasn't implemented because this is an
+> oldoldstyle driver and it works also without that function.
 
+Hi Uwe,
+
+My apologies for the confusion. After further testing, it appears I was
+mistaken, and the hardware reads are working correctly. I must have made
+an error when testing via sysfs.
+
+I'll be submitting a v3 that implements the full round_waveform_tohw(),
+round_waveform_fromhw(), read_waveform(), and write_waveform()
+combination as you initially suggested.
+
+> 
+>> Given this, would it be acceptable to provide a write-only driver? My
+>> proposed solution would be to omit the .read_waveform() and
+>> .round_waveform_fromhw() implementations from my PwmOps trait. This
+> 
+> Please don't skip .round_waveform_fromhw(), that one is needed for
+> pwm_round_waveform_might_sleep().
+> 
+> I don't like it, but given that the hardware doesn't play along there is
+> no alternative.
+> 
+>> would mean the driver can correctly set the PWM state, but attempting to
+>> read it back via sysfs would fail (e.g., with -EOPNOTSUPP), reflecting
+>> the hardware's capability.
+> 
+> I think there might be another patch opportunity then to make PWM_DEBUG
+> work with that.
+> 
+> Best regards
+> Uwe
 
 Best regards,
-Andreas Hindborg
-
-
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
