@@ -1,51 +1,52 @@
 Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5ED52E88A7
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 14:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2872E88BA
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 14:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750169323; cv=none; b=gboQHpwFH5MweHL7T486AmlluJmuGS9jx69sI90QsXAAn1E4GkvRMKZdnWNTPfo8YiKFCZPXEiIHpYJ+GIEPg3hAqZuFzdlevSXocTDiZxTg09fOP/ihsqJAjw81nvQUnH01WnwJutjiAliQ5KcquhVrQSw+3iC645PmPjtvS2E=
+	t=1750169324; cv=none; b=SFSGerQ1hK4uzjQ+H8D4FAEDHDLJigjqLIe3kZV2zNh/WlQng/Y+RcjCLICBcAEmPmgW/ElMpZBTiJH9+Ex+3rdOU7P9yRmnmduK7KCogsuQddqNNUS84Cpt61iF4g98BQx/P3V94ZctLf+jF1CbwuUoDAYfZhrGQ2cKSj7PzC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750169323; c=relaxed/simple;
-	bh=3x4XA8rVGvcqRMp60zC+GETWnoMG7/3bwXr/LsWy2A0=;
+	s=arc-20240116; t=1750169324; c=relaxed/simple;
+	bh=PqPmG7LLWKvnVKOK34Udaecl39RMqDb2VheKIq5I+RM=;
 	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=qMwXTGXU2m4PDqYAzLU4qbS84GMPJUxRZpCnSyUBRMsPjIWXExO6b8xEQYQF7QRtHkYzDmxENNqN4viwbJEpdKjPpYxlxqtua/6FIQEpQfNrU5KO2kkWMbE6d4LvBKHFtTuIG2yDmllaMyQC/tPIpak/z3FzwSCq0gmlxvvxyGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=L82f03LB; arc=none smtp.client-ip=210.118.77.12
+	 Content-Type:References; b=akEPfZK4PLj7phHKl5MxRdGPbobzY/dOUIMi1Ga5+UMVszUGnQ0qNnDdqKHPxcEvF7lewP0VTbNmwQKssZrTews6RXKVHgjKeybwyjFWnRA4EQ4SK6qfPEc8LS/+y0gGXPvfigVPtPrBL2NARc7RtfcgyFOx6mSGmolKGVD4+UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=buWb5B0X; arc=none smtp.client-ip=210.118.77.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="L82f03LB"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250617140836euoutp02cbbd8e7edd48a230ae9349f669571187~J2biJ7JAy0208502085euoutp024
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 14:08:36 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250617140836euoutp02cbbd8e7edd48a230ae9349f669571187~J2biJ7JAy0208502085euoutp024
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="buWb5B0X"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250617140839euoutp025146ff0ca26b679f97cb1939670fc438~J2bkXhU6y0211202112euoutp02I
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 14:08:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250617140839euoutp025146ff0ca26b679f97cb1939670fc438~J2bkXhU6y0211202112euoutp02I
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1750169316;
-	bh=J65JaRuGLW1MK7iS3wcUH4sUEKCN5P+oJvskSjmp6ks=;
+	s=mail20170921; t=1750169319;
+	bh=HLGeBBxVh4s0amVT/Rdjdx5pFJtAmPQ9fVS1AXrdlMc=;
 	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=L82f03LBoT+iBBVmFpUUR6v4ASOgp9PN7Mtz+zU/qy+RfiXwW2V1C64aJ7iTGt/mt
-	 b+x2gZZgKspweuoFzP0wJbla3Jfz+FFpvfYN0tzzLO1q8NCoA21LXbozaVo+kEMLz9
-	 ZS3s1viGBGOhv+5d7+S8sj5vu9+7Jp8Bux8oy6Vw=
+	b=buWb5B0X4ad8hr+YSOoN9fzlMT8HpgN/2lGeLJoP9LCa3XLVlaIMjWABW8MRZIN7t
+	 TWgeG+/B0m/fOPNFTqGrB7iifdOJoEIfwGbOTzc4SdKGEzN3SauEjQX7erTSv3aTth
+	 SJwY2p9aOVnuAu6q0AT14DAW6mnwZwacfXJ4z8Tw=
 Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
 	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250617140835eucas1p2f54c36c63fa7470724a6d027a81d73ff~J2bhECcFv1657216572eucas1p2s;
-	Tue, 17 Jun 2025 14:08:35 +0000 (GMT)
+	20250617140838eucas1p2a31af5a73297580c2421263c1c6ba700~J2bjpps3Z1901919019eucas1p28;
+	Tue, 17 Jun 2025 14:08:38 +0000 (GMT)
 Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
 	[106.210.136.40]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250617140834eusmtip16812335f79834953ba89f1c46df1cd87~J2bf7MMIK2596425964eusmtip1U;
-	Tue, 17 Jun 2025 14:08:34 +0000 (GMT)
+	20250617140837eusmtip19080d4986e3ed16c4afcd038c58f6574~J2biW8HbF2540625406eusmtip1J;
+	Tue, 17 Jun 2025 14:08:37 +0000 (GMT)
 From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Tue, 17 Jun 2025 16:07:24 +0200
-Subject: [PATCH v3 1/9] rust: pwm: Add Kconfig and basic data structures
+Date: Tue, 17 Jun 2025 16:07:26 +0200
+Subject: [PATCH v3 3/9] rust: pwm: Add driver operations trait and
+ registration support
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250617-rust-next-pwm-working-fan-for-sending-v3-1-1cca847c6f9f@samsung.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250617-rust-next-pwm-working-fan-for-sending-v3-3-1cca847c6f9f@samsung.com>
 In-Reply-To: <20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com>
 To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
 	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
@@ -65,321 +66,531 @@ Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
 	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
 X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20250617140835eucas1p2f54c36c63fa7470724a6d027a81d73ff
+X-CMS-MailID: 20250617140838eucas1p2a31af5a73297580c2421263c1c6ba700
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250617140835eucas1p2f54c36c63fa7470724a6d027a81d73ff
+X-RootMTR: 20250617140838eucas1p2a31af5a73297580c2421263c1c6ba700
 X-EPHeader: CA
-X-CMS-RootMailID: 20250617140835eucas1p2f54c36c63fa7470724a6d027a81d73ff
+X-CMS-RootMailID: 20250617140838eucas1p2a31af5a73297580c2421263c1c6ba700
 References: <20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com>
-	<CGME20250617140835eucas1p2f54c36c63fa7470724a6d027a81d73ff@eucas1p2.samsung.com>
+	<CGME20250617140838eucas1p2a31af5a73297580c2421263c1c6ba700@eucas1p2.samsung.com>
 
-Introduce the foundational support for PWM abstractions in Rust.
+Complete the PWM abstraction layer by adding the final components
+required to implement and register a driver.
 
-This commit adds the `RUST_PWM_ABSTRACTIONS` Kconfig option to enable
-the feature, along with the necessary build-system support and C
-helpers.
+The main additions are:
 
-It also introduces the first set of safe wrappers for the PWM
-subsystem, covering the basic data carrying C structs and enums:
-- `Polarity`: A safe wrapper for `enum pwm_polarity`.
-- `Waveform`: A wrapper for `struct pwm_waveform`.
-- `Args`: A wrapper for `struct pwm_args`.
-- `State`: A wrapper for `struct pwm_state`.
+ - PwmOps Trait: An interface that drivers can implement to provide
+   their hardware specific logic. It mirrors the C pwm_ops interface,
+   providing hooks for standard PWM operations like apply, request, and
+   waveform handling.
 
-These types provide memory safe, idiomatic Rust representations of the
-core PWM data structures and form the building blocks for the
-abstractions that will follow.
+ - FFI VTable and Adapter: The Adapter struct, PwmOpsVTable wrapper, and
+   create_pwm_ops function are introduced. This scaffolding handles the
+   unsafe FFI translation, bridging the gap between the idiomatic PwmOps
+   trait and the C kernel's function-pointer-based vtable.
+
+ - Registration Guard: A final RAII guard that uses the vtable to safely
+   register a Chip with the PWM core via pwmchip_add. Its Drop
+   implementation guarantees that pwmchip_remove is always called,
+   preventing resource leaks.
+
+With this patch, the PWM abstraction layer is now complete and ready to
+be used for writing PWM chip drivers in Rust.
 
 Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
 ---
- MAINTAINERS                     |   6 ++
- drivers/pwm/Kconfig             |  13 +++
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers/helpers.c          |   1 +
- rust/kernel/lib.rs              |   2 +
- rust/kernel/pwm.rs              | 198 ++++++++++++++++++++++++++++++++++++++++
- 6 files changed, 221 insertions(+)
+ rust/kernel/pwm.rs | 471 ++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 468 insertions(+), 3 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0c1d245bf7b84f8a78b811e0c9c5a3edc09edc22..a575622454a2ef57ce055c8a8c4765fa4fddc490 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20073,6 +20073,12 @@ F:	include/linux/pwm.h
- F:	include/linux/pwm_backlight.h
- K:	pwm_(config|apply_might_sleep|apply_atomic|ops)
- 
-+PWM SUBSYSTEM BINDINGS [RUST]
-+M:	Michal Wilczynski <m.wilczynski@samsung.com>
-+S:	Maintained
-+F:	rust/helpers/pwm.c
-+F:	rust/kernel/pwm.rs
-+
- PXA GPIO DRIVER
- M:	Robert Jarzmik <robert.jarzmik@free.fr>
- L:	linux-gpio@vger.kernel.org
-diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
-index d9bcd1e8413eaed1602d6686873e263767c58f5f..cfddeae0eab3523f04f361fb41ccd1345c0c937b 100644
---- a/drivers/pwm/Kconfig
-+++ b/drivers/pwm/Kconfig
-@@ -790,4 +790,17 @@ config PWM_XILINX
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called pwm-xilinx.
- 
-+ config RUST_PWM_ABSTRACTIONS
-+	bool "Rust PWM abstractions support"
-+	depends on RUST
-+	depends on PWM=y
-+	help
-+	  This option enables the safe Rust abstraction layer for the PWM
-+	  subsystem. It provides idiomatic wrappers and traits necessary for
-+	  writing PWM controller drivers in Rust.
-+
-+	  The abstractions handle resource management (like memory and reference
-+	  counting) and provide safe interfaces to the underlying C core,
-+	  allowing driver logic to be written in safe Rust.
-+
- endif
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 693cdd01f9290fa01375cf78cac0e5a90df74c6c..6fe7dd529577952bf7adb4fe0526b0d5fbd6f3bd 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -64,6 +64,7 @@
- #include <linux/pm_opp.h>
- #include <linux/poll.h>
- #include <linux/property.h>
-+#include <linux/pwm.h>
- #include <linux/refcount.h>
- #include <linux/sched.h>
- #include <linux/security.h>
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 16fa9bca5949b85e8d4cdcfe8e6886124f72d8d8..60879e6d794ce0f87e39caafc5495bf5e8acf8f0 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -31,6 +31,7 @@
- #include "platform.c"
- #include "pci.c"
- #include "pid_namespace.c"
-+#include "pwm.c"
- #include "rbtree.c"
- #include "rcu.c"
- #include "refcount.c"
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 6b4774b2b1c37f4da1866e993be6230bc6715841..ce1d08b14e456905dbe7b625bbb8ca8b08deae2a 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -105,6 +105,8 @@
- pub mod seq_file;
- pub mod sizes;
- mod static_assert;
-+#[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
-+pub mod pwm;
- #[doc(hidden)]
- pub mod std_vendor;
- pub mod str;
 diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..ed681b228c414e7ae8bf80ca649ad497c9dc4ec3
---- /dev/null
+index 8c4c27a4e4fc9da2fc8ea5015df2a315cfc6b932..64210411450cd3d964d21f1e712fcfd4d8aed988 100644
+--- a/rust/kernel/pwm.rs
 +++ b/rust/kernel/pwm.rs
-@@ -0,0 +1,198 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (c) 2025 Samsung Electronics Co., Ltd.
-+// Author: Michal Wilczynski <m.wilczynski@samsung.com>
+@@ -8,12 +8,12 @@
+ 
+ use crate::{
+     bindings,
+-    device,
+-    error,
++    device::{self, Bound},
++    error::{self, to_result},
+     prelude::*,
+     types::{ARef, AlwaysRefCounted, ForeignOwnable, Opaque},
+ };
+-use core::{convert::TryFrom, ptr::NonNull};
++use core::{convert::TryFrom, marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
+ 
+ /// Maximum size for the hardware-specific waveform representation buffer.
+ ///
+@@ -419,3 +419,468 @@ unsafe impl Send for Chip {}
+ // kernel locks, which the C core is responsible for. Any interior mutability is
+ // handled and synchronized by the C kernel code.
+ unsafe impl Sync for Chip {}
 +
-+//! PWM subsystem abstractions.
-+//!
-+//! C header: [`include/linux/pwm.h`](srctree/include/linux/pwm.h).
-+
-+use crate::{
-+    bindings,
-+    prelude::*,
-+    types::Opaque,
-+};
-+use core::convert::TryFrom;
-+
-+/// Maximum size for the hardware-specific waveform representation buffer.
-+///
-+/// From C: `#define WFHWSIZE 20`
-+pub const WFHW_MAX_SIZE: usize = 20;
-+
-+/// PWM polarity. Mirrors [`enum pwm_polarity`](srctree/include/linux/pwm.h).
-+#[derive(Copy, Clone, Debug, PartialEq, Eq)]
-+pub enum Polarity {
-+    /// Normal polarity (duty cycle defines the high period of the signal).
-+    Normal,
-+
-+    /// Inversed polarity (duty cycle defines the low period of the signal).
-+    Inversed,
++/// Manages the registration of a PWM chip, ensuring `pwmchip_remove` is called on drop.
++pub struct Registration {
++    chip: ManuallyDrop<ARef<Chip>>,
 +}
 +
-+impl TryFrom<bindings::pwm_polarity> for Polarity {
-+    type Error = Error;
-+
-+    fn try_from(polarity: bindings::pwm_polarity) -> Result<Self, Error> {
-+        match polarity {
-+            bindings::pwm_polarity_PWM_POLARITY_NORMAL => Ok(Polarity::Normal),
-+            bindings::pwm_polarity_PWM_POLARITY_INVERSED => Ok(Polarity::Inversed),
-+            _ => Err(EINVAL),
-+        }
-+    }
-+}
-+
-+impl From<Polarity> for bindings::pwm_polarity {
-+    fn from(polarity: Polarity) -> Self {
-+        match polarity {
-+            Polarity::Normal => bindings::pwm_polarity_PWM_POLARITY_NORMAL,
-+            Polarity::Inversed => bindings::pwm_polarity_PWM_POLARITY_INVERSED,
-+        }
-+    }
-+}
-+
-+/// Represents a PWM waveform configuration.
-+/// Mirrors struct [`struct pwm_waveform`](srctree/include/linux/pwm.h).
-+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq)]
-+pub struct Waveform {
-+    /// Total duration of one complete PWM cycle, in nanoseconds.
-+    pub period_length_ns: u64,
-+
-+    /// Duty-cycle active time, in nanoseconds.
++impl Registration {
++    /// Registers a PWM chip (obtained via `Chip::new`) with the PWM subsystem.
 +    ///
-+    /// For a typical normal polarity configuration (active-high) this is the
-+    /// high time of the signal.
-+    pub duty_length_ns: u64,
++    /// Takes an [`ARef<Chip>`]. On `Drop` of the returned `Registration` object,
++    /// `pwmchip_remove` is called for the chip.
++    pub fn new(chip: ARef<Chip>, ops_vtable: &'static PwmOpsVTable) -> Result<Self> {
++        // Get the raw C pointer from ARef<Chip>.
++        let c_chip_ptr = chip.as_raw().cast::<bindings::pwm_chip>();
 +
-+    /// Duty-cycle start offset, in nanoseconds.
-+    ///
-+    /// Delay from the beginning of the period to the first active edge.
-+    /// In most simple PWM setups this is `0`, so the duty cycle starts
-+    /// immediately at each period’s start.
-+    pub duty_offset_ns: u64,
++        // SAFETY: `c_chip_ptr` is valid (guaranteed by ARef existing).
++        // `ops_vtable.as_raw()` provides a valid `*const bindings::pwm_ops`.
++        // `bindings::__pwmchip_add` preconditions (valid pointers, ops set on chip) are met.
++        unsafe {
++            (*c_chip_ptr).ops = ops_vtable.as_raw();
++            to_result(bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()))?;
++        }
++        Ok(Registration {
++            chip: ManuallyDrop::new(chip),
++        })
++    }
 +}
 +
-+impl From<bindings::pwm_waveform> for Waveform {
-+    fn from(wf: bindings::pwm_waveform) -> Self {
-+        Waveform {
-+            period_length_ns: wf.period_length_ns,
-+            duty_length_ns: wf.duty_length_ns,
-+            duty_offset_ns: wf.duty_offset_ns,
++impl Drop for Registration {
++    fn drop(&mut self) {
++        let chip = &**self.chip;
++        let chip_raw: *mut bindings::pwm_chip = chip.as_raw();
++
++        // SAFETY: `chip_raw` points to a chip that was successfully registered via `Self::new`.
++        // `bindings::pwmchip_remove` is the correct C function to unregister it.
++        unsafe {
++            bindings::pwmchip_remove(chip_raw);
++            ManuallyDrop::drop(&mut self.chip); // Drops the ARef<Chip>
 +        }
 +    }
 +}
 +
-+impl From<Waveform> for bindings::pwm_waveform {
-+    fn from(wf: Waveform) -> Self {
-+        bindings::pwm_waveform {
-+            period_length_ns: wf.period_length_ns,
-+            duty_length_ns: wf.duty_length_ns,
-+            duty_offset_ns: wf.duty_offset_ns,
-+        }
++/// Trait defining the operations for a PWM driver.
++pub trait PwmOps: 'static + Sized {
++    /// The driver-specific hardware representation of a waveform.
++    ///
++    /// This type must be [`Copy`], [`Default`], and fit within [`WFHW_MAX_SIZE`].
++    type WfHw: Copy + Default;
++
++    /// Optional hook to atomically apply a new PWM config.
++    fn apply(
++        _chip: &mut Chip,
++        _pwm: &mut Device,
++        _state: &State,
++        _parent_dev: &device::Device<Bound>,
++    ) -> Result {
++        Err(ENOTSUPP)
++    }
++
++    /// Optional hook for when a PWM device is requested.
++    fn request(_chip: &mut Chip, _pwm: &mut Device, _parent_dev: &device::Device<Bound>) -> Result {
++        Ok(())
++    }
++
++    /// Optional hook for when a PWM device is freed.
++    fn free(_chip: &mut Chip, _pwm: &mut Device, _parent_dev: &device::Device<Bound>) {}
++
++    /// Optional hook for capturing a PWM signal.
++    fn capture(
++        _chip: &mut Chip,
++        _pwm: &mut Device,
++        _result: &mut bindings::pwm_capture,
++        _timeout: usize,
++        _parent_dev: &device::Device<Bound>,
++    ) -> Result {
++        Err(ENOTSUPP)
++    }
++
++    /// Optional hook to get the current hardware state.
++    fn get_state(
++        _chip: &mut Chip,
++        _pwm: &mut Device,
++        _state: &mut State,
++        _parent_dev: &device::Device<Bound>,
++    ) -> Result {
++        Err(ENOTSUPP)
++    }
++
++    /// Convert a generic waveform to the hardware-specific representation.
++    /// This is typically a pure calculation and does not perform I/O.
++    fn round_waveform_tohw(
++        _chip: &mut Chip,
++        _pwm: &mut Device,
++        _wf: &Waveform,
++    ) -> Result<(c_int, Self::WfHw)> {
++        Err(ENOTSUPP)
++    }
++
++    /// Convert a hardware-specific representation back to a generic waveform.
++    /// This is typically a pure calculation and does not perform I/O.
++    fn round_waveform_fromhw(
++        _chip: &mut Chip,
++        _pwm: &Device,
++        _wfhw: &Self::WfHw,
++        _wf: &mut Waveform,
++    ) -> Result<c_int> {
++        Err(ENOTSUPP)
++    }
++
++    /// Read the current hardware configuration into the hardware-specific representation.
++    fn read_waveform(
++        _chip: &mut Chip,
++        _pwm: &mut Device,
++        _parent_dev: &device::Device<Bound>,
++    ) -> Result<Self::WfHw> {
++        Err(ENOTSUPP)
++    }
++
++    /// Write a hardware-specific waveform configuration to the hardware.
++    fn write_waveform(
++        _chip: &mut Chip,
++        _pwm: &mut Device,
++        _wfhw: &Self::WfHw,
++        _parent_dev: &device::Device<Bound>,
++    ) -> Result {
++        Err(ENOTSUPP)
 +    }
 +}
++/// Bridges Rust `PwmOps` to the C `pwm_ops` vtable.
++struct Adapter<T: PwmOps> {
++    _p: PhantomData<T>,
++}
 +
-+/// Wrapper for board-dependent PWM arguments [`struct pwm_args`](srctree/include/linux/pwm.h).
-+#[repr(transparent)]
-+pub struct Args(Opaque<bindings::pwm_args>);
-+
-+impl Args {
-+    /// Creates an `Args` wrapper from a C struct pointer.
-+    ///
++impl<T: PwmOps> Adapter<T> {
 +    /// # Safety
 +    ///
-+    /// The caller must ensure that `c_args_ptr` is a valid, non-null pointer
-+    /// to `bindings::pwm_args` and that the pointed-to data is valid
-+    /// for the duration of this function call (as data is copied).
-+    unsafe fn from_c_ptr(c_args_ptr: *const bindings::pwm_args) -> Self {
-+        // SAFETY: Caller guarantees `c_args_ptr` is valid. We dereference it to copy.
-+        Args(Opaque::new(unsafe { *c_args_ptr }))
++    /// `wfhw_ptr` must be valid for writes of `size_of::<T::WfHw>()` bytes.
++    unsafe fn serialize_wfhw(wfhw: &T::WfHw, wfhw_ptr: *mut c_void) -> Result {
++        let size = core::mem::size_of::<T::WfHw>();
++        if size > WFHW_MAX_SIZE {
++            return Err(EINVAL);
++        }
++
++        // SAFETY: The caller ensures `wfhw_ptr` is valid for `size` bytes.
++        unsafe {
++            core::ptr::copy_nonoverlapping(wfhw as *const _ as *const u8, wfhw_ptr.cast(), size);
++        }
++
++        Ok(())
 +    }
 +
-+    /// Returns the period of the PWM signal in nanoseconds.
-+    pub fn period(&self) -> u64 {
-+        // SAFETY: `self.0.get()` returns a pointer to the `bindings::pwm_args`
-+        // managed by the `Opaque` wrapper. This pointer is guaranteed to be
-+        // valid and aligned for the lifetime of `self` because `Opaque` owns a copy.
-+        unsafe { (*self.0.get()).period }
++    /// # Safety
++    ///
++    /// `wfhw_ptr` must be valid for reads of `size_of::<T::WfHw>()` bytes.
++    unsafe fn deserialize_wfhw(wfhw_ptr: *const c_void) -> Result<T::WfHw> {
++        let size = core::mem::size_of::<T::WfHw>();
++        if size > WFHW_MAX_SIZE {
++            return Err(EINVAL);
++        }
++
++        let mut wfhw = T::WfHw::default();
++        // SAFETY: The caller ensures `wfhw_ptr` is valid for `size` bytes.
++        unsafe {
++            core::ptr::copy_nonoverlapping(wfhw_ptr.cast(), &mut wfhw as *mut _ as *mut u8, size);
++        }
++
++        Ok(wfhw)
 +    }
 +
-+    /// Returns the polarity of the PWM signal.
-+    pub fn polarity(&self) -> Result<Polarity, Error> {
-+        // SAFETY: `self.0.get()` returns a pointer to the `bindings::pwm_args`
-+        // managed by the `Opaque` wrapper. This pointer is guaranteed to be
-+        // valid and aligned for the lifetime of `self`.
-+        let raw_polarity = unsafe { (*self.0.get()).polarity };
-+        Polarity::try_from(raw_polarity)
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn apply_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++        s: *const bindings::pwm_state,
++    ) -> c_int {
++        // SAFETY: This block relies on the function's safety contract: the C caller
++        // provides valid pointers. `Chip::from_ptr` and `Device::from_ptr` are `unsafe fn`
++        // whose preconditions are met by this contract.
++        let (chip, pwm) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p)) };
++        let parent_dev = match chip.parent_device() {
++            Some(dev) => dev,
++            None => {
++                return EINVAL.to_errno();
++            }
++        };
++
++        // SAFETY: The PWM core guarantees callbacks only happen on a live, bound device.
++        let bound_parent =
++            unsafe { &*(parent_dev as *const device::Device as *const device::Device<Bound>) };
++
++        // SAFETY: The state provided by the callback is guaranteed to be valid
++        let state = State::from_c(unsafe { *s });
++        match T::apply(chip, pwm, &state, bound_parent) {
++            Ok(()) => 0,
++            Err(e) => e.to_errno(),
++        }
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn request_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++    ) -> c_int {
++        // SAFETY: PWM core guarentees `c` and `p` are valid pointers.
++        let (chip, pwm) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p)) };
++        let parent_dev = match chip.parent_device() {
++            Some(dev) => dev,
++            None => {
++                return EINVAL.to_errno();
++            }
++        };
++
++        let bound_parent =
++	// SAFETY: The PWM core guarantees the device is bound during callbacks.
++            unsafe { &*(parent_dev as *const device::Device as *const device::Device<Bound>) };
++        match T::request(chip, pwm, bound_parent) {
++            Ok(()) => 0,
++            Err(e) => e.to_errno(),
++        }
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn free_callback(c: *mut bindings::pwm_chip, p: *mut bindings::pwm_device) {
++        // SAFETY: Relies on the function's contract that `c` and `p` are valid pointers.
++        let (chip, pwm) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p)) };
++        let parent_dev = match chip.parent_device() {
++            Some(dev) => dev,
++            None => {
++                return;
++            }
++        };
++
++        let bound_parent =
++	// SAFETY: The PWM core guarantees the device is bound during callbacks.
++            unsafe { &*(parent_dev as *const device::Device as *const device::Device<Bound>) };
++        T::free(chip, pwm, bound_parent);
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn capture_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++        res: *mut bindings::pwm_capture,
++        timeout: usize,
++    ) -> c_int {
++        // SAFETY: Relies on the function's contract that `c` and `p` are valid pointers.
++        let (chip, pwm, result) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p), &mut *res) };
++        let parent_dev = match chip.parent_device() {
++            Some(dev) => dev,
++            None => {
++                return EINVAL.to_errno();
++            }
++        };
++
++        let bound_parent =
++	        // SAFETY: The PWM core guarantees the device is bound during callbacks.
++            unsafe { &*(parent_dev as *const device::Device as *const device::Device<Bound>) };
++        match T::capture(chip, pwm, result, timeout, bound_parent) {
++            Ok(()) => 0,
++            Err(e) => e.to_errno(),
++        }
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn get_state_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++        s: *mut bindings::pwm_state,
++    ) -> c_int {
++        // SAFETY: Relies on the function's contract that `c` and `p` are valid pointers.
++        let (chip, pwm) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p)) };
++        let parent_dev = match chip.parent_device() {
++            Some(dev) => dev,
++            None => {
++                return EINVAL.to_errno();
++            }
++        };
++        let bound_parent =
++	// SAFETY: The PWM core guarantees the device is bound during callbacks.
++            unsafe { &*(parent_dev as *const device::Device as *const device::Device<Bound>) };
++        let mut rust_state = State::new();
++        match T::get_state(chip, pwm, &mut rust_state, bound_parent) {
++            Ok(()) => {
++                // SAFETY: `s` is guaranteed valid by the C caller.
++                unsafe {
++                    *s = rust_state.0;
++                };
++                0
++            }
++            Err(e) => e.to_errno(),
++        }
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn round_waveform_tohw_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++        w: *const bindings::pwm_waveform,
++        wh: *mut c_void,
++    ) -> c_int {
++        // SAFETY: Relies on the function's contract that `c` and `p` are valid pointers.
++        let (chip, pwm, wf) =
++            unsafe { (Chip::from_ptr(c), Device::from_ptr(p), Waveform::from(*w)) };
++        match T::round_waveform_tohw(chip, pwm, &wf) {
++            Ok((status, wfhw)) => {
++                // SAFETY: `wh` is valid per this function's safety contract.
++                if unsafe { Self::serialize_wfhw(&wfhw, wh) }.is_err() {
++                    return EINVAL.to_errno();
++                }
++                status
++            }
++            Err(e) => e.to_errno(),
++        }
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn round_waveform_fromhw_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++        wh: *const c_void,
++        w: *mut bindings::pwm_waveform,
++    ) -> c_int {
++        // SAFETY: Relies on the function's contract that `c` and `p` are valid pointers.
++        let (chip, pwm) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p)) };
++        // SAFETY: `deserialize_wfhw`'s safety contract is met by this function's contract.
++        let wfhw = match unsafe { Self::deserialize_wfhw(wh) } {
++            Ok(v) => v,
++            Err(e) => return e.to_errno(),
++        };
++
++        let mut rust_wf = Waveform::default();
++        match T::round_waveform_fromhw(chip, pwm, &wfhw, &mut rust_wf) {
++            Ok(ret) => {
++                // SAFETY: `w` is guaranteed valid by the C caller.
++                unsafe {
++                    *w = rust_wf.into();
++                };
++                ret
++            }
++            Err(e) => e.to_errno(),
++        }
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn read_waveform_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++        wh: *mut c_void,
++    ) -> c_int {
++        // SAFETY: Relies on the function's contract that `c` and `p` are valid pointers.
++        let (chip, pwm) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p)) };
++        let parent_dev = match chip.parent_device() {
++            Some(dev) => dev,
++            None => {
++                return EINVAL.to_errno();
++            }
++        };
++
++        let bound_parent =
++	// SAFETY: The PWM core guarantees the device is bound during callbacks.
++            unsafe { &*(parent_dev as *const device::Device as *const device::Device<Bound>) };
++        match T::read_waveform(chip, pwm, bound_parent) {
++            // SAFETY: `wh` is valid per this function's safety contract.
++            Ok(wfhw) => match unsafe { Self::serialize_wfhw(&wfhw, wh) } {
++                Ok(()) => 0,
++                Err(e) => e.to_errno(),
++            },
++            Err(e) => e.to_errno(),
++        }
++    }
++
++    /// # Safety
++    ///
++    /// Pointers from C must be valid.
++    unsafe extern "C" fn write_waveform_callback(
++        c: *mut bindings::pwm_chip,
++        p: *mut bindings::pwm_device,
++        wh: *const c_void,
++    ) -> c_int {
++        // SAFETY: Relies on the function's contract that `c` and `p` are valid pointers.
++        let (chip, pwm) = unsafe { (Chip::from_ptr(c), Device::from_ptr(p)) };
++        let parent_dev = match chip.parent_device() {
++            Some(dev) => dev,
++            None => {
++                return EINVAL.to_errno();
++            }
++        };
++
++        let bound_parent =
++	        // SAFETY: The PWM core guarantees the device is bound during callbacks.
++            unsafe { &*(parent_dev as *const device::Device as *const device::Device<Bound>) };
++        // SAFETY: `wh` is valid per this function's safety contract.
++        let wfhw = match unsafe { Self::deserialize_wfhw(wh) } {
++            Ok(v) => v,
++            Err(e) => return e.to_errno(),
++        };
++        match T::write_waveform(chip, pwm, &wfhw, bound_parent) {
++            Ok(()) => 0,
++            Err(e) => e.to_errno(),
++        }
 +    }
 +}
 +
-+/// Wrapper for PWM state [`struct pwm_state`](srctree/include/linux/pwm.h).
++/// VTable structure wrapper for PWM operations.
++/// Mirrors [`struct pwm_ops`](srctree/include/linux/pwm.h).
 +#[repr(transparent)]
-+pub struct State(bindings::pwm_state);
++pub struct PwmOpsVTable(Opaque<bindings::pwm_ops>);
 +
-+impl Default for State {
-+    fn default() -> Self {
-+        Self::new()
++// SAFETY: PwmOpsVTable is Send. The vtable contains only function pointers
++// and a size, which are simple data types that can be safely moved across
++// threads. The thread-safety of calling these functions is handled by the
++// kernel's locking mechanisms.
++unsafe impl Send for PwmOpsVTable {}
++
++// SAFETY: PwmOpsVTable is Sync. The vtable is immutable after it is created,
++// so it can be safely referenced and accessed concurrently by multiple threads
++// e.g. to read the function pointers.
++unsafe impl Sync for PwmOpsVTable {}
++
++impl PwmOpsVTable {
++    /// Returns a raw pointer to the underlying `pwm_ops` struct.
++    pub(crate) fn as_raw(&self) -> *const bindings::pwm_ops {
++        self.0.get()
 +    }
 +}
 +
-+impl State {
-+    /// Creates a new zeroed `State`.
-+    pub fn new() -> Self {
-+        State(bindings::pwm_state::default())
-+    }
++/// Creates a PWM operations vtable for a type `T` that implements `PwmOps`.
++///
++/// This is used to bridge Rust trait implementations to the C `struct pwm_ops`
++/// expected by the kernel.
++pub const fn create_pwm_ops<T: PwmOps>() -> PwmOpsVTable {
++    // SAFETY: `core::mem::zeroed()` is unsafe. For `pwm_ops`, all fields are
++    // `Option<extern "C" fn(...)>` or data, so a zeroed pattern (None/0) is valid initially.
++    let mut ops: bindings::pwm_ops = unsafe { core::mem::zeroed() };
 +
-+    /// Creates a `State` wrapper by taking ownership of a C `pwm_state` value.
-+    pub(crate) fn from_c(c_state: bindings::pwm_state) -> Self {
-+        State(c_state)
-+    }
++    ops.apply = Some(Adapter::<T>::apply_callback);
++    ops.request = Some(Adapter::<T>::request_callback);
++    ops.free = Some(Adapter::<T>::free_callback);
++    ops.capture = Some(Adapter::<T>::capture_callback);
++    ops.get_state = Some(Adapter::<T>::get_state_callback);
 +
-+    /// Gets the period of the PWM signal in nanoseconds.
-+    pub fn period(&self) -> u64 {
-+        self.0.period
-+    }
++    ops.round_waveform_tohw = Some(Adapter::<T>::round_waveform_tohw_callback);
++    ops.round_waveform_fromhw = Some(Adapter::<T>::round_waveform_fromhw_callback);
++    ops.read_waveform = Some(Adapter::<T>::read_waveform_callback);
++    ops.write_waveform = Some(Adapter::<T>::write_waveform_callback);
++    ops.sizeof_wfhw = core::mem::size_of::<T::WfHw>();
 +
-+    /// Sets the period of the PWM signal in nanoseconds.
-+    pub fn set_period(&mut self, period_ns: u64) {
-+        self.0.period = period_ns;
-+    }
-+
-+    /// Gets the duty cycle of the PWM signal in nanoseconds.
-+    pub fn duty_cycle(&self) -> u64 {
-+        self.0.duty_cycle
-+    }
-+
-+    /// Sets the duty cycle of the PWM signal in nanoseconds.
-+    pub fn set_duty_cycle(&mut self, duty_ns: u64) {
-+        self.0.duty_cycle = duty_ns;
-+    }
-+
-+    /// Returns `true` if the PWM signal is enabled.
-+    pub fn enabled(&self) -> bool {
-+        self.0.enabled
-+    }
-+
-+    /// Sets the enabled state of the PWM signal.
-+    pub fn set_enabled(&mut self, enabled: bool) {
-+        self.0.enabled = enabled;
-+    }
-+
-+    /// Gets the polarity of the PWM signal.
-+    pub fn polarity(&self) -> Result<Polarity, Error> {
-+        Polarity::try_from(self.0.polarity)
-+    }
-+
-+    /// Sets the polarity of the PWM signal.
-+    pub fn set_polarity(&mut self, polarity: Polarity) {
-+        self.0.polarity = polarity.into();
-+    }
-+
-+    /// Returns `true` if the PWM signal is configured for power usage hint.
-+    pub fn usage_power(&self) -> bool {
-+        self.0.usage_power
-+    }
-+
-+    /// Sets the power usage hint for the PWM signal.
-+    pub fn set_usage_power(&mut self, usage_power: bool) {
-+        self.0.usage_power = usage_power;
-+    }
++    PwmOpsVTable(Opaque::new(ops))
 +}
 
 -- 
