@@ -1,141 +1,123 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906ED2DF3E9
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 11:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBC42DE201;
+	Tue, 17 Jun 2025 12:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750161367; cv=none; b=CAp2SHPNcq6RGSSeo08O+5y6w0EYbAe58Q0mRSC09cOFH4xFxieO5ut7/PLnhCXlBanrWyx7SYAbsQvSudy60JfYalBmHj/04q5FE9eNwAvBriBnkRYJ7nLITuY5kKkHgAp+9bNvbV5pKN1q3bcRuLpDXpweac5F0d8sg+sOpT0=
+	t=1750164137; cv=none; b=uwbPHyN9nXf2shega5J61sBjtSKTBOXGjW+YUkkfEaVKGlUzVYx6yzOZhwJdDKnhwSLufcOPlp17ZMuSlncgMkMdJePpy93N/6M6Pf2wHWX/5dgZC6+LGNhIlSN5dSosfWh8igPvo7dORNiQiT3bLQCmN5xeH4LBhlombUu3Uyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750161367; c=relaxed/simple;
-	bh=spf/OGWq9rNYwhtnFTQUzUHQXPQ8m2LBqxJ8x0nCh68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=ljQUajdlfmlVCNQuvj2lyjfBSWJaxC9ejmdN+Xkon/Tx9mNnqfRqpWyiJiq5BMICLd3rCLXX2vOAJSlKO3Qp3Dsvo5L5HK14KqvsJec7QH//ww4V+rSnoiQmwnwb3fIbpc5A71puDfLWKvvNhOku6a0LdcyBc1iNjH96pybB0iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=hk3/aRhf; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1750164137; c=relaxed/simple;
+	bh=wp8zThC6N9cw43TcQ+r9RrsBd53rRBbiCjDiUQaJpo0=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=QNWQzdv2JK+gJHk1nVPMHLgfYe4EiDRXQ4xhPVjyfeXrtvyBDN898TAIy/hbWoOqp3VMhfQAMWNuc2As/aEAAHd7ynihBUosbynF08wtTW772S7EMIAocJ0X9djYMx7hZfTfoWvTUGo8cJr7RC+RjLQmaJY4jxZZMltwzJ1XtwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eU4PqvnW; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="hk3/aRhf"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250617115558euoutp01fdbb1923e7f567d71c628b7d6e5e77c7~J0nuFDCDE0580205802euoutp01C
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 11:55:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250617115558euoutp01fdbb1923e7f567d71c628b7d6e5e77c7~J0nuFDCDE0580205802euoutp01C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1750161358;
-	bh=oofikVxRsBxHxPSDdlnvLJyVhdL+RF7rzHi6wUMuvQs=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=hk3/aRhfplI0MimyM+0Ny2W5f3hpPbZ//3yhhymz2n67YIKDfT3D3KCZ2wiRiOJ7x
-	 iR2hztlhHdIbLNoFSk5f7oeOHipEVMXkbWJ04oYrtS/1qML0eCIb9xeIW1IVjbbN22
-	 ENbXparJC5pyBqD0Dfc75BwwVviBUUsgvb8Bcm1s=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250617115557eucas1p1fe0dc838ed601d75fe7deba27d312aa7~J0ntgrNum2233822338eucas1p1l;
-	Tue, 17 Jun 2025 11:55:57 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250617115556eusmtip1a9ce151263637f622a84b2312a20b25d~J0nsOwoz40555305553eusmtip1i;
-	Tue, 17 Jun 2025 11:55:56 +0000 (GMT)
-Message-ID: <b1c7c305-fad9-4161-b627-b5c1db9cb0ee@samsung.com>
-Date: Tue, 17 Jun 2025 13:55:55 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eU4PqvnW"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7fd581c2bf4so4571772a12.3;
+        Tue, 17 Jun 2025 05:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750164135; x=1750768935; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wp8zThC6N9cw43TcQ+r9RrsBd53rRBbiCjDiUQaJpo0=;
+        b=eU4PqvnWcfWgxe47DNPQfmKGcFEWehy+F2LUXEIDW50kROSPREqiVdmNSNhwhMcbY9
+         NK0rnOKpPNdZrOyFzzRiqOenCydXNGci+3qq3VOcsV0mOqXZnjPAD1wIduHRr3TUBNBB
+         TfN+vPMUiAcLkjtiirs7pxKwQ6i+LNTvSNRrRJHZC2vHi1UkOpSj64J+vKabpH/BJ+fn
+         Xg2SfGwbGA8q05+40qBug2CI8Mxj45SJ49cL2deDsmRsCgo/KfipC4zyxuY4RlD89tAK
+         ZDTUapfxRAu2AwtJemgTf7of4iKeTtpo1f0V7NrW/1yZocKAzL7Iido/dVdwtGyDGJ82
+         GVDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750164135; x=1750768935;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wp8zThC6N9cw43TcQ+r9RrsBd53rRBbiCjDiUQaJpo0=;
+        b=MybXMdZkpIEP/ssPTjW8aKKVujP9vELoLYa3yc7F58WVzuOgfUkLfTH0vfp9ntKQuF
+         DYly8V0pk++NeXZGr+8+pNVMVMWxqKtQP+0A6A68uQBAr2Dk79HL7GtniC24hjDMU5R2
+         pI5Ytk/JsrZeENHOwHCDNibSdBlB215nOJsNB4ne8hS9bAhYbJplqrtJn1NCBKoTumIa
+         rnk1Ig72etasNfOTaxNMcsTswo8XtjWCmsKTXsPPPosAmqnQeIBuhOK6zVdlil6yhXTV
+         d0Hgl34ENAd9Oj75504e1/O4EZD3zP2tUa8QpV1VYFy2an4RPIbURfQ/jFHflzURLJaZ
+         SPpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWD12Qx97h7drZtIksMODEeJ33SHEt0U9j3gQeP9Ysf6wrEjVViETkEAvKThIE7kjL5xmS9BHtIOZRRyGFi1gM=@vger.kernel.org, AJvYcCXitTqYYtyQOVor9+sEbDWE9HVJ/Cf6HhvB8wH5xfBbnGIX2gITzLXJG/SEUb6YbL6lXVDwQB7kXaQlH+s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6bE7ENoRypJCCT41+1WBYNbYMv5v7mKHR2ZVS60MTiBifz+8h
+	7XmZX1a0Sh65qH3YznLY9kqkJqSDQQIrDmbDJCT3PitHEQO5q2aJ5GAe6Bwjivu8
+X-Gm-Gg: ASbGnctgbR8mTZfKEupC+2g/HD8PWgvpuMnLgaMHUrQix9fu6uMrHucSEleB+4Stfk2
+	RdG+75p/ZmXEu9KpBlSequYaT83pDJ3Ym3g7qs225TcHvKG9zZXhTFqXpN4h92tc34jR3A/eHps
+	fpS8w1q1sLzayLMjg24ESVkaN6ZiQdTPm8CAuED8G/gdB5beuXcwejn7tdjNUrlWakp5o9akqPV
+	9wGseQSpMAIyKhXmVy4cJkzm5doXxFW36JLUAkt2TBcwSMc6dyELXx/qHQDAxRpwzfXHtSz1e3S
+	JcHtD4ppZZPAQM49oEvuugSKuhzxWnytmsGi9fMCsHeJ8wAJ4ButyXiNLgmm61qetQk0gGWxob6
+	1xz3qx5a9UPdqN7XRAUIXMyzolR/HUBZLoeaCWryP
+X-Google-Smtp-Source: AGHT+IGBYiDSH+XW/7WiEAN4Iu3Ysp2ENeOE4J3gC0oSaPzWxHuRYw0Gng+rL/KaJtLA2HzaAc1tkQ==
+X-Received: by 2002:a17:90b:5150:b0:312:1143:cf8c with SMTP id 98e67ed59e1d1-313f1cafae6mr21539935a91.16.1750164134653;
+        Tue, 17 Jun 2025 05:42:14 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31429aae8eesm1265192a91.40.2025.06.17.05.42.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 05:42:14 -0700 (PDT)
+Date: Tue, 17 Jun 2025 21:42:07 +0900 (JST)
+Message-Id: <20250617.214207.1883960660906763456.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com, boqun.feng@gmail.com
+Cc: fujita.tomonori@gmail.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com, mingo@kernel.org
+Subject: Re: [PATCH v3 2/2] rust: task: Add Rust version of might_sleep()
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72kB4hxsyi9D-PV0YDc9KEgfC9iYCTJVEOosZv3fg1+mYA@mail.gmail.com>
+References: <CANiq72mES+dPBuhsdh0-hJcV69AO74j6W5vhCeo+yV5S-Zp+yg@mail.gmail.com>
+	<20250617.120453.1403624234989149033.fujita.tomonori@gmail.com>
+	<CANiq72kB4hxsyi9D-PV0YDc9KEgfC9iYCTJVEOosZv3fg1+mYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] pwm: Add Rust driver for T-HEAD TH1520 SoC
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
-	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
-	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
-	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
-	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <5aam5ff3m24yzsqdh7w2zplccuwmmr2no7jhgmdnxggmhpo4hl@r6iawlw7f42m>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250617115557eucas1p1fe0dc838ed601d75fe7deba27d312aa7
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
-X-EPHeader: CA
-X-CMS-RootMailID: 20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d
-References: <20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com>
-	<CGME20250610125333eucas1p16126b64a0f447a5e9a5ad553d9d7d79d@eucas1p1.samsung.com>
-	<20250610-rust-next-pwm-working-fan-for-sending-v2-2-753e2955f110@samsung.com>
-	<jbm3qvowi5vskhnjyqlp3xek36gzzqjt35m66eayxi6lmi525t@iefevopxjl53>
-	<d1523586-82ca-4863-964f-331718bb1f0e@samsung.com>
-	<5aam5ff3m24yzsqdh7w2zplccuwmmr2no7jhgmdnxggmhpo4hl@r6iawlw7f42m>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-
-
-On 6/12/25 22:36, Uwe Kleine-König wrote:
-> Hello Michael,
-> 
-> On Thu, Jun 12, 2025 at 10:14:13AM +0200, Michal Wilczynski wrote:
->> On 6/11/25 08:58, Uwe Kleine-König wrote:
->>> Huh, if you do the newstyle stuff, .get_state() is wrong. It's either
->>> .round_waveform_tohw() + .round_waveform_fromhw() + .read_waveform() +
->>> .write_waveform() or .apply() + .get_state(), but don't mix these.
->>
->> In the process of implementing the full "newstyle" waveform API as you
->> suggested, I discovered a hardware limitation. After writing new values
->> to the period and duty cycle registers, reading them back does not
->> return the programmed values, which makes it impossible to reliably
->> report the current hardware state.
->>
->> This appears to be a known quirk of the hardware, as the reference C
->> driver from T-HEAD [1] also omits the .get_state callback, likely for
->> the same reason.
-> 
-> Do you read complete non-sense or e.g. the old configuration until
-> the current period ends?
-> 
-> I guess would be that .get_state wasn't implemented because this is an
-> oldoldstyle driver and it works also without that function.
-
-Hi Uwe,
-
-My apologies for the confusion. After further testing, it appears I was
-mistaken, and the hardware reads are working correctly. I must have made
-an error when testing via sysfs.
-
-I'll be submitting a v3 that implements the full round_waveform_tohw(),
-round_waveform_fromhw(), read_waveform(), and write_waveform()
-combination as you initially suggested.
-
-> 
->> Given this, would it be acceptable to provide a write-only driver? My
->> proposed solution would be to omit the .read_waveform() and
->> .round_waveform_fromhw() implementations from my PwmOps trait. This
-> 
-> Please don't skip .round_waveform_fromhw(), that one is needed for
-> pwm_round_waveform_might_sleep().
-> 
-> I don't like it, but given that the hardware doesn't play along there is
-> no alternative.
-> 
->> would mean the driver can correctly set the PWM state, but attempting to
->> read it back via sysfs would fail (e.g., with -EOPNOTSUPP), reflecting
->> the hardware's capability.
-> 
-> I think there might be another patch opportunity then to make PWM_DEBUG
-> work with that.
-> 
-> Best regards
-> Uwe
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+T24gVHVlLCAxNyBKdW4gMjAyNSAxMDowMjoyMiArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBUdWUsIEp1biAxNywgMjAy
+NSBhdCA1OjA14oCvQU0gRlVKSVRBIFRvbW9ub3JpDQo+IDxmdWppdGEudG9tb25vcmlAZ21haWwu
+Y29tPiB3cm90ZToNCj4+DQo+PiBIb3cgYWJvdXQgYWRkaW5nIGEgbGluayB0byB0aGUgaGVhZGVy
+IGZpbGUgd2hlcmUgdGhlIG1pZ2h0X3NsZWVwIG1hY3JvDQo+PiBpcyBkZWZpbmVkLCBsaWtlIHRo
+aXM/DQo+IA0KPiBTb3VuZHMgZ29vZCB0byBtZS4gVGhvdWdoLCBmb3IgQVBJcyB0aGF0IGhhdmUg
+cmVuZGVyZWQgZG9jcywgd2UNCj4gdHlwaWNhbGx5IHBvaW50IHRvIHRob3NlIGluc3RlYWQ6DQo+
+IA0KPiAgICAgaHR0cHM6Ly9kb2NzLmtlcm5lbC5vcmcvZHJpdmVyLWFwaS9iYXNpY3MuaHRtbCNj
+Lm1pZ2h0X3NsZWVwDQoNCkFoLCBzb21laG93LCBJIG92ZXJsb29rZWQgdGhhdC4gVGhhbmtzIQ0K
+DQpCb3F1biwgaGVyZSBpcyB0aGUgcmV2aXNlZCB2ZXJzaW9uLg0KDQpkaWZmIC0tZ2l0IGEvcnVz
+dC9oZWxwZXJzL3Rhc2suYyBiL3J1c3QvaGVscGVycy90YXNrLmMNCmluZGV4IDMxYzMzZWEyZGNl
+Ni4uMmM4NWJiYzI3MjdlIDEwMDY0NA0KLS0tIGEvcnVzdC9oZWxwZXJzL3Rhc2suYw0KKysrIGIv
+cnVzdC9oZWxwZXJzL3Rhc2suYw0KQEAgLTEsNyArMSwxMyBAQA0KIC8vIFNQRFgtTGljZW5zZS1J
+ZGVudGlmaWVyOiBHUEwtMi4wDQogDQorI2luY2x1ZGUgPGxpbnV4L2tlcm5lbC5oPg0KICNpbmNs
+dWRlIDxsaW51eC9zY2hlZC90YXNrLmg+DQogDQordm9pZCBydXN0X2hlbHBlcl9taWdodF9yZXNj
+aGVkKHZvaWQpDQorew0KKwltaWdodF9yZXNjaGVkKCk7DQorfQ0KKw0KIHN0cnVjdCB0YXNrX3N0
+cnVjdCAqcnVzdF9oZWxwZXJfZ2V0X2N1cnJlbnQodm9pZCkNCiB7DQogCXJldHVybiBjdXJyZW50
+Ow0KZGlmZiAtLWdpdCBhL3J1c3Qva2VybmVsL3Rhc2sucnMgYi9ydXN0L2tlcm5lbC90YXNrLnJz
+DQppbmRleCA4MzQzNjgzMTMwODguLmI3OWQxOWRlYjAyZSAxMDA2NDQNCi0tLSBhL3J1c3Qva2Vy
+bmVsL3Rhc2sucnMNCisrKyBiL3J1c3Qva2VybmVsL3Rhc2sucnMNCkBAIC00MDAsMyArNDAwLDI3
+IEBAIGZuIGVxKCZzZWxmLCBvdGhlcjogJkt1aWQpIC0+IGJvb2wgew0KIH0NCiANCiBpbXBsIEVx
+IGZvciBLdWlkIHt9DQorDQorLy8vIEFubm90YXRpb24gZm9yIGZ1bmN0aW9ucyB0aGF0IGNhbiBz
+bGVlcC4NCisvLy8NCisvLy8gRXF1aXZhbGVudCB0byB0aGUgQyBzaWRlIFtgbWlnaHRfc2xlZXBg
+XSBtYWNybywgdGhpcyBmdW5jdGlvbiBzZXJ2ZXMgYXMNCisvLy8gYSBkZWJ1Z2dpbmcgYWlkIGFu
+ZCBhIHBvdGVudGlhbCBzY2hlZHVsaW5nIHBvaW50Lg0KKy8vLw0KKy8vLyBUaGlzIGZ1bmN0aW9u
+IGNhbiBvbmx5IGJlIHVzZWQgaW4gYSBub25hdG9taWMgY29udGV4dC4NCisvLy8NCisvLy8gW2Bt
+aWdodF9zbGVlcGBdOiBodHRwczovL2RvY3Mua2VybmVsLm9yZy9kcml2ZXItYXBpL2Jhc2ljcy5o
+dG1sI2MubWlnaHRfc2xlZXANCisjW3RyYWNrX2NhbGxlcl0NCisjW2lubGluZV0NCitwdWIgZm4g
+bWlnaHRfc2xlZXAoKSB7DQorICAgICNbY2ZnKENPTkZJR19ERUJVR19BVE9NSUNfU0xFRVApXQ0K
+KyAgICB7DQorICAgICAgICBsZXQgbG9jID0gY29yZTo6cGFuaWM6OkxvY2F0aW9uOjpjYWxsZXIo
+KTsNCisgICAgICAgIGxldCBmaWxlID0ga2VybmVsOjpmaWxlX2Zyb21fbG9jYXRpb24obG9jKTsN
+CisNCisgICAgICAgIC8vIFNBRkVUWTogYGZpbGUuYXNfcHRyKClgIGlzIHZhbGlkIGZvciByZWFk
+aW5nIGFuZCBndWFyYW50ZWVkIHRvIGJlIG51bC10ZXJtaW5hdGVkLg0KKyAgICAgICAgdW5zYWZl
+IHsgY3JhdGU6OmJpbmRpbmdzOjpfX21pZ2h0X3NsZWVwKGZpbGUuYXNfcHRyKCkuY2FzdCgpLCBs
+b2MubGluZSgpIGFzIGkzMikgfQ0KKyAgICB9DQorDQorICAgIC8vIFNBRkVUWTogQWx3YXlzIHNh
+ZmUgdG8gY2FsbC4NCisgICAgdW5zYWZlIHsgY3JhdGU6OmJpbmRpbmdzOjptaWdodF9yZXNjaGVk
+KCkgfQ0KK30NCg==
