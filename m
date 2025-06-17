@@ -1,186 +1,197 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C4228E594
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 13:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C6A1E1C3A;
+	Tue, 17 Jun 2025 13:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750167427; cv=none; b=SiX7N3vE1A/wI0GFyEt5FNd1sjU0Z7Gc15TAc8c/XoBI5YsCzZbHhglxNbCSJglRbTWK/3WjCMFe41v8U3rGMTrIdCr+3M+fIpwhodpi1vvpim3BgmvuKq+05yT2X8ODuCTtc2R6zCCEgUHYKhdup+Qsy+Y4OthrmHCiOwBCIOw=
+	t=1750167744; cv=none; b=o5+UsZ1B3ZTE7RC+acBAJDEVZyomQ7zGgo3EnpamUaIM6YoiHW2IaPA8dnqyxkGsVuSu2rTQDwIeF/QACcvEvdweJWCBIKXo908IVyUg5ceNky3wTa8mZhI2iyslOdAyFtGprH2CMM9c+wgEL8A7+Ba4RQHqPTxE8VMrzgRARv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750167427; c=relaxed/simple;
-	bh=M3gQu6VPxrPFYf8hu7y10DRHvlJJ2ovwL/u8xE0ildM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=I/AQzpUR+m5WxLHtItucFn/hUL0TAKrQzlvgw2ZZezN6rhdnUTd/c6V3RhwGZSDL2NsfJVTKEUWTeCwS0U68aycOisgyIbhVtlblmbMvxObY5gXs8/u2YoCosc+ipGCGRi2xvCKIWz3FZAR9+h5XrmACDvGIRzVMorFlQCsqzaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HWr342PH; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1750167744; c=relaxed/simple;
+	bh=6kxGzBsimhmuPwPFGSko0prjDnLGC3C5jeaYqBgiAYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mu7mSKAvjC29798wt4D1tPstdm3LEMP4f8a2H4JuGWba4K1hyOT5l6TnO7FEHHCov+wYwNz1Dp6dsWiodc92UlKItSRz4Xe+Cqma8e166mqaloFi4E/1ou0BKVRNvDB6YEOtpaf4oRqjLFBbzHkDukTfyhgjJ3vfLwTxPBpvHnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MBzkJ3ps; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HWr342PH"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4f8fd1847so2077249f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 06:37:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MBzkJ3ps"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6facacf521eso58089416d6.3;
+        Tue, 17 Jun 2025 06:42:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750167423; x=1750772223; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WdkCvOjgjBWvaH3RbGAWvWYYMnuHBQbG69wwVzqGWxM=;
-        b=HWr342PHWNw07/Qi5cdpGqCXGEviuWsmloLJqsbdrN2jE2DKlbr9izd0dLX8tgWS0i
-         Jpr4ySbwj+3NR6ALtpMlSOxwwXI8anPcIF2OZ+Gi2aqyl+2XueX7ltxREVVZoek1+TQ6
-         CCH2gW52Wak6GaF/alw0AZtEpd/YUL5J3L+RcA0OGjyEix99qo8yI2KRblWKifuEs2gM
-         ZEkstK3y4e4VcbHe0KERyfnhhxEWgljETjOBurKFrNmbbP5+aszCkSCkCPXGnLNmsadD
-         Ql4TM3anAjmViO8OqFhwIqaNhTPy7PjG2tw/U6DBiXoHCLy8OmqrfWWlRm9cjM9P1yHy
-         dZbg==
+        d=gmail.com; s=20230601; t=1750167742; x=1750772542; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=XWJ7ISGxakN/jn9ul7R2vYujXeqC/5WxHQKkaVruGAA=;
+        b=MBzkJ3psDMyySuSEjnC3jNYqO8CUuxRnChKl9As+zL1IKlhC+xJlySdSKspKOOfsWg
+         050tKLxqR9B9cBXCI8ycDSeAWMfZrkGRFZoEGiVhzRGP6wkp0v47T2UUaxvIRibf26D6
+         4KbnjLd+Pt2FSgkxSfVTgi48twYZ6TQ27sLBQnTrA3gMISHSgca3J0Vk1C6TJnePYHPe
+         LaLRR7O7EH0Rhxo9XVCpLO5zNU91X6dE8oN8zNA4XIm522NNlNPj9GMKncKgFm7a5g4+
+         wW8032KivhjOD6qiQ0Lv+PoYzilzZnmATu7epU+dfrgtYcrKCArvf4ocBArPZElRhJO6
+         bX0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750167423; x=1750772223;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WdkCvOjgjBWvaH3RbGAWvWYYMnuHBQbG69wwVzqGWxM=;
-        b=ol8cyXODTEdQoOVHR1bpPEdgOF7DTu3vcpt8kEhfFASxGUVnt/VKntD8Kr23G8ZFTl
-         1JUJgYesCnsbKycc4fQzb3rV+p6ZH8QL+sGmKuS5ZMWQF6VdLhvfimU0NzrmLfmF5tWK
-         T+4ueZrBUyKrAJiJEBW+nq9KXV+2b1Iseq+Nsuvv0f8711fx7prf3Z56Kx28+um9ZkL9
-         Vop7riOoZRRxuZ97S9xWzNABxIR0mvHkgN6PcR0BVh33iAkMAGDcbcTQ15bfWpJBrJ/+
-         9tikqscsB4cvHyBBuyuKWBeVmdGbyLB5d8zQoiM6WsL4XwFfvgb6/Mm+AIDCz11UmmWQ
-         +E3w==
-X-Forwarded-Encrypted: i=1; AJvYcCW1xMPZ2G3c3zEZBLQxWlmuwL6GlIBDeDd4vyteK7GoOLafeUOMBFdfgv7mPQXZ6grlwYOQAzuXf/4+9j8C0A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzqn7+z2rWkPZ1fr4APkRpEYQ8yzP3ekrfRrn2xoot6pJ6yDgFE
-	8gqbk5wYsjpbMzDREhdgGpTMzjraFig4fmGzqZ3HbkIa8rZRNUuKsxxmCAmTsbuPeglIAoeF3hA
-	kRXNj39YMjvlYUcdn3A==
-X-Google-Smtp-Source: AGHT+IEMDhH4okw8GTdgXodniHiT1koUzx1rDCj34eR+Q+7V5b9vWvUIpnrHd+p/WctosGmoTJbrw24dGRNMPG4=
-X-Received: from wro29.prod.google.com ([2002:a05:6000:41dd:b0:3a4:f715:9b07])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2308:b0:3a4:f939:b53 with SMTP id ffacd0b85a97d-3a5723a3ae0mr10356845f8f.38.1750167423450;
- Tue, 17 Jun 2025 06:37:03 -0700 (PDT)
-Date: Tue, 17 Jun 2025 13:36:47 +0000
+        d=1e100.net; s=20230601; t=1750167742; x=1750772542;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XWJ7ISGxakN/jn9ul7R2vYujXeqC/5WxHQKkaVruGAA=;
+        b=cvEegJV14hGt/rNBCnhwVQ463iyE8rUXXjypAdg+fac5A2HUVA4DrqQNt576INnrQq
+         AV6jU6bZEJqPdaigXe3ud7hvMcDLWlba2H6jmbyk8k208N6IT2CWrgqjiPXeBLlInX89
+         173ObuAht/h4GAn4u0p8beDpQsUA3HPjdelUa91Zks2Atvu1ArsbAURl8OU9ugFTE+ID
+         6HatfP3+gBCxmRVOJd2ZFuV3dkvkjkVagZadzaU7uCK823JZILssvBetBPOPZDeQkZzh
+         vjYGt0/IjwLTnXRPyDK1USWlIjQSMb6EkXLmsg/QcYSgqRJyX6eijSzn+rDaiQjhiSY6
+         WDFg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7kwqTFBJuIyQPMnGT+CDMcLBsZ4t0ppmCQ25cJGJuyandlLKtwjUdjzwiD+lYLYjOa5BOBdZxSSet+Ice6g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrbVqcQwieguZJRXAyZ3zI1HCV35126qScPkameYzDxDEmtgbT
+	eLrPQfNsugERAcMTUZE7nz85heafxmvVtZMcywMV57u4RLUfEX25GC/F
+X-Gm-Gg: ASbGncuSPXIVqQDEhDc3cgnY57KR29JGJlytuz6dESVLGcEE6Fp5usoYMcfutIOjSRV
+	QKUUSDdEZeDz5d0KctW7bW4vCjBzlGtTFGMUVougtSv9t54m+xnu65hlvFpaSFKTevBsJyBW0KB
+	V+9gdCOYsupoDQkx7MrnprxzdHhP59V9sItyd7nBS2dhxGvMeE3GJAcNAu9ROfBchDSlPxj3dKb
+	IpHrUyP2qdFkqy/SlwVl9rN+UNbtYt1XIo4aqYgTzLmprOKfMHw1U6oNaaX67qBRWruAICefN4u
+	4MdTV+4L9Qsdk5cdVcYrfWz5a3LsWvqvG8hbQSizi2f6t7R71PRTMqzmQogvNhhFsTf4uAyeQre
+	aRjPpeKgkilQlV53ep8kiQJxO4DBTuNH7ymGjVn7KdzgRp5KcEkf9
+X-Google-Smtp-Source: AGHT+IFCRqWnxQpO0pQYeKbbmW1W+l157ql+WXTsNdBkzj3reR0BtOT3jqKUShAVTiLTHo/6newWug==
+X-Received: by 2002:a05:6214:20ea:b0:6fa:8c15:75c1 with SMTP id 6a1803df08f44-6fb4762f389mr173448666d6.2.1750167741846;
+        Tue, 17 Jun 2025 06:42:21 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35c31566sm62538946d6.61.2025.06.17.06.42.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Jun 2025 06:42:21 -0700 (PDT)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A29511200043;
+	Tue, 17 Jun 2025 09:42:20 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 17 Jun 2025 09:42:20 -0400
+X-ME-Sender: <xms:vHBRaJEqTVLDutusw6X0M-H01-T_xUeBgsHIK8NoIT0qUDLuQbgNZw>
+    <xme:vHBRaOWBu6Igc3-KdKlyXRbRi7nzAcQCvJWQxys4ajnD2ymXQZQKnkScwnjg2TyEi
+    gCPrf5SP0G2YKOtMw>
+X-ME-Received: <xmr:vHBRaLJkBg1nWMvkL84D6Nh555Yx50exa5hVZW0Rvuk60FgdUXrNMLsTew>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdeffecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuf
+    fkfhggtggugfgjsehtkeortddttdejnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegs
+    ohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhepffelke
+    efudethfekhfehkefhledvjefggedvjeejffduleektdffieevjeettedunecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvsh
+    hmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheeh
+    vddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpd
+    hnsggprhgtphhtthhopedvhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhi
+    ghhuvghlrdhojhgvuggrrdhsrghnughonhhishesghhmrghilhdrtghomhdprhgtphhtth
+    hopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidr
+    ghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguh
+    hordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgt
+    ohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtg
+    hpthhtoheprgdrhhhinhgusghorhhgsehsrghmshhunhhgrdgtohhm
+X-ME-Proxy: <xmx:vHBRaPE3LL_SkVw-NzNfn1NmzIBd1MT1h8Y76HQoBvjUMNnW-P2_aA>
+    <xmx:vHBRaPUbhuwa1rlaL7zP7N22OZBUX1aYTaSPr2JL3kPzcQkCI5dIJg>
+    <xmx:vHBRaKOh-u6yMneJI4FYWyMBJm2AdbUklzMM7RlfEgNECXKoXBSjIQ>
+    <xmx:vHBRaO3V0LzUsVBds_gEaNibmCBhsVWddaAEQ-KgX5nyhCrnoJhZIg>
+    <xmx:vHBRaMXQSspjud-EPx_AVCsflpcG_eYpnaLQLjiMNfFR46yuovKJSCcM>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 17 Jun 2025 09:42:20 -0400 (EDT)
+Date: Tue, 17 Jun 2025 06:42:18 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, mingo@redhat.com, peterz@infradead.org,
+	juri.lelli@redhat.com, vincent.guittot@linaro.org,
+	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+	mgorman@suse.de, vschneid@redhat.com, pmladek@suse.com,
+	fujita.tomonori@gmail.com, mingo@kernel.org
+Subject: Re: [PATCH v3 1/2] rust: Introduce file_from_location()
+Message-ID: <aFFwumsjuAEIJVUF@Mac.home>
+References: <20250616153604.49418-1-boqun.feng@gmail.com>
+ <20250616153604.49418-2-boqun.feng@gmail.com>
+ <CANiq72mZV3Ezxb4FvDdMvn=O+ReUPBx9usUahLgwTKKCFD_+cA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAG5vUWgC/x3MSQqAMAxA0atI1ga04IBXERexppqFVlMcQHp3i
- 8u3+P+FwCocoMteUL4kiN8SyjwDu9A2M8qUDKYwVVGXDfqdjpPRqV9R6Uay1diyqx2RgVTtyk6 e/9gPMX7i1WcCYQAAAA==
-X-Change-Id: 20250617-opaque-from-raw-ac5b8ef6faa2
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4237; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=M3gQu6VPxrPFYf8hu7y10DRHvlJJ2ovwL/u8xE0ildM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoUW94PXoLr5TGi3Dy4xbq6vyhDItPxc58t6abl
- RFPIjla48yJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaFFveAAKCRAEWL7uWMY5
- RgkBD/9dtOU3K/e3NpjSkdYgne2dJ5ngj094WXloMO7B+XZLRGjdpTmKKGAgSfpFfiG/YL89edV
- 59g5YxUGu8fApwVw5qTDBE8tGxaxWsAgOwLmN/amy4f8E45bVtXZ/uj77RzSzdvUAx5lFiSjQQr
- v4tlYPjS7nAnBCcNxJyMxKnTHhDzyq0KfQ/S/L82lBxtfCWiWvcmIIeGfRdf1ZU3x81lNaNZc6E
- Bx1dD3v8wdtFyxuP7cuXrjwSH4UOGqDAf0BEABjtk7+jSWi4xMoME6lncXyT0P7w1RDn/NinMRE
- H0NCpX9yDIKwcrXPqTZp8n34n54IAKvilLvaY9xymUqaInHKY7o2A1lCZN+IgiiCzspKLp8i06U
- DkhN23Y8yb7HxEMLiErq+Hx0FUpeJkGpgRgSF7xztEKONVgJnXyOjVBbUnsorfG7oU14O1W1zZA
- OBCTzDXDYItGjj3Ubnlo8JI74S6riRjzX7CYTlqlEK+TbRSRxleNscIySYDAOmOYOTdg7UkYTcN
- bqYekjnuB0ebsMw7huMgOI1SB40/y52VstObeaNtzMVSGE9bolmgbzcWyw1tG/+qOUUhAXsZW+9
- d3uDLoV1/kC/C50jbD7sm2UUoSpB3VmXecpL6kRdWvvt8R3ug01X9E+MZK3e9KMTiT8qFBl6rJ0 I2x0aVTi8mZ4Y/g==
-X-Mailer: b4 0.14.2
-Message-ID: <20250617-opaque-from-raw-v1-1-a2e99efa3ba2@google.com>
-Subject: [PATCH] rust: types: add Opaque::from_raw
-From: Alice Ryhl <aliceryhl@google.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mZV3Ezxb4FvDdMvn=O+ReUPBx9usUahLgwTKKCFD_+cA@mail.gmail.com>
 
-Since commit b20fbbc08a36 ("rust: check type of `$ptr` in
-`container_of!`") we have enforced that the field pointer passed to
-container_of! must match the declared field. This caused mismatches when
-using a pointer to bindings::x for fields of type Opaque<bindings::x>.
+On Mon, Jun 16, 2025 at 11:19:52PM +0200, Miguel Ojeda wrote:
+> On Mon, Jun 16, 2025 at 5:36 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > introduce a file_from_location() function, which return a warning string
+> 
+> returns
+> 
 
-This situation encourages the user to simply pass field.cast() to the
-container_of! macro, but this is not great because you might
-accidentally pass a *mut bindings::y when the field type is
-Opaque<bindings::x>, which would be wrong.
+Fixed.
 
-To help catch this kind of mistake, add a new Opaque::from_raw that
-wraps a raw pointer in Opaque without changing the inner type.
+> >  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(coerce_unsized))]
+> >  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(dispatch_from_dyn))]
+> >  #![cfg_attr(not(CONFIG_RUSTC_HAS_COERCE_POINTEE), feature(unsize))]
+> > +#![cfg_attr(CONFIG_RUSTC_HAS_LOCATION_FILE_WITH_NUL, feature(file_with_nul))]
+> 
+> I would change the config name to `CONFIG_RUSTC_HAS_FILE_WITH_NUL`
+> since that is the actual name, i.e. without "location".
+> 
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/drm/device.rs  | 4 +---
- rust/kernel/drm/gem/mod.rs | 4 +---
- rust/kernel/lib.rs         | 7 +++++++
- rust/kernel/types.rs       | 5 +++++
- 4 files changed, 14 insertions(+), 6 deletions(-)
+Sounds good to me
 
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index 624d7a4c83ead64b93325189f481d9b37c3c6eae..763c825d53aaba4f874361b785587b2c5129d49a 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -135,11 +135,9 @@ pub(crate) fn as_raw(&self) -> *mut bindings::drm_device {
-     ///
-     /// `ptr` must be a valid pointer to a `struct device` embedded in `Self`.
-     unsafe fn from_drm_device(ptr: *const bindings::drm_device) -> *mut Self {
--        let ptr: *const Opaque<bindings::drm_device> = ptr.cast();
--
-         // SAFETY: By the safety requirements of this function `ptr` is a valid pointer to a
-         // `struct drm_device` embedded in `Self`.
--        unsafe { crate::container_of!(ptr, Self, dev) }.cast_mut()
-+        unsafe { crate::container_of!(Opaque::from_raw(ptr), Self, dev) }.cast_mut()
-     }
- 
-     /// Not intended to be called externally, except via declare_drm_ioctls!()
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 4cd69fa84318c3ff2cec57949e9bab05559a3c2f..5b80c248761bb39914a63ad7947aa8d3779054ef 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -125,11 +125,9 @@ fn as_raw(&self) -> *mut bindings::drm_gem_object {
-     }
- 
-     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self {
--        let self_ptr: *mut Opaque<bindings::drm_gem_object> = self_ptr.cast();
--
-         // SAFETY: `obj` is guaranteed to be in an `Object<T>` via the safety contract of this
-         // function
--        unsafe { &*crate::container_of!(self_ptr, Object<T>, obj) }
-+        unsafe { &*crate::container_of!(Opaque::from_raw(self_ptr), Object<T>, obj) }
-     }
- }
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 6b4774b2b1c37f4da1866e993be6230bc6715841..d2402d42b8776c9399a7dfdbe7bd61de7ef8dba3 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -204,6 +204,13 @@ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
- 
- /// Produces a pointer to an object from a pointer to one of its fields.
- ///
-+/// If you encounter a type mismatch due to the [`Opaque`] type, then use [`Opaque::raw_get`] or
-+/// [`Opaque::from_raw`] to resolve the mismatch.
-+///
-+/// [`Opaque`]: crate::types::Opaque
-+/// [`Opaque::raw_get`]: crate::types::Opaque::raw_get
-+/// [`Opaque::from_raw`]: crate::types::Opaque::from_raw
-+///
- /// # Safety
- ///
- /// The pointer passed to this macro, and the pointer returned by this macro, must both be in
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 22985b6f69820d6df8ff3aae0bf815fad36a9d92..a79295500b3c812326cea8a9d339a8545a7f457d 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -413,6 +413,11 @@ pub const fn get(&self) -> *mut T {
-     pub const fn raw_get(this: *const Self) -> *mut T {
-         UnsafeCell::raw_get(this.cast::<UnsafeCell<MaybeUninit<T>>>()).cast::<T>()
-     }
-+
-+    /// The opposite operation of [`Opaque::raw_get`].
-+    pub const fn from_raw(this: *const T) -> *const Self {
-+        this.cast()
-+    }
- }
- 
- /// Types that are _always_ reference counted.
+> By the way, please add a comment on top, like the others, i.e. something like:
+> 
+>     //
+>     // `feature(file_with_nul)` is expected to become stable. Before Rust
+>     // 1.89.0, it did not exist, so enable it conditionally.
+> 
 
----
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20250617-opaque-from-raw-ac5b8ef6faa2
+Will do, one thing though: the comment lines seem to wrap at 78 or 80
+chars, so do other lines for conditional features in rust/kernel/lib.rs.
+However I believe in Rust code we use 100 chars text width, any
+particular reason that I should keep these new lines the same (wrapping
+at 80 characters)? Otherwise I will make the new lines wrap at 100.
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+> Alice: the tracking issue uses the wrong name, i.e. with the
+> `location_*` prefix.
+> 
+> > +/// If `file_with_nul()` is not available, returns a string that warns about it.
+> 
+> Could we give a couple examples, i.e. of each case? (No need to assert anything)
+> 
 
+Sure, will do, but I'm afraid there is only case, unless I misunderstood
+you:
+
+/// # Examples
+///
+/// ```
+/// use kernel::file_from_location;
+///
+/// #[track_caller]
+/// fn foo() {
+///     let caller = core::panic::Location::caller();
+///
+///     pr_info!("{}\n", file_from_location(caller));
+/// }
+///
+/// foo();
+
+> > +        use crate::c_str;
+> 
+> Do we need the `use`?
+> 
+
+No need for that, and thanks for catching it!
+
+Regards,
+Boqun
+
+> Thanks!
+> 
+> Cheers,
+> Miguel
