@@ -1,108 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4C41E0E14;
-	Wed, 18 Jun 2025 09:38:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E374727F16C
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 09:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750239526; cv=none; b=Fk3tQHK0mhVe7F1qNGCjJEIi7kr3dmtMsoPW6jGWDIT3dtLVm+U5NcmZi7vfvIHIzg0jJjX/gl/IN/K2/69WIWIN7FgiRATSQ/MezASiLA0ObzEbn2JoxrnRy4SzMwrBX2H2WV06ZV9YDNXsLnoabom+DVIF9y/+exBtu8gUg2k=
+	t=1750240355; cv=none; b=nEcuhhJXaxrPfBPe77Zme5zsyq0OMKxrGNKzOFeqbEWtHg52DpUuGOBwa+s503bP1ewJ8RgDzP7SBCGYSIM1++BOqkvAAO/jRNj9UgO9T1ldrIHjdocsf0IcwYztSvCGTxdoXEiXN54fwsWdX+W0yPtEtLupihSfoAkf/SK75yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750239526; c=relaxed/simple;
-	bh=Dk4yynuLUZzdLhb5FVHjc9U3LZysX6xe3JJlSsT39M8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A5jbpp/8DWqOLDJe3HGPkYHEJJrhH/RSAtMLIi5x8MfKEbI/9750wfXspPNXvKwwzANDTPX7f6jYwENRJVhUilslStECNEQI6fLjEGSEIxLqCe7OLKHknwAqbUBtkeRFY9OfwG7yMPKI+xwaSVFtwUkiXmHeUN6Zs1Uyi0hxCCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nDAMDTLM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750240355; c=relaxed/simple;
+	bh=5bEnpNZFMrj7qCJtwgu60iTdn6bjP4AVMamgtkgw4qw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Np5RsOOHruupWqb0EWPk3vjSdY8dK5qAFCqgt68tF0fF0uc4cc4ujtPAUrkUz1GMo8sowxI+Waovfq/rq7DPj2o2A7HejT7cOmuJAY8DBs0HBus2bSuoXREJy37WeR81s5lUObSx2nQuSbNCgtbMcqWdSQ1dWPD0jeMuUvjGRqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cYgg0bqN; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nDAMDTLM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA3AC4CEE7;
-	Wed, 18 Jun 2025 09:38:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750239526;
-	bh=Dk4yynuLUZzdLhb5FVHjc9U3LZysX6xe3JJlSsT39M8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nDAMDTLM1J0youlb6K3un6RIsegAIe71aAVZKYlZNqCocGSR1R4PGVdnOydOBOIsi
-	 EaVptVlHCw/gjGeceazkbSOUt01S2EhCdYXpBsw78uvD1o0CVJnVf15FhCbqRpdKVN
-	 4+JeXwh/gKjy88xTZZVaKQSj1PTL2COk76mN+pYDnRCc7+pIyQuNf8qGW9ZWYfdVm0
-	 +UclJJlLzHN3EAfbl6leKnMXLxYz3I/cgnylMcgqGnkhcWk7K26SYeKj4fWNM2zoyl
-	 6+Szq0KbGRb8q6pIKRaO+P6UzhwFFv03vuj1NlnwL+fU8LIUMFFv6K1MoFNlo/cXm+
-	 nMOFBPg4llGtQ==
-Date: Wed, 18 Jun 2025 11:38:40 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: types: add Opaque::from_raw
-Message-ID: <aFKJILuksX90AJHc@pollux>
-References: <20250617-opaque-from-raw-v1-1-a2e99efa3ba2@google.com>
- <aFFzi88miMbCZ0yQ@pollux>
- <aFJx2IqLfCjWsbVv@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cYgg0bqN"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4fac7fa27so2884368f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 02:52:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750240352; x=1750845152; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5bEnpNZFMrj7qCJtwgu60iTdn6bjP4AVMamgtkgw4qw=;
+        b=cYgg0bqNQij2+8nKOQbrbv7lxoh/XgsxLMhMBqvdBPePcYR6mQOqz/Gnr8TJhO/uof
+         I5bvH78jzzcnXX2LaiU58vV14G6BSBjWg5ayJhfx5vUyAmI84dyD5NinGvyu8d84jRku
+         +6WpkT5xkDnbLGfoEW3KILOR4Yatstsux4UBVIkrbhz4Gw6PoY+aryatcUpXeU8b/K1S
+         x+yTtXSvZv9FlKgF4PlMJ8WK1OeiI2swrab1MNSYegkUK28UQmhx7DeV/yRgQzjzQLpV
+         K7kgNH7Ztpt+J1wb/YwkZlVUXJGJkwCZfqbLNAWLTByWeS2SJo1ETn4URRsKyGzEk5Xu
+         ib7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750240352; x=1750845152;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5bEnpNZFMrj7qCJtwgu60iTdn6bjP4AVMamgtkgw4qw=;
+        b=tjpMYtYM7Wu3OXZ87UHkJ3r+JqiT3FJrgYo//cGSkb5qUHAaElfz9nqZvTO0bgxP9l
+         VkxINaD/Kqg7pK2+lwWLZ9Hy0n8DgasToGE5VFmV5de9kShs7OIk+leFs53S0tDug6QT
+         8GpSj1ILjgiLDnmR+YZZHkIzyFl319ZD+WB8UbD/b69rbiXg9acpa3qmDEGSRuuIX+V4
+         TF5w0Y5e32sSTcGUHcPGKj+8XEyBt7v/EYvUyEIzG72nZfCO85K93LO0ggaa8LboJ4II
+         aubaAZDRTwSlrj67pTsYG++i4EyGqcwPF0F0nvx8mTMGECGsE2rG/BYAJ7mKDEL/rThp
+         Hz/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVs7XX5cRbPkVWkYGYKmhPdWM9x7Uv+HQf0sjc+YbTkcHmHqd5E4GM4IYk+uV4Q2ggqZE/0JE+j+VAXs/TfLQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWWiaC1npUBfT0IMTDNDcAIG/yvH1HMga8asmXitCITLPm6KJM
+	X+Gza2zq8+LqPf1XTV3aYXApg+Jk8z8HuuRLI5ckUXws9agySDXg6ieNh1jz6xb9U1bm8WlyYgD
+	zDI3pgsT0/NOX30tvgw==
+X-Google-Smtp-Source: AGHT+IE3kYpXlFdUKU3nwq2/d/ISrrwVjPKX3MaqFovbery7s8OVJiNXEcZ8fmoH61Jbhx+Lgcv8YDANMjz6Ec8=
+X-Received: from wrvk10.prod.google.com ([2002:a5d:518a:0:b0:3a5:75cb:ae])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:64cb:0:b0:3a4:ff01:218a with SMTP id ffacd0b85a97d-3a572e45e20mr12738829f8f.50.1750240352358;
+ Wed, 18 Jun 2025 02:52:32 -0700 (PDT)
+Date: Wed, 18 Jun 2025 09:52:30 +0000
+In-Reply-To: <CANiq72nP+dKugMv3KXdJJsFE0oD01+zYgWbjz3e04kmhj_5MbQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFJx2IqLfCjWsbVv@google.com>
+Mime-Version: 1.0
+References: <20250617144155.3903431-1-fujita.tomonori@gmail.com>
+ <20250617144155.3903431-2-fujita.tomonori@gmail.com> <aFJzNCCERjKHIVty@google.com>
+ <CANiq72nP+dKugMv3KXdJJsFE0oD01+zYgWbjz3e04kmhj_5MbQ@mail.gmail.com>
+Message-ID: <aFKMXqak-mHraxU_@google.com>
+Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods as_micros_ceil
+ and as_millis
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	ojeda@kernel.org, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, 
+	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
+	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
+	tglx@linutronix.de, tmgross@umich.edu
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 18, 2025 at 07:59:20AM +0000, Alice Ryhl wrote:
-> On Tue, Jun 17, 2025 at 03:54:19PM +0200, Danilo Krummrich wrote:
-> > On Tue, Jun 17, 2025 at 01:36:47PM +0000, Alice Ryhl wrote:
-> > > Since commit b20fbbc08a36 ("rust: check type of `$ptr` in
-> > > `container_of!`") we have enforced that the field pointer passed to
-> > > container_of! must match the declared field. This caused mismatches when
-> > > using a pointer to bindings::x for fields of type Opaque<bindings::x>.
-> > > 
-> > > This situation encourages the user to simply pass field.cast() to the
-> > > container_of! macro, but this is not great because you might
-> > > accidentally pass a *mut bindings::y when the field type is
-> > > Opaque<bindings::x>, which would be wrong.
-> > > 
-> > > To help catch this kind of mistake, add a new Opaque::from_raw that
-> > > wraps a raw pointer in Opaque without changing the inner type.
-> > 
-> > The patch does more than that, it also adds a hint to container_of!() and fixes
-> > up two occurences. I feel like we should split it up.
-> 
-> I think they go together pretty naturally, but I can split it if you
-> insist.
+On Wed, Jun 18, 2025 at 11:29:26AM +0200, Miguel Ojeda wrote:
+> On Wed, Jun 18, 2025 at 10:05=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >
+> > Why are we renaming them? The stdlib always uses as_* or to_* for copy
+> > types. In my mind, into_* means that you want to emphasize that you are
+> > performing a transformation that consumes self and transfers ownership
+> > of some resource in the process.
+> >
+> > See the api guidelines:
+> > https://rust-lang.github.io/api-guidelines/naming.html#ad-hoc-conversio=
+ns-follow-as_-to_-into_-conventions-c-conv
+>=20
+> We may be going in circles here... I think the confusion is all on
+> what to do for "owned -> owned" `Copy` non-expensive conversions.
+>=20
+> I think Tomo sent a patch to change the `as_` and `is_` methods to
+> take `&self` to be consistent with the guidelines, since they say
+> there is no "owned -> owned" case for `as_`. Then you mentioned that
+> `self` is OK and Andreas agreed, and I guess Tomo ended up with
+> `into_` since `to_` is only for the expensive case, even though it is
+> not meant for `Copy` types.
+>=20
+> In other words, either we say in the kernel we are OK with `as_` for
+> "owned -> owned" too, or we take `&self`.
+>=20
+> Did I get that right, everyone?
 
-Nah, it's also fine for me to keep it as is, but in that case we should also
-mention the other changes in the commit message.
+Yeah I think using as_* naming for cases other than borrowed->borrowed
+is relatively common for Copy types. Looking at the stdlib, the rules
+I'm seeing are more or less these:
 
-> > > +    /// The opposite operation of [`Opaque::raw_get`].
-> > > +    pub const fn from_raw(this: *const T) -> *const Self {
-> > 
-> > Do we want to name this from_raw()? Usually from_raw() methods return either
-> > Self or &'a Self.
-> > 
-> > Maybe something like cast_from() and rename raw_get() to cast_into()? I think
-> > the latter may be confusing anyways, since it sounds like it would do somthing
-> > with reference counting.
-> 
-> The name raw_get() mirrors the stdlib function UnsafeCell::raw_get().
-> The stdlib uses this naming because in Rust the word "get" normally has
-> nothing to do with reference counting - outside of the kernel, we use
-> "clone" for incrementing refcounts and nobody would ever call it "get".
+First, if the method is expensive the naming is to_* or a verb without a
+prefix. We only use into_* for expensive operations if the call also
+transfers ownership of some resource. Example: CStr::to_bytes()
 
-Yeah, I'm aware. The main reason I proposed cast_into() is that it would fit
-much better with the newly introduced cast_from() (in case we go with that
-name).
+Otherwise, if the method is something that looks inside the type (i.e.
+it peels away a layer of abstraction), then we using as_* naming. Or we
+might use a noun with no prefix if we want it to feel like a field
+access. Example: Duration::as_millis()
 
-I'm happy with other proposals too, I just think that from_raw() would be a bit
-inconsistent with how we use this name otherwise.
+On the other hand, if the method transforms the value while staying at
+the same layer of abstraction, then we may call the method to_* (or just
+use a verb without a prefix). Example: f64::to_radians()
 
-> That said, it may still be worth to rename the method. Thoughts?
-
-I think it'd be good if it aligns naming wise with its counter part added in
-this patch and I don't see this happening with raw_get(). :-)
+Alice
