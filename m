@@ -1,130 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E1C2EE26E;
-	Wed, 18 Jun 2025 15:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E35A2882D1;
+	Wed, 18 Jun 2025 15:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750261151; cv=none; b=tOqscMIRsfEo7pUnxPXrZZ1UJwqXU9/qj67N6b+AQ07Mlsx0NKzUY9Vcd58oYl0hOWJQlEsdCN6Tz2oTVSgUCQCOzGDZAmHa8oql4aPfRWhIEc+EPW1YHGKUJR2nPWgUip7RQs6hppWuK3hv3KoJ6dcfoO303F4UpECmp8sjaUQ=
+	t=1750261661; cv=none; b=r8Auov85xB7sm+FH8NpnpkMqwJyM5dDq0pSYTmPuAAB3GprvucLeIjDmz2XKNg+LVhOY5RVBZGF3l5a0r3iJzTe31rpk0g5URZLbW5nNlSGtKX+lHKO/Rkt+z+k6UafY2G1vID9KcFyveOTwd6b9jkQgR+lWV+Y5cA5mB8WTg3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750261151; c=relaxed/simple;
-	bh=JFhh7AKrOKzUvlarIRdE++QBY1DcQFVTi2V5HaWpvx8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iv6IiwsR8ibCFT/mQghq1oU5LRI4UkE7NZepVS+4vAMMcr1UomiV9+nJi/1W8os9ivOyxFpuMQay1FYk2dClIkUFuuflp6ZArlzFyxmfR/ejj89PwShfJoK1R450sH42+t3148706m4ObLnTPa3F6YaSqkUEDu8dPZozvNA+UXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HhsmriF9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750261661; c=relaxed/simple;
+	bh=1NWRcvqyk1HC6IXC66tM06YKT2T2SuTaEg9Je/zWpNY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ihLni4Z4awC0IwZTLGkABMhfvISePR1qffXXUhfsxE1Uou2ScO5xfR7/+4Gu2eoAoJuUIXG9cj5mlUOfypq9owXg35V3eyCNLw2y5N7o//cYp1a+A0pKel47uWVDJQbYPnho66eYUAu5jw38rEOv0koCr3Lhe0sDP3xFOEsucBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j6809X7b; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HhsmriF9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C62C4CEE7;
-	Wed, 18 Jun 2025 15:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750261151;
-	bh=JFhh7AKrOKzUvlarIRdE++QBY1DcQFVTi2V5HaWpvx8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HhsmriF9FnTh9MW53Z58uEg37HWWlwyNmE4wdGHezwXX2E+2JLj92AKSg6bF7zcGD
-	 l0gKVdL8Zzq/YKnlTTSqBWNa4sxZkFrKeUiIumyD0XS1FBc5kPDKUlT5+W6vYj52uI
-	 9zRwbrj0d7IQksCxU+doEkSWgSiaYkJ7eTMhoCUhsre0ucbCM1HqG3GdOFofou1VDk
-	 Mtg/sQow7zbSR0S5LI5hfma4kezfmrl4mmNOZ2HMhLrt3lneiBASXLwbU4XKyqVFwS
-	 EozLEjRzVk5srE4khhRd66rmiuohplGtHpuyiz1n3TA0TDxUraGKsONIifmHdSwIO+
-	 WL085dnbz7BzQ==
-Date: Wed, 18 Jun 2025 17:39:05 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 2/5] rust: debugfs: Bind file creation for long-lived
- Display
-Message-ID: <aFLdmYLyDucTAiZx@pollux>
-References: <20250618-debugfs-rust-v6-0-72cae211b133@google.com>
- <20250618-debugfs-rust-v6-2-72cae211b133@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j6809X7b"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-312f53d0609so1123010a91.1;
+        Wed, 18 Jun 2025 08:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750261660; x=1750866460; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1NWRcvqyk1HC6IXC66tM06YKT2T2SuTaEg9Je/zWpNY=;
+        b=j6809X7bM6B2H/kHeEtt9peeQVuy1mv2YtNvH+7g/EI41ymDpvScDzVRFOPUoqRX4n
+         w18Z8WrWpBduI9Ku7Yaa1orDhEbqZ5LHtpAHXYV4nNhDHg1nspzJejmQsNbOOhGSFkRQ
+         m4cyBuEFBqZtxQfgU/OXXp1a1MnRMP58asBjfKFMF3PSVjeh+8BnbuCdc8/HJHuE1jIf
+         App6BwrnSMkoQrmQrhJz2McbYD/830fXIl6eLEFfb+uq4cNNGAHW7NQuu7233qNTfYHS
+         m28L9b4FsD6CjYfk1vHmtGpBlOx/HGcJaMk8H+2tat+DJC2a0ivOG/ZBKC5wt/ZFNS5o
+         aSAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750261660; x=1750866460;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1NWRcvqyk1HC6IXC66tM06YKT2T2SuTaEg9Je/zWpNY=;
+        b=M5foFr4todsjkd2ziYK1G/uXojLBoMVj9Fs00pDJNlduUfPOm7CV7I1y1Hf/uaImac
+         J5afkXxh2cm7WVxG71KZuKGEH4Gj6LXZ2bCf7eOZ/8BAGRRPmbeO1g2TDltH+q9i7iMt
+         cR7EmqCiT7YC5psyCLssZf5xAq73vNBIiDxDPrvM+vHG8ByBxuCziwL3r9bEDYoZEbxc
+         7oDL1PXsHB5tLx33esZHDEC1dPPleLb4rb62BV7GjauY7bfKhbO7jEg6Pw7I9kuZIlfX
+         i7Rhut7mGXD7GzZB7TFIerYqluCTCiYZ5AcXRwsncpRyUY5IwKlrgS6/goXLSvsBq61O
+         6xFg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSXf4Zcrv7DijCwuFtThGMralp1uYHF76JrVTQ/MXONq8NdFfdJXK2FfrzsdbE6X4Y/BPVlO+rh5NLbd8=@vger.kernel.org, AJvYcCXHIuJGL1RaO++fSCg/x++ILHcwU7wbFTGCJ32hxfaF4yDC8la6JgBK9pkgMo0taSWzG13gpJm3W0Pns5T16cU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzsp2zTV4C6oHs4lGK8kkENbu6wffaiC7UFchVDcv9CEAy+l29+
+	HKbTzvazpoyeT63/V9GMjjT0yVyaoq9XMiW+3LAI5a6X9g0EHF+gyHTVau/GCym5p6Gu1YEJ2i1
+	v2e+pkebeFCDZiDI/GRiPY1x8Z96dUIg=
+X-Gm-Gg: ASbGncu2qj1J/p6ZTEazrm/X7pE+2b8g3DOhw5RH0cMfhUaASP5ZBMqix4DefRgoYEU
+	RxdvBWqxzMMXfQPvl2PJPsLd3xxMoAINQfi50KeGyulVjvGpuEDrjKcFWM/Y8Q9QeHaftuCw7kg
+	qh5BUWbEG9FKxVL5DpjR5ejJMNdjOVQsqLaALkBofjxdA=
+X-Google-Smtp-Source: AGHT+IFyYd+JxjMJtiuVxmSQK2fVe0FWUd5QPg4Vb9q9Xd73zFxOWEv5UEHwCCyXhu2Hq4ae7/DFdcxsuKfVrTQ+lEw=
+X-Received: by 2002:a17:90b:1ccc:b0:311:c939:c842 with SMTP id
+ 98e67ed59e1d1-313f1de6397mr9265526a91.7.1750261659682; Wed, 18 Jun 2025
+ 08:47:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618-debugfs-rust-v6-2-72cae211b133@google.com>
+References: <20250617144155.3903431-1-fujita.tomonori@gmail.com>
+ <20250617144155.3903431-2-fujita.tomonori@gmail.com> <aFJzNCCERjKHIVty@google.com>
+ <CANiq72nP+dKugMv3KXdJJsFE0oD01+zYgWbjz3e04kmhj_5MbQ@mail.gmail.com>
+ <aFKMXqak-mHraxU_@google.com> <CANiq72kSfHTPeRQjhHKhdw8zuozvNy50CJjTuEbUnW_3j9x8tw@mail.gmail.com>
+ <CAH5fLgggDKUwmU3oCTMS1dQGzA5Whp2fnXoLmbGmNF1W89Ar_A@mail.gmail.com>
+In-Reply-To: <CAH5fLgggDKUwmU3oCTMS1dQGzA5Whp2fnXoLmbGmNF1W89Ar_A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 18 Jun 2025 17:47:27 +0200
+X-Gm-Features: Ac12FXzvwz1JJyMgqNMj3Z9BJKGqVyQdYLECpyT70444q_vEtLig1KxU8dwcXLg
+Message-ID: <CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods as_micros_ceil
+ and as_millis
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	ojeda@kernel.org, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, 
+	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
+	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
+	tglx@linutronix.de, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 18, 2025 at 02:28:14AM +0000, Matthew Maurer wrote:
-> diff --git a/rust/kernel/debugfs/display_file.rs b/rust/kernel/debugfs/display_file.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..65e37e34d7b587482492dc296637a3bc517b9fe3
-> --- /dev/null
-> +++ b/rust/kernel/debugfs/display_file.rs
-> @@ -0,0 +1,60 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +// Copyright (C) 2025 Google LLC.
-> +
-> +use crate::seq_file::SeqFile;
-> +use crate::seq_print;
-> +use core::fmt::Display;
-> +
-> +/// Implements `open` for `file_operations` via `single_open` to fill out a `seq_file`.
-> +///
-> +/// # Safety
-> +///
-> +/// * `inode`'s private pointer must point to a value of type `T` which will outlive the `inode`
-> +///   and will not be mutated during this call.
-> +/// * `file` must point to a live, not-yet-initialized file object.
-> +pub(crate) unsafe extern "C" fn display_open<T: Display>(
-> +    inode: *mut bindings::inode,
-> +    file: *mut bindings::file,
-> +) -> i32 {
+On Wed, Jun 18, 2025 at 3:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> There are also methods such as Duration::as_millis(). Yes, those take
+> &self but &self is equivalent to self for Copy types, so there is no
+> difference. And even if we did treat them differently,
+> Duration::as_millis() is actually borrowed->owned as the return type
+> is not a reference, so ...
 
-Please use kernel::ffi::c_int instead.
+In most cases it may not matter, but even if taking either was exactly
+the same, the point of the discussion(s) was what is more idiomatic,
+i.e. how to spell those signatures.
 
-> +    // SAFETY:
-> +    // * `file` is acceptable by caller precondition.
-> +    // * `print_act` will be called on a `seq_file` with private data set to the third argument,
-> +    //   so we meet its safety requirements.
-> +    // * The `data` pointer passed in the third argument is a valid `T` pointer that outlives
-> +    //   this call by caller preconditions.
-> +    unsafe { bindings::single_open(file, Some(display_act::<T>), (*inode).i_private) }
-> +}
-> +
-> +/// Prints private data stashed in a seq_file to that seq file.
-> +///
-> +/// # Safety
-> +///
-> +/// `seq` must point to a live `seq_file` whose private data is a live pointer to a `T` which is
-> +/// not being mutated.
-> +pub(crate) unsafe extern "C" fn display_act<T: Display>(
-> +    seq: *mut bindings::seq_file,
-> +    _: *mut core::ffi::c_void,
-> +) -> i32 {
+I understand you are saying that `Duration::as_millis()` is already a
+stable example from the standard library of something that is not
+borrowed -> borrowed, and thus the guidelines should be understood as
+implying it is fine either way. It is still confusing, as shown by
+these repeated discussions, and on the parameter's side of things,
+they still seem to prefer `&self`, including in the equivalent methods
+of this patch.
 
-kernel::ffi::c_int
+Personally, I would use `self`, and clarify the guidelines.
 
-> +    // SAFETY: By caller precondition, this pointer is live, points to a value of type `T`, and
-> +    // is not being mutated.
-> +    let data = unsafe { &*((*seq).private as *mut T) };
-> +    // SAFETY: By caller precondition, `seq_file` points to a live `seq_file`, so we can lift
-> +    // it.
-> +    let seq_file = unsafe { SeqFile::from_raw(seq) };
-> +    seq_print!(seq_file, "{}", data);
-> +    0
-> +}
-> +
-> +// Work around lack of generic const items.
-> +pub(crate) trait DisplayFile: Display + Sized {
-> +    const VTABLE: bindings::file_operations = bindings::file_operations {
-> +        read: Some(bindings::seq_read),
-> +        llseek: Some(bindings::seq_lseek),
-> +        release: Some(bindings::single_release),
-> +        open: Some(display_open::<Self> as _),
-
-Why the cast? That shouldn't be needed.
-
-> +        // SAFETY: `file_operations` supports zeroes in all fields.
-> +        ..unsafe { core::mem::zeroed() }
-> +    };
-> +}
+Cheers,
+Miguel
