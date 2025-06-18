@@ -1,135 +1,104 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C192857C2
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 11:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C482DE1EF;
+	Wed, 18 Jun 2025 11:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750245707; cv=none; b=g8O7h5i0J/ZgIyM7FgF5Nvkl4cThISxkWEr4wJKWoBtRfI8YfINkScPYyi1pRwo9fgGjKO/igsunyzY9U+YoHRM6Ev4IOiTbqcSDTxDJ4UKYjZ9dpf6HUxgEBIv/J6/BepqfzSVkVNWnCE4gLRzUeKZtX2v6dnxyTrUUvK8H0Mw=
+	t=1750246639; cv=none; b=mmxmYnNE0zUtWWLrv9W6psQBpbfXZyOfLWdNmou8AatMmNcHb8rJq/QMw1INonhJRmud+vQedSQz4iMet4P91E828/onMcmxODkzxcijBCO6dMVE8T9V5dOToEp1DD37gf7z+0IqcFyIlNRI8iCH1w3VRgoAaiW1ZG/2wnx9ID8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750245707; c=relaxed/simple;
-	bh=md4pBp3+yvPSIRW+B9VI6Ty3LcXwqFQVUKPPV8B75KE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ux3cW2czbCosyjB05KTQ8FLai8JUzFotbeaS/RFHbdoSMgR7LG8pD8SMxp1A4c477l+6y0peDWW8T6RDywYQ2FFUtMnjqPnVT6wC2QA02A1Iuzxvvw2kdGm3RpKOJTwCsyZ4YugoWlDopJfLqdlBy31N1AIIX60kx8DgI4iXt+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BY2FaFLT; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BY2FaFLT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750245705; x=1781781705;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=md4pBp3+yvPSIRW+B9VI6Ty3LcXwqFQVUKPPV8B75KE=;
-  b=BY2FaFLTi+eSuD9Z1G6bkMfUtDIQBgp3wzcHp0d+bknGIU73nrOalGMj
-   elJdeu/cMYeMG06EUAQKtSNd4Cc9JtxYma/3qgQhF68eOu1Jpr8rzC8k0
-   axRb81pEA4+0kWP1H1vEO8bre02njBdx2CIAweWuW2y0EqnExnlEV4p41
-   x87b/TMvn3ypZPhkJNTtG+mS5rrLVZj0/kl8+dRM3S7JymqB/TAuSrjJg
-   IpujasVy9jrZeEPIpFqwBWUHBh9W7hsEniBLukM4zobvYW7esLBZHlWyP
-   hxW+VxDwJkHZFDWbat9CAVk+3zzkLFBPFLCe1l9KSYhEKRgKikYz8aNEV
-   w==;
-X-CSE-ConnectionGUID: MQe2p2ZDS3a1Ze++E3e99A==
-X-CSE-MsgGUID: f0YFOkfOSo2OjFEQznn8Cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="62735024"
-X-IronPort-AV: E=Sophos;i="6.16,245,1744095600"; 
-   d="scan'208";a="62735024"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2025 04:20:37 -0700
-X-CSE-ConnectionGUID: E4bP0IW1Sd+aixw2hRpBnQ==
-X-CSE-MsgGUID: fMi03lhaTuS8TeTat2AzAA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,245,1744095600"; 
-   d="scan'208";a="149306455"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 18 Jun 2025 04:20:35 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uRqqH-000Jhu-0Q;
-	Wed, 18 Jun 2025 11:20:33 +0000
-Date: Wed, 18 Jun 2025 19:20:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Timur Tabi <ttabi@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4] rust: introduce sfile macro for succinct code tracing
-Message-ID: <202506181849.TxpYI9gO-lkp@intel.com>
-References: <20250616193433.2643407-1-ttabi@nvidia.com>
+	s=arc-20240116; t=1750246639; c=relaxed/simple;
+	bh=miWVdcEmACn9TbAvm2+Yx19kNh+0z9kIGEcvC9jyLfs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=HNM5McU1KovxmLW1i2Kf952SmPtIlM51ODt+WT7A16fv2IGQUlmOHxoJ8AyecrfWdogxOOSLWbkQdeYrX/ELjh4fZGhRyKca4PFFCwjcllXxRNNit3Q5mKfvSsYrHu2kapVtJG5mZImUx8Mc07HyoOZdmns3VeYmyaw2sW8HHzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev; spf=pass smtp.mailfrom=buenzli.dev; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=buenzli.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buenzli.dev
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4bMhY56J3rz9tNN;
+	Wed, 18 Jun 2025 13:37:13 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250616193433.2643407-1-ttabi@nvidia.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Jun 2025 13:37:08 +0200
+Message-Id: <DAPMND2X0QHE.1N0NF7R1F8J1G@buenzli.dev>
+From: "Remo Senekowitsch" <remo@buenzli.dev>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Rob Herring" <robh@kernel.org>
+Cc: "Saravana Kannan" <saravanak@google.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Mark
+ Brown" <broonie@kernel.org>, "Dirk Behme" <dirk.behme@de.bosch.com>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v1 3/3] samples: rust: platform: Add property child and
+ reference args examples
+References: <20250616154511.1862909-1-remo@buenzli.dev>
+ <20250616154511.1862909-4-remo@buenzli.dev>
+ <CAL_JsqKXrsdGjTE5KDkqmVHUK5urMJnWSLWgEi8H1yM21gcOCA@mail.gmail.com>
+ <aFFpmKLKR2hGs1I1@pollux>
+In-Reply-To: <aFFpmKLKR2hGs1I1@pollux>
 
-Hi Timur,
+On Tue Jun 17, 2025 at 3:11 PM CEST, Danilo Krummrich wrote:
+> On Tue, Jun 17, 2025 at 08:01:08AM -0500, Rob Herring wrote:
+>> On Mon, Jun 16, 2025 at 10:45=E2=80=AFAM Remo Senekowitsch <remo@buenzli=
+.dev> wrote:
+>> > @@ -91,6 +95,13 @@ fn properties_parse(dev: &device::Device) -> Result=
+ {
+>> >          let prop: KVec<i16> =3D fwnode.property_read_array_vec(name, =
+4)?.required_by(dev)?;
+>> >          dev_info!(dev, "'{name}'=3D'{prop:?}' (KVec)\n");
+>> >
+>> > +        for child in fwnode.children() {
+>> > +            let name =3D c_str!("test,ref-arg");
+>> > +            let nargs =3D NArgs::N(2);
+>> > +            let prop: FwNodeReferenceArgs =3D child.property_get_refe=
+rence_args(name, nargs, 0)?;
+>>=20
+>> Is there some reason we can just pass 2 in rather than nargs? Seems
+>> overly verbose for my tastes.
+>
+> It's because you could also pass NArgs::Prop("foo-bar") to indicate the t=
+he
+> name of the property telling the number of arguments.
+>
+> NArgs is defined as
+>
+> 	pub enum NArgs<'a> {
+> 	    /// The name of the property of the reference indicating the number =
+of
+> 	    /// arguments.
+> 	    Prop(&'a CStr),
+> 	    /// The known number of arguments.
+> 	    N(u32),
+> 	}
+>
+> and FwNode::property_get_reference_args() can match against the correspon=
+ding
+> enum variant to cover both cases.
 
-kernel test robot noticed the following build errors:
+I guess we could make the function generic if that's deemed worth it?
+A trait and an implementation for `u32` and `&CStr` each. Similar to how
+we made `property_read` generic.
 
-[auto build test ERROR on 27605c8c0f69e319df156b471974e4e223035378]
+>> > +            dev_info!(dev, "'{name}'=3D'{prop:?}'\n");
+>> > +        }
+>> > +
+>> >          Ok(())
+>> >      }
+>> >  }
+>> > --
+>> > 2.49.0
+>> >
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Timur-Tabi/rust-introduce-sfile-macro-for-succinct-code-tracing/20250617-034332
-base:   27605c8c0f69e319df156b471974e4e223035378
-patch link:    https://lore.kernel.org/r/20250616193433.2643407-1-ttabi%40nvidia.com
-patch subject: [PATCH v4] rust: introduce sfile macro for succinct code tracing
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250618/202506181849.TxpYI9gO-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250618/202506181849.TxpYI9gO-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506181849.TxpYI9gO-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0432]: unresolved import `kernel::print::rfind_const`
-   --> rust/doctests_kernel_generated.rs:7755:5
-   |
-   7755 | use kernel::print::rfind_const;
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ no `rfind_const` in `print`
---
->> error[E0308]: mismatched types
-   --> rust/doctests_kernel_generated.rs:5834:29
-   |
-   5834 | const SFILE: &'static str = sfile!();
-   |                             ^^^^^^^^
-   |                             |
-   |                             expected `&str`, found `&CStr`
-   |                             arguments to this function are incorrect
-   |
-   = note: expected reference `&str`
-   found reference `&'static rust_doctest_kernel_alloc_kbox_rs_7::kernel::prelude::CStr`
-   note: method defined here
-   --> /opt/cross/rustc-1.78.0-bindgen-0.65.1/rustup/toolchains/1.78.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:2446:18
-   |
-   2446 |     pub const fn is_ascii(&self) -> bool {
-   |                  ^^^^^^^^
-   = note: this error originates in the macro `sfile` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0308]: mismatched types
-   --> rust/doctests_kernel_generated.rs:5833:20
-   |
-   5833 | pr_err!("{}:{}n", sfile!(), line!());
-   |                    ^^^^^^^^
-   |                    |
-   |                    expected `&str`, found `&CStr`
-   |                    arguments to this function are incorrect
-   |
-   = note: expected reference `&str`
-   found reference `&'static rust_doctest_kernel_alloc_kbox_rs_7::kernel::prelude::CStr`
-   note: method defined here
-   --> /opt/cross/rustc-1.78.0-bindgen-0.65.1/rustup/toolchains/1.78.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/str/mod.rs:2446:18
-   |
-   2446 |     pub const fn is_ascii(&self) -> bool {
-   |                  ^^^^^^^^
-   = note: this error originates in the macro `sfile` (in Nightly builds, run with -Z macro-backtrace for more info)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
