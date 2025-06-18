@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211361F4CAE;
-	Wed, 18 Jun 2025 19:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98FC217659;
+	Wed, 18 Jun 2025 19:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750274655; cv=none; b=B3oeph3Iryc/sco2aEmW7yBy9K8TyWKbj4pyQs8tOHwubq7ZC1D8vHtdKU+UnmAbxJGAmZUveqSQWObZVcKTEN7CPI+wkeQt8LHJjNlvNgy2oIf6sNMlAWZWujNS8Q3VieZtxAvnI9dBqrc/8Uyknz8j2ozHNGvesJNTDdVE0Q0=
+	t=1750274978; cv=none; b=Kmu028/8SEyv0HfSPhBaVIH7VAhjbxmnHtIEhQmKPKB6d+okpR1T6wZxHjvkPalJoRuVGN1XRNZUz9z90rW8sHx+x8r3KSibxK/NRkZTPcnByG3/S3r6t8+f7nFFdcE0aJIQkRukpUPnRqvbIo6A4DeH8YAxJ4nYE3+7ufKhxzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750274655; c=relaxed/simple;
-	bh=0B1AqIh7XaT96Qz7mgiF/9cixkNlDiA1iViFQK2gYs4=;
+	s=arc-20240116; t=1750274978; c=relaxed/simple;
+	bh=fYjHud3n0yKw1imgEHSxUMwy3Wo10DwwprcVwhcaP4k=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=aRaOWVuKrB/70EuAwPAqabGSJIriWMJm5pVM/1AXxpBONprGMej8gIiCiBn8iunHFYUotFkEmDtTNIOgWOt5o5DBxwnKH3B0VT6mkf03ia8uIe7xkaDN8n0N72R8qsTdDC78iRtAV+WsC8JNiDOd1FlfvUF/CgSHNldGt4lTL3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnkT9RJz; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=nDCnf/YEDN1hHjdkhkVzw2gkz2pT/jOJux5QCcMoWWSZZZoDPO8O7mSRFN+nSX/8aSxQU4dU6sOAVDgyvDuw0fHLThxSjIUBQ/SA4paAEhNqYgOeFzP1q8BXMu/S/gZ6nuvU924hEC0adKI6KDjd5/IZhbmaT/w4IVYQZ6f6Vmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CtRrYk3t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnkT9RJz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE6CC4CEEF;
-	Wed, 18 Jun 2025 19:24:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CtRrYk3t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F30C4CEED;
+	Wed, 18 Jun 2025 19:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750274654;
-	bh=0B1AqIh7XaT96Qz7mgiF/9cixkNlDiA1iViFQK2gYs4=;
+	s=k20201202; t=1750274978;
+	bh=fYjHud3n0yKw1imgEHSxUMwy3Wo10DwwprcVwhcaP4k=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nnkT9RJza11P1108ZFZQQbR60kDdssVI6SRGhuBkp1onGLyJ+27ShAiQPWjyM5aHN
-	 BSIlZVu+gs57RAtjxyWwmB/velvo4q0R6H2FD8eaXQOUIRxEH15bNc0XBi26Dy80P5
-	 4vhf5pOHx82Fz37X0MboY5pV68Y/YI3EHj/GBtRujwU/wJ0LEsMEnCmSkzR3RwhoXj
-	 Ppa1DhWdv7ro07e5u8zdRyVeFmke3NumBy8EfdRlWnn4wrKXUlNdSNblMStJtEcGwv
-	 up3wnPlQp1GqCUy22Pco8yokKs7ThNq4ULn/0ZjWRhOHORk1ZXEPM3rGPMScr0NkRQ
-	 8NyIWaYc1K0mw==
+	b=CtRrYk3tG0im5Qm9z5QclD2/1qu9A0U9Xr08hMNtmFu+7/JXdzO0TbANfjEK4OkDV
+	 UF6FlIJOzmx46tb5PUY5c+evzs1pvsg5ye6Vz+zzE9M9IJrgX2nbkd1wktsgU+Vphx
+	 f3Czkz67yuUgCRkj19GEfe2yCRpZrxCVB7TwNLErb+BhU3HqRdUdBzYSJNuQG+Owrs
+	 4bbD3i563ttMkk6n3IXowHdSACtRKdcD63qir2QaC3bIPshBGZXF2pFD0YkloiyZME
+	 0tppwmpHanxhKnKJH/2jw5xLd3PY6UQvDisclz66hzjClLmq2/Xpf+MOh68IEBekjc
+	 N4WUY3IlBc9OQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,54 +34,61 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Jun 2025 21:24:08 +0200
-Message-Id: <DAPWKX9V8T26.315LG5OZLLL2M@kernel.org>
-Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
- "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
- "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v5 05/23] rust: num: add the `fls` operation
+Date: Wed, 18 Jun 2025 21:29:33 +0200
+Message-Id: <DAPWP2IC7HZ1.F1GYTSUGD8WN@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <~lkcamp/patches@lists.sr.ht>,
+ <richard120310@gmail.com>
+Subject: Re: [PATCH v7] rust: transmute: Add methods for FromBytes trait
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Christian"
+ <christiansantoslima21@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
- <20250612-nova-frts-v5-5-14ba7eaf166b@nvidia.com>
- <DAMHWN6ML8A1.2AUE4UWR58KR2@kernel.org>
- <DANR43CR8X87.1YWHJK7P75TPQ@nvidia.com>
-In-Reply-To: <DANR43CR8X87.1YWHJK7P75TPQ@nvidia.com>
+References: <20250615072042.133290-1-christiansantoslima21@gmail.com>
+ <CANiq72mnxRquFmjoJemb=3LSq+ZdUfs9J+HXTwM6AavprsVNUg@mail.gmail.com>
+ <CABm2a9fVSGm+WWjdkAmJHUH9eH=Qx5efORKxyJtt0HnQrs0QHQ@mail.gmail.com>
+ <CANiq72=s6Ugqrf5Ot6fJOMyCug2XyvKpjFCzya_Mr5iBkpitLA@mail.gmail.com>
+ <CABm2a9e+XJsess6XY5ukz8vav30ADcmBrufmek+Bd-TNJpR2aQ@mail.gmail.com>
+ <CANiq72kY=sSnhzYPRo3Zuj-7RjULMpRfCBYfoDDCpCHttX-3-A@mail.gmail.com>
+In-Reply-To: <CANiq72kY=sSnhzYPRo3Zuj-7RjULMpRfCBYfoDDCpCHttX-3-A@mail.gmail.com>
 
-On Mon Jun 16, 2025 at 8:41 AM CEST, Alexandre Courbot wrote:
-> On Sun Jun 15, 2025 at 4:16 AM JST, Benno Lossin wrote:
->> On Thu Jun 12, 2025 at 4:01 PM CEST, Alexandre Courbot wrote:
->>> +            #[inline(always)]
->>> +            pub const fn [<fls_ $t>](v: $t) -> u32 {
+On Mon Jun 16, 2025 at 11:23 PM CEST, Miguel Ojeda wrote:
+> On Mon, Jun 16, 2025 at 11:11=E2=80=AFPM Christian
+> <christiansantoslima21@gmail.com> wrote:
 >>
->> Can we name this `find_last_set_bit_ $t`? When the upstream function
->> lands, we should also rename this one.
+>> I mean, using something like `use core::mem;` globally since we use a
+>> lot of core stuff and so, it would make the code less verbose just
+>> importing size_of, align_of and etc.
 >
-> We can - but as for `align_up`/`next_multiple_of`, I am not sure which
-> naming scheme (kernel-like or closer to Rust conventions) is favored in
-> such cases, and so far it seems to come down to personal preference. I
-> tend to think that staying close to kernel conventions make it easier to
-> understand when a function is the equivalent of a C one, but whichever
-> policy we adopt it would be nice to codify it somewhere (apologies if it
-> is already and I missed it).
+> Do you mean adding some more `core` bits to the `kernel` prelude?
+> Yeah, we are always considering which ones to add -- if you want to
+> propose particular ones, then it can be discussed of course. Perhaps
+> in Zulip?
+>
+> However, since these are macros, unless we get a proper custom prelude
+> feature in the compiler (which we requested a long time ago), we
+> probably want to still to refer to everything in full, even if it is
+> in the `kernel` prelude.
 
-I don't think we have it written down anywhere. I don't think that we
-should have a global rule for this. Certain things are more in the
-purview of the kernel and others are more on the Rust side.
+Yes, the prelude won't have precedence over locally defined items. So if
+someone does
 
-My opinion is that this, since it will hopefully be in `core` at some
-point, should go with the Rust naming.
+    mod core {}
+
+    your_macro_that_uses_core!(); // <-- will error with `core::mem` not ex=
+isting
+
+
+
+However in this particular case it seems like that the macro
+`impl_frombytes` is a local to this file. In that case it might be fine
+to rely on imports from the scope.
 
 ---
 Cheers,
