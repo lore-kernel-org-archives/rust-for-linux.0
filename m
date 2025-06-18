@@ -1,124 +1,69 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E374727F16C
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 09:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6246F2857C9;
+	Wed, 18 Jun 2025 10:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750240355; cv=none; b=nEcuhhJXaxrPfBPe77Zme5zsyq0OMKxrGNKzOFeqbEWtHg52DpUuGOBwa+s503bP1ewJ8RgDzP7SBCGYSIM1++BOqkvAAO/jRNj9UgO9T1ldrIHjdocsf0IcwYztSvCGTxdoXEiXN54fwsWdX+W0yPtEtLupihSfoAkf/SK75yE=
+	t=1750241069; cv=none; b=TlFQmsKyAhLPWLiv2vz9LqCsEo/4FyZEdTSOjLDSQEu3M6jK2tDjFZdfwBsjhUWhxfSz9/KjNQ5q2egFtksgnnkXpd2Yg77nl7idJSdUTQ4ubHN+8tlqC3AEpFLwlcKbhg2YGodiFISC3Cz/REe3j7qHlwyFIzgmrF6UcUb7Sx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750240355; c=relaxed/simple;
-	bh=5bEnpNZFMrj7qCJtwgu60iTdn6bjP4AVMamgtkgw4qw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Np5RsOOHruupWqb0EWPk3vjSdY8dK5qAFCqgt68tF0fF0uc4cc4ujtPAUrkUz1GMo8sowxI+Waovfq/rq7DPj2o2A7HejT7cOmuJAY8DBs0HBus2bSuoXREJy37WeR81s5lUObSx2nQuSbNCgtbMcqWdSQ1dWPD0jeMuUvjGRqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cYgg0bqN; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1750241069; c=relaxed/simple;
+	bh=js50rT7ZmZqp2Zlm1S45NX1PVXUIxD1VZI6hR9bYyeE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eHKm9p+7P7hiumMIQK170OQkHH9bw2qy2ivczcsHzUAtyHAas+0KIxl7ejHp60Zw1VosMeqyinhzsSIPNcoRcCAw67F5QbTHh7ilGBQXV+WaPZbpliPgZuAkEmL4zFt+6NGAVQiKZtVCqGYLmhxm1s+5sOFE/lvso21DR07NPNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3ommhor; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cYgg0bqN"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4fac7fa27so2884368f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 02:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750240352; x=1750845152; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5bEnpNZFMrj7qCJtwgu60iTdn6bjP4AVMamgtkgw4qw=;
-        b=cYgg0bqNQij2+8nKOQbrbv7lxoh/XgsxLMhMBqvdBPePcYR6mQOqz/Gnr8TJhO/uof
-         I5bvH78jzzcnXX2LaiU58vV14G6BSBjWg5ayJhfx5vUyAmI84dyD5NinGvyu8d84jRku
-         +6WpkT5xkDnbLGfoEW3KILOR4Yatstsux4UBVIkrbhz4Gw6PoY+aryatcUpXeU8b/K1S
-         x+yTtXSvZv9FlKgF4PlMJ8WK1OeiI2swrab1MNSYegkUK28UQmhx7DeV/yRgQzjzQLpV
-         K7kgNH7Ztpt+J1wb/YwkZlVUXJGJkwCZfqbLNAWLTByWeS2SJo1ETn4URRsKyGzEk5Xu
-         ib7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750240352; x=1750845152;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5bEnpNZFMrj7qCJtwgu60iTdn6bjP4AVMamgtkgw4qw=;
-        b=tjpMYtYM7Wu3OXZ87UHkJ3r+JqiT3FJrgYo//cGSkb5qUHAaElfz9nqZvTO0bgxP9l
-         VkxINaD/Kqg7pK2+lwWLZ9Hy0n8DgasToGE5VFmV5de9kShs7OIk+leFs53S0tDug6QT
-         8GpSj1ILjgiLDnmR+YZZHkIzyFl319ZD+WB8UbD/b69rbiXg9acpa3qmDEGSRuuIX+V4
-         TF5w0Y5e32sSTcGUHcPGKj+8XEyBt7v/EYvUyEIzG72nZfCO85K93LO0ggaa8LboJ4II
-         aubaAZDRTwSlrj67pTsYG++i4EyGqcwPF0F0nvx8mTMGECGsE2rG/BYAJ7mKDEL/rThp
-         Hz/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVs7XX5cRbPkVWkYGYKmhPdWM9x7Uv+HQf0sjc+YbTkcHmHqd5E4GM4IYk+uV4Q2ggqZE/0JE+j+VAXs/TfLQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWWiaC1npUBfT0IMTDNDcAIG/yvH1HMga8asmXitCITLPm6KJM
-	X+Gza2zq8+LqPf1XTV3aYXApg+Jk8z8HuuRLI5ckUXws9agySDXg6ieNh1jz6xb9U1bm8WlyYgD
-	zDI3pgsT0/NOX30tvgw==
-X-Google-Smtp-Source: AGHT+IE3kYpXlFdUKU3nwq2/d/ISrrwVjPKX3MaqFovbery7s8OVJiNXEcZ8fmoH61Jbhx+Lgcv8YDANMjz6Ec8=
-X-Received: from wrvk10.prod.google.com ([2002:a5d:518a:0:b0:3a5:75cb:ae])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:64cb:0:b0:3a4:ff01:218a with SMTP id ffacd0b85a97d-3a572e45e20mr12738829f8f.50.1750240352358;
- Wed, 18 Jun 2025 02:52:32 -0700 (PDT)
-Date: Wed, 18 Jun 2025 09:52:30 +0000
-In-Reply-To: <CANiq72nP+dKugMv3KXdJJsFE0oD01+zYgWbjz3e04kmhj_5MbQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3ommhor"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BAFC4CEE7;
+	Wed, 18 Jun 2025 10:04:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750241068;
+	bh=js50rT7ZmZqp2Zlm1S45NX1PVXUIxD1VZI6hR9bYyeE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F3ommhorCyH9FEc9UQoT3/K6L0puvugkbjyz8oKRYLvPuUkiz2B91lxm1mpoH2kAT
+	 lR9HGp3IIeJXPSThAzuiVsnmnpO/G9U6YLmSaNB2v7BPSFzJrqC5LRF3QHDJadOxzU
+	 9+npQoy+0b9Q6OuqTlp5L9/kjH1/BApjNgdqixNnyA0IG4PBKWO3XC9GBshKyQZR92
+	 zhFLHWcKnFDiWmsfFcKT28xCfPRQhOmc8U2Ef6Y/81oioR0yV8+xTBDToP/bnIzXXV
+	 fbkbMB3m9oftR7lSNsNiBtyyWW4O9kl81G2S6pk1ugMvc71EoXj60m7KJTK2DAIbHj
+	 GaDohBMHL5geg==
+Date: Wed, 18 Jun 2025 12:04:22 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] rust: debugfs: Bind DebugFS directory creation
+Message-ID: <aFKPJnZ2Tk3-oqBE@pollux>
+References: <20250618-debugfs-rust-v6-0-72cae211b133@google.com>
+ <20250618-debugfs-rust-v6-1-72cae211b133@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250617144155.3903431-1-fujita.tomonori@gmail.com>
- <20250617144155.3903431-2-fujita.tomonori@gmail.com> <aFJzNCCERjKHIVty@google.com>
- <CANiq72nP+dKugMv3KXdJJsFE0oD01+zYgWbjz3e04kmhj_5MbQ@mail.gmail.com>
-Message-ID: <aFKMXqak-mHraxU_@google.com>
-Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods as_micros_ceil
- and as_millis
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	ojeda@kernel.org, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, 
-	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
-	tglx@linutronix.de, tmgross@umich.edu
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250618-debugfs-rust-v6-1-72cae211b133@google.com>
 
-On Wed, Jun 18, 2025 at 11:29:26AM +0200, Miguel Ojeda wrote:
-> On Wed, Jun 18, 2025 at 10:05=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> >
-> > Why are we renaming them? The stdlib always uses as_* or to_* for copy
-> > types. In my mind, into_* means that you want to emphasize that you are
-> > performing a transformation that consumes self and transfers ownership
-> > of some resource in the process.
-> >
-> > See the api guidelines:
-> > https://rust-lang.github.io/api-guidelines/naming.html#ad-hoc-conversio=
-ns-follow-as_-to_-into_-conventions-c-conv
->=20
-> We may be going in circles here... I think the confusion is all on
-> what to do for "owned -> owned" `Copy` non-expensive conversions.
->=20
-> I think Tomo sent a patch to change the `as_` and `is_` methods to
-> take `&self` to be consistent with the guidelines, since they say
-> there is no "owned -> owned" case for `as_`. Then you mentioned that
-> `self` is OK and Andreas agreed, and I guess Tomo ended up with
-> `into_` since `to_` is only for the expensive case, even though it is
-> not meant for `Copy` types.
->=20
-> In other words, either we say in the kernel we are OK with `as_` for
-> "owned -> owned" too, or we take `&self`.
->=20
-> Did I get that right, everyone?
+On Wed, Jun 18, 2025 at 02:28:13AM +0000, Matthew Maurer wrote:
+> +#[cfg(CONFIG_DEBUG_FS)]
+> +mod entry;
+> +
+> +/// Owning handle to a DebugFS directory.
+> +///
+> +/// This directory will be cleaned up when the handle and all child directory/file handles have
+> +/// been dropped.
+> +// We hold a reference to our parent if it exists to prevent the dentry we point to from being
+> +// cleaned up when our parent is removed.
+> +pub struct Dir(#[cfg(CONFIG_DEBUG_FS)] Option<Arc<entry::Entry>>);
 
-Yeah I think using as_* naming for cases other than borrowed->borrowed
-is relatively common for Copy types. Looking at the stdlib, the rules
-I'm seeing are more or less these:
-
-First, if the method is expensive the naming is to_* or a verb without a
-prefix. We only use into_* for expensive operations if the call also
-transfers ownership of some resource. Example: CStr::to_bytes()
-
-Otherwise, if the method is something that looks inside the type (i.e.
-it peels away a layer of abstraction), then we using as_* naming. Or we
-might use a noun with no prefix if we want it to feel like a field
-access. Example: Duration::as_millis()
-
-On the other hand, if the method transforms the value while staying at
-the same layer of abstraction, then we may call the method to_* (or just
-use a verb without a prefix). Example: f64::to_radians()
-
-Alice
+NIT: Can we import Entry, such that we don't have to refer to it as entry::Entry
+all the time?
