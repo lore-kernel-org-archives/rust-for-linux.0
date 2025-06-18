@@ -1,52 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A0A1B4121;
-	Wed, 18 Jun 2025 15:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E1C2EE26E;
+	Wed, 18 Jun 2025 15:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750260732; cv=none; b=AJZUcqCsP/oy1EZLoGgukybKFEermjGsV9keUy0g8HfB0yaP1QR95zlH1nmm6q2ft+7chUp8gpeX6BL5qbduMhfQ50MR0msGOij4gduXr3CrajHGVD7GRFeU1NPHh3ARyVqVhcfE57RZPutoHVoUBoG6aAZbaPjxLHnvETqKKJI=
+	t=1750261151; cv=none; b=tOqscMIRsfEo7pUnxPXrZZ1UJwqXU9/qj67N6b+AQ07Mlsx0NKzUY9Vcd58oYl0hOWJQlEsdCN6Tz2oTVSgUCQCOzGDZAmHa8oql4aPfRWhIEc+EPW1YHGKUJR2nPWgUip7RQs6hppWuK3hv3KoJ6dcfoO303F4UpECmp8sjaUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750260732; c=relaxed/simple;
-	bh=9fyrUDii4EsU5ZWomQRcPWSUxRdw4RrXECeKD8bewZ0=;
+	s=arc-20240116; t=1750261151; c=relaxed/simple;
+	bh=JFhh7AKrOKzUvlarIRdE++QBY1DcQFVTi2V5HaWpvx8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eLmHP7HxI0mtPytOYQ7W8i0WzsFsQuCry842A7doU/5DTwpEuJWUT5F2XV7iQtfpspg6x8rkmDcIWGmq17XDc3ngICeOWjJ4/Tn2B1YC3umv/25rSUu4GyTF0pzJ9THa5+122r4L1e1tKHydvmpX9/OC4FCv/RXTagvBr/yCC20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2DgnRIS; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=iv6IiwsR8ibCFT/mQghq1oU5LRI4UkE7NZepVS+4vAMMcr1UomiV9+nJi/1W8os9ivOyxFpuMQay1FYk2dClIkUFuuflp6ZArlzFyxmfR/ejj89PwShfJoK1R450sH42+t3148706m4ObLnTPa3F6YaSqkUEDu8dPZozvNA+UXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HhsmriF9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2DgnRIS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2FFC4CEE7;
-	Wed, 18 Jun 2025 15:32:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HhsmriF9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C62C4CEE7;
+	Wed, 18 Jun 2025 15:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750260730;
-	bh=9fyrUDii4EsU5ZWomQRcPWSUxRdw4RrXECeKD8bewZ0=;
+	s=k20201202; t=1750261151;
+	bh=JFhh7AKrOKzUvlarIRdE++QBY1DcQFVTi2V5HaWpvx8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N2DgnRISxj2lHw5r7scLZ4hQ7KP60wvoxXDN518bbJw3/tNLUfFfGnWeyAey9mXFB
-	 zHquRdU+LvUTXNRM4zsiD1yLBjxtksXBI9T3UTVkIlpp1oS2e06CxPDXfePCxBg22q
-	 sY6Bw0yuNe1R2uFB/sNg4lJGcsPCBDYugt+OXReXZtGJRc8dn+T0ZJStTwhx3gyyw7
-	 v2YxqaotyZ+pe4DWWQDSjHa/Q5GVPwuVJ596KX+nG8f1gXl1OoPa0MupSueHjt1O1D
-	 wv3rwBLi354hz9VhJKov0Sjiu2jZPjRe3aTYGXTq4k92Jl7z+y9TMskwVPrX9V3x2p
-	 Rtv1xR2OPNoKQ==
-Date: Wed, 18 Jun 2025 17:32:04 +0200
+	b=HhsmriF9FnTh9MW53Z58uEg37HWWlwyNmE4wdGHezwXX2E+2JLj92AKSg6bF7zcGD
+	 l0gKVdL8Zzq/YKnlTTSqBWNa4sxZkFrKeUiIumyD0XS1FBc5kPDKUlT5+W6vYj52uI
+	 9zRwbrj0d7IQksCxU+doEkSWgSiaYkJ7eTMhoCUhsre0ucbCM1HqG3GdOFofou1VDk
+	 Mtg/sQow7zbSR0S5LI5hfma4kezfmrl4mmNOZ2HMhLrt3lneiBASXLwbU4XKyqVFwS
+	 EozLEjRzVk5srE4khhRd66rmiuohplGtHpuyiz1n3TA0TDxUraGKsONIifmHdSwIO+
+	 WL085dnbz7BzQ==
+Date: Wed, 18 Jun 2025 17:39:05 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Matthew Maurer <mmaurer@google.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 3/5] rust: debugfs: Support arbitrary owned backing
- for File
-Message-ID: <aFLb9CcL5W-y_TBl@pollux>
+Subject: Re: [PATCH v6 2/5] rust: debugfs: Bind file creation for long-lived
+ Display
+Message-ID: <aFLdmYLyDucTAiZx@pollux>
 References: <20250618-debugfs-rust-v6-0-72cae211b133@google.com>
- <20250618-debugfs-rust-v6-3-72cae211b133@google.com>
- <aFJ2fJ_pX8mWCQo6@google.com>
- <CAGSQo00fwu-UEi9D+Q4F5WpfUUuz562odhaDhp=F99cJyd9WyQ@mail.gmail.com>
+ <20250618-debugfs-rust-v6-2-72cae211b133@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,46 +52,79 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAGSQo00fwu-UEi9D+Q4F5WpfUUuz562odhaDhp=F99cJyd9WyQ@mail.gmail.com>
+In-Reply-To: <20250618-debugfs-rust-v6-2-72cae211b133@google.com>
 
-On Wed, Jun 18, 2025 at 08:00:51AM -0700, Matthew Maurer wrote:
-> > We may want to consider using the ForeignOwnable trait here instead. The
-> 
-> I was considering trying to switch over to `StableDeref`-like trait
-> [1] in a follow-up patchset. The core property I need is that moving
-> the `D` cannot result in the pointer it would `deref` to changing.
-> 
-> The problem with `ForeignOwnable` is that it forbids the user from
-> passing in a `Box<dyn Foo>`, because that doesn't fit in a `void*` A
-> `StableDeref` version would not have this issue. I agree that
-> `ForeignOwnable` would be a strict upgrade to what I have now, since a
-> user can still pass in a `Box<Box<dyn Foo>>` and have it work with
-> `ForeignOwnable`, and if we ever added `StableDeref`, then
-> `ForeignOwnable` would have a blanket impl for it.
-> 
-> I'll send a new version using `ForeignOwnable`, and we can consider
-> the `StableDeref` version in the future.
+On Wed, Jun 18, 2025 at 02:28:14AM +0000, Matthew Maurer wrote:
+> diff --git a/rust/kernel/debugfs/display_file.rs b/rust/kernel/debugfs/display_file.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..65e37e34d7b587482492dc296637a3bc517b9fe3
+> --- /dev/null
+> +++ b/rust/kernel/debugfs/display_file.rs
+> @@ -0,0 +1,60 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// Copyright (C) 2025 Google LLC.
+> +
+> +use crate::seq_file::SeqFile;
+> +use crate::seq_print;
+> +use core::fmt::Display;
+> +
+> +/// Implements `open` for `file_operations` via `single_open` to fill out a `seq_file`.
+> +///
+> +/// # Safety
+> +///
+> +/// * `inode`'s private pointer must point to a value of type `T` which will outlive the `inode`
+> +///   and will not be mutated during this call.
+> +/// * `file` must point to a live, not-yet-initialized file object.
+> +pub(crate) unsafe extern "C" fn display_open<T: Display>(
+> +    inode: *mut bindings::inode,
+> +    file: *mut bindings::file,
+> +) -> i32 {
 
-Yes, please do that for now. It's rather common case that drivers want to expose
-reference counted data, i.e. an Arc, through debugfs and having to go through
-the indirection with an additional Box isn't quite nice.
+Please use kernel::ffi::c_int instead.
 
-> [1]: https://docs.rs/gimli/latest/gimli/trait.StableDeref.html
-> 
-> 
-> > trait is implemented by anything that can be converted to/from a void
-> > pointer, so you can:
-> >
-> > * When creating the file, convert it to a void pointer that you store in
-> >   File and pass to debugfs_create_file_full.
-> > * When displaying the file, create a borrowed version of the void
-> >   pointer and display that.
-> > * When freeing the File, convert the void pointer back into an owned
-> >   value and drop it.
-> >
-> > For cases where a box really is necessary, the user can create a box and
-> > pass it themselves. But if the user already has a pointer type (e.g. and
-> > Arc<T> or &'static T) then they can pass that pointer directly and the
-> > pointer is stored as a void pointer without the Box indirection.
-> >
-> > Alice
+> +    // SAFETY:
+> +    // * `file` is acceptable by caller precondition.
+> +    // * `print_act` will be called on a `seq_file` with private data set to the third argument,
+> +    //   so we meet its safety requirements.
+> +    // * The `data` pointer passed in the third argument is a valid `T` pointer that outlives
+> +    //   this call by caller preconditions.
+> +    unsafe { bindings::single_open(file, Some(display_act::<T>), (*inode).i_private) }
+> +}
+> +
+> +/// Prints private data stashed in a seq_file to that seq file.
+> +///
+> +/// # Safety
+> +///
+> +/// `seq` must point to a live `seq_file` whose private data is a live pointer to a `T` which is
+> +/// not being mutated.
+> +pub(crate) unsafe extern "C" fn display_act<T: Display>(
+> +    seq: *mut bindings::seq_file,
+> +    _: *mut core::ffi::c_void,
+> +) -> i32 {
+
+kernel::ffi::c_int
+
+> +    // SAFETY: By caller precondition, this pointer is live, points to a value of type `T`, and
+> +    // is not being mutated.
+> +    let data = unsafe { &*((*seq).private as *mut T) };
+> +    // SAFETY: By caller precondition, `seq_file` points to a live `seq_file`, so we can lift
+> +    // it.
+> +    let seq_file = unsafe { SeqFile::from_raw(seq) };
+> +    seq_print!(seq_file, "{}", data);
+> +    0
+> +}
+> +
+> +// Work around lack of generic const items.
+> +pub(crate) trait DisplayFile: Display + Sized {
+> +    const VTABLE: bindings::file_operations = bindings::file_operations {
+> +        read: Some(bindings::seq_read),
+> +        llseek: Some(bindings::seq_lseek),
+> +        release: Some(bindings::single_release),
+> +        open: Some(display_open::<Self> as _),
+
+Why the cast? That shouldn't be needed.
+
+> +        // SAFETY: `file_operations` supports zeroes in all fields.
+> +        ..unsafe { core::mem::zeroed() }
+> +    };
+> +}
