@@ -1,149 +1,89 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11201E5B60;
-	Wed, 18 Jun 2025 05:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F29F1B0437;
+	Wed, 18 Jun 2025 06:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750225868; cv=none; b=kNfAGqYleai+lYQwiXVhBWv9DmyO0ybEn4mcJWv9W6g090Mw4ZKnrFDZ5Z8IplF7cdd++XdB59uHNb8Iv+spu0NO6pat+WAJCqgcqApo5KxZ/E9RIk+Hpsh38/13suSIZ+Y4ZEXB4iJRI8tlshkeIb5PNuG2ufOjDt1bYXIQWJ4=
+	t=1750227594; cv=none; b=MUHFo3AaT9x2ySgqusb+LnvduOlFkN434KepqpCyOh30vx5KQP2WIOuTouBZ1Y6156zfOROSyiDGjvQMN3Wy451Gl+r6YX+pVtGkWYtNUUdIYgEC1G/yIFSIeRZC5xDQq27e9qyJCPm3kGT+JZV5IQpuUfY00wCAst6ImxSjOU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750225868; c=relaxed/simple;
-	bh=Tdgx2liwsIplwezdt/eFKC4vMNxOqHp4aQ+BcUH8kBQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QrcECnvIT4oCG/DyeKaQe+NIqqTJ1bewiu383BV2epA1ezJFHY620DmfvpI5Spq4C1D4YmWBeOCJ+e5yGvHSjpPLO7/fxuH0JY3TGA3uldpPewEqXjz5IYWfcSk0rTn0QoO0Hmg2ipq+YRnAIUSfcWT31oS58k3LWW9bG6SpVRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=juhs/ZzI; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750227594; c=relaxed/simple;
+	bh=ptnwGTzj6YMKatvrZaLaa4y9ij+xS18u0yM5DI6DxQY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eF7SupjfD6JJ51zfnZT24nL0lHwGKJtDfjvPkJiTNETmrTasvi4VXTtXfkmgktZpm6ikk/W1O0H3mT6XATDX+QM8onZYku+BACWgMcVmn36qoGvxdcYolo9cpVGF9q/qbzx0JH645oszqKAs2nzyKBHpPAdwAA14Bdtm9DA/avM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EAI+v5uI; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="juhs/ZzI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750225865; x=1781761865;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Tdgx2liwsIplwezdt/eFKC4vMNxOqHp4aQ+BcUH8kBQ=;
-  b=juhs/ZzI6BKbAIj5jkdRhNNc3+zU2jJcjqKOVaAz1lvvQ5zvPrLnRipj
-   YVkK/x0wrOQjPezVNNXK403LClM2PswchZBuwbcur677Cvsd3fyPRETf7
-   /bmuPUgBH66JlFTGOXAgjo+k88GtBlwr3cstKOzhTS/4Nf7xWAtZ0aO9R
-   ISwcGJwbw/Hc7zsmOQtW1D3MXTVCqOtpXE7mCBY1Rz4ZDp7rf5d2nFJBY
-   fEMrCgAsaU8Jywwr0q4HX2dFGaf7R1SQyiHOC8Tn6YleNFzyu2qUGd28D
-   otDfew0UQf0vMny9eCYPvMFFy3aZAwFXE+2g7i2QcKbuwjkqYK6qU77xG
-   Q==;
-X-CSE-ConnectionGUID: 73ha6hyuSe2Y48IgQDIw0Q==
-X-CSE-MsgGUID: dt38bHOMSMSq/0tlhUzRAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11467"; a="52129818"
-X-IronPort-AV: E=Sophos;i="6.16,245,1744095600"; 
-   d="scan'208";a="52129818"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2025 22:51:05 -0700
-X-CSE-ConnectionGUID: y++iQIilS0CcpPuztu0urw==
-X-CSE-MsgGUID: A71+k8qsTsWnOtKAkWParg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,245,1744095600"; 
-   d="scan'208";a="149202854"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 17 Jun 2025 22:51:04 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uRlhM-000JRS-26;
-	Wed, 18 Jun 2025 05:51:00 +0000
-Date: Wed, 18 Jun 2025 13:50:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guillaume Gomez <guillaume1.gomez@gmail.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	ojeda@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/1] Use new `--output-format=doctest` rustdoc command
- line flag to improve doctest handling
-Message-ID: <202506181334.f0STx6ta-lkp@intel.com>
-References: <20250617140032.1133337-2-guillaume1.gomez@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAI+v5uI"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2355360ea88so8361345ad.2;
+        Tue, 17 Jun 2025 23:19:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750227592; x=1750832392; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ptnwGTzj6YMKatvrZaLaa4y9ij+xS18u0yM5DI6DxQY=;
+        b=EAI+v5uI7Gc0leeysixCbGtzLB51TjG5weGbK8DgkJv/jzOSIooM4sj/LJJn7gLFQx
+         v6/WekQRqwQ6cxLys98UnfzQKi3g/ji3BM0DPFkZJ2iQBjR0d1+hhg87l5aGpZq3aL/7
+         47OQEiyS4+sUPPvJFI6xWkktkIFZqsWtuTNZIVYtea5nWn8waivLPN+0vxxEHkuTfu7b
+         RJbtZy3+UsTmvicZbFu5HvE1wh2q8RjoUQFUxwvjDdKWORKUnuC+BWcinck0WDIasF34
+         tfRTG75RuHqdM8JDLhvIQA1stin0mdPc3X4CQ6n9F/EpK6XRkqAEqQ4XT9sMYTcbHqCf
+         /EnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750227592; x=1750832392;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ptnwGTzj6YMKatvrZaLaa4y9ij+xS18u0yM5DI6DxQY=;
+        b=jqzx4idd8sANWLzmqU3w3yRYuOA/NmoGhvj7UHhCzYfDoulUvsBFKyivmi0ok4cMHb
+         ryczP8hqL0busj+tyaJontFuCRNXZEFzjNXtrURSHpZf4SlXO5Mk0lg7B/nwHPCfW3cn
+         JRpCEUZ/5arIo0Va+enV3sP0Y2kHCENGau+60k+EhoT/rjNVRRQJySLXNUVEx0cBDMK3
+         ueb58aWL1pSbbvnA159ZrTwqB5e8ePhHA9ffnjiNKUwabzwZ+nK3soqjJ1zu4LIQqy3t
+         dxSufLsEdJNyNsPwxAwo3d/CaxHA0K62O5LgK1uaUk5vjPmIpyIvnKvyp6wDbtM9Vl2d
+         qzYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXYregCExWBO3ph0MNtkRC4L3wbP9M6Ir2P2ay/5lSZYA+K6FlKpqlF0YWaUsBUJgLc8hP9y31R4n+mmbKxGU=@vger.kernel.org, AJvYcCXEKO7UpRXeDFbflk52Yprc9yzgsQLII9Pk4N6A/9coqYuppEEFw9YMtq7XwI2SFfnfZ373UsdJRFehBI4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2PZXX0YPjh95uYf7YdKSpis+QvxqjkECz+xA8lsDT2nilVmei
+	RyFxvz1INVffNR2UvIu1cbqLIT9nLqWMSwLVtAOzra5OtgXrqNhgZcORnWuXm2nzOoAAKQIQwpU
+	Z8qP+SgtnRD9yDBVbn7AYTkbCdbQYruI=
+X-Gm-Gg: ASbGncufvYgrHMbOKzDZM4ibTQ6Rmwd+ipY38nJmqpraoM91crtMTAL7xLtlUyI2482
+	rwIBzZJOtp7WklgNms62Vy34N0WMjBfVCMmBpVeZ3rR+uQac9J01xX3pDkjYZa8NXnGWtb6jxob
+	0r1OEGCxjPIsY/aN9Bb2cR80mz1Uo6JgIPAMwOsRGOmgc=
+X-Google-Smtp-Source: AGHT+IFtnzX76bEKEbc2BXmLJccO2YsNEFGrLZRb7gLGYgWEKWunrctKo3sA+VxN8wWlXqDc4/YJ4oKSqaG76xV8EU4=
+X-Received: by 2002:a17:902:c404:b0:234:f4a3:f73e with SMTP id
+ d9443c01a7336-2366b1489fbmr84870505ad.9.1750227592465; Tue, 17 Jun 2025
+ 23:19:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250617140032.1133337-2-guillaume1.gomez@gmail.com>
+References: <20250617140032.1133337-2-guillaume1.gomez@gmail.com> <202506181334.f0STx6ta-lkp@intel.com>
+In-Reply-To: <202506181334.f0STx6ta-lkp@intel.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 18 Jun 2025 08:19:40 +0200
+X-Gm-Features: Ac12FXzEAYg6BwKSfXUGSw7sGa50QSsZn7SaLIMHw1acT4CRUVbCTxzzVjN85hc
+Message-ID: <CANiq72ksZwH7GZKAjk=7FN2npWou+T-0pkbOF+fm6hVHdQtNZA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] Use new `--output-format=doctest` rustdoc command
+ line flag to improve doctest handling
+To: kernel test robot <lkp@intel.com>
+Cc: Guillaume Gomez <guillaume1.gomez@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	oe-kbuild-all@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Guillaume,
+On Wed, Jun 18, 2025 at 7:51=E2=80=AFAM kernel test robot <lkp@intel.com> w=
+rote:
+>
+> kernel test robot noticed the following build errors:
 
-kernel test robot noticed the following build errors:
+It is just `rustfmt`, so no need to send a new version just for this.
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on shuah-kselftest/kunit shuah-kselftest/kunit-fixes linus/master v6.16-rc2 next-20250617]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+By the way, from a quick look, it indeed looks like with this now we
+can finally avoid relying on implementation details on the kernel
+side, so this is great, thanks!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Guillaume-Gomez/Use-new-output-format-doctest-rustdoc-command-line-flag-to-improve-doctest-handling/20250617-220502
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20250617140032.1133337-2-guillaume1.gomez%40gmail.com
-patch subject: [PATCH 1/1] Use new `--output-format=doctest` rustdoc command line flag to improve doctest handling
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250618/202506181334.f0STx6ta-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250618/202506181334.f0STx6ta-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506181334.f0STx6ta-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   PATH=/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   INFO PATH=/opt/cross/rustc-1.78.0-bindgen-0.65.1/cargo/bin:/opt/cross/clang-18/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-   /usr/bin/timeout -k 100 12h /usr/bin/make KCFLAGS= -Wno-error=return-type -Wreturn-type -funsigned-char -Wundef W=1 --keep-going LLVM=1 -j32 -C source O=/kbuild/obj/consumer/x86_64-rhel-9.4-rust ARCH=x86_64 SHELL=/bin/bash rustfmtcheck
-   make: Entering directory '/kbuild/src/consumer'
-   make[1]: Entering directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
->> Diff in scripts/rustdoc_test_builder.rs at line 16:
-    //! the `gen` script (done there since we need to be aware of all the tests in a given file).
-    
-    use std::collections::HashMap;
-   -use std::io::Read;
-    use std::fs::create_dir_all;
-   +use std::io::Read;
-    
-    use json::JsonValue;
-    
-   Diff in scripts/rustdoc_test_builder.rs at line 25:
-    
-    fn generate_doctest(file: &str, line: i32, doctest_code: &HashMap<String, JsonValue>) -> bool {
-        // FIXME: Once let chain feature is stable, please use it instead.
-   -    let Some(JsonValue::Object(wrapper)) = doctest_code.get("wrapper") else { return false };
-   -    let Some(JsonValue::String(before)) = wrapper.get("before") else { return false };
-   -    let Some(JsonValue::String(after)) = wrapper.get("after") else { return false };
-   -    let Some(JsonValue::String(code)) = doctest_code.get("code") else { return false };
-   -    let Some(JsonValue::String(crate_level_code)) = doctest_code.get("crate_level") else { return false };
-   +    let Some(JsonValue::Object(wrapper)) = doctest_code.get("wrapper") else {
-   +        return false;
-   +    };
-   +    let Some(JsonValue::String(before)) = wrapper.get("before") else {
-   +        return false;
-   +    };
-   +    let Some(JsonValue::String(after)) = wrapper.get("after") else {
-   +        return false;
-   +    };
-   +    let Some(JsonValue::String(code)) = doctest_code.get("code") else {
-   +        return false;
-   +    };
-   +    let Some(JsonValue::String(crate_level_code)) = doctest_code.get("crate_level") else {
-   +        return false;
-   +    };
-    
-        // For tests that get generated with `Result`, `rustdoc` generates an `unwrap()` on
-        // the return value to check there were no returned errors. Instead, we use our assert macro
-   make[1]: Leaving directory '/kbuild/obj/consumer/x86_64-rhel-9.4-rust'
-   make[2]: *** [Makefile:1825: rustfmt] Error 123
-   make[2]: Target 'rustfmtcheck' not remade because of errors.
-   make[1]: *** [Makefile:248: __sub-make] Error 2
-   make[1]: Target 'rustfmtcheck' not remade because of errors.
-   make: *** [Makefile:248: __sub-make] Error 2
-   make: Target 'rustfmtcheck' not remade because of errors.
-   make: Leaving directory '/kbuild/src/consumer'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Miguel
