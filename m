@@ -1,95 +1,110 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9DD2E6D1E;
-	Wed, 18 Jun 2025 13:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B61627E1C3;
+	Wed, 18 Jun 2025 13:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750252800; cv=none; b=KZIBD5hblRmlDSI8X1T/oEgBdrOphdtMUa+hVXIMG+hSKxxUUzQpjtZ9Q624P6LPoRuomi4yPsjuRR8qk9HAM0XeW4SaGK4HK9XM2QjOS5YtDJz1/vClc9QHNnb5ckoJsrWlzaqQlxHu3ZMBQjiK4CNKiT8pyi8lHfXx3CQFQ3g=
+	t=1750253518; cv=none; b=Dcex8OJC5kqEHnz+t87FuXI9T6fag5IGUK+ne8glaGlWZRPwc2Aam0+aLlyrir97yXycE0X6EwcxGgRGxWHwZ9T258qdwDta2SViFpjLLRINEjUp2ACHayjsGcHigb7WCiO5P/sBqtCE8XdyGWThCyT9S8ijdw0OHjTjFnLqg+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750252800; c=relaxed/simple;
-	bh=6f04xDOpNX05iFRDZ8DlWL53L0pt5D4Vgc+rMTWpBQk=;
+	s=arc-20240116; t=1750253518; c=relaxed/simple;
+	bh=sfxH+ws1wOJOfMLaBxgpISqgTdDurXEqio3nOsX1S/w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FPU4TEcvXAHBLN/mtOwv0JhcG7DSUzfjrLtbq5psLe1Ob+X2MHN/jHb4w1jW6Vaw+y6yuOXiHfg0CIoBgL3bAZh9SrPVAhZUOeGLbYyILrjx+E5cGV65LgNVneWynq1drLezUSEsFXwNrCo2dtAR4wyJHg9Rm5bIia16FD+c6Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YJwamnN5; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qBmwagOJL4ZOwOXhkQ7c/l2AF5hQF/0Vt+q9O2sfB36Jx41MdSqoDo6H3/OnAPRjRASLO+gL0FQ66utEs3yvTAgO2Cq3p0IR8kUQNZNP1+FjWHlcs/uE1dkhFUSenCg0ALwletpYM340Y1F+8fCnEM77vNpTjlF8vaRQG8bl5xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pdzdcBhk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YJwamnN5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46DE3C4CEE7;
-	Wed, 18 Jun 2025 13:19:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pdzdcBhk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9479CC4CEF0;
+	Wed, 18 Jun 2025 13:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750252799;
-	bh=6f04xDOpNX05iFRDZ8DlWL53L0pt5D4Vgc+rMTWpBQk=;
+	s=k20201202; t=1750253518;
+	bh=sfxH+ws1wOJOfMLaBxgpISqgTdDurXEqio3nOsX1S/w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YJwamnN5nsfolQq0lW8x7Qz6jFeRfMqcj7LUP9P7Dl8o6gvr4SXqyK22DG1GPV0Lp
-	 cY9HJK0bFDmEAunLTyGp7DBQDVHdQXqge4TiV3NmgK1xuw8n5JkhA7SlQff6hindRF
-	 ymIkxFsuqk1udmM+vABAxCTwE/uKhh8mOsKNVOEB9/S0OiACJLL7+NDV4eMEZPlQKO
-	 /BNNCYHVE6bWyT9QeznFxALRWzVkniHQdas7IdbnFBmXHFmV6CsWieOxGBOVLZzuqk
-	 jv8xmTL0NyQWl3t0djxl+a2quW0TSowB3I4a4GqOE6xigRRpIwLTGysco0ZAj1GUGY
-	 zz8uh00v7O7xQ==
-Date: Wed, 18 Jun 2025 08:19:58 -0500
+	b=pdzdcBhkCzxCjd2GTsH6uIJmKGXeZ9bSr8OoDGcT0UZpXTLgJXCiXwos2WBtrIken
+	 wxor2acD3hWrH9UtL9BatEUtrkU0qIaY2VGKKiMB3QLYEW+hVGHpvl1KLX+j5iQldc
+	 r5w/4o1KaEHkB2pKRQ/2KBnvhjZ7gTXIe/qsB4Scy4Y+yUYFu27fyuJx6sta3l5Rgm
+	 SUAo3qmqsytZ6ZbEXNp8fVnkyEwTZ6fdUbcB7MQE5ZjqgfRl+01PhIUyLUHWaON3z6
+	 ul9p1lxSDzF6s3OK7opRDl4Uiy5xeAOiRo5SreBcNZ2ZtZ4LnH1ImV/C3j8I7aMp43
+	 XJ3llqp3Bwyjw==
+Date: Wed, 18 Jun 2025 08:31:55 -0500
 From: Rob Herring <robh@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, rafael@kernel.org,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, lenb@kernel.org,
-	wedsonaf@gmail.com, viresh.kumar@linaro.org, alex.hung@amd.com,
-	dingxiangfei2009@gmail.com
-Subject: Re: [PATCH v7 3/9] samples: rust: platform: conditionally call
- Self::properties_parse()
-Message-ID: <20250618131958.GA1550757-robh@kernel.org>
-References: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
- <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
+To: Remo Senekowitsch <remo@buenzli.dev>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Mark Brown <broonie@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v1 3/3] samples: rust: platform: Add property child and
+ reference args examples
+Message-ID: <20250618133155.GB1550757-robh@kernel.org>
+References: <20250616154511.1862909-1-remo@buenzli.dev>
+ <20250616154511.1862909-4-remo@buenzli.dev>
+ <CAL_JsqKXrsdGjTE5KDkqmVHUK5urMJnWSLWgEi8H1yM21gcOCA@mail.gmail.com>
+ <aFFpmKLKR2hGs1I1@pollux>
+ <DAPMND2X0QHE.1N0NF7R1F8J1G@buenzli.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DAPMND2X0QHE.1N0NF7R1F8J1G@buenzli.dev>
 
-On Wed, Jun 18, 2025 at 11:13:25AM +0100, Igor Korotin wrote:
-> From: Danilo Krummrich <dakr@kernel.org>
+On Wed, Jun 18, 2025 at 01:37:08PM +0200, Remo Senekowitsch wrote:
+> On Tue Jun 17, 2025 at 3:11 PM CEST, Danilo Krummrich wrote:
+> > On Tue, Jun 17, 2025 at 08:01:08AM -0500, Rob Herring wrote:
+> >> On Mon, Jun 16, 2025 at 10:45 AM Remo Senekowitsch <remo@buenzli.dev> wrote:
+> >> > @@ -91,6 +95,13 @@ fn properties_parse(dev: &device::Device) -> Result {
+> >> >          let prop: KVec<i16> = fwnode.property_read_array_vec(name, 4)?.required_by(dev)?;
+> >> >          dev_info!(dev, "'{name}'='{prop:?}' (KVec)\n");
+> >> >
+> >> > +        for child in fwnode.children() {
+> >> > +            let name = c_str!("test,ref-arg");
+> >> > +            let nargs = NArgs::N(2);
+> >> > +            let prop: FwNodeReferenceArgs = child.property_get_reference_args(name, nargs, 0)?;
+> >> 
+> >> Is there some reason we can just pass 2 in rather than nargs? Seems
+> >> overly verbose for my tastes.
+> >
+> > It's because you could also pass NArgs::Prop("foo-bar") to indicate the the
+> > name of the property telling the number of arguments.
+> >
+> > NArgs is defined as
+> >
+> > 	pub enum NArgs<'a> {
+> > 	    /// The name of the property of the reference indicating the number of
+> > 	    /// arguments.
+> > 	    Prop(&'a CStr),
+> > 	    /// The known number of arguments.
+> > 	    N(u32),
+> > 	}
+> >
+> > and FwNode::property_get_reference_args() can match against the corresponding
+> > enum variant to cover both cases.
 > 
-> Only call Self::properties_parse() when the device is compatible with
-> "test,rust-device".
-> 
-> Once we add ACPI support, we don't want the ACPI device to fail probing
-> in Self::properties_parse().
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> I guess we could make the function generic if that's deemed worth it?
+> A trait and an implementation for `u32` and `&CStr` each. Similar to how
+> we made `property_read` generic.
 
-This needs your S-o-b as well since you sent the patch.
+There is a case where the cells property is optional and we fallback to 
+0 cells if not found. #msi-cells is an example. I imagine NArgs could 
+express that while a generic could not? In any case, I don't expect 
+drivers to have to deal with that as it would be subsystem code handling 
+it.
 
-> ---
->  samples/rust/rust_driver_platform.rs | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> index 000bb915af60..036dd0b899b0 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -40,7 +40,12 @@ fn probe(
->              dev_info!(dev, "Probed with info: '{}'.\n", info.0);
->          }
->  
-> -        Self::properties_parse(dev)?;
-> +        if dev
-> +            .fwnode()
-> +            .is_some_and(|node| node.is_compatible(c_str!("test,rust-device")))
-
-I think you should be checking just is this ACPI or DT rather than 
-compatible. It's kind of an anti-pattern to test compatible in probe. 
-The reason is we've already matched to a compatible and have match data 
-to use, so we don't need to do it again. It becomes quite messy when 
-there are numerous possible compatibles.
-
-In C, we just do 'if (dev->of_node)' to check for DT or not.
-
-It is just a sample, but I'm sure folks will copy it.
+As-is is fine I think. This function isn't too widely used that it could 
+be changed later if we change our minds.
 
 Rob
