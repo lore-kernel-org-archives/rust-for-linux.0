@@ -1,96 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0221624FE;
-	Wed, 18 Jun 2025 19:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211361F4CAE;
+	Wed, 18 Jun 2025 19:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750274005; cv=none; b=M+rqnbuCQlVJ8112JH8jooDBrDyvMGvuAx0Gp0JuvQCQtf8ieyGQescJ37af+DU4QsyX+2zN6HpgjOnezL/4D9oSdL7TDSz9ig2kCyvZzHDapMur/6NmlnWXL7lNCD400w/GWirQ1B88ukHKSeCXz4t1EsukhZVaLa7lSm6w8lk=
+	t=1750274655; cv=none; b=B3oeph3Iryc/sco2aEmW7yBy9K8TyWKbj4pyQs8tOHwubq7ZC1D8vHtdKU+UnmAbxJGAmZUveqSQWObZVcKTEN7CPI+wkeQt8LHJjNlvNgy2oIf6sNMlAWZWujNS8Q3VieZtxAvnI9dBqrc/8Uyknz8j2ozHNGvesJNTDdVE0Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750274005; c=relaxed/simple;
-	bh=1KuC67Si5OZY9eok+6PD3Us52FjaM5Tmcx6laLxuqZo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Yceo+nv3yyjGhUf5+2cXYmWWuta6qCZg8zGE1wMzE+E6BnosebqyXE/9Uvoa56wD0Ph/SauHQDJi3+MhJaEwACmCCKOP7lrQT5NcqADbTRstWVSJQHSnY2dbicoqJN8hblTiwIjo8LYlHFoKyC4rHGcEVxud3C1E187JVRrUZZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AC6xVQoT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750274655; c=relaxed/simple;
+	bh=0B1AqIh7XaT96Qz7mgiF/9cixkNlDiA1iViFQK2gYs4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=aRaOWVuKrB/70EuAwPAqabGSJIriWMJm5pVM/1AXxpBONprGMej8gIiCiBn8iunHFYUotFkEmDtTNIOgWOt5o5DBxwnKH3B0VT6mkf03ia8uIe7xkaDN8n0N72R8qsTdDC78iRtAV+WsC8JNiDOd1FlfvUF/CgSHNldGt4lTL3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnkT9RJz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AC6xVQoT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1EBC4CEE7;
-	Wed, 18 Jun 2025 19:13:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnkT9RJz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE6CC4CEEF;
+	Wed, 18 Jun 2025 19:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750274005;
-	bh=1KuC67Si5OZY9eok+6PD3Us52FjaM5Tmcx6laLxuqZo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=AC6xVQoTvoCEL86ei0aUY1fb7EB35wweKCF70YT1TVOu16K2RgTzsIOUJ+C6CIElN
-	 vor3dIMBJJOREeKDjansurCJAAJOLOWfGvFv0uI7vWKhKLTfzy/TAFkR74lbeLo5hX
-	 ZoU9bPmgBBrgez8i18u1hljH7uXedw5wrWrLADQcFmWHAE0yIvOHNCGQRon17Wyzob
-	 q/1D/t+YEReiZ0K5S5CdUEgIyFeVP+O680xQc1T1lBsSfNqtlsZX+eRbf9y6zDLvKu
-	 AyWh5ZT8oy5/FNbhoondIWMoLw4lAUD7+IvDKGUIfXS4nbttTZOuDoDR11jGSrLp5U
-	 LaPIodefR9XRQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  <alex.gaynor@gmail.com>,
-  <ojeda@kernel.org>,  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
-  <bjorn3_gh@protonmail.com>,  <dakr@kernel.org>,  <frederic@kernel.org>,
-  <gary@garyguo.net>,  <jstultz@google.com>,
-  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
-  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
-  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
-Subject: Re: [PATCH] rust: time: Seal the ClockSource trait
-In-Reply-To: <aFJINI8ImfxMnvrx@Mac.home> (Boqun Feng's message of "Tue, 17 Jun
-	2025 22:01:40 -0700")
-References: <20250617232053.3927525-1-fujita.tomonori@gmail.com>
-	<aFIEAiDKnxsZQ8s4@tardis.local>
-	<aFENRtYZixePYn0XFOGCbNOkSV9338iV4jWk8XJYKI0crpf4QniT_GyZCmFuqmsKs5Cl64z8qlIK6aVfdTBjbA==@protonmail.internalid>
-	<aFJINI8ImfxMnvrx@Mac.home>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 18 Jun 2025 21:13:07 +0200
-Message-ID: <87tt4c983g.fsf@kernel.org>
+	s=k20201202; t=1750274654;
+	bh=0B1AqIh7XaT96Qz7mgiF/9cixkNlDiA1iViFQK2gYs4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=nnkT9RJza11P1108ZFZQQbR60kDdssVI6SRGhuBkp1onGLyJ+27ShAiQPWjyM5aHN
+	 BSIlZVu+gs57RAtjxyWwmB/velvo4q0R6H2FD8eaXQOUIRxEH15bNc0XBi26Dy80P5
+	 4vhf5pOHx82Fz37X0MboY5pV68Y/YI3EHj/GBtRujwU/wJ0LEsMEnCmSkzR3RwhoXj
+	 Ppa1DhWdv7ro07e5u8zdRyVeFmke3NumBy8EfdRlWnn4wrKXUlNdSNblMStJtEcGwv
+	 up3wnPlQp1GqCUy22Pco8yokKs7ThNq4ULn/0ZjWRhOHORk1ZXEPM3rGPMScr0NkRQ
+	 8NyIWaYc1K0mw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Jun 2025 21:24:08 +0200
+Message-Id: <DAPWKX9V8T26.315LG5OZLLL2M@kernel.org>
+Cc: "John Hubbard" <jhubbard@nvidia.com>, "Ben Skeggs" <bskeggs@nvidia.com>,
+ "Joel Fernandes" <joelagnelf@nvidia.com>, "Timur Tabi" <ttabi@nvidia.com>,
+ "Alistair Popple" <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v5 05/23] rust: num: add the `fls` operation
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>
+X-Mailer: aerc 0.20.1
+References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
+ <20250612-nova-frts-v5-5-14ba7eaf166b@nvidia.com>
+ <DAMHWN6ML8A1.2AUE4UWR58KR2@kernel.org>
+ <DANR43CR8X87.1YWHJK7P75TPQ@nvidia.com>
+In-Reply-To: <DANR43CR8X87.1YWHJK7P75TPQ@nvidia.com>
 
-"Boqun Feng" <boqun.feng@gmail.com> writes:
-
-> On Tue, Jun 17, 2025 at 05:10:42PM -0700, Boqun Feng wrote:
->> On Wed, Jun 18, 2025 at 08:20:53AM +0900, FUJITA Tomonori wrote:
->> > Prevent downstream crates or drivers from implementing `ClockSource`
->> > for arbitrary types, which could otherwise leads to unsupported
->> > behavior.
->> >
+On Mon Jun 16, 2025 at 8:41 AM CEST, Alexandre Courbot wrote:
+> On Sun Jun 15, 2025 at 4:16 AM JST, Benno Lossin wrote:
+>> On Thu Jun 12, 2025 at 4:01 PM CEST, Alexandre Courbot wrote:
+>>> +            #[inline(always)]
+>>> +            pub const fn [<fls_ $t>](v: $t) -> u32 {
 >>
->> Hmm.. I don't think other impl of `ClockSource` is a problem, IIUC, as
->> long as the ktime_get() can return a value in [0, i64::MAX). Also this
->> means ClockSource should be an `unsafe` trait, because the correct
->> implementaion relies on ktime_get() returns the correct value. This is
->> needed even if you sealed ClockSource trait.
->>
->> Could you drop this and fix that the ClockSource trait instead? Thanks!
->>
+>> Can we name this `find_last_set_bit_ $t`? When the upstream function
+>> lands, we should also rename this one.
 >
-> For example:
->
->     /// Trait for clock sources.
->     ///
->     /// ...
->     /// # Safety
->     ///
->     /// Implementers must ensure `ktime_get()` return a value in [0,
->     //  KTIME_MAX (i.e. i64::MAX)).
->     pub unsafe trait ClockSource {
->         ...
->     }
+> We can - but as for `align_up`/`next_multiple_of`, I am not sure which
+> naming scheme (kernel-like or closer to Rust conventions) is favored in
+> such cases, and so far it seems to come down to personal preference. I
+> tend to think that staying close to kernel conventions make it easier to
+> understand when a function is the equivalent of a C one, but whichever
+> policy we adopt it would be nice to codify it somewhere (apologies if it
+> is already and I missed it).
 
-Nice catch, it definitely needs to be unsafe. We should also require
-correlation between ID and the value fetched by `ktime_get`.
+I don't think we have it written down anywhere. I don't think that we
+should have a global rule for this. Certain things are more in the
+purview of the kernel and others are more on the Rust side.
 
-But I still think it is fine to seal the trait, why not?
+My opinion is that this, since it will hopefully be in `core` at some
+point, should go with the Rust naming.
 
-
-Best regards,
-Andreas Hindborg
-
-
+---
+Cheers,
+Benno
