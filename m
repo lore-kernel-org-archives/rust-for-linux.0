@@ -1,195 +1,332 @@
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2089.outbound.protection.outlook.com [40.107.93.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462FF1FDE09;
-	Wed, 18 Jun 2025 05:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750222907; cv=none; b=PAguaAkuZrJBCivhCI0oFTbzhDuFYaZjTs+ydV6pctiUXrxhtwi/1kNvoXV42mBhXQd8wkARBFUnjcyi+PrUIZ+UW9bIhoSn9JKfzMJaG8b5YRNbuI6hd+wABJ+iVYcihE2fKYFH3LS7Y0LFs5APcplkXZIrLoK62OJAT2poRDg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750222907; c=relaxed/simple;
-	bh=BfigIgRrToIGrLTr4lcde7vaVdFGL5utAWrI7l1J+FA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Isk2RZO3mO2Ll4i6ZXlTezQgi+6lBKARctLEUm9y4pCZ1RbkGOny9Bg6Erii/CXlV4nH5Hknin50aSDfPj/kIo9RKL5IuatVyY5h4qhdVQ+YALmJVtFsbeYKvdCj8p3Yf9FFWsORpvUUKq3CZXuuVnolPGQycchTShyN9f1b7R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E67BJwxU; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B2D1F0E56;
+	Wed, 18 Jun 2025 05:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750224421; cv=fail; b=DKYwPSw9ILbR14zuXeLysokXmAtft3EXtWI2mk+fSiSKpaTaWV6VfmbTIPj01wOjZ3a30GRCIlMQHGA3BC4Vir4A4n5D+0mF5JlTxcFP8AlSVHIbcPOhYXDYFfa0arP5AQiohM60GUzNMrTG+mTdgNqi9H1NmvY3vkEjQmX1mUs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750224421; c=relaxed/simple;
+	bh=QU1dHOLEC0T6m5FNcPGaxpxRa2G3owPDLL9zArNduZQ=;
+	h=Content-Type:Date:Message-Id:Subject:From:To:Cc:References:
+	 In-Reply-To:MIME-Version; b=JuJPNGrO6hcv9KgwVMxPJLc2Etm3TPVFyDfnNGqwQdWY71Z4WbUS3OT8CbHlOfI/rc4k7mkYa3IM8nYiL1+r49nlVUrKVlzL9zpHj7mlmHWORCnuL5XQLYzAVfoL7U6HdPhO0DvsD3R6KxlEOmzFHwZkuSNE1wwlWKfaVnlDluc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Zb7VZHG+; arc=fail smtp.client-ip=40.107.93.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E67BJwxU"
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6fa980d05a8so60214546d6.2;
-        Tue, 17 Jun 2025 22:01:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750222904; x=1750827704; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/6rhOO9XqYvs+n6bpe7FIPcze+Fg/amOVJg+3P/e4+Q=;
-        b=E67BJwxUMRgIjjCidmnDYbppCKuVp1yYveDrIwQSYJzWvdK7EghYrqXbh3FnzHkdvk
-         E8CAFNgsL6lDXL0L7YQFUn7EjBFC7aVfCngfYO2dOi2VyBguInHkkT1CMl3yuUz3BhCC
-         gJ0Pmm+6uJoeC1749hQlqGbvkolIifinoQRYe8cfRhTfbZK/uPhQV7Agswrl8tV/g8pI
-         44NCIKqpCbGgiH9KwO4OMzT6gVAxbkQnU7F7hHWEnjihXcFXb95N7lh4nVyKJXOhsbqh
-         TRVIWXTmDwjOcqen1Y9LD79/HWt4btp4OWjs42lXSHolFs4nb4T2eeM06MrBb+EA9oYD
-         TSNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750222904; x=1750827704;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/6rhOO9XqYvs+n6bpe7FIPcze+Fg/amOVJg+3P/e4+Q=;
-        b=GH6g1FteeVAY7zlr+UB5Egm+lAkCs+OcN+FQgdoXeTkwhuenNKOnOMSBf5kw8RAgZf
-         1MsmmRAgqf0EBp024DuGE4XtYtyRMartYK8+Hhik25Ad6UYl48HLo1LzKF/kAamo/4uR
-         n16M6jKogtHokrAq3ANQHGmEITct9G/O1mnIniPfvjaCwkA5ygxUaKaXqfZa1I2fRYVy
-         GAs7MHZiIz863UVB6k6BtP4rMFAytHGX9XySKXf/czlAO7dT5XhVdGgQx7fuOKH5MQ0V
-         qRFyEeTVg8jFEXqhYkvqvAjrVS3P4P7V37uM8rRCOTod5241eMKH/QVJOqing7B62kRP
-         zJ/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUw2n+Y1FC4Mnu/BLvGQxvg4NBAMay8qlD9bv+CviJTKgHgh7n5dccZu2R0Eifq/97PChHh7upuBYXMCfpfGS0=@vger.kernel.org, AJvYcCVYPk30J7E7s4b+f4BhDz+2FUcFsdkIoXcSb3GW3ZxqnbL8UdYZLmKUEBs+v4Z4qeo/gnHNKgfxGILNHBk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPXBanM+/B/wf/jwBmo/Nji5EaPyZ1gBzUkLqN8Pp2gvWg3wIe
-	EEaToyu14JSFpJ/T+uZ1Ib5zeKKRJBkDeUxzfGl4oEblQBAnnz05dvx+
-X-Gm-Gg: ASbGncuO5peX/tej5/jrVhJUPaU3Bn3l200m7cw1zYpqOeWEaOT1qf80+6irKCtq5fx
-	KA1ycB62ABv0TLAt+oYkEroUhQNEqh+E3XlfegZ9ZOKyDaCwsZbKLHMH88jSs7PZybJA+z0KHvy
-	yeSfPmyKud6Rp4UA0ARhvgBgmqqPNXG4WGmvrqj7zrtkpgokNPo5yOaawQDZYmz1VkH0NhUzgJg
-	6gMlmdTbmJ0UTbusf5Z5bACLN0+sKUW0VfvZ9UiQKg1gagej7tGyb4JfU+pOKQ4osGYmWOpVcFI
-	3ZhtJQ3ZFZy3Fwcs7/1pkmQF3vjmyhVGuwLr5fofbDQRS17DXxWRsIT+Au17UDW6RBP3EXTbgE/
-	E/tO9IzLSZB00AQgxLlgUIQL6HyJA964yJJ0n6EXQZU0lOORs8m5H
-X-Google-Smtp-Source: AGHT+IEHVgT0JWHxZcN6y85oBZsGRvLXlIydgmn/Tc4fH8DanmeNopCqO+Sskjc0G5jyU2oExL+tLg==
-X-Received: by 2002:ad4:5ca7:0:b0:6fa:90a2:4ec2 with SMTP id 6a1803df08f44-6fb47770191mr262543776d6.25.1750222903970;
-        Tue, 17 Jun 2025 22:01:43 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb59339378sm21596656d6.46.2025.06.17.22.01.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 22:01:43 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B9FF91200043;
-	Wed, 18 Jun 2025 01:01:42 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Wed, 18 Jun 2025 01:01:42 -0400
-X-ME-Sender: <xms:NkhSaL3KxJxKJmEXMTRw989j01CYUEkhmdQYuasWnpKpXnzt9IrHRw>
-    <xme:NkhSaKE8IqKmnfPCDValjfD0HyxVfJYeWnu6qA-5EE9DIw_LfxGv6572MN3S2NbVj
-    q6D0AL3fxjXWJoq5w>
-X-ME-Received: <xmr:NkhSaL7O2ETzE6a_IU3diXWMegVXj4l14jRDB2UYycV9Es7JYVaDQQ5FoA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduleelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehfuhhjihhtrgdrthhomhhonhhorhhisehgmh
-    grihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpth
-    htohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihh
-    lhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghnnhgrqdhmrghrihgrsehlihhnuh
-    htrhhonhhigidruggvpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehfrhgvuggvrhhitgeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:NkhSaA0nGrpqP0jXeoUPle72Grs5uoPaL5VQNLfXfc_WRqJmDx0K2Q>
-    <xmx:NkhSaOESeD73FACEEq-dxYy5lG7p8ATe2JUVOiVTjFcMOtNs9VfFNw>
-    <xmx:NkhSaB_MaICBPbchMOH6MskN2nNCD50tL-RmlukcpakllPlabCqUqQ>
-    <xmx:NkhSaLlUNFV1vUOaxDAwNNFn5hCWp5phYNx9p8feo5vWcnL2_vMuhg>
-    <xmx:NkhSaKEVo9yxY4DXPSsnVxfVRN8IVSqYSNyyAgizYTk5SrMjrqyWS5BA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Jun 2025 01:01:42 -0400 (EDT)
-Date: Tue, 17 Jun 2025 22:01:40 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org,
-	aliceryhl@google.com, anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com, dakr@kernel.org, frederic@kernel.org,
-	gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org,
-	lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org,
-	sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu
-Subject: Re: [PATCH] rust: time: Seal the ClockSource trait
-Message-ID: <aFJINI8ImfxMnvrx@Mac.home>
-References: <20250617232053.3927525-1-fujita.tomonori@gmail.com>
- <aFIEAiDKnxsZQ8s4@tardis.local>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Zb7VZHG+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oiLOBgiqzbXQ93V/HkgrfWNA8KorizpEOvMYytiq3RQTFXt5AdP/oC4uueViq1rBL4UOrrE+MNgA0b0KPRBit5xl2vAxeyRchYfdAaqnDD6AOJZttTb8oIn4/dxac9SjY8goe1XULvPdBzArMr4Q/O8vKrfKqUDOpWmpOyhAFNMmELphLoNVwDDzCIBMiLnskW7WeoCX4saurNB8eqE6VxaASa0LYAecqDRoAnqCOi7+2WvcChrHHbNdH2yeDtrK51ceu9L/kq6QQIlviVy/He2TBf9BsQw6vdvul6vkGcRIZFZHU2GuZopzENz10kmc6m+ZSHJd57l1/GZcgzWY5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e53FY15+L5V4Sj4zx8ZSRztx+wdrEbYaPA0Rfmx9HyI=;
+ b=Eod+T54ylOjvv0bJqUc8xQcynXcT/9IuxozIvXvzPNrck91a8cxFobFRvE1W4Lo0U1UDNQG+ctCxwbLdXr0I9owQBNo8bey/eCiXD87y10WjgwkPYaYeFVtWzmWAgNHN6Kl9aXYby5EIj19t28F3KgTAOKE83yCxh5yzQs67kwhF2yaC8STSq7HihycQRZjyeiHd+6X5BwKLVsWVb9Rqpe5z5rVLw+wmxdncw0CA3up7cU0G4SQwiekMu6IbH/H3QKIVau1S975UnJVIKCcIyJmpW/ZdcXbOgZDbmz1KOjzL8PTEWymPRd99llpi2X0lzufFeakiFPHmTbm1HKAj3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e53FY15+L5V4Sj4zx8ZSRztx+wdrEbYaPA0Rfmx9HyI=;
+ b=Zb7VZHG+EK1ykTALuvcqTeFl49PsPaKXyaH3JOEqF0s0xCalWESzrO0UqJQ0EcRSb5kA/lxeWkiUYLzGp99SdSMqUER69ZLkzNhVpDoCEmb6m1FjZyxNIE+Wj5om0L6kSM1MyivadZ/AcHHyXv8Vaxj8+FVa6nKJXPjgt4I4k+1b9dEccS1DubEL3YzOWlCyYUEWpOqn40Ikl3K6difEwq7plOHlYoLHnjXnnCYYXv+J6CbhBfioQ6msORaMU7BJgJ74C4X4C3ePGcWJ6dLGFmBQglHVuX2qfJAfQ/CAlAHW3i/WhpxEZkup05Hci94imswmCnQZFvpH8YuqpN0CBg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by LV8PR12MB9134.namprd12.prod.outlook.com (2603:10b6:408:180::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.30; Wed, 18 Jun
+ 2025 05:26:56 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8835.027; Wed, 18 Jun 2025
+ 05:26:56 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 18 Jun 2025 14:26:52 +0900
+Message-Id: <DAPERUYR0C7C.4LXQU1B8HB9Q@nvidia.com>
+Subject: Re: [PATCH v5 15/23] gpu: nova-core: add falcon register
+ definitions and base code
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Benno
+ Lossin" <lossin@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Ben
+ Skeggs" <bskeggs@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, "Lyude
+ Paul" <lyude@redhat.com>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250612-nova-frts-v5-0-14ba7eaf166b@nvidia.com>
+ <20250612-nova-frts-v5-15-14ba7eaf166b@nvidia.com>
+ <aFGYyXS21tZFdldX@pollux>
+In-Reply-To: <aFGYyXS21tZFdldX@pollux>
+X-ClientProxiedBy: TYCP286CA0078.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:2b3::15) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFIEAiDKnxsZQ8s4@tardis.local>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|LV8PR12MB9134:EE_
+X-MS-Office365-Filtering-Correlation-Id: a76a9f75-fc02-48ee-49c2-08ddae28bce4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|10070799003|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aDcveSt0NEtqTGZxQkorZHJzbU8yMXRzSmNnbnVMc3JqcEJkbkg1Tko0bmVt?=
+ =?utf-8?B?SU9qY3Y4bWEvTENpZzdNSDFvZk1DNHhsYURnS0RGM3RkYitHZUlTSDhraWpy?=
+ =?utf-8?B?UmxTN3V2TnBHNVlUMUcvcW1pM1Rsc3d0V3daaTRnenRFOXVJVEJwUUVEMEt1?=
+ =?utf-8?B?TTJBZjFENE1SLzRwSHYvZTR4cDdJN1RSSzB0TERIcUR5Z1QwNlg5OFFqM001?=
+ =?utf-8?B?Vm5mZkdITytNbzhxd290Q1JsY2JXRUtheXFKLzYzN3oyalFqT0xVVEZXV3Ez?=
+ =?utf-8?B?VzJVYlJMWDdJOCtXNWFFamNlTzdQSGE0WCtMVkhFVkdpZmg3elgyNHA2eHEr?=
+ =?utf-8?B?d2lWOEVwSkU2aWRGMktHbWxkNkgzc3JEcW5GMzBTNHRUWk5ySmZCQlk2YWRS?=
+ =?utf-8?B?bFZWOEdIRmhQdWNtamExdmR6cUFuQUpPRm9KVE1aTjFNVjlIRXRrdCtIcVBO?=
+ =?utf-8?B?S1NuVHFueXhUOWViakdvOTExbUNsVUZmMy9iUUpSc29kaTBhL0FwZkNBZjNC?=
+ =?utf-8?B?akthSDVVeFRZYW1YbWVrRzR5WTB6QjFDZEp2NVg3L1U3WXNtL3FtRUNyd01r?=
+ =?utf-8?B?ZG1mSm9xbmlxdURLQk13aWNuM3JJV0xTRVF4QTV2RWc0bFk0ejdTYW5LR2tp?=
+ =?utf-8?B?blhOcmVXaVhUaitUSml4cWFGTk0vL0pDVmdsWG5oaktxZ3UwRmhGbklBc0ZK?=
+ =?utf-8?B?SjVWTUZTNVFqL1ZMakJrSjRxdHJoNWRTTThFaEdGQmIyTmlORjgxZFBnNXlm?=
+ =?utf-8?B?SHJ4R083YlBxblRhMUhaNmV3M2NDUCt2ekRwQ0F5aWNFb3IzelRNR29OZ2p2?=
+ =?utf-8?B?TU9VNC9LbXh5ZUdTdVFoRlBUQlp6YzJaVDVsNXowZW5hcHVxTzlmUytNWlpK?=
+ =?utf-8?B?ZW8zOFRRL2tSaFdCeU5XTHhHNVVWN3F5eDNVN0lzeUNJbEZXUXF4SlFaNk5W?=
+ =?utf-8?B?TTRpU0NQUTM3WXJyVlZ4MnFDTElRN3JvdTVJNHJSaGFXUm5EWG1xNTZsWHBM?=
+ =?utf-8?B?MjlqQVE3K0JIM05BalhLZllRNlQ4WFdvRnc5djhGUndvWC8wbUIwcy9PWVdB?=
+ =?utf-8?B?NlRUcFFucFdRNW4ybVUyTzZJdlk2U1JucTF3c1NHeXFicFpXcFVPVXhWZmM3?=
+ =?utf-8?B?eVYxRXVvTXJadTJKcWdlRk9VbHZjakpXZC9rTUJsaG1ZTDc5WXZ2dmpIOG9v?=
+ =?utf-8?B?MVBDbWpxZkVUOFQvcHQyUTdzejA3QXFIdU9DdjEvK29QQVhnVFJ6WUNCRmFu?=
+ =?utf-8?B?QzRjK1l2Wkg0WUFFMFhlRDI5MHNHZ1ptKzJIK2JVa2ZYdTR4U2pyYTNVOEVu?=
+ =?utf-8?B?bkM4bUhIN0k2MVFXbjhFenVIZlZwTXpodkU0TmsxOVQwdjMrSWcrdzVnOXd6?=
+ =?utf-8?B?b0E0emZMdmZIZllIZUY0czdXSmVEVjBkTGQzT2U2RDdPZGI1eFlnRW9OZXNP?=
+ =?utf-8?B?U1YrcExlWmdUTExNKzdUa3ZFY1dub2h4NWppUzNiQjdtL3FDMFZIS3dLVmdO?=
+ =?utf-8?B?bVZlWXczbVUwUHpNMzVVR2RUdTR0TnppT2FQeVF0VU9SblU5MXh1L000eVEv?=
+ =?utf-8?B?ZWRYR0xDbkwxU01KN2RlL2tabTNpVThEdTZDbGtXeERHQTgwWk1vTmEva2NE?=
+ =?utf-8?B?T2ZpcGJXZEYvYXFvUTJ4cGpEeWlGeTBZdm5uZm12eExYN0xlUVcvYTdtM1VW?=
+ =?utf-8?B?NTdqSExpTEozQlltVkZ5eG1NVmx0eDF6cUN0azVjNzQ1bnMwQkdLMHVMYUhu?=
+ =?utf-8?B?cHViMDJHZ0xQZVFyeWxRcitSUkhpRG5CT2FtTnNVUXEvcWkrNVJld1hOYUl2?=
+ =?utf-8?B?NFF2c0Zka3JRaUZ1ZU5QWWwzb2EvTUpQaUVJMTlTSDAzanRvdXRROEhMYUNn?=
+ =?utf-8?B?VDRlT05USGx5TE5zZW96SmloQUtxLzFvYno5UnlPRStiNGdRS2VWTExVUHNv?=
+ =?utf-8?Q?B+uZGRQJPkE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(10070799003)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Mjc2M3RZQnpYSEVxY0xsNnpxRUlDMlIzK2czODR2TCtpNU00ZEVrVGRFZCtS?=
+ =?utf-8?B?Q2lZcW5aT0czNmdRT2tKOXA0ZVZBQ1kvMGU4Q0hTNTJqTTk4NlkrdktLbWVo?=
+ =?utf-8?B?SDdJYlZ2Q2pkUy9ZN252Q1g0bDBOZ1lDMENSZjhkcEdhMVZ6aUY3T1ErUjZw?=
+ =?utf-8?B?RFlwL0t6RmxIaUl1MlV5ODM1TyttV3pXVi8yVFZJRzIxNkJQT0plNERpME1p?=
+ =?utf-8?B?RWM0ZFdvQXdTeUZabEJuNHVUbUp4SmJmd3NNSGQ0LzVhekh3RCtsK2QzcTlC?=
+ =?utf-8?B?WTdsVm03M1FVdXFwY2hveVVxMktzQWFia1R4S0ZMc3pGcG53QkpBRDlESFZP?=
+ =?utf-8?B?ZEZkRi84OUdXVk1LUnBONktRNGhXdmlFdW1LNlRKQnlCNlpWRUw3b0J5bVJC?=
+ =?utf-8?B?Mm1MRE5aQWY5TEh1Q3dXTXN3L054VHZ3cG5MclU4dFRlTm13QTVpSGx2WGlz?=
+ =?utf-8?B?K0p0Um1wRmQ3WVRhSm1lamkyV3VIRm5wRE5sZ1JNTUxjRjdTbjVlVjBBRUZl?=
+ =?utf-8?B?UVpKN2lPS0RaUWdFOEtOTHRteHlhc0RHdW1Tc1pYQ0d4eG9lbis3RWJpRFdn?=
+ =?utf-8?B?dmdXS2NPU3c3cGpNWkFIY2E4dlBjaTY0ODBBNTJITDJMS09sR2h1SHpWNU1C?=
+ =?utf-8?B?bjc1VyttTkg0VlJMZ3AyVm5wclJKZFNCdFBBb2V3b0s3VE1Rb1A0U3FxVGlR?=
+ =?utf-8?B?UmpwMU9UUXd0SVJjU0JLd1hjMEpqVUxKL1RHc0RrMFdmSVhYd2FuYXovcEl6?=
+ =?utf-8?B?dHZyOG9WK3pMR1E5QmtVVFMyMWRiVHRpSXRqc2FGTWhMcXFqVnVUTWp5UUM5?=
+ =?utf-8?B?blA3bjhWSzMyRG1QNmhaZUp2ODF0VHE1VS9pSkw1d2VuMXl4SEY4RFlxSVBw?=
+ =?utf-8?B?VHcvOHJ1eGYwSDU0aEtXdXhLUjdZQ3NZOWZINWI2RXYxTnRwM2VlcCs4Yyts?=
+ =?utf-8?B?QlZTa3QvOGowM0JUMW00TUpzcHIxYVVZL3gwd0JZeFNWRXRmb3VPd1RVcTlz?=
+ =?utf-8?B?NGxMQXBCQWNmTmpCUFpwbi9Ob0FkYUlPL2Ntbk9MMDkreEVzTkZKeUlydTdv?=
+ =?utf-8?B?ZHZwS0Y3RmcvRGNkOC9KSStnTU1DNjFFK3k0ajhBbWdDMnROTkJhbFJDdWVn?=
+ =?utf-8?B?eFpnYTlNRVdNWkUzWlNuVDhGS3REVGRkYlp2bExvSUhTYnVrK0o0b1VLSUhw?=
+ =?utf-8?B?WVhzUHBLUGdMYlBkMFJhMHJxL1hBVUpKd1hhZjNHSjFSVnJlNldSVnp0bzJq?=
+ =?utf-8?B?VjVnSVY0ejgxOUN0eUE5TzkvdWYraTBMa3VPaVVmMW5qV0lvL01uRjc0T3RS?=
+ =?utf-8?B?dlJGNHp2NmRhSEJlcWhlTDZYcS9uQXFWb1dWalYyc1lTNkVEaFZsbHdXWkhG?=
+ =?utf-8?B?RzZzWXRHcTJyUXlDSG1hKzIrR2pORTZlQ2JydnJpUHRCQUkyT0NwYTBYR05D?=
+ =?utf-8?B?T1JqT1VXT3I1cCtuSGxrRW5mYVZVOTJONXBiNWRhVHJsZ3l4SEoxaUkxOEkz?=
+ =?utf-8?B?WnYzejRPc29Pd3B4U2t4dUFjVUxsMDhQc0RPNTFjd092L3VkQ0dXMDRQaEE2?=
+ =?utf-8?B?MTdEcEpJVktnR2Z4bkcwdWwyZG5OUVVidkpKME90TGlmb2tuV3E0QkJDL1Q2?=
+ =?utf-8?B?VUVzOWtOSW0zajVFZStuckxhZUpERUh4S0ZhdjRLTmhmbEMwZy9jK0FWREgw?=
+ =?utf-8?B?c0FKdlM5c1lQM01TRCtXQ1R4RzU4UFJlM1VPeDY5b2FMWDdaZ0Nkdjh6SVJr?=
+ =?utf-8?B?UVEzaTc4ajIyWTRzcG9LWHRwVFppRS9uYkErN0hUaDZKRmNXZE1JYXlTZncz?=
+ =?utf-8?B?NWRyb3ZKSVlHZWhON1A0VWIwZDBDOEcyZUtDdDREcFVZTDlIREJFclVqWlZi?=
+ =?utf-8?B?aFRzL3BUMStQL1VLVkw1TEdjek45ZXEwa1pqTVhCR2d6dDdVazE1c1FWSURq?=
+ =?utf-8?B?NlB2eWorTFNVT0IxQ1VrWHZpcmx0cktLNXFhdHkzNEk4NVpSTzhaZVpBbzZu?=
+ =?utf-8?B?SGdGdjlKM2cwcG11L1ZPNEkydWtJaU9BS1RqNk9LTTVvTXJPNlpnb3M5Sncx?=
+ =?utf-8?B?UUZOWVhJTndBSVhtRnNtcExwd0R5cGVTQ2M1NGh3MGplMWxqRFlhMy9kZTJm?=
+ =?utf-8?B?Q3J1azdyUkE4NEVIcEFVbzRNSGRieXBRMDNPRWlvT2c5SklycVk1TkJ6dVky?=
+ =?utf-8?Q?I3Thxqn94a33qW9zKpuYjn+9Z28us5ciQyNHGXx2Km9E?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a76a9f75-fc02-48ee-49c2-08ddae28bce4
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2025 05:26:56.4565
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6q2q6XB7DrCJ/+D65LfGcTyr8F4NzHahvMqyrBWG7+2I1cnJvGKzWbwQmrtovlfoVkRXfcAq3cQ9rz0SF25WDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9134
 
-On Tue, Jun 17, 2025 at 05:10:42PM -0700, Boqun Feng wrote:
-> On Wed, Jun 18, 2025 at 08:20:53AM +0900, FUJITA Tomonori wrote:
-> > Prevent downstream crates or drivers from implementing `ClockSource`
-> > for arbitrary types, which could otherwise leads to unsupported
-> > behavior.
-> > 
-> 
-> Hmm.. I don't think other impl of `ClockSource` is a problem, IIUC, as
-> long as the ktime_get() can return a value in [0, i64::MAX). Also this
-> means ClockSource should be an `unsafe` trait, because the correct
-> implementaion relies on ktime_get() returns the correct value. This is
-> needed even if you sealed ClockSource trait.
-> 
-> Could you drop this and fix that the ClockSource trait instead? Thanks!
-> 
+On Wed Jun 18, 2025 at 1:33 AM JST, Danilo Krummrich wrote:
+> On Thu, Jun 12, 2025 at 11:01:43PM +0900, Alexandre Courbot wrote:
+>> +    /// Perform a DMA write according to `load_offsets` from `dma_handl=
+e` into the falcon's
+>> +    /// `target_mem`.
+>> +    ///
+>> +    /// `sec` is set if the loaded firmware is expected to run in secur=
+e mode.
+>> +    fn dma_wr(
+>> +        &self,
+>> +        bar: &Bar0,
+>> +        dma_handle: bindings::dma_addr_t,
+>
+> I think we should pass &F from dma_load() rather than the raw handle.
 
-For example:
+Agreed, done.
 
-    /// Trait for clock sources.
-    ///
-    /// ...
-    /// # Safety
-    /// 
-    /// Implementers must ensure `ktime_get()` return a value in [0,
-    //  KTIME_MAX (i.e. i64::MAX)).
-    pub unsafe trait ClockSource {
-        ...
-    }
+>
+> <snip>
+>
+>> +fn select_core_ga102<E: FalconEngine>(bar: &Bar0) -> Result {
+>> +    let bcr_ctrl =3D regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, E::BASE)=
+;
+>> +    if bcr_ctrl.core_select() !=3D PeregrineCoreSelect::Falcon {
+>> +        regs::NV_PRISCV_RISCV_BCR_CTRL::default()
+>> +            .set_core_select(PeregrineCoreSelect::Falcon)
+>> +            .write(bar, E::BASE);
+>> +
+>> +        util::wait_on(Duration::from_millis(10), || {
+>
+> As agreed, can you please add a brief comment to justify the timeout?
 
-Regards,
-Boqun
+Oops, for some reason I haven't addressed that part of your comment last
+time, sorry about that. Added `// TIMEOUT:` statements above all calls
+to `wait_on`. Note that sometimes the justification for these cannot be
+more than "arbitrarily high value indicating something went wrong".
 
-> Regards,
-> Boqun
-> 
-> > Introduce a `private::Sealed` trait and implement it for all types
-> > that implement `ClockSource`.
-> > 
-> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > ---
-> >  rust/kernel/time.rs | 11 ++++++++++-
-> >  1 file changed, 10 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-> > index eaa6d9ab5737..b1961652c884 100644
-> > --- a/rust/kernel/time.rs
-> > +++ b/rust/kernel/time.rs
-> > @@ -51,6 +51,15 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
-> >      unsafe { bindings::__msecs_to_jiffies(msecs) }
-> >  }
-> >  
-> > +mod private {
-> > +    pub trait Sealed {}
-> > +
-> > +    impl Sealed for super::Monotonic {}
-> > +    impl Sealed for super::RealTime {}
-> > +    impl Sealed for super::BootTime {}
-> > +    impl Sealed for super::Tai {}
-> > +}
-> > +
-> >  /// Trait for clock sources.
-> >  ///
-> >  /// Selection of the clock source depends on the use case. In some cases the usage of a
-> > @@ -58,7 +67,7 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
-> >  /// cases the user of the clock has to decide which clock is best suited for the
-> >  /// purpose. In most scenarios clock [`Monotonic`] is the best choice as it
-> >  /// provides a accurate monotonic notion of time (leap second smearing ignored).
-> > -pub trait ClockSource {
-> > +pub trait ClockSource: private::Sealed {
-> >      /// The kernel clock ID associated with this clock source.
-> >      ///
-> >      /// This constant corresponds to the C side `clockid_t` value.
-> > 
-> > base-commit: 994393295c89711531583f6de8f296a30b0d944a
-> > -- 
-> > 2.43.0
-> > 
+(similarly, I have added a `dma_handle_with_offset` method to
+`CoherentAllocation` as I said I would in v4).
+
+>
+>> +            let r =3D regs::NV_PRISCV_RISCV_BCR_CTRL::read(bar, E::BASE=
+);
+>> +            if r.valid() {
+>> +                Some(())
+>> +            } else {
+>> +                None
+>> +            }
+>> +        })?;
+>> +    }
+>> +
+>> +    Ok(())
+>> +}
+>> +
+>> +fn signature_reg_fuse_version_ga102(
+>> +    dev: &device::Device,
+>> +    bar: &Bar0,
+>> +    engine_id_mask: u16,
+>> +    ucode_id: u8,
+>> +) -> Result<u32> {
+>> +    // The ucode fuse versions are contained in the FUSE_OPT_FPF_<ENGIN=
+E>_UCODE<X>_VERSION
+>> +    // registers, which are an array. Our register definition macros do=
+ not allow us to manage them
+>> +    // properly, so we need to hardcode their addresses for now.
+>
+> Sounds like a TODO?
+
+Yes, although it is addressed in the next iteration of the register
+macro (which I will send after this series), which supports register
+arrays. Marked this as a TODO nonetheless.
+
+>
+>> +
+>> +    // Each engine has 16 ucode version registers numbered from 1 to 16=
+.
+>> +    if ucode_id =3D=3D 0 || ucode_id > 16 {
+>> +        dev_err!(dev, "invalid ucode id {:#x}", ucode_id);
+>> +        return Err(EINVAL);
+>> +    }
+>> +
+>> +    // Base address of the FUSE registers array corresponding to the en=
+gine.
+>> +    let reg_fuse_base =3D if engine_id_mask & 0x0001 !=3D 0 {
+>> +        regs::NV_FUSE_OPT_FPF_SEC2_UCODE1_VERSION::OFFSET
+>> +    } else if engine_id_mask & 0x0004 !=3D 0 {
+>> +        regs::NV_FUSE_OPT_FPF_NVDEC_UCODE1_VERSION::OFFSET
+>> +    } else if engine_id_mask & 0x0400 !=3D 0 {
+>> +        regs::NV_FUSE_OPT_FPF_GSP_UCODE1_VERSION::OFFSET
+>> +    } else {
+>> +        dev_err!(dev, "unexpected engine_id_mask {:#x}", engine_id_mask=
+);
+>> +        return Err(EINVAL);
+>> +    };
+>> +
+>> +    // Read `reg_fuse_base[ucode_id - 1]`.
+>> +    let reg_fuse_version =3D
+>> +        bar.read32(reg_fuse_base + ((ucode_id - 1) as usize * core::mem=
+::size_of::<u32>()));
+>> +
+>> +    Ok(fls_u32(reg_fuse_version))
+>> +}
+>> +
+>> +fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromP=
+arams) -> Result {
+>> +    regs::NV_PFALCON2_FALCON_BROM_PARAADDR::default()
+>> +        .set_value(params.pkc_data_offset)
+>> +        .write(bar, E::BASE);
+>> +    regs::NV_PFALCON2_FALCON_BROM_ENGIDMASK::default()
+>> +        .set_value(params.engine_id_mask as u32)
+>> +        .write(bar, E::BASE);
+>> +    regs::NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID::default()
+>> +        .set_ucode_id(params.ucode_id)
+>> +        .write(bar, E::BASE);
+>> +    regs::NV_PFALCON2_FALCON_MOD_SEL::default()
+>> +        .set_algo(FalconModSelAlgo::Rsa3k)
+>> +        .write(bar, E::BASE);
+>> +
+>> +    Ok(())
+>> +}
+>> +
+>> +pub(super) struct Ga102<E: FalconEngine>(PhantomData<E>);
+>> +
+>> +impl<E: FalconEngine> Ga102<E> {
+>> +    pub(super) fn new() -> Self {
+>> +        Self(PhantomData)
+>> +    }
+>> +}
+>> +
+>> +impl<E: FalconEngine> FalconHal<E> for Ga102<E> {
+>> +    fn select_core(&self, _falcon: &Falcon<E>, bar: &Bar0) -> Result {
+>> +        select_core_ga102::<E>(bar)
+>> +    }
+>> +
+>> +    fn signature_reg_fuse_version(
+>> +        &self,
+>> +        falcon: &Falcon<E>,
+>> +        bar: &Bar0,
+>> +        engine_id_mask: u16,
+>> +        ucode_id: u8,
+>> +    ) -> Result<u32> {
+>> +        signature_reg_fuse_version_ga102(&falcon.dev, bar, engine_id_ma=
+sk, ucode_id)
+>> +    }
+>> +
+>> +    fn program_brom(&self, _falcon: &Falcon<E>, bar: &Bar0, params: &Fa=
+lconBromParams) -> Result {
+>> +        program_brom_ga102::<E>(bar, params)
+>> +    }
+>
+> Why are those two separate functions?
+
+Do you mean why does `program_brom` calls `program_brom_ga102`? This is
+so HAL methods can be re-used in other architectures. For instance,
+Hopper's HAL be identical to Ampere save for `select_core`, so having
+everything in separate functions allows the Hopper HAL to just call
+`program_brom_ga102`. It's a sane convention to have IMHO, maybe we
+should codify it via a HAL paragraph in the guidelines document?
