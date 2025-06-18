@@ -1,55 +1,55 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5991A316E
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 02:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B021B4121
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 02:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750213701; cv=none; b=pgsfyQC0/dpMQR+wTdKSCFhhfb9uGOc3pQWtCeb18Rz0xmKh8Id1ZOHSSYuuyE1hzVMmcxgV6ukRkaaPtCHkqTyssSzGETQrUJgZrq6v7FoZRDJweMGMUN5iK/r7WJ4qpbvzV+xfKR2UWaEZaNZoXA80EfD7JI5E9utJe1Eqz40=
+	t=1750213702; cv=none; b=emrZCGIDhNuC+xYvkATifG6VhVrX3EKEFVmxvgVkqDWY4GRWtST46MMsdBj6hgu1Euu0AxPQh9qZTg5Yo+j53j0jjmESFBXAPgClfeEa1sgaZNkVnKjy3Y/2s5Z9bsdJOjrOv2Y+py+CWGZe01uDJwl//QQCC8O9fVb9vq6e4gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750213701; c=relaxed/simple;
-	bh=arncnwztjoqLIa7H95YpFTsDUfZi47rpF4nw6cr7M0A=;
+	s=arc-20240116; t=1750213702; c=relaxed/simple;
+	bh=7DbO/U0Rj2wyZtj+j8Z2FBKA+3rtUseZ8Hbvsru8fEM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rSR5p6knfCIToK7/wfcdr7sz6uFT6V32g1+Ae94XIvxq2b6o5gVOhYCOb6ThAc8ZtAKB44FfwU6hfztIEiJL05IHDkL6JdLuLJ6sr33ZD715kNVU4cb+csjlbYaI2Ab5qCxbBDng55F5mAa6WkSO1iOWxLucq03cR7Wc+5zLj3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vdjFDRAC; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=YJqIXURl0iPHvhgxIp6o3tsUBkceGO+znXyg3jeieKQNJULBeD9NtP09vJCek9E+ASicAGHC1gtsB/AnIOLawi6uCetF/C762FbkKwAEFK508+MVekLpJcmt4I0UEOU3u7xHB8dSWtnWlyBaj1is9o3I8kakwMW8hG2ktNKMQNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V9Nfm9Gp; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vdjFDRAC"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-748cf01de06so2203683b3a.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 19:28:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V9Nfm9Gp"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-235e1d66fa6so62412545ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 17 Jun 2025 19:28:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750213699; x=1750818499; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750213700; x=1750818500; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5g9C/2aXjP3q3IRmwt44Q9zBgZjDUhb/vz3CKf6T5mY=;
-        b=vdjFDRACDmxxBoJjdJscinXKo2meX5kgIP40IaMDE4jzhZDqlqjNGRIK03N6K6WxZm
-         nZcAg1rxI2dkaZGOTGgSf50Fg2nW2TpzrBfOs8JYahirao0CnRVzkaiEk5ot5SfSCIyk
-         q9jxTo+YS4TrLNw4c06nR7m9btE4IraAXCvfm8ZLmRiqFriJrGBRGfcrbY4pdKmppFeK
-         h18MQvkoDxhaAo4aLD2Re3+Ams1WfnYl1INkl8FbsKTrszTx5jNLK7ZEzgZ/LrGNzJC/
-         OyXaeK6uv4qcdNMVH5BM8YlFxrMY/XOks8rzIqf/uOom8spTS8idv7TJSXDqRCpgmbAw
-         2gNg==
+        bh=DMo2kOcPe/ZWoI8EPcGG6fh15t/rhnw+MiWtIgoq4ZU=;
+        b=V9Nfm9GpKI5HKyae4HvjYdg1CYuL5jU5fnZyb560EUSgPTFLSMSnLCtsqvxsM2Y9xS
+         G3fUGNVLLbn8MD1czCz+JR1ofdl7L3+vBm3wjXO1Xsr/5tmn3oqi8TYMrY7P53Sr8DQg
+         MnHaaK8MZCvnyx/kQlPjUvhGIAemx2bbz+gEpuYAuTOtdVtHhKSsxZZ3j1kuum3/b/Ro
+         6ZbLIEJiVA3I/h4y35K4eMJEI5ivREa7cqlitmvqyJqSU204H209OqB0kKZGEFlL1FP+
+         E2qIw6R/7qITwIUHvzjJsWX1foRO6DVtCb31vImUflD5PKHSV5iOA4smnvFK2+NG/DJI
+         MsXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750213699; x=1750818499;
+        d=1e100.net; s=20230601; t=1750213700; x=1750818500;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5g9C/2aXjP3q3IRmwt44Q9zBgZjDUhb/vz3CKf6T5mY=;
-        b=wXNBYLUaiax356tnziM7ohsSJmorBmdNF97pvCI9vNClOe9FEmlS/O/keBISWGw9eD
-         ekAuY11ThSh0Liivrt0N4ToU+tMi8HbhJbvUQ9iW/cSD4w7tU/2SiDo7+BntNKw66+eZ
-         dQdFBd7xQwaW/Am6vDi7GE8jtzsxQ5u8honvWm70HM7lZh+KrA8shd6Gq7MzNb/FhsfK
-         wx3ig3PhR02OzUXX7J749fZx1H9eS/obkWne6LJY91KmopLb4Jv3rSH6GdZi4w/nEVXN
-         23v3Bb9qn4QsaxQHeHtZ7CqM+v7aXV5CWBkxl0FUoTw13Ltmt26PedRsVIDcOmPJiAej
-         c0Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCXB4RPIDOVfwsq5jMDoI7k880uJLyjgh0ooPVWG49Bq4WyvVrTLQNT2wUnw3u120RmeVhdCEF/8PNbdBupkvg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLPlvEDTp4DeZeIo30FASscbVVQ4Rb+0wpt31vPfVvJa9VNIi5
-	GBO0JCMhiDKpdStNQJXv9pjGaVdSJ8zDUepkvbewhdeDh63sSR1/t084w3NT/ySdMfLsBqhuzGH
-	0/iz32m9ZRA==
-X-Google-Smtp-Source: AGHT+IF5WvYUSe54T6Ow+jbHfSuXMsSRK3PMsFOXvOFipiuoXcxFOhmVI/04CxZ+x/0s0oKv6VvB3fTb+57u
-X-Received: from pfbde14.prod.google.com ([2002:a05:6a00:468e:b0:748:dd5c:e882])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1790:b0:736:3d7c:236c
- with SMTP id d2e1a72fcca58-7489d062437mr20439275b3a.14.1750213698962; Tue, 17
- Jun 2025 19:28:18 -0700 (PDT)
-Date: Wed, 18 Jun 2025 02:28:14 +0000
+        bh=DMo2kOcPe/ZWoI8EPcGG6fh15t/rhnw+MiWtIgoq4ZU=;
+        b=IqYYKRlT34Q5p6+IB7z342Plo4Y+JTzYX4xP2f6MyePajvo2MD3ZJbWxaQ9gfOnGyk
+         cDATXJQplLwQZl1yTJ+zDZXMpPKxUjGyrSzWdqgigqIOcCApflS2VadmyNG1R+gqDzD5
+         kvuFLOs6dZC811m1pWyvndPGt+Biq1QTJDK3Wjv8D9a84S2Nmgtklto283qyqRtLJ42M
+         xNFMLeC1F8ddTJMrZfhhKWJ+/kQxdcKJ/I1WQwNb4RuKtEkZ7B92+hXi+5T/IH9rvsI1
+         8b/0ndwUNdDCmFulbtPEnA2ONl2zCOXTWuhAt/oLtGd32vEWvUwNbDnkE/g2IqnZHu9I
+         fnUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8yKjCG392h2ZJZZxhbZEPnci5vqgCrlUSzR203EN378EC9PdspwXYzd97TYXD3xiQSPuh/fis7Y9OtPEYxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPbC686Hx80K0We1Te0JElMEYZhF2f6pPvQyFrPO0DXnxvcbdj
+	eZ8Sq1Ba3FqRUbECuOraZD/7p44JJDBVX0k6TmlYC6QKA6jtuufs2JoyAynM2/g0pbUEu+cWyp5
+	8ZGP0g/vtuw==
+X-Google-Smtp-Source: AGHT+IHLLmO2+2COBaCiPQUQ2aZiyF2aMmTHgGG9hkU78sySo5jkiz9ScIwnxSFaP9yWZPDCHZU1r3AFS2b0
+X-Received: from plly18.prod.google.com ([2002:a17:902:7c92:b0:223:4c5f:3494])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:a613:b0:236:7333:f183
+ with SMTP id d9443c01a7336-2367333f74emr154142285ad.19.1750213700484; Tue, 17
+ Jun 2025 19:28:20 -0700 (PDT)
+Date: Wed, 18 Jun 2025 02:28:15 +0000
 In-Reply-To: <20250618-debugfs-rust-v6-0-72cae211b133@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,13 +59,13 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20250618-debugfs-rust-v6-0-72cae211b133@google.com>
 X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1750213694; l=7330;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1750213694; l=4592;
  i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
- bh=arncnwztjoqLIa7H95YpFTsDUfZi47rpF4nw6cr7M0A=; b=RPkAyspbgBp0kXzMBUSWsawJSmXKkKlsU5ypJfOiEBT6ZbLFGMzqyTkkOnEyCEKTIa5ViV+6z
- WuIx7BS/XsjBshg7TA4rDpYrKfXoR+UweHV8tDoIF/KpixeI3QdpprL
+ bh=7DbO/U0Rj2wyZtj+j8Z2FBKA+3rtUseZ8Hbvsru8fEM=; b=+GncevBBFmPb+hkR23fxazLrX2DyWqwKtQRDSzgmSa/c74FiR0bg8QZWEX64eVGOhwQUQ3OPY
+ V1Mh+9iicqMCrX5Snibeexc6j949EbZHPl4v85RZVgyuLJtw3gVPXi4
 X-Mailer: b4 0.14.2
-Message-ID: <20250618-debugfs-rust-v6-2-72cae211b133@google.com>
-Subject: [PATCH v6 2/5] rust: debugfs: Bind file creation for long-lived Display
+Message-ID: <20250618-debugfs-rust-v6-3-72cae211b133@google.com>
+Subject: [PATCH v6 3/5] rust: debugfs: Support arbitrary owned backing for File
 From: Matthew Maurer <mmaurer@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -78,199 +78,126 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	Matthew Maurer <mmaurer@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-Allows creation of files for references that live forever and lack
-metadata through the `Display` implementation.
-
-The reference must live forever because we do not have a maximum
-lifetime for the file we are creating.
-
-The `Display` implementation is used because `seq_printf` needs to route
-through `%pA`, which in turn routes through Arguments.
+This allows `File`s to be backed by `Deref<Target=T>` rather than just
+`&'static T`. This means that dynamically allocated objects can be
+attached to `File`s without needing to take extra steps to create a
+pinned reference that's guaranteed to live long enough.
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
- rust/kernel/debugfs.rs              | 62 +++++++++++++++++++++++++++++++++++++
- rust/kernel/debugfs/display_file.rs | 60 +++++++++++++++++++++++++++++++++++
- rust/kernel/debugfs/entry.rs        |  8 +++++
- 3 files changed, 130 insertions(+)
+ rust/kernel/debugfs.rs | 51 ++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 39 insertions(+), 12 deletions(-)
 
 diff --git a/rust/kernel/debugfs.rs b/rust/kernel/debugfs.rs
-index e390278b8b7384f1d9e2b3d7a4f5f365f6447d0f..6a89557d8cf49327d2984d15741ffb6640defd70 100644
+index 6a89557d8cf49327d2984d15741ffb6640defd70..cd83f21cf2818f406575941ebbc6c426575643e4 100644
 --- a/rust/kernel/debugfs.rs
 +++ b/rust/kernel/debugfs.rs
-@@ -10,7 +10,10 @@
+@@ -5,12 +5,13 @@
+ //!
+ //! C header: [`include/linux/debugfs.h`](srctree/include/linux/debugfs.h)
+ 
+-#[cfg(CONFIG_DEBUG_FS)]
++use crate::alloc::KBox;
+ use crate::prelude::GFP_KERNEL;
  use crate::str::CStr;
  #[cfg(CONFIG_DEBUG_FS)]
  use crate::sync::Arc;
-+use core::fmt::Display;
+ use core::fmt::Display;
++use core::ops::Deref;
  
-+#[cfg(CONFIG_DEBUG_FS)]
-+mod display_file;
  #[cfg(CONFIG_DEBUG_FS)]
- mod entry;
- 
-@@ -57,6 +60,43 @@ fn create(_name: &CStr, _parent: Option<&Dir>) -> Self {
-         Self()
+ mod display_file;
+@@ -61,40 +62,59 @@ fn create(_name: &CStr, _parent: Option<&Dir>) -> Self {
      }
  
-+    #[cfg(CONFIG_DEBUG_FS)]
-+    fn create_file<T: Display + Sized>(&self, name: &CStr, data: &'static T) -> File {
-+        let Some(parent) = &self.0 else {
-+            return File {
-+                _entry: entry::Entry::empty(),
-+            };
+     #[cfg(CONFIG_DEBUG_FS)]
+-    fn create_file<T: Display + Sized>(&self, name: &CStr, data: &'static T) -> File {
++    fn create_file<D: Deref<Target = T> + 'static + Send + Sync, T: Display>(
++        &self,
++        name: &CStr,
++        data: D,
++    ) -> File {
++        let mut file = File {
++            _entry: entry::Entry::empty(),
++            _data: None,
 +        };
-+        // SAFETY:
-+        // * `name` is a NUL-terminated C string, living across the call, by `CStr` invariant.
-+        // * `parent` is a live `dentry` since we have a reference to it.
-+        // * `vtable` is all stock `seq_file` implementations except for `open`.
-+        //   `open`'s only requirement beyond what is provided to all open functions is that the
-+        //   inode's data pointer must point to a `T` that will outlive it, which we know because
-+        //   we have a static reference.
-+        let ptr = unsafe {
-+            bindings::debugfs_create_file_full(
-+                name.as_char_ptr(),
-+                0o444,
-+                parent.as_ptr(),
-+                data as *const _ as *mut _,
-+                core::ptr::null(),
-+                &<T as display_file::DisplayFile>::VTABLE,
-+            )
++        let Some(data) = KBox::new(data, GFP_KERNEL).ok() else {
++            return file;
 +        };
 +
-+        // SAFETY: `debugfs_create_file_full` either returns an error code or a legal
-+        // dentry pointer, so `Entry::new` is safe to call here.
-+        let entry = unsafe { entry::Entry::new(ptr, Some(parent.clone())) };
+         let Some(parent) = &self.0 else {
+-            return File {
+-                _entry: entry::Entry::empty(),
+-            };
++            return file;
+         };
 +
-+        File { _entry: entry }
-+    }
+         // SAFETY:
+         // * `name` is a NUL-terminated C string, living across the call, by `CStr` invariant.
+         // * `parent` is a live `dentry` since we have a reference to it.
+         // * `vtable` is all stock `seq_file` implementations except for `open`.
+         //   `open`'s only requirement beyond what is provided to all open functions is that the
+         //   inode's data pointer must point to a `T` that will outlive it, which we know because
+-        //   we have a static reference.
++        //   we have an owning `D` in the `File`, and we tear down the file during `Drop`.
+         let ptr = unsafe {
+             bindings::debugfs_create_file_full(
+                 name.as_char_ptr(),
+                 0o444,
+                 parent.as_ptr(),
+-                data as *const _ as *mut _,
++                data.deref() as *const _ as *mut _,
+                 core::ptr::null(),
+                 &<T as display_file::DisplayFile>::VTABLE,
+             )
+         };
+ 
++        file._data = Some(data);
 +
-+    #[cfg(not(CONFIG_DEBUG_FS))]
-+    fn create_file<T: Display + Sized>(&self, _name: &CStr, _data: &'static T) -> File {
-+        File {}
-+    }
-+
-     /// Create a DebugFS subdirectory.
-     ///
-     /// Subdirectory handles cannot outlive the directory handle they were created from.
-@@ -73,6 +113,22 @@ pub fn subdir(&self, name: &CStr) -> Self {
-         Dir::create(name, Some(self))
+         // SAFETY: `debugfs_create_file_full` either returns an error code or a legal
+         // dentry pointer, so `Entry::new` is safe to call here.
+-        let entry = unsafe { entry::Entry::new(ptr, Some(parent.clone())) };
++        file._entry = unsafe { entry::Entry::new(ptr, Some(parent.clone())) };
+ 
+-        File { _entry: entry }
++        file
      }
  
-+    /// Create a file in a DebugFS directory with the provided name, and contents from invoking
-+    /// [`Display::fmt`] on the provided reference.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::c_str;
-+    /// # use kernel::debugfs::Dir;
-+    /// let dir = Dir::new(c_str!("my_debugfs_dir"));
-+    /// dir.display_file(c_str!("foo"), &200);
-+    /// // "my_debugfs_dir/foo" now contains the number 200.
-+    /// ```
-+    pub fn display_file<T: Display + Sized>(&self, name: &CStr, data: &'static T) -> File {
-+        self.create_file(name, data)
-+    }
-+
-     /// Create a new directory in DebugFS at the root.
-     ///
-     /// # Examples
-@@ -86,3 +142,9 @@ pub fn new(name: &CStr) -> Self {
-         Dir::create(name, None)
-     }
- }
-+
-+/// Handle to a DebugFS file.
-+pub struct File {
-+    #[cfg(CONFIG_DEBUG_FS)]
-+    _entry: entry::Entry,
-+}
-diff --git a/rust/kernel/debugfs/display_file.rs b/rust/kernel/debugfs/display_file.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..65e37e34d7b587482492dc296637a3bc517b9fe3
---- /dev/null
-+++ b/rust/kernel/debugfs/display_file.rs
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (C) 2025 Google LLC.
-+
-+use crate::seq_file::SeqFile;
-+use crate::seq_print;
-+use core::fmt::Display;
-+
-+/// Implements `open` for `file_operations` via `single_open` to fill out a `seq_file`.
-+///
-+/// # Safety
-+///
-+/// * `inode`'s private pointer must point to a value of type `T` which will outlive the `inode`
-+///   and will not be mutated during this call.
-+/// * `file` must point to a live, not-yet-initialized file object.
-+pub(crate) unsafe extern "C" fn display_open<T: Display>(
-+    inode: *mut bindings::inode,
-+    file: *mut bindings::file,
-+) -> i32 {
-+    // SAFETY:
-+    // * `file` is acceptable by caller precondition.
-+    // * `print_act` will be called on a `seq_file` with private data set to the third argument,
-+    //   so we meet its safety requirements.
-+    // * The `data` pointer passed in the third argument is a valid `T` pointer that outlives
-+    //   this call by caller preconditions.
-+    unsafe { bindings::single_open(file, Some(display_act::<T>), (*inode).i_private) }
-+}
-+
-+/// Prints private data stashed in a seq_file to that seq file.
-+///
-+/// # Safety
-+///
-+/// `seq` must point to a live `seq_file` whose private data is a live pointer to a `T` which is
-+/// not being mutated.
-+pub(crate) unsafe extern "C" fn display_act<T: Display>(
-+    seq: *mut bindings::seq_file,
-+    _: *mut core::ffi::c_void,
-+) -> i32 {
-+    // SAFETY: By caller precondition, this pointer is live, points to a value of type `T`, and
-+    // is not being mutated.
-+    let data = unsafe { &*((*seq).private as *mut T) };
-+    // SAFETY: By caller precondition, `seq_file` points to a live `seq_file`, so we can lift
-+    // it.
-+    let seq_file = unsafe { SeqFile::from_raw(seq) };
-+    seq_print!(seq_file, "{}", data);
-+    0
-+}
-+
-+// Work around lack of generic const items.
-+pub(crate) trait DisplayFile: Display + Sized {
-+    const VTABLE: bindings::file_operations = bindings::file_operations {
-+        read: Some(bindings::seq_read),
-+        llseek: Some(bindings::seq_lseek),
-+        release: Some(bindings::single_release),
-+        open: Some(display_open::<Self> as _),
-+        // SAFETY: `file_operations` supports zeroes in all fields.
-+        ..unsafe { core::mem::zeroed() }
-+    };
-+}
-+
-+impl<T: Display + Sized> DisplayFile for T {}
-diff --git a/rust/kernel/debugfs/entry.rs b/rust/kernel/debugfs/entry.rs
-index ae0e2c4e1d58e878ebb081a71e4ac0f4a7d99b91..2baaf31c326c3071b92b5bc37552907fa1102246 100644
---- a/rust/kernel/debugfs/entry.rs
-+++ b/rust/kernel/debugfs/entry.rs
-@@ -38,6 +38,14 @@ pub(crate) unsafe fn new(entry: *mut bindings::dentry, parent: Option<Arc<Entry>
-         }
-     }
- 
-+    /// Constructs a placeholder DebugFS [`Entry`].
-+    pub(crate) fn empty() -> Self {
-+        Self {
-+            entry: core::ptr::null_mut(),
-+            _parent: None,
+     #[cfg(not(CONFIG_DEBUG_FS))]
+-    fn create_file<T: Display + Sized>(&self, _name: &CStr, _data: &'static T) -> File {
+-        File {}
++    fn create_file<D: Deref<Target = T> + 'static + Send + Sync, T: Display>(
++        &self,
++        _name: &CStr,
++        data: D,
++    ) -> File {
++        File {
++            _data: KBox::new(data, GFP_KERNEL).ok().map(|x| x as _),
 +        }
-+    }
-+
-     /// Returns the pointer representation of the DebugFS directory.
-     ///
-     /// # Guarantees
+     }
+ 
+     /// Create a DebugFS subdirectory.
+@@ -125,7 +145,11 @@ pub fn subdir(&self, name: &CStr) -> Self {
+     /// dir.display_file(c_str!("foo"), &200);
+     /// // "my_debugfs_dir/foo" now contains the number 200.
+     /// ```
+-    pub fn display_file<T: Display + Sized>(&self, name: &CStr, data: &'static T) -> File {
++    pub fn display_file<D: Deref<Target = T> + 'static + Send + Sync, T: Display>(
++        &self,
++        name: &CStr,
++        data: D,
++    ) -> File {
+         self.create_file(name, data)
+     }
+ 
+@@ -147,4 +171,7 @@ pub fn new(name: &CStr) -> Self {
+ pub struct File {
+     #[cfg(CONFIG_DEBUG_FS)]
+     _entry: entry::Entry,
++    // The data needs to be kept in a `Box` to prevent it from moving when the file does, as
++    // this might invalidate the pointer that's been passed to debugfs.
++    _data: Option<KBox<dyn Send + Sync>>,
+ }
 
 -- 
 2.50.0.rc2.696.g1fc2a0284f-goog
