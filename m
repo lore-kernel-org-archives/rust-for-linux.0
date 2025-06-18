@@ -1,122 +1,116 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5232EBDF6
-	for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 15:57:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB411D5AB7;
+	Wed, 18 Jun 2025 16:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750262227; cv=none; b=ioIt2u/Gd89MsV615dz5dwghD/EIzDMkv52B/lH5IkHvpSA4bTBXiZCQMvx7xeXtQ0WnIwCSKzgyNK2Bunw9k9LuUa4ZEIzNPQoCjcIlCVOZrqnNv53bRWiAThv/SQiCRiwH3Af/kch9nVTO18Do2266WlqhwFMgBNxbc03j8D0=
+	t=1750265172; cv=none; b=DOUyzvRD1vFAybnZ04lcEAwlkzIBkK36SgenJC3Eh2pta0/Hm5kL3+m7Rx9QoQQHTnlMIIkomYMsWBFYJis43bMRktleOaDkb/wlcS6b2ljDOjhfcLCrXxrUktf44T2P/FMNzUeYoXwM0XNQn3s8PCeCBOxL0Ku+oeYKPkx/qTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750262227; c=relaxed/simple;
-	bh=5Ol34w+EX7bFAAC0ihfTOblLMvz4/xDD3U5Cm33HEqA=;
+	s=arc-20240116; t=1750265172; c=relaxed/simple;
+	bh=TWzALV9LPqlus+Az62QmQW8i9ILqyK/dHFh5EdSLL0k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RmHW1t1XRQYX6niKWYlOdfeKHFjuTWlxd4siEp8iwyoAJVTv3bzi2EZV5M1dfiMWFLZPX1uLXTynNhtqhNhciFfs/bPEMhho5tqkG70hD+tz4NVdPBokIHFrv/rrc6VofFcOJKHE4XYz7jubQSq9B8O877LtZYst2IiyrOYstnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PYXieR6G; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=bb/xzrlYRQ4DUEt41mvacgWKDnYCoZWR+P6E1PmEbdm+uF738QOJaefylC+t2xiEo4OUMQx+ORTafhfcikt77QNTd8ttOHbO1Pt8lLPlEsgrCZIZI82fOdF8DUthHe5RGRisznrftFznoBdfUSfflsoVe09XYYCZ3+rwC7d05OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aGCZuuqi; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PYXieR6G"
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3a582e09144so2202073f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 08:57:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aGCZuuqi"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-313dc7be67aso951739a91.0;
+        Wed, 18 Jun 2025 09:46:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750262223; x=1750867023; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750265170; x=1750869970; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jy6L8+IqarhEZnw6/XACII/s6h4gpaajSXydb5Dkxug=;
-        b=PYXieR6GefUat1kumZ7rc2ZOK+1Ny7ya0gTJFOapm1EdHoLMUHYy9dT5ec3lDzLFam
-         5rN7PQs7rVOnffNCg9LqtwiRg3B+0JMK0AeUKctadoRfhygPjATAWHaoN5Z2qfKhPzZI
-         N2k35KA9V3mfjA4O0u3gh9MZ/PhO5zApd7D9LPgIoG/nOnFRNWU/Q4peQhZilZbmm/hP
-         dcIu+GBLfDOvXYj4SXfFD1dSgx1KTccf8EotzLfU+0B4ZVwNxhK4elKvbPBdZumPFGB4
-         dTVdPZYrI2KwtBg8LKnRIwEN3WpXxRzYHnkRO6NUbUnsgtJWYluUmgT5/ORiZ9f+BoeI
-         igYw==
+        bh=TWzALV9LPqlus+Az62QmQW8i9ILqyK/dHFh5EdSLL0k=;
+        b=aGCZuuqipaBcL3m1lLCsYwzFJD+5VHQvR2GZ7WB/eGF1g9StLSoP8elXIXbm+z9uJ3
+         kTmlzZY6pTZH4iUczsD5VNbHhx1UvY+h4Chgo6KdimwupPPAOUO8OaZE0Kv5qcd5mHj3
+         rRFHR8Dsg/yAtKs3J1BNATgQmli9oUp8dssE63fx3J96JKViACTFj7g253RZTnUqR4yX
+         s8ar4y8VwQ3IUJV9bRiUQRgZeaDmdx4tJql2zwvWNPIhj/xVfGCceRaYYxw1dziMpzPf
+         tp/DYKB+xo+UH+JnifYUoWZARd2bRgi2guTFOUEt8Ldw9PmpySyF6KeCUuih/iXa4sx/
+         y6Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750262223; x=1750867023;
+        d=1e100.net; s=20230601; t=1750265170; x=1750869970;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jy6L8+IqarhEZnw6/XACII/s6h4gpaajSXydb5Dkxug=;
-        b=JLut+s22Q9MXTaaoE4i7bpzgHEUeq1TavToTW+XIfvr+bPlLDs75QNqTqnceMsaacR
-         JasnK5ru2aOqtpqXOMXQ2PhOvSMeilnXiUbrCaAajqvgznoGWh5MhSEFD3CmOWsu+0Ig
-         T/Y3vojPy7bGDtXz7U5r1Qy7fIohK5/DPCrdy0mruqQ3IFv7R/OQMjnJTR0VAIE1elUd
-         kJVw8qDwd3+3w7Jr6rDP4CrSQJ/Y1VLlEJ3+ui/OROIF4N8cMWRXu4mMYDGiO8IMqNax
-         0xXjmFubmZSbXhVwvOd6YnDylffd1JAXPd2lJckS68EcCjiJgOGoShkAn5r7aJ/nX/HP
-         cUDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7/s+8bjRnT9Baodgg7kB1VYWzH5ZwXZL92QiIf0+jr3nnNI2LoNtwsF6KZZBGDj2C5P5ub5adGcLodbaCFg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YykjcqK6mU5Qq5r0nrN1tPi47H+ePbnbAgo9byEdSZV6YEoTbtv
-	IuSenO1wCDw/pb52bbjMshDgPNQyqx7MAq6GsT3O2WbJh6Ab2P5lTniLyZ+v+uXUbchzokz/+T9
-	q6/p28cZ+V2UVZZ4WnbdyXLHAR6JXGIm34Y8PF2YG
-X-Gm-Gg: ASbGnctTWQXF/wHUuooH904q+qfQCeUrf21a4h14fpStii/aCL8PuLL9dXd0dP3COgL
-	EhhOkn8QKmWsiG2R/U1dEWczVxcE9+xc9nEwBT96P63x+SpOoqiR9+zM2gNV3glMSxKnhaq82Wc
-	MFz/rfIysRPXGAarQC1KTj4xyQGU9ZUUxFxo1b4PEEaT+DmXSHyT9E5gz1/jwC8snkES+HNBCkd
-	Q==
-X-Google-Smtp-Source: AGHT+IEJ7F5vqPD1995XVEeNlwQDn1kT4T2sjrBzxP2SNjIQPOVpoD1CGOIJc4ajjNW3i0uj/2GMpOrQIz5EJ+cKc8I=
-X-Received: by 2002:a05:6000:2483:b0:3a4:ddd6:427f with SMTP id
- ffacd0b85a97d-3a5723a50dcmr14989937f8f.35.1750262223390; Wed, 18 Jun 2025
- 08:57:03 -0700 (PDT)
+        bh=TWzALV9LPqlus+Az62QmQW8i9ILqyK/dHFh5EdSLL0k=;
+        b=jrZswja+t/bCK8WUS4aTh6/eOOQm90CJds9j/HJsVgJsBdy0DDlED5LinTC1AYiq+K
+         +wdEV4R2Q9SlSMt6Y+tlP6Ghos3/LLz+BCwfFKb17e5MXxS5JscwyI8DLqmOcu5v5DkF
+         HS994zY+OnEK+G3suuILEDWRSHqX/KY4SFJeIMmFrhwIacNegtPrl5nfeDye+EiGwcAp
+         YRGqJAZFjb67fxuCQJ9G385zc8yXJrSgZXxQs2440pkkX5RV8nxU+nPbdBqAkMtCZu70
+         uauqeeXA8Isc+PQk+jIKgS2nfBNm7vJrr+mTibgaheESnOz5BY5zJyGe5ObNUZjjSYlt
+         P75Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU9Bmd6euUAqB+vISlGDriKVjpl08iq+SIoAz0iF6lWd17Qu1RRnUAPRa3bc3n89cQ8NNtxhAQE6Kb8Cxo=@vger.kernel.org, AJvYcCUW+vFFtyCWMNx2h2ZUboiwRCLeEVB5AgaQ3yHaIvlXrgooTRS/uDHwmexajhdRsC/Y7D+swm1d47M=@vger.kernel.org, AJvYcCUv0SMyo+0bc58606Wy+V6lVa1eoxMyp1DQB2E+KVN7vV8XvSKcgMaED1bWsfnXwRYx37ikmKseB36Z@vger.kernel.org, AJvYcCV9vnWtAXQUuEcHaqnTINav6myGZWGKc3WvdkXaQIbBet9iO+EYEAYo1G0uF8wWbUiPqXn0e5WlmDc8+wfn@vger.kernel.org, AJvYcCVPEJmoybRkd5IiwJMWuGBS9234MPYlsaF07d2ExfBM3ctoJg2G5s3yAkZ+pKwId/vEwUJhhtBFmPw7eHVi@vger.kernel.org, AJvYcCVevuNZzRC1k4WLJEZPiROzOIwk2Yg1hGiQcd6KYuE81CjAZjjxjsvpnHV3qRSgs0SAdsjjzHudWln5KNsf4Rg=@vger.kernel.org, AJvYcCVv1XT1vWGqNxruaHtfPbKZGiJl3beFyfGK7f/bYf7A12UFgKUuSSR41joEZGUJvd2y7EnqvsJr@vger.kernel.org, AJvYcCX6prJ6pnc8fxIPUYXaucbOLimk/j76q8InFNZo3HXhGHDmFpiLPcoKzqxEdbvDSn7O3eM9XASPmtzt@vger.kernel.org, AJvYcCXvKpZ8uYoMyZV6rEldKHpLnWsvZwdyS8fRlUrHkpGepf3SujeCs2xcx5fJhRaACMRAxkthtr5DstyN0FcFz1A4@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0QJpKFciLn8qcO2evtXRhmvVIPyLbxVThy6vkVS0kpWiLHo7k
+	ValFjAfXj+2j9WpqqK/uBjIN2tPcoGP22et7TUais/DKZhZqjVj9Rye6TzClqVHlMpRF1fnp5nY
+	GhB+KZtfjl+Kh1ThuTgUeHd4zjbOmMzc=
+X-Gm-Gg: ASbGncsj878HpFmROhLOj07Bj+vU3zavbYtwOOIxw9psaOKO29EKNB/YTBTtwIx0Efq
+	Q07KWd8SHjTAaNyZ4EOzksuYgYrV9BAQGGrhh/Tf5M1vFbSfz2NJnfVIqDfIamPkCDnnpsC6RIy
+	D/DAvlOd5tpBXzB7kUa++hbh20oEcHoF1djvrS9dH5u6I=
+X-Google-Smtp-Source: AGHT+IH4x/Zjj/Cn6AIOjbJXWQhaDWLSiy8g/xgpU0nYUpfFSqLNbZ8aoqW6DTm7BekXvLqQRHOksCgncGYgycyl5qg=
+X-Received: by 2002:a17:90b:2dcd:b0:312:e9d:3fff with SMTP id
+ 98e67ed59e1d1-3158bb43769mr25041a91.1.1750265170069; Wed, 18 Jun 2025
+ 09:46:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250618-debugfs-rust-v6-0-72cae211b133@google.com>
- <20250618-debugfs-rust-v6-2-72cae211b133@google.com> <aFLdmYLyDucTAiZx@pollux>
-In-Reply-To: <aFLdmYLyDucTAiZx@pollux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 18 Jun 2025 17:56:50 +0200
-X-Gm-Features: Ac12FXxe0yH-TlWMQeCZhQRqD163wyKjk5nADN-rhtrgFr2hX7BRbBm0weldvWo
-Message-ID: <CAH5fLgg=owO8EwdC_tHCdOE1aOghcfcAzrqb5VNExCJTxcmBkw@mail.gmail.com>
-Subject: Re: [PATCH v6 2/5] rust: debugfs: Bind file creation for long-lived Display
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, 
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+References: <20250615-ptr-as-ptr-v12-0-f43b024581e8@gmail.com>
+ <20250615-ptr-as-ptr-v12-1-f43b024581e8@gmail.com> <CAJ-ks9=6RSaLmNmDBv-TzJfGF8WzEi9Vd-s=1wyqBcF7_f7qQQ@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=6RSaLmNmDBv-TzJfGF8WzEi9Vd-s=1wyqBcF7_f7qQQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 18 Jun 2025 18:45:56 +0200
+X-Gm-Features: Ac12FXwfspeQ5n1WfjhtITwDVCEc5U5DXhUfzAvB1x6rILKw_9XGVLNl3gdX3Es
+Message-ID: <CANiq72kgnKH2SSp76EdPeysExBWasqhTyf1JyReR65g6FMsidA@mail.gmail.com>
+Subject: Re: [PATCH v12 1/6] rust: enable `clippy::ptr_as_ptr` lint
+To: Tamir Duberstein <tamird@gmail.com>, Christian Brauner <brauner@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, David Gow <davidgow@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <rmoar@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Benno Lossin <lossin@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Breno Leitao <leitao@debian.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, linux-pci@vger.kernel.org, 
+	linux-block@vger.kernel.org, devicetree@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, linux-mm@kvack.org, 
+	linux-pm@vger.kernel.org, nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 18, 2025 at 5:39=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Wed, Jun 18, 2025 at 3:54=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
 >
-> On Wed, Jun 18, 2025 at 02:28:14AM +0000, Matthew Maurer wrote:
-> > diff --git a/rust/kernel/debugfs/display_file.rs b/rust/kernel/debugfs/=
-display_file.rs
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..65e37e34d7b587482492dc2=
-96637a3bc517b9fe3
-> > --- /dev/null
-> > +++ b/rust/kernel/debugfs/display_file.rs
-> > @@ -0,0 +1,60 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +// Copyright (C) 2025 Google LLC.
-> > +
-> > +use crate::seq_file::SeqFile;
-> > +use crate::seq_print;
-> > +use core::fmt::Display;
-> > +
-> > +/// Implements `open` for `file_operations` via `single_open` to fill =
-out a `seq_file`.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// * `inode`'s private pointer must point to a value of type `T` whic=
-h will outlive the `inode`
-> > +///   and will not be mutated during this call.
-> > +/// * `file` must point to a live, not-yet-initialized file object.
-> > +pub(crate) unsafe extern "C" fn display_open<T: Display>(
-> > +    inode: *mut bindings::inode,
-> > +    file: *mut bindings::file,
-> > +) -> i32 {
+> @Andreas Hindborg could you please have a look for configfs?
 >
-> Please use kernel::ffi::c_int instead.
+> @Rafael J. Wysocki @Viresh Kumar could you please have a look for cpufreq=
+?
 
-And please use it without the fully qualified path. The c_int typedef
-is available in the prelude, so if you import kernel::prelude::* it
-should be available.
+Thanks Tamir.
 
-Alice
+Christian, Danilo, David, Greg, Tejun: It would also be nice to get
+Acked-by's for your bits. Thanks!
+
+Cheers,
+Miguel
