@@ -1,136 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0943621FF33;
-	Thu, 19 Jun 2025 12:19:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1462C231830
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 12:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750335563; cv=none; b=AtrmXZNfIXB9waKDrIvNj2oM9ALSipA10OMoPQHmgpTU+9ofb4gf+++RkGlHxtCkNf82zpWPmUsdKS0zp0l08q4WNpj069K9aSaxIylVtZXmVdMSf4NPSq9L2AiuVMbuuFvoU8hLsmcpUAfNMfGr8Le1QTZQrxnRh6CWrP6XefU=
+	t=1750335580; cv=none; b=HjGzTI3CWjQc2cgBnBUqf3XUoMFTsZgvvXyAWYALXZ/9ipBB9mS5S5971+ZNdOecvgIzZfvAMpHs8t7thJRKaUXo0Wd/J12J0awf/IoP/JWSv/Hy92sLTyoKkFuItz9mBUQFOtSrH0dj1nLhYwkniwOE+a8pkDb89XFUIJ9VygU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750335563; c=relaxed/simple;
-	bh=wOtxYd7FeByenB+qByLpAwEF4ztZQ/PR/wXrB5umFwM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ClV+7hjAmzOQDhZse8UI3UsSLEfEJUQxSTk7POo6FzWj2AsFmyqkRF3n6aSi/DMtMEUesqqVsim84NBOoJdQhWtIchHfNgnv//OCde1+HkDoGo6i3O4tJMppR5ovVlLUn60H7ZT6f2jsPNcrXhm0gTlEmv2RTmcQkOxPL4JIJVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U2sVfizp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750335580; c=relaxed/simple;
+	bh=7ac51FHNRIWsyGPsA2cT/OoFSdh1Legd6vLnNQpKO8c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i6PCTJGNaFCEvpEwn5r7rSLpsl8abz6Ff+l16GfwteALneNZicLQlHOb5BF5dmV6khxtNfOwT1pAdtRICjTKs0lz/+oxBHLY3Os3tljnYbznwm8YuoIGqX+EKJP+WBQD/d6OtOnrG8QGFWuHkz/oKSyYvi512NBU0b/eCWFcxTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gG0ytBXt; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U2sVfizp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C403C4CEEA;
-	Thu, 19 Jun 2025 12:19:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750335562;
-	bh=wOtxYd7FeByenB+qByLpAwEF4ztZQ/PR/wXrB5umFwM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U2sVfizp/8RjiMYlKKqsnF7R2f5DhvS65P6lko53nexYpYpd6ASNO5gMQTW1b6wF9
-	 zPwiLBsX5cLhpZiCkZgzQVQOdQcMQm5H1vnJNo6bpRo7GX9qHdPkm2JwDVidusIK5D
-	 Z6w2GJcarqXOat8r5iPWVfDEUaiBoZyw52kVkR9sCXSqkMERPv1qaKj3KNDARM2VQD
-	 Vm6vnpZ7uzpVGuZO5tF7zbSQE1TOxg29rM8rHEykwQZpestS8+PRf4NHPYVvWOL/3e
-	 VEg8L8mom599SmeL2gzNC+Fe2XHzh4jLy0k0Q4NnjvunpJIwOrwDwoFWZdWUkggm8k
-	 SwdbZMnO/3p+A==
-Date: Thu, 19 Jun 2025 14:19:14 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>,
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: Re: [PATCH v4 4/9] pwm: Add Rust driver for T-HEAD TH1520 SoC
-Message-ID: <aFQAQlB6gG3CElcN@pollux>
-References: <20250618-rust-next-pwm-working-fan-for-sending-v4-0-a6a28f2b6d8a@samsung.com>
- <CGME20250618122807eucas1p22d41cd6a9ac5131d91d41dfb09b8c92a@eucas1p2.samsung.com>
- <20250618-rust-next-pwm-working-fan-for-sending-v4-4-a6a28f2b6d8a@samsung.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gG0ytBXt"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-451dbe494d6so8837355e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 05:19:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1750335576; x=1750940376; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7ac51FHNRIWsyGPsA2cT/OoFSdh1Legd6vLnNQpKO8c=;
+        b=gG0ytBXtmGHLSLatGLouXVMjpdD9PTgyi3phXhmdCWrKH5D2h6HBTzQ7Fpe8ZlMRW+
+         QetZ89S/+/mLR2FAtmNPXyYhA4MN9U9UW4cZaigAb/zP08sCpY/xHMCBe/9GF0ClAe4E
+         dIc7lEuUtyGijgnNNYp1zberagJRM2xotXY+hwCfLDhKw0X8fw9SRz3KxhgBRY3njF95
+         C7KL8pfuqDTb5duEzbql3XqBka1dmTX2TNuRuBd0+X0B0w3FCWvmOWqgskEnEWuvb/cz
+         3ry+wOaXh3Z7UCIpM0UMEgIlCQiG4Rh+ScgVJvTh6DfSatOB2yMCHQi/re9Fz/ypfNQp
+         jYKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750335576; x=1750940376;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7ac51FHNRIWsyGPsA2cT/OoFSdh1Legd6vLnNQpKO8c=;
+        b=WtX1xFQ/dNfgndCi+SblUUC6Q8Bc6RJ8eAEGOMWXH32MGFQqW0X8y1PT2zAIWZijXM
+         soatBlQaJpH8ugxAT3h68aDmFv2Ay8rQY+y6wa+LwKzHF33TVP7QdH2ZXpeTMvKU9ypj
+         gvowIrG44h6W3vP77Yl4wpgTXesVYgEid3frAHiztw0YJE+xhbgk5IPI/ZCXWMOYDJX4
+         uoPvUIkT2IXGglTvYtv78PpiNnGXo2CZl1wNu0DC1IIuLC+ZTIduXgMik1k9b6YJlrPH
+         locMEHCBUMNmzF4cbf9YMh06RkrYeFLBrU9XDwABWGr+36lqeVi3dFgpJayp8BziIsRf
+         L2OA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPvfMYMgfR+de8LNhK17kafOFYBcbXIyIMJHJOxa+G/smkk2W2r02FosetKj8AAU+HoBhwr3LRoxX/raTOYQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhqLbvCJgFu4Dsi8bMoNexzOxM8ystTYOe/tCi1YCUD/q44tKV
+	U83c3neRHjya6IXbt7Qdl14S8JbMOThL+I9DUZFnxE6JijolAgd4mLOqHoAtaLfe+7proJ7ZRI4
+	kfJFzoZX8UItKmsXnKp3gOMJANORx7u9/1/P6+exF
+X-Gm-Gg: ASbGncviw/D2klZKia2NmkOBFu7sniesPj0WK5gbmTzOk2YDmYBe673SH/3mtL/G/Ei
+	ui/6PUnurS2P9GT5F96CGHf3akFqW4l+5z/YoSSQ7li8OgPQtVmtxvxle625RZDIoyGnAAzzkkw
+	8H8pvRzrshKf0bS49eOTXjwRi1r2/3x40fDN7S8xj2PHtWtezeaN5V4AWK6eOKaI6wp9frx1v9X
+	2PwGzMTXAMZ
+X-Google-Smtp-Source: AGHT+IEdN1dcFOkm876VSH5eqAcy40nZdytTN0BHyo53UKISb9ybhB6h26VIwqtDwmUT6/7XOiLspK8lUcD/OvMDcxw=
+X-Received: by 2002:a05:6000:430c:b0:3a5:3517:de3e with SMTP id
+ ffacd0b85a97d-3a572e6bc97mr18896998f8f.35.1750335576228; Thu, 19 Jun 2025
+ 05:19:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618-rust-next-pwm-working-fan-for-sending-v4-4-a6a28f2b6d8a@samsung.com>
+References: <20250618164934.19817-1-boqun.feng@gmail.com> <20250618164934.19817-4-boqun.feng@gmail.com>
+ <20250619103155.GD1613376@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250619103155.GD1613376@noisy.programming.kicks-ass.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 19 Jun 2025 14:19:23 +0200
+X-Gm-Features: Ac12FXz2t9QSaVzsNj9MSWHyeQZH7QvXWY1Yd25RYMgxbqiHuVm7qkIrRqBSAbY
+Message-ID: <CAH5fLgjhdxdFztu_pXLjngu4cD7g7jw16bcQYz=XNmGxKfThsA@mail.gmail.com>
+Subject: Re: [PATCH v5 03/10] rust: sync: atomic: Add ordering annotation types
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev, 
+	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Lyude Paul <lyude@redhat.com>, 
+	Ingo Molnar <mingo@kernel.org>, Mitchell Levy <levymitchell0@gmail.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 18, 2025 at 02:27:37PM +0200, Michal Wilczynski wrote:
+On Thu, Jun 19, 2025 at 12:31=E2=80=AFPM Peter Zijlstra <peterz@infradead.o=
+rg> wrote:
+>
+> On Wed, Jun 18, 2025 at 09:49:27AM -0700, Boqun Feng wrote:
+>
+> > +//! Memory orderings.
+> > +//!
+> > +//! The semantics of these orderings follows the [`LKMM`] definitions =
+and rules.
+> > +//!
+> > +//! - [`Acquire`] and [`Release`] are similar to their counterpart in =
+Rust memory model.
+>
+> So I've no clue what the Rust memory model states, and I'm assuming
+> it is very similar to the C11 model. I have also forgotten what LKMM
+> states :/
+>
+> Do they all agree on what RELEASE+ACQUIRE makes?
 
-<snip>
+Rust just uses the C11 model outright, so yes it's the same. There's
+no separate Rust memory model as far as atomics are concerned.
 
-> +    fn write_waveform(
-> +        chip: &pwm::Chip,
-> +        pwm: &pwm::Device,
-> +        wfhw: &Self::WfHw,
-> +        parent_dev: &Device<Bound>,
-> +    ) -> Result {
-> +        let data: &Self = chip.drvdata().ok_or(EINVAL)?;
-
-<snip>
-
-> +impl platform::Driver for Th1520PwmPlatformDriver {
-> +    type IdInfo = ();
-> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-> +
-> +    fn probe(
-> +        pdev: &platform::Device<Core>,
-> +        _id_info: Option<&Self::IdInfo>,
-> +    ) -> Result<Pin<KBox<Self>>> {
-> +        let dev = pdev.as_ref();
-> +        let resource = pdev.resource(0).ok_or(ENODEV)?;
-> +        let iomem = pdev.ioremap_resource_sized::<TH1520_PWM_REG_SIZE>(resource)?;
-> +        let clk = Clk::get(pdev.as_ref(), None)?;
-> +
-> +        clk.prepare_enable()?;
-> +
-> +        // TODO: Get exclusive ownership of the clock to prevent rate changes.
-> +        // The Rust equivalent of `clk_rate_exclusive_get()` is not yet available.
-> +        // This should be updated once it is implemented.
-> +        let rate_hz = clk.rate().as_hz();
-> +        if rate_hz == 0 {
-> +            dev_err!(dev, "Clock rate is zero\n");
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        if rate_hz > time::NSEC_PER_SEC as usize {
-> +            dev_err!(
-> +                dev,
-> +                "Clock rate {} Hz is too high, not supported.\n",
-> +                rate_hz
-> +            );
-> +            return Err(ERANGE);
-> +        }
-> +
-> +        let chip = pwm::Chip::new(dev, MAX_PWM_NUM, 0)?;
-> +
-> +        let drvdata = KBox::new(Th1520PwmDriverData { iomem, clk }, GFP_KERNEL)?;
-> +        chip.set_drvdata(drvdata);
-
-Sorry that I didn't spot this before: Is there a reason you can't pass drvdata
-directly to pwm::Chip::new()?
-
-If not, you can initialize the pwm::Chip's drvdata on creation of the pwm::Chip.
-
-This has the advantage that your chip.drvdata() (see write_waveform() above)
-becomes infallible.
-
-(If there are reasons this isn't possible, there are other potential solutions
-to avoid chip.drvdata() to return an Option.)
-
-> +
-> +        pwm::Registration::new_foreign_owned(dev, chip, &TH1520_PWM_OPS)?;
-> +
-> +        Ok(KBox::new(Th1520PwmPlatformDriver, GFP_KERNEL)?.into())
-> +    }
-> +}
+Alice
