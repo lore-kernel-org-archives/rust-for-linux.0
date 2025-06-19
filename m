@@ -1,188 +1,116 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251B73085D3;
-	Thu, 19 Jun 2025 15:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EFC1F0992;
+	Thu, 19 Jun 2025 15:30:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750346147; cv=none; b=ljIV5DAjD+cssciQeYBBlt9jr/R2toZmlRkcgs4xKnV7YC/Z7ZHoFhSCqpJ8fTW/SV+/FLIKA7mkBs06Im4V+F8P0rrDeOtreH/NEWFiyg4W3/gsQCBOBA8AyqN3tYdC3J8cB+TbQA/1pMSamlwg67K6dnD9tSOZRRjPGTTbFaA=
+	t=1750347036; cv=none; b=f9aCYvV+3+rD19uKL/dUi5COdw+2pdE3rfBaJbJohJo8ci4Ri5nszMcwR9wPdqmDPY4stOBTiL0eWPDFa1NbqoR88YHUv5zpOJE3ION6U8/WadALsahfz4nmeAKJLf4R7xfX58Tdd0YUjoD6lqBlS3aojb/eJRd4oibTIEymhuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750346147; c=relaxed/simple;
-	bh=zHZPU0pQVvtvELT/A0DnUl36QCSDJghMFFVkTWTaZUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f6M14oh442YbHgRRu/UEZbODUGUFkdv16enoeYd9NdLcbnM4GbOquqlDBCMdWLrGwDfJuUU0h+EvF4fjw+rly/0wdB6ziXYHGrIFAviRtS77kr80YueauNXc7ZL8vYcuEWSZSm+y60i3LWOTuGoPuBYr/OFKGUWD2p9O/ZtqibY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gvI9xjt3; arc=none smtp.client-ip=209.85.160.173
+	s=arc-20240116; t=1750347036; c=relaxed/simple;
+	bh=0fh6espjLEjaSRFixnAFyJrhMUxNyl6iTTMErQ9uzuM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ibsKTEkkyZWEIMEi9xeYO2ybj2UtKWRHsVEDRbECE/Om3+duTXUGEGpsAhOFK8MYa52F/LKM3XaxUJ2D+MdMDD7URcobv8WSt2dXyst6F8dJZt9cV76pRuvxoGDUtOVdSWJHVKkr0WUvCzgs89xSPdg+5ZZ0GRm1u4/t+vI8RKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cX2lXSM7; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gvI9xjt3"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a58ebece05so7711201cf.1;
-        Thu, 19 Jun 2025 08:15:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cX2lXSM7"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32934448e8bso7274931fa.3;
+        Thu, 19 Jun 2025 08:30:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750346145; x=1750950945; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750347032; x=1750951832; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iB6NBWoWO017Q/yotmTxC8XiQqyoYl9JmICEhhvlvHU=;
-        b=gvI9xjt3Wp9ZPsDuHkv7IN2Kd0nM98jn+OKmyvsMR6UUjK1bvGRcnVIw65d9G72Mgl
-         9CvSpBQ5oVJcMusJcHl54HRkfN0pgK8JJk0kwDGO3mc/owizMzvBO+nVhKEeCnkhxcvn
-         HeNfRaO7lTG//GOqr29N/aYMIY2PjDirUg1brTWnUHSASCgNgWQW0/3+rsYRDC+3gMKf
-         6iZmc2SyZoj/1Eu3TnBfXLhqKmFGCYD2Ub3+PmZ2rm+8zOdvVFvus+J1+5Us6VK8mFPC
-         QdKV/F8l7QZj/WSXur7tBmA9WEJ5OAU1BBT/iJj8Yd6rmfsHtROlLo1NcTx9/W0TXWrT
-         LFRg==
+        bh=0fh6espjLEjaSRFixnAFyJrhMUxNyl6iTTMErQ9uzuM=;
+        b=cX2lXSM7aTwSMfMs3W95qDh92hHXDtbZFr3VBD8dKj1LOCPv8Yz52xME0l+6lks53E
+         fDf2Bp2z2VUK3h8RKalSPve7zPBK34axqws6Orc8pPDgCTF7j6CNgwlFIoaPiCnfVPlR
+         U90qWM7lfG9w77imxzmc4Z40TyTbuP6gH33s83slIrtXh1djokNxOG0SxGs9s8MveVG9
+         u3TpY7wRJHh9mJW+bxki07KdEg17WJMFmV7gryEwmTvw8VOCzcsG5Bn1iBKauRYhte3g
+         1oCeDrS5gTw95vUNAr2rGSQLLEWI01DmMLxfUkBRQehcfrLsfRWrIsB6YyZ6BwNTwHUs
+         fUnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750346145; x=1750950945;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1750347032; x=1750951832;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iB6NBWoWO017Q/yotmTxC8XiQqyoYl9JmICEhhvlvHU=;
-        b=Dn8PscKQ3+8NRAgPAeA8Ew6PE/eFYYjkUKX3Dq38RvYuxJ5kR+8k1JYb8QyvhNJsbi
-         JvUkE0YQLXxarVu/7UNr1RTQaxZ94dd7upR42yClTlROMBvYZw8sgqkLAsyFZSh+7elP
-         0+nC40lYnXs0usQMTx2qwNDsMrO96/DESMx0oAfWNoUMn5BqFOitYeiDld2aV6GK5aPq
-         5eoTYT2QOC6iVjhTTVRK4vYmd3F3POXpjR9ltjPl3hvf9JnYnBlcJivrBJsG/t8qjKh+
-         AOKun8MkbQjmueAuuCVZciIl4FKT1V4TaJR8eZbtp5W1M0hqqOEeeLIF2gT70oAR7CYr
-         1MTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZSV8pHchLnAC4np4VQrwi2L5Zi4Mvd//yy+kja1UuPtgXk7QF6QQkR/ZRcj9z18eMqvQ1dWC7Fjr+7EyG/Tw=@vger.kernel.org, AJvYcCUlcF5+qzNbAbkrCV+RN066+q44rFSIEgAVUh9WwwMe2zgEpsEvz+RUDyYliXuk+60pRnNsM6EpynxT@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9CXI/m1v7TiyJPhi7+UgRmgCmCm8rrdxpmdw6QZBXkdrUMK2L
-	IP8+BT3nBxk2xsTfL6KRARjiG7wkf21OaxIo2C8wSRSoN86UcdD07PoG
-X-Gm-Gg: ASbGnctw1OPCqSAkLsJoGCgKC2DwGmhkKwc577ET+UHrP6a63MufcVy6YQTI2m+QzUi
-	Vy6j9RZF6Msrq9vqQs4vHdtUeze3ue4JIiXTQKNjZdIa7tlEi8De4j7NUi0WPlMKCkeCOmIueI9
-	wVuFFg0V/pkVBM80zgmYYfvMWJaiNQ5YBnAs8+9MYvo6+0SHlIZYFAr12inyyQzt35bj4FUDFI5
-	hHqfXhHDiaeLHHIg7zK7kfZz3DUf3gEb86xcqzAbwY5dBtOEojMEOHnFIgifusvW13Lz6RYHiJ7
-	lLDm39ZB5NtLyPUGBTBCASyC3kLXlfIwMJOKAJjpM7DN/QwKHhgU7CKiFZeG1xA9vYchZeut/OD
-	WxGS12Lty6FJbS1b54wzTwtGeAKOOez1xHPeYLx51gS3/OQTdzNQX
-X-Google-Smtp-Source: AGHT+IF8vYUaxN9IXHpKW7pA/QJMa955Hnx3mIGzGHZgpjKqaBXYX9dt9SNO06zJEdxRolqCx+PzwA==
-X-Received: by 2002:ac8:58ce:0:b0:4a4:2d64:a7e4 with SMTP id d75a77b69052e-4a73c608616mr347986811cf.35.1750346144930;
-        Thu, 19 Jun 2025 08:15:44 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7784ce4d1sm443131cf.27.2025.06.19.08.15.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 08:15:42 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BA82F1200069;
-	Thu, 19 Jun 2025 11:15:41 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 19 Jun 2025 11:15:41 -0400
-X-ME-Sender: <xms:nSlUaIskrN58R8pfL5HcUXbdEiumOwJqeuesDalCGA3HVarVvmyARA>
-    <xme:nSlUaFeNOvpNck2jrzCPWg4LTetKM-aQVMaK8C29bgMk9ofYorlSYilskBbtliwyw
-    3Gmn_LeOdbJVgUfcA>
-X-ME-Received: <xmr:nSlUaDywfts9qXJkAqSPEMQoe1SVaa1E4BW_p8tiC1i2t22isfspKuYbeQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdehkeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
-    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
-    hnpefgledvudfhudfhhedugeegheekhfeileelteffgfekleegjeetueefieetudehueen
-    ucffohhmrghinheprhgvlhgvrghsvgdrshhonecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
-    ohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnh
-    hgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedv
-    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgrug
-    gvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrh
-    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhkmhhmsehlihhsthhsrdhlihhnuhig
-    rdguvghvpdhrtghpthhtoheplhhinhhugidqrghrtghhsehvghgvrhdrkhgvrhhnvghlrd
-    horhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    rghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesgh
-    grrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhm
-    rghilhdrtghomh
-X-ME-Proxy: <xmx:nSlUaLNdegtaf3xa6TtwhaE9QVx0LOLdxrxkjQsJumnZV9M82BoMFw>
-    <xmx:nSlUaI97kKqOW3Jz1ZTEl1t1OU9zu2-JXHQ7WwsMcfFCSFGvg1MkrA>
-    <xmx:nSlUaDWyQdmWn8GXYlEn-B9jFQd6bol3p47FB5jr87ZtyMi-7Vjw5g>
-    <xmx:nSlUaBcQjjgb1RuxLQIQq9W7jb-vnzoQorE84AInrV4M6SHYASavZg>
-    <xmx:nSlUaKdQ1obqpDC4h0bIwoMZVevMyR3SsKD7oaRo9lMngoUJv_RfiWfS>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Jun 2025 11:15:41 -0400 (EDT)
-Date: Thu, 19 Jun 2025 08:15:40 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v5 03/10] rust: sync: atomic: Add ordering annotation
- types
-Message-ID: <aFQpnBGrOrd3rtbF@Mac.home>
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <20250618164934.19817-4-boqun.feng@gmail.com>
- <20250619103155.GD1613376@noisy.programming.kicks-ass.net>
- <aFQQuf44uovVNFCV@Mac.home>
- <20250619143214.GJ1613376@noisy.programming.kicks-ass.net>
- <aFQmDoRSEmUuPIQG@Mac.home>
- <20250619151050.GN1613376@noisy.programming.kicks-ass.net>
+        bh=0fh6espjLEjaSRFixnAFyJrhMUxNyl6iTTMErQ9uzuM=;
+        b=EVLoXqEhVKjNUZ8mIWpttyUfUgLmkVvVBYS8/tA4fJmQoMIWkiYsITtdqZywDZJn8G
+         JhXoNVy7YuLO3dE9MuuF4CCUF4MX462ngzICDTN+jCD+Ex+UtqZPmxbdKE5K90ZEJZBX
+         HtRII9k1nvU+shdvQ/X9w16jS177GSaNNIMVADo47Qq1wH7CIDieMLEb0knMixwZUG3d
+         yiwTkU9Z/pasjxxkKdNV7VfgLfLFx5qydHj0OF5c5b0IQ9r++VvjpGE5oWa6+6OnhAwg
+         8gHH73qMK5Dz8Jjh4pm9roRVO8vfTzJJ0ePsT1uimyTJ7ykw8LvsCVk7Yx2JKK5HF3IG
+         PRxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWI2eMw1+kDwIBtRdv8aNkRPODiWJO/oTd5puVkOPpqPjb7gs5QqTna7M/tlVKHLFVt4PpRhUy3imYbc//HkQA=@vger.kernel.org, AJvYcCX7f8IoXhXytrtF4Ro3g+gBkAiRPmAGMfvsqk4KteEI5Mt7T22ivhXVCTQgU+FX6AXmGb0DkjScQdruppo=@vger.kernel.org, AJvYcCXbFM2yUnyuhj+GYTZsV5GoU2wFkNj+pIe3ZS5FYnhN5GHQ8ghwDVx0GVDFxbe88kqLV0/AwWJC@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7QDT3z1IKECvBaQMpQfOX7HV78ke3H+UL5TBhV7CECS8YccVd
+	5ewNOUZic5SCg3f+LJ5Zj9wCbFOseNBSdc3tfpcGPXrAI01Wf5lgDyA1r1dhabKuaLa/rmDRe7I
+	BaVsNyhxVxalAtQOGaoriI1F6JDC2EzQ=
+X-Gm-Gg: ASbGncsdFyKSe0+/GWF1USEqQI1GMGX4Zud9Frzrt0Re7qkvxTODH/yk4R2VRrOhR2f
+	kqR6wDk9Hi/Vn4MobVPhHzChMs6Cly5KUCV1pgq5Q8OVL2spHBU55wfft/5SSI7Dn1dwzf1zfj0
+	nVm3Iqx9pBgmauQyXQxx5jzMYauHFCXSz8ZBdUAqplJbAZcPqnfNPb4qEtL4ap/HzWpP0PFikLW
+	lM39g==
+X-Google-Smtp-Source: AGHT+IEXr6azp2lqbz2V07vRRqpBRe93raFjyVRuV54TirHOCDGMlRMEsS69LHfBi6gvsXCGK2cP39x7vOem4Owyg5s=
+X-Received: by 2002:a2e:bc09:0:b0:32a:714c:12d1 with SMTP id
+ 38308e7fff4ca-32b4a0c589emr78876511fa.1.1750347032146; Thu, 19 Jun 2025
+ 08:30:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250619151050.GN1613376@noisy.programming.kicks-ass.net>
+References: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com>
+ <CAH5fLghomO3znaj14ZSR9FeJSTAtJhLjR=fNdmSQ0MJdO+NfjQ@mail.gmail.com>
+ <CAJ-ks9m837aTYsS9Qd8bC0_abE_GT9TZUDZbbPnpyOtgrF9Ehw@mail.gmail.com>
+ <20250612.094805.256395171864740471.fujita.tomonori@gmail.com> <CAJ-ks9nXwBMNcZLK1uJB=qJk8KsOF7q8nYZC6qANboxmT8qFFA@mail.gmail.com>
+In-Reply-To: <CAJ-ks9nXwBMNcZLK1uJB=qJk8KsOF7q8nYZC6qANboxmT8qFFA@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 19 Jun 2025 11:29:56 -0400
+X-Gm-Features: AX0GCFsBqf-jctJWEanUNO6z5_EE5XXc7yZHCIBnhnkF2fuMrthooPQ_awMNjdg
+Message-ID: <CAJ-ks9mazp=gSqDEzUuh0eTvj6pBET-z2zz7XQzmu9at=4V03A@mail.gmail.com>
+Subject: Re: [PATCH] rust: cast to the proper type
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: aliceryhl@google.com, tmgross@umich.edu, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	dakr@kernel.org, davem@davemloft.net, andrew@lunn.ch, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 19, 2025 at 05:10:50PM +0200, Peter Zijlstra wrote:
-> On Thu, Jun 19, 2025 at 08:00:30AM -0700, Boqun Feng wrote:
-> 
-> > > So given we build locks from atomics, this has to come from somewhere.
-> > > 
-> > > The simplest lock -- TAS -- is: rmw.acquire + store.release.
-> > > 
-> > > So while plain store.release + load.acquire might not make TSO (although
-> > > IIRC ARM added variants that do just that in an effort to aid x86
-> > > emulation); store.release + rmw.acquire must, otherwise we cannot
-> > > satisfy that unlock+lock.
-> > 
-> > Make sense, so something like this in the model should work:
-> > 
-> > diff --git a/tools/memory-model/linux-kernel.cat b/tools/memory-model/linux-kernel.cat
-> > index d7e7bf13c831..90cb6db6e335 100644
-> > --- a/tools/memory-model/linux-kernel.cat
-> > +++ b/tools/memory-model/linux-kernel.cat
-> > @@ -27,7 +27,7 @@ include "lock.cat"
-> >  (* Release Acquire *)
-> >  let acq-po = [Acquire] ; po ; [M]
-> >  let po-rel = [M] ; po ; [Release]
-> > -let po-unlock-lock-po = po ; [UL] ; (po|rf) ; [LKR] ; po
-> > +let po-unlock-lock-po = po ; (([UL] ; (po|rf) ; [LKR]) | ([Release]; (po;rf); [Acquire & RMW])) ; po
-> > 
-> >  (* Fences *)
-> >  let R4rmb = R \ Noreturn       (* Reads for which rmb works *)
-> > 
-> 
-> I am forever struggling with cats, but that does look about right :-)
-> 
+On Wed, Jun 11, 2025 at 8:54=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> On Wed, Jun 11, 2025 at 8:48=E2=80=AFPM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+> >
+> > On Wed, 11 Jun 2025 09:30:46 -0400
+> > Tamir Duberstein <tamird@gmail.com> wrote:
+> >
+> > > On Wed, Jun 11, 2025 at 7:42=E2=80=AFAM Alice Ryhl <aliceryhl@google.=
+com> wrote:
+> > >>
+> > >> On Wed, Jun 11, 2025 at 12:28=E2=80=AFPM Tamir Duberstein <tamird@gm=
+ail.com> wrote:
+> > >> >
+> > >> > Use the ffi type rather than the resolved underlying type.
+> > >> >
+> > >> > Fixes: f20fd5449ada ("rust: core abstractions for network PHY driv=
+ers")
+> > >>
+> > >> Does this need to be backported? If not, I wouldn't include a Fixes =
+tag.
+> > >
+> > > I'm fine with omitting it. I wanted to leave a breadcrumb to the
+> > > commit that introduced the current code.
+> >
+> > I also don't think this tag is necessary because this is not a bug
+> > fix. And since this tag points to the file's initial commit, I don't
+> > think it's particularly useful.
+>
+> Would you be OK stripping the tag on apply, or would you like me to send =
+v2?
 
-;-) ;-) ;-)
-
-> > although I'm not sure whether there will be actual users that use this
-> > ordering.
-> 
-> include/asm-generic/ticket_spinlock.h comes to mind, as I thing would
-> kernel/locking/qspinlock.*, no?
-> 
-
-Ah, right. Although I thought users outside lock implementation would be
-nice, but you're right, we do have users. Previously our reasoning for
-correctness of this particular locking ordering kinda depends on
-per-architecture memory model reasoning, so modeling this does make
-sense.
-
-Regards,
-Boqun
-
-> 
+Hi Tomo, gentle ping here. Does this look reasonable to you, with the
+Fixes tag stripped on apply?
