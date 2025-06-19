@@ -1,111 +1,177 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EF82264DD;
-	Thu, 19 Jun 2025 12:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0814A35963;
+	Thu, 19 Jun 2025 12:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750337514; cv=none; b=mbmcMPI1VTem+6v66kMZ1Lj5tOGb0Cokwf1NewQ7hsfr/VES72nzCaQ9s+eL4NvVVqP3O7m5ekbT5cCnapca31v9MSwa5OVhuit7ts+cMaoYQ6DomSEhWkwSLumzvFsIkY3c9LHO4FRrD4ysuKNFlVruC7n7G6tCZORRLbHr/98=
+	t=1750337711; cv=none; b=nZ7K31M8AVYDpwSh97irRFqryj6GY9IbW/pTKnmPUyLNiB2p+R8N4ZWhVJewATkGhM4iMgakdEvA92s9qLVR/OSsNH4z60aNswadcCde9rlYkYM15TslKNR9cuietgL9EnMGyYk/cgj0griOvq2yWTCdTxzY2Ak8exq6OVQiz2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750337514; c=relaxed/simple;
-	bh=e1UBzeiV9AlClAXRxxXd9aer/JQpA4TTkuCFypUdkvs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=f5liOfj2FPuXmhXmu4pveH3obeRXdv+aPnSXh0efOSdnRMJmjehy2bJcDG661ejznyTMGEzhPFL7htCdT/N4RlkRe0tyeeALd0g3F022l0+zEkZUI64q2O4EJ7mD134VQFgYn1WG4TNq862h9WhFSCQfaa4CYx0Tl+sDhUoQdoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kE9Swjri; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750337711; c=relaxed/simple;
+	bh=F68ARQM2DUOYRKZtWd98Kxrd8cYHG04AvGLTqWL26QE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=DtdVNYSJj+yHQkmlDjCS2QwzdPMsQhpfFG4QVfmRC4FsJoZfw0IHkK9/NByNBmrpNiYtfCUiEtcnctClML+pjHPVHIY2/twelp91eU6WQfUBCUQp+8wPkW9gVhGPyw0AAnHS72XAFmaZyY8wN+Gm4e89mCVDs8rxSJO0tdEcObk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dcuBAS4/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kE9Swjri"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D48C4CEEA;
-	Thu, 19 Jun 2025 12:51:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dcuBAS4/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E57C4CEEA;
+	Thu, 19 Jun 2025 12:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750337514;
-	bh=e1UBzeiV9AlClAXRxxXd9aer/JQpA4TTkuCFypUdkvs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=kE9SwjriWNP/jIYKzby6V9v9DynzRBJ1lEbOdAvOh5Pw/OvykqeN7smtbCrmzQq/g
-	 dEXOoLEVKQvNH2tdVsiBjGxCu5fmmVOPyxMd8tUSGIUtrmf0by3GN1LzpHt4rfJeF/
-	 UUBPKsRqmzFf+nWcZf4hJg065xXzxY7oiM/F/811Ky8AFht7QC2ZKNXhPBdgiDiH2O
-	 Suw0lKYpMH0A5AGr3Hs5xbUvrsN0/7qmQxZpyGoO012Enkd1H4/IzT3f0z+SOmJCIT
-	 HIXlNqJm7IALFxAJ4JBqMI7zn3isieKewpuXQoenf1h71xe6hcq83i2KbXoE7aSLF5
-	 GfjuO9EqJP+jA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  <aliceryhl@google.com>,
-  <alex.gaynor@gmail.com>,  <ojeda@kernel.org>,
-  <anna-maria@linutronix.de>,  <bjorn3_gh@protonmail.com>,
-  <boqun.feng@gmail.com>,  <dakr@kernel.org>,  <frederic@kernel.org>,
-  <gary@garyguo.net>,  <jstultz@google.com>,
-  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
-  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
-  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
-Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods
- as_micros_ceil and as_millis
-In-Reply-To: <CANiq72kHvfkrK0KG2Y60HkLMt=mgJrJMOcuF9Feker0FjgoVkg@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Thu, 19 Jun 2025 13:44:52 +0200")
-References: <CANiq72kSfHTPeRQjhHKhdw8zuozvNy50CJjTuEbUnW_3j9x8tw@mail.gmail.com>
-	<CAH5fLgggDKUwmU3oCTMS1dQGzA5Whp2fnXoLmbGmNF1W89Ar_A@mail.gmail.com>
-	<CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com>
-	<20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
-	<v2VP7JfqanHzCbCjzZsKXCG3l7icurTwDY22nHhk0sJjQjy2gubeujbVvfLe7c8-2KOURnZ87UHLxjAGiTxfeQ==@protonmail.internalid>
-	<CANiq72kacWaLo=EE8WyA_M2Pr9h1MkqjeAmqet6CSGWLvM7B9g@mail.gmail.com>
-	<87ikks84im.fsf@kernel.org>
-	<eA4kkaheodmz2bvo4hsNPi7K85CCQheFde7p25BWA83Kxp8_GQ-Anf_QVdhuIPAm9bDHnZqTlpAqcluWgNw4og==@protonmail.internalid>
-	<CANiq72kHvfkrK0KG2Y60HkLMt=mgJrJMOcuF9Feker0FjgoVkg@mail.gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 19 Jun 2025 14:51:44 +0200
-Message-ID: <878qln7v33.fsf@kernel.org>
+	s=k20201202; t=1750337710;
+	bh=F68ARQM2DUOYRKZtWd98Kxrd8cYHG04AvGLTqWL26QE=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=dcuBAS4/IXvI72zAi2C9wKO8TF8l3yfF6vihcv4oJNxIgPDFaE5J59Gi8cZxion0S
+	 vZ3gK0AWXc8KuQa29Vj97LIgYj+LWdMctHcK8oq80U7YJtkBen+vH2XGJCR7NnW64O
+	 4u91EJeR4rirFLc5w8oM6Beulu2iPq5g9IkbT5i1F1YF7wybZ/58q5CWbnR3oKiogd
+	 uOMVeamHSqojoIMNR9vgU4fm4hUMumMI1ek6RICnpFm4UqKtu98jz4jqmU2oU6Amv9
+	 6bYKAkDk76s6pHl3NgNOvRcOKJB97LD8UEcwwum38gpNDeQFPLXJKZ7/0BTTnalI6L
+	 3VPlNjrdlfiQQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Jun 2025 14:55:03 +0200
+Message-Id: <DAQIXKJ9VMS6.2044WT0FQQCVC@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
+ Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
+ Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
+ "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
+ <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+ <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+ <aa9d7lhjQuDhyNw8zShbtfPFK19W5awx7cPJgC-2X4fGv2yUTnn0jqyIHfMN4wyuaYoS3fU6Fqe_wFteVUGtUg==@protonmail.internalid> <DAPYMAB44RUZ.7NIWDUWY1UYF@kernel.org> <87v7or7wiv.fsf@kernel.org>
+In-Reply-To: <87v7or7wiv.fsf@kernel.org>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
-
-> On Thu, Jun 19, 2025 at 11:28=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
+On Thu Jun 19, 2025 at 2:20 PM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
+>>> +
+>>> +// SAFETY: C kernel handles serializing access to this type. We never =
+access it
+>>> +// from Rust module.
+>>> +unsafe impl Sync for RacyKernelParam {}
+>>> +
+>>> +/// Types that can be used for module parameters.
+>>> +pub trait ModuleParam: Sized + Copy {
 >>
->> The table at [1] seems to suggest `to_*` or `into_*` being the right
->> prefix for this situation. It does not fully match `to_*`, as the
->> conversion is not expensive. It does not match `into_*` as the type is
->> `Copy`.
+>> Why the `Copy` bound?
+>
+> Because of potential unsoundness due to drop [1]. I should document
+> this. It is noted in the change log for the series under the obscure
+> entry "Assign through pointer rather than using `core::ptr::replace`."
+>
+> [1] https://lore.kernel.org/all/878qnbxtyi.fsf@kernel.org
+
+Ah thanks for the pointer, yeah please mention this in a comment
+somewhere.
+
+>>> +    ///
+>>> +    /// Parameters passed at boot time will be set before [`kmalloc`] =
+is
+>>> +    /// available (even if the module is loaded at a later time). Howe=
+ver, in
 >>
->> I am leaning towards `to_*`, but no strong feelings against `into_*`.
+>> I think we should make a section out of this like `# No allocations` (or
+>> something better). Let's also mention it on the trait itself, since
+>> that's where implementers will most likely look.
+>
+> Since this series only support `Copy` types that are passed by value, I
+> think we can remove this comment for now. I will also restrict the
+> lifetime of the string to he duration of the call. Putting static here
+> would be lying.
+>
 >>
->> I would not go with `as_*`, I would expect that to borrow.
+>>> +    /// this case, the argument buffer will be valid for the entire li=
+fetime of
+>>> +    /// the kernel. So implementations of this method which need to al=
+locate
+>>> +    /// should first check that the allocator is available (with
+>>> +    /// [`crate::bindings::slab_is_available`]) and when it is not ava=
+ilable
+>>
+>> We probably shouldn't recommend directly using `bindings`.
+>>
+>>> +    /// provide an alternative implementation which doesn't allocate. =
+In cases
+>>> +    /// where the allocator is not available it is safe to save refere=
+nces to
+>>> +    /// `arg` in `Self`, but in other cases a copy should be made.
+>>
+>> I don't understand this convention, but it also doesn't seem to
+>> relevant (so feel free to leave it as is, but it would be nice if you
+>> could explain it).
 >
-> It is an integer division by compile-time constant, so likely just a
-> multiplication and some adjustment, so it depends on whether we
-> consider that "expensive".
+> It has become irrelevant as the series evolved. When we supported
+> `!Copy` types we would use the reference if we knew it would be valid
+> for the lifetime of the kernel, otherwise we would allocate [1].
 >
-> However, even if we consider that "expensive", we will still have the
-> same question when we have a really cheap method.
+> However, when the reference is passed at module load time, it is still
+> guaranteed to be live for the lifetime of the module, and hence it can
+> still be considered `'static`. But, if the reference were to find it's
+> way across the module boundary, it can cause UAF issues as the reference
+> is not truely `'static`, it is actually `'module`. This ties into the
+> difficulty we have around safety of unloading modules. Module unload
+> should be marked unsafe.
+
+Ah so the argument should rather be an enum that is either
+`Static(&'static str)` or `WithAlloc(&'short str)` with the (non-safety)
+guarantee that `WithAlloc` is only passed when the allocator is
+available.
+
+> At any rate, I will remove the `'static` lifetime from the reference and
+> we are all good for now.
+
+Sounds simplest for now.
+
+>>> +    crate::error::from_result(|| {
+>>> +        let new_value =3D T::try_from_param_arg(arg)?;
+>>> +
+>>> +        // SAFETY: By function safety requirements `param` is be valid=
+ for reads.
+>>> +        let old_value =3D unsafe { (*param).__bindgen_anon_1.arg as *m=
+ut T };
+>>> +
+>>> +        // SAFETY: By function safety requirements, the target of `old=
+_value` is valid for writes
+>>> +        // and is initialized.
+>>> +        unsafe { *old_value =3D new_value };
+>>
+>> So if we keep the `ModuleParam: Copy` bound from above, then we don't
+>> need to drop the type here (as `Copy` implies `!Drop`). So we could also
+>> remove the requirement for initialized memory and use `ptr::write` here
+>> instead. Thoughts?
 >
-> The root issue is that the table just doesn't say what to do in some
-> of the "free" cases, and it is generally confusing.
->
-> Since I am asking for opinions: why do you consider `as_*` as
-> expecting to borrow?
+> Yes, that is the rationale for the `Copy` bound. What would be the
+> benefit of using `ptr::write`? They should be equivalent for `Copy`
+> types, right.
 
-1) I **feel** that is usually the case. I did not check `std` if this
-also the case in practice.
-2) The table at [1] says `as_*` is borrowed -> borrowed.
-3) To me, the wording "as" indicates a view into something.
+They should be equivalent, but if we drop the requirement that the value
+is initialized to begin with, then removing `Copy` will result in UB
+here.
 
-> The standard does take `&self` the majority of
-> the time (but not always), and Clippy also expects a borrow, but you
-> also said in a previous iteration that you don't want to take a
-> pointer just to pass an integer, which makes sense: we wouldn't pass a
-> reference if we were using the integer.
+> I was using `ptr::replace`, but Alice suggested the pace expression
+> assignment instead, since I was not using the old value.
 
-Yes, I would prefer taking by value. I think Alice mentioned earlier in
-this thread that the compiler will be smart about this and just pass the
-value. But it still feels wrong to me.
+That makes sense, but if we also remove the initialized requirement,
+then I would prefer `ptr::write`.
 
-
-Best regards,
-Andreas Hindborg
-
-
+---
+Cheers,
+Benno
