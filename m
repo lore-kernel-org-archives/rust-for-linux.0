@@ -1,160 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32ACA226D1A;
-	Thu, 19 Jun 2025 19:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8996F242D9A;
+	Thu, 19 Jun 2025 19:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750361608; cv=none; b=IXffyJMAFdK+1hkJI7SVBwXmXNhA6EBGDOYqR8k3f1svuv651P9qj8Cjh1dAqgcDQwDKUdOsFNhbXhrvkUvw4qPgrC5OcybfXV3fhjOK73qK9ORsXA9KhdrNsWtIZ5EJJzO+0Oyjy7wAtkKoaKIBA7efkwmESSW6g0JbZyFNvJY=
+	t=1750362154; cv=none; b=MbND2NR2d3189FNqfcjCPV+wubjbVzaD6dsQmoEmFODKIQ5SG3v819XID/fQcleds3JkOCCTaSlEUCuX8loVtFVcS3E5U+w5flFxACk0pjSn8+4iKXHENw84u6CH9NIxRGHBelgKvf8IwAowE6HxP7c7Yy3kFFBERCZk7Jmfkrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750361608; c=relaxed/simple;
-	bh=K3ig0XW+sR2f7AhU8fu/SP67FM15tcTtEVt9oemecH0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=PbnnipJK2xNiIlIK1+SYusk0nhfXp4KpT38ciuc/p+TsgAGIYhqEd/Y4FN18lmvR2hLFbkf9XfIyfrC6kuBFxgO9/4GhcKU96dSWY0hzbZHdybTUATgf6kqj44wbDSOaGhlRlM4KMlnew23bkMHYDJ8L0srFMwEpPNX062jUm9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7fB0MeK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750362154; c=relaxed/simple;
+	bh=vgOeyXaNqwz1ZhXAS9CUkgzo55Wur+mbn5lnE6nfGzM=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=F5g+LUB921eppHKxgmP/a2SHzm5MW8jK8yHUF3Ed4fJc6DN2Oo+Kx9YAoB862Aub7bYdTbWAzf32i9RPl/glYtP08YHefB2l7qYc5JXCrlV3Ny/L8Em+7bJNlL0EbLDeJRNuklQ4eaNfV0lTstg5VXn7qH/DPvHEQCyY/IL8GdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CcaixWvl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7fB0MeK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49B2C4CEEA;
-	Thu, 19 Jun 2025 19:33:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CcaixWvl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A67C4CEEA;
+	Thu, 19 Jun 2025 19:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750361608;
-	bh=K3ig0XW+sR2f7AhU8fu/SP67FM15tcTtEVt9oemecH0=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=j7fB0MeKB++tqdj9jER/Rm7izIOEiRPVFOlvKQYBzqlIV9K5iuWMMYXcyP0c68rFk
-	 ubFhWNSlyPudZ34UiTN06SvJJURtNhIr6SPv3ekvBo3jCdvpxBSoj6FqWjx2FyTrFe
-	 LuVga4BIn27AxV5MMzyFkmx/NzSu8HGGpPhI7sjNnYaDNYTG/Duvvfio5+00ugstmT
-	 S1I9tVu5pkU1OQ1E9Y4mtE9LSTjkFMAKYe9C4LfWDzhD9My3nvIJkwwNlB5igQDoGW
-	 EDMu9gtYJFuMhPDMI19KnGGkfJb/iJA5t+RoRvhxHSjHRDCbPjPUeIgrnt67GaMAyl
-	 srATyCiKuHdMw==
+	s=k20201202; t=1750362154;
+	bh=vgOeyXaNqwz1ZhXAS9CUkgzo55Wur+mbn5lnE6nfGzM=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=CcaixWvlZxmeEHBXe/9lOYYnorSBRYL7qVZL65KIaorWPPBG2sFiyc/beM8k0zmBr
+	 879cRFsL0md0rBm6sOVvlhN2HovEJ7gFrIU4dUxxLdjIW5NoKDRZsVSyOMXHaR0wBK
+	 A+3MqxO6/Bx4F9ckOBa+rUU4IBr8qoOiToQ9Vz4+ij266Bck1lcrSj1yVuEJ+paNki
+	 vUrakMZKmUjMepXsPah9ttvPdMP8ehnmB8lLmFrEmeNMALGSyrooqJrlLv12fIgT+T
+	 gIsaP039ylcvu8oei6PHrsczknW7K5WaSrct04cTosKstPxAECp23NLufdAXMJU1FU
+	 J6jmBwv54ysbg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jun 2025 21:33:24 +0200
-Message-Id: <DAQREKHTS45A.98MH00SWH3PU@kernel.org>
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "slava@dubeyko.com" <slava@dubeyko.com>, "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [RFC] Should we consider to re-write HFS/HFS+ in Rust?
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Viacheslav Dubeyko" <Slava.Dubeyko@ibm.com>, "frank.li@vivo.com"
- <frank.li@vivo.com>, "glaubitz@physik.fu-berlin.de"
- <glaubitz@physik.fu-berlin.de>
-X-Mailer: aerc 0.20.1
-References: <d5ea8adb198eb6b6d2f6accaf044b543631f7a72.camel@ibm.com>
- <4fce1d92-4b49-413d-9ed1-c29eda0753fd@vivo.com>
- <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
-In-Reply-To: <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
+In-Reply-To: <20250618091442.29104-1-work@onurozkan.dev>
+References: <20250618091442.29104-1-work@onurozkan.dev>
+Subject: Re: [PATCH] rust: make `clk::Hertz` methods const
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: mturquette@baylibre.com, ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, Onur =?utf-8?q?=C3=96zkan?= <work@onurozkan.dev>
+To: Onur =?utf-8?q?=C3=96zkan?= <work@onurozkan.dev>, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Thu, 19 Jun 2025 12:42:33 -0700
+Message-ID: <175036215300.4372.6754075623158332740@lazor>
+User-Agent: alot/0.11
 
-Andreas Hindborg will most likely reply with some more info in the near
-future, but I'll drop some of my thoughts.
+Quoting Onur =C3=96zkan (2025-06-18 02:14:42)
+> Marks `Hertz` methods as `const` to make them available
+> for `const` contexts. This can be useful when defining
+> static/compile-time frequency parameters in drivers/subsystems.
+>=20
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> ---
 
-On Wed May 28, 2025 at 6:16 PM CEST, Viacheslav Dubeyko wrote:
-> On Wed, 2025-05-28 at 20:40 +0800, Yangtao Li wrote:
->> +cc rust-for-linux
->>=20
->> =E5=9C=A8 2025/5/28 07:39, Viacheslav Dubeyko =E5=86=99=E9=81=93:
->> > Hi Adrian, Yangtao,
->> >=20
->> > One idea crossed my mind recently. And this is about re-writing HFS/HF=
-S+ in
->> > Rust. It could be interesting direction but I am not sure how reasonab=
-le it
->> > could be. From one point of view, HFS/HFS+ are not critical subsystems=
- and we
->> > can afford some experiments. From another point of view, we have enoug=
-h issues
->> > in the HFS/HFS+ code and, maybe, re-working HFS/HFS+ can make the code=
- more
->> > stable.
->> >=20
->> > I don't think that it's a good idea to implement the complete re-writi=
-ng of the
->> > whole driver at once. However, we need a some unification and generali=
-zation of
->> > HFS/HFS+ code patterns in the form of re-usable code by both drivers. =
-This re-
->> > usable code can be represented as by C code as by Rust code. And we ca=
-n
->> > introduce this generalized code in the form of C and Rust at the same =
-time. So,
->> > we can re-write HFS/HFS+ code gradually step by step. My point here th=
-at we
->> > could have C code and Rust code for generalized functionality of HFS/H=
-FS+ and
->> > Kconfig would define which code will be compiled and used, finally.
->> >=20
->> > How do you feel about this? And can we afford such implementation effo=
-rts?
->>=20
->> It must be a crazy idea! Honestly, I'm a fan of new things.
->> If there is a clear path, I don't mind moving in that direction.
->>=20
->
-> Why don't try even some crazy way. :)
-
-There are different paths that can be taken. One of the easiest would be
-to introduce a rust reference driver [1] for HFS. The default config
-option would still be the C driver so it doesn't break users (& still
-allows all supported architectures), but it allows you to experiment
-using Rust. Eventually, you could remove the C driver when ggc_rs is
-mature enough or only keep the C one around for the obscure
-architectures.
-
-If you don't want to break the duplicate drivers rule, then I can expand
-a bit on the other options, but honestly, they aren't that great:
-
-There are some subsystems that go for a library approach: extract some
-self-contained piece of functionality and move it to Rust code and then
-call that from C. I personally don't really like this approach, as it
-makes it hard to separate the safety boundary, create proper
-abstractions & write idiomatic Rust code.
-
-[1]: https://rust-for-linux.com/rust-reference-drivers
-
->> It seems that downstream already has rust implementations of puzzle and=
-=20
->> ext2 file systems. If I understand correctly, there is currently a lack=
-=20
->> of support for vfs and various infrastructure.
->>=20
->
-> Yes, Rust implementation in kernel is slightly complicated topic. And I d=
-on't
-> suggest to implement the whole HFS/HFS+ driver at once. My idea is to sta=
-rt from
-> introduction of small Rust module that can implement some subset of HFS/H=
-FS+
-> functionality that can be called by C code. It could look like a library =
-that
-> HFS/HFS+ drivers can re-use. And we can have C and Rust "library" and peo=
-ple can
-> select what they would like to compile (C or Rust implementation).
-
-One good path forward using the reference driver would be to first
-create a read-only version. That was the plan that Wedson followed with
-ext2 (and IIRC also ext4? I might misremember). It apparently makes the
-initial implementation easier (I have no experience with filesystems)
-and thus works better as a PoC.
-
->> I'm not an expert on Rust, so it would be great if some Rust people=20
->> could share their opinions.
->>=20
->
-> I hope that Rust people would like the idea. :)
-
-I'm sure that several Rust folks would be interested in getting their
-hands dirty helping with writing abstractions and/or the driver itself.
-
-I personally am more on the Rust side of things, so I could help make
-the abstractions feel idiomatic and ergonomic.
-
-Feel free to ask any follow up questions. Hope this helps!
-
----
-Cheers,
-Benno
+Applied to clk-next
