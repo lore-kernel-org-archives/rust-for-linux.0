@@ -1,124 +1,132 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B18323C513
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 06:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3361A0703;
+	Thu, 19 Jun 2025 07:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750316237; cv=none; b=DBCr2kvW/aYIg/Z2dH/vxr1Hx2RuPCJCc3wwM1BIeetwn7ZhuLBcaZUkNwzLANtFPcasJKH//AxmDDhBD24nTCo5xGvtgw9mrRuCHFfMp5QxChc/mFp4K5FBzW73hmc1IdkZPaiUoProQ20Hrb2RdDmvau+T2mTOhs/cqG5V1ek=
+	t=1750316939; cv=none; b=KwsprjgroOvPzos4ivBSvYpjvI5srfnE+goGoROzowqxIiL9QrYt3DXrZo5GBB+6s0Qzm+wCCw7lJpmovFaEvJCc/OMpyN28vFSmIWyGIrbH8oGoYRh7J2COYrGIALIxmy22uXF8iHapdQp/lX321K8bKtts9ONxzpgKLuwtElE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750316237; c=relaxed/simple;
-	bh=ZpxBiFvNTV24CakR+gqDkbfEBqa7hfmTQr9mkfpyNqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cbV5yJCS8k5Wd1LjIizAIk6XS4RGz49eFnSpUO5ZO18OD7xEgow44ne2zPsKVIPppz+0nXkHYbYFylSoCgPpMceK3lRL/07l0GZGmizqdaT0oKq9MvLkt7ivQ8+I32Oq6T0S/RxiwBwYMtAY8gdmHDAL2aRiEi4y2iY1t/JU1SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a+iB4PHa; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1750316939; c=relaxed/simple;
+	bh=QmsUY/anKNokAAQtOvEPKFRQKmgHYtKr92ZvQyctNPE=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=TP3QJNxZno340wMA5tesX8oiyPPcIXwTpgY8F3u8hMTMv8uno/cViEnChyAz34cEvJ1bpQUmdgmJHEXVYXFwmKrOqhCs/pz0l+6I5YiULcVXYpr/gUlLRcTlE/6qxf0qQTcU8h7/5Bd0v8oeNqwRQC6NMah5RnQeZHe5B7RlgKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O+OycHpj; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a+iB4PHa"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-748da522e79so240777b3a.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Jun 2025 23:57:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O+OycHpj"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2350fc2591dso3646765ad.1;
+        Thu, 19 Jun 2025 00:08:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750316235; x=1750921035; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3wXDhrb5gMp7gMf4JCS4TNzFLsoHKLLOownJ0Qkmwik=;
-        b=a+iB4PHanVN5l90XLRyePv56zs7x0oatjruNiR0U97qR/EKHqQYihxWfQ5D9kX38AT
-         jX/dkTGQGp+0hOZLu/rl2FPD6DUTr3ztK7uSU07PPNeZAwi5FKVrGkJyS41q3bxQut/y
-         LFiB6CI5B3EM1YZIC2KiNuIRQZPCDy4jDBxHZBDPR/4NtuxQ7u6KKMVtzknTiuxAR1ts
-         8JupLugUd0VRRtt8m0g3CWS99Abc5VWD8o+9Gympq6XKbsn2/F/4ywi9r7OCawo8LBDh
-         ZZdTF2gX7nnJw2WzmtaDVdFcdqHqwqyZALgQXHb5EZj69Bm/2LF02BLNL8bobUXJ2KpZ
-         NI0w==
+        d=gmail.com; s=20230601; t=1750316937; x=1750921737; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QmsUY/anKNokAAQtOvEPKFRQKmgHYtKr92ZvQyctNPE=;
+        b=O+OycHpjEx++kwioXd6KFih0a6uWFGmVwsZlLhSNVZGszzJ7VqRLc+6vEQRiQ1SQk6
+         D320bRP6QhC2r+buEEf+vmNp51LzXyFICbz/cvT7XPgeRKhp0s81G39Fbmm/T5VYml3K
+         gP2JONF+fWpcby3DGEaEStU7dIqWW2nypPb/3CWSd9qnMUB/Uoivw3Y5rFhBdMv6ccup
+         0z37fZiLsh8LTfyI0Stsl8kFR7eCDbauxB8sboynuzHNp3A9rNei/M7DWqtraDOLZFqc
+         DTrcD7L3xeii2UEzZ+88NtZSjLTU5HJDd7YcR5ge6/vFJ2s61vvTwLVV8BA5VBjmmuFi
+         tRLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750316235; x=1750921035;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3wXDhrb5gMp7gMf4JCS4TNzFLsoHKLLOownJ0Qkmwik=;
-        b=njqW6W6Eg3nVRbt68hHkhpdrYWwVdoIXswnHp8Pf7d2mR1/gV4WVMEVkCBhgz/SMEd
-         sIuUi8ITdFjFMs/hvAKd7pKoyU0psTBpmK2iz8luV4Vj204F1YF12t7DF9Ccjb5U1lBn
-         602V8eHtNw4RrBc/CII3veexuW9BkiDafFVXuEB2RY0esN5JuZNzJDvd9+P9ZnCPcRqR
-         qFwK0YGileokWr1ulAuu6LID4Reocf4yM6H/9g+uvB0Qvim4iKtsRMVBMcxHV5IT0gZH
-         WN9GNb5hZOk1CevLNyjuupOOyLLYYw6DJJNMZHiZyYHUAmKiJXwbqPdfu79FH07b9iKR
-         ewxg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjOA4TL5FgO4BKmrTfWoJpixRjZSrzjGNPPMGWdz+yGcxwm66Hv14pPMyDuWv6Nf136XHKa8/uUUHekkvwOQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU67hkXyhDMlw3ghl7wdstUHPSLHy3hXPKLOo4+GKWl8kgNCnj
-	Hei1afW0SCgEPbx+DEpK3UBa4lzb+VMTIMzP8ZlRYt1HYkgs3l80Gaycg3zU+kg1lDQ=
-X-Gm-Gg: ASbGncuiK3N2ItQOk/N4nUzKpwYIzyVzm0Gg0ogUJtwhl8r3FORZkR671216nDCvP+3
-	cIiGInQ4M1N6RXvHTI+H+tdR5WB55c4xgR7gdjZrzSwyHW9XgH5pnTAOxb0BknyFGSluEDz23vr
-	piyrP0yVPjn+sswPJkIi90Lpa4hQKGrW8dSynrighRf+rbqmNVzTyU1WGIKNdO48eIqMOkWN2h6
-	WpBfTjL7WNaUXOwujKoL/1gI+J5qV5hdFkrOJBdIuUfABmZvovVW9KE15wqswQuPeCZf9tJmg5d
-	vvM+kdyEI/o9af3cKq8AdwHx/G3eqLCwgHzeIYcQkqGf/OoPTrj2ikXcLL65ADs=
-X-Google-Smtp-Source: AGHT+IGlUdbrNrLWErrn0rW+WYn9rsrB56pXxkDz0+uZxdgPmgRSJkVrVTE8T9ZZyrn/M1TvSJEAvw==
-X-Received: by 2002:a05:6a00:3c89:b0:736:450c:fa54 with SMTP id d2e1a72fcca58-7489cf8b19amr26442033b3a.6.1750316235484;
-        Wed, 18 Jun 2025 23:57:15 -0700 (PDT)
-Received: from localhost ([122.172.81.72])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2fe163a199sm10414785a12.5.2025.06.18.23.57.14
+        d=1e100.net; s=20230601; t=1750316937; x=1750921737;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QmsUY/anKNokAAQtOvEPKFRQKmgHYtKr92ZvQyctNPE=;
+        b=azUFIvf3umvYZNdQjtGC86r414SvqtOwh4xnM8Px/iFAAPDUn9EI0BmWzc3Joallny
+         MQYi+oprbuTJiRNeKfETv78HbLR3lzQZeTaH2vppmwGD683vM41Q9nkcRcYZ0IZFElOZ
+         mmeV33CqVsr16r9Tq4AMjq+nqvVs3qbsCtTw3vDysE1MxE+gJ2txbTHxqAdM92y9T0sx
+         4B58/UdgkCgplB0pTb+ig2Vz5poWa8/I11m5U3Tp7/J7bvk7U0a3wJnm5vOHtqEqo7Cg
+         EzAX9LCLtstuJUt0F0DBWWYJwxYi5rzwNQdECIuGNcpl1bMhPNHDfZ9toQ7mFyJRogQ2
+         aRKw==
+X-Forwarded-Encrypted: i=1; AJvYcCWDkusuoY/A5abNVF2rxftaPoIgA3Lpm9+sGqo2IuMQTVeyQTaQuWLUnEEe5V3EtV/rsFY3mzNPmoL7P7g=@vger.kernel.org, AJvYcCWyXNeKFzg+pKSMsO3++REBXwk8FT910IXTx8zKM7bF8sb4mo0js59KIKU2Hv7+8PfhWJuxzRFxSm3WweBLO4A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0SPTfCK6pElNBBoKdwCHKP6cu9tBVfy0FBtw8Ad4fO3BuQ0eH
+	fh6wQiXX2gbQAmDKm3V8WMjvm6TvCcxwnDv7+gdDIG/lv2P5KUjD4byj
+X-Gm-Gg: ASbGncsOY2j5dZsYGVy3JqEBvwGFp5gTK9c3yOwW4p7cym5pxMetP3M+0gNDIDwOuwC
+	2FFzdPfeI/H3lU2lIvAJ0EN3Bo5xh00o85IuhnTCYtsVjzzoET7AKPd2eM6qDXFMlO6rS4GxlBK
+	F1MbZOrQ68I5hw714iFw+A5CwOUCtPaD7jH1QQeWo1OgdFvYQEIa5etNo1Fgwjoj0FdnyXwpeeS
+	Srq+/yU4vTbN1jV0hgnBoV5iOtP+A1x7CWSGJo8R0igvsq+rzvCjlIBWf7Kqu4J2bqZF6UESoKI
+	zd6+p/bvxTzYFZRy6yMRhO8z+d96WI0XMyRKwotO+SeBNFg/CZ615y/DfFl86tz8wCCWpneCwIj
+	p6vJnxaHQMG51bmOJg+O8+agvp76wJT5NMojbh7+i
+X-Google-Smtp-Source: AGHT+IHPrO5NyJZiMwSFwErreeVoUXpzLKRBxklvoKfDbKH3cvQhU/vDIdIrs9bKD7fLc0CC6TRQzw==
+X-Received: by 2002:a17:902:e84b:b0:235:f091:11e5 with SMTP id d9443c01a7336-237cbf15369mr44395505ad.10.1750316937216;
+        Thu, 19 Jun 2025 00:08:57 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365deaa9f7sm112623365ad.168.2025.06.19.00.08.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Jun 2025 23:57:14 -0700 (PDT)
-Date: Thu, 19 Jun 2025 12:27:13 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Abhinav Ananthu <abhinav.ogl@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: cpufreq: Ensure C ABI compatibility in all
- unsafe
-Message-ID: <20250619065713.hm5ye2uhikaei2xo@vireshk-i7>
-References: <20250613101815.18092-1-abhinav.ogl@gmail.com>
+        Thu, 19 Jun 2025 00:08:56 -0700 (PDT)
+Date: Thu, 19 Jun 2025 16:08:44 +0900 (JST)
+Message-Id: <20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com, aliceryhl@google.com
+Cc: fujita.tomonori@gmail.com, a.hindborg@kernel.org,
+ alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org,
+ frederic@kernel.org, gary@garyguo.net, jstultz@google.com,
+ linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com,
+ rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de,
+ tmgross@umich.edu
+Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods
+ as_micros_ceil and as_millis
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com>
+References: <CANiq72kSfHTPeRQjhHKhdw8zuozvNy50CJjTuEbUnW_3j9x8tw@mail.gmail.com>
+	<CAH5fLgggDKUwmU3oCTMS1dQGzA5Whp2fnXoLmbGmNF1W89Ar_A@mail.gmail.com>
+	<CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250613101815.18092-1-abhinav.ogl@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On 13-06-25, 15:48, Abhinav Ananthu wrote:
-> Update all `unsafe extern "C"` callback functions in the cpufreq module to
-> use `kernel::ffi` types (`c_int`, `c_uint`, etc.) instead of Rust-native
-> types like `i32`, `u32`, or `usize`.
-> 
-> This change ensures that all Rust callbacks have signatures that are
-> ABI-compatible with their corresponding C counterparts, which is critical
-> for FFI correctness and safety.
-> 
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1170
-> Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
-> ---
->  rust/kernel/cpufreq.rs | 26 +++++++++++++-------------
->  1 file changed, 13 insertions(+), 13 deletions(-)
-> 
-> diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-> index 11b03e9d7e89..481a6d2dc362 100644
-> --- a/rust/kernel/cpufreq.rs
-> +++ b/rust/kernel/cpufreq.rs
-> @@ -1207,8 +1207,8 @@ impl<T: Driver> Registration<T> {
->      /// - The pointer arguments must be valid pointers.
->      unsafe extern "C" fn target_callback(
->          ptr: *mut bindings::cpufreq_policy,
-> -        target_freq: u32,
-> -        relation: u32,
-> +        target_freq: c_uint,
-> +        relation: c_uint,
-
-I think the one in prelude points to core::ffi::* instead, while we
-want to use kernel::ffi::* ?
-
-Miguel ?
-
-Also why does prelude use ::ffi::* instead of kernel::ffi::* ? I was always a
-bit confused about it.
-
--- 
-viresh
+T24gV2VkLCAxOCBKdW4gMjAyNSAxNzo0NzoyNyArMDIwMA0KTWlndWVsIE9qZWRhIDxtaWd1ZWwu
+b2plZGEuc2FuZG9uaXNAZ21haWwuY29tPiB3cm90ZToNCg0KPiBPbiBXZWQsIEp1biAxOCwgMjAy
+NSBhdCAzOjE34oCvUE0gQWxpY2UgUnlobCA8YWxpY2VyeWhsQGdvb2dsZS5jb20+IHdyb3RlOg0K
+Pj4NCj4+IFRoZXJlIGFyZSBhbHNvIG1ldGhvZHMgc3VjaCBhcyBEdXJhdGlvbjo6YXNfbWlsbGlz
+KCkuIFllcywgdGhvc2UgdGFrZQ0KPj4gJnNlbGYgYnV0ICZzZWxmIGlzIGVxdWl2YWxlbnQgdG8g
+c2VsZiBmb3IgQ29weSB0eXBlcywgc28gdGhlcmUgaXMgbm8NCj4+IGRpZmZlcmVuY2UuIEFuZCBl
+dmVuIGlmIHdlIGRpZCB0cmVhdCB0aGVtIGRpZmZlcmVudGx5LA0KPj4gRHVyYXRpb246OmFzX21p
+bGxpcygpIGlzIGFjdHVhbGx5IGJvcnJvd2VkLT5vd25lZCBhcyB0aGUgcmV0dXJuIHR5cGUNCj4+
+IGlzIG5vdCBhIHJlZmVyZW5jZSwgc28gLi4uDQo+IA0KPiBJbiBtb3N0IGNhc2VzIGl0IG1heSBu
+b3QgbWF0dGVyLCBidXQgZXZlbiBpZiB0YWtpbmcgZWl0aGVyIHdhcyBleGFjdGx5DQo+IHRoZSBz
+YW1lLCB0aGUgcG9pbnQgb2YgdGhlIGRpc2N1c3Npb24ocykgd2FzIHdoYXQgaXMgbW9yZSBpZGlv
+bWF0aWMsDQo+IGkuZS4gaG93IHRvIHNwZWxsIHRob3NlIHNpZ25hdHVyZXMuDQo+IA0KPiBJIHVu
+ZGVyc3RhbmQgeW91IGFyZSBzYXlpbmcgdGhhdCBgRHVyYXRpb246OmFzX21pbGxpcygpYCBpcyBh
+bHJlYWR5IGENCj4gc3RhYmxlIGV4YW1wbGUgZnJvbSB0aGUgc3RhbmRhcmQgbGlicmFyeSBvZiBz
+b21ldGhpbmcgdGhhdCBpcyBub3QNCj4gYm9ycm93ZWQgLT4gYm9ycm93ZWQsIGFuZCB0aHVzIHRo
+ZSBndWlkZWxpbmVzIHNob3VsZCBiZSB1bmRlcnN0b29kIGFzDQo+IGltcGx5aW5nIGl0IGlzIGZp
+bmUgZWl0aGVyIHdheS4gSXQgaXMgc3RpbGwgY29uZnVzaW5nLCBhcyBzaG93biBieQ0KPiB0aGVz
+ZSByZXBlYXRlZCBkaXNjdXNzaW9ucywgYW5kIG9uIHRoZSBwYXJhbWV0ZXIncyBzaWRlIG9mIHRo
+aW5ncywNCj4gdGhleSBzdGlsbCBzZWVtIHRvIHByZWZlciBgJnNlbGZgLCBpbmNsdWRpbmcgaW4g
+dGhlIGVxdWl2YWxlbnQgbWV0aG9kcw0KPiBvZiB0aGlzIHBhdGNoLg0KPiANCj4gUGVyc29uYWxs
+eSwgSSB3b3VsZCB1c2UgYHNlbGZgLCBhbmQgY2xhcmlmeSB0aGUgZ3VpZGVsaW5lcy4NCg0KU28g
+d291bGQgdGhlIGZ1bmN0aW9uIGJlIGRlZmluZWQgbGlrZSB0aGlzPw0KDQpmbiBhc19uYW5vcyhz
+ZWxmKSAtPiBpNjQ7DQoNCklmIHRoYXQncyB0aGUgY2FzZSwgdGhlbiB3ZSd2ZSBjb21lIGZ1bGwg
+Y2lyY2xlIGJhY2sgdG8gdGhlIG9yaWdpbmFsDQpwcm9ibGVtOyBDbGlwcHkgd2FybnMgYWdhaW5z
+dCB1c2luZyBhc18qIG5hbWVzIGZvciB0cmFpdCBtZXRob2RzIHRoYXQNCnRha2Ugc2VsZiBhcyBm
+b2xsb3dzOg0KDQp3YXJuaW5nOiBtZXRob2RzIGNhbGxlZCBgYXNfKmAgdXN1YWxseSB0YWtlIGBz
+ZWxmYCBieSByZWZlcmVuY2Ugb3IgYHNlbGZgIGJ5IG11dGFibGUgcmVmZXJlbmNlDQogICAtLT4g
+L2hvbWUvZnVqaXRhL2dpdC9saW51eC1ydXN0L3J1c3Qva2VybmVsL3RpbWUvaHJ0aW1lci5yczo0
+MzA6MTcNCiAgICB8DQo0MzAgfCAgICAgZm4gYXNfbmFub3Moc2VsZikgLT4gaTY0Ow0KICAgIHwg
+ICAgICAgICAgICAgICAgIF5eXl4NCiAgICB8DQogICAgPSBoZWxwOiBjb25zaWRlciBjaG9vc2lu
+ZyBhIGxlc3MgYW1iaWd1b3VzIG5hbWUNCiAgICA9IGhlbHA6IGZvciBmdXJ0aGVyIGluZm9ybWF0
+aW9uIHZpc2l0IGh0dHBzOi8vcnVzdC1sYW5nLmdpdGh1Yi5pby9ydXN0LWNsaXBweS9tYXN0ZXIv
+aW5kZXguaHRtbCN3cm9uZ19zZWxmX2NvbnZlbnRpb24NCiAgICA9IG5vdGU6IGAtVyBjbGlwcHk6
+Ondyb25nLXNlbGYtY29udmVudGlvbmAgaW1wbGllZCBieSBgLVcgY2xpcHB5OjphbGxgDQogICAg
+PSBoZWxwOiB0byBvdmVycmlkZSBgLVcgY2xpcHB5OjphbGxgIGFkZCBgI1thbGxvdyhjbGlwcHk6
+Ondyb25nX3NlbGZfY29udmVudGlvbildYA0KDQpodHRwczovL2xvcmUua2VybmVsLm9yZy9ydXN0
+LWZvci1saW51eC8yMDI1MDYxMDEzMjgyMy4zNDU3MjYzLTItZnVqaXRhLnRvbW9ub3JpQGdtYWls
+LmNvbS8NCg0KDQpIclRpbWVyRXhwaXJlcyB0cmFpdCBuZWVkcyBhc19uYW5vcygpIG1ldGhvZCBh
+bmQgSW5zdGFudCBhbmQgRGVsdGENCm5lZWQgdG8gaW1wbGVtZW50IEhyVGltZXJFeHBpcmVzIHRy
+YWl0Lg0KDQpXZSBuZWVkIGEgY29uc2lzdGVudCBkZWZpbml0aW9uIG9mIGFzX25hbm9zKCkgYWNy
+b3NzIHRoZQ0KSHJUaW1lckV4cGlyZXMgdHJhaXQsIGFuZCB0aGUgSW5zdGFudCBhbmQgRGVsdGEg
+c3RydWN0dXJlcy4NCg0KQW5kIGl0IHdvdWxkIGJlIGJldHRlciBpZiB0aGUgZGVmaW5pdGlvbiBv
+ZiBhc19uYW5vcyB3ZXJlIGNvbnNpc3RlbnQNCndpdGggdGhlIG90aGVyIGFzXyogbWV0aG9kcy4N
+Cg0KSXQgbG9va3MgbGlrZSB0aGUgY29udmVyc2lvbiBmcm9tIERlbHRhIHRvIGk2NCBkb2VzbuKA
+mXQgcXVpdGUgZml0IGFueQ0Kb2YgdGhlIGNhdGVnb3JpZXMgaW4gdGhlIEFQSSBndWlkZWxpbmVz
+LiBIb3cgc2hvdWxkIGl0IGJlIGRlZmluZWQ/DQoNCg==
