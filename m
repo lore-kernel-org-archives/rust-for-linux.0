@@ -1,213 +1,299 @@
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2061.outbound.protection.outlook.com [40.107.212.61])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B15253939;
-	Thu, 19 Jun 2025 13:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5112737E4;
+	Thu, 19 Jun 2025 13:50:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750340907; cv=fail; b=TyRYo3iMXgF+xou/aNAhtp1TcWbf4r85LsqsBImt1cOu8DbuunGlVu8jKgWZFkRnLApICNMqAA+S4ZPkom6ibVqCsnuvZRC0r+osADO8YdImURCNMJAlG0YDM4aNXKu6P4pKBAQrPSQLrtipi7AoiSEWeECl0GDmjhOAyiGjc4Q=
+	t=1750341045; cv=pass; b=Rj+r646nFKrqzZhTuXmCIkGRk2BSEbAKr3TD8b3/HlxMmHzPzkPd3U9odvMCUqjXrZxUBp1Cx8UEFVmhBQc1w/5N+5+xbDmOLP0cGt10PFmAOtlup6/J6p8U0E1K2711236JfBdRlB7ri3qUcbOumz7pnplp1mP5ZF8PxiltT4Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750340907; c=relaxed/simple;
-	bh=a0ALJqFaufmxH95x/VhoNpl3MV5J7wQRDCwEZxIyWRE=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=qKF0fhOciUXyGvXcNR0YGdJ6K/JkJfhAeB5NablQ6KkoZwxdQIqKiLCoU9Gh8ZBZXXExEXEmUWrSZb+wDuo/xFz70NdLeQxop5QQIsJ3F6B2HwZ1vfemIO3tOg1giB9hmi1Ex5/kJ0Limyt+fpnqh8IdOnAlXTG1TjYe6NJs7os=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Qomgvr0i; arc=fail smtp.client-ip=40.107.212.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1750341045; c=relaxed/simple;
+	bh=WuziWb/b07UjG6OsaVS8BVtMh4mbA2DcoD8lv11pA18=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=GuUwWrnPz9ZkgtH9GnKGN0xSbdb3UPJwVK5gs8c5X2nk6UluQz+gmOLj7XQp165Gu0Snlu0PB2ejWQqWOgqZRb493iz7F3AhcXaHdNS7/rmXSVkbF5bNH3LwwUSD56iQBbgzgdnuU6SIC+SONDsxWodHF1L6ZLyAyyPF1agq7KQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZJFOMio7; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Qomgvr0i"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kfiS9Qn1WRSfCImyVfk2LbyDf4MsI6ObViPnpixjm78UBP6w02Z2l7llUxkp4JkRMK2BQHsMFQ7sZWctSFSfDR1z9Vy8qdIw/GdxvoZ3HWv8pPkcxNO56PJLxorNWnD74lJDkhFIhbvJRpXjJG53Pztqq3BZI17R4IjcIyXG3Rb5SBKzQcXwwTmpjfpmMEj4V2UowNT3YR7poy3m8pSr81uwcinkqvdwYDyRil+krkv9gwthbta9W0kTXZVdZYVAZ/T3fx0oFXPSiNPL7CRSBzy/2fOclTONXl0rpZY/tf+S6cS07xtVpOhAFe/vSR3OYr/2k6YnxkgcagM2qIRiBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a0ALJqFaufmxH95x/VhoNpl3MV5J7wQRDCwEZxIyWRE=;
- b=gbAm+j1gqI9758KzxQH9qOxT/PBBf9L4oB22qv9d7KcMO5pNfDfZt0ZY3lgm0zwB+8FURArUVLqY7AYa+7ooQXbHmRENBB67dHCt9bOppQ9NCMZYUO3P7XIA7pTWkj/uHYEfv+egYNF4ev580Lh8GqC1UAPVOmfWBfDDXjZCvW/hgPbdblQn1rrObyNKJY2+HS/mP8iXJYLBeOqgv8QtboG/rsdbqETZW/KGu8ipr0Zy3IL6DaKqT7qkc4sQxgnE0wVkIXK6c/zrA1lvgL87upRg3a9NrSu1xhekzw3sfmtGlC6pnwdF9kLCVAuHwYVQyockQONEx6oc1eAOAReHEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a0ALJqFaufmxH95x/VhoNpl3MV5J7wQRDCwEZxIyWRE=;
- b=Qomgvr0ixrl1/Zs8jl5IfGo4XqYwOEHlOzcZ6HP6VRRMvOZFvDUXNIhsLbTmITWMqqLN6l5Ve3/WaIrl0/YoMEwocw+rQL2VwAsXYvhFUmD5WxGW9dFioNZqhku9x978/g0Y1WIxL0p2/c7rIY4nsgdR84OIAL+2B2XZNbI76bqXJQkflvsGQPfRo4uAQolm878O0hh7HfwUzX0WQr08ixJMlwFCqYc9iY+ZQVyWv6UuKcJOZaW0avjBSnkKjyxzQ+uqda4uv/GygMWPvafpSIwiggcbI2XwpeNDJyybxzT8SJxInDTeKoMXS96WpeV0buiSZdADq3SdCMfSy8RRAA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ0PR12MB6783.namprd12.prod.outlook.com (2603:10b6:a03:44e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Thu, 19 Jun
- 2025 13:48:21 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8857.019; Thu, 19 Jun 2025
- 13:48:21 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jun 2025 22:48:18 +0900
-Message-Id: <DAQK2C3GQ5MB.1XV256W5V0ZTY@nvidia.com>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "mturquette@baylibre.com" <mturquette@baylibre.com>, "sboyd@kernel.org"
- <sboyd@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
- "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, "boqun.feng@gmail.com"
- <boqun.feng@gmail.com>, "gary@garyguo.net" <gary@garyguo.net>,
- "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, "lossin@kernel.org"
- <lossin@kernel.org>, "a.hindborg@kernel.org" <a.hindborg@kernel.org>,
- "aliceryhl@google.com" <aliceryhl@google.com>, "tmgross@umich.edu"
- <tmgross@umich.edu>, "dakr@kernel.org" <dakr@kernel.org>
-Subject: Re: [PATCH] Various improvements on clock abstractions
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Onur" <work@onurozkan.dev>, "Viresh Kumar" <viresh.kumar@linaro.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250616200103.24245-1-work@onurozkan.dev>
- <CANiq72n0v7jinSyO85vorYRFB=y5NH5roW4xLRjwZz+DFJ5QSQ@mail.gmail.com>
- <42151750134012@mail.yandex.com>
- <CANiq72n3+qzDCCf0ct-5gtQHKXDbT2rr1fgxVQP4qBW69JmmhA@mail.gmail.com>
- <20250619064534.nipg4rs2gwepxqw2@vireshk-i7>
- <20250619130551.388da2a2@nimda>
-In-Reply-To: <20250619130551.388da2a2@nimda>
-X-ClientProxiedBy: TY2PR0101CA0008.apcprd01.prod.exchangelabs.com
- (2603:1096:404:92::20) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZJFOMio7"
+ARC-Seal: i=1; a=rsa-sha256; t=1750340994; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Xg4E1OYxArkD3TA1ZtARJFjUqeqTKd93T1Gb8XIrs6l9YDUw6pIyxDn4MTmXLAejSPJgYyUlSI7leHyQ3mJfnx3ktfngXuUFCz6k6UuIFRqc73I1WuXe369HBwIB6AqUIEedQl9l1ACKWQKcf/Aof9CC37G/IUq2EDawe8hgX0o=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750340994; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=HXoig7Q+/oEFtN4SjomCo2nMhWyT3fJq8sjjjfihsNI=; 
+	b=RA09koLz/duxiHOQ0bw1Qj5jhhBDus7rzm2Abchy6wWSgiJg/fCSzRT5Eaak0I2Srcyy0VXxDIwtw9vTS4qaejnAP79LeKvh2gTBKTOnyaeAV69tPABiEhrBCY96GaaZbj7q1WO/22A93dAn/8ZzavZszVsJEmNhLUkyyOP1/i8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750340993;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=HXoig7Q+/oEFtN4SjomCo2nMhWyT3fJq8sjjjfihsNI=;
+	b=ZJFOMio78GQ7fSVmxwSZmU49YIRL5zTfMV119aCb6oNzx1bsjhE7xZlPoBup++02
+	ZwRTz2KV7MswUOatZ1YGja/p41Ol9MyhFqZxYnGFx/GFVNgO7Jul2a+gZ8sZbSZVI7K
+	IDpHbUV3sE+114KbCGKPJE9KPfFmHo3Jn/r6qV2M=
+Received: by mx.zohomail.com with SMTPS id 1750340992098417.30853778923847;
+	Thu, 19 Jun 2025 06:49:52 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB6783:EE_
-X-MS-Office365-Filtering-Correlation-Id: 287a78ef-b91c-4cea-4f9d-08ddaf37f445
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RXRlMFJ1dzF4K283MUlWOVhOYndkdk54cW1jaFVSUEl3dnJGclJxcms5MnNl?=
- =?utf-8?B?SkNCZ0N4V1JyaXZtTWRwUHhEb3dLOUVBWHU3S25oMllqbXlZTy9kQlRqUmln?=
- =?utf-8?B?QnJYUk51c0N4WkxObHJwdGJkVjdkZ0JtMHFaaXZmeGlzQjIxZG8xMEhGV3VI?=
- =?utf-8?B?aDllNC9ybXJPSmxlREpwWmVTTUxmNmdmQ2djbFZqMWM3T0VxZGtWYndNTXdu?=
- =?utf-8?B?SXhYc3Jjb0pIQWNUSURpNno4ekFscUtwTkdXZFl1V0w1V2pPb3MvZUl0cU40?=
- =?utf-8?B?aFd5bjQ5SWh2VEM4TWhXSHBzcmp0OU8weS96dVRUaWJNckptOGlPYjRHcHVI?=
- =?utf-8?B?TmlFN3BkUHhJS252OGlKaWtiLzI2UkxGUklsSmxHclRhTmZxdFJmZHhjNFpJ?=
- =?utf-8?B?dWFrVzJScGtBNlhCRXFMR2FjdFRQNElQOGRDSnIwRTk3MEtVNG0za1JCaDFB?=
- =?utf-8?B?blhMc1J6MndYdWYvb3hCS3lIYzFyTUJxSXBPSndJeWd2TGw1bHhPZGR5WGlQ?=
- =?utf-8?B?RVRwSEdIZDQ2TzhMTlZtK3dSdDU0bXVQUkJvRTdVQVl5UG1GZzU3cmJ2czNo?=
- =?utf-8?B?T1ZKRmJOa0tCWUx0aWJSY05xR21OTVdxNjJyQ1dXeXVnMG0yWWJFZjhkVDVl?=
- =?utf-8?B?ck1WUVlBSUtXRmgrdkM2NjIycUpDRENSVDVhdTRGdmJpbjhNVWM1d1ZlSm9D?=
- =?utf-8?B?VFR5V3grMFR6SWZvVmNEVmkvNlFrL1hkY29zbWxablRBVG5PbkRMeGg0NEpo?=
- =?utf-8?B?aTdEMFpsMTAxZ1Z5NFFkSk9waHg5bGRPcHlKM2FYUjZEaFBWa0JuRVZNemw0?=
- =?utf-8?B?Z2J0UTBGMlZGNFkxWGgyL0EzL1d2L0w4RlJFNUtlckVwSTc4YU1aTzdxaDY4?=
- =?utf-8?B?cUdQeE5xSzVnc0FqY1BZcHdDeE40bzUwMFVtN2pRWGNaYUtMMUVmaUJYamFt?=
- =?utf-8?B?WjdIdFNrODFRV2twRGlmcU1heENqSFJ4Zmw0Q3ZVNFhYUkphc0QzcldFbkgx?=
- =?utf-8?B?Vnp5eGR5N29JbEJmeEtOaW1mdUtNL1htTlE2d0tMdW4zMzV0SlJkckRSdWpQ?=
- =?utf-8?B?KzFTRkEreStVakhTbFl6MUlNVzlNMnlWbVpxS04xenVaNHdwQ2RyVmFHa0s3?=
- =?utf-8?B?OE9uSVRRSHBHUWdZOHlSOWVpd0duaDNTdUtmY2VTSlArSG5UT21aVVdkcXkw?=
- =?utf-8?B?YXFDdEwyV1BtakFvS2FHSXdYYmFEQWxjTFpqMHVQWHlrSkVJUExCMWhONEht?=
- =?utf-8?B?TkpwdTh6WFlZc1dGL1VnZVRBS1luN0xZSXBVZWc0cE9rdHg4SFNHWnl6cllG?=
- =?utf-8?B?NjJIWG9Tdm9YM29QQlAydWd2VmZYV09JQ3BpRURaVUFueFlNcTMyWEtpM2t3?=
- =?utf-8?B?M3cyWllwZjZiakZJanB4RzhMQ0RNdUxrRUgvb0U2bzAvcGhRQ3lIYW5UWVhl?=
- =?utf-8?B?MHJjSFdvZmR1d1ZESGNCRHZjSmMvZmRMTzJSYk5HSmxqdGNrbWZRaXo0bWZB?=
- =?utf-8?B?Q0lLdXg4RW03Z3BqY1UwVGdDdlJQOWlBWFNjREZrdnVNNUdYN0I5TzVMSWVM?=
- =?utf-8?B?WUU5bXMvSkQ3M3dYSHpNd1A5UE1XTEF3WVd6ZnAvUTBIT3NhWDc3UCs4RHdG?=
- =?utf-8?B?RGV6UE14dEV3dkdqNzVJYlFCNW9Ha2duOWdVUDBiSDVma2ZFT01abEFJRGVq?=
- =?utf-8?B?NEtrcEZSZlRYclJ3SWJubDIwa0xtS3I0WGVXMjRYcU4vYU1XQmpDQzI4T3NT?=
- =?utf-8?B?WUQyck8zYmc4YnlRMkU1VVhBUVVvZjRHMHN5d1ZMdW11M0MzNndoOXVxNTlw?=
- =?utf-8?B?eXRNYWtYNmV6K2pFSyswak55dCtNVVZ0VHRFbVo2aFdsS1BiOWl3bXZVWTRH?=
- =?utf-8?B?N3krcWtnQUh1OTUxV1lVQmFYMGEyKzVxSWkydHgyRDFGTlMySVdJWkE1REVV?=
- =?utf-8?Q?4qMeRKAOKqo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RHBaNjdmNXJvR3FORWlKRyt2V1YxWUlqSER5VWIvWlB5TWNkYmhieEI3SGJC?=
- =?utf-8?B?czFmakFVREpKdVJnejZYcFlLL3RsNUxkendobVYvUk5ocEJpQ0xXS2FkT2hE?=
- =?utf-8?B?all0R3RMKzdFNzlKM0swUWIyYmVxc0pQMGZ3UGlWMjlPWVFHdW1xbTV5bkRS?=
- =?utf-8?B?RUNENDJGMG56SWtKcXZDYjhISEh2QUR1VHN5TnEvR3dnMUVHL2l0em1XSDhu?=
- =?utf-8?B?bDY2VEZ2QllvdnVURm5vK2pUeTNQNkxmSHVBQ3FCM0I5dWFnZnBqOHo1SW4r?=
- =?utf-8?B?U0hIVmpmdm1WOHIvMjBKOWhUMVNOaFg2ZjFWUi9WNVcrK1N6dFUraEt1dU1B?=
- =?utf-8?B?T2pNL3A2dTR1QmZJZW1YaG55Q0VGUTRlR2FIcWdsU3p4MXE1S1Bia1E5RXFF?=
- =?utf-8?B?eWhNampzZzJEUUhHSU1YdGZNYmlNZzM0RXRnZ1lkYW56NXY1V1NlZ0xWWW83?=
- =?utf-8?B?M3JMSjlNSjNQYmVPWk1OUFNyTTFNQjlJTnFlTmZGTkJnc3A2MGR4SGdIZkUv?=
- =?utf-8?B?UEFGdHpIUW0rMDhkWGxzT1BLNU5IOFB4YVZPSlFsc1JWYkJnR2pTL3hvSVc5?=
- =?utf-8?B?NlBlNXFiTkw0UWlMdkliaENWZzdWVXFKcTAxY3lUME5xaDJoUVBZaFY2V3pN?=
- =?utf-8?B?SDhyMFZodU8xRVdlbzRWd0I4em9aRXMzK3pWbnh0UzNkTGV6T05VdlVXUFhu?=
- =?utf-8?B?a3lNSmxPV1Y2RGU5UDNzVGhRYW1NSDVSaEc5Nmh2WTFEUS82bWVQeEd6N3Zw?=
- =?utf-8?B?WEptTXpZK3F1WE96M1d2ZnpwTHVvR1JxNVNLZXdVV2xJUE56VjB2aG5kSGV1?=
- =?utf-8?B?NFovSTdFTlZ5Y2c2OTlBS1ZqU3hIL2hIamN6aTlBckRBazZoSGRGV2cxSGs1?=
- =?utf-8?B?dU1hNVNOOVFKb3pSYkUwbjliWk5NNE9zdXlhV2hlNkxLSlEyYnlvVmNmTUNJ?=
- =?utf-8?B?WU1XMytQYVNCZlZ2NklwcmE4bVoveHo3Z1A4Z2FlS1NPb3dZMWtPYnE1bTdC?=
- =?utf-8?B?N2hRQUZSSVptYzlnYVRnclBINmlqcVduUUdhMDlxL1krOXd6dDY0bXZMbmxI?=
- =?utf-8?B?clZ1SVJ3OVJvSEhKT2luTUxKejBpZzZXOERiR25ORElKZUJVMmtJK1VxaG1Y?=
- =?utf-8?B?VU01MVJtWm8rQkJSVUZLVDlBMUV2NWVSUFRDMk1mZGlDL0tBVWJReEo0K1NN?=
- =?utf-8?B?Mnl2cHlJMWV3THZSb0hwSUtnYjhPTW15enYwS0I1UXVGYm4zZlFpbEtjVmNt?=
- =?utf-8?B?citZRE16WFRyNkdpWXhlOXU1M1UvSjVJazdwbjF1MW9aUThXQWdmVEp6c2Rp?=
- =?utf-8?B?LzNEYmphLy96cXVFOEhucXZ5NTRyZzJIVjBORkQ4L0FFNnl0V0ZmeFN2T2dT?=
- =?utf-8?B?YXlpNks3V04wazRxTjFkZ2JpTGRJN3pEQ25PemxZY3dSNEpUQjNEOXdhRW5S?=
- =?utf-8?B?MllkSnJDRThDT2tkdHR3dzZHWWRURjVBZi9nV0JuWHVlOHBpbnZ3YTZHd2sx?=
- =?utf-8?B?RnBzaVExR280RDE0c2VRWmNPcnZTSGpiRnVOR012Z2RIVHRlcGU3cE9JT3Iy?=
- =?utf-8?B?cG1vQVBiYStjTk5uNnJ5R0czVW5LRWI5QUVTaGlVUnIrKzIxMzYvSWJESFls?=
- =?utf-8?B?d2VML3Jxc2FjT2xWMmt6NEJSV1NqVkNSRUZYaExUeHFlVldCNEY3TnlGeXd0?=
- =?utf-8?B?dk1UUzFuZFNrZy9xQzQzZWJMeDVqUTJqei94QUtrbHoxbXFMZHlHSDV0ZVRU?=
- =?utf-8?B?bS80M21qa0E3d1BROEVZcUphR01FOTZkbWFoU0hOVjhDOHYwbmpaZUhFUnJp?=
- =?utf-8?B?eFJNSVh4cGxMZHM2T2VtYk1qU2NQV2pLZ29sS0k2Ry9scEl6cjBFb2UyNmFR?=
- =?utf-8?B?T3RFV3lmaDZwR3NZNEQ4QUJmem9kWEJpbTg3TWJvcFUvdjRXd2RSdUpmWkEx?=
- =?utf-8?B?bTY0Vm1NMVhEaFJzREJzeTdzNVVJb2hOWG5iZXZHRFZEMXMxUzVuQnhCRk82?=
- =?utf-8?B?SzdldUpocEpSZTl6VjhndVdpUXowejdpYW1CRHVUWW1lNmwyTzlwaFJzQWtW?=
- =?utf-8?B?N0pGTVBpYklRbEJYUThFTHR1enprZE9VaGZDS2tqSW5zNE1tb2lUKzBuUmxR?=
- =?utf-8?B?a1Q2Rkl0WnlXMFFZQjluUnVKY0wzL0hvTGdnTVNjL3FCbGRSMk8zSGROTlpm?=
- =?utf-8?Q?RSMqNK6NDk5OuflNjMbAauovW61qNcGlF/arkVbPtAEX?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 287a78ef-b91c-4cea-4f9d-08ddaf37f445
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2025 13:48:21.4238
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rVuERdJ+riT3iT6yELlgU3meXT487IFTaQxAy4wFaEmD09Vn7mIeUfBAkqxuJf/FPzxVuh0FgCZ13UdeoY7MVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6783
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v2 2/2] rust: drm: Add GPUVM abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250619135709.634625e0@collabora.com>
+Date: Thu, 19 Jun 2025 10:49:34 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Sumit Semwal <sumit.semwal@linaro.org>,
+ =?utf-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+ Lyude Paul <lyude@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ Asahi Lina <lina@asahilina.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <477186AF-A8D4-4D4E-9F58-86958C654333@collabora.com>
+References: <20250422-gpuvm-v2-0-44d4fc25e411@collabora.com>
+ <20250422-gpuvm-v2-2-44d4fc25e411@collabora.com>
+ <aAgHGuzCZzh7YPz2@cassiopeiae>
+ <DBB3E8CE-19AA-437D-AF54-BF23763B254F@collabora.com>
+ <aAj7gAzFVRX3dN7L@pollux>
+ <F731D6F7-312D-4633-B677-69B7CC7194A6@collabora.com>
+ <20250619135709.634625e0@collabora.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Thu Jun 19, 2025 at 7:05 PM JST, Onur wrote:
-> On Thu, 19 Jun 2025 12:15:34 +0530
-> Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
->> On 17-06-25, 08:55, Miguel Ojeda wrote:
->> > On Tue, Jun 17, 2025 at 6:28=E2=80=AFAM Onur =C3=96zkan <work@onurozka=
-n.dev>
->> > wrote:
->> > >
->> > > Yes, it should be "Onur =C3=96zkan", sorry. Should I update that par=
-t
->> > > and re-send the patch?
->> >=20
->> > I would suggest to wait for other feedback, and then you can send a
->> > v2 if needed.
->> >=20
->> > > where my patch converts this into a single straight line which I
->> > > think makes it more idiomatic.
->> >=20
->> > Up to the maintainers :) So far we have both styles around.
->>=20
->> I am okay with all the changes, the commit log can be improved as you
->> mentioned earlier.
->>=20
->> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
->>=20
->
-> FWIW I split this patch into 3 parts and sent them separately as it
-> was suggested earlier by Alexandre.
->
-> Here are the patches I sent yesterday:
->
-> - https://lore.kernel.org/all/20250618092810.29370-1-work@onurozkan.dev/
-> - https://lore.kernel.org/all/20250618093508.16343-1-work@onurozkan.dev/
-> - https://lore.kernel.org/all/20250618091442.29104-1-work@onurozkan.dev/
+Hi Boris,
 
-These look good! Small nit for next time: since they are closely
-related, please send them as a series to make review (and merging, as
-they will conflict if not applied in the right order) easier.
+> On 19 Jun 2025, at 08:57, Boris Brezillon =
+<boris.brezillon@collabora.com> wrote:
+>=20
+> Hi,
+>=20
+> On Fri, 13 Jun 2025 13:42:59 -0300
+> Daniel Almeida <daniel.almeida@collabora.com> wrote:
+>=20
+>> Danilo,
+>>=20
+>>=20
+>>> <snip>
+>>>=20
+>>>>>> +// SAFETY: DRM GpuVmBo objects are always reference counted and =
+the get/put functions
+>>>>>> +// satisfy the requirements.
+>>>>>> +unsafe impl<T: DriverGpuVm> AlwaysRefCounted for GpuVmBo<T> {
+>>>>>> +    fn inc_ref(&self) {
+>>>>>> +        // SAFETY: The drm_gpuvm_get function satisfies the =
+requirements for inc_ref().
+>>>>>> +        unsafe { bindings::drm_gpuvm_bo_get(&self.bo as *const _ =
+as *mut _) };
+>>>>>> +    }
+>>>>>> +
+>>>>>> +    unsafe fn dec_ref(mut obj: NonNull<Self>) {
+>>>>>> +        // SAFETY: drm_gpuvm_bo_put() requires holding the gpuva =
+lock, which is
+>>>>>> +        // the dma_resv lock by default.
+>>>>>> +        // The drm_gpuvm_put function satisfies the requirements =
+for dec_ref().
+>>>>>> +        // (We do not support custom locks yet.)
+>>>>>> +        unsafe {
+>>>>>> +            let resv =3D (*obj.as_mut().bo.obj).resv;
+>>>>>> +            bindings::dma_resv_lock(resv, =
+core::ptr::null_mut());
+>>>>>> +            bindings::drm_gpuvm_bo_put(&mut obj.as_mut().bo);
+>>>>>> +            bindings::dma_resv_unlock(resv); =20
+>>>>>=20
+>>>>> What if the resv_lock is held already? Please also make sure to =
+put multiple
+>>>>> unsafe calls each in a separate unsafe block. =20
+>>>>=20
+>>>> By whom? =20
+>>>=20
+>>> The lock might be held already by the driver or by TTM when things =
+are called
+>>> from TTM callbacks.
+>>>=20
+>>> This is why GPUVM never takes locks by itself, but asserts that the =
+correct lock
+>>> is held.
+>>>=20
+>>> I think we really want to get proof by the driver by providing lock =
+guard
+>>> references.
+>>>=20
+>>=20
+>> There doesn=E2=80=99t seem to be a solution that fits all the boxes =
+here.
+>>=20
+>> As you said, at this point the current status of the resv is unknown. =
+If we
+>> simply assume that it is not taken, we run into the problem you =
+pointed out:
+>> i.e.: recursive locking where ttm or some other layer has the lock =
+already.
+>>=20
+>> Alternatively, if we assume that the resv must be locked in =
+dec_ref(), then we
+>> may build a lock::Guard from it and assert that it is held, but in =
+any case
+>> it's very confusing to expect the reservation to be locked on a =
+dec_ref() call.
+>>=20
+>> The fact that dec_ref() is placed automatically on drop will =
+massively
+>> complicate the call sites:
+>=20
+> I'm digressing, but there's an aspect I found very annoying in the C
+> version of the API: the fact that we have to take a BO ref, then lock,
+> then release the vm_bo [1], because otherwise the vm_bo might be the
+> last owner of a BO ref leading to a UAF on the lock itself. This to =
+me,
+> denotes a lifetime issue that I think would be good to address in the
+> rust version of the API.
+>=20
+> It's not exactly the same problem, but I think it comes from the same
+> root issue: lax ownership definition. By that I mean it's not clear
+> who's the owner and who's the owned. gem_object::gpuva::list has
+> weak refs on the vm_bos contained in this list, which kinda makes =
+sense
+> because vm_bos themselves have a ref on the gem_object, and if we were
+> to make this weak ref a strong ref we'd never free any of these two
+> objects. The lock is also part of the BO (either the BO resv lock, or =
+a
+> custom lock), and since it's the very same lock we use to =
+insert/remove
+> vm_bos, that's problematic.
+>=20
+> If we were making the gpuvm_bo_list a separate object that's =
+originally
+> created by the BO, and then let the GPUVM layer manipulate only this
+> list, it could work. Of course that means the resv lock/driver custom
+> lock should come from this object too, and I'm not too sure that's an
+> option when dma_buf imports are involved.
+
+This would require changes to the C side, because the C helpers expect =
+the gpuva
+list to be inside drm_gem_object, and these helpers are used in the Rust
+bindings.
+
+Don't get me wrong, IMHO we can definitely pursue this if needed, or if =
+it's an
+improvement. I am merely stating the fact that it's a more elaborate =
+solution
+that what I had originally proposed so that we are all aware.
+
+>=20
+>>=20
+>> We will have to ensure that the resv is locked at all times where we =
+interface
+>> with a GpuVmBo, because each of these points could possibly be the =
+last active
+>> ref. If we don't, then we've introduced a race where the list is =
+modified but
+>> no lock is taken, which will be a pretty easy mistake to make. This =
+seems to
+>> also be the case in C, which we should try to improve upon.
+>=20
+> Yep, with auto-unref thrown into the mix you have to be very careful =
+on
+> which paths might release the last vm_bo ref, and make sure an extra
+> ref is taken on the BO, and the resv/custom lock is held when that
+> happens.
+>=20
+>>=20
+>> My suggestion is to introduce a separate GPU-VA lock here:
+>>=20
+>> /// A base GEM object.
+>> #[repr(C)]
+>> #[pin_data]
+>> pub struct Object<T: DriverObject> {
+>>    obj: bindings::drm_gem_object,
+>>    // The DRM core ensures the Device exists as long as its objects =
+exist, so we don't need to
+>>    // manage the reference count here.
+>>    dev: *const bindings::drm_device,
+>>    #[pin]
+>>    inner: T,
+>>    #[pin]
+>>    _p: PhantomPinned,
+>>    // Add a GPU-VA lock here <--------
+>> }
+>>=20
+>> And only support custom locks in Rust, to the detriment of the =
+optimization
+>> where the resv is used and to the detriment of any perf improvements =
+that
+>> reusing the reservation might bring to the table.
+>=20
+> Yes, if it was only about perf optimizations, then I'd like to see
+> numbers that prove taking an extra lock that's always going to be free
+> in a path where you already took the BO resv lock actually makes a
+> difference, and honestly, I doubt it. But my fear is that it's not so
+> much about avoiding an extra lock to be taken, and more about making
+> sure this list insertion/deletion doesn't race with other paths that
+> are assuming that taking the resv lock is enough to guarantee =
+exclusive
+> access to this vm_bo list (I mean places outside gpuvm, in the drivers
+> directly). I guess the is fixable.
+>=20
+>>=20
+>> Notice that this would sidestep this entire discussion: nobody else =
+would be
+>> aware of this new lock so we could safely lock it in dec_ref(). We =
+would also
+>> be transparently managing the locking on behalf of drivers in all the =
+other
+>> calls where the VA list is accessed, which is another plus as I said =
+above.
+>=20
+> If the lock is part of the gem_object, it's not solving the problem I
+> described above, because you might be taking a lock that disappears if
+> you don't take a BO ref before taking the lock. In the end, that's
+> still a risky business.
+
+I must confess I was not aware of the issue you're discussing. We can =
+add an
+instance of gem::ObjectRef in gpuvm::GpuVmBo if you think this will =
+solve it.
+This will make sure that the vmbo owns the gem object (or rather that it =
+has a
++1 on the refcount) for its lifetime. That seems to be the semantics =
+you're
+looking for?
+
+I thought about adding this lock to the Rust wrapper for the vmbo, but =
+then
+we'd run into the issue of shared BOs, where each would be connected to =
+a
+different vmbo and would thus take a different lock when attempting to =
+modify
+the same underlying gpuva list.
+
+Just to be clear, by shared BO here I specifically mean a BO that's =
+connected
+to more than one VM, which is possible, IIUC.
+
+=E2=80=94 Daniel
+
+
