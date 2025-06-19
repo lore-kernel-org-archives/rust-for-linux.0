@@ -1,260 +1,298 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955D822FF5E;
-	Thu, 19 Jun 2025 11:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F292192F4;
+	Thu, 19 Jun 2025 12:17:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750334244; cv=none; b=N7duZPJ9NjfOAEdKCdBZ3anKPJtN9zMJIlYanxw3n7eufzWiHUAU5cHJpbkWFBMRAUbD2HJo0u8YRWNK9Q1jS1ctg3/g2GNr7QRDUR2CPvOrvq0HLMvsbOLZ1GK89Af400yR6DrOIBpWyINM5p/8M7zVxwVLuBJVM5c58oX2Bsg=
+	t=1750335453; cv=none; b=RvOLz2lQCXYCkSIVraKbHfrZF3xp/xxXbhN3eZLwvAfoK8SpG2Hw6Qvn+waavBjFkurKqWs08VaCwCRsBD1CbfTad6RpatMap8J9YCQ7XxqrPBhplI09Bo3ImDGTIHblZFpEqZp49SMFFqwD7nI16UPmRi2PcQ8vS6BKSOCECuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750334244; c=relaxed/simple;
-	bh=DR/rK5HTj+CWk3pzua5Z1Bq7gFUhrjz26jlD1PlmDUQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jX9VMCs4cg7IIDkSagBEyf/ZMRKLD6dmagRgCzjUl708O1BGgbpehBrQCqvM+ujYtE4QIc/ph2KmCwxn+LdjZVkWjR1h3CpljWqjrwgO8acMKw2OaDULSnKMnO/5D2atlY+RObTL/Xxky9MKsUaQf6kWWGhSZEumLp/9bPdonKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=FwF6rciV; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1750335453; c=relaxed/simple;
+	bh=/EhQ8omFBROqKVC50GMU4FURNn1d6ko5wL+1nqnYQ/M=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=BCh6dmHdkgqSzhoaxyRF9FncE+bGTEaXf/w8zFfx1WQtINyX1IW8OnIEKpoaVI93FZbPhD4/E9Y4I8wruoh4ei8jfMfI1ZtfyJSn0xWpQsYjg8fghIFz4zb3R86hSMGnn/H4t4m7oOG+HT+hnY6X1VoxRLutsqCEMlQ/ufp/93k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dt23KkSV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="FwF6rciV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1750334234;
-	bh=DR/rK5HTj+CWk3pzua5Z1Bq7gFUhrjz26jlD1PlmDUQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FwF6rciVdJ8E6CWw8PHfonXBYZhIx242n/qAuaGVrLLGKSaZXwUPkPGH5WyuxC36X
-	 TszAddwZ75xYE/OOKKdq0+zVOOsFrc9KP90kLV/Zq0mxEyyF2Rzcz4ACTpH5zlJCzO
-	 34mzBRe/RkSOBdot2lihqN3siVwgDnyzLE+/T20ll386qT3uJR2Eg0Uz2gllUMGjkU
-	 WSW9k3YQZ2bzMByXM9/kWiEksP3U0yJbrN/TfB4RDLs+lBtRkRKuLprCkiii8aX+nK
-	 Wz1OffDaFvSD9lrMOXpoDbSRFrXKQsxu9NlWIoLoCMb1UZPnNCUoqSeAsNViOXPkd3
-	 8+eqKYLpRirbQ==
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 437B917E0863;
-	Thu, 19 Jun 2025 13:57:13 +0200 (CEST)
-Date: Thu, 19 Jun 2025 13:57:09 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Sumit Semwal <sumit.semwal@linaro.org>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Alyssa
- Rosenzweig <alyssa@rosenzweig.io>, Lyude Paul <lyude@redhat.com>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Asahi Lina <lina@asahilina.net>
-Subject: Re: [PATCH v2 2/2] rust: drm: Add GPUVM abstraction
-Message-ID: <20250619135709.634625e0@collabora.com>
-In-Reply-To: <F731D6F7-312D-4633-B677-69B7CC7194A6@collabora.com>
-References: <20250422-gpuvm-v2-0-44d4fc25e411@collabora.com>
-	<20250422-gpuvm-v2-2-44d4fc25e411@collabora.com>
-	<aAgHGuzCZzh7YPz2@cassiopeiae>
-	<DBB3E8CE-19AA-437D-AF54-BF23763B254F@collabora.com>
-	<aAj7gAzFVRX3dN7L@pollux>
-	<F731D6F7-312D-4633-B677-69B7CC7194A6@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dt23KkSV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3BFC4CEEA;
+	Thu, 19 Jun 2025 12:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750335453;
+	bh=/EhQ8omFBROqKVC50GMU4FURNn1d6ko5wL+1nqnYQ/M=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Dt23KkSV/9nHUWBbZqwwyVHWh5vfzY2McoksD6/jvAFf8HOocPocB7/dfzUrQVgel
+	 ZemKsW50cEAZstXzAavFEDMstS6soxv1e8fkkJMRzul607c2EBu08d4txfOx0O0EB/
+	 AooFWNZ12H3I/vK52mAGdfwwKkqLydGSWDa6RWrda1XiKWc7B1DSc9pPVu8wbQMoJP
+	 Vwr6UH3X3C4EvD6rCrCOVazVGrwwNETMEy/98VgQ/ITDLHzmjAS354iqM0i3mOyD76
+	 EDRaofER9LmRZ/fxUHhT3MfrkTijxbPM5BeXoYiKEDBfQ2BADT0H1cXD7ZsARCIk13
+	 zU1axqgl5vR/g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Jun 2025 14:17:26 +0200
+Message-Id: <DAQI4RPK2Y7T.3TQ1G3IMZCNK4@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
+ Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
+ Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
+ "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
+ <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 1/6] rust: str: add radix prefixed integer parsing
+ functions
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+ <20250612-module-params-v3-v13-1-bc219cd1a3f8@kernel.org>
+ <bbRxeBHCiFQl9UTC1hFQYdzkdAIV5HcRTuFf9ucPUEZZ-uJmaHAZXfd8Tk-k9vzROgFsCyNhGBBCn5J_HnbUSA==@protonmail.internalid> <DAPY5HF9HGXC.FCEKAMLPFY1H@kernel.org> <871prg7zoh.fsf@kernel.org>
+In-Reply-To: <871prg7zoh.fsf@kernel.org>
 
-Hi,
+On Thu Jun 19, 2025 at 1:12 PM CEST, Andreas Hindborg wrote:
+> I'm having a difficult time parsing. Are you suggesting that we guard
+> against implementations of `TryInto<u64>` that misbehave?
 
-On Fri, 13 Jun 2025 13:42:59 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+Let me try a different explanation:
 
-> Danilo,
->=20
->=20
-> > <snip>
-> >  =20
-> >>>> +// SAFETY: DRM GpuVmBo objects are always reference counted and the=
- get/put functions
-> >>>> +// satisfy the requirements.
-> >>>> +unsafe impl<T: DriverGpuVm> AlwaysRefCounted for GpuVmBo<T> {
-> >>>> +    fn inc_ref(&self) {
-> >>>> +        // SAFETY: The drm_gpuvm_get function satisfies the require=
-ments for inc_ref().
-> >>>> +        unsafe { bindings::drm_gpuvm_bo_get(&self.bo as *const _ as=
- *mut _) };
-> >>>> +    }
-> >>>> +
-> >>>> +    unsafe fn dec_ref(mut obj: NonNull<Self>) {
-> >>>> +        // SAFETY: drm_gpuvm_bo_put() requires holding the gpuva lo=
-ck, which is
-> >>>> +        // the dma_resv lock by default.
-> >>>> +        // The drm_gpuvm_put function satisfies the requirements fo=
-r dec_ref().
-> >>>> +        // (We do not support custom locks yet.)
-> >>>> +        unsafe {
-> >>>> +            let resv =3D (*obj.as_mut().bo.obj).resv;
-> >>>> +            bindings::dma_resv_lock(resv, core::ptr::null_mut());
-> >>>> +            bindings::drm_gpuvm_bo_put(&mut obj.as_mut().bo);
-> >>>> +            bindings::dma_resv_unlock(resv); =20
-> >>>=20
-> >>> What if the resv_lock is held already? Please also make sure to put m=
-ultiple
-> >>> unsafe calls each in a separate unsafe block. =20
-> >>=20
-> >> By whom? =20
-> >=20
-> > The lock might be held already by the driver or by TTM when things are =
-called
-> > from TTM callbacks.
-> >=20
-> > This is why GPUVM never takes locks by itself, but asserts that the cor=
-rect lock
-> > is held.
-> >=20
-> > I think we really want to get proof by the driver by providing lock gua=
-rd
-> > references.
-> >  =20
->=20
-> There doesn=E2=80=99t seem to be a solution that fits all the boxes here.
->=20
-> As you said, at this point the current status of the resv is unknown. If =
-we
-> simply assume that it is not taken, we run into the problem you pointed o=
-ut:
-> i.e.: recursive locking where ttm or some other layer has the lock alread=
-y.
->=20
-> Alternatively, if we assume that the resv must be locked in dec_ref(), th=
-en we
-> may build a lock::Guard from it and assert that it is held, but in any ca=
-se
-> it's very confusing to expect the reservation to be locked on a dec_ref()=
- call.
->=20
-> The fact that dec_ref() is placed automatically on drop will massively
-> complicate the call sites:
+The safety requirement for implementing the `FromStrRadix`:
 
-I'm digressing, but there's an aspect I found very annoying in the C
-version of the API: the fact that we have to take a BO ref, then lock,
-then release the vm_bo [1], because otherwise the vm_bo might be the
-last owner of a BO ref leading to a UAF on the lock itself. This to me,
-denotes a lifetime issue that I think would be good to address in the
-rust version of the API.
+    /// The member functions of this trait must be implemented according to
+    /// their documentation.
 
-It's not exactly the same problem, but I think it comes from the same
-root issue: lax ownership definition. By that I mean it's not clear
-who's the owner and who's the owned. gem_object::gpuva::list has
-weak refs on the vm_bos contained in this list, which kinda makes sense
-because vm_bos themselves have a ref on the gem_object, and if we were
-to make this weak ref a strong ref we'd never free any of these two
-objects. The lock is also part of the BO (either the BO resv lock, or a
-custom lock), and since it's the very same lock we use to insert/remove
-vm_bos, that's problematic.
+Together with the functions of the trait:
 
-If we were making the gpuvm_bo_list a separate object that's originally
-created by the BO, and then let the GPUVM layer manipulate only this
-list, it could work. Of course that means the resv lock/driver custom
-lock should come from this object too, and I'm not too sure that's an
-option when dma_buf imports are involved.
+    /// Parse `src` to [`Self`] using radix `radix`.
+    fn from_str_radix(src: &BStr, radix: u32) -> Result<Self, crate::error:=
+:Error>;
+   =20
+    /// Return the absolute value of [`Self::MIN`].
+    fn abs_min() -> u64;
+   =20
+    /// Perform bitwise 2's complement on `self`.
+    ///
+    /// Note: This function does not make sense for unsigned integers.
+    fn complement(self) -> Self;
 
->=20
-> We will have to ensure that the resv is locked at all times where we inte=
-rface
-> with a GpuVmBo, because each of these points could possibly be the last a=
-ctive
-> ref. If we don't, then we've introduced a race where the list is modified=
- but
-> no lock is taken, which will be a pretty easy mistake to make. This seems=
- to
-> also be the case in C, which we should try to improve upon.
+Doesn't make sense. What does it mean to return the "absolute value of
+[`Self::MIN`]"? We don't have "absolute value" defined for an arbitrary
+type. Similarly for `complement` and `from_str_radix`, what does "Parse
+`src` to [`Self`] using radex `radix`" mean? It's not well-defined.
 
-Yep, with auto-unref thrown into the mix you have to be very careful on
-which paths might release the last vm_bo ref, and make sure an extra
-ref is taken on the BO, and the resv/custom lock is held when that
-happens.
+You use this safety requirement in the parsing branch for negative
+numbers (the `unsafe` call at the bottom):
 
->=20
-> My suggestion is to introduce a separate GPU-VA lock here:
->=20
-> /// A base GEM object.
-> #[repr(C)]
-> #[pin_data]
-> pub struct Object<T: DriverObject> {
->     obj: bindings::drm_gem_object,
->     // The DRM core ensures the Device exists as long as its objects exis=
-t, so we don't need to
->     // manage the reference count here.
->     dev: *const bindings::drm_device,
->     #[pin]
->     inner: T,
->     #[pin]
->     _p: PhantomPinned,
->     // Add a GPU-VA lock here <--------
-> }
->=20
-> And only support custom locks in Rust, to the detriment of the optimizati=
-on
-> where the resv is used and to the detriment of any perf improvements that
-> reusing the reservation might bring to the table.
+    [b'-', rest @ ..] =3D> {
+        let (radix, digits) =3D strip_radix(rest.as_ref());
+        // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
+        // So if we want to parse negative numbers as positive and
+        // later multiply by -1, we have to parse into a larger
+        // integer. We choose `u64` as sufficiently large.
+        //
+        // NOTE: 128 bit integers are not available on all
+        // platforms, hence the choice of 64 bits.
+        let val =3D
+            u64::from_str_radix(core::str::from_utf8(digits).map_err(|_| EI=
+NVAL)?, radix)
+                .map_err(|_| EINVAL)?;
+   =20
+        if val > Self::abs_min() {
+            return Err(EINVAL);
+        }
+   =20
+        if val =3D=3D Self::abs_min() {
+            return Ok(Self::MIN);
+        }
+   =20
+        // SAFETY: We checked that `val` will fit in `Self` above.
+        let val: Self =3D unsafe { val.try_into().unwrap_unchecked() };
+   =20
+        Ok(val.complement())
+    }
 
-Yes, if it was only about perf optimizations, then I'd like to see
-numbers that prove taking an extra lock that's always going to be free
-in a path where you already took the BO resv lock actually makes a
-difference, and honestly, I doubt it. But my fear is that it's not so
-much about avoiding an extra lock to be taken, and more about making
-sure this list insertion/deletion doesn't race with other paths that
-are assuming that taking the resv lock is enough to guarantee exclusive
-access to this vm_bo list (I mean places outside gpuvm, in the drivers
-directly). I guess the is fixable.
+But you don't mention that the check is valid due to the safety
+requirements of implementing `FromStrRadix`. But even if you did, that
+wouldn't mean anything as I explained above.
 
->=20
-> Notice that this would sidestep this entire discussion: nobody else would=
- be
-> aware of this new lock so we could safely lock it in dec_ref(). We would =
-also
-> be transparently managing the locking on behalf of drivers in all the oth=
-er
-> calls where the VA list is accessed, which is another plus as I said abov=
-e.
+So let's instead move all of this negation & u64 conversion logic into
+the `FromStrRadix` trait. Then it can be safe & the `ParseInt::from_str`
+function doesn't use `unsafe` (there still will be `unsafe` in the
+macro, but that is fine, as it's more local and knows the concrete
+types).
 
-If the lock is part of the gem_object, it's not solving the problem I
-described above, because you might be taking a lock that disappears if
-you don't take a BO ref before taking the lock. In the end, that's
-still a risky business.
+---
+Cheers,
+Benno
 
->=20
-> I understand that most C drivers do not need an extra lock, but it's gett=
-ing
-> hard to emulate this behavior in Rust.
->=20
-> Also, the fact that they don't need an extra lock does not invalidate the=
- fact
-> that it would be simply safer to have this extra lock anyways. In other w=
-ords,
-> it is still completely possible to use GPUVM without locking anything and=
- IMHO
-> we shouldn't bring this over if we can help it.
+Here is what I have in mind:
 
-Overall, I do agree with Daniel here. We'd rather think about how to
-make the C API more user-friendly by clearly defining
-ownership/lifetime before we try to add rust bindings on top.
-Deciding where the lock comes from is part of the discussion, but IMHO,
-that's not the only thing we need to sort out.
-
-I hope that me chiming in didn't make the situation worse :-/, and I'd
-be fine if someone convince me that what I complain about here is
-actually not a problem in rust :-).
-
-Regards,
-
-Boris
-
-[1]https://elixir.bootlin.com/linux/v6.15.2/source/drivers/gpu/drm/panthor/=
-panthor_mmu.c#L1090
+diff --git a/rust/kernel/str/parse_int.rs b/rust/kernel/str/parse_int.rs
+index 0754490aec4b..9d6e146c5ea7 100644
+--- a/rust/kernel/str/parse_int.rs
++++ b/rust/kernel/str/parse_int.rs
+@@ -13,32 +13,16 @@
+ // `ParseInt`, that is, prevents downstream users from implementing the
+ // trait.
+ mod private {
++    use crate::prelude::*;
+     use crate::str::BStr;
+=20
+     /// Trait that allows parsing a [`&BStr`] to an integer with a radix.
+-    ///
+-    /// # Safety
+-    ///
+-    /// The member functions of this trait must be implemented according t=
+o
+-    /// their documentation.
+-    ///
+-    /// [`&BStr`]: kernel::str::BStr
+-    // This is required because the `from_str_radix` function on the primi=
+tive
+-    // integer types is not part of any trait.
+-    pub unsafe trait FromStrRadix: Sized {
+-        /// The minimum value this integer type can assume.
+-        const MIN: Self;
+-
++    pub trait FromStrRadix: Sized {
+         /// Parse `src` to [`Self`] using radix `radix`.
+-        fn from_str_radix(src: &BStr, radix: u32) -> Result<Self, crate::e=
+rror::Error>;
+-
+-        /// Return the absolute value of [`Self::MIN`].
+-        fn abs_min() -> u64;
++        fn from_str_radix(src: &BStr, radix: u32) -> Result<Self>;
+=20
+-        /// Perform bitwise 2's complement on `self`.
+-        ///
+-        /// Note: This function does not make sense for unsigned integers.
+-        fn complement(self) -> Self;
++        /// Tries to convert `value` into [`Self`] and negates the resulti=
+ng value.
++        fn from_u64_negated(value: u64) -> Result<Self>;
+     }
+ }
+=20
+@@ -108,19 +92,7 @@ fn from_str(src: &BStr) -> Result<Self> {
+                 let val =3D
+                     u64::from_str_radix(core::str::from_utf8(digits).map_e=
+rr(|_| EINVAL)?, radix)
+                         .map_err(|_| EINVAL)?;
+-
+-                if val > Self::abs_min() {
+-                    return Err(EINVAL);
+-                }
+-
+-                if val =3D=3D Self::abs_min() {
+-                    return Ok(Self::MIN);
+-                }
+-
+-                // SAFETY: We checked that `val` will fit in `Self` above.
+-                let val: Self =3D unsafe { val.try_into().unwrap_unchecked=
+() };
+-
+-                Ok(val.complement())
++                Self::from_u64_negated(val)
+             }
+             _ =3D> {
+                 let (radix, digits) =3D strip_radix(src);
+@@ -131,41 +103,49 @@ fn from_str(src: &BStr) -> Result<Self> {
+ }
+=20
+ macro_rules! impl_parse_int {
+-    ($ty:ty) =3D> {
+-        // SAFETY: We implement the trait according to the documentation.
+-        unsafe impl private::FromStrRadix for $ty {
+-            const MIN: Self =3D <$ty>::MIN;
+-
+-            fn from_str_radix(src: &BStr, radix: u32) -> Result<Self, crat=
+e::error::Error> {
+-                <$ty>::from_str_radix(core::str::from_utf8(src).map_err(|_=
+| EINVAL)?, radix)
+-                    .map_err(|_| EINVAL)
+-            }
+-
+-            fn abs_min() -> u64 {
+-                #[allow(unused_comparisons)]
+-                if Self::MIN < 0 {
+-                    1u64 << (Self::BITS - 1)
+-                } else {
+-                    0
++    ($($ty:ty),*) =3D> {
++        $(
++            impl private::FromStrRadix for $ty {
++                fn from_str_radix(src: &BStr, radix: u32) -> Result<Self> =
+{
++                    <$ty>::from_str_radix(core::str::from_utf8(src).map_er=
+r(|_| EINVAL)?, radix)
++                        .map_err(|_| EINVAL)
+                 }
+-            }
+=20
+-            fn complement(self) -> Self {
+-                (!self).wrapping_add((1 as $ty))
++                fn from_u64_negated(value: u64) -> Result<Self> {
++                    const ABS_MIN: u64 =3D {
++                        #[allow(unused_comparisons)]
++                        if <$ty>::MIN < 0 {
++                            1u64 << (Self::BITS - 1)
++                        } else {
++                            0
++                        }
++                    };
++
++                    fn complement(self) -> Self {
++                        (!self).wrapping_add((1 as $ty))
++                    }
++                    if val > ABS_MIN {
++                        return Err(EINVAL);
++                    }
++
++                    if val =3D=3D ABS_MIN {
++                        return Ok(<$ty>::MIN);
++                    }
++
++                    // SAFETY: The above checks guarantee that `val` fits =
+into `Self`:
++                    // - if `Self` is unsigned, then `ABS_MIN =3D=3D 0` an=
+d thus we have returned above
++                    //   (either `EINVAL` or `MIN`).
++                    // - if `Self` is signed, then we have that `0 <=3D va=
+l < ABS_MIN`. And since
++                    //   `ABS_MIN - 1` fits into `Self` by construction, `=
+val` also does.
++                    let val: Self =3D unsafe { val.try_into().unwrap_unche=
+cked() };
++
++                    Ok((!val).wrapping_add(1))
++                }
+             }
+-        }
+=20
+-        impl ParseInt for $ty {}
++            impl ParseInt for $ty {}
++        )*
+     };
+ }
+=20
+-impl_parse_int!(i8);
+-impl_parse_int!(u8);
+-impl_parse_int!(i16);
+-impl_parse_int!(u16);
+-impl_parse_int!(i32);
+-impl_parse_int!(u32);
+-impl_parse_int!(i64);
+-impl_parse_int!(u64);
+-impl_parse_int!(isize);
+-impl_parse_int!(usize);
++impl_parse_int![i8, u8, i16, u16, i32, u32, i64, u64, isize, usize];
