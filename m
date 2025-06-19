@@ -1,177 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0814A35963;
-	Thu, 19 Jun 2025 12:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA9545038;
+	Thu, 19 Jun 2025 12:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750337711; cv=none; b=nZ7K31M8AVYDpwSh97irRFqryj6GY9IbW/pTKnmPUyLNiB2p+R8N4ZWhVJewATkGhM4iMgakdEvA92s9qLVR/OSsNH4z60aNswadcCde9rlYkYM15TslKNR9cuietgL9EnMGyYk/cgj0griOvq2yWTCdTxzY2Ak8exq6OVQiz2E=
+	t=1750337842; cv=none; b=OHJuy8CvymP1jEauZr5Zc6YKZL1y54GmveYnEXBLIqgZpuStF4QG4wJSPgSSPKp/PRLYi1UM1D76FwAfEQUJRFGjCribLaJ2p/FYM7IfKb5CNhrG0BlK3jSzQVUsOg2t8RigxoQGC8cD1xMQGuqu7vZDpQi3KAR91f9JiRXL2YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750337711; c=relaxed/simple;
-	bh=F68ARQM2DUOYRKZtWd98Kxrd8cYHG04AvGLTqWL26QE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=DtdVNYSJj+yHQkmlDjCS2QwzdPMsQhpfFG4QVfmRC4FsJoZfw0IHkK9/NByNBmrpNiYtfCUiEtcnctClML+pjHPVHIY2/twelp91eU6WQfUBCUQp+8wPkW9gVhGPyw0AAnHS72XAFmaZyY8wN+Gm4e89mCVDs8rxSJO0tdEcObk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dcuBAS4/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750337842; c=relaxed/simple;
+	bh=d9e5HJ45tr/MyEWNHOgb5I6HGDjVGDJUtmF7txoigI8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AwqbG5wEH2cTL5OXEoR+IWz6LtW3vwRBEvQvPAbof7zHbkYwG7d9Xu+9fCFOeI1WsWKYCjomGAm+XXHZMh/1vhAwmOPV45oxUz+JDX9VSg/u3VMgPs1E39+CJco9ankd3gM0kZQMoGB/Idu/kZh1ZO+OXLodQhyDrNmdDD+B/eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuAyVOJr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dcuBAS4/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E57C4CEEA;
-	Thu, 19 Jun 2025 12:55:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuAyVOJr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5ECC4CEEA;
+	Thu, 19 Jun 2025 12:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750337710;
-	bh=F68ARQM2DUOYRKZtWd98Kxrd8cYHG04AvGLTqWL26QE=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=dcuBAS4/IXvI72zAi2C9wKO8TF8l3yfF6vihcv4oJNxIgPDFaE5J59Gi8cZxion0S
-	 vZ3gK0AWXc8KuQa29Vj97LIgYj+LWdMctHcK8oq80U7YJtkBen+vH2XGJCR7NnW64O
-	 4u91EJeR4rirFLc5w8oM6Beulu2iPq5g9IkbT5i1F1YF7wybZ/58q5CWbnR3oKiogd
-	 uOMVeamHSqojoIMNR9vgU4fm4hUMumMI1ek6RICnpFm4UqKtu98jz4jqmU2oU6Amv9
-	 6bYKAkDk76s6pHl3NgNOvRcOKJB97LD8UEcwwum38gpNDeQFPLXJKZ7/0BTTnalI6L
-	 3VPlNjrdlfiQQ==
+	s=k20201202; t=1750337841;
+	bh=d9e5HJ45tr/MyEWNHOgb5I6HGDjVGDJUtmF7txoigI8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DuAyVOJrGQGV11NldPvoe/547B0ypS3eGxON4wu2u9gNuHg7VJsT17LIUY/dRylOo
+	 vFDJ1hD9eHIqiQNN2M5lnqCymi84iKlV3R84RVArLKYgJP3Y4DCVhFWAY2SPBMKeXR
+	 6r91rAO4JByhSfcM7Zyu7tbO0yHRZ/vumw7A73GwgyCEu+H4iyJ22tv7tYsSzyZsi/
+	 8U2Z8CUHoywLCc7thtEj/KWFPF14/+pcmhEmQCWPYqQt/cCtRDNc60yFHH3PEC4Eyz
+	 QupBAJRp6qlCmSIbZVAjSCtHmH6xxvD1XOVqNYcCxy2NB1Xl235ipxBAfwTrc1AA95
+	 8mYcE9BO//Srw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Cc: <boqun.feng@gmail.com>,  <alex.gaynor@gmail.com>,  <ojeda@kernel.org>,
+  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
+  <bjorn3_gh@protonmail.com>,  <dakr@kernel.org>,  <frederic@kernel.org>,
+  <gary@garyguo.net>,  <jstultz@google.com>,
+  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
+  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
+  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
+Subject: Re: [PATCH] rust: time: Seal the ClockSource trait
+In-Reply-To: <20250619.203319.1745503493999032815.fujita.tomonori@gmail.com>
+	(FUJITA Tomonori's message of "Thu, 19 Jun 2025 20:33:19 +0900")
+References: <lliFJqf-6WmrKCArjCpOguz4jsHNtiF9GU0X4Ip5bE8NseTdlyKNH_7Bp_CyxNBD5ZR-Jbz0teNRS4UgV_7Z3g==@protonmail.internalid>
+	<20250619.092816.1768105017126251956.fujita.tomonori@gmail.com>
+	<87cyb084df.fsf@kernel.org>
+	<HtpBC6KWSM5Y-x_Vzv2SvzKId8EC0R3fX9HB88gZQnIvy43YqYFDqAkXPUc1IQos2CoYljFnsJJDcGm-vep0TQ==@protonmail.internalid>
+	<20250619.203319.1745503493999032815.fujita.tomonori@gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 19 Jun 2025 14:57:12 +0200
+Message-ID: <8734bv7utz.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jun 2025 14:55:03 +0200
-Message-Id: <DAQIXKJ9VMS6.2044WT0FQQCVC@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
- Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
- Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
- Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
- "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
- <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
- <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
- <aa9d7lhjQuDhyNw8zShbtfPFK19W5awx7cPJgC-2X4fGv2yUTnn0jqyIHfMN4wyuaYoS3fU6Fqe_wFteVUGtUg==@protonmail.internalid> <DAPYMAB44RUZ.7NIWDUWY1UYF@kernel.org> <87v7or7wiv.fsf@kernel.org>
-In-Reply-To: <87v7or7wiv.fsf@kernel.org>
 
-On Thu Jun 19, 2025 at 2:20 PM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
->>> +
->>> +// SAFETY: C kernel handles serializing access to this type. We never =
-access it
->>> +// from Rust module.
->>> +unsafe impl Sync for RacyKernelParam {}
->>> +
->>> +/// Types that can be used for module parameters.
->>> +pub trait ModuleParam: Sized + Copy {
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+
+> On Thu, 19 Jun 2025 11:31:08 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>
+>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 >>
->> Why the `Copy` bound?
->
-> Because of potential unsoundness due to drop [1]. I should document
-> this. It is noted in the change log for the series under the obscure
-> entry "Assign through pointer rather than using `core::ptr::replace`."
->
-> [1] https://lore.kernel.org/all/878qnbxtyi.fsf@kernel.org
-
-Ah thanks for the pointer, yeah please mention this in a comment
-somewhere.
-
->>> +    ///
->>> +    /// Parameters passed at boot time will be set before [`kmalloc`] =
+>>> On Wed, 18 Jun 2025 21:13:07 +0200
+>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>
+>>>> "Boqun Feng" <boqun.feng@gmail.com> writes:
+>>>>
+>>>>> On Tue, Jun 17, 2025 at 05:10:42PM -0700, Boqun Feng wrote:
+>>>>>> On Wed, Jun 18, 2025 at 08:20:53AM +0900, FUJITA Tomonori wrote:
+>>>>>> > Prevent downstream crates or drivers from implementing `ClockSourc=
+e`
+>>>>>> > for arbitrary types, which could otherwise leads to unsupported
+>>>>>> > behavior.
+>>>>>> >
+>>>>>>
+>>>>>> Hmm.. I don't think other impl of `ClockSource` is a problem, IIUC, =
+as
+>>>>>> long as the ktime_get() can return a value in [0, i64::MAX). Also th=
 is
->>> +    /// available (even if the module is loaded at a later time). Howe=
-ver, in
+>>>>>> means ClockSource should be an `unsafe` trait, because the correct
+>>>>>> implementaion relies on ktime_get() returns the correct value. This =
+is
+>>>>>> needed even if you sealed ClockSource trait.
+>>>>>>
+>>>>>> Could you drop this and fix that the ClockSource trait instead? Than=
+ks!
+>>>>>>
+>>>>>
+>>>>> For example:
+>>>>>
+>>>>>     /// Trait for clock sources.
+>>>>>     ///
+>>>>>     /// ...
+>>>>>     /// # Safety
+>>>>>     ///
+>>>>>     /// Implementers must ensure `ktime_get()` return a value in [0,
+>>>>>     //  KTIME_MAX (i.e. i64::MAX)).
+>>>>>     pub unsafe trait ClockSource {
+>>>>>         ...
+>>>>>     }
+>>>>
+>>>> Nice catch, it definitely needs to be unsafe. We should also require
+>>>> correlation between ID and the value fetched by `ktime_get`.
+>>>
+>>> What's ID?
 >>
->> I think we should make a section out of this like `# No allocations` (or
->> something better). Let's also mention it on the trait itself, since
->> that's where implementers will most likely look.
+>>
+>>   pub trait ClockSource {
+>>       /// The kernel clock ID associated with this clock source.
+>>       ///
+>>       /// This constant corresponds to the C side `clockid_t` value.
+>>       const ID: bindings::clockid_t;
+>>
+>> The constant used to identify the clock source when calling into C APIs.
 >
-> Since this series only support `Copy` types that are passed by value, I
-> think we can remove this comment for now. I will also restrict the
-> lifetime of the string to he duration of the call. Putting static here
-> would be lying.
->
->>
->>> +    /// this case, the argument buffer will be valid for the entire li=
-fetime of
->>> +    /// the kernel. So implementations of this method which need to al=
-locate
->>> +    /// should first check that the allocator is available (with
->>> +    /// [`crate::bindings::slab_is_available`]) and when it is not ava=
-ilable
->>
->> We probably shouldn't recommend directly using `bindings`.
->>
->>> +    /// provide an alternative implementation which doesn't allocate. =
-In cases
->>> +    /// where the allocator is not available it is safe to save refere=
-nces to
->>> +    /// `arg` in `Self`, but in other cases a copy should be made.
->>
->> I don't understand this convention, but it also doesn't seem to
->> relevant (so feel free to leave it as is, but it would be nice if you
->> could explain it).
->
-> It has become irrelevant as the series evolved. When we supported
-> `!Copy` types we would use the reference if we knew it would be valid
-> for the lifetime of the kernel, otherwise we would allocate [1].
->
-> However, when the reference is passed at module load time, it is still
-> guaranteed to be live for the lifetime of the module, and hence it can
-> still be considered `'static`. But, if the reference were to find it's
-> way across the module boundary, it can cause UAF issues as the reference
-> is not truely `'static`, it is actually `'module`. This ties into the
-> difficulty we have around safety of unloading modules. Module unload
-> should be marked unsafe.
+> Ah, I see. Sorry to ask another question, but can we require
+> correlation between ID and the value fetched by `ktime_get`?
 
-Ah so the argument should rather be an enum that is either
-`Static(&'static str)` or `WithAlloc(&'short str)` with the (non-safety)
-guarantee that `WithAlloc` is only passed when the allocator is
-available.
+Yes, I think we should. As in, `ClockSource::ktime_get` must return the
+time associated with the clock specified by `ClockSource::ID`.
 
-> At any rate, I will remove the `'static` lifetime from the reference and
-> we are all good for now.
+>The value
+> fetched by ktime_get is opaque, isn't it?
 
-Sounds simplest for now.
+It is, but the implementation must still fetch the correct counter, right?
+Not sure if it could lead to UB if it did not though =F0=9F=A4=B7
 
->>> +    crate::error::from_result(|| {
->>> +        let new_value =3D T::try_from_param_arg(arg)?;
->>> +
->>> +        // SAFETY: By function safety requirements `param` is be valid=
- for reads.
->>> +        let old_value =3D unsafe { (*param).__bindgen_anon_1.arg as *m=
-ut T };
->>> +
->>> +        // SAFETY: By function safety requirements, the target of `old=
-_value` is valid for writes
->>> +        // and is initialized.
->>> +        unsafe { *old_value =3D new_value };
->>
->> So if we keep the `ModuleParam: Copy` bound from above, then we don't
->> need to drop the type here (as `Copy` implies `!Drop`). So we could also
->> remove the requirement for initialized memory and use `ptr::write` here
->> instead. Thoughts?
->
-> Yes, that is the rationale for the `Copy` bound. What would be the
-> benefit of using `ptr::write`? They should be equivalent for `Copy`
-> types, right.
 
-They should be equivalent, but if we drop the requirement that the value
-is initialized to begin with, then removing `Copy` will result in UB
-here.
+Best regards,
+Andreas Hindborg
 
-> I was using `ptr::replace`, but Alice suggested the pace expression
-> assignment instead, since I was not using the old value.
 
-That makes sense, but if we also remove the initialized requirement,
-then I would prefer `ptr::write`.
 
----
-Cheers,
-Benno
