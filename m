@@ -1,78 +1,141 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05BD1799F
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 11:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C5D221F30;
+	Thu, 19 Jun 2025 11:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750330881; cv=none; b=PaqlC0aloxcxLEnmPe2UQnhwr0S0SSbwQo5CZKwklVdz++RcrlZnWNpT0gWvLKctKoaLiotcj8rXEIdkxyEpiLi20zwhMdQ5qatVbNdbmIdCI+CFzGtg7jSEZB0jcABUXlwJF3lhhh3HP7P3FejR2fNOjQDDStnu3ZOAEEwMjUs=
+	t=1750331564; cv=none; b=aL0SHeNn5lHpNTaF8/Z0DkdBFLzNfW03vLurHGkjE5lWkbkne9vIALe3LYJcOuM2L5uF4xNnB0MrPAYJIO/crXSdqbpaAdj/lwGaFc+vgiN9uCrQFBz+nJOAn7TDA8s9biPVJ40Sm9plMOvVloh2OVBjBtRM04GaQga+fOqzcss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750330881; c=relaxed/simple;
-	bh=QrTbq1gC7rkfhVdqmMkNAd0Xgm8URhDFN46HIJPT/dY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=fjH9YHkjy+0KGdejyCEoDZRPXKFkec6Idb3+zXXdiuac0ZWOBHLacPetz/rf6Hjw4Oo4nh2t8pbHjCqlYK6aMNV9TtcVLs7wdY+sJc18ymMqvGIw7Z1a2F7X4ywxUVbBahUUmNaMzCoU0iWeoAsVm22HkF10vC5f5uIjyp7kXbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCHt64R3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750331564; c=relaxed/simple;
+	bh=0u88sDT/q65KVfR5hIDnrWSdvSt9Ru54yMvadeBOFqc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=q0d8DracoIYXQT4O47SvvmjnamiAvcizjffX3kLu0u0r69tcDjlMJ0qFX1XBZfGCIkVBt4XiXRrpNskZ7rQdi/vArBJdzG3j0eBuHcfZHLHBUC9cNRjQLFuTx5w6WDSlwSI8eFp+CZ9JpX16lCZIhJAn+HRafzmBxW8C5FPHl4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+JJHpce; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCHt64R3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563FDC4CEEA;
-	Thu, 19 Jun 2025 11:01:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+JJHpce"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0066FC4CEEA;
+	Thu, 19 Jun 2025 11:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750330881;
-	bh=QrTbq1gC7rkfhVdqmMkNAd0Xgm8URhDFN46HIJPT/dY=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=RCHt64R3U0CO/MnZbnnpOQgDE0TAGVSCXx1Y4/h/7hMUp9g5451byBD2ePeT4XtIq
-	 5nC8+6JgIZ01Mu0k45EYGi2o/1huaHwf2+Zr9XL7HBIfj4ikPs5PXC5t6oU9Yo36PU
-	 ntg1TivIH/sZ/hwxD5nlWI3x6FlCTgdN2d34ym9S1GUNMvTchItAZe243XNuE8VPqq
-	 Sgu4tyz0evtT2zJRTT8i5fTVoJQnoMftvZp1q9FIgD9HQ07OfD+UkmKm8K6jNdEAg8
-	 YUuC43Epk49kuHOOFGuG2mKn9hrZNyqcp5YI7UXpQoN5M5qCd/iTWeqZQvUE7A5Jxz
-	 03dosavRXfQ1A==
+	s=k20201202; t=1750331563;
+	bh=0u88sDT/q65KVfR5hIDnrWSdvSt9Ru54yMvadeBOFqc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=f+JJHpcebDoGLAiQoKVcSV4vvPEeM7EYIN5xxv6fEWkCF+mVHQMwzBhghOpZKCghQ
+	 7/Td7l838WQdl5744jAdc8yVM7VI4Jncb+XKdHTGVGaJzz0YyLV37Vz6rxmolow8Uu
+	 JRTK+6hqUG+5XmnL3kjsYAE4NO34MW/XGNu7uw4VKAGlq1scb2Pp9u1Osxry71PAss
+	 LJc2oRs8NUFbDeSm3zI7FQ9D3rReyBIXXszKJ0bTkSQKD//b1Uy8bjqWNOEkStyTCS
+	 x1syDEa9r2lrlCbKbjL3wBvHTinnPdRlnCGZbJDABkMYsoJbeMdLlw7GYx6i9qzCCK
+	 0Vxys58LqCw9w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 1/6] rust: str: add radix prefixed integer parsing
+ functions
+In-Reply-To: <DAPY5HF9HGXC.FCEKAMLPFY1H@kernel.org> (Benno Lossin's message of
+	"Wed, 18 Jun 2025 22:38:00 +0200")
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<20250612-module-params-v3-v13-1-bc219cd1a3f8@kernel.org>
+	<bbRxeBHCiFQl9UTC1hFQYdzkdAIV5HcRTuFf9ucPUEZZ-uJmaHAZXfd8Tk-k9vzROgFsCyNhGBBCn5J_HnbUSA==@protonmail.internalid>
+	<DAPY5HF9HGXC.FCEKAMLPFY1H@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 19 Jun 2025 13:12:30 +0200
+Message-ID: <871prg7zoh.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jun 2025 13:01:16 +0200
-Message-Id: <DAQGIG20TJV6.3O4G0F4O72327@kernel.org>
-Cc: <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <aliceryhl@google.com>,
- <daniel.almeida@collabora.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
- <alyssa@rosenzweig.io>, <lyude@redhat.com>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Beata Michalska"
- <beata.michalska@arm.com>
-X-Mailer: aerc 0.20.1
-References: <20250619102102.750668-1-beata.michalska@arm.com>
- <aFPsjIFIC1J2qtdc@pollux>
-In-Reply-To: <aFPsjIFIC1J2qtdc@pollux>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Thu Jun 19, 2025 at 12:55 PM CEST, Danilo Krummrich wrote:
-> On Thu, Jun 19, 2025 at 12:21:02PM +0200, Beata Michalska wrote:
->> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
->> index 445639404fb7..12b296131672 100644
->> --- a/rust/kernel/drm/ioctl.rs
->> +++ b/rust/kernel/drm/ioctl.rs
->> @@ -139,7 +139,7 @@ pub mod internal {
->>                              // asserted above matches the size of this =
-type, and all bit patterns of
->>                              // UAPI structs must be valid.
->>                              let data =3D unsafe {
->> -                                &*(raw_data as *const $crate::types::Op=
-aque<$crate::uapi::$struct>)
->> +                                &mut *(raw_data as *mut $crate::uapi::$=
-struct)
+"Benno Lossin" <lossin@kernel.org> writes:
+
+> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
+>> +pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
+>> +    /// Parse a string according to the description in [`Self`].
+>> +    fn from_str(src: &BStr) -> Result<Self> {
+>> +        match src.deref() {
+>> +            [b'-', rest @ ..] => {
+>> +                let (radix, digits) = strip_radix(rest.as_ref());
+>> +                // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
+>> +                // So if we want to parse negative numbers as positive and
+>> +                // later multiply by -1, we have to parse into a larger
+>> +                // integer. We choose `u64` as sufficiently large.
+>> +                //
+>> +                // NOTE: 128 bit integers are not available on all
+>> +                // platforms, hence the choice of 64 bits.
+>> +                let val =
+>> +                    u64::from_str_radix(core::str::from_utf8(digits).map_err(|_| EINVAL)?, radix)
+>> +                        .map_err(|_| EINVAL)?;
+>> +
+>> +                if val > Self::abs_min() {
+>> +                    return Err(EINVAL);
+>> +                }
+>> +
+>> +                if val == Self::abs_min() {
+>> +                    return Ok(Self::MIN);
+>> +                }
+>> +
+>> +                // SAFETY: We checked that `val` will fit in `Self` above.
 >
-> I think we have to document the guarantees we rely on to create this muta=
-ble
-> reference.
+> Sorry that it took me this long to realize, but this seems pretty weird.
+> I guess this is why the `FromStrRadix` is `unsafe`.
+>
+> Can we just move this part of the code to `FromStrRadix` and make that
+> trait safe?
+>
+> So essentially have:
+>
+>     fn from_u64(value: u64) -> Result<Self>;
+>
+> in `FromStrRadix` and remove `MIN`, `abs_min` and `complement`. Then
+> implement it like this in the macro below:
+>
+>     const ABS_MIN = /* existing abs_min impl */;
+>     if value > ABS_MIN {
+>         return Err(EINVAL);
+>     }
+>     if val == ABS_MIN {
+>         return Ok(<$ty>::MIN);
+>     }
+>     // SAFETY: We checked that `val` will fit in `Self` above.
+>     let val: $ty = unsafe { val.try_into().unwrap_unchecked() };
+>     (!val).wrapping_add(1)
+>
+> The reason that this is fine and the above is "weird" is the following:
+> The current version only has `Self: FromStrRadix` which gives it access
+> to the following guarantee from the `unsafe` trait:
+>
+>     /// The member functions of this trait must be implemented according to
+>     /// their documentation.
+>     ///
+>     /// [`&BStr`]: kernel::str::BStr
+>
+> This doesn't mention `TryFrom<u64>` and thus the comment "We checked
+> that `val` will fit in `Self` above" doesn't really apply: how does
+> checking with the bounds given in `FromStrRadix` make `TryFrom` return
+> `Ok`?
 
-If the C side is using pointers to read/write the value concurrently,
-this is wrong, it needs to be wrapped in Opaque.
+I'm having a difficult time parsing. Are you suggesting that we guard
+against implementations of `TryInto<u64>` that misbehave?
 
----
-Cheers,
-Benno
+
+Best regards,
+Andreas Hindborg
+
+
