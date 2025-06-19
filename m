@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45918265637;
-	Thu, 19 Jun 2025 09:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5A12192F1;
+	Thu, 19 Jun 2025 09:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750324331; cv=none; b=B0sC3GgKQ/0RqOSbGQxFKQV9HSyl/EO0ShXCdcB1YWIZNvxShWwPFg5hk1IumkOHMi4QwGTM5DtNNpHOhBzE3ro3KmZueRSwBpggiCEKIH26PuJQ51FoLX5xO7XXl/dOI6GbpjTNsuDmiSKAp9wqsD5iGroL778vvsG4SMSjJSw=
+	t=1750325296; cv=none; b=Vt3yFWL/aMYD5C5Vwd3Xigf+zo8VHbOk7CbAsS9A1BmMbwvB+oXN/s5w37DlXUE5B+yu3rM72F071GibsJnQv0emtLkBZc5tX/NLLOMuJ+1XjEJpvjXHG/hIMEy5bl8VR4CbxCahXtNz3/tjhrsjis8Lk4jf8N2TXT0cFQZ3AoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750324331; c=relaxed/simple;
-	bh=Sg8ZB7zRTaiF7VwfD5YzBa2ZZKB3AIitrYiKGX28tEs=;
+	s=arc-20240116; t=1750325296; c=relaxed/simple;
+	bh=CdvJbqAN2i2KZVe8rF157rI8pFB9iQGI5sNq/y3z5Lo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KOjiDpvMqcIFkNsFfKeLzP94sdy3PlgQnDNtVoZKJZp7GoNja7FNLjdh8ftsCub/EfNUIVawK8SUb0+LpSyKDUUggXC7S3wFhWDL5A9nbTFVjr63QQotkRLAJeA0z6T7CvBRAbLaWQlCjkFguklF/3RKXBZgKxFjc3clB+M7cMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VV+iVEfI; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=GUlxX8lgg4LrRRM83l/zLDbP074GKKAHnblz0KEIg7z1/tj2eJViiSJk7tM8SkL/d3boBOyIwHUG2wLrPAE0BwqkWKJTVncJ9t/494abnBveON293tcD3ISgoA7Sf82k/+WKp3BJB5CnmSI0ZvFPdLrCEuiTxcHycJ4QtZxQ8yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAAp/X+g; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VV+iVEfI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58EF3C4CEF0;
-	Thu, 19 Jun 2025 09:12:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAAp/X+g"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41161C4CEEA;
+	Thu, 19 Jun 2025 09:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750324330;
-	bh=Sg8ZB7zRTaiF7VwfD5YzBa2ZZKB3AIitrYiKGX28tEs=;
+	s=k20201202; t=1750325296;
+	bh=CdvJbqAN2i2KZVe8rF157rI8pFB9iQGI5sNq/y3z5Lo=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VV+iVEfI7PHeUD+vb+B7fM96kXSOkyqvXhIaM6hD3V13xEvzKVRh8SpKmA5fp0+BU
-	 m4t/ziGLzHd70NqAO1YXFUu0Ql1q4bwTJW9oB/XxN/2HM052o+NCiTnmnS2+Ak8J9U
-	 f0Ry9L5cVn+/zzo5zupS0xJNxCgI9Tyx8xx55NBuZaJH1AZO9Me7hIQnC6k/m2eDFx
-	 vyWpobaJWX63QvWgChle1DMGm/iMyOrJu1NK6HKSL28hs1C+ZEEgqEeSMCqyV4wrt/
-	 8c/SwLR1NCkueqn18i9AeujB9tylvQec7YjdBmSYoSxZ82AEny+nI6qA+JfANI9vBP
-	 Runh32eDM/K7Q==
+	b=TAAp/X+gg05uI6cdtgwIB7zPQu5Do5p66zsUPLMOWIcrnXXpYGzIp/o608NhR+Fcy
+	 WDu+opKV31mUkP53uqM7mDtmZ6VOOv+hXkcQn8Z+299Z+CrF1Ac9FN+VWwcBnS2w5r
+	 X1X+IB3HG5XS0wl8y2spjWtQekTA0YgCpe7+DKA1KfGhLLTTpjziDxNj/iPzovz+LP
+	 3IYPkvBUnLX0x7JwAU7wAOEJBFdqyL0cwqtBJhGO8bkUlxMMs1UR2V0sTb8+HGy/Yf
+	 aqE1D8m62dpVQ7lda66LKxgfF3vBYomp7k94GqzcO1TkxK51LIGQaJzhhnSFye8hpK
+	 Cc0A0OpAuvsrw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <alex.gaynor@gmail.com>,  <ojeda@kernel.org>,  <aliceryhl@google.com>,
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  <aliceryhl@google.com>,
+  <alex.gaynor@gmail.com>,  <ojeda@kernel.org>,
   <anna-maria@linutronix.de>,  <bjorn3_gh@protonmail.com>,
   <boqun.feng@gmail.com>,  <dakr@kernel.org>,  <frederic@kernel.org>,
   <gary@garyguo.net>,  <jstultz@google.com>,
@@ -37,43 +38,75 @@ Cc: <alex.gaynor@gmail.com>,  <ojeda@kernel.org>,  <aliceryhl@google.com>,
   <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
 Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods
  as_micros_ceil and as_millis
-In-Reply-To: <20250617144155.3903431-2-fujita.tomonori@gmail.com> (FUJITA
-	Tomonori's message of "Tue, 17 Jun 2025 23:41:54 +0900")
-References: <20250617144155.3903431-1-fujita.tomonori@gmail.com>
-	<nGua2ftAnkipxGpZlW-9RYB0309pR0BxmzzR1rUx-LWFRRaiuycAACIWx6mPAp9PQcxmF5d1xC14XIu5flxBiA==@protonmail.internalid>
-	<20250617144155.3903431-2-fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72kacWaLo=EE8WyA_M2Pr9h1MkqjeAmqet6CSGWLvM7B9g@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Thu, 19 Jun 2025 09:23:38 +0200")
+References: <CANiq72kSfHTPeRQjhHKhdw8zuozvNy50CJjTuEbUnW_3j9x8tw@mail.gmail.com>
+	<CAH5fLgggDKUwmU3oCTMS1dQGzA5Whp2fnXoLmbGmNF1W89Ar_A@mail.gmail.com>
+	<CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com>
+	<20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
+	<v2VP7JfqanHzCbCjzZsKXCG3l7icurTwDY22nHhk0sJjQjy2gubeujbVvfLe7c8-2KOURnZ87UHLxjAGiTxfeQ==@protonmail.internalid>
+	<CANiq72kacWaLo=EE8WyA_M2Pr9h1MkqjeAmqet6CSGWLvM7B9g@mail.gmail.com>
 User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 19 Jun 2025 11:12:00 +0200
-Message-ID: <87o6uk859b.fsf@kernel.org>
+Date: Thu, 19 Jun 2025 11:28:01 +0200
+Message-ID: <87ikks84im.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Fujita,
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
-
-> Rename the Delta struct's methods as_micros_ceil() and as_millis() to
-> into_micros_ceil() and into_millis() respectively, for consistency
-> with the naming of other methods.
+> On Thu, Jun 19, 2025 at 9:08=E2=80=AFAM FUJITA Tomonori
+> <fujita.tomonori@gmail.com> wrote:
+>>
+>> So would the function be defined like this?
+>>
+>> fn as_nanos(self) -> i64;
+>>
+>> If that's the case, then we've come full circle back to the original
+>> problem; Clippy warns against using as_* names for trait methods that
+>> take self as follows:
+>>
+>> warning: methods called `as_*` usually take `self` by reference or `self=
+` by mutable reference
 >
-> Fix the commit 2ed94606a0fe ("rust: time: Rename Delta's methods from
-> as_* to into_*"), wasn't applied as expected, due to the conflict with
-> the commit 1b7bbd597527 ("rust: time: Avoid 64-bit integer division on
-> 32-bit architectures").
+> Yeah, the Clippy warning is indeed one more data point that the
+> guidelines are confusing to the point of having Clippy complain or,
+> more likely, the guidelines' intention is that we should just pick
+> `&self`.
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> If we decide to be OK with `self`s in the kernel for these cases, we
+> can simply disable the lint. Doing so means we lose the rest of the
+> checking for that lint, sadly.
+>
+> And, yeah, we are indeed going in circles.
+>
+> What I would normally suggest for cases like this is answering: what
+> would be the best for the kernel's particular case, regardless of
+> existing guidelines/lints? Then, if we think it is better to be
+> different, and there is enough justification to do so, then try to
+> mitigate the lose of the lints, talk to upstream, write our own
+> variation of the guidelines, etc.
+>
+> So I would like to hear if anybody feels strongly about either
+> direction, i.e. any other pros/cons that we haven't thought of.
 
-Sorry for messing up your patch. Since we have no rules against rebasing
-rust-timekeeping and the PR is a few weeks down the road, I will just go
-back and fix the original patch. Keep commit history clean.
+The table at [1] seems to suggest `to_*` or `into_*` being the right
+prefix for this situation. It does not fully match `to_*`, as the
+conversion is not expensive. It does not match `into_*` as the type is
+`Copy`.
+
+I am leaning towards `to_*`, but no strong feelings against `into_*`.
+
+I would not go with `as_*`, I would expect that to borrow.
+
 
 Best regards,
 Andreas Hindborg
-
 
 
