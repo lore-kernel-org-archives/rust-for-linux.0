@@ -1,135 +1,223 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA9545038;
-	Thu, 19 Jun 2025 12:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEB014F9F7
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 13:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750337842; cv=none; b=OHJuy8CvymP1jEauZr5Zc6YKZL1y54GmveYnEXBLIqgZpuStF4QG4wJSPgSSPKp/PRLYi1UM1D76FwAfEQUJRFGjCribLaJ2p/FYM7IfKb5CNhrG0BlK3jSzQVUsOg2t8RigxoQGC8cD1xMQGuqu7vZDpQi3KAR91f9JiRXL2YA=
+	t=1750338068; cv=none; b=fHCScggqHDHhZ1+J2BM7IuqxkXzHJQpWGEZacTs7DW18KPK1ihGkj3RHuZCPzoIZgs/PWHc9on5wtImg83o8TtpMVYQ4Fh+XBrlcVCgXLLvAXaKAss9ZnS9XQuoAelrdqP27UsSI4meqRWBHZfBGUyXL2pZgr0ppADW4LFJGKmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750337842; c=relaxed/simple;
-	bh=d9e5HJ45tr/MyEWNHOgb5I6HGDjVGDJUtmF7txoigI8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AwqbG5wEH2cTL5OXEoR+IWz6LtW3vwRBEvQvPAbof7zHbkYwG7d9Xu+9fCFOeI1WsWKYCjomGAm+XXHZMh/1vhAwmOPV45oxUz+JDX9VSg/u3VMgPs1E39+CJco9ankd3gM0kZQMoGB/Idu/kZh1ZO+OXLodQhyDrNmdDD+B/eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuAyVOJr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750338068; c=relaxed/simple;
+	bh=Fb+eo7mMD00G/kYVNIX50aLuR7GCNA1tlFF3IvTl3B0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JVLJDfSG9Yh8sGQXIR/Fmna6oJytl/exUAbOLCARmIjRk6WU5HqMlA1wLDcNSGSkgA5iymnAG5wulvMNQ2/TpHf6Jlv1aeSgFpt/fmFi16nEmUH2L+0fG+dgWyqd3b5U3TgGwK3hhF8Rl8FrEcu42RcFMfyZ/8UiuakRFx1JrG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTaX4qqj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuAyVOJr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5ECC4CEEA;
-	Thu, 19 Jun 2025 12:57:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTaX4qqj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842F2C4CEEA;
+	Thu, 19 Jun 2025 13:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750337841;
-	bh=d9e5HJ45tr/MyEWNHOgb5I6HGDjVGDJUtmF7txoigI8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=DuAyVOJrGQGV11NldPvoe/547B0ypS3eGxON4wu2u9gNuHg7VJsT17LIUY/dRylOo
-	 vFDJ1hD9eHIqiQNN2M5lnqCymi84iKlV3R84RVArLKYgJP3Y4DCVhFWAY2SPBMKeXR
-	 6r91rAO4JByhSfcM7Zyu7tbO0yHRZ/vumw7A73GwgyCEu+H4iyJ22tv7tYsSzyZsi/
-	 8U2Z8CUHoywLCc7thtEj/KWFPF14/+pcmhEmQCWPYqQt/cCtRDNc60yFHH3PEC4Eyz
-	 QupBAJRp6qlCmSIbZVAjSCtHmH6xxvD1XOVqNYcCxy2NB1Xl235ipxBAfwTrc1AA95
-	 8mYcE9BO//Srw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <boqun.feng@gmail.com>,  <alex.gaynor@gmail.com>,  <ojeda@kernel.org>,
-  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
-  <bjorn3_gh@protonmail.com>,  <dakr@kernel.org>,  <frederic@kernel.org>,
-  <gary@garyguo.net>,  <jstultz@google.com>,
-  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
-  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
-  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
-Subject: Re: [PATCH] rust: time: Seal the ClockSource trait
-In-Reply-To: <20250619.203319.1745503493999032815.fujita.tomonori@gmail.com>
-	(FUJITA Tomonori's message of "Thu, 19 Jun 2025 20:33:19 +0900")
-References: <lliFJqf-6WmrKCArjCpOguz4jsHNtiF9GU0X4Ip5bE8NseTdlyKNH_7Bp_CyxNBD5ZR-Jbz0teNRS4UgV_7Z3g==@protonmail.internalid>
-	<20250619.092816.1768105017126251956.fujita.tomonori@gmail.com>
-	<87cyb084df.fsf@kernel.org>
-	<HtpBC6KWSM5Y-x_Vzv2SvzKId8EC0R3fX9HB88gZQnIvy43YqYFDqAkXPUc1IQos2CoYljFnsJJDcGm-vep0TQ==@protonmail.internalid>
-	<20250619.203319.1745503493999032815.fujita.tomonori@gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 19 Jun 2025 14:57:12 +0200
-Message-ID: <8734bv7utz.fsf@kernel.org>
+	s=k20201202; t=1750338067;
+	bh=Fb+eo7mMD00G/kYVNIX50aLuR7GCNA1tlFF3IvTl3B0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rTaX4qqjnmYnKGrgUdNZfjtPgrnCsUce+FpIN0BqsuTq1XNVMPEYR0+L9s6FC7d+/
+	 rdNXJ3CJQDKb+YP0ELyv4NhW8rXRw5QfIfMzLmimWx+eK2Vqja5iYw8Ei1dmJYOAVy
+	 Pff6wIqHSRN9Zd1RC85U5ve/2Keebulf0vcLoQ3yZW5yv+206MtCpGDBT5NhJwMVRJ
+	 ImTJjATlppWCXbuT8q5NFFUDwVBsov+td2sm/GuHuWlWigWwoAsgbE4CDriwBMOCrI
+	 E60LCX3SHH1sXcE4rBPR3j57OKfRgSNch1e1lO0TUVwr4GPJj7LfbHmR2inUKMx9Lv
+	 7tdT4cZLNqL1A==
+Date: Thu, 19 Jun 2025 15:01:01 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Beata Michalska <beata.michalska@arm.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
+	daniel.almeida@collabora.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, alyssa@rosenzweig.io,
+	lyude@redhat.com, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
+Message-ID: <aFQKDe1Pks9nJQqt@pollux>
+References: <20250619102102.750668-1-beata.michalska@arm.com>
+ <aFPsjIFIC1J2qtdc@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aFPsjIFIC1J2qtdc@pollux>
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+On Thu, Jun 19, 2025 at 12:55:14PM +0200, Danilo Krummrich wrote:
+> On Thu, Jun 19, 2025 at 12:21:02PM +0200, Beata Michalska wrote:
+> > With the Opaque<T>, the expectations are that Rust should not make any
+> > assumptions on the layout or invariants of the wrapped C types.
+> > That runs rather counter to ioctl arguments, which must adhere to
+> > certain data-layout constraints. By using Opaque<T>, ioctl handlers
+> > end up doing unsound castings,
+> 
+> Which unsound casts? Please see [1] and [2] for how nova implements those IOCTL
+> handlers.
+> 
+> Speaking of which, this patch breaks the build, since it doesn't adjust the
+> users of the API, i.e. nova.
+> 
+> If you want I can post a diff to fix up nova accordingly for you to add to this
+> patch.
 
-> On Thu, 19 Jun 2025 11:31:08 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
->>
->>> On Wed, 18 Jun 2025 21:13:07 +0200
->>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>>
->>>> "Boqun Feng" <boqun.feng@gmail.com> writes:
->>>>
->>>>> On Tue, Jun 17, 2025 at 05:10:42PM -0700, Boqun Feng wrote:
->>>>>> On Wed, Jun 18, 2025 at 08:20:53AM +0900, FUJITA Tomonori wrote:
->>>>>> > Prevent downstream crates or drivers from implementing `ClockSourc=
-e`
->>>>>> > for arbitrary types, which could otherwise leads to unsupported
->>>>>> > behavior.
->>>>>> >
->>>>>>
->>>>>> Hmm.. I don't think other impl of `ClockSource` is a problem, IIUC, =
-as
->>>>>> long as the ktime_get() can return a value in [0, i64::MAX). Also th=
-is
->>>>>> means ClockSource should be an `unsafe` trait, because the correct
->>>>>> implementaion relies on ktime_get() returns the correct value. This =
-is
->>>>>> needed even if you sealed ClockSource trait.
->>>>>>
->>>>>> Could you drop this and fix that the ClockSource trait instead? Than=
-ks!
->>>>>>
->>>>>
->>>>> For example:
->>>>>
->>>>>     /// Trait for clock sources.
->>>>>     ///
->>>>>     /// ...
->>>>>     /// # Safety
->>>>>     ///
->>>>>     /// Implementers must ensure `ktime_get()` return a value in [0,
->>>>>     //  KTIME_MAX (i.e. i64::MAX)).
->>>>>     pub unsafe trait ClockSource {
->>>>>         ...
->>>>>     }
->>>>
->>>> Nice catch, it definitely needs to be unsafe. We should also require
->>>> correlation between ID and the value fetched by `ktime_get`.
->>>
->>> What's ID?
->>
->>
->>   pub trait ClockSource {
->>       /// The kernel clock ID associated with this clock source.
->>       ///
->>       /// This constant corresponds to the C side `clockid_t` value.
->>       const ID: bindings::clockid_t;
->>
->> The constant used to identify the clock source when calling into C APIs.
->
-> Ah, I see. Sorry to ask another question, but can we require
-> correlation between ID and the value fetched by `ktime_get`?
+diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
+index 7e59a34b830d..7e7d4e2de2fb 100644
+--- a/drivers/gpu/drm/nova/file.rs
++++ b/drivers/gpu/drm/nova/file.rs
+@@ -2,13 +2,11 @@
 
-Yes, I think we should. As in, `ClockSource::ktime_get` must return the
-time associated with the clock specified by `ClockSource::ID`.
+ use crate::driver::{NovaDevice, NovaDriver};
+ use crate::gem::NovaObject;
+-use crate::uapi::{GemCreate, GemInfo, Getparam};
+ use kernel::{
+     alloc::flags::*,
+     drm::{self, gem::BaseObject},
+     pci,
+     prelude::*,
+-    types::Opaque,
+     uapi,
+ };
 
->The value
-> fetched by ktime_get is opaque, isn't it?
+@@ -26,20 +24,19 @@ impl File {
+     /// IOCTL: get_param: Query GPU / driver metadata.
+     pub(crate) fn get_param(
+         dev: &NovaDevice,
+-        getparam: &Opaque<uapi::drm_nova_getparam>,
++        getparam: &mut uapi::drm_nova_getparam,
+         _file: &drm::File<File>,
+     ) -> Result<u32> {
+         let adev = &dev.adev;
+         let parent = adev.parent().ok_or(ENOENT)?;
+         let pdev: &pci::Device = parent.try_into()?;
+-        let getparam: &Getparam = getparam.into();
 
-It is, but the implementation must still fetch the correct counter, right?
-Not sure if it could lead to UB if it did not though =F0=9F=A4=B7
+-        let value = match getparam.param() as u32 {
++        let value = match getparam.param as u32 {
+             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
+             _ => return Err(EINVAL),
+         };
 
+-        getparam.set_value(value);
++        getparam.value = value;
 
-Best regards,
-Andreas Hindborg
+         Ok(0)
+     }
+@@ -47,13 +44,12 @@ pub(crate) fn get_param(
+     /// IOCTL: gem_create: Create a new DRM GEM object.
+     pub(crate) fn gem_create(
+         dev: &NovaDevice,
+-        req: &Opaque<uapi::drm_nova_gem_create>,
++        req: &mut uapi::drm_nova_gem_create,
+         file: &drm::File<File>,
+     ) -> Result<u32> {
+-        let req: &GemCreate = req.into();
+-        let obj = NovaObject::new(dev, req.size().try_into()?)?;
++        let obj = NovaObject::new(dev, req.size.try_into()?)?;
 
+-        req.set_handle(obj.create_handle(file)?);
++        req.handle = obj.create_handle(file)?;
 
+         Ok(0)
+     }
+@@ -61,13 +57,12 @@ pub(crate) fn gem_create(
+     /// IOCTL: gem_info: Query GEM metadata.
+     pub(crate) fn gem_info(
+         _dev: &NovaDevice,
+-        req: &Opaque<uapi::drm_nova_gem_info>,
++        req: &mut uapi::drm_nova_gem_info,
+         file: &drm::File<File>,
+     ) -> Result<u32> {
+-        let req: &GemInfo = req.into();
+-        let bo = NovaObject::lookup_handle(file, req.handle())?;
++        let bo = NovaObject::lookup_handle(file, req.handle)?;
 
+-        req.set_size(bo.size().try_into()?);
++        req.size = bo.size().try_into()?;
+
+         Ok(0)
+     }
+diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
+index 902876aa14d1..730598defe04 100644
+--- a/drivers/gpu/drm/nova/nova.rs
++++ b/drivers/gpu/drm/nova/nova.rs
+@@ -5,7 +5,6 @@
+ mod driver;
+ mod file;
+ mod gem;
+-mod uapi;
+
+ use crate::driver::NovaDriver;
+
+diff --git a/drivers/gpu/drm/nova/uapi.rs b/drivers/gpu/drm/nova/uapi.rs
+deleted file mode 100644
+index eb228a58d423..000000000000
+--- a/drivers/gpu/drm/nova/uapi.rs
++++ /dev/null
+@@ -1,61 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-use kernel::uapi;
+-
+-// TODO Work out some common infrastructure to avoid boilerplate code for uAPI abstractions.
+-
+-macro_rules! define_uapi_abstraction {
+-    ($name:ident <= $inner:ty) => {
+-        #[repr(transparent)]
+-        pub struct $name(::kernel::types::Opaque<$inner>);
+-
+-        impl ::core::convert::From<&::kernel::types::Opaque<$inner>> for &$name {
+-            fn from(value: &::kernel::types::Opaque<$inner>) -> Self {
+-                // SAFETY: `Self` is a transparent wrapper of `$inner`.
+-                unsafe { ::core::mem::transmute(value) }
+-            }
+-        }
+-    };
+-}
+-
+-define_uapi_abstraction!(Getparam <= uapi::drm_nova_getparam);
+-
+-impl Getparam {
+-    pub fn param(&self) -> u64 {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
+-        unsafe { (*self.0.get()).param }
+-    }
+-
+-    pub fn set_value(&self, v: u64) {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
+-        unsafe { (*self.0.get()).value = v };
+-    }
+-}
+-
+-define_uapi_abstraction!(GemCreate <= uapi::drm_nova_gem_create);
+-
+-impl GemCreate {
+-    pub fn size(&self) -> u64 {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
+-        unsafe { (*self.0.get()).size }
+-    }
+-
+-    pub fn set_handle(&self, handle: u32) {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
+-        unsafe { (*self.0.get()).handle = handle };
+-    }
+-}
+-
+-define_uapi_abstraction!(GemInfo <= uapi::drm_nova_gem_info);
+-
+-impl GemInfo {
+-    pub fn handle(&self) -> u32 {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
+-        unsafe { (*self.0.get()).handle }
+-    }
+-
+-    pub fn set_size(&self, size: u64) {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
+-        unsafe { (*self.0.get()).size = size };
+-    }
+-}
