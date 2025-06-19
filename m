@@ -1,102 +1,119 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F3C22D4DD;
-	Thu, 19 Jun 2025 16:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164BA28DB4A;
+	Thu, 19 Jun 2025 17:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750349427; cv=none; b=Kl50YMoadC3ELEdkPiloTsiPlqgqIQgmGn3WtWA7ZUyJMOgxMjQi7+cFW5DLgB78VVYcSiiB1TzkocX/aUIkWtkGX5iD1NyR+E7R5pJ/TQ1/g25QlXywtK4SAYfPU+pLkm+XZMaV1W+30wtJ6H4P2K6779jO+p5qnecadb6fUZ0=
+	t=1750354380; cv=none; b=R+NCF+3MABPEAjpKmQn1Kn+rRyx66hshx8415brd8bkppdPtMEpTLWUVP4V7WvZnGExRo573X0DZ/99X6Mxd8GcGCENwril48IzgbJOSxpgFVwmbdT4J7W2wbkdyzqucVVXoEKfoUEvlU8lkYLotKQaYzbroKSEVmQSZvxaeaTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750349427; c=relaxed/simple;
-	bh=LMH8MvWT9p01LTh8Zrar1FIeudfVGtDYSmePFlQjQmQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KUofq9VzvdO37MFlM/LFhtNopWFDpDXoGd5eA1/MTl6UjqPycGTq+Gjxdeb/CIVuWBnp9OOwiiSKVMbIZl76SglwzzFULDQBxmPpTDvhCPz5d3oEsaxxgy17TO05I5ebzpm0WuD1P9xh00rsYvvJa8r2SKDIR8/Cpn+rYuzMEp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dAdppRoe; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750354380; c=relaxed/simple;
+	bh=iOCYm2Q0ejh/wpUJcN5TvpQXAQZko1nXFyp0be677Gw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hd78VaZkz+OOK2KBUOPvZ9IZQMi7HLDL3WB3vozz6pETpb1W4khBTfT1y3RtFu9DFJ/SlyQPw+cZ9hVy/J2021TZzCFwynBdwHVWNzw5VG3CPq2zrT4fMk2WFA6g7ivVYrPxW1OQMVxp0iXqOgnVrA6q+4jA8EXFDxYEzaTuQtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJWuuCGD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dAdppRoe"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-312f53d0609so154057a91.1;
-        Thu, 19 Jun 2025 09:10:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750349425; x=1750954225; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LMH8MvWT9p01LTh8Zrar1FIeudfVGtDYSmePFlQjQmQ=;
-        b=dAdppRoe36Dhg493rZerlgqPu8UqfH7wdBsUOrZyt96QgYtORrYkkk8cCkehQrFWNB
-         3aTBfzKhS8Fw+7l/0IkksjefKihT+toV8Zf3BPcbtkjG+QqMb1LgtwdpuwSuOF6vHc8R
-         oMBEkpB4pbc7j1E2zqCqdy/gBvGc8g0dqHoAj9ty4p9ttLzFUN1PJ972+RkGUqwAQeJ1
-         DPSI+xarDE02xAVR7oZdKfQGYOkIXNTRxFBtxioaaasey7qCTKITfL3nHo6kbwLEBRqA
-         Im2GQGZsXHzJS8Gs6mUlRiWIJ2aIYpczeHMGNx3pBYLo9VQEyfw+1JhxTAVt6q0b9loe
-         5+Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750349425; x=1750954225;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LMH8MvWT9p01LTh8Zrar1FIeudfVGtDYSmePFlQjQmQ=;
-        b=aWX6AVntMrwDoa5FfypGLqV6c+KP/DeRfq1hjY+jHHY8qSu30Vg8BTUof6mKWqcCwB
-         CkNefWdlpR7ovd9oGU4d+hCMjPYtLYC5IWXPqra5hSq5CWju4ZjjWjIlG0G0E5jLNhAy
-         NzTxRRZZ3pr+/rg8GKNpA7/53kDf+Llwxg9lW/wEV04qmpIj+xHDXXpN/kmdIjAhPf+F
-         YkbXbreAaL6hg9/5Eyiq/l38+JO8NkE/otU9iaWWAOVw8UhHz53F9NtgymDOLJoAcol7
-         KoqEj8opo0Zua9rYmCZBeYMq73nLwvWpto04cbDeaWze2JhGaGHKaU+8ojxq7OQLW0yK
-         pb8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVDVOeJxujSL7zCg+LEKQu7RcbRsB6yuokcXxtXP2RcoM54Ln1swDLsCvN07QtP8HQZSEQrn/7RGwhw@vger.kernel.org, AJvYcCVKogj54vgRMkiILhVb357gSWduj+7ojDcCvLK8jY/aYcxxhzBi+zvFXr6V77Ew+KdBhBn+H7t8MJnq2vbIqto=@vger.kernel.org, AJvYcCWBnnw8WBxOpJCGD2gW4o+EHwzGgWpC/EW4oMWTP0+3KNAOV0DKJ+uHEge8GTmqCJW90VCkC2OXNyttFRncev4k@vger.kernel.org, AJvYcCXRuLPT6NPouKfg+aRCw4vHMWbSR7Ukl+3cDh/nK47h/JxktlMNyrxkGLRaAHFJPgOqIVRgZASxbn8VDMIm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy70seMuCd0zJoWnTB9lpHDCbuXxhWlFBMszgOJ6hiNkUUNvu7M
-	JG5Be7ToB+aWmZUMIUhxnWrKDvaJB4sIcwDslR7W06Kw8ZMM1QIYnVvUGISdvqjOrqlzep97ScS
-	PutlygIyHjYSwTJYcZ0LORxwfdBWQK2g=
-X-Gm-Gg: ASbGncs15qH1bnVdkPmQCw3szjloZSPvroJ3JapxuE0wQawOG+tSFSdx0/+If1cqCtD
-	XHhGQxU3r2Wf4SyEaknpMpDCzExGi6hwwY+VQWc48KUAQjqHJaHmOcS+nBCH1R6s8VNuw4WrKDn
-	BVPwnUlJVNXikgFvg2nRjCG7qopcqQ4fM5q27nzBQqVJJXnGMFj7lbhg==
-X-Google-Smtp-Source: AGHT+IHA1kZM3+30Kh7KI/3Zip3qSV7p770v0+A6KPEYdFDRZEZ7/piUaOGmI0c2RH8JiO02ogUDO/cMxOvTPAK/Zr4=
-X-Received: by 2002:a17:90a:f945:b0:312:ec:411a with SMTP id
- 98e67ed59e1d1-3158bfe52d8mr1733419a91.3.1750349424702; Thu, 19 Jun 2025
- 09:10:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJWuuCGD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FCEC4CEED;
+	Thu, 19 Jun 2025 17:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750354379;
+	bh=iOCYm2Q0ejh/wpUJcN5TvpQXAQZko1nXFyp0be677Gw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kJWuuCGD8Cj4SnXlfiAxM5JdfncyBbq4Y+XC086oR78RG0t2Xtb8xmJ5nMUmOfR9H
+	 xwKZFS8YbfUZihRmC3bFKq9K8fxIFfdPZy4QKXmGW+oTDwnAKH+luLhdR2bf4zqSgK
+	 g1DCSG/1Z4obIrDY5U3Srx7vR2m8MqXr3Vxk8X6WP1mEhQAOWZX//GXBDKgGg8gTjk
+	 2wTACTBjjtZwtUBlDgx5gBAXMRq3WESnliAKyycfUMck+EeMl/p9zsYPrkMdxxPd3N
+	 hvI7f33eDNnDWymycgQ0ZSfHZhkeTYeMnYNj/xFEg0tn/hU1A/5H2fIINMrrhsQRpg
+	 HVkMopKnL3DGw==
+Date: Thu, 19 Jun 2025 19:32:52 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Boris Brezillon <boris.brezillon@collabora.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Lyude Paul <lyude@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, Asahi Lina <lina@asahilina.net>
+Subject: Re: [PATCH v2 2/2] rust: drm: Add GPUVM abstraction
+Message-ID: <aFRJxCFxA0Hqwmqu@pollux>
+References: <20250422-gpuvm-v2-0-44d4fc25e411@collabora.com>
+ <20250422-gpuvm-v2-2-44d4fc25e411@collabora.com>
+ <aAgHGuzCZzh7YPz2@cassiopeiae>
+ <DBB3E8CE-19AA-437D-AF54-BF23763B254F@collabora.com>
+ <aAj7gAzFVRX3dN7L@pollux>
+ <F731D6F7-312D-4633-B677-69B7CC7194A6@collabora.com>
+ <20250619135709.634625e0@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250619-rust-panic-v1-1-ad1a803962e5@google.com>
-In-Reply-To: <20250619-rust-panic-v1-1-ad1a803962e5@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 19 Jun 2025 18:10:12 +0200
-X-Gm-Features: Ac12FXz41mL-93--1Ce-xHCq7bVUjTSgqjY5PcH5jvOVitFgWHe_e11AfPrRbbI
-Message-ID: <CANiq72=ORd8Y=BiMCWEN7sdjLTGrepnLd58AObVHEPcZE_NVAg@mail.gmail.com>
-Subject: Re: [PATCH] panic: improve panic output from Rust panics
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250619135709.634625e0@collabora.com>
 
-On Thu, Jun 19, 2025 at 5:11=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> This patch has the pretty major disadvantage that it unconditionally
-> calls panic() when a Rust panic happens.
+On Thu, Jun 19, 2025 at 01:57:09PM +0200, Boris Brezillon wrote:
+> I'm digressing, but there's an aspect I found very annoying in the C
+> version of the API: the fact that we have to take a BO ref, then lock,
+> then release the vm_bo [1], because otherwise the vm_bo might be the
+> last owner of a BO ref leading to a UAF on the lock itself. This to me,
+> denotes a lifetime issue that I think would be good to address in the
+> rust version of the API.
+> 
+> It's not exactly the same problem, but I think it comes from the same
+> root issue: lax ownership definition. By that I mean it's not clear
+> who's the owner and who's the owned. gem_object::gpuva::list has
+> weak refs on the vm_bos contained in this list, which kinda makes sense
+> because vm_bos themselves have a ref on the gem_object, and if we were
+> to make this weak ref a strong ref we'd never free any of these two
+> objects. The lock is also part of the BO (either the BO resv lock, or a
+> custom lock), and since it's the very same lock we use to insert/remove
+> vm_bos, that's problematic.
 
-Yeah, I don't think we should do that.
+I think the ownership is actually well defined. A struct drm_gpuvm_bo holds a
+reference of its DRM GEM object.
 
-Other `BUG()` calls in the kernel do a `pr_*` plus a `BUG()`, so what
-we currently do is fairly common and I would expect tooling to be
-aware of that alreardy. What we are missing to be on par with C is
-essentially overriding the file/line.
+When the drm_gpuvm_bo is freed it needs to remove itself from the GEM objects
+drm_gpuvm_bo list. This also guarantees that all list entries of the GEM object
+are always valid and can be safely used as long as the list lock is held.
 
-Now, maybe `BUG()` itself could also have a way to inject a better
-one-liner explanation after the file/line.
+The reference count dance you describe does not come from the ownership model
+(which, again, I think is fine), but it comes from the design decision to let
+drivers take all required locks externally rather than locking things
+internally. Or in other words typically GPUVM functions behave like a *_locked()
+variant.
 
-That way, we could improve not just Rust, but use it to improve other
-C reports too.
+The main reason for that is that GPUVM had to be designed with a certain degree
+of flexibility in order to be usable for different driver use-cases. For this
+reason, the external locking approach was used to avoid drivers running into
+lock inversion problems.
 
-Cheers,
-Miguel
+For instance, when we use a separate lock to protect the GEM objects list of
+drm_gpuvm_bo objects, we can either iterate the list of objects from a scope
+where the GEM objects dma_resv lock is already held (e.g. TTM callbacks), which
+is a common use-case, or execute operations that have to grab a dma_resv lock
+while iterating the GEM objects list of drm_gpuvm_bo objects.
+
+Meanwhile, I think we have some experience in how drivers typically have to use
+those APIs. And I think that in this case - as long as we keep the external
+locking scheme for the dma_resv lock - we should be fine to make the lock that
+protects the GEM objects drm_gpuvm_bo list an internal lock in the Rust
+abstractions. For this, we can rename the existing, corresponding C functions
+into *_locked() variants and provide functions with internal locking for both C
+drivers and the Rust abstractions.
+
+- Danilo
