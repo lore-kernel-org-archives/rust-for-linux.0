@@ -1,102 +1,160 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B383522A;
-	Thu, 19 Jun 2025 19:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32ACA226D1A;
+	Thu, 19 Jun 2025 19:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750361507; cv=none; b=BiOlOc0Riba+IsQpEGlg6svI7qC02biJLvNg5t3jOoNydyvF+agi1Yn/+rLjDBEDj22HA1N24yLhttopTXsiblnamkdzf9nFN2/zf9OZrRZhiR9OupjRp7uyu0SHjxsZgp/H6oB4Ks08CFINvJwwmS+tdCP5mk2X/QEhVcgpSOs=
+	t=1750361608; cv=none; b=IXffyJMAFdK+1hkJI7SVBwXmXNhA6EBGDOYqR8k3f1svuv651P9qj8Cjh1dAqgcDQwDKUdOsFNhbXhrvkUvw4qPgrC5OcybfXV3fhjOK73qK9ORsXA9KhdrNsWtIZ5EJJzO+0Oyjy7wAtkKoaKIBA7efkwmESSW6g0JbZyFNvJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750361507; c=relaxed/simple;
-	bh=sAV37d0cFXJZyNIU7TPKo9STDXldlu95Ciz5b1DMJso=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P54LGdCInUp40YD275I1f3rsW6+UdQQrD3jmEff8Pwa1hM7g1/qQQHpC4lueKab5hPIyfm+kjq9XKzQPRAJbekkzgB7W3ebgpvk17I/1mF/wsJ2tJC3c48bl7MA6w2hovSo38StEsP5IjPeTeuH90zzAM5aVXkq0d2qKyivmaMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vtx2zPbm; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750361608; c=relaxed/simple;
+	bh=K3ig0XW+sR2f7AhU8fu/SP67FM15tcTtEVt9oemecH0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=PbnnipJK2xNiIlIK1+SYusk0nhfXp4KpT38ciuc/p+TsgAGIYhqEd/Y4FN18lmvR2hLFbkf9XfIyfrC6kuBFxgO9/4GhcKU96dSWY0hzbZHdybTUATgf6kqj44wbDSOaGhlRlM4KMlnew23bkMHYDJ8L0srFMwEpPNX062jUm9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7fB0MeK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vtx2zPbm"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b31c9132688so132604a12.1;
-        Thu, 19 Jun 2025 12:31:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750361505; x=1750966305; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mtEHKWJLefufP89E8LWjawJdakPNym2pyBrvAO8Qp3I=;
-        b=Vtx2zPbmdnfRk8fTpTBkd/uf+Uq3UaxTWdvV2yRg0pq1TQ7oT/nIH94EgGFePVujQi
-         xnd+7DwC3n/bfOLKqaaQZtmmaE2GN3daX/LkB/Gm9W0RJo9ze0AWGNq6bgHrzwkXHypx
-         Wy1euK9BziFtA7IMV7HymhEDjei5DqAUHO9V87i/A6T0a1RuJQcotZQViMAF/ErcHxfa
-         2aR323ENi6YjTFW4Zx2jP8VxNOFpiTag00nhIkKdv8skZwMoH/VNNrlAeYo9Nhr3WMaV
-         NWbk51nsP9Kk1jDQiQYSGJf/7DfWu054SPmfwHVL8ceqNFrj8prf1Nf6eJhRnsJYeUy6
-         pOTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750361505; x=1750966305;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mtEHKWJLefufP89E8LWjawJdakPNym2pyBrvAO8Qp3I=;
-        b=GS9yHLUynbIq/OVf2yXwsBEPa8J9OipVZmJVdYJa2eU9wP552Ia/6XM0JKIW6n+xEe
-         f3UZZFA2LpBzyUIeW3dlxhTMXZ5yjxQoUINNw7y6iW//LLf7GK7/Dll6CY2kq7Lc8D/V
-         XY25oBL54JyfJqr5hSkiGZd1XREur+xakHyF4fuw9fDS6scjBI7iYjzTVpke3dr5zOm2
-         /jJ1fEydP6x5Zf+IUFgCvnZ9RlqKt4Dz61mtL6fQgwjJKyfiq2dJX/nU2A5mbGetpMWx
-         HAbWXeKo6WfXVvRH5YD3h0ARwzpC/ctK3nHw//zgub22lIxKIk0BA/vGpU4P/zTlAsAN
-         iZhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUkBMWmRZhTGxYNYbY8RCxe5yPibbebtV2HKXbRBO96Zx8pEfCd0X3zGBAfOnkovz55sFsgBz19/FjuyNQ1Lwk=@vger.kernel.org, AJvYcCXBAvzC35HTVoD2rY97uo7PXILqd5LDz7G5Hvq70xJtDjbiTytH3+29G+1c3JsRB/MHhN1X30kj7CHXsFs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxUIEubPwoEVyZBAvC8hMQuf7P6LOsQM45cw68Qf3JJq25mIez
-	8ZaOHeIFkFrsqGDDY1/G+eE899aRv2elemAbhgbLhUOUKhj2RVW5/Swey48mD+QIvG91OHGzQxx
-	BNS9xrzNv3AdI4Jliq7Jq+fwme5Iwa2Q=
-X-Gm-Gg: ASbGncuGMy4+/4bkib+B4E3rfk/CGqvD05oYV8F35JZUQ6bwZtIctZWzgNMdzutQo6m
-	mJS1cs6+4akY+/QtWW6dzvhI3qbkNLQfU3XXDQhAxwycHJKG4ue1EXQ6dak9PJU0VrzSEcilXMd
-	Qwj36UNqi4c9LXVuA0X839oZmi81Crtl5rhhUaXyaprto=
-X-Google-Smtp-Source: AGHT+IHEq4DFo+/yVvsQe9ARdAM9/iGz0q2OVWhVoh1F6aZJ3o8LIx/dcNW1+DvX57Dl2Z2Jegdu69eVZoB45yljgM4=
-X-Received: by 2002:a17:90b:3a43:b0:311:fde5:c4ae with SMTP id
- 98e67ed59e1d1-3159d8e2be9mr207043a91.6.1750361505301; Thu, 19 Jun 2025
- 12:31:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7fB0MeK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49B2C4CEEA;
+	Thu, 19 Jun 2025 19:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750361608;
+	bh=K3ig0XW+sR2f7AhU8fu/SP67FM15tcTtEVt9oemecH0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=j7fB0MeKB++tqdj9jER/Rm7izIOEiRPVFOlvKQYBzqlIV9K5iuWMMYXcyP0c68rFk
+	 ubFhWNSlyPudZ34UiTN06SvJJURtNhIr6SPv3ekvBo3jCdvpxBSoj6FqWjx2FyTrFe
+	 LuVga4BIn27AxV5MMzyFkmx/NzSu8HGGpPhI7sjNnYaDNYTG/Duvvfio5+00ugstmT
+	 S1I9tVu5pkU1OQ1E9Y4mtE9LSTjkFMAKYe9C4LfWDzhD9My3nvIJkwwNlB5igQDoGW
+	 EDMu9gtYJFuMhPDMI19KnGGkfJb/iJA5t+RoRvhxHSjHRDCbPjPUeIgrnt67GaMAyl
+	 srATyCiKuHdMw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250615072042.133290-1-christiansantoslima21@gmail.com>
- <CANiq72mnxRquFmjoJemb=3LSq+ZdUfs9J+HXTwM6AavprsVNUg@mail.gmail.com>
- <CABm2a9fVSGm+WWjdkAmJHUH9eH=Qx5efORKxyJtt0HnQrs0QHQ@mail.gmail.com>
- <CANiq72=s6Ugqrf5Ot6fJOMyCug2XyvKpjFCzya_Mr5iBkpitLA@mail.gmail.com>
- <CABm2a9e+XJsess6XY5ukz8vav30ADcmBrufmek+Bd-TNJpR2aQ@mail.gmail.com>
- <CANiq72kY=sSnhzYPRo3Zuj-7RjULMpRfCBYfoDDCpCHttX-3-A@mail.gmail.com> <DAPWP2IC7HZ1.F1GYTSUGD8WN@kernel.org>
-In-Reply-To: <DAPWP2IC7HZ1.F1GYTSUGD8WN@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 19 Jun 2025 21:31:33 +0200
-X-Gm-Features: Ac12FXyddGraOnaHyCE5OHVAk2L4ld60yghKyl3hA61dKQn8bMId7m3JSW3tsDI
-Message-ID: <CANiq72mZYSd2bFRY30HbHQAsptbr9YYa6Veak6_eehMXxNKyLA@mail.gmail.com>
-Subject: Re: [PATCH v7] rust: transmute: Add methods for FromBytes trait
-To: Benno Lossin <lossin@kernel.org>
-Cc: Christian <christiansantoslima21@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
-	richard120310@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Jun 2025 21:33:24 +0200
+Message-Id: <DAQREKHTS45A.98MH00SWH3PU@kernel.org>
+Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ "slava@dubeyko.com" <slava@dubeyko.com>, "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [RFC] Should we consider to re-write HFS/HFS+ in Rust?
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Viacheslav Dubeyko" <Slava.Dubeyko@ibm.com>, "frank.li@vivo.com"
+ <frank.li@vivo.com>, "glaubitz@physik.fu-berlin.de"
+ <glaubitz@physik.fu-berlin.de>
+X-Mailer: aerc 0.20.1
+References: <d5ea8adb198eb6b6d2f6accaf044b543631f7a72.camel@ibm.com>
+ <4fce1d92-4b49-413d-9ed1-c29eda0753fd@vivo.com>
+ <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
+In-Reply-To: <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
 
-On Wed, Jun 18, 2025 at 9:29=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> Yes, the prelude won't have precedence over locally defined items. So if
-> someone does
->
->     mod core {}
->
->     your_macro_that_uses_core!(); // <-- will error with `core::mem` not =
-existing
+Andreas Hindborg will most likely reply with some more info in the near
+future, but I'll drop some of my thoughts.
 
-Yeah, ideally the custom prelude thing (or Clippy or similar) could
-warn about having any collisions with things in the custom prelude to
-begin with.
+On Wed May 28, 2025 at 6:16 PM CEST, Viacheslav Dubeyko wrote:
+> On Wed, 2025-05-28 at 20:40 +0800, Yangtao Li wrote:
+>> +cc rust-for-linux
+>>=20
+>> =E5=9C=A8 2025/5/28 07:39, Viacheslav Dubeyko =E5=86=99=E9=81=93:
+>> > Hi Adrian, Yangtao,
+>> >=20
+>> > One idea crossed my mind recently. And this is about re-writing HFS/HF=
+S+ in
+>> > Rust. It could be interesting direction but I am not sure how reasonab=
+le it
+>> > could be. From one point of view, HFS/HFS+ are not critical subsystems=
+ and we
+>> > can afford some experiments. From another point of view, we have enoug=
+h issues
+>> > in the HFS/HFS+ code and, maybe, re-working HFS/HFS+ can make the code=
+ more
+>> > stable.
+>> >=20
+>> > I don't think that it's a good idea to implement the complete re-writi=
+ng of the
+>> > whole driver at once. However, we need a some unification and generali=
+zation of
+>> > HFS/HFS+ code patterns in the form of re-usable code by both drivers. =
+This re-
+>> > usable code can be represented as by C code as by Rust code. And we ca=
+n
+>> > introduce this generalized code in the form of C and Rust at the same =
+time. So,
+>> > we can re-write HFS/HFS+ code gradually step by step. My point here th=
+at we
+>> > could have C code and Rust code for generalized functionality of HFS/H=
+FS+ and
+>> > Kconfig would define which code will be compiled and used, finally.
+>> >=20
+>> > How do you feel about this? And can we afford such implementation effo=
+rts?
+>>=20
+>> It must be a crazy idea! Honestly, I'm a fan of new things.
+>> If there is a clear path, I don't mind moving in that direction.
+>>=20
+>
+> Why don't try even some crazy way. :)
 
+There are different paths that can be taken. One of the easiest would be
+to introduce a rust reference driver [1] for HFS. The default config
+option would still be the C driver so it doesn't break users (& still
+allows all supported architectures), but it allows you to experiment
+using Rust. Eventually, you could remove the C driver when ggc_rs is
+mature enough or only keep the C one around for the obscure
+architectures.
+
+If you don't want to break the duplicate drivers rule, then I can expand
+a bit on the other options, but honestly, they aren't that great:
+
+There are some subsystems that go for a library approach: extract some
+self-contained piece of functionality and move it to Rust code and then
+call that from C. I personally don't really like this approach, as it
+makes it hard to separate the safety boundary, create proper
+abstractions & write idiomatic Rust code.
+
+[1]: https://rust-for-linux.com/rust-reference-drivers
+
+>> It seems that downstream already has rust implementations of puzzle and=
+=20
+>> ext2 file systems. If I understand correctly, there is currently a lack=
+=20
+>> of support for vfs and various infrastructure.
+>>=20
+>
+> Yes, Rust implementation in kernel is slightly complicated topic. And I d=
+on't
+> suggest to implement the whole HFS/HFS+ driver at once. My idea is to sta=
+rt from
+> introduction of small Rust module that can implement some subset of HFS/H=
+FS+
+> functionality that can be called by C code. It could look like a library =
+that
+> HFS/HFS+ drivers can re-use. And we can have C and Rust "library" and peo=
+ple can
+> select what they would like to compile (C or Rust implementation).
+
+One good path forward using the reference driver would be to first
+create a read-only version. That was the plan that Wedson followed with
+ext2 (and IIRC also ext4? I might misremember). It apparently makes the
+initial implementation easier (I have no experience with filesystems)
+and thus works better as a PoC.
+
+>> I'm not an expert on Rust, so it would be great if some Rust people=20
+>> could share their opinions.
+>>=20
+>
+> I hope that Rust people would like the idea. :)
+
+I'm sure that several Rust folks would be interested in getting their
+hands dirty helping with writing abstractions and/or the driver itself.
+
+I personally am more on the Rust side of things, so I could help make
+the abstractions feel idiomatic and ergonomic.
+
+Feel free to ask any follow up questions. Hope this helps!
+
+---
 Cheers,
-Miguel
+Benno
