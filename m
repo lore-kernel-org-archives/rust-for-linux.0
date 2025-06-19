@@ -1,223 +1,136 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEB014F9F7
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 13:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42DD188CB1;
+	Thu, 19 Jun 2025 13:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750338068; cv=none; b=fHCScggqHDHhZ1+J2BM7IuqxkXzHJQpWGEZacTs7DW18KPK1ihGkj3RHuZCPzoIZgs/PWHc9on5wtImg83o8TtpMVYQ4Fh+XBrlcVCgXLLvAXaKAss9ZnS9XQuoAelrdqP27UsSI4meqRWBHZfBGUyXL2pZgr0ppADW4LFJGKmQ=
+	t=1750338907; cv=none; b=kp28w68vaDr+pqQXmDhJz7toyOZEkMNnvJb4d963W7cfIy/u7430jbJ3TthtGteulM+t7XFSX7YOQmpiW8AjV5j+fo1OUFAPYpbOD84HZI4GDhSHEQJrLRmTpQ76TSvLxV8FOXWdlHpk6tjh2CZsWRRI9Tzex0nF+USFbpk11VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750338068; c=relaxed/simple;
-	bh=Fb+eo7mMD00G/kYVNIX50aLuR7GCNA1tlFF3IvTl3B0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JVLJDfSG9Yh8sGQXIR/Fmna6oJytl/exUAbOLCARmIjRk6WU5HqMlA1wLDcNSGSkgA5iymnAG5wulvMNQ2/TpHf6Jlv1aeSgFpt/fmFi16nEmUH2L+0fG+dgWyqd3b5U3TgGwK3hhF8Rl8FrEcu42RcFMfyZ/8UiuakRFx1JrG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTaX4qqj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750338907; c=relaxed/simple;
+	bh=XmA/rDaxVSJIKxYDrc79WLUOEQA0G2rxhfSxcF0bi0w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=V6rhNcajfAv2HUPXWMCdTSUfKRHITB6xfz5cbUvBHkuAekpuWhlQx4732ogAWb79s1/nnykyvoy/1PKfeRL6Jb37TaU5UiK0fijgZV/b+OfGpv4U+IsR7a46AhZuCvM5lkHWoWA6VjVZDuGSKWCWisK0OzS/8P7dykwoB9AU+gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HN89VgSY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTaX4qqj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842F2C4CEEA;
-	Thu, 19 Jun 2025 13:01:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HN89VgSY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6ABCC4CEEA;
+	Thu, 19 Jun 2025 13:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750338067;
-	bh=Fb+eo7mMD00G/kYVNIX50aLuR7GCNA1tlFF3IvTl3B0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rTaX4qqjnmYnKGrgUdNZfjtPgrnCsUce+FpIN0BqsuTq1XNVMPEYR0+L9s6FC7d+/
-	 rdNXJ3CJQDKb+YP0ELyv4NhW8rXRw5QfIfMzLmimWx+eK2Vqja5iYw8Ei1dmJYOAVy
-	 Pff6wIqHSRN9Zd1RC85U5ve/2Keebulf0vcLoQ3yZW5yv+206MtCpGDBT5NhJwMVRJ
-	 ImTJjATlppWCXbuT8q5NFFUDwVBsov+td2sm/GuHuWlWigWwoAsgbE4CDriwBMOCrI
-	 E60LCX3SHH1sXcE4rBPR3j57OKfRgSNch1e1lO0TUVwr4GPJj7LfbHmR2inUKMx9Lv
-	 7tdT4cZLNqL1A==
-Date: Thu, 19 Jun 2025 15:01:01 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Beata Michalska <beata.michalska@arm.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
-	daniel.almeida@collabora.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, tmgross@umich.edu, alyssa@rosenzweig.io,
-	lyude@redhat.com, rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
-Message-ID: <aFQKDe1Pks9nJQqt@pollux>
-References: <20250619102102.750668-1-beata.michalska@arm.com>
- <aFPsjIFIC1J2qtdc@pollux>
+	s=k20201202; t=1750338907;
+	bh=XmA/rDaxVSJIKxYDrc79WLUOEQA0G2rxhfSxcF0bi0w=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=HN89VgSYMF+Q0+qxAHhMd+/MiXoZSysZyeTDqWfJKVQJET4+UsnMZqbsxtRQf/+HH
+	 46G3I5+J9OVvl61r/Bg5Ii+6EPOuhHS4dQku/J+1hgG2X6ajxmpQZENAPTMoJ9BLtd
+	 RWybwEPXjtkwQVoMrAi43WExx8OcRbHqxGvbjZalxzjzGERH+FiminnpsTrEjEdjAg
+	 D/pQIRBJAtaARHnL9Nc379AsQWnXNMdhc9/BevFVJtlRGq5Xr0FHqmTGjED6Fyi4nQ
+	 MxdBlX9dNLFNtUCI5tckB4dLFmX+m5doQ5u9bEryuKaiuci8CIigmNvksH6cPWg9B0
+	 FyI5enUD1ezzQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFPsjIFIC1J2qtdc@pollux>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Jun 2025 15:15:00 +0200
+Message-Id: <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>, "Nathan
+ Chancellor" <nathan@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
+ <nicolas.schier@linux.dev>
+Cc: "Trevor Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye"
+ <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
+ Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+ <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+In-Reply-To: <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
 
-On Thu, Jun 19, 2025 at 12:55:14PM +0200, Danilo Krummrich wrote:
-> On Thu, Jun 19, 2025 at 12:21:02PM +0200, Beata Michalska wrote:
-> > With the Opaque<T>, the expectations are that Rust should not make any
-> > assumptions on the layout or invariants of the wrapped C types.
-> > That runs rather counter to ioctl arguments, which must adhere to
-> > certain data-layout constraints. By using Opaque<T>, ioctl handlers
-> > end up doing unsound castings,
-> 
-> Which unsound casts? Please see [1] and [2] for how nova implements those IOCTL
-> handlers.
-> 
-> Speaking of which, this patch breaks the build, since it doesn't adjust the
-> users of the API, i.e. nova.
-> 
-> If you want I can post a diff to fix up nova accordingly for you to add to this
-> patch.
+On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
+> +/// A wrapper for kernel parameters.
+> +///
+> +/// This type is instantiated by the [`module!`] macro when module param=
+eters are
+> +/// defined. You should never need to instantiate this type directly.
+> +///
+> +/// Note: This type is `pub` because it is used by module crates to acce=
+ss
+> +/// parameter values.
+> +#[repr(transparent)]
+> +pub struct ModuleParamAccess<T> {
+> +    data: core::cell::UnsafeCell<T>,
+> +}
+> +
+> +// SAFETY: We only create shared references to the contents of this cont=
+ainer,
+> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
+> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
+> +
+> +impl<T> ModuleParamAccess<T> {
+> +    #[doc(hidden)]
+> +    pub const fn new(value: T) -> Self {
+> +        Self {
+> +            data: core::cell::UnsafeCell::new(value),
+> +        }
+> +    }
+> +
+> +    /// Get a shared reference to the parameter value.
+> +    // Note: When sysfs access to parameters are enabled, we have to pas=
+s in a
+> +    // held lock guard here.
+> +    pub fn get(&self) -> &T {
+> +        // SAFETY: As we only support read only parameters with no sysfs
+> +        // exposure, the kernel will not touch the parameter data after =
+module
+> +        // initialization.
 
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-index 7e59a34b830d..7e7d4e2de2fb 100644
---- a/drivers/gpu/drm/nova/file.rs
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -2,13 +2,11 @@
+This should be a type invariant. But I'm having difficulty defining one
+that's actually correct: after parsing the parameter, this is written
+to, but when is that actually? Would we eventually execute other Rust
+code during that time? (for example when we allow custom parameter
+parsing)
 
- use crate::driver::{NovaDevice, NovaDriver};
- use crate::gem::NovaObject;
--use crate::uapi::{GemCreate, GemInfo, Getparam};
- use kernel::{
-     alloc::flags::*,
-     drm::{self, gem::BaseObject},
-     pci,
-     prelude::*,
--    types::Opaque,
-     uapi,
- };
+This function also must never be `const` because of the following:
 
-@@ -26,20 +24,19 @@ impl File {
-     /// IOCTL: get_param: Query GPU / driver metadata.
-     pub(crate) fn get_param(
-         dev: &NovaDevice,
--        getparam: &Opaque<uapi::drm_nova_getparam>,
-+        getparam: &mut uapi::drm_nova_getparam,
-         _file: &drm::File<File>,
-     ) -> Result<u32> {
-         let adev = &dev.adev;
-         let parent = adev.parent().ok_or(ENOENT)?;
-         let pdev: &pci::Device = parent.try_into()?;
--        let getparam: &Getparam = getparam.into();
+    module! {
+        // ...
+        params: {
+            my_param: i64 {
+                default: 0,
+                description: "",
+            },
+        },
+    }
 
--        let value = match getparam.param() as u32 {
-+        let value = match getparam.param as u32 {
-             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
-             _ => return Err(EINVAL),
-         };
+    static BAD: &'static i64 =3D module_parameters::my_param.get();
 
--        getparam.set_value(value);
-+        getparam.value = value;
+AFAIK, this static will be executed before loading module parameters and
+thus it makes writing to the parameter UB.
 
-         Ok(0)
-     }
-@@ -47,13 +44,12 @@ pub(crate) fn get_param(
-     /// IOCTL: gem_create: Create a new DRM GEM object.
-     pub(crate) fn gem_create(
-         dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_create>,
-+        req: &mut uapi::drm_nova_gem_create,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemCreate = req.into();
--        let obj = NovaObject::new(dev, req.size().try_into()?)?;
-+        let obj = NovaObject::new(dev, req.size.try_into()?)?;
+So maybe we should just use some sort of synchronization tool here...
 
--        req.set_handle(obj.create_handle(file)?);
-+        req.handle = obj.create_handle(file)?;
+---
+Cheers,
+Benno
 
-         Ok(0)
-     }
-@@ -61,13 +57,12 @@ pub(crate) fn gem_create(
-     /// IOCTL: gem_info: Query GEM metadata.
-     pub(crate) fn gem_info(
-         _dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_info>,
-+        req: &mut uapi::drm_nova_gem_info,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemInfo = req.into();
--        let bo = NovaObject::lookup_handle(file, req.handle())?;
-+        let bo = NovaObject::lookup_handle(file, req.handle)?;
-
--        req.set_size(bo.size().try_into()?);
-+        req.size = bo.size().try_into()?;
-
-         Ok(0)
-     }
-diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
-index 902876aa14d1..730598defe04 100644
---- a/drivers/gpu/drm/nova/nova.rs
-+++ b/drivers/gpu/drm/nova/nova.rs
-@@ -5,7 +5,6 @@
- mod driver;
- mod file;
- mod gem;
--mod uapi;
-
- use crate::driver::NovaDriver;
-
-diff --git a/drivers/gpu/drm/nova/uapi.rs b/drivers/gpu/drm/nova/uapi.rs
-deleted file mode 100644
-index eb228a58d423..000000000000
---- a/drivers/gpu/drm/nova/uapi.rs
-+++ /dev/null
-@@ -1,61 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--use kernel::uapi;
--
--// TODO Work out some common infrastructure to avoid boilerplate code for uAPI abstractions.
--
--macro_rules! define_uapi_abstraction {
--    ($name:ident <= $inner:ty) => {
--        #[repr(transparent)]
--        pub struct $name(::kernel::types::Opaque<$inner>);
--
--        impl ::core::convert::From<&::kernel::types::Opaque<$inner>> for &$name {
--            fn from(value: &::kernel::types::Opaque<$inner>) -> Self {
--                // SAFETY: `Self` is a transparent wrapper of `$inner`.
--                unsafe { ::core::mem::transmute(value) }
--            }
--        }
--    };
--}
--
--define_uapi_abstraction!(Getparam <= uapi::drm_nova_getparam);
--
--impl Getparam {
--    pub fn param(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).param }
--    }
--
--    pub fn set_value(&self, v: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).value = v };
--    }
--}
--
--define_uapi_abstraction!(GemCreate <= uapi::drm_nova_gem_create);
--
--impl GemCreate {
--    pub fn size(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).size }
--    }
--
--    pub fn set_handle(&self, handle: u32) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).handle = handle };
--    }
--}
--
--define_uapi_abstraction!(GemInfo <= uapi::drm_nova_gem_info);
--
--impl GemInfo {
--    pub fn handle(&self) -> u32 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).handle }
--    }
--
--    pub fn set_size(&self, size: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).size = size };
--    }
--}
+> +        unsafe { &*self.data.get() }
+> +    }
+> +
+> +    /// Get a mutable pointer to the parameter value.
+> +    pub const fn as_mut_ptr(&self) -> *mut T {
+> +        self.data.get()
+> +    }
+> +}
