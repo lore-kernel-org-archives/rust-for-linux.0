@@ -1,141 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C5D221F30;
-	Thu, 19 Jun 2025 11:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E1C22539D;
+	Thu, 19 Jun 2025 11:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750331564; cv=none; b=aL0SHeNn5lHpNTaF8/Z0DkdBFLzNfW03vLurHGkjE5lWkbkne9vIALe3LYJcOuM2L5uF4xNnB0MrPAYJIO/crXSdqbpaAdj/lwGaFc+vgiN9uCrQFBz+nJOAn7TDA8s9biPVJ40Sm9plMOvVloh2OVBjBtRM04GaQga+fOqzcss=
+	t=1750332350; cv=none; b=nhRHwz/IMAeCk+zpaKnYS8YmuGcoTiJNDwk1N6ACH/exyJG8oW8USXWiDCgS7SiCuPMWNRQUcJ5tGFV1cn7HfBqax8onuG95pnQLxNTUZYUZSazMYjdJ8MoZpVxODQIe4oxoslEcmNiMxGEQ4PEdsIWJ3KNzDM0A+xa58GauEio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750331564; c=relaxed/simple;
-	bh=0u88sDT/q65KVfR5hIDnrWSdvSt9Ru54yMvadeBOFqc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=q0d8DracoIYXQT4O47SvvmjnamiAvcizjffX3kLu0u0r69tcDjlMJ0qFX1XBZfGCIkVBt4XiXRrpNskZ7rQdi/vArBJdzG3j0eBuHcfZHLHBUC9cNRjQLFuTx5w6WDSlwSI8eFp+CZ9JpX16lCZIhJAn+HRafzmBxW8C5FPHl4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+JJHpce; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750332350; c=relaxed/simple;
+	bh=i0izfvAJyCKLVIQ9k2OFX5GZwef7xZQk0VXehAX65nQ=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=q+UwFsNr5k6HL6sMO1dFOho9+gXDHdxXno6WXEPJV5a9e5S8q5mEBRS6FFxB6k2Mb2Hd4o6DMrPRP48iasMFACF07IYFhZQHP0C3Ukw3g+vcWrZA4Wj7fkCdQL/lujtjKzzLXZS7S9Lmai7CQ0NWdZ5jGOFpjxgADh+vpBAPtP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gv8fC/B+; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+JJHpce"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0066FC4CEEA;
-	Thu, 19 Jun 2025 11:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750331563;
-	bh=0u88sDT/q65KVfR5hIDnrWSdvSt9Ru54yMvadeBOFqc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f+JJHpcebDoGLAiQoKVcSV4vvPEeM7EYIN5xxv6fEWkCF+mVHQMwzBhghOpZKCghQ
-	 7/Td7l838WQdl5744jAdc8yVM7VI4Jncb+XKdHTGVGaJzz0YyLV37Vz6rxmolow8Uu
-	 JRTK+6hqUG+5XmnL3kjsYAE4NO34MW/XGNu7uw4VKAGlq1scb2Pp9u1Osxry71PAss
-	 LJc2oRs8NUFbDeSm3zI7FQ9D3rReyBIXXszKJ0bTkSQKD//b1Uy8bjqWNOEkStyTCS
-	 x1syDEa9r2lrlCbKbjL3wBvHTinnPdRlnCGZbJDABkMYsoJbeMdLlw7GYx6i9qzCCK
-	 0Vxys58LqCw9w==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 1/6] rust: str: add radix prefixed integer parsing
- functions
-In-Reply-To: <DAPY5HF9HGXC.FCEKAMLPFY1H@kernel.org> (Benno Lossin's message of
-	"Wed, 18 Jun 2025 22:38:00 +0200")
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
-	<20250612-module-params-v3-v13-1-bc219cd1a3f8@kernel.org>
-	<bbRxeBHCiFQl9UTC1hFQYdzkdAIV5HcRTuFf9ucPUEZZ-uJmaHAZXfd8Tk-k9vzROgFsCyNhGBBCn5J_HnbUSA==@protonmail.internalid>
-	<DAPY5HF9HGXC.FCEKAMLPFY1H@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 19 Jun 2025 13:12:30 +0200
-Message-ID: <871prg7zoh.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gv8fC/B+"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-235ef62066eso8861095ad.3;
+        Thu, 19 Jun 2025 04:25:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750332348; x=1750937148; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=euBuSVlRflY4WIoq5zaHnD8P2J7lITtd19RhSQX9cwU=;
+        b=gv8fC/B+/J/aGkQ5tn0z7PD/Uq2AaYc0kJP2R46Wjx4QXWoq1aVxCIfliGJ4q95XyX
+         zQiVlbf7WO5t1kb56neK5hMgTe4ShBNZpKMsyYw4nNioz9vnWeoe5iC9hqpxC535lFNa
+         dbk3xze5SWNPSG0YesrBox3n/DCtPvozXD0EbXJSeOdi7P1Ec4+P8dywQ2RF5mWXyvNe
+         emAYz1K0JXr3qlpbrNLmWaHawVNRTNGj6j8TWUUbKcvciNu/vtBI8tvejhkdeGSJkN5e
+         sZV0nPpX5zyflakPNU2ZEckOnXQUVnsBwxv6R9bQkb1mMjYyqsur0SniT/ezxsCnN0fJ
+         7zhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750332348; x=1750937148;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=euBuSVlRflY4WIoq5zaHnD8P2J7lITtd19RhSQX9cwU=;
+        b=gl4swwSHQqRI+7pMiOvalkg27ZtWx4p7MqusitbMiK6h+IEqGz02ixouJlRYafz2+h
+         bfdjhctBqfpl/JLQyyA1ASKD9nADB59T6JwUjrgh6kAaob/LiG1DRM7i4bTRZ40hirgS
+         BbbfUm+kf3FFdVYHTce+EfQ5H8gycNU5RMzr6Y9HkKTW2MCBaUWbm2MgONDkB5GGG99c
+         aCFPJtsyBnJUjDuEffKFaGMoXD1Xr0DLTzzBN3jB9xnhlpAhmvtCmSEJN4vzes3TSaZU
+         Q36wE4qjyAGW95Bj42uQckOXy0dLPRtFZ+nvFJ7L2qwy3Z29tnPpQRbuqSzFXXdRpZYe
+         YxqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWq6cmPWLKEx3K0jHpuVkN/8+mvuSoZxgiF5/kdmO/7TQwsk7lgOlng3HRsNf+rSL3P3bSa64w8Az2geE=@vger.kernel.org, AJvYcCXnA/OEzb0FvBjVuaGQEDBPDj7jgULduYRl/3c+EDvZptogLb+vDPd/RQpaGM2ANTc4Sw9Z7TKs1O6/TA3ba8o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqPiSn6Qq/XEDGqMg0nJuGtSYSCnn+Xb3wA6qZGZoSoSeBC7ao
+	BH+dsZsVocIqSCwjpDv5Ycy1+JLhrqrB0iMBqq5Z1tM++YveUaI7NTl2
+X-Gm-Gg: ASbGncujKT+FLdoqQF/wda3a//Gth6cglAsv9LhhVmYd09RZEkyK39Hiq1ls0WzzSPJ
+	Ba7fovpyGHNii4UM2JeWGBdlyPOA3lEcZSXzUj4hFPMN77oHVz/T2hykZL+ekvxjgwmWQW78o2u
+	XAWFLBOlGjdTybDJzC9HomRDl0y+Wn9OnCgzH6l5PQTxCevB+Z4DvXBII3mWMa6naMsYG0uvyAb
+	lijRZ34bRbN6ytw4N94PhyPqg5S6XxVsHnkNQpRZhqt0mzv6CJnV+5yqWeODtjh0201GdMSWTmB
+	ScbgkMZ+Io+YW8apUurWnbhdojZuJUhRT9csItC1nxhuQhV9rGuGSfMg8BC0EyjfUy/SoXfkwBw
+	fa+SN5D5/v6igdst1X5/XXV+w4VLRlC1kB53I/wK3qJHoczpL+nc=
+X-Google-Smtp-Source: AGHT+IHMrb6gIJY17p87seGqfpNAzxyeWFXKunrBPvaNaPvE4IkCuWrXclktERXTgd768DiC41/d4Q==
+X-Received: by 2002:a17:902:d4ca:b0:232:11e7:47c4 with SMTP id d9443c01a7336-2366b3501d6mr325152125ad.15.1750332348235;
+        Thu, 19 Jun 2025 04:25:48 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2365d8a4278sm117969175ad.78.2025.06.19.04.25.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Jun 2025 04:25:47 -0700 (PDT)
+Date: Thu, 19 Jun 2025 20:25:35 +0900 (JST)
+Message-Id: <20250619.202535.960773899864219488.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org,
+ aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org,
+ gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org,
+ lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org,
+ sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu
+Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods
+ as_micros_ceil and as_millis
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <87o6uk859b.fsf@kernel.org>
+References: <nGua2ftAnkipxGpZlW-9RYB0309pR0BxmzzR1rUx-LWFRRaiuycAACIWx6mPAp9PQcxmF5d1xC14XIu5flxBiA==@protonmail.internalid>
+	<20250617144155.3903431-2-fujita.tomonori@gmail.com>
+	<87o6uk859b.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-"Benno Lossin" <lossin@kernel.org> writes:
+On Thu, 19 Jun 2025 11:12:00 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
->> +pub trait ParseInt: private::FromStrRadix + TryFrom<u64> {
->> +    /// Parse a string according to the description in [`Self`].
->> +    fn from_str(src: &BStr) -> Result<Self> {
->> +        match src.deref() {
->> +            [b'-', rest @ ..] => {
->> +                let (radix, digits) = strip_radix(rest.as_ref());
->> +                // 2's complement values range from -2^(b-1) to 2^(b-1)-1.
->> +                // So if we want to parse negative numbers as positive and
->> +                // later multiply by -1, we have to parse into a larger
->> +                // integer. We choose `u64` as sufficiently large.
->> +                //
->> +                // NOTE: 128 bit integers are not available on all
->> +                // platforms, hence the choice of 64 bits.
->> +                let val =
->> +                    u64::from_str_radix(core::str::from_utf8(digits).map_err(|_| EINVAL)?, radix)
->> +                        .map_err(|_| EINVAL)?;
->> +
->> +                if val > Self::abs_min() {
->> +                    return Err(EINVAL);
->> +                }
->> +
->> +                if val == Self::abs_min() {
->> +                    return Ok(Self::MIN);
->> +                }
->> +
->> +                // SAFETY: We checked that `val` will fit in `Self` above.
->
-> Sorry that it took me this long to realize, but this seems pretty weird.
-> I guess this is why the `FromStrRadix` is `unsafe`.
->
-> Can we just move this part of the code to `FromStrRadix` and make that
-> trait safe?
->
-> So essentially have:
->
->     fn from_u64(value: u64) -> Result<Self>;
->
-> in `FromStrRadix` and remove `MIN`, `abs_min` and `complement`. Then
-> implement it like this in the macro below:
->
->     const ABS_MIN = /* existing abs_min impl */;
->     if value > ABS_MIN {
->         return Err(EINVAL);
->     }
->     if val == ABS_MIN {
->         return Ok(<$ty>::MIN);
->     }
->     // SAFETY: We checked that `val` will fit in `Self` above.
->     let val: $ty = unsafe { val.try_into().unwrap_unchecked() };
->     (!val).wrapping_add(1)
->
-> The reason that this is fine and the above is "weird" is the following:
-> The current version only has `Self: FromStrRadix` which gives it access
-> to the following guarantee from the `unsafe` trait:
->
->     /// The member functions of this trait must be implemented according to
->     /// their documentation.
->     ///
->     /// [`&BStr`]: kernel::str::BStr
->
-> This doesn't mention `TryFrom<u64>` and thus the comment "We checked
-> that `val` will fit in `Self` above" doesn't really apply: how does
-> checking with the bounds given in `FromStrRadix` make `TryFrom` return
-> `Ok`?
+>> Rename the Delta struct's methods as_micros_ceil() and as_millis() to
+>> into_micros_ceil() and into_millis() respectively, for consistency
+>> with the naming of other methods.
+>>
+>> Fix the commit 2ed94606a0fe ("rust: time: Rename Delta's methods from
+>> as_* to into_*"), wasn't applied as expected, due to the conflict with
+>> the commit 1b7bbd597527 ("rust: time: Avoid 64-bit integer division on
+>> 32-bit architectures").
+>>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> Sorry for messing up your patch. Since we have no rules against rebasing
+> rust-timekeeping and the PR is a few weeks down the road, I will just go
+> back and fix the original patch. Keep commit history clean.
 
-I'm having a difficult time parsing. Are you suggesting that we guard
-against implementations of `TryInto<u64>` that misbehave?
+I think it would be easier to resolve conflicts by applying the typed
+clock sources patchset and the patchset to convert hrtimer first, and
+then applying the division patch.
+
+Then please ignore this and apply only the second patch in this
+patchset.
+
+Let me know if you need any help.
 
 
-Best regards,
-Andreas Hindborg
-
-
+Thanks!
