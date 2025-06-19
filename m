@@ -1,115 +1,80 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from forward501b.mail.yandex.net (forward501b.mail.yandex.net [178.154.239.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7277B2248AB;
-	Thu, 19 Jun 2025 14:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA2417A30F;
+	Thu, 19 Jun 2025 14:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750343544; cv=none; b=fI7Osx/DD0ITvlQsjrb0c4s+RoLw7kSvcDdya87doDSaL7tte4m74swEC8gLIbDyS/IbexxBZvhIT8Gl54aLTdXKie2lpNYn2H1Cj9RKgMmElrxH+uPyjYZw15pAIArx0SO+sd8ekeZMMdBf5orRfVBwy3KeKLoZ1KRRHQwR/hs=
+	t=1750343637; cv=none; b=bIQY3hbEEHH5lUIQo1zwRZSI9Fr1kTT3gg1dTiGhugVy2aUHIF5xhY6pokKbSqQ+9AsCTvobM+S6U1Ubc2YhSaIoKAJkgOaM5xN6rNB2jyPJp6wRKDY5y3uqJ5KqicBq7gIqcBjHgCCF0hTvh4Cq/lKAhTshtWpwHdZ2NfV0Quc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750343544; c=relaxed/simple;
-	bh=+lGGauceAgecoodgkOWaPseFJ5G5VSZiH3HBHzKffqs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DHKopyth0qd3VLoeU3n+n4Jlq+81/H6KWr8UY6YyhrYdRyjglG103QrRyL8rfBXpg3S5BHYXNpil8M/VM1XJ33lTSt4ib5cF2SXcRMwWZUqqrPXS5fSd0ne9pqMYRyk1VPkaoT0ubx/tdKJAhQvXlbA2MCm7fx6ZzW+ilntIw+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ssaMiAxK; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1750343637; c=relaxed/simple;
+	bh=wOZ5uTN5479Z6g69DPnz7C9RgtplSjaSC8wJO85CcYA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rdUTjTFJ2PzGG8gBFcqKm5/ZvzPeQ+H1XF4+9T4xr3BgeItD0pg3+h8LBFb1m3//dJytR0kZDc3YqvXhRAZdix1qKVoijVQxWttRsVPf69H6Lyhlo7z55h+vfUuldANs71/KG4vcvbOPTm6d3BHIim4rIJb7twNiZHlkD5gkVGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=oeEkQjjr; arc=none smtp.client-ip=178.154.239.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ssaMiAxK"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=FxYqUBO/i9JK9DafKPTMkfssky1LNkMmgnzIrT+GOPc=; b=ssaMiAxKNfkamTbRQCOoy6KJpJ
-	HG9kLWD8ejmLYMWlz8h3FSOED33y9V5p7RdZJdiggUEORapwHvJ6lnYZA+qnb74QMoAZKJQ/+xixW
-	bvddgrrO+A8zgN7p/d/fkjNi8sYM0UrEVcq0DzvOx1f4BIaUBafYgzsdt7VO4Tt4B8PrKiMPgnYrU
-	3fxE2eVsdC3VOCuacQGMIscIoSgS/571vW4MkdVLTg0/pOL4RJ/Pl3Gnp9TzxC115J8J0cvt/hGlU
-	FH7TvAoWwwkOWvXduJ4OY889nriBJpvDe0uBR4EOKygrkr4SnC6DVsY3OVGaP+jIfJt6vqrpQKa14
-	CB/YZQuQ==;
-Received: from 2001-1c00-8d82-d000-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d82:d000:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uSGJM-000000095gu-0evK;
-	Thu, 19 Jun 2025 14:32:16 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 0902D30890E; Thu, 19 Jun 2025 16:32:15 +0200 (CEST)
-Date: Thu, 19 Jun 2025 16:32:14 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v5 03/10] rust: sync: atomic: Add ordering annotation
- types
-Message-ID: <20250619143214.GJ1613376@noisy.programming.kicks-ass.net>
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <20250618164934.19817-4-boqun.feng@gmail.com>
- <20250619103155.GD1613376@noisy.programming.kicks-ass.net>
- <aFQQuf44uovVNFCV@Mac.home>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="oeEkQjjr"
+Received: from mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:8916:0:640:ef62:0])
+	by forward501b.mail.yandex.net (Yandex) with ESMTPS id 26AE36160A;
+	Thu, 19 Jun 2025 17:33:51 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id kXPAP38LjCg0-jyKJDS7h;
+	Thu, 19 Jun 2025 17:33:50 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1750343630;
+	bh=jcxSX1TMbsEbkdeHJrOiYkZWZnk9zdTh8ILIKxpkwfs=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=oeEkQjjrKjnAvP5AOJojH7tynNWsv1Qx2eHGd3IfqmIQlkMyFfOrvmUfHn3wVM31j
+	 koc8CkTx/bcNihUK9qNc1PapNpNw3jXTj7RjYBbIS4ukuhQVPMel4MyldDGqnexYHt
+	 CpSlnxGB0NGfD1BaLAf8vky04Kj0kjICkaniJJDg=
+Authentication-Results: mail-nwsmtp-smtp-production-main-69.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Thu, 19 Jun 2025 17:33:44 +0300
+From: Onur <work@onurozkan.dev>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ mingo@redhat.com, will@kernel.org, boqun.feng@gmail.com,
+ longman@redhat.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, thatslyude@gmail.com
+Subject: Re: [PATCH V3] implement `ww_mutex` abstraction for the Rust tree
+Message-ID: <20250619173344.6c72c48a@nimda.home>
+In-Reply-To: <20250619141401.GI1613376@noisy.programming.kicks-ass.net>
+References: <20250619140656.498-1-work@onurozkan.dev>
+	<20250619141401.GI1613376@noisy.programming.kicks-ass.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFQQuf44uovVNFCV@Mac.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 19, 2025 at 06:29:29AM -0700, Boqun Feng wrote:
-> On Thu, Jun 19, 2025 at 12:31:55PM +0200, Peter Zijlstra wrote:
-> > On Wed, Jun 18, 2025 at 09:49:27AM -0700, Boqun Feng wrote:
-> > 
-> > > +//! Memory orderings.
-> > > +//!
-> > > +//! The semantics of these orderings follows the [`LKMM`] definitions and rules.
-> > > +//!
-> > > +//! - [`Acquire`] and [`Release`] are similar to their counterpart in Rust memory model.
-> > 
-> > So I've no clue what the Rust memory model states, and I'm assuming
-> > it is very similar to the C11 model. I have also forgotten what LKMM
-> > states :/
-> > 
-> > Do they all agree on what RELEASE+ACQUIRE makes?
-> > 
-> 
-> I think the question is irrelevant here, because we are implementing
-> LKMM atomics in Rust using primitives from C, so no C11/Rust memory
-> model in the picture for kernel Rust.
+On Thu, 19 Jun 2025 16:14:01 +0200
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-The question is relevant in so far that the comment refers to them; and
-if their behaviour is different in any way, this is confusing.
+> On Thu, Jun 19, 2025 at 05:06:56PM +0300, Onur =C3=96zkan wrote:
+> > +bool rust_helper_ww_mutex_is_locked(struct ww_mutex *lock)
+> > +{
+> > +	return ww_mutex_is_locked(lock);
+> > +}
+>=20
+> Do we really need this? In general I dislike all the _is_locked()
+> functions and would ideally like to remove them.
+>=20
+> Pretty much the only useful pattern for any of the _is_locked()
+> functions is:
+>=20
+>   WARN_ON_ONCE(!foo_is_locked(&foo));
+>=20
+> Any other use is dodgy as heck.
+>=20
+>=20
 
-> But I think they do. I assume you mostly ask whether RELEASE(a) +
-> ACQUIRE(b) (i.e. release and acquire on different variables) makes a TSO
-> barrier [1]? We don't make it a TSO barrier in LKMM either (only
-> unlock(a)+lock(b) is a TSO barrier) and neither does C11/Rust memory
-> model.
-> 
-> [1]: https://lore.kernel.org/lkml/20211202005053.3131071-1-paulmck@kernel.org/
-
-Right, that!
-
-So given we build locks from atomics, this has to come from somewhere.
-
-The simplest lock -- TAS -- is: rmw.acquire + store.release.
-
-So while plain store.release + load.acquire might not make TSO (although
-IIRC ARM added variants that do just that in an effort to aid x86
-emulation); store.release + rmw.acquire must, otherwise we cannot
-satisfy that unlock+lock.
-
+It's an abstraction of `ww_mutex_is_locked`. Since this is an
+abstraction module, as long as `ww_mutex_is_locked` exists I think
+we should keep it. FWIW it's also quite useful for tests.
