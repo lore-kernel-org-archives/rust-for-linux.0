@@ -1,116 +1,133 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DEB18EFD4
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 10:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0161C18EFD4
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 10:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750330259; cv=none; b=I6cIyD1Oez3lftbsZze/cD4TnnGGSX6VpeKa0Zp07yVulOmN2iBPFMQgcaO9xJCMnhDirUDIGu0HfKaU+6oHYVGHvCp0ZwbJdTZGKgImzsFySRqjIss1XQGdZSVcWViL0qiS4Acj7o7pfojX5J2SJVCseFFppfFlXB0kv5RPDo4=
+	t=1750330515; cv=none; b=Cub/KpjQJ6YCYRLtNV1+JsqnytF8Qywc3ejIZ9vw9GKrj5fPow3Q61oAnmHbcoUJWa4h+sQddj0Lwv9WkC4sLOYYiv7yGX2SJpIFIzeNw2ZwJBUJ87FToVJQNJfcSlmWcMnDcQoHj10Oa84uS4wd0aSuLmA4SeljzR8q7xEBJZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750330259; c=relaxed/simple;
-	bh=B5nwRN0D/Gpfme4JMOlAX0pPFV8TVKGGlk+5USmaxrw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g7YsadJiCFffPZ/xeQFzZ11kprdpYGBq2lL/3DmEKsQwaZK5pKaIjQCkWMvj0l2MHBt2we6IjCqah2y3msYOx1G7OQimyC2c+CPNEXanrt59sTulaR7fh5/MzIGRgSESyMh4TESKgHUrCtR9T2gyEUMyxGjjci1d5pfopTJ0in4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RJ+KtYGb; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750330515; c=relaxed/simple;
+	bh=DsxkiLrEvnYYL3LtCmbLHbPeRaeKYhQpEGZGUUC0dts=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SLBdVfN5NOsDFaK/TfWHii92/laTXbCWSKyu+nXkwqNfTqx5AsYIIJ3ZqtV/H7xPm2DgLw4N+hckwLntBTOVoLEZ76d5wNrti2mXJVPzzOJ169rFb/MqlZ6YDvihL/7ixtHvfEadoJgHco8ekmcl18dVE6C+wFfAooUtnnLAbeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TL962kE8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RJ+KtYGb"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a575a988f9so388990f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 03:50:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750330256; x=1750935056; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XYz7+pFibNw9xxyFYBk3NBPAjtW1pCVQhPTMzi/Ej7U=;
-        b=RJ+KtYGbiRlCIc7NstwRwj6vudYAbpelduM+WWm5g2ojqqAoifyqlOdhitio7UEwww
-         pnMdqWTdFlkLgcDI5vMgcRyKDd+Bx8Aue18sLuXXUh3SOsSOcMB6akG3GGMw/7MX63EP
-         vy9sMz3tPwSzP7pI+RIipxsHdkvCHp00o5IHKZc2zap/Tu0TZUtbGtAAPFnZKRKV/6st
-         Dwjw1QpMgmrRuDcdMbZFQROz3w3nQ3A1EJAZPo2WjUKvYRC5fyKf+T3fRUYRcHn2WU2R
-         b7GSE9mij4V38TSBWZNyx86EDkMnS/cps9aee5Ckckh2SxT85+CQuqFxAKR+0YP4vg22
-         gTwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750330256; x=1750935056;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XYz7+pFibNw9xxyFYBk3NBPAjtW1pCVQhPTMzi/Ej7U=;
-        b=jCW0yUSTlo4Y+aP//2Nao0/Qm9i7kVZIO4eukV3ijBcaWoXKeGxXtVgnXxWtVgh65t
-         fqssAp9DFqNZZ8o7Mp75cao4iLRZpEg7K/HEYyGuUEko+jApLqstM55fq4RD1a+JZh3w
-         e2EgKuAuYfFwyHoEU3DH4Nm40rE1FgVhqif+AYB+PhE4mOWS9ZUHPnrO4JZHrtIafXAC
-         QLcUx2WGy4oc2PWbOQ8tKVo4ouA0LmdbdXbdSjHsiY4FZqH+wb6Eh/PwxKwdPtfLBbXa
-         ddXrTEEAp6+lSYmFVcfe2+7qazaAW+1HixhOoEWvvf3rObO1AYsHq89fPCugE/Hn/yWC
-         xqNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVuMfmtvLS3F5NoqY7OnCsUK5uJqMzmQcCSibA72T8f8A8wU8jvK3xOsnLnhnvc8SqNNMBTTfyPkRhlUeJCCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUmB4XJKIn9LWJdO6Xj9BylquGWzT3N/kO0aYWtBe71m3C0rrR
-	m0bWP/W4WlyZa+d+5MgyGJQHUJUZIgDlA1d+wTwl7NeffC+a7SpeMJLudEOqP6DBx+Zh5sMgjDg
-	5dFhuJapLn0O1JRqM87zFKGqhpBVul3XDfkfrTaXk
-X-Gm-Gg: ASbGncumSLZYNosEX49jBIrssUreMCZQmsxl9Am+HbC2amK+tUo/2dX9kQL8vPXCKOi
-	tL2KhAI9b6Q6TSd7u+hvx4jQe3xCaPvhTkK/ZcmBna+dt2x4F2goJi8vF5RtG4L9jYKSEb2I/x3
-	W0H8mtEAjPyfBSkYZpHJS4cn0rHqwVPkyqFiokRPirU5/F+OWOrbMNoPiEQfLBrhjHtje7C4HhT
-	w==
-X-Google-Smtp-Source: AGHT+IFsqFDhKIv64ceK6XQrOc9Qsekzsih6MfirQI/OCI8WJNBcEkEExzxrQkUKIqsWyKy0KCKo5Y52KDNONSCzm6I=
-X-Received: by 2002:a5d:64cb:0:b0:3a4:d274:1d9b with SMTP id
- ffacd0b85a97d-3a5723ad5eamr18216483f8f.25.1750330256321; Thu, 19 Jun 2025
- 03:50:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TL962kE8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704C7C4CEEA;
+	Thu, 19 Jun 2025 10:55:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750330514;
+	bh=DsxkiLrEvnYYL3LtCmbLHbPeRaeKYhQpEGZGUUC0dts=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TL962kE8WnCwuRVxzoRr7K58ahO16l4pdqiTzb3KsC+oAcykwFfR1pEy9tfHT79PD
+	 Gq7oXj3fdPhrXdogo0M9f7pE/vJmGRD5mx3ZzWej3+Cqi0foaKp/Jbowel0YWzjFcK
+	 LXnP805PsjX58Qv6VsACSFenMwcpiTggsp+wrT5Bzc7YDEcLQIx5xAyLCMnXCAtmB1
+	 UYFIYzZK+TuHZIpGebne/vzTac1ow7Sbogs2Og/Ri72ZklqVRnJHMnXHrjlxtJNypm
+	 JPhTfL5yxEQmCEEJ7VS938r4DzOSn4RXl4+SaBB/98ktgj8bZOcd5naXMeQAzn10cK
+	 QI6SwuquW1tlQ==
+Date: Thu, 19 Jun 2025 12:55:08 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Beata Michalska <beata.michalska@arm.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
+	daniel.almeida@collabora.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, alyssa@rosenzweig.io,
+	lyude@redhat.com, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
+Message-ID: <aFPsjIFIC1J2qtdc@pollux>
+References: <20250619102102.750668-1-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250611194840.877308-1-bqe@google.com> <20250611194840.877308-4-bqe@google.com>
- <CAH5fLgiMCZuaCSYRDLCpZjaa=EZ=Zaw4y54zDED-7ox9K9++2g@mail.gmail.com> <CACQBu=UHdyxiqngiqE-5KPVyn4VFmCDapKiy2W27ic46uNO6sw@mail.gmail.com>
-In-Reply-To: <CACQBu=UHdyxiqngiqE-5KPVyn4VFmCDapKiy2W27ic46uNO6sw@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 19 Jun 2025 12:50:43 +0200
-X-Gm-Features: Ac12FXwUga8sxOhQeH5daHYwT8zCTot9A36Z2YfwsgBxPIWqgfMEo6I4tjBhdMk
-Message-ID: <CAH5fLgh5pPRrPLCWFb1+iWF5ukK7ai0vek0eU5BRsEEHtdGt=Q@mail.gmail.com>
-Subject: Re: [PATCH v12 3/5] rust: add bitmap API.
-To: Burak Emir <bqe@google.com>
-Cc: Yury Norov <yury.norov@gmail.com>, Kees Cook <kees@kernel.org>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	Carlos LLama <cmllamas@google.com>, Pekka Ristola <pekkarr@protonmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250619102102.750668-1-beata.michalska@arm.com>
 
-On Thu, Jun 19, 2025 at 11:49=E2=80=AFAM Burak Emir <bqe@google.com> wrote:
->
-> On Mon, Jun 16, 2025 at 12:49=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> >
-> > On Wed, Jun 11, 2025 at 9:48=E2=80=AFPM Burak Emir <bqe@google.com> wro=
-te:
-> > > +impl core::ops::DerefMut for Bitmap {
-> > > +    fn deref_mut(&mut self) -> &mut CBitmap {
-> > > +        let ptr =3D if self.nbits <=3D bindings::BITS_PER_LONG as _ =
-{
-> > > +            // SAFETY: Bitmap is represented inline.
-> > > +            unsafe { core::ptr::addr_of_mut!(self.repr.bitmap) }
-> > > +        } else {
-> > > +            // SAFETY: Bitmap is represented as array of `unsigned l=
-ong`.
-> > > +            unsafe { self.repr.ptr.as_mut() }
-> >
-> > Nit: You want NonNull::as_mut_ptr() here.
->
-> Can you explain? That seems to be an unstable method that exists so
-> one can get pointer to slice buffer.
->
-> The repr.ptr case is NonNull<usize>, not a slice - though "morally",
-> it is actually an owned C array.
-> Are you suggesting we could/should represent it as a Rust one?
-> However, we'd like it to use the C API to free etc.
+On Thu, Jun 19, 2025 at 12:21:02PM +0200, Beata Michalska wrote:
+> With the Opaque<T>, the expectations are that Rust should not make any
+> assumptions on the layout or invariants of the wrapped C types.
+> That runs rather counter to ioctl arguments, which must adhere to
+> certain data-layout constraints. By using Opaque<T>, ioctl handlers
+> end up doing unsound castings,
 
-Sorry I meant NonNull::as_ptr() which returns a mutable pointer:
-https://doc.rust-lang.org/stable/std/ptr/struct.NonNull.html#method.as_ptr
+Which unsound casts? Please see [1] and [2] for how nova implements those IOCTL
+handlers.
 
-Alice
+Speaking of which, this patch breaks the build, since it doesn't adjust the
+users of the API, i.e. nova.
+
+If you want I can post a diff to fix up nova accordingly for you to add to this
+patch.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/nova/uapi.rs
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/gpu/drm/nova/file.rs
+
+> which adds needless complexity and
+> maintenance overhead, brining no safety benefits.
+> Drop the use of Opaque for ioctl arguments as that is not the best
+> fit here.
+> 
+> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+> ---
+> 
+>  Additional comments:
+>  - UAPI types already automatically derive MaybeZeroable,
+>    so it probably makes little sense to add any verification for that
+>  - FromBytes is pending, but due to the orphan rule, adding verification
+>    of it being implemented for IOCTL args here is pointless
+>  - Verifying pointer alignment could make use of strict_provenance,
+>    but that one is unstable and I am not sure what are the exact rules
+>    here for using those. Without that one though, verifying alignment in
+>    some cases (i.e. pointer tagging) might require more extensive changes.
+>    Happy to deal with either.
+> 
+>  rust/kernel/drm/ioctl.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+> index 445639404fb7..12b296131672 100644
+> --- a/rust/kernel/drm/ioctl.rs
+> +++ b/rust/kernel/drm/ioctl.rs
+> @@ -139,7 +139,7 @@ pub mod internal {
+>                              // asserted above matches the size of this type, and all bit patterns of
+>                              // UAPI structs must be valid.
+>                              let data = unsafe {
+> -                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
+> +                                &mut *(raw_data as *mut $crate::uapi::$struct)
+
+I think we have to document the guarantees we rely on to create this mutable
+reference.
+
+>                              };
+
+This should be formatted as one single line and also adjust the doc-comment of
+the macro accordingly, i.e.:
+
+diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+index 12b296131672..f0c599f15a41 100644
+--- a/rust/kernel/drm/ioctl.rs
++++ b/rust/kernel/drm/ioctl.rs
+@@ -83,7 +83,7 @@ pub mod internal {
+ ///
+ /// ```ignore
+ /// fn foo(device: &kernel::drm::Device<Self>,
+-///        data: &Opaque<uapi::argument_type>,
++///        data: &mut uapi::argument_type,
+ ///        file: &kernel::drm::File<Self::File>,
+ /// ) -> Result<u32>
+ /// ```
+@@ -138,9 +138,7 @@ macro_rules! declare_drm_ioctls {
+                             // SAFETY: The ioctl argument has size `_IOC_SIZE(cmd)`, which we
+                             // asserted above matches the size of this type, and all bit patterns of
+                             // UAPI structs must be valid.
+-                            let data = unsafe {
+-                                &mut *(raw_data as *mut $crate::uapi::$struct)
+-                            };
++                            let data = unsafe { &mut *(raw_data as *mut $crate::uapi::$struct) };
+                             // SAFETY: This is just the DRM file structure
+                             let file = unsafe { $crate::drm::File::as_ref(raw_file) };
