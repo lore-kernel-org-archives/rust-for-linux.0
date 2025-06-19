@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42DD188CB1;
-	Thu, 19 Jun 2025 13:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC5F2472A6
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 13:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750338907; cv=none; b=kp28w68vaDr+pqQXmDhJz7toyOZEkMNnvJb4d963W7cfIy/u7430jbJ3TthtGteulM+t7XFSX7YOQmpiW8AjV5j+fo1OUFAPYpbOD84HZI4GDhSHEQJrLRmTpQ76TSvLxV8FOXWdlHpk6tjh2CZsWRRI9Tzex0nF+USFbpk11VU=
+	t=1750339056; cv=none; b=NNWLx0iOBnH+uiAPHBDDU8wUMIYmy9ca9UovFhPVeo9nEIwuDGouaZRV/VhPqnYxIe4dTkjNX76xbxOInX4o2uJW7DnV6zEzjLlQcmkngkz5iYHNbac/SHu1OpqB6YYjhsUhpZn6EA/9CZbeBiUiTeMmFMn/HHnL1Jyt2cBuLvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750338907; c=relaxed/simple;
-	bh=XmA/rDaxVSJIKxYDrc79WLUOEQA0G2rxhfSxcF0bi0w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=V6rhNcajfAv2HUPXWMCdTSUfKRHITB6xfz5cbUvBHkuAekpuWhlQx4732ogAWb79s1/nnykyvoy/1PKfeRL6Jb37TaU5UiK0fijgZV/b+OfGpv4U+IsR7a46AhZuCvM5lkHWoWA6VjVZDuGSKWCWisK0OzS/8P7dykwoB9AU+gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HN89VgSY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750339056; c=relaxed/simple;
+	bh=c2E3iqwtJvWel7zGv2Rkd8QZeSAwVWBNqMuO8Ypqgbk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=ONj7yhI4kzhw68Li9ARec9NEx16vjH4jbK6jJFhK8eC83Hk2fRfs0pnZk12YPydp4/5buy4JmMnDecFYNRh/pZGy1dqryIULJzV0Z7ZLWTiQVtpLxgl0MrllvcVRC+4s3BPITRNMZxWt9rnsGe6cUhwnfJuzp8K8rqN/rPqjhSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqWIl7Ui; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HN89VgSY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6ABCC4CEEA;
-	Thu, 19 Jun 2025 13:15:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqWIl7Ui"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20516C4CEF9;
+	Thu, 19 Jun 2025 13:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750338907;
-	bh=XmA/rDaxVSJIKxYDrc79WLUOEQA0G2rxhfSxcF0bi0w=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=HN89VgSYMF+Q0+qxAHhMd+/MiXoZSysZyeTDqWfJKVQJET4+UsnMZqbsxtRQf/+HH
-	 46G3I5+J9OVvl61r/Bg5Ii+6EPOuhHS4dQku/J+1hgG2X6ajxmpQZENAPTMoJ9BLtd
-	 RWybwEPXjtkwQVoMrAi43WExx8OcRbHqxGvbjZalxzjzGERH+FiminnpsTrEjEdjAg
-	 D/pQIRBJAtaARHnL9Nc379AsQWnXNMdhc9/BevFVJtlRGq5Xr0FHqmTGjED6Fyi4nQ
-	 MxdBlX9dNLFNtUCI5tckB4dLFmX+m5doQ5u9bEryuKaiuci8CIigmNvksH6cPWg9B0
-	 FyI5enUD1ezzQ==
+	s=k20201202; t=1750339056;
+	bh=c2E3iqwtJvWel7zGv2Rkd8QZeSAwVWBNqMuO8Ypqgbk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fqWIl7Ui2f9PfoGFnlRECL5UBz3jsK02cR9Iyx0tHSUb7w+9SQ0hEXtKqcvVCxJha
+	 Em1swrU2q9N+m20xaH03XT32lVstljh60Py2hXsRb6IlpV9BAKzcVEUxv68jEiZo3J
+	 wwhnVpN1HRf8rTf5I8uZHBirWazU4rKFpaBd+eBoT47ea1ocxCFRhzYqs5n7QgJIBS
+	 a/DuHKsxi8KswMEg+CLug9YV4vZWj+mvxayynpJJAt1eQF3aAA3Gki/AUFi5ExOJwR
+	 zNNzI/e8lBN1afOG4Pbx4RD6RE/DBWF63g6RVqM1q/S1fqA/fvuj3OJZaz+I+eeIzC
+	 0yA0vcGyApVHQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,103 +34,88 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Jun 2025 15:15:00 +0200
-Message-Id: <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>, "Nathan
- Chancellor" <nathan@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
- <nicolas.schier@linux.dev>
-Cc: "Trevor Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye"
- <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
- "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
- <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
- Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+Date: Thu, 19 Jun 2025 15:17:31 +0200
+Message-Id: <DAQJERHUYQF0.2SVXG825J6Q9N@kernel.org>
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Beata Michalska"
+ <beata.michalska@arm.com>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <aliceryhl@google.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <alyssa@rosenzweig.io>, <lyude@redhat.com>,
+ <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
 X-Mailer: aerc 0.20.1
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
- <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
-In-Reply-To: <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+References: <20250619102102.750668-1-beata.michalska@arm.com>
+ <aFPsjIFIC1J2qtdc@pollux> <DAQGIG20TJV6.3O4G0F4O72327@kernel.org>
+ <6DB37626-8817-4939-AE8E-6A463186A550@collabora.com>
+In-Reply-To: <6DB37626-8817-4939-AE8E-6A463186A550@collabora.com>
 
-On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
-> +/// A wrapper for kernel parameters.
-> +///
-> +/// This type is instantiated by the [`module!`] macro when module param=
-eters are
-> +/// defined. You should never need to instantiate this type directly.
-> +///
-> +/// Note: This type is `pub` because it is used by module crates to acce=
-ss
-> +/// parameter values.
-> +#[repr(transparent)]
-> +pub struct ModuleParamAccess<T> {
-> +    data: core::cell::UnsafeCell<T>,
-> +}
-> +
-> +// SAFETY: We only create shared references to the contents of this cont=
-ainer,
-> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
-> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
-> +
-> +impl<T> ModuleParamAccess<T> {
-> +    #[doc(hidden)]
-> +    pub const fn new(value: T) -> Self {
-> +        Self {
-> +            data: core::cell::UnsafeCell::new(value),
-> +        }
-> +    }
-> +
-> +    /// Get a shared reference to the parameter value.
-> +    // Note: When sysfs access to parameters are enabled, we have to pas=
-s in a
-> +    // held lock guard here.
-> +    pub fn get(&self) -> &T {
-> +        // SAFETY: As we only support read only parameters with no sysfs
-> +        // exposure, the kernel will not touch the parameter data after =
-module
-> +        // initialization.
+On Thu Jun 19, 2025 at 2:26 PM CEST, Daniel Almeida wrote:
+> Hi Benno,
+>
+>> On 19 Jun 2025, at 08:01, Benno Lossin <lossin@kernel.org> wrote:
+>>=20
+>> On Thu Jun 19, 2025 at 12:55 PM CEST, Danilo Krummrich wrote:
+>>> On Thu, Jun 19, 2025 at 12:21:02PM +0200, Beata Michalska wrote:
+>>>> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+>>>> index 445639404fb7..12b296131672 100644
+>>>> --- a/rust/kernel/drm/ioctl.rs
+>>>> +++ b/rust/kernel/drm/ioctl.rs
+>>>> @@ -139,7 +139,7 @@ pub mod internal {
+>>>>                             // asserted above matches the size of this=
+ type, and all bit patterns of
+>>>>                             // UAPI structs must be valid.
+>>>>                             let data =3D unsafe {
+>>>> -                                &*(raw_data as *const $crate::types::=
+Opaque<$crate::uapi::$struct>)
+>>>> +                                &mut *(raw_data as *mut $crate::uapi:=
+:$struct)
+>>>=20
+>>> I think we have to document the guarantees we rely on to create this mu=
+table
+>>> reference.
+>>=20
+>> If the C side is using pointers to read/write the value concurrently,
+>> this is wrong, it needs to be wrapped in Opaque.
+>>=20
+>> ---
+>> Cheers,
+>> Benno
+>
+> How can this happen, exactly? Can you provide an example that corroborate=
+s it?
 
-This should be a type invariant. But I'm having difficulty defining one
-that's actually correct: after parsing the parameter, this is written
-to, but when is that actually? Would we eventually execute other Rust
-code during that time? (for example when we allow custom parameter
-parsing)
-
-This function also must never be `const` because of the following:
-
-    module! {
-        // ...
-        params: {
-            my_param: i64 {
-                default: 0,
-                description: "",
-            },
-        },
-    }
-
-    static BAD: &'static i64 =3D module_parameters::my_param.get();
-
-AFAIK, this static will be executed before loading module parameters and
-thus it makes writing to the parameter UB.
-
-So maybe we should just use some sort of synchronization tool here...
+I don't have the context on this, I only saw a raw pointer being turned
+into a mutable reference and that's only possible if there are no shared
+or other exclusive references for the duration of its existence and no
+raw pointers are being used to access the value.
 
 ---
 Cheers,
 Benno
 
-> +        unsafe { &*self.data.get() }
-> +    }
-> +
-> +    /// Get a mutable pointer to the parameter value.
-> +    pub const fn as_mut_ptr(&self) -> *mut T {
-> +        self.data.get()
-> +    }
-> +}
+> The general pattern for drivers is to fill an uapi type and then wait on =
+an
+> ioctl. The kernel then copies that using copy_from_user, so we're safe fr=
+om
+> that perspective (i.e.: from the perspective of concurrent access from
+> userspace).
+>
+> In kernelspace, we usually extract arguments from the uapi types to then
+> dictate further processing inside drivers. In what way are these shared w=
+ith
+> "the C side" ?
+>
+> If the result of this discussion is that we agree that this Opaque is not
+> needed, then we definitely need this patch, because using Opaque<T> compl=
+icates
+> all ioctls implementations by making it harder to get to the inner T in t=
+he
+> first place. We would have to needlessly add a lot of unsafe blocks for d=
+rivers
+> that wouldn't otherwise be there.
+>
+>
+> -- Daniel
+
