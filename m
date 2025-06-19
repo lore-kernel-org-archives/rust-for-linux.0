@@ -1,376 +1,130 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6413423E358;
-	Thu, 19 Jun 2025 12:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750335653; cv=none; b=HerBdt2A+9oOiZE8KHn6zbUkEynvjp/zB0sja0XUrEB79TrpiaL5OGpUsAe0qCiAdFbBjcjDadc88wuKtQ9ipTF7YPLMKroQbi8/Q30+Up58C/ywcfcbWco1Zdh096PUdOlzhG/UAVlZ/qD1jgEFLZ/ndd5wr1xGBCE2T4BGpTo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750335653; c=relaxed/simple;
-	bh=jkzqeMKIBGjU8Ii97etZU/DjufKhqttlQSlZ1CLvyXA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SsyhObhHCZycltO91OTvqafJhxSzjYqzDyUHKZK8UwwyjhLxzuAdZhb6xwhTjljiqMBQE6gz8n4JWg1dX8tMl2q7rVByShtNUfOaWPJ4h69g2yIxn7D80dLGcOqPyLQUK5r9Cai0/OBDnNEUwxyRL0sjKTSP2DPDbGsslg6IgMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6nCO/Y5; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9304B22B585
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 12:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750336061; cv=pass; b=fo092WMZ5dMDRT1DIWgc9GUcWdvqtkOeMnPec0bhIjra8Ph0WkQJE7yH16xGvzureQEVQerWv1MAjIVDdGf8OnIOq+zP9PiR23kyHAGyO/6V5xn+FeCFjCGapBYgHaKVn7O83r2w4lU547lXxdeh0kIAuFhooq8ehbqilGbEKKk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750336061; c=relaxed/simple;
+	bh=JmRUe13y/84zWig5lRl4kClkd6rAPJMHxxXY5oJ93Ts=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=u1SiZvxYJgIrbD5E8HUKmmEL3I/TETwWaJIwWBwa60Zx0DXCBM9lFk4P74MgmKib++B7jzu5nWKz1yMFvCdy+zKi1+OUalgrahFp2LjiIsuLSaMLAfEzlfSwHHvOOI7ca3tFOsYdjenOTZ4pivGyKFgKf4V1HFhsJogNZPNkZdU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V7WECjwc; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6nCO/Y5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376EEC4CEEA;
-	Thu, 19 Jun 2025 12:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750335653;
-	bh=jkzqeMKIBGjU8Ii97etZU/DjufKhqttlQSlZ1CLvyXA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=B6nCO/Y5h2AOpwGwBS7+JPD1HqSk/+4K6bY3n9JgaiFkeRCEhFRX8CsXsJ2ZPwQWm
-	 Eqivsu60zUrLM0oPWYTQIxHaYP1anbbaGsuQiFlHdRKvdZ7TGhHUQSdLuBxoD2iz+6
-	 804BjcfvSrY5TPA9DU8xP3wRGOXUFEL6zyaV3EtvUcscbljVsaOJnmPVasrKqc3vnK
-	 uum21K/8iSYVlQeAdWB8Cue3yPnlBMoESvIEHgT6UhArRr8YI4q1lX3zFwR4wNF/5L
-	 ffVsq8BlHMXbgIcvF553TzdH55Q7gL8xbZTQB6tHW9jzA7LtG/B55L/qEsHFTz937q
-	 4HGRCESf3nWYw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-In-Reply-To: <DAPYMAB44RUZ.7NIWDUWY1UYF@kernel.org> (Benno Lossin's message of
-	"Wed, 18 Jun 2025 22:59:57 +0200")
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
-	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
-	<aa9d7lhjQuDhyNw8zShbtfPFK19W5awx7cPJgC-2X4fGv2yUTnn0jqyIHfMN4wyuaYoS3fU6Fqe_wFteVUGtUg==@protonmail.internalid>
-	<DAPYMAB44RUZ.7NIWDUWY1UYF@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 19 Jun 2025 14:20:40 +0200
-Message-ID: <87v7or7wiv.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V7WECjwc"
+ARC-Seal: i=1; a=rsa-sha256; t=1750336026; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Y/3KjsQt7ratnusfZtfrGx/S5qj+vswy0UDGHfbLfGoKwPnKDGI0oB2IFs/3Zd+Mj6Xm/FKMNc1B8wl4KsjnyNHf0Rhhw9v2tUIhpe+ESRby9/dvViRZyPvAiioHvb4g+2hYkG3/Gd2+NBLEdhmz4OrptXL1Ktl/bGX2FYo8/CM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750336026; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Y23/F3YZXW49CifwI8zvwOTLNocB6jmgOlf40p5qda8=; 
+	b=kQ1auegOOZCtY12Xcut/8VtNexb+WejC2QZQAK9MS9Zi+ySlpBQIwdkcAiA5povLdEsmnLs011nSuzkIbIj5x825S62RX22kyCkIUEWXHA9Kg3dG3esfg5nQbKicgCFlkzqEls/uf07LHtiO5PXil1dDzcdH8hET71kuv6TIavk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750336026;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Y23/F3YZXW49CifwI8zvwOTLNocB6jmgOlf40p5qda8=;
+	b=V7WECjwcYbuVz63oQrCTkLlqvMllLbDY3WtO1YDIGselrMgxyZ1dHORP9cAv0ZMx
+	TjvjA7p5/UoiMytpP3qFf/MiXf+Ud16jT1X6l4Cx8QXX80BNasQyU4uuYG3bQIbg0QJ
+	fvKSnIdQy3diYlHpBIzsElmYbGR4qn8Zuo1gdbP4=
+Received: by mx.zohomail.com with SMTPS id 1750336024069742.4704110312686;
+	Thu, 19 Jun 2025 05:27:04 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DAQGIG20TJV6.3O4G0F4O72327@kernel.org>
+Date: Thu, 19 Jun 2025 09:26:48 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Beata Michalska <beata.michalska@arm.com>,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ aliceryhl@google.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ a.hindborg@kernel.org,
+ tmgross@umich.edu,
+ alyssa@rosenzweig.io,
+ lyude@redhat.com,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6DB37626-8817-4939-AE8E-6A463186A550@collabora.com>
+References: <20250619102102.750668-1-beata.michalska@arm.com>
+ <aFPsjIFIC1J2qtdc@pollux> <DAQGIG20TJV6.3O4G0F4O72327@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-"Benno Lossin" <lossin@kernel.org> writes:
+Hi Benno,
 
-> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
->> Add types and traits for interfacing the C moduleparam API.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/lib.rs          |   1 +
->>  rust/kernel/module_param.rs | 201 ++++++++++++++++++++++++++++++++++++++++++++
->>  2 files changed, 202 insertions(+)
->>
->> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
->> index 6b4774b2b1c3..2b439ea06185 100644
->> --- a/rust/kernel/lib.rs
->> +++ b/rust/kernel/lib.rs
->> @@ -87,6 +87,7 @@
->>  pub mod list;
->>  pub mod miscdevice;
->>  pub mod mm;
->> +pub mod module_param;
->>  #[cfg(CONFIG_NET)]
->>  pub mod net;
->>  pub mod of;
->> diff --git a/rust/kernel/module_param.rs b/rust/kernel/module_param.rs
->> new file mode 100644
->> index 000000000000..fd167df8e53d
->> --- /dev/null
->> +++ b/rust/kernel/module_param.rs
->> @@ -0,0 +1,201 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Support for module parameters.
->> +//!
->> +//! C header: [`include/linux/moduleparam.h`](srctree/include/linux/moduleparam.h)
->> +
->> +use crate::prelude::*;
->> +use crate::str::BStr;
->> +
->> +/// Newtype to make `bindings::kernel_param` [`Sync`].
->> +#[repr(transparent)]
->> +#[doc(hidden)]
->> +pub struct RacyKernelParam(pub ::kernel::bindings::kernel_param);
->
-> s/::kernel:://
->
-> The field shouldn't be public, since then people can access it. Can
-> just have a `pub fn new` instead?
+> On 19 Jun 2025, at 08:01, Benno Lossin <lossin@kernel.org> wrote:
+>=20
+> On Thu Jun 19, 2025 at 12:55 PM CEST, Danilo Krummrich wrote:
+>> On Thu, Jun 19, 2025 at 12:21:02PM +0200, Beata Michalska wrote:
+>>> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+>>> index 445639404fb7..12b296131672 100644
+>>> --- a/rust/kernel/drm/ioctl.rs
+>>> +++ b/rust/kernel/drm/ioctl.rs
+>>> @@ -139,7 +139,7 @@ pub mod internal {
+>>>                             // asserted above matches the size of =
+this type, and all bit patterns of
+>>>                             // UAPI structs must be valid.
+>>>                             let data =3D unsafe {
+>>> -                                &*(raw_data as *const =
+$crate::types::Opaque<$crate::uapi::$struct>)
+>>> +                                &mut *(raw_data as *mut =
+$crate::uapi::$struct)
+>>=20
+>> I think we have to document the guarantees we rely on to create this =
+mutable
+>> reference.
+>=20
+> If the C side is using pointers to read/write the value concurrently,
+> this is wrong, it needs to be wrapped in Opaque.
+>=20
+> ---
+> Cheers,
+> Benno
 
-OK.
+How can this happen, exactly? Can you provide an example that =
+corroborates it?
 
->
->> +
->> +// SAFETY: C kernel handles serializing access to this type. We never access it
->> +// from Rust module.
->> +unsafe impl Sync for RacyKernelParam {}
->> +
->> +/// Types that can be used for module parameters.
->> +pub trait ModuleParam: Sized + Copy {
->
-> Why the `Copy` bound?
+The general pattern for drivers is to fill an uapi type and then wait on =
+an
+ioctl. The kernel then copies that using copy_from_user, so we're safe =
+from
+that perspective (i.e.: from the perspective of concurrent access from
+userspace).
 
-Because of potential unsoundness due to drop [1]. I should document
-this. It is noted in the change log for the series under the obscure
-entry "Assign through pointer rather than using `core::ptr::replace`."
+In kernelspace, we usually extract arguments from the uapi types to then
+dictate further processing inside drivers. In what way are these shared =
+with
+"the C side" ?
 
-[1] https://lore.kernel.org/all/878qnbxtyi.fsf@kernel.org
-
->
->> +    /// The [`ModuleParam`] will be used by the kernel module through this type.
->> +    ///
->> +    /// This may differ from `Self` if, for example, `Self` needs to track
->> +    /// ownership without exposing it or allocate extra space for other possible
->> +    /// parameter values.
->> +    // This is required to support string parameters in the future.
->> +    type Value: ?Sized;
->> +
->> +    /// Parse a parameter argument into the parameter value.
->> +    ///
->> +    /// `Err(_)` should be returned when parsing of the argument fails.
->
-> I don't think we need to explicitly mention this.
-
-I'll remove the line.
-
->
->> +    ///
->> +    /// Parameters passed at boot time will be set before [`kmalloc`] is
->> +    /// available (even if the module is loaded at a later time). However, in
->
-> I think we should make a section out of this like `# No allocations` (or
-> something better). Let's also mention it on the trait itself, since
-> that's where implementers will most likely look.
-
-Since this series only support `Copy` types that are passed by value, I
-think we can remove this comment for now. I will also restrict the
-lifetime of the string to he duration of the call. Putting static here
-would be lying.
-
->
->> +    /// this case, the argument buffer will be valid for the entire lifetime of
->> +    /// the kernel. So implementations of this method which need to allocate
->> +    /// should first check that the allocator is available (with
->> +    /// [`crate::bindings::slab_is_available`]) and when it is not available
->
-> We probably shouldn't recommend directly using `bindings`.
->
->> +    /// provide an alternative implementation which doesn't allocate. In cases
->> +    /// where the allocator is not available it is safe to save references to
->> +    /// `arg` in `Self`, but in other cases a copy should be made.
->
-> I don't understand this convention, but it also doesn't seem to
-> relevant (so feel free to leave it as is, but it would be nice if you
-> could explain it).
-
-It has become irrelevant as the series evolved. When we supported
-`!Copy` types we would use the reference if we knew it would be valid
-for the lifetime of the kernel, otherwise we would allocate [1].
-
-However, when the reference is passed at module load time, it is still
-guaranteed to be live for the lifetime of the module, and hence it can
-still be considered `'static`. But, if the reference were to find it's
-way across the module boundary, it can cause UAF issues as the reference
-is not truely `'static`, it is actually `'module`. This ties into the
-difficulty we have around safety of unloading modules. Module unload
-should be marked unsafe.
-
-At any rate, I will remove the `'static` lifetime from the reference and
-we are all good for now.
-
-[1] https://github.com/Rust-for-Linux/linux/blob/18b7491480025420896e0c8b73c98475c3806c6f/rust/kernel/module_param.rs#L476
-
->
->> +    ///
->> +    /// [`kmalloc`]: srctree/include/linux/slab.h
->> +    fn try_from_param_arg(arg: &'static BStr) -> Result<Self>;
->> +}
->> +
->> +/// Set the module parameter from a string.
->> +///
->> +/// Used to set the parameter value at kernel initialization, when loading
->> +/// the module or when set through `sysfs`.
->> +///
->> +/// See `struct kernel_param_ops.set`.
->> +///
->> +/// # Safety
->> +///
->> +/// - If `val` is non-null then it must point to a valid null-terminated string that must be valid
->> +///   for reads for the duration of the call.
->> +/// - `parm` must be a pointer to a `bindings::kernel_param` that is valid for reads for the
->
-> s/parm/param/
-
-Yea, I get contaminated with spellings used elsewhere in the kernel.
-
->
->> +///   duration of the call.
->> +/// - `param.arg` must be a pointer to an initialized `T` that is valid for writes for the duration
->> +///   of the function.
->> +///
->> +/// # Note
->> +///
->> +/// - The safety requirements are satisfied by C API contract when this function is invoked by the
->> +///   module subsystem C code.
->> +/// - Currently, we only support read-only parameters that are not readable from `sysfs`. Thus, this
->> +///   function is only called at kernel initialization time, or at module load time, and we have
->> +///   exclusive access to the parameter for the duration of the function.
->> +///
->> +/// [`module!`]: macros::module
->> +unsafe extern "C" fn set_param<T>(
->> +    val: *const c_char,
->> +    param: *const crate::bindings::kernel_param,
->> +) -> c_int
->> +where
->> +    T: ModuleParam,
->> +{
->> +    // NOTE: If we start supporting arguments without values, val _is_ allowed
->> +    // to be null here.
->> +    if val.is_null() {
->> +        // TODO: Use pr_warn_once available.
->> +        crate::pr_warn!("Null pointer passed to `module_param::set_param`");
->> +        return EINVAL.to_errno();
->> +    }
->> +
->> +    // SAFETY: By function safety requirement, val is non-null, null-terminated
->> +    // and valid for reads for the duration of this function.
->> +    let arg = unsafe { CStr::from_char_ptr(val) };
->
-> `arg` has the type `&'static CStr`, which is not justified by the safety
-> comment :(
-
-Not any longer, as outlined above. Thanks for catching this.
-
-> Why does `ModuleParam::try_from_param_arg` take a `&'static BStr` and
-> not a `&BStr`? I guess it is related to the "make copies if allocator is
-> available" question I had above.
-
-Yep.
-
->
->> +
->> +    crate::error::from_result(|| {
->> +        let new_value = T::try_from_param_arg(arg)?;
->> +
->> +        // SAFETY: By function safety requirements `param` is be valid for reads.
->> +        let old_value = unsafe { (*param).__bindgen_anon_1.arg as *mut T };
->> +
->> +        // SAFETY: By function safety requirements, the target of `old_value` is valid for writes
->> +        // and is initialized.
->> +        unsafe { *old_value = new_value };
->
-> So if we keep the `ModuleParam: Copy` bound from above, then we don't
-> need to drop the type here (as `Copy` implies `!Drop`). So we could also
-> remove the requirement for initialized memory and use `ptr::write` here
-> instead. Thoughts?
-
-Yes, that is the rationale for the `Copy` bound. What would be the
-benefit of using `ptr::write`? They should be equivalent for `Copy`
-types, right.
-
-I was using `ptr::replace`, but Alice suggested the pace expression
-assignment instead, since I was not using the old value.
-
->
->> +        Ok(0)
->> +    })
->> +}
->> +
->> +macro_rules! impl_int_module_param {
->> +    ($ty:ident) => {
->> +        impl ModuleParam for $ty {
->> +            type Value = $ty;
->> +
->> +            fn try_from_param_arg(arg: &'static BStr) -> Result<Self> {
->> +                <$ty as crate::str::parse_int::ParseInt>::from_str(arg)
->> +            }
->> +        }
->> +    };
->> +}
->> +
->> +impl_int_module_param!(i8);
->> +impl_int_module_param!(u8);
->> +impl_int_module_param!(i16);
->> +impl_int_module_param!(u16);
->> +impl_int_module_param!(i32);
->> +impl_int_module_param!(u32);
->> +impl_int_module_param!(i64);
->> +impl_int_module_param!(u64);
->> +impl_int_module_param!(isize);
->> +impl_int_module_param!(usize);
->> +
->> +/// A wrapper for kernel parameters.
->> +///
->> +/// This type is instantiated by the [`module!`] macro when module parameters are
->> +/// defined. You should never need to instantiate this type directly.
->> +///
->> +/// Note: This type is `pub` because it is used by module crates to access
->> +/// parameter values.
->> +#[repr(transparent)]
->> +pub struct ModuleParamAccess<T> {
->> +    data: core::cell::UnsafeCell<T>,
->> +}
->
-> We should just re-create the `SyncUnsafeCell` [1] from upstream...
-
-I will add a // TODO: Use `SyncUnsafeCell` when available.
-
->
-> Feel free to keep this until we have it though.
->
-> [1]: https://doc.rust-lang.org/nightly/std/cell/struct.SyncUnsafeCell.html
->
->> +
->> +// SAFETY: We only create shared references to the contents of this container,
->> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
->> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
->> +
->> +impl<T> ModuleParamAccess<T> {
->> +    #[doc(hidden)]
->> +    pub const fn new(value: T) -> Self {
->> +        Self {
->> +            data: core::cell::UnsafeCell::new(value),
->> +        }
->> +    }
->> +
->> +    /// Get a shared reference to the parameter value.
->> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
->> +    // held lock guard here.
->> +    pub fn get(&self) -> &T {
->> +        // SAFETY: As we only support read only parameters with no sysfs
->> +        // exposure, the kernel will not touch the parameter data after module
->> +        // initialization.
->> +        unsafe { &*self.data.get() }
->> +    }
->> +
->> +    /// Get a mutable pointer to the parameter value.
->> +    pub const fn as_mut_ptr(&self) -> *mut T {
->> +        self.data.get()
->> +    }
->> +}
->> +
->> +#[doc(hidden)]
->> +#[macro_export]
->
-> Why export this?
-
-Legacy debt. I'll remove it.
+If the result of this discussion is that we agree that this Opaque is =
+not
+needed, then we definitely need this patch, because using Opaque<T> =
+complicates
+all ioctls implementations by making it harder to get to the inner T in =
+the
+first place. We would have to needlessly add a lot of unsafe blocks for =
+drivers
+that wouldn't otherwise be there.
 
 
-Best regards,
-Andreas Hindborg
-
-
+-- Daniel=
