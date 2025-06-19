@@ -1,208 +1,111 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B48627F166;
-	Thu, 19 Jun 2025 15:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99E028B7F1;
+	Thu, 19 Jun 2025 15:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750345819; cv=none; b=GJTzgBAzc3luf5gLxJ2bDxo8TD+YjzzlgGPzr6JGbTx7O3pcu6Udbx0ltN+McCZ3hed82hpDD6sOi7NXlMfGl3t1/aKxeEvj4wRk1pwocUmtssbbAjqimoPbAov8fThw/RWOsAr9yeehI6boA0dDaxYQAiYGXRkHCUQdBAfDLvU=
+	t=1750345859; cv=none; b=e2I4b/zMFur3TB5GUWO/aI0muY3RlBg6plzOnm9fXrPJQ9VO063KIDHUsd1Flfce4KiXKnGUb75AXgeh6mmhWBeLtaqrPSWOfpWzG21FGv20MbPnS29DqhKFNI0dE1pErp58SARcgla+1oBIToVHaUCY+l95WRZ6zIQcPzA5R3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750345819; c=relaxed/simple;
-	bh=+3uwOPQkqMo1nGkLpRbuTQf2OirBtqIa/5IdHIEU6zE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RMWnsUhBzvok1k9Nie0G+oUCxA8sZmg8pv5tbdd1W1tJPN9vth/IAvjsD+gcA+6K4ZPAoGBJcdx8IWNU7/ZLzrJ0vjw1gHfQ4ED6XRDHOuMQV2vIMHwQ0VfGOF/Pqpo5O239W44yXVX1FsGU+BHQ8t8s13/IVrkiP7/IJnQYG4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QH7wjRez; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750345859; c=relaxed/simple;
+	bh=/9QmKk1T2GjtEd9UC/ntK7dEPc9EzgB1lhYmLYcoBTg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oBLTvGW7Z4Jc8ptjTwVKlZGdfnfPIOZwzSAfmw8scOX+cjzQGNk1AfgDGmvaGZuMDrmMoS/NzX7G92Owk1DVg6fhjt/aodOJ7cYoUzn18LxcHiaDXCQCUMUAzZtYK/wyaUcGw2+Do8vvKjvNR8odYOLG0cJUbVTblziaMVGkh4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VTBTsAYk; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QH7wjRez"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6facacf521eso8657446d6.3;
-        Thu, 19 Jun 2025 08:10:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750345817; x=1750950617; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Lejb7bXJVgE3NrEDanzqMW/n0z8ycFLXS900A+s5SWk=;
-        b=QH7wjRez+FO2L8Rle/jmyXYFN6qV3LLfHWNA1tch+x9AU9HYIFkLBxKJc6cv/L5S7q
-         PUNsQJx3t+3F50SFEWHZ0iBn7NpKgqaJWJxxAhs0RY0O1CbVDUDGNMsivfhP9ko0CDGO
-         bnxPPZ68a82xJYz/1yqm/L6LAn6zVlOswkLwc3UCUCdOwqaeXmv8PXYwIwyVc6s71046
-         bMt6Nc3rjmHwXJJVaZXNtA7HWDwoHIKyDFSsIoup9/icwhsxNLRugzs5rlLThLCfMPBI
-         rULrtRl6SpehAIK28Mfm0ABC8dWYHCv7XUGGnSoZ+5UYcJDyCU5WD8ouk3WjqmqSz0Wu
-         ki3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750345817; x=1750950617;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Lejb7bXJVgE3NrEDanzqMW/n0z8ycFLXS900A+s5SWk=;
-        b=FYaAbohXNHOBvDxfT/0MrxLAAhhbr6ffW5nOYy1iyFjr6/fHo8Gai4NJU+C7hAszqZ
-         wxh1xUU7rQV7u9vamyccMPzgROlmg4xwnEK4Fs9zxEbO14pp7P11A1zzs3YCqRiMA/4Q
-         DwyR3s00pithzgXMLZe2kinjqV38+qa+YpeW3cJYO1nN7TgVSi9Vssj8WbbGNeXiapj3
-         6lJxNLmwoBqRSSI1U1JHBu+ylARRG/ZxlbyDLCLgWdD2tu9ItgPtLHhiXrlWb7Nb62BN
-         EjJNF6+6c7jRv/f2hHp6bTOBxZk2Q9WX9s72KygLLHw193Hl6/PsI0BWRoVnB8uKMASH
-         eFyA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0HQ+GL0DJAcFDq698Am5mkFkN1zbTLUrQdc8Ie0Yb/aIaqiEzG2GRgmtXts5J2RmSNCavPUqhoCCblBzhpQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGoYJA5jOosN9V7jsQOzVpEmaIZ4r8Y7ITkK5BKvWu371IDIvq
-	mkGxcNSyU2o3wu5QBKAppmCah7bc0GVHgBw5qu8q0kDGPyp6T9V3ZeHy
-X-Gm-Gg: ASbGnctU3JjySRCvLyl6UnhUK8ifMQ7ssP8Kop4/wmqomiolBkUwDM3HXXYdrKISt/y
-	SP3Tc6VsNLD7uXn6W5tHEr5AlDqtXli+8TBSumFpA82NmhEpzgzr9Zf+ZDSAvwbwejChp3o/UZ6
-	HdtiE58CUrNrqgJFNnad0KcacmRbRkTF+lptvkv9zPjkK4ZrpYcn9GEyeKL14z35lAU2AnlDiq/
-	/dEsnfoKfwOn+XEDeB8oMCLISmY6QIUnUOUliENqlt1M9s39zHNtfKSK43axr/Ct/umqoKacBsm
-	xu91v/y79KkvjIWZSDykWjE+pGyF9PsySYDjr0B8hJopMHe2V/F5lTmuu8xjLiPthboL+5dJRGq
-	UgVwOMON9/3v/YpHxfw6z6Dv3T2v2GHVfmjyFOD9fk+uYIqo0Wwwg
-X-Google-Smtp-Source: AGHT+IERR1rjxNOrB7yL/HYp1QTHURd0m6NvjwOFcG8s+VGvXq/PD3LbmprbercuSZYHNCHEHuYxcw==
-X-Received: by 2002:a05:6214:5906:b0:6fb:474:42b4 with SMTP id 6a1803df08f44-6fb4773495cmr401501266d6.18.1750345816969;
-        Thu, 19 Jun 2025 08:10:16 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd0953b5e5sm674666d6.75.2025.06.19.08.10.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 08:10:14 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id CFE2C1200069;
-	Thu, 19 Jun 2025 11:10:13 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 19 Jun 2025 11:10:13 -0400
-X-ME-Sender: <xms:VShUaJpIbJYCWQG2Hyhuk16XpfRI6BUFUkZIpSQXDp_qGuyJPhzomw>
-    <xme:VShUaLphQxcIRg3v9hXSMX9Fxy1bSwuZQGqETtpDuNzyHhHsgRBgxZHSMkpNFwLVl
-    9H5Am3uJdvdbnmpog>
-X-ME-Received: <xmr:VShUaGMQVszjqdE4ONVj1QpAiMrb6nCgPJSQc8hsg7g-IXdjWx5f2YYp3w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdehkeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertd
-    dtnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghi
-    lhdrtghomheqnecuggftrfgrthhtvghrnhepgffhffevhffhvdfgjefgkedvlefgkeegve
-    euheelhfeivdegffejgfetuefgheeinecuffhomhgrihhnpehkvghrnhgvlhdrohhrghen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
-    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
-    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdehpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhope
-    hojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhr
-    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpd
-    hrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghp
-    thhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprg
-    drhhhinhgusghorhhgsehsrghmshhunhhgrdgtohhm
-X-ME-Proxy: <xmx:VShUaE5YhY3mM5ohPNLRVEv4DtJbfTmd3E1PWDzt98-0wnPLY2EXjg>
-    <xmx:VShUaI5xSFeWF8dRxeNRWWmsayW-2rIw8dDC9ZNl4zx1XRpSIDmf3A>
-    <xmx:VShUaMiJrJMcvFCjaQ58YUsNdiwpdkA7MeauJhKwguhtLWxXcCJYZA>
-    <xmx:VShUaK7rPcvElzHS70FOgCrWM2h9fwhRy0Tmy2jA-oYZqg-D19xPVQ>
-    <xmx:VShUaPJ5NFzpte3AbjYox5pE2m1XhTWWXqStz08fIYMp3EhOLITmexiS>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 19 Jun 2025 11:10:13 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: boqun.feng@gmail.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	pmladek@suse.com,
-	fujita.tomonori@gmail.com,
-	mingo@kernel.org,
-	tamird@gmail.com
-Subject: [PATCH v4 2/2] rust: task: Add Rust version of might_sleep()
-Date: Thu, 19 Jun 2025 08:10:07 -0700
-Message-Id: <20250619151007.61767-3-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250619151007.61767-1-boqun.feng@gmail.com>
-References: <20250619151007.61767-1-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VTBTsAYk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=THCQxo43AHc9M+QzSpcsRgbbNjRK49mREK/7V5OhuoU=; b=VTBTsAYkcyTgk2KB1P6HqL/h3W
+	qj8u1unHK9iM+eBgJ40fd4qhGMaFNO7mLERYC97Rfz/PuGZsVq9Hnf0Az8DJy1myxGNKLZW6tEtvg
+	IcvRrdKvuWR1MI1XEjUR/uiEjYbM2qxwfhfVdzP9H/DMsEdbl8AroVdKzfJbzqf0Vuwh1++Pj4PjW
+	uE8w6vlq3SOcCPdiap3r1sxYxmN3f7byk/7kZiPnQvI0NYe0bILYK1/KWX/sr1gvhCwwV9hWauGBi
+	5qvOW6j05gGxNPaL0BE71B4zk+i4JoCwQm4JXZaL5Mgmf0HykdRQoIf3h1foxdfu+GZDGdW3afT4i
+	QME61ASA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uSGuh-00000004Sbd-11r6;
+	Thu, 19 Jun 2025 15:10:51 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 326DA30890E; Thu, 19 Jun 2025 17:10:50 +0200 (CEST)
+Date: Thu, 19 Jun 2025 17:10:50 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v5 03/10] rust: sync: atomic: Add ordering annotation
+ types
+Message-ID: <20250619151050.GN1613376@noisy.programming.kicks-ass.net>
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+ <20250618164934.19817-4-boqun.feng@gmail.com>
+ <20250619103155.GD1613376@noisy.programming.kicks-ass.net>
+ <aFQQuf44uovVNFCV@Mac.home>
+ <20250619143214.GJ1613376@noisy.programming.kicks-ass.net>
+ <aFQmDoRSEmUuPIQG@Mac.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aFQmDoRSEmUuPIQG@Mac.home>
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Thu, Jun 19, 2025 at 08:00:30AM -0700, Boqun Feng wrote:
 
-Add a helper function equivalent to the C's might_sleep(), which
-serves as a debugging aid and a potential scheduling point.
+> > So given we build locks from atomics, this has to come from somewhere.
+> > 
+> > The simplest lock -- TAS -- is: rmw.acquire + store.release.
+> > 
+> > So while plain store.release + load.acquire might not make TSO (although
+> > IIRC ARM added variants that do just that in an effort to aid x86
+> > emulation); store.release + rmw.acquire must, otherwise we cannot
+> > satisfy that unlock+lock.
+> 
+> Make sense, so something like this in the model should work:
+> 
+> diff --git a/tools/memory-model/linux-kernel.cat b/tools/memory-model/linux-kernel.cat
+> index d7e7bf13c831..90cb6db6e335 100644
+> --- a/tools/memory-model/linux-kernel.cat
+> +++ b/tools/memory-model/linux-kernel.cat
+> @@ -27,7 +27,7 @@ include "lock.cat"
+>  (* Release Acquire *)
+>  let acq-po = [Acquire] ; po ; [M]
+>  let po-rel = [M] ; po ; [Release]
+> -let po-unlock-lock-po = po ; [UL] ; (po|rf) ; [LKR] ; po
+> +let po-unlock-lock-po = po ; (([UL] ; (po|rf) ; [LKR]) | ([Release]; (po;rf); [Acquire & RMW])) ; po
+> 
+>  (* Fences *)
+>  let R4rmb = R \ Noreturn       (* Reads for which rmb works *)
+> 
 
-Note that this function can only be used in a nonatomic context.
+I am forever struggling with cats, but that does look about right :-)
 
-This will be used by Rust version of read_poll_timeout().
+> although I'm not sure whether there will be actual users that use this
+> ordering.
 
-[boqun: Use file_from_location() to get a C string instead of changing
-__might_sleep()]
+include/asm-generic/ticket_spinlock.h comes to mind, as I thing would
+kernel/locking/qspinlock.*, no?
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/helpers/task.c |  6 ++++++
- rust/kernel/task.rs | 24 ++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
-
-diff --git a/rust/helpers/task.c b/rust/helpers/task.c
-index 31c33ea2dce6..2c85bbc2727e 100644
---- a/rust/helpers/task.c
-+++ b/rust/helpers/task.c
-@@ -1,7 +1,13 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/kernel.h>
- #include <linux/sched/task.h>
- 
-+void rust_helper_might_resched(void)
-+{
-+	might_resched();
-+}
-+
- struct task_struct *rust_helper_get_current(void)
- {
- 	return current;
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 834368313088..7d0935bc325c 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -400,3 +400,27 @@ fn eq(&self, other: &Kuid) -> bool {
- }
- 
- impl Eq for Kuid {}
-+
-+/// Annotation for functions that can sleep.
-+///
-+/// Equivalent to the C side [`might_sleep()`], this function serves as
-+/// a debugging aid and a potential scheduling point.
-+///
-+/// This function can only be used in a nonatomic context.
-+///
-+/// [`might_sleep()`]: https://docs.kernel.org/driver-api/basics.html#c.might_sleep
-+#[track_caller]
-+#[inline]
-+pub fn might_sleep() {
-+    #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
-+    {
-+        let loc = core::panic::Location::caller();
-+        let file = kernel::file_from_location(loc);
-+
-+        // SAFETY: `file.as_ptr()` is valid for reading and guaranteed to be nul-terminated.
-+        unsafe { crate::bindings::__might_sleep(file.as_ptr().cast(), loc.line() as i32) }
-+    }
-+
-+    // SAFETY: Always safe to call.
-+    unsafe { crate::bindings::might_resched() }
-+}
--- 
-2.39.5 (Apple Git-154)
 
