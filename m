@@ -1,120 +1,107 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B2323AE60;
-	Thu, 19 Jun 2025 07:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E591624FE;
+	Thu, 19 Jun 2025 07:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750317833; cv=none; b=iUOxywvhQp7+9ZAVjRR67boEmapjGdj7gPB5onVLBy7+7preiAbdZluq+MMn3KRQB7HhxBZY2kGu6QzPf++9rk5N8Xw6hze7ryYaqPT4LdooV9Y7ZOV5AZzBU6VVqBDlexATp+BkH6qqkTrFjgWD7aCC2WANEI9+t1rXDw5X5xw=
+	t=1750318341; cv=none; b=gGO+Pi+rMwiES1ClRPAVRr3fXQQ5SqrvjIVkVOrqZW5HR5gbdYPvnbeE2dACj2pL7diV10J9h6V0UZU+2i06ymfuhER+YHsYcfAFo820uQpXUHdqTKURl6xBsgH0IsXkjw7kT5kV3GI2/yuNc3iSrY7L3KDtME6kLO1ffeAs+7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750317833; c=relaxed/simple;
-	bh=nb2VENM0sUaWVP7DcGKvh8KkGKDw6730hpWK2iWbIK8=;
+	s=arc-20240116; t=1750318341; c=relaxed/simple;
+	bh=TvAQgk4aBUxBjS5hE6KPaEHvXSZd9cEcLLnRmixSYPY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rKb7Bs0wGcrhGPRFnm8c7UeHBJzq4hcWuhuY+TSybNwjeIlkJHXIaNfB8PBKtRGB1VKgkqx7Y87vTHBg4NCVxfUKFKQCBTSAbrylsa0YRSgiZ8Lz/49vfn1ajozgxEIY34f/9LKltE1/9ZYm5ME2YFUOKltocjJG6le+OqDDVYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nfc3bjMg; arc=none smtp.client-ip=209.85.215.170
+	 To:Cc:Content-Type; b=MsBHbVdaFSA7HrUn4ZoMQGfXhvC4e37rggQhpFsVPTQb3mXN5Ma24oXJuoDP8X2kWmjJBQYmRsUacJ3ogBavji9U1rgrLF8iCB5P6G1lpgSoPwtMeWS/OrG2DzraUn8q8AVbJf2I3emDwsegkgf9goRkXRjDQex5PKYhYQn+7no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m7CnDMOz; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nfc3bjMg"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b2700de85d0so52784a12.2;
-        Thu, 19 Jun 2025 00:23:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m7CnDMOz"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-313290ea247so91323a91.3;
+        Thu, 19 Jun 2025 00:32:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750317831; x=1750922631; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750318339; x=1750923139; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nb2VENM0sUaWVP7DcGKvh8KkGKDw6730hpWK2iWbIK8=;
-        b=Nfc3bjMgKid6TqefausfHOnX9IHBFQ49Nb8M2hopapEoakORhPOXGttCSeafrEEDaN
-         2SvXXIf165faYfVEaaLxkc1h0RE9YMNN8140ylWrmI0NaPpPRaRJcXB4nzfr5uSZwfy2
-         eesc5NyYW9R2/DJeizH+2NwMnIYLMCf1LMklMzAHqNIggkjtX/I6kS3ZLi7LDz4268Kk
-         lHreuzy30Bxh6Z9Fqarh0ZIzJYnSpnWbVMe2DxnBPVr8qULGqIQyO45mctdJCpP5K5Iu
-         e6yOOHJoNp0iLTJddgkvPtsq1kDL/dOGA7ZfsVrCjDPGQaUPh5Yx2iLZlX87uOxt4c8i
-         G1Ng==
+        bh=TsLzT9QmvCMN7j+9yVbwOwRf832rY8j8xMjKnCP+ElA=;
+        b=m7CnDMOzecil4uF6EmU6Q6Cf8Om/VP71awob1lqo1iTBPOr1uli6/K8jtquDpcBuuD
+         ngm5bnDVXLwbuJCEZQoXLvnkTNe+yxZN/FxesT0TG7ffIYVykoQlTJ6Cru1sT+P3tGlS
+         vzaEaG7CXAHe0BW7JozcS9v2IJJDQqjxbeV/LwELlrh/j3gLJpsXbNTCLZnsimxfi/JL
+         RT8I5q7jGzccez51zCeEh1AhLZU3j6ea3i5KHZo9Mv6eG8FHptMbJy5G7b/ccn2mWY5K
+         iL3teD/RhKAcTGaaDvlKH2OPj0GvO085wjatToUQTailPHtUTTEt7mUmVEAXGOmCZ8hT
+         XCrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750317831; x=1750922631;
+        d=1e100.net; s=20230601; t=1750318339; x=1750923139;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nb2VENM0sUaWVP7DcGKvh8KkGKDw6730hpWK2iWbIK8=;
-        b=l4Ve2tv85TFknucjwR2FcEhpnbQCnWh2Iq3LYvo+mvW7uZnxWAQnkmM0V4ojaJKZsZ
-         hAeIUd2VGIRPBSBzM7toQPCOaCoMeE8gcTwxkInCKhDOr2oZPXau3PJe8R9/PFaAI0pI
-         mExG16lxRQ8WGKOC012WnJTCRCVrnOTW/X6OTJSyhmY2Vgdvh1h+jyim9wWaaFpoVrPv
-         go42p8Z2qArEW3B9aZdUrOF1qe9wOLVVKrAqr/nnf0T0JdDnUpzPqhpBthF9p7a8yUjw
-         I7600BQmnE2FkJH3cvzRz5+YZskHofcM5UYR+/FR0vc45hWYKVYlRN/R5o1Yzr2ePDXv
-         smNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzm/cOX3odv/Dn0rBg4P8LW8BnLOtxfBAA3LxmGYPsjsCdTxtcpyYNkWr1cuOhuxQuBzfXnd0ipRiMXcZmU8g=@vger.kernel.org, AJvYcCX3dh8qfu5np+4rYiOclCkIFd4HoK56mzDNp4Dq1JVXmZury3LZ1t8CGx5dOWeK9DZXYziE9CrLGsXqIEE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaD51JQ6mt5pLw5yWFifFWh+lThuawsL6TCy32sbHuBkAszN1V
-	DzZvqx3sbaxJsthyBFrnlLhkK1qunSsXrl+U9lEibeKXZpbCL2OOD1/dCybLE3BfGU5DvTAnhq1
-	40vzuPx5yf2FU1LfNGCzNZPFfe7nx7+k=
-X-Gm-Gg: ASbGncvF0ZO7gp/Py1eueXQpZYnTb29TudGUUDIDmNJpP1f2yEDk54r6cTXEQhP4oKV
-	UlHM/OBmvYVeUpGgqOkc2ddSdCUwuK99CQs9Q9dscF9w8icSPCngkuZW5Ejw5sUJ4n2icTT8LBl
-	CJYlz2RvTDdaRR//rRbGve5mhsT/Z7r1poqvod7FGxtr0yWwASt4bZnw==
-X-Google-Smtp-Source: AGHT+IF4xgeSaa7Z6oacjqkh0Uhm6c4701OKVkd4tH+PpdBPRzB6UQ4bdJY88XOmwdVSbKmB5WkB1ChLRw19n7RXFmE=
-X-Received: by 2002:a17:90b:53ce:b0:311:fde5:c4ae with SMTP id
- 98e67ed59e1d1-3158bfee2a1mr1214205a91.6.1750317830755; Thu, 19 Jun 2025
- 00:23:50 -0700 (PDT)
+        bh=TsLzT9QmvCMN7j+9yVbwOwRf832rY8j8xMjKnCP+ElA=;
+        b=uzi8tFz0Giz7c0dCSUhkV5t/BVYxPlaZIdj9gvwjDzPMFiWq2fYIb898S+hZVJ9rc1
+         mp7zB9lI+ZjjpHYYQnFcVn16KYRPOXQSrC8LomaGdXqH2hNIi3YdXtt36yGBH5hfWKf3
+         KtIU4LsJSuJ1QNOQLMqYDC6OvIFTcXifcGAj66OhbdherKohuy3YvMZlrS7FvZzzJmpz
+         Tx5h235SCuczxy1qsEEJLuXVubgrQRkedyLJq7rJzGmN3SRVIa+whWfWSUL6sQMX30sK
+         M5CSHowsTlynRO7yNCdxsSXGuXgT8cnPOkKITah7PvBXGCo5pK0qWV5mCK1nczAJWxQl
+         Crpw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDACS2O0UymU7WmecV7RAnpUIkou7qWzHB1QTgPR9M+MrNmSrKZynfmZKKOZ/+uZXS54n8gW0V/Hk=@vger.kernel.org, AJvYcCXVeM/K+d6eNw4cN3j16sxpTPpxe58zS5jQShQhbN/pzXBljrr3MQYgUD1w4yiTIAx8NLkAzM2JYmwOsjT+1j0=@vger.kernel.org, AJvYcCXkB8ni3cHZ/H5Go82zeI8JRDv3HuBnFl0B9H0Ur9ZgRPNN+iMg7/lskcTKolmmeHYPvzSbawD0e0P/xBc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIRvpBXxOLoZLR1Cr+0xZIAc0lITHDZJezztVgqlwpPlJL2l3p
+	71msBOxoTLlKz28KnOP5vKQKSIeaNQJWzkH9C6gMFJ9zBoVjuxwrRfJwBEMOMHks4ryFKvTXePo
+	7T6C1ouy8q9TuwZJD3/88Kf0+TZhQJ1FW5AMoAgI=
+X-Gm-Gg: ASbGncsZNEAmCasT3iwzRH1G6M736Ri4gFY6eGTZppsXjjAL4xizYHIngldI/DjEUGt
+	GnaQIqDOLAyR8iA7newoDe8QI71R53chpXQWGvV5jnwFtRQr+QAy7vSvFPRoCY89j0BzooZPZYG
+	1XRJRuCJ7NFudtVkA3rWIIyppNu8CJ2moWzz01FN3GwQTpmMfHIbBVEg==
+X-Google-Smtp-Source: AGHT+IGYc1kFLHc13LSr9sTw75f7dYYCV2w7aJLJ+zTMy3pNH7Z+g+cv0wn2Fno90pkGHyXQa9nQnlPwCBNm8rFAU0E=
+X-Received: by 2002:a17:90b:2b48:b0:311:a314:c2dd with SMTP id
+ 98e67ed59e1d1-3158bfbd6f0mr1518019a91.4.1750318339096; Thu, 19 Jun 2025
+ 00:32:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72kSfHTPeRQjhHKhdw8zuozvNy50CJjTuEbUnW_3j9x8tw@mail.gmail.com>
- <CAH5fLgggDKUwmU3oCTMS1dQGzA5Whp2fnXoLmbGmNF1W89Ar_A@mail.gmail.com>
- <CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com> <20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
-In-Reply-To: <20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
+References: <20250613101815.18092-1-abhinav.ogl@gmail.com> <20250619065713.hm5ye2uhikaei2xo@vireshk-i7>
+In-Reply-To: <20250619065713.hm5ye2uhikaei2xo@vireshk-i7>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 19 Jun 2025 09:23:38 +0200
-X-Gm-Features: Ac12FXwkGjT2yKdViSJAtLP5h8VY4TjH8XXhu3mirY9Imu-1zodQb1_8LeMyiWQ
-Message-ID: <CANiq72kacWaLo=EE8WyA_M2Pr9h1MkqjeAmqet6CSGWLvM7B9g@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods as_micros_ceil
- and as_millis
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	ojeda@kernel.org, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, 
-	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
-	tglx@linutronix.de, tmgross@umich.edu
+Date: Thu, 19 Jun 2025 09:32:05 +0200
+X-Gm-Features: Ac12FXxtX3FmmCUDQ1aYO_4RkcRm8PpniSAq_qct3zSY4-xU6fk1kCCgSJ7D8oU
+Message-ID: <CANiq72muPYoPGLrb7jYWMqbWgknMuWJSPMdFPRQMFduFsDTs0Q@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: cpufreq: Ensure C ABI compatibility in all unsafe
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Abhinav Ananthu <abhinav.ogl@gmail.com>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 19, 2025 at 9:08=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Thu, Jun 19, 2025 at 8:57=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
 >
-> So would the function be defined like this?
+> I think the one in prelude points to core::ffi::* instead, while we
+> want to use kernel::ffi::* ?
 >
-> fn as_nanos(self) -> i64;
->
-> If that's the case, then we've come full circle back to the original
-> problem; Clippy warns against using as_* names for trait methods that
-> take self as follows:
->
-> warning: methods called `as_*` usually take `self` by reference or `self`=
- by mutable reference
+> Miguel ?
 
-Yeah, the Clippy warning is indeed one more data point that the
-guidelines are confusing to the point of having Clippy complain or,
-more likely, the guidelines' intention is that we should just pick
-`&self`.
+The one in the `kernel` prelude points to the kernel ones (the core
+ones should not be used anymore).
 
-If we decide to be OK with `self`s in the kernel for these cases, we
-can simply disable the lint. Doing so means we lose the rest of the
-checking for that lint, sadly.
+> Also why does prelude use ::ffi::* instead of kernel::ffi::* ? I was alwa=
+ys a
+> bit confused about it.
 
-And, yeah, we are indeed going in circles.
+It is because we define them in a crate called `ffi`, not in the
+`kernel` one; and we also re-export it in `kernel`.
 
-What I would normally suggest for cases like this is answering: what
-would be the best for the kernel's particular case, regardless of
-existing guidelines/lints? Then, if we think it is better to be
-different, and there is enough justification to do so, then try to
-mitigate the lose of the lints, talk to upstream, write our own
-variation of the guidelines, etc.
+In any case, from now on, one should just refer to them directly as
+`c_*` (please use the `kernel` prelude for that) -- please see:
 
-So I would like to hear if anybody feels strongly about either
-direction, i.e. any other pros/cons that we haven't thought of.
+    https://docs.kernel.org/rust/coding-guidelines.html#c-ffi-types
 
-Thanks!
+I hope that helps!
 
 Cheers,
 Miguel
