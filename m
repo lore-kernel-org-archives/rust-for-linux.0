@@ -1,88 +1,99 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC81218851
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Jun 2025 10:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23C41E2312;
+	Thu, 19 Jun 2025 10:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750328484; cv=none; b=ESN8B4DvU+emNT28X6fA6OQ63cUZaoh4xrbiIJoCzCeH8gEJlLWJ+vI8BUVYe079IXlIY1Myk89azL0LIotZvxhdtqxFVOs1iWPduDaW9mbvD42flN2mFjqDM5pZ5hhL1rl8PoOhEMHT0PlJg9Twe0nFPAq7bpndIWoGooRakI8=
+	t=1750329124; cv=none; b=Imgqqx+QgWa1vC48szRnz3tEr5b4quQwCu3B5rjd6EkqG4B6cKb48Cmpz7P7kbWQCE7Ki9RGYfmZ9oulAxtTYF0UfWaOYZyp56vrOV2d/TXydJqNG/WIwcOauQl8fsg+dSVjrECQwgJayJi34yeVt1i5zxLFjQQaL9ApkKPEWr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750328484; c=relaxed/simple;
-	bh=qUZR5lgHqcPpgjeAobNpTm8ZVpspQlqknfyMVXj1SLU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dsf0CDxPbSUZbT7FCK1cKyoIP3QJxrU8i2jzzndm6/wF/RovowYtMbHJs+qQafVBgjlnFZn0XNL4+Ati2r47a6yYHkJQiPRfsQx/lHZPCmvDUxBBRs/11/A3vva+4VYn8ZqAB2TRBNB5wUBQ3fGX8+QtRmlj9FuytkTzrZ1Q1M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 964B9113E;
-	Thu, 19 Jun 2025 03:21:01 -0700 (PDT)
-Received: from e129154.arm.com (unknown [10.57.67.185])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 230573F66E;
-	Thu, 19 Jun 2025 03:21:17 -0700 (PDT)
-From: Beata Michalska <beata.michalska@arm.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	alyssa@rosenzweig.io,
-	lyude@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
-Date: Thu, 19 Jun 2025 12:21:02 +0200
-Message-Id: <20250619102102.750668-1-beata.michalska@arm.com>
+	s=arc-20240116; t=1750329124; c=relaxed/simple;
+	bh=Khe/sdUUkDDqg1DjiaL2gTiOly2J6fsQL2KHmvONI2E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ut3t2DdIde3Gbl6oAa11Yygck/5kuYzuA9VUXfOvckhZPkRLh0U3wDoPJIX+ID7Bhrfz4wF1EXePC8Me14Yg2LlVkgbsHOfR0XgjQ88QngC6CqKd3LnAScfRRyxORCXVRH7dBdjiFQY4GosMzOlofXrBhO/WviniksBGfb8mOAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=T++0IscD; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="T++0IscD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=w1pniWAitZ7xsbl8EX2cBNfwJUGO6gUBYk8UsyzHaho=; b=T++0IscDTMH7RV/B13VlfwthTO
+	ocClwLWiSq5vhdXUmVM8gBi1SzG4bbvemjpW501sZlrU2uz4YOxforUAKJ+5ObYEFa3SxnbOiCd0k
+	TEK9F2H9iDYc6rxTdlrx9CSfCAl6P0SB4LxNQPp2rH1+vAsl9snvEv+NV3vVLtWRai3k0aVxDEANJ
+	YUWwo1d3cMR5Sk6nyaThKPq2nwpwpzx/hZf8edvc2wN/LB3re0uolTEKg9IdrEw7qMR4WvHa96lGZ
+	a0Cy8pN0ix0sd+rF5z81jdqTdyXw8QwZhmMCuBkQkOShQj2q57sCV4lyc3O078BZMBx7UKr8BnzEW
+	vtaQRULw==;
+Received: from 2001-1c00-8d82-d000-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d82:d000:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uSCYm-00000008GyW-2KJ1;
+	Thu, 19 Jun 2025 10:31:56 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9FB5A30890E; Thu, 19 Jun 2025 12:31:55 +0200 (CEST)
+Date: Thu, 19 Jun 2025 12:31:55 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v5 03/10] rust: sync: atomic: Add ordering annotation
+ types
+Message-ID: <20250619103155.GD1613376@noisy.programming.kicks-ass.net>
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+ <20250618164934.19817-4-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250618164934.19817-4-boqun.feng@gmail.com>
 
-With the Opaque<T>, the expectations are that Rust should not make any
-assumptions on the layout or invariants of the wrapped C types.
-That runs rather counter to ioctl arguments, which must adhere to
-certain data-layout constraints. By using Opaque<T>, ioctl handlers
-end up doing unsound castings, which adds needless complexity and
-maintenance overhead, brining no safety benefits.
-Drop the use of Opaque for ioctl arguments as that is not the best
-fit here.
+On Wed, Jun 18, 2025 at 09:49:27AM -0700, Boqun Feng wrote:
 
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
----
+> +//! Memory orderings.
+> +//!
+> +//! The semantics of these orderings follows the [`LKMM`] definitions and rules.
+> +//!
+> +//! - [`Acquire`] and [`Release`] are similar to their counterpart in Rust memory model.
 
- Additional comments:
- - UAPI types already automatically derive MaybeZeroable,
-   so it probably makes little sense to add any verification for that
- - FromBytes is pending, but due to the orphan rule, adding verification
-   of it being implemented for IOCTL args here is pointless
- - Verifying pointer alignment could make use of strict_provenance,
-   but that one is unstable and I am not sure what are the exact rules
-   here for using those. Without that one though, verifying alignment in
-   some cases (i.e. pointer tagging) might require more extensive changes.
-   Happy to deal with either.
+So I've no clue what the Rust memory model states, and I'm assuming
+it is very similar to the C11 model. I have also forgotten what LKMM
+states :/
 
- rust/kernel/drm/ioctl.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Do they all agree on what RELEASE+ACQUIRE makes?
 
-diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-index 445639404fb7..12b296131672 100644
---- a/rust/kernel/drm/ioctl.rs
-+++ b/rust/kernel/drm/ioctl.rs
-@@ -139,7 +139,7 @@ pub mod internal {
-                             // asserted above matches the size of this type, and all bit patterns of
-                             // UAPI structs must be valid.
-                             let data = unsafe {
--                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
-+                                &mut *(raw_data as *mut $crate::uapi::$struct)
-                             };
-                             // SAFETY: This is just the DRM file structure
-                             let file = unsafe { $crate::drm::File::as_ref(raw_file) };
--- 
-2.25.1
+> +//! - [`Full`] means "fully-ordered", that is:
+> +//!   - It provides ordering between all the preceding memory accesses and the annotated operation.
+> +//!   - It provides ordering between the annotated operation and all the following memory accesses.
+> +//!   - It provides ordering between all the preceding memory accesses and all the fllowing memory
+> +//!     accesses.
+> +//!   - All the orderings are the same strong as a full memory barrier (i.e. `smp_mb()`).
 
+s/strong/strength/ ?
+
+> +//! - [`Relaxed`] is similar to the counterpart in Rust memory model, except that dependency
+> +//!   orderings are also honored in [`LKMM`]. Dependency orderings are described in "DEPENDENCY
+> +//!   RELATIONS" in [`LKMM`]'s [`explanation`].
+> +//!
+> +//! [`LKMM`]: srctree/tools/memory-model/
+> +//! [`explanation`]: srctree/tools/memory-model/Documentation/explanation.txt
