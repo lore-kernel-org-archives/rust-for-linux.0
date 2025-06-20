@@ -1,78 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F4B223DFA;
-	Fri, 20 Jun 2025 11:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106032836B4
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Jun 2025 12:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750420573; cv=none; b=Zhezqhdqs5Zz1SZjZ1ULOJjAUwMeVZOn/SlGOVO0mFNuFEn/y3GgDB5E+qxFBpkNKbgSL7coQ6WMkQXhH+ZtRtQ9Co00NZB+Rf8WSG80S9O8aQryZ5Znmaw6/M9l6/lcI+N3dIrYshJ6gUv3hsAeOw9DXgk8SN18lvlmnCFJVqI=
+	t=1750421844; cv=none; b=ux5c6sQqQ+3IAqJz4IIYPWZ/aozIB0+tp7v0tS46WvnEF+/yzJbNx8PWwy5vCH1C0o3AIU8zoKMRbJv8ofbeeM0CzmBPaq2zqn7euTWZl0Ji1FDVXmCwsNjehCwTUQ2X75LoZqxX8AMr3jLswuIR83NjOn0WfVk+U7TYR0YCXu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750420573; c=relaxed/simple;
-	bh=EHLl4d0QD68sdXBAgG6WT7Tdgd2xo2PXKgC8Tnor7LE=;
+	s=arc-20240116; t=1750421844; c=relaxed/simple;
+	bh=KB4q3tJbq76zr8xO3z2dQXS46LMYvg9cF7clbVVVhPc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OhmalXnXupIOYCQ3yUuNQgEaJXLjBDN+HnP00s2UuLrmlWKQXkfsw/It1UbDv1PSabqdoik0Nmc1AUlrG4XqymLNfBNJS6QTo+LPEu8GRCbXDxauzvXQRtY3mMQtV+w00uq7WGy9uhygPKEBKN6U7q/wqGj94l1akPW/e51Gnyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxR4oOzQ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxR4oOzQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504A4C4CEE3;
-	Fri, 20 Jun 2025 11:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750420572;
-	bh=EHLl4d0QD68sdXBAgG6WT7Tdgd2xo2PXKgC8Tnor7LE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CxR4oOzQQJQ15Gm31XI9FCPgupg4s2bkDYqtEsv3nBEERk0tsVnK30lTg3M/XMPPM
-	 Tr2Fncj057I5/NCgSx6Y0ZVxb6p1xVf2dpfpGqe5IslVitySAyi6P9axqmc43/HyT0
-	 w2bTUrf0TPepMEXNMN2wSvC1ZtBfsjS0cWECQezWmP617KIwjRZdfbCJ2C26SH8uAc
-	 UOpMfsjEx2TfuMkGAjCEkUPTdHpNHnmyTrQAiIM2cwg+mKHWff+gOzzBFsrZt0DUwe
-	 UQ3gk8CvWzI5up08V0Rsi9zBqu5EK3uCtQ7sK9vrJ/n479TL6OdXiJYiO4Jw8b22NK
-	 zJgP1ycQXJ1iA==
-Date: Fri, 20 Jun 2025 13:56:05 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: ojeda@kernel.org, Rob Herring <robh@kernel.org>, alex.gaynor@gmail.com,
-	rafael@kernel.org, gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-acpi@vger.kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	lenb@kernel.org, wedsonaf@gmail.com, viresh.kumar@linaro.org,
-	alex.hung@amd.com, dingxiangfei2009@gmail.com
-Subject: Re: [PATCH v7 3/9] samples: rust: platform: conditionally call
- Self::properties_parse()
-Message-ID: <aFVMVcYm0JwI5L6l@cassiopeiae>
-References: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
- <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
- <20250618131958.GA1550757-robh@kernel.org>
- <aFLJJkeFfHR9GB-0@pollux>
- <aFRP-vGMoZNmQZ2E@pollux>
- <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=eqMwz3LJ9MBivh466c8DuAfOOLDicGcQ8KsNe8RXmfIZeX7pQt0QQYO+4SLhVGI4t1VCzTDDh0bZ4CKfREtenv3EsGh/KSmL0svSbH5IDZKC3WTSj15PGuumEOxlupIxufvOYmH+l3+9C/JJb1VK6VdNIck0qSun7Qo5Z3tRbQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C87BD16F2;
+	Fri, 20 Jun 2025 05:17:02 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E7323F58B;
+	Fri, 20 Jun 2025 05:17:18 -0700 (PDT)
+Date: Fri, 20 Jun 2025 14:17:08 +0200
+From: Beata Michalska <beata.michalska@arm.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, dakr@kernel.org,
+	aliceryhl@google.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, alyssa@rosenzweig.io, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH] rust: drm: Drop the use of Opaque for ioctl arguments
+Message-ID: <aFVRRG9zTCXPn7zJ@arm.com>
+References: <20250619102102.750668-1-beata.michalska@arm.com>
+ <54E44DF8-1192-47B4-A9E3-5891D4BD7424@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <54E44DF8-1192-47B4-A9E3-5891D4BD7424@collabora.com>
 
-On Fri, Jun 20, 2025 at 12:30:37PM +0100, Igor Korotin wrote:
-> Just to make sure that we're on the same page, I replace this:
+On Thu, Jun 19, 2025 at 09:30:19AM -0300, Daniel Almeida wrote:
+> Hi Beata,
 > 
->     if dev.fwnode().is_some_and(|node|
-> node.is_compatible(c_str!("test,rust-device")))
+> > On 19 Jun 2025, at 07:21, Beata Michalska <beata.michalska@arm.com> wrote:
+> > 
+> > With the Opaque<T>, the expectations are that Rust should not make any
+> > assumptions on the layout or invariants of the wrapped C types.
+> > That runs rather counter to ioctl arguments, which must adhere to
+> > certain data-layout constraints. By using Opaque<T>, ioctl handlers
+> > end up doing unsound castings, which adds needless complexity and
+> > maintenance overhead, brining no safety benefits.
 > 
-> with:
+> I don’t think that “unsound casts” is what is happening here.
 > 
->     if dev.fwnode().is_some_and(|node| node.is_of_node())
+> It's mostly the barrage of unsafe blocks to dereference the inner T for a
+> problem that does not exist.
 > 
-> And reworded the comment as follows:
+> > Drop the use of Opaque for ioctl arguments as that is not the best
+> > fit here.
+> > 
+> > Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+> > ---
+> > 
+> > Additional comments:
+> > - UAPI types already automatically derive MaybeZeroable,
+> >   so it probably makes little sense to add any verification for that
+> > - FromBytes is pending, but due to the orphan rule, adding verification
+> >   of it being implemented for IOCTL args here is pointless
 > 
->     samples: rust: platform: conditionally call Self::properties_parse()
+> Even with this missing, I don’t see a problem with this patch.
+The comments here are just informative and those are not a requirements
+for this patch. Just a reference for things that might be needed.
 > 
->     Only call Self::properties_parse() when the device is OF node
-> 
->     Once we add ACPI support, we don't want the ACPI device to fail probing
->     in Self::properties_parse().
+> In fact, if anything, the result of the discussion so far seems to point
+> towards automatically implementing FromBytes for all uapi types.
+That's what the 'pending' was supposed to mean. Will me more specific next
+time.
 
-LGTM!
+---
+BR
+Beata
+> 
+> 
+> > - Verifying pointer alignment could make use of strict_provenance,
+> >   but that one is unstable and I am not sure what are the exact rules
+> >   here for using those. Without that one though, verifying alignment in
+> >   some cases (i.e. pointer tagging) might require more extensive changes.
+> >   Happy to deal with either.
+> > 
+> > rust/kernel/drm/ioctl.rs | 2 +-
+> > 1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+> > index 445639404fb7..12b296131672 100644
+> > --- a/rust/kernel/drm/ioctl.rs
+> > +++ b/rust/kernel/drm/ioctl.rs
+> > @@ -139,7 +139,7 @@ pub mod internal {
+> >                             // asserted above matches the size of this type, and all bit patterns of
+> >                             // UAPI structs must be valid.
+> >                             let data = unsafe {
+> > -                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
+> > +                                &mut *(raw_data as *mut $crate::uapi::$struct)
+> >                             };
+> >                             // SAFETY: This is just the DRM file structure
+> >                             let file = unsafe { $crate::drm::File::as_ref(raw_file) };
+> > -- 
+> > 2.25.1
+> > 
+> > 
+> 
+> — Daniel 
+> 
