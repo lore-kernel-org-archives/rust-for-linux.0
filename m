@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0790220696;
-	Fri, 20 Jun 2025 12:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673CE28A41C;
+	Fri, 20 Jun 2025 12:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750422531; cv=none; b=oddl1Wy0X2yZEAPNFt4LQbayEA0pgodjHJsaaCwohrSB0S3ACTrlmZZpo7hmeOSOiNyvndB8xM0qXOplHovMLANqykJW0YvZXgO7pNA0Dhk4+bPTC3DJiN7N+8badjyg1WnVKziR3L3x7ZNsjQVOFcPrTfv5kMnnFZp7Et9aFmM=
+	t=1750422687; cv=none; b=MPY2eGHCrFfAxRzyCNZ1ZfBU2us3l/E4sZhn6n7kZxVjGCe7WFdrnycpxYlyi18l2NI8Y42J58WSQCiAXfcxzMycjY0GGqVEHYrItglwq9pt35u1KgwkmjwN1Cn0hsB+8/5Ie6pZ7Jz2B+Ybe+TPb/GGoOFGH0ZqCNMGFfHV/CI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750422531; c=relaxed/simple;
-	bh=7nPhNMyXqRY92E+lzth6jsH7dnJ4KYzBBljDG+AN4gw=;
+	s=arc-20240116; t=1750422687; c=relaxed/simple;
+	bh=aD43/sOhmsUVweGrvb0kOVvuYKCc6XzsFSDt8n0p6Lc=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=iGdkrx5DVJy5wDRx+40pHVF6w1HTV8+/4oDciQaCfB6KfUPdUJyRyoiOxmJhFRjMOL2sS3NWrJ3vCQFFXkOkbF9+g3xMoCaLqoYoTmXFwCJgvxo/IzBIv0RcjWgKd4E6sXireUiau9zgZmqaBrxBEAxMJzezY4To/o872a6PWHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJeZeYdD; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=RBAfRGYTwbKbnLgv3qmpk+QiAcJa5vGbXx8c7vQhDMWLqLEtzGAKAMnY5HNilFsc3UQBus6KR0NMa4IKYEJCWxsGWHsepje+2hqUNe1PDDsuIszSLclcsAAV2eroOEmzietuh1LKwQAiThQ06NaaQlBxQ52vO3KvI7gvIqPSt/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NXQHHIbn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJeZeYdD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 906ECC4CEF3;
-	Fri, 20 Jun 2025 12:28:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NXQHHIbn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82017C4CEE3;
+	Fri, 20 Jun 2025 12:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750422531;
-	bh=7nPhNMyXqRY92E+lzth6jsH7dnJ4KYzBBljDG+AN4gw=;
+	s=k20201202; t=1750422686;
+	bh=aD43/sOhmsUVweGrvb0kOVvuYKCc6XzsFSDt8n0p6Lc=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=tJeZeYdDuh/fSbZt/FDky6SBNqceJ/TGmMe4ucAVxvtfSeMueGEbD+tZwHfDfNYyK
-	 /iORBPFTbs1RWlVp0ZUrvrs4hOo3yICq8i/AYVPq6AI2jJkZA98IYVYCxi9J3xLvZJ
-	 FonAz0myhZ/31NIyNWcyi8MCg1C7EWc9hQyEynw000ZF0aQXMYQKSl+hv27BBwdBpi
-	 Fkbe9uZX+qoZtbOAWrXVHpOUelDnBtpBMvXQnzj805vNukEKb8mVHmWaz9s4EOJi6Q
-	 sQnLcohjfrY9606K1bdBTOqm4GJYbtVWSsufHzT2dwJw/zlQ4sEm3P04x8+Kuym8da
-	 vxmJ3TWy5d0lQ==
+	b=NXQHHIbnIGMf2IECcaAYEpTDKBvyrbqaAb2oS5t8pY85PEa8ALOWZbnjVK9rQwChH
+	 J7oLZHOEQLr1S2r6M3XA4GTHCczxJ6S9fcfNfrEC2Dxq1GOIFTAyFdOWk0VdAivY11
+	 2vhn0uavNoK8kY3kLeaTuQWCDPs8+hW+wsdz5yQqnCEqgBFFf0HWNAdsbMg776n/pq
+	 Qnj35G4baCi4+7PrqOielawwW9+GreC2JF2K9ZYDyWOostAJyBwurnzjYGJ1ts4AO7
+	 DFB0fd5u6e74uMwbzM2IZEFDBQFJEgo8nfr+kZdFoNjIbIXrNtxAVXTDfivMgPJjLZ
+	 /M9GlXMSCwy1w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,133 +34,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Jun 2025 14:28:44 +0200
-Message-Id: <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
- Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
- Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
- Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
- "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
- <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+Date: Fri, 20 Jun 2025 14:31:22 +0200
+Message-Id: <DARD1ZC0W9QR.3CBLX6RYE65VU@kernel.org>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] poll: rust: allow poll_table ptrs to be null
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Christian Brauner" <brauner@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
- <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
- <COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid> <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
-In-Reply-To: <87ikkq648o.fsf@kernel.org>
+References: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com>
+In-Reply-To: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com>
 
-On Fri Jun 20, 2025 at 1:29 PM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
->>> +/// A wrapper for kernel parameters.
->>> +///
->>> +/// This type is instantiated by the [`module!`] macro when module par=
-ameters are
->>> +/// defined. You should never need to instantiate this type directly.
->>> +///
->>> +/// Note: This type is `pub` because it is used by module crates to ac=
-cess
->>> +/// parameter values.
->>> +#[repr(transparent)]
->>> +pub struct ModuleParamAccess<T> {
->>> +    data: core::cell::UnsafeCell<T>,
->>> +}
->>> +
->>> +// SAFETY: We only create shared references to the contents of this co=
-ntainer,
->>> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
->>> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
->>> +
->>> +impl<T> ModuleParamAccess<T> {
->>> +    #[doc(hidden)]
->>> +    pub const fn new(value: T) -> Self {
->>> +        Self {
->>> +            data: core::cell::UnsafeCell::new(value),
->>> +        }
->>> +    }
->>> +
->>> +    /// Get a shared reference to the parameter value.
->>> +    // Note: When sysfs access to parameters are enabled, we have to p=
-ass in a
->>> +    // held lock guard here.
->>> +    pub fn get(&self) -> &T {
->>> +        // SAFETY: As we only support read only parameters with no sys=
-fs
->>> +        // exposure, the kernel will not touch the parameter data afte=
-r module
->>> +        // initialization.
->>
->> This should be a type invariant. But I'm having difficulty defining one
->> that's actually correct: after parsing the parameter, this is written
->> to, but when is that actually?
->
-> For built-in modules it is during kernel initialization. For loadable
-> modules, it during module load. No code from the module will execute
-> before parameters are set.
+On Fri Jun 20, 2025 at 1:49 PM CEST, Alice Ryhl wrote:
+>      ///
+>      /// # Safety
+>      ///
+> -    /// The caller must ensure that for the duration of `'a`, the pointe=
+r will point at a valid poll
+> -    /// table (as defined in the type invariants).
+> -    ///
+> -    /// The caller must also ensure that the `poll_table` is only access=
+ed via the returned
+> -    /// reference for the duration of `'a`.
+> -    pub unsafe fn from_ptr<'a>(ptr: *mut bindings::poll_table) -> &'a mu=
+t PollTable {
 
-Gotcha and there never ever will be custom code that is executed
-before/during parameter setting (so code aside from code in `kernel`)?
-
->> Would we eventually execute other Rust
->> code during that time? (for example when we allow custom parameter
->> parsing)
->
-> I don't think we will need to synchronize because of custom parameter
-> parsing. Parameters are initialized sequentially. It is not a problem if
-> the custom parameter parsing code name other parameters, because they
-> are all initialized to valid values (as they are statics).
-
-If you have `&'static i64`, then the value at that reference is never
-allowed to change.
-
->> This function also must never be `const` because of the following:
->>
->>     module! {
->>         // ...
->>         params: {
->>             my_param: i64 {
->>                 default: 0,
->>                 description: "",
->>             },
->>         },
->>     }
->>
->>     static BAD: &'static i64 =3D module_parameters::my_param.get();
->>
->> AFAIK, this static will be executed before loading module parameters and
->> thus it makes writing to the parameter UB.
->
-> As I understand, the static will be initialized by a constant expression
-> evaluated at compile time. I am not sure what happens when this is
-> evaluated in const context:
->
->     pub fn get(&self) -> &T {
->         // SAFETY: As we only support read only parameters with no sysfs
->         // exposure, the kernel will not touch the parameter data after m=
-odule
->         // initialization.
->         unsafe { &*self.data.get() }
->     }
->
-> Why would that not be OK? I would assume the compiler builds a dependency=
- graph
-> when initializing statics?
-
-Yes it builds a dependency graph, but that is irrelevant? The problem is
-that I can create a `'static` reference to the inner value *before* the
-parameter is written-to (as the static is initialized before the
-parameters).
+Returning `Option<&'a mut PollTable>` is not an option? I'd like to
+avoid wrapping raw pointers...
 
 ---
 Cheers,
 Benno
+
+> -        // SAFETY: The safety requirements guarantee the validity of the=
+ dereference, while the
+> -        // `PollTable` type being transparent makes the cast ok.
+> -        unsafe { &mut *ptr.cast() }
+> -    }
