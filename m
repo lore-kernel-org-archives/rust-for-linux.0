@@ -1,110 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078562853EF;
-	Fri, 20 Jun 2025 11:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5397F266B52;
+	Fri, 20 Jun 2025 11:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750418968; cv=none; b=mQDEzhGenSMUo+HZFfkul3KICuo0s+qM3unQ3WnDOUaVF4E6aoYMBwxpm+JXaagFd2KmNorU0ZTqlS1WMxw3Mw94lGXi4D9sPprzpgQc/8QBDn1DwuTyq/26NvRsf9kO3pznt3v1XLRU4B8XYetv0a1MIuTuuEsB30S2L/JOzjk=
+	t=1750419176; cv=none; b=ib625Z2ekylunBDHA/yK6l8/b7K8pB+vmX9d1Er2C5yoC492p49cmWPWmeGxJEXapOVmsadWuUTfEfB00wbRnThg5/w9Bdz/zKnVhGXR9RGslaUCi1GbXEIN8cG39b+ZvJ3fIOzu8buacjxiBm5ditWDjP5qcYToBAOGmdoty9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750418968; c=relaxed/simple;
-	bh=toY/8RlMvZbaSXxFKcYu2G72F3PE0BpQoMJH1XDj3DE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=U1K1UXJixmF4s5ZdEYb3FvlSpMSfiik+zRXTsYpoh8WpVj6jaH/syH6P0gy2Q7Thi+9V8O1gpn7btMEIMHgcD2X2lSZQM3tyYivLw6vaQAr7kPYUN54x40S5iuezIVnN+vlBYCbredDyhk7TQxcEz47LLEjZrgne9ASWavNYVSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rACp/zYB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750419176; c=relaxed/simple;
+	bh=aVUis3tmwjEVO7sLfUIv5dGMKiNhugLFOOb2Uv9ONlE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gnQiZHO+namdmyNzbmY76TPYevW1cowEPmaM7AGCsVdKPv07JFU+XBN1SmRCXMpNYe+3SB5s8/gczhfDuwdnxj3D00ncuj/bESIfERMHmoxFegQmmZyYQlrrV5cSbhx6lFWpUVc+8/cCt2U3HhRZZr6F94HikxUdc9yxW6V0Wcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXb0b8MZ; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rACp/zYB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC79C4CEED;
-	Fri, 20 Jun 2025 11:29:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750418967;
-	bh=toY/8RlMvZbaSXxFKcYu2G72F3PE0BpQoMJH1XDj3DE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rACp/zYBSDuBwdyMyauNMZ+PtNQx4mAX0MagrZFICgxBbzDorvHD3BbX77sBhT4+z
-	 YCKWHq0j+0+7Zr5yt7rwmQvq3WFij9ipXbZQbjNjdazhhQgANwugyh0Y+imrI/ov+Z
-	 TjDQjEBI9Mib/oZvblQav2X4I56jy6I4qisn4X5YdmcsF/gBpuNGzWhDljGMtJP8Bb
-	 WfKA9JqMokqJYELT8W93LE13kleX7tRhc+Io20uMLYH7sXMilpkZT+qVZFmF/89NKy
-	 BSRDXanCFJqHjtmhuqOtFFGz0sdptrc9+v0y1dAvwYTpvqLWm30FazxxM7FSfPvmcb
-	 V15wQSiEcZpeQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-In-Reply-To: <DAQIXKJ9VMS6.2044WT0FQQCVC@kernel.org> (Benno Lossin's message
-	of "Thu, 19 Jun 2025 14:55:03 +0200")
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
-	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
-	<aa9d7lhjQuDhyNw8zShbtfPFK19W5awx7cPJgC-2X4fGv2yUTnn0jqyIHfMN4wyuaYoS3fU6Fqe_wFteVUGtUg==@protonmail.internalid>
-	<DAPYMAB44RUZ.7NIWDUWY1UYF@kernel.org> <87v7or7wiv.fsf@kernel.org>
-	<cYt7F9EQzCCQcq4wPsJlpuXF6bXYHVEq7yhlX8MMQbBIFr2zkJLktttiIwEl7oD5aaaFKp1Mco39U3mkfTvrGw==@protonmail.internalid>
-	<DAQIXKJ9VMS6.2044WT0FQQCVC@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Fri, 20 Jun 2025 12:31:05 +0200
-Message-ID: <87o6ui66xi.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXb0b8MZ"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a54690d369so1552870f8f.3;
+        Fri, 20 Jun 2025 04:32:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750419174; x=1751023974; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q6mEJj3phw5TW6gbm0SfLzIIYERO6R6gcqINxCdoWyU=;
+        b=NXb0b8MZ5uiVVOST+ylTE9Mov2arH5IHHlYJ4KIHMXvHEyELW0mcF5Leq+0J8S5+76
+         5r1uRZYj763RwOAfZ6B8KHQTJBtOZgLLNYZtMpRc9Chhjf9tOrU6BMx6MQ/VG173JYUp
+         60Mijk717h3EcEmYRCvyXJ/nk0JZUhkf3AUs6kWsaQuJM/rb0jqJrd1GMZaXocW4Imar
+         qdQVbKIAk9aUBuNm1J7RAreX4qxWesqWi5/4lxO26Ep6lBNOtcVWuGLqYTshah40ahe2
+         91dTnNts3N3W6dmWte1Rmp/xTKqn8cNldWGOnSq9c1DXTc/Dc9XWHn2qsAj5SipPFhyg
+         WQvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750419174; x=1751023974;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q6mEJj3phw5TW6gbm0SfLzIIYERO6R6gcqINxCdoWyU=;
+        b=u9EghzRN/1N4D1oPUGYJIVcY2TnHsCiHD1pmnL10qRMiZ4FrytY51Xxh7gzfHmDxEW
+         2qK/XAuDy+LW66/pHm3WFOMWT9ceChibNBCdvTQIawzK7kuTYZv3rN1Cj83kBYNazGI9
+         NqgAoGsEcKbVm2OnwER+sBl/gik7qfC7qAtNU9jpxP+Tw6RMJ+S3/fTR+GObMSAisql8
+         cL/XhrJ4ytW3h62YY5VodCOyMqW14T2LmHYwutEymm+GYltl5DTAUOd7yH3mVnBMO1It
+         zTCH/9smUGvzdaaaCeRV2aLmvmtdEuigAj7U+HcltIHvWu71XCvocJ81m98S8hZeNu58
+         vQjg==
+X-Forwarded-Encrypted: i=1; AJvYcCU0FEK5WVp+l55szDCa5CSrpK9eNrWJZZWijuQ1nuHRjLPWZrkItmPYPQtrWGmSUdZiyYVsY3YK2EAhVIgkEdc=@vger.kernel.org, AJvYcCXAJ7PakyrMo1bM18/kfewrECgdcDBgli45Ya56wUz6KtJL+uQP/x38ROh+AkrIqNDuU9/gpX0uAqgc@vger.kernel.org, AJvYcCXLAlxDi7hrIf6gj30XzOsNcdJ0R+iFqKeuqazFV25RNu5c88tijLR6pzNQ4RgMFmkF42QmXkz7TcdCaIj1@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWmJG1NihH9d8x2XE/MncpaaF97S5H18IqfqwNnwCI6jDkW39O
+	9C//jNA0pRWJmycrSULn7+n0h82Mqb/CyVelGzODNssZNPw9YBJ7gI/W
+X-Gm-Gg: ASbGncsi+A7ma/IXXPaiq3q4IHpZQI55tg/1AcYfxUpqt12S8WTKPMhAy+qxETkDdyn
+	j39rxXCRKK4YSsqJ95FXnHSXR1FYwXz80N+bnUBrUBfkQYN5FnS4A9AXw45camOI7m5D580CDuh
+	BeTLfLhS/eFV8n9YIQSX0ze+IhtVcD0PlCQefco8Amh61f9aim2kCv/RBf7kC/Pp9nRNdck/VFi
+	NsONX5xRXAw0UzAydWF7YHLkVsIulhsOM9wlg/fQc3XxumkEKxGPQX8HnWXMJGjdDe9vtHhAjzw
+	NF+CTr38CaHqsAOWf7ydv5EazOWHPnapk4lohNIL1mz2bhLYQhq5fSfPChaFJ4pYtog9
+X-Google-Smtp-Source: AGHT+IEOSthR0EbNak5G9TavGEk3affJNL6c5D3MkqGwwG0EgoahxIttjypkNXmARDLkwGDSSJ3aZg==
+X-Received: by 2002:a5d:64e4:0:b0:3a4:ebc4:45a9 with SMTP id ffacd0b85a97d-3a6d12a422fmr1841526f8f.19.1750419173444;
+        Fri, 20 Jun 2025 04:32:53 -0700 (PDT)
+Received: from [10.38.1.85] ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d118b910sm1773851f8f.84.2025.06.20.04.32.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Jun 2025 04:32:53 -0700 (PDT)
+Message-ID: <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
+Date: Fri, 20 Jun 2025 12:30:37 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 3/9] samples: rust: platform: conditionally call
+ Self::properties_parse()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, Rob Herring <robh@kernel.org>, alex.gaynor@gmail.com,
+ rafael@kernel.org, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
+ boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
+ viresh.kumar@linaro.org, alex.hung@amd.com, dingxiangfei2009@gmail.com
+References: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
+ <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
+ <20250618131958.GA1550757-robh@kernel.org> <aFLJJkeFfHR9GB-0@pollux>
+ <aFRP-vGMoZNmQZ2E@pollux>
+Content-Language: en-US
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+In-Reply-To: <aFRP-vGMoZNmQZ2E@pollux>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-"Benno Lossin" <lossin@kernel.org> writes:
-
-> On Thu Jun 19, 2025 at 2:20 PM CEST, Andreas Hindborg wrote:
->> "Benno Lossin" <lossin@kernel.org> writes:
->>> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
-
-[...]
-
->>>> +    crate::error::from_result(|| {
->>>> +        let new_value = T::try_from_param_arg(arg)?;
->>>> +
->>>> +        // SAFETY: By function safety requirements `param` is be valid for reads.
->>>> +        let old_value = unsafe { (*param).__bindgen_anon_1.arg as *mut T };
->>>> +
->>>> +        // SAFETY: By function safety requirements, the target of `old_value` is valid for writes
->>>> +        // and is initialized.
->>>> +        unsafe { *old_value = new_value };
+On 6/19/25 18:59, Danilo Krummrich wrote:
+> On Wed, Jun 18, 2025 at 04:11:57PM +0200, Danilo Krummrich wrote:
+>> On Wed, Jun 18, 2025 at 08:19:58AM -0500, Rob Herring wrote:
+>>> On Wed, Jun 18, 2025 at 11:13:25AM +0100, Igor Korotin wrote:
+>>>> From: Danilo Krummrich <dakr@kernel.org>
+>>>>
+>>>> Only call Self::properties_parse() when the device is compatible with
+>>>> "test,rust-device".
+>>>>
+>>>> Once we add ACPI support, we don't want the ACPI device to fail probing
+>>>> in Self::properties_parse().
+>>>>
+>>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 >>>
->>> So if we keep the `ModuleParam: Copy` bound from above, then we don't
->>> need to drop the type here (as `Copy` implies `!Drop`). So we could also
->>> remove the requirement for initialized memory and use `ptr::write` here
->>> instead. Thoughts?
+>>> This needs your S-o-b as well since you sent the patch.
+>>>
+>>>> ---
+>>>>  samples/rust/rust_driver_platform.rs | 7 ++++++-
+>>>>  1 file changed, 6 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
+>>>> index 000bb915af60..036dd0b899b0 100644
+>>>> --- a/samples/rust/rust_driver_platform.rs
+>>>> +++ b/samples/rust/rust_driver_platform.rs
+>>>> @@ -40,7 +40,12 @@ fn probe(
+>>>>              dev_info!(dev, "Probed with info: '{}'.\n", info.0);
+>>>>          }
+>>>>  
+>>>> -        Self::properties_parse(dev)?;
+>>>> +        if dev
+>>>> +            .fwnode()
+>>>> +            .is_some_and(|node| node.is_compatible(c_str!("test,rust-device")))
+>>>
+>>> I think you should be checking just is this ACPI or DT rather than 
+>>> compatible. It's kind of an anti-pattern to test compatible in probe. 
+>>> The reason is we've already matched to a compatible and have match data 
+>>> to use, so we don't need to do it again. It becomes quite messy when 
+>>> there are numerous possible compatibles.
 >>
->> Yes, that is the rationale for the `Copy` bound. What would be the
->> benefit of using `ptr::write`? They should be equivalent for `Copy`
->> types, right.
->
-> They should be equivalent, but if we drop the requirement that the value
-> is initialized to begin with, then removing `Copy` will result in UB
-> here.
->
->> I was using `ptr::replace`, but Alice suggested the pace expression
->> assignment instead, since I was not using the old value.
->
-> That makes sense, but if we also remove the initialized requirement,
-> then I would prefer `ptr::write`.
+>> Yeah, that was my first approach; here's the patch from a few days ago [1].
+>>
+>> The reason why I decided against this, was that all the properties we check in
+>> Self::properties_parse() in a fallible way *only* apply to the device with this
+>> compatible string.
+>>
+>> But I don't mind if we replace it with [1] either.
+> 
+> As mentioned, I don't mind either, so let's change it up.
+> 
+> @Igor, can you please pick up the patch in [1] and at the same time drop the
+> patch introducing FwNode::is_compatible() and replace node.is_compatible() with
+> node.is_of_node() in this one?
 
-OK, we can do that.
+Just to make sure that we're on the same page, I replace this:
+
+    if dev.fwnode().is_some_and(|node|
+node.is_compatible(c_str!("test,rust-device")))
+
+with:
+
+    if dev.fwnode().is_some_and(|node| node.is_of_node())
+
+And reworded the comment as follows:
+
+    samples: rust: platform: conditionally call Self::properties_parse()
+
+    Only call Self::properties_parse() when the device is OF node
+
+    Once we add ACPI support, we don't want the ACPI device to fail probing
+    in Self::properties_parse().
 
 
-Best regards,
-Andreas Hindborg
-
-
+Thanks
+Igor
