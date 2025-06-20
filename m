@@ -1,162 +1,243 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5397F266B52;
-	Fri, 20 Jun 2025 11:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1355930E828
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Jun 2025 11:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750419176; cv=none; b=ib625Z2ekylunBDHA/yK6l8/b7K8pB+vmX9d1Er2C5yoC492p49cmWPWmeGxJEXapOVmsadWuUTfEfB00wbRnThg5/w9Bdz/zKnVhGXR9RGslaUCi1GbXEIN8cG39b+ZvJ3fIOzu8buacjxiBm5ditWDjP5qcYToBAOGmdoty9k=
+	t=1750420185; cv=none; b=ZKwoT9SrCY8GTgnxzKg1S9QjbokWiz9wY5nsuSjoV1LXz+WwM0YIIj9uWOEylohLToSDcx+WfWmtjURfAKWkVNv4czk8oYFGdjmdB6TMfZeBt1gyZWUK42Zv0Cjn6dpnYWPnq0cKK7MI8J7G9X+TR79ii94Ub5wPS+7w7ANWG8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750419176; c=relaxed/simple;
-	bh=aVUis3tmwjEVO7sLfUIv5dGMKiNhugLFOOb2Uv9ONlE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gnQiZHO+namdmyNzbmY76TPYevW1cowEPmaM7AGCsVdKPv07JFU+XBN1SmRCXMpNYe+3SB5s8/gczhfDuwdnxj3D00ncuj/bESIfERMHmoxFegQmmZyYQlrrV5cSbhx6lFWpUVc+8/cCt2U3HhRZZr6F94HikxUdc9yxW6V0Wcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXb0b8MZ; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750420185; c=relaxed/simple;
+	bh=iYcWysrw+50j+9IEeqBdWM5KrP5ED7xiKHUq2pSfPvE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=n2KXi6tLsxLKiX+oYKdVxQdwRvFG8Cw60Kph0Znko2tdQSrKXfSnAHD3/05HrpK+ikJZIkJY133LUQbssMF/iCTFI8Sc2J7uc/2jHGNcBV6gP+IqlPjm4vORBUXrf5YSvMsXyfIYU2So8LQIlIBJh8n2w1wNFHbSns9cbKEc/YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ulCI1cQz; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXb0b8MZ"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a54690d369so1552870f8f.3;
-        Fri, 20 Jun 2025 04:32:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ulCI1cQz"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a4edf5bb4dso1399754f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Jun 2025 04:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750419174; x=1751023974; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q6mEJj3phw5TW6gbm0SfLzIIYERO6R6gcqINxCdoWyU=;
-        b=NXb0b8MZ5uiVVOST+ylTE9Mov2arH5IHHlYJ4KIHMXvHEyELW0mcF5Leq+0J8S5+76
-         5r1uRZYj763RwOAfZ6B8KHQTJBtOZgLLNYZtMpRc9Chhjf9tOrU6BMx6MQ/VG173JYUp
-         60Mijk717h3EcEmYRCvyXJ/nk0JZUhkf3AUs6kWsaQuJM/rb0jqJrd1GMZaXocW4Imar
-         qdQVbKIAk9aUBuNm1J7RAreX4qxWesqWi5/4lxO26Ep6lBNOtcVWuGLqYTshah40ahe2
-         91dTnNts3N3W6dmWte1Rmp/xTKqn8cNldWGOnSq9c1DXTc/Dc9XWHn2qsAj5SipPFhyg
-         WQvg==
+        d=google.com; s=20230601; t=1750420182; x=1751024982; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=osALxqpKlzPFa1tkBcSzMAGIeg6+FRzFxocb6BFYLtY=;
+        b=ulCI1cQzyGA4iSbzQlkuhGRGXv3b24cj6g6crDQdmGt0HD5O6HDtxDS+B4WahVHlWm
+         bRglcsRxt2Cel81WGR6eV+FzD5U78G9sD82rz+UteA0P5nlYfhjRCxbQd2TOqINTSeBi
+         eXXwrDiEHmZNOioJ9s7nHcmG8QsLBDZVUL7w2mnIb3tPhRVqK9KFQuIUR+FJODkRVXNE
+         85z26XxmFRisroMXlPeC72AqGnmKrY8q3XqMIjVdSoWMxu1RodEuRtKD5+mLHzCVANVs
+         PnEsP3tTxDHEG/rwQpjXU/krT8KPC1eCQio93VYxWzRezuqiSRvPSBv+GgXWOprv5T8c
+         +XOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750419174; x=1751023974;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q6mEJj3phw5TW6gbm0SfLzIIYERO6R6gcqINxCdoWyU=;
-        b=u9EghzRN/1N4D1oPUGYJIVcY2TnHsCiHD1pmnL10qRMiZ4FrytY51Xxh7gzfHmDxEW
-         2qK/XAuDy+LW66/pHm3WFOMWT9ceChibNBCdvTQIawzK7kuTYZv3rN1Cj83kBYNazGI9
-         NqgAoGsEcKbVm2OnwER+sBl/gik7qfC7qAtNU9jpxP+Tw6RMJ+S3/fTR+GObMSAisql8
-         cL/XhrJ4ytW3h62YY5VodCOyMqW14T2LmHYwutEymm+GYltl5DTAUOd7yH3mVnBMO1It
-         zTCH/9smUGvzdaaaCeRV2aLmvmtdEuigAj7U+HcltIHvWu71XCvocJ81m98S8hZeNu58
-         vQjg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0FEK5WVp+l55szDCa5CSrpK9eNrWJZZWijuQ1nuHRjLPWZrkItmPYPQtrWGmSUdZiyYVsY3YK2EAhVIgkEdc=@vger.kernel.org, AJvYcCXAJ7PakyrMo1bM18/kfewrECgdcDBgli45Ya56wUz6KtJL+uQP/x38ROh+AkrIqNDuU9/gpX0uAqgc@vger.kernel.org, AJvYcCXLAlxDi7hrIf6gj30XzOsNcdJ0R+iFqKeuqazFV25RNu5c88tijLR6pzNQ4RgMFmkF42QmXkz7TcdCaIj1@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWmJG1NihH9d8x2XE/MncpaaF97S5H18IqfqwNnwCI6jDkW39O
-	9C//jNA0pRWJmycrSULn7+n0h82Mqb/CyVelGzODNssZNPw9YBJ7gI/W
-X-Gm-Gg: ASbGncsi+A7ma/IXXPaiq3q4IHpZQI55tg/1AcYfxUpqt12S8WTKPMhAy+qxETkDdyn
-	j39rxXCRKK4YSsqJ95FXnHSXR1FYwXz80N+bnUBrUBfkQYN5FnS4A9AXw45camOI7m5D580CDuh
-	BeTLfLhS/eFV8n9YIQSX0ze+IhtVcD0PlCQefco8Amh61f9aim2kCv/RBf7kC/Pp9nRNdck/VFi
-	NsONX5xRXAw0UzAydWF7YHLkVsIulhsOM9wlg/fQc3XxumkEKxGPQX8HnWXMJGjdDe9vtHhAjzw
-	NF+CTr38CaHqsAOWf7ydv5EazOWHPnapk4lohNIL1mz2bhLYQhq5fSfPChaFJ4pYtog9
-X-Google-Smtp-Source: AGHT+IEOSthR0EbNak5G9TavGEk3affJNL6c5D3MkqGwwG0EgoahxIttjypkNXmARDLkwGDSSJ3aZg==
-X-Received: by 2002:a5d:64e4:0:b0:3a4:ebc4:45a9 with SMTP id ffacd0b85a97d-3a6d12a422fmr1841526f8f.19.1750419173444;
-        Fri, 20 Jun 2025 04:32:53 -0700 (PDT)
-Received: from [10.38.1.85] ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d118b910sm1773851f8f.84.2025.06.20.04.32.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jun 2025 04:32:53 -0700 (PDT)
-Message-ID: <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
-Date: Fri, 20 Jun 2025 12:30:37 +0100
+        d=1e100.net; s=20230601; t=1750420182; x=1751024982;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=osALxqpKlzPFa1tkBcSzMAGIeg6+FRzFxocb6BFYLtY=;
+        b=v7yOypIRvV/FsdlcWqyKDjzGsQ3xoio9nlqnc0lnLQs+NqjPxND/L+b9/E5/kFhlYV
+         GbKi2iWJtJWMxzeJZrcJlwd1Bvxlue6/VyPmF3XIqdj+Y8JEYVsAa4wgV9UIZDvWZ82U
+         +aFqIHk7eBX+enZS18nXvkl1NiAOPe0qnDeuKka+eJFl6z/obJgdy9/7RDjYgnPeG3k3
+         PdfOMV+7pG5eWjBx2CKcCdIijprEh9/4oVt8nSektYEWFJQRT8r3nzZLi8dJPfpcO1gg
+         Q7PHxxWfU+9yKiaZ1TTbwSG50kY1VVqv03LqJyyrkHbImVcm3hZBwN0PQq9qkgFndD4G
+         Wo9w==
+X-Forwarded-Encrypted: i=1; AJvYcCV8fMuazyepNbDjCouuYMAyjgTDyXwuPLg7ITKV25ctXf5vCIcGw6BamO1aw+nN8mBCL1NTMnLa9lmv/zMIsg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKM6qL1u6ECZzf4TbH4sRZI2UXsV2It5qPOJVx8A8DYI6moDB+
+	zGjGAuGQV9yDDYwsuOTIzUTEYQckqShqQNwl1Awtdcau7oY1xL22hmGSP6Q4KCaXWe/088xqioZ
+	Y2Dp78U0YcK4kd+prFw==
+X-Google-Smtp-Source: AGHT+IFXZluW9vjRa/UB5oPmtlNwMPAUSfTUT0iOsUDG4USvhFDRhmzfMEgUj47CN6VNy38IHOWMWFvqOU1ARic=
+X-Received: from wmbbd6.prod.google.com ([2002:a05:600c:1f06:b0:450:d422:69f9])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:23c2:b0:3a5:2ef8:34f9 with SMTP id ffacd0b85a97d-3a6d12fc23bmr1583422f8f.27.1750420182429;
+ Fri, 20 Jun 2025 04:49:42 -0700 (PDT)
+Date: Fri, 20 Jun 2025 11:49:35 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/9] samples: rust: platform: conditionally call
- Self::properties_parse()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, Rob Herring <robh@kernel.org>, alex.gaynor@gmail.com,
- rafael@kernel.org, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com,
- viresh.kumar@linaro.org, alex.hung@amd.com, dingxiangfei2009@gmail.com
-References: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
- <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
- <20250618131958.GA1550757-robh@kernel.org> <aFLJJkeFfHR9GB-0@pollux>
- <aFRP-vGMoZNmQZ2E@pollux>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <aFRP-vGMoZNmQZ2E@pollux>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAM9KVWgC/x2MQQqAIBAAvxJ7bsGEFuwr0cFqrQXR0Iog/HvSb
+ eYw80LmJJxhaF5IfEuWGKp0bQPLbsPGKGt10Er3irTCI3qPp509Y7gqzs5YsrT0ZBhqdSR28vz HcSrlA/cUDRthAAAA
+X-Change-Id: 20250620-poll-table-null-bf9a6a6c569e
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6621; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=iYcWysrw+50j+9IEeqBdWM5KrP5ED7xiKHUq2pSfPvE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoVUrUp5UNN8n2PVnEUCVOoCMu1GnBMLMSBTy0Z
+ p29Pfof6IKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaFVK1AAKCRAEWL7uWMY5
+ Rob2D/9v6AEDnDI7C4zX9iONvfRYtwMhtpvexvE8CIeZcgUTigpxQBLVkeCCYTt299BYvX5XYKK
+ oHfVcOV/UV9N+4Y3y3uKn5dPRmEnvORbOd5znNlF/KvulLw6H62RywQlTB21VRROEr5rF9rlGIX
+ Y+DE9aULDI/LSMRGbGaPScvpc+A7AG8xlm/utE/1HGI0qMX85PjprNYfm3rEajZOlaQCUfnPvxA
+ NxTyQcgMu2oijhQrFleTiKycS8xn0YIJr9g/gd+2QvmaONc4wbTZakHq0CS3gUUf03V9MCiuA92
+ mcranE2Nitol2ZVbWTw+/UN6scbBdQLydTD3lvjvJTkS54tHUlQdKWxquNyIb1B8nBxiFjQvN8T
+ 5/KEjNNrszj3lK/VZ7aZITg2IhHCpvLLlz49cBUwgJvsgGl3I8w4Y3o5PxqWc5G4s93x+ccI6Sz
+ Vfrv8P+0ek5QB9nHVhX0ACzLTt0ff9chM50WR+YV7CuxCMBrlbuxszxQVF/8xhTiP9ae/52Z5WZ
+ 5Bgf/Ps2uY1LYMb5cQ4yhBRCfE4ENTmq7xaL5rH+O55wo9uNOdtr26wQ5Znvnq0wTVUx7e0aU/O
+ I+saGg5TooOBjmApiEOgbwkfjDAq5WJo/FTWwcmHJ9DmA6SIg2l0iBCehzz/fBf7AClfuhHDOWw Emcfq4KkZn8XVAw==
+X-Mailer: b4 0.14.2
+Message-ID: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com>
+Subject: [PATCH] poll: rust: allow poll_table ptrs to be null
+From: Alice Ryhl <aliceryhl@google.com>
+To: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Miguel Ojeda <ojeda@kernel.org>, Christian Brauner <brauner@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 6/19/25 18:59, Danilo Krummrich wrote:
-> On Wed, Jun 18, 2025 at 04:11:57PM +0200, Danilo Krummrich wrote:
->> On Wed, Jun 18, 2025 at 08:19:58AM -0500, Rob Herring wrote:
->>> On Wed, Jun 18, 2025 at 11:13:25AM +0100, Igor Korotin wrote:
->>>> From: Danilo Krummrich <dakr@kernel.org>
->>>>
->>>> Only call Self::properties_parse() when the device is compatible with
->>>> "test,rust-device".
->>>>
->>>> Once we add ACPI support, we don't want the ACPI device to fail probing
->>>> in Self::properties_parse().
->>>>
->>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->>>
->>> This needs your S-o-b as well since you sent the patch.
->>>
->>>> ---
->>>>  samples/rust/rust_driver_platform.rs | 7 ++++++-
->>>>  1 file changed, 6 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
->>>> index 000bb915af60..036dd0b899b0 100644
->>>> --- a/samples/rust/rust_driver_platform.rs
->>>> +++ b/samples/rust/rust_driver_platform.rs
->>>> @@ -40,7 +40,12 @@ fn probe(
->>>>              dev_info!(dev, "Probed with info: '{}'.\n", info.0);
->>>>          }
->>>>  
->>>> -        Self::properties_parse(dev)?;
->>>> +        if dev
->>>> +            .fwnode()
->>>> +            .is_some_and(|node| node.is_compatible(c_str!("test,rust-device")))
->>>
->>> I think you should be checking just is this ACPI or DT rather than 
->>> compatible. It's kind of an anti-pattern to test compatible in probe. 
->>> The reason is we've already matched to a compatible and have match data 
->>> to use, so we don't need to do it again. It becomes quite messy when 
->>> there are numerous possible compatibles.
->>
->> Yeah, that was my first approach; here's the patch from a few days ago [1].
->>
->> The reason why I decided against this, was that all the properties we check in
->> Self::properties_parse() in a fallible way *only* apply to the device with this
->> compatible string.
->>
->> But I don't mind if we replace it with [1] either.
-> 
-> As mentioned, I don't mind either, so let's change it up.
-> 
-> @Igor, can you please pick up the patch in [1] and at the same time drop the
-> patch introducing FwNode::is_compatible() and replace node.is_compatible() with
-> node.is_of_node() in this one?
+It's possible for a poll_table to be null. This can happen if an
+end-user just wants to know if a resource has events right now without
+registering a waiter for when events become available. Furthermore,
+these null pointers should be handled transparently by the API, so we
+should not change `from_ptr` to return an `Option`. Thus, change
+`PollTable` to wrap a raw pointer rather than use a reference so that
+you can pass null.
 
-Just to make sure that we're on the same page, I replace this:
+Comments mentioning `struct poll_table` are changed to just `poll_table`
+since `poll_table` is a typedef. (It's a typedef because it's supposed
+to be opaque.)
 
-    if dev.fwnode().is_some_and(|node|
-node.is_compatible(c_str!("test,rust-device")))
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+This issue was discovered from a syzkaller report on Rust Binder.
 
-with:
+Intended for Christian Brauner's tree.
+---
+ rust/helpers/helpers.c   |  1 +
+ rust/helpers/poll.c      | 10 ++++++++
+ rust/kernel/sync/poll.rs | 65 +++++++++++++++++-------------------------------
+ 3 files changed, 34 insertions(+), 42 deletions(-)
 
-    if dev.fwnode().is_some_and(|node| node.is_of_node())
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 0f1b5d11598591bc62bb6439747211af164b76d6..ff65073fe3a5220e7792306fc9ae74c416935a52 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -30,6 +30,7 @@
+ #include "platform.c"
+ #include "pci.c"
+ #include "pid_namespace.c"
++#include "poll.c"
+ #include "rbtree.c"
+ #include "rcu.c"
+ #include "refcount.c"
+diff --git a/rust/helpers/poll.c b/rust/helpers/poll.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..7e5b1751c2d526f2dd467fcd61dcf49294d3c20d
+--- /dev/null
++++ b/rust/helpers/poll.c
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/export.h>
++#include <linux/poll.h>
++
++void rust_helper_poll_wait(struct file *filp, wait_queue_head_t *wait_address,
++			   poll_table *p)
++{
++	poll_wait(filp, wait_address, p);
++}
+diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
+index d7e6e59e124b09d5f0d62244ca46089e0748d544..f86e3e565e7e6a6d244a01d34113beb9e799e424 100644
+--- a/rust/kernel/sync/poll.rs
++++ b/rust/kernel/sync/poll.rs
+@@ -9,9 +9,8 @@
+     fs::File,
+     prelude::*,
+     sync::{CondVar, LockClassKey},
+-    types::Opaque,
+ };
+-use core::ops::Deref;
++use core::{marker::PhantomData, ops::Deref};
+ 
+ /// Creates a [`PollCondVar`] initialiser with the given name and a newly-created lock class.
+ #[macro_export]
+@@ -23,58 +22,40 @@ macro_rules! new_poll_condvar {
+     };
+ }
+ 
+-/// Wraps the kernel's `struct poll_table`.
++/// Wraps the kernel's `poll_table`.
+ ///
+ /// # Invariants
+ ///
+-/// This struct contains a valid `struct poll_table`.
+-///
+-/// For a `struct poll_table` to be valid, its `_qproc` function must follow the safety
+-/// requirements of `_qproc` functions:
+-///
+-/// * The `_qproc` function is given permission to enqueue a waiter to the provided `poll_table`
+-///   during the call. Once the waiter is removed and an rcu grace period has passed, it must no
+-///   longer access the `wait_queue_head`.
++/// The pointer must be null or reference a valid `poll_table`.
+ #[repr(transparent)]
+-pub struct PollTable(Opaque<bindings::poll_table>);
++pub struct PollTable<'a> {
++    table: *mut bindings::poll_table,
++    _lifetime: PhantomData<&'a bindings::poll_table>,
++}
+ 
+-impl PollTable {
+-    /// Creates a reference to a [`PollTable`] from a valid pointer.
++impl<'a> PollTable<'a> {
++    /// Creates a [`PollTable`] from a valid pointer.
+     ///
+     /// # Safety
+     ///
+-    /// The caller must ensure that for the duration of `'a`, the pointer will point at a valid poll
+-    /// table (as defined in the type invariants).
+-    ///
+-    /// The caller must also ensure that the `poll_table` is only accessed via the returned
+-    /// reference for the duration of `'a`.
+-    pub unsafe fn from_ptr<'a>(ptr: *mut bindings::poll_table) -> &'a mut PollTable {
+-        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
+-        // `PollTable` type being transparent makes the cast ok.
+-        unsafe { &mut *ptr.cast() }
+-    }
+-
+-    fn get_qproc(&self) -> bindings::poll_queue_proc {
+-        let ptr = self.0.get();
+-        // SAFETY: The `ptr` is valid because it originates from a reference, and the `_qproc`
+-        // field is not modified concurrently with this call since we have an immutable reference.
+-        unsafe { (*ptr)._qproc }
++    /// The pointer must be null or reference a valid `poll_table` for the duration of `'a`.
++    pub unsafe fn from_raw(table: *mut bindings::poll_table) -> Self {
++        // INVARIANTS: The safety requirements are the same as the struct invariants.
++        PollTable {
++            table,
++            _lifetime: PhantomData,
++        }
+     }
+ 
+     /// Register this [`PollTable`] with the provided [`PollCondVar`], so that it can be notified
+     /// using the condition variable.
+-    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
+-        if let Some(qproc) = self.get_qproc() {
+-            // SAFETY: The pointers to `file` and `self` need to be valid for the duration of this
+-            // call to `qproc`, which they are because they are references.
+-            //
+-            // The `cv.wait_queue_head` pointer must be valid until an rcu grace period after the
+-            // waiter is removed. The `PollCondVar` is pinned, so before `cv.wait_queue_head` can
+-            // be destroyed, the destructor must run. That destructor first removes all waiters,
+-            // and then waits for an rcu grace period. Therefore, `cv.wait_queue_head` is valid for
+-            // long enough.
+-            unsafe { qproc(file.as_ptr() as _, cv.wait_queue_head.get(), self.0.get()) };
+-        }
++    pub fn register_wait(&self, file: &File, cv: &PollCondVar) {
++        // SAFETY: The pointers `self.table` and `file` are valid for the duration of this call.
++        // The `cv.wait_queue_head` pointer must be valid until an rcu grace period after the
++        // waiter is removed. The `PollCondVar` is pinned, so before `cv.wait_queue_head` can be
++        // destroyed, the destructor must run. That destructor first removes all waiters, and then
++        // waits for an rcu grace period. Therefore, `cv.wait_queue_head` is valid for long enough.
++        unsafe { bindings::poll_wait(file.as_ptr(), cv.wait_queue_head.get(), self.table) }
+     }
+ }
+ 
 
-And reworded the comment as follows:
+---
+base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+change-id: 20250620-poll-table-null-bf9a6a6c569e
 
-    samples: rust: platform: conditionally call Self::properties_parse()
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-    Only call Self::properties_parse() when the device is OF node
-
-    Once we add ACPI support, we don't want the ACPI device to fail probing
-    in Self::properties_parse().
-
-
-Thanks
-Igor
