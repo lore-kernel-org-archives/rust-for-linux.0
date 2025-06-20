@@ -1,96 +1,154 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16BA1FBEB9;
-	Fri, 20 Jun 2025 10:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0972853EF;
+	Fri, 20 Jun 2025 11:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750414491; cv=none; b=uUaWSb06yTe4auTyqII/i7CcIAqA6G1M95v4UxvwtoTTErkE6dFELB7DPwCNaqp/dS3LRJYA7Qjyimh58nb/CVmr/NLM0Z6l5udSCqd9oXGZqTPrFvqixuD1akA2B08ewOcO06a5I4W0T1icmVT6A3/sYBoRV2Pt+BR8uUli++o=
+	t=1750418962; cv=none; b=oVd3MNFT5rFfCEdMzie6JbMTe+8Gl4aQjPnFjN5hDlrPkmK7dHHmyUvJPtCpEc/1Q5iS9vLL7dC+giV+HgdCj3RYYxE+bm4Y0Ry+f1aI4RIK4Xg7GQQRqSbw2SWs9J1ChF2BX+UNCSZW0goaPBK9OIniihvohVCS2FRoTfJ4oEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750414491; c=relaxed/simple;
-	bh=0/NydzBglUSC3hLY6MPcT/TYFF4UUzGCsloUfeL5Veo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bqgnIhQfXy0RHjis8qdbWt4/CkHcndtlYVLnVI0UquCxG7S4SDnDfO8dPdaW9qWNJYD2QIrh6g48Lg8+M2M1SwuUiXCUzCf6GCM7oORPmPpb5vspfDYB1CLEGig2+uV7RBUnPxwL13p0o3iRwob301BvwCsMzFd58W/t/ynpwrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P44K86L3; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750418962; c=relaxed/simple;
+	bh=c4Rc2nFa3I49nxqi5SgaiDRGigf/JNf4RcytD5THg7g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=exvH4P+5oMb9Eg7qu4dVkPdzyxCsAeCoRd4NNoUlnjS2fim5IZOyt25pmfKRhwcL721GPI6yVei8n4+D+MdYvdtyO0WWGwPJvb7Mm9NABOlTljsAuZuVtmefzCy/15McaXgbMua6eyiE2rQ9NTwMmUmNEJnBJzFK4lvqi6vlWWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcB91OzR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P44K86L3"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-313290ea247so294411a91.3;
-        Fri, 20 Jun 2025 03:14:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750414489; x=1751019289; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0/NydzBglUSC3hLY6MPcT/TYFF4UUzGCsloUfeL5Veo=;
-        b=P44K86L3YNKZ/8R1kajnRJrDslwxwCvTTaMKy+RQRQanzLqnJVCw9VUEAmtAF9BNfW
-         AlntpnBxWBXjdNAO6ftNSBNHWx/dtgz1VBsuwM85wC6MZUjmmaYnCch1UyvCvgtqpNti
-         sgWoKIDkJKLpFOJni4HeuBGkGCNb+u8P1DagcKY4twimGdbVt65rTwRA/rUqJo+xNwdR
-         GuT/7QTRgSNojvVWPXJanUDLchgfbo2davAneWJWP2zYgjG4YJ5NoDtADMamvCYZcZjT
-         5WGNqRxFhFZSq3oSuaNiISEuBy6TUjVP+fhDzhoaa8sCMyRVpHrAp7vaRpuKi8Uk0LK3
-         HE6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750414489; x=1751019289;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0/NydzBglUSC3hLY6MPcT/TYFF4UUzGCsloUfeL5Veo=;
-        b=st6AGtiNYwoe6BxxPLjU1iemuYXVbF6CYsvHrd5/agASx7Pi/ApRQUh8VC4Id6oXJo
-         Y+7J0GsHkDYJP6nzm5aai9iltEe495Kj5d+/YBY4RoBqwMJs/ToZ+5XLsVbv0qtzRmlY
-         QBtBFT9GaVAciSP2WoF7xmnKczUMZucrPxLsE04BpShtL28cVQXgI0zl+3+tolHwkUfA
-         zynVKihqGswPe/rrX+sKCkU1GESrPqwh2BUkwcImBZEUsCxGbQ/QAars/QDlKVtFENXf
-         Nirjpfj+iqyALMUgmBB13PukyJZGSd6YRxaFOp1oKrYULBZQPxGA/wqSzncgS/jFGlJm
-         Qq1w==
-X-Forwarded-Encrypted: i=1; AJvYcCW9nnauwb18KF9qtKF6GIJgKKu4Fb5w6e/dI0IJnZmaJ8ZARA1uItmR7XrjX7enXZJjl/PuSbLqrP8=@vger.kernel.org, AJvYcCWFQlcd/xEXVynVkP1CGZe7OVJHv7Rw7EU9abrnqnA/upb2z048RmZ0NIw3jBklljmrZ/iE+5iKiKgqLkg=@vger.kernel.org, AJvYcCXLxEsh5zLsdwubPH1jyqIgYdavQnSfNsy/u4cBsfo2SAHfOdmCbu1FzimQXz2nd+AcNo6uS86mfDwCkEB+mFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxugeo51A17+IhSqaBqmjBh68eyfz4nFLuL5k7JdEIDe4OkFhRG
-	aIwD2esxyAmLc14LGpXovEZriVFgsv2wB7WtKQRp9u5BdFlTuTbcd8p8FQw9iMHlD0u1qMzZzd7
-	48G36IMnBkejYsKDKpWNHWHcWo8hdPc0=
-X-Gm-Gg: ASbGnctiEoULDrcp/f2zDzpa+TTVmvU0IHBEoN1FYSDeqEOmrI7FTFoYEm01Fud7oTj
-	V2LZGwqpZnDUro2L9AQfdO7Y1nONOYQp93b3XfEM5APja0DrJ93WREVtOa+RTi5egiiuNhg+yMN
-	97rK6TS+zQAc2mrHtjiWtMsbcZGEyH0VKI9Rkv3dxAOYRGfUOyX7t5
-X-Google-Smtp-Source: AGHT+IGLbG03uIdIKjDmZb3/x7pPUaTgeFpfxlRzklJ39io1r9KXnw5eU12ARqN276HzeEn9SJ07vWuNIzIeJzcnrm8=
-X-Received: by 2002:a17:90b:5105:b0:312:1d2d:18f8 with SMTP id
- 98e67ed59e1d1-3159d8facf9mr1331919a91.7.1750414489032; Fri, 20 Jun 2025
- 03:14:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcB91OzR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A16C4CEE3;
+	Fri, 20 Jun 2025 11:29:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750418962;
+	bh=c4Rc2nFa3I49nxqi5SgaiDRGigf/JNf4RcytD5THg7g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=PcB91OzROARD50vmekIMFW8RbjI1rBadXKSlSMxIFpR/AIGvnKl8eoxyesnMbPGve
+	 C01F65HbecH8pc0TukmBZ7HdhL1q2kFziyZmB+0spokiEsnzPvNn/D6dvkcp0jOoVk
+	 prbXUdoN89pXXEzLOjlMy1/9lDprj/pIxdLCfwYm9EdR9N06QIDMyf9tdUfM9eTQWr
+	 D74VbkA2mSdfLKLQfpza0alcj3TvhtrsU6mDGLzFhLmcQ9l6MjVh6VqZmmPC3EFFoM
+	 7FjtcnSxMl0gFrmTpxnFyY9wB+sVLjeU+kgif//v9mhUfY/cUApC0OgzAE41vup1Gj
+	 5LPGzkLU9dF9w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+In-Reply-To: <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> (Benno Lossin's message
+	of "Thu, 19 Jun 2025 15:15:00 +0200")
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+	<COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
+	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Fri, 20 Jun 2025 13:29:11 +0200
+Message-ID: <87ikkq648o.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250620095920.20765-1-abhinav.ogl@gmail.com>
-In-Reply-To: <20250620095920.20765-1-abhinav.ogl@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 20 Jun 2025 12:14:36 +0200
-X-Gm-Features: Ac12FXw9NrQ7Z20VT84HWGtqBjMjNPitnvcngGJyK7jRgUS5odM-7SJJbs0OFNU
-Message-ID: <CANiq72=OdGRRkxdvSd5bLPkQcfXXFUj4_8LLjVONzpWx5--shw@mail.gmail.com>
-Subject: Re: [PATCH] rust: opp: use c_* types via kernel prelude
-To: Abhinav Ananthu <abhinav.ogl@gmail.com>
-Cc: vireshk@kernel.org, nm@ti.com, sboyd@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org, 
-	linux-pm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Viresh Kumar <viresh.kumar@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Jun 20, 2025 at 12:00=E2=80=AFPM Abhinav Ananthu <abhinav.ogl@gmail=
-.com> wrote:
+"Benno Lossin" <lossin@kernel.org> writes:
+
+> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
+>> +/// A wrapper for kernel parameters.
+>> +///
+>> +/// This type is instantiated by the [`module!`] macro when module parameters are
+>> +/// defined. You should never need to instantiate this type directly.
+>> +///
+>> +/// Note: This type is `pub` because it is used by module crates to access
+>> +/// parameter values.
+>> +#[repr(transparent)]
+>> +pub struct ModuleParamAccess<T> {
+>> +    data: core::cell::UnsafeCell<T>,
+>> +}
+>> +
+>> +// SAFETY: We only create shared references to the contents of this container,
+>> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
+>> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
+>> +
+>> +impl<T> ModuleParamAccess<T> {
+>> +    #[doc(hidden)]
+>> +    pub const fn new(value: T) -> Self {
+>> +        Self {
+>> +            data: core::cell::UnsafeCell::new(value),
+>> +        }
+>> +    }
+>> +
+>> +    /// Get a shared reference to the parameter value.
+>> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
+>> +    // held lock guard here.
+>> +    pub fn get(&self) -> &T {
+>> +        // SAFETY: As we only support read only parameters with no sysfs
+>> +        // exposure, the kernel will not touch the parameter data after module
+>> +        // initialization.
 >
-> Although these types are defined in a crate named `ffi`, they are re-expo=
-rted
-> via the `kernel::prelude` and should be used from there. This aligns with=
- the
-> Rust-for-Linux coding guidelines and ensures ABI correctness when interfa=
-cing
-> with C code.
+> This should be a type invariant. But I'm having difficulty defining one
+> that's actually correct: after parsing the parameter, this is written
+> to, but when is that actually?
 
-By the way, thanks for sending these, and please feel free to clean up
-the rest -- we have a bunch of instances of this in the tree :)
+For built-in modules it is during kernel initialization. For loadable
+modules, it during module load. No code from the module will execute
+before parameters are set.
 
-Happy to create an issue about it.
+> Would we eventually execute other Rust
+> code during that time? (for example when we allow custom parameter
+> parsing)
 
-Cheers,
-Miguel
+I don't think we will need to synchronize because of custom parameter
+parsing. Parameters are initialized sequentially. It is not a problem if
+the custom parameter parsing code name other parameters, because they
+are all initialized to valid values (as they are statics).
+
+>
+> This function also must never be `const` because of the following:
+>
+>     module! {
+>         // ...
+>         params: {
+>             my_param: i64 {
+>                 default: 0,
+>                 description: "",
+>             },
+>         },
+>     }
+>
+>     static BAD: &'static i64 = module_parameters::my_param.get();
+>
+> AFAIK, this static will be executed before loading module parameters and
+> thus it makes writing to the parameter UB.
+
+As I understand, the static will be initialized by a constant expression
+evaluated at compile time. I am not sure what happens when this is
+evaluated in const context:
+
+    pub fn get(&self) -> &T {
+        // SAFETY: As we only support read only parameters with no sysfs
+        // exposure, the kernel will not touch the parameter data after module
+        // initialization.
+        unsafe { &*self.data.get() }
+    }
+
+Why would that not be OK? I would assume the compiler builds a dependency graph
+when initializing statics?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
