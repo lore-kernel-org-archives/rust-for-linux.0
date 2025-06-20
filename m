@@ -1,111 +1,114 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F0A63CF;
-	Fri, 20 Jun 2025 01:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28D822339;
+	Fri, 20 Jun 2025 01:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750381557; cv=none; b=jgjpiGP/laM5sWO9LcGAZC4D0MJDoqNW1gDxixo05BztV0rVOwVSbzniRPyw+LOb5mWxw09XdUCvwTUFKbQfg+hnvCHprgk8s3dMwPEuVPmdnfQPMMh5Z58aKagZe1PLS3TDtOK2VptXvbH1nUH/qlqIpBaQatjlkoO01Wcf2nk=
+	t=1750383316; cv=none; b=R98PgGTdel6enioluMAYbvvSSvZ+wIiyUKbrXk4gJZ1TrMP/429A+S/Ogbp1y3l7D1DVdd06eLe/KrlMNIG6m36zfgzljIRaBCZze1ERE+lsVRNyEYLbzXP0/2QqT06QeZSa1q1whX+sYAtJF2/38Tdb2oAnNEbMVyOh7YOkTJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750381557; c=relaxed/simple;
-	bh=W9mOqeP2kwr3pLH9cYKHBcKZdgpJAyreKBwjSHcB8Mo=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=eqt9fLw9ZMVlpWu8PkmT9MGV18x4GnCWFZuOQPKkPyq2ftPh02Lfb00FlTxmN5T4X1IIzVRMycgS8AG0j28rUJlqaTEmErh5EqEojkVq2RPGEwuMZOJc5CDoDouHO5H/5L5HTCODxkX6QoMBbNTkZzQj9vnTmjFBVpIPRMcm4ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbtN11a+; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750383316; c=relaxed/simple;
+	bh=Ygb8D3DFDD//bZSNlotR+GYu4xbc8GQmhXzfNgEY/lU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Evf2vWN7P57iJcRB49CQ5Ogp+kbgW4Sm9KOkroJqIqdH4XQ+S7dj0YfBy9nMniTk7nKA41fgMYRyvgEvlm7KflPPr8QY1DytRNZDkS6/h+cm6zEl+Yc75COmz/1HIVn6BfB9M7dJmnbr2SSpejb2rVOlzE55d+OAT8hOQCucN8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jM7li+nU; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbtN11a+"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-747abb3cd0bso848217b3a.1;
-        Thu, 19 Jun 2025 18:05:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750381555; x=1750986355; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DzT2Iuf/ZzNOLQ6gupaXsLkqUMoBHoKHOKKIlOgccBA=;
-        b=AbtN11a+QW7OvI1YSIdisDyjVHD1EKwifjbO7FW/Xquin1f11c2lWfJMMUWEwAfD5Y
-         LE+4VF6KWqIq1wcxm/M3V3NY5ltIyXvORsaYYkTaEt+pyp3DyLsnbf72f47FtGb4RYFd
-         ryZil7jz+VIx9r78Oy2rM7O+JeUbK6IdARXdswzmSm5GDGvsxna7pUw/UWpAySz8WDmq
-         5xEiubbTv+MBScG7FeIQX/oZ1WGHC/jG8mM7rxgfi+NCrAtahGvMeghuHuC2iAjatO/7
-         z6anHl7bqNj+HJXx0DMNBRuBOV5ItIMBWAt/yMwaDMvzmHceWSyo16bbjTmkTxYllezr
-         7Scg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750381555; x=1750986355;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DzT2Iuf/ZzNOLQ6gupaXsLkqUMoBHoKHOKKIlOgccBA=;
-        b=CyOLlNHhVWaHHgCEfssNEMpOt+UESucQuJxIVgnM1ywRUIC06uCgWq8y3/qLLVSDBY
-         PoW3SvadgWeEhQ+l5NfZp/VdH9ZTCUghELcb6MzjIrCiGfkQ6u+ABCZhUFGs0OiMTnJB
-         CgiAvo89S06GTroKBuTS7OqtTmqcRTc0f9PnO5CJ4jD5tcBIhUNy7PhgR3zEO8qiLmk1
-         eIQGSwxWJzFfKHJP1eA9CWVy2qouLg20K/Lv3iqqbAYOtU7rLFTcLqqLCsX+HhErhr+9
-         9KB/06lpHCRIX8oAaTZj/aq7qlgz211uMH0HH3VKTimOAgyFeJ2VRSA8hOWbD0fLCjDY
-         RbLg==
-X-Forwarded-Encrypted: i=1; AJvYcCW4tOHcbcuIXiD7irKmNZBNcYba4TLVWgOVexEAEJpBFgiqySy8YuGKYNtKZnBXarSdEdrPqgbaijdciuM=@vger.kernel.org, AJvYcCWfLSGcDih/c++MComSfhjxxhB9JvVBkp49H7Gf0WN8fL0q0knml8XZjPdwDLWjumZgfYg/8ZfU@vger.kernel.org, AJvYcCX+qd87qBXG6ez1VpOmgPXMj7N+9qTjbgGMWScMD6VuVIdkGtauY+ircnkz7DYZXZJl7xVkmx8rT1rL7EQcy7c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQl0UxNq5jHZ+81ODMiMSXv+bdqRzVdJvdxVR1Bx/6B9ALoICy
-	C3rQQMVnRQ1C1msTBFf5e4opGE/5E0WL51UHth1nM3Hq1XFWmGN3/Hu7
-X-Gm-Gg: ASbGncuNmzYDQc2ylTmpW7uRmC+R+2KQGH3ZjlXJY2nSX7Fq77dYx9PN/779P6zFJ8i
-	5VkyutyZ65xLlIbIsdWiLnFxvDiJbTIZfKi/y6ntStP5gl6FnsmhHXrVwRJCFGdzkrlQGqTRv3/
-	qzcD2Zxiy/i3KrT+x6tCVxvswNwwRmmg3dH+zly1fq431PZYSgDrbJ2MPdYk/lSKd8Ya1c0n0Ig
-	85N38QFc8H1JY6wCXzvazCf32T4/7Vm8G4MMZPkexYx7PVdNEgvKi4eddGYbruZGFaZemDAzwYt
-	zbTt56u4jOiocI4nXXoSWDdNl6eyVuPK7z/qi8YWPQDBqatLA+3Iy51u1PIhyqcEdz1HIUymLPu
-	nCsvS0tca1KOIlsfvm/loD/A4vau/L10vdkLKM9hk
-X-Google-Smtp-Source: AGHT+IHMGyH3pwfxqRRi0CyniU9wTwDjsc/wVG5OYqjExsCqaW50JCFuTv7mJNtVdKpPWwfIgL+fQg==
-X-Received: by 2002:a05:6a20:4321:b0:215:dacf:5746 with SMTP id adf61e73a8af0-220293b751amr744762637.19.1750381555001;
-        Thu, 19 Jun 2025 18:05:55 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f12587fbsm459847a12.62.2025.06.19.18.05.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Jun 2025 18:05:54 -0700 (PDT)
-Date: Fri, 20 Jun 2025 10:05:39 +0900 (JST)
-Message-Id: <20250620.100539.89068405138839860.fujita.tomonori@gmail.com>
-To: tamird@gmail.com
-Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, tmgross@umich.edu,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, dakr@kernel.org, davem@davemloft.net,
- andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: cast to the proper type
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAJ-ks9n-iQAiwN3CVnJP164kPEgwq5nj-E5S7BnZrYdBWoo16g@mail.gmail.com>
-References: <CAJ-ks9mazp=gSqDEzUuh0eTvj6pBET-z2zz7XQzmu9at=4V03A@mail.gmail.com>
-	<20250620.075443.1954975894369072064.fujita.tomonori@gmail.com>
-	<CAJ-ks9n-iQAiwN3CVnJP164kPEgwq5nj-E5S7BnZrYdBWoo16g@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jM7li+nU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750383315; x=1781919315;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ygb8D3DFDD//bZSNlotR+GYu4xbc8GQmhXzfNgEY/lU=;
+  b=jM7li+nUUt/Qidl+PterMewp2En2Kw4LOW04OYx4WnCmn2JmlmZjJPul
+   0lux5JQuGuOpiEm1F1URoZmaP7dWSd1EaM1CjX1levRGHazxzhb/G0xOd
+   S7YXONf5s9wi/f3Xtfew7VeEhnVedk/X4lWvA8WX0k0vpahTklUZQ9ZHH
+   HjYqvtYKxRYNtF0E3M71YO/kFDj3ePqQ3mUI+byNoG72cjnMG2tEuT+k8
+   uxgbWDOikNSN/fOUI3iLUqaTk5sedHpgRpxGD69vuzzVP4mIiow2LDOMe
+   2AS3uwffdnmqKsTVB4ba/9vOyEGPo3mk5UOgxxdxprGN4hcE4bamhKuyU
+   Q==;
+X-CSE-ConnectionGUID: q4cPJS7RTK+ev3X1XN6JWQ==
+X-CSE-MsgGUID: XgOcd5gVQWOJLU80xbstpA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="51750452"
+X-IronPort-AV: E=Sophos;i="6.16,250,1744095600"; 
+   d="scan'208";a="51750452"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2025 18:35:14 -0700
+X-CSE-ConnectionGUID: CPgJMUJiRxiT9t4/7rcsJg==
+X-CSE-MsgGUID: kbMFDARYTOqnqEggcyM+9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,250,1744095600"; 
+   d="scan'208";a="188001454"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 19 Jun 2025 18:35:09 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uSQep-000LGA-0S;
+	Fri, 20 Jun 2025 01:35:07 +0000
+Date: Fri, 20 Jun 2025 09:34:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-hardening@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH] panic: improve panic output from Rust panics
+Message-ID: <202506200907.0hDFXWmf-lkp@intel.com>
+References: <20250619-rust-panic-v1-1-ad1a803962e5@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250619-rust-panic-v1-1-ad1a803962e5@google.com>
 
-On Thu, 19 Jun 2025 19:24:14 -0400
-Tamir Duberstein <tamird@gmail.com> wrote:
+Hi Alice,
 
->> >> > >> > Fixes: f20fd5449ada ("rust: core abstractions for network PHY drivers")
->> >> > >>
->> >> > >> Does this need to be backported? If not, I wouldn't include a Fixes tag.
->> >> > >
->> >> > > I'm fine with omitting it. I wanted to leave a breadcrumb to the
->> >> > > commit that introduced the current code.
->> >> >
->> >> > I also don't think this tag is necessary because this is not a bug
->> >> > fix. And since this tag points to the file's initial commit, I don't
->> >> > think it's particularly useful.
->> >>
->> >> Would you be OK stripping the tag on apply, or would you like me to send v2?
->> >
->> > Hi Tomo, gentle ping here. Does this look reasonable to you, with the
->> > Fixes tag stripped on apply?
->>
->> Yeah, if you drop the Fixes tag, it's fine by me.
-> 
-> Thanks. Would you mind adding your Acked-by?
+kernel test robot noticed the following build errors:
 
-With the tag dropped,
+[auto build test ERROR on 19272b37aa4f83ca52bdf9c16d5d81bdd1354494]
 
-Acked-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/panic-improve-panic-output-from-Rust-panics/20250619-231923
+base:   19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+patch link:    https://lore.kernel.org/r/20250619-rust-panic-v1-1-ad1a803962e5%40google.com
+patch subject: [PATCH] panic: improve panic output from Rust panics
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250620/202506200907.0hDFXWmf-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250620/202506200907.0hDFXWmf-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506200907.0hDFXWmf-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0277]: `core::option::Option<&core::fmt::Arguments<'_>>` doesn't implement `core::fmt::Display`
+   --> rust/kernel/lib.rs:210:36
+   |
+   210 |     match core::format_args!("{}", info.message()) {
+   |                                    ^^^^^^^^^^^^^^ `core::option::Option<&core::fmt::Arguments<'_>>` cannot be formatted with the default formatter
+   |
+   = help: the trait `core::fmt::Display` is not implemented for `core::option::Option<&core::fmt::Arguments<'_>>`
+   = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+   = note: this error originates in the macro `core::format_args` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
