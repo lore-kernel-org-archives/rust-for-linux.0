@@ -1,243 +1,160 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1355930E828
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Jun 2025 11:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13937280002;
+	Fri, 20 Jun 2025 11:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750420185; cv=none; b=ZKwoT9SrCY8GTgnxzKg1S9QjbokWiz9wY5nsuSjoV1LXz+WwM0YIIj9uWOEylohLToSDcx+WfWmtjURfAKWkVNv4czk8oYFGdjmdB6TMfZeBt1gyZWUK42Zv0Cjn6dpnYWPnq0cKK7MI8J7G9X+TR79ii94Ub5wPS+7w7ANWG8M=
+	t=1750420347; cv=none; b=P07SawJ6C0uHC5h7GWzmwTUf778vdWFYUVD4kEVSXUp3S6g38POwj4S+Cp0T3G7SA6BU+M8ho+gFxn2rVFvYY0fjuPItbrS+Pr3EfMnHQnD69WVweYmDXcwOnpKTopMaZZDmZ7WiNxIWiuKUCWN+vqB4FIk3keNSpXh3ZE+EMeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750420185; c=relaxed/simple;
-	bh=iYcWysrw+50j+9IEeqBdWM5KrP5ED7xiKHUq2pSfPvE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=n2KXi6tLsxLKiX+oYKdVxQdwRvFG8Cw60Kph0Znko2tdQSrKXfSnAHD3/05HrpK+ikJZIkJY133LUQbssMF/iCTFI8Sc2J7uc/2jHGNcBV6gP+IqlPjm4vORBUXrf5YSvMsXyfIYU2So8LQIlIBJh8n2w1wNFHbSns9cbKEc/YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ulCI1cQz; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1750420347; c=relaxed/simple;
+	bh=+a2uJy8Ukno04bfheCrhKeTa95Ow8PXF5cGshA7yz6Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=u0u0JiOdD0tXD2JP91vcL6xH8IkoNY9LzeaeHvQymG1OBvzImP+6SRrDIZ3PPX88KtnTikhMX3AlZXu56A73utlEfT4WSb1asE2zv2t+jVsuTU7UvAXZ5xnCC5bJQhq726Dl/YKVSTTAp3iu5sbRuwFGQVL4Pml1l7t85J42WMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAM63k8e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ulCI1cQz"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a4edf5bb4dso1399754f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 Jun 2025 04:49:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750420182; x=1751024982; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=osALxqpKlzPFa1tkBcSzMAGIeg6+FRzFxocb6BFYLtY=;
-        b=ulCI1cQzyGA4iSbzQlkuhGRGXv3b24cj6g6crDQdmGt0HD5O6HDtxDS+B4WahVHlWm
-         bRglcsRxt2Cel81WGR6eV+FzD5U78G9sD82rz+UteA0P5nlYfhjRCxbQd2TOqINTSeBi
-         eXXwrDiEHmZNOioJ9s7nHcmG8QsLBDZVUL7w2mnIb3tPhRVqK9KFQuIUR+FJODkRVXNE
-         85z26XxmFRisroMXlPeC72AqGnmKrY8q3XqMIjVdSoWMxu1RodEuRtKD5+mLHzCVANVs
-         PnEsP3tTxDHEG/rwQpjXU/krT8KPC1eCQio93VYxWzRezuqiSRvPSBv+GgXWOprv5T8c
-         +XOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750420182; x=1751024982;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=osALxqpKlzPFa1tkBcSzMAGIeg6+FRzFxocb6BFYLtY=;
-        b=v7yOypIRvV/FsdlcWqyKDjzGsQ3xoio9nlqnc0lnLQs+NqjPxND/L+b9/E5/kFhlYV
-         GbKi2iWJtJWMxzeJZrcJlwd1Bvxlue6/VyPmF3XIqdj+Y8JEYVsAa4wgV9UIZDvWZ82U
-         +aFqIHk7eBX+enZS18nXvkl1NiAOPe0qnDeuKka+eJFl6z/obJgdy9/7RDjYgnPeG3k3
-         PdfOMV+7pG5eWjBx2CKcCdIijprEh9/4oVt8nSektYEWFJQRT8r3nzZLi8dJPfpcO1gg
-         Q7PHxxWfU+9yKiaZ1TTbwSG50kY1VVqv03LqJyyrkHbImVcm3hZBwN0PQq9qkgFndD4G
-         Wo9w==
-X-Forwarded-Encrypted: i=1; AJvYcCV8fMuazyepNbDjCouuYMAyjgTDyXwuPLg7ITKV25ctXf5vCIcGw6BamO1aw+nN8mBCL1NTMnLa9lmv/zMIsg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKM6qL1u6ECZzf4TbH4sRZI2UXsV2It5qPOJVx8A8DYI6moDB+
-	zGjGAuGQV9yDDYwsuOTIzUTEYQckqShqQNwl1Awtdcau7oY1xL22hmGSP6Q4KCaXWe/088xqioZ
-	Y2Dp78U0YcK4kd+prFw==
-X-Google-Smtp-Source: AGHT+IFXZluW9vjRa/UB5oPmtlNwMPAUSfTUT0iOsUDG4USvhFDRhmzfMEgUj47CN6VNy38IHOWMWFvqOU1ARic=
-X-Received: from wmbbd6.prod.google.com ([2002:a05:600c:1f06:b0:450:d422:69f9])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:23c2:b0:3a5:2ef8:34f9 with SMTP id ffacd0b85a97d-3a6d12fc23bmr1583422f8f.27.1750420182429;
- Fri, 20 Jun 2025 04:49:42 -0700 (PDT)
-Date: Fri, 20 Jun 2025 11:49:35 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAM63k8e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A36C4CEE3;
+	Fri, 20 Jun 2025 11:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750420346;
+	bh=+a2uJy8Ukno04bfheCrhKeTa95Ow8PXF5cGshA7yz6Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=sAM63k8eDUDlD1/Tw36rnZmA3QSz6217JgZNBjEMvH8jv04lonKDsvRNaE42EoVtl
+	 +oDUfpSKg3r7R4CId960Xvg/0xuRqTw2XaLgFvtfT/CdYNslA6O63NenfHtdIPhuz8
+	 uLqKFJJt4rbxwzjTSI2KanQ87uoIbl4wU7NJg9AjDj3/QnOwY13LIkLstKeKVKTWzW
+	 8yXvr+xTQ168CfGBRyQjzM/XV1nV21ZqSpltBlel2GznE+/YDLnIKs85uGNJIWEuv/
+	 hbZOP04L9A5tFYkS5R2YsfKsZ9u2zpVM7t2ks2yxFjL4zN/ESG0FJKiP51MgIzcofC
+	 8KG4HuSebqfUw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+In-Reply-To: <87ikkq648o.fsf@kernel.org> (Andreas Hindborg's message of "Fri,
+	20 Jun 2025 13:29:11 +0200")
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+	<COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
+	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Fri, 20 Jun 2025 13:52:16 +0200
+Message-ID: <87cyay6367.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAM9KVWgC/x2MQQqAIBAAvxJ7bsGEFuwr0cFqrQXR0Iog/HvSb
- eYw80LmJJxhaF5IfEuWGKp0bQPLbsPGKGt10Er3irTCI3qPp509Y7gqzs5YsrT0ZBhqdSR28vz HcSrlA/cUDRthAAAA
-X-Change-Id: 20250620-poll-table-null-bf9a6a6c569e
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6621; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=iYcWysrw+50j+9IEeqBdWM5KrP5ED7xiKHUq2pSfPvE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoVUrUp5UNN8n2PVnEUCVOoCMu1GnBMLMSBTy0Z
- p29Pfof6IKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaFVK1AAKCRAEWL7uWMY5
- Rob2D/9v6AEDnDI7C4zX9iONvfRYtwMhtpvexvE8CIeZcgUTigpxQBLVkeCCYTt299BYvX5XYKK
- oHfVcOV/UV9N+4Y3y3uKn5dPRmEnvORbOd5znNlF/KvulLw6H62RywQlTB21VRROEr5rF9rlGIX
- Y+DE9aULDI/LSMRGbGaPScvpc+A7AG8xlm/utE/1HGI0qMX85PjprNYfm3rEajZOlaQCUfnPvxA
- NxTyQcgMu2oijhQrFleTiKycS8xn0YIJr9g/gd+2QvmaONc4wbTZakHq0CS3gUUf03V9MCiuA92
- mcranE2Nitol2ZVbWTw+/UN6scbBdQLydTD3lvjvJTkS54tHUlQdKWxquNyIb1B8nBxiFjQvN8T
- 5/KEjNNrszj3lK/VZ7aZITg2IhHCpvLLlz49cBUwgJvsgGl3I8w4Y3o5PxqWc5G4s93x+ccI6Sz
- Vfrv8P+0ek5QB9nHVhX0ACzLTt0ff9chM50WR+YV7CuxCMBrlbuxszxQVF/8xhTiP9ae/52Z5WZ
- 5Bgf/Ps2uY1LYMb5cQ4yhBRCfE4ENTmq7xaL5rH+O55wo9uNOdtr26wQ5Znvnq0wTVUx7e0aU/O
- I+saGg5TooOBjmApiEOgbwkfjDAq5WJo/FTWwcmHJ9DmA6SIg2l0iBCehzz/fBf7AClfuhHDOWw Emcfq4KkZn8XVAw==
-X-Mailer: b4 0.14.2
-Message-ID: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com>
-Subject: [PATCH] poll: rust: allow poll_table ptrs to be null
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Miguel Ojeda <ojeda@kernel.org>, Christian Brauner <brauner@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-It's possible for a poll_table to be null. This can happen if an
-end-user just wants to know if a resource has events right now without
-registering a waiter for when events become available. Furthermore,
-these null pointers should be handled transparently by the API, so we
-should not change `from_ptr` to return an `Option`. Thus, change
-`PollTable` to wrap a raw pointer rather than use a reference so that
-you can pass null.
+Andreas Hindborg <a.hindborg@kernel.org> writes:
 
-Comments mentioning `struct poll_table` are changed to just `poll_table`
-since `poll_table` is a typedef. (It's a typedef because it's supposed
-to be opaque.)
+> "Benno Lossin" <lossin@kernel.org> writes:
+>
+>> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
+>>> +/// A wrapper for kernel parameters.
+>>> +///
+>>> +/// This type is instantiated by the [`module!`] macro when module parameters are
+>>> +/// defined. You should never need to instantiate this type directly.
+>>> +///
+>>> +/// Note: This type is `pub` because it is used by module crates to access
+>>> +/// parameter values.
+>>> +#[repr(transparent)]
+>>> +pub struct ModuleParamAccess<T> {
+>>> +    data: core::cell::UnsafeCell<T>,
+>>> +}
+>>> +
+>>> +// SAFETY: We only create shared references to the contents of this container,
+>>> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
+>>> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
+>>> +
+>>> +impl<T> ModuleParamAccess<T> {
+>>> +    #[doc(hidden)]
+>>> +    pub const fn new(value: T) -> Self {
+>>> +        Self {
+>>> +            data: core::cell::UnsafeCell::new(value),
+>>> +        }
+>>> +    }
+>>> +
+>>> +    /// Get a shared reference to the parameter value.
+>>> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
+>>> +    // held lock guard here.
+>>> +    pub fn get(&self) -> &T {
+>>> +        // SAFETY: As we only support read only parameters with no sysfs
+>>> +        // exposure, the kernel will not touch the parameter data after module
+>>> +        // initialization.
+>>
+>> This should be a type invariant. But I'm having difficulty defining one
+>> that's actually correct: after parsing the parameter, this is written
+>> to, but when is that actually?
+>
+> For built-in modules it is during kernel initialization. For loadable
+> modules, it during module load. No code from the module will execute
+> before parameters are set.
+>
+>> Would we eventually execute other Rust
+>> code during that time? (for example when we allow custom parameter
+>> parsing)
+>
+> I don't think we will need to synchronize because of custom parameter
+> parsing. Parameters are initialized sequentially. It is not a problem if
+> the custom parameter parsing code name other parameters, because they
+> are all initialized to valid values (as they are statics).
+>
+>>
+>> This function also must never be `const` because of the following:
+>>
+>>     module! {
+>>         // ...
+>>         params: {
+>>             my_param: i64 {
+>>                 default: 0,
+>>                 description: "",
+>>             },
+>>         },
+>>     }
+>>
+>>     static BAD: &'static i64 = module_parameters::my_param.get();
+>>
+>> AFAIK, this static will be executed before loading module parameters and
+>> thus it makes writing to the parameter UB.
+>
+> As I understand, the static will be initialized by a constant expression
+> evaluated at compile time. I am not sure what happens when this is
+> evaluated in const context:
+>
+>     pub fn get(&self) -> &T {
+>         // SAFETY: As we only support read only parameters with no sysfs
+>         // exposure, the kernel will not touch the parameter data after module
+>         // initialization.
+>         unsafe { &*self.data.get() }
+>     }
+>
+> Why would that not be OK? I would assume the compiler builds a dependency graph
+> when initializing statics?
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-This issue was discovered from a syzkaller report on Rust Binder.
+It seems the compiler builds a dependency graph to check:
 
-Intended for Christian Brauner's tree.
----
- rust/helpers/helpers.c   |  1 +
- rust/helpers/poll.c      | 10 ++++++++
- rust/kernel/sync/poll.rs | 65 +++++++++++++++++-------------------------------
- 3 files changed, 34 insertions(+), 42 deletions(-)
+https://play.rust-lang.org/?version=nightly&mode=debug&edition=2024&gist=7a4d129a3fd2ae39a0aab9df3878a3d3
 
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 0f1b5d11598591bc62bb6439747211af164b76d6..ff65073fe3a5220e7792306fc9ae74c416935a52 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -30,6 +30,7 @@
- #include "platform.c"
- #include "pci.c"
- #include "pid_namespace.c"
-+#include "poll.c"
- #include "rbtree.c"
- #include "rcu.c"
- #include "refcount.c"
-diff --git a/rust/helpers/poll.c b/rust/helpers/poll.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..7e5b1751c2d526f2dd467fcd61dcf49294d3c20d
---- /dev/null
-+++ b/rust/helpers/poll.c
-@@ -0,0 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/export.h>
-+#include <linux/poll.h>
-+
-+void rust_helper_poll_wait(struct file *filp, wait_queue_head_t *wait_address,
-+			   poll_table *p)
-+{
-+	poll_wait(filp, wait_address, p);
-+}
-diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
-index d7e6e59e124b09d5f0d62244ca46089e0748d544..f86e3e565e7e6a6d244a01d34113beb9e799e424 100644
---- a/rust/kernel/sync/poll.rs
-+++ b/rust/kernel/sync/poll.rs
-@@ -9,9 +9,8 @@
-     fs::File,
-     prelude::*,
-     sync::{CondVar, LockClassKey},
--    types::Opaque,
- };
--use core::ops::Deref;
-+use core::{marker::PhantomData, ops::Deref};
- 
- /// Creates a [`PollCondVar`] initialiser with the given name and a newly-created lock class.
- #[macro_export]
-@@ -23,58 +22,40 @@ macro_rules! new_poll_condvar {
-     };
- }
- 
--/// Wraps the kernel's `struct poll_table`.
-+/// Wraps the kernel's `poll_table`.
- ///
- /// # Invariants
- ///
--/// This struct contains a valid `struct poll_table`.
--///
--/// For a `struct poll_table` to be valid, its `_qproc` function must follow the safety
--/// requirements of `_qproc` functions:
--///
--/// * The `_qproc` function is given permission to enqueue a waiter to the provided `poll_table`
--///   during the call. Once the waiter is removed and an rcu grace period has passed, it must no
--///   longer access the `wait_queue_head`.
-+/// The pointer must be null or reference a valid `poll_table`.
- #[repr(transparent)]
--pub struct PollTable(Opaque<bindings::poll_table>);
-+pub struct PollTable<'a> {
-+    table: *mut bindings::poll_table,
-+    _lifetime: PhantomData<&'a bindings::poll_table>,
-+}
- 
--impl PollTable {
--    /// Creates a reference to a [`PollTable`] from a valid pointer.
-+impl<'a> PollTable<'a> {
-+    /// Creates a [`PollTable`] from a valid pointer.
-     ///
-     /// # Safety
-     ///
--    /// The caller must ensure that for the duration of `'a`, the pointer will point at a valid poll
--    /// table (as defined in the type invariants).
--    ///
--    /// The caller must also ensure that the `poll_table` is only accessed via the returned
--    /// reference for the duration of `'a`.
--    pub unsafe fn from_ptr<'a>(ptr: *mut bindings::poll_table) -> &'a mut PollTable {
--        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
--        // `PollTable` type being transparent makes the cast ok.
--        unsafe { &mut *ptr.cast() }
--    }
--
--    fn get_qproc(&self) -> bindings::poll_queue_proc {
--        let ptr = self.0.get();
--        // SAFETY: The `ptr` is valid because it originates from a reference, and the `_qproc`
--        // field is not modified concurrently with this call since we have an immutable reference.
--        unsafe { (*ptr)._qproc }
-+    /// The pointer must be null or reference a valid `poll_table` for the duration of `'a`.
-+    pub unsafe fn from_raw(table: *mut bindings::poll_table) -> Self {
-+        // INVARIANTS: The safety requirements are the same as the struct invariants.
-+        PollTable {
-+            table,
-+            _lifetime: PhantomData,
-+        }
-     }
- 
-     /// Register this [`PollTable`] with the provided [`PollCondVar`], so that it can be notified
-     /// using the condition variable.
--    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
--        if let Some(qproc) = self.get_qproc() {
--            // SAFETY: The pointers to `file` and `self` need to be valid for the duration of this
--            // call to `qproc`, which they are because they are references.
--            //
--            // The `cv.wait_queue_head` pointer must be valid until an rcu grace period after the
--            // waiter is removed. The `PollCondVar` is pinned, so before `cv.wait_queue_head` can
--            // be destroyed, the destructor must run. That destructor first removes all waiters,
--            // and then waits for an rcu grace period. Therefore, `cv.wait_queue_head` is valid for
--            // long enough.
--            unsafe { qproc(file.as_ptr() as _, cv.wait_queue_head.get(), self.0.get()) };
--        }
-+    pub fn register_wait(&self, file: &File, cv: &PollCondVar) {
-+        // SAFETY: The pointers `self.table` and `file` are valid for the duration of this call.
-+        // The `cv.wait_queue_head` pointer must be valid until an rcu grace period after the
-+        // waiter is removed. The `PollCondVar` is pinned, so before `cv.wait_queue_head` can be
-+        // destroyed, the destructor must run. That destructor first removes all waiters, and then
-+        // waits for an rcu grace period. Therefore, `cv.wait_queue_head` is valid for long enough.
-+        unsafe { bindings::poll_wait(file.as_ptr(), cv.wait_queue_head.get(), self.table) }
-     }
- }
- 
-
----
-base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-change-id: 20250620-poll-table-null-bf9a6a6c569e
 
 Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+Andreas Hindborg
+
+
 
