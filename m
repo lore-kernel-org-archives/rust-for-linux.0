@@ -1,160 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13937280002;
-	Fri, 20 Jun 2025 11:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F4B223DFA;
+	Fri, 20 Jun 2025 11:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750420347; cv=none; b=P07SawJ6C0uHC5h7GWzmwTUf778vdWFYUVD4kEVSXUp3S6g38POwj4S+Cp0T3G7SA6BU+M8ho+gFxn2rVFvYY0fjuPItbrS+Pr3EfMnHQnD69WVweYmDXcwOnpKTopMaZZDmZ7WiNxIWiuKUCWN+vqB4FIk3keNSpXh3ZE+EMeY=
+	t=1750420573; cv=none; b=Zhezqhdqs5Zz1SZjZ1ULOJjAUwMeVZOn/SlGOVO0mFNuFEn/y3GgDB5E+qxFBpkNKbgSL7coQ6WMkQXhH+ZtRtQ9Co00NZB+Rf8WSG80S9O8aQryZ5Znmaw6/M9l6/lcI+N3dIrYshJ6gUv3hsAeOw9DXgk8SN18lvlmnCFJVqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750420347; c=relaxed/simple;
-	bh=+a2uJy8Ukno04bfheCrhKeTa95Ow8PXF5cGshA7yz6Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=u0u0JiOdD0tXD2JP91vcL6xH8IkoNY9LzeaeHvQymG1OBvzImP+6SRrDIZ3PPX88KtnTikhMX3AlZXu56A73utlEfT4WSb1asE2zv2t+jVsuTU7UvAXZ5xnCC5bJQhq726Dl/YKVSTTAp3iu5sbRuwFGQVL4Pml1l7t85J42WMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAM63k8e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750420573; c=relaxed/simple;
+	bh=EHLl4d0QD68sdXBAgG6WT7Tdgd2xo2PXKgC8Tnor7LE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OhmalXnXupIOYCQ3yUuNQgEaJXLjBDN+HnP00s2UuLrmlWKQXkfsw/It1UbDv1PSabqdoik0Nmc1AUlrG4XqymLNfBNJS6QTo+LPEu8GRCbXDxauzvXQRtY3mMQtV+w00uq7WGy9uhygPKEBKN6U7q/wqGj94l1akPW/e51Gnyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxR4oOzQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAM63k8e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A36C4CEE3;
-	Fri, 20 Jun 2025 11:52:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxR4oOzQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504A4C4CEE3;
+	Fri, 20 Jun 2025 11:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750420346;
-	bh=+a2uJy8Ukno04bfheCrhKeTa95Ow8PXF5cGshA7yz6Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=sAM63k8eDUDlD1/Tw36rnZmA3QSz6217JgZNBjEMvH8jv04lonKDsvRNaE42EoVtl
-	 +oDUfpSKg3r7R4CId960Xvg/0xuRqTw2XaLgFvtfT/CdYNslA6O63NenfHtdIPhuz8
-	 uLqKFJJt4rbxwzjTSI2KanQ87uoIbl4wU7NJg9AjDj3/QnOwY13LIkLstKeKVKTWzW
-	 8yXvr+xTQ168CfGBRyQjzM/XV1nV21ZqSpltBlel2GznE+/YDLnIKs85uGNJIWEuv/
-	 hbZOP04L9A5tFYkS5R2YsfKsZ9u2zpVM7t2ks2yxFjL4zN/ESG0FJKiP51MgIzcofC
-	 8KG4HuSebqfUw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-In-Reply-To: <87ikkq648o.fsf@kernel.org> (Andreas Hindborg's message of "Fri,
-	20 Jun 2025 13:29:11 +0200")
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
-	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
-	<COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
-	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Fri, 20 Jun 2025 13:52:16 +0200
-Message-ID: <87cyay6367.fsf@kernel.org>
+	s=k20201202; t=1750420572;
+	bh=EHLl4d0QD68sdXBAgG6WT7Tdgd2xo2PXKgC8Tnor7LE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CxR4oOzQQJQ15Gm31XI9FCPgupg4s2bkDYqtEsv3nBEERk0tsVnK30lTg3M/XMPPM
+	 Tr2Fncj057I5/NCgSx6Y0ZVxb6p1xVf2dpfpGqe5IslVitySAyi6P9axqmc43/HyT0
+	 w2bTUrf0TPepMEXNMN2wSvC1ZtBfsjS0cWECQezWmP617KIwjRZdfbCJ2C26SH8uAc
+	 UOpMfsjEx2TfuMkGAjCEkUPTdHpNHnmyTrQAiIM2cwg+mKHWff+gOzzBFsrZt0DUwe
+	 UQ3gk8CvWzI5up08V0Rsi9zBqu5EK3uCtQ7sK9vrJ/n479TL6OdXiJYiO4Jw8b22NK
+	 zJgP1ycQXJ1iA==
+Date: Fri, 20 Jun 2025 13:56:05 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: ojeda@kernel.org, Rob Herring <robh@kernel.org>, alex.gaynor@gmail.com,
+	rafael@kernel.org, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-acpi@vger.kernel.org, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	lenb@kernel.org, wedsonaf@gmail.com, viresh.kumar@linaro.org,
+	alex.hung@amd.com, dingxiangfei2009@gmail.com
+Subject: Re: [PATCH v7 3/9] samples: rust: platform: conditionally call
+ Self::properties_parse()
+Message-ID: <aFVMVcYm0JwI5L6l@cassiopeiae>
+References: <20250618100221.3047133-1-igor.korotin.linux@gmail.com>
+ <20250618101325.3048187-1-igor.korotin.linux@gmail.com>
+ <20250618131958.GA1550757-robh@kernel.org>
+ <aFLJJkeFfHR9GB-0@pollux>
+ <aFRP-vGMoZNmQZ2E@pollux>
+ <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ddcdc5ac-9c6f-4aca-ad66-37e1e66ef740@gmail.com>
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+On Fri, Jun 20, 2025 at 12:30:37PM +0100, Igor Korotin wrote:
+> Just to make sure that we're on the same page, I replace this:
+> 
+>     if dev.fwnode().is_some_and(|node|
+> node.is_compatible(c_str!("test,rust-device")))
+> 
+> with:
+> 
+>     if dev.fwnode().is_some_and(|node| node.is_of_node())
+> 
+> And reworded the comment as follows:
+> 
+>     samples: rust: platform: conditionally call Self::properties_parse()
+> 
+>     Only call Self::properties_parse() when the device is OF node
+> 
+>     Once we add ACPI support, we don't want the ACPI device to fail probing
+>     in Self::properties_parse().
 
-> "Benno Lossin" <lossin@kernel.org> writes:
->
->> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
->>> +/// A wrapper for kernel parameters.
->>> +///
->>> +/// This type is instantiated by the [`module!`] macro when module parameters are
->>> +/// defined. You should never need to instantiate this type directly.
->>> +///
->>> +/// Note: This type is `pub` because it is used by module crates to access
->>> +/// parameter values.
->>> +#[repr(transparent)]
->>> +pub struct ModuleParamAccess<T> {
->>> +    data: core::cell::UnsafeCell<T>,
->>> +}
->>> +
->>> +// SAFETY: We only create shared references to the contents of this container,
->>> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
->>> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
->>> +
->>> +impl<T> ModuleParamAccess<T> {
->>> +    #[doc(hidden)]
->>> +    pub const fn new(value: T) -> Self {
->>> +        Self {
->>> +            data: core::cell::UnsafeCell::new(value),
->>> +        }
->>> +    }
->>> +
->>> +    /// Get a shared reference to the parameter value.
->>> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
->>> +    // held lock guard here.
->>> +    pub fn get(&self) -> &T {
->>> +        // SAFETY: As we only support read only parameters with no sysfs
->>> +        // exposure, the kernel will not touch the parameter data after module
->>> +        // initialization.
->>
->> This should be a type invariant. But I'm having difficulty defining one
->> that's actually correct: after parsing the parameter, this is written
->> to, but when is that actually?
->
-> For built-in modules it is during kernel initialization. For loadable
-> modules, it during module load. No code from the module will execute
-> before parameters are set.
->
->> Would we eventually execute other Rust
->> code during that time? (for example when we allow custom parameter
->> parsing)
->
-> I don't think we will need to synchronize because of custom parameter
-> parsing. Parameters are initialized sequentially. It is not a problem if
-> the custom parameter parsing code name other parameters, because they
-> are all initialized to valid values (as they are statics).
->
->>
->> This function also must never be `const` because of the following:
->>
->>     module! {
->>         // ...
->>         params: {
->>             my_param: i64 {
->>                 default: 0,
->>                 description: "",
->>             },
->>         },
->>     }
->>
->>     static BAD: &'static i64 = module_parameters::my_param.get();
->>
->> AFAIK, this static will be executed before loading module parameters and
->> thus it makes writing to the parameter UB.
->
-> As I understand, the static will be initialized by a constant expression
-> evaluated at compile time. I am not sure what happens when this is
-> evaluated in const context:
->
->     pub fn get(&self) -> &T {
->         // SAFETY: As we only support read only parameters with no sysfs
->         // exposure, the kernel will not touch the parameter data after module
->         // initialization.
->         unsafe { &*self.data.get() }
->     }
->
-> Why would that not be OK? I would assume the compiler builds a dependency graph
-> when initializing statics?
-
-It seems the compiler builds a dependency graph to check:
-
-https://play.rust-lang.org/?version=nightly&mode=debug&edition=2024&gist=7a4d129a3fd2ae39a0aab9df3878a3d3
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+LGTM!
