@@ -1,241 +1,93 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C166253934;
-	Fri, 20 Jun 2025 08:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8216280A5A
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Jun 2025 09:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750409712; cv=none; b=osrL2gKSH/KF/k/7kT+qJhxiR0DohGnqLv1QUllGoLht90RczCx2BuxQ9LvIQFqIOYCK5z/I/klcE+w8CNFR/CBFwJXHxc/V8nma7PXraCilCJDRkX7at50NJGqQY/M7SaQbLs3eLsl9WtuyvRtTUzi0a3yZZLSl56O9IlFB/sY=
+	t=1750411224; cv=none; b=pJ6ow7FbQnS3YHKnaZ9HyOz4VZ21VRgO5U/80srdUKZAKHi2HqflkIHG+JpBIyrGLywsq+U83oxqjRdoOTtA4tY+xuMht4Quw5BQMzJgXKAW1kSahaRi3OJ/YDmG0TOnZn9B0X8Uhy+O2G3pQ1sW9BEgbbTvi07iGwU3eBK0chk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750409712; c=relaxed/simple;
-	bh=bVAYXmi1mGHMSd3f6pN5I21LAjlBO11vnhsVsIy5x8Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jKlGETbFaSbaGBYT3mARvFS1vQjNmKSYk6V6poRI5LbGCZe8u1+HVhSOsk9Wec9XZGij69UVad8iU/dbs+UrvXJdeaq19duFP8ROqYG8LjVAr4Y6/1UZ2eHwvVn0Sa0Z5ncF1HIhULJ5AKNT1fhYjY1AME2bkqBQLmAfnn09UPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HKS3Vlj+; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750411224; c=relaxed/simple;
+	bh=mZ5vhEEnS31cSdEN8193qbJmhpsPbTggj6HeS32WJVU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EGlrUdLHBhmQnW29ijl7UjjzOeiPWvemp43wiTieL0cyWU6oLjgCLfircSE6O7u59sMBhuMC+ViDPUPWMznJjMjgt5V8DRMyUSOb2ybU2UsW6D5G9tnclJtvDiA8XTpP2JjOt2mIOIW3u2hCdBbPMDRvOgFV0qT7IAotOBUfoSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X7M/J3Um; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HKS3Vlj+"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-748f54dfa5fso1081902b3a.2;
-        Fri, 20 Jun 2025 01:55:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X7M/J3Um"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-451ebd3d149so10058315e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 20 Jun 2025 02:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750409710; x=1751014510; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Iv3oZXqRsz+u6cGWSKhTrYlL4O94V/iX3UEF0MlMpEU=;
-        b=HKS3Vlj+3YXvovL0JcgAxL2ZXT5qFo4hs47TZ6admL1meDS2iG7tSOIkN2MEfugs7U
-         GnXw22c+8VLe3f+coSwRT0WkfF6TgXJvHEFzUU92rKWVpPWzqTFpq3hHn3b657+W8RXo
-         ePlfWuZg8vTvtc71Idag9tlWxKom19X4Xxdr53NpyiHKBpyz0qJDZJNrjiJF4mw+cwk1
-         xw32of1vT0OfWW0dQD2ot0dOLNhrLyT7VP1dZLN4VXfQidgHooGA9/B7Z06HQXY0EGpR
-         YL7bO1Vzbctw2B4GZId4sFx3iPTL7zBToPyoD4Lx11GowZSrZyEcpVBrmzKQCexUdYhu
-         IyUA==
+        d=google.com; s=20230601; t=1750411221; x=1751016021; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mZ5vhEEnS31cSdEN8193qbJmhpsPbTggj6HeS32WJVU=;
+        b=X7M/J3UmmjlvgncqVfIVgg/xzZ6W0Q8RvB+kCtrzmk9UEe3z9PSc9svd/7JTsMq3K1
+         tDrc17g8bKSOw1WC1xHKOhGYSthMwAG+OcN1YN4Hq2BIm6simLJY8+8okc3joacD2p2X
+         BOy0ilKtiPcxQHW73dNKdOQfIt1MJPEDcpsbiTEfJXm6F8t3f7WgrswFNiGpK9mWEPv2
+         jMXlV54WBfqGV6yPV1/lszdm+QNOQ24AG2m9XHRfoZsTS7e8PlbG4PSRiqpn3iLcfCKk
+         DYO2KvKNa9y3BGHBp9Zw20YsuRAb0FlvfKpHhNbY1kzKltc8dzR9LjTlPF9z7VjzSs0X
+         OtPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750409710; x=1751014510;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Iv3oZXqRsz+u6cGWSKhTrYlL4O94V/iX3UEF0MlMpEU=;
-        b=WZOe+FV2D1ZQ8v0H/BWmOY1J8yZp6gpNRjfUbwW8Y2C+Z3bb21MDNR8V1Sjn5LoSuQ
-         eDNHumKHEx8qXPAR1FcjX+2snQz5mnMbHGlKjdJa9JJzKQCgway8k+58uk7EMa+USJU4
-         BveoSw1o9c8BJNp6X/VVetAYCzZ/p6oLfoMA6oqROZ9J4Xi9O+sZWfp4Sry/RxHdICAk
-         nSrMapepxrF2yH6aFvHg9ftTS4GXXE0nDi7eCP8VqwKz080gQBN+X1XwUH9GrnZ3mWWP
-         06IsW+rNDhd1xLelyHqRrUehNGbyFYMPZD+zP9LODZGRtCmtyoGsI0Y4mSBsGoEcTrfp
-         dnTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVKK1dqybV7LFm95U8M4C1iuV4CIBz5rh65VhlJIsoBGE27ZQdbmjR5IB0HsmKIL2J0yi2p4uHEDKXya0=@vger.kernel.org, AJvYcCVUya2w0zgMIEeKZBMqjGUjKXqt2NJgWjh0Lc1IYT3df3bLNS5H4Y5N1SroTcUWV0sOk1dIYjwimfQ=@vger.kernel.org, AJvYcCWOCr292hxzUQjOqK3Vaa7bxont85+7FeZXMl7plNDfs1ulD7rxJPcep82k31IfM5E27tilScW9ui5yYBsa/dU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxS9zIWh3koZfDc2Cmy101qSenxkVHeRw+/h164rhAbBJ6JPFbi
-	DggRkYfCB1Srndq5N9RlJQfHw0tySNJ6lrcqGnWBxoGW+vW3QSEKo3pU
-X-Gm-Gg: ASbGncu8PmOmC1V33W3p85O9AIxvf9vLffNPrwpZqjnfbTy1l7kYBvgsDDHb/uIvgr4
-	CDTCCqSMjc+7qzeal5bYGVm1c7DrMjmxLHCIAP/xbOqkA3duT/Q/1mKAUMNaWi8TDtrkGhv3nMg
-	nRDg2ulDojPPLzoZtJdweqGZdhQT7C92Pn1SvEFdQ0EygnCMoon6aNgpO/ddwuAxo+PlwmAeYnc
-	1OwzwInVSP10S1rqJphAaIaXccDDdj//X4pJe/9zuY3mp9q4Y6cUSdjyR6xHJ27RZHrV7SrYkG3
-	pbNVLKvPVVcvNsBEzExSPEjCzeqmFcR8fIgSlo1JtBjL1NOeMm56msv6NJbf
-X-Google-Smtp-Source: AGHT+IF67WJrN3hf2vcD3jXzZM/KBmIBc10Qpir3d5KV+HevWSCQcanboakFIo/NmXsywHkFLR7yIg==
-X-Received: by 2002:a05:6a00:a1f:b0:748:2e1a:84e3 with SMTP id d2e1a72fcca58-7490d9aae0emr3470234b3a.8.1750409710050;
-        Fri, 20 Jun 2025 01:55:10 -0700 (PDT)
-Received: from pop-os.. ([103.21.124.79])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7490a66a819sm1549985b3a.139.2025.06.20.01.55.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 01:55:09 -0700 (PDT)
-From: Abhinav Ananthu <abhinav.ogl@gmail.com>
-To: rafael@kernel.org,
-	viresh.kumar@linaro.org
-Cc: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	linux-pm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abhinav Ananthu <abhinav.ogl@gmail.com>
-Subject: [PATCH] rust: cpufreq: use c_ types from kernel prelude
-Date: Fri, 20 Jun 2025 14:22:30 +0530
-Message-Id: <20250620085229.18250-1-abhinav.ogl@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1750411221; x=1751016021;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mZ5vhEEnS31cSdEN8193qbJmhpsPbTggj6HeS32WJVU=;
+        b=Tzgf0UdCk4w3AbFQ0xTAP20mRhZOF+skx7alfbxqRi6X35v0cCjyR2jXgRNouSbdGy
+         MikYik4h6RlwZjSiL04j7ccE2NIAlmtlgv8YHwuJysVTOdwtlXGhKA2CEbpD6qZB/swB
+         glngcv5sJAvUQfnuk8HKVIB1GYpbydrjD5dx/ekZmiiyQfIQarfOG++mAyzLDZVdfx8X
+         9qPnlYbILmlAs92TZznYSA9P74/toQd+U814kqlV+6YnK+ldkn2utBHH0HYEcn4/nqd6
+         DfBNUZ32uVTU+0PYfKgf7ZNfLiXy8M0mIPJMrasMsASyNSsnoF+RpKD40EN0GPFwUfx5
+         Nsiw==
+X-Forwarded-Encrypted: i=1; AJvYcCUzrIq9wcrHYgRvQHK1R+VM1HMdW6uAeWps2M/MtkTaCC6zPiJT/BkrTlxTzUrxGZSfjknGhOdOokrnJ4mvfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9itjpvxkb4neOlUni4zTnyOeOMcCf1yo1lfYbzRfQlSdW6i3T
+	c5b+2dUf0u5Ea7uM/XISpFkkhnqoHdflB3xDZeoCbrYwnHz6dgBJO/5CbKyTiXvR+pfGpO8izl7
+	HSnOdiduAVtUs/7rC7Mz1T33VZH63VviW6FlQiOjm
+X-Gm-Gg: ASbGnctd8g/sh4Ov5k3We5F3K3NA6kp2Il6Dwcswr3h294urgLsnTz314m+SDsUm22t
+	t/TVSsofCB3XOD0RcRtEXHWFJDsnEbTup5EdCvfxzZMsi46x68g5O60k2PijZdjY7KJwY7TmmXl
+	qW8VuC8nTY/A+3V/TRN1C4FzUcO77kD7o7liovD30jgS25uaRg2pSN/xi0n/v2nf03PCh0PwrIp
+	Q==
+X-Google-Smtp-Source: AGHT+IGOxu/JyT8LKL4rOBc+Bsq5zNd0RaoYbcY7WBLcAPcbTS+9Tu0MnTso5BqDG5xDYUQ4UIo3GUoxMrDuhykIYPE=
+X-Received: by 2002:a5d:5f8c:0:b0:3a4:eda1:6c39 with SMTP id
+ ffacd0b85a97d-3a6d12db6dbmr1837913f8f.13.1750411221085; Fri, 20 Jun 2025
+ 02:20:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250620085229.18250-1-abhinav.ogl@gmail.com>
+In-Reply-To: <20250620085229.18250-1-abhinav.ogl@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 20 Jun 2025 11:20:08 +0200
+X-Gm-Features: Ac12FXy-s6NWQAaZ_bmMiAF99B9M2tvOKWO1ll0w8OfTgwH-nexB-TDc0pyPKqU
+Message-ID: <CAH5fLgi-QG2KRt6mAiU3P-tyVG_xevPzB6VK_W=is2B+7=63kQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: cpufreq: use c_ types from kernel prelude
+To: Abhinav Ananthu <abhinav.ogl@gmail.com>
+Cc: rafael@kernel.org, viresh.kumar@linaro.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, linux-pm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Update cpufreq FFI callback signatures to use `c_int` from the `kernel::prelude`,
-rather than accessing it explicitly through `kernel::ffi::c_int`.
+On Fri, Jun 20, 2025 at 10:55=E2=80=AFAM Abhinav Ananthu <abhinav.ogl@gmail=
+.com> wrote:
+>
+> Update cpufreq FFI callback signatures to use `c_int` from the `kernel::p=
+relude`,
+> rather than accessing it explicitly through `kernel::ffi::c_int`.
+>
+> Although these types are defined in the `ffi` crate, they are re-exported
+> via `kernel::prelude`. This aligns with the Rust-for-Linux coding
+> guidelines and ensures proper C ABI compatibility across platforms.
+>
+> Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
+> Suggested-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Although these types are defined in the `ffi` crate, they are re-exported
-via `kernel::prelude`. This aligns with the Rust-for-Linux coding
-guidelines and ensures proper C ABI compatibility across platforms.
-
-Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
-Suggested-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- rust/kernel/cpufreq.rs | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
-
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index 481a6d2dc362..fda7301c404e 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -1061,7 +1061,7 @@ impl<T: Driver> Registration<T> {
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
-     /// - The pointer arguments must be valid pointers.
--    unsafe extern "C" fn init_callback(ptr: *mut bindings::cpufreq_policy) -> kernel::ffi::c_int {
-+    unsafe extern "C" fn init_callback(ptr: *mut bindings::cpufreq_policy) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1094,7 +1094,7 @@ impl<T: Driver> Registration<T> {
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
-     /// - The pointer arguments must be valid pointers.
--    unsafe extern "C" fn online_callback(ptr: *mut bindings::cpufreq_policy) -> kernel::ffi::c_int {
-+    unsafe extern "C" fn online_callback(ptr: *mut bindings::cpufreq_policy) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1111,7 +1111,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn offline_callback(
-         ptr: *mut bindings::cpufreq_policy,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1128,7 +1128,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn suspend_callback(
-         ptr: *mut bindings::cpufreq_policy,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1143,7 +1143,7 @@ impl<T: Driver> Registration<T> {
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
-     /// - The pointer arguments must be valid pointers.
--    unsafe extern "C" fn resume_callback(ptr: *mut bindings::cpufreq_policy) -> kernel::ffi::c_int {
-+    unsafe extern "C" fn resume_callback(ptr: *mut bindings::cpufreq_policy) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1173,7 +1173,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn verify_callback(
-         ptr: *mut bindings::cpufreq_policy_data,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1190,7 +1190,7 @@ impl<T: Driver> Registration<T> {
-     /// - The pointer arguments must be valid pointers.
-     unsafe extern "C" fn setpolicy_callback(
-         ptr: *mut bindings::cpufreq_policy,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1209,7 +1209,7 @@ impl<T: Driver> Registration<T> {
-         ptr: *mut bindings::cpufreq_policy,
-         target_freq: c_uint,
-         relation: c_uint,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1227,7 +1227,7 @@ impl<T: Driver> Registration<T> {
-     unsafe extern "C" fn target_index_callback(
-         ptr: *mut bindings::cpufreq_policy,
-         index: c_uint,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1250,7 +1250,7 @@ impl<T: Driver> Registration<T> {
-     unsafe extern "C" fn fast_switch_callback(
-         ptr: *mut bindings::cpufreq_policy,
-         target_freq: c_uint,
--    ) -> kernel::ffi::c_uint {
-+    ) -> c_uint {
-         // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-         // lifetime of `policy`.
-         let policy = unsafe { Policy::from_raw_mut(ptr) };
-@@ -1285,7 +1285,7 @@ impl<T: Driver> Registration<T> {
-     unsafe extern "C" fn get_intermediate_callback(
-         ptr: *mut bindings::cpufreq_policy,
-         index: c_uint,
--    ) -> kernel::ffi::c_uint {
-+    ) -> c_uint {
-         // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-         // lifetime of `policy`.
-         let policy = unsafe { Policy::from_raw_mut(ptr) };
-@@ -1306,7 +1306,7 @@ impl<T: Driver> Registration<T> {
-     unsafe extern "C" fn target_intermediate_callback(
-         ptr: *mut bindings::cpufreq_policy,
-         index: c_uint,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
-@@ -1325,7 +1325,7 @@ impl<T: Driver> Registration<T> {
-     /// # Safety
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
--    unsafe extern "C" fn get_callback(cpu: c_uint) -> kernel::ffi::c_uint {
-+    unsafe extern "C" fn get_callback(cpu: c_uint) -> c_uint {
-         // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
-         let cpu_id = unsafe { CpuId::from_u32_unchecked(cpu) };
- 
-@@ -1351,7 +1351,7 @@ impl<T: Driver> Registration<T> {
-     ///
-     /// - This function may only be called from the cpufreq C infrastructure.
-     /// - The pointer arguments must be valid pointers.
--    unsafe extern "C" fn bios_limit_callback(cpu: c_int, limit: *mut c_uint) -> kernel::ffi::c_int {
-+    unsafe extern "C" fn bios_limit_callback(cpu: c_int, limit: *mut c_uint) -> c_int {
-         // SAFETY: The C API guarantees that `cpu` refers to a valid CPU number.
-         let cpu_id = unsafe { CpuId::from_i32_unchecked(cpu) };
- 
-@@ -1372,7 +1372,7 @@ impl<T: Driver> Registration<T> {
-     unsafe extern "C" fn set_boost_callback(
-         ptr: *mut bindings::cpufreq_policy,
-         state: c_int,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         from_result(|| {
-             // SAFETY: The `ptr` is guaranteed to be valid by the contract with the C code for the
-             // lifetime of `policy`.
--- 
-2.34.1
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
