@@ -1,210 +1,97 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073A02E763C;
-	Fri, 20 Jun 2025 15:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38E72BDC01;
+	Fri, 20 Jun 2025 17:06:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750434478; cv=none; b=BmyxJQW5Z0LGE4rYq/A+QUzWu2bGUrW+AezR/dwwFwoRvz15TqC8IdFfqUpvBgtF7fYRBUJqk/jJiqz7RjQV7w9AaI5nCe0I20DCCj5tiGj2kQlGk/wQdJMwrPpF4SGAfTj7gOUEdBEpTQ4NIcn7DCAMXhdscj2w9iutAK3q0fI=
+	t=1750439187; cv=none; b=cspRohQpH51HY1nEHjIMRqGWBvkaJnBHDowospRlKxUJDkD4YEEnF+PIG7qvuhfF4cxrPRhFoPvKs0B8W//MtibQYEdA+uuYtjtafZmJ/zQBN/94MzFGdWUSuauRe2drjQko+13ud+5S1ZhAh+w+w7RkSqffuDh25c180h/EDRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750434478; c=relaxed/simple;
-	bh=puPbHpytOZW7mie8GfL84As9P2RFvRpERNKNKQE1xwk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nmaIicZC6sJ8eWw1BHS6y3X6WMdpHsBSgdj+RgW5pvrzrtpT1gnIRGb0UHEYkulfAk8rGq69GThhl+kHTqA3p9RtTNvoW36yDFUYMSzIbKctDkvJNxffOc7rhWERWoWoJyctMV6lOFORHd2fv5WkgIJw440eajK/nl2bEiLARo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l4kU49/Y; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1750439187; c=relaxed/simple;
+	bh=nR8JCkDCS0gb3QmY+xkreXhapsXDdGblPAP/bOLVoRc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BeFF8xD+lP9RDG69dR+3/DVzEKijK9thzlyvxA3fI7M6vJHXfikZnOfP3IEJoDGspUDfGcFw/yc5O8KvsnYAgTvTCPMJFIIq9R7O3ucZBJ6xHJ/WfIqx8j8XgB7O7mS+Q1xwMjRHzYWLVSPESBE7mK0CkJ39fVRe+5V+pFCdEXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFmvIfPM; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l4kU49/Y"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-453647147c6so10377325e9.2;
-        Fri, 20 Jun 2025 08:47:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFmvIfPM"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-313dc7be67aso323756a91.0;
+        Fri, 20 Jun 2025 10:06:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750434475; x=1751039275; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750439185; x=1751043985; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bqFUjW8+uNCNgRtyXVYxbhOT3igrLvGYOROHOkaDs3Q=;
-        b=l4kU49/YCMtXxAV9xfHhoLUTfzCMwTHjrNNI4ZAEuYnBLDMFt8fBSJcCSHfIJGQAdE
-         bEXQjV/iAKGnR+BlMPXIsspmNMJjD4qjeQ1tT+N977UloaLbgYYpJ2wj9JCx2FzeMfSD
-         rmDbELZyuBNy6FkCkvHptQ5P4yR70VU5g/35uY9AoG+Pcdq9A1UH7MGSqdvgQRjMqgMC
-         RkQdQKVE1u0AfgQp0C3yrhtLJZHJiFdZ26cAIa9a22G1czCdbRN7BOw4d/y6Xsy1yBOI
-         nWEjyKtg568z2ZMCzuVfXEqfLIrEIJiL9is88HwlQ2LRiUPbUTAunzcAMOYniUQifqKz
-         8kMA==
+        bh=nR8JCkDCS0gb3QmY+xkreXhapsXDdGblPAP/bOLVoRc=;
+        b=BFmvIfPMS4Vd5tcFW2uMcgjP1gjcza401C+46iWrxVQQQJlcnwPcjHpYwwuF2dpAx/
+         8w6Ku7ojiRiC6SN+iNZqGoGvyNrDUr/0nKydGzBFetD8En4HhJe2j7y+Hb2kE0LabNF9
+         MIUordx/ie9Z1tQGNQzRHGvK9BT2osUgzhhwSb9+rdtUMBcHQ3qJMSzkee1PXnGZOfsW
+         A5Ohi6q/WG85ceipvrjwnobXHxB2ks3bRirqevJrG1Si/oI/XPF9reR3mhFGOVtuQN7O
+         tKvh4lbIy1KVNGa4QQV22+DbP+zj3HC0LvqF3llX53eH+CC/Eg+OPHVeJucQvR1KhEbM
+         Kfpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750434475; x=1751039275;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bqFUjW8+uNCNgRtyXVYxbhOT3igrLvGYOROHOkaDs3Q=;
-        b=kwAL+DVblYmuanI09kS63ZNSSoZrhNwHyNG9vplPYg7L46EpyJua5EPG+YBEVBIKeg
-         9EwfuyYTqkl2jgrg0qqJgOjbJ+rqN9jlfS+p0zaZJU3pFJzAfUdBKa1pLuG4w+PqAVgf
-         Gl8LxJp9DYSQv9gb5bNXPY0SBf6NLDUQp8pKDZD4hTy4BxxxxfI2MqFdqcIe+d+MGSTn
-         yKdKdVaSVCDErZgZ9zxAaI3c4vAYblKdpuVjymUwSuf2V53u5ELKLAKMJFlUj5W3yVY+
-         3ckPLsDxW7xBOHpgTQ3tGAhsJWKBroQAlrTVQ0Rh5EY8vKU9Uio3X04LsvL8o0gT5WOD
-         PQbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGPMt8k9nw+lo/zmHXjqvkSGFDGNXbSiassgnQUChP7zTV64WXXHIBjIEVNk0TN6rdgL15FDAK6bp1CYDU@vger.kernel.org, AJvYcCWkNWAD9n5MYeXxWnTFbZrMLhx5I4OFsKWjZYt1rpZBYzSgi/wKNKu+J71xHdTNZ6oL56Pw2cbn+q6LzTQAk/0=@vger.kernel.org, AJvYcCX1xZJkiQ6c/iaeSPAhLWcJFBDakCCOagHl9b9RzrfVtooxEQEuoCfNWQ9PtBoRE8ppP3PN8uE1i4nFBA==@vger.kernel.org, AJvYcCXLSjO9jokepqSYoG8KuPUUMDGr90u2+IYGrWIiLvJnHHGO9vIHubXwqPf6zVrpifOv6N7EDWnQ36yS@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzb0WcwUsdnlwtfR4RcscUoEEtqRF0DJPm6dgZkDnFvI86gcWLR
-	9bE0LlShQbTtTuoXMmRl/SJh8PSlKEsfiB/iitwffVKjgMVm6lWidEww
-X-Gm-Gg: ASbGncvmYLyT/Kjuk8YMOdRCde246fvNEyrAAj2rlAYGnN8yMCX67s7gZZ5+kMcuN+c
-	LHLOsFeDaZQ0+imYfUJxu7uK5EVXrynng+mEfyqj1/3H+T3vBBNwxw4d2VmEyPzjK47MHGOI/iB
-	Zxe2Nv4654uwL4aLNyrzjtA/lnRj3iJVGtjcjYOh5bpnV+kSc6Oge9dxVF/rq5kzOJhf90fegDh
-	EGCQfPsaf/WjrkNx7dJKYiuV/+TsmDS68pbrAR+fPAgqaf3pBdG2bPKY3NYk5cfV3XnXmKXWt8W
-	U8sZ6AxTTerJPiM9g4iatUOao1g1xl/Ys0hZzaI7BO93G8w4WTwxpOJ8tCw+BF4zYXUctJvk5YF
-	6lIGYKoyqj0xhtXUo+XUBqyy0IdAYe+Fb9rpT
-X-Google-Smtp-Source: AGHT+IGq8HrsMga9eVPB6fzJA1zoMGuoKpuD12G+vs6rwDV90u10qjjl3ByW06NQ8l5TR4U+898YzQ==
-X-Received: by 2002:a05:6000:248a:b0:3a5:2fae:1348 with SMTP id ffacd0b85a97d-3a6d13129c6mr2772728f8f.51.1750434474935;
-        Fri, 20 Jun 2025 08:47:54 -0700 (PDT)
-Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d0f18a29sm2442795f8f.36.2025.06.20.08.47.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Jun 2025 08:47:54 -0700 (PDT)
-Sender: Igor Korotin <igorkor.3vium@gmail.com>
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>
-Cc: Alex Hung <alex.hung@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Igor Korotin <igor.korotin.linux@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Remo Senekowitsch <remo@buenzli.dev>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	devicetree@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Gary Guo <gary@garyguo.net>,
-	Len Brown <lenb@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH v8 9/9] samples: rust: add ACPI match table example to platform driver
-Date: Fri, 20 Jun 2025 16:45:52 +0100
-Message-ID: <20250620154552.299932-1-igor.korotin.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
-References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
+        d=1e100.net; s=20230601; t=1750439185; x=1751043985;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nR8JCkDCS0gb3QmY+xkreXhapsXDdGblPAP/bOLVoRc=;
+        b=suU67btpWPEMfop9IYLN0NfEZq/5hkAzeGdQKrSrWPP0uoIXidJfjb45HNXyXv3sFX
+         7Cgrar97oz9mtgx9ZGK8jr2YWrVVrBV2C2y5VN/nJHHxgpI7gvwnG1MNoVjgZwCb/w2k
+         WEY+jmIfMOb4errOV/KgVt4NepsJW4CgtA1QfS/+iHl34eJkypILZz4T5LYi0uAPtXgh
+         MYq3mtRkttfmFu/BFHxqn76qqmxuUWBnSOpYks4cKLv0WFbvuvguyelVVed6iw7aWDg3
+         ZTzPSoTNl0BR+bIhqNcAzi1UhUqs6bzY55nJ8Qnt882ENju2whBhXJ4IIRDz8jQ7JHBL
+         G+cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWQKfJNMBN5xUFszCWCZkdGzE+SVIfKFN6X4yS8lltrESWW44XsyWzU6CNLOUAX5qQmK2wLDNqmcJqvWMd5OqY=@vger.kernel.org, AJvYcCWdR2jJNu9TQMdUOF79E2eMXLhMsZpv4D43f6+kZTYtSH+1r0AhUiuo45x+/BCFXBjbn2vmiU80eS3/ayc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNiauedL4Z3MmSJ19tncAC2+mZ3YjSFBJcwSOl1OObKSjQh2TG
+	0wjSgSBtt+IUwTy/0+lX4wIh/5fnnWqgGzHdT9Jlk1swCWcHNNMyBK4v6JkqkTU3fGkbuHi76AL
+	GeqkOawW7y97sEashvAUEGDc/krZ4Rqo=
+X-Gm-Gg: ASbGncuZy5YKGrxeWgff6sJqf8nQRkt0LvXDYLURlr4JGYmrADP5OmbwrHljVlep/Iu
+	h+AAE0ZEprbA63m30Anu3Igchb0rPsxID2Pstg97w8Av4sfTzMtX1jHvVVyYqzCPSGNtDAaHHLp
+	PeyfBZ/9fkciSh7Ya3QL2prdAPtpkthwg5F4zShoCbS/yB6fxAvVA6Fg==
+X-Google-Smtp-Source: AGHT+IFUdRD9ff/2AXzkajZ014jgzqnnrOctCnqUh751BOw8Une3qB2C2bF1iaF/ptF/GHz1mrxH1fQWMGB98YE9euA=
+X-Received: by 2002:a17:90b:51c3:b0:311:a314:c2dd with SMTP id
+ 98e67ed59e1d1-3159d8c6cedmr2366780a91.4.1750439185108; Fri, 20 Jun 2025
+ 10:06:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250620-num-v1-0-7ec3d3fb06c9@nvidia.com> <20250620-num-v1-1-7ec3d3fb06c9@nvidia.com>
+ <CANiq72=BSnom-nQgzLvv-cqwSknK1uJ=CXGP51r0WRj1Y553Ew@mail.gmail.com> <DAREXAUV51B6.7X7TPOJKK249@nvidia.com>
+In-Reply-To: <DAREXAUV51B6.7X7TPOJKK249@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 20 Jun 2025 19:06:12 +0200
+X-Gm-Features: Ac12FXy9impNFri4YJFlzwQ3T6GDHruzREl_6st0yjIG4jjsANoToHYXbGIIsEw
+Message-ID: <CANiq72=kfhLwpXL0s2HWbW79QEZNTvJ1UKBSzp6MHyoVEUAC1A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] rust: add `num` module with `PowerOfTwo` type
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Extend the Rust sample platform driver to probe using device/driver name
-matching, OF ID table matching, or ACPI ID table matching.
+On Fri, Jun 20, 2025 at 3:59=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
+>
+> This reminds me that I should also check whether upstream Rust would be
+> interested in `prev_multiple_of` and `last_set_bit`. The docs I've read
+> for contributing looked a bit intimidating, with RFCs to write and all.
+> Would you have a pointer for where I should start? Maybe a Zulip thread?
 
-Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
----
- samples/rust/rust_driver_platform.rs | 70 +++++++++++++++++++++++++++-
- 1 file changed, 69 insertions(+), 1 deletion(-)
+I would say it is actually quite straightforward compared to, say, WG14/21.
 
-diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-index 8579290eecb3..9c16945e6c70 100644
---- a/samples/rust/rust_driver_platform.rs
-+++ b/samples/rust/rust_driver_platform.rs
-@@ -2,8 +2,68 @@
- 
- //! Rust Platform driver sample.
- 
-+//! ACPI match table test
-+//!
-+//! This demonstrates how to test an ACPI-based Rust platform driver using QEMU
-+//! with a custom SSDT.
-+//!
-+//! Steps:
-+//!
-+//! 1. **Create an SSDT source file** (`ssdt.dsl`) with the following content:
-+//!
-+//!     ```asl
-+//!     DefinitionBlock ("", "SSDT", 2, "TEST", "VIRTACPI", 0x00000001)
-+//!     {
-+//!         Scope (\_SB)
-+//!         {
-+//!             Device (T432)
-+//!             {
-+//!                 Name (_HID, "TST0001")  // ACPI hardware ID to match
-+//!                 Name (_UID, 1)
-+//!                 Name (_STA, 0x0F)        // Device present, enabled
-+//!                 Name (_CRS, ResourceTemplate ()
-+//!                 {
-+//!                     Memory32Fixed (ReadWrite, 0xFED00000, 0x1000)
-+//!                 })
-+//!             }
-+//!         }
-+//!     }
-+//!     ```
-+//!
-+//! 2. **Compile the table**:
-+//!
-+//!     ```sh
-+//!     iasl -tc ssdt.dsl
-+//!     ```
-+//!
-+//!     This generates `ssdt.aml`
-+//!
-+//! 3. **Run QEMU** with the compiled AML file:
-+//!
-+//!     ```sh
-+//!     qemu-system-x86_64 -m 512M \
-+//!         -enable-kvm \
-+//!         -kernel path/to/bzImage \
-+//!         -append "root=/dev/sda console=ttyS0" \
-+//!         -hda rootfs.img \
-+//!         -serial stdio \
-+//!         -acpitable file=ssdt.aml
-+//!     ```
-+//!
-+//!     Requirements:
-+//!     - The `rust_driver_platform` must be present either:
-+//!         - built directly into the kernel (`bzImage`), or
-+//!         - available as a `.ko` file and loadable from `rootfs.img`
-+//!
-+//! 4. **Verify it worked** by checking `dmesg`:
-+//!
-+//!     ```
-+//!     rust_driver_platform TST0001:00: Probed with info: '0'.
-+//!     ```
-+//!
-+
- use kernel::{
--    c_str,
-+    acpi, c_str,
-     device::{self, Core},
-     of, platform,
-     prelude::*,
-@@ -24,9 +84,17 @@ struct SampleDriver {
-     [(of::DeviceId::new(c_str!("test,rust-device")), Info(42))]
- );
- 
-+kernel::acpi_device_table!(
-+    ACPI_TABLE,
-+    MODULE_ACPI_TABLE,
-+    <SampleDriver as platform::Driver>::IdInfo,
-+    [(acpi::DeviceId::new(b"TST0001"), Info(0))]
-+);
-+
- impl platform::Driver for SampleDriver {
-     type IdInfo = Info;
-     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = Some(&OF_TABLE);
-+    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = Some(&ACPI_TABLE);
- 
-     fn probe(
-         pdev: &platform::Device<Core>,
--- 
-2.43.0
+The first thing I added was a method too, to see how things worked,
+and I started just by sending the PR.
 
+So I would say, go for it! :)
+
+Cheers,
+Miguel
