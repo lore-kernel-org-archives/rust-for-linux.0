@@ -1,97 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FFF4C79;
-	Fri, 20 Jun 2025 00:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F0A63CF;
+	Fri, 20 Jun 2025 01:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750380773; cv=none; b=o3aDJCfrwl2DaTrUZHvF4f2tVxd3UKipjSB0uZNg3e2hEh03AdNmXxbGVcx7g2wR4JRgfjwGy3yPsbqG7IGsJmjjCWhj8BBEussLgqqyJb05H9Yofn7C9H+afrn+eKTxZwyXKax4C1Ti5KZxLA0LwNgN+JpFss0YYbGh08hPh4c=
+	t=1750381557; cv=none; b=jgjpiGP/laM5sWO9LcGAZC4D0MJDoqNW1gDxixo05BztV0rVOwVSbzniRPyw+LOb5mWxw09XdUCvwTUFKbQfg+hnvCHprgk8s3dMwPEuVPmdnfQPMMh5Z58aKagZe1PLS3TDtOK2VptXvbH1nUH/qlqIpBaQatjlkoO01Wcf2nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750380773; c=relaxed/simple;
-	bh=ArNMFWMOWO/Ezp/JG8136kkvpDFoqlGtBCU0I6dYd6o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rgu8yzReZ+TD9ocIK4mCrjKlpzL1SVn3QAXSJfm4b3CQ1sn39Slz5BvR8G5ZFTFl/ZSkjmSf6hi8f9/RgUu9gsvCt8CKJXmW3Q5B/qxzDNs4tHgviWm0HUecXY1n5vFIhqV82/myWHSpIjM35RYnvCRGFg6lPnyNfDQEYH5EVxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JznyF8u9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750381557; c=relaxed/simple;
+	bh=W9mOqeP2kwr3pLH9cYKHBcKZdgpJAyreKBwjSHcB8Mo=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=eqt9fLw9ZMVlpWu8PkmT9MGV18x4GnCWFZuOQPKkPyq2ftPh02Lfb00FlTxmN5T4X1IIzVRMycgS8AG0j28rUJlqaTEmErh5EqEojkVq2RPGEwuMZOJc5CDoDouHO5H/5L5HTCODxkX6QoMBbNTkZzQj9vnTmjFBVpIPRMcm4ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbtN11a+; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JznyF8u9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA5B7C4CEEA;
-	Fri, 20 Jun 2025 00:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750380773;
-	bh=ArNMFWMOWO/Ezp/JG8136kkvpDFoqlGtBCU0I6dYd6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JznyF8u9CMVwysl/pVIOQpzpdi4NmP+ZIvsYNyZvMGQIm1MKoSb4wvd7R1+cO2juI
-	 I4E5jDmoxYdIJZt96RDM9url9J8gair5IM3+1Yw9lmP3HOUtjN6yPsWMvNlbz8wV0o
-	 lNOxX8a34MO2cxTnTgQhEfzpc7CqBR8IaJLA4FtoP6HkT1PvkLXhCnF/Tq0GaGEp17
-	 ppfmE+x4kieQF2y5qjAlPn+M4e5kX/b7Vn/fZVouiYTuySAT//OTJZpbB9mS3PnDXM
-	 JmpawmYWS9UNfgO3FXBR6xelyIZHSkVH4TjyBUMojcZ3oGnf5IRIaAS42V/LG6f1KA
-	 l/nKfcWgvf/jA==
-Date: Thu, 19 Jun 2025 17:52:51 -0700
-From: Drew Fustini <fustini@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>,
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v4 0/9] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-Message-ID: <aFSw44++s7xMkJ9I@x1>
-References: <CGME20250618122801eucas1p2f9ca464e9e5c8d954d5150500952aeed@eucas1p2.samsung.com>
- <20250618-rust-next-pwm-working-fan-for-sending-v4-0-a6a28f2b6d8a@samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbtN11a+"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-747abb3cd0bso848217b3a.1;
+        Thu, 19 Jun 2025 18:05:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750381555; x=1750986355; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DzT2Iuf/ZzNOLQ6gupaXsLkqUMoBHoKHOKKIlOgccBA=;
+        b=AbtN11a+QW7OvI1YSIdisDyjVHD1EKwifjbO7FW/Xquin1f11c2lWfJMMUWEwAfD5Y
+         LE+4VF6KWqIq1wcxm/M3V3NY5ltIyXvORsaYYkTaEt+pyp3DyLsnbf72f47FtGb4RYFd
+         ryZil7jz+VIx9r78Oy2rM7O+JeUbK6IdARXdswzmSm5GDGvsxna7pUw/UWpAySz8WDmq
+         5xEiubbTv+MBScG7FeIQX/oZ1WGHC/jG8mM7rxgfi+NCrAtahGvMeghuHuC2iAjatO/7
+         z6anHl7bqNj+HJXx0DMNBRuBOV5ItIMBWAt/yMwaDMvzmHceWSyo16bbjTmkTxYllezr
+         7Scg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750381555; x=1750986355;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DzT2Iuf/ZzNOLQ6gupaXsLkqUMoBHoKHOKKIlOgccBA=;
+        b=CyOLlNHhVWaHHgCEfssNEMpOt+UESucQuJxIVgnM1ywRUIC06uCgWq8y3/qLLVSDBY
+         PoW3SvadgWeEhQ+l5NfZp/VdH9ZTCUghELcb6MzjIrCiGfkQ6u+ABCZhUFGs0OiMTnJB
+         CgiAvo89S06GTroKBuTS7OqtTmqcRTc0f9PnO5CJ4jD5tcBIhUNy7PhgR3zEO8qiLmk1
+         eIQGSwxWJzFfKHJP1eA9CWVy2qouLg20K/Lv3iqqbAYOtU7rLFTcLqqLCsX+HhErhr+9
+         9KB/06lpHCRIX8oAaTZj/aq7qlgz211uMH0HH3VKTimOAgyFeJ2VRSA8hOWbD0fLCjDY
+         RbLg==
+X-Forwarded-Encrypted: i=1; AJvYcCW4tOHcbcuIXiD7irKmNZBNcYba4TLVWgOVexEAEJpBFgiqySy8YuGKYNtKZnBXarSdEdrPqgbaijdciuM=@vger.kernel.org, AJvYcCWfLSGcDih/c++MComSfhjxxhB9JvVBkp49H7Gf0WN8fL0q0knml8XZjPdwDLWjumZgfYg/8ZfU@vger.kernel.org, AJvYcCX+qd87qBXG6ez1VpOmgPXMj7N+9qTjbgGMWScMD6VuVIdkGtauY+ircnkz7DYZXZJl7xVkmx8rT1rL7EQcy7c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQl0UxNq5jHZ+81ODMiMSXv+bdqRzVdJvdxVR1Bx/6B9ALoICy
+	C3rQQMVnRQ1C1msTBFf5e4opGE/5E0WL51UHth1nM3Hq1XFWmGN3/Hu7
+X-Gm-Gg: ASbGncuNmzYDQc2ylTmpW7uRmC+R+2KQGH3ZjlXJY2nSX7Fq77dYx9PN/779P6zFJ8i
+	5VkyutyZ65xLlIbIsdWiLnFxvDiJbTIZfKi/y6ntStP5gl6FnsmhHXrVwRJCFGdzkrlQGqTRv3/
+	qzcD2Zxiy/i3KrT+x6tCVxvswNwwRmmg3dH+zly1fq431PZYSgDrbJ2MPdYk/lSKd8Ya1c0n0Ig
+	85N38QFc8H1JY6wCXzvazCf32T4/7Vm8G4MMZPkexYx7PVdNEgvKi4eddGYbruZGFaZemDAzwYt
+	zbTt56u4jOiocI4nXXoSWDdNl6eyVuPK7z/qi8YWPQDBqatLA+3Iy51u1PIhyqcEdz1HIUymLPu
+	nCsvS0tca1KOIlsfvm/loD/A4vau/L10vdkLKM9hk
+X-Google-Smtp-Source: AGHT+IHMGyH3pwfxqRRi0CyniU9wTwDjsc/wVG5OYqjExsCqaW50JCFuTv7mJNtVdKpPWwfIgL+fQg==
+X-Received: by 2002:a05:6a20:4321:b0:215:dacf:5746 with SMTP id adf61e73a8af0-220293b751amr744762637.19.1750381555001;
+        Thu, 19 Jun 2025 18:05:55 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f12587fbsm459847a12.62.2025.06.19.18.05.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Jun 2025 18:05:54 -0700 (PDT)
+Date: Fri, 20 Jun 2025 10:05:39 +0900 (JST)
+Message-Id: <20250620.100539.89068405138839860.fujita.tomonori@gmail.com>
+To: tamird@gmail.com
+Cc: fujita.tomonori@gmail.com, aliceryhl@google.com, tmgross@umich.edu,
+ ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+ a.hindborg@kernel.org, dakr@kernel.org, davem@davemloft.net,
+ andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: cast to the proper type
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CAJ-ks9n-iQAiwN3CVnJP164kPEgwq5nj-E5S7BnZrYdBWoo16g@mail.gmail.com>
+References: <CAJ-ks9mazp=gSqDEzUuh0eTvj6pBET-z2zz7XQzmu9at=4V03A@mail.gmail.com>
+	<20250620.075443.1954975894369072064.fujita.tomonori@gmail.com>
+	<CAJ-ks9n-iQAiwN3CVnJP164kPEgwq5nj-E5S7BnZrYdBWoo16g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250618-rust-next-pwm-working-fan-for-sending-v4-0-a6a28f2b6d8a@samsung.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 18, 2025 at 02:27:33PM +0200, Michal Wilczynski wrote:
-> This patch series introduces Rust support for the T-HEAD TH1520 PWM
-> controller and demonstrates its use for fan control on the Sipeed Lichee
-> Pi 4A board.
-[snip]
-> [2] - https://github.com/mwilczy/linux/commits/rust-next-pwm-working-fan-for-sending-v8/
+On Thu, 19 Jun 2025 19:24:14 -0400
+Tamir Duberstein <tamird@gmail.com> wrote:
 
-I checked out your branch and get a compiler error about missing pwm.c:
+>> >> > >> > Fixes: f20fd5449ada ("rust: core abstractions for network PHY drivers")
+>> >> > >>
+>> >> > >> Does this need to be backported? If not, I wouldn't include a Fixes tag.
+>> >> > >
+>> >> > > I'm fine with omitting it. I wanted to leave a breadcrumb to the
+>> >> > > commit that introduced the current code.
+>> >> >
+>> >> > I also don't think this tag is necessary because this is not a bug
+>> >> > fix. And since this tag points to the file's initial commit, I don't
+>> >> > think it's particularly useful.
+>> >>
+>> >> Would you be OK stripping the tag on apply, or would you like me to send v2?
+>> >
+>> > Hi Tomo, gentle ping here. Does this look reasonable to you, with the
+>> > Fixes tag stripped on apply?
+>>
+>> Yeah, if you drop the Fixes tag, it's fine by me.
+> 
+> Thanks. Would you mind adding your Acked-by?
 
-$ make W=1 LLVM=1 ARCH=riscv
-  CALL    scripts/checksyscalls.sh
-  BINDGEN rust/bindings/bindings_helpers_generated.rs
-rust/helpers/helpers.c:34:10: fatal error: 'pwm.c' file not found
-Unable to generate bindings: clang diagnosed error: rust/helpers/helpers.c:34:10: fatal error: 'pwm.c' file not found
+With the tag dropped,
 
-make[2]: *** [rust/Makefile:371: rust/bindings/bindings_helpers_generated.rs] Error 1
-make[2]: *** Deleting file 'rust/bindings/bindings_helpers_generated.rs'
-make[1]: *** [/home/pdp7/linux/Makefile:1280: prepare] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-Did I do something wrong?
-
-My kernel config:
-ihttps://gist.github.com/pdp7/8f5b4324a43119f39d4c40158bf3325e
-
-Thanks,
-Drew
+Acked-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
