@@ -1,89 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F05221DAC;
-	Fri, 20 Jun 2025 22:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088CA19E98C;
+	Fri, 20 Jun 2025 22:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750457209; cv=none; b=DVs2cN8C7ZXw+BejlPFCfFq0lgLIIaa9mp5i+3iLLdQaWf7ptWsEdctMZ6AjoZ8rEJHlFDkwiEI4/mJv51hi5DKtdHUgAcXVtFljAG0T6b513/SU0vppuEWd0TQ3qBF+OivJCObgt34XrP9T95u9mskHbuYJyGU0fO0bRBhDBc4=
+	t=1750459055; cv=none; b=VMdUGqcx4McZ/7uz9YTfzALzuLdEwWxQXd0Ql20I+09Kd/+ACmVNlZnD9A/ngBA/hJOcIpJ2pQ+eI87Ei49+I2WQ2CwAOLDnbbTsbo1Nvj9VcsMsZjOF+v0PkMlUNPjRcjbLbZuWSKFDo7CzK9DEZf9m0imJxAqUaWMPdeJQWp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750457209; c=relaxed/simple;
-	bh=eE3jajaJNedzuZV2q+noRIBA/GEx5wr6lDpsRW4JnuU=;
+	s=arc-20240116; t=1750459055; c=relaxed/simple;
+	bh=2rMyA/wzA7o1DmB+D1HVrWEoJH5/9feYghQ21/NivpI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CQ4cMd/JkbVXfIYZVVk6cbvWyJ4ATPIUyzDLF7/M4H1ey+ZK4SDm9PdTqYhfYksEIoFfvq1Z7fuCVdG3l0qYFz61ZU9FHqF+fEaQ1EiF9rQQ1caOATddY4+f1LSW0HZQntlgjmcR86aRe91bW3s9igpF1l1/GPHhBxBGvQt3dEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZPhJTzG; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=G8Ij1y7NDea2E5Qko8CYQT0kkC2SYaRV84WlptFuaTFn17obRfoET0wLvRLZWoSv54qFOtQ/tTCjOlpS2xNNGPGV1sprDYbFl1muwnFg7dOgD/ZdtmTbeLG9Gf4Ku3GQXaZR37s/LBTWmZ57elTdYKKBUmQlEvcyY/hXZY9e54g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTejO0pf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZPhJTzG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08439C4CEE3;
-	Fri, 20 Jun 2025 22:06:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTejO0pf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50BBC4CEE3;
+	Fri, 20 Jun 2025 22:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750457208;
-	bh=eE3jajaJNedzuZV2q+noRIBA/GEx5wr6lDpsRW4JnuU=;
+	s=k20201202; t=1750459054;
+	bh=2rMyA/wzA7o1DmB+D1HVrWEoJH5/9feYghQ21/NivpI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GZPhJTzG+rjZ/ksx00F7qb+fGO7UMyEYCOBCzqeK0z8fQfLrmtNo2wQRQTF/Tzwou
-	 GpWbpmZkxxeDQyh0gxI9+t+Ng1l/er9u483F7D3NL3KoO9w5W5HNQiAdNDgDegybUt
-	 l0CY+FUjiCob7yrbWAqTJBf1mMXliS5Wx7aSVLlMy6WFytBfFmnwvajPkEVto3S9Ss
-	 4QivkrIa/HRrTudrZoGxyLQqP83dkjASNxw7zZR0YWW45N9UN/WRYQwbIOWS5OW4A/
-	 m59pq/ZmbM913crcqhVp4fydUXW4nL2Ii/9UtYVRo/Q1qH68VMK/258vu3XPHJCpBd
-	 y2l0AANJ4JSog==
-Date: Sat, 21 Jun 2025 00:06:40 +0200
+	b=uTejO0pfo5WHe4wXrxMlp5mqT/DBSJu+XO9aDZ1MZA8Zd0s8v7sLbfl49CG4jfNuR
+	 OMk2aNBPr5Qx+5VtFfEq86VNQXfaKsE+HgxZiS1D/c7db4wlxCQl3VPCiC4gNFbZ3N
+	 7+LKBMz/niXgjFn1NMjy/zlakfUlyoDtyivx8MnBPYfpy8cw+sd05harFmF0cU+8yq
+	 z34VxbLnv0mDhrRkJw6UE9DI/PvK2Ko41+yGOasZFDlhSgOy1vlTNi46Tlgy5cdK6J
+	 gN87YeaHYqnVA/OcERIvUiT1lTyuqD4nLFIdwdQEOOw1Fn5f21IbA3BpqHyUfUMsJo
+	 E4gzbmUv0ob4A==
+Date: Sat, 21 Jun 2025 00:37:27 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Igor Korotin <igor.korotin.linux@gmail.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
+To: Rob Herring <robh@kernel.org>
+Cc: Remo Senekowitsch <remo@buenzli.dev>,
 	Saravana Kannan <saravanak@google.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Remo Senekowitsch <remo@buenzli.dev>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Xiangfei Ding <dingxiangfei2009@gmail.com>,
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
+	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Len Brown <lenb@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: Re: [PATCH v8 4/9] rust: acpi: add `acpi::DeviceId` abstraction
-Message-ID: <aFXbcDKP_jw_Sg5k@cassiopeiae>
-References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
- <20250620152425.285683-1-igor.korotin.linux@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Mark Brown <broonie@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v1 3/3] samples: rust: platform: Add property child and
+ reference args examples
+Message-ID: <aFXipz-B1vEYkww9@cassiopeiae>
+References: <20250616154511.1862909-1-remo@buenzli.dev>
+ <20250616154511.1862909-4-remo@buenzli.dev>
+ <CAL_JsqKXrsdGjTE5KDkqmVHUK5urMJnWSLWgEi8H1yM21gcOCA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250620152425.285683-1-igor.korotin.linux@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_JsqKXrsdGjTE5KDkqmVHUK5urMJnWSLWgEi8H1yM21gcOCA@mail.gmail.com>
 
-On Fri, Jun 20, 2025 at 04:24:25PM +0100, Igor Korotin wrote:
-> `acpi::DeviceId` is an abstraction around `struct acpi_device_id`.
+On Tue, Jun 17, 2025 at 08:01:08AM -0500, Rob Herring wrote:
+> On Mon, Jun 16, 2025 at 10:45 AM Remo Senekowitsch <remo@buenzli.dev> wrote:
+> >
+> > Add some example usage of the device property methods for reading
+> > DT/ACPI/swnode child nodes and reference args.
+> >
+> > Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+> > ---
+> >  drivers/of/unittest-data/tests-platform.dtsi |  7 +++++++
+> >  samples/rust/rust_driver_platform.rs         | 13 ++++++++++++-
+> >  2 files changed, 19 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
+> > index 50a51f38afb6..509eb614ab2b 100644
+> > --- a/drivers/of/unittest-data/tests-platform.dtsi
+> > +++ b/drivers/of/unittest-data/tests-platform.dtsi
+> > @@ -40,6 +40,13 @@ test-device@2 {
+> >
+> >                                 test,u32-prop = <0xdeadbeef>;
+> >                                 test,i16-array = /bits/ 16 <1 2 (-3) (-4)>;
+> > +
+> > +                               ref_child_0: child@0 {
 > 
-> This is used by subsequent patches, in particular the i2c driver
-> abstractions, to create ACPI device ID tables.
+> child-0 or you need to add 'reg' property if you keep the unit-address.
 
-I think this should say something like
+Adding child nodes here creates the following dt-test failues.
 
-	"Enable drivers to build ACPI device ID tables, to be consumed by the
-	 corresponding bus abstractions, such as platform or I2C."
+	[    1.031239] ### dt-test ### FAIL of_unittest_platform_populate():1862 Could not create device for node 'child'
+	[    1.031647] ### dt-test ### FAIL of_unittest_platform_populate():1862 Could not create device for node 'child'
 
-instead.
-
-If we agree, I can change it when applying the patch -- no need to resend.
+@Rob: What do you suggest?
 
 > 
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-
-@Rafael: Can I get an ACK for this one, such that I can take it together with
-all other patches through the driver-core tree?
+> > +                                       test,ref-arg = <&ref_child_1 0x20 0x32>;
+> > +                               };
+> > +                               ref_child_1: child@1 {
+> > +                                       test,ref-arg = <&ref_child_0 0x10 0x64>;
+> > +                               };
+> >                         };
+> >                 };
