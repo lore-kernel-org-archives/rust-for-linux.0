@@ -1,100 +1,90 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690431A265E;
-	Sat, 21 Jun 2025 12:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1808870824;
+	Sat, 21 Jun 2025 14:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750508474; cv=none; b=nc4AOw86CKW3YmspTwnuPRxBI+wXjoUtiFoPhWN/NEnvBtrR7nBTpHqxbMkTRutzS80fwOKGlbOCb25FaG3sMSvbfXn3EIbGhnA+SaFKdNCzpbNkMGFdADn0nCdOd2NMmwy+5fuBtIqLF5wHzwIH+r3cyagG+InZVswB2LzAuBU=
+	t=1750517352; cv=none; b=o6DO76DN/HUo2L5CZvAoKuQh3R+lTqBgM+LNNTMp1cllXOkXFHyo36ZUlgenuzz/cUZ8a1wnGxqgg2Cty8EuODFf1rDiH9izxt5rfz0WgINmvRQE73+iavw+2TYMywpkpJGe5XXxFHyxTw56v5DZk7o2ECb4a+4qA0g2yxfnDws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750508474; c=relaxed/simple;
-	bh=mJSNLN94yCCCB04rPzGHW0u9z5VpgtHFtBKWC0jstGM=;
+	s=arc-20240116; t=1750517352; c=relaxed/simple;
+	bh=L9jzxKVD973Y+69sXc6ZIMCAeSN0QkdY5s4QXXZhQ+k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XFFKMS38n/UmutvQkys94HnbDIcA0ukeR5WtCtV74JIsV2b4ASXoADBValV0Du/oOiS2O4T/9ffcNv521Q6IGG1QDROJA93iW6PN+LrqYGz+BH2fl5PZl+TiD1NDwL5js5hZk11BVqCDsHw91+rQb4HdTPXEoSpvBI/rI+ww5Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ak9kxhnT; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=ke+gxcrL5TyJ4i0c9A7BYW0qZIpZt21DxGuZu2HIxf4OZLEDctbKAt4jM2tlrdoWhMOKAZqNGgEAA3bk0RR9quoBhdi92K4U7XwTNjxKF2Lb1DsROB75f5X6xXxFw9wYYiuonRWlzlkY0hshfp9oixZjm6vup6Q/YTaISGgK3S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TITlQGci; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ak9kxhnT"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-31384c8ba66so289253a91.1;
-        Sat, 21 Jun 2025 05:21:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TITlQGci"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b2ed1bc24fcso427384a12.0;
+        Sat, 21 Jun 2025 07:49:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750508472; x=1751113272; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750517350; x=1751122150; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mJSNLN94yCCCB04rPzGHW0u9z5VpgtHFtBKWC0jstGM=;
-        b=ak9kxhnTri8ALzS2keG9zet5ayaLo9Vs8Ep6xyKNsflId8y7pPB5JrwE5ZcomuUeIe
-         BWjM/4Hwmb5V4Nf2vE0+zFOddTO1wzPd5TxflYSVsRF4TJBfNdDmGOuVYXaVKpPpEDC+
-         YsvdzJkEfhVn6uIhOUl2Cd5KyF28cmABs2U7fKi+BKXgH2uWKk5TQsuYE8Xxmcwy5HT5
-         uhD+2ehiqvx9xnjfc4ZasOt6nhwc602UZ0qW4iY+ntbetqtI8XVzKqLbjHH9/sVCC7yB
-         tPJR99RGTgk/+VDOZZKDubYCjvW4LmoYEWyomALNRwb5v4IU1Ble7fXJBjUdpcfu2tJ1
-         I1rQ==
+        bh=1JO/PmxHTS0dVHQZuOxg2POaSrxajCmDCh3CexbgOBU=;
+        b=TITlQGciW2txFXOGe6JT7kPuHUy1CRMz8XHwsfoSWEzDzfw0lM3VT0ehBEps7buMEi
+         QWesnOUdMjlyJdozZkwd92/DGprcQ2LZb5G0IRNSNmUlAg7JPj5cThxR9IYbPvhT4kY/
+         H50KpUEifGUfiqBDD2VQQJOAPKasrXkVpRea0iLwpNSfZWhUMXXHOjDR5lnRABSdG67x
+         PS9hOdERHxDou45qdurxQywWfCIM9dqpFjLmU9BBiiHip9P390z3eGL6bVl1NHUgIuKT
+         xe2lLevkqW/43qyRcpwuKM080sFfLs8yLKe8oZA6VVaXy2uDa1LpYIyvnTc+oZDW1spS
+         37Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750508473; x=1751113273;
+        d=1e100.net; s=20230601; t=1750517350; x=1751122150;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mJSNLN94yCCCB04rPzGHW0u9z5VpgtHFtBKWC0jstGM=;
-        b=PWRAqYw4gxME1+WeI0NvpRZyqno+Ms7PJ5dJ0iott824TyrE8LLoFwfsR0dMPHZlkk
-         F2GRkeqyrwVmWy0dVySjLYB7fK/NOxLGOVE/iDnqw2BYh3SO+rjm4BbgmeWn0qzJYn32
-         bUCo/4SngFk+i4VyQjitcCSrrShkt8s/ypmdWfmSFdT1L3DEHUjK/w0/0j3ORinGqyaL
-         565+dSp5NP+vVx13q/nmb7UO/9ghsKIAURnJiGLV4fDVK3VAuAS1sdso3vs3BPP4VPjV
-         GTmA7SNs4ehd791VLCZo8rcYlY2XBcLd695sljWWTVrLXMrR6gaac6ONb9EB/M149flM
-         Ixbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcyeHwFnIxBTNKTjNyurOMt2PUYlkVpHi8CN2+qvPd2PsG1ntYQv7K12eMBbQhNp/x2Tayx0TCWv1h75/Q@vger.kernel.org, AJvYcCVXoaZQsOd1/p+7BIx5kgv8T/+bi8ihlhxWJyL0FqlUk0xoIOyEe8rKKHpswBnkQNllDz+BX1qv9SnB@vger.kernel.org, AJvYcCVdiPIGtFd/79dLLxgredR4zTD2CM3kFiBow/e8zhuk+ASX0sEzb8Maz2z1wvdx+36RK0H64sja3PwH@vger.kernel.org, AJvYcCXNdW9BPiu+soUIh8ZEd+fQyXaWZVfN9h0ysQ0EAH1XDkbS+WT9xo6uaDREdm4audZTgKJ6Uw1lSXvMoNXTOys=@vger.kernel.org, AJvYcCXnOTmCT2P4etY5t5+SUP30N9Zhh/sD7xK4f1uTNAmb6+CK/Pgi4HjKWknyn+Iq6RjhWLoZJtP3HGd/@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj+DLw4Qs/CXdLTGQ1oUrrb5yojee/x6H50R+tkkU+O5T5ogW5
-	A30+/w7uU/I+MstcX4+E191ttYpivMEUtjpZ6Q0YZZMlo3N2+5JupBkzt9ZpbRZPDqoDgKUkyGE
-	oPQzdFyur2CA4t63rAAWxfhP4sZc/41A=
-X-Gm-Gg: ASbGnctqfUayJM/zqPpXcDZKQrupfy7TWkI07OsU+BLoKXgxjzRvrmEn3jBNzn0benS
-	sLbZ3Ree41AhGDOJp4VHdNC5yMW/7KkCAu4E1Cm3Tot3xKIUVINtDfCD80qCTlR8idUui55m26D
-	5cHBNw2yrxwskkvFo1JRtBxP73Si8JqNsC9As9WWcSfhk=
-X-Google-Smtp-Source: AGHT+IHBkoA8R73wdbCEFSmfGebQhGfDwh3U+PqjqU9Rd7GJGvM7aIk3FgAkUqqEjAXM3xI4sgTT1lGB5ApP/eWh1zs=
-X-Received: by 2002:a17:90b:57ec:b0:311:9c9a:58e8 with SMTP id
- 98e67ed59e1d1-3159d90f997mr3211194a91.7.1750508472604; Sat, 21 Jun 2025
- 05:21:12 -0700 (PDT)
+        bh=1JO/PmxHTS0dVHQZuOxg2POaSrxajCmDCh3CexbgOBU=;
+        b=lDOsVzEmtrX9WU+D0BdmJVHdS1wZhH7bUVovEddQutCgPZdVcC8UK6O4Fk2Dw/r/HM
+         28WPCbL97cT0OH1Ol77s2Dh/6oTwUgR5JL8smM09yHEg4CpDT6NO5ESo8c2/I7w6LLAh
+         8xAKbyR7Rhh8pKCxV/2JQi7cFmJ7GbhkNg+Xf6UW7wo/8wSYEyRF6RjEz2MNyjAdXVH3
+         ncRD6c7MF4MJYtx/HvPGI9/MlItgnCBhSllEKXQZClS/AQKDNelhuJWsNpRwdCG0I5jX
+         hJusCVc7PtWcijXi59RBYElhdwfcknqovxSkPOg/BufxX/XpGnHlAhCabpQYh1Wf7REr
+         bBxg==
+X-Forwarded-Encrypted: i=1; AJvYcCUeGQTSxgS5nwVSmm59hIPhUp33J7HUPPp8KLCzieoPXr6yp1kcR73ZQ9/ZhkuwAeKZy/EmkZQX0hQSlw==@vger.kernel.org, AJvYcCUfjr2Mw/V8aX8O5+zAjt031KrlApkxONGjTGnBlDxxkH81pVr33zoDDR2Q4HRcylxkjZes6d51G8/dlGCsuA==@vger.kernel.org, AJvYcCUg5JzFM6XLx+gfX3hDLhXjXxVL6Rs0RT/FMay90LKJ6NLq6ncg5cxeKseummlQJiFv2KVD1Dk5/ERaHTRU@vger.kernel.org, AJvYcCV+6G2+lpZL5N2Y+HCwJLV5Di8K2cv6w7XM9LbJJ2ttcXU8h8Auug5uxa68Ia1OEl6ChL54baFuFojeGCA3Q5Y=@vger.kernel.org, AJvYcCWxSFDvRSVD6JKIj9X/t1Ljc7BgXK35OS4ZBosGOvnGvXRu+7G1z7wL4eKqVE8s9m2msrTy+qrUXICeA/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpsGbVNkMjP9MCzk+swRrezqvlIYBaUH24S2ZeKDIrVBZrDuKm
+	F4xy+FPL9rocTz8XhpcZ8ZpBsNH6kPDLsAdOeJbxCIQaDWdYcXpvQuaqlOYVPFYuc3Zhv2SP1/b
+	IWeE9voIhDe/OWM4KDgPm0opLDmuCUrA=
+X-Gm-Gg: ASbGnctJ2iCwv3oOojcY54Dd0ygH/8xRsEZ3tcDRR+0G99abHAKjQAUB+iigAJTB+Bu
+	Lp2SCVxIf/OgsF16J7Bw7lkM/oSstEcVYhzoX58wVYpEI4+FV4hc/O3EZMlwmxBr2WwlqWjjq+d
+	QI
+X-Google-Smtp-Source: AGHT+IEo+CKQk8wHNOSQkclxu85nsW/a1YOusDaFxSgp8kZzrYJrC7dRgm/TGgX963G87fb6N1JTUrgrqpNCW47JYFs=
+X-Received: by 2002:a17:90a:d88c:b0:312:25dd:1c8b with SMTP id
+ 98e67ed59e1d1-3159d62a060mr3801838a91.2.1750517348376; Sat, 21 Jun 2025
+ 07:49:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CGME20250618122801eucas1p2f9ca464e9e5c8d954d5150500952aeed@eucas1p2.samsung.com>
- <20250618-rust-next-pwm-working-fan-for-sending-v4-0-a6a28f2b6d8a@samsung.com>
- <aFSw44++s7xMkJ9I@x1>
-In-Reply-To: <aFSw44++s7xMkJ9I@x1>
+References: <cover.1750511018.git.legion@kernel.org> <6e2f70b07a710e761eb68d089d96cee7b27bb2d5.1750511018.git.legion@kernel.org>
+In-Reply-To: <6e2f70b07a710e761eb68d089d96cee7b27bb2d5.1750511018.git.legion@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 21 Jun 2025 14:21:00 +0200
-X-Gm-Features: Ac12FXwlYvFTtsebXFsluqzoJQuMLv7aX97g0RdMlPc1xrNUVWgbbVLGEB9yHw4
-Message-ID: <CANiq72=YsoFSSm9QU0W2ZQseeQTWFNkXYVR1mODdv3HHg-0PAQ@mail.gmail.com>
-Subject: Re: [PATCH v4 0/9] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-To: Drew Fustini <fustini@kernel.org>
-Cc: Michal Wilczynski <m.wilczynski@samsung.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, 
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-clk@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Sat, 21 Jun 2025 16:48:56 +0200
+X-Gm-Features: Ac12FXxYM6BOVWg7hJOdAE-osp-Ry_oOUPNZyOxR1nNHyxVYxW4mw0T0N4kIqio
+Message-ID: <CANiq72kZAMGmDyAj33CtRW2-WdEF=vPZcA-4ziMbpd9gYmFsyw@mail.gmail.com>
+Subject: Re: [PATCH v4 6/7] modpost: Add modname to mod_device_table alias
+To: Alexey Gladkov <legion@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 20, 2025 at 2:52=E2=80=AFAM Drew Fustini <fustini@kernel.org> w=
-rote:
+On Sat, Jun 21, 2025 at 3:57=E2=80=AFPM Alexey Gladkov <legion@kernel.org> =
+wrote:
 >
-> Did I do something wrong?
+>  rust/kernel/device_id.rs |  8 ++++----
 
-No -- the file just doesn't exist in the patches.
+Cc'ing maintainers and list.
 
 Cheers,
 Miguel
