@@ -1,145 +1,189 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14763EC2;
-	Sat, 21 Jun 2025 03:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6256430E842;
+	Sat, 21 Jun 2025 10:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750476504; cv=none; b=mnx6rLbk2UGsjDW/VUt+icaOw9nLDb1sJd6rOVN99EaNz7JdeG/DZaz/ufBsy0ULhC0hZqgmWg+GL5bWVyYIvA2pRPiDjbIfsTzUunNEFfHKLqOIR+wETvRPhz8xfCMu44sOg1dtCKgUUmA1mCaAsk4AN4lStx9vY9r3GukVDQw=
+	t=1750502413; cv=none; b=EEkujAYIVHCYB29DThJDmcx19devNRR4n8LhvsUxIlLnHljlJTxQbCOhAUDmwRwE7WovIX8q+hgE3OurGyyRtaP3IU/AuIgShnTx5MOS+hP3Rek18nLhsIdEpAR3N2KHU7D1WxU+QJg/uD8lKjCMXZcbIkg5sbaZMmnXedsnn6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750476504; c=relaxed/simple;
-	bh=XOIyHyU8R1w9H+z6+fu5PhmSwMuz8DC82MGSiGDequQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZMQ3lYVApuFsTPxOsX3A5yD5/AgFOLyJ89bkFZq3t7GC/itOIfzDtmBVSn7Osg/iz3mNWdW7XLfsPvrGQ7gZF720RKEodjo52u1BntT/t7Qiq8s4fkofPM0BGNXAU7FrEuz+48gKJv8WZj/lt35o6a7pCg4MI6WBUXNkUeyXzkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WFTG9WSj; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750502413; c=relaxed/simple;
+	bh=MbJ56eGUoKOruETAA7fRRk8d/cPg4/Kbu9VBh/8LUzc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u9HIQsNKEEba9Ry5GtwDBcvWwqeVAHLGsaNII5oJccIaztpcD3WtOn6pBGKi8E/ZnIn6R5kA1IPE7cvTZQV1ZpNv5/XDd83MwFXcx8Wae1K9U+Ol+jF5VvBJEw3bLzPtOIi7hJ5Hed1hQzIrdKL3swf51NOmoTwnpzkNLPZ7fLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=oZQ1sD7s; arc=none smtp.client-ip=178.154.239.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WFTG9WSj"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a4fea34e07so1227016f8f.1;
-        Fri, 20 Jun 2025 20:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750476501; x=1751081301; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6RYVzsvFt1KjYQ7dHOGgkQLn8r4WbWR3+fey0qRKwFE=;
-        b=WFTG9WSjfBQly/wxF3TQ5GMVCLOTrOWtTjlFeSt9nw7D1kug7bnEu9WVbCvHAtsQx6
-         8Y+j4G+wPPrNkssYbkrKgbFU0ErctjGP13SdbdZNidLA06lu2n5Vn3zO79MYRsm/lwW9
-         YRcSrwhpbpAA0qUdGS70RdBTd2UidtaaMLLw5NIvWtRhAKTa2/ey++2sGDnOUryiETBI
-         CMxH7h8Mp+eDjyl0kA3M4RcvxUmwhj9mB+d1LLWXJXUJV3UItmYkwxl2qhy1gsYzUYhZ
-         Z3jt4S9zjisCYjy55ENn62B05aFMFTcd3MqEPOdna05CL0gjODgNV/vlYz9E7m4sfRBW
-         BpDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750476501; x=1751081301;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6RYVzsvFt1KjYQ7dHOGgkQLn8r4WbWR3+fey0qRKwFE=;
-        b=QoDrFkb2nR9QxQzLEEi2ajlyAoVNz3iw4spA2JuiYObU5/v5xa+cTL+/7IEw44/xjs
-         uBkZ7THInT6bJCzdLiW1n/KLa/C4JScMlGWcIhPu4oz2KyB0Rw8pLLKWFI0vdIF7/N7U
-         8Xmo9GYkj5ghG+vl/2I/yQ+uO8UMiwFs8wGAEBGaPrM9K9DzgaPtdPD6oimJbFiEqhWT
-         kaqr5Z/SwgUFNxTOiAV8shqfH2G8L8iHmUsj7p/POpVoGuWKX9wGoI6dcxaP3E5zIkYV
-         4Zl3+Ne3YM+nQ+FNFBpAge3kh6sqELGuYM+I8x4XrxaQl2QEenRL1585bTSntzFTp8jP
-         edqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMZotVTI6MYWuO7CENQRbXCi9RKBV7cU1TKhLJI3R9W5rYe3fLm1U9BQ6wk9M+QRfJ7aG6KSsacQoeSxGMQWU=@vger.kernel.org, AJvYcCUq6TZSdC29JdKvNEflwKY+RU8BcsNQfP+OG+8IVLKnTrUzO9ml99ICgOE/OwrAEN//T+ezQJbzaJG71Q==@vger.kernel.org, AJvYcCWlI+p72VCA2pkQjwJKYkN0cIqnbTUG4nhku04svBLe9IUaZLXpC6ukDalTqZhg1lCCUhIUG+N18QIuZPhX@vger.kernel.org, AJvYcCWqzmoTfcit0IJPEYgoY8OMFDzP+kW9JaDd7bHEXC0MEU1bWO1gQ3BqXa/wJI44kEgKyfYopCXaNQ4k@vger.kernel.org
-X-Gm-Message-State: AOJu0YybOjJS8Kxkk3aNWqDreFwr12Zy23m7rdK9CKgELC9ytOOWEWcl
-	+/I3E28KUR3XfiRpzNohz7bHUrlyZrA0FRDQUUv+qHe4IDmUbD5iRhso
-X-Gm-Gg: ASbGncvCFXrDhBmQaQSd+w4nP1tqwS2TPR/sCuhhMWzs21fa2IlACRu7u002CP7IiB9
-	WnEADzW1xTVjwQ9Q5Ihd0rSe4PaGcJNm8dHhdUobgFiyIr+jYUEPyJQJudWVw7LfjKwjDfFBhbn
-	AJO8kEg1d77H0pemRNYQY3cD2EzqZ8J0qbIzu9I9R73JgYdsa1ngSMvFuYXzau/kcdFIBJNzH6t
-	fGeCCl3lpT3BSW4iZ5z9CtHGLOgyU9F1NgfYkxD3lDOb0xNI/WzpePj1Luhel51J+Z64NSWl7Fz
-	DoQJAcp/+UUE9l2WoVNDjxC9dVQE/hFUwfsglO2Qjv5013C9GL/ihoxjwjCjQoLxnTRyaxxhPbU
-	qqMkA5cogT2r57QIPIk8iIYlw4ZBRYMtHCIbw3hx64Fl/i7XQC96JM4DeFwFQqqO4CV1WakN5U0
-	kZyvGAY9I0yTUM5djyeA==
-X-Google-Smtp-Source: AGHT+IEl4sD+EqdTjk1No1Nw/dIxZYZRlU5oJbGK/RYeduxiitvzSariJLNdF8/SAulQCuHsATTNEQ==
-X-Received: by 2002:a05:6000:40cb:b0:3a5:8a68:b815 with SMTP id ffacd0b85a97d-3a6d12e68ccmr4150435f8f.46.1750476501064;
-        Fri, 20 Jun 2025 20:28:21 -0700 (PDT)
-Received: from ?IPV6:2003:df:bf0b:9b00:2ddc:8808:df65:e64d? (p200300dfbf0b9b002ddc8808df65e64d.dip0.t-ipconnect.de. [2003:df:bf0b:9b00:2ddc:8808:df65:e64d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d11909f4sm3527452f8f.88.2025.06.20.20.28.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Jun 2025 20:28:20 -0700 (PDT)
-Message-ID: <9765df90-df3a-48ed-88d8-b5de5b1d0540@gmail.com>
-Date: Sat, 21 Jun 2025 05:28:18 +0200
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="oZQ1sD7s"
+Received: from mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:832b:0:640:fda5:0])
+	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 5DA3261298;
+	Sat, 21 Jun 2025 13:32:44 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id dWNfMBYLimI0-wwrEJ3Lf;
+	Sat, 21 Jun 2025 13:32:43 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1750501963;
+	bh=Z3ZRLrkQIS7QBG05Pth/MJ3flxSjMxjBWX3IXE/GqtY=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=oZQ1sD7sM8hB9lPXZLY6SQkgbICLHbbBpoyIfDPvRlrudqVZMEoXVFKpZHt82ujRb
+	 ULh/GP7QTdt/haEc31GlxIdr5GMMDj+NRue8bNTHeYHVBD/hdkBhacCcRkRuEbM0iU
+	 MudL24e+OF5UqBOa7ffHJjX+WVSAIILoN+FcvTNA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-81.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Sat, 21 Jun 2025 13:32:37 +0300
+From: Onur <work@onurozkan.dev>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <peterz@infradead.org>, <mingo@redhat.com>, <will@kernel.org>,
+ <boqun.feng@gmail.com>, <longman@redhat.com>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <dakr@kernel.org>, <thatslyude@gmail.com>
+Subject: Re: [PATCH V3] implement `ww_mutex` abstraction for the Rust tree
+Message-ID: <20250621133237.5ccdfa3a@nimda.home>
+In-Reply-To: <DAQL7NBDD68Q.1ZS3PUR0AGN0R@kernel.org>
+References: <20250619140656.498-1-work@onurozkan.dev>
+	<DAQL7NBDD68Q.1ZS3PUR0AGN0R@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/9] samples: rust: platform: don't call as_ref()
- repeatedly
-To: Igor Korotin <igor.korotin.linux@gmail.com>,
- "Rafael J . Wysocki" <rafael@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@google.com>
-Cc: Alex Hung <alex.hung@amd.com>, Andrew Morton <akpm@linux-foundation.org>,
- Jakub Kicinski <kuba@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Remo Senekowitsch <remo@buenzli.dev>, Tamir Duberstein <tamird@gmail.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, devicetree@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
- Gary Guo <gary@garyguo.net>, Len Brown <lenb@kernel.org>,
- Trevor Gross <tmgross@umich.edu>
-References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
- <20250620151849.281238-1-igor.korotin.linux@gmail.com>
-Content-Language: de-AT-frami
-From: Dirk Behme <dirk.behme@gmail.com>
-In-Reply-To: <20250620151849.281238-1-igor.korotin.linux@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 20.06.25 17:18, Igor Korotin wrote:
-> From: Danilo Krummrich <dakr@kernel.org>
-> 
-> In SampleDriver::probe() don't call pdev.as_ref() repeatedly, instead
-> introduce a dedicated &Device.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
+On Thu, 19 Jun 2025 16:42:15 +0200
+"Benno Lossin" <lossin@kernel.org> wrote:
+
+> On Thu Jun 19, 2025 at 4:06 PM CEST, Onur =C3=96zkan wrote:
+> > From: onur-ozkan <work@onurozkan.dev>
+>=20
+> Can you double-check your name in your git config? This doesn't match
+> the Signed-off-by below.
+
+That's strange. It should be "Onur =C3=96zkan", gitconfig is the correct
+one. I will re-check that on V4 patch.
+
+> > <work@onurozkan.dev> ---
+> >  rust/helpers/helpers.c            |   1 +
+> >  rust/helpers/ww_mutex.c           |  39 +++
+> >  rust/kernel/error.rs              |   1 +
+> >  rust/kernel/sync/lock.rs          |   1 +
+> >  rust/kernel/sync/lock/ww_mutex.rs | 556
+> > ++++++++++++++++++++++++++++++ 5 files changed, 598 insertions(+)
+> >  create mode 100644 rust/helpers/ww_mutex.c
+> >  create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
+>=20
+> Can you split this patch into multiple smaller ones? For example all
+> the tests can be done separately as well as the abstractions for
+> `ww_class`, `ww_acquire_ctx` and `ww_mutex`.
+>=20
+> Thanks.
+
+I will try to separate them. It's my first big (relatively) patch-based
+work. I am still tryin to get used to it :)
 
 
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
+> > +/// ```
+> > +/// use kernel::c_str;
+> > +/// use kernel::define_ww_class;
+> > +///
+> > +/// define_ww_class!(WOUND_WAIT_GLOBAL_CLASS, wound_wait,
+> > c_str!("wound_wait_global_class")); +///
+> > define_ww_class!(WAIT_DIE_GLOBAL_CLASS, wait_die,
+> > c_str!("wait_die_global_class")); +/// ``` +#[macro_export]
+> > +macro_rules! define_ww_class {
+>=20
+> What's the reason for this being a macro?
 
-Thanks!
+It's for creating global classes which was suggested in previous
+reviews. A similar approach is used on the C side as well with
+`DEFINE_WD_CLASS`.
 
-Dirk
+> > +    ($name:ident, wait_die, $class_name:expr) =3D> {
+> > +        static $name: $crate::sync::lock::ww_mutex::WwClass =3D {
+> > +            $crate::sync::lock::ww_mutex::WwClass {
+> > +                inner:
+> > $crate::types::Opaque::new($crate::bindings::ww_class {
+> > +                    stamp: $crate::bindings::atomic_long_t {
+> > counter: 0 },
+> > +                    acquire_name: $class_name.as_char_ptr(),
+> > +                    mutex_name: $class_name.as_char_ptr(),
+> > +                    is_wait_die: 1,
+> > +                    // TODO: Replace with
+> > `bindings::lock_class_key::default()` once stabilized for `const`.
+> > +                    //
+> > +                    // SAFETY: This is always zero-initialized
+> > when defined with `DEFINE_WD_CLASS`
+> > +                    // globally on C side.
+> > +                    //
+> > +                    // Ref:
+> > https://github.com/torvalds/linux/blob/master/include/linux/ww_mutex.h#=
+L85-L89
+> > +                    acquire_key: unsafe { core::mem::zeroed() },
+> > +                    // TODO: Replace with
+> > `bindings::lock_class_key::default()` once stabilized for `const`.
+> > +                    //
+> > +                    // SAFETY: This is always zero-initialized
+> > when defined with `DEFINE_WD_CLASS`
+> > +                    // globally on C side.
+> > +                    //
+> > +                    // Ref:
+> > https://github.com/torvalds/linux/blob/master/include/linux/ww_mutex.h#=
+L85-L89
+> > +                    mutex_key: unsafe { core::mem::zeroed() },
+> > +                }),
+> > +            }
+> > +        };
+> > +    };
+> > +}
+> > +
+> > +/// Implementation of C side `ww_class`.
+>=20
+> This isn't informative at all. The names already match, so I wouldn't
+> have thought otherwise.
 
-> ---
->  samples/rust/rust_driver_platform.rs | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/samples/rust/rust_driver_platform.rs b/samples/rust/rust_driver_platform.rs
-> index c0abf78d0683..000bb915af60 100644
-> --- a/samples/rust/rust_driver_platform.rs
-> +++ b/samples/rust/rust_driver_platform.rs
-> @@ -32,13 +32,15 @@ fn probe(
->          pdev: &platform::Device<Core>,
->          info: Option<&Self::IdInfo>,
->      ) -> Result<Pin<KBox<Self>>> {
-> -        dev_dbg!(pdev.as_ref(), "Probe Rust Platform driver sample.\n");
-> +        let dev = pdev.as_ref();
-> +
-> +        dev_dbg!(dev, "Probe Rust Platform driver sample.\n");
->  
->          if let Some(info) = info {
-> -            dev_info!(pdev.as_ref(), "Probed with info: '{}'.\n", info.0);
-> +            dev_info!(dev, "Probed with info: '{}'.\n", info.0);
->          }
->  
-> -        Self::properties_parse(pdev.as_ref())?;
-> +        Self::properties_parse(dev)?;
->  
->          let drvdata = KBox::new(Self { pdev: pdev.into() }, GFP_KERNEL)?;
->  
+I didn't want to duplicate the docs. I will update it (and others) on
+V4.
 
+> > +///
+> > +/// Represents a group of mutexes that can participate in deadlock
+> > avoidance together. +/// All mutexes that might be acquired
+> > together should use the same class. +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// use kernel::sync::lock::ww_mutex::WwClass;
+> > +/// use kernel::c_str;
+> > +/// use pin_init::stack_pin_init;
+> > +///
+> > +/// stack_pin_init!(let _wait_die_class =3D
+> > WwClass::new_wait_die(c_str!("graphics_buffers"))); +///
+> > stack_pin_init!(let _wound_wait_class =3D
+> > WwClass::new_wound_wait(c_str!("memory_pools"))); +/// +/// #
+> > Ok::<(), Error>(()) +/// ```
+> > +#[pin_data]
+> > +pub struct WwClass {
+> > +    /// Wrapper of the underlying C `ww_class`.
+> > +    ///
+> > +    /// You should not construct this type manually. Use the
+> > `define_ww_class` macro
+> > +    /// or call `WwClass::new_wait_die` or
+> > `WwClass::new_wound_wait` instead.
+> > +    #[pin]
+> > +    pub inner: Opaque<bindings::ww_class>,
+>=20
+> Why `pub`? Abstractions normally don't expose `Opaque` wrappers for
+> bindings. Especially because this type is marked `#[pin_data]` this
+> seems wrong, because this would allow people to construct it in a
+> non-pinned state & also non-initialized state.
+
+It was for `define_ww_class` macro. It obviously says you shouldn't do
+that but sure, I can undo the `pub` and create a `const` function for
+`define_ww_class`.
+
+
+Regards,
+Onur
