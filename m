@@ -1,264 +1,100 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020091.outbound.protection.outlook.com [52.101.195.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA9C18B0F;
-	Sat, 21 Jun 2025 11:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.91
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750506098; cv=fail; b=gi5C2MhfsUKxysiGGxn2j/M/Kzik9Ocyy8WqpHUTPApqN9ZLjBYPhlaeFO/tGSPMhhWoOVkecZl+Oa6A+6j/9YogC6dezBjL3nNHLud42XTyOdDnukYvl9nKnO5gbWNPBSMv3T3ESO6l+FEbhmjB6rlHNsVo8zItpw9kMEIgYOU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750506098; c=relaxed/simple;
-	bh=00nxWPiLPi7Lplk85jZ/RNfebuNWHnTgDtEVTek+CR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ny4EzmOpPc8zZ8RVoCKUzy7DUQZ6adB/ZkCh5shFerp2vosif4gz/FvAKL8jPOKdb9SzTWS+65kqCpeFX/IzlfU5pFkCMnoOfOPfVpG44yJnfVaasBxplQYUQX5iW9pMjOoHlhZCxAOejj6mpYx3KmjKexoQCIWCcV/n8y9aS0E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=leAih+20; arc=fail smtp.client-ip=52.101.195.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690431A265E;
+	Sat, 21 Jun 2025 12:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750508474; cv=none; b=nc4AOw86CKW3YmspTwnuPRxBI+wXjoUtiFoPhWN/NEnvBtrR7nBTpHqxbMkTRutzS80fwOKGlbOCb25FaG3sMSvbfXn3EIbGhnA+SaFKdNCzpbNkMGFdADn0nCdOd2NMmwy+5fuBtIqLF5wHzwIH+r3cyagG+InZVswB2LzAuBU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750508474; c=relaxed/simple;
+	bh=mJSNLN94yCCCB04rPzGHW0u9z5VpgtHFtBKWC0jstGM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XFFKMS38n/UmutvQkys94HnbDIcA0ukeR5WtCtV74JIsV2b4ASXoADBValV0Du/oOiS2O4T/9ffcNv521Q6IGG1QDROJA93iW6PN+LrqYGz+BH2fl5PZl+TiD1NDwL5js5hZk11BVqCDsHw91+rQb4HdTPXEoSpvBI/rI+ww5Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ak9kxhnT; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="leAih+20"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WDMTx+ZoiRmC3wiH2f2RTJmDeWSGc+dcz1TtCiEeJVYmrH2+SpINRqTHysb/y0/LstPAQoiFHUi7jVK8Npg2RHKB8WhzHXX5gql0wyoa7nSgo7ntBHkeuPVOLaioovEfGb8dJg32k9UhVEY7h8fd6VhvDZcc4bhyNVJvdtLSMsShgJh+op0O/eciyWT6VNM+9MTOU1t+KT5LeZo1yxn/phsgTL1/IFmG1+xkyKhnYAVp5Fq/xmOeTttuDN4IY2uAkRy2BDdVESkVoT+Yo+kr5Mur1kLfNy5tQEWxSAWPcIjsLtd0dDx9aiyQJthP3b3pYp+jbiyUF4P8ADWM9TtFsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/DrYCyXbtdaqUFZtMwGuiFWJZx1b2COO+Z/esr7y9dQ=;
- b=kVpXBvbOeaJpZMz/gj2IINct6D5F4A+e0076tQ1KxL0sTc7l/pvGxlJSxtWrudflaTNt7x+lMJBehAJTPGlp//f9/D++a8qBxuJFWEbhbeWfueO4Q1Y9W5VSDnlSrHsf1+ZFbxQmJhBldOvSzdHUuU/Mm5nB2EekVizeHUHqVC64fYxuizCuTR6hMyny9w2c8egPuab1rDObxSnsJDjTdN70EVH3BBvDU/6gecx4dRJsfjLQ0m1ROZGz2E1KxE/i03tDGyxk6jVy/R7Yy2H4InZUhIqp/Nuxhj40IvMenru6kDZu/LD1DSazkBga2vk+dFP7q9A136EjcnytO5JNJQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/DrYCyXbtdaqUFZtMwGuiFWJZx1b2COO+Z/esr7y9dQ=;
- b=leAih+20gA0hexMNfdCw4+TqXEQQ7ELCCNQqeRbLff/C1kAZC2q9BFniONj4apIItSUz+wC+piN1J9ygWh+MBn3kTpHyoH3xUFlPa2rXRJNtwf2AZR7v+ZyUvXnUEyKAw8llkwSvAzti/Mo8tBF2PGJhjArfgVbQVu0nWqY+1Ts=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CW1P265MB7532.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:216::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.26; Sat, 21 Jun
- 2025 11:41:31 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%6]) with mapi id 15.20.8857.026; Sat, 21 Jun 2025
- 11:41:31 +0000
-Date: Sat, 21 Jun 2025 12:41:29 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- lkmm@lists.linux.dev, linux-arch@vger.kernel.org, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, =?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7Zybg==?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Wedson Almeida
- Filho <wedsonaf@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, Lyude
- Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>, Mitchell Levy
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Linus Torvalds
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
-Subject: Re: [PATCH v5 06/10] rust: sync: atomic: Add the framework of
- arithmetic operations
-Message-ID: <20250621124129.6e879463.gary@garyguo.net>
-In-Reply-To: <20250618164934.19817-7-boqun.feng@gmail.com>
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
-	<20250618164934.19817-7-boqun.feng@gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0386.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:f::14) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ak9kxhnT"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-31384c8ba66so289253a91.1;
+        Sat, 21 Jun 2025 05:21:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750508472; x=1751113272; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mJSNLN94yCCCB04rPzGHW0u9z5VpgtHFtBKWC0jstGM=;
+        b=ak9kxhnTri8ALzS2keG9zet5ayaLo9Vs8Ep6xyKNsflId8y7pPB5JrwE5ZcomuUeIe
+         BWjM/4Hwmb5V4Nf2vE0+zFOddTO1wzPd5TxflYSVsRF4TJBfNdDmGOuVYXaVKpPpEDC+
+         YsvdzJkEfhVn6uIhOUl2Cd5KyF28cmABs2U7fKi+BKXgH2uWKk5TQsuYE8Xxmcwy5HT5
+         uhD+2ehiqvx9xnjfc4ZasOt6nhwc602UZ0qW4iY+ntbetqtI8XVzKqLbjHH9/sVCC7yB
+         tPJR99RGTgk/+VDOZZKDubYCjvW4LmoYEWyomALNRwb5v4IU1Ble7fXJBjUdpcfu2tJ1
+         I1rQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750508473; x=1751113273;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mJSNLN94yCCCB04rPzGHW0u9z5VpgtHFtBKWC0jstGM=;
+        b=PWRAqYw4gxME1+WeI0NvpRZyqno+Ms7PJ5dJ0iott824TyrE8LLoFwfsR0dMPHZlkk
+         F2GRkeqyrwVmWy0dVySjLYB7fK/NOxLGOVE/iDnqw2BYh3SO+rjm4BbgmeWn0qzJYn32
+         bUCo/4SngFk+i4VyQjitcCSrrShkt8s/ypmdWfmSFdT1L3DEHUjK/w0/0j3ORinGqyaL
+         565+dSp5NP+vVx13q/nmb7UO/9ghsKIAURnJiGLV4fDVK3VAuAS1sdso3vs3BPP4VPjV
+         GTmA7SNs4ehd791VLCZo8rcYlY2XBcLd695sljWWTVrLXMrR6gaac6ONb9EB/M149flM
+         Ixbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcyeHwFnIxBTNKTjNyurOMt2PUYlkVpHi8CN2+qvPd2PsG1ntYQv7K12eMBbQhNp/x2Tayx0TCWv1h75/Q@vger.kernel.org, AJvYcCVXoaZQsOd1/p+7BIx5kgv8T/+bi8ihlhxWJyL0FqlUk0xoIOyEe8rKKHpswBnkQNllDz+BX1qv9SnB@vger.kernel.org, AJvYcCVdiPIGtFd/79dLLxgredR4zTD2CM3kFiBow/e8zhuk+ASX0sEzb8Maz2z1wvdx+36RK0H64sja3PwH@vger.kernel.org, AJvYcCXNdW9BPiu+soUIh8ZEd+fQyXaWZVfN9h0ysQ0EAH1XDkbS+WT9xo6uaDREdm4audZTgKJ6Uw1lSXvMoNXTOys=@vger.kernel.org, AJvYcCXnOTmCT2P4etY5t5+SUP30N9Zhh/sD7xK4f1uTNAmb6+CK/Pgi4HjKWknyn+Iq6RjhWLoZJtP3HGd/@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj+DLw4Qs/CXdLTGQ1oUrrb5yojee/x6H50R+tkkU+O5T5ogW5
+	A30+/w7uU/I+MstcX4+E191ttYpivMEUtjpZ6Q0YZZMlo3N2+5JupBkzt9ZpbRZPDqoDgKUkyGE
+	oPQzdFyur2CA4t63rAAWxfhP4sZc/41A=
+X-Gm-Gg: ASbGnctqfUayJM/zqPpXcDZKQrupfy7TWkI07OsU+BLoKXgxjzRvrmEn3jBNzn0benS
+	sLbZ3Ree41AhGDOJp4VHdNC5yMW/7KkCAu4E1Cm3Tot3xKIUVINtDfCD80qCTlR8idUui55m26D
+	5cHBNw2yrxwskkvFo1JRtBxP73Si8JqNsC9As9WWcSfhk=
+X-Google-Smtp-Source: AGHT+IHBkoA8R73wdbCEFSmfGebQhGfDwh3U+PqjqU9Rd7GJGvM7aIk3FgAkUqqEjAXM3xI4sgTT1lGB5ApP/eWh1zs=
+X-Received: by 2002:a17:90b:57ec:b0:311:9c9a:58e8 with SMTP id
+ 98e67ed59e1d1-3159d90f997mr3211194a91.7.1750508472604; Sat, 21 Jun 2025
+ 05:21:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CW1P265MB7532:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f36e618-e51d-4570-b348-08ddb0b89163
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|10070799003|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?V2dRFo/jivl2nCiih67VJafDV0UpzHVKBiHTV27h9q9YKvKpilY3ZhYie/dC?=
- =?us-ascii?Q?E5ZXCy32KRFtSVZyVPAHGwu5nJj6D2xe0oOKhgeWqTC9oVZ6wa+n1VhzHgAA?=
- =?us-ascii?Q?TCgY6IXfPVchpzAyhhmxO4fasK9m2w/rruXJv0Syumtoo7/fKbQpIVV/6oR1?=
- =?us-ascii?Q?cNO+BT5vYGIPZlyCu+oChdAdrZ2+44SqsIKlCRous0gCHXYc5gKQJBMejmBC?=
- =?us-ascii?Q?BjzMigT3jqxBUn3ZOH2dccbJsr9jwGy3P5rNYyvRzdhr7Ghsmhoz6UetvkLc?=
- =?us-ascii?Q?PI1bx5TH91SyRnU4hDr8gZuQSBUvdUdjYns+rBgPl5uNl/g7pAS4Thh3R4b9?=
- =?us-ascii?Q?KDgRco5WKJvingV+y8ZKSH7S6U/wLLn4/dUBhSQ/69yqqQXXppVGqU6fc5J7?=
- =?us-ascii?Q?LC27iZSpx2Hv0Am/UEabNaDzG3q10tIUtWFHZ23BHrzDuNCLpzI6y/gb0+x0?=
- =?us-ascii?Q?K2En02pBRNdzaj4ajQOL6iFLDWyCKmbuD1GjkUXGlWewTjKK5HO7ftdt/IUn?=
- =?us-ascii?Q?9ACEsz67DIO9PtL5Pb2fImRbYzLggO+NgkJBrKAikSUkcJIgf/3/8zNTwy3d?=
- =?us-ascii?Q?HIfy9OnxBEPGJCAOs8Bsi2m43eJDptDkUHhbvxyBwXslX9FiQJdgTVJsN9Sz?=
- =?us-ascii?Q?mF12+dq1k0H307xl3nqeSh6+MPCTGnmCinxL3g2xO10yk8xAcUAmfAUOPZFD?=
- =?us-ascii?Q?QxiwwX8R0oRtqiYiAgBsmpXLfXGfqWFP3sPEmECl3e/x7L2Xuo2tvxcgAMsf?=
- =?us-ascii?Q?kzD9V/icPKaBsR4diJtGve6Z3WzModCi9KsuOzSRJ0oKwAMzOnwpvDbCsxnZ?=
- =?us-ascii?Q?5fd/yj3L0vAXN8Gp/Cx6GjOzwStHF0rMV5H/ifhKascOaN4fBrShBis/h7Oq?=
- =?us-ascii?Q?Xo3vNOO/CMZYb0zDNTx/CW4Fz1sE5j/I4U48xrrbuyBya8+1lhrv8wa9fqwr?=
- =?us-ascii?Q?o0Nqh6zgsLJVPZyWHFT3pqJD/S3Vx8cNcEUL6EmCGOPBKFU2YN1ri8Yxw9h3?=
- =?us-ascii?Q?oRxd0bH8TG2+im9Wjg00p00aItks2x6N48SalpmYaZCdCWFsEbga/YKui9uj?=
- =?us-ascii?Q?2cHN4kcNENTOGfh99++xWdN7OuGtDgloS8LhODb/t+Y4vUtBrElJeenUna6E?=
- =?us-ascii?Q?Xui/b/1Rp5mDbLHMfdGifj1r1F7x94D5N/B6c/grHDkHw57A/a7XWjv00ioS?=
- =?us-ascii?Q?jSEsH4Be0DGiDjRGrYUuJO/bgJCR9ZpMkl0PDrzYpCXkqx7KYZA/8QO4Bat+?=
- =?us-ascii?Q?fCMAFIA6mIyKqQFAwrbDjM8nXKkLJ+3IAClvfATd/4cYfGhgXWpZvsGPrJFz?=
- =?us-ascii?Q?wdhXL7APU8L3ThZ0P0YYyhmQDiRsn83rQbILTzBw9Xs7S7V4ir1TeRxh+7Sl?=
- =?us-ascii?Q?J3u+X+Qr6B6rrK3ovHURYnG9gWDi9mYnE/gqCSbUg/ODjdeIeI6yTvOZRY9K?=
- =?us-ascii?Q?8WYtH4BapbM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(7416014)(376014)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?IbEfm0wOJIcErhlOh97NHfCTuV8dhK7iiarXlTMr5XmXsY+rQtpj5NT70Ouh?=
- =?us-ascii?Q?VOPm3ElJxQWuW52Gk0w9vqw85ueoSC7Xm8Iey6r09rraqj1qqcnlRwyPtnlL?=
- =?us-ascii?Q?53xf/e6sFiCmcggTDjeFy0WHFr2pL5T4voRPSyFZpON3E0q53jbC+qpQVBoF?=
- =?us-ascii?Q?yUq8WEHAGVJ71KfOeLPXrHI4CAIeUA28wFLlJZgoOd8sybltv64Y86C3j9xM?=
- =?us-ascii?Q?duXX8w+1+jMW6wEAOYkLFgL0k6MwLXohkDoVCqbF4gdmy3z6MdCOK+X5JVrI?=
- =?us-ascii?Q?pv/lUhqsp9uIkx19zS3u/RhJjz5NdUIaOJkLV81k0AGpb3bxZHPXuprh2Zbe?=
- =?us-ascii?Q?yyXI8uN2HdbMzP338HajZGDWyUehYeZVP4O4LYfXUfa0fxBCv2aK+rjgmZ5U?=
- =?us-ascii?Q?ulAEHDIRaoZGGVxGrE92Tp1Wkp3ztw3gr2oa/LmPJ6FLH3fqNcqpZ7MDQrNy?=
- =?us-ascii?Q?eDwbNAZCenxRuUaYeqKkNdlcMXvMzILLc0c3/vQo9ZdiFyyHW2V+MvdG3z6S?=
- =?us-ascii?Q?SjVc35XQy0PCcIHwFtnxQlFJPtjCJQvugjarFfAn9VCyYaoZcmIt2t+llolX?=
- =?us-ascii?Q?ZVFU/4/UIEcjw6LaVoy2TUw8eM1cINYOfCR1fePfYUohkkK+/Xq/oQLcigBx?=
- =?us-ascii?Q?6Wtxj4sueFeTkgd1XVEfGo2tWjLm1dizAGrZAbo2lyD2U8chK0pNf39MAwtz?=
- =?us-ascii?Q?tyf9Wf7pBdZvPnoHIfhFJFYo912Yu7FRf+MmJDSTXG1EQ+qF655x2ayCHJLn?=
- =?us-ascii?Q?NxHCa6ByCPAwgpshgkEW06B1Wgh0JCtu5gEFpRTea63f4cxxLJvIwbUY+Sxm?=
- =?us-ascii?Q?X5g9PlgItuYJ8m1RcQBopW+Kddpj6M76EoB9OkoPTT9fkb0ZyKzL7pgQzvu5?=
- =?us-ascii?Q?NjZ3hlb/og7IjOkctWIyQNCgeFJZEJNWdq/VNnw9jxvfnE4vNSSvXacEFoKz?=
- =?us-ascii?Q?B0JjdkExC2kB5eqbmScLDrRaeikeBH2zV3qj+2KbHaKHm85lf6gSXH7xxcmk?=
- =?us-ascii?Q?MO3vv8bSfmhGNf81oHVZHhQFHEMFLTOF5wIQ8wuR3msrlmijMrBPGZ8db/Na?=
- =?us-ascii?Q?Jv3kPBC7m9kLoVPWVF4l/X52IMj6Gqksn8ADvUx2jJPpdSoMUz2yGIJUOHMk?=
- =?us-ascii?Q?YLLR8pKkwTKLw0sUk67yLVII2C57qYlFkz4lz+03XllnAMR0yjtvoqTnukuw?=
- =?us-ascii?Q?QoGDK1nhjcOYwofLCIcQ3PObWZokP0XVlGj//5Oj3Y0FSGgudedAyXan6FE7?=
- =?us-ascii?Q?ZAjKsWa7nQjBHO+cSuLRRa69nRje58Giuj9EpCx8IBNQxHJCKZm6GhN1ReiC?=
- =?us-ascii?Q?m6U0yhqPlR/mga5geAohdxBbAj4Ud2lsS6BTjEf61Ax90QQl31lfyYYW0lzp?=
- =?us-ascii?Q?klduPmwmzVccUvj7Kr7wR619Yz6yObTF9BbbVefLz6u1NP2GVQtkp7f0O3HE?=
- =?us-ascii?Q?lVa+0HcDWVyN2CikrWgKGKGs31KF1jmcZK55zwYdsBr5DTxowC0juQqQg1wl?=
- =?us-ascii?Q?FGkuyV2A0hbYasxUju1XqBmsmh71sFVI5uENNziLB2kGLLAAfqKmluVHoqT0?=
- =?us-ascii?Q?X5KVQx7du1Bu+kxR1lXBsVTR1VhVNUzrDRdxVvfJ/En7CPqvOn4ZTGy/mg2E?=
- =?us-ascii?Q?og=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f36e618-e51d-4570-b348-08ddb0b89163
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2025 11:41:31.7432
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m8/Vq16ceD3KFlefcJ0F61PWwd7doflfrvnZSXRMu3+ULNyaGlD5zZluSHrPGRhkG+YVXJLJaY3YjT1PgNcz1Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB7532
+References: <CGME20250618122801eucas1p2f9ca464e9e5c8d954d5150500952aeed@eucas1p2.samsung.com>
+ <20250618-rust-next-pwm-working-fan-for-sending-v4-0-a6a28f2b6d8a@samsung.com>
+ <aFSw44++s7xMkJ9I@x1>
+In-Reply-To: <aFSw44++s7xMkJ9I@x1>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 21 Jun 2025 14:21:00 +0200
+X-Gm-Features: Ac12FXwlYvFTtsebXFsluqzoJQuMLv7aX97g0RdMlPc1xrNUVWgbbVLGEB9yHw4
+Message-ID: <CANiq72=YsoFSSm9QU0W2ZQseeQTWFNkXYVR1mODdv3HHg-0PAQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/9] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+To: Drew Fustini <fustini@kernel.org>
+Cc: Michal Wilczynski <m.wilczynski@samsung.com>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>, 
+	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-clk@vger.kernel.org, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 18 Jun 2025 09:49:30 -0700
-Boqun Feng <boqun.feng@gmail.com> wrote:
+On Fri, Jun 20, 2025 at 2:52=E2=80=AFAM Drew Fustini <fustini@kernel.org> w=
+rote:
+>
+> Did I do something wrong?
 
-> One important set of atomic operations is the arithmetic operations,
-> i.e. add(), sub(), fetch_add(), add_return(), etc. However it may not
-> make senses for all the types that `AllowAtomic` to have arithmetic
-> operations, for example a `Foo(u32)` may not have a reasonable add() or
-> sub(), plus subword types (`u8` and `u16`) currently don't have
-> atomic arithmetic operations even on C side and might not have them in
-> the future in Rust (because they are usually suboptimal on a few
-> architecures). Therefore add a subtrait of `AllowAtomic` describing
-> which types have and can do atomic arithemtic operations.
-> 
-> A few things about this `AllowAtomicArithmetic` trait:
-> 
-> * It has an associate type `Delta` instead of using
->   `AllowAllowAtomic::Repr` because, a `Bar(u32)` (whose `Repr` is `i32`)
->   may not wants an `add(&self, i32)`, but an `add(&self, u32)`.
-> 
-> * `AtomicImpl` types already implement an `AtomicHasArithmeticOps`
->   trait, so add blanket implementation for them. In the future, `i8` and
->   `i16` may impl `AtomicImpl` but not `AtomicHasArithmeticOps` if
->   arithemtic operations are not available.
-> 
-> Only add() and fetch_add() are added. The rest will be added in the
-> future.
-> 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/kernel/sync/atomic/generic.rs | 101 +++++++++++++++++++++++++++++
->  1 file changed, 101 insertions(+)
-> 
-> diff --git a/rust/kernel/sync/atomic/generic.rs b/rust/kernel/sync/atomic/generic.rs
-> index bcdbeea45dd8..8c5bd90b2619 100644
-> --- a/rust/kernel/sync/atomic/generic.rs
-> +++ b/rust/kernel/sync/atomic/generic.rs
-> @@ -57,6 +57,23 @@ fn from_repr(repr: Self::Repr) -> Self {
->      }
->  }
->  
-> +/// Atomics that allows arithmetic operations with an integer type.
-> +pub trait AllowAtomicArithmetic: AllowAtomic {
-> +    /// The delta types for arithmetic operations.
-> +    type Delta;
-> +
-> +    /// Converts [`Self::Delta`] into the representation of the atomic type.
-> +    fn delta_into_repr(d: Self::Delta) -> Self::Repr;
-> +}
-> +
-> +impl<T: AtomicImpl + AtomicHasArithmeticOps> AllowAtomicArithmetic for T {
-> +    type Delta = Self;
-> +
-> +    fn delta_into_repr(d: Self::Delta) -> Self::Repr {
-> +        d
-> +    }
-> +}
-> +
->  impl<T: AllowAtomic> Atomic<T> {
->      /// Creates a new atomic.
->      pub const fn new(v: T) -> Self {
-> @@ -410,3 +427,87 @@ fn try_cmpxchg<Ordering: All>(&self, old: &mut T, new: T, _: Ordering) -> bool {
->          }
->      }
->  }
-> +
-> +impl<T: AllowAtomicArithmetic> Atomic<T>
-> +where
-> +    T::Repr: AtomicHasArithmeticOps,
-> +{
-> +    /// Atomic add.
-> +    ///
-> +    /// The addition is a wrapping addition.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```rust
-> +    /// use kernel::sync::atomic::{Atomic, Relaxed};
-> +    ///
-> +    /// let x = Atomic::new(42);
-> +    ///
-> +    /// assert_eq!(42, x.load(Relaxed));
-> +    ///
-> +    /// x.add(12, Relaxed);
-> +    ///
-> +    /// assert_eq!(54, x.load(Relaxed));
-> +    /// ```
-> +    #[inline(always)]
-> +    pub fn add<Ordering: RelaxedOnly>(&self, v: T::Delta, _: Ordering) {
+No -- the file just doesn't exist in the patches.
 
-This can be just
-
-pub fn add(&self, v: T::Delta, _: Relaxed)
-
-> +        let v = T::delta_into_repr(v);
-> +        let a = self.as_ptr().cast::<T::Repr>();
-> +
-> +        // SAFETY:
-> +        // - For calling the atomic_add() function:
-> +        //   - `self.as_ptr()` is a valid pointer, and per the safety requirement of `AllocAtomic`,
-> +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` is a valid pointer,
-> +        //   - per the type invariants, the following atomic operation won't cause data races.
-> +        // - For extra safety requirement of usage on pointers returned by `self.as_ptr():
-> +        //   - atomic operations are used here.
-> +        unsafe {
-> +            T::Repr::atomic_add(a, v);
-> +        }
-> +    }
-> +
-
+Cheers,
+Miguel
