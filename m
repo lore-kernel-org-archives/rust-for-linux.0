@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EECF440C;
-	Sun, 22 Jun 2025 07:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EAB440C;
+	Sun, 22 Jun 2025 07:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750578509; cv=none; b=OF4pVZZaQoeU6bvUUCSiT2zRMWWh0hDtzWctLAbE8Q/N1PAGOjQVlm5GPkg/lmU3dB7rJuPJvmZJyrlgIShioi0qz7Qnz4EsiAcZ+ASl7+p2HxtHw/XNJ7BwgOqKqUakPmX8zCHiNV1VFStCwDjdtizZjjUsAKkr7pFz8lWQZfk=
+	t=1750578621; cv=none; b=XGz49sZgRKQ5p2yk4VzaEXoYr2YqYfFthGk7DkCXLsTOS5x0dt7Mwr6xsHwmdGVTU+ukPm4EGf2fRv3PH2n7k2QU0Uv5FKKkY8BJ6r1MSEafth4Nx1BHIX1Lj38sb87PNVYKmrytP56cWJsLQWlbu3zk1Ko6VxIOYJvBPuuVhzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750578509; c=relaxed/simple;
-	bh=gpL9tlBu//lWGAhbLUsHR0Pb8+/j5ns27Zojw08nwA8=;
+	s=arc-20240116; t=1750578621; c=relaxed/simple;
+	bh=14ttKKGoM/RqwfhDERDItGB5yA4zTPPNc8RqK7VoYUg=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Fkz0YS4bMaqS5NqhxUUuQn4tWz8nGgKHgNeBtFLdphlySZsICtgyPz1TvqD8Wdto0VKH2+nru2m3Y3Bjz3qIJTkwMcLt+Q0TRgVxi45/V/jAe6ZriQJGIHqJly1fel90/CdKMKF9WYdx3jWDZsDNt/fgtx35L6tyj9zLTu+Qt+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffIq2Zl/; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=bFELB7z0UbMaSxwgBnh0GHyrIxy3BFTwq4O69DgkTtKcv5OCCx/4BonpNkml01B2kyL+VQjPDfw32mrh8RlLdC9lDrW7byPUUbvxtV5uvmyFIBOM9wJ+qq2W17wGiui9bkLZElXc29pHYy9A65gRRvZyBFzWMdn8BdXQo/gnGHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUskffia; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffIq2Zl/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463CCC4CEE3;
-	Sun, 22 Jun 2025 07:48:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUskffia"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D771C4CEE3;
+	Sun, 22 Jun 2025 07:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750578509;
-	bh=gpL9tlBu//lWGAhbLUsHR0Pb8+/j5ns27Zojw08nwA8=;
+	s=k20201202; t=1750578619;
+	bh=14ttKKGoM/RqwfhDERDItGB5yA4zTPPNc8RqK7VoYUg=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ffIq2Zl/8lsZ0mMXzghLMig7/sbr3pf6zZTUtELF5GT7yHj/KIswJWhn4yupmdOWK
-	 bC6620Vb8TYd1lSuUS86OxeW39ncVTY769tuc4LaUrIx94rXzVlSyelecStKy5eNJY
-	 J/ofEEK40LIh5FL6QmeV0Yib0KFugHLR8VRZ9HgzskrOgLYex4Z6uFoYjW2NfZdg+6
-	 3sso6rsXHZ6dJNvR3qNIROssy3yCDv2ydGFLSG6GZ/0JGLbSSkSw7mNAviIpYen54D
-	 sKr08A9sDGPIr3m4SygPygHoC0VmU2Rzv14g+UTXT96OyuLASuoI+Cbl/1EhuCEqjL
-	 QpkPMq4r+pjZw==
+	b=fUskffia2xPRyJxPLxy/L8RvkPQjcltv9R0hj+sO+IOTd39Dhjfgwxb+eMF02mJ/v
+	 Hse6KQuGYTo12W9hwU9lYJY5OY3a9iMPByX0lJTa91GTjm1d3QuYiyP+TM49sjRFQG
+	 1emFYpSdBIZeU1vKb4SH1WT8HOupgRwXfUls1HWjhWQdzhLWxU4pTSBor67wPfNlbk
+	 OifCN9q48xfTUMORPK7pYxdjzgTJ8ismUpH8OKm48YfdpFPeUI8mWp35gZBBV7qWsd
+	 BUQ5EgKMzUwmdml1xEO/2DgvFa09Rpu8GOzJWwp1W1h5h1auEQLNLB530bvsCRYOA9
+	 eYnTXbNR9VqEg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,110 +34,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 22 Jun 2025 09:48:25 +0200
-Message-Id: <DASWAFCSUIO2.1W6RBKY6VRFHM@kernel.org>
-Cc: "ariel.miculas@gmail.com" <ariel.miculas@gmail.com>, "frank.li@vivo.com"
- <frank.li@vivo.com>, "linux-fsdevel@vger.kernel.org"
- <linux-fsdevel@vger.kernel.org>, "a.hindborg@kernel.org"
- <a.hindborg@kernel.org>, "slava@dubeyko.com" <slava@dubeyko.com>,
- "glaubitz@physik.fu-berlin.de" <glaubitz@physik.fu-berlin.de>,
- "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Subject: Re: [RFC] Should we consider to re-write HFS/HFS+ in Rust?
+Date: Sun, 22 Jun 2025 09:50:15 +0200
+Message-Id: <DASWBTM3280H.KMIP372JNU2O@kernel.org>
+Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Christian Brauner"
+ <brauner@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH] poll: rust: allow poll_table ptrs to be null
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Viacheslav Dubeyko" <Slava.Dubeyko@ibm.com>,
- "miguel.ojeda.sandonis@gmail.com" <miguel.ojeda.sandonis@gmail.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
 X-Mailer: aerc 0.20.1
-References: <d5ea8adb198eb6b6d2f6accaf044b543631f7a72.camel@ibm.com>
- <4fce1d92-4b49-413d-9ed1-c29eda0753fd@vivo.com>
- <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
- <DAQREKHTS45A.98MH00SWH3PU@kernel.org>
- <a9dc59f404ec98d676fe811b2636936cb958dfb3.camel@ibm.com>
- <DAQV1PLOI46S.2BVP6RPQ33Z8Y@kernel.org>
- <39bac29b653c92200954dcc8c4e8cab99215e5b4.camel@ibm.com>
- <CANiq72mUpTMapFMRd4o=RSN0kU0JbLwccRKn9R+NPE7DvXDuwg@mail.gmail.com>
- <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
-In-Reply-To: <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
+References: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com>
+ <DARD1ZC0W9QR.3CBLX6RYE65VU@kernel.org>
+ <CAH5fLgh7n75Q4Txi29CxFG4nfkxzceqh=bMBDyYj01G_KC0vwg@mail.gmail.com>
+In-Reply-To: <CAH5fLgh7n75Q4Txi29CxFG4nfkxzceqh=bMBDyYj01G_KC0vwg@mail.gmail.com>
 
-On Sun Jun 22, 2025 at 12:38 AM CEST, Viacheslav Dubeyko wrote:
-> On Fri, 2025-06-20 at 20:11 +0200, Miguel Ojeda wrote:
->> On Fri, Jun 20, 2025 at 7:50=E2=80=AFPM Viacheslav Dubeyko
->> <Slava.Dubeyko@ibm.com> wrote:
->> >=20
->> > Nowadays, VFS and memory subsystems are C implemented functionality. A=
-nd I don't
->> > think that it will be changed any time soon. So, even file system driv=
-er will be
->> > completely re-written in Rust, then it should be ready to be called fr=
-om C code.
->>=20
->> That is fine and expected.
->>=20
->> > Moreover, file system driver needs to interact with block layer that i=
-s written
->> > in C too. So, glue code is inevitable right now. How bad and inefficie=
-nt could
->> > be using the glue code? Could you please share some example?
->>=20
->> Please take a look the proposed VFS abstractions, the filesystems that
->> were prototyped on top of them, and generally other Rust code we have.
->>=20
->> As for "how bad", the key is that every time you go through a C
->> signature, you need to constrain yourself to what C can encode (which
->> is not much), use unsafe code and other interop issues. Thus you want
->> to avoid having to go back and forth all the time.
->>=20
->> Thus, the idea is to write the filesystem in Rust using abstractions
->> that shield you from that.
->>=20
->> Cc'ing other potentially interested/related people.
->>=20
+On Fri Jun 20, 2025 at 3:19 PM CEST, Alice Ryhl wrote:
+> On Fri, Jun 20, 2025 at 2:31=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
+wrote:
+>>
+>> On Fri Jun 20, 2025 at 1:49 PM CEST, Alice Ryhl wrote:
+>> >      ///
+>> >      /// # Safety
+>> >      ///
+>> > -    /// The caller must ensure that for the duration of `'a`, the poi=
+nter will point at a valid poll
+>> > -    /// table (as defined in the type invariants).
+>> > -    ///
+>> > -    /// The caller must also ensure that the `poll_table` is only acc=
+essed via the returned
+>> > -    /// reference for the duration of `'a`.
+>> > -    pub unsafe fn from_ptr<'a>(ptr: *mut bindings::poll_table) -> &'a=
+ mut PollTable {
+>>
+>> Returning `Option<&'a mut PollTable>` is not an option? I'd like to
+>> avoid wrapping raw pointers...
 >
-> I completely see your point. But let's consider allegory of home construc=
-tion.
-> Usually, we need to start from foundation, then we need to raise the wall=
-s, and
-> so on. The file system's metadata is the foundation and if I would like t=
-o re-
-> write the file system driver, then I need to start from metadata. It mean=
-s that
-> it makes sense to re-write, for example, bitmap or b-tree functionality a=
-nd to
-> check that it works completely functionally correct in the C implemented
-> environment. Then, potentially, I could switch on bitmap implementation i=
-n Rust.
-> This is the vision of step-by-step implementation. And I completely OK wi=
-th glue
-> code and inefficiency on the first steps because I need to prepare the fi=
-le
-> system "foundation" and "walls". Also, I would like to manage the complex=
-ity of
-> implementation and bug fix. It means that I would like to isolate the bug=
-s in
-> HFS/HFS+ layer. I can trust to C implementation of VFS but I cannot trust=
- to
-> Rust implementation of VFS. So, I prefer to re-write HFS/HFS+ functionali=
-ty in
-> Rust by using the C implemented environment at first. Because, from my po=
-int of
-> view, it is the way to manage complexity and to isolate bugs by HFS/HFS+ =
-layer
-> only. And when everything will be in Rust, then it will be possible to sw=
-itch on
-> complete Rust environment.
+> You're going to make people handle the Option by early-returning if
+> you do that, but that's wrong. You're supposed to treat null and
+> non-null the same.
 
-Ah maybe this is where the misunderstanding originates: we're not
-talking about reimplementing bitmap or b-trees in Rust. We build
-abstractions that call into the C side and use the existing
-implementations. The abstractions make them available for the Rust side
-to use them safely & efficiently.
+Ah right...
 
-In the case of bitmaps, there already is someone working on it, see [1].
-
-In your metaphor, our recommendation is use adapters (the abstractions)
-to go from the existing house frame (C) to the new interior (Rust). And
-to avoid having mixed interior.
-
-[1]: https://lore.kernel.org/all/20250620082954.540955-1-bqe@google.com
+An `PollTableInner` type that wraps the `bindings::poll_table` opaquely
+sounds like too much work, so let's go with your approach.
 
 ---
 Cheers,
