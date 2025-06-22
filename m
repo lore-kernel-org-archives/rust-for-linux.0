@@ -1,118 +1,114 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A018F6C
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Jun 2025 11:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E591990B7;
+	Sun, 22 Jun 2025 12:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750590421; cv=none; b=IgonV1u909TNzQQyj9D8Q5rC3RT8lFwqi9ot8qD0i+HhS71DDSFjOEuhGdiZtiu5ii7q0EKu3izsTvu01/502b7zCzRurrwzPnY6+Ux8YwWxLSHScIlsAv8nNR/t65Swfolosz9gxx3g7tm/oUBbtaFmUGTn7dQh8EBl843ViYA=
+	t=1750594124; cv=none; b=P4OhF/6KvqArYR6QYmZag3wsGMNFoT4sWPPS8uuc6B0lFqA6SQKF66i2UIr3Y+61AFlQPq3kMaKf/xVcHdvSVxeaF2lF4UOtLJn/z+jG0nRA+gI28h4SCGjFD+SWhdEhXJ4wpvZAIo1/4efDk1rOpUxSYx01JORVrhWpdVyJUu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750590421; c=relaxed/simple;
-	bh=l8Od2HTxVWSX6nRTUVq0auUiYND751NaClfN2NPUIp4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jh38LD5I1bCXp4WNG1w+WgfmdWKyq99DiRuhct7WVeOiyY4a3x+2Diyc3ANHNjP8yxtwzo19m+Cw96Kyl4SeGj+Py9ylVxESQlBPFS2si5NjX56CgDyAqHzySfjVrXPcUU2u/fGczNO8jG0RegbRZWUqg4SBsAKLfdv3FpIN53s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OgDy/3mb; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750594124; c=relaxed/simple;
+	bh=F0Ocl7lREMAUGCCy9bfS3tlYnFAI+Y1/tYE1Gdg+p9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nlx+BxihXY38DLNx3hD6sIPA2D5oafkjYlpODmVOP3527/h+izHHtIDVhBFWfbXAGgrh2PiZ+EC7GbhIz6DUST3MbUvBdB4E+gE8iletLsbCfYN2xn3lF9O2sih8RUFCsn4ggf+nwAZkv5Ra5xshmX8TNjrXOsdjA9/EXhbbNnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JudOeVKl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OgDy/3mb"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-748e63d4b05so1858075b3a.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Jun 2025 04:06:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750590419; x=1751195219; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+VljDDMKlZnyJpYfoDIrIAj5zLTtbtSo3AaIObR+xY=;
-        b=OgDy/3mbKu0e0D+sKXmM58i0UgCbn7dTGfOFkROsIAYkfo7GUV9gjCRUnbypGXO986
-         f6vu9L/FTTRapAmzXtLmRYkSovp0QbxFn4rAXscLtVJ6EWJRboMrD3gDk1R7pqXiLdTb
-         z8gBczE/JTJd39sBtW7mRgdiQJ3Y/rYzU2RMNgpgMtWuFC1sQrJFL1qH6FXvLpgwliA1
-         uY9kwWXA6z0fyQaQzGyT3HQh7vFa22UnncrRJe2yrWp4hyIZGmVHJpY0syR3HmXCcDbU
-         SrdF6b+ezKtZ9yB8iYxJeipxIoVF6/evsiGxsVRJprA8KKVA75SHVTmN3tO68RsmNmGt
-         de7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750590419; x=1751195219;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r+VljDDMKlZnyJpYfoDIrIAj5zLTtbtSo3AaIObR+xY=;
-        b=dZLmCaq/1CL/lKfl6ZPq1WeGvenRilbTQhplFaxtPq4xdmdkvhngjhLAzfZ1GdxiMA
-         rZmmCz/5j5Fe/srZ63rbPGVr88A94Ku5Qynm7H0weeRDN0VnfXA+k2zQsD0Z+f0bzMnd
-         QzSAqUMKOX7SNoTB6gP+inVauDLhcF2XVJ6AbcdHVhrTcgHzV5a+tMLDGL80sKRmmXT0
-         l75KDZP+rF5aGQEqOrjbupDohQjz/i6JhVCA/PNyv8aGNaOF5VEw1R8txvsnmjqYOAmg
-         OmbpzuN8GwO6LWETkNtSamIgy8M1pjBiqQejg5Z/FmXkf/v2wgc869ooYhyggFNfciew
-         HvLg==
-X-Gm-Message-State: AOJu0Yw2CozZF8iiuq44k5X/sfYjCLHggjTmOz8FBpsHh57Jv3WjXsd5
-	HFAO6/pwy9Ys4ULlNMb2OPTYT0baMjLOIZAFCaeyn+lyjiHDaK1fHkLr5f91THtm
-X-Gm-Gg: ASbGncvZiXF7Adgoqiqz7i/ZpxPdqFOJHwfP2Bm8Pho7BDET/RLhvjhOX9hVfrxzXCN
-	mxDyfYY65UqutufLHwI8hg+sJraWxAMwPNM8Qd92ydwZQwmMlhY6rnVslz02+8fO47YptQDQN9B
-	lrrdKp6oBlXLlaM76UPPOkJsFw1J672FxZ3sCTIqy6zQvAK7knSN0ve6KwTF7pNKgWeFn1dFt1d
-	ftIq12Wm1h5Ho+Kdxxa/8xNAlRcYffkXAKzJOaXMr/RqqvPxbHgKUZzx7oDy33wHtruJQR1U6Zc
-	9M0IeyKykIAKp1Zi2iYqnATAyvPq7x6tdTNBoW+FbmLjogVxgUBAH5OnpZB5QAdbuSzrAcE9Igh
-	O+tA=
-X-Google-Smtp-Source: AGHT+IFHwmn1zIafGQiwX76i2Fkqn5urerFIH/bF8hshHAAHqfUNtNVdvt5N69Mq7PHQOrIqjJBymg==
-X-Received: by 2002:a05:6a00:1990:b0:740:a023:5d60 with SMTP id d2e1a72fcca58-7490d74b176mr11965545b3a.19.1750590418587;
-        Sun, 22 Jun 2025 04:06:58 -0700 (PDT)
-Received: from shankari-IdeaPad.. ([49.128.169.113])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b31f125c50fsm5568260a12.66.2025.06.22.04.06.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Jun 2025 04:06:58 -0700 (PDT)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	ossin@kernel.org,
-	a.hindborg@kernel.org,
-	bjorn3_gh@protonmail.com,
-	Shankari Anand <shankari.ak0208@gmail.com>,
-	Benno Lossin <lossin@kernel.org>
-Subject: [PATCH] rust: miscdevice: clarify invariant for `MiscDeviceRegistration`
-Date: Sun, 22 Jun 2025 16:36:46 +0530
-Message-Id: <20250622110646.150701-1-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JudOeVKl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA24C4CEE3;
+	Sun, 22 Jun 2025 12:08:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750594124;
+	bh=F0Ocl7lREMAUGCCy9bfS3tlYnFAI+Y1/tYE1Gdg+p9U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JudOeVKlSIahD+xmK00EfCagq4++UwNYXtlk/yHDEPEqKaib2UVPeCSXdftWDuPsC
+	 bE4EPe3FNtvaKe7HVz57MerwweB1PYyO17210KnjRMdMOqlsbIz49vwZ7jI0hOKWyW
+	 P5WdGMFdf9n7iiCIFQJ+3W2poLLtS0T2mduoEB7TXrJy2L7Dk9MlvgCvvng3hNEA45
+	 czTOFImUfY07Cm5aW7611H/anJJSU28BxGiEf2e0lAOkkKfpUdY8Vq2rrGfDZbqab9
+	 1o2w8Sa6Rpx+ZCuNuyDw5PBGdxgwP1oOhfQreU/LZ6ecIiBQzfEGQZPOwMKaliIpts
+	 GvJOD+YdO4lGw==
+Date: Sun, 22 Jun 2025 14:08:38 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] rust: devres: get rid of Devres' inner Arc
+Message-ID: <aFfyRuYPxUfc7TM-@pollux>
+References: <20250612145145.12143-1-dakr@kernel.org>
+ <20250612145145.12143-4-dakr@kernel.org>
+ <DASVDU1WY5RH.1VLCIQ4TIS0FP@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DASVDU1WY5RH.1VLCIQ4TIS0FP@kernel.org>
 
-Reword and expand the invariant documentation for `MiscDeviceRegistration`
-to clarify what it means for the inner device to be "registered".
-It expands to explain:
-- `inner` points to a `miscdevice` registered via `misc_register`.
-- This registration stays valid for the entire lifetime of the object.
-- Deregistration is guaranteed on `Drop`, via `misc_deregister`.
+On Sun, Jun 22, 2025 at 09:05:51AM +0200, Benno Lossin wrote:
+> On Thu Jun 12, 2025 at 4:51 PM CEST, Danilo Krummrich wrote:
+> > +#[pin_data(PinnedDrop)]
+> > +pub struct Devres<T> {
+> > +    dev: ARef<Device>,
+> > +    callback: unsafe extern "C" fn(*mut c_void),
+> 
+> Do I remember correctly that we at some point talked about adding a
+> comment here for why this is needed? (ie it's needed, because
+> `Self::callback` might return different addresses?)
 
-Reported-by: Benno Lossin <lossin@kernel.org>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1168
-Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
----
- rust/kernel/miscdevice.rs | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Correct -- thanks for reminding me of that. Will add the corresponding comment.
 
-diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-index 939278bc7b03..5df98dce019a 100644
---- a/rust/kernel/miscdevice.rs
-+++ b/rust/kernel/miscdevice.rs
-@@ -45,7 +45,15 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
- ///
- /// # Invariants
- ///
--/// `inner` is a registered misc device.
-+/// The `inner` field contains a `struct miscdevice` that has been registered with
-+/// the kernel using `misc_register()`.
-+/// This registration remains valid for the entire lifetime of the `MiscDeviceRegistration`
-+/// instance.
-+/// Deregistration is guaranteed to occur exactly once, during the [`Drop`] implementation, via
-+/// a call to `misc_deregister()`.
-+/// The `inner` pointer is never null and always points to a valid, pinned `miscdevice` instance
-+/// initialized via `MiscDeviceOptions::into_raw`.
-+
- #[repr(transparent)]
- #[pin_data(PinnedDrop)]
- pub struct MiscDeviceRegistration<T> {
--- 
-2.34.1
+> > +    #[pin]
+> > +    data: Revocable<T>,
+> > +    #[pin]
+> > +    devm: Completion,
+> > +    #[pin]
+> > +    revoke: Completion,
+> 
+> Probably a good idea to add some doc comments explaining what these two
+> completions track.
+> 
+> (feel free to do these in another patch or in a follow-up)
 
+No, I think it'd be good to do it right away -- will add them.
+
+> > +#[pinned_drop]
+> > +impl<T> PinnedDrop for Devres<T> {
+> > +    fn drop(self: Pin<&mut Self>) {
+> >          // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
+> >          // anymore, hence it is safe not to wait for the grace period to finish.
+> > -        if unsafe { self.0.data.revoke_nosync() } {
+> > -            // We revoked `self.0.data` before the devres action did, hence try to remove it.
+> > -            if !DevresInner::remove_action(&self.0) {
+> > +        if unsafe { self.data.revoke_nosync() } {
+> > +            // We revoked `self.data` before the devres action did, hence try to remove it.
+> > +            if !self.remove_action() {
+> >                  // We could not remove the devres action, which means that it now runs concurrently,
+> > -                // hence signal that `self.0.data` has been revoked successfully.
+> > -                self.0.revoke.complete_all();
+> > +                // hence signal that `self.data` has been revoked by us successfully.
+> > +                self.revoke.complete_all();
+> > +
+> > +                // Wait for `Self::devres_callback` to be done using this object.
+> > +                self.devm.wait_for_completion();
+> >              }
+> > +        } else {
+> > +            // `Self::devres_callback` revokes `self.data` for us, hence wait for it to be done
+> > +            // using this object.
+> > +            self.devm.wait_for_completion();
+> 
+> I don't understand this change, maybe it's best to move that into a
+> separate commit?
+
+We can't do that, without this change the code would be incorrect.
+
+What happens here is that, if drop() races with devres_callback() we have to
+make drop() wait until devres_callback() is completed, because otherwise
+devres_callback() might experience a use-after-free.
+
+Previoulsly this has been taken care of by Arc<DevresInner>, which C devres held
+a reference of.
