@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52EEE376;
-	Sun, 22 Jun 2025 07:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C878E610C;
+	Sun, 22 Jun 2025 07:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750577198; cv=none; b=atOK5Lf8hlX/sKh4jPmXLq/DsdIjOxgMmk5eo+2IcVbuIqxgauu4aPgpSNgU/Ff6E53zDU0JFPmettpTzreZt3HUj0PyioVs5ONNhseex9FJwGyvehplX1VdxJZ3MBuEcuBEuu94VuUbVPyitG9jViSLRsnbeHqpVOZSwBP8u2E=
+	t=1750578129; cv=none; b=Mrnrd1itNd7nAI6jlupnreFJGJMESUwBPd2GZi0mAOqmcXQoD6gIH7SAShOuPR07dB2QH7pgQmIVwz8PuPOKoqhHU78TFDZXwQagXdl36Epys/zr3sDkWjx9a7cF+57qPty5gQpeJpL7LNlJ6fOoDpZmqABbmkAd2q15xPG+uSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750577198; c=relaxed/simple;
-	bh=KJd8/9pB4BBLfTmsmqhD1838pzERSEA7W+NIgN4qq7A=;
+	s=arc-20240116; t=1750578129; c=relaxed/simple;
+	bh=cQQQgjyjkSMIetWzKBGvZVTq5Nm37KOVVGvrc7g7Emo=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=WCKtMgmw1wUOWRKKm4PkeJ+I0gFgjFebkbWyRnClRCRyhJg6xKgR136rflgxrGyz+Kq1sfCGlVXhN7uWpJNyot/yUuaiZiVEkoXOei9WNFsnkV5rD/wdSDk63jp1Aw4E0l74CqfM3gwXNj3wwY7XvNkD3dDhUTHVUq7sAPH74SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZPLoazpJ; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=FOt8XE7egyRpfL6/aXE96Y/2SQ2+k/Y897/HUEfH1esyPzY4GzxysnKts7j4h/xL4Gie8SwJaYDeie8s59jcYyNFbI8o4iSskRz5Pj9GnMKNuAKFDXDZePmNzhQgl3n4IYd/PuPzmpcrJkq4R7Iy2TOGsYS9LVt0CXNuVIAYbhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3RaYBqL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZPLoazpJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3419EC4CEE3;
-	Sun, 22 Jun 2025 07:26:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3RaYBqL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AF2C4CEE3;
+	Sun, 22 Jun 2025 07:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750577197;
-	bh=KJd8/9pB4BBLfTmsmqhD1838pzERSEA7W+NIgN4qq7A=;
+	s=k20201202; t=1750578129;
+	bh=cQQQgjyjkSMIetWzKBGvZVTq5Nm37KOVVGvrc7g7Emo=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ZPLoazpJuDwkYelJ6IfkVyObObGMZNkPGhHxRefgnwWZvaYPn1oXY/774U5npfASl
-	 kh6REOLJt7dkiH0mhwuRsZkGz81SxgmP2fVTK8LdD0bgdC6pypBSUkf0Yqxdcumwz+
-	 89TWbpnpLlsSFeUKI+xbo3KiJFRS/lurW4QDDRf4EO6PsVyI6evfyq4laI/bqe/SNm
-	 AtXr+reP75ZgzM7JQ32bSn2e7xLxJMjaKpLzcrcXmpbWEw+IyLL/uEHHOKgoK6zYU0
-	 xVMsr4WaQREWokknz2a0tYyYN/GesPbQ5hrAdPq3e5Ctel04yUez5aGfxhFpxwkQEA
-	 emyYmeyTGxt9A==
+	b=f3RaYBqLMV0273WAPiCQGUH7CeZu6IU/rWxDNjNjKPUT/6OCubhEgYvGYgjV/ShdA
+	 BtxvzJGGgLp6pCOk4Tg9psJ2u7e2WbFxD+rgoiw6GtN2pAdlSu7xkD/MwLzQlXrKkd
+	 WBhb/Bp9UoxZzYhtVm6zAD3hFNWVhJeJw/gXwU7s8iNv8Rkgpqa+zI1JBpXLUwYTRX
+	 M3bvrpj5yo3WOFvZX55lngCqZWOxxlFF/1sKlAsJpXz/szv8JbyJWVZqfBDVlK70q7
+	 s7ekSn19PIeSDmkM6ZVGEjvqeOOcYNfRfr13ns39V4iYutofu32JsTtbzdwRIY3a8H
+	 xwi/HmhKa5UPA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,175 +34,137 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 22 Jun 2025 09:26:33 +0200
-Message-Id: <DASVTOJU2OE8.GU1NH3MZ3SX@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4/4] rust: devres: implement register_foreign_release()
+Date: Sun, 22 Jun 2025 09:42:03 +0200
+Message-Id: <DASW5JYFRE2K.1E5T6FI6KNRQJ@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Dave
+ Airlie" <airlied@redhat.com>, "Simona Vetter" <simona.vetter@ffwll.ch>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>
+Subject: Re: [PATCH 2/4] rust: devres: replace Devres::new_foreign_owned()
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>
+To: "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.20.1
 References: <20250612145145.12143-1-dakr@kernel.org>
- <20250612145145.12143-5-dakr@kernel.org>
-In-Reply-To: <20250612145145.12143-5-dakr@kernel.org>
+ <20250612145145.12143-3-dakr@kernel.org>
+ <DASIPSH2IFKL.O55ZBVZFPVWB@kernel.org> <aFcn51EPcWlDG_YW@pollux>
+In-Reply-To: <aFcn51EPcWlDG_YW@pollux>
 
-On Thu Jun 12, 2025 at 4:51 PM CEST, Danilo Krummrich wrote:
-> register_foreign_release() is useful when a device resource has
-> associated data, but does not require the capability of accessing it or
-> manually releasing it.
+On Sat Jun 21, 2025 at 11:45 PM CEST, Danilo Krummrich wrote:
+> On Sat, Jun 21, 2025 at 11:10:14PM +0200, Benno Lossin wrote:
+>> On Thu Jun 12, 2025 at 4:51 PM CEST, Danilo Krummrich wrote:
+>> > diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+>> > index b0a9c6182aec..f20636079f7a 100644
+>> > --- a/rust/kernel/cpufreq.rs
+>> > +++ b/rust/kernel/cpufreq.rs
+>> > @@ -12,7 +12,7 @@
+>> >      clk::Hertz,
+>> >      cpumask,
+>> >      device::{Bound, Device},
+>> > -    devres::Devres,
+>> > +    devres,
+>> >      error::{code::*, from_err_ptr, from_result, to_result, Result, VT=
+ABLE_DEFAULT_ERROR},
+>> >      ffi::{c_char, c_ulong},
+>> >      prelude::*,
+>> > @@ -910,7 +910,7 @@ unsafe impl<T: Driver> Sync for Registration<T> {}
+>> >  /// thread.
+>> >  unsafe impl<T: Driver> Send for Registration<T> {}
+>> > =20
+>> > -impl<T: Driver> Registration<T> {
+>> > +impl<T: Driver + 'static> Registration<T> {
+>>=20
+>> This change should probably be its own patch? If not, then it should be
+>> mentioned in the commit message.
 >
-> If we would want to be able to access the device resource and release the
-> device resource manually before the device is unbound, but still keep
-> access to the associated data, we could implement it as follows.
+> It's a consequence of register_foreign_boxed() requiring T: 'static.
+
+Then let's put the bound on that function, since putting it on the impl
+block also affects `Registration::new()`.
+
+>> >      const VTABLE: bindings::cpufreq_driver =3D bindings::cpufreq_driv=
+er {
+>> >          name: Self::copy_name(T::NAME),
+>> >          boost_enabled: T::BOOST_ENABLED,
+>> > @@ -1044,10 +1044,10 @@ pub fn new() -> Result<Self> {
+>> > =20
+>> >      /// Same as [`Registration::new`], but does not return a [`Regist=
+ration`] instance.
+>> >      ///
+>> > -    /// Instead the [`Registration`] is owned by [`Devres`] and will =
+be revoked / dropped, once the
+>> > +    /// Instead the [`Registration`] is owned by [`kernel::devres`] a=
+nd will be dropped, once the
+>> >      /// device is detached.
+>> >      pub fn new_foreign_owned(dev: &Device<Bound>) -> Result {
+>>=20
+>> I think we can improve the names here. How about `new_attached`? See
+>> more below.
 >
-> 	struct Registration<T> {
-> 	   inner: Devres<RegistrationInner>,
-> 	   data: T,
-> 	}
+> I feel like the name pretty much nails it: it's a new instance that is no=
+t
+> owned, by the Rust side, but by the C devres implementation (i.e. foreign
+> owned), which automatically drops it when the device is unbound.
+
+Yeah, but `foreign` is so unspecific... With `ForeignOwnable`, it makes
+sense, since it could be anything.
+
+> Maybe Registration::new_devres_owned() instead?
+
+I like that one better, let's go with that.
+
+>> > -        Devres::new_foreign_owned(dev, Self::new()?, GFP_KERNEL)
+>> > +        devres::register_foreign_boxed(dev, Self::new()?, GFP_KERNEL)
+>> >      }
+>> >  }
+>>=20
+>> > +/// Encapsulate `data` in a [`KBox`] and [`Drop::drop`] `data` once `=
+dev` is unbound.
+>> > +///
+>> > +/// # Examples
+>> > +///
+>> > +/// ```no_run
+>> > +/// use kernel::{device::{Bound, Device}, devres};
+>> > +///
+>> > +/// struct Registration;
+>> > +///
+>> > +/// impl Registration {
+>> > +///     fn new() -> Self {
+>> > +///         // register (e.g. class device, IRQ, etc.)
+>> > +///
+>> > +///         Self
+>> > +///     }
+>> > +/// }
+>> > +///
+>> > +/// impl Drop for Registration {
+>> > +///     fn drop(&mut self) {
+>> > +///        // unregister
+>> > +///     }
+>> > +/// }
+>> > +///
+>> > +/// fn from_bound_context(dev: &Device<Bound>) -> Result {
+>> > +///     devres::register_foreign_boxed(dev, Registration::new(), GFP_=
+KERNEL)
+>> > +/// }
+>> > +/// ```
+>> > +pub fn register_foreign_boxed<T, E>(
+>>=20
+>> I don't really get the name of this function. The data isn't really
+>> foreign and that the user also shouldn't really care about the fact that
+>> you use `KBox` under the hood.
+>>=20
+>> How about we call this something like `attach_data`?
 >
-> However, if we never need to access the resource or release it manually,
-> register_foreign_release() is great optimization for the above, since it
-> does not require the synchronization of the Devres type.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/devres.rs | 80 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 80 insertions(+)
+> Hm, I think attach_data() doesn't quite hit the point. Maybe just
+> devres::register_owned() instead. I agree that 'boxed' is an unnecessary
+> implementation detail.
 
-Idea & implementation look good, I'm just a little unsatisfied with the
-names & docs...
-
-> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> index 4ee9037f4ad4..495dca6240fc 100644
-> --- a/rust/kernel/devres.rs
-> +++ b/rust/kernel/devres.rs
-> @@ -16,6 +16,7 @@
->      sync::{rcu, Completion},
->      types::{ARef, ForeignOwnable},
->  };
-> +use core::ops::Deref;
-> =20
->  /// This abstraction is meant to be used by subsystems to containerize [=
-`Device`] bound resources to
->  /// manage their lifetime.
-> @@ -303,3 +304,82 @@ pub fn register_foreign_boxed<T, E>(
-> =20
->      register_foreign(dev, data)
->  }
-> +
-> +/// To be implemented by an object passed to [`register_foreign_release`=
-].
-
-    /// [`Devres`]-releaseable resource.
-    ///
-    /// Register an object implementing this trait with [`register_foreign_=
-release`]. It's `release`
-    /// function will be called once the device unbinds.
-
-> +pub trait Release {
-> +    /// Called once the [`Device`] given to [`register_foreign_release`]=
- is unbound.
-> +    fn release(&self);
-
-Would it make sense to also supply the `Device` that this is attached
-to? In case you have one object in multiple `register_foreign_release`
-calls with different devices, or is that something that doesn't happen?
-
-> +}
-> +
-> +impl<T: Release> Release for crate::sync::ArcBorrow<'_, T> {
-> +    fn release(&self) {
-> +        self.deref().release();
-> +    }
-> +}
-> +
-> +impl<T: Release> Release for Pin<&'_ T> {
-> +    fn release(&self) {
-> +        self.deref().release();
-> +    }
-> +}
-
-We should also implement it for `&T`, since that is `Box`'s `Borrowed`.
-
-> +
-> +/// Consume the `data`, [`Release::release`] and [`Drop::drop`] `data` o=
-nce `dev` is unbound.
-> +///
-> +/// # Examples
-> +///
-> +/// ```no_run
-> +/// use kernel::{device::{Bound, Device}, devres, devres::Release, sync:=
-:Arc};
-> +///
-> +/// struct Registration<T> {
-
-Maybe add some explanation above/below this example. It looks like a new
-bus registration?
+I like `register_owned` better, but I'm not 100% convinced by the
+`owned` part... The regular devres creation is called `Devres::new`,
+right? How about we just call this `register`?
 
 ---
 Cheers,
 Benno
-
-> +///     data: T,
-> +/// }
-> +///
-> +/// impl<T> Registration<T> {
-> +///     fn new(data: T) -> Result<Arc<Self>> {
-> +///         // register (e.g. class device, IRQ, etc.)
-> +///
-> +///         Ok(Arc::new(Self { data }, GFP_KERNEL)?)
-> +///     }
-> +/// }
-> +///
-> +/// impl<T> Release for Registration<T> {
-> +///     fn release(&self) {
-> +///        // unregister
-> +///     }
-> +/// }
-> +///
-> +/// fn from_bound_context(dev: &Device<Bound>) -> Result {
-> +///     let reg =3D Registration::new(0x42)?;
-> +///
-> +///     devres::register_foreign_release(dev, reg.clone())
-> +/// }
-> +/// ```
-> +pub fn register_foreign_release<P>(dev: &Device<Bound>, data: P) -> Resu=
-lt
-> +where
-> +    P: ForeignOwnable,
-> +    for<'a> P::Borrowed<'a>: Release,
-> +{
-> +    let ptr =3D data.into_foreign();
-> +
-> +    #[allow(clippy::missing_safety_doc)]
-> +    unsafe extern "C" fn callback<P>(ptr: *mut kernel::ffi::c_void)
-> +    where
-> +        P: ForeignOwnable,
-> +        for<'a> P::Borrowed<'a>: Release,
-> +    {
-> +        // SAFETY: `ptr` is the pointer to the `ForeignOwnable` leaked a=
-bove and hence valid.
-> +        unsafe { P::borrow(ptr.cast()) }.release();
-> +
-> +        // SAFETY: `ptr` is the pointer to the `ForeignOwnable` leaked a=
-bove and hence valid.
-> +        let _ =3D unsafe { P::from_foreign(ptr.cast()) };
-> +    }
-> +
-> +    // SAFETY:
-> +    // - `dev.as_raw()` is a pointer to a valid and bound device.
-> +    // - `ptr` is a valid pointer the `ForeignOwnable` devres takes owne=
-rship of.
-> +    to_result(unsafe {
-> +        // `devm_add_action_or_reset()` also calls `callback` on failure=
-, such that the
-> +        // `ForeignOwnable` is released eventually.
-> +        bindings::devm_add_action_or_reset(dev.as_raw(), Some(callback::=
-<P>), ptr.cast())
-> +    })
-> +}
-
