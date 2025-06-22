@@ -1,174 +1,117 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C2B3C0C;
-	Sun, 22 Jun 2025 17:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29B5D299;
+	Sun, 22 Jun 2025 20:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750614549; cv=none; b=NV+0M968SkJkbOlEYq+vzN1N2YISHuYSMQYiUzVfLGLBYtMqrO+V9iIdKRW7yWjP3nhyyLBp7nnSt188zH3JlGNQ85Ng4ZWKe6LHcB29n4Ch4mPHY3UM+v3+k0FU/5pai3HwxQNKP5mITSObFSy4+SXAB+yBYL65AHmJYLcDLb8=
+	t=1750623245; cv=none; b=M/UJp8Gwm8kLTpuv04M6/SohPuz52gKcVY1jAMXx644NsMD02JXXJWx+inq+4A1EVkYuqjYJ+SmUU/2l8mrs9QkOAUcQHHSAFNBATnTpta8PLpxPZrcjYalkhUE1sEz3RqilYY6MQRK9UJyPgAHHjMGknM8yUc6cl4aXnkr2nlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750614549; c=relaxed/simple;
-	bh=MiIhk1lJ/smOXSAgzqsoAlrky2zGHGKkSRt+I1InojQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LGVcO43sYgzGEalDuC8zq5qDJCAxtqtHHjKss1vivGZEyYMisg5P2OnUuUARIM2QMLn9qapdsUzkllwLeJ5k/OkRooZ4ISPaCQRVozFCKbjoa+yuluKQJW93nEwMkJ09UPBxHl0+0sCMKnRvJ5jBGKJ45JgYQnEYqEU5dOO8ZZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JcIxSGXc; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750623245; c=relaxed/simple;
+	bh=35x6Mxn3trce9gfGtiBjrHl6Aqu//3K9ejdgH0ORui8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=ap14juVBrX+BcNqnM+r99Cd8i5AaakmoI1RMIh/BxuU2GEHpYp6+SJ62IJEKnhixmfzvPndhTYHH9NU9iVc6oqG+kOSB/2AdZhNMO/zYBVjMQIQDdzlvdPQt59zikmmRWR4sIV1o/4yjyZFdneQR7P0h9waXDG3jUgxw0c1g+KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMADnHIx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JcIxSGXc"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-32b78b5aa39so36861091fa.1;
-        Sun, 22 Jun 2025 10:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750614546; x=1751219346; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HzmeehA5lQTLgvc8ARVJ5h/x37pM5IS3JJEp3oVKKu0=;
-        b=JcIxSGXcLjBq/soZtaSoi0T2A8ZczyvS52xx92wacGrVp/eJj4wmq7l7UhlaSSbnR3
-         F/3Ykc3EnMqkkQOFHt5/2axaRontVgfh0S2tGOUulXuWcjgKb7OnWG/Njw/HqITmToTu
-         oTuW9oVkQUT3BnY+llbqY3AUPVRZTPdb7MEGy7DBf7oj5i5QxjSN7RBQuoBnpFJkzbNG
-         dNsU8XZ4JiTcTUgm2mjp2LiQ21ILJAgNyRVh9uN6/QzkPY/E2fJUzGKObKPsl2fHs3jF
-         iXs7T/2JFFtWOiGOaWp1LXCTADvAYu47HPgeqhTy6MAY+jH0yowNoqPVo2JtGswQiov9
-         M0WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750614546; x=1751219346;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HzmeehA5lQTLgvc8ARVJ5h/x37pM5IS3JJEp3oVKKu0=;
-        b=BvLcCdJ4E12cUZTwWsXIDEq3gc42vWHnxwve+wlHcTN5SpWhAt+UfBu99lBg9CEs5P
-         yzFvgrbmM4m+GQ5PrYKJZfhbaH0EPyS3vmdjaASuznUEq2L5EgnvcLSx+pR8axbG+mQF
-         qLeXVkfQ02+WdzxbA2KCJOba/hu07U0piqB8PYXN1MBBNNtwkaSw/sZa0Pdd48sGqSEG
-         GCF+g17xXkstqGb+o0d0Rr/OKJw2wU54FKZmedI4+KbeLQa0R3vUBtwvN2Zl7xp3wiMX
-         iceELvU0tDFu3ya9XZX9W//ZQzlxEuK0yACu8TdjK66cGLRP3rGnF4ssW9LXPetcANcP
-         HGYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYdY85EUIzLRnkn3FSJeCw1rc1aL2Aa2Cw0GiUgGhZzTmYYx7sT+XOykTvcmeM6+GS7Zavvua6awgNFuGDItY=@vger.kernel.org, AJvYcCXfpmchwBcQAsj6HwqkAX8mItmjuyXh6eY8mLxEkjA3dE/thc6WhMs8VhJ3ABh3xw1IwvbfHtC/O3K+unI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwanEjy1W+NjJ+wQhm3D5VviTt1cmKA3yfQZ5knFdUprMgGCRv4
-	7azRVLN8fofXvfzTURl1TsOlAHdGR/nB/yGphlHYAtFqZyIO5DYwecUuFk5GUsl8FRk7a8zMTyH
-	bG8r1L2qjmZ4HetGEYug69BxQ04eIXz4=
-X-Gm-Gg: ASbGncs+w1SQL5DVvWvTWUH5YVfPlOhMYt50pDSF+Ge84OsH8y1ge92WW2V29r8e4B5
-	lktc1bXjVBh+sNEyNwPBCiutOr6wjTJ97lmV4f4KgIFb+UReEGUIcVwRTfKP99jJc2RdBu4xmNm
-	OZ9GMjUVan1Uc3/VRPE+3hfmxu6W4YU6hoT1e2YLIORdwQ1G7QYO42ZnlqCfYyPRJB4oDMk19JI
-	CeRaA==
-X-Google-Smtp-Source: AGHT+IHpjqokKopjJ1dwq1zxhH9Du1Zqu9pTdxoLYJjNWOAKtFTH4NcN4QMKRJsrOyQAx30ElNPnwFbJvkUhuh3lP94=
-X-Received: by 2002:a2e:aa8a:0:b0:32a:7315:fff3 with SMTP id
- 38308e7fff4ca-32b9900369cmr22180941fa.35.1750614545782; Sun, 22 Jun 2025
- 10:49:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMADnHIx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E421C4CEE3;
+	Sun, 22 Jun 2025 20:14:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750623245;
+	bh=35x6Mxn3trce9gfGtiBjrHl6Aqu//3K9ejdgH0ORui8=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=GMADnHIxayoLHisZ14MSmoav5j5XAYJaDcq7jq9h62Bc7timN/epnfj4mEkzE7Luf
+	 gXboIyIIH80JkOnmRCI1a3H4WeqlhCFOues64G3mzWgA5ljyuL4eZxDGXYd7NhheRc
+	 SqRmLdGctBn7Gv6uZwldmOeGsm8M462aABC+7+T75ryM8354hKfffk9YQFYE6m8JMO
+	 OrmVuNIqDLPQ7ZamSmo7Boi4l9pwPuBrKjqhEzkBPemm2zoCpbmQq3gPEm1UjDMPyu
+	 S8XFpqEFMtcKrOdi7vKO4D9qkdYqt9BmA3YJATVqfEpBn13c5Ai2HwikdAXEkccNsE
+	 mxabx9zRySkaQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250621230231.100181-1-contact@antoniohickey.com> <20250621230231.100181-2-contact@antoniohickey.com>
-In-Reply-To: <20250621230231.100181-2-contact@antoniohickey.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 22 Jun 2025 13:48:28 -0400
-X-Gm-Features: AX0GCFsP1GIMaN_JBwqL0o78W67f7wAGFiQX-ds5CYK7fjg8szB3P2bOJwZbsnQ
-Message-ID: <CAJ-ks9n1SqM_1xAstHQpp8Z7-2JSTkp9zUn8kwZA7OAAqWxQ6Q@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: kernel: create `overflow_assert!` macro
-To: Antonio Hickey <contact@antoniohickey.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Cote <danielstonecote@gmail.com>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 22 Jun 2025 22:14:00 +0200
+Message-Id: <DATC5A2JBHZQ.33AFQQP6V6L1A@kernel.org>
+Subject: Re: [PATCH 4/4] rust: devres: implement register_foreign_release()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250612145145.12143-1-dakr@kernel.org>
+ <20250612145145.12143-5-dakr@kernel.org>
+ <DASVTOJU2OE8.GU1NH3MZ3SX@kernel.org> <aFf7QVhqE6dhp0m2@pollux>
+In-Reply-To: <aFf7QVhqE6dhp0m2@pollux>
 
-On Sat, Jun 21, 2025 at 7:06=E2=80=AFPM Antonio Hickey
-<contact@antoniohickey.com> wrote:
+On Sun Jun 22, 2025 at 2:46 PM CEST, Danilo Krummrich wrote:
+> On Sun, Jun 22, 2025 at 09:26:33AM +0200, Benno Lossin wrote:
+>> On Thu Jun 12, 2025 at 4:51 PM CEST, Danilo Krummrich wrote:
+>> > +pub trait Release {
+>> > +    /// Called once the [`Device`] given to [`register_foreign_releas=
+e`] is unbound.
+>> > +    fn release(&self);
+>>=20
+>> Would it make sense to also supply the `Device` that this is attached
+>> to? In case you have one object in multiple `register_foreign_release`
+>> calls with different devices, or is that something that doesn't happen?
 >
-> This commit creates a macro for overflow assertions. The use of this
-> macro will avoid local `#ifdef`s by encapsulating the conditional
-> behavior (like `#[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]`) to the macro.
->
-> In addition this macro allows us to document the intent of the assertion
-> more clearly.
->
-> Co-developed-by: Daniel Cote <danielstonecote@gmail.com>
-> Signed-off-by: Daniel Cote <danielstonecote@gmail.com>
-> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1159
-> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/kernel/lib.rs             |  1 +
->  rust/kernel/overflow_assert.rs | 33 +++++++++++++++++++++++++++++++++
->  2 files changed, 34 insertions(+)
->  create mode 100644 rust/kernel/overflow_assert.rs
->
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 6b4774b2b1c3..e395adb6b293 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -92,6 +92,7 @@
->  pub mod of;
->  #[cfg(CONFIG_PM_OPP)]
->  pub mod opp;
-> +pub mod overflow_assert;
->  pub mod page;
->  #[cfg(CONFIG_PCI)]
->  pub mod pci;
-> diff --git a/rust/kernel/overflow_assert.rs b/rust/kernel/overflow_assert=
-.rs
-> new file mode 100644
-> index 000000000000..cc5f60611ba2
-> --- /dev/null
-> +++ b/rust/kernel/overflow_assert.rs
-> @@ -0,0 +1,33 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Overflow assert.
+> No, doing that wouldn't make any sense. A resource should only be bound t=
+o the
+> lifetime of a single device.
 
-s/assert/assertion/
+But the API doesn't prevent it... Does it make more sense to instead ask
+the user to provide a closure?
 
-AFAIK the standard library always uses assertion where a noun is
-needed, and assert where a verb is needed.
-
-> +
-> +/// Verifies at runtime that an expression is within an expected bound.
-> +///
-> +/// This macro is only active when `CONFIG_RUST_OVERFLOW_CHECKS` is enab=
-led.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// overflow_assert!(3 <=3D 10);
-> +/// overflow_assert!(5 <=3D 5);
-> +///
-> +/// const X: u8 =3D 5;
-> +/// overflow_assert!(X + 3 < 10);
-> +///
-> +/// const fn f(x: i32) -> i32 {
-> +///     x + 1
-> +/// }
-> +/// overflow_assert!(f(40) < 42);
-> +/// ```
-> +#[macro_export]
-> +macro_rules! overflow_assert {
-> +    ($cond:expr) =3D> {
-> +        if cfg!(CONFIG_RUST_OVERFLOW_CHECKS) {
-> +            ::core::assert!(
-> +                $cond,
-> +                concat!("overflow assertion failed: ", stringify!($cond)=
-)
-
-Can we still allow the caller to pass additional arguments to the
-macro, so that the overflowing value can be emitted? Alternatively if
-the expectation is that this macro is always used with a comparison
-operator perhaps we could have `overflow_assert_lt` and
-`overflow_assert_le` which provide panic messages containing the
-operand values?
-
-> +            );
-> +        }
-> +    };
-> +}
-> --
-> 2.50.0
+>> > +}
+>> > +
+>> > +impl<T: Release> Release for crate::sync::ArcBorrow<'_, T> {
+>> > +    fn release(&self) {
+>> > +        self.deref().release();
+>> > +    }
+>> > +}
+>> > +
+>> > +impl<T: Release> Release for Pin<&'_ T> {
+>> > +    fn release(&self) {
+>> > +        self.deref().release();
+>> > +    }
+>> > +}
+>>=20
+>> We should also implement it for `&T`, since that is `Box`'s `Borrowed`.
 >
+> That should implicitly be the case when T: Release, where T is P<T>.
+
+I don't understand? When `P` is set to `Box<T>` in the
+`register_foreign_release` below, then `P::Borrow<'_> =3D=3D &'_ T` and the
+bound of `&T: Release` is not satisfied.
+
+>> > +
+>> > +/// Consume the `data`, [`Release::release`] and [`Drop::drop`] `data=
+` once `dev` is unbound.
+>> > +///
+>> > +/// # Examples
+>> > +///
+>> > +/// ```no_run
+>> > +/// use kernel::{device::{Bound, Device}, devres, devres::Release, sy=
+nc::Arc};
+>> > +///
+>> > +/// struct Registration<T> {
+>>=20
+>> Maybe add some explanation above/below this example. It looks like a new
+>> bus registration?
 >
->
+> *class device registration, see Registration::new() below. But I can also=
+ add a
+> brief comment to the struct. It's indeed a bit subtly this way. :)
+
+I'd just add a small paragraph explaining what it does :)
+
+---
+Cheers,
+Benno
