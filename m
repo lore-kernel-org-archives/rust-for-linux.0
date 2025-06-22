@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C878E610C;
-	Sun, 22 Jun 2025 07:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EECF440C;
+	Sun, 22 Jun 2025 07:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750578129; cv=none; b=Mrnrd1itNd7nAI6jlupnreFJGJMESUwBPd2GZi0mAOqmcXQoD6gIH7SAShOuPR07dB2QH7pgQmIVwz8PuPOKoqhHU78TFDZXwQagXdl36Epys/zr3sDkWjx9a7cF+57qPty5gQpeJpL7LNlJ6fOoDpZmqABbmkAd2q15xPG+uSU=
+	t=1750578509; cv=none; b=OF4pVZZaQoeU6bvUUCSiT2zRMWWh0hDtzWctLAbE8Q/N1PAGOjQVlm5GPkg/lmU3dB7rJuPJvmZJyrlgIShioi0qz7Qnz4EsiAcZ+ASl7+p2HxtHw/XNJ7BwgOqKqUakPmX8zCHiNV1VFStCwDjdtizZjjUsAKkr7pFz8lWQZfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750578129; c=relaxed/simple;
-	bh=cQQQgjyjkSMIetWzKBGvZVTq5Nm37KOVVGvrc7g7Emo=;
+	s=arc-20240116; t=1750578509; c=relaxed/simple;
+	bh=gpL9tlBu//lWGAhbLUsHR0Pb8+/j5ns27Zojw08nwA8=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=FOt8XE7egyRpfL6/aXE96Y/2SQ2+k/Y897/HUEfH1esyPzY4GzxysnKts7j4h/xL4Gie8SwJaYDeie8s59jcYyNFbI8o4iSskRz5Pj9GnMKNuAKFDXDZePmNzhQgl3n4IYd/PuPzmpcrJkq4R7Iy2TOGsYS9LVt0CXNuVIAYbhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3RaYBqL; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Fkz0YS4bMaqS5NqhxUUuQn4tWz8nGgKHgNeBtFLdphlySZsICtgyPz1TvqD8Wdto0VKH2+nru2m3Y3Bjz3qIJTkwMcLt+Q0TRgVxi45/V/jAe6ZriQJGIHqJly1fel90/CdKMKF9WYdx3jWDZsDNt/fgtx35L6tyj9zLTu+Qt+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffIq2Zl/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3RaYBqL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AF2C4CEE3;
-	Sun, 22 Jun 2025 07:42:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffIq2Zl/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463CCC4CEE3;
+	Sun, 22 Jun 2025 07:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750578129;
-	bh=cQQQgjyjkSMIetWzKBGvZVTq5Nm37KOVVGvrc7g7Emo=;
+	s=k20201202; t=1750578509;
+	bh=gpL9tlBu//lWGAhbLUsHR0Pb8+/j5ns27Zojw08nwA8=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=f3RaYBqLMV0273WAPiCQGUH7CeZu6IU/rWxDNjNjKPUT/6OCubhEgYvGYgjV/ShdA
-	 BtxvzJGGgLp6pCOk4Tg9psJ2u7e2WbFxD+rgoiw6GtN2pAdlSu7xkD/MwLzQlXrKkd
-	 WBhb/Bp9UoxZzYhtVm6zAD3hFNWVhJeJw/gXwU7s8iNv8Rkgpqa+zI1JBpXLUwYTRX
-	 M3bvrpj5yo3WOFvZX55lngCqZWOxxlFF/1sKlAsJpXz/szv8JbyJWVZqfBDVlK70q7
-	 s7ekSn19PIeSDmkM6ZVGEjvqeOOcYNfRfr13ns39V4iYutofu32JsTtbzdwRIY3a8H
-	 xwi/HmhKa5UPA==
+	b=ffIq2Zl/8lsZ0mMXzghLMig7/sbr3pf6zZTUtELF5GT7yHj/KIswJWhn4yupmdOWK
+	 bC6620Vb8TYd1lSuUS86OxeW39ncVTY769tuc4LaUrIx94rXzVlSyelecStKy5eNJY
+	 J/ofEEK40LIh5FL6QmeV0Yib0KFugHLR8VRZ9HgzskrOgLYex4Z6uFoYjW2NfZdg+6
+	 3sso6rsXHZ6dJNvR3qNIROssy3yCDv2ydGFLSG6GZ/0JGLbSSkSw7mNAviIpYen54D
+	 sKr08A9sDGPIr3m4SygPygHoC0VmU2Rzv14g+UTXT96OyuLASuoI+Cbl/1EhuCEqjL
+	 QpkPMq4r+pjZw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,136 +34,110 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 22 Jun 2025 09:42:03 +0200
-Message-Id: <DASW5JYFRE2K.1E5T6FI6KNRQJ@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Dave
- Airlie" <airlied@redhat.com>, "Simona Vetter" <simona.vetter@ffwll.ch>,
- "Viresh Kumar" <viresh.kumar@linaro.org>
-Subject: Re: [PATCH 2/4] rust: devres: replace Devres::new_foreign_owned()
+Date: Sun, 22 Jun 2025 09:48:25 +0200
+Message-Id: <DASWAFCSUIO2.1W6RBKY6VRFHM@kernel.org>
+Cc: "ariel.miculas@gmail.com" <ariel.miculas@gmail.com>, "frank.li@vivo.com"
+ <frank.li@vivo.com>, "linux-fsdevel@vger.kernel.org"
+ <linux-fsdevel@vger.kernel.org>, "a.hindborg@kernel.org"
+ <a.hindborg@kernel.org>, "slava@dubeyko.com" <slava@dubeyko.com>,
+ "glaubitz@physik.fu-berlin.de" <glaubitz@physik.fu-berlin.de>,
+ "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Subject: Re: [RFC] Should we consider to re-write HFS/HFS+ in Rust?
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
+To: "Viacheslav Dubeyko" <Slava.Dubeyko@ibm.com>,
+ "miguel.ojeda.sandonis@gmail.com" <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250612145145.12143-1-dakr@kernel.org>
- <20250612145145.12143-3-dakr@kernel.org>
- <DASIPSH2IFKL.O55ZBVZFPVWB@kernel.org> <aFcn51EPcWlDG_YW@pollux>
-In-Reply-To: <aFcn51EPcWlDG_YW@pollux>
+References: <d5ea8adb198eb6b6d2f6accaf044b543631f7a72.camel@ibm.com>
+ <4fce1d92-4b49-413d-9ed1-c29eda0753fd@vivo.com>
+ <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
+ <DAQREKHTS45A.98MH00SWH3PU@kernel.org>
+ <a9dc59f404ec98d676fe811b2636936cb958dfb3.camel@ibm.com>
+ <DAQV1PLOI46S.2BVP6RPQ33Z8Y@kernel.org>
+ <39bac29b653c92200954dcc8c4e8cab99215e5b4.camel@ibm.com>
+ <CANiq72mUpTMapFMRd4o=RSN0kU0JbLwccRKn9R+NPE7DvXDuwg@mail.gmail.com>
+ <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
+In-Reply-To: <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
 
-On Sat Jun 21, 2025 at 11:45 PM CEST, Danilo Krummrich wrote:
-> On Sat, Jun 21, 2025 at 11:10:14PM +0200, Benno Lossin wrote:
->> On Thu Jun 12, 2025 at 4:51 PM CEST, Danilo Krummrich wrote:
->> > diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
->> > index b0a9c6182aec..f20636079f7a 100644
->> > --- a/rust/kernel/cpufreq.rs
->> > +++ b/rust/kernel/cpufreq.rs
->> > @@ -12,7 +12,7 @@
->> >      clk::Hertz,
->> >      cpumask,
->> >      device::{Bound, Device},
->> > -    devres::Devres,
->> > +    devres,
->> >      error::{code::*, from_err_ptr, from_result, to_result, Result, VT=
-ABLE_DEFAULT_ERROR},
->> >      ffi::{c_char, c_ulong},
->> >      prelude::*,
->> > @@ -910,7 +910,7 @@ unsafe impl<T: Driver> Sync for Registration<T> {}
->> >  /// thread.
->> >  unsafe impl<T: Driver> Send for Registration<T> {}
->> > =20
->> > -impl<T: Driver> Registration<T> {
->> > +impl<T: Driver + 'static> Registration<T> {
+On Sun Jun 22, 2025 at 12:38 AM CEST, Viacheslav Dubeyko wrote:
+> On Fri, 2025-06-20 at 20:11 +0200, Miguel Ojeda wrote:
+>> On Fri, Jun 20, 2025 at 7:50=E2=80=AFPM Viacheslav Dubeyko
+>> <Slava.Dubeyko@ibm.com> wrote:
+>> >=20
+>> > Nowadays, VFS and memory subsystems are C implemented functionality. A=
+nd I don't
+>> > think that it will be changed any time soon. So, even file system driv=
+er will be
+>> > completely re-written in Rust, then it should be ready to be called fr=
+om C code.
 >>=20
->> This change should probably be its own patch? If not, then it should be
->> mentioned in the commit message.
+>> That is fine and expected.
+>>=20
+>> > Moreover, file system driver needs to interact with block layer that i=
+s written
+>> > in C too. So, glue code is inevitable right now. How bad and inefficie=
+nt could
+>> > be using the glue code? Could you please share some example?
+>>=20
+>> Please take a look the proposed VFS abstractions, the filesystems that
+>> were prototyped on top of them, and generally other Rust code we have.
+>>=20
+>> As for "how bad", the key is that every time you go through a C
+>> signature, you need to constrain yourself to what C can encode (which
+>> is not much), use unsafe code and other interop issues. Thus you want
+>> to avoid having to go back and forth all the time.
+>>=20
+>> Thus, the idea is to write the filesystem in Rust using abstractions
+>> that shield you from that.
+>>=20
+>> Cc'ing other potentially interested/related people.
+>>=20
 >
-> It's a consequence of register_foreign_boxed() requiring T: 'static.
+> I completely see your point. But let's consider allegory of home construc=
+tion.
+> Usually, we need to start from foundation, then we need to raise the wall=
+s, and
+> so on. The file system's metadata is the foundation and if I would like t=
+o re-
+> write the file system driver, then I need to start from metadata. It mean=
+s that
+> it makes sense to re-write, for example, bitmap or b-tree functionality a=
+nd to
+> check that it works completely functionally correct in the C implemented
+> environment. Then, potentially, I could switch on bitmap implementation i=
+n Rust.
+> This is the vision of step-by-step implementation. And I completely OK wi=
+th glue
+> code and inefficiency on the first steps because I need to prepare the fi=
+le
+> system "foundation" and "walls". Also, I would like to manage the complex=
+ity of
+> implementation and bug fix. It means that I would like to isolate the bug=
+s in
+> HFS/HFS+ layer. I can trust to C implementation of VFS but I cannot trust=
+ to
+> Rust implementation of VFS. So, I prefer to re-write HFS/HFS+ functionali=
+ty in
+> Rust by using the C implemented environment at first. Because, from my po=
+int of
+> view, it is the way to manage complexity and to isolate bugs by HFS/HFS+ =
+layer
+> only. And when everything will be in Rust, then it will be possible to sw=
+itch on
+> complete Rust environment.
 
-Then let's put the bound on that function, since putting it on the impl
-block also affects `Registration::new()`.
+Ah maybe this is where the misunderstanding originates: we're not
+talking about reimplementing bitmap or b-trees in Rust. We build
+abstractions that call into the C side and use the existing
+implementations. The abstractions make them available for the Rust side
+to use them safely & efficiently.
 
->> >      const VTABLE: bindings::cpufreq_driver =3D bindings::cpufreq_driv=
-er {
->> >          name: Self::copy_name(T::NAME),
->> >          boost_enabled: T::BOOST_ENABLED,
->> > @@ -1044,10 +1044,10 @@ pub fn new() -> Result<Self> {
->> > =20
->> >      /// Same as [`Registration::new`], but does not return a [`Regist=
-ration`] instance.
->> >      ///
->> > -    /// Instead the [`Registration`] is owned by [`Devres`] and will =
-be revoked / dropped, once the
->> > +    /// Instead the [`Registration`] is owned by [`kernel::devres`] a=
-nd will be dropped, once the
->> >      /// device is detached.
->> >      pub fn new_foreign_owned(dev: &Device<Bound>) -> Result {
->>=20
->> I think we can improve the names here. How about `new_attached`? See
->> more below.
->
-> I feel like the name pretty much nails it: it's a new instance that is no=
-t
-> owned, by the Rust side, but by the C devres implementation (i.e. foreign
-> owned), which automatically drops it when the device is unbound.
+In the case of bitmaps, there already is someone working on it, see [1].
 
-Yeah, but `foreign` is so unspecific... With `ForeignOwnable`, it makes
-sense, since it could be anything.
+In your metaphor, our recommendation is use adapters (the abstractions)
+to go from the existing house frame (C) to the new interior (Rust). And
+to avoid having mixed interior.
 
-> Maybe Registration::new_devres_owned() instead?
-
-I like that one better, let's go with that.
-
->> > -        Devres::new_foreign_owned(dev, Self::new()?, GFP_KERNEL)
->> > +        devres::register_foreign_boxed(dev, Self::new()?, GFP_KERNEL)
->> >      }
->> >  }
->>=20
->> > +/// Encapsulate `data` in a [`KBox`] and [`Drop::drop`] `data` once `=
-dev` is unbound.
->> > +///
->> > +/// # Examples
->> > +///
->> > +/// ```no_run
->> > +/// use kernel::{device::{Bound, Device}, devres};
->> > +///
->> > +/// struct Registration;
->> > +///
->> > +/// impl Registration {
->> > +///     fn new() -> Self {
->> > +///         // register (e.g. class device, IRQ, etc.)
->> > +///
->> > +///         Self
->> > +///     }
->> > +/// }
->> > +///
->> > +/// impl Drop for Registration {
->> > +///     fn drop(&mut self) {
->> > +///        // unregister
->> > +///     }
->> > +/// }
->> > +///
->> > +/// fn from_bound_context(dev: &Device<Bound>) -> Result {
->> > +///     devres::register_foreign_boxed(dev, Registration::new(), GFP_=
-KERNEL)
->> > +/// }
->> > +/// ```
->> > +pub fn register_foreign_boxed<T, E>(
->>=20
->> I don't really get the name of this function. The data isn't really
->> foreign and that the user also shouldn't really care about the fact that
->> you use `KBox` under the hood.
->>=20
->> How about we call this something like `attach_data`?
->
-> Hm, I think attach_data() doesn't quite hit the point. Maybe just
-> devres::register_owned() instead. I agree that 'boxed' is an unnecessary
-> implementation detail.
-
-I like `register_owned` better, but I'm not 100% convinced by the
-`owned` part... The regular devres creation is called `Devres::new`,
-right? How about we just call this `register`?
+[1]: https://lore.kernel.org/all/20250620082954.540955-1-bqe@google.com
 
 ---
 Cheers,
