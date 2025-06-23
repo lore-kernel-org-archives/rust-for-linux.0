@@ -1,124 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F292A1AA;
-	Mon, 23 Jun 2025 09:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A4F23AE96;
+	Mon, 23 Jun 2025 10:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750672074; cv=none; b=sQWHkl9v7IT+Y+dR+39Al8vtPlec3yRsgYQvAj3f6S+dRh2g+2v5DcVR0yJtkbUnSdTiCj75jBbS1AoPOQdD980HSZuQBd9nJ0nqTG8fjAsGTWEBLbjZKrKGT9sSWNL4vPKvRWJ5xMFvXPMpkFSNWWaV97gtZ+2BRRj4FskZ5N4=
+	t=1750674319; cv=none; b=NwMy96sTZ2V7mYL6TRDi8+4sPJoQvQIAwf9r+E2kHwpCwc8PwNcFYcF+M7zwbXZvmvY+N/vOxtPOvNohmGwH+osIlWfsUOlf82FP7FhBnbV+u66R0V51BTN0CRjL4EPIHzgF1JUn1xATNTacWlVgduOIYyMapcfC1gefvR1R5NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750672074; c=relaxed/simple;
-	bh=M3wDsMVnMxBIbp4y9+JARPWxPf7DiKPaxlrwuAYYhwA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EYjdgj4AJG+GGmB/7c+zLfY0exBVfHp5++YP/b+sOiHOnqS5/Gf1eWDchuy6a/idlRneUWtVQgP+k7FPhSxiUlwBvPkffzPob6dTXKL9wFR2bpJWkVjiweB2/Htvc/edrnFXFuIRkSDxFtvsKAhum2FwV6MVHnC9J3qaavaM5xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kx05u67J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750674319; c=relaxed/simple;
+	bh=JoF13i0LZyapjKFIIUhrt3kypJwlGw4vYPJDGezJMJ0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PJHbKwj7Z+0kRPbq/bh8nW05aK5OmEUjHhGOjCS3sJx+z7YS31adsAt9SGHPlHP3ORYaircLY4fhsW/0WoET8dr2mBgnVsoobcdbnZ2596ypaM3zmUDyC+kn/P/ACU80g5EmRzMtN+OuWBKHi+tOJhf3oS2Lq8aFpA5crrwY6ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AG0sZ27o; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kx05u67J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58121C4CEEA;
-	Mon, 23 Jun 2025 09:47:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750672074;
-	bh=M3wDsMVnMxBIbp4y9+JARPWxPf7DiKPaxlrwuAYYhwA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Kx05u67J4F1GId/vsrq7rWKFpNiVGyI1JPp1Ht+PYbIAwnv++MQHoHwUz08gtWw/1
-	 quwpo80CiM9ZJRLn3IsHrU1JLrkSAqziq23Ns3XbuswrR/daGQFAB1FZGwmrsdEtWa
-	 3pYMQ85laE6M65/1Z7f11+oAqOiAkyGjAoKh7qD+FdnMMLBJS6YNQvmXUi2ThN4eFJ
-	 jHJRLlb8NJ79v1ezaiU9teqmgTiN6o1/KzE8z3WW5RmhGd3rsXsM2ARWXQKLGciFXO
-	 H9zdPQBsbbUX/qNc+lNt+kXABf3ZUazVDOcat6nQFy/eU+wbwHnZ0xveKPAdcJHthj
-	 nYdVlZsef8uWA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-In-Reply-To: <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> (Benno Lossin's message
-	of "Fri, 20 Jun 2025 14:28:44 +0200")
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
-	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
-	<COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
-	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
-	<smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid>
-	<DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Mon, 23 Jun 2025 11:47:43 +0200
-Message-ID: <871pra6b7k.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AG0sZ27o"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-31384c8ba66so423515a91.1;
+        Mon, 23 Jun 2025 03:25:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750674318; x=1751279118; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JoF13i0LZyapjKFIIUhrt3kypJwlGw4vYPJDGezJMJ0=;
+        b=AG0sZ27oYKLYCskCpqw/19C9zxk/oRlNkoBSqdRu9VTWGlYL5SDrvQbcR82ZdcTCaF
+         hq95ys4wgR6wKNn7/ZxVtN+0m5v9jJ1n3KIRLGLfY5WHDb7JeLZNhJKsQCmigt8WsB0s
+         C/ZdJgnKejLL4rJKWHZE/4bbdWfQb1xl/H8+F5IYQTRRkZVWLg9WbGol7+VhQ0FIWtEH
+         KQvAHKsfhBQf+o+3CE7VN4zsXlp5O0PACKJuTL/OLWiHKVqTVaODB3RvnILX38+V/R/l
+         OlOG0DuwFal/SjrMtg31FugiKmjf+YcjTkH/vbDE1tkghVUGSweaS7XtTgslxNBEkF2B
+         TEow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750674318; x=1751279118;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JoF13i0LZyapjKFIIUhrt3kypJwlGw4vYPJDGezJMJ0=;
+        b=Pl8wUZx+F6U4NvCudfV1d+8GzB0+ieDAaLBdxnwZpwRBjFnLTXJ1vavc89WgVTh5BY
+         Z1nMWBkZ+OIOfeOG6OypPQlMKn8Izjr9TTpEi76DpHp0S19kjoizPKBwCWpWqd19AEM9
+         90WanN+ClixOx4rwrfElhN+45rhtn7Tib1I5dc/wyTlGaUjAO70tdxE37AYpkMeG9O7w
+         LVNA+cDZW7CAouI/40AV0IeKPwGoSVR9rYhaDwMGjx0cqs3Ou6+Fd0/DiSygYLdem89b
+         BxXxNOiQryo2Ee9AdfZZkj+5O26kSig9ULrW1eAM8EtIp7jRq6qSr6RIvywDWvpPrUNg
+         V5KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8HnDqAXUsFZW8kHzIc21mlB1EtefEApOohnPfE0KWbMxQkhKYFJvHS8jGwMzBmpsKktBR/ao14xctnika@vger.kernel.org, AJvYcCWwi/Iki4t65RwBVmy/PlJ++ZQ2IFOALfka9TeJRjN4H8Irh9cEsVPW9BGS27UrmF4rb/3046EicWx55hJhfog=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6LfiohZAsFNqHR2hb0ZANW6DUvDiDYcUT2VIE6KuTltvgbnFh
+	sOkYx/dj69pRGHE/HHrYCIZfw7F/N9N6zoUCiNLxVoNOd5QDcJkfI8FeUMMCZ44OtTi0uzCyFhX
+	ijfNQwqvw36PtfCEUKApmDbzbxFTHrMg=
+X-Gm-Gg: ASbGncvCqHa+JxIZkcC3c02BlxY/LN3GL6SYELsjSVBqj8xGBqw7R7guOYYBqny4iFQ
+	didyW8ve+5t+KHVXCkC6zvOjv6E8HZu7bmc44CAPWBuIh7XyO6e5UcWxOS2ThdF/OnKZUSCvHE2
+	3AIeGeYEv6ZfsR9x6UCuv0PBp6bNzAvhwHD86YFF94/8M=
+X-Google-Smtp-Source: AGHT+IH44uRazgYKeg/GGdrY59Bo9M/r/97fGJnTNsWpvOYZ7ChsmOtK+tWEjUo35Ks++uUA4nWruzq2q28En6iagws=
+X-Received: by 2002:a17:90a:e7ca:b0:310:8d79:dfe4 with SMTP id
+ 98e67ed59e1d1-3159d8ca488mr7598352a91.4.1750674317721; Mon, 23 Jun 2025
+ 03:25:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <d5ea8adb198eb6b6d2f6accaf044b543631f7a72.camel@ibm.com>
+ <4fce1d92-4b49-413d-9ed1-c29eda0753fd@vivo.com> <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
+ <DAQREKHTS45A.98MH00SWH3PU@kernel.org> <a9dc59f404ec98d676fe811b2636936cb958dfb3.camel@ibm.com>
+ <DAQV1PLOI46S.2BVP6RPQ33Z8Y@kernel.org> <39bac29b653c92200954dcc8c4e8cab99215e5b4.camel@ibm.com>
+ <CANiq72mUpTMapFMRd4o=RSN0kU0JbLwccRKn9R+NPE7DvXDuwg@mail.gmail.com> <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
+In-Reply-To: <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Jun 2025 12:25:05 +0200
+X-Gm-Features: Ac12FXyW8_J8gCT-mZ5VYNdxGGkNCz2J6cxnbaUtXI0z17b1symQrSHeX7OJMkY
+Message-ID: <CANiq72m_T02Rh5LWCtHYjpn8-fF5b7gDay0aOxp+-RFCdDqrAg@mail.gmail.com>
+Subject: Re: [RFC] Should we consider to re-write HFS/HFS+ in Rust?
+To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Cc: "ariel.miculas@gmail.com" <ariel.miculas@gmail.com>, "frank.li@vivo.com" <frank.li@vivo.com>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
+	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "lossin@kernel.org" <lossin@kernel.org>, 
+	"slava@dubeyko.com" <slava@dubeyko.com>, 
+	"glaubitz@physik.fu-berlin.de" <glaubitz@physik.fu-berlin.de>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Benno Lossin" <lossin@kernel.org> writes:
-
-> On Fri Jun 20, 2025 at 1:29 PM CEST, Andreas Hindborg wrote:
->> "Benno Lossin" <lossin@kernel.org> writes:
->>> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
->>>> +/// A wrapper for kernel parameters.
->>>> +///
->>>> +/// This type is instantiated by the [`module!`] macro when module parameters are
->>>> +/// defined. You should never need to instantiate this type directly.
->>>> +///
->>>> +/// Note: This type is `pub` because it is used by module crates to access
->>>> +/// parameter values.
->>>> +#[repr(transparent)]
->>>> +pub struct ModuleParamAccess<T> {
->>>> +    data: core::cell::UnsafeCell<T>,
->>>> +}
->>>> +
->>>> +// SAFETY: We only create shared references to the contents of this container,
->>>> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
->>>> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
->>>> +
->>>> +impl<T> ModuleParamAccess<T> {
->>>> +    #[doc(hidden)]
->>>> +    pub const fn new(value: T) -> Self {
->>>> +        Self {
->>>> +            data: core::cell::UnsafeCell::new(value),
->>>> +        }
->>>> +    }
->>>> +
->>>> +    /// Get a shared reference to the parameter value.
->>>> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
->>>> +    // held lock guard here.
->>>> +    pub fn get(&self) -> &T {
->>>> +        // SAFETY: As we only support read only parameters with no sysfs
->>>> +        // exposure, the kernel will not touch the parameter data after module
->>>> +        // initialization.
->>>
->>> This should be a type invariant. But I'm having difficulty defining one
->>> that's actually correct: after parsing the parameter, this is written
->>> to, but when is that actually?
->>
->> For built-in modules it is during kernel initialization. For loadable
->> modules, it during module load. No code from the module will execute
->> before parameters are set.
+On Sun, Jun 22, 2025 at 12:39=E2=80=AFAM Viacheslav Dubeyko
+<Slava.Dubeyko@ibm.com> wrote:
 >
-> Gotcha and there never ever will be custom code that is executed
-> before/during parameter setting (so code aside from code in `kernel`)?
+> I completely see your point.
 
-Not with the parameter parsers we provide now. In the case of custom
-parsing code, I suppose there is nothing preventing the parsing code
-from spinning up a thread that could do stuff while more parameters are
-initialized by the kernel.
+I think we are going in circles.
 
+Yes, we understand the engineering value of taking small steps and
+replacing small bits each time. That is not the issue -- we haven't
+argued anything against that.
 
-Best regards,
-Andreas Hindborg
+If you are talking about replacing code that is local/private to HFS
+and that does not have any other users (like a custom data structure),
+then it may or may not be a good idea, depending on what is it and how
+you do it. It is hard to say without knowing more or seeing an
+example.
 
+But if you are talking about using C APIs shared with others, then it
+is different, because the goal of the project is to provide safe
+abstractions for modules to use, rather than have every module call C
+directly (or have everyone reimplement their own abstractions
+internally, and possibly unsoundly).
 
+Those "abstractions" are not about reimplementing existing C code, but
+about allowing Rust callers to use the existing C code _safely_. That
+is a big part of the reason for using Rust in the kernel, and why we
+are asking you to take a look at the existing abstractions and the VFS
+ones.
+
+Now, there can be exceptions, as usual in the kernel, and we can
+discuss them, of course. But that is the general principle.
+
+Cheers,
+Miguel
