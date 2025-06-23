@@ -1,364 +1,121 @@
-Received: from forward501b.mail.yandex.net (forward501b.mail.yandex.net [178.154.239.145])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22CC223328;
-	Mon, 23 Jun 2025 18:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.145
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750702679; cv=none; b=PtZt0vUaMW4BVOz9jjsbHdWXTjQ3lFNSqAdTn4garyXiMNX/4k1FON+NC5DfRSphg9eTUy5reUNpkoECd4PjyXCMmH1FjKTux+JejBzQvRmJ64uM6zmxfAtHa1vYLjzy2G5xR96gmQvPbERKYYO/9xkDpNOuPLEDBQnk6ipkid4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750702679; c=relaxed/simple;
-	bh=D+/v7TuU2GoeaETlDsdUtbZJ6dC4i3YTMcm8D2c97Nc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SjzwxMEd2xeWw5xFlxs29VpSntEJnuIZlhNIPZDogPs1fJSZDiL1KF0mMWqTSRdCIKmbznmIuh51eS8Ch++wabWlYDfdB/0Uqk678sYQPRwHAxROxE3QOOOhqHQz6XAGKYS+UuBWpi/m6fApIaQ+rm9nT7PbMON4T6IDPR+52IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=mS6ed7kB; arc=none smtp.client-ip=178.154.239.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4EB1DD543;
+	Mon, 23 Jun 2025 18:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750702951; cv=pass; b=kOPqqCjkaNi2po8b5PiCj6n05klQLMBhB8WpFQLMb57/yMKsauhkQafLZd6qbKdXqSdp/bON/8oIXRhjkJtxsLcpJUUXa4Rt3KEfvNL7EsB8gabS9+47OtjK+BrtJsyzJMXrIMCQOByCcOl7sMDfjxUqLGHQSr3LaQOfeTjyuyQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750702951; c=relaxed/simple;
+	bh=78zljtZfCkyV+36EzrE5IHk5HsRoBO7R7AODO3JDmVU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LYjOfoOlIZdBMg/WQZb5RmvMRaO9XEB4/ZWexDwaTVkULvaqsSmZ1f/ngwb2A8o6T+/7a7u/gNLIsp6+EGYdLGwlqCq7MXHXKDbcNRX9eOHpISj2O5BAsLGlTHCn7GsLm+YTEY9CTCkn6E95nhybqYjBpMtR7sW9AgMAFRSViSE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Rn3STh18; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="mS6ed7kB"
-Received: from mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:5b8e:0:640:78f0:0])
-	by forward501b.mail.yandex.net (Yandex) with ESMTPS id B8D2560DD1;
-	Mon, 23 Jun 2025 21:17:46 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id fHX0NMhLb0U0-J0Hm20nW;
-	Mon, 23 Jun 2025 21:17:45 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1750702665;
-	bh=PAnJeYkpwPcTveZ2du1jhNjmMb6m/1pYEnrih+1nazg=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=mS6ed7kBUtxjI0r5h5pQnUYLxvFu2tkuTfdM4W2HpH142mtrHg7zoADOgp0uyhoT5
-	 HmZCi6CQmdwCYHIFlGuF9yTYaZvO7GpVupfNcs1rz2Biz3fKmjHHCF5qHHOgTH9nU+
-	 N7WiGahgLUSaV4SUSyb/cEztIogrstpK2FTsFp7U=
-Authentication-Results: mail-nwsmtp-smtp-production-main-92.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Mon, 23 Jun 2025 21:17:40 +0300
-From: Onur <work@onurozkan.dev>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
- tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com,
- will@kernel.org, longman@redhat.com, felipe_life@live.com,
- daniel@sedlak.dev, bjorn3_gh@protonmail.com
-Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
-Message-ID: <20250623211740.00a5bfea@nimda.home>
-In-Reply-To: <aFlV9ky2RKrYnrJX@Mac.home>
-References: <20250621184454.8354-1-work@onurozkan.dev>
-	<20250621184454.8354-3-work@onurozkan.dev>
-	<aFlV9ky2RKrYnrJX@Mac.home>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Rn3STh18"
+ARC-Seal: i=1; a=rsa-sha256; t=1750702930; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=m0wA39mFAG1iGrmISF3974NUUU0ZdkzkUZs1P1TMx9O3zUEfOnqCvYdLbyLErR7hdGJ2GrgWL500dh0hykwrjybhGQql4M7D2utxQN0bpErwn3CaB80QnpeVyjheYZHr+Bgoxs+N7/JiZ9eLb0lPjzwXHAjZ83u9LxDJDqqrnBQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750702930; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=cLvpLxc+Dv5n+IXKSFVzsrMUeWJS8k49AoozdkNlWfo=; 
+	b=ZLPV7kMq+TWuLDtg7HTfwzMeNT68KyQHVp+k8MKnUbLJq24YmSCQhuH9ssTpbxufmY50OGwMn1uBxUk/njwSg4rf+tspCBfm92nCH3eVhxEjowr0iNBUZiBB2rGLEhK7R4dARzYdCPT2KbqjOnkuIWn8lFtBegQ03EfGCag77kg=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750702930;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=cLvpLxc+Dv5n+IXKSFVzsrMUeWJS8k49AoozdkNlWfo=;
+	b=Rn3STh18HSPKiogo0W4Hcq/ZaeKHZ8EK4NkE9IiMxt8ZC+FIF5jzhikBWz5phXB6
+	GOl7vuG9M0VzodbGYSTO0oFj01cDfCg5YrsOMiRczVqbL2RqZOLMChuXH+l/h9TKY6h
+	/y8mDApFrj5lB5AfQ5jsbwavTAFuVxXrvYWRBF3M=
+Received: by mx.zohomail.com with SMTPS id 1750702927925790.0062225101886;
+	Mon, 23 Jun 2025 11:22:07 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v5 0/2] Add a bare-minimum Regulator abstraction
+Date: Mon, 23 Jun 2025 15:21:55 -0300
+Message-Id: <20250623-topics-tyr-regulator-v5-0-99069658cb54@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 23 Jun 2025 06:26:14 -0700
-Boqun Feng <boqun.feng@gmail.com> wrote:
-
-> On Sat, Jun 21, 2025 at 09:44:53PM +0300, Onur =C3=96zkan wrote:
-> [...]
-> > +#[pin_data(PinnedDrop)]
-> > +pub struct WwAcquireCtx<'a> {
-> > +    #[pin]
-> > +    inner: Opaque<bindings::ww_acquire_ctx>,
-> > +    _p: PhantomData<&'a WwClass>,
-> > +}
-> > +
-> > +// SAFETY: Used in controlled ways during lock acquisition. No
-> > race risk. +unsafe impl Sync for WwAcquireCtx<'_> {}
-> > +// SAFETY: Doesn't rely on thread-local state. Safe to move
-> > between threads. +unsafe impl Send for WwAcquireCtx<'_> {}
-> > +
->=20
-> I don't think `WwAcquireCtx` is `Send`, if you look at C code when
-> LOCKDEP is enabled, `ww_acquire_init()` calls a few `mutex_acquire()`
-> and expects `ww_acquire_fini()` to call the corresponding
-> `mutex_release()`, and these two have to be on the same task. Also I
-> don't think there is a need for sending `WwAcquireCtx` to another
-> thread.
-
-I wasn't very sure about myself analyzing the C API of ww_mutex thank
-you. I will address this along with the other notes you pointed out.
-
-> Besides, the `Sync` of `WwAcquireCtx` also doesn't make sense, I would
-> drop it if there is no real usage for now.
->=20
-> > +impl<'ctx> WwAcquireCtx<'ctx> {
-> > +    /// Initializes `Self` with calling C side `ww_acquire_init`
-> > inside.
-> > +    pub fn new<'class: 'ctx>(ww_class: &'class WwClass) -> impl
-> > PinInit<Self> {
-> > +        let raw_ptr =3D ww_class.inner.get();
-> > +        pin_init!(WwAcquireCtx {
-> > +            inner <- Opaque::ffi_init(|slot: *mut
-> > bindings::ww_acquire_ctx| {
-> > +                // SAFETY: The caller guarantees that `ww_class`
-> > remains valid.
-> > +                unsafe { bindings::ww_acquire_init(slot, raw_ptr) }
-> > +            }),
-> > +            _p: PhantomData
-> > +        })
-> > +    }
-> > +
-> > +    /// Marks the end of the acquire phase with C side
-> > `ww_acquire_done`.
-> > +    ///
-> > +    /// After calling this function, no more mutexes can be
-> > acquired with this context.
-> > +    pub fn done(self: Pin<&mut Self>) {
-> > +        // SAFETY: The context is pinned and valid.
-> > +        unsafe { bindings::ww_acquire_done(self.inner.get()) };
-> > +    }
-> > +
-> > +    /// Returns a raw pointer to the inner `ww_acquire_ctx`.
-> > +    fn as_ptr(&self) -> *mut bindings::ww_acquire_ctx {
-> > +        self.inner.get()
-> > +    }
-> > +}
-> > +
-> > +#[pinned_drop]
-> > +impl PinnedDrop for WwAcquireCtx<'_> {
-> > +    fn drop(self: Pin<&mut Self>) {
-> > +        // SAFETY: The context is being dropped and is pinned.
-> > +        unsafe { bindings::ww_acquire_fini(self.inner.get()) };
-> > +    }
-> > +}
-> > +
-> [...]
-> > +#[pin_data]
-> > +pub struct WwMutex<'a, T: ?Sized> {
-> > +    _p: PhantomData<&'a WwClass>,
-> > +    #[pin]
-> > +    mutex: Opaque<bindings::ww_mutex>,
-> > +    data: UnsafeCell<T>,
-> > +}
-> > +
-> > +// SAFETY: [`WwMutex`] can be shared between threads.
-> > +unsafe impl<T: ?Sized + Send> Send for WwMutex<'_, T> {}
-> > +// SAFETY: [`WwMutex`] can be safely accessed from multiple
-> > threads concurrently. +unsafe impl<T: ?Sized + Sync> Sync for
-> > WwMutex<'_, T> {}
->=20
-> I believe this requires `T` being `Send` as well, because if
-> `&WwMutex` is shared between threads, that means any thread can
-> access `&mut T` when the lock acquired.
->=20
-> > +
-> > +impl<'ww_class, T> WwMutex<'ww_class, T> {
-> > +    /// Creates `Self` with calling `ww_mutex_init` inside.
-> > +    pub fn new(t: T, ww_class: &'ww_class WwClass) -> impl
-> > PinInit<Self> {
-> > +        let raw_ptr =3D ww_class.inner.get();
-> > +        pin_init!(WwMutex {
-> > +            mutex <- Opaque::ffi_init(|slot: *mut
-> > bindings::ww_mutex| {
-> > +                // SAFETY: The caller guarantees that `ww_class`
-> > remains valid.
-> > +                unsafe { bindings::ww_mutex_init(slot, raw_ptr) }
-> > +            }),
-> > +            data: UnsafeCell::new(t),
-> > +            _p: PhantomData,
-> > +        })
-> > +    }
-> > +}
-> > +
-> [...]
-> > +    /// Checks if the mutex is currently locked.
-> > +    pub fn is_locked(&self) -> bool {
->=20
-> Did I miss a reply from you regarding:
->=20
-> 	https://lore.kernel.org/rust-for-linux/aFReIdlPPg4MmaYX@tardis.local/
->=20
-> no public is_lock() please. Do an assert_is_locked() instead. We need
-> to avoid users from abusing this.
-
-Sorry, I missed that. Perhaps, using `#[cfg(CONFIG_KUNIT)]` e.g.,:
-
-    /// Checks if the mutex is currently locked.
-    #[cfg(CONFIG_KUNIT)]
-    fn is_locked(&self) -> bool {
-        // SAFETY: The mutex is pinned and valid.
-        unsafe { bindings::ww_mutex_is_locked(self.mutex.get()) }
-    }
-
-would be better? What do you think?
-
----
-
-On Mon, 23 Jun 2025 11:51:56 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
-
-> On Sat, Jun 21, 2025 at 09:44:53PM +0300, Onur =C3=96zkan wrote:
-> > Adds Rust bindings for the kernel's `ww_mutex` infrastructure to
-> > enable deadlock-free acquisition of multiple related locks.
-> >=20
-> > The patch abstracts `ww_mutex.h` header and wraps the existing
-> > C `ww_mutex` with three main types:
-> >     - `WwClass` for grouping related mutexes
-> >     - `WwAcquireCtx` for tracking lock acquisition context
-> >     - `WwMutex<T>` for the actual lock
-> >=20
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/error.rs              |   1 +
-> >  rust/kernel/sync/lock.rs          |   1 +
-> >  rust/kernel/sync/lock/ww_mutex.rs | 421
-> > ++++++++++++++++++++++++++++++ 3 files changed, 423 insertions(+)
-> >  create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
-> >=20
-> > diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> > index 3dee3139fcd4..28157541e12c 100644
-> > --- a/rust/kernel/error.rs
-> > +++ b/rust/kernel/error.rs
-> > @@ -64,6 +64,7 @@ macro_rules! declare_err {
-> >      declare_err!(EPIPE, "Broken pipe.");
-> >      declare_err!(EDOM, "Math argument out of domain of func.");
-> >      declare_err!(ERANGE, "Math result not representable.");
-> > +    declare_err!(EDEADLK, "Resource deadlock avoided.");
-> >      declare_err!(EOVERFLOW, "Value too large for defined data
-> > type."); declare_err!(ERESTARTSYS, "Restart the system call.");
-> >      declare_err!(ERESTARTNOINTR, "System call was interrupted by a
-> > signal and will be restarted."); diff --git
-> > a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs index
-> > e82fa5be289c..8824ebc81084 100644 --- a/rust/kernel/sync/lock.rs
-> > +++ b/rust/kernel/sync/lock.rs
-> > @@ -15,6 +15,7 @@
-> > =20
-> >  pub mod mutex;
-> >  pub mod spinlock;
-> > +pub mod ww_mutex;
-> > =20
-> >  pub(super) mod global;
-> >  pub use global::{GlobalGuard, GlobalLock, GlobalLockBackend,
-> > GlobalLockedBy}; diff --git a/rust/kernel/sync/lock/ww_mutex.rs
-> > b/rust/kernel/sync/lock/ww_mutex.rs new file mode 100644
-> > index 000000000000..dcb23941813c
-> > --- /dev/null
-> > +++ b/rust/kernel/sync/lock/ww_mutex.rs
-> > @@ -0,0 +1,421 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! A kernel Wound/Wait Mutex.
-> > +//!
-> > +//! This module provides Rust abstractions for the Linux kernel's
-> > `ww_mutex` implementation, +//! which provides deadlock avoidance
-> > through a wait-wound or wait-die algorithm. +//!
-> > +//! C header:
-> > [`include/linux/ww_mutex.h`](srctree/include/linux/ww_mutex.h) +//!
-> > +//! For more information:
-> > <https://docs.kernel.org/locking/ww-mutex-design.html> +
-> > +use crate::bindings;
-> > +use crate::error::to_result;
-> > +use crate::prelude::*;
-> > +use crate::types::{NotThreadSafe, Opaque};
-> > +use core::cell::UnsafeCell;
-> > +use core::marker::PhantomData;
-> > +
-> > +/// Create static [`WwClass`] instances.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// use kernel::{c_str, define_ww_class};
-> > +///
-> > +/// define_ww_class!(WOUND_WAIT_GLOBAL_CLASS, wound_wait,
-> > c_str!("wound_wait_global_class")); +///
-> > define_ww_class!(WAIT_DIE_GLOBAL_CLASS, wait_die,
-> > c_str!("wait_die_global_class")); +/// ```
->=20
-> should we split this into two macros define_ww_class! and
-> define_wd_class! to match the C macros?
-
-I don't have a strong opinion on that. I like having small helper
-macros but Benno doesn't seem to like having any macro at all for
-creating global `WwClass`.
-
----
-
-On Sun, 22 Jun 2025 11:18:24 +0200
-"Benno Lossin" <lossin@kernel.org> wrote:
-
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/error.rs              |   1 +
-> >  rust/kernel/sync/lock.rs          |   1 +
-> >  rust/kernel/sync/lock/ww_mutex.rs | 421
-> > ++++++++++++++++++++++++++++++ 3 files changed, 423 insertions(+)
-> >  create mode 100644 rust/kernel/sync/lock/ww_mutex.rs
->=20
-> Thanks for splitting the tests into its own patch, but I still think
-> it's useful to do the abstractions for `ww_class`, `ww_acquire_ctx`
-> and `ww_mutex` separately.
->=20
-> > +/// Create static [`WwClass`] instances.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// use kernel::{c_str, define_ww_class};
-> > +///
-> > +/// define_ww_class!(WOUND_WAIT_GLOBAL_CLASS, wound_wait,
-> > c_str!("wound_wait_global_class")); +///
-> > define_ww_class!(WAIT_DIE_GLOBAL_CLASS, wait_die,
-> > c_str!("wait_die_global_class")); +/// ``` +#[macro_export]
-> > +macro_rules! define_ww_class {
-> > +    ($name:ident, wound_wait, $class_name:expr) =3D> {
-> > +        static $name: $crate::sync::lock::ww_mutex::WwClass =3D
-> > +            {
-> > $crate::sync::lock::ww_mutex::WwClass::new($class_name, false) };
-> > +    };
-> > +    ($name:ident, wait_die, $class_name:expr) =3D> {
-> > +        static $name: $crate::sync::lock::ww_mutex::WwClass =3D
-> > +            {
-> > $crate::sync::lock::ww_mutex::WwClass::new($class_name, true) };
-> > +    };
-> > +}
->=20
-> I really don't see the value in having a macro here. The user can just
-> declare the static themselves.
-
-Yes, they can. This is just a helper to make things a bit simpler.
-I am fine with either keeping or removing it, I don't have a strong
-opinion on this macro.
-
-Alice also made a suggestion about it (it should be visible in this
-e-mail as I replied that as well): splitting `define_ww_class!` into two
-macros, `define_wd_class!` and `define_ww_class!`.
-
-In my opinion, having this macro doesn't add much value but it also
-doesn't introduce any complexity, so it leaves us with a small gain, I
-guess.
-
-> > +
-> > +impl WwClass {
-> > +    /// Creates a [`WwClass`].
-> > +    ///
-> > +    /// It's `pub` only so it can be used by the
-> > `define_ww_class!` macro.
-> > +    ///
-> > +    /// You should not use this function directly. Use the
-> > `define_ww_class!`
-> > +    /// macro or call [`WwClass::new_wait_die`] or
-> > [`WwClass::new_wound_wait`] instead.
-> > +    pub const fn new(name: &'static CStr, is_wait_die: bool) ->
-> > Self {
->=20
-> This doesn't work together with `#[pin_data]`, you shouldn't return it
-> by-value if it is supposed to be pin-initialized.
->=20
-> Is this type address sensitive? If yes, this function needs to be
-> `unsafe`, if no, then we can remove `#[pin_data]`.
-
-It should be `unsafe` function, thanks.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEObWWgC/4XOTW7DIBCG4atErIvFnzHuqveoshjDECNhE4FrJ
+ Yp89+JsLEWNuvwW88z7IAVzwEI+Tw+ScQ0lpLmO9uNE7AjzBWlwdRPBRMuk0HRJ12ALXe6ZZrz
+ 8RFhSpmiG3nhtNHMdqafXjD7cnuz3uW6f00SXMSMcmOA916LlXSM6I7WgnDqYA8YG4oTBwZdNM
+ cKQMjQ2TTs7hlK/3Z+xq9jxf7rWXbUMQYPRfED9Yu5tqzyglss3kKyQslZ0TDmP9k9IHZBm/Rt
+ IVWhQ3lnPpWmhe4W2bfsFYSmMNpUBAAA=
+X-Change-ID: 20250326-topics-tyr-regulator-e8b98f6860d7
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Boris Brezillon <boris.brezillon@collabora.com>, 
+ Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
 
 ---
+Changes in v5:
+- Remove TryIntoEnabled and TryIntoDisabled traits (they were only
+  implemented for a single type anyways)
+- Added regulator.rs to VOLTAGE AND CURRENT REGULATOR FRAMEWORK
+- Applied the diff from Miguel Ojeda to format the docs
+- Link to v4: https://lore.kernel.org/r/20250609-topics-tyr-regulator-v4-1-b4fdcf1385a7@collabora.com
 
-Regards,
-Onur
+Changes in v4:
+- Rewrote the abstraction to use typestates as per the suggestions by
+  Benno and Alex.
+- Introduced the `Dynamic` state.
+- Added more examples.
+- Fixed some broken docs.
+- Link to v3: https://lore.kernel.org/r/20250513-topics-tyr-regulator-v3-1-4cc2704dfec6@collabora.com
 
+Changes in v3:
+- Rebased on rust-next
+- Added examples to showcase the API
+- Fixed some rendering issues in the docs
+- Exposed {get|set}_voltage for both Regulator and EnabledRegulator
+- Derived Clone, Copy, PartialEq and Eq for Microvolt
+- Link to v2: https://lore.kernel.org/r/20250326-topics-tyr-regulator-v2-1-c0ea6a861be6@collabora.com
+
+Resend v2:
+  - cc Regulator maintainers
+Changes from v1:
+  - Rebased on rust-next
+  - Split the design into two types as suggested by Alice Ryhl.
+  - Modify the docs to highlight how users can use kernel::types::Either
+    or an enum to enable and disable the regulator at runtime.
+  - Link to v1: https://lore.kernel.org/rust-for-linux/20250219162517.278362-1-daniel.almeida@collabora.com/
+
+---
+Daniel Almeida (2):
+      rust: regulator: add a bare minimum regulator abstraction
+      MAINAINTERS: add regulator.rs to the regulator API entry
+
+ MAINTAINERS                     |   1 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/regulator.rs        | 382 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 386 insertions(+)
+---
+base-commit: edc5e6e019c99b529b3d1f2801d5cce9924ae79b
+change-id: 20250326-topics-tyr-regulator-e8b98f6860d7
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
 
