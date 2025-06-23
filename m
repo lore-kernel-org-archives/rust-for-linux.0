@@ -1,111 +1,225 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B6423AE7C
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Jun 2025 13:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6783725B684;
+	Mon, 23 Jun 2025 14:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750687151; cv=none; b=JkxlefwTl11KDT0fFg9VnWBY1bTNvKldZFid8UDRsRlhGmx2S+tO7bJX8PqoQJBshbPfy796hk9lvprrHAL8hzYCZi7bpqtR2oQGjRWzCg1CUoUzS2xIIMrzuiN1eFmcuw5Xcf7FvdowptL9QGmkXomKnj91LJjrFzfjjPqQoFw=
+	t=1750689120; cv=none; b=fasyYysbylquGQbjRoM+RmFW8kIWny6JB5lo+X2/oiUtyQ/mYM06CKpyu4WjCsmuxmZzmYsPPfLZU9/dH3k0EOoYbUoYkmnzxv2eDyBY9U2H709C5EHr/pXI/f+LpWdpyr4DhFBp9002faWDFCTwIJ/rKyrNmK8ivH0XP1aBiGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750687151; c=relaxed/simple;
-	bh=inXF4Oubtc3GyfCn/HjA8BZ+YeWKDMlYsxQk1gw6gRM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ib3KpAD3Oxqt82wfXNzZZ0XwA+fEGXuGgYe3VaYWHcnW/egVaL99/ZPvBpysJ5aSsFbxdCOg/Uylvg8DRwG2XYZCUOLYqc+fbQi8/EGZD+d8VXgSlWU6HR0zPzZ1njtLMgRXpNUNFBq4xQG347LLib/1BOc2D8wkBWOHStbC1h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OGGnpZLu; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750689120; c=relaxed/simple;
+	bh=ZCQSFONaYxeZZAAKU4SpBHMquV6hYTWRC8UGHRliBp4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OxTOKOlbUVlprETeKFn6cqG2K4o0YmunrvlASmpj2QhQUZL1d784exHsMm5KcOakVsuqkJIZY9cPSVxlKptN/B6kxfsop0NF0SZDf6BXahF7CUgBf33GkXqhAYyeOkU/6UBvAvyI7qpWAmapEZdzvP9hQAWL9M1UI8e2lRThhfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jck3wg9R; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OGGnpZLu"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a57c8e247cso3423833f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Jun 2025 06:59:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750687148; x=1751291948; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eqJS7qFMkRiHiiDSabIzy0WZp3PMNXzqu6adpC39pLU=;
-        b=OGGnpZLuq4KCShbZx7ZvxdpMDF0LmbwPptQo31y9x6o8iW00VqHW1HkrzlP8p1WltS
-         QoDozYshLAVyd2M2RgK6UVvW7pJMQRfXdjOkWoMh6bzhDk+YoBcxOTL2XO6X1z2ukZz9
-         sdg8efWQ2qepNsZsNbIilM+jJXbADD0he/VuvhYpp2jvW6ep+Xq2QMdl6sH/8ZnnzMLl
-         BczcPr/vPSdYik6I/x+uIPbaAiFa8y7Ol67UQfVQvLKQve9CzeWb4A/y+2DZb/HU4QhQ
-         aQ6gn4nSv/wE+TuTeQgVE4FPopXldig4BNPIzXsjoJT8Jgow/ym5ZdVq9E/PNxzkxBTy
-         CAsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750687148; x=1751291948;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eqJS7qFMkRiHiiDSabIzy0WZp3PMNXzqu6adpC39pLU=;
-        b=Av7/N5DD0aduiWZOKM9N0/HKsp3QBl2P7oGZ+xFXT+j3L0rtxeFFh+P0NEx9/Kbu3o
-         H+l1cSELXeEo/oSHe2rzkicBZfVWwL1z5WUMp61momIW39XmxSpMQ+bDZKiDTYWBVmGw
-         ILAZFKK5c/lFlU1WAdp7H1deD+IpkHGLFLcorx9htUO7eSyHx0r1SvURSomDX5a4GZUh
-         SjInQt+0MxyuQS+AHT8C0Z+KsSGgNXsSajo+uYNjss0s0Z+M8avhRwpOLUj8gI8/V6yH
-         r0aURqB0ekCbdOQGZjiI1PBZrvifH1cwP5X672tiDZ+rv3Bc+yPp4WrmSzMe1cIJww8V
-         eJ6A==
-X-Forwarded-Encrypted: i=1; AJvYcCWey8DsyaOxdjxIVXdkqOnbxd87FJH0Jq+Ro3PGzBM/zCZX4LIlkrDFjL+RnMoYfYYicrJTvNvRLBuMhUGN5g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/Y/DcJOiR7FdWZCNN5OmLmeWa1itHvb7r3ZeLEaO+afVuao6y
-	mteNAqy8Sk2DTKX40bWbTJuQE5QRu8kJJUpOCRHJ8Z3RJrCj+qBj3RKDiCEQ9/3ntyv9tsDmoJa
-	6RVEQQet9o7KJ41pOhpSS+MgfJtK6ScVO8tKs2HPN7cCiYz3XNw3vTa9N9H0=
-X-Gm-Gg: ASbGncsoKDiu+jdeBuCyhjPEOh0iwGQCTcl048ZiEXTaYsBXFJb+KzTjbQm/3xgMoqW
-	R5xnNL3JOO0VUPsmWOjVWBfcq1H6Hbk0KNj9Ai1zJbUmU76fWHd1LRzByRePitCcl7hxkYGO7wu
-	+uz3jhIqmAH+c/FwLebMIDBLWw69DIHePwiKOx/nRtthVDJPXxMOH5di9PvF9IaBiAoTBz2zOb
-X-Google-Smtp-Source: AGHT+IF13VpRWBoHPpgam7052C025eCxfMTe2ZN2zg+750j8LMCwpXZyrZANJdkkdFJASOocVfeSbJe8hg0XFMJ5+R4=
-X-Received: by 2002:a5d:64cb:0:b0:3a5:2e59:833a with SMTP id
- ffacd0b85a97d-3a6d12db838mr11127802f8f.1.1750687147965; Mon, 23 Jun 2025
- 06:59:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jck3wg9R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA72C4CEEA;
+	Mon, 23 Jun 2025 14:31:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750689119;
+	bh=ZCQSFONaYxeZZAAKU4SpBHMquV6hYTWRC8UGHRliBp4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Jck3wg9RZb7bC/hxuIJDfydr1nNweR7OZJwVDH678MV6CoDluvzhfc59m0hb27d0R
+	 z9+2urvvjL1OCQjoBm8RHH34/8FTMHW3LPeLq5XnC2Tn3uDp4aC+7Zup9ShnVNdanG
+	 I2ImATQ1Ie3dohqcbHJYfh+HEFFLgOH+W9tpEjuRbcVZntHJCM/iXmVU9POCLs3hsv
+	 tOOi8KnY2VxMT0UsTCT6EYYzOFz6JiA4L0DHAtLoWSYfD4abaIZLUm1tgHSNMBG7a6
+	 HDZbrnbZpKkVntLXje5BSEEOP58hexCD7FngXqRfVq2o6uidA6yIl9g5/xPaKNomQ6
+	 0lN2fvcsM5dyw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+In-Reply-To: <DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> (Benno Lossin's message
+	of "Mon, 23 Jun 2025 13:48:42 +0200")
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+	<COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
+	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
+	<smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid>
+	<DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org>
+	<Mg1_h6lRpg9tdi0VjiyDfIEy2juzgDWxOhYX61qSUfyEpeMMksWW1e-blTka_G1dXUvpZVktdD-zL3X1a6T6Cg==@protonmail.internalid>
+	<DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Mon, 23 Jun 2025 16:31:45 +0200
+Message-ID: <87v7om4jhq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com> <20250623-gigant-luftraum-ff854d561474@brauner>
-In-Reply-To: <20250623-gigant-luftraum-ff854d561474@brauner>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 23 Jun 2025 14:58:55 +0100
-X-Gm-Features: Ac12FXxHPXAuSdWs_8rI41rh8PLjcu-3VIb0L7y5j_atAMl1-_MbGOrLem8jdO0
-Message-ID: <CAH5fLghv-CE5DLR=VxQFbC3OJadP+GNPG1QCUKhNKa8nScXgvQ@mail.gmail.com>
-Subject: Re: [PATCH] poll: rust: allow poll_table ptrs to be null
-To: Christian Brauner <brauner@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Jun 23, 2025 at 12:56=E2=80=AFPM Christian Brauner <brauner@kernel.=
-org> wrote:
->
-> On Fri, 20 Jun 2025 11:49:35 +0000, Alice Ryhl wrote:
-> > It's possible for a poll_table to be null. This can happen if an
-> > end-user just wants to know if a resource has events right now without
-> > registering a waiter for when events become available. Furthermore,
-> > these null pointers should be handled transparently by the API, so we
-> > should not change `from_ptr` to return an `Option`. Thus, change
-> > `PollTable` to wrap a raw pointer rather than use a reference so that
-> > you can pass null.
-> >
-> > [...]
->
-> Applied to the vfs-6.17.rust branch of the vfs/vfs.git tree.
-> Patches in the vfs-6.17.rust branch should appear in linux-next soon.
->
-> Please report any outstanding bugs that were missed during review in a
-> new review to the original patch series allowing us to drop it.
->
-> It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> patch has now been applied. If possible patch trailers will be updated.
->
-> Note that commit hashes shown below are subject to change due to rebase,
-> trailer updates or similar. If in doubt, please check the listed branch.
->
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> branch: vfs-6.17.rust
->
-> [1/1] poll: rust: allow poll_table ptrs to be null
->       https://git.kernel.org/vfs/vfs/c/6efbf978891b
+"Benno Lossin" <lossin@kernel.org> writes:
 
-I just sent a v2, would you be able to pick that up instead? Thanks!
+> On Mon Jun 23, 2025 at 11:44 AM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
+>>
+>>> On Fri Jun 20, 2025 at 1:29 PM CEST, Andreas Hindborg wrote:
+>>>> "Benno Lossin" <lossin@kernel.org> writes:
+>>>>> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
+>>>>>> +/// A wrapper for kernel parameters.
+>>>>>> +///
+>>>>>> +/// This type is instantiated by the [`module!`] macro when module parameters are
+>>>>>> +/// defined. You should never need to instantiate this type directly.
+>>>>>> +///
+>>>>>> +/// Note: This type is `pub` because it is used by module crates to access
+>>>>>> +/// parameter values.
+>>>>>> +#[repr(transparent)]
+>>>>>> +pub struct ModuleParamAccess<T> {
+>>>>>> +    data: core::cell::UnsafeCell<T>,
+>>>>>> +}
+>>>>>> +
+>>>>>> +// SAFETY: We only create shared references to the contents of this container,
+>>>>>> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
+>>>>>> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
+>>>>>> +
+>>>>>> +impl<T> ModuleParamAccess<T> {
+>>>>>> +    #[doc(hidden)]
+>>>>>> +    pub const fn new(value: T) -> Self {
+>>>>>> +        Self {
+>>>>>> +            data: core::cell::UnsafeCell::new(value),
+>>>>>> +        }
+>>>>>> +    }
+>>>>>> +
+>>>>>> +    /// Get a shared reference to the parameter value.
+>>>>>> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
+>>>>>> +    // held lock guard here.
+>>>>>> +    pub fn get(&self) -> &T {
+>>>>>> +        // SAFETY: As we only support read only parameters with no sysfs
+>>>>>> +        // exposure, the kernel will not touch the parameter data after module
+>>>>>> +        // initialization.
+>>>>>
+>>>>> This should be a type invariant. But I'm having difficulty defining one
+>>>>> that's actually correct: after parsing the parameter, this is written
+>>>>> to, but when is that actually?
+>>>>
+>>>> For built-in modules it is during kernel initialization. For loadable
+>>>> modules, it during module load. No code from the module will execute
+>>>> before parameters are set.
+>>>
+>>> Gotcha and there never ever will be custom code that is executed
+>>> before/during parameter setting (so code aside from code in `kernel`)?
+>>>
+>>>>> Would we eventually execute other Rust
+>>>>> code during that time? (for example when we allow custom parameter
+>>>>> parsing)
+>>>>
+>>>> I don't think we will need to synchronize because of custom parameter
+>>>> parsing. Parameters are initialized sequentially. It is not a problem if
+>>>> the custom parameter parsing code name other parameters, because they
+>>>> are all initialized to valid values (as they are statics).
+>>>
+>>> If you have `&'static i64`, then the value at that reference is never
+>>> allowed to change.
+>>>
+>>>>> This function also must never be `const` because of the following:
+>>>>>
+>>>>>     module! {
+>>>>>         // ...
+>>>>>         params: {
+>>>>>             my_param: i64 {
+>>>>>                 default: 0,
+>>>>>                 description: "",
+>>>>>             },
+>>>>>         },
+>>>>>     }
+>>>>>
+>>>>>     static BAD: &'static i64 = module_parameters::my_param.get();
+>>>>>
+>>>>> AFAIK, this static will be executed before loading module parameters and
+>>>>> thus it makes writing to the parameter UB.
+>>>>
+>>>> As I understand, the static will be initialized by a constant expression
+>>>> evaluated at compile time. I am not sure what happens when this is
+>>>> evaluated in const context:
+>>>>
+>>>>     pub fn get(&self) -> &T {
+>>>>         // SAFETY: As we only support read only parameters with no sysfs
+>>>>         // exposure, the kernel will not touch the parameter data after module
+>>>>         // initialization.
+>>>>         unsafe { &*self.data.get() }
+>>>>     }
+>>>>
+>>>> Why would that not be OK? I would assume the compiler builds a dependency graph
+>>>> when initializing statics?
+>>>
+>>> Yes it builds a dependency graph, but that is irrelevant? The problem is
+>>> that I can create a `'static` reference to the inner value *before* the
+>>> parameter is written-to (as the static is initialized before the
+>>> parameters).
+>>
+>> I see, I did not consider this situation. Thanks for pointing this out.
+>>
+>> Could we get around this without a lock maybe? If we change
+>> `ModuleParamAccess::get` to take a closure instead:
+>>
+>>     /// Call `func` with a reference to the parameter value stored in `Self`.
+>>     pub fn read(&self, func: impl FnOnce(&T)) {
+>>         // SAFETY: As we only support read only parameters with no sysfs
+>>         // exposure, the kernel will not touch the parameter data after module
+>>         // initialization.
+>>         let data = unsafe { &*self.data.get() };
+>>
+>>         func(data)
+>>     }
+>>
+>> I think this would bound the lifetime of the reference passed to the
+>> closure to the duration of the call, right?
+>
+> Yes that is correct. Now you can't assign the reference to a static.
+> However, this API is probably very clunky to use, since you always have
+> to create a closure etc.
+>
+> Since you mentioned in the other reply that one could spin up a thread
+> and do something simultaneously, I don't think this is enough. You could
+> have a loop spin over the new `read` function and read the value and
+> then the write happens.
+
+Yes you are right, we have to treat it as if it could be written at any
+point in time.
+
+> One way to fix this issue would be to use atomics to read the value and
+> to not create a reference to it. So essentially have
+>
+>     pub fn read(&self) -> T {
+>         unsafe { atomic_read_unsafe_cell(&self.data) }
+>     }
+
+That could work.
+
+> Another way would be to use a `Once`-like type (does that exist on the C
+> side?) so a type that can be initialized once and then never changes.
+> While it doesn't have a value set, we return some default value for the
+> param and print a warning, when it's set, we just return the value. But
+> this probably also requires atomics...
+
+I think atomic bool is not that far away. Either that, or we can lock.
+
+> Is parameter accessing used that often in hot paths? Can't you just copy
+> the value into your `Module` struct?
+
+I don't imagine this being read in a hot path. If so, the user could
+make a copy.
+
+
+Best regards,
+Andreas Hindborg
+
+
