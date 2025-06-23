@@ -1,155 +1,103 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA9B225A23;
-	Mon, 23 Jun 2025 22:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EC128EA;
+	Mon, 23 Jun 2025 23:12:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750719544; cv=none; b=cO52NDQF9Fa1mohe/GCL4MBTxVJU/KUjf6MCi6Uala579l1zGqsnEBzXLCZSYvseB7566pawi0MFPPyPpQ2V03jvtXK4YzbBMXJLrJypmxMjTSZmKTay5y1CgccWRgZSFj3mWY8qNqgXBWolOV5raUdaji9cur+ut6xj/bd1AI4=
+	t=1750720336; cv=none; b=I4dokoTTqJStQYerMAqSKRRnidhDQdMVzxxQiVdwBTeDN42Ovo2lmUJlv4wTTNLykpr9HZmy938GOuNB4VVMF4nq/wOIh06spGdYIHsObCN3ahpQNnj3XJYR/2/M63JETG1HvHswc041yqVFU1HOJB0Xo0BnwqNyn7P1Eip0eRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750719544; c=relaxed/simple;
-	bh=aodqo2TfNv//TKLZmuT/byFBC/ScJXPbbKHlGhkNSr0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LifOGSzpt8Nc7ZVyAFA+ILESaoP8WPh+sVQWui5KYbn4OlMQG3W0vMF40lmasgzDGkd+XHj8C6GOugJEYHuf9cYKHnNzUkVbB6UNLR7wGDPvNQ1K7uB1epXZeZW9rewIP136nMOALh78gRGqCax6fwPANVvaEGmKX9+mtN7Uh2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kTiAkh0F; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1750720336; c=relaxed/simple;
+	bh=OXlr1yF0Sv9rwvXvPs5aTpuJ+a9sKko9efc+xXFpxqc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=os/4g3D7xZOd6q0IbFimqanmup67qllw4657RdUdX2qqN1U48eRIgQkGhDO9TRCuiEoxW9al4givN/ziQh9nsx/yEG8msZgmsDTQsagH9m4+T20TWsgKQEOdaLRHMnW10cqUEedmQ+ZGm4ulbfTaibvWhGTf7cyt6KTO1acxgzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A+leis0x; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kTiAkh0F"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-747c2cc3419so3390595b3a.2;
-        Mon, 23 Jun 2025 15:59:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A+leis0x"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-23496600df1so10334785ad.2;
+        Mon, 23 Jun 2025 16:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750719542; x=1751324342; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pcy7yresPbC3EzSIERmqz2XWS4vYmJ0nwu020eXVaWA=;
-        b=kTiAkh0F4xJ55La83JmomVrdT01B8C3gN06ytrPw07O1tDbOvJDWmFY2wmpfFS4blr
-         CKxR1/QSx7qqYnE9xjNMQlC1KgbKbAXZKJX+lt4ofcpbweV5kHu+VRr04LnUHK2bUC8U
-         TXXKI7L07kHnQyphrVWndSrE4fp5+eKWPv1IAJmsTUThJ19F+1FiJzzOtNfmRs7JkotU
-         eyUA2u+rasY88I4B+si523wPjOgG2wxB7284+QSdmfPYqVR0/8q7jAO7gXLxCUqlsXtz
-         iV98zzCfXweZX3ZBnl/sEs8ZbG+56vcXsOP+bHIz1g4sIxhCRPMPl1gDIq63WeWQOgBl
-         fdmA==
+        d=gmail.com; s=20230601; t=1750720334; x=1751325134; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OXlr1yF0Sv9rwvXvPs5aTpuJ+a9sKko9efc+xXFpxqc=;
+        b=A+leis0x6J1uZXp1J7mZwMIynHrwurms9VvideD2PorMnn4pl8KfT2qgkI6XljGSXN
+         Lo5/1QeHo/2OXE86BKtpTV9UL3WfgGeprriFzaNobizkp9EYhdDUwp0izhZNR7TaATLQ
+         V3YgIOdowRM1ZAUXpjSZXOsa8vS/tVYIjgTk9gXdun/1nPI3aa2PEdIFb9ovnHRI5wvX
+         OdTQXkrYWPFa7YdkdARojLo7fow6IpKSXTHNrxA0iB1gTX/0FnPFqwLletcZXGhCQHMe
+         WZaliyk/kcuTtj346TCCQsSGdv30mnUuYBOyMaImfZF/zFXGjxidZsLYU+f1OF9r0bgz
+         3hxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750719542; x=1751324342;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Pcy7yresPbC3EzSIERmqz2XWS4vYmJ0nwu020eXVaWA=;
-        b=wdqrQGUV3uCmtyFrfH5Hr8YurOPrMvtI6vgJZqvHtYP70pcp1Ey+OdDu6IU6pqTm9n
-         HseGg/PwkCTvu0gzJuL/ISS+SfJCpS9bHAlEzv1VgIOaQqhmz5QMQ7cMZMnBlMzX3RD2
-         IKdXzngv+/xKr2B2Om3eXFqOWu5UPicTaMPwTkIuJHqnlaK9Nfkx9FpOb6kDIPjHszp4
-         8ig5ifAHQAhZJYFvEulIOOlCvogytcfX81GdaKpxm9oDGNbzkGRkPptIc2vcCME+OFA3
-         8xQZLiMDcoPoXeh/us3kWRv6qcEn9vOv+CmK7oXQkO7Z2gTRFC1JOjWPQp5mkKGJJId4
-         xuAg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7myKqsj8IX5cXpAbIXwxuDEsB+/17Wtd7OzARCYPSCt+01JUmsnTUM4UhVraDmn7Ov5qHNv8DTyDo@vger.kernel.org, AJvYcCUorBWTdXg2q1ikqsrCGTOqz5LJWVG6kpn6VbDZe4X8ISLH86f51PnKEVKAs05lz0avzG7FX+7/7+/BIDiO4+k=@vger.kernel.org, AJvYcCWbcqp9ukOA7Nd9Pyz/mzVUTHqy5Ek2O/qwL1vGcnAoNePdPRJgpzy2ORtuMStwCAojAJI7iSBqq7gj@vger.kernel.org, AJvYcCXS1+lJ9OAkvk+22yeSfqYbkKdbLPDROLJO9su0aMkWhde641QJRLYHJ+lWlZKv2eKMgpjIA+eEXBPMeWOw@vger.kernel.org
-X-Gm-Message-State: AOJu0YygP+zERFI2tHWwax7BFiBXaZEBQXH8jNmmAHhc4a0C4kmKUXCL
-	AlhahCv5FiHEgaPSrHGAJKPUKw2NyfL+P789Vw6MT3VWUXy3jV4NllMU
-X-Gm-Gg: ASbGnct4ffo8iL8E7QO+RLGZeEpe4hBZ4SfcujimJjkg2NnJ7pJaYwr541vcmokX+3O
-	6DAhMWx+N0gsVxOcIJK6sH7UbzzdsSEocSJJvbNGHBoRbhKaFK9epUgp+n4B2jb8TWmDe/Ikd9t
-	Xx1Jdw2gtLzUQnqkXfLcoa1qnPJN/8Bc08KGDrD2b6j0fxEVmH3Iao+NSIO3kHlDAumPpFVpZqe
-	au1/6eMO1hIHCVPToPuzBXtLyZglcIoTO+GekC3XlSqtO4yTtA6hm3GiQrEWPvYn+IjcTkEJfzi
-	eY6gsQJHbSRmMWCVH2vzVT7v7xscHC6zfNLu+0MBDS4YwxLw088DPIxsGkbZKuObL14XYDCjevC
-	icYkswuRGzJrgo2XxcjEvsAKmL9MgjuAT65g=
-X-Google-Smtp-Source: AGHT+IE939Z4t7O/tLb4fWGzn/o4VmmAeQawC4bX+wCLcSY8yO+m7Esw6TNR1NXnkHekz8HOzqa6sw==
-X-Received: by 2002:a05:6a20:43a4:b0:21a:bc07:b42c with SMTP id adf61e73a8af0-22026fa379bmr24630957637.30.1750719542219;
-        Mon, 23 Jun 2025 15:59:02 -0700 (PDT)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-749c88532d2sm213620b3a.132.2025.06.23.15.58.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 15:59:01 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: alex.gaynor@gmail.com,
-	dakr@kernel.org,
-	gregkh@linuxfoundation.org,
-	ojeda@kernel.org,
-	rafael@kernel.org,
-	robh@kernel.org,
-	saravanak@google.com
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bhelgaas@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	devicetree@vger.kernel.org,
-	gary@garyguo.net,
-	kwilczynski@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lossin@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu
-Subject: [PATCH v1] rust: fix typo in #[repr(transparent)] comments
-Date: Tue, 24 Jun 2025 07:58:46 +0900
-Message-ID: <20250623225846.169805-1-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1750720334; x=1751325134;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OXlr1yF0Sv9rwvXvPs5aTpuJ+a9sKko9efc+xXFpxqc=;
+        b=joRcQf6RZc7lmF6dtPR95pINuFll1E+AeM4TI1R0VmzySqEKpEbYFxZyzB9ASmxT6x
+         C2+n/GMXj/rJ7M2BbZS1TFf2Dx+rHA5HqbpVeLZv/KS42j+5rRmAGb4iRFbEFzLvz/Me
+         /74gkLWb/MbBG4EGPZCN+ybdV3ksGimCCyF/HAbtXNY9jkrls95aHXGbSYvDlqnsUZZC
+         +CeHJf0DcrJxlGDgZHp2JElAFSwbXnOW++b0EPsSGUpxRowRGrA+mUewF1tkLpKkRTEE
+         APzgMoJZqnbwZtU9qE69A1BCoERaUNDesaumLHEfmzE1RX51rRtJXBcc7VuKofyNbqy8
+         Tldw==
+X-Forwarded-Encrypted: i=1; AJvYcCU5a06wEgOP2vKB3qbCncQ5/aF23BhgT1f/M+OHcEXlmoWPZvbDcXLHGIdSHuP2+mAtWMJElOD0Rnk30hOYhOg=@vger.kernel.org, AJvYcCUxBQ5mNg9Y9OofEjaXG7j0/Bo8hT9FR3nwZdcca3lk2gwdAzDt6huInTjkL3xpsHai7TIHKBe7uCVJTws=@vger.kernel.org, AJvYcCXw/YakgdnoOenhfZ1OGGofpt0muJPyj6K4ge5W3F+QiVAHggzMknOoShs3sDG8iqvY2+XgQK0wKQK/Isqzf3xD@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjJe7CtPCnpDc1GSz+Jxs+ASIIb3LCWPW0IP+6F/1SGjq/HCxP
+	8of/GWV/qPJg4ZSeE3Q5IHSSwTIgkR27d9IxOH0yDqNAVBw1uGRSVtcj2qpXJ/zEHBbfi5UMM4S
+	nYjE51CchRTsXkwUN4Nr472nX24kHFAA=
+X-Gm-Gg: ASbGncuWSu8R3DjEwiT89xE/v8XBWB++wN7oBd9CRBWZtSGNGy8Kixx9mW88UKURFxs
+	+Rw8KvSuLLWNbkLx80nLSDArUe2djOekFUSZ6qzJ5ubZRb8DWtaXgXU9RyzrKD17PwEeBtLpaBe
+	k2snAsa+FF4mijhdvEHLc4+1pEZj5upAhXiBa18bBFOLU=
+X-Google-Smtp-Source: AGHT+IEyTbn2237c2Hr31vCXUyYt8AHF82k+rm80b+xf6aeGb6FyZfjgW0zu3Cma9NlYREtN0F2AZV8USuCwvY6JKbk=
+X-Received: by 2002:a17:902:d487:b0:235:ee04:dd2e with SMTP id
+ d9443c01a7336-237d9a7743emr94347515ad.10.1750720334082; Mon, 23 Jun 2025
+ 16:12:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250528174953.2948570-1-y.j3ms.n@gmail.com>
+In-Reply-To: <20250528174953.2948570-1-y.j3ms.n@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 24 Jun 2025 01:12:01 +0200
+X-Gm-Features: Ac12FXx5OoNfI1d2_Fa2rZCqEx25veUJNrUk5MYiNNH_z3yPSX8Wkm7urNEFEP4
+Message-ID: <CANiq72nfHFM4rdr8VhjvL0PRwMn+_G_rG3dqwk2eTr1ahbBmGg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: kunit: use crate-level mapping for `c_void`
+To: Jesung Yang <y.j3ms.n@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix a typo in several comments where `#[repr(transparent)]` was
-mistakenly written as `#[repr(transparent)` (missing closing
-bracket).
+On Wed, May 28, 2025 at 7:51=E2=80=AFPM Jesung Yang <y.j3ms.n@gmail.com> wr=
+ote:
+>
+> Remove `use core::ffi::c_void`, which shadows `kernel::ffi::c_void`
+> brought in via `use crate::prelude::*`, to maintain consistency and
+> centralize the abstraction.
+>
+> Since `kernel::ffi::c_void` is a straightforward re-export of
+> `core::ffi::c_void`, both are functionally equivalent. However, using
+> `kernel::ffi::c_void` improves consistency across the kernel's Rust code
+> and provides a unified reference point in case the definition ever needs
+> to change, even if such a change is unlikely.
+>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Signed-off-by: Jesung Yang <y.j3ms.n@gmail.com>
+> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic/x=
+/near/520452733
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/driver.rs | 2 +-
- rust/kernel/of.rs     | 2 +-
- rust/kernel/pci.rs    | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+Applied to `rust-next` -- thanks everyone!
 
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index ec9166cedfa7..de4ed5dafa96 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -159,7 +159,7 @@ fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-         if raw_id.is_null() {
-             None
-         } else {
--            // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and
-+            // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id` and
-             // does not add additional invariants, so it's safe to transmute.
-             let id = unsafe { &*raw_id.cast::<of::DeviceId>() };
- 
-diff --git a/rust/kernel/of.rs b/rust/kernel/of.rs
-index 40d1bd13682c..cca3d5cfaa92 100644
---- a/rust/kernel/of.rs
-+++ b/rust/kernel/of.rs
-@@ -13,7 +13,7 @@
- pub struct DeviceId(bindings::of_device_id);
- 
- // SAFETY:
--// * `DeviceId` is a `#[repr(transparent)` wrapper of `struct of_device_id` and does not add
-+// * `DeviceId` is a `#[repr(transparent)]` wrapper of `struct of_device_id` and does not add
- //   additional invariants, so it's safe to transmute to `RawType`.
- // * `DRIVER_DATA_OFFSET` is the offset to the `data` field.
- unsafe impl RawDeviceId for DeviceId {
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index f6b19764ad17..dc1516ce0bdc 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -68,7 +68,7 @@ extern "C" fn probe_callback(
-         // INVARIANT: `pdev` is valid for the duration of `probe_callback()`.
-         let pdev = unsafe { &*pdev.cast::<Device<device::Core>>() };
- 
--        // SAFETY: `DeviceId` is a `#[repr(transparent)` wrapper of `struct pci_device_id` and
-+        // SAFETY: `DeviceId` is a `#[repr(transparent)]` wrapper of `struct pci_device_id` and
-         // does not add additional invariants, so it's safe to transmute.
-         let id = unsafe { &*id.cast::<DeviceId>() };
-         let info = T::ID_TABLE.info(id.index());
-@@ -162,7 +162,7 @@ pub const fn from_class(class: u32, class_mask: u32) -> Self {
- }
- 
- // SAFETY:
--// * `DeviceId` is a `#[repr(transparent)` wrapper of `pci_device_id` and does not add
-+// * `DeviceId` is a `#[repr(transparent)]` wrapper of `pci_device_id` and does not add
- //   additional invariants, so it's safe to transmute to `RawType`.
- // * `DRIVER_DATA_OFFSET` is the offset to the `driver_data` field.
- unsafe impl RawDeviceId for DeviceId {
-
-base-commit: dc35ddcf97e99b18559d0855071030e664aae44d
--- 
-2.43.0
-
+Cheers,
+Miguel
