@@ -1,99 +1,94 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040E43FB1B;
-	Mon, 23 Jun 2025 23:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07119229B16;
+	Mon, 23 Jun 2025 23:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750720462; cv=none; b=BddxEIkWBxxKFrDTlgVLPVZuyPvOHZYym2GbQvXXWpjLJuqvezxwMgyPhLY5/hcecVKFUODdaJrNHDVMIDb2H0y64a0rnm1wC2g2YsyQ8Z3b/xkH1AzK3yvA/Oixg5JQKK9fpvwkK7fNRR2/t3/hf1Vt0HlafYP/wPL2SrTpNfg=
+	t=1750720533; cv=none; b=VcbABdhn4VwLpb3QlOq2TG1zJlqjdjE6MarTBz6fSXryYuxyYFR6YpA/yPqnRRhNkws6Bk7Z2u+Zii3cMMU33FSPrGSqGnMn8gdSvknDCDw8ejX5OkZPAYoLmuSziOaLAxX5mH6+5aGsDPmIy9Vne7Kk464Lezh7GpK/sn8lmrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750720462; c=relaxed/simple;
-	bh=qZfM3+qxtQpx6gfqjvivz5oVhIMPAwRL0sy7SYW70eo=;
+	s=arc-20240116; t=1750720533; c=relaxed/simple;
+	bh=TRl0+p+jrdHvCnb9FZSoYZqE5p28+PTZwicHcD6Bths=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RAjGoqod7l4mZjocYo3iNqUd1OpJPe4QmtAh+dCoWuoW+TFrFvPCXnAn1s89hz5z+rH5m0QUkWvytmQwVGmD95RCnyk8aDdBiXpeVarEvELTCM673Ww4dHqIPi69uY6GCG3OZIK7MuWmjXv+pPZnfF+4CeTLKdkm4UGnyjMfqa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DzZ775JC; arc=none smtp.client-ip=209.85.216.41
+	 To:Cc:Content-Type; b=ugdYIkXnFfKf6dXgMz1gAEODzTIto3Stj9str60Q8x4aJeY84r9FbLWmNFB3SvcxDcV/trRQ1z2X1tCmU1rywkDlnSUE32axc26qoGnv4vP2Lg+htBw/dJrbqBDpBgfgqiK3T/QmHOteB5tuIhcjYMMMlPIa35uit8ye1p08CKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EprXylQH; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DzZ775JC"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-313756c602fso540903a91.3;
-        Mon, 23 Jun 2025 16:14:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EprXylQH"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-234b122f2feso6084705ad.0;
+        Mon, 23 Jun 2025 16:15:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750720459; x=1751325259; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750720531; x=1751325331; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sngl8tyAMi3uwXk0DJtqeHxatiEd8iNe6qf5tHF3BoE=;
-        b=DzZ775JC1WEsIo3UR6y3mkDzESljWtO3gxBTxss3N8usEHSuxVRWOZOUt3AA236kJS
-         nJrhvvx9AfwN5vrDg9AiIRFkQJfBQ+Saaydk824GksqsGSzE4FaBi1WT+Nc9aYdsZG+r
-         2QBRIkt/3nOxSZ4CGoPkT/IxybBLIAHP1zdEb1OKWS4JL9gKe28XuASj4IiyW4+T4PYx
-         x34SUQZJgkvR9zlOiAu5vwXb/dFL/s1/QgRr3rq5DoIKlHJn0FQuohGO4r0kX9wLKbwH
-         u44ZExUjNuA5BMX1gsoMeSjNODVvzMjfiIHBEDcsL49qdX/WmUHXR73ZJ2rpx3UgB+ys
-         6edg==
+        bh=TRl0+p+jrdHvCnb9FZSoYZqE5p28+PTZwicHcD6Bths=;
+        b=EprXylQHTyBd6vPhucqS5aRjLWIS51+opgymex5rQ7d/zeP3JThZXp7L2iQ4mlYrl5
+         2US8Cz0wBjiFo17lTUU+z3YnYmxmwn1k9xPtrQG64Tuos5wPmDQ8Az9dCCJjJUauZjgE
+         MkDMiruv0gg/t2h3lNNwmQ4wx9TWXv/71fqJN0QtS7tgCDCmUjvdzjA/9rOVuSchng6i
+         mrhL86xxKcPtAHZwZ7gNhH3MaHH2tI/SWEMkovloDNz9MExypxvtGcwWrIKgYl+XOlWJ
+         G+8a49dTe+RZH96pIoNRLxZCRIReqcl4bcoH09tYElnHg9XebjvVq0i4CbTcTn2/AtmB
+         oizA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750720459; x=1751325259;
+        d=1e100.net; s=20230601; t=1750720531; x=1751325331;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sngl8tyAMi3uwXk0DJtqeHxatiEd8iNe6qf5tHF3BoE=;
-        b=IJKLOyK2QlbXaszjPlqrbzLOP8xTnSXeeb1Iix3tnrabJO54SmgehjsUfciXkVhaOb
-         RsT1pvRP9eY7DQjG9xuck1jBt8RPiKqqzQKgr6ql1J49DBylogryjYsgDeCWNhwxQD9l
-         tOcnghx+qOfZCVrI7HMV+CM1gGfFo0eP+3NZLrgJaslHCLbX8HRQqpUJU8mB3LbMDkFr
-         TtW1J0TiyVQnf4zNTZ08/G4Sd9nJx/PP0IAvMNtg4wCe8i+k/vDIXhhcEn+5Zdcqu3eI
-         BFv8Us+4PK5PYBR2RYrX5xyKQYCXnfe3LBLL6d4yGZv4S7k7uI/fDpCbsoCBnca5rMWc
-         UI5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVkcLTl+HXjuuJGIuhF0t6KTAHO8zoiHypCrckOCj96gdarDjpAnUELHTV3Mq2iDE0PZoD6HQ3uDtyzafA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCQb4y5WjlPnART8byPR4SJMEoLMn7fluTlZj0ef5cFASOJ2U6
-	WF2e5SBToYKGTeYcbXvkPcfaqtI+hXxwvk0Zem2CQd5vyhBIGT5nIlH7D1sH68ocPVLxhlm/4Lh
-	7wnfHGxM6t7Ig8UB339b1JblpCNef5Io=
-X-Gm-Gg: ASbGncu0CrQ/CiInDTA7R5JXx70Gv0STEyjgWxCwhiVeAOxGoEadsocTjb66NmkcfB+
-	+hVQXSk0vlq5QKhkNB57dL1JQGW+HzaZuH/ygaSOU1QkSqnzquNOCMJB50Aflo5w8NQ1QaFt3vN
-	5b09Fhxjs8ib875YoyDTxK21KA37ZfWVBs/pUK41WW6dc=
-X-Google-Smtp-Source: AGHT+IGZ3tiVKlkXWPqLG9MnXGdRjgQCZE/XhXvv2PUbhwLgT2jcWW3+NJWC5d8bHaCU0LTeg5qzWb4swSkwpApQ02s=
-X-Received: by 2002:a17:90b:17cb:b0:311:c5d9:2c8b with SMTP id
- 98e67ed59e1d1-3159d8e05f7mr8360421a91.5.1750720459212; Mon, 23 Jun 2025
- 16:14:19 -0700 (PDT)
+        bh=TRl0+p+jrdHvCnb9FZSoYZqE5p28+PTZwicHcD6Bths=;
+        b=Yh3Us2wB1JYeVNKs8AgveXP4qkkDa2Tvzp9rQ3X0IGBeCUvDif7CEnWMqxVAnlf07x
+         W2bf3I7QYwfcVSRf2gm1QwKEo/ANMgs0i1pYmyj0mhcQtyai675QpvYI5UBDJs02hkCe
+         mYG3WMO+em5ZXRdPzWqYWfXTffnFyP9cQS9Zpl71t8Ja5SvnSz4lg7771DDevbgENA8X
+         e9q0NrE5K/EOHqcnbZEdUgD9P1L+hyDVTQ7Z4x0bk6oaYIZwwAStSmJ8R5PcYkuvxg+P
+         O//KBegN41NAldZQs9Ag0xZ6p2QeyjE/tfk0hajkAP9BQckLrCFqjKXkJtkvGvxayqqt
+         4GGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUED5iaJEZnvys5C2SDsP38OrjAd23pFB3xX4arBRfTbVUCn+2pMIH+Rxa3H0hT9cOSZf6NdyI39hXD7zxB@vger.kernel.org, AJvYcCUfH0b6u8B2Ro0DjxPzB4If06TZVGLssAi6kNgwjkrsrmJyxVWTYMllxFSxfVr0kjRE0PBxgIGJi/yXl5OW5Nc=@vger.kernel.org, AJvYcCWnk7eDDED/g14jYXIs/5/eClh2H7y8j6D1qjlWfLwYmZh3ZyspPgdKOMm8LftqbdGseLlfQgqlw29T@vger.kernel.org, AJvYcCXrJFH+MR7EGzDPtcQ7k3N2rKtPnuSDu7LfHTbNy44JIAeuouRKE9Oi5wjhC1vT15HP7cIC02mYU3bl@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL5vo75/rWT2yJnbZ0Q4W6u/SuB8zSTiTV67U9vc84Uo4R8juC
+	pjRG3VzI8EHed7nTyfMGG1m9pg0Msh6qw5NZZh07QLDmZJOginS0Cuz2H7Vy+7k0kCkSNvcDerC
+	Q25K+5D2oIadKKaSdYpl0Kls27dXf7p0=
+X-Gm-Gg: ASbGnctbKYToGTr8YOCjPYsNZCPDPeeYCLaepTygALrnvTTp1Pe/m58YeUD7kGoAP+P
+	R6xGUccHibgYvH/BzISx4aJU/O2iCncYkC6mJ1OKcC5kKp7z1lAhDTI+U/PVAG2j1DWx4lI/tIa
+	KbwPAZ/d1PH47IwkqckrQ1V4r+qc8yAdwFLD08gu4EC88=
+X-Google-Smtp-Source: AGHT+IEC7ho78SQgsaeN6q4AwKfEC47488zfkhERu+v8xcfCtxiQkAURHCdYUqFdhvEtneSoYJlGM5Vil8YO+3c5hMU=
+X-Received: by 2002:a17:902:f547:b0:235:239d:2e3d with SMTP id
+ d9443c01a7336-237d9a7513cmr76716975ad.9.1750720531155; Mon, 23 Jun 2025
+ 16:15:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602164923.48893-2-saivishnu725@gmail.com>
-In-Reply-To: <20250602164923.48893-2-saivishnu725@gmail.com>
+References: <20250623225846.169805-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20250623225846.169805-1-fujita.tomonori@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Jun 2025 01:14:06 +0200
-X-Gm-Features: Ac12FXyqZ3g-1ON5fFexR90xH35tHfSbVnzNE1OtPfzOPTL7_G5-x-04YBhAohU
-Message-ID: <CANiq72=drJrCgfrFyyDOKiEANPMsOEMxbwJhcqhPWEchjAvm3g@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: doc: Clean up formatting in io.rs
-To: Sai Vishnu M <saivishnu725@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
-	dakr@kernel.org, gregkh@linuxfoundation.org, daniel.almeida@collabora.com, 
-	me@kloenk.dev
+Date: Tue, 24 Jun 2025 01:15:18 +0200
+X-Gm-Features: Ac12FXzhVwJQmdWGNlkk5XZjEkFRfHTuAwlYi_-pSvjUB_1-gW_-1kjZDIajmgQ
+Message-ID: <CANiq72kR=yFrMUtvOVp__QSNT574f+HwwbpVAvw7D8LeBs1pmw@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: fix typo in #[repr(transparent)] comments
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: alex.gaynor@gmail.com, dakr@kernel.org, gregkh@linuxfoundation.org, 
+	ojeda@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, 
+	a.hindborg@kernel.org, aliceryhl@google.com, bhelgaas@google.com, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, devicetree@vger.kernel.org, 
+	gary@garyguo.net, kwilczynski@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org, lossin@kernel.org, rust-for-linux@vger.kernel.org, 
+	tmgross@umich.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 2, 2025 at 6:51=E2=80=AFPM Sai Vishnu M <saivishnu725@gmail.com=
-> wrote:
+On Tue, Jun 24, 2025 at 12:59=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> From: Sai Vishnu M <saivishnu725@gmail.com>
+> Fix a typo in several comments where `#[repr(transparent)]` was
+> mistakenly written as `#[repr(transparent)` (missing closing
+> bracket).
 >
-> Removed reference to internal variables in the comment of `IoMem`
-> This avoids using private variable names in public documentation.
->
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes:  https://github.com/Rust-for-Linux/linux/issues/1167
-> Signed-off-by: Sai Vishnu M <saivishnu725@gmail.com>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Applied to `rust-next` -- thanks!
+Thanks for fixing the typo!
 
-    [ Reworded title and adjusted tags. - Miguel ]
-
-Danilo: you originally added this, so if you are against this one,
-please let me know.
+Looks fine to me.
 
 Cheers,
 Miguel
