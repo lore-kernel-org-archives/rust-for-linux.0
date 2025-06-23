@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C27223DE1;
-	Mon, 23 Jun 2025 23:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2D81ADFFE
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Jun 2025 23:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750720931; cv=none; b=aJWF8UUvk5dZR412fdS2LROg+ijh/xj1p3lWF0XyKnUsgxbkhBnek8XTpTtF0IvvfsPGlfvkx0lBXDmFYW1xKwoR2C+pVXbSccxtyrelzLkB+o678k6AH6pUcOR2jAqdsGfmUZ7NJe/W0fJvbcUPSVsQ/WRg2A+3czNpGOPGG6w=
+	t=1750721163; cv=none; b=pHnKWae+4utMoa1ClDy8+Y+bpfK3EA3+QVVW7dqtoDdYKbhqX8SmO0+u5GbiBEMF75f1wimf6Am96UJI2QFljUTg2UkFMMJ4WeRZdz9uToZxRuIWpEGRNe0incz75J25l/Uc9J+BAEXP5yp0l2O3nhzXySPPYkbt3n2sRfrTfSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750720931; c=relaxed/simple;
-	bh=gKpUNb2ySame1235TpxrDwcS53OCEqx/s21YimB9rrg=;
+	s=arc-20240116; t=1750721163; c=relaxed/simple;
+	bh=lR/BztWCQJZ/IxQD2zGS4bK8NM91WP71Q9t8zPKLZgI=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=UsvRtB2heihIYHWH/knkc4czi5/oVixJ/LPWdH8oIbCaeaQ/46KPCLywZoRBk12C89Lyh00M+vvmhSm1jxxhS506BWoqHr8nsBII+gg5esuzSEjYQcv6bUOjvs0IF/eSCwpi8jgaAoskbMNiMS4E5IAdCw5DsCFB/uBBejLPuL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6oZyXJp; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=BYH9lWfIqrOkAzYJSVBXhghf764HH2MgcxOhQVxQEkZcPsiHUD9aSEJs91IjUCXR+r/H0EC7Vr3cEP8ax5sNzu7H5TdmYJGhM94W6Ad5Z8XbGW7aHtan8p6GOr6N/w98a8T8hk3OqKZ5ZBM5zmtAtOrkq+pG0xpA6SKx3d2s37Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sR4eEZd9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6oZyXJp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE859C4CEEA;
-	Mon, 23 Jun 2025 23:22:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sR4eEZd9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E98FC4CEEA;
+	Mon, 23 Jun 2025 23:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750720930;
-	bh=gKpUNb2ySame1235TpxrDwcS53OCEqx/s21YimB9rrg=;
+	s=k20201202; t=1750721163;
+	bh=lR/BztWCQJZ/IxQD2zGS4bK8NM91WP71Q9t8zPKLZgI=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=J6oZyXJpeDeGnaYjzST7RnCmZ+VNN1jEUocHjcmdMapezoQQmLB1Prk/RbwK9Zftc
-	 vMEDEvyNfzcWU+bWdjaiSM/PjvvInOe4PojPOUg68GRJ41o4+oHXGyQYLJbMXaC2dA
-	 ErNT7NHdGZYAd0TkjuE2h2AmiIF1/OGefRfgb4nG7znnD2h3CHCocW/LeO/uhuy6Gz
-	 xU9lYV+Bs5Bje15Xl7pGdDn0RPqkh8Yb5GngpO0JmY1zeskr5sRNzp032Kewv3BS11
-	 +x8clZkDGkPc1y3hNG4jrmDF4ZkOmzsuOdyMdP6TV+52LJ5O+aMQKHMFk8ViCRhVh/
-	 5Unm13xkG3PKA==
+	b=sR4eEZd962RxEtnO9M09EnY1K6Z/FDpmClH1ZHwxxYx8W/GsWk2ZHRVsnsi6BLbC4
+	 ew6r/1+xJMMvFuGfDRgJO6laBZdoABNx1iIoO3ZobR3QULwsoHDhYSePmv4L0aSWmv
+	 WtyVGLiXzgIArZglem8wVIk8RQdsDP/ce9dJy119fG0PLZfIECwytdOAhwstAC2r0J
+	 D6lu95B47X/r8h7jU0SAbSdXGuAxFgSOmISQRi8Urs9mLiTGuzHkSnNa5ctHdKk9nY
+	 OCteJokzaFIFsRMCEMKs6y5Sb5btIr6/1atw90khaV9rsBatjifCzKYzYpiwGvACm9
+	 xk1BfupvlVHxw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,198 +34,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Jun 2025 01:22:05 +0200
-Message-Id: <DAUARTYJ118U.YW38OP8TRVO3@kernel.org>
-Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <gary@garyguo.net>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <dakr@kernel.org>, <peterz@infradead.org>, <mingo@redhat.com>,
- <will@kernel.org>, <longman@redhat.com>, <felipe_life@live.com>,
- <daniel@sedlak.dev>, <bjorn3_gh@protonmail.com>, <simona@ffwll.ch>,
- <airlied@gmail.com>, <dri-devel@lists.freedesktop.org>, <lyude@redhat.com>
-Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
+Date: Tue, 24 Jun 2025 01:25:59 +0200
+Message-Id: <DAUAUTGMKB4Y.2NS5D54LX5JIA@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: move ARef and AlwaysRefCounted to sync::aref
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
+To: "Shankari Anand" <shankari.ak0208@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250621184454.8354-1-work@onurozkan.dev>
- <20250621184454.8354-3-work@onurozkan.dev>
- <DASY7BECFRCT.332X5ZHZMV2W@kernel.org> <aFlQ7K_mYYbrG8Cl@Mac.home>
- <DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org> <aFlpFQ4ivKw81d-y@Mac.home>
- <DAU0ELV91E2Q.35FZOII18W44J@kernel.org> <aFmKsE_nJkaVMv0T@tardis.local>
-In-Reply-To: <aFmKsE_nJkaVMv0T@tardis.local>
+References: <20250623192530.266103-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250623192530.266103-1-shankari.ak0208@gmail.com>
 
-On Mon Jun 23, 2025 at 7:11 PM CEST, Boqun Feng wrote:
-> On Mon, Jun 23, 2025 at 05:14:37PM +0200, Benno Lossin wrote:
->> On Mon Jun 23, 2025 at 4:47 PM CEST, Boqun Feng wrote:
->> > On Mon, Jun 23, 2025 at 03:44:58PM +0200, Benno Lossin wrote:
->> >> I didn't have a concrete API in mind, but after having read the
->> >> abstractions more, would this make sense?
->> >>=20
->> >>     let ctx: &WwAcquireCtx =3D ...;
->> >>     let m1: &WwMutex<T> =3D ...;
->> >>     let m2: &WwMutex<Foo> =3D ...;
->> >>=20
->> >>     let (t, foo, foo2) =3D ctx
->> >>         .begin()
->> >>         .lock(m1)
->> >>         .lock(m2)
->> >>         .lock_with(|(t, foo)| &*foo.other)
->> >>         .finish();
->> >>=20
->> >
->> > Cute!
->> >
->> > However, each `.lock()` will need to be polymorphic over a tuple of
->> > locks that are already held, right? Otherwise I don't see how
->> > `.lock_with()` knows it's already held two locks. That sounds like a
->> > challenge for implementation.
->>=20
->> I think it's doable if we have=20
->>=20
->>     impl WwActiveCtx {
+On Mon Jun 23, 2025 at 9:25 PM CEST, Shankari Anand wrote:
+> Move the definitions of `ARef` and `AlwaysRefCounted` from `types.rs`
+> to a new file `sync/aref.rs`.
+> Define the corresponding `aref` module under `rust/kernel/sync.rs`.
+> These types are better grouped in `sync` with other synchronization primi=
+tives.
 >
-> I think you mean *WwAcquireCtx*
-
-Oh yeah.
-
->>         fn begin(&self) -> WwActiveCtx<'_, ()>;
->>     }
->>=20
->>     struct WwActiveCtx<'a, Locks> {
->>         locks: Locks,
+> To avoid breaking existing imports, they are re-exported from `types.rs`.
+> Drop unused imports `mem::ManuallyDrop`, `ptr::NonNull` from `types.rs`,
+> they are now only used in `sync/aref.rs`, where they are already imported=
+.
 >
-> This probably need to to be Result<Locks>, because we may detect
-> -DEADLOCK in the middle.
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> ---
 >
->     let (a, c, d) =3D ctx.begin()
->         .lock(a)
->         .lock(b) // <- `b` may be locked by someone else. So we should
->                  // drop `a` and switch `locks` to an `Err(_)`.
->         .lock(c) // <- this should be a no-op if `locks` is an `Err(_)`.
->         .finish();
+> The moving patch and updating patch are split as discussed in https://git=
+hub.com/Rust-for-Linux/linux/issues/1173
+> A follow-up patch will update all the call sites to import `ARef` and `Al=
+waysRefCounted`
+> directly from `sync::aref` instead of `types`.
 
-Hmm, I thought that we would go for the `lock_slow_path` thing, but
-maybe that's the wrong thing to do? Maybe `lock` should return a result?
-I'd have to see the use-cases...
+Ah, I meant that you can just send the two patches in a single series.
+No need to wait for anything (it's easier to review the two distinct
+changes, that's why I thought it's a good idea to split them).
 
->>         _ctx: PhantomData<&'a WwAcquireCtx>,
+> Fixes were also made to intra-doc links: unresolved references to `inc_re=
+f` and `dec_ref`
+> were updated to use `AlwaysRefCounted::inc_ref` and `AlwaysRefCounted::de=
+c_ref`.
 >
-> We can still take a reference to WwAcquireCtx here I think.
+> ---
+>  rust/kernel/sync.rs      |   1 +
+>  rust/kernel/sync/aref.rs | 170 +++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/types.rs     | 156 ++---------------------------------
+>  3 files changed, 176 insertions(+), 151 deletions(-)
+>  create mode 100644 rust/kernel/sync/aref.rs
 
-Yeah we have to do that in order to call lock on the mutexes.
-
->>     }
->>=20
->>     impl<'a, Locks> WwActiveCtx<'a, Locks>
->>     where
->>         Locks: Tuple
->>     {
->>         fn lock<'b, T>(
->>             self,
->>             lock: &'b WwMutex<T>,
->>         ) -> WwActiveCtx<'a, Locks::Append<WwMutexGuard<'b, T>>>;
->>=20
->>         fn lock_with<'b, T>(
->>             self,
->>             get_lock: impl FnOnce(&Locks) -> &'b WwMutex<T>,
->>         ) -> WwActiveCtx<'a, Locks::Append<WwMutexGuard<'b, T>>>;
->>         // I'm not 100% sure that the lifetimes will work out...
->
-> I think we can make the following work?
->
->     impl<'a, Locks> WwActiveCtx<'a, Locks>
->     where
->         Locks: Tuple
->     {
->         fn lock_with<T>(
-> 	    self,
-> 	    get_lock: impl FnOnce(&Locks) -> &WmMutex<T>,
-> 	) -> WwActiveCtx<'a, Locks::Append<WmMutexGuard<'a, T>>
->     }
->
-> because with a `WwActiveCtx<'a, Locks>`, we can get a `&'a Locks`, which
-> will give us a `&'a WmMutex<T>`, and should be able to give us a
-> `WmMutexGuard<'a, T>`.
-
-I think this is more restrictive, since this will require that the mutex
-is (potentially) locked for `'a` (you can drop the guard before, but you
-can't drop the mutex itself). So again concrete use-cases should inform
-our choice here.
-
->>         fn finish(self) -> Locks;
->>     }
->>=20
->>     trait Tuple {
->>         type Append<T>;
->>=20
->>         fn append<T>(self, value: T) -> Self::Append<T>;
->>     }
->>=20
->
-> `Tuple` is good enough for its own, if you could remember, we have some
-> ideas about using things like this to consolidate multiple `RcuOld` so
-> that we can do one `synchronize_rcu()` for `RcuOld`s.
-
-Yeah that's true, feel free to make a patch or good-first-issue, I won't
-have time to create a series.
-
->>     impl Tuple for () {
->>         type Append<T> =3D (T,);
->>=20
->>         fn append<T>(self, value: T) -> Self::Append<T> {
->>             (value,)
->>         }
->>     }
->>    =20
->>     impl<T1> Tuple for (T1,) {
->>         type Append<T> =3D (T1, T);
->>=20
->>         fn append<T>(self, value: T) -> Self::Append<T> {
->>             (self.0, value,)
->>         }
->>     }
->>=20
->>     impl<T1, T2> Tuple for (T1, T2) {
->>         type Append<T> =3D (T1, T2, T);
->>=20
->>         fn append<T>(self, value: T) -> Self::Append<T> {
->>             (self.0, self.1, value,)
->>         }
->>     }
->>=20
->>     /* these can easily be generated by a macro */
->>=20
->> > We also need to take into consideration that the user want to drop any
->> > lock in the sequence? E.g. the user acquires a, b and c, and then drop
->> > b, and then acquires d. Which I think is possible for ww_mutex.
->>=20
->> Hmm what about adding this to the above idea?:
->>=20
->>     impl<'a, Locks> WwActiveCtx<'a, Locks>
->>     where
->>         Locks: Tuple
->>     {
->>         fn custom<L2>(self, action: impl FnOnce(Locks) -> L2) -> WwActiv=
-eCtx<'a, L2>;
->>     }
->>=20
->> Then you can do:
->>=20
->>     let (a, c, d) =3D ctx.begin()
->>         .lock(a)
->>         .lock(b)
->>         .lock(c)
->>         .custom(|(a, _, c)| (a, c))
->>         .lock(d)
->>         .finish();
->>=20
->
-> Seems reasonable. But we still need to present this to the end user to
-> see how much they like it. For ww_mutex I think the major user is DRM,
-> so add them into Cc list.
-
-Yeah let's see some use-cases :)
+This doesn't apply to `rust-next` or `v6.16-rc3`, what base did you use?
+When creating `.patch` files for sending, please use `--base` to make
+git add your base at the bottom.
 
 ---
 Cheers,
