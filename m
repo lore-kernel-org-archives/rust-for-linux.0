@@ -1,157 +1,452 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAE51AD3FA;
-	Mon, 23 Jun 2025 21:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715696; cv=none; b=kcxr/QdagWJWSXrV8wlJGiwYu9PPaDFSzxPxx/AKlsXSUCm1YydOsNTZYHF1Kf60lMOU+bhIn1/up0D460QA78DB7k208cyQAW1cJ/4HjCY2+n0zawMwqheNnwNpAhyCa6YaIR78PurDmPqRAousm+bPGpnqeq/XuGDk0ZUJT7c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715696; c=relaxed/simple;
-	bh=M9NqqGvqesekEZeAlJ2U1P7PPbr6+pny52J9cuRc0oA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=itycTOE4PEhf/Zufk7B7cYvcX+mxw2nyZg8jcxIWglTbTJp0nH5NtTEiKRmMH0WDBl7XdMYK83TzBY2kyWgOgWeirtQuzJDbi9re1PV8vAz5LzjDRbS3Dx7H3zGCwKQaFTdOpGPzAHA9mA4UioIhO5tgAEs+DgwlV+n35lVhaXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h/q+3iuO; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A83D226533;
+	Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750716824; cv=pass; b=V2VKSs5WayV39+mcIr+uNG9IUH+rzx4peobS66UxCfHUCapYW/txiDdQhyDPwmVZs22UPqBJAwr/5zKeRstkXlf3DOXinOWdkv3/MIXKFkWzHHRrD8rzcDhPTbrqIowRC1tdahcQt3bAPPICNoZglU+/3WSfd4q3oWW3MFBW9xI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750716824; c=relaxed/simple;
+	bh=UYzgCMXJyejxiYrlE2yhmphCLd1lWU3qkc/+/cpjJRw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aSxUhcAmUezXXBJ/lQgrglDPcJD+UqkJPsF6SknoQtk9Ad8zMNLHFVd183Z1doMbFpDSieZ9Ys4NJ9Gld/4/dZBEyNQfPiTzAAVyJMstlft0jWrcIz2+KiYPZcfGacufKjoltg/4/pdOBXKIyrxmVAa2ZuC5fiCXLoyCulgLZv8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Ny52dreS; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h/q+3iuO"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6facc3b9559so74899146d6.0;
-        Mon, 23 Jun 2025 14:54:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750715694; x=1751320494; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FPXwJIEuFLuIBNJLi2CQrb55dG3WvD/ZK7FkLBpIGNI=;
-        b=h/q+3iuOjNpXAIqI1LfGCpx2RvBQbhbFnIWwbyvxbzlqXZXIepLAaS6OCgkJBd/Z2K
-         yuL8jjIgETo2VceMWRfHmM0SKYWJwoUVunQFbZQFAAy5xLU4BMixtCLiUZKX3bELclm2
-         h11QZSfn7md21Hz1mI7DZja0Iev9i6Hqj9WmI9MxsqTS2Pm9aPCrd6ss8xTbqIZ1n+qt
-         e0Bpyf7dWH8OJHbYhs7ZeiKvZlgtOrO2Ry2JGYUaM0JFVmKIm+TjpBzMrFsZxDxoLe98
-         GrfA5bcB5f3/Vinx3pUdWlivYCDS/XNT6Vw4+nS4xKwTgI+9StRJdJ2kDkt4s9HMHKBK
-         Yo2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750715694; x=1751320494;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FPXwJIEuFLuIBNJLi2CQrb55dG3WvD/ZK7FkLBpIGNI=;
-        b=aDrsGpNra89IUxf86YDt5Rpytoe83AZOZwUFycqcSACkSAIW5YWzTcLBCKbNrkxw8x
-         iYP8h+fb0S0bKvcP+EGlMcHgv6/DeLvVplPQ+rfHLhnP6qaLaetoTNRt2pTLeLUnDEI/
-         xOD2GwZec29JQIWQTHN3L1UXRv11Qwv72TnQTNEdBZpcx9h9h+oQBuj4fF3eD/pGb48e
-         HfcBtS45rzc6Dap28NChFe3pbthE6XRBzjD6LRCa3i9pyvJkAkhwep3mcniHYnwBdIUo
-         uUZRxdnDD76GGOXgKhXvyX7qrd8QTLlS3PPF0rF7s/VBH7vDXdcfVakrN8khM88Cwj78
-         on9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUwXSnLxvrF4Aydlzhkve+9Tf9pahdr7bdkxFy9rCTiFsq7AGJ2VUKEuSA1s3Nd8VC/IszfqIzSR41crFdsLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVhP/urAgDwRyBXkxrQTJy3glbiN0DeHzYRUMoaYE8/yB86f+p
-	0uC0O57rnnj4phx+vx8spR7FnEtVZYoGw3M+SI0C1tzUhfthGKCDJCTi
-X-Gm-Gg: ASbGncuCwfQmsyocTT458QGbMezLfboXViEkilkpHdWkeajCcxl1uwLC3WFFMoEX+1H
-	3eC5B1RUcnZg37Cnl3vWUvrp3nz0WeHhmze39IK+dmMGT1HCxvemRkrFm8BO6ktEk9eG6QPHATI
-	xAGWzxVD5SL8M4nuUavvRYT4jvb2wfVFJfcYZGn/1KDKLHaAxR6Rdtiy4uP4U/UwTHC7me0BhKq
-	c7Gd1KtiesLN8vGwI0NfFpxd8W98Hy+00y8wj3J1G2+c8QiJ5bsBkLLMTopQtSzNTsU4zcaAmTw
-	RJN1cg122dQs9HgPx+CywDiP8IUg+Jp3VIJg6wPCZuJGjuu40T8KThVx3syQ6bP6ZG6p0QWIvI4
-	oYcaelxwq1WE2/OXrpNKsPIx5n4Xr7cuA1yGF4BafQYtSLhgNBrwZoCyMrQRBlro=
-X-Google-Smtp-Source: AGHT+IGV9Fw/fjtiPKvAaqNmv48UdUW9if2dOxAcnAUenkr+67/or7hGlYjo/8Z3z1R4t4fwu52/Kw==
-X-Received: by 2002:a05:6214:509c:b0:6fa:fb7d:6e4c with SMTP id 6a1803df08f44-6fd0a54d8c8mr241917876d6.25.1750715693772;
-        Mon, 23 Jun 2025 14:54:53 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd1e31c8a2sm29185156d6.5.2025.06.23.14.54.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 14:54:53 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9DB881200043;
-	Mon, 23 Jun 2025 17:54:52 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 23 Jun 2025 17:54:52 -0400
-X-ME-Sender: <xms:LM1ZaDA7wIphjuX98egOJmqKqQW1nD4e5g-Lv_GZqRdPR-gjhg8cuA>
-    <xme:LM1ZaJhvPEGEN0MJJBvsvg_jw6YHZLYX1qL1Qo0HwDxTljRvfWcEJuziQRse_4SEc
-    yYA8Kwr3jvWDvUwVA>
-X-ME-Received: <xmr:LM1ZaOlrfroTI0hiJbXBLevcpYJ3eB3NOLlimtQRgvLg5aGmxqZW7BbhD1Pu4A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddukeduhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
-    dtvdenucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgr
-    ihhlrdgtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihe
-    dvteehuddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepfihorhhksehonhhurhhoiihkrghnrdguvghvpdhrtghpthhtoheplhhinhhugi
-    dqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushht
-    qdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepoh
-    hjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhes
-    ghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprh
-    gtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhi
-    nhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlse
-    hgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:LM1ZaFy0dsq2Q2Yt4QEOOtbIxt5sJUbznqRTl-1lVl8ojojNwdnS6A>
-    <xmx:LM1ZaIQ3qSMlavbOJzH3LMQKbWp5G9JOt4zliXlrqNoUf5sDf3mmpQ>
-    <xmx:LM1ZaIbXg10vJ7VuM5C2s6-8fHPlwBJVw1UV695xwA6l83BJk7hTiA>
-    <xmx:LM1ZaJS56ppW1gwfGebKfePE7HWoMTLUOwdrqBy40p9uxjCnsIexDQ>
-    <xmx:LM1ZaODIzE08yg1nRQt8xMkv7bC4BDSIKmhGsOEmVVLYoy42-KWgdp-e>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 23 Jun 2025 17:54:52 -0400 (EDT)
-Date: Mon, 23 Jun 2025 14:54:51 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Onur <work@onurozkan.dev>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org,
-	mingo@redhat.com, will@kernel.org, longman@redhat.com,
-	felipe_life@live.com, daniel@sedlak.dev, bjorn3_gh@protonmail.com
-Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
-Message-ID: <aFnNK1zE_IvLKsaa@tardis.local>
-References: <20250621184454.8354-1-work@onurozkan.dev>
- <20250621184454.8354-3-work@onurozkan.dev>
- <aFlV9ky2RKrYnrJX@Mac.home>
- <20250623211740.00a5bfea@nimda.home>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Ny52dreS"
+ARC-Seal: i=1; a=rsa-sha256; t=1750716779; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=K1j0Zgy09FLjJkBECueMZBV/vl1KJSGzrccGMXKa0hf5+aIHaNs8YPCKSI18k0OWpA7nonPYJf+50SW6KCzOe6PIgXlV025oUx4a0JX0lIjWLpwu32Nj+yCFwuTuG2Zwe2xaruybPMZpPXHYCaaFWvhAIt/KyLqk9f048zAR/HU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750716779; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=R/OPNWNuNU0gy1bLm311JcmJwmHKTXtpZ8cbHCqzFBs=; 
+	b=DUKRSJnk357tKTeZN+20NosV7a1E9EyNQ15qc99io2gR9rk9rFtEvY0DCTG0tZHbJCGrows7RPleIdRI9eoVLZlE+KHOePc2/OBdMEI0FwVFimx8HZ7qnABo8cDJUqrrwd/nnUKsfXhF2j1xstbbDLrL4ZN/RrcQ/JJFbblEukQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750716779;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=R/OPNWNuNU0gy1bLm311JcmJwmHKTXtpZ8cbHCqzFBs=;
+	b=Ny52dreSbhg3cbj71MwbqK0yRh+3XoZC38vUKCtLpO6AL7OsLLL0rpNdnRSgQdDj
+	0I8/Aa33JuIvBCBPHoDvquUggk66/SVIrOLo6b6Yg2N/I1cSfSP+K68lwsiqDs46SIy
+	5qBpjdkukMsUMVMMuSs6DE3VbnqztzfsexisZ5Eg=
+Received: by mx.zohomail.com with SMTPS id 1750716776569246.03084252845588;
+	Mon, 23 Jun 2025 15:12:56 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Mon, 23 Jun 2025 19:12:45 -0300
+Subject: [PATCH] rust: drm: mm: Add DRM MM Range Allocator abstraction
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250623211740.00a5bfea@nimda.home>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250623-topics-tyr-drm_mm-v1-1-82fe8104a6f5@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAFzRWWgC/x2MQQqAIBAAvyJ7biG1OvSViAjdag9WrBKF9Pckm
+ MscZjJEEqYIvcogdHHkYy+iKwVum/eVkH1xMLVp685YTMfJLmJ6BL2EKQT02je20FmtoXSn0ML
+ 3/xzG9/0AoXYv5WMAAAA=
+X-Change-ID: 20250623-topics-tyr-drm_mm-d1d43d436311
+To: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ rust-for-linux@vger.kernel.org, Asahi Lina <lina+kernel@asahilina.net>, 
+ Asahi Lina <lina+kernel@asahilina.net>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Mon, Jun 23, 2025 at 09:17:40PM +0300, Onur wrote:
-> > [...]
-> > > +    /// Checks if the mutex is currently locked.
-> > > +    pub fn is_locked(&self) -> bool {
-> > 
-> > Did I miss a reply from you regarding:
-> > 
-> > 	https://lore.kernel.org/rust-for-linux/aFReIdlPPg4MmaYX@tardis.local/
-> > 
-> > no public is_lock() please. Do an assert_is_locked() instead. We need
-> > to avoid users from abusing this.
-> 
-> Sorry, I missed that. Perhaps, using `#[cfg(CONFIG_KUNIT)]` e.g.,:
-> 
+From: Asahi Lina <lina+kernel@asahilina.net>
 
-As long as it's not `pub`, it's fine. `#[cfg(CONFIG_KUNIT)]` is not
-needed.
+drm_mm provides a simple range allocator, useful for managing virtual
+address ranges. Add a Rust abstraction to expose this module to Rust
+drivers.
 
->     /// Checks if the mutex is currently locked.
+This code will be used by upcoming GPU drivers soon in order to manage
+a range of memory reserved to the kernel driver. This includes some
+kernel-managed objects as well as memory needed by the GPU hardware
+itself.
 
-Please mention that the function is only for internal testing, and
-cannot be used to check whether another task has acquired an lock or
-not.
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+---
+Changes from v0:
+- Rebase on rust-next
+- Use Opaque<T> as needed.
+- Improve the docs
+- Slightly reword the commit message to highligh how this will be used
+  by new drivers
+---
+ rust/kernel/drm/mm.rs  | 333 +++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/drm/mod.rs |   1 +
+ 2 files changed, 334 insertions(+)
 
-Thanks!
+diff --git a/rust/kernel/drm/mm.rs b/rust/kernel/drm/mm.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..9536a97fc3831ace5d2f4d216c723d97c52f925c
+--- /dev/null
++++ b/rust/kernel/drm/mm.rs
+@@ -0,0 +1,333 @@
++// SPDX-License-Identifier: GPL-2.0 OR MIT
++
++//! DRM MM range allocator.
++//!
++//! The range allocator is frequently used to manage GPU memory. To do so,
++//! drivers have to insert nodes into the allocator. The presence of a node in
++//! the allocator indicates that the range it represents is currently taken.
++//!
++//! See [`DRM MM Range Allocator`](https://docs.kernel.org/gpu/drm-mm.html#drm-mm-range-allocator)
++//! for more information.
++//!
++//! C header: [`include/drm/drm_mm.h`](srctree/include/drm/drm_mm.h)
++
++use crate::{
++    alloc::flags::*,
++    bindings,
++    error::{to_result, Result},
++    new_mutex,
++    sync::{Arc, Mutex, UniqueArc},
++    types::Opaque,
++};
++
++use crate::init::InPlaceInit;
++use crate::prelude::KBox;
++
++use core::{
++    marker::{PhantomData, PhantomPinned},
++    ops::Deref,
++    pin::Pin,
++};
++
++/// Type alias representing a DRM MM node.
++pub type Node<A, T> = Pin<KBox<NodeData<A, T>>>;
++
++/// Trait which must be implemented by the inner allocator state type provided by the user.
++pub trait AllocInner<T> {
++    /// Notification that a node was dropped from the allocator.
++    fn drop_object(&mut self, _start: u64, _size: u64, _color: usize, _object: &mut T) {}
++}
++
++impl<T> AllocInner<T> for () {}
++
++/// Wrapper type for a `struct drm_mm` plus user AllocInner object.
++///
++/// # Invariants
++/// The `drm_mm` struct is valid and initialized.
++struct MmInner<A: AllocInner<T>, T>(Opaque<bindings::drm_mm>, A, PhantomData<T>);
++
++/// Represents a single allocated node in the MM allocator
++///
++/// # Invariants
++///
++/// - `node` points to a valid `drm_mm_node` struct, which is initialized when
++///   the node is inserted in the allocator, and inserting a node is the only way
++///   to create a `NodeData`, therefore `node` is always valid.
++pub struct NodeData<A: AllocInner<T>, T> {
++    node: Opaque<bindings::drm_mm_node>,
++    mm: Arc<Mutex<MmInner<A, T>>>,
++    valid: bool,
++    /// A drm_mm_node needs to be pinned because nodes reference each other in a linked list.
++    _pin: PhantomPinned,
++    inner: T,
++}
++
++impl<A: AllocInner<T>, T> NodeData<A, T> {
++    /// Returns the color of the node (an opaque value)
++    #[inline]
++    pub fn color(&self) -> usize {
++        // SAFETY: Safe as per the type invariants of `NodeData`.
++        unsafe { *self.node.get() }.color
++    }
++
++    /// Returns the start address of the node
++    #[inline]
++    pub fn start(&self) -> u64 {
++        // SAFETY: Safe as per the type invariants of `NodeData`.
++        unsafe { *self.node.get() }.start
++    }
++
++    /// Returns the size of the node in bytes
++    #[inline]
++    pub fn size(&self) -> u64 {
++        // SAFETY: Safe as per the type invariants of `NodeData`.
++        unsafe { *self.node.get() }.size
++    }
++
++    /// Operate on the user `AllocInner<T>` implementation associated with this node's allocator.
++    pub fn with_inner<RetVal>(&self, cb: impl FnOnce(&mut A) -> RetVal) -> RetVal {
++        let mut l = self.mm.lock();
++        cb(&mut l.1)
++    }
++
++    /// Return a clonable, detached reference to the allocator inner data.
++    pub fn alloc_ref(&self) -> InnerRef<A, T> {
++        InnerRef(self.mm.clone())
++    }
++
++    /// Return a mutable reference to the inner data.
++    pub fn inner_mut(self: Pin<&mut Self>) -> &mut T {
++        // SAFETY: This is okay because inner is not structural
++        unsafe { &mut self.get_unchecked_mut().inner }
++    }
++}
++
++impl<A: AllocInner<T>, T> Deref for NodeData<A, T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        &self.inner
++    }
++}
++
++impl<A: AllocInner<T>, T> Drop for NodeData<A, T> {
++    fn drop(&mut self) {
++        if self.valid {
++            let mut guard = self.mm.lock();
++
++            // Inform the user allocator that a node is being dropped.
++            guard
++                .1
++                .drop_object(self.start(), self.size(), self.color(), &mut self.inner);
++            // SAFETY: The MM lock is still taken, so we can safely remove the node.
++            unsafe { bindings::drm_mm_remove_node(self.node.get()) };
++        }
++    }
++}
++
++// SAFETY: Allocator ops take the mutex, and there are no mutable actions on the node.
++unsafe impl<A: Send + AllocInner<T>, T: Send> Send for NodeData<A, T> {}
++// SAFETY: Allocator ops take the mutex, and there are no mutable actions on the node.
++unsafe impl<A: Send + AllocInner<T>, T: Sync> Sync for NodeData<A, T> {}
++
++/// Available MM node insertion modes
++#[repr(u32)]
++pub enum InsertMode {
++    /// Search for the smallest hole (within the search range) that fits the desired node.
++    ///
++    /// Allocates the node from the bottom of the found hole.
++    Best = bindings::drm_mm_insert_mode_DRM_MM_INSERT_BEST,
++
++    /// Search for the lowest hole (address closest to 0, within the search range) that fits the
++    /// desired node.
++    ///
++    /// Allocates the node from the bottom of the found hole.
++    Low = bindings::drm_mm_insert_mode_DRM_MM_INSERT_LOW,
++
++    /// Search for the highest hole (address closest to U64_MAX, within the search range) that fits
++    /// the desired node.
++    ///
++    /// Allocates the node from the top of the found hole. The specified alignment for the node is
++    /// applied to the base of the node (`Node.start()`).
++    High = bindings::drm_mm_insert_mode_DRM_MM_INSERT_HIGH,
++
++    /// Search for the most recently evicted hole (within the search range) that fits the desired
++    /// node. This is appropriate for use immediately after performing an eviction scan and removing
++    /// the selected nodes to form a hole.
++    ///
++    /// Allocates the node from the bottom of the found hole.
++    Evict = bindings::drm_mm_insert_mode_DRM_MM_INSERT_EVICT,
++}
++
++/// A clonable, interlocked reference to the allocator state.
++///
++/// This is useful to perform actions on the user-supplied `AllocInner<T>` type given just a Node,
++/// without immediately taking the lock.
++#[derive(Clone)]
++pub struct InnerRef<A: AllocInner<T>, T>(Arc<Mutex<MmInner<A, T>>>);
++
++impl<A: AllocInner<T>, T> InnerRef<A, T> {
++    /// Operate on the user `AllocInner<T>` implementation, taking the lock.
++    pub fn with<RetVal>(&self, cb: impl FnOnce(&mut A) -> RetVal) -> RetVal {
++        let mut l = self.0.lock();
++        cb(&mut l.1)
++    }
++}
++
++/// An instance of a DRM MM range allocator.
++pub struct Allocator<A: AllocInner<T>, T> {
++    mm: Arc<Mutex<MmInner<A, T>>>,
++    _p: PhantomData<T>,
++}
++
++impl<A: AllocInner<T>, T> Allocator<A, T> {
++    /// Create a new range allocator for the given start and size range of addresses.
++    ///
++    /// The user may optionally provide an inner object representing allocator state, which will
++    /// be protected by the same lock. If not required, `()` can be used.
++    #[track_caller]
++    pub fn new(start: u64, size: u64, inner: A) -> Result<Allocator<A, T>> {
++        let mm = UniqueArc::pin_init(
++            new_mutex!(MmInner(Opaque::uninit(), inner, PhantomData)),
++            GFP_KERNEL,
++        )?;
++
++        // SAFETY: The Opaque instance provides a valid pointer, and it is initialized after
++        // this call.
++        unsafe {
++            bindings::drm_mm_init(mm.lock().0.get(), start, size);
++        }
++
++        Ok(Allocator {
++            mm: mm.into(),
++            _p: PhantomData,
++        })
++    }
++
++    /// Insert a new node into the allocator of a given size.
++    ///
++    /// `node` is the user `T` type data to store into the node.
++    pub fn insert_node(&mut self, node: T, size: u64) -> Result<Node<A, T>> {
++        self.insert_node_generic(node, size, 0, 0, InsertMode::Best)
++    }
++
++    /// Insert a new node into the allocator of a given size, with configurable alignment,
++    /// color, and insertion mode.
++    ///
++    /// `node` is the user `T` type data to store into the node.
++    pub fn insert_node_generic(
++        &mut self,
++        node: T,
++        size: u64,
++        alignment: u64,
++        color: usize,
++        mode: InsertMode,
++    ) -> Result<Node<A, T>> {
++        self.insert_node_in_range(node, size, alignment, color, 0, u64::MAX, mode)
++    }
++
++    /// Insert a new node into the allocator of a given size, with configurable alignment,
++    /// color, insertion mode, and sub-range to allocate from.
++    ///
++    /// `node` is the user `T` type data to store into the node.
++    #[allow(clippy::too_many_arguments)]
++    pub fn insert_node_in_range(
++        &mut self,
++        node: T,
++        size: u64,
++        alignment: u64,
++        color: usize,
++        start: u64,
++        end: u64,
++        mode: InsertMode,
++    ) -> Result<Node<A, T>> {
++        let mut mm_node = KBox::new(
++            NodeData {
++                // SAFETY: This C struct should be zero-initialized.
++                node: unsafe { core::mem::zeroed() },
++                valid: false,
++                inner: node,
++                mm: self.mm.clone(),
++                _pin: PhantomPinned,
++            },
++            GFP_KERNEL,
++        )?;
++
++        let guard = self.mm.lock();
++        // SAFETY: We hold the lock and all pointers are valid.
++        to_result(unsafe {
++            bindings::drm_mm_insert_node_in_range(
++                guard.0.get(),
++                mm_node.node.get(),
++                size,
++                alignment,
++                color,
++                start,
++                end,
++                mode as u32,
++            )
++        })?;
++
++        mm_node.valid = true;
++
++        Ok(Pin::from(mm_node))
++    }
++
++    /// Insert a node into the allocator at a fixed start address.
++    ///
++    /// `node` is the user `T` type data to store into the node.
++    pub fn reserve_node(
++        &mut self,
++        node: T,
++        start: u64,
++        size: u64,
++        color: usize,
++    ) -> Result<Node<A, T>> {
++        let mut mm_node = KBox::new(
++            NodeData {
++                // SAFETY: This C struct should be zero-initialized.
++                node: unsafe { core::mem::zeroed() },
++                valid: false,
++                inner: node,
++                mm: self.mm.clone(),
++                _pin: PhantomPinned,
++            },
++            GFP_KERNEL,
++        )?;
++
++        {
++            // SAFETY: It is safe to fabricate a &mut reference here.
++            let mm_node = unsafe { &mut *mm_node.node.get() };
++            mm_node.start = start;
++            mm_node.size = size;
++            mm_node.color = color;
++        }
++
++        let guard = self.mm.lock();
++        // SAFETY: We hold the lock and all pointers are valid.
++        to_result(unsafe { bindings::drm_mm_reserve_node(guard.0.get(), mm_node.node.get()) })?;
++
++        mm_node.valid = true;
++
++        Ok(Pin::from(mm_node))
++    }
++
++    /// Operate on the inner user type `A`, taking the allocator lock
++    pub fn with_inner<RetVal>(&self, cb: impl FnOnce(&mut A) -> RetVal) -> RetVal {
++        let mut guard = self.mm.lock();
++        cb(&mut guard.1)
++    }
++}
++
++impl<A: AllocInner<T>, T> Drop for MmInner<A, T> {
++    fn drop(&mut self) {
++        // SAFETY: If the MmInner is dropped then all nodes are gone (since they hold references),
++        // so it is safe to tear down the allocator.
++        unsafe {
++            bindings::drm_mm_takedown(self.0.get());
++        }
++    }
++}
++
++// SAFETY: MmInner is safely Send if the AllocInner user type is Send.
++unsafe impl<A: Send + AllocInner<T>, T> Send for MmInner<A, T> {}
+diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
+index 1b82b6945edf25b947afc08300e211bd97150d6b..f369da5b12fb876f23eda8ea7665990919f3960c 100644
+--- a/rust/kernel/drm/mod.rs
++++ b/rust/kernel/drm/mod.rs
+@@ -7,6 +7,7 @@
+ pub mod file;
+ pub mod gem;
+ pub mod ioctl;
++pub mod mm;
+ 
+ pub use self::device::Device;
+ pub use self::driver::Driver;
 
-Regards,
-Boqun
+---
+base-commit: dc35ddcf97e99b18559d0855071030e664aae44d
+change-id: 20250623-topics-tyr-drm_mm-d1d43d436311
 
->     #[cfg(CONFIG_KUNIT)]
->     fn is_locked(&self) -> bool {
->         // SAFETY: The mutex is pinned and valid.
->         unsafe { bindings::ww_mutex_is_locked(self.mutex.get()) }
->     }
-> 
-> would be better? What do you think?
-[..]
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
