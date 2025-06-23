@@ -1,94 +1,232 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07119229B16;
-	Mon, 23 Jun 2025 23:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C27223DE1;
+	Mon, 23 Jun 2025 23:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750720533; cv=none; b=VcbABdhn4VwLpb3QlOq2TG1zJlqjdjE6MarTBz6fSXryYuxyYFR6YpA/yPqnRRhNkws6Bk7Z2u+Zii3cMMU33FSPrGSqGnMn8gdSvknDCDw8ejX5OkZPAYoLmuSziOaLAxX5mH6+5aGsDPmIy9Vne7Kk464Lezh7GpK/sn8lmrE=
+	t=1750720931; cv=none; b=aJWF8UUvk5dZR412fdS2LROg+ijh/xj1p3lWF0XyKnUsgxbkhBnek8XTpTtF0IvvfsPGlfvkx0lBXDmFYW1xKwoR2C+pVXbSccxtyrelzLkB+o678k6AH6pUcOR2jAqdsGfmUZ7NJe/W0fJvbcUPSVsQ/WRg2A+3czNpGOPGG6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750720533; c=relaxed/simple;
-	bh=TRl0+p+jrdHvCnb9FZSoYZqE5p28+PTZwicHcD6Bths=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ugdYIkXnFfKf6dXgMz1gAEODzTIto3Stj9str60Q8x4aJeY84r9FbLWmNFB3SvcxDcV/trRQ1z2X1tCmU1rywkDlnSUE32axc26qoGnv4vP2Lg+htBw/dJrbqBDpBgfgqiK3T/QmHOteB5tuIhcjYMMMlPIa35uit8ye1p08CKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EprXylQH; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750720931; c=relaxed/simple;
+	bh=gKpUNb2ySame1235TpxrDwcS53OCEqx/s21YimB9rrg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=UsvRtB2heihIYHWH/knkc4czi5/oVixJ/LPWdH8oIbCaeaQ/46KPCLywZoRBk12C89Lyh00M+vvmhSm1jxxhS506BWoqHr8nsBII+gg5esuzSEjYQcv6bUOjvs0IF/eSCwpi8jgaAoskbMNiMS4E5IAdCw5DsCFB/uBBejLPuL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J6oZyXJp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EprXylQH"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-234b122f2feso6084705ad.0;
-        Mon, 23 Jun 2025 16:15:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750720531; x=1751325331; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TRl0+p+jrdHvCnb9FZSoYZqE5p28+PTZwicHcD6Bths=;
-        b=EprXylQHTyBd6vPhucqS5aRjLWIS51+opgymex5rQ7d/zeP3JThZXp7L2iQ4mlYrl5
-         2US8Cz0wBjiFo17lTUU+z3YnYmxmwn1k9xPtrQG64Tuos5wPmDQ8Az9dCCJjJUauZjgE
-         MkDMiruv0gg/t2h3lNNwmQ4wx9TWXv/71fqJN0QtS7tgCDCmUjvdzjA/9rOVuSchng6i
-         mrhL86xxKcPtAHZwZ7gNhH3MaHH2tI/SWEMkovloDNz9MExypxvtGcwWrIKgYl+XOlWJ
-         G+8a49dTe+RZH96pIoNRLxZCRIReqcl4bcoH09tYElnHg9XebjvVq0i4CbTcTn2/AtmB
-         oizA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750720531; x=1751325331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TRl0+p+jrdHvCnb9FZSoYZqE5p28+PTZwicHcD6Bths=;
-        b=Yh3Us2wB1JYeVNKs8AgveXP4qkkDa2Tvzp9rQ3X0IGBeCUvDif7CEnWMqxVAnlf07x
-         W2bf3I7QYwfcVSRf2gm1QwKEo/ANMgs0i1pYmyj0mhcQtyai675QpvYI5UBDJs02hkCe
-         mYG3WMO+em5ZXRdPzWqYWfXTffnFyP9cQS9Zpl71t8Ja5SvnSz4lg7771DDevbgENA8X
-         e9q0NrE5K/EOHqcnbZEdUgD9P1L+hyDVTQ7Z4x0bk6oaYIZwwAStSmJ8R5PcYkuvxg+P
-         O//KBegN41NAldZQs9Ag0xZ6p2QeyjE/tfk0hajkAP9BQckLrCFqjKXkJtkvGvxayqqt
-         4GGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUED5iaJEZnvys5C2SDsP38OrjAd23pFB3xX4arBRfTbVUCn+2pMIH+Rxa3H0hT9cOSZf6NdyI39hXD7zxB@vger.kernel.org, AJvYcCUfH0b6u8B2Ro0DjxPzB4If06TZVGLssAi6kNgwjkrsrmJyxVWTYMllxFSxfVr0kjRE0PBxgIGJi/yXl5OW5Nc=@vger.kernel.org, AJvYcCWnk7eDDED/g14jYXIs/5/eClh2H7y8j6D1qjlWfLwYmZh3ZyspPgdKOMm8LftqbdGseLlfQgqlw29T@vger.kernel.org, AJvYcCXrJFH+MR7EGzDPtcQ7k3N2rKtPnuSDu7LfHTbNy44JIAeuouRKE9Oi5wjhC1vT15HP7cIC02mYU3bl@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL5vo75/rWT2yJnbZ0Q4W6u/SuB8zSTiTV67U9vc84Uo4R8juC
-	pjRG3VzI8EHed7nTyfMGG1m9pg0Msh6qw5NZZh07QLDmZJOginS0Cuz2H7Vy+7k0kCkSNvcDerC
-	Q25K+5D2oIadKKaSdYpl0Kls27dXf7p0=
-X-Gm-Gg: ASbGnctbKYToGTr8YOCjPYsNZCPDPeeYCLaepTygALrnvTTp1Pe/m58YeUD7kGoAP+P
-	R6xGUccHibgYvH/BzISx4aJU/O2iCncYkC6mJ1OKcC5kKp7z1lAhDTI+U/PVAG2j1DWx4lI/tIa
-	KbwPAZ/d1PH47IwkqckrQ1V4r+qc8yAdwFLD08gu4EC88=
-X-Google-Smtp-Source: AGHT+IEC7ho78SQgsaeN6q4AwKfEC47488zfkhERu+v8xcfCtxiQkAURHCdYUqFdhvEtneSoYJlGM5Vil8YO+3c5hMU=
-X-Received: by 2002:a17:902:f547:b0:235:239d:2e3d with SMTP id
- d9443c01a7336-237d9a7513cmr76716975ad.9.1750720531155; Mon, 23 Jun 2025
- 16:15:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J6oZyXJp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE859C4CEEA;
+	Mon, 23 Jun 2025 23:22:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750720930;
+	bh=gKpUNb2ySame1235TpxrDwcS53OCEqx/s21YimB9rrg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=J6oZyXJpeDeGnaYjzST7RnCmZ+VNN1jEUocHjcmdMapezoQQmLB1Prk/RbwK9Zftc
+	 vMEDEvyNfzcWU+bWdjaiSM/PjvvInOe4PojPOUg68GRJ41o4+oHXGyQYLJbMXaC2dA
+	 ErNT7NHdGZYAd0TkjuE2h2AmiIF1/OGefRfgb4nG7znnD2h3CHCocW/LeO/uhuy6Gz
+	 xU9lYV+Bs5Bje15Xl7pGdDn0RPqkh8Yb5GngpO0JmY1zeskr5sRNzp032Kewv3BS11
+	 +x8clZkDGkPc1y3hNG4jrmDF4ZkOmzsuOdyMdP6TV+52LJ5O+aMQKHMFk8ViCRhVh/
+	 5Unm13xkG3PKA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250623225846.169805-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20250623225846.169805-1-fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Jun 2025 01:15:18 +0200
-X-Gm-Features: Ac12FXzhVwJQmdWGNlkk5XZjEkFRfHTuAwlYi_-pSvjUB_1-gW_-1kjZDIajmgQ
-Message-ID: <CANiq72kR=yFrMUtvOVp__QSNT574f+HwwbpVAvw7D8LeBs1pmw@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: fix typo in #[repr(transparent)] comments
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: alex.gaynor@gmail.com, dakr@kernel.org, gregkh@linuxfoundation.org, 
-	ojeda@kernel.org, rafael@kernel.org, robh@kernel.org, saravanak@google.com, 
-	a.hindborg@kernel.org, aliceryhl@google.com, bhelgaas@google.com, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, devicetree@vger.kernel.org, 
-	gary@garyguo.net, kwilczynski@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, lossin@kernel.org, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Jun 2025 01:22:05 +0200
+Message-Id: <DAUARTYJ118U.YW38OP8TRVO3@kernel.org>
+Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <gary@garyguo.net>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <dakr@kernel.org>, <peterz@infradead.org>, <mingo@redhat.com>,
+ <will@kernel.org>, <longman@redhat.com>, <felipe_life@live.com>,
+ <daniel@sedlak.dev>, <bjorn3_gh@protonmail.com>, <simona@ffwll.ch>,
+ <airlied@gmail.com>, <dri-devel@lists.freedesktop.org>, <lyude@redhat.com>
+Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20250621184454.8354-1-work@onurozkan.dev>
+ <20250621184454.8354-3-work@onurozkan.dev>
+ <DASY7BECFRCT.332X5ZHZMV2W@kernel.org> <aFlQ7K_mYYbrG8Cl@Mac.home>
+ <DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org> <aFlpFQ4ivKw81d-y@Mac.home>
+ <DAU0ELV91E2Q.35FZOII18W44J@kernel.org> <aFmKsE_nJkaVMv0T@tardis.local>
+In-Reply-To: <aFmKsE_nJkaVMv0T@tardis.local>
 
-On Tue, Jun 24, 2025 at 12:59=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Mon Jun 23, 2025 at 7:11 PM CEST, Boqun Feng wrote:
+> On Mon, Jun 23, 2025 at 05:14:37PM +0200, Benno Lossin wrote:
+>> On Mon Jun 23, 2025 at 4:47 PM CEST, Boqun Feng wrote:
+>> > On Mon, Jun 23, 2025 at 03:44:58PM +0200, Benno Lossin wrote:
+>> >> I didn't have a concrete API in mind, but after having read the
+>> >> abstractions more, would this make sense?
+>> >>=20
+>> >>     let ctx: &WwAcquireCtx =3D ...;
+>> >>     let m1: &WwMutex<T> =3D ...;
+>> >>     let m2: &WwMutex<Foo> =3D ...;
+>> >>=20
+>> >>     let (t, foo, foo2) =3D ctx
+>> >>         .begin()
+>> >>         .lock(m1)
+>> >>         .lock(m2)
+>> >>         .lock_with(|(t, foo)| &*foo.other)
+>> >>         .finish();
+>> >>=20
+>> >
+>> > Cute!
+>> >
+>> > However, each `.lock()` will need to be polymorphic over a tuple of
+>> > locks that are already held, right? Otherwise I don't see how
+>> > `.lock_with()` knows it's already held two locks. That sounds like a
+>> > challenge for implementation.
+>>=20
+>> I think it's doable if we have=20
+>>=20
+>>     impl WwActiveCtx {
 >
-> Fix a typo in several comments where `#[repr(transparent)]` was
-> mistakenly written as `#[repr(transparent)` (missing closing
-> bracket).
+> I think you mean *WwAcquireCtx*
+
+Oh yeah.
+
+>>         fn begin(&self) -> WwActiveCtx<'_, ()>;
+>>     }
+>>=20
+>>     struct WwActiveCtx<'a, Locks> {
+>>         locks: Locks,
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> This probably need to to be Result<Locks>, because we may detect
+> -DEADLOCK in the middle.
+>
+>     let (a, c, d) =3D ctx.begin()
+>         .lock(a)
+>         .lock(b) // <- `b` may be locked by someone else. So we should
+>                  // drop `a` and switch `locks` to an `Err(_)`.
+>         .lock(c) // <- this should be a no-op if `locks` is an `Err(_)`.
+>         .finish();
 
-Thanks for fixing the typo!
+Hmm, I thought that we would go for the `lock_slow_path` thing, but
+maybe that's the wrong thing to do? Maybe `lock` should return a result?
+I'd have to see the use-cases...
 
-Looks fine to me.
+>>         _ctx: PhantomData<&'a WwAcquireCtx>,
+>
+> We can still take a reference to WwAcquireCtx here I think.
 
+Yeah we have to do that in order to call lock on the mutexes.
+
+>>     }
+>>=20
+>>     impl<'a, Locks> WwActiveCtx<'a, Locks>
+>>     where
+>>         Locks: Tuple
+>>     {
+>>         fn lock<'b, T>(
+>>             self,
+>>             lock: &'b WwMutex<T>,
+>>         ) -> WwActiveCtx<'a, Locks::Append<WwMutexGuard<'b, T>>>;
+>>=20
+>>         fn lock_with<'b, T>(
+>>             self,
+>>             get_lock: impl FnOnce(&Locks) -> &'b WwMutex<T>,
+>>         ) -> WwActiveCtx<'a, Locks::Append<WwMutexGuard<'b, T>>>;
+>>         // I'm not 100% sure that the lifetimes will work out...
+>
+> I think we can make the following work?
+>
+>     impl<'a, Locks> WwActiveCtx<'a, Locks>
+>     where
+>         Locks: Tuple
+>     {
+>         fn lock_with<T>(
+> 	    self,
+> 	    get_lock: impl FnOnce(&Locks) -> &WmMutex<T>,
+> 	) -> WwActiveCtx<'a, Locks::Append<WmMutexGuard<'a, T>>
+>     }
+>
+> because with a `WwActiveCtx<'a, Locks>`, we can get a `&'a Locks`, which
+> will give us a `&'a WmMutex<T>`, and should be able to give us a
+> `WmMutexGuard<'a, T>`.
+
+I think this is more restrictive, since this will require that the mutex
+is (potentially) locked for `'a` (you can drop the guard before, but you
+can't drop the mutex itself). So again concrete use-cases should inform
+our choice here.
+
+>>         fn finish(self) -> Locks;
+>>     }
+>>=20
+>>     trait Tuple {
+>>         type Append<T>;
+>>=20
+>>         fn append<T>(self, value: T) -> Self::Append<T>;
+>>     }
+>>=20
+>
+> `Tuple` is good enough for its own, if you could remember, we have some
+> ideas about using things like this to consolidate multiple `RcuOld` so
+> that we can do one `synchronize_rcu()` for `RcuOld`s.
+
+Yeah that's true, feel free to make a patch or good-first-issue, I won't
+have time to create a series.
+
+>>     impl Tuple for () {
+>>         type Append<T> =3D (T,);
+>>=20
+>>         fn append<T>(self, value: T) -> Self::Append<T> {
+>>             (value,)
+>>         }
+>>     }
+>>    =20
+>>     impl<T1> Tuple for (T1,) {
+>>         type Append<T> =3D (T1, T);
+>>=20
+>>         fn append<T>(self, value: T) -> Self::Append<T> {
+>>             (self.0, value,)
+>>         }
+>>     }
+>>=20
+>>     impl<T1, T2> Tuple for (T1, T2) {
+>>         type Append<T> =3D (T1, T2, T);
+>>=20
+>>         fn append<T>(self, value: T) -> Self::Append<T> {
+>>             (self.0, self.1, value,)
+>>         }
+>>     }
+>>=20
+>>     /* these can easily be generated by a macro */
+>>=20
+>> > We also need to take into consideration that the user want to drop any
+>> > lock in the sequence? E.g. the user acquires a, b and c, and then drop
+>> > b, and then acquires d. Which I think is possible for ww_mutex.
+>>=20
+>> Hmm what about adding this to the above idea?:
+>>=20
+>>     impl<'a, Locks> WwActiveCtx<'a, Locks>
+>>     where
+>>         Locks: Tuple
+>>     {
+>>         fn custom<L2>(self, action: impl FnOnce(Locks) -> L2) -> WwActiv=
+eCtx<'a, L2>;
+>>     }
+>>=20
+>> Then you can do:
+>>=20
+>>     let (a, c, d) =3D ctx.begin()
+>>         .lock(a)
+>>         .lock(b)
+>>         .lock(c)
+>>         .custom(|(a, _, c)| (a, c))
+>>         .lock(d)
+>>         .finish();
+>>=20
+>
+> Seems reasonable. But we still need to present this to the end user to
+> see how much they like it. For ww_mutex I think the major user is DRM,
+> so add them into Cc list.
+
+Yeah let's see some use-cases :)
+
+---
 Cheers,
-Miguel
+Benno
