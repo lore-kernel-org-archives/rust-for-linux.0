@@ -1,81 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A426724DCFD;
-	Mon, 23 Jun 2025 13:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F811957FF;
+	Mon, 23 Jun 2025 13:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686594; cv=none; b=gGs29YVFc8teuzeOzJyrK4NW1OwxPlIab0Ow24sR5mZTWsodVxF9D9rEeZrzHXGntAsRp2Zhi2hQTxZBeQSwqcKiifS0YjmmNsxU2n4Y1oFRqkyIeFzUKCcVLA64sCFj68BnTprUdh9lcsWx2XWzanm9SLWE84z5O9DM97OyX/A=
+	t=1750686944; cv=none; b=NLDEul7fagYw2fzrk+rYh4DV8+Pr+KUDIa5U1I3uylaCUlMVkk+kIL3uw8plbIbgIAKBr2REE7lJ6Uz29Hx/94U85o8kKaHsyT/tBkJayTX/iUPywD4mR0Nz2f5SPxUkCT5H40PmgLhxoU30WTdfcq15F4Lq8TkIA54nVr24Lqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686594; c=relaxed/simple;
-	bh=tFNiRzAffr71bbPsV2DOGZh7VVU+ne3AoexZ2EclchI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fcg/WeYFLTcz/CKYs7sdOtwcsBH0QYKiOeVTxOtmb/omEEfBsX2LU9UKuD0WRi4FR3Alhdfp/vD+ubVQnzs4RinGnCqqQXM16TZTD+JmF6A5oFjrbxio3s5p/8E/n/lmHpU4fDgPrC49XK33kqGzDVn/t1k6ffJGGcqhpKS04VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZewjF5E; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750686944; c=relaxed/simple;
+	bh=/Ag7v6ZQya0VRiBpyA8Kql7m+wSMLKuyVmJ/dONXjk0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Rz3saIYFB+ZYLq+0tk+dNR3btC2jdPe+0Bk9eIfbOK+JxPWq5K01/Dht3JM3+uVevQlujkLBJkQcEGdwwpwVvYa5+IFjc7d1oBdJr4TxsDEP0EQYQxKg13QoUEDxtWGmpxmVspZevnaamWWin3mqNc9UEdpGmegw9gpbTHAzdtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7FxlE2m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZewjF5E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEAFC4CEEA;
-	Mon, 23 Jun 2025 13:49:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7FxlE2m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BEDC4CEEA;
+	Mon, 23 Jun 2025 13:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750686594;
-	bh=tFNiRzAffr71bbPsV2DOGZh7VVU+ne3AoexZ2EclchI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sZewjF5EwXbcvf/YcaF9NBIxkGTj9JRj+m6co7EBnNxW6KgWCJDlim8XPDTP7k8LZ
-	 zKXcwb2rC4sx8y6BUiagEQXxQvaSHZ8hywWHwjBg0Nbs5gTahkgne/e13pEqA3OulS
-	 KKyR/yaiWk3VJG/rlK9eOdh3feNpHJwXRTCHXjDU4kPyOSJCBy54lFWOhq27rJjxSG
-	 ysjX92wODTzeya3rYs6RtPAc2HGFShf/cg94LZ1iIYrvVvZ3Oy012XZFitZJE8FGab
-	 Nhy+N9mipFS33VFX6jhzQywxl5wa4u6SlponpQaCOK4D5px8KYgPLC3e64FxjalYIc
-	 Wtwp9S2L2+eOA==
-Date: Mon, 23 Jun 2025 15:49:47 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@kernel.org, tmgross@umich.edu, david.m.ertman@intel.com,
-	ira.weiny@intel.com, leon@kernel.org, kwilczynski@kernel.org,
-	bhelgaas@google.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] rust: devres: implement register_release()
-Message-ID: <aFlbe5zxPsxwl3zn@cassiopeiae>
-References: <20250622164050.20358-1-dakr@kernel.org>
- <20250622164050.20358-5-dakr@kernel.org>
- <aFlCCsvXCSJeYaFQ@google.com>
- <aFlN7W5rMRcmE300@cassiopeiae>
- <DATYE858ERJP.9B9NY8NPMOM2@kernel.org>
+	s=k20201202; t=1750686943;
+	bh=/Ag7v6ZQya0VRiBpyA8Kql7m+wSMLKuyVmJ/dONXjk0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=a7FxlE2m6dWEXl7rt1U2aYfWkWlTwLI8NBLXC2n7o0SJ+xDRD4qW8s45fryqENIE7
+	 l1Ja7J4V5t5yI25UFpZvujNYCN49P/h/xRUgLW6/gY0p7D9d6+b8CeV/JEEAOGd+Cw
+	 HwTNuuTLNOlztLTUqeYxnDOfdDwkjjIdk4F+689dFI52lJ1bPKv79DstmE1P1QT1eS
+	 vvhhtVrdgQYph8EASW3Rkmk/LiDICnYpk5P+TOWY8t661kV7tGhvKjhRJtzr7OSI9J
+	 Paqp8TdJmnFYrZJAHrBem8KY7SmzLtww+o8W6F9f9ZUWciQuKogif9JYza+AhlC6rs
+	 kzV4/msZzJGmw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DATYE858ERJP.9B9NY8NPMOM2@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 23 Jun 2025 15:55:36 +0200
+Message-Id: <DATYQ3ZIFGZO.1CLIKLTTO2YM3@kernel.org>
+Cc: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>, "Nathan
+ Chancellor" <nathan@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
+ <nicolas.schier@linux.dev>, "Trevor Gross" <tmgross@umich.edu>, "Adam
+ Bratschi-Kaye" <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
+ Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+ <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+ <COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid> <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org> <smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid> <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org> <DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> <CANiq72nV3QzpRZTyDTv7Qx-c83jeayUY3nnvhpbtOYXf47EgJA@mail.gmail.com>
+In-Reply-To: <CANiq72nV3QzpRZTyDTv7Qx-c83jeayUY3nnvhpbtOYXf47EgJA@mail.gmail.com>
 
-On Mon, Jun 23, 2025 at 03:40:05PM +0200, Benno Lossin wrote:
-> On Mon Jun 23, 2025 at 2:51 PM CEST, Danilo Krummrich wrote:
-> > On Mon, Jun 23, 2025 at 12:01:14PM +0000, Alice Ryhl wrote:
-> >> On Sun, Jun 22, 2025 at 06:40:41PM +0200, Danilo Krummrich wrote:
-> >> > +pub fn register_release<P>(dev: &Device<Bound>, data: P) -> Result
-> >> > +where
-> >> > +    P: ForeignOwnable,
-> >> > +    for<'a> P::Borrowed<'a>: Release,
-> >> 
-> >> I think we need where P: ForeignOwnable + 'static too.
-> >> 
-> >> otherwise I can pass something with a reference that expires before the
-> >> device is unbound and access it in the devm callback as a UAF.
-> >
-> > I can't really come up with an example for such a case, mind providing one? :)
-> 
->     {
->         let local = MyLocalData { /* ... */ };
->         let data = Arc::new(Data { r: &local });
->         devres::register_release(dev, data)?;
->     }
->     // devres still holds onto `data`, but that points at `MyLocalData`
->     // which is on the stack and freed here...
+On Mon Jun 23, 2025 at 2:37 PM CEST, Miguel Ojeda wrote:
+> On Mon, Jun 23, 2025 at 1:48=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
+wrote:
+>>
+>> Another way would be to use a `Once`-like type (does that exist on the C
+>> side?) so a type that can be initialized once and then never changes.
+>
+> There are `DO_ONCE{,_SLEEPABLE,_LITE}`.
 
-Thanks for providing the example, I think I slightly misunderstood. Gonna add
-the corresponding lifetime bound.
+Thanks for the pointer, it is pretty much exactly what the `Once` type
+in Rust is.
+
+It's not exactly what I'm thinking of in this case, but since it is
+implemented with static key, maybe we can do something similar with a
+static key? So switch the return value of the `ModuleParamAccess::read`
+function depending on weather the module parameters have been written
+and while they haven't just return a dummy value and WARN.
+
+Thoughts @Andreas?
+
+---
+Cheers,
+Benno
