@@ -1,221 +1,272 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22DE2D4B5A;
-	Mon, 23 Jun 2025 19:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBE91E1DFE;
+	Mon, 23 Jun 2025 19:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750705767; cv=none; b=IMAgK8zsnbj3k55T4x2WXlBSK1/nfdgcN/n45K0eD4MNZ+aRCuhdoyiKTOfwA7EhsecwLnPaVlfK1+TJ31MQxHwMkaRMC2YenUedtj0iH99dabTBYPWvTtsMr5Z2jX0ZK85fH++fsIkKXDHveH1L6AET4c8vfmGlSYKPBAa35rM=
+	t=1750706300; cv=none; b=XanOP3sCpEjVz3vTdEoBsFL09+vKAp4LqjGtslxaUCMeUgYuGvUNzFwLEK/NtDlJIPlzmNEDH+6/EaWpuM5QklOhZ16MLGoYGUiiSoXF0B2jqSS1WbTFtGV30KlokWXJiCAD/EGjsV/zjxh/PesYxrkHH7aveCY7eEKmtq5xuIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750705767; c=relaxed/simple;
-	bh=3aUrTipdBM0DvG+bnkRlIqVvv9Fl0CJzrYFcGMsX7+0=;
+	s=arc-20240116; t=1750706300; c=relaxed/simple;
+	bh=CCa+qFwoB/4SE/mJsQWrLXlV9mWW5ISzIjMEdBOmqMY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kcq32xGTd8N5MThI8ZqwJhb/dTJkKFt3WUtjpMrViaP4klCb2uZU+MdlRLEe3uZvflzUaO/RSlZ54OlZrkd34X18/BrxbyGw5jEqCaYTlCrsl4ki2f9BrtLGigFMnS3TcfBElAYmHvFxGMaZdbNUYkOP2vmEwTJLoZptX5Gd/Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mw2ahumo; arc=none smtp.client-ip=209.85.222.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=S2aBzLotOe194UGtEfVvoIS224bvEA6G1X+P9afQ4VhbtDq/UQbzbaZqU5qBYst/1ji0AGgdqmajlDI6APY1kC+E0hm8m394Gk4YKYVjJbM575I7qvl1MxDorJgYHn2BEnlU+b3s1h8oEK0PDA1JER/tNRFuz6EjCz/Z1XvsL6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XWyxxhT+; arc=none smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mw2ahumo"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7d0a0bcd3f3so512398485a.1;
-        Mon, 23 Jun 2025 12:09:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWyxxhT+"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4a440a72584so50865911cf.2;
+        Mon, 23 Jun 2025 12:18:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750705764; x=1751310564; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8sms7B4y2rI1NnoG8cKJvlxEFKP61lyDQPa3zPMR/0k=;
-        b=mw2ahumoqwXGFj88rCaLZ8MlrJwp0k3y/47i/4c9bc0Jh+fjJbHpQ4w/W2JutkjTVI
-         OO7Rcaj5kgO6GQss5mAqWYFB50mI9uMSrdK47ejW0D2mJXEZnrsLRzc/n2MXBB+24C1o
-         r+I1MYn/K0d6BPD1kiHTGveFwIhvm1KyPx+9LFJqz0DNMQdW2SwJEC8vnIY9Eouz8mNx
-         IhDDOI8tCUYUhNZbyaXB8m9tuLfEI8pZS4aPOFpOKhLVv8nDP4wtDThyfzfpgDlMs4Zl
-         Pbu33uK9hN7CiEGFt2ZeXQlKFb+rg7g3CiZcW61/vlVVhPWAdJmTWmDgqtTjh12SkvnF
-         eyUQ==
+        d=gmail.com; s=20230601; t=1750706297; x=1751311097; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jpuQIftcNsqHfftfV777iY5f4fxqvsRYD0zJxsdnOrY=;
+        b=XWyxxhT+AySUgbO6ukKov3HjUilYgiM5ACML45d7/JGyTwsjB2EuLLCX/90Qg11qjg
+         pnQ6kk7lqk03hkp5uOgLbZyOqpVC3OSQfZXXnEvgIfhR9yWIIfp4DHlYSYPNZHSxjSr6
+         m7ufwD8I2vvbbdQjnITivRr+J5OZ09b+xK5aUTmak7CjhvdfMsflUDCehjxL9yL8AF9C
+         GGgBRvR3bGMN28ol63MNxoVm6hk5YYLTZjdYYg2jr41fxmWIN1Be2NImt88ooGUDHLCB
+         covyFBbAxcSR0cvfEU1FvgUeDPEw+kveb6++sSn4t2uierLs6dIuOi/rGRwg3MlYX3jy
+         ssbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750705764; x=1751310564;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8sms7B4y2rI1NnoG8cKJvlxEFKP61lyDQPa3zPMR/0k=;
-        b=bTanNossIFRMIMukqjX6NU/0I9Wptzxgv/JuYz7mrvCgEgL0xz2KTKfzl5KpvkaKYV
-         GbckFIuv33JOdb81pE6SSLcWrNC0o3ojrod8UFuNcti0rusyQR5D3MS9xKnfrHbFioJy
-         cM9O8cVMgH5E/vvp5s/VDCFdHiWboqqG7RXb6w2j1uO0/RKzJpsGsWckJ3X+t5dKbCtA
-         MDHRnwIgINUfzRidd24qY5ksUwnTcijfeUfN1gBohv9+05JlebtNO6oN/IW8OdbIzCBS
-         Obe7ZpZVH3uRSJdlOKlLrqU5PSSo8ZrKYrE6pA620kZcGKnTqF9FaVMyISC+0RP6nrMJ
-         Pa8g==
-X-Forwarded-Encrypted: i=1; AJvYcCUoBSI+gHNrUnnO/J63iji0BQsD1lE9YDA7yzc0P5I2oZUz4AmF75+kNrIqpNotbeiIX+6bzWY08CqC@vger.kernel.org, AJvYcCXgMMrP+SV2itPj5lfL4s4pvcT5z9xj8DaUd6CmqTc0f7o7obJDcLep9R4manrTT1WlrIafgAxILOi5v01wpqU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHfk/AIsgaJ9dUNrmUfL1LSriewdf/Q09SVOvtbReUrGYHH5HR
-	wxDHVBp497TpUQW2E1blmL+nvRbLy4LTlbGiir7tJ2IgNJvV+TU3w41Q
-X-Gm-Gg: ASbGnctPzHehyIfOGiTLuK24kGj5T3aCpUzTOLQ2UtKS1CJVU7+8C3yRPn22oQSt92x
-	T9LjI3Ir2X6glzsWetCQnLsIhZIDe2sbzD3z32sxT+mFmF6ZcO71iyAUW9tZ6K1QUZ0m4TWhZnu
-	FaDbpj9aBUyzcKYIHRu+HyQGZOVGN1w1vgh64tv3f7xe2dYRqhGuxGDy2VJZx49RpaJiuSLnaad
-	uperbzW2t4r6LUGdX+F0xgnRkCd39ksSvPWraK3hMQZmDzvV6aEitOdlGFqAdhJtz2h5NCFpBdW
-	WPg4wr5rsF7r386YhCYar+OhCEhKbfwKSNIMYQYoheJUcqf33FgN84Q0XfQ//AD6lQLksXgWIeC
-	RHePelwJvLHTSiW46ukOu1PhNZ+JmlLNFYgK8E3KGTk2SV68EqBa/
-X-Google-Smtp-Source: AGHT+IFY0SLaBFXkzJuI5EVp2A8p77EVAtcc7Ba+/G4JrsIRg5C2bcRBKquGlsSNvaGt38E2kEU+VA==
-X-Received: by 2002:a05:620a:a811:b0:7d4:2f2:a44f with SMTP id af79cd13be357-7d41ec42108mr75415285a.23.1750705764284;
-        Mon, 23 Jun 2025 12:09:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750706297; x=1751311097;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jpuQIftcNsqHfftfV777iY5f4fxqvsRYD0zJxsdnOrY=;
+        b=IgYj0v+1hwH02FcN0fQiNdZTiQ9/MEqRxv209xlC9+/vgyTGFRHGUgw/awyFCd+unK
+         dcDuDD8C9bj9cO4A3ezS/flejQosapnRqZLXEEFtpo6cmvRjJpP1YhTxKDqDSRDEQF7c
+         qyQGy39o32ZMYK0WNnWADJJg/1exTA+rpSYcWtfF+hEEA4Ncubi5TQhvLA6FArAO2Tfa
+         sCmnxrwQgYv9KRb9p+nK3mFgN898fUNYQucqRhCZ1dftsJZqExBXHo2e9TfeZK1eREaE
+         PIQKEfjusGN3D1MAv3QH7uDYcld0h9HTmX9ChUjeR6DoF1ZpgciolUBVQfisZkHfuo8S
+         e/xA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9SqWuo3bpdBlPoaGoYC8kgPuRsFM4f69WA02kiuK2DLORH3Fx5Ns9eJeAZpbt50fSQoRfjoYnMvHmzGdPefE=@vger.kernel.org, AJvYcCVmfSaE2Vdj1mJmwaKPvj+4sAVRX/sjnos4wUeZgHrBkghRKDcAQo7q2+Y9RFwNrUI3kxNeE1Damft3xeM=@vger.kernel.org, AJvYcCX0E/V9Abv5jF0PeriF9DtxufL9hiEgUtCJ3iBmhlk10EqCV+Muc3tRDSmrl03Pkvo0xSHzGabMunk3@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywrj6X0djS9DpC6yd7BScQRiFzfv6iGabxKjHCF8kHsCN0V3YuA
+	g8iaIPUmH5kct+BFny/iHFcIK8q6AEQDGAuWVEZncW5cmpz6nDd0Rhhc
+X-Gm-Gg: ASbGncsVNZyCCKDV2uA9pEsMog0pyyCiPI0oRzlBrHHj/KvbJYQT+IiEVN0xs2JUfGy
+	Bs2g6wZd14/485ZgkJlhNzZoj1WIhMRp9cF0Mz++ih0+18/vGwqejr+jsSYxL80wtQYVfbCdxJc
+	Rbc3dGHuyUXYf++cHZACxWZ8BJ6Se/wZynL/T7HTMOKT82I1ATrYvx9F335VdjiGLWPO2f0w7by
+	6F/I60S7oTI98dZvLcJhR69Ye90MRLOYVgRqIi/J2fOGQrNrNLDEqW8pt6C77Vckmg76COzNw6h
+	RuUUgfQZPfged6WsAik5Qvq+G8sYGQGvqC8cyJ+iOMxiJiG95Hhl13jkjIANav1J2+J/oq0+Pdr
+	5+3ZCnVQ4hBhMarBqwRH0U8GpoG8Eq0NDfo0992/FcQe1NGYO7B4Z24Nr3tO+ZMk=
+X-Google-Smtp-Source: AGHT+IFDVtOnWaqm/7AYzXA/NCwVetvA+PYk1LTyOkW68YxjyQbu07rbo67Ap4gWE/PQS9AvQbcpCw==
+X-Received: by 2002:a05:622a:246:b0:4a4:31a0:68d1 with SMTP id d75a77b69052e-4a77a24c1b1mr203720071cf.21.1750706296698;
+        Mon, 23 Jun 2025 12:18:16 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3f9a06e6csm417860185a.107.2025.06.23.12.09.23
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a779d6635fsm42084201cf.20.2025.06.23.12.18.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 12:09:23 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 03AC51200043;
-	Mon, 23 Jun 2025 15:09:22 -0400 (EDT)
+        Mon, 23 Jun 2025 12:18:16 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BBDE21200043;
+	Mon, 23 Jun 2025 15:18:15 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Mon, 23 Jun 2025 15:09:23 -0400
-X-ME-Sender: <xms:YqZZaO5SpQ3ZYuDdTaKH5kB30Vw-FyLc6Yo3ZNurN9fFUzDEgjGWdA>
-    <xme:YqZZaH4_RHd_4UfZiShZ9a8h7m6h9NvzVMvq7sNUmSh6czwiF6R2HHQpAGpmd5DQl
-    9rM5A_rNoo_rejFJQ>
-X-ME-Received: <xmr:YqZZaNeUotxMrc1oYdOTAFQK3P-p0l5x5Il1IjTDHSUdb29ropMaFwlhjg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddujeekudcutefuodetggdotefrod
+  by phl-compute-11.internal (MEProxy); Mon, 23 Jun 2025 15:18:15 -0400
+X-ME-Sender: <xms:d6hZaGiSWPoZVr7-XJbCk1XCtZ4VZ8n1yiTBfrA3AfirFzoZU4YHGA>
+    <xme:d6hZaHDiFZvDlziWg6p8aBa58EET3wLKe0wc78TY1UdAul8gPhVxQkEEhm8hg8aC6
+    Ullijl00MUi5VUfxg>
+X-ME-Received: <xmr:d6hZaOFhYog7ZHl08Z29HJCalwgxkfH9vcq3lQl3ZrMaKjSgnHWc_U4yHw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddujeekgecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedviedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtoheplhhinhhugidqkh
-    gvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhf
-    ohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhkmh
-    hmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqrghrtghh
-    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdp
-    rhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtph
-    htthhopehlohhsshhinheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:YqZZaLL1CfAXc78MDA_HThZsiJOPaWHUppguaQkdRm9DUhUflQQisg>
-    <xmx:YqZZaCJNVz_4kAieWRiIGwQyaCPFGdUIRxabiWXcn4lQl5M6Kb2cUA>
-    <xmx:YqZZaMz_tn-HXO3gMGH-g_JWzL0un4BBTs_BCC4F01eWizUo06qO_A>
-    <xmx:YqZZaGLDafVPWyCiDz1UCxnuVGeU8PLYCdkkf8udWtei4dvkyceIAQ>
-    <xmx:YqZZaJYJm6b2b0uOCNY-Kh5jD9JR1ggYaNpgaSRjWY1IN-OdIEc3h9f8>
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeevgffhueevkedutefgveduuedujeefledthffgheegkeekiefgudekhffggeel
+    feenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgt
+    phhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvg
+    hrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrg
+    drtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihse
+    hgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhn
+    mhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdroh
+    hrgh
+X-ME-Proxy: <xmx:d6hZaPQ-IxSUgUcyznCAW6LU4uVBu2pZ_2M40QgDZAKciR2el6VXOg>
+    <xmx:d6hZaDzKxBoz_c3uzFW4spHml9otF4y_sRN8kmE8yL6VGvIsCkSjFA>
+    <xmx:d6hZaN6fsitWCXaqkwl7hgXFgxZBavnYTKNRWk6ranoe4dU8HepI0w>
+    <xmx:d6hZaAwX9W1ox7GznsMmTS08je1Bn7cTPkPsZqA9a9jeu1nZvAqmGA>
+    <xmx:d6hZaPhk0LOdasJBJc2walhSSM6-Qa7z3mZaeUU0Lna3I3MHZypmGFtj>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 23 Jun 2025 15:09:22 -0400 (EDT)
-Date: Mon, 23 Jun 2025 12:09:21 -0700
+ 23 Jun 2025 15:18:15 -0400 (EDT)
+Date: Mon, 23 Jun 2025 12:18:14 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+To: Benno Lossin <lossin@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
-Message-ID: <aFmmYSAyvxotYfo7@tardis.local>
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <20250618164934.19817-5-boqun.feng@gmail.com>
- <20250621123212.66fb016b.gary@garyguo.net>
- <aFjj8AV668pl9jLN@Mac.home>
- <20250623193019.6c425467.gary@garyguo.net>
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?iso-8859-1?Q?Wilczy=B4nski?= <kwilczynski@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+Message-ID: <aFmodsQK6iatXKoZ@tardis.local>
+References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
+ <20250608-topics-tyr-request_irq-v4-3-81cb81fb8073@collabora.com>
+ <aEbJt0YSc3-60OBY@pollux>
+ <CAH5fLghDbrgO2PiKyKZ87UrtouG25xWhVP_YmcgO0fFcnvZRkQ@mail.gmail.com>
+ <DAU0NHTHTDG4.2HNEABNAI8GHZ@kernel.org>
+ <aFmPZMLGngAE_IHJ@tardis.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250623193019.6c425467.gary@garyguo.net>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aFmPZMLGngAE_IHJ@tardis.local>
 
-On Mon, Jun 23, 2025 at 07:30:19PM +0100, Gary Guo wrote:
-> On Sun, 22 Jun 2025 22:19:44 -0700
-> Boqun Feng <boqun.feng@gmail.com> wrote:
+On Mon, Jun 23, 2025 at 10:31:16AM -0700, Boqun Feng wrote:
+> On Mon, Jun 23, 2025 at 05:26:14PM +0200, Benno Lossin wrote:
+> > On Mon Jun 23, 2025 at 5:10 PM CEST, Alice Ryhl wrote:
+> > > On Mon, Jun 9, 2025 at 12:47 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> > >> On Sun, Jun 08, 2025 at 07:51:08PM -0300, Daniel Almeida wrote:
+> > >> > +        dev: &'a Device<Bound>,
+> > >> > +        irq: u32,
+> > >> > +        flags: Flags,
+> > >> > +        name: &'static CStr,
+> > >> > +        handler: T,
+> > >> > +    ) -> impl PinInit<Self, Error> + 'a {
+> > >> > +        let closure = move |slot: *mut Self| {
+> > >> > +            // SAFETY: The slot passed to pin initializer is valid for writing.
+> > >> > +            unsafe {
+> > >> > +                slot.write(Self {
+> > >> > +                    inner: Devres::new(
+> > >> > +                        dev,
+> > >> > +                        RegistrationInner {
+> > >> > +                            irq,
+> > >> > +                            cookie: slot.cast(),
+> > >> > +                        },
+> > >> > +                        GFP_KERNEL,
+> > >> > +                    )?,
+> > >> > +                    handler,
+> > >> > +                    _pin: PhantomPinned,
+> > >> > +                })
+> > >> > +            };
+> > >> > +
+> > >> > +            // SAFETY:
+> > >> > +            // - The callbacks are valid for use with request_irq.
+> > >> > +            // - If this succeeds, the slot is guaranteed to be valid until the
+> > >> > +            // destructor of Self runs, which will deregister the callbacks
+> > >> > +            // before the memory location becomes invalid.
+> > >> > +            let res = to_result(unsafe {
+> > >> > +                bindings::request_irq(
+> > >> > +                    irq,
+> > >> > +                    Some(handle_irq_callback::<T>),
+> > >> > +                    flags.into_inner() as usize,
+> > >> > +                    name.as_char_ptr(),
+> > >> > +                    slot.cast(),
+> > >> > +                )
+> > >> > +            });
+> > >> > +
+> > >> > +            if res.is_err() {
+> > >> > +                // SAFETY: We are returning an error, so we can destroy the slot.
+> > >> > +                unsafe { core::ptr::drop_in_place(&raw mut (*slot).handler) };
+> > >> > +            }
+> > >> > +
+> > >> > +            res
+> > >> > +        };
+> > >> > +
+> > >> > +        // SAFETY:
+> > >> > +        // - if this returns Ok, then every field of `slot` is fully
+> > >> > +        // initialized.
+> > >> > +        // - if this returns an error, then the slot does not need to remain
+> > >> > +        // valid.
+> > >> > +        unsafe { pin_init_from_closure(closure) }
+> > >>
+> > >> Can't we use try_pin_init!() instead, move request_irq() into the initializer of
+> > >> RegistrationInner and initialize inner last?
+> > >
+> > > We need a pointer to the entire struct when calling
+> > > bindings::request_irq. I'm not sure this allows you to easily get one?
+> > > I don't think using container_of! here is worth it.
+> > 
+> > There is the `&this in` syntax (`this` is of type `NonNull<Self>`):
+> > 
+> >     try_pin_init!(&this in Self {
+> >         inner: Devres::new(
+> >             dev,
+> >             RegistrationInner {
+> >                 irq,
+> >                 cookie: this.as_ptr().cast(),
+> >             },
+> >             GFP_KERNEL,
+> >         )?,
+> >         handler,
+> >         _pin: {
+> >             to_result(unsafe {
+> >                 bindings::request_irq(
+> >                     irq,
+> >                     Some(handle_irq_callback::<T>),
+> >                     flags.into_inner() as usize,
+> >                     name.as_char_ptr(),
+> >                     slot.as_ptr().cast(),
 > 
-> > On Sat, Jun 21, 2025 at 12:32:12PM +0100, Gary Guo wrote:
-> > [...]
-> > > > +#[repr(transparent)]
-> > > > +pub struct Atomic<T: AllowAtomic>(Opaque<T>);  
-> > > 
-> > > This should store `Opaque<T::Repr>` instead.
-> > >   
-> > 
-> > "should" is a strong word ;-) If we still use `into_repr`/`from_repr`
-> > it's a bit impossible, because Atomic::new() wants to be a const
-> > function, so it requires const_trait_impl I believe.
-> > 
-> > If we require transmutability as a safety requirement for `AllowAtomic`,
-> > then either `T` or `T::Repr` is fine.
-> > 
-> > > The implementation below essentially assumes that this is
-> > > `Opaque<T::Repr>`:
-> > > * atomic ops cast this to `*mut T::Repr`
-> > > * load/store operates on `T::Repr` then converts to `T` with
-> > >   `T::from_repr`/`T::into_repr`.
-> > >   
-> > 
-> > Note that we only require one direction of strong transmutability, that
-> > is: for every `T`, it must be able to safe transmute to a `T::Repr`, for
-> > `T::Repr` -> `T` transmutation, only if it's a result of a `transmute<T,
-> > T::Repr>()`. This is mostly due to potential support for unit-only enum.  
-> > E.g. using an atomic variable to represent a finite state.
-> > 
-> > > Note tha the transparent new types restriction on `AllowAtomic` is not
-> > > sufficient for this, as I can define
-> > >   
-> > 
-> > Nice catch! I do agree we should disallow `MyWeirdI32`, and I also agree
-> > that we should put transmutability as safety requirement for
-> > `AllowAtomic`. However, I would suggest we still keep
-> > `into_repr`/`from_repr`, and require the implementation to make them
-> > provide the same results as transmute(), as a correctness precondition
-> > (instead of a safety precondition), in other words, you can still write
-> > a `MyWeirdI32`, and it won't cause safety issues, but it'll be
-> > incorrect.
-> > 
-> > The reason why I think we should keep `into_repr`/`from_repr` but add
-> > a correctness precondition is that they are easily to implement as safe
-> > code for basic types, so it'll be better than a transmute() call. Also
-> > considering `Atomic<*mut T>`, would transmuting between integers and
-> > pointers act the same as expose_provenance() and
-> > from_exposed_provenance()?
+> this is "this" instead of "slot", right?
 > 
-> Okay, this is more problematic than I thought then. For pointers, you
-
-Welcome to my nightmare ;-)
-
-> cannot just transmute between from pointers to usize (which is its
-> Repr):
-> * Transmuting from pointer to usize discards provenance
-> * Transmuting from usize to pointer gives invalid provenance
+> >                 )
+> >             })?;
+> >             PhantomPinned
+> >         },
+> >     })
+> > 
+> > Last time around, I also asked this question and you replied with that
+> > we need to abort the initializer when `request_irq` returns false and
+> > avoid running `Self::drop` (thus we can't do it using `pin_chain`).
+> > 
+> > I asked what we could do instead and you mentioned the `_: {}`
+> > initializers and those would indeed solve it, but we can abuse the
+> > `_pin` field for that :)
+> > 
 > 
-> We want neither behaviour, so we must store `usize` directly and
-> always call into repr functions.
+> Hmm.. but if request_irq() fails, aren't we going to call `drop` on
+> `inner`, which drops the `Devres` which will eventually call
+> `RegistrationInner::drop()`? And that's a `free_irq()` without
+> `request_irq()` succeeded.
 > 
 
-If we store `usize`, how can we support the `get_mut()` then? E.g.
+This may however work ;-) Because at `request_irq()` time, all it needs
+is ready, and if it fails, `RegistrationInner` won't construct.
 
-    static V: i32 = 32;
-
-    let mut x = Atomic::new(&V as *const i32 as *mut i32);
-    // ^ assume we expose_provenance() in new().
-
-    let ptr: &mut *mut i32 = x.get_mut(); // which is `&mut self.0.get()`.
-
-    let ptr_val = *ptr; // Does `ptr_val` have the proper provenance?
-
-> To make things cost I guess you would need an extra trait to indicate
-> that transmuting is fine.
-
-Could you maybe provide an example?
+    try_pin_init!(&this in Self {
+        handler,
+        inner: Devres::new(
+            dev,
+            RegistrationInner {
+                // Needs to use `handler` address as cookie, same for
+                // request_irq().
+                cookie: &raw (*(this.as_ptr().cast()).handler),
+                irq: {
+                     to_result(unsafe { bindings::request_irq(...) })?;
+					 irq
+				}
+             },
+             GFP_KERNEL,
+        )?,
+        _pin: PhantomPinned
+    })
 
 Regards,
 Boqun
 
+> Regards,
+> Boqun
 > 
-> Best,
-> Gary
+> > ---
+> > Cheers,
+> > Benno
