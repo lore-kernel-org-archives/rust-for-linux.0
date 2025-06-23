@@ -1,89 +1,187 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DC51E231F;
-	Mon, 23 Jun 2025 09:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99A81FBEBD;
+	Mon, 23 Jun 2025 09:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750671604; cv=none; b=YvJdoF4X+yE+addi2J/LqwF3J5PcJc+KiLlr3g6QD9tabXIC7tjd6BvJS+3EmXm81yahG6lj4hUTofol2vzMgN5oZNKP/e4TV6oJZ5yza9HceO506q/oxk8pscxnzWpPpFKs9Pjv03deCsJcyFQ9cQhWlOK8kQnTt3I2Pp9T3Bk=
+	t=1750671899; cv=none; b=EYvXaHluaFqiTY4Tt324pWuyhuZ8+ABZoPTVeGj4Zs3nfj+qSHGoufYAwp4CXDNUudnzhF4RC4rC0HxcT8L0uXozLpJ5uPMvaCLvahr4JS2oRMc/ofPFJlYdvOGjH7ZrEOwyAIgMV6wMgQ6pQSuccUtR6KKxRKclpcOQnu8rGpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750671604; c=relaxed/simple;
-	bh=ZKNEJgDXO9EXRvaarNnIiZt3L2xof+1ejrRb6+1xU9E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H3Y1GLD9+eWrIcT29h7Pg7v09rs6Z7xDJNvmOGIS4B1p1Au6qPfEMVq89RPb0ZpM+qsYRNhwe3ZEql4m9Vx3ebkVdiTsHea3XcQ3qalt2tJJGgA5z9puB3aixMYkIYLMgEFZLsWBRW1ol1mNVZHvx956wJWAElXPMv05wjj/Wq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D5GaFz3F; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750671899; c=relaxed/simple;
+	bh=dUHxe+8KpyB6sh0m0/GxIBcVysNPv+g+1nWdIB9lUCQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ttHkQyLxj9xjRQYUMSwq/EemkJPAjmC0qgMiN9axJBuMOHhdRIg3KAntTcsG0HeHm0YQwZxDcdgufJiyzzoLV+l527HUUt9vReMTPFeNAB5kOKChZbJkqX0lRnFeIVQ8kCHcnkzqXMCgf4jvQzYVFlLiEMH69d/8DDDUPPjI5t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qU6Hl5z0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D5GaFz3F"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-312a806f002so347906a91.3;
-        Mon, 23 Jun 2025 02:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750671602; x=1751276402; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZKNEJgDXO9EXRvaarNnIiZt3L2xof+1ejrRb6+1xU9E=;
-        b=D5GaFz3Fx/Ido+UDBFSou6d9QK51XVDlCOb/zsfpNR9UH6j3aXTnQThNEt4F9yR9gM
-         RQLFpyjG38RMZ5N2IaNHLB7k+/D/sOzww1RDNwvgR8AB4+vTFoeTsWsgFSDXeSWfMEhw
-         /sR5KktrPyfRrCRvtvakBklQuwPvrP/f8vjeHZg6Eqxu1eglEUsMCv1SZ/rxP+6P7/TV
-         /ydv0bRnW9WSrHIBb1WjCFUlpbiKCYLQsMWgYL8O8HvbmlnrPrFbnO0NnTCEgKFSDW+I
-         wVcmjLpui2PeqCltqJOhj2L7JklmpjauD9VfsMkcOCvIIjgX2JOJIkOrsBMCP00rHNms
-         ZYOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750671602; x=1751276402;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZKNEJgDXO9EXRvaarNnIiZt3L2xof+1ejrRb6+1xU9E=;
-        b=nIRGl6MXImUlZgm5M1youze7uZLzXUxuaptqi+9dAhddQwsTWMzZx/MG9hU5GQDBTm
-         T22Q4W5qS5HlUdyiLOy8grNk7NJ09RphLBiWOdLwgJYNHWvyCaTrO+GfYKIWeVHshy3x
-         +17adZvl9m0wZE7rK1qG3WHzf2+YfeN09Wk7re6oZegTMmxWmB04M9FCpF+a+bzPsFMS
-         GJXj0TEnMrK4lh7Op8SN9b4T043UowfjjlWe6bpW32ATuHhDMAiC/rNMeklUOMFoJ5Ex
-         lD51D0yTGA0e69AzeCLiNZuVzE1ROGcwqWMkosQmR0tPs7VZWDBJ1SMPTnx+4arcmGaC
-         RH9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVP8LZ2nJZXQUuOc8SWfYGOl2zW3iy8u1znmGSkNWo+PxeFYcvqEprXVy0EEpsh5aeClAqdMhiaDIA2/949EMQ=@vger.kernel.org, AJvYcCWPAd2yxmgrayJaw8c19GIzelBYWgJCWSeI4OGKcaqFiA41OK2x8UbbCTdj8krm2R3z2Qa9btqBtPdCBME=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaD4klELenpvVt8FINRq/vEf4xUgRBU0pu1ZZhLkaUL2IFX1AB
-	uTciRKPA1Vmnzz8MOZWvY4zxHMSMTJ0HboucB41oT4ZHb/G8Ypm8qnFn8z7QGYAQAQl24DBDAZq
-	ZGQkKdjkNQ1PZZO1dgcbtxc3wAwLxSmE=
-X-Gm-Gg: ASbGnctD6O/dh39M2pcIPQhwjgr2tO9+lgnwxCWOUh13C6c2ig9etWTFocprJIq9DbE
-	hOrHaMQrJPFLJ1Ny+h6mMhH/ZJPXSrEY6L+SBSXDgtUtXFakAqP5JKkla2R9FcYPS9e5Z6ylKJF
-	HxP2fuaEizAmkCr8FgdJpSHEbyV4dcT74uQWdaKQ7xLsgSqRUfX3TUnw==
-X-Google-Smtp-Source: AGHT+IH6MnmjBrD69AiruLg/McFuY2Qa/akCLl9ekRAN3hnV277++V8+pu0fSU+UkjIkm+NTuQl6CXaYftb1wNgR7f4=
-X-Received: by 2002:a17:90b:2dd0:b0:311:e9a6:332e with SMTP id
- 98e67ed59e1d1-3159d577a7bmr7206435a91.0.1750671602464; Mon, 23 Jun 2025
- 02:40:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qU6Hl5z0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53493C4CEEA;
+	Mon, 23 Jun 2025 09:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750671899;
+	bh=dUHxe+8KpyB6sh0m0/GxIBcVysNPv+g+1nWdIB9lUCQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qU6Hl5z0f2nZ5iyQsuZZu4u+tlmBpaMknF2PQ6iDTeBJnt5zUIVj5aVNnktTV/CkN
+	 jxW++fbwQfl/c7tFh1aBUxGLr4J2OJN5JLToGP2+a7fgWyim/Jg6R1u3rKr05d2waF
+	 99kTfcylfTqk1EsHpRAGZw04j/PeFN1pr0/mmwwFHX9qs8lkb2MG4Kdi+gsmRlQC+V
+	 wr5EiEsNuCR3FmPl2nDGKu1AtzAf6h0CdnyLZ3tEsRkTgH9MRtDTGtXD4ohoQc60wS
+	 12VxYK+TW/g3QbmS9NnvyVDRAjorZ9sGkNbABsci3QTyxY/rD74UzOa3Xxl0Xw6Y9K
+	 AKg5hcgYGcNAw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+In-Reply-To: <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> (Benno Lossin's message
+	of "Fri, 20 Jun 2025 14:28:44 +0200")
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+	<COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
+	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
+	<smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid>
+	<DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Mon, 23 Jun 2025 11:44:49 +0200
+Message-ID: <877c126bce.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250621230231.100181-1-contact@antoniohickey.com>
- <20250621230231.100181-2-contact@antoniohickey.com> <CAJ-ks9n1SqM_1xAstHQpp8Z7-2JSTkp9zUn8kwZA7OAAqWxQ6Q@mail.gmail.com>
- <20250622222023.29071-1-contact@antoniohickey.com> <CAJ-ks9kDTjw7ukrErWgS06HRQ7d-gAsqzzgAnQC92pi2xLFdBQ@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kDTjw7ukrErWgS06HRQ7d-gAsqzzgAnQC92pi2xLFdBQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Jun 2025 11:39:47 +0200
-X-Gm-Features: Ac12FXwnDiWG7z7SLhB-An4b96jyohXb_jDXhZcV-wlQJEN52iINnecBitXiMmo
-Message-ID: <CANiq72npbnkZKpELET4GoGWHYhb7cowvxCoQaxUXL5oZQ1Q5wQ@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: kernel: create `overflow_assert!` macro
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Antonio Hickey <contact@antoniohickey.com>, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
-	aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, danielstonecote@gmail.com, gary@garyguo.net, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Mon, Jun 23, 2025 at 12:54=E2=80=AFAM Tamir Duberstein <tamird@gmail.com=
-> wrote:
+"Benno Lossin" <lossin@kernel.org> writes:
+
+> On Fri Jun 20, 2025 at 1:29 PM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
+>>> On Thu Jun 12, 2025 at 3:40 PM CEST, Andreas Hindborg wrote:
+>>>> +/// A wrapper for kernel parameters.
+>>>> +///
+>>>> +/// This type is instantiated by the [`module!`] macro when module parameters are
+>>>> +/// defined. You should never need to instantiate this type directly.
+>>>> +///
+>>>> +/// Note: This type is `pub` because it is used by module crates to access
+>>>> +/// parameter values.
+>>>> +#[repr(transparent)]
+>>>> +pub struct ModuleParamAccess<T> {
+>>>> +    data: core::cell::UnsafeCell<T>,
+>>>> +}
+>>>> +
+>>>> +// SAFETY: We only create shared references to the contents of this container,
+>>>> +// so if `T` is `Sync`, so is `ModuleParamAccess`.
+>>>> +unsafe impl<T: Sync> Sync for ModuleParamAccess<T> {}
+>>>> +
+>>>> +impl<T> ModuleParamAccess<T> {
+>>>> +    #[doc(hidden)]
+>>>> +    pub const fn new(value: T) -> Self {
+>>>> +        Self {
+>>>> +            data: core::cell::UnsafeCell::new(value),
+>>>> +        }
+>>>> +    }
+>>>> +
+>>>> +    /// Get a shared reference to the parameter value.
+>>>> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
+>>>> +    // held lock guard here.
+>>>> +    pub fn get(&self) -> &T {
+>>>> +        // SAFETY: As we only support read only parameters with no sysfs
+>>>> +        // exposure, the kernel will not touch the parameter data after module
+>>>> +        // initialization.
+>>>
+>>> This should be a type invariant. But I'm having difficulty defining one
+>>> that's actually correct: after parsing the parameter, this is written
+>>> to, but when is that actually?
+>>
+>> For built-in modules it is during kernel initialization. For loadable
+>> modules, it during module load. No code from the module will execute
+>> before parameters are set.
 >
-> Ack, thanks for that. Still, I think the "any expression" version
-> should allow the caller to supply a custom message.
+> Gotcha and there never ever will be custom code that is executed
+> before/during parameter setting (so code aside from code in `kernel`)?
+>
+>>> Would we eventually execute other Rust
+>>> code during that time? (for example when we allow custom parameter
+>>> parsing)
+>>
+>> I don't think we will need to synchronize because of custom parameter
+>> parsing. Parameters are initialized sequentially. It is not a problem if
+>> the custom parameter parsing code name other parameters, because they
+>> are all initialized to valid values (as they are statics).
+>
+> If you have `&'static i64`, then the value at that reference is never
+> allowed to change.
+>
+>>> This function also must never be `const` because of the following:
+>>>
+>>>     module! {
+>>>         // ...
+>>>         params: {
+>>>             my_param: i64 {
+>>>                 default: 0,
+>>>                 description: "",
+>>>             },
+>>>         },
+>>>     }
+>>>
+>>>     static BAD: &'static i64 = module_parameters::my_param.get();
+>>>
+>>> AFAIK, this static will be executed before loading module parameters and
+>>> thus it makes writing to the parameter UB.
+>>
+>> As I understand, the static will be initialized by a constant expression
+>> evaluated at compile time. I am not sure what happens when this is
+>> evaluated in const context:
+>>
+>>     pub fn get(&self) -> &T {
+>>         // SAFETY: As we only support read only parameters with no sysfs
+>>         // exposure, the kernel will not touch the parameter data after module
+>>         // initialization.
+>>         unsafe { &*self.data.get() }
+>>     }
+>>
+>> Why would that not be OK? I would assume the compiler builds a dependency graph
+>> when initializing statics?
+>
+> Yes it builds a dependency graph, but that is irrelevant? The problem is
+> that I can create a `'static` reference to the inner value *before* the
+> parameter is written-to (as the static is initialized before the
+> parameters).
 
-Agreed, we should add that, like we did for `static_assert!` recently.
+I see, I did not consider this situation. Thanks for pointing this out.
 
-Cheers,
-Miguel
+Could we get around this without a lock maybe? If we change
+`ModuleParamAccess::get` to take a closure instead:
+
+    /// Call `func` with a reference to the parameter value stored in `Self`.
+    pub fn read(&self, func: impl FnOnce(&T)) {
+        // SAFETY: As we only support read only parameters with no sysfs
+        // exposure, the kernel will not touch the parameter data after module
+        // initialization.
+        let data = unsafe { &*self.data.get() };
+
+        func(data)
+    }
+
+I think this would bound the lifetime of the reference passed to the
+closure to the duration of the call, right?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
+
