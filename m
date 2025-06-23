@@ -1,205 +1,289 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4441D9346;
-	Mon, 23 Jun 2025 19:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750706939; cv=none; b=BRPaQa7dD/cR3FskRQ7XG93qaUozSMsmuOaUGgkaK5o3t4l9Gaj7a5AcdZ5rL9xZAAOhGLGcaETqqtpNht0gHwdVqQa8t2xCEc0wBFuGS8bZNlJOvSxbxwxp7jOQSy7GA5n3EotHbmL2i1Hb6QgaMnTMQvLQ5+WIuGtVAgkpb6k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750706939; c=relaxed/simple;
-	bh=abqYg+NPlH/Y1LdYWR56sWNYNyn4CS03rSTerLlXcJQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ZtSRa8Zc2D7XIJJUn3YFujMHjq3gGEtUNp6pWohGcNOzw/tRl+ecpUnA8+DIvLH5A6ewiIjgN54DDZPoVGsqAEaCFLoe53CXVf9VO5Wr5JNZBx/2dvpeGL5e8oFx56f9ZQW6dWzDmzXmjAGR2WgO/MJkvK5P5ccbVp49ZnOfODc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYQaGryN; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D101D19049B;
+	Mon, 23 Jun 2025 20:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750709899; cv=pass; b=PQKm2kU1EH1D/Ffr5uah7N9y0Ebrew7UJmP/+q+bPCijayxfnwQTw3Acq8yn0zfabwt1ixHRX5J0fx8oUiVUqg7kbziy2HNvw4Habc8ln5Xy1wxG6iOVOx9waRsF8jkxWCRbwvSpXSSs33iiRl6z/fEFTqU1E6h6Y34HvKjmyJs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750709899; c=relaxed/simple;
+	bh=3hlJLa0kfG7gE+lr+wJ30LnboKlt5YahPW/GPKq7lfI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dQIU3MCX1Kpb4iVqKccth2oss9v4mMRNW/Xb9hEEVx30u/V2XtZsC1znr2DrP87FUxXXSPlRBjPTEh/ZWJDoRgZ5X5FQaznuIrrdGHs8BFKXXvTXB2aS/0fODSwfqMdS6NldfIplddo2Ou5G4ssXir1UrU9TiNCOrHjzcKb2FPg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=OZWsOFn9; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYQaGryN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB33EC4CEEA;
-	Mon, 23 Jun 2025 19:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750706939;
-	bh=abqYg+NPlH/Y1LdYWR56sWNYNyn4CS03rSTerLlXcJQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=WYQaGryNnFdWSc/jLwvOTlmVsGbC4vQR3Ay1+PM0Au2R8O43kDF1y51mqI7/ynea4
-	 A/iWrMbikXQaVHXJTh2is/kPY4kEq5N3wfWM+6S0h23nhLH9EgdPh+zaos8+m4ysDG
-	 1aHzS18o4qYT6Sv2alAe4pEgFe7u2Y9nmSK+p0bckvuh+d+ZIzIPhz+VQsJJor53Wk
-	 3D1SQF4FawbW9guCCeBZZEjl+40zq9WDbP69tm7zV7NrT5aQtQkrmy1tloG/D4CSZI
-	 PYE3OzkH9r1TsD6ppl/9Ojp/nrtFn/K4s92p5iBwQZwsiRKWBILzW0kF0Qcd1MQPjr
-	 R0EKi4FwNimXQ==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="OZWsOFn9"
+ARC-Seal: i=1; a=rsa-sha256; t=1750709878; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DSVi3hHf9UD3xgyX2a5yQv9eb3p6iFnk5dD2T1VvOM9dtWVlBbAKNUtZqzUgpjlm1GMqkGlEKC+nSvYd3SGMc1H4dz8O3npST08GPQpvWjtwpzWcNJbXLzncvLeL3cEjK6VLyyQi9X2vOH2N3OTEMoAn0G1qGiZVsV5kaiHTDZU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750709878; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=WqLTbHpOLfN/8P0kYn2TCUukVUVe+wOiSE7+iFMQKxM=; 
+	b=CtyiyMdibD7cXVHC0ZC1HAYt3K7GEiDutkJfv762tlkn4Yp+ZBPgcffhvZH2FstQwJI69JH2L1WGGBU5fZ+LDwKusdD3WWzS8FPmyWzP04h5my8GASyrVPJD7n0T5AhX0O6FvBhs9J/r3Lm+kKmqZWb0ozKryKK/PWJmEb3GznM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750709878;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=WqLTbHpOLfN/8P0kYn2TCUukVUVe+wOiSE7+iFMQKxM=;
+	b=OZWsOFn9iGTptTo0K3O8TaWjhYB0gumrKf7yJTj0fkiljv31kkkJLqyNkYRrWJqX
+	hxDlv8KZKA0SHkWmdJSth4+uTXViMTgA5imq/5kXgKNl4ScZOK/lfb3R+P1RAaI2hpD
+	L5CnwyitdabD4lDSPdYMHWLIuuam5vmiGanYUsFo=
+Received: by mx.zohomail.com with SMTPS id 1750709876006799.3496765035169;
+	Mon, 23 Jun 2025 13:17:56 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Mon, 23 Jun 2025 17:17:33 -0300
+Subject: [PATCH v7] rust: kernel: add support for bits/genmask macros
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Jun 2025 21:28:53 +0200
-Message-Id: <DAU5TAFKJQOF.2DFO7YAHZA4V2@kernel.org>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?=
- <kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v4 3/6] rust: irq: add support for non-threaded IRQs and
- handlers
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com> <20250608-topics-tyr-request_irq-v4-3-81cb81fb8073@collabora.com> <aEbJt0YSc3-60OBY@pollux> <CAH5fLghDbrgO2PiKyKZ87UrtouG25xWhVP_YmcgO0fFcnvZRkQ@mail.gmail.com> <DAU0NHTHTDG4.2HNEABNAI8GHZ@kernel.org> <aFmPZMLGngAE_IHJ@tardis.local> <aFmodsQK6iatXKoZ@tardis.local>
-In-Reply-To: <aFmodsQK6iatXKoZ@tardis.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250623-topic-panthor-rs-genmask-v7-1-9f986951e7b5@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAFy2WWgC/33PTWrDMBAF4KsEraui0Z/drnqPksVoLMWiiWUkY
+ xqC7145EFKK6+UbmO/xbqz4HH1h74cby36OJaahhublwKjH4eR57GpmUkgNQio+pTESH3GY+pR
+ 5LvzkhwuWLx7QkWlU8EErVt/H7EP8vtOfx5r7WKaUr/emWa7XB6r/R2fJgbdGqoYgCPL4Qel8R
+ pcyvlK6sBWe1QMzAiTsYKpihpTrggTywmxh+okpaHcwXTFlhNCB0CJtYuYXJu0OZirmAlrQQoL
+ uNmfaJ2ZB7GB2nSkCAr614Aj+Ysuy/ABNsT61+AEAAA==
+X-Change-ID: 20241023-topic-panthor-rs-genmask-fabc573fef43
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Mon Jun 23, 2025 at 9:18 PM CEST, Boqun Feng wrote:
-> On Mon, Jun 23, 2025 at 10:31:16AM -0700, Boqun Feng wrote:
->> On Mon, Jun 23, 2025 at 05:26:14PM +0200, Benno Lossin wrote:
->> > On Mon Jun 23, 2025 at 5:10 PM CEST, Alice Ryhl wrote:
->> > > On Mon, Jun 9, 2025 at 12:47=E2=80=AFPM Danilo Krummrich <dakr@kerne=
-l.org> wrote:
->> > >> On Sun, Jun 08, 2025 at 07:51:08PM -0300, Daniel Almeida wrote:
->> > >> > +        dev: &'a Device<Bound>,
->> > >> > +        irq: u32,
->> > >> > +        flags: Flags,
->> > >> > +        name: &'static CStr,
->> > >> > +        handler: T,
->> > >> > +    ) -> impl PinInit<Self, Error> + 'a {
->> > >> > +        let closure =3D move |slot: *mut Self| {
->> > >> > +            // SAFETY: The slot passed to pin initializer is val=
-id for writing.
->> > >> > +            unsafe {
->> > >> > +                slot.write(Self {
->> > >> > +                    inner: Devres::new(
->> > >> > +                        dev,
->> > >> > +                        RegistrationInner {
->> > >> > +                            irq,
->> > >> > +                            cookie: slot.cast(),
->> > >> > +                        },
->> > >> > +                        GFP_KERNEL,
->> > >> > +                    )?,
->> > >> > +                    handler,
->> > >> > +                    _pin: PhantomPinned,
->> > >> > +                })
->> > >> > +            };
->> > >> > +
->> > >> > +            // SAFETY:
->> > >> > +            // - The callbacks are valid for use with request_ir=
-q.
->> > >> > +            // - If this succeeds, the slot is guaranteed to be =
-valid until the
->> > >> > +            // destructor of Self runs, which will deregister th=
-e callbacks
->> > >> > +            // before the memory location becomes invalid.
->> > >> > +            let res =3D to_result(unsafe {
->> > >> > +                bindings::request_irq(
->> > >> > +                    irq,
->> > >> > +                    Some(handle_irq_callback::<T>),
->> > >> > +                    flags.into_inner() as usize,
->> > >> > +                    name.as_char_ptr(),
->> > >> > +                    slot.cast(),
->> > >> > +                )
->> > >> > +            });
->> > >> > +
->> > >> > +            if res.is_err() {
->> > >> > +                // SAFETY: We are returning an error, so we can =
-destroy the slot.
->> > >> > +                unsafe { core::ptr::drop_in_place(&raw mut (*slo=
-t).handler) };
->> > >> > +            }
->> > >> > +
->> > >> > +            res
->> > >> > +        };
->> > >> > +
->> > >> > +        // SAFETY:
->> > >> > +        // - if this returns Ok, then every field of `slot` is f=
-ully
->> > >> > +        // initialized.
->> > >> > +        // - if this returns an error, then the slot does not ne=
-ed to remain
->> > >> > +        // valid.
->> > >> > +        unsafe { pin_init_from_closure(closure) }
->> > >>
->> > >> Can't we use try_pin_init!() instead, move request_irq() into the i=
-nitializer of
->> > >> RegistrationInner and initialize inner last?
->> > >
->> > > We need a pointer to the entire struct when calling
->> > > bindings::request_irq. I'm not sure this allows you to easily get on=
-e?
->> > > I don't think using container_of! here is worth it.
->> >=20
->> > There is the `&this in` syntax (`this` is of type `NonNull<Self>`):
->> >=20
->> >     try_pin_init!(&this in Self {
->> >         inner: Devres::new(
->> >             dev,
->> >             RegistrationInner {
->> >                 irq,
->> >                 cookie: this.as_ptr().cast(),
->> >             },
->> >             GFP_KERNEL,
->> >         )?,
->> >         handler,
->> >         _pin: {
->> >             to_result(unsafe {
->> >                 bindings::request_irq(
->> >                     irq,
->> >                     Some(handle_irq_callback::<T>),
->> >                     flags.into_inner() as usize,
->> >                     name.as_char_ptr(),
->> >                     slot.as_ptr().cast(),
->>=20
->> this is "this" instead of "slot", right?
->>=20
->> >                 )
->> >             })?;
->> >             PhantomPinned
->> >         },
->> >     })
->> >=20
->> > Last time around, I also asked this question and you replied with that
->> > we need to abort the initializer when `request_irq` returns false and
->> > avoid running `Self::drop` (thus we can't do it using `pin_chain`).
->> >=20
->> > I asked what we could do instead and you mentioned the `_: {}`
->> > initializers and those would indeed solve it, but we can abuse the
->> > `_pin` field for that :)
->> >=20
->>=20
->> Hmm.. but if request_irq() fails, aren't we going to call `drop` on
->> `inner`, which drops the `Devres` which will eventually call
->> `RegistrationInner::drop()`? And that's a `free_irq()` without
->> `request_irq()` succeeded.
->>=20
->
-> This may however work ;-) Because at `request_irq()` time, all it needs
-> is ready, and if it fails, `RegistrationInner` won't construct.
->
->     try_pin_init!(&this in Self {
->         handler,
->         inner: Devres::new(
->             dev,
->             RegistrationInner {
->                 // Needs to use `handler` address as cookie, same for
->                 // request_irq().
->                 cookie: &raw (*(this.as_ptr().cast()).handler),
->                 irq: {
->                      to_result(unsafe { bindings::request_irq(...) })?;
-> 					 irq
-> 				}
->              },
->              GFP_KERNEL,
->         )?,
->         _pin: PhantomPinned
->     })
+In light of bindgen being unable to generate bindings for macros, and
+owing to the widespread use of these macros in drivers, manually define
+the bit and genmask C macros in Rust.
 
-Well yes and no, with the Devres changes, the `cookie` can just be the
-address of the `RegistrationInner` & we can do it this way :)
+The *_checked version of the functions provide runtime checking while
+the const version performs compile-time assertions on the arguments via
+the build_assert!() macro.
+
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+Changes in v7:
+- Rebase on top of latest rust-next
+- Use RangeInclusive
+- Fix formatting
+- Fix checks of start/end to account for RangeInclusive
+- Use the paste macro to simplify the implementation
+- Get rid of the _unbounded versions (they were not const fns anyway, so
+  users can just write it themselves)
+- Change the examples to account for RangeInclusive
+- Link to v6: https://lore.kernel.org/r/20250610-topic-panthor-rs-genmask-v6-1-50fa1a981bc1@collabora.com
+
+Changes in v6:
+Thanks, Alex {
+  - Added _checked and _unbounded versions of the functions
+  - Implemented the functions through a macro
+  - Changed the genmask logic to prevent over/underflow (hopefully)
+  - Genmask now takes a range instead of "h" and "l" arguments
+  - Made all functions #[inline]
+  - +cc Alex directly
+  - Removed all panics
+}
+- Link to v5: https://lore.kernel.org/r/20250326-topic-panthor-rs-genmask-v5-1-bfa6140214da@collabora.com
+
+Changes in v5:
+- Added versions for u16 and u8 in order to reduce the amount of casts
+  for callers. This came up after discussing the issue with Alexandre
+  Courbot in light of his "register" abstractions.
+- Link to v4: https://lore.kernel.org/r/20250318-topic-panthor-rs-genmask-v4-1-35004fca6ac5@collabora.com
+
+Changes in v4:
+- Split bits into bits_u32 and bits_u64
+- Added r-b's
+- Rebased on top of rust-next
+- Link to v3: https://lore.kernel.org/r/20250121-topic-panthor-rs-genmask-v3-1-5c3bdf21ce05@collabora.com
+
+Changes in v3:
+- Changed from declarative macro to const fn
+- Added separate versions for u32 and u64
+- Link to v2: https://lore.kernel.org/r/20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com
+
+Changes in v2:
+
+- Added ticks around `BIT`, and `h >=l` (Thanks, Benno).
+- Decided to keep the arguments as `expr`, as I see no issues with that
+- Added a proper example, with an assert_eq!() (Thanks, Benno)
+- Fixed the condition h <= l, which should be h >= l.
+- Checked that the assert for the condition above is described in the
+  docs.
+---
+ rust/kernel/bits.rs | 133 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs  |   1 +
+ 2 files changed, 134 insertions(+)
+
+diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..8db122b5db9565b76c14fc33e33058f9dac7bd75
+--- /dev/null
++++ b/rust/kernel/bits.rs
+@@ -0,0 +1,133 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Bit manipulation macros.
++//!
++//! C header: [`include/linux/bits.h`](srctree/include/linux/bits.h)
++
++use crate::prelude::*;
++use core::ops::RangeInclusive;
++use macros::paste;
++
++macro_rules! impl_bit_fn {
++    (
++        $ty:ty
++    ) => {
++        paste! {
++            /// Computes `1 << n` if `n` is in bounds, i.e.: if `n` is smaller than
++            /// the maximum number of bits supported by the type.
++            ///
++            /// Returns [`None`] otherwise.
++            #[inline]
++            pub fn [<checked_bit_ $ty>](n: u32) -> Option<$ty> {
++                (1 as $ty).checked_shl(n)
++            }
++
++            /// Computes `1 << n` by performing a compile-time assertion that `n` is
++            /// in bounds.
++            ///
++            /// This version is the default and should be used if `n` is known at
++            /// compile time.
++            #[inline]
++            pub const fn [<bit_ $ty>](n: u32) -> $ty {
++                build_assert!(n < <$ty>::BITS);
++                (1 as $ty) << n
++            }
++        }
++    };
++}
++
++impl_bit_fn!(u64);
++impl_bit_fn!(u32);
++impl_bit_fn!(u16);
++impl_bit_fn!(u8);
++
++macro_rules! impl_genmask_fn {
++    (
++        $ty:ty,
++        $(#[$genmask_ex:meta])*
++    ) => {
++        paste! {
++            /// Creates a compile-time contiguous bitmask for the given range by
++            /// validating the range at runtime.
++            ///
++            /// Returns [`None`] if the range is invalid, i.e.: if the start is
++            /// greater than or equal to the end.
++            #[inline]
++            pub fn [<genmask_checked_ $ty>](range: RangeInclusive<u32>) -> Option<$ty> {
++                let start = *range.start();
++                let end = *range.end();
++
++                if start >= end || end >= <$ty>::BITS {
++                    return None;
++                }
++
++                let high = [<checked_bit_ $ty>](end)?;
++                let low = [<checked_bit_ $ty>](start)?;
++                Some((high | (high - 1)) & !(low - 1))
++            }
++
++            /// Creates a compile-time contiguous bitmask for the given range by
++            /// performing a compile-time assertion that the range is valid.
++            ///
++            /// This version is the default and should be used if the range is known
++            /// at compile time.
++            $(#[$genmask_ex])*
++            #[inline]
++            pub const fn [<genmask_ $ty>](range: RangeInclusive<u32>) -> $ty {
++                let start = *range.start();
++                let end = *range.end();
++
++                build_assert!(start < end);
++                build_assert!(end < <$ty>::BITS);
++
++                let high = [<bit_ $ty>](end);
++                let low = [<bit_ $ty>](start);
++                (high | (high - 1)) & !(low - 1)
++            }
++        }
++    };
++}
++
++impl_genmask_fn!(
++    u64,
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u64;
++    /// let mask = genmask_u64(21..=39);
++    /// assert_eq!(mask, 0x000000ffffe00000);
++    /// ```
++);
++
++impl_genmask_fn!(
++    u32,
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u32;
++    /// let mask = genmask_u32(0..=9);
++    /// assert_eq!(mask, 0x000003ff);
++    /// ```
++);
++
++impl_genmask_fn!(
++    u16,
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u16;
++    /// let mask = genmask_u16(0..=9);
++    /// assert_eq!(mask, 0x000003ff);
++    /// ```
++);
++
++impl_genmask_fn!(
++    u8,
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u8;
++    /// let mask = genmask_u8(0..=7);
++    /// assert_eq!(mask, 0x000000ff);
++    /// ```
++);
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 6b4774b2b1c37f4da1866e993be6230bc6715841..1bb294de8cb000120a0d04f61d6f7262fbc9f600 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -54,6 +54,7 @@
+ pub mod alloc;
+ #[cfg(CONFIG_AUXILIARY_BUS)]
+ pub mod auxiliary;
++pub mod bits;
+ #[cfg(CONFIG_BLOCK)]
+ pub mod block;
+ #[doc(hidden)]
 
 ---
-Cheers,
-Benno
+base-commit: dc35ddcf97e99b18559d0855071030e664aae44d
+change-id: 20241023-topic-panthor-rs-genmask-fabc573fef43
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
