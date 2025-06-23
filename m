@@ -1,134 +1,143 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C435423BF9B
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Jun 2025 11:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA431C8FB5
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Jun 2025 11:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750678785; cv=none; b=d2W9YU91G1OKbwsIT06UN+8SMKTpAjxeFkC+7HZkBkAwA9m9KtuwwOLyoOnQk3iVKvKiXheeam8w9ugULbTATbgNGFvKArRdKgfqLNvtNNBtKfgnABHPxZ6GXGI+AsiIerW251r0ZV34JYdRUgaLd1ZWxtkWwBJKfNWkxJpTgLk=
+	t=1750678928; cv=none; b=nG7OIQ+xyV6JWLTm21FXbxmCytFnO0dh0shOwIio0PG9zIjdkQ0oFddtd9unKQf6exdgHK8O7OaOndSYmc62SOGpTf69MD+Dn7KVUpdtv9eB0vUYT37XN/DkHsbu8TbMbH492S0WHFn/IIVIT50SRaQvjv20f1YYh6ordswf3vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750678785; c=relaxed/simple;
-	bh=WLxkC7V19D77AzPdWZubB6l8aqMizd+u3nLpk+F8nkc=;
+	s=arc-20240116; t=1750678928; c=relaxed/simple;
+	bh=JWkNAYIXXxAvHocsXw3a5RBhWI73mua+uVzpAKrzxQo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LM52YYqPfFXg3wPVpbc2Xbgrq8U9mLrWVRYLDcLfxOMoOQiVjePBr0XLG8Dg2eKbsFSAgNeAYHX8K36EKVW3diw7ihJY66mU5NXN8fStdTAb6Ua/w7hsEblGdvTgaDtSVL4x111BCfpYYGQIs8oNEm6QZ5VljFPaJmCigm0P4CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=akXXosn5; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=JU1la3BamJ268umd3ZlidtOCJ4Z7Wd/sB5lxor5oPbKiec5mpTbocTTGorvK3ewajYPRSyDG4bhRt+CWmWDN0GaxW8i7KplAoaIVVQIEYT9AusFvpL+Ny301pklUcDou+e3/fIUrw6CpUDg49pq/+43uEE05DS9gm4ACotHKCKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TjPZc1tK; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="akXXosn5"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4f7ebfd00so1735542f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Jun 2025 04:39:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TjPZc1tK"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-450eaae2934so35108415e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Jun 2025 04:42:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750678782; x=1751283582; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750678925; x=1751283725; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jBTUKpx0ZNKYHazA3t/A7/vG1k1Wn2pxBHruJSDnkA0=;
-        b=akXXosn5JeWGX1uWfbF59wVWWkNdaoc1dSFu/HSATKRwPT3yXzan4jljbJ2Y0Mvb37
-         6sTUBwjBHxW6wqt7KUz/4XazOtA65+N1879Mv4Nh/WEssXji0XvGKnJ8/GwadjwBO1HX
-         onzTNLlqM4mRKeye2bT1e3shC5jCWOMRD0oLdWUKnpAjpX60AfL6ILNxGwBEyeMSQgKs
-         MhBNK6cKpx/8UdJZW/K/1n5Q/FrfsDUVqBQlAoy0vaBRNj1nDva36/NgN+zkpBLDRU0G
-         WuR43EPf60KBN0fZFISoauCF/EKLrbuIoQ3rzzTmAwNKBQRn1JOGihifeTLeH1LwGEPt
-         SMpA==
+        bh=gOakrre7l7gSs8tnftFg1umC3O4hex3jEXhe5bAXm4c=;
+        b=TjPZc1tKJMPQH5NNZcbKfcZqaFd8c5WwED8IzY3MsCAQME4R1vaAyUZYRYV8UEzcfY
+         MHbw4M9o13668sXiaTSavIN976kUSPCXSw1L2BFJUOMGWMie0zCE2wslNClSEN9zx3XE
+         FeHBCj3ghC3uqP2qMo4lxRMGl8jFbQSt8Vy4KYBe+9fIyvDKY2CW4yz44lrMwHB7uIq+
+         R9jqnf/D4BFfKA0Rc2QceSVYm1Atdugl1RoqbmQ73hX4aXQsDX9XgJTOt9GnVAjvcbJd
+         Zwqe/0Y1mXzsZGUBPbcoF/jwVlI/DzttLtyxdIfctC0SITgz9hE59RZ7eBRxxV7zIYbM
+         Oq7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750678782; x=1751283582;
+        d=1e100.net; s=20230601; t=1750678925; x=1751283725;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jBTUKpx0ZNKYHazA3t/A7/vG1k1Wn2pxBHruJSDnkA0=;
-        b=YERjOUWYVuoKOgP9i5QfgoGU18CaO8hQcJ8qQh+qe8pCpEfqmFltUEiOnj9ynOdHD2
-         c3Dxs+zPjqXGsItqgZrLSHmI+FCgWbjRu9SiZHNJxyzq52kLKnISzIZwkmCkH4YuWMld
-         x2hE0LdkSAl2sAwpE9MW+7FHHEWtHYIQejEPQkBKJuLvBa3h6sFTA40bgo7M0Sh56qWS
-         VNXOHLVdSmalvTF1RIAwVBGZXmpj2JXvpfG9+gkLfvtCibPjv3SaDfH8KJo9fMmllh1s
-         UoEG2fHTO7ffIIBOZZtleaQH2SSrLR8G9b5cJYweYTYlv1L0odebdUF3fjPIx42dSpcP
-         UEJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUw4IX2wrRs42IOe5JwPOGKkZLgC8HHjQaTvOoQgmNINGtT7f/dS1pMsanqGSjE4gjSygY1OPpmEHgFYUIUQg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMEKN97QNf7di6mV6DerpgrpKaPe3C6h/p2fMtY0GiJ1V50PZZ
-	4EGQDKusQkqXmY9lwABvmOH9AsHQ2B3j/OuLAMD6hybG5t6Wq5GOR0xmc379hYuuXymmC9SPMSj
-	fYBynuLzaK8pzzmMElQ==
-X-Google-Smtp-Source: AGHT+IHOfkmOn/iFDpfwri/R3bnIweVDsVpN6vKnfwZl34PHvpa36cU93NoZdwYN5nFotAGyPMw/l9yziseyIAA=
-X-Received: from wmbji4.prod.google.com ([2002:a05:600c:a344:b0:451:4d6b:5b7e])
+        bh=gOakrre7l7gSs8tnftFg1umC3O4hex3jEXhe5bAXm4c=;
+        b=Q2soFnYnVbfGak7g/Ltoev9olegW/bBdSsEz/F1xApbCBOj19hFIYXKFsBzNT8GoYE
+         s44lX0vjqWRoF0+W+4Nh0WTpvDCbQCQ0M8G7oLXVPfv1Bfltqo1nXiRqFffaBSJk5YeK
+         G+6stQe6BbE8zdHPZ1ymDy2d0LMZ1a04RJHBVWxBCIKLu9D/LS2s77eUAuh471DnUjt8
+         92QqJuqsh9xA/yqN8PNxQpwqSNCA9a6xUviut1S0RSvmEJaLwmg1eQnvOdPhWpIRr/Oz
+         Xgly+Nz5XLGyom6WhWmnkXzUBy1urNlJFmgEprOJM/3gfcqPYwVkWPb15Njg29ezt3rR
+         oOZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6UfPwkb7mSlP199snT+gBh3dojWLR+1ghn4qKZthwodyQtN0aQ5OJ3ObZn0oUVGtfdG/YZF5WaIo5LzcL8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBFMSQS+CBFMuyV9KDdksovjPpQ5U7YF/LP4c7IK9ohlMpHdrX
+	XnCZ2eVrW2JuRsLfBbCH4FewJ8H7hqB/ZUOihvZvpYOHYmcyPutZVFosBi5nJt7J7p5wt2yEomc
+	GMg4hDGT9DQ2KFJYk7w==
+X-Google-Smtp-Source: AGHT+IFLgU2zCTWelcLduERfWArl79+0ODmzTBoOgn9WbMCJ/VeopIZFCpbEQxpUShrPw9S7d8IZRIEelvQI5Xg=
+X-Received: from wmbfs6.prod.google.com ([2002:a05:600c:3f86:b0:453:ccf:1528])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1ac8:b0:3a4:ee40:715c with SMTP id ffacd0b85a97d-3a6d130168fmr11662811f8f.14.1750678782136;
- Mon, 23 Jun 2025 04:39:42 -0700 (PDT)
-Date: Mon, 23 Jun 2025 11:39:39 +0000
-In-Reply-To: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com>
+ 2002:a05:600c:8b14:b0:453:a88:d509 with SMTP id 5b1f17b1804b1-453659ca92cmr134236355e9.10.1750678925797;
+ Mon, 23 Jun 2025 04:42:05 -0700 (PDT)
+Date: Mon, 23 Jun 2025 11:42:03 +0000
+In-Reply-To: <20250620-num-v1-2-7ec3d3fb06c9@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com>
-Message-ID: <aFk8-_TNeV51v2OA@google.com>
-Subject: Re: [PATCH] rust: cast to the proper type
+References: <20250620-num-v1-0-7ec3d3fb06c9@nvidia.com> <20250620-num-v1-2-7ec3d3fb06c9@nvidia.com>
+Message-ID: <aFk9i71j2rKcC6KL@google.com>
+Subject: Re: [PATCH 2/3] rust: num: add the `last_set_bit` operation
 From: Alice Ryhl <aliceryhl@google.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jun 11, 2025 at 06:28:47AM -0400, Tamir Duberstein wrote:
-> Use the ffi type rather than the resolved underlying type.
+On Fri, Jun 20, 2025 at 10:14:52PM +0900, Alexandre Courbot wrote:
+> Add an equivalent to the `fls` (Find Last Set bit) C function to Rust
+> unsigned types.
 > 
-> Fixes: f20fd5449ada ("rust: core abstractions for network PHY drivers")
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-
-Please use unqualified imports.
-
->  rust/kernel/net/phy.rs | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> It is to be first used by the nova-core driver.
 > 
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 32ea43ece646..905e6534c083 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -163,17 +163,17 @@ pub fn set_speed(&mut self, speed: u32) {
->          let phydev = self.0.get();
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
-> -        unsafe { (*phydev).speed = speed as i32 };
-> +        unsafe { (*phydev).speed = speed as crate::ffi::c_int };
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-unsafe { (*phydev).speed = speed as c_int };
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
->      }
+>  rust/kernel/num.rs | 38 ++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
+> 
+> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
+> index 6ecff037893dd25420a6369ea0cd6adbe3460b29..95766201a7cf208989f37ecbc6d54d264385a754 100644
+> --- a/rust/kernel/num.rs
+> +++ b/rust/kernel/num.rs
+> @@ -161,3 +161,41 @@ pub const fn align_up(self, value: $t) -> $t {
+>  }
 >  
->      /// Sets duplex mode.
->      pub fn set_duplex(&mut self, mode: DuplexMode) {
->          let phydev = self.0.get();
->          let v = match mode {
-> -            DuplexMode::Full => bindings::DUPLEX_FULL as i32,
-> -            DuplexMode::Half => bindings::DUPLEX_HALF as i32,
-> -            DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN as i32,
-> -        };
-> +            DuplexMode::Full => bindings::DUPLEX_FULL,
-> +            DuplexMode::Half => bindings::DUPLEX_HALF,
-> +            DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN,
-> +        } as crate::ffi::c_int;
+>  power_of_two_impl!(usize, u8, u16, u32, u64, u128);
+> +
+> +macro_rules! impl_last_set_bit {
+> +    ($($t:ty),+) => {
+> +        $(
+> +            ::kernel::macros::paste! {
 
-I would keep the imports on each line.
+I think this would read slightly nicer with the paste! invocation on the
+outer scope.
 
-let v = match mode {
-    DuplexMode::Full => bindings::DUPLEX_FULL as c_int,
-    DuplexMode::Half => bindings::DUPLEX_HALF as c_int,
-    DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN as c_int,
-};
+$(::kernel::macros::paste! {
+    ...
+})+
 
-Alice
-
->          // SAFETY: The struct invariant ensures that we may access
->          // this field without additional synchronization.
->          unsafe { (*phydev).duplex = v };
+> +            /// Last Set Bit: return the 1-based index of the last (i.e. most significant) set bit
+> +            /// in `v`.
+> +            ///
+> +            /// Equivalent to the C `fls` function.
+> +            ///
+> +            /// # Examples
+> +            ///
+> +            /// ```
+> +            #[doc = concat!("use kernel::num::last_set_bit_", stringify!($t), ";")]
+> +            ///
+> +            #[doc = concat!("assert_eq!(last_set_bit_", stringify!($t), "(0x0), 0);")]
+> +            #[doc = concat!("assert_eq!(last_set_bit_", stringify!($t), "(0x1), 1);")]
+> +            #[doc = concat!("assert_eq!(last_set_bit_", stringify!($t), "(0x10), 5);")]
+> +            #[doc = concat!("assert_eq!(last_set_bit_", stringify!($t), "(0x1f), 5);")]
+> +            #[doc = concat!(
+> +                "assert_eq!(last_set_bit_",
+> +                stringify!($t),
+> +                "(",
+> +                stringify!($t),
+> +                "::MAX), ",
+> +                stringify!($t), "::BITS);"
+> +            )]
+> +            /// ```
+> +            #[inline(always)]
+> +            pub const fn [<last_set_bit_ $t>](v: $t) -> u32 {
+> +                $t::BITS - v.leading_zeros()
+> +            }
+> +            }
+> +        )+
+> +    };
+> +}
+> +
+> +impl_last_set_bit!(usize, u8, u16, u32, u64, u128);
 > 
-> ---
-> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-> change-id: 20250611-correct-type-cast-1de8876ddfc1
-> 
-> Best regards,
-> --  
-> Tamir Duberstein <tamird@gmail.com>
+> -- 
+> 2.49.0
 > 
