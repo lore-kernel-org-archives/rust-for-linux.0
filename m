@@ -1,95 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F53188CC9;
-	Mon, 23 Jun 2025 11:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC02188CC9;
+	Mon, 23 Jun 2025 11:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750679685; cv=none; b=K08NK6NB7a8bPbJnL7JbOBRnstiDMuOSz8s0/rAiLdUqdLOHCoVX67SPQSgslJi5VwB48cfTmExEOOpLHLab1JEepFIecuCydXk0zXXQ4FuwPwO/AxeiMdLSv3UeDBO+LrE5Eu+CXh7Mh7pkuRlFYqb8WUEXxmR8DiF3ZKbs0cg=
+	t=1750679799; cv=none; b=OBK23N7lB+N9ASKduyeI2TFPIzkJDJBpd6iB20nKAIMRmzkB5LLDOsk6BkkH2oRJfstBRKyrCYAtvT7pOIZquAwtkLVA1kWSBatSJXl7IQKrgMPytPtdlXb9BgubcsTD0G1R++jDFebCCrsaodLnQgiavB4s8XvGTyBcgK+Wo5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750679685; c=relaxed/simple;
-	bh=/uT155bZSbLCiM0qCfhRE3uZEOZiDrXtCzPyDSsBQ6g=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=eDZl8iAwZP3UBMR8wyfnsLqs1CNTRu4zzOqvZA8afNYQdkKvQ3Iz7SQB+s3no63e26Bl3pXTk3K6FtmUp6TEZkLl8UI0Dtiph7ijWTCf1iZaXSJNN0eN1eaHuqGK4Zoc13XSbZ2k4SPPhqFo6KyqW7xt5cbHrCKSaY+iKAhXJps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEzDE9rD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750679799; c=relaxed/simple;
+	bh=AsVQmS7bq9T9Ijg20TqdcrkVwjG2XZOy1DlfOyQadUk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O7t/ySxOC5RQz0o3FpYspIiXIwDyCX8QD43IJj6yDRFFBlXY9vd0zxvtuB9wsKx3oMIMZ/l2FdVctnfa+V78+ewX9ierpPMCOd0gBPMrK8D6W5ELQRC0YStjc/FkClrKEzLzvDoi+Iq+lVy7jdETKjZnxgOOFXnCgg0z00swTmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYO9Ayvf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEzDE9rD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404CDC4CEEA;
-	Mon, 23 Jun 2025 11:54:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYO9Ayvf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE3FC4CEEA;
+	Mon, 23 Jun 2025 11:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750679684;
-	bh=/uT155bZSbLCiM0qCfhRE3uZEOZiDrXtCzPyDSsBQ6g=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=aEzDE9rDNoQg8vhz8itfbNQn/JbKJiELUhuRe09vzbthtQZb3ucyMox6uuRQ/wWHi
-	 T6BWQO9R2OwZNdK8dgzpcaFVSe+2qh3j/wbVTApYKh/eMzYLMbybohZTl/J6inh1Kc
-	 tnYVFSJnCh8s0ttfeNbS8Pr0quCoJajAMqQ+7USFsKTzgBGnwa7cE+80+iWrVQpwv/
-	 HUvv/Sm9CHs1KB7hanR1AEUfrHCM6KrQg1RpW1xOWfJDpT5/zwCkyRtMaJHe0GQHa8
-	 P7nPVhPxIKUpJ8H/thzrn4HaLVE8rp+beSgYIUf6NQ2GQwE4j+wkWs/WCaSzS66SO6
-	 hj6aYJIGvVbLw==
+	s=k20201202; t=1750679799;
+	bh=AsVQmS7bq9T9Ijg20TqdcrkVwjG2XZOy1DlfOyQadUk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=eYO9AyvfD1Fz12Pekiy5r2TdUATUkIEbIktIoz7diA6XFKJlJu0RgwJgEoLbamMe5
+	 uHDyeLh7EMagUSkc4xJidI9CDc2mKgPJdzqiiwDTdcyeuWyysODXqx0Ve+H5vcTlfa
+	 r3mcsjw1990DowcUvxawUEwz2DIXBPZ0Gj87pHGt5urPD5CzBIfxcpgZCe1vRk1uF9
+	 aR++hwdpSEwxqrIiY8cys7+B1aT0RWrADkbY/yCbGt+R+vXhbL7RtHLiwz94OaCGke
+	 6CCVGRCfEnwA94MwelBPKOkziRkyuB99y/OvrdaSbsHGZYv4amEk4NDdcGe67Xvoa6
+	 F/uJSbFV0k25w==
+From: Christian Brauner <brauner@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH] poll: rust: allow poll_table ptrs to be null
+Date: Mon, 23 Jun 2025 13:56:27 +0200
+Message-ID: <20250623-gigant-luftraum-ff854d561474@brauner>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com>
+References: <20250620-poll-table-null-v1-1-b3fe92a4fd0d@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Jun 2025 13:54:38 +0200
-Message-Id: <DATW5HJ259PB.1289VEJEUBT2Z@kernel.org>
-Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
- Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
-X-Mailer: aerc 0.20.1
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <20250618164934.19817-5-boqun.feng@gmail.com>
- <20250621123212.66fb016b.gary@garyguo.net> <aFjj8AV668pl9jLN@Mac.home>
-In-Reply-To: <aFjj8AV668pl9jLN@Mac.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1288; i=brauner@kernel.org; h=from:subject:message-id; bh=AsVQmS7bq9T9Ijg20TqdcrkVwjG2XZOy1DlfOyQadUk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWREOnywV3irX9L95ojuXt4t2/OaJ2yPO+Fv+l7L7965W SbP3FYs7ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiIxgKG/+ELXvxyfhGcUp15 S/OXw36lGT+iPTwr5+ReCZkYZmjF+J3hf3Shv69MluUcY22GKbK5x6LWOH3s6T598cOTrl+Kp2M teAE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Mon Jun 23, 2025 at 7:19 AM CEST, Boqun Feng wrote:
-> On Sat, Jun 21, 2025 at 12:32:12PM +0100, Gary Guo wrote:
->> Note tha the transparent new types restriction on `AllowAtomic` is not
->> sufficient for this, as I can define
->>=20
->
-> Nice catch! I do agree we should disallow `MyWeirdI32`, and I also agree
-> that we should put transmutability as safety requirement for
-> `AllowAtomic`. However, I would suggest we still keep
-> `into_repr`/`from_repr`, and require the implementation to make them
-> provide the same results as transmute(), as a correctness precondition
-> (instead of a safety precondition), in other words, you can still write
-> a `MyWeirdI32`, and it won't cause safety issues, but it'll be
-> incorrect.
+On Fri, 20 Jun 2025 11:49:35 +0000, Alice Ryhl wrote:
+> It's possible for a poll_table to be null. This can happen if an
+> end-user just wants to know if a resource has events right now without
+> registering a waiter for when events become available. Furthermore,
+> these null pointers should be handled transparently by the API, so we
+> should not change `from_ptr` to return an `Option`. Thus, change
+> `PollTable` to wrap a raw pointer rather than use a reference so that
+> you can pass null.
+> 
+> [...]
 
-Hmm I don't like keeping the function when we add the transmute
-requirement.
+Applied to the vfs-6.17.rust branch of the vfs/vfs.git tree.
+Patches in the vfs-6.17.rust branch should appear in linux-next soon.
 
-> The reason why I think we should keep `into_repr`/`from_repr` but add
-> a correctness precondition is that they are easily to implement as safe
-> code for basic types, so it'll be better than a transmute() call. Also
-> considering `Atomic<*mut T>`, would transmuting between integers and
-> pointers act the same as expose_provenance() and
-> from_exposed_provenance()?
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Hmmm, this is indeed a problem for pointers. I guess we do need the
-functions...
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
-But this also prevents us from adding the transmute requirement, as it
-doesn't hold for pointers. Maybe we need to add the requirement that
-`into_repr`/`from_repr` preserve the binary representation?
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
----
-Cheers,
-Benno
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.17.rust
+
+[1/1] poll: rust: allow poll_table ptrs to be null
+      https://git.kernel.org/vfs/vfs/c/6efbf978891b
