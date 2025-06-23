@@ -1,98 +1,73 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52790248F7C;
-	Mon, 23 Jun 2025 12:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA71244663;
+	Mon, 23 Jun 2025 12:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750682239; cv=none; b=SHgR660rNVQx5kzf3RZS1OwQotaPk5dOt9RauRyM3xTFNh537gMFUEX3ZDBWMDC8LtM+zioYH5yZhraYx1XG2liDIvdYmIppjr/Qmx0on76oMaNOBzIGvqBsulwD5LNXZu6omsYyv+4q3PfqYYl9cwKNE/LMGVBIsEso8xh3wBM=
+	t=1750682517; cv=none; b=sCnvVIEL50Ui71MAFDsh0Y9jDj1v3CHzo0JgQsJkVqszzWCD+2tfjg1NiT0mD8nZfUEdIhD4B8I0YjEyMmtaD4gPiodNZ3wEVdUh0m6ms264jPMx1gLJA9X9V1u7aoVeo6I16vWluTBqm8v6nXHDunX5E5ziUhwSJnA2NIAxUpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750682239; c=relaxed/simple;
-	bh=6djygWjjisSGtthFe/KFX8iwdEpK803K6qgoaBiMTBQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WJDT10t1qMWvIisLgHzkTW2GCah4XZrVaRMOSP9XpyX9U9cK6flHCjDZ9vXaTsi5bwOZn49b3JiIqfgAOqcLsijASRutVaqMFynPp0LHGU7QjDdO4cnXPy5bP+Jfi4NV5ma/Rfkh0zewFe464bGOlNc95/vJNOH/8wfcaHx3sEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OMnUmRp7; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750682517; c=relaxed/simple;
+	bh=+FElCxP+gPXujA324quUzQTpAMHP1zjz6iLGuGL6yIE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cYbxMnGlPq2Q1dX8gqWHvXf4IxdrrNspLW0LlVuXKapaEsIPU7y0V0v74ND4nnqk/sO7Jlw5vgorQE+ZHouKE91JGyvNlE6zIy1YRJfsDN1GQfnJiaLRAjLro9YR0ryD0sruE2ONCvZTciQlWw2OAmBTXEJHJvWn8v72KsMBDbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4a8RYcu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OMnUmRp7"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b26fabda6d9so772669a12.1;
-        Mon, 23 Jun 2025 05:37:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750682237; x=1751287037; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6djygWjjisSGtthFe/KFX8iwdEpK803K6qgoaBiMTBQ=;
-        b=OMnUmRp7elb7qhH5crJ/bib2o0kS0gpIDjhWPl5ts8raFemRHG5ZBeTrVlNopX3Fd+
-         dRlR/j1BrPPwBUCRW6KdCuVJh7F3gLvJGQr0IJ4thBRK+k/KKtksmUw3r5Mg5LCuXJ56
-         f3Q21OJU6AHCBCQ5fZFxgg150WZSDdcx4LtPbOtMaw7TPiQvOycGC4MxFx42wIf7IBU3
-         Ji8kM9aJIlTwaXWyzFrNfzzKmwyCOfa7wbZqdPJxPCJeMzG5N7zeW7P14jWLpjMbZgB6
-         Rs6/c6osJkuJI0pdij1v3kmidBkE+e6hZDTOLgnGJEZjTIHrJsW8eyOSYghQVZlYd0ps
-         UWgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750682237; x=1751287037;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6djygWjjisSGtthFe/KFX8iwdEpK803K6qgoaBiMTBQ=;
-        b=vUORCchyEvskN92s0hWZi1aZWz2kiKiCnwTEAAEv7d/QujMyknAZkSaPOZXtH5rges
-         OinZtE8zZS36c6q05zYeBcgXM+j9/jyEy1RdcCdHWXfJ3c/ehoLSQatbJmZ25ls0Br1A
-         Vr7rE4CRQhPE3VRggAbxAmAyblOBw6hK5FTWbt4gDgVx60JwHgfLwVrPyKXlXQ471r3X
-         iUp1Xh9PdfGRSxulI6Lb2Bu0+3N7UTeIQGFviqafJoKP5dANJiLN8Za+RRcsZxRDvUsq
-         2U/ob5EemgvkVKeO3AMerinesCQvwP95hZEH6TXGoVOQc01fv7a5AKOr3JWhxzLe3pvr
-         6IPg==
-X-Forwarded-Encrypted: i=1; AJvYcCU+eD5iqIjMT0lmIVEOFQmQIb+1qB6dbyBCmcWA43UxgGay/RzunzRKZwNlCPks621zbYd6UN1SNudBVRvqFT4=@vger.kernel.org, AJvYcCUe/F1TpmOe4Z3nEcpMICoBMUSYU8jeVLlsfZSLwyMP08d9/OA+/yj5SxSBLR+lFwQ6IJ35g6oCLj2ftA/x@vger.kernel.org, AJvYcCVLDy87ucDC6G7y2yKyQ3C9AhmcDgnPtGPlQVb0ePl3i8IUc5S9rCfc+sCJxnR+qqTFk+y+DI3r68bOzR4=@vger.kernel.org, AJvYcCX3OZsphVQbJmLf5XXO902AhdpbIOMvHq0dE+jQMomWFGw/cbG2sM/S/LH+u93J7yfSMUVbPRv9UjL+PP72Uw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzav3xluMr4TkUMDwf+E5SXBqD1Ot1qD01CHtgSw5YxenGWGs/T
-	BJbOqiy2qgzl7PmLY10Dmmu0X4tyepg3ppAgPPArEV1maNh+zO0136g5NmQWiFioEDRi1saM9jW
-	sSleQGb4MFVVHFzepDdX5cZHMKmz35f4erriFLZlHxQ==
-X-Gm-Gg: ASbGnctfNiKrXzm5gd2ROXBV/wMq17qheARdwaVDGj2B94wDQwSPZ/sSnt687jQzgG3
-	3N4XA1V4E2dTt5fKamXl7mf1ZM0EbfsRWRX/94yikT4LcdFVqOYxa3Ehb5Q4za9pBQ8RU+Nozcr
-	vWWga2h5Z5xXRVHIJWBIS8+NinF4pDQPLJXW7ejQXgn6yLPueguTEr3g==
-X-Google-Smtp-Source: AGHT+IHj4Vc3q5Tm73gXKkrqpOdUoFXibUWEB+aaKFTc2msTk+p2ncYTBtc78U549+h3Sla50NrSjaTYFBnaq75wZA8=
-X-Received: by 2002:a17:90b:5828:b0:311:488:f506 with SMTP id
- 98e67ed59e1d1-3159d8dfcfemr6489570a91.6.1750682237514; Mon, 23 Jun 2025
- 05:37:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4a8RYcu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E8BBC4CEF0;
+	Mon, 23 Jun 2025 12:41:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750682516;
+	bh=+FElCxP+gPXujA324quUzQTpAMHP1zjz6iLGuGL6yIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I4a8RYcui3jW+pZ++5z/Y9O58xN6h3JAMC1hy1bAl2d2/Iol0QfeJmsnvXc8EZxWK
+	 f1Gm/EEwKH8qqVN4Jnh51r0qoRVuQ6KmY+hF5glEQvpZ0sEi0L8k+XfhROjVqC3oae
+	 Y7HtOJcU8dtZS2aSWWX02ceXhLIX8QGNaIcGcf1jhOprcVi7moIjRmuFTmONlBhQKJ
+	 cYZzMNHiYpchEWyssdB3V8Kac/yih7c7mMaxnzhis5rNpypPZM/5nB3c/0CSLb02VU
+	 veRpDRwbcpfBZSYZ4dznOs70rJ+ZtLD9NsDZus0el9kqQF+f6/zAtMm3oSULGxUI0K
+	 PxGinu+3ky0Cg==
+Date: Mon, 23 Jun 2025 14:41:49 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
+	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: Re: [PATCH v2 2/4] rust: devres: replace Devres::new_foreign_owned()
+Message-ID: <aFlLjQFZ8gzh5Mz6@cassiopeiae>
+References: <20250622164050.20358-1-dakr@kernel.org>
+ <20250622164050.20358-3-dakr@kernel.org>
+ <aFlA92ooeQsSThLh@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
- <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org> <COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
- <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
- <smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid>
- <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org> <DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org>
-In-Reply-To: <DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Jun 2025 14:37:05 +0200
-X-Gm-Features: Ac12FXzd4fB_ylukQug0_-S4aWsl7Va8G7w5RrcYN_9qD3AkvAN8eEjNhJmevGI
-Message-ID: <CANiq72nV3QzpRZTyDTv7Qx-c83jeayUY3nnvhpbtOYXf47EgJA@mail.gmail.com>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-To: Benno Lossin <lossin@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aFlA92ooeQsSThLh@google.com>
 
-On Mon, Jun 23, 2025 at 1:48=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> Another way would be to use a `Once`-like type (does that exist on the C
-> side?) so a type that can be initialized once and then never changes.
+On Mon, Jun 23, 2025 at 11:56:39AM +0000, Alice Ryhl wrote:
+> On Sun, Jun 22, 2025 at 06:40:39PM +0200, Danilo Krummrich wrote:
+> > +pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flags) -> Result
+> > +where
+> > +    T: 'static,
+> > +    Error: From<E>,
+> > +{
+> > +    let data = KBox::pin_init(data, flags)?;
+> 
+> Wouldn't we also want to expose the ForeignOwnable version? It seems
+> likely someone would want to avoid the allocation.
 
-There are `DO_ONCE{,_SLEEPABLE,_LITE}`.
+Allowing other things than Box changes the semantics of the API. For instance,
+if it'd be a reference counted thing (e.g. Arc), it would basically mean "please
+make this object live *at least* as long as the device is bound".
 
-Cheers,
-Miguel
+Before considering to allow such things, I really want a potential user to
+present a valid use-case for that.
