@@ -1,116 +1,103 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A4F23AE96;
-	Mon, 23 Jun 2025 10:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668C423BD09;
+	Mon, 23 Jun 2025 10:42:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750674319; cv=none; b=NwMy96sTZ2V7mYL6TRDi8+4sPJoQvQIAwf9r+E2kHwpCwc8PwNcFYcF+M7zwbXZvmvY+N/vOxtPOvNohmGwH+osIlWfsUOlf82FP7FhBnbV+u66R0V51BTN0CRjL4EPIHzgF1JUn1xATNTacWlVgduOIYyMapcfC1gefvR1R5NM=
+	t=1750675328; cv=none; b=e7cJ8Og5CceS8+uozXB0bgVVzG6ddAuYWZs5t8xfyMJyIxcjstsyDDk/Yc5dkPQZY4CWjI3bYwJWfcjosMrIAbELLF0KByZ7Is5vV0fGpvaPQ9Mjj9nj5ileepz79jiSOmDyJrGe2KcNnYPKDD5eexeo43qO2t5+dG3ktZU4GNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750674319; c=relaxed/simple;
-	bh=JoF13i0LZyapjKFIIUhrt3kypJwlGw4vYPJDGezJMJ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PJHbKwj7Z+0kRPbq/bh8nW05aK5OmEUjHhGOjCS3sJx+z7YS31adsAt9SGHPlHP3ORYaircLY4fhsW/0WoET8dr2mBgnVsoobcdbnZ2596ypaM3zmUDyC+kn/P/ACU80g5EmRzMtN+OuWBKHi+tOJhf3oS2Lq8aFpA5crrwY6ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AG0sZ27o; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750675328; c=relaxed/simple;
+	bh=BpponAcg+z4hGFK/u5zBtOrapD2VBIN9qxipHbAfAZc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=UA56g/+bLNLxt153mbXpSmWPZ6aU5bV4mriWfrdFKxu0Z+khDI3yLwzwmNSegnhxvOydskhDpsu6cPSKCE+iPqmystSCV+5SUaNwQqSR7TQjBHi87qv2PTFUrr+bZM6/S7XpU2wCBe37Ie7U2wLpjyvfbGwp5Of3CxAEdLEaAAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=GzKVBdPw; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AG0sZ27o"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-31384c8ba66so423515a91.1;
-        Mon, 23 Jun 2025 03:25:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750674318; x=1751279118; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JoF13i0LZyapjKFIIUhrt3kypJwlGw4vYPJDGezJMJ0=;
-        b=AG0sZ27oYKLYCskCpqw/19C9zxk/oRlNkoBSqdRu9VTWGlYL5SDrvQbcR82ZdcTCaF
-         hq95ys4wgR6wKNn7/ZxVtN+0m5v9jJ1n3KIRLGLfY5WHDb7JeLZNhJKsQCmigt8WsB0s
-         C/ZdJgnKejLL4rJKWHZE/4bbdWfQb1xl/H8+F5IYQTRRkZVWLg9WbGol7+VhQ0FIWtEH
-         KQvAHKsfhBQf+o+3CE7VN4zsXlp5O0PACKJuTL/OLWiHKVqTVaODB3RvnILX38+V/R/l
-         OlOG0DuwFal/SjrMtg31FugiKmjf+YcjTkH/vbDE1tkghVUGSweaS7XtTgslxNBEkF2B
-         TEow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750674318; x=1751279118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JoF13i0LZyapjKFIIUhrt3kypJwlGw4vYPJDGezJMJ0=;
-        b=Pl8wUZx+F6U4NvCudfV1d+8GzB0+ieDAaLBdxnwZpwRBjFnLTXJ1vavc89WgVTh5BY
-         Z1nMWBkZ+OIOfeOG6OypPQlMKn8Izjr9TTpEi76DpHp0S19kjoizPKBwCWpWqd19AEM9
-         90WanN+ClixOx4rwrfElhN+45rhtn7Tib1I5dc/wyTlGaUjAO70tdxE37AYpkMeG9O7w
-         LVNA+cDZW7CAouI/40AV0IeKPwGoSVR9rYhaDwMGjx0cqs3Ou6+Fd0/DiSygYLdem89b
-         BxXxNOiQryo2Ee9AdfZZkj+5O26kSig9ULrW1eAM8EtIp7jRq6qSr6RIvywDWvpPrUNg
-         V5KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU8HnDqAXUsFZW8kHzIc21mlB1EtefEApOohnPfE0KWbMxQkhKYFJvHS8jGwMzBmpsKktBR/ao14xctnika@vger.kernel.org, AJvYcCWwi/Iki4t65RwBVmy/PlJ++ZQ2IFOALfka9TeJRjN4H8Irh9cEsVPW9BGS27UrmF4rb/3046EicWx55hJhfog=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6LfiohZAsFNqHR2hb0ZANW6DUvDiDYcUT2VIE6KuTltvgbnFh
-	sOkYx/dj69pRGHE/HHrYCIZfw7F/N9N6zoUCiNLxVoNOd5QDcJkfI8FeUMMCZ44OtTi0uzCyFhX
-	ijfNQwqvw36PtfCEUKApmDbzbxFTHrMg=
-X-Gm-Gg: ASbGncvCqHa+JxIZkcC3c02BlxY/LN3GL6SYELsjSVBqj8xGBqw7R7guOYYBqny4iFQ
-	didyW8ve+5t+KHVXCkC6zvOjv6E8HZu7bmc44CAPWBuIh7XyO6e5UcWxOS2ThdF/OnKZUSCvHE2
-	3AIeGeYEv6ZfsR9x6UCuv0PBp6bNzAvhwHD86YFF94/8M=
-X-Google-Smtp-Source: AGHT+IH44uRazgYKeg/GGdrY59Bo9M/r/97fGJnTNsWpvOYZ7ChsmOtK+tWEjUo35Ks++uUA4nWruzq2q28En6iagws=
-X-Received: by 2002:a17:90a:e7ca:b0:310:8d79:dfe4 with SMTP id
- 98e67ed59e1d1-3159d8ca488mr7598352a91.4.1750674317721; Mon, 23 Jun 2025
- 03:25:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="GzKVBdPw"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250623104204euoutp012401a2774c3ecc6088173c26bf10b1ec~Lpe6VQh3p2279622796euoutp012;
+	Mon, 23 Jun 2025 10:42:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250623104204euoutp012401a2774c3ecc6088173c26bf10b1ec~Lpe6VQh3p2279622796euoutp012
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1750675324;
+	bh=ZgC7RmHblf1sf7WhXqmx7u6LQrZhsQXE/footszyEW0=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=GzKVBdPw94wRPygDILO19gR4YjbJe52ce42rJk/B3hzlaWlrRlfdwI8nsZzPkDiQR
+	 oHaiH1lEGlhXsfloz3SwuT/GSfXbXvhOrUWgy+NKZPTMSNBdHMWEf8RvcPeRf9TVzb
+	 iloMNZJkhXyEyTut7qAzHEx/iDzsnRv5iMjOI6wE=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250623104203eucas1p1ad615a6dbbfc1e4a493d4eb81b68d666~Lpe52oEhj0250002500eucas1p1v;
+	Mon, 23 Jun 2025 10:42:03 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250623104202eusmtip1432554c88ece7735183b4593540639d1~Lpe4jGdCu1485414854eusmtip1Q;
+	Mon, 23 Jun 2025 10:42:02 +0000 (GMT)
+Message-ID: <962be35f-65be-4589-a844-cb613ea40286@samsung.com>
+Date: Mon, 23 Jun 2025 12:42:02 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <d5ea8adb198eb6b6d2f6accaf044b543631f7a72.camel@ibm.com>
- <4fce1d92-4b49-413d-9ed1-c29eda0753fd@vivo.com> <1ab023f2e9822926ed63f79c7ad4b0fed4b5a717.camel@ibm.com>
- <DAQREKHTS45A.98MH00SWH3PU@kernel.org> <a9dc59f404ec98d676fe811b2636936cb958dfb3.camel@ibm.com>
- <DAQV1PLOI46S.2BVP6RPQ33Z8Y@kernel.org> <39bac29b653c92200954dcc8c4e8cab99215e5b4.camel@ibm.com>
- <CANiq72mUpTMapFMRd4o=RSN0kU0JbLwccRKn9R+NPE7DvXDuwg@mail.gmail.com> <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
-In-Reply-To: <c3786491d6ed5fa10a27e307631253e97c644373.camel@ibm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 23 Jun 2025 12:25:05 +0200
-X-Gm-Features: Ac12FXyW8_J8gCT-mZ5VYNdxGGkNCz2J6cxnbaUtXI0z17b1symQrSHeX7OJMkY
-Message-ID: <CANiq72m_T02Rh5LWCtHYjpn8-fF5b7gDay0aOxp+-RFCdDqrAg@mail.gmail.com>
-Subject: Re: [RFC] Should we consider to re-write HFS/HFS+ in Rust?
-To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Cc: "ariel.miculas@gmail.com" <ariel.miculas@gmail.com>, "frank.li@vivo.com" <frank.li@vivo.com>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "lossin@kernel.org" <lossin@kernel.org>, 
-	"slava@dubeyko.com" <slava@dubeyko.com>, 
-	"glaubitz@physik.fu-berlin.de" <glaubitz@physik.fu-berlin.de>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/9] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Drew Fustini
+	<fustini@kernel.org>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
+	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
+	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-clk@vger.kernel.org, Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <CANiq72=YsoFSSm9QU0W2ZQseeQTWFNkXYVR1mODdv3HHg-0PAQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250623104203eucas1p1ad615a6dbbfc1e4a493d4eb81b68d666
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250618122801eucas1p2f9ca464e9e5c8d954d5150500952aeed
+X-EPHeader: CA
+X-CMS-RootMailID: 20250618122801eucas1p2f9ca464e9e5c8d954d5150500952aeed
+References: <CGME20250618122801eucas1p2f9ca464e9e5c8d954d5150500952aeed@eucas1p2.samsung.com>
+	<20250618-rust-next-pwm-working-fan-for-sending-v4-0-a6a28f2b6d8a@samsung.com>
+	<aFSw44++s7xMkJ9I@x1>
+	<CANiq72=YsoFSSm9QU0W2ZQseeQTWFNkXYVR1mODdv3HHg-0PAQ@mail.gmail.com>
 
-On Sun, Jun 22, 2025 at 12:39=E2=80=AFAM Viacheslav Dubeyko
-<Slava.Dubeyko@ibm.com> wrote:
->
-> I completely see your point.
 
-I think we are going in circles.
 
-Yes, we understand the engineering value of taking small steps and
-replacing small bits each time. That is not the issue -- we haven't
-argued anything against that.
+On 6/21/25 14:21, Miguel Ojeda wrote:
+> On Fri, Jun 20, 2025 at 2:52 AM Drew Fustini <fustini@kernel.org> wrote:
+>>
+>> Did I do something wrong?
+> 
+> No -- the file just doesn't exist in the patches.
 
-If you are talking about replacing code that is local/private to HFS
-and that does not have any other users (like a custom data structure),
-then it may or may not be a good idea, depending on what is it and how
-you do it. It is hard to say without knowing more or seeing an
-example.
+Yeah I did something wrong, I missed it during the commit split, and for
+me compilation worked as I had many untracked files in the repository
+and were compiling with pwm.c as one of them.
 
-But if you are talking about using C APIs shared with others, then it
-is different, because the goal of the project is to provide safe
-abstractions for modules to use, rather than have every module call C
-directly (or have everyone reimplement their own abstractions
-internally, and possibly unsoundly).
+> 
+> Cheers,
+> Miguel
+> 
 
-Those "abstractions" are not about reimplementing existing C code, but
-about allowing Rust callers to use the existing C code _safely_. That
-is a big part of the reason for using Rust in the kernel, and why we
-are asking you to take a look at the existing abstractions and the VFS
-ones.
-
-Now, there can be exceptions, as usual in the kernel, and we can
-discuss them, of course. But that is the general principle.
-
-Cheers,
-Miguel
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
