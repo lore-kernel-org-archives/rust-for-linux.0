@@ -1,165 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F791CD1F;
-	Mon, 23 Jun 2025 15:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060F426D4C6;
+	Mon, 23 Jun 2025 15:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750692379; cv=none; b=ZIvYoEhdYp5DSx24l7k5eauxupTbLFWD4KfpAzJcwEMU5EmS5trdIq9JzVw1Qg2Ek7kQlRWK6v93S8LqHZrObIPHBSWa1pzENwqqNtzv7G0fgY0sZDbc6pyzt5tH+UPearkAu7gSwUq73ixdRJqJQObTZMk9cfUyDxrpt5fzPME=
+	t=1750693384; cv=none; b=KmdLK5SnOovyb1sfQNBKNCQJMdi9ZGFk6Gyc0axXo5rjhhoQsno8aTkkhNKjw7sxAO00z+g+gY1N96wDNDcRQLJA+JxVbJgaJwst5cIeeZHFkfSke2CJCxz1hpKVUHYqCV4NSJEKzgO1ktsz4e8LXfvjZvgVe1TwT7v2GioGees=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750692379; c=relaxed/simple;
-	bh=+hXT9NgKl54nrfoBfadxq8ETqumOuW4V7oUlv+01yZI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=BmFZjwiqk/juWPO2+Q0QETpGHMf+KVpSWQA7gmTpeymyCDo1JJTNOpnweQK6PF3vgcO+UZzIIF5u17cWk+Lx+Tbz52eenDbOop9IuHZ8BLFQSWiHwzRw8EWbeps1nG7I1maJnOVcPXtNy5HEljmd0ruclmE7oZ7nnYMXIgvSs4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxnO0C6b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750693384; c=relaxed/simple;
+	bh=DEsBc+hs49pm8VweFdAsT/RduB+CaSEOw49ute5T254=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uQcHaHLObQWICP9igmBC4U0WWueLKlEuxhVgGjY1Q41kroq/hdYBCOh60tJp0Ci3n4FOkEZFLwBh1yESIzpbPIaLLigOReacAWwOUUuKYymCGf7+OJUk/zImrHERzH8yXq6sjTWSFUYUNWl8W2NnZOGEcrvHyaxE4c4u+8dXrrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uo4+3kr0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxnO0C6b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D822AC4CEEF;
-	Mon, 23 Jun 2025 15:26:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uo4+3kr0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C80CC4CEEA;
+	Mon, 23 Jun 2025 15:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750692379;
-	bh=+hXT9NgKl54nrfoBfadxq8ETqumOuW4V7oUlv+01yZI=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=JxnO0C6bM+y5mdsqgVRs6SRVQiKmcNmRb2yI+wAPQSM6DDHueeuhxpQ6IP4ocbp8c
-	 X6RfZr128BtMRyabHNVxToqBNi34raB6iTkfilIYgOheIfPxjKD3Gsvd3vMLJJgtw5
-	 G9eqIXf40iVMXZRYibCpCUhV7hfn7f83khSgSuQQghbW/BdWuCZ65x13tDmTH781M1
-	 49KaoKy8Ibpd1dqP8tYndEwEus+zBNekkJdor0Cz3ngn/LaTPRJ5xt51H4ke/txB3g
-	 30EZzcOS+fzarwnHX/9cFzXQV1X1mndQS6BZuwl09lYlwxYDXLo6GHF/SDbZNHWJNc
-	 YBz4VT1/Wm5GQ==
+	s=k20201202; t=1750693383;
+	bh=DEsBc+hs49pm8VweFdAsT/RduB+CaSEOw49ute5T254=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Uo4+3kr0C+qRmuQBrmqoJaywznJcg9JXcxC0SHXwxKUQmxEDdm4JkwJlAYxC5d3SY
+	 l7OXpXpZZv8GJ02aC/3Wr/+lBCRAfuLUGNiNDC6cjQIj5yIuQOP86smwD5zZis1Kcg
+	 FXyMj4UHdoQsBM73LciSAVKbsnh7tsrpzPi4TK7s+QRuKiWzRfM9MQdGFlEElhIwVH
+	 31Kygn94r2vDUsKKl/6kT7ujEcpjJtdeCaT4iHPWi2FwCLJReByCSUbf5Ibp2Zv4CX
+	 E8XmFyr1NwFrBE/fBG+8jhi1jWsYRoTobogifQGKilvlmxib8Lb0VmRI0FouG1UTza
+	 9Vo+0s8N5FpvA==
+Date: Mon, 23 Jun 2025 17:42:56 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Cc: acourbot@nvidia.com, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	"open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+	Petr Tesarik <petr@tesarici.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Michael Kelley <mhklinux@outlook.com>
+Subject: Re: [PATCH v4 0/3] Additional improvements for dma coherent allocator
+Message-ID: <aFl2AOUQ-CKYgIn8@cassiopeiae>
+References: <20250602085444.1925053-1-abdiel.janulgue@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 23 Jun 2025 17:26:14 +0200
-Message-Id: <DAU0NHTHTDG4.2HNEABNAI8GHZ@kernel.org>
-Subject: Re: [PATCH v4 3/6] rust: irq: add support for non-threaded IRQs and
- handlers
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>, "Bjorn
- Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com> <20250608-topics-tyr-request_irq-v4-3-81cb81fb8073@collabora.com> <aEbJt0YSc3-60OBY@pollux> <CAH5fLghDbrgO2PiKyKZ87UrtouG25xWhVP_YmcgO0fFcnvZRkQ@mail.gmail.com>
-In-Reply-To: <CAH5fLghDbrgO2PiKyKZ87UrtouG25xWhVP_YmcgO0fFcnvZRkQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250602085444.1925053-1-abdiel.janulgue@gmail.com>
 
-On Mon Jun 23, 2025 at 5:10 PM CEST, Alice Ryhl wrote:
-> On Mon, Jun 9, 2025 at 12:47=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
->> On Sun, Jun 08, 2025 at 07:51:08PM -0300, Daniel Almeida wrote:
->> > +        dev: &'a Device<Bound>,
->> > +        irq: u32,
->> > +        flags: Flags,
->> > +        name: &'static CStr,
->> > +        handler: T,
->> > +    ) -> impl PinInit<Self, Error> + 'a {
->> > +        let closure =3D move |slot: *mut Self| {
->> > +            // SAFETY: The slot passed to pin initializer is valid fo=
-r writing.
->> > +            unsafe {
->> > +                slot.write(Self {
->> > +                    inner: Devres::new(
->> > +                        dev,
->> > +                        RegistrationInner {
->> > +                            irq,
->> > +                            cookie: slot.cast(),
->> > +                        },
->> > +                        GFP_KERNEL,
->> > +                    )?,
->> > +                    handler,
->> > +                    _pin: PhantomPinned,
->> > +                })
->> > +            };
->> > +
->> > +            // SAFETY:
->> > +            // - The callbacks are valid for use with request_irq.
->> > +            // - If this succeeds, the slot is guaranteed to be valid=
- until the
->> > +            // destructor of Self runs, which will deregister the cal=
-lbacks
->> > +            // before the memory location becomes invalid.
->> > +            let res =3D to_result(unsafe {
->> > +                bindings::request_irq(
->> > +                    irq,
->> > +                    Some(handle_irq_callback::<T>),
->> > +                    flags.into_inner() as usize,
->> > +                    name.as_char_ptr(),
->> > +                    slot.cast(),
->> > +                )
->> > +            });
->> > +
->> > +            if res.is_err() {
->> > +                // SAFETY: We are returning an error, so we can destr=
-oy the slot.
->> > +                unsafe { core::ptr::drop_in_place(&raw mut (*slot).ha=
-ndler) };
->> > +            }
->> > +
->> > +            res
->> > +        };
->> > +
->> > +        // SAFETY:
->> > +        // - if this returns Ok, then every field of `slot` is fully
->> > +        // initialized.
->> > +        // - if this returns an error, then the slot does not need to=
- remain
->> > +        // valid.
->> > +        unsafe { pin_init_from_closure(closure) }
->>
->> Can't we use try_pin_init!() instead, move request_irq() into the initia=
-lizer of
->> RegistrationInner and initialize inner last?
->
-> We need a pointer to the entire struct when calling
-> bindings::request_irq. I'm not sure this allows you to easily get one?
-> I don't think using container_of! here is worth it.
+On Mon, Jun 02, 2025 at 11:53:10AM +0300, Abdiel Janulgue wrote:
 
-There is the `&this in` syntax (`this` is of type `NonNull<Self>`):
+Applied to alloc-next, thanks!
 
-    try_pin_init!(&this in Self {
-        inner: Devres::new(
-            dev,
-            RegistrationInner {
-                irq,
-                cookie: this.as_ptr().cast(),
-            },
-            GFP_KERNEL,
-        )?,
-        handler,
-        _pin: {
-            to_result(unsafe {
-                bindings::request_irq(
-                    irq,
-                    Some(handle_irq_callback::<T>),
-                    flags.into_inner() as usize,
-                    name.as_char_ptr(),
-                    slot.as_ptr().cast(),
-                )
-            })?;
-            PhantomPinned
-        },
-    })
+> Abdiel Janulgue (3):
+>   rust: dma: clarify wording and be consistent in `coherent`
+>     nomenclature
+>   rust: dma: convert the read/write macros to return Result
 
-Last time around, I also asked this question and you replied with that
-we need to abort the initializer when `request_irq` returns false and
-avoid running `Self::drop` (thus we can't do it using `pin_chain`).
+  [ Fix line length in dma_read!(). - Danilo ]
 
-I asked what we could do instead and you mentioned the `_: {}`
-initializers and those would indeed solve it, but we can abuse the
-`_pin` field for that :)
+>   rust: dma: add as_slice/write functions for CoherentAllocation
 
----
-Cheers,
-Benno
+  [ Fix line length and slightly reword safety comment in doc-test of
+    CoherentAllocation::write(); fix formatting issue. - Danilo ]
