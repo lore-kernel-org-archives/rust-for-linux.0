@@ -1,102 +1,99 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay4-3.pub.mailoutpod3-cph3.one.com (mailrelay4-3.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E9E284682;
-	Tue, 24 Jun 2025 12:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EA0290D85
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 12:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750767909; cv=none; b=LcUsKG3d9KICrrBc85lZqE5BiRDitMhDSly6BsIg1FAMlsrtG681ZhVTuC0NSaPhqobY/z3ZridXCeM/30wpqEvwc45fdfTwDdx14pexu9Jf78yuVpAJyPkMkwk91cwJnbZJvbngFFFK6KW8CT2O1X/l+o1korFKyuASwoE+v1I=
+	t=1750768166; cv=none; b=C7lN2t0sf2UvPvqN4TklcOaolywZgMa6T2YptU6X5MMcC+vtatwUsdF7OaMeCeYjXxfavLhlDeUx6u16XVjAvFC4paGEUchKsizCbQ7AEC3RCgOs0+DB49T/kyXZjLVXUqVHjwZ+RsRZjTVs2rRyU5ZL4Vr+6XhmSsRNfm4/XUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750767909; c=relaxed/simple;
-	bh=RI237N+iEEDDXGHWhevijSlBlXFUedEd8zc16128Oec=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F/1mYV2L/+f5lsGbDZXyjShHUOpKr0JBj8jlRNqvr8wzbWZhCxW5w0NSSOuxzcjIVqmgqVwxLWDq4fFL7u+Ji8nI30q13L28mujpAi+7ZDoxAoTh78sefsX4bMgw5GD+1LwDW+NkbX+ThqQbmDEZBuegXDv7mgZbxImglN8lSJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZjQlTu3M; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750768166; c=relaxed/simple;
+	bh=jQ8u9ZH99hgK/EV7QukLMxw0vYk0v1W8W5JIgBpDeUo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=XHN6nmN1Wk60s8SZ//xyVRHhw2UeqKWC39VZgCq14MAOnfKF2BN2etm75sxjhiQcyYZ9wf1igOhcXuEgz50Y9Rl5+QBP7KOyssUvHUBxlRb2NHx1+dE/KWqv1YmJe4aGwyRx55EkbvvcYxAfTy0TMrOiFfRVsVgeoHQnWB6yicw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Sm6ggA8Y; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=WW8DTx1a; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZjQlTu3M"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-235248ba788so4210005ad.0;
-        Tue, 24 Jun 2025 05:25:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750767907; x=1751372707; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RI237N+iEEDDXGHWhevijSlBlXFUedEd8zc16128Oec=;
-        b=ZjQlTu3MW86eCmqacWK7bnkTifA3W+keoVLGFlHBxJqameS2d8LbncXgOmNQo9nBJe
-         zpQvweW6IERvxe3rWNvrTtqkCbkhRjb5YAmsTk67UEYgbom3GL05JNEz447GzYT2V0sl
-         DZ5GSiIEwZCyl4G0hViIuvmm2Ym1iBw54omm1uCPtPK2nHA6Vd1rVB0R3IugVyJN41HI
-         T2l855nPx8PSCWbAWcsxeI8cwSOrn0HH1uZreU2BAgRBiIPlrmXfRazlM9ukOOE5Ro7b
-         RMN9X3PKN0QCjke2k86xaMbnI37MkfzGuljIgCHqOzbiDBVr/jmPDpmoOK5C9wEagQzc
-         RyYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750767907; x=1751372707;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RI237N+iEEDDXGHWhevijSlBlXFUedEd8zc16128Oec=;
-        b=gx3ogLIiDdv+5R4sOiw+h9iMJgnM28sP509P8fcFTVgpx1npXa3uAY8uIsP6mMjJ2/
-         2MIg4hrdPiAS8u/s2Xr1t4JgTgQxzzdqzex5u2FeKBF5Hc6OJCdUNVxd47EKLCLyCBfE
-         uXcE7bLCCEGb5Z0rO0MXd3kTijcEcDHZdiWdC0xgyzU5tGvY6795KrUW1AeTIW1gjKUL
-         UzPyK/piLtKqeINk5Ek3Yv7TC/yFb8DNULbfXWmWXoAbyouuigacpU5EhHDNX604MWvg
-         c3WbLAIy+7Liei/tPXkKuPa7HV8ZaWt+GFnadqEmed6beq8WoR2Ou4i0TUtxIFE+6LdK
-         1WSg==
-X-Forwarded-Encrypted: i=1; AJvYcCXtNDyERG2rV259/snXvb8kAEG1j5RW1TGs5OfQzbMdcOij3Tdc9wwlc9afw6M3BizVuqC3Ysa9C66+u/k=@vger.kernel.org, AJvYcCXu+hYZXgqpxoW/j/tTWBNgtwHO/AzijEbKIrJhhOZo2WUPakCzWopTJj+zz2K5i0mzKviGVfp0JX4GSg/XWAw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzL6Et2UuAwKS859hu8OdKnHlEhS4/hXbUElO+mxTyuap1gNoWM
-	Nz/yDLLpERl1hXBtc1rbGbeeEtCuNtsx1oqGajRTSmk536tnuLX2WGaqiUwjVXUCedNxQqSHwMn
-	mgXDBRg1sQOIOimw4tEH8sAnHCcNbHSU=
-X-Gm-Gg: ASbGncsHrAO7x/ERszPAiu1vKIW4+7SCk6M4KwG3S59tpFYq3xg+HKj3fcUz7G3kIxD
-	DhFns/bACWVDwcLS3RqXe3VejhxHvZAyH+vDjjW0e16o3Ebinh4lUZ5wL+yHuGPJn7xZZBbAbV/
-	VGQJOx7+94/gaNeDoEdo6f2EiwsZNiBsBg9glY+0jq+C/rtANcQEcxDg==
-X-Google-Smtp-Source: AGHT+IGPFPvWxO0zZJ84NddNpo0qv/EumfthTANDa5RwJtDYi61D2XEZlpdrdwTNkZd/MkrWJNiuxhvruxDIz2633t0=
-X-Received: by 2002:a17:903:1105:b0:223:5124:ee7f with SMTP id
- d9443c01a7336-237d996a6d0mr102853315ad.12.1750767907174; Tue, 24 Jun 2025
- 05:25:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Sm6ggA8Y";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="WW8DTx1a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750768093; x=1751372893;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=jQ8u9ZH99hgK/EV7QukLMxw0vYk0v1W8W5JIgBpDeUo=;
+	b=Sm6ggA8Yw7u+J1/4ssN4EBmg+aB0fhwYcakxY8aNW3vxYX8wZUJLksa/zMmhfOpwYL2OIGhE62whw
+	 T1d0JNfjYa7Dpz+q1h2th5Q6O9MLYza2MgGFD28C0IPnjen1PclXU76hq8b8Pvo2XFjbNUqJHTYWP2
+	 a1+lkxUUbCcr0lc308p8AshdjDaT6rfrT5x77BdUMuXCRiCISHX9q1RAF/ckdpv+etks4sgE7ImdCV
+	 6pGi7eKA4OeC9UL9wc9VMQspb43t6hYWDGZZSzf8kLEM/eVIY1r3jEVn7jORoCc/OcWsLjMa2vOjWP
+	 bonA1uvhd2KkowqrK8pRLqJRD4errVQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750768093; x=1751372893;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=jQ8u9ZH99hgK/EV7QukLMxw0vYk0v1W8W5JIgBpDeUo=;
+	b=WW8DTx1aUof2q4JjkF8HxCt8HWqzOv47Kybs5OKQLdCQ7MXyTLtiaOJxKccriu/4qqovLw8OK84PJ
+	 XTOpYuDDA==
+X-HalOne-ID: b1b0c725-50f6-11f0-81bc-29b2d794c87d
+Received: from smtpclient.apple (host-90-233-201-126.mobileonline.telia.com [90.233.201.126])
+	by mailrelay4.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id b1b0c725-50f6-11f0-81bc-29b2d794c87d;
+	Tue, 24 Jun 2025 12:28:13 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
- <175015666837.277659.5038961663728008472.b4-ty@kernel.org>
- <CANiq72=mDe2kB4yQnzb=kwopyUYG936pOoj80YpWk7+q6aJwbQ@mail.gmail.com> <87plet4cjq.fsf@kernel.org>
-In-Reply-To: <87plet4cjq.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Jun 2025 14:24:54 +0200
-X-Gm-Features: Ac12FXzytGqFDbRGL6J92HqdAk34F3bl-1kAhuCQB-wQTJVEARH7AQlfK7-O8nE
-Message-ID: <CANiq72nwaxszEbn6O3xZi6H9P+U=5N0ugK1n9qBRteQwKXQSaw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and Delta
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: alex.gaynor@gmail.com, ojeda@kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, aliceryhl@google.com, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH] mm/vmalloc: allow to set node and align in vrealloc
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <CAH5fLgjYg_S574yQac=jQaCMM9GLkjRstkiB7tzw3iopkXAbTg@mail.gmail.com>
+Date: Tue, 24 Jun 2025 14:28:02 +0200
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+ linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <5C21A3CB-DDA6-44E1-B435-D2278D94969C@konsulko.se>
+References: <20250624095121.3243540-1-vitaly.wool@konsulko.se>
+ <aFqT1mK7SYsYd3DZ@pc636> <D562EE6A-DE99-4C97-8934-D60682DDE711@konsulko.se>
+ <CAH5fLgjYg_S574yQac=jQaCMM9GLkjRstkiB7tzw3iopkXAbTg@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-On Tue, Jun 24, 2025 at 1:14=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
->
-> My plan is to merge it and go with `into_*`. There are pros and cons for
-> both `to_*` and `into_*`. If someone has objections, they can send a new
-> patch with rationale and we can revisit. Sounds OK?
 
-I would just drop (or revert) the patch. The issue was under
-discussion, and anyway it seems clear that `into_*` is not the right
-choice from both the cost and ownership perspectives that we were
-discussing in the other thread.
 
-If this were not a rename and didn't had conflicts, then it wouldn't
-be a big deal. But given it is wrong and already introduces pain for
-others (and likely even more pain when we need to rename it back next
-cycle), it doesn't look like a good idea to keep it.
+> On Jun 24, 2025, at 2:22=E2=80=AFPM, Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>=20
+> On Tue, Jun 24, 2025 at 1:15=E2=80=AFPM Vitaly Wool =
+<vitaly.wool@konsulko.se> wrote:
+>>=20
+>>=20
+>>=20
+>>> On Jun 24, 2025, at 2:02=E2=80=AFPM, Uladzislau Rezki =
+<urezki@gmail.com> wrote:
+>>> Do we have users which require alignment and nid? I see that it is =
+part
+>>> of kvrealloc() API only.
+>>>=20
+>>=20
+>> There=E2=80=99s a patch pending inclusion of this one which will be =
+the user of this change. I was reluctant
+>> to combine these 2 in one series because the second one is on the =
+Rust side, but it can be found
+>> here: https://github.com/vwool/linux-mm/pull/new/realloc-extend.
+>=20
+> I think it is useful to include the immediate user in the same series
+> so we can see how it will be used.
+>=20
+> Alice
+>=20
 
-It is early in the cycle anyway.
+Alright, stay tuned.
 
-Cheers,
-Miguel
+~Vitaly=
