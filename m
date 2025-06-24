@@ -1,72 +1,72 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D552B307491;
-	Tue, 24 Jun 2025 15:46:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCB3145355;
+	Tue, 24 Jun 2025 15:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750780019; cv=none; b=W9Q/g4lox0cRjms4D1eJdqmhABErZKsw5gij8XaTMNwwGqcZ1CrFrgKu8n4f1XZQnT2NcNC0w6S9qm8dBZDKFo+FCW0CyUREeslYFn1BNDdJqzCYsp2RgNz8qyE1QljC6VmTzc6v1vSMVYJqKHw7etz89A53pOR7rGUNZtQrwNg=
+	t=1750780257; cv=none; b=jqddFxgWM/04aNYENdneqyMEt4rWt36MqGpbKPCX59mmjRunkjUBgzLIHEDtiq1OxUPwXYO4IgkzLNNKzZ0F/DMjcHIRhUndhu/9UQqZFVYOfI4l3MUgL1eBXE1e/xTXz6DTXsVmEefiTOnFUN6+Hpe/fEc/xxxyGJIgOszdCfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750780019; c=relaxed/simple;
-	bh=VV0w8frs3TUUtOcTTxlmDoBNWaoPExvIYNZbS5H5APE=;
+	s=arc-20240116; t=1750780257; c=relaxed/simple;
+	bh=fNLPhMp4lTEFXkCOuujjiKNjZOI6aPE3WGNRI7f4uE8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rQC5hwezQZHrXiWGrxap66xm4YvNt9uf4Yrcdlg1YIBU9z7tHmflcNRzPdVGLFsfIdeNSj4MFCrz2jmXgM3hiu6a4uOW5iZYjjn7nGrXoujMNbyFgfed8g/MC7pz2sW9hCwHjGfVZpM4Pt7Eg35nGGyk+qWDz8Un9bUAzq2zaho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jG57DApx; arc=none smtp.client-ip=209.85.222.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=c+6vqjAVaap9gIwKovx8ZolNWE1X2BTjGrHU077QYuL+oYTmtKKHeLo2LV4P3tZfKCpfvuW6MGLs6gBAc1dFXTdN9b2HtNmsF8QLj3OkAQRvE6p4pBEUF7VksSwQefx6uAHef8C9Tq/j5AIem3wi8rFq/358dO3EaV5XVHr9/20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iH8kYhx7; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jG57DApx"
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7d3f192a64eso56652085a.2;
-        Tue, 24 Jun 2025 08:46:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iH8kYhx7"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7d3da67de87so55505185a.3;
+        Tue, 24 Jun 2025 08:50:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750780017; x=1751384817; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750780254; x=1751385054; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iEkppCMbMJPX/l0pixxRGpqT6O+LXb+bTlJSvsaT7Hk=;
-        b=jG57DApxWxOU4Bfb4Bgz2EEc6DWyikZCx/jCXBbhPFiDo4x2trdIjvaR7ATJZWEdc+
-         VH9HkUpjp9mMUINaflGDvawC4kLwq+IAo5QF7p1G6t120Y5K7lZ5kYE6SDNib8BAy729
-         a5b4BNH1h5WDPxl1MuqqOptn8GjsRz6N62WJ49iCokq/GDSJRYoavgsVVePgR3dsDKyR
-         G6c32OXj5NGykCVhQ0oOL0EwYNeEQtCvYnruOZOQCsfUp6y4eyk+y62dPlQTJuZ2qXsx
-         FLoa2TPBc48bPjxWhAbKVR0riGA700kvzbVbhzvJoAE8GtBxXJl/HhRyN4hyb3rivq4d
-         hBBA==
+        bh=rDR18IrgBtO5TS0RMZe4KQzn+MlNrwNw8bMyZk5uk0w=;
+        b=iH8kYhx7YkvONUOsk1nKkmvmlloZrX62xPt3tOXNZKHPlBkppEURE8vRuFpw/iBCFi
+         PjAX29QUcXDC5efH31DVR79fSPCU8eFAZSUkHFoyytvyAd8+TspNDWLQHKaHL0lZHMWM
+         sGf972cSQxShT5D2Z+WPS71nsZ+oT15p/PLsT2VZHnc0jKojV2l3tKpdjzKQermO4RzI
+         o7KZB7wX1sZR2fiz3klDcnkt8VyuL+K8AvW9VQOnCiFmjAZjhOG8lyEV4s1efFkLwp5X
+         64ojqwcAOZwGvGbDfRuZYPnjbv81kGwsgvyCvLr4rO4NtNkIpf4kuuCeo34YELTAwjUe
+         Ly6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750780017; x=1751384817;
+        d=1e100.net; s=20230601; t=1750780254; x=1751385054;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iEkppCMbMJPX/l0pixxRGpqT6O+LXb+bTlJSvsaT7Hk=;
-        b=chlagcv7phvwE/nNpFeuzSnf0/Y+feZ/YCmoGxnrpcTm1JswgIy4OSiCLo2hIkc2/2
-         lczeFyMKncVaRp317GG+tYn8XQRgPC29/qAjr8pwGF9CYcAHjmNBCkPdCEkTH0T132AK
-         62z2gN17hD7jjBKQ9VcBvjDcrNPq7SQX/hFN82qh0F2AZtTDHwcLa8ipuIrT4Sd22FJu
-         tSyNn9RASPFXhAYsinq/V9a5vK63QPh99zQY+BuknYQm+DiPMOjyWjtrokh9Bd0jrEIw
-         UzKfcndFef/h6SbqMkUW/H+jMMWhnHtKURaALuG+nGM//+khYjHhv5u+NkyDG/4HNzIs
-         gD/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVA2NV6CfecbeJwmMwRbYQs7s8byyQGBC4iuPA67CazdKR1rnGS+B+FlNxICliapu+DUMzBJZHQ8NtU@vger.kernel.org, AJvYcCWH86zvUSvc3X2aO7y++XV78kBFVq5A42JWmTRIOcFOe4ot+8vqV0OdbVX3iCECMFRtSfcUHGcgaSAFaoc=@vger.kernel.org, AJvYcCWzPVQOJJMsRHagslczDNhXkKI+fgNSGRAe7Pwa87AgTbYF/Ewz1kmCxHLPi5vFdvUnURjEjgW0iD2YCAFV+sM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmiCGBOSKT1bKgOFaGBPiZgQQ13ojglyrNJW1/AHjLLZkq5afN
-	SK+UldjpyMZ8qzzpqdyD7kEnu1kXapsNF1NBSjP93ZDlwfw7lVfG9YPk
-X-Gm-Gg: ASbGncvdnU3izFNo8ciaYqkby7LbJGr6jtCQZUDN5ZDIaicCsN2S8KDguxFwIv/Oj+Z
-	mHQpwl5UtPKY1TA72TeKKB1dMVF17kgPiC7n/iQGLyAVxB9PyJ7+Lvhy4Ij7ImhD+hFSZ6VkDJD
-	tOSfY6eKc+r0h17pz7muRjZZb5t+jJKfv9vbCkcRYNh/hJN3wLohRMNSQaXlP6lWyiLNsJgObNk
-	+9s5zbeSMp2B8XmQwBxNSmA0Dz4nvcr/ZcztZThsrhCw2eUyfwiXSMdrsjz+SS3dncQ9p7oNjOE
-	zzViY11R0Z5kqJvIbimt2lSyT8gEFAM9SUEMciqM13alLK47Xv4HUergM5K5QLxfBg193aayiWk
-	IJ+7bEsb2BNXa+z2tp9wjNjoUNUlB7Voes3KJ0rXgeojEFlrpokB0
-X-Google-Smtp-Source: AGHT+IFpdX3K7daLXSR1sILnc2fqOLC5kxPiWH19yQj9idfgJBH9qxiweLdzjtmQZ2jqZtKPzlRP6g==
-X-Received: by 2002:a05:620a:a905:b0:7d4:1dac:9a65 with SMTP id af79cd13be357-7d41dac9a7cmr673393185a.43.1750780016541;
-        Tue, 24 Jun 2025 08:46:56 -0700 (PDT)
+        bh=rDR18IrgBtO5TS0RMZe4KQzn+MlNrwNw8bMyZk5uk0w=;
+        b=QiQ9vY43uLtHUtELxR51WvceVVSap7CEOaGOm0CowxHB2ndbMPhEnwx3pG5vJNTh5P
+         6T9x9UOZFRSB2wXM2+x8EKRu4r9wdAqrKosC/kqgy4eZrPE9ay7AERyw4Z9zErm3lRgD
+         RSt6ANG+azR2ScEgDCTcMAA9t/26bGKrpc/v2p4bPFhj00E8YZ8P/LXHkyHrbG49CW/L
+         A3NvF0ByfzxqjW1nNnlVi2+GO5GILormVZ+5kKkUhx0WEcVSdnMRkb947whf+rL7CQl9
+         deMQzgtUXZuM492geqCtZ3c0pPsk64F1gpwTaxQIbEE3Id/RFnWaHXnnx7Y5bhJb5mwl
+         NDIA==
+X-Forwarded-Encrypted: i=1; AJvYcCWHTSEGQhAP7Hqhz3TAPpYtiy9bufd1okAUQI1EJSdt9qNYCIDyff8j3ve3Qu45bfTOetZ7rOYpV9b2dD0oh2Y=@vger.kernel.org, AJvYcCWsYE1EKARv4ZmOZS3955Amj6kLWYLi01r/rNztouGDYx58WdlCp10yTQPMwRBXxD9JD23jTcVj7PbMd2I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVwImhmQj8XZjetuqDET13dRCSFJiGx3f+WUG/5bZtiFkQOGOz
+	qYB8y8kcwAoNO/ZNgAIzZNkscAYYWSgguy9TPmB1shWL1NzCWdyrorKrzcy0/g==
+X-Gm-Gg: ASbGncva1nX8iy8+k1AGiwbFJ1T2Np/xsMH4Y22q0hLClsTYvvGg1a6j44L0V5BhAo9
+	WpYcghag1akor/zlPrYM5ozWc4eFQbDqLf5SPF2q+iQ/6jD7LZag+/hD1rh9Dqbqb/mBXgFMamy
+	IagYmcBV0nKURpc7bxN+4Bt58KPZY7KGLDGy7GLCx1l9JfQknTQmUDBwGoEakXALFzkmHNEiOqz
+	2B63j10sZdTO5MxCtQiD8tPfS7zdBscMZXhNMOH3gRjAGQ/IoEezFKriNBLDnSvevBwDNdlQcYO
+	9jsAYAzbTjpzKY6kWcnsQHm/vcf1DyLnPLc2kuZH0Szzqbr62LUy8nEUT9mqwVZjbMUmq+H4wjY
+	nlY+oFX/BdTTCktefnbE+EzRcXBTI+CPwx9eumujMY+N2vDbnbl2O
+X-Google-Smtp-Source: AGHT+IFSr/qTOXafKTj+NvpW/Gjb5c10LaPSJ3957VJkh5+DYtNOSMgLq0V6H1bLfcrQepQewUFBmA==
+X-Received: by 2002:a05:620a:2699:b0:7d4:de4:a7cb with SMTP id af79cd13be357-7d428c9f7fcmr15258785a.16.1750780254306;
+        Tue, 24 Jun 2025 08:50:54 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3f99efab4sm518102185a.76.2025.06.24.08.46.55
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3f9a0727bsm513818385a.108.2025.06.24.08.50.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Jun 2025 08:46:56 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 6D7AC1200066;
-	Tue, 24 Jun 2025 11:46:55 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Tue, 24 Jun 2025 11:46:55 -0400
-X-ME-Sender: <xms:b8haaBM-nlVooUygxkovg37V7nE52XXtpgWy50eg6RhcMvqUrLqwGw>
-    <xme:b8haaD-cn5veRASezMnNL2gcKYtFshglIrNoCpWiaZ34_x0oPz7SCvyopGYAFnyLd
-    2rb8-jLlTO_R-Gn0w>
-X-ME-Received: <xmr:b8haaAR5ykyoz9bUnr_RYFftT5ud1dpnJW4p8ia6rucGKHf0t-71rE95Mg>
+        Tue, 24 Jun 2025 08:50:53 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 33CED1200043;
+	Tue, 24 Jun 2025 11:50:53 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Tue, 24 Jun 2025 11:50:53 -0400
+X-ME-Sender: <xms:XclaaEqoYkJ0tfWVrlshbCkEozM8GTyWDFmnVV5lAI2-DSnu2jtsVw>
+    <xme:XclaaKo_Yn9ozhYPT7zKyvzSUcYoSfyjBQ146x9qUcg6oRE5sLpOjJdhxGWnWZ5ZN
+    CGORsKIGXo4inkqVg>
+X-ME-Received: <xmr:XclaaJMvIJYAbMQW0B2TJuyw7uI2pofH_ggQAdNpiaP18skXejWuCBprOg>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvtddvlecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
@@ -76,38 +76,39 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvtddvlecutefuodetgg
     necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
     hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
     jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslh
-    hinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehg
-    rghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprh
-    hothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:b8haaNuKgufPhe9kI6Rs7Jg-0E5V-E4OZgZfyEpo-T2m8XLl-xj6hg>
-    <xmx:b8haaJelfQPjLzFhYHXGqdzR7tQeF37CvULZhO2a0EH6GEj-eE6MDw>
-    <xmx:b8haaJ3HX3lnpNRQcdMx9x2RYNvVuhSuLx1zaDmfI5-OARuJElg_zw>
-    <xmx:b8haaF-deFjqxXGu6XfTNlJ0mnPPAKu7YzLaVRYkw6gfxPY_e5uUSA>
-    <xmx:b8haaE8oA4fku6QZ1rFKCw2_K2Vn8PUkCcEsZlFxrqW2Ffg86R7bO27d>
+    drnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepmhgrrg
+    hrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphht
+    thhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtiihimhhmvg
+    hrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdr
+    tghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtohepoh
+    hjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:XclaaL6_2XBaLpF35rjNnwBwDCT2oXNskgG-EyGND7fKpNXpKfP63w>
+    <xmx:XclaaD4cZ3JuKmvXt3KFhyLa7hUw5E4LgyWP7Yawz3vvw2MTg8-JUw>
+    <xmx:XclaaLhWVafqbMmSCcVSMyfX1yW8R-yuf0ejqHhJa8TLaw8uqFmO9g>
+    <xmx:XclaaN7NfN9SnkOW5g6IJqUNFXRI6hZxRH0o4MrKOAsJ5Q5Gc5uQ-w>
+    <xmx:XclaaGLocZ4woJHHb2yoZgdfYcgbXaZEjxz7CTN2k-OJxp71YcVwVvso>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 24 Jun 2025 11:46:54 -0400 (EDT)
-Date: Tue, 24 Jun 2025 08:46:53 -0700
+ 24 Jun 2025 11:50:52 -0400 (EDT)
+Date: Tue, 24 Jun 2025 08:50:51 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
-	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] rust: devres: get rid of Devres' inner Arc
-Message-ID: <aFrIbRA9b9LOxFQ3@Mac.home>
-References: <20250622164050.20358-1-dakr@kernel.org>
- <20250622164050.20358-4-dakr@kernel.org>
- <aFizv7suXTADJU3f@Mac.home>
- <aFrBvwFrUGD45TeF@cassiopeiae>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] Add Opaque::cast_from
+Message-ID: <aFrJW31m8anUpnJ2@Mac.home>
+References: <20250624-opaque-from-raw-v2-0-e4da40bdc59c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -116,62 +117,28 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aFrBvwFrUGD45TeF@cassiopeiae>
+In-Reply-To: <20250624-opaque-from-raw-v2-0-e4da40bdc59c@google.com>
 
-On Tue, Jun 24, 2025 at 05:18:23PM +0200, Danilo Krummrich wrote:
-> On Sun, Jun 22, 2025 at 06:54:07PM -0700, Boqun Feng wrote:
-> > I think you also need to mention that `inner` only remains valid until
-> > `inner.devm.complete_all()` unblocks `Devres::drop()`, because after
-> > `Devres::drop()`'s `devm.wait_for_completion()` returns, `inner` may be
-> > dropped or freed.
+On Tue, Jun 24, 2025 at 03:27:54PM +0000, Alice Ryhl wrote:
+> Since commit b20fbbc08a36 ("rust: check type of `$ptr` in
+> `container_of!`") we have enforced that the field pointer passed to
+> container_of! must match the declared field. This caused mismatches when
+> using a pointer to bindings::x for fields of type Opaque<bindings::x>.
 > 
-> I think of it the other way around: The invariant guarantees that `inner` is
-> *always* valid.
+> This situation encourages the user to simply pass field.cast() to the
+> container_of! macro, but this is not great because you might
+> accidentally pass a *mut bindings::y when the field type is
+> Opaque<bindings::x>, which would be wrong.
 > 
-> The the `drop_in_place(inner)` call has to justify that it upholds this
-> invariant, by ensuring that at the time it is called no other code that accesses
-> `inner` can ever run.
+> To help catch this kind of mistake, add a new Opaque::cast_from that
+> wraps a raw pointer in Opaque without changing the inner type. Also
+> rename raw_get() to cast_into() for naming consistency.
 > 
-> Defining it the other way around would make the `inner()` accessor unsafe.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Maybe I wasn't clear enough, I meant in the following function:
+Acked-by: Boqun Feng <boqun.feng@gmail.com>
 
-    unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
--        let ptr = ptr as *mut DevresInner<T>;
--        // Devres owned this memory; now that we received the callback, drop the `Arc` and hence the
--        // reference.
--        // SAFETY: Safe, since we leaked an `Arc` reference to devm_add_action() in
--        //         `DevresInner::new`.
--        let inner = unsafe { Arc::from_raw(ptr) };
-+        // SAFETY: In `Self::new` we've passed a valid pointer to `Inner` to `devm_add_action()`,
-+        // hence `ptr` must be a valid pointer to `Inner`.
-+        let inner = unsafe { &*ptr.cast::<Inner<T>>() };
-
-^ this `inner` was constructed by reborrowing from `ptr`, but it should
-only be used before the following `inner.devm.complete_all()`...
-
-         if !inner.data.revoke() {
-             // If `revoke()` returns false, it means that `Devres::drop` already started revoking
--            // `inner.data` for us. Hence we have to wait until `Devres::drop()` signals that it
--            // completed revoking `inner.data`.
-+            // `data` for us. Hence we have to wait until `Devres::drop` signals that it
-+            // completed revoking `data`.
-             inner.revoke.wait_for_completion();
-[...]
-+        // Signal that we're done using `inner`.
-+        inner.devm.complete_all();
-
-... because the `DevresInner` might be freed after we signal the
-`Devres::drop()`. And for example, doing a:
-
-    inner.data.try_access();
-
-after the above line would be unsound.
-
-+    }
-
-And I would prefer we document this or use `ScopeGuard`, does it make
-sense?
+Thanks!
 
 Regards,
 Boqun
