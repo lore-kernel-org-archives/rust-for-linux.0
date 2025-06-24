@@ -1,44 +1,44 @@
-Received: from mailrelay4-3.pub.mailoutpod3-cph3.one.com (mailrelay4-3.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from mailrelay-egress12.pub.mailoutpod2-cph3.one.com (mailrelay-egress12.pub.mailoutpod2-cph3.one.com [46.30.211.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EA0290D85
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 12:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B420828C86C
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 12:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.211.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750768166; cv=none; b=C7lN2t0sf2UvPvqN4TklcOaolywZgMa6T2YptU6X5MMcC+vtatwUsdF7OaMeCeYjXxfavLhlDeUx6u16XVjAvFC4paGEUchKsizCbQ7AEC3RCgOs0+DB49T/kyXZjLVXUqVHjwZ+RsRZjTVs2rRyU5ZL4Vr+6XhmSsRNfm4/XUY=
+	t=1750768239; cv=none; b=BAniS0cXVVaVTmZzdDzJmGaRlna0IyNYv7eXe6cddFtD7zX5/UfD9h7nGg8+YgA+4w3JHjy0JfIgC1ibpWd89hcSE9DKfrfgP+qKp5dWfZBHfulVduids7WAmD8PYialq2FzKqhoHGrBbOdwS/oVhDMhbm4MsNmWJsvLplponR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750768166; c=relaxed/simple;
-	bh=jQ8u9ZH99hgK/EV7QukLMxw0vYk0v1W8W5JIgBpDeUo=;
+	s=arc-20240116; t=1750768239; c=relaxed/simple;
+	bh=vF01rZpDzoIVAbNSn6ZBGT9knYGRMdAWg5gganY2Yqw=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=XHN6nmN1Wk60s8SZ//xyVRHhw2UeqKWC39VZgCq14MAOnfKF2BN2etm75sxjhiQcyYZ9wf1igOhcXuEgz50Y9Rl5+QBP7KOyssUvHUBxlRb2NHx1+dE/KWqv1YmJe4aGwyRx55EkbvvcYxAfTy0TMrOiFfRVsVgeoHQnWB6yicw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Sm6ggA8Y; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=WW8DTx1a; arc=none smtp.client-ip=46.30.212.3
+	 Message-Id:References:To; b=W3nIDQAsnuC8W5gsoIooC5+JYpon9GnVxrUVYFj/oDNAoW03wNkWxcL5ohxSQk6SViTULml9rbWQKwMdo43lZMreV1lj8W3owSHaTahu7ELNOZiwKOjJvTK9pyFZCAOxh2bJ4lwyElM4UpS47T+bWk5mqTWs8eEHb1IEhPZNX6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=bEZMufuy; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=KMf9weui; arc=none smtp.client-ip=46.30.211.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Sm6ggA8Y";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="WW8DTx1a"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750768093; x=1751372893;
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="bEZMufuy";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="KMf9weui"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750768228; x=1751373028;
 	d=konsulko.se; s=rsa1;
 	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
 	 subject:mime-version:content-type:from;
-	bh=jQ8u9ZH99hgK/EV7QukLMxw0vYk0v1W8W5JIgBpDeUo=;
-	b=Sm6ggA8Yw7u+J1/4ssN4EBmg+aB0fhwYcakxY8aNW3vxYX8wZUJLksa/zMmhfOpwYL2OIGhE62whw
-	 T1d0JNfjYa7Dpz+q1h2th5Q6O9MLYza2MgGFD28C0IPnjen1PclXU76hq8b8Pvo2XFjbNUqJHTYWP2
-	 a1+lkxUUbCcr0lc308p8AshdjDaT6rfrT5x77BdUMuXCRiCISHX9q1RAF/ckdpv+etks4sgE7ImdCV
-	 6pGi7eKA4OeC9UL9wc9VMQspb43t6hYWDGZZSzf8kLEM/eVIY1r3jEVn7jORoCc/OcWsLjMa2vOjWP
-	 bonA1uvhd2KkowqrK8pRLqJRD4errVQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750768093; x=1751372893;
+	bh=vF01rZpDzoIVAbNSn6ZBGT9knYGRMdAWg5gganY2Yqw=;
+	b=bEZMufuyIIGNCIWWKFBUozLBZMWTIu5d/9fxAop4xVNAkIFFnYJk5LSnZ5dttQkOow7h8puVBwpew
+	 llBwl01koWDkQoqgl7H5qW9ODJB291Qoop7KmvJSIM9d1TG+aXdBDtCbflYEsUVocQ1QfSHGbTpdeu
+	 wWIVu6QUfp1Y/Qza7IS06YkS4Vz76yJLOmWbRs5PLDdBCZIALicNI30PbTfihchF6JnuWJLlRSmNLx
+	 lYZ/AULZfKkrML2OLMLAV/yINSDnLUgXzLT9GVi0+kyTihwAWan1q5Yz0zb+xyqOXKlauT0DCzAhQm
+	 dlRiAwDimIzPB6LCevuFDK7bAbp4tqA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750768228; x=1751373028;
 	d=konsulko.se; s=ed1;
 	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
 	 subject:mime-version:content-type:from;
-	bh=jQ8u9ZH99hgK/EV7QukLMxw0vYk0v1W8W5JIgBpDeUo=;
-	b=WW8DTx1aUof2q4JjkF8HxCt8HWqzOv47Kybs5OKQLdCQ7MXyTLtiaOJxKccriu/4qqovLw8OK84PJ
-	 XTOpYuDDA==
-X-HalOne-ID: b1b0c725-50f6-11f0-81bc-29b2d794c87d
+	bh=vF01rZpDzoIVAbNSn6ZBGT9knYGRMdAWg5gganY2Yqw=;
+	b=KMf9weui2bgcX+N3Hb2Kq30L3N98dx9I0MQuntmZfCYVCrR80rTBtPkTfOG+USTW9iy41m74K0l6I
+	 4uNPealDg==
+X-HalOne-ID: 0243cf4c-50f7-11f0-8442-f3c0f7fef5ee
 Received: from smtpclient.apple (host-90-233-201-126.mobileonline.telia.com [90.233.201.126])
-	by mailrelay4.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id b1b0c725-50f6-11f0-81bc-29b2d794c87d;
-	Tue, 24 Jun 2025 12:28:13 +0000 (UTC)
+	by mailrelay4.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 0243cf4c-50f7-11f0-8442-f3c0f7fef5ee;
+	Tue, 24 Jun 2025 12:30:27 +0000 (UTC)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -49,51 +49,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
 Subject: Re: [PATCH] mm/vmalloc: allow to set node and align in vrealloc
 From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <CAH5fLgjYg_S574yQac=jQaCMM9GLkjRstkiB7tzw3iopkXAbTg@mail.gmail.com>
-Date: Tue, 24 Jun 2025 14:28:02 +0200
+In-Reply-To: <aFqYWOZoOirYlUCy@pollux>
+Date: Tue, 24 Jun 2025 14:30:17 +0200
 Cc: Uladzislau Rezki <urezki@gmail.com>,
  linux-mm@kvack.org,
  akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
  rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5C21A3CB-DDA6-44E1-B435-D2278D94969C@konsulko.se>
+Message-Id: <948A3530-4C1B-4D57-881A-6C003BF637ED@konsulko.se>
 References: <20250624095121.3243540-1-vitaly.wool@konsulko.se>
  <aFqT1mK7SYsYd3DZ@pc636> <D562EE6A-DE99-4C97-8934-D60682DDE711@konsulko.se>
- <CAH5fLgjYg_S574yQac=jQaCMM9GLkjRstkiB7tzw3iopkXAbTg@mail.gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
+ <aFqYWOZoOirYlUCy@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.200.121)
 
 
 
-> On Jun 24, 2025, at 2:22=E2=80=AFPM, Alice Ryhl <aliceryhl@google.com> =
-wrote:
+> On Jun 24, 2025, at 2:21=E2=80=AFPM, Danilo Krummrich =
+<dakr@kernel.org> wrote:
 >=20
-> On Tue, Jun 24, 2025 at 1:15=E2=80=AFPM Vitaly Wool =
-<vitaly.wool@konsulko.se> wrote:
->>=20
->>=20
->>=20
->>> On Jun 24, 2025, at 2:02=E2=80=AFPM, Uladzislau Rezki =
-<urezki@gmail.com> wrote:
->>> Do we have users which require alignment and nid? I see that it is =
-part
->>> of kvrealloc() API only.
->>>=20
->>=20
+> On Tue, Jun 24, 2025 at 02:15:01PM +0200, Vitaly Wool wrote:
 >> There=E2=80=99s a patch pending inclusion of this one which will be =
 the user of this change. I was reluctant
 >> to combine these 2 in one series because the second one is on the =
 Rust side, but it can be found
 >> here: https://github.com/vwool/linux-mm/pull/new/realloc-extend.
 >=20
-> I think it is useful to include the immediate user in the same series
-> so we can see how it will be used.
+> I think the link is broken, I suppose you wanted to refer to the patch =
+in [1].
 >=20
-> Alice
+> [1] =
+https://github.com/vwool/linux-mm/commit/5af47ac6f9010814263617b2136203a54=
+ed4c25e
 >=20
 
-Alright, stay tuned.
+You=E2=80=99re right, thanks a lot!
 
 ~Vitaly=
