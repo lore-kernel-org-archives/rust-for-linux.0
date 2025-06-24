@@ -1,538 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2040.outbound.protection.outlook.com [40.107.92.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F412550A4;
-	Tue, 24 Jun 2025 21:56:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750802181; cv=none; b=kLCbLg05XIsearv2ZZSFvvlx+0VDq8lWe/R/YbxXDMp1bPSNp+vmSgitGu0yiuY9/M5efwC+fBWNSsPJbBOahKyBL9udM4GTXCdrxk7euyRKjl/f8jSnrcz/UtapsFZUy0jBYfDHx3MmP3/nAp29ft/QocF3+LySKCmgwsaidOY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750802181; c=relaxed/simple;
-	bh=dx4a+bZV5PhRq106yEHXAnSF/szd9gVYUC+VoZ6iawU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTJIb/fwhYSdsy2bW+/HgU6T22KTLW1/n69U3aR2A4T/DqlCYZl09xBZtiTGJgoYkXba7awxPz/TqgxXEzuY2cbqWM5OWim42ZaHN8i0SWOc8exdA7IZo+SFdQJIpxMlMEuLhzE6cvUG1dbK86W9WdQepBOdaKX+AC31O7Co2ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RF9IcWfw; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2FF25B302
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 21:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750802184; cv=fail; b=E2WEQBTeKeX4E1nY34VzzfQXbRzCwFR3K4xhyyn1t1dHakd29L7tuPPTBeHq6pekhb0AgdgnbKQ004sIZeVloCrk4sxfifmIdu59/EtDD7YxKtlDhPmz82qqSHbJNX1eFQ8VvA8WIl+UJfGpetNpHZCKb+eu+TutIy/oFqls84U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750802184; c=relaxed/simple;
+	bh=W8TXgyDieAxxLUEQNectFJh4ud5z4jqV9kaN21gkhZ8=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=pg52PYKKxepUsGVK4TYjFf4xMaIUn5LxrkBEQ9bVUKlQVmoHFByCI7Irg1zYDM4mRtEAVazL4EohdXdER5sC2Ygknopunlj88ODsjiX2DIfM4J9cdg21HQE/H9Kr/hRfoO38SZVSM3dn28VO+p1xgOdLMPY0lBQb0zmLfU/GG2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nqZa3vp0; arc=fail smtp.client-ip=40.107.92.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RF9IcWfw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19266C4CEF0;
-	Tue, 24 Jun 2025 21:56:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750802181;
-	bh=dx4a+bZV5PhRq106yEHXAnSF/szd9gVYUC+VoZ6iawU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RF9IcWfw0dM3URYiIt3+mvZbseedpWL+SCw6Za4KbBA8XvDjD+Udc/PU1I/sGNJo0
-	 ka1//ElVGOwgzDRBv8eKWyP7D+SL9SLZQwLiBetk+2OYw5dkKeBvTfldR6R1x5zRge
-	 35/7+3CA7Sj3pqkfH2Vzj7q4SywAazBPFWm8RJ56r/r3DCedaCZarGfcCkC6apk2Fu
-	 9dKUmMt7ilE7yi3EVjKNdsdH1YdXEVNJEO7gz+MV8afJg1jEiWyngv3YXG1j6zPQRK
-	 lwCwaFT70ar+/2FLcnTNKS3KJ0wyyr+Dykik3mTw83C2yM+w+DAiHrLE9LvE93BdJh
-	 +4CUTXvbwXa8w==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	david.m.ertman@intel.com,
-	ira.weiny@intel.com,
-	leon@kernel.org,
-	kwilczynski@kernel.org,
-	bhelgaas@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v3 3/4] rust: devres: get rid of Devres' inner Arc
-Date: Tue, 24 Jun 2025 23:54:01 +0200
-Message-ID: <20250624215600.221167-4-dakr@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250624215600.221167-1-dakr@kernel.org>
-References: <20250624215600.221167-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nqZa3vp0"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AzGWyJm4XJi3MoZC7Rqm5TgxhgII3u3yCCA8oJWbbhd9HAR0+gnvlXcY6XRcszEc0hLQdyg8/8Ekj9q5xbVeisqwXvqPwHNQNno4ag/y/PUCyxEwAVNTIwnlcL3B1tW7kle56cHv1qe83f3Hye7LVo8+6cG9QErgLr8Oz7AsUx4LX78ULmxBfqXWRAhxkrTa1qeCNTsR7hM0ufe+BedrBsJta7WP8MFB/VIW/N1M0Xi1J0HY0ZWjR6frOG0Wx/NWbGyq5Pqlqsvb1BwKsPGFoXzip1ASj6DRXkBup4gxMdLAvOMIlVcI+idrBvAwHTuk1tPDDTEJes1HLfKlt7Xz/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=W8TXgyDieAxxLUEQNectFJh4ud5z4jqV9kaN21gkhZ8=;
+ b=Kj0PYVfFH8BMj//h4b4VUGp/8HQeTOO46+wZn+3gFUb8c+n56mZzbzw4RPiiXyVLaoi0k9r25bgjDqlhus49xnH+w3gYZtuvYeENqpnajedYy8ZUteWQ+ZRbRXTX+vB3NZtHgrnGCBIWmpja33pr2K3s7uNYhNeP+iSYckVcPhOj2IUhs0pK528lzlmnejTgf+1yigkEAiuxGyKsUzE7NxlcqZsSGVCohHPWLiEIi7zErzh9ZUUay2NBedyuQNSxmJgUjBAvoDhcFaAQXPUg5YkcvWFxzWgAHY/3mskH3QMXQldhPjTW3IVsB4s8yQgQmPhuICidGFE2WwKR9jwgow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W8TXgyDieAxxLUEQNectFJh4ud5z4jqV9kaN21gkhZ8=;
+ b=nqZa3vp0NF1Vi2g99dqGUrwjDF9Kz8IIRJdUzlxN+ZDfx1t7thLs480fdCosEcpbR6S6uCQUNRMp/q6bHIyJEJegeWwNwc6X3Lq74ZegoYVi6jMRDxuzgTlfhQqHhF0qpepL6Vlu0TXaeGJzUWk1Qbcg5QP1LsTleMcHtkj/3NYv8KWc0OfPMR6R5nmYxFh+dlTDjzJNBLOw0YEfh+PrZ/I1LYTpxnMH9U4jIHJcqaJddjEidUGClnH4jeSyAlOeTq9HVpR5SlDhPmefxfO+eZ6T/nhju6VYQmFVDKVHN4ImRwqfdEmTCcwVSlc4EWGJ7Doym6QkrqAMLM036s7N7A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DS2PR12MB9614.namprd12.prod.outlook.com (2603:10b6:8:276::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Tue, 24 Jun
+ 2025 21:56:19 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8857.026; Tue, 24 Jun 2025
+ 21:56:18 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 25 Jun 2025 06:55:57 +0900
+Message-Id: <DAV3KFP156H2.2IN5UVOWBDC86@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, <nouveau@lists.freedesktop.org>
+Cc: <airlied@gmail.com>, <simona@ffwll.ch>, <jhubbard@nvidia.com>,
+ <bskeggs@nvidia.com>, <joelagnelf@nvidia.com>, <ttabi@nvidia.com>,
+ <apopple@nvidia.com>, <sbaskaran@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <ojeda@kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: Add Alexandre Courbot as co-maintainer to
+ nova-core
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250624170517.105148-1-dakr@kernel.org>
+In-Reply-To: <20250624170517.105148-1-dakr@kernel.org>
+X-ClientProxiedBy: TYCP286CA0023.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:263::10) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DS2PR12MB9614:EE_
+X-MS-Office365-Filtering-Correlation-Id: e06ec437-a3ad-4633-5772-08ddb369e811
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UWdGbDNyWUs4U2FJZUhEbDlleExDK2I1MDZLbGFLL2NGdkJGbUdVYUFSSWxM?=
+ =?utf-8?B?eEhYc2o4YzNCZUE4VlJqOW5NTWpoQ0hyeCtHUytNK25GR3VmeUo2eVZnSnZD?=
+ =?utf-8?B?aEQ5SnJDRmErOGlqRjlyV2NnZHpFWDJrNjJLeTJyQVgrUFJGcmNSNktVL3Js?=
+ =?utf-8?B?QVNCNXlOS2IrNXlSZURLOXBLT2gxaUc0cWo0aFR1K3RPcjRGc2hDT2pNc0Q2?=
+ =?utf-8?B?d2lWY3ZPNUVYLzlJOEtxZjM5MXlML1JMS1BYcFY0NC83ZitQL0JzZ2lIUkNU?=
+ =?utf-8?B?Z2Z1bldGS3VZaWxXSHRpTll2RzJVTDNmUnFvZGxxSzdneFU5TVBVbzNtRmdK?=
+ =?utf-8?B?UUVwSFdXbFYxM1dReHNLdnRMRXlHdmwrRWZhNk5LdkkrU0tZNnB4ak1Ic0RN?=
+ =?utf-8?B?YlJNdFZQZDFXSXJROWw3ckl1aDBlSjgwNjZJUGNvNGorb0NPQjlXMmsvcHRI?=
+ =?utf-8?B?amNISE1VaDFYb1dUN3gydHYwR0F3STVYaWRNL3VuZnNYMWpNT1U3ZmJ2UkZq?=
+ =?utf-8?B?MjNxWlNLUUZPcmU2clIyaTBRTG8wRWRlRTZzTlNFOTZpNUZRZWNNTzgvNGQw?=
+ =?utf-8?B?N0VnVWdiZWZMSmk0cUFnbXVnclpwSlduZTM3OEhjaFNBZmJvQ2ZvYjZDOUZK?=
+ =?utf-8?B?NWVhM3VnRkRDTWhVOEpuN3NjbHd1TEZGN212cUJMbGF3cjRjK2hBZG8xQ3p2?=
+ =?utf-8?B?ajVXbHJncmdFVlg4VWNRNXNheWpvNmxpRDVhdEU5TjJUL1ExSnRidDVRWGJJ?=
+ =?utf-8?B?RE9TdWtBYlkvVzFHV3gvNHpRZWdBb3RWSjYzSWVFdkxKN0JvRHovdWg4UHQ4?=
+ =?utf-8?B?N1pmcXJQTkNDYVJtdWJ0TWF0alNLQ0hiU25NdTN6bFhjd0Rnckl1dkl0NnNq?=
+ =?utf-8?B?VTB5MmhlNDNTMHBkQWh3dVExQVBib004S1BTbEhMc3JMTlppdEhQR28xa1A4?=
+ =?utf-8?B?enhCWE1sbWc4eGNqU0NpTjJGbmlRWFAzaUtBb0VLeVJUSkV0cFhnbjc5YWJI?=
+ =?utf-8?B?Tk5HZXBBYzRVNGZ3L0cxYlIrT0VSMVVNNnRUemFOdHk5bW5Dd0FlaXVqOTFm?=
+ =?utf-8?B?WGg5RlJLdzJLTWQ5Nm5pRzNETXU5aGhIODRyU0t3THJ4UkNWd3RyRUU5RG95?=
+ =?utf-8?B?T3h2VzBWNHVBZFFla21YMzRjaEtxUFUvU0JlcUNhSG5RTEdkeWl4YmNtaGww?=
+ =?utf-8?B?eFh1THBkRWExaTE4cFN5ZEo3eFZldjFlU1g2SFVLL0RpcFMyTXplVWU5eGdi?=
+ =?utf-8?B?TDNJSXlkVUc5eUxUMDM2YkhnbVN0ZWczWTRacm1MUXJLTEh6VkxtSzcyL0c3?=
+ =?utf-8?B?aW1zVnN3SU5DZy9hZVBmc2RVOXNMNVZYdi9ZUElHTE5jMmsveW1OYncvdVpy?=
+ =?utf-8?B?OFR6REVQVy9nUlA2UzllTWV5Z1g2MTl5WVFTRTF3MUZ3TFlDQU5VTUdzREFO?=
+ =?utf-8?B?VkppdnFoRU8raTJWK1dYMDlrUGZsTWJ6VkV1RmxPN1BRa25KM1l3NVNTYk5I?=
+ =?utf-8?B?NWh4Ump3SkdZM2V6SVFTVlhyUUV2L2t5MHJjWHJXK2xUN1kvb2gxZDJPTjVy?=
+ =?utf-8?B?TEp6djRrWEFhUS93R3hLWHp2eE1Ta3R5V0JGc1Q2enlQVWFoVHpNQ0RBcTVG?=
+ =?utf-8?B?alFsSHFqQkpoZEM4VFJEalRtVCthR1ZudzZpM1FncjZDSEIxdVkvZFc3cVp0?=
+ =?utf-8?B?VDE4YmN6MUFHN09uQ0pEeFg1Y2JNTzU4b2NYbVpTWWtJN3BjRTVtQXhqcVlB?=
+ =?utf-8?B?TXZCYXRVZmNkMWRzT3ozZmJ2K2NtczBCUWlOcDFlWXQrMXJKUUN2UWcyRFBm?=
+ =?utf-8?B?bnNuRnlqN09lUmVYZlB3Q0ZJWGJTWjNjUTZpU0RjSnJ2SmorbCs0UXZXZXht?=
+ =?utf-8?B?OXV5K2tnQzFBaWFkNXJVS054b2ZPT3NCWVhjWk5XRjdxaDFIbGg1cWVhWTh0?=
+ =?utf-8?Q?nyUy8M2lwh4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YjJwcUk5a2J5WlNJRllXTWlEeTM3TjNpWXdUOC9WYXhpU3NFdTl5VVp1VzE2?=
+ =?utf-8?B?Z2ZWa0RGMEs0Q0oxSDdjZ2Rxbmp1cnJiN21XSGppZ2RpT09BTzNZTVBpQi9q?=
+ =?utf-8?B?dE9WQjk0eWd3aWZRdHlWaGVqSk9meThxZmxKOWt2eTlWNkhEOVRUc2ZsV2U4?=
+ =?utf-8?B?WFB5Nml1TkRXVWs4M0NGTW1hM2pHclA1czJSRnZiVVRodGZ2SXJEYTg1TURF?=
+ =?utf-8?B?UGpJK3cwQlVUbmtYcHVhcVVNMC9YakZUdDNaeXhCOStncFV4R2hRaVJPQVhs?=
+ =?utf-8?B?VDIzR2RVL1QrWjVqUFhaSlA5R0ZFVVVYbnYxSUxaWFdQNmFmc25xcSt3MllB?=
+ =?utf-8?B?dDVDMTdMUEpuQktQeDFQTWNKQkxoT0tDbEZaQzVEckVZamk0T04xNUtQaEll?=
+ =?utf-8?B?SEE2aWh0a200dWxQMDltMUdGdXJsYnY1WGNrVUhCNDJzSWhqekpBcjRzSkpW?=
+ =?utf-8?B?S0JkNkU2WDVVWWQvMnlRTEhFTjd1K0NhWGkzZTMyK2NuVGpPTGR1WmlqTFNZ?=
+ =?utf-8?B?cWdRWDV6aFJRaWJMaExxaWE5dld0WFFuN3ZPVWxscFVRdktkWTNsMksvSzJ3?=
+ =?utf-8?B?cDJtTHAwZGJRaDlvNDY2MWcyc1ZjSGJwQ1NvQXhJalpKU1BQWk4xd0YxMDVv?=
+ =?utf-8?B?S1R2MnA3ZmNKWXFyWmVVb3c4RHVqOVlDWlc4OEZpMktpbTk0MG9XRnpSbEhs?=
+ =?utf-8?B?dTIzYWVOSTRDY3Q0Ni9idTJEdXg1V21GVVhVTVRPUWx3UEtkV1RiTmlkR0xk?=
+ =?utf-8?B?WWQyTk9xdnplM0tHMWdSM0taWkI5Rmo0WkcxWDRib2VrT3BXWTRjYzYvc0Iw?=
+ =?utf-8?B?b2IvUElJbWp1allvSmpET2diNVpPOWlNVUxteGwrRmlKTE9DbjBSYmZOMnhy?=
+ =?utf-8?B?SnhwMFlPTkkxYktGTUJpQ09PdWZuRHA5Q1Vwek95YTgzTkRhZmNUTWpJaGNh?=
+ =?utf-8?B?RmlFc2Y3cmJVVEx5Q1N1dXNQOTJFL0QyTDZ2aDlwUlQ0cldlSTFZbnkyK3dE?=
+ =?utf-8?B?WlFVOFRRS3R6Q1YzbjRMUndEZHNqbGxEMXNZOW8vcnZxTXJWNmdkOVVmNG9U?=
+ =?utf-8?B?ekt5SU5VV0k1NWxVTzlCVDV1M2N1ZE5Ucy85UThPelBWeXJCY2ZIUldSYWVI?=
+ =?utf-8?B?cERjQThtWk5HRVBCTlY0dmswNkJsT1paVWdaTVJrUUJySHlwYkQyTEVaMTNn?=
+ =?utf-8?B?bXh1MmlkK0lMNHQycG10WGxlSWlLMkhNYk04bXZEUjZOWnhCQkNIZ0pROW5a?=
+ =?utf-8?B?RFBwWklQZ1BORnkzK3ZRZDRuRHhlVCs4YldhVy80ZGYySEpPMU5MV0ZhaEYy?=
+ =?utf-8?B?VnNHN21nOVlnTGlnQkpjcGhTaHRUQkV6VUlNOTVCa1I1TjhsVmNkSU5DQ3l3?=
+ =?utf-8?B?SEVoWHBPdjA0dmxKU3RmSTJjcDdRd1JKOWtZWSs3UXUyRXhvYW8xTzFGdFBW?=
+ =?utf-8?B?ejAxeUJ5Rjk3OENxRHVLTU1YS1lZVW9TNlpLREJQeVlYc3d6bFdRZkNQRnUz?=
+ =?utf-8?B?bkJrdE02dzVnbTlHSnM2b2FBR3lEZXh2c0dNUUYwOTk5akc2cVlzVFg1ZFRL?=
+ =?utf-8?B?Q1dXNEpycm1UVTdod0U0NG9aTzA1QzRrMFF0TVBqNmI4ZitUbUlrdFlMRXdD?=
+ =?utf-8?B?TkpuUjdkNldjbkpHdDYyR1RVaDVmSTFkYUZTTExtSVVCTVZoZEVCenJPeEdX?=
+ =?utf-8?B?ZlRsVXV5Szk2K2ZFSyt3dytyYldtOFJuaUVGY0ZJOFVmUTJPQnZ6TkZFWHVO?=
+ =?utf-8?B?RFN1WDJSSVdvRVlpeFVsYUJZYk9SNks0K2dFVUtCL1cvSzVRTGRGakhOTmNy?=
+ =?utf-8?B?dmNKTVRtSWJnQ1c0Q2U0RlFLNDVEbzlVOHRsNk1ENklPbms4OWcwQ0FQS1o2?=
+ =?utf-8?B?MCs2azdVV0lHcUkwK3grbkdrLzEzeERUWXBadm1GR01IOFZSTXhwS0NTUkds?=
+ =?utf-8?B?QXYzNnZpZGIyNGFwVDdOVFR5bE8rZFJMcG4zdjkwMzBleGdZUzBUbU9Xa2Uv?=
+ =?utf-8?B?ekhHbHo2T2MxNUh1OER3S2JHNGxCeHFmbDNGcldjanR4S1M3UnZKT3lKUk5l?=
+ =?utf-8?B?cFhLNUN3WG4zT2dnSDhWbUlTQkl0L1VTZURvYndsM244TE9hUHVZRkF6dk9Y?=
+ =?utf-8?Q?wzq8vlGvh6cgO19/FAK+44wUN?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e06ec437-a3ad-4633-5772-08ddb369e811
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 21:56:18.3487
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wEo7wG5OgC98SAgUxa/ZUncmGYv5w1a86bCIFQu/CBDAnu6nYUfsQjAXiqXRg5eDZqCYgoXpUq2qYUElu7hwuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9614
 
-So far Devres uses an inner memory allocation and reference count, i.e.
-an inner Arc, in order to ensure that the devres callback can't run into
-a use-after-free in case where the Devres object is dropped while the
-devres callback runs concurrently.
+On Wed Jun 25, 2025 at 2:05 AM JST, Danilo Krummrich wrote:
+> Alex has extensive experience with NVIDIA GPU support, is closely
+> involved in nova-core development, and brings valuable Rust expertise.
+>
+> In addition to his technical contributions, Alex is actively engaged with
+> the broader community. He works closely with contributors and
+> stakeholders to identify and solve issues, fosters collaboration, and
+> helps ensure that the Nova driver evolves in alignment with the
+> community.
+>
+> I trust him to take a key role in making the Nova driver a successful
+> upstream solution for NVIDIA GPUs in the Linux kernel.
+>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Instead, use a completion in order to avoid a potential UAF: In
-Devres::drop(), if we detect that we can't remove the devres action
-anymore, we wait for the completion that is completed from the devres
-callback. If, in turn, we were able to successfully remove the devres
-action, we can just go ahead.
+Acked-by: Alexandre Courbot <acourbot@nvidia.com>
 
-This, again, allows us to get rid of the internal Arc, and instead let
-Devres consume an `impl PinInit<T, E>` in order to return an
-`impl PinInit<Devres<T>, E>`, which enables us to get away with less
-memory allocations.
-
-Additionally, having the resulting explicit synchronization in
-Devres::drop() prevents potential subtle undesired side effects of the
-devres callback dropping the final Arc reference asynchronously within
-the devres callback.
-
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- drivers/gpu/nova-core/driver.rs |   7 +-
- drivers/gpu/nova-core/gpu.rs    |   6 +-
- rust/kernel/devres.rs           | 210 +++++++++++++++++++-------------
- rust/kernel/pci.rs              |  20 +--
- samples/rust/rust_driver_pci.rs |  19 +--
- 5 files changed, 151 insertions(+), 111 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/driver.rs b/drivers/gpu/nova-core/driver.rs
-index 8c86101c26cb..110f2b355db4 100644
---- a/drivers/gpu/nova-core/driver.rs
-+++ b/drivers/gpu/nova-core/driver.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use kernel::{auxiliary, bindings, c_str, device::Core, pci, prelude::*};
-+use kernel::{auxiliary, bindings, c_str, device::Core, pci, prelude::*, sync::Arc};
- 
- use crate::gpu::Gpu;
- 
-@@ -34,7 +34,10 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self
-         pdev.enable_device_mem()?;
-         pdev.set_master();
- 
--        let bar = pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core/bar0"))?;
-+        let bar = Arc::pin_init(
-+            pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova-core/bar0")),
-+            GFP_KERNEL,
-+        )?;
- 
-         let this = KBox::pin_init(
-             try_pin_init!(Self {
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 60b86f370284..47653c14838b 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use kernel::{device, devres::Devres, error::code::*, pci, prelude::*};
-+use kernel::{device, devres::Devres, error::code::*, pci, prelude::*, sync::Arc};
- 
- use crate::driver::Bar0;
- use crate::firmware::{Firmware, FIRMWARE_VERSION};
-@@ -161,14 +161,14 @@ fn new(bar: &Bar0) -> Result<Spec> {
- pub(crate) struct Gpu {
-     spec: Spec,
-     /// MMIO mapping of PCI BAR 0
--    bar: Devres<Bar0>,
-+    bar: Arc<Devres<Bar0>>,
-     fw: Firmware,
- }
- 
- impl Gpu {
-     pub(crate) fn new(
-         pdev: &pci::Device<device::Bound>,
--        devres_bar: Devres<Bar0>,
-+        devres_bar: Arc<Devres<Bar0>>,
-     ) -> Result<impl PinInit<Self>> {
-         let bar = devres_bar.access(pdev.as_ref())?;
-         let spec = Spec::new(bar)?;
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 47ead37faf4c..eeffdc8115aa 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -13,16 +13,21 @@
-     ffi::c_void,
-     prelude::*,
-     revocable::{Revocable, RevocableGuard},
--    sync::{rcu, Arc, Completion},
--    types::{ARef, ForeignOwnable},
-+    sync::{rcu, Completion},
-+    types::{ARef, ForeignOwnable, ScopeGuard, Opaque},
- };
- 
-+use pin_init::Wrapper;
-+
-+/// [`Devres`] inner data accessed from [`Devres::callback`].
- #[pin_data]
--struct DevresInner<T> {
--    dev: ARef<Device>,
--    callback: unsafe extern "C" fn(*mut c_void),
-+struct Inner<T> {
-     #[pin]
-     data: Revocable<T>,
-+    /// Tracks whether [`Devres::callback`] has been completed.
-+    #[pin]
-+    devm: Completion,
-+    /// Tracks whether revoking [`Self::data`] has been completed.
-     #[pin]
-     revoke: Completion,
- }
-@@ -44,6 +49,10 @@ struct DevresInner<T> {
- /// [`Devres`] users should make sure to simply free the corresponding backing resource in `T`'s
- /// [`Drop`] implementation.
- ///
-+/// # Invariants
-+///
-+/// [`Self::inner`] is guaranteed to be initialized and is always accessed read-only.
-+///
- /// # Example
- ///
- /// ```no_run
-@@ -88,100 +97,108 @@ struct DevresInner<T> {
- /// # fn no_run(dev: &Device<Bound>) -> Result<(), Error> {
- /// // SAFETY: Invalid usage for example purposes.
- /// let iomem = unsafe { IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD)? };
--/// let devres = Devres::new(dev, iomem, GFP_KERNEL)?;
-+/// let devres = KBox::pin_init(Devres::new(dev, iomem), GFP_KERNEL)?;
- ///
- /// let res = devres.try_access().ok_or(ENXIO)?;
- /// res.write8(0x42, 0x0);
- /// # Ok(())
- /// # }
- /// ```
--pub struct Devres<T>(Arc<DevresInner<T>>);
-+#[pin_data(PinnedDrop)]
-+pub struct Devres<T> {
-+    dev: ARef<Device>,
-+    /// Pointer to [`Self::devres_callback`].
-+    ///
-+    /// Has to be stored, since Rust does not guarantee to always return the same address for a
-+    /// function. However, the C API uses the address as a key.
-+    callback: unsafe extern "C" fn(*mut c_void),
-+    /// Contains all the fields shared with [`Self::callback`].
-+    // TODO: Replace with `UnsafePinned`, once available.
-+    #[pin]
-+    inner: Opaque<Inner<T>>,
-+}
-+
-+impl<T> Devres<T> {
-+    /// Creates a new [`Devres`] instance of the given `data`.
-+    ///
-+    /// The `data` encapsulated within the returned `Devres` instance' `data` will be
-+    /// (revoked)[`Revocable`] once the device is detached.
-+    pub fn new<'a, E>(
-+        dev: &'a Device<Bound>,
-+        data: impl PinInit<T, E> + 'a,
-+    ) -> impl PinInit<Self, Error> + 'a
-+    where
-+        T: 'a,
-+        Error: From<E>,
-+    {
-+        let callback = Self::devres_callback;
- 
--impl<T> DevresInner<T> {
--    fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
--        let inner = Arc::pin_init(
--            try_pin_init!( DevresInner {
--                dev: dev.into(),
--                callback: Self::devres_callback,
-+        try_pin_init!(&this in Self {
-+            // INVARIANT: `inner` is properly initialized.
-+            inner <- Opaque::pin_init(try_pin_init!(Inner {
-                 data <- Revocable::new(data),
-+                devm <- Completion::new(),
-                 revoke <- Completion::new(),
--            }),
--            flags,
--        )?;
--
--        // Convert `Arc<DevresInner>` into a raw pointer and make devres own this reference until
--        // `Self::devres_callback` is called.
--        let data = inner.clone().into_raw();
-+            })),
-+            callback,
-+            dev: {
-+                // SAFETY: `this` is a valid pointer to uninitialized memory.
-+                let inner = unsafe { &raw mut (*this.as_ptr()).inner };
- 
--        // SAFETY: `devm_add_action` guarantees to call `Self::devres_callback` once `dev` is
--        // detached.
--        let ret =
--            unsafe { bindings::devm_add_action(dev.as_raw(), Some(inner.callback), data as _) };
--
--        if ret != 0 {
--            // SAFETY: We just created another reference to `inner` in order to pass it to
--            // `bindings::devm_add_action`. If `bindings::devm_add_action` fails, we have to drop
--            // this reference accordingly.
--            let _ = unsafe { Arc::from_raw(data) };
--            return Err(Error::from_errno(ret));
--        }
-+                // SAFETY:
-+                // - `dev.as_raw()` is a pointer to a valid bound device.
-+                // - `inner` is guaranteed to be a valid for the duration of the lifetime of `Self`.
-+                // - `devm_add_action()` is guaranteed not to call `callback` until `this` has been
-+                //    properly initialized, because we require `dev` (i.e. the *bound* device) to
-+                //    live at least as long as the returned `impl PinInit<Self, Error>`.
-+                to_result(unsafe {
-+                    bindings::devm_add_action(dev.as_raw(), Some(callback), inner.cast())
-+                })?;
- 
--        Ok(inner)
-+                dev.into()
-+            },
-+        })
-     }
- 
--    fn as_ptr(&self) -> *const Self {
--        self as _
-+    fn inner(&self) -> &Inner<T> {
-+        // SAFETY: By the type invairants of `Self`, `inner` is properly initialized and always
-+        // accessed read-only.
-+        unsafe { &*self.inner.get() }
-     }
- 
--    fn remove_action(this: &Arc<Self>) -> bool {
--        // SAFETY:
--        // - `self.inner.dev` is a valid `Device`,
--        // - the `action` and `data` pointers are the exact same ones as given to devm_add_action()
--        //   previously,
--        // - `self` is always valid, even if the action has been released already.
--        let success = unsafe {
--            bindings::devm_remove_action_nowarn(
--                this.dev.as_raw(),
--                Some(this.callback),
--                this.as_ptr() as _,
--            )
--        } == 0;
--
--        if success {
--            // SAFETY: We leaked an `Arc` reference to devm_add_action() in `DevresInner::new`; if
--            // devm_remove_action_nowarn() was successful we can (and have to) claim back ownership
--            // of this reference.
--            let _ = unsafe { Arc::from_raw(this.as_ptr()) };
--        }
--
--        success
-+    fn data(&self) -> &Revocable<T> {
-+        &self.inner().data
-     }
- 
-     #[allow(clippy::missing_safety_doc)]
-     unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
--        let ptr = ptr as *mut DevresInner<T>;
--        // Devres owned this memory; now that we received the callback, drop the `Arc` and hence the
--        // reference.
--        // SAFETY: Safe, since we leaked an `Arc` reference to devm_add_action() in
--        //         `DevresInner::new`.
--        let inner = unsafe { Arc::from_raw(ptr) };
-+        // SAFETY: In `Self::new` we've passed a valid pointer to `Inner` to `devm_add_action()`,
-+        // hence `ptr` must be a valid pointer to `Inner`.
-+        let inner = unsafe { &*ptr.cast::<Inner<T>>() };
-+
-+        // Ensure that `inner` can't be used anymore after we signal completion of this callback.
-+        let inner = ScopeGuard::new_with_data(inner, |inner| inner.devm.complete_all());
- 
-         if !inner.data.revoke() {
-             // If `revoke()` returns false, it means that `Devres::drop` already started revoking
--            // `inner.data` for us. Hence we have to wait until `Devres::drop()` signals that it
--            // completed revoking `inner.data`.
-+            // `data` for us. Hence we have to wait until `Devres::drop` signals that it
-+            // completed revoking `data`.
-             inner.revoke.wait_for_completion();
-         }
-     }
--}
- 
--impl<T> Devres<T> {
--    /// Creates a new [`Devres`] instance of the given `data`. The `data` encapsulated within the
--    /// returned `Devres` instance' `data` will be revoked once the device is detached.
--    pub fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Self> {
--        let inner = DevresInner::new(dev, data, flags)?;
--
--        Ok(Devres(inner))
-+    fn remove_action(&self) -> bool {
-+        // SAFETY:
-+        // - `self.dev` is a valid `Device`,
-+        // - the `action` and `data` pointers are the exact same ones as given to
-+        //   `devm_add_action()` previously,
-+        (unsafe {
-+            bindings::devm_remove_action_nowarn(
-+                self.dev.as_raw(),
-+                Some(self.callback),
-+                core::ptr::from_ref(self.inner()).cast_mut().cast(),
-+            )
-+        } == 0)
-     }
- 
-     /// Obtain `&'a T`, bypassing the [`Revocable`].
-@@ -213,44 +230,63 @@ pub fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Self> {
-     /// }
-     /// ```
-     pub fn access<'a>(&'a self, dev: &'a Device<Bound>) -> Result<&'a T> {
--        if self.0.dev.as_raw() != dev.as_raw() {
-+        if self.dev.as_raw() != dev.as_raw() {
-             return Err(EINVAL);
-         }
- 
-         // SAFETY: `dev` being the same device as the device this `Devres` has been created for
--        // proves that `self.0.data` hasn't been revoked and is guaranteed to not be revoked as
--        // long as `dev` lives; `dev` lives at least as long as `self`.
--        Ok(unsafe { self.0.data.access() })
-+        // proves that `self.data` hasn't been revoked and is guaranteed to not be revoked as long
-+        // as `dev` lives; `dev` lives at least as long as `self`.
-+        Ok(unsafe { self.data().access() })
-     }
- 
-     /// [`Devres`] accessor for [`Revocable::try_access`].
-     pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
--        self.0.data.try_access()
-+        self.data().try_access()
-     }
- 
-     /// [`Devres`] accessor for [`Revocable::try_access_with`].
-     pub fn try_access_with<R, F: FnOnce(&T) -> R>(&self, f: F) -> Option<R> {
--        self.0.data.try_access_with(f)
-+        self.data().try_access_with(f)
-     }
- 
-     /// [`Devres`] accessor for [`Revocable::try_access_with_guard`].
-     pub fn try_access_with_guard<'a>(&'a self, guard: &'a rcu::Guard) -> Option<&'a T> {
--        self.0.data.try_access_with_guard(guard)
-+        self.data().try_access_with_guard(guard)
-     }
- }
- 
--impl<T> Drop for Devres<T> {
--    fn drop(&mut self) {
-+// SAFETY: `Devres` can be send to any task, if `T: Send`.
-+unsafe impl<T: Send> Send for Devres<T> {}
-+
-+// SAFETY: `Devres` can be shared with any task, if `T: Sync`.
-+unsafe impl<T: Sync> Sync for Devres<T> {}
-+
-+#[pinned_drop]
-+impl<T> PinnedDrop for Devres<T> {
-+    fn drop(self: Pin<&mut Self>) {
-         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
-         // anymore, hence it is safe not to wait for the grace period to finish.
--        if unsafe { self.0.data.revoke_nosync() } {
--            // We revoked `self.0.data` before the devres action did, hence try to remove it.
--            if !DevresInner::remove_action(&self.0) {
-+        if unsafe { self.data().revoke_nosync() } {
-+            // We revoked `self.data` before the devres action did, hence try to remove it.
-+            if !self.remove_action() {
-                 // We could not remove the devres action, which means that it now runs concurrently,
--                // hence signal that `self.0.data` has been revoked successfully.
--                self.0.revoke.complete_all();
-+                // hence signal that `self.data` has been revoked by us successfully.
-+                self.inner().revoke.complete_all();
-+
-+                // Wait for `Self::devres_callback` to be done using this object.
-+                self.inner().devm.wait_for_completion();
-             }
-+        } else {
-+            // `Self::devres_callback` revokes `self.data` for us, hence wait for it to be done
-+            // using this object.
-+            self.inner().devm.wait_for_completion();
-         }
-+
-+        // INVARIANT: At this point it is guaranteed that `inner` can't be accessed any more.
-+        //
-+        // SAFETY: `inner` is valid for dropping.
-+        unsafe { core::ptr::drop_in_place(self.inner.get()) };
-     }
- }
- 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 8435f8132e38..db0eb7eaf9b1 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -5,7 +5,6 @@
- //! C header: [`include/linux/pci.h`](srctree/include/linux/pci.h)
- 
- use crate::{
--    alloc::flags::*,
-     bindings, container_of, device,
-     device_id::RawDeviceId,
-     devres::Devres,
-@@ -398,19 +397,20 @@ pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
- impl Device<device::Bound> {
-     /// Mapps an entire PCI-BAR after performing a region-request on it. I/O operation bound checks
-     /// can be performed on compile time for offsets (plus the requested type size) < SIZE.
--    pub fn iomap_region_sized<const SIZE: usize>(
--        &self,
-+    pub fn iomap_region_sized<'a, const SIZE: usize>(
-+        &'a self,
-         bar: u32,
--        name: &CStr,
--    ) -> Result<Devres<Bar<SIZE>>> {
--        let bar = Bar::<SIZE>::new(self, bar, name)?;
--        let devres = Devres::new(self.as_ref(), bar, GFP_KERNEL)?;
--
--        Ok(devres)
-+        name: &'a CStr,
-+    ) -> impl PinInit<Devres<Bar<SIZE>>, Error> + 'a {
-+        Devres::new(self.as_ref(), Bar::<SIZE>::new(self, bar, name))
-     }
- 
-     /// Mapps an entire PCI-BAR after performing a region-request on it.
--    pub fn iomap_region(&self, bar: u32, name: &CStr) -> Result<Devres<Bar>> {
-+    pub fn iomap_region<'a>(
-+        &'a self,
-+        bar: u32,
-+        name: &'a CStr,
-+    ) -> impl PinInit<Devres<Bar>, Error> + 'a {
-         self.iomap_region_sized::<0>(bar, name)
-     }
- }
-diff --git a/samples/rust/rust_driver_pci.rs b/samples/rust/rust_driver_pci.rs
-index 15147e4401b2..5c35f1414172 100644
---- a/samples/rust/rust_driver_pci.rs
-+++ b/samples/rust/rust_driver_pci.rs
-@@ -25,8 +25,10 @@ impl TestIndex {
-     const NO_EVENTFD: Self = Self(0);
- }
- 
-+#[pin_data(PinnedDrop)]
- struct SampleDriver {
-     pdev: ARef<pci::Device>,
-+    #[pin]
-     bar: Devres<Bar0>,
- }
- 
-@@ -73,13 +75,11 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> Result<Pin<KBox<Self>
-         pdev.enable_device_mem()?;
-         pdev.set_master();
- 
--        let bar = pdev.iomap_region_sized::<{ Regs::END }>(0, c_str!("rust_driver_pci"))?;
--
--        let drvdata = KBox::new(
--            Self {
-+        let drvdata = KBox::pin_init(
-+            try_pin_init!(Self {
-                 pdev: pdev.into(),
--                bar,
--            },
-+                bar <- pdev.iomap_region_sized::<{ Regs::END }>(0, c_str!("rust_driver_pci")),
-+            }),
-             GFP_KERNEL,
-         )?;
- 
-@@ -90,12 +90,13 @@ fn probe(pdev: &pci::Device<Core>, info: &Self::IdInfo) -> Result<Pin<KBox<Self>
-             Self::testdev(info, bar)?
-         );
- 
--        Ok(drvdata.into())
-+        Ok(drvdata)
-     }
- }
- 
--impl Drop for SampleDriver {
--    fn drop(&mut self) {
-+#[pinned_drop]
-+impl PinnedDrop for SampleDriver {
-+    fn drop(self: Pin<&mut Self>) {
-         dev_dbg!(self.pdev.as_ref(), "Remove Rust PCI driver sample.\n");
-     }
- }
--- 
-2.49.0
-
+Thanks Danilo for your trust and for guiding us to this point! It is
+still a long road ahead, but I am happy and excited to be involved in
+this effort with you and the community.
