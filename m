@@ -1,117 +1,254 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4682D1DE8B2;
-	Tue, 24 Jun 2025 21:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79A225A2A4
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 21:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750799643; cv=none; b=grvmfxsVKbd5fjAP0vGQwQyef476mY1x8CEAKv2l7XXOmCZx1Iq56bkcjh7SuemtxC0BKy1UD9o96Ph8KcJHsS7pY+FaaIwbgT2f7eMXytk2X3lcCvCzscbVV6kwZM5LxscSY6oxP8AT/znT6HvnnTal89u0HpixWCfnyLKEeQs=
+	t=1750800175; cv=none; b=QT78bR+jCvC8Vh7zA9U8ca4LWZ+uz1CqzGj5T4/yhsNzqNQ8zKU1MrMMrHi1NLHAfpypU3fEEVCM5wCjolayvReE0yDS1AdnFab1VVrI0U7pz9YD18xuCkxwUCShhPDVSORSzyJCO+wbxsUL1YyBGwDeFdtPmsVoObVCOGRVnGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750799643; c=relaxed/simple;
-	bh=mxpbj7+7aiyOHL0XvewuzjpkoAy8jbYePAbVKI3rvvU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L1K9l4q9g/oaTPoo9Dbef425wK6kOf2QF8lEsBHoujpCZl5YpzrIeyR91uwZS1+9yGzt7g4X/K/lex/kc3PS/IEsTj/Ospi7yo0EEQtnwwaBkJS7UbY1I8OdodBGtTAApnBqSJ75fbS6QzFwPeVM89JPV4Y5t5e3lJt3JiGWHNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MbO9NYV9; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MbO9NYV9"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2369dd5839dso13387485ad.3;
-        Tue, 24 Jun 2025 14:14:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750799641; x=1751404441; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxpbj7+7aiyOHL0XvewuzjpkoAy8jbYePAbVKI3rvvU=;
-        b=MbO9NYV9pfZ2snp6l08LdtNGVU+xCe+Xr7tPhHsh1/iCs6cAD2LJDkdoRMreQgPwyP
-         XvnyDwHcQ/Ou/UVvUgwbGSFPDLaj4zFz/ysvVpWf+QOz2ze4ogq1I37A+ou9IkuD9UAm
-         hXpsyBDKl1t3vwZsH/8dF80ruF3QMhWopz+wBQOJuRVKkyvXFLnR0qyy4ZnkO1BbX80r
-         4RuErioTlco3vLzYAZ0OM9AZyrasWwoLUI3z9wq9C+GATq8IsEr+q/Oji55EotFtXvWX
-         KZgKcI+gDsWoheSBZ+AyPgGlIdYAH0Rjkb7j9479E4N1gLZOpxMPjr2WNLV3lgXA6DyF
-         aFlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750799641; x=1751404441;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mxpbj7+7aiyOHL0XvewuzjpkoAy8jbYePAbVKI3rvvU=;
-        b=bDNGk75ON/AP8/l62Hx5CrWup+vr7vo3LV4Dnl49gVVDWwokFQGix2bWMJRp6/waKF
-         Djrj47tFAy/M2aF1lINlRiMdilKcrXFSI78b4MlUYC3Lrjmx+r4tvueU3HSm0s2gXypo
-         JyQVwuKZkExfXg0VcO4TWXw9rsRoUnPC+A5rWcJYSt1ek5Qql1+8LpMkY+EsrwW7tn51
-         b4mPRCgNt8WoWIAtzzskERJtTpt9E9QzvaDHGl4CbalW9BMkCAwjFoxK3yoGoqhtYDVk
-         H+u21wgiBPxGyiwbiz3rSaB9Bz1D9KacZFbpg4utpzgOa/aVygRNmyQOaSaSAks+6Zh/
-         va4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUVpPX/sZ9QntuFVhv06gT1X55QF1rLW1yonkbwlWaTFJJimzWXMEMbl0OX14qeHIop+s/Nr0dv7v3oTVU=@vger.kernel.org, AJvYcCWi75iAxPPRu6NmQFRSGVAMOCQfJ9v+yGctg3z7B0EciOHnI3HsJEhm3nCP7S/n8ne9UCLNvSyStjLb5QfgH1Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM7iCeWkDkbk+aZAePqRytf2y3ukL5/gUIdf1jDho1qPHF7b9z
-	S0aUT6RzvwtyjgaThfoGXTJ3D/dp/6+Y5KyJNMjQMR3fUDP1cO8t62vBKamw7/GdILaP7XY8RrZ
-	O74emDd8AjgMt7bjNdYgfFIVoQiF2mos=
-X-Gm-Gg: ASbGncu4RKEa6/ls/iewBvd/KHqKKxJPp5Xm3K4vfJVz9ksmCbJ6+bBvwG5JTvgjtGQ
-	llaHi10vgBWMIWL4ZlBlnBAk5Xbwmf627RDgRx1WvjF2D8QlVdpHSEHB8BHGhkIZzjvmXUZxX+X
-	p47MMkbOU/13pf9IMxcvk1kZ4G4eUBblEO9mJ60oRay9k=
-X-Google-Smtp-Source: AGHT+IGYyQcumkAenptjy2lvnd5vYH65mG+PdJ1dpzQGeDvwH0Tz6ACQggQr4CIa1EsfWlDtmSngXOVNhnWKT+IeLtk=
-X-Received: by 2002:a17:903:1a67:b0:234:9fee:afe0 with SMTP id
- d9443c01a7336-23824080784mr4083605ad.14.1750799641529; Tue, 24 Jun 2025
- 14:14:01 -0700 (PDT)
+	s=arc-20240116; t=1750800175; c=relaxed/simple;
+	bh=FJc3/wHmIrxqjx+kYZ7rG7EJsEH4rMvfWcMEKWFB8Jo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L2rtzNrW/wE2qzP2R8NrhGd7C3ZQxLgobKsIqmI4cC9Db66WW7IeOmTmau6Qctk2aTlKeHHVKjCnyiBvIzJpOB10VKxE3LrofuFtFA9XkOTU5Pi8SiWH/X4czimeD7DGQwCnf49S449nq10X+fBmN6KF4ymvmEFsxEpMNUyZtok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25A0D113E;
+	Tue, 24 Jun 2025 14:22:34 -0700 (PDT)
+Received: from e129154.arm.com (unknown [10.57.66.60])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F1BE13F58B;
+	Tue, 24 Jun 2025 14:22:47 -0700 (PDT)
+From: Beata Michalska <beata.michalska@arm.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	dakr@kernel.org,
+	aliceryhl@google.com,
+	daniel.almeida@collabora.com
+Cc: boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	tmgross@umich.edu,
+	alyssa@rosenzweig.io,
+	lyude@redhat.com,
+	rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH v3] rust: drm: Drop the use of Opaque for ioctl arguments
+Date: Tue, 24 Jun 2025 23:22:25 +0200
+Message-Id: <20250624212225.2169888-1-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
- <175015666837.277659.5038961663728008472.b4-ty@kernel.org>
- <CANiq72=mDe2kB4yQnzb=kwopyUYG936pOoj80YpWk7+q6aJwbQ@mail.gmail.com>
- <87plet4cjq.fsf@kernel.org> <_dhT441zoMZanviBlUpcvPZEw7TiwB4v28ONPXSwi7WvEaMg_YJSmi5vRlLVaaUOujF7NOspxR0NYFLOHXud_g==@protonmail.internalid>
- <CANiq72nwaxszEbn6O3xZi6H9P+U=5N0ugK1n9qBRteQwKXQSaw@mail.gmail.com> <87wm912sjg.fsf@kernel.org>
-In-Reply-To: <87wm912sjg.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Jun 2025 23:13:49 +0200
-X-Gm-Features: Ac12FXzTfPaGunExTwkXXEgL9VwYIwPnJPjGxxTKuOoYUf9mK8y2zn24qvDSg-k
-Message-ID: <CANiq72kHocyULzwqxS51XeSEhsJpccfNFc+QYE67yvfvS8BApw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and Delta
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: alex.gaynor@gmail.com, ojeda@kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, aliceryhl@google.com, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Tue, 24 Jun 2025 at 15:11, Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
-> None of the options are the right choice.
+With the Opaque<T>, the expectations are that Rust should not
+make any assumptions on the layout or invariants of the wrapped
+C types. That runs rather counter to ioctl arguments, which must
+adhere to certain data-layout constraits. By using Opaque<T>,
+ioctl handlers are forced to use unsafe code where non is acually
+needed. This adds needless complexity and maintenance overhead,
+brining no safety benefits.
+Drop the use of Opaque for ioctl arguments as that is not the best
+fit here.
 
-That is fine (it is also what I have been arguing in the other thread
-and in previous times), but that does not imply `into_*` is not a bad
-choice if we really want to follow upstream.
+Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+[ nova-drm changes: Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ drivers/gpu/drm/nova/file.rs | 23 ++++++--------
+ drivers/gpu/drm/nova/nova.rs |  1 -
+ drivers/gpu/drm/nova/uapi.rs | 61 ------------------------------------
+ rust/kernel/drm/ioctl.rs     | 11 ++++---
+ 4 files changed, 16 insertions(+), 80 deletions(-)
+ delete mode 100644 drivers/gpu/drm/nova/uapi.rs
 
-> Cost and ownership _do_ line
-> up for `into_*` in this case.
+diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
+index 7e59a34b830d..7e7d4e2de2fb 100644
+--- a/drivers/gpu/drm/nova/file.rs
++++ b/drivers/gpu/drm/nova/file.rs
+@@ -2,13 +2,11 @@
+ 
+ use crate::driver::{NovaDevice, NovaDriver};
+ use crate::gem::NovaObject;
+-use crate::uapi::{GemCreate, GemInfo, Getparam};
+ use kernel::{
+     alloc::flags::*,
+     drm::{self, gem::BaseObject},
+     pci,
+     prelude::*,
+-    types::Opaque,
+     uapi,
+ };
+ 
+@@ -26,20 +24,19 @@ impl File {
+     /// IOCTL: get_param: Query GPU / driver metadata.
+     pub(crate) fn get_param(
+         dev: &NovaDevice,
+-        getparam: &Opaque<uapi::drm_nova_getparam>,
++        getparam: &mut uapi::drm_nova_getparam,
+         _file: &drm::File<File>,
+     ) -> Result<u32> {
+         let adev = &dev.adev;
+         let parent = adev.parent().ok_or(ENOENT)?;
+         let pdev: &pci::Device = parent.try_into()?;
+-        let getparam: &Getparam = getparam.into();
+ 
+-        let value = match getparam.param() as u32 {
++        let value = match getparam.param as u32 {
+             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
+             _ => return Err(EINVAL),
+         };
+ 
+-        getparam.set_value(value);
++        getparam.value = value;
+ 
+         Ok(0)
+     }
+@@ -47,13 +44,12 @@ pub(crate) fn get_param(
+     /// IOCTL: gem_create: Create a new DRM GEM object.
+     pub(crate) fn gem_create(
+         dev: &NovaDevice,
+-        req: &Opaque<uapi::drm_nova_gem_create>,
++        req: &mut uapi::drm_nova_gem_create,
+         file: &drm::File<File>,
+     ) -> Result<u32> {
+-        let req: &GemCreate = req.into();
+-        let obj = NovaObject::new(dev, req.size().try_into()?)?;
++        let obj = NovaObject::new(dev, req.size.try_into()?)?;
+ 
+-        req.set_handle(obj.create_handle(file)?);
++        req.handle = obj.create_handle(file)?;
+ 
+         Ok(0)
+     }
+@@ -61,13 +57,12 @@ pub(crate) fn gem_create(
+     /// IOCTL: gem_info: Query GEM metadata.
+     pub(crate) fn gem_info(
+         _dev: &NovaDevice,
+-        req: &Opaque<uapi::drm_nova_gem_info>,
++        req: &mut uapi::drm_nova_gem_info,
+         file: &drm::File<File>,
+     ) -> Result<u32> {
+-        let req: &GemInfo = req.into();
+-        let bo = NovaObject::lookup_handle(file, req.handle())?;
++        let bo = NovaObject::lookup_handle(file, req.handle)?;
+ 
+-        req.set_size(bo.size().try_into()?);
++        req.size = bo.size().try_into()?;
+ 
+         Ok(0)
+     }
+diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
+index 902876aa14d1..730598defe04 100644
+--- a/drivers/gpu/drm/nova/nova.rs
++++ b/drivers/gpu/drm/nova/nova.rs
+@@ -5,7 +5,6 @@
+ mod driver;
+ mod file;
+ mod gem;
+-mod uapi;
+ 
+ use crate::driver::NovaDriver;
+ 
+diff --git a/drivers/gpu/drm/nova/uapi.rs b/drivers/gpu/drm/nova/uapi.rs
+deleted file mode 100644
+index eb228a58d423..000000000000
+--- a/drivers/gpu/drm/nova/uapi.rs
++++ /dev/null
+@@ -1,61 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-
+-use kernel::uapi;
+-
+-// TODO Work out some common infrastructure to avoid boilerplate code for uAPI abstractions.
+-
+-macro_rules! define_uapi_abstraction {
+-    ($name:ident <= $inner:ty) => {
+-        #[repr(transparent)]
+-        pub struct $name(::kernel::types::Opaque<$inner>);
+-
+-        impl ::core::convert::From<&::kernel::types::Opaque<$inner>> for &$name {
+-            fn from(value: &::kernel::types::Opaque<$inner>) -> Self {
+-                // SAFETY: `Self` is a transparent wrapper of `$inner`.
+-                unsafe { ::core::mem::transmute(value) }
+-            }
+-        }
+-    };
+-}
+-
+-define_uapi_abstraction!(Getparam <= uapi::drm_nova_getparam);
+-
+-impl Getparam {
+-    pub fn param(&self) -> u64 {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
+-        unsafe { (*self.0.get()).param }
+-    }
+-
+-    pub fn set_value(&self, v: u64) {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
+-        unsafe { (*self.0.get()).value = v };
+-    }
+-}
+-
+-define_uapi_abstraction!(GemCreate <= uapi::drm_nova_gem_create);
+-
+-impl GemCreate {
+-    pub fn size(&self) -> u64 {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
+-        unsafe { (*self.0.get()).size }
+-    }
+-
+-    pub fn set_handle(&self, handle: u32) {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
+-        unsafe { (*self.0.get()).handle = handle };
+-    }
+-}
+-
+-define_uapi_abstraction!(GemInfo <= uapi::drm_nova_gem_info);
+-
+-impl GemInfo {
+-    pub fn handle(&self) -> u32 {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
+-        unsafe { (*self.0.get()).handle }
+-    }
+-
+-    pub fn set_size(&self, size: u64) {
+-        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
+-        unsafe { (*self.0.get()).size = size };
+-    }
+-}
+diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+index 445639404fb7..3425a835f9cd 100644
+--- a/rust/kernel/drm/ioctl.rs
++++ b/rust/kernel/drm/ioctl.rs
+@@ -83,7 +83,7 @@ pub mod internal {
+ ///
+ /// ```ignore
+ /// fn foo(device: &kernel::drm::Device<Self>,
+-///        data: &Opaque<uapi::argument_type>,
++///        data: &mut uapi::argument_type,
+ ///        file: &kernel::drm::File<Self::File>,
+ /// ) -> Result<u32>
+ /// ```
+@@ -138,9 +138,12 @@ pub mod internal {
+                             // SAFETY: The ioctl argument has size `_IOC_SIZE(cmd)`, which we
+                             // asserted above matches the size of this type, and all bit patterns of
+                             // UAPI structs must be valid.
+-                            let data = unsafe {
+-                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
+-                            };
++                            // The `ioctl` argument is exclusively owned by the handler
++                            // and guaranteed by the C implementation (`drm_ioctl()`) to remain
++                            // valid for the entire lifetime of the reference taken here.
++                            // There is no concurrent access or aliasing; no other references
++                            // to this object exist during this call.
++                            let data = unsafe { &mut *(raw_data as *mut $crate::uapi::$struct) };
+                             // SAFETY: This is just the DRM file structure
+                             let file = unsafe { $crate::drm::File::as_ref(raw_file) };
+ 
+-- 
+2.25.1
 
-No, ownership definitely doesn't line up: `Delta` is not `Copy` and
-there is no conceptual ownership transfer. While it says "owned ->
-owned", not being `Copy` is quite important here: the guidelines
-clarify in an example for a `Copy` type that if the input is not
-consumed then it should not be `into_*`.
-
-Sure, "Variable" cost means anything could go there, but that doesn't
-tell us much, i.e. if it was completely free, we could just as well
-pick `as_`, which would actually provide some information since you
-know it needs to be cheap.
-
-So the whole argument for `into_*` is... "it says 'Variable' cost so
-it lines up"?
-
-Now, what I argued is that we may just as well define our own rules,
-since that table is confusing and doesn't cover all cases. If we do
-that, then you could propose things like "all owned->owned methods are
-`into_*`", which I think is what you are essentially implying here.
-
-> I do not think that is settled.
-
-If you think so, then the patch shouldn't be applied.
-
-Cheers,
-Miguel
