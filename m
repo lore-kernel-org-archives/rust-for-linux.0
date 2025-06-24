@@ -1,132 +1,145 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8120323E336
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 13:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F023D2AD
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 13:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750773040; cv=none; b=WUSn4DrR8r/gTcy7iGwnJ1scoqbOYacHVJ35YrAvkMMCvlKeh6L1AV1nRf/nfkLOrT92c1MBxoTLg4G/w8VxIfBkqIcLI67vJmv1PsrbixktWgZyjuOaei3VEjPXoUwpbYUls/lzemoHdYT2dcCIvV0bJNCoXkOCi22P8/JYvpU=
+	t=1750773280; cv=none; b=kSKlGVM77BOcVYtDaTQPz3ncCqXacmVMN80hKNqxf2OUT7xGn9jBJCTzzMddVWHbLQqHcSTC8/QNNVAkw7QmnQHQTZdb7bztZCc0uua53FpQ1TArxV88Qr3bUQ0gTiPDp7HGHs9hxUmayizf9J9itSod6Kn2MfzKyqHvwEaL7YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750773040; c=relaxed/simple;
-	bh=x869jf+HcyzdISYV8dZz/gWjbV7ixtQEFmQ5vF/GuAw=;
+	s=arc-20240116; t=1750773280; c=relaxed/simple;
+	bh=qCGN185qCjx8F271RlR0vW4iPGcpJCnJd3e/5OauLFc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ThTqUH6m/VcQbAvONSFyRIAnmhMtOAtew6sHpQYuZM37vaJ3pZC1tGi19vYgtnF8VkwIdTZzgsIul50URMGqCg/B2/q4Xk3vivhpky62DBTh87SlJmPz/bnkNKZjOV/eJZ0goROomp7o2wBvwJMY9cqNV792JtE9Xy8ea4AOYks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I5r9o4Gg; arc=none smtp.client-ip=209.85.221.50
+	 To:Cc:Content-Type; b=e/B3C6R7Itf4wFQBjL3SSxPxlmPJDMQxUQSdDffpH0xS+xHeKtgcOGa+0SdRGL0o0p4tpC/OK5zyLQnwveVBWW4H523weaMok5qHowhbDLGnhqM2E3pfJnGzhkSSqlSbdjmNrpH8JFp255pLYBSXkM/I9EyCzd9Ygq7zKHUr//Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J/UpI6wF; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I5r9o4Gg"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a54690d369so4630594f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 06:50:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J/UpI6wF"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a54690d369so4638132f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 06:54:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750773037; x=1751377837; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1750773277; x=1751378077; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FuSC/X9PgRtXfhqHGEt/bUX/whB0bmpCwcmqOcOnono=;
-        b=I5r9o4GgFQqOT2VKpPuuA08Pox05fWwiGLcfPgMr1HF7tBq4EekoNHX6VICtq2yfI7
-         1VxW+kd76dgIfs80w6WqvlC9hcZUT0xV+Pi7oeRvMrK9js1r8fRFjxrvNLK5o0QsYIOo
-         9AsAAuhAgvhPwkJStJfxdmTWvQ3OfiKzM54RT1o5OWNgXRzuv+/hzmqWm58QtUWFqUoW
-         1ZGlae8NoSkLYsGHBhvTGdWBCGLRZG/zbkqiITTWqmQfAWK6bgs/s3zU+g4VBz6uUf+S
-         RIzxL6sSRrcZtMtHYyvBwmYn1vQG5svcfWHH9/EBOHFXl9HA2lWh2vzk/tbxkeVunFVR
-         qeWg==
+        bh=ndIWN7+8y5BdWE2PTIgJRaIaFxEDuJ6LVBN5W+A3/wU=;
+        b=J/UpI6wFFt9MJkzf24qTCwKcKkD6jMrbJ4stzJFbZgcVraQBjEwcNcy2Ff5vydeJfl
+         gz971kySHoMCUQ5Bl6zOOwYBlagk8tXlGdVJT5gL7lSjLfmhsqHOLvColZHA+M4AIKIg
+         RnZgIQJF2EqwE/P3DEEMlCVoTp7eoXpPj1TXFFWMdfnqiG0NsU9+JSbDYQlOz/Y3eqDR
+         0RRjYOkZV0HQog/bdLGnA57v5+bAb9IaaMjVRqVYX2SX256LeGvbTGnCpKNM/nMSfUTE
+         42TEeSxS2c4aUIhMtWm3JMr6aJQeiinpmChDldJ2v90N/58rRSUZpwQO6uSJz7o27McQ
+         Gegw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750773037; x=1751377837;
+        d=1e100.net; s=20230601; t=1750773277; x=1751378077;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FuSC/X9PgRtXfhqHGEt/bUX/whB0bmpCwcmqOcOnono=;
-        b=CqHk9BpFJwYIehAl9dDJWDAOrvBlbi1amMKO8e6TmXGf+QSPf8V0K3A04Q2nW1cvqJ
-         Iu1AVTqhV/bFKyfTfwFLQA+IRfe7mcqzatxACRT8eNTa9KOBLZgkYdh55GYnB1nHcnnK
-         cMGi8vCwgd3C3CH+W+NkmxQQhPTXm0VspS9bfMBsi0oP6llMLBCAv7Spn7P2O70eOPq4
-         uzCE74bQMWGHyz1lfP6C9wnJ0Ri+h87UBkMxf/4epBtrHlVH5J3/fIKIwtc1Yn9jVQlJ
-         NBrywD3/qVeZPFk2WCozKhi7RmnMmnh40hV1y/XvumT8mUpjBHOLzTOd5ra9+PiMPBWG
-         dsNw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3k5HKSUeH2NefubRhoR52XmiyBCMz7qjXotxZl+lZAyoD85NzR1SoXWiCy2ARgybIB2ic4Oraw47ixPn/4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP2e3kC86+utnriCJNuZHI3ETMhA6LqonwbTPjcXcj3P7tN/4l
-	lw6Uo1o6qTF9Q2hnFNjs/ewpi1OP6FFvuW8ZnvN2aP72iNRminsxdA97F4gQlVecRBKUAVHLzdz
-	jGA0zUtesHlMxP2Ddy1HQ3yvgcAprdNn5EfY/zk5v
-X-Gm-Gg: ASbGncsCkwc8zocDdZE63V+q943ByW/DxeQZ6seeYxXomhdTbVdxyJMSWr7XUsNIk7m
-	6XKGeivNXkQpPLOlpSzl0ecEUw9pgOimhoNkTTom2BkJ8T71Apuv0yjXO6S3RwISjlRcZIY1Mhn
-	diiwT4iOOMVsRsNWyV2d6N33qGUS18qBnA74CzW+ij+HjB605Y2yHEA/k=
-X-Google-Smtp-Source: AGHT+IGnrnePw+dcT7/yyqAE5xLybA6KvH5/W9NCQoo7oBZLRLyIwlJ7wVikWfPRtL8Ejq0gVIGBHa1DhIpdduVksJE=
-X-Received: by 2002:a05:6000:4021:b0:3a4:ef36:1f4d with SMTP id
- ffacd0b85a97d-3a6d12e419bmr12601998f8f.38.1750773036600; Tue, 24 Jun 2025
- 06:50:36 -0700 (PDT)
+        bh=ndIWN7+8y5BdWE2PTIgJRaIaFxEDuJ6LVBN5W+A3/wU=;
+        b=KNpEHVBe0WigdTTr3sIXP68B6xR2GEnCp1fZiFmKDCIclj1iXB2ecth6Rpiu6PCzlT
+         TN6ZKE18+CJn0lqwreBJAXxpqO8RgH0xlPIT+UIL2Af6LjTmh1aZsQZWxFnIWvdi91S9
+         sy1bcHi7ywzsKums981fkVCVMlKbgZfiUYEzCAC3FAI4M5YlSQcHPUOVAsiaMB3QCzp2
+         fWc1OMFEP/y33608zlPW1p6j1vCs5aN8seng8/xWmtwOTy/ABmu1GOsU+gAlE9djPZ32
+         0MJ0U8E2Ayw7dd0yLE+6lUOrxTR8OxTh0Jg/yUJh1G9bvkJ6cnU/Pa5cmGWYgntKtlk2
+         pywg==
+X-Forwarded-Encrypted: i=1; AJvYcCWHkp7SGPJ9AkMTGddGYezJNdff2lHgkrfJQmy4zxmLksZPqHD0FFocWg3yFBlgT1i0TeLo7YHH5VcUayIUHg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyumCMY3BboqCZLoGwiIXzgiz0piITbluyiObMTySBEXrpd7EtQ
+	56Lyk7LRs2vEiY9aWJpTRobU3C1IB2qQoyB5jN1iC3fH84K3bQ8OWaXd+afkdMYTQZEJvIibvXp
+	QZY8WPV25Fx5hI78mmbhh95WirNUR0ecr4vmE8DQ5
+X-Gm-Gg: ASbGncu75fZuj4/rukn/GR/n4aSu8wuTTqXIKFLaKdFPmIX4kTMLLL56tMVLHI5fuiC
+	Sww+XwgJAHd1k4cvbeSrm2+zJsHreLYQHv6PQBf2v6ZGqLPf6UGL/62+IAd/ayGeCaU0r+N9grZ
+	OHsUByRfxii5E83F4HdMFnCvUt0ibK363Uvn7RSONFxMbA
+X-Google-Smtp-Source: AGHT+IE6qG4yT4F52V089BtqdcgW05JVoCujc2240lce+bClkgklwaKunhcojU2TzqvrWFprU2PCaZKTOAq2hBQtLY8=
+X-Received: by 2002:a05:6000:4708:b0:3a4:f6ba:51c8 with SMTP id
+ ffacd0b85a97d-3a6d12a3ee6mr13662866f8f.14.1750773277164; Tue, 24 Jun 2025
+ 06:54:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com>
- <20250608-topics-tyr-request_irq-v4-3-81cb81fb8073@collabora.com>
- <aEbJt0YSc3-60OBY@pollux> <CAH5fLghDbrgO2PiKyKZ87UrtouG25xWhVP_YmcgO0fFcnvZRkQ@mail.gmail.com>
- <DAU0NHTHTDG4.2HNEABNAI8GHZ@kernel.org> <aFmPZMLGngAE_IHJ@tardis.local>
- <aFmodsQK6iatXKoZ@tardis.local> <DAU5TAFKJQOF.2DFO7YAHZA4V2@kernel.org>
- <DB7F39EC-5F7D-49DA-BF2B-6200998B45E2@collabora.com> <DAURVNHM7PKM.PLUFKFRVXR25@kernel.org>
-In-Reply-To: <DAURVNHM7PKM.PLUFKFRVXR25@kernel.org>
+References: <CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com>
+ <20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
+ <CAH5fLgjJRbjPnN58RuaBtNrY1A-tif3ohETLxdbaE4b46Hjbqg@mail.gmail.com> <20250624.224923.1801832299260163743.fujita.tomonori@gmail.com>
+In-Reply-To: <20250624.224923.1801832299260163743.fujita.tomonori@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 24 Jun 2025 14:50:23 +0100
-X-Gm-Features: Ac12FXxhBUp0laB6o-uk241zbrLxNt97_Zs06jxl60wtCBp8pHCACUlpYJSNp-I
-Message-ID: <CAH5fLggs=mUi0xAEuiLvZrua4qrMYjBDEmyK8xc-kkXVyUKRog@mail.gmail.com>
-Subject: Re: [PATCH v4 3/6] rust: irq: add support for non-threaded IRQs and handlers
-To: Benno Lossin <lossin@kernel.org>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org
+Date: Tue, 24 Jun 2025 14:54:24 +0100
+X-Gm-Features: Ac12FXzK2-zU_qiS9xBkPbYaAbQyGj3kbgqXjtmwFWyfIVtERMkUn_W2s4_gTfo
+Message-ID: <CAH5fLgjttTnev2h4J-hF-LdUTJCoryJyFm5_LqJ6_GBe+=An5Q@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods as_micros_ceil
+ and as_millis
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: miguel.ojeda.sandonis@gmail.com, a.hindborg@kernel.org, 
+	alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
+	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
+	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
+	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
+	tmgross@umich.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 24, 2025 at 1:46=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
+On Tue, Jun 24, 2025 at 2:49=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> On Tue Jun 24, 2025 at 2:31 PM CEST, Daniel Almeida wrote:
-> > On 23 Jun 2025, at 16:28, Benno Lossin <lossin@kernel.org> wrote:
-> >> On Mon Jun 23, 2025 at 9:18 PM CEST, Boqun Feng wrote:
-> >>>    try_pin_init!(&this in Self {
-> >>>        handler,
-> >>>        inner: Devres::new(
-> >>>            dev,
-> >>>            RegistrationInner {
-> >>>                // Needs to use `handler` address as cookie, same for
-> >>>                // request_irq().
-> >>>                cookie: &raw (*(this.as_ptr().cast()).handler),
-> >>>                irq: {
-> >>>                     to_result(unsafe { bindings::request_irq(...) })?=
-;
-> >>>  irq
-> >>> }
-> >>>             },
-> >>>             GFP_KERNEL,
-> >>>        )?,
-> >>>        _pin: PhantomPinned
-> >>>    })
-> >>
-> >> Well yes and no, with the Devres changes, the `cookie` can just be the
-> >> address of the `RegistrationInner` & we can do it this way :)
-> >>
-> >> ---
-> >> Cheers,
-> >> Benno
-> >
-> >
-> > No, we need this to be the address of the the whole thing (i.e.
-> > Registration<T>), otherwise you can=E2=80=99t access the handler in the=
- irq
-> > callback.
+> On Tue, 24 Jun 2025 13:15:32 +0100
+> Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> Gotcha, so you keep the cookie field, but you should still be able to
-> use `try_pin_init` & the devres improvements to avoid the use of
-> `pin_init_from_closure`.
+> >> So would the function be defined like this?
+> >>
+> >> fn as_nanos(self) -> i64;
+> >>
+> >> If that's the case, then we've come full circle back to the original
+> >> problem; Clippy warns against using as_* names for trait methods that
+> >> take self as follows:
+> >>
+> >> warning: methods called `as_*` usually take `self` by reference or `se=
+lf` by mutable reference
+> >>    --> /home/fujita/git/linux-rust/rust/kernel/time/hrtimer.rs:430:17
+> >>     |
+> >> 430 |     fn as_nanos(self) -> i64;
+> >>     |                 ^^^^
+> >>     |
+> >>     =3D help: consider choosing a less ambiguous name
+> >>     =3D help: for further information visit https://rust-lang.github.i=
+o/rust-clippy/master/index.html#wrong_self_convention
+> >>     =3D note: `-W clippy::wrong-self-convention` implied by `-W clippy=
+::all`
+> >>     =3D help: to override `-W clippy::all` add `#[allow(clippy::wrong_=
+self_convention)]`
+> >>
+> >> https://lore.kernel.org/rust-for-linux/20250610132823.3457263-2-fujita=
+.tomonori@gmail.com/
+> >
+> > Are we missing a derive(Copy) for this type? Clippy does not emit that
+> > lint if the type is Copy:
+> > https://github.com/rust-lang/rust-clippy/issues/273
+>
+> I think that both Delta and Instant structs implement Copy.
+>
+> #[repr(transparent)]
+> #[derive(PartialEq, PartialOrd, Eq, Ord)]
+> pub struct Instant<C: ClockSource> {
+>     inner: bindings::ktime_t,
+>     _c: PhantomData<C>,
+> }
+>
+> impl<C: ClockSource> Clone for Instant<C> {
+>     fn clone(&self) -> Self {
+>         *self
+>     }
+> }
+>
+> impl<C: ClockSource> Copy for Instant<C> {}
+>
+> #[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
+> pub struct Delta {
+>     nanos: i64,
+> }
+>
+> The above warning is about the trait method.
 
-It sounds like this is getting too complicated and that
-`pin_init_from_closure` is the simpler way to go.
+Wait, it's a trait method!?
 
 Alice
