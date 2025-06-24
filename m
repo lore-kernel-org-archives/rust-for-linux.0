@@ -1,142 +1,186 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay5-3.pub.mailoutpod3-cph3.one.com (mailrelay5-3.pub.mailoutpod3-cph3.one.com [46.30.212.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DDC2D1926
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 12:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBFF1A01B9
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 12:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750767347; cv=none; b=lJwWWoLRLt+twcn0jeY4nqi22TJDpTOAfNB6GU+IPUOcOY2BbvNvDhrcoo/iaVwPcqcQkt/uN4NFnB2UFafCqdclDrpNyhx+KWQoHpMJFvk4yzIdxwcbneJGb8i7LtRDpKbqNtOVay3XKVr0zEF5nRd/Ojga+eNmnb101MEBo4g=
+	t=1750767385; cv=none; b=hVurKHFKfUyFNzL0NIkSNcQvZF8VTA/xwa+nqJ4me5Tt8ald5fHKlQgR9SgcxLiD6GRt9/TUV8ATsv17LlUQ4OoYOM9mlUrugm/JjJV1Wjv0B/myNl8xLAZePrKA6PQ249b0BdCCe23ojjybqeUeb2ALXXvjrCu7rAN+Wzmbtjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750767347; c=relaxed/simple;
-	bh=NRepsZpu5+Yf5TQ1kTE/0hFpwzxb35mUBOyr/OXyPDY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=izXkTjRTQW01mCg1lsUtgLWNIxPtO00b6I8v9ZIGfwcxNNTKamXR41Kk0hMdOmsylfqoR9Zh3sXj+2mYOPeMYW53MJjKKQOVZgM0khB3NLLATTKHYvY3qNXv5P5GelEfA+14IuQ/+hXQ7QghsFrimHUPwD6kkSRm7wdMSYA2Amc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wlFkp2s8; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750767385; c=relaxed/simple;
+	bh=zrvi77xSHk1MKReIAMpc6aIPXchnFwbbbWCkQnC3Bg8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=sK/r4+n+MfpOG7XFW2int6x1i2c7W9f0D4hj6KeicAGhxPsA+kauMrjENLa2dQXiOuoTJZVtpPthSngBDkWTYpjQYaDiD9q1MroZUPdVTAictayjYCG8pwQinMYIYC8RdRoGKelo/NqOQ2jOaxBNKXWvFOUGHFg45jPGVcavJ+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=O1Y3yI7y; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=bZ6Ahj+E; arc=none smtp.client-ip=46.30.212.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wlFkp2s8"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a588da60dfso3163281f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 05:15:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750767344; x=1751372144; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AgIQYI6cjVDVnnSrpu3BxZ3Yf7K/B5NVQRkTTMG6gb8=;
-        b=wlFkp2s8Dif1kaF3mZUXhOxHU2utMqP6OisRKuqWd5Kc/hoDTbeYVFhbzgEyubN2V0
-         xs3zkUgFaktP3b4s4Sa0laDuM9QNSN3RykHJLu9bfLPtK2LUdJ6E3hpsT3mfAzRfu/YE
-         dUwDK+xEXENqMrSFwJef7dcTm6JRiZF9lkqY5QopQse/C44D4/mMaDaBINL33Z4ZIhrJ
-         cISoL/atudU/XBrc1lBmQh/bij4lUGeoxMSs242uEzEzt4BCDrlRxsRd0lFLAW4eaTWb
-         ivAHQNio0LEL/rSi5DIuyBO3Ev1xd4ETxWflKGKUz/ghVlbOAgwC4xfJczZuFLoxSz/d
-         t00g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750767344; x=1751372144;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AgIQYI6cjVDVnnSrpu3BxZ3Yf7K/B5NVQRkTTMG6gb8=;
-        b=YzM/Xr94lc+5ansbFcJ/aK2OVsLX/jI6ORjFiXWIZJrmOynGPFiqlzEJxRYmehpUg9
-         3leVeh5bsxZTG9OdiUR+JcOQP3s31mRScBq+Le5D+Kojlx1J3ZrM5FL0fVpOViPI/a17
-         aT9yN34kkte30YKb1p8DAU18IdmowLGST5kvvvpuIohHZgfp6lAlGirHAn4LG6mdvdyK
-         2So1Urg2v4gsDDPOw/7A9xxvLOlUjhl7uoBqsPD2FAvDXqCp4Ng+pzg1n/2pX3zSi8Zi
-         wWxkfu5HVaml7wH8MRGTPoi3rXm779CO0dfzHGmBVyQ45ZnsVcNOG7dLKwfNw4vwoEnw
-         5uGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVWXjdErTzkopOM6CNz+AY2jeC/rIB0zPBUryydDwHgf7vSYOaqXfMOdqhAOj3ToDKKK+cdSP/HaTSiuvhUXQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxStQrm10QzWUIwRgusSi2v/NcBKI/aJU+0gWN9Ti3HDZpVMHpM
-	zYbwXEljuhTV37qmxp+7Bjr1pYqQEXzATjhrfT/RJJWTJGh/7JeY/U1nX/1mAj4fQAW68GpnrSo
-	XmiG0KNrDcwOXgc2mA7LnUGjGH96mcBkEQA/ww/6j
-X-Gm-Gg: ASbGncvdtv5DiLvXD7YHEWR55XNg4136bU8ODM1LtjpuuGDUKaD91gWK5myn3ejp0YP
-	L0JDm99/E3yY7UBYm93ElIkdgjaotchY4eHMfibeSwK/NqLjFR2Z73/j0hcO6o8/2qqGcRtX8ao
-	CiNl70fSw5ggi3+lzFUJCwtnsYQYOd8gDz1lRjsK5LkiOaeSHpymy1xAsaoAU4GBo4JrimG83t
-X-Google-Smtp-Source: AGHT+IEBJbwFowoZZTD/1y0aHQeGzln/iSEJbdEQX4Q0YwPXUEFQyxTs/Zyn7A4yU7Z9p7xT6DWMb6EljFgZU32Y1LE=
-X-Received: by 2002:a05:6000:178f:b0:3a3:7987:945f with SMTP id
- ffacd0b85a97d-3a6d12eb327mr13259630f8f.57.1750767343931; Tue, 24 Jun 2025
- 05:15:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="O1Y3yI7y";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="bZ6Ahj+E"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750767312; x=1751372112;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=M1Kg+66kgHeJqX/QTGsvuXZbak7RCmywd80sh5ukf3U=;
+	b=O1Y3yI7yDGtiM9CJBlbGz+wXBfbYrUpUbsnMBZ/MQBv16Gl7XVKButbAve9mGYAp3S8jgAdDUgGn6
+	 IkOTDz5oDWzMCszy22AG/G4qECmO7V0pU8ocjI+WlCSiwgL9xHypEuZTGWN3vQRXcTdvgfLZjBeo7E
+	 70jjzTwYge3Wh9WF8uGmu01fWKRi80HuxrL5D6hWzJxlEQsAsM5Y0yBLz4/mz87EslFz/ji+v5JNCZ
+	 H7pbrka4q9qZ4PvSAQTLz/KPJJsBJz21qRAlpOUxfXRTNW5BrFF40J8G/QPy2dYyR/XMHt7LE7Ak2x
+	 xUmf56OJ2hJLKHP8fVeWEjRn05oIy4w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750767312; x=1751372112;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=M1Kg+66kgHeJqX/QTGsvuXZbak7RCmywd80sh5ukf3U=;
+	b=bZ6Ahj+ExbkkRKMS4MKnICYB62Nu0dxU9dEaCvG8p/lb+BVUOP+EBn9ZfKDKz+TULZ0c2AzmSzsu7
+	 MmvVSCSCQ==
+X-HalOne-ID: df90b046-50f4-11f0-af95-d7c209f8bd06
+Received: from smtpclient.apple (host-90-233-201-126.mobileonline.telia.com [90.233.201.126])
+	by mailrelay5.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id df90b046-50f4-11f0-af95-d7c209f8bd06;
+	Tue, 24 Jun 2025 12:15:12 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CANiq72kSfHTPeRQjhHKhdw8zuozvNy50CJjTuEbUnW_3j9x8tw@mail.gmail.com>
- <CAH5fLgggDKUwmU3oCTMS1dQGzA5Whp2fnXoLmbGmNF1W89Ar_A@mail.gmail.com>
- <CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com> <20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
-In-Reply-To: <20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 24 Jun 2025 13:15:32 +0100
-X-Gm-Features: Ac12FXws5btU2oFkkv4uKO_j5CDSLeTEtnWC3N63vZCngd_EBMYAq0yhHAs7Zv0
-Message-ID: <CAH5fLgjJRbjPnN58RuaBtNrY1A-tif3ohETLxdbaE4b46Hjbqg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods as_micros_ceil
- and as_millis
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: miguel.ojeda.sandonis@gmail.com, a.hindborg@kernel.org, 
-	alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH] mm/vmalloc: allow to set node and align in vrealloc
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <aFqT1mK7SYsYd3DZ@pc636>
+Date: Tue, 24 Jun 2025 14:15:01 +0200
+Cc: linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <D562EE6A-DE99-4C97-8934-D60682DDE711@konsulko.se>
+References: <20250624095121.3243540-1-vitaly.wool@konsulko.se>
+ <aFqT1mK7SYsYd3DZ@pc636>
+To: Uladzislau Rezki <urezki@gmail.com>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-On Thu, Jun 19, 2025 at 8:08=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Wed, 18 Jun 2025 17:47:27 +0200
-> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
->
-> > On Wed, Jun 18, 2025 at 3:17=E2=80=AFPM Alice Ryhl <aliceryhl@google.co=
-m> wrote:
-> >>
-> >> There are also methods such as Duration::as_millis(). Yes, those take
-> >> &self but &self is equivalent to self for Copy types, so there is no
-> >> difference. And even if we did treat them differently,
-> >> Duration::as_millis() is actually borrowed->owned as the return type
-> >> is not a reference, so ...
-> >
-> > In most cases it may not matter, but even if taking either was exactly
-> > the same, the point of the discussion(s) was what is more idiomatic,
-> > i.e. how to spell those signatures.
-> >
-> > I understand you are saying that `Duration::as_millis()` is already a
-> > stable example from the standard library of something that is not
-> > borrowed -> borrowed, and thus the guidelines should be understood as
-> > implying it is fine either way. It is still confusing, as shown by
-> > these repeated discussions, and on the parameter's side of things,
-> > they still seem to prefer `&self`, including in the equivalent methods
-> > of this patch.
-> >
-> > Personally, I would use `self`, and clarify the guidelines.
->
-> So would the function be defined like this?
->
-> fn as_nanos(self) -> i64;
->
-> If that's the case, then we've come full circle back to the original
-> problem; Clippy warns against using as_* names for trait methods that
-> take self as follows:
->
-> warning: methods called `as_*` usually take `self` by reference or `self`=
- by mutable reference
->    --> /home/fujita/git/linux-rust/rust/kernel/time/hrtimer.rs:430:17
->     |
-> 430 |     fn as_nanos(self) -> i64;
->     |                 ^^^^
->     |
->     =3D help: consider choosing a less ambiguous name
->     =3D help: for further information visit https://rust-lang.github.io/r=
-ust-clippy/master/index.html#wrong_self_convention
->     =3D note: `-W clippy::wrong-self-convention` implied by `-W clippy::a=
-ll`
->     =3D help: to override `-W clippy::all` add `#[allow(clippy::wrong_sel=
-f_convention)]`
->
-> https://lore.kernel.org/rust-for-linux/20250610132823.3457263-2-fujita.to=
-monori@gmail.com/
 
-Are we missing a derive(Copy) for this type? Clippy does not emit that
-lint if the type is Copy:
-https://github.com/rust-lang/rust-clippy/issues/273
 
-Alice
+> On Jun 24, 2025, at 2:02=E2=80=AFPM, Uladzislau Rezki =
+<urezki@gmail.com> wrote:
+>=20
+> On Tue, Jun 24, 2025 at 11:51:21AM +0200, Vitaly Wool wrote:
+>> Reimplement vrealloc() to be able to set node and alignment should
+>> a user need to do so. Rename the function to vrealloc_node() to
+>> better match what it actually does now and introduce a macro for
+>> vrealloc() for backward compatibility.
+>>=20
+>> With that change we also provide the ability for the Rust part of
+>> the kernel to set node and aligmnent in its allocations.
+>>=20
+>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+>> ---
+>> include/linux/vmalloc.h |  8 +++++---
+>> mm/vmalloc.c            | 16 +++++++++++++---
+>> 2 files changed, 18 insertions(+), 6 deletions(-)
+>>=20
+>> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+>> index fdc9aeb74a44..7d5251287687 100644
+>> --- a/include/linux/vmalloc.h
+>> +++ b/include/linux/vmalloc.h
+>> @@ -197,9 +197,11 @@ extern void *__vcalloc_noprof(size_t n, size_t =
+size, gfp_t flags) __alloc_size(1
+>> extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, =
+2);
+>> #define vcalloc(...) alloc_hooks(vcalloc_noprof(__VA_ARGS__))
+>>=20
+>> -void * __must_check vrealloc_noprof(const void *p, size_t size, =
+gfp_t flags)
+>> - __realloc_size(2);
+>> -#define vrealloc(...) alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+>> +void *__must_check vrealloc_node_noprof(const void *p, size_t size,
+>> + unsigned long align, gfp_t flags, int nid) __realloc_size(2);
+>> +#define vrealloc_noprof(p, s, f) vrealloc_node_noprof(p, s, 1, f, =
+NUMA_NO_NODE)
+>> +#define vrealloc_node(...) =
+alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
+>> +#define vrealloc(...) alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+>>=20
+>> extern void vfree(const void *addr);
+>> extern void vfree_atomic(const void *addr);
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index ab986dd09b6a..117894301db1 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -4081,10 +4081,12 @@ void *vzalloc_node_noprof(unsigned long size, =
+int node)
+>> EXPORT_SYMBOL(vzalloc_node_noprof);
+>>=20
+>> /**
+>> - * vrealloc - reallocate virtually contiguous memory; contents =
+remain unchanged
+>> + * vrealloc_node - reallocate virtually contiguous memory; contents =
+remain unchanged
+>>  * @p: object to reallocate memory for
+>>  * @size: the size to reallocate
+>> + * @align: requested alignment
+>>  * @flags: the flags for the page level allocator
+>> + * @nid: node id
+>>  *
+>>  * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If =
+@size is 0 and
+>>  * @p is not a %NULL pointer, the object pointed to is freed.
+>> @@ -4103,7 +4105,7 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+>>  * Return: pointer to the allocated memory; %NULL if @size is zero or =
+in case of
+>>  *         failure
+>>  */
+>> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>> +void *vrealloc_node_noprof(const void *p, size_t size, unsigned long =
+align, gfp_t flags, int nid)
+>> {
+>> struct vm_struct *vm =3D NULL;
+>> size_t alloced_size =3D 0;
+>> @@ -4127,6 +4129,13 @@ void *vrealloc_noprof(const void *p, size_t =
+size, gfp_t flags)
+>> if (WARN(alloced_size < old_size,
+>> "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
+>> return NULL;
+>> + if (WARN(nid !=3D NUMA_NO_NODE && nid !=3D =
+page_to_nid(vmalloc_to_page(p)),
+>> + "vrealloc() has mismatched nids\n"))
+>> + return NULL;
+>> + if (WARN((uintptr_t)p & (align - 1),
+>> + "will not reallocate with a bigger alignment (0x%lx)\n",
+>> + align))
+>> + return NULL;
+>> }
+>>=20
+>> /*
+>> @@ -4158,7 +4167,8 @@ void *vrealloc_noprof(const void *p, size_t =
+size, gfp_t flags)
+>> }
+>>=20
+>> /* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
+>> - n =3D __vmalloc_noprof(size, flags);
+>> + n =3D __vmalloc_node_noprof(size, align, flags, nid, =
+__builtin_return_address(0));
+>> +
+>> if (!n)
+>> return NULL;
+>>=20
+>> --=20
+>> 2.39.2
+>>=20
+> Do we have users which require alignment and nid? I see that it is =
+part
+> of kvrealloc() API only.
+>=20
+
+There=E2=80=99s a patch pending inclusion of this one which will be the =
+user of this change. I was reluctant
+to combine these 2 in one series because the second one is on the Rust =
+side, but it can be found
+here: https://github.com/vwool/linux-mm/pull/new/realloc-extend.
+
+~Vitaly=
