@@ -1,96 +1,69 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C862E2288EE;
-	Tue, 24 Jun 2025 11:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6084221F17
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 11:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750763312; cv=none; b=hWlvDf39SxojfCo4WTQTZm2fOEDAybuQUKewFfkQdpL++n5Rhd66CZc30NSYJsXKwyNUyUEwvQd1BKuxYjvXgfZs+TDzIDE0Gp3U4XT4V8ad+Ewdfn3jYYuA97/khEeeBVIIWWC4/d/wHl2bt0g43yZqn5D1EUl58k6XduleqJ0=
+	t=1750763370; cv=none; b=kEqb5sMBegQfXSoWd5/aFuo50VMhlO+BcJ5QH35oEzcR7HMBuVEI5lN9eXyHaAJf2vuLdj6p7fY6i5yQOP2NakLs2H8doSIKwGFBR5a+4fxRw4gISNIcb9Wp9attk9ZafvigPXk+9lBeeA+axypGhqr8fph/Z6lG8eBynD7vJoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750763312; c=relaxed/simple;
-	bh=DNg1JCVsgEHf23k4WG2oExPiJlj+bBuyEUK7sYa8r7U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kYzOMRgPh6/GHSsy0N0T5zHCiVaWBbICp27xcnGT73YvMCR/atM1Dz1Vw3Q5o8r43Yw3U1PZ3EGATCmfd5GOP6LUYe7xVzFYzlllrieRd5zIQsXi+cP5AQDx/Lp/edrIzmHEzXH/emYuoznYx1cnuG4A0jKUOP9PUUirtDYtKbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IiYfk0Mw; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IiYfk0Mw"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-234ae2bf851so7339245ad.1;
-        Tue, 24 Jun 2025 04:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750763310; x=1751368110; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u4AdC7xJ04CgkqAaAO3h+p8gGTP59K3A/YKahZ0U2Us=;
-        b=IiYfk0MwfkA110jQI6dgSM2N/sLhKUKfapDpomoAKFfN293MtF1CY5zi95RsJZ7mR1
-         JFE8lGfj3YM78UqTLM4QIIzwlMu+o8PTK0bapz04oK5GFktPcbb3vJ6WS1prCd/l9S/E
-         +1GUkdzGMj9/ptxkWZiJc6DPbX4zuNrvZX9IMukmp4Wb3j5A0HtPcf6w+k8CHnobQve7
-         bsHkg0aF9zbiCgU11PhW9eY3Ef7fLOwp1PvrhnifPKtAMUBSYspZo0NR0kc/tQeYTGaM
-         VNzCnM1t9TYtUZp+drYESB0ESFS+vP3ssH0sTPqp+ZPTVfDIBKWOpaxaOw6UcsGLor9b
-         lJbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750763310; x=1751368110;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u4AdC7xJ04CgkqAaAO3h+p8gGTP59K3A/YKahZ0U2Us=;
-        b=M58QtE+z7g0xYPeea2hkbeWWFCM3sQTPtL6L+GpDS6WFnf7Rp3AA5mDtRSpd0i3WiY
-         s2iYSIKAYeWwuHBq1olWv9rGav7XUSys3kAgO2+SNhdNd4cCDn3L24hJ+87DQbeNTTm3
-         17wN6KA04DPvirQMZXX0mp/pwdJSmhWYorJoc7NCnpKmQ9w8CoE29MT4Fpov8uIYUpB3
-         Xc0BQMEHnGscL7opYvRH+3t6uilsIVdTkRmMpRcBYxfCraitFtv56ovNPikfJqzKUYm2
-         whvUIBuegHP5IkZ/Oa4LA15GgdynPY4wLa8ZOw2By0C6SI7A7z8fom7TDkzKWT+Um4Lj
-         D2rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvcL+/oTeJ8Us0JdssmVuBAhHj+zl8SwutNrX2pkA7ENTQGUX5S8OEjTj27IFKZShMuY6E4h2UZRrdxr8=@vger.kernel.org, AJvYcCXqEdKuN+HOP7UeZWdLSgppjBuepeV8deq9wF5qn9fRLj6W4wioH7q23Arz+dg8/AwVn2/SXGXkTsTrIB+g2jw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjI5HtpWngWvBULFy6cjWAw0/zOZTy5gw7fGg+JV1TYJnciu/g
-	/VeOaqsQpS+HirAm780FBDfoOIvJeFwTjywgPceHbJb6Z+PADY0wWGOT8V+/0acEw9ogBTa/yJC
-	ckPXOKSN4Rn370M7rnfksn3xIXAOIlH0Hr1xRCuc=
-X-Gm-Gg: ASbGncvFyrlEW1nnfCPFTRfJibK3kdseM5+dN2hZ85BIIZkFrySA+GtZZkZlB3PM9TI
-	J/jkRDXqEuFRgY4ovn1minrhsqQiMQl9Z1XsKuGNbDvaGZbIyPzzS9z4OOQdEuc1bu9Tk5eRzFF
-	gxQ8XChgLM8bRFaayPMbykTMlSkII/+Vf0IFCoP3+H6WM=
-X-Google-Smtp-Source: AGHT+IHnFuakCpfPBkjJNvFKFCJKt0vC/f+jLh/CjjCBWyYIGLi8aAa/I/GMHz7wT/6gQgfix8FO3sp0tGSeV4FtsYQ=
-X-Received: by 2002:a17:903:2450:b0:234:f200:5194 with SMTP id
- d9443c01a7336-237d980d929mr102574535ad.1.1750763310017; Tue, 24 Jun 2025
- 04:08:30 -0700 (PDT)
+	s=arc-20240116; t=1750763370; c=relaxed/simple;
+	bh=CTPhbo8se9svw/pHkT1sCo49DQwCyHA3m8bcbxjlYQ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z84DdOvdExuqI6eh3fK8TNusbu1c5xIK1PjaGilWLZQwnigpGAkWN48o1DiJhfbTnrHnx+y5aVFcLYurXM+qSXN4Nmpdo7bjHokcvb0rj7HgFjz7fY+FUkXKPm4069uykKGOdr8mwtxS6Gs2AGxRGejX2/5BImL4uKsxhJO4IPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4BF4106F;
+	Tue, 24 Jun 2025 04:09:08 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3CD23F66E;
+	Tue, 24 Jun 2025 04:09:21 -0700 (PDT)
+Date: Tue, 24 Jun 2025 13:09:12 +0200
+From: Beata Michalska <beata.michalska@arm.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
+	daniel.almeida@collabora.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, alyssa@rosenzweig.io,
+	lyude@redhat.com, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v2 2/2] drm: nova-drm: Update ioctl handlers to drop
+ Opaque usage
+Message-ID: <aFqHWOl0XcDdOrlN@arm.com>
+References: <20250624093200.812812-1-beata.michalska@arm.com>
+ <20250624093200.812812-3-beata.michalska@arm.com>
+ <0ba4c988-194a-46f6-8e5d-b8fbc95a3eb8@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610132823.3457263-1-fujita.tomonori@gmail.com> <175015666837.277659.5038961663728008472.b4-ty@kernel.org>
-In-Reply-To: <175015666837.277659.5038961663728008472.b4-ty@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 24 Jun 2025 13:08:17 +0200
-X-Gm-Features: Ac12FXw9NRLPGpki39ay2NhQnfu75XaImkNq6s2i4SyS7A6IERIj-PvCYxubfCk
-Message-ID: <CANiq72=mDe2kB4yQnzb=kwopyUYG936pOoj80YpWk7+q6aJwbQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and Delta
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: alex.gaynor@gmail.com, ojeda@kernel.org, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, aliceryhl@google.com, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ba4c988-194a-46f6-8e5d-b8fbc95a3eb8@kernel.org>
 
-On Tue, Jun 17, 2025 at 12:39=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
+On Tue, Jun 24, 2025 at 11:59:25AM +0200, Danilo Krummrich wrote:
+> On 6/24/25 11:32 AM, Beata Michalska wrote:
+> > From: Danilo Krummrich <dakr@kernel.org>
+> > 
+> > Following the removal of `Opaque<T>` for ioctl arguments in the DRM
+> > framework, this patch updates the affected driver code to use typed
+> > references directly.
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+> 
+> It's very kind you want to attribute the shared diff with a separate patch, but
+> you have to include this change into patch 1 ("rust: drm: Drop the use of Opaque
+> for ioctl arguments"), otherwise it still breaks the build intermediately.
 >
-> [1/5] rust: time: Rename Delta's methods from as_* to into_*
->       commit: 2ed94606a0fea693e250e5b8fda11ff8fc240d37
+It is not so uncommon to send such changes in separate patches, to clearly
+distinguish the changes, as long as whole series preserves the build.
+That said, I can still send those as a single patch if that is the requirement.
 
-Do we want this given the (~ongoing) discussion at
-
-    https://lore.kernel.org/rust-for-linux/20250617144155.3903431-2-fujita.=
-tomonori@gmail.com/
-
-?
-
-I noticed due to a conflict in linux-next today.
-
-Cheers,
-Miguel
+---
+BR
+Beata
+> Please feel free to just include the change in your patch -- no need for any
+> attribution as far as I'm concerned. :)
