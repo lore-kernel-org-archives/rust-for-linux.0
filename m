@@ -1,195 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E871F4C87
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 13:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493E6291C02;
+	Tue, 24 Jun 2025 13:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750771425; cv=none; b=ih6y28U3vsp4tF6QY4BuapWJm27MpSOOEZdOmDn3iLsUF5GWyZCRQVfMdPHxwfT+Nnp7C3fHVuIGW1rl+qJFIIfYTSNfKm5RdcNvlRH3marlxrosY42Z2IaVXXZteLbGHK0XyhFfptLFvmXrfspYz0BimCgG/mTkQZMqIep+pO0=
+	t=1750772505; cv=none; b=TnhLfdGi5PKXULPE0X2prDz5B3Wl2JkhbvaP67Sc61SpotbH6w5geBz4P1/5dIPqQoCzoQWmBLE3tsdyvQoqXvbQEhXGzvcbEluFZxwx6UjRqL/dbSuB8E715OYmAWKuOu7exUS9muiCG3Rxu2hBnV2L6HdSKTOZYkiu6PG7MZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750771425; c=relaxed/simple;
-	bh=ZVZeCz4080DuWECCuNctinG1lnDgPZZ/aLY+BEgOEdk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COwqrAdmKFunJO3xy9QdWsDl+1KCCVJYQ+AA3osHQz7A6S/cSBHC66WpvuqOCmlN85hRgu0F5baay9/fYIjytxsi6sPBkyV5ph0QO2mGQ09/ZzBvV/Noz5+OALlf/xhZezLzGTw2T6Su2/HPmUVy3OWHT3qsHBnyJ3IPkFus3U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmf4RyL+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750772505; c=relaxed/simple;
+	bh=ilr8QyCfE8ZkgcKvzvG9t+yXqup+CVbZnX7tdrDKiUU=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=oUpPRFaof8fTKoS++TiJvEELt9ohouuglEwi+x9QZRHsG84JIFDzJgVdD17ZaIusQAn20RDTIzd9b97Yr8rfLCffA1yrblEI8Xq3aVFqRLfsEnXfd/T/gGixJfqwpqqIYMszj4RZq+rvuEw0TcP3u6ni0k0eKYjf3YXwMwwpuFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=anqu1VRR; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmf4RyL+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3F9C4CEF1;
-	Tue, 24 Jun 2025 13:23:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750771423;
-	bh=ZVZeCz4080DuWECCuNctinG1lnDgPZZ/aLY+BEgOEdk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmf4RyL+KGvSwmMtbJUU7LLL96BXOQThddSvDyhOBNjokAc6Sr1RBuZInnrJcnK+I
-	 F3zSSAjsIM97MYCvkQsk8aCHR58q1Rf99pYzr/Ns/hD/on8w849g66BiJFrRotvimL
-	 P8IpFahfMfC+RSXSd4xbIHoR/HI7SoDTF+6hPbHEzrRKxhGZw+05KWooljgn/X118B
-	 IBErOuGK0ULd9DwhXhOtgbjN7MRkAwZxeEX36NN4XG9eoNgeTg1BtAeN3jgYBtuHXI
-	 3X8exuN8iQ5FmMOysZtHZlg+Fk1Yf1TQmZJEyMWT7ps/NfuDWhqKK2v9atYykXp7Jf
-	 qSYddzVnT1o7Q==
-From: Danilo Krummrich <dakr@kernel.org>
-To: nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 2/2] gpu: nova-core: consider `clippy::cast_lossless`
-Date: Tue, 24 Jun 2025 15:23:23 +0200
-Message-ID: <20250624132337.2242-2-dakr@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250624132337.2242-1-dakr@kernel.org>
-References: <20250624132337.2242-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="anqu1VRR"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3122368d7cfso356031a91.1;
+        Tue, 24 Jun 2025 06:41:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750772503; x=1751377303; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VLtIMvBntPZebemDraNox5q771O0b4RJzZvZqb2Y8Nc=;
+        b=anqu1VRRGPoJ0YoRfOyZ/1Frig21WaaCoCS+aXGw0eWntu7OVYTtLvxlXPRssvRy2M
+         wRaNgwyt1YPuo+hNa4hAFGQtsYw0W4j90Ah+CD6iVMPa5JJ8t3MqjlF4g6pP1gnPEf4c
+         17vakgT6l0k20k0qRD2TSBQEGDfKXR0igtUrzXwqwUMRr0E1/CKyAKjl6CFTdd85BOyJ
+         p/MovHCaSSFovJt4jSepp4BOb2Hufd0DOP0S924o5rva1ev+wX5HLFMIvfAGREy2DF+f
+         YYfmFJhNuDYeoF1d5qb8/G9KsKQPachYZgzc39nszXy1ITemtB3pUqjiBR3plpQmbIfn
+         PgEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750772503; x=1751377303;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VLtIMvBntPZebemDraNox5q771O0b4RJzZvZqb2Y8Nc=;
+        b=IQjz9/j57sKgAjuHh3DCFZ31DOnaoab+UfKQ+lvXeLDPZU14OD4LdWwHnCAFMaTVAH
+         xGFUo/wrsxibrr81ydOeQy3PQW7rWvxEBiNZN/GkmnXnSkKz6n8AewNuu4OFB/HZgmLg
+         86w+1BuBES0Ao3i+pDKd4NSDRBxtBzAPvo50AZsmCChtw6SOtlCF6hMP0EtyLAzMRXTD
+         xNhQ3FVSkceQQ1MMB+l8PVbHF+wJTDawuzO2sJiJGXSul+3Nwyd64Emw2D/z5GRVXeys
+         g3qr125OqGWJd/i2TilbYb+saIMVidt0XbfagHbkaNcENlBkvdNXZLMvNbFCZ2NIAgf3
+         xb0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUorZSZjgsS1cJFwJmL0XqxOhi08x5X2WhVCayXX3+ls5g/9hl0e3LqhzJplkIACB/Dgz0+PLgD/bfqFvNT6AY=@vger.kernel.org, AJvYcCXJKTMvERbOHRW/OBlIpUycL1elqFvPmFWS3s6+sXSWdkLF7HdWSZG21kObDaaCW2imOzEAiREnwl/LqKI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmsQqSdvx/ba5+4TocznN0yBPhSZk2AEPQs+XSZMCxmlioTeO/
+	SUnN6E3rKZttvReT6buRHZiEI6raFix1YnCyepikVcZKfZ5yYE91ofOt
+X-Gm-Gg: ASbGncvb5F7bNKpICbsK6FIbjQ/xK2DlY/6tm3DDVx19FeSqJF84RmNa7O4O52pUG31
+	InpEeaIJTnM6NNajZGq/EDlh3fWUkFhO2LSqtXuVhy3cnkXbNvBNsDV2lVNoPSb8SmE3p57AdNe
+	hPSAQ55xcSgRpIA01dX/pq/eDDXgg1ZPrXTYCuffpj7YeQx5+Vk18f/ZSjsJ2SFjyeIFmu77UBj
+	sbyPFRa+xGV9JaJ/3EnyvBvTr6+PXgGf4yXO6HaXBpwvRHQzm6RXgU4Svy9LcF4NOGnqgCcunzM
+	dE9eB+jBFuBxvoBI38YYRU6hEbZ0IowPoMzlTGTtyuDMUAKqkf7FW/hpxKjGpGjdZz4KK8O73yD
+	dkPGBpkSy8paf8wAPOviaHW9WCJpOatl7Qw4Wadma
+X-Google-Smtp-Source: AGHT+IHA4wQdkY9pu5NPgDKAEx4KBIQ9Py8m30aGH51cuZUBSEKdOHrMkZ51fRAHcH8uyzh+aCZBiA==
+X-Received: by 2002:a17:90b:2e87:b0:315:6f2b:ce53 with SMTP id 98e67ed59e1d1-3159d8df90bmr23541039a91.25.1750772503448;
+        Tue, 24 Jun 2025 06:41:43 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3158a2f0b05sm14566237a91.32.2025.06.24.06.41.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Jun 2025 06:41:43 -0700 (PDT)
+Date: Tue, 24 Jun 2025 22:41:30 +0900 (JST)
+Message-Id: <20250624.224130.2089845741064711087.fujita.tomonori@gmail.com>
+To: a.hindborg@kernel.org
+Cc: miguel.ojeda.sandonis@gmail.com, alex.gaynor@gmail.com,
+ ojeda@kernel.org, fujita.tomonori@gmail.com, aliceryhl@google.com,
+ anna-maria@linutronix.de, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
+ dakr@kernel.org, frederic@kernel.org, gary@garyguo.net,
+ jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org,
+ lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org,
+ tglx@linutronix.de, tmgross@umich.edu
+Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
+ Delta
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <87wm912sjg.fsf@kernel.org>
+References: <_dhT441zoMZanviBlUpcvPZEw7TiwB4v28ONPXSwi7WvEaMg_YJSmi5vRlLVaaUOujF7NOspxR0NYFLOHXud_g==@protonmail.internalid>
+	<CANiq72nwaxszEbn6O3xZi6H9P+U=5N0ugK1n9qBRteQwKXQSaw@mail.gmail.com>
+	<87wm912sjg.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Fix all warnings caused by `clippy::cast_lossless`, which is going to be
-enabled by [1].
+On Tue, 24 Jun 2025 15:11:31 +0200
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-Cc: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/r/20250615-ptr-as-ptr-v12-5-f43b024581e8@gmail.com [1]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- drivers/gpu/nova-core/falcon.rs           | 2 +-
- drivers/gpu/nova-core/falcon/hal/ga102.rs | 2 +-
- drivers/gpu/nova-core/fb/hal/ga100.rs     | 4 ++--
- drivers/gpu/nova-core/fb/hal/tu102.rs     | 2 +-
- drivers/gpu/nova-core/firmware/fwsec.rs   | 2 +-
- drivers/gpu/nova-core/regs.rs             | 8 ++++----
- drivers/gpu/nova-core/vbios.rs            | 8 ++++----
- 7 files changed, 14 insertions(+), 14 deletions(-)
+>> and already introduces pain for
+>> others (and likely even more pain when we need to rename it back next
+>> cycle), it doesn't look like a good idea to keep it.
+> 
+> Ok, I'll drop it.
 
-diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
-index 1affffb109ec..1d21ea129890 100644
---- a/drivers/gpu/nova-core/falcon.rs
-+++ b/drivers/gpu/nova-core/falcon.rs
-@@ -427,7 +427,7 @@ fn dma_wr<F: FalconFirmware<Target = E>>(
-                 fw.dma_handle_with_offset(load_offsets.src_start as usize)?,
-             ),
-         };
--        if dma_start % DMA_LEN as bindings::dma_addr_t > 0 {
-+        if dma_start % bindings::dma_addr_t::from(DMA_LEN) > 0 {
-             dev_err!(
-                 self.dev,
-                 "DMA transfer start addresses must be a multiple of {}",
-diff --git a/drivers/gpu/nova-core/falcon/hal/ga102.rs b/drivers/gpu/nova-core/falcon/hal/ga102.rs
-index 664327f75cf4..0344cd33e6ea 100644
---- a/drivers/gpu/nova-core/falcon/hal/ga102.rs
-+++ b/drivers/gpu/nova-core/falcon/hal/ga102.rs
-@@ -78,7 +78,7 @@ fn program_brom_ga102<E: FalconEngine>(bar: &Bar0, params: &FalconBromParams) ->
-         .set_value(params.pkc_data_offset)
-         .write(bar, E::BASE);
-     regs::NV_PFALCON2_FALCON_BROM_ENGIDMASK::default()
--        .set_value(params.engine_id_mask as u32)
-+        .set_value(u32::from(params.engine_id_mask))
-         .write(bar, E::BASE);
-     regs::NV_PFALCON2_FALCON_BROM_CURR_UCODE_ID::default()
-         .set_ucode_id(params.ucode_id)
-diff --git a/drivers/gpu/nova-core/fb/hal/ga100.rs b/drivers/gpu/nova-core/fb/hal/ga100.rs
-index 4827721c9860..871c42bf033a 100644
---- a/drivers/gpu/nova-core/fb/hal/ga100.rs
-+++ b/drivers/gpu/nova-core/fb/hal/ga100.rs
-@@ -11,8 +11,8 @@
- use super::tu102::FLUSH_SYSMEM_ADDR_SHIFT;
- 
- pub(super) fn read_sysmem_flush_page_ga100(bar: &Bar0) -> u64 {
--    (regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08() as u64) << FLUSH_SYSMEM_ADDR_SHIFT
--        | (regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::read(bar).adr_63_40() as u64)
-+    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
-+        | u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR_HI::read(bar).adr_63_40())
-             << FLUSH_SYSMEM_ADDR_SHIFT_HI
- }
- 
-diff --git a/drivers/gpu/nova-core/fb/hal/tu102.rs b/drivers/gpu/nova-core/fb/hal/tu102.rs
-index 6f8ae58e9481..b022c781caf4 100644
---- a/drivers/gpu/nova-core/fb/hal/tu102.rs
-+++ b/drivers/gpu/nova-core/fb/hal/tu102.rs
-@@ -10,7 +10,7 @@
- pub(super) const FLUSH_SYSMEM_ADDR_SHIFT: u32 = 8;
- 
- pub(super) fn read_sysmem_flush_page_gm107(bar: &Bar0) -> u64 {
--    (regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08() as u64) << FLUSH_SYSMEM_ADDR_SHIFT
-+    u64::from(regs::NV_PFB_NISO_FLUSH_SYSMEM_ADDR::read(bar).adr_39_08()) << FLUSH_SYSMEM_ADDR_SHIFT
- }
- 
- pub(super) fn write_sysmem_flush_page_gm107(bar: &Bar0, addr: u64) -> Result {
-diff --git a/drivers/gpu/nova-core/firmware/fwsec.rs b/drivers/gpu/nova-core/firmware/fwsec.rs
-index 047aab76470e..0dff3cfa90af 100644
---- a/drivers/gpu/nova-core/firmware/fwsec.rs
-+++ b/drivers/gpu/nova-core/firmware/fwsec.rs
-@@ -346,7 +346,7 @@ pub(crate) fn new(
-         let desc = bios.fwsec_image().header(dev)?;
-         let ucode_signed = if desc.signature_count != 0 {
-             let sig_base_img = (desc.imem_load_size + desc.pkc_data_offset) as usize;
--            let desc_sig_versions = desc.signature_versions as u32;
-+            let desc_sig_versions = u32::from(desc.signature_versions);
-             let reg_fuse_version =
-                 falcon.signature_reg_fuse_version(bar, desc.engine_id_mask, desc.ucode_id)?;
-             dev_dbg!(
-diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
-index 707f87d6828d..e8b8aabce3f3 100644
---- a/drivers/gpu/nova-core/regs.rs
-+++ b/drivers/gpu/nova-core/regs.rs
-@@ -68,7 +68,7 @@ pub(crate) fn chipset(self) -> Result<Chipset> {
- impl NV_PFB_PRI_MMU_LOCAL_MEMORY_RANGE {
-     /// Returns the usable framebuffer size, in bytes.
-     pub(crate) fn usable_fb_size(self) -> u64 {
--        let size = ((self.lower_mag() as u64) << (self.lower_scale() as u64))
-+        let size = (u64::from(self.lower_mag()) << u64::from(self.lower_scale()))
-             * kernel::sizes::SZ_1M as u64;
- 
-         if self.ecc_mode_enabled() {
-@@ -87,7 +87,7 @@ pub(crate) fn usable_fb_size(self) -> u64 {
- impl NV_PFB_PRI_MMU_WPR2_ADDR_LO {
-     /// Returns the lower (inclusive) bound of the WPR2 region.
-     pub(crate) fn lower_bound(self) -> u64 {
--        (self.lo_val() as u64) << 12
-+        u64::from(self.lo_val()) << 12
-     }
- }
- 
-@@ -100,7 +100,7 @@ impl NV_PFB_PRI_MMU_WPR2_ADDR_HI {
-     ///
-     /// A value of zero means the WPR2 region is not set.
-     pub(crate) fn higher_bound(self) -> u64 {
--        (self.hi_val() as u64) << 12
-+        u64::from(self.hi_val()) << 12
-     }
- }
- 
-@@ -158,7 +158,7 @@ impl NV_PDISP_VGA_WORKSPACE_BASE {
-     /// Returns the base address of the VGA workspace, or `None` if none exists.
-     pub(crate) fn vga_workspace_addr(self) -> Option<u64> {
-         if self.status_valid() {
--            Some((self.addr() as u64) << 16)
-+            Some(u64::from(self.addr()) << 16)
-         } else {
-             None
-         }
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index feb80c847077..663fc50e8b66 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -494,10 +494,10 @@ fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
-         if data.len() >= 30 {
-             // Read size_of_block at offset 0x1A.
-             size_of_block = Some(
--                (data[29] as u32) << 24
--                    | (data[28] as u32) << 16
--                    | (data[27] as u32) << 8
--                    | (data[26] as u32),
-+                u32::from(data[29]) << 24
-+                    | u32::from(data[28]) << 16
-+                    | u32::from(data[27]) << 8
-+                    | u32::from(data[26]),
-             );
-         }
- 
--- 
-2.49.0
+Do you want me to send the updated hrtimer conversion patchset
+(using as_* names)?
 
