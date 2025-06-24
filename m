@@ -1,254 +1,83 @@
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79A225A2A4
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 21:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A112580E1
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 21:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750800175; cv=none; b=QT78bR+jCvC8Vh7zA9U8ca4LWZ+uz1CqzGj5T4/yhsNzqNQ8zKU1MrMMrHi1NLHAfpypU3fEEVCM5wCjolayvReE0yDS1AdnFab1VVrI0U7pz9YD18xuCkxwUCShhPDVSORSzyJCO+wbxsUL1YyBGwDeFdtPmsVoObVCOGRVnGg=
+	t=1750800206; cv=none; b=D/XTvURIgLl+/YJxtXVfh0n4QsX6tozQUToZ0yCQv8wpN66k+wMNLb0fjNgr6RyOqAQAdehrY+hhtAhTIJl9JxixpMMdlAsZm0Vp3Q4VivxLYC2jXaGo0ZNAzWu+s69awYyEDDr7XDYCMUYBF9P2cZYuOHgSqp2v74EKFNss+is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750800175; c=relaxed/simple;
-	bh=FJc3/wHmIrxqjx+kYZ7rG7EJsEH4rMvfWcMEKWFB8Jo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L2rtzNrW/wE2qzP2R8NrhGd7C3ZQxLgobKsIqmI4cC9Db66WW7IeOmTmau6Qctk2aTlKeHHVKjCnyiBvIzJpOB10VKxE3LrofuFtFA9XkOTU5Pi8SiWH/X4czimeD7DGQwCnf49S449nq10X+fBmN6KF4ymvmEFsxEpMNUyZtok=
+	s=arc-20240116; t=1750800206; c=relaxed/simple;
+	bh=XibSCvtqYwj7TO9EBRhCbEfOeFMjQl6BOcBuRT50gQ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h74J137sdftAf8ozL6/3ajKJY297/LRMivJJzsIpNcd8YlZNMRXPsTT54zIgE/8yHFAYFtmqvGUsHQ/Ryjjcdb/B4V/603hneFv8m5UpQ4YdLklQ9KXChRqiqVEaEupGeT/ctvdfaUO974UEfAIvQUUCL0Oz8MhkGonNzjL8BZw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25A0D113E;
-	Tue, 24 Jun 2025 14:22:34 -0700 (PDT)
-Received: from e129154.arm.com (unknown [10.57.66.60])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F1BE13F58B;
-	Tue, 24 Jun 2025 14:22:47 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7343F113E;
+	Tue, 24 Jun 2025 14:23:06 -0700 (PDT)
+Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B23EF3F58B;
+	Tue, 24 Jun 2025 14:23:19 -0700 (PDT)
+Date: Tue, 24 Jun 2025 23:23:16 +0200
 From: Beata Michalska <beata.michalska@arm.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	alyssa@rosenzweig.io,
-	lyude@redhat.com,
-	rust-for-linux@vger.kernel.org,
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
+	daniel.almeida@collabora.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, alyssa@rosenzweig.io,
+	lyude@redhat.com, rust-for-linux@vger.kernel.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH v3] rust: drm: Drop the use of Opaque for ioctl arguments
-Date: Tue, 24 Jun 2025 23:22:25 +0200
-Message-Id: <20250624212225.2169888-1-beata.michalska@arm.com>
+Subject: Re: [PATCH v2 2/2] drm: nova-drm: Update ioctl handlers to drop
+ Opaque usage
+Message-ID: <aFsXRMnl8IZ29qNa@arm.com>
+References: <20250624093200.812812-1-beata.michalska@arm.com>
+ <20250624093200.812812-3-beata.michalska@arm.com>
+ <0ba4c988-194a-46f6-8e5d-b8fbc95a3eb8@kernel.org>
+ <aFqHWOl0XcDdOrlN@arm.com>
+ <aFqKE4UJqMp9nVR4@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aFqKE4UJqMp9nVR4@pollux>
 
-With the Opaque<T>, the expectations are that Rust should not
-make any assumptions on the layout or invariants of the wrapped
-C types. That runs rather counter to ioctl arguments, which must
-adhere to certain data-layout constraits. By using Opaque<T>,
-ioctl handlers are forced to use unsafe code where non is acually
-needed. This adds needless complexity and maintenance overhead,
-brining no safety benefits.
-Drop the use of Opaque for ioctl arguments as that is not the best
-fit here.
-
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-[ nova-drm changes: Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- drivers/gpu/drm/nova/file.rs | 23 ++++++--------
- drivers/gpu/drm/nova/nova.rs |  1 -
- drivers/gpu/drm/nova/uapi.rs | 61 ------------------------------------
- rust/kernel/drm/ioctl.rs     | 11 ++++---
- 4 files changed, 16 insertions(+), 80 deletions(-)
- delete mode 100644 drivers/gpu/drm/nova/uapi.rs
-
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-index 7e59a34b830d..7e7d4e2de2fb 100644
---- a/drivers/gpu/drm/nova/file.rs
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -2,13 +2,11 @@
- 
- use crate::driver::{NovaDevice, NovaDriver};
- use crate::gem::NovaObject;
--use crate::uapi::{GemCreate, GemInfo, Getparam};
- use kernel::{
-     alloc::flags::*,
-     drm::{self, gem::BaseObject},
-     pci,
-     prelude::*,
--    types::Opaque,
-     uapi,
- };
- 
-@@ -26,20 +24,19 @@ impl File {
-     /// IOCTL: get_param: Query GPU / driver metadata.
-     pub(crate) fn get_param(
-         dev: &NovaDevice,
--        getparam: &Opaque<uapi::drm_nova_getparam>,
-+        getparam: &mut uapi::drm_nova_getparam,
-         _file: &drm::File<File>,
-     ) -> Result<u32> {
-         let adev = &dev.adev;
-         let parent = adev.parent().ok_or(ENOENT)?;
-         let pdev: &pci::Device = parent.try_into()?;
--        let getparam: &Getparam = getparam.into();
- 
--        let value = match getparam.param() as u32 {
-+        let value = match getparam.param as u32 {
-             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
-             _ => return Err(EINVAL),
-         };
- 
--        getparam.set_value(value);
-+        getparam.value = value;
- 
-         Ok(0)
-     }
-@@ -47,13 +44,12 @@ pub(crate) fn get_param(
-     /// IOCTL: gem_create: Create a new DRM GEM object.
-     pub(crate) fn gem_create(
-         dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_create>,
-+        req: &mut uapi::drm_nova_gem_create,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemCreate = req.into();
--        let obj = NovaObject::new(dev, req.size().try_into()?)?;
-+        let obj = NovaObject::new(dev, req.size.try_into()?)?;
- 
--        req.set_handle(obj.create_handle(file)?);
-+        req.handle = obj.create_handle(file)?;
- 
-         Ok(0)
-     }
-@@ -61,13 +57,12 @@ pub(crate) fn gem_create(
-     /// IOCTL: gem_info: Query GEM metadata.
-     pub(crate) fn gem_info(
-         _dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_info>,
-+        req: &mut uapi::drm_nova_gem_info,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemInfo = req.into();
--        let bo = NovaObject::lookup_handle(file, req.handle())?;
-+        let bo = NovaObject::lookup_handle(file, req.handle)?;
- 
--        req.set_size(bo.size().try_into()?);
-+        req.size = bo.size().try_into()?;
- 
-         Ok(0)
-     }
-diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
-index 902876aa14d1..730598defe04 100644
---- a/drivers/gpu/drm/nova/nova.rs
-+++ b/drivers/gpu/drm/nova/nova.rs
-@@ -5,7 +5,6 @@
- mod driver;
- mod file;
- mod gem;
--mod uapi;
- 
- use crate::driver::NovaDriver;
- 
-diff --git a/drivers/gpu/drm/nova/uapi.rs b/drivers/gpu/drm/nova/uapi.rs
-deleted file mode 100644
-index eb228a58d423..000000000000
---- a/drivers/gpu/drm/nova/uapi.rs
-+++ /dev/null
-@@ -1,61 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--use kernel::uapi;
--
--// TODO Work out some common infrastructure to avoid boilerplate code for uAPI abstractions.
--
--macro_rules! define_uapi_abstraction {
--    ($name:ident <= $inner:ty) => {
--        #[repr(transparent)]
--        pub struct $name(::kernel::types::Opaque<$inner>);
--
--        impl ::core::convert::From<&::kernel::types::Opaque<$inner>> for &$name {
--            fn from(value: &::kernel::types::Opaque<$inner>) -> Self {
--                // SAFETY: `Self` is a transparent wrapper of `$inner`.
--                unsafe { ::core::mem::transmute(value) }
--            }
--        }
--    };
--}
--
--define_uapi_abstraction!(Getparam <= uapi::drm_nova_getparam);
--
--impl Getparam {
--    pub fn param(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).param }
--    }
--
--    pub fn set_value(&self, v: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).value = v };
--    }
--}
--
--define_uapi_abstraction!(GemCreate <= uapi::drm_nova_gem_create);
--
--impl GemCreate {
--    pub fn size(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).size }
--    }
--
--    pub fn set_handle(&self, handle: u32) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).handle = handle };
--    }
--}
--
--define_uapi_abstraction!(GemInfo <= uapi::drm_nova_gem_info);
--
--impl GemInfo {
--    pub fn handle(&self) -> u32 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).handle }
--    }
--
--    pub fn set_size(&self, size: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).size = size };
--    }
--}
-diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-index 445639404fb7..3425a835f9cd 100644
---- a/rust/kernel/drm/ioctl.rs
-+++ b/rust/kernel/drm/ioctl.rs
-@@ -83,7 +83,7 @@ pub mod internal {
- ///
- /// ```ignore
- /// fn foo(device: &kernel::drm::Device<Self>,
--///        data: &Opaque<uapi::argument_type>,
-+///        data: &mut uapi::argument_type,
- ///        file: &kernel::drm::File<Self::File>,
- /// ) -> Result<u32>
- /// ```
-@@ -138,9 +138,12 @@ pub mod internal {
-                             // SAFETY: The ioctl argument has size `_IOC_SIZE(cmd)`, which we
-                             // asserted above matches the size of this type, and all bit patterns of
-                             // UAPI structs must be valid.
--                            let data = unsafe {
--                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
--                            };
-+                            // The `ioctl` argument is exclusively owned by the handler
-+                            // and guaranteed by the C implementation (`drm_ioctl()`) to remain
-+                            // valid for the entire lifetime of the reference taken here.
-+                            // There is no concurrent access or aliasing; no other references
-+                            // to this object exist during this call.
-+                            let data = unsafe { &mut *(raw_data as *mut $crate::uapi::$struct) };
-                             // SAFETY: This is just the DRM file structure
-                             let file = unsafe { $crate::drm::File::as_ref(raw_file) };
- 
--- 
-2.25.1
-
+On Tue, Jun 24, 2025 at 01:20:51PM +0200, Danilo Krummrich wrote:
+> On Tue, Jun 24, 2025 at 01:09:12PM +0200, Beata Michalska wrote:
+> > On Tue, Jun 24, 2025 at 11:59:25AM +0200, Danilo Krummrich wrote:
+> > > On 6/24/25 11:32 AM, Beata Michalska wrote:
+> > > > From: Danilo Krummrich <dakr@kernel.org>
+> > > > 
+> > > > Following the removal of `Opaque<T>` for ioctl arguments in the DRM
+> > > > framework, this patch updates the affected driver code to use typed
+> > > > references directly.
+> > > > 
+> > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > > Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+> > > 
+> > > It's very kind you want to attribute the shared diff with a separate patch, but
+> > > you have to include this change into patch 1 ("rust: drm: Drop the use of Opaque
+> > > for ioctl arguments"), otherwise it still breaks the build intermediately.
+> > >
+> > It is not so uncommon to send such changes in separate patches, to clearly
+> > distinguish the changes, as long as whole series preserves the build.
+> > That said, I can still send those as a single patch if that is the requirement.
+> 
+> I think it is very uncommon; the general rule is that no patch should ever break
+> the build.
+>
+Noted.
+> From [1]:
+> 
+> "When dividing your change into a series of patches, take special care to ensure
+> that the kernel builds and runs properly after each patch in the series.
+> Developers using `git bisect` to track down a problem can end up splitting your
+> patch series at any point; [...]"
+> 
+> [1] https://docs.kernel.org/process/submitting-patches.html#separate-your-changes
+> 
+> > > Please feel free to just include the change in your patch -- no need for any
+> > > attribution as far as I'm concerned. :)
