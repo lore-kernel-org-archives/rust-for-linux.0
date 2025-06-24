@@ -1,184 +1,275 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD55B14B08A;
-	Tue, 24 Jun 2025 02:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750733819; cv=fail; b=fsAHKa94nnqr1dzqnY0RFom/IcvgVKBO1W2suEkS5DvuttI4869eMqjH2KMo+NxmvVbr/E70NwEW4QgwZAhpmEhMbUtkZ3CL1JKT4zhv54Mjl2FEPnPQaN9rH1hmFraxLrKk0j2qHVWCgYNXDP2jO1luHaNZvnM3wUtBoM/AGvA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750733819; c=relaxed/simple;
-	bh=fnvgEdONBzyAyUbKKUP1nWelCoDg30yUqUAdN+Yr6S4=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=bJAdAi/gZvsXQiecZ43aGPRC4It6ZFaXVeL82r6Bxu+at1B6tjzhzUrM2bopPQgQHZ8spdWvKIja/jwKivVBsSTN3wvyKIo1lFTe03JPcfg0xzujEBDKnXlkTsvMb2VDji/m8QoKH4549w+UgTP5djlJfo6G4J5nssRkz27+e/I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=We0Al2lq; arc=fail smtp.client-ip=40.107.236.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A176136;
+	Tue, 24 Jun 2025 04:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750739290; cv=none; b=ht6HfL0OqA/av4aq7vanRI6LMAFN3Sk/LW4L/Lehp4827YTncWR0PaCI00sqe83q36CccQqEaURInNR9dr6win99Dn5hn2HFVLMLmTYE5TUjXeFH1ypZ5ayC8Vg7di919cnev+aSUfK0LFIvXvhfchLPfu4Iez36Ww1+oDnfkZg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750739290; c=relaxed/simple;
+	bh=qDq+KroKdv6fd4RFczineFXJjUXv3l3EBcPo11dsWpE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=bEpQKluIhQ135AU8d/M/nKbzMuKDbCmfuJNXbyDzhuGopUL+kgxas+zCwrs5q/wfHrZdllwEQk1bxdPxZPXh+5Ow1floEgZGyWZWnb8Us03GaLtt6QfmS+3tM37qD/oymF7+Cra3hB9CW0VEuVmxDT6vYb6fUdsy+60bExaMnco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gFl2xlDt; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="We0Al2lq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U/KpIjaPAs6NlXt54jTkSGoL4iF9Xf2ogHvK2klgPfcls5SMMyP5ERWgYYij8wW7Ws/vBqaA8IFgZG2mdvbwXmWhzeh2D8zYFAuKxC6efbk5QyQ/pzsT5yCBtuxhIErXntcUU2qUwXQxqUUTKwoEUtrzzCir94Iln/4WJnTpH08di6Hv4ieN81xEIsX2Jy5wYXr6Eu7tABoR8WD4947Dt7TtIxb1qaNp8i5R+w5AxVytBkFCjwuiS0V+4dSZBuoWNQiEVbUUkIlh1hIVefLBfh+MZw4U9wh3rdEv9LabCCe/XccYvuDkTfFRFnO0r3YqqgLsgQ0nST+VlrdGia3C6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cEzsp+t2u+47PwsRehIOGUEI/jcqGACnpobByNnLXIM=;
- b=IjtDkdeFJz/dgsZ3qs0KM51rLZqESDPhwUThOVzCoSQkJxgsjUjuLJcVZgERf51MRbXfMco1oD9ksaKOZKqDp2QwNpHQmgul4LI5w9lnqutMwnaZdoQfjl1CiZfLL4DKXAx0MCuA9DL1ie+FF5KNN1SpAN9wo/Vz82pRDDMdGrx0hJZ6GMwKfBpJsyappl5xUXS+OSVfkc47C4ceIC4W6c21G6vLFXT9756RlP/0LCBF4DXc+NSaEq8gmC0bM0BXFPMvOpHdbwIGdaMjZ53Jay9FnFL8mEE74IPi8BEzfFcNC9PNmSTiGhK5mVgDe8+yb6a5ZghhO0yq4iYMn0jGKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cEzsp+t2u+47PwsRehIOGUEI/jcqGACnpobByNnLXIM=;
- b=We0Al2lq2MOe0DMhUiN67Flq2cPOUioMwjzNlOTyATeKRL74HRlcbpeUfE8j1Ogpeppj1D5jh/OgF2HhlUckcMa9wZiz/UAXHWm5+8I7/CoEI2m5+R/zaa3je+/eTm1AdCLUuD0HIkKTfJ86MEjXOlQtMba02c0oxLshGVwnoXJH6UqrmxU9ypFONT64PATYp1QKQXArIRNICiZ1O149w3GGfZEkJkFPDVzzz52JwNckYkYIKi3Jk2fod/tw4AVLLE2QRwcl/20pZfKOGYzX49RnOxSGHMaUVgmnnbVDnggRF0C8n+UlUexV0GC63kqkhXNEuDEu7WQ/7MsPQUI64g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CH1PPF8423FDA82.namprd12.prod.outlook.com (2603:10b6:61f:fc00::617) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.26; Tue, 24 Jun
- 2025 02:56:53 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8857.026; Tue, 24 Jun 2025
- 02:56:53 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Jun 2025 11:56:49 +0900
-Message-Id: <DAUFC932W5MR.Q13BFD3CYEKJ@nvidia.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "Benno
- Lossin" <lossin@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Ben
- Skeggs" <bskeggs@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
- "Timur Tabi" <ttabi@nvidia.com>, "Alistair Popple" <apopple@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>, "Lyude
- Paul" <lyude@redhat.com>, "Shirish Baskaran" <sbaskaran@nvidia.com>
-Subject: Re: [PATCH v6 00/24] nova-core: run FWSEC-FRTS to perform first
- stage of GSP initialization
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250619-nova-frts-v6-0-ecf41ef99252@nvidia.com>
- <aFnArVIFkHCUzNqe@pollux>
-In-Reply-To: <aFnArVIFkHCUzNqe@pollux>
-X-ClientProxiedBy: TYWPR01CA0036.jpnprd01.prod.outlook.com
- (2603:1096:400:aa::23) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gFl2xlDt"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-313336f8438so648471a91.0;
+        Mon, 23 Jun 2025 21:28:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750739288; x=1751344088; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RmSIN6ze48fHLAU7HddzL1LXnxd1gMl3vk8ikqqzThg=;
+        b=gFl2xlDtmQGOqWwBSnrd7N6S+kD8Lx2jrCiOLcCoVKwkzRfeBUPR0ABxsVEkfaLeRx
+         y19CvSWZ6dataJOSVoCapPKTbHEV185eHg4yZ2ZKIPmkRO7C5P0va7GCqvaGwc6rbPIW
+         J2NOd0mg1bG69D5rl9iPiZWCbbDsvgOZlQokATI9FxTcoyQ611RkJTacaJ5AztgUG0EV
+         9qiDYCYdQtCwcTwL5MHAlGonbOxEKfIzQYLgyQaP/voQcCcWlToWuZm0KToVlpo9aLLz
+         XjjY02gPUrcuaNqYoVL6/wotvYFitXMoB6iD1BKw6UlN1kh0gCEJTvy50Io25jZEXVz+
+         F/mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750739288; x=1751344088;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RmSIN6ze48fHLAU7HddzL1LXnxd1gMl3vk8ikqqzThg=;
+        b=E2QVfPdMSqB6a+H9hbciy0nWJlTQfBswex8/uK7clK/s/o2YWUFXCN8wSstHGrzQAo
+         003JgjfmrGo4u5yPcUI1C57sxa1sNHrrs0W1afLXFipU3keNkYqgXMSi8oVksH/Qclvs
+         07tCPDn0XObgbfjQhG+gZYC5BCykubiodKT2VhNTIm8+B9aPcSPF/DMyloAx3Nv1od+Y
+         xN4Yg9C7IqkeW74IlBL2gO3ArNB7Frr+VoJprzsFaMZLxbm2pbmmOBMx18XSezLq3sUM
+         jl1F+NqhwX6giIM4vH2f4R0eMt9QAZeurVF1OX67Qeon7Rf3zuBZrTXPgjcPE6c2Td9p
+         ZsQw==
+X-Forwarded-Encrypted: i=1; AJvYcCU2fISER5fCKOmbQrlrRzhkA8YIGOJ2aRRTvmXY5c3D3yhR55kwDGFaNnYbj8acwL7npH9TIHgxTrFKkfCRDtM=@vger.kernel.org, AJvYcCVKLMLN+5LyLKmtnBrR2ya/ByRJB/MOq9Z42xT4NFXb9T116gjXEnuMdcCWvq4oDu3m8XXBVOxN4H/VvjA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2EuB0jecKvCC5faxiiwafq3IPhRVU9ID/dJzaZddoGuVIOZlK
+	hdTLf11hAI/arV/7FBNPE4b7OuAeVieYxC87znteS86R0sMZu8QGLxPm
+X-Gm-Gg: ASbGncsV2Uwq+tdA8xEd1s1Ml3gYB1ddvGR2h3LKJ4frzt6jEYQjO0QzsQicvUFORVi
+	Qs7ZLJ6w4rXiTLJeaeZnRvNDzp1yxQFHluuqunOI9iCWImK8xF8Srba/Nr19KhVJthlrccoNLaJ
+	zQGOh057bKgKZ/ZJSsNwlm0hvahggAVGTkE/HO4IpG2pqklLpk36z6kuGhqUZ/GBxrYQTcEqXvc
+	HhlO4POXUkXx42qS4Vmrx9ZnQzcfg/qnO/LORgsItVLVbg9GZUWPcfQmgEA3UzW+jleIPtHFtkd
+	Xu/ktcmVBYdep5f6OYQbyZO1OCjtfF9FAxDy2TWQXvU+Poz9HDqgPu8MDGkT4wqQd2RzAOYd3w5
+	umCFrO7BilBWv6HQ=
+X-Google-Smtp-Source: AGHT+IEs6EWS+EoVH2MIVJCKKApIeloHaAs25Uc47CI0bKqoK2OdgPgy0frPAhiLvltO/93opV0rYQ==
+X-Received: by 2002:a17:903:32c3:b0:234:8e54:2d5f with SMTP id d9443c01a7336-237d9ac4532mr88230265ad.13.1750739288464;
+        Mon, 23 Jun 2025 21:28:08 -0700 (PDT)
+Received: from localhost.localdomain ([138.94.103.170])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d874fe39sm96363105ad.251.2025.06.23.21.28.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Jun 2025 21:28:08 -0700 (PDT)
+From: "Christian S. Lima" <christiansantoslima21@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	~lkcamp/patches@lists.sr.ht,
+	richard120310@gmail.com
+Subject: [PATCH v8] rust: transmute: Add methods for FromBytes trait
+Date: Tue, 24 Jun 2025 01:28:02 -0300
+Message-ID: <20250624042802.105623-1-christiansantoslima21@gmail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CH1PPF8423FDA82:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6c3e0930-2bc2-4639-cf0b-08ddb2cac5f9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?cDhxNXRvY2ovQWZyOCsxMjN0K0tnOTdRaFdWemxIK2cySnNOUTd6RytHMlFB?=
- =?utf-8?B?bm9xcktPTFU3NWRNTytrMS9POFlhaUlXSEQ5bEpKeGVrbFVHS0l0aVZTOFJK?=
- =?utf-8?B?S0FLK0U1QXYrL0ZwNFZQSHM5TEF6TDB2TzVMQ0hXSU5Zb1MydnZMdHVRN0p3?=
- =?utf-8?B?c3l6UTJhRFBxejVEMXVnSFVSZ0tJYllVS1dnOWFTdVpWQk9rMnByUE1PeW5M?=
- =?utf-8?B?YWsyMThoV0luaHQ4QWhGSjIzMW5oNXB0TDFhVFZiUTJ2Q3FTWSs5L3hyYURa?=
- =?utf-8?B?VlNVclBiVzhCMmVnRDZxaWNFUjFITk05YmFTWWRBZDh1WG04QitNNzdBdDZy?=
- =?utf-8?B?N3d3ZTRCRTgybXpETFdkeTk0VmpHUXZyalUwU2h6OENtN3cxeG9GdlFtcVV5?=
- =?utf-8?B?VmJYaGQxY1d5cS85WHZ2ZXJzdTZ0cUlsZkdpNlgvek9pTE4vQTdmdG5XbXFT?=
- =?utf-8?B?RnRsRmVPWEVaQktjSkJmblhyUU16b3B4UXlXT3lJVXFxbDFrVVdPQ3FXUU9q?=
- =?utf-8?B?MjFVK2JxandMR0lES2pYVFJ6Q2pzUlNZd25jK0ZEOGh2UzQyeTBpeGY0TTJy?=
- =?utf-8?B?NE4rTFAwTWVDa3ZwM0djdmxqd3BqSGh2cGQ4a1JVRXlwNlZtZ2ZiNGc1ckVt?=
- =?utf-8?B?M2g1RmlxRkJWNEpLRWNPZXpQMHdIalh1em1MWWNJdlpMMXFsYTRxLzJFQ3hH?=
- =?utf-8?B?ZEhqeWRzVFAwRUQzTUJWVTRocHJKa1lwOU1NRytDbmxoWDdiM1JPMmVSUGox?=
- =?utf-8?B?QXpqa1luYVd2S0lrNUhMbk5Gd2hsVmR6U2EvNy83djgzdVRRQnBBWThLZjEw?=
- =?utf-8?B?emZMczMyeFRxZ21LYk1PUUxVdEFGVUJzdnIwa2FRWEFHS3hSU2NXb1hlb0Qr?=
- =?utf-8?B?aGJnQTNLd2RhWlhLTFlHTGVnOEx0RERldTdoSWhPL0MrbFJnbzlPUWR0YTE4?=
- =?utf-8?B?eFpiVHBMazhaZGF5eHFiY2dPYjYyMjhMTm5rZjJUWGtDakVmUFdTcWZZd3hD?=
- =?utf-8?B?Q1U3eHZiVUJuL05KVVBtbE9FSGV2K09MaWRpSlAzMEZ1aUljYS9lU0JoNU1n?=
- =?utf-8?B?YTBURmVNV3FobjhxQVY4Y0d6ek93QXRxTE9BcTZVU1llUFdHSTBXMm1QYmtm?=
- =?utf-8?B?UkRzcmhKWGs0d0xudnU1akQvcE54L2Q4SGJwSDVFK2lJcU9MQUlZb25YZ01O?=
- =?utf-8?B?a2hoL3h5WW92RHF5eWxseU80dkN5NU9lU2ExZ250YmswTnY0YzhRT0tXREhx?=
- =?utf-8?B?UXJseTU1TzNpN3UvRzVtN2V4bGtwVTl2UE44MVRpU2xUdUNDSUU0OFR5TjJo?=
- =?utf-8?B?dy8yem1nYXd6ekd3ekV0c3M4bE1oQ3ZlZE9yRXVzY3kybnpJK2dHN2o4UnlS?=
- =?utf-8?B?WDl5WlZIVWVGUWxKcERTZW0rNXp2TFRJNmdkSGVvSnNPUDAvaEw0VmhORXhu?=
- =?utf-8?B?NzJ4TmdaRzNxMTR0cDNLRXViQkhKeWtxVEhhYndwWXlXWWpuYmFXMWdsN3pY?=
- =?utf-8?B?bTRkMW55czdPajF3aGx4Z0F5LzkxOUtBSFpsTDlrcTQ2VVNPVWVxWHNkRzdq?=
- =?utf-8?B?TXU4SEhpeWdXOWJtamZVeGtNSWpyTVhsUTVaNE5xamY3UFJUT3F4cHY3Z1RO?=
- =?utf-8?B?UklqZEl5NVpERHpHaHVBM2VvN01XMndVaG5uZG5jbEFQS0JTQ3hmaFU1aDRU?=
- =?utf-8?B?dVhGbTlIS3ExK2NYeUVRQ0dLa1BtSkp4VjJ5N3R4N2puQzN3Qit0U0x1LzZk?=
- =?utf-8?B?UGxzWlNSV0pYM3JYRkQzMVplSVVHWVZTMWtzYzkrOWtuRzNtN0ZGNUlBcy9O?=
- =?utf-8?B?R3JtQndHd2FvUitTdW04QmFGRGFhRW9ZQnUvSWgzMEJ3ZitacFJHVWxEbkIv?=
- =?utf-8?B?NzdtRC9aeXNCRjMzSkNlc2ZiRmNKU1gyOWkyMGJXK0RTd2c9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?djdhMXJQVTBVWC95NS81QkZoV3VBWFRrcTJMK1JTcXlDOElSVVlad2FsSGdN?=
- =?utf-8?B?VlpBbnpjeWhJTm9idUxiNWIvTHRDU2U2U3FGT1JQZzNmdHF1eDRGL2wwRk96?=
- =?utf-8?B?WS9aN2VWZnRIL0g4MlFLQTUwZEx6N29UZ1AzZ21QTzVsdHAxM2dKeE9qTURS?=
- =?utf-8?B?aE9EalUvb01QclhCUjJZWmk2S1FVb29KOTg1eStqM2MybWoyK3A1VkIxTGU0?=
- =?utf-8?B?QStieU41b3h2aDNOZ1V0ZXhSTmlwRW9RMlhoandLbFVkQ1g5dDZocWZuTUJ4?=
- =?utf-8?B?UURkK1pzQnFtY1Fsdi9qTkh4MnVEYjRKblZvL1NrcTROWExTN1U2YmFaTzl4?=
- =?utf-8?B?R0U4NWVXVmtEY2FrYW0vbU1RK3NvM3hLcVg2OVFUVEpaZysrczRpRVlBd0NE?=
- =?utf-8?B?bU56aTB3L3RwaGJ1WENkSG5hVTJWT2p2WWo0Vm1jRHliajFJS1pFSjRZZUJo?=
- =?utf-8?B?ZXZYUjVuNWdsdkpGRFBNcCtzWXNlV0FUUXRER1lVRThKbGgrL2FYeWF5WThm?=
- =?utf-8?B?T1pIcm5GNTUrSG9tZ3pBVTRWUUM3b29TbUtOc21TT2gyUGRkSEVXc1JUWmor?=
- =?utf-8?B?TEtnem5BMXFyT0V2OG9EdkpCekJTM1NRTnJtQytrdCtRUWYzeGFpSEtBbGZy?=
- =?utf-8?B?UmpXazBPM2tHb1lFMFppdXE4Nk52bXoycmR6MTA5K0dpKzJja09LM0hncWxF?=
- =?utf-8?B?SzVteUcrWktoOE84RHI3dkM2MXNReEVOd1J5RHI4TWVORDBVSlNNc1JUR21Y?=
- =?utf-8?B?cFd4K2FibUJFSitBdjR2RndNNmNrdFNTRUFsNmlXZGllYVZMZ2pEL1NMUnZ0?=
- =?utf-8?B?ZnVvcGs4QlU5UWgwb25nbXI2b1l6Z3NpcVlSSkpGbWxwY3laeUh5aTd0dDFk?=
- =?utf-8?B?R1ZXZDNtN282bG9EYks3OVMvNy83SWpGOWJEeE1WMVNjSENxY25iMTJYYUEr?=
- =?utf-8?B?SGVtbmowQmIvREdLWkRzREIrZEJpVlZHQVVWQ0drcEhnQ21zMjVidWhMb3c3?=
- =?utf-8?B?T0VPbnJPeUN0aXJEL25oaDI5Q2duWEdSbUNwWDlRMDRRUTJTZkMzMjN2Smll?=
- =?utf-8?B?VzNPcVNEcmx4Wk9QVEdRN2s2UzNmTXF1VVY1MkdoRU9lSjlpTkhqRVhRTlJr?=
- =?utf-8?B?Nkk1NkdzQnM5TzZvdktuSTBkd1JoYkdTcDBuZC9Zb3RtRngvb0NPWUhCTGFz?=
- =?utf-8?B?Q244Qy9BU1BWSC9UeHUwTkt0ZVlSK2doSTVvVy9FYmhCbHN6QlFXaHNzTEt0?=
- =?utf-8?B?bElIVUdOTVFBTlo3d0NkRHIrdHBlZFJ1bjJNV2FDKzdMOThHY3RrM0dOdXZj?=
- =?utf-8?B?ZUxRckJlclY4T1IvMzE4OVdFM2VzQnduYlNtaEVDcXpxcWw2eVBjejQwcXJr?=
- =?utf-8?B?bzdIZk9EQitCMzYyR3Y2Q1pCdFlTY0JWQ2hLNUJ1R1p6NGRhQkFWRVhXUzVU?=
- =?utf-8?B?WG5obzR2Z1dYdEQ5QUMyYTVZK1RoaEl3cjZUV1ZMaVJJNlkyK3dUYVh5LzdK?=
- =?utf-8?B?M0ZyTG1QV2ZVZ3RwdkRnUTgvTWxYbGxoSSthaENwL1g3SjFpOXFDOHVwT1l6?=
- =?utf-8?B?UkZCS3ZVVnN5bkpremg5N3VxL0xjNjFOSWZ0aVJKU2pyUUExSEN4a09GYnJx?=
- =?utf-8?B?bVAyWmZDVGVWM3FJVUUyNmNsUmcxVjZIL1Y3SFlvSlNTZ215eGsrT3cyTmp4?=
- =?utf-8?B?WVFqQnNwVU1WRTFNNHNMTzlOMHJDaWFsWnhmTFY3S2YvMG14MWF0S0pJOFg1?=
- =?utf-8?B?L1JSTGc4K0lYZkNHczZaNFNIUTlBendTMjB2aWZkUjcyblVWaTRWdklXcGFu?=
- =?utf-8?B?UjErMHlDSXFSKzNoa0d2S3BwdGNWQ25JcFRrRDRzelp3SWFpemZldENMU2M2?=
- =?utf-8?B?clRPNVA3a3hzSlM5bWdjMFRHN3RDUllsekphWWtkVmVHYlpFL1dJa0dFWW11?=
- =?utf-8?B?SWErSnZKVEx6NFRJaWh3bUpLeGwxcFROVzRyOXV0cVV3U3VXQjJHSW4ycmJi?=
- =?utf-8?B?VjArSXJyUitxSmVlMXRhdjZCc1NEWjRpbGlkZTNXTWoxNThkWGVXTnBRSzBk?=
- =?utf-8?B?QVFGdUdYQWY0TnorVXdlaWdtMTdJOFlTVGZWTTN1YXpPa3NRVWRGZkozNXpX?=
- =?utf-8?B?MVlCMFVhdzN2TlRjZmxSYzFWQjFkeDUzdlBUayt4NEVzVmF1NHJqSzdvWExG?=
- =?utf-8?Q?H8odyj5QmnsnarZBuwydAkCfgGD7/b30XbCml9OwdSdU?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c3e0930-2bc2-4639-cf0b-08ddb2cac5f9
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2025 02:56:53.2962
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qEijqXOWBgkKLE26eavw8WU3NWbfS6ESTYCjphqOMHjSsiWlit6NfXsxQzOsTDR2RLCU7cj8e6kcQcxhaBjnxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF8423FDA82
+Content-Transfer-Encoding: 8bit
 
-On Tue Jun 24, 2025 at 6:01 AM JST, Danilo Krummrich wrote:
-> There's one thing that would be nice to fix subsequently, which is proper=
-ly
-> resetting the GPU. Currently, it needs a power cycle to be able to probe
-> successfully after unbinding the driver.
+The two methods added take a slice of bytes and return those bytes in a
+specific type. These methods are useful when we need to transform the
+stream of bytes into specific type.
 
-Yes, what I usually do is the following after unloading Nova:
+The `FromBytesSized` trait was added to make it easier to implement other
+user defined types within the codebase. With the current implementation,
+there's no way to interact without implementing `from_bytes` and
+`from_mut_bytes`for every new type, and this would end up generating a lot
+of duplicate code. By using FromBytesSized as a proxy trait, we can avoid
+this without generating a direct dependecy. If necessary, the user can
+simply implement `FromBytes`if needed. For more context please, check the
+[1] and [2].
 
-    echo 1 | sudo tee /sys/bus/pci/devices/0000:01:00.0/reset
+[1] https://lore.kernel.org/rust-for-linux/DANSZ6Q476EC.3GY00K717QVUL@nvidia.com/
+[2] https://lore.kernel.org/rust-for-linux/DAOESYD6F287.3U3M64X0S1WN5@nvidia.com/
 
-and this allows it to probe again. Maybe we want to add some equivalent
-programmatically in the driver probe function?
+Link: https://github.com/Rust-for-Linux/linux/issues/1119
+Suggested-by: Alexandre Courbot <acourbot@nvidia.com>
+Signed-off-by: Christian S. Lima <christiansantoslima21@gmail.com>
+---
+Changes in v2:
+- Rollback the implementation for the macro in the repository and implement
+  methods in trait
+- Link to v2: https://lore.kernel.org/rust-for-linux/20241012070121.110481-1-christiansantoslima21@gmail.com/
+
+Changes in v3:
+- Fix grammar errors
+- Remove repeated tests
+- Fix alignment errors
+- Fix tests not building
+- Link to v3: https://lore.kernel.org/rust-for-linux/20241109055442.85190-1-christiansantoslima21@gmail.com/
+
+Changes in v4:
+- Removed core::simd::ToBytes
+- Changed trait and methods to safe Add
+- Result<&Self, Error> in order to make safe methods
+- Link to v4: https://lore.kernel.org/rust-for-linux/20250314034910.134463-1-christiansantoslima21@gmail.com/
+
+Changes in v5:
+- Changed from Result to Option
+- Removed commentaries
+- Returned trait impl to unsafe
+- Link to v5: https://lore.kernel.org/rust-for-linux/20250320014041.101470-1-christiansantoslima21@gmail.com/
+
+Changes in v6:
+- Add endianess check to doc test and use match to check
+success case
+- Reformulated safety comments
+- Link to v6: https://lore.kernel.org/rust-for-linux/20250330234039.29814-1-christiansantoslima21@gmail.com/
+
+Changes in v7:
+- Add alignment check
+- Link to v7: https://lore.kernel.org/rust-for-linux/20250615072042.133290-1-christiansantoslima21@gmail.com/
+
+Changes in v8:
+- Add the new FromBytesSized trait
+- Change the implementation of FromBytes trait methods
+- Move the cast to pointer earlier and use `is_aligned()` instead manual alignment check
+---
+ rust/kernel/transmute.rs | 100 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 94 insertions(+), 6 deletions(-)
+
+diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+index 1c7d43771a37..832c65a1239c 100644
+--- a/rust/kernel/transmute.rs
++++ b/rust/kernel/transmute.rs
+@@ -9,27 +9,115 @@
+ ///
+ /// It's okay for the type to have padding, as initializing those bytes has no effect.
+ ///
++/// # Examples
++///
++/// ```
++/// use kernel::transmute::FromBytes;
++///
++/// let foo = [1, 2, 3, 4];
++///
++/// let result = u32::from_bytes(&foo)?;
++///
++/// #[cfg(target_endian = "little")]
++/// assert_eq!(*result, 0x4030201);
++///
++/// #[cfg(target_endian = "big")]
++/// assert_eq!(*result, 0x1020304);
++/// ```
++///
+ /// # Safety
+ ///
+ /// All bit-patterns must be valid for this type. This type must not have interior mutability.
+-pub unsafe trait FromBytes {}
++pub unsafe trait FromBytes {
++    /// Converts a slice of bytes to a reference to `Self` when possible.
++    fn from_bytes(bytes: &[u8]) -> Option<&Self>;
++
++    /// Converts a mutable slice of bytes to a reference to `Self` when possible.
++    fn from_mut_bytes(bytes: &mut [u8]) -> Option<&mut Self>
++    where
++        Self: AsBytes;
++}
+ 
+-macro_rules! impl_frombytes {
++/// Just a proxy trait for FromBytes, if you need an implementation for your type use this instead.
++///
++/// # Safety
++///
++/// All bit-patterns must be valid for this type. This type must not have interior mutability.
++pub unsafe trait FromBytesSized: Sized {}
++
++macro_rules! impl_frombytessized {
+     ($($({$($generics:tt)*})? $t:ty, )*) => {
+         // SAFETY: Safety comments written in the macro invocation.
+-        $(unsafe impl$($($generics)*)? FromBytes for $t {})*
++        $(unsafe impl$($($generics)*)? FromBytesSized for $t {})*
+     };
+ }
+ 
+-impl_frombytes! {
++impl_frombytessized! {
+     // SAFETY: All bit patterns are acceptable values of the types below.
+     u8, u16, u32, u64, usize,
+     i8, i16, i32, i64, isize,
+ 
+     // SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
+     // patterns are also acceptable for arrays of that type.
+-    {<T: FromBytes>} [T],
+-    {<T: FromBytes, const N: usize>} [T; N],
++    {<T: FromBytesSized, const N: usize>} [T; N],
++}
++
++// SAFETY: All bit patterns are acceptable values of the types and in array case if all bit patterns
++// are acceptable for individual values in an array, then all bit patterns are also acceptable
++// for arrays of that type.
++unsafe impl<T> FromBytes for T
++where
++    T: FromBytesSized,
++{
++    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
++        let slice_ptr = bytes.as_ptr().cast::<T>();
++        if bytes.len() == ::core::mem::size_of::<T>() && slice_ptr.is_aligned() {
++            // SAFETY: Since the code checks the size and alignment, the slice is valid.
++            unsafe { Some(&*slice_ptr) }
++        } else {
++            None
++        }
++    }
++
++    fn from_mut_bytes(bytes: &mut [u8]) -> Option<&mut Self>
++    where
++        Self: AsBytes,
++    {
++        let slice_ptr = bytes.as_mut_ptr().cast::<T>();
++        if bytes.len() == ::core::mem::size_of::<T>() && slice_ptr.is_aligned() {
++            // SAFETY: Since the code checks the size and alignment, the slice is valid.
++            unsafe { Some(&mut *slice_ptr) }
++        } else {
++            None
++        }
++    }
++}
++
++// SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
++// patterns are also acceptable for arrays of that type.
++unsafe impl<T: FromBytes> FromBytes for [T] {
++    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
++        let slice_ptr = bytes.as_ptr().cast::<T>();
++        if bytes.len() % ::core::mem::size_of::<T>() == 0 && slice_ptr.is_aligned() {
++            // SAFETY: Since the code checks the size and alignment, the slice is valid.
++            unsafe { Some(::core::slice::from_raw_parts(slice_ptr, bytes.len())) }
++        } else {
++            None
++        }
++    }
++
++    fn from_mut_bytes(bytes: &mut [u8]) -> Option<&mut Self>
++    where
++        Self: AsBytes,
++    {
++        let slice_ptr = bytes.as_mut_ptr().cast::<T>();
++        if bytes.len() % ::core::mem::size_of::<T>() == 0 && slice_ptr.is_aligned() {
++            // SAFETY: Since the code checks the size and alignment, the slice is valid.
++            unsafe { Some(::core::slice::from_raw_parts_mut(slice_ptr, bytes.len())) }
++        } else {
++            None
++        }
++    }
+ }
+ 
+ /// Types that can be viewed as an immutable slice of initialized bytes.
+-- 
+2.49.0
+
