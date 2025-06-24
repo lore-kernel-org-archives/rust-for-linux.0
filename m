@@ -1,44 +1,56 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B56917A31C
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 09:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailrelay2-3.pub.mailoutpod3-cph3.one.com (mailrelay2-3.pub.mailoutpod3-cph3.one.com [46.30.212.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E1927BF85
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 09:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750757572; cv=none; b=W8emIpds8Yu5RJcqXmB+xnlZd5M/IHCMMMBcxeaTNol+BSeyEjtvt2dZwrIUrQbtU6jiGHtScJlnSU5MM/t+jOKUWJ2GEKV7rI61KAarDteRnVlNE7TjCoGTBTXDuqsrHWi47bxYXKr7KRvMLkmJKBxBU7xgFiBuRgHgE60GoAw=
+	t=1750758706; cv=none; b=fwI7nw+AKdGA3qEdyAwCs1FxBSMjuiMuvDvzDgxWE/k1luZMyXsUNcxrOCwUTBLwFtUnE6zPCfBDLRYgciA2Hp+oUi+8DFashMkGHVF0fYT/YdfV6SQojwz2KoXuhcBazK1mMOUY/uj4m7ONjiOSJ92/rxQJie1KXAZywemhf5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750757572; c=relaxed/simple;
-	bh=0nf1HpMQ7jdgeSitwkw8RAuYrRMhgjEDTbHvg2laKMo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GSdk9bpHtq+9uLIUbIU7yh6FjbdV4JP+k904Ih68J3yx2Dg0ULYARyDma673Lp1DRBF644f0pjL1RsoH9TG9TJZQrjAmnZMyuVHcnyqi8dvZIovO/fglmRR4Fm+CNTKTNENt+TGVPGSIed1aX49Lw5s/eXL/iB12nR774HuRaXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AF641113E;
-	Tue, 24 Jun 2025 02:32:32 -0700 (PDT)
-Received: from e129154.arm.com (unknown [10.57.66.60])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C5BEC3F66E;
-	Tue, 24 Jun 2025 02:32:45 -0700 (PDT)
-From: Beata Michalska <beata.michalska@arm.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	alyssa@rosenzweig.io,
-	lyude@redhat.com,
+	s=arc-20240116; t=1750758706; c=relaxed/simple;
+	bh=BFmKSpEgAwVocaPSZwF9WbqCvnn76JBej5o9Mf7w2BI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ieQde7TIQK3tszbO31Ux1o53dEAgiZuEwN2emPLJAfKapxwr3hwwWsXIVsNDPKmBYhuUKDGlkP+y0MUzhQyptroa0eacwIafac3w7qbmEJXaJt8DUS4mv6mtenwNdweFYUr+aXdtgWP3iENwbr7MTntwNQrDtr50aERbIrBcShI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=xb2dolm7; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=6hNG98yt; arc=none smtp.client-ip=46.30.212.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="xb2dolm7";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="6hNG98yt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750758693; x=1751363493;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=Y2ViI0m6Ko/2vCWgWrN+qyTDBaY8p8ed02QkoJAaUgU=;
+	b=xb2dolm77e4o92saCnwSqyWpYW9GAv3uL4RlOkuUBjwsNbue22f0cRtCdJsd2htSG5QfloSi5BicU
+	 K2vHl7Ki2kTNG+gg/n2Af4gF/60s+q64vAb8DiVr4sG8v5RBE7sj1fF6I9ESqldRIpLZKF2hPc4Rlf
+	 2Wt+h/wMtVXkL0qH/mC6FZLINkVzjU4qJSoa51HNHv7VJj7AHpwXm5g2exIGo7uoOjmsMkkwlb3Mtm
+	 KrW6wbHNAX7tsbKGMGAV8KO12Cc+Hx0g4R0T0kTiG9pCl4idcB05z2vvkTsZKQkNnazTAn5G4dqMha
+	 KZCYMMMpuhADBp22uTamHK3rsqAcGOA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750758693; x=1751363493;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=Y2ViI0m6Ko/2vCWgWrN+qyTDBaY8p8ed02QkoJAaUgU=;
+	b=6hNG98ytp9OfWzzNVSjeBjQl0/oyu15lMqzPrsfOmom+8QOlJLCEQZpFo1W5VC1uL+GugOOoZ/T1R
+	 nFD5FalAg==
+X-HalOne-ID: ce8fdaae-50e0-11f0-b958-b37c246f863f
+Received: from localhost.localdomain (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
+	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id ce8fdaae-50e0-11f0-b958-b37c246f863f;
+	Tue, 24 Jun 2025 09:51:33 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH v2 2/2] drm: nova-drm: Update ioctl handlers to drop Opaque usage
-Date: Tue, 24 Jun 2025 11:32:00 +0200
-Message-Id: <20250624093200.812812-3-beata.michalska@arm.com>
-In-Reply-To: <20250624093200.812812-1-beata.michalska@arm.com>
-References: <20250624093200.812812-1-beata.michalska@arm.com>
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH] mm/vmalloc: allow to set node and align in vrealloc
+Date: Tue, 24 Jun 2025 11:51:21 +0200
+Message-Id: <20250624095121.3243540-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,176 +59,90 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Danilo Krummrich <dakr@kernel.org>
+Reimplement vrealloc() to be able to set node and alignment should
+a user need to do so. Rename the function to vrealloc_node() to
+better match what it actually does now and introduce a macro for
+vrealloc() for backward compatibility.
 
-Following the removal of `Opaque<T>` for ioctl arguments in the DRM
-framework, this patch updates the affected driver code to use typed
-references directly.
+With that change we also provide the ability for the Rust part of
+the kernel to set node and aligmnent in its allocations.
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
 ---
- drivers/gpu/drm/nova/file.rs | 23 ++++++--------
- drivers/gpu/drm/nova/nova.rs |  1 -
- drivers/gpu/drm/nova/uapi.rs | 61 ------------------------------------
- 3 files changed, 9 insertions(+), 76 deletions(-)
- delete mode 100644 drivers/gpu/drm/nova/uapi.rs
+ include/linux/vmalloc.h |  8 +++++---
+ mm/vmalloc.c            | 16 +++++++++++++---
+ 2 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-index 7e59a34b830d..7e7d4e2de2fb 100644
---- a/drivers/gpu/drm/nova/file.rs
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -2,13 +2,11 @@
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index fdc9aeb74a44..7d5251287687 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -197,9 +197,11 @@ extern void *__vcalloc_noprof(size_t n, size_t size, gfp_t flags) __alloc_size(1
+ extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, 2);
+ #define vcalloc(...)		alloc_hooks(vcalloc_noprof(__VA_ARGS__))
  
- use crate::driver::{NovaDevice, NovaDriver};
- use crate::gem::NovaObject;
--use crate::uapi::{GemCreate, GemInfo, Getparam};
- use kernel::{
-     alloc::flags::*,
-     drm::{self, gem::BaseObject},
-     pci,
-     prelude::*,
--    types::Opaque,
-     uapi,
- };
+-void * __must_check vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+-		__realloc_size(2);
+-#define vrealloc(...)		alloc_hooks(vrealloc_noprof(__VA_ARGS__))
++void *__must_check vrealloc_node_noprof(const void *p, size_t size,
++		unsigned long align, gfp_t flags, int nid) __realloc_size(2);
++#define vrealloc_noprof(p, s, f)	vrealloc_node_noprof(p, s, 1, f, NUMA_NO_NODE)
++#define vrealloc_node(...)		alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
++#define vrealloc(...)			alloc_hooks(vrealloc_noprof(__VA_ARGS__))
  
-@@ -26,20 +24,19 @@ impl File {
-     /// IOCTL: get_param: Query GPU / driver metadata.
-     pub(crate) fn get_param(
-         dev: &NovaDevice,
--        getparam: &Opaque<uapi::drm_nova_getparam>,
-+        getparam: &mut uapi::drm_nova_getparam,
-         _file: &drm::File<File>,
-     ) -> Result<u32> {
-         let adev = &dev.adev;
-         let parent = adev.parent().ok_or(ENOENT)?;
-         let pdev: &pci::Device = parent.try_into()?;
--        let getparam: &Getparam = getparam.into();
+ extern void vfree(const void *addr);
+ extern void vfree_atomic(const void *addr);
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index ab986dd09b6a..117894301db1 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4081,10 +4081,12 @@ void *vzalloc_node_noprof(unsigned long size, int node)
+ EXPORT_SYMBOL(vzalloc_node_noprof);
  
--        let value = match getparam.param() as u32 {
-+        let value = match getparam.param as u32 {
-             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
-             _ => return Err(EINVAL),
-         };
+ /**
+- * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
++ * vrealloc_node - reallocate virtually contiguous memory; contents remain unchanged
+  * @p: object to reallocate memory for
+  * @size: the size to reallocate
++ * @align: requested alignment
+  * @flags: the flags for the page level allocator
++ * @nid: node id
+  *
+  * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
+  * @p is not a %NULL pointer, the object pointed to is freed.
+@@ -4103,7 +4105,7 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+  * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
+  *         failure
+  */
+-void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
++void *vrealloc_node_noprof(const void *p, size_t size, unsigned long align, gfp_t flags, int nid)
+ {
+ 	struct vm_struct *vm = NULL;
+ 	size_t alloced_size = 0;
+@@ -4127,6 +4129,13 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+ 		if (WARN(alloced_size < old_size,
+ 			 "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
+ 			return NULL;
++		if (WARN(nid != NUMA_NO_NODE && nid != page_to_nid(vmalloc_to_page(p)),
++			 "vrealloc() has mismatched nids\n"))
++			return NULL;
++		if (WARN((uintptr_t)p & (align - 1),
++			 "will not reallocate with a bigger alignment (0x%lx)\n",
++			 align))
++			return NULL;
+ 	}
  
--        getparam.set_value(value);
-+        getparam.value = value;
+ 	/*
+@@ -4158,7 +4167,8 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+ 	}
  
-         Ok(0)
-     }
-@@ -47,13 +44,12 @@ pub(crate) fn get_param(
-     /// IOCTL: gem_create: Create a new DRM GEM object.
-     pub(crate) fn gem_create(
-         dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_create>,
-+        req: &mut uapi::drm_nova_gem_create,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemCreate = req.into();
--        let obj = NovaObject::new(dev, req.size().try_into()?)?;
-+        let obj = NovaObject::new(dev, req.size.try_into()?)?;
+ 	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
+-	n = __vmalloc_noprof(size, flags);
++	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
++
+ 	if (!n)
+ 		return NULL;
  
--        req.set_handle(obj.create_handle(file)?);
-+        req.handle = obj.create_handle(file)?;
- 
-         Ok(0)
-     }
-@@ -61,13 +57,12 @@ pub(crate) fn gem_create(
-     /// IOCTL: gem_info: Query GEM metadata.
-     pub(crate) fn gem_info(
-         _dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_info>,
-+        req: &mut uapi::drm_nova_gem_info,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemInfo = req.into();
--        let bo = NovaObject::lookup_handle(file, req.handle())?;
-+        let bo = NovaObject::lookup_handle(file, req.handle)?;
- 
--        req.set_size(bo.size().try_into()?);
-+        req.size = bo.size().try_into()?;
- 
-         Ok(0)
-     }
-diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
-index 902876aa14d1..730598defe04 100644
---- a/drivers/gpu/drm/nova/nova.rs
-+++ b/drivers/gpu/drm/nova/nova.rs
-@@ -5,7 +5,6 @@
- mod driver;
- mod file;
- mod gem;
--mod uapi;
- 
- use crate::driver::NovaDriver;
- 
-diff --git a/drivers/gpu/drm/nova/uapi.rs b/drivers/gpu/drm/nova/uapi.rs
-deleted file mode 100644
-index eb228a58d423..000000000000
---- a/drivers/gpu/drm/nova/uapi.rs
-+++ /dev/null
-@@ -1,61 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--use kernel::uapi;
--
--// TODO Work out some common infrastructure to avoid boilerplate code for uAPI abstractions.
--
--macro_rules! define_uapi_abstraction {
--    ($name:ident <= $inner:ty) => {
--        #[repr(transparent)]
--        pub struct $name(::kernel::types::Opaque<$inner>);
--
--        impl ::core::convert::From<&::kernel::types::Opaque<$inner>> for &$name {
--            fn from(value: &::kernel::types::Opaque<$inner>) -> Self {
--                // SAFETY: `Self` is a transparent wrapper of `$inner`.
--                unsafe { ::core::mem::transmute(value) }
--            }
--        }
--    };
--}
--
--define_uapi_abstraction!(Getparam <= uapi::drm_nova_getparam);
--
--impl Getparam {
--    pub fn param(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).param }
--    }
--
--    pub fn set_value(&self, v: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).value = v };
--    }
--}
--
--define_uapi_abstraction!(GemCreate <= uapi::drm_nova_gem_create);
--
--impl GemCreate {
--    pub fn size(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).size }
--    }
--
--    pub fn set_handle(&self, handle: u32) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).handle = handle };
--    }
--}
--
--define_uapi_abstraction!(GemInfo <= uapi::drm_nova_gem_info);
--
--impl GemInfo {
--    pub fn handle(&self) -> u32 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).handle }
--    }
--
--    pub fn set_size(&self, size: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).size = size };
--    }
--}
 -- 
-2.25.1
+2.39.2
 
