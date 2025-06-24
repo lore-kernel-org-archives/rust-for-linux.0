@@ -1,69 +1,83 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6084221F17
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 11:09:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33237221F17;
+	Tue, 24 Jun 2025 11:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750763370; cv=none; b=kEqb5sMBegQfXSoWd5/aFuo50VMhlO+BcJ5QH35oEzcR7HMBuVEI5lN9eXyHaAJf2vuLdj6p7fY6i5yQOP2NakLs2H8doSIKwGFBR5a+4fxRw4gISNIcb9Wp9attk9ZafvigPXk+9lBeeA+axypGhqr8fph/Z6lG8eBynD7vJoA=
+	t=1750763656; cv=none; b=KUT4ZfH3U5+Ueh9zzad0IVuH8vpZUzFZ9CPnnRwCAdm0hpVQOIlmyH/eAV5WOUvaAHXzoLAnMrTkmACllxikBBqcJTI4/p68sN9QI1o+3yMfP5lqBHYGGw/HKZoVPvDaCZsgDIGRxHKzCRK+SpoMk2ZqnPUaozib2M2EtCMMdIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750763370; c=relaxed/simple;
-	bh=CTPhbo8se9svw/pHkT1sCo49DQwCyHA3m8bcbxjlYQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z84DdOvdExuqI6eh3fK8TNusbu1c5xIK1PjaGilWLZQwnigpGAkWN48o1DiJhfbTnrHnx+y5aVFcLYurXM+qSXN4Nmpdo7bjHokcvb0rj7HgFjz7fY+FUkXKPm4069uykKGOdr8mwtxS6Gs2AGxRGejX2/5BImL4uKsxhJO4IPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4BF4106F;
-	Tue, 24 Jun 2025 04:09:08 -0700 (PDT)
-Received: from arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C3CD23F66E;
-	Tue, 24 Jun 2025 04:09:21 -0700 (PDT)
-Date: Tue, 24 Jun 2025 13:09:12 +0200
-From: Beata Michalska <beata.michalska@arm.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com,
-	daniel.almeida@collabora.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, tmgross@umich.edu, alyssa@rosenzweig.io,
-	lyude@redhat.com, rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH v2 2/2] drm: nova-drm: Update ioctl handlers to drop
- Opaque usage
-Message-ID: <aFqHWOl0XcDdOrlN@arm.com>
-References: <20250624093200.812812-1-beata.michalska@arm.com>
- <20250624093200.812812-3-beata.michalska@arm.com>
- <0ba4c988-194a-46f6-8e5d-b8fbc95a3eb8@kernel.org>
+	s=arc-20240116; t=1750763656; c=relaxed/simple;
+	bh=Us7Q1PFZzaMBawMok6kpzJbe2Glw5foEeT6W19FayVw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hhofjdoObRbc8jDcT3GqJz6fEVz6FXHS/ei6QC26GbDmBWrZ6oVG16jLmb2EPHd5h332vPsKr9oAfZ3uQPTZwEm8m14X82cZAVWUErQ4pDeA2YGxOvcbtElhzpx45KcU5iA1pES6Z5b4RXMCOrK3QYoUIH/z+XPssUfaIhbHLzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fXoKQpDr; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fXoKQpDr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363A1C4CEEE;
+	Tue, 24 Jun 2025 11:14:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750763654;
+	bh=Us7Q1PFZzaMBawMok6kpzJbe2Glw5foEeT6W19FayVw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fXoKQpDrEY6m6qKm3fCmp+HwRy5F0dgMYA+u5GTCsLJVBhljgr3kFarHv7NooRCsU
+	 dmJ5lSMvd/xrHz8UDapUpPqrxIE0U+Df1RDQxbFcwvopL+lBo/to6IxEHbkna3v3Ln
+	 Ul0D/YRJXEhhdglDoRO4DRWoKgqrWXGx8JLH0l8mlADpXbnXbRLzYXrPfKoQjZKKRm
+	 tBbX8HVp9u3/w39v7leEK4db6Y9CLy/xS/A8CPpawqQczmMRAnqxM+9m2c+nWMBbWU
+	 2IpqDb7horrpODjDDUv8d/6Eql1tL27U8RJizLmSeQ1zbYy30fKNZabV6qxP1SrI2D
+	 b0DZcGzMRWLsw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: alex.gaynor@gmail.com,  ojeda@kernel.org,  FUJITA Tomonori
+ <fujita.tomonori@gmail.com>,  aliceryhl@google.com,
+  anna-maria@linutronix.de,  bjorn3_gh@protonmail.com,
+  boqun.feng@gmail.com,  dakr@kernel.org,  frederic@kernel.org,
+  gary@garyguo.net,  jstultz@google.com,  linux-kernel@vger.kernel.org,
+  lossin@kernel.org,  lyude@redhat.com,  rust-for-linux@vger.kernel.org,
+  sboyd@kernel.org,  tglx@linutronix.de,  tmgross@umich.edu
+Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
+ Delta
+In-Reply-To: <CANiq72=mDe2kB4yQnzb=kwopyUYG936pOoj80YpWk7+q6aJwbQ@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Tue, 24 Jun 2025 13:08:17 +0200")
+References: <20250610132823.3457263-1-fujita.tomonori@gmail.com>
+	<175015666837.277659.5038961663728008472.b4-ty@kernel.org>
+	<CANiq72=mDe2kB4yQnzb=kwopyUYG936pOoj80YpWk7+q6aJwbQ@mail.gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 24 Jun 2025 13:14:01 +0200
+Message-ID: <87plet4cjq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ba4c988-194a-46f6-8e5d-b8fbc95a3eb8@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 24, 2025 at 11:59:25AM +0200, Danilo Krummrich wrote:
-> On 6/24/25 11:32 AM, Beata Michalska wrote:
-> > From: Danilo Krummrich <dakr@kernel.org>
-> > 
-> > Following the removal of `Opaque<T>` for ioctl arguments in the DRM
-> > framework, this patch updates the affected driver code to use typed
-> > references directly.
-> > 
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> 
-> It's very kind you want to attribute the shared diff with a separate patch, but
-> you have to include this change into patch 1 ("rust: drm: Drop the use of Opaque
-> for ioctl arguments"), otherwise it still breaks the build intermediately.
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+
+> On Tue, Jun 17, 2025 at 12:39=E2=80=AFPM Andreas Hindborg <a.hindborg@ker=
+nel.org> wrote:
+>>
+>> [1/5] rust: time: Rename Delta's methods from as_* to into_*
+>>       commit: 2ed94606a0fea693e250e5b8fda11ff8fc240d37
 >
-It is not so uncommon to send such changes in separate patches, to clearly
-distinguish the changes, as long as whole series preserves the build.
-That said, I can still send those as a single patch if that is the requirement.
+> Do we want this given the (~ongoing) discussion at
+>
+>     https://lore.kernel.org/rust-for-linux/20250617144155.3903431-2-fujit=
+a.tomonori@gmail.com/
+>
+> ?
+>
 
----
-BR
-Beata
-> Please feel free to just include the change in your patch -- no need for any
-> attribution as far as I'm concerned. :)
+My plan is to merge it and go with `into_*`. There are pros and cons for
+both `to_*` and `into_*`. If someone has objections, they can send a new
+patch with rationale and we can revisit. Sounds OK?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
