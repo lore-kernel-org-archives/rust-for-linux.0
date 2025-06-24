@@ -1,145 +1,104 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F023D2AD
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 13:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DE62C326D
+	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 14:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750773280; cv=none; b=kSKlGVM77BOcVYtDaTQPz3ncCqXacmVMN80hKNqxf2OUT7xGn9jBJCTzzMddVWHbLQqHcSTC8/QNNVAkw7QmnQHQTZdb7bztZCc0uua53FpQ1TArxV88Qr3bUQ0gTiPDp7HGHs9hxUmayizf9J9itSod6Kn2MfzKyqHvwEaL7YQ=
+	t=1750774159; cv=none; b=oJmil9AAn6krizUsgvISMpL6+VaiWweN+LCH3m9rUxUoQnAfxa0cClYxQ0Jrrpoz5EhsUMIWeDlh4oMLZwgA7pY5deIpc7Us5ozLhH3Vo7I9cVcTjFjDdiF+SmAqgcHWPgBuflejSkaEd6XHLuWk/KKqcx4iuRSkftJfefCRPp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750773280; c=relaxed/simple;
-	bh=qCGN185qCjx8F271RlR0vW4iPGcpJCnJd3e/5OauLFc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e/B3C6R7Itf4wFQBjL3SSxPxlmPJDMQxUQSdDffpH0xS+xHeKtgcOGa+0SdRGL0o0p4tpC/OK5zyLQnwveVBWW4H523weaMok5qHowhbDLGnhqM2E3pfJnGzhkSSqlSbdjmNrpH8JFp255pLYBSXkM/I9EyCzd9Ygq7zKHUr//Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J/UpI6wF; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1750774159; c=relaxed/simple;
+	bh=N9FFUmIdDzVMU8XsJRCCmoPnShJDK1x8yp/Sugg6+iE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KIUoADr/jC7xhyz57Agon5dvT5hJs4g4BR+7ieH3LcjaeTGq9xq7rVZDHYxazqMj+XZsF7BregF8vV4vKk9ulL9iaMcejZ30i4q1GWuDbOSRIoXp5fkq4hjEoTpf37aHsjs+YNaPNi9os4VeYP3HPkwUugWZzqMcsuuHleE75TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lqymA6bO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J/UpI6wF"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3a54690d369so4638132f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 06:54:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1750773277; x=1751378077; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ndIWN7+8y5BdWE2PTIgJRaIaFxEDuJ6LVBN5W+A3/wU=;
-        b=J/UpI6wFFt9MJkzf24qTCwKcKkD6jMrbJ4stzJFbZgcVraQBjEwcNcy2Ff5vydeJfl
-         gz971kySHoMCUQ5Bl6zOOwYBlagk8tXlGdVJT5gL7lSjLfmhsqHOLvColZHA+M4AIKIg
-         RnZgIQJF2EqwE/P3DEEMlCVoTp7eoXpPj1TXFFWMdfnqiG0NsU9+JSbDYQlOz/Y3eqDR
-         0RRjYOkZV0HQog/bdLGnA57v5+bAb9IaaMjVRqVYX2SX256LeGvbTGnCpKNM/nMSfUTE
-         42TEeSxS2c4aUIhMtWm3JMr6aJQeiinpmChDldJ2v90N/58rRSUZpwQO6uSJz7o27McQ
-         Gegw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750773277; x=1751378077;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ndIWN7+8y5BdWE2PTIgJRaIaFxEDuJ6LVBN5W+A3/wU=;
-        b=KNpEHVBe0WigdTTr3sIXP68B6xR2GEnCp1fZiFmKDCIclj1iXB2ecth6Rpiu6PCzlT
-         TN6ZKE18+CJn0lqwreBJAXxpqO8RgH0xlPIT+UIL2Af6LjTmh1aZsQZWxFnIWvdi91S9
-         sy1bcHi7ywzsKums981fkVCVMlKbgZfiUYEzCAC3FAI4M5YlSQcHPUOVAsiaMB3QCzp2
-         fWc1OMFEP/y33608zlPW1p6j1vCs5aN8seng8/xWmtwOTy/ABmu1GOsU+gAlE9djPZ32
-         0MJ0U8E2Ayw7dd0yLE+6lUOrxTR8OxTh0Jg/yUJh1G9bvkJ6cnU/Pa5cmGWYgntKtlk2
-         pywg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHkp7SGPJ9AkMTGddGYezJNdff2lHgkrfJQmy4zxmLksZPqHD0FFocWg3yFBlgT1i0TeLo7YHH5VcUayIUHg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyumCMY3BboqCZLoGwiIXzgiz0piITbluyiObMTySBEXrpd7EtQ
-	56Lyk7LRs2vEiY9aWJpTRobU3C1IB2qQoyB5jN1iC3fH84K3bQ8OWaXd+afkdMYTQZEJvIibvXp
-	QZY8WPV25Fx5hI78mmbhh95WirNUR0ecr4vmE8DQ5
-X-Gm-Gg: ASbGncu75fZuj4/rukn/GR/n4aSu8wuTTqXIKFLaKdFPmIX4kTMLLL56tMVLHI5fuiC
-	Sww+XwgJAHd1k4cvbeSrm2+zJsHreLYQHv6PQBf2v6ZGqLPf6UGL/62+IAd/ayGeCaU0r+N9grZ
-	OHsUByRfxii5E83F4HdMFnCvUt0ibK363Uvn7RSONFxMbA
-X-Google-Smtp-Source: AGHT+IE6qG4yT4F52V089BtqdcgW05JVoCujc2240lce+bClkgklwaKunhcojU2TzqvrWFprU2PCaZKTOAq2hBQtLY8=
-X-Received: by 2002:a05:6000:4708:b0:3a4:f6ba:51c8 with SMTP id
- ffacd0b85a97d-3a6d12a3ee6mr13662866f8f.14.1750773277164; Tue, 24 Jun 2025
- 06:54:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqymA6bO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E5FC4CEE3;
+	Tue, 24 Jun 2025 14:09:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750774159;
+	bh=N9FFUmIdDzVMU8XsJRCCmoPnShJDK1x8yp/Sugg6+iE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lqymA6bOfjgmSBBYC8KvTYLoY2Fq4JzsZf5a4Crbr4RuU0GSagPpMnYnTKUvUaf3A
+	 prkvZQ78pu948053uqmFodxfpwVFxEEUbo/0OSliobF52Eey/eTEZXEpXt5aOJt5Xo
+	 /ErkUreEosCfgiPfOfq08ofbBKg1oFQ/IQJeFzNIlgZi3eeoIuhUySbosmSBJ5igeh
+	 3VXy7Zsa+oEZbYSTDfxUThWxsfkWQOaoK6v00n0gru84oEEEuXAfhfPJqL6kYLtg6D
+	 ymqrj33zjM3km4Yn0ufGPthuaInGM44NXnhES3TRmMG8MekVAqgDWo0u15l8lOisWr
+	 k/4vbhkex8tjA==
+Date: Tue, 24 Jun 2025 16:09:15 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 1/2] gpu: nova-core: impl From for u32 for enums used
+ from register!
+Message-ID: <aFqxi7AvQiBLl528@pollux>
+References: <20250624132337.2242-1-dakr@kernel.org>
+ <DAUT7K6AFAXI.I6R4SBSYLRKP@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72mBfTr0cdj_4Cpdk62h2k+Y5K3NSs54_1-9jiszMZ6AuA@mail.gmail.com>
- <20250619.160844.1477802332578239775.fujita.tomonori@gmail.com>
- <CAH5fLgjJRbjPnN58RuaBtNrY1A-tif3ohETLxdbaE4b46Hjbqg@mail.gmail.com> <20250624.224923.1801832299260163743.fujita.tomonori@gmail.com>
-In-Reply-To: <20250624.224923.1801832299260163743.fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 24 Jun 2025 14:54:24 +0100
-X-Gm-Features: Ac12FXzK2-zU_qiS9xBkPbYaAbQyGj3kbgqXjtmwFWyfIVtERMkUn_W2s4_gTfo
-Message-ID: <CAH5fLgjttTnev2h4J-hF-LdUTJCoryJyFm5_LqJ6_GBe+=An5Q@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] rust: time: Rename Delta's methods as_micros_ceil
- and as_millis
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: miguel.ojeda.sandonis@gmail.com, a.hindborg@kernel.org, 
-	alex.gaynor@gmail.com, ojeda@kernel.org, anna-maria@linutronix.de, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
-	frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAUT7K6AFAXI.I6R4SBSYLRKP@nvidia.com>
 
-On Tue, Jun 24, 2025 at 2:49=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> On Tue, 24 Jun 2025 13:15:32 +0100
-> Alice Ryhl <aliceryhl@google.com> wrote:
->
-> >> So would the function be defined like this?
-> >>
-> >> fn as_nanos(self) -> i64;
-> >>
-> >> If that's the case, then we've come full circle back to the original
-> >> problem; Clippy warns against using as_* names for trait methods that
-> >> take self as follows:
-> >>
-> >> warning: methods called `as_*` usually take `self` by reference or `se=
-lf` by mutable reference
-> >>    --> /home/fujita/git/linux-rust/rust/kernel/time/hrtimer.rs:430:17
-> >>     |
-> >> 430 |     fn as_nanos(self) -> i64;
-> >>     |                 ^^^^
-> >>     |
-> >>     =3D help: consider choosing a less ambiguous name
-> >>     =3D help: for further information visit https://rust-lang.github.i=
-o/rust-clippy/master/index.html#wrong_self_convention
-> >>     =3D note: `-W clippy::wrong-self-convention` implied by `-W clippy=
-::all`
-> >>     =3D help: to override `-W clippy::all` add `#[allow(clippy::wrong_=
-self_convention)]`
-> >>
-> >> https://lore.kernel.org/rust-for-linux/20250610132823.3457263-2-fujita=
-.tomonori@gmail.com/
+On Tue, Jun 24, 2025 at 10:48:57PM +0900, Alexandre Courbot wrote:
+> On Tue Jun 24, 2025 at 10:23 PM JST, Danilo Krummrich wrote:
+> > Implement From for u32 for all enum types used within the register!()
+> > macro.
 > >
-> > Are we missing a derive(Copy) for this type? Clippy does not emit that
-> > lint if the type is Copy:
-> > https://github.com/rust-lang/rust-clippy/issues/273
->
-> I think that both Delta and Instant structs implement Copy.
->
-> #[repr(transparent)]
-> #[derive(PartialEq, PartialOrd, Eq, Ord)]
-> pub struct Instant<C: ClockSource> {
->     inner: bindings::ktime_t,
->     _c: PhantomData<C>,
-> }
->
-> impl<C: ClockSource> Clone for Instant<C> {
->     fn clone(&self) -> Self {
->         *self
->     }
-> }
->
-> impl<C: ClockSource> Copy for Instant<C> {}
->
-> #[derive(Copy, Clone, PartialEq, PartialOrd, Eq, Ord, Debug)]
-> pub struct Delta {
->     nanos: i64,
-> }
->
-> The above warning is about the trait method.
+> > This avoids a conflict with [1] as reported in [2].
+> >
+> > Cc: Alexandre Courbot <acourbot@nvidia.com>
+> > Cc: Miguel Ojeda <ojeda@kernel.org>
+> > Link: https://lore.kernel.org/r/20250615-ptr-as-ptr-v12-5-f43b024581e8@gmail.com [1]
+> > Link: https://lore.kernel.org/all/20250624173114.3be38990@canb.auug.org.au/ [2]
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> 
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+> 
+> Also confirmed that Ampere still successfully probed with this:
+> 
+> Tested-by: Alexandre Courbot <acourbot@nvidia.com>
+> 
+> One small comment and question below.
+> 
+> > ---
+> >  drivers/gpu/nova-core/falcon.rs | 18 ++++++++++++++++++
+> >  1 file changed, 18 insertions(+)
+> >
+> > diff --git a/drivers/gpu/nova-core/falcon.rs b/drivers/gpu/nova-core/falcon.rs
+> > index 07be1c30668c..1affffb109ec 100644
+> > --- a/drivers/gpu/nova-core/falcon.rs
+> > +++ b/drivers/gpu/nova-core/falcon.rs
+> > @@ -20,6 +20,16 @@
+> >  mod hal;
+> >  pub(crate) mod sec2;
+> >  
+> > +macro_rules! impl_from_enum_to_u32 {
+> > +    ($enum_type:ty) => {
+> > +        impl From<$enum_type> for u32 {
+> > +            fn from(value: $enum_type) -> Self {
+> > +                value as u32
+> > +            }
+> > +        }
+> > +    };
+> > +}
+> 
+> We might need some equivalent in other modules as well in the future -
+> do you think we should move it to the root of the driver, and explain
+> its purpose with a comment?
 
-Wait, it's a trait method!?
+Let's do that once we need it in other modules.
 
-Alice
+> I am also thinking that we might want to turn this into a derive macro
+> in the future, similar to `FromPrimitive` - so maybe a TODO item is
+> warranted for this. I haven't looked closely at the `FromPrimitive`
+> patchset yet but it would be neat if we could leverage it somehow.
+
+This sounds exactly like what IntoPrimitive does. So, yes, I can add a comment
+to replace the macro with IntoPrimitive in the future.
