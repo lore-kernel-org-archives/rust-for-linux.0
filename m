@@ -1,186 +1,58 @@
-Received: from mailrelay5-3.pub.mailoutpod3-cph3.one.com (mailrelay5-3.pub.mailoutpod3-cph3.one.com [46.30.212.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBFF1A01B9
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Jun 2025 12:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63752A1A4;
+	Tue, 24 Jun 2025 12:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750767385; cv=none; b=hVurKHFKfUyFNzL0NIkSNcQvZF8VTA/xwa+nqJ4me5Tt8ald5fHKlQgR9SgcxLiD6GRt9/TUV8ATsv17LlUQ4OoYOM9mlUrugm/JjJV1Wjv0B/myNl8xLAZePrKA6PQ249b0BdCCe23ojjybqeUeb2ALXXvjrCu7rAN+Wzmbtjg=
+	t=1750767709; cv=none; b=UPtFGum2AIJIlhiC+n6o+l1nFMo432GlTPemJuKXQGFQitKMxvnu21CLrYClJGimudGTr0Bw9WcCuGsj6F8nFVSKGBK4hr2avNVKce3wlep5SBV0zKNksDOAOGM1DdDSkuNBohQkzqaE0YOMqwRG1Z0YHfMcduGhPquNOB29O34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750767385; c=relaxed/simple;
-	bh=zrvi77xSHk1MKReIAMpc6aIPXchnFwbbbWCkQnC3Bg8=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=sK/r4+n+MfpOG7XFW2int6x1i2c7W9f0D4hj6KeicAGhxPsA+kauMrjENLa2dQXiOuoTJZVtpPthSngBDkWTYpjQYaDiD9q1MroZUPdVTAictayjYCG8pwQinMYIYC8RdRoGKelo/NqOQ2jOaxBNKXWvFOUGHFg45jPGVcavJ+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=O1Y3yI7y; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=bZ6Ahj+E; arc=none smtp.client-ip=46.30.212.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1750767709; c=relaxed/simple;
+	bh=wA94sXqAIpFgEMTxTi5i3m/XKl0PgGDmPS3JbFKqq7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WeKaIdZaSAtYcvj1v4Q0Y9A6vCjw0qlAOQzVHdbo6yZqX1xPKDeZWH9KkEn9diSLVdidjQad3daBA4wjvyD/LdPjto9/ejntiUR02Tecnmk4ZWnnmdX+WwbjChEHm+ifyQEDRxJw0XSk4yjDOlLGYF+nuA9ZiLnzqK4sB8KWovA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOlFmrKU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="O1Y3yI7y";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="bZ6Ahj+E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750767312; x=1751372112;
-	d=konsulko.se; s=rsa1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=M1Kg+66kgHeJqX/QTGsvuXZbak7RCmywd80sh5ukf3U=;
-	b=O1Y3yI7yDGtiM9CJBlbGz+wXBfbYrUpUbsnMBZ/MQBv16Gl7XVKButbAve9mGYAp3S8jgAdDUgGn6
-	 IkOTDz5oDWzMCszy22AG/G4qECmO7V0pU8ocjI+WlCSiwgL9xHypEuZTGWN3vQRXcTdvgfLZjBeo7E
-	 70jjzTwYge3Wh9WF8uGmu01fWKRi80HuxrL5D6hWzJxlEQsAsM5Y0yBLz4/mz87EslFz/ji+v5JNCZ
-	 H7pbrka4q9qZ4PvSAQTLz/KPJJsBJz21qRAlpOUxfXRTNW5BrFF40J8G/QPy2dYyR/XMHt7LE7Ak2x
-	 xUmf56OJ2hJLKHP8fVeWEjRn05oIy4w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750767312; x=1751372112;
-	d=konsulko.se; s=ed1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=M1Kg+66kgHeJqX/QTGsvuXZbak7RCmywd80sh5ukf3U=;
-	b=bZ6Ahj+ExbkkRKMS4MKnICYB62Nu0dxU9dEaCvG8p/lb+BVUOP+EBn9ZfKDKz+TULZ0c2AzmSzsu7
-	 MmvVSCSCQ==
-X-HalOne-ID: df90b046-50f4-11f0-af95-d7c209f8bd06
-Received: from smtpclient.apple (host-90-233-201-126.mobileonline.telia.com [90.233.201.126])
-	by mailrelay5.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id df90b046-50f4-11f0-af95-d7c209f8bd06;
-	Tue, 24 Jun 2025 12:15:12 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOlFmrKU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C261BC4CEE3;
+	Tue, 24 Jun 2025 12:21:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750767708;
+	bh=wA94sXqAIpFgEMTxTi5i3m/XKl0PgGDmPS3JbFKqq7w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hOlFmrKUwu5osjbFIQzpjuy1C1Ei7zlQIcFYdLKMEEotrYyZnQdQw6ygA7Vp5qJZm
+	 WZnZmQ6hOIHKTjNGYQLoCAOM8Ss53WfpMX/4K+MGbRrkDlm2Fv+QvAUcM2J389Cikx
+	 MrZhzvoTExRMUSdclf2o7kJpCu8p3ZxerY7rZ4i8zSjKXshFr5l7fovQcrJTv7oM3y
+	 jOXEqCJ7H+Tlqjwpd2885wMOBofcy7iqh0u6xyhFu2x9v/KrpgerEUw5s3HPTqgX6X
+	 LkdXVdSJQIwT3GqkNb8oU0CgIpJuM4NS/zWbDyqRWL8IUR8xHASRu4krWCNyFyRDEk
+	 0cyAYqPdMvvOA==
+Date: Tue, 24 Jun 2025 14:21:44 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] mm/vmalloc: allow to set node and align in vrealloc
+Message-ID: <aFqYWOZoOirYlUCy@pollux>
+References: <20250624095121.3243540-1-vitaly.wool@konsulko.se>
+ <aFqT1mK7SYsYd3DZ@pc636>
+ <D562EE6A-DE99-4C97-8934-D60682DDE711@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH] mm/vmalloc: allow to set node and align in vrealloc
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <aFqT1mK7SYsYd3DZ@pc636>
-Date: Tue, 24 Jun 2025 14:15:01 +0200
-Cc: linux-mm@kvack.org,
- akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D562EE6A-DE99-4C97-8934-D60682DDE711@konsulko.se>
-References: <20250624095121.3243540-1-vitaly.wool@konsulko.se>
- <aFqT1mK7SYsYd3DZ@pc636>
-To: Uladzislau Rezki <urezki@gmail.com>
-X-Mailer: Apple Mail (2.3826.200.121)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D562EE6A-DE99-4C97-8934-D60682DDE711@konsulko.se>
 
+On Tue, Jun 24, 2025 at 02:15:01PM +0200, Vitaly Wool wrote:
+> There’s a patch pending inclusion of this one which will be the user of this change. I was reluctant
+> to combine these 2 in one series because the second one is on the Rust side, but it can be found
+> here: https://github.com/vwool/linux-mm/pull/new/realloc-extend.
 
+I think the link is broken, I suppose you wanted to refer to the patch in [1].
 
-> On Jun 24, 2025, at 2:02=E2=80=AFPM, Uladzislau Rezki =
-<urezki@gmail.com> wrote:
->=20
-> On Tue, Jun 24, 2025 at 11:51:21AM +0200, Vitaly Wool wrote:
->> Reimplement vrealloc() to be able to set node and alignment should
->> a user need to do so. Rename the function to vrealloc_node() to
->> better match what it actually does now and introduce a macro for
->> vrealloc() for backward compatibility.
->>=20
->> With that change we also provide the ability for the Rust part of
->> the kernel to set node and aligmnent in its allocations.
->>=20
->> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
->> ---
->> include/linux/vmalloc.h |  8 +++++---
->> mm/vmalloc.c            | 16 +++++++++++++---
->> 2 files changed, 18 insertions(+), 6 deletions(-)
->>=20
->> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
->> index fdc9aeb74a44..7d5251287687 100644
->> --- a/include/linux/vmalloc.h
->> +++ b/include/linux/vmalloc.h
->> @@ -197,9 +197,11 @@ extern void *__vcalloc_noprof(size_t n, size_t =
-size, gfp_t flags) __alloc_size(1
->> extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, =
-2);
->> #define vcalloc(...) alloc_hooks(vcalloc_noprof(__VA_ARGS__))
->>=20
->> -void * __must_check vrealloc_noprof(const void *p, size_t size, =
-gfp_t flags)
->> - __realloc_size(2);
->> -#define vrealloc(...) alloc_hooks(vrealloc_noprof(__VA_ARGS__))
->> +void *__must_check vrealloc_node_noprof(const void *p, size_t size,
->> + unsigned long align, gfp_t flags, int nid) __realloc_size(2);
->> +#define vrealloc_noprof(p, s, f) vrealloc_node_noprof(p, s, 1, f, =
-NUMA_NO_NODE)
->> +#define vrealloc_node(...) =
-alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
->> +#define vrealloc(...) alloc_hooks(vrealloc_noprof(__VA_ARGS__))
->>=20
->> extern void vfree(const void *addr);
->> extern void vfree_atomic(const void *addr);
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index ab986dd09b6a..117894301db1 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -4081,10 +4081,12 @@ void *vzalloc_node_noprof(unsigned long size, =
-int node)
->> EXPORT_SYMBOL(vzalloc_node_noprof);
->>=20
->> /**
->> - * vrealloc - reallocate virtually contiguous memory; contents =
-remain unchanged
->> + * vrealloc_node - reallocate virtually contiguous memory; contents =
-remain unchanged
->>  * @p: object to reallocate memory for
->>  * @size: the size to reallocate
->> + * @align: requested alignment
->>  * @flags: the flags for the page level allocator
->> + * @nid: node id
->>  *
->>  * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If =
-@size is 0 and
->>  * @p is not a %NULL pointer, the object pointed to is freed.
->> @@ -4103,7 +4105,7 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
->>  * Return: pointer to the allocated memory; %NULL if @size is zero or =
-in case of
->>  *         failure
->>  */
->> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->> +void *vrealloc_node_noprof(const void *p, size_t size, unsigned long =
-align, gfp_t flags, int nid)
->> {
->> struct vm_struct *vm =3D NULL;
->> size_t alloced_size =3D 0;
->> @@ -4127,6 +4129,13 @@ void *vrealloc_noprof(const void *p, size_t =
-size, gfp_t flags)
->> if (WARN(alloced_size < old_size,
->> "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
->> return NULL;
->> + if (WARN(nid !=3D NUMA_NO_NODE && nid !=3D =
-page_to_nid(vmalloc_to_page(p)),
->> + "vrealloc() has mismatched nids\n"))
->> + return NULL;
->> + if (WARN((uintptr_t)p & (align - 1),
->> + "will not reallocate with a bigger alignment (0x%lx)\n",
->> + align))
->> + return NULL;
->> }
->>=20
->> /*
->> @@ -4158,7 +4167,8 @@ void *vrealloc_noprof(const void *p, size_t =
-size, gfp_t flags)
->> }
->>=20
->> /* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
->> - n =3D __vmalloc_noprof(size, flags);
->> + n =3D __vmalloc_node_noprof(size, align, flags, nid, =
-__builtin_return_address(0));
->> +
->> if (!n)
->> return NULL;
->>=20
->> --=20
->> 2.39.2
->>=20
-> Do we have users which require alignment and nid? I see that it is =
-part
-> of kvrealloc() API only.
->=20
-
-There=E2=80=99s a patch pending inclusion of this one which will be the =
-user of this change. I was reluctant
-to combine these 2 in one series because the second one is on the Rust =
-side, but it can be found
-here: https://github.com/vwool/linux-mm/pull/new/realloc-extend.
-
-~Vitaly=
+[1] https://github.com/vwool/linux-mm/commit/5af47ac6f9010814263617b2136203a54ed4c25e
