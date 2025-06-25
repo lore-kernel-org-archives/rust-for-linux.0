@@ -1,145 +1,87 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [178.154.239.214])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDCE1B4F0A;
-	Wed, 25 Jun 2025 02:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F175103F;
+	Wed, 25 Jun 2025 04:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750819182; cv=none; b=K9TsR3L6TYdl/2e9zvQ1kcDnncE/AvBs+vXpixekpRE7k3GOjEEWFsTrNH/EU/eiNkUpMamDS0Ql576fGGVZAcqGgYG69d9t3UFrI6jFN/RykbspnFHNBYaYIwlJylRmVioZpiweg1MXRRQ2Qpy5/87quum6SWSzuE9V+tsSt9k=
+	t=1750826217; cv=none; b=ToQzKPq+FpTK2YCp723IjQq3HFioaR2mixkR1qWL2yzK2/pqO/WTdDT/pQtUD2Adqs1+Vnfc0VvT6bVXdiarxAdSEziYEQ1LbCl+cWtzQsrVdzMrVgf9FPrJSnmbaJfRaz+ZXgUd/LwxLPY5d5DUml+fYjh1GVgKf6mtd7SgVE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750819182; c=relaxed/simple;
-	bh=WAerYuAXgqsAgcla018iotDoPRumUCAOOHyW2IVFyXk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kopL4lXWGR8gOWDY/ONaQpTl0HTffFuAnVNg/8n80gLKerrMvHPAvcEvT4Kh5jJ19OIo3ZmD/eqjR9qdBnfwN28s47CpGAN7ycC8HKbUmdmYlPzjTSGiu0lxeAkAV+461lSgUqQpiZwB65Hh0+jdvM0vXAUTlNlSwFASD+3AWQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IW5Z1A32; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1750826217; c=relaxed/simple;
+	bh=cCupKY9Hndwkwgmd2K/71AI2364rhm4+f+AMl670xM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u4Qh/9eZ+J/JjloYL1TINJ6gssXxEjHmtbAQPKGJLYl3Zv73IV4Y8hf2ePny50ozAKwMZ1TkOzQexirtP4x6S++hVaUtvyfDqUhd/1mIc+PLPop4eFHNDr/wxBYvdynOlZfR8ZN+r09OhXZE3JbRmeWR3KLiCzFMjkhHyhWNPEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=nC2dcisv; arc=none smtp.client-ip=178.154.239.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IW5Z1A32"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750819180; x=1782355180;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WAerYuAXgqsAgcla018iotDoPRumUCAOOHyW2IVFyXk=;
-  b=IW5Z1A322VM+NyF7LmrxhMrpGwr20V5eG2J8VfD/dDJGuIVMVns/9Ah3
-   QXjVf0CqWOEf5sFVjePcXMun0rwHlT//w9WitYU3W9ujE767UPx0q1L3y
-   9WNS+VNKMZSkxKujdinQ+EUJJzNW2UD3Nipmj3/jX3hS8lOz7MHGUfiyI
-   SeRTfiPnORDwdkiuLJLZpS9MhM91zvYq2Lz11oJuKkVcUPjo3smHg5Lxl
-   jE7whNCLdOVhiGGo3GDzvPayUDt7jIWLRFTkniZ5VnYTd0ugrnMc56noA
-   VOBMCaicvaO4/mLTRKxpTJnsvVATOUlsPKBjUDXvUPd10ig0em0rJdVOR
-   w==;
-X-CSE-ConnectionGUID: r6/sbV+HSfW1IIJq0ySZLw==
-X-CSE-MsgGUID: ng7y4UbYTbiAONABew7nfQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="53143018"
-X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
-   d="scan'208";a="53143018"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2025 19:39:39 -0700
-X-CSE-ConnectionGUID: A5XXVkmVQDKrUq5PVqT0tQ==
-X-CSE-MsgGUID: mI7++jFoSCSUNFPwrZwNVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,263,1744095600"; 
-   d="scan'208";a="183124331"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 24 Jun 2025 19:39:35 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uUG2v-000ShS-1A;
-	Wed, 25 Jun 2025 02:39:33 +0000
-Date: Wed, 25 Jun 2025 10:39:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Christian S. Lima" <christiansantoslima21@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht,
-	richard120310@gmail.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
-Message-ID: <202506251052.onsnGcvR-lkp@intel.com>
-References: <20250624042802.105623-1-christiansantoslima21@gmail.com>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="nC2dcisv"
+Received: from mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:31ca:0:640:ced4:0])
+	by forward103d.mail.yandex.net (Yandex) with ESMTPS id F0A6F60058;
+	Wed, 25 Jun 2025 07:36:45 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id WaLA94GLnuQ0-LsZqoE3S;
+	Wed, 25 Jun 2025 07:36:45 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1750826205;
+	bh=kOV7I3utxcKTGzVyLqwhw09KsqwttzfWXuoRmExx5OM=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=nC2dcisvSrJORapX3rgau3c0XydiNfbUZPupW6xVEUSl+YK95O2UWSiK0/Svj1wrA
+	 wPcYSSpvZVE/Kdd8t5tnF8Th4dgkR+XZXbPK41I2d3YFFAVEblFr8GxrNnZC1+ntRv
+	 JylT+evZl4k4un+T2jCilolaQHbQy8ras05jz/BM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-80.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	dakr@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH] rust: simplify `Adapter::id_info`
+Date: Wed, 25 Jun 2025 07:36:30 +0300
+Message-ID: <20250625043630.7677-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624042802.105623-1-christiansantoslima21@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Christian,
+It was obviously unnecessary to check if `id` is `Some`.
 
-kernel test robot noticed the following build errors:
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ rust/kernel/driver.rs | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-[auto build test ERROR on rust/rust-next]
-[also build test ERROR on linus/master v6.16-rc3 next-20250624]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Christian-S-Lima/rust-transmute-Add-methods-for-FromBytes-trait/20250624-123012
-base:   https://github.com/Rust-for-Linux/linux rust-next
-patch link:    https://lore.kernel.org/r/20250624042802.105623-1-christiansantoslima21%40gmail.com
-patch subject: [PATCH v8] rust: transmute: Add methods for FromBytes trait
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250625/202506251052.onsnGcvR-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506251052.onsnGcvR-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506251052.onsnGcvR-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> error[E0658]: use of unstable library feature 'pointer_is_aligned'
-   --> rust/kernel/transmute.rs:74:68
-   |
-   74 |         if bytes.len() == ::core::mem::size_of::<T>() && slice_ptr.is_aligned() {
-   |                                                                    ^^^^^^^^^^
-   |
-   = note: see issue #96284 <https://github.com/rust-lang/rust/issues/96284> for more information
-   = help: add `#![feature(pointer_is_aligned)]` to the crate attributes to enable
-   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
+diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+index ec9166cedfa7..1036755cb27d 100644
+--- a/rust/kernel/driver.rs
++++ b/rust/kernel/driver.rs
+@@ -178,11 +178,6 @@ fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
+     /// If this returns `None`, it means that there is no match in any of the ID tables directly
+     /// associated with a [`device::Device`].
+     fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+-        let id = Self::of_id_info(dev);
+-        if id.is_some() {
+-            return id;
+-        }
+-
+-        None
++        Self::of_id_info(dev)
+     }
+ }
 --
->> error[E0658]: use of unstable library feature 'pointer_is_aligned'
-   --> rust/kernel/transmute.rs:87:68
-   |
-   87 |         if bytes.len() == ::core::mem::size_of::<T>() && slice_ptr.is_aligned() {
-   |                                                                    ^^^^^^^^^^
-   |
-   = note: see issue #96284 <https://github.com/rust-lang/rust/issues/96284> for more information
-   = help: add `#![feature(pointer_is_aligned)]` to the crate attributes to enable
-   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
---
->> error[E0658]: use of unstable library feature 'pointer_is_aligned'
-   --> rust/kernel/transmute.rs:101:72
-   |
-   101 |         if bytes.len() % ::core::mem::size_of::<T>() == 0 && slice_ptr.is_aligned() {
-   |                                                                        ^^^^^^^^^^
-   |
-   = note: see issue #96284 <https://github.com/rust-lang/rust/issues/96284> for more information
-   = help: add `#![feature(pointer_is_aligned)]` to the crate attributes to enable
-   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
---
->> error[E0658]: use of unstable library feature 'pointer_is_aligned'
-   --> rust/kernel/transmute.rs:114:72
-   |
-   114 |         if bytes.len() % ::core::mem::size_of::<T>() == 0 && slice_ptr.is_aligned() {
-   |                                                                        ^^^^^^^^^^
-   |
-   = note: see issue #96284 <https://github.com/rust-lang/rust/issues/96284> for more information
-   = help: add `#![feature(pointer_is_aligned)]` to the crate attributes to enable
-   = note: this compiler was built on 2024-04-29; consider upgrading it if it is out of date
+2.50.0
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
