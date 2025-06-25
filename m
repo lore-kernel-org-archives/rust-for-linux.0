@@ -1,74 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970632750F8;
-	Wed, 25 Jun 2025 08:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347A027FB28;
+	Wed, 25 Jun 2025 09:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750841192; cv=none; b=tWSfKwm2szTNfIoYu2VMEyyVpOm0ZkZ19tCvoGq5e0VIAQeTeEPiD0o44tw3DW9Y8NlTXBfMG0Qv/lOYcWNg08Z4amZz0vkfseOBj0f1f5EdAxkSD+v53xlfd8j/AbWVdux0bCIRJo13lzxKkHWU3/Xg6AvikjIfjcWl+HUBcAw=
+	t=1750843067; cv=none; b=rqHToYY2/qKbI0ZnJnQ+fNlW5M5KVUhWJrEmEmfTR4QyXc9Ptuu7mH/xk4Q26nWrzdxKcIh2A5lVeDI02oW0fly5AvWpPq75i5IAisL6WMQ+QEFDxHxwRsXPxUdRTT58crHk5QntVxQEo+edPqAfyp9mzqqJ133j+Up34Ykxacc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750841192; c=relaxed/simple;
-	bh=cY7Eyl5hR/lx2x1lh3MrmiytMFzS7zS7uUXCCsWV6vc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AMk4U2+tcRncKH03eLsvpvn0IsGuhfuBw5ki9BSBdwKF1bZHZY034A0qhUEojU/9WLMatZmSsq2oqC09cl9QOgxRObaysTIhI3NqHe04CkfMKqwL/afcY1GnS2kcgPV2GJRnj6YPkZdjUV3lYc3w3qyIygZVXSql5Y02RdPmPJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1xNiTjY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750843067; c=relaxed/simple;
+	bh=lzpnOdON6DVOT5w6AYitAh53ABW/+efYEjeRFM+K+0I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kxlgh2lSiaOotCO8Oq6N7ILbsX9Jof1d39D76oQwKl4WuVBZeb3ZFrKz++h4XtAwnbuzCmfgNe6JsdGLTFUS444h7YQRgLgETsR0CAlL4uX/UNr/3puwJsiCuQ84+SJf1ZP7ez0NzAcKAjwK4XKws2dOcTKCpDHTX6bQUU5IwIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIFaz6HA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1xNiTjY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4C4C4CEEA;
-	Wed, 25 Jun 2025 08:46:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIFaz6HA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E5EC4CEFC;
+	Wed, 25 Jun 2025 09:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750841192;
-	bh=cY7Eyl5hR/lx2x1lh3MrmiytMFzS7zS7uUXCCsWV6vc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m1xNiTjYEIdQql/xZXl1Aqm5+h2U6i8G09utQJX2u7CPP4n/1tLDAIyBRWiy+nC7x
-	 F6kZI3uCgfsHUlRoWb6T7iCnnmJEZz9Fdb7yWG3l3rs/q9peyopAh4IR5mervSC63f
-	 JBHKTW0SLPYk2gMmVutbRnBpu7AoXT5aeIPKCeYIDke9yVy4Px2drYeaT2ZEwYD21r
-	 DHK7rpiAaGzw+A2OF0UqFsawI5nmD5+LYBL5wV+W8DmdbkrEfwVtblfpFdNxnKsnw9
-	 fHGgRWcTE0ZUmBz7EqArbdVrfq6mS10t3vFVJuR0tOLrfb9F+JHy8M/etzM72O6dGF
-	 YAPF4gFxnwUOQ==
-Date: Wed, 25 Jun 2025 10:46:26 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v7 3/6] rust: types: Support &'static and &'static mut
- ForeignOwnable
-Message-ID: <aFu3YpGyaM6eNsIR@cassiopeiae>
-References: <20250624-debugfs-rust-v7-0-9c8835a7a20f@google.com>
- <20250624-debugfs-rust-v7-3-9c8835a7a20f@google.com>
- <aFu25UGNjpdSVd6_@cassiopeiae>
+	s=k20201202; t=1750843066;
+	bh=lzpnOdON6DVOT5w6AYitAh53ABW/+efYEjeRFM+K+0I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=XIFaz6HAp30XC5+3kqWdbXtioch/sN2GYVla67EpZbZur7OMiWAmaWk+mVMmQjq7h
+	 xWUkKD+6vJNDyOBeSsHwjpwIqsWGm/tBIvAVKheCu/e9tpTOjHd+75Jq4gmLFMw2os
+	 /sY/85yf0wnByP76jCTiSiw9WgxezQacG7tUYcIkAj9GG3REgJR8nsBem1NNxfc2/D
+	 xbD1foSYRScGYKvWqMymjo5Ff89TmWU28FLjE2oOoiOn04Y9UT23ASghVz4gPcfbYQ
+	 YkAWMyhdPj/jkyF0Bkajv9n31IeX60kr0CslyJVzFdHSp+YnTbPE0n2UuNvp4JtF7o
+	 +8G0CsvspQGMQ==
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-60ef07eb7f4so3340198eaf.3;
+        Wed, 25 Jun 2025 02:17:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWiEhFJM8CTNvkSpjjQGcYY1FQn2yDiZBdmMpDsyo1K3CXStMcllxuiVWa4GfwYbZyT/V3drg3B9Bb1zP3V@vger.kernel.org, AJvYcCXV/xggpJvnQe2r1FNbuHYnk5C8XPqNMrUnUa8sAJeI4Vy+lzYzT2ncCKtHUTae+XnXDuPqbzqr4hzMNf82Vv8=@vger.kernel.org, AJvYcCXb/b9X5Go/HbxN9hmY12Msyy1UH8yexaimP1zv1OVt0uTjf3ihIptKWNKAEFUD8Qitfnvf6ViQ0O7K@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4P6CEtEh6BLEmFOL9EMxFZU3qiENWsFEVg6B7X72lY0VhjKZo
+	lyeqbZgjQw8rUlP4jtcXxnVbS0IPd2F7furhzgK0ko0WDdLMvc6sWZ2scZloufuDyuBtM96hNuE
+	hqEi7vOtAHLJoNGQPYpSLX8gk1cdKrMc=
+X-Google-Smtp-Source: AGHT+IGwmHiP0k0AYczEQyTJX9RAeJkddhKZ8nYsuI6oroN+azy2At44HmYTpTB4O/qsehu29og+iFkdUwWY8+oAXOs=
+X-Received: by 2002:a05:6820:4c0d:b0:611:75a8:f6ca with SMTP id
+ 006d021491bc7-6119d87e6c2mr1465775eaf.6.1750843065563; Wed, 25 Jun 2025
+ 02:17:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFu25UGNjpdSVd6_@cassiopeiae>
+References: <20250613133517.1229722-1-igor.korotin.linux@gmail.com>
+ <20250613135407.1233005-1-igor.korotin.linux@gmail.com> <aFB2FZEFcXUsW8lN@pollux>
+ <f29b4eba-bd79-4f74-940c-8cff65495ae0@gmail.com> <aFGisAm-n6Mt70Hd@pollux>
+In-Reply-To: <aFGisAm-n6Mt70Hd@pollux>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 25 Jun 2025 11:17:33 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hBG-ccWdhiKtcasAVOph+===AZoOroznf2k5OG0BOnkg@mail.gmail.com>
+X-Gm-Features: Ac12FXzgbtqeoG_UDw0GugtkAlia8IsWynCbV-x9VcnNKKiUERwayNEWl_bRE4s
+Message-ID: <CAJZ5v0hBG-ccWdhiKtcasAVOph+===AZoOroznf2k5OG0BOnkg@mail.gmail.com>
+Subject: Re: [PATCH v6 6/6] samples: rust: add ACPI match table example to
+ platform driver
+To: Danilo Krummrich <dakr@kernel.org>, Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, rafael@kernel.org, 
+	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, lenb@kernel.org, wedsonaf@gmail.com, 
+	viresh.kumar@linaro.org, alex.hung@amd.com, dingxiangfei2009@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 25, 2025 at 10:44:27AM +0200, Danilo Krummrich wrote:
-> On Tue, Jun 24, 2025 at 11:25:22PM +0000, Matthew Maurer wrote:
-> > +    fn into_foreign(self) -> *mut Self::PointedTo {
-> > +        self as *const _ as _
-> 
-> Please prefer
-> 
-> 	core::ptr::from_ref(self).cast_mut()
-> 
-> instead.
+On Tue, Jun 17, 2025 at 7:15=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Tue, Jun 17, 2025 at 05:39:07PM +0100, Igor Korotin wrote:
+> > I could suggest on of the following:
+> > DRV0001
+> > DRVR0001
+> > PDRV0001
+>
+> This one looks reasonable to me.
+>
+> > TEST0001
+> > TST0001
 
-I think in the second impl it can just be:
+Can we please avoid using made up device IDs in the code, even if it
+is just sample code?
 
-	core::ptr::from_mut(self)
+It is way better to use a real one that's been reserved already as
+"never use in real ACPI tables" for some reason.  I think I can find a
+few of these for you if need be.
 
-> 
-> > +    }
+Thanks!
