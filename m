@@ -1,91 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAAB1F460B;
-	Wed, 25 Jun 2025 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D0B25C837;
+	Wed, 25 Jun 2025 14:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750860503; cv=none; b=Hq3YXDqorE0Xk8UYOWRUQxruiie68MG9dJr/wljvmxKzlB1ECvngmqU8XoJ1kgwDZ8nhjcWPXBU1I+0bS0BQSIJwROcOazbKAyNM8K0zJ+OQzULMKgA5IiHegUqGTh0+2bmdHPCVzT1GDdIDuo2jL2v4Sg/0P/60So6czwh1HrA=
+	t=1750862373; cv=none; b=heEY7rHeMKEM3F/Z13VKhNzzIA2aB1zQutPB3b/FSsDsxEi35w/BH+RsMDS27aAfdhwssgcF5b035WWCN6TvmbfGHQc/W8w8EU+nTbEwaRyEIJHnIa5Ow3My0RUm9ldqtZF+bgz3kEaM9joPpiLCTjUo9ochPjR0hOmlZHohjSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750860503; c=relaxed/simple;
-	bh=4vIZXsuKUOK8a+9KYnOCvceaIEpUDoSD0Xk7uwoqMOM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KMmspn8iRhgMs/D+m26rsp81f1m6HmkZ6+ZgimeWuUf2+mCyhGltFWgjdhdvuEffRk0brcK6BhiFl4EUgyuXUi4IWv7RR3b3dgfGLjdb6zKegWJEn7nB+W9bdaBfr0yDTpOaD6QI7AMB1hJkVwcMVRhoKvCriTAlxlVq6gVCh7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lngmZW6d; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750862373; c=relaxed/simple;
+	bh=X/lKwA8QAaVG1SwWzEqYk8hwBUZQD0NFX6fGDFDDcw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e67tXGYmMgaDMoRtpwzzV6P9mdicVcJxy2uJOAK+ighPiDeyBcssAwFOiKuRYctimkMZ0cvtNN/VyCIAxWfmiiILdIK2paJmtxQuQe0z9OI2evONato/UFwtqWic2u9Afk3Q4GkXpggaMfmH3K83bCMChniTLtOWk5Dmj0PO5CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qoqSyi6s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lngmZW6d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C74C4CEEF;
-	Wed, 25 Jun 2025 14:08:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qoqSyi6s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C2BC4CEEA;
+	Wed, 25 Jun 2025 14:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750860503;
-	bh=4vIZXsuKUOK8a+9KYnOCvceaIEpUDoSD0Xk7uwoqMOM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lngmZW6d0OpP8fT7KC63MqY2H9hdncczxcomCYo6wSWtTNWpuz8+AIsrUiFz+fOPJ
-	 8fbN8gNOBbhO/8Fao/0x2HGRzaMfeTFc8hxnKzGVN5RALl9H+jaMWsBV8MiV3z7KSI
-	 CjiRa2BBx4DQ0UYeofft+dqdiCJ3tqULlAby6vr2ZVcj5EJVAkWpk7LGFzE+8H5Lie
-	 oBhWKD5bmtZ2xSrNSrdDKdQoGrH+vcfkBaZae0wG8j//aLCN4xXshLwbC2Qe9ueGzg
-	 JE5xEM/59eYm04/v5ydoUlBfZWN9oAM14Ku5vFMLNmkna22aCWJZT3+A4W0aEAxnVM
-	 TDag+MrLCvGjw==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-60867565fb5so3004549a12.3;
-        Wed, 25 Jun 2025 07:08:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU/Mvq/yV2YJyuxRCir2W7Q066nimiCuzc7Sk8+y5Xd/F1omMi0YMe+7BjkslWerO/r32z+2uMR335Sh94I@vger.kernel.org, AJvYcCUKmvz/1oM6RqXKdajwCTp3xC6aOO2H/8shdoepSohfiFocDxCNhvRrIZ/OCVRbz75Fe1zVTNVnWeer@vger.kernel.org, AJvYcCXI1vRxNC330qJuJgel7/RTx6PkLQfzPUIPo8TsPD6lQMT5irCGzpAHAC8Cb8xfEaGvodKgOdqPjNOlaVJo9Xo=@vger.kernel.org, AJvYcCXgYtaHC58mtnJMfYlSlbHh/AZTCPe6bxl6lhV4F72bhV+Xtau8PFxc0XAdL7GgNXGGl+s0//Zmv2F3Mw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyLWD6lnYsiYD8RrKXtjNDKcELGnKw3AH1iXI4bjnHpcfudbT2
-	fZJG5AXADedH2PwbYCFZwWYD4oRdWcWk7ejMnDcBROukd3rtmB4ORHjHt+8+iBM390qmpU7IkKb
-	NSOK0afLSmgVCbJgli8zdmuiNspyhsw==
-X-Google-Smtp-Source: AGHT+IGRQMMmj3unS5ciqd3uH6EUFNd8IVgWwlI/rRMie8w0Ra7lYzi6iW8icoIkLFesEo0jH7PHkSh2vWz7wpa1Ab8=
-X-Received: by 2002:a17:907:2da9:b0:add:f62e:a300 with SMTP id
- a640c23a62f3a-ae0bebe8ff6mr342351766b.2.1750860501819; Wed, 25 Jun 2025
- 07:08:21 -0700 (PDT)
+	s=k20201202; t=1750862372;
+	bh=X/lKwA8QAaVG1SwWzEqYk8hwBUZQD0NFX6fGDFDDcw8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qoqSyi6sAVEZNykoMV15NDGfMlVn3r7azbeV4h3f6pQIx9JcL2DDrzEXw6xoM+aJZ
+	 9nXefeCRVIx9fbEFbv9kLxQkSrOaQg6JDv6kjYhOEHLsBeRJuzzasUgJy8HItXfAov
+	 mdt7MLFnqFCWBHY8OebOPRjOtXmipbGR3NGb93rxY8nE6rtfYg2q795ZsdPt6GMGuP
+	 6CUOuK68VlayuUkgM7vsbje9kaPY92h/RbAw37mnWSpXjIA5Fg7WEqzcWzzQkGqGc2
+	 VVxjPltHfPwEXDQKu3x+73Z1WOa0zUKSErW8q3Kydzje2+YCPpvs3RGeUzxw/ybDeH
+	 SmEiBGbN/5s4Q==
+Date: Wed, 25 Jun 2025 09:39:30 -0500
+From: Rob Herring <robh@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Remo Senekowitsch <remo@buenzli.dev>,
+	Saravana Kannan <saravanak@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Mark Brown <broonie@kernel.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v1 3/3] samples: rust: platform: Add property child and
+ reference args examples
+Message-ID: <20250625143930.GA1006384-robh@kernel.org>
+References: <20250616154511.1862909-1-remo@buenzli.dev>
+ <20250616154511.1862909-4-remo@buenzli.dev>
+ <CAL_JsqKXrsdGjTE5KDkqmVHUK5urMJnWSLWgEi8H1yM21gcOCA@mail.gmail.com>
+ <aFXipz-B1vEYkww9@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250620150914.276272-1-igor.korotin.linux@gmail.com> <20250620151504.278766-1-igor.korotin.linux@gmail.com>
-In-Reply-To: <20250620151504.278766-1-igor.korotin.linux@gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 25 Jun 2025 09:08:10 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqJZ2bPuBZ=gskWGuk6J-g8iEKUBSJzNPp1R_0h=-gDLjw@mail.gmail.com>
-X-Gm-Features: Ac12FXxJ0lIPGJmUoAyYij_5Tc5EGrA9gwnPxeT8GjAH4rphivqHLogw6AizxSc
-Message-ID: <CAL_JsqJZ2bPuBZ=gskWGuk6J-g8iEKUBSJzNPp1R_0h=-gDLjw@mail.gmail.com>
-Subject: Re: [PATCH v8 1/9] rust: device: implement FwNode::is_of_node()
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Alex Hung <alex.hung@amd.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jakub Kicinski <kuba@kernel.org>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Remo Senekowitsch <remo@buenzli.dev>, 
-	Tamir Duberstein <tamird@gmail.com>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Xiangfei Ding <dingxiangfei2009@gmail.com>, 
-	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, Len Brown <lenb@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aFXipz-B1vEYkww9@cassiopeiae>
 
-On Fri, Jun 20, 2025 at 10:17=E2=80=AFAM Igor Korotin
-<igor.korotin.linux@gmail.com> wrote:
->
-> From: Danilo Krummrich <dakr@kernel.org>
->
-> Implement FwNode::is_of_node() in order to check whether a FwNode
-> instance is embedded in a struct device_node.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
-> ---
->  MAINTAINERS                    | 1 +
->  rust/helpers/helpers.c         | 1 +
->  rust/helpers/of.c              | 8 ++++++++
->  rust/kernel/device/property.rs | 7 +++++++
->  4 files changed, 17 insertions(+)
->  create mode 100644 rust/helpers/of.c
+On Sat, Jun 21, 2025 at 12:37:27AM +0200, Danilo Krummrich wrote:
+> On Tue, Jun 17, 2025 at 08:01:08AM -0500, Rob Herring wrote:
+> > On Mon, Jun 16, 2025 at 10:45 AM Remo Senekowitsch <remo@buenzli.dev> wrote:
+> > >
+> > > Add some example usage of the device property methods for reading
+> > > DT/ACPI/swnode child nodes and reference args.
+> > >
+> > > Signed-off-by: Remo Senekowitsch <remo@buenzli.dev>
+> > > ---
+> > >  drivers/of/unittest-data/tests-platform.dtsi |  7 +++++++
+> > >  samples/rust/rust_driver_platform.rs         | 13 ++++++++++++-
+> > >  2 files changed, 19 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/of/unittest-data/tests-platform.dtsi b/drivers/of/unittest-data/tests-platform.dtsi
+> > > index 50a51f38afb6..509eb614ab2b 100644
+> > > --- a/drivers/of/unittest-data/tests-platform.dtsi
+> > > +++ b/drivers/of/unittest-data/tests-platform.dtsi
+> > > @@ -40,6 +40,13 @@ test-device@2 {
+> > >
+> > >                                 test,u32-prop = <0xdeadbeef>;
+> > >                                 test,i16-array = /bits/ 16 <1 2 (-3) (-4)>;
+> > > +
+> > > +                               ref_child_0: child@0 {
+> > 
+> > child-0 or you need to add 'reg' property if you keep the unit-address.
+> 
+> Adding child nodes here creates the following dt-test failues.
+> 
+> 	[    1.031239] ### dt-test ### FAIL of_unittest_platform_populate():1862 Could not create device for node 'child'
+> 	[    1.031647] ### dt-test ### FAIL of_unittest_platform_populate():1862 Could not create device for node 'child'
+> 
+> @Rob: What do you suggest?
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+This should fix it:
+
+index eeb370e0f507..e3503ec20f6c 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -1856,6 +1856,8 @@ static void __init of_unittest_platform_populate(void)
+        of_platform_populate(np, match, NULL, &test_bus->dev);
+        for_each_child_of_node(np, child) {
+                for_each_child_of_node(child, grandchild) {
++                       if (!of_property_present(grandchild, "compatible"))
++                               continue;
+                        pdev = of_find_device_by_node(grandchild);
+                        unittest(pdev,
+                                 "Could not create device for node '%pOFn'\n",
+
