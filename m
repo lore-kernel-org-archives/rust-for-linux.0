@@ -1,209 +1,253 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012043.outbound.protection.outlook.com [52.101.66.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5FA1F5827;
-	Wed, 25 Jun 2025 05:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750828535; cv=none; b=Beyurn/6aWdkHCh8uqg6HHHkMLPCCBGQhWm3lZdnNd+eB5NFO7OhxwbJHggvRoKhws4bFJUdS7IAIbCOYo1SOwxoLIdpaWfsYHJt8FzyA6r0HhDlDAvQySMQCUuA4pSGAXLnyaK7naJMSWKFC7BxAHq34C2gFIa76WRHuj6gQP0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750828535; c=relaxed/simple;
-	bh=VBOn77Pw4+tme4JesglES2sMUF30+bd7R7k26+boK2k=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mnH6UVxaidFDUVUDSAuS+zyVUAVzxwORS7q74UHm/lj2CtCwgsKTKDtf18ekxp5ILN71QQc5stfC9ZEBRIKRGtN3U2zB3kK8QBIxHPRzgXPk8KUy0d5YAkAshJTsMHUbBMarXgRJQsQMqfXKWFVBQxVCQxUwtHG8DrxPq42P3gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HjkxyFau; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B7E15A86B;
+	Wed, 25 Jun 2025 06:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750832610; cv=fail; b=CAc9ajJlKRX+88XHNyZeMI1KyqFXzf9+mDhgjbkxehJF0mwhkikC4yF2cxVnDBwpMY1p9gZA1gtBuEfHAfJ+X9Upp7DbvsgpiFu/xavUS+ImxGs6iKmTXFzXPKq0khnaM2ZkpWbns15Z4iZdvGXEFApsH4Cei28x5TxZCnXJzl8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750832610; c=relaxed/simple;
+	bh=jDFAGZOoHrRxjh9mw0olQVG/6ikExjDVOAg66G5SWZs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=aBN8XJRWv+UrdoQAbj5zP0BrXK57NTrApMMVsuvkZYhTKwxI/Fp4UPZlqo0ZNEG+nQuz5i0wgaHu+hWs7g3eScml+SisgWV4TMbhRNjnORvDr2POBeuGpZo/wpHMluqPIF45upnd+g8BMXat2kMUv1f4bIrHl/jXg4WncP2l+xU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=IUy6h5RX; arc=fail smtp.client-ip=52.101.66.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HjkxyFau"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6facc3b9559so95389286d6.0;
-        Tue, 24 Jun 2025 22:15:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750828533; x=1751433333; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jPHPiLn+shRnXPTS0LeS5dHvFwnPQLKTW28CIznWwTs=;
-        b=HjkxyFau48fihkAR62Y6uhrQs9FITGpIxMG65DHaBMCDasBSYgzLnMcbgdNUDyiqif
-         YLPvIPaVogkPd2oRuVQw5GKfTI81nH4v5BT7zAHYyDYyriVp6en9RYQQIQVNKx5I+8CD
-         0KTSplj0Z2wjYLdVlyvLOQajkFXFVTxJ3I61Mmb5hs9mdXksuIUaTnGdEVeHQuuqd/xZ
-         v2nLD3y/mZOJfsp9TcXuURINbltDEAN044tBs/MPT2T9PceTLGH9GWM0dZYLG93RBcyN
-         PhSg0GFIqzZJhcS/EkysjehuBbd+T1Pu3EalfSSgXcc06r27VDhpgtBkWACtKAkZ2SZ3
-         XhLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750828533; x=1751433333;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jPHPiLn+shRnXPTS0LeS5dHvFwnPQLKTW28CIznWwTs=;
-        b=hQfz2cGn00OOkDSrQuK4zmP3KcWkLIKaTjHSqx8zTuMWtZEzQShl1lHaqQyTGXaBxp
-         TJNXaEQtbUeChTCdIHNFSC0osaP+E4mHyfbCcddGh0/TbLwnszbP04fQLLGpSEft8fqp
-         enXeq5nk4zaxT0wbwWe9YsU7ohJzid8BA/0ufdCXxM2roh/eUVpC7WAK2BZjWNsvEi/5
-         olRF4+tc8/fLnpFXjgtaJJFQfsFlsKqoy0pTVuku30ULM7YO7HYKGOnpJzIFTCg5nBbq
-         vBu1IJQFVu1XNC10fsQF7O7WX2fMF+KIexBLFW0vS6jqGOWHWxMZ0Z1FIw533EBMzpPu
-         5Qmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJjQN6ABttNXtu7GpIaHIdHFF5lcXNzIS+fn2m0v65JcyOEvro4cNJmUelo+uexiUg6CWEkCp7+VUoaZQ=@vger.kernel.org, AJvYcCXwuBOyUaIffdgj9c3cS8Wpp3GmDpPN1ItXPYTduG8qEbfklECJ8c0d7p4xptclCMLDfwFOcTsproY7Ha81J80=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXDD/hFVM+AqkAEU/JkB0yHTGtg5dapgnteZKe/QJqRHtPMmdh
-	DpiVS58x/26jaCxM5vTc2wniPDA/KTBygQQEgsErvYXWeMhOkwA6tDrz
-X-Gm-Gg: ASbGncuV8mUTbkMAZ8GbgcUm+ofPnFZj38uQ1p3tA6SBy5Vei9SPs+jywh/7xo/to1f
-	xlbyalC/E8a4ROtBZNcywrQPrR63P7xtREfZqDRElTnzrpBWAfEGLgVnEsxcn3Cz6lGpH3zzzTU
-	30EY77P8ojA5O/JX55V7HNPt3FFGqt9+dcmSHcjUlykZi2VBqNAt9uu2ZzIE/jRPf74TYm08vE+
-	h0P0K1dQeZxZdWC0XXdVONpRCXzA3jlxcpYMOi1d9WD+Vf3Bz675QlGKeINdCheiaSbr8J1uSZ2
-	q6ZYq6wm4qyFGKgh0kJ6bpOIkjzmh9QQz0lTQp0kpV8R9u26459bUrHgQ0lrMwHJX05rOh4mA+k
-	Vi+hrYY/AqAl8k1IRmpyaSMEKJWFaq4FU9e3sog1gQUUdW0684yjy
-X-Google-Smtp-Source: AGHT+IFait6Cui768Cq84nzBcA7GCns6Fe7QqQseb3Vb4z41dIqYjDzEjvA0QzsRI6znLXw9/crJRw==
-X-Received: by 2002:a05:6214:258f:b0:6fa:b42b:2bd9 with SMTP id 6a1803df08f44-6fd5efa0ff3mr27794456d6.37.1750828532649;
-        Tue, 24 Jun 2025 22:15:32 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd09578243sm64267716d6.91.2025.06.24.22.15.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Jun 2025 22:15:32 -0700 (PDT)
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 645C8F40066;
-	Wed, 25 Jun 2025 01:15:31 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Wed, 25 Jun 2025 01:15:31 -0400
-X-ME-Sender: <xms:84VbaGkHUZFzJ20zsbFGD7T0kI97aKYEohxzyB0y7Z7amuVQfxQcTg>
-    <xme:84VbaN2Z6tYoHjrkSR4NbSFyHhASumwcYpiPt5zhbMWPs5GnlMr0P9I2Yq14AMcWD
-    5wj2F6Ukyh3OBkA_Q>
-X-ME-Received: <xmr:84VbaEppPL2QwPm6d_qd2zPk7Nir0YWPXY7MFaLMDhqXVYMht6CtIcSckQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvudeltdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhepgffhffevhffhvdfgjefgkedvlefgkeegveeuheelhfeivdegffejgfetuefgheei
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
-    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
-    feehpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhnghhosehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgt
-    phhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopehjuhhrihdrlh
-    gvlhhlihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepvhhinhgtvghnthdrghhuihht
-    thhotheslhhinhgrrhhordhorhhgpdhrtghpthhtohepughivghtmhgrrhdrvghgghgvmh
-    grnhhnsegrrhhmrdgtohhmpdhrtghpthhtoheprhhoshhtvgguthesghhoohgumhhishdr
-    ohhrghdprhgtphhtthhopegsshgvghgrlhhlsehgohhoghhlvgdrtghomhdprhgtphhtth
-    hopehmghhorhhmrghnsehsuhhsvgdruggv
-X-ME-Proxy: <xmx:84VbaKm8bFqE8HcxVAkOyxg0KbsiVzwXbzDVWy3CMvh7qfjk_DSfmw>
-    <xmx:84VbaE3u2-eUBFBKSlN7R9IdZ8m_uLO6xPRnDpEEWT1wNcLil_T-yg>
-    <xmx:84VbaBtBoEYgGa1G58UPcT7paysUGCplZBfN9H2fAEK4mGWvlBvoZw>
-    <xmx:84VbaAWMO-5zzCXFAFZZhDzwrTpf7OZaavhU8OvL-3atZgOCz19F-A>
-    <xmx:84VbaP3oc2KF8bZelQrXZVQqiYevbr12iT4L-aa3i7R3ktazUmZOXXwd>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Jun 2025 01:15:30 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>,	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Tamir Duberstein <tamird@gmail.com>,	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Borys Tyran <borys.tyran@protonmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Panagiotis Foliadis <pfoliadis@posteo.net>,	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,	llvm@lists.linux.dev
-Subject: [PATCH v2 5/5] rust: task: Add Rust version of might_sleep()
-Date: Tue, 24 Jun 2025 22:15:18 -0700
-Message-Id: <20250625051518.15255-6-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250625051518.15255-1-boqun.feng@gmail.com>
-References: <20250625051518.15255-1-boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="IUy6h5RX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hdEz+LR9dKMhw6L+TKpJYb1URLuxUemMZ6ynOSyAA/LbSjIhGCNzY2n3TwPf+ygi7JEJ2WpU4mXc2HOq+E/SxeoyPQwQo8iBOdDnBs8x0mgjiLysj+aK+/G16iXU+v5ozisUxhULmIdkbyo/QAOrSZeqRQfZZzNbVgdQ4gLJL9KbYw3skHRX/2Rw9BcYr1zKIPAn8v1DFBliX7Apc5khUe9YJZJ7MPO/csSOwAP2EQDF1CC++giysO+cbhuuy0VzNRdPRZCmu8m6qm+yaoXulzrgU8mj1cCkry6sMTRbAIXGbjQzvCB70wwWJ6DWqy/KllxhXlX6+ATUoV6r56naPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MCjchQIP0TCeADoa/aE0yvTd6WPLK2hH+W4Gj+ysL7k=;
+ b=jEUweRvOmh/RpZw+aqqMyZ3T0BI/QGpwrAn3S53gelCDqLbFCPHR2MRhkbtTxHS13eFils1pKyQ3lwoOx/WQQImGmoiZNKJNhJOOegfz0fZa7GBLsiBxF0fQw4+xC4f7u0mZfQ50RAw/1xgXQYB7NXD82yxeTuC0pAwCvDEYK/3M9IXMRtxHc3vWJuSnsMVXNSotGd4sA/y42lxP56FMrWdg6n+rKDMJ+DUKhJDPnUN99GpIgBudt4e4JtMnBcl3VSoYQ9/QNhoDpKZ7hwDofi9GfvxhCIo+ddWOtOJWtfBI+vgO4/knqlrhq8sc1tEaJ7OyZK/CvRmgIWWmNvkO2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=google.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MCjchQIP0TCeADoa/aE0yvTd6WPLK2hH+W4Gj+ysL7k=;
+ b=IUy6h5RXLDjljZSaDgJV19kiPWt8BrMPrdX4pjzmoS8uqhSvrMLm+wfaDXR9UEqfDi5Xr/Rj5Y3p84s4YBIF9qd0UcgtVOuScv/P3rDMd4wKal3bRXSrBtMVqne/0LsXogFGsUD7MXVaamYBTF/yb0HYg/KUFjBnpRnyS88LciCpCNGXKWZtE42U/bvShJSXnCVw+EFVZi/FoR0S0DegcFxVWcfkMRm0iYzJsrT1zMvmh1dN22lJ/RGnyP0HbaEftJk2NBzJBng0wrhjmW211rWIlMnvHMi3YHk7EK2H5JW/8GbvAic8ApgJbcb2IssngFPyP3/MTzGFkeF6y2pWqg==
+Received: from DB8PR06CA0040.eurprd06.prod.outlook.com (2603:10a6:10:120::14)
+ by DU0PR10MB6385.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:40e::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.16; Wed, 25 Jun
+ 2025 06:23:20 +0000
+Received: from DB1PEPF000509FD.eurprd03.prod.outlook.com
+ (2603:10a6:10:120:cafe::7) by DB8PR06CA0040.outlook.office365.com
+ (2603:10a6:10:120::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8857.30 via Frontend Transport; Wed,
+ 25 Jun 2025 06:23:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DB1PEPF000509FD.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8880.14 via Frontend Transport; Wed, 25 Jun 2025 06:23:19 +0000
+Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Wed, 25 Jun
+ 2025 08:23:14 +0200
+Received: from RNGMBX3002.de.bosch.com (10.124.11.207) by
+ FE-EXCAS2000.de.bosch.com (10.139.217.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.57; Wed, 25 Jun 2025 08:23:14 +0200
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Wed, 25 Jun
+ 2025 08:23:13 +0200
+Message-ID: <a9fe125d-6227-46ed-b006-daa90b2f4d53@de.bosch.com>
+Date: Wed, 25 Jun 2025 08:22:57 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v7 0/6] rust: DebugFS Bindings
+To: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, "Danilo
+ Krummrich" <dakr@kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Sami
+ Tolvanen" <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, "Benno
+ Lossin" <lossin@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+References: <20250624-debugfs-rust-v7-0-9c8835a7a20f@google.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20250624-debugfs-rust-v7-0-9c8835a7a20f@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF000509FD:EE_|DU0PR10MB6385:EE_
+X-MS-Office365-Filtering-Correlation-Id: 268373c3-df43-4ff9-16ef-08ddb3b0c79c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|7416014|376014|13003099007|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WUJ3UVZtUTU5WUUzQVJwdGJGTFB2My9qVGc0ZDFnU2Z2RTUxMENnbm9IWlRn?=
+ =?utf-8?B?cjNSWU9zVjlqYVVyU0JnVjh6czBsdy9hMlhRS29YZlBKYmhCNzQrVFdjdG90?=
+ =?utf-8?B?OFMzSmlCb0RKdHRZL3FMaEg3Wm1DWk5uMklyemloNDNGNjc2NUhPWjhCYlYz?=
+ =?utf-8?B?LzlweG5DZ05kNEZaNm1BNWZydVh2aG9GTkJTLzhwVUNzV1Rhc3ZndU9tUGVr?=
+ =?utf-8?B?Zm9SalJscWc4RFpteWZlM01ybW03emVvbHJVZ0M4RlNyTVhxTlk1QUZLN1VS?=
+ =?utf-8?B?UFlwSUl2NTMyYzFzanZHT2dERVdLejRlYW9GeWthbnErWWw2U0lOSlNoYllU?=
+ =?utf-8?B?aW55eG1oeU41ekV4cnMyRmp5d2tCTkxOT1h4YWhTVWtZblUzVE41RWJicDB5?=
+ =?utf-8?B?TWppSE5TdFFVNlhnelVsSmJWT0Rrby9GNG02LzVLdXBXWis3eVBFdzJQdUQr?=
+ =?utf-8?B?VlV0RVIvNytSS1hWL2tMQ3BVNE12ZnlDaW9Yb1VrREJlMDhPb0VNVDBUM2xL?=
+ =?utf-8?B?VEpOUTY4eEkrdytzOUowcTRDY2Z1RTVlWHVaZWRRV3BPbDE2WThHMzA0ODdZ?=
+ =?utf-8?B?WllrU1FwNXhSNENadHhINVc2MDNkNWVMZE5POEJ4VEdySUl2bkYxd0VIalpn?=
+ =?utf-8?B?dEl2QXdrNmpsZ1ZaYmhPWGRTMy9RV2R4b3BYMjg3Sklpd2hpWnlrZXkzOGlh?=
+ =?utf-8?B?cUJvNlpRYmFIOXlQNXBHODFJQzBTalI5ZFYyc2RMU3o2ZUxHZmd2cGY5T05K?=
+ =?utf-8?B?MFJIVERnaDNjTlFBdFc5SzlMZFhMMGdFZlZtc1M4MGlPQlBNZmg1enVlTWp3?=
+ =?utf-8?B?L1RQTU10TURmRXNyVHg3RkVGeE1wQWVEdSs1ZUFXOFhZcDYvR3VZV3llMjlB?=
+ =?utf-8?B?RkdBOUxYMm9yeFZwS1JBRVpzSlk1SWhGc1ZCSDVvc0xOTittRGszTmJreWZU?=
+ =?utf-8?B?cDFXQkw0U2hTUkdCc3FLOGFEaHF4MDNMQ1RuUkRwUTFYWGZtcHdCaHVyeCtG?=
+ =?utf-8?B?L1ZocWd0ZWZDK2pMdjRjY0FaUmxOdXJRQU9ScjlObElBZ2VHNlBMZURLSy9D?=
+ =?utf-8?B?bDEwRHMvR0NZU1J5ZWYrY3BxY25oQ2gvejA2ZWpxNWpuWE5USkJaVmNrTXBB?=
+ =?utf-8?B?RWkrRUZqNndlb1d3S1VMS21xWlJkekpSZEZwRkVudHQ2WUdZMVRRVmZldVM1?=
+ =?utf-8?B?REhjWkF6N3A1MGlFSlMwRnZVM09lUnp1bWNZaThmUDJEdUUrZmZqZkpIZUla?=
+ =?utf-8?B?a0hJdytMZThtMXBHdk5mUG5mVkc1N01Dai95Mmd6Vk4zYVpXVGQxNFpqOGpq?=
+ =?utf-8?B?L0htS2dvTWlQWXhicU9Gamwwd01HU0pmMHphd0FQNGFMSlBUNUxnTE5XOE1H?=
+ =?utf-8?B?TDRIM3dCL0lLem9zTkVuN0ZYalBnQ2svQ0lqcS8vMFJ6bCtlVDI4ZXV5b2xt?=
+ =?utf-8?B?QmlQUjFPMW5IMmczdStmWTBReWR6aHdmS3BKQ0pwNFF6alNzT0Q4OG54dG13?=
+ =?utf-8?B?MjVPZ3BuejdCMnNETGNObEc1c08xSVhGKzVqMkQrTUVHTXZqR3hlVjNaOXZP?=
+ =?utf-8?B?UmR5cFViMGFySkYwd2lwUG5oc1ROVG9MV1RsZmREeDlEcWd2T1ZIeXVCQUUz?=
+ =?utf-8?B?aUtIMDF5Q3F0ZExTNTlTbU5rT0dGTGJXbTZnWkViMWpiemF3NDFkYmk4ME9W?=
+ =?utf-8?B?RkhsR25vdXRmakIxbU5EU2F3SmQ2bXdHM1ZabG10aENqL3ZsM0VGMkw2RTZs?=
+ =?utf-8?B?cVVMVFArV0wyTFVNQzZxZlNwdWNwcW9OZGxIUDN0S0lIaTBKQ1A5Yi9OMHQ5?=
+ =?utf-8?B?c1BXdzhFM3RtaDVGVEVNMlRNMk5RMER1Q2p1Z1RVZTd5VngwOGM4Qm1iL1NT?=
+ =?utf-8?B?eDlqaUM5TDZkRDljMEVYTkphM2F1YVcxUG5UbjQwc1lKYjk4aENxYm16ci9X?=
+ =?utf-8?B?TXVWaG1ic0RIbGg4dFQ2V2I5S3ArZlkxTnMvVnpDSzM2eURGZUdQQjFNWFBQ?=
+ =?utf-8?B?ZWp2cU83andNbXBWaFpNcEJIaTVsTWk1aUJSMlpBZFZhOVRraHVLVmtZeFBv?=
+ =?utf-8?B?SHl6OHJCZkswanVmYnd5cEZoTi9UZjhNQythUT09?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(7416014)(376014)(13003099007)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2025 06:23:19.9872
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 268373c3-df43-4ff9-16ef-08ddb3b0c79c
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509FD.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB6385
 
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On 25/06/2025 01:25, Matthew Maurer wrote:
+> This series provides safe DebugFS bindings for Rust, with a sample
+> module using them.
+> 
+> Signed-off-by: Matthew Maurer <mmaurer@google.com>
 
-Add a helper function equivalent to the C's might_sleep(), which
-serves as a debugging aid and a potential scheduling point.
 
-Note that this function can only be used in a nonatomic context.
+Same testing done as on v6:
 
-This will be used by Rust version of read_poll_timeout().
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-[boqun: Use file_from_location() to get a C string instead of changing
-__might_sleep()]
+Thanks!
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250619151007.61767-3-boqun.feng@gmail.com
----
- rust/helpers/task.c |  6 ++++++
- rust/kernel/task.rs | 24 ++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+Dirk
 
-diff --git a/rust/helpers/task.c b/rust/helpers/task.c
-index 31c33ea2dce6..2c85bbc2727e 100644
---- a/rust/helpers/task.c
-+++ b/rust/helpers/task.c
-@@ -1,7 +1,13 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/kernel.h>
- #include <linux/sched/task.h>
- 
-+void rust_helper_might_resched(void)
-+{
-+	might_resched();
-+}
-+
- struct task_struct *rust_helper_get_current(void)
- {
- 	return current;
-diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-index 834368313088..7d0935bc325c 100644
---- a/rust/kernel/task.rs
-+++ b/rust/kernel/task.rs
-@@ -400,3 +400,27 @@ fn eq(&self, other: &Kuid) -> bool {
- }
- 
- impl Eq for Kuid {}
-+
-+/// Annotation for functions that can sleep.
-+///
-+/// Equivalent to the C side [`might_sleep()`], this function serves as
-+/// a debugging aid and a potential scheduling point.
-+///
-+/// This function can only be used in a nonatomic context.
-+///
-+/// [`might_sleep()`]: https://docs.kernel.org/driver-api/basics.html#c.might_sleep
-+#[track_caller]
-+#[inline]
-+pub fn might_sleep() {
-+    #[cfg(CONFIG_DEBUG_ATOMIC_SLEEP)]
-+    {
-+        let loc = core::panic::Location::caller();
-+        let file = kernel::file_from_location(loc);
-+
-+        // SAFETY: `file.as_ptr()` is valid for reading and guaranteed to be nul-terminated.
-+        unsafe { crate::bindings::__might_sleep(file.as_ptr().cast(), loc.line() as i32) }
-+    }
-+
-+    // SAFETY: Always safe to call.
-+    unsafe { crate::bindings::might_resched() }
-+}
--- 
-2.39.5 (Apple Git-154)
+> ---
+> Changes in v7:
+> - Rewrote `entry::Entry` -> `Entry`
+> - Use `c_int` and `c_void` from kernel prelude rather than core
+> - Removed unnecessary `display_open` cast
+> - Switched from `Deref` + an explicit box to `ForeignOwnable` for
+>   attaching owned data.
+> - Made `&'static` and `&'static mut` implement `ForeignOwnable`
+> - Swapped "driver" to "module" in sample code
+> - Link to v6: https://lore.kernel.org/r/20250618-debugfs-rust-v6-0-72cae211b133@google.com
+> 
+> Changes in v6:
+> - Replaced explicit lifetimes with children keeping their parents alive.
+> - Added support for attaching owned data.
+> - Removed recomendation to only keep root handles and handles you want
+>   to delete around.
+> - Refactored some code into separate files to improve clarity.
+> - Link to v5: https://lore.kernel.org/r/20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com
+> 
+> Changes in v5:
+> - Made Dir + File wrappers around Entry
+> - All functions return owning handles. To discard without drop, use
+>   `forget`. To keep a handle without drop, use `ManuallyDrop`.
+> - Fixed bugs around `not(CONFIG_DEBUG_FS)`
+> - Removed unnecessary `addr_of!`
+> - Link to v4: https://lore.kernel.org/r/20250502-debugfs-rust-v4-0-788a9c6c2e77@google.com
+> 
+> Changes in v4:
+> - Remove SubDir, replace with type-level constant.
+> - Add lifetime to Dir to prevent subdirectories and files from outliving
+>   their parents and triggering an Oops when accessed.
+> - Split unsafe blocks with two calls into two blocks
+> - Access `private` field through direct pointer dereference, avoiding
+>   creation of a reference to it.
+> - Notably not changed - owning/non-owning handle defaults. The best read
+>   I had from the thread was to continue with this mode, but I'm willing
+>   to change if need be.
+> - Comment changes
+>   - More comment markdown
+>   - Remove scopes from examples
+>   - Put `as_ptr` properties into a `# Guarantees` section.
+> - Link to v3: https://lore.kernel.org/r/20250501-debugfs-rust-v3-0-850869fab672@google.com
+> 
+> Changes in v3:
+> - Split `Dir` into `Dir`/`SubDir`/`File` to improve API.
+> - Add "." to end of all comments.
+> - Convert INVARIANT to # Invariants on types.
+> - Add backticks everywhere I found variables/types in my comments.
+> - Promoted invariant comment to doc comment.
+> - Extended sample commenting to make it clearer what is happening.
+> - Link to v2: https://lore.kernel.org/r/20250430-debugfs-rust-v2-0-2e8d3985812b@google.com
+> 
+> Changes in v2:
+> - Drop support for builder / pinned bindings in initial series
+> - Remove `ARef` usage to abstract the dentry nature of handles
+> - Remove error handling to discourage users from caring whether DebugFS
+>   is enabled.
+> - Support CONFIG_DEBUG_FS=n while leaving the API available
+> - Fixed mistaken decimal/octal mixup
+> - Doc/comment cleanup
+> - Link to v1: https://lore.kernel.org/r/20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com
+> 
+> ---
+> Matthew Maurer (6):
+>       rust: debugfs: Bind DebugFS directory creation
+>       rust: debugfs: Bind file creation for long-lived Display
+>       rust: types: Support &'static and &'static mut ForeignOwnable
+>       rust: debugfs: Support arbitrary owned backing for File
+>       rust: debugfs: Support format hooks
+>       rust: samples: Add debugfs sample
+> 
+>  MAINTAINERS                         |   3 +
+>  rust/bindings/bindings_helper.h     |   1 +
+>  rust/kernel/debugfs.rs              | 268 ++++++++++++++++++++++++++++++++++++
+>  rust/kernel/debugfs/display_file.rs | 155 +++++++++++++++++++++
+>  rust/kernel/debugfs/entry.rs        |  66 +++++++++
+>  rust/kernel/lib.rs                  |   1 +
+>  rust/kernel/types.rs                |  58 ++++++++
+>  samples/rust/Kconfig                |  11 ++
+>  samples/rust/Makefile               |   1 +
+>  samples/rust/rust_debugfs.rs        |  76 ++++++++++
+>  10 files changed, 640 insertions(+)
+> ---
+> base-commit: bd243cb5d922cc6343007a3f3918c8d1970541d2
+> change-id: 20250428-debugfs-rust-3cd5c97eb7d1
+> 
+> Best regards,
 
