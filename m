@@ -1,137 +1,112 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921E425EF8F;
-	Wed, 25 Jun 2025 12:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AF025FA2D;
+	Wed, 25 Jun 2025 12:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750854349; cv=none; b=uOvrnnIgFORGpD+ITMCp5M8nZSfD+EPjR5dv/ru2QQDuPgLYK8nLWu7nZu33su0uwq3BXihYplQvYT5PIxxHqw03O8ORofgMryC+XbOhV3JvA6QqeC9N7jfCqhbh+6+y7ZXW0P8Eq/shDpzNgF0h0Gw9kJpPy95Ue6LSfIyisX4=
+	t=1750855543; cv=none; b=R2Z45zSCHEGN3SMKQkaG8+eZWxgpBqAImI0J22Y1iHsFIVicod73MaVLRoYyoJz/CuWcic7n8JY4VVJvzxBCAa4jK+qhmgfD0LREFZBxjwfG+ZMiAXYJcjOVDXW1JWNuJ9ksaLUO1uhoO9rhBXMRmvPqR9qxw8Je3a6lIgGJyFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750854349; c=relaxed/simple;
-	bh=GWlhp73LNm/7EbO3DbUYo/TyoyteULAA+bKvzRvitdU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FLI9CuM4w1WZush1+cHt/P1G5A4jhOhMo3NsvJGnjVh1p1ul82tcyIj6r3CMLGN2V+Lo7MJ+XRk7IPfkkt1JH0g1M8rrheSDs5/bUOSYbj8+/FGVc42ZLdMsLuaF/0Mgh0I4Gs8NB9fvl0NE6DuHLKckVuIP8N763XAim4gOJPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AI/e6nso; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750855543; c=relaxed/simple;
+	bh=JM1dsCTTMKSVO7veZW6xF7seieqF91knIU3zOqPtYe4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FNtfDGsebbhlKrI9dh2I8kpErPVKOWHZVqO3ii6kW5m0DZFquQwhivhtSwMZhiZ5VR26jHE0Jm7HHI3Zjz2TkAfxNPXWJDVe0+CDR//IaKdOb0vQUTBxlUXAGIqrhXLuiyx+N0l/QFqbDP/fpJoFwF2puR9mNeeM/n+iaLFT4oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dz9D+ahs; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AI/e6nso"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-237e6963f63so27646925ad.2;
-        Wed, 25 Jun 2025 05:25:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750854346; x=1751459146; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gK8Hp/mA0/WB+LCIYX3QIzvfFd0YpHU2lftvUglJLEk=;
-        b=AI/e6nsoLKUx+iWuYt2f/94E9X5rQPiqg9t+uIjN3jD0U8Gk5tdz8/H12ENO2VaNtD
-         aMRst/y384qHnr9w7+PKVyike9C8kHj/5aWqq4LH0uWYj54Lqfl8adVqfA7qKKajFtUY
-         gHeR7IeXz+yy8OsjZrM6V9TTqzIM4j8zdJ9uNfkqcFuqpq/M/rSU6orgCviMaNOca2hA
-         kJFmvQqRHGwWmPXQh1yHECuz6yDvINxXsmiPeUOkwB0S8fkwF+JK/SYSZSBk9UsqENoa
-         id6+BjrlpkxZFNlWu280qZw+MvVrq74wovackoPy50bSWbXO/33VHqoTONPnWERocmKD
-         SQxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750854346; x=1751459146;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gK8Hp/mA0/WB+LCIYX3QIzvfFd0YpHU2lftvUglJLEk=;
-        b=UB732ojk3QsPiDp+Lb5rpHvJVFz6OO/ERUm7XcpeU076aVkmzaMTDLq7l2+eVqD+/J
-         wcvRQ/6QAJLCSXh0Ui9ZUzDGynL3a1VhrxChtnH3365i5X2oobQGP8BJ1hQMAH6VrlY0
-         rnEQAGNj/yhqj07oEUfamLXg9Zpnq0oNKi5Cr+e4+nTk5yO0YJOf8xM6HqRCZcDJo08g
-         NfPmitthd0/MQBG7Lp5zJH2TBh1UBEVYdMNLs1MQhXrDTE3tWoVgRgTCshoQdL0fJcRT
-         h/Zc+sVzOU6F6cVngbHLmeSDi1lZBeb1r6u11XygatxNc6ImB3iE9rFKBbfxnUnY3ACi
-         R5MA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0/LskhkyJHYVtgtp8QKz+7LAXJMtL4Z7QSWGK5UH1Of0oud7Cdyx7Uu1giM65ym/geveBQQv0C4ZOlxq26Lw=@vger.kernel.org, AJvYcCXH+Dokr9M2ytngjMThbna7XbpKWo4BYZizzqZD3qYcvAbQwv8ma3vpagsASQ4citf3SO8WcGYcFQtfrG8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq4hL/0HQtQPEUHPlsQT1zHPzMZFuqOjDlKu22dMbYE5fDNpaw
-	j6OdTcZXvrWT+BtsZc0amaFvsrN+VhgEQXwgHqtgYFMTKXgGyXowB0JY
-X-Gm-Gg: ASbGncvGXUTsAoTRXNJZtDX7GYx6BUwrkfhPaeePpA1J0mJNP+27+dml6NE7K+CBDzo
-	SLNY+qxPw63KJlct4dGT29tCEE1nQaRooS2/fQUm016HY4LwHZ5DftiDqVtMlSa/mVEsdoSpkNe
-	s25kHJRcJir/brs/l4DOckWKrgHvlNG6yMOqAzLGzv76OEEoAl6uZZIG9rrZqO5n4rsm/0fqso2
-	V2gBVVnXPJKIgdrf3gvte4k9M10Wz6/2Hg9V68MqFV5CPmeTopqD6hftm/e3rYD1/77+EmiyboV
-	tvNIWEPRfmAQvdNJU8zAFnkY8BQXF+CefNNzzp1uItlv7UdrWF2b8LP4BD49QTlrh5n7mFlFaU+
-	ClUKfpxebj1djc935sTJ4MtiAs7l7lDgSALuQJfZHprSBggIQzNfXJ0Jk
-X-Google-Smtp-Source: AGHT+IHtv4E8mTXtJhjRtDr/sOzVXJ8chAiqbXjdQq30k70nkAEaKLwRixvhgJfDtHBn2buXrkIWeA==
-X-Received: by 2002:a17:903:2f10:b0:223:f9a4:3f99 with SMTP id d9443c01a7336-23824044733mr56789135ad.29.1750854345794;
-        Wed, 25 Jun 2025 05:25:45 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([50.233.106.34])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d83ea243sm137551405ad.72.2025.06.25.05.25.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 05:25:45 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 25 Jun 2025 05:25:39 -0700
-Subject: [PATCH net-next v2 2/2] Cast to the proper type
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dz9D+ahs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750855543; x=1782391543;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JM1dsCTTMKSVO7veZW6xF7seieqF91knIU3zOqPtYe4=;
+  b=Dz9D+ahsTKH9Wrk61jAyLgHUVjcQ9rgL4a7Go3zxy0NmHk0DEywciJQY
+   w6aXmcM3dgWVOhDZpJDPFHcFXGpRuame7SpTEmRyom6kMOCGy0vDTK0on
+   4YRgxZjrFsbwAmiiVXdPCdS6rkZkr9eIRtJeKOQI9Wqk9srSu4DblEB3Q
+   a1hfOC+0WuZ82h4154y0HKNFPfcZAPKDhE/Hz0giONN2XxG015GAfDvbD
+   R2ZcD3/oEsBzu5Wmr2p8LI8qJ7ynzweQVLKj7/wlKcUFJMkx2cec5FsKa
+   iN9nzcDCmSY5v3zWeDIrOMzICRU+6lhRVXuasvEXb7uOQnb30UTmhvPXd
+   A==;
+X-CSE-ConnectionGUID: eZVsgBlGQu+QuDiGXtRQVQ==
+X-CSE-MsgGUID: jOGHF8I1RpOZ77ekxx51gQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11474"; a="75661888"
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="75661888"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2025 05:45:42 -0700
+X-CSE-ConnectionGUID: cW31pKh0S+KsTFQLo7x2ZQ==
+X-CSE-MsgGUID: saZoJ8aRTkmSx/Qs3ISaQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,264,1744095600"; 
+   d="scan'208";a="183245285"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 25 Jun 2025 05:45:37 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uUPVP-000T6o-0L;
+	Wed, 25 Jun 2025 12:45:35 +0000
+Date: Wed, 25 Jun 2025 20:45:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2 2/2] rust: types: rename Opaque::raw_get to cast_into
+Message-ID: <202506252207.uYOBf8SU-lkp@intel.com>
+References: <20250624-opaque-from-raw-v2-2-e4da40bdc59c@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250625-correct-type-cast-v2-2-6f2c29729e69@gmail.com>
-References: <20250625-correct-type-cast-v2-0-6f2c29729e69@gmail.com>
-In-Reply-To: <20250625-correct-type-cast-v2-0-6f2c29729e69@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, 
- Trevor Gross <tmgross@umich.edu>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1750854341; l=1601;
- i=tamird@gmail.com; h=from:subject:message-id;
- bh=GWlhp73LNm/7EbO3DbUYo/TyoyteULAA+bKvzRvitdU=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QLiFIDwSMOyJlQHnf/QjQNXkpiIIChkOhXZtBSbgofNDN9br92N6eAa+Mq90ITZAPwF3itPMtkc
- 2hu6u7BX0eQI=
-X-Developer-Key: i=tamird@gmail.com; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624-opaque-from-raw-v2-2-e4da40bdc59c@google.com>
 
-Use the ffi type rather than the resolved underlying type.
+Hi Alice,
 
-Acked-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- rust/kernel/net/phy.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 9b4dc09403e4..5fa6b7e97887 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -163,20 +163,20 @@ pub fn set_speed(&mut self, speed: u32) {
-         let phydev = self.0.get();
-         // SAFETY: The struct invariant ensures that we may access
-         // this field without additional synchronization.
--        unsafe { (*phydev).speed = speed as i32 };
-+        unsafe { (*phydev).speed = speed as c_int };
-     }
- 
-     /// Sets duplex mode.
-     pub fn set_duplex(&mut self, mode: DuplexMode) {
-         let phydev = self.0.get();
-         let v = match mode {
--            DuplexMode::Full => bindings::DUPLEX_FULL as i32,
--            DuplexMode::Half => bindings::DUPLEX_HALF as i32,
--            DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN as i32,
-+            DuplexMode::Full => bindings::DUPLEX_FULL,
-+            DuplexMode::Half => bindings::DUPLEX_HALF,
-+            DuplexMode::Unknown => bindings::DUPLEX_UNKNOWN,
-         };
-         // SAFETY: The struct invariant ensures that we may access
-         // this field without additional synchronization.
--        unsafe { (*phydev).duplex = v };
-+        unsafe { (*phydev).duplex = v as c_int };
-     }
- 
-     /// Reads a PHY register.
+[auto build test ERROR on 19272b37aa4f83ca52bdf9c16d5d81bdd1354494]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/rust-types-add-Opaque-cast_from/20250624-232939
+base:   19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+patch link:    https://lore.kernel.org/r/20250624-opaque-from-raw-v2-2-e4da40bdc59c%40google.com
+patch subject: [PATCH v2 2/2] rust: types: rename Opaque::raw_get to cast_into
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250625/202506252207.uYOBf8SU-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250625/202506252207.uYOBf8SU-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506252207.uYOBf8SU-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0599]: no function or associated item named `cast_into` found for struct `HrTimer` in the current scope
+   --> rust/kernel/time/hrtimer.rs:175:45
+   |
+   96  | #[pin_data]
+   | ----------- function or associated item `cast_into` not found for this struct
+   ...
+   175 |         let c_timer_ptr = unsafe { HrTimer::cast_into(this) };
+   |                                             ^^^^^^^^^ function or associated item not found in `HrTimer<_>`
 
 -- 
-2.50.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
