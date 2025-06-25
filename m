@@ -1,77 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BCC27381E;
-	Wed, 25 Jun 2025 08:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941A5BA4A;
+	Wed, 25 Jun 2025 08:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750840214; cv=none; b=aw3XOoDa2f7V1l99S9adjMSw/tLmaZ8reqbijGpP/upaYoyPNPFGNRCWdM10Qv3YR56bb4jfZ85QkgYiwhF5FU31HF2dl5QAg+T/lR9QVTlD//H4gVQHWQbUVoATDrWfb8jUyESUm8Mfy5SZY2Oh4x+57OsSBualIbKjA54Vq7I=
+	t=1750840793; cv=none; b=IWltORpljV4dOD7jyRodPK3xOnF1gV9GwJ4B1RioT/2q57zhZtOCC0iMTogegcZ9tA2tWvJFGIwAD+KKG4UhWNIjbXfFxxiHbvO7gP3uVdhcWElmkLHeSjEL53Sm6fLGcqnq3hZKozl+8oNf9bKMxZ1mDSz+wzCW/j9POeZDlOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750840214; c=relaxed/simple;
-	bh=ZMYcV0v+/lOBTq3uVM5tv5E1P/nDL0elBHzgrXYiC5g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oNrO428l3nm8rzOuI8aHLJetK7Eq97sMmcXCPIFtyHUUBIiqTmHLkkrUtGSeMHESdJSmrqVTl6AjYrothn7wEfN/w6H3/zY/I7b5zHJhZHPI87mWqTN27JmHtklc3NGiNbApBxpJ88YtItxMA+68xxDAVtnkI0fiHxrhhh5wLiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cpd6syaX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750840793; c=relaxed/simple;
+	bh=1/kjlpSwf+6F2gTqCeLo5ATGF0NRGzb0h+zdWq8kh38=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O84zpBfm/VT2Hr5xnUjXkj622GijfNIMIfCvyFMgl1zPMtjYiEos3cjFTP+iHDu4/fIoQguK0UJ9E1cHv8sJzKk9MywJuftzWGCjKVZrXBvyD/Em4syHwgN4utaTjY81NalDHmjGNUSfvEqWDKEAIwFaRjQPYBH57F2msNCSXk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXUka6/a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cpd6syaX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFD0C4CEEA;
-	Wed, 25 Jun 2025 08:30:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXUka6/a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468D2C4CEEA;
+	Wed, 25 Jun 2025 08:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750840213;
-	bh=ZMYcV0v+/lOBTq3uVM5tv5E1P/nDL0elBHzgrXYiC5g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Cpd6syaXk0hxiMytORKNWNPS6j7d/MGIi91z6ajhWMiVWLz9gB4/MZBhH8edvvJcw
-	 lBLktn3CwHdO9W90pORMAc2TyeGFS61u3fNjXuq5O1SwF6L0RCBkVCtqHJThLm57zG
-	 mdMBU0mK7yWcijctfJ+zePSHqjM126HO83k9DCO49hwgyPgXPn/PF8GeqPO1K8N8Nd
-	 rY8j6Tu4E/O2jdXraDysEFpz3t6Gl23sEq6fhWDQiXvH+zJBz8VQYGB9J+5aM1fevZ
-	 BCjqEhBtniN3wQ6V52lff2e7uXqR6ik+O9xiKcKQp9gIUDAo1HI3DZeGkhW94EZ4nR
-	 5Z11nuxCJCAkQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  <alex.gaynor@gmail.com>,
-  <ojeda@kernel.org>,  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
-  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
-  <frederic@kernel.org>,  <gary@garyguo.net>,  <jstultz@google.com>,
-  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
-  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
-  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
-Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
- Delta
-In-Reply-To: <CANiq72mTKTh+GSWUW5aZwkqpdMFZ5VwA6djwubtsVn2KOy362Q@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Wed, 25 Jun 2025 10:11:56 +0200")
-References: <CANiq72nwaxszEbn6O3xZi6H9P+U=5N0ugK1n9qBRteQwKXQSaw@mail.gmail.com>
-	<87wm912sjg.fsf@kernel.org>
-	<CANiq72kHocyULzwqxS51XeSEhsJpccfNFc+QYE67yvfvS8BApw@mail.gmail.com>
-	<20250625.083037.1910124819838055415.fujita.tomonori@gmail.com>
-	<3zCWvNSS_nriw1U9HytX_Lh6WWrEJelevyNQ_pWrzbxvSoUPNd-NTs1koz4PY2rIzkOBeVL82dj0NTR4_R5nyw==@protonmail.internalid>
-	<CANiq72mTKTh+GSWUW5aZwkqpdMFZ5VwA6djwubtsVn2KOy362Q@mail.gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 25 Jun 2025 10:30:04 +0200
-Message-ID: <87v7ok1awj.fsf@kernel.org>
+	s=k20201202; t=1750840793;
+	bh=1/kjlpSwf+6F2gTqCeLo5ATGF0NRGzb0h+zdWq8kh38=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GXUka6/aGAnipxrPWUDCXi2oAjXbbXzhCxykOPyv2eMo62Bz7xK5GQYb/vqNCx9sF
+	 gY9cM5zyGnDXycKgTn2ruGHHRR4HG6m+Y2ntWNhJn1k29p10Jjb4mVvTqUD/WVJ3eI
+	 +F6yl8WVQAkuRqOBNbsbEb/RgOKF3afTnMbUnZg2Ym3oxt3BHlkfTWJ1IGGxuw5mua
+	 vILG7f2FWeyKl3lQjPt5EOIGDQ2wAYF5qyCE1/QafVWkgqvcfzq9vczZAsjyKJWt9L
+	 JMdTRPDYge21phccl2u8IndXGzG6mqsMLVLidwFK7fVC/w271Q5mqtXv4QHldY3b5t
+	 ud/EeAive5dTQ==
+Date: Wed, 25 Jun 2025 10:39:47 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Onur <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu
+Subject: Re: [PATCH] rust: simplify `Adapter::id_info`
+Message-ID: <aFu10-dGkoyi0I2T@cassiopeiae>
+References: <20250625043630.7677-1-work@onurozkan.dev>
+ <aFux2MUDAGEYY49I@pollux>
+ <20250625113604.21a6ec4a@nimda>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625113604.21a6ec4a@nimda>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On Wed, Jun 25, 2025 at 11:36:04AM +0300, Onur wrote:
+> Even with that, it can be something like this:
+> 
+> fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+>     let id = Self::acpi_id_info(dev);
+>     if id.is_some() {
+>         return id;
+>     }
+> 
+>     Self::of_id_info(dev)
+> }
+> 
+> or maybe even this:
+> 
+> fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+>     Self::acpi_id_info(dev).or_else(|| Self::of_id_info(dev))
+> }
 
-> On Wed, Jun 25, 2025 at 1:30=E2=80=AFAM FUJITA Tomonori
-> <fujita.tomonori@gmail.com> wrote:
->>
->> Just to clarify, Delta implements Copy:
->
-> Sorry, that was a typo: I meant it is `Copy` (the table says `into_*`
-> is for non`-`Copy` types).
+That's fair, can you please rebase your patch onto [1]?
 
-The confusions will have no end.
-
-Best regards,
-Andreas Hindborg
-
-
-
+[1] https://lore.kernel.org/lkml/20250620153914.295679-1-igor.korotin.linux@gmail.com/
