@@ -1,106 +1,163 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB28D1AF0BB;
-	Wed, 25 Jun 2025 12:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21F9263F40;
+	Wed, 25 Jun 2025 13:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750855671; cv=none; b=EQJrJ0qRD0BkEMaUJA+B5ukqCz03t2deJ48f7fl/x7v9wXxDxYq4DXMG4fXLMUH89e57sX3tR88+1FZo7po0eAy5TtPyxA3rBEHUSYmHH1ekx0dy/PF/VdZGgPRwX+eNTjpeGvo7RODJL0Yes7+lAdb93LWAJba3+GhINQMoqJQ=
+	t=1750857179; cv=none; b=NcONgsXzEahTXjQh9Gh6EwsDW7eKHA+N9gIrI5FPyvx+eZTPNN7tuBIWbbMYtWCj9UsmhKaB7LisPALCCpjJMxY0zY3eEz+ffwM0TNwUWfd1+EdN+qdbAAj7PvjRtfPN6rXfa6KyjIMTxKrGRb9321p4W9JcfPAQhI3WWuJI86A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750855671; c=relaxed/simple;
-	bh=BU3167g77+eBh3FQcZRn67ZUlMzren6rPxnJ6rrLr6s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=REI3Q9K8jpb9/rZruWP9caCOX8a2LFjd62y7yD4nb5Vo444IW4ZB+g5RQg71eJjxiGKx9YVzCQ2hMw0ayp8ZnbyEj/xn8IToss7kTwT3/UzJanKiAB3ui5A4qHZepbK6xiGdm6K4UBzClDIcuW8a1VkMKWiyhEt9kNBU54l0Au0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gshbbXz5; arc=none smtp.client-ip=209.85.216.43
+	s=arc-20240116; t=1750857179; c=relaxed/simple;
+	bh=c/cs2GvmT9AV9fE3ByodzfHCrxWqxDY8Mw90vyx3za0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MqqG3i8N6RNMBw427ddRvSeCIwikM+IwTxYkmGj77Fs4lfuhL33Wf3LVvewbQRP7tTIb7moZrkYzppnzQHBnuGSO1PgzsUVGJiBwq0Z2Shzx3NHJWetJBPRAZm6yJEVpBLU9PqOWL+1Uie7IhmftkwYXK0G4lwJR13+qBf2KWM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agIkpwCI; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gshbbXz5"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-31306794b30so828382a91.2;
-        Wed, 25 Jun 2025 05:47:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agIkpwCI"
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6fd0a7d3949so26219006d6.0;
+        Wed, 25 Jun 2025 06:12:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750855669; x=1751460469; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1750857175; x=1751461975; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xRdtBmMzlAb9QIbZaGxD9UlH4C68HhmhN0SNfJyz9VA=;
-        b=gshbbXz5/SsZ7hQ26jZvnlLorw82vS9epkibt48qKQ+I3QRnqDYp4oAFU6eKP1wYG4
-         Pj9ebSQHVeCcnlQzOdTDUk/I9oCxkQzBa2LVDhbAPJ8zoDL+B0oIERtc4K5J4QSCXNSP
-         tYfeKbVWuC+iRvqCe1LhtNg0ymG0evi4Y/1ZED3iI8Tc9pul3latsoTKJD8ZDT1/1pQB
-         +teY42Upi/JSNFxbD1DZD5LMADrRhnTrIYbNYli1T5Q9Y314YQYzaSf4mJn4MOZ9FJ1o
-         NfuGJHY3etuNnivspCvUDHPL4Gl0qEiiMs7mdVpWbq5suvb3lPiuYeEqh6b7qOTtw7yQ
-         9YBA==
+        bh=O7XEAeABBEPfH4dacoEICW2H1x2av1UXnkGOMgIKze4=;
+        b=agIkpwCIim1wyxkdGbCtiM7hbSrGwLh2+AJryGVLty3N3u6kglQOvWMg2JA2M620g8
+         Gr6WtLm+NTIIGLMIx0nNbW2HBHvWU/zLycUMjd5qQQPayacoDBgaEkKsKYAO7AdTNa3e
+         5z3R678wLw8o+8QQ3Tqx1dxF0qVpvUqZzHsVTgAc8WT8WvCCAozWPfkw0jh3UTQvKNip
+         Uc2hPiVfk8tIXzUBF3f0hYqQ043vAgh3UdI1PSfjopHjsWsjahUdczTgDVXsxVNkwMdF
+         XBjIumD9TsRQPYZbu2OEUUdXkytdCiB/de7sKbvAqUG6jIjlRgMGVX0SCfRuRg8CjFOB
+         7Paw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750855669; x=1751460469;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1750857175; x=1751461975;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xRdtBmMzlAb9QIbZaGxD9UlH4C68HhmhN0SNfJyz9VA=;
-        b=cFp46Lb+azDWNMfMSxjoOXG/4i6RQSJAiJHBxN4XmXzDvpbQAXSl1BFOrPxdNrYge9
-         9SP9KqCbLtKNNL+vmS68n+ZPpeAuemRpJwLQc8kz1SvRjDaboprsh14nPq5PZmKW5rm0
-         vVZWHQOrH5ynqTBdrQ8SGYMvR3FjFh3qtrn9NbSLrov/ovcSJ4F1ps2xjvTMDH3eEzKT
-         yls4Iu8l95MVoeC4tFsLstEQKlacyaRGzGzH6KSm693r+myK3k23pd/kQO7L5+3/t4vM
-         85HC/TKobaCwq1ZeoOB5DfdtljLtFfUE8jYEVr/NlOcyvC9uBDXx7arJ3Ncnp+xawH5l
-         kDmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUa/bjYF/7GmUmESIwvE0J5eZCAg6SH9OSiVa6qsobUq5cHp7KWfpFmXwV/0Csq5pxtJe7BVUUHhEn2peM=@vger.kernel.org, AJvYcCVrUG1Tm24Btu71/h4AfadRnSj4TrWF1C0A/Hvcgj/QzcNyYwLkwDceKzo1G+USS7Ztkj+tjnDt46iSfn7YbQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJNARyqt4rSTkOLcWDvRce9XTdasy/B/QYo75VkcFrqYt40wq2
-	+0YGgvNQH+wT8793XLbPL9N3erGaF91TnwYh2JBoAC/HC6wx0C8lLytfNEN7VyI5ztgMCJCQarA
-	tewwwbGDqqN48e4SgfYeibEKHA8ClSHo=
-X-Gm-Gg: ASbGncthO7D+cDzBJx/ADsJWKqnEqXBvIaLWwijwk1V8vVCgXtBRMRxVeDINYwIGa4I
-	TXSiRguY0V1lKdR2F0+5Z1tV1N555hU92q3dsbNTL+8cmRTZs6ZLQho388d/6rMLhFe0/4joUMv
-	6IUsnO5y65Tuhan27OzZfmZjcewBOhgCIUqV6FY6glAFo=
-X-Google-Smtp-Source: AGHT+IHnvlarZCuv/RCxHiq29Qi7ylrCmEZXswOwHX+FJluU1B6A+ro+JsxQXvsVUnAYNWJueug97Vcpgz4xDNQHbpo=
-X-Received: by 2002:a17:90b:51c6:b0:30a:80bc:ad4 with SMTP id
- 98e67ed59e1d1-315f25545b6mr1686463a91.0.1750855668951; Wed, 25 Jun 2025
- 05:47:48 -0700 (PDT)
+        bh=O7XEAeABBEPfH4dacoEICW2H1x2av1UXnkGOMgIKze4=;
+        b=vtnJAqACQLnG+eN6MCjY/gC8pZoFk4kS9Vub41ZHCAxJ1cL4dP6q/f6dmOCAHbUiyO
+         VCFRyKxTIPyzNZGUXIWC35O0om43sqGkTLZ/ocruiMM5Nbm0lD+ROERH8bkuARDNTPLw
+         pfLv9EzS9FQ7l/oMmQFFkTS8sUddIHF5nAyy4nBjFvjK3RNvPXcu5H9UhcGYpMoP3lkD
+         V6U+zcHAImJCv1H1OQEsAr3dkzNb9H3n2VRn5Js1R0/cFhpBfaD+OYoRzWrZRIXqGzMk
+         2zavxWhdA+BIz1dw8PApNbgkHgXYheyeNU8ksF5GpUemYA1WSv35/kHONX3qud+r3YOM
+         /4/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUFNckpgjWo4LpMoaumGieVBLWXk8QyxQ7NB5C/hRszbZ7A97wNM6Bbyb4nmy1h3QJikU8Bvup4U4sMPHa8pbQ=@vger.kernel.org, AJvYcCXRdHk8c5bIaakEjaVgIT/0ZZP98evwt+2lLmIRoh2rRRiToWSlvgfghAhX9sqK82MPM0f6+m9IstSA0kA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6u0b3K0oz7F9Rfne8Q1Vh+gjGycRvew8nb+vbr9LsYCugPfsz
+	b/PKPz/Lrp56JYZyYw1HOv+w2ci4jQxQy4UcXTiqSnzBQtF774HDYm5+
+X-Gm-Gg: ASbGncsBSwc/LED4tLWhOPG7LAy68CAOrCb04Lcsm7s92vnXSRR/8Gg0BbJX3KibWz3
+	KvaGRYJShMKjUX8TCa58zj8RqAf/zWDmABWIdg8eAoekvRi94Ie+OjVeFVgV3ai0i6nuXDbNQez
+	gfBVTgfUpShBszOs9SozkInt4czwlFiAfHOrptm0Rpzpax+Z5QJ/pL81R2vBQQE/uWjJsCfohkU
+	DdATs6JLUrHicX7YaRWDAnp3Pw+P8i13VeNAjgDD6zLvMcwaRIPnzUuI3Zu+Aw58mvCLx3cjcQX
+	4ARh9ms/Q4/AJ1C48smoQ+eRBGleaZ1nqK4FrJx80nLmtSWXvuxWkgvw5iNuw1kCeSJS9zeyHMn
+	0orG8FoSU8Vw4K5mWAWn9zmVIJYiloRSIvHGyx4iEV5AFw9wSpyac
+X-Google-Smtp-Source: AGHT+IEKl2vX+++pejg4hzGpoabiaPqmms6wmMMNyFuJ2l2VDlniu7fykiwNfg3L8xSXuDe+8kTAOQ==
+X-Received: by 2002:a05:6214:224a:b0:6fd:5e46:dbc with SMTP id 6a1803df08f44-6fd5ef93451mr41870326d6.33.1750857174972;
+        Wed, 25 Jun 2025 06:12:54 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd09460830sm67855996d6.51.2025.06.25.06.12.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Jun 2025 06:12:54 -0700 (PDT)
+Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C34BCF40066;
+	Wed, 25 Jun 2025 09:12:53 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 25 Jun 2025 09:12:53 -0400
+X-ME-Sender: <xms:1fVbaEW2bUaMgXMhtujBPzqqjoufvObHeN79U66FRD0RXOslzW0GeQ>
+    <xme:1fVbaIm1CrTBe2grveDuvabWT28OwTqm-0_QEsEa70j7BDkIm2hS3qKHBNOiSBuRo
+    9Dm7--bwCEydRHpfw>
+X-ME-Received: <xmr:1fVbaIa5VGfXpehAP6s6qsr01MmbjnGLXyrPV6Y1QSUqvNDwUGAP0Wztfw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvvdekiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehvihhtrghlhidrfihoohhlsehkohhnshhulhhkohdrshgvpdhrtghpthhtoheplh
+    hinhhugidqmhhmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhig
+    qdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehurhgviihkihesghhmrghi
+    lhdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    eprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprhhushhtqdhf
+    ohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqh
+    hunhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:1fVbaDXOLJ5DgxECeaRhn3gcRfq1vwaDQi35gUgZefScgvHlAH3-dw>
+    <xmx:1fVbaOkud-W494iEr4IQbNzS-0V1UR6kFpzlTwD72l58FibULbqwjA>
+    <xmx:1fVbaIfrlpViMUitgiaQcdBLUlbSPyCs5WGey28uy--Cqx1Wc9_gkQ>
+    <xmx:1fVbaAEk7-1iQdh8M5AduXOQWtrnA8fvSLxi7feyCSux_7AnT6dl2w>
+    <xmx:1fVbaEkHyEAST2UpDqUCaXYxRU_PLTw9CQli1EiCgszfK8zQ0Eg4M35R>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Jun 2025 09:12:53 -0400 (EDT)
+Date: Wed, 25 Jun 2025 06:12:52 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] rust: support align and NUMA id in allocations
+Message-ID: <aFv11ORZDmM7g6S-@Mac.home>
+References: <20250625062917.3379804-1-vitaly.wool@konsulko.se>
+ <20250625063026.3379921-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250623-topics-tyr-drm_mm-v1-1-82fe8104a6f5@collabora.com>
-In-Reply-To: <20250623-topics-tyr-drm_mm-v1-1-82fe8104a6f5@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 25 Jun 2025 14:47:36 +0200
-X-Gm-Features: Ac12FXyWwIT-f0p09GbrWuQHLM0OEITTFnrLijUbU8qrHeVE1B6UgsCWrUJVsP0
-Message-ID: <CANiq72k07PuSodVgb+LDNw1jZVWhKt1BuYSULfBY8DBH1EJbBA@mail.gmail.com>
-Subject: Re: [PATCH] rust: drm: mm: Add DRM MM Range Allocator abstraction
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
-	Asahi Lina <lina+kernel@asahilina.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625063026.3379921-1-vitaly.wool@konsulko.se>
 
-On Tue, Jun 24, 2025 at 12:13=E2=80=AFAM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
+On Wed, Jun 25, 2025 at 08:30:26AM +0200, Vitaly Wool wrote:
+[...]
+> @@ -151,16 +159,11 @@ unsafe fn realloc(
+>          layout: Layout,
+>          old_layout: Layout,
+>          flags: Flags,
+> +        nid: Option<i32>,
+>      ) -> Result<NonNull<[u8]>, AllocError> {
+> -        // TODO: Support alignments larger than PAGE_SIZE.
 
-Patches from others also need to be signed off by you as carrier.
+Thanks a lot for doing this! While you're at it, maybe we can add a few
+tests for various alignments of allocation? I'm thinking:
 
-> Changes from v0:
+#[repr(align(65536)]
+pub struct Test64k {
+    a: i32
+}
 
-I assume you mean the RFC patch from more than 2 years ago, i.e.
+#[kunit_tests(rust_vbox)]
+mod tests {
+    #[test]
+    fn large_allocation() -> Result {
+        // Better use `new_uninit()` to avoid allocation on the stack.
+        let x = VBox::<Test64k>::new_uninit(...)?;
 
-    https://lore.kernel.org/rust-for-linux/20230307-rust-drm-v1-7-917ff5bc8=
-0a8@asahilina.net/
+	assert!(x.as_ptr().addr() & (kernel::sizes::SZ_64K - 1) == 0);
+    }
+}
 
-Right?
+Thoughts?
 
-(In general, it is very useful to have a link to the previous version
-in the changelog, especially when it is a very long time ago, when
-titles change, when it is non-obvious in general, etc.).
+Regards,
+Boqun
 
-Thanks!
-
-Cheers,
-Miguel
+> -        if layout.align() > bindings::PAGE_SIZE {
+> -            pr_warn!("Vmalloc does not support alignments larger than PAGE_SIZE yet.\n");
+> -            return Err(AllocError);
+> -        }
+> -
+>          // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
+>          // allocated with this `Allocator`.
+> -        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, flags) }
+> +        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, flags, nid) }
+>      }
+>  }
+>  
+[...]
