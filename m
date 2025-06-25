@@ -1,41 +1,44 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mailrelay6-3.pub.mailoutpod3-cph3.one.com (mailrelay6-3.pub.mailoutpod3-cph3.one.com [46.30.212.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940282DAFD5;
-	Wed, 25 Jun 2025 19:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750879100; cv=pass; b=WlNHJ41qFSdaRUKQ2CAeQbX7kwReKTuKsXBpPeR2QFuN6fRmafa0f8nyTn2RJ3MIC187gSa3N4PbwobyOtaSGsTkrLZqioPQJGu0HzIePiSgM0L0EK3cdW1QOP7b+WwXweU3nQmDRjprHo3qGls/n4waNll/YslvQFUBqxXUuBc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750879100; c=relaxed/simple;
-	bh=uyy4xiNlMjh21MUqTmqBPBeeB97sutVHpJnk3zwpGiI=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CD23074AF
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Jun 2025 20:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750883367; cv=none; b=Gp3M/xA9ivgglolW5fdH3qduSnWHQZ0h5Y4uIQ3m+iFvAI4AGy4cXcYabjzKOGlxLK5EGKl/e+h3FBMUorvLTyCDMv0lsb0mA8vLUDo2z3PZErB6VX9k/OOkmfXrZ3kYEynjZlm03IxlI9ScjYCMgSEdZp6oouw2oOzFfFuyOzk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750883367; c=relaxed/simple;
+	bh=vuzj/xayTr95WcffBwjHoYH2sEOFOq8LE0VUip3uJHQ=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=RmtZQClBLu8PiL9bFIi0ctW0akRIO+SZn/dpIhlEabv5t5VaTkItYasUMaQ2pqKpF07DGpFZxrg+OjB3AtByf+HaoVpSWQT0FJdc770VHjDh2fFXQJyL3DfFCNcA6nW2vhLNHLakEBZ4oCIjiHNJD8Utq9xFZIUIGCcg800zJa4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=PN0Oge+T; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	 Message-Id:References:To; b=kbWd3vbSxGyE35moT2a07VctP4QGUF2GQY6Z635I5FYlu/tXi+3fre8xAyGKP5t5I9QVVRGkuH6eIKO3zvlJt8VGpQq6bF6kXY05xp1pZVDdHZczmX7WB2dBtCTBl8sZ24DFriCqwjyVX1tH9Sek7zNm1MDtB8MdT3z76uIvLsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=xlWYxEIt; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=e1VP2Tqq; arc=none smtp.client-ip=46.30.212.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="PN0Oge+T"
-ARC-Seal: i=1; a=rsa-sha256; t=1750879071; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=UqET5Z3qZJFBe6aSFk/n/qpxfMIlbohNMpS4qaUD7wsZxDNVH/5K+fNrrGkel5tYw8wtxBjo2z66U9omjU59QK4hhC/g7XA+B24WqHwtOQCHWGYxQF+W8lqt3WA63wzEOBHwk6OzhCHeaLbxuMLbIT6RV420mDfOwCovkkcSpfo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1750879071; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=dHw1fcw6yCMKDuaRUUmcQkZkXANFxT243nZxfiY1M6I=; 
-	b=iGsGrCAxuU1kE2CWKUlQIQdxdSz+I/4sLPr68FwvaalROom8waebR8SQ/937q0m+A8axgV8HYRFLR6K7cIKsbjeo1CU4UWdhzEooF+WTe+JY/rVWdaSVfpmpvIWM1l5ZHOWmFeVIiesbnuKN9rgP9QktfZnUiRpU4pbMl/DE5ac=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750879071;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=dHw1fcw6yCMKDuaRUUmcQkZkXANFxT243nZxfiY1M6I=;
-	b=PN0Oge+TTYcSdiDSd3aXm/0E+ddTAJxm0dS7Nup2dbcXCpiZwLIZIf3I/U5u3mTw
-	Y2ShIAkD43R+DzRaY9rNq1UFQG15HQZ8v7uZl4LLeOFgq7JhccBAfHgXJqLwXlvlOn9
-	gsZYk+2LAxsEVInprpbycQAutRMKQsNEm4Wp7epE=
-Received: by mx.zohomail.com with SMTPS id 1750879068314974.8188270241737;
-	Wed, 25 Jun 2025 12:17:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="xlWYxEIt";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="e1VP2Tqq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750883356; x=1751488156;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=mFicMW97oCaFX3ytmFZghvLQmZgDqR8OgB6iTx+baCA=;
+	b=xlWYxEIt96EYtxtxqfAkDKuAn42RhF4BXnMhnbDT4tX9n8AZs/S7PBTGJHkJtZWCDOwujMmd8Hvpx
+	 uA+V1ub2XXvaGc68ADH67NAcIJJ8JI8+Jqq0WwwJ1b9mMR+p9g2jb7Wsc3BqFmdRtUEFVGcYSjRVKI
+	 kn3pTyP6IM96YqO9zGtHY/2Al0BBJoHSpXDlZD8nyIpP3flgxtOdLsrwRjfe+2gES0gI7faSJJ5ud0
+	 fPo6ZBy4GifEPHmRBAiyg8DicoqJW3k7ovWISrZAM0sdNUe0kp+so0+inW71+UBy3jB2dv3nbWStNw
+	 5ru0KiBrS8KyqjQc+6phNWvVRrUTHBg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750883356; x=1751488156;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=mFicMW97oCaFX3ytmFZghvLQmZgDqR8OgB6iTx+baCA=;
+	b=e1VP2TqqOq6P+uUeLxOSceSYWSkdKhkMQ7NYvr4vQ2yjSIBjR4EMk8hv2ppLiDME9rAD+XXA5HRFg
+	 UmXUSZqDQ==
+X-HalOne-ID: 0f22a303-5203-11f0-843b-417246ffdc90
+Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay6.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 0f22a303-5203-11f0-843b-417246ffdc90;
+	Wed, 25 Jun 2025 20:29:16 +0000 (UTC)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -43,77 +46,136 @@ X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH] rust: drm: mm: Add DRM MM Range Allocator abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CANiq72k07PuSodVgb+LDNw1jZVWhKt1BuYSULfBY8DBH1EJbBA@mail.gmail.com>
-Date: Wed, 25 Jun 2025 16:17:33 -0300
-Cc: David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v3 2/2] rust: support align and NUMA id in allocations
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <aFxI-rjvktSe3h8M@cassiopeiae>
+Date: Wed, 25 Jun 2025 22:22:36 +0200
+Cc: linux-mm@kvack.org,
+ akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- Asahi Lina <lina+kernel@asahilina.net>
+ Uladzislau Rezki <urezki@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3E03D94C-5446-4857-BC94-D7EA1646E54A@collabora.com>
-References: <20250623-topics-tyr-drm_mm-v1-1-82fe8104a6f5@collabora.com>
- <CANiq72k07PuSodVgb+LDNw1jZVWhKt1BuYSULfBY8DBH1EJbBA@mail.gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+Message-Id: <C349F54D-348D-44FE-A02F-E75C78608734@konsulko.se>
+References: <20250625062917.3379804-1-vitaly.wool@konsulko.se>
+ <20250625063026.3379921-1-vitaly.wool@konsulko.se>
+ <aFxGQWG_81Peu7mP@cassiopeiae> <aFxI-rjvktSe3h8M@cassiopeiae>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-Hi Miguel
 
-> On 25 Jun 2025, at 09:47, Miguel Ojeda =
-<miguel.ojeda.sandonis@gmail.com> wrote:
+
+> On Jun 25, 2025, at 9:07=E2=80=AFPM, Danilo Krummrich =
+<dakr@kernel.org> wrote:
 >=20
-> On Tue, Jun 24, 2025 at 12:13=E2=80=AFAM Daniel Almeida
-> <daniel.almeida@collabora.com> wrote:
+> On Wed, Jun 25, 2025 at 08:56:05PM +0200, Danilo Krummrich wrote:
+>> On Wed, Jun 25, 2025 at 08:30:26AM +0200, Vitaly Wool wrote:
+>>> Add support for large (> PAGE_SIZE) alignments in Rust allocators
+>>> (Kmalloc support for large alignments is limited to the requested
+>>> size, which is a reasonable limitation anyway).
 >>=20
->> Signed-off-by: Asahi Lina <lina@asahilina.net>
->=20
-> Patches from others also need to be signed off by you as carrier.
+>> Please split this..
+>>=20
+>>> Besides, add support for NUMA id to Vmalloc.
+>>=20
+>> and this into separate patches.
+>>=20
+>> Please also add some information to the commit message what you need =
+node
+>> support for. Do you also have patches to add node support to Box and =
+Vec?
 
-Thanks for catching that. This was indeed forgotten on this patch.
+No, but there is a zswap backend implementation written in Rust and it =
+should be  NUMA id aware.
+I=E2=80=99m planning on submitting that basically as soon as this piece =
+gets accepted.
+
+>>=20
+>>>=20
+>>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+>>> ---
+>>> rust/helpers/slab.c            |  8 +++++--
+>>> rust/helpers/vmalloc.c         |  4 ++--
+>>> rust/kernel/alloc.rs           | 28 ++++++++++++++++++++++--
+>>> rust/kernel/alloc/allocator.rs | 40 =
++++++++++++++++++++---------------
+>>> rust/kernel/alloc/kvec.rs      |  3 ++-
+>>> 5 files changed, 59 insertions(+), 24 deletions(-)
+>>>=20
+>>> diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
+>>> index a842bfbddcba..221c517f57a1 100644
+>>> --- a/rust/helpers/slab.c
+>>> +++ b/rust/helpers/slab.c
+>>> @@ -3,13 +3,17 @@
+>>> #include <linux/slab.h>
+>>>=20
+>>> void * __must_check __realloc_size(2)
+>>> -rust_helper_krealloc(const void *objp, size_t new_size, gfp_t =
+flags)
+>>> +rust_helper_krealloc(const void *objp, size_t new_size, unsigned =
+long align, gfp_t flags, int nid)
+>>=20
+>> This should have a comment making it obvious why the function has two =
+arguments
+>> that are discarded. I think we should even separate it with an =
+additional inline
+>> function.
+>>=20
+>> I do agree with discarding the align argument, given that it's not =
+exposed to
+>> users though the Allocator API.
+>=20
+> What I meant is that proper alignment is implied when krealloc() =
+succeeds.
+
+I agree, I need to add some comments explaining this.
 
 >=20
->> Changes from v0:
->=20
-> I assume you mean the RFC patch from more than 2 years ago, i.e.
->=20
->    =
-https://lore.kernel.org/rust-for-linux/20230307-rust-drm-v1-7-917ff5bc80a8=
-@asahilina.net/
->=20
-> Right?
+>> I do disagree with discarding the nid argument though, since you =
+change the
+>> generic Allocator::realloc() API to take a node argument, which for =
+KREALLOC and
+>> KVREALLOC is silently discarded. If we introduce it, we should do so =
+for all
+>> three allocators.
+>>=20
+>>> {
+>>> + if (WARN_ON(new_size & (align - 1)))
+>>> + return NULL;
+>>=20
+>> I don't think we should have this WARN_ON(). If we want to warn about =
+this, we
+>> should already do so on the Rust side. The helper functions in this =
+file should
+>> not contain any logic.
 
-Yes
+Agreed.
 
+>>=20
+>>> return krealloc(objp, new_size, flags);
+>>> }
+>>>=20
+>>> void * __must_check __realloc_size(2)
+>>> -rust_helper_kvrealloc(const void *p, size_t size, gfp_t flags)
+>>> +rust_helper_kvrealloc(const void *p, size_t size, unsigned long =
+align, gfp_t flags, int nid)
+>>> {
+>>> + if (WARN_ON(size & (align - 1)))
+>>> + return NULL;
+>>> return kvrealloc(p, size, flags);
+>>> }
+>>=20
+>> Same as above.
 >=20
-> (In general, it is very useful to have a link to the previous version
-> in the changelog, especially when it is a very long time ago, when
-> titles change, when it is non-obvious in general, etc.).
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
->=20
+> This is actually different though, here kvrealloc() may succeed even =
+if the
+> requested alignment is not fulfilled, so this is incorrect.
 
+I can move this logic to the Rust part, too. My point here is, for =
+Kvrealloc with a large alignment we=E2=80=99ll just make the decision to =
+use vmalloc, period. We can indeed do that on the Rust side.
 
-Ack, will fix this in v2.
+~Vitaly
 
-=E2=80=94 Daniel=
