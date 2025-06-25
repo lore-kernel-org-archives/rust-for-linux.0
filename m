@@ -1,66 +1,68 @@
-Received: from gentwo.org (gentwo.org [62.72.0.81])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D9029AB02;
-	Wed, 25 Jun 2025 17:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.72.0.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748E433086
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Jun 2025 18:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750874065; cv=none; b=THGRYdM1zvvRcsCzLhmVzBNCYHFKppPw2sexhphqSlIOcE20cyyeLXa5lQBX4PleR/qM1pOfs9uGGdqAPiwKUDdq5Vi+yB6AfIARlMeaddh27XrDGbX06L9AIwUnC8SiYwgB1BOiPoshyaEs3jwomYh8sOv3xPe4PXbxG03WKQg=
+	t=1750875620; cv=none; b=p9+G5TOlhWDvnGms6GGFuvRH9YBVXvhI61T7LvD1UOn57OTi5nyDStU+8N+2vUBFVbryIRUbOWA9Hq7aaib+D+voJAWicsvZlz7gtdtqoN5JH4395PJBMJ8fve8yjk03a9VKAxk51sFqQHI+kSIIQikWZduLnBl9V6pGRtype5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750874065; c=relaxed/simple;
-	bh=NGkpVoEaQdpDgPeWuBVnzV5+AxosWbl5FUgYHVP9+F4=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=EKRD3/0tXxV5TP8mdJSH7qNRJVvVGUSi3T+25NbxhVV3eX6v5v4v8fkZ7o/HyWB8zpDkANFG5UVWnOXXa21bfvz4yw8mv3h40Ersg6SFEt3gyR/f1QtQ3LFmURMf0G5G/y3ca/RfQgJRmczM5nFCetUuXUlFKqGwl3EnxoZNjM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=BpMO2uHz; arc=none smtp.client-ip=62.72.0.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
+	s=arc-20240116; t=1750875620; c=relaxed/simple;
+	bh=VxlmLzMyNV7tHN6TJqRWcZDGSM22FRYtG3OjfMQ6e44=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g0pGeeIZh6Lg+b4+jLU/UVXCbGKdASBMp9Yju7OKHF5AGxeaPfX/IZqgrS7kVsAyu91SLzFqMckUop0NRtoU+mJc86LuDJT0THNdTxQACHX8hxICxb8UbNyMZgU0UkgO6x1OdwO1+nNRcOhG15tSt+tJtXKUhUa3ygsWK1ZD+yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUPN5tOr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="BpMO2uHz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1750872222;
-	bh=NGkpVoEaQdpDgPeWuBVnzV5+AxosWbl5FUgYHVP9+F4=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=BpMO2uHzL5lQXkm1+fD38fBuWdrwbshTzBBQX81FyKHxfvSgdGXRMQkY/WAgW8oHY
-	 Rp6K4Cch0Z0PulPhN+ed8UTdwp8c/9RaH1EZJtND6pn1PS+kCkEisyOiXtZCIieQGt
-	 FW4z6emguFAfMa48GWSBaEyt//bO84GkbteQ5+hk=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 2D91040743; Wed, 25 Jun 2025 10:23:42 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 2C7F940113;
-	Wed, 25 Jun 2025 10:23:42 -0700 (PDT)
-Date: Wed, 25 Jun 2025 10:23:42 -0700 (PDT)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: Mitchell Levy <levymitchell0@gmail.com>
-cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Andreas Hindborg <a.hindborg@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-    Andrew Morton <akpm@linux-foundation.org>, Dennis Zhou <dennis@kernel.org>, 
-    Tejun Heo <tj@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
-    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-    rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 4/5] rust: percpu: Add pin-hole optimizations for
- numerics
-In-Reply-To: <20250624-rust-percpu-v1-4-9c59b07d2a9c@gmail.com>
-Message-ID: <d938ed3a-cb00-0a71-2380-dac7d1a9e039@gentwo.org>
-References: <20250624-rust-percpu-v1-0-9c59b07d2a9c@gmail.com> <20250624-rust-percpu-v1-4-9c59b07d2a9c@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUPN5tOr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D3EC4CEEA;
+	Wed, 25 Jun 2025 18:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750875620;
+	bh=VxlmLzMyNV7tHN6TJqRWcZDGSM22FRYtG3OjfMQ6e44=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZUPN5tOreQIycJeduVlWcP1WcvUiGZkIXmffaSYRTlWGdHS6EEP1vDvaTuV0s1afL
+	 Fu/27kdJL0Cf6ZcytxFFlSrTSyOinOoVQ1el9Wfkw2LuxS2FF55WeENuz4IxxSG+Tk
+	 BU/gyQbefa3UTkNoN3+0sYtcT4+kSCbE2H9p+X1aOkWzGiAboZlg+1sCbZeJjR1zNy
+	 THaIYj3LEReChCTb6wqLfY4U6jF6kIrNJVvtHisnIAkssQQdqAVKAkdZxtyaBA9tms
+	 LndNKlzlVo4zYOytXLoiyjWhyaobTn4p+0LduOVhMLYSjp7D6JbTv1fwYuvkFHFL4w
+	 caB6muGJXND0w==
+Message-ID: <513ee881-cf28-4c68-99ee-5a802c3269e2@kernel.org>
+Date: Wed, 25 Jun 2025 20:20:16 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add Alexandre Courbot as co-maintainer to
+ nova-core
+To: acourbot@nvidia.com
+Cc: nouveau@lists.freedesktop.org, airlied@gmail.com, simona@ffwll.ch,
+ jhubbard@nvidia.com, bskeggs@nvidia.com, joelagnelf@nvidia.com,
+ ttabi@nvidia.com, apopple@nvidia.com, sbaskaran@nvidia.com,
+ rust-for-linux@vger.kernel.org, ojeda@kernel.org
+References: <20250624170517.105148-1-dakr@kernel.org>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250624170517.105148-1-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Jun 2025, Mitchell Levy wrote:
+On 6/24/25 7:05 PM, Danilo Krummrich wrote:
+> Alex has extensive experience with NVIDIA GPU support, is closely
+> involved in nova-core development, and brings valuable Rust expertise.
+> 
+> In addition to his technical contributions, Alex is actively engaged with
+> the broader community. He works closely with contributors and
+> stakeholders to identify and solve issues, fosters collaboration, and
+> helps ensure that the Nova driver evolves in alignment with the
+> community.
+> 
+> I trust him to take a key role in making the Nova driver a successful
+> upstream solution for NVIDIA GPUs in the Linux kernel.
+> 
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-> +                        concat!("add gs:[{off}], {val:", $reg, "}"),
-
-> +                        concat!("sub gs:[{off}], {val:", $reg, "}"),
-
-> +                        concat!("sub gs:[{off}], {val}"),
-
-Where are the other RMV instructions like this_cpu_xchg and
-this_cpu_cmpxchg, this_cpu_cmpxchg_double etc?
-
+Applied to nova-next, thanks!
