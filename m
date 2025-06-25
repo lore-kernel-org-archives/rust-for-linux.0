@@ -1,72 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941A5BA4A;
-	Wed, 25 Jun 2025 08:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A5A285C95;
+	Wed, 25 Jun 2025 08:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750840793; cv=none; b=IWltORpljV4dOD7jyRodPK3xOnF1gV9GwJ4B1RioT/2q57zhZtOCC0iMTogegcZ9tA2tWvJFGIwAD+KKG4UhWNIjbXfFxxiHbvO7gP3uVdhcWElmkLHeSjEL53Sm6fLGcqnq3hZKozl+8oNf9bKMxZ1mDSz+wzCW/j9POeZDlOg=
+	t=1750841018; cv=none; b=SX6ThaRyWbr4FKSEgO8D/de2HDM33IQPFuHlAoh1ZfzRRzXjnCGnm7izJaGVtyC6Id07Mm49SOCqARQW8MHO4OZTQaOtDLx3jy1WKDg+4YaRYiz4qj1uB1S7bdl6xirgMNggxNcV+eNZekAeJnf3NDUMUxoCjQwDuu0k1tOWKLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750840793; c=relaxed/simple;
-	bh=1/kjlpSwf+6F2gTqCeLo5ATGF0NRGzb0h+zdWq8kh38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O84zpBfm/VT2Hr5xnUjXkj622GijfNIMIfCvyFMgl1zPMtjYiEos3cjFTP+iHDu4/fIoQguK0UJ9E1cHv8sJzKk9MywJuftzWGCjKVZrXBvyD/Em4syHwgN4utaTjY81NalDHmjGNUSfvEqWDKEAIwFaRjQPYBH57F2msNCSXk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXUka6/a; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750841018; c=relaxed/simple;
+	bh=Kmjw/sEqs7FMYsHa4Eb74upYl9Drag+iPdh6H3DgEKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nSZtHo9WBOJCaXXj1FOqelL+A5p/dD6keIqrKbXrjZkZCWVAFmmbnfEgA3QT9MrQMdrTaP6w3rbZePmK0qjfp0WVhFcN8QFl20NzpmXDs0kxi9m8ZkzR5It6+ffdfiiW1wVJto9s/Wzk9PAuqfO2+XoscsgZBoB3fGYjtYIbyCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=S9yRZF4s; arc=none smtp.client-ip=178.154.239.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXUka6/a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468D2C4CEEA;
-	Wed, 25 Jun 2025 08:39:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750840793;
-	bh=1/kjlpSwf+6F2gTqCeLo5ATGF0NRGzb0h+zdWq8kh38=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GXUka6/aGAnipxrPWUDCXi2oAjXbbXzhCxykOPyv2eMo62Bz7xK5GQYb/vqNCx9sF
-	 gY9cM5zyGnDXycKgTn2ruGHHRR4HG6m+Y2ntWNhJn1k29p10Jjb4mVvTqUD/WVJ3eI
-	 +F6yl8WVQAkuRqOBNbsbEb/RgOKF3afTnMbUnZg2Ym3oxt3BHlkfTWJ1IGGxuw5mua
-	 vILG7f2FWeyKl3lQjPt5EOIGDQ2wAYF5qyCE1/QafVWkgqvcfzq9vczZAsjyKJWt9L
-	 JMdTRPDYge21phccl2u8IndXGzG6mqsMLVLidwFK7fVC/w271Q5mqtXv4QHldY3b5t
-	 ud/EeAive5dTQ==
-Date: Wed, 25 Jun 2025 10:39:47 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Onur <work@onurozkan.dev>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="S9yRZF4s"
+Received: from mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:23c6:0:640:5e87:0])
+	by forward500b.mail.yandex.net (Yandex) with ESMTPS id E74A6619F2;
+	Wed, 25 Jun 2025 11:36:08 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 4aPD9A1LaGk0-i5mfQuPq;
+	Wed, 25 Jun 2025 11:36:07 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1750840568;
+	bh=eiH/JiqtJBziHS6aXO1G2AAC4szfxmuQl4LgCpv/bVM=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=S9yRZF4sw2RvUCoMxIiH39YP2HsOD7+6usSiXuZ00Oh1aMZqt+dNZLuiuQsqdcVAi
+	 +0gvobYfHG4sKEfHm2TCJz25n2NMmsZkcd+qx6WB9r48xym4gwF955MZh0PcH0Iwep
+	 MCz00s+/kuCX6BkXeM0FfyyVWtI30XCDb+mwfqX0=
+Authentication-Results: mail-nwsmtp-smtp-production-canary-88.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Wed, 25 Jun 2025 11:36:04 +0300
+From: Onur <work@onurozkan.dev>
+To: Danilo Krummrich <dakr@kernel.org>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu
+ gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu
 Subject: Re: [PATCH] rust: simplify `Adapter::id_info`
-Message-ID: <aFu10-dGkoyi0I2T@cassiopeiae>
+Message-ID: <20250625113604.21a6ec4a@nimda>
+In-Reply-To: <aFux2MUDAGEYY49I@pollux>
 References: <20250625043630.7677-1-work@onurozkan.dev>
- <aFux2MUDAGEYY49I@pollux>
- <20250625113604.21a6ec4a@nimda>
+	<aFux2MUDAGEYY49I@pollux>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250625113604.21a6ec4a@nimda>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 25, 2025 at 11:36:04AM +0300, Onur wrote:
-> Even with that, it can be something like this:
-> 
-> fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
->     let id = Self::acpi_id_info(dev);
->     if id.is_some() {
->         return id;
->     }
-> 
->     Self::of_id_info(dev)
-> }
-> 
-> or maybe even this:
-> 
-> fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
->     Self::acpi_id_info(dev).or_else(|| Self::of_id_info(dev))
-> }
+On Wed, 25 Jun 2025 10:22:48 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
 
-That's fair, can you please rebase your patch onto [1]?
+> On Wed, Jun 25, 2025 at 07:36:30AM +0300, Onur =C3=96zkan wrote:
+> > It was obviously unnecessary to check if `id` is `Some`.
+> >=20
+> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
+> > ---
+> >  rust/kernel/driver.rs | 7 +------
+> >  1 file changed, 1 insertion(+), 6 deletions(-)
+> >=20
+> > diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+> > index ec9166cedfa7..1036755cb27d 100644
+> > --- a/rust/kernel/driver.rs
+> > +++ b/rust/kernel/driver.rs
+> > @@ -178,11 +178,6 @@ fn of_id_info(_dev: &device::Device) ->
+> > Option<&'static Self::IdInfo> { /// If this returns `None`, it
+> > means that there is no match in any of the ID tables directly ///
+> > associated with a [`device::Device`]. fn id_info(dev:
+> > &device::Device) -> Option<&'static Self::IdInfo> {
+> > -        let id =3D Self::of_id_info(dev);
+> > -        if id.is_some() {
+> > -            return id;
+> > -        }
+> > -
+> > -        None
+>=20
+> This was intentional, since I anticipated we'll get [1] eventually. :)
+>=20
+> [1]
+> https://lore.kernel.org/lkml/20250620153914.295679-1-igor.korotin.linux@g=
+mail.com/
+>=20
+> > +        Self::of_id_info(dev)
+> >      }
+> >  }
+> > --
+> > 2.50.0
+> >=20
 
-[1] https://lore.kernel.org/lkml/20250620153914.295679-1-igor.korotin.linux@gmail.com/
+Even with that, it can be something like this:
+
+fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+    let id =3D Self::acpi_id_info(dev);
+    if id.is_some() {
+        return id;
+    }
+
+    Self::of_id_info(dev)
+}
+
+or maybe even this:
+
+fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+    Self::acpi_id_info(dev).or_else(|| Self::of_id_info(dev))
+}
