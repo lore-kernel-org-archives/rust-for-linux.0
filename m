@@ -1,34 +1,34 @@
 Received: from gentwo.org (gentwo.org [62.72.0.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C6F2BCF5B;
-	Wed, 25 Jun 2025 17:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D9029AB02;
+	Wed, 25 Jun 2025 17:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.72.0.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750873165; cv=none; b=RcfHi138WRVm5Xw3FHZi2N1dbGXqC2nP20eN4ayr/YNVecReWKv/6kmB0l7D79l5xmYAUNIg4q4WUo+LM85pq+MEeS4GcrxYa8xmAqRdMy7zKFCUyY4cOHEVKAWzKR/y8kpY9iER/82xOUvrpAWp59rSzDalNI1GsZ9Ewj8BRvM=
+	t=1750874065; cv=none; b=THGRYdM1zvvRcsCzLhmVzBNCYHFKppPw2sexhphqSlIOcE20cyyeLXa5lQBX4PleR/qM1pOfs9uGGdqAPiwKUDdq5Vi+yB6AfIARlMeaddh27XrDGbX06L9AIwUnC8SiYwgB1BOiPoshyaEs3jwomYh8sOv3xPe4PXbxG03WKQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750873165; c=relaxed/simple;
-	bh=CKN7jXDXNSdo0JPoRAElkX7s0qdgtsJUpELl83VbQOM=;
+	s=arc-20240116; t=1750874065; c=relaxed/simple;
+	bh=NGkpVoEaQdpDgPeWuBVnzV5+AxosWbl5FUgYHVP9+F4=;
 	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=j2LLx9wIKfHdg6IT7x9EtPlvB24Emlzv53tEmuQswLS+7cdNocxxSfsTc5GB0fytUIYX7iX2CDVNTNIbzb2RTvmGv4oM97vxkIPT/X+daWJVt3yJj8F2Nj+kYPVACuCCfoKLVOO6FUQ0VIoDbueWLWyny8Ia0hUEwb5aFr6cGQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=A7ARc/7c; arc=none smtp.client-ip=62.72.0.81
+	 MIME-Version:Content-Type; b=EKRD3/0tXxV5TP8mdJSH7qNRJVvVGUSi3T+25NbxhVV3eX6v5v4v8fkZ7o/HyWB8zpDkANFG5UVWnOXXa21bfvz4yw8mv3h40Ersg6SFEt3gyR/f1QtQ3LFmURMf0G5G/y3ca/RfQgJRmczM5nFCetUuXUlFKqGwl3EnxoZNjM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=BpMO2uHz; arc=none smtp.client-ip=62.72.0.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="A7ARc/7c"
+	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="BpMO2uHz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1750872077;
-	bh=CKN7jXDXNSdo0JPoRAElkX7s0qdgtsJUpELl83VbQOM=;
+	s=default; t=1750872222;
+	bh=NGkpVoEaQdpDgPeWuBVnzV5+AxosWbl5FUgYHVP9+F4=;
 	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=A7ARc/7cVihbcYi3L2nhTZBJa5JGYExfH9JovW4hj1UDk/lWRioFkPnsRoR1heZC0
-	 /p1a4jK8Q4ryTns5zwES0BEegTS3VpQ+Sao094IWUdpw3wngYb6c+r23xdMP7OjAY2
-	 ++Fry20RLTEr9ZgxeFe1Dmq4C/fNc4kfKF20eLo4=
+	b=BpMO2uHzL5lQXkm1+fD38fBuWdrwbshTzBBQX81FyKHxfvSgdGXRMQkY/WAgW8oHY
+	 Rp6K4Cch0Z0PulPhN+ed8UTdwp8c/9RaH1EZJtND6pn1PS+kCkEisyOiXtZCIieQGt
+	 FW4z6emguFAfMa48GWSBaEyt//bO84GkbteQ5+hk=
 Received: by gentwo.org (Postfix, from userid 1003)
-	id 1BE7C40267; Wed, 25 Jun 2025 10:21:17 -0700 (PDT)
+	id 2D91040743; Wed, 25 Jun 2025 10:23:42 -0700 (PDT)
 Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 17CB040113;
-	Wed, 25 Jun 2025 10:21:17 -0700 (PDT)
-Date: Wed, 25 Jun 2025 10:21:17 -0700 (PDT)
+	by gentwo.org (Postfix) with ESMTP id 2C7F940113;
+	Wed, 25 Jun 2025 10:23:42 -0700 (PDT)
+Date: Wed, 25 Jun 2025 10:23:42 -0700 (PDT)
 From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
 To: Mitchell Levy <levymitchell0@gmail.com>
 cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -43,7 +43,7 @@ cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Subject: Re: [PATCH 4/5] rust: percpu: Add pin-hole optimizations for
  numerics
 In-Reply-To: <20250624-rust-percpu-v1-4-9c59b07d2a9c@gmail.com>
-Message-ID: <cd3a600c-a4ee-4034-f605-ad9bac5c7655@gentwo.org>
+Message-ID: <d938ed3a-cb00-0a71-2380-dac7d1a9e039@gentwo.org>
 References: <20250624-rust-percpu-v1-0-9c59b07d2a9c@gmail.com> <20250624-rust-percpu-v1-4-9c59b07d2a9c@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -55,25 +55,12 @@ Content-Type: text/plain; charset=US-ASCII
 
 On Tue, 24 Jun 2025, Mitchell Levy wrote:
 
-> The C implementations of `this_cpu_add`, `this_cpu_sub`, etc., are
-> optimized to save an instruction by avoiding having to compute
-> `this_cpu_ptr(&x)` for some per-CPU variable `x`. For example, rather
-> than
+> +                        concat!("add gs:[{off}], {val:", $reg, "}"),
 
-Cool. Great progress for Rust support. Maybe we can switch the SLUB
-allocator over or come up with SLRB for the Slab Rust allocator ;-)
+> +                        concat!("sub gs:[{off}], {val:", $reg, "}"),
 
+> +                        concat!("sub gs:[{off}], {val}"),
 
-> +        impl PerCpuNumeric<'_, $ty> {
-> +            /// Adds `rhs` to the per-CPU variable.
-> +            pub fn add(&mut self, rhs: $ty) {
-> +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
-> +                // pointer relative to the `gs` segment register) by the invariants of PerCpu.
-> +                unsafe {
-> +                    asm!(
-> +                        concat!("add gs:[{off}], {val}"),
-> +                        off = in(reg) self.ptr.0 as *mut $ty,
-> +                        val = in(reg_byte) rhs,
-
-That looks arch specific to x86? What about ARM and other platforms?
+Where are the other RMV instructions like this_cpu_xchg and
+this_cpu_cmpxchg, this_cpu_cmpxchg_double etc?
 
