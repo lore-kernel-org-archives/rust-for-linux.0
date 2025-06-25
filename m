@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D9935280;
-	Wed, 25 Jun 2025 22:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A06926D4C7;
+	Wed, 25 Jun 2025 22:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750889912; cv=none; b=stolAnz6S3upv6e0N7oqxEn/SFSolnDzHBfKYLN2G2rAhQovzz9K40S6ewln903ANf8DfxT+eMocTexb6BNcGA9k8FQwoqLWx5H+TweQWGyYQ1H6wKOXbLGtZBRfhE9dHDW/B7SAX7A3GzMvkqXoxgeTXWIorXQPuIqY4acC5w8=
+	t=1750890580; cv=none; b=Lt6TCjDZ/fz1fIBglRkmssHxUOHZR5HhDbWD1Q/SvodSN5ycjuW85c9CosYzaG1zoMq7QF0X0EW0ucp4rLdfzTrb1TsDrBaE7pR6G8VysS6bncmeSP4YOrzDIMiSq3WiduHh90zVh6aAGQ4Km/mrjV+BCEPL7hXaaIOA7hQ3L88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750889912; c=relaxed/simple;
-	bh=jHlQiRg4UtnzJJnBTe3Rk3Red9/nsoYqw9mrUsapWhU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=X7944bdLi55o1JqyIL/cQ/Tuvl55GulviLfMUJNZCls7UBATGEGcIlEWoPT9BqKVUGCrq/cznv919pwh1+DuzOx5YehiZ+NnFjPbArx45DoB4lNs0sWpeE6ZfHxCushmt9KgRg71ZWoU9uU6bW9ZyfYhJVX4fkHJkBzZOiV4vnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGW8CSSg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750890580; c=relaxed/simple;
+	bh=65fugPI9FRJsqGGo3gHAxWmOr4BVEX8RKL5+9t0LBHk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=UfVkfiHZCI2pLhQB1RIs+aKwqnpEHIaAOQfu8B+ia1GiPF87ukX+MTRC3WO0lnnRF7vAVRXhL7ZYe1WyjlRBhNCASo10EHxeVFtbXAFzVBHs1gNrzBdz37gctpiilKw5FiLQNQTHFY9ihkhNteDSidrY2g0tiKZOxG8Nvlc8XrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Efw8FHVe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGW8CSSg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C36C4CEF1;
-	Wed, 25 Jun 2025 22:18:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Efw8FHVe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D90C4CEEA;
+	Wed, 25 Jun 2025 22:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750889911;
-	bh=jHlQiRg4UtnzJJnBTe3Rk3Red9/nsoYqw9mrUsapWhU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HGW8CSSg6Lo4OF/QY+m0VJ5Ky4qfOPysOi9MfyoUMwPBCwj3b0EbZyepJ/NRIvtOx
-	 z0TDfdCJfq2YAkm4iGGPFlXF6ZctZTUPYrPCJa00VwrsDKeyCqFYYC/4FaYYqKbiOO
-	 CTAJsDAUYoapUyEA+/tEnFejmUV5/KPyp/3VlFghG/+0lSKQa+aygDU1Y/DnPQXoyD
-	 oxcBELTlIj+2Vmjbq/1gqv2IbAEqW9PVlL7kBWK1+drYBkKAmw/zB0me5AXW9xjdsb
-	 W+CfKbqaoTIiremq+z/y8duCiuxfwmlLBHKwkOcBU8I+10BOgj9x1D6xLSK9qqZWsa
-	 WFfGhhj8/BqoQ==
+	s=k20201202; t=1750890580;
+	bh=65fugPI9FRJsqGGo3gHAxWmOr4BVEX8RKL5+9t0LBHk=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=Efw8FHVeKi4IxhwYO1QOUPEuNL5FPNa0rLKLLBgiHc6QAnmK5295Vz0Aqf4bIlAAD
+	 sVVAxMyXpwoD2vO0+TCCZDATGQgh9k3bjFlqHVY2VPlppXbMPWy6dY9+PgV3p0Skzc
+	 fCLkifjGi2m9hZpZBDioTecqIA2QeuYKQJkll+mdrjZpQs9ejOMTOqgS8Smai/DdL8
+	 ozY6ye8PJiTx3QAMXR/MgZ7UsMuDmQJwXitMhULL9HVXCoMKb6JKauHpnHTDOAcGKr
+	 vTqj0eMOwREY/kINDUuxaiSejdHpvMeYF85KyoXNQOoh6bw74xtRG9lWC0Iwt1rILV
+	 RPyq71RZ0I9dA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,53 +34,118 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Jun 2025 00:18:26 +0200
-Message-Id: <DAVYO6S5VMDF.1615DT3F5J6H3@kernel.org>
+Date: Thu, 26 Jun 2025 00:29:35 +0200
+Message-Id: <DAVYWQE2PYZE.3TRIT906A9BJM@kernel.org>
+To: "Shankari Anand" <shankari.ak0208@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <patches@lists.linux.dev>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, "Roy Baron" <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: move ARef and AlwaysRefCounted to
+ sync::aref
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] rust: types: rename Opaque::raw_get to cast_into
 X-Mailer: aerc 0.20.1
-References: <20250624-opaque-from-raw-v2-0-e4da40bdc59c@google.com>
- <20250624-opaque-from-raw-v2-2-e4da40bdc59c@google.com>
-In-Reply-To: <20250624-opaque-from-raw-v2-2-e4da40bdc59c@google.com>
+References: <20250625111133.698481-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250625111133.698481-1-shankari.ak0208@gmail.com>
 
-On Tue Jun 24, 2025 at 5:27 PM CEST, Alice Ryhl wrote:
-> In the previous patch we added Opaque::cast_from() that performs the
-> opposite operation to Opaque::raw_get(). For consistency with this
-> naming, rename raw_get() to cast_from().
->
-> There are a few other options such as calling cast_from() something
-> closer to raw_get() rather than renaming this method. However, I could
-> not find a great naming scheme that works with raw_get(). The previous
-> version of this patch used from_raw(), but functions of that name
-> typically have a different signature, so that's not a great option.
->
-> Suggested-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/configfs.rs                | 2 +-
->  rust/kernel/init.rs                    | 6 +++---
->  rust/kernel/lib.rs                     | 4 ++--
->  rust/kernel/list.rs                    | 2 +-
->  rust/kernel/list/impl_list_item_mod.rs | 4 ++--
->  rust/kernel/time/hrtimer.rs            | 4 ++--
->  rust/kernel/types.rs                   | 8 ++++----
->  rust/kernel/workqueue.rs               | 2 +-
->  8 files changed, 16 insertions(+), 16 deletions(-)
+On Wed Jun 25, 2025 at 1:11 PM CEST, Shankari Anand wrote:
+> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+> new file mode 100644
+> index 000000000000..93a23b493e21
+> --- /dev/null
+> +++ b/rust/kernel/sync/aref.rs
+> @@ -0,0 +1,170 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Atomic reference-counted pointer abstraction.
 
-For init.rs:
+I'd say this module is about supporting objects with builtin reference
+counting.
 
-Acked-by: Benno Lossin <lossin@kernel.org>
+> +//!
+> +//! This module provides [`ARef<T>`], an owned reference to a value that=
+ implements
+> +//! [`AlwaysRefCounted`] =E2=80=94 an unsafe trait for types that manage=
+ their own reference count.
+
+I would lead with comparing `ARef<T>` to `Arc<T>` and only later mention
+`AlwaysRefCounted`.
+
+> +//!
+> +//! It is based on the Linux kernel's manual reference counting model an=
+d is typically used
+> +//! with C types that implement reference counting (e.g., via `refcount_=
+t` or `kref`).
+> +//!
+> +//! For Rust-managed objects, prefer using [`Arc`](crate::sync::Arc) ins=
+tead.
+> +
+> +use core::{
+> +    marker::PhantomData,
+> +    mem::ManuallyDrop,
+> +    ops::Deref,
+> +    ptr::NonNull,
+> +};
+> +
+> +/// Trait for types that are _always_ reference-counted.
+> +///
+> +/// This trait allows types to define custom reference increment and dec=
+rement logic.
+> +/// It enables safe conversion from a shared reference `&T` to an owned =
+[`ARef<T>`].
+> +///
+> +/// This is usually implemented by wrappers around C types with manual r=
+efcounting.
+> +///
+> +/// For purely Rust-managed memory, consider using [`Arc`](crate::sync::=
+Arc) instead.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that:
+> +///
+> +/// - Calling [`AlwaysRefCounted::inc_ref`] keeps the object alive in me=
+mory until a matching [`AlwaysRefCounted::dec_ref`] is called.
+> +/// - The object is always managed by a reference count; it must never b=
+e stack-allocated or
+> +///   otherwise untracked.
+> +/// - When the count reaches zero in [`AlwaysRefCounted::dec_ref`], the =
+object is properly freed and no further
+> +///   access occurs.
+> +///
+> +/// Failure to follow these rules may lead to use-after-free or memory c=
+orruption.
+
+You also rephrased these docs, can you do that in a separate patch?
+
+> +
+
+Newline?
 
 ---
 Cheers,
 Benno
+
+> +pub unsafe trait AlwaysRefCounted {
+> +    /// Increments the reference count on the object.
+> +    fn inc_ref(&self);
+> +
+> +    /// Decrements the reference count on the object.
+> +    ///
+> +    /// Frees the object when the count reaches zero.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that there was a previous matching increment=
+ to the reference count,
+> +    /// and that the object is no longer used after its reference count =
+is decremented (as it may
+> +    /// result in the object being freed), unless the caller owns anothe=
+r increment on the refcount
+> +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
+> +    /// [`AlwaysRefCounted::dec_ref`] once).
+> +    unsafe fn dec_ref(obj: NonNull<Self>);
+> +}
