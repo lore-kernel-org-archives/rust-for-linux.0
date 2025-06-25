@@ -1,123 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77DAE2E11AE;
-	Wed, 25 Jun 2025 19:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750878463; cv=none; b=TjeOIMeqXlOut/C80B0Dn2mAj0c7Ry0gp3vIfsh68qmw7dluPn2HTRp27gWIZsvAt7WUnxuG1jmmLcAL60LEmtdfqJEaJcakDJolanlcbkU+SzZt+kFOqi29w2XaNl6CQbvw0iKWNN2gyZTcz5kCEXlYhLLiB+zyRTdJBc6vmTM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750878463; c=relaxed/simple;
-	bh=NTjjLVl+LeSllJP6R1f53QYe43vLG0TwGoSH4vgeBpU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C31JmDJgg6s0HsEe5mt2SflWDQajMuBRiiNta3ep+THFux0TNbBUYF9tSsLPM62hdFbQUzrjEE85cpWipgmIS+tzkB2Gy91ipfNWDErEInkBNtmvyzWL1huNT9eNMpV3WFb9jik9n4chUjy9DtF+65xlPuuG39q3OKZadAbcWBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tnLTQT9X; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E8A158218;
+	Wed, 25 Jun 2025 19:17:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750879045; cv=pass; b=uhicK0qMaeulHj71Hy1oOujwT91Bvz6rMfe5CNYBOQVfVDB14pOMUNSMOpwlS/ayh1pdJrN+VfY25FolLq02Zn4DV1b76H4lkpxhJdoaVgdJgqNUM47Q6pUTdKhxN1sA1gYRpNeCMe4/MSapqcyVLoVEvW65w9UY5Xxz1agaYk8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750879045; c=relaxed/simple;
+	bh=baQ8lqoDMJrwv2qMYvhMt67Ycn967P+jzd4BkSWTRuE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=qxhUk9i2le/GPLOfHFrgAUCVqbdyxbGhWHHHrF6WZ7lMXlJXT92a0+g5DhiLOdztTZKQCeSAVh+tSMGVwE02OzkJflB1YzMCvzjgVjX2+0v/uXyuSdKajw0pKvTpE95F9XyPs3vQf+GnGmbLVBMlNuW+cGGRctSsXN8eFPh0xFc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ET9LuHMG; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tnLTQT9X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7745CC4CEEA;
-	Wed, 25 Jun 2025 19:07:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750878463;
-	bh=NTjjLVl+LeSllJP6R1f53QYe43vLG0TwGoSH4vgeBpU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tnLTQT9XyDCKDpGmH6TieOM5dQPInWDIgXpXHByydzTLNwqm1C3EX9AMWa5DjAuxW
-	 y/wnjIYacb/tCgGLuXP/8cwQYpCkW1eN4uPsIxUAJLUh8Frp60b+ZzSVnmh6BVnLZS
-	 u9RCORJJV7fWpihkmRjzUEa3m+bARSmow8P6HwObyFyxowoGiWRxwoBBl0MKQ+a0xG
-	 N5KMjkKPzYLRHNrXP4w3Q4KmRVbW7wBbHj6CUWyn89aJjWgyT6eGRyCTque+ahhzYC
-	 SYmg1BoTFRvaKDjhkfZGrQ4Z+rDprpAKqho3egcQ4jMBiDdTfMCiInFNKy01MAjoQi
-	 HxLxJb0Ewj8NQ==
-Date: Wed, 25 Jun 2025 21:07:38 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] rust: support align and NUMA id in allocations
-Message-ID: <aFxI-rjvktSe3h8M@cassiopeiae>
-References: <20250625062917.3379804-1-vitaly.wool@konsulko.se>
- <20250625063026.3379921-1-vitaly.wool@konsulko.se>
- <aFxGQWG_81Peu7mP@cassiopeiae>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ET9LuHMG"
+ARC-Seal: i=1; a=rsa-sha256; t=1750879014; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=IupojBcgiuJFEfYbMOO2Yq4WbPyu4PoiSeS/cjsqsvipeh7SwGrXk5aSN9ohUIoazDWxAVpPLMUlIPaRamN1Ci8m2jL7B5Gzr6TEu5HZLOffo4n7nVdjPpDKYL09gBOSjy7UFuqlpKREmbZd6+PM0aDToqoSV6xjnigwQX1O0HE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1750879014; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=mXp/NJEKK2k9Y06sPTp+De6aiQuPK+J2/l3zBut2c/A=; 
+	b=VH4wGgKwym8pq4m/6lwlRAIRVxrYOK4BRK3O7mTPCOC5mbw28US9seDqF+lb4TezwiTGZyIWIsq+aKVnOVNzY7Nn6+cmQwMSwJIfAA3hfl3WveJ8Q3NH6v1oEu4jb72yMc3t61FHEcXP0RBi8H7jvPugvy8t0sbPsrv7KbY5/HU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1750879014;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=mXp/NJEKK2k9Y06sPTp+De6aiQuPK+J2/l3zBut2c/A=;
+	b=ET9LuHMGh6U8m3sABooFAIdJNWQ8UaCChyGIHCcoqhBj4QcaJqLRL/ohF+0yztuh
+	ybdkAK5XoESv6BtyPDQh6Etm1iJEs6FOEAOG/v+TckvV8SXRchvl9UyKRnFolVnIMCg
+	7N/tdp/Jh5kZeOl9GN4ly72SJHGvoWQqvz9WUOXQ=
+Received: by mx.zohomail.com with SMTPS id 1750879012416705.8054775099233;
+	Wed, 25 Jun 2025 12:16:52 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFxGQWG_81Peu7mP@cassiopeiae>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] rust: drm: mm: Add DRM MM Range Allocator abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250623-topics-tyr-drm_mm-v1-1-82fe8104a6f5@collabora.com>
+Date: Wed, 25 Jun 2025 16:16:36 -0300
+Cc: linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ Asahi Lina <lina+kernel@asahilina.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7D78A0E7-9CA7-4E04-AD55-11254DF66ED8@collabora.com>
+References: <20250623-topics-tyr-drm_mm-v1-1-82fe8104a6f5@collabora.com>
+To: David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Wed, Jun 25, 2025 at 08:56:05PM +0200, Danilo Krummrich wrote:
-> On Wed, Jun 25, 2025 at 08:30:26AM +0200, Vitaly Wool wrote:
-> > Add support for large (> PAGE_SIZE) alignments in Rust allocators
-> > (Kmalloc support for large alignments is limited to the requested
-> > size, which is a reasonable limitation anyway).
-> 
-> Please split this..
-> 
-> > Besides, add support for NUMA id to Vmalloc.
-> 
-> and this into separate patches.
-> 
-> Please also add some information to the commit message what you need node
-> support for. Do you also have patches to add node support to Box and Vec?
-> 
-> > 
-> > Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> > ---
-> >  rust/helpers/slab.c            |  8 +++++--
-> >  rust/helpers/vmalloc.c         |  4 ++--
-> >  rust/kernel/alloc.rs           | 28 ++++++++++++++++++++++--
-> >  rust/kernel/alloc/allocator.rs | 40 +++++++++++++++++++---------------
-> >  rust/kernel/alloc/kvec.rs      |  3 ++-
-> >  5 files changed, 59 insertions(+), 24 deletions(-)
-> > 
-> > diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
-> > index a842bfbddcba..221c517f57a1 100644
-> > --- a/rust/helpers/slab.c
-> > +++ b/rust/helpers/slab.c
-> > @@ -3,13 +3,17 @@
-> >  #include <linux/slab.h>
-> >  
-> >  void * __must_check __realloc_size(2)
-> > -rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
-> > +rust_helper_krealloc(const void *objp, size_t new_size, unsigned long align, gfp_t flags, int nid)
-> 
-> This should have a comment making it obvious why the function has two arguments
-> that are discarded. I think we should even separate it with an additional inline
-> function.
-> 
-> I do agree with discarding the align argument, given that it's not exposed to
-> users though the Allocator API.
+Hmm, this has an issue
 
-What I meant is that proper alignment is implied when krealloc() succeeds.
+[..]
 
-> I do disagree with discarding the nid argument though, since you change the
-> generic Allocator::realloc() API to take a node argument, which for KREALLOC and
-> KVREALLOC is silently discarded. If we introduce it, we should do so for all
-> three allocators.
-> 
-> >  {
-> > +	if (WARN_ON(new_size & (align - 1)))
-> > +		return NULL;
-> 
-> I don't think we should have this WARN_ON(). If we want to warn about this, we
-> should already do so on the Rust side. The helper functions in this file should
-> not contain any logic.
-> 
-> >  	return krealloc(objp, new_size, flags);
-> >  }
-> >  
-> >  void * __must_check __realloc_size(2)
-> > -rust_helper_kvrealloc(const void *p, size_t size, gfp_t flags)
-> > +rust_helper_kvrealloc(const void *p, size_t size, unsigned long align, gfp_t flags, int nid)
-> >  {
-> > +	if (WARN_ON(size & (align - 1)))
-> > +		return NULL;
-> >  	return kvrealloc(p, size, flags);
-> >  }
-> 
-> Same as above.
+>=20
+> +impl<A: AllocInner<T>, T> Drop for MmInner<A, T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: If the MmInner is dropped then all nodes are gone =
+(since they hold references),
+> +        // so it is safe to tear down the allocator.
+> +        unsafe {
+> +            bindings::drm_mm_takedown(self.0.get());
+> +        }
+> +    }
+> +}
+> +
+>=20
 
-This is actually different though, here kvrealloc() may succeed even if the
-requested alignment is not fulfilled, so this is incorrect.
+Where the docs for drm_mm_takedown states:
+
+/**
+* drm_mm_takedown - clean up a drm_mm allocator
+* @mm: drm_mm allocator to clean up
+*
+* Note that it is a bug to call this function on an allocator which is =
+not
+* clean.
+*/
+void drm_mm_takedown(struct drm_mm *mm)
+{
+if (WARN(!drm_mm_clean(mm),
+"Memory manager not clean during takedown.\n"))
+show_leaks(mm);
+}
+EXPORT_SYMBOL(drm_mm_takedown);
+
+
+So perhaps we should remove all nodes before takedown?
+
+This covers the error path, i.e.: something failed somewhere else and =
+the allocator is dirty.
+
+=E2=80=94 Daniel=
