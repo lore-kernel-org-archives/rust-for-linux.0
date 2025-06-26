@@ -1,99 +1,276 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3035275115;
-	Thu, 26 Jun 2025 11:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CD42F1FE4;
+	Thu, 26 Jun 2025 12:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750938030; cv=none; b=doH6R6t0FPAe1bB0JyoSwT8J4yPoIKK3H1AmS6cmY95nr9NwEeZ+VXGYvs/LIouVElPp9BAFqiscsr2pVCWf70jh4ZcA8EPo4Y86PQFWSdzkVhCbqEKenkod3HdzBjbiJoVb13a3Vso6xqXR0sdzhKYeJ6iSXKpHjlleedgkgiw=
+	t=1750940147; cv=none; b=fFofAXeYlkcfEurooQRVEry0IELfhThDr1yWsXmWqwGZD1pjkwLsPyhsmbZM4LDK7BRtZ5c4NnZklmuJ52DnDQtJKrz02Z/WOxley+1ESeKsB2T2lp8SBh+59JN6DF3QcXex429d7/jUWujByTg33Ui0ith66cHYjAbVPvTb2PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750938030; c=relaxed/simple;
-	bh=vpkGbqYUMukz6V9t3VsChBVMYanG+RJ4SeL/y9Rrtjc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fsEQC9h6Xgbmli1f5wiu9e2JwUnms4ulRqrgT5h6MGKINVUW/ESVSk22dR5IoU6/YEJotw9Do2sHWar5ktu6nHZsAWQSSack+8YKtTtguqBsio/RqdYHFaXPnh6cKq/iHz07XHtDR+YHcG5DJWCaBaI6N9q/0dXeL4uOwDdkFtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p/yoG0oj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750940147; c=relaxed/simple;
+	bh=rO317H3xuWCZdX9BLTv7dshWsqwwlUzyOMx4HJubyN8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JCpDzjec87+ImJd2/oFqqwjRnNFXLIayMy64o9ubsGcN1JxzacjDLenOPmaRF2sieWP0iZujWfK3+/Umf/4XowoVyfNuRZOLrAjEeepAegN4KkdFII9jMpLW1Q3A/RUwXzCMgJtxAT1fP669EzxPNxg4fB8EJ75Rcv4LiceNxa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOn9Twm7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/yoG0oj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B645C4CEEB;
-	Thu, 26 Jun 2025 11:40:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOn9Twm7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77FBC4CEED;
+	Thu, 26 Jun 2025 12:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750938030;
-	bh=vpkGbqYUMukz6V9t3VsChBVMYanG+RJ4SeL/y9Rrtjc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p/yoG0ojiYgvEaGMNpNsb81K5Qz7AtbdguTR/DY2uPDtibazqksDcGmDtscTLuP4G
-	 RpPicBuoMjJkSjkYf5kJfRJULHQbZp1gskeV8rc2JQniEmSIXPMPdyYINVsGMQYWcm
-	 1XHvS1QwlhB3i3aAnucJSkwP4nZGhOxNh76lqEYDkI5SGKGXCtYtBm0qyUMxwGOJSS
-	 g/4mBZpHKGdsk/4pvxhGEqShUIHT6AJvAwDAJSlcxV9gOKL7GbYIt4wCSeXbBaN3Bt
-	 ZGNtOYjZmOCwgkSwL3KemD9H65PuC9q66VglZp/eGQnYqtLGyyc36YVYfQAWiVnTDt
-	 n3GWOlX0MB98w==
-Date: Thu, 26 Jun 2025 13:40:23 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, david.m.ertman@intel.com,
-	ira.weiny@intel.com, leon@kernel.org, kwilczynski@kernel.org,
-	bhelgaas@google.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] rust: devres: get rid of Devres' inner Arc
-Message-ID: <aF0xp4ZKP_a7cJsc@pollux>
-References: <20250624215600.221167-1-dakr@kernel.org>
- <20250624215600.221167-4-dakr@kernel.org>
- <aFzI5L__OcB9hqdG@Mac.home>
- <aF0aiHhCuHjLFIij@pollux>
- <DAWE690DWP9A.10I5FIJSZDSR6@kernel.org>
- <aF0p5vIcL_4PBJCG@pollux>
+	s=k20201202; t=1750940147;
+	bh=rO317H3xuWCZdX9BLTv7dshWsqwwlUzyOMx4HJubyN8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MOn9Twm7xNtUwkihn3JedqgUylRmDdJS4ZWJ3ph2oq9sEvwvDa7PynSBEjKqzGL2D
+	 rQ4YvvdGhLIP3v0dK0Wq2lhei49URaCog9hdaybvy/oEwUWGefAumQob7+s+kKp1Ni
+	 WP5BfnHy15gMOZJuqZJEyizdT59FgxEdWDVMWkxZ1HY8mJhW1gl2s1D4s8g9SKib+6
+	 W3X8q6csNhvnupBWQUjVhh2YT7O1Z3CpZQtm/m+e5qpVagwWwpz2jCcxIeWH9SkJ6Q
+	 aka9U70Nlgm8grn7xswEyLWIG1ije91x7ox2Te9+QLNR+OsoMky1kS+fMxnj4Vyj/4
+	 jOZzjTV2UbYLQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <lkmm@lists.linux.dev>,  <linux-arch@vger.kernel.org>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Will Deacon" <will@kernel.org>,  "Peter Zijlstra"
+ <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,  "Wedson
+ Almeida Filho" <wedsonaf@gmail.com>,  "Viresh Kumar"
+ <viresh.kumar@linaro.org>,  "Lyude Paul" <lyude@redhat.com>,  "Ingo
+ Molnar" <mingo@kernel.org>,  "Mitchell Levy" <levymitchell0@gmail.com>,
+  "Paul E. McKenney" <paulmck@kernel.org>,  "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Linus Torvalds"
+ <torvalds@linux-foundation.org>,  "Thomas Gleixner" <tglx@linutronix.de>
+Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
+In-Reply-To: <20250618164934.19817-5-boqun.feng@gmail.com> (Boqun Feng's
+	message of "Wed, 18 Jun 2025 09:49:28 -0700")
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+	<8ISRnKRw28Na4so9GDfdv0gd40nmTGOwD7hFx507xGgJ64p9s8qECsOkboryQH02IQJ4ObvqAwcLUZCKt1QwZQ==@protonmail.internalid>
+	<20250618164934.19817-5-boqun.feng@gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 26 Jun 2025 14:15:35 +0200
+Message-ID: <8734bm1yxk.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aF0p5vIcL_4PBJCG@pollux>
+Content-Type: text/plain
 
-On Thu, Jun 26, 2025 at 01:07:25PM +0200, Danilo Krummrich wrote:
-> On Thu, Jun 26, 2025 at 12:27:18PM +0200, Benno Lossin wrote:
-> > On Thu Jun 26, 2025 at 12:01 PM CEST, Danilo Krummrich wrote:
-> > > On Wed, Jun 25, 2025 at 09:13:24PM -0700, Boqun Feng wrote:
-> > >> On Tue, Jun 24, 2025 at 11:54:01PM +0200, Danilo Krummrich wrote:
-> > >> [...]
-> > >> > +#[pin_data(PinnedDrop)]
-> > >> > +pub struct Devres<T> {
-> > >> 
-> > >> It makes me realize: I think we need to make `T` being `Send`? Because
-> > >> the devm callback can happen on a different thread other than
-> > >> `Devres::new()` and the callback may drop `T` because of revoke(), so we
-> > >> are essientially sending `T`. Alternatively we can make `Devres::new()`
-> > >> and its friend require `T` being `Send`.
-> > >> 
-> > >> If it's true, we need a separate patch that "Fixes" this.
-> > >
-> > > Indeed, that needs a fix.
-> > 
-> > Oh and we have no `'static` bound on `T` either... We should require
-> > that as well.
-> 
-> I don't think we actually need that, The Devres instance can't out-live a &T
-> passed into it. And the &T can't out-live the &Device<Bound>, hence we're
-> guaranteed that devres_callback() is never called because Devres::drop() will be
-> able successfully unregister the callback given that we're still in the
-> &Device<Bound> scope.
-> 
-> The only thing that could technically out-live the &Device<Bound> would be
-> &'static T, but that would obviously be fine.
-> 
-> Do I miss anything?
+"Boqun Feng" <boqun.feng@gmail.com> writes:
 
-Thinking a bit more about it, a similar argumentation is true for not needing
-T: Send. The only way to leave the &Device<Bound> scope and hence the thread
-would be to stuff the Devres into a ForeignOwnable container, no?
+[...]
 
-Analogous to Benno asking for ForeignOwnable: 'static, should we also require
-ForeignOwnable: Send + Sync?
+> +
+> +impl<T: AllowAtomic> Atomic<T> {
+> +    /// Creates a new atomic.
+> +    pub const fn new(v: T) -> Self {
+> +        Self(Opaque::new(v))
+> +    }
+> +
+> +    /// Creates a reference to [`Self`] from a pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `ptr` has to be a valid pointer.
+> +    /// - `ptr` has to be valid for both reads and writes for the whole lifetime `'a`.
+> +    /// - For the whole lifetime of '`a`, other accesses to the object cannot cause data races
+> +    ///   (defined by [`LKMM`]) against atomic operations on the returned reference.
 
-Alternatively, the safety requirements of ForeignOwnable:::from_foreign() and
-ForeignOwnable::borrow() would need to cover this, which they currently they
-are not.
+I feel the wording is a bit tangled here. How about something along the
+lines of
+
+  For the duration of `'a`, all accesses to the object must be atomic.
+
+> +    ///
+> +    /// [`LKMM`]: srctree/tools/memory-model
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// Using [`Atomic::from_ptr()`] combined with [`Atomic::load()`] or [`Atomic::store()`] can
+> +    /// achieve the same functionality as `READ_ONCE()`/`smp_load_acquire()` or
+> +    /// `WRITE_ONCE()`/`smp_store_release()` in C side:
+> +    ///
+> +    /// ```rust
+> +    /// # use kernel::types::Opaque;
+> +    /// use kernel::sync::atomic::{Atomic, Relaxed, Release};
+> +    ///
+> +    /// // Assume there is a C struct `Foo`.
+> +    /// mod cbindings {
+> +    ///     #[repr(C)]
+> +    ///     pub(crate) struct foo { pub(crate) a: i32, pub(crate) b: i32 }
+> +    /// }
+> +    ///
+> +    /// let tmp = Opaque::new(cbindings::foo { a: 1, b: 2});
+> +    ///
+> +    /// // struct foo *foo_ptr = ..;
+> +    /// let foo_ptr = tmp.get();
+> +    ///
+> +    /// // SAFETY: `foo_ptr` is a valid pointer, and `.a` is inbound.
+
+Did you mean to say "in bounds"? Or what is "inbound"?
+
+> +    /// let foo_a_ptr = unsafe { core::ptr::addr_of_mut!((*foo_ptr).a) };
+
+This should be `&raw mut` by now, right?
+
+> +    ///
+> +    /// // a = READ_ONCE(foo_ptr->a);
+> +    /// //
+> +    /// // SAFETY: `foo_a_ptr` is a valid pointer for read, and all accesses on it is atomic, so no
+> +    /// // data race.
+> +    /// let a = unsafe { Atomic::from_ptr(foo_a_ptr) }.load(Relaxed);
+> +    /// # assert_eq!(a, 1);
+> +    ///
+> +    /// // smp_store_release(&foo_ptr->a, 2);
+> +    /// //
+> +    /// // SAFETY: `foo_a_ptr` is a valid pointer for write, and all accesses on it is atomic, so no
+> +    /// // data race.
+> +    /// unsafe { Atomic::from_ptr(foo_a_ptr) }.store(2, Release);
+> +    /// ```
+> +    ///
+> +    /// However, this should be only used when communicating with C side or manipulating a C struct.
+> +    pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self
+> +    where
+> +        T: Sync,
+> +    {
+> +        // CAST: `T` is transparent to `Atomic<T>`.
+> +        // SAFETY: Per function safety requirement, `ptr` is a valid pointer and the object will
+> +        // live long enough. It's safe to return a `&Atomic<T>` because function safety requirement
+> +        // guarantees other accesses won't cause data races.
+> +        unsafe { &*ptr.cast::<Self>() }
+> +    }
+> +
+> +    /// Returns a pointer to the underlying atomic variable.
+> +    ///
+> +    /// Extra safety requirement on using the return pointer: the operations done via the pointer
+> +    /// cannot cause data races defined by [`LKMM`].
+> +    ///
+> +    /// [`LKMM`]: srctree/tools/memory-model
+> +    pub const fn as_ptr(&self) -> *mut T {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Returns a mutable reference to the underlying atomic variable.
+> +    ///
+> +    /// This is safe because the mutable reference of the atomic variable guarantees the exclusive
+> +    /// access.
+> +    pub fn get_mut(&mut self) -> &mut T {
+> +        // SAFETY: `self.as_ptr()` is a valid pointer to `T`, and the object has already been
+> +        // initialized. `&mut self` guarantees the exclusive access, so it's safe to reborrow
+> +        // mutably.
+> +        unsafe { &mut *self.as_ptr() }
+> +    }
+> +}
+> +
+> +impl<T: AllowAtomic> Atomic<T>
+> +where
+> +    T::Repr: AtomicHasBasicOps,
+> +{
+> +    /// Loads the value from the atomic variable.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// Simple usages:
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{Atomic, Relaxed};
+> +    ///
+> +    /// let x = Atomic::new(42i32);
+> +    ///
+> +    /// assert_eq!(42, x.load(Relaxed));
+> +    ///
+> +    /// let x = Atomic::new(42i64);
+> +    ///
+> +    /// assert_eq!(42, x.load(Relaxed));
+> +    /// ```
+> +    ///
+> +    /// Customized new types in [`Atomic`]:
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{generic::AllowAtomic, Atomic, Relaxed};
+> +    ///
+> +    /// #[derive(Clone, Copy)]
+> +    /// #[repr(transparent)]
+> +    /// struct NewType(u32);
+> +    ///
+> +    /// // SAFETY: `NewType` is transparent to `u32`, which has the same size and alignment as
+> +    /// // `i32`.
+> +    /// unsafe impl AllowAtomic for NewType {
+> +    ///     type Repr = i32;
+> +    ///
+> +    ///     fn into_repr(self) -> Self::Repr {
+> +    ///         self.0 as i32
+> +    ///     }
+> +    ///
+> +    ///     fn from_repr(repr: Self::Repr) -> Self {
+> +    ///         NewType(repr as u32)
+> +    ///     }
+> +    /// }
+> +    ///
+> +    /// let n = Atomic::new(NewType(0));
+> +    ///
+> +    /// assert_eq!(0, n.load(Relaxed).0);
+> +    /// ```
+> +    #[doc(alias("atomic_read", "atomic64_read"))]
+> +    #[inline(always)]
+> +    pub fn load<Ordering: AcquireOrRelaxed>(&self, _: Ordering) -> T {
+> +        let a = self.as_ptr().cast::<T::Repr>();
+> +
+> +        // SAFETY:
+> +        // - For calling the atomic_read*() function:
+> +        //   - `self.as_ptr()` is a valid pointer, and per the safety requirement of `AllocAtomic`,
+
+Typo `AllocAtomic`.
+
+> +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` is a valid pointer,
+> +        //   - per the type invariants, the following atomic operation won't cause data races.
+> +        // - For extra safety requirement of usage on pointers returned by `self.as_ptr():
+> +        //   - atomic operations are used here.
+> +        let v = unsafe {
+> +            if Ordering::IS_RELAXED {
+> +                T::Repr::atomic_read(a)
+> +            } else {
+> +                T::Repr::atomic_read_acquire(a)
+> +            }
+> +        };
+> +
+> +        T::from_repr(v)
+> +    }
+> +
+> +    /// Stores a value to the atomic variable.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{Atomic, Relaxed};
+> +    ///
+> +    /// let x = Atomic::new(42i32);
+> +    ///
+> +    /// assert_eq!(42, x.load(Relaxed));
+> +    ///
+> +    /// x.store(43, Relaxed);
+> +    ///
+> +    /// assert_eq!(43, x.load(Relaxed));
+> +    /// ```
+> +    ///
+> +    #[doc(alias("atomic_set", "atomic64_set"))]
+> +    #[inline(always)]
+> +    pub fn store<Ordering: ReleaseOrRelaxed>(&self, v: T, _: Ordering) {
+> +        let v = T::into_repr(v);
+> +        let a = self.as_ptr().cast::<T::Repr>();
+> +
+> +        // SAFETY:
+> +        // - For calling the atomic_set*() function:
+> +        //   - `self.as_ptr()` is a valid pointer, and per the safety requirement of `AllocAtomic`,
+
+Typo `AllocAtomic`.
+
+
+Best regards,
+Andreas Hindborg
+
+
