@@ -1,323 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1642E611C
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 14:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018861DE4CE;
+	Thu, 26 Jun 2025 14:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750947552; cv=none; b=YTuHHHm30T6bvniK1TRkqyUmOyKNosXHIBjZoF/fjHFKtrTGyO1jwrCsH+ZIBECkGBI8tRKtTrv9jtlTaYkM+e1b8FQx5DvfR4rVqEzHH8S8Xf3UTVGXluqq6Kb7o1wydaQCKDIGQMnZvGiQDrsmoR0xAm8WRknExzmgN7aQqkc=
+	t=1750947795; cv=none; b=c7pwshreYRlY15iHUwmACW+55WkJtpWHLqsg5ccDm5XMisLc8E1gMKLpT1aycAUiRc7uhNr1wHwjD9lA94nroJ3RemY+NeYzZqpEg1SOUyPF5/ijlQox0OIrby5zaFaanXGcbqACRS8ZO5GpojcgBaOiT5JRnAq0PxAbFeLeWGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750947552; c=relaxed/simple;
-	bh=esB0vfJ3Uw5riitYWBen1aiZyCTdvUgebVPq4nNPgTU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=g//yTLIvdwb4q/Ab+dX953Xl5I2QJ84p0M7RwQujSHrPqyeIDWRJCexGDpwcZ+rD1KBiur7QLkRJDEei4NIyx8yQ5ejZyDTopR6F1p0sM+h/WDjlGn/xKohDzH+5Vu9TchdIXEljqSQVeGYYrdEvPDY+d7e7c48u6j8Jg8a0e4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D62CpQ5C; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1750947795; c=relaxed/simple;
+	bh=3PmJhzf1sJs2FN8a0RHNKuha/3rAM6VtFHnWa30sHCs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u+ikNFcCblfIn/2osd1fcZKRkg40Vn8H5uPhnIuHAC1fnmgtT/SNoItZ5EWGrnrNRlyNUwFwRf8oe/36aumao0LzoHbGvrOjGuoL1phyvBXApm3bsG5UbS6DDI+OH44FyJWoo31Khqxx3b8Ozn4bj3mpRHz4dcbaj69Yy86CG3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gquLyRvd; arc=none smtp.client-ip=209.85.166.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D62CpQ5C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750947546;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=283q34iA0wfQG7FDPPwFCBMleMjUx5hsae5q9eVpzXA=;
-	b=D62CpQ5C+gCs/qwnDDwObM7oufJwrrmqErGDbTuknyNkSOjhpFpi4aqSSkfCo6ktbLRm9S
-	fzzuEhEGGPYmnTDAEYUsQ0EGQD9oRzsBIgvuUPv2PzjQUJ08/yA6MexSwCqPW1vHgFMwiP
-	xNnNAjqvr+Tk3vRh4i1YS/UCamNnfB4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-9UnilF7kMUKnrL_yYFeApQ-1; Thu, 26 Jun 2025 10:19:04 -0400
-X-MC-Unique: 9UnilF7kMUKnrL_yYFeApQ-1
-X-Mimecast-MFC-AGG-ID: 9UnilF7kMUKnrL_yYFeApQ_1750947544
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43e9b0fd00cso6049685e9.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 07:19:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gquLyRvd"
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3de252f75d7so10760215ab.3;
+        Thu, 26 Jun 2025 07:23:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750947793; x=1751552593; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3PmJhzf1sJs2FN8a0RHNKuha/3rAM6VtFHnWa30sHCs=;
+        b=gquLyRvdTDE+fLFEPlGJVrAffLxcaHk5QYiRy9+lSmqhoDF3TUhR1X5kwsKy7K6PmS
+         7IjdJA7JxpH5lEG/q2uQj7U1y0YRld8NE/dwR6twrYsmF6wtG17ZNtIuEozFqi3GSKRp
+         U7h+NoSmCw7mLNICgPSbUu4uNCs07cxYQyLqYSYFeq3DlEOTr8rYvhAkwH/dDDqbGuVi
+         zp6fok8632tGvd0matk7LSwYrv9kZQtFsjSo5R8Ht0caYZgYmQCAf4DfXqTjTohM+Xvs
+         H7/CFj52Oy6Zgc7t1NBOnluPUzpuFzfWLDEA/Owuh4i0WSB4YX19a0+hq3kl3pfvE30k
+         4vDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750947544; x=1751552344;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=283q34iA0wfQG7FDPPwFCBMleMjUx5hsae5q9eVpzXA=;
-        b=hKR+fc5Sb3GjqY03yOmtFVjwCdl2WPrEvhIQRG/EbyjMm5HjKGdsOGsRxkgaYRBHux
-         e6OPBxSW5vJJpygVwEmXyXSAo+D35wBAQL9m9H+qCdOVNzX9+AepN2k2tSV/e+KCaoDo
-         3F4uXh5y6IURwWCzWNElBCUgi7SSoxqDrCBOUDrHGIu0fgLM+qM6dU7K82pTz4GQvcQ0
-         s0KlbMDrZmv0fy5T9yLMxdEXdEZMDq2QheuiTdrPhQ+TMH2M3nqBUM/tFXUJu+gllHAy
-         grA6DBxTUvdjY/eRNvaxCeOyFNi226pxXYz8PSKvj4oXiYmPbJzMUqXoA2O7Om545aAw
-         b3ww==
-X-Forwarded-Encrypted: i=1; AJvYcCV6mS66IX5VBZspkPkwWfUf6SBEwUe5lZo6KxBMbNqMglc01Um28G5DTHZzsFTf0GFYRmsWHFd5UeZOYDx2Iw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuN2t+dvySv4IjD6mXTS6HT3qQ8K674/BLTSOc8d/YC8wvJu+x
-	Q0baA/kAdDegr4k3TxkbrJML8O1dYWbD9UVRwevzndUD7EvenABFspbf8lkCa7apKVOTeSiI2Oq
-	PdQ76jvMxWuQUzDFQj/8hk4uGhzPWOZ6+wl5eCH5WcNpSxLRBVDajJ95hlP/QZAyByLIB
-X-Gm-Gg: ASbGnctNB/fSNT8x6icwTwtEZK0BoSh2e/F5vQ3GIM0cHrd/YLsC0NpuHXNY3rxqPdt
-	WaqhAkHWIk5uo+/tMC63CiCNMjvzV12L3i5fg+rXnTLJgQgR2P8u8yT3pnM4LnVqXuwbkLhfSvo
-	FrfvJvd1ZF7mZqPQXKtP5HTpGMG/XisvgnbYYIgT2ga74IQFaMNMH08GBuGn9VxFWMCzZzgyUMq
-	SRWVww26RSmO2iIE6r9T0A4AwMhqJ1PKBYsLUCUG8LIRvjV3Gns7QeNF2QUHnx8dbXit7jdmizm
-	anZt02fv2AeumqgnQistcrdXc9lKqfG0DgQNc8oZiYZcGnsSLNDXIK0fFmVv4w==
-X-Received: by 2002:a05:600c:35c9:b0:453:79cb:7c86 with SMTP id 5b1f17b1804b1-4538896ba75mr41350065e9.3.1750947543438;
-        Thu, 26 Jun 2025 07:19:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHX3SUpCYk0Q1rtUXxdiwTxAC1uqwZZn+noU/tSvXGhBzHLk/17+Raj1JTfMd2KuovA5Hm6ZQ==
-X-Received: by 2002:a05:600c:35c9:b0:453:79cb:7c86 with SMTP id 5b1f17b1804b1-4538896ba75mr41349375e9.3.1750947542873;
-        Thu, 26 Jun 2025 07:19:02 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:8998:e0cf:68cc:1b62? ([2a01:e0a:c:37e0:8998:e0cf:68cc:1b62])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823c463asm51664655e9.39.2025.06.26.07.19.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jun 2025 07:19:02 -0700 (PDT)
-Message-ID: <80d092a3-0210-48d8-97da-f9175260a5fc@redhat.com>
-Date: Thu, 26 Jun 2025 16:19:00 +0200
+        d=1e100.net; s=20230601; t=1750947793; x=1751552593;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3PmJhzf1sJs2FN8a0RHNKuha/3rAM6VtFHnWa30sHCs=;
+        b=eCSOp1SbmHnJunhL/VDU0lfLKq/uDpC+lyJjn7/gBTUbk5EKLmOKjznZxqsVfnDKIx
+         5Zfdy1HVsDw/CZGwpVqkUieYR5ArY4MxY7nZ+dUGO5O0mFGxId4Qbfs1GtQ3P6QcxBGC
+         3ax0aKXa26DkhO1Is55XFjJqI5grqEGFXypqecFjsg5upqWVdsJiGXSxFknzoL+aQxg0
+         8PJ7pzAfsLkQhI2nkDC5DoN104yKWQLfxc9i6PhGxj3HI2mCftHy/pDWSUkPNQ1bwZyW
+         iS6Ll6DCRGloYlsWSweRDphnNeRP48KklFJikX2XSnbSS30BV5/CRQRIFAxZoHR5BlSI
+         JvjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjQjCwPS3sN4zRNw5j2DXcdq7EfrORF0/QpIRoL60ERaAvc/xns73FWuiAaxXGCnEU05aVEq6A++Yuqci5MQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0RGl803hTJKKbYLAQoGBs31ymwQ5klyJeI5UXVcKD+zGKR0qW
+	719jqlDWmZPuZeon3oNWW7ksUn7pUxcZgNM29XWKos2dVkMIm9/fc/4hD6rbUaFRdQs2BrRxCPQ
+	JrXDlYs2C4h4VW6XePInlShJEwQbDuJY=
+X-Gm-Gg: ASbGnctUz8KtD/VE5whEmi7SVoyAnxne5T1ERwXoOCBWzV75Z7Ji1WAQIV660yDhYBn
+	h1WXZKFTp8mFPaRSphGpuQx252WaK3VPfa90fGnScUWDPTbHE7bfoQk5qxNyKK13qHtJuPP3e48
+	p4UHYSM3KlJELCMW7f1WKZ7lntw9ME7Fc3QPEWuXJtnUM=
+X-Google-Smtp-Source: AGHT+IF3rE0mC2CPX+Ugvjxi6nBUgivlndxS0obHPchi2LG/zWvKMmmAwuBdqywvKq+VzZiCw1orp74px1+xkgYq9ik=
+X-Received: by 2002:a05:6e02:378c:b0:3dc:8b2c:4bc7 with SMTP id
+ e9e14a558f8ab-3df32852952mr95072965ab.1.1750947792809; Thu, 26 Jun 2025
+ 07:23:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/panic: Use a decimal fifo to avoid u64 by u64 divide
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Andrei Lalaev <andrey.lalaev@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Christian Schrefl <chrisi.schrefl@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- Russell King <linux@armlinux.org.uk>, Simona Vetter <simona@ffwll.ch>,
- Paolo Bonzini <pbonzini@redhat.com>, David Airlie <airlied@gmail.com>,
- Maxime Ripard <mripard@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Javier Martinez Canillas <javierm@redhat.com>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- dri-devel@lists.freedesktop.org,
- rust-for-linux <rust-for-linux@vger.kernel.org>
-References: <20250418165059.560503-1-jfalempe@redhat.com>
- <c0a2771c-f3f5-4d4c-aa82-d673b3c5cb46@gmail.com>
- <cbaf2819-84b3-4482-8d91-7d3d24625e4f@redhat.com>
-In-Reply-To: <cbaf2819-84b3-4482-8d91-7d3d24625e4f@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: uph1eJm_nNrEBtAR_aA2c_EAdoMsoutR2tVaqyQDU-0_1750947544
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <cover.1750689857.git.y.j3ms.n@gmail.com> <DAVO878E49AN.1L5TPHANBBHE6@nvidia.com>
+In-Reply-To: <DAVO878E49AN.1L5TPHANBBHE6@nvidia.com>
+From: Jesung Yang <y.j3ms.n@gmail.com>
+Date: Thu, 26 Jun 2025 23:23:01 +0900
+X-Gm-Features: Ac12FXzfN9fk03al47GYWZapf9guorVxLElMTuSPKfESyeSLvx8gJf-MiJnO3vM
+Message-ID: <CA+tqQ4Ji486i=Gzy5oEsdZLOFDmGHpxT=Wkng2cyZpJ=u14FPA@mail.gmail.com>
+Subject: Re: [PATCH 0/4] rust: add `FromPrimitive` support
+To: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 25/06/2025 00:18, Jocelyn Falempe wrote:
-> On 24/06/2025 20:55, Andrei Lalaev wrote:
->> On 18.04.25 18:48, Jocelyn Falempe wrote:
->>> On 32bits ARM, u64/u64 is not supported [1], so change the algorithm
->>> to use a simple fifo with decimal digits as u8 instead.
->>> This is slower but should compile on all architecture.
->>>
->>> Link: https://lore.kernel.org/dri-devel/ 
->>> CANiq72ke45eOwckMhWHvmwxc03dxr4rnxxKvx+HvWdBLopZfrQ@mail.gmail.com/ [1]
->>> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
->>> ---
->>>   drivers/gpu/drm/drm_panic_qr.rs | 71 ++++++++++++++++++++++-----------
->>>   1 file changed, 48 insertions(+), 23 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/ 
->>> drm_panic_qr.rs
->>> index 6025a705530e..dd55b1cb764d 100644
->>> --- a/drivers/gpu/drm/drm_panic_qr.rs
->>> +++ b/drivers/gpu/drm/drm_panic_qr.rs
->>> @@ -366,8 +366,48 @@ fn iter(&self) -> SegmentIterator<'_> {
->>>           SegmentIterator {
->>>               segment: self,
->>>               offset: 0,
->>> -            carry: 0,
->>> -            carry_len: 0,
->>> +            decfifo: Default::default(),
->>> +        }
->>> +    }
->>> +}
->>> +
->>> +/// Max fifo size is 17 (max push) + 2 (max remaining)
->>> +const MAX_FIFO_SIZE: usize = 19;
->>> +
->>> +/// A simple Decimal digit FIFO
->>> +#[derive(Default)]
->>> +struct DecFifo {
->>> +    decimals: [u8; MAX_FIFO_SIZE],
->>> +    len: usize,
->>> +}
->>> +
->>> +impl DecFifo {
->>> +    fn push(&mut self, data: u64, len: usize) {
->>> +        let mut chunk = data;
->>> +        for i in (0..self.len).rev() {
->>> +            self.decimals[i + len] = self.decimals[i];
->>> +        }
->>> +        for i in 0..len {
->>> +            self.decimals[i] = (chunk % 10) as u8;
->>> +            chunk /= 10;
->>> +        }
->>> +        self.len += len;
->>> +    }
->>> +
->>> +    /// Pop 3 decimal digits from the FIFO
->>> +    fn pop3(&mut self) -> Option<(u16, usize)> {
->>> +        if self.len == 0 {
->>> +            None
->>> +        } else {
->>> +            let poplen = 3.min(self.len);
->>> +            self.len -= poplen;
->>> +            let mut out = 0;
->>> +            let mut exp = 1;
->>> +            for i in 0..poplen {
->>> +                out += self.decimals[self.len + i] as u16 * exp;
->>> +                exp *= 10;
->>> +            }
->>> +            Some((out, NUM_CHARS_BITS[poplen]))
->>>           }
->>>       }
->>>   }
->>> @@ -375,8 +415,7 @@ fn iter(&self) -> SegmentIterator<'_> {
->>>   struct SegmentIterator<'a> {
->>>       segment: &'a Segment<'a>,
->>>       offset: usize,
->>> -    carry: u64,
->>> -    carry_len: usize,
->>> +    decfifo: DecFifo,
->>>   }
->>>   impl Iterator for SegmentIterator<'_> {
->>> @@ -394,31 +433,17 @@ fn next(&mut self) -> Option<Self::Item> {
->>>                   }
->>>               }
->>>               Segment::Numeric(data) => {
->>> -                if self.carry_len < 3 && self.offset < data.len() {
->>> -                    // If there are less than 3 decimal digits in 
->>> the carry,
->>> -                    // take the next 7 bytes of input, and add them 
->>> to the carry.
->>> +                if self.decfifo.len < 3 && self.offset < data.len() {
->>> +                    // If there are less than 3 decimal digits in 
->>> the fifo,
->>> +                    // take the next 7 bytes of input, and push them 
->>> to the fifo.
->>>                       let mut buf = [0u8; 8];
->>>                       let len = 7.min(data.len() - self.offset);
->>>                       
->>> buf[..len].copy_from_slice(&data[self.offset..self.offset + len]);
->>>                       let chunk = u64::from_le_bytes(buf);
->>> -                    let pow = u64::pow(10, BYTES_TO_DIGITS[len] as 
->>> u32);
->>> -                    self.carry = chunk + self.carry * pow;
->>> +                    self.decfifo.push(chunk, BYTES_TO_DIGITS[len]);
->>>                       self.offset += len;
->>> -                    self.carry_len += BYTES_TO_DIGITS[len];
->>> -                }
->>> -                match self.carry_len {
->>> -                    0 => None,
->>> -                    len => {
->>> -                        // take the next 3 decimal digits of the carry
->>> -                        // and return 10bits of numeric data.
->>> -                        let out_len = 3.min(len);
->>> -                        self.carry_len -= out_len;
->>> -                        let pow = u64::pow(10, self.carry_len as u32);
->>> -                        let out = (self.carry / pow) as u16;
->>> -                        self.carry %= pow;
->>> -                        Some((out, NUM_CHARS_BITS[out_len]))
->>> -                    }
->>>                   }
->>> +                self.decfifo.pop3()
->>>               }
->>>           }
->>>       }
->>>
->>> base-commit: 74757ad1c105c8fc00b4cac0b7918fe3262cdb18
->>
->> Hi Jocelyn,
->>
->> Apologies for reviving this old thread, but I'm still encountering
->> the same issue with the latest master (78f4e737a53e).
->>
->> When compiling this module for ARM32 (multi_v7_defconfig),
->> I get the following error:
->>
->>      ld.lld: error: undefined symbol: __aeabi_uldivmod
->>      >>> referenced by drm_panic_qr.rs:392 (drivers/gpu/drm/ 
->> drm_panic_qr.rs:392)
->>      >>>               drivers/gpu/drm/drm_panic_qr.o: 
->> (<drm_panic_qr::SegmentIterator as 
->> core::iter::traits::iterator::Iterator>::next) in archive vmlinux.a
->>      >>> referenced by drm_panic_qr.rs:392 (drivers/gpu/drm/ 
->> drm_panic_qr.rs:392)
->>      >>>               drivers/gpu/drm/drm_panic_qr.o: 
->> (<drm_panic_qr::SegmentIterator as 
->> core::iter::traits::iterator::Iterator>::next) in archive vmlinux.a
->>      >>> referenced by drm_panic_qr.rs:392 (drivers/gpu/drm/ 
->> drm_panic_qr.rs:392)
->>      >>>               drivers/gpu/drm/drm_panic_qr.o: 
->> (<drm_panic_qr::SegmentIterator as 
->> core::iter::traits::iterator::Iterator>::next) in archive vmlinux.a
->>      >>> referenced 14 more times
->>      >>> did you mean: __aeabi_uidivmod
->>      >>> defined in: vmlinux.a(arch/arm/lib/lib1funcs.o)
->>
->> Since no one else has reported this in two months, I’m wondering
->> if this might be a configuration issue on my end.
-> 
-> Ok, that's surprising, the lines 391 and 392 are:
-> 
-> self.decimals[i] = (chunk % 10) as u8;
-> chunk /= 10;
-> 
-> So the compiler should be smart enough to do that without using a division.
-> I will try to reproduce, and see if I can fix that.
+On Wed, Jun 25, 2025 at 11:07=E2=80=AFPM Alexandre Courbot <acourbot@nvidia=
+.com> wrote:
+>
+> If you add an associated type, I guess this means the derive macro
+> should have a helper attribute to specify it?
 
-I reproduced the issues, it looks like clang doesn't do the optimization 
-on ARM32:
+The current implementation tries to detect the enum's representation
+(e.g., `#[repr(u8)]`) and falls back to `isize` if nothing is provided,
+since it's the default [1]. However, when `#[repr(C)]` is used, the
+internal representation is not controlled on the Rust side. To quote
+the reference [2]:
 
-https://github.com/llvm/llvm-project/issues/37280
+For field-less enums, the C representation has the size and
+alignment of the default enum size and alignment for the target
+platform's C ABI.
 
-So I've made a quick test with the following changes, and it builds:
+Given this, it would definitely help with determinism if users provided
+an explicit attribute. Being explicit also often improves clarity and
+makes the intent more obvious.
 
-
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs 
-b/drivers/gpu/drm/drm_panic_qr.rs
-index dd55b1cb764d..57bd3c6465bb 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -381,6 +381,20 @@ struct DecFifo {
-      len: usize,
-  }
-
-+fn div10(val: u64) -> u64
-+{
-+    let val_h = val >> 32;
-+    let val_l = val & 0xFFFFFFFF;
-+    let b_h: u64 = 0x66666666;
-+    let b_l: u64 = 0x66666667;
-+
-+    let tmp1 = val_h * b_l + ((val_l * b_l) >> 32);
-+    let tmp2 = val_l * b_h + (tmp1 & 0xffffffff);
-+    let tmp3 = val_h * b_h + (tmp1 >> 32) + (tmp2 >> 32);
-+
-+    tmp3 >> 2
-+}
-+
-  impl DecFifo {
-      fn push(&mut self, data: u64, len: usize) {
-          let mut chunk = data;
-@@ -389,7 +403,7 @@ fn push(&mut self, data: u64, len: usize) {
-          }
-          for i in 0..len {
-              self.decimals[i] = (chunk % 10) as u8;
--            chunk /= 10;
-+            chunk = div10(chunk);
-          }
-          self.len += len;
-      }
-
+[1]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.en=
+um.discriminant.repr-rust
+[2]: https://doc.rust-lang.org/reference/type-layout.html?highlight=3Drepr#=
+r-layout.repr.c.enum
 
 Best regards,
-
--- 
-
-Jocelyn
-
-> 
-> Best regards,
-> 
->>
->> Thanks a lot!
->>
-> 
-
+Jesung
