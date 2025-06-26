@@ -1,269 +1,225 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E44211489
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 16:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mailrelay2-3.pub.mailoutpod3-cph3.one.com (mailrelay2-3.pub.mailoutpod3-cph3.one.com [46.30.212.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EB720E6F7
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 16:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750955374; cv=none; b=DOd6zruK2bB5ZJh1q4TTx5Dj9CCSyzF93QWqA1DLDxDJqoMbjTgyX27Yl2iGByNKBCXO2zEAjrAQ+JXtqo9qIjntKhEsxQ1ZK5nBrUy7CPqXUC1O38rNW4P2c1bhBMYXQlL6GMRkrBoBbQ1nNN7qku51urQL/kiwU2V5xpdHqOo=
+	t=1750955385; cv=none; b=PwePiz3UmBstF/F67TL0ioFk9wZelNseM6k6oHFAOa21zmCnAYC7INBXaQU3k6IO8qbUAIOPRbha/q4blx9wTsZi2BjWuJIN8aQsrSSH3b5LwLHiENYOSEL7VzfnVW5zoneLLmbmGXcViTywEDiXuhvQUoBpDp9Bw286Ra1Ar04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750955374; c=relaxed/simple;
-	bh=5KdOCbZYn98yLz5T4S0LbaO/0PHtFSw2dPS+GlF3Jho=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g+hyfST8NPt1G1pBGEN/SekNYM6in47TV45XLAo7D1QDm6VbLQw/p+qMmCRCB1cOvJCqE78QAl7UT6in7/nEIKO/pJvsFARzNcQsi6j/o7EF7FaO7lJGVoKMK9ABz2ELEmt1SyWEUD1tVYL7xVNf8uMtCFOphxIcEJdEoNcVWVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C75611758;
-	Thu, 26 Jun 2025 09:23:13 -0700 (PDT)
-Received: from e129154.arm.com (unknown [10.57.66.136])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 362BA3F66E;
-	Thu, 26 Jun 2025 09:23:27 -0700 (PDT)
-From: Beata Michalska <beata.michalska@arm.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	dakr@kernel.org,
-	aliceryhl@google.com,
-	daniel.almeida@collabora.com,
-	boqun.feng@gmail.com
-Cc: gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	tmgross@umich.edu,
-	alyssa@rosenzweig.io,
-	lyude@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH v5] rust: drm: Drop the use of Opaque for ioctl arguments
-Date: Thu, 26 Jun 2025 18:23:13 +0200
-Message-Id: <20250626162313.2755584-1-beata.michalska@arm.com>
+	s=arc-20240116; t=1750955385; c=relaxed/simple;
+	bh=CT3Snx40eh6HnKjAwO9g6zUyVa/HGCyqQm/rD7HSOlk=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=YtB/BrosPcMGMc3Fhi81XLksHSF2ZRxYwMlVd109ksWKLJAcJTd8rg4Z3Lt4uPxwTypLZc3d0ytmfIMNXBe7vL5V9RY+NiGEIoNr5LtY6PxQOuQB2bKCQ7v6v4M9vuezno6GhUiSLIOpLPcU3pJzoD1JVPRS/zsAJWXYMunwBkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=XfHWg0fJ; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=cKofyBaP; arc=none smtp.client-ip=46.30.212.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="XfHWg0fJ";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="cKofyBaP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1750955375; x=1751560175;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=Pe7xeslr3EnaI4eQ4G3Fal7OrGAZHQXi7GxA/Z6tTtk=;
+	b=XfHWg0fJ2o4Qj61LVARguZS8GfMl6j4JhwJrJrh6JvTe4McQ+XVbFl0NEhyaFU3O3iSzOI9nhOTS2
+	 d+ZiJ06ASlW1Wfa5su7ojDGVKLzdl+1RUaek0nN7uklAs3mKvdGfhJRmEKjw+XS5y7yo8n28+UHWD9
+	 HQjj0Pu+9g8+wVMX/l9SdkDhGCfJWO4ovD1ej9Jnoar+NRG3OsITcIDLHNRijZJbRqaROCZ4+LSUdn
+	 gSULaR3ic+5BdCKTJ+gsiNKbrI8kRrKs2kBArttjXwLWU2JjP/q/LeeOzRBmaZuh5u+U8x6xGix4Rk
+	 qa8pcNLyl3M1eU3zvHJ1IYje6W57zpQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1750955375; x=1751560175;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=Pe7xeslr3EnaI4eQ4G3Fal7OrGAZHQXi7GxA/Z6tTtk=;
+	b=cKofyBaPtXskP+rf2X2G0lhLuOIxo8k+IKnJCrRnZz3GEwGrqC6csA0L4RG8DslhJULU8M8M8q1lu
+	 RrGRTz/Ag==
+X-HalOne-ID: be6172b6-52aa-11f0-9c3a-b37c246f863f
+Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id be6172b6-52aa-11f0-9c3a-b37c246f863f;
+	Thu, 26 Jun 2025 16:29:34 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-With the Opaque<T>, the expectations are that Rust should not
-make any assumptions on the layout or invariants of the wrapped
-C types. That runs rather counter to ioctl arguments, which must
-adhere to certain data-layout constraints. By using Opaque<T>,
-ioctl handlers are forced to use unsafe code where none is actually
-needed. This adds needless complexity and maintenance overhead,
-brining no safety benefits.
-Drop the use of Opaque for ioctl arguments as that is not the best
-fit here.
-
-Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
----
-
-Changes in v5:
-- Use `.cast::<T>()` for ptr casting
-
-Changes in v4:
-- Fixed typo in commit message
-
-Changes in v3:
-- Squashed the changes into single commit
-
-Changes in v2:
-- Missing Nova changes now included
-- Fixed formatting and added comment on safety guarantees
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v4 3/4] rust: support large alignments in allocations
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <aF0-tYomGe7nB5vX@pollux>
+Date: Thu, 26 Jun 2025 18:29:24 +0200
+Cc: linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <72365C10-D984-4BC5-A081-B058C1619D06@konsulko.se>
+References: <20250626083516.3596197-1-vitaly.wool@konsulko.se>
+ <20250626083642.3596388-1-vitaly.wool@konsulko.se> <aF0-tYomGe7nB5vX@pollux>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.200.121)
 
 
- drivers/gpu/drm/nova/file.rs | 23 ++++++--------
- drivers/gpu/drm/nova/nova.rs |  1 -
- drivers/gpu/drm/nova/uapi.rs | 61 ------------------------------------
- rust/kernel/drm/ioctl.rs     | 11 ++++---
- 4 files changed, 16 insertions(+), 80 deletions(-)
- delete mode 100644 drivers/gpu/drm/nova/uapi.rs
 
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-index 7e59a34b830d..7e7d4e2de2fb 100644
---- a/drivers/gpu/drm/nova/file.rs
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -2,13 +2,11 @@
- 
- use crate::driver::{NovaDevice, NovaDriver};
- use crate::gem::NovaObject;
--use crate::uapi::{GemCreate, GemInfo, Getparam};
- use kernel::{
-     alloc::flags::*,
-     drm::{self, gem::BaseObject},
-     pci,
-     prelude::*,
--    types::Opaque,
-     uapi,
- };
- 
-@@ -26,20 +24,19 @@ impl File {
-     /// IOCTL: get_param: Query GPU / driver metadata.
-     pub(crate) fn get_param(
-         dev: &NovaDevice,
--        getparam: &Opaque<uapi::drm_nova_getparam>,
-+        getparam: &mut uapi::drm_nova_getparam,
-         _file: &drm::File<File>,
-     ) -> Result<u32> {
-         let adev = &dev.adev;
-         let parent = adev.parent().ok_or(ENOENT)?;
-         let pdev: &pci::Device = parent.try_into()?;
--        let getparam: &Getparam = getparam.into();
- 
--        let value = match getparam.param() as u32 {
-+        let value = match getparam.param as u32 {
-             uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
-             _ => return Err(EINVAL),
-         };
- 
--        getparam.set_value(value);
-+        getparam.value = value;
- 
-         Ok(0)
-     }
-@@ -47,13 +44,12 @@ pub(crate) fn get_param(
-     /// IOCTL: gem_create: Create a new DRM GEM object.
-     pub(crate) fn gem_create(
-         dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_create>,
-+        req: &mut uapi::drm_nova_gem_create,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemCreate = req.into();
--        let obj = NovaObject::new(dev, req.size().try_into()?)?;
-+        let obj = NovaObject::new(dev, req.size.try_into()?)?;
- 
--        req.set_handle(obj.create_handle(file)?);
-+        req.handle = obj.create_handle(file)?;
- 
-         Ok(0)
-     }
-@@ -61,13 +57,12 @@ pub(crate) fn gem_create(
-     /// IOCTL: gem_info: Query GEM metadata.
-     pub(crate) fn gem_info(
-         _dev: &NovaDevice,
--        req: &Opaque<uapi::drm_nova_gem_info>,
-+        req: &mut uapi::drm_nova_gem_info,
-         file: &drm::File<File>,
-     ) -> Result<u32> {
--        let req: &GemInfo = req.into();
--        let bo = NovaObject::lookup_handle(file, req.handle())?;
-+        let bo = NovaObject::lookup_handle(file, req.handle)?;
- 
--        req.set_size(bo.size().try_into()?);
-+        req.size = bo.size().try_into()?;
- 
-         Ok(0)
-     }
-diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
-index 902876aa14d1..730598defe04 100644
---- a/drivers/gpu/drm/nova/nova.rs
-+++ b/drivers/gpu/drm/nova/nova.rs
-@@ -5,7 +5,6 @@
- mod driver;
- mod file;
- mod gem;
--mod uapi;
- 
- use crate::driver::NovaDriver;
- 
-diff --git a/drivers/gpu/drm/nova/uapi.rs b/drivers/gpu/drm/nova/uapi.rs
-deleted file mode 100644
-index eb228a58d423..000000000000
---- a/drivers/gpu/drm/nova/uapi.rs
-+++ /dev/null
-@@ -1,61 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--use kernel::uapi;
--
--// TODO Work out some common infrastructure to avoid boilerplate code for uAPI abstractions.
--
--macro_rules! define_uapi_abstraction {
--    ($name:ident <= $inner:ty) => {
--        #[repr(transparent)]
--        pub struct $name(::kernel::types::Opaque<$inner>);
--
--        impl ::core::convert::From<&::kernel::types::Opaque<$inner>> for &$name {
--            fn from(value: &::kernel::types::Opaque<$inner>) -> Self {
--                // SAFETY: `Self` is a transparent wrapper of `$inner`.
--                unsafe { ::core::mem::transmute(value) }
--            }
--        }
--    };
--}
--
--define_uapi_abstraction!(Getparam <= uapi::drm_nova_getparam);
--
--impl Getparam {
--    pub fn param(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).param }
--    }
--
--    pub fn set_value(&self, v: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
--        unsafe { (*self.0.get()).value = v };
--    }
--}
--
--define_uapi_abstraction!(GemCreate <= uapi::drm_nova_gem_create);
--
--impl GemCreate {
--    pub fn size(&self) -> u64 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).size }
--    }
--
--    pub fn set_handle(&self, handle: u32) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
--        unsafe { (*self.0.get()).handle = handle };
--    }
--}
--
--define_uapi_abstraction!(GemInfo <= uapi::drm_nova_gem_info);
--
--impl GemInfo {
--    pub fn handle(&self) -> u32 {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).handle }
--    }
--
--    pub fn set_size(&self, size: u64) {
--        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
--        unsafe { (*self.0.get()).size = size };
--    }
--}
-diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-index 445639404fb7..cb30b9ad1808 100644
---- a/rust/kernel/drm/ioctl.rs
-+++ b/rust/kernel/drm/ioctl.rs
-@@ -83,7 +83,7 @@ pub mod internal {
- ///
- /// ```ignore
- /// fn foo(device: &kernel::drm::Device<Self>,
--///        data: &Opaque<uapi::argument_type>,
-+///        data: &mut uapi::argument_type,
- ///        file: &kernel::drm::File<Self::File>,
- /// ) -> Result<u32>
- /// ```
-@@ -138,9 +138,12 @@ pub mod internal {
-                             // SAFETY: The ioctl argument has size `_IOC_SIZE(cmd)`, which we
-                             // asserted above matches the size of this type, and all bit patterns of
-                             // UAPI structs must be valid.
--                            let data = unsafe {
--                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
--                            };
-+                            // The `ioctl` argument is exclusively owned by the handler
-+                            // and guaranteed by the C implementation (`drm_ioctl()`) to remain
-+                            // valid for the entire lifetime of the reference taken here.
-+                            // There is no concurrent access or aliasing; no other references
-+                            // to this object exist during this call.
-+                            let data = unsafe { &mut *(raw_data.cast::<$crate::uapi::$struct>()) };
-                             // SAFETY: This is just the DRM file structure
-                             let file = unsafe { $crate::drm::File::as_ref(raw_file) };
- 
--- 
-2.25.1
+> On Jun 26, 2025, at 2:36=E2=80=AFPM, Danilo Krummrich =
+<dakr@kernel.org> wrote:
+>=20
+> On Thu, Jun 26, 2025 at 10:36:42AM +0200, Vitaly Wool wrote:
+>> void * __must_check __realloc_size(2)
+>> -rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
+>> +rust_helper_krealloc(const void *objp, size_t new_size, unsigned =
+long align, gfp_t flags)
+>> {
+>> return krealloc(objp, new_size, flags);
+>> }
+>>=20
+>> void * __must_check __realloc_size(2)
+>> -rust_helper_kvrealloc(const void *p, size_t size, gfp_t flags)
+>> +rust_helper_kvrealloc(const void *p, size_t size, unsigned long =
+align, gfp_t flags)
+>> {
+>> return kvrealloc(p, size, flags);
+>> }
+>=20
+> I think you forgot to add comments explaining why we have the =
+additional
+> discarded align argument.
+>=20
+> Also please keep those helpers as they are. You can write an identical =
+inline
+> function in Rust that discards the align argument and calls =
+bindings::krealloc,
+> etc.
+>=20
+> For instance:
+>=20
+> unsafe extern "C" fn krealloc_align(
+>    ptr: *const c_void,
+>    size: usize,
+>    _align: c_ulong
+>    flags: u32,
+> ) -> *mut c_void {
+>    bindings::krealloc(ptr, size, flags)
+> }
+>=20
+
+Ugh. This is indeed a mistake from my side but I don=E2=80=99t quite =
+agree with your variant here too.
+The thing is that the new patchset has a patch #2 which adds =
+kvrealloc_node and realloc_node so this chunk IMO should have looked =
+like
+
+-rust_helper_kvrealloc(const void *p, size_t size, gfp_t flags)
++rust_helper_kvrealloc(const void *p, size_t size, unsigned long align, =
+gfp_t flags)
+ {
+ -      return kvrealloc(p, size, flags);
+ +      return kvrealloc_node(p, size, align, flags, NUMA_NO_NODE);
+
+ }
+
+=E2=80=A6exactly like for vmalloc, see also my comment below.
+
+>> diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
+>> index 80d34501bbc0..4618c0b79283 100644
+>> --- a/rust/helpers/vmalloc.c
+>> +++ b/rust/helpers/vmalloc.c
+>> @@ -3,7 +3,7 @@
+>> #include <linux/vmalloc.h>
+>>=20
+>> void * __must_check __realloc_size(2)
+>> -rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
+>> +rust_helper_vrealloc(const void *p, size_t size, unsigned long =
+align, gfp_t flags)
+>> {
+>> - return vrealloc(p, size, flags);
+>> + return vrealloc_node(p, size, align, flags, NUMA_NO_NODE);
+>> }
+>=20
+> Same here, just make this a "real" helper for vrealloc_node() and =
+create a Rust
+> function vrealloc_align() like in the example above.
+
+Wait, why? What=E2=80=99s the use of vrealloc() if it doesn=E2=80=99t =
+provide the align functionality that we need?
+>=20
+>> diff --git a/rust/kernel/alloc/allocator.rs =
+b/rust/kernel/alloc/allocator.rs
+>> index aa2dfa9dca4c..a0d78c497974 100644
+>> --- a/rust/kernel/alloc/allocator.rs
+>> +++ b/rust/kernel/alloc/allocator.rs
+>> @@ -58,7 +58,7 @@ fn aligned_size(new_layout: Layout) -> usize {
+>> ///
+>> /// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
+>> struct ReallocFunc(
+>> -    unsafe extern "C" fn(*const crate::ffi::c_void, usize, u32) -> =
+*mut crate::ffi::c_void,
+>> +    unsafe extern "C" fn(*const crate::ffi::c_void, usize, usize, =
+u32) -> *mut crate::ffi::c_void,
+>=20
+> Should be c_ulong instead of usize.
+>=20
+
+Noted.
+
+>> );
+>>=20
+>> impl ReallocFunc {
+>> @@ -110,7 +110,7 @@ unsafe fn call(
+>>         // - Those functions provide the guarantees of this function.
+>>         let raw_ptr =3D unsafe {
+>>             // If `size =3D=3D 0` and `ptr !=3D NULL` the memory =
+behind the pointer is freed.
+>> -            self.0(ptr.cast(), size, flags.0).cast()
+>> +            self.0(ptr.cast(), size, layout.align(), flags.0).cast()
+>>         };
+>>=20
+>>         let ptr =3D if size =3D=3D 0 {
+>> @@ -152,12 +152,6 @@ unsafe fn realloc(
+>>         old_layout: Layout,
+>>         flags: Flags,
+>>     ) -> Result<NonNull<[u8]>, AllocError> {
+>> -        // TODO: Support alignments larger than PAGE_SIZE.
+>> -        if layout.align() > bindings::PAGE_SIZE {
+>> -            pr_warn!("Vmalloc does not support alignments larger =
+than PAGE_SIZE yet.\n");
+>> -            return Err(AllocError);
+>> -        }
+>> -
+>>         // SAFETY: If not `None`, `ptr` is guaranteed to point to =
+valid memory, which was previously
+>>         // allocated with this `Allocator`.
+>>         unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, =
+flags) }
+>> @@ -176,12 +170,6 @@ unsafe fn realloc(
+>>         old_layout: Layout,
+>>         flags: Flags,
+>>     ) -> Result<NonNull<[u8]>, AllocError> {
+>> -        // TODO: Support alignments larger than PAGE_SIZE.
+>> -        if layout.align() > bindings::PAGE_SIZE {
+>> -            pr_warn!("KVmalloc does not support alignments larger =
+than PAGE_SIZE yet.\n");
+>> -            return Err(AllocError);
+>> -        }
+>=20
+> Didn't you propose to use VREALLOC if layout.align() > =
+bindings::PAGE_SIZE?
+>=20
+
+I did, and this is what happens on the C side now, please see the #2 =
+patch in series.
+I think it=E2=80=99s better this way because of uniformity but I don=E2=80=
+=99t have a strong opinion on this.
+
+>>         // SAFETY: If not `None`, `ptr` is guaranteed to point to =
+valid memory, which was previously
+>>         // allocated with this `Allocator`.
+>>         unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, =
+flags) }
+>=20
 
