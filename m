@@ -1,202 +1,115 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward100d.mail.yandex.net (forward100d.mail.yandex.net [178.154.239.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE87B186E2E;
-	Thu, 26 Jun 2025 04:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34E625CC5B;
+	Thu, 26 Jun 2025 08:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750911209; cv=none; b=Ph8QdE9PV0vpB+3YNdJpHOTDAyhuznRJKzu2MMRUnx7xZGIZf5we6xbXzOPS1ec8WOkoXpT2K4/zAkbP1wFYN4iSHYCdh3dqTXUjjgtRaBYt7kfjbgOueobxP7+Dv3fR0kRzc6PlyypaebjHchsl3JWFIrKr1lWfxQykuPQnWjE=
+	t=1750925468; cv=none; b=tmIaZerFdsKkRZDGElNMOM2W54DIfqUpUEGSzPOj2pcq8lnRs5HTEhLgxzGLIMOAZtEq/+5MCX/d3wzY9nZl85s5qF3TuiBHDsZXTJX4nQ9Ss4ayCiDLyO7Wo9h6edVxix7zF80DU3DDUoqyIlgMDS9HTiZBg2N1qOCSdOsWsUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750911209; c=relaxed/simple;
-	bh=HBCEEJz/CPA+TBfOtmhfTxmJ2gUIJttlEr9jJMcBJRk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dj6BgnIHCDuh8Ovo/mKuXkm1b8+YrvUXwtVca/zOOU1kUW3IL+a3hDVCX6b/wvhr8fuZe1nJWoUhu+C3uOlyiXqBHaWu5Vxp6Hb47hkjjnivM3yFSHlq4Z+VmuX0nbqptn0Qa+hY49bddX2/02mplkGlA76Uag72iCZm10hA1SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KFwpRieB; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750925468; c=relaxed/simple;
+	bh=0qK7pgJcflU2S/1gkTA6x7GaoJekdCBu3N/L20K2kYw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U8E238ukfHzp+ZkgN5XpYSSMaidGOviDRHUtLXizcqMN6gvYW0w5L2CUIFbioeVrUZ3673cYiJpcPhAFbVtMcUdzLVzrKWhkUO3jujwIVPnCm5alyHgrP817WiMZvWR5pD+QiufNFCLVoX93GjvR79s5JP95VFq6iijeeZmwuS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=gtJ+GglQ; arc=none smtp.client-ip=178.154.239.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KFwpRieB"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6fd0a3cd326so8458626d6.1;
-        Wed, 25 Jun 2025 21:13:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750911206; x=1751516006; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cB89kIOPc2zsNiciblqiuc+ZzwafSNwodC7kwMuppfQ=;
-        b=KFwpRieB9N1DxzqFLmRb3R+X1uDQlQ3Z3XX+wOu/nLmSI2HHCsN5IAemZ3CNVVJmeL
-         iZJ1AKryqPVa5oxlMtW3+kGKYCANILUDqnDMFITsQilAyylzYOgp5xxun9qwLHM9VGpX
-         1pU9NpTmvtuPZQLbfglvpkOuLkc9u1UZZsrlso14Tm+BcIknOSMH7EIzBTB9eWihg9rf
-         HFRP7+cCpNsydVrUJRVLmqAj/t4iVpi6izfLk0io/Lu7jGjo64I9JS55JR4kaEZX4P1Y
-         8P5RMRERzhLEQDE2IsgGKHalxH8a6oepfyF0y/ptl6yNkp1QPLN2om5VUfbm+hTAdOH6
-         RiqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750911206; x=1751516006;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cB89kIOPc2zsNiciblqiuc+ZzwafSNwodC7kwMuppfQ=;
-        b=Guf2NjNIVnxwUKqv21NuXWXJiB7CdNGr2KHP0UjsSRrY/ky8i+7CdcTwmdohxyogWF
-         UsIhZci3hf1pK1zYsvzvrvQQQeIP/I7HkyK9ZjSrEGMxLCw4q2m6dZjdabwPLJB7LkZE
-         CDPkIAfYw8jSYnw6OcpjPu/wgaNr/kvi7mAG3aiI6CxTMemzDs8srDs8MineVVtESxKH
-         GYTv0fxNUzZ4Pf9aGqBz+inlK6boUpKhjv1a67FQ0C8Fj2qQ60n/1DlzJM4X2ur58VQO
-         TPBB5Uf46Y7+git+DXCDUMm7ZE6pi8GJyK1180DiKp1flBdmcRk0h+qhbs11FbTWrmz1
-         yH3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUKE0bKOCfuvhSxvNSOUyzZJSDgiXARTuCZ7NXxezQuPIFFrPDcsH4Ktgtfp9nbNmIWWBP3kweQDEzW@vger.kernel.org, AJvYcCUd6tPJmt+OKs2z2LRKJJ0MFzadjQKq3IzTgBeeBAVXmUJg9a/0aJrCaRugJk81RQRjDPzXXt+/O+MThj8=@vger.kernel.org, AJvYcCW4Vyw6Qb4r//zs2gtKoz+BPXS3dGpqtgVGaLlDUcs90s6nfAq5ep2ryH0+Girm9Y/FlV9+9UKq2o6P77ONjE8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwV/hH+GvyMzl57Rc9QwmaYbz7JybbHI+Cefwt78bPRKTz9tw/m
-	H9NN4SObmT2buHt6QvXka7WJl8qLLFIVySlSuv3vaTFpdyIUfe+0stHu
-X-Gm-Gg: ASbGnctTjhuZlLLUR4uHWdKDfjWCmBD1q0/FVx2tgmNMvWY6DGgbaPoWElZixeNX5Kd
-	osAcgUP/Kun+bySzDAXaJ5Tcxie6gmki6u3hYSANEJKNahtzpmrK8lf5DV/kcnFu8ukl/FH+s7P
-	iAPgRttmx1QVWGMZZuH4tAe/Qdz6RHNcTJmVV8VyVDSYiVg32nqNUYFVikSioWLN0MtjB67sAKb
-	/DIRzk8vvgWBmyAzjS1Q477hBvXGIOX+tYv9AYKsA/1UrfCpxJSbhjrz1cxhiE+r3tPoODAQTMN
-	IkhaVmiD4dxQnqUetHiyQs4GDgaiy4+NBcpkDdYywdx4ZzPJXOeFQkRH6vAJwFYp2GZPMnlcOPv
-	RJdwzwksyIgoU4NH4kpJo63CbGJ7qO0daIsRz6NbeKJ13frJ2GOMW
-X-Google-Smtp-Source: AGHT+IEYt5oCVKOc/516M6/N/PL+WpfaA2TZVJgo4mdX1mTLcLC6ilJONaUQ9y3KxymHOe4xQKG0/A==
-X-Received: by 2002:a05:6214:570a:b0:6ed:19d1:212f with SMTP id 6a1803df08f44-6fd5ef2fdadmr95362836d6.5.1750911206526;
-        Wed, 25 Jun 2025 21:13:26 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d3f99efaa9sm681441585a.58.2025.06.25.21.13.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 21:13:25 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 60FCFF40068;
-	Thu, 26 Jun 2025 00:13:25 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 26 Jun 2025 00:13:25 -0400
-X-ME-Sender: <xms:5chcaCby8GYuawfa1FKNCxUMUEO2uruhr-Qd48ij5KXq7y4_ZsvYvA>
-    <xme:5chcaFZaI8WN2AWRNxzTT5KrLND2DsO5q_Rzfo36c1QV3W-kSl07hSw_ulvBD37oW
-    TVUdrQI5pzlJF6Myw>
-X-ME-Received: <xmr:5chcaM8S34Wi6md5idxSLwHKgzkCVOCGTIY-Tbmuh0MtcXP9xYt9iRVpYA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvgeeihecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslh
-    hinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehg
-    rghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprh
-    hothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:5chcaEpomIhvOKx33CWlPv06L5ByMQx72pg_NjEh55rxZrC5QHwGMg>
-    <xmx:5chcaNqnEqPlxgQybsDI_WozILenKtnsx4vHmUDJ1s5xxQLRdRmaVg>
-    <xmx:5chcaCTwnXuCAAd_U0OghL2mxjiTUhTthUoLE9pXos7z7xeDndVsaw>
-    <xmx:5chcaNoozZN9WEUBDaGhtnMhr6-FZIJhVGN9YfpK_xVYWJPHqGHBgQ>
-    <xmx:5chcaK4Nt_5Ez4O8fld5_mYv5UQ2jDVxVJ951kKeGTqTxyrAkOmT4uPL>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 26 Jun 2025 00:13:24 -0400 (EDT)
-Date: Wed, 25 Jun 2025 21:13:24 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="gtJ+GglQ"
+Received: from mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:c90:0:640:54cb:0])
+	by forward100d.mail.yandex.net (Yandex) with ESMTPS id 06E806090C;
+	Thu, 26 Jun 2025 11:10:54 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id jAQpStTLmmI0-m7OVeu3S;
+	Thu, 26 Jun 2025 11:10:53 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1750925453;
+	bh=Yinnm7E77h8mES7qlr1gkasOuZ5UvgTpmubeiNbiEMA=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=gtJ+GglQyobmFoiJoNhUHjIv789LxN8GxgZLLUOxlaFuh3WE1Mzucb2qbRx1DxrDh
+	 L1ed7Gjw1SV0VbZw30sNXf9MvEJaaFcWFfsyUhiT7xU6aiJdYXArKEQNSyF/8vvx02
+	 V15mhCKiD7TY/rUEzlL7Mf8rEEVWvhhp4/eksNWs=
+Authentication-Results: mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Thu, 26 Jun 2025 11:10:45 +0300
+From: Onur <work@onurozkan.dev>
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
-	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v3 3/4] rust: devres: get rid of Devres' inner Arc
-Message-ID: <aFzI5L__OcB9hqdG@Mac.home>
-References: <20250624215600.221167-1-dakr@kernel.org>
- <20250624215600.221167-4-dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu
+Subject: Re: [PATCH] rust: simplify `Adapter::id_info`
+Message-ID: <20250626111045.2c90a402@nimda>
+In-Reply-To: <aFu10-dGkoyi0I2T@cassiopeiae>
+References: <20250625043630.7677-1-work@onurozkan.dev>
+	<aFux2MUDAGEYY49I@pollux>
+	<20250625113604.21a6ec4a@nimda>
+	<aFu10-dGkoyi0I2T@cassiopeiae>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250624215600.221167-4-dakr@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 24, 2025 at 11:54:01PM +0200, Danilo Krummrich wrote:
-[...]
-> +#[pin_data(PinnedDrop)]
-> +pub struct Devres<T> {
+On Wed, 25 Jun 2025 10:39:47 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
 
-It makes me realize: I think we need to make `T` being `Send`? Because
-the devm callback can happen on a different thread other than
-`Devres::new()` and the callback may drop `T` because of revoke(), so we
-are essientially sending `T`. Alternatively we can make `Devres::new()`
-and its friend require `T` being `Send`.
+> On Wed, Jun 25, 2025 at 11:36:04AM +0300, Onur wrote:
+> > Even with that, it can be something like this:
+> > 
+> > fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+> >     let id = Self::acpi_id_info(dev);
+> >     if id.is_some() {
+> >         return id;
+> >     }
+> > 
+> >     Self::of_id_info(dev)
+> > }
+> > 
+> > or maybe even this:
+> > 
+> > fn id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
+> >     Self::acpi_id_info(dev).or_else(|| Self::of_id_info(dev))
+> > }
+> 
+> That's fair, can you please rebase your patch onto [1]?
+> 
+> [1]
+> https://lore.kernel.org/lkml/20250620153914.295679-1-igor.korotin.linux@gmail.com/
 
-If it's true, we need a separate patch that "Fixes" this.
+HEAD: e0b49ca268d4a0d2b97d5820420d5a78b67d2537 currently doesn't pass
+clippy. Should I send an additional change for the clippy fix or would
+you prefer to fix it yourself first?
 
-(Imagine a Devres<MutexGuard>)
+Here is the output of `make LLVM=1 -j $(nproc) CLIPPY=1`:
 
-> +    dev: ARef<Device>,
-> +    /// Pointer to [`Self::devres_callback`].
-> +    ///
-> +    /// Has to be stored, since Rust does not guarantee to always return the same address for a
-> +    /// function. However, the C API uses the address as a key.
-> +    callback: unsafe extern "C" fn(*mut c_void),
-> +    /// Contains all the fields shared with [`Self::callback`].
-> +    // TODO: Replace with `UnsafePinned`, once available.
+```
+  DESCEND objtool
+  CALL    scripts/checksyscalls.sh
+  INSTALL libsubcmd_headers
+  CLIPPY L rust/kernel.o
+error: unneeded `return` statement
+   --> rust/kernel/driver.rs:188:13
+    |
+188 |             return None;
+    |             ^^^^^^^^^^^
+    |
+    = help: for further information visit
+https://rust-lang.github.io/rust-clippy/master/index.html#needless_return
+= note: `-D clippy::needless-return` implied by `-D warnings` = help:
+to override `-D warnings` add `#[allow(clippy::needless_return)]` help:
+remove `return` |
+188 -             return None;
+188 +             None
+    |
 
-nit: Maybe also reference the `drop_in_place()` in Devres::drop() as
-well, because once we use `UnsafePinned`, we don't need that
-`drop_in_place()`. But not a big deal, just trying to help the people
-who would handle that "TODO" ;-)
+error: aborting due to 1 previous error
 
-> +    #[pin]
-> +    inner: Opaque<Inner<T>>,
-> +}
-> +
-[...]
-> +// SAFETY: `Devres` can be send to any task, if `T: Send`.
-> +unsafe impl<T: Send> Send for Devres<T> {}
-> +
-> +// SAFETY: `Devres` can be shared with any task, if `T: Sync`.
-> +unsafe impl<T: Sync> Sync for Devres<T> {}
-
-`T` also need to be `Send` for `Devres<T>` to be `Sync` because that's
-what `Revocable<T>` requires. (Unless we want `T` always being `Send`
-because of the issue I mentioned above)
-
-The rest looks good to me.
-
-Regards,
-Boqun
-
-> +
-> +#[pinned_drop]
-> +impl<T> PinnedDrop for Devres<T> {
-> +    fn drop(self: Pin<&mut Self>) {
->          // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
->          // anymore, hence it is safe not to wait for the grace period to finish.
-> -        if unsafe { self.0.data.revoke_nosync() } {
-> -            // We revoked `self.0.data` before the devres action did, hence try to remove it.
-> -            if !DevresInner::remove_action(&self.0) {
-> +        if unsafe { self.data().revoke_nosync() } {
-> +            // We revoked `self.data` before the devres action did, hence try to remove it.
-> +            if !self.remove_action() {
->                  // We could not remove the devres action, which means that it now runs concurrently,
-> -                // hence signal that `self.0.data` has been revoked successfully.
-> -                self.0.revoke.complete_all();
-> +                // hence signal that `self.data` has been revoked by us successfully.
-> +                self.inner().revoke.complete_all();
-> +
-> +                // Wait for `Self::devres_callback` to be done using this object.
-> +                self.inner().devm.wait_for_completion();
->              }
-> +        } else {
-> +            // `Self::devres_callback` revokes `self.data` for us, hence wait for it to be done
-> +            // using this object.
-> +            self.inner().devm.wait_for_completion();
->          }
-> +
-> +        // INVARIANT: At this point it is guaranteed that `inner` can't be accessed any more.
-> +        //
-> +        // SAFETY: `inner` is valid for dropping.
-> +        unsafe { core::ptr::drop_in_place(self.inner.get()) };
->      }
->  }
->  
-[...]
+make[2]: *** [rust/Makefile:538: rust/kernel.o] Error 1
+make[1]: *** [/home/nimda/devspace/onur-ozkan/linux/Makefile:1280:
+prepare] Error 2 make: *** [Makefile:248: __sub-make] Error 2
+```
