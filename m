@@ -1,165 +1,349 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7475F1D798E;
-	Thu, 26 Jun 2025 00:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E1F19F42D
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 03:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750896787; cv=none; b=L9oLjk1H7QN5NQTPdJ7uCWfRVzdJ4uUWXOSnoct7uZLylc9yqOxeZvMIkROCLTSB9DHsycHUVD+0GhBFLUJ7A/slM/OGqYPXLz5mEJIXhU2+tw70wWSX89aiU+FMo4Kw59fbjhy7y9ey5qoyISWa6Fdo0HoNLryNKYvyyaE5c44=
+	t=1750909361; cv=none; b=gDGd4+6VFPJqstW3WRKKx+UXiPJrccC8gqoTIljs4O8vWUC6mdr22oy4h8yzzbcPj1rLyiYdRtWX9qSmNO2EhuChCEA1SU1VbSQFrgROJK0WRJrqepA03fzebW1bNxcDnPVzyapyu6K2NiS6l0RIRRTEZO6AnYg7aUQOQzRP1MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750896787; c=relaxed/simple;
-	bh=nAVHFD+i9xZWVVU/vBhB3qKx5mEAFbUlAUwinOef2J8=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=kB+agpoRyV0pbha0Q0uIrQ68flARAq4hjHYacwIcR2SEuHDojgMQ38HGVOhLwPcDslg/24C3eGF3lCDIhpSIA9twTi8L2EwbPhLLReMrI5rTe0uPE4BEYi+ZxgAzp5FpQEQbrtfJAv3ZMXTthYvXNwS0s02LzQ0EioYDlZfBPaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GiPrI1yQ; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1750909361; c=relaxed/simple;
+	bh=ziz5RaIHjUmXzirMJ9t2zMO3ma04CAh9yvpjFBg+j6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5c+atyrMkMA9pqSP4EnwUL/8/raii9HOjlQn1w8cOeMpArmzggx05DbVHBWqR+tyWCvR84dPvakIgj7oi9bQXziQpiQQPWJ3THeJ2y/5yaCpPup2M0CXl59+EneKKjLoYeJIHmKxOCHrY6uI7srlZCbwLSvO/yux8OPY7AH8Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OWuhwIxO; arc=none smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GiPrI1yQ"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-234bfe37cccso6278265ad.0;
-        Wed, 25 Jun 2025 17:13:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OWuhwIxO"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4a6f6d07bb5so7362281cf.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Jun 2025 20:42:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750896785; x=1751501585; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nAVHFD+i9xZWVVU/vBhB3qKx5mEAFbUlAUwinOef2J8=;
-        b=GiPrI1yQfmKH5p/yU6yyiO3b1JSSPNqr4NKdFhXypDwruhYH/DPFOd1tdHB9tphk4n
-         78zxmm9/CCNdw7ku3nMhkAJj/wnqaxfDjQguGW3EZl2WwIKFXP09TYBvdVYQHRGw64lI
-         TdQI4qegtue9CY5Znks6VuQE2YHPB2tDi1rLtAI9sXtRjyBYfL1Ua7ldWzMIb3I3vrhz
-         V9db7hFte+d0ncMBmkK7kS/GZZ98KZknd32xYwt+dZ2P7/b26kc3dyMz3xOO1sit9RUL
-         6/hSOHixIbfUumTKigggRQ2wzT+vE/0ox6FLxj8qqZirp/fImfRU/zhWNY94xGbcVuWm
-         GUIQ==
+        d=gmail.com; s=20230601; t=1750909358; x=1751514158; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3liawWZctXs7keSPhZo5W3GQUl0iBuavz+nLQeEcPG8=;
+        b=OWuhwIxOF19c5yizTu9dXyU/4+RH9Q4Pc2Dl8nj1Vubjcv3l2JklM9rI9dYp7XUWh1
+         vjLnFVZI3ACVtZ9DolSeDglVFlB5Q5KAWZseT7tntqn1u8byQhA712JfIhsvQtJkWhTN
+         MHYXuhBJXFkm8SPCvJbGRhhmwlZo7pfEj9FvkrKw6rBCYkus2vGY+QyiDL8RqyWRKRHO
+         4TrCJ/iyu90bHYHskNTaBBULhYa8YwMuk3YPD/XMnqJaQDHTHrp8XDr5gR3wuHRDqCH6
+         2ythiSkSduBXw+gaSSW0z908LCTWMpU1+SIIvUhZ5ErkDthgd82hMdKPBzaBV+TtflzB
+         oG2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750896785; x=1751501585;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nAVHFD+i9xZWVVU/vBhB3qKx5mEAFbUlAUwinOef2J8=;
-        b=qDsBroLUk8H7VU4BlXTsvtHaHzNjXEALMZ69z8pyaNcoRJobWHziuTK1f183XwsOZo
-         OLZQEMd5OGYjZ9ZakX6cSpx4aoDtzamdVPXr1Eu6lwufr0EYbB6QATpTSHX13UC+Masc
-         tw2/oD3aNL08+vF2P0BHamT+/2Gan0roOsEky0x414MAS4PKF90r3m6S4jhd6fc9csZH
-         JvHGxvHdPAzKjj7xJNwAqWOOc5n3Un3UNjuhuIzceu9Maeg8gDm9LVK1h236v04Oo1FV
-         mUU3i+NQc7puLZOtUaerhbWmIjYpZbZu3ZapwlG16pGhTsOB98/3CA+WDq1ZEH5Mzo0Z
-         Falg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHYYlArnhC7drrNzpLCwBrexvfgqXfifx4owVKnzg8/xfLsEs4jjgFw+8J6UFeQrPdsdkBhSkxtQpJ7Fc=@vger.kernel.org, AJvYcCXEJ0nTlKUCF99CeiYsU+6O30vIdJmeIVCpnDDFRE8OWvT9pmJ5lPohsBH3hcP9NgKhTBLT7ZbJAnlNF0P8MgQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGI5B98IUbucnLRNizKHx1xxTl5WdcduAzlAQhINEyJyBQyUfh
-	k+HT3B4vTcoB4oqr5ZgyOxPR1zFaOmxwiF5IkEwpVz0S9Fnkq51QrqYAFyJ5kQJI
-X-Gm-Gg: ASbGncu1nk7p2JWlx2GH2+lCGVcnxqKe5jwaVyCBJxFxHon+jbXSQMXIb1vw6UmTrKA
-	fsOYw4owCd0sgPWBtnqWrqBgRNTAAx8Aav0jYt+ScjQLWRZhwJqeOq8d86Hyk0G/gNIKz/4WUBQ
-	L/B1nyakobC/AF53c+zDLiLHHvKqUPl21Eug6YSXpHtiwV39GWlFGOjEU0TgQB0RIHxIch8hOwn
-	1QEj2D3pQaySrJG+YWQZR3zth+zyhDnEkdnU8mUfrOk5cEBinscL+5S6vZTRlwHYy5MqGYZhR2m
-	RVg5VkSiezFRpj5/h2Elz06yEkZj1U3l1KsQ8nl++dtcGVx1WZrTSt+Or9XsavQiQe6dQJYVaMn
-	Rm5e3tpvQ5CiLDv9owVo6AUI2qzLsTM/uQNrLutAz
-X-Google-Smtp-Source: AGHT+IE35C4YzBhApDL/QlPCpZu3UDcvIFW6f+pu3aTaGKSjpNeS+Vx15cLfn4EdGf95ihJ52v2NzQ==
-X-Received: by 2002:a17:902:e743:b0:235:e76c:4362 with SMTP id d9443c01a7336-238240f4048mr66997305ad.18.1750896784561;
-        Wed, 25 Jun 2025 17:13:04 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d864bc91sm142973835ad.150.2025.06.25.17.13.00
+        d=1e100.net; s=20230601; t=1750909358; x=1751514158;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3liawWZctXs7keSPhZo5W3GQUl0iBuavz+nLQeEcPG8=;
+        b=tGDcvR+XNqyAt/S73p/qpqhzYZZ+zncczsTgntghjg5D7nm+w51DRQa5Vioi8FF76Z
+         33TTW1YwdHcV2FlC52c0IVOYE/VmKO6LGzLLwEcIreH9kW+5lCa2jIg9tMAzyHsxT/Tx
+         LRbDKv5yNNWqOLeKqapPdiQThuR5/6AFw7fn3yeMXBodWecU8bLJHwJ0qdvmOBhMhiw+
+         ow4CWxwf9kGtxKlof5/nVB/5kUysTz7FPYgbD7hakfxrn6VMOb4Gb7ESgFsLIzduWrbS
+         DEwdyucg+fysjS3P20GUC3YO7T5osaDs2pO9W+BToqgfOiNq+WhXkzMwPsjvHB1Jcp/V
+         bB2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWEe2avVjuZ5JHPg+SaXv1dSnZNtu6I+/8w/XkmUNGVWbGOJf6ks8y7E631AYmC8WsWpfPW+j1hxXN9P/6now==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFnTQOibMOEYeJDtYi6AhtobWskQ+NMxpfR2jlc79nzI2O1jNo
+	8V3C90Q05Kmhnh6SvAnUFES+tXjZCwsq3KRjRti7u0rUnj4QusmmOmx+
+X-Gm-Gg: ASbGnctvqNNUhF6TB1KdBFmwF3w+0kbusksIGUU3B/andbSSnawU0o04PbNNU6i6dd3
+	OZ79/t1Bwz57KvAaA962U5/k2BZSD0T7EzpbPCCC+LahBVqaD6zc7sU9MYCtR7Ci1htxNcNa3F8
+	/AObTRFJ3GgSMKSFA+4aYBF7NkS9DbOAbWfJg61530dpZfCaNGzsJfLWlNUiDVF/RVRM5QczQAs
+	Mr/QUQ+tj2O8lAgyaRV5WU/8tUiQI/cPAyDiPSPAkn1I4SBTnQTBFw37M8fejAgKG/DNvm0xjxj
+	f9/bzplsqb63+FCqXEBSx+VbfrIfnXMM8YVekodApX499hH/EpXHn3/Tmyt5M/TKMowaXfEHfk5
+	0HjWE+hVL/KKK6/Uf+Xk15iOyPOSWfMHE7mrLWpiQ8rRq0aRa38fg
+X-Google-Smtp-Source: AGHT+IFhhwRvlnji45uC2Dtp9KaiTKyb5Stv70eMaFEe1Wr/Xy7cLd1PkADT73suamYikUi7ELZa4w==
+X-Received: by 2002:a05:622a:2611:b0:4a7:14c3:7405 with SMTP id d75a77b69052e-4a7c07d4cf2mr107582861cf.27.1750909358053;
+        Wed, 25 Jun 2025 20:42:38 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a779d672f6sm67750101cf.27.2025.06.25.20.42.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 17:13:04 -0700 (PDT)
-Date: Thu, 26 Jun 2025 09:12:48 +0900 (JST)
-Message-Id: <20250626.091248.526065656918619245.fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org, miguel.ojeda.sandonis@gmail.com
-Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org,
- aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
- boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org,
- gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org,
- lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu
-Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
- Delta
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <877c102pxs.fsf@kernel.org>
-References: <94kOZwdYnRPRMO6SAHAvEFEygT4dU-njfBxTMC6BiPQ-u49pyL5hLgbLQBGOct1ruxVJPtYGJ0Dq0Ns2mh-sMQ==@protonmail.internalid>
-	<20250625.082020.1714542193051382332.fujita.tomonori@gmail.com>
-	<877c102pxs.fsf@kernel.org>
+        Wed, 25 Jun 2025 20:42:37 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 05400F40066;
+	Wed, 25 Jun 2025 23:42:37 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 25 Jun 2025 23:42:37 -0400
+X-ME-Sender: <xms:rMFcaD5BdUPjrtAh5aOxRjF_iLdRO-hxNTiqfRPNKbnZgm2e6vEe_w>
+    <xme:rMFcaI6XqELPHFIhvtaz37h7hihLLQ0j7zTnx3tz1dT9kRKZ2xbaMeVy2tzfzZqKv
+    ZVKnA_wunb9YF9p6Q>
+X-ME-Received: <xmr:rMFcaKdzOqw2NHmYJy7B0GVPNmCZtA7qrtbJ2JW43Vghs6irOyvfNzZeZA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvgeehlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddvhedt
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
+    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
+    udeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsvggrthgrrdhmihgthhgrlh
+    hskhgrsegrrhhmrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtth
+    hopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhes
+    ghhoohhglhgvrdgtohhmpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtoh
+    hllhgrsghorhgrrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvght
+    pdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtg
+    hpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:rMFcaEK0oo0zlHzCXKcyG9qLhXYVgKA3pvoSkUtDQvKhN8Ja4L32TQ>
+    <xmx:rMFcaHLQVSEhKlQNKz_9JCrNP-VkwoEzjlUfLA6PoSJmkUtpoQuA6Q>
+    <xmx:rMFcaNzIztB8Gegt3cMyIl33klVJzmM3M4v00BefVQok6wQlA8wHTA>
+    <xmx:rMFcaDK_7hUsd1j5ZfV9pHBEO4wbwZBPw1tfS3JUOl91Fm6P9cTPNw>
+    <xmx:rcFcaCYhN305NErnbZx_pqfampNke6-guDhSERvjtsVTglYZoi0KvRcE>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Jun 2025 23:42:36 -0400 (EDT)
+Date: Wed, 25 Jun 2025 20:42:35 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Beata Michalska <beata.michalska@arm.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, dakr@kernel.org,
+	aliceryhl@google.com, daniel.almeida@collabora.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, tmgross@umich.edu, alyssa@rosenzweig.io,
+	lyude@redhat.com, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH v4] rust: drm: Drop the use of Opaque for ioctl arguments
+Message-ID: <aFzBq4wDVbLFry6z@Mac.home>
+References: <20250625081333.2217887-1-beata.michalska@arm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-7
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625081333.2217887-1-beata.michalska@arm.com>
 
-T24gV2VkLCAyNSBKdW4gMjAyNSAxMDoxOTo1OSArMDIwMA0KQW5kcmVhcyBIaW5kYm9yZyA8YS5o
-aW5kYm9yZ0BrZXJuZWwub3JnPiB3cm90ZToNCg0KPiAiRlVKSVRBIFRvbW9ub3JpIiA8ZnVqaXRh
-LnRvbW9ub3JpQGdtYWlsLmNvbT4gd3JpdGVzOg0KPiANCj4+IE9uIFR1ZSwgMjQgSnVuIDIwMjUg
-MjE6MDM6MjQgKzAyMDANCj4+IEFuZHJlYXMgSGluZGJvcmcgPGEuaGluZGJvcmdAa2VybmVsLm9y
-Zz4gd3JvdGU6DQo+Pg0KPj4+IEFuZHJlYXMgSGluZGJvcmcgPGEuaGluZGJvcmdAa2VybmVsLm9y
-Zz4gd3JpdGVzOg0KPj4+DQo+Pj4+ICJGVUpJVEEgVG9tb25vcmkiIDxmdWppdGEudG9tb25vcmlA
-Z21haWwuY29tPiB3cml0ZXM6DQo+Pj4+DQo+Pj4+PiBPbiBUdWUsIDI0IEp1biAyMDI1IDE1OjEx
-OjMxICswMjAwDQo+Pj4+PiBBbmRyZWFzIEhpbmRib3JnIDxhLmhpbmRib3JnQGtlcm5lbC5vcmc+
-IHdyb3RlOg0KPj4+Pj4NCj4+Pj4+Pj4gYW5kIGFscmVhZHkgaW50cm9kdWNlcyBwYWluIGZvcg0K
-Pj4+Pj4+PiBvdGhlcnMgKGFuZCBsaWtlbHkgZXZlbiBtb3JlIHBhaW4gd2hlbiB3ZSBuZWVkIHRv
-IHJlbmFtZSBpdCBiYWNrIG5leHQNCj4+Pj4+Pj4gY3ljbGUpLCBpdCBkb2Vzbid0IGxvb2sgbGlr
-ZSBhIGdvb2QgaWRlYSB0byBrZWVwIGl0Lg0KPj4+Pj4+DQo+Pj4+Pj4gT2ssIEknbGwgZHJvcCBp
-dC4NCj4+Pj4+DQo+Pj4+PiBEbyB5b3Ugd2FudCBtZSB0byBzZW5kIHRoZSB1cGRhdGVkIGhydGlt
-ZXIgY29udmVyc2lvbiBwYXRjaHNldA0KPj4+Pj4gKHVzaW5nIGFzXyogbmFtZXMpPw0KPj4+Pg0K
-Pj4+PiBObywgSSBhbSBqdXN0IGFib3V0IGZpbmlzaGVkIGZpeGluZyB1cCB0aGUgcmVzdC4gWW91
-IGNhbiBjaGVjayBpZiBpdCBpcw0KPj4+PiBPSyB3aGVuIEkgcHVzaC4NCj4+Pg0KPj4+IEkgcHVz
-aGVkIGl0LCBwbGVhc2UgY2hlY2suDQo+Pg0KPj4gVGhhbmtzIQ0KPj4NCj4+IFRoZSBjb21taXQg
-ZDlmYzAwZGM3MzU0ICgicnVzdDogdGltZTogQWRkIEhyVGltZXJFeHBpcmVzIHRyYWl0IikgYWRk
-cw0KPj4gdG8gSW5zdGFudCBzdHJ1Y3R1cmU6DQo+Pg0KPj4gKyAgICAjW2lubGluZV0NCj4+ICsg
-ICAgcHViKGNyYXRlKSBmbiBhc19uYW5vcygmc2VsZikgLT4gaTY0IHsNCj4+ICsgICAgICAgIHNl
-bGYuaW5uZXINCj4+ICsgICAgfQ0KPj4NCj4+IFdvdWxkIGl0IGJlIGJldHRlciB0byB0YWtlIHNl
-bGYgaW5zdGVhZCBvZiAmc2VsZj8NCj4+DQo+PiBwdWIoY3JhdGUpIGZuIGFzX25hbm9zKHNlbGYp
-IC0+IGk2NCB7DQo+Pg0KPj4gQmVjYXVzZSB0aGUgYXNfbmFub3MgbWV0aG9kIG9uIHRoZSBEZWx0
-YSBzdHJ1Y3QgdGFrZXMgc2VsZiwgd291bGRuonQgaXQNCj4+IGJlIGJldHRlciB0byBrZWVwIGl0
-IGNvbnNpc3RlbnQ/IEkgdGhpbmsgdGhhdCBteSBvcmlnaW5hbCBwYXRjaCBhZGRzDQo+PiBpbnRv
-X25hbm9zKCkgdGhhdCB0YWtlcyBzZWxmLg0KPj4NCj4+IFRoaXMgY29tbWl0IGFsc28gYWRkcyBI
-clRpbWVyRXhwaXJlIHN0cmFpdCwgd2hpY2ggYXNfbmFub3MoKSBtZXRob2QNCj4+IHRha2VzICZz
-ZWxmOg0KPj4NCj4+ICsvLy8gVGltZSByZXByZXNlbnRhdGlvbnMgdGhhdCBjYW4gYmUgdXNlZCBh
-cyBleHBpcmF0aW9uIHZhbHVlcyBpbiBbYEhyVGltZXJgXS4NCj4+ICtwdWIgdHJhaXQgSHJUaW1l
-ckV4cGlyZXMgew0KPj4gKyAgICAvLy8gQ29udmVydHMgdGhlIGV4cGlyYXRpb24gdGltZSBpbnRv
-IGEgbmFub3NlY29uZCByZXByZXNlbnRhdGlvbi4NCj4+ICsgICAgLy8vDQo+PiArICAgIC8vLyBU
-aGlzIHZhbHVlIGNvcnJlc3BvbmRzIHRvIGEgcmF3IGt0aW1lX3QgdmFsdWUsIHN1aXRhYmxlIGZv
-ciBwYXNzaW5nIHRvIGtlcm5lbA0KPj4gKyAgICAvLy8gdGltZXIgZnVuY3Rpb25zLiBUaGUgaW50
-ZXJwcmV0YXRpb24gKGFic29sdXRlIHZzIHJlbGF0aXZlKSBkZXBlbmRzIG9uIHRoZQ0KPj4gKyAg
-ICAvLy8gYXNzb2NpYXRlZCBbSHJUaW1lck1vZGVdIGluIHVzZS4NCj4+ICsgICAgZm4gYXNfbmFu
-b3MoJnNlbGYpIC0+IGk2NDsNCj4+ICt9DQo+Pg0KPj4gVGhhdCdzIGJlY2F1c2UgYXMgSSByZXBv
-cnRlZCwgQ2xpcHB5IHdhcm5zIGlmIGFzXyogdGFrZSBzZWxmLg0KPj4NCj4+IEFzIEFsaWNlIHBv
-aW50ZWQgb3V0LCBDbGlwcHkgZG9lc24ndCB3YXJuIGlmIGEgdHlwZSBpbXBsZW1lbnRzDQo+PiBD
-b3B5LiBTbyB3ZSBjYW4gYWRkIENvcHkgdG8gSHJUaW1lckV4cGlyZXMgdHJhaXQsIHRoZW4gQ2xp
-cHB5IGRvZXNuJ3QNCj4+IHdhcm4gYWJvdXQgYXNfbmFub3MgbWV0aG9kIHRoYXQgdGFrZXMgc2Vs
-ZjoNCj4+DQo+PiArLy8vIFRpbWUgcmVwcmVzZW50YXRpb25zIHRoYXQgY2FuIGJlIHVzZWQgYXMg
-ZXhwaXJhdGlvbiB2YWx1ZXMgaW4gW2BIclRpbWVyYF0uDQo+PiArcHViIHRyYWl0IEhyVGltZXJF
-eHBpcmVzOiBDb3B5IHsNCj4+ICsgICAgLy8vIENvbnZlcnRzIHRoZSBleHBpcmF0aW9uIHRpbWUg
-aW50byBhIG5hbm9zZWNvbmQgcmVwcmVzZW50YXRpb24uDQo+PiArICAgIC8vLw0KPj4gKyAgICAv
-Ly8gVGhpcyB2YWx1ZSBjb3JyZXNwb25kcyB0byBhIHJhdyBrdGltZV90IHZhbHVlLCBzdWl0YWJs
-ZSBmb3IgcGFzc2luZyB0byBrZXJuZWwNCj4+ICsgICAgLy8vIHRpbWVyIGZ1bmN0aW9ucy4gVGhl
-IGludGVycHJldGF0aW9uIChhYnNvbHV0ZSB2cyByZWxhdGl2ZSkgZGVwZW5kcyBvbiB0aGUNCj4+
-ICsgICAgLy8vIGFzc29jaWF0ZWQgW0hyVGltZXJNb2RlXSBpbiB1c2UuDQo+PiArICAgIGZuIGFz
-X25hbm9zKHNlbGYpIC0+IGk2NDsNCj4+ICt9DQo+Pg0KPj4gSSdtIGZpbmUgd2l0aCBlaXRoZXIg
-KHRha2luZyAmc2VsZiBvciBBZGRpbmcgQ29weSkuDQo+IA0KPiBMZXQncyB3YWl0IGZvciB0aGUg
-d2hvbGUgbmFtaW5nIGRpc2N1c3Npb24gdG8gcmVzb2x2ZSBiZWZvcmUgd2UgZG8NCj4gYW55dGhp
-bmcuIEkgYW0gaG9uZXN0bHkgYSBiaXQgY29uZnVzZWQgYXMgdG8gd2hhdCBpcyB0aGUgbW9zdCBp
-ZGlvbWF0aWMNCj4gcmVzb2x1dGlvbiBoZXJlLg0KPiANCj4gSSB0aGluayB0YWtpbmcgYCZzZWxm
-YCB2cyBgc2VsZmAgbWFrZXMgbm90IGRpZmZlcmVuY2UgaW4gY29kZWdlbiBpZiB3ZQ0KPiBtYXJr
-IHRoZSBmdW5jdGlvbiBgI1tpbmxpbmUoYWx3YXlzKV1gLg0KDQpJIGJlbGlldmUgd2UndmUgcmVh
-Y2hlZCBhIGNvbnNlbnN1cyBvbiB0aGUgZGlzY3Vzc2lvbiBhYm91dCBgJnNlbGZgIHZzDQpgc2Vs
-ZmAuDQoNCk1pZ3VlbCBzdW1tYXJpemVkIG5pY2VseToNCg0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5v
-cmcvbGttbC9DQU5pcTcybmQ2bTNlT3hGKzZrc2NYdVZ1N3VMaW00S2dwT051cGdUc01jQUY5VE5o
-WVFAbWFpbC5nbWFpbC5jb20vDQoNCj4+IFllcywgSSB3b3VsZCBwcmVmZXIgdGFraW5nIGJ5IHZh
-bHVlLiBJIHRoaW5rIEFsaWNlIG1lbnRpb25lZCBlYXJsaWVyIGluDQo+PiB0aGlzIHRocmVhZCB0
-aGF0IHRoZSBjb21waWxlciB3aWxsIGJlIHNtYXJ0IGFib3V0IHRoaXMgYW5kIGp1c3QgcGFzcyB0
-aGUNCj4+IHZhbHVlLiBCdXQgaXQgc3RpbGwgZmVlbHMgd3JvbmcgdG8gbWUuDQo+IA0KPiBJZiBp
-bmxpbmVkL3ByaXZhdGUsIHllczsgYnV0IG5vdCBhbHdheXMuDQo+IA0KPiBTbyBmb3Igc21hbGwg
-KCJmcmVlIikgZnVuY3Rpb25zIGxpa2UgdGhpcywgaXQgc2hvdWxkIGdlbmVyYWxseSBub3QNCj4g
-bWF0dGVyLCBzaW5jZSB0aGV5IHNob3VsZCBiZSBpbmxpbmVkIHdoZXRoZXIgYnkgbWFudWFsIG1h
-cmtpbmcgb3IgYnkNCj4gdGhlIGNvbXBpbGVyLg0KDQo+IEJ1dCwgaW4gZ2VuZXJhbCwgaXQgaXMg
-bm90IHRoZSBzYW1lLCBhbmQgeW91IGNhbiBzZWUgY2FzZXMgd2hlcmUgdGhlDQo+IGNvbXBpbGVy
-IHdpbGwgc3RpbGwgcGFzcyBhIHBvaW50ZXIsIGFuZCB0aHVzIGRlcmVmZXJlbmNlcyBhbmQgd3Jp
-dGVzDQo+IHRvIG1lbW9yeSB0byB0YWtlIGFuIGFkZHJlc3MgdG8gcGFzcyBpdC4NCj4gDQo+IFdo
-aWNoIG1lYW5zIHRoYXQsIG91dHNpZGUgc21hbGwgdGhpbmdzIGxpa2UgYGFzXypgLCBvbmUgc2hv
-dWxkIHN0aWxsDQo+IHByb2JhYmx5IHRha2UgYnkgdmFsdWUuIFdoaWNoIGNyZWF0ZXMgYW4gaW5j
-b25zaXN0ZW5jeS4NCg0KDQpJIHRoaW5rIHRoYXQgYW5vdGhlciBjb25zZW5zdXMgZnJvbSB0aGlz
-IGRpc2N1c3Npb24gaXMgdGhhdCB0aGUgdGFibGUNCmluIHRoZSBBUEkgbmFtaW5nIGd1aWRlbGlu
-ZXMgZG9lc24ndCBjb3ZlciB0aGlzIHBhcnRpY3VsYXIgY2FzZS4NClRoZXJlZm9yZSwgaXQgbWFr
-ZXMgc2Vuc2UgdG8ga2VlcCB0aGUgY3VycmVudCBmdW5jdGlvbiBuYW1lIGFuZCBtb3ZlDQpmb3J3
-YXJkLg0KDQpEZWx0YSBhbHJlYWR5IHByb3ZpZGVzIGBmbiBhc19uYW5vcyhzZWxmKWAgKGFuZCBk
-cm0gdXNlcyBpbg0KbGludXgtbmV4dCwgYXMgeW91IGtub3cpIHNvIEkgYmVsaWV2ZSB0aGF0IElu
-c3RhbnQgc2hvdWxkIHVzZSB0aGUgc2FtZQ0KaW50ZXJmYWNlLg0KDQoNClRoYXQgdGFibGUgbmVl
-ZHMgaW1wcm92ZW1lbnQsIGJ1dCByZWFjaGluZyBjb25zZW5zdXMgd2lsbCBsaWtlbHkgdGFrZQ0K
-dGltZSwgaXQgbWFrZXMgc2Vuc2UgdG8gYWRkcmVzcyBpdCBpbmRlcGVuZGVudGx5Lg0K
+Hi Beata,
+
+On Wed, Jun 25, 2025 at 10:13:33AM +0200, Beata Michalska wrote:
+> With the Opaque<T>, the expectations are that Rust should not
+> make any assumptions on the layout or invariants of the wrapped
+> C types. That runs rather counter to ioctl arguments, which must
+> adhere to certain data-layout constraits. By using Opaque<T>,
+> ioctl handlers are forced to use unsafe code where none is acually
+> needed. This adds needless complexity and maintenance overhead,
+> brining no safety benefits.
+> Drop the use of Opaque for ioctl arguments as that is not the best
+> fit here.
+> 
+> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
+> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+
+Appreciate it if you could put a change log here mentioning changes
+between each version.
+
+>  drivers/gpu/drm/nova/file.rs | 23 ++++++--------
+>  drivers/gpu/drm/nova/nova.rs |  1 -
+>  drivers/gpu/drm/nova/uapi.rs | 61 ------------------------------------
+>  rust/kernel/drm/ioctl.rs     | 11 ++++---
+>  4 files changed, 16 insertions(+), 80 deletions(-)
+>  delete mode 100644 drivers/gpu/drm/nova/uapi.rs
+> 
+> diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
+> index 7e59a34b830d..7e7d4e2de2fb 100644
+> --- a/drivers/gpu/drm/nova/file.rs
+> +++ b/drivers/gpu/drm/nova/file.rs
+> @@ -2,13 +2,11 @@
+>  
+>  use crate::driver::{NovaDevice, NovaDriver};
+>  use crate::gem::NovaObject;
+> -use crate::uapi::{GemCreate, GemInfo, Getparam};
+>  use kernel::{
+>      alloc::flags::*,
+>      drm::{self, gem::BaseObject},
+>      pci,
+>      prelude::*,
+> -    types::Opaque,
+>      uapi,
+>  };
+>  
+> @@ -26,20 +24,19 @@ impl File {
+>      /// IOCTL: get_param: Query GPU / driver metadata.
+>      pub(crate) fn get_param(
+>          dev: &NovaDevice,
+> -        getparam: &Opaque<uapi::drm_nova_getparam>,
+> +        getparam: &mut uapi::drm_nova_getparam,
+>          _file: &drm::File<File>,
+>      ) -> Result<u32> {
+>          let adev = &dev.adev;
+>          let parent = adev.parent().ok_or(ENOENT)?;
+>          let pdev: &pci::Device = parent.try_into()?;
+> -        let getparam: &Getparam = getparam.into();
+>  
+> -        let value = match getparam.param() as u32 {
+> +        let value = match getparam.param as u32 {
+>              uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
+>              _ => return Err(EINVAL),
+>          };
+>  
+> -        getparam.set_value(value);
+> +        getparam.value = value;
+>  
+>          Ok(0)
+>      }
+> @@ -47,13 +44,12 @@ pub(crate) fn get_param(
+>      /// IOCTL: gem_create: Create a new DRM GEM object.
+>      pub(crate) fn gem_create(
+>          dev: &NovaDevice,
+> -        req: &Opaque<uapi::drm_nova_gem_create>,
+> +        req: &mut uapi::drm_nova_gem_create,
+>          file: &drm::File<File>,
+>      ) -> Result<u32> {
+> -        let req: &GemCreate = req.into();
+> -        let obj = NovaObject::new(dev, req.size().try_into()?)?;
+> +        let obj = NovaObject::new(dev, req.size.try_into()?)?;
+>  
+> -        req.set_handle(obj.create_handle(file)?);
+> +        req.handle = obj.create_handle(file)?;
+>  
+>          Ok(0)
+>      }
+> @@ -61,13 +57,12 @@ pub(crate) fn gem_create(
+>      /// IOCTL: gem_info: Query GEM metadata.
+>      pub(crate) fn gem_info(
+>          _dev: &NovaDevice,
+> -        req: &Opaque<uapi::drm_nova_gem_info>,
+> +        req: &mut uapi::drm_nova_gem_info,
+>          file: &drm::File<File>,
+>      ) -> Result<u32> {
+> -        let req: &GemInfo = req.into();
+> -        let bo = NovaObject::lookup_handle(file, req.handle())?;
+> +        let bo = NovaObject::lookup_handle(file, req.handle)?;
+>  
+> -        req.set_size(bo.size().try_into()?);
+> +        req.size = bo.size().try_into()?;
+>  
+>          Ok(0)
+>      }
+> diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
+> index 902876aa14d1..730598defe04 100644
+> --- a/drivers/gpu/drm/nova/nova.rs
+> +++ b/drivers/gpu/drm/nova/nova.rs
+> @@ -5,7 +5,6 @@
+>  mod driver;
+>  mod file;
+>  mod gem;
+> -mod uapi;
+>  
+>  use crate::driver::NovaDriver;
+>  
+> diff --git a/drivers/gpu/drm/nova/uapi.rs b/drivers/gpu/drm/nova/uapi.rs
+> deleted file mode 100644
+> index eb228a58d423..000000000000
+> --- a/drivers/gpu/drm/nova/uapi.rs
+> +++ /dev/null
+> @@ -1,61 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -
+> -use kernel::uapi;
+> -
+> -// TODO Work out some common infrastructure to avoid boilerplate code for uAPI abstractions.
+> -
+> -macro_rules! define_uapi_abstraction {
+> -    ($name:ident <= $inner:ty) => {
+> -        #[repr(transparent)]
+> -        pub struct $name(::kernel::types::Opaque<$inner>);
+> -
+> -        impl ::core::convert::From<&::kernel::types::Opaque<$inner>> for &$name {
+> -            fn from(value: &::kernel::types::Opaque<$inner>) -> Self {
+> -                // SAFETY: `Self` is a transparent wrapper of `$inner`.
+> -                unsafe { ::core::mem::transmute(value) }
+> -            }
+> -        }
+> -    };
+> -}
+> -
+> -define_uapi_abstraction!(Getparam <= uapi::drm_nova_getparam);
+> -
+> -impl Getparam {
+> -    pub fn param(&self) -> u64 {
+> -        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
+> -        unsafe { (*self.0.get()).param }
+> -    }
+> -
+> -    pub fn set_value(&self, v: u64) {
+> -        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_getparam`.
+> -        unsafe { (*self.0.get()).value = v };
+> -    }
+> -}
+> -
+> -define_uapi_abstraction!(GemCreate <= uapi::drm_nova_gem_create);
+> -
+> -impl GemCreate {
+> -    pub fn size(&self) -> u64 {
+> -        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
+> -        unsafe { (*self.0.get()).size }
+> -    }
+> -
+> -    pub fn set_handle(&self, handle: u32) {
+> -        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_create`.
+> -        unsafe { (*self.0.get()).handle = handle };
+> -    }
+> -}
+> -
+> -define_uapi_abstraction!(GemInfo <= uapi::drm_nova_gem_info);
+> -
+> -impl GemInfo {
+> -    pub fn handle(&self) -> u32 {
+> -        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
+> -        unsafe { (*self.0.get()).handle }
+> -    }
+> -
+> -    pub fn set_size(&self, size: u64) {
+> -        // SAFETY: `self.get()` is a valid pointer to a `struct drm_nova_gem_info`.
+> -        unsafe { (*self.0.get()).size = size };
+> -    }
+> -}
+> diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
+> index 445639404fb7..3425a835f9cd 100644
+> --- a/rust/kernel/drm/ioctl.rs
+> +++ b/rust/kernel/drm/ioctl.rs
+> @@ -83,7 +83,7 @@ pub mod internal {
+>  ///
+>  /// ```ignore
+>  /// fn foo(device: &kernel::drm::Device<Self>,
+> -///        data: &Opaque<uapi::argument_type>,
+> +///        data: &mut uapi::argument_type,
+>  ///        file: &kernel::drm::File<Self::File>,
+>  /// ) -> Result<u32>
+>  /// ```
+> @@ -138,9 +138,12 @@ pub mod internal {
+>                              // SAFETY: The ioctl argument has size `_IOC_SIZE(cmd)`, which we
+>                              // asserted above matches the size of this type, and all bit patterns of
+>                              // UAPI structs must be valid.
+> -                            let data = unsafe {
+> -                                &*(raw_data as *const $crate::types::Opaque<$crate::uapi::$struct>)
+> -                            };
+> +                            // The `ioctl` argument is exclusively owned by the handler
+> +                            // and guaranteed by the C implementation (`drm_ioctl()`) to remain
+> +                            // valid for the entire lifetime of the reference taken here.
+> +                            // There is no concurrent access or aliasing; no other references
+> +                            // to this object exist during this call.
+> +                            let data = unsafe { &mut *(raw_data as *mut $crate::uapi::$struct) };
+
+"ptr as ptr" should be avoided, see:
+
+	https://lore.kernel.org/rust-for-linux/20250615-ptr-as-ptr-v12-1-f43b024581e8@gmail.com/
+
+so probably
+
+    let data = unsafe { &mut *(raw_data.cast()) };
+
+?
+
+With that fixed, feel free to add:
+
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
+>                              // SAFETY: This is just the DRM file structure
+>                              let file = unsafe { $crate::drm::File::as_ref(raw_file) };
+>  
+> -- 
+> 2.25.1
+> 
