@@ -1,161 +1,276 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2BD1DFFD;
-	Thu, 26 Jun 2025 20:48:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5960723498E;
+	Thu, 26 Jun 2025 20:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750970890; cv=none; b=ILv3Y4Bm2gImyHT0fXSny96SQZO3Z5hXDa4bb6hC1JHkd/FdskMY3h55lR0L+zpfVv8FypGhks+GzkGJmUcx/fqujR4wrPuidP72c3s2Zr0j99sZN4X8FIcm5TQ8qOq2gCv0MYho9hQ65udmn4p1xPdcCR49RGyhLqAnKCCzp0w=
+	t=1750971224; cv=none; b=OxGQLoa4TgkdE8NKsbBBXS2Hr405LcqSuo10CFty3KQvTnt80kx1WP7NwbwqIzd/G45/7nI4bp3bNJJRGQT5dNGX8HpAyw/gVeXn+U9V8aN/elZzeYM/zTJhDRX7ouknshZ2gNcz+QG1GTud5TGTLk1WeiMuLxTfA/ML8d6pG84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750970890; c=relaxed/simple;
-	bh=7z6321plEQZT+2ZW+imOOp3mUqwzt6EqgUbPghQ4g14=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rWFHDyuJKlNKxGPdgWq0qotoWOZWjQqZaNj8HC10OWmN7UDLyjZaAhD0xSEDyEYV2XXY3cFfPgvMNkrO+5yn9CQBDPKwvmIrjsIgM6SPms/TqmyZ9aNgYK33HVC1HACqtNWkBjOu8zEbleLIUbUYUoV8y54Zsc5zLdDtSNgE6B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rh5mgufi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750971224; c=relaxed/simple;
+	bh=Ft275+6NguxVtKIelk/MGGPXOjF3bLvbZHtNBsEMxHw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hbJ1Xw12ZQq2ZcbrtWkVscIvjen81klOTUQ3VMUhwVcbIurIzZZurr3o57I28DwZpktOLjBQ/SKO9D062hn+RKux0KELcebV1+m1MPpy/2czw1iQhQ2rRUlPzMpOkwB5xQ1nw8dLVmnibWs0SQE3EBbEAA3Mj7cY2Q9FMdpZ/o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJp9dMFv; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rh5mgufi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7269C4CEEB;
-	Thu, 26 Jun 2025 20:48:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750970889;
-	bh=7z6321plEQZT+2ZW+imOOp3mUqwzt6EqgUbPghQ4g14=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rh5mgufiRVHufKUNpaxAtyi0MkSAQIG24UdKl5C4U45muLrijDAAgGD7BBMXFN51A
-	 ySJAKcP5E/XfzsZOiZLp/9vSnhk/0p5vVXPangtey4dXiO7u5GGBFG6TltEx5KugfN
-	 zEL1ZrU0+rZn55bd6kNYbnuwUr6ZTfLrfjkg6vYjxlHQtGmfHKh0zBTBHkBpPwhl1p
-	 Sq2YSEIvKlcIrDVkYIhAuhA7QpZDtuKiauRvIOc3mk5PNhrJOYCmln6Q8QMTFUSK3G
-	 Rp5ZNX47yU7Qr42D//F0fAHCEK8y4ajxpz0u4/I1oipQcJqd50jt7jPXovUkgnY9Yi
-	 +Bz9OkOhKg3cw==
-Date: Thu, 26 Jun 2025 22:48:03 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
-	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] rust: devres: implement register_release()
-Message-ID: <aF2yA9TbeIrTg-XG@cassiopeiae>
-References: <20250626200054.243480-1-dakr@kernel.org>
- <20250626200054.243480-6-dakr@kernel.org>
- <aF2vgthQlNA3BsCD@tardis.local>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJp9dMFv"
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32b7113ed6bso15150291fa.1;
+        Thu, 26 Jun 2025 13:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750971220; x=1751576020; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kHR0j6osj5JXjZAu8frswdQtAV7pwiXahW5jwmRCgMI=;
+        b=iJp9dMFvV6PfvpIac4VGpAKdyFoa8LXMd/HiFTQwr47ya1EJHWDRPVpjpxxaU44E1q
+         XH3e0ajOhimse50rOFKV3FZU2s8ZqWhzsUhogwoKBSSqNtMVGY6ePkZ2T2s0udqhkZ+r
+         c+86ItNcoAa8Nwsh/nJlFtyNSsjixJ4z+nWJik9kixyXkpDbZqLoTnPBe1WxKxpQyjq/
+         I03I8EWCujx26sGp8dOrosxDqQnjlRwS2dnO/DqXdAIXEfREYRs2iA351djOpFx8m4AK
+         6kjv7GIjqloHvrJFBYAyykbR28zXz7DcUeyGfGOJ8TzfnnjK8Mpc7kAKrVZodeHFTS6F
+         lF3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750971220; x=1751576020;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kHR0j6osj5JXjZAu8frswdQtAV7pwiXahW5jwmRCgMI=;
+        b=C22SIaIzYcrTqCy/7+khs1dMDpFMQ9vz0mXw4hEq1FQvTYl0jv4sQJu2ShO7WcoDQ3
+         2HGMBgr28UtRjICDCBKrglN/xT1vd6LFHBF27MJAJjY0ffy8KPENXeavLBQi36C57+rA
+         dcAxCBxCJ+tXwQ+qNOAun//FDEQu+L+EIqum9rDWQmZaP5gNQ3Fx1FWIEuSiLweZ0HEt
+         5Ul/J004gna0/r/l3ZQBuUSdwvFZUerRrqF8Zfl2YlB27B182c3i+CvYlwd5BNvlbCqe
+         u/0NBKHFDlj07DfePLZpKgVFDEVn0yvX6UvQ35n7NFaRL4nXDXx1eKQq0TZnC5T/jb4J
+         Dc3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUtp5lxUqAvFbW6tWB9ZTihBVpoD5OtT2M6FgW+gAcfqLx/fk4YbZdDKjpWzXsEOuISkwcWZy/pSlM17BI0ifg=@vger.kernel.org, AJvYcCVhh4WkDnnuOl96h27Wm5eNJGe8ISaO1GyKTcMKqMN8JL0Ipyxk8UlAPx3uhjwD4adgDplLMX2/4ZpyJwE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzcAs6pNkMcXVR5ysxgmLhe0vg0YYoREVUie6AIKSCsCCdqPpzi
+	lO8LsSsmPIpiGP4Lk3ZzBACYToHSG14EqYEBNfan/jsyupnFxoS3L4xDcUsjL6sz0YoaOvjwoYh
+	dw2rpxeqGNCWGnmTyCWlwo+Ya8DQWt5Q=
+X-Gm-Gg: ASbGncv2+du/wuSbGEosZktm+mgKKuSROS867q4cEGR8Qsq0wDliHTygy+f1ntchbxB
+	7WUCH+J/9UeHBhIsF9PmMLk+dHNmcu/SIGBOHBovqRVp7p1ugjZFiOnqX4ZMwueCS87dPkJc+Ln
+	ES708Bh+J4TAb2IdIy95r+6IovqmiTrzyldSNfX9SPZAEH
+X-Google-Smtp-Source: AGHT+IFAeiNVCuRuFxrOTBMGX/B06Ycb/XWjiNYp1OXtmPtAGsFpz5UnI23CDyMY2wmlK3gee5nSfzFKdZYV7oqhHzo=
+X-Received: by 2002:a2e:ae11:0:b0:32a:8ae2:a8a7 with SMTP id
+ 38308e7fff4ca-32cdc4820a0mr1400421fa.8.1750971220105; Thu, 26 Jun 2025
+ 13:53:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aF2vgthQlNA3BsCD@tardis.local>
+References: <20250626083516.3596197-1-vitaly.wool@konsulko.se> <20250626083632.3596363-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250626083632.3596363-1-vitaly.wool@konsulko.se>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 26 Jun 2025 13:53:03 -0700
+X-Gm-Features: Ac12FXzCJObvxzPse24yMd5WH8K7cSo47qQtOjEJRK-wxx22oD_vk28dKv_9NQg
+Message-ID: <CAJ-ks9mB8tAG+vE2RnN0+3-pqcQU_KkmZUHU++-uswpxLBp9Kg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/4] mm/slub: allow to set node and align in k[v]realloc
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 01:37:22PM -0700, Boqun Feng wrote:
-> On Thu, Jun 26, 2025 at 10:00:43PM +0200, Danilo Krummrich wrote:
-> > register_release() is useful when a device resource has associated data,
-> > but does not require the capability of accessing it or manually releasing
-> > it.
-> > 
-> > If we would want to be able to access the device resource and release the
-> > device resource manually before the device is unbound, but still keep
-> > access to the associated data, we could implement it as follows.
-> > 
-> > 	struct Registration<T> {
-> > 	   inner: Devres<RegistrationInner>,
-> > 	   data: T,
-> > 	}
-> > 
-> > However, if we never need to access the resource or release it manually,
-> > register_release() is great optimization for the above, since it does not
-> > require the synchronization of the Devres type.
-> > 
-> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > ---
-> >  rust/kernel/devres.rs | 73 +++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 73 insertions(+)
-> > 
-> > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-> > index 3ce8d6161778..92aca78874ff 100644
-> > --- a/rust/kernel/devres.rs
-> > +++ b/rust/kernel/devres.rs
-> > @@ -353,3 +353,76 @@ pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flag
-> >  
-> >      register_foreign(dev, data)
-> >  }
-> > +
-> > +/// [`Devres`]-releaseable resource.
-> > +///
-> > +/// Register an object implementing this trait with [`register_release`]. Its `release`
-> > +/// function will be called once the device is being unbound.
-> > +pub trait Release {
-> > +    /// The [`ForeignOwnable`] pointer type consumed by [`register_release`].
-> > +    type Ptr: ForeignOwnable;
-> > +
-> > +    /// Called once the [`Device`] given to [`register_release`] is unbound.
-> > +    fn release(this: Self::Ptr);
-> > +}
-> > +
-> 
-> I would like to point out the limitation of this design, say you have a
-> `Foo` that can ipml `Release`, with this, I think you could only support
-> either `Arc<Foo>` or `KBox<Foo>`. You cannot support both as the input
-> for `register_release()`. Maybe we want:
-> 
->     pub trait Release<Ptr: ForeignOwnable> {
->         fn release(this: Ptr);
->     }
+On Thu, Jun 26, 2025 at 1:39=E2=80=AFAM Vitaly Wool <vitaly.wool@konsulko.s=
+e> wrote:
+>
+> Reimplement k[v]realloc() to be able to set node and alignment
+> should a user need to do so. Rename the respective functions to
+> k[v]realloc_node() to better match what they actually do now and
+> introduce macros for k[v]realloc() for backward compatibility.
+>
+> With that change we also provide the ability for the Rust part of
+> the kernel to set node and aligmnent in its K[v]xxx [re]allocations.
+>
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
 
-Good catch! I think this wasn't possible without ForeignOwnable::Target.
+Hi Vitaly, there is a typo in the subject line: it should be slab, not slub=
+.
 
-Here's the diff for the change:
-
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 92aca78874ff..42a9cd2812d8 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -358,12 +358,9 @@ pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flag
- ///
- /// Register an object implementing this trait with [`register_release`]. Its `release`
- /// function will be called once the device is being unbound.
--pub trait Release {
--    /// The [`ForeignOwnable`] pointer type consumed by [`register_release`].
--    type Ptr: ForeignOwnable;
--
-+pub trait Release<Ptr: ForeignOwnable> {
-     /// Called once the [`Device`] given to [`register_release`] is unbound.
--    fn release(this: Self::Ptr);
-+    fn release(this: Ptr);
- }
-
- /// Consume the `data`, [`Release::release`] and [`Drop::drop`] `data` once `dev` is unbound.
-@@ -384,9 +381,7 @@ pub trait Release {
- ///     }
- /// }
- ///
--/// impl Release for Registration {
--///     type Ptr = Arc<Self>;
--///
-+/// impl Release<Arc<Self>> for Registration {
- ///     fn release(this: Arc<Self>) {
- ///        // unregister
- ///     }
-@@ -401,7 +396,7 @@ pub trait Release {
- pub fn register_release<P>(dev: &Device<Bound>, data: P) -> Result
- where
-     P: ForeignOwnable,
--    P::Target: Release<Ptr = P> + Send,
-+    P::Target: Release<P> + Send,
- {
-     let ptr = data.into_foreign();
-
-@@ -409,7 +404,7 @@ pub fn register_release<P>(dev: &Device<Bound>, data: P) -> Result
-     unsafe extern "C" fn callback<P>(ptr: *mut kernel::ffi::c_void)
-     where
-         P: ForeignOwnable,
--        P::Target: Release<Ptr = P>,
-+        P::Target: Release<P>,
-     {
-         // SAFETY: `ptr` is the pointer to the `ForeignOwnable` leaked above and hence valid.
-         let data = unsafe { P::from_foreign(ptr.cast()) };
+> ---
+>  include/linux/slab.h | 12 ++++++++----
+>  mm/slub.c            | 33 ++++++++++++++++++++++-----------
+>  2 files changed, 30 insertions(+), 15 deletions(-)
+>
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index d5a8ab98035c..119f100978c8 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -465,9 +465,11 @@ int kmem_cache_shrink(struct kmem_cache *s);
+>  /*
+>   * Common kmalloc functions provided by all allocators
+>   */
+> -void * __must_check krealloc_noprof(const void *objp, size_t new_size,
+> -                                   gfp_t flags) __realloc_size(2);
+> -#define krealloc(...)                          alloc_hooks(krealloc_nopr=
+of(__VA_ARGS__))
+> +void * __must_check krealloc_node_noprof(const void *objp, size_t new_si=
+ze,
+> +                                        gfp_t flags, int nid) __realloc_=
+size(2);
+> +#define krealloc_node(...)             alloc_hooks(krealloc_node_noprof(=
+__VA_ARGS__))
+> +#define krealloc_noprof(o, s, f)       krealloc_node_noprof(o, s, f, NUM=
+A_NO_NODE)
+> +#define krealloc(...)                  alloc_hooks(krealloc_noprof(__VA_=
+ARGS__))
+>
+>  void kfree(const void *objp);
+>  void kfree_sensitive(const void *objp);
+> @@ -1073,8 +1075,10 @@ kvmalloc_array_node_noprof(size_t n, size_t size, =
+gfp_t flags, int node)
+>  #define kvcalloc_node(...)                     alloc_hooks(kvcalloc_node=
+_noprof(__VA_ARGS__))
+>  #define kvcalloc(...)                          alloc_hooks(kvcalloc_nopr=
+of(__VA_ARGS__))
+>
+> -void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +void *kvrealloc_node_noprof(const void *p, size_t size, gfp_t flags, int=
+ nid)
+>                 __realloc_size(2);
+> +#define kvrealloc_node(...)                    alloc_hooks(kvrealloc_nod=
+e_noprof(__VA_ARGS__))
+> +#define kvrealloc_noprof(p, s, f)              kvrealloc_node_noprof(p, =
+s, f, NUMA_NO_NODE)
+>  #define kvrealloc(...)                         alloc_hooks(kvrealloc_nop=
+rof(__VA_ARGS__))
+>
+>  extern void kvfree(const void *addr);
+> diff --git a/mm/slub.c b/mm/slub.c
+> index c4b64821e680..2d5150d075d5 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4845,7 +4845,7 @@ void kfree(const void *object)
+>  EXPORT_SYMBOL(kfree);
+>
+>  static __always_inline __realloc_size(2) void *
+> -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
+> +__do_krealloc(const void *p, size_t new_size, gfp_t flags, int nid)
+>  {
+>         void *ret;
+>         size_t ks =3D 0;
+> @@ -4859,6 +4859,15 @@ __do_krealloc(const void *p, size_t new_size, gfp_=
+t flags)
+>         if (!kasan_check_byte(p))
+>                 return NULL;
+>
+> +       /*
+> +        * it is possible to support reallocation with a different nid, b=
+ut
+> +        * it doesn't go well with the concept of krealloc(). Such
+> +        * reallocation should be done explicitly instead.
+> +        */
+> +       if (WARN(nid !=3D NUMA_NO_NODE && nid !=3D page_to_nid(virt_to_pa=
+ge(p)),
+> +                               "krealloc() has mismatched nids\n"))
+> +               return NULL;
+> +
+>         if (is_kfence_address(p)) {
+>                 ks =3D orig_size =3D kfence_ksize(p);
+>         } else {
+> @@ -4903,7 +4912,7 @@ __do_krealloc(const void *p, size_t new_size, gfp_t=
+ flags)
+>         return (void *)p;
+>
+>  alloc_new:
+> -       ret =3D kmalloc_node_track_caller_noprof(new_size, flags, NUMA_NO=
+_NODE, _RET_IP_);
+> +       ret =3D kmalloc_node_track_caller_noprof(new_size, flags, nid, _R=
+ET_IP_);
+>         if (ret && p) {
+>                 /* Disable KASAN checks as the object's redzone is access=
+ed. */
+>                 kasan_disable_current();
+> @@ -4919,6 +4928,7 @@ __do_krealloc(const void *p, size_t new_size, gfp_t=
+ flags)
+>   * @p: object to reallocate memory for.
+>   * @new_size: how many bytes of memory are required.
+>   * @flags: the type of memory to allocate.
+> + * @nid: NUMA node or NUMA_NO_NODE
+>   *
+>   * If @p is %NULL, krealloc() behaves exactly like kmalloc().  If @new_s=
+ize
+>   * is 0 and @p is not a %NULL pointer, the object pointed to is freed.
+> @@ -4947,7 +4957,7 @@ __do_krealloc(const void *p, size_t new_size, gfp_t=
+ flags)
+>   *
+>   * Return: pointer to the allocated memory or %NULL in case of error
+>   */
+> -void *krealloc_noprof(const void *p, size_t new_size, gfp_t flags)
+> +void *krealloc_node_noprof(const void *p, size_t new_size, gfp_t flags, =
+int nid)
+>  {
+>         void *ret;
+>
+> @@ -4956,13 +4966,13 @@ void *krealloc_noprof(const void *p, size_t new_s=
+ize, gfp_t flags)
+>                 return ZERO_SIZE_PTR;
+>         }
+>
+> -       ret =3D __do_krealloc(p, new_size, flags);
+> +       ret =3D __do_krealloc(p, new_size, flags, nid);
+>         if (ret && kasan_reset_tag(p) !=3D kasan_reset_tag(ret))
+>                 kfree(p);
+>
+>         return ret;
+>  }
+> -EXPORT_SYMBOL(krealloc_noprof);
+> +EXPORT_SYMBOL(krealloc_node_noprof);
+>
+>  static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
+>  {
+> @@ -5079,10 +5089,11 @@ void kvfree_sensitive(const void *addr, size_t le=
+n)
+>  EXPORT_SYMBOL(kvfree_sensitive);
+>
+>  /**
+> - * kvrealloc - reallocate memory; contents remain unchanged
+> + * kvrealloc_node - reallocate memory; contents remain unchanged
+>   * @p: object to reallocate memory for
+>   * @size: the size to reallocate
+>   * @flags: the flags for the page level allocator
+> + * @nid: NUMA node id
+>   *
+>   * If @p is %NULL, kvrealloc() behaves exactly like kvmalloc(). If @size=
+ is 0
+>   * and @p is not a %NULL pointer, the object pointed to is freed.
+> @@ -5100,17 +5111,17 @@ EXPORT_SYMBOL(kvfree_sensitive);
+>   *
+>   * Return: pointer to the allocated memory or %NULL in case of error
+>   */
+> -void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +void *kvrealloc_node_noprof(const void *p, size_t size, gfp_t flags, int=
+ nid)
+>  {
+>         void *n;
+>
+>         if (is_vmalloc_addr(p))
+> -               return vrealloc_noprof(p, size, flags);
+> +               return vrealloc_node_noprof(p, size, 1, flags, nid);
+>
+> -       n =3D krealloc_noprof(p, size, kmalloc_gfp_adjust(flags, size));
+> +       n =3D krealloc_node_noprof(p, size, kmalloc_gfp_adjust(flags, siz=
+e), nid);
+>         if (!n) {
+>                 /* We failed to krealloc(), fall back to kvmalloc(). */
+> -               n =3D kvmalloc_noprof(size, flags);
+> +               n =3D kvmalloc_node_noprof(size, flags, nid);
+>                 if (!n)
+>                         return NULL;
+>
+> @@ -5126,7 +5137,7 @@ void *kvrealloc_noprof(const void *p, size_t size, =
+gfp_t flags)
+>
+>         return n;
+>  }
+> -EXPORT_SYMBOL(kvrealloc_noprof);
+> +EXPORT_SYMBOL(kvrealloc_node_noprof);
+>
+>  struct detached_freelist {
+>         struct slab *slab;
+> --
+> 2.39.2
+>
+>
