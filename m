@@ -1,253 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B1E13AA2F;
-	Thu, 26 Jun 2025 17:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B79267F53;
+	Thu, 26 Jun 2025 18:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750960712; cv=none; b=Sc3Mpfs22Nr87n3QZqYNRafZChzHfxWxlYffM2yRmyAW4zurQV84bxl3k79+Ffl3MjFmCncokGmV6f1ylojoFNZ1PmKUxc5Qm6YxMhapcUkwhzmJjvYS59D8eMZKwiT4c7uCp19nO6CIY3pIP+VGaGZ2TB8RBZP25W3TOcTDWVg=
+	t=1750962494; cv=none; b=eaRruSciuZN3wZqtwixBwUIdsQjgUHMXw4ofkfd+30WXb1l65igWR0rNo0ks//sBQnvMCqP1Gd0FuLsdA6VnuewolRcr0ud5rX+gAKxFZ8C9i4Z1gpVVl5fUC2T56MjvStOVDaftyRIy6eKaZbZ/zFsrzWkuooCF8hAYieEdBvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750960712; c=relaxed/simple;
-	bh=9kSgYJslI9669W5ZX/ZizxoETZvyBzl6RRzfWIJiGB8=;
+	s=arc-20240116; t=1750962494; c=relaxed/simple;
+	bh=nEf1l43KaouDikpuorZWPUKVVUh+pNAxFKrEO2DfOrw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QHTk1QX1mxyEBGIv0zquE+XCttJVa0cAOLqfq4+fIDSnwjY/IcgIV2CeE0B4q1/q8b0OpblP8kY/A8q2Solt7iEVlpStDRUgHlc1tvKpuLY3YY+u80IqVKmPKIS9UfzpGNf34HiwE4aCrK8vNTMrg2eN+Qfqf54cqXM+Z2FkT/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6ZuqU0A; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hs76pU/dMZbAggdH2OggNgMIldIN/ZbOvl1WTR0wBgolbrxv9wBKicJ2cgvqfvhXOCFCMNOkCv66l1SIGXcuaUdkwfKyQg+eNrDdLvSy5/04SWMxPVf164rZjLAdHMyl7mlIEgDfksl3DNczGoqBcD3Qtu18KFqM9vCJmXcz/c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8QqsWw7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6ZuqU0A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736EDC4CEEB;
-	Thu, 26 Jun 2025 17:58:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8QqsWw7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2163C4CEEF;
+	Thu, 26 Jun 2025 18:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750960712;
-	bh=9kSgYJslI9669W5ZX/ZizxoETZvyBzl6RRzfWIJiGB8=;
+	s=k20201202; t=1750962494;
+	bh=nEf1l43KaouDikpuorZWPUKVVUh+pNAxFKrEO2DfOrw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q6ZuqU0AhMSVruGouu0fykiZUjYFBqnqPMY7yrwYikDukfBzc6r1l9K4ybVUugEIN
-	 6CvVcyh5euPloItJxGwUVtgghYi17OJYPIIgNrzx/N8tn9j6LNdGbCcLyY+GgEmDdy
-	 OC4VCDAOEaYpGxASwwKQSUnVuJXTQo/rjLzqaWWoOkV23OemTpHxO7qLvUH+9s4dhW
-	 gntSwkv9pHypP0O8HI6M749L3HKZ5v+mIxFxRnhIdMl5Tf+9MjSnWaMnmOy5sw7F+F
-	 UdkwFEyvXl+MKPLGnU6pkFIINh1A6qYQtrtj6mhmapCcOuz0prj3v2AI+l25LFGqJ0
-	 SeG2/nMYA0bnA==
-Date: Thu, 26 Jun 2025 19:58:27 +0200
+	b=j8QqsWw7SxYPuWEQUdlpamK5i1Am6fGyFs6uVZ6EnbAK1d82ueqY47YTELqwHV5ca
+	 uSue5FB2tg7Fut+ebftqQe1aIvA4mftQdfupMWJ1lpDdrFV+iBGPYMoWcYr6e+0zyp
+	 UBwwlm0Lc6k1BL7Y/+q2nkn/V6EV6yzdfstl02JunYllygysVlxui/9XFY55RWIKyb
+	 owr+sq1MFkso/nQh9I4dqq4GBrW23p1+RpXECksn88ZyLY/Udmhde8TTdNcyF2ibnY
+	 PATTqcr3ow4+2kQcddVzsHlwyLAjj3h288g3KtXfxFOp/WUFYETF39mjY2OxbJfVdE
+	 5JAu1evmwaxmA==
+Date: Thu, 26 Jun 2025 20:28:05 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] rust: support large alignments in allocations
-Message-ID: <aF2KQyUZRVNDPf-y@cassiopeiae>
-References: <20250626083516.3596197-1-vitaly.wool@konsulko.se>
- <20250626083642.3596388-1-vitaly.wool@konsulko.se>
- <aF0-tYomGe7nB5vX@pollux>
- <72365C10-D984-4BC5-A081-B058C1619D06@konsulko.se>
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Remo Senekowitsch <remo@buenzli.dev>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	devicetree@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>, Len Brown <lenb@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>
+Subject: Re: [PATCH v8 4/9] rust: acpi: add `acpi::DeviceId` abstraction
+Message-ID: <aF2RNVJVIHyKuead@cassiopeiae>
+References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
+ <20250620152425.285683-1-igor.korotin.linux@gmail.com>
+ <c5d750fd-ffcf-4d07-bfff-ebe206faa41a@kernel.org>
+ <31804bbf-1a0b-4312-8db6-532a008528a2@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <72365C10-D984-4BC5-A081-B058C1619D06@konsulko.se>
+In-Reply-To: <31804bbf-1a0b-4312-8db6-532a008528a2@gmail.com>
 
-On Thu, Jun 26, 2025 at 06:29:24PM +0200, Vitaly Wool wrote:
+On Thu, Jun 26, 2025 at 06:40:06PM +0100, Igor Korotin wrote:
 > 
 > 
-> > On Jun 26, 2025, at 2:36â€¯PM, Danilo Krummrich <dakr@kernel.org> wrote:
+> On 6/26/25 16:25, Danilo Krummrich wrote:
+> > On 6/20/25 5:24 PM, Igor Korotin wrote:
+> >> +impl DeviceId {
+> >> +    const ACPI_ID_LEN: usize = 16;
+> >> +
+> >> +    /// Create a new device id from an ACPI 'id' string.
+> >> +    pub const fn new<const N: usize>(id: &[u8; N]) -> Self {
 > > 
-> > On Thu, Jun 26, 2025 at 10:36:42AM +0200, Vitaly Wool wrote:
-> >> void * __must_check __realloc_size(2)
-> >> -rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
-> >> +rust_helper_krealloc(const void *objp, size_t new_size, unsigned long align, gfp_t flags)
-> >> {
-> >> return krealloc(objp, new_size, flags);
-> >> }
-> >> 
-> >> void * __must_check __realloc_size(2)
-> >> -rust_helper_kvrealloc(const void *p, size_t size, gfp_t flags)
-> >> +rust_helper_kvrealloc(const void *p, size_t size, unsigned long align, gfp_t flags)
-> >> {
-> >> return kvrealloc(p, size, flags);
-> >> }
+> > Didn't notice before, but why was this silently changed from &CStr to
+> > &[u8; N]
+> > from v6 to v7?
 > > 
-> > I think you forgot to add comments explaining why we have the additional
-> > discarded align argument.
-> > 
-> > Also please keep those helpers as they are. You can write an identical inline
-> > function in Rust that discards the align argument and calls bindings::krealloc,
-> > etc.
-> > 
-> > For instance:
-> > 
-> > unsafe extern "C" fn krealloc_align(
-> >    ptr: *const c_void,
-> >    size: usize,
-> >    _align: c_ulong
-> >    flags: u32,
-> > ) -> *mut c_void {
-> >    bindings::krealloc(ptr, size, flags)
-> > }
-> > 
+> >> +        build_assert!(N <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
+> >> +        // Replace with `bindings::acpi_device_id::default()` once
+> >> stabilized for `const`.
+> >> +        // SAFETY: FFI type is valid to be zero-initialized.
+> >> +        let mut acpi: bindings::acpi_device_id = unsafe
+> >> { core::mem::zeroed() };
+> >> +        let mut i = 0;
+> >> +        while i < N {
+> >> +            acpi.id[i] = id[i];
+> >> +            i += 1;
+> >> +        }
+> >> +
+> >> +        Self(acpi)
+> >> +    }
+> >> +}
 > 
-> Ugh. This is indeed a mistake from my side but I donâ€™t quite agree with your variant here too.
-> The thing is that the new patchset has a patch #2 which adds kvrealloc_node and realloc_node so this chunk IMO should have looked like
+> In v6 I was asked to change assert! (runtime) to build_assert! (build time)
+> It was as follows:
 > 
-> -rust_helper_kvrealloc(const void *p, size_t size, gfp_t flags)
-> +rust_helper_kvrealloc(const void *p, size_t size, unsigned long align, gfp_t flags)
->  {
->  -      return kvrealloc(p, size, flags);
->  +      return kvrealloc_node(p, size, align, flags, NUMA_NO_NODE);
+> > +    pub const fn new(id: &'static CStr) -> Self {
+> > +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
 > 
->  }
+> but id.len() breaks const context and so build_assert! triggers
+> assertion.
 
-No for two reasons:
+It does indeed, but I'm not sure why it does...
 
-  1) Rust helpers are transparent wrappers for  C functions / macros slipping
-     through bindgen. We don't add any logic to them, as you do here.
+> If I needed to explicitly describe change from CStr to
+> [u8;20], then it's my bad.
 
-  2) This patch is only about supporting large alignments for VMALLOC. There's
-     no need to introduce kvrealloc_node() (yet).
+Yes, that's usually better. Otherwise reviewers might skip the changed part. In
+this case I think it actually introduced a bug:
 
-The only thing you want here is to keep the signature common between all realloc
-functions. Hence, you want
+Checking for N <= Self::ACPI_ID_LEN it can happen that acpi_device_id::id is not
+NULL terminated anymore, whereas before this was ensured by
+CStr::as_bytes_with_nul(). See also [1].
 
-	unsafe extern "C" fn krealloc_align(
-	   ptr: *const c_void,
-	   size: usize,
-	   _align: c_ulong
-	   flags: u32,
-	) -> *mut c_void {
-	   bindings::krealloc(ptr, size, flags)
-	}
+I think we can easily fix this by just checking N < Self::ACPI_ID_LEN.
 
-on the Rust side of things. And in the next patch you want
+However, I'd still like to check why build_assert!() does not work with
+CStr::len() in this case first.
 
-	unsafe extern "C" fn krealloc_node_align(
-	   ptr: *const c_void,
-	   size: usize,
-	   _align: c_ulong
-	   flags: u32,
-	   c_int: nid,
-	) -> *mut c_void {
-	   bindings::krealloc_node(ptr, size, flags, nid)
-	}
-
-> â€¦exactly like for vmalloc, see also my comment below.
-> 
-> >> diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
-> >> index 80d34501bbc0..4618c0b79283 100644
-> >> --- a/rust/helpers/vmalloc.c
-> >> +++ b/rust/helpers/vmalloc.c
-> >> @@ -3,7 +3,7 @@
-> >> #include <linux/vmalloc.h>
-> >> 
-> >> void * __must_check __realloc_size(2)
-> >> -rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
-> >> +rust_helper_vrealloc(const void *p, size_t size, unsigned long align, gfp_t flags)
-> >> {
-> >> - return vrealloc(p, size, flags);
-> >> + return vrealloc_node(p, size, align, flags, NUMA_NO_NODE);
-> >> }
-> > 
-> > Same here, just make this a "real" helper for vrealloc_node() and create a Rust
-> > function vrealloc_align() like in the example above.
-> 
-> Wait, why? Whatâ€™s the use of vrealloc() if it doesnâ€™t provide the align functionality that we need?
-
-That's fine, then this should be
-
-	void * __must_check __realloc_size(2)
-	rust_helper_vrealloc_node(const void *p, size_t size,
-				  unsigned long align,
-				  gfp_t flags, int nid)
-	{
-		return vrealloc_node(p, size, align, flags, nid);
-	}
-
-and on the Rust side, for this patch, you want:
-
-	unsafe extern "C" fn vrealloc_align(
-	   ptr: *const c_void,
-	   size: usize,
-	   align: c_ulong
-	   flags: u32,
-	   c_int: nid,
-	) -> *mut c_void {
-	   bindings::vrealloc_node(ptr, size, align, flags, bindings::NUMA_NO_NODE)
-	}
-
-The diff between the patches may come out nicer if you do it the other way
-around though, i.e. first support node IDs and then support larger alignments
-than PAGE_SIZE for VMALLOC.
-
-> > 
-> >> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> >> index aa2dfa9dca4c..a0d78c497974 100644
-> >> --- a/rust/kernel/alloc/allocator.rs
-> >> +++ b/rust/kernel/alloc/allocator.rs
-> >> @@ -58,7 +58,7 @@ fn aligned_size(new_layout: Layout) -> usize {
-> >> ///
-> >> /// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
-> >> struct ReallocFunc(
-> >> -    unsafe extern "C" fn(*const crate::ffi::c_void, usize, u32) -> *mut crate::ffi::c_void,
-> >> +    unsafe extern "C" fn(*const crate::ffi::c_void, usize, usize, u32) -> *mut crate::ffi::c_void,
-> > 
-> > Should be c_ulong instead of usize.
-> > 
-> 
-> Noted.
-> 
-> >> );
-> >> 
-> >> impl ReallocFunc {
-> >> @@ -110,7 +110,7 @@ unsafe fn call(
-> >>         // - Those functions provide the guarantees of this function.
-> >>         let raw_ptr = unsafe {
-> >>             // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
-> >> -            self.0(ptr.cast(), size, flags.0).cast()
-> >> +            self.0(ptr.cast(), size, layout.align(), flags.0).cast()
-> >>         };
-> >> 
-> >>         let ptr = if size == 0 {
-> >> @@ -152,12 +152,6 @@ unsafe fn realloc(
-> >>         old_layout: Layout,
-> >>         flags: Flags,
-> >>     ) -> Result<NonNull<[u8]>, AllocError> {
-> >> -        // TODO: Support alignments larger than PAGE_SIZE.
-> >> -        if layout.align() > bindings::PAGE_SIZE {
-> >> -            pr_warn!("Vmalloc does not support alignments larger than PAGE_SIZE yet.\n");
-> >> -            return Err(AllocError);
-> >> -        }
-> >> -
-> >>         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-> >>         // allocated with this `Allocator`.
-> >>         unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, flags) }
-> >> @@ -176,12 +170,6 @@ unsafe fn realloc(
-> >>         old_layout: Layout,
-> >>         flags: Flags,
-> >>     ) -> Result<NonNull<[u8]>, AllocError> {
-> >> -        // TODO: Support alignments larger than PAGE_SIZE.
-> >> -        if layout.align() > bindings::PAGE_SIZE {
-> >> -            pr_warn!("KVmalloc does not support alignments larger than PAGE_SIZE yet.\n");
-> >> -            return Err(AllocError);
-> >> -        }
-> > 
-> > Didn't you propose to use VREALLOC if layout.align() > bindings::PAGE_SIZE?
-> > 
-> 
-> I did, and this is what happens on the C side now, please see the #2 patch in series.
-
-I'm fine doing it on the C side if the C side maintainers agree.
-
-However, I don't see you doing it. kvrealloc_node_noprof() does not even have an
-align argument AFAICS.
-
-> I think itâ€™s better this way because of uniformity but I donâ€™t have a strong opinion on this.
-
-I agree, but again, I don't think you do it yet. :)
-
-> 
-> >>         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-> >>         // allocated with this `Allocator`.
-> >>         unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags) }
-> > 
-> 
+[1] https://elixir.bootlin.com/linux/v6.15.3/source/drivers/acpi/bus.c#L899
