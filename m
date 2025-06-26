@@ -1,106 +1,101 @@
-Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018861DE4CE;
-	Thu, 26 Jun 2025 14:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F04218858;
+	Thu, 26 Jun 2025 14:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750947795; cv=none; b=c7pwshreYRlY15iHUwmACW+55WkJtpWHLqsg5ccDm5XMisLc8E1gMKLpT1aycAUiRc7uhNr1wHwjD9lA94nroJ3RemY+NeYzZqpEg1SOUyPF5/ijlQox0OIrby5zaFaanXGcbqACRS8ZO5GpojcgBaOiT5JRnAq0PxAbFeLeWGw=
+	t=1750948921; cv=none; b=aROavpeOFlYwkz4WLXRQpBkFJ9JukRM0ICj0njKXzxDLbJYBv5x9owa2FwbmQbrHncJDvdUghNC7YUoAYXyq2HOBX271INLPEw+xTZMVX4Fsrcl3Us7BwmI7B2tDNDt5z4V0KvG/9ekTR/0mOAQnJDs8TjLJQMNdefEqriSRboM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750947795; c=relaxed/simple;
-	bh=3PmJhzf1sJs2FN8a0RHNKuha/3rAM6VtFHnWa30sHCs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u+ikNFcCblfIn/2osd1fcZKRkg40Vn8H5uPhnIuHAC1fnmgtT/SNoItZ5EWGrnrNRlyNUwFwRf8oe/36aumao0LzoHbGvrOjGuoL1phyvBXApm3bsG5UbS6DDI+OH44FyJWoo31Khqxx3b8Ozn4bj3mpRHz4dcbaj69Yy86CG3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gquLyRvd; arc=none smtp.client-ip=209.85.166.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750948921; c=relaxed/simple;
+	bh=42OjuS98WxGG89iYw29vlodU1GzD56kRmxMHKIDo8Ao=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=DELwbyFsoglM9bVPVgNJvF9IfxwwCXiw1lBTY86kUbRUJFBqQtIZjwJSVaepQuG8NySCvHXk082ks7RNBprWpjG9RIsDfIeToX49Adu24r6ELdL7eEOqbdt0FKhVfuJgE8rbCdAJn8kGxomRkRy3F4NfLGZd/gh+8sL02Vu31dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2kAUTRm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gquLyRvd"
-Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3de252f75d7so10760215ab.3;
-        Thu, 26 Jun 2025 07:23:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750947793; x=1751552593; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3PmJhzf1sJs2FN8a0RHNKuha/3rAM6VtFHnWa30sHCs=;
-        b=gquLyRvdTDE+fLFEPlGJVrAffLxcaHk5QYiRy9+lSmqhoDF3TUhR1X5kwsKy7K6PmS
-         7IjdJA7JxpH5lEG/q2uQj7U1y0YRld8NE/dwR6twrYsmF6wtG17ZNtIuEozFqi3GSKRp
-         U7h+NoSmCw7mLNICgPSbUu4uNCs07cxYQyLqYSYFeq3DlEOTr8rYvhAkwH/dDDqbGuVi
-         zp6fok8632tGvd0matk7LSwYrv9kZQtFsjSo5R8Ht0caYZgYmQCAf4DfXqTjTohM+Xvs
-         H7/CFj52Oy6Zgc7t1NBOnluPUzpuFzfWLDEA/Owuh4i0WSB4YX19a0+hq3kl3pfvE30k
-         4vDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750947793; x=1751552593;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3PmJhzf1sJs2FN8a0RHNKuha/3rAM6VtFHnWa30sHCs=;
-        b=eCSOp1SbmHnJunhL/VDU0lfLKq/uDpC+lyJjn7/gBTUbk5EKLmOKjznZxqsVfnDKIx
-         5Zfdy1HVsDw/CZGwpVqkUieYR5ArY4MxY7nZ+dUGO5O0mFGxId4Qbfs1GtQ3P6QcxBGC
-         3ax0aKXa26DkhO1Is55XFjJqI5grqEGFXypqecFjsg5upqWVdsJiGXSxFknzoL+aQxg0
-         8PJ7pzAfsLkQhI2nkDC5DoN104yKWQLfxc9i6PhGxj3HI2mCftHy/pDWSUkPNQ1bwZyW
-         iS6Ll6DCRGloYlsWSweRDphnNeRP48KklFJikX2XSnbSS30BV5/CRQRIFAxZoHR5BlSI
-         JvjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjQjCwPS3sN4zRNw5j2DXcdq7EfrORF0/QpIRoL60ERaAvc/xns73FWuiAaxXGCnEU05aVEq6A++Yuqci5MQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0RGl803hTJKKbYLAQoGBs31ymwQ5klyJeI5UXVcKD+zGKR0qW
-	719jqlDWmZPuZeon3oNWW7ksUn7pUxcZgNM29XWKos2dVkMIm9/fc/4hD6rbUaFRdQs2BrRxCPQ
-	JrXDlYs2C4h4VW6XePInlShJEwQbDuJY=
-X-Gm-Gg: ASbGnctUz8KtD/VE5whEmi7SVoyAnxne5T1ERwXoOCBWzV75Z7Ji1WAQIV660yDhYBn
-	h1WXZKFTp8mFPaRSphGpuQx252WaK3VPfa90fGnScUWDPTbHE7bfoQk5qxNyKK13qHtJuPP3e48
-	p4UHYSM3KlJELCMW7f1WKZ7lntw9ME7Fc3QPEWuXJtnUM=
-X-Google-Smtp-Source: AGHT+IF3rE0mC2CPX+Ugvjxi6nBUgivlndxS0obHPchi2LG/zWvKMmmAwuBdqywvKq+VzZiCw1orp74px1+xkgYq9ik=
-X-Received: by 2002:a05:6e02:378c:b0:3dc:8b2c:4bc7 with SMTP id
- e9e14a558f8ab-3df32852952mr95072965ab.1.1750947792809; Thu, 26 Jun 2025
- 07:23:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2kAUTRm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26455C4CEEB;
+	Thu, 26 Jun 2025 14:41:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750948920;
+	bh=42OjuS98WxGG89iYw29vlodU1GzD56kRmxMHKIDo8Ao=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=F2kAUTRmhh2r5WO93+pK/HVDynCmy/G5fdUgNn6aGkfu4+HaoBuU5QGoRvNQeZOa7
+	 cUygQT6QTn7ATW8GkraAtLkiCgK/jHG72B1GEB++fEhZHiOkaay11eoGgGHFe7d56Z
+	 l2u8v3F7fFn48HfEALXXMcgnsnDjmRW19qx1PzSyrbwNqamJubXcQJWN1TmTHMZNGF
+	 LB6gtaTdVWeFqPUWYVJ3ok31gBbDjBnLeIup9lGfiHn5ZoutzvsHYNZao65naIz6tS
+	 w6zJjdslGbxYDOuNwzdXoTT2TQyKfXY6Dv8FPDb587vqTxwCN7woYt3M/OBHp9jKGG
+	 8gRmwsvvsgOhw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1750689857.git.y.j3ms.n@gmail.com> <DAVO878E49AN.1L5TPHANBBHE6@nvidia.com>
-In-Reply-To: <DAVO878E49AN.1L5TPHANBBHE6@nvidia.com>
-From: Jesung Yang <y.j3ms.n@gmail.com>
-Date: Thu, 26 Jun 2025 23:23:01 +0900
-X-Gm-Features: Ac12FXzfN9fk03al47GYWZapf9guorVxLElMTuSPKfESyeSLvx8gJf-MiJnO3vM
-Message-ID: <CA+tqQ4Ji486i=Gzy5oEsdZLOFDmGHpxT=Wkng2cyZpJ=u14FPA@mail.gmail.com>
-Subject: Re: [PATCH 0/4] rust: add `FromPrimitive` support
-To: Alexandre Courbot <acourbot@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Jun 2025 16:41:55 +0200
+Message-Id: <DAWJL7B9577H.3HY4CULLAHGCU@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <david.m.ertman@intel.com>,
+ <ira.weiny@intel.com>, <leon@kernel.org>, <kwilczynski@kernel.org>,
+ <bhelgaas@google.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v3 4/4] rust: devres: implement register_release()
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250624215600.221167-1-dakr@kernel.org>
+ <20250624215600.221167-5-dakr@kernel.org>
+ <DAWED7BIC32G.338MXRHK4NSJG@kernel.org> <aF0rzzlKgwopOVHV@pollux>
+ <aF1TEuotIIwcKODM@cassiopeiae>
+In-Reply-To: <aF1TEuotIIwcKODM@cassiopeiae>
 
-On Wed, Jun 25, 2025 at 11:07=E2=80=AFPM Alexandre Courbot <acourbot@nvidia=
-.com> wrote:
+On Thu Jun 26, 2025 at 4:02 PM CEST, Danilo Krummrich wrote:
+> On Thu, Jun 26, 2025 at 01:15:34PM +0200, Danilo Krummrich wrote:
+>> On Thu, Jun 26, 2025 at 12:36:23PM +0200, Benno Lossin wrote:
+>> > Or, we could change `Release` to be:
+>> >=20
+>> >     pub trait Release {
+>> >         type Ptr: ForeignOwnable;
+>> >=20
+>> >         fn release(this: Self::Ptr);
+>> >     }
+>> >=20
+>> > and then `register_release` is:
+>> >=20
+>> >     pub fn register_release<T: Release>(dev: &Device<Bound>, data: T::=
+Ptr) -> Result
+>> >=20
+>> > This way, one can store a `Box<T>` and get access to the `T` at the en=
+d.
+>>=20
+>> I think this was also the case before? Well, it was P::Borrowed instead.
+>>=20
+>> > Or if they store the value in an `Arc<T>`, they have the option to clo=
+ne
+>> > it and give it to somewhere else.
+>>=20
+>> Anyways, I really like this proposal of implementing the Release trait.
 >
-> If you add an associated type, I guess this means the derive macro
-> should have a helper attribute to specify it?
+> One downside seems to be that the compiler cannot infer T anymore with th=
+is
+> function signature.
 
-The current implementation tries to detect the enum's representation
-(e.g., `#[repr(u8)]`) and falls back to `isize` if nothing is provided,
-since it's the default [1]. However, when `#[repr(C)]` is used, the
-internal representation is not controlled on the Rust side. To quote
-the reference [2]:
+Yeah... That's a bit annoying.
 
-For field-less enums, the C representation has the size and
-alignment of the default enum size and alignment for the target
-platform's C ABI.
+We might be able to add an associated type to `ForeignOwnable` like
+`Target` or `Inner` or whatever.
 
-Given this, it would definitely help with determinism if users provided
-an explicit attribute. Being explicit also often improves clarity and
-makes the intent more obvious.
+Then we could do:
 
-[1]: https://doc.rust-lang.org/reference/items/enumerations.html#r-items.en=
-um.discriminant.repr-rust
-[2]: https://doc.rust-lang.org/reference/type-layout.html?highlight=3Drepr#=
-r-layout.repr.c.enum
+    pub fn register_release<P>(dev: &Device<Bound>, data: P) -> Result
+    where
+        P: ForeignOwnable,
+        P::Inner: Release<Ptr =3D P>,
 
-Best regards,
-Jesung
+---
+Cheers,
+Benno
