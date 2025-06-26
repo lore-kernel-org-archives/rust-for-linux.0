@@ -1,222 +1,79 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616C12E7F1C;
-	Thu, 26 Jun 2025 13:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B928156F5E;
+	Thu, 26 Jun 2025 14:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750946209; cv=none; b=lnBFUNM9L5k/Pk8dAEbONVwY75ztsxx68yiR4lpnNWso2KafyHTo0RA9gwbsUXUBbeOBqWERYkMESscdvaO8d2Yp5CGFl4p+HMr+PPLbdHgmr4UB+YqWab7tdNV4DE1Q5aqK04fsOeqyXcmqIu3wZgsufe7ITVsmQGogJxEGDTU=
+	t=1750946585; cv=none; b=GqsWrmkT1BNuGa9mGtLLLCvzNqLrOxSElXNq0EJYhMWRCt9KMA5Gn4w17pWRzmNPFXYOcPVAjFPpPTTqERHBMbA6x2+5coQtCjKdWg1M3HQeGQqXAi72o1cwAeTm6VQYa8ei2mBtP83wBmLwy7qFnETeBONYEdc48aMP9uidakA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750946209; c=relaxed/simple;
-	bh=gjdHL52RORLpW8wvnJn6OWMRqxB5lI1erYSoLtMSVmw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OD4qODYhwducq4hnAHrhcL/Ub1r9o3s0u7uBp36dFbQMOCIQCkqCHcvOiO7Q5eZSw880njCvCLHsSOKOGaUi8yYJ2GLZzTtfeoVPK4DNkNZ/emHLG7PW/w4EtnYhlZmGnqBto1ycBs44cXMajsuUFIYl4vEQlZD9NMYQIq5T3j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ala7Mcdo; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1750946585; c=relaxed/simple;
+	bh=f86r/ImK9cC+0QrF6hoABx5UmkguYkXjzEcX3QquBFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G42vsbRYzZT2cq5ZVoVRyBe/isCHZ91sFr9s9lAuJ24bybXhAwulpw/C4Y6AK2NxT55ghBigJqpRoXmI92Ab+wkHi/wZz9hGssk942nHIFAxxa6rDjJyPqcxQ8vNv2beJG8TpL62StHEU96ci9An/85j8BpCNG86ZAqWjaEUK1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvrIoAxj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ala7Mcdo"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3137c20213cso1144681a91.3;
-        Thu, 26 Jun 2025 06:56:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750946208; x=1751551008; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WvA01Sx6mR6kWi/vaxXvE8U/fUvAZjtw0tMx9Rr2caI=;
-        b=ala7McdoMmXryixCWucdCxiyp1yWOj+f962PONx1Q85DvpzP2vgU2qUQcBFPAiXwC9
-         Y7qvy7OpAY2RM4MO3qnxdpnqDaSFQLnvIPVt87+qhoTtbGS0gY0/DdBr+tFKL18C2rg+
-         AR5MDjUHg+2I8xX4EO66jlz+Xl1FZs6X5mBkMGEzIVuitOjtSxmab1iq+Bdssxc4ZC0j
-         fBnS35Nfqs/zLHzVVyDAkw22nsx0nJwt9YZreYNzZoG156zMQIPJiRPpHsGpMgh1lQxy
-         KG/3cjs0WROFQ358hilaFPiXj54eOVqfddNzSKCokdXpZiPUeUqnRNuI5kS+7h0seoB5
-         bQgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750946208; x=1751551008;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WvA01Sx6mR6kWi/vaxXvE8U/fUvAZjtw0tMx9Rr2caI=;
-        b=s295J/zL4RUMf37fZyHC2XJY91GmUCvlvGhH0vkWmw5YZKzA2vQ5tGYbeijCt/xaJD
-         WR5T2y5USrF7innzFLVwiukShvemLNi+ti2Moy520gGAAp9JdsE2MUOYiKQ8cRlpzINr
-         ChLvLBUEvinTi3xnz4HxfWIS03qP0tvH3AYk+qCzHJ1AplbCBTjadEl9mDpN/bEwf1pZ
-         q2SOfEVyf6r69j1abDtrShOkmvwsnHJoevKHdhew4CA6I5kABGFHu/45AXwMh2gWuKqm
-         8tPVmHO04TqYgGY2pTPidf4wB+Wny4T0thyLIO6NYINO7m9D5f4PtfErCnODiZLmBtWQ
-         ETGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV03XEQa78Axe+YEqs+I8ojmH2tsozgDcfVM3NOBW9ZxyvCKyIp3ZFMjopD02jtoZwfEpT9R9mJ6lwvGeekIQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz23kacyxYC4sUc4b5yVqxmIo1DfDa7fIINm4YlfTa6d62CnQ6+
-	Y26EOUzvjSigUSYOK1BTf3eWP/A64+h09ry/DG84+P0WzrOLn/tnZTjlO4F1mxR4oFRAQlvGFRs
-	6g/KeKTeB2G4UtJnAnGxprKbwEiHwIDo=
-X-Gm-Gg: ASbGncvNv6owtNNjhdMSCxqhajd1Uk+0x8T8g4UMKmHG8OeHl8gdOmeHgEPI4H0gXae
-	sqIyNAk4F3jhZhlbFG5z6bh2fr6Nny5JoBm3RWvrvtY2Ao5RY1MYTYvuJSsGnm+9kgUoUc2/s0z
-	9VzzsORBwz43JP1Lssvzu33+KywrMQQuSOZTBSRniF4yb7
-X-Google-Smtp-Source: AGHT+IHa6yXbM+5t0Adv5dhFozO1ihksVo3U4Ek0FSY6Tg6xwKFT7Wimn2JDB77xa3AbviAVvHPk4vp6zrXXGggTnYM=
-X-Received: by 2002:a17:90b:51c3:b0:312:ea46:3e66 with SMTP id
- 98e67ed59e1d1-315f26771admr9880287a91.21.1750946207302; Thu, 26 Jun 2025
- 06:56:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvrIoAxj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4069C4CEEB;
+	Thu, 26 Jun 2025 14:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750946584;
+	bh=f86r/ImK9cC+0QrF6hoABx5UmkguYkXjzEcX3QquBFE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pvrIoAxj6GskbI/oF6/5SODbvIEA7uugOoMQhqh8EJDpAfGZaoZkvpSvOQo/X2M+/
+	 2+EV36YgorT+QRjH2KgTFzcayds+cLUOOobUNMPrYvHqSlOyx8GV6kWVEvsRGEeXFM
+	 WHydNvSFkri+vk6c47vg8pYPsF6BfsQM/YoYsg59WUXTl+CmZGzbaVk9gcVE/bfaIv
+	 rpR0psv6LBgAiELRrLi1HBlJ/Vu6ymeeI5VgSYOLbiuXUJr3anl6Wpn78TnH4aPmkP
+	 kBCNR8/b/k0R+CB8zAibcQ0ou9//wWlqLlIzPiVTVLCVNZ+m2i7ZBhpRJtA4+lu4Fh
+	 AcFcjxn6rEgIA==
+Date: Thu, 26 Jun 2025 16:02:58 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, david.m.ertman@intel.com,
+	ira.weiny@intel.com, leon@kernel.org, kwilczynski@kernel.org,
+	bhelgaas@google.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 4/4] rust: devres: implement register_release()
+Message-ID: <aF1TEuotIIwcKODM@cassiopeiae>
+References: <20250624215600.221167-1-dakr@kernel.org>
+ <20250624215600.221167-5-dakr@kernel.org>
+ <DAWED7BIC32G.338MXRHK4NSJG@kernel.org>
+ <aF0rzzlKgwopOVHV@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250625111133.698481-1-shankari.ak0208@gmail.com> <DAVYWQE2PYZE.3TRIT906A9BJM@kernel.org>
-In-Reply-To: <DAVYWQE2PYZE.3TRIT906A9BJM@kernel.org>
-From: Shankari Anand <shankari.ak0208@gmail.com>
-Date: Thu, 26 Jun 2025 19:25:00 +0530
-X-Gm-Features: Ac12FXyUfuHgDsplwFCWon9SVCweA6V7I2FgMpfKrWvpZS6e0pfkq2b7MOiOMmw
-Message-ID: <CAPRMd3=5aMx_DmhuXxWbNodM8OV6EWkXMTByAzOSr3ESoSj_BQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: move ARef and AlwaysRefCounted to sync::aref
-To: Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	patches@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Roy Baron <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aF0rzzlKgwopOVHV@pollux>
 
-Hello,
-Thanks for your feedback!
+On Thu, Jun 26, 2025 at 01:15:34PM +0200, Danilo Krummrich wrote:
+> On Thu, Jun 26, 2025 at 12:36:23PM +0200, Benno Lossin wrote:
+> > Or, we could change `Release` to be:
+> > 
+> >     pub trait Release {
+> >         type Ptr: ForeignOwnable;
+> > 
+> >         fn release(this: Self::Ptr);
+> >     }
+> > 
+> > and then `register_release` is:
+> > 
+> >     pub fn register_release<T: Release>(dev: &Device<Bound>, data: T::Ptr) -> Result
+> > 
+> > This way, one can store a `Box<T>` and get access to the `T` at the end.
+> 
+> I think this was also the case before? Well, it was P::Borrowed instead.
+> 
+> > Or if they store the value in an `Arc<T>`, they have the option to clone
+> > it and give it to somewhere else.
+> 
+> Anyways, I really like this proposal of implementing the Release trait.
 
-> I'd say this module is about supporting objects with builtin reference
-> counting.
-I described the module as an "Atomic reference-counted pointer
-abstraction" to highlight its similarity to Arc<T>, but for manually
-refcounted types. Your version about =E2=80=9Csupporting objects with built=
--in
-reference counting=E2=80=9D is definitely clearer, happy to adopt that
-phrasing if preferred.
-
-> I would lead with comparing `ARef<T>` to `Arc<T>` and only later mention
-> `AlwaysRefCounted`.
-I mentioned AlwaysRefCounted early on just to give readers a quick
-idea of what the module is really about, but I understand your point
-about introducing it a bit later and can rearrange that.
-
->
-> You also rephrased these docs, can you do that in a separate patch?
-
-I rephrased a few lines in the intro since we=E2=80=99re starting a new mod=
-ule
-and I thought it might help with readability. But if keeping the
-original is better, I can revert those changes, no problem at all.
-
-
-> Newline?
-About the extra newline - I didn=E2=80=99t add it manually, but it might=E2=
-=80=99ve
-come from creating the new file. I=E2=80=99ll check the patch, and if it wa=
-s
-actually added, I=E2=80=99ll remove it.
-
-> ---
-> Cheers,
-> Benno
----
-Thanks and regards,
-Shankari
-
-
-On Thu, Jun 26, 2025 at 3:59=E2=80=AFAM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> On Wed Jun 25, 2025 at 1:11 PM CEST, Shankari Anand wrote:
-> > diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-> > new file mode 100644
-> > index 000000000000..93a23b493e21
-> > --- /dev/null
-> > +++ b/rust/kernel/sync/aref.rs
-> > @@ -0,0 +1,170 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Atomic reference-counted pointer abstraction.
->
-> I'd say this module is about supporting objects with builtin reference
-> counting.
->
-> > +//!
-> > +//! This module provides [`ARef<T>`], an owned reference to a value th=
-at implements
-> > +//! [`AlwaysRefCounted`] =E2=80=94 an unsafe trait for types that mana=
-ge their own reference count.
->
-> I would lead with comparing `ARef<T>` to `Arc<T>` and only later mention
-> `AlwaysRefCounted`.
->
-> > +//!
-> > +//! It is based on the Linux kernel's manual reference counting model =
-and is typically used
-> > +//! with C types that implement reference counting (e.g., via `refcoun=
-t_t` or `kref`).
-> > +//!
-> > +//! For Rust-managed objects, prefer using [`Arc`](crate::sync::Arc) i=
-nstead.
-> > +
-> > +use core::{
-> > +    marker::PhantomData,
-> > +    mem::ManuallyDrop,
-> > +    ops::Deref,
-> > +    ptr::NonNull,
-> > +};
-> > +
-> > +/// Trait for types that are _always_ reference-counted.
-> > +///
-> > +/// This trait allows types to define custom reference increment and d=
-ecrement logic.
-> > +/// It enables safe conversion from a shared reference `&T` to an owne=
-d [`ARef<T>`].
-> > +///
-> > +/// This is usually implemented by wrappers around C types with manual=
- refcounting.
-> > +///
-> > +/// For purely Rust-managed memory, consider using [`Arc`](crate::sync=
-::Arc) instead.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that:
-> > +///
-> > +/// - Calling [`AlwaysRefCounted::inc_ref`] keeps the object alive in =
-memory until a matching [`AlwaysRefCounted::dec_ref`] is called.
-> > +/// - The object is always managed by a reference count; it must never=
- be stack-allocated or
-> > +///   otherwise untracked.
-> > +/// - When the count reaches zero in [`AlwaysRefCounted::dec_ref`], th=
-e object is properly freed and no further
-> > +///   access occurs.
-> > +///
-> > +/// Failure to follow these rules may lead to use-after-free or memory=
- corruption.
->
-> You also rephrased these docs, can you do that in a separate patch?
->
-> > +
->
-> Newline?
->
-> ---
-> Cheers,
-> Benno
->
-> > +pub unsafe trait AlwaysRefCounted {
-> > +    /// Increments the reference count on the object.
-> > +    fn inc_ref(&self);
-> > +
-> > +    /// Decrements the reference count on the object.
-> > +    ///
-> > +    /// Frees the object when the count reaches zero.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Callers must ensure that there was a previous matching increme=
-nt to the reference count,
-> > +    /// and that the object is no longer used after its reference coun=
-t is decremented (as it may
-> > +    /// result in the object being freed), unless the caller owns anot=
-her increment on the refcount
-> > +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then call=
-s
-> > +    /// [`AlwaysRefCounted::dec_ref`] once).
-> > +    unsafe fn dec_ref(obj: NonNull<Self>);
-> > +}
+One downside seems to be that the compiler cannot infer T anymore with this
+function signature.
