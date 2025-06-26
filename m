@@ -1,276 +1,281 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5960723498E;
-	Thu, 26 Jun 2025 20:53:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEE1202996
+	for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 20:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750971224; cv=none; b=OxGQLoa4TgkdE8NKsbBBXS2Hr405LcqSuo10CFty3KQvTnt80kx1WP7NwbwqIzd/G45/7nI4bp3bNJJRGQT5dNGX8HpAyw/gVeXn+U9V8aN/elZzeYM/zTJhDRX7ouknshZ2gNcz+QG1GTud5TGTLk1WeiMuLxTfA/ML8d6pG84=
+	t=1750971454; cv=none; b=GoEtvK0wDmg1fV017KgNlZIz/zX6T9ZZ+2Oi4MXVslbAuyUPKNZ/7uIjQX4daUgtRkxPbRo+LiYVrSu4Bq+Cr0HKGbtUwKH61luBNBUQ9+6Uw1igHsmYRal7K1T1o0ciksXFMl3u9BoB6Z6o76zyykSo7+NTcLzm6bNWcfuLsnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750971224; c=relaxed/simple;
-	bh=Ft275+6NguxVtKIelk/MGGPXOjF3bLvbZHtNBsEMxHw=;
+	s=arc-20240116; t=1750971454; c=relaxed/simple;
+	bh=QEf+2Q4j5b3ltB4HIXDQ8FpArFsE35NErtqGlCazRBI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hbJ1Xw12ZQq2ZcbrtWkVscIvjen81klOTUQ3VMUhwVcbIurIzZZurr3o57I28DwZpktOLjBQ/SKO9D062hn+RKux0KELcebV1+m1MPpy/2czw1iQhQ2rRUlPzMpOkwB5xQ1nw8dLVmnibWs0SQE3EBbEAA3Mj7cY2Q9FMdpZ/o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJp9dMFv; arc=none smtp.client-ip=209.85.208.182
+	 To:Cc:Content-Type; b=a/FNPQCwh9WYOipPuSVUJtvQv2iTd4q/A9NkKeOhgLNDivD9qzbYeaMYd7+BKQxIF/zJBzrDaCxzBjX25mc8loUWPLVRXfgH22MAI98XsU3Wj00a20VesxNEufpq9xWIWYvPzUAmknLQmMUO22z7Hex9WsXweWj8CMIi6lg25rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdTZjstB; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJp9dMFv"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32b7113ed6bso15150291fa.1;
-        Thu, 26 Jun 2025 13:53:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdTZjstB"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3138e64fc73so191655a91.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 13:57:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750971220; x=1751576020; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kHR0j6osj5JXjZAu8frswdQtAV7pwiXahW5jwmRCgMI=;
-        b=iJp9dMFvV6PfvpIac4VGpAKdyFoa8LXMd/HiFTQwr47ya1EJHWDRPVpjpxxaU44E1q
-         XH3e0ajOhimse50rOFKV3FZU2s8ZqWhzsUhogwoKBSSqNtMVGY6ePkZ2T2s0udqhkZ+r
-         c+86ItNcoAa8Nwsh/nJlFtyNSsjixJ4z+nWJik9kixyXkpDbZqLoTnPBe1WxKxpQyjq/
-         I03I8EWCujx26sGp8dOrosxDqQnjlRwS2dnO/DqXdAIXEfREYRs2iA351djOpFx8m4AK
-         6kjv7GIjqloHvrJFBYAyykbR28zXz7DcUeyGfGOJ8TzfnnjK8Mpc7kAKrVZodeHFTS6F
-         lF3Q==
+        d=gmail.com; s=20230601; t=1750971452; x=1751576252; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZqJr7lHwWQ8usD5WLzvtqFCdBBM5J6U2PRRjVVnhd0Y=;
+        b=fdTZjstBy31MAYkyu6Gx6R6ErLqxmZSXwHEwscNBqLLmqCCMSjDF+vtl8iVnBob+S1
+         /vf9dBy9uunH46Q3MCeTs5ri1VO5N5n0dsgA8r4qX1Y9vV7MCCvz3kpCrhLiX6SLv7M8
+         QTwP57VNg7sEjKqrwUvQZzHXb97PIVV0xwo6JqjkKGnwPG08m4LqSP8MSlrGw7p06G9u
+         2mJjUjzd64Xpr71WUGhQmwC8Ij6WfLm6Ko5f//vEnhILlz7kHTUGmLX6jMhPPPWbRJtL
+         PaMVjaw4c0rgw33JPS1SBj5/DTQbDh94BTDQhoL2yrdl82UyjglqCqQfgAR9i/sVwktC
+         CbnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750971220; x=1751576020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kHR0j6osj5JXjZAu8frswdQtAV7pwiXahW5jwmRCgMI=;
-        b=C22SIaIzYcrTqCy/7+khs1dMDpFMQ9vz0mXw4hEq1FQvTYl0jv4sQJu2ShO7WcoDQ3
-         2HGMBgr28UtRjICDCBKrglN/xT1vd6LFHBF27MJAJjY0ffy8KPENXeavLBQi36C57+rA
-         dcAxCBxCJ+tXwQ+qNOAun//FDEQu+L+EIqum9rDWQmZaP5gNQ3Fx1FWIEuSiLweZ0HEt
-         5Ul/J004gna0/r/l3ZQBuUSdwvFZUerRrqF8Zfl2YlB27B182c3i+CvYlwd5BNvlbCqe
-         u/0NBKHFDlj07DfePLZpKgVFDEVn0yvX6UvQ35n7NFaRL4nXDXx1eKQq0TZnC5T/jb4J
-         Dc3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUtp5lxUqAvFbW6tWB9ZTihBVpoD5OtT2M6FgW+gAcfqLx/fk4YbZdDKjpWzXsEOuISkwcWZy/pSlM17BI0ifg=@vger.kernel.org, AJvYcCVhh4WkDnnuOl96h27Wm5eNJGe8ISaO1GyKTcMKqMN8JL0Ipyxk8UlAPx3uhjwD4adgDplLMX2/4ZpyJwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcAs6pNkMcXVR5ysxgmLhe0vg0YYoREVUie6AIKSCsCCdqPpzi
-	lO8LsSsmPIpiGP4Lk3ZzBACYToHSG14EqYEBNfan/jsyupnFxoS3L4xDcUsjL6sz0YoaOvjwoYh
-	dw2rpxeqGNCWGnmTyCWlwo+Ya8DQWt5Q=
-X-Gm-Gg: ASbGncv2+du/wuSbGEosZktm+mgKKuSROS867q4cEGR8Qsq0wDliHTygy+f1ntchbxB
-	7WUCH+J/9UeHBhIsF9PmMLk+dHNmcu/SIGBOHBovqRVp7p1ugjZFiOnqX4ZMwueCS87dPkJc+Ln
-	ES708Bh+J4TAb2IdIy95r+6IovqmiTrzyldSNfX9SPZAEH
-X-Google-Smtp-Source: AGHT+IFAeiNVCuRuFxrOTBMGX/B06Ycb/XWjiNYp1OXtmPtAGsFpz5UnI23CDyMY2wmlK3gee5nSfzFKdZYV7oqhHzo=
-X-Received: by 2002:a2e:ae11:0:b0:32a:8ae2:a8a7 with SMTP id
- 38308e7fff4ca-32cdc4820a0mr1400421fa.8.1750971220105; Thu, 26 Jun 2025
- 13:53:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750971452; x=1751576252;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZqJr7lHwWQ8usD5WLzvtqFCdBBM5J6U2PRRjVVnhd0Y=;
+        b=X8g7a3sVVCR0fFtV3fnhF6/bZ0heQrOKGfp0zNj04OQ8o2ywSlDRjKzNMEt8l56+LD
+         W+m9svdJaNLuTxXQuF+C0sJKcz5PH5ybm9se3CP0KDebFTK02lfLY2LOCrH+Aj76xeJl
+         puPm71qPSMJPtAjB44gD4/8f4nR0KcuDafXvX814Vfi7iYauaUf5HfbcQU5WAcGXgq6e
+         8mY35x2q2+9vgv27ht33ZVooFq6x6iSIxuVuOaEzcv0ud6z4tGj9d5VlEhTE8ifqT8eD
+         uzW33htoDlTSoigkWviOyHsVmfsWOsPD4lC1Owwz6Zgv7IXsJdj5Hcplk6yqYK1x4Bog
+         Purw==
+X-Forwarded-Encrypted: i=1; AJvYcCVvp7vdA23Rk5bb/j/xrABmC2zHG3p+dkWsApdn1W8BRHWahFxf2mpZiek9yeHTH0gdCMIKAq1YvxMrc8cjIg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOy+jH4/PVxbbZgTDVS3/vLniBPFAH0W1LlyEoFosKUwjXSek7
+	wsZrRv+qzH65ilZsJ7H2IxS8PMt5djf2YGbQFz7FbUaSvi7B4LH808PhVd+95JF3RNmsKPsj3M6
+	fGEXQEiOUjXIVvgmxYyLJew/mZPKUvRz1fEEReUk=
+X-Gm-Gg: ASbGncu7TrXBZU2WcNA27C524rDxsIJ90tja9SXtGO9+ryeXcpkztI75I3ZOCc61vl7
+	SNl7K+N8mHWE13lzKYNRVT1tL9vZTfJ7KHSgIteKepHVQthJaRuBvB+SRSS7lZaFIR11kgomzJP
+	vijyadF3wHChMM4wC5SbULVjPcQyJetzP6yLeTxHYK/tA=
+X-Google-Smtp-Source: AGHT+IHxeCKSRhIqz47ziRhxxaTGSL8GFDkQNKOBWk7/zutbPnyc9RaKzJ0QtR7z3NZHEoVrtrMftwYXGb6m+6Kz/ww=
+X-Received: by 2002:a17:90b:58e7:b0:311:e9a6:332e with SMTP id
+ 98e67ed59e1d1-318c8cd87b8mr259246a91.0.1750971451719; Thu, 26 Jun 2025
+ 13:57:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250626083516.3596197-1-vitaly.wool@konsulko.se> <20250626083632.3596363-1-vitaly.wool@konsulko.se>
-In-Reply-To: <20250626083632.3596363-1-vitaly.wool@konsulko.se>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 26 Jun 2025 13:53:03 -0700
-X-Gm-Features: Ac12FXzCJObvxzPse24yMd5WH8K7cSo47qQtOjEJRK-wxx22oD_vk28dKv_9NQg
-Message-ID: <CAJ-ks9mB8tAG+vE2RnN0+3-pqcQU_KkmZUHU++-uswpxLBp9Kg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] mm/slub: allow to set node and align in k[v]realloc
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+References: <20250616193433.2643407-1-ttabi@nvidia.com> <CANiq72=cDk5rVEiAoudaQZUhNL_rne1EEjSEfiNuo_gkL3HOZw@mail.gmail.com>
+ <DAOMQXNTLSGR.U0QOV8BU1I5V@kernel.org> <CANiq72moqFBWeS9RL6y8wzpxURvhdz4D0J8WfjaOBp0XSgufdg@mail.gmail.com>
+ <579273832b4accc4cd989d5182f3179c9950966f.camel@nvidia.com>
+ <CANiq72m1W6Do4z0qjKmzxSbYT3az_x1DKZ5C3eLABsPRv55EwQ@mail.gmail.com> <e92c3e23c09579e4dc13d999503cf9a2b1451c2b.camel@nvidia.com>
+In-Reply-To: <e92c3e23c09579e4dc13d999503cf9a2b1451c2b.camel@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Jun 2025 22:57:17 +0200
+X-Gm-Features: Ac12FXwUoNt71AN50O2rkGQxm1csnolFBknXbR_KoIG3gxPb4sajylyf82opiRY
+Message-ID: <CANiq72n79HKo_MBLJCgs1YnZqah+KrFdNixQuovZn-bequyhxQ@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: introduce sfile macro for succinct code tracing
+To: Timur Tabi <ttabi@nvidia.com>
+Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
+	"lossin@kernel.org" <lossin@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Content-Type: multipart/mixed; boundary="00000000000064ba5806387fcf31"
+
+--00000000000064ba5806387fcf31
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 1:39=E2=80=AFAM Vitaly Wool <vitaly.wool@konsulko.s=
-e> wrote:
+On Thu, Jun 26, 2025 at 6:30=E2=80=AFPM Timur Tabi <ttabi@nvidia.com> wrote=
+:
 >
-> Reimplement k[v]realloc() to be able to set node and alignment
-> should a user need to do so. Rename the respective functions to
-> k[v]realloc_node() to better match what they actually do now and
-> introduce macros for k[v]realloc() for backward compatibility.
->
-> With that change we also provide the ability for the Rust part of
-> the kernel to set node and aligmnent in its K[v]xxx [re]allocations.
->
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> So you're saying that instead of calling assert!(), shortname() should ju=
+st return None if there
+> are any failure conditions, and the macro should then panic if it gets No=
+ne?
 
-Hi Vitaly, there is a typo in the subject line: it should be slab, not slub=
-.
+Yes, but note that the panic in the macro will not be a runtime panic,
+but a compile time error, which is why it is OK.
 
-> ---
->  include/linux/slab.h | 12 ++++++++----
->  mm/slub.c            | 33 ++++++++++++++++++++++-----------
->  2 files changed, 30 insertions(+), 15 deletions(-)
->
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index d5a8ab98035c..119f100978c8 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -465,9 +465,11 @@ int kmem_cache_shrink(struct kmem_cache *s);
->  /*
->   * Common kmalloc functions provided by all allocators
->   */
-> -void * __must_check krealloc_noprof(const void *objp, size_t new_size,
-> -                                   gfp_t flags) __realloc_size(2);
-> -#define krealloc(...)                          alloc_hooks(krealloc_nopr=
-of(__VA_ARGS__))
-> +void * __must_check krealloc_node_noprof(const void *objp, size_t new_si=
-ze,
-> +                                        gfp_t flags, int nid) __realloc_=
-size(2);
-> +#define krealloc_node(...)             alloc_hooks(krealloc_node_noprof(=
-__VA_ARGS__))
-> +#define krealloc_noprof(o, s, f)       krealloc_node_noprof(o, s, f, NUM=
-A_NO_NODE)
-> +#define krealloc(...)                  alloc_hooks(krealloc_noprof(__VA_=
-ARGS__))
->
->  void kfree(const void *objp);
->  void kfree_sensitive(const void *objp);
-> @@ -1073,8 +1075,10 @@ kvmalloc_array_node_noprof(size_t n, size_t size, =
-gfp_t flags, int node)
->  #define kvcalloc_node(...)                     alloc_hooks(kvcalloc_node=
-_noprof(__VA_ARGS__))
->  #define kvcalloc(...)                          alloc_hooks(kvcalloc_nopr=
-of(__VA_ARGS__))
->
-> -void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> +void *kvrealloc_node_noprof(const void *p, size_t size, gfp_t flags, int=
- nid)
->                 __realloc_size(2);
-> +#define kvrealloc_node(...)                    alloc_hooks(kvrealloc_nod=
-e_noprof(__VA_ARGS__))
-> +#define kvrealloc_noprof(p, s, f)              kvrealloc_node_noprof(p, =
-s, f, NUMA_NO_NODE)
->  #define kvrealloc(...)                         alloc_hooks(kvrealloc_nop=
-rof(__VA_ARGS__))
->
->  extern void kvfree(const void *addr);
-> diff --git a/mm/slub.c b/mm/slub.c
-> index c4b64821e680..2d5150d075d5 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -4845,7 +4845,7 @@ void kfree(const void *object)
->  EXPORT_SYMBOL(kfree);
->
->  static __always_inline __realloc_size(2) void *
-> -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
-> +__do_krealloc(const void *p, size_t new_size, gfp_t flags, int nid)
->  {
->         void *ret;
->         size_t ks =3D 0;
-> @@ -4859,6 +4859,15 @@ __do_krealloc(const void *p, size_t new_size, gfp_=
-t flags)
->         if (!kasan_check_byte(p))
->                 return NULL;
->
-> +       /*
-> +        * it is possible to support reallocation with a different nid, b=
-ut
-> +        * it doesn't go well with the concept of krealloc(). Such
-> +        * reallocation should be done explicitly instead.
-> +        */
-> +       if (WARN(nid !=3D NUMA_NO_NODE && nid !=3D page_to_nid(virt_to_pa=
-ge(p)),
-> +                               "krealloc() has mismatched nids\n"))
-> +               return NULL;
-> +
->         if (is_kfence_address(p)) {
->                 ks =3D orig_size =3D kfence_ksize(p);
->         } else {
-> @@ -4903,7 +4912,7 @@ __do_krealloc(const void *p, size_t new_size, gfp_t=
- flags)
->         return (void *)p;
->
->  alloc_new:
-> -       ret =3D kmalloc_node_track_caller_noprof(new_size, flags, NUMA_NO=
-_NODE, _RET_IP_);
-> +       ret =3D kmalloc_node_track_caller_noprof(new_size, flags, nid, _R=
-ET_IP_);
->         if (ret && p) {
->                 /* Disable KASAN checks as the object's redzone is access=
-ed. */
->                 kasan_disable_current();
-> @@ -4919,6 +4928,7 @@ __do_krealloc(const void *p, size_t new_size, gfp_t=
- flags)
->   * @p: object to reallocate memory for.
->   * @new_size: how many bytes of memory are required.
->   * @flags: the type of memory to allocate.
-> + * @nid: NUMA node or NUMA_NO_NODE
->   *
->   * If @p is %NULL, krealloc() behaves exactly like kmalloc().  If @new_s=
-ize
->   * is 0 and @p is not a %NULL pointer, the object pointed to is freed.
-> @@ -4947,7 +4957,7 @@ __do_krealloc(const void *p, size_t new_size, gfp_t=
- flags)
->   *
->   * Return: pointer to the allocated memory or %NULL in case of error
->   */
-> -void *krealloc_noprof(const void *p, size_t new_size, gfp_t flags)
-> +void *krealloc_node_noprof(const void *p, size_t new_size, gfp_t flags, =
-int nid)
->  {
->         void *ret;
->
-> @@ -4956,13 +4966,13 @@ void *krealloc_noprof(const void *p, size_t new_s=
-ize, gfp_t flags)
->                 return ZERO_SIZE_PTR;
->         }
->
-> -       ret =3D __do_krealloc(p, new_size, flags);
-> +       ret =3D __do_krealloc(p, new_size, flags, nid);
->         if (ret && kasan_reset_tag(p) !=3D kasan_reset_tag(ret))
->                 kfree(p);
->
->         return ret;
->  }
-> -EXPORT_SYMBOL(krealloc_noprof);
-> +EXPORT_SYMBOL(krealloc_node_noprof);
->
->  static gfp_t kmalloc_gfp_adjust(gfp_t flags, size_t size)
->  {
-> @@ -5079,10 +5089,11 @@ void kvfree_sensitive(const void *addr, size_t le=
-n)
->  EXPORT_SYMBOL(kvfree_sensitive);
->
->  /**
-> - * kvrealloc - reallocate memory; contents remain unchanged
-> + * kvrealloc_node - reallocate memory; contents remain unchanged
->   * @p: object to reallocate memory for
->   * @size: the size to reallocate
->   * @flags: the flags for the page level allocator
-> + * @nid: NUMA node id
->   *
->   * If @p is %NULL, kvrealloc() behaves exactly like kvmalloc(). If @size=
- is 0
->   * and @p is not a %NULL pointer, the object pointed to is freed.
-> @@ -5100,17 +5111,17 @@ EXPORT_SYMBOL(kvfree_sensitive);
->   *
->   * Return: pointer to the allocated memory or %NULL in case of error
->   */
-> -void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> +void *kvrealloc_node_noprof(const void *p, size_t size, gfp_t flags, int=
- nid)
->  {
->         void *n;
->
->         if (is_vmalloc_addr(p))
-> -               return vrealloc_noprof(p, size, flags);
-> +               return vrealloc_node_noprof(p, size, 1, flags, nid);
->
-> -       n =3D krealloc_noprof(p, size, kmalloc_gfp_adjust(flags, size));
-> +       n =3D krealloc_node_noprof(p, size, kmalloc_gfp_adjust(flags, siz=
-e), nid);
->         if (!n) {
->                 /* We failed to krealloc(), fall back to kvmalloc(). */
-> -               n =3D kvmalloc_noprof(size, flags);
-> +               n =3D kvmalloc_node_noprof(size, flags, nid);
->                 if (!n)
->                         return NULL;
->
-> @@ -5126,7 +5137,7 @@ void *kvrealloc_noprof(const void *p, size_t size, =
-gfp_t flags)
->
->         return n;
->  }
-> -EXPORT_SYMBOL(kvrealloc_noprof);
-> +EXPORT_SYMBOL(kvrealloc_node_noprof);
->
->  struct detached_freelist {
->         struct slab *slab;
-> --
-> 2.39.2
->
->
+> I don't think I can call from_utf8() because it returns Result, and conve=
+rting that to an Option
+> requires me to call .ok(), which (for some reason) cannot be called in a =
+const function.
+
+You can -- `ok()` is not `const fn` because it is generic and thus
+needs to work in more cases, but you can do it "manually" for this
+particular `Result`.
+
+> I don't see how this lets me avoid the is_ascii() call.  However, I just =
+discovered that in UTF-
+> 8, you cannot have a slash (0x2F) or dot (0x2E) as one of the UTF-8 bytes=
+, since all UTF-8 bytes
+> have bit 7 set.  So you won't accidentally find a / inside a UTF characte=
+r.  This means that
+> this macro should be able to handle Unicode file names.  So I'll just rem=
+ove the is_ascii()
+> check altogether.
+
+We can avoid it because `from_utf8` already checks it is valid UTF-8,
+so if something bad is passed as input, such as broken UTF-8, it will
+already return an error. We are not expecting Unicode filenames
+anyway.
+
+We can in fact do it all in safe code, because we can take advantage
+of `split_at_checked` -- sadly only on `slice`, but in some months
+(minimum Rust >=3D 1.84) we should be able to simplify further using the
+`str` one.
+
+And if we are OK with panicking, e.g. if we just want to use it from
+the macro, we can simplify further.
+
+See the attached diff to see how `shortname()` could look like.
+
+`inline_const` and `const_option` are just to make the macro nicer,
+they are optional.
+
+Cheers,
+Miguel
+
+--00000000000064ba5806387fcf31
+Content-Type: text/x-patch; charset="US-ASCII"; 
+	name="0001-Show-how-shortname-could-be-written.patch"
+Content-Disposition: attachment; 
+	filename="0001-Show-how-shortname-could-be-written.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mcduyzgi0>
+X-Attachment-Id: f_mcduyzgi0
+
+RnJvbSBmOTFmYTk2MjU2Nzc1YTMwZjhiNzU3NjAzYzU2Y2FhNzczNmFkODFlIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBNaWd1ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+CkRhdGU6
+IFRodSwgMjYgSnVuIDIwMjUgMjA6NDg6MDEgKzAyMDAKU3ViamVjdDogW1BBVENIXSBTaG93IGhv
+dyBgc2hvcnRuYW1lKClgIGNvdWxkIGJlIHdyaXR0ZW4KCk5vdC1TaWduZWQtb2ZmLWJ5OiBNaWd1
+ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+Ci0tLQogcnVzdC9rZXJuZWwvbGliLnJzICAgICB8
+ICAzICsrCiBydXN0L2tlcm5lbC9wcmludC5ycyAgIHwgNDYgKysrLS0tLS0tLS0tLS0tLS0tLS0K
+IHJ1c3Qva2VybmVsL3N0ci5ycyAgICAgfCA5NiArKysrKysrKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKystLS0KIHNjcmlwdHMvTWFrZWZpbGUuYnVpbGQgfCAgNCArLQogNCBmaWxlcyBj
+aGFuZ2VkLCAxMDIgaW5zZXJ0aW9ucygrKSwgNDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
+cnVzdC9rZXJuZWwvbGliLnJzIGIvcnVzdC9rZXJuZWwvbGliLnJzCmluZGV4IDZiNDc3NGIyYjFj
+My4uMjM4M2I0NTY1ZWYxIDEwMDY0NAotLS0gYS9ydXN0L2tlcm5lbC9saWIucnMKKysrIGIvcnVz
+dC9rZXJuZWwvbGliLnJzCkBAIC0xOSw2ICsxOSw5IEBACiAvLyBTdGFibGUgc2luY2UgUnVzdCAx
+Ljc5LjAuCiAjIVtmZWF0dXJlKGlubGluZV9jb25zdCldCiAvLworLy8gU3RhYmxlIHNpbmNlIFJ1
+c3QgMS44MC4wLgorIyFbZmVhdHVyZShzcGxpdF9hdF9jaGVja2VkKV0KKy8vCiAvLyBTdGFibGUg
+c2luY2UgUnVzdCAxLjgxLjAuCiAjIVtmZWF0dXJlKGxpbnRfcmVhc29ucyldCiAvLwpkaWZmIC0t
+Z2l0IGEvcnVzdC9rZXJuZWwvcHJpbnQucnMgYi9ydXN0L2tlcm5lbC9wcmludC5ycwppbmRleCBl
+NTk4MzExZjE5OGMuLmMzN2IyNzg3M2M2ZiAxMDA2NDQKLS0tIGEvcnVzdC9rZXJuZWwvcHJpbnQu
+cnMKKysrIGIvcnVzdC9rZXJuZWwvcHJpbnQucnMKQEAgLTQzNCw0OSArNDM0LDEzIEBAIG1hY3Jv
+X3J1bGVzISBwcl9jb250ICgKIC8vLyAjIEV4YW1wbGVzCiAvLy8KIC8vLyBgYGAKLS8vLyB1c2Ug
+a2VybmVsOjpzZmlsZTsKKy8vLyAjIHVzZSBrZXJuZWw6OnNmaWxlOwogLy8vIHByX2VyciEoInt9
+Ont9XG4iLCBzZmlsZSEoKSwgbGluZSEoKSk7Ci0vLy8gY29uc3QgU0ZJTEU6ICYnc3RhdGljIHN0
+ciA9IHNmaWxlISgpOworLy8vIGNvbnN0IFNGSUxFOiAmc3RyID0gc2ZpbGUhKCk7CiAvLy8gYGBg
+CiAjW21hY3JvX2V4cG9ydF0KIG1hY3JvX3J1bGVzISBzZmlsZSB7Ci0gICAgKCkgPT4ge3sKLSAg
+ICAgICAgY29uc3QgewotICAgICAgICAgICAgY29uc3QgRklMRTogJnN0ciA9IGNvcmU6OmZpbGUh
+KCk7Ci0KLSAgICAgICAgICAgIC8vIFtgLmFzX2J5dGVzKClgXSBkb2VzIG5vdCBzdXBwb3J0IG5v
+bi1BU0NJSSBmaWxlbmFtZXMKLSAgICAgICAgICAgIGFzc2VydCEoOjpjb3JlOjpwcmltaXRpdmU6
+OnN0cjo6aXNfYXNjaWkoRklMRSkpOwotCi0gICAgICAgICAgICBsZXQgc3RhcnQgPSBtYXRjaCA6
+Omtlcm5lbDo6c3RyOjpyZmluZF9jb25zdChGSUxFLCAnLycpIHsKLSAgICAgICAgICAgICAgICBT
+b21lKHNsYXNoKSA9PiBzbGFzaCArIDEsCi0gICAgICAgICAgICAgICAgTm9uZSA9PiAwLAotICAg
+ICAgICAgICAgfTsKLSAgICAgICAgICAgIGxldCBlbmQgPSBtYXRjaCA6Omtlcm5lbDo6c3RyOjpy
+ZmluZF9jb25zdChGSUxFLCAnLicpIHsKLSAgICAgICAgICAgICAgICBTb21lKGRvdCkgPT4gZG90
+LAotICAgICAgICAgICAgICAgIE5vbmUgPT4gRklMRS5sZW4oKSwKLSAgICAgICAgICAgIH07Ci0K
+LSAgICAgICAgICAgIC8vIE1ha2Ugc3VyZSB0aGF0IHRoZXJlIGFjdHVhbGx5IGlzIHNvbWV0aGlu
+ZyB0byByZXR1cm4uICBUaGlzIGFsc28KLSAgICAgICAgICAgIC8vIGNvdmVycyBhIGxvdCBvZiBj
+b3JuZXIgY2FzZXMsIHN1Y2ggYXMgZWxpbWluYXRpbmcgZmlsZW5hbWVzIHRoYXQKLSAgICAgICAg
+ICAgIC8vIGVuZCBpbiBhIHNsYXNoIChub3QgcG9zc2libGUpIG9yIGRvbid0IGhhdmUgYW4gZXh0
+ZW5zaW9uLAotICAgICAgICAgICAgLy8gYW5kIG1ha2luZyBzdXJlIHRoYXQgYHN0YXJ0YCA8IGBG
+SUxFLmxlbigpYCBhbmQgYGVuZGAgLSBgc3RhcnRgID4gMC4KLSAgICAgICAgICAgIGFzc2VydCEo
+c3RhcnQgPCBlbmQpOwotCi0gICAgICAgICAgICAvLyBUaGUgZm9sbG93aW5nIGNvZGUgdGhlIGVx
+dWl2YWxlbnQgb2YgJkZJTEVbc3RhcnQuLnN0YXJ0K2xlbl0sCi0gICAgICAgICAgICAvLyBleGNl
+cHQgdGhhdCBpdCBhbGxvd3MgZm9yIGNvbnN0IGNvbnRleHRzLiAgRm9yIGV4YW1wbGUsCi0gICAg
+ICAgICAgICAvLyAgIGNvbnN0IFNGSUxFOiAmJ3N0YXRpYyBzdHIgPSBzZmlsZSEoKTsKLQotICAg
+ICAgICAgICAgbGV0IGJhc2VfcHRyOiAqY29uc3QgdTggPSBGSUxFLmFzX3B0cigpOwotCi0gICAg
+ICAgICAgICAvLyBTQUZFVFk6IFRoZSBhYm92ZSBhc3NlcnRpb24gZW5zdXJlcyB0aGF0IGBzdGFy
+dGAgcG9pbnRzIHRvIGluc2lkZQotICAgICAgICAgICAgLy8gdGhlIHN0cmluZy4KLSAgICAgICAg
+ICAgIGxldCBwdHI6ICpjb25zdCB1OCA9IHVuc2FmZSB7IGJhc2VfcHRyLmFkZChzdGFydCkgfTsK
+LSAgICAgICAgICAgIC8vIFNBRkVUWTogQmFzZWQgb24gYWxsIGNvbnN0cmFpbnRzIG9uIGBzdGFy
+dGAgYW5kIGBlbmRgLCB0aGlzIHNsaWNlCi0gICAgICAgICAgICAvLyB3aWxsIG5ldmVyIGV4dGVu
+ZCBiZXlvbmQgdGhlIHN0cmluZy4KLSAgICAgICAgICAgIGxldCBzbGljZSA9IHVuc2FmZSB7IGNv
+cmU6OnNsaWNlOjpmcm9tX3Jhd19wYXJ0cyhwdHIsIGVuZCAtIHN0YXJ0KSB9OwotICAgICAgICAg
+ICAgLy8gU0FGRVRZOiBXZSBrbm93IHRoYXQgdGhlIHNsaWNlIGlzIHZhbGlkIFVURi04LCBiZWNh
+dXNlIHdlIGNoZWNrZWQKLSAgICAgICAgICAgIC8vIHRoYXQgRklMRSBpcyBBU0NJSSAodmlhIGlz
+X2FzY2lpKCkgYWJvdmUpLgotICAgICAgICAgICAgdW5zYWZlIHsgY29yZTo6c3RyOjpmcm9tX3V0
+ZjhfdW5jaGVja2VkKHNsaWNlKSB9Ci0gICAgICAgIH0KLSAgICB9fTsKKyAgICAoKSA9PiB7Cisg
+ICAgICAgIGNvbnN0IHsgOjprZXJuZWw6OnN0cjo6c2hvcnRuYW1lKGZpbGUhKCkpLnVud3JhcCgp
+IH0KKyAgICB9OwogfQpkaWZmIC0tZ2l0IGEvcnVzdC9rZXJuZWwvc3RyLnJzIGIvcnVzdC9rZXJu
+ZWwvc3RyLnJzCmluZGV4IDY4MGM2MzFjMmViMy4uODRkNzJkNzRhOWQ0IDEwMDY0NAotLS0gYS9y
+dXN0L2tlcm5lbC9zdHIucnMKKysrIGIvcnVzdC9rZXJuZWwvc3RyLnJzCkBAIC05NDUsMTkgKzk0
+NSwxMDUgQEAgbWFjcm9fcnVsZXMhIGZtdCB7CiAvLy8gIyBFeGFtcGxlcwogLy8vCiAvLy8gYGBg
+Ci0vLy8gdXNlIGtlcm5lbDo6cHJpbnQ6OnJmaW5kX2NvbnN0OwotLy8vIGxldCBsID0gcmZpbmRf
+Y29uc3QoIndoZW4gd2lsbCB0aGVuIGJlIG5vdz8iLCAnbCcpOworLy8vICMgdXNlIGtlcm5lbDo6
+c3RyOjpzbGljZV91OF9yZmluZF9jb25zdDsKKy8vLyBsZXQgbCA9IHNsaWNlX3U4X3JmaW5kX2Nv
+bnN0KCJ3aGVuIHdpbGwgdGhlbiBiZSBub3c/Ii5hc19ieXRlcygpLCBiJ2wnKTsKIC8vLyBhc3Nl
+cnQhKGwgPT0gU29tZSg4KSk7CiAvLy8gYGBgCiAjW2lubGluZV0KLXB1YiBjb25zdCBmbiByZmlu
+ZF9jb25zdChoYXlzdGFjazogJnN0ciwgbmVlZGxlOiBjaGFyKSAtPiBPcHRpb248dXNpemU+IHsK
+LSAgICBsZXQgaGF5c3RhY2sgPSBoYXlzdGFjay5hc19ieXRlcygpOworcHViIGNvbnN0IGZuIHNs
+aWNlX3U4X3JmaW5kX2NvbnN0KGhheXN0YWNrOiAmW3U4XSwgbmVlZGxlOiB1OCkgLT4gT3B0aW9u
+PHVzaXplPiB7CiAgICAgbGV0IG11dCBpID0gaGF5c3RhY2subGVuKCk7CiAgICAgd2hpbGUgaSA+
+IDAgewogICAgICAgICBpIC09IDE7Ci0gICAgICAgIGlmIGhheXN0YWNrW2ldID09IG5lZWRsZSBh
+cyB1OCB7CisgICAgICAgIGlmIGhheXN0YWNrW2ldID09IG5lZWRsZSB7CiAgICAgICAgICAgICBy
+ZXR1cm4gU29tZShpKTsKICAgICAgICAgfQogICAgIH0KICAgICBOb25lCiB9CisKKy8vLyAuLi4K
+Ky8vLworLy8vICMgRXhhbXBsZXMKKy8vLworLy8vIGBgYAorLy8vICMgdXNlIGtlcm5lbDo6c3Ry
+OjpzaG9ydG5hbWU7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoIiIpLCBOb25lKTsKKy8vLyBh
+c3NlcnRfZXEhKHNob3J0bmFtZSgiZXhhbXBsZSIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNo
+b3J0bmFtZSgiZXhhbXBsZS5ycyIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
+cGF0aC9leGFtcGxlIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJwYXRoL2V4
+YW1wbGUucnMiKSwgU29tZSgiZXhhbXBsZSIpKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
+bG9uZ2VyL3BhdGgvZXhhbXBsZS5mb28ucnMiKSwgU29tZSgiZXhhbXBsZS5mb28iKSk7CisvLy8K
+Ky8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiL2UuIiksIFNvbWUoImUiKSk7CisvLy8gYXNzZXJ0
+X2VxIShzaG9ydG5hbWUoIi5lLyIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
+L2UuZSIpLCBTb21lKCJlIikpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCIuZS9lIiksIE5v
+bmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJlL2UuIiksIFNvbWUoImUiKSk7CisvLy8g
+YXNzZXJ0X2VxIShzaG9ydG5hbWUoImUuZS8iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9y
+dG5hbWUoImUvZS5lIiksIFNvbWUoImUiKSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUu
+ZS9lIiksIE5vbmUpOworLy8vCisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoIi5lLyIpLCBOb25l
+KTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS5lL2UiKSwgTm9uZSk7CisvLy8KKy8vLyBh
+c3NlcnRfZXEhKHNob3J0bmFtZSgiLi4iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5h
+bWUoIi4uZSIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS4uIiksIE5vbmUp
+OworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJlLi5lIiksIE5vbmUpOworLy8vCisvLy8gYXNz
+ZXJ0X2VxIShzaG9ydG5hbWUoIi8vIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1l
+KCIvL2UiKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUvLyIpLCBOb25lKTsK
+Ky8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS8vZSIpLCBOb25lKTsKKy8vLworLy8vIGFzc2Vy
+dF9lcSEoc2hvcnRuYW1lKCIvLiIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
+Li8iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoIi8uZSIpLCBOb25lKTsKKy8v
+LyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiLi9lIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hv
+cnRuYW1lKCJlLy4iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUuLyIpLCBO
+b25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS8uZSIpLCBOb25lKTsKKy8vLyBhc3Nl
+cnRfZXEhKHNob3J0bmFtZSgiZS4vZSIpLCBOb25lKTsKKy8vLworLy8vIGFzc2VydF9lcSEoc2hv
+cnRuYW1lKCIuIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCIvIiksIE5vbmUp
+OworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCIuZSIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEh
+KHNob3J0bmFtZSgiL2UiKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUuIiks
+IE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJlLyIpLCBOb25lKTsKKy8vLyBhc3Nl
+cnRfZXEhKHNob3J0bmFtZSgiZS5lIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1l
+KCJlL2UiKSwgTm9uZSk7CisvLy8KKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiIiksIE5vbmUp
+OworLy8vIGBgYAorcHViIGNvbnN0IGZuIHNob3J0bmFtZShwYXRoOiAmc3RyKSAtPiBPcHRpb248
+JnN0cj4geworICAgIGxldCBwYXRoID0gcGF0aC5hc19ieXRlcygpOworCisgICAgbGV0IFNvbWUo
+bGFzdF9zbGFzaCkgPSBzbGljZV91OF9yZmluZF9jb25zdChwYXRoLCBiJy8nKSBlbHNlIHsKKyAg
+ICAgICAgcmV0dXJuIE5vbmU7CisgICAgfTsKKyAgICBsZXQgU29tZShwYXRoKSA9IHBhdGguc3Bs
+aXRfYXRfY2hlY2tlZChsYXN0X3NsYXNoICsgMSkgZWxzZSB7CisgICAgICAgIHJldHVybiBOb25l
+OworICAgIH07CisgICAgbGV0IHBhdGggPSBwYXRoLjE7CisKKyAgICBsZXQgU29tZShsYXN0X3Bl
+cmlvZCkgPSBzbGljZV91OF9yZmluZF9jb25zdChwYXRoLCBiJy4nKSBlbHNlIHsKKyAgICAgICAg
+cmV0dXJuIE5vbmU7CisgICAgfTsKKyAgICBsZXQgU29tZShwYXRoKSA9IHBhdGguc3BsaXRfYXRf
+Y2hlY2tlZChsYXN0X3BlcmlvZCkgZWxzZSB7CisgICAgICAgIHJldHVybiBOb25lOworICAgIH07
+CisgICAgbGV0IHBhdGggPSBwYXRoLjA7CisKKyAgICAvLyBUT0RPOiBhZnRlciBSdXN0IDEuODQu
+MCwgd2UgY291bGQgdXNlIGBzcGxpdF9hdF9jaGVja2VkYCBvbiBgc3RyYAorICAgIC8vIGRpcmVj
+dGx5IHRvIGF2b2lkIGdvaW5nIHRocm91Z2ggYCZbdThdYC4KKyAgICBsZXQgT2socGF0aCkgPSBj
+b3JlOjpzdHI6OmZyb21fdXRmOChwYXRoKSBlbHNlIHsKKyAgICAgICAgcmV0dXJuIE5vbmU7Cisg
+ICAgfTsKKworICAgIGlmIHBhdGguaXNfZW1wdHkoKSB7CisgICAgICAgIHJldHVybiBOb25lOwor
+ICAgIH0KKworICAgIFNvbWUocGF0aCkKK30KZGlmZiAtLWdpdCBhL3NjcmlwdHMvTWFrZWZpbGUu
+YnVpbGQgYi9zY3JpcHRzL01ha2VmaWxlLmJ1aWxkCmluZGV4IGE2NDYxZWE0MTFmNy4uMjA3ZjJm
+ZjUwNGU5IDEwMDY0NAotLS0gYS9zY3JpcHRzL01ha2VmaWxlLmJ1aWxkCisrKyBiL3NjcmlwdHMv
+TWFrZWZpbGUuYnVpbGQKQEAgLTMwOCwxNCArMzA4LDE2IEBAICQob2JqKS8lLmxzdDogJChvYmop
+LyUuYyBGT1JDRQogCiAjIFRoZSBmZWF0dXJlcyBpbiB0aGlzIGxpc3QgYXJlIHRoZSBvbmVzIGFs
+bG93ZWQgZm9yIG5vbi1gcnVzdC9gIGNvZGUuCiAjCisjICAgLSBTdGFibGUgc2luY2UgUnVzdCAx
+Ljc5LjA6IGBmZWF0dXJlKGlubGluZV9jb25zdClgLgogIyAgIC0gU3RhYmxlIHNpbmNlIFJ1c3Qg
+MS44MS4wOiBgZmVhdHVyZShsaW50X3JlYXNvbnMpYC4KICMgICAtIFN0YWJsZSBzaW5jZSBSdXN0
+IDEuODIuMDogYGZlYXR1cmUoYXNtX2NvbnN0KWAsIGBmZWF0dXJlKHJhd19yZWZfb3ApYC4KKyMg
+ICAtIFN0YWJsZSBzaW5jZSBSdXN0IDEuODMuMDogYGZlYXR1cmUoY29uc3Rfb3B0aW9uKWAuCiAj
+ICAgLSBTdGFibGUgc2luY2UgUnVzdCAxLjg3LjA6IGBmZWF0dXJlKGFzbV9nb3RvKWAuCiAjICAg
+LSBFeHBlY3RlZCB0byBiZWNvbWUgc3RhYmxlOiBgZmVhdHVyZShhcmJpdHJhcnlfc2VsZl90eXBl
+cylgLgogIwogIyBQbGVhc2Ugc2VlIGh0dHBzOi8vZ2l0aHViLmNvbS9SdXN0LWZvci1MaW51eC9s
+aW51eC9pc3N1ZXMvMiBmb3IgZGV0YWlscyBvbgogIyB0aGUgdW5zdGFibGUgZmVhdHVyZXMgaW4g
+dXNlLgotcnVzdF9hbGxvd2VkX2ZlYXR1cmVzIDo9IGFzbV9jb25zdCxhc21fZ290byxhcmJpdHJh
+cnlfc2VsZl90eXBlcyxsaW50X3JlYXNvbnMscmF3X3JlZl9vcAorcnVzdF9hbGxvd2VkX2ZlYXR1
+cmVzIDo9IGFzbV9jb25zdCxhc21fZ290byxhcmJpdHJhcnlfc2VsZl90eXBlcyxjb25zdF9vcHRp
+b24saW5saW5lX2NvbnN0LGxpbnRfcmVhc29ucyxyYXdfcmVmX29wCiAKICMgYC0tb3V0LWRpcmAg
+aXMgcmVxdWlyZWQgdG8gYXZvaWQgdGVtcG9yYXJpZXMgYmVpbmcgY3JlYXRlZCBieSBgcnVzdGNg
+IGluIHRoZQogIyBjdXJyZW50IHdvcmtpbmcgZGlyZWN0b3J5LCB3aGljaCBtYXkgYmUgbm90IGFj
+Y2Vzc2libGUgaW4gdGhlIG91dC1vZi10cmVlCgpiYXNlLWNvbW1pdDogNzczZjJmOTQ5ZjAyZDQ2
+MzNhNTFiNDFjMTIwNGNhN2RmMWI3ZDIzYgotLSAKMi41MC4wCgo=
+--00000000000064ba5806387fcf31--
