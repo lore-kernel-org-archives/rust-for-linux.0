@@ -1,140 +1,150 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D195202C50;
-	Thu, 26 Jun 2025 17:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8B2339A8;
+	Thu, 26 Jun 2025 17:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750959747; cv=none; b=nv6yDgWgjORShhWRF0nayMc6uQrc9pCJqUCP0gMNQ+6jbkkHEYXRFe+yHdOp/o191cnPSqX29bVhIbTnRisUKt25DdqwgkWENHh38K58SHPTawa59K/ZXm5lMb2UQVTJWGyjaMWYqzCW1YEz3cduyxJUr2x6y3M+J4cCNMWLPJw=
+	t=1750960111; cv=none; b=QjZ0dtVh8lWZwu5+k1ongWwP1l29p7wJ5imWaskZfpKATGBcSLCICF7oedDAdBBPOdvwVFovzPuNxYrKfFEkHBa5fwhCFj2gWH/8eGCqkpBG9d3vVgijJOfxyNJEjwI6wQCqRh51YIpsJXXFPrS50ueuJrCPzJBu1yQLMhy/S/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750959747; c=relaxed/simple;
-	bh=d/uFaFpLqxiJWZje950XRpP9HEjDy0svn2RVhXaZP6w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WQGjZ/0Dd4WJ3OO0HaurlrTPdpanp1qwQGjJmi284VlNLX6UHuuaOwZNHENcFB2SqBYRg7WuWem1g0e7KitRAPPqJ3pyUmxyqXoUHIAbUmoePXtyCdZuYUm+E951DzXdAc7S+I+y0VwCwFmWCgrlhI8G2+jf354kfYAVaYfQCQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZIBBs1PB; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1750960111; c=relaxed/simple;
+	bh=LRec7XG15yYVqYXD4V+rr6o+ySekVyH57ZR0Z7yirGE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iOkMJMOVfgbDrXQgEYX4MMn3UvlI2PDOiLVZpY4bMe95NLRXIiOC8DVZ3E24iPrXRQY7rgYbn/s6mM+poELCDMBUUfu3Hu89wPW03hhN9czx9ikoZzNBDMRXEKjBs/5rBtQsUyGd2ZyEi1DhqRL8B7DWHAO2/xWiNQS+fKEzrug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GFtVBfcY; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZIBBs1PB"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a536ecbf6fso765258f8f.2;
-        Thu, 26 Jun 2025 10:42:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFtVBfcY"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4536b8c183cso8603985e9.0;
+        Thu, 26 Jun 2025 10:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750959744; x=1751564544; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9it6V+UE5SX4dDhUGK283b/ucph+OC15b+uAeGnEJBc=;
-        b=ZIBBs1PBblxWhuOkkVY84zVzw+nDZXUNniuDYQJrzSs87JGWyf38MmJKRMJi+4ibMg
-         lJ97AGpaiwQtd6A41uD7hS2Y7KOtTHc/266lRKvEiOaHhw+Ttm0aJhA99t2r0Ydv5/5T
-         gK+/lo4ILYWIZYDWxSYYc3J87Se1jSD7dmnihwMiBy7SFLmxO/EQtJ1q/+fnqCmGEnCv
-         SD5FbiGEy9T5SlkJkTtUMEJrGqtjfPds8zz9ftCfHP4gFwad00KTPTSHspm5GdgrpLYk
-         eKe7RYvOa1DYR3qdPLfuwwl1azOlsWHtZ80tPmCZhiBzQa35ksU6o4oo8MW71LxTzFqB
-         1HnQ==
+        d=gmail.com; s=20230601; t=1750960108; x=1751564908; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=d4IQo3oY1NUbU13/kHA6jBPwbWfvABXBa/vUplEI8Dw=;
+        b=GFtVBfcY84Mb2yshMniEEk1Ri3iAEBSQ5IB/wjYQvJXN+rB06D5AQTj8fvOL6wwxj5
+         v8gwkfOOApiSVNi+E0E7196UcKcLChsbtzlYab/CvCYR2Ffec9nNmlN4Xk4EnbkiHCyv
+         t3qH46m/YQccqMUS5ao/v22DFSNe3CUzIhdacv3JE2zz6WKKqnsBOw1gf6dFggfASAuc
+         iwsRriGnBQkDMYQQ0A+h2D2c69Fc6vIG4TFbG+PnqsuvsEOpLPLGl38dOYfiwDrRn40i
+         lT1ZqgMQqzaXQlDxNJkJ9y2jpHSxJtegFADALh1D3CZD1+fJhp/DZdntoi/qh0GaJpAJ
+         rwSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750959744; x=1751564544;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9it6V+UE5SX4dDhUGK283b/ucph+OC15b+uAeGnEJBc=;
-        b=uNAesVnoZuko4vb/M73twto/y090a/c8TDn2/l2a8LYAV8rQHMv7lFzBVui3WGzcnw
-         At4tneR7Xv8BuR+JENHtyII98/8BvoIxrz89na1xKqSoNlI54/bKDTR2b7pkDURxSjBE
-         ktqdA53ExHzcjS/1QApuOWSvV35i5i+xgx7xxQRW56iAXM6DDFzGlstTkFc4iceMvFv9
-         l+j7TePq6h3sowqcr8AQyWz41XDtjVyoN/al0e5fpAX8E40PG8avC5cWZCBfj/P/L84e
-         JYtpXeK5GOJrXJe8inmr0eZ2Cj5f8Nqjv54AHRWlWaGQx2mIqS/R7ibW9ng/v1mUJKdx
-         YR1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUPWTQUVFe8x8U+x4iVpwa0LMugiqFDU/ln52bYoPct5/V0ZkX/p35WFibUG9AQyfyfo0BNahSH5c1P@vger.kernel.org, AJvYcCVejSgnGeESX6WBOJ4qUEHK8aVcBr95/tr0Z29mXVc99Cyl0eBN7Za395DUmdoFoNWy/0uY+CM9/TIvh7X5@vger.kernel.org, AJvYcCWWvErnrz0tBlDz+BVeqkIucAUA8SlfhgbIsXzDVYxULGSr6ta6fY2VhROlu4mroOLF77mVje4Ic/BrRA==@vger.kernel.org, AJvYcCXKcC/CwnU4JsIzSybjBRnusWdO7F2P7FMy6DxG2IG3QL3LRpdy5pE8ygiVBVP9pM1ZpglG0A0fFUM24qTjnwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQbjJ0dKqWWY3B6jAy3iyuAiIDhgrtWzzt0KnGDaX0Dz6xRSOi
-	sJ60ZbdpQEFGPI91zBMXtp47JvGhNF2AF01W/1OusebBuWBXjr0DjMkP
-X-Gm-Gg: ASbGncs2VTMqLbhLVxWs5xE9QU92vub5t8FZIvyAmwnoLTrRaMDs8FkGxMz3o8zuGTh
-	yyGNNoICDb/UztkzEUI4uXb1CCsM53PfZnCxRz/zlzLcMuXjMP8wCgUPHPXha3JCQXv+CjbfxvT
-	g0v3SFKshhaYlN/tPtNCsxzhjGNZKO31LwRX62H6qBzP91d6AlsfiUlYvT7CZo1xi4PMMTxn1a9
-	A0RxyBsO1YidlmV9eeKuA9eYWeu1bGZw/kxzGHpjxegkwX0bveOBV0f7rQEtFgta84rGwZ/d3Ml
-	56hHnrk4O0Nsi5Q6dfdma1rn5EzSHZhWXVt5v6OHK2iGMe/trCBHfoMBf6sqEsgeg2KkOLU=
-X-Google-Smtp-Source: AGHT+IGr2M9MxH/JfMsZ07lpE1ikbaPFCtQUD7frnfdUMbPRMyzGWfcYKWrr5HHz3Nw1g/Fqcy5Sag==
-X-Received: by 2002:a05:6000:2082:b0:3a3:7ba5:93a5 with SMTP id ffacd0b85a97d-3a8feb85191mr466394f8f.26.1750959743398;
-        Thu, 26 Jun 2025 10:42:23 -0700 (PDT)
-Received: from [10.38.1.85] ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823b6c21sm56282555e9.29.2025.06.26.10.42.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Jun 2025 10:42:23 -0700 (PDT)
-Message-ID: <31804bbf-1a0b-4312-8db6-532a008528a2@gmail.com>
-Date: Thu, 26 Jun 2025 18:40:06 +0100
+        d=1e100.net; s=20230601; t=1750960108; x=1751564908;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d4IQo3oY1NUbU13/kHA6jBPwbWfvABXBa/vUplEI8Dw=;
+        b=LIetQ9111AigcSL1GcKzrqYLQK9FJMh2/TaaIZeQkE3VD7BpUn5CHUY33YLWPlAOXZ
+         8oiKHLzwC3P1fszf3WSHHB/FOYk0+EW5OhOX6OTCnxkLXoM9zSlX+GJr6Fn1xSp5sjtr
+         EQhroDMVMi/pEUrmsdgxhFK2vjBT564l4/dBtKY7t74gVUXRSddu85Py1oQkNc7s9DOY
+         YTaFro9FMn1163osMA1aUENlUzRG3Oca+3q+V3rWdzhy2AuiNxER5opC0uyWXI6dR6jC
+         wyPmFd/6904cgfb8CYbz/0A3vBuogco6KBOY835uHQboNtY9/T1N77FGlZ9XXU8kjOij
+         J78Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVc3G1CVwrjcM+fUNlHBw1wJgTMATUvsxT3hsu4AXZ93vBTAgRRcby/lXpP1RM/3CqPbAIjh76PATs=@vger.kernel.org, AJvYcCVsgCjsud+BcU9dOeua9+V94YGFmSge+uCQpKAI0PrKumn1UNtvu8rka4m4XrpleguqCSgunfaZdg5PPMap@vger.kernel.org, AJvYcCW/WOCxVKMgsG/6xbK+aaZopeqBFMH/Qxj2Ds9mzSMvxgxn5z+n//jBtSyqcyT5q3eap9OKdRVYqYn7yDTkI60=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7E2XUXsTw8rV9+B9FH3brXJXHVd6SFznvSe0QTVNxQJiktxqK
+	afiU+S4COeCL1kHEkr5XpD2sJOzvyTu2qrFPURKl15YLyfjZMmQu7T7w
+X-Gm-Gg: ASbGncvreEv+iHLtvUcRFAi3fyjo+fHbUuyr7+L9g92puySrlxQ5Dmtbekd3qlOt26V
+	O4aG9wsHDWo9O18Htd3WTFqrSTfZ6Q8ZCWdPpwHLvnywQlJ7ZVJ9Q6tJMPzXWOapIGjgsqGgq3N
+	Y+dEKZiWnmuUs+ZAlIIFV2vtAUfDsuAcBJcSMZpUteK75h2EjVaktISqFHOoV7b+CtLvCgyeyM2
+	ORStPigmfSYf0LCZtEIxmzWwM+p5+wrdIaSRcjTTDzdBh/cHdFlmub9rym2GvWEpaEU6Xxqeqm8
+	+oxiZW9EWhH9L2dNWlWRX9VcE7Yu4szW1Ws0jW/gz7/B6ggjARfv+DLTJQsvrLI8V4BbAqL/jqx
+	9A9FH7ABsgKpfjgOzSI/fqx0WwvnrGc9Mef45
+X-Google-Smtp-Source: AGHT+IEtQQDsCtrX7XpvEE3Zm7CcK8+iP9f0fNFYFZWyY02phYTfFomN9ziJ0aLLcUwjE6mDiO8Wzw==
+X-Received: by 2002:a05:600c:8b41:b0:442:f904:1305 with SMTP id 5b1f17b1804b1-4538901ec48mr49592805e9.6.1750960107401;
+        Thu, 26 Jun 2025 10:48:27 -0700 (PDT)
+Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a892e52c2esm494455f8f.53.2025.06.26.10.48.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Jun 2025 10:48:26 -0700 (PDT)
+Sender: Igor Korotin <igorkor.3vium@gmail.com>
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Xiangfei Ding <dingxiangfei2009@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-i2c@vger.kernel.org
+Subject: [PATCH v1 0/4] rust: Add basic I2C driver abstractions
+Date: Thu, 26 Jun 2025 18:46:22 +0100
+Message-ID: <20250626174623.904917-1-igor.korotin.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 4/9] rust: acpi: add `acpi::DeviceId` abstraction
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>,
- Saravana Kannan <saravanak@google.com>, Alex Hung <alex.hung@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, Jakub Kicinski <kuba@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Remo Senekowitsch <remo@buenzli.dev>, Tamir Duberstein <tamird@gmail.com>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, devicetree@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Benno Lossin <lossin@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Len Brown <lenb@kernel.org>, Trevor Gross <tmgross@umich.edu>
-References: <20250620150914.276272-1-igor.korotin.linux@gmail.com>
- <20250620152425.285683-1-igor.korotin.linux@gmail.com>
- <c5d750fd-ffcf-4d07-bfff-ebe206faa41a@kernel.org>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <c5d750fd-ffcf-4d07-bfff-ebe206faa41a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+This patch series introduces basic Rust I2C driver abstractions 
+and optional ACPI match-table support and provides a sample driver 
+demonstrating both OF and ACPI binding
+
+Currently Rust I2C abstractions support only Open Firmware OF device 
+matching. This series splits the work into four patches so that the 
+core abstractions and sample driver can land immediately while ACPI 
+integration may be reviewed once the ACPI macros are upstream
+
+Changes include
+ - core I2C abstractions `i2c::Device` `i2c::Driver` `i2c::Adapter` 
+   built on `struct i2c_client` and `struct i2c_driver`
+ - a standalone Rust sample driver exercising Legacy I2C ID and OF ID
+   matching
+ - optional ACPI ID-table support in the `i2c::Driver` abstraction
+ - ACPI-enabled sample driver showing `kernel::acpi_device_table!` 
+   usage
+
+This separation lets maintainers review and merge the non-ACPI portions
+immediately while patches 3 and 4 both depending on the ACPI 
+infrastructure can be queued once the ACPI macros are upstream
+
+Patch series:
+
+1 rust: i2c: add basic I2C device and driver abstractions
+2 samples: rust: add I2C sample driver (OF only)
+3 rust: i2c: support ACPI match-table in driver abstractions
+Depends-on: 20250620152425.285683-1-igor.korotin.linux@gmail.com
+4 samples: rust: show ACPI ID-table in I2C sample driver
+Depends-on: 20250620152425.285683-1-igor.korotin.linux@gmail.com
+
+Igor Korotin (4):
+  rust: i2c: add basic I2C device and driver abstractions
+  samples: rust: add Rust I2C sample driver
+  rust: i2c: ACPI ID-table support for I2C abstractions
+  samples: rust: show ACPI ID-table in I2C sample driver
+
+ MAINTAINERS                     |   3 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/i2c.c              |  15 ++
+ rust/kernel/i2c.rs              | 386 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ samples/rust/Kconfig            |  11 +
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_driver_i2c.rs |  69 ++++++
+ 9 files changed, 489 insertions(+)
+ create mode 100644 rust/helpers/i2c.c
+ create mode 100644 rust/kernel/i2c.rs
+ create mode 100644 samples/rust/rust_driver_i2c.rs
 
 
-On 6/26/25 16:25, Danilo Krummrich wrote:
-> On 6/20/25 5:24 PM, Igor Korotin wrote:
->> +impl DeviceId {
->> +    const ACPI_ID_LEN: usize = 16;
->> +
->> +    /// Create a new device id from an ACPI 'id' string.
->> +    pub const fn new<const N: usize>(id: &[u8; N]) -> Self {
-> 
-> Didn't notice before, but why was this silently changed from &CStr to
-> &[u8; N]
-> from v6 to v7?
-> 
->> +        build_assert!(N <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
->> +        // Replace with `bindings::acpi_device_id::default()` once
->> stabilized for `const`.
->> +        // SAFETY: FFI type is valid to be zero-initialized.
->> +        let mut acpi: bindings::acpi_device_id = unsafe
->> { core::mem::zeroed() };
->> +        let mut i = 0;
->> +        while i < N {
->> +            acpi.id[i] = id[i];
->> +            i += 1;
->> +        }
->> +
->> +        Self(acpi)
->> +    }
->> +}
+base-commit: 63dafeb392139b893a73b6331f347613f0929702
+-- 
+2.43.0
 
-In v6 I was asked to change assert! (runtime) to build_assert! (build time)
-It was as follows:
-
-> +    pub const fn new(id: &'static CStr) -> Self {
-> +        assert!(id.len() <= Self::ACPI_ID_LEN, "ID exceeds 16 bytes");
-
-but id.len() breaks const context and so build_assert! triggers
-assertion. If I needed to explicitly describe change from CStr to
-[u8;20], then it's my bad.
-
-Thanks,
-Igor
