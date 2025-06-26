@@ -1,154 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CEA2E5412;
-	Thu, 26 Jun 2025 13:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98EB2E540B;
+	Thu, 26 Jun 2025 13:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750943544; cv=none; b=eEY1QzUkrw1XF7pzX0FGP/LrFiTLQepnP7E5J6p0ic0beeGth8dQKqCcZx+lSOZMErEMSrCydynUMMU1RJtc0pqWCB4DShj7JUy/dXSVq52BvVhOuMtuVW+/7DqdesV8yVoyfqZcQMezQlfFh9ZgLjOLH2/n2BTB0IXGLzlmaY0=
+	t=1750943592; cv=none; b=rLLDT/GT+5BRJyzBwC+h92xDGwRUJEwd+AO0VgRYKxy7/nxIgCPsmhlLJh0mf6YqmSuHZ8DhA8045D8mdejE0bRB60Eev/HOt2a+mDAPFrgL+ISn8CyzArVWXkaRUDiawcezT9hEitmzR2lidbsFJyT0qn7cKPyvlKBdnNOBf/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750943544; c=relaxed/simple;
-	bh=6WoBhCawDr2/q9QTjDOrhN78tjcCQb59Az1jMjyMNes=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JrBO3Aw39DZ7YWd7cBNPzVE93aqiAAa+i1Pgy5y670rVt/6PGt/zUxNDqhsP7sfssTbUa/q4zPuq95uDUWQtKxJTjCIZ9Iy0As0Gen96TJCDMBcFrjnzKZVsxbNvNXxhj7W27IhuG5Ps4petr2tuo8lmWH02U1N9aqt8IO4ul3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qnDhrNTI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750943592; c=relaxed/simple;
+	bh=PreKZtSoyeCQQgE0MXWcjP/5/bBwOnNbclzp2Oj3YyU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=NOE/IQHmuapzYQUyrPcTDg/1GUxAI//0E+7llRJGZfl9hE5T0knyECfWwSCcBG7IKjVIlconIObjRibetXCiwu/cIspKYvemTOKWwAWuJ5efpXFtQ1Ez5a2AlH06BgauEO1mtQHVPGiDvHaJodUv/SiwcOTdbLOCkURwVLXMAXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyFvx/SC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qnDhrNTI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F250DC4CEF0;
-	Thu, 26 Jun 2025 13:12:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyFvx/SC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96CAC4CEEB;
+	Thu, 26 Jun 2025 13:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750943543;
-	bh=6WoBhCawDr2/q9QTjDOrhN78tjcCQb59Az1jMjyMNes=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qnDhrNTIfp+SM3B2zLBk3qIttbKsKa1Us2ef4HbgVXoTiUJo7vwKEpRkZ1NuXpbpF
-	 fvtOin+klWJKLTggpH9eYM8j6EoUU03CnCltZvhP6y4So0eF8sqPZwyi4sJzlBcQQa
-	 PObACkruEeL57kJ6+ksbaD1e4BIpcHa0q1sT6bLKqVtvGlZSBnyvnAL1n6Q/Le0OM1
-	 0NhK3NF809MNz4nS7W/iHOcK8Zb9SF+DfJTye47fVm9DnxvK7JAMFTwLVak20Jr1EJ
-	 dWGYBHlR/xCew3+wzio4X0N8o2+p7PfqZqJP/4qq2W6PwuVv0ZgRbTC2BJCpvr0Sts
-	 eBZjGnRnP7n2Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <lkmm@lists.linux.dev>,  <linux-arch@vger.kernel.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Will Deacon" <will@kernel.org>,  "Peter Zijlstra"
- <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,  "Wedson
- Almeida Filho" <wedsonaf@gmail.com>,  "Viresh Kumar"
- <viresh.kumar@linaro.org>,  "Lyude Paul" <lyude@redhat.com>,  "Ingo
- Molnar" <mingo@kernel.org>,  "Mitchell Levy" <levymitchell0@gmail.com>,
-  "Paul E. McKenney" <paulmck@kernel.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Linus Torvalds"
- <torvalds@linux-foundation.org>,  "Thomas Gleixner" <tglx@linutronix.de>
-Subject: Re: [PATCH v5 05/10] rust: sync: atomic: Add atomic {cmp,}xchg
- operations
-In-Reply-To: <20250618164934.19817-6-boqun.feng@gmail.com> (Boqun Feng's
-	message of "Wed, 18 Jun 2025 09:49:29 -0700")
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
-	<jBAtISwM9LKkR7KuCHEnym75NfGOM4z408pMuDfk4U8VzN8PQuk9JJfBc33Usre3YSjbgtFRj8c0ZNeeQMpZsA==@protonmail.internalid>
-	<20250618164934.19817-6-boqun.feng@gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 26 Jun 2025 15:12:12 +0200
-Message-ID: <87a55uzlxv.fsf@kernel.org>
+	s=k20201202; t=1750943591;
+	bh=PreKZtSoyeCQQgE0MXWcjP/5/bBwOnNbclzp2Oj3YyU=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=UyFvx/SCp+HbuN3e7GecTnhWCE7ctRhui/g5helDTlWYPRD4bG+aPKUeDeXOx8Ka+
+	 WV2yxI0wSQq6FLkQpp6ixke8+Iev9J/1RCKzdZvd0a+jRbC4MXMe8qKF5lFxwyTxGt
+	 eWrpN4MpEuJL24yBQywXDis+xgOOe3QXAOwlMpRSoW3JawpmD6N1+iWtdPx+krUsc7
+	 2RQJ3UPWVNjVmt8IHrIgT7sFwPdMP1lXrpOCA+6AJfMhGGm491cB2TTF9D+cfh8yX2
+	 G66cRqz8q46jtptaNrp3gJkNi+AOAi1Gjmweq4jkAe8r5sFg5tjVH04aAA81GNurxW
+	 62E/6LlKRB4Gg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 26 Jun 2025 15:13:06 +0200
+Message-Id: <DAWHP7292ZGD.2SQDBIZOUA4AB@kernel.org>
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <david.m.ertman@intel.com>,
+ <ira.weiny@intel.com>, <leon@kernel.org>, <kwilczynski@kernel.org>,
+ <bhelgaas@google.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v3 4/4] rust: devres: implement register_release()
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250624215600.221167-1-dakr@kernel.org>
+ <20250624215600.221167-5-dakr@kernel.org>
+ <DAWED7BIC32G.338MXRHK4NSJG@kernel.org> <aF0rzzlKgwopOVHV@pollux>
+In-Reply-To: <aF0rzzlKgwopOVHV@pollux>
 
-"Boqun Feng" <boqun.feng@gmail.com> writes:
-
-> xchg() and cmpxchg() are basic operations on atomic. Provide these based
-> on C APIs.
+On Thu Jun 26, 2025 at 1:15 PM CEST, Danilo Krummrich wrote:
+> On Thu, Jun 26, 2025 at 12:36:23PM +0200, Benno Lossin wrote:
+>> Or, we could change `Release` to be:
+>>=20
+>>     pub trait Release {
+>>         type Ptr: ForeignOwnable;
+>>=20
+>>         fn release(this: Self::Ptr);
+>>     }
+>>=20
+>> and then `register_release` is:
+>>=20
+>>     pub fn register_release<T: Release>(dev: &Device<Bound>, data: T::Pt=
+r) -> Result
+>>=20
+>> This way, one can store a `Box<T>` and get access to the `T` at the end.
 >
-> Note that cmpxchg() use the similar function signature as
-> compare_exchange() in Rust std: returning a `Result`, `Ok(old)` means
-> the operation succeeds and `Err(old)` means the operation fails.
+> I think this was also the case before? Well, it was P::Borrowed instead.
+
+Well you had access to a `&T`, but not the `T` directly.
+
+>> Related questions:
+>>=20
+>> * should we implement `ForeignOwnable` for `&'static T`?
 >
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  rust/kernel/sync/atomic/generic.rs | 154 +++++++++++++++++++++++++++++
->  1 file changed, 154 insertions(+)
+> There's already a patch on the list doing this in the context of DebugFS =
+[1].
 >
-> diff --git a/rust/kernel/sync/atomic/generic.rs b/rust/kernel/sync/atomic/generic.rs
-> index 73c26f9cf6b8..bcdbeea45dd8 100644
-> --- a/rust/kernel/sync/atomic/generic.rs
-> +++ b/rust/kernel/sync/atomic/generic.rs
-> @@ -256,3 +256,157 @@ pub fn store<Ordering: ReleaseOrRelaxed>(&self, v: T, _: Ordering) {
->          };
->      }
->  }
-> +
-> +impl<T: AllowAtomic> Atomic<T>
-> +where
-> +    T::Repr: AtomicHasXchgOps,
-> +{
-> +    /// Atomic exchange.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```rust
-> +    /// use kernel::sync::atomic::{Atomic, Acquire, Relaxed};
-> +    ///
-> +    /// let x = Atomic::new(42);
-> +    ///
-> +    /// assert_eq!(42, x.xchg(52, Acquire));
-> +    /// assert_eq!(52, x.load(Relaxed));
-> +    /// ```
-> +    #[doc(alias("atomic_xchg", "atomic64_xchg"))]
-> +    #[inline(always)]
-> +    pub fn xchg<Ordering: All>(&self, v: T, _: Ordering) -> T {
-> +        let v = T::into_repr(v);
-> +        let a = self.as_ptr().cast::<T::Repr>();
-> +
-> +        // SAFETY:
-> +        // - For calling the atomic_xchg*() function:
-> +        //   - `self.as_ptr()` is a valid pointer, and per the safety requirement of `AllocAtomic`,
+> [1] https://lore.kernel.org/lkml/20250624-debugfs-rust-v7-3-9c8835a7a20f@=
+google.com/
 
-Typo: `AllowAtomic`.
+Ah, I'm not following that series at the moment.
 
-> +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` is a valid pointer,
-> +        //   - per the type invariants, the following atomic operation won't cause data races.
-> +        // - For extra safety requirement of usage on pointers returned by `self.as_ptr():
-> +        //   - atomic operations are used here.
-> +        let ret = unsafe {
-> +            match Ordering::TYPE {
-> +                OrderingType::Full => T::Repr::atomic_xchg(a, v),
-> +                OrderingType::Acquire => T::Repr::atomic_xchg_acquire(a, v),
-> +                OrderingType::Release => T::Repr::atomic_xchg_release(a, v),
-> +                OrderingType::Relaxed => T::Repr::atomic_xchg_relaxed(a, v),
-> +            }
-> +        };
-> +
-> +        T::from_repr(ret)
-> +    }
-> +
-> +    /// Atomic compare and exchange.
-> +    ///
-> +    /// Compare: The comparison is done via the byte level comparison between the atomic variables
-> +    /// with the `old` value.
-> +    ///
-> +    /// Ordering: When succeeds, provides the corresponding ordering as the `Ordering` type
-> +    /// parameter indicates, and a failed one doesn't provide any ordering, the read part of a
-> +    /// failed cmpxchg should be treated as a relaxed read.
-
-Rust `core::ptr` functions have this sentence on success ordering for
-compare_exchange:
-
-  Using Acquire as success ordering makes the store part of this
-  operation Relaxed, and using Release makes the successful load
-  Relaxed.
-
-Does this translate to LKMM cmpxchg operations? If so, I think we should
-include this sentence. This also applies to `Atomic::xchg`.
-
-
-Best regards,
-Andreas Hindborg
-
-
+---
+Cheers,
+Benno
