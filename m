@@ -1,281 +1,242 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACEE1202996
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 20:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB761DE4F3;
+	Thu, 26 Jun 2025 21:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750971454; cv=none; b=GoEtvK0wDmg1fV017KgNlZIz/zX6T9ZZ+2Oi4MXVslbAuyUPKNZ/7uIjQX4daUgtRkxPbRo+LiYVrSu4Bq+Cr0HKGbtUwKH61luBNBUQ9+6Uw1igHsmYRal7K1T1o0ciksXFMl3u9BoB6Z6o76zyykSo7+NTcLzm6bNWcfuLsnU=
+	t=1750972610; cv=none; b=awFCPzl/bGn5TmhWBweW4fXqgkeYaZjFl45dJPkryTfu7305oWDqOERZo7wTroEsux5KtP7r5yAW6ggn6qSm14Qg43FScfcxzy5KHOt9uMn7ptcsbhBknePhg7pG74E4ej9RyvY4mz1AC/ZONPggjjcT/Z8pKKvILub/omvtdT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750971454; c=relaxed/simple;
-	bh=QEf+2Q4j5b3ltB4HIXDQ8FpArFsE35NErtqGlCazRBI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a/FNPQCwh9WYOipPuSVUJtvQv2iTd4q/A9NkKeOhgLNDivD9qzbYeaMYd7+BKQxIF/zJBzrDaCxzBjX25mc8loUWPLVRXfgH22MAI98XsU3Wj00a20VesxNEufpq9xWIWYvPzUAmknLQmMUO22z7Hex9WsXweWj8CMIi6lg25rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdTZjstB; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1750972610; c=relaxed/simple;
+	bh=gB1D+i614hMsNCN+9Dr4ELv/AgWCJ6yYLGZWwiIz7XY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BEYrYpGzPO3Q3ZNd/mlc1+TKejgRR6RK9ugSPjNHYtbgX2/9dVG0MqnyCjNftJ2REQw575C9TlJmxZ4vmT16cAA0vX6oZnWklPaMdWDuPVI1OPpMB30IeSP+8S4ngXw84wWPWIx0LEye+0z7iEbGXRH/5m+p8JkrgeHRmcIJh9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wpa+5aA3; arc=none smtp.client-ip=209.85.160.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdTZjstB"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3138e64fc73so191655a91.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 13:57:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wpa+5aA3"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4a44b0ed780so21619441cf.3;
+        Thu, 26 Jun 2025 14:16:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750971452; x=1751576252; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZqJr7lHwWQ8usD5WLzvtqFCdBBM5J6U2PRRjVVnhd0Y=;
-        b=fdTZjstBy31MAYkyu6Gx6R6ErLqxmZSXwHEwscNBqLLmqCCMSjDF+vtl8iVnBob+S1
-         /vf9dBy9uunH46Q3MCeTs5ri1VO5N5n0dsgA8r4qX1Y9vV7MCCvz3kpCrhLiX6SLv7M8
-         QTwP57VNg7sEjKqrwUvQZzHXb97PIVV0xwo6JqjkKGnwPG08m4LqSP8MSlrGw7p06G9u
-         2mJjUjzd64Xpr71WUGhQmwC8Ij6WfLm6Ko5f//vEnhILlz7kHTUGmLX6jMhPPPWbRJtL
-         PaMVjaw4c0rgw33JPS1SBj5/DTQbDh94BTDQhoL2yrdl82UyjglqCqQfgAR9i/sVwktC
-         CbnA==
+        d=gmail.com; s=20230601; t=1750972608; x=1751577408; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qLVom/J/+xLOTCVxjDew0IkUWGcOk1+WeSaRra2z6nc=;
+        b=Wpa+5aA3NYhDTKjQjYagQeeyArz27YYglvILZ2DKcxhv4U33IFMP/L+gSt76zF9aMW
+         6MkewdcKeRNE4iQREL3pCHnNrN+ypl6+eLOJPNbH9Zg4XrhHuvA+mcuSZ+wrBvdFcjBY
+         ZrY8//tOjb29hyY3in76xtyy3tBF++w+vKfg5CAKLqOP5ywRCPIl192nOUZq2IOOnTO+
+         rnjlseAV6+O0M9R69x54P80YGiqAiu8zmkys6m1EvVtDkL2lTqNXE3tKFGRa9OCdJPym
+         vFqmsVWTdygtmgBEv75FhWr0OKdKCd9iEcSzNrHo9RKpWq/RVFpKz8q7+zZkQJxxHnkZ
+         78dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750971452; x=1751576252;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZqJr7lHwWQ8usD5WLzvtqFCdBBM5J6U2PRRjVVnhd0Y=;
-        b=X8g7a3sVVCR0fFtV3fnhF6/bZ0heQrOKGfp0zNj04OQ8o2ywSlDRjKzNMEt8l56+LD
-         W+m9svdJaNLuTxXQuF+C0sJKcz5PH5ybm9se3CP0KDebFTK02lfLY2LOCrH+Aj76xeJl
-         puPm71qPSMJPtAjB44gD4/8f4nR0KcuDafXvX814Vfi7iYauaUf5HfbcQU5WAcGXgq6e
-         8mY35x2q2+9vgv27ht33ZVooFq6x6iSIxuVuOaEzcv0ud6z4tGj9d5VlEhTE8ifqT8eD
-         uzW33htoDlTSoigkWviOyHsVmfsWOsPD4lC1Owwz6Zgv7IXsJdj5Hcplk6yqYK1x4Bog
-         Purw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvp7vdA23Rk5bb/j/xrABmC2zHG3p+dkWsApdn1W8BRHWahFxf2mpZiek9yeHTH0gdCMIKAq1YvxMrc8cjIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOy+jH4/PVxbbZgTDVS3/vLniBPFAH0W1LlyEoFosKUwjXSek7
-	wsZrRv+qzH65ilZsJ7H2IxS8PMt5djf2YGbQFz7FbUaSvi7B4LH808PhVd+95JF3RNmsKPsj3M6
-	fGEXQEiOUjXIVvgmxYyLJew/mZPKUvRz1fEEReUk=
-X-Gm-Gg: ASbGncu7TrXBZU2WcNA27C524rDxsIJ90tja9SXtGO9+ryeXcpkztI75I3ZOCc61vl7
-	SNl7K+N8mHWE13lzKYNRVT1tL9vZTfJ7KHSgIteKepHVQthJaRuBvB+SRSS7lZaFIR11kgomzJP
-	vijyadF3wHChMM4wC5SbULVjPcQyJetzP6yLeTxHYK/tA=
-X-Google-Smtp-Source: AGHT+IHxeCKSRhIqz47ziRhxxaTGSL8GFDkQNKOBWk7/zutbPnyc9RaKzJ0QtR7z3NZHEoVrtrMftwYXGb6m+6Kz/ww=
-X-Received: by 2002:a17:90b:58e7:b0:311:e9a6:332e with SMTP id
- 98e67ed59e1d1-318c8cd87b8mr259246a91.0.1750971451719; Thu, 26 Jun 2025
- 13:57:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750972608; x=1751577408;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qLVom/J/+xLOTCVxjDew0IkUWGcOk1+WeSaRra2z6nc=;
+        b=pIT+W1Cson4A1Rtr1rIIfmu8rJXakFZ5TktL6Cq8v9NY8q3r5bwZDZDix8c9kydHJb
+         fS5Mj28wDr3cMm6PEo5vGqOeRhpzczfP5bpitmDlIUoPKlZADifYTOA5G66EJiU0euAL
+         QA6W4KsGc/T0XFZFyhUbERnSD74jITM8P9ajNxAAXXa52g0cePQsf9ufXv0djKvDN5UN
+         I0bLFGXNYt6hLlmcocDYTts7n0QAd9qxaSa6qGH+ziYVEx/2MIul5OC8R1lTrpY51iyc
+         MJLSszL5WEwxjoNXWoUzGFvz1l6YAWScroNEZTqiJ3hKH6lWNlnvnjg1YF1hlh+AS+3X
+         YQ8w==
+X-Forwarded-Encrypted: i=1; AJvYcCVV+BL6WW6X1oElOZqNoC4afNc4Fi2sfkZqs9D4RDAiThXQOaZ/RSaYyB5xzG5pquGYD4cY55eJqr0mGlzQZGk=@vger.kernel.org, AJvYcCWM4c5Poj7stfN640wWjGXsdCg/eGSgCaRw9WdH1eGEIx3F58FsSwrsDyVTwN/RkxRmGKvzPosCK6Pp@vger.kernel.org, AJvYcCXGRX1caGmi3bXwbzCNSXKwAe9O9kVl+gKwxMzKLfNSMFVqboXzIriBZTzFPTkBLug5c/u+msNeMwkGEZU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7W+XbNbBpqAsYPRiTF5DSd+lJ+3s6Wparv+as5xlIXq5GCmvH
+	oAm8CTT5WEvy4Ia63iK6iijdeRxuLUMmRvHAmwSbiEinvSEOzyHdUzxg
+X-Gm-Gg: ASbGnctyC0XghC+XTmTx9E9FZHo0DYfnGnVHna3OmDqRPx/13TJvsJiLxfp7HmGq/bT
+	04JyT1XE50e/gqKFLgnLL8HUdDX54r5rrupGzeKQDAzoNErv0qePhMJL+nAxsw2hH4YDFSnssc2
+	qyM0Sani5Bt72I+EDi8NsU7HnRXBbY3pH30hH3EdP8TIOYSaBbeqyDCyBAROghK0ypXjjfDMJtN
+	q/rXoUJHPvLptCJRHhky70s5xq6DW6/SErQyzFdWsHplq/Uk5CgisaCs7Mwuxkmo0Y4St9Ze8FY
+	o1/QMEUtgBdnI6kd0J2d/Ytvd7aClbU5vT3ZF1QzSxCZn0nMnP+IKrIcE+hjGXbe2raLxfDwylw
+	Rs8AQ/JCJsTazs8XVs4gIVSKUJ78TXAc4ytcJ5wbLuvqH1MUJOtHt
+X-Google-Smtp-Source: AGHT+IGK0mlIVMvvN9i1ApnC+zTrHWTgkdGk4i22vkdNoAEbMAYTTStF/w6jQXdAMO/OxCFhlWNqnQ==
+X-Received: by 2002:ac8:58d2:0:b0:4a7:693a:6ae4 with SMTP id d75a77b69052e-4a7fcac6e11mr20292381cf.28.1750972607847;
+        Thu, 26 Jun 2025 14:16:47 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7fc55cd14sm3750411cf.45.2025.06.26.14.16.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Jun 2025 14:16:47 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BEA73F4006A;
+	Thu, 26 Jun 2025 17:16:46 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Thu, 26 Jun 2025 17:16:46 -0400
+X-ME-Sender: <xms:vrhdaEu1cXjI19yYxBLKWK9R5RsSOCdjPkfDISWsmqMhgQuiiJoX3A>
+    <xme:vrhdaBevZeRaVAErv0RjvBTt736uhAFSDRh-zk9mxLZwk0Nf6YVNVTEduE9ncelBo
+    Tng8QHetl305owT-g>
+X-ME-Received: <xmr:vrhdaPyOLu0fBWAINanrqVnpaWC5zAdv-hf672bKoHqkYqssXfhqZESrmw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduvdefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffeivden
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
+    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
+    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
+    hnrghmvgdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepghhrvghgkhhhsehlih
+    hnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghr
+    nhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgr
+    rhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhroh
+    htohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:vrhdaHO1fG4JtQwkX4AxknMPrKVxmSPUgTYHjOJReapxWX-ht-PRzA>
+    <xmx:vrhdaE9YZlJcolxSP4I5h9pZAu-WDJiuMfZsat2YRdvfytarXePw-Q>
+    <xmx:vrhdaPUvpXQnYMnjB88c7gEr3I5Q4pEatQAxz1YpmxNB-HLwbVHZSA>
+    <xmx:vrhdaNca5TG0eTw2Ob1kfOYnXtZX7mUp2nfgUWmtIZaTa-QfGFr00A>
+    <xmx:vrhdaGdkjk21FkxXc7gGp9Ogax5eZhjS9f58wgRulwbCC0CnZpoFZajF>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Jun 2025 17:16:46 -0400 (EDT)
+Date: Thu, 26 Jun 2025 14:16:45 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
+	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] rust: devres: implement register_release()
+Message-ID: <aF24vbtHgP-kYuBg@tardis.local>
+References: <20250626200054.243480-1-dakr@kernel.org>
+ <20250626200054.243480-6-dakr@kernel.org>
+ <aF2vgthQlNA3BsCD@tardis.local>
+ <aF2yA9TbeIrTg-XG@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250616193433.2643407-1-ttabi@nvidia.com> <CANiq72=cDk5rVEiAoudaQZUhNL_rne1EEjSEfiNuo_gkL3HOZw@mail.gmail.com>
- <DAOMQXNTLSGR.U0QOV8BU1I5V@kernel.org> <CANiq72moqFBWeS9RL6y8wzpxURvhdz4D0J8WfjaOBp0XSgufdg@mail.gmail.com>
- <579273832b4accc4cd989d5182f3179c9950966f.camel@nvidia.com>
- <CANiq72m1W6Do4z0qjKmzxSbYT3az_x1DKZ5C3eLABsPRv55EwQ@mail.gmail.com> <e92c3e23c09579e4dc13d999503cf9a2b1451c2b.camel@nvidia.com>
-In-Reply-To: <e92c3e23c09579e4dc13d999503cf9a2b1451c2b.camel@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Jun 2025 22:57:17 +0200
-X-Gm-Features: Ac12FXwUoNt71AN50O2rkGQxm1csnolFBknXbR_KoIG3gxPb4sajylyf82opiRY
-Message-ID: <CANiq72n79HKo_MBLJCgs1YnZqah+KrFdNixQuovZn-bequyhxQ@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: introduce sfile macro for succinct code tracing
-To: Timur Tabi <ttabi@nvidia.com>
-Cc: "ojeda@kernel.org" <ojeda@kernel.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
-	"lossin@kernel.org" <lossin@kernel.org>, "dakr@kernel.org" <dakr@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
-Content-Type: multipart/mixed; boundary="00000000000064ba5806387fcf31"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aF2yA9TbeIrTg-XG@cassiopeiae>
 
---00000000000064ba5806387fcf31
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Thu, Jun 26, 2025 at 10:48:03PM +0200, Danilo Krummrich wrote:
+> On Thu, Jun 26, 2025 at 01:37:22PM -0700, Boqun Feng wrote:
+> > On Thu, Jun 26, 2025 at 10:00:43PM +0200, Danilo Krummrich wrote:
+> > > register_release() is useful when a device resource has associated data,
+> > > but does not require the capability of accessing it or manually releasing
+> > > it.
+> > > 
+> > > If we would want to be able to access the device resource and release the
+> > > device resource manually before the device is unbound, but still keep
+> > > access to the associated data, we could implement it as follows.
+> > > 
+> > > 	struct Registration<T> {
+> > > 	   inner: Devres<RegistrationInner>,
+> > > 	   data: T,
+> > > 	}
+> > > 
+> > > However, if we never need to access the resource or release it manually,
+> > > register_release() is great optimization for the above, since it does not
+> > > require the synchronization of the Devres type.
+> > > 
+> > > Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > ---
+> > >  rust/kernel/devres.rs | 73 +++++++++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 73 insertions(+)
+> > > 
+> > > diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> > > index 3ce8d6161778..92aca78874ff 100644
+> > > --- a/rust/kernel/devres.rs
+> > > +++ b/rust/kernel/devres.rs
+> > > @@ -353,3 +353,76 @@ pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flag
+> > >  
+> > >      register_foreign(dev, data)
+> > >  }
+> > > +
+> > > +/// [`Devres`]-releaseable resource.
+> > > +///
+> > > +/// Register an object implementing this trait with [`register_release`]. Its `release`
+> > > +/// function will be called once the device is being unbound.
+> > > +pub trait Release {
+> > > +    /// The [`ForeignOwnable`] pointer type consumed by [`register_release`].
+> > > +    type Ptr: ForeignOwnable;
+> > > +
+> > > +    /// Called once the [`Device`] given to [`register_release`] is unbound.
+> > > +    fn release(this: Self::Ptr);
+> > > +}
+> > > +
+> > 
+> > I would like to point out the limitation of this design, say you have a
+> > `Foo` that can ipml `Release`, with this, I think you could only support
+> > either `Arc<Foo>` or `KBox<Foo>`. You cannot support both as the input
+> > for `register_release()`. Maybe we want:
+> > 
+> >     pub trait Release<Ptr: ForeignOwnable> {
+> >         fn release(this: Ptr);
+> >     }
+> 
+> Good catch! I think this wasn't possible without ForeignOwnable::Target.
+> 
+> Here's the diff for the change:
+> 
 
-On Thu, Jun 26, 2025 at 6:30=E2=80=AFPM Timur Tabi <ttabi@nvidia.com> wrote=
-:
->
-> So you're saying that instead of calling assert!(), shortname() should ju=
-st return None if there
-> are any failure conditions, and the macro should then panic if it gets No=
-ne?
+Looks good to me.
 
-Yes, but note that the panic in the macro will not be a runtime panic,
-but a compile time error, which is why it is OK.
+> diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+> index 92aca78874ff..42a9cd2812d8 100644
+> --- a/rust/kernel/devres.rs
+> +++ b/rust/kernel/devres.rs
+> @@ -358,12 +358,9 @@ pub fn register<T, E>(dev: &Device<Bound>, data: impl PinInit<T, E>, flags: Flag
+>  ///
+>  /// Register an object implementing this trait with [`register_release`]. Its `release`
+>  /// function will be called once the device is being unbound.
+> -pub trait Release {
+> -    /// The [`ForeignOwnable`] pointer type consumed by [`register_release`].
+> -    type Ptr: ForeignOwnable;
+> -
+> +pub trait Release<Ptr: ForeignOwnable> {
 
-> I don't think I can call from_utf8() because it returns Result, and conve=
-rting that to an Option
-> requires me to call .ok(), which (for some reason) cannot be called in a =
-const function.
+My bad, is it possible to do
 
-You can -- `ok()` is not `const fn` because it is generic and thus
-needs to work in more cases, but you can do it "manually" for this
-particular `Result`.
+	pub trait Release<Ptr: ForeignOwnable<Target=Self>> {
 
-> I don't see how this lets me avoid the is_ascii() call.  However, I just =
-discovered that in UTF-
-> 8, you cannot have a slash (0x2F) or dot (0x2E) as one of the UTF-8 bytes=
-, since all UTF-8 bytes
-> have bit 7 set.  So you won't accidentally find a / inside a UTF characte=
-r.  This means that
-> this macro should be able to handle Unicode file names.  So I'll just rem=
-ove the is_ascii()
-> check altogether.
+? that's better IMO.
 
-We can avoid it because `from_utf8` already checks it is valid UTF-8,
-so if something bad is passed as input, such as broken UTF-8, it will
-already return an error. We are not expecting Unicode filenames
-anyway.
+Regards,
+Boqun
 
-We can in fact do it all in safe code, because we can take advantage
-of `split_at_checked` -- sadly only on `slice`, but in some months
-(minimum Rust >=3D 1.84) we should be able to simplify further using the
-`str` one.
-
-And if we are OK with panicking, e.g. if we just want to use it from
-the macro, we can simplify further.
-
-See the attached diff to see how `shortname()` could look like.
-
-`inline_const` and `const_option` are just to make the macro nicer,
-they are optional.
-
-Cheers,
-Miguel
-
---00000000000064ba5806387fcf31
-Content-Type: text/x-patch; charset="US-ASCII"; 
-	name="0001-Show-how-shortname-could-be-written.patch"
-Content-Disposition: attachment; 
-	filename="0001-Show-how-shortname-could-be-written.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mcduyzgi0>
-X-Attachment-Id: f_mcduyzgi0
-
-RnJvbSBmOTFmYTk2MjU2Nzc1YTMwZjhiNzU3NjAzYzU2Y2FhNzczNmFkODFlIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBNaWd1ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+CkRhdGU6
-IFRodSwgMjYgSnVuIDIwMjUgMjA6NDg6MDEgKzAyMDAKU3ViamVjdDogW1BBVENIXSBTaG93IGhv
-dyBgc2hvcnRuYW1lKClgIGNvdWxkIGJlIHdyaXR0ZW4KCk5vdC1TaWduZWQtb2ZmLWJ5OiBNaWd1
-ZWwgT2plZGEgPG9qZWRhQGtlcm5lbC5vcmc+Ci0tLQogcnVzdC9rZXJuZWwvbGliLnJzICAgICB8
-ICAzICsrCiBydXN0L2tlcm5lbC9wcmludC5ycyAgIHwgNDYgKysrLS0tLS0tLS0tLS0tLS0tLS0K
-IHJ1c3Qva2VybmVsL3N0ci5ycyAgICAgfCA5NiArKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKystLS0KIHNjcmlwdHMvTWFrZWZpbGUuYnVpbGQgfCAgNCArLQogNCBmaWxlcyBj
-aGFuZ2VkLCAxMDIgaW5zZXJ0aW9ucygrKSwgNDcgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEv
-cnVzdC9rZXJuZWwvbGliLnJzIGIvcnVzdC9rZXJuZWwvbGliLnJzCmluZGV4IDZiNDc3NGIyYjFj
-My4uMjM4M2I0NTY1ZWYxIDEwMDY0NAotLS0gYS9ydXN0L2tlcm5lbC9saWIucnMKKysrIGIvcnVz
-dC9rZXJuZWwvbGliLnJzCkBAIC0xOSw2ICsxOSw5IEBACiAvLyBTdGFibGUgc2luY2UgUnVzdCAx
-Ljc5LjAuCiAjIVtmZWF0dXJlKGlubGluZV9jb25zdCldCiAvLworLy8gU3RhYmxlIHNpbmNlIFJ1
-c3QgMS44MC4wLgorIyFbZmVhdHVyZShzcGxpdF9hdF9jaGVja2VkKV0KKy8vCiAvLyBTdGFibGUg
-c2luY2UgUnVzdCAxLjgxLjAuCiAjIVtmZWF0dXJlKGxpbnRfcmVhc29ucyldCiAvLwpkaWZmIC0t
-Z2l0IGEvcnVzdC9rZXJuZWwvcHJpbnQucnMgYi9ydXN0L2tlcm5lbC9wcmludC5ycwppbmRleCBl
-NTk4MzExZjE5OGMuLmMzN2IyNzg3M2M2ZiAxMDA2NDQKLS0tIGEvcnVzdC9rZXJuZWwvcHJpbnQu
-cnMKKysrIGIvcnVzdC9rZXJuZWwvcHJpbnQucnMKQEAgLTQzNCw0OSArNDM0LDEzIEBAIG1hY3Jv
-X3J1bGVzISBwcl9jb250ICgKIC8vLyAjIEV4YW1wbGVzCiAvLy8KIC8vLyBgYGAKLS8vLyB1c2Ug
-a2VybmVsOjpzZmlsZTsKKy8vLyAjIHVzZSBrZXJuZWw6OnNmaWxlOwogLy8vIHByX2VyciEoInt9
-Ont9XG4iLCBzZmlsZSEoKSwgbGluZSEoKSk7Ci0vLy8gY29uc3QgU0ZJTEU6ICYnc3RhdGljIHN0
-ciA9IHNmaWxlISgpOworLy8vIGNvbnN0IFNGSUxFOiAmc3RyID0gc2ZpbGUhKCk7CiAvLy8gYGBg
-CiAjW21hY3JvX2V4cG9ydF0KIG1hY3JvX3J1bGVzISBzZmlsZSB7Ci0gICAgKCkgPT4ge3sKLSAg
-ICAgICAgY29uc3QgewotICAgICAgICAgICAgY29uc3QgRklMRTogJnN0ciA9IGNvcmU6OmZpbGUh
-KCk7Ci0KLSAgICAgICAgICAgIC8vIFtgLmFzX2J5dGVzKClgXSBkb2VzIG5vdCBzdXBwb3J0IG5v
-bi1BU0NJSSBmaWxlbmFtZXMKLSAgICAgICAgICAgIGFzc2VydCEoOjpjb3JlOjpwcmltaXRpdmU6
-OnN0cjo6aXNfYXNjaWkoRklMRSkpOwotCi0gICAgICAgICAgICBsZXQgc3RhcnQgPSBtYXRjaCA6
-Omtlcm5lbDo6c3RyOjpyZmluZF9jb25zdChGSUxFLCAnLycpIHsKLSAgICAgICAgICAgICAgICBT
-b21lKHNsYXNoKSA9PiBzbGFzaCArIDEsCi0gICAgICAgICAgICAgICAgTm9uZSA9PiAwLAotICAg
-ICAgICAgICAgfTsKLSAgICAgICAgICAgIGxldCBlbmQgPSBtYXRjaCA6Omtlcm5lbDo6c3RyOjpy
-ZmluZF9jb25zdChGSUxFLCAnLicpIHsKLSAgICAgICAgICAgICAgICBTb21lKGRvdCkgPT4gZG90
-LAotICAgICAgICAgICAgICAgIE5vbmUgPT4gRklMRS5sZW4oKSwKLSAgICAgICAgICAgIH07Ci0K
-LSAgICAgICAgICAgIC8vIE1ha2Ugc3VyZSB0aGF0IHRoZXJlIGFjdHVhbGx5IGlzIHNvbWV0aGlu
-ZyB0byByZXR1cm4uICBUaGlzIGFsc28KLSAgICAgICAgICAgIC8vIGNvdmVycyBhIGxvdCBvZiBj
-b3JuZXIgY2FzZXMsIHN1Y2ggYXMgZWxpbWluYXRpbmcgZmlsZW5hbWVzIHRoYXQKLSAgICAgICAg
-ICAgIC8vIGVuZCBpbiBhIHNsYXNoIChub3QgcG9zc2libGUpIG9yIGRvbid0IGhhdmUgYW4gZXh0
-ZW5zaW9uLAotICAgICAgICAgICAgLy8gYW5kIG1ha2luZyBzdXJlIHRoYXQgYHN0YXJ0YCA8IGBG
-SUxFLmxlbigpYCBhbmQgYGVuZGAgLSBgc3RhcnRgID4gMC4KLSAgICAgICAgICAgIGFzc2VydCEo
-c3RhcnQgPCBlbmQpOwotCi0gICAgICAgICAgICAvLyBUaGUgZm9sbG93aW5nIGNvZGUgdGhlIGVx
-dWl2YWxlbnQgb2YgJkZJTEVbc3RhcnQuLnN0YXJ0K2xlbl0sCi0gICAgICAgICAgICAvLyBleGNl
-cHQgdGhhdCBpdCBhbGxvd3MgZm9yIGNvbnN0IGNvbnRleHRzLiAgRm9yIGV4YW1wbGUsCi0gICAg
-ICAgICAgICAvLyAgIGNvbnN0IFNGSUxFOiAmJ3N0YXRpYyBzdHIgPSBzZmlsZSEoKTsKLQotICAg
-ICAgICAgICAgbGV0IGJhc2VfcHRyOiAqY29uc3QgdTggPSBGSUxFLmFzX3B0cigpOwotCi0gICAg
-ICAgICAgICAvLyBTQUZFVFk6IFRoZSBhYm92ZSBhc3NlcnRpb24gZW5zdXJlcyB0aGF0IGBzdGFy
-dGAgcG9pbnRzIHRvIGluc2lkZQotICAgICAgICAgICAgLy8gdGhlIHN0cmluZy4KLSAgICAgICAg
-ICAgIGxldCBwdHI6ICpjb25zdCB1OCA9IHVuc2FmZSB7IGJhc2VfcHRyLmFkZChzdGFydCkgfTsK
-LSAgICAgICAgICAgIC8vIFNBRkVUWTogQmFzZWQgb24gYWxsIGNvbnN0cmFpbnRzIG9uIGBzdGFy
-dGAgYW5kIGBlbmRgLCB0aGlzIHNsaWNlCi0gICAgICAgICAgICAvLyB3aWxsIG5ldmVyIGV4dGVu
-ZCBiZXlvbmQgdGhlIHN0cmluZy4KLSAgICAgICAgICAgIGxldCBzbGljZSA9IHVuc2FmZSB7IGNv
-cmU6OnNsaWNlOjpmcm9tX3Jhd19wYXJ0cyhwdHIsIGVuZCAtIHN0YXJ0KSB9OwotICAgICAgICAg
-ICAgLy8gU0FGRVRZOiBXZSBrbm93IHRoYXQgdGhlIHNsaWNlIGlzIHZhbGlkIFVURi04LCBiZWNh
-dXNlIHdlIGNoZWNrZWQKLSAgICAgICAgICAgIC8vIHRoYXQgRklMRSBpcyBBU0NJSSAodmlhIGlz
-X2FzY2lpKCkgYWJvdmUpLgotICAgICAgICAgICAgdW5zYWZlIHsgY29yZTo6c3RyOjpmcm9tX3V0
-ZjhfdW5jaGVja2VkKHNsaWNlKSB9Ci0gICAgICAgIH0KLSAgICB9fTsKKyAgICAoKSA9PiB7Cisg
-ICAgICAgIGNvbnN0IHsgOjprZXJuZWw6OnN0cjo6c2hvcnRuYW1lKGZpbGUhKCkpLnVud3JhcCgp
-IH0KKyAgICB9OwogfQpkaWZmIC0tZ2l0IGEvcnVzdC9rZXJuZWwvc3RyLnJzIGIvcnVzdC9rZXJu
-ZWwvc3RyLnJzCmluZGV4IDY4MGM2MzFjMmViMy4uODRkNzJkNzRhOWQ0IDEwMDY0NAotLS0gYS9y
-dXN0L2tlcm5lbC9zdHIucnMKKysrIGIvcnVzdC9rZXJuZWwvc3RyLnJzCkBAIC05NDUsMTkgKzk0
-NSwxMDUgQEAgbWFjcm9fcnVsZXMhIGZtdCB7CiAvLy8gIyBFeGFtcGxlcwogLy8vCiAvLy8gYGBg
-Ci0vLy8gdXNlIGtlcm5lbDo6cHJpbnQ6OnJmaW5kX2NvbnN0OwotLy8vIGxldCBsID0gcmZpbmRf
-Y29uc3QoIndoZW4gd2lsbCB0aGVuIGJlIG5vdz8iLCAnbCcpOworLy8vICMgdXNlIGtlcm5lbDo6
-c3RyOjpzbGljZV91OF9yZmluZF9jb25zdDsKKy8vLyBsZXQgbCA9IHNsaWNlX3U4X3JmaW5kX2Nv
-bnN0KCJ3aGVuIHdpbGwgdGhlbiBiZSBub3c/Ii5hc19ieXRlcygpLCBiJ2wnKTsKIC8vLyBhc3Nl
-cnQhKGwgPT0gU29tZSg4KSk7CiAvLy8gYGBgCiAjW2lubGluZV0KLXB1YiBjb25zdCBmbiByZmlu
-ZF9jb25zdChoYXlzdGFjazogJnN0ciwgbmVlZGxlOiBjaGFyKSAtPiBPcHRpb248dXNpemU+IHsK
-LSAgICBsZXQgaGF5c3RhY2sgPSBoYXlzdGFjay5hc19ieXRlcygpOworcHViIGNvbnN0IGZuIHNs
-aWNlX3U4X3JmaW5kX2NvbnN0KGhheXN0YWNrOiAmW3U4XSwgbmVlZGxlOiB1OCkgLT4gT3B0aW9u
-PHVzaXplPiB7CiAgICAgbGV0IG11dCBpID0gaGF5c3RhY2subGVuKCk7CiAgICAgd2hpbGUgaSA+
-IDAgewogICAgICAgICBpIC09IDE7Ci0gICAgICAgIGlmIGhheXN0YWNrW2ldID09IG5lZWRsZSBh
-cyB1OCB7CisgICAgICAgIGlmIGhheXN0YWNrW2ldID09IG5lZWRsZSB7CiAgICAgICAgICAgICBy
-ZXR1cm4gU29tZShpKTsKICAgICAgICAgfQogICAgIH0KICAgICBOb25lCiB9CisKKy8vLyAuLi4K
-Ky8vLworLy8vICMgRXhhbXBsZXMKKy8vLworLy8vIGBgYAorLy8vICMgdXNlIGtlcm5lbDo6c3Ry
-OjpzaG9ydG5hbWU7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoIiIpLCBOb25lKTsKKy8vLyBh
-c3NlcnRfZXEhKHNob3J0bmFtZSgiZXhhbXBsZSIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNo
-b3J0bmFtZSgiZXhhbXBsZS5ycyIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
-cGF0aC9leGFtcGxlIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJwYXRoL2V4
-YW1wbGUucnMiKSwgU29tZSgiZXhhbXBsZSIpKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
-bG9uZ2VyL3BhdGgvZXhhbXBsZS5mb28ucnMiKSwgU29tZSgiZXhhbXBsZS5mb28iKSk7CisvLy8K
-Ky8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiL2UuIiksIFNvbWUoImUiKSk7CisvLy8gYXNzZXJ0
-X2VxIShzaG9ydG5hbWUoIi5lLyIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
-L2UuZSIpLCBTb21lKCJlIikpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCIuZS9lIiksIE5v
-bmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJlL2UuIiksIFNvbWUoImUiKSk7CisvLy8g
-YXNzZXJ0X2VxIShzaG9ydG5hbWUoImUuZS8iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9y
-dG5hbWUoImUvZS5lIiksIFNvbWUoImUiKSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUu
-ZS9lIiksIE5vbmUpOworLy8vCisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoIi5lLyIpLCBOb25l
-KTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS5lL2UiKSwgTm9uZSk7CisvLy8KKy8vLyBh
-c3NlcnRfZXEhKHNob3J0bmFtZSgiLi4iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5h
-bWUoIi4uZSIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS4uIiksIE5vbmUp
-OworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJlLi5lIiksIE5vbmUpOworLy8vCisvLy8gYXNz
-ZXJ0X2VxIShzaG9ydG5hbWUoIi8vIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1l
-KCIvL2UiKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUvLyIpLCBOb25lKTsK
-Ky8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS8vZSIpLCBOb25lKTsKKy8vLworLy8vIGFzc2Vy
-dF9lcSEoc2hvcnRuYW1lKCIvLiIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgi
-Li8iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoIi8uZSIpLCBOb25lKTsKKy8v
-LyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiLi9lIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hv
-cnRuYW1lKCJlLy4iKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUuLyIpLCBO
-b25lKTsKKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiZS8uZSIpLCBOb25lKTsKKy8vLyBhc3Nl
-cnRfZXEhKHNob3J0bmFtZSgiZS4vZSIpLCBOb25lKTsKKy8vLworLy8vIGFzc2VydF9lcSEoc2hv
-cnRuYW1lKCIuIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCIvIiksIE5vbmUp
-OworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCIuZSIpLCBOb25lKTsKKy8vLyBhc3NlcnRfZXEh
-KHNob3J0bmFtZSgiL2UiKSwgTm9uZSk7CisvLy8gYXNzZXJ0X2VxIShzaG9ydG5hbWUoImUuIiks
-IE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1lKCJlLyIpLCBOb25lKTsKKy8vLyBhc3Nl
-cnRfZXEhKHNob3J0bmFtZSgiZS5lIiksIE5vbmUpOworLy8vIGFzc2VydF9lcSEoc2hvcnRuYW1l
-KCJlL2UiKSwgTm9uZSk7CisvLy8KKy8vLyBhc3NlcnRfZXEhKHNob3J0bmFtZSgiIiksIE5vbmUp
-OworLy8vIGBgYAorcHViIGNvbnN0IGZuIHNob3J0bmFtZShwYXRoOiAmc3RyKSAtPiBPcHRpb248
-JnN0cj4geworICAgIGxldCBwYXRoID0gcGF0aC5hc19ieXRlcygpOworCisgICAgbGV0IFNvbWUo
-bGFzdF9zbGFzaCkgPSBzbGljZV91OF9yZmluZF9jb25zdChwYXRoLCBiJy8nKSBlbHNlIHsKKyAg
-ICAgICAgcmV0dXJuIE5vbmU7CisgICAgfTsKKyAgICBsZXQgU29tZShwYXRoKSA9IHBhdGguc3Bs
-aXRfYXRfY2hlY2tlZChsYXN0X3NsYXNoICsgMSkgZWxzZSB7CisgICAgICAgIHJldHVybiBOb25l
-OworICAgIH07CisgICAgbGV0IHBhdGggPSBwYXRoLjE7CisKKyAgICBsZXQgU29tZShsYXN0X3Bl
-cmlvZCkgPSBzbGljZV91OF9yZmluZF9jb25zdChwYXRoLCBiJy4nKSBlbHNlIHsKKyAgICAgICAg
-cmV0dXJuIE5vbmU7CisgICAgfTsKKyAgICBsZXQgU29tZShwYXRoKSA9IHBhdGguc3BsaXRfYXRf
-Y2hlY2tlZChsYXN0X3BlcmlvZCkgZWxzZSB7CisgICAgICAgIHJldHVybiBOb25lOworICAgIH07
-CisgICAgbGV0IHBhdGggPSBwYXRoLjA7CisKKyAgICAvLyBUT0RPOiBhZnRlciBSdXN0IDEuODQu
-MCwgd2UgY291bGQgdXNlIGBzcGxpdF9hdF9jaGVja2VkYCBvbiBgc3RyYAorICAgIC8vIGRpcmVj
-dGx5IHRvIGF2b2lkIGdvaW5nIHRocm91Z2ggYCZbdThdYC4KKyAgICBsZXQgT2socGF0aCkgPSBj
-b3JlOjpzdHI6OmZyb21fdXRmOChwYXRoKSBlbHNlIHsKKyAgICAgICAgcmV0dXJuIE5vbmU7Cisg
-ICAgfTsKKworICAgIGlmIHBhdGguaXNfZW1wdHkoKSB7CisgICAgICAgIHJldHVybiBOb25lOwor
-ICAgIH0KKworICAgIFNvbWUocGF0aCkKK30KZGlmZiAtLWdpdCBhL3NjcmlwdHMvTWFrZWZpbGUu
-YnVpbGQgYi9zY3JpcHRzL01ha2VmaWxlLmJ1aWxkCmluZGV4IGE2NDYxZWE0MTFmNy4uMjA3ZjJm
-ZjUwNGU5IDEwMDY0NAotLS0gYS9zY3JpcHRzL01ha2VmaWxlLmJ1aWxkCisrKyBiL3NjcmlwdHMv
-TWFrZWZpbGUuYnVpbGQKQEAgLTMwOCwxNCArMzA4LDE2IEBAICQob2JqKS8lLmxzdDogJChvYmop
-LyUuYyBGT1JDRQogCiAjIFRoZSBmZWF0dXJlcyBpbiB0aGlzIGxpc3QgYXJlIHRoZSBvbmVzIGFs
-bG93ZWQgZm9yIG5vbi1gcnVzdC9gIGNvZGUuCiAjCisjICAgLSBTdGFibGUgc2luY2UgUnVzdCAx
-Ljc5LjA6IGBmZWF0dXJlKGlubGluZV9jb25zdClgLgogIyAgIC0gU3RhYmxlIHNpbmNlIFJ1c3Qg
-MS44MS4wOiBgZmVhdHVyZShsaW50X3JlYXNvbnMpYC4KICMgICAtIFN0YWJsZSBzaW5jZSBSdXN0
-IDEuODIuMDogYGZlYXR1cmUoYXNtX2NvbnN0KWAsIGBmZWF0dXJlKHJhd19yZWZfb3ApYC4KKyMg
-ICAtIFN0YWJsZSBzaW5jZSBSdXN0IDEuODMuMDogYGZlYXR1cmUoY29uc3Rfb3B0aW9uKWAuCiAj
-ICAgLSBTdGFibGUgc2luY2UgUnVzdCAxLjg3LjA6IGBmZWF0dXJlKGFzbV9nb3RvKWAuCiAjICAg
-LSBFeHBlY3RlZCB0byBiZWNvbWUgc3RhYmxlOiBgZmVhdHVyZShhcmJpdHJhcnlfc2VsZl90eXBl
-cylgLgogIwogIyBQbGVhc2Ugc2VlIGh0dHBzOi8vZ2l0aHViLmNvbS9SdXN0LWZvci1MaW51eC9s
-aW51eC9pc3N1ZXMvMiBmb3IgZGV0YWlscyBvbgogIyB0aGUgdW5zdGFibGUgZmVhdHVyZXMgaW4g
-dXNlLgotcnVzdF9hbGxvd2VkX2ZlYXR1cmVzIDo9IGFzbV9jb25zdCxhc21fZ290byxhcmJpdHJh
-cnlfc2VsZl90eXBlcyxsaW50X3JlYXNvbnMscmF3X3JlZl9vcAorcnVzdF9hbGxvd2VkX2ZlYXR1
-cmVzIDo9IGFzbV9jb25zdCxhc21fZ290byxhcmJpdHJhcnlfc2VsZl90eXBlcyxjb25zdF9vcHRp
-b24saW5saW5lX2NvbnN0LGxpbnRfcmVhc29ucyxyYXdfcmVmX29wCiAKICMgYC0tb3V0LWRpcmAg
-aXMgcmVxdWlyZWQgdG8gYXZvaWQgdGVtcG9yYXJpZXMgYmVpbmcgY3JlYXRlZCBieSBgcnVzdGNg
-IGluIHRoZQogIyBjdXJyZW50IHdvcmtpbmcgZGlyZWN0b3J5LCB3aGljaCBtYXkgYmUgbm90IGFj
-Y2Vzc2libGUgaW4gdGhlIG91dC1vZi10cmVlCgpiYXNlLWNvbW1pdDogNzczZjJmOTQ5ZjAyZDQ2
-MzNhNTFiNDFjMTIwNGNhN2RmMWI3ZDIzYgotLSAKMi41MC4wCgo=
---00000000000064ba5806387fcf31--
+>      /// Called once the [`Device`] given to [`register_release`] is unbound.
+> -    fn release(this: Self::Ptr);
+> +    fn release(this: Ptr);
+>  }
+> 
+>  /// Consume the `data`, [`Release::release`] and [`Drop::drop`] `data` once `dev` is unbound.
+> @@ -384,9 +381,7 @@ pub trait Release {
+>  ///     }
+>  /// }
+>  ///
+> -/// impl Release for Registration {
+> -///     type Ptr = Arc<Self>;
+> -///
+> +/// impl Release<Arc<Self>> for Registration {
+>  ///     fn release(this: Arc<Self>) {
+>  ///        // unregister
+>  ///     }
+> @@ -401,7 +396,7 @@ pub trait Release {
+>  pub fn register_release<P>(dev: &Device<Bound>, data: P) -> Result
+>  where
+>      P: ForeignOwnable,
+> -    P::Target: Release<Ptr = P> + Send,
+> +    P::Target: Release<P> + Send,
+>  {
+>      let ptr = data.into_foreign();
+> 
+> @@ -409,7 +404,7 @@ pub fn register_release<P>(dev: &Device<Bound>, data: P) -> Result
+>      unsafe extern "C" fn callback<P>(ptr: *mut kernel::ffi::c_void)
+>      where
+>          P: ForeignOwnable,
+> -        P::Target: Release<Ptr = P>,
+> +        P::Target: Release<P>,
+>      {
+>          // SAFETY: `ptr` is the pointer to the `ForeignOwnable` leaked above and hence valid.
+>          let data = unsafe { P::from_foreign(ptr.cast()) };
