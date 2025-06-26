@@ -1,90 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98EB2E540B;
-	Thu, 26 Jun 2025 13:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F99C28BAB1;
+	Thu, 26 Jun 2025 13:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750943592; cv=none; b=rLLDT/GT+5BRJyzBwC+h92xDGwRUJEwd+AO0VgRYKxy7/nxIgCPsmhlLJh0mf6YqmSuHZ8DhA8045D8mdejE0bRB60Eev/HOt2a+mDAPFrgL+ISn8CyzArVWXkaRUDiawcezT9hEitmzR2lidbsFJyT0qn7cKPyvlKBdnNOBf/4=
+	t=1750944350; cv=none; b=ozQz6aeSF7YgO7ycswFLuZhoMmHa6mQ5ZH5IWKGSWkF1rkJ+/xsk/fWwVT9Ngd6Q3z6Z83LfzQNUzigW1uOCqnt+G5KcyKqmWmrRR21yEATPCSwHsgdyA2/DYj5eoYzMfECjtfCDpIpGiTLA4Rh5Pmy7+f33PzcyZ8rBmIaJEik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750943592; c=relaxed/simple;
-	bh=PreKZtSoyeCQQgE0MXWcjP/5/bBwOnNbclzp2Oj3YyU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=NOE/IQHmuapzYQUyrPcTDg/1GUxAI//0E+7llRJGZfl9hE5T0knyECfWwSCcBG7IKjVIlconIObjRibetXCiwu/cIspKYvemTOKWwAWuJ5efpXFtQ1Ez5a2AlH06BgauEO1mtQHVPGiDvHaJodUv/SiwcOTdbLOCkURwVLXMAXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyFvx/SC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750944350; c=relaxed/simple;
+	bh=X8oqV9/hrJLm7FxNpugISZbe6ORT3aK7Xh1y/oYOuEk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DYET2xS/gNhCsiflA6b5HnUt6P5JIeKXQHOj++jVDq7BRmUofczPRGgKfhNUfKQbHmJMMN/TrSIJJs/utUaRvW0t0s/xeVrcUmL+XYSdx+WNfYcP/Plz6FJBENj3mIDpvNjrTssbjCniAAw5Bao04CnTSku3vfUN7Ld+kbrgEcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rycJ7FKl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyFvx/SC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96CAC4CEEB;
-	Thu, 26 Jun 2025 13:13:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rycJ7FKl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5077BC4CEEB;
+	Thu, 26 Jun 2025 13:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750943591;
-	bh=PreKZtSoyeCQQgE0MXWcjP/5/bBwOnNbclzp2Oj3YyU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=UyFvx/SCp+HbuN3e7GecTnhWCE7ctRhui/g5helDTlWYPRD4bG+aPKUeDeXOx8Ka+
-	 WV2yxI0wSQq6FLkQpp6ixke8+Iev9J/1RCKzdZvd0a+jRbC4MXMe8qKF5lFxwyTxGt
-	 eWrpN4MpEuJL24yBQywXDis+xgOOe3QXAOwlMpRSoW3JawpmD6N1+iWtdPx+krUsc7
-	 2RQJ3UPWVNjVmt8IHrIgT7sFwPdMP1lXrpOCA+6AJfMhGGm491cB2TTF9D+cfh8yX2
-	 G66cRqz8q46jtptaNrp3gJkNi+AOAi1Gjmweq4jkAe8r5sFg5tjVH04aAA81GNurxW
-	 62E/6LlKRB4Gg==
+	s=k20201202; t=1750944350;
+	bh=X8oqV9/hrJLm7FxNpugISZbe6ORT3aK7Xh1y/oYOuEk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rycJ7FKl8OUvefVTh9Q5Y6nkQPQaDzp0iy1GGqKaxV0gHJqTRfRb9IjumxKRgP6d+
+	 OZG4/rQQXlDfR4KrhYsUy+a1NS/vEAt5N78btw5XgOlsQB/ugilvUmNyRvjPV4ngeU
+	 aGXhRT4kx3vffTtygk7OUO+/Le+c9Yg46zCle7FRBgwX5+iptLLiBpPMIxVGU0IJzB
+	 Z1zRUiOrs7B+WRpnZQNUnQwfolHHIsacUvB1KlMO4rp4MX8dTQ/A7yssnblN7e+Sqw
+	 3DQjk73tzA++u1YDbk+tGJzxf47ZT2x9yEJa7Yu0StFd8qi7XFuKM9srNRYdvWPV69
+	 6MHHN1ON/n4jQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH] rust: devres: require T: Send for Devres
+Date: Thu, 26 Jun 2025 15:24:46 +0200
+Message-ID: <20250626132544.72866-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Jun 2025 15:13:06 +0200
-Message-Id: <DAWHP7292ZGD.2SQDBIZOUA4AB@kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <kwilczynski@kernel.org>,
- <bhelgaas@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] rust: devres: implement register_release()
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250624215600.221167-1-dakr@kernel.org>
- <20250624215600.221167-5-dakr@kernel.org>
- <DAWED7BIC32G.338MXRHK4NSJG@kernel.org> <aF0rzzlKgwopOVHV@pollux>
-In-Reply-To: <aF0rzzlKgwopOVHV@pollux>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Jun 26, 2025 at 1:15 PM CEST, Danilo Krummrich wrote:
-> On Thu, Jun 26, 2025 at 12:36:23PM +0200, Benno Lossin wrote:
->> Or, we could change `Release` to be:
->>=20
->>     pub trait Release {
->>         type Ptr: ForeignOwnable;
->>=20
->>         fn release(this: Self::Ptr);
->>     }
->>=20
->> and then `register_release` is:
->>=20
->>     pub fn register_release<T: Release>(dev: &Device<Bound>, data: T::Pt=
-r) -> Result
->>=20
->> This way, one can store a `Box<T>` and get access to the `T` at the end.
->
-> I think this was also the case before? Well, it was P::Borrowed instead.
+Due to calling Revocable::revoke() from Devres::devres_callback() T may
+be dropped from Devres::devres_callback() and hence must be Send.
 
-Well you had access to a `&T`, but not the `T` directly.
+Fix this by adding the corresponding bound to Devres and DevresInner.
 
->> Related questions:
->>=20
->> * should we implement `ForeignOwnable` for `&'static T`?
->
-> There's already a patch on the list doing this in the context of DebugFS =
-[1].
->
-> [1] https://lore.kernel.org/lkml/20250624-debugfs-rust-v7-3-9c8835a7a20f@=
-google.com/
-
-Ah, I'm not following that series at the moment.
-
+Reported-by: Boqun Feng <boqun.feng@gmail.com>
+Closes: https://lore.kernel.org/lkml/aFzI5L__OcB9hqdG@Mac.home/
+Fixes: 76c01ded724b ("rust: add devres abstraction")
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
-Cheers,
-Benno
+ rust/kernel/devres.rs | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+index 57502534d985..8ede607414fd 100644
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -18,7 +18,7 @@
+ };
+ 
+ #[pin_data]
+-struct DevresInner<T> {
++struct DevresInner<T: Send> {
+     dev: ARef<Device>,
+     callback: unsafe extern "C" fn(*mut c_void),
+     #[pin]
+@@ -95,9 +95,9 @@ struct DevresInner<T> {
+ /// # Ok(())
+ /// # }
+ /// ```
+-pub struct Devres<T>(Arc<DevresInner<T>>);
++pub struct Devres<T: Send>(Arc<DevresInner<T>>);
+ 
+-impl<T> DevresInner<T> {
++impl<T: Send> DevresInner<T> {
+     fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
+         let inner = Arc::pin_init(
+             pin_init!( DevresInner {
+@@ -175,7 +175,7 @@ fn remove_action(this: &Arc<Self>) -> bool {
+     }
+ }
+ 
+-impl<T> Devres<T> {
++impl<T: Send> Devres<T> {
+     /// Creates a new [`Devres`] instance of the given `data`. The `data` encapsulated within the
+     /// returned `Devres` instance' `data` will be revoked once the device is detached.
+     pub fn new(dev: &Device<Bound>, data: T, flags: Flags) -> Result<Self> {
+@@ -247,7 +247,7 @@ pub fn try_access_with_guard<'a>(&'a self, guard: &'a rcu::Guard) -> Option<&'a
+     }
+ }
+ 
+-impl<T> Drop for Devres<T> {
++impl<T: Send> Drop for Devres<T> {
+     fn drop(&mut self) {
+         // SAFETY: When `drop` runs, it is guaranteed that nobody is accessing the revocable data
+         // anymore, hence it is safe not to wait for the grace period to finish.
+
+base-commit: 86731a2a651e58953fc949573895f2fa6d456841
+-- 
+2.49.0
+
