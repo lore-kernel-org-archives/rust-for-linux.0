@@ -1,65 +1,64 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EE12EE988;
-	Thu, 26 Jun 2025 18:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3C22EF283;
+	Thu, 26 Jun 2025 18:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750963833; cv=none; b=WVxn5WIxgMtY0Q+pAelINEXTbONY+6foj8uiyc0KSggDLXzKk18ZNQdu49hT/uDf/GHXSxtmpYCQGZFWGQgIKmQK6BSBsuE69BXhxoAZXgcGtCqaomyKbyacmZ6N0zDLDx1IF5+t0IYSSsXE0AmWovCE3CF88TT/drshnNPsV0E=
+	t=1750964158; cv=none; b=WvRsV3PekKZMgwZl1OmIDnpY/KWFUHaTilMRnQiw5HHD3iGdKSMgIinjcX01yY9g+GtQZ7grJUxPE3cpF2nklWuUkMMxFLDIlZSwtWwswIy9O7WNov16ap4A9VSzYyfOL8QtGZjEgASfrNi7MQiUpO123WdKjZZwXSg2v639bY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750963833; c=relaxed/simple;
-	bh=B8jELx8h+z45gMAddPWraepqUp+huui0e6LNh0/0M1k=;
+	s=arc-20240116; t=1750964158; c=relaxed/simple;
+	bh=DRqe2nzX4jfqs+HlvB+tuxCgIsyE7/oimrxK3Tj39sQ=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IbLJIj8Ch8t8C0VXzM2TSX1uHy/IjyNFHzeJXimfFijdmsHZdKFSsI3QZcZAD6W5lvctkGFjU4JD3+jM7is9KyQdxfGV9YCQkUt103OX8KKPTGh1WidUmAaUm15YRTqPhNokHqWzycSob9fm5Ghav7VUtItUUpJzV2xQUfi8NEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D/MOAbfL; arc=none smtp.client-ip=209.85.215.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7ZHaob6uSXcVrZ4MsYgzG3+0J4mHty4WL7bMzOkxQJy/aYypOD8cMWKXzqZYWLJati67p5mDBjhwukq77ZBBSi/xnGj0pplatSwrkrC//BBrbsgKt2ZxSFzPU0PxOtWvXjWzFmf7gA1hrgtuaojIGCKbo9hOwAq8sYMOdnwbkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kf1EjS+L; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D/MOAbfL"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-b31e0ead80eso1260715a12.0;
-        Thu, 26 Jun 2025 11:50:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kf1EjS+L"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-747fba9f962so1309308b3a.0;
+        Thu, 26 Jun 2025 11:55:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750963832; x=1751568632; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1750964157; x=1751568957; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:subject:cc
          :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=tT/zYKlN6ZjN3xYYT5+Jz2nPYygKr3Y4QXZEyrym/qA=;
-        b=D/MOAbfLaTfCyxvfhWEQbxlfZhPgfvoz2Uq5a6RlQC2WFuDH+j6aCG/Pq2Pdq+8t9i
-         LkXY4nKaWDgFTCHlf099T9NsSJmhUJgEsX+hIyKdsktcrhNg8II2wNtEmdiVVdkVZi6m
-         0x+V3o3FPxaHTc9dlnnj6U4SnJHQiexpWu0/Kn/c8aKn31VzGCsd6/33bii6/zswDOVt
-         1xjl6kkqMU1XvpcGQeBufhjAfy+PqP6+e3WIWgW7v9FDtsOqakLbsLLYdVE/ffYkrbgV
-         q5yN1LI9pSUNCEZaNiszF8JbcjNDOr6EoY2wID3TZ7uEKISSlGLWanr8gQybiXWzLADc
-         DAnA==
+        bh=0qV2RBXaIIhVx8uNkXIn8vYQn7df28o+lZ51Nk6sfdk=;
+        b=kf1EjS+LMiU99CladPCHgYjdZ/TpJ+/xBd67TnEZTMlp5UB7FFMVLjd7mF3tvHg5P/
+         5jfORerA5kUA49Pyh6z3RggJoiw0GzXiHb9Sgmb+6Ilk+I+sMPib2JKBEsk6X3xzkDag
+         K4s5jxKFiL2CJST4JZiXkwFBK4g1VzRvadPiKNvR1LZ3I/5E4C5IHkn5cOFy04wH96sI
+         LRuZLB0A4+VpFE5Vi5SX/4L5YAdHNqHJWdiNZZBAiVTVnAYEZkSzKvNA6KwM2oobJ6va
+         uKORVVlm0FXnD78X+3L0AamOXgTaMbJNRM1gM7VAg9wiYEuwNc5c7VzKKhlJ/hIXcv2a
+         7yeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750963832; x=1751568632;
+        d=1e100.net; s=20230601; t=1750964157; x=1751568957;
         h=in-reply-to:content-disposition:mime-version:references:subject:cc
          :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tT/zYKlN6ZjN3xYYT5+Jz2nPYygKr3Y4QXZEyrym/qA=;
-        b=f4Kvg9bjxVMCUcDXeDlPH+hrSlShonmgGadBFaSkY5grS2a5k4qQat+QKnLpio1ZbM
-         oBF1igdcgeXSlLM89USGBp0MG6mZZEwi0uB57NlFkTtHGWYrgN9Gs6Eq2x+drvmALxbK
-         t9W4k5G3/wG/wyGuu4zuVHERJkcL2j23SPYmLK0q0vRIM09GjuW9Ci9SXPwRgfzG+QaP
-         H0FRwhFtMBoDVTdhjZUnma233Tn2VLo/n9CgT8EKXRZk28jQMZI9lDyPT4IyP0tLgW0r
-         iNGIi46ekdTQZ7x3H07J+V8oG9860MmQpteiEAQ1IZwc79PVGMDmgciSwuPva3th9WZL
-         zWpg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPGFzGWW1or2k4o8/D18rNouRBI7JFdLiENueozDpIyTfhdDT0k6cv4i2jGytZi86DXoUkvSEonBB+qGs=@vger.kernel.org, AJvYcCXddlzf5lCB/CM5rIAYk35prPemA0aXQHXPwi4FlbQiWwyhiKci1BGPW8jno7PovkPLbBf2TOkSHTUBdJtOnwU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHYwzMV4tzEwqNJPOlt7NhM/QO+ySCkNlme3VdQZZ6uiRzNnCo
-	SPmVv2EyvJhW9z/vjz+vWlfzv31ROg4UeX4JCdotqkq9UtvNOqys7Zbl
-X-Gm-Gg: ASbGnct4L5QhF9xMhecL97k0nQjxo67maz9vhHC4FKTp094A89SzHsmJ/cuzZIsiEy6
-	x2Vrp8NM+1/keA7yLfSkWx/0fBn2kGFncZ5OzZ0/GsUMFwh/+qP6dsTDyiL/jr5ugVypT7JJbW1
-	GjmLsCBXdNBItA3eMPPoF6ObjWhp499SAGZHiGmg9Mq9pV7n6Z9gj0fJYeBW5WueQ8x5kOKmiXL
-	qMKWZ3RYVPBSiEoaQmwwdUzCh4NY82+RXRwA80HRDfWfnWF+70F4qD/9tjyrNjGCy3eEEt641DI
-	kxKznMWgKHHNi79oYZq+b0DZ3k12MTG30e47+dH42gcuaurWeaXfRsnze44Ls8jWA1gC7FvMIB2
-	lJw==
-X-Google-Smtp-Source: AGHT+IFvF6jP6PBP3u85jsm2DJZo1+ExfXSmCRGLdvtkh10ZkCMNcJx1NbgwU+/1tKNLMQUEkVD7yw==
-X-Received: by 2002:a17:902:d58f:b0:235:2e0:ab8 with SMTP id d9443c01a7336-23ac3cf54a7mr4504725ad.6.1750963831745;
-        Thu, 26 Jun 2025 11:50:31 -0700 (PDT)
+        bh=0qV2RBXaIIhVx8uNkXIn8vYQn7df28o+lZ51Nk6sfdk=;
+        b=nUWqbIl19pwNxy4Ks6UuiDutA4hSkGQxX6pdLpXk545RAjp9V3wuuX9+HGPm6kBtWw
+         RyFcJncE2MJY3J4n5NWv0IaPhC/m7D+2XnmAaLxyuIlWPMfdtAlmPYtCaKmQq3RbwHJv
+         MyUBOB0ZLEQH/hFCf94WFnkI2XiT3AM2DL/M7i7KwiZl7f6l4Xj458rYKD0G2u0Ny95s
+         SSbbgK68cNWVXDJMmSFiOnG31Buo3WMitXna+/EYtAruzdDJ47wNGIUneZaKI34mR+7Y
+         G3cH80uiincmqaKoNgL9yKR2UsGzjOPujweEDHbenPdZY6GXuJRfSMwvIzAGTonfRkO0
+         YXUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMi+EQastO3Y/hatOV2/adsgYyLGgc/6UJN1hKe1OEkINonH8Vt7wBS02pPG4dTIJX3w5fMBiPnggqbM+b0Jg=@vger.kernel.org, AJvYcCXHimhtArMO+zSxMRSZ3+phKHK2kXqjvfBchJqJfv1nOHxGwOiJylK8T27hcFKoy+LvEniMKA7ZgSxSUSY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdDhfRpclwDTQDrBLGz1todZgV28b2l/XzYLzORKksVTjOatVv
+	IACfryoNgHV0s2+rWxF+McRDSNmPOWvJuJISPutMdc58pwPn1gIELpOO
+X-Gm-Gg: ASbGnctMbDep9ZfnIDdgtE22v3nWb4werGYX3ZIaT0/uA5VG3qYYkeqrQ/CdPgxg1fU
+	nbiH2pXveM9u8eBj6489gGSwc68edGsbrmeC1JCPYvOMWCvnyzgwl4HaG85aQ3TA+ZlSiI8GjIh
+	x2/3bk4OIN+0i+wSXAYtk9Cd/eLPU7huab5oEjt1h7noYe45v55H4dnz7qfx9Vz6fJRKOI5CoHY
+	DKADVimV4G6N1+RcNSg/qXLc5sqMVAun0CcNkEZX1mImq8o2rBnbryM+2kEAe0dcX1+Mgj4rQ3r
+	QePpjVAzn7k5UAPZItC7ayLLB8ZLLuHHvAVPtZKrNkeMbK/AIDOhZ8Og6P50kxJrDSM=
+X-Google-Smtp-Source: AGHT+IHZdd4iUO4X6OH+qrKIWbRgtMr1OIG9uLTQ7Q5xNEgdniTrrw4+dcC2e9htVhZ+MGs6rFhtoQ==
+X-Received: by 2002:a05:6a00:b52:b0:748:6a12:1b47 with SMTP id d2e1a72fcca58-74af7aef473mr149120b3a.10.1750964156834;
+        Thu, 26 Jun 2025 11:55:56 -0700 (PDT)
 Received: from Cyndaquil. ([174.127.224.194])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23abe426d82sm3689475ad.219.2025.06.26.11.50.30
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af541d2bfsm379466b3a.60.2025.06.26.11.55.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Jun 2025 11:50:31 -0700 (PDT)
-Message-ID: <685d9677.170a0220.3b599c.7713@mx.google.com>
-X-Google-Original-Message-ID: <aF2Wd6wHcK5ePpen@Cyndaquil.>
-Date: Thu, 26 Jun 2025 11:50:31 -0700
+        Thu, 26 Jun 2025 11:55:56 -0700 (PDT)
+Message-ID: <685d97bc.050a0220.3c0bff.7a70@mx.google.com>
+X-Google-Original-Message-ID: <aF2XvKbsgJUs508n@Cyndaquil.>
+Date: Thu, 26 Jun 2025 11:55:56 -0700
 From: Mitchell Levy <levymitchell0@gmail.com>
 To: "Christoph Lameter (Ampere)" <cl@gentwo.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -75,7 +74,7 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Subject: Re: [PATCH 4/5] rust: percpu: Add pin-hole optimizations for numerics
 References: <20250624-rust-percpu-v1-0-9c59b07d2a9c@gmail.com>
  <20250624-rust-percpu-v1-4-9c59b07d2a9c@gmail.com>
- <cd3a600c-a4ee-4034-f605-ad9bac5c7655@gentwo.org>
+ <d938ed3a-cb00-0a71-2380-dac7d1a9e039@gentwo.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -84,42 +83,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cd3a600c-a4ee-4034-f605-ad9bac5c7655@gentwo.org>
+In-Reply-To: <d938ed3a-cb00-0a71-2380-dac7d1a9e039@gentwo.org>
 
-On Wed, Jun 25, 2025 at 10:21:17AM -0700, Christoph Lameter (Ampere) wrote:
+On Wed, Jun 25, 2025 at 10:23:42AM -0700, Christoph Lameter (Ampere) wrote:
 > On Tue, 24 Jun 2025, Mitchell Levy wrote:
 > 
-> > The C implementations of `this_cpu_add`, `this_cpu_sub`, etc., are
-> > optimized to save an instruction by avoiding having to compute
-> > `this_cpu_ptr(&x)` for some per-CPU variable `x`. For example, rather
-> > than
+> > +                        concat!("add gs:[{off}], {val:", $reg, "}"),
 > 
-> Cool. Great progress for Rust support. Maybe we can switch the SLUB
-> allocator over or come up with SLRB for the Slab Rust allocator ;-)
-
-Thank you!
-
-I'm certainly very excited about the prospect of more Rust :)
-
+> > +                        concat!("sub gs:[{off}], {val:", $reg, "}"),
 > 
-> > +        impl PerCpuNumeric<'_, $ty> {
-> > +            /// Adds `rhs` to the per-CPU variable.
-> > +            pub fn add(&mut self, rhs: $ty) {
-> > +                // SAFETY: `self.ptr.0` is a valid offset into the per-CPU area (i.e., valid as a
-> > +                // pointer relative to the `gs` segment register) by the invariants of PerCpu.
-> > +                unsafe {
-> > +                    asm!(
-> > +                        concat!("add gs:[{off}], {val}"),
-> > +                        off = in(reg) self.ptr.0 as *mut $ty,
-> > +                        val = in(reg_byte) rhs,
+> > +                        concat!("sub gs:[{off}], {val}"),
 > 
-> That looks arch specific to x86? What about ARM and other platforms?
+> Where are the other RMV instructions like this_cpu_xchg and
+> this_cpu_cmpxchg, this_cpu_cmpxchg_double etc?
 
-Yes; pretty much everything added by this series is x86_64 specific. In
-`rust/kernel/lib.rs` the whole percpu module is gated behind
-`#[cfg(CONFIG_X86_64)]`. 
-
-I'm certainly interested in adding support for ARM and other
-architectures. That said, x86 is where I started, and since it's in a
-workable state, I wanted to get some input from the list.
+I wanted to stick with (what I saw as) the most basic operations for the
+first submission. That said, I tried to design things such that adding
+more operations should be straightforward. Happy to build on this
+further for a v2 if folks are interested in that.
 
