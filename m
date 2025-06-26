@@ -1,129 +1,121 @@
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C8F1A0BF1
-	for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 16:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FB718871F;
+	Thu, 26 Jun 2025 16:59:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750957167; cv=none; b=FVjnsEX1eQ+CZvrddPmNxfAPKGtczRIuLIhRm8DPIdbvAfZdA5uXrQLUMbOgsteKtOtcRxUFqHjfqav5uE4+ykayZNCM4Q7Sbwt1xRZZn2HE16KwJo3WxQbGx5Aqf9CRUe1XNEyoalY/53xbAxJBSTw7dC8LkanAfi2C2fF9HqU=
+	t=1750957181; cv=none; b=E2yH96johIRphxXI8bBLn+x1aZvCVmjbu970lbt9J42136gHcTXkvS2flry+ERupekQveBn051Zwxpn8SY9UAwpf3gG/Bln8x3SNZ3ISqP+YJqdP8f2nz8Z340/u73yUVKMwOHfQiEHSjx0SKdoBwyLNRPoneOhNbatJFRxcpx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750957167; c=relaxed/simple;
-	bh=PvI5gHUwVIhFv2dtw/qoLeiyWDGk8BjmnnuVTn+txO0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ugOwTwQUF4y0V/qSLbtJcv5Izwu/E3C6vbvW7bFfGczOkCK/XjRgrHnuDgrsnKtD8UhOt+9Z7i9ePUTe5TFLm/aQxgOz2OA+7uXod3tCY7p7rbkjMdPsUC3iHA6lnO1R4Lc9ZDad2SU8kaWgoSfcy32QANavcKGqrQK0O9eWFtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FCo36aYy; arc=none smtp.client-ip=209.85.160.41
+	s=arc-20240116; t=1750957181; c=relaxed/simple;
+	bh=aIxIA6zQvTROLZ2rBk9oC7yeFzYwYAj55y3ZB/NadJw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XYwxcA0NqzmnHa+0Rf9B9UO3ceEu4VYK5yMZek5aZpVOlCytMJvzz9Zc8a40aKJmKY3Po1BkGOzegoOFcwlJV6oTzgISR9dFLm9qmZte/k0n6CGVlm8r9JpVX6DZ48hdGUNB9a1P9rHsZwv0dT3VwWC0teBK0P/Ys9P/Dkrhhck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pe2l0CXp; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FCo36aYy"
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2ea2fee5471so723210fac.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 26 Jun 2025 09:59:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pe2l0CXp"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2350b1b9129so9617265ad.0;
+        Thu, 26 Jun 2025 09:59:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750957165; x=1751561965; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T3IEyo9WONKfEiyTgck650sXXAAvZTgQqrZBF8o33MA=;
-        b=FCo36aYyzOGlvye2BsejLSePoPIjs5UTHoXctDMPLR5Lv5FsM4xvXNTC5HMjdQM/1c
-         SrXd3/hN2FecOaFPTCSQj6C9AYtDadRV0oW339x+mkt+E0HvJHMYVPjLO1rjI6C2DQo3
-         R8UD0EZsWvTu+MqB9sqgPJeRongwr+BKLGgpPYOMZ/QzKCX5sx2wdl4rJv1b3s9LoT9E
-         kDpV0PYqsLNGPFMhmB34YmtiPf48RH13Dr8/NOILFUdr3x+AnfStU8mNfN4dtniUxB6T
-         wtTu5Btv+dSUMoCqcMW1/qw7qS9mXM6fTFPAgQW4NejnRkqum4pMw16LS8YkiTSKGa5s
-         lb5g==
+        d=gmail.com; s=20230601; t=1750957179; x=1751561979; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vhz1FOD9yNsNC2xPBOAJj+zX5MtGTzkAHI8nVF6cq9U=;
+        b=Pe2l0CXp3brLVC11J96RgP7XOGSfxWnomH5xIdURn3c1bukRlS3cZgOwaxU8OYf0bZ
+         12GOvcMhIfna5k7jsxIw5/vxmlIoIHOyy9Kvhu8a1dOC19X0W33H8n4D0B551xKZmS40
+         DO6aEZKOYgsD7Ho+ruSfZEvLbCtdD2Dq7ktcssgSxmfwToCyX/En9o3u+uSicGVxO90P
+         3erDd58KTpYlav+aDH82AmrPk15k5dJQFJASdtzxZPg/+g6aXPtSQgaQPsaiMG3pRujk
+         ulaw7C84bRDM3Lxtpwqd5sHnpCy1cBPbeO0ehE2l4l+xAM6YeWn6KSXcZ/rLgqd+Ugtq
+         CuEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750957165; x=1751561965;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T3IEyo9WONKfEiyTgck650sXXAAvZTgQqrZBF8o33MA=;
-        b=eoB+yLlCxnIgeMdPoMYyHD7b3iy/+G/8lPWug7aYZSS4lC7x9doZNKTxq0EBNj6o+5
-         9jF3HEKMPxTKfjAuvduCBUsvnkZEd7+WOBO4Wp2kElAzCSUcoJQIjlgg1iOo98CpC9tx
-         6apDCePmVIaHm5xIqldJEdEAb7SZJrgZMdB1wFJkCzw86MiMHO4czHzGfcHbWYPNtOjp
-         b2PLlJH7fP03IyNZG5LXDEn8E71yANJL4QRdNYEAO6ZF6mgHfoFdbZvgT7sHZetnm4qK
-         /BY4FTkUQEdOOX2z/TeLmqTCZVeemYjVGTponQZi+itCiVyQYSVy1mGuDUOV7joAqYXE
-         LvwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUrcNU90VpFS/o4w85jow/xpZ/ZIHI19gP4s0dZAzYlGNtOWx8Uku5KvjMRjfYyMiF9iNOhmMSu9A1N7SsWLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyul1okYmNpNA5d6ZzA+B/vKCInNRZ7jCgl4TWuTJr6kIGGuIW4
-	FHyy1hIfjx2CurHX2x15d1HGcsKoqlBwnWmqTONJGPuO66XLkyPx3ntKEJ4+5n6A5OKRVMB+/mr
-	PKan4MW19OYPQkR6coS2THaT7lCAPt9Y=
-X-Gm-Gg: ASbGnct1HWIxkk4N11jikrcg8qVnZfGIeCca37BLQgtH0kMS7xUWQWJHum6v5lpbBE7
-	bnLe6ZzJjM+Zxfnr/Mrs1s3YWjmoH6a6Cd06K1j79siXO91h1eOn12QEA1C5Ed6cL2F8DTFPB8q
-	62zP4nJNRDGaT/wabHyC+gFB8CV0AuGbcW9OAL3wqAdPUD7KgfgCz+XG4=
-X-Google-Smtp-Source: AGHT+IEmGOFpoBJAharVpKxEGP+kT3JHv0GhBnEjE6VvCorsSJEK8B6zcLb3kqary8KNh3C0IHg1H1hO+wnnQ1jZlEg=
-X-Received: by 2002:a05:6870:304a:b0:2da:b440:5b1 with SMTP id
- 586e51a60fabf-2efceee0bf5mr3184497fac.5.1750957164792; Thu, 26 Jun 2025
- 09:59:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750957179; x=1751561979;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Vhz1FOD9yNsNC2xPBOAJj+zX5MtGTzkAHI8nVF6cq9U=;
+        b=wUMlUc3ojeGTeAVqdS4y2/mZ5jrt+aiJzvobgeDzOuxvsy4ooll3XL++gGNpYkGbSr
+         gCPRvVvousaVKcmigwSJhpI7jTer//9h6uamD7ZloN0zw8kg3IqtRI3pEls6EaLEYm6b
+         03y85stmGq8BlRac6FFFvTUPlz2P8h30x1jamurX+q4SwNf9g/YqA+FHNnjEk9I96C5y
+         y4TEmYOtdPl71ENzaRDezq2Ghk9Goofxv28hTk8ALepD1PBsTUBTfGrBYSUeRa3BY1Bs
+         ExjAV+owaOu1GFs3/5n6/DFWyqqz1UZ/ee98hvxGENaMod+HjzB7mlH7xIrlTt83cmLx
+         qOCA==
+X-Gm-Message-State: AOJu0YwhsjYwVYfSuYK++TxblLUC4vV10CASn4Dq10MHUdJexF9Ijr7Q
+	LdnX1J2jh+0soD+HnnAQQDVpkyAngpS6g1Qft7nVm95KvxE7AKGU96ZZvtC7XlNe
+X-Gm-Gg: ASbGncvEUN015U3zsZnGlhe1dofJCULBpg0CCbgB3oJJQYt11a/KsRt+hjV9ES54lUJ
+	HDJFhevd0N6amTPLwXdRyNB201AMZSsSzYhxjERKwA760XCLIocUyEeAtRbFzJ51gIrY6Bwg79T
+	N9f7YWmGL8Q8QhmvwaZIEOROeNa/+wcEnXIQa5uLmKqNyQUq10wW3iPxXoBw2DxgEWB34MsVAog
+	EZddP2n9NThMuw8k/3q1kzO9YnJX5esjLen285irvq6hmGTvXxWNKN3ZMApjtMBRWR53il017ys
+	65co35mz4TX6NtcYbiaVuzxVrPLWgKAVpfj+GLFRk4OQltEK
+X-Google-Smtp-Source: AGHT+IEydPZD5gf5bm0Z1et3oJc58NxqT032IKiYytwtIjpzcFTtkrxz13uS6GICiIbwAYIj1/h9+w==
+X-Received: by 2002:a17:902:ebc4:b0:234:a139:1203 with SMTP id d9443c01a7336-23ac460552emr763695ad.32.1750957179451;
+        Thu, 26 Jun 2025 09:59:39 -0700 (PDT)
+Received: from fedora ([2804:14c:64:af90::1001])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23abe329b72sm2615195ad.80.2025.06.26.09.59.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Jun 2025 09:59:39 -0700 (PDT)
+From: Marcelo Moreira <marcelomoreira1905@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	dakr@kernel.org,
+	ojeda@kernel.org,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	~lkcamp/patches@lists.sr.ht
+Subject: [PATCH v5 0/2] rust: revocable: documentation and refactorings
+Date: Thu, 26 Jun 2025 13:59:25 -0300
+Message-ID: <20250626165927.66498-1-marcelomoreira1905@gmail.com>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250602232842.144304-1-marcelomoreira1905@gmail.com>
- <20250602232842.144304-2-marcelomoreira1905@gmail.com> <DAKFLKX7HS7W.29I8XUZP8L1KN@kernel.org>
- <CAPZ3m_hQF+ZHdfWTVZ3Z3dJoMu37Q8YcSecKi=fv1s3dw6UTSA@mail.gmail.com>
- <DAMGEMZF6UC9.1YB4QHDZIW5PS@kernel.org> <CAPZ3m_jqnGJtOxff2cJre_qFLyOehbhZ+XVvE0BjzFv7ADqOAg@mail.gmail.com>
- <CANiq72kmjEEsBjbmJ1rN-OYA7Tt7N_0j6mEB0=DPK9ng7uyuDA@mail.gmail.com>
- <CAPZ3m_gGOy2XsiVaVbbAivwO0JBpgqMke68LV4OD+i2L1Z5PEw@mail.gmail.com>
- <DANRU0TC3F11.30DUO1LQZUE42@kernel.org> <CAPZ3m_gBEBfnCHtcFoga=HEi_acr6-eJ1a71VgrZDJbfrCz=0A@mail.gmail.com>
- <DAOMIWBZXFO9.U353H8NWTLC5@kernel.org>
-In-Reply-To: <DAOMIWBZXFO9.U353H8NWTLC5@kernel.org>
-From: Marcelo Moreira <marcelomoreira1905@gmail.com>
-Date: Thu, 26 Jun 2025 13:59:12 -0300
-X-Gm-Features: Ac12FXx7be057Up6x4A_gcxS91ot4-C2g3HC8fYFf_Yj3AZzUoT-Zesxpl6HZYw
-Message-ID: <CAPZ3m_ge=epGKTuQEVqr81Aq_xTa_e4Yjo_Bn0Ox1cb+zEZctQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] rust: revocable: update write invariant and fix
- safety comments
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, dakr@kernel.org, ojeda@kernel.org, 
-	rust-for-linux@vger.kernel.org, skhan@linuxfoundation.org, 
-	linux-kernel-mentees@lists.linuxfoundation.org, ~lkcamp/patches@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Em ter., 17 de jun. de 2025 =C3=A0s 04:18, Benno Lossin <lossin@kernel.org>=
- escreveu:
->
-> On Tue Jun 17, 2025 at 4:49 AM CEST, Marcelo Moreira wrote:
-> > Em seg., 16 de jun. de 2025 =C3=A0s 04:15, Benno Lossin <lossin@kernel.=
-org> escreveu:
-> >> How about:
-> >>
-> >> // - `self.data` is valid for writes because of `Self`'s type invarian=
-ts:
-> >> //   `&mut Self` guarantees exclusive access, thus no other thread can=
- concurrently access `data`.
-> >> // - this function is a drop function, thus this code is at most execu=
-ted once.
-> >
-> > Ok! =3D)
-> >
-> > I thought about using "so" instead of the first "thus" so I wouldn't
-> > have to repeat the use of "thus" so many times.
->
-> I personally don't care about repeating those "filler" words in safety
-> documentation. The clearer it is the better :)
->
+This patch series brings documentation and refactorings to the `Revocable` type.
 
-Ok, thanks Benno!
+Changes include:
+- Clarifying the write invariant and updating associated safety comments for `Revocable<T>`.
+- Splitting the internal `revoke_internal` function into two distinct, explicit functions: `revoke()` (safe, synchronizing with RCU) and `revoke_nosync()` (unsafe, without RCU synchronization), now returning `bool` to indicate revocation status.
 
-> > Final version:
-> > // - `self.data` is valid for writes because of `Self`'s type invariant=
-s:
-> > //   `&mut Self` guarantees exclusive access, so no other thread can
-> > concurrently access `data`.
-> > // - this function is a drop function, thus this code is at most execut=
-ed once.
->
-> That is fine too.
+Marcelo Moreira (2):
+  rust: revocable: Refactor revocation mechanism to remove generic
+    revoke_internal
+  rust: revocable: Clarify write invariant and update safety comments
 
-Thanks!
+Changelog
+---------
 
-Guys, sorry for the delay in replying. I traveled to my parents' house
-to visit them :)
+Changes since v4:
+- Rebased the series onto the latest `rfl/rust-next` to integrate recent changes, specifically the `bool` return for `revoke()` and `revoke_nosync()`.
+- Dropped the "rust: revocable: simplify RevocableGuard for internal safety" patch, as the approach of using a direct reference (`&'a T`) for `RevocableGuard` was found to be unsound due to Rust's aliasing rules and LLVM's `dereferencable` attribute guarantees, which require references to remain valid for the entire function call duration, even if the internal RCU guard is dropped earlier.
+- Refined the `PinnedDrop::drop` `SAFETY` comment based on Benno Lossin's and Miguel Ojeda's feedback, adopting a more concise and standard Kernel-style bullet point format.
+- Corrected a duplicated line in the commit message of the second patch.
 
-I'm sending v5 now!
+Link to v4: https://lore.kernel.org/rust-for-linux/DAOMIWBZXFO9.U353H8NWTLC5@kernel.org/T/#u
 
----
-Cheers,
-Marcelo Moreira
+Changes since v3:
+- Refined the wording of the `Revocable<T>` invariants to be more precise about read and write validity conditions, specifically including RCU read-side lock acquisition timing for reads and RCU grace period for writes.
+- Simplified the `try_access_with_guard` safety comment for better conciseness.
+- Refactored `RevocableGuard` to use `&'a T` instead of `*const T`, removing its internal invariants and `unsafe` blocks.
+- Simplified `Revocable::try_access` to leverage `try_access_with_guard` and `map`.
+- Split `revoke_internal` into `revoke()` and `revoke_nosync()` functions, making synchronization behavior explicit.
+- Link to v3: https://lore.kernel.org/rust-for-linux/DAOMIWBZXFO9.U353H8NWTLC5@kernel.org/T/#u
+
+Changes in v2:
+- Refined the wording of the invariants in `Revocable<T>` to be more direct and address feedback regarding the phrase 'must occur'.
+- Added '// INVARIANT:' comments in `try_access` and `try_access_with_guard` as suggested by reviewers.
+- Added the missing invariant for `RevocableGuard<'_, T>` regarding the validity of `data_ref`.
+- Updated the safety comment in the `Deref` implementation of `RevocableGuard` to refer to the new invariant.
+- Link to v2: https://lore.kernel.org/rust-for-linux/CAPZ3m_jw0LxK1MmseaamNYhj9VY8AXtJ0AOcYd9qcn=5wPE4eA@mail.gmail.com/T/#t
+
+ rust/kernel/revocable.rs | 68 +++++++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 32 deletions(-)
+
+base-commit: 0303584766b7bdb6564c7e8f13e0b59b6ef44984
+
+-- 
+2.50.0
