@@ -1,132 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C81222590;
-	Thu, 26 Jun 2025 10:36:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D41210198;
+	Thu, 26 Jun 2025 10:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750934189; cv=none; b=dDO47fhPrOokNTKtjsg7maHX4Wzh8bx/AN9NcrXBF4vESNCjSpNRro4uyGa4Sf/L6EcEjE4LUMDtDnqKBdWk/hZ1ADcWxfU/6NGlRWekNt7HXZbLcnI98m6wkpaDGMP7wlG0h9DidbGb1hzdpj74oZMzxTObDo1gKwpvmM38Mlg=
+	t=1750934743; cv=none; b=byNBNYhcpnAYnPt2aFR8Be49bLOwRIVJpAAdeCcNCIumrcI+mj1UyE5SB2WlP3hDaQ0xiPixhDipi05BlA9kPzPVNI13+xdKnAgFOIYBWn5UeA8O4mXy7k9fTe2LiZLLHXDagaDuv/HWURxezBzXi57C/+MWhoY20Sjn7xcHA34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750934189; c=relaxed/simple;
-	bh=awgx4GCv+DU9O391SVRk/D4EEDX+wR3EWr3gJ0RVJZ4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=AsChr+hJ+18U0OO9FQ6ZSpUqswoZaRIvKa7aZJ6z4iYoABkWO75N6bTHvyzYPUaqA010EQFV1DtxkzYceuvi/7Kv70HRNroTChKHsFZaPJjCpKJL3/IgFtvL4vb9/PNFTMr1IXYZHqNI529XZAJgj3gSIwGoYLgZidKNyq7RP3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UIimtl2L; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750934743; c=relaxed/simple;
+	bh=nOf8soMmRGmaMNZe0vd2LALZAHYkbrrvJnC7O2i9mbw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kuQlXNPC5A6uSxLLHMujg8WfcoQkLbA7yiz+cQ9W9D8wb6aQCbnRQmYkDsDkikqT0g0AYA50u11KQ/KDxw5LA9QAXp4Z22NRJr/V0cty2zVyQVMFRuo0mGV8gkruvvl9UZvym7vjmRvq22XnLFmfqV8xl9tmvXaIgs4G0sS5vGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gNHSK15X; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIimtl2L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FF4C4CEEB;
-	Thu, 26 Jun 2025 10:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750934188;
-	bh=awgx4GCv+DU9O391SVRk/D4EEDX+wR3EWr3gJ0RVJZ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UIimtl2LFIMtv61BMJTLnOiyklJzr5y1r/gaLDPPDy+hHVsUj825W7EO1MpTh98KO
-	 Bfyys9ZRcY85iIqA4qvdHGYDdwwTtvocxo5GxYiUTuQ0MJHGxUZ3i6+ZEo+ip679gh
-	 I+5xTGkWfvVweJIaE7SkDYjnw0G5xI8evVeI6ErRSUeYMEgpLUU2jlyhg8iBek3GOP
-	 ya+du6Mw+aelhuVjgctRiT70B9Y5lfLkndKtGWm0ylBUJEWDsDMTs/Sqe8QvcSCIQm
-	 qzxDUiW3Gw3FBD4ZzpEK9xjNa3Yywu54oNlU5KvdNDYGj4ayDtY2lH9mEIplohJp53
-	 WLAbq0M+3A10g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gNHSK15X"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-23636167afeso8666525ad.3;
+        Thu, 26 Jun 2025 03:45:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750934741; x=1751539541; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y1t9GLFsVKIrtONSeSIsYsMMcNJWR+ObNECrjbsPTbc=;
+        b=gNHSK15XWOMcbU0X2Hynfic+lyEabfR8chCSY6++f8OBh1/+cC0u/ZJYmwH9MAFPV0
+         jV7078W8IFiyoPC3i1pO2CKuI+i6WpUnPubMiu/lDn8AlCEAXEKghujuD/8Q7pOTqhrJ
+         KUSYBHCjI/v8LynicaqzXimv48DUJHLqc3fJ3rE82kj03p8PLZ7/E5usoRpEp29d02Im
+         D2+D3k1wazZt7vAPliDVnH8zilApzwWFSRPo8hAd1hhlfFONpoPyXFTA1FXouXpmxD0w
+         5gNXuMxBKmEL9Zg7/Ege40LIF+s0ZAk9+cHjCHPydXYb/PZY8SfheQMzaq/qhkSRkl+T
+         JGfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750934741; x=1751539541;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y1t9GLFsVKIrtONSeSIsYsMMcNJWR+ObNECrjbsPTbc=;
+        b=iIewbcPdnXI/q0Lu0VZeVkEpukvg7DB7xLPOLyKNvnH8uxPa2MYBUbdDiDvZgjIWX2
+         auWqrtu2//LsGRaYy2Nrwpp9Lc+KkeAHdKA8MhEpOqDWVV2Z7/0CBMkmRrN/MWBjG2MF
+         Qk51b9ND1CPgEc9Y9YV+u553HUDqhmD0S/4QzcLE5LGwTJLmEgkh9OUg9Vy0OaF2cqbb
+         0f9Th2bmaijIyNh3Mo1BBdR12arBpOtq2uxyTHesExwGmKF4z8Gxx6jrBNLQgB/y6THI
+         EipJzxDUf5tqTzo6/Go0BsEFvION6u/0Q323bBOidTmLvyZFz7rP88/dSPxRrZFwZ1C2
+         4n8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVjtlCEGP/GhBg4wnGaIToE1smOpZvpnr0K2C4wnavj6iOZBeUyA9fbCIVASo0Nd3mlTv8Z3i1vE9veFVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCjf7cxiICQeeBEtjkAqetvRDaUE23CUEqlGt9xW2/H/MrkhHz
+	jwQ8iTHZoPk0SygD7i8W2gCEIYBMlcX/UcnWo481gqqdYMcsedR8NZoXnC8/DnOn
+X-Gm-Gg: ASbGncu3OcMuIg5+kWLinHy0qANUpQPZM5Gj3a99upzdk28fhbPQAzbaHd+cR1Ze32Z
+	VIyCfJj9VvOxXOhtOPSPyrCVFyofXbIpYpWF+ZzoPMeE4iRpk+vLxJhD3Py90IoVUWItn/9AAtS
+	zj2od8f/CEvXW1vcRcV/VWroEKlzZfbgcVTBpoAtIo4P5CvWLYDjfI2M9XwcuW5Pu43U662bvpd
+	6J+C3l9dqqK/AhH2ovG2v1o5982rF3SDDXwMkG23k6kIzlfj2NaC5mi5vE+xzs8lgb3XiMDi7Kh
+	RzJohaQ2AheprQYIBHNheZRW8JGpZ9b8XH0zNqO4hp2mHovJIbGIU5/ZT//mlB/gYvJkh52iX3Q
+	5x9A=
+X-Google-Smtp-Source: AGHT+IE0XuN41/0D9/Z/JjSpSQ3M7h6oJlOa7LHC9w7kONipaGHQbT5U68NF436XxElu5Jwkc2Xq0Q==
+X-Received: by 2002:a17:902:f644:b0:234:b430:cea7 with SMTP id d9443c01a7336-23823fda0cbmr115943075ad.22.1750934740997;
+        Thu, 26 Jun 2025 03:45:40 -0700 (PDT)
+Received: from shankari-IdeaPad.. ([49.128.169.113])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d860a76esm154268995ad.107.2025.06.26.03.45.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Jun 2025 03:45:40 -0700 (PDT)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Subject: [PATCH v2] rust: miscdevice: clarify invariant for `MiscDeviceRegistration`
+Date: Thu, 26 Jun 2025 16:15:20 +0530
+Message-Id: <20250626104520.563036-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Jun 2025 12:36:23 +0200
-Message-Id: <DAWED7BIC32G.338MXRHK4NSJG@kernel.org>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <kwilczynski@kernel.org>, <bhelgaas@google.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 4/4] rust: devres: implement register_release()
-X-Mailer: aerc 0.20.1
-References: <20250624215600.221167-1-dakr@kernel.org>
- <20250624215600.221167-5-dakr@kernel.org>
-In-Reply-To: <20250624215600.221167-5-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Jun 24, 2025 at 11:54 PM CEST, Danilo Krummrich wrote:
-> +pub fn register_release<P>(dev: &Device<Bound>, data: P) -> Result
-> +where
-> +    P: ForeignOwnable + 'static,
-> +    for<'a> P::Borrowed<'a>: Release,
-> +{
-> +    let ptr =3D data.into_foreign();
-> +
-> +    #[allow(clippy::missing_safety_doc)]
-> +    unsafe extern "C" fn callback<P>(ptr: *mut kernel::ffi::c_void)
-> +    where
-> +        P: ForeignOwnable,
-> +        for<'a> P::Borrowed<'a>: Release,
-> +    {
-> +        // SAFETY: `ptr` is the pointer to the `ForeignOwnable` leaked a=
-bove and hence valid.
-> +        unsafe { P::borrow(ptr.cast()) }.release();
-> +
-> +        // SAFETY: `ptr` is the pointer to the `ForeignOwnable` leaked a=
-bove and hence valid.
-> +        drop(unsafe { P::from_foreign(ptr.cast()) });
+Reword and expand the invariant documentation for `MiscDeviceRegistration`
+to clarify what it means for the inner device to be "registered".
+It expands to explain:
+- `inner` points to a `miscdevice` registered via `misc_register`.
+- This registration stays valid for the entire lifetime of the object.
+- Deregistration is guaranteed on `Drop`, via `misc_deregister`.
 
-Maybe this function should just be:
-
-    let p =3D unsafe { P::from_foreign(ptr.cast()) };
-    p.release();
-
-And we require `P: ForeignOwnable + Release + 'static`?
-
-We then need these impls instead:
-
-    impl<T: Release, A: Allocator> Release for Pin<Box<T, A>>;
-    impl<T: Release, A: Allocator> Release for Box<T, A>;
-    impl<T: Release> Release for Arc<T>;
-
-Or, we could change `Release` to be:
-
-    pub trait Release {
-        type Ptr: ForeignOwnable;
-
-        fn release(this: Self::Ptr);
-    }
-
-and then `register_release` is:
-
-    pub fn register_release<T: Release>(dev: &Device<Bound>, data: T::Ptr) =
--> Result
-
-This way, one can store a `Box<T>` and get access to the `T` at the end.
-Or if they store the value in an `Arc<T>`, they have the option to clone
-it and give it to somewhere else.
-
-Related questions:
-
-* should we implement `ForeignOwnable` for `&'static T`?
-* should we require `'static` in `ForeignOwnable`? At the moment we only
-  have those kinds supported and it only makes sense, a foreign owned
-  object can be owned for any amount of time (so it must stay valid
-  indefinitely).
-
+Reported-by: Benno Lossin <lossin@kernel.org>
+Closes: https://github.com/Rust-for-Linux/linux/issues/1168
+Fixes: f893691e7426 ("rust: miscdevice: add base miscdevice abstraction")
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
 ---
-Cheers,
-Benno
+v1 -> v2 : Added bullet points, changed the last point in the description and added intra-doc links.
+---
+ rust/kernel/miscdevice.rs | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-> +    }
-> +
-> +    // SAFETY:
-> +    // - `dev.as_raw()` is a pointer to a valid and bound device.
-> +    // - `ptr` is a valid pointer the `ForeignOwnable` devres takes owne=
-rship of.
-> +    to_result(unsafe {
-> +        // `devm_add_action_or_reset()` also calls `callback` on failure=
-, such that the
-> +        // `ForeignOwnable` is released eventually.
-> +        bindings::devm_add_action_or_reset(dev.as_raw(), Some(callback::=
-<P>), ptr.cast())
-> +    })
-> +}
+diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+index 288f40e79906..3fb118496958 100644
+--- a/rust/kernel/miscdevice.rs
++++ b/rust/kernel/miscdevice.rs
+@@ -45,7 +45,13 @@ pub const fn into_raw<T: MiscDevice>(self) -> bindings::miscdevice {
+ ///
+ /// # Invariants
+ ///
+-/// `inner` is a registered misc device.
++/// - `inner` contains a `struct miscdevice` that is registered using
++///   `misc_register()`.
++/// - This registration remains valid for the entire lifetime of the
++///   [`MiscDeviceRegistration`] instance.
++/// - Deregistration occurs exactly once in [`Drop`] via `misc_deregister()`.
++/// - `inner` wraps a valid, pinned `miscdevice` created using
++///   [`MiscDeviceOptions::into_raw`].
+ #[repr(transparent)]
+ #[pin_data(PinnedDrop)]
+ pub struct MiscDeviceRegistration<T> {
+ 
+base-commit: 0303584766b7bdb6564c7e8f13e0b59b6ef44984
+-- 
+2.34.1
 
