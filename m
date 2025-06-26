@@ -1,123 +1,154 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10D62E427B;
-	Thu, 26 Jun 2025 13:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CEA2E5412;
+	Thu, 26 Jun 2025 13:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750943376; cv=none; b=tthV9d0jnLGFw5swnfNIfSbCvgerDSmI8Y7nPW0mM6OAJrqBcIU3zK64qcFBUsXk1M1Rcy0x+MnEx2gA083cHZzDkdUeF9XsXdLL137YvWB2zjvTQbZIeRT9iHb9qzWVtY+YRQJqK/8/Hmi48BBvWdGhGVzSmTA5KQzPgfwNXqw=
+	t=1750943544; cv=none; b=eEY1QzUkrw1XF7pzX0FGP/LrFiTLQepnP7E5J6p0ic0beeGth8dQKqCcZx+lSOZMErEMSrCydynUMMU1RJtc0pqWCB4DShj7JUy/dXSVq52BvVhOuMtuVW+/7DqdesV8yVoyfqZcQMezQlfFh9ZgLjOLH2/n2BTB0IXGLzlmaY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750943376; c=relaxed/simple;
-	bh=4kYQMayMrWVmvStoGOZmLUJ6A52n1HD9otIp1Mp471s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=M6NcabjuGDdcAduSQFwE8i6eVb9Wkb92IIQOL0h6XHCRYnKnBSrkpMHue4wGMkvHrE9SD5+kdOW9A2CQTv8P0niUAXlQ4j00J8DDxiGoE2Or95Xwd0KCiqcoaGbjDVISvfV8ZbxSj4IeuabZJRqPz5ZCmFdwdbRBWM/yIpOI/Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1quAzko; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750943544; c=relaxed/simple;
+	bh=6WoBhCawDr2/q9QTjDOrhN78tjcCQb59Az1jMjyMNes=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JrBO3Aw39DZ7YWd7cBNPzVE93aqiAAa+i1Pgy5y670rVt/6PGt/zUxNDqhsP7sfssTbUa/q4zPuq95uDUWQtKxJTjCIZ9Iy0As0Gen96TJCDMBcFrjnzKZVsxbNvNXxhj7W27IhuG5Ps4petr2tuo8lmWH02U1N9aqt8IO4ul3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qnDhrNTI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1quAzko"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA520C4CEEB;
-	Thu, 26 Jun 2025 13:09:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qnDhrNTI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F250DC4CEF0;
+	Thu, 26 Jun 2025 13:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750943375;
-	bh=4kYQMayMrWVmvStoGOZmLUJ6A52n1HD9otIp1Mp471s=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=L1quAzkoF1xDsNXcp1cvVr9Sq3NPGXGI+jSqqBX5EhC30mewCUJbX7z6qh787ceNe
-	 xIXfT/vmZ3yMfpcneA/GOQk3OxRA/BLixNOejVZiHy9WXzYwlWsQ/eR+rOCvILSeWB
-	 4w00WxqA6ThIURlznchENNUByFbwcxv8X2wma9wce92G/V5b4wCvQj3q2q2nU9TKNT
-	 JRjBqDi6R5TzJrpIXI6PUoc2LTdGqXbC7q77CZMHf8O389jDbfZOepFl/6HGGbcife
-	 3ZGhUyQN0q3T/eXCUMao0Nu49PTuYVfQ/0+R4Jr6r6sj8weHFhRWsUjVQUfJnTUa5/
-	 jPt80Wal21xUA==
+	s=k20201202; t=1750943543;
+	bh=6WoBhCawDr2/q9QTjDOrhN78tjcCQb59Az1jMjyMNes=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qnDhrNTIfp+SM3B2zLBk3qIttbKsKa1Us2ef4HbgVXoTiUJo7vwKEpRkZ1NuXpbpF
+	 fvtOin+klWJKLTggpH9eYM8j6EoUU03CnCltZvhP6y4So0eF8sqPZwyi4sJzlBcQQa
+	 PObACkruEeL57kJ6+ksbaD1e4BIpcHa0q1sT6bLKqVtvGlZSBnyvnAL1n6Q/Le0OM1
+	 0NhK3NF809MNz4nS7W/iHOcK8Zb9SF+DfJTye47fVm9DnxvK7JAMFTwLVak20Jr1EJ
+	 dWGYBHlR/xCew3+wzio4X0N8o2+p7PfqZqJP/4qq2W6PwuVv0ZgRbTC2BJCpvr0Sts
+	 eBZjGnRnP7n2Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <lkmm@lists.linux.dev>,  <linux-arch@vger.kernel.org>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin" <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Will Deacon" <will@kernel.org>,  "Peter Zijlstra"
+ <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,  "Wedson
+ Almeida Filho" <wedsonaf@gmail.com>,  "Viresh Kumar"
+ <viresh.kumar@linaro.org>,  "Lyude Paul" <lyude@redhat.com>,  "Ingo
+ Molnar" <mingo@kernel.org>,  "Mitchell Levy" <levymitchell0@gmail.com>,
+  "Paul E. McKenney" <paulmck@kernel.org>,  "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>,  "Linus Torvalds"
+ <torvalds@linux-foundation.org>,  "Thomas Gleixner" <tglx@linutronix.de>
+Subject: Re: [PATCH v5 05/10] rust: sync: atomic: Add atomic {cmp,}xchg
+ operations
+In-Reply-To: <20250618164934.19817-6-boqun.feng@gmail.com> (Boqun Feng's
+	message of "Wed, 18 Jun 2025 09:49:29 -0700")
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+	<jBAtISwM9LKkR7KuCHEnym75NfGOM4z408pMuDfk4U8VzN8PQuk9JJfBc33Usre3YSjbgtFRj8c0ZNeeQMpZsA==@protonmail.internalid>
+	<20250618164934.19817-6-boqun.feng@gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 26 Jun 2025 15:12:12 +0200
+Message-ID: <87a55uzlxv.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Jun 2025 15:09:30 +0200
-Message-Id: <DAWHMFWA2FZB.2III53VFXATS4@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <kwilczynski@kernel.org>,
- <bhelgaas@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v3 3/4] rust: devres: get rid of Devres' inner Arc
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250624215600.221167-1-dakr@kernel.org>
- <20250624215600.221167-4-dakr@kernel.org> <aFzI5L__OcB9hqdG@Mac.home>
- <aF0aiHhCuHjLFIij@pollux> <DAWE690DWP9A.10I5FIJSZDSR6@kernel.org>
- <aF0p5vIcL_4PBJCG@pollux> <aF0xp4ZKP_a7cJsc@pollux>
-In-Reply-To: <aF0xp4ZKP_a7cJsc@pollux>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Thu Jun 26, 2025 at 1:40 PM CEST, Danilo Krummrich wrote:
-> On Thu, Jun 26, 2025 at 01:07:25PM +0200, Danilo Krummrich wrote:
->> On Thu, Jun 26, 2025 at 12:27:18PM +0200, Benno Lossin wrote:
->> > On Thu Jun 26, 2025 at 12:01 PM CEST, Danilo Krummrich wrote:
->> > > On Wed, Jun 25, 2025 at 09:13:24PM -0700, Boqun Feng wrote:
->> > >> On Tue, Jun 24, 2025 at 11:54:01PM +0200, Danilo Krummrich wrote:
->> > >> [...]
->> > >> > +#[pin_data(PinnedDrop)]
->> > >> > +pub struct Devres<T> {
->> > >>=20
->> > >> It makes me realize: I think we need to make `T` being `Send`? Beca=
-use
->> > >> the devm callback can happen on a different thread other than
->> > >> `Devres::new()` and the callback may drop `T` because of revoke(), =
-so we
->> > >> are essientially sending `T`. Alternatively we can make `Devres::ne=
-w()`
->> > >> and its friend require `T` being `Send`.
->> > >>=20
->> > >> If it's true, we need a separate patch that "Fixes" this.
->> > >
->> > > Indeed, that needs a fix.
->> >=20
->> > Oh and we have no `'static` bound on `T` either... We should require
->> > that as well.
->>=20
->> I don't think we actually need that, The Devres instance can't out-live =
-a &T
->> passed into it. And the &T can't out-live the &Device<Bound>, hence we'r=
-e
->> guaranteed that devres_callback() is never called because Devres::drop()=
- will be
->> able successfully unregister the callback given that we're still in the
->> &Device<Bound> scope.
->>=20
->> The only thing that could technically out-live the &Device<Bound> would =
-be
->> &'static T, but that would obviously be fine.
->>=20
->> Do I miss anything?
+"Boqun Feng" <boqun.feng@gmail.com> writes:
+
+> xchg() and cmpxchg() are basic operations on atomic. Provide these based
+> on C APIs.
 >
-> Thinking a bit more about it, a similar argumentation is true for not nee=
-ding
-> T: Send. The only way to leave the &Device<Bound> scope and hence the thr=
-ead
-> would be to stuff the Devres into a ForeignOwnable container, no?
+> Note that cmpxchg() use the similar function signature as
+> compare_exchange() in Rust std: returning a `Result`, `Ok(old)` means
+> the operation succeeds and `Err(old)` means the operation fails.
+>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+>  rust/kernel/sync/atomic/generic.rs | 154 +++++++++++++++++++++++++++++
+>  1 file changed, 154 insertions(+)
+>
+> diff --git a/rust/kernel/sync/atomic/generic.rs b/rust/kernel/sync/atomic/generic.rs
+> index 73c26f9cf6b8..bcdbeea45dd8 100644
+> --- a/rust/kernel/sync/atomic/generic.rs
+> +++ b/rust/kernel/sync/atomic/generic.rs
+> @@ -256,3 +256,157 @@ pub fn store<Ordering: ReleaseOrRelaxed>(&self, v: T, _: Ordering) {
+>          };
+>      }
+>  }
+> +
+> +impl<T: AllowAtomic> Atomic<T>
+> +where
+> +    T::Repr: AtomicHasXchgOps,
+> +{
+> +    /// Atomic exchange.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{Atomic, Acquire, Relaxed};
+> +    ///
+> +    /// let x = Atomic::new(42);
+> +    ///
+> +    /// assert_eq!(42, x.xchg(52, Acquire));
+> +    /// assert_eq!(52, x.load(Relaxed));
+> +    /// ```
+> +    #[doc(alias("atomic_xchg", "atomic64_xchg"))]
+> +    #[inline(always)]
+> +    pub fn xchg<Ordering: All>(&self, v: T, _: Ordering) -> T {
+> +        let v = T::into_repr(v);
+> +        let a = self.as_ptr().cast::<T::Repr>();
+> +
+> +        // SAFETY:
+> +        // - For calling the atomic_xchg*() function:
+> +        //   - `self.as_ptr()` is a valid pointer, and per the safety requirement of `AllocAtomic`,
 
-I think `T: Send` is required, since we drop the `T` in the other thread
-when `devres_callback` is called from the device unbinding.
+Typo: `AllowAtomic`.
 
-> Analogous to Benno asking for ForeignOwnable: 'static, should we also req=
-uire
-> ForeignOwnable: Send + Sync?
+> +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` is a valid pointer,
+> +        //   - per the type invariants, the following atomic operation won't cause data races.
+> +        // - For extra safety requirement of usage on pointers returned by `self.as_ptr():
+> +        //   - atomic operations are used here.
+> +        let ret = unsafe {
+> +            match Ordering::TYPE {
+> +                OrderingType::Full => T::Repr::atomic_xchg(a, v),
+> +                OrderingType::Acquire => T::Repr::atomic_xchg_acquire(a, v),
+> +                OrderingType::Release => T::Repr::atomic_xchg_release(a, v),
+> +                OrderingType::Relaxed => T::Repr::atomic_xchg_relaxed(a, v),
+> +            }
+> +        };
+> +
+> +        T::from_repr(ret)
+> +    }
+> +
+> +    /// Atomic compare and exchange.
+> +    ///
+> +    /// Compare: The comparison is done via the byte level comparison between the atomic variables
+> +    /// with the `old` value.
+> +    ///
+> +    /// Ordering: When succeeds, provides the corresponding ordering as the `Ordering` type
+> +    /// parameter indicates, and a failed one doesn't provide any ordering, the read part of a
+> +    /// failed cmpxchg should be treated as a relaxed read.
 
-I don't think so, you could have a type that stores the pointer in C,
-but only ever allows access from the same thread.
+Rust `core::ptr` functions have this sentence on success ordering for
+compare_exchange:
 
-> Alternatively, the safety requirements of ForeignOwnable:::from_foreign()=
- and
-> ForeignOwnable::borrow() would need to cover this, which they currently t=
-hey
-> are not.
+  Using Acquire as success ordering makes the store part of this
+  operation Relaxed, and using Release makes the successful load
+  Relaxed.
 
-Oh right, yeah they should cover that.
+Does this translate to LKMM cmpxchg operations? If so, I think we should
+include this sentence. This also applies to `Atomic::xchg`.
 
----
-Cheers,
-Benno
+
+Best regards,
+Andreas Hindborg
+
+
