@@ -1,162 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11B6295517;
-	Thu, 26 Jun 2025 08:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607351E9B35;
+	Thu, 26 Jun 2025 09:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750927817; cv=none; b=i6Orrpe3Bk6aIVZcgW3T8m5me7noRCVi/VILs7cw1QCAY97ovgEGPPiYl6QVZ3y9X7miJB1c9RIIJPN/QyCJp+6juTEzTUAZNggRESxrdjxnmLOwVsm1QIKMO/QnxvHV+H826snDOmLlMpKIq26aijFnppNb8KLygtbOEBcmbNY=
+	t=1750930907; cv=none; b=PLWt3FytlOMprMasUPvMKj+9B1qMuQ+XkuGRAuHrYPEJSvD1iFJdvNaDtcOTm6pVoTE8dE5/u1urismgboUZcpo0VCii/oq5tSfQO6gPfFn32d0uyTSdm4s36tMWsAvefo6V2sDmPF5/J1ad4WrldEyNM7/OFd3933MTuJmSphM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750927817; c=relaxed/simple;
-	bh=uNjYg/ewMnvuysPUDDt3GNwngbDKWv/d6y88QcyM828=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HomILCLm1Wx9yJgESI4gKnoxOPSfMAc8gSjenUpwnyvFOUY0MDkR+BhSkfRynSVGvvWEIN41J9ul/funD9r6vYitMxEMmVDaTU92ISeWOkfuweWS1vmGsqnbuBDUWdNqkWNN+5kTbkWm0E4li4wyZ36kiua5CBt+deOSWAJCfKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOhhkIfL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1750930907; c=relaxed/simple;
+	bh=TtTDaseTfS+Lxjf17Sd/nxI6KIZkDKNIf8nALJlynrA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q2mzpY6/W28W/WRXaUZnxskmETBWezOky0u3o0P6enJBcfhQwxImFuevhevurzF7yW6waekF8ycsbnzdzQ2etlia/uL+9Bdc1bt4cvu2jXVJsvpM3J5f1j5rxFQ5W6eo/ae/vp1Tw5R9Y5zmovgw2xOldxRxs3X5BMJ7bX2Wgy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=asOJzzp5; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOhhkIfL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F46C4CEEB;
-	Thu, 26 Jun 2025 08:50:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750927817;
-	bh=uNjYg/ewMnvuysPUDDt3GNwngbDKWv/d6y88QcyM828=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=JOhhkIfLeUb/1k+YlF7KmQ523EzcBnhPSfMFabFy6OK2jnxUH+XUvha116XgcYTL/
-	 HcMy3j7E+c+TWI/ybPfxIbvckH8+QTu3EzQ0TCzIZwum1qIWiJAU+tuEs9MSkLosTv
-	 8JING4oCuOrCFmOxRX2L4ANPg70PQF4bGKshiC7lOo9oifJ5e1eNDviTO34+pbvEWK
-	 n5QfQHhfZNUNCY1M84xxo8ASkFnqCBJcwVaAAikCS+XBVa9HLeGpbdp0IKNrWC0hQT
-	 vRgRyxJXQTgqykAbCiS/chxZFB8DC+By73PTWuVrDTTjJI3UcJTuHR6znHBo+KfgU4
-	 8sgxqTA7JRaQw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <lkmm@lists.linux.dev>,  <linux-arch@vger.kernel.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Will Deacon" <will@kernel.org>,  "Peter Zijlstra"
- <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,  "Wedson
- Almeida Filho" <wedsonaf@gmail.com>,  "Viresh Kumar"
- <viresh.kumar@linaro.org>,  "Lyude Paul" <lyude@redhat.com>,  "Ingo
- Molnar" <mingo@kernel.org>,  "Mitchell Levy" <levymitchell0@gmail.com>,
-  "Paul E. McKenney" <paulmck@kernel.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Linus Torvalds"
- <torvalds@linux-foundation.org>,  "Thomas Gleixner" <tglx@linutronix.de>
-Subject: Re: [PATCH v5 02/10] rust: sync: Add basic atomic operation mapping
- framework
-In-Reply-To: <20250618164934.19817-3-boqun.feng@gmail.com> (Boqun Feng's
-	message of "Wed, 18 Jun 2025 09:49:26 -0700")
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
-	<CUuSJ1MRuO5_kQUQw69PENREVroAdiGBE0Rfy5-G7AD2Z5TNu1FUYRME9kvZZHT0GSIqtYK3yID0jB8xvfg2Qw==@protonmail.internalid>
-	<20250618164934.19817-3-boqun.feng@gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Thu, 26 Jun 2025 10:50:07 +0200
-Message-ID: <87ecv628g0.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="asOJzzp5"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-312efc384fcso109707a91.3;
+        Thu, 26 Jun 2025 02:41:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750930906; x=1751535706; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TtTDaseTfS+Lxjf17Sd/nxI6KIZkDKNIf8nALJlynrA=;
+        b=asOJzzp5Dd919iAboMqsGt+V1YQttb2fPrf+xOH6aOJnZMWOtDqEcdzl7JhARCpYQ2
+         XleP6nimkHWLpCbUg44ddc9M7JjN/fQeVDtAHYJLYGKxkBu0bt1oSSUlnwaLrchci6hi
+         ZhQqc8OPKRPSYxx2LM42la2naG822rYybHuVxllSJ3pxaHru5FYgnSbTAXxrW4qK2tEr
+         aTW3Ah9KOUBxhiPDNqnhVKJ1MBHZqq5O9SEz6l87C+ENtzMk1vIHpHOKd3ssZd6K8aq+
+         UUyw7pWbiNTx2NsHZgi7s72z3bOT3o5d4ZZJJSrpRfN0KveHleqrrc55uM4Y1de9uDzz
+         pFlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750930906; x=1751535706;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TtTDaseTfS+Lxjf17Sd/nxI6KIZkDKNIf8nALJlynrA=;
+        b=iA7Q/TvHiM1iiMgUeHc28PbrzsCUd2kZgS1FGEgkmtduZFILufFmQM60kQNFzcj3Hn
+         PbMAnqjy0Vv7xV9bMFFgMYEfLUFxW2Hde8TxtBBTJs2sj/u326+025fTZSOf/Dm9OUk2
+         hfy4S3wu2uKkj15eofSFoY3g8KVt1P+ZS4RG30MrmHQuO2SYp85Pk/E3qZ9/SRAFCjIg
+         ZPl9SH946qHGgscS5BFlB8VYbP4YT8tG0idqZVOWHZE06Vy9AGdr9zUq/r2YPCtvQOU5
+         O3zxO36xXg6fcq0DZ1FcPBhgFHcbKJ+0TDo/6zHmxM2itJIqUGerVOmls5jnX7YVUNjy
+         t+YQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5vX9cgkH1r3kI833bLugbNQjeNwA1HyHxUX2wcnokn/1K8EOvMHJS13AoCrg/PBWi2Y29svM4g62PI9ExDfk=@vger.kernel.org, AJvYcCXjjipuURgdmkeIMGeL7DDt4eZ4QfC4Fi0bE7cexa75cPoTCBrvGNmuLxhuixGo89bt08Pac37rDYeWCjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWbn39yt155BjO6SfbOGbbg+gjDJjtjzcSXnSOINBM9b0STPjK
+	9Vkm+VrNIWKAR8r6nidMI9/Q1k2hSjberdysNM2/oVIycdJpWf1DkIyarxNzxr7apf8Dzjn3Alu
+	dRZJAn5zJbRUvIi5WHI7ldlMfebxZ7VIaWokx
+X-Gm-Gg: ASbGnct7PPgtApACSwI+KBB6czqPt7qJi8bJfc8jVcie87ey12H6fmebszxjBrZvqh1
+	d3/sqo3BPWTfqYHubXZJGwuSYjksqkKDD9TuchzB2UxJQmz03Xrg8bJPKRg5qgWegb8m3KBHbIP
+	Qc5kjkLgOBGKK27AdHcGbsSQf7T0BC36F52MEOTvkH3ro=
+X-Google-Smtp-Source: AGHT+IGELLr5aDYj7j6oxcbFCvviclW/BxibFvr2jyVEWKOI5pRHKMZnYLPZklg+kIRxs8XbKIEWYZdjTgiShKD0e+w=
+X-Received: by 2002:a17:90a:d644:b0:310:8d54:3209 with SMTP id
+ 98e67ed59e1d1-315f2610175mr3494919a91.2.1750930905464; Thu, 26 Jun 2025
+ 02:41:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250625043630.7677-1-work@onurozkan.dev> <aFux2MUDAGEYY49I@pollux>
+ <20250625113604.21a6ec4a@nimda> <aFu10-dGkoyi0I2T@cassiopeiae> <20250626111045.2c90a402@nimda>
+In-Reply-To: <20250626111045.2c90a402@nimda>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Jun 2025 11:41:33 +0200
+X-Gm-Features: Ac12FXx6PheBSyWU1ettcDGQNU8LyToFvrQwo7EXl3v449WPWgC6L7VjAxNlnwc
+Message-ID: <CANiq72nsQzCje3167G_4YSJ_he02Czr4NveLOf13zYj-DO_gsw@mail.gmail.com>
+Subject: Re: [PATCH] rust: simplify `Adapter::id_info`
+To: Onur <work@onurozkan.dev>
+Cc: Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Boqun Feng" <boqun.feng@gmail.com> writes:
+On Thu, Jun 26, 2025 at 10:11=E2=80=AFAM Onur <work@onurozkan.dev> wrote:
+>
+> HEAD: e0b49ca268d4a0d2b97d5820420d5a78b67d2537 currently doesn't pass
+> clippy. Should I send an additional change for the clippy fix or would
+> you prefer to fix it yourself first?
 
-> Preparation for generic atomic implementation. To unify the
-> implementation of a generic method over `i32` and `i64`, the C side
-> atomic methods need to be grouped so that in a generic method, they can
-> be referred as <type>::<method>, otherwise their parameters and return
-> value are different between `i32` and `i64`, which would require using
-> `transmute()` to unify the type into a `T`.
->
-> Introduce `AtomicImpl` to represent a basic type in Rust that has the
-> direct mapping to an atomic implementation from C. This trait is sealed,
-> and currently only `i32` and `i64` impl this.
->
-> Further, different methods are put into different `*Ops` trait groups,
-> and this is for the future when smaller types like `i8`/`i16` are
-> supported but only with a limited set of API (e.g. only set(), load(),
-> xchg() and cmpxchg(), no add() or sub() etc).
->
-> While the atomic mod is introduced, documentation is also added for
-> memory models and data races.
->
-> Also bump my role to the maintainer of ATOMIC INFRASTRUCTURE to reflect
-> my responsiblity on the Rust atomic mod.
->
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->  MAINTAINERS                    |   4 +-
->  rust/kernel/sync.rs            |   1 +
->  rust/kernel/sync/atomic.rs     |  19 ++++
->  rust/kernel/sync/atomic/ops.rs | 199 +++++++++++++++++++++++++++++++++
->  4 files changed, 222 insertions(+), 1 deletion(-)
->  create mode 100644 rust/kernel/sync/atomic.rs
->  create mode 100644 rust/kernel/sync/atomic/ops.rs
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0c1d245bf7b8..5eef524975ca 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3894,7 +3894,7 @@ F:	drivers/input/touchscreen/atmel_mxt_ts.c
->  ATOMIC INFRASTRUCTURE
->  M:	Will Deacon <will@kernel.org>
->  M:	Peter Zijlstra <peterz@infradead.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun.feng@gmail.com>
->  R:	Mark Rutland <mark.rutland@arm.com>
->  L:	linux-kernel@vger.kernel.org
->  S:	Maintained
-> @@ -3903,6 +3903,8 @@ F:	arch/*/include/asm/atomic*.h
->  F:	include/*/atomic*.h
->  F:	include/linux/refcount.h
->  F:	scripts/atomic/
-> +F:	rust/kernel/sync/atomic.rs
-> +F:	rust/kernel/sync/atomic/
->
->  ATTO EXPRESSSAS SAS/SATA RAID SCSI DRIVER
->  M:	Bradley Grove <linuxdrivers@attotech.com>
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 36a719015583..b620027e0641 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -10,6 +10,7 @@
->  use pin_init;
->
->  mod arc;
-> +pub mod atomic;
->  mod condvar;
->  pub mod lock;
->  mod locked_by;
-> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> new file mode 100644
-> index 000000000000..65e41dba97b7
-> --- /dev/null
-> +++ b/rust/kernel/sync/atomic.rs
-> @@ -0,0 +1,19 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Atomic primitives.
-> +//!
-> +//! These primitives have the same semantics as their C counterparts: and the precise definitions of
-> +//! semantics can be found at [`LKMM`]. Note that Linux Kernel Memory (Consistency) Model is the
-> +//! only model for Rust code in kernel, and Rust's own atomics should be avoided.
-> +//!
-> +//! # Data races
-> +//!
-> +//! [`LKMM`] atomics have different rules regarding data races:
-> +//!
-> +//! - A normal write from C side is treated as an atomic write if
-> +//!   CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC=y.
-> +//! - Mixed-size atomic accesses don't cause data races.
-> +//!
-> +//! [`LKMM`]: srctree/tools/memory-mode/
+Where is that commit coming from?
 
-Typo in the link destination.
+Thanks!
 
-
-Best regards,
-Andreas Hindborg
-
-
+Cheers,
+Miguel
