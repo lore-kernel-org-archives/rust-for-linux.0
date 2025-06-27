@@ -1,134 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3961A841C;
-	Fri, 27 Jun 2025 11:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F781EDA3C
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 11:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751023216; cv=none; b=fnriWsWb4SlxGLIFUCuj1E2kP0wkc9CXts85W9EYZDTxfUFXM2RxTOPC7rKAg+ZOEDknHesnnh7l7MU0y1eEiaTZhsFO0CjdtM12BkvkuJi42mckTsZUMaQT0wgBTcUN1Pmk9W4JZ2BlUfZ7jNmByVKbYhsaXaq6FK+NfSkyydc=
+	t=1751024230; cv=none; b=NeVACg1SskR6o6PnLA4LIF/JXzXRYJyjsHGZipMFDdpztpqcYayXye5KfhG9LACsH5uiRg5G6Fyi++iw5uYd2q7LtoM0U42UR5Na6MPOyMyurxohax5tANnCUNP3pngBTa6oxG/do8tthUNviATSjeVV3wu4Ql4mNGm1+N14pDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751023216; c=relaxed/simple;
-	bh=LlMs2RYEoSyATnOfokVMPOkgG73vQ701gJIshNUkVJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PF21c30GTfxPH1Bi3pd4eEDZzsLYOnxtqk/vODzHr8m+orUl0U31QPkrd1t7DJBtkYib8AYkcG6VuFPhVVaBdf4N/VVXUpWyjs1H/VuPu983W/eEsRYR+Y403Y0Oh+N1rjrNNqytZOdsbLrwc3mfQJO3Epk5H1zoKiPcTB5ImWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hl8+5wB9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751024230; c=relaxed/simple;
+	bh=7cICcofpdyjl1+9gvfvBCNX8KnStyEhFEANPQEOCcig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u+wfR0HUroljC/hFgvd+LbZzJ+5OfOFkpenahlr614pB/cPf8ktu+960SCiolX3nxqvokI+MPE8DKQD5OA1EYLg6l2qOUZg5wEWSGb3SFh1KZfCihg7/1pgQS1nw9HiD8wkvhaDKWhI9imXB5KRFxWTuKoGpDHselhRO5BN47oE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YWeLS6vX; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hl8+5wB9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC69FC4CEE3;
-	Fri, 27 Jun 2025 11:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751023215;
-	bh=LlMs2RYEoSyATnOfokVMPOkgG73vQ701gJIshNUkVJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hl8+5wB9xLillD0nK5nrroF9IjtyhcV9bEzcfVOKQ7snWYDSS9iMEzqcYqPdxWBYj
-	 S1almeYH4kttJ/ukqfYDBdBhNnxLht1FdZktgJs9qC208XhrUv62g04yzzja0WPRAS
-	 neT4NtjNIHTTkblM7jebiaqNyLodx9EiZJTH54xrO9TVDECslDQHPEmvZHmqi9pcSf
-	 F016Zu+XO3wd9LYPdWOAJ1U/TOQGMb3fQx2pSlyDChp8gKvfkSoFTfijRsdTr16Nhh
-	 /Nq6yocw77YZUh3++gbRX/3oBwl//rTTsJ8enoVWsjDa/wr/mAmd2He7m+v5AtZe67
-	 K+9kpd785IwKA==
-Date: Fri, 27 Jun 2025 13:20:11 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v5 3/4] rust: add support for NUMA ids in allocations
-Message-ID: <aF5-a-bUp1pD5tiS@pollux>
-References: <20250627092901.356909-1-vitaly.wool@konsulko.se>
- <20250627093858.413855-1-vitaly.wool@konsulko.se>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YWeLS6vX"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a4e742dc97so2061910f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 04:37:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751024227; x=1751629027; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bomnLwHZuA9rg+cFy8tAC4Q2mTuNozVG1EqvGvsyDqs=;
+        b=YWeLS6vXBh9YnVAwyP+VBpJcr2q9R7kUspXTui4qNLIb5sfPDlItUgy68tuLVKNCHf
+         OprpsE1ahAAqVdoF0iOcdNYjW55/pFnefhLtxb/+vLmLeivk3koXOMWeQtTyh8IMRBga
+         RtMEqL+cYIGJnvPAhg91VFOXZ427fpwXQrTTg6k3rFJ0E5U5zlMs2etRJl1s57EikS//
+         xjoV9bFTjo7zbuIkUzb1Lw7yyGEb3SJGIR3xtb0ARNa/mwHeSoY/EKX+1Ai/8YuCEqUp
+         DOb3OHNFZrHjc9V4NNY5qMoQWwFtyerJ9FbfLvx7YO94UuE66siLXrHn9WZ0FX/REsaN
+         GRJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751024227; x=1751629027;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bomnLwHZuA9rg+cFy8tAC4Q2mTuNozVG1EqvGvsyDqs=;
+        b=CQmmPQ1ZVA/ecYf34IglOiB46ofG5K85giFeEtuvtFAqCmKZQ5xDN2+uoP0hQ+ZYjg
+         f0Sl0aKnDPvSCWc1RgK0OcRhC+mqXCZvp8HG3v1IaKlEtaB06ZUKqxdUTQCsPTC1cRLc
+         Uc3pxJKowO+X65wNVKEQBFd4KXd/iE+hDT6yeFTT0LXMlFrLl74Y4ItHKy2sfq8ZN7qu
+         XsfDNwqu6MiVysPnm7WzxYLE7g7psbTjXMZOt2lMXnD4KpgQuGOgvJ8B5kLLSdVkkgvx
+         cBEoeq5CdXmOUBrqEqmiNsNml2MDJ8Haz8rL5zZ+7tR+15dR8kwRSO/b2s4kG7e5yShc
+         eAtA==
+X-Forwarded-Encrypted: i=1; AJvYcCVzWF7OnM85ppoVT3TL3SmmNLJclGCm/9jbiDIWPwmo7OeTdsEQGhydQtPpvAK90jZk8QbEqKXKkaF7nOyFNQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxO/hRQ4o6Qfn1dPrlj6ezAY1Ouic5mZSwVuGgMOEdwQ1DXAK/8
+	83CqHL0YWm3JHFz4lXDKa34lzWZNU2KQjqSqKZpP3PN1vYw30nbPoBnYBENXfQzjYkaQeJ2GmMP
+	AkAbeSyvxaphzj4f8bZLsAeOV0NzDHrsXHNV86tyW
+X-Gm-Gg: ASbGncvQJNqIUbPet2spRnT8j/bXC1JIdZeOtk83uJeMmms+QqIi7qYWQwZFrlX1so5
+	tOCHKBQJb5kEvaoetVBjqY/NJa/eaJs2opeOVVgc6WPS4spOaJTTlGHgxJaTdckZqR1WpoUjdCX
+	0X3DZjNmetkbgXroK9M/OHHW6jE86cym3wuSWvVyjaPrAi
+X-Google-Smtp-Source: AGHT+IHhQwveHXquBiq2OL5jFul3X4Iqrm3gaTcQksYUbptvQShoEH4ZnoLoGPXB5w2cgF2SU8OAzk3Y3AeFtNlDlKs=
+X-Received: by 2002:adf:e18c:0:b0:3a6:d95e:f39d with SMTP id
+ ffacd0b85a97d-3a97fcd2910mr2337836f8f.4.1751024226841; Fri, 27 Jun 2025
+ 04:37:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250627093858.413855-1-vitaly.wool@konsulko.se>
+References: <20250627094102.770689-1-jfalempe@redhat.com>
+In-Reply-To: <20250627094102.770689-1-jfalempe@redhat.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 27 Jun 2025 13:36:40 +0200
+X-Gm-Features: Ac12FXzCmQBarxz6DrTB7aiRsIFjDy1zyR5MJjJQhJ3mD38Fryft7yJAf_t0jpw
+Message-ID: <CAH5fLgimktQmU6d24o3QVDBX90OD5E4wdnvLoNhk_gtpbUhXMA@mail.gmail.com>
+Subject: Re: [PATCH] drm/panic: Add a u64 divide by 10 for arm32
+To: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Andrei Lalaev <andrey.lalaev@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Russell King <linux@armlinux.org.uk>, Paolo Bonzini <pbonzini@redhat.com>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 27, 2025 at 11:38:58AM +0200, Vitaly Wool wrote:
-> +    /// Allocate memory based on `layout`, `flags` and `nid`.
+On Fri, Jun 27, 2025 at 11:41=E2=80=AFAM Jocelyn Falempe <jfalempe@redhat.c=
+om> wrote:
+>
+> On 32bits ARM, u64 divided by a constant is not optimized to a
+> multiply by inverse by the compiler [1].
+> So do the multiply by inverse explicitly for this architecture.
+>
+> Link: https://github.com/llvm/llvm-project/issues/37280 [1]
+> Reported-by: Andrei Lalaev <andrey.lalaev@gmail.com>
+> Closes: https://lore.kernel.org/dri-devel/c0a2771c-f3f5-4d4c-aa82-d673b3c=
+5cb46@gmail.com/
+> Fixes: 675008f196ca ("drm/panic: Use a decimal fifo to avoid u64 by u64 d=
+ivide")
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 
-The semantical meanting of layout and flags is rather obvious due to its type.
+Not to block this change, but I think this really ought to be fixed in
+the compiler. We should not have to do this kind of thing to divide by
+10.
 
-We should probably introduce a new type NumaNode with a constant for
-NUMA_NODE_NONE.
-
-> +    ///
-> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
-> +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
-> +    ///
-> +    /// This function is equivalent to `realloc` when called with `None`.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// When the return value is `Ok(ptr)`, then `ptr` is
-> +    /// - valid for reads and writes for `layout.size()` bytes, until it is passed to
-> +    ///   [`Allocator::free`] or [`Allocator::realloc`],
-> +    /// - aligned to `layout.align()`,
-> +    ///
-> +    /// Additionally, `Flags` are honored as documented in
-> +    /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
-> +    fn alloc_node(layout: Layout, flags: Flags, nid: Option<i32>)
-> +                -> Result<NonNull<[u8]>, AllocError> {
-> +        // SAFETY: Passing `None` to `realloc` is valid by its safety requirements and asks for a
-> +        // new memory allocation.
-> +        unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags, nid) }
->      }
->  
->      /// Re-allocate an existing memory allocation to satisfy the requested `layout`.
-> @@ -196,6 +219,7 @@ unsafe fn realloc(
->          layout: Layout,
->          old_layout: Layout,
->          flags: Flags,
-> +        nid: Option<i32>,
->      ) -> Result<NonNull<[u8]>, AllocError>;
-
-Please rename to realloc_node() and expand the documentation explaining what
-happens for invalid nid numbers and what happens if nid changes throughout
-invocations.
-
-Also, please introduce realloc() which calls realloc_node() with NUMA_NODE_NONE.
-
->  
->      /// Free an existing memory allocation.
-> @@ -211,7 +235,7 @@ unsafe fn free(ptr: NonNull<u8>, layout: Layout) {
->          // SAFETY: The caller guarantees that `ptr` points at a valid allocation created by this
->          // allocator. We are passing a `Layout` with the smallest possible alignment, so it is
->          // smaller than or equal to the alignment previously used with this allocation.
-> -        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), layout, Flags(0)) };
-> +        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), layout, Flags(0), None) };
->      }
+>  drivers/gpu/drm/drm_panic_qr.rs | 24 +++++++++++++++++++++++-
+>  1 file changed, 23 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_=
+qr.rs
+> index dd55b1cb764d..82acecd505d3 100644
+> --- a/drivers/gpu/drm/drm_panic_qr.rs
+> +++ b/drivers/gpu/drm/drm_panic_qr.rs
+> @@ -381,6 +381,24 @@ struct DecFifo {
+>      len: usize,
 >  }
->  
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> index aa2dfa9dca4c..4f0fe2b67593 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -58,18 +58,20 @@ fn aligned_size(new_layout: Layout) -> usize {
->  ///
->  /// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
->  struct ReallocFunc(
-> -    unsafe extern "C" fn(*const crate::ffi::c_void, usize, u32) -> *mut crate::ffi::c_void,
-> +    unsafe extern "C" fn(*const crate::ffi::c_void, usize, crate::ffi::c_ulong, u32,
-> +                         crate::ffi::c_int
-> +    ) -> *mut crate::ffi::c_void,
->  );
->  
->  impl ReallocFunc {
-> -    // INVARIANT: `krealloc` satisfies the type invariants.
-> -    const KREALLOC: Self = Self(bindings::krealloc);
-> +    // INVARIANT: `krealloc_node` satisfies the type invariants.
-> +    const KREALLOC_NODE: Self = Self(bindings::krealloc_node);
->  
-> -    // INVARIANT: `vrealloc` satisfies the type invariants.
-> -    const VREALLOC: Self = Self(bindings::vrealloc);
-> +    // INVARIANT: `vrealloc_node` satisfies the type invariants.
-> +    const VREALLOC_NODE: Self = Self(bindings::vrealloc_node);
->  
-> -    // INVARIANT: `kvrealloc` satisfies the type invariants.
-> -    const KVREALLOC: Self = Self(bindings::kvrealloc);
-> +    // INVARIANT: `kvrealloc_node` satisfies the type invariants.
-> +    const KVREALLOC_NODE: Self = Self(bindings::kvrealloc_node);
+>
+> +/// On arm32 architecture, dividing an u64 by a constant will generate a=
+ call
+> +/// to __aeabi_uldivmod which is not present in the kernel.
+> +/// So use the multiply by inverse method for this architecture.
+> +#[cfg(target_arch =3D "arm")]
+> +fn div10(val: u64) -> u64
+> +{
 
-I think those constants can remain to be named just KREALLOC, etc.
+Please run rustfmt on your patch.
+
+> +    let val_h =3D val >> 32;
+> +    let val_l =3D val & 0xFFFFFFFF;
+> +    let b_h: u64 =3D 0x66666666;
+> +    let b_l: u64 =3D 0x66666667;
+> +
+> +    let tmp1 =3D val_h * b_l + ((val_l * b_l) >> 32);
+> +    let tmp2 =3D val_l * b_h + (tmp1 & 0xffffffff);
+> +    let tmp3 =3D val_h * b_h + (tmp1 >> 32) + (tmp2 >> 32);
+> +
+> +    tmp3 >> 2
+> +}
+> +
+>  impl DecFifo {
+>      fn push(&mut self, data: u64, len: usize) {
+>          let mut chunk =3D data;
+> @@ -389,7 +407,11 @@ fn push(&mut self, data: u64, len: usize) {
+>          }
+>          for i in 0..len {
+>              self.decimals[i] =3D (chunk % 10) as u8;
+> -            chunk /=3D 10;
+> +            if cfg!(target_arch =3D "arm") {
+> +                chunk =3D div10(chunk);
+> +            } else {
+> +                chunk /=3D 10;
+> +            }
+
+I would get rid of this conditional and declare another div10 function
+that just does input/10 on other arches.
+
+Alice
