@@ -1,198 +1,171 @@
-Received: from mailrelay2-3.pub.mailoutpod3-cph3.one.com (mailrelay2-3.pub.mailoutpod3-cph3.one.com [46.30.212.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D325171092
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 18:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280471DF271;
+	Fri, 27 Jun 2025 18:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751048222; cv=none; b=sIn4M+Kww22/CgJGmoWj8VLifLDiY5xJaXVh+CQq+3CwQdTsAHolLKeYB5TlQsmHX6A69qYD1zxKtrfcig42yded32GiCxP6wr4tIpVRJGZD6FXCmJfNt6MYwWTPN2FdC9XK1EED7kvNPt4NPzg8eDMnNOfgfiDRWfMcixlzImM=
+	t=1751048424; cv=none; b=mjs8NOsF2PkKwPVheXb+3imA3Stjg6oqhzodZdBS5UURXr15DNaVJ4iOoYPh3nG9Qz8gMjsmBb2Wgw+dg8+1VsmfdPzC5T5fFK2T+l9ilrR1Y2BRGN9VxvY1HgLZvl58ef7Ebt0tb8u5jBlxNvuBP1rzMn2kZU+0YZsdzalyuQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751048222; c=relaxed/simple;
-	bh=OSnfF0rkhizQ5UItDZhugwlhecd7aPvj7lMsuNsab9E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N2IUwDUJ/w4GFub1m0QXH+oUL3QsgMEuvHCLohndyWTZzPAhH/L0yHsE46FufycpuDWVtE0hTJm6Sk7UayrCc2pKyXFTgf5cQc16M4m9Gqat0ZDFS2i72Fi1x7SDPlfdvzd0P6/Kg7jz4rUpgquyqy/2FFKUAi9uvDKVTTgWzQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=q2T6/3Zy; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=rnigHV4Q; arc=none smtp.client-ip=46.30.212.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1751048424; c=relaxed/simple;
+	bh=As0yuel3TuJEOFeXO33HLu6S/jbTweiZGo7+qQleETU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rkomHrscvzNsaYcZml3dvWM6g9G4EiRGbpYjiESOnjhGllq/0rXbtX51yLXuapfqeso5AciWdXqg5IQrD+93bp/i7reDekLKXDrp2nQMtIPJdGJTor7tQyO02n06iUlZZavgbpZREs5SBztpYX0Epk84Ujfv6c2oTYlV7+QUGvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqeMO1KZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="q2T6/3Zy";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="rnigHV4Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751048212; x=1751653012;
-	d=konsulko.se; s=rsa1;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=nGDXplcE1kynSxniFbixzug4U6mDvYyhwrjb8WHIhtg=;
-	b=q2T6/3ZyOqMhuPtNThP7x9F/JyEqdmaZ+scvIPY2wYJU26q8X6AW3IsSE3ScjEt9n9DCVuIaEQi16
-	 fdZD9dPLAJcAgjdCQlkq946utdeNwp8fyYxzbirr+zeVz40td08NVa1jQb7/Nc2rhNbAibtK+XWjfe
-	 kql6nMooVFo0fdHCReSRp/lQ7ooSJFiccQ7JzqkqN86M+uCzo8rgKBcfJK+2lPenKeiIuxU+9wpRi/
-	 cqqRR8kkGSzGptQ+hdNEQSi17ySAPPNmQALMk/OkMGKKYILDkfUHL9+5Z59H1hh3YRz6HUprQrKxF0
-	 /ORRCu8eCCCJ3SiuQhZcouJDRrplM/g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751048212; x=1751653012;
-	d=konsulko.se; s=ed1;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=nGDXplcE1kynSxniFbixzug4U6mDvYyhwrjb8WHIhtg=;
-	b=rnigHV4QpoNKhsBxThOlStYW8z3A/ltqFBVXlnO69ooDSHvDLnc++oaCBb0CY5gdhScDWhSmnlTxy
-	 +ku7ObGCg==
-X-HalOne-ID: e597f1cd-5382-11f0-b0a1-b37c246f863f
-Received: from slottsdator.home (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
-	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id e597f1cd-5382-11f0-b0a1-b37c246f863f;
-	Fri, 27 Jun 2025 18:16:52 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Subject: [PATCH v6 4/4] rust: support large alignments in allocations
-Date: Fri, 27 Jun 2025 20:16:50 +0200
-Message-Id: <20250627181650.2081123-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250627181505.2080916-1-vitaly.wool@konsulko.se>
-References: <20250627181505.2080916-1-vitaly.wool@konsulko.se>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqeMO1KZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55234C4CEE3;
+	Fri, 27 Jun 2025 18:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751048423;
+	bh=As0yuel3TuJEOFeXO33HLu6S/jbTweiZGo7+qQleETU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OqeMO1KZx0PvtCVFQWVi24HCJtDrnTTsXAbX5W66GHe8lb+Uz1uGFH9mYbLrUxqVp
+	 2aVMjJdPiJGx3F4rJSRfL4pMPMjluG10Gku7hsmodTwB1BSIDHyycV878naiuCNTAM
+	 8sdu/bJ4Z8LaFvnu/lIJxGTds7xX78/DqwSr5Ja38F8SR5KATBIqDRAnVHf1sbHCK6
+	 D7UscoFRsfgafkbbHT6CSpsaCaAiVReuebWlY9Z933DtxMVtH+J8ZUOOMTMZzOt/4P
+	 mWMNbp1EMIeCUsJ6CG5izKjS24UhfPzw9o2JQ4IczWNnKz73j1Ck9+T40HFbGyGTsl
+	 wWv54fwoqatBw==
+Date: Fri, 27 Jun 2025 20:20:08 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v10 2/4] rust: io: mem: add a generic iomem abstraction
+Message-ID: <aF7g2CpVhMntW7-O@pollux>
+References: <20250623-topics-tyr-platform_iomem-v10-0-ed860a562940@collabora.com>
+ <20250623-topics-tyr-platform_iomem-v10-2-ed860a562940@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250623-topics-tyr-platform_iomem-v10-2-ed860a562940@collabora.com>
 
-Add support for large (> PAGE_SIZE) alignments in Rust allocators.
-All the preparations on the C side are already done, we just need
-to add bindings for <alloc>_node_align() functions and start
-using those.
+On Mon, Jun 23, 2025 at 03:00:59PM -0300, Daniel Almeida wrote:
+> Add a generic iomem abstraction to safely read and write ioremapped
+> regions.
+> 
+> The reads and writes are done through IoRaw, and are thus checked either
+> at compile-time, if the size of the region is known at that point, or at
+> runtime otherwise.
+> 
+> Non-exclusive access to the underlying memory region is made possible to
+> cater to cases where overlapped regions are unavoidable.
+> 
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> ---
+>  rust/helpers/io.c     |   5 ++
+>  rust/kernel/io.rs     |   1 +
+>  rust/kernel/io/mem.rs | 142 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 148 insertions(+)
+> 
+> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+> index 404776cf6717c8570c7600a24712ce6e4623d3c6..c475913c69e647b1042e8e7d66b9148d892947a1 100644
+> --- a/rust/helpers/io.c
+> +++ b/rust/helpers/io.c
+> @@ -8,6 +8,11 @@ void __iomem *rust_helper_ioremap(phys_addr_t offset, size_t size)
+>  	return ioremap(offset, size);
+>  }
+>  
+> +void __iomem *rust_helper_ioremap_np(phys_addr_t offset, size_t size)
+> +{
+> +	return ioremap_np(offset, size);
+> +}
+> +
+>  void rust_helper_iounmap(void __iomem *addr)
+>  {
+>  	iounmap(addr);
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 7b70d5b5477e57d6d0f24bcd26bd8b0071721bc0..b7fc759f8b5d3c3ac6f33f5a66e9f619c58b7405 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -7,6 +7,7 @@
+>  use crate::error::{code::EINVAL, Result};
+>  use crate::{bindings, build_assert};
+>  
+> +pub mod mem;
+>  pub mod resource;
+>  
+>  pub use resource::Resource;
+> diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..2bd9cf4c4f1a59f027999a6e9a203dc99ad6c003
+> --- /dev/null
+> +++ b/rust/kernel/io/mem.rs
+> @@ -0,0 +1,142 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Generic memory-mapped IO.
+> +
+> +use core::ops::Deref;
+> +
+> +use crate::device::Bound;
+> +use crate::device::Device;
+> +use crate::devres::Devres;
+> +use crate::io;
+> +use crate::io::resource::Region;
+> +use crate::io::resource::Resource;
+> +use crate::io::Io;
+> +use crate::io::IoRaw;
+> +use crate::prelude::*;
+> +
+> +/// An exclusive memory-mapped IO region.
+> +///
+> +/// # Invariants
+> +///
+> +/// - [`ExclusiveIoMem`] has exclusive access to the underlying [`IoMem`].
+> +pub struct ExclusiveIoMem<const SIZE: usize> {
+> +    /// The region abstraction. This represents exclusive access to the
+> +    /// range represented by the underlying `iomem`.
+> +    ///
+> +    /// It's placed first to ensure that the region is released before it is
+> +    /// unmapped as a result of the drop order.
 
-Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
----
- rust/helpers/slab.c            | 14 ++++++++++++++
- rust/helpers/vmalloc.c         |  7 +++++++
- rust/kernel/alloc/allocator.rs | 34 +++++++++++-----------------------
- 3 files changed, 32 insertions(+), 23 deletions(-)
+Isn't it more logical the other way around, i.e. first free the resource and
+then release the resource guard?
 
-diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
-index 5abd552ccbd4..c4bb451bcf4e 100644
---- a/rust/helpers/slab.c
-+++ b/rust/helpers/slab.c
-@@ -25,3 +25,17 @@ rust_helper_kvrealloc_node(const void *p, size_t size, gfp_t flags, int node)
- {
- 	return kvrealloc_node(p, size, flags, node);
- }
-+
-+void * __must_check __realloc_size(2)
-+rust_helper_krealloc_node_align(const void *objp, size_t new_size, unsigned long align,
-+				gfp_t flags, int node)
-+{
-+	return krealloc_node_align(objp, new_size, align, flags, node);
-+}
-+
-+void * __must_check __realloc_size(2)
-+rust_helper_kvrealloc_node_align(const void *p, size_t size, unsigned long align,
-+				gfp_t flags, int node)
-+{
-+	return kvrealloc_node_align(p, size, align, flags, node);
-+}
-diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
-index e6c796c65ee1..09aee472340f 100644
---- a/rust/helpers/vmalloc.c
-+++ b/rust/helpers/vmalloc.c
-@@ -13,3 +13,10 @@ rust_helper_vrealloc_node(const void *p, size_t size, gfp_t flags, int node)
- {
- 	return vrealloc_node(p, size, flags, node);
- }
-+
-+void * __must_check __realloc_size(2)
-+rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
-+				gfp_t flags, int node)
-+{
-+	return vrealloc_node_align(p, size, align, flags, node);
-+}
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 47d9668c3599..7f986c974150 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -59,19 +59,19 @@ fn aligned_size(new_layout: Layout) -> usize {
- /// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
- struct ReallocFunc(
-     unsafe extern "C" fn(
--        *const crate::ffi::c_void, usize, u32, crate::ffi::c_int
-+        *const crate::ffi::c_void, usize, crate::ffi::c_ulong, u32, crate::ffi::c_int,
-     ) -> *mut crate::ffi::c_void,
- );
- 
- impl ReallocFunc {
--    // INVARIANT: `krealloc_node` satisfies the type invariants.
--    const KREALLOC_NODE: Self = Self(bindings::krealloc_node);
-+    // INVARIANT: `krealloc_node_align` satisfies the type invariants.
-+    const KREALLOC_NODE_ALIGN: Self = Self(bindings::krealloc_node_align);
- 
--    // INVARIANT: `vrealloc_node` satisfies the type invariants.
--    const VREALLOC_NODE: Self = Self(bindings::vrealloc_node);
-+    // INVARIANT: `vrealloc_node_align` satisfies the type invariants.
-+    const VREALLOC_NODE_ALIGN: Self = Self(bindings::vrealloc_node_align);
- 
--    // INVARIANT: `kvrealloc_node` satisfies the type invariants.
--    const KVREALLOC_NODE: Self = Self(bindings::kvrealloc_node);
-+    // INVARIANT: `kvrealloc_node_align` satisfies the type invariants.
-+    const KVREALLOC_NODE_ALIGN: Self = Self(bindings::kvrealloc_node_align);
- 
-     /// # Safety
-     ///
-@@ -118,7 +118,7 @@ unsafe fn call(
-         // - Those functions provide the guarantees of this function.
-         let raw_ptr = unsafe {
-             // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
--            self.0(ptr.cast(), size, flags.0, c_nid).cast()
-+            self.0(ptr.cast(), size, layout.align(), flags.0, c_nid).cast()
-         };
- 
-         let ptr = if size == 0 {
-@@ -145,7 +145,7 @@ unsafe fn realloc(
-         nid: Option<i32>,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-         // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
--        unsafe { ReallocFunc::KREALLOC_NODE.call(ptr, layout, old_layout, flags, nid) }
-+        unsafe { ReallocFunc::KREALLOC_NODE_ALIGN.call(ptr, layout, old_layout, flags, nid) }
-     }
- }
- 
-@@ -162,15 +162,9 @@ unsafe fn realloc(
-         flags: Flags,
-         nid: Option<i32>,
-     ) -> Result<NonNull<[u8]>, AllocError> {
--        // TODO: Support alignments larger than PAGE_SIZE.
--        if layout.align() > bindings::PAGE_SIZE {
--            pr_warn!("Vmalloc does not support alignments larger than PAGE_SIZE yet.\n");
--            return Err(AllocError);
--        }
--
-         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-         // allocated with this `Allocator`.
--        unsafe { ReallocFunc::VREALLOC_NODE.call(ptr, layout, old_layout, flags, nid) }
-+        unsafe { ReallocFunc::VREALLOC_NODE_ALIGN.call(ptr, layout, old_layout, flags, nid) }
-     }
- }
- 
-@@ -187,14 +181,8 @@ unsafe fn realloc(
-         flags: Flags,
-         nid: Option<i32>,
-     ) -> Result<NonNull<[u8]>, AllocError> {
--        // TODO: Support alignments larger than PAGE_SIZE.
--        if layout.align() > bindings::PAGE_SIZE {
--            pr_warn!("KVmalloc does not support alignments larger than PAGE_SIZE yet.\n");
--            return Err(AllocError);
--        }
--
-         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-         // allocated with this `Allocator`.
--        unsafe { ReallocFunc::KVREALLOC_NODE.call(ptr, layout, old_layout, flags, nid) }
-+        unsafe { ReallocFunc::KVREALLOC_NODE_ALIGN.call(ptr, layout, old_layout, flags, nid) }
-     }
- }
--- 
-2.39.2
+Anyways, I don't think it matters too much, since drop() owns the object and
+Devres guarantees that we can't race with another device trying to access the
+resource.
 
+Otherwise, I guess you could drop() the object and create a new one right away,
+but that doesn't seem to be a problem either for any order?
+
+> +    /// This field is needed for ownership of the region.
+> +    _region: Region,
+> +    /// The underlying `IoMem` instance.
+> +    iomem: IoMem<SIZE>,
+> +}
+> +
+> +impl<const SIZE: usize> ExclusiveIoMem<SIZE> {
+> +    /// Creates a new `ExclusiveIoMem` instance.
+> +    pub(crate) fn ioremap(resource: &Resource) -> Result<Self> {
+> +        let iomem = IoMem::ioremap(resource)?;
+> +
+> +        let start = resource.start();
+> +        let size = resource.size();
+> +        let name = resource.name();
+> +
+> +        let region = resource
+> +            .request_region(start, size, name, io::resource::flags::IORESOURCE_MEM)
+> +            .ok_or(EBUSY)?;
+
+Same here, why do the ioremap() first? I think it logically makes more sense to
+first try and get the region.
