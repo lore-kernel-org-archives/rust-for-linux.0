@@ -1,123 +1,84 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163E01C1741;
-	Fri, 27 Jun 2025 16:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751041812; cv=pass; b=RPdLTP83DXtKmKysIRy5kbhrmNghqIsR+6nXu4DqTb7+XrfqNUdVjmB0MdcxPhVDo7C1jjaD8CfAy4Vyj4lBTMCKQydZS+7JxIrCidJlJirJrD7EBgiZUNLlKW6b9e+YUh1eAfbQSm2pXwVUlL9IEj4rAkbwxIyh3ebuGOPbm68=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751041812; c=relaxed/simple;
-	bh=uZOpiqDnsPeN80lkYsgZGsg3XngV1n4ZEp+gMiBSaLo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=i/GhkyYEba4XXVGz6CqA+3fE/hDxlsT0xouHS3453uMLfA4BYNkbye8b4wxPge3apV9ky7vYrePkGJMgPuplwXJX3IvYrnatJp4iOss4xxlbYHniF4sEqgQBl4LbfN15LGzyEQ0XZraw+h2DVKe5hDsKvwVRPzBXFmWD0uROoRo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=K18JUEzi; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13352EA72A;
+	Fri, 27 Jun 2025 16:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751043348; cv=none; b=H48YN3Rr+5+mFuqQBwpSE/rtTjdk5c7cGB8N0jy2FO71JEtt/+1IYh66QwgoDB24VpOHC2Uluc0yrYo/NBHlVPgY7DE/8YUYoBW95I0PAiCjLEh+G7FTMuw5SybhPgQ8mWAGZiKRMLNlT+v+3+lMoIuxXo0KVKrZXv70NU/PEN8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751043348; c=relaxed/simple;
+	bh=Ru+vXHBV8y+6Bsp5bc2kVjvc7h7M/KrKuaxCk5SRMDg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k2JJFXVwSZvy68/gjQJt0+Gb11Rl+FcVD2C8KCJN6F0QU0ncNJI3gwNAxuFVYFgQuZCrmR/DPFsC4rAbmEWe6vJH+yr+9UNs+qu5s0RCRMf8OedjL0FKIYIKVOV3TTefdGpx/QhVXKeQnLpwgZ82DUJi7NWzbK+WlkJqIASYn08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EC0nrlmw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="K18JUEzi"
-ARC-Seal: i=1; a=rsa-sha256; t=1751041789; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=kybPJYkwMmG8BMGNFyE8OOoidf5kSHfCd7oOzb00Z5/iXMZGfd3WAHFvoMaD2oWKkcT/5ionolbmCph4fETBIAKkCtPEwpHLj5OW9QMwE6YJildn1NKHXktHXdIcAZNSoL/8Pf0hdibHVEWtcsxz9XREjvFuuMLVv3T4ozN3ZBI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1751041789; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=1UYgOu06ruRDAYOcp4JfazG4HIO4Q2KaS4cnFmSM66M=; 
-	b=aCruIxIdxItIKw2gwoarURCrKaR/IQQsnwRvLgMagk0Kl2dT/0pos3tfL6UkuqcKTXXE3ZRx678tRATyyQVhDrAtufRzQB2NXa6DK6bLqw6p9tFkMuLLV6BXczLBLlmSC1qgjpYPTy1OGvVVtTH0XXwuUu9DT81nvP0f74M6yJ0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751041789;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=1UYgOu06ruRDAYOcp4JfazG4HIO4Q2KaS4cnFmSM66M=;
-	b=K18JUEziMCfx3B/fRsaqyjFHGgBMBxOzzmRMWCtx65njiyUlkxEtfa0kRFBXmIOk
-	L9LQ71GMnfOin7/wmUXxKJyyCmmmRe8lzC9VcqSlAJs4GBSSrdsKtXl9nMBqhhY55Kn
-	ejY41ZOUux89RkVtxTXrD0b3/NcvvvN8uzYcvynk=
-Received: by mx.zohomail.com with SMTPS id 1751041787930194.57928858422827;
-	Fri, 27 Jun 2025 09:29:47 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EC0nrlmw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F01C4CEE3;
+	Fri, 27 Jun 2025 16:55:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751043347;
+	bh=Ru+vXHBV8y+6Bsp5bc2kVjvc7h7M/KrKuaxCk5SRMDg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EC0nrlmwfOMi0lYaBe9mBqhAcEdP04DXeSoAAG0O3fTue9Onl3312Nub3JSY2aeXW
+	 tERxqOV8nAvSOOrOHcyDC6pSIO1BSqR8IMCh1rhAjI7iX8tYjk4qD9BKdLlIFfOhuH
+	 v9hw0BlGYRzpMxZDbePM/X4tfEzUTg66Hp5OkMuSpPsVghZHp4XNXsMXv06epWSXqe
+	 LbnsZwaYHfRd596FlGFbDXlJCnSTgmXsmm2Y1gdvaJ9wLnpQMqR9pKjqHuS8XAzxXt
+	 8ZGdVydbYtAHnJJHs3Eb/gQAjpcKpyCO3dddgJGIRrrI26bB3tlrN+JxZFVsNcP1dX
+	 S7WWAKJa+9waQ==
+Date: Fri, 27 Jun 2025 06:55:46 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
+Subject: Re: [PATCH v2] workqueue: rust: add delayed work items
+Message-ID: <aF7NEkFJne9Cn1Wr@slm.duckdns.org>
+References: <20250627-workqueue-delay-v2-1-84b046fdb4fc@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v5 0/6] rust: add support for request_irq
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250627-topics-tyr-request_irq-v5-0-0545ee4dadf6@collabora.com>
-Date: Fri, 27 Jun 2025 13:29:31 -0300
-Cc: linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6FF34F9D-4FA6-4463-8922-3894E088CDD2@collabora.com>
-References: <20250627-topics-tyr-request_irq-v5-0-0545ee4dadf6@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Benno Lossin <lossin@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627-workqueue-delay-v2-1-84b046fdb4fc@google.com>
 
+On Fri, Jun 27, 2025 at 09:38:42AM +0000, Alice Ryhl wrote:
+> This patch is being sent for use in the various Rust GPU drivers that
+> are under development. It provides the additional feature of work items
+> that are executed after a delay.
+> 
+> The design of the existing workqueue is rather extensible, as most of
+> the logic is reused for delayed work items even though a different work
+> item type is required. The new logic consists of:
+> 
+> * A new DelayedWork struct that wraps struct delayed_work.
+> * A new impl_has_delayed_work! macro that provides adjusted versions of
+>   the container_of logic, that is suitable with delayed work items.
+> * A `enqueue_delayed` method that can enqueue a delayed work item.
+> 
+> This patch does *not* rely on the fact that `struct delayed_work`
+> contains `struct work_struct` at offset zero. It will continue to work
+> even if the layout is changed to hold the `work` field at a different
+> offset.
+> 
+> Please see the example introduced at the top of the file for example
+> usage of delayed work items.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
+Acked-by: Tejun Heo <tj@kernel.org>
 
-> On 27 Jun 2025, at 13:21, Daniel Almeida =
-<daniel.almeida@collabora.com> wrote:
->=20
->=20
-> ---
-> Changes in v5:
->=20
-> Thanks, Danilo {
->  - Removed extra scope in the examples.
->  - Renamed Registration::register() to Registration::new(),
->  - Switched to try_pin_init! in Registration::new() (thanks for the
->    code and the help, Boqun and Benno)
->  - Renamed the trait functions to handle() and handle_on_thread().
->  - Introduced IrqRequest with an unsafe pub(crate) constructor
->  - Made both register() and the accessors that return IrqRequest =
-public
->    the idea is to allow both of these to work:
-> // `irq` is an `irq::Registration`
-> let irq =3D pdev.threaded_irq_by_name()?
->  and
-> // `req` is an `IrqRequest`.
-> let req =3D pdev.irq_by_name()?;
-> // `irq` is an `irq::Registration`
-> let irq =3D irq::ThreadedRegistration::new(req)?;
->=20
->  - Added another name in the byname variants. There's now one for the
->    request part and the other one to register()
->  - Reworked the examples in request.rs
->  - Implemented the irq accessors in place for pci.rs
->  - Split the platform accessor macros into two
-> }
->=20
-> - Added a rust helper for pci_irq_vectors if !CONFIG_PCI_MSI (thanks,
-> Intel 0day bot)
-> - Link to v4: =
-https://lore.kernel.org/r/20250608-topics-tyr-request_irq-v4-0-81cb81fb807=
-3@collabora.com
->=20
+Thanks.
 
-Sorry, I forgot to mention that this now depends on the new Devres =
-series at [0].
-
-[0]  =
-https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=3Dru=
-st/devres
-
-
+-- 
+tejun
