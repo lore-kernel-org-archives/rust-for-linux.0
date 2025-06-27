@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6181E22FC;
-	Fri, 27 Jun 2025 18:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EB22EBB86;
+	Fri, 27 Jun 2025 18:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751049380; cv=none; b=Mlf3dxlHdDFz1koC1fmzhFlWYHrzO+4pQ4NDlZHg4HNgZLMGr5LTj/vPgwJKMf0tLf28a2E2hjwbNWOt0NJ07Z75baX+c256S0YBszabOG0sart1HMaM0KHHGazHLPhsUTcA4uso13bCjRzaezbSnFi18Tc6xYluAaUOwzSt8xc=
+	t=1751049443; cv=none; b=bqkxSiS3ZYdxxJgOifECF1JMyEXoDWwFSnSb8sphaW31CsbYvMSwN0dJxtrxLLRZ/eE+8nqGpe8p2WKf7WAW/C/o9fZBfkCrCAE3U4hFH2hJby3/lSrMslnIpJ4sNtdgRzgYoVDtS+zYj39938kc2C3waeMuwUROgD7yqPvwUKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751049380; c=relaxed/simple;
-	bh=UGlAEvHJZ5FkAhATIQUdtmRiAgmz7gNZLwYsF8dR8U4=;
+	s=arc-20240116; t=1751049443; c=relaxed/simple;
+	bh=n4I1t10u+1TLvpEKHa1L2Jl/GLtVz26vUrNW5m6uLk8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s6ylED2i2mmstHU9xzfldbXJtas4VwYkcVwKVowsmRvW7PPoWkgaZNwk2HdSvKGMFwBOLj/0A8ZKY3/jN6IEgqVV86U28MklUf86DTCn/2eD6dsHI/5xk0J3LDheNdnTXfMwpF3VvMWhVp840uaSVnfkfbjzhOF8wATbxwmMqCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fo/jcr08; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=lfOkbiu5Z/xanOD0+XXex44e1wv9kfd5ZMZtZnB4s2zVuRlnyqSRDdAblzsSkOJbPuSLgi4SmTIkIXjalw3FePp1V1V1SvBakXvWicxzRrVKr2dYIgY3m1yMYuJcJTDEM2xl9jjqSEZnuFMNnAWvV3g0CV0hxdX2dJkQnzrP/Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CeJZAlqM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fo/jcr08"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB35C4CEE3;
-	Fri, 27 Jun 2025 18:36:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CeJZAlqM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F090C4CEE3;
+	Fri, 27 Jun 2025 18:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751049375;
-	bh=UGlAEvHJZ5FkAhATIQUdtmRiAgmz7gNZLwYsF8dR8U4=;
+	s=k20201202; t=1751049443;
+	bh=n4I1t10u+1TLvpEKHa1L2Jl/GLtVz26vUrNW5m6uLk8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Fo/jcr08LnirSs5EZ6Ebxcg6zAv7uu8WZ11U5cpQA6Qf16QyAXDFnetYvTr0GMq58
-	 PM0xrAKdWzqv9gRfSrsBKkW5XWhQQwEQNsmOy8LzoUI8hsXEnpK7qd00Szj5IHHbNP
-	 8k+QJgxlQU6KOzc41XmdeWkbLPQpsAwNlOPnUarfZhiXsJmPZq0RJA7Sf9RtMfoMCi
-	 hu8M4LgL7KVLA4VOLBjJzSeuHIPTs0a3WMXWd47zlfKCOfh/QYvKTvnxpdTspCzmbe
-	 QgjYOHE7l6DwKlkcCswaXAgalcSN95qHBoDKPEBq3q68fqhDkij0Z+fpJnQTWQzGwo
-	 odTg6CmBz/lmQ==
-Date: Fri, 27 Jun 2025 20:36:11 +0200
+	b=CeJZAlqMau3jCZQEn4scg3KB/9TSIdvbdgV3CL+bVMiZkLJaseDhqvZVQVvzl9Xa1
+	 fUU78Bp1PzC3d6Ch6mbrt6swVxKPeEOjF09HdAOXH8g7/ie6sGKOn7fDHWjygmEqbr
+	 7YNwSefJ/qENwVzQbSWwl9CYoi5d0BfG8Bz2jQegMr3uISW7hH3szy5xcQLnaYUzib
+	 3RilmUkh4iWmGarA9CEfQn70Gsd9mOefcphXghhrcngIr1btasn+ejIO6Dx5B03Tiu
+	 u52AiUBw3zmsUItRgkwxVLbakRddvV8fSYYhYBs4Nidu/6GDuSYgFMsOexRJSBuKUE
+	 prfj7P8LeKutw==
+Date: Fri, 27 Jun 2025 20:37:18 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Vitaly Wool <vitaly.wool@konsulko.se>
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
 	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6 3/4] rust: add support for NUMA ids in allocations
-Message-ID: <aF7km7nm9ggoj2AW@pollux>
+Subject: Re: [PATCH v6 4/4] rust: support large alignments in allocations
+Message-ID: <aF7k3grxI2Y80sFo@pollux>
 References: <20250627181505.2080916-1-vitaly.wool@konsulko.se>
- <20250627181638.2081102-1-vitaly.wool@konsulko.se>
+ <20250627181650.2081123-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,21 +44,61 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250627181638.2081102-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250627181650.2081123-1-vitaly.wool@konsulko.se>
 
-On Fri, Jun 27, 2025 at 08:16:38PM +0200, Vitaly Wool wrote:
-> Add support for specifying NUMA ids in Rust allocators as an Option
-> (i. e. providing `None` as nid corresponds to NUMA_NO_NODE). To do
-> this, modify ReallocFunc to use the new extended realloc primitives
-> from the C side of the kernel (i. e. k[v]realloc_node/vrealloc_node)
-> and add the new function alloc_node to the Allocator trait while
-> keeping the existing one (alloc) for backward compatibility.
-> 
-> This will allow to specify node to use for allocation of e. g.
-> {KV}Box, as well as for future NUMA aware users of the API.
+On Fri, Jun 27, 2025 at 08:16:50PM +0200, Vitaly Wool wrote:
+> Add support for large (> PAGE_SIZE) alignments in Rust allocators.
+> All the preparations on the C side are already done, we just need
+> to add bindings for <alloc>_node_align() functions and start
+> using those.
 > 
 > Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> ---
+>  rust/helpers/slab.c            | 14 ++++++++++++++
+>  rust/helpers/vmalloc.c         |  7 +++++++
+>  rust/kernel/alloc/allocator.rs | 34 +++++++++++-----------------------
+>  3 files changed, 32 insertions(+), 23 deletions(-)
+> 
+> diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
+> index 5abd552ccbd4..c4bb451bcf4e 100644
+> --- a/rust/helpers/slab.c
+> +++ b/rust/helpers/slab.c
+> @@ -25,3 +25,17 @@ rust_helper_kvrealloc_node(const void *p, size_t size, gfp_t flags, int node)
+>  {
+>  	return kvrealloc_node(p, size, flags, node);
+>  }
+> +
+> +void * __must_check __realloc_size(2)
+> +rust_helper_krealloc_node_align(const void *objp, size_t new_size, unsigned long align,
+> +				gfp_t flags, int node)
+> +{
+> +	return krealloc_node_align(objp, new_size, align, flags, node);
+> +}
+> +
+> +void * __must_check __realloc_size(2)
+> +rust_helper_kvrealloc_node_align(const void *p, size_t size, unsigned long align,
+> +				gfp_t flags, int node)
+> +{
+> +	return kvrealloc_node_align(p, size, align, flags, node);
+> +}
+> diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
+> index e6c796c65ee1..09aee472340f 100644
+> --- a/rust/helpers/vmalloc.c
+> +++ b/rust/helpers/vmalloc.c
+> @@ -13,3 +13,10 @@ rust_helper_vrealloc_node(const void *p, size_t size, gfp_t flags, int node)
+>  {
+>  	return vrealloc_node(p, size, flags, node);
+>  }
+> +
+> +void * __must_check __realloc_size(2)
+> +rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
+> +				gfp_t flags, int node)
+> +{
+> +	return vrealloc_node_align(p, size, align, flags, node);
+> +}
 
-Did you see [1]? I can't see the feedback being addressed.
+Here and in the previous patch, please remove unused helper functions when you
+replace their usage with new ones.
 
-[1] https://lore.kernel.org/lkml/aF5-a-bUp1pD5tiS@pollux/
+Thanks,
+Danilo
