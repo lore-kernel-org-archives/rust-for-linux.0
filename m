@@ -1,167 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107624502A;
-	Fri, 27 Jun 2025 18:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392A31B423C;
+	Fri, 27 Jun 2025 19:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751050321; cv=none; b=D/TPdYlSuKT+tXc0cQ1EST/QjC+nBSPC6gkadrmfoJjGatlFKedd5p3UZtPNLVcT0C39nZIzPTAqgqsAx478ATSfbckmflIy/RXV7/jABKBHdtodFQr8tV/S+XIhuRrdxDWUUCicki34kG04IKDQlN7V+m/2pDn6aW6EljwVeMg=
+	t=1751051423; cv=none; b=MT8z1Jv8XK7Dtrs8VXG5Wu6UmPGV6YFicLKVsatV7cj7AmgnSctiihQeou9Rqrd+tnJ/+S8X0PmC12aM4/mvhcBoxhdNXaTBcRoSYNg6iqWC6qI066WWXxAFskrHBBZialFWP4bfPlN2JdDk37bZpODS7PxL5gpBQDg1Nj7VYIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751050321; c=relaxed/simple;
-	bh=euvnyW4y4L7Ax2AaJfgnY285+oZy74N4SwvcUrcj4aA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ngurEg5zteG7LpgdzfO7XpTVDkaw/3jn8iPFgbqI6KlF5QgQ7hJ/ToCtxzfOW+z1ApKrwPgIDHFmRtO4W9AwKco03WNrQDPmT1YWq/s2XdCWebFwRhpj+pkn76UzYgJ3H8t+rPlqJ7uosJIbQP8Ki+HSy6BxtuxCIm7Q+8EE4mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f89gT4qm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751051423; c=relaxed/simple;
+	bh=zX3NmrA+sBHyFFa22AKtA6yA3y98WyDwudTRj5xeJKE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iO025SyUvhTL4qyQ+u6EOyjq3cmseThgPfoC3GorebA7FdP1YRrtnNJD1Kgqwo2au3HKZ3ooF4n3mmpKuCEoLEnn0wIiEg34HFDzYyfnvQo+wfuse21w5Hs/oVIeyhLcby5becLPkO5OMSxvqlWV3eKjLdpHeNKFvYgETNkDKGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X2UBa0m7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f89gT4qm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CA3C4CEE3;
-	Fri, 27 Jun 2025 18:51:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X2UBa0m7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99647C4CEEB;
+	Fri, 27 Jun 2025 19:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751050319;
-	bh=euvnyW4y4L7Ax2AaJfgnY285+oZy74N4SwvcUrcj4aA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f89gT4qmMIdFe6oB5I+WVQS4FNELutxouQp7A4Pbl8uaWBia15pG1PeQbOWhWSzS4
-	 ldrmQcjnd70byKhVmXgxNS9u5Tr1MzI16xM9vacE3gxT7SftOQayTZoyj2qFAIBfR1
-	 DnmbUjv4BKN17rpd5w1SClMSBQmFF0UG2XdT2CRRDHW20mwpkTx9AYQcu6ncIg3EKs
-	 iZbul4cc4L8Yi86LWWRERnejaccCX6uPfL2QqP1idwMg4kRD5LXkpp6g2zVwzWHpxw
-	 f+Gl5pogZhQsteJfOly0+pK7ZLoVTudL+XMzXUtV6dBMy6xhDM0Q3UMn9jSeZzPuqX
-	 LZS5q2LzrxKOA==
-Message-ID: <8c4284f6-58eb-4d9a-b2e7-e1c66d3fcad6@kernel.org>
-Date: Fri, 27 Jun 2025 20:51:51 +0200
+	s=k20201202; t=1751051422;
+	bh=zX3NmrA+sBHyFFa22AKtA6yA3y98WyDwudTRj5xeJKE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X2UBa0m716Nxz46zUZMMU6MzN7Z18nE2RCdmEtbKFJ9PTgigoYsIWRjX4ngDpvCll
+	 F45snIb6EOBjAMXfXtrxDeAlK25ijB87lMq63g8SXrGvaldQM9uzLlR0Yj0MTYsIl5
+	 mbMOpsFphlWy+AUOQpLVXRGqXyCVk3ZD2D2cZsw64AQLetjWHdlHoRmYsYP8o/IXS+
+	 fe0NcVvGGDDFonlPoHHOGabX7iBblz9HB0/ILHlnxL1HhO040Hd4wIntxxj9Pfg8W2
+	 jDbtGmx0QMtwOaGvcYTHNOp0+nto6MBI58mh4qC2FfTJGNdZ1ylr+KmPwL9vblw6QT
+	 gd5AvyGd5d4lA==
+Date: Fri, 27 Jun 2025 21:10:14 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Benno Lossin <lossin@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v5 5/6] rust: platform: add irq accessors
+Message-ID: <aF7slhheVOXaGB9T@pollux>
+References: <20250627-topics-tyr-request_irq-v5-0-0545ee4dadf6@collabora.com>
+ <20250627-topics-tyr-request_irq-v5-5-0545ee4dadf6@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/9] rust: pwm: Add driver operations trait and
- registration support
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Drew Fustini <drew@pdp7.com>,
- Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Benno Lossin
- <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
- linux-clk@vger.kernel.org
-References: <20250623-rust-next-pwm-working-fan-for-sending-v5-0-0ca23747c23e@samsung.com>
- <CGME20250623180900eucas1p2ffbd79e79f690189ae89aefcc3793e50@eucas1p2.samsung.com>
- <20250623-rust-next-pwm-working-fan-for-sending-v5-3-0ca23747c23e@samsung.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250623-rust-next-pwm-working-fan-for-sending-v5-3-0ca23747c23e@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627-topics-tyr-request_irq-v5-5-0545ee4dadf6@collabora.com>
 
-On 6/23/25 8:08 PM, Michal Wilczynski wrote:
-> diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-> index 3865b43ec47df6cb0c09bc74a228535512b6b1a8..25bc07a3df1d43467a3a6ec8f2362ae8f770360a 100644
-> --- a/rust/kernel/pwm.rs
-> +++ b/rust/kernel/pwm.rs
-> @@ -8,12 +8,13 @@
->   
->   use crate::{
->       bindings,
-> -    device,
-> -    error,
-> +    device::{self, Bound},
-> +    devres::Devres,
-> +    error::{self, to_result},
->       prelude::*,
->       types::{ARef, AlwaysRefCounted, ForeignOwnable, Opaque},
->   };
-> -use core::{convert::TryFrom, ptr::NonNull};
-> +use core::{convert::TryFrom, marker::PhantomData, ptr::NonNull};
->   
->   /// Maximum size for the hardware-specific waveform representation buffer.
->   ///
-> @@ -408,3 +409,482 @@ unsafe impl Send for Chip {}
->   // kernel locks, which the C core is responsible for. Any interior mutability is
->   // handled and synchronized by the C kernel code.
->   unsafe impl Sync for Chip {}
+On Fri, Jun 27, 2025 at 01:21:07PM -0300, Daniel Almeida wrote:
+> +macro_rules! define_irq_accessor_by_index {
+> +    ($(#[$meta:meta])* $fn_name:ident, $request_fn:ident, $reg_type:ident, $handler_trait:ident) => {
+> +        $(#[$meta])*
+> +        pub fn $fn_name<T: irq::$handler_trait + 'static>(
+> +            &self,
+> +            index: u32,
+> +            flags: irq::flags::Flags,
+> +            name: &'static CStr,
+> +            handler: T,
+> +        ) -> Result<impl PinInit<irq::$reg_type<T>, Error> + '_> {
+> +            let request = self.$request_fn(index)?;
 > +
-> +/// A resource guard that ensures `pwmchip_remove` is called on drop.
-> +///
-> +/// This struct is intended to be managed by the `devres` framework by transferring its ownership
-> +/// via [`Devres::new_foreign_owned`]. This ties the lifetime of the PWM chip registration
-> +/// to the lifetime of the underlying device.
-> +pub struct Registration {
-> +    chip: ARef<Chip>,
+> +            Ok(irq::$reg_type::<T>::new(
+> +                request,
+> +                flags,
+> +                name,
+> +                handler,
+> +            ))
+> +        }
+> +    };
 > +}
 > +
-> +impl Registration {
-> +    /// Registers a PWM chip with the PWM subsystem.
-> +    ///
-> +    /// Transfers its ownership to the `devres` framework, which ties its lifetime
-> +    /// to the parent device.
-> +    /// On unbind of the parent device, the `devres` entry will be dropped, automatically
-> +    /// calling `pwmchip_remove`. This function should be called from the driver's `probe`.
-> +    pub fn new_foreign_owned(
-> +        dev: &device::Device<Bound>,
-> +        chip: ARef<Chip>,
-> +        ops_vtable: &'static PwmOpsVTable,
-> +    ) -> Result {
-> +        let c_chip_ptr = chip.as_raw();
+> +macro_rules! define_irq_accessor_by_name {
+> +    ($(#[$meta:meta])* $fn_name:ident, $request_fn:ident, $reg_type:ident, $handler_trait:ident) => {
+> +        $(#[$meta])*
+> +        pub fn $fn_name<T: irq::$handler_trait + 'static>(
+> +            &self,
+> +            irq_name: &'static CStr,
+> +            name: &'static CStr,
+> +            flags: irq::flags::Flags,
+> +            handler: T,
+> +        ) -> Result<impl PinInit<irq::$reg_type<T>, Error> + '_> {
+> +            let request = self.$request_fn(irq_name)?;
 > +
-> +        // SAFETY: `c_chip_ptr` is valid because the `ARef<Chip>` that owns it exists.
-> +        // The vtable pointer is also valid. This sets the `.ops` field on the C struct.
-> +        unsafe {
-> +            (*c_chip_ptr).ops = ops_vtable.as_raw();
+> +            Ok(irq::$reg_type::<T>::new(
+> +                request,
+> +                flags,
+> +                name,
+> +                handler,
+> +            ))
 > +        }
-> +
-> +        // SAFETY: `c_chip_ptr` points to a valid chip with its ops initialized.
-> +        // `__pwmchip_add` is the C function to register the chip with the PWM core.
-> +        unsafe {
-> +            to_result(bindings::__pwmchip_add(c_chip_ptr, core::ptr::null_mut()))?;
-> +        }
-> +
-> +        let registration = Registration { chip };
-> +
-> +        Devres::new_foreign_owned(dev, registration, GFP_KERNEL)?;
-> +
-> +        Ok(())
-
-This can just be:
-
-	Devres::new_foreign_owned(dev, registration, GFP_KERNEL)
-
-I.e. no need for the `Ok(())` below.
-
-With that,
-
-	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-
-for the Registration bits.
-
-@Uwe: Just a head-up if you plan to pick this up for the upcoming merge window,
-Devres::new_foreign_owned() will be replaced with devres::register() --
-semantics and arguments do not change.
-
-> +    }
+> +    };
 > +}
-> +
-> +impl Drop for Registration {
-> +    fn drop(&mut self) {
-> +        let chip_raw = self.chip.as_raw();
-> +
-> +        // SAFETY: `chip_raw` points to a chip that was successfully registered.
-> +        // `bindings::pwmchip_remove` is the correct C function to unregister it.
-> +        // This `drop` implementation is called automatically by `devres` on driver unbind.
-> +        unsafe {
-> +            bindings::pwmchip_remove(chip_raw);
-> +        }
 
-NIT: You can write this in one line as:
-
-	unsafe { bindings::pwmchip_remove(chip_raw) };
+NIT: Please make the order of name and flags the same for both macros.
