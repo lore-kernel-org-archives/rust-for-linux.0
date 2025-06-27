@@ -1,135 +1,96 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA6C1DE2C9
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 09:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1847C296169;
+	Fri, 27 Jun 2025 10:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751017281; cv=none; b=B7MVOhIuACaFSDRcG3ItZhQmHsR8KdXJBHmgWb4/YuUqO3uqCClhdqY0StnKk7d2Q7UZ6izHs+yVA9zY4k2qtnIVKkE9W/E4NfEuqgDwwnORloG9YOLczEYzYz4pbDSvdcgkPnBGSf+Ix7ZGbtkaQmURGiOoahOR1tXbabTnWH0=
+	t=1751020866; cv=none; b=n7fMTjErXDhGS78Yqwhfmlc0uqLGfXQ83AG8MVc+pv+uiVpfESmONLrT7w1ANKVQM7xgf+CKdpDr3d1KPf5sNU1SZEU/6ByFgcft0cPyFl2I6PLJZAuh8h3j+PRvJa6ZW5yK4mfHQ4PT27qLpl1WfNDZyCJOV7fCq2qmXq8RPco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751017281; c=relaxed/simple;
-	bh=OwhSX3bSnKFZFbuiFzZGihWz3WKDhCyD/cwvc2jLcRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=UCzrRWXbK0nJjmejxzmQVubY+4TylHR+w38q7F7iqNQVCsqhBi6YVr9kqbgFEhoU50NK080Tkv1P5PaoHuaAt3ki5Qn7uz6/7Smb1UZasWELw/WNIVrjMXb3F1AzjePaPTecTW/jG1VvXgiWD53SiguRzxQkZkXS5u/pZCxyF4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=P4yfJj8+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1751020866; c=relaxed/simple;
+	bh=rzLraCNuwTpuf/DUAb7YKc3FNpCiMSkIclVF2DPCAuY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i9A3S2asQzcHXgG2sSisq+v5ZMvQHFWQFP6wFbL5A1gdyufxvvVe6bgSYxSvjxxIVZLeqRZgZMT/VMvZBFed7Lxb6ttBhccwVf9R0yHhU9u/gWHFZV6/slcmYXEHdEqtfZ351pPPbj6SP+RESa02KeC7jjiwhCLoUZMoetJzcK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M306hN6G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="P4yfJj8+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751017278;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=L6jxLqbH5aL7S/cyb6QujO2iII/2MSR1tRtC68sK9Tc=;
-	b=P4yfJj8+yDh8mc0VYX6d548nOxRQxX/aqIePhOYT+1+huK0N2fOOTh7T8kkGS6u9mz+dMW
-	/Sua3xnCN+EgJUAP91H4DN7MJMkdEV0nxza5uJRe+JM1U14YAu+labS/aF99/9KmKKE9WA
-	Ja1mkOEpcPBAk9URB4mrIo/NKbPNPlw=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-208-CFZx656jPpyzHa0zMhDWhw-1; Fri,
- 27 Jun 2025 05:41:16 -0400
-X-MC-Unique: CFZx656jPpyzHa0zMhDWhw-1
-X-Mimecast-MFC-AGG-ID: CFZx656jPpyzHa0zMhDWhw_1751017274
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D022E1955ECC;
-	Fri, 27 Jun 2025 09:41:13 +0000 (UTC)
-Received: from hydra.redhat.com (unknown [10.45.224.209])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD40C19560A7;
-	Fri, 27 Jun 2025 09:41:07 +0000 (UTC)
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Andrei Lalaev <andrey.lalaev@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Russell King <linux@armlinux.org.uk>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	rust-for-linux <rust-for-linux@vger.kernel.org>,
-	Linux ARM <linux-arm-kernel@lists.infradead.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH] drm/panic: Add a u64 divide by 10 for arm32
-Date: Fri, 27 Jun 2025 11:40:01 +0200
-Message-ID: <20250627094102.770689-1-jfalempe@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M306hN6G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB27C4CEE3;
+	Fri, 27 Jun 2025 10:41:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751020865;
+	bh=rzLraCNuwTpuf/DUAb7YKc3FNpCiMSkIclVF2DPCAuY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M306hN6Gbd1Gc0eJnFzf0djXisEUIKObApc/k5J1CV4qprjUwcg+Mz59+LP32KFL3
+	 GYVIZADFbzS4qNopkBV8ktDgDogH1TqLRM1y/MZk9sPQhCUyZQsr4KvyaZHIvKqWFN
+	 mhl7oc484C7kjweoDcz2qstW5s7qei8lNxdyaOZ3rdRft4GLVL086ncZw5xoGqJTjo
+	 x35XKN5ZczLLlGin5ck3EhmjsUO/iqt3BbCXNyL4Y1dmvs+tXU2w2oSzlYFfTJ00bO
+	 TFAUnUQc1kVBoYoxsusUX2G7iCw6Ssi1np9NmON3IZ6ATy9v3fhbAcFvfzf08x/yqD
+	 3QMnYXhiNHz4w==
+Date: Fri, 27 Jun 2025 12:41:01 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 2/4] mm/slub: allow to set node and align in k[v]realloc
+Message-ID: <aF51PTZh0gRVFuYu@pollux>
+References: <20250627092901.356909-1-vitaly.wool@konsulko.se>
+ <20250627093714.402989-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: dlaPQS_qrgiAO36q0xEFJucmYBRc_daAl1j5fHjCqXg_1751017274
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627093714.402989-1-vitaly.wool@konsulko.se>
 
-On 32bits ARM, u64 divided by a constant is not optimized to a
-multiply by inverse by the compiler [1].
-So do the multiply by inverse explicitly for this architecture.
+On Fri, Jun 27, 2025 at 11:37:14AM +0200, Vitaly Wool wrote:
+> Reimplement k[v]realloc_node() to be able to set node and
+> alignment should a user need to do so. In order to do that while
+> retaining the maximal backward compatibility, the following rules
+> are honored:
+> * kmalloc/kzalloc/krealloc remain unchanged
+> * kvmalloc/kvrealloc/kvcalloc remain unchanged
+> * kvrealloc remains unchanged
+> * kvrealloc_node is implemented as a new function taking align and
+>   NUMA id as extra parameters compared to kvrealloc.
+> * krealloc_node is implemented as a new function taking NUMA id
+>   as an extra parameter compared to krealloc
+> * kvmalloc_node/kvzalloc_node/kvcalloc_node get an extra parameter
+>   (alignment)
 
-Link: https://github.com/llvm/llvm-project/issues/37280 [1]
-Reported-by: Andrei Lalaev <andrey.lalaev@gmail.com>
-Closes: https://lore.kernel.org/dri-devel/c0a2771c-f3f5-4d4c-aa82-d673b3c5cb46@gmail.com/
-Fixes: 675008f196ca ("drm/panic: Use a decimal fifo to avoid u64 by u64 divide")
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
----
- drivers/gpu/drm/drm_panic_qr.rs | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+I see what you're doing here:
 
-diff --git a/drivers/gpu/drm/drm_panic_qr.rs b/drivers/gpu/drm/drm_panic_qr.rs
-index dd55b1cb764d..82acecd505d3 100644
---- a/drivers/gpu/drm/drm_panic_qr.rs
-+++ b/drivers/gpu/drm/drm_panic_qr.rs
-@@ -381,6 +381,24 @@ struct DecFifo {
-     len: usize,
- }
- 
-+/// On arm32 architecture, dividing an u64 by a constant will generate a call
-+/// to __aeabi_uldivmod which is not present in the kernel.
-+/// So use the multiply by inverse method for this architecture.
-+#[cfg(target_arch = "arm")]
-+fn div10(val: u64) -> u64
-+{
-+    let val_h = val >> 32;
-+    let val_l = val & 0xFFFFFFFF;
-+    let b_h: u64 = 0x66666666;
-+    let b_l: u64 = 0x66666667;
-+
-+    let tmp1 = val_h * b_l + ((val_l * b_l) >> 32);
-+    let tmp2 = val_l * b_h + (tmp1 & 0xffffffff);
-+    let tmp3 = val_h * b_h + (tmp1 >> 32) + (tmp2 >> 32);
-+
-+    tmp3 >> 2
-+}
-+
- impl DecFifo {
-     fn push(&mut self, data: u64, len: usize) {
-         let mut chunk = data;
-@@ -389,7 +407,11 @@ fn push(&mut self, data: u64, len: usize) {
-         }
-         for i in 0..len {
-             self.decimals[i] = (chunk % 10) as u8;
--            chunk /= 10;
-+            if cfg!(target_arch = "arm") {
-+                chunk = div10(chunk);
-+            } else {
-+                chunk /= 10;
-+            }
-         }
-         self.len += len;
-     }
+You created vrealloc_node_noprof() in the previous patch, taking the following
+arguments:
 
-base-commit: 3529cb5ab16b4f1f8bbc31dc39a1076a94bd1e38
--- 
-2.49.0
+	vrealloc_node_noprof(const void *p, size_t size,
+			     unsigned long align,
+			     gfp_t flags, int nid)
 
+And now you're aligning the newly introduced krealloc_node() and
+kvrealloc_node() with that.
+
+The idea for having an align argument on krealloc_node() simply is that it
+fails if the alignment requirement can't be fulfilled by the corresponding
+kmalloc bucket, such that we can fall back to vrealloc_node() in
+kvrealloc_node().
+
+Generally, this makes sense to me.
+
+However, now you consequently have to add the align argument to kvmalloc_node(),
+kvzalloc_node(), kvcalloc_node() as well.
+
+This is what creates this huge diffstat changing all the users.
+
+IMHO, the problem here was introduced already with vrealloc_node_noprof() taking
+an align argument in your previous patch, since now you have to adjust
+everything else to logically follow the same naming scheme.
+
+Instead, I think you should introduce vrealloc_node_align(),
+kvrealloc_node_align(), etc. This way no existing function signatures, such as
+kvmalloc_node() have to be changed and no users have to be adjusted.
+
+- Danilo
