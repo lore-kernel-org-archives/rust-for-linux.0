@@ -1,100 +1,99 @@
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF55215779;
-	Fri, 27 Jun 2025 22:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107BF21ABCB;
+	Fri, 27 Jun 2025 22:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751063956; cv=none; b=J/z+8zgVv/NyfJKvkt5pVMa0Oet1Liph4IG/cs9k6ngJzUVjciyCaSNrHAFqn1dA3qeolDGTNNuH9IMjvuvw9jYo804JMWMTIcACSBztcYi2/iSEjuMs0j2YoTEh9wzWBH4gkqS5VaSN4/xKUoGnt9qm5q1GWFcGPsBf1kzO4bw=
+	t=1751065004; cv=none; b=j5PNFdTUNvoxyca/xSxTeZOB8znCAhWLz9o1gw8mn0nqtTMQpYoOzg2SA47z3eb7g0CO+czea9cJMAP+Ix4wa76YoZ7FgvlhWsmB6SUab6AXlP4FW6dYtGlfDLZtYmm67fMNQ/6aL0dmzehWEqw7WRxU7N+bzkJ79czZiYpV+Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751063956; c=relaxed/simple;
-	bh=tSpyaSFSPT7uJTv05rNtSxyQNlW06OSxvXs6dBWfvAE=;
+	s=arc-20240116; t=1751065004; c=relaxed/simple;
+	bh=xP9I9qlYdpZT1dOF+ucPElGQ/N4btOQDPldfNkCWPT0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QJR9PbATob9Bsm+gOI5vN9sU0BjmyyfPZr+kbBADI4xJ4qZD9bIZjyz4GJpF2FOVJhpXKXVPAEr+2nAEngfcnCkMtXg2AruVfF+CCrkGgoQa/kLVUa9ISAMoqGhLTsBNbt32AgFHFNaClKC1wBCHp8pRjmvjmUQ26VGHDU30DgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UdSsYP5V; arc=none smtp.client-ip=209.85.219.49
+	 Content-Type:Content-Disposition:In-Reply-To; b=uhh2qdsg6JVYXDMiJB7KtFYDsxvDGyZUT2HsYF5bcCkD/6F8ZSrnmYhCoXvYb/WipPZ4JQmoW2jCZKySlB61V+trwKp881VYzlAL9ZzBHQRSpf8yJr+7+eIqucRi7wSbS3JcxV36s7Ok3YVfICKm4D43EvgOPZclgehsT7dVyXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MXFqoy+W; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UdSsYP5V"
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6ecf99dd567so4826076d6.0;
-        Fri, 27 Jun 2025 15:39:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MXFqoy+W"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6fd1b2a57a0so23586106d6.1;
+        Fri, 27 Jun 2025 15:56:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751063953; x=1751668753; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=7g1bBXYrSy7vlenebLtkHlzOqTtWZZlLI9LeHsV4Peg=;
-        b=UdSsYP5Vd1bq1capBFMf+G/XGaP9uAUUbHxXueBGO/NmwqtbWKnTICu48a7ZrLY+x9
-         vZIyHlbEBstWgjohz4aHFbJF+PYgyYR3TdeJtNkbhTzeZLiLkWPgS91zRCsDfaRENQV3
-         6wdF1Rv4Fn9cda8i76WXrubjH9lhoP59Z8yKhmoP8Kh9KOpJEIct9tSuoifNGFH7Bk5V
-         mAtb9uR3dbXi+oB2rkbox2apIQUn51HRsmDJeyUw4gX/jYrIxIJK/YY50r5S/fnJUA7M
-         LZpddsUIvx9iYXYKIz4JEE0Ytd6TPYtddZkBqF2Bt/eFeXE7De7oDc2rmrYeNzOe15Wm
-         Atfg==
+        d=gmail.com; s=20230601; t=1751065002; x=1751669802; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iDoIoBHK7rn8NNEmc8cLOtE3R2Edk/u3sKpTOmNcF9M=;
+        b=MXFqoy+WOOZFIdF0MGQDtR56loIQ+KbVWqPZ3jHIwzIuD0iruW4iQbNDj22K6a5RoX
+         c2ID7CkmStLRu/NWsjLKSORFMFeWSR0DPXlNMpt2RNgUT3Mtbc45OGbx8WzDDEefdvnY
+         hqfSRX1nLVggyAUZ1crNuteY7MF+AQVaKpzc5iW76A9lcmQD6cBXm7ASo4/U6czURsZ/
+         EJVPMV9CTVhXJnqsy7mnOKmg5vqKqnDfMIOd5ONF18qxkszWfm+TbP1z1ZwlFlE/b1Uq
+         NZX5dKPIfBRfpIlaahkOW3ElXrlXvdqdVyyBEo60JUGbgg5bz2TW9WePSxsTStywpRf2
+         qNMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751063953; x=1751668753;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7g1bBXYrSy7vlenebLtkHlzOqTtWZZlLI9LeHsV4Peg=;
-        b=DU+tck2KCXc4lqZCmAWj9dtN23olXrx2IswlOPRwLR87lz0L2XaJGazpT7KCFx5Bh7
-         SuzW8LEnoW3NPizUuuxIAMriiISJv23fG9kOCrwwNHVhv+D+ZPfPHV3xBN7/wErBrOa2
-         5WmXZj0WpPXRVasSVttZwpepRsHlOb9eziDml5u5i0un1FTcGDGyEpMkzCBvErXfpxp7
-         ewhgiXG9De6hFt/IikTRwZa8WptQj8SzYwW1neprRPuCJyCClaBuhp7xQHtPv1tHdULT
-         ILeRTrBrmGJnph7KzyersYKIDQ6PVikaW/mlfKKdY7vrwiwwAHtEhteziRwFh+FGAKa5
-         Mq4w==
-X-Forwarded-Encrypted: i=1; AJvYcCU5p6lei66qGWU2zgENUN537SO0OSO1jCka1pnew/40EBL2Qki0dnSOZF2h5nrsyck6yQPpumeyLDXJ1KknKr8=@vger.kernel.org, AJvYcCWitjH+6DYc0jqOZ0jPvhJb2KRisrQqzRddGIJQ40vvB+vISYSqvbUZ71gkmv3I0S5H1yM5nnaRRj5UYs8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztrdCIBT4WfnuptwfeubtPKvT/AUbtjt/WxQRRruqj9U+AqDfP
-	FHl4x3AwGmzM7Z0bqosz0k3eF6WC43SYsuJKwfKEx8VfZcheOTuUNKiv
-X-Gm-Gg: ASbGncsfUvs2j8Gdfa9OxzCuOpC+2GVHP6JREhDOnsZ5RRqjhFphMjW5HHkZa6Ogj3C
-	g8EgECQvkJYHmGpWXpIOqaEkeqXDAtNE2MpYqg3gVeMtcmJzc3H4V6A0cvJ6Wudn74O1flObuJq
-	1xxbJcdFnmD8wgYeRf7GtBZ8BxjdaVLBhIRQAT5Z8yfTzSmxBlBmZXVYP4XsrF41LC94BqKTaAC
-	ZlTKbgE61XR+Xoj7pKcv2/0BDzmqMm2fkj0XTAql2LUicbCY/NH7/SufGu+dNTRj28gZ/cuAAvn
-	P01NySROmCGRWTGG56UMqiVwcu/ny0vWVscgHKRWm/LXRepEVooASvQVM2FaVYvTDYhFP09TWZB
-	1pva/NPYZaeOY0lms/DESNdlEDU17G4PKitso0sv9mocB0znVlACE
-X-Google-Smtp-Source: AGHT+IFWuNaj/OKb0RZH+IjgOcgGhXHGSzbx04zgmFEX8NtAwscJcxkqQnoNKbPXGS61cWBJnzOEbg==
-X-Received: by 2002:a05:6214:c44:b0:6fa:fcd9:35bf with SMTP id 6a1803df08f44-7001441b0c5mr66576126d6.42.1751063953388;
-        Fri, 27 Jun 2025 15:39:13 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd771907c9sm28206756d6.2.2025.06.27.15.39.12
+        d=1e100.net; s=20230601; t=1751065002; x=1751669802;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iDoIoBHK7rn8NNEmc8cLOtE3R2Edk/u3sKpTOmNcF9M=;
+        b=kdmDymHxvi/SSPGfZFXNbXNEn5g2sbTPQ7F2O99Ff0VARXqYyI5F6BWbzoEbyGOJWj
+         dNbZT1rbenvCOO8WBLg6IrXMRKesFyZ0dp+2FVhIeVnKKyLQaT63EdmonP5gbJXYXdhZ
+         q6dvN+45IMSxRoMub41UI4in2T6A0MR2V4a3Yj+sLY81tkcD26N5Q75yd3hRQYHqWh4n
+         DKZkEYRbhOBDmEnrGFt/r96gs/m5S9PRUu5J2VSpvhZjNgq7dV26SbIgcH/x4ny1xim+
+         x1oBaSz5+ectGZihDRHoO1u9IJIxaLMj8N/PGsVonFelZNzgjDUFKozOIsSzHwtxTQYC
+         3awQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKO+572PamwbR92t17ZvUyHp0DCmUrgzwPKm3iWdFV0D4HJBMb2h0Kbiojj7bHo7ekt8AHLacQwsIO2is=@vger.kernel.org, AJvYcCWo5ffr8k2fTxCUn2dL1YwEc5eTsUZbb5qD/gMozvIgTKZ6wa0QwEA5wspQT4dNE2//fnULVoJ6akdHuWgUkls=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAlPkGMMK2645qho3umbGSz+D1XR7T1PwycuuCh0pNayvSdCpu
+	B1uj5YzjFO0z0wToWc1BppeLHxXc/xekDsTwW98wJiv1LGBg8mVjulfx
+X-Gm-Gg: ASbGncsgsirWrA/GDClpZBMMvL93MlYmt6DptUq0nI0d1dSsJPutct7FJLABvV2pau9
+	lrod+BVlIV1g2Flgyd9VlqoB5tFxCUDSWm5BLHGDEee+9da+ZM08zFfH3wr+rhH9Qc+ajvHws2c
+	wzrCpLgi8vXhu7kQOtu0MnIEdMb7q2XYRUTn8oQ6pSmBy8AiCRl1xDMjwQHhIYpvJbXWvbrOEcX
+	I+pT2VdK805zlMZEeatCfi7c2jTRD0lNgfJfUv/2F6t/dcAMbKk/huGfWLXMDTvF4Gzrua/Csxe
+	QEqaTsSyYom3KLBQngytIhnQ6UL4k9idQM+xEgVs7UUgyBHly/3NA274ognmzQ8+li3nVZT3+wq
+	y0ty8/tTrRUBOyVXf3kzAVrP8iG70s9ox55ehngpE8i2jApPAs2RE
+X-Google-Smtp-Source: AGHT+IFCU9MSnpICIKm+jetw5cPBjIgYpEzSNVMlwUJfw80d7drV1D18juGzglx+pCiPFa+ffk/mFw==
+X-Received: by 2002:a05:6214:43c8:b0:6e8:fbb7:6764 with SMTP id 6a1803df08f44-700131c3c5emr86130976d6.45.1751065001802;
+        Fri, 27 Jun 2025 15:56:41 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd772e45b1sm28095476d6.69.2025.06.27.15.56.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 15:39:12 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 480B5F40066;
-	Fri, 27 Jun 2025 18:39:12 -0400 (EDT)
+        Fri, 27 Jun 2025 15:56:41 -0700 (PDT)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C069AF40066;
+	Fri, 27 Jun 2025 18:56:40 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 27 Jun 2025 18:39:12 -0400
-X-ME-Sender: <xms:kB1faNOxkjtCFix6_w_rot87ViWsb8wjUo0vjkytxCHkAyDbLrzWwg>
-    <xme:kB1faP9ks1nrAds7CC40G9qxQ16uAHReMZgFsGfWkgWwnz9Mw80v-84stSQQ0K3AH
-    l2cMkqtagxbiwwAKQ>
-X-ME-Received: <xmr:kB1faMRyk5IARiz87bUwzTbsBP09dC-ntralNRH4hDvIQ3-AJQL2cZS9e8lU6g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegvdekucetufdoteggodetrfdotf
+  by phl-compute-04.internal (MEProxy); Fri, 27 Jun 2025 18:56:40 -0400
+X-ME-Sender: <xms:qCFfaDXcj823Tc-8ZF5Jys9FLLrEkchqmo14rSPBgbUB7j-Gl9ZOrQ>
+    <xme:qCFfaLl86gQ94x3dMygc0JsAAFxXy12juYnZ7EWVoBsW7NjtLUpCvh2zh187NUPfJ
+    x3b5m_StXigEhxv4Q>
+X-ME-Received: <xmr:qCFfaPao0SNxWwmU98n5t35zfk3oDs19U8LyX6-N0emJaIXszsGZ_JGi4v2BUg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegfeduucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
     lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnheptdegheelveffudejffegvdelgffhhfelkeeiieefgeevteejvdegveeuffeihefh
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhmpdhrtg
-    hpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdr
-    tghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehtiihimhhmvghrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtoheprghirhhlihgv
-    ugesghhmrghilhdrtghomhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpd
-    hrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgig
-    rdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihgh
-    huohdrnhgvth
-X-ME-Proxy: <xmx:kB1faJthd-tFGLJNLe-nAQkH56NVz9fnznKUgc35i602na4LkfS5kA>
-    <xmx:kB1faFeVrSSzrp4_EhOMCv6cOJMhHQsgk2VXTa5is8g1ygAkalFc-Q>
-    <xmx:kB1faF1cLzGjwOhN79n1-y9UhMuh_Bmx55O7BYqrZMyvlZ-8-eptWA>
-    <xmx:kB1faB9zf7w4YiPdZlel3i--5a3DEese5OgyQt6-yKd_J3fNsj2C-Q>
-    <xmx:kB1faA-r9s6UtJfP2rn4IH21a-4GoP9FU4sb8NYRru1M6R17cBKmSHFG>
+    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffeivden
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
+    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
+    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
+    hnrghmvgdpnhgspghrtghpthhtohepvdejpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghnihgvlhdrrghlmhgvihgurgestgholhhlrggsohhrrgdrtghomhdprhgtph
+    htthhopehmrggrrhhtvghnrdhlrghnkhhhohhrshhtsehlihhnuhigrdhinhhtvghlrdgt
+    ohhmpdhrtghpthhtohepmhhrihhprghrugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epthiiihhmmhgvrhhmrghnnhesshhushgvrdguvgdprhgtphhtthhopegrihhrlhhivggu
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhimhhonhgrsehffhiflhhlrdgthhdprh
+    gtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidr
+    ghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguh
+    hordhnvght
+X-ME-Proxy: <xmx:qCFfaOVgvfnuri2a5V2w4IbqVqnr044KMguTSOirQCKCI5dj1HPzzA>
+    <xmx:qCFfaNnDD6By1AnwE0SCj7DpGWlZ5eoV_YOPuGG2CEVRLYHYVCFxOQ>
+    <xmx:qCFfaLf1nYsqF1_kvTmlr56PekgW9-9RiCEeE-sf22HXE6ABbQRFRA>
+    <xmx:qCFfaHGaVQZk3Pv01x3ZDx2qiCM8kZF0hQ9dyjh5vn8dRG1usE16Hg>
+    <xmx:qCFfaPkUEQJcbn2Je1iX-1ydBDVHrUFhgfIbKGOCFEFDnkBWXTIcCHIQ>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 27 Jun 2025 18:39:11 -0400 (EDT)
-Date: Fri, 27 Jun 2025 15:39:10 -0700
+ 27 Jun 2025 18:56:40 -0400 (EDT)
+Date: Fri, 27 Jun 2025 15:56:39 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -117,28 +116,69 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org, kernel@collabora.com
 Subject: Re: [PATCH] Introduce Tyr
-Message-ID: <aF8djorZMkuw4CCq@tardis.local>
+Message-ID: <aF8hp5-e5LrHTWfT@tardis.local>
 References: <20250627-tyr-v1-1-cb5f4c6ced46@collabora.com>
- <81B29EDF-B6FB-458E-BADC-F3708A9434BB@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <81B29EDF-B6FB-458E-BADC-F3708A9434BB@collabora.com>
+In-Reply-To: <20250627-tyr-v1-1-cb5f4c6ced46@collabora.com>
 
-On Fri, Jun 27, 2025 at 07:36:33PM -0300, Daniel Almeida wrote:
-> I´ll fix the missing "rust: drm:" tags on a v2.
-> 
+On Fri, Jun 27, 2025 at 07:34:04PM -0300, Daniel Almeida wrote:
+[...]
+> +#[pin_data]
+> +pub(crate) struct TyrData {
+> +    pub(crate) pdev: ARef<platform::Device>,
+> +
+> +    #[pin]
+> +    clks: Mutex<Clocks>,
+> +
+> +    #[pin]
+> +    regulators: Mutex<Regulators>,
+> +
+> +    // Some inforation on the GPU. This is mainly queried by userspace (mesa).
+> +    pub(crate) gpu_info: GpuInfo,
+> +}
+> +
+> +unsafe impl Send for TyrData {}
+> +unsafe impl Sync for TyrData {}
 
-No worries. For a second I thought you meant to write "Introduce Tyrion"
-;-)
+I think you better just mark Clk (which is just a refcount to `struct
+clk`) and Regulator `Send` and `Sync`?
+
+Then `TyrData` will be `Send` and `Sync` automatically. And the total
+number of `unsafe` in this patch goes down to 1.
 
 Regards,
 Boqun
 
-> - Daniel
+> +
+[...]
+> +// This can be queried by userspace to get information about the GPU.
+> +#[repr(C)]
+> +pub(crate) struct GpuInfo {
+> +    pub(crate) gpu_id: u32,
+> +    pub(crate) csf_id: u32,
+> +    pub(crate) gpu_rev: u32,
+> +    pub(crate) core_features: u32,
+> +    pub(crate) l2_features: u32,
+> +    pub(crate) tiler_features: u32,
+> +    pub(crate) mem_features: u32,
+> +    pub(crate) mmu_features: u32,
+> +    pub(crate) thread_features: u32,
+> +    pub(crate) max_threads: u32,
+> +    pub(crate) thread_max_workgroup_size: u32,
+> +    pub(crate) thread_max_barrier_size: u32,
+> +    pub(crate) coherency_features: u32,
+> +    pub(crate) texture_features: [u32; 4],
+> +    pub(crate) as_present: u32,
+> +    pub(crate) shader_present: u64,
+> +    pub(crate) tiler_present: u64,
+> +    pub(crate) l2_present: u64,
+> +}
+> +
+[...]
