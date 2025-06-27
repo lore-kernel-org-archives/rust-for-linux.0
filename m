@@ -1,139 +1,131 @@
-Received: from mailrelay-egress12.pub.mailoutpod2-cph3.one.com (mailrelay-egress12.pub.mailoutpod2-cph3.one.com [46.30.211.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70D123B61D
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 12:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.211.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35EA2BEFE5;
+	Fri, 27 Jun 2025 12:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751025698; cv=none; b=ZfKbyDcIr+kUwPqiTdegQop7NbitMvqK+P0BK6RoC5VuBV19v0TnWtTSyWRx+kp+GU00Xa/Zale7330Caqj3viVZne8xNTpbA3odbA7PUcd0MmYExlX1PUCBy3rgJ4DgWa4ZvqfhFG0lgqvEvDO60SG0LTRqUTsg4xGmhltVBNE=
+	t=1751026375; cv=none; b=LOj454kiVEOpNa1HN4GQcosU8vpqeOEOhhyitMYUt6jas0VXL4RX12ywoA0IkoZZWw1ZzDIlPoTYqvggs8WHD4Hn2XtJr7kX3MNTZJdnn7DjEr2QFUP77ZPBxVW7rwNnLmGnrRV09hosAV37TuBxsSBhCQwiUSuhD1rBo3ULvls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751025698; c=relaxed/simple;
-	bh=dveS3dz0/tVYs2oYeHsTlR9eW66aOO/Bg7sniYE5tSI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=aaY7BCFLMrktFcdDW7J00QcjEHa5FBSsBbWRo7iywGfciq7TC3rMtttYhupuYwVUxovlK0o7uayxmNcsjvaF+oXyUlH7KWAL2quTxt8pJS4xWNnXmSfPFG/RJ+rss6Rc6IHNP/23xB/64hzsWSSViMVxCT7zIU65kk9mbfihZko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=QWHlN5S1; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=plJo6EVo; arc=none smtp.client-ip=46.30.211.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1751026375; c=relaxed/simple;
+	bh=C6oegAaJ6Q9XOuL86FjJu5fzYxEuJUZ71dKO2pzkkNI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ccng3ONfYUGqizahC/sQ5w3j5bzM+S4GkwoM4IYI1JdFkACaZFR1IqAz5ZOiZEOcxx+a2QtbjCbuyRy6Zy+UYj276UvUOSYPeF/tgIlZG29DuKu/jpouaOhDTCaMflfLpVPvYTMDDChqI7TdlWASRHbQEQs1GXiRzrPWC9y5T7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sftZOycl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="QWHlN5S1";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="plJo6EVo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751025694; x=1751630494;
-	d=konsulko.se; s=rsa1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=uKS3HDNF930knCZOok1v2ViZte0XlPRX5ok0p1B2NIA=;
-	b=QWHlN5S1uJmIPI6qxF/CONzE/AY4TSvK8ygi5az3JJjoyLnpkvmq1Yenyb0VfvHP9VjaPUdl4gj/Z
-	 cuB41kRZ/vKy0GQuJmWUVbZxBYms1la/ymoHS3dWdE/rQt3IhTVIfaixYc8PdE/j9+xyR/oNyIMwZA
-	 fyh9H3+vid4KYIMOMHZCtvaQm8t/JVYisGmUUetIC7LcLHKUkRl3bcfpNiS09+QqyDVAUgP3yhgqzV
-	 u1eSESmFSjR1cM3iDGQdzkeAOKsj7BtOnQSKuPwrY8S1bxZGinJ01D3SpvWZ1s7ubRYpZiCw7MFFjC
-	 bplfF0f/u94x3nD9/zvTJw8p8ZGISXg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751025694; x=1751630494;
-	d=konsulko.se; s=ed1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=uKS3HDNF930knCZOok1v2ViZte0XlPRX5ok0p1B2NIA=;
-	b=plJo6EVoYEQpR09rHvEkZH4M66P0Elt8wjAzuB0fq2Kjl/Dqn/VoRbn5bITykMt/76HQt+xL3Y33n
-	 fi2q8+ZAQ==
-X-HalOne-ID: 785ab324-534e-11f0-8646-e90f2b8e16ca
-Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
-	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 785ab324-534e-11f0-8646-e90f2b8e16ca;
-	Fri, 27 Jun 2025 12:01:34 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sftZOycl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6153C4CEE3;
+	Fri, 27 Jun 2025 12:12:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751026374;
+	bh=C6oegAaJ6Q9XOuL86FjJu5fzYxEuJUZ71dKO2pzkkNI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sftZOyclg0UnjLvH59IBt3TWlpu4GVOW4KuMn8IEDuNrH2vgoHXZSa2IWzQCGGp+F
+	 0iUvAhRQ8QbFdRyHnK3kbDHevMUO6/pDQ7eHfiAtXrWH9DIYuA/NwwCHmddErxrQvd
+	 EhxQxR03CgCIJuprGt35iCoWpUVCp+i+9GYzHYmqCMamk57ZxzoAcZV10yeMpZGRgH
+	 WbHRJ/tm6DnZBbQf0qPzqtq98A+E+4qpYoFnp9m+E+HUrLW2WRyDh3QCP2VZJ/mOph
+	 ss/bWH7nlFaFJ5IAA3BwX3vWRvHMEvx3OjT+YMWHWPmbhgU0blePaRiruCixQxauZ7
+	 sDQ1YZKaxcHNA==
+Date: Fri, 27 Jun 2025 14:12:46 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Drew Fustini <drew@pdp7.com>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-clk@vger.kernel.org
+Subject: Re: [PATCH v5 2/9] rust: pwm: Add core 'Device' and 'Chip' object
+ wrappers
+Message-ID: <aF6Kvrk3UTC1Jj5Q@pollux>
+References: <20250623-rust-next-pwm-working-fan-for-sending-v5-0-0ca23747c23e@samsung.com>
+ <CGME20250623180859eucas1p10ebb40f33046d52618ba738ebbbaa664@eucas1p1.samsung.com>
+ <20250623-rust-next-pwm-working-fan-for-sending-v5-2-0ca23747c23e@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH 2/4] mm/slub: allow to set node and align in k[v]realloc
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <aF6DmPmeSpWU3hH_@pc636>
-Date: Fri, 27 Jun 2025 14:01:23 +0200
-Cc: Danilo Krummrich <dakr@kernel.org>,
- linux-mm@kvack.org,
- akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org,
- Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C6331389-1008-4D8B-99AA-C2640671E9A2@konsulko.se>
-References: <20250627092901.356909-1-vitaly.wool@konsulko.se>
- <20250627093714.402989-1-vitaly.wool@konsulko.se> <aF51PTZh0gRVFuYu@pollux>
- <aF6DmPmeSpWU3hH_@pc636>
-To: Uladzislau Rezki <urezki@gmail.com>
-X-Mailer: Apple Mail (2.3826.200.121)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250623-rust-next-pwm-working-fan-for-sending-v5-2-0ca23747c23e@samsung.com>
 
+On Mon, Jun 23, 2025 at 08:08:50PM +0200, Michal Wilczynski wrote:
+> +    /// Gets the *typed* driver-specific data associated with this chip's embedded device.
+> +    pub fn drvdata<T: 'static>(&self) -> &T {
+> +        // SAFETY: `self.as_raw()` gives a valid pwm_chip pointer.
+> +        // `bindings::pwmchip_get_drvdata` is the C function to retrieve driver data.
+> +        let ptr = unsafe { bindings::pwmchip_get_drvdata(self.as_raw()) };
+> +
+> +        // SAFETY: The only way to create a chip is through Chip::new, which initializes
+> +        // this pointer.
+> +        unsafe { &*ptr.cast::<T>() }
+> +    }
+> +
+> +    /// Sets the *typed* driver-specific data associated with this chip's embedded device.
+> +    pub fn set_drvdata<T: 'static + ForeignOwnable>(&self, data: T) {
+> +        // SAFETY: `self.as_raw()` gives a valid pwm_chip pointer.
+> +        // `bindings::pwmchip_set_drvdata` is the C function to set driver data.
+> +        // `data.into_foreign()` provides a valid `*mut c_void`.
+> +        unsafe { bindings::pwmchip_set_drvdata(self.as_raw(), data.into_foreign().cast()) }
+> +    }
 
+I think this is unsound, e.g. what happens if someone calls set_drvdata() twice?
+Then you leak the ForeignOwnable from the first call.
 
-> On Jun 27, 2025, at 1:42=E2=80=AFPM, Uladzislau Rezki =
-<urezki@gmail.com> wrote:
->=20
-> Hello, Vitaly, Danilo.
->=20
->> On Fri, Jun 27, 2025 at 11:37:14AM +0200, Vitaly Wool wrote:
->>> Reimplement k[v]realloc_node() to be able to set node and
->>> alignment should a user need to do so. In order to do that while
->>> retaining the maximal backward compatibility, the following rules
->>> are honored:
->>> * kmalloc/kzalloc/krealloc remain unchanged
->>> * kvmalloc/kvrealloc/kvcalloc remain unchanged
->>> * kvrealloc remains unchanged
->>> * kvrealloc_node is implemented as a new function taking align and
->>>  NUMA id as extra parameters compared to kvrealloc.
->>> * krealloc_node is implemented as a new function taking NUMA id
->>>  as an extra parameter compared to krealloc
->>> * kvmalloc_node/kvzalloc_node/kvcalloc_node get an extra parameter
->>>  (alignment)
->>=20
->> I see what you're doing here:
->>=20
->> You created vrealloc_node_noprof() in the previous patch, taking the =
-following
->> arguments:
->>=20
->> vrealloc_node_noprof(const void *p, size_t size,
->>      unsigned long align,
->>      gfp_t flags, int nid)
->>=20
->> And now you're aligning the newly introduced krealloc_node() and
->> kvrealloc_node() with that.
->>=20
->> The idea for having an align argument on krealloc_node() simply is =
-that it
->> fails if the alignment requirement can't be fulfilled by the =
-corresponding
->> kmalloc bucket, such that we can fall back to vrealloc_node() in
->> kvrealloc_node().
->>=20
->> Generally, this makes sense to me.
->>=20
->> However, now you consequently have to add the align argument to =
-kvmalloc_node(),
->> kvzalloc_node(), kvcalloc_node() as well.
->>=20
->> This is what creates this huge diffstat changing all the users.
->>=20
->> IMHO, the problem here was introduced already with =
-vrealloc_node_noprof() taking
->> an align argument in your previous patch, since now you have to =
-adjust
->> everything else to logically follow the same naming scheme.
->>=20
->> Instead, I think you should introduce vrealloc_node_align(),
->>=20
-> I am probably missing something. Could you please clarify why do you
-> need the vrealloc_node_align() and other friends? Do you have users
-> which require vrealloc() or kvrealloc() to support nid and align from
-> Rust API point of view?=20
->=20
->=20
+Anyways, this does not need to be public, you should just call
+bindings::pwmchip_set_drvdata() once in Self::new().
 
-Alignment for Rust allocators should generally be supported, it=E2=80=99s =
-been listed as TODO for a while.
-Node awareness is very desirable for e.g. KVBox and for the coming zpool =
-mapping.
+Please also see [1], where I introduce generic accessors for drvdata for Device.
 
-~Vitaly
+[1] https://lore.kernel.org/lkml/20250621195118.124245-3-dakr@kernel.org/
 
+> +    /// Allocates and wraps a PWM chip using `bindings::pwmchip_alloc`.
+> +    ///
+> +    /// Returns an [`ARef<Chip>`] managing the chip's lifetime via refcounting
+> +    /// on its embedded `struct device`.
+> +    pub fn new<T: 'static + ForeignOwnable>(
+> +        parent_dev: &device::Device,
+> +        npwm: u32,
+> +        sizeof_priv: usize,
+> +	drvdata: T,
+> +    ) -> Result<ARef<Self>> {
+> +        // SAFETY: `parent_device_for_dev_field.as_raw()` is valid.
+> +        // `bindings::pwmchip_alloc` returns a valid `*mut bindings::pwm_chip` (refcount 1)
+> +        // or an ERR_PTR.
+> +        let c_chip_ptr_raw =
+> +            unsafe { bindings::pwmchip_alloc(parent_dev.as_raw(), npwm, sizeof_priv) };
+> +
+> +        let c_chip_ptr: *mut bindings::pwm_chip = error::from_err_ptr(c_chip_ptr_raw)?;
+> +
+> +        // Cast the `*mut bindings::pwm_chip` to `*mut Chip`. This is valid because
+> +        // `Chip` is `repr(transparent)` over `Opaque<bindings::pwm_chip>`, and
+> +        // `Opaque<T>` is `repr(transparent)` over `T`.
+> +        let chip_ptr_as_self = c_chip_ptr.cast::<Self>();
+> +
+> +	// SAFETY: The pointer is valid, so we can create a temporary ref to set data.
+> +        let chip_ref = unsafe { &*chip_ptr_as_self };
+> +        chip_ref.set_drvdata(drvdata);
+> +
+> +        // SAFETY: `chip_ptr_as_self` points to a valid `Chip` (layout-compatible with
+> +        // `bindings::pwm_chip`) whose embedded device has refcount 1.
+> +        // `ARef::from_raw` takes this pointer and manages it via `AlwaysRefCounted`.
+> +        Ok(unsafe { ARef::from_raw(NonNull::new_unchecked(chip_ptr_as_self)) })
+> +    }
+> +}
