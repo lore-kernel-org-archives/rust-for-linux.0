@@ -1,139 +1,99 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2847429DB8F;
-	Fri, 27 Jun 2025 11:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CCC29DB6C
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 11:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751024543; cv=none; b=aovNOBuLihqdWxzHlF39+zrA2BLiMzoE+7zeIrKDsrv3Zcg9z2a3z1nGPO8ssTF8IBxXsPF/NL6PDSmT49mRNb53k90R2aRE/jn1al6oHN4D/NUwHh8MwftU8+axISPpLk7nD+isjPNbCT0azlgotePQCslHuhLm1zVaUjKLDK4=
+	t=1751024661; cv=none; b=Xdt8YVAc59aZC2JiMd2N6aIuiOLtya05c2RsvfEuASnlObOwnuvSqylZfSi0aLlMHjv3iuB+eGaf/fkrlLIferwsCHy7J/DHB1RQgXd9wpUlzeekQ9vWxE/0ROvLTNIIgZhffTMMldzRD5J0CCd2fBSPTDJ2XNzvshFwsg9OFFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751024543; c=relaxed/simple;
-	bh=DLQjs7jc3NN2Z6ubvR29XdtYB2MPYQoKAWQDBl77eLg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uVzEJqy8vRxzAWYk+FWDOCEGtUaw6f/tvQVhCcwiJByZuDQ8geeNMSRFk8npiw0dyyZJWix16ZeOWuF/i4Of1kDZjSV8lKgC1daHWnAYlrHYnvJB/aS62h6lEtOwj/GCAbzb1plxjVXHHkpaeyiZDj7Fn70pnW5vv91VI/Hs8GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hpdcb2VW; arc=none smtp.client-ip=209.85.167.51
+	s=arc-20240116; t=1751024661; c=relaxed/simple;
+	bh=OL+RP3b07r5oCSV8n2+AbVnJkI16WJtMe6m1uDM8frY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XelK5RNNkyNyqXwfLSVzghKooWkbvtxXmjUNbKKVQzZLNJZLrLaGJNnDKy57JHr6w9O8Ja0QWyJL1gdZf7AtMp2jHMKRigzo14uaERYMvQFDCE1eeT563Tk5X1+TUYSfYyOjVSbe1w6cruE+ct2Ya7bUlj2v2rFPzZ4nJO7VyKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5qz9FRA; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hpdcb2VW"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5533303070cso2056406e87.2;
-        Fri, 27 Jun 2025 04:42:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5qz9FRA"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-313862d48e7so284317a91.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 04:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751024540; x=1751629340; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tmPrqaqhW+EK4H5tg98y4zFWAy9fgrveP3Z8NDC1wKI=;
-        b=Hpdcb2VWYE0pEXs93+ZcW6ew9b9uM6liea715mIQfk5bjd0YdrGZJosnINaL/aaPih
-         SL0UJgXmhZtYc2Q4GmuDnfFvr/xQJZFqSD5t5mL4j+NnBD2QPZJT3UmqiDZNS672BkG5
-         hUP2F1TIUmMRkgiTgv5CGOeMp0AQ+Rmo4HbQfTBUnDsiMHdyIUUGTkmASySqssqgZDK3
-         7eHQQMJQM2wDj3RhIKwfPRI64X2rMkuQp8CZyqGTwTsAL9/oXeZxNWksTqTfrExsiPT4
-         HpCPt0qi5yxlsHXtJHOcjSOL7U/7TxyK0F7QAnZ6OPvUc5dDg84aZ5pRRolLw9fjBtss
-         9N0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751024540; x=1751629340;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1751024659; x=1751629459; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tmPrqaqhW+EK4H5tg98y4zFWAy9fgrveP3Z8NDC1wKI=;
-        b=I4Pz5sGELulEqHatB5ZmZUPgMOQeL/08zcX5jiDuAwcPYQPnn8309xMn8I0BMNbRh1
-         Ab1uYmUOiaBPlTNfm0AYMTs7t1SnEsiG7qw4I8QnG0oKDSP7MdzTKTE7Ku+bqn4NPXVw
-         tH+vAuXEf5AU9AcpTew94+hVX+E4wBCyxv88U+KDarzHRmug5uEl+AEWUlxyi/YNgvDd
-         4To5/cBh+hfPiDy/kltpPbflLczs8S+cRtIhPc6/aQ73CKIn4Ypa8VXaZFH0Qw67hbtk
-         xYd7F1PV7A6/Mjg1JUtc9WFQy9dmZdmZhjFoLh+2mL06DeprQ8QUROAaePdi0r2Uq0RV
-         wkLA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5ozkE54M422WDkCc1hJioVHMcFrvgCKLQabZiupg8GK5HWondQtcYDTRfYTi/k37TaSME8GihWnrvJpQ=@vger.kernel.org, AJvYcCUsfue+KMP0b4RftC07PkWoXNeXYgQ5iGE8Ge1IENNqrB4RWxD2NFEkFbytQGuO+kMImOwmoxRUPy9Y1TeiI9c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQw0hzvjivpC3lFHDqOknLQCu/Fpa0AVIA6b3HFBmNBecHnVFm
-	45gV/eWdphn4/THSYMWiNrqKsxuQj0WZGgxAfuYm/vn8oqHuCwWrc71/Rw3HPg==
-X-Gm-Gg: ASbGncthlybJmfzSnNKFMKRy2dEGAFvw72HbzMzxximNnDI9rV/tbsW0rR6anidumTF
-	XW/GjYwJMNVtPQbBHQt0Xc1x2N8s5MvsCdgIgrYZYeTdFVIdTXhMmecEelR0cn2DDUK/JmqywPH
-	G3MD04c3G/05rzY7D08fBsNxSzBSWbK0o+ipEcsWDKUcS6jeACW955OMPbwzDuVPMyiKsRmZl4O
-	911u94HPS3EnoavoybuVx/YNvBa+XLvI7EU+6Odm6LBCr3P9Q8ZVClTtREssrUxwEF0HjcBmwRi
-	tpAlWuDfCY1xY0Cf3l0lSYiAAhu+ShSj9/JumD0EKUYjQAxxskxTP4UxZFRC4gw9sxLhTA8J3ot
-	w3MWTx1ytWBM=
-X-Google-Smtp-Source: AGHT+IEy7VhPgAWEXO/LXQ0C8S+wuoF2yCySoHfhr2ctNDV4hnMQQJxvZ9qI5HLKufPyjdWQvFs8lQ==
-X-Received: by 2002:a05:6512:224c:b0:553:ad81:4de1 with SMTP id 2adb3069b0e04-5550b8253c0mr973628e87.24.1751024539809;
-        Fri, 27 Jun 2025 04:42:19 -0700 (PDT)
-Received: from pc636 (host-95-203-1-180.mobileonline.telia.com. [95.203.1.180])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5550b2ec0a7sm414748e87.237.2025.06.27.04.42.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 04:42:18 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Fri, 27 Jun 2025 13:42:16 +0200
-To: Danilo Krummrich <dakr@kernel.org>,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/4] mm/slub: allow to set node and align in k[v]realloc
-Message-ID: <aF6DmPmeSpWU3hH_@pc636>
-References: <20250627092901.356909-1-vitaly.wool@konsulko.se>
- <20250627093714.402989-1-vitaly.wool@konsulko.se>
- <aF51PTZh0gRVFuYu@pollux>
+        bh=pS+ZPyznlJ3iS5vNN9mSK0o3DY38FMnpY0fJETaSO/s=;
+        b=S5qz9FRAg04tN1flbA+FhV4qjSTaj4bp0T1h+Wiu4ubPJWn9BG8LRo6DfJ99eK9sUd
+         t3S8wG+4ZUZbTG8NYYDoeUD+uY+fd7kDSS1Gti0LqPAWfYPH9M+Sw2Wdluml35fhWoZR
+         6zhoM76jFyeaCfp75EmOB3x8G7yiFL+ZC2zzMdGc0Ww29AtHk4+B6E57m0sPoVmJu63l
+         VyBpKhCn2JFxu/DQuucpLymUJScxWwEAmPX6JN6/o1oyuCzafAj3qyPdTQFUeHbiEPJm
+         toh3p7F2XxUJJuNltFDpKwWqEfK2tcsDH9dpYC3Vnzi7XqwccoG9hUBXILa+YCmfgkQa
+         yD/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751024659; x=1751629459;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pS+ZPyznlJ3iS5vNN9mSK0o3DY38FMnpY0fJETaSO/s=;
+        b=da1+AF67PwoFHYGfl9eAt/bT3sZc0fUD5CSvotXldnzDs+MJXsF21nXvapZ4ywhxhv
+         Dq+aRFJ+LHwKUcP6PkdTgfQWx+1+DETJ3YOk5tmf1zRdDRnI+JmAdD5VqRrbY+3dF3DA
+         l58NvDyrGsMz6Rym+Y8nrFrB1tjt5NgM4KZsc3h6cSVlchXJAeoebkbVkhgdGKqut47c
+         Ylx73W6jLH7phxNcKMTKThy7QNdWzgvE6pUGFlmMllqEu4gxaP5DUopr0Z8/3fWzECZ6
+         fiuFhhrkPhXxY1tAOCsXy5lGLCxDAiwSFHP1DAOL9lPj0Sgf/voBszvcF6wP/mTpdoWN
+         KcGw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtikzzW83qpqbkHWIpC+QzJogAlZVD/d9g78BoCOoGZ5poTYZUGUKgbnTNaRhYleO2BDVZV+9BWq5Rr2nWrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIJbjqaod7UPL4UrEwc10/bQP7IODaRNW161wmMpi1omBzfDWb
+	BJd5zIas20r/TYVXX7wO9Z88n5bhQMjuRmA4lIwmMi0BRAol2k6JOKZTeulejBpJK907Wb3lheg
+	RaIWHvGp3OB6AeU6eCQCW8YFYPuRNcDvPuIg5yMk=
+X-Gm-Gg: ASbGncuPEQlwiorRdMzJVaOFVtF20eciMAMYalYsf6zw/5xOTdnzAxQJGWIU2fGcd/D
+	iFw17I2AVCU6VsT7JAbvKeLVq24oE3JvRqssUS4EUOxQ41SJ09R5whjH3MGsNYHeglPTs7usAgg
+	GvVyYyAKg6PWquWkOc2TpqHec6ZfLFOg/DjqxYcyrhQtM=
+X-Google-Smtp-Source: AGHT+IE366TUu7KMH/hZ3aJAQfk1MJ2VG8O3hymjtiBQTP+jBFFLF0J1kyJhKcyp/4h7ZGpYnNpQeVzFO4P2hKv7u9M=
+X-Received: by 2002:a17:90b:3d85:b0:313:14b5:2521 with SMTP id
+ 98e67ed59e1d1-318c92af3a7mr1613655a91.5.1751024659411; Fri, 27 Jun 2025
+ 04:44:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aF51PTZh0gRVFuYu@pollux>
+References: <20250627094102.770689-1-jfalempe@redhat.com>
+In-Reply-To: <20250627094102.770689-1-jfalempe@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 27 Jun 2025 13:44:06 +0200
+X-Gm-Features: Ac12FXx-5LTvv9I-ZDb9-nivG3KWk1kM0W75cZm76TLxZSE56N1ptu8fSUOgiIc
+Message-ID: <CANiq72=aiAnn3n7ADgmKUNNSp7HfBjRc1ftG2qSD4EFUkS3jqw@mail.gmail.com>
+Subject: Re: [PATCH] drm/panic: Add a u64 divide by 10 for arm32
+To: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Andrei Lalaev <andrey.lalaev@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Russell King <linux@armlinux.org.uk>, Paolo Bonzini <pbonzini@redhat.com>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Javier Martinez Canillas <javierm@redhat.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello, Vitaly, Danilo.
-
-> On Fri, Jun 27, 2025 at 11:37:14AM +0200, Vitaly Wool wrote:
-> > Reimplement k[v]realloc_node() to be able to set node and
-> > alignment should a user need to do so. In order to do that while
-> > retaining the maximal backward compatibility, the following rules
-> > are honored:
-> > * kmalloc/kzalloc/krealloc remain unchanged
-> > * kvmalloc/kvrealloc/kvcalloc remain unchanged
-> > * kvrealloc remains unchanged
-> > * kvrealloc_node is implemented as a new function taking align and
-> >   NUMA id as extra parameters compared to kvrealloc.
-> > * krealloc_node is implemented as a new function taking NUMA id
-> >   as an extra parameter compared to krealloc
-> > * kvmalloc_node/kvzalloc_node/kvcalloc_node get an extra parameter
-> >   (alignment)
-> 
-> I see what you're doing here:
-> 
-> You created vrealloc_node_noprof() in the previous patch, taking the following
-> arguments:
-> 
-> 	vrealloc_node_noprof(const void *p, size_t size,
-> 			     unsigned long align,
-> 			     gfp_t flags, int nid)
-> 
-> And now you're aligning the newly introduced krealloc_node() and
-> kvrealloc_node() with that.
-> 
-> The idea for having an align argument on krealloc_node() simply is that it
-> fails if the alignment requirement can't be fulfilled by the corresponding
-> kmalloc bucket, such that we can fall back to vrealloc_node() in
-> kvrealloc_node().
-> 
-> Generally, this makes sense to me.
-> 
-> However, now you consequently have to add the align argument to kvmalloc_node(),
-> kvzalloc_node(), kvcalloc_node() as well.
-> 
-> This is what creates this huge diffstat changing all the users.
-> 
-> IMHO, the problem here was introduced already with vrealloc_node_noprof() taking
-> an align argument in your previous patch, since now you have to adjust
-> everything else to logically follow the same naming scheme.
-> 
-> Instead, I think you should introduce vrealloc_node_align(),
+On Fri, Jun 27, 2025 at 11:41=E2=80=AFAM Jocelyn Falempe <jfalempe@redhat.c=
+om> wrote:
 >
-I am probably missing something. Could you please clarify why do you
-need the vrealloc_node_align() and other friends? Do you have users
-which require vrealloc() or kvrealloc() to support nid and align from
-Rust API point of view? 
+> +/// On arm32 architecture, dividing an u64 by a constant will generate a=
+ call
+> +/// to __aeabi_uldivmod which is not present in the kernel.
+> +/// So use the multiply by inverse method for this architecture.
 
-Thank you in advance!
+This sounds more like a normal comment instead of function docs, no?
 
---
-Uladzislau Rezki
+By the way, formatting:
+
+    `u64`
+    `__aeabi_uldivmod`
+
+Thanks for fixing this! It is nice seeing 32-bit arm taking shape.
+
+Cheers,
+Miguel
