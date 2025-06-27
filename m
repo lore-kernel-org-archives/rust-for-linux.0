@@ -1,236 +1,294 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D0D234994
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 08:26:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF96229B15;
+	Fri, 27 Jun 2025 08:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751012763; cv=none; b=MjpRtEr+ac4SqN0OJVmaCcDErNXiD9CCWtZwC2PIvSXgx/akoAXNmhDulxdErNGhXT/r7xak3PAuPnbEaEfEczn9xhqdm9V2lGUrsBT1bcFPCBLxj3p3FYbAlznIzjs+9ujOsRths8+gILHBnx+6mmeX66pSJp6OngsAF4YfF80=
+	t=1751014730; cv=none; b=J33f3BgNDFQKl/u3vE1zGOyHZ9F4t5kROuxx1Oxo7LIPzbOnMBpItLFBgPQI7ZIeNezv5WwpIkYEBPYQiDM4ug5IoqwWLjEM2Zg5JqdMGSTAjX8X+yJ87uw3xnztisZrh9RDUOV95g2/tLI/y3ZNX3KapaBq8hsXPw3Iy30BsM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751012763; c=relaxed/simple;
-	bh=ir/N+n88LeElpdL3MYFNd6vXJP2TjafYRKF1TR1eB98=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=NG0JkEfBmiaC9v4s9nJbgMmqJXUTG2ZsIBXjY2kxE/Wid/r8bI7O0XNVa/euTNtIXukUuk9jGaMCmHhyxEQyMj894cq9FuzuVQp2q3ztL1Z52HBe6hErfD1/U0x6NGP4qnLxSNEZ17iGw+JtXVrU0v8BGbXPqB9jdXZ0FYitGxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=UTHIDV21; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1751014730; c=relaxed/simple;
+	bh=7Q0EJNGfoLDItxk7UkA5TTYdcSirFMepdH0/ItIQbdY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=JSTux3G4EmE5UWMHX3fsgsNh7P0Mtlv++onlJY1c5fAjC3DF6CdVOPrCoEe+FOt+djDhtKtqePvmX9OiWnORBn/i8x/chtnz/YlIkuwEGIq1US1wBV4m6y/+QV+tPXb4yPK7TUqyOmVgcQ4EC6yQcOcLGXX2XqWTiCI3GBOgEf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KZ1uBfMr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="UTHIDV21"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250627082558euoutp0210a5aa33ce957ea3be3ba887ba73c658~M2NO0K8rX1971819718euoutp02Y
-	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 08:25:58 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250627082558euoutp0210a5aa33ce957ea3be3ba887ba73c658~M2NO0K8rX1971819718euoutp02Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1751012758;
-	bh=M1Ykbn/pBVOabKs5ZHex6cNpqH0Is/kdafbvlBYYhj4=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=UTHIDV21Do3UUUriINUuOaiH9UfjWe+WB0t7EO3enZ2l3OM6gBMGmTwEJw+t5YWoX
-	 Pd9ebN+7b7ep/n1FwaDN6OAvHSGtvCMAuZEFGQXvR6pwFg3VjmDi/YhR1q94FDbVgL
-	 qpG3UayXxRELkI7y2e7T2pb9OfO79rogdaxp12bA=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250627082558eucas1p26eefb0758cdd40798781a44be9a35775~M2NOMd2l60336903369eucas1p24;
-	Fri, 27 Jun 2025 08:25:58 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250627082556eusmtip2faa11d32e2b6de5e10c6b535e52aa2ec~M2NM_Hj8m1862018620eusmtip2V;
-	Fri, 27 Jun 2025 08:25:56 +0000 (GMT)
-Message-ID: <9f6e3393-a930-4010-9ca1-1f8fb164b5df@samsung.com>
-Date: Fri, 27 Jun 2025 10:25:56 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZ1uBfMr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED55C4CEED;
+	Fri, 27 Jun 2025 08:58:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751014730;
+	bh=7Q0EJNGfoLDItxk7UkA5TTYdcSirFMepdH0/ItIQbdY=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=KZ1uBfMrQUHPPAz+Nq7hNbEKd+DazgJ4hhbGGNZtF9sYEAlWqDk2hUkgp7CKHbPZA
+	 PO/Z9Cliyx8yWpvUSSEujEPB1WvTpUjeI1WDsbW4IFZFM+1AHCqcwgmxGtdFfxbgQA
+	 jfkCYhDr/6x73ihykZhMxtylSWREa8Xi2d5+JXzvIKNB6cjyVeRl5lpkIVh/hSFAuU
+	 RdDgcJM09g7WpkXSL4Ql/h3MBBWjipOU/ep4M0Omk8e8+JzYDSEy2nqzC6JwEzlBXh
+	 xzFkJ6yUCLBTg5s4xlDLtk5mqiS1gdWDZER9SHXYxBjCzfjORcsL3+MFb95ngw4LFn
+	 SyMyA004Wxi1w==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/9] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
-	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
-	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
-	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
-	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org, Krzysztof Kozlowski
-	<krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <20250623-rust-next-pwm-working-fan-for-sending-v5-0-0ca23747c23e@samsung.com>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250627082558eucas1p26eefb0758cdd40798781a44be9a35775
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250623180857eucas1p2e3e9ddad89b5f055af801cb97dbfc7cc
-X-EPHeader: CA
-X-CMS-RootMailID: 20250623180857eucas1p2e3e9ddad89b5f055af801cb97dbfc7cc
-References: <CGME20250623180857eucas1p2e3e9ddad89b5f055af801cb97dbfc7cc@eucas1p2.samsung.com>
-	<20250623-rust-next-pwm-working-fan-for-sending-v5-0-0ca23747c23e@samsung.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 27 Jun 2025 10:58:43 +0200
+Message-Id: <DAX6WZ87S99G.1CMIN6IQXJYPL@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
+ <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
+ Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
+Subject: Re: [PATCH v5 05/10] rust: sync: atomic: Add atomic {cmp,}xchg
+ operations
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
+ <linux-arch@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+ <20250618164934.19817-6-boqun.feng@gmail.com>
+In-Reply-To: <20250618164934.19817-6-boqun.feng@gmail.com>
 
+On Wed Jun 18, 2025 at 6:49 PM CEST, Boqun Feng wrote:
+> +impl<T: AllowAtomic> Atomic<T>
+> +where
+> +    T::Repr: AtomicHasXchgOps,
+> +{
+> +    /// Atomic exchange.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{Atomic, Acquire, Relaxed};
+> +    ///
+> +    /// let x =3D Atomic::new(42);
+> +    ///
+> +    /// assert_eq!(42, x.xchg(52, Acquire));
+> +    /// assert_eq!(52, x.load(Relaxed));
+> +    /// ```
+> +    #[doc(alias("atomic_xchg", "atomic64_xchg"))]
+> +    #[inline(always)]
+> +    pub fn xchg<Ordering: All>(&self, v: T, _: Ordering) -> T {
 
+Can we name this `exchange`?
 
-On 6/23/25 20:08, Michal Wilczynski wrote:
-> This patch series introduces Rust support for the T-HEAD TH1520 PWM
-> controller and demonstrates its use for fan control on the Sipeed Lichee
-> Pi 4A board.
-> 
-> The primary goal of this patch series is to introduce a basic set of
-> Rust abstractions for the Linux PWM subsystem. As a first user and
-> practical demonstration of these abstractions, the series also provides
-> a functional PWM driver for the T-HEAD TH1520 SoC. This allows control
-> of its PWM channels and ultimately enables temperature controlled fan
-> support for the Lichee Pi 4A board. This work aims to explore the use of
-> Rust for PWM drivers and lay a foundation for potential future
-> Rust based PWM drivers.
-> 
-> The core of this series is a new rust/kernel/pwm.rs module that provides
-> abstractions for writing PWM chip provider drivers in Rust. This has
-> been significantly reworked from v1 based on extensive feedback. The key
-> features of the new abstraction layer include:
-> 
->  - Ownership and Lifetime Management: The pwm::Chip wrapper is managed
->    by ARef, correctly tying its lifetime to its embedded struct device
->    reference counter. Chip registration is handled by a pwm::Registration
->    RAII guard, which guarantees that pwmchip_add is always paired with
->    pwmchip_remove, preventing resource leaks.
-> 
->  - Modern and Safe API: The PwmOps trait is now based on the modern
->    waveform API (round_waveform_tohw, write_waveform, etc.) as recommended
->    by the subsystem maintainer. It is generic over a driver's
->    hardware specific data structure, moving all unsafe serialization logic
->    into the abstraction layer and allowing drivers to be written in 100%
->    safe Rust.
-> 
->  - Ergonomics: The API provides safe, idiomatic wrappers for other PWM
->    types (State, Args, Device, etc.) and uses standard kernel error
->    handling patterns.
-> 
-> The series is structured as follows:
->  - Rust PWM Abstractions: The new safe abstraction layer.
->  - TH1520 PWM Driver: A new Rust driver for the TH1520 SoC, built on
->    top of the new abstractions.
->  - Clock Fix: A necessary fix to the TH1520 clock driver to ensure bus
->    clocks remain enabled.
->  - Device Tree Bindings & Nodes: The remaining patches add the necessary
->    DT bindings and nodes for the TH1520 PWM controller, a thermal
->    sensor, and the PWM fan configuration for the Lichee Pi 4A board.
-> 
-> Testing:
-> Tested on the TH1520 SoC. The fan works correctly. The duty/period
-> calculations are correct. Fan starts slow when the chip is not hot and
-> gradually increases the speed when PVT reports higher temperatures.
-> 
-> The patches are based on mainline, with some dependencies which are not
-> merged yet - platform Io support [1].
-> 
-> Reference repository with all the patches together can be found on
-> github [2].
-> 
-> [1] - https://lore.kernel.org/rust-for-linux/20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com/
-> [2] - https://github.com/mwilczy/linux/commits/rust-next-pwm-working-fan-for-sending-v9/
-> 
-> ---
-> Changes in v5:
-> - Reworked `pwm::Chip` creation to take driver data directly, which
->   allowed making the `chip.drvdata()` accessor infallible
-> - added missing `pwm.c` file lost during the commit split (sorry !)
-> - Link to v4: https://lore.kernel.org/r/20250618-rust-next-pwm-working-fan-for-sending-v4-0-a6a28f2b6d8a@samsung.com
-> 
-> Changes in v4:
->  - Reworked the pwm::Registration API to use the devres framework,
->    addressing lifetime issue.
->  - Corrected the PwmOps trait and its callbacks to use immutable references
->    (&Chip, &Device) for improved safety.
->  - Applied various code style and naming cleanups based on feedback
-> 
-> - Link to v3: https://lore.kernel.org/r/20250617-rust-next-pwm-working-fan-for-sending-v3-0-1cca847c6f9f@samsung.com
-> 
-> Changes in v3:
->  - Addressed feedback from Uwe by making multiple changes to the TH1520
->    driver and the abstraction layer.
->  - Split the core PWM abstractions into three focused commits to ease
->    review per Benno request.
->  - Confirmed the driver now works correctly with CONFIG_PWM_DEBUG enabled
->    by implementing the full waveform API, which correctly reads the
->    hardware state.
->  - Refactored the Rust code to build cleanly with
->    CONFIG_RUST_BUILD_ASSERT_ALLOW=n, primarily by using the try_* family of
->    functions for IoMem access.
->  - Included several cosmetic changes and cleanups to the abstractions
->    per Miguel review.
-> 
-> - Link to v2: https://lore.kernel.org/r/20250610-rust-next-pwm-working-fan-for-sending-v2-0-753e2955f110@samsung.com
-> 
-> Changes in v2:
->  - Reworked the PWM abstraction layer based on extensive feedback.
->  - Replaced initial devm allocation with a proper ARef<Chip> lifetime model
->    using AlwaysRefCounted.
->  - Implemented a Registration RAII guard to ensure safe chip add/remove.
->  - Migrated the PwmOps trait from the legacy .apply callback to the modern
->    waveform API.
->  - Refactored the TH1520 driver to use the new, safer abstractions.
->  - Added a patch to mark essential bus clocks as CLK_IGNORE_UNUSED to fix
->    boot hangs when the PWM and thermal sensors are enabled.
-> - Link to v1: https://lore.kernel.org/r/20250524-rust-next-pwm-working-fan-for-sending-v1-0-bdd2d5094ff7@samsung.com
-> 
-> ---
-> Michal Wilczynski (9):
->       rust: pwm: Add Kconfig and basic data structures
->       rust: pwm: Add core 'Device' and 'Chip' object wrappers
->       rust: pwm: Add driver operations trait and registration support
->       pwm: Add Rust driver for T-HEAD TH1520 SoC
->       clk: thead: Mark essential bus clocks as CLK_IGNORE_UNUSED
->       dt-bindings: pwm: thead: Add T-HEAD TH1520 PWM controller
->       riscv: dts: thead: Add PWM controller node
->       riscv: dts: thead: Add PVT node
->       riscv: dts: thead: Add PWM fan and thermal control
-> 
->  .../devicetree/bindings/pwm/thead,th1520-pwm.yaml  |  48 ++
->  MAINTAINERS                                        |   8 +
->  arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts  |  67 ++
->  arch/riscv/boot/dts/thead/th1520.dtsi              |  18 +
->  drivers/clk/thead/clk-th1520-ap.c                  |   5 +-
->  drivers/pwm/Kconfig                                |  23 +
->  drivers/pwm/Makefile                               |   1 +
->  drivers/pwm/pwm_th1520.rs                          | 318 ++++++++
->  rust/bindings/bindings_helper.h                    |   1 +
->  rust/helpers/helpers.c                             |   1 +
->  rust/helpers/pwm.c                                 |  20 +
->  rust/kernel/lib.rs                                 |   2 +
->  rust/kernel/pwm.rs                                 | 890 +++++++++++++++++++++
->  13 files changed, 1400 insertions(+), 2 deletions(-)
-> ---
-> base-commit: 79b01ff21368605a62b76535ab1ab5f1f726de60
-> change-id: 20250524-rust-next-pwm-working-fan-for-sending-552ad2d1b193
-> 
-> Best regards,
+> +        let v =3D T::into_repr(v);
+> +        let a =3D self.as_ptr().cast::<T::Repr>();
+> +
+> +        // SAFETY:
+> +        // - For calling the atomic_xchg*() function:
+> +        //   - `self.as_ptr()` is a valid pointer, and per the safety re=
+quirement of `AllocAtomic`,
+> +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` is a=
+ valid pointer,
+> +        //   - per the type invariants, the following atomic operation w=
+on't cause data races.
+> +        // - For extra safety requirement of usage on pointers returned =
+by `self.as_ptr():
+> +        //   - atomic operations are used here.
+> +        let ret =3D unsafe {
+> +            match Ordering::TYPE {
+> +                OrderingType::Full =3D> T::Repr::atomic_xchg(a, v),
+> +                OrderingType::Acquire =3D> T::Repr::atomic_xchg_acquire(=
+a, v),
+> +                OrderingType::Release =3D> T::Repr::atomic_xchg_release(=
+a, v),
+> +                OrderingType::Relaxed =3D> T::Repr::atomic_xchg_relaxed(=
+a, v),
+> +            }
+> +        };
+> +
+> +        T::from_repr(ret)
+> +    }
+> +
+> +    /// Atomic compare and exchange.
+> +    ///
+> +    /// Compare: The comparison is done via the byte level comparison be=
+tween the atomic variables
+> +    /// with the `old` value.
+> +    ///
+> +    /// Ordering: When succeeds, provides the corresponding ordering as =
+the `Ordering` type
+> +    /// parameter indicates, and a failed one doesn't provide any orderi=
+ng, the read part of a
+> +    /// failed cmpxchg should be treated as a relaxed read.
 
-Hi,
+This is a bit confusing to me. The operation has a store and a load
+operation and both can have different orderings (at least in Rust
+userland) depending on the success/failure of the operation. In
+userland, I can supply `AcqRel` and `Acquire` to ensure that I always
+have Acquire semantics on any read and `Release` semantics on any write
+(which I would think is a common case). How do I do this using your API?
 
-Since this v5 patchset hasn't received further comments, I'd like to
-inquire about the merge strategy.
+Don't I need `Acquire` semantics on the read in order for
+`compare_exchange` to give me the correct behavior in this example:
 
-The first three patches containing the Rust PWM abstractions have no
-outstanding dependencies. Could these be considered for the next merge
-window independently?
+    pub struct Foo {
+        data: Atomic<u64>,
+        new: Atomic<bool>,
+        ready: Atomic<bool>,
+    }
 
-The fourth patch (the TH1520 driver) depends on the platform IoMem
-support [1], which is now at v10. If that series is merged, could the
-rest of this series also be considered?
+    impl Foo {
+        pub fn new() -> Self {
+            Self {
+                data: Atomic::new(0),
+                new: Atomic::new(false),
+                ready: Atomic::new(false),
+            }
+        }
 
-Thanks for your guidance.
+        pub fn get(&self) -> Option<u64> {
+            if self.new.compare_exchange(true, false, Release).is_ok() {
+                let val =3D self.data.load(Acquire);
+                self.ready.store(false, Release);
+                Some(val)
+            } else {
+                None
+            }
+        }
 
-[1] - https://lore.kernel.org/rust-for-linux/20250623-topics-tyr-platform_iomem-v10-0-ed860a562940@collabora.com/
+        pub fn set(&self, val: u64) -> Result<(), u64> {
+            if self.ready.compare_exchange(false, true, Release).is_ok() {
+                self.data.store(val, Release);
+                self.new.store(true, Release);
+            } else {
+                Err(val)
+            }
+        }
+    }
 
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+IIUC, you need `Acquire` ordering on both `compare_exchange` operations'
+reads for this to work, right? Because if they are relaxed, this could
+happen:
+
+                    Thread 0                    |                    Thread=
+ 1
+------------------------------------------------|--------------------------=
+----------------------
+ get() {                                        | set(42) {
+                                                |   if ready.cmpxchg(false,=
+ true, Rel).is_ok() {
+                                                |     data.store(42, Rel)
+                                                |     new.store(true, Rel)
+   if new.cmpxchg(true, false, Rel).is_ok() {   |
+     let val =3D self.data.load(Acq); // reads 0  |
+     ready.store(false, Rel);                   |
+     Some(val)                                  |
+   }                                            |   }
+ }                                              | }
+=20
+So essentially, the `data.store` operation is not synchronized, because
+the read on `new` is not `Acquire`.
+
+> +    ///
+> +    /// Returns `Ok(value)` if cmpxchg succeeds, and `value` is guarante=
+ed to be equal to `old`,
+> +    /// otherwise returns `Err(value)`, and `value` is the value of the =
+atomic variable when
+> +    /// cmpxchg was happening.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{Atomic, Full, Relaxed};
+> +    ///
+> +    /// let x =3D Atomic::new(42);
+> +    ///
+> +    /// // Checks whether cmpxchg succeeded.
+> +    /// let success =3D x.cmpxchg(52, 64, Relaxed).is_ok();
+> +    /// # assert!(!success);
+> +    ///
+> +    /// // Checks whether cmpxchg failed.
+> +    /// let failure =3D x.cmpxchg(52, 64, Relaxed).is_err();
+> +    /// # assert!(failure);
+> +    ///
+> +    /// // Uses the old value if failed, probably re-try cmpxchg.
+> +    /// match x.cmpxchg(52, 64, Relaxed) {
+> +    ///     Ok(_) =3D> { },
+> +    ///     Err(old) =3D> {
+> +    ///         // do something with `old`.
+> +    ///         # assert_eq!(old, 42);
+> +    ///     }
+> +    /// }
+> +    ///
+> +    /// // Uses the latest value regardlessly, same as atomic_cmpxchg() =
+in C.
+> +    /// let latest =3D x.cmpxchg(42, 64, Full).unwrap_or_else(|old| old)=
+;
+> +    /// # assert_eq!(42, latest);
+> +    /// assert_eq!(64, x.load(Relaxed));
+> +    /// ```
+> +    #[doc(alias(
+> +        "atomic_cmpxchg",
+> +        "atomic64_cmpxchg",
+> +        "atomic_try_cmpxchg",
+> +        "atomic64_try_cmpxchg"
+> +    ))]
+> +    #[inline(always)]
+> +    pub fn cmpxchg<Ordering: All>(&self, mut old: T, new: T, o: Ordering=
+) -> Result<T, T> {
+
+`compare_exchange`?
+
+> +    /// Atomic compare and exchange and returns whether the operation su=
+cceeds.
+> +    ///
+> +    /// "Compare" and "Ordering" part are the same as [`Atomic::cmpxchg(=
+)`].
+> +    ///
+> +    /// Returns `true` means the cmpxchg succeeds otherwise returns `fal=
+se` with `old` updated to
+> +    /// the value of the atomic variable when cmpxchg was happening.
+> +    #[inline(always)]
+> +    fn try_cmpxchg<Ordering: All>(&self, old: &mut T, new: T, _: Orderin=
+g) -> bool {
+
+`try_compare_exchange`?
+
+---
+Cheers,
+Benno
+
+> +        let old =3D (old as *mut T).cast::<T::Repr>();
+> +        let new =3D T::into_repr(new);
+> +        let a =3D self.0.get().cast::<T::Repr>();
+> +
+> +        // SAFETY:
+> +        // - For calling the atomic_try_cmpchg*() function:
+> +        //   - `self.as_ptr()` is a valid pointer, and per the safety re=
+quirement of `AllowAtomic`,
+> +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` is a=
+ valid pointer,
+> +        //   - per the type invariants, the following atomic operation w=
+on't cause data races.
+> +        //   - `old` is a valid pointer to write because it comes from a=
+ mutable reference.
+> +        // - For extra safety requirement of usage on pointers returned =
+by `self.as_ptr():
+> +        //   - atomic operations are used here.
+> +        unsafe {
+> +            match Ordering::TYPE {
+> +                OrderingType::Full =3D> T::Repr::atomic_try_cmpxchg(a, o=
+ld, new),
+> +                OrderingType::Acquire =3D> T::Repr::atomic_try_cmpxchg_a=
+cquire(a, old, new),
+> +                OrderingType::Release =3D> T::Repr::atomic_try_cmpxchg_r=
+elease(a, old, new),
+> +                OrderingType::Relaxed =3D> T::Repr::atomic_try_cmpxchg_r=
+elaxed(a, old, new),
+> +            }
+> +        }
+> +    }
+> +}
+
