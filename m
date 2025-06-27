@@ -1,123 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailrelay1-3.pub.mailoutpod3-cph3.one.com (mailrelay1-3.pub.mailoutpod3-cph3.one.com [46.30.212.0])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526AD293B7E;
-	Fri, 27 Jun 2025 09:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C81F29552B
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 09:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.0
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751015150; cv=none; b=jXrRLW7LAjQ6/U1vZ2XeuR2rWOA0IITyXJtJQV7DoDoK44nqBhrijSgwg6UOrlXD0coWE9lk8nOoRDn7MjU8viTxJR+YC9HFskd8OPqTZy+FzXgKMpGu1tjak1TtRbEc2jb2JNiDvlCW4GnO1durVNqyqc5rzDTIOSNqk/a5MPk=
+	t=1751016617; cv=none; b=UOUkBYPrgOrN9OZaG5pavKo4awhHyzSvpeBz3rUiZhgNsGYsp8uqUUuF8byEFS3IpOwsxqNXZfmzsQMxneCtPfdJsfCNARxdmfErCwctoQEK5t+a3eTxhpVKoRss8gjetjp71wpXpB3OWbx32JJF5okTfzGGCotKKhP4HlQOlN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751015150; c=relaxed/simple;
-	bh=XvxycTB3onM69EDKebMKpJFwtx2tibWRvWCOQn8a4IU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=AaWiE87tNbxHJ00ZWqGPpgDZRBNEtPkd1L6/lJ1fETSb/F79hHukJqKnVXAV10HlaJz2vSvodITI/+hIFnRoegFXvPcKarn+MAzQxSPy6KmBlG6WGiPwuxrEEMa8gMA4ay0nrA/IgHX5k6kaYcv762co2M/wKSYfvWqNGXTR7z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTLpJw6r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751016617; c=relaxed/simple;
+	bh=hEOJrVMGDzKkOP2R+1Ohzn8Ie+hvnAxSW+0XgxMjiWc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Fvm1I1wD5ci/es86hTI2mEC5beyAy2kPE2OzIzQFuS7NL9Qo6zmGIOlgdJ/+1Vu1PzLv/D4UJV1E4VFiC8BXTtWoX7rCp24K4HDxG/1wmWaasKC1hs9fuK5ZQuc5PWGXgHbED3sKxtfkLEVsSfSmSyRzaFeL0jitJlF6kfpVPZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=CAQMo3G4; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=OTCogenG; arc=none smtp.client-ip=46.30.212.0
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTLpJw6r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52484C4CEE3;
-	Fri, 27 Jun 2025 09:05:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751015149;
-	bh=XvxycTB3onM69EDKebMKpJFwtx2tibWRvWCOQn8a4IU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nTLpJw6rxqPJ1mmiibAIPVRYLcl1FLPvAt0F4lpglJcAKuMZ1e8sbjxCbwfgE3nUX
-	 tRy1STZYPYA7s8yBvgzBAscd1KJO3CuBEVO9OxR4VCGF6O4U71aOlUYky0StnZu+NW
-	 7mTuVIoJRIBJXL2YQf6oveN3gjvZBIGbjFAtw7V1pL64ZaB0J/nCrCw4KdWOyqpzhE
-	 DASbjievzFGMoGBfZalKwzlZNRPER4xTMba413UiUpFO75HjadRw0B1RnCTfCrQ8o2
-	 GwM+w58EqX3NHanHyZqqcGV6ZMB1Q5d2MiUEv/FdfHYutTfa2y21qmQ5Zwax1ze1rk
-	 G6xBE9uOeJTiQ==
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="CAQMo3G4";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="OTCogenG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751016545; x=1751621345;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=4ldWEIgjhHcv8pLoOguZ60cI9NblcazUnA8m9dt7vcc=;
+	b=CAQMo3G4jnsz/FHF5g3IqkiO13sJrszTQFG5ErmCNU3JutOVaaYGdeqNuWhdRx83qEUCRy/VCOh3D
+	 ZwMAQluEuFCTE9x53wj/r+Djprab49ulSA3+Zmm5cdk+TFva1NQ5v6tnYI8R0oJyz+SE2trq/Aq46R
+	 Ylt0oB2hLeYuWhzGf5GCqpFYqStETNF3Oxc1NtRyNMGvYLU35k3h4+vzVFVp7otvDo0wEQDYKFBTOi
+	 fDW35BeEvCPezwLb7Jn3U+sDYv9BRMgS0D0hN1FLKN2qc6rVNOa0IqbytsZmcwRSjohkwNQ/dofq4q
+	 p8abRfYeLW0EJ33+3UrIPJ4vHJGaA9Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751016545; x=1751621345;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=4ldWEIgjhHcv8pLoOguZ60cI9NblcazUnA8m9dt7vcc=;
+	b=OTCogenGbBDBq+1HCOantkqK9ARCR4C1l6ZTay7EufFwABKuvSDO9EDL0EUtTlNghM5MH5tnyfJ66
+	 QC7BIt6BA==
+X-HalOne-ID: 2a14a1c1-5339-11f0-b4b2-152d8afab6bc
+Received: from slottsdator.home (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
+	by mailrelay1.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 2a14a1c1-5339-11f0-b4b2-152d8afab6bc;
+	Fri, 27 Jun 2025 09:29:04 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v5 0/4] support large align and nid in Rust allocators
+Date: Fri, 27 Jun 2025 11:29:01 +0200
+Message-Id: <20250627092901.356909-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Jun 2025 11:05:44 +0200
-Message-Id: <DAX72CI4S0JF.1GCUWSOEO3H7W@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Andreas Hindborg"
- <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <kwilczynski@kernel.org>,
- <bhelgaas@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v4 4/5] rust: types: ForeignOwnable: Add type Target
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250626200054.243480-1-dakr@kernel.org>
- <20250626200054.243480-5-dakr@kernel.org> <aF2rpzSccqgoVvn0@tardis.local>
- <DAWUKB7PAZG1.2K2W9VCATZ3O0@kernel.org>
- <45a2bd65-ec77-4ce7-bd8e-553880d85bdf@app.fastmail.com>
- <DAWUY4YH6XP9.TWAP6N95L5BR@kernel.org>
- <8922f6f0-241a-4659-b382-fb8c62b77e8f@app.fastmail.com>
- <44579f29-a8a4-41cb-97ea-5ab7711e4d2a@app.fastmail.com>
-In-Reply-To: <44579f29-a8a4-41cb-97ea-5ab7711e4d2a@app.fastmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Jun 27, 2025 at 1:55 AM CEST, Boqun Feng wrote:
-> On Thu, Jun 26, 2025, at 4:45 PM, Boqun Feng wrote:
->> On Thu, Jun 26, 2025, at 4:36 PM, Benno Lossin wrote:
->>> On Fri Jun 27, 2025 at 1:21 AM CEST, Boqun Feng wrote:
->>>> On Thu, Jun 26, 2025, at 4:17 PM, Benno Lossin wrote:
->>>>> On Thu Jun 26, 2025 at 10:20 PM CEST, Boqun Feng wrote:
->>>>>> On Thu, Jun 26, 2025 at 10:00:42PM +0200, Danilo Krummrich wrote:
->>>>>>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->>>>>>> index 3958a5f44d56..74c787b352a9 100644
->>>>>>> --- a/rust/kernel/types.rs
->>>>>>> +++ b/rust/kernel/types.rs
->>>>>>> @@ -27,6 +27,9 @@
->>>>>>>  /// [`into_foreign`]: Self::into_foreign
->>>>>>>  /// [`PointedTo`]: Self::PointedTo
->>>>>>>  pub unsafe trait ForeignOwnable: Sized {
->>>>>>> +    /// The payload type of the foreign-owned value.
->>>>>>> +    type Target;
->>>>>>
->>>>>> I think `ForeignOwnable` also implies a `T` maybe get dropped via a
->>>>>> pointer from `into_foreign()`. Not sure it's worth mentioning though=
-.
->>>>>
->>>>> What? How would that happen?
->>>>
->>>> The owner of the pointer can do from_foreign() and eventually drop
->>>> the ForeignOwnable, hence dropping T.
->>>
->>> I'm confused, you said `into_foreign` above. I don't think any sensible
->>> ForeignOwnable implementation will drop a T in any of its functions.
->>>
->>
->> A KBox<T> would drop T when it gets dropped, no?
->> A Arc<T> would drop T when it gets dropped if it=E2=80=99s the last refc=
-ount.
->>
->> I was trying to say =E2=80=9CForeignOwnable::drop() may implies Target::=
-drop()=E2=80=9D,
->> that=E2=80=99s what a =E2=80=9Cpayload=E2=80=9D means. Maybe that I used=
- =E2=80=9CT=E2=80=9D instead of =E2=80=9CTarget=E2=80=9D
->> in the original message caused confusion?
+The coming patches provide the ability for Rust allocators to set
+NUMA node and large alignment.
 
-Ah now I understand what you are saying. Your mentioning of
-`into_foreign` and `from_foreign` confused me. Yes a `ForeignOwnable`
-may drop a `T`/`Target` in its own drop function. But I don't think we
-need to document that.
+Changelog:
+v2 -> v3:
+* fixed the build breakage for non-MMU configs
+v3 -> v4:
+* added NUMA node support for k[v]realloc (patch #2)
+* removed extra logic in Rust helpers
+* patch for Rust allocators split into 2 (align: patch #3 and
+  NUMA ids: patch #4)
+v4 -> v5:
+* reworked NUMA node support for k[v]realloc for all 3 <alloc>_node
+  functions to have the same signature
+* all 3 <alloc>_node slab/vmalloc functions now support alignment
+  specification
+* Rust helpers are extended with new functions, the old ones are left
+  intact
+* Rust support for NUMA nodes comes first now (as patch #3)
 
-> The point is whichever receives the pointer from a into_foreign()
-> would owns the Target, because it can from_foreign() and
-> drop the ForeignOwnable. So for example, if the pointer can
-> be passed across threads, that means Target needs to be Send.
-
-We should solve this in a different manner. Document the `Send` & `Sync`
-requirements on `into_foreign`. So when you turn a `P: ForeignOwnable`
-that is `!Send` into a raw pointer, you are not allowed to call
-`from_foreign` on a different thread.
-
-If `P: !Sync` then you're not allowed to call `borrow[_mut]` on the
-pointer from two different threads (ie only the one that is currently
-owning the value is allowed to call that).
-
----
-Cheers,
-Benno
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
