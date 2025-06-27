@@ -1,92 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailrelay-egress12.pub.mailoutpod2-cph3.one.com (mailrelay-egress12.pub.mailoutpod2-cph3.one.com [46.30.211.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF18F212D97;
-	Fri, 27 Jun 2025 19:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B36F270547
+	for <rust-for-linux@vger.kernel.org>; Fri, 27 Jun 2025 21:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.211.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751054362; cv=none; b=Ahx7ccoGknFsTO1bTYeDSG2NZGE0EeBFCiQvZJ8iQTFb5t9ZZVqpjaRfD6FUZoaqOXVlyiyCUbgOMTXE9lFMKAFEbmprXAEeG5gHZzvij4kf7vtjWXdlcRYvSzRhRIfLEfiLgGTW9x0pBYou5C6RdpXA8THxraArIuzS7PeSZ3E=
+	t=1751059512; cv=none; b=a9ZH5A8+WJUJNsk0jvj90acDu9TRstlYy71WAVMzRBVPntDi0AHBGwj5TYRIMU5U89sc9eWj2uDZpraMVy4IKALEeOSe3QpDlj7MI2rII1EG7TiYu1urymxKiD0lAsLyCDd+JfptcTGONA8ZVmig4sKYreStsRN82v11D3o53yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751054362; c=relaxed/simple;
-	bh=FxCyO5AUIucb+mVJoILJ0mKThytxO5/jSMZ6GOpF2B0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=SMoCFOlsT8QPAOrJpbrs0L9yXluY1CnIUDhAjjQn64Xpir2JL2ebL/gWwbf3xTD/9U+DtLKSqYICtvQuu59qNuxV39oWfMFAMe/csh4oAQKPo4kiEYMZ9V4gzkVKuO61jk2vEr4TPCvIhOIKFTjAFTdKzEfFUiYDtJqtLjEynUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNdX04SC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751059512; c=relaxed/simple;
+	bh=Cl/F68/WK5XrJ6XvRUuGsOqyQMCE+IfVmht+m+da248=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kXz73eetr8Uw0f855yQUvtM+5jywSijFe2XaQIc9iFNlCADJHPxAuSshUG/Q0rEU41u1ECA6RIhUNUKbAnE1eGRxJsrXeh6w0pPmYJbBx7RhVyGxoL3zUm2QdFYNR4m0WGUmNArPtQKg8JMbNojVbiqAf/f8pKKlNbTPf+3Iw6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=rIQ2pMpv; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=4enDKfXj; arc=none smtp.client-ip=46.30.211.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNdX04SC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8075C4CEE3;
-	Fri, 27 Jun 2025 19:59:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751054361;
-	bh=FxCyO5AUIucb+mVJoILJ0mKThytxO5/jSMZ6GOpF2B0=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=VNdX04SC6YCuEldsxezVQLGuSgcUiOD+kH+dnNiqydVt5ERJbYrvGjy2FRCfHshmw
-	 Xs2Qv0xDqqtCjqYYFBl9JWzOXnHeOiWVYGT2xqnLLueDU6y/LlqMFGjaopfQCB+Yqm
-	 bqc8TVR+KEs9I1RP0axg2VaDmmbBvMXMALTTn2Ly0wTUGhdNZOCF6Y7IVp8XlDuahF
-	 2by3IM1C8I+njjz3hwUbXurHHMcDJFTtso9rqYgaV3xn0BsUn5QzZiz1YEiBUTnybC
-	 x9DM2hDg7yFRzAyzu6Tk8fVJQsa2RMbKbQO9QPSl5h0jv2o7cG29u0Qtnrjcf0e2v/
-	 NCJKv30GeBb8A==
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="rIQ2pMpv";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="4enDKfXj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751059505; x=1751664305;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=U4CnvzeAUDkTiiObQEooy+CGcM4uqIv1lPLEWTjEViE=;
+	b=rIQ2pMpv8Cqb5ViJp6UfhcpX5O1CGU2hvsPXNenyva3o9jHbCRgwt6tgUInUgmrSkQ1OVgc6DXFfU
+	 9wgkCIT2Jtkj/CCzz0g2gi+KIh3Kuh2OTGrkDArGpQH1gmyNvkhvnyZTh2nymZuAlYQejrpgc7vMrg
+	 ElEbgH9ts/cH9Z9aAhBNVIa3U+LPfpHUm1KIaC27tOeAJn5Mn3oNc0E2kG+FzivWaHsXzWyilF9mNS
+	 quEadn48MM/hd+ObmKYn4LUvBykvLEA7IiGTWZPWOr8kIftHrTknB4xxG1IDzWy8/CjqEafkr6qfC9
+	 waDr4mPkXWJXshy9XYlGRYGRmnFLuUA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751059505; x=1751664305;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=U4CnvzeAUDkTiiObQEooy+CGcM4uqIv1lPLEWTjEViE=;
+	b=4enDKfXjyD5XtC+t6O9KGhgnQsaIqyG+AaFElTfgX7vDawXeK8v89uobXRBshe+B8IGKPVFywDJDp
+	 /RK1d+ZCA==
+X-HalOne-ID: 3015eec2-539d-11f0-8e72-e90f2b8e16ca
+Received: from localhost.localdomain (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
+	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 3015eec2-539d-11f0-8e72-e90f2b8e16ca;
+	Fri, 27 Jun 2025 21:25:04 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v7 0/4] support large align and nid in Rust allocators
+Date: Fri, 27 Jun 2025 23:24:51 +0200
+Message-Id: <20250627212451.2181627-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 27 Jun 2025 21:59:14 +0200
-Message-Id: <DAXKYPCR5D4I.1B44OH77BGRTQ@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
- <david.m.ertman@intel.com>, <ira.weiny@intel.com>, <leon@kernel.org>,
- <kwilczynski@kernel.org>, <bhelgaas@google.com>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v4 3/5] rust: devres: get rid of Devres' inner Arc
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250626200054.243480-1-dakr@kernel.org>
- <20250626200054.243480-4-dakr@kernel.org>
-In-Reply-To: <20250626200054.243480-4-dakr@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Jun 26, 2025 at 10:00 PM CEST, Danilo Krummrich wrote:
-> So far Devres uses an inner memory allocation and reference count, i.e.
-> an inner Arc, in order to ensure that the devres callback can't run into
-> a use-after-free in case where the Devres object is dropped while the
-> devres callback runs concurrently.
->
-> Instead, use a completion in order to avoid a potential UAF: In
-> Devres::drop(), if we detect that we can't remove the devres action
-> anymore, we wait for the completion that is completed from the devres
-> callback. If, in turn, we were able to successfully remove the devres
-> action, we can just go ahead.
->
-> This, again, allows us to get rid of the internal Arc, and instead let
-> Devres consume an `impl PinInit<T, E>` in order to return an
-> `impl PinInit<Devres<T>, E>`, which enables us to get away with less
-> memory allocations.
->
-> Additionally, having the resulting explicit synchronization in
-> Devres::drop() prevents potential subtle undesired side effects of the
-> devres callback dropping the final Arc reference asynchronously within
-> the devres callback.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+The coming patches provide the ability for Rust allocators to set
+NUMA node and large alignment.
 
-With the invariants section moved:
+Changelog:
+v2 -> v3:
+* fixed the build breakage for non-MMU configs
+v3 -> v4:
+* added NUMA node support for k[v]realloc (patch #2)
+* removed extra logic in Rust helpers
+* patch for Rust allocators split into 2 (align: patch #3 and
+  NUMA ids: patch #4)
+v4 -> v5:
+* reworked NUMA node support for k[v]realloc for all 3 <alloc>_node
+  functions to have the same signature
+* all 3 <alloc>_node slab/vmalloc functions now support alignment
+  specification
+* Rust helpers are extended with new functions, the old ones are left
+  intact
+* Rust support for NUMA nodes comes first now (as patch #3)
+v5 -> v6:
+* added <alloc>_node_align functions to keep the existing interfaces
+  intact
+* clearer separation for Rust support of MUNA ids and large alignments
+v6 -> v7:
+* NUMA identifier as a new Rust type (NumaNode)
+* better documentation for changed and new functions and constants
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
----
-Cheers,
-Benno
-
-> ---
->  drivers/gpu/nova-core/driver.rs |   7 +-
->  drivers/gpu/nova-core/gpu.rs    |   6 +-
->  rust/kernel/devres.rs           | 213 +++++++++++++++++++-------------
->  rust/kernel/pci.rs              |  20 +--
->  samples/rust/rust_driver_pci.rs |  19 +--
->  5 files changed, 154 insertions(+), 111 deletions(-)
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
