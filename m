@@ -1,86 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED2B1AC88B;
-	Sat, 28 Jun 2025 12:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E062F1FE6;
+	Sat, 28 Jun 2025 12:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751113755; cv=none; b=l7iRXcroE9szXaYX1Y6l7Vj+PFAzGjFZCax8dXTX9mDfzS6FpT/RIbCxSz8JpgHatenOBQrCyLxNoVIMqXFFpuEnq6GBJWUaQvRzhoPSslQ0Q3lvCyraNMQBtZ65AF8x8OmrHEDxAyjlEyrFJNYZJZY4nXVMEAtb5sPaG508DPI=
+	t=1751113948; cv=none; b=NE3M4xk24nt1lv/Y3PnYlAS/GpVjwdu9o2NUM47XTNr4jvxBlNphNa8Ye0Ub2yfM9CV/S1IiMYrDSkHA3c0Z/rqDV+ftHtc9LHXl2iKkElfFIneknR2GMOfBQpvCoNbFQ0B2t+ZctMq13ph1QoAt95rjeFtmEtcvW8f09DiDe3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751113755; c=relaxed/simple;
-	bh=6e6bkAAqO4DlwzMyBf2Bv1Otfnqw8aMDaRR5IA3G2kc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=pLzK/ZlEqxQ2oJbfmzFKDyGEN/L3abTR2iZQY6caBbWA8xuJK4J3J1P0mun+a/FIMBZ4eM5TpsnSkUqM9jFlw08d9AR8JsPxDN+9Ji4no7+7r9HRVwjIf6Z9bNpKy0dEp4GrXH2fRqcFL8kH1Pofy7bOnG4dTJ2H2iRT6e3lHh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyM1h4oZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751113948; c=relaxed/simple;
+	bh=JYYNrGkl597kbFUKM8+TWyiKPVf8sMl4omwZhKosOLk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UX7Vd+SBHcZr2D/nUmmsgI+FBUwtZjRA6SqU2zxuMiBtGyvTGm/n/yBfazFS4hdy2gu/GecBsZ9kJiSn60MYjc9OPoNTCGjgrg3Y+WWVa//jGGSSS5DMYMhiLHNe4m72SzO//Hal1qLdiL2kjAWCNZ49k05bdIHBtWlGJ6FDkNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRM7yvWo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyM1h4oZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44B9C4CEEA;
-	Sat, 28 Jun 2025 12:29:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRM7yvWo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB50BC4CEEA;
+	Sat, 28 Jun 2025 12:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751113755;
-	bh=6e6bkAAqO4DlwzMyBf2Bv1Otfnqw8aMDaRR5IA3G2kc=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=XyM1h4oZx/zo5W2HAkwmNN4tCUNPeDPpAHPnZHnT5ma01wUdDoMDctc2FQXCQC3FM
-	 n12e16f90VJfwhgDzvsypl+QUyLmmUCMIQbxEdGDb+n2Y4fGIm/7U5FiUpnalL6Qhh
-	 JRw5e8mt9f2DQgElcKkboXVutF0RVUruIl9uey1Ldtsvw+Vtk290iBBf09D/i83DsE
-	 kRgB6GIRMiPtGQDRXJB3LKjx/O8hjiEMHC+gzr1M8T2jFF+mx2fAGNNMouPo/UkhSj
-	 xehkHOjwYp+n5kJY/TR2UQOzuX0onZuLOYJrMAy76Lu+9N9xHTuEQ79Ufs4IV6V8Dh
-	 /y9YyNJYo4TBw==
+	s=k20201202; t=1751113947;
+	bh=JYYNrGkl597kbFUKM8+TWyiKPVf8sMl4omwZhKosOLk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LRM7yvWoKVVgAdZzbiMnI6SA0xl0+cfpjnBscAumROSINobJerFxB8qDESqS5ihC/
+	 PK/O4AyrQBQyz80GNYOJaI87vjMCoNG7CJuzhnFNiW/0s5OjX4ii6lfCJqoPngnYgp
+	 6n3vFoTUyDkIAo1MTGZt1KNBb+c90H1MaiPvLqe3kHWvAIjHSf0zMmXH+vOfd5IsOp
+	 Gd+s2T7P7/wo3LLtIolR10+i3iC67qy46SiZDDOx/SpttzFS5aU/wkn/6m6I4RwimG
+	 qMnf1wtI9qD8eJ1f6Qqjm/8dv7RYYiO8eBEnZnPnfSbi+Ae2YxDuNImt/jqcupl09z
+	 ptDd5FdHGgXuQ==
+Date: Sat, 28 Jun 2025 14:32:21 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, david.m.ertman@intel.com,
+	ira.weiny@intel.com, leon@kernel.org, kwilczynski@kernel.org,
+	bhelgaas@google.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] rust: devres: implement register_release()
+Message-ID: <aF_g1aspI_6GVRLC@pollux>
+References: <20250626200054.243480-6-dakr@kernel.org>
+ <aF2vgthQlNA3BsCD@tardis.local>
+ <aF2yA9TbeIrTg-XG@cassiopeiae>
+ <DAWULS8SIOXS.1O4PLL2WCLX74@kernel.org>
+ <aF8V8hqUzjdZMZNe@tardis.local>
+ <DAXXVXNTRLYH.1B8O2LKBF4EW1@kernel.org>
+ <aF-N-luMxFTurl91@Mac.home>
+ <DAY059Y669BX.2GVKH6RBG80B6@kernel.org>
+ <aF-83Tb4-Sxz_KFk@pollux>
+ <DAY5ODJ7ZPWY.24OXGYED4EAK9@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Jun 2025 14:29:11 +0200
-Message-Id: <DAY60NP32ZDA.155XFXZ9AOF70@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: init: Fix generics in *_init! macros
-From: "Benno Lossin" <lossin@kernel.org>
-To: <j@jannau.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>
-X-Mailer: aerc 0.20.1
-References: <20250628-rust_init_trailing_comma-v1-1-2d162ae1a757@jannau.net>
-In-Reply-To: <20250628-rust_init_trailing_comma-v1-1-2d162ae1a757@jannau.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAY5ODJ7ZPWY.24OXGYED4EAK9@kernel.org>
 
-On Sat Jun 28, 2025 at 1:36 PM CEST, Janne Grunau via B4 Relay wrote:
-> From: Janne Grunau <j@jannau.net>
->
-> The match pattern for a optional trailing comma in the list of generics
-> is erroneously repeated in the code block resulting in following error:
->
-> | error: attempted to repeat an expression containing no syntax variables=
- matched as repeating at this depth
-> |    --> rust/kernel/init.rs:301:73
-> |     |
-> | 301 |         ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generi=
-cs),* $(,)?>)? {
-> |     |                                                                  =
-       ^^^
->
-> Remove "$(,)?" from all code blocks in the try_init! and try_pin_init!
-> definitions.
+On Sat, Jun 28, 2025 at 02:13:08PM +0200, Benno Lossin wrote:
+> On Sat Jun 28, 2025 at 11:58 AM CEST, Danilo Krummrich wrote:
+> > On Sat, Jun 28, 2025 at 09:53:06AM +0200, Benno Lossin wrote:
+> >> Hmm @Danilo, do you have any use-cases in mind or already done?
+> >
+> > There may be other use-cases, but the one that I could forsee is very specific:
+> >
+> > A Registration type that carries additional reference-counted data, where the
+> > Registration should be released exactly when the device is unbound, independent
+> > of the lifetime of the data.
+> >
+> > Obviously, this implies that the ForeignOwnable is an Arc.
+> >
+> > With KBox, Release and Drop are pretty much identical, so using
+> > devres::release() instead, is much simpler and hence what we do for all simple
+> > class device registrations.
+> >
+> > Besides that, the use-case described above can also be covered by Devres with
+> > the pin-init rework, by having the Registration  embed a Devres<Inner>, which
+> > is what irq::Registration does and I also do in the MiscDeviceRegistration
+> > patches.
+> >
+> > Hence, I already considered dropping this patch -- and I think we should do this
+> > for now.
+> 
+> Sounds good! We can always pick it up again when needed.
 
-Oops, that's a good catch! Seems like nobody used the generics before...
-
-Do you need this to go in as a fix into v6.16, or is it fine if I pick
-it for v6.17, since it's only a build failure?
-
-@Miguel any opinion?
-
----
-Cheers,
-Benno
-
-> Fixes: 578eb8b6db13 ("rust: pin-init: move the default error behavior of =
-`try_[pin_]init`")
-> Signed-off-by: Janne Grunau <j@jannau.net>
-> ---
->  rust/kernel/init.rs | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+Exactly -- thanks Benno and Boqun! The discussion of the design of the Release
+trait seems also relevant for other use-cases with ForeignOwnable types where we
+require trait bounds for their target types.
