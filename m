@@ -1,81 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailrelay3-3.pub.mailoutpod3-cph3.one.com (mailrelay3-3.pub.mailoutpod3-cph3.one.com [46.30.212.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5092012FF69;
-	Sat, 28 Jun 2025 09:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266272222BA
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Jun 2025 10:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751104740; cv=none; b=cxcZZn1hgIwUIZprtHUTEY8m+GJ6z9IsU2KgjZ4VTru3S4nErGRT1Igj7CCMlWEapiuCo7oj9lHuUMQrIWTDmg3chFr120tO5DZ97pBflrasMKuciSliAq1of90N0bvPEMAYJsTeGsEudzQFiaNzMNlnUYC+HPHcHfsFTLfIEhA=
+	t=1751106207; cv=none; b=mCH77CsFBhMQyPe/gWJ3JiGVLzO9xBmuVCkUtykrjOVWQvt0ymJWN4HVo3zYY2n//OrZ6mU7C9mr9s2s6emZBM4gYRe3CBv0ZYT5uDnAlv6zaU5SU+5EzA+ihvFTVxvWm/6vq6/uUXsUf9Vm4nP0llST5ZtDX88ZhHd1PL4cjhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751104740; c=relaxed/simple;
-	bh=UN1stUXsni/d6TUJvZpDboqqcUYchqF9z6pjR6r2aIs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7uluJwozXlZlHhG96ifxN3J8JXcMOl7X8zKDy74S9DMNt+v9OgOr/lF7PI7bLk/3Od7DU9kaVfIWiL2kBwZT3SP19+67ch844imAI+W9MQ5dKM4oOanKfYJsXP5pRgi10WdHNgJYjY/K3CmXqo25XcgAfaep4CgdEX97HtkwMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/RbxkOx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751106207; c=relaxed/simple;
+	bh=ZC3YvRWK8eKwI0mSEg2vmY1bglHZT4c18XfkWdCm/VQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bI0TB+jS5lfM2OVH43YtOKiBa1fw1S6prCSV96fgn4RKhiFShF0kpJEkapWy4oGXPqKx2BzMjiAvcOrQsqR5U1V1dpUekKBbKpR28YycUnoug3SI3GXOtm1dZ6W5za7h6pJiRnpqZggHPvKN6wOFYfMXFgJhv4m9NXOfu18wol4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=uUlABG8z; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=5ogo2rpF; arc=none smtp.client-ip=46.30.212.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/RbxkOx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E363C4CEEA;
-	Sat, 28 Jun 2025 09:58:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751104739;
-	bh=UN1stUXsni/d6TUJvZpDboqqcUYchqF9z6pjR6r2aIs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E/RbxkOx0QOABP4ujopxBsEo2wnU4pS8HTyKjBj3hdXAdQJ0xH/Eo17uCisCLDXod
-	 E6H7hnoAUDKTeEooRc+2NMJkyPqDCdhiLqAuncPhswj++/FcYVHGQHlOV08TE0WLGe
-	 TTPBIQOQyGq6/CtJ4kdU+IyXeaaK5666vDVS/P/fY41z2zpZWyMhnXF/UIPLoIAI/f
-	 wFNDyIiQJ0ooT7WiHXoEIRbGkAlST99DGOIWcvyqe0HvO5Yo54WDj237jWg5mdgUJS
-	 UynDuRu0LxQmS0pznCaWeccR73KaO0eO7GNe8p+cqfz0CbdlB5dIjWntlBuThT1LI/
-	 MLZiIu6EQFX8A==
-Date: Sat, 28 Jun 2025 11:58:53 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, david.m.ertman@intel.com,
-	ira.weiny@intel.com, leon@kernel.org, kwilczynski@kernel.org,
-	bhelgaas@google.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] rust: devres: implement register_release()
-Message-ID: <aF-83Tb4-Sxz_KFk@pollux>
-References: <20250626200054.243480-1-dakr@kernel.org>
- <20250626200054.243480-6-dakr@kernel.org>
- <aF2vgthQlNA3BsCD@tardis.local>
- <aF2yA9TbeIrTg-XG@cassiopeiae>
- <DAWULS8SIOXS.1O4PLL2WCLX74@kernel.org>
- <aF8V8hqUzjdZMZNe@tardis.local>
- <DAXXVXNTRLYH.1B8O2LKBF4EW1@kernel.org>
- <aF-N-luMxFTurl91@Mac.home>
- <DAY059Y669BX.2GVKH6RBG80B6@kernel.org>
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="uUlABG8z";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="5ogo2rpF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751106201; x=1751711001;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=zZ3lWvoCYkoDfv5FGP/87e3wTYP9JjUflTXQlLe9Lcc=;
+	b=uUlABG8zGhy7NuA9rlWV/OZ9zrXwYG8dzNTo5dNOJFxVWU5TxFLWf1YEUA7UPw3NiKPES4VY2+6sJ
+	 D+R7SC3j7+r91bfs3Q9ELLHrurTMsJZYH04jMnWTmgXw6atdWsSsnRFpZiaCUyxPBno06JM6fieQht
+	 tbgXiQ8w2jwg1j9eWmJm+cyMCMDolvZ0wGEGTB44ZvWWRUzEqdF3tDZucj+I0qssJ9o7tzmjnqG3CV
+	 0k1nqAzvtmUBAdALJ4Sb7CD1s8QNGoJe5yabpUTf/i08UurW9481xIwfMoUM2D5LxXRxq9qNQyFafT
+	 wSLSadW9WAhuHb2NLvztkTxsDdn7s7w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751106201; x=1751711001;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=zZ3lWvoCYkoDfv5FGP/87e3wTYP9JjUflTXQlLe9Lcc=;
+	b=5ogo2rpFeUriKg7dTaX8rtIZ2u8aT5J65qZa5dNfUtcIRLhm2Z/dhZK7Q9CWgitYJV7JkHIXfTYzT
+	 MCcX5+pCA==
+X-HalOne-ID: e8aba921-5409-11f0-af50-2b8368a4d5c5
+Received: from slottsdator.home (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
+	by mailrelay3.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id e8aba921-5409-11f0-af50-2b8368a4d5c5;
+	Sat, 28 Jun 2025 10:23:20 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v8 0/4] support large align and nid in Rust allocators
+Date: Sat, 28 Jun 2025 12:23:15 +0200
+Message-Id: <20250628102315.2542656-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DAY059Y669BX.2GVKH6RBG80B6@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jun 28, 2025 at 09:53:06AM +0200, Benno Lossin wrote:
-> Hmm @Danilo, do you have any use-cases in mind or already done?
+The coming patches provide the ability for Rust allocators to set
+NUMA node and large alignment.
 
-There may be other use-cases, but the one that I could forsee is very specific:
+Changelog:
+v2 -> v3:
+* fixed the build breakage for non-MMU configs
+v3 -> v4:
+* added NUMA node support for k[v]realloc (patch #2)
+* removed extra logic in Rust helpers
+* patch for Rust allocators split into 2 (align: patch #3 and
+  NUMA ids: patch #4)
+v4 -> v5:
+* reworked NUMA node support for k[v]realloc for all 3 <alloc>_node
+  functions to have the same signature
+* all 3 <alloc>_node slab/vmalloc functions now support alignment
+  specification
+* Rust helpers are extended with new functions, the old ones are left
+  intact
+* Rust support for NUMA nodes comes first now (as patch #3)
+v5 -> v6:
+* added <alloc>_node_align functions to keep the existing interfaces
+  intact
+* clearer separation for Rust support of MUNA ids and large alignments
+v6 -> v7:
+* NUMA identifier as a new Rust type (NumaNode)
+* better documentation for changed and new functions and constants
+v7 -> v8:
+* removed NumaError
+* small cleanups per reviewers' comments
 
-A Registration type that carries additional reference-counted data, where the
-Registration should be released exactly when the device is unbound, independent
-of the lifetime of the data.
-
-Obviously, this implies that the ForeignOwnable is an Arc.
-
-With KBox, Release and Drop are pretty much identical, so using
-devres::release() instead, is much simpler and hence what we do for all simple
-class device registrations.
-
-Besides that, the use-case described above can also be covered by Devres with
-the pin-init rework, by having the Registration  embed a Devres<Inner>, which
-is what irq::Registration does and I also do in the MiscDeviceRegistration
-patches.
-
-Hence, I already considered dropping this patch -- and I think we should do this
-for now.
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
