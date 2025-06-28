@@ -1,126 +1,140 @@
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C2E2BAF9;
-	Sat, 28 Jun 2025 13:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD6A16EB42;
+	Sat, 28 Jun 2025 13:28:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751117114; cv=none; b=BWBczxDEQ4c7YeNYje5O5L5SLww6I/HQVJL1dR49jevRrVRMtebCuvESuXxLwPzPeY7o0HPTWgtiEAX4J9jkKWlq+K/c7LYJwfoNDHUhXPzrNJzfGP/8qGRHLwNBj3xKrKvF4xLio6KcOPnGts/fwtVy7Lc0V3LHYYMP3/GJoYk=
+	t=1751117324; cv=none; b=vD58jd2pFiC3CT2U+sfFXUpUOIR/+qROhJ143eRdcnXxomPbmacvCmC31IfZmpkvYkFddAf1BmWH0CTvt5wLWwKvdcwiJ5hdIPbJgjPJWZHxcJAdJdioN/NW6Qa1VAAwEJFFJnpLjFd4nOVrLp6Fa6lYF+dziNalDHZQ8MPwYtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751117114; c=relaxed/simple;
-	bh=a/VRXOBHb+54bJLtyVDnQXqlX8sSkyFG+BAHc8Z76v4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ua0/la0Fky9IPLcffM0OW9QuFbdEtT68w20fSy5s1birTLzQNDABPT3w1f0Lk+kbDmc/7xyM9qg2K4xY26ysfj2Ubl2FziE7nCUTyGTDmX5/O6vFWiQoIODY/ltv0V886Kye4l5S+M7HoVwMauKtoOsW0pBWMPlWIlOgi36puQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=SyV9Eq5A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=T/sfxZf2; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+	s=arc-20240116; t=1751117324; c=relaxed/simple;
+	bh=T/j8U9rdyUQILkZZOO6YDvdjlKeeHE2rOYeTpHYUXZs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iI6SqYyT9Pa2xTdsrZWr4fWs8/Bsnuw0Q010BnNCmXkTdki64VtRM25i4B2WBFf9c8nVrl+YnE/8A/WQf4MQHx5evkFY5ctU98jYzsc5wXGYN1r4of8UKNsqUSZgeky0ntC5FGSis46pv2A/NvmZH5Zq++AD3fy30a+FZxG9FSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j2oXXtkB; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="SyV9Eq5A";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="T/sfxZf2"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id AA2C3EC02C2;
-	Sat, 28 Jun 2025 09:25:10 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Sat, 28 Jun 2025 09:25:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1751117110; x=1751203510; bh=+DXqWG5G2Q
-	yQpZZ3WaDiy1a334HccLT+TaSWZASvRlY=; b=SyV9Eq5ALNAKFps5UIkWAtGPNd
-	DrUA2p3YdFAddWYrbns/zRl/fwEP5cHewxMytBzkOIGZA50YGhEHC9e8P/l57ig8
-	7uZwtEvIgJmam7eu0Lt9LKD1yKNWXen8RJiGI3ayiiPVgfpYDwNMAmOfwniNNAfh
-	nA0pypWNisUoFxWVxxrlLs5iip5HcyXwQ8D2ABIabR7s23Z/dbcdAbjIrUboPjZ+
-	SdPaxt7oJX4ewInEzsiJyzXMipeNOgUarbiuHmHaPBVLrl57S1kg1pNkP+xVA0cU
-	eOkAB4C/7OKrbF5XvH+8s+j3mQTK9KUh3obPUalI+YbfnPGV77BtiWgAxnKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1751117110; x=1751203510; bh=+DXqWG5G2QyQpZZ3WaDiy1a334HccLT+TaS
-	WZASvRlY=; b=T/sfxZf2BIhXU/Q0p81DtiJDKWEgwxekOSA0c/Ebj0VpqsJICb/
-	UHEC6+oPRxth4thKNBs7UJItW2omHaGXCaD1mBT3GADoCAj4oDoBWHeaJCEVGvrJ
-	rsgRhpM0uSBDMpdMXM/OsCgA/YkAjWCFalNDbXYTcBmMqBGteIqlAbcE/BxlJUMM
-	tFwS41ouyFpqhi46R76q+bLLdJsFak651QoLZ1WM0FOaoEE1gvhcK+PDV3FjSXhr
-	JhR8HE+BSv7ISNzpudfv01GmPPovdmnRKOWqI+iNtJnAio3RsuDZEoPw+4vyj1wG
-	1FyWb3lqv8NAl/u1xaEuRu3CTFKVa5KMPaA==
-X-ME-Sender: <xms:Ne1faFLXLjXtyZ7aktRs1oNrSMOBPW5a6vgD5c5d35zC1gQe0dspbw>
-    <xme:Ne1faBJ2851feDkLPumPAVvxcZGYowZWsitNRp4DRbIHDKcvcWV7GHu6sAuJWGv9S
-    RD0XDQfNTdh7STJ8_c>
-X-ME-Received: <xmr:Ne1faNvJtWjwVzG76yezLzcP5l7vh7S2bsSFoLYYu6FAew8BoM2C9EdCld37SeHgmIzqXN-H0GUgbfzfSzSehpQwOgUSoxfu3WU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeitdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomheplfgrnhhnvgcuifhr
-    uhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpefgvdffve
-    elgedujeeffeehheekheelheefgfejffeftedugeethfeuudefheefteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjsehjrghnnhgruhdrnh
-    gvthdpnhgspghrtghpthhtohepudefpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtgho
-    mhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtth
-    hopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhh
-    sehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgt
-    ohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:Ne1faGYgiS0zsNKdAhS_HbppMNWRp22w5s9bCPujoAbeqe3VohHqLA>
-    <xmx:Ne1faMYzyiS_XVoFfm5W0Ea_PphlCEM2RVRL1UrFMZ4ulXulFG2PpQ>
-    <xmx:Ne1faKCLCkQnpqhVrghfeOb5yVj4PFrZUSgYtXz6qwGp9zgt0HTWRQ>
-    <xmx:Ne1faKbEDFxdtTLERSLTtvnvzDaWnvyq_hqdpQu8odr4ll7K4NvgKw>
-    <xmx:Nu1faNeom0iqmYOXF3shAY5x3MB1UzbBOt0ndIOBtMC2HpuuaS-XRO0u>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 28 Jun 2025 09:25:09 -0400 (EDT)
-Date: Sat, 28 Jun 2025 15:25:07 +0200
-From: Janne Grunau <j@jannau.net>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: init: Fix generics in *_init! macros
-Message-ID: <20250628132507.GA1546990@robin.jannau.net>
-References: <20250628-rust_init_trailing_comma-v1-1-2d162ae1a757@jannau.net>
- <DAY60NP32ZDA.155XFXZ9AOF70@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j2oXXtkB"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-313336f8438so715274a91.0;
+        Sat, 28 Jun 2025 06:28:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751117322; x=1751722122; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7WL3lDKYi2M4QM/WmNCuiZEoDjKzJbZf9w3+SaIZN3M=;
+        b=j2oXXtkBF1J2M8lX0u0z0QI68jY4uo9SBhVKsP1uXf7sUN1BKTzhzNfjNaICe5E0do
+         OizzUUufesIHzgtuA/zdQfomnUOR1O7k1wISbcTzXJAt3yVXhDajjk7szqfwX5pFS7xv
+         HX3QfWk2e4E5ZKNXjv7ZcKH+eEfYLvwTGfDyhEhUZT/ZSaZzRrr/WPEfsv7BLB3xX5ZR
+         bSCyO3Fzqe85n6+vWHE4FTUUenfs7tgokWINGXN/MVbAkzqW2txlzbNQzdXg5ke3KzaS
+         tm84T/Erh+aILI8URUqLU4HwuYVl5FWAjHXZxLmi5uQxPufJVBQ+0uWfjsYKOUPApIVN
+         qgyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751117322; x=1751722122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7WL3lDKYi2M4QM/WmNCuiZEoDjKzJbZf9w3+SaIZN3M=;
+        b=TSn8bUNDSkZCSERSOesRGyMe87fPlSfW5FnNRv7z/pbdm6jHtmru/P1TYYbKVPALtx
+         bc4yEjpQrii/TGwj7Lgds6CF3+aZgN2dJ92ozEQoAKZ037Z1HDRvyNb5k5K66HRYBS5O
+         2+BKMgTZ426CoIUGfKcnkIbs8IyMLaK7BjrXrn73w9qJ21bwU80H9J5qlz2B+5Xj4s2K
+         BsLIDK9pQ2Vxmmd7kWQSsGOHQaukUkpqc0ndkTT5YdZFywFLAFORqO6lbCK6LvgF5qH6
+         NzRxSfcqrtLLPOx3dgylsCrYc845bqoLBcwuMAHSY+eLF/zc5vJ9GFmkErxuUxzxFYUu
+         +hdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDWwMxXrd9kFsn943FdjXd2IKlWJsJUPFnxCZfS1JKFrxJ0rVsjvO9xZCBM+uuDpe7tu2xGsIem28KiDk=@vger.kernel.org, AJvYcCUfPvmwp4EG4ipcqFUuncYqGsljENXMZSy+ol+U9eB93uNYHj98oEpb1Gf/up+7QCRIrwt+lAdpeLU=@vger.kernel.org, AJvYcCWU28B/dX4oPMrgQypL1WykBCosRaDof73igSqlv9gYjkAZF2epDnCYICvyBmjsz/YJT2VYbz1EQuCGZJe3ZSQ=@vger.kernel.org, AJvYcCXF6SHMcL50SwJ7hJ3Xi+zrAbNOx348dsCi0jt+FU1AF4+M0PZIc7HizY0tYD7+JssWS2F1nD2IF22nfR5uGmUF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1DaT8CfuTRfTepsKzyCku6J4vbrLH6aw3CG30Kly6LXXroYBU
+	strxNPQ/O2rFvkiQV9WP4D1i0CtBERgKZ0eJDLxZ/Y2UhvHiffuG0dZ/QbT7iGntRgSkszhcSor
+	YI77MeXRuA0v6Ajj1222xhrvIMPE8i60=
+X-Gm-Gg: ASbGncsy7Jt8MF0IUFCKxZfC/Zou6o4kH++KCFPM3IPgYAYM2xPsscN3xHgtlvnrrXW
+	Vri5X0RymG0xsQv1TUSUgSXshlEm8op5/KOi9lhYd+eD/7/N5VV4OarmMvUge2CufkJPGtS2Mks
+	3L0UPhLV6tkumyWjLEowLMwOAL7u6e1M1/VPvvoB4Ier4=
+X-Google-Smtp-Source: AGHT+IHc6wdHVj6IpZsm+aHQxHlCim58v6/HcwGkhWy25SGPfViHk3Es9U5eM3IItHwndHObtV3frrARCnNb42IPH6w=
+X-Received: by 2002:a17:90b:3f50:b0:311:fde5:c4ae with SMTP id
+ 98e67ed59e1d1-318ec431932mr1841270a91.6.1751117321888; Sat, 28 Jun 2025
+ 06:28:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DAY60NP32ZDA.155XFXZ9AOF70@kernel.org>
+References: <20250628040956.2181-1-work@onurozkan.dev> <20250628040956.2181-4-work@onurozkan.dev>
+ <CANiq72kjdj4KbDhfnTbm8jZpLC1+WPB3E6M8D8M2NLnphMs5vg@mail.gmail.com>
+ <20250628133013.703461c8@nimda.home> <CANiq72kY9DA_JD_XkF01ZSmXbD8iaFthVZ66X+9N5aa_WObt+A@mail.gmail.com>
+ <20250628154237.0f367cee@nimda.home> <CANiq72mxJM-7WAP8xVDukmiXq=ntThyFESFLs1+dmZJSS2q60Q@mail.gmail.com>
+ <20250628161117.7786b3a4@nimda.home>
+In-Reply-To: <20250628161117.7786b3a4@nimda.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 28 Jun 2025 15:28:29 +0200
+X-Gm-Features: Ac12FXzaVuWKO4aWMseA1ihBqRgJ54vOY07I6pfAHsieZ7gtsGYmuexr3j1wmCo
+Message-ID: <CANiq72kgB6gQ3+etQOYLLDqWt4EQhiDfN3dcwHBOpZh9USt3iA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] rust: remove `#[allow(clippy::non_send_fields_in_send_ty)]`
+To: Onur <work@onurozkan.dev>
+Cc: viresh.kumar@linaro.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, rafael@kernel.org, gregkh@linuxfoundation.org, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	davidgow@google.com, nm@ti.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 28, 2025 at 02:29:11PM +0200, Benno Lossin wrote:
-> On Sat Jun 28, 2025 at 1:36 PM CEST, Janne Grunau via B4 Relay wrote:
-> > From: Janne Grunau <j@jannau.net>
-> >
-> > The match pattern for a optional trailing comma in the list of generics
-> > is erroneously repeated in the code block resulting in following error:
-> >
-> > | error: attempted to repeat an expression containing no syntax variables matched as repeating at this depth
-> > |    --> rust/kernel/init.rs:301:73
-> > |     |
-> > | 301 |         ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generics),* $(,)?>)? {
-> > |     |                                                                         ^^^
-> >
-> > Remove "$(,)?" from all code blocks in the try_init! and try_pin_init!
-> > definitions.
-> 
-> Oops, that's a good catch! Seems like nobody used the generics before...
+On Sat, Jun 28, 2025 at 3:11=E2=80=AFPM Onur <work@onurozkan.dev> wrote:
+>
+> Aha, I see. I missed that. I guess `allow` was added when the author
+> had this lint enabled on their checkout, but their work was merged when
+> lint removal was merged before that.
 
-Nobody upstream, it's used downstream in the asahi tree.
+Yeah, some of the code going around was written years ago, so
+sometimes this sort of thing happens. :)
 
-> Do you need this to go in as a fix into v6.16, or is it fine if I pick
-> it for v6.17, since it's only a build failure?
+> Do you want me to update the patch description by including
+> 5e7c9b84ad08 ref and send v4?
 
-I don't need it since I have to carry it anyway in the downstream tree
-but I think it would be good idea to fix it in v6.16.
-Since it's in the kernel crate (the macros in pin-init are fine) I'd
-propose that Miguel picks it with other rust fixes.
+Sure -- maybe wait a few days, to see if anyone says anything else.
+Then we will need to wait for Acked-bys from other maintainers.
 
-Janne
+Or, actually, if you are sending a new version and you are willing to
+do it, then it would be easier to land if you split the first patch
+also by subsystem -- that way each maintainer can take their patches
+on their own time instead. Since each patch is independent, you can
+send them in independent patch series, that makes it even easier for
+maintainers to track.
+
+For instance, you could do this grouping:
+
+     rust/kernel/error.rs                | 2 +-
+     rust/kernel/types.rs                | 2 +-
+     rust/macros/helpers.rs              | 2 +-
+     (+ this patch #2)
+
+     rust/kernel/init.rs                 | 6 +++---
+
+     rust/kernel/kunit.rs                | 2 +-
+
+     drivers/gpu/nova-core/regs.rs       | 2 +-
+     rust/kernel/drm/ioctl.rs            | 8 ++++----
+
+     rust/kernel/devres.rs               | 2 +-
+     rust/kernel/driver.rs               | 2 +-
+
+     rust/kernel/alloc/allocator_test.rs | 2 +-
+
+     rust/kernel/opp.rs                  | 4 ++--
+     (+ this patch #3)
+
+So e.g. the top one (Rust) would be a series of 2 patches, then the
+next one (pin-init) a single independent patch, and so on.
+
+> Sorry for misunderstanding by the way!
+
+No worries at all! It happens :)
+
+And thanks for doing these cleanups! They are appreciated.
+
+Cheers,
+Miguel
