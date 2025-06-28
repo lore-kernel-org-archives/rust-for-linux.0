@@ -1,199 +1,227 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A351A23B5;
-	Sat, 28 Jun 2025 06:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D36D23CB;
+	Sat, 28 Jun 2025 06:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751091169; cv=none; b=IegK7UXJHXMgN5Grbcp5xjSEY5eYwsuTnQlWnsnxIJlNdRI56na/j8XWyMSGzg8FT2RfS5fGauzmxHuKLGGpc6E9S9qo5Y80fyuAZgUYEzEa1SlRl+M9wB/tUdVcKGESS3yWtBQykzfb2xgVT8mxX7snFXVlXSXlgkud9K7vMOc=
+	t=1751092735; cv=none; b=AcsLh5AovXZ/NoWymiV+37nS9S0kyjWEjbdOb0Lmm/9MnDFdS9MuKKgxY2SLzLlU0rFWoh8S5KFYkUOG5MmkGK4FU+Okg2xJPkfoVt1Jl7wL7F2Z+0VYtP0z9BRr11JuOt1fDHY561i16QLX7hN9g7bB5JMDoN/ypYM76RmaUDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751091169; c=relaxed/simple;
-	bh=lISQXDWIEw2gFD8C2DEkkUCDzWcx14RFk492z9Yzofg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=MBIC9SvEchWAD866JOk6Yp/NX8NCsTtUb7rxy156zRxFv/+xLYt+BpKCWI5kMxRL2BUCFSv7r0clLmwrqktKbilg9Wh30x4T0gLFqXSNEWAHnJ7SI5zRGu40WMDAcEIuDy//ohDRnCWNArLZcD0bjgZyMsS2/oEmu1JFwdDWiTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FXSBWnaI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751092735; c=relaxed/simple;
+	bh=oP7t6HvsgP8qgMA7aRmI/wAjO9SSAlA+570vBivG8lI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cvIxpZxfvfxPt/WtyrBhE/o+zPzMbvyejdYvZ+FYmPXKnzXxO1hwA7R51KrCyhvQ7ERO4E7cHpNOM4z1wzpX3YKYXWPSsP3Q17deYLjFGkNYeDL/wp9OyJ2FgNTJ6R89TeIkX45t4RU1w3aY0/+qHFnPWcYZJWb5idpYxkG+QWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J3+PMlon; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FXSBWnaI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61C8C4CEEA;
-	Sat, 28 Jun 2025 06:12:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751091168;
-	bh=lISQXDWIEw2gFD8C2DEkkUCDzWcx14RFk492z9Yzofg=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=FXSBWnaIYW5MZgS2KyU58VoAmcvfIBLngBYZjqFqDm/89rda0VI6+yC1rQr6ajLXh
-	 VJwVavPIwvQA3Zmux3gI1oJRRolp4n6qEUdfVoviqJLGK7UY8LN7H43PxUm6e7yfX2
-	 EbYJgf2lUSC1VGFOGJeiedrWdIBh26+gcN+cwb9KzJHtHUHLlJLVgNgBLTbczSZAxy
-	 nFmXtOvwtlqij4rgQkNvrlGuQoGRqsnyCc9ybzRhU/QArRaWSHcE547bUEl2F0YVXq
-	 sibg5akYE5/THI1KyUoz5/rEBo2BAq6j9v1lpd2++BGtAv2vtXTKJIREDhMjeWs85f
-	 FImQwi209L8Jg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J3+PMlon"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7d44e4d248dso28837185a.2;
+        Fri, 27 Jun 2025 23:38:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751092733; x=1751697533; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tOUJ6GG0uLmctREkF28ijNPjBM4EJ3ix2IGOKO6Y/9g=;
+        b=J3+PMlonaEHLmV7F0MAnXR4fqAC0+5lkmQBgNKUt6CCYbnxTTuVxrG9ANJnSCEisFL
+         QKROvUpiKr0v7+n5BRQzAX78CeEtWc8h20/G4RWyccDOYb41Bz+OXouzDmTQdfCSHJNs
+         8Jgs2vAh2HMGGyIXC/5fe5hRt1gU8ej5nLe8pg+bQte+lMoIqJ+PW0dxA7ERsWmmC8cv
+         g75Gx58590lSf8LSx8kqGyZyr9saxzZ2FGV0GWxFZT51COzlY8meGHB4P0bJdIO+9hD4
+         M1hiD3owF77JLw+/02qPQxkxoSxLJVBj9zGwoIAZCgCbCBm6kNH06IvRXTuRj8LCEszU
+         f1hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751092733; x=1751697533;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tOUJ6GG0uLmctREkF28ijNPjBM4EJ3ix2IGOKO6Y/9g=;
+        b=tOqTrANKm9O2M46PsdR+kT0VOXdySmmPYfrg6pTGy6VEx2yNHQQBIT8OC5U+Jqg7rw
+         HXdOr/alr1Kgcl8Kcb6sKQ/flO7yNFFbSLpDOQgeyIRtincEfsM0sg1tWzjlncv5PgYB
+         lWuu0X7XsKjfaMDwAir5xVZgHy8xLs/33ZNebR7udUjaUmK0sMYLI77AXUAa0kCGoaip
+         zQst/j09WksQPCMHXieN0ATy8wAEeApr8xNKwj/URDSZ2eMhkT/KaJu0HTvxnLcpTKkJ
+         L0WyoNOk4jbrH77culM4VOmSGgXfMA4b/bzEF8H5U0NVuOGXb6PQeqd95MOEyLhD4kIr
+         KF5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUj2CKYRJl1PqGRCfcFFKDS1udIHF3rlXFpUhPIoEzBTG1j6iSOvI5toPk1b7nnu1xi6CGuJli2zXcm/MU=@vger.kernel.org, AJvYcCWUK6GdOF+VLLi+BgeDpbCCSvxX0DD8QBiaYt+6FGsHKe5G+jCG2UKqxVXN1pETMfHY+s+72GrtGSU2oLBtC5k=@vger.kernel.org, AJvYcCXmg8ZAse2jzbudDJiiGYPubJZE2YxQP59hfcN7CYea9JjXYrFrGGSPjQRMdUI+bx/f0EbM0mByvtC5@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxp0miAnso7ik6GDQqHYpsWyvu72kFQP328g4Uj5ZwqJB/mt/3R
+	ZqF5THYIpv0yp07mWy98Xg/9GOT+bEvOd0825M1gPKYfiveZjYSI/BuH
+X-Gm-Gg: ASbGnctiEAI/xU8fhyprlzbcJe3EOXlnqpzp3HznTHoyyDFwchkZnydxmkPrBWYzsD5
+	PpqZGgag9B6sM1plgye4mQ7yfAA3FS1ZUeZMcXGJMfqT+wqtjtgQcwvHmIwgvqDZ57O6ipx+itV
+	09Ubenrc9Gf3bGSgObTOTLgqZlDJQmiDxpywqP6WT86fiA1VXKmOxghDPa0ti3wqzKiEXLKEHZU
+	Nz2/o4DOfIvaH5LsK3EHwqKNLcAXLw7Gh9hZQoR0WAN/o++arxQl1Qg8O939H+HcfEAM30Kx0wE
+	gxpHoPKB8Fm4MTHNnL+UQf8s5gXct03/3ShbB47m3vZZPpUf3oZNd/7NIAKgV5ILlWRTgLtTV0Y
+	Wth1Q4/8btPnvtmUZzWENZudOOsxAIZxjkZfNlGGOZBdDJ8g+BeZR
+X-Google-Smtp-Source: AGHT+IF1l4FCRN2WC8+UznV02+AE7WkwSTpaR1igKVCjG0nL2GptpUjVG/DtOcLWj3kdaWRr1N4AKg==
+X-Received: by 2002:a05:620a:3728:b0:7d0:9ffd:422f with SMTP id af79cd13be357-7d44398fde2mr1172154385a.54.1751092732776;
+        Fri, 27 Jun 2025 23:38:52 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd7730acf9sm32823886d6.108.2025.06.27.23.38.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jun 2025 23:38:52 -0700 (PDT)
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8F04DF40066;
+	Sat, 28 Jun 2025 02:38:51 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Sat, 28 Jun 2025 02:38:51 -0400
+X-ME-Sender: <xms:-41faG0-kWIJzm5yT21BmJs4d3U1CqEAgeS1P6e-Pe94G0PiRUp49Q>
+    <xme:-41faJGeX9DQfK7tNTUlYrmE_Arz_Rn4VyEXJf6AqtnttmXu-4UI8Ey0IOHP7w27f
+    lsxuQ5-Y0Zbr9aJVA>
+X-ME-Received: <xmr:-41faO4hOYTRCmaVsbe1Wjiux84pMpHbxVu4N-3Akf2oy4gTiCmklrqfaQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehvdegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
+    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
+    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
+    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
+    hnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffeivden
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
+    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
+    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
+    hnrghmvgdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurght
+    ihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhg
+    rgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuoh
+    drnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtgho
+    mhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:-41faH2yGpGQN7L07QCk5ppI52ZB9eHWCexYbh0k4zDA1x37RPQ2sA>
+    <xmx:-41faJEROvLyfcQ00eX_msvJvnkOkQr6ZsgF1HTZq1uJGEMGy5QllQ>
+    <xmx:-41faA9dFL_EmRz4K7lMzknzspf1yHAtIAfLAyAGsJ5vwnvuOIf1ug>
+    <xmx:-41faOmquOV7ekifBdniIscEd5YA_-g4JlFGURvmvVymqrATmgy_Dw>
+    <xmx:-41faBHoql482q28AqBkAs8TQO91XF1OClzS2THeugUwXK-z_RpiLKTT>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 28 Jun 2025 02:38:51 -0400 (EDT)
+Date: Fri, 27 Jun 2025 23:38:50 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, david.m.ertman@intel.com,
+	ira.weiny@intel.com, leon@kernel.org, kwilczynski@kernel.org,
+	bhelgaas@google.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v4 5/5] rust: devres: implement register_release()
+Message-ID: <aF-N-luMxFTurl91@Mac.home>
+References: <20250626200054.243480-1-dakr@kernel.org>
+ <20250626200054.243480-6-dakr@kernel.org>
+ <aF2vgthQlNA3BsCD@tardis.local>
+ <aF2yA9TbeIrTg-XG@cassiopeiae>
+ <DAWULS8SIOXS.1O4PLL2WCLX74@kernel.org>
+ <aF8V8hqUzjdZMZNe@tardis.local>
+ <DAXXVXNTRLYH.1B8O2LKBF4EW1@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Jun 2025 08:12:42 +0200
-Message-Id: <DAXY0EJHHDWM.1KRSSJLOTCZ8F@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
-Subject: Re: [PATCH v5 05/10] rust: sync: atomic: Add atomic {cmp,}xchg
- operations
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <20250618164934.19817-6-boqun.feng@gmail.com>
- <DAX6WZ87S99G.1CMIN6IQXJYPL@kernel.org> <aF6iXB6wiHcpAKIU@Mac.home>
-In-Reply-To: <aF6iXB6wiHcpAKIU@Mac.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DAXXVXNTRLYH.1B8O2LKBF4EW1@kernel.org>
 
-On Fri Jun 27, 2025 at 3:53 PM CEST, Boqun Feng wrote:
-> On Fri, Jun 27, 2025 at 10:58:43AM +0200, Benno Lossin wrote:
->> On Wed Jun 18, 2025 at 6:49 PM CEST, Boqun Feng wrote:
->> > +impl<T: AllowAtomic> Atomic<T>
->> > +where
->> > +    T::Repr: AtomicHasXchgOps,
->> > +{
->> > +    /// Atomic exchange.
->> > +    ///
->> > +    /// # Examples
->> > +    ///
->> > +    /// ```rust
->> > +    /// use kernel::sync::atomic::{Atomic, Acquire, Relaxed};
->> > +    ///
->> > +    /// let x =3D Atomic::new(42);
->> > +    ///
->> > +    /// assert_eq!(42, x.xchg(52, Acquire));
->> > +    /// assert_eq!(52, x.load(Relaxed));
->> > +    /// ```
->> > +    #[doc(alias("atomic_xchg", "atomic64_xchg"))]
->> > +    #[inline(always)]
->> > +    pub fn xchg<Ordering: All>(&self, v: T, _: Ordering) -> T {
->>=20
->> Can we name this `exchange`?
->>=20
->
-> FYI, in Rust std, this operation is called `swap()`, what's the reason
-> of using a name that is neither the Rust convention nor Linux kernel
-> convention?
+On Sat, Jun 28, 2025 at 08:06:52AM +0200, Benno Lossin wrote:
+> On Sat Jun 28, 2025 at 12:06 AM CEST, Boqun Feng wrote:
+> > On Fri, Jun 27, 2025 at 01:19:53AM +0200, Benno Lossin wrote:
+> >> On Thu Jun 26, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
+> >> > On Thu, Jun 26, 2025 at 01:37:22PM -0700, Boqun Feng wrote:
+> >> >> On Thu, Jun 26, 2025 at 10:00:43PM +0200, Danilo Krummrich wrote:
+> >> >> > +/// [`Devres`]-releaseable resource.
+> >> >> > +///
+> >> >> > +/// Register an object implementing this trait with [`register_release`]. Its `release`
+> >> >> > +/// function will be called once the device is being unbound.
+> >> >> > +pub trait Release {
+> >> >> > +    /// The [`ForeignOwnable`] pointer type consumed by [`register_release`].
+> >> >> > +    type Ptr: ForeignOwnable;
+> >> >> > +
+> >> >> > +    /// Called once the [`Device`] given to [`register_release`] is unbound.
+> >> >> > +    fn release(this: Self::Ptr);
+> >> >> > +}
+> >> >> > +
+> >> >> 
+> >> >> I would like to point out the limitation of this design, say you have a
+> >> >> `Foo` that can ipml `Release`, with this, I think you could only support
+> >> >> either `Arc<Foo>` or `KBox<Foo>`. You cannot support both as the input
+> >> >> for `register_release()`. Maybe we want:
+> >> >> 
+> >> >>     pub trait Release<Ptr: ForeignOwnable> {
+> >> >>         fn release(this: Ptr);
+> >> >>     }
+> >> >
+> >> > Good catch! I think this wasn't possible without ForeignOwnable::Target.
+> >> 
+> >> Hmm do we really need that? Normally you either store a type in a shared
+> >
+> > I think it might be quite common, for example, `Foo` may be a general
+> > watchdog for a subsystem, for one driver, there might be multiple
+> > devices that could feed the dog, for another driver, there might be only
+> > one. For the first case we need Arc<Watchdog> or the second we can do
+> > Box<Watchdog>.
+> 
+> I guess then the original `&self` design is better? Not sure...
+> 
 
-Ah, well then my suggestion would be `swap()` instead :)
+This is what you said in v3:
 
-> As for naming, the reason I choose xchg() and cmpxchg() is because they
-> are the name LKMM uses for a long time, to use another name, we have to
-> have a very good reason to do so and I don't see a good reason
-> that the other names are better, especially, in our memory model, we use
-> xchg() and cmpxchg() a lot, and they are different than Rust version
-> where you can specify orderings separately. Naming LKMM xchg()/cmpxchg()
-> would cause more confusion I believe.
+"""
+and then `register_release` is:
 
-I'm just not used to the name shortening from the kernel... I think it's
-fine to use them especially since the ordering parameters differ from
-std's atomics.
+    pub fn register_release<T: Release>(dev: &Device<Bound>, data: T::Ptr) -> Result
 
-Can you add aliases for the Rust names?
+This way, one can store a `Box<T>` and get access to the `T` at the end.
+Or if they store the value in an `Arc<T>`, they have the option to clone
+it and give it to somewhere else.
+"""
 
-> Same answer for compare_exchange() vs cmpxchg().
->
->> > +        let v =3D T::into_repr(v);
->> > +        let a =3D self.as_ptr().cast::<T::Repr>();
->> > +
->> > +        // SAFETY:
->> > +        // - For calling the atomic_xchg*() function:
->> > +        //   - `self.as_ptr()` is a valid pointer, and per the safety=
- requirement of `AllocAtomic`,
->> > +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` i=
-s a valid pointer,
->> > +        //   - per the type invariants, the following atomic operatio=
-n won't cause data races.
->> > +        // - For extra safety requirement of usage on pointers return=
-ed by `self.as_ptr():
->> > +        //   - atomic operations are used here.
->> > +        let ret =3D unsafe {
->> > +            match Ordering::TYPE {
->> > +                OrderingType::Full =3D> T::Repr::atomic_xchg(a, v),
->> > +                OrderingType::Acquire =3D> T::Repr::atomic_xchg_acqui=
-re(a, v),
->> > +                OrderingType::Release =3D> T::Repr::atomic_xchg_relea=
-se(a, v),
->> > +                OrderingType::Relaxed =3D> T::Repr::atomic_xchg_relax=
-ed(a, v),
->> > +            }
->> > +        };
->> > +
->> > +        T::from_repr(ret)
->> > +    }
->> > +
->> > +    /// Atomic compare and exchange.
->> > +    ///
->> > +    /// Compare: The comparison is done via the byte level comparison=
- between the atomic variables
->> > +    /// with the `old` value.
->> > +    ///
->> > +    /// Ordering: When succeeds, provides the corresponding ordering =
-as the `Ordering` type
->> > +    /// parameter indicates, and a failed one doesn't provide any ord=
-ering, the read part of a
->> > +    /// failed cmpxchg should be treated as a relaxed read.
->>=20
->> This is a bit confusing to me. The operation has a store and a load
->> operation and both can have different orderings (at least in Rust
->> userland) depending on the success/failure of the operation. In
->> userland, I can supply `AcqRel` and `Acquire` to ensure that I always
->> have Acquire semantics on any read and `Release` semantics on any write
->> (which I would think is a common case). How do I do this using your API?
->>=20
->
-> Usually in kernel that means in a failure case you need to use a barrier
-> afterwards, for example:
->
-> 	if (old !=3D cmpxchg(v, old, new)) {
-> 		smp_mb();
-> 		// ^ following memory operations are ordered against.
-> 	}
+I think that's the reason why we think the current version (the
+associate type design) is better than `&self`?
 
-Do we already have abstractions for those?
+The generic type design (i.e. Release<P: ForeignOwnable>) just further
+allows this "different behaviors between Box and Arc" for the same type
+T. I think it's a natural extension of the current design and provides
+some better flexibility.
 
->> Don't I need `Acquire` semantics on the read in order for
->> `compare_exchange` to give me the correct behavior in this example:
->>=20
->>     pub struct Foo {
->>         data: Atomic<u64>,
->>         new: Atomic<bool>,
->>         ready: Atomic<bool>,
->>     }
->>=20
->>     impl Foo {
->>         pub fn new() -> Self {
->>             Self {
->>                 data: Atomic::new(0),
->>                 new: Atomic::new(false),
->>                 ready: Atomic::new(false),
->>             }
->>         }
->>=20
->>         pub fn get(&self) -> Option<u64> {
->>             if self.new.compare_exchange(true, false, Release).is_ok() {
->
-> You should use `Full` if you want AcqRel-like behavior when succeed.
+> > What's the downside?
+> 
+> You'll need to implement `Release` twice:
+> 
 
-I think it would be pretty valuable to document this. Also any other
-"direct" translations from the Rust memory model are useful. For example
-is `SeqCst` "equivalent" to `Full`?
+Only if you need to support both for `Foo`, right? You can impl only one
+if you only need one.
 
----
-Cheers,
-Benno
+Also you can do:
+
+    impl<P: ForeignOwnable<Target=Foo> + Deref<Target=Foo>> Release<P> for Foo {
+        fn release(this: P) {
+	    this.deref().do_sth();
+	}
+    }
+
+if you want Box and Arc case share the similar behavior, right?
+
+>     impl Release<Box<Self>> for Foo {
+>         fn release(this: Box<Self>) {
+>             /* ... */
+>         }
+>     }
+> 
+>     impl Release<Arc<Self>> for Foo {
+>         fn release(this: Arc<Self>) {
+>             /* ... */
+>         }
+>     }
+> 
+> This also means that you can have different behavior for `Box` and
+> `Arc`...
+
+That's the point, as one of the benefits you mentioned above for the
+associate type design, just extending it to the same type.
+
+Regards,
+Boqun
+
+> 
+> ---
+> Cheers,
+> Benno
