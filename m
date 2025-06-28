@@ -1,227 +1,101 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D36D23CB;
-	Sat, 28 Jun 2025 06:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9A28635D;
+	Sat, 28 Jun 2025 07:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751092735; cv=none; b=AcsLh5AovXZ/NoWymiV+37nS9S0kyjWEjbdOb0Lmm/9MnDFdS9MuKKgxY2SLzLlU0rFWoh8S5KFYkUOG5MmkGK4FU+Okg2xJPkfoVt1Jl7wL7F2Z+0VYtP0z9BRr11JuOt1fDHY561i16QLX7hN9g7bB5JMDoN/ypYM76RmaUDM=
+	t=1751094846; cv=none; b=Swp8U7KC9HGo35TDxusYexhm2AmGQt1d/ottYfljluYi63XzlInFZ9gTzXEnXQpytWu3SzkpGi4016/DvP21jCE7uxxOnLldDtLEhzshVC1tr2nfIC5vALG06SHzuGQHkXVu15t+bWQbZS2SlJNo2KHmYNvsBmaskwsEzwIjIIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751092735; c=relaxed/simple;
-	bh=oP7t6HvsgP8qgMA7aRmI/wAjO9SSAlA+570vBivG8lI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cvIxpZxfvfxPt/WtyrBhE/o+zPzMbvyejdYvZ+FYmPXKnzXxO1hwA7R51KrCyhvQ7ERO4E7cHpNOM4z1wzpX3YKYXWPSsP3Q17deYLjFGkNYeDL/wp9OyJ2FgNTJ6R89TeIkX45t4RU1w3aY0/+qHFnPWcYZJWb5idpYxkG+QWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J3+PMlon; arc=none smtp.client-ip=209.85.222.181
+	s=arc-20240116; t=1751094846; c=relaxed/simple;
+	bh=H1N2WeCN9Ubm4R/1tsb3yfHGSgMXi8Z9AP4UNGlOFfw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rO7VX5D6/bOL4XxFDpJiuFseq/Xw8tOYROHTMQwVYFTt5q96GuV5rICcdrXEFT0yMwDeCSKujMAF5JC22UGq09uvzii/0vN7LI8dANngERL/CNW548mFp4TlZPDw2mong3SaJELbYC0aKxODsVfjKIouzJDeTttRVCE44MtvCno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jFGSgN/E; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J3+PMlon"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7d44e4d248dso28837185a.2;
-        Fri, 27 Jun 2025 23:38:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jFGSgN/E"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-313fab41fd5so574963a91.1;
+        Sat, 28 Jun 2025 00:14:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751092733; x=1751697533; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1751094844; x=1751699644; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tOUJ6GG0uLmctREkF28ijNPjBM4EJ3ix2IGOKO6Y/9g=;
-        b=J3+PMlonaEHLmV7F0MAnXR4fqAC0+5lkmQBgNKUt6CCYbnxTTuVxrG9ANJnSCEisFL
-         QKROvUpiKr0v7+n5BRQzAX78CeEtWc8h20/G4RWyccDOYb41Bz+OXouzDmTQdfCSHJNs
-         8Jgs2vAh2HMGGyIXC/5fe5hRt1gU8ej5nLe8pg+bQte+lMoIqJ+PW0dxA7ERsWmmC8cv
-         g75Gx58590lSf8LSx8kqGyZyr9saxzZ2FGV0GWxFZT51COzlY8meGHB4P0bJdIO+9hD4
-         M1hiD3owF77JLw+/02qPQxkxoSxLJVBj9zGwoIAZCgCbCBm6kNH06IvRXTuRj8LCEszU
-         f1hQ==
+        bh=H1N2WeCN9Ubm4R/1tsb3yfHGSgMXi8Z9AP4UNGlOFfw=;
+        b=jFGSgN/EQnUgnTN4l/bHq52+0ntt7f7YgHsbsqSZsSW0kw0/Ju+hP9RhLzsF+SLTBP
+         h03ajTPMrZPRfppirgUPHEWrpUorGQ+rJv8p6BUGaZ0zKuFfPXvivAK3SuA+bsxWAEz6
+         MrmsT6t0/iMNvBGSCFYIoMuUsWaeKLHwtCTMVNiqHxnxaIerKot4HJZIWeZ/kFBOeUp4
+         Jf6QfHr/VshT9ZkVJ1R+7F0v/LCujOmTEWbL0QpehP8N49V9djidIaLquc2PeHGnYgfz
+         lxzvdfc0bGdLNYDW1C2c9Pc0H67jS0CZEf5ga1mhHO+WU/Yzcb69kG9oMlxdK3+j/TcU
+         A7Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751092733; x=1751697533;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1751094844; x=1751699644;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tOUJ6GG0uLmctREkF28ijNPjBM4EJ3ix2IGOKO6Y/9g=;
-        b=tOqTrANKm9O2M46PsdR+kT0VOXdySmmPYfrg6pTGy6VEx2yNHQQBIT8OC5U+Jqg7rw
-         HXdOr/alr1Kgcl8Kcb6sKQ/flO7yNFFbSLpDOQgeyIRtincEfsM0sg1tWzjlncv5PgYB
-         lWuu0X7XsKjfaMDwAir5xVZgHy8xLs/33ZNebR7udUjaUmK0sMYLI77AXUAa0kCGoaip
-         zQst/j09WksQPCMHXieN0ATy8wAEeApr8xNKwj/URDSZ2eMhkT/KaJu0HTvxnLcpTKkJ
-         L0WyoNOk4jbrH77culM4VOmSGgXfMA4b/bzEF8H5U0NVuOGXb6PQeqd95MOEyLhD4kIr
-         KF5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUj2CKYRJl1PqGRCfcFFKDS1udIHF3rlXFpUhPIoEzBTG1j6iSOvI5toPk1b7nnu1xi6CGuJli2zXcm/MU=@vger.kernel.org, AJvYcCWUK6GdOF+VLLi+BgeDpbCCSvxX0DD8QBiaYt+6FGsHKe5G+jCG2UKqxVXN1pETMfHY+s+72GrtGSU2oLBtC5k=@vger.kernel.org, AJvYcCXmg8ZAse2jzbudDJiiGYPubJZE2YxQP59hfcN7CYea9JjXYrFrGGSPjQRMdUI+bx/f0EbM0mByvtC5@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxp0miAnso7ik6GDQqHYpsWyvu72kFQP328g4Uj5ZwqJB/mt/3R
-	ZqF5THYIpv0yp07mWy98Xg/9GOT+bEvOd0825M1gPKYfiveZjYSI/BuH
-X-Gm-Gg: ASbGnctiEAI/xU8fhyprlzbcJe3EOXlnqpzp3HznTHoyyDFwchkZnydxmkPrBWYzsD5
-	PpqZGgag9B6sM1plgye4mQ7yfAA3FS1ZUeZMcXGJMfqT+wqtjtgQcwvHmIwgvqDZ57O6ipx+itV
-	09Ubenrc9Gf3bGSgObTOTLgqZlDJQmiDxpywqP6WT86fiA1VXKmOxghDPa0ti3wqzKiEXLKEHZU
-	Nz2/o4DOfIvaH5LsK3EHwqKNLcAXLw7Gh9hZQoR0WAN/o++arxQl1Qg8O939H+HcfEAM30Kx0wE
-	gxpHoPKB8Fm4MTHNnL+UQf8s5gXct03/3ShbB47m3vZZPpUf3oZNd/7NIAKgV5ILlWRTgLtTV0Y
-	Wth1Q4/8btPnvtmUZzWENZudOOsxAIZxjkZfNlGGOZBdDJ8g+BeZR
-X-Google-Smtp-Source: AGHT+IF1l4FCRN2WC8+UznV02+AE7WkwSTpaR1igKVCjG0nL2GptpUjVG/DtOcLWj3kdaWRr1N4AKg==
-X-Received: by 2002:a05:620a:3728:b0:7d0:9ffd:422f with SMTP id af79cd13be357-7d44398fde2mr1172154385a.54.1751092732776;
-        Fri, 27 Jun 2025 23:38:52 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd7730acf9sm32823886d6.108.2025.06.27.23.38.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Jun 2025 23:38:52 -0700 (PDT)
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8F04DF40066;
-	Sat, 28 Jun 2025 02:38:51 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sat, 28 Jun 2025 02:38:51 -0400
-X-ME-Sender: <xms:-41faG0-kWIJzm5yT21BmJs4d3U1CqEAgeS1P6e-Pe94G0PiRUp49Q>
-    <xme:-41faJGeX9DQfK7tNTUlYrmE_Arz_Rn4VyEXJf6AqtnttmXu-4UI8Ey0IOHP7w27f
-    lsxuQ5-Y0Zbr9aJVA>
-X-ME-Received: <xmr:-41faO4hOYTRCmaVsbe1Wjiux84pMpHbxVu4N-3Akf2oy4gTiCmklrqfaQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehvdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceurghi
-    lhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurh
-    epfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcuhfgv
-    nhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtthgvrh
-    hnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueevieduffeivden
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquh
-    hnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudej
-    jeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggrkhhrsehkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurght
-    ihhonhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhg
-    rgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuoh
-    drnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtgho
-    mhdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:-41faH2yGpGQN7L07QCk5ppI52ZB9eHWCexYbh0k4zDA1x37RPQ2sA>
-    <xmx:-41faJEROvLyfcQ00eX_msvJvnkOkQr6ZsgF1HTZq1uJGEMGy5QllQ>
-    <xmx:-41faA9dFL_EmRz4K7lMzknzspf1yHAtIAfLAyAGsJ5vwnvuOIf1ug>
-    <xmx:-41faOmquOV7ekifBdniIscEd5YA_-g4JlFGURvmvVymqrATmgy_Dw>
-    <xmx:-41faBHoql482q28AqBkAs8TQO91XF1OClzS2THeugUwXK-z_RpiLKTT>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 28 Jun 2025 02:38:51 -0400 (EDT)
-Date: Fri, 27 Jun 2025 23:38:50 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, david.m.ertman@intel.com,
-	ira.weiny@intel.com, leon@kernel.org, kwilczynski@kernel.org,
-	bhelgaas@google.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] rust: devres: implement register_release()
-Message-ID: <aF-N-luMxFTurl91@Mac.home>
-References: <20250626200054.243480-1-dakr@kernel.org>
- <20250626200054.243480-6-dakr@kernel.org>
- <aF2vgthQlNA3BsCD@tardis.local>
- <aF2yA9TbeIrTg-XG@cassiopeiae>
- <DAWULS8SIOXS.1O4PLL2WCLX74@kernel.org>
- <aF8V8hqUzjdZMZNe@tardis.local>
- <DAXXVXNTRLYH.1B8O2LKBF4EW1@kernel.org>
+        bh=H1N2WeCN9Ubm4R/1tsb3yfHGSgMXi8Z9AP4UNGlOFfw=;
+        b=Ll6hEUZEH4+bQfTf73zHxWerFraO6WJjTxqqojYER63ek3uFaKtq9dtiKC3rFjZyoz
+         TUiAMNs+LRYbK1q4cU/CuZ1Qle46BEkRgk7qAr8U/xTyE4psV18lkv+UvkwAKuDkJW5s
+         L8NoEW7yUkAwuMDqC0OslF32H5FHBdGGoj4wGOFycUx43O5/0Qo8QQglDioLER6Nbsyj
+         Wo01c7Pp6amjCjqhfdEvkJNY7bNmhT8QECECN28p8vBx98j9IIlusDU19PcD4YnYe+z0
+         0qX8Jsagh9CkM0gr0b7zu/xd4gp/SD02fxokXTtHBLArWxNA+5CIc89K6HlH8D2vWkH9
+         w3Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCUludUmhBYeY8jNJN5B7M6U70zgEiRY+NRY7N06YKsz6isZIdC2PgKBFYRF23T3p4dVw1vf9frSaOo7kXs=@vger.kernel.org, AJvYcCVGq9GN0zkmLEqOz8nCgCjkRpJsWzEKkp1iHCPuChSaXszYYqaCrBOk0YbK379D9lNmAX/tQUv06ac=@vger.kernel.org, AJvYcCXL4a+cl/rEUOC/Ocy82JgZ05Wza34XMgR+gBb4g+I73lUH1zFHf2SotHKS7A87/EF41y8SufW9qFjt5SlEsPix@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzLoUg/Cvl5pLuMAupUp5UrpwyftinLY+WycdggmHXUADlIvDX
+	B2uhHPyVf4R/nNuxINslFrplR1xofWGoJs0hnK3a6W4e8dAyvFnmS1MjdUmCAq7KGQn9VNTjIdP
+	D4kAHJPghF0ETJBPh9EpOtcIIY1hk10A=
+X-Gm-Gg: ASbGncu568OUf0eGxl9mau9hmpQ9Z5vmNor26iXaO0ycsdVr7iGXXY5OHhiKWDNTjzL
+	WsrEZU7cFGlCTKZ5oBF1xElKvCYBFMpPxRk+8xnnmdA0SNHHAotEQjJgd0OG2EYnc87e2P7xILQ
+	a6pIQwLHsrQMc96sG7HXLW3ab3YKhEQLsRWI5mLEq1BwhTmpb5CZiRtg==
+X-Google-Smtp-Source: AGHT+IEiaOH6ajuLpwpwZz2av1oq2F3csYt/I+OBbc6IxDRF5jDVIWZ0gicRa6bCrZYV0QOxsk9yQObhR6Jo8uBU1pg=
+X-Received: by 2002:a17:90b:2e4d:b0:311:e8cc:4250 with SMTP id
+ 98e67ed59e1d1-318ec4117d4mr1196429a91.3.1751094844258; Sat, 28 Jun 2025
+ 00:14:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DAXXVXNTRLYH.1B8O2LKBF4EW1@kernel.org>
+References: <20250628040956.2181-1-work@onurozkan.dev> <20250628040956.2181-4-work@onurozkan.dev>
+In-Reply-To: <20250628040956.2181-4-work@onurozkan.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 28 Jun 2025 09:13:50 +0200
+X-Gm-Features: Ac12FXwmmYcafnkojfcG5S_KqGaI7dG-A-bId82UJsz_kOdPdtwmEEpPMVImX7I
+Message-ID: <CANiq72kjdj4KbDhfnTbm8jZpLC1+WPB3E6M8D8M2NLnphMs5vg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] rust: remove `#[allow(clippy::non_send_fields_in_send_ty)]`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, airlied@gmail.com, simona@ffwll.ch, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	rafael@kernel.org, viresh.kumar@linaro.org, gregkh@linuxfoundation.org, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	davidgow@google.com, nm@ti.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 28, 2025 at 08:06:52AM +0200, Benno Lossin wrote:
-> On Sat Jun 28, 2025 at 12:06 AM CEST, Boqun Feng wrote:
-> > On Fri, Jun 27, 2025 at 01:19:53AM +0200, Benno Lossin wrote:
-> >> On Thu Jun 26, 2025 at 10:48 PM CEST, Danilo Krummrich wrote:
-> >> > On Thu, Jun 26, 2025 at 01:37:22PM -0700, Boqun Feng wrote:
-> >> >> On Thu, Jun 26, 2025 at 10:00:43PM +0200, Danilo Krummrich wrote:
-> >> >> > +/// [`Devres`]-releaseable resource.
-> >> >> > +///
-> >> >> > +/// Register an object implementing this trait with [`register_release`]. Its `release`
-> >> >> > +/// function will be called once the device is being unbound.
-> >> >> > +pub trait Release {
-> >> >> > +    /// The [`ForeignOwnable`] pointer type consumed by [`register_release`].
-> >> >> > +    type Ptr: ForeignOwnable;
-> >> >> > +
-> >> >> > +    /// Called once the [`Device`] given to [`register_release`] is unbound.
-> >> >> > +    fn release(this: Self::Ptr);
-> >> >> > +}
-> >> >> > +
-> >> >> 
-> >> >> I would like to point out the limitation of this design, say you have a
-> >> >> `Foo` that can ipml `Release`, with this, I think you could only support
-> >> >> either `Arc<Foo>` or `KBox<Foo>`. You cannot support both as the input
-> >> >> for `register_release()`. Maybe we want:
-> >> >> 
-> >> >>     pub trait Release<Ptr: ForeignOwnable> {
-> >> >>         fn release(this: Ptr);
-> >> >>     }
-> >> >
-> >> > Good catch! I think this wasn't possible without ForeignOwnable::Target.
-> >> 
-> >> Hmm do we really need that? Normally you either store a type in a shared
-> >
-> > I think it might be quite common, for example, `Foo` may be a general
-> > watchdog for a subsystem, for one driver, there might be multiple
-> > devices that could feed the dog, for another driver, there might be only
-> > one. For the first case we need Arc<Watchdog> or the second we can do
-> > Box<Watchdog>.
-> 
-> I guess then the original `&self` design is better? Not sure...
-> 
+On Sat, Jun 28, 2025 at 6:10=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
+>
+> Clippy no longer complains about this lint.
 
-This is what you said in v3:
+Do you have more context? For instance, do you know since when it no
+longer complains, or why was the reason for the change? i.e. why we
+had the `allow` in the first place, so that we know we don't need it
+anymore?
 
-"""
-and then `register_release` is:
+For instance, please how I reasoned about it in commit 5e7c9b84ad08
+("rust: sync: remove unneeded
+`#[allow(clippy::non_send_fields_in_send_ty)]`").
 
-    pub fn register_release<T: Release>(dev: &Device<Bound>, data: T::Ptr) -> Result
+(It may happen to be the same reason, or not.)
 
-This way, one can store a `Box<T>` and get access to the `T` at the end.
-Or if they store the value in an `Arc<T>`, they have the option to clone
-it and give it to somewhere else.
-"""
+Thanks!
 
-I think that's the reason why we think the current version (the
-associate type design) is better than `&self`?
-
-The generic type design (i.e. Release<P: ForeignOwnable>) just further
-allows this "different behaviors between Box and Arc" for the same type
-T. I think it's a natural extension of the current design and provides
-some better flexibility.
-
-> > What's the downside?
-> 
-> You'll need to implement `Release` twice:
-> 
-
-Only if you need to support both for `Foo`, right? You can impl only one
-if you only need one.
-
-Also you can do:
-
-    impl<P: ForeignOwnable<Target=Foo> + Deref<Target=Foo>> Release<P> for Foo {
-        fn release(this: P) {
-	    this.deref().do_sth();
-	}
-    }
-
-if you want Box and Arc case share the similar behavior, right?
-
->     impl Release<Box<Self>> for Foo {
->         fn release(this: Box<Self>) {
->             /* ... */
->         }
->     }
-> 
->     impl Release<Arc<Self>> for Foo {
->         fn release(this: Arc<Self>) {
->             /* ... */
->         }
->     }
-> 
-> This also means that you can have different behavior for `Box` and
-> `Arc`...
-
-That's the point, as one of the benefits you mentioned above for the
-associate type design, just extending it to the same type.
-
-Regards,
-Boqun
-
-> 
-> ---
-> Cheers,
-> Benno
+Cheers,
+Miguel
