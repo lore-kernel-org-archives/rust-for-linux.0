@@ -1,385 +1,95 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F824A08;
-	Sat, 28 Jun 2025 00:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751069618; cv=pass; b=NS9ajSr8k01zasylSmYfzOgW7eMnT1wExwNSZyiSksGEeuWbJqmI7B2GKXLy7tdGg/PO7NyW4h8umJcybVTgwW9O440CVoauNpa2ady49fiRofgwnJI5j4b2Qqs7RVyeVvJoDzJAzMXEldHTqf7uC0ltuoB+nknSNi3h/5xCLK8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751069618; c=relaxed/simple;
-	bh=MR3mgJVR9hWjT8RT1DnLxhQrmjwNcavTbOK6stqADRc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=V/+rEvucamcK8Y++Nh0bpNfOLfMhGd3rqiTIsJPf7AUKv1oISnYPU3iOBoaCVt90RhQfJAJnvTLR50JzCVjAvvYR9KcifFNU+RZdJTiisKd6JhX+1yfnF5HkevArIWOYYv46jtG0UB7/LNgWq69oGdGVyGCc2CvGuXqRQOaDP4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=dTvkq1SD; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4EE1A3177;
+	Sat, 28 Jun 2025 02:34:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751078080; cv=none; b=n/Nt7TkJVeMfGMUd9te+LYNXkdyTFhBxw9q/5jP++TqsRiMqhJmGqkNR+6DoqhFdU7yKgHfSHkwCc90PR6FHFfWEcBVOoh9hMZtiE/ribgL/SIRxyh8V/fg6K/64eSDT38yTVCsMTQg66NKhv8Jc5YyiN94rX9BFDF73kRzn5Q0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751078080; c=relaxed/simple;
+	bh=bUMjV42AAnUZwQesaTICI2r5JpnBLWkb6qGG/pPC7oo=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=BL85gW0kh57jShdiMEZgB9XW8oIFp8fXgjK4HQXnkzT1LugSn3FNKlEFyl7Zpqj3loIK4jarnEzX4JzqoPj+asf8Ho3n7ns/2mE01uUizSWhhWf+htLNHqXykxqoe6vpLOGQyC0QriVUqCb194kY2GxEaSZslq28cJHskAdQfV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WSG95FTL; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="dTvkq1SD"
-ARC-Seal: i=1; a=rsa-sha256; t=1751069570; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=F2doFgpRNe+kctg93ooMSm+aHwQZtQseEHZOkialN4dewhKyPezKXvpu1vJeuSAl6qNmyLWsWh+a93DNumhKPwIEkHGgsC5P3FQctsIK6q36AhpKPTgIjaUh86ue4xwy6SXILugzu7rSAgPYaKywkUIiCgKWGTbRMqYFXwp08n8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1751069570; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0H5Q14gT58j9sWQ7Mkf1VLBkEerIw45k/88Qa7/Ee54=; 
-	b=C7t9Oni+dH1ywmeQ8PwSkOjWo3URfX1t3zHGdgYSJGC/b32VGSLRKwxYMLqFfJus4CS0n/zlm8KOB+cdbmMUHaqNohr690vtmgvxy7H8MS/xw7R6SsduDvTHoP9uoTqgFXzHlKGkHLwkYmkZhlQ6TUmBn1Y+sGzLGgWrmge+MGQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751069570;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=0H5Q14gT58j9sWQ7Mkf1VLBkEerIw45k/88Qa7/Ee54=;
-	b=dTvkq1SDplJdHuRfEA3aufvDDPQQr57yXv2ZZ00yiWZoeO7fG93KDCx0J0qY0VHk
-	sODw7Ipu5Zq0fa/6G28QInGEA+pFZvYr9SImHLYlUW1gjGPyra6GqABr2tUHZFff33d
-	ln5y9o6EGdeOynvH/L/kVN3Aw/T5FNaKI+c8OWi8=
-Received: by mx.zohomail.com with SMTPS id 1751069566742886.3233886676038;
-	Fri, 27 Jun 2025 17:12:46 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WSG95FTL"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-74931666cbcso3100351b3a.0;
+        Fri, 27 Jun 2025 19:34:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751078078; x=1751682878; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OLgSgTS/p6Xn687P1bEfCPfNF/GovvtrQo/hxR5s58I=;
+        b=WSG95FTLwjgcEqIIIaIVBNO9AQVMYUoxKmzkfDeU3OdX9tBTKhw6u2Uj+1E/dEg/5G
+         PfIk9ir2NRoilPDqqoryWoHNu5Lw5lQ0mlr60VzMWw6OGTxiCV7OFzlsgwRErytWJcTx
+         daLAqfemHknmMZWqmmuIm0Kj4QGMyoeDYEKQts77rxBWVCFbklez7zcmhQrio6kBWojx
+         CQfXfIT0QjkoNiFUWUKaXfhJFI6HIvL0fZxTSxztfLK5n/DaQRXmos6lkVFAqqRXBAZm
+         co5PPNU3zPhJumK+SCwfMSeBXd9ZFQZ3/7cot3oWyadYv0KLqNxKMeEx52FYajDrL5AK
+         kJkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751078078; x=1751682878;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OLgSgTS/p6Xn687P1bEfCPfNF/GovvtrQo/hxR5s58I=;
+        b=bLHP8CSwZJoYKFYemkw7gucS7WE+q4KntAL8iXjz0W2lJsvdUqlPXJ5hqJJ8PMbHc8
+         3KAZ44HJx1E2D9JJAPxmtiRzj9BdDLYOtxqn/3m9BQK3VBNrif9HoWwRWNelR4ClBHC8
+         jtNZPSj1dSNQe1q4ji1KXOltEtETnSVD9122SXQkpp1aF5MvyKPS/mDCI1oBBDARwz/+
+         11/yQ4rXLfPrf+s8ltM6AiOwx+g7eM2XN8aWtTRTPYgKL0GiT54jDNjB33ZQJljA+wu0
+         HNjdINWsviMEwhLmILKYPY5KYyIqvkL8WpedQsI+vdmERO5V4d0yfODt6vfu0BnS6EZD
+         5E7A==
+X-Forwarded-Encrypted: i=1; AJvYcCWr/LbG11dc7i6hPP5P1Rx5zRXnMaPOuqc7r+dfaDBKM2R4K9Q0TMG/toAvHmmQTl8cAtsVDb6s@vger.kernel.org, AJvYcCX5hVKcUny8vlpiwGU/WLvioZfSvVz7h9bSftIuvZJlNSKBbZtoKKtKGmlexkcHkvQwZ4UdTHlBpR+4oCA=@vger.kernel.org, AJvYcCXvki9FhHYdxuqJyBxf/rAGBwUuNbt/fFOMuPa06/g+RuCqZVMQJ1wGiQlvirZcO3AMH5q3I6B0JRe0xGq7YqA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSobOz6jf+KUS77ytELaVLgBEkV/ES7UDt/W38hL2itxUuYwcR
+	8UlDYUmQ4CyED5chTJO/7eydoEfjsccjcWxH7WL4tS9gtn194QeVfpLAMQEvASwI
+X-Gm-Gg: ASbGncv4sNPKcZMSqkmwzHhye2nb70jimhKy9JwgMFjRnXww1uVmnndhKvCEJspD99a
+	CmMT3EhPwTitiSxeM00UENRiMkgejFx1oQAmhixWdbm67808KN5p3fdMKFu7PtMp6AoLWMXydic
+	jaQeZTnF6fsIOe1iyzDxshoIvMSoWe8XKL03hOTu3nGBR+a/eQ1MOTo1KrZeybvaWUw5LM343Uo
+	ML/2bPO705VvFPe++Rx8fIjKK/vDIBmGOAhi89Q7KXm8P7IemBaSieeFF5wf5ErWsozOo6jMGti
+	G3hMPX5Qc1X8JKrOrHjI38xG88tte/NXJfe4LwHc6LylLp467Q6v7RjA+/HHaF4PDhOy8HA0PLU
+	7/6ZxTzdqI0nyG8jgNQz/xDs4TdezWnB9EWXg6U+E
+X-Google-Smtp-Source: AGHT+IGvspN3xr07jKdiZeyLhaj1qvaD3Xxuzu6awzryXExjC9o/hrNWS8AVStdM6jxTUN1fQ+imeg==
+X-Received: by 2002:a05:6a00:928f:b0:736:6043:69f9 with SMTP id d2e1a72fcca58-74af6f70cc0mr8101229b3a.19.1751078078362;
+        Fri, 27 Jun 2025 19:34:38 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b34e31d855asm2631193a12.55.2025.06.27.19.34.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Jun 2025 19:34:37 -0700 (PDT)
+Date: Sat, 28 Jun 2025 11:34:32 +0900 (JST)
+Message-Id: <20250628.113432.912890378716072875.fujita.tomonori@gmail.com>
+To: tamird@gmail.com
+Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, dakr@kernel.org, davem@davemloft.net,
+ andrew@lunn.ch, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/2] Use unqualified references to ffi types
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20250625-correct-type-cast-v2-1-6f2c29729e69@gmail.com>
+References: <20250625-correct-type-cast-v2-0-6f2c29729e69@gmail.com>
+	<20250625-correct-type-cast-v2-1-6f2c29729e69@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH] Introduce Tyr
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aF8lYpK_l2I-ts1k@pollux>
-Date: Fri, 27 Jun 2025 21:12:29 -0300
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Daniel Stone <daniels@collabora.com>,
- Rob Herring <robh@kernel.org>,
- Alice Ryhl <alice.ryhl@google.com>,
- Beata Michalska <beata.michalska@arm.com>,
- Carsten Haitzler <carsten.haitzler@foss.arm.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Ashley Smith <ashley.smith@collabora.com>,
- linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- rust-for-linux@vger.kernel.org,
- kernel@collabora.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9D9AFE08-2CBB-4A89-866D-512D9080754C@collabora.com>
-References: <20250627-tyr-v1-1-cb5f4c6ced46@collabora.com>
- <aF8lYpK_l2I-ts1k@pollux>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Hi Danilo, thank you an Boqun for having a look at this,
+On Wed, 25 Jun 2025 05:25:38 -0700
+Tamir Duberstein <tamird@gmail.com> wrote:
 
+> Remove unnecessary qualifications; `kernel::ffi::*` is included in
+> `kernel::prelude`.
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  rust/kernel/net/phy.rs | 24 ++++++++----------------
+>  1 file changed, 8 insertions(+), 16 deletions(-)
 
-> On 27 Jun 2025, at 20:12, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On Fri, Jun 27, 2025 at 07:34:04PM -0300, Daniel Almeida wrote:
->> +#[pin_data]
->> +pub(crate) struct TyrData {
->> +    pub(crate) pdev: ARef<platform::Device>,
->> +
->> +    #[pin]
->> +    clks: Mutex<Clocks>,
->> +
->> +    #[pin]
->> +    regulators: Mutex<Regulators>,
->> +
->> +    // Some inforation on the GPU. This is mainly queried by =
-userspace (mesa).
->> +    pub(crate) gpu_info: GpuInfo,
->> +}
->> +
->> +unsafe impl Send for TyrData {}
->> +unsafe impl Sync for TyrData {}
->=20
-> What's the safety justification for those? Why do you need them? The =
-fact that
-> you seem to need to implement those traits within a driver indicates =
-an issue.
-
-This was forgotten when scooped from the downstream code.
-
-Although I think the problematic members are only Clk and Regulator
-as Boqun pointed out.
-
-In any case, my bad.
-
-Also, for some reason the Clippy lint did not save me this time.
-
->=20
->> +fn issue_soft_reset(iomem: &Devres<IoMem<0>>) -> Result<()> {
->> +    let irq_enable_cmd =3D 1 | bit_u32(8);
->> +    regs::GPU_CMD.write(iomem, irq_enable_cmd)?;
->> +
->> +    let op =3D || regs::GPU_INT_RAWSTAT.read(iomem);
->> +    let cond =3D |raw_stat: &u32| -> bool { (*raw_stat >> 8) & 1 =3D=3D=
- 1 };
->> +    let res =3D io::poll::read_poll_timeout(
->> +        op,
->> +        cond,
->> +        time::Delta::from_millis(100),
->> +        Some(time::Delta::from_micros(20000)),
->> +    );
->> +
->> +    if let Err(e) =3D res {
->> +        pr_err!("GPU reset failed with errno {}\n", e.to_errno());
->> +        pr_err!(
->> +            "GPU_INT_RAWSTAT is {}\n",
->> +            regs::GPU_INT_RAWSTAT.read(iomem)?
->> +        );
->=20
-> This is a driver, please use dev_err!().
->=20
->> +    }
->> +
->> +    Ok(())
->> +}
->> +
->> +kernel::of_device_table!(
->> +    OF_TABLE,
->> +    MODULE_OF_TABLE,
->> +    <TyrDriver as platform::Driver>::IdInfo,
->> +    [
->> +        (of::DeviceId::new(c_str!("rockchip,rk3588-mali")), ()),
->> +        (of::DeviceId::new(c_str!("arm,mali-valhall-csf")), ())
->> +    ]
->> +);
->> +
->> +impl platform::Driver for TyrDriver {
->> +    type IdInfo =3D ();
->> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D =
-Some(&OF_TABLE);
->> +
->> +    fn probe(
->> +        pdev: &platform::Device<Core>,
->> +        _info: Option<&Self::IdInfo>,
->> +    ) -> Result<Pin<KBox<Self>>> {
->> +        dev_dbg!(pdev.as_ref(), "Probed Tyr\n");
->> +
->> +        let core_clk =3D Clk::get(pdev.as_ref(), =
-Some(c_str!("core")))?;
->> +        let stacks_clk =3D Clk::get(pdev.as_ref(), =
-Some(c_str!("stacks")))?;
->> +        let coregroup_clk =3D Clk::get(pdev.as_ref(), =
-Some(c_str!("coregroup")))?;
->> +
->> +        core_clk.prepare_enable()?;
->> +        stacks_clk.prepare_enable()?;
->> +        coregroup_clk.prepare_enable()?;
->> +
->> +        let mali_regulator =3D =
-Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("mali"))?;
->> +        let sram_regulator =3D =
-Regulator::<regulator::Enabled>::get(pdev.as_ref(), c_str!("sram"))?;
->> +
->> +        let resource =3D pdev.resource_by_index(0).ok_or(EINVAL)?;
->> +
->> +        let iomem =3D Arc::new(pdev.iomap_resource(resource)?, =
-GFP_KERNEL)?;
->=20
-> You can do
->=20
-> let io =3D iomem.access(pdev.as_ref())?;
->=20
-> which gives you an &IoMem for the whole scope of probe() without any
-> limitations.
->=20
-> Also, why not use iomap_resource_sized()? Lots of offsets are known at =
-compile
-> time. This allows you to use infallible accesses, e.g. write() instead =
-of
-> try_write().
-
-Right, I did not even consider this. Should be possible indeed.
-
->=20
->> +
->> +        issue_soft_reset(&iomem)?;
->> +        gpu::l2_power_on(&iomem)?;
->> +
->> +        let gpu_info =3D GpuInfo::new(&iomem)?;
->> +        gpu_info.log(pdev);
->> +
->> +        let platform: ARef<platform::Device> =3D pdev.into();
->> +
->> +        let data =3D try_pin_init!(TyrData {
->> +                pdev: platform.clone(),
->> +                clks <- new_mutex!(Clocks {
->> +                    core: core_clk,
->> +                    stacks: stacks_clk,
->> +                    coregroup: coregroup_clk,
->> +                }),
->> +                regulators <- new_mutex!(Regulators {
->> +                    mali: mali_regulator,
->> +                    sram: sram_regulator,
->> +                }),
->> +                gpu_info,
->> +        });
->> +
->> +        let data =3D Arc::pin_init(data, GFP_KERNEL)?;
->> +
->> +        let tdev: ARef<TyrDevice> =3D =
-drm::device::Device::new(pdev.as_ref(), data.clone())?;
->> +        drm::driver::Registration::new_foreign_owned(&tdev, =
-pdev.as_ref(), 0)?;
->> +
->> +        let driver =3D KBox::pin_init(try_pin_init!(TyrDriver { =
-device: tdev }), GFP_KERNEL)?;
->> +
->> +        regs::MCU_CONTROL.write(&iomem, regs::MCU_CONTROL_AUTO)?;
->> +
->> +        dev_info!(pdev.as_ref(), "Tyr initialized correctly.\n");
->=20
-> Consider dev_dbg!() instead.
-
-The problem with dev_dbg() is that it doesn't work, as Alex has also =
-found out
-recently. There was a thread on fixing it and I guess Tamir(?) or =
-Andrew(?)
-came up with a patch, but it hasn't seen any traction. I simply don't =
-think
-there is a way to get these to print for now (at least in upstream code)
-
->=20
->> +    pub(crate) fn log(&self, pdev: &platform::Device) {
->> +        let major =3D (self.gpu_id >> 16) & 0xff;
->> +        let minor =3D (self.gpu_id >> 8) & 0xff;
->> +        let status =3D self.gpu_id & 0xff;
->> +
->> +        let model_name =3D if let Some(model) =3D GPU_MODELS
->> +            .iter()
->> +            .find(|&f| f.major =3D=3D major && f.minor =3D=3D minor)
->> +        {
->> +            model.name
->> +        } else {
->> +            "unknown"
->> +        };
->> +
->> +        dev_info!(
->> +            pdev.as_ref(),
->> +            "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status =
-0x{:x}",
->> +            model_name,
->> +            self.gpu_id >> 16,
->> +            major,
->> +            minor,
->> +            status
->> +        );
->> +
->> +        dev_info!(
->> +            pdev.as_ref(),
->> +            "Features: L2:{:#x} Tiler:{:#x} Mem:{:#x} MMU:{:#x} =
-AS:{:#x}",
->> +            self.l2_features,
->> +            self.tiler_features,
->> +            self.mem_features,
->> +            self.mmu_features,
->> +            self.as_present
->> +        );
->> +
->> +        dev_info!(
->> +            pdev.as_ref(),
->> +            "shader_present=3D0x{:016x} l2_present=3D0x{:016x} =
-tiler_present=3D0x{:016x}",
->> +            self.shader_present,
->> +            self.l2_present,
->> +            self.tiler_present
->> +        );
->> +
->> +        dev_info!(
->> +            pdev.as_ref(),
->> +            "PA bits: {}, VA bits: {}",
->> +            self.pa_bits(),
->> +            self.va_bits()
->> +        );
->> +    }
->=20
-> This is called from probe() and seems way too verbose for dev_info!(), =
-please
-> use dev_dbg!() instead.
-
-Same comment as above. Although I don=E2=80=99t care about these =
-printing.
-
-I think that at this point we just need one dev_info!() at the end of =
-probe,
-just to make sure it worked. The rest can be converted to dev_dbg!().
-
-OTOH, IIRC these are indeed printed for Panthor, so maybe Boris can
-explain why this would be relevant.
-
->=20
->> +/// Represents a register in the Register Set
->> +pub(crate) struct Register<const OFFSET: usize>;
->> +
->> +impl<const OFFSET: usize> Register<OFFSET> {
->> +    #[inline]
->> +    pub(crate) fn read(&self, iomem: &Devres<IoMem>) -> Result<u32> =
-{
->> +        (*iomem).try_access().ok_or(ENODEV)?.try_read32(OFFSET)
->> +    }
->> +
->> +    #[inline]
->> +    pub(crate) fn write(&self, iomem: &Devres<IoMem>, value: u32) -> =
-Result<()> {
->> +        (*iomem)
->> +            .try_access()
->> +            .ok_or(ENODEV)?
->> +            .try_write32(value, OFFSET)
->> +    }
->> +}
->=20
-> This seems like a bad idea. You really want to use Devres::access() =
-from each
-> entry point where you have a &Device<Bound> (such as probe()) and use =
-the
-> returned &IoMem instead. Otherwise every read() and write() does an =
-atomic read
-> and RCU read-side critical section, due to try_access().
->=20
-> If you really run in a case where you don't have a &Device<Bound>, you =
-can use
-> Devres::try_access_with(), which takes a closure that will have an =
-&IoMem as
-> argument, such that you can do things like:
->=20
-> io.try_access_with(|io| my_register.write(io, ...))
-
-Right, thanks for pointing that out.
-
->=20
-> Also, you want accessors for read32() and write32() rather than always =
-use
-> try_read32() and try_write32(). The latter you only want to use when =
-the offset
-> isn't known at compile time.
->=20
-> I also recommend looking at what nova-core does for register accesses. =
-Regarding
-> the register!() macro in nova-core, we're working on providing this as =
-generic
-> infrastructure.
-
-Oh we=E2=80=99ll definitely switch to the nova macro. We just didn=E2=80=99=
-t get to
-work on it yet, and IIUC it's not available atm?
-
-In any case, if you guys post a patch to make the macro available to =
-other
-drivers I'll switch to that instead.
-
-=E2=80=94 Daniel
-
+Reviewed-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
