@@ -1,105 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AFB19E992;
-	Sat, 28 Jun 2025 12:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED2B1AC88B;
+	Sat, 28 Jun 2025 12:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751113265; cv=none; b=kEMY0Ls7JSwFaJP/+bdMlmwXRKs1XJoWGxPrnYuAoFRi0wdY9pqfu5gD8gAdReAOGv4ExdLpkNKMQV4aIxOLM+SmWMBtAf9MlkCntN5wv3rPwszN3rwavboDMDiaFG+dkk9Q65PtIxXHbwhOXbIZmL+409wWZhdLKuqV73J9cIs=
+	t=1751113755; cv=none; b=l7iRXcroE9szXaYX1Y6l7Vj+PFAzGjFZCax8dXTX9mDfzS6FpT/RIbCxSz8JpgHatenOBQrCyLxNoVIMqXFFpuEnq6GBJWUaQvRzhoPSslQ0Q3lvCyraNMQBtZ65AF8x8OmrHEDxAyjlEyrFJNYZJZY4nXVMEAtb5sPaG508DPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751113265; c=relaxed/simple;
-	bh=0PMfZgVrVOhGJzluE63L4B+hXTDSgAsn2owIh7LlYxc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y8vO/pkXNxWliyqxyNlMofV34LrA4zfHenRA8FoV4J4DxIhH5ctbzkDE1O26Vmq0GaZ6i8yxw3NzDXxvA/POHxyyQpCJrFP87ehoM9/rfNX6H47PaUV0BLxPy92qhs1KkdhkhVtrNvUatDhDnCXujJe1AVHgxQ26j0pCsRNWoNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2FN0Yrl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751113755; c=relaxed/simple;
+	bh=6e6bkAAqO4DlwzMyBf2Bv1Otfnqw8aMDaRR5IA3G2kc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=pLzK/ZlEqxQ2oJbfmzFKDyGEN/L3abTR2iZQY6caBbWA8xuJK4J3J1P0mun+a/FIMBZ4eM5TpsnSkUqM9jFlw08d9AR8JsPxDN+9Ji4no7+7r9HRVwjIf6Z9bNpKy0dEp4GrXH2fRqcFL8kH1Pofy7bOnG4dTJ2H2iRT6e3lHh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyM1h4oZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2FN0Yrl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89F1C4CEEA;
-	Sat, 28 Jun 2025 12:21:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyM1h4oZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44B9C4CEEA;
+	Sat, 28 Jun 2025 12:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751113265;
-	bh=0PMfZgVrVOhGJzluE63L4B+hXTDSgAsn2owIh7LlYxc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j2FN0YrlWAytnO47v/Wig6KgbAnFZBd2spjfO84QK+78w05me/rXOETn9GWD7X4Uj
-	 yoN/R32FkflU77pPuLlvjBGoPTfFu8tylqbGNqxegg7OuqXqjwPMD8uCy1YEYJa+ge
-	 C+83c7r7OupaxW4/rouaOzkLsJ8xGROAvD/MOXNXCYt1K2Uiq3ec/CWZoZQ9RcYPee
-	 e8iB27VxqzgfkLn8D3ZthXrQyoZ6vGVMqEJJKyNue/I7dCURKZEFmc3X1y3brjd95Y
-	 /A2ufsq8CXAOrHFQikdS42ITHwwqU/qtd/kVqxs3YLD4jA5k94G+a+3gvhp5ZgeX8r
-	 X/m7XeQNFj/FQ==
-Date: Sat, 28 Jun 2025 14:21:01 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v8 3/4] rust: add support for NUMA ids in allocations
-Message-ID: <aF_eLTlirxl-1jPP@pollux>
-References: <20250628102315.2542656-1-vitaly.wool@konsulko.se>
- <20250628102611.2542910-1-vitaly.wool@konsulko.se>
+	s=k20201202; t=1751113755;
+	bh=6e6bkAAqO4DlwzMyBf2Bv1Otfnqw8aMDaRR5IA3G2kc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=XyM1h4oZx/zo5W2HAkwmNN4tCUNPeDPpAHPnZHnT5ma01wUdDoMDctc2FQXCQC3FM
+	 n12e16f90VJfwhgDzvsypl+QUyLmmUCMIQbxEdGDb+n2Y4fGIm/7U5FiUpnalL6Qhh
+	 JRw5e8mt9f2DQgElcKkboXVutF0RVUruIl9uey1Ldtsvw+Vtk290iBBf09D/i83DsE
+	 kRgB6GIRMiPtGQDRXJB3LKjx/O8hjiEMHC+gzr1M8T2jFF+mx2fAGNNMouPo/UkhSj
+	 xehkHOjwYp+n5kJY/TR2UQOzuX0onZuLOYJrMAy76Lu+9N9xHTuEQ79Ufs4IV6V8Dh
+	 /y9YyNJYo4TBw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250628102611.2542910-1-vitaly.wool@konsulko.se>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 28 Jun 2025 14:29:11 +0200
+Message-Id: <DAY60NP32ZDA.155XFXZ9AOF70@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: init: Fix generics in *_init! macros
+From: "Benno Lossin" <lossin@kernel.org>
+To: <j@jannau.net>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Fiona Behrens" <me@kloenk.dev>
+X-Mailer: aerc 0.20.1
+References: <20250628-rust_init_trailing_comma-v1-1-2d162ae1a757@jannau.net>
+In-Reply-To: <20250628-rust_init_trailing_comma-v1-1-2d162ae1a757@jannau.net>
 
-On Sat, Jun 28, 2025 at 12:26:11PM +0200, Vitaly Wool wrote:
-> +/// Non Uniform Memory Access (NUMA) node identifier
-> +#[derive(Clone, Copy, PartialEq)]
-> +pub struct NumaNode(i32);
-> +
-> +impl NumaNode {
-> +    /// create a new NUMA node identifer (non-negative integer)
-> +    /// returns EINVAL if a negative id is specified
-> +    pub fn new(node: i32) -> Result<Self> {
-> +        if node < 0 {
-> +            return Err(EINVAL);
-> +        }
+On Sat Jun 28, 2025 at 1:36 PM CEST, Janne Grunau via B4 Relay wrote:
+> From: Janne Grunau <j@jannau.net>
+>
+> The match pattern for a optional trailing comma in the list of generics
+> is erroneously repeated in the code block resulting in following error:
+>
+> | error: attempted to repeat an expression containing no syntax variables=
+ matched as repeating at this depth
+> |    --> rust/kernel/init.rs:301:73
+> |     |
+> | 301 |         ::pin_init::try_pin_init!($(&$this in)? $t $(::<$($generi=
+cs),* $(,)?>)? {
+> |     |                                                                  =
+       ^^^
+>
+> Remove "$(,)?" from all code blocks in the try_init! and try_pin_init!
+> definitions.
 
-Should we also check for MAX_NUMNODES?
+Oops, that's a good catch! Seems like nobody used the generics before...
 
-> +        Ok(Self(node))
-> +    }
-> +}
+Do you need this to go in as a fix into v6.16, or is it fine if I pick
+it for v6.17, since it's only a build failure?
 
-<snip>
+@Miguel any opinion?
 
-> +    /// Re-allocate an existing memory allocation to satisfy the requested `layout` and
-> +    /// optionally a specific NUMA node request to allocate the memory for.
+---
+Cheers,
+Benno
 
-It's not an Option anymore, so we may want to drop 'optionally'. Also please
-leave an empty line here.
-
-> +    /// Systems employing a Non Uniform Memory Access (NUMA) architecture contain
-> +    /// collections of hardware resources including processors, memory, and I/O buses,
-> +    /// that comprise what is commonly known as a NUMA node.
-> +    /// `nid` stands for NUMA id, i. e. NUMA node identifier, which is a non-negative
-> +    /// integer if a node needs to be specified, or NUMA_NO_NODE if the caller doesn't care.
-
-Please also explain what happens when the NumaNode changes between calls to
-realloc_node().
-
-Does it have to remain the same NumaNode? Do we need a safety requirement for
-that?
-
-(Btw. no need to send a new version right away, leave a few days for people to
-catch up and comment on this one or the other patches before resending.)
-
->      ///
->      /// If the requested size is zero, `realloc` behaves equivalent to `free`.
->      ///
-> @@ -191,13 +246,29 @@ fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
->      ///   and old size, i.e. `ret_ptr[0..min(layout.size(), old_layout.size())] ==
->      ///   p[0..min(layout.size(), old_layout.size())]`.
->      /// - when the return value is `Err(AllocError)`, then `ptr` is still valid.
-> -    unsafe fn realloc(
-> +    unsafe fn realloc_node(
->          ptr: Option<NonNull<u8>>,
->          layout: Layout,
->          old_layout: Layout,
->          flags: Flags,
-> +        nid: NumaNode,
->      ) -> Result<NonNull<[u8]>, AllocError>;
+> Fixes: 578eb8b6db13 ("rust: pin-init: move the default error behavior of =
+`try_[pin_]init`")
+> Signed-off-by: Janne Grunau <j@jannau.net>
+> ---
+>  rust/kernel/init.rs | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
