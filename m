@@ -1,93 +1,138 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward501b.mail.yandex.net (forward501b.mail.yandex.net [178.154.239.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C600B218E8B;
-	Sat, 28 Jun 2025 12:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA66B247295;
+	Sat, 28 Jun 2025 12:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751114534; cv=none; b=CpPgmrzYPQt99UUhgHUtRbEdINmS+BW/lbFTkxEvdNRSjHuT+0S7bKWe0y1JOlJP+WQgopZ6DrwlfFtMs20v4vDcBzeHlgiah48tf7GJJgalYY5WvDB16h/ADOwrQQFYt1xEdigm4ep75/i6WjyDsqb3qgf0EXwOpsvr5L0lYAY=
+	t=1751114579; cv=none; b=eT+RfpyABUAJBny9vyoCandoytZ1PQLYgNmXvwqDhIlv6GDEBzTSnWFXeAOCOByT7XnV2za7l+X50XSJ+CI7HbJd82zvRPjOTvtobTMsmTuvqFui/sTFU1bNurejxjkJouPaFfoyH8WT9c84Dx8qa9esnSX2A9klZwyooNfG0u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751114534; c=relaxed/simple;
-	bh=wOGO1YcmdZnB9GDXfbRgoK9nxZHZCRHcQwLPwPX49eQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kSR/hoePvF4dDVjcnKGp48exFBsrnKq4q8Pv10YnEXhNH06y43wd3N5yBVCroXsPYF5W0SASw0T2uULU7gmDXofVe74xw/Q1oMIHrmHMJkBVRmOjGyhLlw6NoAZ3zeEjtXLIr/fV+802fLqF36ycpsj8oT0NlF3DE1Z+Gk4iqrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gYtBbEzU; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751114579; c=relaxed/simple;
+	bh=s/WZnLwH3tHwxZ/2hCc6hHoR41MuA7BSIsnaMlHFV2Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VeyM6KO9rsuGY7ZIvbjBP0vqis5y8oAi4TUd4jXNd7aqpoGFCfdLS6mb5tILHlIg2sQh3rUWLDG6scWQlRcNf9C9pXKN6ulADsvXLwLxRyjqFBx+dpy9RP6kLhofqlYhHq1ZwNejgYsbYrv4dbgLPonNqUqiR8QsB8GwezdI0hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=kO4zj33U; arc=none smtp.client-ip=178.154.239.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gYtBbEzU"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b2fcd6fe970so515315a12.3;
-        Sat, 28 Jun 2025 05:42:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751114532; x=1751719332; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wOGO1YcmdZnB9GDXfbRgoK9nxZHZCRHcQwLPwPX49eQ=;
-        b=gYtBbEzUI3u75Kr42ZkRjoTZc8hdaUbd062R24fvr/pHA/WxfdoQBaInTUbj3z8GCE
-         pdpDI6XA4nWw6jmW6acmxBMDpqPGN3Wl0Lv9HhIRj7m2IFNXWnT4sjruqygTEPXmBc+l
-         VFDBuHsULeEpfv9NoXMqY0RRMAtRli+rAiudUmqxUkn/n45qJZZteX7UqFIOi8XGbdwq
-         m7YbHM+7QJB9kilEpMoohI3nmYN5DDCH/2nWK1pAAXRcjPv1PkYRRW3OLoxjEdPHuJZR
-         CV1FA8lQH1aZ4f3ajBmzEJGRa78D/8yqQo8UwApLl/0xq771H7IYhNK0+AUD5ywEqa3m
-         Js+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751114532; x=1751719332;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wOGO1YcmdZnB9GDXfbRgoK9nxZHZCRHcQwLPwPX49eQ=;
-        b=eAqZZ6mPSMtn7bidOK1VzJcoymCsJu0LIpZwFjzAjf/Fos9ce6mLiTrYjOLSixYbXS
-         l4z8zHDTBehaJpZSnmAnKdoabGIsc9X+HvXA6rJq9163WsALQS7HSHcr/70DozLWon/w
-         Ru5NuWyIM5446whSoSa33i9CijkC4EcmxHLPCgtrI63gr3E/RsEcGx5bguuHyL4hJbl2
-         tmiHTWtsp9fVIVSS0zvNJv2mjOmZ4ipCJpufJke5RFE07ngI0I0tEohnYZU4HZatJqrs
-         XZDqFyIwZ5p0UGWJLZGG2bJ9ipBTVs2dwG7c/xnAQ2NrouSAoTNo5yUih82UmDZIQe6U
-         Lb3w==
-X-Forwarded-Encrypted: i=1; AJvYcCUQz738ZU5p6l+h7kTYrtNI94AEBQwEBbpUWk/5dpsq6/7OOhod3e6WytRhmwfXM88csoHh94/w/1yGk+BqYrA=@vger.kernel.org, AJvYcCVqR2ADGCsKrX6jbRTU1Tj+y7MXKU8tnoDonM4gyXkv2f/jogBhxw0IbIs4IG6Jt8RhBkTDkXPV0Sst37s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYtICcaeuztgVm//6+L/ULdNefjJLQ07XEUxGAHn7zWMEIoyqn
-	D5ImMQ3YHF0vZsT95SE1noOVUsk/k2hGKVbz81Fp5wqSY8wivEaeO7HGzAGb5fhCSzK3QhTwbBY
-	SIXcb8+uLhfbcPUAJCJ5DcEAAyGof1tw=
-X-Gm-Gg: ASbGncuiWlqjmTMglUcU6VhqLHto43VPcjX7wI3mTP5dIPqwovudMn3/HC8tuUNKEaZ
-	L1yqNmRObXu1/wYM1tEy17gW6hQWJPSPof0ytz0Ec3KVEQzRVtgLN0yMdlmjq7N/glf9ygT5K1S
-	2FQE33PqZ+RRdnqAsssgjhRxg6pxHuq4/gdITZYXTk4SY=
-X-Google-Smtp-Source: AGHT+IFu3ECa9MsKaUx+sB9hsEWVH2L871z/9rACBjqSTpbIgxp4nXb8PZMyP2C9HJxqzvqIzKycfEghcWOieqRSEhk=
-X-Received: by 2002:a17:90b:2887:b0:311:a314:c2c9 with SMTP id
- 98e67ed59e1d1-318ede30a62mr1431261a91.1.1751114532065; Sat, 28 Jun 2025
- 05:42:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="kO4zj33U"
+Received: from mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:c1e:0:640:507e:0])
+	by forward501b.mail.yandex.net (Yandex) with ESMTPS id 2E0436166C;
+	Sat, 28 Jun 2025 15:42:47 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id cgWMKGFLu0U0-cPlMrCZa;
+	Sat, 28 Jun 2025 15:42:45 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1751114565;
+	bh=l9sqUa1BCO8G9s1UQoEHxXQzb1nfW17lDgk2JjFmzCw=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=kO4zj33U4BUJWRq7uO+H5s9Fg1NfZTZLABQkmN8D8eND+h1LgxQEFvO6shgQEze4Y
+	 bnMBgsFDeWJa4E/1JT4mVk1Gjw4An/QAQh944aZD5f7zGuVWXInPMWF+UJlJAb/Pje
+	 61etcJ5bnEGOixDGzM2ljCzJAJnVv50u6pvj/uNs=
+Authentication-Results: mail-nwsmtp-smtp-production-main-89.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Sat, 28 Jun 2025 15:42:37 +0300
+From: Onur <work@onurozkan.dev>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: viresh.kumar@linaro.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+ airlied@gmail.com, simona@ffwll.ch, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, rafael@kernel.org,
+ gregkh@linuxfoundation.org, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, tzimmermann@suse.de, davidgow@google.com, nm@ti.com
+Subject: Re: [PATCH v3 3/3] rust: remove
+ `#[allow(clippy::non_send_fields_in_send_ty)]`
+Message-ID: <20250628154237.0f367cee@nimda.home>
+In-Reply-To: <CANiq72kY9DA_JD_XkF01ZSmXbD8iaFthVZ66X+9N5aa_WObt+A@mail.gmail.com>
+References: <20250628040956.2181-1-work@onurozkan.dev>
+	<20250628040956.2181-4-work@onurozkan.dev>
+	<CANiq72kjdj4KbDhfnTbm8jZpLC1+WPB3E6M8D8M2NLnphMs5vg@mail.gmail.com>
+	<20250628133013.703461c8@nimda.home>
+	<CANiq72kY9DA_JD_XkF01ZSmXbD8iaFthVZ66X+9N5aa_WObt+A@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250628-rust_init_trailing_comma-v1-1-2d162ae1a757@jannau.net> <DAY60NP32ZDA.155XFXZ9AOF70@kernel.org>
-In-Reply-To: <DAY60NP32ZDA.155XFXZ9AOF70@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 28 Jun 2025 14:41:58 +0200
-X-Gm-Features: Ac12FXx4-8rjfwGC1OlyZW4Qvi35lwsZJnRZvoW9Qtno2DKmkKzq7dOQjnuD9YE
-Message-ID: <CANiq72m1-+YmA0Ot1tO6FQxVytROCuZsKSFmcQ55ov-13qyUGg@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: Fix generics in *_init! macros
-To: Benno Lossin <lossin@kernel.org>
-Cc: j@jannau.net, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Fiona Behrens <me@kloenk.dev>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 28, 2025 at 2:29=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
->
-> Oops, that's a good catch! Seems like nobody used the generics before...
->
-> Do you need this to go in as a fix into v6.16, or is it fine if I pick
-> it for v6.17, since it's only a build failure?
->
-> @Miguel any opinion?
+On Sat, 28 Jun 2025 14:18:53 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-If it is a fix, then we can just pick it. I have to send others
-anyway, so I will be doing a fixes PR in a week or so.
+> On Sat, Jun 28, 2025 at 12:30=E2=80=AFPM Onur <work@onurozkan.dev> wrote:
+> >
+> > It doesn't seem to be the same reason. I rebased over
+> > c6af9a1191d042839e56abff69e8b0302d117988 (the exact commit where
+> > that lint was added) but still Clippy did not complain about it on
+> > the MSRV. So it was either a leftover, or there is a version between
+> > 1.78 and the current stable where Clippy did complain. I can dig
+> > into it more during the week if you would like.
+>=20
+> Are you sure? The lint is actually disabled, as I mention in
+> 5e7c9b84ad08.
+>=20
+> From a quick test, I enabled it in that file, and I get the warning.
+>=20
+> Thus it seems to me Clippy would still complain about it just fine.
 
-Cheers,
-Miguel
+Yes, I am sure. Just to clarify, I am not testing 5e7c9b84ad08. I am
+testing c6af9a1191d042839e56abff69e8b0302d117988 where
+`#[allow(clippy::non_send_fields_in_send_ty)]` was added on
+`unsafe impl<T: Driver> Send for Registration<T> {}`.
+
+Switching from `allow` to `expect` produced the following result on my
+end:
+
+```
+$ make LLVM=3D1 -j $(nproc)
+CLIPPY=3D1 DESCEND objtool
+  CALL    scripts/checksyscalls.sh
+  INSTALL libsubcmd_headers
+  CLIPPY L rust/kernel.o
+error: this lint expectation is unfulfilled
+   --> rust/kernel/cpufreq.rs:908:10
+    |
+908 | #[expect(clippy::non_send_fields_in_send_ty)]
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    =3D note: `-D unfulfilled-lint-expectations` implied by `-D warnings`
+    =3D help: to override `-D warnings` add
+`#[allow(unfulfilled_lint_expectations)]`
+
+error: aborting due to 1 previous error
+
+make[2]: *** [rust/Makefile:534: rust/kernel.o] Error 1
+make[1]: *** [/home/nimda/devspace/onur-ozkan/linux/Makefile:1283:
+prepare] Error 2 make: *** [Makefile:248: __sub-make] Error 2
+
+$ git log -1
+commit c6af9a1191d042839e56abff69e8b0302d117988 (HEAD -> master)
+Author: Viresh Kumar <viresh.kumar@linaro.org>
+Date:   Wed Jan 24 12:36:33 2024 +0530
+
+    rust: cpufreq: Extend abstractions for driver registration
+
+    Extend the cpufreq abstractions to support driver registration from
+    Rust.
+
+    Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+    Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+$ rustc --version --verbose
+rustc 1.78.0 (9b00956e5 2024-04-29)
+binary: rustc
+commit-hash: 9b00956e56009bab2aa15d7bff10916599e3d6d6
+commit-date: 2024-04-29
+host: x86_64-unknown-linux-gnu
+release: 1.78.0
+LLVM version: 18.1.2
+```
+
+Regards,
+Onur
+
