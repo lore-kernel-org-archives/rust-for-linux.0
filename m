@@ -1,155 +1,132 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mailrelay4-3.pub.mailoutpod3-cph3.one.com (mailrelay4-3.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA218246BDE
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Jun 2025 15:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E52C1E0B91
+	for <rust-for-linux@vger.kernel.org>; Sat, 28 Jun 2025 15:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751122803; cv=none; b=HTOn7TevQeyCpamlAmVkX/hINuSkihkNLBd5FnvDnJ+kwyNfnNjn5ULiouwEMRCheGJ9BVqL+SK6y8dLGyThMaonnuieNiSWm+VLMMFzNUDEs2NHBQKDOeX91ObDX3p8CW/+TulGc/eb0Fc7iwKAMxZq2JSj8H9E3Qas5nFXfIE=
+	t=1751124369; cv=none; b=OH4VTHRm/uvj+0drzO6PlKY6ZpRTa7M2yxPWZXM81FiG0NF6IhExNhK80q4YRMl/d7FP5kuXr4oczo79R8GqCqHxMpd+ZSI2yJm0UZVGgF4EOnlHQibHAtAFsUbk/LFbS3iE5VcZOpMhanV7IJgyLynuLVt1nKp+PMRU/lAt1q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751122803; c=relaxed/simple;
-	bh=bMKnRAjj4+BlOLa9W5+0P7HUnfQRmvXx9kbjRTWJfWM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=TBlncRLCB2Chc3pX+jJcRW9bVBinbortJc+XLva47k0+F59PCNGVgEmMrc1dtJNaS4eyKgKwpMR7K62T/YtlL00OGvvB4clmEst2FrhO3ueqNNbhqd2yDulzcudjKQoKukxhYlu4PC3pOATYVqrfs3/pnFNvWqoF68PyLsPgN1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=mSr5CnBZ; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1751124369; c=relaxed/simple;
+	bh=hIkf0PFQT6Xc9qpqiOBy2ebjmbUnvVFbDBVfpMhay2Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=jA8BmKG7efJAuFjx7W5Qg+3sSZh7sr+0GU8pdLFLZC7gDFU3ksXtBq/DWKWokBzibdHFHRxS/1bHjZB87C/h3Mt3gM8XQUkQURnzAi1MRgKjiuXbgH36KYHR2z+40YVwhPOC7nzkbD/LZoE05ITUt5byUtbtbbNtyD50hDieo84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=jzj1RZKk; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=OmpYaJ+y; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="mSr5CnBZ"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250628150000euoutp0284c37c51d15657c59bcb54b57a8bf495~NPOiuw-OR0380803808euoutp02O
-	for <rust-for-linux@vger.kernel.org>; Sat, 28 Jun 2025 15:00:00 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250628150000euoutp0284c37c51d15657c59bcb54b57a8bf495~NPOiuw-OR0380803808euoutp02O
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1751122800;
-	bh=iPLiuotXR3pLvhRQOSqtXf5NifLPkVWrQ6ZXxbZuw3Q=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=mSr5CnBZRzfx6aAp1yHyfCqkZDU3yQrUc9FGDXIfhXuN/5RNTxpqMWbve4iE44X3c
-	 z28wZiTlUzWA34JXyivzg5KHAdNqjX1PbVJbSJHmk2NQfq6nF/X9JKKJ9MGtuPDZz3
-	 FSj3tcn/dUE8FYlgx+2howgQo/6AQQnGbtkGw8oE=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250628145958eucas1p2a6252159d9e210271037f04a5f64bcf2~NPOhNrPea2071620716eucas1p2L;
-	Sat, 28 Jun 2025 14:59:58 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250628145957eusmtip27308016313ad13db5410a2ce67c9e323~NPOgCb8Jg2822428224eusmtip2D;
-	Sat, 28 Jun 2025 14:59:57 +0000 (GMT)
-Message-ID: <08b44fb5-1dad-4cc8-a843-85ac2fa6b7e9@samsung.com>
-Date: Sat, 28 Jun 2025 16:59:57 +0200
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="jzj1RZKk";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="OmpYaJ+y"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751124364; x=1751729164;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=BOIeB1Vb/vFEPkAxZTIsJPYgb2yRlv4ViGfG7pUkR5Q=;
+	b=jzj1RZKkozDCKaPDZKl2tY3NEVhZ5/5+gJY6UuOo7KCRvZPaOp5cMvvcNeXMnhNx/LyNWnsA4HQzP
+	 CHGt5J1WQd/TYM7s0YypOyrv0d8zfH1BE1RWvKAwq8O9y4tKDL5F9st5iR6IjUj82z6BQtV7NEvedO
+	 qemC51DxRaFd3M64TE/HUDX5PBaPbOWaJj+SA84VH5w4JAyrwhadcAYNkvm7xUjOQWg8vmq+2Hio3c
+	 NnApClLRMPNMEYOAjLSAy3MG4RsVX02yHVEWE8xIZ0BRIF0qd9q7FlLJKqvHhsj3qfjDMCRokcr7O/
+	 NIgsCcXYBD5WfhctoYFOduUnIc3ApFQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751124364; x=1751729164;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=BOIeB1Vb/vFEPkAxZTIsJPYgb2yRlv4ViGfG7pUkR5Q=;
+	b=OmpYaJ+yiuelLE7861I59SxCB2SAJmAhnBMXUcSkE86lwdd2flmb8fHBnQtIcPziG463g7Ne/0/PM
+	 QB47pBlDw==
+X-HalOne-ID: 3315bb22-5434-11f0-8a91-29b2d794c87d
+Received: from smtpclient.apple (host-90-233-200-0.mobileonline.telia.com [90.233.200.0])
+	by mailrelay4.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 3315bb22-5434-11f0-8a91-29b2d794c87d;
+	Sat, 28 Jun 2025 15:26:03 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/9] rust: pwm: Add core 'Device' and 'Chip' object
- wrappers
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v8 3/4] rust: add support for NUMA ids in allocations
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <aF_eLTlirxl-1jPP@pollux>
+Date: Sat, 28 Jun 2025 17:25:52 +0200
+Cc: linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <61DAD282-B00A-4809-B579-3F47F4781BBC@konsulko.se>
+References: <20250628102315.2542656-1-vitaly.wool@konsulko.se>
+ <20250628102611.2542910-1-vitaly.wool@konsulko.se> <aF_eLTlirxl-1jPP@pollux>
 To: Danilo Krummrich <dakr@kernel.org>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Drew Fustini <drew@pdp7.com>, Guo Ren
-	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
-	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
-	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, Benno
-	Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <aF6Kvrk3UTC1Jj5Q@pollux>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250628145958eucas1p2a6252159d9e210271037f04a5f64bcf2
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250623180859eucas1p10ebb40f33046d52618ba738ebbbaa664
-X-EPHeader: CA
-X-CMS-RootMailID: 20250623180859eucas1p10ebb40f33046d52618ba738ebbbaa664
-References: <20250623-rust-next-pwm-working-fan-for-sending-v5-0-0ca23747c23e@samsung.com>
-	<CGME20250623180859eucas1p10ebb40f33046d52618ba738ebbbaa664@eucas1p1.samsung.com>
-	<20250623-rust-next-pwm-working-fan-for-sending-v5-2-0ca23747c23e@samsung.com>
-	<aF6Kvrk3UTC1Jj5Q@pollux>
+X-Mailer: Apple Mail (2.3826.200.121)
 
 
 
-On 6/27/25 14:12, Danilo Krummrich wrote:
-> On Mon, Jun 23, 2025 at 08:08:50PM +0200, Michal Wilczynski wrote:
->> +    /// Gets the *typed* driver-specific data associated with this chip's embedded device.
->> +    pub fn drvdata<T: 'static>(&self) -> &T {
->> +        // SAFETY: `self.as_raw()` gives a valid pwm_chip pointer.
->> +        // `bindings::pwmchip_get_drvdata` is the C function to retrieve driver data.
->> +        let ptr = unsafe { bindings::pwmchip_get_drvdata(self.as_raw()) };
+> On Jun 28, 2025, at 2:21=E2=80=AFPM, Danilo Krummrich =
+<dakr@kernel.org> wrote:
+>=20
+> On Sat, Jun 28, 2025 at 12:26:11PM +0200, Vitaly Wool wrote:
+>> +/// Non Uniform Memory Access (NUMA) node identifier
+>> +#[derive(Clone, Copy, PartialEq)]
+>> +pub struct NumaNode(i32);
 >> +
->> +        // SAFETY: The only way to create a chip is through Chip::new, which initializes
->> +        // this pointer.
->> +        unsafe { &*ptr.cast::<T>() }
->> +    }
->> +
->> +    /// Sets the *typed* driver-specific data associated with this chip's embedded device.
->> +    pub fn set_drvdata<T: 'static + ForeignOwnable>(&self, data: T) {
->> +        // SAFETY: `self.as_raw()` gives a valid pwm_chip pointer.
->> +        // `bindings::pwmchip_set_drvdata` is the C function to set driver data.
->> +        // `data.into_foreign()` provides a valid `*mut c_void`.
->> +        unsafe { bindings::pwmchip_set_drvdata(self.as_raw(), data.into_foreign().cast()) }
->> +    }
-> 
-> I think this is unsound, e.g. what happens if someone calls set_drvdata() twice?
-> Then you leak the ForeignOwnable from the first call.
-> 
-> Anyways, this does not need to be public, you should just call
-> bindings::pwmchip_set_drvdata() once in Self::new().
-> 
-> Please also see [1], where I introduce generic accessors for drvdata for Device.
+>> +impl NumaNode {
+>> +    /// create a new NUMA node identifer (non-negative integer)
+>> +    /// returns EINVAL if a negative id is specified
+>> +    pub fn new(node: i32) -> Result<Self> {
+>> +        if node < 0 {
+>> +            return Err(EINVAL);
+>> +        }
+>=20
+> Should we also check for MAX_NUMNODES?
 
-Thanks, it would be a great idea to update the code after below patchset
-is merged.
+Good point, thanks.
 
-> 
-> [1] https://lore.kernel.org/lkml/20250621195118.124245-3-dakr@kernel.org/
-> 
->> +    /// Allocates and wraps a PWM chip using `bindings::pwmchip_alloc`.
->> +    ///
->> +    /// Returns an [`ARef<Chip>`] managing the chip's lifetime via refcounting
->> +    /// on its embedded `struct device`.
->> +    pub fn new<T: 'static + ForeignOwnable>(
->> +        parent_dev: &device::Device,
->> +        npwm: u32,
->> +        sizeof_priv: usize,
->> +	drvdata: T,
->> +    ) -> Result<ARef<Self>> {
->> +        // SAFETY: `parent_device_for_dev_field.as_raw()` is valid.
->> +        // `bindings::pwmchip_alloc` returns a valid `*mut bindings::pwm_chip` (refcount 1)
->> +        // or an ERR_PTR.
->> +        let c_chip_ptr_raw =
->> +            unsafe { bindings::pwmchip_alloc(parent_dev.as_raw(), npwm, sizeof_priv) };
->> +
->> +        let c_chip_ptr: *mut bindings::pwm_chip = error::from_err_ptr(c_chip_ptr_raw)?;
->> +
->> +        // Cast the `*mut bindings::pwm_chip` to `*mut Chip`. This is valid because
->> +        // `Chip` is `repr(transparent)` over `Opaque<bindings::pwm_chip>`, and
->> +        // `Opaque<T>` is `repr(transparent)` over `T`.
->> +        let chip_ptr_as_self = c_chip_ptr.cast::<Self>();
->> +
->> +	// SAFETY: The pointer is valid, so we can create a temporary ref to set data.
->> +        let chip_ref = unsafe { &*chip_ptr_as_self };
->> +        chip_ref.set_drvdata(drvdata);
->> +
->> +        // SAFETY: `chip_ptr_as_self` points to a valid `Chip` (layout-compatible with
->> +        // `bindings::pwm_chip`) whose embedded device has refcount 1.
->> +        // `ARef::from_raw` takes this pointer and manages it via `AlwaysRefCounted`.
->> +        Ok(unsafe { ARef::from_raw(NonNull::new_unchecked(chip_ptr_as_self)) })
+>=20
+>> +        Ok(Self(node))
 >> +    }
 >> +}
-> 
+>=20
+> <snip>
+>=20
+>> +    /// Re-allocate an existing memory allocation to satisfy the =
+requested `layout` and
+>> +    /// optionally a specific NUMA node request to allocate the =
+memory for.
+>=20
+> It's not an Option anymore, so we may want to drop 'optionally'. Also =
+please
+> leave an empty line here.
+>=20
+>> +    /// Systems employing a Non Uniform Memory Access (NUMA) =
+architecture contain
+>> +    /// collections of hardware resources including processors, =
+memory, and I/O buses,
+>> +    /// that comprise what is commonly known as a NUMA node.
+>> +    /// `nid` stands for NUMA id, i. e. NUMA node identifier, which =
+is a non-negative
+>> +    /// integer if a node needs to be specified, or NUMA_NO_NODE if =
+the caller doesn't care.
+>=20
+> Please also explain what happens when the NumaNode changes between =
+calls to
+> realloc_node().
+>=20
+> Does it have to remain the same NumaNode? Do we need a safety =
+requirement for
+> that?
 
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+Since we don=E2=80=99t implement that logic, we trust the C part. The =
+current implementation will refuse to realloc for a different node, and =
+I believe that is the right thing to do because transferring an =
+allocation to a different node doesn=E2=80=99t go well with the concept =
+of simple adjustment of the allocation size.
+
+Do you believe it is necessary to explicitly state it here in the =
+comments?
+
+<snip>=
