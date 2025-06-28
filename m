@@ -1,283 +1,66 @@
-Received: from forward203a.mail.yandex.net (forward203a.mail.yandex.net [178.154.239.90])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EAE1DA5F;
-	Sat, 28 Jun 2025 04:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008DD199E9D;
+	Sat, 28 Jun 2025 06:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751084186; cv=none; b=MkBs1iCYCN+lzcs0fwRsxVhU3UCgi73baY/JskZIapjmeYlkdm4hTTazCGV2Td0v1P84zt5NR6PlGiWRvMkh5ZMo+Xr8JRjCCc6yUCiwoyNOPS5lGmq7PvI9Y+kyYYBBZdn5w9Lx8V6QtonkqY2msWZ6U81HaumJC5SWQ4ZmJPQ=
+	t=1751090802; cv=none; b=jMdowqIXhnkWM78jOiVLfNv1CTTa6htGiqGXfqlKra/TG3nbidBDpeeF8SRLszEiKH7yAtT7vDvnp+MMllAHC2+FPUhcLrG0UkdHnas8DZa7JFJ4e/L4jQVqRt86sWrysMQjG5Z/7K4FaLP7grATYTKEvPLWfOd88CR1KOjn170=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751084186; c=relaxed/simple;
-	bh=6PPm+z0Voreuxlt/f6pyQtj0szioLUwKqVqXsNk38C8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vEakG5G3FaJ2ZKh6ZdYGBQrAto/0YVq9EEC9FdITV6DQMyl2MsOc8BYOfygjuUs84/0XrLOpmIcYJ+KGorzEj3YwH88tGK8jNqXBUWnF8WcdkVInZtEDMDooeNFwn613b3vUf4nvg32ujpi5a21q1H+A+2aeAz9GE4aM7VkxwW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=RhFSUmf2; arc=none smtp.client-ip=178.154.239.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1751090802; c=relaxed/simple;
+	bh=fKbg/NIIoxfAHjE8h++RspDS4XkNumWXH5La9thCeJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tVxLC8VBdr+Q7KOG2WZ8JYAEHNXrOOjG9e/tNs4ofyPl8AXeeXQSuUzZWGQA3sd8/tKLZ49leVcrmjHhW5TQk9V0eHgpIiqGJdYDWBZ/JkQMclrzMUZbWqqPi7PTo+gJ8m6o/Bf+XJMAfd1T7faE1E/AlRvEyOOU4udHwQ+gTpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHnT9JHd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="RhFSUmf2"
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
-	by forward203a.mail.yandex.net (Yandex) with ESMTPS id 4F7D063BAC;
-	Sat, 28 Jun 2025 07:10:30 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:623d:0:640:ecee:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTPS id A64C360C7D;
-	Sat, 28 Jun 2025 07:10:21 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id w9OeTYGL2iE0-RBZxA6Gz;
-	Sat, 28 Jun 2025 07:10:20 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1751083821;
-	bh=66XMk2S+hNChlVq6JsXPo4J4fdNzIBjohNEYPvX9x4Y=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=RhFSUmf2lcImRaqvyYXO8w/n3LMK5QM9CAN7XZk1TCNJFm8fTXtlDck6zw5H7GM8t
-	 RYog3kMCFWypMhCPEvK22owfb71bBxvYlY40g+HsopLiIB397BSlzucJAN3SsBxRoh
-	 W0Bp6itf0f7YYHftaT+3mzUMKW+IENG/yeeSFddc=
-Authentication-Results: mail-nwsmtp-smtp-production-main-84.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com
-Cc: airlied@gmail.com,
-	simona@ffwll.ch,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	rafael@kernel.org,
-	viresh.kumar@linaro.org,
-	gregkh@linuxfoundation.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	davidgow@google.com,
-	nm@ti.com,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v3 1/3] replace `#[allow(...)]` with `#[expect(...)]`
-Date: Sat, 28 Jun 2025 07:09:54 +0300
-Message-ID: <20250628040956.2181-2-work@onurozkan.dev>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250628040956.2181-1-work@onurozkan.dev>
-References: <20250628040956.2181-1-work@onurozkan.dev>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHnT9JHd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB665C4CEEA;
+	Sat, 28 Jun 2025 06:06:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1751090801;
+	bh=fKbg/NIIoxfAHjE8h++RspDS4XkNumWXH5La9thCeJ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CHnT9JHd/quelBSGW2Ue0wl8nevROlnpwqlPtVeewjGayKD5D105ilC6jJBBWwN4N
+	 vTLCrnUivFjkfJhugpb2RJgeb7dfdmlsRFOwXcqTW6Db1wGlYsaohq9hP2qXjf5I6P
+	 fXyML2yZOMFVLtpK6kYr3JKb0qSMmQSK8NRXbfxU=
+Date: Sat, 28 Jun 2025 07:06:38 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: miscdevice: Export vtable testing
+Message-ID: <2025062836-reactor-mandate-6712@gregkh>
+References: <20250627-linux-miscident-v1-1-d37c870550ef@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250627-linux-miscident-v1-1-d37c870550ef@google.com>
 
-This makes it clear that the warning is expected not just
-ignored, so we don't end up having various unnecessary
-linting rules in the codebase.
+On Fri, Jun 27, 2025 at 11:42:38PM +0000, Matthew Maurer wrote:
+> A common pattern in the kernel is to test whether a file belongs to a
+> particular driver by checking its `f_op` struct against an expected
+> value. This provides a safe way to perform that test for `MiscDevice`
+> implementations without needing to directly expose the vtable.
 
-Some parts of the codebase already use this approach, this
-patch just applies it more broadly.
+Ick, who does that?  And why?  Who cares within the kernel what driver
+owns a fd as why would any driver ever be passed a fd that is not owned
+by it?
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- drivers/gpu/nova-core/regs.rs       | 2 +-
- rust/kernel/alloc/allocator_test.rs | 2 +-
- rust/kernel/devres.rs               | 2 +-
- rust/kernel/driver.rs               | 2 +-
- rust/kernel/drm/ioctl.rs            | 8 ++++----
- rust/kernel/error.rs                | 2 +-
- rust/kernel/init.rs                 | 6 +++---
- rust/kernel/kunit.rs                | 2 +-
- rust/kernel/opp.rs                  | 4 ++--
- rust/kernel/types.rs                | 2 +-
- rust/macros/helpers.rs              | 2 +-
- 11 files changed, 17 insertions(+), 17 deletions(-)
+I would like to see a real user first please, or point out some places
+in the kernel today that does this so we can go and fix them up :)
 
-diff --git a/drivers/gpu/nova-core/regs.rs b/drivers/gpu/nova-core/regs.rs
-index 5a1273230306..87e5963f1ebb 100644
---- a/drivers/gpu/nova-core/regs.rs
-+++ b/drivers/gpu/nova-core/regs.rs
-@@ -2,7 +2,7 @@
+thanks,
 
- // Required to retain the original register names used by OpenRM, which are all capital snake case
- // but are mapped to types.
--#![allow(non_camel_case_types)]
-+#![expect(non_camel_case_types)]
-
- #[macro_use]
- mod macros;
-diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-index d19c06ef0498..844197d7194e 100644
---- a/rust/kernel/alloc/allocator_test.rs
-+++ b/rust/kernel/alloc/allocator_test.rs
-@@ -7,7 +7,7 @@
- //! `Cmalloc` allocator within the `allocator_test` module and type alias all kernel allocators to
- //! `Cmalloc`. The `Cmalloc` allocator uses libc's `realloc()` function as allocator backend.
-
--#![allow(missing_docs)]
-+#![expect(missing_docs)]
-
- use super::{flags::*, AllocError, Allocator, Flags};
- use core::alloc::Layout;
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index 57502534d985..0e9510cf4625 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -157,7 +157,7 @@ fn remove_action(this: &Arc<Self>) -> bool {
-         success
-     }
-
--    #[allow(clippy::missing_safety_doc)]
-+    #[expect(clippy::missing_safety_doc)]
-     unsafe extern "C" fn devres_callback(ptr: *mut kernel::ffi::c_void) {
-         let ptr = ptr as *mut DevresInner<T>;
-         // Devres owned this memory; now that we received the callback, drop the `Arc` and hence the
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index ec9166cedfa7..fc7bd65b01f1 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -168,7 +168,7 @@ fn of_id_info(dev: &device::Device) -> Option<&'static Self::IdInfo> {
-     }
-
-     #[cfg(not(CONFIG_OF))]
--    #[allow(missing_docs)]
-+    #[expect(missing_docs)]
-     fn of_id_info(_dev: &device::Device) -> Option<&'static Self::IdInfo> {
-         None
-     }
-diff --git a/rust/kernel/drm/ioctl.rs b/rust/kernel/drm/ioctl.rs
-index 445639404fb7..3ae8d2d8263f 100644
---- a/rust/kernel/drm/ioctl.rs
-+++ b/rust/kernel/drm/ioctl.rs
-@@ -9,28 +9,28 @@
- const BASE: u32 = uapi::DRM_IOCTL_BASE as u32;
-
- /// Construct a DRM ioctl number with no argument.
--#[allow(non_snake_case)]
-+#[expect(non_snake_case)]
- #[inline(always)]
- pub const fn IO(nr: u32) -> u32 {
-     ioctl::_IO(BASE, nr)
- }
-
- /// Construct a DRM ioctl number with a read-only argument.
--#[allow(non_snake_case)]
-+#[expect(non_snake_case)]
- #[inline(always)]
- pub const fn IOR<T>(nr: u32) -> u32 {
-     ioctl::_IOR::<T>(BASE, nr)
- }
-
- /// Construct a DRM ioctl number with a write-only argument.
--#[allow(non_snake_case)]
-+#[expect(non_snake_case)]
- #[inline(always)]
- pub const fn IOW<T>(nr: u32) -> u32 {
-     ioctl::_IOW::<T>(BASE, nr)
- }
-
- /// Construct a DRM ioctl number with a read-write argument.
--#[allow(non_snake_case)]
-+#[expect(non_snake_case)]
- #[inline(always)]
- pub const fn IOWR<T>(nr: u32) -> u32 {
-     ioctl::_IOWR::<T>(BASE, nr)
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 3dee3139fcd4..a59613918d4c 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -263,7 +263,7 @@ fn from(e: core::convert::Infallible) -> Error {
- /// [`samples/rust/rust_minimal.rs`]):
- ///
- /// ```
--/// # #[allow(clippy::single_match)]
-+/// # #[expect(clippy::single_match)]
- /// fn example() -> Result {
- ///     let mut numbers = KVec::new();
- ///
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 8d228c237954..288b1c2a290d 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -30,7 +30,7 @@
- //! ## General Examples
- //!
- //! ```rust,ignore
--//! # #![allow(clippy::disallowed_names)]
-+//! # #![expect(clippy::disallowed_names)]
- //! use kernel::types::Opaque;
- //! use pin_init::pin_init_from_closure;
- //!
-@@ -67,11 +67,11 @@
- //! ```
- //!
- //! ```rust,ignore
--//! # #![allow(unreachable_pub, clippy::disallowed_names)]
-+//! # #![expect(unreachable_pub, clippy::disallowed_names)]
- //! use kernel::{prelude::*, types::Opaque};
- //! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};
- //! # mod bindings {
--//! #     #![allow(non_camel_case_types)]
-+//! #     #![expect(non_camel_case_types)]
- //! #     pub struct foo;
- //! #     pub unsafe fn init_foo(_ptr: *mut foo) {}
- //! #     pub unsafe fn destroy_foo(_ptr: *mut foo) {}
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 4b8cdcb21e77..91710a1d7b87 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -280,7 +280,7 @@ macro_rules! kunit_unsafe_test_suite {
-             static mut KUNIT_TEST_SUITE: ::kernel::bindings::kunit_suite =
-                 ::kernel::bindings::kunit_suite {
-                     name: KUNIT_TEST_SUITE_NAME,
--                    #[allow(unused_unsafe)]
-+                    #[expect(unused_unsafe)]
-                     // SAFETY: `$test_cases` is passed in by the user, and
-                     // (as documented) must be valid for the lifetime of
-                     // the suite (i.e., static).
-diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-index a566fc3e7dcb..aaeefe84861a 100644
---- a/rust/kernel/opp.rs
-+++ b/rust/kernel/opp.rs
-@@ -600,9 +600,9 @@ extern "C" fn config_regulators(
- pub struct Table {
-     ptr: *mut bindings::opp_table,
-     dev: ARef<Device>,
--    #[allow(dead_code)]
-+    #[expect(dead_code)]
-     em: bool,
--    #[allow(dead_code)]
-+    #[expect(dead_code)]
-     of: bool,
-     cpus: Option<CpumaskVar>,
- }
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 22985b6f6982..a5d5a4737a41 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -600,5 +600,5 @@ pub enum Either<L, R> {
- /// constructed.
- ///
- /// [`NotThreadSafe`]: type@NotThreadSafe
--#[allow(non_upper_case_globals)]
-+#[expect(non_upper_case_globals)]
- pub const NotThreadSafe: NotThreadSafe = PhantomData;
-diff --git a/rust/macros/helpers.rs b/rust/macros/helpers.rs
-index e2602be402c1..6fd1462ff01a 100644
---- a/rust/macros/helpers.rs
-+++ b/rust/macros/helpers.rs
-@@ -98,7 +98,7 @@ pub(crate) fn file() -> String {
-     }
-
-     #[cfg(CONFIG_RUSTC_HAS_SPAN_FILE)]
--    #[allow(clippy::incompatible_msrv)]
-+    #[expect(clippy::incompatible_msrv)]
-     {
-         proc_macro::Span::call_site().file()
-     }
---
-2.50.0
-
+greg k-h
