@@ -1,94 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788512F1FF1;
-	Sat, 28 Jun 2025 12:13:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA379220F41;
+	Sat, 28 Jun 2025 12:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751112796; cv=none; b=GeQcEyL6eAnZIG2zkYRCMAGHtEc8yfi/k605N3ow9mYgoby8d8gKiCLkRMT5GAs1o/kNliQlqAbpbwHnkoXOOwLXVaQU+4CSNe+c7PhDaeqsLL3MwlQ+YrAf8D1x/VUJSETdZR4y297g/zgCy7i9c8giK0PQn9a/0lmC8qzjWb0=
+	t=1751113148; cv=none; b=moEEJ0bSZgbsXeBBo27BUpoiNXBr+wpixeV/XOjBl+jmTD1qNYdO/T0ZMOxNaWkjfMNIVx8FaEKbN8g9z4Zfn8W3HflTDjxHqEb9Ewhz+CPNeofZOE19Pf+QFWuvzTMnA2xS1MgldNkW3Tbw9jhAD1pKKwZgaaF8DsoKK/Pfcv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751112796; c=relaxed/simple;
-	bh=4hVx8Zebvf3phZoCLzuTJOPQggGs+Xb1sgBaGSs/HZQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=fxreJyfIC+tCw+7P20jtf6CjyuDZ3a6yYyTp1eX3ExFiUIos9TaZUXYDe3fD8N/HS1IBc155VF6eODG4u0Bzhk8s2FjslH0uffasNdrdMPF9V67Y7g5RlpJkUsKSUwbcAaPXrLVvAFY8Ng+LIyictsMyqHUHFK+41YTHj6xexJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4aGT9r+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751113148; c=relaxed/simple;
+	bh=SzdKukWgBhdmdV1afJ4LoBiWW5gP6MVZ4xof9rPG9mA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CynyFzdbxjw+lGNZAg183Mvtu0VpDKp6rDUaYCOaTowiUuYQQfy+b5/tCTpKL9LXwFwSlNvRWK5PGUCIjpHQ+sP/MhRoAwi0Ol2+O7sFW5IFMz426ScPXX99h+DFMfEDYExQlbm78D8x2YyMgoAyLCJTlUI9TX88v7FhmcYljl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yprr9nQ6; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4aGT9r+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECAEC4CEEA;
-	Sat, 28 Jun 2025 12:13:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751112795;
-	bh=4hVx8Zebvf3phZoCLzuTJOPQggGs+Xb1sgBaGSs/HZQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=T4aGT9r+49qyah52Rxu7BcYcFgiJHIidIZbDpuUl/6MxdiJW3k3/fYm1Aays1vZXB
-	 aNWKutpFOuQ0x99lBfpu9FpyIxSCgrf9vDombqyvNGX0UHZICJnn4YXF1jxzc5tlyx
-	 3FCZVA4o2s7Vsg6SLX2pebOHwCU1PQ+KDMqD6e8qYuFrqprxgJp6gjk0utzW/qYV0+
-	 vUG+uD2QDqf3Sl9S9zDv+gwUonwIeKJ8E/z82jaaYIVC5rgXrT+eT7o0OTD5vm+a65
-	 ot5qZivLPRZsVcIzd9ljaXK/FFCPi4WIXEtigjTYMCTmsMqsyiLU1B05jGE1We1lU+
-	 /6Mw4UywH90KQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yprr9nQ6"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-31306794b30so417585a91.2;
+        Sat, 28 Jun 2025 05:19:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751113146; x=1751717946; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SzdKukWgBhdmdV1afJ4LoBiWW5gP6MVZ4xof9rPG9mA=;
+        b=Yprr9nQ6Dr2Y7QGYzjtUZfwcvZ64VIK3sxVsF7MTD2vCnu9CAcjzyK/YpptOc75HCT
+         ln2ryBEUWMXpJot66DjJly7ahbe3Y0oqzjSm1ewrFJlYd7/cPTLj9Rk+onwRRj71Fqju
+         PF7Y/2MVRMml1WoJy/ssNxu3sE8G91srKSalX2L1dbGfg5T63LwBagb1Y2lN/SDv2muv
+         Lp23uGkr2AdtjYS4OVr4iloJ+8hkUcL1AqaaJa2rE9tw1BNBfVSUTa932d2reE8WdNBF
+         tlwreS+e4D9m245AxCo4Vy/K8GUgpm44AAyTVMDPjITMC2hMphdvmzJ2bUAG/ttpBALl
+         OwHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751113146; x=1751717946;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzdKukWgBhdmdV1afJ4LoBiWW5gP6MVZ4xof9rPG9mA=;
+        b=xAQpk093MgACncpEb8rb9Od/3oMEeoTKFysO5bqaY4ksg7KrH1eIAyris5PKLLVmxs
+         AoOm4v9FGVQa/EG89SWc+LtJlBnkqbz/ZOoSZdrFVW5tLk0GRr9sAV/A+HJ5yFpEzrSO
+         awOVbiVgLWMtHxj1F6suCytzY8wzCDb4UrUecckoUFjqm9unsJsPf02EqWk3gI3djbac
+         INNmc35eLMg/hyCL/ZsoslIUrmFJv2ZOWUCnByHabItlL8CQj7ADhDaeaI1c2A8aqCZo
+         CorDAkgM0kHfhB/TgKESEmemYClaLdV09Ao9wJY1+zdS9YPjkJNrZfMaWfYNDAgSL1XV
+         543g==
+X-Forwarded-Encrypted: i=1; AJvYcCV4g46FTntD0NYELu5IkjVB+iXrHyyO5qrP2axQdeC9lDqPAkstj0VAeaQQzrefyYR+5PzF+NOiIlA=@vger.kernel.org, AJvYcCVfxrIme3z0zHAlVvxbX/R10EauMUs6R24v4nQEeR65baal1Hc8W/+8JzyuSqcDJhqjAIoWbxqa0JWuTrM=@vger.kernel.org, AJvYcCWURrTluT//ahWEr+hhkASd4Yqxf4gRgcXOEA0BefXGTCdT0LzIzvuJhW5DAFtWmKblkKrHcLX+QiRmc/O1Dulf@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEpP9gAgBls/pa0TLuwFz0uSgpkrakWk5OEcQ+BZkF3XqAXmmd
+	xgZhynmn6sAKU0YJPHo7qEvUTIVBqFyA0HsjrRna/skPaIQ1Gb01cFOFnQT3lfynSwxhMNZzqWA
+	s7qtqjDZDUSsOHMPo6aC8dY422SgWvJukDfEC86k+UA==
+X-Gm-Gg: ASbGnct8/7R0X77DEM6Sz8aaKraybBaSd7aaiMP4r83y6IFiwAzoz1DfMPdKuf1DFn8
+	gcKGxGeja9lVXofTFbTalXlYCtXvnKZDdMXBP2X0+MMAWpueL262x3PBH4JAg6e0lasbRRdjsDI
+	+bFTZohTfH5a+loOY0unz3XahjExK7ZH0mY1419utdMlQ=
+X-Google-Smtp-Source: AGHT+IGgOIPOSWcI4SyHL/P/nImiGOwt6QITJk5YEphAa0NrYbuKsNiPSt631d7/8lZfIvKm4XE3s49XsmhW3bUKW18=
+X-Received: by 2002:a17:90b:390b:b0:30a:80bc:ad4 with SMTP id
+ 98e67ed59e1d1-318edd3da95mr1366705a91.0.1751113145945; Sat, 28 Jun 2025
+ 05:19:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250628040956.2181-1-work@onurozkan.dev> <20250628040956.2181-4-work@onurozkan.dev>
+ <CANiq72kjdj4KbDhfnTbm8jZpLC1+WPB3E6M8D8M2NLnphMs5vg@mail.gmail.com> <20250628133013.703461c8@nimda.home>
+In-Reply-To: <20250628133013.703461c8@nimda.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 28 Jun 2025 14:18:53 +0200
+X-Gm-Features: Ac12FXy8IZuX4C_aGR3lTNf1m2yaOzD8uNrtbrbCmNNocjT9FjWir7FB3_SiMBY
+Message-ID: <CANiq72kY9DA_JD_XkF01ZSmXbD8iaFthVZ66X+9N5aa_WObt+A@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] rust: remove `#[allow(clippy::non_send_fields_in_send_ty)]`
+To: Onur <work@onurozkan.dev>, viresh.kumar@linaro.org
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, airlied@gmail.com, simona@ffwll.ch, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	rafael@kernel.org, gregkh@linuxfoundation.org, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	davidgow@google.com, nm@ti.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 28 Jun 2025 14:13:08 +0200
-Message-Id: <DAY5ODJ7ZPWY.24OXGYED4EAK9@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <david.m.ertman@intel.com>,
- <ira.weiny@intel.com>, <leon@kernel.org>, <kwilczynski@kernel.org>,
- <bhelgaas@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v4 5/5] rust: devres: implement register_release()
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250626200054.243480-1-dakr@kernel.org>
- <20250626200054.243480-6-dakr@kernel.org> <aF2vgthQlNA3BsCD@tardis.local>
- <aF2yA9TbeIrTg-XG@cassiopeiae> <DAWULS8SIOXS.1O4PLL2WCLX74@kernel.org>
- <aF8V8hqUzjdZMZNe@tardis.local> <DAXXVXNTRLYH.1B8O2LKBF4EW1@kernel.org>
- <aF-N-luMxFTurl91@Mac.home> <DAY059Y669BX.2GVKH6RBG80B6@kernel.org>
- <aF-83Tb4-Sxz_KFk@pollux>
-In-Reply-To: <aF-83Tb4-Sxz_KFk@pollux>
 
-On Sat Jun 28, 2025 at 11:58 AM CEST, Danilo Krummrich wrote:
-> On Sat, Jun 28, 2025 at 09:53:06AM +0200, Benno Lossin wrote:
->> Hmm @Danilo, do you have any use-cases in mind or already done?
+On Sat, Jun 28, 2025 at 12:30=E2=80=AFPM Onur <work@onurozkan.dev> wrote:
 >
-> There may be other use-cases, but the one that I could forsee is very spe=
-cific:
->
-> A Registration type that carries additional reference-counted data, where=
- the
-> Registration should be released exactly when the device is unbound, indep=
-endent
-> of the lifetime of the data.
->
-> Obviously, this implies that the ForeignOwnable is an Arc.
->
-> With KBox, Release and Drop are pretty much identical, so using
-> devres::release() instead, is much simpler and hence what we do for all s=
-imple
-> class device registrations.
->
-> Besides that, the use-case described above can also be covered by Devres =
-with
-> the pin-init rework, by having the Registration  embed a Devres<Inner>, w=
-hich
-> is what irq::Registration does and I also do in the MiscDeviceRegistratio=
-n
-> patches.
->
-> Hence, I already considered dropping this patch -- and I think we should =
-do this
-> for now.
+> It doesn't seem to be the same reason. I rebased over
+> c6af9a1191d042839e56abff69e8b0302d117988 (the exact commit where that
+> lint was added) but still Clippy did not complain about it on the
+> MSRV. So it was either a leftover, or there is a version between
+> 1.78 and the current stable where Clippy did complain. I can dig into it
+> more during the week if you would like.
 
-Sounds good! We can always pick it up again when needed.
+Are you sure? The lint is actually disabled, as I mention in 5e7c9b84ad08.
 
----
+From a quick test, I enabled it in that file, and I get the warning.
+
+Thus it seems to me Clippy would still complain about it just fine.
+
+It doesn't mean we shouldn't remove it, though.
+
+> IMO, we should require people to add a comment explaining the reason
+> for adding these lint rules to the codebase. It would make both reading
+> and modifying the code much simpler and clearer.
+
+Do you mean using the lint reasons feature? IIRC we discussed at some
+point doing that when the feature was added (we enabled it for the
+`expect` side of things).
+
+For non-obvious cases or uncommon lints, it would be definitely nice
+(a comment is also OK). I am not sure if it is worth enforcing it for
+every single case, though.
+
+It would be nice if `clippy::allow_attributes_without_reason` could be
+enabled just for `allow`, or ignore it for certain lints.
+
 Cheers,
-Benno
+Miguel
