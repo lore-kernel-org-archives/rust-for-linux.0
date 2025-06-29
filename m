@@ -1,61 +1,71 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6438213957E
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Jun 2025 13:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5801E412A;
+	Sun, 29 Jun 2025 14:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751204492; cv=none; b=eN0Zvp+rPmh8RLpzWMNChiMxC6W1+hV/xQhFoPtKrga7fpHVl4YsW8g1QXsEmvq9BIq8Zbewjg3uQgL9ycXDBjQUl1NJwZCaYv6wyIhroLKlVs62RxPw08LxhcroKeNhqkpyckJVmfiV546yLD5BN0Cgoflfr9Khhs8pWRfCX3g=
+	t=1751209001; cv=none; b=HFJMSXcm35LRkozbGxNUUSe4Td99vaVqV7jSZYlnPUPmpOiX4XZQQb2wYjGhlJoIfcXF1tIjnwvEKExFtQDQLkcK741XYOxL6mxgACs29+j4dW3OMKGzEc5CkKmHM0gPQuKN91mA/KgGWbAphLMWczvpFf/qKNffBaujNWtU68c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751204492; c=relaxed/simple;
-	bh=6pH6Jrus+isDRInRJC5Z5etu0I3dqpdkTpbdprAOHWA=;
+	s=arc-20240116; t=1751209001; c=relaxed/simple;
+	bh=u/4/+SN3xS+ObLD8V7Bx1+EsQs2A4HPAtqNg0o8UzSU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bnprug1Dd4GJDse7/cX8FeyxhonK0PAcCNrf0Nj87R6CwpLPC4J+dUexnFU4E51yhY7gPJ/SQVT9nEub5LqBp+8Rl3eQimIATuTYtvkL3itOa2hfJin3XupzW997LeFjB1aULCUxG6aog/9kMwfBrpxyLhnG9aHmi+rjgRLuyjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fanw32p+; arc=none smtp.client-ip=192.198.163.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=CQT/NJP+VY9Hy0d3lXof6BPnLwQXbou6g3rqCib4mW2j6thsfnEJaQnHftFWwof2xYxWz3nbQo6MX7ag57xG7L4GKm1FIZ46tcV9pi2hKV8WDIvNaPqGYUwcH/BWC36BZd2Ogn3uiA1clTZqHACDpHrPXFoZSErxib049Sfhu7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HJuKTEP0; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fanw32p+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HJuKTEP0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751204491; x=1782740491;
+  t=1751208999; x=1782744999;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=6pH6Jrus+isDRInRJC5Z5etu0I3dqpdkTpbdprAOHWA=;
-  b=fanw32p+3rrzs1C/Ef9qEk241a1JqgH1AwRjJc1vQoIHI2h16woWSgXa
-   CeOmC4lWg6fXfZwsxU6hLhSli7Y/ke6hb7V8SUOOoXIUBkGnuixImauog
-   pZCE0NMsDGhHereOOi9So27g71Sh2eMRbS2ARfdsQx5pcx6kKuR6fb9li
-   eU17UenUtBGCuxmxvGLA5GvUVsMAjlfDitJ+0zpthu3rBWUh9g055tkZ+
-   F6H0IMpXLK7OPQADR9GFIy2R6Ftp9V6ZMw6X4pU4xQkGPLYMmZ0a1t/PQ
-   jmhnnclM5K9gegbZoPz4bRROppYrOQTlAs0i7OYSHf+FohXBC237if5Nd
-   A==;
-X-CSE-ConnectionGUID: ONWTQeh7Twi1mL+FpLq0Iw==
-X-CSE-MsgGUID: 6b4t4DNTSRuSRlE5kR/h1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="52559267"
+  bh=u/4/+SN3xS+ObLD8V7Bx1+EsQs2A4HPAtqNg0o8UzSU=;
+  b=HJuKTEP0j+ycw0LPEkhLVk91i5JSwO1X/9EWFHwoy8IlMAMNGDtHjIuP
+   f1tcSS1Mq0zdTlSRqt7wYpHUIZoxHDRZU1B9sRECMObT8S50/7j22es8x
+   DtwUnTNU8jgu/SrHGpXUQ503OTp2jK0dMyF2jxYyjfIiDG3+9ZBC/s98G
+   sXvPV+at5IXOLTYRcIy7CR8LeJus1kf1WxWD2RCtRs/igHWXY1kchzHtI
+   W36bBDhMxCe/ZHPWZPXjeWkr7dRYhI9sEJZkLbZoGOW1NER4URIDas+QJ
+   GtNYvR7uRzVg97GTJeIfKeQ6RvpXBXBr1mzGF4BGJwzaiGVCDk6/wKoQO
+   Q==;
+X-CSE-ConnectionGUID: qDXMMt6YQ1yuhUTD8+vY+w==
+X-CSE-MsgGUID: 1FJvEWU/TrSlQfK+ErHBqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="52675765"
 X-IronPort-AV: E=Sophos;i="6.16,275,1744095600"; 
-   d="scan'208";a="52559267"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2025 06:41:30 -0700
-X-CSE-ConnectionGUID: Fcu/cX/tT7yl7jctrZs1SA==
-X-CSE-MsgGUID: 7AK8iye2RRWg4U15YIMQNA==
+   d="scan'208";a="52675765"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2025 07:56:38 -0700
+X-CSE-ConnectionGUID: v+A5bqgxSIqB4gL7KQyvIg==
+X-CSE-MsgGUID: bEslpo9+SqiizZzXOcxg5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.16,275,1744095600"; 
-   d="scan'208";a="157251116"
+   d="scan'208";a="190415114"
 Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 29 Jun 2025 06:41:28 -0700
+  by orviesa001.jf.intel.com with ESMTP; 29 Jun 2025 07:56:34 -0700
 Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1uVsHe-000Xyg-00;
-	Sun, 29 Jun 2025 13:41:26 +0000
-Date: Sun, 29 Jun 2025 21:41:09 +0800
+	id 1uVtSK-000Y1K-0F;
+	Sun, 29 Jun 2025 14:56:32 +0000
+Date: Sun, 29 Jun 2025 22:55:31 +0800
 From: kernel test robot <lkp@intel.com>
-To: Timur Tabi <ttabi@nvidia.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v5] rust: introduce sfile macro for succinct code tracing
-Message-ID: <202506292116.f6SHoUIX-lkp@intel.com>
-References: <20250626203535.331219-1-ttabi@nvidia.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v2] rust: io_pgtable: Add io_pgtable abstraction
+Message-ID: <202506300052.VAXOKQxS-lkp@intel.com>
+References: <20250623-io_pgtable-v2-1-fd72daac75f1@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -64,47 +74,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250626203535.331219-1-ttabi@nvidia.com>
+In-Reply-To: <20250623-io_pgtable-v2-1-fd72daac75f1@collabora.com>
 
-Hi Timur,
+Hi Daniel,
 
-kernel test robot noticed the following build errors:
+kernel test robot noticed the following build warnings:
 
-[auto build test ERROR on c4dce0c094a89b1bc8fde1163342bd6fe29c0370]
+[auto build test WARNING on dc35ddcf97e99b18559d0855071030e664aae44d]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Timur-Tabi/rust-introduce-sfile-macro-for-succinct-code-tracing/20250627-043731
-base:   c4dce0c094a89b1bc8fde1163342bd6fe29c0370
-patch link:    https://lore.kernel.org/r/20250626203535.331219-1-ttabi%40nvidia.com
-patch subject: [PATCH v5] rust: introduce sfile macro for succinct code tracing
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250629/202506292116.f6SHoUIX-lkp@intel.com/config)
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-io_pgtable-Add-io_pgtable-abstraction/20250624-053329
+base:   dc35ddcf97e99b18559d0855071030e664aae44d
+patch link:    https://lore.kernel.org/r/20250623-io_pgtable-v2-1-fd72daac75f1%40collabora.com
+patch subject: [PATCH v2] rust: io_pgtable: Add io_pgtable abstraction
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250630/202506300052.VAXOKQxS-lkp@intel.com/config)
 compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
 rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250629/202506292116.f6SHoUIX-lkp@intel.com/reproduce)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250630/202506300052.VAXOKQxS-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506292116.f6SHoUIX-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506300052.VAXOKQxS-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
+All warnings (new ones prefixed by >>):
 
->> error: `Option::<T>::unwrap` is not yet stable as a const fn
-   --> rust/doctests_kernel_generated.rs:5969:29
+>> warning: unresolved link to `IOPagetable`
+   --> rust/kernel/io_pgtable.rs:55:44
    |
-   5969 | const SFILE: &'static str = sfile!();
-   |                             ^^^^^^^^
+   55 |     /// User-specified type owned by the [`IOPagetable`] that will be passed to TLB
+   |                                            ^^^^^^^^^^^ no item named `IOPagetable` in scope
    |
-   = help: add `#![feature(const_option)]` to the crate attributes to enable
-   = note: this error originates in the macro `sfile` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error: `Option::<T>::unwrap` is not yet stable as a const fn
-   --> rust/doctests_kernel_generated.rs:5915:20
-   |
-   5915 | pr_err!("{}:{}n", sfile!(), line!());
-   |                    ^^^^^^^^
-   |
-   = help: add `#![feature(const_option)]` to the crate attributes to enable
-   = note: this error originates in the macro `sfile` (in Nightly builds, run with -Z macro-backtrace for more info)
+   = help: to escape `[` and `]` characters, add '' before them like `[` or `]`
+   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
 
 -- 
 0-DAY CI Kernel Test Service
