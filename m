@@ -1,131 +1,131 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380344C80
-	for <rust-for-linux@vger.kernel.org>; Sun, 29 Jun 2025 07:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865181E5018;
+	Sun, 29 Jun 2025 07:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751181631; cv=none; b=jE4zDhlLb8QCt3hVLzIdkXmUDtljIJ0xqMulec9VbUL40xznkmO+JtedGPEaIgOxFeC1Ad3owN2bkTIzqUmIT6tzHoWY87gB/LMasb6Xvs8OY/9T/SoqtwQpl3zIUnYvDerM4b09C0C6INebbH6wbzovOcKlVv9Ur1iKbbi/ajw=
+	t=1751183048; cv=none; b=aEQcy2oaNRJcQUS+a1mdQ4G0cqDXf1ViXEo9Bmq8J5AaOEI4GrmUDAKYChIpMwpTey1Ew8mg6FyrkcaW0R5A7HglwUYPY6+JLdQGeQddlLNpw6l+SYziB2S93uVrtUShKfWqBouOzlWtmIiIehSzuVnnfxNQGg8ahcGMoJ092uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751181631; c=relaxed/simple;
-	bh=Cpp4cimSlX6/ZA+LS1tvkBe5d6uSGAhUqiVr+pmYzpU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jwHoqIjddEKioiJKsT4+MdAWyx1Jd194VDUpPsgA/aWC9P5fvmsWlY0ieVfW0H4Bauq5aU+EUYAK30zMZsc+7iQVLqW3IvCw27eKfZ/5SkRO4v1lhWTYQVSNB7IT/yaTOIAr8oFc1kAw0h8xXGtF0A7R5DPNdLico3093uZ0jyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=penguintechs.org; spf=pass smtp.mailfrom=penguintechs.org; dkim=pass (1024-bit key) header.d=penguintechs.org header.i=@penguintechs.org header.b=a100A77s; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=penguintechs.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=penguintechs.org
+	s=arc-20240116; t=1751183048; c=relaxed/simple;
+	bh=SEqy5zb+emFhpz7wJU3XLdetnXNP8qZL/erb9T+5OOs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VoYQqvmWquCmWSco2dTfVOOeaGaf2zIfOLrJ/C4fqnhHx+SFbHGtsbc96pwd9TjfhFnk3IzwacCRNQQgUcFM0D1nU+zGQtLkAZ/0Gpv4NT/d/6SfV/vfkSuz0OYE4bTmun7AvO6quTxiy1N9mi3m61k/AuKjNzGz2MYD14OASHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WHQ8Cg+D; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=penguintechs.org header.i=@penguintechs.org header.b="a100A77s"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-742c3d06de3so1538006b3a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 29 Jun 2025 00:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=penguintechs.org; s=google; t=1751181628; x=1751786428; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3YbYWCMUijBwsfHEBbDnTMP57muDMHFrEOHCcbc1whE=;
-        b=a100A77sxKk1gtNpMy/JCKtFz8t9QWsqyQS+qSjflKj7eUQUdE9UhpqxeJlJLrbql+
-         y9rdPyzsYDsDU1NBTpPPb6vhwVh5mHzPZ2P6V0mIG+1caSWFu/EyJsyEMB75SuJ4XCqm
-         vsZr2ueQsH0xmDKjA+7Nyt+MOD4cp+ODnODac=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751181628; x=1751786428;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3YbYWCMUijBwsfHEBbDnTMP57muDMHFrEOHCcbc1whE=;
-        b=k20/XSciVHu6PaU5vZ249CuC65dVBtN54RE0OSRmGnxfqq5ZRx1z2XpQbaPwgof4v4
-         8WidkuoWT7RXO8ij+hpjwe3/XT9LPFvfWE+/D1UD99Ybzxs30tAeYgcEtgsXEXCFUruB
-         3ofKP8H0p8Mdvbl7NXkOzKScfxL3hIw9Lxp32KZrdtFTqs3u5UR6XuTt5KGoSxEc9h2k
-         X+HrGNIH3iGDXiqJo4KPpvZcmbVZh0qHrtBUrYV5MSKPn2pVGARiAbfk0wGmq9TeoheZ
-         S/QUikRmICo7cg72LC6S1B/hHE9xr3uDxwfBgu9LheOSpC39GbYNmfaQ7jpsRspOZqhR
-         T57g==
-X-Forwarded-Encrypted: i=1; AJvYcCWPm1HWSQywMsEZeTUPzMf9KuqpAz4EuEwZEYPK1p2h9ZWbR86jfXweTokzFDyU4Eyk+wjjMTRp/lqHopXFUg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI8qPhYCXHzXqIk0XcVKnwEP4ug6L6yLK5Gc45HTN8AD5JPd8p
-	D/h6cbAmbSwPuZ0KSnKFRkBgttKKH0V4vAK/KJVECw2qcpOhunY9+25SLxhIq30LYmBdVFaQSh+
-	y1oyrzIGK
-X-Gm-Gg: ASbGncvP/LrSGqeTKuVjfeMO52OH+RgaV05D1mW5QUarT5b3kS9nYfYHs3EEiH9qepE
-	dM1SJ3Jb8ab+6YZPK8bdbqIre27z1aKo3HKFjIpcZixPjZwaQqxsE3rCgKe5jL/WH7vGwT5zOeY
-	NTJ+ELU7QdpznFVxPhQqtmOr7NOXfdIrsHBuF2PkdDAJghmVh4WrOYlwhsodGlaYIt8PCus1A/c
-	GUfm2MuSs9wPoKLsbNRNFvTjCYY92dm9dPjwWoYX7X90GwOyS4+9vka7JgFcgdjOY2aqhF2PyHc
-	rvh87bey+w/cj95/ukbYYeLjX16Tq3aHiR29yZBoxtERV4MAXt3tE4TiANN6akBRHjVGrF8nm/6
-	Af7uGOxtAsNrXfH0fWL1DFDblcZbEcXQlhbpr4Rcju1tf3Q==
-X-Google-Smtp-Source: AGHT+IEHkik0r8PJ7wgKd9VwE2NTDfBOTlJf0xKoCEuaiQe9ZnV5cbmTfkGbKhXrCLsrJpCbzOkIvw==
-X-Received: by 2002:a05:6a00:1898:b0:748:eb38:8830 with SMTP id d2e1a72fcca58-74af6fcdd6amr11854659b3a.13.1751181628497;
-        Sun, 29 Jun 2025 00:20:28 -0700 (PDT)
-Received: from ?IPV6:2601:646:8700:dd30:5f3e:5ba7:e0ea:9a08? ([2601:646:8700:dd30:5f3e:5ba7:e0ea:9a08])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af57ef308sm5885444b3a.157.2025.06.29.00.20.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 29 Jun 2025 00:20:28 -0700 (PDT)
-Message-ID: <a6b1b841-87b5-4b77-ac15-89364cc760ea@penguintechs.org>
-Date: Sun, 29 Jun 2025 00:20:27 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WHQ8Cg+D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751183046; x=1782719046;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SEqy5zb+emFhpz7wJU3XLdetnXNP8qZL/erb9T+5OOs=;
+  b=WHQ8Cg+DWH3RJ55jeMKQ8ahwfcZqZsMG9Gw8pSKZEhqYCzyt+xTYmSKv
+   ee09UZf+D5g6O82Qfa5RgKh2dtnC7MNgFlL0NLsjC9EwymqlMXT1Ya8/S
+   9m1d9ZNUJ/H+BcOCSXVFuOzYnPh0rfRQmsP9lDVk7bv1oNp0JE7UMvMgE
+   NuzP0qz1saYVH+LlaobQ7OhpJORWOPD2xt5hO5bYhKXd7m6hJLh4CsRO6
+   sW9hNWFL8XAgtfC3go6hhEC4cWJbOhs9lFs8fd5zHzeP6ImDlsP58gT+j
+   NMxtSXUcbQRkQjP/btWVivCK18yefXSiTdMlqOSI65lOqgRKGER9upK77
+   A==;
+X-CSE-ConnectionGUID: i34v0/vARfO/lwDGhbkvnw==
+X-CSE-MsgGUID: rw8DN9XrTDywFGrDgOwqag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11478"; a="64881137"
+X-IronPort-AV: E=Sophos;i="6.16,274,1744095600"; 
+   d="scan'208";a="64881137"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2025 00:44:05 -0700
+X-CSE-ConnectionGUID: 768TlwaAQU20+qeUe/XL0Q==
+X-CSE-MsgGUID: kJ0CsLdyQhaFtS8NBHabgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,274,1744095600"; 
+   d="scan'208";a="152804225"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 29 Jun 2025 00:43:59 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uVmhh-000XlG-0E;
+	Sun, 29 Jun 2025 07:43:57 +0000
+Date: Sun, 29 Jun 2025 15:43:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, airlied@gmail.com,
+	simona@ffwll.ch, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rafael@kernel.org, viresh.kumar@linaro.org,
+	gregkh@linuxfoundation.org, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, davidgow@google.com,
+	nm@ti.com, Onur =?iso-8859-1?Q?=D6zkan?= <work@onurozkan.dev>
+Subject: Re: [PATCH v3 1/3] replace `#[allow(...)]` with `#[expect(...)]`
+Message-ID: <202506291507.M9eg5kic-lkp@intel.com>
+References: <20250628040956.2181-2-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: pci: fix documentation related to Device instances
-From: Wren Turkal <wt@penguintechs.org>
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>,
- linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org
-Cc: Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-References: <20250629055729.94204-2-sergeantsagara@protonmail.com>
- <ee8636ef-ecf5-4e1b-a304-9a96df1ae4ba@penguintechs.org>
-Content-Language: en-US
-In-Reply-To: <ee8636ef-ecf5-4e1b-a304-9a96df1ae4ba@penguintechs.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250628040956.2181-2-work@onurozkan.dev>
 
-Apologies on the double send. I thought the first didn't go through. 
-Please ignore this message and reply to the other.
+Hi Onur,
 
-wt
+kernel test robot noticed the following build warnings:
 
-On 6/29/25 12:15 AM, Wren Turkal wrote:
-> On 6/28/25 10:57 PM, Rahul Rameshbabu wrote:
->> Device instances in the pci crate represent a valid struct pci_dev, 
->> not a struct
->> device.
->>
->> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
->> ---
->>
->> Notes:
->>      Notes:
->>      I noticed this while working on my HID abstraction work and 
->> figured it would be
->>      a small fixup I could send afterwards.
->>      Link: https://lore.kernel.org/rust-for- 
->> linux/20250629045031.92358-2-sergeantsagara@protonmail.com/
->>
->>   rust/kernel/pci.rs | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
->> index 6b94fd7a3ce9..af25a3fe92e5 100644
->> --- a/rust/kernel/pci.rs
->> +++ b/rust/kernel/pci.rs
->> @@ -254,7 +254,7 @@ pub trait Driver: Send {
->>   ///
->>   /// # Invariants
->>   ///
->> -/// A [`Device`] instance represents a valid `struct device` created 
->> by the C portion of the kernel.
->> +/// A [`Device`] instance represents a valid `struct pci_dev` created 
->> by the C portion of the kernel.
-> 
-> Should this not just be a "a valid pci device" and let the type in the 
-> function definition speak for the type instead of duplicating the type 
-> name in the  doc comment?
-> 
->>   #[repr(transparent)]
->>   pub struct Device<Ctx: device::DeviceContext = device::Normal>(
->>       Opaque<bindings::pci_dev>,
-> 
+[auto build test WARNING on driver-core/driver-core-next]
+[also build test WARNING on driver-core/driver-core-linus rust/alloc-next shuah-kselftest/kunit shuah-kselftest/kunit-fixes rafael-pm/linux-next rafael-pm/bleeding-edge linus/master v6.16-rc3]
+[cannot apply to rust/rust-next driver-core/driver-core-testing rust/pin-init-next amd-pstate/linux-next amd-pstate/bleeding-edge next-20250627]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Onur-zkan/replace-allow-with-expect/20250628-121734
+base:   driver-core/driver-core-next
+patch link:    https://lore.kernel.org/r/20250628040956.2181-2-work%40onurozkan.dev
+patch subject: [PATCH v3 1/3] replace `#[allow(...)]` with `#[expect(...)]`
+config: x86_64-randconfig-008-20250629 (https://download.01.org/0day-ci/archive/20250629/202506291507.M9eg5kic-lkp@intel.com/config)
+compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250629/202506291507.M9eg5kic-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506291507.M9eg5kic-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   ***
+   *** Rust bindings generator 'bindgen' < 0.69.5 together with libclang >= 19.1
+   *** may not work due to a bug (https://github.com/rust-lang/rust-bindgen/pull/2824),
+   *** unless patched (like Debian's).
+   ***   Your bindgen version:  0.65.1
+   ***   Your libclang version: 20.1.7
+   ***
+   ***
+   *** Please see Documentation/rust/quick-start.rst for details
+   *** on how to set up the Rust support.
+   ***
+>> warning: this lint expectation is unfulfilled
+   --> rust/kernel/opp.rs:603:14
+   |
+   603 |     #[expect(dead_code)]
+   |              ^^^^^^^^^
+   |
+   = note: `#[warn(unfulfilled_lint_expectations)]` on by default
+--
+>> warning: this lint expectation is unfulfilled
+   --> rust/kernel/opp.rs:605:14
+   |
+   605 |     #[expect(dead_code)]
+   |              ^^^^^^^^^
 
 -- 
-You're more amazing than you think!
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
