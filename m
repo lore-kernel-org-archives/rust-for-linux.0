@@ -1,71 +1,41 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5801E412A;
-	Sun, 29 Jun 2025 14:56:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA5927456;
+	Sun, 29 Jun 2025 15:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751209001; cv=none; b=HFJMSXcm35LRkozbGxNUUSe4Td99vaVqV7jSZYlnPUPmpOiX4XZQQb2wYjGhlJoIfcXF1tIjnwvEKExFtQDQLkcK741XYOxL6mxgACs29+j4dW3OMKGzEc5CkKmHM0gPQuKN91mA/KgGWbAphLMWczvpFf/qKNffBaujNWtU68c=
+	t=1751209724; cv=none; b=oYJoYAFoOlSESuh67PWhyML4obQ6bD8TQ22QESYD+lqLAVrca+wMVMbz98KaEIkt5KIThz2Y6nLG7eUqwSJRHsfo985PAnJ5RsHjUI3D4ofyJY2WUE2+Jvzz2E/qR1YgNMYsZSOSyPjpdzu0znaKt19ADJ0Q+hIKRNWj+z7DMzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751209001; c=relaxed/simple;
-	bh=u/4/+SN3xS+ObLD8V7Bx1+EsQs2A4HPAtqNg0o8UzSU=;
+	s=arc-20240116; t=1751209724; c=relaxed/simple;
+	bh=IqAxO6aa7wTiMZS6kcscadztrqSEzge5sTPfk8h63gU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CQT/NJP+VY9Hy0d3lXof6BPnLwQXbou6g3rqCib4mW2j6thsfnEJaQnHftFWwof2xYxWz3nbQo6MX7ag57xG7L4GKm1FIZ46tcV9pi2hKV8WDIvNaPqGYUwcH/BWC36BZd2Ogn3uiA1clTZqHACDpHrPXFoZSErxib049Sfhu7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HJuKTEP0; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=uSaqfYJAA2+EonuGRQ67Gh1ipMGhil5VtI/67DgeiKec2zn7GzIrDpy80B6noa/weGHU8IsAtZzwXDcwgbQ2uGRFbUe/Dl8s/yXMDrW1/QctiTkY76HwCA1N0nkem66uLYqex5bT22+dtz+UzXxPSL5xkdrk+5KIWJ9eIN4pKrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DqdoJ8vj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HJuKTEP0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751208999; x=1782744999;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=u/4/+SN3xS+ObLD8V7Bx1+EsQs2A4HPAtqNg0o8UzSU=;
-  b=HJuKTEP0j+ycw0LPEkhLVk91i5JSwO1X/9EWFHwoy8IlMAMNGDtHjIuP
-   f1tcSS1Mq0zdTlSRqt7wYpHUIZoxHDRZU1B9sRECMObT8S50/7j22es8x
-   DtwUnTNU8jgu/SrHGpXUQ503OTp2jK0dMyF2jxYyjfIiDG3+9ZBC/s98G
-   sXvPV+at5IXOLTYRcIy7CR8LeJus1kf1WxWD2RCtRs/igHWXY1kchzHtI
-   W36bBDhMxCe/ZHPWZPXjeWkr7dRYhI9sEJZkLbZoGOW1NER4URIDas+QJ
-   GtNYvR7uRzVg97GTJeIfKeQ6RvpXBXBr1mzGF4BGJwzaiGVCDk6/wKoQO
-   Q==;
-X-CSE-ConnectionGUID: qDXMMt6YQ1yuhUTD8+vY+w==
-X-CSE-MsgGUID: 1FJvEWU/TrSlQfK+ErHBqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="52675765"
-X-IronPort-AV: E=Sophos;i="6.16,275,1744095600"; 
-   d="scan'208";a="52675765"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2025 07:56:38 -0700
-X-CSE-ConnectionGUID: v+A5bqgxSIqB4gL7KQyvIg==
-X-CSE-MsgGUID: bEslpo9+SqiizZzXOcxg5w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,275,1744095600"; 
-   d="scan'208";a="190415114"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 29 Jun 2025 07:56:34 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uVtSK-000Y1K-0F;
-	Sun, 29 Jun 2025 14:56:32 +0000
-Date: Sun, 29 Jun 2025 22:55:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Subject: Re: [PATCH v2] rust: io_pgtable: Add io_pgtable abstraction
-Message-ID: <202506300052.VAXOKQxS-lkp@intel.com>
-References: <20250623-io_pgtable-v2-1-fd72daac75f1@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DqdoJ8vj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBAEC4CEEB;
+	Sun, 29 Jun 2025 15:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751209722;
+	bh=IqAxO6aa7wTiMZS6kcscadztrqSEzge5sTPfk8h63gU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DqdoJ8vjcPk4tUp3kn2x6SDHSNWaY0MAGJvDgq11YENCoxlOA+1KMW8b7cBMH8ZJs
+	 Z4ekCSly7mfEzTDt0WkhJWzl+VeKIx9ODNhNbBZpUDYQClbzN4yp54wrGUZ9y9fpwg
+	 wDx3wuRMAb0CJyZUrs9xFpJxfulEVdCAdIjeuCynMEX/YOIZJZwA+kd+AiP1B8lrNN
+	 0eqafGKcATZsO2Hdw2+dIaayOFLk04+/wupzYBwRqhj330KJWOkWTneIvWP3Z/nWli
+	 /eQz1IJeyRqUUlOD+VptdMKrtHP9nEfAVDMBpFlH8Wq+rRGJCtNsFn6NZ4HIQEnzAg
+	 Kv9plWCLUB4bQ==
+Date: Sun, 29 Jun 2025 17:08:37 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: devres: require T: Send for Devres
+Message-ID: <aGFW9QBfV3wQVbuq@pollux>
+References: <20250626132544.72866-1-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,39 +44,17 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250623-io_pgtable-v2-1-fd72daac75f1@collabora.com>
+In-Reply-To: <20250626132544.72866-1-dakr@kernel.org>
 
-Hi Daniel,
+On Thu, Jun 26, 2025 at 03:24:46PM +0200, Danilo Krummrich wrote:
+> Due to calling Revocable::revoke() from Devres::devres_callback() T may
+> be dropped from Devres::devres_callback() and hence must be Send.
+> 
+> Fix this by adding the corresponding bound to Devres and DevresInner.
+> 
+> Reported-by: Boqun Feng <boqun.feng@gmail.com>
+> Closes: https://lore.kernel.org/lkml/aFzI5L__OcB9hqdG@Mac.home/
+> Fixes: 76c01ded724b ("rust: add devres abstraction")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on dc35ddcf97e99b18559d0855071030e664aae44d]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-io_pgtable-Add-io_pgtable-abstraction/20250624-053329
-base:   dc35ddcf97e99b18559d0855071030e664aae44d
-patch link:    https://lore.kernel.org/r/20250623-io_pgtable-v2-1-fd72daac75f1%40collabora.com
-patch subject: [PATCH v2] rust: io_pgtable: Add io_pgtable abstraction
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250630/202506300052.VAXOKQxS-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250630/202506300052.VAXOKQxS-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506300052.VAXOKQxS-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> warning: unresolved link to `IOPagetable`
-   --> rust/kernel/io_pgtable.rs:55:44
-   |
-   55 |     /// User-specified type owned by the [`IOPagetable`] that will be passed to TLB
-   |                                            ^^^^^^^^^^^ no item named `IOPagetable` in scope
-   |
-   = help: to escape `[` and `]` characters, add '' before them like `[` or `]`
-   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Applied to driver-core-testing, thanks!
