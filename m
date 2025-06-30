@@ -1,193 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E40824466E;
-	Mon, 30 Jun 2025 10:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5912AF1B;
+	Mon, 30 Jun 2025 10:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751278616; cv=none; b=gKygM2+pGDNqVtBR2lUtw48PawZ/i9fkNfhW6ETQpo0157RsqU0bGqFHPpLRSN3CNfRL9JMJkJBP+0zOVqFmA55mPRlFmJrqzaPuKqWtbFr5eY/gfrEncuiGuAK/kyeg0xfLj8nBjcvXhPivEInOCKiOdcsFdxCzRID1ilGy12E=
+	t=1751279459; cv=none; b=s40+QPiS6LKtkQ7RbprnZSl+CoaGz29QTVV6q+EtLlk4LUAVhEq4i93stot//nXSj6eD8WPcoBCpIMK/YfC72OhEkyc1lWB2ss0Hp0RTuvGKRaIq5CIlMSE9SjNS5xvQB2xbj/chfhrPEW25Bw0EjJWLsfJ7esGEMpAR81oDDBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751278616; c=relaxed/simple;
-	bh=jyY7VefVj/pRCib4aQ/EAxfV4IOvZHmPLQGlbEVLfrA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fE12EDwfR9btKMuGhIXwrvkgmoIa6bq4qBorYFlX0mQJN3IkrxVCx5IwAXkRs6/RwMIrvySF8qEOc6E8veCBLMRdx++pzRS8deqiKEvdUtLxmJZ5JBak4BX3GPPikvucbme0vA6sOXbzMPqKAuD/4ZGH6wymDsoYS95biHY/clU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lK+Qs1me; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751279459; c=relaxed/simple;
+	bh=rzqf8KMfkh7J6fnUaHKXupiWofR6LjqFm240toyhNGI=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t8fMuuU7tbx1K3YbAQT4daVJx23wqwmaD/8LZ2hsuj5JaF8U/Fkb3WI2SpnXxEtYNxTPep0NlLEA2geRhA3gYuk5xYUiBeoJ79Me3rYGFOj7juafNeUZNczQk1BbvZfuaJYTZFKUpFbCVLA0cKJjw8rZNPfjtcSDp4+CM6T//Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G8dsbeoV; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lK+Qs1me"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B8FC4CEEF;
-	Mon, 30 Jun 2025 10:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751278616;
-	bh=jyY7VefVj/pRCib4aQ/EAxfV4IOvZHmPLQGlbEVLfrA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lK+Qs1meId433F4nC7m2zLarI/XsKLyZs/NfXqSW08FevT7XSPlMrHPvkMzFEU5ej
-	 IvT3UDjLnfVoSZvhzu0eM6dvMa/FoFOAlrrF7fEdu9o2SbHuaSWfPYm4iTy0Jyg9aD
-	 kNrflsFLt+mvouLIkVjJC+naTdwm3VHchi/gBnA1RYic2R5CotM73QSCLyWi2FVxoe
-	 bn0BMrrfefesjQ6M29xvJfOTvoWm9LinFL8DjMKems0c5OgqtCn6XgDqvUkzlZSmoF
-	 eJ3AI5Pj/RokTFGvBmOAoSN7T5q8gN8uPKsV2On28I21lzlyfwsM1qFDRln/r7+KTZ
-	 OOjVIlzPoI+tg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <lkmm@lists.linux.dev>,  <linux-arch@vger.kernel.org>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Benno
- Lossin" <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Will Deacon" <will@kernel.org>,  "Peter Zijlstra"
- <peterz@infradead.org>,  "Mark Rutland" <mark.rutland@arm.com>,  "Wedson
- Almeida Filho" <wedsonaf@gmail.com>,  "Viresh Kumar"
- <viresh.kumar@linaro.org>,  "Lyude Paul" <lyude@redhat.com>,  "Ingo
- Molnar" <mingo@kernel.org>,  "Mitchell Levy" <levymitchell0@gmail.com>,
-  "Paul E. McKenney" <paulmck@kernel.org>,  "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>,  "Linus Torvalds"
- <torvalds@linux-foundation.org>,  "Thomas Gleixner" <tglx@linutronix.de>
-Subject: Re: [PATCH v5 05/10] rust: sync: atomic: Add atomic {cmp,}xchg
- operations
-In-Reply-To: <aF9bmpX-i6HVMlaj@Mac.home> (Boqun Feng's message of "Fri, 27 Jun
-	2025 20:03:54 -0700")
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
-	<jBAtISwM9LKkR7KuCHEnym75NfGOM4z408pMuDfk4U8VzN8PQuk9JJfBc33Usre3YSjbgtFRj8c0ZNeeQMpZsA==@protonmail.internalid>
-	<20250618164934.19817-6-boqun.feng@gmail.com> <87a55uzlxv.fsf@kernel.org>
-	<_pLa3zqu-AHBOnxkEz7l13l9W-OsKBtuXIkjRsIJJy6EnYTrM99E8Yr24pzjqwCAj1_qs_PI-cVxRsBsbgiFdA==@protonmail.internalid>
-	<aF9bmpX-i6HVMlaj@Mac.home>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Mon, 30 Jun 2025 12:16:27 +0200
-Message-ID: <878ql9zg90.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G8dsbeoV"
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-555024588b1so2204969e87.1;
+        Mon, 30 Jun 2025 03:30:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751279455; x=1751884255; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8e/7v2ltNn1nX9ioUgVxorlkzFe2GpNMHMiKKK8K6ls=;
+        b=G8dsbeoV+V23kG3rZj+HIuRKarlKyFKQaNX6fBJvg90Xbxe+cLV1YQlJ1wU81h8uCe
+         Jtj+QF8V0VEnHWkgIzL4h/Y9SVPmG4IM6AixQoWEIlhJUWG5RskGHndQmn8BoFBG9YjD
+         ZgPyGKSkGh/yp8buV08p9fHMiyV7currBXu07+empKlqtmngCYLxbthDOYxDyHqdbAxR
+         WdvVffMxV5ICKl3CO0AuwLZax2mocwENakVQB8ftCPELXtRNkeTHlE7K0X/kMZFgfJTH
+         eIfwsR0q/UNjrxU2mqMlFSXDwnt2W+8eKKIOf++kFSnxE/ZdvKkZCDTAgVryKwaf8t4e
+         Dc0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751279455; x=1751884255;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8e/7v2ltNn1nX9ioUgVxorlkzFe2GpNMHMiKKK8K6ls=;
+        b=OdHHmZ+y2n8fLdknpJxrvSGHzLFBW1jETLnV9uIrAoXhwSyhjkIiVFAiW00MfBm1ll
+         NNE1iV8qAcgUieCWba83zvrwNHtkbZxXgWRAzk6B2MzQQy8PFtf47wnbQervXoGgH5um
+         wPyPHQQaIHEfWz0h3e9XTXEe/VqFzm52G42bt/rGedhgsxnG3Rthd9BOOs6PVDmv/bxP
+         qNoQxaPRBF9IHNjoSRfoMHjRYpzPffVRcs4ivCXtx4ntgCqg8v7FAz3WFQW1MgN7AHBj
+         x8qLqljHkzl1gbyr/40ol7p7uSd//mbfoWDrr8QVQc/wXONfLII9qP0jj7fk7fh5FmsN
+         Jq0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVrm7xMQ4MW0w5W0eb6r64M1AnW32NfzAP3Vrgnw1721hte8uOMPK13NSUWVCSyKK7WJMUZicvM0U7lY7eGxDE=@vger.kernel.org, AJvYcCX8BzOx3jALWFLcefjvpAGJDPgidWGiEDVTpHUmwuiayDkn5oaVDlWAZ6kn2ayZENeIKx5HTvLN7cByzh4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbkINqGtnphVs4ksRHI2lS77f7ZMyw5VnWjHnVcQisbwphqnge
+	xeEg2G1ZJNYaG+njqxsbM54c8SQStmCSRlwNE+44CU7l+eVsAji8z/Fh
+X-Gm-Gg: ASbGncv+2hXG/BewB16luQBXrd0kJ69ZtB0qdMQhCFv5R/NTGWkiDYFyww57lAYfLZj
+	+iLLRnIL67YuCkn+KvTvIiAXJYX35/2vM9ZqdVauz/s0mGEspxqVgcFN92ejJs1kK0INOt1UoHE
+	bTQOLN+oVqC+XJxmfIAvGRMW9RvYZwZygpw3yFVeHFRtMkqxNtO+lqGlEkMEDxElcjlX9SvRGtU
+	VoWRwAYHhVECY5/F5lWwj86W4pUiDCueCNGzl4JuIjvRYbQycsx6IWUX9deJfQsy4jesn4B/A6z
+	NeWo2VMd4QxixSRfwUTbNsu+YB7Jm8JNlg9UQbttt20LREzWmcyoxpZ6HTqQa0HOgsSpGmB646n
+	SG6jD6pOZE6Q=
+X-Google-Smtp-Source: AGHT+IEF2nOl072KkJX5VOycpUDoH66uDeT/lt1cf4dthiOO6DxJCwj1jJ46PgB8pAi9UlOEqIa06g==
+X-Received: by 2002:a05:6512:318f:b0:553:510d:f46b with SMTP id 2adb3069b0e04-5550b8b0549mr4515221e87.32.1751279455093;
+        Mon, 30 Jun 2025 03:30:55 -0700 (PDT)
+Received: from pc636 (host-95-203-1-180.mobileonline.telia.com. [95.203.1.180])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5550b24d130sm1397220e87.54.2025.06.30.03.30.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Jun 2025 03:30:54 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 30 Jun 2025 12:30:52 +0200
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v8 1/4] mm/vmalloc: allow to set node and align in
+ vrealloc
+Message-ID: <aGJnXLl_OLqwjAUt@pc636>
+References: <20250628102315.2542656-1-vitaly.wool@konsulko.se>
+ <20250628102537.2542789-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250628102537.2542789-1-vitaly.wool@konsulko.se>
 
-"Boqun Feng" <boqun.feng@gmail.com> writes:
-
-> On Thu, Jun 26, 2025 at 03:12:12PM +0200, Andreas Hindborg wrote:
->> "Boqun Feng" <boqun.feng@gmail.com> writes:
->>
->> > xchg() and cmpxchg() are basic operations on atomic. Provide these based
->> > on C APIs.
->> >
->> > Note that cmpxchg() use the similar function signature as
->> > compare_exchange() in Rust std: returning a `Result`, `Ok(old)` means
->> > the operation succeeds and `Err(old)` means the operation fails.
->> >
->> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->> > ---
->> >  rust/kernel/sync/atomic/generic.rs | 154 +++++++++++++++++++++++++++++
->> >  1 file changed, 154 insertions(+)
->> >
->> > diff --git a/rust/kernel/sync/atomic/generic.rs b/rust/kernel/sync/atomic/generic.rs
->> > index 73c26f9cf6b8..bcdbeea45dd8 100644
->> > --- a/rust/kernel/sync/atomic/generic.rs
->> > +++ b/rust/kernel/sync/atomic/generic.rs
->> > @@ -256,3 +256,157 @@ pub fn store<Ordering: ReleaseOrRelaxed>(&self, v: T, _: Ordering) {
->> >          };
->> >      }
->> >  }
->> > +
->> > +impl<T: AllowAtomic> Atomic<T>
->> > +where
->> > +    T::Repr: AtomicHasXchgOps,
->> > +{
->> > +    /// Atomic exchange.
->> > +    ///
->> > +    /// # Examples
->> > +    ///
->> > +    /// ```rust
->> > +    /// use kernel::sync::atomic::{Atomic, Acquire, Relaxed};
->> > +    ///
->> > +    /// let x = Atomic::new(42);
->> > +    ///
->> > +    /// assert_eq!(42, x.xchg(52, Acquire));
->> > +    /// assert_eq!(52, x.load(Relaxed));
->> > +    /// ```
->> > +    #[doc(alias("atomic_xchg", "atomic64_xchg"))]
->> > +    #[inline(always)]
->> > +    pub fn xchg<Ordering: All>(&self, v: T, _: Ordering) -> T {
->> > +        let v = T::into_repr(v);
->> > +        let a = self.as_ptr().cast::<T::Repr>();
->> > +
->> > +        // SAFETY:
->> > +        // - For calling the atomic_xchg*() function:
->> > +        //   - `self.as_ptr()` is a valid pointer, and per the safety requirement of `AllocAtomic`,
->>
->> Typo: `AllowAtomic`.
->>
+On Sat, Jun 28, 2025 at 12:25:37PM +0200, Vitaly Wool wrote:
+> Reimplement vrealloc() to be able to set node and alignment should
+> a user need to do so. Rename the function to vrealloc_node_align()
+> to better match what it actually does now and introduce macros for
+> vrealloc() and friends for backward compatibility.
+> 
+> With that change we also provide the ability for the Rust part of
+> the kernel to set node and aligmnent in its allocations.
+> 
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> ---
+>  include/linux/vmalloc.h | 12 +++++++++---
+>  mm/vmalloc.c            | 20 ++++++++++++++++----
+>  2 files changed, 25 insertions(+), 7 deletions(-)
+> 
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index fdc9aeb74a44..68791f7cb3ba 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -197,9 +197,15 @@ extern void *__vcalloc_noprof(size_t n, size_t size, gfp_t flags) __alloc_size(1
+>  extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, 2);
+>  #define vcalloc(...)		alloc_hooks(vcalloc_noprof(__VA_ARGS__))
+>  
+> -void * __must_check vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> -		__realloc_size(2);
+> -#define vrealloc(...)		alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+> +void *__must_check vrealloc_node_align_noprof(const void *p, size_t size,
+> +		unsigned long align, gfp_t flags, int nid) __realloc_size(2);
+> +#define vrealloc_node_noprof(_p, _s, _f, _nid)	\
+> +	vrealloc_node_align_noprof(_p, _s, 1, _f, _nid)
+> +#define vrealloc_noprof(_p, _s, _f)		\
+> +	vrealloc_node_align_noprof(_p, _s, 1, _f, NUMA_NO_NODE)
+> +#define vrealloc_node_align(...)		alloc_hooks(vrealloc_node_align_noprof(__VA_ARGS__))
+> +#define vrealloc_node(...)			alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
+> +#define vrealloc(...)				alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+>  
+>  extern void vfree(const void *addr);
+>  extern void vfree_atomic(const void *addr);
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 6dbcdceecae1..d633ac0ff977 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4089,12 +4089,15 @@ void *vzalloc_node_noprof(unsigned long size, int node)
+>  EXPORT_SYMBOL(vzalloc_node_noprof);
+>  
+>  /**
+> - * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
+> + * vrealloc_node_align_noprof - reallocate virtually contiguous memory; contents
+> + * remain unchanged
+>   * @p: object to reallocate memory for
+>   * @size: the size to reallocate
+> + * @align: requested alignment
+>   * @flags: the flags for the page level allocator
+> + * @nid: node id
+>   *
+> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
+> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). If @size is 0 and
+>   * @p is not a %NULL pointer, the object pointed to is freed.
+>   *
+>   * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
+> @@ -4111,7 +4114,8 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+>   * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
+>   *         failure
+>   */
+> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align,
+> +				 gfp_t flags, int nid)
+>  {
+>  	struct vm_struct *vm = NULL;
+>  	size_t alloced_size = 0;
+> @@ -4135,6 +4139,13 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>  		if (WARN(alloced_size < old_size,
+>  			 "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
+>  			return NULL;
+> +		if (WARN(nid != NUMA_NO_NODE && nid != page_to_nid(vmalloc_to_page(p)),
+> +			 "vrealloc() has mismatched nids\n"))
+> +			return NULL;
+> +		if (WARN((uintptr_t)p & (align - 1),
+> +			 "will not reallocate with a bigger alignment (0x%lx)\n",
+> +			 align))
+> +			return NULL;
 >
-> Fixed.
->
->> > +        //      a `*mut T` is a valid `*mut T::Repr`. Therefore `a` is a valid pointer,
->> > +        //   - per the type invariants, the following atomic operation won't cause data races.
->> > +        // - For extra safety requirement of usage on pointers returned by `self.as_ptr():
->> > +        //   - atomic operations are used here.
->> > +        let ret = unsafe {
->> > +            match Ordering::TYPE {
->> > +                OrderingType::Full => T::Repr::atomic_xchg(a, v),
->> > +                OrderingType::Acquire => T::Repr::atomic_xchg_acquire(a, v),
->> > +                OrderingType::Release => T::Repr::atomic_xchg_release(a, v),
->> > +                OrderingType::Relaxed => T::Repr::atomic_xchg_relaxed(a, v),
->> > +            }
->> > +        };
->> > +
->> > +        T::from_repr(ret)
->> > +    }
->> > +
->> > +    /// Atomic compare and exchange.
->> > +    ///
->> > +    /// Compare: The comparison is done via the byte level comparison between the atomic variables
->> > +    /// with the `old` value.
->> > +    ///
->> > +    /// Ordering: When succeeds, provides the corresponding ordering as the `Ordering` type
->> > +    /// parameter indicates, and a failed one doesn't provide any ordering, the read part of a
->> > +    /// failed cmpxchg should be treated as a relaxed read.
->>
->> Rust `core::ptr` functions have this sentence on success ordering for
->> compare_exchange:
->>
->>   Using Acquire as success ordering makes the store part of this
->>   operation Relaxed, and using Release makes the successful load
->>   Relaxed.
->>
->> Does this translate to LKMM cmpxchg operations? If so, I think we should
->> include this sentence. This also applies to `Atomic::xchg`.
->>
->
-> I see this as a different style of documenting, so in my next version,
-> I have the following:
->
-> //! - [`Acquire`] provides ordering between the load part of the annotated operation and all the
-> //!   following memory accesses.
-> //! - [`Release`] provides ordering between all the preceding memory accesses and the store part of
-> //!   the annotated operation.
->
-> in atomic/ordering.rs, I think I can extend it to:
->
-> //! - [`Acquire`] provides ordering between the load part of the annotated operation and all the
-> //!   following memory accesses, and if there is a store part, it has Relaxed ordering.
-> //! - [`Release`] provides ordering between all the preceding memory accesses and the store part of
-> //!   the annotated operation, and if there is load part, it has Relaxed ordering
->
-> This aligns with what we usually describe things in tool/memory-model/.
+IMO, IS_ALIGNED() should be used instead. We have already a macro for this
+purpose, i.e. the idea is just to check that "p" is aligned with "align"
+request.
 
-Cool. When you start to go into details of ordering concepts, I feel
-like something is missing though. For example for this sentence:
+Can you replace the (uintptr_t) casting to (ulong) or (unsigned long)
+this is how we mostly cast in vmalloc code?
 
-  [`Release`] provides ordering between all the preceding memory
-  accesses and the store part of the annotated operation.
+WARN() probably is worth to replace. Use WARN_ON_ONCE() to prevent
+flooding.
 
-I guess this provided ordering is only guaranteed to be observable for
-threads that read the same location with `Acquire` or stronger ordering?
-
-If we start expanding on the orderings, rather than deferring to LKMM,
-we should include this info.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+--
+Uladzislau Rezki
