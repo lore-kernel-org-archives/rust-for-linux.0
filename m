@@ -1,104 +1,221 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A96728B7C1
-	for <rust-for-linux@vger.kernel.org>; Mon, 30 Jun 2025 13:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6A725B687;
+	Mon, 30 Jun 2025 13:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751290427; cv=none; b=k3SyKPSdvRgOK24GgeZlKf6pwU5fSEVVvEbxtrI4W5yLcPq5G5RkE8Mepk3vJ8jPpPVNfcWgDbm+sLRdupxEEUeyqeyGeTtoNfAY4opx0Mf8Wu0uUSMPkTdqf4ZS09R6Cyyrazeo7XDmrpOGAHL9bHuAwpBwqinLY9+AK8S8378=
+	t=1751291436; cv=none; b=agVx17c2RxqVOC5vXo/hR32DuEiqcYX61Wv3E8NRNPQJ08R4ZdDJ6QOL58BZYQDUpm0zD2M8cajl9Ha/p509eSl+zCtWRCPdO8t1YxuJMxkjDI0VHPxLS9XK9rDQGWkEoXOfryb0Knz2ioQ7nLQeO1/W0J/1H5xEyf4XkU89MA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751290427; c=relaxed/simple;
-	bh=o45INCbiSeQE2IgHq1YnHw8Gfkpjyezwdh5cW/jtGEk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=maffHUixQsVos6MWZD5JQZGOcMmS8ur+DQ+irz0IM+3hkHeGiy5AMfUsdyi4HSpeJLdgbbNMRqYEhYTnX9zSXRaS+XUNvlvrTg5jL7jZhhjQ6IYFkH7g2ldZPvVFAK+VI1R9bid2BqRKluU9rE36YlV0lSsSTBJ0VdHLMZTk9NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nEDF8MM2; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1751291436; c=relaxed/simple;
+	bh=IQVhGSw27mbrhh2Uwszh19QwB+gQgLHGxJNAYOIfAUE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qgAlx1S+SHIJbQtpzS+rHZlLz1dLxk4C2I51Ci8j2q1Thy4domiApyR2P5D6NsI9n3Kb6F++tQ/Xx/TLj7V8EQbhuPpY4Dz8MeGD9NDr9k8kxYGa8zJCLVbSHS5oXNbWXdAl4MH1GoSayjTg5HkqZe7k2efnIiadg0XnsdePSvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kLSX97ud; arc=none smtp.client-ip=209.85.219.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nEDF8MM2"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4538bc52a8dso28306805e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 30 Jun 2025 06:33:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kLSX97ud"
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6fad4e6d949so14500096d6.0;
+        Mon, 30 Jun 2025 06:50:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751290424; x=1751895224; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1751291433; x=1751896233; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o45INCbiSeQE2IgHq1YnHw8Gfkpjyezwdh5cW/jtGEk=;
-        b=nEDF8MM2pc7lbtsVi3CTNhTyrzz6UkXzdgcX0fhTCrPjr834pmMvFk52be2MR4awJ2
-         2iZxXtR+m0LYrOA07pY7LU8wCNwAHrg3qDBc3H1e+CWspixjdCYJyNEtNfj9nqyiaAWQ
-         i8qZLNe68flg2qa7cKoyhxqVfNuPLX8o31yTJFWrvC+gTfrxY2X7kv7LNDgxz0kDg8+M
-         png/m9NgUoS+8Ictbqop2IAFtG77TozE36kwQ5i0J2B+B/MzQgRUHDjY0RDjgddNQW3I
-         OrPQBM/IGfi+N0Nk/dSbQbFUtBO9JTWu1S2LAAEJeOWhjPew/dnpviw0LX7IYKD4+Jrh
-         o/6w==
+        bh=N5Lb9XyF7dArjU8ijxNd19g2e4SY59XNR0KZZKcVnQQ=;
+        b=kLSX97ud6gG/NVDwsXJjOewUDFYkK+qKVEqUQaVnROEmN9CWP9u5WullWazKWscKm7
+         UPTuJTM8yJJP3WJisgdgkI7CgX+1/FM/XNJaO4YwOgu3tOc2vNZU6K29GTrwftsEsDp9
+         I/SokZCxly9lg5whXdior0cqFqApaugB550Hg2E+0WN+DJNs6tWHJZqdeufpHxusEd3x
+         c/7/gxyefJ6TZKu8B3QkZYV9ZMIeSRk9w/OXCML81PhkSBCKdU2Q6OnodFG6ZXuf1KQY
+         1TbLGNJl1mUx8uJcTxtOFjgfEgxVI6ncoxsc5pT6ZDn+a0Y2E7/Xp8MdCVv2fwTLZOWJ
+         mDpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751290424; x=1751895224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1751291433; x=1751896233;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=o45INCbiSeQE2IgHq1YnHw8Gfkpjyezwdh5cW/jtGEk=;
-        b=R2wVaVzBMVWsP7xDD98ZZxKvU9CQqM+qY+xJjxr8Ld+kqOQbc81XzC179nzD1ZIc1D
-         /wGSbLIzgzjW6mM1ZJ6A+sQNXTzrNhkfZIKQA1dGHErj1zzEXAwlTD2W3imeP0faKsi6
-         cRnTdMf3ibgDFxAehddEWE7fdl08laqc5cR4DiGQ14JY3DsCJ3IsT2HdipvokadcdflU
-         FPOArTIO/kHbxERgRsv4g/pu4kwuUL2cUkXsBQhrG6wIWyQ68z8BXXf4kueQyaUhjnI0
-         9F0I21nDEVQl8nthktnhnJEn/11/u+04vSa5HaKtcFyp15tHwjwCIPcdHeOv178TlYYi
-         qMJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXrlRW3xiiFPA/fkFwSpKEArw13GLWlFhY+sRpPDMUAGHrYyhQLengK4BkrfD0UOFJ6UxCiHspcheFyyvgP1Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YytxGErslc72AWHwJO75LfuAu2SEdKoJz0hAt3NpKkZvT9P0Hy2
-	10aW7M9PJ0Lu9NftI8mGm66OviElf+OTgvgpPwPAHWk/Xy/CdfH7n/b/Bdq49Y+v2BQhsrwH9Cv
-	RqxBHGpb4Kl0quxT7nG4MvE1ZceDfrpUOeO6xbEHu
-X-Gm-Gg: ASbGncsqUGKr3uHE5WR55Aq0wvWGCAADJVEDPZwZkaPDLL9kAwWAoTwHnqYWrsjlcrZ
-	0LGJ+vZOeEno45vDK+Y+In4VJTk5t6vy5l94CJeY/AcFBwfV68DsKkT7kKbR3p2lZFsi0VvnAu5
-	sU4LJRGN5na2OOaV5snerstPGjmtabYrVdawfkKFib/xUbuBohBQJefGUT+G/6Sq2rDrIg4vg6
-X-Google-Smtp-Source: AGHT+IGVJu/D277FQPc0r0siJTAo3I5FJWrKQJdxkbD3ntuYhNVrd8Ps5yu0EVn0gdE5xaSnpYRMnPIuj1WaKYAXRKc=
-X-Received: by 2002:a05:600c:698e:b0:43c:f513:958a with SMTP id
- 5b1f17b1804b1-4538ee3bb38mr125353655e9.13.1751290424357; Mon, 30 Jun 2025
- 06:33:44 -0700 (PDT)
+        bh=N5Lb9XyF7dArjU8ijxNd19g2e4SY59XNR0KZZKcVnQQ=;
+        b=iS9+AM9v/wZLOqtGg82XRHAwPBjO+XqTj4ffd/mW+/IorNmc3oZsQa9Z4resLKSb14
+         KtBdnEWJqlRH4k8LexnWWkwu1fPse5e7J6weJk5KjwG0DWkL8cmzPKYUbCaU8JY2YCEO
+         0B9zIg1aJ0r7JIHgh4XJUO9RRcJAXwnfNN2fLMHMLpN4ZSdALzR6mhvilkdwkI80yvC3
+         V2qg9vMj9hVX1XjR0d02KhJz7V/+tW4za+FeMAANXyGTxXm6YaTpDpR2cTRCEKZcbVOE
+         TObRsUKho616ej8ERb9qIf0CC1aDx2eoVFKF7rfGRr1+oHwNfkm2YaIb+fZ5EwW5OUF3
+         O1zg==
+X-Forwarded-Encrypted: i=1; AJvYcCVVcG+9dx8G3HD5utatjD8touzH+J4TUAoQVMwL+zrb7VL1yNXbYy7YIjbeyxCrJqHPMBg9Byce/CElTLE=@vger.kernel.org, AJvYcCXAA27ufZ64rvqx46EEUZoRpSXoBdO1rnFWujJa8eLsRZ1YKN144i8vtLf11JlSlqNiNVE0ujKAujy+oKbRNi4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUc/yWdlPSLBTJKXqMFV0Xwy+QJXidCfk6Utw6LXhOCfuCRqxg
+	BQzRl8LJReNSXnaNA5y28ewxDvmT00hg86/V5+IrIEQv7JwAlkfry/vw
+X-Gm-Gg: ASbGncvtY+akG5nmgZxHCr7kU/UtfWEW0/W8bPyKIUAd4IJdrdDGwB59zeV3CEzG7wM
+	KtW30WrS32Xl9ERfbTRVYS13py2Zy46RS8MLaVqFUpJUhG/+PpNEPGP/ZkrFbA2ArpQC/+wJj+F
+	Y/+zwik0SZiz9Y+rtdE0ecQpPCkpwY8m7tb4fw0YdZ9KsL9lhchVGzx6etflj7zyU/4A0ZbTg76
+	RFnUZnbJrpNdETFqN3GNEoXf4CuKvHIAUu2s6kVzzs87SPWx9Y1zrVkXxN36cnzRY89ZWqdup+e
+	xAeB46/xq1kz2J/BuENFZFMe66n7ldm3CO8kzwqkVfqzjuSRTOXLWXzd2CmKaRD5lRjO8gTevp2
+	ny20uQV2c7UrmFvM5MJ3j19sUY3lU9gdgtJCbIO2YvZF2Pe6h8EeL
+X-Google-Smtp-Source: AGHT+IEHxeGpLNvKFW1gWPsvXXwQLIfBdOzO4xQXmaXIvW3hINkG5Lb3gWbZJ55wDEeX5PNX6IYdqQ==
+X-Received: by 2002:a05:6214:76f:b0:6fa:c81a:6204 with SMTP id 6a1803df08f44-6fffdcff257mr195938466d6.10.1751291432568;
+        Mon, 30 Jun 2025 06:50:32 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd7718d8f2sm68154456d6.23.2025.06.30.06.50.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Jun 2025 06:50:28 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 24AEEF40066;
+	Mon, 30 Jun 2025 09:50:26 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 30 Jun 2025 09:50:26 -0400
+X-ME-Sender: <xms:IpZiaK1guDOH7SmL4XT_MroNhCJtGq9O-mSASHLW9HgsuJjT-nGGwQ>
+    <xme:IpZiaNGzzhlRHUL5l6VTOwdhl9vj6S6TuLsjOrhx33TjWyQVMj0mp7WmUFe3rRX6x
+    ra9ug2ouqJLrW6-XQ>
+X-ME-Received: <xmr:IpZiaC6unKwSHMhWsd-3QhRgTcUo3ggbnQwvPlNPz6thLwyLmn4aUHkImQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduudekjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddvhedt
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
+    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
+    feehpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhnghhosehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgt
+    phhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopehjuhhrihdrlh
+    gvlhhlihesrhgvughhrghtrdgtohhmpdhrtghpthhtohepvhhinhgtvghnthdrghhuihht
+    thhotheslhhinhgrrhhordhorhhgpdhrtghpthhtohepughivghtmhgrrhdrvghgghgvmh
+    grnhhnsegrrhhmrdgtohhmpdhrtghpthhtoheprhhoshhtvgguthesghhoohgumhhishdr
+    ohhrghdprhgtphhtthhopegsshgvghgrlhhlsehgohhoghhlvgdrtghomhdprhgtphhtth
+    hopehmghhorhhmrghnsehsuhhsvgdruggv
+X-ME-Proxy: <xmx:IpZiaL3pfv5C-L8GiSrTyFayQftmx5D6SfPZ9AEAd-tMNIHODA4QPA>
+    <xmx:IpZiaNEXif6gWn7z1G3LnIF5N4A7kDuaXo7bHnwovfv1o7ayjxaFeg>
+    <xmx:IpZiaE-GVz9OC470fbW0XQ7IbsLuU8t-yrSZdvV-DpoSFlsrOEsalA>
+    <xmx:IpZiaCm7YGAZvjzBatdIIymAhDzx9vg4lxZhGDzmxStRnNz-0cbWlg>
+    <xmx:IpZiaFFT0xHuCvNQvEdFBMIsoGSLWN6pvZ4qEkzvYnvF5qOh-m34U5Ij>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Jun 2025 09:50:25 -0400 (EDT)
+Date: Mon, 30 Jun 2025 06:50:24 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Tamir Duberstein <tamird@gmail.com>,	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Borys Tyran <borys.tyran@protonmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Panagiotis Foliadis <pfoliadis@posteo.net>,	linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,	llvm@lists.linux.dev
+Subject: Re: [GIT PULL] [PATCH v2 0/5] rust: Task & schedule related changes
+ for v6.17
+Message-ID: <aGKWIFVl4nwSl8SG@Mac.home>
+References: <20250625051518.15255-1-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250630131011.405219-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20250630131011.405219-1-fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 30 Jun 2025 15:33:31 +0200
-X-Gm-Features: Ac12FXxucSgJGsLEUQk81gSz3INXTFu7cO5Eq9OXyDy2vbnALYwRo8UAsMt7WH4
-Message-ID: <CAH5fLgirsNn9WwEUgFaY2z9+9gG3SWssCoNSzpE56F=sS02kEw@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: time: make ClockSource unsafe trait
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, ojeda@kernel.org, 
-	boqun.feng@gmail.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
-	linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250625051518.15255-1-boqun.feng@gmail.com>
 
-On Mon, Jun 30, 2025 at 3:10=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Mark the ClockSource trait as unsafe and document its safety
-> requirements. Specifically, implementers must guarantee that their
-> `ktime_get()` implementation returns a value in the inclusive range
-> [0, KTIME_MAX].
->
-> Update all existing implementations to use `unsafe impl` with
-> corresponding safety comments.
->
-> Note that there could be potential users of a customized clock source [1]
-> so we don't seal the trait.
->
-> Link: https://lore.kernel.org/rust-for-linux/Z9xb1r1x5tOzAIZT@boqun-archl=
-inux/ [1]
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+On Tue, Jun 24, 2025 at 10:15:13PM -0700, Boqun Feng wrote:
+> Hi Ingo & Peter,
+> 
+> This is the updated version from my pull request last cycle:
+> 
+> v1: https://lore.kernel.org/rust-for-linux/20250506045843.51258-1-boqun.feng@gmail.com/
+> 
+> Please take a look, thanks!
+> 
 
-LGTM:
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Ping ;-) I forgot to add that this is a dependency for Rust version's
+read_poll_timeout(), which is a dependency to a few things:
 
-Though you're missing `` around [0; KTIME_MAX] in some places, which
-may be worth adding.
+* In the `Tyr` driver:
 
-Alice
+  https://lore.kernel.org/rust-for-linux/20250628.224928.690831629261546521.fujita.tomonori@gmail.com/
+
+* In Nova, the gpu driver:
+
+  https://lore.kernel.org/rust-for-linux/20250619-nova-frts-v6-24-ecf41ef99252@nvidia.com/
+
+* In the qt2025 phy driver:
+
+  https://lore.kernel.org/lkml/20250220070611.214262-9-fujita.tomonori@gmail.com/
+
+Thanks!
+
+Regards,
+Boqun
+
+> Changes since v1:
+> 
+> - `Location::file_with_nul()` is used to avoid the C changes of
+>   __might_sleep()
+> 
+> Regards,
+> Boqun
+> 
+> 
+> The following changes since commit 5bc34be478d09c4d16009e665e020ad0fcd0deea:
+> 
+>   sched/core: Reorganize cgroup bandwidth control interface file writes (2025-06-18 13:59:57 +0200)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git tags/rust-sched.2025.06.24
+> 
+> for you to fetch changes up to 7e611710acf966df1e14bcf4e067385e38e549a1:
+> 
+>   rust: task: Add Rust version of might_sleep() (2025-06-24 15:53:50 -0700)
+> 
+> ----------------------------------------------------------------
+> Rust task & schedule changes for v6.17:
+> 
+> - Make Task, CondVar and PollCondVar methods inline to avoid unnecessary
+>   function calls
+> 
+> - Add might_sleep() support for Rust code: Rust's "#[track_caller]"
+>   mechanism is used so that Rust's might_sleep() doesn't need to be
+>   defined as a macro
+> 
+> ----------------------------------------------------------------
+> Boqun Feng (1):
+>   rust: Introduce file_from_location()
+> 
+> FUJITA Tomonori (1):
+>   rust: task: Add Rust version of might_sleep()
+> 
+> Kunwu Chan (2):
+>   rust: sync: Mark CondVar::notify_*() inline
+>   rust: sync: Mark PollCondVar::drop() inline
+> 
+> Panagiotis Foliadis (1):
+>   rust: task: Mark Task methods inline
+> 
+>  init/Kconfig                |  3 +++
+>  rust/helpers/task.c         |  6 +++++
+>  rust/kernel/lib.rs          | 48 +++++++++++++++++++++++++++++++++++++
+>  rust/kernel/sync/condvar.rs |  3 +++
+>  rust/kernel/sync/poll.rs    |  1 +
+>  rust/kernel/task.rs         | 33 +++++++++++++++++++++++++
+>  6 files changed, 94 insertions(+)
+> 
+> -- 
+> 2.39.5 (Apple Git-154)
+> 
