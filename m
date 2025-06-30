@@ -1,160 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA722745C;
-	Mon, 30 Jun 2025 18:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A2643151;
+	Mon, 30 Jun 2025 19:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751307422; cv=none; b=l3MjLZPkzQrXgaCjZ7pyaVjF9MsdthUgB9Y5HtfJP3c53CZqK9PX7LsmaXu/krdNJCJqnH92QSbUpv4g4HIDHeSSyoOz0BImOhHu2hsGlloZVlb5t7Soo92cvtugiQhgflO4OUP6G99wt70oXcVczVyaylWHFJbcqRhsGZIdyCA=
+	t=1751310165; cv=none; b=gg7C4QpgIlrq3hUupYscOMWQzLkkjLH+SXqQOXqfWQ8dXyMh/5zPs/VpqVnNKndFvutszahCVpDLm0VOujGQcsH+WI9S/OHeLQuZTkAroG3WjwVVowS3ppupYWNVnF8wXtN6iQYNgDBty8gy5QyQCfqg7UnXtCVyommiZGnKaH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751307422; c=relaxed/simple;
-	bh=aCYppRcN644WL/nycmbSiYLX4a8QaSQ8CcpHHOQHOGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qXLe1hKSzTY+VX6UtzGm0JRGifkPSd3vkxdCEgfqvJETY3EAKozZA38VFE9BWPfsDR5QMthjkQxJoxRXe7MVL4ywthNneRdxsShvvAeglJmD8ltvi1FZu1pLuvh4KRHO5j9J6bQsbdEOGKht1vUWR7XEAcp6ZDSosqC9EsN6FAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FA6SesH2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751310165; c=relaxed/simple;
+	bh=3ZviabXAPMdMjrA9k+SYU8j0EE5YIyw3lU8BHpP0Ee0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=kltGd0qbsVyrtcp0cWVoUfWrRyw2wiJ/Gq3GGQZgGCc9gxJvSV2ZfHtuhuOHHbHCKKl8OLNTTraeKpg0zlcwfebBbNK9brUPl6S0u4flE83jpr7qybWlUuETfadB8lWmOYrgmygTWXQ4TmwuPWzDNOfI2OR5AGIaX4qVCozhYIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y3HRpiCM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FA6SesH2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161BFC4CEE3;
-	Mon, 30 Jun 2025 18:16:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y3HRpiCM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAC7C4CEE3;
+	Mon, 30 Jun 2025 19:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751307421;
-	bh=aCYppRcN644WL/nycmbSiYLX4a8QaSQ8CcpHHOQHOGY=;
+	s=k20201202; t=1751310164;
+	bh=3ZviabXAPMdMjrA9k+SYU8j0EE5YIyw3lU8BHpP0Ee0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FA6SesH2YGGfotBs8sSlYCGB+oCfdL4RtdxqNKrzI7ej3ouYhx07yeYlKfTM0hOZh
-	 XNxay5hzRW6GJEEbLlsVyYc09k5D3fjprdMyQOOJ8ybUTRxb3HoWIbl6C9bQDU3Kji
-	 M02wpimO5CH/n3j5hyzthfNFZ50KVySkS/6qSAvCdCaBAjPTxSqGEpgq6RuH4+N7TB
-	 s6SwYmMK3hTfZF/7YBbY9/eicIyIw3AEbdckxoOX9PDMRtygAk2uHOWwG+F9XvhPAV
-	 4MNrIZqQlTtxVNCmtlicw8hv1Tn6DWNA9NEqy+RHTibwm7mZFHQp3MvBoMjjNPwpvc
-	 qRospOBbaZE9Q==
-Date: Mon, 30 Jun 2025 20:16:55 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing
- for File
-Message-ID: <aGLUl7ZtuQBPoCuv@pollux>
-References: <20250627-debugfs-rust-v8-0-c6526e413d40@google.com>
- <20250627-debugfs-rust-v8-4-c6526e413d40@google.com>
- <5c3a2289-01c5-413e-9d7c-88a41c3f54e2@kernel.org>
- <CAGSQo038u_so+_pMRYj0K546zNfO5-eqoXFivXsEF6ACK=Y5cw@mail.gmail.com>
- <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org>
- <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
+	b=Y3HRpiCMZeaha7LTlG3YTPJUXrhyvdpEgyTeZwt1v87WQe+xdqXfnC1jXlNNv2Jla
+	 bP2vX8MvmfsagwTgAAySOB3xpDGaGl5h78M3HGhQrQ4Z+wlN0fkmnTEbny1+i0i2xj
+	 0cnNnSDrn+PzjX7/i3SFrcbqD/7VYgFsSRTUfmFWx9d+i7oSmjSokW4BOkHQb+Xs2c
+	 QNAbGed9RpQPSxXNUtES/EztOB3+v22I3aSdZB42jLbZv/7hL+CP4bSdJAqRGH+1B9
+	 aJUdnbowWXoCkoI+yjdcl7+MoS48WqSUZF4KBHZk3V9MKd3n+J2Y9CivoqqCtfMq1f
+	 no5Wiy5fsinsA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 30 Jun 2025 21:02:37 +0200
+Message-Id: <DB03MZI2FCOW.2JBFL3TY38FK@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
+ Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
+ Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
+ "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
+ <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+X-Mailer: aerc 0.20.1
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+ <20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+ <COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid> <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org> <smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid> <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org> <Mg1_h6lRpg9tdi0VjiyDfIEy2juzgDWxOhYX61qSUfyEpeMMksWW1e-blTka_G1dXUvpZVktdD-zL3X1a6T6Cg==@protonmail.internalid> <DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> <87v7om4jhq.fsf@kernel.org> <RPPvXQKnjK77Kp9mKaiFxbNj1fTHKb_I7_nbY81fZop-Wz8n5TTi4_lpXP9U9AwjocvZKqJPI8PGKufJn9cIzQ==@protonmail.internalid> <DAU0J3T0IEVM.2K7ZRQOVOHF8H@kernel.org> <878qlh4aj1.fsf@kernel.org> <87plepzke5.fsf@kernel.org> <xFouVLxX1_t1mH69FDYwlIhBlI72M0IzQEKn0ntG_wT9z7V5DtbxiwVP_frH_yiS-Gf0q_AhqetbLmuvJ_yP5Q==@protonmail.internalid> <DAX65TRN0TGP.25VZ9DYV86XWY@kernel.org> <87wm8txysl.fsf@kernel.org>
+ <9G3W1seaM7elcwWXaeoaa2nfpFYCf-AmBdvZhACGP13KGUtTPVMwGNYdTQsdtp8ru7GIP3-UYTzXscC1MRUKrg==@protonmail.internalid> <DAZV8OGL8BMH.11SLXBXQ17ZJ9@kernel.org> <87h5zxxtdw.fsf@kernel.org>
+In-Reply-To: <87h5zxxtdw.fsf@kernel.org>
 
-On Mon, Jun 30, 2025 at 10:49:51AM -0700, Matthew Maurer wrote:
-> On Mon, Jun 30, 2025 at 10:39 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> >
-> > On 6/30/25 7:34 PM, Matthew Maurer wrote:
-> > > On Mon, Jun 30, 2025 at 10:30 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> > >>
-> > >> On 6/28/25 1:18 AM, Matthew Maurer wrote:
-> > >>> +    fn create_file<D: ForeignOwnable>(&self, _name: &CStr, data: D) -> File
-> > >>> +    where
-> > >>> +        for<'a> D::Borrowed<'a>: Display,
-> > >>> +    {
-> > >>> +        File {
-> > >>> +            _foreign: ForeignHolder::new(data),
-> > >>> +        }
-> > >>>        }
-> > >>
-> > >> What's the motivation for the ForeignHolder abstraction? Why not just make it
-> > >> File<D> and store data directly?
-> > >
-> > > 1. A `File<D>` can't be held in collection data structures as easily
-> > > unless all your files contain the *same* backing type.
-> >
-> > That sounds reasonable.
-> >
-> > > 2. None of the APIs or potential APIs for `File` care about which type
-> > > it's wrapping, nor are they supposed to. If nothing you can do with a
-> > > `File` is different depending on the backing type, making it
-> > > polymorphic is just needlessly confusing.
-> >
-> > What if I want to access file.data() and do something with the data? Then I'd
-> > necessarily need to put my data in an Arc and reference count it to still be
-> > able to access it.
-> >
-> > That doesn't seem like a reasonable requirement to be able to access data
-> > exposed via debugfs.
-> 
-> `pub fn data(&self) -> D` would go against my understanding of Greg's
-> request for DebugFS files to not really support anything other than
-> delete. I was even considering making `D` not be retained in the
-> disabled debugfs case, but left it in for now for so that the
-> lifecycles wouldn't change.
+On Mon Jun 30, 2025 at 3:15 PM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>> On Mon Jun 30, 2025 at 1:18 PM CEST, Andreas Hindborg wrote:
+>>> "Benno Lossin" <lossin@kernel.org> writes:
+>>>> (no idea if the orderings are correct, I always have to think way to
+>>>> much about that... especially since our atomics seem to only take one
+>>>> ordering in compare_exchange?)
+>>>>
+>>>>> As far as I can tell, atomics may not land in v6.17, so this series
+>>>>> will probably not be ready for merge until v6.18 at the earliest.
+>>>>
+>>>> Yeah, sorry about that :(
+>>>
+>>> Actually, perhaps we could aim at merging this code without this
+>>> synchronization?
+>>
+>> I won't remember this issue in a few weeks and I fear that it will just
+>> get buried. In fact, I already had to re-read now what the actual issue
+>> was...
+>>
+>>> The lack of synchronization is only a problem if we
+>>> support custom parsing. This patch set does not allow custom parsing
+>>> code, so it does not suffer this issue.
+>>
+>> ... In doing that, I saw my original example of UB:
+>>
+>>     module! {
+>>         // ...
+>>         params: {
+>>             my_param: i64 {
+>>                 default: 0,
+>>                 description: "",
+>>             },
+>>         },
+>>     }
+>>
+>>     static BAD: &'static i64 =3D module_parameters::my_param.get();
+>>
+>> That can happen without custom parsing, so it's still a problem...
+>
+> Ah, got it. Thanks.
 
-Well, that's because the C side does not have anything else. But the C side has
-no type system that deals with ownership:
+On second thought, we *could* just make the accessor function `unsafe`.
+Of course with a pinky promise to make the implementation safe once
+atomics land. But I think if it helps you get your driver faster along,
+then we should do it.
 
-In C you just stuff a pointer of your private data into debugfs_create_file()
-without any implication of ownership. debugfs has a pointer, the driver has a
-pointer. The question of the ownership semantics is not answered by the API, but
-by the implementation of the driver.
-
-The Rust API is different, and it's even implied by the name of the trait you
-expect the data to implement: ForeignOwnable.
-
-The File *owns* the data, either entirely or a reference count of the data.
-
-If the *only* way to access the data the File now owns is by making it reference
-counted, it:
-
-  1) Is additional overhead imposed on users.
-
-  2) It has implications on the ownership design of your driver. Once something
-     is reference counted, you loose the guarantee the something can't out-live
-     some event.
-
-I don't want that people have to stuff their data structures into Arc (i.e.
-reference count them), even though that's not necessary. It makes it easy to
-make mistakes. Things like:
-
-	let foo = bar.clone();
-
-can easily be missed in reviews, whereas some contributor falsely changing a
-KBox to an Arc is much harder to miss.
-
-> If you want a `.data()` function, I can add it in,
-
-I think it could even be an implementation of Deref.
-
-> but I don't think
-> it'll improve flexibility in most cases. If you want to do something
-> with the data and it's not in an `Arc` / behind a handle of some kind,
-> you'll need something providing threadsafe interior mutability in the
-> data structure. If that's a lock, then I have a hard time believing
-> that `Arc<Mutex<T>>`(or if it's a global, a `&'static Mutex<T>`, which
-> is why I added that in the stack) is so much more expensive than
-> `Box<Mutex<T>>` that it's worth a more complex API. If it's an atomic,
-> e.g. `Arc<AtomicU8>`, then I can see the benefit to having
-> `Box<AtomicU8>` over that, but it still seems so slim that I think the
-> simpler "`File` is just a handle to how long the file stays alive, it
-> doesn't let you do anything else" API makes sense.
-
-I don't really see what is complicated about File<T> -- it's a File and it owns
-data of type T that is exposed via debugfs. Seems pretty straight forward to me.
-
-Maybe the performance cost is not a huge argument here, but maintainability in
-terms of clarity about ownership and lifetime of an object as explained above
-clearly is.
-
-- Danilo
+---
+Cheers,
+Benno
