@@ -1,202 +1,136 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5C828DB5D;
-	Mon, 30 Jun 2025 15:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751296368; cv=none; b=mxrIcfvEDQ1/zRUNAfvIh1l3q0UQ+cYRmRHL6h5cLQtSlr7DxTMk95z4sdUZJ5iBleUu/w/jsvP+1MXJ1RPDXKJSqBRAmP+Xuyl5TZCfvl7GM5cMNWB8ytfjvNjF7pz6A3pwBehPRAg7BV69CDV2M3Z2llwcedTVrUkmEzhQP1Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751296368; c=relaxed/simple;
-	bh=DRVwtCNqcIY5zcQdsRZsM0qpmQoaT3TR9n/N8B5xSRc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eppKtk7nmBBABkd9woBjFQOwQXiC+BqtlcdNNZgP0Z/SZxqbQ2pb1ph6U4uO+26iAKUHI7QSy/l/1vRSsFIWpyyVYdaTjSOcMWwXLP1VtNLyW49VKIJM7RJ0yGEUW7lTJLR//TCawXDgQQorVN7m455/g5D04mSw9KK4E/Vz4ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eVwxPjZ9; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C688328C006;
+	Mon, 30 Jun 2025 15:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751297029; cv=pass; b=TC8+9Sv8luQ1ENnVrFxmI1xj5ckFPa/9Tz93/Khu5WfVUt3vYcPMm8JthAIyIJm9JWz5pOpZ5rqEmbvgMEeaa45frSjgKc/FJmoLUXa5qz3jMSx0Af+MEiR76f/L4ZP58YFK0oaVNn1xOQc46SrYcYa3d3Q/O8Zk+HRRdnudqVI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751297029; c=relaxed/simple;
+	bh=8tTwO9ZYPc6bdxdTPWEIP4Q0K9Y56w0NyN2VSbUDB5E=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=huwsC1+XHSsfaRqwUI9dwjhDJQ4VuXkDjUFqpQAITFqO2IFT2jnuMzQb//dIK9AjJqDjbUQm5lCSwJxJk2r0KJwthiEvaI3lDZ/c6PUzlrjFG9K4RRu/bQJE2Kpr76xbZByku4C2s3z5f5CgGqhHQe9xXZaX7VO2WbWmWJIUBD0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=f8GAnrnQ; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eVwxPjZ9"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-4a58ebece05so24288471cf.1;
-        Mon, 30 Jun 2025 08:12:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751296365; x=1751901165; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SaOLegHrcn1eXx3UWYOL64GB4OGC7u3vLrNV/6rSYsM=;
-        b=eVwxPjZ9/H3RfrVRRkJRfsT1BWq3gi3DqAxIGLzt8Z13zSOmIcinQ3CrkJz7V1z7LD
-         ABbxccXKPm1juCVEhkmR6KsYBANFbFCh+9L5liaVSOibKM46BD9Km1TbUqDju6ohwKzX
-         kkt+LhqiAjb8XgOWSp1iFUassBcHxvOGvluCsRPzq+xZEjE25XWXpiM2SGJoeqOm2emh
-         z8Uwqu+ILWDknLdodvB0pQGXx/vMQ3dyl7626tUBhcdU7jnZUwsHAI6Oqub6IrPe+2m7
-         EF8EkE1mirxkqdQ++dIyXWkwOCsMcXbB50IT9S5rca2r61aG4qna5ud4BaskAw3J5yNa
-         YuYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751296365; x=1751901165;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SaOLegHrcn1eXx3UWYOL64GB4OGC7u3vLrNV/6rSYsM=;
-        b=XLd+WmV8PyFMq4w0tl/k/7R+rpxtoaU+nlZEiUBt71YMDhsbLS2zAfxIhkckiurquo
-         CcS7uTvAaucDGSYXDlL+XevmKnN9PuGPbehrZW5sYofHPzJPpn/Jpmaa9PBORBjEHoAa
-         aNMk6GxPXLoDwkWXTSrmq3g49aqo3CufsmfBhyW8cbxiz/NW5TcQuos7jDnflGDWi27R
-         nm7T34YQjKUszLICKaztJLUNcTrznB6I83hsBlc1Mqmv5dMV14eNC1Ha5hVatAGuj3y2
-         wwyQgZ5o5dDGiOjV28ILx2mIZQZzww7TsmMv8g3fpw4re645RNpFttn3nhPJ0Ai6G59b
-         MP/A==
-X-Forwarded-Encrypted: i=1; AJvYcCU+L1H3def5pd5e+L+rTolUytV7GPFmURd9CKSHbqdhsdDoNcp3ntK1VqZV8zjVZsQzqO+Njof7MHxBd78p+/Y=@vger.kernel.org, AJvYcCVs87Xr3rotEfLEL9+9SuFmJpa47dZ5XnRPshOuWVT09HDo7s5im795N6jKjknpOfTrYfjHgZwCZhJh@vger.kernel.org, AJvYcCXDVQikoy+YOHlSd3A6kl395Au04e4b98aMuOs5+9L+GytrZCaUiyJu13dUQR25Ny0TJVbyEHD2pKUzAGej@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+5LBFhXfeAx8Ru0f/FlQtvet1iRtkE8qt5QGwSWz/iFvYFsnG
-	UJaOzC10/+uJxmdw9LIlr3Lit3jfdhQdCLTMoeIqprsQKpObfYT+ZgiT
-X-Gm-Gg: ASbGncu/VeghezMAPvo8pp+Jik0A4Jt8cHe0rWXrB95qIFGJd17ePuNmu6dUguzjghh
-	m9V2u0Qgy5WvuOQKdHjDyipaNkfqsrrTvPl6T6gk2dPnbeJUx546bjsXmhiR+c0g4wKEGlZ2wRr
-	6TPXlc9VcILTH+jn9CiJvcFlKzGSu2t2qnFQ+O3WJMz7adIsLgf/eWhK/9R99cbXArluW5C+ZEv
-	7iVTLyLatsn1nc4N3ROzZrEz2173rfkWBF8ZBFfPL6wdRides/cw3pgEohu49Q7Px5YihiOJnMH
-	dKnLFWP5zo0gcMFXpzz/+PHK6uDuVAqFin6/hjxRWQYJUb7GcNRqVSz+MCOaG2MwI+wGY2gdksC
-	LKoMoQG/ojwNZmX5EK3hlC6zZA1bUaPtRP982HiAFOx2mYVopbqqR
-X-Google-Smtp-Source: AGHT+IF4/b5ksWqDbDU0roRQ3BW5PvN7+2E2foS0GiY85GNlwFSrjehK8SMdetGdO5NFItvx9tP16g==
-X-Received: by 2002:a05:622a:111:b0:4a4:3a4e:b77c with SMTP id d75a77b69052e-4a7fca0781emr217381661cf.17.1751296365175;
-        Mon, 30 Jun 2025 08:12:45 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a7fc5ad3c6sm59909241cf.78.2025.06.30.08.12.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 08:12:44 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C0151F4006A;
-	Mon, 30 Jun 2025 11:12:43 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 30 Jun 2025 11:12:43 -0400
-X-ME-Sender: <xms:a6liaCOZK0Si2jNcqBsGnZs4J7g8DBX0ow6zTnK5qXW200lQPDNtyw>
-    <xme:a6liaA_CXwBuK-Nug70W4vQUX8e8-uTfYYsPJbWIAW7hTVHdcwOrvB5B1iw12OeRU
-    S5JM8eOgrgjN45Y0Q>
-X-ME-Received: <xmr:a6liaJRyUxCTXh69iIvE08a1VbmysNaO6wW369ymQqmF4WM6W8TwbOm5segJAg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduvddtvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepshhtvghrnhesrhhofihlrghnugdrhhgrrhhvrghrugdrvgguuhdprhgtphhtth
-    hopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhush
-    htqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    lhhkmhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqrg
-    hrtghhsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtg
-    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:a6liaCstzCm5svvpiZfFQnFbON1YbLLhalgqr0R6u8I70KyUsXGyyg>
-    <xmx:a6liaKeha2bPZbpRi-DoW4zn5bEeQScHW3BFeBDQFGAvvnMxVMWL2w>
-    <xmx:a6liaG166qeo-ic7TvaQy-l2VY6GImnCXSeANjKNxxO-g7eCodqcWQ>
-    <xmx:a6liaO-f7f0nkKNV8d6cyc9FDNIe8xjoosmrGuo2FRTej7O7Nr1LHg>
-    <xmx:a6liaJ-f4la_XrC1RYPUt7iwkqVkpGecQhrcEAcOPLSLY-egrFsKZWHg>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Jun 2025 11:12:42 -0400 (EDT)
-Date: Mon, 30 Jun 2025 08:12:42 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev,
-	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v5 05/10] rust: sync: atomic: Add atomic {cmp,}xchg
- operations
-Message-ID: <aGKpaoZt5Ab2a7Zj@tardis.local>
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <jBAtISwM9LKkR7KuCHEnym75NfGOM4z408pMuDfk4U8VzN8PQuk9JJfBc33Usre3YSjbgtFRj8c0ZNeeQMpZsA==@protonmail.internalid>
- <20250618164934.19817-6-boqun.feng@gmail.com>
- <87a55uzlxv.fsf@kernel.org>
- <_pLa3zqu-AHBOnxkEz7l13l9W-OsKBtuXIkjRsIJJy6EnYTrM99E8Yr24pzjqwCAj1_qs_PI-cVxRsBsbgiFdA==@protonmail.internalid>
- <aF9bmpX-i6HVMlaj@Mac.home>
- <878ql9zg90.fsf@kernel.org>
- <1cf36f94-7e70-48eb-a79f-ebde218cd716@rowland.harvard.edu>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="f8GAnrnQ"
+ARC-Seal: i=1; a=rsa-sha256; t=1751296991; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TSmuYDpWN0AjuNdpYKZxbSnnShxLnDH/1d11PN7tgQlw9la9QvFqR5LeJujLR8W+SaiEeUOnsWOe+lyXmHI5rsAj4foOVJp4c8cB5T/UlyRTxi9Shn8OqzFp3Y4vWWvzt0CUc8dohZL1orV6y4z/hZqps8hkjMAKBLtJEM0AQAM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751296991; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=PTIIe1Aef1zTvIAq5zModAnt55M2pKA3V/rGHZYwSMA=; 
+	b=gJgmeANLvuTPqLP8MEbmkL5qJT5CGjCET2lfKhAGLkqEfgsAf5TrMDLn6lu3D3ezxRakbpTsxcOcFWmw8UAw8BD6cC98opifG2xHeUWHjAMz7JoAf5f+a2+841uMgVJ2kCkT0LaKS/KBzufSnwOi8ptw1mQk0zTW3HDdskiXumk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751296991;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=PTIIe1Aef1zTvIAq5zModAnt55M2pKA3V/rGHZYwSMA=;
+	b=f8GAnrnQR05FfuTHIf8ITMcIQe3nsndxc2Ukc8rK2fi6spJU6Fg/xZsDgDYJg85i
+	ZxApeQbHeE23FwpGVt9I2HWFXXNgwpS+2T8lwu8TvF5taKEtL/X7ALB1rCNxS3ak3zY
+	e2lsVmGoxKFvZAT9csDI/Xsghm4746BINUxHGpfE=
+Received: by mx.zohomail.com with SMTPS id 175129699030831.897741607410353;
+	Mon, 30 Jun 2025 08:23:10 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1cf36f94-7e70-48eb-a79f-ebde218cd716@rowland.harvard.edu>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH] Introduce Tyr
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CANiq72kWGUbpDW+WjKki4JUYX63j_GFBcyQse-rgddwyoFw7cg@mail.gmail.com>
+Date: Mon, 30 Jun 2025 12:22:52 -0300
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Daniel Stone <daniels@collabora.com>,
+ Rob Herring <robh@kernel.org>,
+ Alice Ryhl <alice.ryhl@google.com>,
+ Beata Michalska <beata.michalska@arm.com>,
+ Carsten Haitzler <carsten.haitzler@foss.arm.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Ashley Smith <ashley.smith@collabora.com>,
+ linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ kernel@collabora.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5F5F10F8-C082-44AA-9126-3436E14D0855@collabora.com>
+References: <20250627-tyr-v1-1-cb5f4c6ced46@collabora.com>
+ <CANiq72nJcEM09HbQB3_NpKGxr9x8Ah0VE+=XS=xvA26P2qg=_g@mail.gmail.com>
+ <48605183-78B6-461E-9476-C96C8E55A55D@collabora.com>
+ <CANiq72kWGUbpDW+WjKki4JUYX63j_GFBcyQse-rgddwyoFw7cg@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Mon, Jun 30, 2025 at 10:51:00AM -0400, Alan Stern wrote:
-> On Mon, Jun 30, 2025 at 12:16:27PM +0200, Andreas Hindborg wrote:
-> > "Boqun Feng" <boqun.feng@gmail.com> writes:
-> > > in atomic/ordering.rs, I think I can extend it to:
-> > >
-> > > //! - [`Acquire`] provides ordering between the load part of the annotated operation and all the
-> > > //!   following memory accesses, and if there is a store part, it has Relaxed ordering.
-> > > //! - [`Release`] provides ordering between all the preceding memory accesses and the store part of
-> > > //!   the annotated operation, and if there is load part, it has Relaxed ordering
-> > >
-> > > This aligns with what we usually describe things in tool/memory-model/.
-> > 
-> > Cool. When you start to go into details of ordering concepts, I feel
+Hi Miguel,
 
-Well, avoiding going too much into the details is what I wanted for
-those documentation comments ;-)
+>> Hmm, I must say I did not know that this was a thing.
+>>=20
+>> Why is it better than [#allow] during the development phase?
+>=20
+> I have some notes at:
+>=20
+>    https://docs.kernel.org/rust/coding-guidelines.html#lints
+>=20
+> Generally speaking, we default to `expect` unless there is a reason
+> not to (I list some possible reasons in the link), because `expect`
+> forces us to clean it when unneeded.
+>=20
+> Not sure what you mean by "development phase" -- even if Tyr is under
+> development, it should still try to conform to the usual guidelines.
+> Of course, if a particular `expect` would be a pain, then please feel
+> free to use `allow`. But is that case here? i.e. you will want to
+> remove the `allow` anyway when you add the new code, no?
+>=20
+> Thanks!
+>=20
+> Cheers,
+> Miguel
 
-> > like something is missing though. For example for this sentence:
-> > 
-> >   [`Release`] provides ordering between all the preceding memory
-> >   accesses and the store part of the annotated operation.
-> > 
-> > I guess this provided ordering is only guaranteed to be observable for
-> > threads that read the same location with `Acquire` or stronger ordering?
-> > 
-> > If we start expanding on the orderings, rather than deferring to LKMM,
-> > we should include this info.
+When I said "in development"I was referring to "dead_code" specifically, =
+as we
+will invariably have some of that until the other parts of the driver =
+land.
 
-I'm not sure I follow you on this one. I'm not trying to expand on
-orderings, instead I'm trying to resolve your feedback that my previous
-version didn't mention what ordering the unspecific part of a
-read-modify-write has (like the store part of an Acquire and load part
-of the Release). And to me, they are naturally just Relaxed, but I feel
-that given the feedback I got from you, maybe I should explicitly
-mention they are Relaxed.
+Just as an example: IMHO it doesn't make much sense to only introduce =
+the
+register definitions used for this patch if we know for sure that:
 
-It's simply just making things more explicit and I'm still deferring to
-LKMM about the exact meaning of the ordering.
+a) the currently unused definitions will be used once the subsequent =
+parts land,
 
-> 
-> The problem with the word "ordering" is that it is too general, not 
-> specific enough.  You need more context to know exactly what the 
-> ordering means.
-> 
-> For example, ordering store A against store B (which comes later in the 
-> code) could mean that the CPU executes A before it executes B.  Or it 
-> could mean that a different CPU will see the data from A before it sees 
-> the data from B.
-> 
-> A more explicit description would be helpful.
-> 
+b) they will not change, as they're derived from the hardware itself
 
-Except that the explicit description should be in tools/memory-model/
-instead of the comments of a function or the Rust atomic module. Like
-Documentation/atomic_t.txt vs
-tools/memory-model/Documentation/explanation.txt. Because one is for
-people to get a quick idea about what these annotations/suffixes mean,
-and the other is the more elaborate on their precise meaning. Most of
-the cases, people won't need to get the subtilly of the memory model to
-write correct code.
+It makes more sense to just sit down and transcribe this part of the =
+spec at
+once. It lowers the chance of copy and paste errors too.
 
-Regards,
-Boqun
+As I said, I was unfamiliar with "expect". Can it be made to work on a =
+module
+level? Anyway, I can try to make this work with "expect" instead of =
+=E2=80=9Callow", no
+worries :)
 
-> Alan Stern
+=E2=80=94 Daniel=
