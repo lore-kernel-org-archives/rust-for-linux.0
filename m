@@ -1,184 +1,207 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42585282FA;
-	Mon, 30 Jun 2025 13:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2C027F001;
+	Mon, 30 Jun 2025 13:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751289057; cv=none; b=D1ykw6rbVCkL6WS+7pyTwpT/0qbXuztael/7lg7ZVJIR+i1gHb//SdKbjAVXPhnp9tqPf2fWCkVHkAt2gKJsQ+QY7EpoWOEaNh8l7n7NuGN+czCaca2Z57gnePH2omTOIcsG2Y7K77jtaJn87d22zixupyANjn+nR420+hriXz8=
+	t=1751289350; cv=none; b=cQ3R0H/2UfGCMscrDy8XBpsEUeBgzcjL9BFlT8KRdXgMlmRR61XOu1l++0CsiBFDpm8eTNwxYOhp+9VV7ltwBekiigFoS6DktfUQnUAJT8mcfLDMzJDkXOiyFhFYAedp9AX83cQpvJUTWsmqi7jRWK6z/Gfy5d+V5xmuxMNd7Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751289057; c=relaxed/simple;
-	bh=zTanlzol4nrqsNN6Ad+a+tZNxjt6u1+sQebSyo8YjmI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tqjNTBTPua8m5CgcWmh6dB18Sn+PSI6UNNb5cWWRx1z35AvChYu3tM+NSYt2aF5eseQa2ZmDvbC7ZCMBd/DbK2E6tyKfHQVXwywzKV8ZWyJYTZRIsuLusiMafEiuI8UQ1dFAQ7gERE4rIKJCPNRRraooUFmQuLHcLcllcNevaPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aiQFnxoZ; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751289350; c=relaxed/simple;
+	bh=U7/MjXkE+p4yuQr7ejO4TfxXPI5nPBw2vfJZcZldfzs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ks+S37nBJQfQPFvJGQHBTJA4des5D9dksj0eb2rf844rrWZWB+X+CfcQh/Fevx3evKhhlcmDmNugobTv3dVlepNzY2fUpzuysHRPoWVdGg8DEz+ts1N4XM4YbWwP60mdBbjQGKMEBFG6SWzB9YR//+hEsUwuwrPdx1g3ow/a9FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dhvag7JK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aiQFnxoZ"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-747ef5996edso1790982b3a.0;
-        Mon, 30 Jun 2025 06:10:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751289055; x=1751893855; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+DLfm3snRYFkb9TKEMAfI7I8jXbRrBgn5m4gNtwXWdk=;
-        b=aiQFnxoZfT/xSNHCJfizDyazoQJDOxL4WFnVmZZgT6C51r+9qG791LCnvAcNI/NETG
-         I5+WaVKVdWS5qPhCKz77w3/jmp9MGv7FavSF3hxrfsFjxiHJ07+vxaivjMFKKan2WYyJ
-         rXW0CtReIzSAS4LOaWJ3JBLUh0OaAZvt5C4AcySf39wfTO26Kun5T8bMwxqpKR2sVxVu
-         JbUXeP1tp8GHWo3fWzynzxEqDg/aizPAp63Fq2a6XT/3hvUfSVwevr0lv/uEl2+hK5W4
-         B5pmNHMeL7Gp8wUBpBPOCTt8jyxDzMI74D2oKtL68sCCixOE+g9vAoQohjF+iS3Vg1iL
-         gsKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751289055; x=1751893855;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+DLfm3snRYFkb9TKEMAfI7I8jXbRrBgn5m4gNtwXWdk=;
-        b=TFoYG+w27QP9ONUKt+chlgstT7y6UANjNo8T+Y14+Kdhhpa/7maraAbxLQL4+LLCA0
-         nKPZBwnc/UZs4S98sqhOjZoqrrYpHH8rYMH2KCvkMquW4QMYdx6qRD9jZ4qBHOUUWdcp
-         9eCzIQhmL4k7rXGNZzdEL5aA8VUfkx9+TUYAmHJbU50V0JERXxgM3U9ANyzWyjbnqrDI
-         053N47/2IgQNwmyVgJhLfKb8prGQhqiVsuTm2fdBHCpAOU/xmE7qo7YxQJOBEV1AfgGA
-         W22ifp7WWScsHWGRDipKQd6FijvcWrR1PAzfXOWSl7ckB69eYFisRdXoC3qL5A3PTk8q
-         iytg==
-X-Forwarded-Encrypted: i=1; AJvYcCUH4X0ri/2P8cP2hE+Qd/ojQeodTAO/X0Zzxpq3rqiL2f5xCyprYF+tEkpwY5vurNdRYgZE0Tb3XkclVqk=@vger.kernel.org, AJvYcCV1aTVhurhpbZ/RoV7ngwFhGKCn9LPSlSOPHG+exsGkZDmFhmPFNTAyWriuUgpkfpoLR9UQ8PbFrQzVnFPBay4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl4kzU2BwWvfPMeCGgQ1R9V9P9GsCFK6ZWQEMDVK09yC73sTE8
-	TX3zYbYNREBDPxJgfb15ppcmfS/VceM5EkE/PMRXElabXRj0C/qFUwYT
-X-Gm-Gg: ASbGncuKTIMjnB92OEgOePqjkI8G9jW33coVwwx9JSCKZmeMBJRHIrteaQaOZFnnaed
-	j9khC+QWrXDpnkw8266ci1czZSDOqqxOPYaFrziRhb/JiLp92Bv37D9HldFvfoEij0f+hP3EEoG
-	roSH/vGf2V4i9/j5iNyA7h+w/U/VbWTo+19zRSU3HO0r6rZiqzGrmVH+xe1wBW2QAdt7Ij/rZ2P
-	iSRs0AVtqKS1k3clOvevVMdyUZV4p7CME5T7tjtYlQeY7hlfL7h1OgvtCdxstM30eswFVVWSqrH
-	5qagHSlNBoqz9R5aM4DKV20s1w5fGfyzR5NCc8kqJ0EIXNZ++CD7skMPffgO4Yvc4uSc0VPY2Xx
-	IKMqql2LWFWLfHwxsbNOaKRMqInHVc2X5/Jc=
-X-Google-Smtp-Source: AGHT+IEb0NLLErVrv/OqOcKaCsqjLHA7spOa7s+ntrl9dz85xfprkYxf/8+tgyzQqhGJok0XgYjuNA==
-X-Received: by 2002:a05:6a00:2288:b0:746:3025:6576 with SMTP id d2e1a72fcca58-74af6f222dfmr17479678b3a.14.1751289055423;
-        Mon, 30 Jun 2025 06:10:55 -0700 (PDT)
-Received: from bee.. (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74af557b27dsm9090770b3a.84.2025.06.30.06.10.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Jun 2025 06:10:55 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	ojeda@kernel.org,
-	boqun.feng@gmail.com
-Cc: aliceryhl@google.com,
-	anna-maria@linutronix.de,
-	bjorn3_gh@protonmail.com,
-	dakr@kernel.org,
-	frederic@kernel.org,
-	gary@garyguo.net,
-	jstultz@google.com,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	lyude@redhat.com,
-	rust-for-linux@vger.kernel.org,
-	sboyd@kernel.org,
-	tglx@linutronix.de,
-	tmgross@umich.edu
-Subject: [PATCH v1] rust: time: make ClockSource unsafe trait
-Date: Mon, 30 Jun 2025 22:10:11 +0900
-Message-ID: <20250630131011.405219-1-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dhvag7JK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A07C4CEE3;
+	Mon, 30 Jun 2025 13:15:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751289349;
+	bh=U7/MjXkE+p4yuQr7ejO4TfxXPI5nPBw2vfJZcZldfzs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=dhvag7JKPTiDMHUBAdQHhv0ORkVZDFMJisug676CqP1cJtIpQlotEEf8uVeFrFpGm
+	 OMIlCDizuRQpRk6Ut1NJE4lUJIPnxcvVBOuRSDEmaEz2g47UDO3/q94hShZuam7FHU
+	 ypvGN5ZZdYZpGmzmcB1O5PrSCy0aSSJVBacoDFDzQr+WPvLoqmN47SZojI9ddVPll4
+	 bhQ+S51+fva/3iz+HhqFD6ezFqXKmciLUH4Y7sGD2xIC02lCfESD+ANeNHeInERf8q
+	 9eq6SHkVYwdY1UxAq+JO1Nedv65Pwz21dDtofu3UZRivOSjUx2nFdxUBCP779/xlx6
+	 ht5dA/8EUaaAA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+In-Reply-To: <DAZV8OGL8BMH.11SLXBXQ17ZJ9@kernel.org> (Benno Lossin's message
+	of "Mon, 30 Jun 2025 14:27:47 +0200")
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<20250612-module-params-v3-v13-2-bc219cd1a3f8@kernel.org>
+	<COU2bqJOzCHRf6g4rwFpu2NY3wLY0G0AmNjRaU9aGEqu1HaPZ5X4KzfDT_CEB3Okh5BV50sJS10sKhmtHut8ew==@protonmail.internalid>
+	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
+	<smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid>
+	<DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org>
+	<Mg1_h6lRpg9tdi0VjiyDfIEy2juzgDWxOhYX61qSUfyEpeMMksWW1e-blTka_G1dXUvpZVktdD-zL3X1a6T6Cg==@protonmail.internalid>
+	<DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> <87v7om4jhq.fsf@kernel.org>
+	<RPPvXQKnjK77Kp9mKaiFxbNj1fTHKb_I7_nbY81fZop-Wz8n5TTi4_lpXP9U9AwjocvZKqJPI8PGKufJn9cIzQ==@protonmail.internalid>
+	<DAU0J3T0IEVM.2K7ZRQOVOHF8H@kernel.org> <878qlh4aj1.fsf@kernel.org>
+	<87plepzke5.fsf@kernel.org>
+	<xFouVLxX1_t1mH69FDYwlIhBlI72M0IzQEKn0ntG_wT9z7V5DtbxiwVP_frH_yiS-Gf0q_AhqetbLmuvJ_yP5Q==@protonmail.internalid>
+	<DAX65TRN0TGP.25VZ9DYV86XWY@kernel.org> <87wm8txysl.fsf@kernel.org>
+	<9G3W1seaM7elcwWXaeoaa2nfpFYCf-AmBdvZhACGP13KGUtTPVMwGNYdTQsdtp8ru7GIP3-UYTzXscC1MRUKrg==@protonmail.internalid>
+	<DAZV8OGL8BMH.11SLXBXQ17ZJ9@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Mon, 30 Jun 2025 15:15:39 +0200
+Message-ID: <87h5zxxtdw.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Mark the ClockSource trait as unsafe and document its safety
-requirements. Specifically, implementers must guarantee that their
-`ktime_get()` implementation returns a value in the inclusive range
-[0, KTIME_MAX].
+"Benno Lossin" <lossin@kernel.org> writes:
 
-Update all existing implementations to use `unsafe impl` with
-corresponding safety comments.
+> On Mon Jun 30, 2025 at 1:18 PM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
+>>> On Fri Jun 27, 2025 at 9:57 AM CEST, Andreas Hindborg wrote:
+>>>> Andreas Hindborg <a.hindborg@kernel.org> writes:
+>>>>> "Benno Lossin" <lossin@kernel.org> writes:
+>>>>>> That's good to know, then let's try to go for something simple.
+>>>>>>
+>>>>>> I don't think that we can just use a `Mutex<T>`, because we don't have a
+>>>>>> way to create it at const time... I guess we could have
+>>>>>>
+>>>>>>     impl<T> Mutex<T>
+>>>>>>         /// # Safety
+>>>>>>         ///
+>>>>>>         /// The returned value needs to be pinned and then `init` needs
+>>>>>>         /// to be called before any other methods are called on this.
+>>>>>>         pub unsafe const fn const_new() -> Self;
+>>>>>>
+>>>>>>         pub unsafe fn init(&self);
+>>>>>>     }
+>>>>>>
+>>>>>> But that seems like a bad idea, because where would we call the `init`
+>>>>>> function? That also needs to be synchronized...
+>>>>>
+>>>>> Ah, that is unfortunate. The init function will not run before this, so
+>>>>> we would need a `Once` or an atomic anyway to initialize the lock.
+>>>>>
+>>>>> I am not sure if we are allowed to sleep during this, I would have to
+>>>>> check. But then we could use a spin lock.
+>>>>>
+>>>>> We will need the locking anyway, when we want to enable sysfs write
+>>>>> access to the parameters.
+>>>>>
+>>>>>>
+>>>>>> Maybe we can just like you said use an atomic bool?
+>>>>>
+>>>>> Sigh, I will have to check how far that series has come.
+>>>>>
+>>>>
+>>>> I think I am going to build some kind of `Once` feature on top of
+>>>> Boqun's atomic series [1], so that we can initialize a lock in these
+>>>> statics. We can't use `global_lock!`, because that depends on module
+>>>> init to initialize the lock before first use.
+>>>
+>>> Sounds good, though we probably don't want to name it `Once`. Since it
+>>> is something that will be populated in the future, but not by some
+>>> random accessor, but rather a specific populator.
+>>>
+>>> So maybe:
+>>>
+>>>     pub struct Delayed<T> {
+>>>         dummy: T,
+>>>         real: Opaque<T>,
+>>>         populated: Atomic<bool>, // or Atomic<Flag>
+>>>         writing: Atomic<bool>, // or Atomic<Flag>
+>>>     }
+>>>
+>>>     impl<T> Delayed<T> {
+>>>         pub fn new(dummy: T) -> Self {
+>>>             Self {
+>>>                 dummy,
+>>>                 real: Opaque::uninit(),
+>>>                 populated: Atomic::new(false),
+>>>                 writing: Atomic::new(false),
+>>>             }
+>>>         }
+>>>
+>>>         pub fn get(&self) -> &T {
+>>>             if self.populated.load(Acquire) {
+>>>                 unsafe { &*self.real.get() }
+>>>             } else {
+>>>                 // maybe print a warning here?
+>>>                 // or maybe let the user configure this in `new()`?
+>>>                 &self.dummy
+>>>             }
+>>>         }
+>>>
+>>>         pub fn populate(&self, value: T) {
+>>>             if self.writing.cmpxchg(false, true, Release) {
+>>>                 unsafe { *self.real.get() = value };
+>>>                 self.populated.store(true, Release);
+>>>             } else {
+>>>                 pr_warn!("`Delayed<{}>` written to twice!\n", core::any::type_name::<T>());
+>>>             }
+>>>         }
+>>>     }
+>>>
+>>> (no idea if the orderings are correct, I always have to think way to
+>>> much about that... especially since our atomics seem to only take one
+>>> ordering in compare_exchange?)
+>>>
+>>>> As far as I can tell, atomics may not land in v6.17, so this series
+>>>> will probably not be ready for merge until v6.18 at the earliest.
+>>>
+>>> Yeah, sorry about that :(
+>>
+>> Actually, perhaps we could aim at merging this code without this
+>> synchronization?
+>
+> I won't remember this issue in a few weeks and I fear that it will just
+> get buried. In fact, I already had to re-read now what the actual issue
+> was...
+>
+>> The lack of synchronization is only a problem if we
+>> support custom parsing. This patch set does not allow custom parsing
+>> code, so it does not suffer this issue.
+>
+> ... In doing that, I saw my original example of UB:
+>
+>     module! {
+>         // ...
+>         params: {
+>             my_param: i64 {
+>                 default: 0,
+>                 description: "",
+>             },
+>         },
+>     }
+>
+>     static BAD: &'static i64 = module_parameters::my_param.get();
+>
+> That can happen without custom parsing, so it's still a problem...
 
-Note that there could be potential users of a customized clock source [1]
-so we don't seal the trait.
+Ah, got it. Thanks.
 
-Link: https://lore.kernel.org/rust-for-linux/Z9xb1r1x5tOzAIZT@boqun-archlinux/ [1]
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/time.rs | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 64c8dcf548d6..a90c386dda3a 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -59,7 +59,13 @@ pub fn msecs_to_jiffies(msecs: Msecs) -> Jiffies {
- /// cases the user of the clock has to decide which clock is best suited for the
- /// purpose. In most scenarios clock [`Monotonic`] is the best choice as it
- /// provides a accurate monotonic notion of time (leap second smearing ignored).
--pub trait ClockSource {
-+///
-+/// # Safety
-+///
-+/// Implementers must ensure that `ktime_get()` returns a value in the inclusive range
-+/// [0, KTIME_MAX] (i.e., greater than or equal to 0 and less than or equal to
-+/// `KTIME_MAX`, where `KTIME_MAX` equals `i64::MAX`).
-+pub unsafe trait ClockSource {
-     /// The kernel clock ID associated with this clock source.
-     ///
-     /// This constant corresponds to the C side `clockid_t` value.
-@@ -67,7 +73,7 @@ pub trait ClockSource {
- 
-     /// Get the current time from the clock source.
-     ///
--    /// The function must return a value in the range from 0 to `KTIME_MAX`.
-+    /// The function must return a value in the range [0, KTIME_MAX].
-     fn ktime_get() -> bindings::ktime_t;
- }
- 
-@@ -84,7 +90,9 @@ pub trait ClockSource {
- /// count time that the system is suspended.
- pub struct Monotonic;
- 
--impl ClockSource for Monotonic {
-+// SAFETY: The kernel's `ktime_get()` is guaranteed to return a value
-+// in [0, KTIME_MAX].
-+unsafe impl ClockSource for Monotonic {
-     const ID: bindings::clockid_t = bindings::CLOCK_MONOTONIC as bindings::clockid_t;
- 
-     fn ktime_get() -> bindings::ktime_t {
-@@ -109,7 +117,9 @@ fn ktime_get() -> bindings::ktime_t {
- /// the clock will experience discontinuity around leap second adjustment.
- pub struct RealTime;
- 
--impl ClockSource for RealTime {
-+// SAFETY: The kernel's `ktime_get_real()` is guaranteed to return a value
-+// in [0, KTIME_MAX].
-+unsafe impl ClockSource for RealTime {
-     const ID: bindings::clockid_t = bindings::CLOCK_REALTIME as bindings::clockid_t;
- 
-     fn ktime_get() -> bindings::ktime_t {
-@@ -127,7 +137,9 @@ fn ktime_get() -> bindings::ktime_t {
- /// discontinuities if the time is changed using settimeofday(2) or similar.
- pub struct BootTime;
- 
--impl ClockSource for BootTime {
-+// SAFETY: The kernel's `ktime_get_boottime()` is guaranteed to return a value
-+// in [0, KTIME_MAX].
-+unsafe impl ClockSource for BootTime {
-     const ID: bindings::clockid_t = bindings::CLOCK_BOOTTIME as bindings::clockid_t;
- 
-     fn ktime_get() -> bindings::ktime_t {
-@@ -149,7 +161,9 @@ fn ktime_get() -> bindings::ktime_t {
- /// The acronym TAI refers to International Atomic Time.
- pub struct Tai;
- 
--impl ClockSource for Tai {
-+// SAFETY: The kernel's `ktime_get_clocktai()` is guaranteed to return a value
-+// in [0, KTIME_MAX].
-+unsafe impl ClockSource for Tai {
-     const ID: bindings::clockid_t = bindings::CLOCK_TAI as bindings::clockid_t;
- 
-     fn ktime_get() -> bindings::ktime_t {
+Best regards,
+Andreas Hindborg
 
-base-commit: d4b29ddf82a458935f1bd4909b8a7a13df9d3bdc
--- 
-2.43.0
+
 
