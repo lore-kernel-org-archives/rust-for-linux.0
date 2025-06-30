@@ -1,77 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AC428C01E;
-	Mon, 30 Jun 2025 15:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F96B282FA;
+	Mon, 30 Jun 2025 15:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751298232; cv=none; b=DPyLn1m5iUca3rVT3nXVT3lPfRudeLmYVLjMLRzgefCpj1DVKeZQzsbVfzgSZkws+Zo707dKhPYXtvxsKZuNCfbdFbk+nJWwDaZ9mlfxs29Q4OFZs7ipidvj7JV9RWlV6o1cI1TFiesh79Qj7QNyz/LuUcKUoplAiplgIy3b8Y0=
+	t=1751298632; cv=none; b=tAZZj2fOqXOP5965E1rHOEl41IDbvN8P6+8n8gbixtq6qyGMNjVt6QiHt7z3g+gN61XqV2HJVwLeD8t2q4zKqDAeJoFFGSDj6gXAM2Ng9ZU7RJTbw119ELFs8shu6SY1R/hGmBRm9733YJ58Ym0Qsu7Eupe2P0yLHgttoWO0DTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751298232; c=relaxed/simple;
-	bh=FOffP837AZnxr3Cf3oXVoWZpuKRjIGbq0zA+f2kxS84=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h16wa+MdAxaQeN+0AAaLZOH1rRqslm3/FzxaZJqkp1K1zPmHEgPittCff3e9mjuDCDUuasEW/IRBG6pKuFaErPAU10jjk90X+w+qdhktCukp7gTPIfnGdm2BjoQBGk9nU6+R0okG0b1F97p3OSmypx8qqKStVZWHVQGPOkmCYDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4ylB0Au; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751298632; c=relaxed/simple;
+	bh=CSJUGiOUWxP2VkzX3WWdpnoHSgKS/uHYmWqXozPe0A0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=mvWJEY9f8mjCRm4VZQfZ5Zt1yej4AgaJjCZLeeWSqYwJKR55oHLeocLhmU6VUxh2bD2IIS5TAiUnuFzpVIBiUIMZiJbsCCpQxI1m6q6N9I2O1CZsiFr21C9GpJUIsiOMGDHWiSR8kt0PPtEoUWZPyf+zWPC1ToPPnatlqfWFQ2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5WXWCDO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4ylB0Au"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BBBC4CEE3;
-	Mon, 30 Jun 2025 15:43:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5WXWCDO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249C5C4CEEF;
+	Mon, 30 Jun 2025 15:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751298231;
-	bh=FOffP837AZnxr3Cf3oXVoWZpuKRjIGbq0zA+f2kxS84=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=a4ylB0AuIbou16df+1m7yjyLB8eVWeIJO2yvajmw6JYBRiP1WMMPflnAsna06GNjA
-	 Sqw+n0UBzQRjF1LwWjkPC1mHh1AyHbvjHw7UGsn0NxwfzU5rSkHXVZEhIll3q8uNQe
-	 Ingvk07sB2oU3zV+yaJkVw7+j54y+SeSdpyVNz+04U7SJ9TnYxYnJs5z22zlz4YQHp
-	 MyJ1MqpGzTdpIfBaLWNx/6AN8yUrwpYjs6JpPWtDC3IDW64Yvl3n8qMa5nEmyOOtro
-	 FvO/EEOH7d8lqu7ljW1GaI7cQzSE/LdkWoEHPTxkwFSs4bpRTvGCcM/784SgyjPOrK
-	 RKr+yRjFie5Lw==
-Message-ID: <324c842b-e110-4e15-b058-9238a9ee598a@kernel.org>
-Date: Mon, 30 Jun 2025 17:43:44 +0200
+	s=k20201202; t=1751298631;
+	bh=CSJUGiOUWxP2VkzX3WWdpnoHSgKS/uHYmWqXozPe0A0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=O5WXWCDOFT9xSP7EWEdwiqrP7Z9E9l7zGxZxfrkYT5GuEWMZPY0D7Ldowf8OJqyIb
+	 pee1VEGR+F7Yl8GfOU5CLvIK+oyEz1snVp2S7fYvF8jcGwWh+8Hsh5ESbwzvyTjJr6
+	 6pw91zZp2zLnTb+y46ZGqVFt5zyKefQIFBSAkkmE/bLwgse+N83rMhCFGmfWsYXVL+
+	 QOqRftCDjuhmLkSDpEHipp32Qez57uoD1gw5m4DJMagYFWrrMqaUrzkqHYoKfcbmpb
+	 YNyPglDh9s1heE/I37Z3h3k4d2gghSx9mKKb+JDiVJSpGueo33Z/JgCOfZJt70ZNxx
+	 dfvIogoTSVm5Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 00/24] nova-core: run FWSEC-FRTS to perform first stage
- of GSP initialization
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Benno Lossin <lossin@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
- Ben Skeggs <bskeggs@nvidia.com>, Joel Fernandes <joelagnelf@nvidia.com>,
- Timur Tabi <ttabi@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Lyude Paul <lyude@redhat.com>, Shirish Baskaran <sbaskaran@nvidia.com>
-References: <20250619-nova-frts-v6-0-ecf41ef99252@nvidia.com>
- <aFnArVIFkHCUzNqe@pollux> <DAUFC932W5MR.Q13BFD3CYEKJ@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DAUFC932W5MR.Q13BFD3CYEKJ@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 30 Jun 2025 17:50:25 +0200
+Message-Id: <DAZZJTOR5N3G.1ZC2DWWPP2YM5@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
+ "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
+Subject: Re: [PATCH v5 05/10] rust: sync: atomic: Add atomic {cmp,}xchg
+ operations
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+ <20250618164934.19817-6-boqun.feng@gmail.com>
+ <DAX6WZ87S99G.1CMIN6IQXJYPL@kernel.org> <aF6iXB6wiHcpAKIU@Mac.home>
+ <DAXY0EJHHDWM.1KRSSJLOTCZ8F@kernel.org> <aF-aS5FLX7QIiiPa@Mac.home>
+ <DAY0AZXDTCD3.OAWZ91IQJT2Q@kernel.org> <aGKsHZ0saC-XkQlA@tardis-2.local>
+In-Reply-To: <aGKsHZ0saC-XkQlA@tardis-2.local>
 
-On 6/24/25 4:56 AM, Alexandre Courbot wrote:
-> On Tue Jun 24, 2025 at 6:01 AM JST, Danilo Krummrich wrote:
->> There's one thing that would be nice to fix subsequently, which is properly
->> resetting the GPU. Currently, it needs a power cycle to be able to probe
->> successfully after unbinding the driver.
-> 
-> Yes, what I usually do is the following after unloading Nova:
-> 
->      echo 1 | sudo tee /sys/bus/pci/devices/0000:01:00.0/reset
-> 
-> and this allows it to probe again. Maybe we want to add some equivalent
-> programmatically in the driver probe function?
+On Mon Jun 30, 2025 at 5:24 PM CEST, Boqun Feng wrote:
+> On Sat, Jun 28, 2025 at 10:00:34AM +0200, Benno Lossin wrote:
+>> On Sat Jun 28, 2025 at 9:31 AM CEST, Boqun Feng wrote:
+>> > On Sat, Jun 28, 2025 at 08:12:42AM +0200, Benno Lossin wrote:
+>> >> On Fri Jun 27, 2025 at 3:53 PM CEST, Boqun Feng wrote:
+>> >> > As for naming, the reason I choose xchg() and cmpxchg() is because =
+they
+>> >> > are the name LKMM uses for a long time, to use another name, we hav=
+e to
+>> >> > have a very good reason to do so and I don't see a good reason
+>> >> > that the other names are better, especially, in our memory model, w=
+e use
+>> >> > xchg() and cmpxchg() a lot, and they are different than Rust versio=
+n
+>> >> > where you can specify orderings separately. Naming LKMM xchg()/cmpx=
+chg()
+>> >> > would cause more confusion I believe.
+>> >>=20
+>> >> I'm just not used to the name shortening from the kernel... I think i=
+t's
+>> >
+>> > I guess it's a bit curse of knowledge from my side...
+>> >
+>> >> fine to use them especially since the ordering parameters differ from
+>> >> std's atomics.
+>> >>=20
+>> >> Can you add aliases for the Rust names?
+>> >>=20
+>> >
+>> > I can, but I also want to see a real user request ;-) As a bi-model us=
+er
+>> > myself, I generally don't mind the name, as you can see C++ and Rust u=
+se
+>> > different names as well, what I usually do is just "tell me what's the
+>> > name of the function if I need to do this" ;-)
+>>=20
+>> I think learning Rust in the kernel is different from learning a new
+>> language. Yes you're learning a specific dialect of Rust, but that's
+>> what every project does.
+>>=20
+>> You also added aliases for the C versions, so let's also add the Rust
+>> ones :)
+>>=20
+>
+> Make senses, so added:
+>
+> --- a/rust/kernel/sync/atomic/generic.rs
+> +++ b/rust/kernel/sync/atomic/generic.rs
+> @@ -310,7 +310,7 @@ impl<T: AllowAtomic> Atomic<T>
+>      /// assert_eq!(42, x.xchg(52, Acquire));
+>      /// assert_eq!(52, x.load(Relaxed));
+>      /// ```
+> -    #[doc(alias("atomic_xchg", "atomic64_xchg"))]
+> +    #[doc(alias("atomic_xchg", "atomic64_xchg", "swap"))]
+>      #[inline(always)]
+>      pub fn xchg<Ordering: Any>(&self, v: T, _: Ordering) -> T {
+>          let v =3D T::into_repr(v);
+> @@ -382,6 +382,7 @@ pub fn xchg<Ordering: Any>(&self, v: T, _: Ordering) =
+-> T {
+>          "atomic64_cmpxchg",
+>          "atomic_try_cmpxchg",
+>          "atomic64_try_cmpxchg"
+> +        "compare_exchange"
+>      ))]
+>      #[inline(always)]
+>      pub fn cmpxchg<Ordering: Any>(&self, mut old: T, new: T, o: Ordering=
+) -> Result<T, T> {
+>
+> Seems good?
 
-Probably -- how are things implemented on the GPU side of things? Is the GPU
-firmware surviving a FLR?
+Yeah, thanks!
+
+---
+Cheers,
+Benno
