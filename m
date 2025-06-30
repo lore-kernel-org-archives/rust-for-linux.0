@@ -1,75 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B9D28507C;
-	Mon, 30 Jun 2025 12:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8377A24A058;
+	Mon, 30 Jun 2025 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751285275; cv=none; b=BMDl59vx+s2uJHvqlbGi+wtAiV0cdCc6NtTdVT0ewmxg9lbtU0amCNt2pcIU1QxrRO4nMoEN3PtwXgQO7GJQUKTd3pj4QA2zxJJYpUZFJXa8oxVP1W4HgHJBN+LfzF/cSHwGF16JsAOVN56gaRKoSVbSwGw7XOE63Ry4aFgMsT0=
+	t=1751285574; cv=none; b=KFt9hAARPcLAkcFMr4TuFP2YurNPOWQQZtZsrneQguheAEfJO/DWwzOaq8ppxwsVEGn3GYum+HxEImGwZAjDFBoYke2Xay4XykEHvD/iXX47t/AiMF4imXLu5vjun05FFVOeUw5aw+N2d51oe0vXZHQi814yoNS6Rnma5BEtYBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751285275; c=relaxed/simple;
-	bh=S4SLPLJ5aUNyII+1n/NO7BN3kALINnqQMc6l4VYDPV4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=PHwLxf+87TBEvCmRC55q7PJhaHRKWzX5ZfbwBsj8Q7pYUy1ZdEBSJPcKtyXKGEf6lhExs26SoaffnuTyrX3Hrfv9EdjT+JxDlFIqovFnVqhsymsez5ETAzSEy9gsu5NpbXwjU+cz/VelojsnNdLS4Ixu1smYYOk5uPIZJ8ycr0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzAXkgt2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751285574; c=relaxed/simple;
+	bh=OAKKPO5WAFxNS5ms3mqTo100SLRig36uzVnDCmiO2jg=;
+	h=From:To:Cc:Subject:In-Reply-To:Message-ID:References:Date:
+	 MIME-Version:Content-Type; b=Z/3+b3OAA17t5UnTtUMqct50iWcaVzMvbHKrZsC4F8SjLTuFd1OH9z+mIy7WcEN2nmyOr5zPWlwQkEOAZUJmw+xmvfGVz7Izn1x39K9Xd8moiIZ6AY+NTcdg1EFecxD/Zz3XktRRvVEX+4A91tfRw1tEheZQoFf7DZwSxC0oNF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kaV5oK5c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzAXkgt2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF0BC4CEEF;
-	Mon, 30 Jun 2025 12:07:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kaV5oK5c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A127AC4CEE3;
+	Mon, 30 Jun 2025 12:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751285274;
-	bh=S4SLPLJ5aUNyII+1n/NO7BN3kALINnqQMc6l4VYDPV4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=SzAXkgt2PfnIOv0IO8RTPrcq6R4G2EtvH+wJIXGTAjsC75FDj/L2gPld/diAyvJfV
-	 Fd3tkoHVB6aazW1jLnwNQMX+wzAZepbI2L/5PZNzy016Uj3BJ2a5CTpXwGeehxL9OH
-	 2bmEDcKyGFSbmZFB41XhBTz+Vqawmu9lY0IzRPVMX268uWPHH6q2SbBGCQU1eXqxPX
-	 kg8RZOOI2bzwmpxi8JdjQqF/eH1w0zOJG5rJY/7RwkQXd258iExKboqUorTfdsQfvV
-	 iMfbZkjY/rJeblqlZQwHr9zTOikKDH98onR8zKxvTUhb42ULF5eqB0D+T7dls1FE9D
-	 sENewE42WmSTQ==
+	s=k20201202; t=1751285574;
+	bh=OAKKPO5WAFxNS5ms3mqTo100SLRig36uzVnDCmiO2jg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=kaV5oK5cQQGMvF0zVYgdU8Dy+GsxKluitINfeXUMmlNoENC+nFheop9ZPsEK4aT2r
+	 yWkVuFOsjL9wQPm9ZGUEoWI8ABc0bSF8QrbhebjYRGRwKJeMt8n6sPhaTZRbw7RxYl
+	 NyBig3DaeWSGGqwJ+esch7hG9O0BoWlZQn1zIzAUs6tsgBLfEenDq3Q1rlkRIsVDim
+	 n1GR2vOEzp9GJH5AotscDxPxVudiPmYQ/q4gDaNtoh/qVEHLOave/dGRmqtxn4+E88
+	 rH6vTb1fExRuIizGiYNGSMoob16xpac/lD9yaLFJaGHL2RWUbse+mh5SlVdsZymEEm
+	 Ny93+DFRINP8Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: alex.gaynor@gmail.com, ojeda@kernel.org, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: aliceryhl@google.com, anna-maria@linutronix.de, 
- bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, 
- frederic@kernel.org, gary@garyguo.net, jstultz@google.com, 
- linux-kernel@vger.kernel.org, lossin@kernel.org, lyude@redhat.com, 
- rust-for-linux@vger.kernel.org, sboyd@kernel.org, tglx@linutronix.de, 
- tmgross@umich.edu, Fiona Behrens <me@kloenk.dev>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250617144155.3903431-3-fujita.tomonori@gmail.com>
-References: <20250617144155.3903431-1-fujita.tomonori@gmail.com>
- <20250617144155.3903431-3-fujita.tomonori@gmail.com>
-Subject: Re: [PATCH v1 2/2] rust: time: Add wrapper for fsleep() function
-Message-Id: <175128525179.98300.14832479480460293241.b4-ty@kernel.org>
-Date: Mon, 30 Jun 2025 14:07:31 +0200
+To: "Danilo Krummrich" <dakr@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?us-ascii?Q?=3D=3Futf-8=3FQ=3FBj=3DC3=3DB6rn=3F=3D?=
+ Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Benno Lossin" <lossin@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 5/6] rust: samples: add a module parameter to the
+ rust_minimal sample
+In-Reply-To: <a343d3ce-a179-4c2c-a279-e2c3919a0a99@kernel.org> (Danilo
+	Krummrich's message of "Mon, 30 Jun 2025 13:30:02 +0200")
+Message-ID: <87qzz1xwdg.fsf@kernel.org>
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<20250612-module-params-v3-v13-5-bc219cd1a3f8@kernel.org>
+	<Ewn_4yTakSQtGyiitglJP70oWR-szfflywmDJoIY6EFgJVwLYQfXICpOyUk7rIq6_5dAb5Lf0JAREGMnakfylg==@protonmail.internalid>
+	<a343d3ce-a179-4c2c-a279-e2c3919a0a99@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Mon, 30 Jun 2025 14:12:44 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain
 
+"Danilo Krummrich" <dakr@kernel.org> writes:
 
-On Tue, 17 Jun 2025 23:41:55 +0900, FUJITA Tomonori wrote:
-> Add a wrapper for fsleep(), flexible sleep functions in
-> include/linux/delay.h which typically deals with hardware delays.
-> 
-> The kernel supports several sleep functions to handle various lengths
-> of delay. This adds fsleep(), automatically chooses the best sleep
-> method based on a duration.
-> 
-> [...]
+> (Sorry for being late on this one, just a minor nit below.)
+>
+> On 6/12/25 3:40 PM, Andreas Hindborg wrote:
+>>   struct RustMinimal {
+>> @@ -20,6 +26,10 @@ impl kernel::Module for RustMinimal {
+>>       fn init(_module: &'static ThisModule) -> Result<Self> {
+>>           pr_info!("Rust minimal sample (init)\n");
+>>           pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
+>> +        pr_info!(
+>> +            "test_parameter: {}\n",
+>> +            *module_parameters::test_parameter.get()
+>
+> Can we please call it something else than get(), maybe obtain(), access() or
+> just ref()?
 
-Applied, thanks!
+Probably `ref` is the most precise of the options you propose. I would
+go with that one. Or, should it be `as_ref`?
 
-[2/2] rust: time: Add wrapper for fsleep() function
-      commit: d4b29ddf82a458935f1bd4909b8a7a13df9d3bdc
 
 Best regards,
--- 
-Andreas Hindborg <a.hindborg@kernel.org>
+Andreas Hindborg
+
 
 
