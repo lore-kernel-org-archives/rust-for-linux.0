@@ -1,85 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852D01EA6F;
-	Tue,  1 Jul 2025 07:59:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB19726A09F
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 08:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751356787; cv=none; b=MJndQonp+21O3qu7NcruCBySN/aYauxzxZDxfsU97blX/9OELViZMi68iSSsHVDEq7ucmq2ezpQUoRX95kcJA0dv+7/7rjI38Ouj9+yyaOpNUTpad+XNhkTlRISpulL0Z3NQyKjoUbIWJI/iBntdFcSN7N1Wdde5mxElLsRnuWo=
+	t=1751358306; cv=none; b=txOnk4rPXNeOk1KnRzjHfo0jLMOB3N20YPXiPdhAAmQ/+/gPXM03XZ4a1tPskY/NHvrQWqeXd3im140YVFTHaf3A/OF2LKLkK7wElFHMhP0VffrwdnWu5gJWao5Q2UmWA9FrXyhc4MUei/xm2XIC+QoB1/mRiya2B18o/pwg72U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751356787; c=relaxed/simple;
-	bh=/bVoCC58KjG3tC81okaYbYmNMbCNmMB+vqNzzJFatKI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=p6LfGhpX87bHZhSVcZUx5/qfFfqJJgrZ8AddYiqzkJVGffdsg/FlowfsshjLfKg8Z4pQVl6EbfQV/oB2NU9TyOz/p4w3FEQROQ2jMQVbXUiLfEPLtrNYi6ZTfu33oGS4hxaJZhjGPg3CTTbc+B03afsPQPtCnobXW3zlzpQS3QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfXO3EcW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751358306; c=relaxed/simple;
+	bh=4NBRo7asrbE4jcsC4N5i3/e2ZCZPMxakKBYsVImNKI0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=sKeFIJN0uVlJ5mKJRKv02MX/RUMOBljvwNY0i+vCIKYGnbToqRgnV6tuzRR2zLiQsNzVfTJZYVLggpHb/e4E2/QF5wuwkm7k8MdWSUkABrTnIXr2gretiPi6fi8DUq5/V6CG5bvNFjT/7nDkhBgTpbUcvpasGpmiJMAa35YzWzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=PwQsOHJX; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfXO3EcW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B68AC4CEEB;
-	Tue,  1 Jul 2025 07:59:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751356787;
-	bh=/bVoCC58KjG3tC81okaYbYmNMbCNmMB+vqNzzJFatKI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qfXO3EcWcBlEGCrTpt5uKHXK8DfkcUhr1pYikCl9KK1EI2ZE/AxMqqpLjT2Klk9Bh
-	 NTt6QZ3eqkVRKf6tQdmYBO7/V3pXH8pVDjBtFAigesbYVom5XIxRL/nV8J20M/UhpI
-	 hahOX74ujDSDSWuErWqU6amgZJkj/BOrazJFfK5GKjqrDFFU2Dqqbhc2Jl+0Hx6X5A
-	 HerOnwsCI8CQ5duL+B3dmp024gKYqyGa+JSvl+p+4R8wJA7TkRUSOoiT+qIqLqNz8v
-	 2/KbGDcsTsJ5U955QoCb9uPZDjAb2iLTbwAfoKp8bBxhq5Cs27FHAx5wi55/TqsbLd
-	 oaCF+xLL1MsRQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D6D38111CE;
-	Tue,  1 Jul 2025 08:00:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="PwQsOHJX"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250701082456euoutp0121415ae06bb39b2511ee7b324524b0f0~OExd6-F8t0067900679euoutp01t
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 08:24:56 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250701082456euoutp0121415ae06bb39b2511ee7b324524b0f0~OExd6-F8t0067900679euoutp01t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1751358296;
+	bh=KfdpUFAVhAyxGqE9eLEIBkkqrEYX2W0imprAxbQivkU=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=PwQsOHJXGkU9mixvHQse3EYengfFoqHmA30yZ29Nwz9nTmg5Vjvv3Mjnkdj2yQTO+
+	 HA7ti9PjBheHdgVw6q3trtWTW6m0QWrOBK8uQ0cUBq4yTUAK1j2qGYkWFUG+eAtdKk
+	 Zd1cwp+uPNs5SfmyqgTwNswNIlSbQiMFzoMmeoPY=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250701082456eucas1p27ac527ab6df65b4ad24af9f1936ee772~OExdUXUK-0564305643eucas1p2z;
+	Tue,  1 Jul 2025 08:24:56 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250701082454eusmtip179c87208d9c76abee9ff0a1bd9cb19a6~OExcL0hDa2415924159eusmtip1p;
+	Tue,  1 Jul 2025 08:24:54 +0000 (GMT)
+Message-ID: <ca58f110-7f9a-427d-b018-e514cf34adaf@samsung.com>
+Date: Tue, 1 Jul 2025 10:24:54 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/9] rust: pwm: Add Kconfig and basic data structures
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
+	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
+	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <n5zfbzu3hn7kqdf3xc7orpeovvdprc2xlf7w3f62uoohkxdk5c@cc24urt5xf36>
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/2] Clean up usage of ffi types
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <175135681200.3705465.5362877571191623980.git-patchwork-notify@kernel.org>
-Date: Tue, 01 Jul 2025 08:00:12 +0000
-References: <20250625-correct-type-cast-v2-0-6f2c29729e69@gmail.com>
-In-Reply-To: <20250625-correct-type-cast-v2-0-6f2c29729e69@gmail.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: fujita.tomonori@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, dakr@kernel.org, davem@davemloft.net, andrew@lunn.ch,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+X-CMS-MailID: 20250701082456eucas1p27ac527ab6df65b4ad24af9f1936ee772
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250623180858eucas1p1815f6d6815b1c715baad94810cefacd5
+X-EPHeader: CA
+X-CMS-RootMailID: 20250623180858eucas1p1815f6d6815b1c715baad94810cefacd5
+References: <20250623-rust-next-pwm-working-fan-for-sending-v5-0-0ca23747c23e@samsung.com>
+	<CGME20250623180858eucas1p1815f6d6815b1c715baad94810cefacd5@eucas1p1.samsung.com>
+	<20250623-rust-next-pwm-working-fan-for-sending-v5-1-0ca23747c23e@samsung.com>
+	<q7sz7uci5vnyc24laqzs56vgt4i2jamb3ifyxkqom6qcml5kkv@642prvwxjkxc>
+	<c127e368-8c1f-4299-b222-a105940ac34e@samsung.com>
+	<1450a457-4bd3-4e9c-a74f-3be15c9ec84f@samsung.com>
+	<n5zfbzu3hn7kqdf3xc7orpeovvdprc2xlf7w3f62uoohkxdk5c@cc24urt5xf36>
 
-Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
 
-On Wed, 25 Jun 2025 05:25:37 -0700 you wrote:
-> Remove qualification of ffi types which are included in the prelude and
-> change `as` casts to target the proper ffi type alias rather than the
-> underlying primitive.
+On 6/29/25 12:29, Uwe Kleine-König wrote:
+> On Sat, Jun 28, 2025 at 09:47:19PM +0200, Michal Wilczynski wrote:
+
+>>>>> +    /// Sets the polarity of the PWM signal.
+>>>>> +    pub fn set_polarity(&mut self, polarity: Polarity) {
+>>>>> +        self.0.polarity = polarity.into();
+>>>>> +    }
+>>>>
+>>>> Please don't expose these non-atomic callbacks. pwm_disable() would be
+>>>> fine.
+>>
+>> Hmm, I've just realized that without those setters it would most likely
+>> impossible to correctly implement the get_state callback.
 > 
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> Changes in v2:
-> - Use unqualified types.
-> - Remove Fixes tag.
-> - Link to v1: https://lore.kernel.org/r/20250611-correct-type-cast-v1-1-06c1cf970727@gmail.com
+> You shouldn't implement the get_state callback for a waveform driver.
+
+You're right that a new driver using the waveform API shouldn't
+implement .get_state.
+
+My goal for the abstraction layer, however, is to be flexible enough to
+support writing both modern waveform drivers and legacy style drivers
+that use the .apply and .get_state callbacks.
+
+To implement the .get_state callback, a driver needs the ability to
+construct a State struct and populate its fields from hardware values
+before returning it to the PWM core. Without this ability there is no
+way to implement get_state callback.
+
+I think the cleaner way, without the setters would be to update the
+`new` like so:
+    pub fn new(
+        period: u64,
+        duty_cycle: u64,
+        polarity: Polarity,
+        enabled: bool,
+        usage_power: bool,
+    ) -> Self {
+        let raw_c_state = bindings::pwm_state {
+            period,
+            duty_cycle,
+            polarity: polarity.into(),
+            enabled,
+            usage_power,
+        };
+
+        State(raw_c_state)
+    }
+
+This way the get_state callback would be responsible for creating new
+state and initializing it, instead of passing the mutable State to
+get_state.
+
+
 > 
-> [...]
+> Best regards
+> Uwe
 
-Here is the summary with links:
-  - [net-next,v2,1/2] Use unqualified references to ffi types
-    https://git.kernel.org/netdev/net-next/c/22955d942f28
-  - [net-next,v2,2/2] Cast to the proper type
-    https://git.kernel.org/netdev/net-next/c/c9a7bcd2c016
-
-You are awesome, thank you!
+Best regards,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Michal Wilczynski <m.wilczynski@samsung.com>
