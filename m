@@ -1,137 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DF334CF5;
-	Tue,  1 Jul 2025 09:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1BD72602;
+	Tue,  1 Jul 2025 09:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751360750; cv=none; b=DUiWhlHLZUPd81CD4UFZeTjkZfp92WWmPPn/cWAvbNO792urkYk9QHcihLvn2rJSIMDOXZH4TTdCgzYR8q2TV0KhLp9z26E6QLhSfvaD0mAb3h9iCdfU740YzZwzZ78GTWEIfl+8C0oL0eK/vOQbD7urOnu68rv6FfbB4ZHU/zY=
+	t=1751361075; cv=none; b=md7p226jv0qo5dI7jpMaMO0rNxr9IjzyO+dCcb66r0MQIGAut5z3/PpEYeoeCvlQRhfFgJK29tC/94woi1jgjeodGZLBoWCJA0gSrevKH15M5z0GHP6xsnTxR9cMd6cPu17y9WBvnJG4q9OxNgGrWzayquwG39hldRpjyb4y8Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751360750; c=relaxed/simple;
-	bh=xhsZmINazcdrD1pjiN7YSbtRlKq9MVLMTaRxasNE/Z4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Ukznhz43xKylb5hpVU59E/nK2BjazuoMinGFFvVP8OcVm+ILnEzx7p8ogtX2/RchuNDhBn/limOcO7KjqTrGzW/+9JZ9BTTyxFz1fPuBWXtqaaM9kakCpVv9wb/WXq2XPCQbnHWA08k+UNjEY3pWw2hRpZ5UMj+SMrTiN3vX4I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhQDdwKt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751361075; c=relaxed/simple;
+	bh=rAIL7P5+qgQNxK6HoIqMiX8Nk+ttOzK/4HLG7PIlpec=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L7dJfE6PAyNTo8iOR4ccEF5nHRDqmgyxC5s7OzJFqj15hsB2mzoAjhuHJSbtGYUJADEfCbOmcLPzV9QM4n+VR4R4GnCT61BxYVTeO6YRO/5ttocY81SzGV17X4VS0bOXTA/uALO56VAQ6R1hlFhNfZlp3VkGc9KrHNcYdAZa5eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=XiY0mipX; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhQDdwKt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C23C4CEEF;
-	Tue,  1 Jul 2025 09:05:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751360750;
-	bh=xhsZmINazcdrD1pjiN7YSbtRlKq9MVLMTaRxasNE/Z4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=WhQDdwKtAN1U0Hdv2NqIoFVW1P9SmH/HG/CInzSXvT8Q4Z0celp3TjEYhfauptrns
-	 dEWwTqqU+2Sgc5wDBIxZ6pv3/iP+F2rg8qgL4m+eEnVBimjycCLUNIEWb0AQ2ZUvi5
-	 JMzmi6Jm87DNVG81yOYGIGaFEyt1ELnYBCxFj2GTb7hTypqEfI2j6Q0mrO0OrfgbR9
-	 ozw3YnV7tAsR+O59UGz/G+37hbNawsN7L5oGP8sLGT0YF08q9tqExB4FQk+92I4ak4
-	 LYjuHZrOODtCzjFycvF9nAOe95AjyKnYNCnAHMT7kL9tuDjBa3QMmHkZc1xv7dBULJ
-	 cXlO0Q1FJ9NWA==
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="XiY0mipX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1751361070;
+	bh=rAIL7P5+qgQNxK6HoIqMiX8Nk+ttOzK/4HLG7PIlpec=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XiY0mipXyPR5TGdzWUzCkYtMFOFA9XsLStZoUjZL6EMse9DdrVrca8Mrd7cE0DmW8
+	 wmR0+Lb8y590XdxthIJQGP75zQY79S1hOMPK8tUOEmBEH2hnvgXBjDMZD14edIiTGP
+	 MixfqPrVmDwiu62qP91NCqC2GKBMj8gjtY38Ky1Rgb1x9zKnk592Cx3gbT+g2SKBs9
+	 iWx5Qiy9TfHTeP9t5sZU6TUn6f9s6/piHke1BNvMh5C4b6BmTSyHztDWtqU6wVvR1X
+	 9wMY6c4jgyuZ9k0Lv6K3X0kk6aF8564rKmR1kEX7ev11LcKdz924p51PF/JVuv8LsB
+	 kcYT9taBGpgVg==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:16f1:973:959b:9b0c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7DAC417E0342;
+	Tue,  1 Jul 2025 11:11:09 +0200 (CEST)
+Date: Tue, 1 Jul 2025 11:11:03 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas
+ Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Daniel Stone <daniels@collabora.com>, Rob
+ Herring <robh@kernel.org>, Alice Ryhl <alice.ryhl@google.com>, Beata
+ Michalska <beata.michalska@arm.com>, Carsten Haitzler
+ <carsten.haitzler@foss.arm.com>, Ashley Smith <ashley.smith@collabora.com>,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org, kernel@collabora.com
+Subject: Re: [PATCH] Introduce Tyr
+Message-ID: <20250701111103.728ef3d7@fedora>
+In-Reply-To: <e64c20ae-5aaf-44cf-a463-c7eb1134daee@kernel.org>
+References: <20250627-tyr-v1-1-cb5f4c6ced46@collabora.com>
+	<aF8lYpK_l2I-ts1k@pollux>
+	<20250630180631.5e8066cd@fedora>
+	<e64c20ae-5aaf-44cf-a463-c7eb1134daee@kernel.org>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Jul 2025 11:05:43 +0200
-Message-Id: <DB0LKI8BO3HZ.3FF03JN4364RM@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
- Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
- Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
- Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
- "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
- <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
- <DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
- <smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid> <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org> <Mg1_h6lRpg9tdi0VjiyDfIEy2juzgDWxOhYX61qSUfyEpeMMksWW1e-blTka_G1dXUvpZVktdD-zL3X1a6T6Cg==@protonmail.internalid> <DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> <87v7om4jhq.fsf@kernel.org> <RPPvXQKnjK77Kp9mKaiFxbNj1fTHKb_I7_nbY81fZop-Wz8n5TTi4_lpXP9U9AwjocvZKqJPI8PGKufJn9cIzQ==@protonmail.internalid> <DAU0J3T0IEVM.2K7ZRQOVOHF8H@kernel.org> <878qlh4aj1.fsf@kernel.org> <87plepzke5.fsf@kernel.org> <xFouVLxX1_t1mH69FDYwlIhBlI72M0IzQEKn0ntG_wT9z7V5DtbxiwVP_frH_yiS-Gf0q_AhqetbLmuvJ_yP5Q==@protonmail.internalid> <DAX65TRN0TGP.25VZ9DYV86XWY@kernel.org> <87wm8txysl.fsf@kernel.org> <9G3W1seaM7elcwWXaeoaa2nfpFYCf-AmBdvZhACGP13KGUtTPVMwGNYdTQsdtp8ru7GIP3-UYTzXscC1MRUKrg==@protonmail.internalid> <DAZV8OGL8BMH.11SLXBXQ17ZJ9@kernel.org> <87h5zxxtdw.fsf@kernel.org>
- <H78pT7YnQEhAXdxzl_hhnGVUiQuFpibB21_bjH658fMz_5JYbwsPLYYVh8u1gYnzK3N3ilTEAvqOpkuptVx3rg==@protonmail.internalid> <DB03MZI2FCOW.2JBFL3TY38FK@kernel.org> <87bjq4xpv7.fsf@kernel.org>
-In-Reply-To: <87bjq4xpv7.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue Jul 1, 2025 at 10:43 AM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Mon Jun 30, 2025 at 3:15 PM CEST, Andreas Hindborg wrote:
->>> "Benno Lossin" <lossin@kernel.org> writes:
->>>> On Mon Jun 30, 2025 at 1:18 PM CEST, Andreas Hindborg wrote:
->>>>> "Benno Lossin" <lossin@kernel.org> writes:
->>>>>> (no idea if the orderings are correct, I always have to think way to
->>>>>> much about that... especially since our atomics seem to only take on=
-e
->>>>>> ordering in compare_exchange?)
->>>>>>
->>>>>>> As far as I can tell, atomics may not land in v6.17, so this series
->>>>>>> will probably not be ready for merge until v6.18 at the earliest.
->>>>>>
->>>>>> Yeah, sorry about that :(
->>>>>
->>>>> Actually, perhaps we could aim at merging this code without this
->>>>> synchronization?
->>>>
->>>> I won't remember this issue in a few weeks and I fear that it will jus=
-t
->>>> get buried. In fact, I already had to re-read now what the actual issu=
-e
->>>> was...
->>>>
->>>>> The lack of synchronization is only a problem if we
->>>>> support custom parsing. This patch set does not allow custom parsing
->>>>> code, so it does not suffer this issue.
->>>>
->>>> ... In doing that, I saw my original example of UB:
->>>>
->>>>     module! {
->>>>         // ...
->>>>         params: {
->>>>             my_param: i64 {
->>>>                 default: 0,
->>>>                 description: "",
->>>>             },
->>>>         },
->>>>     }
->>>>
->>>>     static BAD: &'static i64 =3D module_parameters::my_param.get();
->>>>
->>>> That can happen without custom parsing, so it's still a problem...
->>>
->>> Ah, got it. Thanks.
->>
->> On second thought, we *could* just make the accessor function `unsafe`.
->> Of course with a pinky promise to make the implementation safe once
->> atomics land. But I think if it helps you get your driver faster along,
->> then we should do it.
->
-> No, I am OK for now with configfs.
->
-> But, progress is still great. How about if we add a copy accessor
-> instead for now, I think you proposed that a few million emails ago:
->
->     pub fn get(&self) -> T;
->
-> or maybe rename:
->
->     pub fn copy(&self) -> T;
->
-> Then we are fine safety wise for now, right? It is even sensible for
-> these `T: Copy` types.
+On Mon, 30 Jun 2025 18:12:02 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
 
-That is better than getting a reference, but still someone could read at
-the same time that a write is happening (though we need some new
-abstractions AFAIK?). But I fear that we forget about this issue,
-because it'll be some time until we land parameters that are `!Copy` (if
-at all...)
+> On 6/30/25 6:06 PM, Boris Brezillon wrote:
+> > On Sat, 28 Jun 2025 01:12:34 +0200
+> > Danilo Krummrich <dakr@kernel.org> wrote:
+> >   
+> >>> +    pub(crate) fn log(&self, pdev: &platform::Device) {
+> >>> +        let major = (self.gpu_id >> 16) & 0xff;
+> >>> +        let minor = (self.gpu_id >> 8) & 0xff;
+> >>> +        let status = self.gpu_id & 0xff;
+> >>> +
+> >>> +        let model_name = if let Some(model) = GPU_MODELS
+> >>> +            .iter()
+> >>> +            .find(|&f| f.major == major && f.minor == minor)
+> >>> +        {
+> >>> +            model.name
+> >>> +        } else {
+> >>> +            "unknown"
+> >>> +        };
+> >>> +
+> >>> +        dev_info!(
+> >>> +            pdev.as_ref(),
+> >>> +            "mali-{} id 0x{:x} major 0x{:x} minor 0x{:x} status 0x{:x}",
+> >>> +            model_name,
+> >>> +            self.gpu_id >> 16,
+> >>> +            major,
+> >>> +            minor,
+> >>> +            status
+> >>> +        );
+> >>> +
+> >>> +        dev_info!(
+> >>> +            pdev.as_ref(),
+> >>> +            "Features: L2:{:#x} Tiler:{:#x} Mem:{:#x} MMU:{:#x} AS:{:#x}",
+> >>> +            self.l2_features,
+> >>> +            self.tiler_features,
+> >>> +            self.mem_features,
+> >>> +            self.mmu_features,
+> >>> +            self.as_present
+> >>> +        );
+> >>> +
+> >>> +        dev_info!(
+> >>> +            pdev.as_ref(),
+> >>> +            "shader_present=0x{:016x} l2_present=0x{:016x} tiler_present=0x{:016x}",
+> >>> +            self.shader_present,
+> >>> +            self.l2_present,
+> >>> +            self.tiler_present
+> >>> +        );
+> >>> +
+> >>> +        dev_info!(
+> >>> +            pdev.as_ref(),
+> >>> +            "PA bits: {}, VA bits: {}",
+> >>> +            self.pa_bits(),
+> >>> +            self.va_bits()
+> >>> +        );
+> >>> +    }  
+> >>
+> >> This is called from probe() and seems way too verbose for dev_info!(), please
+> >> use dev_dbg!() instead.  
+> > 
+> > We do have the same level of verbosity in Panthor, and it's proven
+> > useful when people are filling bug reports. Asking them to reload
+> > the module with debug prints enabled is kinda annoying, and I don't
+> > think I've heard anyone complaining that this was too verbose or slowing
+> > down the boot, so I'd be tempted to keep it like that, and least for
+> > the information printed in this function.  
+> 
+> Yeah, I think for the GPU revision bits that's reasonable, but do you really
+> also need the other prints to be dev_info()? Don't you know this information
+> from the combination of the GPU revision bits and the kernel version?
 
----
-Cheers,
-Benno
+Sure, we could have a tool extracting most of that from the driver info
+and DEV_QUERY ioctl(), but those info have been printed in Panfrost
+since the early days. I picked those traces up in Panthor because devs
+were used to it, and I honestly see no good reason to not print those as
+dev_info() in Tyr too. What's your concern here? Is this about boot
+time, not bloating the kernel logs or something else? I mean, we're
+talking about less than 10 lines printed at boot/module-load-time.
