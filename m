@@ -1,121 +1,202 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B23A27B4FC;
-	Tue,  1 Jul 2025 16:27:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978C01AA1DB;
+	Tue,  1 Jul 2025 16:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751387256; cv=none; b=dzXSLu4Yqfm+k0ho3DYjjqEshAcILOKqik3+AEpfDTHyJH82DgelNpe5Oznz+gB5iuMlLctflD7A8noi33vVQaiSoIfEk2n+81RWDbQanOXlBfJjRtIR6v+8zXcBgB+GnCwciMyUVYjMoTQZt2MgMZrOOIopxTQkR6JyTUQCYWA=
+	t=1751387722; cv=none; b=DJzN6k+LI95djQQ4F3N2rAu2Bt5IEnR2TE5CyYnABVAswPynN6SKZl+CBdeRci//C3Lo8DFV8NDLd5xxjxkieH2j0JR6ONiA93HapyYRdHQCYKKeBfwWpfCDehokaldZu18czYbL5/HzG3+8rBm10yWlIs2SGLeZncNvv2I2Lvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751387256; c=relaxed/simple;
-	bh=cKjnvNYdXUtU4xsuzC/O/yPbXpoyFkJif6q5RgpXK80=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GdyM8+T4sT5IvzWKwHEGwA6BM30VHOMiOoN7mWrlxSfcATvwxYPiTfPXDuDRyNwv6Y0QLp4coQr5qdeFRWnDOigKAs0TqzeGkBMCyHb/yCXQsVJTAwwUUM2Yo6dvhIlSgO09fjJNOQ/2Bn4hY8RX8xFFZ0C6K3PEqK6cNqJKAeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J1VXjDeq; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1751387722; c=relaxed/simple;
+	bh=4hsshI57Z9C4/sYvwAkYfdFuTtX1WltnX6JifWIWylc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ANiwWN2OUZrNkO7Nk+IpSG9C8qwVcG1tat3tj2Sk3wVf3DzUZOk8AXWZ/NmPNg5ErMmuWhCnUfRMMpZuFr8TlebN6zEhux3snde8SlixjHBui8lZu0fB/sAsNjJUHcZXDrwrvGs1Lq22ly2b/HiZv8a/SI6r/63x4ERRxDWcfoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RqU07gre; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J1VXjDeq"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b31c9d96bcbso744332a12.3;
-        Tue, 01 Jul 2025 09:27:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RqU07gre"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6fb0eb0f0fbso62985086d6.1;
+        Tue, 01 Jul 2025 09:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751387254; x=1751992054; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1751387719; x=1751992519; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cKjnvNYdXUtU4xsuzC/O/yPbXpoyFkJif6q5RgpXK80=;
-        b=J1VXjDeqaZQNOVzJWYgrR5Ox+QxQ+B3dRxBAOveC/B5uQ8JVfSpTdQMxb5bxtb+hzO
-         9Ra8IjjzW92+Ya1N9z2SYUdlMvSh6aB2s/lTXecO4JOxtXixX4K2lJcK9xBQE6fGR4yp
-         DBDJ9B4w6S6HP6o+1TI3xpJ40yHX5oSYKFDMiI8zzJp33rvII4xjJdJAM1pXWFmNo6vI
-         8/TfViFHXYoBvgN3b5qGap75iJ+s6hcxS4VnRWDUMj7VNT7UFRUfZZpkl06S09tvLftf
-         2dm9cq0PADnwrNuJrLi1PpF/sNy4DzQjZfrMd9JoQJa3jiqdaCJqgwKGnJ9EJ3Ok377x
-         5p0Q==
+        bh=Z5+0hrUrWdaTQSD5NTP041Iw08AxAQ4FPS5CuAQJAhY=;
+        b=RqU07greEN/iJULK0HB9fLamt3RmNd/uttNr2cBIL3PeCAyMWhbw2JS9mGlDatOFwN
+         VdMvuIBwdb3VzBVhqRI3i75zO+HjHQsKpXAmB8l2lvXIuZwnqRsQIsTdF2TGEzFZFO4p
+         bhfnDVQLhbebJw0SxqwTqJEN8FX9m43mAQytg4ctr+hXOYmnk8p0XZNz747PxDYUuoMm
+         KjkaNm/m3zPQyj12jifLjyLx0u1e37KCT5qCxsMJx0/9AT7F96xQk/kBlkUrQz54KE4t
+         ZoYOvEaXuUjOwR9yzMmnsDlix25OWwriTYWwmMd7Ze12RTeahMAvdQ1S0sV2hYAjJA8b
+         nPIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751387254; x=1751992054;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1751387719; x=1751992519;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cKjnvNYdXUtU4xsuzC/O/yPbXpoyFkJif6q5RgpXK80=;
-        b=BPh1gOlkOo/Bhrh+LxmeitqfWf9AFD1PyPYqF4bg32WKODWIPSU4hjqQkfsA2lKDG/
-         yG6V+Sj6JRutae25dlkPuB4jz27uLG0EcA7qC6cd8wjGWnGiWRDgijVq9mRIaiIV1xRO
-         vWaBNb1KB6Gvds+NK2RktBHPD0kj5+44ubVd9AmLhfzR9p48ykZ5GPVLBa2Ahu5NeYbz
-         9c0mVXsXdY/Kr0giGAqv2//PQ9IYI2Ep7XsV7jBrO7HujSOGigiPY9VO3bG6chzAtVai
-         IG59n5hrlYG4U5MRLyCqUXeVcjlZrub+0sbUxeVH03dbl1b2yrCrWZ8+yFvYOFTKasOh
-         BPoA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2f8RUpHVFSY5PUPdSzgRBqOetGHAFxzPjSuAPMPfuN3QRFfbuBnIfKnNE6EC958upDzx4AYaumOoHz08=@vger.kernel.org, AJvYcCWESL0kbtDUC5E44A41hWoMYSZYtUi+vyJyHiYgU+phXsxX31/IzNUeuAtrZ1nz9sNUmW7IP5/t3+almGYkOw==@vger.kernel.org, AJvYcCXILPz4g0CieDgp52VRB+hAwOljpjs7CiW5RVLmy9zudvoiYqzTxxs26iGYKhdH89AClb60AfBINTkv4Ksy@vger.kernel.org, AJvYcCXbfDVi+tcz4wZj2pI9wzqxRThWr/+BY2OKPorcTKT/cUgPLPQCAhSwFeNH16dTJf84RDwAdKNmiSRKeya9FnY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIQwqwM90trwrS/hoJpTe0WuZKyQETz1pIC08bq2AsFZCeQt6t
-	0qzP7uKeV+ohgQnIJXWQnylABOhpgNPAX2lymJm+8uDgymFXz5hE+AtSd/AFWYf/Rm5iR7YEQLK
-	sJHdbDklx4JJe1gLBDrOe3VohUoyO/BU=
-X-Gm-Gg: ASbGncuOxuH9B/oL0Q4dVJ77lAakU0GlDUWxvkYwzbG6oEd2VUKOvs3rJuvik7k1eTr
-	FxCNbFFFgOB6uxqU/LVCQ2XGsKVdu2+9TcN791iykxWLhuAqWBkOlX6atSJaWAa/kPgd+7nJKWB
-	CU5sJp2IbPECu+BZdcDa8/f9WpM5A8ERypwSNsqXXPX1Y=
-X-Google-Smtp-Source: AGHT+IGyD90mrtIwflgMbVjW9OHseBOqyeZ7mkyz0iOzcZtgRqM8RHdH6rWzGOaOZb/HfAv5sN+D5yHjiOrAL0dvkWM=
-X-Received: by 2002:a17:90b:4f49:b0:313:f9fc:7214 with SMTP id
- 98e67ed59e1d1-31951965582mr2297818a91.1.1751387254254; Tue, 01 Jul 2025
- 09:27:34 -0700 (PDT)
+        bh=Z5+0hrUrWdaTQSD5NTP041Iw08AxAQ4FPS5CuAQJAhY=;
+        b=arnper7/u0rkDZEAYY9gHoKqA78HsiWTwyadIusCnn9Qr31L5UQDntlUiSu4h3eHzT
+         LK/ePsDYz8O2WQ8ikI2Lf80sWq0dqOaYmhMiBanqOQA95UFKwuTcuPinLgw+IdoXY1QR
+         tGZdF1PWqoEkRN3Pc/7HFisNWSRXrZRk1E8o/+lIZ0z5mjjQeiENo03Zt8VQIt9xieGL
+         PlZSH/DcPe309hH/UpAMHBWLxNubl9X/+//vRPFYPB1/gVsKB4ZkuUztLEiJJPFvhQRL
+         kkheX9OBoASbxqRr+KJdOGJk1fE1q4cYj/NpVGwSUaZndQUQtW60Ruq8oudww15DHaAw
+         tkow==
+X-Forwarded-Encrypted: i=1; AJvYcCU7qMHiTRRKUthiSiuf1Uoute2bYi4o/OSliNUa7pmQ0Jb6dXu7ThPegAoXIWf+WqyJCrMXD5E4066bim+sZsc=@vger.kernel.org, AJvYcCVZahPpQtCmPuYu5vmchX3PEJFvcS/6XnWAlkMq6aCi8npclTBDYT+AL7tLfjhY+fktquW9UM9tTp49+ym2@vger.kernel.org, AJvYcCXtLYE7usbVXETv9RNu+HBQ0wHM4iHn3MXS0CV4Z8TJp2wegcOnlE8xFq0bRe/WoNAY3dhiVm4fL3wjBm37@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjqWShLfzVZSAmz5pA3nNiPyJi33JCg+qJJ3y+OAZPT/2b4Kdg
+	ZCcwJ018whtyrl4CiP4A+mi+O5KtDXzRySGJzSTXuxYoZ+fMQDsF+TnG
+X-Gm-Gg: ASbGnctKXhbJue5fdvWgs6cJWqD6ioiRpsIFDJCKE4FFu9T+/la7YSM/NERfCHDVBMl
+	fn78pgdfTPcnK/3sb7Sx2OgR6mbWSQYCBRouFZHX0afYd7DnnV/v5/xFnHUI1S8DfYgh9w5cVrQ
+	eeSuNdulSHsUnOf8GF6pdZNIxMzFGUhmwYjZwB6ZUewq2KPswMUmSU+dKgXxPLOtfSRpMMd+YXw
+	TGHMrCe5Tnds9VwE/j0uNYQ8RSkTnCrz8S325JcLA/UYrkqUZX5xRodQnbYmg3O9pdq5RVQEzVa
+	GTeTwgsPOzqZK+Ai543VMphf16aTlnxMzmn/vhuZp2/OoDZ+VjYPUKbU14cYEBMadGHOUKAogB9
+	I4VmzFXoD7Udgayjw/MhAGeNYERMRSyVP35c9mS2RZ/UjxR0XbTXbE5+JTbL4GoA=
+X-Google-Smtp-Source: AGHT+IHPuVm5X6/V6Y6ozrMdjj8rGAidZSiuaMJIbUTy0MxSjjYB4uoxLPCKT2h7nQTZaSV7v4ivTg==
+X-Received: by 2002:a05:6214:4003:b0:6fa:a5f6:ffce with SMTP id 6a1803df08f44-7010a9c4834mr67949186d6.19.1751387719283;
+        Tue, 01 Jul 2025 09:35:19 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd773151dbsm86553886d6.115.2025.07.01.09.35.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Jul 2025 09:35:18 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 33D02F40066;
+	Tue,  1 Jul 2025 12:35:18 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 01 Jul 2025 12:35:18 -0400
+X-ME-Sender: <xms:Rg5kaO2_yW7MpV1A9zjpBZO7mmcU7Mrllmke9WfuNPLKrVVmRWU7DQ>
+    <xme:Rg5kaBHCxyrMeFS1JShTQ5RAIdT3-v35kv7sfFr3fCTZbWYszA6y8N5EFmIgkknNd
+    Uc_6QbCGzMeWlberw>
+X-ME-Received: <xmr:Rg5kaG4_dUyxJsBa50ercYT3IYMIgLtiwQWR1bw91EWohV85DDkjxVfuQQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdduhedtvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepthgrmhhirhgusehgmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusg
+    horhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtg
+    hpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhef
+    pghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtgho
+    mhdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:Rg5kaP1BNAfvhS696e5mAtZ9SW-AsKrQhObKKjqW0odq5Dphb3bxYQ>
+    <xmx:Rg5kaBErCXx0yLCro1mqntOmPXgZXOTafBAonT3NYnu6jW3U3agelA>
+    <xmx:Rg5kaI84K_9F2c3aba6s1VsFFCYR5xQ7FiSXmh_ij8GB3HRJldPfPg>
+    <xmx:Rg5kaGkgqRLeHYWrLbiNYVaOggUO_YYKWE7CdwCIeUImlkROHCcT1A>
+    <xmx:Rg5kaJHvndzRnF7fcqkxs3_AMbjQGlAGHKTegbbuDi1Qd-6rYRV29vBh>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 1 Jul 2025 12:35:17 -0400 (EDT)
+Date: Tue, 1 Jul 2025 09:35:16 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH 1/3] rust: xarray: use the prelude
+Message-ID: <aGQORK02N8jMOhy6@Mac.home>
+References: <20250701-xarray-insert-reserve-v1-0-25df2b0d706a@gmail.com>
+ <20250701-xarray-insert-reserve-v1-1-25df2b0d706a@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
- <DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org>
- <Mg1_h6lRpg9tdi0VjiyDfIEy2juzgDWxOhYX61qSUfyEpeMMksWW1e-blTka_G1dXUvpZVktdD-zL3X1a6T6Cg==@protonmail.internalid>
- <DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> <87v7om4jhq.fsf@kernel.org>
- <RPPvXQKnjK77Kp9mKaiFxbNj1fTHKb_I7_nbY81fZop-Wz8n5TTi4_lpXP9U9AwjocvZKqJPI8PGKufJn9cIzQ==@protonmail.internalid>
- <DAU0J3T0IEVM.2K7ZRQOVOHF8H@kernel.org> <878qlh4aj1.fsf@kernel.org>
- <87plepzke5.fsf@kernel.org> <xFouVLxX1_t1mH69FDYwlIhBlI72M0IzQEKn0ntG_wT9z7V5DtbxiwVP_frH_yiS-Gf0q_AhqetbLmuvJ_yP5Q==@protonmail.internalid>
- <DAX65TRN0TGP.25VZ9DYV86XWY@kernel.org> <87wm8txysl.fsf@kernel.org>
- <9G3W1seaM7elcwWXaeoaa2nfpFYCf-AmBdvZhACGP13KGUtTPVMwGNYdTQsdtp8ru7GIP3-UYTzXscC1MRUKrg==@protonmail.internalid>
- <DAZV8OGL8BMH.11SLXBXQ17ZJ9@kernel.org> <87h5zxxtdw.fsf@kernel.org>
- <H78pT7YnQEhAXdxzl_hhnGVUiQuFpibB21_bjH658fMz_5JYbwsPLYYVh8u1gYnzK3N3ilTEAvqOpkuptVx3rg==@protonmail.internalid>
- <DB03MZI2FCOW.2JBFL3TY38FK@kernel.org> <87bjq4xpv7.fsf@kernel.org>
- <ffROWpeKczrWSBlKYov2atJG-QD5l5fUOb2dVCNkWlcT9h6DJpa4joGQpjqtYyLP7HX227fCAayyDQunZ464XQ==@protonmail.internalid>
- <DB0LKI8BO3HZ.3FF03JN4364RM@kernel.org> <87zfdovvz4.fsf@kernel.org> <DB0U12HAEVZ6.JKFPI2UQHDRY@kernel.org>
-In-Reply-To: <DB0U12HAEVZ6.JKFPI2UQHDRY@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 1 Jul 2025 18:27:21 +0200
-X-Gm-Features: Ac12FXwGokU26ku6MNjpG2T2im_ml-gRqu_GdFwFKfo05_BR1hAAvDHeKXa2Hck
-Message-ID: <CANiq72kFUSFgBv7Es3Mhe4HUaSPZk0EVW=JaMdaAGHsQOxYN6w@mail.gmail.com>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-To: Benno Lossin <lossin@kernel.org>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
-	Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250701-xarray-insert-reserve-v1-1-25df2b0d706a@gmail.com>
 
-On Tue, Jul 1, 2025 at 5:43=E2=80=AFPM Benno Lossin <lossin@kernel.org> wro=
-te:
->
-> Ultimately this is something for Miguel to decide.
+On Tue, Jul 01, 2025 at 12:27:17PM -0400, Tamir Duberstein wrote:
+> Using the prelude is customary in the kernel crate.
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  rust/kernel/xarray.rs | 34 ++++++++++++++++++++--------------
+>  1 file changed, 20 insertions(+), 14 deletions(-)
+> 
+> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> index 75719e7bb491..436faad99c89 100644
+> --- a/rust/kernel/xarray.rs
+> +++ b/rust/kernel/xarray.rs
+> @@ -5,16 +5,15 @@
+>  //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
+>  
+>  use crate::{
+> -    alloc, bindings, build_assert,
+> -    error::{Error, Result},
+> +    alloc,
+> +    prelude::*,
+>      types::{ForeignOwnable, NotThreadSafe, Opaque},
+>  };
+> -use core::{iter, marker::PhantomData, mem, pin::Pin, ptr::NonNull};
+> -use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
+> +use core::{iter, marker::PhantomData, mem, ptr::NonNull};
+>  
+>  /// An array which efficiently maps sparse integer indices to owned objects.
+>  ///
+> -/// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but more efficient when there are
+> +/// This is similar to a [`Vec<Option<T>>`], but more efficient when there are
+>  /// holes in the index space, and can be efficiently grown.
+>  ///
+>  /// # Invariants
+> @@ -104,16 +103,23 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self> {
+>      fn iter(&self) -> impl Iterator<Item = NonNull<T::PointedTo>> + '_ {
+>          let mut index = 0;
+>  
+> -        // SAFETY: `self.xa` is always valid by the type invariant.
+> -        iter::once(unsafe {
+> -            bindings::xa_find(self.xa.get(), &mut index, usize::MAX, bindings::XA_PRESENT)
+> -        })
+> -        .chain(iter::from_fn(move || {
+> +        core::iter::Iterator::chain(
 
-Only if you all cannot get to an agreement ;)
+Does this part come from using the prelude? If not, either we need to
+split the patch or we need to mention it in the changelog at least.
 
-If Andreas wants to have it already added, then I would say just mark
-it `unsafe` as Benno recommends (possibly with an overbearing
-precondition), given it has proven subtle/forgettable enough and that,
-if I understand correctly, it would actually become unsafe if someone
-"just" added "reasonably-looking code" elsewhere.
+Also since we `use core::iter` above, we can avoid the `core::` here.
 
-That way we have an incentive to make it safe later on and, more
-importantly, to think again about it when such a patch lands,
-justifying it properly. And it could plausibly protect out-of-tree
-users, too.
+Regards,
+Boqun
 
-This is all assuming that we will not have many users of this added
-right away (in a cycle or two), i.e. assuming it will be easy to
-change callers later on (if only to remove the `unsafe {}`).
-
-Cheers,
-Miguel
+>              // SAFETY: `self.xa` is always valid by the type invariant.
+> -            Some(unsafe {
+> -                bindings::xa_find_after(self.xa.get(), &mut index, usize::MAX, bindings::XA_PRESENT)
+> -            })
+> -        }))
+> +            iter::once(unsafe {
+> +                bindings::xa_find(self.xa.get(), &mut index, usize::MAX, bindings::XA_PRESENT)
+> +            }),
+> +            iter::from_fn(move || {
+> +                // SAFETY: `self.xa` is always valid by the type invariant.
+> +                Some(unsafe {
+> +                    bindings::xa_find_after(
+> +                        self.xa.get(),
+> +                        &mut index,
+> +                        usize::MAX,
+> +                        bindings::XA_PRESENT,
+> +                    )
+> +                })
+> +            }),
+> +        )
+>          .map_while(|ptr| NonNull::new(ptr.cast()))
+>      }
+>  
+> 
+> -- 
+> 2.50.0
+> 
