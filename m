@@ -1,43 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2F225B66A;
-	Tue,  1 Jul 2025 12:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0027260D;
+	Tue,  1 Jul 2025 12:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751372281; cv=none; b=K7xw/WoiQlVFQV8I9tBqMvYemmsNmIIiII05Xj4QWsvVnFz9pFqfqFlr9OW+/kBwP/zkXhiWZ/c0uc5ZZcUz4fkpF8XONkpWfhryo1I3OEtK0zABlvV1QlfSnov8wZWF70i5CM2ZLExnzi5uNz5HbgYib4TuDcAdaeiIPyuFvZE=
+	t=1751373175; cv=none; b=OdKNX4zy19n1v47goTZWtq92STVUiUI/EGVbsyj77vx+vIPyKKbSgEa+FG8bsIPysge+Wxx8UJ85/CWyvflyCJtEuvtex2IEhLqiQMfcPFSFGW0tZ1CNf7IoGYEfscVtf1RSMQD38CueWLDjLbdXr49LehQC4GTGUkU6tbtb7c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751372281; c=relaxed/simple;
-	bh=uSxrEa/aatStDlYzdgidWMnNxmVi/goKnF/38j+P230=;
+	s=arc-20240116; t=1751373175; c=relaxed/simple;
+	bh=EgnjTsHP1Vq2quIe/8Ig5Z5WM3e7RASn4K2qkIPVXAw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XWdfmg5nrVUlR/I8J5Wdug0r22LEvK4dEfC9PFor4W5R4YlU4aFtRzziOTbk6yjUNwRmaz6e0yEiHdZoIg/muYy2Fey4drCEmtBskTl9G+8X1mDJWlUOGcE8T6l/n1xR4a8Hdf1OoX5o0fIWVRRqQe4/2Gw4gWhmkAcZk/vtKiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CwBWX/EY; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HuDUR9+as1aDvnJw/D+a64MF0epqdCGSaKfAlJroK/MI7auvo16Wa5KEGHUDJPt+FsOsKe+uzTZYBhf5QlSt4Igm2CXTwtz+VKjnl2oh4Oy6AbD7GV9gRZzAORPD6ZfKek3Rxo5xy5Z3qTqiOqBydHBUFIZY+c1j8NEi4gKFngk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FnbYkatI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CwBWX/EY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D02C4CEEB;
-	Tue,  1 Jul 2025 12:17:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FnbYkatI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40019C4CEEB;
+	Tue,  1 Jul 2025 12:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751372281;
-	bh=uSxrEa/aatStDlYzdgidWMnNxmVi/goKnF/38j+P230=;
+	s=k20201202; t=1751373175;
+	bh=EgnjTsHP1Vq2quIe/8Ig5Z5WM3e7RASn4K2qkIPVXAw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CwBWX/EYNxrD7OpYQ79dSZLp+xr2dLlwrDm5kUDkVzkIMQbiDsapIjt/SmcIzxjmH
-	 Vvg2zgq4DQdeYmzkOTrKG4AZrNP3F2r9KZGjrYbje+PvNMIlIZ83dLliCiRo7wSQLb
-	 Ca+FPda4W/PwXbv4XPg6oJlBHP6Lg3Lx2vGddLkqJuccIHopkrqdg9HjN1vFScjW+V
-	 4wc1ygy6RRhpIM+Zmv+X2xwCkauourLcN+bBNxQpVcIN+GcuMeFpjxWuSaq1VaDyd/
-	 mk2XVK+gIMJg+3t/ca0I3EaQARnFyBHTksFp38qnAAYUcVG6/6kxMWZ31gTHakShfw
-	 /a/Ls/x87KeYQ==
-Date: Tue, 1 Jul 2025 14:17:55 +0200
+	b=FnbYkatIc63nSAWXHGRcXLrHa4F6oBFA1gtKZ9NqVjantusF2fdNUDhDCNMHNcFNI
+	 XArdWkwuHAFvmeVSRo06rDuya1LA4Koq1gobY6acoXvvEr5HBl+F758553kUCPE7OZ
+	 P+GNY6vqUEQnEp//ptZcoahdiu0F7occNE+dEYbkqhqfHNpl2YhVKtBYfyW+TaeUH1
+	 WYb6/2kguLB5bzAqhtLSqHL2yADHyMwCqMoHmi68zA3AxQVovDXVYJ5dHnle0Eia3o
+	 RfhTIkgaKD/gphdRHzbppgWC3DyTLL3xPP30/jH+txiuLxfawdOpGa9j5VjS3doatZ
+	 hunmZD8MVlTaw==
+Date: Tue, 1 Jul 2025 14:32:48 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
-	robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, acourbot@nvidia.com
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: dma: require mutable reference for as_slice_mut()
- and write()
-Message-ID: <aGPR8-psu96m9ioA@pollux>
-References: <20250628165120.90149-1-dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
+	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH 1/8] rust: device: introduce device::Internal
+Message-ID: <aGPVcMEOImBA8RLB@pollux>
+References: <20250621195118.124245-1-dakr@kernel.org>
+ <20250621195118.124245-2-dakr@kernel.org>
+ <2025070110-renounce-blinks-b28f@gregkh>
+ <aGO7a3dsRdcjdBnb@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,24 +50,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250628165120.90149-1-dakr@kernel.org>
+In-Reply-To: <aGO7a3dsRdcjdBnb@pollux>
 
-On Sat, Jun 28, 2025 at 06:49:54PM +0200, Danilo Krummrich wrote:
-> Given the safety requirements of as_slice_mut() and write() taking an
-> immutable reference is technically not incorrect.
+On Tue, Jul 01, 2025 at 12:41:53PM +0200, Danilo Krummrich wrote:
+> On Tue, Jul 01, 2025 at 11:26:47AM +0200, Greg KH wrote:
+> > On Sat, Jun 21, 2025 at 09:43:27PM +0200, Danilo Krummrich wrote:
+> > > Introduce an internal device context, which is semantically equivalent
+> > > to the Core device context, but reserved for bus abstractions.
+> > > 
+> > > This allows implementing methods for the Device type, which are limited
+> > > to be used within the core context of bus abstractions, i.e. restrict
+> > > the availability for drivers.
+> > > 
+> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > ---
+> > >  rust/kernel/device.rs | 14 ++++++++++++++
+> > >  1 file changed, 14 insertions(+)
+> > > 
+> > > diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> > > index 665f5ceadecc..e9094d8322d5 100644
+> > > --- a/rust/kernel/device.rs
+> > > +++ b/rust/kernel/device.rs
+> > > @@ -261,6 +261,10 @@ pub trait DeviceContext: private::Sealed {}
+> > >  /// any of the bus callbacks, such as `probe()`.
+> > >  pub struct Core;
+> > >  
+> > > +/// Semantically the same as [`Core`] but reserved for internal usage of the corresponding bus
+> > > +/// abstraction.
+> > > +pub struct Internal;
+> > 
+> > Naming is hard :)
+> > 
+> > As this is ONLY for the bus code to touch, why not call it Bus_Internal?
 > 
-> However, let's leverage the compiler's capabilities and require a
-> mutable reference to ensure exclusive access.
-> 
-> This also fixes a clippy warning introduced with 1.88:
-> 
->   warning: mutable borrow from immutable input(s)
->      --> rust/kernel/dma.rs:297:78
->       |
->   297 |     pub unsafe fn as_slice_mut(&self, offset: usize, count: usize) -> Result<&mut [T]> {
->       |                                                                              ^^^^^^^^
-> 
-> Fixes: d37a39f607c4 ("rust: dma: add as_slice/write functions for CoherentAllocation")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> BusInternal is better indeed!
 
-Applied to alloc-next, thanks!
+I now remember that I first wanted to go for CoreInternal, but then went for
+just Internal, since it thought it was unnecessary to be more specific. But I
+now think CoreInternal would have been the correct pick.
+
+> > And can a driver touch this, or only the bus owner?
+> 
+> It is to prevent drivers from getting access to functions implemented for
+> &Device<BusInternal>.
