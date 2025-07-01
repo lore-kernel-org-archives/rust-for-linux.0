@@ -1,156 +1,122 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44C226FA70;
-	Tue,  1 Jul 2025 17:05:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA301CAB3;
+	Tue,  1 Jul 2025 17:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751389505; cv=none; b=pQ/U7HLX3Shj+d/XNfBaG0y0q0VJZJ0Lzd6VPAgQzZ7DxCun7mK41aWifIj3CfRrpfZkoRjZOc1FamNT68jbWqSFzXtF8kFEwCwuZZuj+3C2SofDeLpBN7E2sIvu+fvGgYezjGw/UU6WwX1mCtQVa50tBImb+RzXNEF1+LuxUVY=
+	t=1751389678; cv=none; b=DzQ31oN7SZmke2fr2O6CZnSDhdF4Z5d/Y4Fh3lHz80izJPctXBhiA0frJIwJwcMQ2wfNa/yc7tceegr9I/2yJeBACn8sUwKp+YhNQdbOIh74fq1l5oWWLGLsDhYkahgCRa4mHv8NNe6wWtXYEROGeqzK/awGsfmmzzjYS+Mn8Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751389505; c=relaxed/simple;
-	bh=8AtDB9ZOK1mJSfdffS72JMAaKzwesnXF2qFcjp0ossQ=;
+	s=arc-20240116; t=1751389678; c=relaxed/simple;
+	bh=otvAmKrNgrGmm953h66f4Y1tIUJExy7j19EPbj8H6iA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eo0S0VGB5m9gsK2zgyAuzHZGXhj6dLHCtWw+g3a1hwJ8mG+t74AXusU4o45yeryXovWzGwep/JIoeev7mNWRU/fiSV/d+ikT9qQrI/rj54bwXofGVdUep7+J1Y1aLJiymEB9kX+SoqPk9kZKRb9l8npQjvh2kMn6DCuClekheGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=diheASn7; arc=none smtp.client-ip=209.85.208.172
+	 To:Cc:Content-Type; b=imsI4lm2o4Pp8z1ePpt9l/qTXI6UXqkoK5uxY2bLaAVDr1CYRqWqCLjVA4xvQQBltQGUl/qkhKRTENZmvDB+7UJjszSlJ6B7s+erbTGlbPpZ2593r/AqaVLaLPh8lWYICkDRE3R5NtZ5ilKOV+ZJ4PKB5njIbCmz4ZErvBVyxZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kiYjz8NN; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="diheASn7"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-32cd499007aso42602901fa.0;
-        Tue, 01 Jul 2025 10:05:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kiYjz8NN"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3138e64fc73so857584a91.2;
+        Tue, 01 Jul 2025 10:07:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751389500; x=1751994300; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751389676; x=1751994476; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=C+K6ZF3dYWrim9dWHEWNEC7aeyZabJ9Egpf5a6k6P7g=;
-        b=diheASn7C3q2BA8iH1KJ9Qgo8YK4aZanK4sXO3LgBXA+agoyTVyYhQh5xh1A9M9PEJ
-         kPk2ik+k+NJVjvj99aZk7Vb2qinWNZB+7YigxzWvZtA7Rc3tygTvvfzB1NlAlObA2iXt
-         3L4JVf/HYOCBDFBnR/BEvUkpvFWK1mizTEqiN3L/Xk+QrubTr7WDe4fCl9w3cnnIS/Jp
-         oUFwMaL21ePPbuwYZyqwz1nFp9r/5LTagVxHKoUSlBfEDnLHaGVTukIwB6b7UZwa6SK/
-         52BQX5uSCyP47Q3Q1MYzQGiD+6MdA8G4LapbPrC4pSALI+4qsmYDgBw2YTJYSK5Qca7P
-         rRYw==
+        bh=otvAmKrNgrGmm953h66f4Y1tIUJExy7j19EPbj8H6iA=;
+        b=kiYjz8NNpOJxrRXlsqGZ3oeOj12/hks03K2uwKszmsm2TKO6PWHasSkbSal/thUBtP
+         j5KUOPmclpaWDZWbSJyFhYH0BjB05x4Uoy+zlqWSFYFbmvc4UQBbHF8jboYIAfa39HDO
+         2rGOETIxlw98tSfVouySSyy5vYhriVOqZp/YrhLQtsfa7FKg2KZY4ADKJiW//84H4U2T
+         ilhk25nr3cCU/Az4xLDd1uzeRfdXQ2GdyMDDDoTmPcH1ia/62JpVltVwDvstOlAxR+Me
+         VVEwudhStPelyFrY+k/SjljkeeGSABxeiY6qoHiI/WgKnHZTbxUuSdR12PS7o5bIjWFG
+         EgZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751389500; x=1751994300;
+        d=1e100.net; s=20230601; t=1751389676; x=1751994476;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=C+K6ZF3dYWrim9dWHEWNEC7aeyZabJ9Egpf5a6k6P7g=;
-        b=wuGNRbR5xrMWZY5G8xGHI//pKy36nOKmRizzFzpu04TtHgyP2ZxnpPf32vLx2OQMOm
-         aNjqJXXUvNTPoAFrRpLc6dHFrPt/1tpYWTM0Edeg5X3F2p9ksmTXKZipPq2fpYIbhtcz
-         AcEWJa6Ua9GuA3aZtNFZFv/UTLlDF5YPD7I6q+pK9kITzmGCKj5clcY2DyJYkuPFVnY0
-         U7+TYPgUfRgOMkmNZ5wMQUNI6O1v25w+6EeqGhTN8Y178eutc7nRdll3oOQKLxQTESQE
-         CkyGiGBdXtNPo28ZELDLkDMICvY9q8+PWRyAyduAd0XfKDvw3hTZdvqsgJhw+a2fp7q+
-         jn6g==
-X-Forwarded-Encrypted: i=1; AJvYcCVwf6Z9OBwLKcnc38TKurTp9YiGHCYm/rvFBCkKUD1oUUyqzuqfK/W9bCo4+rNBR1DXX0x2h3WiGV3HYOjo4YY=@vger.kernel.org, AJvYcCVzHzWHX6NwoA9K22l1t6pNdw7jGo4D/nbNeQMYZeI1vcrCJ6AWuYrbZi0aaX6mQGzCaPlYgEEgmvPSKYE7@vger.kernel.org, AJvYcCWppHx7m3eOZbTSBR6IrTEoDcRh1Y9MMifNtMKL3nUWAoFItGKpYZCyHfJ64zhvuUmgiDm7vbNgsvyN4Bc3@vger.kernel.org
-X-Gm-Message-State: AOJu0YwF/L53v6eRZ91bHJJz4UdivsiobMFewyubY1G50xH1XFsWr5b7
-	guCIxnhPhyyWmQnC2XsLdQj9Pha22MAlpSOPqdc0dOr5Q/BWfx32NgRMISfCO9TsvtY/tRhoGap
-	V7ZakDilZzl4LTymZp0UqPO/jkDuCBQE=
-X-Gm-Gg: ASbGncsNg9GLYqHjX672TGK3bS0P2blvfHIilVsnkQjLsMCxXZINS8YlTnR/dCrqUWj
-	amabnCz8tHkMbh8HSvwpL8Gv7n5lskXz5855aKvxJAL+2CE5eDd6Bgnr/7Bb03zXVjLOA/mC5Z+
-	0FVBRekd3iRk8VOHcjhzcd8XHGQZEaSgvEH649MH/ByXwI5ikbieZ+VA9ouE3a3pUGcNfrxS1s5
-	wUw1ptAztn1J456
-X-Google-Smtp-Source: AGHT+IGqYOo2c8/8oI+jyXB0x4gWaxsVOe9Tp1zXFwmtuWqACbNl3YCeogJ+en7TpTeTnciAtjdBji+bnjdfRKFy2FM=
-X-Received: by 2002:a2e:22c5:0:b0:32a:dcc7:f99e with SMTP id
- 38308e7fff4ca-32cdc4ef298mr64711841fa.22.1751389499666; Tue, 01 Jul 2025
- 10:04:59 -0700 (PDT)
+        bh=otvAmKrNgrGmm953h66f4Y1tIUJExy7j19EPbj8H6iA=;
+        b=Qu/ukY7nmnNyvhSFwBW4+4Wv8NSNoScJYtoEyaEaiRMHt267/igRxaQQGBzBEgPBSp
+         eHkKCVhbvUHPoKzcaNJlcsRuIYNwZdhEW64r1oMM/7PwNDieaClizqupLTSUIXWwvfYw
+         Hh/w4tjmgU7XcwRPOHfLcT6+uIYVfwVrOr5MO/eT4NpZ5SMIiFenKsIHTHvZ/IR1XQmK
+         f7xRF9HuvdtuBGon1X9Q7aa7ASv52+im3uA8Nl/MDUCvNaWjpEz7qVN2lGu0Rd4OkYM6
+         OJPpf7QNt2KFEU7ceV7HTU6OvwPSbmiBSBTP4WG7yFbFwXBb2zKZYPDo5/R88jMFAMsI
+         LSuA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8ajjKB68SLN66QP388B5a/X7BCzoLsOMq+SfWmFwqq3+55TFvY5KGlGB7qsXtAqUE6H312HLIRoO1@vger.kernel.org, AJvYcCUC8uVNBMVzrKos7qCAdYnISml67mR+0S+WrG7QyK/waONB/H0pFNhSCyqiEo0tqVovsQ5HPMu5zk82067N5S/g@vger.kernel.org, AJvYcCUyCzEanLJJwP/53KnufHUVLGcO3o3tr8kmdqNPogv0SIpeK8/Zu0ZoHTaRwv5aPoHlOABhZ87S@vger.kernel.org, AJvYcCVdN7uuRg1cxOK3xoX2WB5VyLk6Uam+qw6eVl5wIz+XDOai5C+jEJjMZV1ycYwCY8V8rVz8cXx9YyFjpQ7X@vger.kernel.org, AJvYcCW3EbVRy5zWudWdXbf3hgDtVBOAtNVI6bv3hRWZzJ0u2yyYyGsft9c640VCtONXq08Dbh4cPiuRgiM=@vger.kernel.org, AJvYcCWIV3pR6hmlBX5LxsK62Fk32K6TIXO0TpC4k2cVma7qt7XP9FIEc5vCxKX1kqOZSTjVLZJH06/+wCnX/ZdYVEo=@vger.kernel.org, AJvYcCWg/WQDlo9Ef/L+RGBOwstLuIo4VbR5EhAdIbM6QWFQ5TIhVLqUv6D4G2Lp6IVZcjCeT9ucMhbSyuPp@vger.kernel.org, AJvYcCWnrObpUbMViM5Zj1qjfHzMvTWiBdbtESKORQw/R4LBL6sk8uliH2SH0I0+SSgbjtYYfIkAOGtbLt9l@vger.kernel.org, AJvYcCXzaRYlXuOY354Vn+39W80azjkjQ3lyNaESXCrWfLPFW/VH1HVe4+T5lIA2it6dXNcy/fgWcb4ZQG7UJ9w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMyLgeDCVWKHE0b6GjKargB9+UP52wtiW7s4avvvT35w/W9OSH
+	FgDcOTOKuSe0JZ27YeijfbSuGgTK2Y36vmlUUB6I3yyevLt+YK2+L0+O/vwMSDNKtwiat762zf/
+	kaCKzl8jfN9C1N3kgqtzIMC38Fg0Nk+E=
+X-Gm-Gg: ASbGncu3GsJU777MZ/9SlyVeltVoM2EU0ZNPFl9PwUI+tgKHXu/P1FJrFO1FyLmCuIr
+	h9PcFrNdZwZSp3iEj/fZbq6TZbfGsVikf/oPwTSGcjkG0VcJ040+9y4MDWWuZx2OUvRxqdQjS9c
+	9afKGcCqIgB2XweBlczKVrhglD33ZCWn8l1a9LCQSW+KntSvWZpntyng==
+X-Google-Smtp-Source: AGHT+IGgyj2cxaLL1I/RbT9oFzMdK+mMcfN6YoSZuvCYWImRFjEfnNWMRG/RDCPN3KNKY0Jv5Rbef8Y4TKqAiOAmPyk=
+X-Received: by 2002:a17:90b:1843:b0:314:29ff:6845 with SMTP id
+ 98e67ed59e1d1-319519ee90bmr2461781a91.4.1751389675613; Tue, 01 Jul 2025
+ 10:07:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-xarray-insert-reserve-v1-0-25df2b0d706a@gmail.com>
- <20250701-xarray-insert-reserve-v1-1-25df2b0d706a@gmail.com>
- <aGQORK02N8jMOhy6@Mac.home> <CAJ-ks9nqWHSJjjeg=QReVh3pq87LSLE-+NDOD5scp1axYV7k7Q@mail.gmail.com>
- <aGQUuuCpaBFrWrSe@Mac.home>
-In-Reply-To: <aGQUuuCpaBFrWrSe@Mac.home>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 1 Jul 2025 13:04:22 -0400
-X-Gm-Features: Ac12FXzUo3uf1OgsqLAqpL1VF9vNiKALMZv_azy7ZRgjbxDzg8RiT9byf5Y14Vc
-Message-ID: <CAJ-ks9=Nfv+U8i-h7bb0fK5PMy5w78yiN+P14Hkx8Ckbw3xQ0Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: xarray: use the prelude
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>
+References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
+In-Reply-To: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 1 Jul 2025 19:07:43 +0200
+X-Gm-Features: Ac12FXxPrxBmeSfKO3xPaPnHZ9Ojlak6uQ0jVcG0JF2jdPMZA5As1xRK0OZ6894
+Message-ID: <CANiq72kb5b-Q4OwASfGg6gz94fCQSLH34u29umQRsF8MEhR+6g@mail.gmail.com>
+Subject: Re: [PATCH v13 0/5] rust: replace kernel::str::CStr w/ core::ffi::CStr
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-clk@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 1, 2025 at 1:02=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
-ote:
+On Tue, Jul 1, 2025 at 6:49=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> On Tue, Jul 01, 2025 at 12:36:20PM -0400, Tamir Duberstein wrote:
-> > On Tue, Jul 1, 2025 at 12:35=E2=80=AFPM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > On Tue, Jul 01, 2025 at 12:27:17PM -0400, Tamir Duberstein wrote:
-> > > > Using the prelude is customary in the kernel crate.
-> > > >
-> > > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > > > ---
-> > > >  rust/kernel/xarray.rs | 34 ++++++++++++++++++++--------------
-> > > >  1 file changed, 20 insertions(+), 14 deletions(-)
-> > > >
-> > > > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> > > > index 75719e7bb491..436faad99c89 100644
-> > > > --- a/rust/kernel/xarray.rs
-> > > > +++ b/rust/kernel/xarray.rs
-> > > > @@ -5,16 +5,15 @@
-> > > >  //! C header: [`include/linux/xarray.h`](srctree/include/linux/xar=
-ray.h)
-> > > >
-> > > >  use crate::{
-> > > > -    alloc, bindings, build_assert,
-> > > > -    error::{Error, Result},
-> > > > +    alloc,
-> > > > +    prelude::*,
-> > > >      types::{ForeignOwnable, NotThreadSafe, Opaque},
-> > > >  };
-> > > > -use core::{iter, marker::PhantomData, mem, pin::Pin, ptr::NonNull}=
-;
-> > > > -use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
-> > > > +use core::{iter, marker::PhantomData, mem, ptr::NonNull};
-> > > >
-> > > >  /// An array which efficiently maps sparse integer indices to owne=
-d objects.
-> > > >  ///
-> > > > -/// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], b=
-ut more efficient when there are
-> > > > +/// This is similar to a [`Vec<Option<T>>`], but more efficient wh=
-en there are
-> > > >  /// holes in the index space, and can be efficiently grown.
-> > > >  ///
-> > > >  /// # Invariants
-> > > > @@ -104,16 +103,23 @@ pub fn new(kind: AllocKind) -> impl PinInit<S=
-elf> {
-> > > >      fn iter(&self) -> impl Iterator<Item =3D NonNull<T::PointedTo>=
-> + '_ {
-> > > >          let mut index =3D 0;
-> > > >
-> > > > -        // SAFETY: `self.xa` is always valid by the type invariant=
-.
-> > > > -        iter::once(unsafe {
-> > > > -            bindings::xa_find(self.xa.get(), &mut index, usize::MA=
-X, bindings::XA_PRESENT)
-> > > > -        })
-> > > > -        .chain(iter::from_fn(move || {
-> > > > +        core::iter::Iterator::chain(
-> > >
-> > > Does this part come from using the prelude? If not, either we need to
-> > > split the patch or we need to mention it in the changelog at least.
-> >
-> > Yes, it's from using the prelude - PinInit also has a chain method
-> > that causes ambiguity here.
+> This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
+> have omitted Co-authored tags, as the end result is quite different.
 >
-> Maybe you can mention this in the change log as well. Like "Calling
-> iter::chain() with the associated function style to disambiguate with
-> PinInit::chain()". Make it easier to review (and remember) why.
+> Link: https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vador=
+ovsky@protonmail.com/t/#u [0]
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1075
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Yep, done for the next spin.
+Thanks for keeping this up.
+
+Let's see if we get some Acked-by's -- otherwise, we may want to split
+by subsystem and avoid flagday changes wherever possible.
+
+Cheers,
+Miguel
