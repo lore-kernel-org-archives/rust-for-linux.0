@@ -1,87 +1,240 @@
-Received: from fabulous-taliesin.relay-egress.a.mail.umich.edu (relay-egress-host.us-east-2.a.mail.umich.edu [13.59.128.245])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC502222A6;
-	Tue,  1 Jul 2025 21:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.59.128.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209732FE33C
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 21:54:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751405964; cv=none; b=HgXGra6Z9Jw2wJF82LWAuNSHkUNgYX7oRepJ0dZlcr6YpJOWstbfDVG/F3CceUtCZ6iK/gpMuL3qxQw0+u5qTG0K306QTRlE5IFTxz7EyM7N31sbUCo7fG4OFkVCcN5+6MIv/Y1d0SIXeVEX02Gl1IRWiIhOU9RQuR/Lon93pKE=
+	t=1751406847; cv=none; b=Ka8pbuaM6wuqd0PX63hDvsPeRCweffUwbDWVj3YfvjVHx+Ew1gRXGMjl42aTcuHtuNDuhg2cnN7/3rbz1XzsxgYGYnLR9fJQZQaeFlyE+UfOOunKu5A0EAUIue5KShrO7/7yHoUofLivdkwZ2eXaFKeI1rGCy6XHvBxn2Jy4ya4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751405964; c=relaxed/simple;
-	bh=FfRpsdCetCvTN4MvBRq2kYjiqRtFaR1ruWoUx1S7KfE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=uX11jmFvGigILdVwOR/Ih98yBxWHMhSIA9R2jqXGOsc4Wfk15x8cj/5LB+wvJ3ipnEykyeg1z1GG4vuzd+21Bc95TokZJQ6Z/if3acKXjPTSxmdWn8ix95A1YGGqzbyivWsqTZnkhr49SGMV1b62ECyKaMM3QqzGzd0VqYj3gSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=Tqr4Y0So; arc=none smtp.client-ip=13.59.128.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1751406847; c=relaxed/simple;
+	bh=JMomTEei7y0V0/UZWksu2X8Dnt9cCX7Lrm18/W01Xhc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Og2AEFmt8soRKzXfmo4eYVlNQ6i74GbhX5v6m7wUcLxyODe35nqLbYEq/gF3Tljm+dxlxo7f62DZQyVVhhGTSSa/bTDY704N+XH7BPAl8KoIDTR2PpXHako2ogmP6of9lh9zBixAgwf2xOILevfM8i5dkHrrRP46FoqjHa3B7HE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jAJ4fMGD; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Tqr4Y0So"
-Received: from enriching-yacaruna.authn-relay.a.mail.umich.edu (ip-10-0-73-67.us-east-2.compute.internal [10.0.73.67])
-	by fabulous-taliesin.relay-egress.a.mail.umich.edu with ESMTPS
-	id 68645573.2994DE00.13D81883.132849;
-	Tue, 01 Jul 2025 17:38:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=umich.edu;
-	s=relay-1; t=1751405937;
-	bh=EoCFQ7P8Tnk+dsaPLBjGlDsJb2PcEiJqEGBMjg3BNJA=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To;
-	b=Tqr4Y0SoTUl3hjVtISApUUlSvtP0x0o8Q7gTb9EPBigNjeSAYteDfqIdKlbKDDnWC
-	 hVm+wsmrlcn1Us/3D6z/iRMyZnzYslcRxSfRvXlln/hkKbBhxYhmbLKCtn5g473ZSR
-	 HEuJmQxcMTTCpNO0ktclae25mAPJ8ui8HIcibKoyapT/iGkVjjuOo9J56Lv70kVlHz
-	 +a2XCXpn7LEUcUk+2DzyblYtNAJxIEnFKbnMMoG/Y1XyKZYuf+zcPf67Oe32YCdZ/2
-	 cBbMyHkcsMANYRqq+RHR2KiO48ISBDdK6yaZSkzfA1pI7GiKCTV0K4vuN/vnQUTbMI
-	 jWvnRKklE2G/g==
-Authentication-Results: enriching-yacaruna.authn-relay.a.mail.umich.edu; 
-	iprev=fail policy.iprev=73.110.187.65 (Mismatch);
-	auth=pass smtp.auth=tmgross
-Received: from localhost (Mismatch [73.110.187.65])
-	by enriching-yacaruna.authn-relay.a.mail.umich.edu with ESMTPSA
-	id 68645571.4F66061.263F03BF.1065300;
-	Tue, 01 Jul 2025 17:38:57 -0400
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jAJ4fMGD"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-609b169834cso18752a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 14:54:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751406843; x=1752011643; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ld7F4HBIlGiN9DWhZfqacu/pe2SF5kE57miwsPVjWkY=;
+        b=jAJ4fMGDLS408Z4htpMn4j1TNRvteH1MBcWp3weT6cQfGl3iOlk6wL/grJug9HDhdt
+         xe/YFyTuNm8a3cTsm92ZeN6AfP22ln9IohuNC3MT2hnH8EOfFo+YvA12xMuoWYKIDMdK
+         y/VuLigH6fHleLrQvJsNS9gImTWiItLpnNB/y4gZEqmjp5MqxHjhxUsUdSsermw9tgB+
+         nFQbvqRlGfdBbrh4zYr1kQy8kT8IWc8AKJFyXpljBeTr4Ma1/M+t69kKngRoQUjc8BbH
+         tdzk3KDIVPBBQJ6drqSGWqMLR2bH0l5Kb6xN3jIKj+bFhmh9MuLLAHW+OknCc1eg2YcT
+         jtDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751406843; x=1752011643;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ld7F4HBIlGiN9DWhZfqacu/pe2SF5kE57miwsPVjWkY=;
+        b=FYjSskP2PTfVc0ZdhjAMf7rTE2Ysf8d/6icqQx2LbcPVp2myjrpIoyLyF3OkV8b6KJ
+         8GxS9igc5GhIybhyKbJhB7H9zs+7rd0gHDYIbe7j0qtM1sSuwh3xvO4T2Dk90IXqyFgz
+         k3V6yteEpaFcoqZeSIOzcQmZ8kwp50veK0mHhxaUUtgksmwlTjg7v5wikYbpx7EKPd3G
+         KLl243B2OD5EPSfRyeyxsONOF0fK7Nuc0m8qsGjuhiqpFELl9aabSxeIJ7phVhLK56iY
+         vtmH6X1VpgRUm5e6stI7wCMEgKBqZZ20TJ5A7NGVK7SXHHLR4N4+aPc7oavFqe9PP0pa
+         +rjA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2aw2Zcbtu+Fqc9jRKa55vIWp9fagdz3YXwWATTMVnmfyz/7gc3ZVJQkbfmPxfcR9f2UlWGfjjc+d9g3NGGQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUrWweUtWk4qiNuZZdc7KO3xOTV5EY0SwgZdZP3Uj7xwXN2o+z
+	af9PMcAhqD/n1yLRTCpNvyvPhwMN6CC8JxvBAloCDUz1RIS528dlEm5LKrKwqQvULfBkk1gwoWj
+	NiBT2YX4CskvtB8jzaWPP9k9n78poEXR6Uu0dw7LCyJ4fXNPmC4y0JoPH+a8=
+X-Gm-Gg: ASbGncsbnz+3pR8U9iKMKJWTvvj26xqxa9J9muH4Cjq8P7KwrtzdwtlgzGYdGgD6z29
+	tAs3ql799/L3jVuE/a5uKfySHnnHyKsXx1he0RzMtNnBjfhObMbq37ZzOmFxE4vm+u8iWntmx7z
+	q9MQH4n0zXhgPxyHTrlREDU6G0M3PuznKlALsrvgHlcwCnhqe3hccxStUDKHgGXNeaA+GxPf/z
+X-Google-Smtp-Source: AGHT+IEcCwkWt0puE4zG3pLRWxXga/B8flfyWb4xB/N4Qbq1OeY9qSRBWTJV/btdLG+9+8LK4mi6nrRvTTdojft+2J0=
+X-Received: by 2002:a05:6402:4558:b0:609:99a7:efdb with SMTP id
+ 4fb4d7f45d1cf-60e388f2b76mr147545a12.2.1751406843249; Tue, 01 Jul 2025
+ 14:54:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <2025070131-icon-quarters-0c16@gregkh> <aGPtCBB6nWTNJuwK@pollux>
+ <2025070137-tartar-juncture-fcd2@gregkh> <aGP6d2-jJy5rtjMK@pollux>
+ <CAGSQo00eG5oRdN_xORLUyUauLi_vzypU-gz6DSU_FzaAbHRLng@mail.gmail.com>
+ <aGQ1VsnFaxBo9zaM@pollux> <DB0Z71SF488V.3QURUHHELOY84@kernel.org>
+ <3c928a0e-ccd4-4ba0-9f42-9f2bb0203e75@kernel.org> <DB0ZJVL0682F.ZNNOXEIDL5NN@kernel.org>
+ <DB0ZOHPFJR7T.1W3OF32GDL55O@kernel.org> <aGRCM1VRHI8EvZmd@pollux>
+In-Reply-To: <aGRCM1VRHI8EvZmd@pollux>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 1 Jul 2025 14:53:52 -0700
+X-Gm-Features: Ac12FXwQ8trYMtg8ADu-pbYNZ4d3NZdUbsJXRWIWlbPMuwiMmCItQakKxyNtqsA
+Message-ID: <CAGSQo03nX2cMc0WZQ2YmUKkOLCH_iu9MeQuLSXfCHmNBbuDJ9g@mail.gmail.com>
+Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing for File
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Dirk Behme <dirk.behme@de.bosch.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Jul 2025 16:38:56 -0500
-Message-Id: <DB11L7KWH27S.8L9WLRAR1B0P@umich.edu>
-Cc: "Len Brown" <lenb@kernel.org>, <linux-acpi@vger.kernel.org>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
-Subject: Re: [PATCH] rust: acpi: remove unneeded cast to clean future Clippy
- warning
-From: "Trevor Gross" <tmgross@umich.edu>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250701174656.62205-1-ojeda@kernel.org>
-In-Reply-To: <20250701174656.62205-1-ojeda@kernel.org>
 
-On Tue Jul 1, 2025 at 12:46 PM CDT, Miguel Ojeda wrote:
-> A future Clippy warning, `clippy::as_underscore`, is getting enabled in
-> parallel in the rust-next tree:
+On Tue, Jul 1, 2025 at 1:16=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
->     error: using `as _` conversion
->       --> rust/kernel/acpi.rs:25:9
->        |
->     25 |         self.0.driver_data as _
->        |         ^^^^^^^^^^^^^^^^^^^^^^-
->        |                               |
->        |                               help: consider giving the type exp=
-licitly: `usize`
+> On Tue, Jul 01, 2025 at 10:09:10PM +0200, Benno Lossin wrote:
+> > On Tue Jul 1, 2025 at 10:03 PM CEST, Benno Lossin wrote:
+> > > On Tue Jul 1, 2025 at 9:58 PM CEST, Danilo Krummrich wrote:
+> > >> On 7/1/25 9:46 PM, Benno Lossin wrote:
+> > >>> On Tue Jul 1, 2025 at 9:21 PM CEST, Danilo Krummrich wrote:
+> > >>>> On Tue, Jul 01, 2025 at 11:11:13AM -0700, Matthew Maurer wrote:
+> > >>>>> If we implement *only* pinned files, we run into an additional pr=
+oblem
+> > >>>>> - you can't easily extend a pinned vector. This means that you ca=
+nnot
+> > >>>>> have dynamically created devices unless you're willing to put eve=
+ry
+> > >>>>> new `File` into its own `Box`, because you aren't allowed to move=
+ any
+> > >>>>> of the previously allocated `File`s for a resize.
+> > >>>>>
+> > >>>>> Where previously you would have had
+> > >>>>>
+> > >>>>> ```
+> > >>>>> debug_files: Vec<File>
+> > >>>>> ```
+> > >>>>>
+> > >>>>> you would now have
+> > >>>>>
+> > >>>>> ```
+> > >>>>> debug_files: Vec<PinBox<File<T>>>
+> > >>>>> ```
+> > >>>>
+> > >>>> Stuffing single File instances into a Vec seems like the wrong thi=
+ng to do.
+> > >>>>
+> > >>>> Instead you may have instances of some data structure that is crea=
+ted
+> > >>>> dynamically in your driver that you want to expose through debugfs=
+.
+> > >>>>
+> > >>>> Let's say you have (userspace) clients that can be registered arbi=
+trarily, then
+> > >>>> you want a Vec<Client>, which contains the client instances. In or=
+der to provide
+> > >>>> information about the Client in debugfs you then have the client e=
+mbed things as
+> > >>>> discussed above.
+> > >>>>
+> > >>>>  struct Client {
+> > >>>>     id: File<ClientId>,
+> > >>>>     data: File<ClientData>,
+> > >>>>     ...
+> > >>>>  }
+> > >>>>
+> > >>>> I think that makes much more sense than keeping a Vec<Arc<Client>>=
+ *and* a
+> > >>>> Vec<File> separately. Also, note that with the above, your Client =
+instances
+> > >>>> don't need to be reference counted anymore.
+> > >>>>
+> > >>>> I think this addresses the concerns below.
+> > >>>
+> > >>> You still have the issue that `Client` now needs to be pinned and t=
+he
+> > >>> vector can't be resized. But if you know that it's bounded, then we
+> > >>> could just make `Pin<Vec<T>>` work as expected (not relocating the
+> > >>> underlying allocation by not exposing `push`, only
+> > >>> `push_within_capacity`).
+> > >>>
+> > >>> We also could have a `SegmentedVec<T>` that doesn't move elements.
+> > >>> Essentially it is
+> > >>>
+> > >>>      enum SegmentedVec<T> {
+> > >>>          Cons(Segment<T>, KBox<SegmentedVec<T>>)
+> > >>>          Nul,
+> > >>>      }
+> > >>>
+> > >>>      struct Segment<T> {
+> > >>>          elements: [T; 16]
+> > >>>      }
+> > >>>
+> > >>> or make the segments variable-sized and grow them accordingly.
+> > >>
+> > >> That sounds a lot like the perfect application for XArray. :)
+> > >
+> > > Haha I didn't know this already existed in the kernel :) Yeah then we
+> > > should make XArray work for this use-case.
+> >
+> > Ah wait, I meant for `SegmentedVec<T>` to store multiple `T` in the sam=
+e
+> > allocation, so it would only grow sometimes and amortize the allocation=
+s
+> > just like `Vec`. It seems to me that XArray only stores pointers, so yo=
+u
+> > have to box everything (which we're trying to avoid IIUC).
 >
-> The type is already `ulong`, which nowadays is always `usize`, so the
-> cast is unneeded. Thus remove it, which in turn will avoid the warning
-> in the future.
->
-> Other abstractions of device tables do not use a cast here either.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Yes, that sounds good. And if the potential number of Client instances ca=
+n get
+> pretty large Vec isn't a good choice anyways. If we really get a ton of c=
+lients,
+> they should be allocated with a kmem_cache and stored in an XArray, maple=
+ tree,
+> etc.
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+OK. I've outlined why I disagree, but it sounds like consensus here is that=
+:
+1. You want a `File<T>` that implements `Deref` to expose a `&T`.
+2. To enable `T` to take on values which are not `ForeignOwnable`, you
+want me to make `create_file` return a `PinInit<File<T>>` (We will
+also grow a `T: Sized` bound here.)
+
+You are aware that:
+1. A `File` can no longer be placed in a normal Rust collection, you
+will either need to box it or use a special collection kind.
+2. Adding or removing DebugFS support for some data in a driver may
+cause more noise (code edits non-local to the debug logic) than
+expected.
+
+The one thing I still don't see a consensus on:
+
+What do you want me to do about standard traits for `File`? If we're
+intending it to be heavily used throughout structs, we'll effectively
+break `#[derive]` if I don't add support. For example, if we had
+```
+#[derive(Debug, PartialEq)]
+struct FooAttrs {
+  name: String,
+  size: usize,
+}
+// In my current patch world someone adds `File`, it's by putting
+`FooAttrs` into an `Arc` and passing that into `create_file`, no
+modifications to the structure are made.
+```
+before, we have an obvious semantics for this. If someone adds `File`
+with the new API, we get
+```
+#[derive(Debug, PartialEq)]
+#[pin_data]
+struct FooAttrs {
+  #[pin]
+  name: File<String>,
+  #[pin]
+  size: File<usize>,
+}
+```
+
+This means that for the `#[derive]` to keep working, `File` needs to
+implement these traits. Do we want it to:
+A. Purely delegate, so making this sort of change keeps the same
+behavior of derived traits
+B. Do what makes sense for a `File`, so e.g. Debug might print 'File {
+data: "name_of_foo" }', and PartialEq might test for equality of the
+dentry if not an error
+
+I'm guessing you want A, but I've been through so many API reworks at
+this point that I wanted to ask in case there's  disagreement here.
