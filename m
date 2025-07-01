@@ -1,144 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1031D7989;
-	Tue,  1 Jul 2025 08:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60A01E833C;
+	Tue,  1 Jul 2025 08:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751359448; cv=none; b=lJ4oMhOUIrdjTOIK4tiyzU/s+zPUbWdbcgSSva4oYKYzvxJjEuk5dRZPwp0dNILoZj9Tsx4jFJOq8CARI+U8vwrFAFVpOIJYq6G5A2mIt2VBVmI5EM4EzIk9RmLNGPCUIbq64i8Z36M1XXV7f/dlIBKmCXPbpCegWllEaSHkMdc=
+	t=1751359580; cv=none; b=L21nMRbN3JUKtTe8fwilViofv1B3TpgVv7NGvweGZKpFfmh6DgSwTg5QbrVapPXVBMEOA7Ahw3vNn+c0PaMRFHgU2k+8pM7RH/TJ9iMHgpTd8xixEE8/0Jr1pEv0d/vI2kaRPOP4OwJoNaGhpHqYbxgYd/34OAkO5lVCwjC/RjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751359448; c=relaxed/simple;
-	bh=JQnJ50WwtWPmuUmhqUal++GEN46ier5irpKnyb6pzhk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=AIt+ApAqQKorU/heenE2hWNmo7aa1sOElvDgiS2sYL5gMNUXW2NdH+7LmNssW3RvTLsOp8dmhjb1z7WeFtuUpiattq3jES8s1K0Ks1bcrdP1xxta6lDIZW+EEPQ4WQ10l11eJ8PRQB+gF4zvagTgscsR9N4Az4zXBlPG/Rj+1Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5FB23ln; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751359580; c=relaxed/simple;
+	bh=adu+8i0sSmJ/HE3ZQgmBuKqQJ13BpqfiMhweYdrG56Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fWsK113Pr/diFx8T/hwqADkv8lSE4JNHkNTwaTpE+aTMdKg2+Zr9xDXNeKJvG4Zsgva5EB38cy30JdtcZq4jcainv+rPwQy7xsnSvSbCVluWODEdl0tAl3YZAF6Wia7aCSDHRhEJos20kEzDf/L29qMbXzLsi6l4R/r+58SHWaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ao0bvY5m; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5FB23ln"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF3AC4CEEB;
-	Tue,  1 Jul 2025 08:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751359447;
-	bh=JQnJ50WwtWPmuUmhqUal++GEN46ier5irpKnyb6pzhk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=W5FB23lnRmqMblxQRYfHg3U8Cb96WoRZP9N91S7HABOR21skwzV5IaYGRpc3SMCED
-	 0jmWPuRHRM9Of1mZsV142+GoRxobrpP+f2JUis8pCQX8jsHc2hToAqMlDSA4cEQc6W
-	 7zmUtc+x8mJc0qKbiE5E/u17/kIbXirUJOaHd88F33v/Qv43qtn6ngBW8W5yiZw2qc
-	 +zBd1BXmKL1Fr/5+eieLu+o+5OhUZ8nVt1L6qP3xR+StIRlCaLYZ75R6+sguURrD8a
-	 VJpWu8tLOa/LXp4BPDOKn97dd/kfB7eDKmTmFb5/nEKuMmcejKsXNuueOLc3ZdR+GD
-	 KAXHLMCtD9EHw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
-In-Reply-To: <DB03MZI2FCOW.2JBFL3TY38FK@kernel.org> (Benno Lossin's message of
-	"Mon, 30 Jun 2025 21:02:37 +0200")
-References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
-	<DAQJCUE1C2JE.204A8IS7LBIVZ@kernel.org> <87ikkq648o.fsf@kernel.org>
-	<smOfUo2mEmQu-lykKKMiNOUWq2ze6p_CoEEpgGE0dtAnoJDGEpvQMkP1q-n13MiUxLK1xAiM-4QLsivPrG57sg==@protonmail.internalid>
-	<DARCZYNPIJVZ.3JJSZ6PSAEMEC@kernel.org> <877c126bce.fsf@kernel.org>
-	<Mg1_h6lRpg9tdi0VjiyDfIEy2juzgDWxOhYX61qSUfyEpeMMksWW1e-blTka_G1dXUvpZVktdD-zL3X1a6T6Cg==@protonmail.internalid>
-	<DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> <87v7om4jhq.fsf@kernel.org>
-	<RPPvXQKnjK77Kp9mKaiFxbNj1fTHKb_I7_nbY81fZop-Wz8n5TTi4_lpXP9U9AwjocvZKqJPI8PGKufJn9cIzQ==@protonmail.internalid>
-	<DAU0J3T0IEVM.2K7ZRQOVOHF8H@kernel.org> <878qlh4aj1.fsf@kernel.org>
-	<87plepzke5.fsf@kernel.org>
-	<xFouVLxX1_t1mH69FDYwlIhBlI72M0IzQEKn0ntG_wT9z7V5DtbxiwVP_frH_yiS-Gf0q_AhqetbLmuvJ_yP5Q==@protonmail.internalid>
-	<DAX65TRN0TGP.25VZ9DYV86XWY@kernel.org> <87wm8txysl.fsf@kernel.org>
-	<9G3W1seaM7elcwWXaeoaa2nfpFYCf-AmBdvZhACGP13KGUtTPVMwGNYdTQsdtp8ru7GIP3-UYTzXscC1MRUKrg==@protonmail.internalid>
-	<DAZV8OGL8BMH.11SLXBXQ17ZJ9@kernel.org> <87h5zxxtdw.fsf@kernel.org>
-	<H78pT7YnQEhAXdxzl_hhnGVUiQuFpibB21_bjH658fMz_5JYbwsPLYYVh8u1gYnzK3N3ilTEAvqOpkuptVx3rg==@protonmail.internalid>
-	<DB03MZI2FCOW.2JBFL3TY38FK@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 01 Jul 2025 10:43:56 +0200
-Message-ID: <87bjq4xpv7.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ao0bvY5m"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b34dde96cbfso424939a12.2;
+        Tue, 01 Jul 2025 01:46:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751359578; x=1751964378; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c/v0xD6UvnMJc03nf121OpAGHnJPH1i49Y2f3p3BdBU=;
+        b=Ao0bvY5mlnsQv9k1okNkEF+WiKH4BP96wrWJOe/D0HZQQegu5AWWszpSoVuUZGbuCg
+         3XK128wsSGefs6ga1ZtZl/VxDYI9L6Dx5L5jNCNUba2BRyYtlOXowfWHK7JS3RvlWAdp
+         xxxGOmoFXT+hEjhR/v4/C5s8bIDbP1pU0kp/BbRtyU3si6Cd4tNWgum5t7vmRqr592lM
+         LfK574d78SoK+xnGdS9vOF+NsPj+/oL2oVfipVsbu7x9PUtTqRfpsmaiCU/b8XO9cfwi
+         v4tFsxU4pFK4MmC2BSZ3dwoa7J8mbZSMdCloaIG3+yMNkVptERPNzTp5d7hU1ymAxVIJ
+         6/Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751359578; x=1751964378;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c/v0xD6UvnMJc03nf121OpAGHnJPH1i49Y2f3p3BdBU=;
+        b=L4oey5quoH0Kelpb6SDB2cUdduo40MZjy+Fbz6qBPXz3Tr23D5MXfQSilZP20J6DgO
+         L+JaSjqPGYOfhZ61oX1UyeCoHT2YzgB9L4MWEcjASRR9ZnHK2MEPK1Tgh+fScjIf+A5y
+         A3siyNNc6xZrZdeUOAS3bB0kGvXiP9gOdjbuEp9xaeXZFNYQFei2WRgdHK3zHFTuTtZ7
+         wquxRCj9jDtsjQWFTRC7YQeZklHfAkpj/Htp+18fs0vVN9FfTvZGRGgACiqn5a9cssnH
+         cWylYkN4+RCB1/KW68WmUVrEr+mrPRSk84XNdVxgbWgLmN2q6DUWD2n1sjlI7C6z2Acp
+         qidA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnTr/YZUFn2yDhVDyThtf6efQ+c+bsK6g7+JNBJd3teCxw19IZZsExilBtbaOQehWBjYJGJwthacg=@vger.kernel.org, AJvYcCVjSFfJU8QaP2vU/YDoUwZAl/S8jyPpNxAtsiKGjiLeLnzkUo84qGnXMEgJQgHNGvbtbDQi67KZo8UWqP5Nij9x@vger.kernel.org, AJvYcCX7OysUKFe8KCtk7SOT58hSsQnA1cK5ebP21ARh+9i7mViCv98fldgktWr3P1RyREr3SlU3mz0dgTyg2ZU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy9L+Q1p5UVNiLZgdh/8HzI3lB9qZKLp94BJ/xjxLvTDvIY+4N
+	ledZEwzBVtJkhfjg3EfGSf/FHrHltOz+z58hX100rvjZ/P6C8JZb47Gk5AhXo1+wCJ83RyQoY3P
+	8gNC2PipJg6JlwqadzWvgXf6Q6xc0IbY=
+X-Gm-Gg: ASbGncuVZYgZFXuqXNp4boF8HItXJ4p+k+qrlweXgF26l9j08yQhq3cBxrJJTXyWKI1
+	+AU86nmLqI5TFXE1xjXL+w7Clscp/3EdKxUvZ3C4XSRkQqNdxtRhK0NhIcD7i4Q6UReQjg8vqy2
+	6WYowgYo+4PEDLLKkfdKPhZ0f2oU9ibzUAvBpqYIlLaiY=
+X-Google-Smtp-Source: AGHT+IGayysUot5FJmNyS1+LhAXkSuEABGqTts/x9kFQq2v3uECf9Pjd6BFyweSkXtMkC4KdiSu54T+GD3+7VQpgqcQ=
+X-Received: by 2002:a17:90b:3c91:b0:312:1ae9:1537 with SMTP id
+ 98e67ed59e1d1-319420d6defmr1484022a91.0.1751359577749; Tue, 01 Jul 2025
+ 01:46:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250701053557.20859-1-work@onurozkan.dev> <20250701053557.20859-7-work@onurozkan.dev>
+In-Reply-To: <20250701053557.20859-7-work@onurozkan.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 1 Jul 2025 10:46:04 +0200
+X-Gm-Features: Ac12FXzHDv1UinEBt9Y-8t0CdxgdsylkUNnz7RlsW1aWZL7FWxUuIV4iYhqdPNA
+Message-ID: <CANiq72=NBhCeENQ7x94viBEmSx+N8ET0if91y=N93pXFoGKdDQ@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] rust: remove `#[allow(clippy::non_send_fields_in_send_ty)]`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, airlied@gmail.com, simona@ffwll.ch, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	rafael@kernel.org, viresh.kumar@linaro.org, gregkh@linuxfoundation.org, 
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de, 
+	davidgow@google.com, nm@ti.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Benno Lossin" <lossin@kernel.org> writes:
-
-> On Mon Jun 30, 2025 at 3:15 PM CEST, Andreas Hindborg wrote:
->> "Benno Lossin" <lossin@kernel.org> writes:
->>> On Mon Jun 30, 2025 at 1:18 PM CEST, Andreas Hindborg wrote:
->>>> "Benno Lossin" <lossin@kernel.org> writes:
->>>>> (no idea if the orderings are correct, I always have to think way to
->>>>> much about that... especially since our atomics seem to only take one
->>>>> ordering in compare_exchange?)
->>>>>
->>>>>> As far as I can tell, atomics may not land in v6.17, so this series
->>>>>> will probably not be ready for merge until v6.18 at the earliest.
->>>>>
->>>>> Yeah, sorry about that :(
->>>>
->>>> Actually, perhaps we could aim at merging this code without this
->>>> synchronization?
->>>
->>> I won't remember this issue in a few weeks and I fear that it will just
->>> get buried. In fact, I already had to re-read now what the actual issue
->>> was...
->>>
->>>> The lack of synchronization is only a problem if we
->>>> support custom parsing. This patch set does not allow custom parsing
->>>> code, so it does not suffer this issue.
->>>
->>> ... In doing that, I saw my original example of UB:
->>>
->>>     module! {
->>>         // ...
->>>         params: {
->>>             my_param: i64 {
->>>                 default: 0,
->>>                 description: "",
->>>             },
->>>         },
->>>     }
->>>
->>>     static BAD: &'static i64 = module_parameters::my_param.get();
->>>
->>> That can happen without custom parsing, so it's still a problem...
->>
->> Ah, got it. Thanks.
+On Tue, Jul 1, 2025 at 7:36=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev>=
+ wrote:
 >
-> On second thought, we *could* just make the accessor function `unsafe`.
-> Of course with a pinky promise to make the implementation safe once
-> atomics land. But I think if it helps you get your driver faster along,
-> then we should do it.
+> Just like how we did in [1], we no longer need this lint
+> as it's no longer part of Clippy's `suspicious` lint group.
+>
+> Link: https://github.com/torvalds/linux/commit/5e7c9b84ad08cc7a41b2ddbbba=
+ccb60057da3860 [1]
 
-No, I am OK for now with configfs.
+Normally this format is used:
 
-But, progress is still great. How about if we add a copy accessor
-instead for now, I think you proposed that a few million emails ago:
+    ... did in commit 5e7c9b84ad08 ("rust: sync: remove unneeded
+`#[allow(clippy::non_send_fields_in_send_ty)]`"), we no longer ...
 
-    pub fn get(&self) -> T;
+Maintainers may want to fix this when they apply the patch, so I
+wouldn't send a new version just for this (but if you do, then please
+reword it).
 
-or maybe rename:
-
-    pub fn copy(&self) -> T;
-
-Then we are fine safety wise for now, right? It is even sensible for
-these `T: Copy` types.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Cheers,
+Miguel
