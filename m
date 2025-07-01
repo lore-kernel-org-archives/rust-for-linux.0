@@ -1,184 +1,193 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4663E15E96
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 10:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8B8239E6A;
+	Tue,  1 Jul 2025 10:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751366062; cv=none; b=q4ACXahVB5xQ09vj30I7gtgCN3UQvb+S5YE/nGynX5lxzC3Vcw3JDLOadl5yBsTL/WWNERqJ6UnJW5TYfagR0wMYb1QCPSklK3mPv75NB1tsOl7Neh3Jw9KDetLE9u2EekUOOgxt0n60VCNFi01Cd+UbVtxn+L3Z0RwZdciX3jk=
+	t=1751366411; cv=none; b=HiN8+/bR96J78EJhwTJloE3u/6trinwLn4NE+vC4otCitxeiZI/tiYifdpajA+E7C9tnbpB9GR+gjMA7/IoebrXQ5Q9ixkCRvyR899Pb2LeAGuLnqsvBc/6+m7GUw+AFvaLk5ssRuqI/Z8nhlCo5gRUJVptHgaXwWT0xabQVbPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751366062; c=relaxed/simple;
-	bh=I5mrvGlIhRbJlxQ8eVXQCIvLA2D3zDa5EyQuNgkm5ro=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=J1/tACrDOlfgpbLdYf/fqlQzkdHjfAP55yFNYmnLgigoNNDHWecF0/9D4o/ajsDn1oDibYgwSnRVH4N4XcgnwRjeNUdRsOmkX8Qv+6BYQ34DsTc7C5vKHlBoM9imWkA4POaxVqeusdvQMyZUUc+nHYAHM4fUKfAM84TLaaTUo98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W7Ql/uHP; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1751366411; c=relaxed/simple;
+	bh=4q5eEKQGOug08pTmwxuaY7C2xv4i14LRs5CG9K+y0G8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TdqV9FVweF1+n6SIR5Lk7WHZounHGtAKcuHt3rftEBj9sEYoHWt0AK/guD0Hk9DeJZz6uUmhXh4m8nCKKUailfTHQY72dtex7nVCTs0sARCUw+9OLg5ndqY8pAIT5TVNysc40DH0uYK/GoegVEiDmi+YluRfRwxraKuvwg5BtVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WFTovyDT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W7Ql/uHP"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a50816cc58so2825964f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 03:34:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751366058; x=1751970858; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9eYpIWWOyUDfBdnF6w5EzWxG6nDSQGMmFCg+4mWFSaM=;
-        b=W7Ql/uHPu57+EntIi7rgmExXZ5vuBZnpDlIz+dpAQagiXcHzO5JxrxgkqgFJhFmryZ
-         9GtU5xB/dnQOTqam3b5u/AmMtZtTXfnvuvpLVWTroGSAPdTx32uSmzeQbSJeEGwyrS5R
-         WnSTLPJVks/o7THb2qTX31U+VLBsX9zOqEx/sTlVRYnXpV0bGBDZh3RzoYOlI2IgVVah
-         N2fuTgegu6A1A4KUUXGT9d8XtRejjFD2GwrlBaSkpuAuNjsd9y20J1N1OUGX8+RZpDQ9
-         HS1TZwOMBwcP8rXvUy/jbbfnYPdnyRM36k7g66US1asyo9JyHy0pyIK3Yt7WNv4PX33C
-         dgOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751366058; x=1751970858;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9eYpIWWOyUDfBdnF6w5EzWxG6nDSQGMmFCg+4mWFSaM=;
-        b=PEtdvNDbOCwJwb48TaJJugvllcJgBjwJjBEZvYlnC49pYI/1h23kqJ2ZU1Q8jaSlZL
-         fhBiJ7ZlHmOPABUYF+7z08bZF35BUvZb8APDddb4kjmACeU5EWTwFLjcYVGigx3rToi+
-         rPvi0xUKGVTL79xnZoK36qxjNXR0yBvIGD4AXM49poGzUnhbhJNMHxC8TL+ziu279KfM
-         pWcLDyJ4a/AsWK0lTLfcQjEIRZEvrLk1m3WEiUIsjZCzyCPeAId0al9Pivd1eeoCN1QR
-         Dqp6kSwV5FMcTfdMeTv5AxHL3f7OO40/zYwYtLSPwuEvtUkapDRc4/fSOjbgRNrNqtD5
-         k8PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVegs4J28HTzDfhM2SG7433pXHHK5LjUPtlBLAvHt7Vn4U73e8V2xFy9hBe9SZY493UmM0tjVmZiYhyxUb84w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhJEjf8WIWQw60z5257x54Y643EibEIZI7qfnMZgmk3/FPMszJ
-	Z4ZWp39YhqtJ6xWVVrRFpojOh82/V1JY0d9bVwl5aizkXFpar+6Azr+WgOSq+wgriN0FKsRFYO+
-	dOc7EMWN5jr0RLEgPOA==
-X-Google-Smtp-Source: AGHT+IExCFB+P+olVhWi69uc4CgDaEnI8SE94UUo0CxDvKCx5CZn1RoH+3jT8lmx3jEG2VJ7mPnAhF7D8TcmUIk=
-X-Received: from wmbds13.prod.google.com ([2002:a05:600c:628d:b0:450:da87:cebb])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:646:b0:3a5:8600:7cff with SMTP id ffacd0b85a97d-3a8fdb2a82fmr15767911f8f.1.1751366058480;
- Tue, 01 Jul 2025 03:34:18 -0700 (PDT)
-Date: Tue, 1 Jul 2025 10:34:17 +0000
-In-Reply-To: <20250630221640.3325306-1-vitaly.wool@konsulko.se>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WFTovyDT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BE0C4CEEB;
+	Tue,  1 Jul 2025 10:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751366411;
+	bh=4q5eEKQGOug08pTmwxuaY7C2xv4i14LRs5CG9K+y0G8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WFTovyDTaAKvJDx/A2lxFYmJRzlAKblZsTueQ6e/os0Y3FO0JdpTM0hWqUu3oGYFO
+	 Cp4x2bSHKxvCrnR0+oukwjNl6akJhjhUJBj/WO2lUlP6PPjtEzSEg1xxXrLscvkBm2
+	 TK5s0kckgLcPJzMV1PXOWIgfYf0M1nK8B+D1b5AO/c+neBBsWq1/eGiHgQOJXb/knO
+	 bDC2QV9qmb9xgjcnD8xR8ILXVqGUqt52iKdLbc3GkfYjd8o1V52O27qatIK4NyvhGl
+	 kRqdIYsYUL4V3LcNRTe605PUfF/cvDRv8RO6I3hQe2v7mFeDAcmhy3gbySuufBeire
+	 13rq4mkgCFrRw==
+Date: Tue, 1 Jul 2025 12:40:04 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
+	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH 0/8] Device: generic accessors for drvdata +
+ Driver::unbind()
+Message-ID: <aGO7BP1t-A_CQ700@pollux>
+References: <20250621195118.124245-1-dakr@kernel.org>
+ <2025070142-difficult-lucid-d949@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250630221511.3325123-1-vitaly.wool@konsulko.se> <20250630221640.3325306-1-vitaly.wool@konsulko.se>
-Message-ID: <aGO5qadROziFuO35@google.com>
-Subject: Re: [PATCH v9 3/4] rust: add support for NUMA ids in allocations
-From: Alice Ryhl <aliceryhl@google.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025070142-difficult-lucid-d949@gregkh>
 
-On Tue, Jul 01, 2025 at 12:16:40AM +0200, Vitaly Wool wrote:
-> Add a new type to support specifying NUMA identifiers in Rust
-> allocators and extend the allocators to have NUMA id as a
-> parameter. Thus, modify ReallocFunc to use the new extended realloc
-> primitives from the C side of the kernel (i. e.
-> k[v]realloc_node_align/vrealloc_node_align) and add the new function
-> alloc_node to the Allocator trait while keeping the existing one
-> (alloc) for backward compatibility.
+On Tue, Jul 01, 2025 at 11:25:41AM +0200, Greg KH wrote:
+> On Sat, Jun 21, 2025 at 09:43:26PM +0200, Danilo Krummrich wrote:
+> > This patch series consists of the following three parts.
+> > 
+> >   1. Introduce the 'Internal' device context (semantically identical to the
+> >      'Core' device context), but only accessible for bus abstractions.
+> > 
+> >   2. Introduce generic accessors for a device's driver_data  pointer. Those are
+> >      implemented for the 'Internal' device context only, in order to only enable
+> >      bus abstractions to mess with the driver_data pointer of struct device.
+> > 
+> >   3. Implement the Driver::unbind() callback (details below).
+> > 
+> > Driver::unbind()
+> > ----------------
+> > 
+> > Currently, there's really only one core callback for drivers, which is
+> > probe().
+> > 
+> > Now, this isn't entirely true, since there is also the drop() callback of
+> > the driver type (serving as the driver's private data), which is returned
+> > by probe() and is dropped in remove().
+> > 
+> > On the C side remove() mainly serves two purposes:
+> > 
+> >   (1) Tear down the device that is operated by the driver, e.g. call bus
+> >       specific functions, write I/O memory to reset the device, etc.
+> > 
+> >   (2) Release the resources that have been allocated by a driver for a
+> >       specific device.
+> > 
+> > The drop() callback mentioned above is intended to cover (2) as the Rust
+> > idiomatic way.
+> > 
+> > However, it is partially insufficient and inefficient to cover (1)
+> > properly, since drop() can't be called with additional arguments, such as
+> > the reference to the corresponding device that has the correct device
+> > context, i.e. the Core device context.
 > 
-> This will allow to specify node to use for allocation of e. g.
-> {KV}Box, as well as for future NUMA aware users of the API.
+> I'm missing something, why doesn't drop() have access to the device
+> itself, which has the Core device context?  It's the same "object",
+> right?
+
+Not exactly, the thing in drop() is the driver's private data, which has the
+exact lifetime of a driver being bound to a device, which makes drop() pretty
+much identical to remove() in this aspect.
+
+	// This is the private data of the driver.
+	struct MyDriver {
+	   bar: Devres<pci::Bar>,
+	   ...
+	}
+
+	impl pci::Driver for MyDriver {
+	   fn probe(
+	      pdev: &pci::Device<Core>,
+	      info: &Self::IdInfo
+	   ) -> Result<Pin<KBox<Self>>> {
+	      let bar = ...;
+	      pdev.enable_device()?;
+
+	      KBox::pin_init(Self { bar }, GFP_KERNEL)
+	   }
+
+	   fn unbind(&self, pdev: &Device<Core>) {
+	      // Can only be called with a `&Device<Core>`.
+	      pdev.disable_device();
+	   }
+	}
+
+	impl Drop for MyDriver {
+	   fn drop(&mut self) {
+	      // We don't need to do anything here, the destructor of `self.bar`
+	      // is called automatically, which is where the PCI BAR is unmapped
+	      // and the resource region is released. In fact, this impl block
+	      // is optional and can be omitted.
+	   }
+	}
+
+The probe() method's return value is the driver's private data, which, due to
+being a ForeignOwnable, is stored in dev->driver_data by the bus abstraction.
+
+The lifetime goes until remove(), which is where the bus abstraction does not
+borrow dev->driver_data, but instead re-creates the original driver data object,
+which subsequently in the bus abstraction's remove() function goes out of scope
+and hence is dropped.
+
+From the bus abstraction side of things it conceptually looks like this:
+
+	 extern "C" fn probe_callback(pdev, ...) {
+	    let data = T::probe();
+
+	    pdev.as_ref().set_drvdata(data);
+	 }
+
+	extern "C" fn remove_callback(pdev) {
+	   let data = unsafe { pdev.as_ref().drvdata_obtain::<Pin<KBox<T>>>() }
+
+	   T::unbind(pdev, data.as_ref());
+	} // data.drop() is called here, since data goes out of scope.
+
+> > This makes it inefficient (but not impossible) to access device
+> > resources, e.g. to write device registers, and impossible to call device
+> > methods, which are only accessible under the Core device context.
+> > 
+> > In order to solve this, add an additional callback for (1), which we
+> > call unbind().
+> > 
+> > The reason for calling it unbind() is that, unlike remove(), it is *only*
+> > meant to be used to perform teardown operations on the device (1), but
+> > *not* to release resources (2).
 > 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> Ick.  I get the idea, but unbind() is going to get confusing fast.
+> Determining what is, and is not, a "resource" is going to be hard over
+> time.  In fact, how would you define it?  :)
 
-My main feedback is that we should consider introducing a new trait
-instead of modifying Allocator. What we could do is have a NodeAllocator
-trait that is a super-trait of Allocator and has additional methods with
-a node parameter.
+I think the definition is simple: All teardown operations a driver needs a
+&Device<Core> for go into unbind().
 
-A sketch:
+Whereas drop() really only is the destructor of the driver's private data.
 
-pub unsafe trait NodeAllocator: Allocator {
-    fn alloc_node(layout: Layout, flags: Flags, nid: NumaNode)
-                -> Result<NonNull<[u8]>, AllocError>;
+> Is "teardown" only allowed to write to resources, but not free them?
 
-    unsafe fn realloc_node(
-        ptr: Option<NonNull<u8>>,
-        layout: Layout,
-        old_layout: Layout,
-        flags: Flags,
-        nid: NumaNode,
-    ) -> Result<NonNull<[u8]>, AllocError>;
-}
+"Teardown" is everything that involves interaction with the device when the
+driver is unbound.
 
-By doing this, it's possible to have allocators that do not support
-specifying the numa node which only implement Allocator, and to have
-other allocators that implement both Allocator and NumaAllocator where
-you are able to specify the node.
+However, we can't free things there, that happens in the automatically when the
+destructor of the driver's private data is called, i.e. in drop().
 
-If all allocators in the kernel support numa nodes, then you can ignore
-this.
-> +/// Non Uniform Memory Access (NUMA) node identifier
-> +#[derive(Clone, Copy, PartialEq)]
-> +pub struct NumaNode(i32);
-> +
-> +impl NumaNode {
-> +    /// create a new NUMA node identifer (non-negative integer)
-> +    /// returns EINVAL if a negative id or an id exceeding MAX_NUMNODES is specified
-> +    pub fn new(node: i32) -> Result<Self> {
-> +        // SAFETY: MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10
-> +        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
-> +            return Err(EINVAL);
-> +        }
-> +        Ok(Self(node))
-> +    }
-> +}
-> +
-> +/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
-> +/// about the NUMA node to allocate memory from.
-> +pub mod numa {
-> +    use super::NumaNode;
-> +
-> +    /// No preference for NUMA node
-> +    pub const NUMA_NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
-> +}
+> If so, why can't that happen in drop() as the resources are available there.
 
-Instead of using a module, you can make it an associated constant of the
-struct.
+For instance, some functions can only be implemented for a &Device<Core>, such
+as pci_disable_device(), which hence we can't call from drop().
 
-impl NumaNode {
-    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
-}
+> I'm loath to have a 2-step destroy system here for rust only, and not
+> for C, as maintaining this over time is going to be rough.
 
-This way you can access the constant as NumaNode::NO_NODE.
-
->  /// The kernel's [`Allocator`] trait.
->  ///
->  /// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffers described
-> @@ -148,7 +175,7 @@ pub unsafe trait Allocator {
->      ///
->      /// When the return value is `Ok(ptr)`, then `ptr` is
->      /// - valid for reads and writes for `layout.size()` bytes, until it is passed to
-> -    ///   [`Allocator::free`] or [`Allocator::realloc`],
-> +    ///   [`Allocator::free`], [`Allocator::realloc`] or [`Allocator::realloc_node`],
->      /// - aligned to `layout.align()`,
->      ///
->      /// Additionally, `Flags` are honored as documented in
-> @@ -159,7 +186,38 @@ fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
->          unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags) }
->      }
->  
-> -    /// Re-allocate an existing memory allocation to satisfy the requested `layout`.
-> +    /// Allocate memory based on `layout`, `flags` and `nid`.
-> +    ///
-> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
-> +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
-> +    ///
-> +    /// This function is equivalent to `realloc_node` when called with `None`.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// When the return value is `Ok(ptr)`, then `ptr` is
-> +    /// - valid for reads and writes for `layout.size()` bytes, until it is passed to
-> +    ///   [`Allocator::free`], [`Allocator::realloc`] or [`Allocator::realloc_node`],
-> +    /// - aligned to `layout.align()`,
-> +    ///
-> +    /// Additionally, `Flags` are honored as documented in
-> +    /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
-> +    fn alloc_node(layout: Layout, flags: Flags, nid: NumaNode)
-> +                -> Result<NonNull<[u8]>, AllocError> {
-
-I don't think this is how rustfmt would format this. Can you run rustfmt
-on your patch?
-
-Alice
+Why do you think so? To me it seems pretty clean to separate the "unbind()
+teardown sequence" from the destructor of the driver's private data, even if
+there wouldn't be a technical reason to do so.
