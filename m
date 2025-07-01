@@ -1,172 +1,113 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066FD27F737
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 16:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751385733; cv=none; b=BqFuxnb3uVvsYSvcRQsRu2jQ3TubRocWooIp9tnlxYfvgcUYX3RhiLX3zClE4wX6n/pWaQ/KJgDn1PRF1LfRL5RiLtCUuXXoQCnSf7QmJ2046PYgbVgveCOm/X3KGdcfaG8zAc4SWT7EDWwtGDYYFSfQ87zRJdE5JIUiUPlhA3U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751385733; c=relaxed/simple;
-	bh=pQpdhYmfxqh3Yfxmei5sPv11PaCzGkgZVRufLVaDNj8=;
-	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=k+rYPUUd/83zYtthmR4KybB7KYncF7TzWfNQLVuDryVHHWSiYjZFCXkYXVYSdvJIgLEF27AOYficzoFBNSreNv1EIm8d1YMyvWaJbVifBOkyQT6q2gMj7c7i6EHKyXl1K6qasOYK422yHYvzGaF3nVo8OCJ3keH+uDOIe74XD9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=E4CZAKog; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B221A0BF3;
+	Tue,  1 Jul 2025 16:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751386234; cv=pass; b=YUHj8x3UCuCX/6GXvl/iK9uAFiQuGA3AXCyH62Kt1rZMmFsNp23e5w+lfYA5DhMZC2xSv1suhRqec9rsMRW+iE9/I+ABGwq66MGi1BjGivoHZYXEyCK1/fxqZp/fdQ0PQP99pHHxh61/WqYcbf51qWX5TwbQzOgzTGvO/IsjsWA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751386234; c=relaxed/simple;
+	bh=x1qGCQgelaLxofKdit6EBhI1imMhPEdkaaVrDIbEQjE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=IF2km7nda6C+yujomBD/m1160wVLcsXzeC18Gw/OyFni4kwU9c1+BTYkWP7FFtk8uNj/QFCqfRsQljSnrrL6vbhH3T8ZDUy4j8mhFUhATaR4ijEIKfEOhCXIVXEzLh3Yib5fE6/lsPEmJyBLON+RgeGlJlGN5OtvZphPwUK5y+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Jfkhlvwc; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="E4CZAKog"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250701160208euoutp028a5439210d857ca2017595dd915fdd27~OLAp-qwLV2669026690euoutp02g
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 16:02:08 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250701160208euoutp028a5439210d857ca2017595dd915fdd27~OLAp-qwLV2669026690euoutp02g
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1751385728;
-	bh=Thc/4MnT4r5I8ag38cbivyQhpbuX345C1nEB0lzCSSU=;
-	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=E4CZAKogyAvZo+4zp4YdTXwhS6UT3701qpYlrBkDWHg7t+enBnejRciSq8V2WvOqI
-	 LVIWNffSp+f6RsG7Ydj0ZxFSY+cmVPUMR1Tq3K6JdNYBk3FeRzWPdkV6CmUgru2TCu
-	 XQ6KQyxk8FijjwV7q4bJZV2EGWx6kRDPr5xIw+XM=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250701160208eucas1p2633ce5cd0b9ef013999b3d596be74cdd~OLApiaZG32521625216eucas1p2G;
-	Tue,  1 Jul 2025 16:02:08 +0000 (GMT)
-Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
-	[106.210.136.40]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250701160206eusmtip192999017bfbc2de977e7580df56a36a7~OLAoZ52AM3260032600eusmtip1D;
-	Tue,  1 Jul 2025 16:02:06 +0000 (GMT)
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Tue, 01 Jul 2025 18:01:45 +0200
-Subject: [PATCH v6 8/8] riscv: dts: thead: Add PWM fan and thermal control
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Jfkhlvwc"
+ARC-Seal: i=1; a=rsa-sha256; t=1751386214; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Bwe7574DJ71S6deqceQzpzjpIXC6JOjuOhtDqtP2IVtT7VXubIMkjdTv1UPIY4Zbrwr8dpsMlprIDzGiXNN8PDx6mLD5QHjShD+/04JouVzhJvNVyDQKW6O0J8kOv5PeCmWOLE8WoC73WELgVxEkbyiNJnPZZ9T6V08pNm0nQQc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751386214; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=MyN19d0qYooXy4ljYZwHK6qQV1IUB2tRRk5Vjjv2GF8=; 
+	b=kJZ9EXD2PgP3bWG4xfgMUn5KfJi/ZciUZ6sFyAHDPyw/shC+g+tNoCkUccpdYIMNUoDh+xbfym0mA5SUHuCPqlZ/uxiGWozqdQWj1qfRuA930clXUZeZ4GpebUGuy2mu7HFdbmPoyGMUN6Gk8ubAQ0ltcXpuGpYoMvmdYg5aGuw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751386214;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=MyN19d0qYooXy4ljYZwHK6qQV1IUB2tRRk5Vjjv2GF8=;
+	b=JfkhlvwcTUAW3inEhsVpDadalzZg6FFJpnJwmx8ycjaAQOgTlRriJMeryQG1a2fF
+	rbdNVDR2Ho+1fjRi4LkuJ8V6ybJqO2J/iBovE8kOZAGQc6NfWYosS+1b1PncsMMVzKF
+	uh7GzFv1q5/1DaKUiCiXlxlBdewUjviOROJfe/dI=
+Received: by mx.zohomail.com with SMTPS id 1751386212406353.3401923756019;
+	Tue, 1 Jul 2025 09:10:12 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250701-rust-next-pwm-working-fan-for-sending-v6-8-2710932f6f6b@samsung.com>
-In-Reply-To: <20250701-rust-next-pwm-working-fan-for-sending-v6-0-2710932f6f6b@samsung.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,  Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,  Michal
-	Wilczynski <m.wilczynski@samsung.com>, Guo Ren <guoren@kernel.org>,  Fu Wei
-	<wefu@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Paul Walmsley
-	<paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>,  Alexandre Ghiti <alex@ghiti.fr>,  Marek Szyprowski
-	<m.szyprowski@samsung.com>,  Benno Lossin <lossin@kernel.org>,  Michael
-	Turquette <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>, Benno
-	Lossin <lossin@kernel.org>,  Drew Fustini <fustini@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20250701160208eucas1p2633ce5cd0b9ef013999b3d596be74cdd
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250701160208eucas1p2633ce5cd0b9ef013999b3d596be74cdd
-X-EPHeader: CA
-X-CMS-RootMailID: 20250701160208eucas1p2633ce5cd0b9ef013999b3d596be74cdd
-References: <20250701-rust-next-pwm-working-fan-for-sending-v6-0-2710932f6f6b@samsung.com>
-	<CGME20250701160208eucas1p2633ce5cd0b9ef013999b3d596be74cdd@eucas1p2.samsung.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v6 0/2] Add a bare-minimum Regulator abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <25e9a9b6-4d81-4731-98fa-add40ccd4aab@sirena.org.uk>
+Date: Tue, 1 Jul 2025 13:09:55 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <42FAAE27-E6D0-4CA8-83EF-5E4F9199FA9C@collabora.com>
+References: <20250627-topics-tyr-regulator-v6-0-1d015219b454@collabora.com>
+ <CC8F34AD-811F-4504-B625-AFD845198549@collabora.com>
+ <25e9a9b6-4d81-4731-98fa-add40ccd4aab@sirena.org.uk>
+To: Mark Brown <broonie@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-Add Device Tree nodes to enable a PWM controlled fan and it's associated
-thermal management for the Lichee Pi 4A board.
 
-This enables temperature-controlled active cooling for the Lichee Pi 4A
-board based on SoC temperature.
 
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
----
- arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts | 67 +++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+> On 1 Jul 2025, at 12:34, Mark Brown <broonie@kernel.org> wrote:
+>=20
+> On Tue, Jul 01, 2025 at 12:28:37PM -0300, Daniel Almeida wrote:
+>=20
+>> Is it ok for the abstraction to only be built when =
+CONFIG_REGULATOR=3Dy? This
+>> means that any Rust drivers using it have to depend on =
+CONFIG_REGULATOR too.
+>=20
+>> I thought this was acceptable, but apparently that is not the case? =
+See this
+>> comment from Rob Herring [0].
+>=20
+> The regulator API stubs itself out when disabled, but given that this =
+is
+> just wrappers it's not clear what the tasteful thing would be here - =
+it
+> should do the right thing because it will itself be built in terms of
+> the C stubs.  I don't know if Rust can sensibly stub things, or if
+> there's much percentage in that for a thin wrapper which does =
+basically
+> nothing itself.
 
-diff --git a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-index 4020c727f09e8e2286fdc7fecd79dbd8eba69556..c58c2085ca92a3234f1350500cedae4157f0c35f 100644
---- a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-+++ b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-@@ -28,9 +28,76 @@ aliases {
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
-+
-+	thermal-zones {
-+		cpu-thermal {
-+			polling-delay = <1000>;
-+			polling-delay-passive = <1000>;
-+			thermal-sensors = <&pvt 0>;
-+
-+			trips {
-+				fan_config0: fan-trip0 {
-+					temperature = <39000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config1: fan-trip1 {
-+					temperature = <50000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config2: fan-trip2 {
-+					temperature = <60000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+			};
-+
-+			cooling-maps {
-+				map-active-0 {
-+					cooling-device = <&fan 1 1>;
-+					trip = <&fan_config0>;
-+				};
-+
-+				map-active-1 {
-+					cooling-device = <&fan 2 2>;
-+					trip = <&fan_config1>;
-+				};
-+
-+				map-active-2 {
-+					cooling-device = <&fan 3 3>;
-+					trip = <&fan_config2>;
-+				};
-+			};
-+		};
-+	};
-+
-+	fan: pwm-fan {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&fan_pins>;
-+		compatible = "pwm-fan";
-+		#cooling-cells = <2>;
-+		pwms = <&pwm 1 10000000 0>;
-+		cooling-levels = <0 66 196 255>;
-+	};
-+
- };
- 
- &padctrl0_apsys {
-+	fan_pins: fan-0 {
-+		pwm1-pins {
-+			pins = "GPIO3_3"; /* PWM1 */
-+			function = "pwm";
-+			bias-disable;
-+			drive-strength = <25>;
-+			input-disable;
-+			input-schmitt-disable;
-+			slew-rate = <0>;
-+		};
-+	};
-+
- 	uart0_pins: uart0-0 {
- 		tx-pins {
- 			pins = "UART0_TXD";
+Well, if all functions in the regulator API have stubs, then perhaps a =
+trivial
+solution would be removing this #[cfg] from here:
 
--- 
-2.34.1
++#[cfg(CONFIG_REGULATOR)] <---
++pub mod regulator;
 
+This would build the abstractions unconditionally, and it would =
+transparently
+use the C stubs when calling the C functions.
+
+Waiting for more comments from the other RFL folks.
+
+-- Daniel=
