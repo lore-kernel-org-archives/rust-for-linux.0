@@ -1,146 +1,137 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D06919994F;
-	Tue,  1 Jul 2025 16:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F0D2798FA;
+	Tue,  1 Jul 2025 16:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751387821; cv=none; b=Eol5qAUY5htkR5rRbuhoMrYj8FYl8n9SE/lZ4xhcik9kgXfYAld7NwL4R8gWnvhrC72WQbZa4bXqd3MelTEF8fEguQf+4+kuGz0vcLbbPY8FvLmyvEEzj7fap7Xuy0TrdA7f3GXQCqZ3gVmlyZjtcGY3Um+BQfn89vBu16LgjGM=
+	t=1751388438; cv=none; b=fpYzDT7R+Ymw6OrGv05jqTohCIePFrepWX02h6uadsNyIRmgBHcO6ncIJU6MESHQNpln5GHo2WdeIMF24r7WEQp7Q6cGX6ebraDD3NwatLc3Wei8H/ZIhLMs3Sx5P135sFwYUsc2SbwEL+40F2Lqf6IjsQsIe4CbAHDhaaB5z4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751387821; c=relaxed/simple;
-	bh=9DgFIrLkwE3noyfPke5sVBHJbvoThEKAcnkbqSUaWWY=;
+	s=arc-20240116; t=1751388438; c=relaxed/simple;
+	bh=ymyz98G6WAIWhgot7OyS3l+nPaHFTvJsU8EnPPnV3hw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AxxE8YReVfKZ7Cu8j2KPRErHB7d1uTnpOP4k57SsRRjp7f4YLTHSgQArdzkjfLVDCJuRcSjWIWGqQ4tFNhGMVf64BNX5QEgWVHUKyTx6vm896bT36PlchEClJ94eUGHBv7VVmG3jFbQTjsZuI7BYXUXR/v8A5TubGkKxudNeU2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mCDr6Bkw; arc=none smtp.client-ip=209.85.208.173
+	 To:Cc:Content-Type; b=jmYlgSW7XfGHmNWqBy6Tl0YPHjO6d4MlhSz9MDHSRtTmq2tZZ6YMhiqHIxYNIlOt80Tv6T02gBxmNxwgSDGhlFePvajGANFpaxPmJpLDbgfVAk3EcJPRIrxkEGYcpB/JhfwHTIwxm8+eYwG96hkhYsMcwZFM0FecioILuuMZBxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZFC/jGu; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mCDr6Bkw"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32b5931037eso46364431fa.2;
-        Tue, 01 Jul 2025 09:36:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZFC/jGu"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32cdc9544ceso30043591fa.0;
+        Tue, 01 Jul 2025 09:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751387818; x=1751992618; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751388434; x=1751993234; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hgyVkx3d9RLCvXLZyf3F2xIgeVZ3LcaqlbEZ/2Q1Ka0=;
-        b=mCDr6BkwzALZnfZNGiZdKPtaRl8MfTqjEU5fwma+lbawBfCZKdXaq2IdlfSUdVZRVf
-         jrYYSRUYnD3iVNOwzxKFYnw1VBQNruBi3EzpvnxfVOnCMvI/x1pllG9DnZhEcD3BKsLC
-         atOnPFrFUs3rKyodhjkE/jwYz/0R+jd1A2RjVQ9E9jLbjiLm9VB39Q5swyVmU5hUYgga
-         kZL7KbbKEWI5iTztNvRG9ZN1F7vkfTPM9SMbOzlwiQ5T7kI4UrmZj5rcIqyMmm07PYZz
-         SF+DUfz9YbGPriKTY2QWSYTWI3lcjlX7lWSsj8zIwo0bBCCJ9NCKq3tgpi3zOIzx36W6
-         pr6Q==
+        bh=ymyz98G6WAIWhgot7OyS3l+nPaHFTvJsU8EnPPnV3hw=;
+        b=RZFC/jGuvOhElYbJdSKVKR+vOQ4+ZCR5TVwAlqWpR2svkdoOXBQ9obkYcTh6Drma3q
+         qLSzWR+QgCL6X4MWR1DN9tEqLnHXcxUTYcilIKS/atsW/RvgLB+upBteOGFIl9fTbF1l
+         4xE41/q1EtjI88Xt+knbYXFoZQvkX0TfO5HWKJbTbO/tsj0HSJFFddPM0xDtEMvmHftH
+         ReNeMxfA9FV0sNqcwUY1qjSEvKibnZn7G/3SNk+bUp160VwTk10+1Zk7WRplNsYWrxm0
+         KGpjqcsiMGd7kkJ2RBrAAWPPqrZTxwD080I+AfFINLots+G9BGUVVu9JQzuXwAapYdFW
+         uzlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751387818; x=1751992618;
+        d=1e100.net; s=20230601; t=1751388434; x=1751993234;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hgyVkx3d9RLCvXLZyf3F2xIgeVZ3LcaqlbEZ/2Q1Ka0=;
-        b=LOBwz9b2VVAPVTfEhtp3yPsGxJP0rwYI0EOWu7JiFCuzqwxIWRr/iHM+bqIfPAcYdd
-         12xOBOPYZeviCSE/3DnjuNKN61/MpRiZoHvvngMoioAQ3rsyxKR66AOOx62l/LMiNoyz
-         c1ahNoSnoxTuj9HsSXZI/RrTeRdhunNSpmIziBmK9YHqiSnkvdzeS2wobQPeVr6Ldnkj
-         BsySv0C5yxiX5nlXA1lOn8onfaz9Rwv245qOwCf9BVN7b+JRvrGgfRBzuZ3Bn7iXi4sb
-         lYtBIaPaEhBpVTRTiKJgrUDPL6c3rpJ+B59UrbrM/CSpNf4NJkiM4Vbscp5SURH/WyC3
-         N4BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJhEbfUSCqH8cZxUdAeirC08CJD6zw7rboq2zrNM/1NGNfa9zADvbQOU/D/UsOT3dAkhHbYUJDRHukl9p3@vger.kernel.org, AJvYcCW34wJktDaUasUZdbTkdXv5+5m3HtJX0+Gk/xmegnk5yOJwnKFmgxiavrXZfTPuKaRF8czuQq01gz6M7Z96@vger.kernel.org, AJvYcCXovkcXPyh6KQFOwIERhqNX962SoeAQJGChOZFDahcYWyUmCJ+f34nuPvk8PU58o1pS2F3DANA0LQXZcQliHt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeVcLlD1pz9CJGgbd9mgmRxBjpcAZmLSqESZ9CpXaJFyRzuR/6
-	4N8mYim9E87JJPhWiz8WSXEox5xd+XCqK0gnQxU9PEJddHeKrHzJI/fUPNJIEGSvf3004H/6emR
-	S9iqkxjaHCaOJxZFHIB+9MiDHwG5rhrc=
-X-Gm-Gg: ASbGncv9/GD+zkbOu/suh79P6uLZVdVAQb+u0pap54LFvEESnX/FGugUYSq3RxcjB7o
-	Pe32rTI0TWk5jHNcwGjHK9SDLklTD6/RAt0ladtf8W3PlxBZD0HooZAf95k34iZHwkXlhcTqlvu
-	JQhnE7fc645aBtoaN/XG+GO2Ifh952v3v48Izf0HpIgd1jUk8jLE3Y/FPwB4XN89UkHuz3u54Q7
-	HMyhqGi/RkzWtj4
-X-Google-Smtp-Source: AGHT+IEqCqt2bO97VSw5brojzdV3SZzJg+MkUJyR8sldEgfU+5WSPMAXAbtSk5Z703LmfE/XJzygq6h09VCa1Ovh93Q=
-X-Received: by 2002:a05:651c:3248:20b0:30b:f52d:148f with SMTP id
- 38308e7fff4ca-32cdc482b6fmr28085101fa.18.1751387817386; Tue, 01 Jul 2025
- 09:36:57 -0700 (PDT)
+        bh=ymyz98G6WAIWhgot7OyS3l+nPaHFTvJsU8EnPPnV3hw=;
+        b=UL5BwIdbe57vfJQs9UWHMO1QN/CxnfkmdxDXtLijDyBsFi2K9eWXEmM9PS65Y1mmlr
+         an+yC6PGZ5xKy3ulYXRv4x7uYwQe46tw1G8UBTgm9bdB2WdN6qnDipmJMkBSM+b+Xp7f
+         7cNrA/0d220r0dC/Kt8rqnubn78ayw6CdqzFt7YSHgTbbHmNt0sIhmOcxrxwp2dueWLw
+         Imlr4puauuiwmlGfvvSJhTl0ZW1Tt83AWfQJWmZ4XExb1/Zjlicc5bOuTGJWxb1y4s00
+         r9qlq7aeJ0LKbRM7AKZchFyjQC/ngRTZmEQFV9lMuIt+fPxGJsLNT6FTIFlPZ+H4bXiZ
+         7FyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCOQd8i4kOBLmqHPjJ7RU9Xt7JcxESpHk2lH73uHcfRsh3aQzMrCTqB8rDkCiidHcKxbCLwSqUP65qKBD6xVk=@vger.kernel.org, AJvYcCUaCbzxPxuDts8/ImtrFbDERuCI+i3tuGeCIVG05mUba4eNYZuKGmS3U8MGPs67eCCfMw7TCB4lirM=@vger.kernel.org, AJvYcCUwcQi0sai9VUZeb3fDcwuxtPuj2Tnk8L5rdHz+TI84/qQcMEIndGEq5aR+5EUTvvwNIiPfdLaBpHTrYF1XBAk8@vger.kernel.org, AJvYcCW9EaHS62g1Hp0LNcXCoJgABJKv99UbzF1FM9DKFTy6EDjWNJw1dHEd9+/BlNcz+6AKs3DejxIbCtT1@vger.kernel.org, AJvYcCWZilvt5uJ0QLlxhaZqtU75xC85cG5kQULsrJ1JwBA9DXIGEnR/sBTTnq34vUlQnJBfRkuH7zS2@vger.kernel.org, AJvYcCWk/npMOtG8kAP4cMk/j2zje4SoYmXE9n+f3VsCFVa+Yq+RSx260W8YdLx+kf4n/XZXGpSu79mTBerPvpM=@vger.kernel.org, AJvYcCXVWhtUytKw40WInDMflfrQNGrugDPSDo08xE0uCjY/5eXSsWmuvnTLA8PfYtzvRpxkraUCuPD3Ap2GtN2U@vger.kernel.org, AJvYcCXZ1FkRVTHPbHwRvUt1GSQkOGOy51TsZaVZEtGpR/7xn/kzXxi+RipI7GbV8TUNc2sl53VfhURzM2UX@vger.kernel.org, AJvYcCXegcSZlhgS2mPJoagurMt9GAlI+I7x37E1NDSxFSJy78Dp/DFiq2c2q6AabknG5QDfubkySY0uT2An@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP+mYa/dIb+AvWsYjOwL4xbmeQ/6zqedOf3Th66C1KGDCWjonT
+	uiqwwOt/OJsDmT99Nkk/gp9mbSxxyukREEeEIA0qKtFPe4QrP+h27ogMBQP7uPCAyK3aPda6MEm
+	CX2yLE5sLGK/Xe3t1F9ZWl1Ipbs8/Hd0=
+X-Gm-Gg: ASbGncvIdJreVaPaH7bakggtW/bhmClPzk720Z47WTO5BhHBaqdQjD2wUYCIURKr/5f
+	VFY4OFPTjy7fCVC/qTMTp5L/4MS9MzeDK2leoId1Y2xmkCmtzqwRkjo9ujlBMNx1a6VCpBSx+Py
+	T2z0H6CYwj5yp5huePfRMX1dv8uZyTlofJ3Kj9HSMF1bvtR4uTTLr038I1epeayeKDSF+zJwVnz
+	Fu21g==
+X-Google-Smtp-Source: AGHT+IFASHXyh6nKAuBWNflJbwzC1dxAvHKvYXKVWM4leUPhMKpN6FRK5U0/hoCDkOtFemkDVZIaXGSG2DOrBLCq8Rk=
+X-Received: by 2002:a2e:7c08:0:b0:32c:a907:491f with SMTP id
+ 38308e7fff4ca-32cdc464463mr36198291fa.15.1751388434129; Tue, 01 Jul 2025
+ 09:47:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-xarray-insert-reserve-v1-0-25df2b0d706a@gmail.com>
- <20250701-xarray-insert-reserve-v1-1-25df2b0d706a@gmail.com> <aGQORK02N8jMOhy6@Mac.home>
-In-Reply-To: <aGQORK02N8jMOhy6@Mac.home>
+References: <20250619-cstr-core-v12-0-80c9c7b45900@gmail.com> <aGO7-SQUUgg6kSVU@google.com>
+In-Reply-To: <aGO7-SQUUgg6kSVU@google.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 1 Jul 2025 12:36:20 -0400
-X-Gm-Features: Ac12FXzwtYZh48LsIbouap6aPSYLMEtyprvogrYztvEYzaNQhpMD-bJ8UxP3Ra4
-Message-ID: <CAJ-ks9nqWHSJjjeg=QReVh3pq87LSLE-+NDOD5scp1axYV7k7Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: xarray: use the prelude
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>
+Date: Tue, 1 Jul 2025 12:46:37 -0400
+X-Gm-Features: Ac12FXw8AGP83JXgR8yzKwPiapZfBBkrNyDazktnve1kCOVkl79eviuMomA9o84
+Message-ID: <CAJ-ks9kbsTRrRN4yP7GmphozPyZHgbaAGJmLXR42NVgJ1ie_SQ@mail.gmail.com>
+Subject: Re: [PATCH v12 0/5] rust: replace kernel::str::CStr w/ core::ffi::CStr
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, Benno Lossin <lossin@kernel.org>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-clk@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 1, 2025 at 12:35=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Tue, Jul 1, 2025 at 6:44=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> On Tue, Jul 01, 2025 at 12:27:17PM -0400, Tamir Duberstein wrote:
-> > Using the prelude is customary in the kernel crate.
+> On Thu, Jun 19, 2025 at 11:06:24AM -0400, Tamir Duberstein wrote:
+> > This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
+> > have omitted Co-authored tags, as the end result is quite different.
+> >
+> > Link: https://lore.kernel.org/rust-for-linux/20240819153656.28807-2-vad=
+orovsky@protonmail.com/t/#u [0]
+> > Closes: https://github.com/Rust-for-Linux/linux/issues/1075
 > >
 > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > ---
-> >  rust/kernel/xarray.rs | 34 ++++++++++++++++++++--------------
-> >  1 file changed, 20 insertions(+), 14 deletions(-)
-> >
-> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> > index 75719e7bb491..436faad99c89 100644
-> > --- a/rust/kernel/xarray.rs
-> > +++ b/rust/kernel/xarray.rs
-> > @@ -5,16 +5,15 @@
-> >  //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.=
-h)
-> >
-> >  use crate::{
-> > -    alloc, bindings, build_assert,
-> > -    error::{Error, Result},
-> > +    alloc,
-> > +    prelude::*,
-> >      types::{ForeignOwnable, NotThreadSafe, Opaque},
-> >  };
-> > -use core::{iter, marker::PhantomData, mem, pin::Pin, ptr::NonNull};
-> > -use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
-> > +use core::{iter, marker::PhantomData, mem, ptr::NonNull};
-> >
-> >  /// An array which efficiently maps sparse integer indices to owned ob=
-jects.
-> >  ///
-> > -/// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but m=
-ore efficient when there are
-> > +/// This is similar to a [`Vec<Option<T>>`], but more efficient when t=
-here are
-> >  /// holes in the index space, and can be efficiently grown.
-> >  ///
-> >  /// # Invariants
-> > @@ -104,16 +103,23 @@ pub fn new(kind: AllocKind) -> impl PinInit<Self>=
- {
-> >      fn iter(&self) -> impl Iterator<Item =3D NonNull<T::PointedTo>> + =
-'_ {
-> >          let mut index =3D 0;
-> >
-> > -        // SAFETY: `self.xa` is always valid by the type invariant.
-> > -        iter::once(unsafe {
-> > -            bindings::xa_find(self.xa.get(), &mut index, usize::MAX, b=
-indings::XA_PRESENT)
-> > -        })
-> > -        .chain(iter::from_fn(move || {
-> > +        core::iter::Iterator::chain(
 >
-> Does this part come from using the prelude? If not, either we need to
-> split the patch or we need to mention it in the changelog at least.
+> Overall LGTM. Only question is whether we should re-export
+> core::ffi::CStr from kernel::ffi. Reason being that right now we are
+> telling people to never use core::ffi as the integer types are wrong,
+> and I think it would be nice if we can continue to tell people "never
+> use core::ffi".
 
-Yes, it's from using the prelude - PinInit also has a chain method
-that causes ambiguity here.
+I agree that'd be nice. There are existing references to items in
+`core::ffi` scattered around (e.g. in rust/kernel/drm/file.rs); it
+would be good to clean all those up together with CStr provided we
+have some ability to lint against new occurrences.
 
-> Also since we `use core::iter` above, we can avoid the `core::` here.
+I'll leave this as-is for now since this series has already churned
+quite a lot, and the cleanup can be a reasonable first task for
+someone.
 
-Good point.
+>
+> Either way, for the whole series:
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+Thanks! I'll send the rebase on rc3 momentarily.
+Tamir
