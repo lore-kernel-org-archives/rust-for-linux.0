@@ -1,210 +1,290 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEAE2749DA;
-	Tue,  1 Jul 2025 14:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8F274FFC;
+	Tue,  1 Jul 2025 15:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751381424; cv=none; b=hC5RsmDAMSsC+l3MXdDsW8Mlhq6iPwQBD19WGObx6jaHyUWu3f08T6GGNZlfdfXJtP+wh0PfVqeGzK9fp3dek+4PePo6m/9M2rUM6Ax8oVcHuaDoitUErQWJ85WC+PvlqIPDAyGbaA4JGH6bY5pSOYdiuxG+VBuHsHV6fukYZtU=
+	t=1751382654; cv=none; b=swoz0gJYoUDVb7tcMk9cJXGe3Bw3tGj0zsipV/D1fehw2vClihu7nz/HoExCIChKwBr2rRtQvo9IWY+7W3VOUUumm1Tq6fLb4hJzjh3rPTfHQWs6cbsTjap3N53BnHiGlV155dkexMrMjxjnQZ1f5Doed8hwVS3YPuCl/ldPRfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751381424; c=relaxed/simple;
-	bh=Pp4vcS03lDmrPdszYRwucchkYH6zncgLHopCa9qKIcc=;
+	s=arc-20240116; t=1751382654; c=relaxed/simple;
+	bh=PmyDCqMEnT4QmUp8Uj8zNtP0ENLrkCyeXk8z6dXLJOU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hifjwmGKxZ3Ezvr6rjXnutuDpzpRqeDTiLz5kxPgPjDLw7+EWXOcPbxORGwGKdCjM40CpwIz2Jyt/Pj6HkTXxY9Qu2ZIGzP7HSD2OCJPvHsHtFZDsbHsuqF6hsA2t92EDcCdqaO3NGDp9DITQDUoBHIr7AvKi0ZbLZIfFskQbw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X1AA+efQ; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=jUBiPlkfEvB0Hn9n4KahgIa9z2H0lI9tMd2CLRswevpI/YfLa6qw5wve5idlT9gr9IUZ+yNaVpGBDopFL+ycD9PES/d0U1bYIc8sSy2Z5KfeyTtXwF/FHcdj3eWUR7+cD1udRtBop1U7rmcW5VYblZe08UfHHXYql5lgxC08Sso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O1bs+kth; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X1AA+efQ"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6face367320so37949606d6.3;
-        Tue, 01 Jul 2025 07:50:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751381422; x=1751986222; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1xMPzI4BYFmtrcIaXCgikpxCSbMyY6dtY8BA23HqZsU=;
-        b=X1AA+efQVofjVvJHm3GgMU+OFGltYRfRo6fycQbhHTK5BLi/opUW26UgHlvJNqr7jP
-         AyOPHMJDYNRPFOhITSlpdEmmTUzDvuUFPYpAy9anwreQ5gtPgTlvFdLJx1JjzuKFtTUG
-         BbDpIbjvVpIHTCf1r5q7g5mM0KAGTcFCEX2wTbe1rOQlL25JlyDtQsQtan1XsGGl+3ul
-         5UA7WHhrkoePdaqV8nSKQRM8SwTQvqQfWN7a+KF/0Yx8hpTFxR8+6CqeZAOvmkkRSatv
-         XyrTQsudFOQm1ZK0j7fDsk96pAH21fise1brizYq1e4KAk/pfowsCphckeu2FhOQVCj9
-         33QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751381422; x=1751986222;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1xMPzI4BYFmtrcIaXCgikpxCSbMyY6dtY8BA23HqZsU=;
-        b=wxX2YB66s+StYhapf1nAPt+m6y+9w9yhwb9+KM/1vzkZAuoBLvlIEfEriUE9Zf4crV
-         hLtwmHGmCbidxEIhXxo/JwmpP3x6HbfqXD6M5uESEOoSMsBBpzf8/ukpWst7I4cHH/SE
-         1wLsMoYMgxmFNh80ehyCBoyWSmPkOKnf0ccQ4Tbnr70z6cJPint8Yuug4qLEqztc6uFH
-         rprunniOD9sTc4Yy+mX0GZtNgIAmYjV58YqGRRRs5LNvqa2VhY+RFmrI+q0uLZa0LUu+
-         6O/zodi8d6SuUUKrwRlfKtINYhIvWYcsz30E/yXeRg5/DbWaIyhWY5wcU7UnY8HmMKzT
-         w4Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCUb4B0y7Vwht18+OzsEQWupjpj9nDBgJIjHmBQ1pKpSEvCjTYPUw1N4TVsXuXV3/n9rsT0c/hlwrHqUbca9Y+w=@vger.kernel.org, AJvYcCVOVTYa2vtPh4x9DcV01VbUURUdHEqEUjFAP0X3Ma1eK4IxvimZtpX2SGQJ9L7OqGZTMDx6A4nUhft2@vger.kernel.org, AJvYcCX1ZsXRJk2FWVffiMmi3DYFackMzKlAyZOUrE7dXOVT0VES2cXTPls7Ni0HcRJwP3jLNbkYI5kp0POTa8Xe@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw56nMYCwYDC4586Kth/sRK1s1V8gLye4ZZjOTmVYWGfu5X1Iz4
-	C/lqzZPFp9Lc0varp8CvFbkSpsz47ZT0FuRvtaWNNN6Fnf/3yktXm7Wt
-X-Gm-Gg: ASbGncuj7FAQqJR9oH3JlHhbS+9nXhp9iH/OmF9x8X9hivfcNDKd5lX+4iPFCYJKtR2
-	HebkQ0kLFN0BxKtcBuVFOUPI2nCCYKEM0BIZsgCU+4NXC0MusTcUZtcg4jXNibJP6y2mv+iLZGT
-	5wqNJAfxV0yyN2So5bZPzMT8D2GNXTsOTeGbCgwvwdtgKPbCqaEBz1SKB6vZB5mnnUeFgMG2Pjq
-	U8PLV2JFNVogBKh+utGL0MUdcdxrs+7IS1IrlDlH/TUNLzv91EPUwobaDDkqbJ8u6OkIhQS06PY
-	7BIFm36r+KnDvInq2jnt9/iSomADjEg4nbdIVZ6yoaT/bKl9G1vz25U5Cxe3oXdVsilcjLePp2k
-	llOerjewEnnvZ80+VhIQiyplpO4+xh2CLVU9B0kzpO8o7ICT/dTRu
-X-Google-Smtp-Source: AGHT+IHfI2aCrI4TIYMVgRKiuqjH+gb+mFLEAN3w4NLv9Fi8LElRo+IdtEtnYa5pG130yeXIgjMESQ==
-X-Received: by 2002:a05:6214:5f04:b0:6fa:fcb0:b88d with SMTP id 6a1803df08f44-70003995071mr338769956d6.28.1751381421434;
-        Tue, 01 Jul 2025 07:50:21 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd771c0d3esm84971806d6.42.2025.07.01.07.50.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 07:50:20 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 33A68F40067;
-	Tue,  1 Jul 2025 10:50:20 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Tue, 01 Jul 2025 10:50:20 -0400
-X-ME-Sender: <xms:rPVjaDmf6bppXXWuyv1FjC8_peq-09fIctn0u9XCKW8HJGaMoalaTg>
-    <xme:rPVjaG0dCPk3Xfsd8Teyi8FhpDmDGrCuBbiXMqNclw-S1PlIFIsFeSBkjxucLCzOH
-    -DCvC0FeYBs6CsX0g>
-X-ME-Received: <xmr:rPVjaJrNwPDxboVIkUWqKBbELesfszbYKGDLqoh7RVSeV3iA5Yc2cxZd-g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeektdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsth
-    gvrhhnsehrohiflhgrnhgurdhhrghrvhgrrhgurdgvughupdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhush
-    htqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    lhhkmhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqrg
-    hrtghhsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtg
-    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:rPVjaLlSqxV867VYSVIxy4V0XyF2b04cvL7jofUibe7Ao8Wb0-vnKg>
-    <xmx:rPVjaB0zFBPdu2v8fvtKv2UYeIMh2sGKriDGVyWI7S_okQbRHQ8g6g>
-    <xmx:rPVjaKttKAur6FBBU7yTblwAgSCi4R-SX6kCCy6UgacTFOtUDLmi7Q>
-    <xmx:rPVjaFXl_-j9uf18xtrqCUaFjFrPeK8idU9rx-cRoape6jeWe--tqQ>
-    <xmx:rPVjaA3QC0YP7iRSJV12wavuytCNqclO0FL1w9C_7sO-BSGw0mnPKWxK>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Jul 2025 10:50:19 -0400 (EDT)
-Date: Tue, 1 Jul 2025 07:50:18 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev,
-	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O1bs+kth"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174A0C4CEEB;
+	Tue,  1 Jul 2025 15:10:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751382653;
+	bh=PmyDCqMEnT4QmUp8Uj8zNtP0ENLrkCyeXk8z6dXLJOU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O1bs+kthNQwVekwxsy9XQCTCz/D/DhNLi5RnP7fwmimc8h9oqUpx2ZV8OkyiS0uir
+	 Kn4f5Ex8oCvTJJt0wnW/hSqx0W3iL/QK5UlJ0WxVxTOhOEdKZB0aHdimY1CuTs/QHf
+	 2HOiucyoEhnr4A4xOrPixgoziVd1SH6nk2GOzXGLciLIxy73JOm0fr17Nb2Bguu7vd
+	 Erl9Uvww70+d7gud+4OGa6HcTCe9t0QrGZ0GNO4gUFqj9mzdD3UZCDOPQzs7gqJcaS
+	 xUfCjGN/j5h60xPdQxnz9uv6n6ZQ8j5/5lRSuIyPKnCdzbp2suZxQSyXTjLtHj51dd
+	 Kxs0jiCaG6QYQ==
+Date: Tue, 1 Jul 2025 17:10:47 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
-Message-ID: <aGP1qoda9U0q2yss@Mac.home>
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <8ISRnKRw28Na4so9GDfdv0gd40nmTGOwD7hFx507xGgJ64p9s8qECsOkboryQH02IQJ4ObvqAwcLUZCKt1QwZQ==@protonmail.internalid>
- <20250618164934.19817-5-boqun.feng@gmail.com>
- <8734bm1yxk.fsf@kernel.org>
- <jJqJwkURyr0NjkFdJaF6oYbPGY4LEzZs_sfY9jlmqoK1B9iE8VjqbfINHilEHxKfmpc9co7DmsS142ZWsBQ8tw==@protonmail.internalid>
- <aF6yRIixTPx5YZbA@Mac.home>
- <87jz4tzhcs.fsf@kernel.org>
- <Xfm2JGPb6LBj7GAjuEFddz5UvwY_vFr3r-253ujBCBa4galferuILoEDKNSQcfOL-lFi65L-rTnBWAxxCE4cyg==@protonmail.internalid>
- <7eea6ee3-4a9e-4eb5-b412-2ece02b33c6c@rowland.harvard.edu>
- <875xgcxpe6.fsf@kernel.org>
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing
+ for File
+Message-ID: <aGP6d2-jJy5rtjMK@pollux>
+References: <20250627-debugfs-rust-v8-0-c6526e413d40@google.com>
+ <20250627-debugfs-rust-v8-4-c6526e413d40@google.com>
+ <5c3a2289-01c5-413e-9d7c-88a41c3f54e2@kernel.org>
+ <CAGSQo038u_so+_pMRYj0K546zNfO5-eqoXFivXsEF6ACK=Y5cw@mail.gmail.com>
+ <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org>
+ <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
+ <aGLUl7ZtuQBPoCuv@pollux>
+ <2025070131-icon-quarters-0c16@gregkh>
+ <aGPtCBB6nWTNJuwK@pollux>
+ <2025070137-tartar-juncture-fcd2@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <875xgcxpe6.fsf@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025070137-tartar-juncture-fcd2@gregkh>
 
-On Tue, Jul 01, 2025 at 10:54:09AM +0200, Andreas Hindborg wrote:
-> "Alan Stern" <stern@rowland.harvard.edu> writes:
+On Tue, Jul 01, 2025 at 04:21:56PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Jul 01, 2025 at 04:13:28PM +0200, Danilo Krummrich wrote:
+> > On Tue, Jul 01, 2025 at 03:58:45PM +0200, Greg Kroah-Hartman wrote:
+> > > On Mon, Jun 30, 2025 at 08:16:55PM +0200, Danilo Krummrich wrote:
+> > > > On Mon, Jun 30, 2025 at 10:49:51AM -0700, Matthew Maurer wrote:
+> > > > > On Mon, Jun 30, 2025 at 10:39 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> > > > > >
+> > > > > > On 6/30/25 7:34 PM, Matthew Maurer wrote:
+> > > > > > > On Mon, Jun 30, 2025 at 10:30 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> > > > > > >>
+> > > > > > >> On 6/28/25 1:18 AM, Matthew Maurer wrote:
+> > > > > > >>> +    fn create_file<D: ForeignOwnable>(&self, _name: &CStr, data: D) -> File
+> > > > > > >>> +    where
+> > > > > > >>> +        for<'a> D::Borrowed<'a>: Display,
+> > > > > > >>> +    {
+> > > > > > >>> +        File {
+> > > > > > >>> +            _foreign: ForeignHolder::new(data),
+> > > > > > >>> +        }
+> > > > > > >>>        }
+> > > > > > >>
+> > > > > > >> What's the motivation for the ForeignHolder abstraction? Why not just make it
+> > > > > > >> File<D> and store data directly?
+> > > > > > >
+> > > > > > > 1. A `File<D>` can't be held in collection data structures as easily
+> > > > > > > unless all your files contain the *same* backing type.
+> > > > > >
+> > > > > > That sounds reasonable.
+> > > > > >
+> > > > > > > 2. None of the APIs or potential APIs for `File` care about which type
+> > > > > > > it's wrapping, nor are they supposed to. If nothing you can do with a
+> > > > > > > `File` is different depending on the backing type, making it
+> > > > > > > polymorphic is just needlessly confusing.
+> > > > > >
+> > > > > > What if I want to access file.data() and do something with the data? Then I'd
+> > > > > > necessarily need to put my data in an Arc and reference count it to still be
+> > > > > > able to access it.
+> > > > > >
+> > > > > > That doesn't seem like a reasonable requirement to be able to access data
+> > > > > > exposed via debugfs.
+> > > > > 
+> > > > > `pub fn data(&self) -> D` would go against my understanding of Greg's
+> > > > > request for DebugFS files to not really support anything other than
+> > > > > delete. I was even considering making `D` not be retained in the
+> > > > > disabled debugfs case, but left it in for now for so that the
+> > > > > lifecycles wouldn't change.
+> > > > 
+> > > > Well, that's because the C side does not have anything else. But the C side has
+> > > > no type system that deals with ownership:
+> > > > 
+> > > > In C you just stuff a pointer of your private data into debugfs_create_file()
+> > > > without any implication of ownership. debugfs has a pointer, the driver has a
+> > > > pointer. The question of the ownership semantics is not answered by the API, but
+> > > > by the implementation of the driver.
+> > > > 
+> > > > The Rust API is different, and it's even implied by the name of the trait you
+> > > > expect the data to implement: ForeignOwnable.
+> > > > 
+> > > > The File *owns* the data, either entirely or a reference count of the data.
+> > > > 
+> > > > If the *only* way to access the data the File now owns is by making it reference
+> > > > counted, it:
+> > > > 
+> > > >   1) Is additional overhead imposed on users.
+> > > > 
+> > > >   2) It has implications on the ownership design of your driver. Once something
+> > > >      is reference counted, you loose the guarantee the something can't out-live
+> > > >      some event.
+> > > > 
+> > > > I don't want that people have to stuff their data structures into Arc (i.e.
+> > > > reference count them), even though that's not necessary. It makes it easy to
+> > > > make mistakes. Things like:
+> > > > 
+> > > > 	let foo = bar.clone();
+> > > > 
+> > > > can easily be missed in reviews, whereas some contributor falsely changing a
+> > > > KBox to an Arc is much harder to miss.
+> > > > 
+> > > > > If you want a `.data()` function, I can add it in,
+> > > > 
+> > > > I think it could even be an implementation of Deref.
+> > > > 
+> > > > > but I don't think
+> > > > > it'll improve flexibility in most cases. If you want to do something
+> > > > > with the data and it's not in an `Arc` / behind a handle of some kind,
+> > > > > you'll need something providing threadsafe interior mutability in the
+> > > > > data structure. If that's a lock, then I have a hard time believing
+> > > > > that `Arc<Mutex<T>>`(or if it's a global, a `&'static Mutex<T>`, which
+> > > > > is why I added that in the stack) is so much more expensive than
+> > > > > `Box<Mutex<T>>` that it's worth a more complex API. If it's an atomic,
+> > > > > e.g. `Arc<AtomicU8>`, then I can see the benefit to having
+> > > > > `Box<AtomicU8>` over that, but it still seems so slim that I think the
+> > > > > simpler "`File` is just a handle to how long the file stays alive, it
+> > > > > doesn't let you do anything else" API makes sense.
+> > > > 
+> > > > I don't really see what is complicated about File<T> -- it's a File and it owns
+> > > > data of type T that is exposed via debugfs. Seems pretty straight forward to me.
+> > > > 
+> > > > Maybe the performance cost is not a huge argument here, but maintainability in
+> > > > terms of clarity about ownership and lifetime of an object as explained above
+> > > > clearly is.
+> > > 
+> > > I'm agreeing here.  As one of the primary users of this api is going to
+> > > be a "soc info" module, like drivers/soc/qcom/socinfo.c, I tried to make
+> > > an example driver to emulate that file with just a local structure, but
+> > > the reference counting and access logic just didn't seem to work out
+> > > properly.  Odds are I'm doing something stupid though...
+> > 
+> > I think it technically works, but it imposes semantics on drivers that we
+> > shouldn't do; see the example below.
+> > 
+> > > So a file callback IS going to want to have access to the data of type T
+> > > that is exposed somehow.
+> > 
+> > With the current API we would need this:
+> > 
+> > 	struct GPU {
+> > 	   fw: Arc<Firmware>,
+> > 	   fw_file: debugfs::File,
+> > 	}
+> > 
+> > and then I would initialize it the following way:
+> > 
+> > 	let fw = Arc::new(Firmware::new(), GFP_KERNEL)?;
+> > 	let fw_file = dir.create_file("firmware", fw.clone());
+> > 
+> > 	fw.do_something();
+> > 
+> > This is bad, because now my Firmware instance in GPU needs to be reference
+> > counted, even though it should *never* out-live the GPU instance. This is error
+> > prone.
 > 
-> > On Mon, Jun 30, 2025 at 11:52:35AM +0200, Andreas Hindborg wrote:
-> >> "Boqun Feng" <boqun.feng@gmail.com> writes:
-> >> > Well, a non-atomic read vs an atomic read is not a data race (for both
-> >> > Rust memory model and LKMM), so your proposal is overly restricted.
-> >>
-> >> OK, my mistake then. I thought mixing marked and plain accesses would be
-> >> considered a race. I got hat from
-> >> `tools/memory-model/Documentation/explanation.txt`:
-> >>
-> >>     A "data race"
-> >>     occurs when there are two memory accesses such that:
-> >>
-> >>     1.	they access the same location,
-> >>
-> >>     2.	at least one of them is a store,
-> >>
-> >>     3.	at least one of them is plain,
-> >>
-> >>     4.	they occur on different CPUs (or in different threads on the
-> >>       same CPU), and
-> >>
-> >>     5.	they execute concurrently.
-> >>
-> >> I did not study all that documentation, so I might be missing a point or
-> >> two.
-> >
-> > You missed point 2 above: at least one of the accesses has to be a
-> > store.  When you're looking at a non-atomic read vs. an atomic read,
-> > both of them are loads and so it isn't a data race.
+> Agreed, AND you just created a new fw structure that you really didn't
+> need, wasting memory.
+
+In case you refer to fw.clone(), since fw is an Arc<Firmware>, clone() just
+creates a new reference count to the same object.
+
+> > Instead this should just be:
+> > 
+> > 	struct GPU {
+> > 	   fw: debugfs::File<Firmware>,
+> > 	}
+> > 
+> > and then I would initialize it the following way:
+> > 
+> > 	let fw = KBox::new(Firmware::new(), GFP_KERNEL)?;
+> > 	let file = dir.create_file("firmware", fw);
+> > 
+> > 	// debugfs::File<Firmware> dereferences to Firmware
+> > 	file.do_something();
+> > 
+> > 	// Access to fw is prevented by the compiler, since it has been moved
+> > 	// into file.
+> > 
+> > This is much better, since now I have the guarantee that my Firmare instance
+> > can't out-live the GPU instance.
 > 
-> Ah, right. I was missing the entire point made by Boqun. Thanks for
-> clarifying.
-> 
-> Since what constitutes a race might not be immediately clear to users
-> (like me), can we include the section above in the safety comment,
-> rather than deferring to LKMM docs?
-> 
+> That's better, yes, but how would multiple files for the same
+> "structure" work here?  Like a debugfs-file-per-field of a structure
+> that we often have?
 
-Still, I don't think it's a good idea. For a few reasons:
+That is a very good question and I thought about this as well, because with only
+the current API this would require us to have more and more dynamic allocations
+if we want to have a more fine grained filesystem representations of structures.
 
-1) Maintaining multiple sources of truth is painful and risky, it's
-   going to be further confusing if users feel LKMM and the function
-   safety requirement conflict with each other.
+The idea I have for this is to use pin-init, which we do in quite some other
+places as well.
 
-2) Human language is not the best tool to describe memory model, that's
-   why we use herd to describe and use memory model. Trying to describe
-   the memory model in comments rather than referring to the formal
-   model is a way backwards.
+I think we can add an additional API like this:
 
-3) I believed the reason we got our discussion here is because you tried
-   to improve the comment of `from_ptr()`, and I do appreciate that
-   effort. And I think we should continue in that direction instead of
-   pulling the whole "what are data race conditions" into picture. So
-   how about we clearly call out that it'll be safe if other accesses
-   are atomic, which should be the most cases:
+	impl Dir {
+	   pub fn create_file<T>(&self, data: impl PinInit<T>) -> impl PinInit<Self> {
+	      pin_init!(Self {
+	         data <- data,
+	         ...
+	      })
+	   }
+	}
 
-   /// - For the duration of `'a`, other accesses to the object cannot cause data races
-   ///   (defined by [`LKMM`]) against atomic operations on the returned reference. Note
-   ///   that if all other accesses are atomic, then this safety requirement is trivially
-   ///   fulfilled.
+This allows us to do things like:
 
-Regards,
-Boqun
+	#[pin_data]
+	struct Firmware {
+	   #[pin]
+	   minor: debugfs::File<u32>,
+	   #[pin]
+	   major: debugfs::File<u32>,
+	   #[pin]
+	   buffer: debugfs::File<[u8]>,
+	}
 
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
+	impl Firmware {
+	   pub fn new(&dir: debugfs::Dir, buffer: [u8]) -> impl PinInit<Self> {
+	      pin_init!(Self {
+	         minor <- dir.create_file("minor", 1),
+	         major <- dir.create_file("major", 2),
+	         buffer <- dir.create_file("buffer", buffer),
+	      })
+	   }
+	}
+
+	// This is the only allocation we need.
+	let fw = KBox::pin_init(Firmware::new(...), GFP_KERNEL)?;
+
+With this everything is now in a single allocation and since we're using
+pin-init, Dir::create_file() can safely store pointers of the corresponding data
+in debugfs_create_file(), since this structure is guaranteed to be pinned in
+memory.
+
+Actually, we can also implement *only this*, since with this my previous example
+would just become this:
+
+	struct GPU {
+	   fw: debugfs::File<Firmware>,
+	}
+
+	let file = dir.create_file("firmware", Firmware::new());
+	let file = KBox::pin_init(file, GFP_KERNEL)?;
+
+	// debugfs::File<Firmware> dereferences to Firmware
+	file.do_something();
+
+Given that, I think we should change things to use pin-init right away for the
+debugfs::File API.
