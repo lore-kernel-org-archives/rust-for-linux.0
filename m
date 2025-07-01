@@ -1,83 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676551F4285;
-	Tue,  1 Jul 2025 17:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97C527C15C
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 17:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751390085; cv=none; b=rpHLqhlvl0kbGuNjq+LjIDHCkU1kvkNcS2Brh4xa1XmCZQRRKiJYwQ8+bUk4Pipl5npvRvArU3gk0/kEdaBT0QDQFB5tcS6AAf2VS1TV5/t8ZcXCeS2YD7ZjRBOI5OZ4XyXnTMRvKL/L6a+INfcZ5FVleM2RxmJr8X7sdoq6Pyw=
+	t=1751390659; cv=none; b=Yg7ZDTwx7zO3gWdf7hmiaxcWcDfHuUhfq8lpqXp1kA44FwFFjsEYknwXNYNj9uuz2e1KgzfGVSxjDQxc0PZ7ypWrsYQHJN9YQNrgliCjefeSidNuJf7sMQx6PNaIZLk9B2sTVmfGBOSLGI+oRjbo1UBTjjOPXbQmT1H1cZm0gpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751390085; c=relaxed/simple;
-	bh=/nYOnOIIbrOV+84hpe4LR2uNAOY0fYnhNLgViKHOwaA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FDwQdUhbM/DOjSQNwGjKvFKLlrfv4hmITDnNvoEal1nbfShcTeXMm+GK+bNeD2+dGF9YG1jwSMy+bAkc0Ii3DN8WQeFKQHpXKyuESqLjlnPL80I09kmn9jKUQuoqCLUoJW7depxCSG7Fxpv5mMdgo3+MjPY8+a+Scd26k2+B8Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opSQbVh6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751390659; c=relaxed/simple;
+	bh=zXorP0aHXYEM7YGD8CdDJaNtPHdWDyvo5IePuvsVQ1I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AGPnId9JMWwCsa6NOnlPDFRlsIn+lOfqEaRUU2XBKe9W0VDYrZcZQNgL4hS01XnEs1INQXawLOBNEFN8IIoXQY4fr0GM7/WlIqWWr+MdN2QrwO5M3a61pt1i8jevZlozr2oe3bvlgnLBABC5OKcMDygn8J4gxZvy3IQ3t9B3FC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MjkQpnuI; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opSQbVh6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6540DC4CEEB;
-	Tue,  1 Jul 2025 17:14:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751390084;
-	bh=/nYOnOIIbrOV+84hpe4LR2uNAOY0fYnhNLgViKHOwaA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=opSQbVh63+1AG4gEDXtVjLecX5Ff/0yV6Pvs8ObQge9FVL2sDvLA4exzHD6w5Eiq4
-	 oA0sEuYIT1FPtZzwuCIL/MFW3oLhmvSZ29YQ15I5N3swOVr5tDG9eGfOmNpTLw4Wjb
-	 4/3FEXeATUtsv4d46vz5q9LkVVeArZBZuL4S68yVmPKAsVanB0nLbZIBQSQjmIr5HO
-	 PDl2Ag2K+yWjOZd08MnNcHXmJdxFT3ymSUawNTxpeSt4mmq27oaOliI690M5kSMjHp
-	 YU8hkAsAYkTjkXzWp3t20A9YIb0Cl+20RQu6g2QaOFNrW/kOb1Qqv1fDcfAIKk5H/1
-	 JcOO8Yn5xhjOQ==
-Message-ID: <aeb45ff9-73a7-427b-8cca-cc9646b65b9b@kernel.org>
-Date: Tue, 1 Jul 2025 19:14:37 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MjkQpnuI"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6098ef283f0so16557a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 10:24:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751390656; x=1751995456; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SQNkN/ZgyhuKuim3tffdar1QYfhVDSTf7v9swXpgSLs=;
+        b=MjkQpnuIO/8UbDJWYXVRZhRclXw4rftbwonZq/zLBbAdVbk/PiTpgGHf/PFgpgBL2F
+         R7pYG54P6tIb8S7uUF8Q1jkskTuCOPvsosf9a1esO0XanMAaOKpsLzCxtY5EdbyT3Aaf
+         hsPncFJzJXjz+B16XxjSTnykx9x24eInLz5VmmiG0zPgkDTeASXy+UrDXLEP12pJ9ZMb
+         6NIRYK+ObPJbwl53BG148MrmFWg0RGxpf9c3kYX4x2H3hslRXImvB6XG0kB6oy5jDeT3
+         8xnb2BEi9b7GSSsFRy+DWT45iBCuru/KluXoIxd301QINm6KQE5KxXUE1+CF5i81cFni
+         Hftw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751390656; x=1751995456;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SQNkN/ZgyhuKuim3tffdar1QYfhVDSTf7v9swXpgSLs=;
+        b=PB19y3xE0znhCGSLMJD07o1YK7ktwqn/EutR3BcwZQAR7d4UKSltHkvBZEVCWDbD7n
+         VLGwGl+znC8nrT0BiTlM36lTJyEUtqbN8zyKyY/+8nd7vEqjwMv6vjboRcflo0ji2tGk
+         MomRBaD8X8ZWfTmJyn6gSyqP1IFbU3YWrDCvYUVpHY3t4UC2vPlrs8Guz03mP2WnhUbR
+         vhWpcl15vbbPDz3zPfg/V5sVeoLBhrgf/GZRJd0ORSa8j2kgfHY2Ja66jTAxAb4B6BH7
+         UCBY4EePAI0q7dBggIScbmgg90w2uqk1A6GnHXKSsAFu8CvqsS83SsMeNBGwTZWjwhw4
+         bbEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfnyikPHJO6J4IgupPBwMoY0cgplHaGNqFdlKAOspN3UkOYz+eEKD+ohmIiCRM0Cf4FYLbL4hf9Pj7dOotRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx87hf0e62mCu5C3AY0aKTjt2z0PIQG6QZzjOcPZ8k4RsQFbnnF
+	SGIggUB3hkW6m/Zea5TibGeiXD1XAHYa7M7MAB0UPrDDoaZ3lycwIBUngEl8bnEeX7XRCia4QGj
+	sRPr/lIVFHdNWYi33V/c8kQDekoMw5TuxzTnsNk/f
+X-Gm-Gg: ASbGncuQrhZKP8KpYU+6CqSPI3CmUuA3TncroikTY1jWP5QHkFYlceI9t3m+NT/ib+e
+	py9ZAlGl8lGWHxxY9XS952e4b26JkvXX1+3ETMI0gOdJ9lnq/OJ8LCyr/4BiDZTzhTbCejGlfB/
+	j7QFgAFPNGoy13zuPxCX1ZGaYqp2QHOVEeeMLnaC1trAvTATAx65IGk4Lf86wRdRlCvoI+Hzpk
+X-Google-Smtp-Source: AGHT+IGhH9LZcfaTk04JJmUrOjkTq7VQ1GKaFo5Pj4fM5cCZrHXRkP5priFsjf6di2GqQgivM7JMchuH4R3ybVvXIQg=
+X-Received: by 2002:a05:6402:1d55:b0:607:d206:7657 with SMTP id
+ 4fb4d7f45d1cf-60e4ba76fddmr30992a12.2.1751390655895; Tue, 01 Jul 2025
+ 10:24:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/8] rust: pwm: Add core 'Device' and 'Chip' object
- wrappers
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
- <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Drew Fustini <fustini@kernel.org>,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
- devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-References: <20250701-rust-next-pwm-working-fan-for-sending-v6-0-2710932f6f6b@samsung.com>
- <CGME20250701160201eucas1p14d4182ecd8d6b2034f55ed5262bac646@eucas1p1.samsung.com>
- <20250701-rust-next-pwm-working-fan-for-sending-v6-3-2710932f6f6b@samsung.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250701-rust-next-pwm-working-fan-for-sending-v6-3-2710932f6f6b@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250627-debugfs-rust-v8-0-c6526e413d40@google.com>
+ <20250627-debugfs-rust-v8-6-c6526e413d40@google.com> <2025070148-primer-stillness-0409@gregkh>
+In-Reply-To: <2025070148-primer-stillness-0409@gregkh>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 1 Jul 2025 10:24:04 -0700
+X-Gm-Features: Ac12FXy0gxiaMyTy9WQGgYK34RtWEzDFpqk47coJhyeL-x7WameSHxw2w-MkJYs
+Message-ID: <CAGSQo00UiOUAgYODhXT9BWLW0bXoCxMzt9fV2F2aiTEOG1vwyA@mail.gmail.com>
+Subject: Re: [PATCH v8 6/6] rust: samples: Add debugfs sample
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Dirk Behme <dirk.behme@de.bosch.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/1/25 6:01 PM, Michal Wilczynski wrote:
-> +    /// Returns a reference to the parent device of this PWM chip's device.
-> +    pub fn parent_device(&self) -> Option<&device::Device> {
-> +        self.device().parent()
-> +    }
+On Tue, Jul 1, 2025 at 7:03=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Jun 27, 2025 at 11:18:29PM +0000, Matthew Maurer wrote:
+> > +        // An `Arc<Mutex<usize>>` doesn't implement display, so let's =
+give explicit instructions on
+> > +        // how to print it
+> > +        let file_2 =3D sub.fmt_file(c_str!("arc_backed"), my_arc.clone=
+(), &|val, f| {
+> > +            writeln!(f, "locked value: {:#010x}", *val.lock())
+> > +        });
+>
+> While cute, is this really going to be the way to describe all "custom"
+> debugfs function callbacks?  No other way to point to a function itself
+> instead?  Look at "fun" debugfs functions like qh_lines() in
+> drivers/usb/host/ehci-dbg.c that is dumping tons of data out.  Putting
+> that inline here is going to be a bit ackward :)
 
-I know what you use this for, i.e. to provide a &Device<Bound> reference in your
-class device callbacks -- that's great!
+Good news, function pointers are legal to pass in here as well
+already, I can add that usage to make it clear.
 
-But please don't expose this to the public. I think what you want instead is a
-private unsafe method that returns you the &Device<Bound> directly, since you
-also know that you set a valid parent device, hence no need to mess with the
-Option as well.
+>
+> So can you show an example of a "traditional" debugfs file output with
+> multiple lines that is dealing with a dynamically allocated device that
+> is associated with the module (not the static example you showed here),
+> as that's going to be the real way this is used, not with static
+> variables.
 
-And again, sorry for not catching it right away.
+Sure, do we want to:
+* Finish creating the driver struct early in `init`, then call dynamic
+`.create(&str)` or `.destroy(&str)` `.modify(&str)` type things on it
+in `init` to show how it would work
+* Actually wire up an input source to drive create/destroy/modify
+dynamically (e.g. I could implement a miscdevice) - if you want this
+one, do you have a preference on where I get my input signal from?
 
-- Danilo
+>
+> thanks,
+>
+> greg k-h
