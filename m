@@ -1,94 +1,102 @@
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1642741DA;
-	Tue,  1 Jul 2025 17:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B3925A2BC;
+	Tue,  1 Jul 2025 17:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751390893; cv=none; b=kKrSvXwu0V0OYp+DYL7FWyTQFlLmn0wFTYRNlcQdqWDSIxifJbqbewzmblBnCeknUM3GCX3vkK54xdsnzVGtTURWj422MzybKBVJtydg63CPeg0foogZoWyefwzmigWer557YZYgcL3iOo3ZmVWlcDbNyp7FEL8Qedq9bWIzvaU=
+	t=1751391295; cv=none; b=if/q4Xnrx5Q016cFgQ5LNFLSMzI2VD3wXnLEbFeIkAIVODi2DtFaxoneYNbHe/vRHmYG1Vetn1lIB6hULQfJdwEREW7iQnjwJnFDww0EOAUXMYzdKpPPZZVqNdYD5rFMJJ3vuoWiKK6c1gci7lTpHXaUUXbrq+5Fax3NdGkfSO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751390893; c=relaxed/simple;
-	bh=SefuK/BsWTSGg9td9xfzy2e6ut71LLgcl4K//G29a1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X9BcmKiGOy0qSy+6ip/9xvBX/iazYHcXA9MaCUg1uWlf8yqxrk7lBJnYxbeo+dOmvevqVQhq3BwIFC7qQbW5pY1Mc5Oriu2rv5UPsp3UgFgx6RXsqRbqBy2CDs8ioomP1Gq7fKJ/XhbQKlom1NdfldNJxKb7isLhv4tQKuuvTNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=fCwSNJXJ; arc=none smtp.client-ip=178.154.239.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1751391295; c=relaxed/simple;
+	bh=Se7Gtkkk90SXCT9cJj7ZvM8q7WY/FjCqqXgfwGctlbM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L/+tJVDr9sz2AwPHcypTrMWvGFcqD4BRR961lVjMuXj/7l9ldowJjAl0kpTnvK9ICF3U4FdMGNLtkviZQhBrTIVRoaYTOz9my5fR8IT00pGQZZTV25/l1MPSuRtjJOZkdzOiIAoCpYQ7vJCUsP6uScQCe8mz0KpMYdYUO51q3yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bmtdmBku; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="fCwSNJXJ"
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:1115:0:640:abf2:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 1FB9362065;
-	Tue,  1 Jul 2025 20:28:02 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id sRe9KV0LlGk0-EE6VII3p;
-	Tue, 01 Jul 2025 20:28:00 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1751390881;
-	bh=YBv0jD8rKBC/4rAgNS+GucZmX4U/NADqKv+OE5fzFkw=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=fCwSNJXJ2VZbfLU6Vl34xnSSXiA3NFtwh1iHp4MnpCJTFlVSJUk0+/8xI91d7AjqV
-	 LCgE5HzVu7+GYdgwamuwSV0GKRnhLa+WiV0+NHzI5RJOUsj0SWHERHfxmqrNlit+hd
-	 ONfVoSDghp0ZaLGp0MyNWKkGZevWIk4moORlJUjQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 1 Jul 2025 20:27:52 +0300
-From: Onur <work@onurozkan.dev>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, airlied@gmail.com, simona@ffwll.ch,
- ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- rafael@kernel.org, viresh.kumar@linaro.org, gregkh@linuxfoundation.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- davidgow@google.com, nm@ti.com
-Subject: Re: [PATCH v4 0/6] replace `allow(...)` lints with `expect(...)`
-Message-ID: <20250701202752.4f3eacc9@nimda.home>
-In-Reply-To: <CANiq72keo+NKF75F7qB_Epcbf7fhQqUo27EEVkdet1J2syQfvQ@mail.gmail.com>
-References: <20250701053557.20859-1-work@onurozkan.dev>
-	<CANiq72keo+NKF75F7qB_Epcbf7fhQqUo27EEVkdet1J2syQfvQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bmtdmBku"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF06C4CEEF;
+	Tue,  1 Jul 2025 17:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751391294;
+	bh=Se7Gtkkk90SXCT9cJj7ZvM8q7WY/FjCqqXgfwGctlbM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bmtdmBku9oDv7zQel+ctz6e9hWIDRMYUvkHTvqbeVTlWr57WF6spUw5ZW0Vai+lYw
+	 5Pz5KVh21iv6gTVOyYxJWcTr98giKgJu4ofwk8PTtJVKPzbMXtE2vdUGp7znyNmZ+2
+	 HXCJkVf5nVupjM2TkzBrQTjAvPieBYkKzzum7hLOKWBFrOnXAJa80JQzFOdiv4hePD
+	 +d8nXKv7j/LOyeBhtQj4LsgrBAbqRO43pRo0niaTqux5Sl4jAIxGKlQZikHrGKmvfA
+	 vsMOUwdMwsq9n2T+tzYbYPu01qF2NsBCl7OXoicxoZx/zvzGfNlwaXNiQLlbDfmQK2
+	 psrAyISjWEdEg==
+Date: Tue, 1 Jul 2025 19:34:48 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: Re: [PATCH v8 6/6] rust: samples: Add debugfs sample
+Message-ID: <aGQcODIzMiB46gKF@pollux>
+References: <20250627-debugfs-rust-v8-0-c6526e413d40@google.com>
+ <20250627-debugfs-rust-v8-6-c6526e413d40@google.com>
+ <2025070148-primer-stillness-0409@gregkh>
+ <CAGSQo00UiOUAgYODhXT9BWLW0bXoCxMzt9fV2F2aiTEOG1vwyA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGSQo00UiOUAgYODhXT9BWLW0bXoCxMzt9fV2F2aiTEOG1vwyA@mail.gmail.com>
 
-On Tue, 1 Jul 2025 10:43:10 +0200
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
-
-> On Tue, Jul 1, 2025 at 7:36=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.de=
-v> wrote:
+On Tue, Jul 01, 2025 at 10:24:04AM -0700, Matthew Maurer wrote:
+> On Tue, Jul 1, 2025 at 7:03 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
 > >
-> > Onur =C3=96zkan (6):
-> >   rust: switch to `#[expect(...)]` in core modules
-> >   rust: switch to `#[expect(...)]` in init and kunit
-> >   drivers: gpu: switch to `#[expect(...)]` in nova-core/regs.rs
-> >   rust: switch to `#[expect(...)]` in devres, driver and ioctl
-> >   rust: remove `#[allow(clippy::unnecessary_cast)]`
-> >   rust: remove `#[allow(clippy::non_send_fields_in_send_ty)]`
->=20
-> Thanks for splitting this, it is very much appreciated.
->=20
-> I think you decided on a split based on similarity (?). In the kernel,
-> different maintainers/trees take care of different areas/files (the
-> `MAINTAINERS` file describes this mapping). For instance, in one of
-> them, KUnit and init is mixed, which are maintained by different
-> people.
+> > On Fri, Jun 27, 2025 at 11:18:29PM +0000, Matthew Maurer wrote:
+> > > +        // An `Arc<Mutex<usize>>` doesn't implement display, so let's give explicit instructions on
+> > > +        // how to print it
+> > > +        let file_2 = sub.fmt_file(c_str!("arc_backed"), my_arc.clone(), &|val, f| {
+> > > +            writeln!(f, "locked value: {:#010x}", *val.lock())
+> > > +        });
+> >
+> > While cute, is this really going to be the way to describe all "custom"
+> > debugfs function callbacks?  No other way to point to a function itself
+> > instead?  Look at "fun" debugfs functions like qh_lines() in
+> > drivers/usb/host/ehci-dbg.c that is dumping tons of data out.  Putting
+> > that inline here is going to be a bit ackward :)
+> 
+> Good news, function pointers are legal to pass in here as well
+> already, I can add that usage to make it clear.
+> 
+> >
+> > So can you show an example of a "traditional" debugfs file output with
+> > multiple lines that is dealing with a dynamically allocated device that
+> > is associated with the module (not the static example you showed here),
+> > as that's going to be the real way this is used, not with static
+> > variables.
+> 
+> Sure, do we want to:
+> * Finish creating the driver struct early in `init`, then call dynamic
+> `.create(&str)` or `.destroy(&str)` `.modify(&str)` type things on it
+> in `init` to show how it would work
+> * Actually wire up an input source to drive create/destroy/modify
+> dynamically (e.g. I could implement a miscdevice) - if you want this
+> one, do you have a preference on where I get my input signal from?
 
-I didn't know I could use `MAINTAINERS` file to organize my changes.
+I think the idea was to show how it works in a real driver context, e.g. a
+platform driver, just like what samples/rust/rust_driver_platform.rs does. Not a
+miscdevice registered from a module, which is a rather rare use-case.
 
-> That is why the split I suggested was one that allows maintainers to
-> pick them independently. With this one, maintainers still have to
-> coordinate, which isn't a big deal, since the changes are small and
-> straightforward, but the purpose of the split was to avoid that.
-
-
-I see, I will make sure to use `MAINTAINERS` file as a ref next
-time, thank you. :)
-
-Regards,
-Onur
+If you rebase on the latest driver-core-next, you can write a platform driver
+with an ACPI ID table, which can easily probed by passing
+`-acpitable file=ssdt.aml` to qemu, i.e. no need to mess with OF.
