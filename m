@@ -1,222 +1,261 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B4D134A8;
-	Tue,  1 Jul 2025 14:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751379719; cv=none; b=eZ4WDprXpi95vCkMVRaX0+JusJdLaa23lGaJ760xEOw4H5XpY/FWsZdz++nAdZJ+R7zpEhR1+dEe/djdHp5Eh81TETdGvMMh+v2KN7Fsn8LeLx6qN/BX9jhXSkCvuxUvwnBV1aoZk2Lr+pv+0Zo05u/ZxqALTykHBTPcBddZddU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751379719; c=relaxed/simple;
-	bh=0YnqpRTN54FJ/bDQBEHRh1rky/Lv0g5pn2Ij8zRljIo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o41jwnqs8AnS+torHGEr0RgVET9CoflwhHS9DIhawXxDWuT+sKvZP/OxsqpQbSj/ModtIxuDBRbVWzF8AYNQaDfFW2nGEN9Tj6ed972lAcJDsjaE+yuLyHaMTY1EaCmQiL01keqbeVgSErLjPPgoY38HTDxZx0lXEhIvNzQ5mj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oi1vmeuL; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92131D79A5;
+	Tue,  1 Jul 2025 14:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751380534; cv=pass; b=pHVemZJB0lX52QAOETu1+/zyzPi9gRJGsRLqAwjp/k2lKtkX6IocaQRaZQt8be97CtPhb9ixTj1dH7Q5cMFy0MWSXx4nyCQ9IKDcUI3eZw/KSBdozjTdWRabL1MnmPxQdaVH3xom43mHIkDabgyWwKrAxCj8dI1aQN+iddQ9hHA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751380534; c=relaxed/simple;
+	bh=GNS5MBfnyCzDkLtrQxaJRkLUgvusRreAZgvHPDlOnGs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=M8/KM73uAE6nMcgXwGRiLVNeD3z2sn7KnTUIOg+TeXbiEJBhLrGAxKUmeKy8YAqrmojltYMW6pJBROH8gp7PYUms37xxNTcx/apqVI1ECJWQIZfe6ZIJ84IHB6npHobbuAMXgxUCut2S/7EmhxraIsyttw2hfIO+BOlWFIo+htg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GoVbTy2C; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oi1vmeuL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817ECC4CEEB;
-	Tue,  1 Jul 2025 14:21:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751379719;
-	bh=0YnqpRTN54FJ/bDQBEHRh1rky/Lv0g5pn2Ij8zRljIo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oi1vmeuLwEL+Lq9eRgu8tgJ9I8BKLgGxq8FKhubKyBPdkdAej3zc/niGycvohY6T8
-	 0OwJRBpCd6WqEC4cOR4pe/t+ewk2Qy0KR5fFc5frE5cmEP7zNSqwHJ0JK2rFoCq46V
-	 R3JWGGUatCSaQ/cVOxqBy5Wdz+ogEBBXvLKMx1eo=
-Date: Tue, 1 Jul 2025 16:21:56 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Matthew Maurer <mmaurer@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing
- for File
-Message-ID: <2025070137-tartar-juncture-fcd2@gregkh>
-References: <20250627-debugfs-rust-v8-0-c6526e413d40@google.com>
- <20250627-debugfs-rust-v8-4-c6526e413d40@google.com>
- <5c3a2289-01c5-413e-9d7c-88a41c3f54e2@kernel.org>
- <CAGSQo038u_so+_pMRYj0K546zNfO5-eqoXFivXsEF6ACK=Y5cw@mail.gmail.com>
- <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org>
- <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
- <aGLUl7ZtuQBPoCuv@pollux>
- <2025070131-icon-quarters-0c16@gregkh>
- <aGPtCBB6nWTNJuwK@pollux>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GoVbTy2C"
+ARC-Seal: i=1; a=rsa-sha256; t=1751380507; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=JnTF7mQM1nu2yHe055DZH6vnU1789keoPquXZFjmNNSZ2+Vlch8oWx9qhW+nMZ+Rtrelq0PLNOTo/Euy4V13XP4RHs3ifFHDI8MBAV6b0nhIPHJ0r1tXadu7Jv4b8OQneek4tL1LJrWe7VzPGepuK/1D+JSWPL4jISDBWNwMvg8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751380507; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=iGYUxOVLNyr0EJX9bY+jWfcpDzJkAr/EkhLgtanbeWk=; 
+	b=K6AX+eALUaGsP5x8eEMyGUPtVYfyY/Hj7tiP3yAeBkJet0E6uQAiWnVhkqLpha34cQAweKhieWfi09WWniBJOFHvOfOCCM48FSrkWLYXZZWruDFwQuAxtY14kohtp1WjPR3mPhYqfkVNvGbDGkrvMiMhNPxMbOUaMN0PA+SyaM4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751380507;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=iGYUxOVLNyr0EJX9bY+jWfcpDzJkAr/EkhLgtanbeWk=;
+	b=GoVbTy2CI8D89/m7Z7h3sHfqQN9Fq2fBwNFY9wLGtPTYhl5y1vmI2X4KnPrg3RBK
+	W6piUQoJdFOAU6IxAdBn7U1h3o4lgFDOGXoSXatjkUfXNfykpy5tgb5jCyXMKiZgSw2
+	4g79QXo0LRB1LhLghpL5OE6uzUiyt/VK39xfXYPE=
+Received: by mx.zohomail.com with SMTPS id 1751380504773815.8869809951292;
+	Tue, 1 Jul 2025 07:35:04 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v11 0/4] rust: platform: add Io support
+Date: Tue, 01 Jul 2025 11:34:38 -0300
+Message-Id: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aGPtCBB6nWTNJuwK@pollux>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAP7xY2gC/43O3WqEMBCG4VtZctzITDR/Pep9lFJSM+kG1EgU6
+ bJ4742eWLZFevgNzMN7ZxPlSBN7vtxZpiVOMQ1lID5dWHt1wyfx6MuBCRASajR8TmNsJz7fMh8
+ 7N4eU+/eYeuo5agSHWhP6wMr/mCnErx1/fSs75NTz+ZrJHSLWIARIYSulpLGKI/duiNRVruspe
+ vfSpq5zHym7qk39xl7jNKd825MXveH/iVs0B66b2iiL3lLQD/AWuJhDk2DPNFM0sgG1kK6BX5m
+ 7Zg9NQX2m2aI5oQkalJpq+ktD+MGJUw5hq/NGgZNK2AYevXVdvwEa7Kv3+gEAAA==
+X-Change-ID: 20250318-topics-tyr-platform_iomem-1710a177e1df
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Fiona Behrens <me@kloenk.dev>, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Tue, Jul 01, 2025 at 04:13:28PM +0200, Danilo Krummrich wrote:
-> On Tue, Jul 01, 2025 at 03:58:45PM +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Jun 30, 2025 at 08:16:55PM +0200, Danilo Krummrich wrote:
-> > > On Mon, Jun 30, 2025 at 10:49:51AM -0700, Matthew Maurer wrote:
-> > > > On Mon, Jun 30, 2025 at 10:39 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> > > > >
-> > > > > On 6/30/25 7:34 PM, Matthew Maurer wrote:
-> > > > > > On Mon, Jun 30, 2025 at 10:30 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> > > > > >>
-> > > > > >> On 6/28/25 1:18 AM, Matthew Maurer wrote:
-> > > > > >>> +    fn create_file<D: ForeignOwnable>(&self, _name: &CStr, data: D) -> File
-> > > > > >>> +    where
-> > > > > >>> +        for<'a> D::Borrowed<'a>: Display,
-> > > > > >>> +    {
-> > > > > >>> +        File {
-> > > > > >>> +            _foreign: ForeignHolder::new(data),
-> > > > > >>> +        }
-> > > > > >>>        }
-> > > > > >>
-> > > > > >> What's the motivation for the ForeignHolder abstraction? Why not just make it
-> > > > > >> File<D> and store data directly?
-> > > > > >
-> > > > > > 1. A `File<D>` can't be held in collection data structures as easily
-> > > > > > unless all your files contain the *same* backing type.
-> > > > >
-> > > > > That sounds reasonable.
-> > > > >
-> > > > > > 2. None of the APIs or potential APIs for `File` care about which type
-> > > > > > it's wrapping, nor are they supposed to. If nothing you can do with a
-> > > > > > `File` is different depending on the backing type, making it
-> > > > > > polymorphic is just needlessly confusing.
-> > > > >
-> > > > > What if I want to access file.data() and do something with the data? Then I'd
-> > > > > necessarily need to put my data in an Arc and reference count it to still be
-> > > > > able to access it.
-> > > > >
-> > > > > That doesn't seem like a reasonable requirement to be able to access data
-> > > > > exposed via debugfs.
-> > > > 
-> > > > `pub fn data(&self) -> D` would go against my understanding of Greg's
-> > > > request for DebugFS files to not really support anything other than
-> > > > delete. I was even considering making `D` not be retained in the
-> > > > disabled debugfs case, but left it in for now for so that the
-> > > > lifecycles wouldn't change.
-> > > 
-> > > Well, that's because the C side does not have anything else. But the C side has
-> > > no type system that deals with ownership:
-> > > 
-> > > In C you just stuff a pointer of your private data into debugfs_create_file()
-> > > without any implication of ownership. debugfs has a pointer, the driver has a
-> > > pointer. The question of the ownership semantics is not answered by the API, but
-> > > by the implementation of the driver.
-> > > 
-> > > The Rust API is different, and it's even implied by the name of the trait you
-> > > expect the data to implement: ForeignOwnable.
-> > > 
-> > > The File *owns* the data, either entirely or a reference count of the data.
-> > > 
-> > > If the *only* way to access the data the File now owns is by making it reference
-> > > counted, it:
-> > > 
-> > >   1) Is additional overhead imposed on users.
-> > > 
-> > >   2) It has implications on the ownership design of your driver. Once something
-> > >      is reference counted, you loose the guarantee the something can't out-live
-> > >      some event.
-> > > 
-> > > I don't want that people have to stuff their data structures into Arc (i.e.
-> > > reference count them), even though that's not necessary. It makes it easy to
-> > > make mistakes. Things like:
-> > > 
-> > > 	let foo = bar.clone();
-> > > 
-> > > can easily be missed in reviews, whereas some contributor falsely changing a
-> > > KBox to an Arc is much harder to miss.
-> > > 
-> > > > If you want a `.data()` function, I can add it in,
-> > > 
-> > > I think it could even be an implementation of Deref.
-> > > 
-> > > > but I don't think
-> > > > it'll improve flexibility in most cases. If you want to do something
-> > > > with the data and it's not in an `Arc` / behind a handle of some kind,
-> > > > you'll need something providing threadsafe interior mutability in the
-> > > > data structure. If that's a lock, then I have a hard time believing
-> > > > that `Arc<Mutex<T>>`(or if it's a global, a `&'static Mutex<T>`, which
-> > > > is why I added that in the stack) is so much more expensive than
-> > > > `Box<Mutex<T>>` that it's worth a more complex API. If it's an atomic,
-> > > > e.g. `Arc<AtomicU8>`, then I can see the benefit to having
-> > > > `Box<AtomicU8>` over that, but it still seems so slim that I think the
-> > > > simpler "`File` is just a handle to how long the file stays alive, it
-> > > > doesn't let you do anything else" API makes sense.
-> > > 
-> > > I don't really see what is complicated about File<T> -- it's a File and it owns
-> > > data of type T that is exposed via debugfs. Seems pretty straight forward to me.
-> > > 
-> > > Maybe the performance cost is not a huge argument here, but maintainability in
-> > > terms of clarity about ownership and lifetime of an object as explained above
-> > > clearly is.
-> > 
-> > I'm agreeing here.  As one of the primary users of this api is going to
-> > be a "soc info" module, like drivers/soc/qcom/socinfo.c, I tried to make
-> > an example driver to emulate that file with just a local structure, but
-> > the reference counting and access logic just didn't seem to work out
-> > properly.  Odds are I'm doing something stupid though...
-> 
-> I think it technically works, but it imposes semantics on drivers that we
-> shouldn't do; see the example below.
-> 
-> > So a file callback IS going to want to have access to the data of type T
-> > that is exposed somehow.
-> 
-> With the current API we would need this:
-> 
-> 	struct GPU {
-> 	   fw: Arc<Firmware>,
-> 	   fw_file: debugfs::File,
-> 	}
-> 
-> and then I would initialize it the following way:
-> 
-> 	let fw = Arc::new(Firmware::new(), GFP_KERNEL)?;
-> 	let fw_file = dir.create_file("firmware", fw.clone());
-> 
-> 	fw.do_something();
-> 
-> This is bad, because now my Firmware instance in GPU needs to be reference
-> counted, even though it should *never* out-live the GPU instance. This is error
-> prone.
+Changes in v11:
+- Rebased on top of driver-core-next (to get the latest Devres changes)
+- Changed the order between requesting the resource and mapping it
+  (Danilo)
+- Link to v10: https://lore.kernel.org/r/20250623-topics-tyr-platform_iomem-v10-0-ed860a562940@collabora.com
 
-Agreed, AND you just created a new fw structure that you really didn't
-need, wasting memory.
+rust: platform: add Io support
 
-> Instead this should just be:
-> 
-> 	struct GPU {
-> 	   fw: debugfs::File<Firmware>,
-> 	}
-> 
-> and then I would initialize it the following way:
-> 
-> 	let fw = KBox::new(Firmware::new(), GFP_KERNEL)?;
-> 	let file = dir.create_file("firmware", fw);
-> 
-> 	// debugfs::File<Firmware> dereferences to Firmware
-> 	file.do_something();
-> 
-> 	// Access to fw is prevented by the compiler, since it has been moved
-> 	// into file.
-> 
-> This is much better, since now I have the guarantee that my Firmare instance
-> can't out-live the GPU instance.
+Changes in v10:
+- Rebased on driver-core-next
+- Fixed examples (they were still using try_access())
+- Removed map_err() from the examples, as it was not needed.
+- Added a pub use for Resource in io.rs
+- Reworked the platform code to make use of the pub use above
+- Link to v9: https://lore.kernel.org/r/20250603-topics-tyr-platform_iomem-v9-0-a27e04157e3e@collabora.com
 
-That's better, yes, but how would multiple files for the same
-"structure" work here?  Like a debugfs-file-per-field of a structure
-that we often have?
+Changes in v9:
+- Rebased on top of nova-next (for Devres::access())
+- Reworked the documentation to add more markdown.
+- Converted to &raw mut instead of addr_of_mut!()
+- Renamed 'from_ptr' to 'as_ref' for consistency
+- Changed the IoMem examples to use the signature for probe()
+- Changed resource() to resource_by_index(). It's a better fit given
+  the existance of resource_by_name().
+- Created a separate patch for the resource accessors above.
+- Moved the accessors into the generic impl block, so they work with all
+  Device contexts.
+- Take Device<Bound> where applicable
+- Renamed "ioremap_*" to "iomap_*", in order to be consistent with the code
+  in pci.rs
+- Switched to Devres::access()
+- Link to v8: https://lore.kernel.org/r/20250509-topics-tyr-platform_iomem-v8-0-e9f1725a40da@collabora.com
 
-thanks,
+rust: platform: add Io support
 
-greg k-h
+Changes in v8:
+- Rebased on driver-core-next
+- Opted to wait for 'rust/revocable: add try_with() convenience method' to
+  land instead of using the suggested closure (let me know if we should
+  just switch to the closure anyways)
+- Cc'd more people
+- Link to v7: https://lore.kernel.org/r/20250318-topics-tyr-platform_iomem-v7-0-7438691d9ef7@collabora.com
+
+Changes in v7:
+
+- Rebased on top of rust-next
+- Fixed a few Clippy lints
+- Fixed typos (Thanks Daniel!)
+- "struct Flags" now contains a usize (thanks Daniel)
+- Fixed "Doc list without indentation" warning (thanks, Guangbo)
+
+Thanks, Fiona {
+- Removed RequestFn, as all functions simply used request_region and RequestFn
+  had issues. Only request_region() is exposed now.
+- Gated iomem_resource on CONFIG_HAS_IOMEM
+- Require that the name argument be 'static
+}
+
+- Correctly check for IORESOURCE_MEM_NONPOSTED. We now call ioremap_np if that
+  is set (thanks, Lina!)
+- Remove #[dead_code] attribute from ExclusiveIoMem::region.
+
+Changes in v6:
+
+- Added Fiona as co-developer in the first patch, as I merged part of her code
+from the LED driver series (thanks, Fiona)
+
+- (Fiona) added the ResourceSize type, thereby fixing the u32 vs u64 issues
+  pointed out by Christian
+
+- Moved the request_region, release_region and friends to resource.rs
+
+- Added the Region type. This type represents a resource returned by
+  `request_region` and friends. It is also owned, representing the fact
+  that the region remains marked as busy until release_region is called on
+  drop. (Thanks Alice, for pointing out this pattern)
+
+- Rewrote the IoMem abstraction to implement a separate type for exclusive
+  access to an underlying region. I really disliked the `EXCLUSIVE` const
+  generic, as it was definitely not ergonomic, i.e.:
+
+  `IoMem<0, false>`
+
+  ...doesn't really say much. In fact, I believe that boolean parameters
+  hurt readability in general.
+
+  This new approach lets users build either regular IoMem's, which basically
+  call ioremap under the covers, and ExclusiveIoMem's , which also call request_region
+  via the Region type.
+
+- Added access to the ioresource_port and ioresource_mem globals.
+
+Link to v5: https://lore.kernel.org/rust-for-linux/20250116125632.65017-1-daniel.almeida@collabora.com/
+
+Changes in v5:
+
+- resend v5, as the r4l list was not cc'd
+- use srctree where applicable in the docs (Alice)
+- Remove 'mut' in Resource::from_ptr() (Alice)
+- Add 'invariants' section for Resource (Alice)
+- Fix typos in mem.rs (Alice)
+- Turn 'exclusive' into a const generic (Alice)
+- Fix example in platform.rs (Alice)
+- Rework the resource.is_null() check (Alice)
+- Refactor IoMem::new() to return DevRes<IoMem> directly (Danilo)
+
+link to v4: https://lore.kernel.org/rust-for-linux/20250109133057.243751-1-daniel.almeida@collabora.com/
+
+Changes in v4:
+
+- Rebased on top of driver-core-next
+- Split series in multiple patches (Danilo)
+- Move IoMem and Resource into its own files (Danilo)
+- Fix a missing "if exclusive {...}" check (Danilo)
+- Fixed the example, since it was using the old API (Danilo)
+- Use Opaque in `Resource`, instead of NonNull and PhantomData (Boqun)
+- Highlight that non-exclusive access to the iomem might be required in some cases
+- Fixed the safety comment in IoMem::deref()
+
+Link to v3: https://lore.kernel.org/rust-for-linux/20241211-topic-panthor-rs-platform_io_support-v3-1-08ba707e5e3b@collabora.com/
+
+Changes in v3:
+- Rebased on top of v5 for the PCI/Platform abstractions
+- platform_get_resource is now called only once when calling ioremap
+- Introduced a platform::Resource type, which is bound to the lifetime of the
+ platform Device
+- Allow retrieving resources from the platform device either by index or
+ name
+- Make request_mem_region() optional
+- Use resource.name() in request_mem_region
+- Reword the example to remove an unaligned, out-of-bounds offset
+- Update the safety requirements of platform::IoMem
+
+Changes in v2:
+- reworked the commit message
+- added missing request_mem_region call (Thanks Alice, Danilo)
+- IoMem::new() now takes the platform::Device, the resource number and
+ the name, instead of an address and a size (thanks, Danilo)
+- Added a new example for both sized and unsized versions of IoMem.
+- Compiled the examples using kunit.py (thanks for the tip, Alice!)
+- Removed instances of `foo as _`. All `as` casts now spell out the actual
+ type.
+- Now compiling with CLIPPY=1 (I realized I had forgotten, sorry)
+- Rebased on top of rust-next to check for any warnings given the new
+ unsafe lints.
+
+Daniel Almeida (3):
+  rust: io: add resource abstraction
+  rust: io: mem: add a generic iomem abstraction
+  rust: platform: allow ioremap of platform resources
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/io.c               |  36 +++++
+ rust/kernel/io.rs               |   3 +
+ rust/kernel/io/mem.rs           | 125 ++++++++++++++++
+ rust/kernel/io/resource.rs      | 252 ++++++++++++++++++++++++++++++++
+ rust/kernel/platform.rs         | 123 +++++++++++++++-
+ 6 files changed, 539 insertions(+), 1 deletion(-)
+ create mode 100644 rust/kernel/io/mem.rs
+ create mode 100644 rust/kernel/io/resource.rs
+
+--
+2.48.0
+
+---
+Daniel Almeida (4):
+      rust: io: add resource abstraction
+      rust: io: mem: add a generic iomem abstraction
+      rust: platform: add resource accessors
+      rust: platform: allow ioremap of platform resources
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/io.c               |  41 ++++++++
+ rust/kernel/io.rs               |   5 +
+ rust/kernel/io/mem.rs           | 147 ++++++++++++++++++++++++++
+ rust/kernel/io/resource.rs      | 222 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/platform.rs         | 163 ++++++++++++++++++++++++++++-
+ 6 files changed, 578 insertions(+), 1 deletion(-)
+---
+base-commit: f5d3ef25d238901a76fe0277787afa44f7714739
+change-id: 20250318-topics-tyr-platform_iomem-1710a177e1df
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
