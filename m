@@ -1,235 +1,210 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4872727E2;
-	Tue,  1 Jul 2025 14:35:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751380552; cv=pass; b=Xgnfh0VcMpj8MvnsLdvKEiT7Jn59HCRZTsP/ZJCCOoiy6uuuLw8gEpFwpSGBN4FqtPMs3y+usuvqeb49GnDYBYZRuqgb7IwYz1xfDL5bGmTX6aOLMX7aAATkacIReyEzCFBXh5X6PvXFXfJ06UeyuhjgY4ucMVHrP+0isP7uhjk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751380552; c=relaxed/simple;
-	bh=RFF4HZsCA1/aqivGylnpl/zmYTyzs6/vFUohEaI8E3w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=lhf1w/E0hsVUhWrPQN0cPBrh+5i3l6plV9IeneaYF/7vob7oakWuczJWmtgMM8EclLbxWnxi91KjafHi5UqMlYSIq6DG/IfeX+xGC/0shu3Sjx6wubyhZB4D+5Ii6Auct2lssCX0aCgCDSFPE/dLERFdD+OK5xukM9HFg+OhqWU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=e/RlLUV4; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEAE2749DA;
+	Tue,  1 Jul 2025 14:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751381424; cv=none; b=hC5RsmDAMSsC+l3MXdDsW8Mlhq6iPwQBD19WGObx6jaHyUWu3f08T6GGNZlfdfXJtP+wh0PfVqeGzK9fp3dek+4PePo6m/9M2rUM6Ax8oVcHuaDoitUErQWJ85WC+PvlqIPDAyGbaA4JGH6bY5pSOYdiuxG+VBuHsHV6fukYZtU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751381424; c=relaxed/simple;
+	bh=Pp4vcS03lDmrPdszYRwucchkYH6zncgLHopCa9qKIcc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hifjwmGKxZ3Ezvr6rjXnutuDpzpRqeDTiLz5kxPgPjDLw7+EWXOcPbxORGwGKdCjM40CpwIz2Jyt/Pj6HkTXxY9Qu2ZIGzP7HSD2OCJPvHsHtFZDsbHsuqF6hsA2t92EDcCdqaO3NGDp9DITQDUoBHIr7AvKi0ZbLZIfFskQbw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X1AA+efQ; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="e/RlLUV4"
-ARC-Seal: i=1; a=rsa-sha256; t=1751380527; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=TGVCgLk9mPGH4aRpbk61SIulwbSL077y4suEJkY3JBvVg+64IwA8vNum9OCdOxTw661Dr1TeTcvnFPDLfWq0Z2mOLM8oxySDi+uPOtW9czdOKg5eVHdHrjeE8n7pbypvaG6PEOPD4pRp7uuSS1iU2t6kFefRZDCo/ax+UyrLlAQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1751380527; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=9qx2K7ri1vTm3J/raEM49wZb7qlOxaHzPm52ap9Pbqw=; 
-	b=OSGrwb2mknssxqiAsYQsxJVwDLjvoRiLjDuKLiue5xtesHFQu2xSNWVrYVC9VN4skLx5M9daUkfPNFaTaj0yAxAJhDPGqGVf77VkVNaPevDLrK37rcCUfp5eqBrejXirArNsF2Uv6L9P3N6UjaFD0ORnde0ANqVfjzokcObwblo=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751380527;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=9qx2K7ri1vTm3J/raEM49wZb7qlOxaHzPm52ap9Pbqw=;
-	b=e/RlLUV4K9sj45DLW2xRIs8SIo7EZ4MRYxReUz/NjbJCBWqCkHX8QCIUfTRvrbS5
-	NYzj505blrWfIEy1pBD/0dFgGgT8FMnqL6t0Qceq1cDLDN4VzaBDli70WiXNetio7yJ
-	ZWdThDmoeZ9em3fIh8z77+5fSTtbDvwbui/+hca0=
-Received: by mx.zohomail.com with SMTPS id 1751380526351830.310196252349;
-	Tue, 1 Jul 2025 07:35:26 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Tue, 01 Jul 2025 11:34:42 -0300
-Subject: [PATCH v11 4/4] rust: platform: allow ioremap of platform
- resources
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X1AA+efQ"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6face367320so37949606d6.3;
+        Tue, 01 Jul 2025 07:50:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751381422; x=1751986222; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1xMPzI4BYFmtrcIaXCgikpxCSbMyY6dtY8BA23HqZsU=;
+        b=X1AA+efQVofjVvJHm3GgMU+OFGltYRfRo6fycQbhHTK5BLi/opUW26UgHlvJNqr7jP
+         AyOPHMJDYNRPFOhITSlpdEmmTUzDvuUFPYpAy9anwreQ5gtPgTlvFdLJx1JjzuKFtTUG
+         BbDpIbjvVpIHTCf1r5q7g5mM0KAGTcFCEX2wTbe1rOQlL25JlyDtQsQtan1XsGGl+3ul
+         5UA7WHhrkoePdaqV8nSKQRM8SwTQvqQfWN7a+KF/0Yx8hpTFxR8+6CqeZAOvmkkRSatv
+         XyrTQsudFOQm1ZK0j7fDsk96pAH21fise1brizYq1e4KAk/pfowsCphckeu2FhOQVCj9
+         33QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751381422; x=1751986222;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1xMPzI4BYFmtrcIaXCgikpxCSbMyY6dtY8BA23HqZsU=;
+        b=wxX2YB66s+StYhapf1nAPt+m6y+9w9yhwb9+KM/1vzkZAuoBLvlIEfEriUE9Zf4crV
+         hLtwmHGmCbidxEIhXxo/JwmpP3x6HbfqXD6M5uESEOoSMsBBpzf8/ukpWst7I4cHH/SE
+         1wLsMoYMgxmFNh80ehyCBoyWSmPkOKnf0ccQ4Tbnr70z6cJPint8Yuug4qLEqztc6uFH
+         rprunniOD9sTc4Yy+mX0GZtNgIAmYjV58YqGRRRs5LNvqa2VhY+RFmrI+q0uLZa0LUu+
+         6O/zodi8d6SuUUKrwRlfKtINYhIvWYcsz30E/yXeRg5/DbWaIyhWY5wcU7UnY8HmMKzT
+         w4Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCUb4B0y7Vwht18+OzsEQWupjpj9nDBgJIjHmBQ1pKpSEvCjTYPUw1N4TVsXuXV3/n9rsT0c/hlwrHqUbca9Y+w=@vger.kernel.org, AJvYcCVOVTYa2vtPh4x9DcV01VbUURUdHEqEUjFAP0X3Ma1eK4IxvimZtpX2SGQJ9L7OqGZTMDx6A4nUhft2@vger.kernel.org, AJvYcCX1ZsXRJk2FWVffiMmi3DYFackMzKlAyZOUrE7dXOVT0VES2cXTPls7Ni0HcRJwP3jLNbkYI5kp0POTa8Xe@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw56nMYCwYDC4586Kth/sRK1s1V8gLye4ZZjOTmVYWGfu5X1Iz4
+	C/lqzZPFp9Lc0varp8CvFbkSpsz47ZT0FuRvtaWNNN6Fnf/3yktXm7Wt
+X-Gm-Gg: ASbGncuj7FAQqJR9oH3JlHhbS+9nXhp9iH/OmF9x8X9hivfcNDKd5lX+4iPFCYJKtR2
+	HebkQ0kLFN0BxKtcBuVFOUPI2nCCYKEM0BIZsgCU+4NXC0MusTcUZtcg4jXNibJP6y2mv+iLZGT
+	5wqNJAfxV0yyN2So5bZPzMT8D2GNXTsOTeGbCgwvwdtgKPbCqaEBz1SKB6vZB5mnnUeFgMG2Pjq
+	U8PLV2JFNVogBKh+utGL0MUdcdxrs+7IS1IrlDlH/TUNLzv91EPUwobaDDkqbJ8u6OkIhQS06PY
+	7BIFm36r+KnDvInq2jnt9/iSomADjEg4nbdIVZ6yoaT/bKl9G1vz25U5Cxe3oXdVsilcjLePp2k
+	llOerjewEnnvZ80+VhIQiyplpO4+xh2CLVU9B0kzpO8o7ICT/dTRu
+X-Google-Smtp-Source: AGHT+IHfI2aCrI4TIYMVgRKiuqjH+gb+mFLEAN3w4NLv9Fi8LElRo+IdtEtnYa5pG130yeXIgjMESQ==
+X-Received: by 2002:a05:6214:5f04:b0:6fa:fcb0:b88d with SMTP id 6a1803df08f44-70003995071mr338769956d6.28.1751381421434;
+        Tue, 01 Jul 2025 07:50:21 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fd771c0d3esm84971806d6.42.2025.07.01.07.50.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Jul 2025 07:50:20 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 33A68F40067;
+	Tue,  1 Jul 2025 10:50:20 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Tue, 01 Jul 2025 10:50:20 -0400
+X-ME-Sender: <xms:rPVjaDmf6bppXXWuyv1FjC8_peq-09fIctn0u9XCKW8HJGaMoalaTg>
+    <xme:rPVjaG0dCPk3Xfsd8Teyi8FhpDmDGrCuBbiXMqNclw-S1PlIFIsFeSBkjxucLCzOH
+    -DCvC0FeYBs6CsX0g>
+X-ME-Received: <xmr:rPVjaJrNwPDxboVIkUWqKBbELesfszbYKGDLqoh7RVSeV3iA5Yc2cxZd-g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeektdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsth
+    gvrhhnsehrohiflhgrnhgurdhhrghrvhgrrhgurdgvughupdhrtghpthhtoheplhhinhhu
+    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhush
+    htqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhkmhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqrg
+    hrtghhsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtg
+    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:rPVjaLlSqxV867VYSVIxy4V0XyF2b04cvL7jofUibe7Ao8Wb0-vnKg>
+    <xmx:rPVjaB0zFBPdu2v8fvtKv2UYeIMh2sGKriDGVyWI7S_okQbRHQ8g6g>
+    <xmx:rPVjaKttKAur6FBBU7yTblwAgSCi4R-SX6kCCy6UgacTFOtUDLmi7Q>
+    <xmx:rPVjaFXl_-j9uf18xtrqCUaFjFrPeK8idU9rx-cRoape6jeWe--tqQ>
+    <xmx:rPVjaA3QC0YP7iRSJV12wavuytCNqclO0FL1w9C_7sO-BSGw0mnPKWxK>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 1 Jul 2025 10:50:19 -0400 (EDT)
+Date: Tue, 1 Jul 2025 07:50:18 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev,
+	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
+Message-ID: <aGP1qoda9U0q2yss@Mac.home>
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+ <8ISRnKRw28Na4so9GDfdv0gd40nmTGOwD7hFx507xGgJ64p9s8qECsOkboryQH02IQJ4ObvqAwcLUZCKt1QwZQ==@protonmail.internalid>
+ <20250618164934.19817-5-boqun.feng@gmail.com>
+ <8734bm1yxk.fsf@kernel.org>
+ <jJqJwkURyr0NjkFdJaF6oYbPGY4LEzZs_sfY9jlmqoK1B9iE8VjqbfINHilEHxKfmpc9co7DmsS142ZWsBQ8tw==@protonmail.internalid>
+ <aF6yRIixTPx5YZbA@Mac.home>
+ <87jz4tzhcs.fsf@kernel.org>
+ <Xfm2JGPb6LBj7GAjuEFddz5UvwY_vFr3r-253ujBCBa4galferuILoEDKNSQcfOL-lFi65L-rTnBWAxxCE4cyg==@protonmail.internalid>
+ <7eea6ee3-4a9e-4eb5-b412-2ece02b33c6c@rowland.harvard.edu>
+ <875xgcxpe6.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250701-topics-tyr-platform_iomem-v11-4-6cd5d5061151@collabora.com>
-References: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
-In-Reply-To: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- Bjorn Helgaas <bhelgaas@google.com>, 
- Mika Westerberg <mika.westerberg@linux.intel.com>, 
- Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>, 
- Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875xgcxpe6.fsf@kernel.org>
 
-The preceding patches added support for resources, and for a general
-IoMem abstraction, but thus far there is no way to access said IoMem
-from drivers, as its creation is unsafe and depends on a resource that
-must be acquired from some device first.
+On Tue, Jul 01, 2025 at 10:54:09AM +0200, Andreas Hindborg wrote:
+> "Alan Stern" <stern@rowland.harvard.edu> writes:
+> 
+> > On Mon, Jun 30, 2025 at 11:52:35AM +0200, Andreas Hindborg wrote:
+> >> "Boqun Feng" <boqun.feng@gmail.com> writes:
+> >> > Well, a non-atomic read vs an atomic read is not a data race (for both
+> >> > Rust memory model and LKMM), so your proposal is overly restricted.
+> >>
+> >> OK, my mistake then. I thought mixing marked and plain accesses would be
+> >> considered a race. I got hat from
+> >> `tools/memory-model/Documentation/explanation.txt`:
+> >>
+> >>     A "data race"
+> >>     occurs when there are two memory accesses such that:
+> >>
+> >>     1.	they access the same location,
+> >>
+> >>     2.	at least one of them is a store,
+> >>
+> >>     3.	at least one of them is plain,
+> >>
+> >>     4.	they occur on different CPUs (or in different threads on the
+> >>       same CPU), and
+> >>
+> >>     5.	they execute concurrently.
+> >>
+> >> I did not study all that documentation, so I might be missing a point or
+> >> two.
+> >
+> > You missed point 2 above: at least one of the accesses has to be a
+> > store.  When you're looking at a non-atomic read vs. an atomic read,
+> > both of them are loads and so it isn't a data race.
+> 
+> Ah, right. I was missing the entire point made by Boqun. Thanks for
+> clarifying.
+> 
+> Since what constitutes a race might not be immediately clear to users
+> (like me), can we include the section above in the safety comment,
+> rather than deferring to LKMM docs?
+> 
 
-Now, allow the ioremap of platform resources themselves, thereby making
-the IoMem available to platform drivers.
+Still, I don't think it's a good idea. For a few reasons:
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/platform.rs | 127 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 125 insertions(+), 2 deletions(-)
+1) Maintaining multiple sources of truth is painful and risky, it's
+   going to be further confusing if users feel LKMM and the function
+   safety requirement conflict with each other.
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index bafd3ccea6d15b7965d1a993deef3f58e03b3490..b2c17fd6ab990c0b5ae6d6ed2e466b199eae2536 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,9 +5,14 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    acpi, bindings, container_of, device, driver,
-+    acpi, bindings, container_of, device,
-+    devres::Devres,
-+    driver,
-     error::{to_result, Result},
--    io::Resource,
-+    io::{
-+        mem::{ExclusiveIoMem, IoMem},
-+        Resource,
-+    },
-     of,
-     prelude::*,
-     str::CStr,
-@@ -251,6 +256,124 @@ pub fn resource_by_name(&self, name: &CStr) -> Option<&Resource> {
-     }
- }
- 
-+impl Device<device::Bound> {
-+    /// Maps a platform resource where the size is known at compile time.
-+    ///
-+    /// This uses the
-+    /// [`ioremap()`](https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device)
-+    /// C API.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```no_run
-+    /// # use kernel::{bindings, c_str, platform, of, device::Core};
-+    /// # struct SampleDriver;
-+    ///
-+    /// impl platform::Driver for SampleDriver {
-+    ///    # type IdInfo = ();
-+    ///    # const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-+    ///
-+    ///    fn probe(
-+    ///       pdev: &platform::Device<Core>,
-+    ///       info: Option<&Self::IdInfo>,
-+    ///    ) -> Result<Pin<KBox<Self>>> {
-+    ///       let offset = 0; // Some offset.
-+    ///
-+    ///       // If the size is known at compile time, use [`Self::iomap_resource_sized`].
-+    ///       //
-+    ///       // No runtime checks will apply when reading and writing.
-+    ///       let resource = pdev.resource_by_index(0).ok_or(ENODEV)?;
-+    ///       let iomem = pdev.iomap_resource_sized::<42>(&resource)?;
-+    ///       let iomem = KBox::pin_init(iomem, GFP_KERNEL)?;
-+    ///
-+    ///       let io = iomem.access(pdev.as_ref())?;
-+    ///
-+    ///       // Read and write a 32-bit value at `offset`.
-+    ///       let data = io.read32_relaxed(offset);
-+    ///
-+    ///       io.write32_relaxed(data, offset);
-+    ///
-+    ///       # Ok(KBox::new(SampleDriver, GFP_KERNEL)?.into())
-+    ///     }
-+    /// }
-+    /// ```
-+    pub fn iomap_resource_sized<const SIZE: usize>(
-+        &self,
-+        resource: &Resource,
-+    ) -> Result<impl PinInit<Devres<IoMem<SIZE>>, Error> + '_> {
-+        IoMem::new(resource, self.as_ref())
-+    }
-+
-+    /// Same as [`Self::iomap_resource_sized`] but with exclusive access to the
-+    /// underlying region.
-+    ///
-+    /// This uses the
-+    /// [`ioremap()`](https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device)
-+    /// C API.
-+    pub fn iomap_resource_exclusive_sized<const SIZE: usize>(
-+        &self,
-+        resource: &Resource,
-+    ) -> Result<impl PinInit<Devres<ExclusiveIoMem<SIZE>>, Error> + '_> {
-+        ExclusiveIoMem::new(resource, self.as_ref())
-+    }
-+
-+    /// Maps a platform resource through `iomap()`.
-+    ///
-+    /// This uses the
-+    /// [`ioremap()`](https://docs.kernel.org/driver-api/device-io.html#getting-access-to-the-device)
-+    /// C API.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```no_run
-+    /// # use kernel::{bindings, c_str, platform, of, device::Core};
-+    /// # struct SampleDriver;
-+    ///
-+    /// impl platform::Driver for SampleDriver {
-+    ///    # type IdInfo = ();
-+    ///    # const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-+    ///
-+    ///    fn probe(
-+    ///       pdev: &platform::Device<Core>,
-+    ///       info: Option<&Self::IdInfo>,
-+    ///    ) -> Result<Pin<KBox<Self>>> {
-+    ///       let offset = 0; // Some offset.
-+    ///
-+    ///       // Unlike [`Self::iomap_resource_sized`], here the size of the memory region
-+    ///       // is not known at compile time, so only the `try_read*` and `try_write*`
-+    ///       // family of functions should be used, leading to runtime checks on every
-+    ///       // access.
-+    ///       let resource = pdev.resource_by_index(0).ok_or(ENODEV)?;
-+    ///       let iomem = pdev.iomap_resource(&resource)?;
-+    ///       let iomem = KBox::pin_init(iomem, GFP_KERNEL)?;
-+    ///
-+    ///       let io = iomem.access(pdev.as_ref())?;
-+    ///
-+    ///       let data = io.try_read32_relaxed(offset)?;
-+    ///
-+    ///       io.try_write32_relaxed(data, offset)?;
-+    ///
-+    ///       # Ok(KBox::new(SampleDriver, GFP_KERNEL)?.into())
-+    ///     }
-+    /// }
-+    /// ```
-+    pub fn iomap_resource(
-+        &self,
-+        resource: &Resource,
-+    ) -> Result<impl PinInit<Devres<IoMem<0>>, Error> + '_> {
-+        self.iomap_resource_sized::<0>(resource)
-+    }
-+
-+    /// Same as [`Self::iomap_resource`] but with exclusive access to the underlying
-+    /// region.
-+    pub fn iomap_resource_exclusive(
-+        &self,
-+        resource: &Resource,
-+    ) -> Result<impl PinInit<Devres<ExclusiveIoMem<0>>, Error> + '_> {
-+        self.iomap_resource_exclusive_sized::<0>(resource)
-+    }
-+}
-+
- // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
- // argument.
- kernel::impl_device_context_deref!(unsafe { Device });
+2) Human language is not the best tool to describe memory model, that's
+   why we use herd to describe and use memory model. Trying to describe
+   the memory model in comments rather than referring to the formal
+   model is a way backwards.
 
--- 
-2.50.0
+3) I believed the reason we got our discussion here is because you tried
+   to improve the comment of `from_ptr()`, and I do appreciate that
+   effort. And I think we should continue in that direction instead of
+   pulling the whole "what are data race conditions" into picture. So
+   how about we clearly call out that it'll be safe if other accesses
+   are atomic, which should be the most cases:
 
+   /// - For the duration of `'a`, other accesses to the object cannot cause data races
+   ///   (defined by [`LKMM`]) against atomic operations on the returned reference. Note
+   ///   that if all other accesses are atomic, then this safety requirement is trivially
+   ///   fulfilled.
+
+Regards,
+Boqun
+
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
