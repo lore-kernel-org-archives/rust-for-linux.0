@@ -1,44 +1,44 @@
 Received: from mailrelay-egress12.pub.mailoutpod2-cph3.one.com (mailrelay-egress12.pub.mailoutpod2-cph3.one.com [46.30.211.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C461FBCAF
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 11:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE0725A2A4
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 11:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.211.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751368761; cv=none; b=fqSVahQJxI1LCSl+yV2gYQ0ArGSw83Q2yvXtJBbgYtkymmYjhGIk8lpcGKslqK7BHPQ5nH3TzHgKgAqiur8WeOCG4FrI/BPAwY8YwVszOin7qllXkCWTkAge7ZknX2l/AnlvKga6FEJFjNIUYNS8ukX7KR2i+Zx73gpqnAlQ+TQ=
+	t=1751368928; cv=none; b=Dmk07DDwrvhaSXgbA7/CpNTWi5mcA7J4NCt16Kv2JavAYycBSSnBwTz24T0q4UvpwTNEZLDBqc1qiZdpFc6wKE+3+uP8mf0lvZ4OTXW9ujnxgjhOcU+44YhGVGr+TboBUVRVb3tui0QIAA0GvsnWZvSxwKXepd/FZBWAv2GtQFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751368761; c=relaxed/simple;
-	bh=Wi3qTUOqLTwu6EydYZdUzDHX2+YaRYTHjrIsTbVXha8=;
+	s=arc-20240116; t=1751368928; c=relaxed/simple;
+	bh=t7zkl/qlRj4bl42LCaW7PP/E22dbIn6npeQKVgaEFxQ=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=rdRrdAYI+br+Fnq8I4fC4kA/KtXJpMuboGigH7PUxf9OzbxEWmChZO5MbGNzmIt3R0zXrChBSMHIXDKbggJZ/ekCir0oQdGFIltL13e1gnoO4OmgAIbPF9LTGOKqYfDCOoca10u/kGBxeoRqwV0F9hcPFMTKZcVDdVuI5Y7ASyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=DnPyqWNv; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=IMDbMUQ7; arc=none smtp.client-ip=46.30.211.187
+	 Message-Id:References:To; b=fceJj72dPFX7134t6tL3tXfIqFBQdZ4VRGUV8SA+JsYZUs0wyAqb9N4ytxuzOO/k8mLlu69/gfDI62S17rQbFEZ16mBubIAs/ySXhPqqLAZbGMpbDwNryp11uMtX3GPPjb4h8m2r4yo1KfcQ+dcUQ6RjcR9DMrdxsl90IhfLNLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=GHxdOp1T; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=73Ubm0CM; arc=none smtp.client-ip=46.30.211.187
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="DnPyqWNv";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="IMDbMUQ7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751368756; x=1751973556;
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="GHxdOp1T";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="73Ubm0CM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751368924; x=1751973724;
 	d=konsulko.se; s=rsa1;
 	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
 	 subject:mime-version:content-type:from;
-	bh=DHXuxV40u1ZYjDXLBVQbXs11RHOmrGLB2bnqKxDAyss=;
-	b=DnPyqWNviCmpJZ2Hfth/ae8KzTc8bC9btMPr1I8VVD/4t0UE+fWAzDmTpnpribFRkeG6dMqpB7JWX
-	 dwyZf3PS8aWEGKU2C5sIVsSLGX8+xpPAfnrf1Sf//Ca8AGbqgJXJ0PLMRD7etZhKTr5tGWgdom9219
-	 0AbgSZHChHYuFqn04J1SX4IpA6r4hfpr3Mq9KFCmlroV5wJhhEaBattoEIQQ/swKgW2vbKrCH8YNgh
-	 T/SIW7bykAwD16e+KP6UADGr28leGRSjPPx4iWEcC9G1FXuGn1uQ0CVR5P502IT3jlJUUqRZ+z78al
-	 Pvpb0LtmPdW1WzkiOQpTFsMzeNcs81Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751368756; x=1751973556;
+	bh=ype0RXWkZlnpbFqpY1x56iV2OcirmQognCCOHtgnUhY=;
+	b=GHxdOp1TQlnXScmmzp9jCJc+kUqZv8KWDtOOa8f44GFfzle2p3QZEHUju9yxNev7hnVG9JPA8vYbQ
+	 T70J26mZRkaJy+wV2Yqe5BJG3vZbVXpRdvHpKHee/p1KS2DZj+qZoLmG4H4a+Hz0s3rs/TYMU5sUEI
+	 mqhC/EmtTUz0FvXE9YCpLbqUOxi3FGUV4soren1gozCLplXkGVzv6NQJNgeSjqn+P4/JpvcNxK5H6/
+	 NgM+2UzDHIGHhvjhSUMyVRwn/zukSjgItKo5dhkKVcAASklzQvgCkER2eORkdaLPSviLO1GEnzLxOK
+	 x8XJcOFMWUjl1trcsECQCNpwiZSod+g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751368924; x=1751973724;
 	d=konsulko.se; s=ed1;
 	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
 	 subject:mime-version:content-type:from;
-	bh=DHXuxV40u1ZYjDXLBVQbXs11RHOmrGLB2bnqKxDAyss=;
-	b=IMDbMUQ7RkW5LhtaMJhpYbNC1TMzZWvyW51Z3IMABcj6SDyJ7yUS5UO2ltw2SrY9SaFjYYBm8VAwY
-	 Frwzcq7DA==
-X-HalOne-ID: 393bfb6b-566d-11f0-ab17-85eb291bc831
+	bh=ype0RXWkZlnpbFqpY1x56iV2OcirmQognCCOHtgnUhY=;
+	b=73Ubm0CMpwm1Mu67KoqKjyrZpyKh+6Sb1jL5TC9Dhm9KAGTWm5AFOQkUqy/8/Y2IVApvr5GPsPb4e
+	 ipLNslWCw==
+X-HalOne-ID: 9ceca3db-566d-11f0-b5ef-f78b1f841584
 Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
-	by mailrelay5.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 393bfb6b-566d-11f0-ab17-85eb291bc831;
-	Tue, 01 Jul 2025 11:19:16 +0000 (UTC)
+	by mailrelay1.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 9ceca3db-566d-11f0-b5ef-f78b1f841584;
+	Tue, 01 Jul 2025 11:22:03 +0000 (UTC)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -47,178 +47,164 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v9 3/4] rust: add support for NUMA ids in allocations
+Subject: Re: [PATCH v9 1/4] mm/vmalloc: allow to set node and align in
+ vrealloc
 From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <aGO5qadROziFuO35@google.com>
-Date: Tue, 1 Jul 2025 13:19:06 +0200
+In-Reply-To: <aGPDcUc5ixYF8cQL@pc636>
+Date: Tue, 1 Jul 2025 13:21:53 +0200
 Cc: linux-mm@kvack.org,
  akpm@linux-foundation.org,
  linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>,
  Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
  rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <3D58CB40-CB1C-47A2-BB71-5C32B3609AE0@konsulko.se>
+Message-Id: <190A8A7B-A46B-4073-8EFC-14A0EB6EF3DC@konsulko.se>
 References: <20250630221511.3325123-1-vitaly.wool@konsulko.se>
- <20250630221640.3325306-1-vitaly.wool@konsulko.se>
- <aGO5qadROziFuO35@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
+ <20250630221615.3325221-1-vitaly.wool@konsulko.se> <aGO9a06HutqljjNS@pc636>
+ <31E257E1-AB52-4115-A264-56F545AB84A9@konsulko.se> <aGPDcUc5ixYF8cQL@pc636>
+To: Uladzislau Rezki <urezki@gmail.com>
 X-Mailer: Apple Mail (2.3826.200.121)
 
 
 
-> On Jul 1, 2025, at 12:34=E2=80=AFPM, Alice Ryhl <aliceryhl@google.com> =
-wrote:
+> On Jul 1, 2025, at 1:16=E2=80=AFPM, Uladzislau Rezki =
+<urezki@gmail.com> wrote:
 >=20
-> On Tue, Jul 01, 2025 at 12:16:40AM +0200, Vitaly Wool wrote:
->> Add a new type to support specifying NUMA identifiers in Rust
->> allocators and extend the allocators to have NUMA id as a
->> parameter. Thus, modify ReallocFunc to use the new extended realloc
->> primitives from the C side of the kernel (i. e.
->> k[v]realloc_node_align/vrealloc_node_align) and add the new function
->> alloc_node to the Allocator trait while keeping the existing one
->> (alloc) for backward compatibility.
+> On Tue, Jul 01, 2025 at 12:54:36PM +0200, Vitaly Wool wrote:
 >>=20
->> This will allow to specify node to use for allocation of e. g.
->> {KV}Box, as well as for future NUMA aware users of the API.
 >>=20
->> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
->=20
-> My main feedback is that we should consider introducing a new trait
-> instead of modifying Allocator. What we could do is have a =
-NodeAllocator
-> trait that is a super-trait of Allocator and has additional methods =
-with
-> a node parameter.
->=20
-> A sketch:
->=20
-> pub unsafe trait NodeAllocator: Allocator {
->    fn alloc_node(layout: Layout, flags: Flags, nid: NumaNode)
->                -> Result<NonNull<[u8]>, AllocError>;
->=20
->    unsafe fn realloc_node(
->        ptr: Option<NonNull<u8>>,
->        layout: Layout,
->        old_layout: Layout,
->        flags: Flags,
->        nid: NumaNode,
->    ) -> Result<NonNull<[u8]>, AllocError>;
-> }
->=20
-> By doing this, it's possible to have allocators that do not support
-> specifying the numa node which only implement Allocator, and to have
-> other allocators that implement both Allocator and NumaAllocator where
-> you are able to specify the node.
->=20
-> If all allocators in the kernel support numa nodes, then you can =
-ignore
-> this.
-
-This is an elegant solution indeed but I think that keeping the existing =
-approach goes better with the overall kernel trend of having better NUMA =
-support. My point is, if we add NodeAllocator as a super-trait and in a =
-foreseeable future all the Rust allocators will want/be required to =
-support NUMA (which is likely to happen), we=E2=80=99ll have to =
-=E2=80=9Cflatten=E2=80=9D the traits and effectively go back to the =
-approach expressed in this patch.
-
->> +/// Non Uniform Memory Access (NUMA) node identifier
->> +#[derive(Clone, Copy, PartialEq)]
->> +pub struct NumaNode(i32);
->> +
->> +impl NumaNode {
->> +    /// create a new NUMA node identifer (non-negative integer)
->> +    /// returns EINVAL if a negative id or an id exceeding =
-MAX_NUMNODES is specified
->> +    pub fn new(node: i32) -> Result<Self> {
->> +        // SAFETY: MAX_NUMNODES never exceeds 2**10 because =
-NODES_SHIFT is 0..10
->> +        if node < 0 || node >=3D bindings::MAX_NUMNODES as i32 {
->> +            return Err(EINVAL);
->> +        }
->> +        Ok(Self(node))
->> +    }
->> +}
->> +
->> +/// Specify necessary constant to pass the information to Allocator =
-that the caller doesn't care
->> +/// about the NUMA node to allocate memory from.
->> +pub mod numa {
->> +    use super::NumaNode;
->> +
->> +    /// No preference for NUMA node
->> +    pub const NUMA_NO_NODE: NumaNode =3D =
-NumaNode(bindings::NUMA_NO_NODE);
->> +}
->=20
-> Instead of using a module, you can make it an associated constant of =
-the
-> struct.
->=20
-> impl NumaNode {
->    pub const NO_NODE: NumaNode =3D NumaNode(bindings::NUMA_NO_NODE);
-> }
->=20
-> This way you can access the constant as NumaNode::NO_NODE.
-
-Thanks, noted.
-
->=20
->> /// The kernel's [`Allocator`] trait.
->> ///
->> /// An implementation of [`Allocator`] can allocate, re-allocate and =
-free memory buffers described
->> @@ -148,7 +175,7 @@ pub unsafe trait Allocator {
->>     ///
->>     /// When the return value is `Ok(ptr)`, then `ptr` is
->>     /// - valid for reads and writes for `layout.size()` bytes, until =
-it is passed to
->> -    ///   [`Allocator::free`] or [`Allocator::realloc`],
->> +    ///   [`Allocator::free`], [`Allocator::realloc`] or =
-[`Allocator::realloc_node`],
->>     /// - aligned to `layout.align()`,
->>     ///
->>     /// Additionally, `Flags` are honored as documented in
->> @@ -159,7 +186,38 @@ fn alloc(layout: Layout, flags: Flags) -> =
-Result<NonNull<[u8]>, AllocError> {
->>         unsafe { Self::realloc(None, layout, Layout::new::<()>(), =
-flags) }
->>     }
+>>> On Jul 1, 2025, at 12:50=E2=80=AFPM, Uladzislau Rezki =
+<urezki@gmail.com> wrote:
+>>>=20
+>>> On Tue, Jul 01, 2025 at 12:16:15AM +0200, Vitaly Wool wrote:
+>>>> Reimplement vrealloc() to be able to set node and alignment should
+>>>> a user need to do so. Rename the function to vrealloc_node_align()
+>>>> to better match what it actually does now and introduce macros for
+>>>> vrealloc() and friends for backward compatibility.
+>>>>=20
+>>>> With that change we also provide the ability for the Rust part of
+>>>> the kernel to set node and aligmnent in its allocations.
+>>>>=20
+>>>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+>>>> ---
+>>>> include/linux/vmalloc.h | 12 +++++++++---
+>>>> mm/vmalloc.c            | 19 +++++++++++++++----
+>>>> 2 files changed, 24 insertions(+), 7 deletions(-)
+>>>>=20
+>>>> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+>>>> index fdc9aeb74a44..68791f7cb3ba 100644
+>>>> --- a/include/linux/vmalloc.h
+>>>> +++ b/include/linux/vmalloc.h
+>>>> @@ -197,9 +197,15 @@ extern void *__vcalloc_noprof(size_t n, size_t =
+size, gfp_t flags) __alloc_size(1
+>>>> extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, =
+2);
+>>>> #define vcalloc(...) alloc_hooks(vcalloc_noprof(__VA_ARGS__))
+>>>>=20
+>>>> -void * __must_check vrealloc_noprof(const void *p, size_t size, =
+gfp_t flags)
+>>>> - __realloc_size(2);
+>>>> -#define vrealloc(...) alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+>>>> +void *__must_check vrealloc_node_align_noprof(const void *p, =
+size_t size,
+>>>> + unsigned long align, gfp_t flags, int nid) __realloc_size(2);
+>>>> +#define vrealloc_node_noprof(_p, _s, _f, _nid) \
+>>>> + vrealloc_node_align_noprof(_p, _s, 1, _f, _nid)
+>>>> +#define vrealloc_noprof(_p, _s, _f) \
+>>>> + vrealloc_node_align_noprof(_p, _s, 1, _f, NUMA_NO_NODE)
+>>>> +#define vrealloc_node_align(...) =
+alloc_hooks(vrealloc_node_align_noprof(__VA_ARGS__))
+>>>> +#define vrealloc_node(...) =
+alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
+>>>> +#define vrealloc(...) alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+>>>>=20
+>>>> extern void vfree(const void *addr);
+>>>> extern void vfree_atomic(const void *addr);
+>>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>>>> index 6dbcdceecae1..776c68f84ce2 100644
+>>>> --- a/mm/vmalloc.c
+>>>> +++ b/mm/vmalloc.c
+>>>> @@ -4089,12 +4089,15 @@ void *vzalloc_node_noprof(unsigned long =
+size, int node)
+>>>> EXPORT_SYMBOL(vzalloc_node_noprof);
+>>>>=20
+>>>> /**
+>>>> - * vrealloc - reallocate virtually contiguous memory; contents =
+remain unchanged
+>>>> + * vrealloc_node_align_noprof - reallocate virtually contiguous =
+memory; contents
+>>>> + * remain unchanged
+>>>> * @p: object to reallocate memory for
+>>>> * @size: the size to reallocate
+>>>> + * @align: requested alignment
+>>>> * @flags: the flags for the page level allocator
+>>>> + * @nid: node id
+>>>> *
+>>>> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If =
+@size is 0 and
+>>>> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). =
+If @size is 0 and
+>>>> * @p is not a %NULL pointer, the object pointed to is freed.
+>>>> *
+>>>> * If __GFP_ZERO logic is requested, callers must ensure that, =
+starting with the
+>>>> @@ -4111,7 +4114,8 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+>>>> * Return: pointer to the allocated memory; %NULL if @size is zero =
+or in case of
+>>>> *         failure
+>>>> */
+>>>> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>>>> +void *vrealloc_node_align_noprof(const void *p, size_t size, =
+unsigned long align,
+>>>> + gfp_t flags, int nid)
+>>>> {
+>>>> struct vm_struct *vm =3D NULL;
+>>>> size_t alloced_size =3D 0;
+>>>> @@ -4135,6 +4139,11 @@ void *vrealloc_noprof(const void *p, size_t =
+size, gfp_t flags)
+>>>> if (WARN(alloced_size < old_size,
+>>>> "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
+>>>> return NULL;
+>>>> + if (WARN(!IS_ALIGNED((unsigned long)p, align),
+>>>> + "will not reallocate with a bigger alignment (0x%lx)\n", align))
+>>>> + return NULL;
+>>>> + if (nid !=3D NUMA_NO_NODE && nid !=3D =
+page_to_nid(vmalloc_to_page(p)))
+>>>> + goto need_realloc;
+>>>>=20
+>>> By this goto change, you bypass the two important checks below. For
+>>> example if you shrink the allocated size, you do not need to perform
+>>> any allocations. Instead the patch goes and allocates a new area.
+>>>=20
+>>> You just need to remove:
+>>>=20
+>>> - if (nid !=3D NUMA_NO_NODE && nid !=3D =
+page_to_nid(vmalloc_to_page(p)))
+>>> - goto need_realloc;
+>>>=20
+>>> to make it working.
+>>>=20
 >>=20
->> -    /// Re-allocate an existing memory allocation to satisfy the =
-requested `layout`.
->> +    /// Allocate memory based on `layout`, `flags` and `nid`.
->> +    ///
->> +    /// On success, returns a buffer represented as `NonNull<[u8]>` =
-that satisfies the layout
->> +    /// constraints (i.e. minimum size and alignment as specified by =
-`layout`).
->> +    ///
->> +    /// This function is equivalent to `realloc_node` when called =
-with `None`.
->> +    ///
->> +    /// # Guarantees
->> +    ///
->> +    /// When the return value is `Ok(ptr)`, then `ptr` is
->> +    /// - valid for reads and writes for `layout.size()` bytes, =
-until it is passed to
->> +    ///   [`Allocator::free`], [`Allocator::realloc`] or =
-[`Allocator::realloc_node`],
->> +    /// - aligned to `layout.align()`,
->> +    ///
->> +    /// Additionally, `Flags` are honored as documented in
->> +    /// =
-<https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
->> +    fn alloc_node(layout: Layout, flags: Flags, nid: NumaNode)
->> +                -> Result<NonNull<[u8]>, AllocError> {
+>> I am not sure I=E2=80=99m following. If we get a request to =
+reallocate for a different node then we should either reject it or do =
+the new allocation for this new node and copy the data to the new place. =
+Shrinking the allocation on the old node doesn=E2=80=99t seem to be =
+right. Or am I missing something?
+>>=20
+> If your process migrates to a new NODE, which is fine, it does not =
+mean
+> that you have to perform all this bouncing movement(reallocate on a =
+new node).
+> Next time it can be migrated back. Process are allowed to migrate and =
+access
+> to a remote memory.
 >=20
-> I don't think this is how rustfmt would format this. Can you run =
-rustfmt
-> on your patch?
->=20
->=20
-Will do, thanks.
+
+Indeed, but in that case the caller is expected to specify NUMA_NO_NODE =
+in vrealloc_node_align(). If the caller did specify an exact node we =
+can=E2=80=99t just silently disregard that, we should either respect =
+that or fail.
 
 ~Vitaly
 
