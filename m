@@ -1,102 +1,143 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7187627A465
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 11:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397DC27147D
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 11:52:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751370601; cv=none; b=OYHcmM8bxzi6F/wQYx+a1UEsppj91pvJxZwpOTMdhMk1AcgEnRS5yABYFN+h7VYNkgMjkjK8vQXAflfH/Yr+YxkAIXkUxES25T60AX01jKeBXYT3goADI7EXsSQHT2nsvl2TET0hb/uZ9rAz9Ymv7HesUszxHue89On6QE57k68=
+	t=1751370765; cv=none; b=pi4tGC82m9SU8na611KbEUpPrtw+owKOICPToOAkkCjr9Q5V6kxsq9uEeKt1+OJCgWS8L5xA7rRUQb3CFbJh47EO1E/sPBILN3X2guIu/Uey6EaOg3f9e384Ly3NmHbjNPsDMrHBiP5amF8fjIXom81ccF4l+/t6f8BH4fkbpt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751370601; c=relaxed/simple;
-	bh=R+rwOhIowzKwTY9h4u5eqn86gDd48p2rdXWg3ykB4X0=;
+	s=arc-20240116; t=1751370765; c=relaxed/simple;
+	bh=jrHyPTE0Cbbg51nU/1dDVkkk444gMusx+i7f5CaT3BM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lYCy0SnMmd/2pd8Ba0tyIIqoYNupnQ7+s9O+M5Vc2YoGPXSyWGNlTPns94tl3HAw956lMi4iEheR1ZM7jyr7o9QEtTDfoe1DckgC5ykNCkEEx/RpGVO0Bd+bfw6pmnFvxbkVxxjcxgRHiVl/taxrQt/hQTn0wycB0Ti384/Iy3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0JUONJrG; arc=none smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=VpCrm0gO+MpvRs98QyIbDwQgPKtXotBDc4kHuftitSW0mkEyuqKdLJOlXueZTEqMc5DQok87WG8FZdlVkz5TKZsHlCA4Nwq9ZBW9V2Ig0kY+Bf9LL7cMOJG9OgYfxdbyXuV3lKCM8BI1G2I4gdF/5Q0Au3ZpYiyMi5DlYp64YvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UZ+VDBVv; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0JUONJrG"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a50956e5d3so4717495f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 04:49:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UZ+VDBVv"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a575a988f9so3628922f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 04:52:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751370598; x=1751975398; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1751370762; x=1751975562; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0KGSBavzhT3TpQui0uI73A+Z+3UDA0xLLxmDbt54UW0=;
-        b=0JUONJrGzkaw1i/zUiw+03ML/aAkfY8AGX628MberDpxPEpBMbOcvlBo2B37+WvDjE
-         KdmyhJruSd1D+AMUAahBFaAcxNFpYddVLdNYsz9zqcbF5HQx8hzudHvVAwOrVZnn44Vr
-         1vmmX7WWsiTNf35fnB9i4tmZezAuKiC6Ryepj/79CeQk5HetymnC7+rHM3ZXAzfOW2jd
-         svPMSuF84qClbkXmj3fwCLAdmCa5zA9HRvWVCyjCMTTvGTosPu+83DpVXFcLCd8TsJpq
-         JAUr5u4dpiiKRfHT/r36SG1d7jrKtfVxzIm/SHQSc+NM8xsrHo/nrH7WXRZQI0k7Ml43
-         Fphg==
+        bh=veoFO+1wdpPDWz3qRkvkxT3szkUu/z2wjkK1DneZyWM=;
+        b=UZ+VDBVvIPiPg+KusvlM1G13dxaBGmTxAHDPOhozNVmQ4QQaMCKXI44cJTUy4z/E4H
+         mGYecZsXg0KR7EJ4BM7G5VibZne/WSo1NpG1yM+s3+4p22UL+IXiEgXdWdi9utxWUE8K
+         DoIwmqth+I8ukbb57iVMTu+/d3HgdEYtqO11xBTA9JKciT2O4EWiAj62f973pT0ZZmOY
+         mUGJSaS5DJnLoCsLUd1KWqo4BN2vs3m/Ur4NZ80lX1NeY5Jq0Ter+QAmfYVDTP2lePgf
+         0Ini4agqU+8AuCsFBgVvfW4vEUab9Pi4uZyFC2jOtmH3way9Z/4wMDIU/y9fWL8bK4H+
+         OQOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751370598; x=1751975398;
+        d=1e100.net; s=20230601; t=1751370762; x=1751975562;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=0KGSBavzhT3TpQui0uI73A+Z+3UDA0xLLxmDbt54UW0=;
-        b=vrBd83ex3I3BJ9E1iUAoBW9Y/ZwEkFvhgP77nGnF+0m4UGNBXDWnKnIXTQ2x+I6iRN
-         hIrP3V14qHxONtB4bseufakiKr4Re8rluXy5xIE9s/i6zfcs6iqsHLj/xjoBDIRjXRw+
-         LU0CHd/vkoOGZ1Pscph2Yv0ofW3g3psOvB18b+BeMOA1WGArYfbx2wvwyuPT2c47ZbEd
-         S7YDqqefQD8T0hqYY38MK7j78W8KJsk8JqKeNuH2qfzSuYXQB0Aoc/nKV6C/GHuM4SiD
-         mSQVl4gPFK13m89QC9HcyB3UxExxlOri8da7tiRjI1e5O2RzsrZDa452hdhY8pK4y9FH
-         IjWA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgUnP0HG4O2+1LO2Tm9r7fuSdqDXJjP1LrPhaMYpOQPN3YFaAjv4HmwxfHfHsDb28ub3WCl63T79vsUiDRIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjZBEqcI1muNMx0AKKZqzwAk7ZtWiOZeicJouH2n6heFeH7zyj
-	uSuh32h6uf5m9+EXjUf0jvUrLM3T+tgHoQfS0vaWDBO/1VfX/cVbYY53d+Q4p5MqofzDSUt/xc3
-	ir7igTjnTBJSh4W3iidpBjzd8gUsXSNECuKFziyp3
-X-Gm-Gg: ASbGncvEykCNl2D2mrwXjdE3xi0WnNa1xWJAE+ObhOzq7yiFVPZm7NXYQHH9qetUHT5
-	68Z4Y9iSqoxmaQ4mImGQvsTrBqSO+itedHOVIqRWl31mbIjpnik347H229dxDbkdecFgYDTksJ5
-	8T1yOyCNDMgiy+PGdN0tfdyK62u4seFu/hq/NQ0GryrypY
-X-Google-Smtp-Source: AGHT+IGZXsC8mGRscscDusoREbjL9I6GGdeiYS8C2b53bnLNCJ1i8gfIkCUFcIsBDQNQAE78Y338ALuI+8cM8titd0w=
-X-Received: by 2002:adf:c084:0:b0:3a4:f9e7:2796 with SMTP id
- ffacd0b85a97d-3a9176038c6mr11687442f8f.35.1751370597647; Tue, 01 Jul 2025
- 04:49:57 -0700 (PDT)
+        bh=veoFO+1wdpPDWz3qRkvkxT3szkUu/z2wjkK1DneZyWM=;
+        b=Vi2eWNSZu2mY8YFqwwzohRCDxYfPwj0GK1Xvzk1zBf6pcV0q6JZPkbQslUYFmxxsAp
+         xSzSgOb8bFRUR1VA5QQNVrFS6OI56WgLPDElV5LLugyDZCyAdKKejokeoAbODrTDfv9U
+         NsvvIspGIhfKgWYNhiGTFqJYABS5t4QK9m0WXwFxVX+0wU8/8HLcGdFik9ihhl3TCks6
+         s96FNTPd+F09/Vs7nX+41hcCPLjnjMFa5p/XGL6vlmey99JKkSzUQbGMUbYBSuBuppON
+         c4N38vlTjuiaZqbuSXO+MVqzGbrvmBIf6ki981ZNDaaC7E+cKgSL67eg1rl5Em/09tQ9
+         5pJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVTZtwQ4oZ4C+AE1CGwDfMlEP1F2bs6jvGaGBhYADysqAjJO9qi5hGtWcm7Qpq2dUaf7mCgZNySe1ZJ5Zv31Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSP6w/a87RWTlhAv7zwyjJukdJaX1KNKdHYn2ecdNEroO4f5hQ
+	VeX/n+hFhI2RIQkGhH5AyqWoM4J1d0JdMjt34oWie/0Mpurf4/G6rQfmL4wptphQtHLcp2ZLlzR
+	Y+U/35aNw3E2jD+UoLB4D4Wa/e6koDK7RqrR2/Kd5
+X-Gm-Gg: ASbGncvW/L1wKvAkRjDY1Fqa+ZY1UH9oOhxnetcZBTt8HxqABxpSfGvvmZL/3gnBbzR
+	V97GgJuttyLnGiLDW3wr3EQBSfEeCoACwprNv3rYACB215caMAyoqmdch4K/ZZTYsQvBbZRkpVd
+	k55aP85CuNy18Fq1hAkErII/aCpSDWLjjtJChrpmJdGmlhDcuUsKf3B/Y=
+X-Google-Smtp-Source: AGHT+IFUlJySjsgWCyutnog4gDVqPy3/yBi31gYRy/p63NPCINHZ/bW019+CCuJmHTVh0LKrHnBPA0F6FZ0BNIhxi30=
+X-Received: by 2002:a05:6000:2188:b0:3a5:2465:c0c8 with SMTP id
+ ffacd0b85a97d-3a8fdb2acd9mr11587808f8f.7.1751370762366; Tue, 01 Jul 2025
+ 04:52:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250626200054.243480-1-dakr@kernel.org> <20250626200054.243480-5-dakr@kernel.org>
-In-Reply-To: <20250626200054.243480-5-dakr@kernel.org>
+References: <20250630221511.3325123-1-vitaly.wool@konsulko.se>
+ <20250630221640.3325306-1-vitaly.wool@konsulko.se> <aGO5qadROziFuO35@google.com>
+ <3D58CB40-CB1C-47A2-BB71-5C32B3609AE0@konsulko.se>
+In-Reply-To: <3D58CB40-CB1C-47A2-BB71-5C32B3609AE0@konsulko.se>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 1 Jul 2025 13:49:45 +0200
-X-Gm-Features: Ac12FXwadsx85yoxejxv-zSg2WaTwJMeTKN6Q-FEKtOdJN3NxG-K0L-aW-nbazs
-Message-ID: <CAH5fLghrF84T2V_0yckusmpBEdPgS2YPRDLw9iww9rAY3_qqCg@mail.gmail.com>
-Subject: Re: [PATCH v4 4/5] rust: types: ForeignOwnable: Add type Target
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com, 
-	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org
+Date: Tue, 1 Jul 2025 13:52:29 +0200
+X-Gm-Features: Ac12FXzcpTlny4SSlNLGwk5zd2CXwwCXOFc_w3xt_vRf8kazpRdDDaXsreX05Ek
+Message-ID: <CAH5fLghKvWgaVT_=TYpwqBJ4z_XYDbT8kbLvkxAT95+Sjg5zYg@mail.gmail.com>
+Subject: Re: [PATCH v9 3/4] rust: add support for NUMA ids in allocations
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 10:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
+On Tue, Jul 1, 2025 at 1:19=E2=80=AFPM Vitaly Wool <vitaly.wool@konsulko.se=
+> wrote:
 >
-> ForeignOwnable::Target defines the payload data of a ForeignOwnable. For
-> Arc<T> for instance, ForeignOwnable::Target would just be T.
 >
-> This is useful for cases where a trait bound is required on the target
-> type of the ForeignOwnable. For instance:
 >
->         fn example<P>(data: P)
->            where
->               P: ForeignOwnable,
->               P::Target: MyTrait,
->         {}
+> > On Jul 1, 2025, at 12:34=E2=80=AFPM, Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> >
+> > On Tue, Jul 01, 2025 at 12:16:40AM +0200, Vitaly Wool wrote:
+> >> Add a new type to support specifying NUMA identifiers in Rust
+> >> allocators and extend the allocators to have NUMA id as a
+> >> parameter. Thus, modify ReallocFunc to use the new extended realloc
+> >> primitives from the C side of the kernel (i. e.
+> >> k[v]realloc_node_align/vrealloc_node_align) and add the new function
+> >> alloc_node to the Allocator trait while keeping the existing one
+> >> (alloc) for backward compatibility.
+> >>
+> >> This will allow to specify node to use for allocation of e. g.
+> >> {KV}Box, as well as for future NUMA aware users of the API.
+> >>
+> >> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> >
+> > My main feedback is that we should consider introducing a new trait
+> > instead of modifying Allocator. What we could do is have a NodeAllocato=
+r
+> > trait that is a super-trait of Allocator and has additional methods wit=
+h
+> > a node parameter.
+> >
+> > A sketch:
+> >
+> > pub unsafe trait NodeAllocator: Allocator {
+> >    fn alloc_node(layout: Layout, flags: Flags, nid: NumaNode)
+> >                -> Result<NonNull<[u8]>, AllocError>;
+> >
+> >    unsafe fn realloc_node(
+> >        ptr: Option<NonNull<u8>>,
+> >        layout: Layout,
+> >        old_layout: Layout,
+> >        flags: Flags,
+> >        nid: NumaNode,
+> >    ) -> Result<NonNull<[u8]>, AllocError>;
+> > }
+> >
+> > By doing this, it's possible to have allocators that do not support
+> > specifying the numa node which only implement Allocator, and to have
+> > other allocators that implement both Allocator and NumaAllocator where
+> > you are able to specify the node.
+> >
+> > If all allocators in the kernel support numa nodes, then you can ignore
+> > this.
 >
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> This is an elegant solution indeed but I think that keeping the existing =
+approach goes better with the overall kernel trend of having better NUMA su=
+pport. My point is, if we add NodeAllocator as a super-trait and in a fores=
+eeable future all the Rust allocators will want/be required to support NUMA=
+ (which is likely to happen), we=E2=80=99ll have to =E2=80=9Cflatten=E2=80=
+=9D the traits and effectively go back to the approach expressed in this pa=
+tch.
 
-I am skeptical about this patch. I think that most of the time, you
-should just place the trait bound on `P` instead of having a Target
-type like this.
+If we are not going to have allocators without numa support, then what
+you did is reasonable. Though in that case I would consider just
+changing the existing methods instead of having methods both with and
+without a numa node argument.
 
 Alice
