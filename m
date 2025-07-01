@@ -1,95 +1,184 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B916D26F477
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 10:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4663E15E96
+	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 10:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751365477; cv=none; b=puIWnsV4k2BHzX7GGg6Gw+EL5jg51ip226cR2OBt780VM7KveLHTzN2fvDFJJ7aiY2iaTnRqH2PCjLQ2x9fIuHirG+ZTlJyAPLG71jmEkv+PSNZ3jbITQZpKSqO3ER1ka2mOJ5lq7AB+1mcKATtlSNT6rMQXdkv3yU7TF5Oyllw=
+	t=1751366062; cv=none; b=q4ACXahVB5xQ09vj30I7gtgCN3UQvb+S5YE/nGynX5lxzC3Vcw3JDLOadl5yBsTL/WWNERqJ6UnJW5TYfagR0wMYb1QCPSklK3mPv75NB1tsOl7Neh3Jw9KDetLE9u2EekUOOgxt0n60VCNFi01Cd+UbVtxn+L3Z0RwZdciX3jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751365477; c=relaxed/simple;
-	bh=ZFXU2/Ibp4ecCRuQYjkbKYOpoIIpT4Zpp7sdJw8JlfE=;
+	s=arc-20240116; t=1751366062; c=relaxed/simple;
+	bh=I5mrvGlIhRbJlxQ8eVXQCIvLA2D3zDa5EyQuNgkm5ro=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=K6ObVenHqKkGDcO5MoIopwROHF9QTmKKtJUhRaZBEUBg90Z1pIKViAuWosTOLKnTJuPMoRcoi9X75OZptNVkW8wj3GEemczoVIQgc/H8r0sbYh4a7m7ThzysycV3HgRpo/fIE5PsduyPi68rJ/KH/dzuqXno5541d3YUpjo8Hiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eC7kedE1; arc=none smtp.client-ip=209.85.208.74
+	 To:Cc:Content-Type; b=J1/tACrDOlfgpbLdYf/fqlQzkdHjfAP55yFNYmnLgigoNNDHWecF0/9D4o/ajsDn1oDibYgwSnRVH4N4XcgnwRjeNUdRsOmkX8Qv+6BYQ34DsTc7C5vKHlBoM9imWkA4POaxVqeusdvQMyZUUc+nHYAHM4fUKfAM84TLaaTUo98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W7Ql/uHP; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eC7kedE1"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-607206f0d57so2584775a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 03:24:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W7Ql/uHP"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a50816cc58so2825964f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 03:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751365474; x=1751970274; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1751366058; x=1751970858; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GUhtn5RG9Qyt3qmH9EZcO8PZo3a4nOb2nOYzpePWtbY=;
-        b=eC7kedE1+HlcSQnWD7pGFepZd3WGhFxlZz3FvLs/k1eIfHYp5c5daETiJNhGdqbd0P
-         /dZH8fWN6IC89/+wbB4H8esq2G+EZ0Z8Cy/JxWmiBlx8zKe5EaC0oSMJSIVHH9HajixL
-         GRIbV1CmCz/NfXXgwO6ck0r1nVdUltPghXePaY0ig8opygrnPQYLQgzf9QMnkTU+27Mt
-         sprCGjAKgFZZpetNiTS36A6G6D9/iyg2gt34QtyefCaWrbQkzWHNNiNhydZJZUtUPmKo
-         e3f1IUTxRTeTXssE2na5+KKo+Ql30ixDqPRsyqdJIsajvACoMGhAdGf6qy8edZECx0IT
-         XN9g==
+        bh=9eYpIWWOyUDfBdnF6w5EzWxG6nDSQGMmFCg+4mWFSaM=;
+        b=W7Ql/uHPu57+EntIi7rgmExXZ5vuBZnpDlIz+dpAQagiXcHzO5JxrxgkqgFJhFmryZ
+         9GtU5xB/dnQOTqam3b5u/AmMtZtTXfnvuvpLVWTroGSAPdTx32uSmzeQbSJeEGwyrS5R
+         WnSTLPJVks/o7THb2qTX31U+VLBsX9zOqEx/sTlVRYnXpV0bGBDZh3RzoYOlI2IgVVah
+         N2fuTgegu6A1A4KUUXGT9d8XtRejjFD2GwrlBaSkpuAuNjsd9y20J1N1OUGX8+RZpDQ9
+         HS1TZwOMBwcP8rXvUy/jbbfnYPdnyRM36k7g66US1asyo9JyHy0pyIK3Yt7WNv4PX33C
+         dgOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751365474; x=1751970274;
+        d=1e100.net; s=20230601; t=1751366058; x=1751970858;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GUhtn5RG9Qyt3qmH9EZcO8PZo3a4nOb2nOYzpePWtbY=;
-        b=Kl00NMry1tHbot9jhIh6nwZeN3qDWjTWNoLZdFgPfihCz1ZmJksAPQ5H2Gt8/PrvWE
-         g6BX8dkqUy1FvrX/hTl4MBtc0KT8MbPJ5sX3BVo6tir9k5mAjzRhmTScnKzz6f27AdJk
-         GZnMwWus2mHWYqV6vJmhqUlV9bf5X24y0w0PKQCOJRukICS1QFsLh8scneWZEFZZjpCf
-         y8ao+t8LkH02mLn+v0cO68kbxr+bKwK3uiwKY+Bs/mil2/IrCywRYERXb8+yD6JhPmZt
-         aSIxL0pXrRt04rcJV8U7tTg4X9LQGng1bUryfXzvqXr5KG19tulm/I6WVldte52NdEQu
-         /6oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+JOswLc6iME5/yDWdnQPs+3BhvIT90r0rWj3nvdPw08VVl7X50ysa5J44js8YT0jG1Xl6Y7UKjA2H8w3glQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLTQt6aTbXCHDVFK5gRtYa6bAAuxPWxZbzQQv+P3yH7n3F3YH3
-	O0j8AqgGjJhzF8mfRXb4ArHt6YW+bp/SwibjdcopqE0Hwbjrs2unueHi7Gnqv4UgXTeflDxGzvd
-	MW29IRi3KWXvajucnSA==
-X-Google-Smtp-Source: AGHT+IFeLVmEdincwRIecInghJ8Lwip41MVfmuoZTlfQBus5dMVBnFrpiXqzg//PJ+GcGjLhtKgP2XEhLbDGfdk=
-X-Received: from edau21.prod.google.com ([2002:a50:9515:0:b0:609:5b37:161])
+        bh=9eYpIWWOyUDfBdnF6w5EzWxG6nDSQGMmFCg+4mWFSaM=;
+        b=PEtdvNDbOCwJwb48TaJJugvllcJgBjwJjBEZvYlnC49pYI/1h23kqJ2ZU1Q8jaSlZL
+         fhBiJ7ZlHmOPABUYF+7z08bZF35BUvZb8APDddb4kjmACeU5EWTwFLjcYVGigx3rToi+
+         rPvi0xUKGVTL79xnZoK36qxjNXR0yBvIGD4AXM49poGzUnhbhJNMHxC8TL+ziu279KfM
+         pWcLDyJ4a/AsWK0lTLfcQjEIRZEvrLk1m3WEiUIsjZCzyCPeAId0al9Pivd1eeoCN1QR
+         Dqp6kSwV5FMcTfdMeTv5AxHL3f7OO40/zYwYtLSPwuEvtUkapDRc4/fSOjbgRNrNqtD5
+         k8PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVegs4J28HTzDfhM2SG7433pXHHK5LjUPtlBLAvHt7Vn4U73e8V2xFy9hBe9SZY493UmM0tjVmZiYhyxUb84w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhJEjf8WIWQw60z5257x54Y643EibEIZI7qfnMZgmk3/FPMszJ
+	Z4ZWp39YhqtJ6xWVVrRFpojOh82/V1JY0d9bVwl5aizkXFpar+6Azr+WgOSq+wgriN0FKsRFYO+
+	dOc7EMWN5jr0RLEgPOA==
+X-Google-Smtp-Source: AGHT+IExCFB+P+olVhWi69uc4CgDaEnI8SE94UUo0CxDvKCx5CZn1RoH+3jT8lmx3jEG2VJ7mPnAhF7D8TcmUIk=
+X-Received: from wmbds13.prod.google.com ([2002:a05:600c:628d:b0:450:da87:cebb])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:5209:b0:60c:3ecd:5163 with SMTP id 4fb4d7f45d1cf-60c88e9b3femr15675912a12.26.1751365474174;
- Tue, 01 Jul 2025 03:24:34 -0700 (PDT)
-Date: Tue, 1 Jul 2025 10:24:33 +0000
-In-Reply-To: <20250628165120.90149-1-dakr@kernel.org>
+ 2002:a05:6000:646:b0:3a5:8600:7cff with SMTP id ffacd0b85a97d-3a8fdb2a82fmr15767911f8f.1.1751366058480;
+ Tue, 01 Jul 2025 03:34:18 -0700 (PDT)
+Date: Tue, 1 Jul 2025 10:34:17 +0000
+In-Reply-To: <20250630221640.3325306-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250628165120.90149-1-dakr@kernel.org>
-Message-ID: <aGO3QgrGSgN5X2hz@google.com>
-Subject: Re: [PATCH] rust: dma: require mutable reference for as_slice_mut()
- and write()
+References: <20250630221511.3325123-1-vitaly.wool@konsulko.se> <20250630221640.3325306-1-vitaly.wool@konsulko.se>
+Message-ID: <aGO5qadROziFuO35@google.com>
+Subject: Re: [PATCH v9 3/4] rust: add support for NUMA ids in allocations
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com, 
-	robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu, 
-	acourbot@nvidia.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Sat, Jun 28, 2025 at 06:49:54PM +0200, Danilo Krummrich wrote:
-> Given the safety requirements of as_slice_mut() and write() taking an
-> immutable reference is technically not incorrect.
+On Tue, Jul 01, 2025 at 12:16:40AM +0200, Vitaly Wool wrote:
+> Add a new type to support specifying NUMA identifiers in Rust
+> allocators and extend the allocators to have NUMA id as a
+> parameter. Thus, modify ReallocFunc to use the new extended realloc
+> primitives from the C side of the kernel (i. e.
+> k[v]realloc_node_align/vrealloc_node_align) and add the new function
+> alloc_node to the Allocator trait while keeping the existing one
+> (alloc) for backward compatibility.
 > 
-> However, let's leverage the compiler's capabilities and require a
-> mutable reference to ensure exclusive access.
+> This will allow to specify node to use for allocation of e. g.
+> {KV}Box, as well as for future NUMA aware users of the API.
 > 
-> This also fixes a clippy warning introduced with 1.88:
-> 
->   warning: mutable borrow from immutable input(s)
->      --> rust/kernel/dma.rs:297:78
->       |
->   297 |     pub unsafe fn as_slice_mut(&self, offset: usize, count: usize) -> Result<&mut [T]> {
->       |                                                                              ^^^^^^^^
-> 
-> Fixes: d37a39f607c4 ("rust: dma: add as_slice/write functions for CoherentAllocation")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
 
-I'm not sure if `as_slice_mut()` is exactly the right API we want
-long-term, but this is a step in the right direction.
+My main feedback is that we should consider introducing a new trait
+instead of modifying Allocator. What we could do is have a NodeAllocator
+trait that is a super-trait of Allocator and has additional methods with
+a node parameter.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+A sketch:
+
+pub unsafe trait NodeAllocator: Allocator {
+    fn alloc_node(layout: Layout, flags: Flags, nid: NumaNode)
+                -> Result<NonNull<[u8]>, AllocError>;
+
+    unsafe fn realloc_node(
+        ptr: Option<NonNull<u8>>,
+        layout: Layout,
+        old_layout: Layout,
+        flags: Flags,
+        nid: NumaNode,
+    ) -> Result<NonNull<[u8]>, AllocError>;
+}
+
+By doing this, it's possible to have allocators that do not support
+specifying the numa node which only implement Allocator, and to have
+other allocators that implement both Allocator and NumaAllocator where
+you are able to specify the node.
+
+If all allocators in the kernel support numa nodes, then you can ignore
+this.
+> +/// Non Uniform Memory Access (NUMA) node identifier
+> +#[derive(Clone, Copy, PartialEq)]
+> +pub struct NumaNode(i32);
+> +
+> +impl NumaNode {
+> +    /// create a new NUMA node identifer (non-negative integer)
+> +    /// returns EINVAL if a negative id or an id exceeding MAX_NUMNODES is specified
+> +    pub fn new(node: i32) -> Result<Self> {
+> +        // SAFETY: MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10
+> +        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
+> +            return Err(EINVAL);
+> +        }
+> +        Ok(Self(node))
+> +    }
+> +}
+> +
+> +/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
+> +/// about the NUMA node to allocate memory from.
+> +pub mod numa {
+> +    use super::NumaNode;
+> +
+> +    /// No preference for NUMA node
+> +    pub const NUMA_NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
+> +}
+
+Instead of using a module, you can make it an associated constant of the
+struct.
+
+impl NumaNode {
+    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
+}
+
+This way you can access the constant as NumaNode::NO_NODE.
+
+>  /// The kernel's [`Allocator`] trait.
+>  ///
+>  /// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffers described
+> @@ -148,7 +175,7 @@ pub unsafe trait Allocator {
+>      ///
+>      /// When the return value is `Ok(ptr)`, then `ptr` is
+>      /// - valid for reads and writes for `layout.size()` bytes, until it is passed to
+> -    ///   [`Allocator::free`] or [`Allocator::realloc`],
+> +    ///   [`Allocator::free`], [`Allocator::realloc`] or [`Allocator::realloc_node`],
+>      /// - aligned to `layout.align()`,
+>      ///
+>      /// Additionally, `Flags` are honored as documented in
+> @@ -159,7 +186,38 @@ fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
+>          unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags) }
+>      }
+>  
+> -    /// Re-allocate an existing memory allocation to satisfy the requested `layout`.
+> +    /// Allocate memory based on `layout`, `flags` and `nid`.
+> +    ///
+> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
+> +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
+> +    ///
+> +    /// This function is equivalent to `realloc_node` when called with `None`.
+> +    ///
+> +    /// # Guarantees
+> +    ///
+> +    /// When the return value is `Ok(ptr)`, then `ptr` is
+> +    /// - valid for reads and writes for `layout.size()` bytes, until it is passed to
+> +    ///   [`Allocator::free`], [`Allocator::realloc`] or [`Allocator::realloc_node`],
+> +    /// - aligned to `layout.align()`,
+> +    ///
+> +    /// Additionally, `Flags` are honored as documented in
+> +    /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
+> +    fn alloc_node(layout: Layout, flags: Flags, nid: NumaNode)
+> +                -> Result<NonNull<[u8]>, AllocError> {
+
+I don't think this is how rustfmt would format this. Can you run rustfmt
+on your patch?
+
+Alice
