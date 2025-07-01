@@ -1,171 +1,79 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD45220F23;
-	Tue,  1 Jul 2025 20:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6335D1E9B1C;
+	Tue,  1 Jul 2025 20:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751400194; cv=none; b=mrPepE+EOO8CjFXLBeWsJ+QM0wzaHFbTIYRyjovcpCRY1VoHcNDikJCupehoaRe0gko/AJ+sQYv3PxeEN82GQWlZmI3o1Yn8+X53hSjmt1hA5nVKYl2WMEb0kvMIkvpD5ewojCO/InprGvfNbV3/MsYuwPPMutsxwoY/U3CraAE=
+	t=1751400361; cv=none; b=fpZvJstSmzluOAJ6W6kg/253P64/8b0GMNCdVJ9JfsdC/ODHzRuRFkgkib5bjiiKk5XCBSQoSXBmTTrbztyTs/z4mc0Xd0ByJQ6nKzFsv6c0iqKOcZyWHErsyzTSd26ix8D5Noa3w5PddUQ93+toxa7SsKzIlFvxmh6APEq1V9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751400194; c=relaxed/simple;
-	bh=zLG8hsviQknEuvu3ax9pjjgXHOaZgAcLL9QurUfylIs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=KJ5zn3GrLrh349nlNCUqcNRnoksL48be3d0ODvgqsPMQtuFmb5NgsKUUhyLrtX+3C5vk4twiL0brQetLEAdwmeX7wSQvBQZ5MKbxym2BvPEZ/fAo9xWl6X02TTIIhryn5U364YTTgM5Sah+j8p/RzAoAqEYANhyAoftTZXcEtIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwkHiNjQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751400361; c=relaxed/simple;
+	bh=EgCnSjkxf4u1frTm53+gSUO8YuhHv0iXVp3vsJ/h0RU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZIwX/SAHs5trYQrzpSAJRowld0cWTb1xblBkbJtMIXQTNr19/kHlDirXBToumoxWep6tcHZjHIIDjirSeJt7Ge+59KmEf0ET0InbLoQW6m72MlmRg77FGU9PCNVdW4Y0i/dhjiAmcsODoWQRsSWVI+JTh9/lGgb9YmuO3YOhHzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hiCcDC/L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwkHiNjQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063AAC4CEEB;
-	Tue,  1 Jul 2025 20:03:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hiCcDC/L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C334C4CEEB;
+	Tue,  1 Jul 2025 20:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751400194;
-	bh=zLG8hsviQknEuvu3ax9pjjgXHOaZgAcLL9QurUfylIs=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=fwkHiNjQaNu1n7D7py4s8pl2Y0/X/lIQidjR5+/5DiCD2dZuSrr5UbBn0yx35v9Lg
-	 WjoWLbjgwoPwQnx1cCv5+AQrYIjvfXNDDKW23uoWwFfgorE82U5uUVIIVSCErSjUoC
-	 FaZwuT7RY4UOHzS9wDI3yT/lP6ygmtpyHGgvdoBYCRrOmEN5rg0S3w2kp++ttGl3GE
-	 PHdYiqw3yW9Wp0uPoBsktuXwREXLdt96eEcMdgVJS+Mw4YrGHFR20JzeY8cWAcWqOt
-	 f+eKoAVfn5HSmh99uR51hQ0MTTVQhD6mmsWaKS/V7XJ+ptwzs34nfiTc/VrP1w8O3m
-	 7NlCKzNpAM/+g==
+	s=k20201202; t=1751400360;
+	bh=EgCnSjkxf4u1frTm53+gSUO8YuhHv0iXVp3vsJ/h0RU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hiCcDC/LMjF4xusnlzOHKMvbFAnZ5glKwkSnQD38zFYwoP5d+j+D65q8v1QxTBjvE
+	 ovSjwtxKoO4AAnJsBdOZPxQiw36jM7qV9i2fUs0QZEzDhhKzmDwgikxzZTEZYJBkEE
+	 nSylKd5/ukuQiI05UAv7aJpTx2aY5a+LRhVyiHzmmOzphhvJZFo0CANwewdpdDAn7p
+	 d2uGSWQT3bzxAPl9WZ8G8S4iFkbpDrV8OvKzUT1Jhmw7AM5Vkpaa9nmQCrcYJuWgDA
+	 dXnKlAn+RqRmebG9V1oOD6N0rXgmAjgfkugQ+voiTz9QQH+piz4p0iiZC+M2yP3SRf
+	 uugx2/WRLqaZQ==
+Date: Tue, 1 Jul 2025 13:05:58 -0700
+From: Drew Fustini <fustini@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v6 0/8] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+Message-ID: <aGQ/ph1dGIJcnyZu@x1>
+References: <CGME20250701160157eucas1p1b6dfd8bf3859b07bff0cfcd171d7c939@eucas1p1.samsung.com>
+ <20250701-rust-next-pwm-working-fan-for-sending-v6-0-2710932f6f6b@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Jul 2025 22:03:09 +0200
-Message-Id: <DB0ZJVL0682F.ZNNOXEIDL5NN@kernel.org>
-Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing
- for File
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Sami Tolvanen"
- <samitolvanen@google.com>, "Timur Tabi" <ttabi@nvidia.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Dirk
- Behme" <dirk.behme@de.bosch.com>
-X-Mailer: aerc 0.20.1
-References: <5c3a2289-01c5-413e-9d7c-88a41c3f54e2@kernel.org>
- <CAGSQo038u_so+_pMRYj0K546zNfO5-eqoXFivXsEF6ACK=Y5cw@mail.gmail.com>
- <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org>
- <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
- <aGLUl7ZtuQBPoCuv@pollux> <2025070131-icon-quarters-0c16@gregkh>
- <aGPtCBB6nWTNJuwK@pollux> <2025070137-tartar-juncture-fcd2@gregkh>
- <aGP6d2-jJy5rtjMK@pollux>
- <CAGSQo00eG5oRdN_xORLUyUauLi_vzypU-gz6DSU_FzaAbHRLng@mail.gmail.com>
- <aGQ1VsnFaxBo9zaM@pollux> <DB0Z71SF488V.3QURUHHELOY84@kernel.org>
- <3c928a0e-ccd4-4ba0-9f42-9f2bb0203e75@kernel.org>
-In-Reply-To: <3c928a0e-ccd4-4ba0-9f42-9f2bb0203e75@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250701-rust-next-pwm-working-fan-for-sending-v6-0-2710932f6f6b@samsung.com>
 
-On Tue Jul 1, 2025 at 9:58 PM CEST, Danilo Krummrich wrote:
-> On 7/1/25 9:46 PM, Benno Lossin wrote:
->> On Tue Jul 1, 2025 at 9:21 PM CEST, Danilo Krummrich wrote:
->>> On Tue, Jul 01, 2025 at 11:11:13AM -0700, Matthew Maurer wrote:
->>>> On Tue, Jul 1, 2025 at 8:10=E2=80=AFAM Danilo Krummrich <dakr@kernel.o=
-rg> wrote:
->>>>>          impl Firmware {
->>>>>             pub fn new(&dir: debugfs::Dir, buffer: [u8]) -> impl PinI=
-nit<Self> {
->>>>>                pin_init!(Self {
->>>>>                   minor <- dir.create_file("minor", 1),
->>>>>                   major <- dir.create_file("major", 2),
->>>>>                   buffer <- dir.create_file("buffer", buffer),
->>>>>                })
->>>>>             }
->>>>>          }
->>>>>
->>>>>          // This is the only allocation we need.
->>>>>          let fw =3D KBox::pin_init(Firmware::new(...), GFP_KERNEL)?;
->>>>>
->>>>> With this everything is now in a single allocation and since we're us=
-ing
->>>>> pin-init, Dir::create_file() can safely store pointers of the corresp=
-onding data
->>>>> in debugfs_create_file(), since this structure is guaranteed to be pi=
-nned in
->>>>> memory.
->>>>>
->>>>> Actually, we can also implement *only this*, since with this my previ=
-ous example
->>>>> would just become this:
->>>>
->>>> If we implement *only* pinned files, we run into an additional problem
->>>> - you can't easily extend a pinned vector. This means that you cannot
->>>> have dynamically created devices unless you're willing to put every
->>>> new `File` into its own `Box`, because you aren't allowed to move any
->>>> of the previously allocated `File`s for a resize.
->>>>
->>>> Where previously you would have had
->>>>
->>>> ```
->>>> debug_files: Vec<File>
->>>> ```
->>>>
->>>> you would now have
->>>>
->>>> ```
->>>> debug_files: Vec<PinBox<File<T>>>
->>>> ```
->>>
->>> Stuffing single File instances into a Vec seems like the wrong thing to=
- do.
->>>
->>> Instead you may have instances of some data structure that is created
->>> dynamically in your driver that you want to expose through debugfs.
->>>
->>> Let's say you have (userspace) clients that can be registered arbitrari=
-ly, then
->>> you want a Vec<Client>, which contains the client instances. In order t=
-o provide
->>> information about the Client in debugfs you then have the client embed =
-things as
->>> discussed above.
->>>
->>> 	struct Client {
->>> 	   id: File<ClientId>,
->>> 	   data: File<ClientData>,
->>> 	   ...
->>> 	}
->>>
->>> I think that makes much more sense than keeping a Vec<Arc<Client>> *and=
-* a
->>> Vec<File> separately. Also, note that with the above, your Client insta=
-nces
->>> don't need to be reference counted anymore.
->>>
->>> I think this addresses the concerns below.
->>=20
->> You still have the issue that `Client` now needs to be pinned and the
->> vector can't be resized. But if you know that it's bounded, then we
->> could just make `Pin<Vec<T>>` work as expected (not relocating the
->> underlying allocation by not exposing `push`, only
->> `push_within_capacity`).
->>=20
->> We also could have a `SegmentedVec<T>` that doesn't move elements.
->> Essentially it is
->>     =20
->>      enum SegmentedVec<T> {
->>          Cons(Segment<T>, KBox<SegmentedVec<T>>)
->>          Nul,
->>      }
->>=20
->>      struct Segment<T> {
->>          elements: [T; 16]
->>      }
->>=20
->> or make the segments variable-sized and grow them accordingly.
->
-> That sounds a lot like the perfect application for XArray. :)
+On Tue, Jul 01, 2025 at 06:01:37PM +0200, Michal Wilczynski wrote:
+> This patch series introduces Rust support for the T-HEAD TH1520 PWM
+> controller and demonstrates its use for fan control on the Sipeed Lichee
+> Pi 4A board.
+[snip]
+> [2] - https://github.com/mwilczy/linux/commits/rust-next-pwm-working-fan-for-sending-v10/
 
-Haha I didn't know this already existed in the kernel :) Yeah then we
-should make XArray work for this use-case.
+I've tested this branch, which is now based on next-20250701, and the fan
+is working correctly.
 
----
-Cheers,
-Benno
+Tested-by: Drew Fustini <fustini@kernel.org>
