@@ -1,82 +1,145 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C5026B740
-	for <rust-for-linux@vger.kernel.org>; Tue,  1 Jul 2025 10:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6A226FD84;
+	Tue,  1 Jul 2025 10:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751367484; cv=none; b=IuXCepnW9kKqhLN7qKSlmiax+XWRCdegB7O4vVpt36uHpT79Mq0hNXsZMqxRbprsMY4fJq81nuXmOYQFL+Y27b43n0vnSUd0uIUX4ITSREoycGO5x0y09uOHTp3G4EqnbQFGBB+U9psRiCylv7I71q1JYQDphMGjVGRxnV5GAII=
+	t=1751367505; cv=none; b=fd3m2LdAXRYS3NChl3WiRbPnwOBz8uQ19jEOnEayWQ6ipUMP8BghLKfaad2A/9JxKTYSV/Ua8J0OGMbb5qOJGUMq+cf/vQvN4TiQTf+EWNGmbphxl44paKSyqGVD89JruOjAQ5Ze38DfVlylCfKS5sDJl5LjV7ONb5CWfKi4vlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751367484; c=relaxed/simple;
-	bh=69skJtRKFUn7zDpOwVUIh2uP80P8co6NUJyIRIhpXI0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rnDSIFrNj6947/NF6Z69HxwavNwpX9q1T0eyDTl+tMDecGdFtWNM6Hzm3nyvF0+6vQNetm2cc/qG1C3OlDQX2+ezkqznnafowTMP9u4jvIpPqRPa/w0clbKIu8HRsuaUTOGBVNdG0tNf95scwuspkOzU+XD0Zb+hhisqJ/lEs04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gNC++AjB; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1751367505; c=relaxed/simple;
+	bh=rkk9UXLbZVSCdjtp0NqI8G1ocVmjPZNAkzoBEd4QeOw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rSWk3vjDwjBnfIOHwNKwT0Ls41/0Y5mqLZDdZM/Fqh00KxrwU88u4rkdXTcMA00LMc/Bvy1Kx0sLD0YPun+E9p1glLgRbtN8hX4N82jl4NcEHNxPs+PUiGvOUlKinyX8/TTke0NErjxkae9ZjnG3APCw0M19wuYzN9ygLu/T1Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUzxtVUf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gNC++AjB"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4e9252ba0so1995829f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 01 Jul 2025 03:58:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751367481; x=1751972281; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+4pmXumBMClvdmoqj3ckb+e8tnZlkJ8riF+IbGt1/2Y=;
-        b=gNC++AjBDRTU8vWbHK1bvP+9xNR1MBDe+6oLJmUXyPTL+olnvdTxDAb1TAxU5OgG1/
-         zDKELBL2UasyHzJsgsX9BqRMSIxPHxgxKYAjynYVylw2dG4GPRvHs7itffd2DnhjpjCp
-         QFoBpD1iB9pkFPXQQ5dtLxYKfN5Do66Y8cTaWfuP0ZaA2sIsVbeyZqpH95in0NvbYbYz
-         oNazhGc33pFYQuxp9CHLPjb/+FCCqJ9K6ErpxHyHAGKeyeGd/mG5im6RlBBknb3iRNfE
-         4Vsn7L4FA4eMQ5LjbUEBgeUCG8BZ4gW0sP5NBUAe6EdLyf0Vvps0xXl9bByfym5eCepf
-         mSiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751367481; x=1751972281;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+4pmXumBMClvdmoqj3ckb+e8tnZlkJ8riF+IbGt1/2Y=;
-        b=k99LS6067/RwQlzheD1BVZlT7/6KAF7PnIlNiE5B232/541/rrQ8uDwTS95H2uwcwK
-         C2ra00BpZnDvK89ZCYOYRTgkfNAHAHtBncg4+GduVz5thZrs6cdM5xPd/Gs4I8ayaWd8
-         /zy705hf7YQSra/S1lHmLuqRbjrp644FtIWeVAg8CCioHdo85ZxG3R33nHWQgRLyM0oC
-         prNINEgO+Gg2SmajLhAiy2bc0Siwd/jef8QC36CllppWYwlFnB11DlGXUqrUgAA2hxPe
-         l7qyXOjdGl7OSDiSKHYprPDq6W1Cs6NV43sOvku+i4/8k8Jv0eW0Xrl/GFpDQ9vlvcWJ
-         TDOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXeWffmHzR+U9z6tUKmM0w7G3+L+SbkkCZpo4/3PUtejfYQlV1bV8YEjVcDUHa5XuXkP0VbPc37BISCrIvCOw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxjk436LM0SakAKkK2RBu5uDUrVZRa6guqgfx12EOKOlpALFh/s
-	Cl+aiRDD+pw3WqLnE093OU3MbQ0eb34ps6ndYpX//2iBcY1IKBMiAOUJtXmNba/iH264vemOsUx
-	gXADSODr6uUOnlLeAnA==
-X-Google-Smtp-Source: AGHT+IHVJRVexX67i++8eKSxECLv2YKxZWXGbP3lemNbo7XVNq6X7mdBDqKPr9CZGLFA4uVb+aCZ/DJFXDtvSzw=
-X-Received: from wmth7.prod.google.com ([2002:a05:600c:8b67:b0:453:910:1a18])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2905:b0:3a4:de02:208 with SMTP id ffacd0b85a97d-3a8fda34e30mr15196967f8f.25.1751367480898;
- Tue, 01 Jul 2025 03:58:00 -0700 (PDT)
-Date: Tue, 1 Jul 2025 10:57:59 +0000
-In-Reply-To: <20250627-debugfs-rust-v8-0-c6526e413d40@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUzxtVUf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4DAC4CEF2;
+	Tue,  1 Jul 2025 10:58:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751367504;
+	bh=rkk9UXLbZVSCdjtp0NqI8G1ocVmjPZNAkzoBEd4QeOw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MUzxtVUfD+FrdmJ4uxcXRjHlmlp2bY+JUoTNEReVPbJZGHiSZZI9q6rLqHcHT0cg8
+	 fReLHXJHPb7dOmIb9xkRccCpQlfgPeH9Rb0kyjUrekLeGkQ27twK+dN6xcVBZq7CiS
+	 RtINx2Q5gNubSCw3xUCGMJnpkEVm2Kr9uX5EdA2BD550F8TLssLt6RNlUSAIsmcKLe
+	 I+05mSRTsPhteQ1V/Sz/5f0Xf3nSGV39EG/SRGiDaiZHdssO38GAxtfwOfw6P8FFYT
+	 9AduqGDx+AOvI6bp5jI6WeRgFv1x0U/WNfrNAGKYl2inFZ6sAGHIhcNlzOqrbh3YDt
+	 9UMzA7B53hYuw==
+Date: Tue, 1 Jul 2025 12:58:17 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, david.m.ertman@intel.com, ira.weiny@intel.com,
+	leon@kernel.org, kwilczynski@kernel.org, bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/8] rust: device: add drvdata accessors
+Message-ID: <aGO_SS20fttVZM6D@pollux>
+References: <20250621195118.124245-1-dakr@kernel.org>
+ <20250621195118.124245-3-dakr@kernel.org>
+ <2025070159-perkiness-bullion-da76@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250627-debugfs-rust-v8-0-c6526e413d40@google.com>
-Message-ID: <aGO_N9fjmUGZ5JVx@google.com>
-Subject: Re: [PATCH v8 0/6] rust: DebugFS Bindings
-From: Alice Ryhl <aliceryhl@google.com>
-To: Matthew Maurer <mmaurer@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Dirk Behme <dirk.behme@de.bosch.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025070159-perkiness-bullion-da76@gregkh>
 
-On Fri, Jun 27, 2025 at 11:18:23PM +0000, Matthew Maurer wrote:
-> This series provides safe DebugFS bindings for Rust, with a sample
-> module using them.
+On Tue, Jul 01, 2025 at 11:27:54AM +0200, Greg KH wrote:
+> On Sat, Jun 21, 2025 at 09:43:28PM +0200, Danilo Krummrich wrote:
+
+> > +impl Device<Internal> {
+> > +    /// Store a pointer to the bound driver's private data.
+> > +    pub fn set_drvdata(&self, data: impl ForeignOwnable) {
+> > +        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
+> > +        unsafe { bindings::dev_set_drvdata(self.as_raw(), data.into_foreign().cast()) }
+> > +    }
 > 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> Ah, but a driver's private data in the device is NOT a bus-specific
+> thing, it's a driver-specific thing, so your previous patch about
+> Internal being there for busses feels odd.
 
-Looks good to me!
+It's because we only want to allow the bus abstraction to call
+Device::set_drvdata().
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+The reason is the lifecycle of the driver's private data:
+
+It starts when the driver returns the private data object in probe(). In the bus
+abstraction's probe() function, we're calling set_drvdata().
+
+At this point the ownership of the object technically goes to the device. And it
+is our responsibility to extract the object from dev->driver_data at some point
+again through drvdata_obtain(). With calling drvdata_obtain() we take back
+ownership of the object.
+
+Obviously, we do this in the bus abstraction's remove() callback, where we then
+let the object go out of scope, such that it's destructor gets called.
+
+In contrast, drvdata_borrow() does what its name implies, it only borrows the
+object from dev->driver_data, such that we can provide it for the driver to use.
+
+In the bus abstraction's remove() callback, drvdata_obtain() must be able to
+proof that the object we extract from dev->driver_data is the exact object that
+we set when calling set_drvdata() from probe().
+
+If we'd allow the driver to call set_drvdata() itself (which is unnecessary
+anyways), drivers could:
+
+  1) Call set_drvdata() multiple times, where every previous call would leak the
+     object, since the pointer would be overwritten.
+
+  2) We'd loose any guarantee about the type we extract from dev->driver_data
+     in the bus abstraction's remove() callback wioth drvdata_obtain().
+
+> > +
+> > +    /// Take ownership of the private data stored in this [`Device`].
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// - Must only be called once after a preceding call to [`Device::set_drvdata`].
+> > +    /// - The type `T` must match the type of the `ForeignOwnable` previously stored by
+> > +    ///   [`Device::set_drvdata`].
+> > +    pub unsafe fn drvdata_obtain<T: ForeignOwnable>(&self) -> T {
+> > +        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
+> > +        let ptr = unsafe { bindings::dev_get_drvdata(self.as_raw()) };
+> > +
+> > +        // SAFETY: By the safety requirements of this function, `ptr` comes from a previous call to
+> > +        // `into_foreign()`.
+> > +        unsafe { T::from_foreign(ptr.cast()) }
+> > +    }
+> > +
+> > +    /// Borrow the driver's private data bound to this [`Device`].
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// - Must only be called after a preceding call to [`Device::set_drvdata`] and before
+> > +    ///   [`Device::drvdata_obtain`].
+> > +    /// - The type `T` must match the type of the `ForeignOwnable` previously stored by
+> > +    ///   [`Device::set_drvdata`].
+> > +    pub unsafe fn drvdata_borrow<T: ForeignOwnable>(&self) -> T::Borrowed<'_> {
+> > +        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
+> > +        let ptr = unsafe { bindings::dev_get_drvdata(self.as_raw()) };
+> > +
+> > +        // SAFETY: By the safety requirements of this function, `ptr` comes from a previous call to
+> > +        // `into_foreign()`.
+> > +        unsafe { T::borrow(ptr.cast()) }
+> > +    }
+> > +}
+> 
+> Why can't this be part of Core?
+
+Device::drvdata_borrow() itself can indeed be part of Core. It has to remain
+unsafe though, because the type T has to match the type that the driver returned
+from probe().
+
+Instead, we should provide a reference of the driver's private data in every bus
+callback, such that drivers don't need unsafe code.
+
+In order to not tempt drivers to use the unsafe method drvdata_borrow()
+directly, I went for hiding it behind the BusInternal device context.
