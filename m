@@ -1,139 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7551DF27E;
-	Wed,  2 Jul 2025 10:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693F22594BD;
+	Wed,  2 Jul 2025 10:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751451415; cv=none; b=KntrmWVQOO+7wxbfotUdDLML8lUigf4M3J8kn2z7kZA/PQoUJyaP8F2TqPmzeXq5wKJ3B0Q0QV5DTM1G2GPRTmQQjJTqm1Of1DeNpYfMiLkBupklQgetFQav1brQsjBbn6QWUtIPzcvApzOIGeJUQqujeDS30bf28Z9BOG0ByNg=
+	t=1751451670; cv=none; b=ihGlq/oApoEnLGzvZMFMNr8as5IomnAB8K/oqS7RQYuzrlo3bSV4kb6WWGUQvF4LQ/JSOkSP43RcX0FSK67hhlPDX9mqcfNnPNZL3SthNdFOd2SlkSK/7yQDVVxsneO5RGHz2giZPZut3wN5Wcmgr3dW9ejL17qvpdf6aQfD3fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751451415; c=relaxed/simple;
-	bh=nJMHPXeAJaBz7xhsn1CHhGywgMoqmwosoUeaAN0Iqwc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=Z/ED+fm/FlAE7FXgjF8dFTXAnhDL7odCx9a7pheICJWK20DRPr+7Z3CN3jokY9xnH6jnCBj6nuXjOYcC228/4PnlDUrKsoqA5MNylMBypHXR9P0Z6Mvui8HuujRmX7GwEJSM1EA8XYx8LPSBzTLP+RV/tCj+RotQD3Ca6RamJg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5rZtJFP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751451670; c=relaxed/simple;
+	bh=XH4seAkx/+Wdc115tc1uJi/R/MgxEBvbX4bonefNEUU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fBTRa904IQva7+kVkmukD6gDY/qL8G+hQeb6yWxBbDSopmIZd49gYGoCzqR6PkIERJGsW1G/CExTBf+npzBbLOTu+rlYitCwUyCP/YSsbRvnIG70UZXr7YHJz5OIz1JQd+HRMr3SEx5QJD8AC81BpSCMZpZsySiy+zHRunf3W20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMNrw8JT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5rZtJFP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1D5C4CEED;
-	Wed,  2 Jul 2025 10:16:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMNrw8JT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADC4C4CEED;
+	Wed,  2 Jul 2025 10:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751451414;
-	bh=nJMHPXeAJaBz7xhsn1CHhGywgMoqmwosoUeaAN0Iqwc=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Z5rZtJFP5THphnMGrAwNEsylF5NxdVxbBcxvCTPSdp72Z/Sbophtc7TPZs1YatmIt
-	 t/tP8337Skyo6r1GjPXAfNfOVx43T2rT1K19ql0/FaCawx+sXQdGG+pHW0Ws5hyAd/
-	 ahlDuVLQujhoZ9CQPrdj2u657lcnOGFCyNPwUU/tHHYJZSz74rMBwxkvxnh5PEN6XN
-	 vhRjQk01XjKEt5GANo/pkJoXWazhPLJu3cF1ei/ez6ZUM9Lio6DTJbc2mWyGFQdEcI
-	 wcTYT011g2+G4DpvDZGwOOXVIuahSVw4cysXxXGaH3hvA9jxkDSX8rleUMbdbGaC5K
-	 yAmYCsyHJgzmQ==
+	s=k20201202; t=1751451669;
+	bh=XH4seAkx/+Wdc115tc1uJi/R/MgxEBvbX4bonefNEUU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MMNrw8JTg4INuqObi2Fydr8ei5bzJgKowapOfaG9vhcJCHOvKaYW0eDGCvWlaFTwf
+	 GBB4dmeeo4otgVyKGB6E1YT3G3u57piO1+J1+9PWUZS+YQYEwJVB3V0jaPRpSShfpV
+	 xTxNf1MBg4lx6mgsdfmmIN7qcEmoFvSqoFcSm4ZUdtVSOC9BdCkkT+dTur12f28cP1
+	 Td38g1xDbQbH5BWNh7c0R01UAxe6YQHFJsWHGkaiORM+NlpFALoeqpTOWCGHfFDQhk
+	 AeRCDOvbz+hBmGje7QS6PC2foGmJ9jVBv+paW2h0ccoOqqvPJ3H8+9GHI4pReNLX3K
+	 zV1bNwZ5YvUtg==
+Message-ID: <6b8c65cc-d0cd-4022-8d8c-3a4aaf8d36e5@kernel.org>
+Date: Wed, 2 Jul 2025 12:21:04 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 02 Jul 2025 12:16:47 +0200
-Message-Id: <DB1HPGT5MG09.25OEO7K36RNKX@kernel.org>
-Subject: Re: [RFC RESEND v10 00/14] Refcounted interrupts, SpinLockIrq for
- rust
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Boqun Feng"
- <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250527222254.565881-1-lyude@redhat.com>
-In-Reply-To: <20250527222254.565881-1-lyude@redhat.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/4] rust: io: add resource abstraction
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Fiona Behrens <me@kloenk.dev>
+References: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
+ <20250701-topics-tyr-platform_iomem-v11-1-6cd5d5061151@collabora.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250701-topics-tyr-platform_iomem-v11-1-6cd5d5061151@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed May 28, 2025 at 12:21 AM CEST, Lyude Paul wrote:
-> Hi! While this patch series still needs some changes on the C side, I
-> wanted to update things and send out the latest version of it that's
-> been sitting on my machine for a while now. This adds back the
-> mistakenly missing commit messages along with a number of other changes
-> that were requested.
->
-> Please keep in mind, there are still some issues with this patch series
-> that I do need help with solving before it can move forward:
->
-> * https://lore.kernel.org/rust-for-linux/ZxrCrlg1XvaTtJ1I@boqun-archlinux=
-/
-> * Concerns around double checking the HARDIRQ bits against all
->   architectures that have interrupt priority support. I know what IPL is
->   but I really don't have a clear understanding of how this actually
->   fits together in the kernel's codebase or even how to find the
->   documentation for many of the architectures involved here.
->
->   Please help :C! If you want these rust bindings, figuring out these
->   two issues will let this patch seires move forward.
->
-> The previous version of this patch series can be found here:
->
-> https://lore.kernel.org/rust-for-linux/20250227221924.265259-4-lyude@redh=
-at.com/T/
+> +#[cfg(CONFIG_HAS_IOPORT)]
+> +/// Returns a reference to the global `ioport_resource` variable.
+> +pub fn ioport_resource() -> &'static Resource {
+> +    // SAFETY: `bindings::ioport_resoure` has global lifetime and is of type Resource.
+> +    unsafe { Resource::as_ref(&raw mut bindings::ioport_resource) }
+> +}
+> +
+> +#[cfg(CONFIG_HAS_IOMEM)]
+> +/// Returns a reference to the global `iomem_resource` variable.
+> +pub fn iomem_resource() -> &'static Resource {
+> +    // SAFETY: `bindings::iomem_resoure` has global lifetime and is of type Resource.
+> +    unsafe { Resource::as_ref(&raw mut bindings::iomem_resource) }
+> +}
 
-Overall I think it looks good, I haven't checked the details though.
-IIUC, the C side will also change a bit, inducing some more changes on
-the Rust side as well, so I'll just take a look when this becomes a
-normal patch series :)
+This caught my attention, and I have a few questions:
 
-Thanks for the hard work Lyude & Boqun!
+   1) What do you need them for? I don't see any methods that would usually
+      consume those.
 
----
-Cheers,
-Benno
+   2) Why are they behind CONFIG_HAS_IOPORT and CONFIG_HAS_IOMEM, even though the
+      C instances are not?
 
-> Boqun Feng (6):
->   preempt: Introduce HARDIRQ_DISABLE_BITS
->   preempt: Introduce __preempt_count_{sub, add}_return()
->   irq & spin_lock: Add counted interrupt disabling/enabling
->   rust: helper: Add spin_{un,}lock_irq_{enable,disable}() helpers
->   rust: sync: lock: Add `Backend::BackendInContext`
->   locking: Switch to _irq_{disable,enable}() variants in cleanup guards
->
-> Lyude Paul (8):
->   rust: Introduce interrupt module
->   rust: sync: Add SpinLockIrq
->   rust: sync: Introduce lock::Backend::Context
->   rust: sync: Add a lifetime parameter to lock::global::GlobalGuard
->   rust: sync: lock/global: Rename B to G in trait bounds
->   rust: sync: Expose lock::Backend
->   rust: sync: lock/global: Add Backend parameter to GlobalGuard
->   rust: sync: lock/global: Add BackendInContext support to GlobalLock
->
->  arch/arm64/include/asm/preempt.h  |  18 +++
->  arch/s390/include/asm/preempt.h   |  19 +++
->  arch/x86/include/asm/preempt.h    |  10 ++
->  include/asm-generic/preempt.h     |  14 +++
->  include/linux/irqflags.h          |   1 -
->  include/linux/irqflags_types.h    |   6 +
->  include/linux/preempt.h           |  20 +++-
->  include/linux/spinlock.h          |  88 +++++++++++---
->  include/linux/spinlock_api_smp.h  |  27 +++++
->  include/linux/spinlock_api_up.h   |   8 ++
->  include/linux/spinlock_rt.h       |  16 +++
->  kernel/locking/spinlock.c         |  31 +++++
->  kernel/softirq.c                  |   3 +
->  rust/helpers/helpers.c            |   1 +
->  rust/helpers/interrupt.c          |  18 +++
->  rust/helpers/spinlock.c           |  15 +++
->  rust/kernel/interrupt.rs          |  83 +++++++++++++
->  rust/kernel/lib.rs                |   1 +
->  rust/kernel/sync.rs               |   5 +-
->  rust/kernel/sync/lock.rs          |  69 ++++++++++-
->  rust/kernel/sync/lock/global.rs   |  91 ++++++++++-----
->  rust/kernel/sync/lock/mutex.rs    |   2 +
->  rust/kernel/sync/lock/spinlock.rs | 186 ++++++++++++++++++++++++++++++
->  23 files changed, 680 insertions(+), 52 deletions(-)
->  create mode 100644 rust/helpers/interrupt.c
->  create mode 100644 rust/kernel/interrupt.rs
->
->
-> base-commit: a3b2347343e077e81d3c169f32c9b2cb1364f4cc
-
+   3) What happens if we pass them to IoMem::new()? Is this really safe, or do we
+      need them to be a special Resource type?
