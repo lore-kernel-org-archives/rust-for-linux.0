@@ -1,172 +1,227 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0279E287243
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Jul 2025 13:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D9E27A10A;
+	Wed,  2 Jul 2025 13:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751464207; cv=none; b=gba/CcrSlDDrYY6Bm4BnR6+B1POr3sK/cN8tU3Le1ITMBvafac3fy3BEkggpIR18HSb3Q2t4ZsO0azRmTC+7Km8XF3KOJZu6pYf0P/rQrU4a8xfn6/VusbcpN/d/aQ+N/xNQpNJt49OPh8t+FfDQLmgWT4uaSEs5b6hatawcfWA=
+	t=1751464469; cv=none; b=QWRAUC7OVEU8+eCJAhSvNZTygxMWvgNsgFtcVJi7hCxCPKmcKgE9k+9KPrZjk7pCzT3bvohOkUxtE3I5qFloLjmwBQSBNLVU5oguRbL04XzrJFywecVS6NdCsn2eqG3FpDtOB+P83l4pheNL2OhgM5e/x5m5tI9xzjzpfdr5W0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751464207; c=relaxed/simple;
-	bh=pQpdhYmfxqh3Yfxmei5sPv11PaCzGkgZVRufLVaDNj8=;
-	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=IbjbLa5nmSIarpL8NmPG33m8PmOLj61YwSxlLOLKG6D3Aj6wm4JMWOA7dXf49fh1LaIjLS11lFd/s4dgbOLm+0YfJf+ooKyI5SIuJH0CMThD/NR6HlKoRRuLnctgTnlOpGLOQvyhjzYfyWsoliP4fmPADnfFW5socuFkZjEgzAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=PLSOJR1e; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1751464469; c=relaxed/simple;
+	bh=kBgzh2+fqwzDciyqJNrK1fk8cDdbFE2K5Dy495Oc5g4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=YDmmZdjtxa8Y3L50X5GsnM6B7cYQvg51vSRQqSWcV1ilRE6E2gibssGJFBh/LKD5BEzVIy/5j2ukbBG8seLgxzY3TfE1EYquSEYgyjmgrB3BsysTOgrRvsuQELmFLGYiYbYNqYPA5lu963bLb3KNnYbealuW+blaw4zvbMYYxks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ju7IdGKH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="PLSOJR1e"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250702135004euoutp01fb09ec684a56a982429a65b4df413992~Oc2ob2Mm40656406564euoutp01S
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Jul 2025 13:50:04 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250702135004euoutp01fb09ec684a56a982429a65b4df413992~Oc2ob2Mm40656406564euoutp01S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1751464204;
-	bh=Thc/4MnT4r5I8ag38cbivyQhpbuX345C1nEB0lzCSSU=;
-	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=PLSOJR1ems9j+u01Iom1Bf7tfQqAO/+/i6RKbz6UaUaX9AtpnRZZ7lavK/yC7eR5x
-	 JeOIjXtNkv8gRas0XHkr9ijybMp3xbvaM3TA7v8CDzrpim4tzm4okn5gXj/hnI/cjH
-	 vgKaWaY3wiBd7raLicR1hTP6Oysay60LERJ06vsY=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250702135003eucas1p114a5ce5dea469242940b7e2e44a7ad59~Oc2nsQ3Sd2688626886eucas1p1g;
-	Wed,  2 Jul 2025 13:50:03 +0000 (GMT)
-Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
-	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250702135002eusmtip2051f0a93828f9a33086d66487d03c072~Oc2moyBjI0829708297eusmtip2_;
-	Wed,  2 Jul 2025 13:50:02 +0000 (GMT)
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Wed, 02 Jul 2025 15:45:36 +0200
-Subject: [PATCH v7 8/8] riscv: dts: thead: Add PWM fan and thermal control
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ju7IdGKH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5A4C4CEF3;
+	Wed,  2 Jul 2025 13:54:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751464468;
+	bh=kBgzh2+fqwzDciyqJNrK1fk8cDdbFE2K5Dy495Oc5g4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Ju7IdGKH1LQ5POT+7RjJKtenTKMGXPv09aLY+GX+gO0vkcEvbzP+HDtiPhIcV6blv
+	 VvVdajUBDVFfC3XFchODN4Fj0D4hPcsICasmMZKt4iQ+a9G9Jr1O0faG2OGJzGEUi1
+	 GL+SeaR1JeNio8puuOxI+3XuTF/wyawGutRnuYcaxVE+Fs+L6pVl4KoMqNuSD8lEFV
+	 IDdH5zrrK7Zgb1mUen3P8WWEdCAwVeAYcOlLQVgeEDIJSjkbgMMLy3FgG1SviQzUX5
+	 XDjijTgVOh32JCnyNOalSQQuGDtrCCyuq8FbGS3vENA6YZaZ09AQGyakjKKs67CREr
+	 3Ll1n0cACUz6w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Masahiro Yamada" <masahiroy@kernel.org>,  "Nathan Chancellor"
+ <nathan@kernel.org>,  "Luis Chamberlain" <mcgrof@kernel.org>,  "Danilo
+ Krummrich" <dakr@kernel.org>,  "Benno Lossin" <lossin@kernel.org>,
+  "Nicolas Schier" <nicolas.schier@linux.dev>,  "Trevor Gross"
+ <tmgross@umich.edu>,  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
+In-Reply-To: <CAH5fLghw5TDrzmFZB=tORR5Lxx4WoG4wer6y5NuFdod2_tb6zg@mail.gmail.com>
+ (Alice
+	Ryhl's message of "Wed, 02 Jul 2025 15:32:05 +0200")
+References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
+	<20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
+	<QU7IDrQqnXyNZDFF_jgZ4qTsRLPmUeeWedU_T1i11uOyc1E83Zo4tETj_oPxSfJySNZZ4-XEVBlkZJ-MZech4g==@protonmail.internalid>
+	<CAH5fLghw5TDrzmFZB=tORR5Lxx4WoG4wer6y5NuFdod2_tb6zg@mail.gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Wed, 02 Jul 2025 15:54:11 +0200
+Message-ID: <87ms9mvgu4.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250702-rust-next-pwm-working-fan-for-sending-v7-8-67ef39ff1d29@samsung.com>
-In-Reply-To: <20250702-rust-next-pwm-working-fan-for-sending-v7-0-67ef39ff1d29@samsung.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,  Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,  Michal
-	Wilczynski <m.wilczynski@samsung.com>, Guo Ren <guoren@kernel.org>,  Fu Wei
-	<wefu@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Paul Walmsley
-	<paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>,  Alexandre Ghiti <alex@ghiti.fr>,  Marek Szyprowski
-	<m.szyprowski@samsung.com>,  Benno Lossin <lossin@kernel.org>,  Michael
-	Turquette <mturquette@baylibre.com>,  Drew Fustini <fustini@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,  Drew Fustini <fustini@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	devicetree@vger.kernel.org
-X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20250702135003eucas1p114a5ce5dea469242940b7e2e44a7ad59
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250702135003eucas1p114a5ce5dea469242940b7e2e44a7ad59
-X-EPHeader: CA
-X-CMS-RootMailID: 20250702135003eucas1p114a5ce5dea469242940b7e2e44a7ad59
-References: <20250702-rust-next-pwm-working-fan-for-sending-v7-0-67ef39ff1d29@samsung.com>
-	<CGME20250702135003eucas1p114a5ce5dea469242940b7e2e44a7ad59@eucas1p1.samsung.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Add Device Tree nodes to enable a PWM controlled fan and it's associated
-thermal management for the Lichee Pi 4A board.
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-This enables temperature-controlled active cooling for the Lichee Pi 4A
-board based on SoC temperature.
+> On Wed, Jul 2, 2025 at 3:19=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>>
+>> Introduce the `OnceLock` type, a container that can only be written once.
+>> The container uses an internal atomic to synchronize writes to the inter=
+nal
+>> value.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> This type provides no way to wait for initialization to finish if it's
+> ongoing. Do you not need that?
 
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
----
- arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts | 67 +++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+I don't, and in my use case it would cause a deadlock to wait. Anyway,
+it might be useful to others. Would you add it now, or wait for a user?
 
-diff --git a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-index 4020c727f09e8e2286fdc7fecd79dbd8eba69556..c58c2085ca92a3234f1350500cedae4157f0c35f 100644
---- a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-+++ b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-@@ -28,9 +28,76 @@ aliases {
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
-+
-+	thermal-zones {
-+		cpu-thermal {
-+			polling-delay = <1000>;
-+			polling-delay-passive = <1000>;
-+			thermal-sensors = <&pvt 0>;
-+
-+			trips {
-+				fan_config0: fan-trip0 {
-+					temperature = <39000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config1: fan-trip1 {
-+					temperature = <50000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config2: fan-trip2 {
-+					temperature = <60000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+			};
-+
-+			cooling-maps {
-+				map-active-0 {
-+					cooling-device = <&fan 1 1>;
-+					trip = <&fan_config0>;
-+				};
-+
-+				map-active-1 {
-+					cooling-device = <&fan 2 2>;
-+					trip = <&fan_config1>;
-+				};
-+
-+				map-active-2 {
-+					cooling-device = <&fan 3 3>;
-+					trip = <&fan_config2>;
-+				};
-+			};
-+		};
-+	};
-+
-+	fan: pwm-fan {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&fan_pins>;
-+		compatible = "pwm-fan";
-+		#cooling-cells = <2>;
-+		pwms = <&pwm 1 10000000 0>;
-+		cooling-levels = <0 66 196 255>;
-+	};
-+
- };
- 
- &padctrl0_apsys {
-+	fan_pins: fan-0 {
-+		pwm1-pins {
-+			pins = "GPIO3_3"; /* PWM1 */
-+			function = "pwm";
-+			bias-disable;
-+			drive-strength = <25>;
-+			input-disable;
-+			input-schmitt-disable;
-+			slew-rate = <0>;
-+		};
-+	};
-+
- 	uart0_pins: uart0-0 {
- 		tx-pins {
- 			pins = "UART0_TXD";
+>
+>> ---
+>>  rust/kernel/sync.rs           |   1 +
+>>  rust/kernel/sync/once_lock.rs | 104 +++++++++++++++++++++++++++++++++++=
++++++++
+>>  2 files changed, 105 insertions(+)
+>>
+>> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+>> index c7c0e552bafe..f2ee07315091 100644
+>> --- a/rust/kernel/sync.rs
+>> +++ b/rust/kernel/sync.rs
+>> @@ -15,6 +15,7 @@
+>>  mod condvar;
+>>  pub mod lock;
+>>  mod locked_by;
+>> +pub mod once_lock;
+>
+> I would add a re-export so that users can import this as kernel::sync::On=
+ceLock.
 
--- 
-2.34.1
+OK.
+
+>
+>>  pub mod poll;
+>>  pub mod rcu;
+>>
+>> diff --git a/rust/kernel/sync/once_lock.rs b/rust/kernel/sync/once_lock.=
+rs
+>> new file mode 100644
+>> index 000000000000..cd311bea3919
+>> --- /dev/null
+>> +++ b/rust/kernel/sync/once_lock.rs
+>> @@ -0,0 +1,104 @@
+>> +//! A container that can be initialized at most once.
+>> +
+>> +use super::atomic::ordering::Acquire;
+>> +use super::atomic::ordering::Release;
+>> +use super::atomic::Atomic;
+>> +use kernel::types::Opaque;
+>> +
+>> +/// A container that can be populated at most once. Thread safe.
+>> +///
+>> +/// Once the a [`OnceLock`] is populated, it remains populated by the s=
+ame object for the
+>> +/// lifetime `Self`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// `init` tracks the state of the container:
+>> +///
+>> +/// - If the container is empty, `init` is `0`.
+>> +/// - If the container is mutably accessed, `init` is `1`.
+>
+> I would phrase this as "being initialized" instead of "mutably
+> accessed". I initially thought this was talking about someone calling
+> a &mut self method.
+
+Makes sense, I will change that.
+
+>
+>> +/// - If the container is populated and ready for shared access, `init`=
+ is `2`.
+>> +///
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// # use kernel::sync::once_lock::OnceLock;
+>> +/// let value =3D OnceLock::new();
+>> +/// assert_eq!(None, value.as_ref());
+>> +///
+>> +/// let status =3D value.populate(42u8);
+>> +/// assert_eq!(true, status);
+>> +/// assert_eq!(Some(&42u8), value.as_ref());
+>> +/// assert_eq!(Some(42u8), value.copy());
+>> +///
+>> +/// let status =3D value.populate(101u8);
+>> +/// assert_eq!(false, status);
+>> +/// assert_eq!(Some(&42u8), value.as_ref());
+>> +/// assert_eq!(Some(42u8), value.copy());
+>> +/// ```
+>> +pub struct OnceLock<T> {
+>> +    init: Atomic<u32>,
+>> +    value: Opaque<T>,
+>
+> Opaque does not destroy the inner value. You are missing a destructor.
+
+Oops.
+
+>
+>> +}
+>> +
+>> +impl<T> Default for OnceLock<T> {
+>> +    fn default() -> Self {
+>> +        Self::new()
+>> +    }
+>> +}
+>> +
+>> +impl<T> OnceLock<T> {
+>> +    /// Create a new [`OnceLock`].
+>> +    ///
+>> +    /// The returned instance will be empty.
+>> +    pub const fn new() -> Self {
+>> +        // INVARIANT: The container is empty and we set `init` to `0`.
+>> +        Self {
+>> +            value: Opaque::uninit(),
+>> +            init: Atomic::new(0),
+>> +        }
+>> +    }
+>> +
+>> +    /// Get a reference to the contained object.
+>> +    ///
+>> +    /// Returns [`None`] if this [`OnceLock`] is empty.
+>> +    pub fn as_ref(&self) -> Option<&T> {
+>> +        if self.init.load(Acquire) =3D=3D 2 {
+>> +            // SAFETY: As determined by the load above, the object is r=
+eady for shared access.
+>> +            Some(unsafe { &*self.value.get() })
+>> +        } else {
+>> +            None
+>> +        }
+>> +    }
+>> +
+>> +    /// Populate the [`OnceLock`].
+>> +    ///
+>> +    /// Returns `true` if the [`OnceLock`] was successfully populated.
+>> +    pub fn populate(&self, value: T) -> bool {
+>> +        // INVARIANT: We obtain exclusive access to the contained alloc=
+ation and write 1 to
+>> +        // `init`.
+>> +        if let Ok(0) =3D self.init.cmpxchg(0, 1, Acquire) {
+>
+> This acquire can be Relaxed. All other accesses to self.value
+> synchronize with the release store below, so you do not need acquire
+> here to obtain exclusive access.
+
+Right, thanks.
+
+
+Best regards,
+Andreas Hindborg
+
+
 
