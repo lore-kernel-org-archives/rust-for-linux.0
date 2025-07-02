@@ -1,185 +1,91 @@
-Received: from mailrelay1-3.pub.mailoutpod3-cph3.one.com (mailrelay1-3.pub.mailoutpod3-cph3.one.com [46.30.212.0])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731EF2E7BD5
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Jul 2025 16:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.0
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751472567; cv=none; b=QmzLk0BbukHhyjJPEqLMwI54+RTVacIgDoIIQ6kal8RLDZUKuORHHOoahBF/xDO3Hg3bBVLSnFJpcAlq/J8BbTYHefJnRV6gm/3+Phel29rWM8OXu6aOggZfLafW2gRiBLVO6IEFyxvCoMS6P92qZ6NUEtdG/ryYUSQV4PjMYHk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751472567; c=relaxed/simple;
-	bh=SYIW75+wm3VibWBWsPEbk0MAzhXEBD5WcQ0waXQDF8Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BXLasSK1waZgZP1fYTmdhN/o4glCXu7fu91xk3S4KdjZzYAAt4INWdhjQSckGnf1/6jkjge+W6GMqCfUqpeCUXKglOv73oYPSaZfrAFmvXDbPzZPutCiex26mTD944DPzlLRt8VGsBIWmrxoi7eoBeYkJ70ZXv7Wvto3/IGNOA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=6WROcM2D; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=dQPUYuCn; arc=none smtp.client-ip=46.30.212.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D2630E820;
+	Wed,  2 Jul 2025 18:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751479525; cv=pass; b=ovxRdFe1e/1oo05o8/Tp6OJGTWiZKnKEcq5KyrLgGDVKGsyiz5H4o2Y1cxJixBPFOIeZCwBsvid6WYnq6bBUul/9ubLCQu4nSG4uyuneWuyzdiX1s+mQLMCl8n8Y6ZNErXZ99LlJHXHWgzMFFmo+CIeThGHLz0kq0Za7a+0jnqs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751479525; c=relaxed/simple;
+	bh=+1iN/ppiWwYuvQ7aCaXfQ7OMEU4L9uJfsI6J8cVpacY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=hJy2+c5zvigZQlZgm31Pf2MMORcueqwm0FCtSXAOi+g4NTUrmRmk9aXH8LPZTXdNux+DOTzJ7C9ywRBElhhjH0PCHzq5fHXLnqytf2jY4qguiMnCqs7SFMJZgdPv4+PLttMsX6BnnnFH09lco18cWTW9UK/5LlsdlS/85oPVtvM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=CMVonJkI; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="6WROcM2D";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="dQPUYuCn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751472564; x=1752077364;
-	d=konsulko.se; s=rsa1;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=gALnPztzwr59zDTT061QlxUWux/AzyL/kG1HsRDCKCA=;
-	b=6WROcM2DLPsHrpKb49sbmLJLoAnNEZzzsNFVn4HpXFH2oTiJz1jayjOJQn3m23WDnT4bD9nB9P7v3
-	 Cx/b99i8L8evsyjIvvnL28jRGu9lSJGNMdwsflPFm76r0I1oF5weHc0wU8qsHcep10Ak+v1luAAnth
-	 Xqfps3LLH4OwNQVHoowwPcNsqCIGlPDJ4qLI6CJbNYGQexxDTuGjny0+JC26AchRenPPDzgeKUb8cx
-	 AdE5yvnSMIvcwnRB0bKHttLPetfqw2HCs3Aw4k6OEMYLORNrSOrsHwC3nSBHi77BtcmSI7rnenhTa0
-	 FijH7kR5qGSAXnFXcbW+zw2S69Lvh+A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751472564; x=1752077364;
-	d=konsulko.se; s=ed1;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=gALnPztzwr59zDTT061QlxUWux/AzyL/kG1HsRDCKCA=;
-	b=dQPUYuCnHuYFEszxvpCEW2oq5+ZNWdHr8saktkE8JByP3BM+uCoVrzoOhA8l8h0HhzlQBysnwsPdW
-	 1IvTTlaDA==
-X-HalOne-ID: e9e51555-575e-11f0-918f-152d8afab6bc
-Received: from slottsdator.home (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
-	by mailrelay1.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id e9e51555-575e-11f0-918f-152d8afab6bc;
-	Wed, 02 Jul 2025 16:09:23 +0000 (UTC)
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Subject: [PATCH v10 4/4] rust: support large alignments in allocations
-Date: Wed,  2 Jul 2025 18:09:21 +0200
-Message-Id: <20250702160921.3610168-1-vitaly.wool@konsulko.se>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250702160758.3609992-1-vitaly.wool@konsulko.se>
-References: <20250702160758.3609992-1-vitaly.wool@konsulko.se>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="CMVonJkI"
+ARC-Seal: i=1; a=rsa-sha256; t=1751479497; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QH8wTollkzQby69pfxpum3+Kf9+wHf/5VLA/6m9TpxuUf7j1VU/jGDEL0/Q33FpLhqcdRdiDppekkmWNVuPc4veJfN3CWSq1czqC7Y9C6IN2P9iRTtjfwGiqUi4RtNOyJ9HWrkix6tuK8lQBs+E6ktlC3j2oiaRAPfGUT9J3z0Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751479497; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+1iN/ppiWwYuvQ7aCaXfQ7OMEU4L9uJfsI6J8cVpacY=; 
+	b=O4TWemNMkb0z9a/Qo+i/7VH6TOTh0RI2GTkb2wVWvCPMSsKj4Ke63tXtWhsigdv8o9vSKY7BRbMoCudOknkuF97hOAwwrNGuceV29/DIPAIHwV+YUEHgfsU4eCQ0HHC8/WcZqyB2fT3Vaj1Lst3UIKDqNSzCNjNDHHigOxWEIR8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751479497;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=+1iN/ppiWwYuvQ7aCaXfQ7OMEU4L9uJfsI6J8cVpacY=;
+	b=CMVonJkI3FOXki4E9S1Lw2D4TR6kWLHAjYC+NDVPz7Q3wJfvy0XuinO9FGwQK8DQ
+	SU5H59RD/Cksxm2UbE9ji4GyUTUyYRV7bWyy+ey8JhHicSXqHZdtnVb5fj4Z+5n8Pp1
+	fvzaNv1XqAD75IhvFWDpcCqfYC8uSYlT4PDypVbc=
+Received: by mx.zohomail.com with SMTPS id 1751479496117758.5462233195104;
+	Wed, 2 Jul 2025 11:04:56 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v11 1/4] rust: io: add resource abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CANiq72khZQMQcyp7uVjMz--U1dbbnx7K3pU1Eu=ZN6SXi98TZw@mail.gmail.com>
+Date: Wed, 2 Jul 2025 15:04:34 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Fiona Behrens <me@kloenk.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <14F43E80-7DCF-4825-BB08-6D3B5CE6A698@collabora.com>
+References: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
+ <20250701-topics-tyr-platform_iomem-v11-1-6cd5d5061151@collabora.com>
+ <CANiq72khZQMQcyp7uVjMz--U1dbbnx7K3pU1Eu=ZN6SXi98TZw@mail.gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-Add support for large (> PAGE_SIZE) alignments in Rust allocators.
-All the preparations on the C side are already done, we just need
-to add bindings for <alloc>_node_align() functions and start
-using those.
+Hi Miguel,
 
-Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
----
- rust/helpers/slab.c            | 10 ++++++----
- rust/helpers/vmalloc.c         |  5 +++--
- rust/kernel/alloc/allocator.rs | 27 ++++++++-------------------
- 3 files changed, 17 insertions(+), 25 deletions(-)
+>=20
+> "Safe", periods at the end. (few instances)
+>=20
 
-diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
-index 8472370a4338..d729be798f31 100644
---- a/rust/helpers/slab.c
-+++ b/rust/helpers/slab.c
-@@ -3,13 +3,15 @@
- #include <linux/slab.h>
- 
- void * __must_check __realloc_size(2)
--rust_helper_krealloc_node(const void *objp, size_t new_size, gfp_t flags, int node)
-+rust_helper_krealloc_node_align(const void *objp, size_t new_size, unsigned long align,
-+				gfp_t flags, int node)
- {
--	return krealloc_node(objp, new_size, flags, node);
-+	return krealloc_node_align(objp, new_size, align, flags, node);
- }
- 
- void * __must_check __realloc_size(2)
--rust_helper_kvrealloc_node(const void *p, size_t size, gfp_t flags, int node)
-+rust_helper_kvrealloc_node_align(const void *p, size_t size, unsigned long align,
-+				gfp_t flags, int node)
- {
--	return kvrealloc_node(p, size, flags, node);
-+	return kvrealloc_node_align(p, size, align, flags, node);
- }
-diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
-index 62d30db9a1a6..7d7f7336b3d2 100644
---- a/rust/helpers/vmalloc.c
-+++ b/rust/helpers/vmalloc.c
-@@ -3,7 +3,8 @@
- #include <linux/vmalloc.h>
- 
- void * __must_check __realloc_size(2)
--rust_helper_vrealloc_node(const void *p, size_t size, gfp_t flags, int node)
-+rust_helper_vrealloc_node_align(const void *p, size_t size, unsigned long align,
-+				gfp_t flags, int node)
- {
--	return vrealloc_node(p, size, flags, node);
-+	return vrealloc_node_align(p, size, align, flags, node);
- }
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 15d737fe89ed..1a54513533cf 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -61,20 +61,21 @@ struct ReallocFunc(
-     unsafe extern "C" fn(
-         *const crate::ffi::c_void,
-         usize,
-+        crate::ffi::c_ulong,
-         u32,
-         crate::ffi::c_int,
-     ) -> *mut crate::ffi::c_void,
- );
- 
- impl ReallocFunc {
--    // INVARIANT: `krealloc_node` satisfies the type invariants.
--    const KREALLOC: Self = Self(bindings::krealloc_node);
-+    // INVARIANT: `krealloc_node_align` satisfies the type invariants.
-+    const KREALLOC: Self = Self(bindings::krealloc_node_align);
- 
--    // INVARIANT: `vrealloc_node` satisfies the type invariants.
--    const VREALLOC: Self = Self(bindings::vrealloc_node);
-+    // INVARIANT: `vrealloc_node_align` satisfies the type invariants.
-+    const VREALLOC: Self = Self(bindings::vrealloc_node_align);
- 
--    // INVARIANT: `kvrealloc_node` satisfies the type invariants.
--    const KVREALLOC: Self = Self(bindings::kvrealloc_node);
-+    // INVARIANT: `kvrealloc_node_align` satisfies the type invariants.
-+    const KVREALLOC: Self = Self(bindings::kvrealloc_node_align);
- 
-     /// # Safety
-     ///
-@@ -116,7 +117,7 @@ unsafe fn call(
-         // - Those functions provide the guarantees of this function.
-         let raw_ptr = unsafe {
-             // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
--            self.0(ptr.cast(), size, flags.0, nid.0).cast()
-+            self.0(ptr.cast(), size, layout.align(), flags.0, nid.0).cast()
-         };
- 
-         let ptr = if size == 0 {
-@@ -160,12 +161,6 @@ unsafe fn realloc_node(
-         flags: Flags,
-         nid: NumaNode,
-     ) -> Result<NonNull<[u8]>, AllocError> {
--        // TODO: Support alignments larger than PAGE_SIZE.
--        if layout.align() > bindings::PAGE_SIZE {
--            pr_warn!("Vmalloc does not support alignments larger than PAGE_SIZE yet.\n");
--            return Err(AllocError);
--        }
--
-         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-         // allocated with this `Allocator`.
-         unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, flags, nid) }
-@@ -185,12 +180,6 @@ unsafe fn realloc_node(
-         flags: Flags,
-         nid: NumaNode,
-     ) -> Result<NonNull<[u8]>, AllocError> {
--        // TODO: Support alignments larger than PAGE_SIZE.
--        if layout.align() > bindings::PAGE_SIZE {
--            pr_warn!("KVmalloc does not support alignments larger than PAGE_SIZE yet.\n");
--            return Err(AllocError);
--        }
--
-         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-         // allocated with this `Allocator`.
-         unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags, nid) }
--- 
-2.39.2
 
+Is it only about the periods, or is there any issues with the word
+=E2=80=9CSafe=E2=80=9D itself (and/or its capitalization?)
+
+=E2=80=94 Daniel=
