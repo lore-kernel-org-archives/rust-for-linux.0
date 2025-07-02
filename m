@@ -1,86 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693F22594BD;
-	Wed,  2 Jul 2025 10:21:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7515717A2E6
+	for <rust-for-linux@vger.kernel.org>; Wed,  2 Jul 2025 10:27:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751451670; cv=none; b=ihGlq/oApoEnLGzvZMFMNr8as5IomnAB8K/oqS7RQYuzrlo3bSV4kb6WWGUQvF4LQ/JSOkSP43RcX0FSK67hhlPDX9mqcfNnPNZL3SthNdFOd2SlkSK/7yQDVVxsneO5RGHz2giZPZut3wN5Wcmgr3dW9ejL17qvpdf6aQfD3fo=
+	t=1751452044; cv=none; b=RWITfZpzaK+U+WjXssaW2G8G1fL8W+M8DpwWiDEMy1lkYYb2dv2fLL36RrndiHPztlNkhofbAYuO9M0C55qBrcN1g3maGEfJ4kWGK2l6hR6Gi46USOORlVUL3hjkAdiXOswjZWL7GVDThcqPQA9X9aKq6zLXu4lALG2sphYQsGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751451670; c=relaxed/simple;
-	bh=XH4seAkx/+Wdc115tc1uJi/R/MgxEBvbX4bonefNEUU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fBTRa904IQva7+kVkmukD6gDY/qL8G+hQeb6yWxBbDSopmIZd49gYGoCzqR6PkIERJGsW1G/CExTBf+npzBbLOTu+rlYitCwUyCP/YSsbRvnIG70UZXr7YHJz5OIz1JQd+HRMr3SEx5QJD8AC81BpSCMZpZsySiy+zHRunf3W20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMNrw8JT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751452044; c=relaxed/simple;
+	bh=e/2DidzQn91ralezgjwJALoi1TnJjVxKoJXQdqSYZ3c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qZABE2VW1QOPbZechTVk4JcJm8JIthUBPvkw3OsZ64imDFm+pO74vO33I0maYNQTRgOH6/+iGiJ+Vn67txGxoDahDklLGbB5iWxuLm/kIWNcFz1/b+aQKCLefLtzVATLJx8qS2IqjotSSdrSbw7yOUiK35GILIbW26WkIitMte4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XfaFzWnQ; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMNrw8JT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADC4C4CEED;
-	Wed,  2 Jul 2025 10:21:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751451669;
-	bh=XH4seAkx/+Wdc115tc1uJi/R/MgxEBvbX4bonefNEUU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MMNrw8JTg4INuqObi2Fydr8ei5bzJgKowapOfaG9vhcJCHOvKaYW0eDGCvWlaFTwf
-	 GBB4dmeeo4otgVyKGB6E1YT3G3u57piO1+J1+9PWUZS+YQYEwJVB3V0jaPRpSShfpV
-	 xTxNf1MBg4lx6mgsdfmmIN7qcEmoFvSqoFcSm4ZUdtVSOC9BdCkkT+dTur12f28cP1
-	 Td38g1xDbQbH5BWNh7c0R01UAxe6YQHFJsWHGkaiORM+NlpFALoeqpTOWCGHfFDQhk
-	 AeRCDOvbz+hBmGje7QS6PC2foGmJ9jVBv+paW2h0ccoOqqvPJ3H8+9GHI4pReNLX3K
-	 zV1bNwZ5YvUtg==
-Message-ID: <6b8c65cc-d0cd-4022-8d8c-3a4aaf8d36e5@kernel.org>
-Date: Wed, 2 Jul 2025 12:21:04 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XfaFzWnQ"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a365a6804eso3561951f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 02 Jul 2025 03:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751452041; x=1752056841; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e/2DidzQn91ralezgjwJALoi1TnJjVxKoJXQdqSYZ3c=;
+        b=XfaFzWnQEuptvfWwIZRlXOtONgn6f/ci1l4ctOx6ghUq0jWxepAi8x/GI8HmuAkIiz
+         UOQ+ZD15fwAH7baXX5Xs1tOECYHtUBgp6vw60jGCSO990NLk8TNRLTNQgpJD8OrSqAmQ
+         0+TyY1H4Sht8vD9elPtTC7WuYvF5gP5j8ssU8G8+1s8Sz88A1K36W9NLUw72altdB1cg
+         Gao1dq5rZOpipHiu9hWWsWiFDDSm5jN8UwUW9fFEfV3uNpzuHzZIcQ9/G5nA8I1PG284
+         +M2ivZsi/yY/4KrLtgmcTMp1jcO8D/LEQAJflqfdbzSLT1ThwKZi8hF8xQ4bhVShbKrY
+         y12Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751452041; x=1752056841;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e/2DidzQn91ralezgjwJALoi1TnJjVxKoJXQdqSYZ3c=;
+        b=FHCguZlQzW7IiffdT0zGf0ZcpdjiaDmFNOKlTT2Ev0wpYKGYQVFtAaARjhGFlSY9pM
+         kKvjpYCZJBFtvGQQ7+Um81qEfqozWcWxjy0lymIVcdclwyGdX7LKnXkCu+vVahAJJSM5
+         OK5EyxHNHtPqGra+ymn3U4XWsJRvJFZhO91kBQDqDyKBSZI+OGUVXsHS/mJFYBmI0IfV
+         GQ0szxV8b4r4W4S2muBFzFX/94eUUqVxKs/+2t9SxrVwwXDDzppiZ+cb8/T73aXRRDvo
+         vq7WhOtkaQYAFBSS2WkW0qKGiRBEKzeNH4ST1oss8bzPYo4IajwQNwlyF3cp6DE2KrgN
+         Ytww==
+X-Forwarded-Encrypted: i=1; AJvYcCVW77uhIGHlh2HCYR9mue0Q0xa5/HU9I/qlSxF3rS5X8r8jJJrDfr5m/feeamMiz0W4LHSwSimQjV94KonB3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFyWd+M5spxY7ezv3J/GlV411jZ83VevWLDRlBYRVTesP1BYdA
+	K/rM19Wj0UMGiGZN284LxQ0URu/M9gsijjvWbvkUTwJmA9+MPMPi7HxhJ1J8Absm99GwXJ5HJGf
+	YtGhRCjSlh0TTweZRzNoQqBwbqKcsmwFTz/mquSoK
+X-Gm-Gg: ASbGnctEkRJMUdSxQ7O58wR2HqSntLNDZFRpuMSqoIhA2s32ZdZnsbR+yFYuRdYrpSz
+	Fh1QQGLQvO88jyiDhTVKte6dzwjvF0Vlq7BBv5ksSYXcdjfZhHfoHL6jJD64339Mq9F9brbRidS
+	GhoJmbCGh0QSPu+z0EGcZpG0ApBBSRx0uS0eobxuzqJxHGQEXUtUoOCd/B3lbRcCN77Hr/rR4=
+X-Google-Smtp-Source: AGHT+IHcDKa52ZbBh7xXAnCYNxMEK3W7ps/ysJeG6YWWhxazrmmr2AVmHplNPOuhkyB9cQitMM0Mw35ydX0IITJf55A=
+X-Received: by 2002:a05:6000:1ac9:b0:3a1:f5c4:b81b with SMTP id
+ ffacd0b85a97d-3b1fe1e69b5mr1844476f8f.23.1751452040702; Wed, 02 Jul 2025
+ 03:27:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 1/4] rust: io: add resource abstraction
+References: <20250623-topic-panthor-rs-genmask-v7-1-9f986951e7b5@collabora.com>
+In-Reply-To: <20250623-topic-panthor-rs-genmask-v7-1-9f986951e7b5@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 2 Jul 2025 12:27:07 +0200
+X-Gm-Features: Ac12FXzlflXkEllqBb8Mz1-lOflGv_eOwPN42WDgahWL-HLwQCBTeDY1VvFELhc
+Message-ID: <CAH5fLgicRxTsjpBKXDrcJSibOq7HQOsTXdKEBnH1-K8Jt=S-xA@mail.gmail.com>
+Subject: Re: [PATCH v7] rust: kernel: add support for bits/genmask macros
 To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Fiona Behrens <me@kloenk.dev>
-References: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
- <20250701-topics-tyr-platform_iomem-v11-1-6cd5d5061151@collabora.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250701-topics-tyr-platform_iomem-v11-1-6cd5d5061151@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Benno Lossin <lossin@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +#[cfg(CONFIG_HAS_IOPORT)]
-> +/// Returns a reference to the global `ioport_resource` variable.
-> +pub fn ioport_resource() -> &'static Resource {
-> +    // SAFETY: `bindings::ioport_resoure` has global lifetime and is of type Resource.
-> +    unsafe { Resource::as_ref(&raw mut bindings::ioport_resource) }
-> +}
-> +
-> +#[cfg(CONFIG_HAS_IOMEM)]
-> +/// Returns a reference to the global `iomem_resource` variable.
-> +pub fn iomem_resource() -> &'static Resource {
-> +    // SAFETY: `bindings::iomem_resoure` has global lifetime and is of type Resource.
-> +    unsafe { Resource::as_ref(&raw mut bindings::iomem_resource) }
-> +}
+On Mon, Jun 23, 2025 at 10:18=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> In light of bindgen being unable to generate bindings for macros, and
+> owing to the widespread use of these macros in drivers, manually define
+> the bit and genmask C macros in Rust.
+>
+> The *_checked version of the functions provide runtime checking while
+> the const version performs compile-time assertions on the arguments via
+> the build_assert!() macro.
+>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-This caught my attention, and I have a few questions:
+Is it intentional that the macros are not available for usize?
 
-   1) What do you need them for? I don't see any methods that would usually
-      consume those.
-
-   2) Why are they behind CONFIG_HAS_IOPORT and CONFIG_HAS_IOMEM, even though the
-      C instances are not?
-
-   3) What happens if we pass them to IoMem::new()? Is this really safe, or do we
-      need them to be a special Resource type?
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
