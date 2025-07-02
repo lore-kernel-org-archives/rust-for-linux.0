@@ -1,244 +1,236 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4473093CF;
-	Wed,  2 Jul 2025 15:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FEB30AAC3;
+	Wed,  2 Jul 2025 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751468839; cv=none; b=bPBvHwWjR+rknS6sSOgkuZxxTtqMYGdsvhRBVM/4WB4CaKSaOu5UfgtRY3zobiDhDVXLwnEv/qCen655Dxe3om9isJk1nMYAbSIZdQMNrT0AcjtE3/sySd16WwINaMizOXRjsvC1XAMAkNlAn6W6ihdG8R4Vebs/1jIg3Aoe4RE=
+	t=1751469223; cv=none; b=r1OAYhvJkKgu2IJvaj/YV3U/GrS/qlNCckMzfj3XqkR6aefX8+pWcFWNzTDcFyCpWgRN/kpz+P9jdwfHVV/gtjbsopmbcdTvllnZKr0yE9HblF2oCGvxA8wwR28A88VCuEt3jlqjhBZdeirFr9518VRTsCgPrOqE+l5lpdutueE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751468839; c=relaxed/simple;
-	bh=07BIaW5fAzrHSMxQBsZV6MlEtvhFBYxqbhT4d+ChSyk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Vqp4hc+b40hcahE87Th1iwLR3YrYKLe88g00iU3srt75zJ/afpbpXJ201H/MSE2Oqiz+07RXMiesYlnscH9qfjVzhlhaFqxY2L40NEvB/lCZX39rQdC11aSvozqhEKydQ/xBeCqFjLlxZu6GdrAVmDsKp2oR0kCZLMDjViJ+WJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbTC8VmN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751469223; c=relaxed/simple;
+	bh=9KOpZ+d/XCXNDsoS55VxNUdTj9TN9I7t+x/Rpsw/H7I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H/MlSEhxLCu5qCP/c/DuPEKogGIdqk72N2GPpLxQKv89NcL+PhCbDW0YP7Cge8RbNHNqZ9zF5sjTZeemWUkc3pqKWn5XB51Lmz84H9iZP1H74nGrCMZ0YMPhkl8aGqLMjFVCQ44/mm4ZgyIODXf9S2y278xu2qVEGjNdd8jnNkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3YKk9tc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbTC8VmN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB0CC4CEF1;
-	Wed,  2 Jul 2025 15:07:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3YKk9tc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A56C4CEE7;
+	Wed,  2 Jul 2025 15:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751468839;
-	bh=07BIaW5fAzrHSMxQBsZV6MlEtvhFBYxqbhT4d+ChSyk=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=EbTC8VmN5Y4QzM9FwcP0au4LQ4SwbVlbp8gFL2n41R5wiNGu/t4mr5GDOQ/eXaInI
-	 oef23grCvPWGNKrSRFgG2PkVFUhKKMs6aNDlXiaQzwwu+1TuoM37C57W651maPPSMc
-	 qd4yPnBrjyLC1iwB5giBnY0NahMUn5ZaTDj//quRMro3IFMRvKcStX2TLxNUgbCVMY
-	 FNQX5m2sqKP7256Zau+ZcKYx6zVS3YnCkcpzK4mQFpuD41t407O7b51VPlgMb9AgC1
-	 BK04efPYAgPG6qYpJM/QrI+THk6IiWTER4E7TsXZ6RD1BoI8HQNl6oWcbMJLJoMa34
-	 APkGQFI5DLAtA==
+	s=k20201202; t=1751469222;
+	bh=9KOpZ+d/XCXNDsoS55VxNUdTj9TN9I7t+x/Rpsw/H7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T3YKk9tcc21lKT0e8rJsMgs392Ojl6R9DEscpVgysb7rhzQEb/5aQmDusOXxbcfKN
+	 HdFhz4rka4g4jIgo8bej4SSBWSJ1LcCipsCMZ2lOrA6G1tXp2arxNhF8axS6Jm85sn
+	 Bi3cG2p92nnYcCrLxZwQZzZh4uasZkmOkoJrQ+gI5k75y2n+XpWsINKGqd4LAIJrzH
+	 PymYC+//cYLekNyniNlYPjTQUL7FzMjAnQyC9AoNNX9E91LMFh3tCWYIkAj8pEMxX9
+	 3ZI1qDtXCuFm7ac56rBTj7QbLPaQgudPU9IFUQVO0QBjnayWM5dceCsqui6wW4SAl1
+	 WwXV/5Tu5oV3g==
+Date: Wed, 2 Jul 2025 17:13:34 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Drew Fustini <fustini@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 3/8] rust: pwm: Add core 'Device' and 'Chip' object
+ wrappers
+Message-ID: <aGVMnmoepIVSS0yK@pollux>
+References: <20250702-rust-next-pwm-working-fan-for-sending-v7-0-67ef39ff1d29@samsung.com>
+ <CGME20250702134957eucas1p1d84f2ed3014cf98ea3a077c7fae6dea6@eucas1p1.samsung.com>
+ <20250702-rust-next-pwm-working-fan-for-sending-v7-3-67ef39ff1d29@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 02 Jul 2025 17:07:12 +0200
-Message-Id: <DB1NVTWHU7BN.2WGPMAY9LQYNW@kernel.org>
-Cc: "Trevor Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye"
- <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
- "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
- <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
- Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>, "Nathan
- Chancellor" <nathan@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
- <nicolas.schier@linux.dev>
-X-Mailer: aerc 0.20.1
-References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
- <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
-In-Reply-To: <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250702-rust-next-pwm-working-fan-for-sending-v7-3-67ef39ff1d29@samsung.com>
 
-On Wed Jul 2, 2025 at 3:18 PM CEST, Andreas Hindborg wrote:
-> Introduce the `OnceLock` type, a container that can only be written once.
-> The container uses an internal atomic to synchronize writes to the intern=
-al
-> value.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/sync.rs           |   1 +
->  rust/kernel/sync/once_lock.rs | 104 ++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 105 insertions(+)
->
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index c7c0e552bafe..f2ee07315091 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -15,6 +15,7 @@
->  mod condvar;
->  pub mod lock;
->  mod locked_by;
-> +pub mod once_lock;
+On Wed, Jul 02, 2025 at 03:45:31PM +0200, Michal Wilczynski wrote:
+> Building on the basic data types, this commit introduces the central
+> object abstractions for the PWM subsystem: Device and Chip. It also
+> includes the core trait implementations that make the Chip wrapper a
+> complete, safe, and managed object.
+> 
+> The main components of this change are:
+>  - Device and Chip Structs: These structs wrap the underlying struct
+>    pwm_device and struct pwm_chip C objects, providing safe, idiomatic
+>    methods to access their fields.
+> 
+>  - High-Level `Device` API: Exposes safe wrappers for the modern
+>    `waveform` API, allowing consumers to apply, read, and pre-validate
+>    hardware configurations.
+> 
+>  - Core Trait Implementations for Chip:
+>     - AlwaysRefCounted: Links the Chip's lifetime to its embedded
+>       struct device reference counter. This enables automatic lifetime
+>       management via ARef.
+>     - Send and Sync: Marks the Chip wrapper as safe for use across
+>       threads. This is sound because the C core handles all necessary
+>       locking for the underlying object's state.
+> 
+> These wrappers and traits form a robust foundation for building PWM
+> drivers in Rust.
+> 
+> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
 
-As Alice already said, we should reexport the type. And then make the
-module private, no need to have `kernel::sync::OnceLock` and
-`kernel::sync::once_lock::OnceLock`...
+Few more comments below, with those fixed:
 
-Also, I agree with the name change to `SetOnce` or something similar.
+	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
->  pub mod poll;
->  pub mod rcu;
-> =20
-> diff --git a/rust/kernel/sync/once_lock.rs b/rust/kernel/sync/once_lock.r=
-s
-> new file mode 100644
-> index 000000000000..cd311bea3919
-> --- /dev/null
-> +++ b/rust/kernel/sync/once_lock.rs
-> @@ -0,0 +1,104 @@
-> +//! A container that can be initialized at most once.
+> +/// Wrapper for a PWM device [`struct pwm_device`](srctree/include/linux/pwm.h).
+> +#[repr(transparent)]
+> +pub struct Device(Opaque<bindings::pwm_device>);
 > +
-> +use super::atomic::ordering::Acquire;
-> +use super::atomic::ordering::Release;
-> +use super::atomic::Atomic;
-> +use kernel::types::Opaque;
+> +impl Device {
+
+<snip>
+
+> +    /// Gets a reference to the parent `Chip` that this device belongs to.
+> +    pub fn chip(&self) -> &Chip {
+> +        // SAFETY: `self.as_raw()` provides a valid pointer. (*self.as_raw()).chip
+> +        // is assumed to be a valid pointer to `pwm_chip` managed by the kernel.
+> +        // Chip::as_ref's safety conditions must be met.
+> +        unsafe { Chip::as_ref((*self.as_raw()).chip) }
+
+I assume the C API does guarantee that a struct pwm_device *always* holds a
+valid pointer to a struct pwm_chip?
+
 > +
-> +/// A container that can be populated at most once. Thread safe.
-> +///
-> +/// Once the a [`OnceLock`] is populated, it remains populated by the sa=
-me object for the
-> +/// lifetime `Self`.
-> +///
-> +/// # Invariants
-> +///
-> +/// `init` tracks the state of the container:
-> +///
-> +/// - If the container is empty, `init` is `0`.
-> +/// - If the container is mutably accessed, `init` is `1`.
-
-I think we should swap the order and change the ifs to iffs:
-
-    - `init =3D=3D 0` iff the container is empty.
-    - `init =3D=3D 1` iff the container is being accessed mutably.
-
-> +/// - If the container is populated and ready for shared access, `init` =
-is `2`.
-
-You also need that `init` is only increased and never decreases.
-Otherwise you could read a `2` and then access the value, but `init`
-changed under your nose to `0`.
-
-Then the INVARIANT comments below also need to be updated.
-
-> +///
-> +/// # Example
-> +///
-> +/// ```
-> +/// # use kernel::sync::once_lock::OnceLock;
-> +/// let value =3D OnceLock::new();
-> +/// assert_eq!(None, value.as_ref());
-> +///
-> +/// let status =3D value.populate(42u8);
-> +/// assert_eq!(true, status);
-> +/// assert_eq!(Some(&42u8), value.as_ref());
-> +/// assert_eq!(Some(42u8), value.copy());
-> +///
-> +/// let status =3D value.populate(101u8);
-> +/// assert_eq!(false, status);
-> +/// assert_eq!(Some(&42u8), value.as_ref());
-> +/// assert_eq!(Some(42u8), value.copy());
-> +/// ```
-> +pub struct OnceLock<T> {
-> +    init: Atomic<u32>,
-> +    value: Opaque<T>,
-> +}
+> +/// Wrapper for a PWM chip/controller ([`struct pwm_chip`](srctree/include/linux/pwm.h)).
+> +#[repr(transparent)]
+> +pub struct Chip(Opaque<bindings::pwm_chip>);
 > +
-> +impl<T> Default for OnceLock<T> {
-> +    fn default() -> Self {
-> +        Self::new()
-> +    }
-> +}
-> +
-> +impl<T> OnceLock<T> {
-> +    /// Create a new [`OnceLock`].
+> +impl Chip {
+> +    /// Creates a reference to a [`Chip`] from a valid pointer.
 > +    ///
-> +    /// The returned instance will be empty.
-> +    pub const fn new() -> Self {
-> +        // INVARIANT: The container is empty and we set `init` to `0`.
-> +        Self {
-> +            value: Opaque::uninit(),
-> +            init: Atomic::new(0),
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+> +    /// returned [`Chip`] reference.
+> +    pub(crate) unsafe fn as_ref<'a>(ptr: *mut bindings::pwm_chip) -> &'a Self {
+> +        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
+> +        // `Chip` type being transparent makes the cast ok.
+> +        unsafe { &*ptr.cast::<Self>() }
+> +    }
+> +
+> +    /// Returns a raw pointer to the underlying `pwm_chip`.
+> +    pub(crate) fn as_raw(&self) -> *mut bindings::pwm_chip {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Gets the number of PWM channels (hardware PWMs) on this chip.
+> +    pub fn npwm(&self) -> u32 {
+> +        // SAFETY: `self.as_raw()` provides a valid pointer for `self`'s lifetime.
+> +        unsafe { (*self.as_raw()).npwm }
+> +    }
+> +
+> +    /// Returns `true` if the chip supports atomic operations for configuration.
+> +    pub fn is_atomic(&self) -> bool {
+> +        // SAFETY: `self.as_raw()` provides a valid pointer for `self`'s lifetime.
+> +        unsafe { (*self.as_raw()).atomic }
+> +    }
+> +
+> +    /// Returns a reference to the embedded `struct device` abstraction.
+> +    pub fn device(&self) -> &device::Device {
+> +        // SAFETY: `self.as_raw()` provides a valid pointer to `bindings::pwm_chip`.
+> +        // The `dev` field is an instance of `bindings::device` embedded within `pwm_chip`.
+> +        // Taking a pointer to this embedded field is valid.
+> +        // `device::Device` is `#[repr(transparent)]`.
+> +        // The lifetime of the returned reference is tied to `self`.
+> +        let dev_field_ptr = unsafe { core::ptr::addr_of!((*self.as_raw()).dev) };
+
+I think you can use `&raw` instead.
+
+> +        // SAFETY: `dev_field_ptr` is a valid pointer to `bindings::device`.
+> +        // Casting and dereferencing is safe due to `repr(transparent)` and lifetime.
+> +        unsafe { &*(dev_field_ptr.cast::<device::Device>()) }
+
+Please use Device::as_ref() instead.
+
+> +    }
+> +
+> +    /// Gets the *typed* driver-specific data associated with this chip's embedded device.
+> +    pub fn drvdata<T: 'static>(&self) -> &T {
+
+You need to make the whole Chip structure generic over T, i.e.
+Chip<T: ForeignOwnable>.
+
+Otherwise the API is unsafe, since the caller can pass in any T when calling
+`chip.drvdata()` regardless of whether you actually stored as private data
+through Chip::new().
+
+Also, given that `T: ForeignOwnable`, you should return `T::Borrowed`.
+
+> +        // SAFETY: `self.as_raw()` gives a valid pwm_chip pointer.
+> +        // `bindings::pwmchip_get_drvdata` is the C function to retrieve driver data.
+> +        let ptr = unsafe { bindings::pwmchip_get_drvdata(self.as_raw()) };
+> +
+> +        // SAFETY: The only way to create a chip is through Chip::new, which initializes
+> +        // this pointer.
+> +        unsafe { &*ptr.cast::<T>() }
+> +    }
+> +
+> +    /// Allocates and wraps a PWM chip using `bindings::pwmchip_alloc`.
+> +    ///
+> +    /// Returns an [`ARef<Chip>`] managing the chip's lifetime via refcounting
+> +    /// on its embedded `struct device`.
+> +    pub fn new<T: 'static + ForeignOwnable>(
+> +        parent_dev: &device::Device,
+> +        npwm: u32,
+> +        sizeof_priv: usize,
+> +        drvdata: T,
+
+As mentioned above, the whole Chip structure needs to be generic over T,
+otherwise you can't guarantee that this T is the same T as the one in drvdata().
+
+> +// SAFETY: Implements refcounting for `Chip` using the embedded `struct device`.
+> +unsafe impl AlwaysRefCounted for Chip {
+> +    #[inline]
+> +    fn inc_ref(&self) {
+> +        // SAFETY: `self.0.get()` points to a valid `pwm_chip` because `self` exists.
+> +        // The embedded `dev` is valid. `get_device` increments its refcount.
+> +        unsafe {
+> +            bindings::get_device(core::ptr::addr_of_mut!((*self.0.get()).dev));
+
+I think you can use `&raw mut` instead.
+
+Also, if you move the semicolon at the end of the unsafe block, this goes in one
+line.
+
 > +        }
 > +    }
 > +
-> +    /// Get a reference to the contained object.
-> +    ///
-> +    /// Returns [`None`] if this [`OnceLock`] is empty.
-> +    pub fn as_ref(&self) -> Option<&T> {
-> +        if self.init.load(Acquire) =3D=3D 2 {
-> +            // SAFETY: As determined by the load above, the object is re=
-ady for shared access.
-
-    // SAFETY: By the safety requirements of `Self`, `self.init =3D=3D 2` m=
-eans that `self.value` contains
-    // a valid value.
-
-> +            Some(unsafe { &*self.value.get() })
-> +        } else {
-> +            None
-> +        }
-> +    }
+> +    #[inline]
+> +    unsafe fn dec_ref(obj: NonNull<Chip>) {
+> +        let c_chip_ptr = obj.cast::<bindings::pwm_chip>().as_ptr();
 > +
-> +    /// Populate the [`OnceLock`].
-> +    ///
-> +    /// Returns `true` if the [`OnceLock`] was successfully populated.
-> +    pub fn populate(&self, value: T) -> bool {
-> +        // INVARIANT: We obtain exclusive access to the contained alloca=
-tion and write 1 to
-> +        // `init`.
-> +        if let Ok(0) =3D self.init.cmpxchg(0, 1, Acquire) {
-> +            // SAFETY: We obtained exclusive access to the contained obj=
-ect.
-> +            unsafe { core::ptr::write(self.value.get(), value) };
-> +            // INVARIANT: We release our exclusive access and transition=
- the object to shared
-> +            // access.
-> +            self.init.store(2, Release);
-> +            true
-> +        } else {
-> +            false
-> +        }
-> +    }
-> +}
-> +
-> +impl<T: Copy> OnceLock<T> {
-> +    /// Get a copy of the contained object.
-> +    ///
-> +    /// Returns [`None`] if the [`OnceLock`] is empty.
-> +    pub fn copy(&self) -> Option<T> {
-> +        if self.init.load(Acquire) =3D=3D 2 {
-> +            // SAFETY: As determined by the load above, the object is re=
-ady for shared access.
-> +            Some(unsafe { *self.value.get() })
-> +        } else {
-> +            None
+> +        // SAFETY: `obj` is a valid pointer to a `Chip` (and thus `bindings::pwm_chip`)
+> +        // with a non-zero refcount. `put_device` handles decrement and final release.
+> +        unsafe {
+> +            bindings::put_device(core::ptr::addr_of_mut!((*c_chip_ptr).dev));
 > +        }
 
-The impl can just be:
-
-    self.as_ref().copied()
-
-Would it make sense for this function to take `self` instead & we make
-the `OnceLock` also `Copy` if `T: Copy`? Maybe not...
+Same here.
 
 > +    }
 > +}
-
-You can move this method into the block above and just add `where T:
-Copy` on the method.
-
----
-Cheers,
-Benno
