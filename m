@@ -1,100 +1,141 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBFC26A0EB;
-	Wed,  2 Jul 2025 12:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751459678; cv=none; b=W2ptykIc890+oJZuyJmNkZSKoRvvIPiVH/hRHNo4VCDH70fz2FRmG6B9S6sJ8TZDT+25/RGWGDM08NFMfBCsFBMoNYf4qZK33soygPR5tVN7EGPgtudO33O6GtW2RvPBAblJSofn3tlf4MrI4irkMzb2BT16qlU+FXXLrC1aQEo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751459678; c=relaxed/simple;
-	bh=mzTW+TqSUEzk8fmktxy5CGaAVrReWkENvam7sk5L6Wk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tiw2iqy5TkxyT64Lm4USxDJaKncA6VGeWoCfsE1hmOaZLPjPe4FyoCom2DTH4s5FQqHS+esFQ8ZBcE6JeoQYMsQnTCunsQi4d+M0fVfVq+jpN6e0R6WhTGsRAgd2uYILFkLrD1z0+JHrTbEJoF9FBkTOG7EcCJcNrxT27v7rpXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZAOuONiY; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D456A55;
+	Wed,  2 Jul 2025 13:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751461428; cv=pass; b=aW8Z4wnnFWswtZWP+vX2zyzHpF0LHBWI2HYNwHoANbteWLIrE7n/fyoys5gwx9JmaTCO+mTc7rc1BspOgxp170u0zFqsmYtZtJv3TP57RKTxco/fGLUcbgveYzZaIiyq7c7kdg5JbwAN/X6WD0XNPUtK9DTrr2F0heX7iM9ddQU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751461428; c=relaxed/simple;
+	bh=vOCYCvkAhXAcixMZrU83lNCfy99zM7lOFMnQrE1/j+8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=f3lMIQa3PuBLMqpcN3DQn+Vv4OggrAvNbGb0TYkDn2ZPmLzxwAxlfvt7NR3mNw75EES3Fve+wr02BzGAs+8OpfOsMr3tMm2K72f/YOglHEPiK+2MmUet9/JLHejFd7pb36J2WJgnxdQyYS4GCBM6t6CcP0j5VEWVpH8rRFsbEYI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=dStIQqI9; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZAOuONiY"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-313dc7be67aso943494a91.0;
-        Wed, 02 Jul 2025 05:34:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751459676; x=1752064476; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mzTW+TqSUEzk8fmktxy5CGaAVrReWkENvam7sk5L6Wk=;
-        b=ZAOuONiY80yRq9KsGYHEyWS1RG8Nn1mjWMiRtrwPQu8qUnQooEo6p9Slw6y2Fh+/b1
-         HDDOpELcgFNSkoS8QYx/dRqqiY59HFAaiDMpYHDVnFJB3gkm3GayE5V/MoMAUPmpKfmT
-         mLihmIiqHKyCvDDrEqm+SozfDjUWpXDp51wZGNOhOVhJpFK56NiL+5YhiMklmvFEePB7
-         rtQLr3zlKhl3tCaX3Cu6as5tcaJY4fmLffIxNCniP5zXGdPdKOBiZGw9w5ybM+dhcfd2
-         fs5Ugn9ZmdaWXJ6DdSrcxOxfyRAVTGHd3RDMR/+fskA4owP+pDqRHww1MVnLPOOeQfvC
-         uesQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751459676; x=1752064476;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mzTW+TqSUEzk8fmktxy5CGaAVrReWkENvam7sk5L6Wk=;
-        b=B5kSYEzZwqZKzkcRTUxw45fNrEJGhlh37LhrJ9yzZXLiCeBYjvSBWbBqjRrjQ/t62J
-         jHJqFuL1tTyZYz81HoT3rQ9dch5zZtxPo3Qjm/0Ko6zq4MonW32nbyZNBNAtHZYtcNU/
-         godShxBCMihZsCgjhVJmZVTAs+M34IZIr55FL4xBVvntd0lIXkd7CkRsCb9lWXaIRkdJ
-         HdtIsAEhLbp0Nz8/gBWSkg5nCUaHMhyYvIZOSx8DOq5fFZ5Wi8ADII9aAmuyCfxWCPpE
-         B5ow25qvB9lWEZJpyKd8k9B6C5BK+pWTk57LFkVfkefziSiqROSb5bmsBsExd6pRJZS5
-         zF1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUI622QHPzJT5//AHuMooKNhQn/Y+y50ndmusbwTYgSK+cJ4leW1EP46ANVKpun+Sfl87BOKwOpmczc3ILjErQ=@vger.kernel.org, AJvYcCWDTvtHL6bxldd0bRLtdMi2+LCVDOsW7k7md+BTzXPtWqd4lGnlr6WTeiCVKd1cl61e7m+GfRFGzjeLr4A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoC+31QOxWEwYtsksjD5LMo2K7lC467l23agoPoUok3H12J5/3
-	mJPYm9nSFDkPKaHcCC4fKnenNkPfdfwzhYRojOgonGm/KhZcc1Dyoh73AYLYo18vXWA618OgY0w
-	RzSTlM+DbjXNtqm3zZyWC/UQ/laFukNk=
-X-Gm-Gg: ASbGncuOMJVZelm6bSgtrDYlfa1spL2LZywNTPNrrVQBu0BUcINFkRdVMG1qlJUdgD6
-	FFkKoxPcsNvUDZ6ST1gVOSmsyITFFKLcrAfQ4X/8yQXMe4XWLhzu1OQxxAqVLfBV+rjbDXplyTe
-	DhnozVfg+m2nX4fvsKrvoTpzd9PipsCK+7T/nWiHIA8Hs=
-X-Google-Smtp-Source: AGHT+IG9SfscpjxpOW8VWWo+j+txbqwJKQnHHud5dEaZRHtbgncdC7yj8rxKvhncYz2QiCbWHr5XiJn+ENwDcuJiJlw=
-X-Received: by 2002:a17:90b:534c:b0:311:a314:c2dd with SMTP id
- 98e67ed59e1d1-31a90bdc46fmr1470452a91.4.1751459675919; Wed, 02 Jul 2025
- 05:34:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="dStIQqI9"
+ARC-Seal: i=1; a=rsa-sha256; t=1751461407; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=J7FJsSTGq2NrBJWkpuLvwJduoDsBGXL0sr6rNsg/KX6QQRql7ZAkQlrnIEVUZPcZ0/PEjCjT1k8Cp5VgXlm2HpYOxh+KI2QSCMJs2EuU3u2bXDTVHRP9QDxgIbzrwHM8K5jZudvyYrU+B4CWmoYuylirsRJA0uwxNR4MDYAtCqk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751461407; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=byRuEdbt3yBp4cJY83tL1v8nZ7RW6HbIN82zNgWJ2EE=; 
+	b=BAL2xJf6JVgp09oGwwNtGgYdIRTBtXn83nJNiFQBzSNqb6wOi52T5MALECUAXknVKuXpgATN6Ivdzipy8OhfXCJ8yN3qo7Ex4lDJvGoECvghtIaSvJn6n6V27p4PuBWmk+ipeWHT66/IW9QBXG22Ng8cyz2kqgZv0QmgwJ9XFPo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751461407;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=byRuEdbt3yBp4cJY83tL1v8nZ7RW6HbIN82zNgWJ2EE=;
+	b=dStIQqI96/PkjZx4dU21WmrCKtRgm3UH6T0i5m+VJ5ai9M1DMJHBU8+IixVky7Bt
+	VCeJ6z95xoMX066Q+UPs1gmRD08uexsOoFf8gUQtcHMFqBzIXgrNWt5wLF/pwFDgZAm
+	e2Jb0Mrex3lq0w13By7uitaf9gdST3G0ypVdyUZU=
+Received: by mx.zohomail.com with SMTPS id 17514614054171015.6028273805258;
+	Wed, 2 Jul 2025 06:03:25 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <kyrCsGDYN5QdXPkUe4OxMxU2UzHfJ-vH5z643gA-_KFJIaew0duyMXU0yfTrGN5ZCNaecP8Yu2kIXKXMoWS2lA==@protonmail.internalid>
- <20250701001809.496389-1-fujita.tomonori@gmail.com> <874ivvvvjw.fsf@kernel.org>
- <20250702.180922.1185854079687770335.fujita.tomonori@gmail.com>
-In-Reply-To: <20250702.180922.1185854079687770335.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Jul 2025 14:34:23 +0200
-X-Gm-Features: Ac12FXyeX_CoN9Gd5KjF3KbaBd5lVxPxjLli5fXfW5MTYFZJjXeqhByvQVxV6mk
-Message-ID: <CANiq72kq8EMKkehTQS2odA-AVqxZe=EQs4yj4tQ8CK3zi9e9Pw@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: time: Add examples with doctest for Delta
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: a.hindborg@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, 
-	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
-	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
-	tglx@linutronix.de, tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v6 1/2] rust: regulator: add a bare minimum regulator
+ abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAH5fLgj_eKuo=E7HPgmd1bJNfidGUS37MM1QqRaQ_MJ2kTgCmg@mail.gmail.com>
+Date: Wed, 2 Jul 2025 10:03:08 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>,
+ Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <1DFECD1D-9445-4D59-A727-37C527B5DFF5@collabora.com>
+References: <20250627-topics-tyr-regulator-v6-0-1d015219b454@collabora.com>
+ <20250627-topics-tyr-regulator-v6-1-1d015219b454@collabora.com>
+ <CAH5fLgj_eKuo=E7HPgmd1bJNfidGUS37MM1QqRaQ_MJ2kTgCmg@mail.gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Wed, Jul 2, 2025 at 11:09=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> I think that Miguel suggested adding examples but either is fine by me:
->
-> https://lore.kernel.org/lkml/CANiq72kiTwpcH6S0XaTEBnLxqyJ6EDVLoZPi9X+MWka=
-nK5wq=3Dw@mail.gmail.com/
+Hi Alice,
 
-Ah, if Andreas was talking about the examples in general (not just the
-edge cases within each example, which is what I understood in my
-previous reply), then we definitely want to have examples in our
-documentation. Unit tests serve a different purpose.
+> On 2 Jul 2025, at 07:35, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Fri, Jun 27, 2025 at 7:11=E2=80=AFPM Daniel Almeida
+> <daniel.almeida@collabora.com> wrote:
+>>=20
+>> Add a bare minimum regulator abstraction to be used by Rust drivers.
+>> This abstraction adds a small subset of the regulator API, which is
+>> thought to be sufficient for the drivers we have now.
+>>=20
+>> Regulators provide the power needed by many hardware blocks and thus =
+are
+>> likely to be needed by a lot of drivers.
+>>=20
+>> It was tested on rk3588, where it was used to power up the "mali"
+>> regulator in order to power up the GPU.
+>>=20
+>> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+>=20
+> Overall looks reasonable to me.
+>=20
+>> +/// A trait that abstracts the ability to check if a [`Regulator`] =
+is enabled.
+>> +pub trait IsEnabled: RegulatorState {}
+>> +impl IsEnabled for Disabled {}
+>> +impl IsEnabled for Dynamic {}
+>=20
+> Naming-wise, it's a bit weird that IsEnabled applies to everything
+> *but* enabled. And also, the is_enabled() method should probably exist
+> for only Dynamic anyway?
 
-It is a balance -- to me, examples should try to be minimal and yet
-show all "cases" a user may need to care about, but if other tests
-would be useful as tests (e.g. passing `i64::MAX` as input), then
-those would be unit tests.
+I think it's the other way around? Enabled doesn't need this impl =
+precisely
+because of the Enabled token. IOW:
 
-Cheers,
-Miguel
+Regulator<Enabled>::is_enabled() doesn't make sense.
+
+>  And also, the is_enabled() method should probably exist for only =
+Dynamic anyway?
+
+Also no, because Regulator<Disabled> isn't necessarily disabled. It just =
+was
+not enabled by us, but might have been enabled by somebody else in the =
+system.
+
+
+[=E2=80=A6]
+
+>=20
+>=20
+>> +impl<T: RegulatorState + 'static> Drop for Regulator<T> {
+>> +    fn drop(&mut self) {
+>> +        if core::any::TypeId::of::<T>() =3D=3D =
+core::any::TypeId::of::<Enabled>() {
+>=20
+> I would avoid this kind of logic. Instead, you can add an
+> `disable_on_drop()` method or constant to the trait and check it here.
+>=20
+> Alice
+>=20
+
+Can you expand on this?
+
+=E2=80=94 Daniel
+
