@@ -1,105 +1,150 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF44225A47;
-	Wed,  2 Jul 2025 07:52:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DCF211F;
+	Wed,  2 Jul 2025 07:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751442767; cv=none; b=cZQlGFHt5ks5o5Tt8Aq8Mf3AtfeANxyScS6D81yZiw3xIT34bUp+aEDxIAkgYW+FNPh//VU55QV2OrsdS2jHCpq8PTSHowSZP0iKEikCcb0fK1N+5srKX69vq3+txcoDCQ01Getyu5p/sTA9aPsi/G4qm6blWBmtQiJiRubxK0s=
+	t=1751443022; cv=none; b=t3T72Ht9UB0PEUfniZlKb+cA8yM9SN4XbAGWEEFxl9Dvx8UWIfs6AN2GPqdKiQ6g2qVEeHqt7MXtPIiz8IAFe221ekZv1bc3QrRDxWjrp1WmPufSK2GnsPqwwAkiYLJ+G2sDFVkVVqApw2FGYjGgTexmp2kIUBAS5LO0n1NWg3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751442767; c=relaxed/simple;
-	bh=TSZqcAZ4Tg7ebWwY0wAEGXMf80+FJlgSnej2MOlmEY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pglrSPZKljwwgQAjPV8OKJtBdGFHoH1wAtR8XsFe+d55opcpni2lM9+Suoe5tpu3dXfjj2GCP9mpNPumeWvk/x4PvJhVIAJPUGiIIzt0tC7WyRGvXvBGRsOATx1qXkUugsYCm3reZGD3kPn6zMB/DX6Y8gJp405IFlBW1BexF5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hC32VTMR; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751443022; c=relaxed/simple;
+	bh=iPRdlhGWfx9VLtmj4Qr358Ma925NEGSXkWBmva+PDXA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=plkB7jo3AHMw9b8GRYXVf0e6H++nt1Wt5nO9rgDI6HxMSJyDrl6KjdLUXbq3g+S5cH4K978mUalvmEL3kcmwmUw7DNPTovnyF6TJzvSRqhbz0IDmg0dbDrJXPE5GeiD5GBPJXVsZPol9lS1R3kiCkw7l7vurvdtp7TBw7N65/7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jDAJOT7H; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hC32VTMR"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-312a806f002so773311a91.3;
-        Wed, 02 Jul 2025 00:52:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751442766; x=1752047566; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KA/109TsRFaW0BmhmmEYfEfe3Acd4UWLLhiWzpP4vPQ=;
-        b=hC32VTMR4qAESRX3OQS5EK+C2MabU8c8D5PKiy/42YYe5/fcp0sYgV4E8AhppUUd1J
-         58e52mzWp6HvymGsvnzvRsNI6QY5NWkwuNkxlTsJNpypYZyRJmR13WfbbjQGA4Lz7mIZ
-         o4g+rVstbGGkmLorhpOZRmwFFPQqs3dsGwZnSJEQ5wKqofuLkMReDZfjr932Oy5ClyXj
-         dF/jibhO1zDgwa+d2ogAgfvJHxgBPFI5CRTCJMGyp9jxG83wXxn9UUC114dvlDcxxsLQ
-         Aq3rWeTIWvH0Tw0KryJ8HOj0trQm/wg/XSw7q1iJB4YAZuMKazTLKscI7dKNcDXrKPWe
-         lFyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751442766; x=1752047566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KA/109TsRFaW0BmhmmEYfEfe3Acd4UWLLhiWzpP4vPQ=;
-        b=ajxmPvEsZ9UnuH0h9h0qD8KPznTgLr09+8j0awXUuC8vZSMi8sFjYv7nY7ovBc98dY
-         pJ6SmKaj+vbIpPb9hrYCvpSzer5PjWquTf6d2crI5fpSdjd5yyK2/ReIY3KN/NOVtpwv
-         IINVvTSbw8SW3ExQ/c3uMqoPJy+y24cx6Nbd7cwLAbrOfuFMMobRacK0calSMtGDt00P
-         Jce9hXb93oMAkRFfFtwZp4ggkW5rOb4vIL0ufLB5ZZcNTzCeMKyKu+Anj7PRJ67YyRXE
-         JPprC1NbhMmy6Swa1G0kfwlkGUlkNX5bUPu+7Y39Zi7V+5Rfv9xDi7PH3v0rrp82Wre3
-         SFyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnsB5wvRYWtY3O26wfiS5uLsFcc9n4e7fzpiwkINTFR0yIvzYwLy8JJMAeBzrAbZhUSN2OuId5nYPmRcA=@vger.kernel.org, AJvYcCVvMA2XIaKBCwnmWxLnDllNuNfkmN1DHdvPuki0qc+ruRxI7g7I4fejh4K2cdMlkHxJVfzdqRvCE327ZhyVwKY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzrffCHNAcI3uY8i97xPOuPbjRiaHgBDhj+15AEBF32bySt9Yd3
-	3uQ6Swo6lWovw/+WcBWBkmRN7YAD0bS0KJuBA1kz6oiAeERrFqYQiNHhjXPAfE2hnsx/TDpbv5z
-	PKPznwIKLwD2MT53+dPNm4PketCkxJio=
-X-Gm-Gg: ASbGncv/wHO0Kt5xOTPR4xf9aSA7zs0N3gJU7fhMRkXILI19cw4KoMYV978lrEfmFEv
-	a7ZEO1Xn4ox9AsjbQ7MtanJOF/+BVa+PBG+lUgdphXhuIX7ajSZ2gd4/tp1V/TD3ZqdwRrnjme7
-	XVou49/aHXFQnJHYsmYtQmeNXHoqp4YCXRTmLKddY+meM=
-X-Google-Smtp-Source: AGHT+IFVmPMwKuOe/k9MSEOIsEdeRgV0YIMqSPHExRICpwj8qUJ/DXKlAiXWYvySqYjOvnnn2njRlDX0SW91WLrsg9Q=
-X-Received: by 2002:a17:90b:4c4d:b0:312:ec:411a with SMTP id
- 98e67ed59e1d1-31a90c1076bmr1206288a91.3.1751442765904; Wed, 02 Jul 2025
- 00:52:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jDAJOT7H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4BDC4CEED;
+	Wed,  2 Jul 2025 07:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751443022;
+	bh=iPRdlhGWfx9VLtmj4Qr358Ma925NEGSXkWBmva+PDXA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=jDAJOT7HLum6yiMRluiGc4tMSFC54IRmLsQrSvdr2uOF6JHJgGCg3CpR9fHpPRDNy
+	 j5g2vjUhlis20IrYgZ9S2CfzylqaQ9ayGZ8GA72tEsMogJciaC0a+g9eHB8KXv5YK9
+	 y7XQV8ecp2z/J3SjobB3j/rGb3CVKpQF3wexh+SrXIns+8W70gUfT+NcYlhusCGB/b
+	 tiNebM/8pvcgVwXhS/sIxMbUYIBziCMDvbrVi8jbpUPkcxvakHCJB9QbzY25s2Kke9
+	 AsKGkUI7mW/57u+FwKv0XSEL2Kg1IWZme0S6itxsB8+0y+L+shI39jyHpMg+g6e2RF
+	 JGtMVN77NvWhw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v13 2/6] rust: introduce module_param module
+In-Reply-To: <DB0U12HAEVZ6.JKFPI2UQHDRY@kernel.org> (Benno Lossin's message of
+	"Tue, 01 Jul 2025 17:43:29 +0200")
+References: <20250612-module-params-v3-v13-0-bc219cd1a3f8@kernel.org>
+	<DATW0XWNN45X.1L2WMZ41JJ5O8@kernel.org> <87v7om4jhq.fsf@kernel.org>
+	<RPPvXQKnjK77Kp9mKaiFxbNj1fTHKb_I7_nbY81fZop-Wz8n5TTi4_lpXP9U9AwjocvZKqJPI8PGKufJn9cIzQ==@protonmail.internalid>
+	<DAU0J3T0IEVM.2K7ZRQOVOHF8H@kernel.org> <878qlh4aj1.fsf@kernel.org>
+	<87plepzke5.fsf@kernel.org>
+	<xFouVLxX1_t1mH69FDYwlIhBlI72M0IzQEKn0ntG_wT9z7V5DtbxiwVP_frH_yiS-Gf0q_AhqetbLmuvJ_yP5Q==@protonmail.internalid>
+	<DAX65TRN0TGP.25VZ9DYV86XWY@kernel.org> <87wm8txysl.fsf@kernel.org>
+	<9G3W1seaM7elcwWXaeoaa2nfpFYCf-AmBdvZhACGP13KGUtTPVMwGNYdTQsdtp8ru7GIP3-UYTzXscC1MRUKrg==@protonmail.internalid>
+	<DAZV8OGL8BMH.11SLXBXQ17ZJ9@kernel.org> <87h5zxxtdw.fsf@kernel.org>
+	<H78pT7YnQEhAXdxzl_hhnGVUiQuFpibB21_bjH658fMz_5JYbwsPLYYVh8u1gYnzK3N3ilTEAvqOpkuptVx3rg==@protonmail.internalid>
+	<DB03MZI2FCOW.2JBFL3TY38FK@kernel.org> <87bjq4xpv7.fsf@kernel.org>
+	<ffROWpeKczrWSBlKYov2atJG-QD5l5fUOb2dVCNkWlcT9h6DJpa4joGQpjqtYyLP7HX227fCAayyDQunZ464XQ==@protonmail.internalid>
+	<DB0LKI8BO3HZ.3FF03JN4364RM@kernel.org> <87zfdovvz4.fsf@kernel.org>
+	<UQ6WtusvCeJPizlUr0kA7_g7RGdSRfQ6L29hClAXDKsNlWbtAgmCu_glKbUSeyy3I_NKvN5BJW9HbeHleAhRmw==@protonmail.internalid>
+	<DB0U12HAEVZ6.JKFPI2UQHDRY@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Wed, 02 Jul 2025 09:56:50 +0200
+Message-ID: <87tt3vvxdp.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
-In-Reply-To: <20250701-topics-tyr-platform_iomem-v11-0-6cd5d5061151@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 2 Jul 2025 09:52:33 +0200
-X-Gm-Features: Ac12FXzq9tfBcRPeIMFtfwMNToDlgYwrtI-hw6IhYMWV_LH3OADew-Cany1x2T4
-Message-ID: <CANiq72=QFyivcD9R8SfA7RXk0CNCtrL=UcDdAw9iLPL5qUfgOQ@mail.gmail.com>
-Subject: Re: [PATCH v11 0/4] rust: platform: add Io support
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, Jul 1, 2025 at 4:35=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+"Benno Lossin" <lossin@kernel.org> writes:
+
+> On Tue Jul 1, 2025 at 4:14 PM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
+>>> On Tue Jul 1, 2025 at 10:43 AM CEST, Andreas Hindborg wrote:
+>>>> No, I am OK for now with configfs.
+>>>>
+>>>> But, progress is still great. How about if we add a copy accessor
+>>>> instead for now, I think you proposed that a few million emails ago:
+>>>>
+>>>>     pub fn get(&self) -> T;
+>>>>
+>>>> or maybe rename:
+>>>>
+>>>>     pub fn copy(&self) -> T;
+>>>>
+>>>> Then we are fine safety wise for now, right? It is even sensible for
+>>>> these `T: Copy` types.
+>>>
+>>> That is better than getting a reference, but still someone could read at
+>>> the same time that a write is happening (though we need some new
+>>> abstractions AFAIK?). But I fear that we forget about this issue,
+>>> because it'll be some time until we land parameters that are `!Copy` (if
+>>> at all...)
+>>
+>> No, that could not happen when we are not allowing custom parsing or
+>> sysfs access. Regarding forgetting, I already added a `NOTE` on `!Copy`,
+>> and I would add one on this issue as well.
 >
-> Daniel Almeida (4):
->       rust: io: add resource abstraction
->       rust: io: mem: add a generic iomem abstraction
->       rust: platform: add resource accessors
->       rust: platform: allow ioremap of platform resources
+> Ultimately this is something for Miguel to decide. I would support an
+> unsafe accessor (we should also make it `-> T`), since there it "can't
+> go wrong", any UB is the fault of the user of the API. It also serves as
+> a good reminder, since a `NOTE` comment shouldn't be something
+> guaranteeing safety (we do have some of these global invariants, but I
+> feel like this one is too tribal and doesn't usually come up, so I feel
+> like it's more dangerous).
 
-I think Danilo needs these -- I left a couple nits I noticed in the first o=
-ne:
+I see no reason for making it unsafe when it is safe?
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-(By the way, this cover letter is all over the place -- it has two
-diffstats/footers, no intro, and there is even a title in the middle
-of it.)
+    /// Get a copy of the parameter value.
+    ///
+    /// # Note
+    ///
+    /// When this method is called in `const` context, the default
+    /// parameter value will be returned. During module initialization, the
+    /// kernel will populate the parameter with the value supplied at module
+    /// load time or kernel boot time.
+    // NOTE: When sysfs access to parameters are enabled, we have to pass in a
+    // held lock guard here.
+    //
+    // NOTE: When we begin supporting custom parameter parsing with user
+    // supplied code, this method must be synchronized.
+    pub const fn copy(&self) -> T {
+        // SAFETY: As we only support read only parameters with no sysfs
+        // exposure, the kernel will not touch the parameter data after module
+        // initialization. The kernel will update the parameters serially, so we
+        // will not race with other accesses.
+        unsafe { *self.data.get() }
+    }
 
-Cheers,
-Miguel
+>
+> I think we should also move this patchset along, we could also opt for
+> no accessor at all :) Then it isn't really useful without the downstream
+> accessor function, but that can come after.
+
+I would rather not merge it without an access method. Then it is just
+dead code, and we will not notice if we break it.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
