@@ -1,256 +1,110 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2280127A919
-	for <rust-for-linux@vger.kernel.org>; Wed,  2 Jul 2025 13:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751463142; cv=none; b=Ps2S6OG8Pu5iDzelTTBYMWa3AAWIEa278d9W2k4Ns4xSVdEJCb649Dwq4JUOilU5Al4xbX2/psM8cY+TioqcN2FAGcar7u+n+OCKMCUPei25zwkp5FF7vve57a8ZET19pP74lzzzX2xjix11TkdM5miCML/VxGXtyRBRc4blbTk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751463142; c=relaxed/simple;
-	bh=z7Gd2ZV19XvvqLtgd16QId8F4kQS/oThQ6mvOseMOeA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QY4jIisfxrV9G2PkP1rv9HJK1CIYpQ6VSCXC1piVRuaUhLOX1FQdMsQM4hwI6azMjU0L0jNjpis9A3+eIE7y9unxVAtKjHSYos37I8W+WUBX0NmxDW5NKyuWt5jlmN4ShJ/ZhLOUtw+MU/7wDKi8RaNUs6s5E9CqdvSg9joKt6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tsgDG4ar; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4962749D6;
+	Wed,  2 Jul 2025 13:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751463619; cv=pass; b=NrYrZx4aXNydTmzWpQ+HTj6hTXhX1UIPO5hi81D++obcZvJFhmgYsq7Jv2K3acACE9eP2C+u4/1uXbiCvqhO1X6qa8UKeNNWOOwc3VKaqVyUuGMOcEgn+0M74gd4kd1dMTDcStVX0jspx+QjYoiJPvpYmOkc0CSQqZFaEqatJpE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751463619; c=relaxed/simple;
+	bh=zGz3wZaMO2CCXdPpXYEDAMhtkv9y3EB0vMLHbEUIfYQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=JyemlBK0sU2GIkkLAXhdJtEa8NbaA0MAdjnnmuC4s7SkryPYt21YiPqEuxW948IZQZ0x9Li43sGVuTvCwLEzwYupf1dLJ4FtS9MWcI2ByEU7j22dscjWa5TA21BCYPcbOoI8+wmwpBox4n5u+kfwFQxwSBisUziSsdt92oOd8H8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=TaoMGapY; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tsgDG4ar"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3138e64b3fcso3242753a91.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 02 Jul 2025 06:32:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751463140; x=1752067940; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rLb/hiHcDswU0D4uNpcn2drPp3SCOUyv9DR9ui8PXlc=;
-        b=tsgDG4arB5k0MWH3m6IqSA4JrJ1cE46VRb7JreDK4X/naTp6liVD07yMDgbAi9z+qo
-         +9JBqnVawGjIc0Vcx6D0HNxn+uaJmRt4tpyk/gENgCZAkTuyolgL9na3PCiZHqndE+98
-         NfJie5wja6L3wRPI0vrOgFCQAswDXyey8Ps1V616s70s9XOkFCMj5uI1wxnXCrO4NL7T
-         HBI5Z1tZA+cYUBJKb4dNp8v/OxUx8UfPtcXvUUc7SA1q0p1Ywg9+PX2GEADWNpe//x3r
-         DFqsKzCbsLWmCJjG54jhf6f6SD7BlIAvM5BzkND8XepL6/zFGWTn567/tA8TvsIyZiRM
-         +/CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751463140; x=1752067940;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rLb/hiHcDswU0D4uNpcn2drPp3SCOUyv9DR9ui8PXlc=;
-        b=LnA0cx6Bd8b8uIDIEOUKjlNGSy85xNnJw77TZmYoWfg666reLvGd9DCy4tBQzL5zV3
-         tsQRE52+K1w37twkrAHaUdaDArdQy7z6sgF3eOpc3i8vZLXyR+LKv4D2mnyTqgaV97gz
-         bzWn9A3W4al3m0RlNEpuJwe8u5pluMsDLgP3Q0kapvgI+RG7RsEb+aGrfxa+ZPw1HQuy
-         nrEEoZPfWEUtpv1KdIPC7NfOyLi+IGq5qomrkG5fX8wbahFi8ZwjrTyy0bi1WH61YDk/
-         0C611/H8+pKRyiqujRQ+bc9dgltXnV2nf6hbkf15+y6byxysDAcn8RgDwbM6NC/zMKst
-         ovbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVebjfllxAVOcySJKMZxK9YaESQuDqsJu/sphSyc/7Ej2PR0WVHckWBMaGIVSgTqE2FRvJh9V0Go/2gdigc2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFbC8FH4eaMCoG6itxBQkjy/bGRIQhaKJ01vTuef/BO3G2ix3g
-	OMxbUDx4MeDmFaJrgQb4LmgGb4bHXIUhB3927bSJzFZVWeJ548F+776blu1lovSIywDU0SJ4XLO
-	7M5LXZm/ozK9CgA0vY7XUbe5ZHEcm9tW7LTqInV7Q
-X-Gm-Gg: ASbGncuYbF/NhqFNAgKjZI7cMxxCfuEJGlWGU48+m0wiSDsTBAiis6KACgio3iad7xk
-	h4FJc/v4x328BlsKLT1NfgGuLYxfn44EXxdFJiLqoaAROMds7EtaO6qZqh1yxxey0OqN4d/sPtY
-	ExkDPsQFIkL770d61Zb9uSjwSga29bHocB1JB4+Yr+raVj2KmiW6DpMO2SFB85FcNhuptE+EToW
-	O97DETisg==
-X-Google-Smtp-Source: AGHT+IGl/TSKdQK7b9WQhHkHUkAL99tfbfmIwoIuqDS1wkyiy3yWj1kqtAXrBjAXrNOeDXSrDfXhNvdyiTqbiD64MZ4=
-X-Received: by 2002:a17:90b:5788:b0:312:e91c:e340 with SMTP id
- 98e67ed59e1d1-31a90c2f8f3mr4423923a91.35.1751463139949; Wed, 02 Jul 2025
- 06:32:19 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="TaoMGapY"
+ARC-Seal: i=1; a=rsa-sha256; t=1751463588; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cExZJQShZ2uQ1MN1i5UO8fmEQalayc+lyTtgz46ZkgqQgPLT9tOz30SLJDv3qFITFp0srCKKCJ93qIKXTcke0806yZo9AekWCmgkTlHTfSB6F6XQ+USpo+aqUDMg0snEMhhxMWr1Z7QxG5nKx8l3451G0YTJzb1VkmmVzgkN71Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751463588; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=zGz3wZaMO2CCXdPpXYEDAMhtkv9y3EB0vMLHbEUIfYQ=; 
+	b=nSetWO1moVj9josi1pcj5yvFifyocK6d3/CKHmkV8TjL2jF7aMjnj1pRt4X+RXBA6AltKoVI4nnrE2DgePS1bH78+i2JhYrECS1hYmm5aEigpcrewVurzv+slfS+DOdHVDL0fvpZnlXAt1Sh9slZm7MreNfNKlL9jPJdFjGILJU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751463588;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=zGz3wZaMO2CCXdPpXYEDAMhtkv9y3EB0vMLHbEUIfYQ=;
+	b=TaoMGapYkuGCPVaT+OpCTHgKvr3HndiuyLlDNyl+81jX7y2HthpMkQ44DE3cw/Ch
+	G8vAT9xp7J6s+vLU1orxlhw7Qy2zkrauGwzba7KrjQPceZ3XljUICqN7tWFxxWwBmFj
+	lyhE0JLSZJar7N8jOP16vAGl0D0EEb+oQL6n1cNc=
+Received: by mx.zohomail.com with SMTPS id 1751463587050641.5348975838191;
+	Wed, 2 Jul 2025 06:39:47 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org> <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
-In-Reply-To: <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 2 Jul 2025 15:32:05 +0200
-X-Gm-Features: Ac12FXyWI8bK1guggG5Rvhs0301hdIxUpCmaYFQClmsVD87QxHCiS9wDlqMCJQk
-Message-ID: <CAH5fLghw5TDrzmFZB=tORR5Lxx4WoG4wer6y5NuFdod2_tb6zg@mail.gmail.com>
-Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Trevor Gross <tmgross@umich.edu>, 
-	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH 3/3] rust: xarray: add `insert` and `reserve`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <CAJ-ks9k7Jn=8K1a0QeDK-vhTWO8-dv_bkw2SJm3EEUsinMTFQA@mail.gmail.com>
+Date: Wed, 2 Jul 2025 10:39:30 -0300
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <70F0607C-FFAA-412C-9412-5F5A01079C45@collabora.com>
+References: <20250701-xarray-insert-reserve-v1-0-25df2b0d706a@gmail.com>
+ <20250701-xarray-insert-reserve-v1-3-25df2b0d706a@gmail.com>
+ <CANiq72nf-h86GszE3=mLpWHi5Db+Tj0TRyUe9ANfjdNbesBEEg@mail.gmail.com>
+ <CAJ-ks9k7Jn=8K1a0QeDK-vhTWO8-dv_bkw2SJm3EEUsinMTFQA@mail.gmail.com>
+To: Tamir Duberstein <tamird@gmail.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Wed, Jul 2, 2025 at 3:19=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
-org> wrote:
->
-> Introduce the `OnceLock` type, a container that can only be written once.
-> The container uses an internal atomic to synchronize writes to the intern=
-al
-> value.
->
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Hi, this is on my todo list.
 
-This type provides no way to wait for initialization to finish if it's
-ongoing. Do you not need that?
+Again, thanks Tamir for working on this.
 
-> ---
->  rust/kernel/sync.rs           |   1 +
->  rust/kernel/sync/once_lock.rs | 104 ++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 105 insertions(+)
->
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index c7c0e552bafe..f2ee07315091 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -15,6 +15,7 @@
->  mod condvar;
->  pub mod lock;
->  mod locked_by;
-> +pub mod once_lock;
+> On 1 Jul 2025, at 14:04, Tamir Duberstein <tamird@gmail.com> wrote:
+>=20
+> On Tue, Jul 1, 2025 at 12:56=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+>>=20
+>> On Tue, Jul 1, 2025 at 6:27=E2=80=AFPM Tamir Duberstein =
+<tamird@gmail.com> wrote:
+>>>=20
+>>> Add `Guard::{insert,reserve}` and `Guard::{insert,reserve}_limit`, =
+which
+>>> are akin to `__xa_{alloc,insert}` in C.
+>>=20
+>> Who will be using this? i.e. we need to justify adding code, =
+typically
+>> by mentioning the users.
+>=20
+> Daniel, could you name your use case?
 
-I would add a re-export so that users can import this as kernel::sync::Once=
-Lock.
+My main use case is for insert_limit.
 
->  pub mod poll;
->  pub mod rcu;
->
-> diff --git a/rust/kernel/sync/once_lock.rs b/rust/kernel/sync/once_lock.r=
-s
-> new file mode 100644
-> index 000000000000..cd311bea3919
-> --- /dev/null
-> +++ b/rust/kernel/sync/once_lock.rs
-> @@ -0,0 +1,104 @@
-> +//! A container that can be initialized at most once.
-> +
-> +use super::atomic::ordering::Acquire;
-> +use super::atomic::ordering::Release;
-> +use super::atomic::Atomic;
-> +use kernel::types::Opaque;
-> +
-> +/// A container that can be populated at most once. Thread safe.
-> +///
-> +/// Once the a [`OnceLock`] is populated, it remains populated by the sa=
-me object for the
-> +/// lifetime `Self`.
-> +///
-> +/// # Invariants
-> +///
-> +/// `init` tracks the state of the container:
-> +///
-> +/// - If the container is empty, `init` is `0`.
-> +/// - If the container is mutably accessed, `init` is `1`.
+Tyr uses xarrays to keep track of resources allocated by userspace, and =
+we need
+to impose limits on how many resources can be allocated at once.
 
-I would phrase this as "being initialized" instead of "mutably
-accessed". I initially thought this was talking about someone calling
-a &mut self method.
+insert_limits() provides the exact semantics needed, i.e.: insert =
+somewhere in
+the array as long as there is vacant space in the given range.
 
-> +/// - If the container is populated and ready for shared access, `init` =
-is `2`.
-> +///
-> +/// # Example
-> +///
-> +/// ```
-> +/// # use kernel::sync::once_lock::OnceLock;
-> +/// let value =3D OnceLock::new();
-> +/// assert_eq!(None, value.as_ref());
-> +///
-> +/// let status =3D value.populate(42u8);
-> +/// assert_eq!(true, status);
-> +/// assert_eq!(Some(&42u8), value.as_ref());
-> +/// assert_eq!(Some(42u8), value.copy());
-> +///
-> +/// let status =3D value.populate(101u8);
-> +/// assert_eq!(false, status);
-> +/// assert_eq!(Some(&42u8), value.as_ref());
-> +/// assert_eq!(Some(42u8), value.copy());
-> +/// ```
-> +pub struct OnceLock<T> {
-> +    init: Atomic<u32>,
-> +    value: Opaque<T>,
-
-Opaque does not destroy the inner value. You are missing a destructor.
-
-> +}
-> +
-> +impl<T> Default for OnceLock<T> {
-> +    fn default() -> Self {
-> +        Self::new()
-> +    }
-> +}
-> +
-> +impl<T> OnceLock<T> {
-> +    /// Create a new [`OnceLock`].
-> +    ///
-> +    /// The returned instance will be empty.
-> +    pub const fn new() -> Self {
-> +        // INVARIANT: The container is empty and we set `init` to `0`.
-> +        Self {
-> +            value: Opaque::uninit(),
-> +            init: Atomic::new(0),
-> +        }
-> +    }
-> +
-> +    /// Get a reference to the contained object.
-> +    ///
-> +    /// Returns [`None`] if this [`OnceLock`] is empty.
-> +    pub fn as_ref(&self) -> Option<&T> {
-> +        if self.init.load(Acquire) =3D=3D 2 {
-> +            // SAFETY: As determined by the load above, the object is re=
-ady for shared access.
-> +            Some(unsafe { &*self.value.get() })
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +
-> +    /// Populate the [`OnceLock`].
-> +    ///
-> +    /// Returns `true` if the [`OnceLock`] was successfully populated.
-> +    pub fn populate(&self, value: T) -> bool {
-> +        // INVARIANT: We obtain exclusive access to the contained alloca=
-tion and write 1 to
-> +        // `init`.
-> +        if let Ok(0) =3D self.init.cmpxchg(0, 1, Acquire) {
-
-This acquire can be Relaxed. All other accesses to self.value
-synchronize with the release store below, so you do not need acquire
-here to obtain exclusive access.
-
-> +            // SAFETY: We obtained exclusive access to the contained obj=
-ect.
-> +            unsafe { core::ptr::write(self.value.get(), value) };
-> +            // INVARIANT: We release our exclusive access and transition=
- the object to shared
-> +            // access.
-> +            self.init.store(2, Release);
-> +            true
-> +        } else {
-> +            false
-> +        }
-> +    }
-> +}
-> +
-> +impl<T: Copy> OnceLock<T> {
-> +    /// Get a copy of the contained object.
-> +    ///
-> +    /// Returns [`None`] if the [`OnceLock`] is empty.
-> +    pub fn copy(&self) -> Option<T> {
-> +        if self.init.load(Acquire) =3D=3D 2 {
-> +            // SAFETY: As determined by the load above, the object is re=
-ady for shared access.
-> +            Some(unsafe { *self.value.get() })
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +}
->
-> --
-> 2.47.2
->
->
+=E2=80=94 Daniel=
