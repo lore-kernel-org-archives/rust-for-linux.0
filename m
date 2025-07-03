@@ -1,102 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B1D2FEE2A;
-	Thu,  3 Jul 2025 19:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E6A29B20D;
+	Thu,  3 Jul 2025 20:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751572549; cv=none; b=gg7d63tV8bxDuMzRwtXaQP6NBehDX1m1SCQLdo2ERzfAv6OCN5GARqON0AHES+O0vGAARcWz6UjqZQZvh9/B5g53Ae4NfzVamv0wL91ZsPwt/VkijknXVmOVRxGmw/fgzyPV9rX8bfabd0AVeKnW9Z0Wvs0CrdfSAoW9qbfljv8=
+	t=1751573636; cv=none; b=Dxnubyi/JftVo+TR5I7tuBLb1TklMKS8zlAI80Z+fjBv7fyByBUdd63qlY1IiYdCRarisPXFFovJAjFxIgQYitITE4J61J+RJpvyF1lPK4FSaHi8Rc1DFijHugOKmrX92ZRjAbJHNr6wd/bC4aPnHtd0zhB5C79aWZyCuhGe6NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751572549; c=relaxed/simple;
-	bh=z6ZuFPFQCILhwVyx9iU+iK6Y5gFTaCZgVh9XLzBiyLw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=UqlzGBipQGrXOFEaWQBTqgXlkLY/09/l2ed2nU9Jxr4n1J7dSmwHZGMnzh3TjSCRsAhMI+oBuKRvPECcuxsu7Wagxkf1e/OTAIhy40vU5GGRMK8z/iFaDWQTy0QR7aMMkqwxzeHb3N834sf7cIwIo4LHT4vHhAqHfk9gXsGRdrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nTHF2138; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751573636; c=relaxed/simple;
+	bh=xGaRycledJGdlf425UdwgEj3N4v7BtyR+liW0smD3T8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BFXHDvh6Gb7OqeoZ1RcVZHLZh05j1p0QPAtQQu96aMg+7zqWIbNPDB7GF57oLGjRQI6P59isswA1L5rgXUwaxbxP+BGcqvmvy0JGhEMz4vviqkO/0dujq/cABNkbq4/Krf4+/tMqDRzWyC0KZeWDJtqljteteNzmsqdzIwZFwIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uE72JgV2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nTHF2138"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903B9C4CEEB;
-	Thu,  3 Jul 2025 19:55:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uE72JgV2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19031C4CEE3;
+	Thu,  3 Jul 2025 20:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751572549;
-	bh=z6ZuFPFQCILhwVyx9iU+iK6Y5gFTaCZgVh9XLzBiyLw=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nTHF2138OKFv1OkMcPY2aBCfmub1J6Rm9Y3uoFJUAckQ5DoX6+YtCv6h5w0lb+NrF
-	 mZidcwHDmy3t5h5Ui4b4YMhoZg3rSGlGjAwE2AHstlS7289H9I+EFx102QZwXqZqAz
-	 kIB5FjRITRqTc2XT++wHNP1TKghjZxztfk1NZX5lLQM+3koH5Sl80vNz19Ps3bK+W4
-	 sScpdrbE9EM6/7XBGUfCZIopgerTNDTf2Ig1SlLkkX18AEpe3d8qein3ZtKU9X6im0
-	 wvsDlVE2r1ytduNxJclJ6jKmDJLlyOgahmKzTJCLp+qLeejuFYT7IGvEMOvZFfWvtH
-	 +oioGNeeQmVew==
+	s=k20201202; t=1751573635;
+	bh=xGaRycledJGdlf425UdwgEj3N4v7BtyR+liW0smD3T8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uE72JgV2ZLDqVGWtzkm233V2Jqe8pMPTgWSGgSBhooO/vlhoJcyDv/IQARsmoNQj3
+	 3Zi9tVXgdpMDb3J+HvEnk2pYZrDjOmpT2FzeR//FSkv9th/RN3Ag1o4E+o4QONNS0u
+	 CGyDO2cBszAxnTjBtYNLOn9fpZP5UZAPD20fJtHMrZRvTHes+IHYUEKBqv8wmCqUuM
+	 xxNccoaBhX1Gks2Cd926ZVPLa6a6zNF0Pce9fE5ju5rkXf5HEJEPjxIBEgdgJ4ZN8l
+	 qtfqyY78YGCAcWPwW9U3+1FD6B4932jY3esdXcmVZRu0vOEdi7D0vsMLxex6fCVnl9
+	 +G7pI3spJ6qKA==
+Date: Thu, 3 Jul 2025 22:13:49 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Benno Lossin <lossin@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v6 0/6] rust: add support for request_irq
+Message-ID: <aGbkfa57bDa1mzI7@pollux>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Jul 2025 21:55:44 +0200
-Message-Id: <DB2ONAGQF92H.1ARBZW47KMVV8@kernel.org>
-Cc: <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <acourbot@nvidia.com>, <joelagnelf@nvidia.com>, <wedsonaf@gmail.com>
-Subject: Re: [PATCH] rust: fix outdated safety note in
- `Revocable::revoke_internal`
-From: "Benno Lossin" <lossin@kernel.org>
-To: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250703172605.28891-1-work@onurozkan.dev>
-In-Reply-To: <20250703172605.28891-1-work@onurozkan.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
 
-Something went wrong with your TO addresses, merging Alex's and
-Boqun's...
+On Thu, Jul 03, 2025 at 04:29:58PM -0300, Daniel Almeida wrote:
+> Daniel Almeida (6):
+>       rust: irq: add irq module
+>       rust: irq: add flags module
+>       rust: irq: add support for non-threaded IRQs and handlers
+>       rust: irq: add support for threaded IRQs and handlers
+>       rust: platform: add irq accessors
+>       rust: pci: add irq accessors
 
-On Thu Jul 3, 2025 at 7:26 PM CEST, Onur =C3=96zkan wrote:
-> The code used to use `compare_exchange` in the initial version
-> but it was changed to `swap` after a reviewer suggestion (see [1]),
-> and then the safety comment was not updated and became incorrect.
->
-> Link: https://lore.kernel.org/all/20241211104742.533392-1-benoit@dugarrea=
-u.fr [1]
->
-> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> ---
->  rust/kernel/revocable.rs | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> index 06a3cdfce344..5c0b7afa76fb 100644
-> --- a/rust/kernel/revocable.rs
-> +++ b/rust/kernel/revocable.rs
-> @@ -163,8 +163,10 @@ unsafe fn revoke_internal<const SYNC: bool>(&self) -=
-> bool {
->                  unsafe { bindings::synchronize_rcu() };
->              }
-> =20
-> -            // SAFETY: We know `self.data` is valid because only one CPU=
- can succeed the
-> -            // `compare_exchange` above that takes `is_available` from `=
-true` to `false`.
-> +            // SAFETY: We just used an atomic `swap` to check if the dat=
-a was still marked
-> +            // as available. If it returns `true`, that means we are the=
- first (and only)
-> +            // thread to see it as available and mark it as unavailable.=
- So no other thread
-> +            // can access or drop the data after this. That makes it saf=
-e to drop the data here.
+What's the intended merge path for this series? Should I take it through
+driver-core? I'd assume so, given that, besides the series also containing
+platform and PCI patches, it depends on patches that are in driver-core-next.
 
-I think this is already addressed by this series:
+@Thomas: Is there any agreement on how the IRQ Rust code should be maintained?
+What's your preference?
 
-    https://lore.kernel.org/all/20250626165927.66498-1-marcelomoreira1905@g=
-mail.com
-
----
-Cheers,
-Benno
-
->              unsafe { drop_in_place(self.data.get()) };
->          }
-> =20
-
+- Danilo
