@@ -1,32 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF532DE713;
-	Thu,  3 Jul 2025 11:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AB02E266C;
+	Thu,  3 Jul 2025 12:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751542916; cv=none; b=YnCTR4XnxSQmx/0bcro0i4qqDK+joHThwGCJDGizM1gGzjU+rJuLaq4Djy/kbyekUPNyPqFthV4jP+42Eg3/keXXUZau8c/fwRxNfDenMLreCzgr520CchkCNiCGGirMcGns8vj4zHDIZZMbuiHLbkDvYiNKHAsMVacW5yW3Lb8=
+	t=1751545779; cv=none; b=GyKXfakRIDQiom5chWR/APTixXIo1zizymBJU/oOGY0+DFQB7VuqlJgR3o8FbuYuE2yTjIGtlOtI/4cvpv3gs/RTeapBryFIw57DM/Haww/IjBRcL2KMhldyc9kJeDJTd85tmwxHjIqaUFRlKFvRbcLWG8SjaYDXQhaq9ibYG0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751542916; c=relaxed/simple;
-	bh=D/Ym6RYmv823XmO3ORXAntlc3sWVVpbHq7uzyYrTGOk=;
+	s=arc-20240116; t=1751545779; c=relaxed/simple;
+	bh=eMLR8B6UQwPnHJW42gS8dT/DQ5cRY3n6VOIcIfPOHuc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dUAPg4wCS1vErJ+4IxciroA072U7lj+bKmAQ0mVP2TVeLouQ0lCXLvf5GG0yCI2Zc8Sw3wxkLUBkTe7/Fhd9erZDmQJTjIOl2CrwwVIzbXQWv6eGEq5nBk4Bl4kkrAJwkdguvYua0brbs0NTDv0mjBbD/YpLpzXROek0wCWVLDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kqlu1KmT; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=JETbRatbyRltRyqa8SKioV8t53zDjISVVEoGmkLWba8p2stqvWJSvdSbGS1oP/+iEO0n+roFoZU/qTXnMIHWNuEPczm7Dhmbpm7FxoF+LQ5CEm0jWYC7kX0OmGJ6IWphVNZeTmbMI1xQp+7cyf/9ks/AHrXv0GFBs6cGgAC08Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HimfUY+v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kqlu1KmT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638BDC4CEE3;
-	Thu,  3 Jul 2025 11:41:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751542916;
-	bh=D/Ym6RYmv823XmO3ORXAntlc3sWVVpbHq7uzyYrTGOk=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HimfUY+v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E20C4CEED;
+	Thu,  3 Jul 2025 12:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751545777;
+	bh=eMLR8B6UQwPnHJW42gS8dT/DQ5cRY3n6VOIcIfPOHuc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kqlu1KmTspCigZhmSjUb8oupFSm5lltgb/v3H2ZDkAJdl0sXdQHsbr3ljrlKeTX21
-	 dSz5H4ReLn58TqEIlKvOVFA4/4FoSAOFIcn+PT8OcuM8e9xGROcAvyET3KRKqL8pJs
-	 LYR6Ta0tOTBXWWkB0C/xjiA20B3rH5jO0ltDww5E=
-Date: Thu, 3 Jul 2025 13:41:53 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+	b=HimfUY+vsDfOvlO4a+IKxQN9gBS+R7/bJJEsr+WGXLVbu94TJmjW5GUj+WTP5Ejc0
+	 17cFZio6VpvyAbnPqdDjouytHQJfZ2nIeUsUZD+G+UEtAAb+dww3Qeg3xER7azhwvB
+	 mSGWgbFwz2e9ReQ4kUz3jusg7XiWtEP2BeJAzvpYMtInuB1eSL0dDGbv6ckwdQPFlb
+	 eiPRZn7lKGEGomOK3BQqnUq5KzSFW7TiL++55JF6R+j5Z1+kF3QGy4qQqYFsujBatv
+	 uvU3oLcGvhezEto0UQ04MRSpcYwxFOAKTKG2q6g/XS9o/vp2uyX5EICM3ldfoQ/Fyv
+	 q2Kll0zsi/JHw==
+Date: Thu, 3 Jul 2025 14:29:31 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>,
 	Matthew Maurer <mmaurer@google.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -41,9 +44,8 @@ Cc: Benno Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
 	Dirk Behme <dirk.behme@de.bosch.com>
 Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing
  for File
-Message-ID: <2025070349-tricky-arguable-5362@gregkh>
-References: <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org>
- <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
+Message-ID: <aGZ3q0PEmZ7lV4I-@pollux>
+References: <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
  <aGLUl7ZtuQBPoCuv@pollux>
  <2025070131-icon-quarters-0c16@gregkh>
  <aGPtCBB6nWTNJuwK@pollux>
@@ -52,191 +54,157 @@ References: <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org>
  <aGZVUqangIR-c4aW@google.com>
  <DB2COGYW20C5.2YN1TFXR87UTS@kernel.org>
  <CAH5fLgjaNzOHNxa+XY1c2V5A1H2RhWP9gHAAmHx=9LN9CbHq=Q@mail.gmail.com>
+ <2025070349-tricky-arguable-5362@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjaNzOHNxa+XY1c2V5A1H2RhWP9gHAAmHx=9LN9CbHq=Q@mail.gmail.com>
+In-Reply-To: <2025070349-tricky-arguable-5362@gregkh>
 
-On Thu, Jul 03, 2025 at 12:54:18PM +0200, Alice Ryhl wrote:
-> On Thu, Jul 3, 2025 at 12:33 PM Benno Lossin <lossin@kernel.org> wrote:
-> >
-> > On Thu Jul 3, 2025 at 12:02 PM CEST, Alice Ryhl wrote:
-> > > On Tue, Jul 01, 2025 at 05:10:47PM +0200, Danilo Krummrich wrote:
-> > >> On Tue, Jul 01, 2025 at 04:21:56PM +0200, Greg Kroah-Hartman wrote:
-> > >> > On Tue, Jul 01, 2025 at 04:13:28PM +0200, Danilo Krummrich wrote:
-> > >> > > Instead this should just be:
-> > >> > >
-> > >> > >  struct GPU {
-> > >> > >     fw: debugfs::File<Firmware>,
-> > >> > >  }
-> > >> > >
-> > >> > > and then I would initialize it the following way:
-> > >> > >
-> > >> > >  let fw = KBox::new(Firmware::new(), GFP_KERNEL)?;
-> > >> > >  let file = dir.create_file("firmware", fw);
-> > >> > >
-> > >> > >  // debugfs::File<Firmware> dereferences to Firmware
-> > >> > >  file.do_something();
-> > >> > >
-> > >> > >  // Access to fw is prevented by the compiler, since it has been moved
-> > >> > >  // into file.
-> > >> > >
-> > >> > > This is much better, since now I have the guarantee that my Firmare instance
-> > >> > > can't out-live the GPU instance.
-> > >> >
-> > >> > That's better, yes, but how would multiple files for the same
-> > >> > "structure" work here?  Like a debugfs-file-per-field of a structure
-> > >> > that we often have?
-> > >>
-> > >> That is a very good question and I thought about this as well, because with only
-> > >> the current API this would require us to have more and more dynamic allocations
-> > >> if we want to have a more fine grained filesystem representations of structures.
-> > >>
-> > >> The idea I have for this is to use pin-init, which we do in quite some other
-> > >> places as well.
-> > >>
-> > >> I think we can add an additional API like this:
-> > >>
-> > >>      impl Dir {
-> > >>         pub fn create_file<T>(&self, data: impl PinInit<T>) -> impl PinInit<Self> {
-> > >>            pin_init!(Self {
-> > >>               data <- data,
-> > >>               ...
-> > >>            })
-> > >>         }
-> > >>      }
-> > >>
-> > >> This allows us to do things like:
-> > >>
-> > >>      #[pin_data]
-> > >>      struct Firmware {
-> > >>         #[pin]
-> > >>         minor: debugfs::File<u32>,
-> > >>         #[pin]
-> > >>         major: debugfs::File<u32>,
-> > >>         #[pin]
-> > >>         buffer: debugfs::File<[u8]>,
-> > >>      }
-> > >>
-> > >>      impl Firmware {
-> > >>         pub fn new(&dir: debugfs::Dir, buffer: [u8]) -> impl PinInit<Self> {
-> > >>            pin_init!(Self {
-> > >>               minor <- dir.create_file("minor", 1),
-> > >>               major <- dir.create_file("major", 2),
-> > >>               buffer <- dir.create_file("buffer", buffer),
-> > >>            })
-> > >>         }
-> > >>      }
-> > >>
-> > >>      // This is the only allocation we need.
-> > >>      let fw = KBox::pin_init(Firmware::new(...), GFP_KERNEL)?;
-> > >>
-> > >> With this everything is now in a single allocation and since we're using
-> > >> pin-init, Dir::create_file() can safely store pointers of the corresponding data
-> > >> in debugfs_create_file(), since this structure is guaranteed to be pinned in
-> > >> memory.
-> > >>
-> > >> Actually, we can also implement *only this*, since with this my previous example
-> > >> would just become this:
-> > >>
-> > >>      struct GPU {
-> > >>         fw: debugfs::File<Firmware>,
-> > >>      }
-> > >>
-> > >>      let file = dir.create_file("firmware", Firmware::new());
-> > >>      let file = KBox::pin_init(file, GFP_KERNEL)?;
-> > >>
-> > >>      // debugfs::File<Firmware> dereferences to Firmware
-> > >>      file.do_something();
-> > >>
-> > >> Given that, I think we should change things to use pin-init right away for the
-> > >> debugfs::File API.
-> > >
-> > > Does this actually work in practice for anything except immutable data?
-> > > I mean, let's take Rust Binder as an example and lets say that I want to
-> > > expose a directory for each Process object with some of the fields
-> > > exposed. Let's just simplify Rust Binder a bit and only include some of
-> > > the fields:
-> > >
-> > > #[pin_data]
-> > > struct Process {
-> > >     task: ARef<Task>,
-> > >     #[pin]
-> > >     inner: SpinLock<ProcessInner>,
-> > > }
-> > >
-> > > pub(crate) struct ProcessInner {
-> > >     threads: RBTree<i32, Arc<Thread>>,
-> > >     nodes: RBTree<u64, DArc<Node>>,
-> > >     requested_thread_count: u32,
-> > >     max_threads: u32,
-> > >     started_thread_count: u32,
-> > > }
-> > >
-> > > Rust Binder already does expose some debugging data through a file
-> > > system, though it doesn't do so using debugfs. It exposes a lot of data,
-> > > but among them are the pid, the number of threads and nodes, as well as
-> > > the values of requested_thread_count, started_thread_count, and
-> > > max_threads.
-> > >
-> > > Now, we run into problem number one: pinning is not supported inside
-> > > mutexes. But let's say we solved that and we could do this:
-> > >
-> > > #[pin_data]
-> > > struct Process {
-> > >     task: File<ARef<Task>>, // prints the pid
-> > >     #[pin]
-> > >     inner: SpinLock<ProcessInner>,
-> > > }
-> > >
-> > > pub(crate) struct ProcessInner {
-> > >     threads: File<RBTree<i32, Arc<Thread>>>, // prints the count
-> > >     nodes: File<RBTree<u64, DArc<Node>>>, // prints the count
-> > >     requested_thread_count: File<u32>,
-> > >     max_threads: File<u32>,
-> > >     started_thread_count: File<u32>,
-> > > }
-> > >
-> > > However, this still doesn't work! Debugfs may get triggered at any time
-> > > and need to read these fields, and there's no way for it to take the
-> > > spinlock with the above design - it doesn't know where the spinlock is.
-> > > For the integers I guess we could make them atomic to allow reading them
-> > > in parallel with mutation, but that option is not available for the
-> > > red/black trees.
-> > >
-> > > What is the intended solution in this case? If the argument is that this
-> > > is a rare case, then keep in mind that this is a real-world example of
-> > > debugging information that we actually expose today in a real driver.
-> > > With Matt's current approach, it's relatively easy - just store a bunch
-> > > of File<Arc<Process>> instances somewhere and define each one to take
-> > > the mutex and print the relevant value.
-> >
-> > How would your example look like with the current approach? IIUC, it
-> > also wouldn't work, because the debugfs data can't be mutated?
-> 
-> I would store a bunch of `File<Arc<Process>>` instances somewhere.
-> Each one has a closure that takes the spinlock and prints the
-> appropriate value.
+On Thu, Jul 03, 2025 at 01:41:53PM +0200, Greg Kroah-Hartman wrote:
+> Yes, we need to be able to have a debugfs file callback handle a mutable
+> structure in order to lock things correctly.  We also need to have it be
+> mutable so that it can MODIFY the value (everyone seems to forget that
+> debugfs allows that...)
 
-Ok, I think we need to see some "real" examples here of the api in use
-before figuring it out further as I'm totally confused :)
+Well, that's possible with both approaches. Data behind a lock becomes mutable
+once you grabbed the lock. That's the same in both cases.
 
-Yes, we need to be able to have a debugfs file callback handle a mutable
-structure in order to lock things correctly.  We also need to have it be
-mutable so that it can MODIFY the value (everyone seems to forget that
-debugfs allows that...)
+The difference is that with the pin-init approach I propose you can't have what
+Alice sketched up. And I think it's even desirable that you can't do it.
 
-So how about a platform driver that exposes values read from a platform
-device (i.e. a soc info driver), that also includes a
-local-to-the-device data structure that can be locked and modified?
-That should cover all the use cases that I can think of at the moment.
+Let's me explain the difference on a simplified example, based on Alice'
+example.
 
-thanks,
+ForeignOwnable API
+------------------
 
-greg k-h
+	#[pin_data]
+	struct Process {
+	    task: ARef<Task>,
+	    #[pin]
+	    inner: SpinLock<ProcessInner>,
+	}
+	
+	pub(crate) struct ProcessInner {
+	    threads: RBTree<i32, Arc<Thread>>,
+	    max_threads: u32,
+	}
+
+Here we have to create an Arc<Process> (let's call it process) and create files
+from it.
+
+	let file_threads = dir.create_file("threads", process);
+	let file_max_threads = dir.create_file("max_threads", process);
+
+In the file system callback of both of these, we now have an Arc<Process>, hence
+we can access:
+
+	let guard = process.inner.lock();
+
+	read_or_write(guard.max_threads);
+
+and in the other file:
+
+	let guard = process.inner.lock();
+
+	read_or_write(guard.max_threads);
+
+Pin-Init API
+------------
+
+	#[pin_data]
+	struct Process {
+	    task: ARef<Task>,
+	    #[pin]
+	    inner: File<SpinLock<ProcessInner>>,
+	}
+	
+	pub(crate) struct ProcessInner {
+	    threads: RBTree<i32, Arc<Thread>>,
+	    max_threads: u32,
+	}
+
+Here Process does not need to be within an Arc and no separate file instances
+need to be kept around, that happens already within the constructor of Process:
+
+	pin_init!(Process {
+	   inner <- dir.create_file("process_inner", ...),
+	   [...]
+	})
+
+The file itself has a reference to SpinLock<ProcessInner>, hence we can access:
+
+	let guard = inner.lock();
+
+	read_or_write(guard.threads)
+	read_or_write(guard.max_threads)
+
+The difference is that with the ForeignOwnable API it was possible to have
+separate files for threads and max_threads.
+
+While with the pin-init one we either have to have a single file exposing
+ProcessInner (which is what I did above) or protect threads and max_threads
+with separate locks (of course max_threads could also just be an atomic).
+
+(If you like I can sketch up this case as well.)
+
+At a first glance this seems like an undesirable limitation, but I argue that
+this is a good thing.
+
+The reason I think so is what I also explained in [1], but let me adjust it a
+bit for this reply:
+
+threads and max_threads being protected by the same lock means that they are in
+a certain relationship to each other. Meaning that they only really make sense
+looking at them atomically.
+
+So I argue it does not make sense to expose those values to userspace through
+separate files.
+
+For instance:
+
+	$ cat max_threads && cat threads
+	$ 5
+	$ 10
+
+This way you may read 5 max_threads, but 10 actual threads, because things may
+have changed in between the two cat commands.
+
+However, if instead, they are exposed through a single file, we get an atomic
+view of them, such that the semantic relationship between them is preserved.
+
+For instance:
+
+	$ cat process_info
+	$ threads: 2
+	$ max_threads: 10
+
+So, what I'm trying to say is, I think it's a good thing if fields that are
+protected by the same lock can't be exposed through separate files, because it
+means that the fields only make sense in the context of each other.
+
+Or saying it the other way around, if it makes sense to expose fields through
+separate files, it means they're unrelated to each other and hence should be
+protected with separate locks, rather than a common one.
+
+IMHO it's even a good thing beyond the scope of debugfs, because it forces
+developers to really think about organizing structures properly, e.g. in a way
+that only fields that really belong behind a certain lock are placed behind this
+lock.
+
+> So how about a platform driver that exposes values read from a platform
+> device (i.e. a soc info driver), that also includes a
+> local-to-the-device data structure that can be locked and modified?
+> That should cover all the use cases that I can think of at the moment.
+
+Yes, I also really like to have that.
+
+But, again, both approaches can do this. It's just that I really discourage the
+one that forces us to have an Arc instance on structures exposed through
+debugfs, since this messes with the driver's lifetime and ownership
+architecture in a bad way.
