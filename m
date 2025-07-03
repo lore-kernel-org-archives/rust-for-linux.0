@@ -1,84 +1,74 @@
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [178.154.239.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B9A288C9B;
-	Thu,  3 Jul 2025 17:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2709716F841;
+	Thu,  3 Jul 2025 18:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751563618; cv=none; b=KKxjPfxGR0iSWIBqRzkiDrdRofrDTzAyleT3qwuysfQq/cxG/1aVaJ1XVJWoeV/r4JFLZkMWvlwXn4awcgBuAR+Tlvur62E3hlr6byCDNsLPe6M27ZcjLCtL1n7ctqkwY+IOQ4/f6EwmMsRXXjNH9BJ6Z+G0VpFVgSkT/uGBDPY=
+	t=1751568553; cv=none; b=EWt/L2hHAfNBpHd7qrEK5pLjSwwa31I4eeNyEybDEGzbc059sesUbH66Nh8EaBc6Ot2H1Fwz0OBCpAZrJbMcHUcNbiQiLbNybcnZVIETH0DYNw3GEFUCFr5R8XmUxcVbB5GVVHd+pQzyXdLCIw2+00dIW7jAye/jQGBRl2REctc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751563618; c=relaxed/simple;
-	bh=SM8lYkR5HE7giqEtfGgk9mB5gPnaSPRZUMEMtuEWai8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S47UyRBtzCc1Z/ZCF6vmuW6w684q3BTR5kT+P3MJsojlQAIp7r+v8knDR0MUDdONJsHUQjp11bf7CsH+n9784KTLu2QzGTKTUkbJK/TOkkv3+s6Y9GO3yKQWAoeHJu15/IR8yGeOIWjX7yQIv4lkMULTZmEArLvzZTrB9p96qyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=fail (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=D0FlLEef reason="signature verification failed"; arc=none smtp.client-ip=178.154.239.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1751568553; c=relaxed/simple;
+	bh=jn3wxtS88ko9VuMGoaNRGohaM/J76C7T2/Cdnu6qOq8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SIOXxiRyAIYbj9nlZVmeRDP7+spV0RSxwjSmEj6kmKJrxWBbMwFsEZCwQAaSyPo2bCNEFBNKOlKBWiIdJ/St+nhU7sfL1pci7I32Nu9CEMRF2+rrjukd+SaQeBtuaX0JURrjK9g0NVTGVpYCbKfSLGvCe3J+YVPElEK6XLIqvHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1BH5q6K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="D0FlLEef"
-Received: from mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:1115:0:640:abf2:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id EEF6760927;
-	Thu,  3 Jul 2025 20:26:44 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id cQg4EvKL1Sw0-U24gxadN;
-	Thu, 03 Jul 2025 20:26:43 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1751563604;
-	bh=0nowOd9g3OEwPon5R+zMkJ5oeBWn22IfpORnZmHlNhk=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=D0FlLEefKj5VeCMPFWjMqCABhfscXpPvrxLvtTTlGh0AWKfBEmo2TTCT716lJkJRO
-	 +B82QmLpgmk7saMe/D0XvEe9YEElgiCywe1f6EhFm8+naHmsAG/bYFkSCL8VqJMPN5
-	 xiLYgb25aS70pPhCrSvCeBk2f9MyjX8LmJQgUJFQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-63.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: ojeda@kernel.org, "alex.gaynor@gmail.comboqun.feng"@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	dakr@kernel.org, acourbot@nvidia.com, joelagnelf@nvidia.com,
-	wedsonaf@gmail.com,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH] rust: fix outdated safety note in `Revocable::revoke_internal`
-Date: Thu,  3 Jul 2025 20:26:05 +0300
-Message-ID: <20250703172605.28891-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1BH5q6K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A870C4CEE3;
+	Thu,  3 Jul 2025 18:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751568552;
+	bh=jn3wxtS88ko9VuMGoaNRGohaM/J76C7T2/Cdnu6qOq8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=R1BH5q6KrZ/BkDJPw0tGvTzBQ6y1VIhmM2mk86JquLsEvfLh0frn6KymDBootVPin
+	 AJBHGobb4KPBD8MUh6uXB5OmfxmCZIY8ePUHRlI8bcp/uVWjnb+wkLXrueSrwLNB3L
+	 QDQjkKKDHzKevJcvED/xP5W82QPbMsgrPIWh/50nPySl2gqP+sZGzOkGBrRR1KtoJc
+	 nn2NV4qrdeOVYJ0bdMyX1LJVlQeYWOtKhQM/xB9aQl+rbokwFRgDBwiQ/kAyyDxXzz
+	 rgFpiZY5IX/5YtI2lzB9KMmt4FuGT7mMzQeQokKGtEW7aXctKCO/PDI8BpP+zzvRJM
+	 k1VmuSV8MrhSw==
+Message-ID: <92c347d7-4b59-436e-b4ce-5941bdc42cd8@kernel.org>
+Date: Thu, 3 Jul 2025 20:49:07 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20250627-topics-tyr-request_irq-v5-0-0545ee4dadf6@collabora.com>
+ <20250627-topics-tyr-request_irq-v5-3-0545ee4dadf6@collabora.com>
+ <022A0919-37A5-4FF0-B834-333E512EC0C6@collabora.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <022A0919-37A5-4FF0-B834-333E512EC0C6@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-The code used to use `compare_exchange` in the initial version
-but it was changed to `swap` after a reviewer suggestion (see [1]),
-and then the safety comment was not updated and became incorrect.
+On 7/3/25 7:12 PM, Daniel Almeida wrote:
+>> +/// Callbacks for an IRQ handler.
+>> +pub trait Handler: Sync {
+> 
+> I wonder if we should require ’static here too?
+> 
+> Same for the Threaded trait.
 
-Link: https://lore.kernel.org/all/20241211104742.533392-1-benoit@dugarreau.fr [1]
+You already have
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/revocable.rs | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+	impl<T: Handler + 'static> Registration<T>
 
-diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-index 06a3cdfce344..5c0b7afa76fb 100644
---- a/rust/kernel/revocable.rs
-+++ b/rust/kernel/revocable.rs
-@@ -163,8 +163,10 @@ unsafe fn revoke_internal<const SYNC: bool>(&self) -> bool {
-                 unsafe { bindings::synchronize_rcu() };
-             }
- 
--            // SAFETY: We know `self.data` is valid because only one CPU can succeed the
--            // `compare_exchange` above that takes `is_available` from `true` to `false`.
-+            // SAFETY: We just used an atomic `swap` to check if the data was still marked
-+            // as available. If it returns `true`, that means we are the first (and only)
-+            // thread to see it as available and mark it as unavailable. So no other thread
-+            // can access or drop the data after this. That makes it safe to drop the data here.
-             unsafe { drop_in_place(self.data.get()) };
-         }
- 
--- 
-2.50.0
-
+which I think this is good enough.
