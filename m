@@ -1,105 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EA9224B01;
-	Thu,  3 Jul 2025 20:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BCC76C61;
+	Thu,  3 Jul 2025 21:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751575314; cv=none; b=vBvNbThf5CxiRFFiDKdfprdHE1G9KBTn/tLPmNsaeAV/v6Fv0otyZnUNforTtfWBPjjGBOViaAU4w3hY1vsNd7FxMwMKshkyo9/zMZ+rutipLL9V7oFiEHawK26PjUQ7I+36JODpm7ZuG5PnOut9AO8jTwWy/lkQNaYPbokYBlE=
+	t=1751577130; cv=none; b=Geb96UBprV7kF2poC5oFIvoR0DmQzAg43MRzCVnaPwUkIshFpUxDeTezPFYj8/2Qk2G6nz83axuAP8JkD+4UpT0FPEYVWq+BBjeaMLMCAqVfjLA3OyRYFijOpuWcdmggp1dE29pc9Q5Bd3B6IHFaJeOCrI6wBLf4o4yHaTb/IfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751575314; c=relaxed/simple;
-	bh=kfQCrWTU8jF0Wb8PkVzyL3vCnCGGq4Sl58weKgDBXNI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ejv9QX3M1h5sVGBdc8At26gklukLmbaUdEiWVfE6MqYIhiJMCBeq9JhMa1NZOS51c+cy4UWqWtU2lfOXAy9idH7rIQyRv9LuFT/7BFb0cQ0fpRYlkHAhkimNRQbQ+3/Vl6fOSuPreDzGq5EcXy/XRdsMgxLlxy814+MBYODyAjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ibt7q1in; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751577130; c=relaxed/simple;
+	bh=BccBPphFegUfvo9vaJnC2YeCQIMSxr8COvMz3kKjdFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UDCkBee9PZNI2luuH+4t828tuyJdP2TMj3msA7DAoVsOxb7WA8TI7NV868vQpOUGJjgWOu/qqKPc+yw9T/jy4gyLn9E4yTwiY1LHNhbX9l2PI2d41Hp5oShoGog71yrb58AzOzfQshMI/lViayMpeRKVO+LDHUhwUNDj1sG/W54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MM2xOjYP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ibt7q1in"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391E1C4CEE3;
-	Thu,  3 Jul 2025 20:41:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MM2xOjYP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2B6C4CEEB;
+	Thu,  3 Jul 2025 21:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751575313;
-	bh=kfQCrWTU8jF0Wb8PkVzyL3vCnCGGq4Sl58weKgDBXNI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ibt7q1insR1nFsC3nmwtOtPt2S8QoUreqHzdhiXnaP+1kdgOG1CWm/1PdoSZUN/Hu
-	 /O9SZX+I0Qhe5KZckoe4kMnE9/+DiWGHcXbEjhxtxeB7cFCXZpM5Xwo8CrrmChL783
-	 DqFJEp+DjM20T3NZdhlte4CHsMYRAoMv4UFlZYmM++nH+dEkwdNkza2ZpHdOo1Pt+U
-	 /go0ZezP7aLj3HqGilqBnIOe3LJuNM2wVEtdT05GYh/5ri/eA+OFRXKkbrxh5rBv2U
-	 41PZzacjdw953uljPolHeVkJsIm+SYob6QGyMO3b0wsuD6fd6gCL/tNzYDp9DicJnB
-	 brzjwCUji7auA==
+	s=k20201202; t=1751577130;
+	bh=BccBPphFegUfvo9vaJnC2YeCQIMSxr8COvMz3kKjdFQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MM2xOjYPR/IlHPzFnc4v2tVz/O2tS3X1RNb1e1zd37lyGL3SuN4QC2cD2rggrgojM
+	 YqnQMLcCzLbZYB97rUY8sid3KisERGoNEM89VfLjSqmgPU4GFfBsbGO/oMLjNDC6CB
+	 +bmZ5tUZ0Uj0Z5JJHvqMlBG5QZAUjDq9eCOGUaaLy9RA7rzjPaVijO25n2XibWN2/A
+	 s4rdeHqvUtmuJ1qG71Px/2qpMUJm45f1tAwV9dQb+oTmxlm5jzgEVWE8uOiGVSnZrW
+	 7OjzF+BqqRhVtSUZU8NXUsq095I++8WhR8gdQ5XmKnXnTj+i7ie+9J+OuR+w6ZyKfC
+	 FOk/GBTTD0aUw==
+Date: Thu, 3 Jul 2025 14:12:08 -0700
+From: Drew Fustini <fustini@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 8/8] riscv: dts: thead: Add PWM fan and thermal control
+Message-ID: <aGbyKAYPc3Hqc+uY@x1>
+References: <20250702-rust-next-pwm-working-fan-for-sending-v7-0-67ef39ff1d29@samsung.com>
+ <CGME20250702135003eucas1p114a5ce5dea469242940b7e2e44a7ad59@eucas1p1.samsung.com>
+ <20250702-rust-next-pwm-working-fan-for-sending-v7-8-67ef39ff1d29@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Jul 2025 22:41:47 +0200
-Message-Id: <DB2PMJKCP2K6.3SRFFDDXL3CV1@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
- Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
- Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
- Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
- "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
- <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
- <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
- <dO7tJL6M4FKz_QOo-Vbb0bZOybyXa9CkBI0SIIKeCGBHIjNHlpElEV0iPbNeXBa6elnsQXqrGS5AGXdGU5hefQ==@protonmail.internalid> <DB1NVTWHU7BN.2WGPMAY9LQYNW@kernel.org> <87bjq1ve6t.fsf@kernel.org> <vbMLL995UAW3v-0IanP32kkT2-kRHTK21bCbdsgaykKMsJk3gEKRbJk4CegAZWuTR8oAhAI1R-wFgMuezTeNLw==@protonmail.internalid> <DB2BM4UMCFQR.3SQWIRF7HDP09@kernel.org> <87y0t5tf56.fsf@kernel.org>
-In-Reply-To: <87y0t5tf56.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250702-rust-next-pwm-working-fan-for-sending-v7-8-67ef39ff1d29@samsung.com>
 
-On Thu Jul 3, 2025 at 6:25 PM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Thu Jul 3, 2025 at 11:03 AM CEST, Andreas Hindborg wrote:
->>> "Benno Lossin" <lossin@kernel.org> writes:
->>>> On Wed Jul 2, 2025 at 3:18 PM CEST, Andreas Hindborg wrote:
->>>>> +impl<T: Copy> OnceLock<T> {
->>>>> +    /// Get a copy of the contained object.
->>>>> +    ///
->>>>> +    /// Returns [`None`] if the [`OnceLock`] is empty.
->>>>> +    pub fn copy(&self) -> Option<T> {
->>>>> +        if self.init.load(Acquire) =3D=3D 2 {
->>>>> +            // SAFETY: As determined by the load above, the object i=
-s ready for shared access.
->>>>> +            Some(unsafe { *self.value.get() })
->>>>> +        } else {
->>>>> +            None
->>>>> +        }
->>>>
->>>> The impl can just be:
->>>>
->>>>     self.as_ref().copied()
->>>
->>> Nice. I was thinking of dropping this method and just have callers do
->>>
->>>  my_once_lock.as_ref().map(|v| v.copied())
->>>
->>> What do you think?
->>
->> There is `Option::copied`, so no need for the `.map` call.
->
-> Cool.
->
->> I don't
->> really have a preference, if users always want to access it by-value,
->> then we should have `copy`.
->
-> But should it be `copy` or `copied` like `Option`?
+On Wed, Jul 02, 2025 at 03:45:36PM +0200, Michal Wilczynski wrote:
+> Add Device Tree nodes to enable a PWM controlled fan and it's associated
+> thermal management for the Lichee Pi 4A board.
+> 
+> This enables temperature-controlled active cooling for the Lichee Pi 4A
+> board based on SoC temperature.
+> 
+> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
 
-I'd say `copy`. With `copied` I'm thinking of something that turns
-`OnceLock<&T>` into `OnceLock<T>`, which is weird...
+Reviewed-by: Drew Fustini <fustini@kernel.org>
 
----
-Cheers,
-Benno
+I'll apply this to the thead-dt-for-next branch once the PWM driver is
+accepted by Uwe.
+
+Thanks,
+Drew
