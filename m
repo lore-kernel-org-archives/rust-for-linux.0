@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B3A2DE701;
-	Thu,  3 Jul 2025 21:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1204F1DF985;
+	Thu,  3 Jul 2025 22:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751579394; cv=none; b=Bz9ttb/DklReJzoYTGUpgdIOGR9SDJLCaqKTcllUhlgIjwppHpWOZYyrGzSSXQUr5FMjj47kthAbJpUFcyMxcixYW5bKVznSspUIvyNWmRtWauqPogrKZFpPF9BOCj3DWjhrL2ZxKTmJINP3cNyZKI8A8/zPBp1ZNeQNu86I2ak=
+	t=1751580926; cv=none; b=ZaEq04Sx4+Zo9s60wXAoUJoKJghyzN1/ZnbW7lCnxTmjmkUke5ZDfd7FU9igNEkGp+3E486hu3qzUXDJxEa6GdgV+rV8lqQrV2tW1boHWdYh/ytxt+VazXw2W6uIKLtrC5EtKlJ65OwRfZ93EZKuDUSwB1WwSqS25SojlD4jLX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751579394; c=relaxed/simple;
-	bh=CGX2SPIZ9xHHR7xXxfAWC/JUQPZzoF0O31iWxNQOu/w=;
+	s=arc-20240116; t=1751580926; c=relaxed/simple;
+	bh=Eb+gDRBV8zsdTjqzbYxzjH0tSA1S2PkkmHytpR+om3M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r5inA0DFogyCgufVEWnmvr6gJ3Ltk3QbXqJMcCBOh8xhwNy1i/76TdQimWqRTgRhqZi22mNb+qP5+XbB4et4X4gSXc7SrAWKHcILFLOiewevAyq2Xc9iUnA9pmFtK91zcUpJVWALN/ZGCdeswM5pzInSfXLPv9PC+RyW/RSXkcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kgzTO+XL; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=OKy05fHrg63i63xC9sn93sOJIM3jtw+XkMJBnOkI8NlKeN0o65Ayf6cgfVkv8UrLJAgXwiyA+awEC8Hb3cIdm60htQDRIAOy7KNls6BMqwpxMGzMgsPNOiwFV4l2GOQN4A9HP0XZX6tm/kDcPL3ws6SHF1Zwm5Myt4gTEkxUFok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7wcnWH5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kgzTO+XL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F7CC4CEE3;
-	Thu,  3 Jul 2025 21:49:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7wcnWH5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12209C4CEE3;
+	Thu,  3 Jul 2025 22:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751579394;
-	bh=CGX2SPIZ9xHHR7xXxfAWC/JUQPZzoF0O31iWxNQOu/w=;
+	s=k20201202; t=1751580925;
+	bh=Eb+gDRBV8zsdTjqzbYxzjH0tSA1S2PkkmHytpR+om3M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kgzTO+XLqwCuSwNpaXZACKDE/QvJYSyRQyBOAaO0MinLorg3TvaZTL3j5t1aJP7NV
-	 kKEx/gHmpJz0UjUHuWO59zTx/ywLtJs4MAQ0N9Ul3KUsbKFuVTH7wetUAWIoM7mMc3
-	 2eXJD0D4kES0VX4M4ga0JPF2w7+5pVYfWqXdJErUr49QPtWrp2+0vTDUlVHO1K0j4d
-	 rbPvj0aKxhh/syUyXhZEihGdwIggAvrryynEkyt04ZrX+x6yZrPgXDJWX3qMbhkCF9
-	 ZuH8WDcFq3WK1US5Czl0dP6w8oUjMy3yiz09nbypB/iKGpG/wN/E0MGJiV77PwzQKo
-	 5lh0WWrDGieLA==
-Message-ID: <0e89892f-103e-4b92-a067-e192cb7b89a6@kernel.org>
-Date: Thu, 3 Jul 2025 23:49:47 +0200
+	b=G7wcnWH5lY1yLVBoOraujbdvWmpNx/kq6lUK26PpaPEAuS72Q9g0ZmNXkHWZCYKXW
+	 uCDKdUaadPVTIUlre7QjVKIBfUlEQuXX2xpZUgXyVGqrtOVAogLXHTIaea8P2Ljwd4
+	 VGaXSLtpsI8aCbPShZ/T7i78CSyklhjk2e7bqxKtx6zCKE8xqb/vmWrtiJZkgeF01/
+	 byP5tr33R8UO+CVM1djDL5tQLAh/zz/msXqHc+gsY7LWlha9iNBTZse2R2toEhH9Sf
+	 XXBYVJJkGlqAKWvokJz1iTRBu7JPYxIaa0y4p6UUtiBi/mJl7GdFtOZ0c7v6/2npz0
+	 V5SYDno61XL1w==
+Message-ID: <64cec618-b883-4330-b1ba-5172f7790fe3@kernel.org>
+Date: Fri, 4 Jul 2025 00:15:19 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -35,35 +35,35 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 3/7] rust: introduce module_param module
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Benno Lossin <lossin@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>,
- Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Petr Pavlu <petr.pavlu@suse.com>,
- Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
- <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>,
- Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>,
- Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
-References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
- <20250702-module-params-v3-v14-3-5b1cc32311af@kernel.org>
+Subject: Re: [PATCH v1 1/3] rust: device_id: make DRIVER_DATA_OFFSET optional
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: alex.gaynor@gmail.com, gregkh@linuxfoundation.org, ojeda@kernel.org,
+ rafael@kernel.org, robh@kernel.org, saravanak@google.com,
+ a.hindborg@kernel.org, aliceryhl@google.com, bhelgaas@google.com,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, david.m.ertman@intel.com,
+ devicetree@vger.kernel.org, gary@garyguo.net, ira.weiny@intel.com,
+ kwilczynski@kernel.org, leon@kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, lossin@kernel.org, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
+References: <20250623060951.118564-1-fujita.tomonori@gmail.com>
+ <20250623060951.118564-2-fujita.tomonori@gmail.com>
 From: Danilo Krummrich <dakr@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250702-module-params-v3-v14-3-5b1cc32311af@kernel.org>
+In-Reply-To: <20250623060951.118564-2-fujita.tomonori@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 7/2/25 3:18 PM, Andreas Hindborg wrote:
-> +    /// Get a shared reference to the parameter value.
-> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
-> +    // held lock guard here.
-> +    pub fn get(&self) -> &T {
-> +        self.value.as_ref().unwrap_or(&self.default)
-> +    }
+On 6/23/25 8:09 AM, FUJITA Tomonori wrote:
+> Enable support for device ID structures that do not contain
+> context/data field (usually named `driver_data`), making the trait
+> usable in a wider range of subsystems and buses.
+> 
+> Several such structures are defined in
+> include/linux/mod_devicetable.h.
+> 
+> This refactoring is a preparation for enabling the PHY abstractions to
+> use device_id trait.
+> 
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-I think you forgot to rename this.
+Acked-by: Danilo Krummrich <dakr@kernel.org>
