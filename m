@@ -1,121 +1,154 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3D8230D14;
-	Thu,  3 Jul 2025 16:26:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5B3158535;
+	Thu,  3 Jul 2025 16:42:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751559985; cv=none; b=DKfr1fPZ5JLRm4gr9rynPLRDLf4cRWdpyY4fYq3Tb2osG4+jyC+VQFTU3sH7zfCQvnfo+VRf1JDkJBl+nLjkl23Xb6haJiv4V7ZGPu5vmYvy6IFxKuBMvjlLFhMBevniyr842ea/dvBBok2pb6CcFA22BHy3EqO1AA08OIf9P70=
+	t=1751560928; cv=none; b=ZTvfJVwi0ES2seA+8yX+pEp6O81gba3eoXuIA7jZCXRwXwuKM5rUA32uoMhC6jhE441R3tjjNr0rK7jgBt+r8UY6fvPC1tV6fg0KDPVD7vK5EkgDuoIU8njccj3lRyvMra3oNU5dRMYcxNRZtpaywzjS7HFV+iK8kf7rTfFXELw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751559985; c=relaxed/simple;
-	bh=rSyt4WnF+qHRwEMJ5395X7EAvgdTWUY/zMhaiamm5RI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XVC2h1s7nUxxGwV0yn+xms37AYNIAzrpqHpuakdc+t66nGlgg2O0bS40KAHgiOkdqveNY380mM4Hy9alXOiqgHS9QCxZi+pcl+Ni7JuRDDSkfEQ0kXNdVC9WjMR0DPk5Q9VcVPkJJl8ud7M9GhG/EnkTZbu4VI1pckSX6gCPCh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g3sTY+eu; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751560928; c=relaxed/simple;
+	bh=ZT9MMzNVBc46W+N2Nstu+3l0+Cbqa9TefNxhDjkrowg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cm00An8vQi1rkuwGDCdbOw5Pe9xUpfmGfXdCIJinON2f7I9dwxS9xiw24TNkTHF9WiRwhpPf9/t0Jy6KLAskoQ/xx9FSnienlfpJBGR4QMzemDcHjTDf12oQfsO6TQGl7oHGa5+LHC+vh2wKYwKf/IyLOCLf2zX2wiavRIY0HvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cirVBWt2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g3sTY+eu"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2355360ea88so128595ad.2;
-        Thu, 03 Jul 2025 09:26:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751559983; x=1752164783; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rSyt4WnF+qHRwEMJ5395X7EAvgdTWUY/zMhaiamm5RI=;
-        b=g3sTY+euO3GvTdVZ8f0/AIpvIM3PPPLGpOLLt7qMJhCZpZx4qtwAj5qaV1C5j64VWd
-         9GYqDMsg60tYlHvviG85u4Ww/WYvch3EaYPIe1Cb1PTqlIQOWglSixKljpSq3o0SsRYu
-         zRkVVskX8i3S1b4J+MnUbpUqa3b3E6MWWMMgh033WQIVn/r2t2dhOl5UFZLf/C0CcTQu
-         xbYMeISan4ioanBy6UtKgk8pqaCv4IYE3b5eiWxqueB9wuMKSusV7SGPT/iD1myxVfWL
-         aWtjsZ8d+ptWhbxnPK2dnH7pG7vz3rZSMffgBeKOmg6p9qtd+ABVfb5JYI9ZnoYjEM5+
-         OGdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751559983; x=1752164783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rSyt4WnF+qHRwEMJ5395X7EAvgdTWUY/zMhaiamm5RI=;
-        b=cO0G34mIElQphWEBFCx5WPGW0ROHDJbu75a4s/BU8D94cKvCsGPsrwgen+o3RRoFw4
-         69uIBr+Q8joxDpp/ziohQxDXa3KokH4GXtEZrcE48GwGz6xV5ED5mEGZlYf8TSxy6/hn
-         tmWBoxqrYCvCygvwS0QmPyUoyBUo7ClaSKQKNuKPyX2DeOajLVhdW06hA6FOyTiVGF0N
-         8k9aj/vg2cxw8E7ouRORWRadLSpDEtapPhN1+2g1t5vL1a8wC2qxLP3zkuGJMrYN8LSp
-         1TA+GQFWb/ybbGBxl5pX2Mv43Vx+sDTkBn+yhrcwcpksXZcRuXB00IQoHOCB0lkDuLM8
-         mfIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+pHe6VHHgmmuUbhOimV5itDneHlMbEjFQfN6m6xztjScc+o8S6ficzTNlodpXjiD375pnCuBcDuk1REFlrY9a@vger.kernel.org, AJvYcCUtYvhmCzdO9PpoXeSD3XAunsCmNpuHJzCQBUchnDqpxJeGlr6PdspRhKCpNnfCkhhdIN2kF/1BQBhG@vger.kernel.org, AJvYcCVe+hgrz61eq1UlJSA2eykJk21xWwvUWlmrImepYeAiyYkNbMmn7vjkPtSB+mQyVF7K8BOlXzwcyffl@vger.kernel.org, AJvYcCVpitAWol/gOZfK6FfPHRS+n1aRWViDgJoD22OXyEnMYEd72vXXgz9SBWYFXYj40hVsIvprNWM4q92F5kE=@vger.kernel.org, AJvYcCWdBLcvOf7eL6EsyLOJ8i9qjJ3CxV9WZxz3jRTRmRVCWW4h+ibT+LgInauq05BzcNCXddyJmTGR@vger.kernel.org, AJvYcCWlDbzXekGXS3AOJieIdqkZdvsAnMkXlF0qWjv66aNFapouOYzRBDWQB9McZFy0e5L9Fh6Vud3vfSNB@vger.kernel.org, AJvYcCWlgSqyRp5WSRVv0+5W6c/pGqRekVJgYfeZd2z8qs+HIqdsHY0/JOo60PWEKS30u32JjQFXT6eGj1w8yq87@vger.kernel.org, AJvYcCWp7siMtuYNbrzpdRc1hKn6Wyu3fr09yNsmnulH8hBDdbVoetBs49KuXddg5f3QIl1TmVg988MPg1Ha0ZiF0eU=@vger.kernel.org, AJvYcCX08kByfDL5ec+P4zBbyQvNQ5ueSMKXswFTOy0pkd1CPMlrwkHWgz8j88Qb9lYqDIM23JjlzmXK/t8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzofDK51ZYbATHuFb2uW/IRLi9TvLKi+CFTCD0hxxwjsCHl1pj0
-	yl++iggY0A66EuTXW2XI7NV/7h9kQDrLxwlwLVi/Y0UZy4DQ5Gv8PKSmI2nW99sAeXJCNBjJ0Ru
-	E7DFg27jHqAjwSpEwbysyL2qx8vHqd54=
-X-Gm-Gg: ASbGncszFfX6DWMo1cZPqQL/Ylv8YZ8cbpazdK+JrI4gs4OhcG2oxXpbGfyukCek5w7
-	uluCQONxpZQJzk2V8X57IATzIAtnBAQ4IGs/1Q2f/NbQkz5XCT7YWlrgAZmHSxdohohWP2Vkc0g
-	KI4ukOhApuTwD5+8AOWYge5LVTOuksFqh796qfUdTOParaGoZ9zvbBNQ==
-X-Google-Smtp-Source: AGHT+IE2AsrunGhRqAPTssN0vu1pH9T/puSPtq1EYmN/wZ3G149WG6FCC+weBXEH09090+WjrZpEYCR5WVBab3y8bBw=
-X-Received: by 2002:a17:902:d50c:b0:234:cb4a:bc1c with SMTP id
- d9443c01a7336-23c7b2c48abmr14508535ad.6.1751559983011; Thu, 03 Jul 2025
- 09:26:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cirVBWt2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA175C4CEE3;
+	Thu,  3 Jul 2025 16:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751560927;
+	bh=ZT9MMzNVBc46W+N2Nstu+3l0+Cbqa9TefNxhDjkrowg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=cirVBWt2mMQN25eRMphhuim2VblJWGdF+H883c7IMa2m63WLVewdiJP7F1o079pkG
+	 tgcl9nVqMHsDBCrTygnD+srAUUXX6Tvx2Tp/G3YnQPjYJUFOLODyUa2rABfh7nx9x1
+	 WJoBI0fWPfodhIihD4Bi4YKP+0xU/7oXltJG3cPRMOMi3Loqt0EDsXhzoelZ7m9zzP
+	 KYZFuU/DUJ377LWTjdAVsSgDwuEycIEjIBJFmhFR9nDEFCOXh8RKhei7dZiC9B2z87
+	 ZACnInQgTkMYdZWWhGNOf87RykyccA1SoSHaHaKMmMT+bZlOX4Wj04M5HKzrhQyu4M
+	 1g1vrAYWCRkfQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Wren Turkal" <wt@penguintechs.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Benno
+ Lossin" <lossin@kernel.org>,  "Nicolas Schier" <nicolas.schier@linux.dev>,
+  "Trevor Gross" <tmgross@umich.edu>,  "Adam Bratschi-Kaye"
+ <ark.email@gmail.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>,  <linux-kbuild@vger.kernel.org>,  "Petr
+ Pavlu" <petr.pavlu@suse.com>,  "Sami Tolvanen" <samitolvanen@google.com>,
+  "Daniel Gomez" <da.gomez@samsung.com>,  "Simona Vetter"
+ <simona.vetter@ffwll.ch>,  "Greg KH" <gregkh@linuxfoundation.org>,  "Fiona
+ Behrens" <me@kloenk.dev>,  "Daniel Almeida"
+ <daniel.almeida@collabora.com>,  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
+In-Reply-To: <35e1fef4-b715-4827-a498-bdde9b58b51c@penguintechs.org> (Wren
+	Turkal's message of "Thu, 03 Jul 2025 02:36:39 -0700")
+References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
+	<20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
+	<FRBew2n3RrQrWTcQwXL0RSoeEj9HFX0-pueBrZSpa8EFcB80KpzsnE1INWFbuxK8qm4ROETZCoWzpxelZ_anhQ==@protonmail.internalid>
+	<35e1fef4-b715-4827-a498-bdde9b58b51c@penguintechs.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 03 Jul 2025 18:41:57 +0200
+Message-ID: <87sejdteei.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com> <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
- <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
-In-Reply-To: <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 3 Jul 2025 18:26:09 +0200
-X-Gm-Features: Ac12FXyK3yF1o66pvRj95wQBg--_tN8783HmS0ZULfxKl6rLdQ-EP0UVIzak-4s
-Message-ID: <CANiq72=61JhEf97JTkineo+FX+JG+Q9x9x86MC_hukSa9YSX3g@mail.gmail.com>
-Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Benno Lossin <lossin@kernel.org>, Michal Rostecki <vadorovsky@protonmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Jul 3, 2025 at 3:56=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
+"Wren Turkal" <wt@penguintechs.org> writes:
+
+> On 7/2/25 6:18 AM, Andreas Hindborg wrote:
+
+[...]
+
+>> +pub struct OnceLock<T> {
+>> +    init: Atomic<u32>,
+>> +    value: Opaque<T>,
+>> +}
 >
-> Can you help me understand why? The changes you ask to be separated
-> would all be in different files, so why would separate commits make it
-> easier to review?
+> This type looks very much like the Once type in rust's stdlib. I am
+> wondering if the api could be changed to match that api. I know that
+> this type is trying to provide a version subset of std::sync::OnceLock
+> that doesn't allow resetting the type like these apis:
+>
+> * https://doc.rust-lang.org/std/sync/struct.OnceLock.html#method.get_mut
+> * https://doc.rust-lang.org/std/sync/struct.OnceLock.html#method.take
+>
+> However, these methods can only be used on mut. See here for failing
+> example:
+> https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=a78e51203c5b9555e3c151e162f0acab
+>
+> I think it might make more sense to match the api of the stdlib API and
+> maybe only implement the methods you need.
 
-By the way, if we are talking about splitting, it is easier to land
-patches that can go independently into different subsystems and
-avoiding flag day changes (or making those as small as possible), i.e.
-ideally being able to land big changes across more than one kernel
-cycle.
+I agree, it would be nice to match the names to std. But I do not like
+that they have `OnceLock::set`, `OnceLock::try_init` and
+`OnceLock::get_or{_try}_init`. Why is it not `OnceLock::init` or
+`OnceLock::try_set`?
 
-Cheers,
-Miguel
+>
+>> +
+>> +impl<T> Default for OnceLock<T> {
+>> +    fn default() -> Self {
+>> +        Self::new()
+>> +    }
+>> +}
+>
+> Any reason not to use #[derive(Default)]?
+
+We don't have `Default` for neither `Atomic` or `Opaque`.
+
+[...]
+
+> Might also be worth implementing get_or_{try,}init, which get the value
+> while initializing.
+
+I did not have a user for those, so not adding for now. It would be dead
+code. They should be fairly straight forward to add though.
+
+>
+>> +        // INVARIANT: We obtain exclusive access to the contained allocation and write 1 to
+>> +        // `init`.
+>> +        if let Ok(0) = self.init.cmpxchg(0, 1, Acquire) {
+>> +            // SAFETY: We obtained exclusive access to the contained object.
+>> +            unsafe { core::ptr::write(self.value.get(), value) };
+>> +            // INVARIANT: We release our exclusive access and transition the object to shared
+>> +            // access.
+>> +            self.init.store(2, Release);
+>> +            true
+>> +        } else {
+>> +            false
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +impl<T: Copy> OnceLock<T> {
+>> +    /// Get a copy of the contained object.
+>> +    ///
+>> +    /// Returns [`None`] if the [`OnceLock`] is empty.
+>> +    pub fn copy(&self) -> Option<T> {
+>
+> No equivalent in OnceLock. Similar to something like this:
+>
+> x.get().copied().unwrap(); // x is a OnceLock
+>
+> Example:
+> https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=f21068e55f73722544fb5ad341bce1c5
+>
+> Maybe not specifically needed?
+
+I don't actually have a user for this, so I think I will drop it.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
