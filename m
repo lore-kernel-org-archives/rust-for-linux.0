@@ -1,141 +1,253 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6682D0C8A;
-	Thu,  3 Jul 2025 08:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922282D46D8;
+	Thu,  3 Jul 2025 09:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751531094; cv=none; b=U/o0jhYx5PAr6Ej97uMNiZ4ZVgR1pP2iStWTBxkfFAPzqYqMJsnDhoPpCgJW62wna4m+CjivsCXOGSU0tLWay1+ex3yTwwGW+Btz3Of9AQNrWm4d0uSqqzHY+MikKG0Ns/l/aNWMxJJwGrHfnXkWC471O030UPK1FxK228MVz80=
+	t=1751533432; cv=none; b=Fv5ktQ91EIrB1KEjDz6giEdDk7w1Uy3zkfzIh8JVLHDncWUZbzO9fLzjgKPAyZlfxoMfQC8Dio0SV9ABd79cRB7PBx4IHNKG6MPysr9cOiKzkXbw0ZZFADCLKIO87NqzXP3G/MNwsH3TMbIrNgA0G0NOKQ7fsABjWUpNZssYyjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751531094; c=relaxed/simple;
-	bh=M4Ov1VXaqpydoTJijiZAO+F7mcgehJ0Rtm+hmVqdK1M=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=q9VZCSWUuhd2Ud7rjwwGL8Mfv5ALUXxA9CfxsIwhp0LJg7BIaUxv5ZqoI5cI/abR65yyCsRfy+mBVKMhWqTR2iMvAxe1xmsHI5Bm3s231UW9Eg0PdGfeUV6bgSLpmZNhAIEz/MkfrmpcAcpoCPRaKv2aw0yeOYV5rS5LZFdOWW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2lWhRds; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751533432; c=relaxed/simple;
+	bh=kbEgVgqK1SbedI67JqjXUQivK0IS/eKmWKgp7Da1LgQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XS01QqBXDpu8XvHHMTLjlls1R/TAh9LiS4tX05mRuGhtQ1CmyEM3WvRssiu+KbldhfMdPKPHRx53gQriTOtgcuXcfnc5KLobTAxs16rPOnovCwEMQEZProiu9p035FdTi9APW1QmKvmAeJ24gMY8FMQP6KkrRg7Yo9uoqets0RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KFir1PWd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2lWhRds"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DE8C4AF09;
-	Thu,  3 Jul 2025 08:24:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KFir1PWd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC56BC4CEE3;
+	Thu,  3 Jul 2025 09:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751531094;
-	bh=M4Ov1VXaqpydoTJijiZAO+F7mcgehJ0Rtm+hmVqdK1M=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Y2lWhRdsOmzLuubH2Eiq282ZlYPt0wt+WSwNPrzub6usYaUenhIMkygqY4YoFbg9X
-	 BFYhnkQXaNBcdccW9WsRVRiXHMBHM3KYJIbDDEa0r7mHWYUx2XGwB0sY0RkuJS3p0Q
-	 C41kycAt3NnQncbDNjulhtyWPmqanjaVrhq426mJLEMd5XGPI44LVg2x2nJCaNzntM
-	 j3D6eXS9NoiZL7AhO4v1w0TtalxtagC+hNwNn1lFXDhz0yuLMgF3v0ofVLzL/87O4m
-	 se2s7NNdfOzfCjBDSZH5qsZPESZIwKXHbWXIaK9npH3FvigVfUgUSSnJn6ov8POEUF
-	 YpBx7wqvjgt7Q==
+	s=k20201202; t=1751533432;
+	bh=kbEgVgqK1SbedI67JqjXUQivK0IS/eKmWKgp7Da1LgQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KFir1PWdfnx57ynH5Ssvy6Q/FYYrSFn+apUAt0404VMayA9IrBUE9qKCCf2OHKMpA
+	 R5hw91AMpSvIgtS80YnD5QNlOkaw4UbkYx3G96idIocZvApocdrGE2v4Tjd6DFpzPu
+	 yyyGcJh2/qj5WuNjz7B6y4kvJIk5Fgb8C71Jpnqm5X7x1j4e0oMxa/4Yjba0Wzdqv5
+	 Kd0E0tGP/Xxj+5kjGc21VtRWRXH6TGexMGRggYfKAt34yP8gURe49lkoxF4LFCr/Pr
+	 d8R0QnmcFOkpOoROi6bULSDbQcNrErZji4trOSbWPo9ag2dhUTM/6zVET2ewrUp968
+	 B4INmb9cxerKw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
+In-Reply-To: <DB1NVTWHU7BN.2WGPMAY9LQYNW@kernel.org> (Benno Lossin's message
+	of "Wed, 02 Jul 2025 17:07:12 +0200")
+References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
+	<20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
+	<dO7tJL6M4FKz_QOo-Vbb0bZOybyXa9CkBI0SIIKeCGBHIjNHlpElEV0iPbNeXBa6elnsQXqrGS5AGXdGU5hefQ==@protonmail.internalid>
+	<DB1NVTWHU7BN.2WGPMAY9LQYNW@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 03 Jul 2025 11:03:38 +0200
+Message-ID: <87bjq1ve6t.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Jul 2025 10:24:50 +0200
-Message-Id: <DB29YAYDK6YW.1NF5I2WSI1BPR@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <ojeda@kernel.org>,
- <skhan@linuxfoundation.org>,
- <linux-kernel-mentees@lists.linuxfoundation.org>,
- <~lkcamp/patches@lists.sr.ht>
-Subject: Re: [PATCH v5 0/2] rust: revocable: documentation and refactorings
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>,
- <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250626165927.66498-1-marcelomoreira1905@gmail.com>
-In-Reply-To: <20250626165927.66498-1-marcelomoreira1905@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Thu Jun 26, 2025 at 6:59 PM CEST, Marcelo Moreira wrote:
-> This patch series brings documentation and refactorings to the `Revocable=
-` type.
->
-> Changes include:
-> - Clarifying the write invariant and updating associated safety comments =
-for `Revocable<T>`.
-> - Splitting the internal `revoke_internal` function into two distinct, ex=
-plicit functions: `revoke()` (safe, synchronizing with RCU) and `revoke_nos=
-ync()` (unsafe, without RCU synchronization), now returning `bool` to indic=
-ate revocation status.
+"Benno Lossin" <lossin@kernel.org> writes:
 
-Could you wrap your text to a more readable column? Thanks!
+> On Wed Jul 2, 2025 at 3:18 PM CEST, Andreas Hindborg wrote:
+>> Introduce the `OnceLock` type, a container that can only be written once.
+>> The container uses an internal atomic to synchronize writes to the internal
+>> value.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  rust/kernel/sync.rs           |   1 +
+>>  rust/kernel/sync/once_lock.rs | 104 ++++++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 105 insertions(+)
+>>
+>> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+>> index c7c0e552bafe..f2ee07315091 100644
+>> --- a/rust/kernel/sync.rs
+>> +++ b/rust/kernel/sync.rs
+>> @@ -15,6 +15,7 @@
+>>  mod condvar;
+>>  pub mod lock;
+>>  mod locked_by;
+>> +pub mod once_lock;
+>
+> As Alice already said, we should reexport the type. And then make the
+> module private, no need to have `kernel::sync::OnceLock` and
+> `kernel::sync::once_lock::OnceLock`...
+
+Will do.
 
 >
-> Marcelo Moreira (2):
->   rust: revocable: Refactor revocation mechanism to remove generic
->     revoke_internal
->   rust: revocable: Clarify write invariant and update safety comments
->
-> Changelog
-> ---------
->
-> Changes since v4:
-> - Rebased the series onto the latest `rfl/rust-next` to integrate recent =
-changes, specifically the `bool` return for `revoke()` and `revoke_nosync()=
-`.
-> - Dropped the "rust: revocable: simplify RevocableGuard for internal safe=
-ty" patch, as the approach of using a direct reference (`&'a T`) for `Revoc=
-ableGuard` was found to be unsound due to Rust's aliasing rules and LLVM's =
-`dereferencable` attribute guarantees, which require references to remain v=
-alid for the entire function call duration, even if the internal RCU guard =
-is dropped earlier.
-> - Refined the `PinnedDrop::drop` `SAFETY` comment based on Benno Lossin's=
- and Miguel Ojeda's feedback, adopting a more concise and standard Kernel-s=
-tyle bullet point format.
-> - Corrected a duplicated line in the commit message of the second patch.
+> Also, I agree with the name change to `SetOnce` or something similar.
 
-Now since we had to drop the `RevocableGuard` change, its safety
-invariant & comment in `deref` is insufficient. It shouldn't have the
-invariant that the rcu lock is held (since it owns an `rcu::Guard`, that
-already is guaranteed), but instead it should require that the
-`data_ref` pointer is valid. That invariant is then used by the safety
-comment in `deref` to justify dereferencing the pointer.
+I'm OK with that, but please see my comments on Alice suggestion.
 
-Also, I think it's better to reorder the patches again (since the
-current first one relies on changes from the second one), the first one
-should be the change to the invariants section of `Revocable` (so
-currently the second patch). Then the second and third patches can be
-the removal of `revoke_internal` and the `RevocableGuard` safety
-documentation fix.
+>
+>>  pub mod poll;
+>>  pub mod rcu;
+>>
+>> diff --git a/rust/kernel/sync/once_lock.rs b/rust/kernel/sync/once_lock.rs
+>> new file mode 100644
+>> index 000000000000..cd311bea3919
+>> --- /dev/null
+>> +++ b/rust/kernel/sync/once_lock.rs
+>> @@ -0,0 +1,104 @@
+>> +//! A container that can be initialized at most once.
+>> +
+>> +use super::atomic::ordering::Acquire;
+>> +use super::atomic::ordering::Release;
+>> +use super::atomic::Atomic;
+>> +use kernel::types::Opaque;
+>> +
+>> +/// A container that can be populated at most once. Thread safe.
+>> +///
+>> +/// Once the a [`OnceLock`] is populated, it remains populated by the same object for the
+>> +/// lifetime `Self`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// `init` tracks the state of the container:
+>> +///
+>> +/// - If the container is empty, `init` is `0`.
+>> +/// - If the container is mutably accessed, `init` is `1`.
+>
+> I think we should swap the order and change the ifs to iffs:
+>
+>     - `init == 0` iff the container is empty.
+>     - `init == 1` iff the container is being accessed mutably.
 
----
-Cheers,
-Benno
+Right, that is better, but I will expand "iff".
 
-> Link to v4: https://lore.kernel.org/rust-for-linux/DAOMIWBZXFO9.U353H8NWT=
-LC5@kernel.org/T/#u
 >
-> Changes since v3:
-> - Refined the wording of the `Revocable<T>` invariants to be more precise=
- about read and write validity conditions, specifically including RCU read-=
-side lock acquisition timing for reads and RCU grace period for writes.
-> - Simplified the `try_access_with_guard` safety comment for better concis=
-eness.
-> - Refactored `RevocableGuard` to use `&'a T` instead of `*const T`, remov=
-ing its internal invariants and `unsafe` blocks.
-> - Simplified `Revocable::try_access` to leverage `try_access_with_guard` =
-and `map`.
-> - Split `revoke_internal` into `revoke()` and `revoke_nosync()` functions=
-, making synchronization behavior explicit.
-> - Link to v3: https://lore.kernel.org/rust-for-linux/DAOMIWBZXFO9.U353H8N=
-WTLC5@kernel.org/T/#u
+>> +/// - If the container is populated and ready for shared access, `init` is `2`.
 >
-> Changes in v2:
-> - Refined the wording of the invariants in `Revocable<T>` to be more dire=
-ct and address feedback regarding the phrase 'must occur'.
-> - Added '// INVARIANT:' comments in `try_access` and `try_access_with_gua=
-rd` as suggested by reviewers.
-> - Added the missing invariant for `RevocableGuard<'_, T>` regarding the v=
-alidity of `data_ref`.
-> - Updated the safety comment in the `Deref` implementation of `RevocableG=
-uard` to refer to the new invariant.
-> - Link to v2: https://lore.kernel.org/rust-for-linux/CAPZ3m_jw0LxK1Mmseaa=
-mNYhj9VY8AXtJ0AOcYd9qcn=3D5wPE4eA@mail.gmail.com/T/#t
+> You also need that `init` is only increased and never decreases.
+> Otherwise you could read a `2` and then access the value, but `init`
+> changed under your nose to `0`.
 >
->  rust/kernel/revocable.rs | 68 +++++++++++++++++++++-------------------
->  1 file changed, 36 insertions(+), 32 deletions(-)
+> Then the INVARIANT comments below also need to be updated.
+
+OK.
+
 >
-> base-commit: 0303584766b7bdb6564c7e8f13e0b59b6ef44984
+>> +///
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// # use kernel::sync::once_lock::OnceLock;
+>> +/// let value = OnceLock::new();
+>> +/// assert_eq!(None, value.as_ref());
+>> +///
+>> +/// let status = value.populate(42u8);
+>> +/// assert_eq!(true, status);
+>> +/// assert_eq!(Some(&42u8), value.as_ref());
+>> +/// assert_eq!(Some(42u8), value.copy());
+>> +///
+>> +/// let status = value.populate(101u8);
+>> +/// assert_eq!(false, status);
+>> +/// assert_eq!(Some(&42u8), value.as_ref());
+>> +/// assert_eq!(Some(42u8), value.copy());
+>> +/// ```
+>> +pub struct OnceLock<T> {
+>> +    init: Atomic<u32>,
+>> +    value: Opaque<T>,
+>> +}
+>> +
+>> +impl<T> Default for OnceLock<T> {
+>> +    fn default() -> Self {
+>> +        Self::new()
+>> +    }
+>> +}
+>> +
+>> +impl<T> OnceLock<T> {
+>> +    /// Create a new [`OnceLock`].
+>> +    ///
+>> +    /// The returned instance will be empty.
+>> +    pub const fn new() -> Self {
+>> +        // INVARIANT: The container is empty and we set `init` to `0`.
+>> +        Self {
+>> +            value: Opaque::uninit(),
+>> +            init: Atomic::new(0),
+>> +        }
+>> +    }
+>> +
+>> +    /// Get a reference to the contained object.
+>> +    ///
+>> +    /// Returns [`None`] if this [`OnceLock`] is empty.
+>> +    pub fn as_ref(&self) -> Option<&T> {
+>> +        if self.init.load(Acquire) == 2 {
+>> +            // SAFETY: As determined by the load above, the object is ready for shared access.
+>
+>     // SAFETY: By the safety requirements of `Self`, `self.init == 2` means that `self.value` contains
+>     // a valid value.
+
+By the *type invariants* I guess?
+
+>
+>> +            Some(unsafe { &*self.value.get() })
+>> +        } else {
+>> +            None
+>> +        }
+>> +    }
+>> +
+>> +    /// Populate the [`OnceLock`].
+>> +    ///
+>> +    /// Returns `true` if the [`OnceLock`] was successfully populated.
+>> +    pub fn populate(&self, value: T) -> bool {
+>> +        // INVARIANT: We obtain exclusive access to the contained allocation and write 1 to
+>> +        // `init`.
+>> +        if let Ok(0) = self.init.cmpxchg(0, 1, Acquire) {
+>> +            // SAFETY: We obtained exclusive access to the contained object.
+>> +            unsafe { core::ptr::write(self.value.get(), value) };
+>> +            // INVARIANT: We release our exclusive access and transition the object to shared
+>> +            // access.
+>> +            self.init.store(2, Release);
+>> +            true
+>> +        } else {
+>> +            false
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +impl<T: Copy> OnceLock<T> {
+>> +    /// Get a copy of the contained object.
+>> +    ///
+>> +    /// Returns [`None`] if the [`OnceLock`] is empty.
+>> +    pub fn copy(&self) -> Option<T> {
+>> +        if self.init.load(Acquire) == 2 {
+>> +            // SAFETY: As determined by the load above, the object is ready for shared access.
+>> +            Some(unsafe { *self.value.get() })
+>> +        } else {
+>> +            None
+>> +        }
+>
+> The impl can just be:
+>
+>     self.as_ref().copied()
+
+Nice. I was thinking of dropping this method and just have callers do
+
+ my_once_lock.as_ref().map(|v| v.copied())
+
+What do you think?
+
+
+Best regards,
+Andreas Hindborg
+
+
 
