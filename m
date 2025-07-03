@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BF118DB1A;
-	Thu,  3 Jul 2025 13:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F92295524;
+	Thu,  3 Jul 2025 13:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751549668; cv=none; b=iqFK8vsN3KWtaFzsVtbKtkIQuIgpSVbFa11IV70kS3OGugPVHxHT1ctPMBueXNwP/qaP7/EItFrlqFsrpm3yA8CivPf/dB7Prufyc3qQtSD64AuxXcs6m66IeEAD4LzOjyaWkM52CcDpSgm/RaZdO+Y310Jr0AdhVF5kZQrIT7Y=
+	t=1751549757; cv=none; b=MrOgUIIm6EQYZub9eRgRxsaqshadzAofHio7IuHW7nmNAeADb4HGFss3LvyPyIPRSUGaNYKigMx4vA9NOldjdYW/kKTMAnWBkF02TmO/ZthSi0cTwf3CPkQNFkkY2KljUzIT4sJtvSt0l2wRsr4mzGBKOodDtUwCuumQ1Pi/9P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751549668; c=relaxed/simple;
-	bh=FslVDeBg6EqBCZI8xcWRy/XpFKF0YeXIHs+VpfoIyzo=;
+	s=arc-20240116; t=1751549757; c=relaxed/simple;
+	bh=Sw56mQH+HjIAjMB6ARuILcj1oqw5cMB+35BgJfWA2uE=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=fSNVBL0qMPYtj8ZwjK8jIxUAzfYm72rxw2lfZwRK1EhDvBVm/xRQR9LGMunP761ixymeoniC5ZHvvuQodq8jU/tFLnGRsUgwsHUFXWJVcueq6erwR5r68hs88rJ7d0ZqhEqePwAfyI1lYl0pLwAhLjgjQFWY87BUgE+FE/vIb28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=awixeaz/; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=bQZAR3sB/rQ+2ULA9f4Km68LbDP3FsNizaBOcd8Lmh7tb7OXljNzKnZQ3EAhvF7WggRNcmw7gpdSi6KBFmfwmFSMjZZxlJEXmHhJBNIqag4Ld0rVcrG0d5kkIDve1OrYW2ZJfyHMU0pB3mTiQFCtznJ6FiW7LL1qjo0yp4/j8qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nFbFGG+1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="awixeaz/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13034C4CEED;
-	Thu,  3 Jul 2025 13:34:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nFbFGG+1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B53C4CEE3;
+	Thu,  3 Jul 2025 13:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751549668;
-	bh=FslVDeBg6EqBCZI8xcWRy/XpFKF0YeXIHs+VpfoIyzo=;
+	s=k20201202; t=1751549757;
+	bh=Sw56mQH+HjIAjMB6ARuILcj1oqw5cMB+35BgJfWA2uE=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=awixeaz/v3h602wRJjurY8YIpwdQ65XhMMZ/tT2owQgq2icreVQbq8VdFS+avRX5b
-	 gJDVN8DbNReub6trulaNfvcJf9ZTw1zR6XVMuNhqxHmC2lhyIgXNM+m+kcR9ppCv8A
-	 4Oy9N9mElc6kzaptu2hgoGBWombo1OWzUnqT8AxCrCfqen+tn47BezctT6XQSlO24x
-	 U2DPjngmESU76q4nVVWz2XCY45FkzPmHr35C4shtYZ3njlXcdI3awnln3mZxhIfmdm
-	 hVIfJ5aVmU/PnHFfrsylAhBzGxweF0STyRivdIScH7DfoqmaAyB6xCOkV7k6lztXLK
-	 1HmCpoL/zJKMA==
+	b=nFbFGG+1LWRVB+UTMbuXa6UmIaoC12qKa8hRLtv4klELQiThESBPcduJU4mRPBEDV
+	 qswHwc9zCXIPeO6/kTpNs2rIoH8xnNKu7Rh0gQRWVJDnOGjJJX+i22JpyLA4E6zsJw
+	 rGhXri9lOzp7tcWFWeYiI4RPLV0w9dZakq5TVdCGQxScun3eMKWrb4YBidiC7xeU9I
+	 Lxdmn8xaxytosqZdmsm9IjxwkWAfxzmi1NpyK4H3cBtmArtkzlvzpviUJlKU2wm3Mh
+	 5K/9v/55YUZij4limnmUfXvFZ6d7+U7MMaYRJvuo0QCB6dRAuFFPduoPMs32qCQ14b
+	 +SRHCANHrZlmQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Jul 2025 15:34:23 +0200
-Message-Id: <DB2GJB0ZRCSN.32R6OOCOMSO2Q@kernel.org>
+Date: Thu, 03 Jul 2025 15:35:52 +0200
+Message-Id: <DB2GKFUREH3U.15ME8JB2HJOQN@kernel.org>
 Cc: "Alice Ryhl" <aliceryhl@google.com>, "Matthew Maurer"
  <mmaurer@google.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
@@ -55,39 +55,61 @@ References: <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
 In-Reply-To: <aGZ3q0PEmZ7lV4I-@pollux>
 
 On Thu Jul 3, 2025 at 2:29 PM CEST, Danilo Krummrich wrote:
-> So, what I'm trying to say is, I think it's a good thing if fields that a=
-re
-> protected by the same lock can't be exposed through separate files, becau=
-se it
-> means that the fields only make sense in the context of each other.
+> On Thu, Jul 03, 2025 at 01:41:53PM +0200, Greg Kroah-Hartman wrote:
+>> Yes, we need to be able to have a debugfs file callback handle a mutable
+>> structure in order to lock things correctly.  We also need to have it be
+>> mutable so that it can MODIFY the value (everyone seems to forget that
+>> debugfs allows that...)
+>
+> Well, that's possible with both approaches. Data behind a lock becomes mu=
+table
+> once you grabbed the lock. That's the same in both cases.
+>
+> The difference is that with the pin-init approach I propose you can't hav=
+e what
+> Alice sketched up. And I think it's even desirable that you can't do it.
+>
+> Let's me explain the difference on a simplified example, based on Alice'
+> example.
+>
+> ForeignOwnable API
+> ------------------
+>
+> 	#[pin_data]
+> 	struct Process {
+> 	    task: ARef<Task>,
+> 	    #[pin]
+> 	    inner: SpinLock<ProcessInner>,
+> 	}
+> =09
+> 	pub(crate) struct ProcessInner {
+> 	    threads: RBTree<i32, Arc<Thread>>,
+> 	    max_threads: u32,
+> 	}
+>
+> Here we have to create an Arc<Process> (let's call it process) and create=
+ files
+> from it.
+>
+> 	let file_threads =3D dir.create_file("threads", process);
+> 	let file_max_threads =3D dir.create_file("max_threads", process);
+>
+> In the file system callback of both of these, we now have an Arc<Process>=
+, hence
+> we can access:
+>
+> 	let guard =3D process.inner.lock();
+>
+> 	read_or_write(guard.max_threads);
+>
+> and in the other file:
+>
+> 	let guard =3D process.inner.lock();
+>
+> 	read_or_write(guard.max_threads);
 
-I think that even the pin-init API can have multiple files for different
-elements of the locked structure, you just need to nest `File`:
-
-    #[pin_data]
-    struct Process {
-        task: ARef<Task>,
-        #[pin]
-        inner: File<File<SpinLock<ProcessInner>>>,
-    }
-   =20
-    pub(crate) struct ProcessInner {
-        threads: RBTree<i32, Arc<Thread>>,
-        max_threads: u32,
-    }
-
-Now you can do:
-
-    pin_init!(Process {
-        inner <- dir.create_file(
-            "threads",
-            dir.create_file("max_threads", new_spinlock!(...)),
-        ),
-        // ...
-    })
-
-But I'd say this will at least raise eyebrows for the reviewers, which
-is good, since it catches the footgun.
+Where do you actually specify this callback? At the moment, the API asks
+for `Display` and thus it can only read values?
 
 ---
 Cheers,
