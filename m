@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF242571B2;
-	Thu,  3 Jul 2025 12:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FB8233127;
+	Thu,  3 Jul 2025 12:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751546709; cv=none; b=p51RL089cG+42j6McoW4L8QXoFGwXcT64f3SdTl6b2HMEHBSUchDQ1tKM4gCho9mfwfi4iW1GEUyHdtDisahHwB69FvEY6X4wiThFjNzudV1Nq1p1QnT+yzzIybr6K9uEfdLOXgLwiweeM3EwbII+syYIMS0kRpJuR+PU5Dp1e4=
+	t=1751547053; cv=none; b=JdJ2hZyJB7Mad5zs6nPYCkUh8c2MxkR9dySco9LHoXjgi/CHmmuw5e09l2Kd+qhPrkaedvhnGlMY/w7Hqj+1XM+eTWbVzuQKjShSdfaZP8LbvkVCrTz8AcR4ASfJjspm59T5YzsFiRrHdnJ4e4D95RFmHztkF2skRS96X7ORKXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751546709; c=relaxed/simple;
-	bh=f3SdX+yI+BEn1CSE9MjjvM4/QtlA1wnpIQpB8iY2nsM=;
+	s=arc-20240116; t=1751547053; c=relaxed/simple;
+	bh=RUtbH0FKvFEZ9xAEl4E1iiZ0teKFnEEvUjve+lHqvEY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WfGV1gdW/3VD4uotPcZqChjW8XqwqY2Y6T5FfduAUkK6jeZ1qgUswv/eDglQQS3WlVmwyaTlQIHMFPsZuHx4XtMsuyH3zDpnIeGo2Fe0p9lcynKEcO2/cTUYbiEPjUZXPWCo2UqyiO/lWNIlBwRaseEj2Z3UmZB7C2uH2HtX9TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHOTiZEy; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=LuAlTmN17vZDmHZ/0t07gcoBQkjfYFuxyu1cTvSeDjLJ/xR9J98AFRjSQD4HansljEEfsqHBvwoWT6qNyreapIU7XjwFY8wb2i4m5jUH0cg2zSCSM03L4F/WADp3h18ZmxbUjbIfsvQ5WNAx5ArBDyYVCTy+LuR5ubNWazgLrSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWvE5RKE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHOTiZEy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA47C4CEF5;
-	Thu,  3 Jul 2025 12:45:07 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWvE5RKE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED63C4CEE3;
+	Thu,  3 Jul 2025 12:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1751546708;
-	bh=f3SdX+yI+BEn1CSE9MjjvM4/QtlA1wnpIQpB8iY2nsM=;
+	s=korg; t=1751547053;
+	bh=RUtbH0FKvFEZ9xAEl4E1iiZ0teKFnEEvUjve+lHqvEY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zHOTiZEydjiTjTAe9MkYnLYQmd+U3dy3sSulljbKJ1mQV0rJH8TRlG7Eant3gSSPt
-	 8yGKZ+gw+n9yATNvw0pxqNa4Fzwnfjl044MvIuKOef68wCf/dI8aVXWmcJDIlJofu/
-	 Or2Hv0R6b1pVIztLCKBZFu2d58BYsPppTGkYfxQg=
-Date: Thu, 3 Jul 2025 14:45:04 +0200
+	b=SWvE5RKE62wnCSZHCqbLlsbjze6jvLQd0XxrOHq3OKeKu/y3rdLg3XgSGmDOM+Aum
+	 40A5DMWH2MRWCQap9DvsM75Znj3zy9FEd7vShfa/i1vWLbAuSdOiwsG+lDgzBs3Rxv
+	 9SJqnZidFyH6WSRk8pt7qHVBxMD3bMCH/xNEid7c=
+Date: Thu, 3 Jul 2025 14:50:48 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>,
 	Matthew Maurer <mmaurer@google.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -41,7 +41,7 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>,
 	Dirk Behme <dirk.behme@de.bosch.com>
 Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing
  for File
-Message-ID: <2025070320-annuity-earplugs-6eee@gregkh>
+Message-ID: <2025070353-algebra-exhume-1f21@gregkh>
 References: <aGLUl7ZtuQBPoCuv@pollux>
  <2025070131-icon-quarters-0c16@gregkh>
  <aGPtCBB6nWTNJuwK@pollux>
@@ -51,55 +51,173 @@ References: <aGLUl7ZtuQBPoCuv@pollux>
  <DB2COGYW20C5.2YN1TFXR87UTS@kernel.org>
  <CAH5fLgjaNzOHNxa+XY1c2V5A1H2RhWP9gHAAmHx=9LN9CbHq=Q@mail.gmail.com>
  <2025070349-tricky-arguable-5362@gregkh>
- <DB2F98GJQMTL.3UMZTA6FR7BA@kernel.org>
+ <aGZ3q0PEmZ7lV4I-@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DB2F98GJQMTL.3UMZTA6FR7BA@kernel.org>
+In-Reply-To: <aGZ3q0PEmZ7lV4I-@pollux>
 
-On Thu, Jul 03, 2025 at 02:34:13PM +0200, Benno Lossin wrote:
-> On Thu Jul 3, 2025 at 1:41 PM CEST, Greg Kroah-Hartman wrote:
-> > On Thu, Jul 03, 2025 at 12:54:18PM +0200, Alice Ryhl wrote:
-> >> On Thu, Jul 3, 2025 at 12:33 PM Benno Lossin <lossin@kernel.org> wrote:
-> >> > How would your example look like with the current approach? IIUC, it
-> >> > also wouldn't work, because the debugfs data can't be mutated?
-> >> 
-> >> I would store a bunch of `File<Arc<Process>>` instances somewhere.
-> >> Each one has a closure that takes the spinlock and prints the
-> >> appropriate value.
-> 
-> But you could also do that with the pin-init design?
-> 
-> > Ok, I think we need to see some "real" examples here of the api in use
-> > before figuring it out further as I'm totally confused :)
-> 
-> Agreed :)
-> 
+On Thu, Jul 03, 2025 at 02:29:31PM +0200, Danilo Krummrich wrote:
+> On Thu, Jul 03, 2025 at 01:41:53PM +0200, Greg Kroah-Hartman wrote:
 > > Yes, we need to be able to have a debugfs file callback handle a mutable
-> > structure in order to lock things correctly.
+> > structure in order to lock things correctly.  We also need to have it be
+> > mutable so that it can MODIFY the value (everyone seems to forget that
+> > debugfs allows that...)
 > 
-> To me this seems orthogonal to storing the value in-place or in a
-> `ForeignOwnable`.
+> Well, that's possible with both approaches. Data behind a lock becomes mutable
+> once you grabbed the lock. That's the same in both cases.
 > 
-> > We also need to have it be mutable so that it can MODIFY the value
-> > (everyone seems to forget that debugfs allows that...)
+> The difference is that with the pin-init approach I propose you can't have what
+> Alice sketched up. And I think it's even desirable that you can't do it.
 > 
-> Well that changes things a lot IMO... How does the C side usually handle
-> synchronization here? Does the driver decide that the structure exposed
-> to debugfs is locked with eg a spinlock and then in the debugfs callback
-> they just lock the same one?
+> Let's me explain the difference on a simplified example, based on Alice'
+> example.
+> 
+> ForeignOwnable API
+> ------------------
+> 
+> 	#[pin_data]
+> 	struct Process {
+> 	    task: ARef<Task>,
+> 	    #[pin]
+> 	    inner: SpinLock<ProcessInner>,
+> 	}
+> 	
+> 	pub(crate) struct ProcessInner {
+> 	    threads: RBTree<i32, Arc<Thread>>,
+> 	    max_threads: u32,
+> 	}
+> 
+> Here we have to create an Arc<Process> (let's call it process) and create files
+> from it.
+> 
+> 	let file_threads = dir.create_file("threads", process);
+> 	let file_max_threads = dir.create_file("max_threads", process);
+> 
+> In the file system callback of both of these, we now have an Arc<Process>, hence
+> we can access:
+> 
+> 	let guard = process.inner.lock();
+> 
+> 	read_or_write(guard.max_threads);
+> 
+> and in the other file:
+> 
+> 	let guard = process.inner.lock();
+> 
+> 	read_or_write(guard.max_threads);
+> 
+> Pin-Init API
+> ------------
+> 
+> 	#[pin_data]
+> 	struct Process {
+> 	    task: ARef<Task>,
+> 	    #[pin]
+> 	    inner: File<SpinLock<ProcessInner>>,
+> 	}
+> 	
+> 	pub(crate) struct ProcessInner {
+> 	    threads: RBTree<i32, Arc<Thread>>,
+> 	    max_threads: u32,
+> 	}
+> 
+> Here Process does not need to be within an Arc and no separate file instances
+> need to be kept around, that happens already within the constructor of Process:
+> 
+> 	pin_init!(Process {
+> 	   inner <- dir.create_file("process_inner", ...),
+> 	   [...]
+> 	})
+> 
+> The file itself has a reference to SpinLock<ProcessInner>, hence we can access:
+> 
+> 	let guard = inner.lock();
+> 
+> 	read_or_write(guard.threads)
+> 	read_or_write(guard.max_threads)
+> 
+> The difference is that with the ForeignOwnable API it was possible to have
+> separate files for threads and max_threads.
+> 
+> While with the pin-init one we either have to have a single file exposing
+> ProcessInner (which is what I did above) or protect threads and max_threads
+> with separate locks (of course max_threads could also just be an atomic).
+> 
+> (If you like I can sketch up this case as well.)
+> 
+> At a first glance this seems like an undesirable limitation, but I argue that
+> this is a good thing.
+> 
+> The reason I think so is what I also explained in [1], but let me adjust it a
+> bit for this reply:
+> 
+> threads and max_threads being protected by the same lock means that they are in
+> a certain relationship to each other. Meaning that they only really make sense
+> looking at them atomically.
+> 
+> So I argue it does not make sense to expose those values to userspace through
+> separate files.
+> 
+> For instance:
+> 
+> 	$ cat max_threads && cat threads
+> 	$ 5
+> 	$ 10
+> 
+> This way you may read 5 max_threads, but 10 actual threads, because things may
+> have changed in between the two cat commands.
+> 
+> However, if instead, they are exposed through a single file, we get an atomic
+> view of them, such that the semantic relationship between them is preserved.
+> 
+> For instance:
+> 
+> 	$ cat process_info
+> 	$ threads: 2
+> 	$ max_threads: 10
 
-It does whatever it feels like, so both are valid uses.
+I think you mean to write:
+ 	$ cat process_info
+ 	threads: 2
+ 	max_threads: 10
 
-Sometimes a lock is involved, sometimes not.  Remember this is debugfs,
-the only rule for it is "there are no rules except it requires root
-permissions to access".
+right?
+
+> So, what I'm trying to say is, I think it's a good thing if fields that are
+> protected by the same lock can't be exposed through separate files, because it
+> means that the fields only make sense in the context of each other.
+> 
+> Or saying it the other way around, if it makes sense to expose fields through
+> separate files, it means they're unrelated to each other and hence should be
+> protected with separate locks, rather than a common one.
+> 
+> IMHO it's even a good thing beyond the scope of debugfs, because it forces
+> developers to really think about organizing structures properly, e.g. in a way
+> that only fields that really belong behind a certain lock are placed behind this
+> lock.
+> 
+> > So how about a platform driver that exposes values read from a platform
+> > device (i.e. a soc info driver), that also includes a
+> > local-to-the-device data structure that can be locked and modified?
+> > That should cover all the use cases that I can think of at the moment.
+> 
+> Yes, I also really like to have that.
+> 
+> But, again, both approaches can do this. It's just that I really discourage the
+> one that forces us to have an Arc instance on structures exposed through
+> debugfs, since this messes with the driver's lifetime and ownership
+> architecture in a bad way.
+> 
+
+Thanks for the long descriptions, that's great to help out here.  I'll
+wait for the next patch series with a real example to show my ignorance
+of rust some more :)
 
 thanks,
 
