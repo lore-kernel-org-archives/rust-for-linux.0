@@ -1,179 +1,229 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477C3226CF8;
-	Thu,  3 Jul 2025 09:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826A42E03F6
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Jul 2025 10:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751535786; cv=none; b=lTM86eHQw7Fi2KZ/YgcDbCUEikhHfCz+8ysilSa4xQWwOf7MQOj1clTfVBf1VRuHtio9rhyBga6/UPDdNrG/p/DedalUszoFXV67gwbNOaAXG1nMT36EsVs64PEv1bYZQfTdXhDXk2KRzU7lsWuzAjsij/61/TyDi8x4a9HlbQs=
+	t=1751536983; cv=none; b=HaL8XCvsosElwSSdJuxhO947Xv+zSwCfUGHMmYjZhoZKzg/BcGEqcePugSdLiV21dOfzndedELP7ezClxyn9DW/QgQ0tBp3oEDD21sB1HUv3ih05+RzVtP2Hh36McAsIkFMqBuzKIn9jUnPw6cEpP4x/UOgAvvRr5p83EAvk/sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751535786; c=relaxed/simple;
-	bh=x7llXm1Wc1Knju/eXnjIz5voqe0e0IahnlFOhVrt2cQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=X8LPDYoIldXDhGRHhjIgpBjgNLyhpbRUMXXEWB7Th8J0gCb0FEmbDqecuwvaB9398ZrRlv6k0zyq8lhh3She2PiHNt4PczV/4CN5pOIqgQZ1KvuWXsffftxekYppEB43334I+ZTx5dMGGCDrvOE5twX/ny5oKtqisDDBgcx/tgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+8pTfm1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751536983; c=relaxed/simple;
+	bh=Obh6DD9vix+TIBwQQYvbpQ2RjdqyGcCDt1xJHHQRTDI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=o5cbkCsuLz3qQgpAE96SFqECxYwa0ulNH8nko7GLem28da8lz+wrBYbkUDYJXoE3QYFJiBd6TJFTS7RDZoRF/Axr+UL8UTONWEokro8X+B2ygczkBOsDhzPug752/S7V0zES8D7DCi+el/SJ9hFBdei/pJLQ5RY9/qlldcmf6xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TwDpfGF/; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+8pTfm1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EF0C4CEEB;
-	Thu,  3 Jul 2025 09:43:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751535785;
-	bh=x7llXm1Wc1Knju/eXnjIz5voqe0e0IahnlFOhVrt2cQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=S+8pTfm1iFBwFfXg7bmM6ffdRoVHbLeyb5LLuNb+kMBbOt4pVR/BBn2AefrnafS6S
-	 4eqhQc5ZfvxRVzQ10FNcOcIITlalQELD0P3xhs0L6Abdp9rn9gZaW2Zh7+XaxTwdgp
-	 XH1tacsJm/VA3aRfjfIkpIHS8PMZGJWvlf2BFhQbtdHhMkAHHxjRVMHL7uHGUKB4D1
-	 R0bkL4kKW0zxZycOjvR5/1NxjWub41d6tl/fVMHyrq5Mj7XueQZx1zyKfND6SI8LqK
-	 Dlo5PvwxOF0472ERAhRFBraxna3u7GZy57e+AGoc7vCfblntF6kZUhBuzw2SFZD96H
-	 qIy4r52JCMiSA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TwDpfGF/"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6090274dd37so5236049a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 03 Jul 2025 03:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751536980; x=1752141780; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IqGaJD9/W4j+MwX6QlvRgP3GnrOVCmaSlWQ5633fypg=;
+        b=TwDpfGF/wyk7p9LUqkLZhaZGwPPjTq+uqDNqhL0/+0ymddwFeWgvfT1kFZX0/77qtJ
+         6WFvwpiL6xNlIDs0FbwUtJLTggoltTJSjsr6/yAjCC8YEgQth2MBlA3+NYeN+PlT4Zj5
+         g/fMB32+i67k2Dzy02cuHym5/kw6WeYEGZc5PDFX/H7RiMY7jC8Un5NxErf2AEOmjk61
+         8xUITplwIc9dtN0YCk9A++WduhD+PPqthT6QevVRUBqYTTzHrxEfWO3N+CqwrGvwckjp
+         n50WaycIUuzdKJGWCMzpLRl2DsiUwMmWSwDXLo2lSxiiyTPsSa2QpZkveHCk13EP90MT
+         3Qcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751536980; x=1752141780;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IqGaJD9/W4j+MwX6QlvRgP3GnrOVCmaSlWQ5633fypg=;
+        b=mOpM+uR239G5sljuczvbkLWQxol84jXZ/iNd5NU49Qd+Krd6GzlKCV20w3FxbDAiOe
+         nJTfS4gSWi12ypZtOXCPgtDOdhfBUxyUt+sLE3/heXld+JauxD6SafYqgg3VprPfLwtf
+         SwkOGewN6Bj3Si020Jn4WPiMqxq+5f4g7w+YxqesSv4hoLSqUqGZk/dInBnEPYqfRVpN
+         GobSFbwRI7+G9KWYWpbzWnmf6W3eOXbwil5ebEOcX7/KlJAV3B4k1KfAi3o8vAOXhzKF
+         sovPiGby1Sk39GosLWdUIjYOgI3pL3bMO/WTbLDBb+N+9S0PI67WeHTOekfzdim9bTN9
+         Dhrw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3SJxILPpctXAct3HdGIcMMi/wLZQBJl4PQeIMdQvkF15LBtQe/brI4e0qkxFk5VRKBzH4L9uaX3HCdy12zQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoCt+oTS257S0QW+XN/jRY1ZxEFxWXelGsKjJVjLx1l9wcuQ89
+	0lpARhRCGRrzEEBLQXDU13tmiS3zjEtsK9LeS/5oxgEL85o86yjHatQy5DUMcB8berYFcBJ2kUa
+	KTnsgrn+ASs7hy7S6mg==
+X-Google-Smtp-Source: AGHT+IF2s93ihLX1PXkClG9cJiSTZ35qsjoCiFotxikRqPbGr/bigMKo3h5oYLJkMHWpg4yl3gvHTgjJVd/9b/U=
+X-Received: from edba15.prod.google.com ([2002:a50:c30f:0:b0:601:dd78:8e2f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:b6e:b0:608:3f9c:c69d with SMTP id 4fb4d7f45d1cf-60e5350016dmr4264704a12.33.1751536979907;
+ Thu, 03 Jul 2025 03:02:59 -0700 (PDT)
+Date: Thu, 3 Jul 2025 10:02:58 +0000
+In-Reply-To: <aGP6d2-jJy5rtjMK@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Jul 2025 11:42:59 +0200
-Message-Id: <DB2BM4UMCFQR.3SQWIRF7HDP09@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
- Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
- "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
- Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
- Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
- "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
- <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
- <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
- <dO7tJL6M4FKz_QOo-Vbb0bZOybyXa9CkBI0SIIKeCGBHIjNHlpElEV0iPbNeXBa6elnsQXqrGS5AGXdGU5hefQ==@protonmail.internalid> <DB1NVTWHU7BN.2WGPMAY9LQYNW@kernel.org> <87bjq1ve6t.fsf@kernel.org>
-In-Reply-To: <87bjq1ve6t.fsf@kernel.org>
+References: <20250627-debugfs-rust-v8-4-c6526e413d40@google.com>
+ <5c3a2289-01c5-413e-9d7c-88a41c3f54e2@kernel.org> <CAGSQo038u_so+_pMRYj0K546zNfO5-eqoXFivXsEF6ACK=Y5cw@mail.gmail.com>
+ <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org> <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
+ <aGLUl7ZtuQBPoCuv@pollux> <2025070131-icon-quarters-0c16@gregkh>
+ <aGPtCBB6nWTNJuwK@pollux> <2025070137-tartar-juncture-fcd2@gregkh> <aGP6d2-jJy5rtjMK@pollux>
+Message-ID: <aGZVUqangIR-c4aW@google.com>
+Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing for File
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, Timur Tabi <ttabi@nvidia.com>, 
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Dirk Behme <dirk.behme@de.bosch.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu Jul 3, 2025 at 11:03 AM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Wed Jul 2, 2025 at 3:18 PM CEST, Andreas Hindborg wrote:
->>> +///
->>> +/// # Example
->>> +///
->>> +/// ```
->>> +/// # use kernel::sync::once_lock::OnceLock;
->>> +/// let value =3D OnceLock::new();
->>> +/// assert_eq!(None, value.as_ref());
->>> +///
->>> +/// let status =3D value.populate(42u8);
->>> +/// assert_eq!(true, status);
->>> +/// assert_eq!(Some(&42u8), value.as_ref());
->>> +/// assert_eq!(Some(42u8), value.copy());
->>> +///
->>> +/// let status =3D value.populate(101u8);
->>> +/// assert_eq!(false, status);
->>> +/// assert_eq!(Some(&42u8), value.as_ref());
->>> +/// assert_eq!(Some(42u8), value.copy());
->>> +/// ```
->>> +pub struct OnceLock<T> {
->>> +    init: Atomic<u32>,
->>> +    value: Opaque<T>,
->>> +}
->>> +
->>> +impl<T> Default for OnceLock<T> {
->>> +    fn default() -> Self {
->>> +        Self::new()
->>> +    }
->>> +}
->>> +
->>> +impl<T> OnceLock<T> {
->>> +    /// Create a new [`OnceLock`].
->>> +    ///
->>> +    /// The returned instance will be empty.
->>> +    pub const fn new() -> Self {
->>> +        // INVARIANT: The container is empty and we set `init` to `0`.
->>> +        Self {
->>> +            value: Opaque::uninit(),
->>> +            init: Atomic::new(0),
->>> +        }
->>> +    }
->>> +
->>> +    /// Get a reference to the contained object.
->>> +    ///
->>> +    /// Returns [`None`] if this [`OnceLock`] is empty.
->>> +    pub fn as_ref(&self) -> Option<&T> {
->>> +        if self.init.load(Acquire) =3D=3D 2 {
->>> +            // SAFETY: As determined by the load above, the object is =
-ready for shared access.
->>
->>     // SAFETY: By the safety requirements of `Self`, `self.init =3D=3D 2=
-` means that `self.value` contains
->>     // a valid value.
->
-> By the *type invariants* I guess?
+On Tue, Jul 01, 2025 at 05:10:47PM +0200, Danilo Krummrich wrote:
+> On Tue, Jul 01, 2025 at 04:21:56PM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, Jul 01, 2025 at 04:13:28PM +0200, Danilo Krummrich wrote:
+> > > Instead this should just be:
+> > > 
+> > > 	struct GPU {
+> > > 	   fw: debugfs::File<Firmware>,
+> > > 	}
+> > > 
+> > > and then I would initialize it the following way:
+> > > 
+> > > 	let fw = KBox::new(Firmware::new(), GFP_KERNEL)?;
+> > > 	let file = dir.create_file("firmware", fw);
+> > > 
+> > > 	// debugfs::File<Firmware> dereferences to Firmware
+> > > 	file.do_something();
+> > > 
+> > > 	// Access to fw is prevented by the compiler, since it has been moved
+> > > 	// into file.
+> > > 
+> > > This is much better, since now I have the guarantee that my Firmare instance
+> > > can't out-live the GPU instance.
+> > 
+> > That's better, yes, but how would multiple files for the same
+> > "structure" work here?  Like a debugfs-file-per-field of a structure
+> > that we often have?
+> 
+> That is a very good question and I thought about this as well, because with only
+> the current API this would require us to have more and more dynamic allocations
+> if we want to have a more fine grained filesystem representations of structures.
+> 
+> The idea I have for this is to use pin-init, which we do in quite some other
+> places as well.
+> 
+> I think we can add an additional API like this:
+> 
+> 	impl Dir {
+> 	   pub fn create_file<T>(&self, data: impl PinInit<T>) -> impl PinInit<Self> {
+> 	      pin_init!(Self {
+> 	         data <- data,
+> 	         ...
+> 	      })
+> 	   }
+> 	}
+> 
+> This allows us to do things like:
+> 
+> 	#[pin_data]
+> 	struct Firmware {
+> 	   #[pin]
+> 	   minor: debugfs::File<u32>,
+> 	   #[pin]
+> 	   major: debugfs::File<u32>,
+> 	   #[pin]
+> 	   buffer: debugfs::File<[u8]>,
+> 	}
+> 
+> 	impl Firmware {
+> 	   pub fn new(&dir: debugfs::Dir, buffer: [u8]) -> impl PinInit<Self> {
+> 	      pin_init!(Self {
+> 	         minor <- dir.create_file("minor", 1),
+> 	         major <- dir.create_file("major", 2),
+> 	         buffer <- dir.create_file("buffer", buffer),
+> 	      })
+> 	   }
+> 	}
+> 
+> 	// This is the only allocation we need.
+> 	let fw = KBox::pin_init(Firmware::new(...), GFP_KERNEL)?;
+> 
+> With this everything is now in a single allocation and since we're using
+> pin-init, Dir::create_file() can safely store pointers of the corresponding data
+> in debugfs_create_file(), since this structure is guaranteed to be pinned in
+> memory.
+> 
+> Actually, we can also implement *only this*, since with this my previous example
+> would just become this:
+> 
+> 	struct GPU {
+> 	   fw: debugfs::File<Firmware>,
+> 	}
+> 
+> 	let file = dir.create_file("firmware", Firmware::new());
+> 	let file = KBox::pin_init(file, GFP_KERNEL)?;
+> 
+> 	// debugfs::File<Firmware> dereferences to Firmware
+> 	file.do_something();
+> 
+> Given that, I think we should change things to use pin-init right away for the
+> debugfs::File API.
 
-Oh yeah.
+Does this actually work in practice for anything except immutable data?
+I mean, let's take Rust Binder as an example and lets say that I want to
+expose a directory for each Process object with some of the fields
+exposed. Let's just simplify Rust Binder a bit and only include some of
+the fields:
 
->>> +            Some(unsafe { &*self.value.get() })
->>> +        } else {
->>> +            None
->>> +        }
->>> +    }
->>> +
->>> +    /// Populate the [`OnceLock`].
->>> +    ///
->>> +    /// Returns `true` if the [`OnceLock`] was successfully populated.
->>> +    pub fn populate(&self, value: T) -> bool {
->>> +        // INVARIANT: We obtain exclusive access to the contained allo=
-cation and write 1 to
->>> +        // `init`.
->>> +        if let Ok(0) =3D self.init.cmpxchg(0, 1, Acquire) {
->>> +            // SAFETY: We obtained exclusive access to the contained o=
-bject.
->>> +            unsafe { core::ptr::write(self.value.get(), value) };
->>> +            // INVARIANT: We release our exclusive access and transiti=
-on the object to shared
->>> +            // access.
->>> +            self.init.store(2, Release);
->>> +            true
->>> +        } else {
->>> +            false
->>> +        }
->>> +    }
->>> +}
->>> +
->>> +impl<T: Copy> OnceLock<T> {
->>> +    /// Get a copy of the contained object.
->>> +    ///
->>> +    /// Returns [`None`] if the [`OnceLock`] is empty.
->>> +    pub fn copy(&self) -> Option<T> {
->>> +        if self.init.load(Acquire) =3D=3D 2 {
->>> +            // SAFETY: As determined by the load above, the object is =
-ready for shared access.
->>> +            Some(unsafe { *self.value.get() })
->>> +        } else {
->>> +            None
->>> +        }
->>
->> The impl can just be:
->>
->>     self.as_ref().copied()
->
-> Nice. I was thinking of dropping this method and just have callers do
->
->  my_once_lock.as_ref().map(|v| v.copied())
->
-> What do you think?
+#[pin_data]
+struct Process {
+    task: ARef<Task>,
+    #[pin]
+    inner: SpinLock<ProcessInner>,
+}
 
-There is `Option::copied`, so no need for the `.map` call. I don't
-really have a preference, if users always want to access it by-value,
-then we should have `copy`.
+pub(crate) struct ProcessInner {
+    threads: RBTree<i32, Arc<Thread>>,
+    nodes: RBTree<u64, DArc<Node>>,
+    requested_thread_count: u32,
+    max_threads: u32,
+    started_thread_count: u32,
+}
 
----
-Cheers,
-Benno
+Rust Binder already does expose some debugging data through a file
+system, though it doesn't do so using debugfs. It exposes a lot of data,
+but among them are the pid, the number of threads and nodes, as well as
+the values of requested_thread_count, started_thread_count, and
+max_threads.
+
+Now, we run into problem number one: pinning is not supported inside
+mutexes. But let's say we solved that and we could do this:
+
+#[pin_data]
+struct Process {
+    task: File<ARef<Task>>, // prints the pid
+    #[pin]
+    inner: SpinLock<ProcessInner>,
+}
+
+pub(crate) struct ProcessInner {
+    threads: File<RBTree<i32, Arc<Thread>>>, // prints the count
+    nodes: File<RBTree<u64, DArc<Node>>>, // prints the count
+    requested_thread_count: File<u32>,
+    max_threads: File<u32>,
+    started_thread_count: File<u32>,
+}
+
+However, this still doesn't work! Debugfs may get triggered at any time
+and need to read these fields, and there's no way for it to take the
+spinlock with the above design - it doesn't know where the spinlock is.
+For the integers I guess we could make them atomic to allow reading them
+in parallel with mutation, but that option is not available for the
+red/black trees.
+
+What is the intended solution in this case? If the argument is that this
+is a rare case, then keep in mind that this is a real-world example of
+debugging information that we actually expose today in a real driver.
+With Matt's current approach, it's relatively easy - just store a bunch
+of File<Arc<Process>> instances somewhere and define each one to take
+the mutex and print the relevant value.
+
+Alice
