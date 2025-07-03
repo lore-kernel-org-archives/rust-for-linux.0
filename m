@@ -1,235 +1,201 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DB8298CA3;
-	Thu,  3 Jul 2025 19:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751570243; cv=none; b=e4hpULlTv8t7bcb5izd1Oz44z2U0S6n7WBYTRqj0xyzfO7hwjWEXbHdd1gLgt3PtfKvenhbJEaZSg6/HuykP2x6I4aXXeFawQbI+cO+Tt5vZ4sAzqcu+cNnFhwXuJzKfXy5N03+K6BqLe/9NzmQhqiqHaK4gGs4GprZWyVeU8E8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751570243; c=relaxed/simple;
-	bh=8e3W8v7w5bcyQIgewGyA9kt9oSM7xIJIbCEFgUMyAAE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kY17xv5a+RGTC34ItuF4Zv/9IefofXjcM7XLZGIh2WYuU2R/xf/IWd+p4cSWXYTRDSxYpB4bOaOwAOQAMuYqQEpe0PIrZE/n5Gm2+mEq5rAiUaEihf1wZaWAGYoA6tEE0KrClBiJOcYL6NIZ/0UBjNPJQUGrNZqya9YEJabRa9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XHYN9jhC; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6724F2F32;
+	Thu,  3 Jul 2025 19:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751571063; cv=pass; b=UkBsEiOnjFVd3tLymSQbbF+/B4aVCHd1DciZsJPUqMJpsLdMRvcBnun5tkWB7wetRKcUQjIO5T3yMLvNeBiA6kQ/xV8gVDT04CLZjYOJXBybTrcQkvKWRh7gDye0ZNEif3T/HDY9uE45eqNkEqTlpPoEa02oe9Casw+wZBkZJiM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751571063; c=relaxed/simple;
+	bh=Ds091A2QHY1R50IW9GXE0qk+a0KraO37xj+yVkIfagk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=uPWeyNmumaibkp5XVpQ6gZL93UKpDIuzUXFBX33LxiYC2ZFhGjhtI6uDNgnDLbD5/QwRFoSmtDOG8h60FNTBLWbZTHyaniUgjMCCgH9/ZjcuYDSYb2TYhpx/aIHOgNg6+7y9emhaU2P3TJckl5wXxAmAxVX2U08yyB0Oc8sJnrE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Fpp2i2Na; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XHYN9jhC"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-32cd0dfbd66so1943161fa.3;
-        Thu, 03 Jul 2025 12:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751570239; x=1752175039; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R3Barr3IhXzrNTPGC2RTs5bswjpJKBTkkOzXAPniR4c=;
-        b=XHYN9jhC0PZ64ASbC6MVF6NWEpjDLlqnSZcdhSmT/MYnclnSalVM02TEqQD+LackTU
-         xf9vqY5/HLBUBCjGWwvWUSBP6FFyw4dWBHw5fMEuf8YSNYI0a16sSjgRCTDLldMZg7t1
-         DXXNRCTu3J09Q9W70UcQ5ISFZQcnB+POq+0QwsMMeCLxlTB1Jn1UJZWZZZN2cNEscqGD
-         /Pry5/Qzs/EQgG4693kddfOrBCKRYh1+kDorUaQrPAieks4IRtZu5Xt/HTJlzgt2eFZl
-         bvhR2avzKXIcPTv9oVzuAlOIEV3udetfxpdy7DHKZhL/2B9GTwnZSwM+5OwiVG+lFHPn
-         L28A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751570239; x=1752175039;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R3Barr3IhXzrNTPGC2RTs5bswjpJKBTkkOzXAPniR4c=;
-        b=BKpTY2KjJVOWQiXriis4qJ0dyxkmE780Mz+n1Pdmt2PJKsyhAFneilkmZe7OP9fewU
-         XQqPYEhMniDigAVFO1wwXISv/up80QCxW51dPYKSvIg4BkO2Ja3472/CZ5XgaQZD1+QF
-         kMNqN68WnCag5hBZtqgdN7O6JszbzaQAy19TJEmYxn+KRQ40kz1roxf+odM1qrCk5M6k
-         Bu1FEjUVglkCQLnHpxLNV0ytV9MhC+ETjdQmb+j/JwirA4bQyPdvb93kvccmaN3Lbc9H
-         E7dK6Z9pwDc8JP/YUfMDfXC0g7c9UGaIvDCYlw8WCGXjudXADxQWsMh1SnFzkqgMYooK
-         g0sg==
-X-Forwarded-Encrypted: i=1; AJvYcCV0x1prkS9Opk/WN2MBLJh7F65VUMIIlB6VgPwT7Rqh/smAanb7pGUqAeiqBrHC2D7MYybicrSUobtqS8M=@vger.kernel.org, AJvYcCV6JMO3qtQwPDMk4zcmAJ9WEuqieKKX/1QsIYYMBjkb29duPbfufwwupKIn9hHFRtqNGLsxqgl3ek9t@vger.kernel.org, AJvYcCVKvbkl0UkzHXGMwGQtFn6qFuAlvpphN45VHO0ujEI+rm9dKcdk1PnLNXs77zIlXCDPy0F6zp0H@vger.kernel.org, AJvYcCWXjm0Z8X3X/SbxUoIXAnN2JG2nMQoZ+iKaZUXQUnXeHkTi2XZRsn85/VMB2Kyu9xIfT8Bk8ZO1Y4ciNzGX@vger.kernel.org, AJvYcCWYqOBU/tN9EnPpoc9hxnO/xeOhzrM0mAdHUPrBqZf5jEi4xrqbvodUCKF8c3ZLNnPx1lEVt8YoaLBmzKoMsRc=@vger.kernel.org, AJvYcCX8MvpA5ZcXrustMrBULAJQwMtNQfj4IXXdEJe8QGny7si0t0ZwYRNDMqDh7KcfCcRESLbxjhdTGuX9@vger.kernel.org, AJvYcCXDuNADXeCALEcj31q5XyazECv/9UG1MxKUYazfeQVnSr7NQ1OEdPU4kzLi8A/D2rajf2E42MTw7ADj0+BEB9LP@vger.kernel.org, AJvYcCXFDUQ6zmK6wMMuweaBgSNFfHkEsZGrcqtD9VWrM0QOlhtKVF093oASgq2kWT1pBXjgHxVrY1ABckc=@vger.kernel.org, AJvYcCXcqXVhntPjs453kfnuO/Bno79rixzJtG1J3qQAuFFgOBXJXYWyeLckkQMKWLLldmaTHJo8rfdP75yJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRX0JkJwNF1MSdUMP8JTwneFdTf2W0To9LngexUnCRHxyKaQOK
-	hpA+GYXwjGfjd+Z66Xm4QodQtDxjlbHFcqQ6UCzStvqIERsqG8oBIdrN2IA59RjQ1fsT2Zke/CT
-	m8DynGvGj7WCGbUu5I1VQCRwi8N2nYe0=
-X-Gm-Gg: ASbGncvE/17EmCkJpr+D89P468ZRQho8gGUlYT9LXEp5nOy4cyTwEbeA4wVvN1m5NkE
-	Jc4WZcPQPIYqOWeen+HfoXnOSjQI6YL7/ibvOYwb2r5A4vxNDK6UlDVKxI2fPBi9UxnyaHuEqom
-	KGMpxDc2JDhkh8+YITxGL8NHn8m3rn9Fe96nFl8iNtUrgMzQ==
-X-Google-Smtp-Source: AGHT+IGjC0TGXLvqJzlq7AH9t/Q8+27F2aQQEGTeZqTm6S+IuruBMFgglwnG67+02iIc84HBQzCfPbXa93QdJ3TTD74=
-X-Received: by 2002:a05:651c:3c2:b0:327:fec0:b85d with SMTP id
- 38308e7fff4ca-32e00049994mr27628221fa.21.1751570238849; Thu, 03 Jul 2025
- 12:17:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Fpp2i2Na"
+ARC-Seal: i=1; a=rsa-sha256; t=1751571040; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=a5AIitHHpc0UrPLnyAdIZLZkbJM0+CuLtGvk5p4DsvsuB4R71gKPInwSqSGVGzQhdfxQ6fw9SiuLQg45h/NDpRqdFTsD6MWihc/IOBvz4xj2pEI90ssP8CvizFJrGM0f+vmfy7tRnMdAtliF5yqqL9g1UGb3wRxYnpXJPhf3BPM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751571040; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=z29PaVAh0oaF9dtOWNlB1A+h3wpFMIUnr7A55gjmThA=; 
+	b=Gcal96NVmvYYvTXw8xRR2bUX8ke3eZFUIMMhcULnkDywmTA5TyyCMGhWctLv3H4hTHSVqMyrG6ed/iczGSdigGVj/5F5H7IL/2DWxGXI78zxZUVqng8TFl/h5MmsROxB3V4/ffsJjgbUdQUGJc8XObMPKOOCH4/JEtszIcAUkjY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751571040;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=z29PaVAh0oaF9dtOWNlB1A+h3wpFMIUnr7A55gjmThA=;
+	b=Fpp2i2Na9Ebip3jADvhUdCqrv1ngx0ZXNkTSqNOeEvh+ZzLH/BeTMqrR6EN9PTWI
+	DpOcB6S1TzMu1NFdvFz6+t/bVM7gcgL/RO/9S/mJvhPLLGjm5sPh+2egaiMakhbOdZr
+	V+L8//r1zFJHrgk9JS6cj0bKN0p9u4Y5Y5imKE0w=
+Received: by mx.zohomail.com with SMTPS id 1751571039028940.1650885014568;
+	Thu, 3 Jul 2025 12:30:39 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v6 0/6] rust: add support for request_irq
+Date: Thu, 03 Jul 2025 16:29:58 -0300
+Message-Id: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com> <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
- <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
- <DB2IJ9HBIM0W.3N0JVGKX558QI@kernel.org> <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
-In-Reply-To: <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 3 Jul 2025 15:16:42 -0400
-X-Gm-Features: Ac12FXxZ9om-DmQ4Jtb_QO5Js54rwUi8z1hnIkmX71Lj1sGPMSjTGrGnMcngSCg
-Message-ID: <CAJ-ks9nCHCBqfM5nG3XpBBsWSqGpJLexV53UGL2i3KTdRiWRXQ@mail.gmail.com>
-Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
-To: Benno Lossin <lossin@kernel.org>
-Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADbaZmgC/6XPTWrDMBAF4KsErSujf8tZ9R6llLE0bgYcK5Fc0
+ xB89yrpIqUk3XT5Bt73mDMrmAkL227OLONChdJUg3vasLCD6R05xZqZEsoKKw2f04FC4fMp84z
+ HDyzzG+UjN4MDLbxuETyr5UPGgT6v8MtrzTsqc8qn684iL9dvUiolne60aoxzXcsljzARjg2Me
+ 6QIzyGNI/QpQxPSnl2oRf2vrm/1Px5aNBc8uiEEZTsJ3t+jzI1ywj+kTKW8DL2XQ+9Fq+9R9ge
+ l2oeUrZSwxiKaCHFwv6l1Xb8A/NNHcNQBAAA=
+X-Change-ID: 20250514-topics-tyr-request_irq-4f6a30837ea8
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-pci@vger.kernel.org, Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Thu, Jul 3, 2025 at 2:55=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
->
-> On Thu, Jul 3, 2025 at 11:08=E2=80=AFAM Benno Lossin <lossin@kernel.org> =
-wrote:
-> >
-> > On Thu Jul 3, 2025 at 3:55 PM CEST, Tamir Duberstein wrote:
-> > > On Thu, Jul 3, 2025 at 5:32=E2=80=AFAM Benno Lossin <lossin@kernel.or=
-g> wrote:
-> > >> On Tue Jul 1, 2025 at 6:49 PM CEST, Tamir Duberstein wrote:
-> > >> > Introduce a `fmt!` macro which wraps all arguments in
-> > >> > `kernel::fmt::Adapter` and a `kernel::fmt::Display` trait. This en=
-ables
-> > >> > formatting of foreign types (like `core::ffi::CStr`) that do not
-> > >> > implement `core::fmt::Display` due to concerns around lossy conver=
-sions which
-> > >> > do not apply in the kernel.
-> > >> >
-> > >> > Replace all direct calls to `format_args!` with `fmt!`.
-> > >> >
-> > >> > Replace all implementations of `core::fmt::Display` with implement=
-ations
-> > >> > of `kernel::fmt::Display`.
-> > >> >
-> > >> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> > >> > Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-=
-General/topic/Custom.20formatting/with/516476467
-> > >> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > >> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > >> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > >> > ---
-> > >> >  drivers/block/rnull.rs       |  2 +-
-> > >> >  drivers/gpu/nova-core/gpu.rs |  4 +-
-> > >> >  rust/kernel/block/mq.rs      |  2 +-
-> > >> >  rust/kernel/device.rs        |  2 +-
-> > >> >  rust/kernel/fmt.rs           | 89 +++++++++++++++++++++++++++++++=
-++++++++
-> > >> >  rust/kernel/kunit.rs         |  6 +--
-> > >> >  rust/kernel/lib.rs           |  1 +
-> > >> >  rust/kernel/prelude.rs       |  3 +-
-> > >> >  rust/kernel/print.rs         |  4 +-
-> > >> >  rust/kernel/seq_file.rs      |  2 +-
-> > >> >  rust/kernel/str.rs           | 22 ++++------
-> > >> >  rust/macros/fmt.rs           | 99 +++++++++++++++++++++++++++++++=
-+++++++++++++
-> > >> >  rust/macros/lib.rs           | 19 +++++++++
-> > >> >  rust/macros/quote.rs         |  7 ++++
-> > >> >  scripts/rustdoc_test_gen.rs  |  2 +-
-> > >> >  15 files changed, 236 insertions(+), 28 deletions(-)
-> > >>
-> > >> This would be a lot easier to review if he proc-macro and the call
-> > >> replacement were different patches.
-> > >>
-> > >> Also the `kernel/fmt.rs` file should be a different commit.
-> > >
-> > > Can you help me understand why? The changes you ask to be separated
-> > > would all be in different files, so why would separate commits make i=
-t
-> > > easier to review?
-> >
-> > It takes less time to go through the entire patch and give a RB. I can
-> > take smaller time chunks and don't have to get back into the entire
-> > context of the patch when I don't have 30-60min available.
->
-> Ah, I see what you mean. Yeah, the requirement to RB the entire patch
-> does mean there's a benefit to smaller patches.
->
-> > In this patch the biggest problem is the rename & addition of new
-> > things, maybe just adding 200 lines in those files could be okay to go
-> > together, see below for more.
->
-> After implementing your suggestion of re-exporting things from
-> `kernel::fmt` the diffstat is
->
-> 26 files changed, 253 insertions(+), 51 deletions(-)
->
-> so I guess I could do all the additions in one patch, but then
-> *everything* else has to go in a single patch together because the
-> formatting macros either want core::fmt::Display or
-> kernel::fmt::Display; they can't work in a halfway state.
->
-> >
-> > > I prefer to keep things in one commit because the changes are highly
-> > > interdependent. The proc macro doesn't make sense without
-> > > kernel/fmt.rs and kernel/fmt.rs is useless without the proc macro.
-> >
-> > I think that `Adapter`, the custom `Display` and their impl blocks
-> > don't need to be in the same commit as the proc-macro. They are related=
-,
-> > but maybe someone is not well-versed in proc-macros and thus doesn't
-> > want to review that part.
->
-> Sure, I guess I will split them. But as noted above: changing the
-> formatting macros and all the types' trait implementations has to be a
-> "flag day" change.
->
-> >
-> > >> > diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
-> > >> > new file mode 100644
-> > >> > index 000000000000..348d16987de6
-> > >> > --- /dev/null
-> > >> > +++ b/rust/kernel/fmt.rs
-> > >> > @@ -0,0 +1,89 @@
-> > >> > +// SPDX-License-Identifier: GPL-2.0
-> > >> > +
-> > >> > +//! Formatting utilities.
-> > >> > +
-> > >> > +use core::fmt;
-> > >>
-> > >> I think we should pub export all types that we are still using from
-> > >> `core::fmt`. For example `Result`, `Formatter`, `Debug` etc.
-> > >>
-> > >> That way I can still use the same pattern of importing `fmt` and the=
-n
-> > >> writing
-> > >>
-> > >>     impl fmt::Display for MyType {
-> > >>         fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {}
-> > >>     }
-> > >
-> > > Great idea, done for the next spin. It would be nice to be able to
-> > > lint against references to `core::fmt` outside of kernel/fmt.rs.
-> >
-> > I think there was something in clippy that can do that globally and we
-> > could allow that in this file?
->
-> I didn't find anything suitable. Do you have one in mind?
 
-I think we want https://github.com/rust-lang/rust-clippy/issues/14807.
+---
+Changes in v6:
+- Fixed some typos in the docs (thanks, Dirk!)
+- Reordered the arguments for the accessors in platform.rs (Danilo)
+- Renamed handle_on_thread() to handle_threaded() (Danilo)
+- Changed the documentation for Handler and ThreadedHandler to what
+  Danilo suggested
+- Link to v5: https://lore.kernel.org/r/20250627-topics-tyr-request_irq-v5-0-0545ee4dadf6@collabora.com
+
+Changes in v5:
+
+Thanks, Danilo {
+  - Removed extra scope in the examples.
+  - Renamed Registration::register() to Registration::new(),
+  - Switched to try_pin_init! in Registration::new() (thanks for the
+    code and the help, Boqun and Benno)
+  - Renamed the trait functions to handle() and handle_on_thread().
+  - Introduced IrqRequest with an unsafe pub(crate) constructor
+  - Made both register() and the accessors that return IrqRequest public
+    the idea is to allow both of these to work:
+	// `irq` is an `irq::Registration`
+	let irq = pdev.threaded_irq_by_name()?
+  and
+	// `req` is an `IrqRequest`.
+	let req = pdev.irq_by_name()?;
+	// `irq` is an `irq::Registration`
+	let irq = irq::ThreadedRegistration::new(req)?;
+
+  - Added another name in the byname variants. There's now one for the
+    request part and the other one to register()
+  - Reworked the examples in request.rs
+  - Implemented the irq accessors in place for pci.rs
+  - Split the platform accessor macros into two
+}
+
+- Added a rust helper for pci_irq_vectors if !CONFIG_PCI_MSI (thanks,
+Intel 0day bot)
+- Link to v4: https://lore.kernel.org/r/20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com
+
+Changes in v4:
+
+Thanks, Benno {
+  - Split series into more patches (see patches 1-4)
+  - Use cast() where possible
+  - Merge pub use statements.
+  - Add {Threaded}IrqReturn::into_inner() instead of #[repr(u32)]
+  - Used AtomicU32 instead of SpinLock to add interior mutability to the
+    handler's data. SpinLockIrq did not land yet.
+  - Mention that `&self` is !Unpin and was initialized using pin_init in
+    drop()
+  - Fix the docs slightly
+}
+
+- Add {try_}synchronize_irq().
+- Use Devres for the irq registration (see RegistrationInner). This idea
+  was suggested by Danilo and Alice.
+- Added PCI accessors (as asked by Joel Fernandez)
+- Fix a major oversight: we were passing in a pointer to Registration
+  in register_{threaded}_irq() but casting it to Handler/ThreadedHandler in
+  the callbacks.
+- Make register() pub(crate) so drivers can only retrieve registrations
+  through device-specific accessors. This forbids drivers from trying to
+  register an invalid irq.
+- I think this will still go through a few rounds, so I'll defer the
+  patch to update MAINTAINERS for now.
+
+- Link to v3: https://lore.kernel.org/r/20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com
+
+Changes in v3:
+- Rebased on driver-core-next
+- Added patch to get the irq numbers from a platform device (thanks,
+  Christian!)
+- Split flags into its own file.
+- Change iff to "if and only if"
+- Implement PartialEq and Eq for Flags
+- Fix some broken docs/markdown
+- Reexport most things so users can elide ::request from the path
+- Add a blanket implementation of ThreadedHandler and Handler for
+  Arc/Box<T: Handler> that just forwards the call to the T. This lets us
+  have Arc<Foo> and Box<Foo> as handlers if Foo: Handler.
+- Rework the examples a bit.
+- Remove "as _" casts in favor of "as u64" for flags. This is needed to
+  cast the individual flags into u64.
+- Use #[repr(u32)] for ThreadedIrqReturn and IrqReturn.
+- Wrapped commit messages to < 75 characters
+
+- Link to v2: https://lore.kernel.org/r/20250122163932.46697-1-daniel.almeida@collabora.com
+
+Changes in v2:
+- Added Co-developed-by tag to account for the work that Alice did in order to
+figure out how to do this without Opaque<T> (Thanks!)
+- Removed Opaque<T> in favor of plain T
+- Fixed the examples
+- Made sure that the invariants sections are the last entry in the docs
+- Switched to slot.cast() where applicable,
+- Mentioned in the safety comments that we require that T: Sync,
+- Removed ThreadedFnReturn in favor of IrqReturn,
+- Improved the commit message
+
+Link to v1: https://lore.kernel.org/rust-for-linux/20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com/
+
+---
+Daniel Almeida (6):
+      rust: irq: add irq module
+      rust: irq: add flags module
+      rust: irq: add support for non-threaded IRQs and handlers
+      rust: irq: add support for threaded IRQs and handlers
+      rust: platform: add irq accessors
+      rust: pci: add irq accessors
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/irq.c              |   9 +
+ rust/helpers/pci.c              |   8 +
+ rust/kernel/irq.rs              |  22 ++
+ rust/kernel/irq/flags.rs        | 102 ++++++++
+ rust/kernel/irq/request.rs      | 508 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/pci.rs              |  45 +++-
+ rust/kernel/platform.rs         | 143 ++++++++++-
+ 10 files changed, 837 insertions(+), 3 deletions(-)
+---
+base-commit: 40b37285e5ecf9bbf7ab29ed5a6e9640e7684e5d
+change-id: 20250514-topics-tyr-request_irq-4f6a30837ea8
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
