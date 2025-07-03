@@ -1,97 +1,172 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6013A1C6FE9
-	for <rust-for-linux@vger.kernel.org>; Thu,  3 Jul 2025 21:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3F1B2AF19;
+	Thu,  3 Jul 2025 21:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751577992; cv=none; b=mXDnIi34kREp3qObgAoFri+Ag4qss4A2nNtcLpZk8Ra+VQ2bCR0Qf7doxMaVVHDFpy+hKCxQKHGR/pVy+xmAc2uhUpRrtQR232depKXMrkHVJG9kjkuoVNP0q4jpFLvgbtJySR6OyJ5uCixUWZbZVMV7rkScCJEXLyhjgkSg7yk=
+	t=1751578131; cv=none; b=oJNUjWpHI5H3OsUODtQ4BZjorF0w4Dw2SfGwtD4B+TOVp+7QnMSkujFF3r3oWsv0ctLIuqMP9YwBiO/OTfyZxT05kXbEAUwj+4frTLBLg/kkvPP/wgSZpnWLZmLOR/6kdci7QQ20QQwuhbsL8DI3Ll3sbrY252BpcFROAzzlA8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751577992; c=relaxed/simple;
-	bh=fcScF2Li2iE+rzeQj24dXvUmzs1FWMrT/HfRy4nr7Co=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mPHGphaOykzP3qKQIKw7zqkAM6FYmTbKXlAULRVas2R6m7FSWs41dXHjY+Ua0d6S+f2+8dLTbd2QRiQyvyp8X+Pbd53SzTYa4lc87q+ZFJq3f6genILSYDTsLRNeGTMBV2VpmsdVS39XOHK0bC3VUZgANEMkn45lBfagU9WpgTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oLaTlNFZ; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1751578131; c=relaxed/simple;
+	bh=7s1vdVb4Jp0AKYi0fqgt4BTeqCIZhFaWic60VjgU5TU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GHB5t5XzldEmrSlyUzdCzN5OmzCJIS5T3FdIn0uTbHwi+calt1iaanfpHJVlhnmTyTUkSMxGXU2iMgy/Qy5MbLWP6SXR3RluJU2NlnbQdYsJ81Qk20k0HiPd7wRKxVfTqhD6oWX3YyniAANFhC7+0y3+JtkJO7Nat1kcEUsXAYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Nas0qbwd; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oLaTlNFZ"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-45348bff79fso3363435e9.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 03 Jul 2025 14:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751577989; x=1752182789; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fcScF2Li2iE+rzeQj24dXvUmzs1FWMrT/HfRy4nr7Co=;
-        b=oLaTlNFZNPxJ/H70G0oXe561ZS2TGnbxrmdFxgA062gdVncYj2saQQ8FJ6Gza+0CUp
-         wHBmKmF4LxQKAwn+QjCBTGirF6uyye6ZOI8D6i00ZUWAu+ty+UqNyuQ9kG+GZCmIUyVI
-         igQfh46CehGQDibXtrCVvv0p5coQkB9hNFkeslzhJYx66eAROqr6oqj7JYUyMMTvCYuh
-         1uW9O53GxMbJtixiegVVYEYMip1+eHF+HAL2sC2+iWkCJGEkjZ30CowjQgRvEqSkXGzF
-         GxHQ9qk2smdKTqcDUFBouiOgRwVL+OF4o1tPXf+PDkKQQry7pXxipR4upq2+rbA9aypH
-         pFOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751577989; x=1752182789;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fcScF2Li2iE+rzeQj24dXvUmzs1FWMrT/HfRy4nr7Co=;
-        b=AtXRG2IoQfxJHYKvHkqnT2C89sn0MNqhJ8MblAvLyifyVfzxOOo9036lyQ2KDzvBGi
-         kj8SkH5BGVFAlR5yl0eNSV0FWI55TZ6v28mv5hfKmaSXB/79h8t5hNXqPyY+tVSp34xE
-         Or0kWF1p9p6pXwMlscbEXUNhbu4CJEUShRrpcZ6Q+BfjHvRGtMju8Pv9FrBn93UhBRF1
-         1s/Qhkay+7e5YjWyZysFpefH4LjA0ZhUok0wHVscRCLRMKGRGQohEwCQGyZzRvp5uW2C
-         Ux8cHwkrcnadLFLzeQkzztgpmeqqPi1wnvXPIsOsc2teaL2tGOQhStLqDJnNbsHahx39
-         uS6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWlPufrF0QoTMiKWsWLOM0bkTu1yGKNv40znsMNcsT9bKEgdrWIPTvo/L5mEmQTkCjFjDddaYRGk+r4tMaZxw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1KwRBmc6pxLEVRKkV7fZqHZh7gPM/beufy+6r7XGHD08Ez/Zj
-	h+ZtvLPb3aX2fCrai506TLtCZUhf33L3TnzAi2yn7rP6gq1LyPcHGOE/1tr/zHma1o69zFD3iEz
-	+ERenwlEtx4K6vj3/Z36+kuZ3VSdYXmNssvvVpbRv
-X-Gm-Gg: ASbGncvRyDzJhPln2lomGV1LtQ52lVoce3mR23B7SaLOs26QjczOz1VlMOYegngElPN
-	BSkTxgIe3Ok3EFwoT7AQwN01a2uqkM+OBTkf0uWoR7s1jBJpAvwzatBCFN4HvD1lVN9EOHtTwmu
-	nqh4cA5/TJTWxq9g78nLqG5qNsMBwAGl7D4tK74Y/Q3RTV
-X-Google-Smtp-Source: AGHT+IG1XAyEUVg2pztxNrKRTh5b09syCpDvfmlq5SM1Ct7agJOSAKKx4USd0rx1a5tClltFn9f3jAuO2suLm6AuLBk=
-X-Received: by 2002:a05:600c:8b6f:b0:43c:f44c:72a6 with SMTP id
- 5b1f17b1804b1-454b305ac33mr1219305e9.2.1751577988601; Thu, 03 Jul 2025
- 14:26:28 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Nas0qbwd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=A83NKRGoevWzL/NcvqijuYTaZ0xDTVIZ9pvu0pc07Jk=; b=Na
+	s0qbwdL6B67K0wS+f7tbNlfneHHctNev/cTniYFhLMkwezOAunGEDatFtpLb4g+PG761JVmPtbDzC
+	rfpydruVCCrDayQ33cjSGl/o6BiA+VGkuX6ILQmO0/nR1G4/Ap/W5RcWrBNuhbzqrUhTrrpdbnIlt
+	YvmVDe7keP8zJfo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uXRTN-0008hX-2p; Thu, 03 Jul 2025 23:28:01 +0200
+Date: Thu, 3 Jul 2025 23:28:01 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>,
+	Michal Rostecki <vadorovsky@protonmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	llvm@lists.linux.dev, linux-pci@vger.kernel.org,
+	nouveau@lists.freedesktop.org, linux-block@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-clk@vger.kernel.org
+Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
+Message-ID: <34c00dfa-8302-45ee-8d80-58b97a08e52e@lunn.ch>
+References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
+ <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com>
+ <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
+ <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
+ <DB2IJ9HBIM0W.3N0JVGKX558QI@kernel.org>
+ <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250629153747.72536-1-dakr@kernel.org>
-In-Reply-To: <20250629153747.72536-1-dakr@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 3 Jul 2025 23:26:15 +0200
-X-Gm-Features: Ac12FXyUV-obWXZdLpvBmC6loWxe3pPktRix4vbmOg-M9NjfTWl5JJrUBsohCAM
-Message-ID: <CAH5fLgi3muZpf_xPcByEEjVSnXWspmyucVwXGGYQjWn7+7ZoKQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: drm: device: drop_in_place() the drm::Device in release()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: airlied@gmail.com, simona@ffwll.ch, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, tmgross@umich.edu, 
-	acourbot@nvidia.com, alyssa@rosenzweig.io, lyude@redhat.com, 
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
 
-On Sun, Jun 29, 2025 at 5:38=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> In drm::Device::new() we allocate with __drm_dev_alloc() and return an
-> ARef<drm::Device>.
->
-> When the reference count of the drm::Device falls to zero, the C code
-> automatically calls drm_dev_release(), which eventually frees the memory
-> allocated in drm::Device::new().
->
-> However, due to that, drm::Device::drop() is never called. As a result
-> the destructor of the user's private data, i.e. drm::Device::data is
-> never called. Hence, fix this by calling drop_in_place() from the DRM
-> device's release callback.
->
-> Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Thu, Jul 03, 2025 at 02:55:30PM -0400, Tamir Duberstein wrote:
+> On Thu, Jul 3, 2025 at 11:08 AM Benno Lossin <lossin@kernel.org> wrote:
+> >
+> > On Thu Jul 3, 2025 at 3:55 PM CEST, Tamir Duberstein wrote:
+> > > On Thu, Jul 3, 2025 at 5:32 AM Benno Lossin <lossin@kernel.org> wrote:
+> > >> On Tue Jul 1, 2025 at 6:49 PM CEST, Tamir Duberstein wrote:
+> > >> > Introduce a `fmt!` macro which wraps all arguments in
+> > >> > `kernel::fmt::Adapter` and a `kernel::fmt::Display` trait. This enables
+> > >> > formatting of foreign types (like `core::ffi::CStr`) that do not
+> > >> > implement `core::fmt::Display` due to concerns around lossy conversions which
+> > >> > do not apply in the kernel.
+> > >> >
+> > >> > Replace all direct calls to `format_args!` with `fmt!`.
+> > >> >
+> > >> > Replace all implementations of `core::fmt::Display` with implementations
+> > >> > of `kernel::fmt::Display`.
+> > >> >
+> > >> > Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> > >> > Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General/topic/Custom.20formatting/with/516476467
+> > >> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > >> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > >> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> > >> > ---
+> > >> >  drivers/block/rnull.rs       |  2 +-
+> > >> >  drivers/gpu/nova-core/gpu.rs |  4 +-
+> > >> >  rust/kernel/block/mq.rs      |  2 +-
+> > >> >  rust/kernel/device.rs        |  2 +-
+> > >> >  rust/kernel/fmt.rs           | 89 +++++++++++++++++++++++++++++++++++++++
+> > >> >  rust/kernel/kunit.rs         |  6 +--
+> > >> >  rust/kernel/lib.rs           |  1 +
+> > >> >  rust/kernel/prelude.rs       |  3 +-
+> > >> >  rust/kernel/print.rs         |  4 +-
+> > >> >  rust/kernel/seq_file.rs      |  2 +-
+> > >> >  rust/kernel/str.rs           | 22 ++++------
+> > >> >  rust/macros/fmt.rs           | 99 ++++++++++++++++++++++++++++++++++++++++++++
+> > >> >  rust/macros/lib.rs           | 19 +++++++++
+> > >> >  rust/macros/quote.rs         |  7 ++++
+> > >> >  scripts/rustdoc_test_gen.rs  |  2 +-
+> > >> >  15 files changed, 236 insertions(+), 28 deletions(-)
+> > >>
+> > >> This would be a lot easier to review if he proc-macro and the call
+> > >> replacement were different patches.
+> > >>
+> > >> Also the `kernel/fmt.rs` file should be a different commit.
+> > >
+> > > Can you help me understand why? The changes you ask to be separated
+> > > would all be in different files, so why would separate commits make it
+> > > easier to review?
+> >
+> > It takes less time to go through the entire patch and give a RB. I can
+> > take smaller time chunks and don't have to get back into the entire
+> > context of the patch when I don't have 30-60min available.
+> 
+> Ah, I see what you mean. Yeah, the requirement to RB the entire patch
+> does mean there's a benefit to smaller patches.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+I often tell kernel newbies:
+
+Lots of small patches which are obviously correct.
+
+A small patch tends to be more obviously correct than a big patch. The
+commit message is more focused and helpful because it refers to a
+small chunk of code. Because the commit message is more focused, it
+can answer questions reviewers might ask, before they ask them. If i
+can spend 60 seconds looking at a patch and decide it looks correct,
+i'm more likely to actually look at it and give a reviewed by. If i
+need to find 10 minutes, it is going to get put off for a later
+time. Many reviewers just have a few minutes here, a few there,
+slotted into time between other tasks, while drinking coffee, etc.
+
+	Andrew
