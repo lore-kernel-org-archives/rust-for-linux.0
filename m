@@ -1,126 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AF01D9694;
-	Thu,  3 Jul 2025 08:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBCD142E73;
+	Thu,  3 Jul 2025 08:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751530825; cv=none; b=b8YP2osrudFKLYGOct1SmEeE/Sgg8pglMBp53WLBblMJ5Gjy6kJpfd1JNwtJZpD84LPM1VDK+nN3e3dfhWLIb7mfZg9aDAkdlexNxUvd751Matuwp53Io9uvhgMW5zxsE2Zned8UyWOavjUYuqjTLz/6vqbPfeby+JwDX21TxXU=
+	t=1751531091; cv=none; b=Riq/zAvPHlPL+2S7LxqYTNOECkfiSy54MIv3Bdu3Md5gaXvBzKa1R1dPm2szVlhjb3QvNhNQBu4JU9MaJ4gQyrKnRJ7QNAsWC7ITCFYl8uoBQpVTTZnWZvp6gJYeKuukCP84mVWhKcqPwt1UX/RtzDe1FyGmT+722jI2/1ujcpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751530825; c=relaxed/simple;
-	bh=onW2/V8pm6PJLCQrfUQi+7kAgJh7tQlPpsCTdk7wVBI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rkb20H0MjVGB/irE1TcNSjWAfjDuPR6I0HZKm25T5h10H+WQxcAm59dIWlm3+eP7sodIpoL+qD4ghFDsc6PRAUFtwUmblW6ATFLmDI+VFxuiWHThKnlHt81kG1w5vCt3rGcUAaxuaJvwwVsM8ruTyGsks8psZx5UdbPg/xTeNtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T1lDWpr6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751531091; c=relaxed/simple;
+	bh=2g1z9Lo+89gJyejgACQ+2xNbf+MhUSX6mK1HfGuQ5K0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=ZczDkYDxN6tvAQbnsKw50vpfmO+SkcAwedTKmGNVv8+hUwEKfsNB2xjvRErBR3S0upX9SdjkNWuhgPe5/ukRIdahgga29iKMgGBzj/lujQOl9rapEKmCY7OY+/D8OETpl5l70StIS+bBtpqRWBLLl2BlJ49hovXN0RW9zOpSWcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4F5rdDx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T1lDWpr6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B464C4CEF1;
-	Thu,  3 Jul 2025 08:20:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4F5rdDx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D73C4CEE3;
+	Thu,  3 Jul 2025 08:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751530824;
-	bh=onW2/V8pm6PJLCQrfUQi+7kAgJh7tQlPpsCTdk7wVBI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=T1lDWpr6mAAQJauZdmwolwQ/4vur+P13xI1yBTXOYMq9X7Iw6/NgvbiNaQnm7dtMn
-	 sA3brOe5wJb+vxQZk2gN4G+a1BVUQ47KuRBgiyELCz4FTYSOvN/6UjZV7tYe2tjIgY
-	 JCigfibpQap5jzdlhmecFcZhAxl6V9K16MSa7a0841WUmpjF58xaeyQNzSd1kiIAF9
-	 tBIMZmQsJAJy5GEHCjfKx9Z7wf4VjSVMvHKRcbxlysnkCbY1jsiyvCUbAroY8Nn1BM
-	 fcjWggfb84AEJU1AvxVNosc+ns1kH220BZwXB6fZMCVNULBFpBkumEmVHdvrdvgTPG
-	 nYFfa4v2ryugA==
-Message-ID: <0b7c2a9b-9cdc-41e9-bdaa-ddd8b0807449@kernel.org>
-Date: Thu, 3 Jul 2025 10:20:19 +0200
+	s=k20201202; t=1751531091;
+	bh=2g1z9Lo+89gJyejgACQ+2xNbf+MhUSX6mK1HfGuQ5K0=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=C4F5rdDxmdPdW71ZgIPdlkQ8VXK5Vh8uxRpFu/cu7EFBHzyWPUfhR2pbLhfd4KVDe
+	 aJ6eTXirOZBTCeFJSmm8h9NOGEBxZEnTJIN5+pQvnB8Y5a48z+Pf+aJF/cxHDep/kF
+	 fdmkkQ8ZwkMMIJkihFMWZamzblmj0TO2qOOJvlkMkRLbHA1kdaygz/jcSq6R4WB7e8
+	 LBofvjai4Rw0sOrxGflW1RqPaoInmy0rgMyNuISnZpXvZax+1qgh+b4XZC3i4T8Txt
+	 dMtxB75suheIUbY9H1ytsvNqrH9AsLEdwylHbp5EjunuC9RrTtlL13EMxGMDAgx/nA
+	 +nHLI1AuKy29A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/3] rust: core abstractions for HID drivers
-To: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>,
- Rahul Rameshbabu <sergeantsagara@protonmail.com>,
- linux-input@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Daniel Brooks <db48x@db48x.net>
-References: <20250629045031.92358-2-sergeantsagara@protonmail.com>
- <20250629045031.92358-4-sergeantsagara@protonmail.com>
- <aGD9OIZ_xE6h3199@pollux> <8os57581-8q0n-p226-836s-52610166qq02@xreary.bet>
- <p2tuq2a77dpl3ku7a6dbwqgsk5yybemqcfyoozjl5k3auijxqk@7myvbre2aam4>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <p2tuq2a77dpl3ku7a6dbwqgsk5yybemqcfyoozjl5k3auijxqk@7myvbre2aam4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 03 Jul 2025 10:24:47 +0200
+Message-Id: <DB29Y9LUF90V.90X56SDRG8LN@kernel.org>
+To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <dakr@kernel.org>, <ojeda@kernel.org>,
+ <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ <~lkcamp/patches@lists.sr.ht>
+Subject: Re: [PATCH v5 1/2] rust: revocable: Refactor revocation mechanism
+ to remove generic revoke_internal
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250626165927.66498-1-marcelomoreira1905@gmail.com>
+ <20250626165927.66498-2-marcelomoreira1905@gmail.com>
+In-Reply-To: <20250626165927.66498-2-marcelomoreira1905@gmail.com>
 
-On 7/3/25 10:01 AM, Benjamin Tissoires wrote:
-> On Jul 03 2025, Jiri Kosina wrote:
->> On Sun, 29 Jun 2025, Danilo Krummrich wrote:
->>
->>> (Cc: +Jiri)
->>
->> Thanks.
->>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index c3f7fbd0d67a..487750d9fd1e 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -10686,6 +10686,13 @@ F:	include/uapi/linux/hid*
->>>>   F:	samples/hid/
->>>>   F:	tools/testing/selftests/hid/
->>>>   
->>>> +HID CORE LAYER [RUST]
->>>> +M:	Rahul Rameshbabu <sergeantsagara@protonmail.com>
->>>> +L:	linux-input@vger.kernel.org
->>>> +S:	Maintained
->>>> +T:	git git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git
->>>> +F:	rust/kernel/hid.rs
->>>
->>> I assume this is agreed with the HID CORE LAYER maintainers?
->>>
->>> There are multiple possible options, for instance:
->>>
->>>    1) Maintain the Rust abstractions as part of the existing MAINTAINERS entry.
->>>       Optionally, the author can be added as another maintainer or reviewer.
->>>
->>>    2) Add a separate MAINTAINERS entry; patches still go through the same
->>>       subsystem tree.
->>>
->>>    3) Add a separate MAINTAINERS entry; patches don't go through the subsystem
->>>       tree (e.g. because the subsystem maintainers don't want to deal with it).
->>
->> I can't speak for Benjamin, but as far as I am concerned, I'd personally
->> prefer option (3).
-> 
-> I understand Jiri's concerns, but I'm slighlty worried (3) will end up
-> also having the leaf drivers in a separate tree, which means that 2
-> trees will fight for the same resource.
-> 
-> First patch of this series is a first example where some changes are
-> needed in the HID bus for making rust life's easier.
-> 
-> Personally, I'd like to have a say and an eye on the rust abstractions
-> and most of it, on the leaf drivers. I can't say I'll proactively
-> review/merge things (these past few months have shown that I merely
-> manage to follow things happening ATM), but at least I can keep an eye
-> and shout if something is wrong.
-> 
-> OTOH, the HID tree (the core part) is a low change tree now, so maybe a
-> separate tree can be handled correctly without too much troubles.
-> 
-> Danilo, if a separate tree is chosen, is the common practice to directly
-> send the PR to Linus or does it need to got through the subsystem tree
-> first (like bpf with net for example).
+On Thu Jun 26, 2025 at 6:59 PM CEST, Marcelo Moreira wrote:
+> The revocation mechanism is refactored by removing the generic
+> `revoke_internal` function. Its logic is now directly integrated into
+> two distinct public functions: `revoke()` and `revoke_nosync()`.
+>
+> `revoke_nosync()` is an `unsafe` function that requires the caller to
+> guarantee no concurrent users, thus avoiding an RCU grace period.
+> `revoke()` is a safe function that internally waits for the RCU grace
+> period to ensure all concurrent accesses have completed before dropping
+> the wrapped object.
+>
+> This change improves API clarity and simplifies associated `SAFETY`
+> comments by making the synchronization behavior explicit in the function
+> signatures.
+>
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Suggested-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
 
-We usually fall back to the global Rust tree, which is ultimately maintained by
-Miguel, so it's his call in the end.
+With the patch order changed:
 
-However, IMHO this is more like a "last resort" in case any other approaches 
-within the same subsystem are not desired.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
- From what I can read above, it feels to me as if having a separate tree
-(maintained by Rahul) with him sending pull requests to you guys seems like a
-good option. What do you think about that?
+---
+Cheer,
+Benno
+
+> ---
+>  rust/kernel/revocable.rs | 48 ++++++++++++++++++----------------------
+>  1 file changed, 21 insertions(+), 27 deletions(-)
