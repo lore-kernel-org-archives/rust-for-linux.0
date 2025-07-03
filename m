@@ -1,387 +1,269 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68C81E8338;
-	Thu,  3 Jul 2025 09:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239B42D3753
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Jul 2025 09:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751535141; cv=none; b=QdlQs2Ws0Wmug/kDdgXRrlW23jFPjrbgrSFRLi6TjUAB5f9cluP3YatoBEpFiwm5ltFD+x5WpTMQv797cEUxnZvPxxmogeyXj81BR1lPMhZvc1xLEZvmBoR9J7TpSzB9xYuE9fAcnZVUYV4695diHRHQnqikufFs/S9O8GToc4M=
+	t=1751535405; cv=none; b=G+x6bI2tBoNkq8QpfcPsuvooXftKjRhJYTdDIWx3vaq2leJpzfG+3gT1rM2lTOyrsLZ0MgaZL3tnGJmxmeWJkJsVQDfsGjsdYPyB+h6SZprQoMlRg+XojtOzdp5BFStP29BkismFB+IeBHJcYJsgAaUzJMvWBoXUWG+gKPPkSFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751535141; c=relaxed/simple;
-	bh=WtO1DgUxyix8oDOSgjZfMtxXQjswM3LI+TSs1gDywZg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=l8GvH7Pdrtd4fJCoduqVchA49aHq03u5vBVzfqc5JkCBPapnlo+3Vk7ey0PBwRn1C9EUJ8cLDzZcp4QisnjwGKCJPpV3+EV1qQOZqq6b16ew+cYwtJ1c2FJadMiNicbETT8LWrda9mDjgF5tbdMC/XnqNf6I7WsBQNwFMw7n+pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdPt2XDh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751535405; c=relaxed/simple;
+	bh=UNBBkEo9dLh004V3nW9S9BnSVg1BNnCyVDQknQy6Cf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nbPWSEq3LnHLWWFsGeAkLxP4wlND6e0H6w6PO63OxIqQQaUnZ7NzdCYMbqlxO9u0OqE34iZHtvIGEx+AdPmIVWcTYvz++0cSeCq/ThRJYZcflF/YMvhVbqAkuug5lVYmV97iVPDQ3EXe8kwOjQvSSKrjQn+FoHNlTvoS0AbRsyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=penguintechs.org; spf=pass smtp.mailfrom=penguintechs.org; dkim=pass (1024-bit key) header.d=penguintechs.org header.i=@penguintechs.org header.b=jSKSpC5a; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=penguintechs.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=penguintechs.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdPt2XDh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD0DC4CEE3;
-	Thu,  3 Jul 2025 09:32:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751535139;
-	bh=WtO1DgUxyix8oDOSgjZfMtxXQjswM3LI+TSs1gDywZg=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=PdPt2XDhT93ntXTcvbBpnFi+Vp43qWrOTV8apH25X/OTbnhL7q3cDHTb+eEs1S6FN
-	 byoaUU84MkJoHRtB6frTgxrNxHJ07pzp7FkepC9If0jj/Woeiz8HWUFkxHC7CeQlR5
-	 T/5Iea4mPe/5Xf5+6YfdT7aRrUFon4wI1LeIJqR2/5nJvKSN9y/8Z+w5av1BnrjGCj
-	 inULlHQYluATDD3nWJfOJsLTnNmVB5K0jK8xLINhcQhHyS96/X5NCTLbc17DFX3OjI
-	 ay5ZRmAGoY67ktEqCeRBECvTPRbAc9Qcj4ukGwQrIHoHeiKjak6hbo3yOo4Cm8P9Gt
-	 LyMUdqnzaTcPw==
+	dkim=pass (1024-bit key) header.d=penguintechs.org header.i=@penguintechs.org header.b="jSKSpC5a"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b31e0ead80eso6482497a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 03 Jul 2025 02:36:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=penguintechs.org; s=google; t=1751535402; x=1752140202; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4PfJEOD6bcsCKwy/03k+/1lB8bmN4UuO1fxBnn9sTTY=;
+        b=jSKSpC5aBy+55w7Zzqth08AStZA3hzw6UzGx8nppIg0ZRDmBqMzcL6642KYJNsTvew
+         EIQrioad+Z4VvN6DPBQilQj1hijhlaLxyv6iFAqI3mXUSfskMSCGrjtQ5KXRKv45EX7r
+         fd7sKKE7qV2nACoXhgyf64hI+yNb3Gvs0M/YM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751535402; x=1752140202;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4PfJEOD6bcsCKwy/03k+/1lB8bmN4UuO1fxBnn9sTTY=;
+        b=qC8QV69gdoCTLzFtkQMRfr5IyrKit2/QCZRpaCA6Q32EWf/u2QPzEJRJnU2aV9/mlX
+         o1xil3rb1O5erJ1w0f9oLN5X9POB+aLwL6BEHwUNObdPI0FQ/le/JV7zZS+ASg3seOpd
+         r6CzfQP6ciQQ4kd/8knkNniIaBuUdp+zFZc8wXrhycx2KIMn6N/mh3Epu9kDEXWwi4fI
+         TghvCky41SKZaigrF/SgyvfG+X77oNskvdPuYLZp84luYq6cv28KFY8zoRPJgYGJJh19
+         XdTCVWFd2FdzXcgUKdjW/kzL9pVaondkO4tD/Ff3mKFoDX1iwxhZxxTyW4x2KDLae5iH
+         WKcw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4cRfvgrmnaFHbiMfDH1sFuHPphoy0hpCfLA2guQR1egr4fc+NSjk4nhgYZLE2HPKvpILI2aMyM0gh7Q+k8w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6jdUI//59VTMcz7pVBtZjB7ORu+4kmIMgtMfrehbDn8ZmsVv3
+	RSg7J91TXs5SMImi9IxrFjqRM7ZNN2G3V6N5F5wVzwuBHhCDGOcabMzP8hoxXo1PcASiDUU7agi
+	oBjDWqqbC
+X-Gm-Gg: ASbGncsJ1GrydlMfhmBPhU0fgZH9WnkeQmcTyeIrUZ5Pc1RHLQJcyQ2BJObG/8o6vf7
+	uXL7idbo2tZGMF5VgjMrzRPKg8OLiq1cidACe0H07liLat5FAcFb/x5gzSo/3mIAKkGizOzj2YI
+	NZa3Rrt/0Ij4PeKQfcrqHYWdvE9bII/DjQ0ueFIOMbyPrW/ZPEKjy+7aBbdCpdY3gdIl4tCRF7a
+	a/T3tCEMUqL631cuj1ZusgvhB/xFLRkDCxeNQgru+gut25IigxCrzXmbJH4wXfja/YZNFeaHr5B
+	MPwbAdr1G9JL40mn3cXAeiAxQKga45WuYaj0wgWZxkVPtVnw9t1c8Rb7yxQiMcc0CKOY/61mBta
+	BkCPxalTIIw6pEvQx8YwN5Fi0fVxBZzC2PJk=
+X-Google-Smtp-Source: AGHT+IHXJh0SDDKaDCkTtTOXpeI99DlSTdKDZyjyyQnshIr85+25RuGYbbGI0dZbtoEoZ3MOFWsOLg==
+X-Received: by 2002:a17:90b:52c6:b0:316:3972:b9d0 with SMTP id 98e67ed59e1d1-31a90a2d5d4mr10538719a91.0.1751535402153;
+        Thu, 03 Jul 2025 02:36:42 -0700 (PDT)
+Received: from ?IPV6:2601:646:8700:dd30:5f3e:5ba7:e0ea:9a08? ([2601:646:8700:dd30:5f3e:5ba7:e0ea:9a08])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31a9cc5c8a9sm1874182a91.15.2025.07.03.02.36.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Jul 2025 02:36:41 -0700 (PDT)
+Message-ID: <35e1fef4-b715-4827-a498-bdde9b58b51c@penguintechs.org>
+Date: Thu, 3 Jul 2025 02:36:39 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 03 Jul 2025 11:32:05 +0200
-Message-Id: <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
- <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <llvm@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <linux-block@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <linux-clk@vger.kernel.org>
-Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>, "Michal Rostecki"
- <vadorovsky@protonmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
- <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
- "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "FUJITA
- Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
- "Saravana Kannan" <saravanak@google.com>, "Peter Zijlstra"
- <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
- <will@kernel.org>, "Waiman Long" <longman@redhat.com>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt"
- <justinstitt@google.com>, "Andrew Lunn" <andrew@lunn.ch>, "Heiner Kallweit"
- <hkallweit1@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jens
- Axboe" <axboe@kernel.dk>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, "Leon Romanovsky" <leon@kernel.org>, "Breno
- Leitao" <leitao@debian.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
- "Michael Turquette" <mturquette@baylibre.com>, "Stephen Boyd"
- <sboyd@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com>
-In-Reply-To: <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 1/7] rust: sync: add `OnceLock`
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>,
+ Nicolas Schier <nicolas.schier@linux.dev>
+Cc: Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye
+ <ark.email@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>,
+ Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>,
+ Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
+References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
+ <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
+Content-Language: en-US
+From: Wren Turkal <wt@penguintechs.org>
+In-Reply-To: <20250702-module-params-v3-v14-1-5b1cc32311af@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue Jul 1, 2025 at 6:49 PM CEST, Tamir Duberstein wrote:
-> Introduce a `fmt!` macro which wraps all arguments in
-> `kernel::fmt::Adapter` and a `kernel::fmt::Display` trait. This enables
-> formatting of foreign types (like `core::ffi::CStr`) that do not
-> implement `core::fmt::Display` due to concerns around lossy conversions w=
-hich
-> do not apply in the kernel.
->
-> Replace all direct calls to `format_args!` with `fmt!`.
->
-> Replace all implementations of `core::fmt::Display` with implementations
-> of `kernel::fmt::Display`.
->
-> Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> Link: https://rust-for-linux.zulipchat.com/#narrow/channel/288089-General=
-/topic/Custom.20formatting/with/516476467
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+On 7/2/25 6:18 AM, Andreas Hindborg wrote:
+> Introduce the `OnceLock` type, a container that can only be written once.
+> The container uses an internal atomic to synchronize writes to the internal
+> value.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 > ---
->  drivers/block/rnull.rs       |  2 +-
->  drivers/gpu/nova-core/gpu.rs |  4 +-
->  rust/kernel/block/mq.rs      |  2 +-
->  rust/kernel/device.rs        |  2 +-
->  rust/kernel/fmt.rs           | 89 ++++++++++++++++++++++++++++++++++++++=
-+
->  rust/kernel/kunit.rs         |  6 +--
->  rust/kernel/lib.rs           |  1 +
->  rust/kernel/prelude.rs       |  3 +-
->  rust/kernel/print.rs         |  4 +-
->  rust/kernel/seq_file.rs      |  2 +-
->  rust/kernel/str.rs           | 22 ++++------
->  rust/macros/fmt.rs           | 99 ++++++++++++++++++++++++++++++++++++++=
-++++++
->  rust/macros/lib.rs           | 19 +++++++++
->  rust/macros/quote.rs         |  7 ++++
->  scripts/rustdoc_test_gen.rs  |  2 +-
->  15 files changed, 236 insertions(+), 28 deletions(-)
-
-This would be a lot easier to review if he proc-macro and the call
-replacement were different patches.
-
-Also the `kernel/fmt.rs` file should be a different commit.
-
-> diff --git a/rust/kernel/fmt.rs b/rust/kernel/fmt.rs
+>   rust/kernel/sync.rs           |   1 +
+>   rust/kernel/sync/once_lock.rs | 104 ++++++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 105 insertions(+)
+> 
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index c7c0e552bafe..f2ee07315091 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -15,6 +15,7 @@
+>   mod condvar;
+>   pub mod lock;
+>   mod locked_by;
+> +pub mod once_lock;
+>   pub mod poll;
+>   pub mod rcu;
+>   
+> diff --git a/rust/kernel/sync/once_lock.rs b/rust/kernel/sync/once_lock.rs
 > new file mode 100644
-> index 000000000000..348d16987de6
+> index 000000000000..cd311bea3919
 > --- /dev/null
-> +++ b/rust/kernel/fmt.rs
-> @@ -0,0 +1,89 @@
-> +// SPDX-License-Identifier: GPL-2.0
+> +++ b/rust/kernel/sync/once_lock.rs
+> @@ -0,0 +1,104 @@
+> +//! A container that can be initialized at most once.
 > +
-> +//! Formatting utilities.
+> +use super::atomic::ordering::Acquire;
+> +use super::atomic::ordering::Release;
+> +use super::atomic::Atomic;
+> +use kernel::types::Opaque;
 > +
-> +use core::fmt;
-
-I think we should pub export all types that we are still using from
-`core::fmt`. For example `Result`, `Formatter`, `Debug` etc.
-
-That way I can still use the same pattern of importing `fmt` and then
-writing
-
-    impl fmt::Display for MyType {
-        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {}
-    }
-
-> +
-> +/// Internal adapter used to route allow implementations of formatting t=
-raits for foreign types.
+> +/// A container that can be populated at most once. Thread safe.
 > +///
-> +/// It is inserted automatically by the [`fmt!`] macro and is not meant =
-to be used directly.
+> +/// Once the a [`OnceLock`] is populated, it remains populated by the same object for the
+> +/// lifetime `Self`.
 > +///
-> +/// [`fmt!`]: crate::prelude::fmt!
-> +#[doc(hidden)]
-> +pub struct Adapter<T>(pub T);
-> +
-> +macro_rules! impl_fmt_adapter_forward {
-> +    ($($trait:ident),* $(,)?) =3D> {
-> +        $(
-> +            impl<T: fmt::$trait> fmt::$trait for Adapter<T> {
-> +                fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result=
- {
-> +                    let Self(t) =3D self;
-> +                    fmt::$trait::fmt(t, f)
-> +                }
-> +            }
-> +        )*
-> +    };
+> +/// # Invariants
+> +///
+> +/// `init` tracks the state of the container:
+> +///
+> +/// - If the container is empty, `init` is `0`.
+> +/// - If the container is mutably accessed, `init` is `1`.
+> +/// - If the container is populated and ready for shared access, `init` is `2`.
+> +///
+> +/// # Example
+> +///
+> +/// ```
+> +/// # use kernel::sync::once_lock::OnceLock;
+> +/// let value = OnceLock::new();
+> +/// assert_eq!(None, value.as_ref());
+> +///
+> +/// let status = value.populate(42u8);
+> +/// assert_eq!(true, status);
+> +/// assert_eq!(Some(&42u8), value.as_ref());
+> +/// assert_eq!(Some(42u8), value.copy());
+> +///
+> +/// let status = value.populate(101u8);
+> +/// assert_eq!(false, status);
+> +/// assert_eq!(Some(&42u8), value.as_ref());
+> +/// assert_eq!(Some(42u8), value.copy());
+> +/// ```
+> +pub struct OnceLock<T> {
+> +    init: Atomic<u32>,
+> +    value: Opaque<T>,
 > +}
+
+This type looks very much like the Once type in rust's stdlib. I am 
+wondering if the api could be changed to match that api. I know that 
+this type is trying to provide a version subset of std::sync::OnceLock 
+that doesn't allow resetting the type like these apis:
+
+* https://doc.rust-lang.org/std/sync/struct.OnceLock.html#method.get_mut
+* https://doc.rust-lang.org/std/sync/struct.OnceLock.html#method.take
+
+However, these methods can only be used on mut. See here for failing 
+example: 
+https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=a78e51203c5b9555e3c151e162f0acab
+
+I think it might make more sense to match the api of the stdlib API and 
+maybe only implement the methods you need.
+
 > +
-> +impl_fmt_adapter_forward!(Debug, LowerHex, UpperHex, Octal, Binary, Poin=
-ter, LowerExp, UpperExp);
-> +
-> +/// A copy of [`fmt::Display`] that allows us to implement it for foreig=
-n types.
-> +///
-> +/// Types should implement this trait rather than [`fmt::Display`]. Toge=
-ther with the [`Adapter`]
-> +/// type and [`fmt!`] macro, it allows for formatting foreign types (e.g=
-. types from core) which do
-> +/// not implement [`fmt::Display`] directly.
-> +///
-> +/// [`fmt!`]: crate::prelude::fmt!
-> +pub trait Display {
-> +    /// Same as [`fmt::Display::fmt`].
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result;
-> +}
-> +
-> +impl<T: ?Sized + Display> Display for &T {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        Display::fmt(*self, f)
+> +impl<T> Default for OnceLock<T> {
+> +    fn default() -> Self {
+> +        Self::new()
 > +    }
 > +}
+
+Any reason not to use #[derive(Default)]?
 > +
-> +impl<T: ?Sized + Display> fmt::Display for Adapter<&T> {
-> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-> +        let Self(t) =3D self;
-> +        Display::fmt(t, f)
+> +impl<T> OnceLock<T> {
+> +    /// Create a new [`OnceLock`].
+> +    ///
+> +    /// The returned instance will be empty.
+> +    pub const fn new() -> Self {
 
-Why not `Display::fmt(&self.0, f)`?
+Like new in std OnceLock. Matches. Good.
 
-> +    }
-> +}
-> +
-> +macro_rules! impl_display_forward {
-> +    ($(
-> +        $( { $($generics:tt)* } )? $ty:ty $( { where $($where:tt)* } )?
-> +    ),* $(,)?) =3D> {
-> +        $(
-> +            impl$($($generics)*)? Display for $ty $(where $($where)*)? {
-> +                fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result=
- {
-> +                    fmt::Display::fmt(self, f)
-> +                }
-> +            }
-> +        )*
-> +    };
-> +}
-> +
-> +impl_display_forward!(
-> +    bool,
-> +    char,
-> +    core::panic::PanicInfo<'_>,
-> +    fmt::Arguments<'_>,
-> +    i128,
-> +    i16,
-> +    i32,
-> +    i64,
-> +    i8,
-> +    isize,
-> +    str,
-> +    u128,
-> +    u16,
-> +    u32,
-> +    u64,
-> +    u8,
-> +    usize,
-> +    {<T: ?Sized>} crate::sync::Arc<T> {where crate::sync::Arc<T>: fmt::D=
-isplay},
-> +    {<T: ?Sized>} crate::sync::UniqueArc<T> {where crate::sync::UniqueAr=
-c<T>: fmt::Display},
-> +);
-
-> diff --git a/rust/macros/fmt.rs b/rust/macros/fmt.rs
-> new file mode 100644
-> index 000000000000..edc37c220a89
-> --- /dev/null
-> +++ b/rust/macros/fmt.rs
-> @@ -0,0 +1,99 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +use proc_macro::{Ident, TokenStream, TokenTree};
-> +use std::collections::BTreeSet;
-> +
-> +/// Please see [`crate::fmt`] for documentation.
-> +pub(crate) fn fmt(input: TokenStream) -> TokenStream {
-> +    let mut input =3D input.into_iter();
-> +
-> +    let first_opt =3D input.next();
-> +    let first_owned_str;
-> +    let mut names =3D BTreeSet::new();
-> +    let first_lit =3D {
-> +        let Some((mut first_str, first_lit)) =3D (match first_opt.as_ref=
-() {
-> +            Some(TokenTree::Literal(first_lit)) =3D> {
-> +                first_owned_str =3D first_lit.to_string();
-> +                Some(first_owned_str.as_str()).and_then(|first| {
-> +                    let first =3D first.strip_prefix('"')?;
-> +                    let first =3D first.strip_suffix('"')?;
-> +                    Some((first, first_lit))
-
-You're only using first_lit to get the span later, so why not just get
-the span directly here?
-
-> +                })
-> +            }
-> +            _ =3D> None,
-> +        }) else {
-> +            return first_opt.into_iter().chain(input).collect();
-> +        };
-> +        while let Some((_, rest)) =3D first_str.split_once('{') {
-
-Let's put a comment above this loop mentioning [1] and saying that it
-parses the identifiers from the format arguments.
-
-[1]: https://doc.rust-lang.org/std/fmt/index.html#syntax
-
-> +            first_str =3D rest;
-> +            if let Some(rest) =3D first_str.strip_prefix('{') {
-> +                first_str =3D rest;
-> +                continue;
-> +            }
-> +            if let Some((name, rest)) =3D first_str.split_once('}') {
-> +                first_str =3D rest;
-> +                let name =3D name.split_once(':').map_or(name, |(name, _=
-)| name);
-> +                if !name.is_empty() && !name.chars().all(|c| c.is_ascii_=
-digit()) {
-> +                    names.insert(name);
-> +                }
-> +            }
+> +        // INVARIANT: The container is empty and we set `init` to `0`.
+> +        Self {
+> +            value: Opaque::uninit(),
+> +            init: Atomic::new(0),
 > +        }
-> +        first_lit
-> +    };
+> +    }
 > +
-> +    let first_span =3D first_lit.span();
-> +    let adapter =3D quote_spanned! {
-> +        first_span =3D> ::kernel::fmt::Adapter
-> +    };
+> +    /// Get a reference to the contained object.
+> +    ///
+> +    /// Returns [`None`] if this [`OnceLock`] is empty.
+> +    pub fn as_ref(&self) -> Option<&T> {
 
-I think we should follow the formatting convention from the quote crate:
+Looks like the get method in the OnceLock.
 
-    let adapter =3D quote_spanned!(first_span=3D> ::kernel::fmt::Adapter);
-
-> +
-> +    let mut args =3D TokenStream::from_iter(first_opt);
-> +    {
-> +        let mut flush =3D |args: &mut TokenStream, current: &mut TokenSt=
-ream| {
-
-You don't need to pass `args` as a closure argument, since you always
-call it with `&mut args`.
-
-> +            let current =3D std::mem::take(current);
-> +            if !current.is_empty() {
-> +                let (lhs, rhs) =3D (|| {
-> +                    let mut current =3D current.into_iter();
-> +                    let mut acc =3D TokenStream::new();
-> +                    while let Some(tt) =3D current.next() {
-> +                        // Split on `=3D` only once to handle cases like=
- `a =3D b =3D c`.
-> +                        if matches!(&tt, TokenTree::Punct(p) if p.as_cha=
-r() =3D=3D '=3D') {
-> +                            names.remove(acc.to_string().as_str());
-> +                            // Include the `=3D` itself to keep the hand=
-ling below uniform.
-> +                            acc.extend([tt]);
-> +                            return (Some(acc), current.collect::<TokenSt=
-ream>());
-> +                        }
-> +                        acc.extend([tt]);
-> +                    }
-> +                    (None, acc)
-> +                })();
-> +                args.extend(quote_spanned! {
-> +                    first_span =3D> #lhs #adapter(&#rhs)
-> +                });
-> +            }
-> +        };
-> +
-> +        let mut current =3D TokenStream::new();
-
-Define this before the closure, then you don't need to pass it as an
-argument.
-
----
-Cheers,
-Benno
-
-> +        for tt in input {
-> +            match &tt {
-> +                TokenTree::Punct(p) if p.as_char() =3D=3D ',' =3D> {
-> +                    flush(&mut args, &mut current);
-> +                    &mut args
-> +                }
-> +                _ =3D> &mut current,
-> +            }
-> +            .extend([tt]);
+> +        if self.init.load(Acquire) == 2 {
+> +            // SAFETY: As determined by the load above, the object is ready for shared access.
+> +            Some(unsafe { &*self.value.get() })
+> +        } else {
+> +            None
 > +        }
-> +        flush(&mut args, &mut current);
 > +    }
 > +
-> +    for name in names {
-> +        let name =3D Ident::new(name, first_span);
-> +        args.extend(quote_spanned! {
-> +            first_span =3D> , #name =3D #adapter(&#name)
-> +        });
-> +    }
-> +
-> +    quote_spanned! {
-> +        first_span =3D> ::core::format_args!(#args)
+> +    /// Populate the [`OnceLock`].
+> +    ///
+> +    /// Returns `true` if the [`OnceLock`] was successfully populated.
+> +    pub fn populate(&self, value: T) -> bool {
+
+Looks like set in OnceLock.
+
+Might also be worth implementing get_or_{try,}init, which get the value 
+while initializing.
+
+> +        // INVARIANT: We obtain exclusive access to the contained allocation and write 1 to
+> +        // `init`.
+> +        if let Ok(0) = self.init.cmpxchg(0, 1, Acquire) {
+> +            // SAFETY: We obtained exclusive access to the contained object.
+> +            unsafe { core::ptr::write(self.value.get(), value) };
+> +            // INVARIANT: We release our exclusive access and transition the object to shared
+> +            // access.
+> +            self.init.store(2, Release);
+> +            true
+> +        } else {
+> +            false
+> +        }
 > +    }
 > +}
+> +
+> +impl<T: Copy> OnceLock<T> {
+> +    /// Get a copy of the contained object.
+> +    ///
+> +    /// Returns [`None`] if the [`OnceLock`] is empty.
+> +    pub fn copy(&self) -> Option<T> {
+
+No equivalent in OnceLock. Similar to something like this:
+
+x.get().copied().unwrap(); // x is a OnceLock
+
+Example:
+https://play.rust-lang.org/?version=nightly&mode=debug&edition=2021&gist=f21068e55f73722544fb5ad341bce1c5
+
+Maybe not specifically needed?
+
+> +        if self.init.load(Acquire) == 2 {
+> +            // SAFETY: As determined by the load above, the object is ready for shared access.
+> +            Some(unsafe { *self.value.get() })
+> +        } else {
+> +            None
+> +        }
+> +    }
+> +}
+> 
+
+-- 
+You're more amazing than you think!
+
