@@ -1,259 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587342E498A;
-	Thu,  3 Jul 2025 11:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286A92E3B0F
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Jul 2025 11:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751540430; cv=none; b=aJ5bAgbGt8Oo/gl/9UtLK7AWr8oyQGLzVfRhXfHd66JILKEvJ7sWVXiRgzl2nuOsPR8ydCD9jj0HUr42pRmSzYkyaY2cHes9CmPuBnIFoDrVYfdSxX3+W91ByB82CrlC1BgWFf2IA3fyci3ILG7cQFYJNeYnv2F2lTsHCFqtV3Y=
+	t=1751542669; cv=none; b=WD5KZeMgkdylfmSFqBpL32po+lpQGNN0g/yANUlN7cbODZcvD/BJTZ6yQd/ad77ldRSK4k8Y2+uwjQSOVs3l+2VF5tfRE3PSEcCE+9y3GjQPlIFIjbASBnYwr9FC+l8m23voOCuC0bVnAQV1Jeh0UwwyBk3RYfv9FQhusURd6kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751540430; c=relaxed/simple;
-	bh=Ib82rjmxVB/4uHkaCH4KJLsoHomS5YRNyB+GNi2QfO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cqVPT11dsSXV5ThquC3MJ+QVFQistgmWwwAd+LQoKjIDHXCtbweFq8QCe8G0BJhFi97ghbl5uQDyAXIUOsKudVhRZH/KsNXIicCxzx+x3hSviMEQ9K/HP5PjfkwHyZULXYEUun7aFJhxfCYbpT6HMXoUBdp0IrojgTa26ZxFJcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdIHqay0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751542669; c=relaxed/simple;
+	bh=evYGdWXWw+/6PRQoXuVCrMVKNTai1x93mZvTubwFAMQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=rLt1ONL3+drls1GOxMu1WLjlflLO4n6uwDnmWSppRuk0UOBsZVQfd/AewIAaf89gc/hjpZWMqBFlnCujViwrHVG7zO7tRxs4yl6MVFuOSLU+0OhY5jPTH5TzRjwmbBa4mqEW24ZHyLTGJBqOKajdWqyBZkNvcD2bVTku33lJpog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=fTHWtAb9; arc=none smtp.client-ip=210.118.77.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdIHqay0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2BEC4CEEB;
-	Thu,  3 Jul 2025 11:00:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751540429;
-	bh=Ib82rjmxVB/4uHkaCH4KJLsoHomS5YRNyB+GNi2QfO8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gdIHqay0D6RqD9E/DQq+r0h+l/A7PC1D9lULY2M+h+zn71qtTLI+NsAS+V7t856U4
-	 QCfbq4NpUT9jKY0SdIzRrSoJQfVKIM8X7jB5CntWzWsGXCIVXGTmJSZcGiVk+z9QcY
-	 QbbMROjFaxo/m1xQD8ROIkFwGqXmaX1RnmW+NM6/4RRknryC0MK2sGTR1EiW4Sfykt
-	 DPukSpomYBUixqGY2v6b10q1ul26GRnF95/S7hWB2rX9KZKttgJjjab0CprwN/kmbz
-	 LVxIFINc1kPTmQMOCU3azp1mg9WCCH8ywsVuTtIhYiCULj3xC1QLKAo7SZiyes4e2J
-	 N/Nv5Xj8vLpig==
-Date: Thu, 3 Jul 2025 13:00:23 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: Re: [PATCH v8 4/6] rust: debugfs: Support arbitrary owned backing
- for File
-Message-ID: <aGZixxMG-IJ39lEn@pollux>
-References: <5c3a2289-01c5-413e-9d7c-88a41c3f54e2@kernel.org>
- <CAGSQo038u_so+_pMRYj0K546zNfO5-eqoXFivXsEF6ACK=Y5cw@mail.gmail.com>
- <ce8f428b-fcb0-48dc-b13e-6717c9a851b4@kernel.org>
- <CAGSQo02hyJncD1oTpUMgiSZeX5UYYY2p-WZTyroQJJ6fMnOrCQ@mail.gmail.com>
- <aGLUl7ZtuQBPoCuv@pollux>
- <2025070131-icon-quarters-0c16@gregkh>
- <aGPtCBB6nWTNJuwK@pollux>
- <2025070137-tartar-juncture-fcd2@gregkh>
- <aGP6d2-jJy5rtjMK@pollux>
- <aGZVUqangIR-c4aW@google.com>
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="fTHWtAb9"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250703113745euoutp0119542bbccd2de1e1571f7c83629e72fe~OusYvaSeX0697006970euoutp01X
+	for <rust-for-linux@vger.kernel.org>; Thu,  3 Jul 2025 11:37:45 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250703113745euoutp0119542bbccd2de1e1571f7c83629e72fe~OusYvaSeX0697006970euoutp01X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1751542665;
+	bh=IaUSrP5vF7c7LGO5H4Eij7O+D07WlO1LwH0IQDoV9Z8=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=fTHWtAb9YYu5inKO0J3HoW674ZkV25N5g2HW/kyUJ50zhaNeytdMrVsog2TjpZqdG
+	 Jj0WC7gFvDyT+IEt+0PceeUd8tVS+W8U4ugRgC6jAbNCcnsF/1vOlJdsKktQ6zK0Bx
+	 CrQg+OofpOOAJosMNakVfLKwYgn6YHGLQqR8QFR8=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250703113744eucas1p157ec555de6855afe8b1d1280030fc06d~OusX8uDZc2942729427eucas1p1O;
+	Thu,  3 Jul 2025 11:37:44 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250703113743eusmtip18065c1273aae5e6af7f4987e4c46d79b~OusW4AM3g1070910709eusmtip1C;
+	Thu,  3 Jul 2025 11:37:43 +0000 (GMT)
+Message-ID: <6d9ce601-b81e-4c2a-b9c3-4cba6fa87b8b@samsung.com>
+Date: Thu, 3 Jul 2025 13:37:43 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aGZVUqangIR-c4aW@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 3/8] rust: pwm: Add core 'Device' and 'Chip' object
+ wrappers
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Guo Ren <guoren@kernel.org>, Fu Wei
+	<wefu@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <aGVMnmoepIVSS0yK@pollux>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250703113744eucas1p157ec555de6855afe8b1d1280030fc06d
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250702134957eucas1p1d84f2ed3014cf98ea3a077c7fae6dea6
+X-EPHeader: CA
+X-CMS-RootMailID: 20250702134957eucas1p1d84f2ed3014cf98ea3a077c7fae6dea6
+References: <20250702-rust-next-pwm-working-fan-for-sending-v7-0-67ef39ff1d29@samsung.com>
+	<CGME20250702134957eucas1p1d84f2ed3014cf98ea3a077c7fae6dea6@eucas1p1.samsung.com>
+	<20250702-rust-next-pwm-working-fan-for-sending-v7-3-67ef39ff1d29@samsung.com>
+	<aGVMnmoepIVSS0yK@pollux>
 
-On Thu, Jul 03, 2025 at 10:02:58AM +0000, Alice Ryhl wrote:
-> On Tue, Jul 01, 2025 at 05:10:47PM +0200, Danilo Krummrich wrote:
-> > On Tue, Jul 01, 2025 at 04:21:56PM +0200, Greg Kroah-Hartman wrote:
-> > > On Tue, Jul 01, 2025 at 04:13:28PM +0200, Danilo Krummrich wrote:
-> > > > Instead this should just be:
-> > > > 
-> > > > 	struct GPU {
-> > > > 	   fw: debugfs::File<Firmware>,
-> > > > 	}
-> > > > 
-> > > > and then I would initialize it the following way:
-> > > > 
-> > > > 	let fw = KBox::new(Firmware::new(), GFP_KERNEL)?;
-> > > > 	let file = dir.create_file("firmware", fw);
-> > > > 
-> > > > 	// debugfs::File<Firmware> dereferences to Firmware
-> > > > 	file.do_something();
-> > > > 
-> > > > 	// Access to fw is prevented by the compiler, since it has been moved
-> > > > 	// into file.
-> > > > 
-> > > > This is much better, since now I have the guarantee that my Firmare instance
-> > > > can't out-live the GPU instance.
-> > > 
-> > > That's better, yes, but how would multiple files for the same
-> > > "structure" work here?  Like a debugfs-file-per-field of a structure
-> > > that we often have?
-> > 
-> > That is a very good question and I thought about this as well, because with only
-> > the current API this would require us to have more and more dynamic allocations
-> > if we want to have a more fine grained filesystem representations of structures.
-> > 
-> > The idea I have for this is to use pin-init, which we do in quite some other
-> > places as well.
-> > 
-> > I think we can add an additional API like this:
-> > 
-> > 	impl Dir {
-> > 	   pub fn create_file<T>(&self, data: impl PinInit<T>) -> impl PinInit<Self> {
-> > 	      pin_init!(Self {
-> > 	         data <- data,
-> > 	         ...
-> > 	      })
-> > 	   }
-> > 	}
-> > 
-> > This allows us to do things like:
-> > 
-> > 	#[pin_data]
-> > 	struct Firmware {
-> > 	   #[pin]
-> > 	   minor: debugfs::File<u32>,
-> > 	   #[pin]
-> > 	   major: debugfs::File<u32>,
-> > 	   #[pin]
-> > 	   buffer: debugfs::File<[u8]>,
-> > 	}
-> > 
-> > 	impl Firmware {
-> > 	   pub fn new(&dir: debugfs::Dir, buffer: [u8]) -> impl PinInit<Self> {
-> > 	      pin_init!(Self {
-> > 	         minor <- dir.create_file("minor", 1),
-> > 	         major <- dir.create_file("major", 2),
-> > 	         buffer <- dir.create_file("buffer", buffer),
-> > 	      })
-> > 	   }
-> > 	}
-> > 
-> > 	// This is the only allocation we need.
-> > 	let fw = KBox::pin_init(Firmware::new(...), GFP_KERNEL)?;
-> > 
-> > With this everything is now in a single allocation and since we're using
-> > pin-init, Dir::create_file() can safely store pointers of the corresponding data
-> > in debugfs_create_file(), since this structure is guaranteed to be pinned in
-> > memory.
-> > 
-> > Actually, we can also implement *only this*, since with this my previous example
-> > would just become this:
-> > 
-> > 	struct GPU {
-> > 	   fw: debugfs::File<Firmware>,
-> > 	}
-> > 
-> > 	let file = dir.create_file("firmware", Firmware::new());
-> > 	let file = KBox::pin_init(file, GFP_KERNEL)?;
-> > 
-> > 	// debugfs::File<Firmware> dereferences to Firmware
-> > 	file.do_something();
-> > 
-> > Given that, I think we should change things to use pin-init right away for the
-> > debugfs::File API.
+
+
+On 7/2/25 17:13, Danilo Krummrich wrote:
+> On Wed, Jul 02, 2025 at 03:45:31PM +0200, Michal Wilczynski wrote:
+>> Building on the basic data types, this commit introduces the central
+>> object abstractions for the PWM subsystem: Device and Chip. It also
+>> includes the core trait implementations that make the Chip wrapper a
+>> complete, safe, and managed object.
+>>
+>> The main components of this change are:
+>>  - Device and Chip Structs: These structs wrap the underlying struct
+>>    pwm_device and struct pwm_chip C objects, providing safe, idiomatic
+>>    methods to access their fields.
+>>
+>>  - High-Level `Device` API: Exposes safe wrappers for the modern
+>>    `waveform` API, allowing consumers to apply, read, and pre-validate
+>>    hardware configurations.
+>>
+>>  - Core Trait Implementations for Chip:
+>>     - AlwaysRefCounted: Links the Chip's lifetime to its embedded
+>>       struct device reference counter. This enables automatic lifetime
+>>       management via ARef.
+>>     - Send and Sync: Marks the Chip wrapper as safe for use across
+>>       threads. This is sound because the C core handles all necessary
+>>       locking for the underlying object's state.
+>>
+>> These wrappers and traits form a robust foundation for building PWM
+>> drivers in Rust.
+>>
+>> Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
 > 
-> Does this actually work in practice for anything except immutable data?
-> I mean, let's take Rust Binder as an example and lets say that I want to
-> expose a directory for each Process object with some of the fields
-> exposed. Let's just simplify Rust Binder a bit and only include some of
-> the fields:
+> Few more comments below, with those fixed:
 > 
-> #[pin_data]
-> struct Process {
->     task: ARef<Task>,
->     #[pin]
->     inner: SpinLock<ProcessInner>,
-> }
+> 	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 > 
-> pub(crate) struct ProcessInner {
->     threads: RBTree<i32, Arc<Thread>>,
->     nodes: RBTree<u64, DArc<Node>>,
->     requested_thread_count: u32,
->     max_threads: u32,
->     started_thread_count: u32,
-> }
+>> +/// Wrapper for a PWM device [`struct pwm_device`](srctree/include/linux/pwm.h).
+>> +#[repr(transparent)]
+>> +pub struct Device(Opaque<bindings::pwm_device>);
+>> +
+>> +impl Device {
 > 
-> Rust Binder already does expose some debugging data through a file
-> system, though it doesn't do so using debugfs. It exposes a lot of data,
-> but among them are the pid, the number of threads and nodes, as well as
-> the values of requested_thread_count, started_thread_count, and
-> max_threads.
+> <snip>
 > 
-> Now, we run into problem number one: pinning is not supported inside
-> mutexes. But let's say we solved that and we could do this:
+>> +    /// Gets a reference to the parent `Chip` that this device belongs to.
+>> +    pub fn chip(&self) -> &Chip {
+>> +        // SAFETY: `self.as_raw()` provides a valid pointer. (*self.as_raw()).chip
+>> +        // is assumed to be a valid pointer to `pwm_chip` managed by the kernel.
+>> +        // Chip::as_ref's safety conditions must be met.
+>> +        unsafe { Chip::as_ref((*self.as_raw()).chip) }
 > 
-> #[pin_data]
-> struct Process {
->     task: File<ARef<Task>>, // prints the pid
->     #[pin]
->     inner: SpinLock<ProcessInner>,
-> }
+> I assume the C API does guarantee that a struct pwm_device *always* holds a
+> valid pointer to a struct pwm_chip?
 > 
-> pub(crate) struct ProcessInner {
->     threads: File<RBTree<i32, Arc<Thread>>>, // prints the count
->     nodes: File<RBTree<u64, DArc<Node>>>, // prints the count
->     requested_thread_count: File<u32>,
->     max_threads: File<u32>,
->     started_thread_count: File<u32>,
-> }
+>> +
+>> +/// Wrapper for a PWM chip/controller ([`struct pwm_chip`](srctree/include/linux/pwm.h)).
+>> +#[repr(transparent)]
+>> +pub struct Chip(Opaque<bindings::pwm_chip>);
+>> +
+>> +impl Chip {
+>> +    /// Creates a reference to a [`Chip`] from a valid pointer.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+>> +    /// returned [`Chip`] reference.
+>> +    pub(crate) unsafe fn as_ref<'a>(ptr: *mut bindings::pwm_chip) -> &'a Self {
+>> +        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
+>> +        // `Chip` type being transparent makes the cast ok.
+>> +        unsafe { &*ptr.cast::<Self>() }
+>> +    }
+>> +
+>> +    /// Returns a raw pointer to the underlying `pwm_chip`.
+>> +    pub(crate) fn as_raw(&self) -> *mut bindings::pwm_chip {
+>> +        self.0.get()
+>> +    }
+>> +
+>> +    /// Gets the number of PWM channels (hardware PWMs) on this chip.
+>> +    pub fn npwm(&self) -> u32 {
+>> +        // SAFETY: `self.as_raw()` provides a valid pointer for `self`'s lifetime.
+>> +        unsafe { (*self.as_raw()).npwm }
+>> +    }
+>> +
+>> +    /// Returns `true` if the chip supports atomic operations for configuration.
+>> +    pub fn is_atomic(&self) -> bool {
+>> +        // SAFETY: `self.as_raw()` provides a valid pointer for `self`'s lifetime.
+>> +        unsafe { (*self.as_raw()).atomic }
+>> +    }
+>> +
+>> +    /// Returns a reference to the embedded `struct device` abstraction.
+>> +    pub fn device(&self) -> &device::Device {
+>> +        // SAFETY: `self.as_raw()` provides a valid pointer to `bindings::pwm_chip`.
+>> +        // The `dev` field is an instance of `bindings::device` embedded within `pwm_chip`.
+>> +        // Taking a pointer to this embedded field is valid.
+>> +        // `device::Device` is `#[repr(transparent)]`.
+>> +        // The lifetime of the returned reference is tied to `self`.
+>> +        let dev_field_ptr = unsafe { core::ptr::addr_of!((*self.as_raw()).dev) };
 > 
-> However, this still doesn't work! Debugfs may get triggered at any time
-> and need to read these fields, and there's no way for it to take the
-> spinlock with the above design - it doesn't know where the spinlock is.
-> For the integers I guess we could make them atomic to allow reading them
-> in parallel with mutation, but that option is not available for the
-> red/black trees.
+> I think you can use `&raw` instead.
 > 
-> What is the intended solution in this case? If the argument is that this
-> is a rare case, then keep in mind that this is a real-world example of
-> debugging information that we actually expose today in a real driver.
+>> +        // SAFETY: `dev_field_ptr` is a valid pointer to `bindings::device`.
+>> +        // Casting and dereferencing is safe due to `repr(transparent)` and lifetime.
+>> +        unsafe { &*(dev_field_ptr.cast::<device::Device>()) }
+> 
+> Please use Device::as_ref() instead.
+> 
+>> +    }
+>> +
+>> +    /// Gets the *typed* driver-specific data associated with this chip's embedded device.
+>> +    pub fn drvdata<T: 'static>(&self) -> &T {
+> 
+> You need to make the whole Chip structure generic over T, i.e.
+> Chip<T: ForeignOwnable>.
+> 
+> Otherwise the API is unsafe, since the caller can pass in any T when calling
+> `chip.drvdata()` regardless of whether you actually stored as private data
+> through Chip::new().
 
-I'd like to question the decision of having a separate File for each member of
-ProcessInner in this case a bit:
+You were right that the original drvdata<T>() method was unsafe. The
+most direct fix, making Chip generic to Chip<T>, unfortunately creates a
+significant cascade effect:
 
-Given the decision to protect all members of ProcessInner with the same lock, I
-assume that they are in a certain relationship to each other, such that it is
-either necessary or (at least) makes the most sense to keep them synchronized
-with each other.
+- If Chip becomes Chip<T>, then anything holding it, like ARef, must
+  become ARef<Chip<T>>.
 
-In other words, you probably don't want that, for instance, changes on
-requested_thread_count can race with threads, or max_threads, etc.
+- This in turn forces container structs like Registration to become
+  generic (Registration<T>).
 
-So the question I want to raise is, given that, does it make sense to expose
-those values to userspace unsychronized to each other, i.e. through separate
-files?
+- Finally, the PwmOps trait itself needs to be aware of T, which
+  complicates the trait and all driver implementations.
 
-For instance:
+This chain reaction adds a lot of complexity. To avoid it, I've
+figured an alternative:
 
-	$ cat max_threads && cat threads
-	$ 5
-	$ 10
+The new idea keeps Chip simple and non generic but ensures type safety
+through two main improvements to the abstraction layer:
 
-This way you may read 5 max_threads, but 10 actual threads, because things have
-changed in between the two cat commands.
+1. A Thread Safe DriverData Wrapper
 
-Or is it more that you want to expose them all at once, such that reading
-those values from debugfs you can be sure that they were *all* captured under
-the same lock at the same time and are in a valid relationship to each other?
+The pwm.rs module now provides a generic pwm::DriverData<T> struct. Its
+only job is to wrap the driver's private data and provide the necessary
+unsafe impl Send + Sync.
 
-For instance:
+// In `rust/kernel/pwm.rs`
+// SAFETY: The contained data is guaranteed by the kernel to have
+// synchronized access during callbacks.
+pub struct DriverData<T>(T);
+unsafe impl<T: Send> Send for DriverData<T> {}
+unsafe impl<T: Sync> Sync for DriverData<T> {}
 
-	$ cat process_info
-	$ threads: 2
-	$ nodes: 2
-	$ requested_thread_count: 5
-	$ max_threads: 10
-	$ started_thread_count: 1
+// In the driver's `probe` function
+let safe_data = pwm::DriverData::new(Th1520PwmDriverData{ });
 
-(I don't know if the numbers make sense semantically, but you get the idea.)
+2. A More Ergonomic PwmOps Trait
 
-So, what I'm trying to say is, I think that usually we want to expose data
-protected with the same lock as a whole and otherwise protect data that is
-independant from other data with separate locks.
+The PwmOps trait methods now receive the driver's data directly as
+&self, which is much more intuitive. We achieve this by providing a
+default associated type for the data owner, which removes boilerplate
+from the driver.
 
-- Danilo
+// In `rust/kernel/pwm.rs`
+pub trait PwmOps: 'static + Sized {
+    type Owner: Deref<Target = DriverData<Self>> + ForeignOwnable =
+        Pin<KBox<DriverData<Self>>>;
+    /// For now I'm getting compiler error here: `associated type defaults are unstable`
+    /// So the driver would need to specify this for now, until this feature
+    /// is stable
+
+
+    // Methods now receive `&self`, making them much cleaner to implement.
+    fn round_waveform_tohw(&self, chip: &Chip, pwm: &Device, wf: &Waveform) -> Result<...>;
+}
+
+// In the driver
+impl pwm::PwmOps for Th1520PwmDriverData {
+    type WfHw = Th1520WfHw;
+
+    fn round_waveform_tohw(&self, chip: &pwm::Chip, ...) -> Result<...> {
+        // no drvdata() call here :-)
+        let rate_hz = self.clk.rate().as_hz();
+        // ...
+    }
+}
+
+This solution seem to address to issue you've pointed (as the user of
+the API never deals with drvdata directly at this point), while making
+it easier to develop PWM drivers in Rust.
+
+Please let me know what you think.
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
