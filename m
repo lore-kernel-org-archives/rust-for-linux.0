@@ -1,96 +1,95 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7137427F75F;
-	Fri,  4 Jul 2025 07:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B25686329;
+	Fri,  4 Jul 2025 07:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751614657; cv=none; b=O7lI5FJaH1nsh3yXp2KAbL7ddYYXsMUtKPXEKVmoOBQwKa+HnQhn7XPZhd1b8azOxMhnpuYaRXTOs2vYp/QYU6a+mRMbCLSJHZqPkmpcCTr7lN70Grcd9tAMBegjsFWohc+u6Wsap7WjbJ32jAWJW79lC1YqqRb9DwAqHLvIVpw=
+	t=1751614748; cv=none; b=Vm16DnJK3F88bS9iOMrGq7uWuHkOA8qh/sTCMqNaaYe4adcdklZGqF+UjsIK/N3k/nH1kl0abEEcAAQRJHToGrjlLAt1pn4IuugLATrnoHj9jlM8j9Orrxc3tMJ+lNR1dFISB0H32DdBSLLvGzL/lKitPY+HK9+KWr7QJrREk+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751614657; c=relaxed/simple;
-	bh=Bwsw9LbOGOJT3bRp+bvb8W348cGEpDFgUqMB5Fyqu7Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iIOaRbkzwX56ob0ouv91ptXkAt4fpeTdnFaNCoTkSonpNQ2ydPZ8+VHNHoM21V6NY2YRCq1I/nNJmsT8fJ/Aq1g3E2aUwcYhu4iQmzg2dg98j6TD6rit+mDrYtjtNo/FkugCaRKFnqtKr1NxXAf9NquagZhNxpWCYCm1dJ2IZQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aKKbs7Xs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751614748; c=relaxed/simple;
+	bh=rjNdr3P82CPN8ne5290kjZpL5EbhmgLvDuFTgnRaVys=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KJv1WwbFQpkHQ0xGsyAnp2d2akLExmBG2lsO0S8K1zyIbgycruwXUea1HdbouSrWx+rY6vvDMhzTkSrJU1d1ogiLZUHzz2/HG272oNXZvA+dsuBs/oKitwuAuS3KZ3LvmFnJ+6AL6ZcwQsO0HgBOSmQOsjRS/+aM9fZHYoQ+wco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PtcZW6Sx; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aKKbs7Xs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2A8C4CEE3;
-	Fri,  4 Jul 2025 07:37:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751614655;
-	bh=Bwsw9LbOGOJT3bRp+bvb8W348cGEpDFgUqMB5Fyqu7Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aKKbs7XszlrkErZmfUWSDP3eH7hCkfiAp5s+RwgjbwJ5Mff9sVyuCXmcN1/vDISmD
-	 +vQVlAgrfl5lMAHc+H0sIRKcbClHztH/lduYF6W1q7aFPXAnqU6SX1wylf0Fz+Wssb
-	 p+MuhjxU3PIidiOVqXYDyUnfnSt2rJQ77tyDF3WX/ITZSNpod6nTTxvQcqLcZbNPVm
-	 wgx5dlHOZUZ3N7g9rIK+ngycpnHgULLWevYsIt+CZxBsnS2pUPCVp2+PTxoQX+ebK0
-	 sn7mMmFwUlzDA1/vBfwLQwOoYVE8k+/2brwl1vluiAFgeAqknoZu916tx4uFvUnTAv
-	 lAKXH/vaseNMw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Benno Lossin" <lossin@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v14 3/7] rust: introduce module_param module
-In-Reply-To: <875xg8tnv7.fsf@kernel.org> (Andreas Hindborg's message of "Fri,
-	04 Jul 2025 09:29:48 +0200")
-References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
-	<20250702-module-params-v3-v14-3-5b1cc32311af@kernel.org>
-	<aOJo8e9FTJikY-WFnv8a7qAvQS6RFIHTU_gb8fa9RD-8SdGo7o56AoSlWUJUG9NTNB1Wgd09N4p5LJEY8HHXvQ==@protonmail.internalid>
-	<0e89892f-103e-4b92-a067-e192cb7b89a6@kernel.org>
-	<875xg8tnv7.fsf@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Fri, 04 Jul 2025 09:37:25 +0200
-Message-ID: <87zfdks8y2.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PtcZW6Sx"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-234a45e69c8so982905ad.2;
+        Fri, 04 Jul 2025 00:39:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751614747; x=1752219547; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rjNdr3P82CPN8ne5290kjZpL5EbhmgLvDuFTgnRaVys=;
+        b=PtcZW6SxljYO0Hhvh2tMjdMMSsI7px0qUImc1naRgeFtDFJygt+5Y4c8DKR9TsJRBE
+         0qOwNSRRq0qqUAwY9ThMYZVwCR4HxXUGoETZWWWvMpsZnOr12sfcjlVnqzjl7tstiFhE
+         tt/y4mXkSV4422MpoQrpLdaO1s9iv190FswGYdJyT/3As/EI1srAcibgXrk99LBfW+sl
+         qaEPcvhyk1yfYBaumeYKrGQAd9WYWSICAoP7r7OVTRevKGxi4Ooa/T3FIYw3RDqXNdep
+         M27JOmOrFs/OXp08I8+rMmoYhR1MFszSWAGpvt/yMFVziYnIEHAlZ9n1/2/wSjA2uAHk
+         YnHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751614747; x=1752219547;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rjNdr3P82CPN8ne5290kjZpL5EbhmgLvDuFTgnRaVys=;
+        b=veXJdxvmsfZU2y1LIxr4H5WkLTuwIhoqaZ015trXq1ovLNnIEpW6PZi5YZ9QVawXM2
+         MmL2+n9SEgiWiRkhqDNRro+oTUt0lyH/ZVb48q7GhS9VFllBY1+DARCH+sQYYCRERuKa
+         AiwWzrUS93zQkiWFiOlPMYvX/IB6iO70xzj24rdtAbGNY+c1hIUygGRdNGRCCAF6iWyG
+         xZhysGJt0V9rKzNO9pc12usD+5DfmcBBK6HnBYsSvfIstusqk8H+pmKQ0i1t8D8WIGcS
+         UyygPfE8DkmAPG/jPUdAktQ2iq16w4p0HOgCxKQpFCybC5MYNw306rg6DR3gJk+jU4XS
+         P3Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhJtgPE0lflsQL48smoQuNaLPhnT0xEjaTMK8r6h1bWrw466KOX1V2cWasCWUW9YE933xLNtsSJ8jNYlCRxEs=@vger.kernel.org, AJvYcCWonJKSKzCsEf9eSqXvYpTD+EFeo0NMcukB/Pku6kZVhJY2XSG7rU+goNXHPG1fnji9/G20SR26Vhg1yvI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrxykaJUpTF6kNtUDce+sNDW4MS9htJnF01GiqvKCwZFTqeL4u
+	nKyHBNlJhnhJYGFzZvmpZBndGP21Yq/B4YwrJClCP8ZqetZfLaMzAjkA5cMm5+eRRXx6aQ6kWBe
+	O/9Hd1VxKtSdCUZ8ekpJDgRekvbdNv3M=
+X-Gm-Gg: ASbGnctpWvK32EQDI3ilNiDhUr7+AUBXtsKE2dcQRc71cA7qyXjVuWDK08WAfBnTsoY
+	w8Hk6Cp8xK7t1rAdDMk/PBi+IWD05HdPeU3SBlNpYvmaTudASx4IBz28xu5th6BOywzM5rGP5cw
+	xMkMNU2NkZgDU+RJvZSBWm0mPOQ8fIGZ/criNUzYgugFs=
+X-Google-Smtp-Source: AGHT+IEYtdvgCskwIxk7k9/Nc9r2ocf2FKCL5tXK0bkZCo0iC/FUdHPb1rFwJij/q4aqpHqQAc1JhdfBiWi112ayytw=
+X-Received: by 2002:a17:90b:2d50:b0:30a:80bc:ad4 with SMTP id
+ 98e67ed59e1d1-31aac31a67cmr993171a91.0.1751614746707; Fri, 04 Jul 2025
+ 00:39:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250701001809.496389-1-fujita.tomonori@gmail.com>
+ <874ivvvvjw.fsf@kernel.org> <CANiq72ntFkvN983N3x=AKMd6fW2yXb8d0LB1LT3c20oYmPCiGg@mail.gmail.com>
+ <RnAWsCMnf4ZwlMnwtZY9XC95vcJ6S0QUiRGwx_H7juiXpbSze8NUfbrPDSkLdd_CZxXuxs2jykc_ZDes95SV5A==@protonmail.internalid>
+ <20250704.093618.1554080777023438310.fujita.tomonori@gmail.com> <87bjq0tnxr.fsf@kernel.org>
+In-Reply-To: <87bjq0tnxr.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 4 Jul 2025 09:38:54 +0200
+X-Gm-Features: Ac12FXwkZ-NjfnulTXkjFGiBhXgxvNOPsIxWxUVDaG8eiZNusZKljER-bM3-CaI
+Message-ID: <CANiq72m2hTwLzMd7HtSMSfRgCG=LAH=wpzo0AG2vkg7UQi6cOA@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: time: Add examples with doctest for Delta
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alex.gaynor@gmail.com, ojeda@kernel.org, 
+	aliceryhl@google.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, dakr@kernel.org, frederic@kernel.org, gary@garyguo.net, 
+	jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org, 
+	lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org, 
+	tglx@linutronix.de, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
-
-> "Danilo Krummrich" <dakr@kernel.org> writes:
+On Fri, Jul 4, 2025 at 9:28=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
 >
->> On 7/2/25 3:18 PM, Andreas Hindborg wrote:
->>> +    /// Get a shared reference to the parameter value.
->>> +    // Note: When sysfs access to parameters are enabled, we have to pass in a
->>> +    // held lock guard here.
->>> +    pub fn get(&self) -> &T {
->>> +        self.value.as_ref().unwrap_or(&self.default)
->>> +    }
->>
->> I think you forgot to rename this.
->
-> Yes, thanks for being persistent on this :)
+> I don't know what the very large constants are
 
-Actually, there is a discussion on whether to keep the API similar to
-`std::sync::OnceLock` [1] but also whether to rename this to something
-other than `OnceLock` [2]. Depending on how that resolves, it might make
-sense to stay with `get` or rename to something else.
+They come from `i64::MAX / 1000`.
 
+> Maybe if the constants had a name, or were expressed relative to another =
+constant?
 
-Best regards,
-Andreas Hindborg
+Yes, we should do that.
 
-
-[1] https://lore.kernel.org/all/35e1fef4-b715-4827-a498-bdde9b58b51c@penguintechs.org
-[2] https://lore.kernel.org/all/CAH5fLggY2Ei14nVJzLBEoR1Rut1GKU4SZX=+14tuRH1aSuQVTA@mail.gmail.com
-
-
-
+Cheers,
+Miguel
