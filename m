@@ -1,138 +1,136 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847931FC3;
-	Fri,  4 Jul 2025 02:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B0E18A6CF;
+	Fri,  4 Jul 2025 03:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751597640; cv=none; b=GRFKp+jwcBbiKpFFkuUudueW6TnM7o3+ikyLA3/C5zm8iNfRKQ5z/XUpuMo9mjLjKxW8E1S575NQrVQ2780a7sYOjxiKSwO3u2YRJcIO7/YdJ9J4g95TPDHwscu/Un20CmbW1hM42z0/kcOjJXu2qxD9xqpEMRrqvjbIrJCH91M=
+	t=1751598747; cv=none; b=mmvjFNNkWuRChGacOl4hyLYEfrEtLkPAUl7A0hH5iQca5U+pk6p4eRt8W0isy6WW5rdwiV2Jmoog/iDA1k8d5dvXuZlNDgJsclk7EEQ6G+vCS5h5NM4t6LspaRUi24dGK4oJZTyPCv1xVUARy0jDdRHgRgQRN5pw/PhYxGF7dDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751597640; c=relaxed/simple;
-	bh=THX26/jXeFAoW2ksOlvzrvGU5g863BgeG42sCpCIRd0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NmD4G5RY56UvAW17uQH7zQmMIqCv2nLnbW9LJ1l80DOktKYz1k1KhfaQD0OdIyhCbZhVGQTQMwKDJVEd+Qr4z9JdwLaS9xf+1nCTCjxh/Sp2Q7ldlScUccicGL476xM3CGd28ncvgeLtB39NXlFd65h570l47CJT3kM3Zj4l9hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lYZKoGAj; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1751598747; c=relaxed/simple;
+	bh=Fs5SxE9OYDU9RRGx9YYCJ+8P6J1CW9T/pjsOKtv2W/c=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=WwgJFFeJFBBEChjQ56e1pyg1NEN10FTkL9jBCLik7RJdLuJp6pVbn4Sc/aE7cLpz+iBkMxkfdgq5H8nE+ZIDa2ZxO2jmN5jzB3CtIuIPMN06VCbsekjCB6eFkhbic4hRQdDj8ClVnFa7NV13GGnvbNMpC+ajBPw4KL0zujGE4fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AXZ2Rxug; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lYZKoGAj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=yZ+/4POeJ+yHT/+h9d2KsWJy9/hmIi0Y9xqqcxUt7NA=; b=lYZKoGAjIA8YcYimrooC4eIto6
-	yak5x8tiy/5dKOdmpBS560TOTQWUHdLKm83CAe0U5xkYVlEBdOpL9R3QjQpLMNdPeg0VwTnNeuAmT
-	BCLEUwnSwDAmoKySqQf3lta43duK9cv3NePg1QHC+4ykyte5HJ/0KnPEff9Hbcdc3vI6MYa74minu
-	xRE+8vUNZ0Uj+RvFXEHxP5xnkS5A5rhElxQ1YeeNLo90tfvQrPSfogHv7pH+xX/35L3hBr7ysIAnP
-	SuHrc4U6/njOEDycTiduitUhudaHmb6khWMKIvVdjtlv1RPpHbhVE6zp0mVAkK2ZSrPRVPKDLWSGd
-	lNG2sh7A==;
-Received: from [50.53.25.54] (helo=[192.168.254.17])
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uXWYj-0000000FKfH-3ZeZ;
-	Fri, 04 Jul 2025 02:53:54 +0000
-Message-ID: <2cc85345-3350-494d-beea-0fc568d162a7@infradead.org>
-Date: Thu, 3 Jul 2025 19:53:47 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AXZ2Rxug"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7425bd5a83aso647783b3a.0;
+        Thu, 03 Jul 2025 20:12:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751598745; x=1752203545; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UDnxtWl5s/38sHw0j/zQjmRuBOsfROq4Q9JtcMPC9gI=;
+        b=AXZ2RxugIR6Qb2n/vWLP43ZVDCRpuw6TKWbot5Xk9oM6rRtIZKYq+jnNCql7iGNXf4
+         LEWiVnitHNk7HTD1s6c1aORcMgKa3Sl25u22nSBbWpX10iG3gEMAf9GFt+OXmZjh9xUA
+         +TxfZRls3OO3TaoMHl9K2P9bPIIf4hLPbGgfTswNVuTXJ52VHOeEcyyyd0pWMEtkj+t6
+         MRUbZWUJ0y8yfDikyrMMRluxVv2P+DEybJJtc9hCWurv8yzjjr8UoM/g5Y9QqhncGMYa
+         BPG0Orege4XnVTJ3R6WXsKAAAYJOPUVwC24Ji39eccFzRM5E1LUL/GOVl7jfdjZrEFSr
+         RiYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751598745; x=1752203545;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UDnxtWl5s/38sHw0j/zQjmRuBOsfROq4Q9JtcMPC9gI=;
+        b=jX1VP56ROU2fwNIbdBc6X7pW9WL+ncWgoH6e2mdyO3md7a+MPHOuXvz5wvM3PQ0Go9
+         e+hhvSB0M0PMvpXlD+2Fpx/H+CXmO01C1AzAEkVAldFbj7gMEKbKOuvfZSEGFuyLiLRF
+         cHAxD7z1lAKjJ9kT5l5aF2XHkLYSCf3OzX0G3TDogH3sDHkA0HuyAG5l8FmM6w1LdCav
+         9zWeh/r4/fMIX79vxVcNrewEgzR+hzXgHwDYuujCIY+KfzQiT0edphXJZNVVgaTzGDir
+         5Lo1COmRZSJ4nq6ka6eoT2Rjo5yvS1+Md1jpuXxBmiUxA7c+SX559/THsW0O8dfU6WPP
+         Io0A==
+X-Forwarded-Encrypted: i=1; AJvYcCUi/EZ+vnnq9x4/3s2L4sS+x2wLtUTbQd60+61Y1lQAbd6BN6Hq2WWcBaT2mo6kGZ3yvRDZXpxMSpUT@vger.kernel.org, AJvYcCWGwuk12iA2mRF00hbjsqyoAB1CkEumz509eIfS2SjN6HSYrXTsWV+JtEirJxhBm1+69depvuVXHq8TIG6Eq4o=@vger.kernel.org, AJvYcCWHRms7T5rv4t9rYcKs1yhQotgOLnLl/OGS3YgLfjOuhGXqYSWlx0GPjUn5uSztqp4Z2ltaYniB5iUrzJGl@vger.kernel.org, AJvYcCWJyuvjC2KBG7KyrCThQSKaSylk27zUlJNrKKzFnWOC0a29Jmzl5aeGqP5JnV4eU4PD8tQFUQti@vger.kernel.org, AJvYcCWZ0OjewRwTtjDChJ2ubNtqRQNN7GJJPh6NV66QxXyoiWAwuFimGJQSRBaUVRhFBsk8WrrxFQ6BkkfF@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUNdOOf5kSuKeRTRUEg9xlQLkW2tXHWE68jQBDND3G62WuRQuM
+	VLhl+4mj2z7LHdrWJbXMrb2JVqRK3gOtG0vRVzhD7VuxyvB2itv1WZyB
+X-Gm-Gg: ASbGncsBZHu5a8ze6sNuvdw971xOgKff7XJlfVYpNUPGoF8A39aPGxxknzOWYklz2ew
+	1PYddKtYniG9ugej4+kFcCVG/tU3PDtZ8qzZErtfgnZxs2KvApGC9gIon70Adei3uMhCxtT9DK8
+	0jWqPQs7zCucbpro6sNm0imDPvbTV7Kv1Mt7Xp+I3v0qYck3hrRUYugIKS5SW/JDKx7sPMab783
+	i292eLsnuGsPtZZ+vVmGcEj4LwQS1dLvlmMsBiwr3eeRqqXKBsqDKDp2iOpdNojFoX+93T3N6Nq
+	aAWuzLsEbjdkg7RFyFbomq6MAD3UPgPdFyX/tZ1Vc0MO0h4H1jFx56uojoJdoL2NzW6Z86BgYuN
+	L+LViRKASHnVC6vRMNto9hdyQRGHiLUJ1R3sA/jtc
+X-Google-Smtp-Source: AGHT+IGsyFjekenVPYCtS93mzSmCbDC/+mZ2vHpqBkN8bjtYSY2xjBOBoLm6ohoEPg7/g649OEgPBw==
+X-Received: by 2002:a05:6a20:2583:b0:21f:54f0:3b84 with SMTP id adf61e73a8af0-2260b96873fmr609171637.35.1751598745078;
+        Thu, 03 Jul 2025 20:12:25 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74ce42a2c10sm863165b3a.136.2025.07.03.20.12.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Jul 2025 20:12:24 -0700 (PDT)
+Date: Fri, 04 Jul 2025 12:12:08 +0900 (JST)
+Message-Id: <20250704.121208.1554239479866226095.fujita.tomonori@gmail.com>
+To: dakr@kernel.org
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com,
+ gregkh@linuxfoundation.org, ojeda@kernel.org, rafael@kernel.org,
+ robh@kernel.org, saravanak@google.com, a.hindborg@kernel.org,
+ aliceryhl@google.com, bhelgaas@google.com, bjorn3_gh@protonmail.com,
+ boqun.feng@gmail.com, david.m.ertman@intel.com,
+ devicetree@vger.kernel.org, gary@garyguo.net, ira.weiny@intel.com,
+ kwilczynski@kernel.org, leon@kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, lossin@kernel.org, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v2 1/3] rust: device_id: split out index support into a
+ separate trait
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <aGckCY3BiPRCPmS7@pollux>
+References: <20250701141252.600113-1-fujita.tomonori@gmail.com>
+	<20250701141252.600113-2-fujita.tomonori@gmail.com>
+	<aGckCY3BiPRCPmS7@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] kunit: fix longest symbol length test
-From: Randy Dunlap <rdunlap@infradead.org>
-To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
- David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
- Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>
-Cc: rust-for-linux@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Peter Zijlstra <peterz@infradead.org>,
- Nathan Chancellor <nathan@kernel.org>,
- David Laight <david.laight.linux@gmail.com>,
- Shuah Khan <skhan@linuxfoundation.org>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>, x86@kernel.org,
- linux-kbuild@vger.kernel.org
-References: <20250514192416.12635-1-sergio.collado@gmail.com>
- <30b8e7c2-3a70-4728-b633-b24c99a8d025@infradead.org>
-Content-Language: en-US
-In-Reply-To: <30b8e7c2-3a70-4728-b633-b24c99a8d025@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+On Fri, 4 Jul 2025 02:44:57 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
+
+> On Tue, Jul 01, 2025 at 11:12:50PM +0900, FUJITA Tomonori wrote:
+>> +// SAFETY:
+>> +// * `DRIVER_DATA_OFFSET` is the offset to the `driver_data` field.
+> 
+> Here and for a few other occurances, this doesn't need to be a list, since it's
+> just a single item.
+
+Indeed, fixed all the places.
 
 
+>> +/// Extension trait for [`RawDeviceId`] for devices that embed an index or context value.
+>> +///
+>> +/// This is typically used when the device ID struct includes a field like `driver_data`
+>> +/// that is used to store a pointer-sized value (e.g., an index or context pointer).
+>> +///
+>> +/// # Safety
+>> +///
+>> +/// Implementers must ensure that:
+>> +///   - `DRIVER_DATA_OFFSET` is the correct offset (in bytes) to the context/data field (e.g., the
+>> +///     `driver_data` field) within the raw device ID structure. This field must be correctly sized
+>> +///     to hold a `usize`.
+>> +///
+>> +///     Ideally, the data should ideally be added during `Self` to `RawType` conversion,
+> 
+> Remove one of the duplicate "ideally".
 
-On 5/14/25 2:00 PM, Randy Dunlap wrote:
-> 
-> 
-> On 5/14/25 12:24 PM, Sergio González Collado wrote:
->> The kunit test that checks the longests symbol length [1], has triggered
->> warnings in some pilelines when symbol prefixes are used [2][3]. The test
->> will to depend on !PREFIX_SYMBOLS and !CFI_CLANG as sujested in [4] and
->> on !GCOV_KERNEL.
->>
->> [1] https://lore.kernel.org/rust-for-linux/CABVgOSm=5Q0fM6neBhxSbOUHBgNzmwf2V22vsYC10YRBT=kN1g@mail.gmail.com/T/#t
->> [2] https://lore.kernel.org/all/20250328112156.2614513-1-arnd@kernel.org/T/#u
->> [3] https://lore.kernel.org/rust-for-linux/bbd03b37-c4d9-4a92-9be2-75aaf8c19815@infradead.org/T/#t
->> [4] https://lore.kernel.org/linux-kselftest/20250427200916.GA1661412@ax162/T/#t
->>
->> Reviewed-by: Rae Moar <rmoar@google.com>
->> Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-> 
-> 
-> Works for me. Thanks.
-> 
-> Acked-by: Randy Dunlap <rdunlap@infradead.org>
-> Tested-by: Randy Dunlap <rdunlap@infradead.org>
-> 
-> 
->> ---
->> v2 -> v3: added dependency on !GCOV_KERNEL (to avoid __gcov_ prefix)
->> ---
->> v1 -> v2: added dependency on !CFI_CLANG as suggested in [3], removed
->> 	CONFIG_ prefix
->> ---
->>  lib/Kconfig.debug                | 1 +
->>  lib/tests/longest_symbol_kunit.c | 3 +--
->>  2 files changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
->> index f9051ab610d5..e55c761eae20 100644
->> --- a/lib/Kconfig.debug
->> +++ b/lib/Kconfig.debug
->> @@ -2886,6 +2886,7 @@ config FORTIFY_KUNIT_TEST
->>  config LONGEST_SYM_KUNIT_TEST
->>  	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
->>  	depends on KUNIT && KPROBES
->> +	depends on !PREFIX_SYMBOLS && !CFI_CLANG && !GCOV_KERNEL
->>  	default KUNIT_ALL_TESTS
->>  	help
->>  	  Tests the longest symbol possible
->> diff --git a/lib/tests/longest_symbol_kunit.c b/lib/tests/longest_symbol_kunit.c
->> index e3c28ff1807f..9b4de3050ba7 100644
->> --- a/lib/tests/longest_symbol_kunit.c
->> +++ b/lib/tests/longest_symbol_kunit.c
->> @@ -3,8 +3,7 @@
->>   * Test the longest symbol length. Execute with:
->>   *  ./tools/testing/kunit/kunit.py run longest-symbol
->>   *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
->> - *  --kconfig_add CONFIG_RETPOLINE=n --kconfig_add CONFIG_CFI_CLANG=n
->> - *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=n
->> + *  --kconfig_add CONFIG_CPU_MITIGATIONS=n --kconfig_add CONFIG_GCOV_KERNEL=n
->>   */
->>  
->>  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->>
->> base-commit: 1a80a098c606b285fb0a13aa992af4f86da1ff06
-> 
+Oops, removed.
 
-Hi,
 
-I'm still seeing this issue in linux-next 20250703.
+>> +///     but there's currently no way to do it when using traits in const.
+>> +///
+>> +///   - The `index` method must return the value stored at the location specified
+>> +///     by `DRIVER_DATA_OFFSET`, assuming `self` is layout-compatible with `RawType`.
+> 
+> I think technically this safety requirement isn't needed.
 
-Any merge plans for this patch?
+Ah, you're right. I'll remove it.
 
-Thanks.
--- 
-~Randy
+
+> With this:
+> 
+> 	Acked-by: Danilo Krummrich <dakr@kernel.org>
+
+Thanks a lot!
 
