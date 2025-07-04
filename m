@@ -1,160 +1,122 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F6F1DE4DC;
-	Fri,  4 Jul 2025 19:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6D823AD;
+	Fri,  4 Jul 2025 19:49:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751657973; cv=none; b=pF3dCC/1IBrfPjXQ7MWrsStrquO41pEvy0lULOvHuOavYrXC6hnkupNLImQWJbiYl3/Q/FW/r1sMg4xEK+NWB7L/UZgoZuo5sNCZAWQKkZZOzfQZ3TEJAofM7yDRuVHNrHD7X6k86yJ3epQiwKuFFR3Gtn4uVVtsZDK4ZMB5btk=
+	t=1751658600; cv=none; b=RVL+U2d0MLbPZJRxR5Ot/Bz3izU2aDWY90MeuP1WN5IGuxydSWVuQ2BMnzQcU6iExBUgsvu2EPdQ74ibYNUzQmfkY+I+oV00O26RImVXe3y6Ab5pknAS+9lvhhhsC9t2urHQiEG3spx+ktOACFT+nDd4GK99OBWaiqMGXGNlwOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751657973; c=relaxed/simple;
-	bh=ty9V8JMAdvvmDv0P0k4PGgC/jV1j8pI2d1WXBXRtpJI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bZ/IV4rgiavEdPXn/WiOxNcdii4rhQAQRTOnUeG51Pmce/PiJNm8a2f8Tc1ILrQF+Qg37bWBgiP9N7VmS1O17fl7HlnOKvdQeShHGTstME/zZhayJNROYQo65NC6FlR3+8x6xpxLo4fWFiUSZgrCQcTRxoAsgdWEwhr7m7Ph64A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I9UO33Ch; arc=none smtp.client-ip=209.85.208.170
+	s=arc-20240116; t=1751658600; c=relaxed/simple;
+	bh=oLQqFCW09GL4Ccc76Hf9TKFciOsxEskAz3T9JX5Hpr0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CNALu2cO7bCuF5YTg+N7mdbU3ouf6uc+pzWSMLt+tprcPZoigi2tawtfU7/J3C6jUoR2hbIeZf+9SnRxOGIyUkHBBaJ9t7VutI5jG1edoAFWIgQcmi+svGaCxs8RaWrNL2E/oAk7XHS2kbk8/fGQqJyk4fhueIx1M9tXykr6Sls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Btf0OMbR; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I9UO33Ch"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32f1763673cso2319421fa.3;
-        Fri, 04 Jul 2025 12:39:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Btf0OMbR"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6facf4d8ea8so9881276d6.0;
+        Fri, 04 Jul 2025 12:49:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751657969; x=1752262769; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PaN1iXlsiktU/ZIaAdJUYYtsPKiTgtwWPQpDE5mPO2Y=;
-        b=I9UO33Ch8Q9mrOD/M7pYrNP/6yXwnGYuiISlMxIx+fEgmO7W7xKxBWu7VE7BMhNeVz
-         B5VDHSNZ0a4SOXmult/S2ys6kOcY5rtYGnarXdjmrKCdIegLMN0dFgr96dmfJyIoclPv
-         VzKZ+qxH6H/Rn7XQvOJ0spguCYfsH6/87wnDHywwc1IKBh8VMFlPhPjxZjr1Taz9Icp1
-         O+qVNi/gO4mE6s0WggvOcnmjrzo1UJH9tYlwvqwEGf5+DqJOX18EEfs+bC8Q8MftxS9A
-         lNoKLhbAn72+T7w47bXi+ymPlA5QrFMNoo1a1i3sLaPpUZLIjzhBDrrdv23BVAcJMweQ
-         bp7w==
+        d=gmail.com; s=20230601; t=1751658597; x=1752263397; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zbyO3uwVjEiMhcVvxpvfA6jAl9ojxLYQ03N6BOpxmvM=;
+        b=Btf0OMbRK7MIM6S/CmO0eP981FP7Apivn41nGOW3YnXDRCduvjndNPDcA7iDIzeCG5
+         q+1rrXel0UfZbeINb6wg89y25ig3CWCDtKEL6IqoBxHS4LNtD6TwC+YXjaKHTELOov2p
+         VP+3cXJlJdM1k5NndjXi9o1pxTUS6VGv3wpu0UorSr6gKwiS3WPSLPRgt5Rgjd2GVMYU
+         nkhXWYlPIXDfBF0yiIIoO35B6p4s/0+MLcj1FQxBTXKIBoJp4XD3JAYsbMIg4GwbmFaU
+         cW7Bfz2dBxbFklE1yVYjQBWAQ+qIhEXK9ukBM+9eqfXlyffyT64FFz4GVPNK8OGY4NgA
+         XT6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751657969; x=1752262769;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PaN1iXlsiktU/ZIaAdJUYYtsPKiTgtwWPQpDE5mPO2Y=;
-        b=qTAByDLsFTL5NJ+cgfyLtSRfQo1qqF+UkUPANt/aycwHPGnwbVsnonZqr32K4BJiXn
-         Q0aAvyEGFIY6hLkRRa33PMIeXZSiBvdUXjoPSu2k990VZkUEzFXfqPQUHu9NYJAblUG2
-         mGbv7Qq0gn1gwoW6y+/OMUW2tv2y5gM94WFWhjJKc351wTgq5ps2MiiXfQHY2lK8nTqK
-         /JGOY+MYIDjWxP+3Lzn3N3v+Irx+BI2YO06U8qkYX9mzimAWGH9pffSWS5OJ04Upbhhs
-         WxbkAJJZzixP+qv8b6Ly5rlr0Uv50TlqRC21VP4DPbJJlrXCjcOTWDAIq++FU1x1JcDr
-         yJtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5bE6gYhBjtGijKZvpSP1iwBGuBpiQUIgB6x4PJES8xlC7qE5eu9rw/oI7/62+seyG4h1A9302nGXk2cykGxpn@vger.kernel.org, AJvYcCUH+S1fFbCXyJIcUE2m0Sw+ZqNlxjqGVqZzLCLzpKCH4AlxHT5nLGkg8QpCyXrNmfD0Qt2wNq300m2SpVxOFzs=@vger.kernel.org, AJvYcCUtq7h4qLLJy3OVh9VMg54/leVmm//v1hh9TZ0ubEcR7yp5bY7kHdGk6rq/uU/7goVAart/Wc/SqN4=@vger.kernel.org, AJvYcCUuFc2YE+0eazNbwlNd+IF0kqr1pvK7SmvyBikZDHrROy2/r6YsVcUFuNf3g8r3anS52XVC3GSY1uEmmvMe@vger.kernel.org, AJvYcCWXYlyFJPoY3pBbVB+1gio1tzfiSPEAT5XLiaHkYobZM0vgc+LSnorvyPRVxm0ZC5kyvMmMteTMPCyl@vger.kernel.org, AJvYcCWsFQoldrMHxuaS7QYxNIkzPi0sDNsG/fOrinWYaYh8mU+Y2vMmjtALRYYWD1YQGrdDUR/Sp4HXVCPM@vger.kernel.org, AJvYcCWxI4E0lc9vhXcYhgMvOpDHc1+rP6YRR4dPMFoKcOQ+WvagZXaXuLRCa4E1wQvxjTYDImIzbrhO2Lpz@vger.kernel.org, AJvYcCX7W5ocIKModOBVt5zie92WusYsn+u+PaitpMlcsAhtBlH+eEfzbYf0DWkgjKb3gQPXpJQQ7CW/@vger.kernel.org, AJvYcCXbnBEJEoyS5AUyxlWnxTPGTNghA2zsrfxjVAcwxxEZQgn08S4YwmwvTsez+T8qjkzVDagg4hbsQCq+osM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYk0xN29p7aRys9tiPnFLhnZMPtKzM8lg22NNojhzUdstDfiGY
-	EKKXDm7j31NRcxjUS+8Xug0NSdCE7xynQTVRv5yzzXh3Ajbk6d0WIIz978/40qHXVzxr2QlxEbk
-	2ei273M1We1fHE3+1BOWSu+0HbHHGw8M=
-X-Gm-Gg: ASbGncvlYShZkkURrkUg43I1M1XWZTlTiQ5ygjIqM5Feus3x/wo+J6M3OycGwtvxBCB
-	LYrPwATqM1K80/vAecVzgdBtAoBtqccUJbipLBelwksYf6n4mX7H+lJ8I/1DpoNxDJowLKqfBno
-	ffazwGFf3Z6yDgDc6QEZO6zH02D6Kjf2lDbCbmsbCFup+iPEC/heekMxX1RESQRzWWEJOrqCRM6
-	tdv9g==
-X-Google-Smtp-Source: AGHT+IEUCasNpOjrLiPTdba+G1DzRMt5tyZu55jlQh+AX9oNhtSkPC1M27OuhbpRgJbummxXICHmkFV1J91gViP7ObU=
-X-Received: by 2002:a2e:b88f:0:b0:32a:6c63:92a with SMTP id
- 38308e7fff4ca-32f03639f57mr13413521fa.22.1751657968994; Fri, 04 Jul 2025
- 12:39:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751658597; x=1752263397;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zbyO3uwVjEiMhcVvxpvfA6jAl9ojxLYQ03N6BOpxmvM=;
+        b=M/V3AmvFQtfkQCCg/LhIFenInsWPHoWXOXaCj1uHy+MK2Evcrk6zshJR2vohy34DuP
+         F+eCAzn/ESM9kpZS96g+VPlwVn6XVnzazbCKGgLRCQoNx44yMF1X1LjfsBXgtSa9y/al
+         jSfPn0BMG5VBS5p24kVgxgX0TGNL2mVhXmJxDxc27aaT7Lbgt0rAD2r39w5Jy5CzPuQ/
+         7HOecgjCJ5/wBxCWcmhjDQv5Cl6ucn/2id40cy2P8m4CIquXLRtkIc2BJryqMz17DzP/
+         E5A7AACP6EPFDbFXq32pn8i6dCzkahnQGL+2xivCAI+RW7tEpfuUlh9tqY4Hh1M5xlc3
+         MvMg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3IjkH+rG9uuRQiWCeAvKgwzbE8ZHXugZdzyEnOEbBV7O94trZjhMKiX+ehsc1+HMQE3FG9tP9BP61tKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmAibuHY229hvYRQE4WIbEQ8lJw6LmieVq+xbiJ8JIKD23k4pF
+	BVez21QkuXZUaC1H7CKLQNAUZC+0mk9wHJuTweNF4/pn3tHxcZaWM3ic
+X-Gm-Gg: ASbGnct3Huw+Fkw/rPajwzkpX64D7tK3sSj+cO5YB1KXi4fIRI/fRsR1HZOSJY5QZHg
+	amCGhPjnbXrhZqVP+AjnOxkeXZcq3SArdpSId1v6mMHigyHAzN2O6Te1/uNxCdsT5jOKmABBJhN
+	fl+9sttn2PAFqLoN2O1Z7HKaQmnHTLmE8Gq3NPdgJAuQG7DFZnTLxF7mdKKvoVcpsHPOMPJS08f
+	8CFHz5Dqf04xqfUIDgeXWyyv0ab/geacE4KTF+j8DmiBmPtH6ULtCf4gD16xZmMG4KSYPHCk48P
+	DxX3DdhwbsGnmA35SW3nOkiB9pKIQgBV/jgkXyfZo/FoyQ0ODwN5tGb/bKd6ITPIsBN0Rqk1j5m
+	ryeR/j14=
+X-Google-Smtp-Source: AGHT+IFo8nm6i7npeWQq2fuKAnLp9TyVGdOwbAF3njccPAVs20Hj8Of8ibICgj4NpVwD2rPcN0lUfw==
+X-Received: by 2002:a05:6214:27c7:b0:702:bcdf:8b59 with SMTP id 6a1803df08f44-702c6a3acfamr56569876d6.0.1751658597537;
+        Fri, 04 Jul 2025 12:49:57 -0700 (PDT)
+Received: from 156.1.168.192.in-addr.arpa ([2600:4041:5c29:e400:94f3:d2bb:5ace:77a1])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d5dbdbd172sm198544785a.42.2025.07.04.12.49.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jul 2025 12:49:57 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 04 Jul 2025 15:49:54 -0400
+Subject: [PATCH] rust: platform: remove unnecessary import
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-3-29f7d3eb97a6@gmail.com> <DB3AFTUC22W1.39C4DMWSENZGB@kernel.org>
-In-Reply-To: <DB3AFTUC22W1.39C4DMWSENZGB@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 4 Jul 2025 15:38:53 -0400
-X-Gm-Features: Ac12FXzIFREDgXqCwrv6XJgEObqPEvHKICa5en-HTCiFL74MHyUAIu3tq-_u52g
-Message-ID: <CAJ-ks9=Q2+zmBzq36aYnePmRm2b5NL3buMXP36FpmnJ+UU3FWQ@mail.gmail.com>
-Subject: Re: [PATCH v13 3/5] rust: replace `CStr` with `core::ffi::CStr`
-To: Benno Lossin <lossin@kernel.org>
-Cc: Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250704-cstr-include-platform-v1-1-ff7803ee7a81@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAGEwaGgC/x3MSwqAMAwA0atI1gba+sWriAtpowa0SlpFEO9uc
+ fkWMw8EEqYAXfaA0MWBd5+g8wzsMvqZkF0yGGUq1agSbYiC7O16OsJjHeO0y4bKaU3UFqUxNaT
+ 2EJr4/r/98L4fUQ4fPWcAAAA=
+X-Change-ID: 20250704-cstr-include-platform-0d11ee834226
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1751658596; l=677;
+ i=tamird@gmail.com; h=from:subject:message-id;
+ bh=oLQqFCW09GL4Ccc76Hf9TKFciOsxEskAz3T9JX5Hpr0=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QOHYA4ChWSCW9L65SqlEQNAM1BtYX5KNfVTDZYRwNM4/4LRj/eUB1lRgWPvl4Pxmo/iySjzVQSO
+ pTpq5RMtvMwg=
+X-Developer-Key: i=tamird@gmail.com; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On Fri, Jul 4, 2025 at 9:00=E2=80=AFAM Benno Lossin <lossin@kernel.org> wro=
-te:
->
-> On Tue Jul 1, 2025 at 6:49 PM CEST, Tamir Duberstein wrote:
-> > `kernel::ffi::CStr` was introduced in commit d126d2380131 ("rust: str:
-> > add `CStr` type") in November 2022 as an upstreaming of earlier work
-> > that was done in May 2021[0]. That earlier work, having predated the
-> > inclusion of `CStr` in `core`, largely duplicated the implementation of
-> > `std::ffi::CStr`.
-> >
-> > `std::ffi::CStr` was moved to `core::ffi::CStr` in Rust 1.64 in
-> > September 2022. Hence replace `kernel::str::CStr` with `core::ffi::CStr=
-`
-> > to reduce our custom code footprint, and retain needed custom
-> > functionality through an extension trait.
-> >
-> > C-String literals were added in Rust 1.77, while our MSRV is 1.78. Thus
-> > opportunistically replace instances of `kernel::c_str!` with C-String
-> > literals where other code changes were already necessary or where
-> > existing code triggered clippy lints; the rest will be done in a later
-> > commit.
-> >
-> > Link: https://github.com/Rust-for-Linux/linux/commit/faa3cbcca03d0dec8f=
-8e43f1d8d5c0860d98a23f [0]
-> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > ---
-> >  drivers/gpu/drm/drm_panic_qr.rs |   2 +-
-> >  rust/kernel/auxiliary.rs        |   4 +-
-> >  rust/kernel/configfs.rs         |   4 +-
-> >  rust/kernel/cpufreq.rs          |   2 +-
-> >  rust/kernel/device.rs           |   4 +-
-> >  rust/kernel/drm/device.rs       |   4 +-
-> >  rust/kernel/error.rs            |   4 +-
-> >  rust/kernel/firmware.rs         |  11 +-
-> >  rust/kernel/kunit.rs            |   6 +-
-> >  rust/kernel/miscdevice.rs       |   2 +-
-> >  rust/kernel/net/phy.rs          |   2 +-
-> >  rust/kernel/of.rs               |   2 +-
-> >  rust/kernel/prelude.rs          |   5 +-
-> >  rust/kernel/seq_file.rs         |   4 +-
-> >  rust/kernel/str.rs              | 394 +++++++++++---------------------=
---------
-> >  rust/kernel/sync/condvar.rs     |   2 +-
-> >  rust/kernel/sync/lock.rs        |   2 +-
-> >  rust/kernel/sync/lock/global.rs |   2 +-
-> >  samples/rust/rust_configfs.rs   |   2 +-
-> >  19 files changed, 140 insertions(+), 318 deletions(-)
->
-> Is it also possible to split this? First rename the existing functions
-> on our CStr to match upstream & then you don't need to do the rename &
-> removal of our CStr in the same patch?
+`kernel::str::CStr` is included in the prelude.
 
-Yes.
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+ rust/kernel/platform.rs | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
+index 0a6a6be732b2..12359d26bc6a 100644
+--- a/rust/kernel/platform.rs
++++ b/rust/kernel/platform.rs
+@@ -9,7 +9,6 @@
+     error::{to_result, Result},
+     of,
+     prelude::*,
+-    str::CStr,
+     types::{ForeignOwnable, Opaque},
+     ThisModule,
+ };
+
+---
+base-commit: 769e324b66b0d92d04f315d0c45a0f72737c7494
+change-id: 20250704-cstr-include-platform-0d11ee834226
+
+Best regards,
+--  
+Tamir Duberstein <tamird@gmail.com>
+
