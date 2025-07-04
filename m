@@ -1,136 +1,100 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD5D20B80C
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Jul 2025 06:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7585260571;
+	Fri,  4 Jul 2025 06:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751609656; cv=none; b=CxLJAJIwXVGX9jIc8ckOiUQXOG9U5c4N11Nr2W0SsAhay2UpHbErZJr2RjiftL+CAoaCT+AqC10KRv+ynSneRJ5ROoUaOl5qa4o3Ji0yeiGfuJz+9TQ2Or1T25ekmURvcuAkPaL7A1/LrSE0dm3DPMO838BZBnkdoIHhYuVGuCA=
+	t=1751611342; cv=none; b=k5k2/Nc7gVMHg9XBIMUxgLudZE4K1EDRIGz6w9meCsEsfplOZxuOom/uJmrA5GZ2Nj3eWXYs3AVAWX9yQuAF5pAGwai6gTN7twJHK1z6n1tGqxnDzdeyU9jQZYCCmnUwNm2boJD9ZFFb/WMBUUoPTzjqxy1f7yldpBToqEeqQfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751609656; c=relaxed/simple;
-	bh=NQpLby3JagGA/u3jCbNd5/YQJd7ptj+EdM3LxWvIu+U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k88x9LkOIqsLGyyfbDQ1YSH7Ph/I1G55/ydOWGlbdn1ELrJgSfMOHOpHbMAisOEpqKy3kYsdFYnwkqtYnZc9X/IyY8090WLegqUhPplK/ZT2cMCq6QAts9+Kui7lfcoe+b7+QQHzN+pDxpYfXMvcchpLvH9M5hz7w6ZP86dQMqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=A9t6K1Ly; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1751611342; c=relaxed/simple;
+	bh=ViSAA+jIXsu3GgiaEzSROieoqkCVPTUAZ8LCHBhP4lM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hlzPzMjGRifIp0GQbQssh5h6LQrTgJuSBpegTe5frLQBXBDk864ENNA6D63Qzz6Xtb5M8jIY23VDWdManvd9ldQLsoPUeTk0YnU8pcgWuX9mFobdr6L52vHLY+7gFg6Bk00SNwB5OuUxsoERExyNddKfoRfcXsdkgW51jj1FNdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SYoT74p7; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="A9t6K1Ly"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ad56cbc7b07so97603566b.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 03 Jul 2025 23:14:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SYoT74p7"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3138e64fc73so131479a91.2;
+        Thu, 03 Jul 2025 23:42:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1751609653; x=1752214453; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wl+OFcWbl5NripR5OloKOuQ5b3UuSM5Bie/W2u7bud8=;
-        b=A9t6K1Ly5Z4QqL5Gw38rtF1mzAfmMRmqxf9oxeSaFaXSHUhaa0Ykoo3+GTbF6tXJc1
-         Fml4jZ7HEZsMcfcOGV8Zy3nGjtrP58EQYZ23njsrka/qqhI6uFx8gfsGlE2IW0Ei74G6
-         z/sqayYItixuQEU8bK+ugzUTnTggVeHQKwF3XFf3nAWT+X/j7gD2r1CWI0NQJbQHg52m
-         kSujSusbDADcK85N1KZCcqrYINEB6/n6zQbAZ8Hs8WoJ5esLO3e1LGMCCAOzHB1aKHdO
-         iKZaO9dlTxv3/+HxqYrJqpLYJarX2WDBAwqfeV1U7Y6psqggIwR/di8JSSVvHnvfDSxD
-         uQ/Q==
+        d=gmail.com; s=20230601; t=1751611340; x=1752216140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ViSAA+jIXsu3GgiaEzSROieoqkCVPTUAZ8LCHBhP4lM=;
+        b=SYoT74p7ZFFXW/oGErllU4KQN0ztsuRYECflyoZaBt+vtj6Dui9EGO+K0gngGX1x2c
+         K7pFP7I4o3wa1i0Q/SKCle+M8niXtgA1drCgaraMVhv+7v4HjG2y+lFmejAWW3JEO0Dm
+         EPAcw5dTvd+xC3+g5HC1VjukWy9VCc9vrncVsVm/Q+2u6PXwZoYm0ajv+5RRaAINQ0F3
+         NmpKaYPnmgq5UNExHCY52sKmuA4i4bosoIQQlxGak93jDIJ6HF8FQ6Pd5yCVm1nzOFZA
+         +YZv5+IJLeyCet3IN76by9q5qgSaITZWhRk4C1HYHzxu2Krn2AnqHNTvi66x3Ub0hIOK
+         F+8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751609653; x=1752214453;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wl+OFcWbl5NripR5OloKOuQ5b3UuSM5Bie/W2u7bud8=;
-        b=pogtDO0ZVBqhHJnCB2E1fKDKk7IuruVuVF8mGFfjt3xIktdOGNGO8+MuFiDFwELb8+
-         93L86+bi21nlYA4ZuTz6GGdRjxhko+yFmViglkEmjmJb8KsaEEUukv/gtMyhOJAzKymj
-         qZsm6O1+OFTbC2055cPCkTMcf4fTrEx0zU8+6KxN7eeHMY/jjY0y7F/auMJvVKSm90yN
-         eIDua0NKIC+ruOoKXlPBEHvX6u0aCwFqQ4OYHpDHg74DgF3ZK5A95E0PvFFW4p0Un63l
-         Bbwy11j7PG/qKiNqmVW1h6uB9+ej5y6UcpiGEc7RYK57e+6HeNrsY1TfHKJ+q0T9pyKD
-         QvhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTYCV5C/xvyd85/6DbnLDGQ2xU+iy1aX+DzKUm7X9lwq6mygJpT7zu9pv46OuXxjFoszQj6Tl9ng9A6zt4vA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEeettTaPzsKqX2TGohyibq4KmzB6lD4PWcfP5xVK/GYXANh99
-	oL9zrotPp/2snjG82pHnpc1Fnu6gJO7DMKjlSzK9vVO5JREJbG9a3q+9gjEs0WZ2ksU=
-X-Gm-Gg: ASbGnctlW9xYcgLagwEm+iK1+uJ6xksn2thPlqihO5U+qSRZ2Xb7XPHkugWhc1x04ct
-	EeJ8oCPJR3yeHhDrfJF7ZIFzH5BPWxhLxfcT6MAfDQ7Qor05wgESDra8Je92FtKrtODYXwf0Xbh
-	vCsVmWnx7y94eHCQW0ly3vR3X3Q/DhGtFRWfnMRdY5hNsYnPauWcQ9l8ihLo6kvymQQJc8tquEk
-	CqAbR+9VBylhfaxsPfQCgPKnRIFLHffW0Ix+3CiMmkT1A36sTHsoeEttZ55z4tNWM2sixKcCIKX
-	JgV1sW03CdxaOSwxwMgfH2mM2nqZjRPZmI8sGzhOsbGu1Tr7uiSDf0z/Vkgcqx9FsyEWlr78Lqv
-	0ChvsHuko0RsWfoKOzwB/aXsNjAJ+YA==
-X-Google-Smtp-Source: AGHT+IH0bg6umv9ZUToHt0GI088EjJSGRPAT4nP9caOEX8ao40a+HO6JMdGNpUYc8qiIG17UWBeQ2g==
-X-Received: by 2002:a17:906:7310:b0:add:fe17:e970 with SMTP id a640c23a62f3a-ae3fe691cfdmr68755966b.14.1751609652858;
-        Thu, 03 Jul 2025 23:14:12 -0700 (PDT)
-Received: from ?IPV6:2a01:b380:3000:1d69:a334:729:91bc:3061? ([2a01:b380:3000:1d69:a334:729:91bc:3061])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae3f6b60008sm106997166b.161.2025.07.03.23.14.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Jul 2025 23:14:12 -0700 (PDT)
-Message-ID: <fcdae3ca-104d-4e8b-8588-2452783ed09a@sedlak.dev>
-Date: Fri, 4 Jul 2025 08:14:11 +0200
+        d=1e100.net; s=20230601; t=1751611340; x=1752216140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ViSAA+jIXsu3GgiaEzSROieoqkCVPTUAZ8LCHBhP4lM=;
+        b=tGkKtEb0BXNnePaPt3+ZgMAeg8m5Zco9vUed1wzJEFNSVFCUAJZKfXyEliM+Z3/Ny5
+         QZodFwrSjJXGx37dGxhn97HtLbnIWsfJVt39kNlOWaWju8PNxB+eWTvyaJRjZwQY4aR0
+         br7Z8wjPpPkBbQ9fPCd5SF7HI4WPYtl1ACR14YlklSLws7uJzOSohVYpRQkw8FNv+xgm
+         Nx6FnLDEEso7iqtgeEV70e/xGrah8BY1eO/esNsc9bw2oO30b/CSju0sixFRKQOsXrVm
+         Fby1l2MvJz2j0L+fpKrDjTiXFsq2y3ER8VKr7Rzj+GUkDUQrPj+LieWvq+vNVay6zmxT
+         gFUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUD8efjYEKgnoL0QhPV4SUGl1GzNoO9ZxgrRL1qzFdL1VznFvx9FG+O3hCVi07KqcplXHUqU6V2thXlyIIpvik=@vger.kernel.org, AJvYcCUHRBtMIv1fog5Px2V+CF7QkchRN+M7X738UZPD4pFJNLHrMAx/sgA2KpxP3x5gqb68O71TXNeuPYgacAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJh1hQQCeesLT4EDmmIjE5n2+rs1cDM00CkOt1f+bndXoO2ci4
+	DXoEuLbvxSmufN5EFPIu8aZy/lSyVT3iaQ27h/vU5ipgZ0U41GcFfNVA6cV4ppvwmJzPfW3unmT
+	YeSouYRRf4oYalcpK3AYaCrjyTpISF4w=
+X-Gm-Gg: ASbGncvijZV8/eyeSJB7JrLj4Sqqbo6svDe5l1/kxsgjZWEW4AZGLs/nBSiXJhjH+UH
+	q/x6j4FLldPEZwLRhyfnXG6sr5sa1FJuTlL6aaxeLonecDHnqykoIENcf/xnfwCfx+gtbiwmMdI
+	QPivbIZXY4NXUPiVk1aG/U6ImdY99niPUJ74hKH7LzIVc=
+X-Google-Smtp-Source: AGHT+IFflxlDHNrJiLaP0pOFaF5MZ6UmoLwnCtBsjbPI2tWqFOHHZtyQffMIjGTdaBjn/nSJ7GrpiGc8bV40j2OMyj8=
+X-Received: by 2002:a17:90b:562e:b0:312:639:a06d with SMTP id
+ 98e67ed59e1d1-31aaccc1da6mr846527a91.5.1751611340001; Thu, 03 Jul 2025
+ 23:42:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/6] rust: irq: add flags module
-To: Daniel Almeida <daniel.almeida@collabora.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
- <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
- <20250703-topics-tyr-request_irq-v6-2-74103bdc7c52@collabora.com>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <20250703-topics-tyr-request_irq-v6-2-74103bdc7c52@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250701.083940.2222161064880631447.fujita.tomonori@gmail.com>
+ <87sejfuf3n.fsf@kernel.org> <CAH5fLgjdpso4waCrP6iVaMEOpYLUmqCz8PxqXuSbQBMaxxCHBw@mail.gmail.com>
+ <20250704.090751.571327900479764851.fujita.tomonori@gmail.com>
+In-Reply-To: <20250704.090751.571327900479764851.fujita.tomonori@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 4 Jul 2025 08:42:07 +0200
+X-Gm-Features: Ac12FXwJ0HlfbWLg_t1Axh-UIkOoLQooLeToRwISrwau9tExpdnnh5hh6PUGWjA
+Message-ID: <CANiq72m886R2ZOLSSzehU8aTXzYtPmTyyrSxpOQCr7GX_Bcghg@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: time: make ClockSource unsafe trait
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: aliceryhl@google.com, a.hindborg@kernel.org, alex.gaynor@gmail.com, 
+	ojeda@kernel.org, boqun.feng@gmail.com, anna-maria@linutronix.de, 
+	bjorn3_gh@protonmail.com, dakr@kernel.org, frederic@kernel.org, 
+	gary@garyguo.net, jstultz@google.com, linux-kernel@vger.kernel.org, 
+	lossin@kernel.org, lyude@redhat.com, rust-for-linux@vger.kernel.org, 
+	sboyd@kernel.org, tglx@linutronix.de, tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Daniel,
+On Fri, Jul 4, 2025 at 2:08=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> I had a quick look at the official Rust documentation, and I think I
+> agree with this opinion.
 
-On 7/3/25 9:30 PM, Daniel Almeida wrote:
-> +/// Flags to be used when registering IRQ handlers.
-> +///
-> +/// They can be combined with the operators `|`, `&`, and `!`.
-> +#[derive(Clone, Copy, PartialEq, Eq)]
-> +pub struct Flags(u64);
+My personal take: I agree that having both English and something else
+is a bit redundant -- some redundancy is good when something (like a
+notation) may be non-obvious, but I think a math integer interval or a
+Rust range or a condition like 0 <=3D v <=3D `KTIME_MAX` are all
+understandable in this context.
 
-Why not Flags(u32)? You may get rid of all unnecessary casts later, plus 
-save some extra bytes.
-> +/// Use the interrupt line as already configured.
-> +pub const TRIGGER_NONE: Flags = Flags(bindings::IRQF_TRIGGER_NONE as u64);
-> +
-> +/// The interrupt is triggered when the signal goes from low to high.
-> +pub const TRIGGER_RISING: Flags = Flags(bindings::IRQF_TRIGGER_RISING as u64);
-> +
-> +/// The interrupt is triggered when the signal goes from high to low.
-> +pub const TRIGGER_FALLING: Flags = Flags(bindings::IRQF_TRIGGER_FALLING as u64);
-> +
-> +/// The interrupt is triggered while the signal is held high.
-> +pub const TRIGGER_HIGH: Flags = Flags(bindings::IRQF_TRIGGER_HIGH as u64);
-> +
-> +/// The interrupt is triggered while the signal is held low.
-> +pub const TRIGGER_LOW: Flags = Flags(bindings::IRQF_TRIGGER_LOW as u64);
-> +
-> +/// Allow sharing the irq among several devices.
+Now, whether to use English or any of the other options, it is hard to
+say what is best for most readers. Personally, I prefer to just see
+one of the expressions, which makes it also closer to other forms,
+e.g. a debug assert somewhere, or a contract, or other tooling or
+formalization efforts.
 
-nit: irq -> IRQ?
-
-> +pub const SHARED: Flags = Flags(bindings::IRQF_SHARED as u64);
-> +
-> +/// Set by callers when they expect sharing mismatches to occur.
-> +pub const PROBE_SHARED: Flags = Flags(bindings::IRQF_PROBE_SHARED as u64);
-> +
-> +/// Flag to mark this interrupt as timer interrupt.
-> +pub const TIMER: Flags = Flags(bindings::IRQF_TIMER as u64);
-> +
-> +/// Interrupt is per cpu.
-
-nit: cpu -> CPU?
-
-> +pub const PERCPU: Flags = Flags(bindings::IRQF_PERCPU as u64);
-Thanks!
-Daniel
+Cheers,
+Miguel
