@@ -1,90 +1,126 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E47302DEA62;
-	Fri,  4 Jul 2025 18:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751654668; cv=pass; b=jB/nO44FQOvkoibCvM0Ra3eMCCb9yylq1JK2zAxA497xXE/R/lHTyY7atPTaDX1mgYo4TQ/+zpMqDNH63XhpotmJKF1M1cqhJzCopQ+iPBuKNIB6fmmhGx08PGWdLWH/JMmbbLXYiQlyu/OPBXdFlP1oqR4c9WYqnN74UdxqQJU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751654668; c=relaxed/simple;
-	bh=kyDLnOCjoGfz+6q9I1eudUn2Cey2irvZ9KMtRJostUE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bCyTnLCcyAM1Sez5X74eVSwjMK2FTfeUjTq8fdoR+KGh4n1vNrfMCop7P1se09ZP3UMvwJkLwkTCwDqn/AAQTDayM+KjaRMDZzY92zBNADKHazKGzj2n7xGd9avLr+TqB50Kh0VbPGiQ2r0WJCMREG10GtkO4GgL1d7UXYbcpRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=EBNYr5Xt; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C8429A2;
+	Fri,  4 Jul 2025 19:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751657931; cv=none; b=VIRiLcW3YAFzcZyLKTa1gONt2YJIYa1Jm2cforGRYTojnMNW0yxRt/11qu4FJ8oOxKtjlgPUykChX1IBamED11v4sx1aCHqBCxFG4XxSjrM5/YBG6+y9I6vgAnsabOh1xoe22ySw90NFcAqb1wt4EvdFrChAaQWl5kc3pECMsQw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751657931; c=relaxed/simple;
+	bh=+1vlZgumgifEwNecl68EJAlB8Sprq//BvrO4WzNYsMM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O4UqPNW32Rh1SCOTZO87PQX/GFrZveNMutozpUdxltB7vkbg4pawbxJTabQpAbUuJTzhFZgBK/20OtDieb1w/cKWeD4NdF3wkf/Y+TAikX82d5QGEFufleSQIcfyUb2CpHujiUVagml3YgBOy03jNHVd85+hmSbx1gKxgPwIfXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PcwR5aNk; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="EBNYr5Xt"
-ARC-Seal: i=1; a=rsa-sha256; t=1751654651; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=LWB0fHDsGvtlkfM3G5eATt7/VzN/i8dbK8+tFFsJp5mFqjktdzsysYbSp/hF7kBFTaYj8PZg8v+eVIhvrV/N8hvYQxJFOWW1wwHe/ytcypQr6XcF/kPgx/eif3k5xK7mjksfcjF4UeqarhcwNKwjtcJq78hENKJ0zIAr5CWIxFQ=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1751654651; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=q4JIOgJrl40/4y9+wXMYM2pa0x8adsGNIe4PvYtRgKw=; 
-	b=SU7C+HDVFXyz4O8vVv7s3fXF/CjltvW2ARqR3y1PJTt9hAW4QYJWlAyPqevQVHK7iAUqX5voWFspqY0My7dAevGwqdSxBzvTotWYBAAkpIPbK3DS0bXx49WWEMxLLyxtCwVIgQSc1c/qixkK7hDV5oUzpLBo6UZkCDMsCopEDxI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751654651;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=q4JIOgJrl40/4y9+wXMYM2pa0x8adsGNIe4PvYtRgKw=;
-	b=EBNYr5XtXysMWGvyD9ASeoiabz7aPU9XNXsV/uEYUAtKLNBQ2ZbI813mt2WrCg2q
-	5aKR5l7y+TEE4jAMVh/ZSCSxflLUT3Qbj8dBbTTChm2ScKJgD+/v3jPqVHIuzeakkDS
-	gnvGYN6Ghfhb3u5yPl6d5f2q73vykgkJ5cdbcpq4=
-Received: by mx.zohomail.com with SMTPS id 175165464944647.05484131175058;
-	Fri, 4 Jul 2025 11:44:09 -0700 (PDT)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Fri, 04 Jul 2025 15:43:41 -0300
-Subject: [PATCH v7 2/2] MAINAINTERS: add regulator.rs to the regulator API
- entry
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PcwR5aNk"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-32b2f5d91c8so11076721fa.0;
+        Fri, 04 Jul 2025 12:38:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751657928; x=1752262728; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+1vlZgumgifEwNecl68EJAlB8Sprq//BvrO4WzNYsMM=;
+        b=PcwR5aNkrf7IHfPVH1MG1RCWor6BX4Vv1JxMCP4wh6qtC1hIjk8HRYHvCW5XAVOHpc
+         RbHgNf3wXsnM2dSCiIYrIMyND6cQe0MmRUn45QpS47CTIkv7Xqh1RbZpxRT0ClH2SyPA
+         X9rDu9fiUdpwlcY6okwUgaVr1AOlWCam1lCf58vMahsBAFfLICRU+I/yGr+3fKlKTj2Z
+         Rw2gnW5O3r7YhCjdCTwFFoBbL9jYvx15vSLlR0p2E7p0R/0bqfM84x1Jrv43kEn95G1d
+         04a0c4ra8k5+E9PsZVARYx8TviIMsplG6B2+rrLKyMPwCpnf4hxPJKikH2uXWZJNNFIC
+         0DPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751657928; x=1752262728;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+1vlZgumgifEwNecl68EJAlB8Sprq//BvrO4WzNYsMM=;
+        b=raxSgSuaVgX7fQ+wX9K+s0u+GvO5Aw6t2ncC/2HO8KYUhjMV0CyIPHtQENFJ6Q862Q
+         t4d959zdiVr4Ydl6FDdNSAiymlT/MIIfncSDWam7q5MkBqjqn9VkQyv2xnJRl3Qf+tQZ
+         EUxtIuG49RDbkxlLFwtDcs1Vbe62eyqVcgMVNGUjQNjxAY1JewNSYkWSM9O2Q8QGXfy2
+         LT+A7pzga2purScOBDAEzvxDSgVhKWdtF0kSn6NH7cRtLifoKUK6i9th1sHPP63GPGjI
+         rI9nmzuvvNYDCHwVNNN/cvRCQkDVmJe/0+sSXYa7hHQQQWXWqNNVpxlbk0t7qiKZVKkO
+         wRGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHCy55bSmZk4jpp621J/soN5QPIdagC/ixqvPqUrR/Apr8Df66TWcvbwGp1nLFGZkT2Lslc32EhQE=@vger.kernel.org, AJvYcCVM673+sBvzHRJgAcngzCBUOpx1nSAzLlBstq9wPZsz8PHyE3B4TporMsSQIvWjUA6oXLNb8I+ydWwcDllI@vger.kernel.org, AJvYcCVoTwxWo0g1NuaV+qLTapK1TnYDJsieAVQZ3jG8456dsX4p3jtbDQgFL13sGBAQUoI+kOQrP95M@vger.kernel.org, AJvYcCWZrSlRoogZfOjFNalN9ML9VEgZjNcEpYHyvSLBEbLoacw9QdxEXcZy5Kdr3jbYlI0QrCjtDCBzzsITcgWR4iYn@vger.kernel.org, AJvYcCWxgf+UiP5R/W7etgzKzjZezrJDN6xD7YVEm9Hm06YLh+neCAe3GW/JwCBnrqSCLD/gUR8Cjx8GFBIb@vger.kernel.org, AJvYcCWy1a/VkwRrMIHGtDp+auByY0+u29V6b38yAJTzv4uimbnOQI8RMbn1iiV0j7+uBPcOcOBsSHiyTOxY@vger.kernel.org, AJvYcCWzAcGvs1dy/a4s2L1Qhho0ytI/m/rQUbgkIr32GKDaeYYrmPDDnHhZp47MDG/cDJC296+pgJU0yfuB@vger.kernel.org, AJvYcCX2wnjAeztcciqCgRk+FnFOf+uNTcxRyqwkR96ZwcaUxfC5GyOySeDYJ1+pssc+sNBwmlsY0+o/a8Umxdg=@vger.kernel.org, AJvYcCXpbVRtNAkIGAhMIDg7g2ZFXvuMH6JTgZTDpvsTyB+mzrTcN1NuOcMFXmwYKCtJIieNpAFagHVURbCtdNS1Pps=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0NRdHaXHF0yfak5KDlnhLKA/0kfeyrb1Mh+7VzZJPdzKZha0j
+	+nd4wTMkZfpASgA/yMXIgBGzAX9+hLROad+i4lqYAqRNHxCQ6lAt4iL1ys8SVm1N+i/lLUnT8tr
+	nxXVfju7d60fgl04REwi+466IsObtq+0=
+X-Gm-Gg: ASbGncuMDJJrjpQX40Sl5aD0i8pttq1CctJIRLw/lJeuEVHPkM1cjuWE1X3UHS1/8iu
+	Eg50sQ7KdawCsHbic4tGloTDPe/u3q1yKVfWiwO0ZAR8arIN87QhLVPGFsRXGVLECadmq/LWCmq
+	8J/XX5WvVbK030n/5x175pkUaJnBFiLmJ0Knh2VNM6clNdzsGd+253/Z1iadINMA8S0z8TUjykU
+	gP6uK7esChwwRMb
+X-Google-Smtp-Source: AGHT+IEtZIZHyQdOcRcbH+zRF5QnKwCn2iKXPxprHvYuNR2jSg6UqBw9KbMdEWrPUWxqoAE0oN54aToeuNsJtUiGyRY=
+X-Received: by 2002:a05:651c:542:b0:32c:a097:4198 with SMTP id
+ 38308e7fff4ca-32f00c63744mr9980551fa.1.1751657927846; Fri, 04 Jul 2025
+ 12:38:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250704-topics-tyr-regulator-v7-2-77bfca2e22dc@collabora.com>
-References: <20250704-topics-tyr-regulator-v7-0-77bfca2e22dc@collabora.com>
-In-Reply-To: <20250704-topics-tyr-regulator-v7-0-77bfca2e22dc@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Boris Brezillon <boris.brezillon@collabora.com>, 
- Sebastian Reichel <sebastian.reichel@collabora.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
-X-ZohoMailClient: External
+References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
+ <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com> <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
+ <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
+ <DB2IJ9HBIM0W.3N0JVGKX558QI@kernel.org> <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
+ <DB2PIGAQHCJR.3BF8ZHECYH3KB@kernel.org> <CAJ-ks9=WmuXLJ6KkMEOP2jTvM_YBJO10SNsq0DU2J+_d4jp7qw@mail.gmail.com>
+ <CAJ-ks9kNiOgPO7FF3cAbaSNtTWs0_PzQ4k4W0AxjHNFuMJnDcQ@mail.gmail.com>
+ <DB36T5JWBL10.2F56EDJ1XKAD0@kernel.org> <CAJ-ks9=Jutg+UAwCVER_X91BGxWzmVq=OdStDgLZjTyMQSEX6Q@mail.gmail.com>
+ <CANiq72nZhgpbWOD4Evy-qw2J=G=RY4Hsoq9_rj6HGWMQW=2kTw@mail.gmail.com>
+In-Reply-To: <CANiq72nZhgpbWOD4Evy-qw2J=G=RY4Hsoq9_rj6HGWMQW=2kTw@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 4 Jul 2025 15:38:11 -0400
+X-Gm-Features: Ac12FXw768F_Lk3HRxkz7eCyR4EleC6ZiRWgAxdQvNU_x7ZQ7VCNlmwZ-Al3Xv8
+Message-ID: <CAJ-ks9m4S1jujQvyt9TOvNMewjNSztps8vayGga+MnNU+0YUcQ@mail.gmail.com>
+Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>, Michal Rostecki <vadorovsky@protonmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add this file to the regulator API entry as requested by Mark Brown.
+On Fri, Jul 4, 2025 at 8:15=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Fri, Jul 4, 2025 at 1:59=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
+> wrote:
+> >
+> > That would probably work. We will probably see regressions because we
+> > can't just replace `core::fmt` imports with `kernel::fmt`, so new code
+> > may appear that uses the former.
+>
+> That is fine -- it happens all the time with this sort of approach.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c3f7fbd0d67afe8376ea84bc17d70e9fa4b89bf6..235a33b013473b6ff83c4fbd67c0b635c2ed2366 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26522,6 +26522,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git
- F:	Documentation/devicetree/bindings/regulator/
- F:	Documentation/power/regulator/
- F:	drivers/regulator/
-+F:	rust/kernel/regulator.rs
- F:	include/dt-bindings/regulator/
- F:	include/linux/regulator/
- K:	regulator_get_optional
-
--- 
-2.50.0
-
+OK, with all the splitting requested, this comes out to ~54 patches.
+I'll send the first bit (which can go in cycle 0) as v14.
