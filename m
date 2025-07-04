@@ -1,160 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF707285045;
-	Fri,  4 Jul 2025 22:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC81A2AD25;
+	Fri,  4 Jul 2025 22:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751666756; cv=none; b=fS2o7+5lrlz6q2RnrQHSfm5LvtXJQfv+46s8xfmui59/7Z87Y393pZJ+2BSVt6Y2teajlXs60osJzNFhOoxxDhOo7DL8OcIZtSnLwAjfRcmDxnvrKIBmdNIHKKE+s/No7/xUa2tS0LvSTNKDCr87AJEbPe8O0We33lC7GSMFKDc=
+	t=1751667367; cv=none; b=B3seBEjCL4+jSx03h5Ur3nDrTIx7UDm8nvOinMl7LRuLd02An/braldBlUbFT8Y2HyzyuKDPcVpu21WAE2sX213kBplYe55Y3FUF1rN34EjDAr8Us8bBe547aZa3fYWTgEkcHLT4mQAbNtfEgXnLAlapQMjQpPvqPQoG0EaEccE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751666756; c=relaxed/simple;
-	bh=XLeXxdSCNAGO5NV6NYg14ixnzSnIeBzMBFkCaOw/yTg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=KG5mIxB42oLrCdExcG783IoQLKGas4h4G+pFF3h+DQq5o5DRBbFC631S4hgKZHYFtkw7eOtT0wVh4/pyoe0AAQUHOuOGYjY1ij9HeXmZo76z25zMThDA4fs0JUSdCkiiDEOzqXEZRkNhF0sWKAHAl6FCB0VSdTK5hieNQtj3jto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RaObhdcg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751667367; c=relaxed/simple;
+	bh=1qPLH2DUCtpS7ngyfeRXFfT4BV6higPIeS0SuWPwrIs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=obNiET3Ot7pzjJqnBDd415HIHVXjj6/J926kLNV+3XeTHh2jLw0GRk2kEoXtR0VhXiIzUOvZW3B7RF89rYhA6VkIFJBF/9G41SPm27Vi+WqKJ25UZ2snXsqe1WUWTgm4fCxy6NyLj9sVL5iSwDEb2WNXBOdo2M3XBRjiPpVcr0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2cnkQhQ; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RaObhdcg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C10C4CEE3;
-	Fri,  4 Jul 2025 22:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751666755;
-	bh=XLeXxdSCNAGO5NV6NYg14ixnzSnIeBzMBFkCaOw/yTg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=RaObhdcgZPd6pSpQ4SqB2VmgQ1BFy9M6LKrbBG5JDNxN8mtqA67t9eTdPBYVb+83q
-	 3k39fL7Wai8dpPb5Ap2GVdwIIbUwBQbCEB+C7Yt+r6IxGgAMC57JHoOpv/tZobkIlG
-	 apiYAYtAsgWi/KnkLkuEG8VCpcTa2TbwyXc4Lr66ac0iiCZJMoY2lyuZdGrXUAsUqt
-	 LAMO6ScsIc5hpifZlgQwUJdYyLOsjRxXWOi67zLt4Ajt28tJzYUv9Esd/Ckj7zVka9
-	 lzGFk03x2udcuVyMFGLN8PbU1xk36UcKuKblVRZz1aB4eFxbjAvPKhuEfAdhT2XBQx
-	 5OENedr+rHnYQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2cnkQhQ"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b34dde96cbfso63803a12.2;
+        Fri, 04 Jul 2025 15:16:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751667365; x=1752272165; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1qPLH2DUCtpS7ngyfeRXFfT4BV6higPIeS0SuWPwrIs=;
+        b=C2cnkQhQrF2B4IGqgxHs+pkrlegR0GmEDVtv5OzXeiv/X/+ntaecZ/q5AbT7n+ocm4
+         YjnlxDkFu+EWMzi97zHFm1pVURnG6H1y2hNiDDl4yEmCT1XD6lYI1SUlblaejduUtYkr
+         s5WNPpztlSVwm+idRD0V+ketjz7+hdSn1uGdQr6LxD54y1TWN3GKgdgpWmiKM0+yR/F2
+         ZXwXgV288lGUP/jVPDhcNy7YnwzWY9CWnFmsodJCBVDePnenpKWVYY1g29v6ZBSqD+Wn
+         cv5F7jZ2xYEXzWnC3uS8fCCaSJYD3Bv3oEDgro89BG5Jdkyt45ji3MWjqYgob+naCnl9
+         VhMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751667365; x=1752272165;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1qPLH2DUCtpS7ngyfeRXFfT4BV6higPIeS0SuWPwrIs=;
+        b=GXaOADtXtKT+59m324l1jdap+PlCc2GYEd+VzhixBHVp60HNlq1zpISgUbRng6SkDc
+         5pPE+1zLfc9CGeiuMQlktS20RhvGeTfNtdAGV+rIiy9wRHl15bmLwXaiF0nUuF8vCpt+
+         M5TtpVy/LorZ910zKsTfyhAJYpEW3oWJPKDEZoGIDvWs3xFWyJtO9VBrrHvfCkg0vEXk
+         uzOJ5LczgLG/y0blOlbvb/JZ7SfzHClhsHHZUr4uxH24mRdzrp1dr7MjG605WwW24hrB
+         urTD7Va8s5oJLELQ5OLbwR7W5xXK+bKnL5cHdun/4qfy25f5oTHIbGbi1+1DEszf8ehv
+         WG6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW0zh0+/E37iZbk9HxuWzSrSQlCTZuR4h675VaF0KyfhZ2Pkpnf762KCzXaCaW2NFHQ3fWy+O3TLJAS0scgI0c=@vger.kernel.org, AJvYcCXTR8WI8F7BKuC3i0OsSdE8ausesG+3+4OuEoUI0zgG86OqXnxwMPuKEHoxifsYTyKtxtYcdfIvkcIQimM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNokDkXAbd3kOLJyUvgQU2UwHwGuRhjxJA2M7iCEQFqZN5qcDK
+	EJsPcH40VvgBTx61imtuATFsJyDxZ49IlxOXPum8AvYLSOnmo2OB3LJyl51w4gK2hfVUhvW//PE
+	UNl3B4I7cyn+zjgO27m8QsYrALDKt0dQ=
+X-Gm-Gg: ASbGncucB7lCisd1KeXJKt9Ys5jWHnzTZP2bpKXXmshX5mIQ+lYV07a0UpcqRIvW4fr
+	t7ZC/5fMydF1/4cINz/INJsPqKfOQXsFZGtkFGrFVIg7cqVmeLYOkqQN/DY1KZmnYRwn1eBUYVK
+	ZXKoh2+xNcvtDrKRsyuFtRLLPveIpRPMF8msNEypK944dG
+X-Google-Smtp-Source: AGHT+IGmQH4dNb8TFmji3Oa7QAVqdfXqa1PncIaNrishd7qZsoqjrndooJiEnVDz8dB5O53zOlOlnb49LuuEEbVUUiQ=
+X-Received: by 2002:a17:90b:17d0:b0:312:e9d:3fff with SMTP id
+ 98e67ed59e1d1-31aacb4118emr2011549a91.1.1751667365131; Fri, 04 Jul 2025
+ 15:16:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250704054539.7715-1-work@onurozkan.dev> <aGeEcOEYXiLju-Lj@google.com>
+ <20250704181419.0a6a4d97@nimda.home>
+In-Reply-To: <20250704181419.0a6a4d97@nimda.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 5 Jul 2025 00:15:50 +0200
+X-Gm-Features: Ac12FXwbkOCrJSpH8WT1tsVCnsqS0WBQLMbDsWpwwUfk0ggJcHa4tKtAPJTEIKY
+Message-ID: <CANiq72mj1AEH6S+kZ12D2+ib3jVPJHo01L6D1qhHz_9_FzwA_A@mail.gmail.com>
+Subject: Re: [PATCH] rust: rbtree: simplify finding `current` in `remove_current`
+To: Onur <work@onurozkan.dev>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	mattgilbride@google.com, wedsonaf@gmail.com, daniel@sedlak.dev, 
+	tamird@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 05 Jul 2025 00:05:48 +0200
-Message-Id: <DB3M1FEMKVLN.1BDAD6WHDR7HG@kernel.org>
-Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "Gary Guo" <gary@garyguo.net>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
- <linux-arch@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
-X-Mailer: aerc 0.20.1
-References: <20250618164934.19817-1-boqun.feng@gmail.com>
- <20250618164934.19817-5-boqun.feng@gmail.com>
- <20250621123212.66fb016b.gary@garyguo.net> <aFjj8AV668pl9jLN@Mac.home>
- <20250623193019.6c425467.gary@garyguo.net> <aFmmYSAyvxotYfo7@tardis.local>
- <DAUAW2Y0HYLY.3CDC9ZW0BUKI4@kernel.org> <aFrTyXcFVOjWa2o-@Mac.home>
- <DAWIKTODZ3FT.2LGX1H8ZFDONN@kernel.org> <aGhGDJvUf7zFCmQt@Mac.home>
-In-Reply-To: <aGhGDJvUf7zFCmQt@Mac.home>
 
-On Fri Jul 4, 2025 at 11:22 PM CEST, Boqun Feng wrote:
-> On Thu, Jun 26, 2025 at 03:54:24PM +0200, Benno Lossin wrote:
->> On Tue Jun 24, 2025 at 6:35 PM CEST, Boqun Feng wrote:
->> > On Tue, Jun 24, 2025 at 01:27:38AM +0200, Benno Lossin wrote:
->> >> On Mon Jun 23, 2025 at 9:09 PM CEST, Boqun Feng wrote:
->> >> > On Mon, Jun 23, 2025 at 07:30:19PM +0100, Gary Guo wrote:
->> >> >> cannot just transmute between from pointers to usize (which is its
->> >> >> Repr):
->> >> >> * Transmuting from pointer to usize discards provenance
->> >> >> * Transmuting from usize to pointer gives invalid provenance
->> >> >>=20
->> >> >> We want neither behaviour, so we must store `usize` directly and
->> >> >> always call into repr functions.
->> >> >>=20
->> >> >
->> >> > If we store `usize`, how can we support the `get_mut()` then? E.g.
->> >> >
->> >> >     static V: i32 =3D 32;
->> >> >
->> >> >     let mut x =3D Atomic::new(&V as *const i32 as *mut i32);
->> >> >     // ^ assume we expose_provenance() in new().
->> >> >
->> >> >     let ptr: &mut *mut i32 =3D x.get_mut(); // which is `&mut self.=
-0.get()`.
->> >> >
->> >> >     let ptr_val =3D *ptr; // Does `ptr_val` have the proper provena=
-nce?
->> >>=20
->> >> If `get_mut` transmutes the integer into a pointer, then it will have
->> >> the wrong provenance (it will just have plain invalid provenance).
->> >>=20
->> >
->> > The key topic Gary and I have been discussing is whether we should
->> > define Atomic<T> as:
->> >
->> > (my current implementation)
->> >
->> >     pub struct Atomic<T: AllowAtomic>(Opaque<T>);
->> >
->> > or
->> >
->> > (Gary's suggestion)
->> >
->> >     pub struct Atomic<T: AllowAtomic>(Opaque<T::Repr>);
->> >
->> > `T::Repr` is guaranteed to be the same size and alignment of `T`, and
->> > per our discussion, it makes sense to further require that `transmute<=
-T,
->> > T::Repr>()` should also be safe (as the safety requirement of
->> > `AllowAtomic`), or we can say `T` bit validity can be preserved by
->> > `T::Repr`: a valid bit combination `T` can be transumated to `T::Repr`=
-,
->> > and if transumated back, it's the same bit combination.
->> >
->> > Now as I pointed out, if we use `Opaque<T::Repr>`, then `.get_mut()`
->> > would be unsound for `Atomic<*mut T>`. And Gary's concern is that in
->> > the current implementation, we directly cast a `*mut T` (from
->> > `Opaque::get()`) into a `*mut T::Repr`, and pass it directly into C/as=
-m
->> > atomic primitives. However, I think with the additional safety
->> > requirement above, this shouldn't be a problem: because the C/asm atom=
-ic
->> > primitives would just pass the address to an asm block, and that'll be
->> > out of Rust abstract machine, and as long as the C/primitives atomic
->> > primitives are implemented correctly, the bit representation of `T`
->> > remains valid after asm blocks.
->> >
->> > So I think the current implementation still works and is better.
->>=20
->> I don't think there is a big difference between=C2=A0`Opaque<T>`=C2=A0an=
-d
->> `Opaque<T::Repr>`=C2=A0if we have the transmute equivalence between the =
-two.
->> From a safety perspective, you don't gain or lose anything by using the
->> first over the second one. They both require the invariant that they are
->> valid (as=C2=A0`Opaque`=C2=A0removes that... we should really be using
->> `UnsafeCell`=C2=A0here instead... why aren't we doing that?).
->>=20
+On Fri, Jul 4, 2025 at 5:14=E2=80=AFPM Onur <work@onurozkan.dev> wrote:
 >
-> I need the `UnsafePinned`-like behavior of `Atomic<*mut T>` to support
-> Rcu<T>, and I will replace it with `UnsafePinned`, once that's is
-> available.
+> Looks nice. Do you want me to send v2 right away, or wait couple of days
+> to give sometime to other reviewers?
 
-Can you expand on this? What do you mean by "`UnsafePinned`-like
-behavior"? And what does `Rcu<T>` have to do with atomics?
+Unless there is a particular reason (e.g. it needs to land quickly),
+in general it is best to wait at least a few days.
 
-> Maybe that also means `UnsafePinned<T>` make more sense? Because if `T`
-> is a pointer, it's easy to prove the provenance is there. (Note a
-> `&Atomic<*mut T>` may come from a `*mut *mut T`, may be a field in C
-> struct)
-
-Also don't understand this.
-
----
 Cheers,
-Benno
+Miguel
