@@ -1,50 +1,59 @@
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+Received: from forward202d.mail.yandex.net (forward202d.mail.yandex.net [178.154.239.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AFE322A;
-	Fri,  4 Jul 2025 05:08:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8631120E005;
+	Fri,  4 Jul 2025 05:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751605704; cv=none; b=t0vI0xtcfHQ26TBxPoda0wLitGYa8aA9ZPqjLlEKO0ctNllSO9tAfBJqONkq+Mrpif9lvsUM17YzNejR1uj6jlGa7A5V5AkVk3E4KmAOj8XzjjwAay7vpxLlzFXgpmKQ3Fa0JVozXFbApMTs0v7q0NaEffskAWremxueM6fqo0U=
+	t=1751608339; cv=none; b=c9fP9PU9ZWE3o+OJ5Arz5kFEHRaBHWNut16i2bH+fPUmPEk1BwdJWa+6JBa0vAGOiNp2MnTMM62k5GB51OG9tHCPiREpBU2LaOzHlJIVvIiI1spUGizYAgG8gvkfFi5G35eaAmA2EUOaeKGMy8NxYbqR0zwz6SdRxUWN8CzdlfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751605704; c=relaxed/simple;
-	bh=y1gPNZj/q88bfYBuvkxThRzZpt/n3D7A1dyvXz3xKww=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hngktCSmXj28+U3a9AmWPyve3fwxvr+mLEIC4UbmGdzY1eOMmroBiGki1F60v+iMfXjPTmfNjDkfQ29hHId88gu8xJOJyAAQwF+HO1WRDFtLxGbzj67LfHB0lDeEMou86URPQaab9vZxwceM1Gy2VHNN2gsC0nDDRsLnUIUTs3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=gbw97eqi; arc=none smtp.client-ip=178.154.239.80
+	s=arc-20240116; t=1751608339; c=relaxed/simple;
+	bh=E6svKm+Qv+ZXCWMqasvSRlkJ1IQ9meRTlpMu7mgHXYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IwtNYv77vJ44sarRVz/lGMUqbIAvpfce9GQRQIglJ3iR9TiyyiqmsOskjq+U5xirOZTldY25/0pkt4jQ2ZePlGGJuFo09+1H20cCAFHE4oNcH8RtedOslUt0b5Bs76ialUCWgOQI0Ce58azbo9P8UG0IZTTE702+DIL1dlYDUNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=FetE71AY; arc=none smtp.client-ip=178.154.239.219
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="gbw97eqi"
-Received: from mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:1984:0:640:94c0:0])
-	by forward500a.mail.yandex.net (Yandex) with ESMTPS id 9ACD5620B4;
-	Fri,  4 Jul 2025 08:02:15 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id A2Vf089LriE0-WHwM9yJw;
-	Fri, 04 Jul 2025 08:02:14 +0300
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="FetE71AY"
+Received: from forward101d.mail.yandex.net (forward101d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d101])
+	by forward202d.mail.yandex.net (Yandex) with ESMTPS id E4ACB65FFF;
+	Fri,  4 Jul 2025 08:46:01 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:2f26:0:640:90f6:0])
+	by forward101d.mail.yandex.net (Yandex) with ESMTPS id C4C9760021;
+	Fri,  4 Jul 2025 08:45:52 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id ejVF7TEL2uQ0-QF09MHxa;
+	Fri, 04 Jul 2025 08:45:52 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1751605334;
-	bh=xiN3xK1QCQB4ufzRZmASOp1MO1WSMZ7q2pXVsqlbvFc=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=gbw97eqib7MwQ+doUdFtrYVDglHAQgssMZKbtEEN6ogK6tAhGx7QpQpVcFoFxXbg8
-	 VY1zTir1qjsJ9/eMV/RT400gwPucFmRqt9yMMGh/kHG06OIWcL6mOz6T2xumXydVr/
-	 hacVqhjYfkGn7Jy0dOs7dUqr4OAwh6LRkiZU3M4U=
-Authentication-Results: mail-nwsmtp-smtp-production-main-64.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Fri, 4 Jul 2025 08:02:08 +0300
-From: Onur <work@onurozkan.dev>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <acourbot@nvidia.com>, <joelagnelf@nvidia.com>, <wedsonaf@gmail.com>
-Subject: Re: [PATCH] rust: fix outdated safety note in
- `Revocable::revoke_internal`
-Message-ID: <20250704080208.0a6bd4c3@nimda.home>
-In-Reply-To: <DB2ONAGQF92H.1ARBZW47KMVV8@kernel.org>
-References: <20250703172605.28891-1-work@onurozkan.dev>
-	<DB2ONAGQF92H.1ARBZW47KMVV8@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	s=mail; t=1751607952;
+	bh=7pgV02ZJczYf5f5e5DwWjzRTxSRKgprRp4L6AbFTIGU=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=FetE71AYojF99W3Hu4Xn4HWi/I552o16HJP1eRnSG2xfkKS0/exNh7rLlfRaSvezZ
+	 IG0PYGyVFw9yXBH2XKlQpCnjhYZZjFP4bP4Pdl4m2e0N/kQ/5AuIFNrzV/DuM4VJ4I
+	 BsQDKGcdDmfufkwy9SNXtzmhjk1xFPZJ2p2Yg86A=
+Authentication-Results: mail-nwsmtp-smtp-production-main-52.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	mattgilbride@google.com,
+	wedsonaf@gmail.com,
+	daniel@sedlak.dev,
+	tamird@gmail.com,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH] rust: rbtree: simplify finding `current` in `remove_current`
+Date: Fri,  4 Jul 2025 08:45:39 +0300
+Message-ID: <20250704054539.7715-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,56 +61,47 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, 03 Jul 2025 21:55:44 +0200
-"Benno Lossin" <lossin@kernel.org> wrote:
+The previous version used a verbose `match` to get
+`current`, which may be slightly confusing at first
+glance.
 
-> Something went wrong with your TO addresses, merging Alex's and
-> Boqun's...
->=20
-> On Thu Jul 3, 2025 at 7:26 PM CEST, Onur =C3=96zkan wrote:
-> > The code used to use `compare_exchange` in the initial version
-> > but it was changed to `swap` after a reviewer suggestion (see [1]),
-> > and then the safety comment was not updated and became incorrect.
-> >
-> > Link:
-> > https://lore.kernel.org/all/20241211104742.533392-1-benoit@dugarreau.fr
-> > [1]
-> >
-> > Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
-> > ---
-> >  rust/kernel/revocable.rs | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> > index 06a3cdfce344..5c0b7afa76fb 100644
-> > --- a/rust/kernel/revocable.rs
-> > +++ b/rust/kernel/revocable.rs
-> > @@ -163,8 +163,10 @@ unsafe fn revoke_internal<const SYNC:
-> > bool>(&self) -> bool { unsafe { bindings::synchronize_rcu() };
-> >              }
-> > =20
-> > -            // SAFETY: We know `self.data` is valid because only
-> > one CPU can succeed the
-> > -            // `compare_exchange` above that takes `is_available`
-> > from `true` to `false`.
-> > +            // SAFETY: We just used an atomic `swap` to check if
-> > the data was still marked
-> > +            // as available. If it returns `true`, that means we
-> > are the first (and only)
-> > +            // thread to see it as available and mark it as
-> > unavailable. So no other thread
-> > +            // can access or drop the data after this. That makes
-> > it safe to drop the data here.
->=20
-> I think this is already addressed by this series:
->=20
->     https://lore.kernel.org/all/20250626165927.66498-1-marcelomoreira1905=
-@gmail.com
+This change makes it shorter and more clearly expresses
+the intent: prefer `next` if available, otherwise fall
+back to `prev`.
 
-Yeah, seems like.
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ rust/kernel/rbtree.rs | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index 8d978c896747..8f1052552132 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -769,18 +769,10 @@ pub fn remove_current(self) -> (Option<Self>, RBTreeNode<K, V>) {
+         // the tree cannot change. By the tree invariant, all nodes are valid.
+         unsafe { bindings::rb_erase(&mut (*this).links, addr_of_mut!(self.tree.root)) };
 
-Thanks,
-Onur
+-        let current = match (prev, next) {
+-            (_, Some(next)) => next,
+-            (Some(prev), None) => prev,
+-            (None, None) => {
+-                return (None, node);
+-            }
+-        };
+-
+         (
+-            // INVARIANT:
+-            // - `current` is a valid node in the [`RBTree`] pointed to by `self.tree`.
+-            Some(Self {
++            next.or(prev).map(|current| Self {
++                // INVARIANT:
++                // - `current` is a valid node in the [`RBTree`] pointed to by `self.tree`.
+                 current,
+                 tree: self.tree,
+             }),
+--
+2.50.0
+
