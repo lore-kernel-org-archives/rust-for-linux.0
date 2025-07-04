@@ -1,130 +1,105 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B3D2F50B0;
-	Fri,  4 Jul 2025 13:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84DB30748D;
+	Fri,  4 Jul 2025 13:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751634099; cv=none; b=eaIvkhRVA6PAJJOGJnZApRdCxDy1nTl90Kob8hxCXJBoFAG1jhXVh1sSu3mpwyC81r8exZyxEi1I2vUBoThqZIcfTI7e2Tvij1NnHWXs6JagY+NxCgweWH0hoIKidNsm0jy58fO1/uvszHTJAnWkDSdQEVnISAKbM9TDkvk7IUA=
+	t=1751637101; cv=none; b=PhAos7cHy3/SbKJbtBWLOfm7xODiP4sZYVHFsizjxSSxhqC2h7lPkdA5zdEAhVPeDqf/EM/nAJ7WKVPeVqDeSsL6gUdNkN4wJPKPaN/tZV6lAGi4uxafQobnIE8DYuudjLW/Ya6x6vJKkGEan7is3+m+LP93sgJMQ/Tpm+vm6NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751634099; c=relaxed/simple;
-	bh=1SFIg86ScSSNsm00r4z39bxOC+QdfD7ofZFsNo39Gyw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=QuDmR68sXHJu1VdwvmOy/8TKkuR13xrJO6c5cZ2Dm/63RUAXWFJo+uSeEfuIuoyWIfr+OSEYH50qX3xum/A/sAZZ72tqBtllDepreXqcg7TkhEkoSAQX7YcMVMYNoQfVX3DGY/+ZHLIamqaMI/wFSizpV1u5LYGB1BhBXd1C95s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTZQCGwh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751637101; c=relaxed/simple;
+	bh=/OiYSjkCDD0yVzW/zMXSwGUuzicvKJf923CS++qCXzw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S+AZ4bpfvfdExWeJiGUlTpeUoymUrCMc5ap9uea0xnFHDXO1212VicYo8lSmtaww4pI2RkVdWAGgDrviBrA0oYxMYvNIRRQS/QFxyxbgdt4h6xvl4g9WNLWeGzjpKGr7LLrcp0/zJv6ffrqc7RHZfStupSF87DQKoXjSpRoW26A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DjnrqUa3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTZQCGwh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA72C4CEE3;
-	Fri,  4 Jul 2025 13:01:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DjnrqUa3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9B4C4CEE3;
+	Fri,  4 Jul 2025 13:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751634099;
-	bh=1SFIg86ScSSNsm00r4z39bxOC+QdfD7ofZFsNo39Gyw=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=VTZQCGwhAN+TexmrabJGl6LSW4Xumo1b3iyodJcqKKb2S+NtuyH0wgV0XP9jPivaQ
-	 QuIqn8AtkfhK0+gKQ1ejE0AWPSMFd9C0sa8nLfuIly2BzdyUP8Px0ho4oMaC2LnN3l
-	 4lB1zV53g1wSLGMaKO1dWQLG5r1vqzj/k5z4JY4BdlXr5S/IsxRkvkdm+tgkf2VgOx
-	 fZqh+B/8T9b4HB0rnSrjSrFm90CAihtJ2cuZ6KUhRJXNxo5H/Hqv9zo/6d3q3R8XPw
-	 gK1OTk3fERiW0Prtx9CO8/vhuUS5bARcvhok3yE2TSbAXA89qvtD+iuArw73v2kZOz
-	 bKOGfZaX9sCWQ==
+	s=k20201202; t=1751637101;
+	bh=/OiYSjkCDD0yVzW/zMXSwGUuzicvKJf923CS++qCXzw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DjnrqUa36fkh8FCFhG4sw12ZoEQfFO5inamHW+G/dfchhyYcVkgSTNUaT7VMxNcLQ
+	 n0NMJIE54SJcJTBThl4+lP+1p+nWD+FQsogOMa7LXxWImwDAVkByIIOOAHuQgRbKFd
+	 8cW61XSP+u/00KT/B7YrqlLeuyd3zkSV2zuEtD5knRGXd4NxajCNQHNj21kOFwBoA8
+	 ikzmrCdb3T0ZHWl/jdiG9yTzwTiGfvAsbL2GoEp3DWdP8Gh8PTMjFmAQB/o50DizLx
+	 /jRp0Wci77uzt8oWFXrXsB5VohKUetig9XsWsJROzsP+oCkCMIPrDGsy9LOwjbc3RL
+	 LvfM/eZpDJIEA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v14 5/7] rust: module: update the module macro with
+ module parameter support
+In-Reply-To: <DB3A6GR3TQON.C9N9U4V48R1D@kernel.org> (Benno Lossin's message of
+	"Fri, 04 Jul 2025 14:48:10 +0200")
+References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
+	<20250702-module-params-v3-v14-5-5b1cc32311af@kernel.org>
+	<5fYjUlNFhuBwWOP46ph07KX4CMe0ORT5pZ_pD-l719E0ChkPTI2pV1tYJcN3oxKKcMI8_HGU1InaWBj52Kbbag==@protonmail.internalid>
+	<DB1OK2PQZ790.S317HUWYJR3J@kernel.org> <875xg8rvei.fsf@kernel.org>
+	<32cgJkp6-1w5-FLQMuvqhCiTvKUhR7SiIWtWdQFlkp2UoeAU3YuYmj7EElURj_NxY01OuuWlZ2aNPzX1UksjOg==@protonmail.internalid>
+	<DB3A6GR3TQON.C9N9U4V48R1D@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Fri, 04 Jul 2025 15:51:27 +0200
+Message-ID: <87zfdkqd28.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 04 Jul 2025 15:01:23 +0200
-Message-Id: <DB3AGL1QO4M4.2HANWHX9TF9WN@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
- <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <llvm@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <linux-block@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <linux-clk@vger.kernel.org>
-Subject: Re: [PATCH v13 4/5] rust: replace `kernel::c_str!` with C-Strings
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>, "Michal Rostecki"
- <vadorovsky@protonmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
- <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>,
- "Maxime Ripard" <mripard@kernel.org>, "Thomas Zimmermann"
- <tzimmermann@suse.de>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "FUJITA
- Tomonori" <fujita.tomonori@gmail.com>, "Rob Herring" <robh@kernel.org>,
- "Saravana Kannan" <saravanak@google.com>, "Peter Zijlstra"
- <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
- <will@kernel.org>, "Waiman Long" <longman@redhat.com>, "Nathan Chancellor"
- <nathan@kernel.org>, "Nick Desaulniers" <nick.desaulniers+lkml@gmail.com>,
- "Bill Wendling" <morbo@google.com>, "Justin Stitt"
- <justinstitt@google.com>, "Andrew Lunn" <andrew@lunn.ch>, "Heiner Kallweit"
- <hkallweit1@gmail.com>, "Russell King" <linux@armlinux.org.uk>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jens
- Axboe" <axboe@kernel.dk>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Dave Ertman" <david.m.ertman@intel.com>, "Ira
- Weiny" <ira.weiny@intel.com>, "Leon Romanovsky" <leon@kernel.org>, "Breno
- Leitao" <leitao@debian.org>, "Viresh Kumar" <viresh.kumar@linaro.org>,
- "Michael Turquette" <mturquette@baylibre.com>, "Stephen Boyd"
- <sboyd@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-4-29f7d3eb97a6@gmail.com>
-In-Reply-To: <20250701-cstr-core-v13-4-29f7d3eb97a6@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Tue Jul 1, 2025 at 6:49 PM CEST, Tamir Duberstein wrote:
-> C-String literals were added in Rust 1.77. Replace instances of
-> `kernel::c_str!` with C-String literals where possible and rename
-> `kernel::c_str!` to `str_to_cstr!` to clarify its intended use.
+"Benno Lossin" <lossin@kernel.org> writes:
 
-These two things can also be split? And it should also be possible to do
-this by-subsystem, right?
+> On Fri Jul 4, 2025 at 2:29 PM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
+>>> On Wed Jul 2, 2025 at 3:18 PM CEST, Andreas Hindborg wrote:
+>>>> +                            perm: 0, // Will not appear in sysfs
+>>>> +                            level: -1,
+>>>> +                            flags: 0,
+>>>> +                            __bindgen_anon_1:
+>>>> +                                ::kernel::bindings::kernel_param__bindgen_ty_1 {{
+>>>> +                                    arg: {param_name}.as_void_ptr()
+>>>> +                                }},
+>>>
+>>> Formatting?
+>>>
+>>> +                            __bindgen_anon_1: ::kernel::bindings::kernel_param__bindgen_ty_1 {{
+>>> +                                arg: {param_name}.as_void_ptr()
+>>> +                            }},
+>>
+>>
+>> That makes the line more than 100 characters after changing other
+>> formatting things. Perhaps I should just left shift all this?
+>
+> Not sure what you mean by left shift? When I tried it, it was fine, but
+> it could have changed with the other things... Do you have a branch with
+> your changes?
 
----
-Cheers,
-Benno
+Move all the code template so the least indented start at column 0.
 
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1075
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
->  drivers/block/rnull.rs                |  2 +-
->  drivers/cpufreq/rcpufreq_dt.rs        |  5 ++---
->  drivers/gpu/drm/nova/driver.rs        | 10 +++++-----
->  drivers/gpu/nova-core/driver.rs       |  6 +++---
->  drivers/net/phy/ax88796b_rust.rs      |  7 +++----
->  drivers/net/phy/qt2025.rs             |  5 ++---
->  rust/kernel/clk.rs                    |  6 ++----
->  rust/kernel/configfs.rs               |  9 +++++----
->  rust/kernel/cpufreq.rs                |  3 +--
->  rust/kernel/devres.rs                 |  2 +-
->  rust/kernel/drm/ioctl.rs              |  2 +-
->  rust/kernel/firmware.rs               |  6 +++---
->  rust/kernel/kunit.rs                  | 14 ++++++--------
->  rust/kernel/net/phy.rs                |  6 ++----
->  rust/kernel/platform.rs               |  4 ++--
->  rust/kernel/str.rs                    | 24 ++++++++++++++++--------
->  rust/kernel/sync.rs                   |  7 +++----
->  rust/kernel/sync/completion.rs        |  2 +-
->  rust/kernel/sync/lock/global.rs       |  3 ++-
->  rust/kernel/workqueue.rs              |  8 ++++----
->  rust/macros/kunit.rs                  | 10 +++++-----
->  rust/macros/module.rs                 |  2 +-
->  samples/rust/rust_configfs.rs         |  5 ++---
->  samples/rust/rust_driver_auxiliary.rs |  4 ++--
->  samples/rust/rust_driver_faux.rs      |  4 ++--
->  samples/rust/rust_driver_pci.rs       |  4 ++--
->  samples/rust/rust_driver_platform.rs  |  4 ++--
->  samples/rust/rust_misc_device.rs      |  3 +--
->  scripts/rustdoc_test_gen.rs           |  4 ++--
->  29 files changed, 84 insertions(+), 87 deletions(-)
+My WIP branch is here [1].
+
+
+Best regards,
+Andreas Hindborg
+
+
+[1] https://github.com/metaspace/linux/tree/module-params
+
