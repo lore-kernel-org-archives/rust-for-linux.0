@@ -1,52 +1,52 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C575F271456;
-	Fri,  4 Jul 2025 07:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888491F463C;
+	Fri,  4 Jul 2025 07:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751613236; cv=none; b=Cf9WzTluHLropy7av+xzi6CmlFfB/wTTvbQL4s39BZ10iXboKFZmBrRMfHO0MxVnKsvouBsm4RmR/qmvhy2WNnGwIkbmzCKnjeaSiRJMP7rfAn72og8sInnkVbYZJt4lAnvxeStlLjEuyx7+5QNlJQXfeL9om9bqt0CKhC/fIyY=
+	t=1751613641; cv=none; b=dqyHCqM+lQTIubBcy+jGoZm1qk4ygGgqAxIs1ScKFQl1j9lpcQaauIcJ9l43AU7EXZdtDlP1KkpmMWS9RYqwXMhXCaMlNZ9CWyqIy8AvYQIlEZtAU9GI9qz7dcNy52bk+jBcbqPz6kljfSMX67c47dnR+FNaI8zl1lOrASzqIYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751613236; c=relaxed/simple;
-	bh=tcLavxAVlYo+tHuYvEppo9Oz15fXopm70O8QPBgs204=;
+	s=arc-20240116; t=1751613641; c=relaxed/simple;
+	bh=6GsPaRiKgeYVnDnqBL+zKJ43kvtFQgCU07RdluLCgVI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=aE9VPl3Cey1jq1h8UXBkXCp0xS57Do0dJ9pc2Q6m9Fr6aeixivdfVYHSa11gacL2zuhlgQZbk13QVw/GzDIEzgJVfcpYwuGhYF9UMIca3DJz2biyrcc0NN8rLkWNbrE/wXOs69YkVUpFwPgvlVkpy21uyn/PDrtTiKSfO55PRGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRzXGwyv; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=T4NVbsk2+EASgXikx19iXejpofSv5axF+8M4em9JYdFtWClyBwDaYouDVtrAoIW0XBigPfHxhDxmiDcwmAIbq9Qtu5L6jykc9+e7W/0KUtg0vLBjVvwaaF9RZnwZo0Ep8zHZmoVq/ZY32yhjGuddaPWRAr+MBJ/xciWJk50y0/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tXJAa5/P; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRzXGwyv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EE6C4CEED;
-	Fri,  4 Jul 2025 07:13:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tXJAa5/P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC18C4CEE3;
+	Fri,  4 Jul 2025 07:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751613236;
-	bh=tcLavxAVlYo+tHuYvEppo9Oz15fXopm70O8QPBgs204=;
+	s=k20201202; t=1751613641;
+	bh=6GsPaRiKgeYVnDnqBL+zKJ43kvtFQgCU07RdluLCgVI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=uRzXGwyvAtPft9w1VoMphyV0tQUJKziy2Lsclj0vZNmNF6FkjiaEXgo2wpyVxY1lY
-	 h+3SRWIJ8SicrcpUV0nzP33SGpMRKJ0rLItmDpJySyP5s6CnJpulPkYWTu46W93Yd5
-	 43WEtB8cdEx+4JVvtK1AqyWGHeE+qia0KGz44FMuX2/cILf618AENNfEv9EkV6fyyp
-	 4/ZKNinqWvrDfGDkIxfNEFzFyB7V4YbmZ6wLXpdF3uRhU1hsAMP0YZD9OJNOJPPVop
-	 In4OhGqXX/KvUYdRHpQTNGhtoC4LS6yUO9J1Hn1jXG3FFYQrj5a4L51veikLglh7ce
-	 XC4Vp1zbFOhgw==
+	b=tXJAa5/P7SIMT/vVcFuovMsjkccf90PZrOyABdWwryeLd9sC7irxvVzG2R/ZMHF81
+	 tBJOuqUs/v9/VoEOXFENGUO+Ve/8TTWNm1eIufhcGbPGQ/69apGtc9I1V6ZNGkTBPY
+	 BUCsnYyiTB5IGjeHErhCwAfwdFXqZcYJfPetXh2s8Va3U+1IAYfARQH1Rq66wJC5tT
+	 gKmigVtzugRSnYrOKMlm2uS7eik7ULbT8u14SWNpD5k3R/dntn5HD9P93a3Ixonkhw
+	 hVIhKp5HuPhHS14902KJr76mmgh4YEFUL+KF7z31bjdsftrXuxCnBbnuqgDpsafPro
+	 EO+8Zoet8uH6Q==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,  aliceryhl@google.com,
-  alex.gaynor@gmail.com,  ojeda@kernel.org,  boqun.feng@gmail.com,
-  anna-maria@linutronix.de,  bjorn3_gh@protonmail.com,  dakr@kernel.org,
-  frederic@kernel.org,  gary@garyguo.net,  jstultz@google.com,
-  linux-kernel@vger.kernel.org,  lossin@kernel.org,  lyude@redhat.com,
-  rust-for-linux@vger.kernel.org,  sboyd@kernel.org,  tglx@linutronix.de,
-  tmgross@umich.edu
-Subject: Re: [PATCH v1] rust: time: make ClockSource unsafe trait
-In-Reply-To: <CANiq72m886R2ZOLSSzehU8aTXzYtPmTyyrSxpOQCr7GX_Bcghg@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Fri, 4 Jul 2025 08:42:07 +0200")
-References: <20250701.083940.2222161064880631447.fujita.tomonori@gmail.com>
-	<87sejfuf3n.fsf@kernel.org>
-	<CAH5fLgjdpso4waCrP6iVaMEOpYLUmqCz8PxqXuSbQBMaxxCHBw@mail.gmail.com>
-	<20250704.090751.571327900479764851.fujita.tomonori@gmail.com>
-	<CANiq72m886R2ZOLSSzehU8aTXzYtPmTyyrSxpOQCr7GX_Bcghg@mail.gmail.com>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Cc: <miguel.ojeda.sandonis@gmail.com>,  <alex.gaynor@gmail.com>,
+  <ojeda@kernel.org>,  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
+  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
+  <frederic@kernel.org>,  <gary@garyguo.net>,  <jstultz@google.com>,
+  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
+  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
+  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
+Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
+ Delta
+In-Reply-To: <20250626.091248.526065656918619245.fujita.tomonori@gmail.com>
+	(FUJITA Tomonori's message of "Thu, 26 Jun 2025 09:12:48 +0900")
+References: <94kOZwdYnRPRMO6SAHAvEFEygT4dU-njfBxTMC6BiPQ-u49pyL5hLgbLQBGOct1ruxVJPtYGJ0Dq0Ns2mh-sMQ==@protonmail.internalid>
+	<20250625.082020.1714542193051382332.fujita.tomonori@gmail.com>
+	<877c102pxs.fsf@kernel.org>
+	<ZFASmKV5PIQgMyCMtprnQhN2MklF9_-3RwUFGLemFqvv23Cm3vyKh-spm0PhKWFjc8vixGNYrAlz93Dw_ruczw==@protonmail.internalid>
+	<20250626.091248.526065656918619245.fujita.tomonori@gmail.com>
 User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Fri, 04 Jul 2025 09:13:45 +0200
-Message-ID: <87ms9ktoly.fsf@kernel.org>
+Date: Fri, 04 Jul 2025 09:20:29 +0200
+Message-ID: <87h5zstoaq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,28 +56,151 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> writes:
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 
-> On Fri, Jul 4, 2025 at 2:08=E2=80=AFAM FUJITA Tomonori
-> <fujita.tomonori@gmail.com> wrote:
+> On Wed, 25 Jun 2025 10:19:59 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>
+>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 >>
->> I had a quick look at the official Rust documentation, and I think I
->> agree with this opinion.
+>>> On Tue, 24 Jun 2025 21:03:24 +0200
+>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>
+>>>> Andreas Hindborg <a.hindborg@kernel.org> writes:
+>>>>
+>>>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>>>>>
+>>>>>> On Tue, 24 Jun 2025 15:11:31 +0200
+>>>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>>>>
+>>>>>>>> and already introduces pain for
+>>>>>>>> others (and likely even more pain when we need to rename it back n=
+ext
+>>>>>>>> cycle), it doesn't look like a good idea to keep it.
+>>>>>>>
+>>>>>>> Ok, I'll drop it.
+>>>>>>
+>>>>>> Do you want me to send the updated hrtimer conversion patchset
+>>>>>> (using as_* names)?
+>>>>>
+>>>>> No, I am just about finished fixing up the rest. You can check if it =
+is
+>>>>> OK when I push.
+>>>>
+>>>> I pushed it, please check.
+>>>
+>>> Thanks!
+>>>
+>>> The commit d9fc00dc7354 ("rust: time: Add HrTimerExpires trait") adds
+>>> to Instant structure:
+>>>
+>>> +    #[inline]
+>>> +    pub(crate) fn as_nanos(&self) -> i64 {
+>>> +        self.inner
+>>> +    }
+>>>
+>>> Would it be better to take self instead of &self?
+>>>
+>>> pub(crate) fn as_nanos(self) -> i64 {
+>>>
+>>> Because the as_nanos method on the Delta struct takes self, wouldn=E2=
+=80=99t it
+>>> be better to keep it consistent? I think that my original patch adds
+>>> into_nanos() that takes self.
+>>>
+>>> This commit also adds HrTimerExpire strait, which as_nanos() method
+>>> takes &self:
+>>>
+>>> +/// Time representations that can be used as expiration values in [`Hr=
+Timer`].
+>>> +pub trait HrTimerExpires {
+>>> +    /// Converts the expiration time into a nanosecond representation.
+>>> +    ///
+>>> +    /// This value corresponds to a raw ktime_t value, suitable for pa=
+ssing to kernel
+>>> +    /// timer functions. The interpretation (absolute vs relative) dep=
+ends on the
+>>> +    /// associated [HrTimerMode] in use.
+>>> +    fn as_nanos(&self) -> i64;
+>>> +}
+>>>
+>>> That's because as I reported, Clippy warns if as_* take self.
+>>>
+>>> As Alice pointed out, Clippy doesn't warn if a type implements
+>>> Copy. So we can add Copy to HrTimerExpires trait, then Clippy doesn't
+>>> warn about as_nanos method that takes self:
+>>>
+>>> +/// Time representations that can be used as expiration values in [`Hr=
+Timer`].
+>>> +pub trait HrTimerExpires: Copy {
+>>> +    /// Converts the expiration time into a nanosecond representation.
+>>> +    ///
+>>> +    /// This value corresponds to a raw ktime_t value, suitable for pa=
+ssing to kernel
+>>> +    /// timer functions. The interpretation (absolute vs relative) dep=
+ends on the
+>>> +    /// associated [HrTimerMode] in use.
+>>> +    fn as_nanos(self) -> i64;
+>>> +}
+>>>
+>>> I'm fine with either (taking &self or Adding Copy).
+>>
+>> Let's wait for the whole naming discussion to resolve before we do
+>> anything. I am honestly a bit confused as to what is the most idiomatic
+>> resolution here.
+>>
+>> I think taking `&self` vs `self` makes not difference in codegen if we
+>> mark the function `#[inline(always)]`.
 >
-> My personal take: I agree that having both English and something else
-> is a bit redundant -- some redundancy is good when something (like a
-> notation) may be non-obvious, but I think a math integer interval or a
-> Rust range or a condition like 0 <=3D v <=3D `KTIME_MAX` are all
-> understandable in this context.
->
-> Now, whether to use English or any of the other options, it is hard to
-> say what is best for most readers. Personally, I prefer to just see
-> one of the expressions, which makes it also closer to other forms,
-> e.g. a debug assert somewhere, or a contract, or other tooling or
-> formalization efforts.
+> I believe we've reached a consensus on the discussion about `&self` vs
+> `self`.
 
-I would prefer `0..=3DKTIME_MAX` or `0 <=3D v <=3D KTIME_MAX`. English prose
-is also OK and I won't object to that, but I prefer the others.
+But not on the function name, right?
+
+>
+> Miguel summarized nicely:
+>
+> https://lore.kernel.org/lkml/CANiq72nd6m3eOxF+6kscXuVu7uLim4KgpONupgTsMcA=
+F9TNhYQ@mail.gmail.com/
+>
+>>> Yes, I would prefer taking by value. I think Alice mentioned earlier in
+>>> this thread that the compiler will be smart about this and just pass the
+>>> value. But it still feels wrong to me.
+>>
+>> If inlined/private, yes; but not always.
+>>
+>> So for small ("free") functions like this, it should generally not
+>> matter, since they should be inlined whether by manual marking or by
+>> the compiler.
+>
+>> But, in general, it is not the same, and you can see cases where the
+>> compiler will still pass a pointer, and thus dereferences and writes
+>> to memory to take an address to pass it.
+>>
+>> Which means that, outside small things like `as_*`, one should still
+>> probably take by value. Which creates an inconsistency.
+>
+>
+> I think that another consensus from this discussion is that the table
+> in the API naming guidelines doesn't cover this particular case.
+> Therefore, it makes sense to keep the current function name and move
+> forward.
+>
+> Delta already provides `fn as_nanos(self)` (and drm uses in
+> linux-next, as you know) so I believe that Instant should use the same
+> interface.
+>
+>
+> That table needs improvement, but reaching consensus will likely take
+> time, it makes sense to address it independently.
+
+I am still uncertain what guidelines to follow inside the kernel. Last
+time I applied a patch in this situation, I had to remove it again. I
+would rather not have to do that.
+
+Perhaps the best way forward is if you send the patch with the naming
+and argument type you think is best, and then we continue the discussion
+on that patch?
 
 
 Best regards,
