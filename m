@@ -1,116 +1,130 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03FB1C07C3;
-	Thu,  3 Jul 2025 23:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F65623A6;
+	Fri,  4 Jul 2025 00:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751586141; cv=none; b=AXO/VqBnTe8Y/4pqPDQbK+hFPpT7g+0PIB5x5hfRyBLALHMC07WCTZMAaD9pUenMQlMw3ztzDKeeVcy7HvE1V+QG4JD7syE87taiazqVep8g+2D1txc6UvxjYKi+WIj6jyzyERGjNVwhWHhYST7oIpbS7wlgqDMQ3NbMcoqCdV8=
+	t=1751587689; cv=none; b=mcH75K+C1LQZSXwd2qN+KcZNYOO9onZwutOFitpJ1IrjZlFbvnbMFFzgYsO/cYjvwFfe2XySQk8l+Ko1hRfZBnF+S3XedraHZyk2uKMqvTXGJGddwJmK6l6oSONizeU35A+JSLIWRUb1rKlJnEsDZzOCZLc3Q6PA/8KV3c0cL6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751586141; c=relaxed/simple;
-	bh=lhR4RZPnwwTUQfyli8yukVHymruSc9mB3XDQlwCPzoM=;
+	s=arc-20240116; t=1751587689; c=relaxed/simple;
+	bh=6IOtBe302IQ49hbl2incLA/h2cLlOoTFSUyfYxYhEiY=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=GN0F55aTi5ntTHN0PDB97AYQJcdMvEhf1p9kU1h5q823eL9NlXmrt2FUwR18dGqIoOW3c6QT42QZnJxuhycF730cunzB9g4iZ0clXIZoAnlSUIZsn+x/yFcN+51fq3De7Or+vVYcu6A24/JjeUb5sYO28rSY6jr7mU8K4iseWrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MoVqakLO; arc=none smtp.client-ip=209.85.216.42
+	 Mime-Version:Content-Type; b=Vv0hvmYjNFpi2rfAa5fRZUTWakfaRJXeQjm+VnzTGXFHOcQ8GZp456qBtezNW6Jfis6U19+0PdFNEwBJu9F0y8txMXOWZr0tzLvbuGjB2xmGNnuTmB2nVrfsaQJ75zIxuuCqDrdV5X0FFuWGxYGNidm0IeRPKdptBW7aTD7F1Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SZ7yhh+f; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MoVqakLO"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-3122368d7cfso348453a91.1;
-        Thu, 03 Jul 2025 16:42:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SZ7yhh+f"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-748f5a4a423so339034b3a.1;
+        Thu, 03 Jul 2025 17:08:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751586137; x=1752190937; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751587687; x=1752192487; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qKNinWMj37vCi2UqRrU909/WDXj3eScieF7WNVO/swg=;
-        b=MoVqakLOxgy03J0BIArfgNbD2rFUJrBr4W0Lj715KPuUpbVAj+ZHE+ZCKPvojQ4zxi
-         Uqu6XnTrorCSvnO4fckuunJGxvO/SaTQR3YPD54hUsNWZvq7JcskUWqzIvRnDlHJADPX
-         7h/mhpTJZ1ZhF7szOWpvpGw+LoH6WT4apa75nSkSn6tbaQ0mNPdZuSMvdmMR8Z9sBvcv
-         U41IQn6scHn0mX+34hgjgRc1V/P0tEowSPW1FGllPeQkG71pcdDYgBUULjjNERqENJLK
-         38LxgRC3ZkGJrAtHEAbSd3Hif6SUcraGNt1n/zE4pC1QflRvG0dBc0u3fJD3Zc8W1B3e
-         q+5A==
+        bh=iTtXxeSTjFwbn7vBl3oWSyxodotdHStB5CipA3nQfs0=;
+        b=SZ7yhh+fLi0/3lWw7FCOVLkmFsHd/fLP0KIWLdeno7Qlp+yqdixRcJRJBnv5vpI0dv
+         dsO5wrhZAN2yMlOaU76rPMP+OXdxaZlZoyEf3zhHne2lKG1+JViMLbUZnVCWA+DiGMoO
+         c+gdXdBHNh47jLnV6Ilp7I0D9E6Wg7hC0lnU2uP5uNtMUTR58xNoicUJlNyOdUOy/6/U
+         tw8f7c2YuOmwnZ+ubeQRD6xlysN50Y0mUpg6tw4LYnjm2ePZdhOVhsFy2p1BgSSwafq+
+         0Bt0wd/wrdcyFb7aok50y1WTZGK52J0vNrdUMyjmQGKTyawkGK/FD9RWORCcghG1Utrp
+         RyJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751586137; x=1752190937;
+        d=1e100.net; s=20230601; t=1751587687; x=1752192487;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=qKNinWMj37vCi2UqRrU909/WDXj3eScieF7WNVO/swg=;
-        b=VGx5c2Yuf6pIShZfpyi4iB8x/r0CfOg5+FGHUYbTj7e3fXh2bnLnrDxOik09E7JY/L
-         R7RppcrnuRgr4PI0HslZpkAjhyMnPDhi3eS6jj+SyFqMZw+6czcamC/njm3QZI5C/PGP
-         OriHkCHLGWKsE8YmJBhpV5YVvJVQWtQCKbkEvPmAKVoY2+1eSTpcrF6a2K2exfbyAl5P
-         mUtBlWw4007EenuxArNDDG8Ri5YlWoFdpbB180LuD9XgAQbW5hB6kpmmHC7K6J3x5/2M
-         AcagS0qQWdaytfzPqlTyUr2DEPVJ9yelDu991jRXBZCrsEVD2ERSQ2qB/it5KURMZjd0
-         +HqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3fqqZrZWvbTdREmZLlYa5uPIuw9DbzzLZkp2PJPiVjW985nDTj1kf+SFpuPe6xdVfqVvcZJTpgsMI@vger.kernel.org, AJvYcCV3KD7pQjf/dK6qQGQReeL0LiqMXBDfbdvNXkvt51s0fYPQlfBPX2hY3zpYAfcZvxNe8q+5YUcQIXTtePNc@vger.kernel.org, AJvYcCViIJ3mzGNiZrRQG5n3T4ODtZ0RYP8+kukKo/3KOULjgQCdECr2J54+queFlY0Iqv5tp9mpXB3xX0E9@vger.kernel.org, AJvYcCWE3vT8sSPxbKAnrDQoqfunbeZW/iaWj4Y8C0CruGosDD4rGNNwOUALa6H3fgLKkYcxV7P+9dGE@vger.kernel.org, AJvYcCXVKFhi626QLEOaRC7GrvQKVsS8t/XegbTUp06tOD1K51mALdMvHe0CMRr+xo4IFc1s1zUuS6xcrnu+jm0oeSA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvMngCyZAXeRA/YJe82r8QdMVQMZFJ9xdJSc1wvP8KlensPvoj
-	ouwmnaswgRQVDyILgAJUgzzwTw48sSrtGT7V8OPEBlu/FKInUeF9l8Gu
-X-Gm-Gg: ASbGncuBCXD43xUHzRq+AJHRFS3/1k3l/wphvFBCWibufRScUJNjUsxVURFuMWJN6xX
-	8wZf9s+IZ0ZoWlqHIKYoItSbxAu2dhsyA17bwcoPRzOMVYRW6L7SYDui4Jpw2wqKIlfb6BAQyHg
-	eT5PD5p0EvmzdCvO0GvAVuaNb9SwUGrDO82vbREp7DmWBwYDFbEPJZxB2Amky/3FA9RSDj58jgB
-	uHbccOAs8jbJ+Q6CmgBmLdI62ZRfpCZ9g4/d9l5HYF7DqPP87l+J/uwhnTJk/ftoU3kkfXxDqre
-	2XCxWqdHkmdICqnWidsDbk+dQtmkSKNpAY8ImLmHQHeoqXUjmrv8mgdn+zL6NjfhlXCqHf6u+3V
-	PEEQeiE4I6EZ4I1Vf4vfkVtkAQ4yUz1mMiFTHTM5a
-X-Google-Smtp-Source: AGHT+IFlCPvcGAkGD2bjF3k+rTOckARCfwGn6FP1B3780U9Hwhe3ozJbspQZY9UpgTuMJ228GOqlXQ==
-X-Received: by 2002:a17:90b:3d43:b0:311:eb85:96f0 with SMTP id 98e67ed59e1d1-31aac53b7ccmr728829a91.29.1751586136990;
-        Thu, 03 Jul 2025 16:42:16 -0700 (PDT)
+        bh=iTtXxeSTjFwbn7vBl3oWSyxodotdHStB5CipA3nQfs0=;
+        b=T3dTdjbCMw+vP0FDLdN1ZgeLHbCOPG4mY/qHs5osYO5pIIh5LxTTpcungsTEtQK30k
+         ZVangMbSzp8FaHx53i4MsFkQxo69pWVDvyoXHnegJwmNDBGjgtTbjnMKgCoWup38NjcR
+         h7t+cOO4TVqvJYlUBtmwskFLNr6HxWnq8HRjwcqCNd9NX0UxuSV2CJtT/WmV8dJl1wAJ
+         YHBjfsMrFFlPK/JnGCOkhsJGCruPzfhz+Zcc6uxtk5n+lAQH2rg1f11BvcF8wuaGop4F
+         ROhuAgRdSwJXE8eomGWtAfikU0QLIfbNGlyXELJZ+w237R+NiYpm+PT6dPzeL5/VlSzO
+         ESlw==
+X-Forwarded-Encrypted: i=1; AJvYcCWjwJ9kBoN7mcB8wVXl1HzzXwGeCA9YjUSUJk7saAb5RXetBoGX9Lh57+vW2u+ZoSFtyOdde6kyKrHzg3Q3NeY=@vger.kernel.org, AJvYcCWmfBFXtMimJQbHAjV70/ruZLfOhfgB6jiX2C0prmTQT1v6iVkYajZ22qOQe7gjoIelAlWUUXeOEbkTLEc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDe3etPmo4i5QkoF0ONbB53jG6RNJ/h/AB4UGNLJ/BT1IaSPCr
+	ePLdOdMl+XvO1hsfn/DGueGnwD57SiOo8B6dFssJcVeLJP0OesdmXyNw
+X-Gm-Gg: ASbGncvxHRXwBeZo8tjQQI4DVztIWCfWJ+l1B2yoxxp/aStQC2cDwr9VPegOebHvHWx
+	45xdh/hJQwgrQf3xea1ibhRPIrvxPM09ZgP1XDx/JGKvKUbDu2z01fTSbT0bIwHkshLAwWcAvKb
+	R+0y9jNDRDljB4KntRYbbvfTBzGQv/erb9G9Clm+Yl9sDnpceA1z7vaB3kQ314HcpeUOWe3GRcX
+	kvyI10rf2eBp1eRaDVfSIusGRqUQzBnsBqQOjLdZff7wkzmVfy8EGFMarsNoafowMJSdq2kT62K
+	CUiTO7kvdEksVirzjTcBAuchE9RAdHOQG0ZSHojaOxfKzbn6ATGwKpwmhpp7T1ZJRx7oE6RZub+
+	/fGBRLPHhmgeWPiugdE4K53Smu2TuLxwXPHrQz1zbedE/C+X4XOM=
+X-Google-Smtp-Source: AGHT+IEcjjhEoGNnFpdeaxOrd3OBNKkUIO/cGlogM9cZHvglpNVTY2wleVcrSuVvg7vDsuQBbWiXbw==
+X-Received: by 2002:a05:6a00:3d16:b0:748:2cbb:be45 with SMTP id d2e1a72fcca58-74ce8a8debcmr157858b3a.15.1751587687381;
+        Thu, 03 Jul 2025 17:08:07 -0700 (PDT)
 Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31a9cd09a27sm3301175a91.33.2025.07.03.16.42.11
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74ce359f54asm629336b3a.31.2025.07.03.17.08.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jul 2025 16:42:16 -0700 (PDT)
-Date: Fri, 04 Jul 2025 08:41:59 +0900 (JST)
-Message-Id: <20250704.084159.887748101305692803.fujita.tomonori@gmail.com>
-To: dakr@kernel.org, ojeda@kernel.org
-Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com,
- gregkh@linuxfoundation.org, rafael@kernel.org, robh@kernel.org,
- saravanak@google.com, a.hindborg@kernel.org, aliceryhl@google.com,
- bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
- david.m.ertman@intel.com, devicetree@vger.kernel.org, gary@garyguo.net,
- ira.weiny@intel.com, kwilczynski@kernel.org, leon@kernel.org,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- lossin@kernel.org, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- tmgross@umich.edu
-Subject: Re: [PATCH v1 1/3] rust: device_id: make DRIVER_DATA_OFFSET
- optional
+        Thu, 03 Jul 2025 17:08:06 -0700 (PDT)
+Date: Fri, 04 Jul 2025 09:07:51 +0900 (JST)
+Message-Id: <20250704.090751.571327900479764851.fujita.tomonori@gmail.com>
+To: aliceryhl@google.com, a.hindborg@kernel.org
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com, ojeda@kernel.org,
+ boqun.feng@gmail.com, anna-maria@linutronix.de, bjorn3_gh@protonmail.com,
+ dakr@kernel.org, frederic@kernel.org, gary@garyguo.net,
+ jstultz@google.com, linux-kernel@vger.kernel.org, lossin@kernel.org,
+ lyude@redhat.com, rust-for-linux@vger.kernel.org, sboyd@kernel.org,
+ tglx@linutronix.de, tmgross@umich.edu
+Subject: Re: [PATCH v1] rust: time: make ClockSource unsafe trait
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <64cec618-b883-4330-b1ba-5172f7790fe3@kernel.org>
-References: <20250623060951.118564-1-fujita.tomonori@gmail.com>
-	<20250623060951.118564-2-fujita.tomonori@gmail.com>
-	<64cec618-b883-4330-b1ba-5172f7790fe3@kernel.org>
+In-Reply-To: <CAH5fLgjdpso4waCrP6iVaMEOpYLUmqCz8PxqXuSbQBMaxxCHBw@mail.gmail.com>
+References: <20250701.083940.2222161064880631447.fujita.tomonori@gmail.com>
+	<87sejfuf3n.fsf@kernel.org>
+	<CAH5fLgjdpso4waCrP6iVaMEOpYLUmqCz8PxqXuSbQBMaxxCHBw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-2022-jp
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Fri, 4 Jul 2025 00:15:19 +0200
-Danilo Krummrich <dakr@kernel.org> wrote:
+On Wed, 2 Jul 2025 11:50:35 +0200
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-> On 6/23/25 8:09 AM, FUJITA Tomonori wrote:
->> Enable support for device ID structures that do not contain
->> context/data field (usually named `driver_data`), making the trait
->> usable in a wider range of subsystems and buses.
->> Several such structures are defined in
->> include/linux/mod_devicetable.h.
->> This refactoring is a preparation for enabling the PHY abstractions to
->> use device_id trait.
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> >>> Mark the ClockSource trait as unsafe and document its safety
+>> >>> requirements. Specifically, implementers must guarantee that their
+>> >>> `ktime_get()` implementation returns a value in the inclusive range
+>> >>> [0, KTIME_MAX].
+>> >>>
+>> >>> Update all existing implementations to use `unsafe impl` with
+>> >>> corresponding safety comments.
+>> >>>
+>> >>> Note that there could be potential users of a customized clock source [1]
+>> >>> so we don't seal the trait.
+>> >>>
+>> >>> Link: https://lore.kernel.org/rust-for-linux/Z9xb1r1x5tOzAIZT@boqun-archlinux/ [1]
+>> >>> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+>> >>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> >>
+>> >> LGTM:
+>> >> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> >
+>> > Thanks!
+>> >
+>> >> Though you're missing `` around [0; KTIME_MAX] in some places, which
+>> >> may be worth adding.
+>> >
+>> > Andreas, would you like me to send v2 with the above changes?
+>>
+>> Perhaps we should use rust ranges instead [1]? Like this, no brackets: `0..=KTIME_MAX`.
 > 
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> Well, maybe. But I think it's also worth considering just using
+> english to describe it:
 
-Thanks a lot!
+I had a quick look at the official Rust documentation, and I think I
+agree with this opinion.
 
-Miguel suggested that splitting the RawDeviceId trait might lead to a
-cleaner design, and I also tried that approach [v2]. But just to
-confirm ― do you prefer the original v1 approach instead?
+> Implementers must ensure that `ktime_get()` returns a positive value
+> less than or equal to `KTIME_MAX`.
 
-https://lore.kernel.org/lkml/CANiq72k0sdUoBxVYghgh50+ZRV2gbDkgVjuZgJLtj=4s9852xg@mail.gmail.com/
+Would it make sense to explicitly mention that zero is included? Also
+it would be nice to explain the value of KTIME_MAX?
 
-[v2]: https://lore.kernel.org/rust-for-linux/20250701141252.600113-1-fujita.tomonori@gmail.com/ 
 
-Either way works for me.
+Implementers must ensure that ktime_get() returns a non-negative value
+less than or equal to KTIME_MAX, where KTIME_MAX equals i64::MAX.
 
-Sorry Miguel, I forgot to fix the comment typo you pointed out in v1. I'll correct it in v3.
