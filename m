@@ -1,174 +1,139 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF422877F6;
-	Fri,  4 Jul 2025 08:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15259289370
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Jul 2025 09:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751618459; cv=none; b=RBAUJl3svz6cNDxWHQ1UnkyQelNSstprG61XKduS/L3pDD4qV73oQG9zRSiZWDKsOnVFtl2L+VRSAn9IyAA5OoEf9gYnGUjFzwMuY3Gu4ZkNnB07br3zGkrdrxXx+BlQi5DjNui0Jhh0wD254KCiAokiJIl7FRnbuclDsK94xjI=
+	t=1751621182; cv=none; b=qLnbnKLCx8pNhUvGA1JcazIQNbIkRE7eJJmaHK1awQ0IhAUPk3DOAiYOPMWkIXkAC2at/UcPP8h0IHLppSZRruTygarJ/oPjF7pf1/M0E1qo7ualrnDyUE9JFvbrGgIudd0g6MG/DOA+nICM4Wxyq1byBrTpvPmG6QMtDvkhxrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751618459; c=relaxed/simple;
-	bh=pMXtGRROxYPlLPH4DHRGNMDWd5KHAZVN6SCVZ3OapRA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZiPan4aDiXnC1JMj6vB8OFug2du3/P6h+eUpegUV2BJHkPd/qjQkhTgq8IGGNegnlsjjI87/ts5NjCHQPON1sBzL4nGfFC/QX9dsCSo9T0WIgOkBStKTDBf5s8Zr9wpYkllZd5X0wvL8Ij/SGfAwY9wybMr0B4aSDVtdOeAA89I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bzeq9P50; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751621182; c=relaxed/simple;
+	bh=jA6MONzIu3QhZ01eMnmDvDUUw/i81j4aNXXrOLK8WrQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=HIQGpL4WawLJwHwpJ4K+ydp1Yo7NKzrmy25CoOu4oltKkirhLOh1/SlzDYDpjlJYsTAcjE77SU+Vnhbacc69IrIjDH/2eGXUHAfr/5542DemeaW4yzZ4+KDSodiX0OljB2QWnjs7sf3RvLaCmlZbAzeypP6556T9Wiuaowy/9Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NR0/fkjO; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bzeq9P50"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-234ae2bf851so1167885ad.1;
-        Fri, 04 Jul 2025 01:40:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NR0/fkjO"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-60c9a1db851so562408a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 04 Jul 2025 02:26:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751618456; x=1752223256; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dHSEKYsU05H6zm689vQoHx3pYIDxa35XkhfzWTQQ1co=;
-        b=Bzeq9P50kol2ZeLr6FIr9eK3alv5iuod5raycUWSg6VlQHOpVZCnmt464cL5O0eUbM
-         aITpLB2HRDEPXf1BOg+lkdiegrSvvi1MH+OMrPgxF7yY8eayaXFa1FDeYxNlx9RldYYr
-         9qINIempwG+/I21P62sSi666k9u+j5jDR/K1jgbuHTJ8HpPYb41A6pAQRYMDmu2tL56q
-         H15VndfwCiyRwXld+HwPfgAcYxDCXO7K086+NDhQo98OUPoCXrGxK6g9wmgD3+iv47Hv
-         QfKJrsU2dHYdd0yr3azRH1OEdRisx69E8sAcXm4rbjVzBIzPAhUUymS+AKlESsty3aZs
-         qUOw==
+        d=google.com; s=20230601; t=1751621179; x=1752225979; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Eom8MqTYzc2hVFio+dl04ZGQfBCtZA5mA+TPRkPngn0=;
+        b=NR0/fkjORTXDjKYGyFkJ+dcAyVtRuZVCl1k7L0mwedrqUhOpDx9g9TFqC+bzGUjv5w
+         mkyDGuvMXE+FZ5imDQRpq3RcEwNqP2wnpRT3uUTSZur1l91KdhTOzYMJZzBa5Dtau3hQ
+         +jAJRGL2VGm/BfcXP274X5V5wGMSAkd1N4DevTaNhmiAzJglgx4tlZmA4qkwT6m7I+jL
+         fvgpwHN9fZAA3LTy4wuChfbDdDakV+Y1H+mTVtNt00/Qc8DT1Pfc0waXtRQaFNpQ5uJj
+         d8vnNL8Vw/vs0+9VTqch945esniGyX/u5eK9BZ4PKwCQ0hEZ+hciQHRhnrs5fOb90ZKk
+         aulw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751618456; x=1752223256;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dHSEKYsU05H6zm689vQoHx3pYIDxa35XkhfzWTQQ1co=;
-        b=m6SHLv2te55bJDD2svThCxYTAbiWwzXJpGLDXM30LYPtWDQHdWpJviArf8OgMOxM50
-         OX0uPS952mIoqwCOfUHdkD9wyXUEO1G6SArbi/ouxHsJ2NuKEmcUf0EZgcrj5eBLBher
-         H20B8u0eiNf0jMDR/CKw1mHE/M+d+Q3iyJpOY5WCVoofh2AqPfAesuK2ge5MccSgd45c
-         k7Ih9dqJAwLThpSEv9TW9iNJDBtIZc7NpBQX2kPQtBN9D9PaeST0+PLypGGLOljnminE
-         f1/y5cVQ3YZco7m9iqms/Wmhv66x7VCz/vFIxnvVjmX1Za7Zl6uUMwnGfs/qj/U5VqVq
-         X2Vw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3cCOZmUVuhG1fyHAcyGmi73KgJTB3445+D2vobUrp0ycO/EEpAo6gxlaEC4ZpzN1zUkN0bGG/Gmjn@vger.kernel.org, AJvYcCUAMwb3VWMCUAiexM3KKUr9cGxigbyri7C9z3Xq/thq6WXhz9EHcp/gTFsYTZzYpN0DrInrU1U54He8YHs=@vger.kernel.org, AJvYcCUW//ZZEMYHK9OljczbHJ2dCrPpY8rch1f2aVsCHsuDg/RVYN6sTxMvAjPgQaaV8VtFuD2kFCm5BItD@vger.kernel.org, AJvYcCV4CIaFouKsa/iNSlBD+6dAXIoJIBghGYya71AJYtAxQWoS+0WdoeT3/totlWGcFAJICRIOWA7Y6FNeBzeceyI=@vger.kernel.org, AJvYcCVESNr/NymRCfNdEBfBcqc+6gWtjRvYc+w1+nBnqN2iNkvSZGoiaMRMKaFfO/NXIbBnOk2SlyuhMMA=@vger.kernel.org, AJvYcCWDzDmr0AJAWhfT2dt6DpqIaSvaNbpyFeWEzmrk4wqldFukrxB46lyCxWVcLzPlg33/dUW/AxvPVNEcpycp@vger.kernel.org, AJvYcCWRb6q1DCxqxueFaQXDGZt0BWP6bfgJn6zRSMSsIjzniGDyVcCmUQ/qOLCUkLph0mRXFKLocwZh6c5FsVDbNWv8@vger.kernel.org, AJvYcCX/9hq8OaS4xAlL8LDugjNIjVPWCDGIEjopWKLJhUFg8W8n9G3kEK6n7EU84k3FPHRJICYP1e93KUmr@vger.kernel.org, AJvYcCXB5DrWLhl/FGz56m6717kgCDzuVn0dhELU0zuXws1sMstJ6t17mgjjUhGAUkse13EUs++OY12W@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx796ck+apW87+Uji9q2JYCzen2qRUKajt/2JF4bV0fJfC8inU/
-	jvamyOYa3c3tMHBsGXDU9p4nqPEjPqEACuXlm59LzWNv54YgYM7EDMDFwfBs41zi0RPMX/bLPal
-	Rc+uLEJKm5Jl+jd0owBLLsEIMVALyeo0=
-X-Gm-Gg: ASbGncsbqEeJXO+BFa7iMzxLPc/K8fQH3yCZnpLBhz3YuOh9wkfcpT6mdLsbxfHrDp+
-	x9dPVlgqHee9pFeCQzYYts2mbw7e3gswfd9wnHJ4y45lH0aamnJYRR9aKnIdiliFgbIN+DPpq62
-	rM/Wiq1Aq/ShI6df2W5PgLutXL/j/W6koDc1Vda9TqVN4=
-X-Google-Smtp-Source: AGHT+IFMfEXuJ43kSXsdtdWY5bcekIDLYN3gAjscsQDNZrtLRLqrsSS7+psigrvCXRqkKZzl+hRlwyHYKmZ9GwWepBk=
-X-Received: by 2002:a17:90b:1dcc:b0:311:c1da:3858 with SMTP id
- 98e67ed59e1d1-31aaca78c4dmr1037960a91.0.1751618456422; Fri, 04 Jul 2025
- 01:40:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1751621179; x=1752225979;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Eom8MqTYzc2hVFio+dl04ZGQfBCtZA5mA+TPRkPngn0=;
+        b=F2sGVVhTBHMQwsXifhG8Cv4rMG2zRxUDyOKafrsjeYI6DmFrxh2dqrlQCbd1P2VDxu
+         bJq/YsXJ0kED9y6QatSshUbw30r7OSa/46+xj+dyJwg4ai2KafoPIvx7M3PtT3qSpgGA
+         9l/gQfvquC83/IwIV99rR82YOfZyjOUP06AThWXrZzkvTTs+pirGv3BvCA2hlLDzPKi6
+         6X+BaCzXFjobccB4yPnOj+agvvYZLMIFpkwROUBUXwvLKQ9Juf2EC5RiTZLhvdPt6S27
+         mOKFG4B79cCyQzatOZhVPw5+pJJrjHNNPyfpo0NOYYL/vXo6T03AGkcWUPiW0Gc1VVDx
+         EPGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWpFa2c7CdheCXJC5XDHt1YaPH7rfmna1qcZiC1+Zcm/1BGIg7spGpjBV2aB/LLVPOmRptLZ9Mm2xYOz5udTg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxKgzCZqcYCtemIrvMu5cQy2bwrsYQYydp0lsfGToajCRJTvL2
+	wBSZBDxD9J38BQbp2boVU4rdl/xUwQ4HQO3yxRxWZApCUsSQ5oNS23o7J/OTKAMcsCK9M3EQ65K
+	MBzzSeoRoT1JFHTlQ7Q==
+X-Google-Smtp-Source: AGHT+IGpAGqrFQjkabZlag62YAsRfLlg/dcIbSyK0g+6L/sdiwhOYD4IJucZtwsiFtgepP0TqjRqwJp1I3o0r5A=
+X-Received: from edjc4.prod.google.com ([2002:a50:d644:0:b0:60c:6f2a:9be0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:518c:b0:607:35d8:4cf8 with SMTP id 4fb4d7f45d1cf-60fd65156admr1304585a12.11.1751621179336;
+ Fri, 04 Jul 2025 02:26:19 -0700 (PDT)
+Date: Fri, 04 Jul 2025 09:25:59 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com> <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
- <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
- <DB2IJ9HBIM0W.3N0JVGKX558QI@kernel.org> <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
- <34c00dfa-8302-45ee-8d80-58b97a08e52e@lunn.ch> <CANiq72ksOG10vc36UDdBytsM-LT7PdgjcZ9B0dkqSETH6a0ezA@mail.gmail.com>
- <CAJ-ks9mkC3ncTeTiJo54p2nAgoBgTKdRsAwEEwZE2CtwbAS7BA@mail.gmail.com>
-In-Reply-To: <CAJ-ks9mkC3ncTeTiJo54p2nAgoBgTKdRsAwEEwZE2CtwbAS7BA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 4 Jul 2025 10:40:43 +0200
-X-Gm-Features: Ac12FXwGbZyrddKNNViyoD8x6yBVbP3kVI8pI2AlPxz0BjAZk4Lec5cu34XzXTU
-Message-ID: <CANiq72kta=Wk=3764A5SzxB6Mq=sJfm9DyMZXFC91ojUSj1TeQ@mail.gmail.com>
-Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Benno Lossin <lossin@kernel.org>, 
-	Michal Rostecki <vadorovsky@protonmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
-	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-clk@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIACeeZ2gC/22PMQ7CMAxFr1J5xihO21A6cQ/EEFK3WIIGkhCBE
+ HcnwMLA+Oyv5+8HRA7CEfrqAYGzRPFzAb2owB3sPDHKUBi00q2qiVB8Rkkc0K27xrJVq4E6KPF
+ z4FFuH9V2V/ggMflw/5gzvad/JJlQ4WjcmuqGbaebzeT9dOSl8yfYPb/awJdrKZa+btjbyFj2J 0l9lc2SDAan4bdxeeB9yqgWz17mxAMmj4ZWyrKiVquxz3XxP19I1B0kAAEAAA==
+X-Change-Id: 20250311-iov-iter-c984aea07d18
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1937; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=jA6MONzIu3QhZ01eMnmDvDUUw/i81j4aNXXrOLK8WrQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoZ545KR6dKEwqApm01zdQBZIua9CQ6K8Ks+QLo
+ HJXHL+GXrmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaGeeOQAKCRAEWL7uWMY5
+ RkQSD/44fqIFVhkx4Q2GpK7mPaCTSzyIoAsVwc17urlo+ZOx77X3ecI6UCDlb6q7XdQU3L/MUSP
+ JK6cp9TByS44tjXPr2bOEd4Ytev2JBhLRjBTXuO/6H/hVMRlYWtHuiVDS7JGAmGjOT9UTCRlu/6
+ EXnZODE+098Qp7OwbT5ZyC1hLyK4hnbKwVvv1467YoJK/pKk50qVjhTFQ1yioDr/3g1ggRtG5a6
+ LXynE7PLXwPNv3Egr6s0+U63SZWBst8LBfIA10i+gFMkvW3lwbFpSCmaXIQ4xyghmkmzn8V3yIA
+ fgvqew6xgP25Qcs8B8iRipsF824B+eJPdceLXsXcZns2Nlzr82OkzRbvery5Hpf8IYrenLOZnFK
+ m9qZQesEHiBwFTBQTNWymEVjnB+WjrG1gvkxB8pG7HttVrt4gqjUcsr1L4pw0I3ZhYqb6iJKUqt
+ 2G8hw5EKEBjK7LCANQl/Ka9536LzmjUijbSuXFx1X8tVRP+bwUbWhw4EP3D8t/Br+WZ5xzxAvjy
+ wWBscoY83m4G+ChQBAMJ1VeNflbcMZ4q4/iguTjFo9Ln8ai11tgB5uUPIY5K0oWFWz44c7YrEQt
+ dMrLL3/BTnyod9MTJnoPwIeh5rdMUP3bt/q6/1EMm3HUICshBACZsT9eiO385KN846EmShTTRw2 ZtMSUjM5cacahqw==
+X-Mailer: b4 0.14.2
+Message-ID: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
+Subject: [PATCH v2 0/4] Rust support for `struct iov_iter`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jul 4, 2025 at 12:46=E2=80=AFAM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> There's also a tactical question about splitting by subsystem: are
-> there any tools that would assist in doing this, or is it a matter of
-> manually consulting MAINTAINERS to figure out file groupings?
+This series adds support for the `struct iov_iter` type. This type
+represents an IO buffer for reading or writing, and can be configured
+for either direction of communication.
 
-As Andrew mentioned, you can use that script, though I recommend not
-fully/blindly trusting it.
+In Rust, we define separate types for reading and writing. This will
+ensure that you cannot mix them up and e.g. call copy_from_iter in a
+read_iter syscall.
 
-Sometimes you will want to adjust things, e.g. sometimes things may be
-related even if in a couple different `MAINTAINERS` entries, or you
-may want to adjust the flags the script provides to filter, or you may
-want to check `git log --no-merges` to see who is recently applying
-patches related to that area, etc.
+To use the new abstractions, miscdevices are given new methods read_iter
+and write_iter that can be used to implement the read/write syscalls on
+a miscdevice. The miscdevice sample is updated to provide read/write
+operations.
 
-It is essentially the same process as when you send patches.
+Depends on:
+https://lore.kernel.org/all/20250612-pointed-to-v3-0-b009006d86a1@kernel.org/
 
-For instance, taking the diffstat above, and ignoring contents (i.e.
-assuming all lines could just be freely split and without considering
-other splits discussed to make the patches smaller first and reducing
-the flag day changes), I could have done something like this:
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Remove Send/Sync/Copy impls.
+- Reword docs significantly.
+- Rename Kiocb::private_data() to Kiocb::device().
+- Rebase on v6.16-rc2.
+- Link to v1: https://lore.kernel.org/r/20250311-iov-iter-v1-0-f6c9134ea824@google.com
 
-    drivers/block/rnull.rs       |  2 +-
-    rust/kernel/block/mq.rs      |  2 +-
+---
+Alice Ryhl (3):
+      rust: iov: add iov_iter abstractions for ITER_SOURCE
+      rust: iov: add iov_iter abstractions for ITER_DEST
+      rust: miscdevice: Provide additional abstractions for iov_iter and kiocb structures
 
-    drivers/gpu/nova-core/gpu.rs |  4 +-
+Lee Jones (1):
+      samples: rust_misc_device: Expand the sample to support read()ing from userspace
 
-    rust/kernel/device.rs        |  2 +-
+ rust/kernel/iov.rs               | 289 +++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/miscdevice.rs        |  97 ++++++++++++-
+ samples/rust/rust_misc_device.rs |  36 ++++-
+ 4 files changed, 420 insertions(+), 3 deletions(-)
+---
+base-commit: e76fe965a0365e346cdaaf462847bac748354ab2
+change-id: 20250311-iov-iter-c984aea07d18
+prerequisite-change-id: 20250605-pointed-to-6170ae01520f:v3
+prerequisite-patch-id: 11b11790787664c10cc5ea40ce7b65f35f442c02
+prerequisite-patch-id: bd6b8bd6b811baa375b1d2eb51c1c7475bfdede5
 
-    rust/kernel/kunit.rs         |  6 +--
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-    rust/kernel/seq_file.rs      |  2 +-
-
-    rust/kernel/fmt.rs           | 89 +++++++++++++++++++++++++++++++++++++=
-++
-    rust/kernel/lib.rs           |  1 +
-    rust/kernel/prelude.rs       |  3 +-
-    rust/kernel/print.rs         |  4 +-
-    rust/kernel/str.rs           | 22 ++++------
-    rust/macros/fmt.rs           | 99
-++++++++++++++++++++++++++++++++++++++++++++
-    rust/macros/lib.rs           | 19 +++++++++
-    rust/macros/quote.rs         |  7 ++++
-    scripts/rustdoc_test_gen.rs  |  2 +-
-
-And then those long lines may hint that it may make sense to split the
-smaller tweaks in the last group into their own patch, so that it
-mirrors what is done for the other smaller groups. Thus possibly
-leaving the feature being added into its own patch, which would be the
-biggest and the one that would take some discussion. And the others
-would be the small ones that are easy to Acked-by or Reviewed-by or
-simply take (if independently possible) by other maintainers.
-
-And so on -- again, this is speaking generally, and it is just a dummy
-example, not intended to say anything about the current patch. And
-sometimes things may not make sense to split too far, and it can be
-more annoying than it is worth for everyone involved, e.g. when we are
-talking about trivial conversions that could take 50+ patches that
-could be automated instead and then applied by a single maintainer.
-
-So it is a balance.
-
-Cheers,
-Miguel
