@@ -1,102 +1,100 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E42328AE4;
-	Fri,  4 Jul 2025 09:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE91329B790;
+	Fri,  4 Jul 2025 09:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751621510; cv=none; b=ec7cDSLoTFgYej7fsgM7zAlk+2XcQY6QdVnPMS5m36hMZvIjXjq0G1yRiGGwIEXCTxg/vwcVJ+iPi9IiFv7PVn4HYglSmuEiQBxOhZGvmr0XzOqUS27RaMbC8VwFx3McruLm2MMbYIqpcWG/d5hA+DzJ5GKjPDK58BbMlHwhCr0=
+	t=1751623187; cv=none; b=ZDjITSKtryE9RVaHzoJoZK1X0Rbi1NBwerWguP2rg/U4rlVcikwCgycfpV6znkxIffhYkr1stKaOUm+ooRXgvAz4x9HqXk+sritbxD7Z4g47LAe27nC/wovgAMwEQUoUbtU/b6Qk/01kyL9JY/wCEtIpgLcwPFC/XNTOiwxBEO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751621510; c=relaxed/simple;
-	bh=d/MO04WOV1NKnJM6X29x0Vs3JojE3h50l+YSvo1LTLc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hJNkAuSAgCemLXFtPfIS66SCSxrXOeW4/2yLQpENPCitgia/dc30+b0uLv+PIDSbBA7cS+q6Qyk8FKKJOcN79lAwuMXMcN000ZLGxx7XON43zZmn1PWGhUNZSjs7aC3gOYYrQAJVlsfY3VIF0dungsf73X7LisleYvnbu+j+ITg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BQHbbdf2; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751623187; c=relaxed/simple;
+	bh=i2NX/0XGbvqHv1vq1CFp+VRtaQ0tYwiJJDPkl7hVchI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=KVn2jxEyES+gN3JkoHUk1X3Uwr8p5FLXQkpb5xVvj+k4V1AOeClSw40tjaRarXHuey4oOVxlVj2dFvfBiVFnylO7/PTV206dQc1uYSXqE2oEusYMmTy9GA39lo+m7uE0bCTID0AzlVD0Xqefo655RtqQUk2gbNVXDQjE3c5LL0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAv/XRZo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BQHbbdf2"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23c71b21f72so1274315ad.2;
-        Fri, 04 Jul 2025 02:31:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751621508; x=1752226308; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d/MO04WOV1NKnJM6X29x0Vs3JojE3h50l+YSvo1LTLc=;
-        b=BQHbbdf21W5hD4xFpH1NDVkR3OyReLHUNB37l07qwYd++s3lMVfWMlH1cxW9Tkh8Ok
-         PEq/AEY8Q+ULQTAE/Kk5A1mQ+6RiQ3nq0nqGfaCPl7ZqBuap+8MOaD4C6f/x8irn7b89
-         j6gi2YvCANj5n/x3CZEp9rA3nY//cKsFcYnpAfQA5XN6hMWRWitHREqoSsYKXv4gE76r
-         6ZNAOshiYsnxCC4qyvwsmF6xEEC4IdEb/IqYEsse4Uqy/u6Pf5OUhEsUWnKpnW5NBtfa
-         2rsyTDSlfUAoQJ/+0KH4v8oHNwYKnTr2bFx2/5fR45ih9b5aEjrcTZJHj0UkGEdclbn0
-         BmPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751621508; x=1752226308;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d/MO04WOV1NKnJM6X29x0Vs3JojE3h50l+YSvo1LTLc=;
-        b=qvnbtYe+yfs/43nlqzHmkKk9/kP5rqCFZ7BztrJFzbYXxZ4qNlamdfQb/SbtEbxRZ7
-         OF16rnEC0M9EutZCEErg935r59d3vLMIFtHm8auy6uWdeOGzpdjD2tsHTIobjhdEKdrh
-         IJIx8houWIPm/rnWijOZFQQbalJFwWMndI29P2ut9PIVjYrtfcl+NR1+24juVap/xTgY
-         tneLcryPe2rl28U+mHA8VxPIPctTAAtpcgm5vKoGKY4q5FblBLZugJXJklIeuKWyypMH
-         De2r1n4DcuKJ30HAUHRc7EV1oFOHMP8JdpxQeWe1PzAJwfF+ht6ByxsikKEA4SDBB/Ps
-         QSjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV7w7nEvWpPc19Sdk2s1wqCg5YUjwQYN2XYFSPwwyzkF1+rHXK+ce5uDyVfVV4MmihgY04NTVo4X7pq@vger.kernel.org, AJvYcCXnJwydPZq2LgrZvbpybcqAVslYAukPiRLfibxBg3YtTT8anTv2hlVhSi2x7o21a+AcnfCQM/DwU4S/4dK2xAM=@vger.kernel.org, AJvYcCXsOHVna8mFyW3NGULxKI3KgYgVbM00sNa0VipoLzECE2mkhIuY/DlZuhJc27QXmhfVagZdWTf4UF6w7n8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxNWyHg8rNk8VRlg8NIRRzLnn+9IjsQa3vHX5/xcAV+5u1nqAo
-	i0FfoVM+5L3HvQMlbgJKWDi2Qh+jQ0SnKT5M6keW+Ba2JuCA2Tedl3Ct6kIeKldLpnMcdG+rxR8
-	JEYBoM23uM1VuFZv3Drrv+2FkaqDDaE0=
-X-Gm-Gg: ASbGncuHE3cRh4PqUq6mWNpjj7nICINoFfVMzv7fZ2sU0SCjZxuXGqgtHRbSEuq7kA/
-	cNCKPXLSahaxi4w/cdi5fO6ZuQ4uzslMmqtqAo/bcTycx3KIe0xB4zskDGOp79ASxq4PRSj4YbX
-	Q0kRzWiVA/2i1YVQjpTBiQBn8JkRUdg8Gm0i/4n6ibvdU=
-X-Google-Smtp-Source: AGHT+IGZgZIOOC5V45OzgF9nVnkAkyYapdLuVvpdWtNopyjN8VdZsEMtsXDqfVWiZu81PQxveBrb5ac1J46HVQwP484=
-X-Received: by 2002:a17:90b:17d0:b0:312:e9d:3fff with SMTP id
- 98e67ed59e1d1-31aacb4118emr974079a91.1.1751621508473; Fri, 04 Jul 2025
- 02:31:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAv/XRZo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06C3C4CEE3;
+	Fri,  4 Jul 2025 09:59:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751623187;
+	bh=i2NX/0XGbvqHv1vq1CFp+VRtaQ0tYwiJJDPkl7hVchI=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=NAv/XRZoBqDaKXo52NCJUZhjJlI/0JD6+0jqOmjvc5+n6kUXo8WrgAbTkYNO3lGcw
+	 JzhUAj1JSkcypWKhFMT4vnk6wriwxLCOYCe3g1CfeY0MahZaYKV3j4/wpDWZYcHA7N
+	 DFkI+FCwSpJcSvF5FAbec2vjjBIDug+QJ2QP6lOmBjH9QaXWqxCzaHCAHvdqHWmMyj
+	 OTKJq5B/JLEHe0j5gqwcjJ0+RIgB2mduUspe4Wfzzc0+wnSAMHsN/hmvx5DsuDfpBh
+	 Kfs9k8nUXc9LnXxPU7IBdw3jqNPvo8vBEV/r9nlS5pl78dnCiptnkPgHUSq5RwoaO+
+	 bEZomn9lhLcYQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
- <20250703-topics-tyr-request_irq-v6-2-74103bdc7c52@collabora.com> <fcdae3ca-104d-4e8b-8588-2452783ed09a@sedlak.dev>
-In-Reply-To: <fcdae3ca-104d-4e8b-8588-2452783ed09a@sedlak.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 4 Jul 2025 11:31:34 +0200
-X-Gm-Features: Ac12FXxOPwNdMLG_SDYv3paQWeciOf5zRBzImQn-zzRgaYYgawpcpeWIjIF2lJE
-Message-ID: <CANiq72mA3c-gs5CZ5F2U6zkWU=X7kHcgWVsvXkHpvv9mXeoY2Q@mail.gmail.com>
-Subject: Re: [PATCH v6 2/6] rust: irq: add flags module
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 04 Jul 2025 11:59:40 +0200
+Message-Id: <DB36LGJOWHZQ.GHXR3VGX7806@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Nicolas Schier"
+ <nicolas.schier@linux.dev>, "Trevor Gross" <tmgross@umich.edu>, "Adam
+ Bratschi-Kaye" <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
+ <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
+ Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v14 3/7] rust: introduce module_param module
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
+ <20250702-module-params-v3-v14-3-5b1cc32311af@kernel.org>
+ <aOJo8e9FTJikY-WFnv8a7qAvQS6RFIHTU_gb8fa9RD-8SdGo7o56AoSlWUJUG9NTNB1Wgd09N4p5LJEY8HHXvQ==@protonmail.internalid> <0e89892f-103e-4b92-a067-e192cb7b89a6@kernel.org> <875xg8tnv7.fsf@kernel.org> <87zfdks8y2.fsf@kernel.org>
+In-Reply-To: <87zfdks8y2.fsf@kernel.org>
 
-On Fri, Jul 4, 2025 at 8:14=E2=80=AFAM Daniel Sedlak <daniel@sedlak.dev> wr=
-ote:
+On Fri Jul 4, 2025 at 9:37 AM CEST, Andreas Hindborg wrote:
+> Andreas Hindborg <a.hindborg@kernel.org> writes:
 >
-> Why not Flags(u32)? You may get rid of all unnecessary casts later, plus
-> save some extra bytes.
+>> "Danilo Krummrich" <dakr@kernel.org> writes:
+>>
+>>> On 7/2/25 3:18 PM, Andreas Hindborg wrote:
+>>>> +    /// Get a shared reference to the parameter value.
+>>>> +    // Note: When sysfs access to parameters are enabled, we have to =
+pass in a
+>>>> +    // held lock guard here.
+>>>> +    pub fn get(&self) -> &T {
+>>>> +        self.value.as_ref().unwrap_or(&self.default)
+>>>> +    }
+>>>
+>>> I think you forgot to rename this.
+>>
+>> Yes, thanks for being persistent on this :)
+>
+> Actually, there is a discussion on whether to keep the API similar to
+> `std::sync::OnceLock` [1] but also whether to rename this to something
+> other than `OnceLock` [2]. Depending on how that resolves, it might make
+> sense to stay with `get` or rename to something else.
 
-Yeah, avoiding the casts would be nice -- however it is done.
+But this is for the `ModuleParamAccess`, right? There I think it makes
+sense to choose `access` or `value`.
 
-On the patch: it wouldn't hurt to add an example for each of the
-operators too. Even better if it is a common use case of each (say,
-for `|`, a common combination of these flags).
-
-(By the way, the use of the `into_inner()` name here is another one we
-will want to discuss for the new naming guidelines table.)
-
-Thanks!
-
+---
 Cheers,
-Miguel
+Benno
+
+> Best regards,
+> Andreas Hindborg
+>
+>
+> [1] https://lore.kernel.org/all/35e1fef4-b715-4827-a498-bdde9b58b51c@peng=
+uintechs.org
+> [2] https://lore.kernel.org/all/CAH5fLggY2Ei14nVJzLBEoR1Rut1GKU4SZX=3D+14=
+tuRH1aSuQVTA@mail.gmail.com
