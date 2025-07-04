@@ -1,209 +1,250 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2064.outbound.protection.outlook.com [40.107.93.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888491F463C;
-	Fri,  4 Jul 2025 07:20:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751613641; cv=none; b=dqyHCqM+lQTIubBcy+jGoZm1qk4ygGgqAxIs1ScKFQl1j9lpcQaauIcJ9l43AU7EXZdtDlP1KkpmMWS9RYqwXMhXCaMlNZ9CWyqIy8AvYQIlEZtAU9GI9qz7dcNy52bk+jBcbqPz6kljfSMX67c47dnR+FNaI8zl1lOrASzqIYo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751613641; c=relaxed/simple;
-	bh=6GsPaRiKgeYVnDnqBL+zKJ43kvtFQgCU07RdluLCgVI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=T4NVbsk2+EASgXikx19iXejpofSv5axF+8M4em9JYdFtWClyBwDaYouDVtrAoIW0XBigPfHxhDxmiDcwmAIbq9Qtu5L6jykc9+e7W/0KUtg0vLBjVvwaaF9RZnwZo0Ep8zHZmoVq/ZY32yhjGuddaPWRAr+MBJ/xciWJk50y0/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tXJAa5/P; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD2627CB04;
+	Fri,  4 Jul 2025 07:25:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751613928; cv=fail; b=jf4oegGlBixDtG9b0XEghlbaQfgo2/E8+IVCPPhATyaDb7oBPYrBEMD9QjARANjQJcGHoSUOLwYW+92emObT6TVbimOoQy1z9yYbNlFuglfBf7h+lQ9VCbQpPsDWpO+SNKhj0etSenSlxHQ1k3UkJkGkJK5N45de0gOCO46CULg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751613928; c=relaxed/simple;
+	bh=fme1MusOd8PiVe7ueujkQom4JhcBEeMq71NkraGL0dM=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=t7QTQU2LUHhdvo3wNYBQXSC5QcMUtolUIs5e2+KCN6vtg4C7u1WzJ81BqCIiIGSkqf/hrpJkO10L/Yp53c78EMiaZI5e+sWsmREwHvnexhpRw3e/QjfVlt7sEqlRhE9qtg01+8WnPa9H4s9JN5UmpmaPz2TCypQw4WfUNuCUsVA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZTUA9D9d; arc=fail smtp.client-ip=40.107.93.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tXJAa5/P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC18C4CEE3;
-	Fri,  4 Jul 2025 07:20:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751613641;
-	bh=6GsPaRiKgeYVnDnqBL+zKJ43kvtFQgCU07RdluLCgVI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=tXJAa5/P7SIMT/vVcFuovMsjkccf90PZrOyABdWwryeLd9sC7irxvVzG2R/ZMHF81
-	 tBJOuqUs/v9/VoEOXFENGUO+Ve/8TTWNm1eIufhcGbPGQ/69apGtc9I1V6ZNGkTBPY
-	 BUCsnYyiTB5IGjeHErhCwAfwdFXqZcYJfPetXh2s8Va3U+1IAYfARQH1Rq66wJC5tT
-	 gKmigVtzugRSnYrOKMlm2uS7eik7ULbT8u14SWNpD5k3R/dntn5HD9P93a3Ixonkhw
-	 hVIhKp5HuPhHS14902KJr76mmgh4YEFUL+KF7z31bjdsftrXuxCnBbnuqgDpsafPro
-	 EO+8Zoet8uH6Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
-Cc: <miguel.ojeda.sandonis@gmail.com>,  <alex.gaynor@gmail.com>,
-  <ojeda@kernel.org>,  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
-  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
-  <frederic@kernel.org>,  <gary@garyguo.net>,  <jstultz@google.com>,
-  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
-  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
-  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
-Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
- Delta
-In-Reply-To: <20250626.091248.526065656918619245.fujita.tomonori@gmail.com>
-	(FUJITA Tomonori's message of "Thu, 26 Jun 2025 09:12:48 +0900")
-References: <94kOZwdYnRPRMO6SAHAvEFEygT4dU-njfBxTMC6BiPQ-u49pyL5hLgbLQBGOct1ruxVJPtYGJ0Dq0Ns2mh-sMQ==@protonmail.internalid>
-	<20250625.082020.1714542193051382332.fujita.tomonori@gmail.com>
-	<877c102pxs.fsf@kernel.org>
-	<ZFASmKV5PIQgMyCMtprnQhN2MklF9_-3RwUFGLemFqvv23Cm3vyKh-spm0PhKWFjc8vixGNYrAlz93Dw_ruczw==@protonmail.internalid>
-	<20250626.091248.526065656918619245.fujita.tomonori@gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Fri, 04 Jul 2025 09:20:29 +0200
-Message-ID: <87h5zstoaq.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZTUA9D9d"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=n7gQJM3NEoVWlUG4gUQx2Ej2swD7J6pFhHf+MrmZrDtj2qIjCVc/zT4sZ+Y+1d0Gu7Ygl0oYWO6DhGaZaEP/N4d9m529I5xUSK9JmaJlNW1a9/LNN9eGcPG3b/7Gbs/9ALOey2Wt5v3Z8rjz2YacegqgBlakUOmlB2e16/N4S79gkYvhkcCRkkOe+bruBpeBTEk4YLzRUDg9BGAPfx1BZ+Yh7kZ2af5mdZ4pICQzLEfmLWl0BYd8nEGqpUtjngXs/BvU97a0DYz7FfwAgP7OziYRmZrXhqhrnIrStDZohynUWRzYjv5OpSRl6xESV1OWyVwGnZUonAyQRiuxLNiKjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rQlo3CTjcV3orX5xM+Tetxx736KWT65mAp5QFkYqMB8=;
+ b=SFlaD8QDWpcF9GLqf6GAVKOOzdsI6dOqbb/hsTb0uDl3chDaYkLm40kqz0CKPPuWp7T/1dHsJSL7e3wjdnAYnr+M1ktH64NFYp38k5vDf/XSpo4nJ4ZbEZuzkaJkx6FEunLkTK6T6vX0pBz1hImZCoQNwnnBdnv/h2AxxGps8p3uJbdEHF+sjAe5ouTB8cvW2UwtUjUMeGlGoz2VRk3y7xYMkyYPtNYZZ2l61tnZrLJoSsLmimMugh6NL9BUgwVf5lqqHzcN74QADYy1Y8vwNx2zM+AihBKz66s4dmgkS2QE1HdkIyCzNAjMsE0AIQuxizpGt5Qj9B9c2ISGtMcaLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rQlo3CTjcV3orX5xM+Tetxx736KWT65mAp5QFkYqMB8=;
+ b=ZTUA9D9d+V807tRa5uXFeDngDbKhSu8KXFBy4fN3YfDf1ncSLT6KxnDwpbmCHNTB8yvWz4TpHVlaa/b+NZ26zJjpcgwVXSsHoK9j3txftovVLvKwS2bEV6Aul6znoO1l0S9ys8YHcMn/9ktD5RfzuXnaU3tavrTZAe4szYO1uvhpJ0ifXiV8VmuAFPtg8O1M8+15bLNFH8l3PUc1t7K2ait7nHMfayF2kOkjdvTcC1JoCbh/vt8S0LvmGsl1pztQkFEnRZQVZTN+L61aGH6b4tM7QLGAjDIrp5zqOkMS+1vqKz2UOgLqYAgLpMtmrI3dGjNt321qZkkmyifJzbh5hA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by MN0PR12MB6341.namprd12.prod.outlook.com (2603:10b6:208:3c2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Fri, 4 Jul
+ 2025 07:25:23 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8901.018; Fri, 4 Jul 2025
+ 07:25:22 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH 00/18] gpu: nova-core: register!() macro improvements
+Date: Fri, 04 Jul 2025 16:25:01 +0900
+Message-Id: <20250704-nova-regs-v1-0-f88d028781a4@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM2BZ2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDcwNj3bz8skTdotT0Yl0jk5SUlNQ007SkRGMloPqCotS0zAqwWdGxtbU
+ Az+C2T1sAAAA=
+X-Change-ID: 20250703-nova-regs-24dddef5fba3
+To: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Beata Michalska <beata.michalska@arm.com>, nouveau@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, 
+ John Hubbard <jhubbard@nvidia.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: TYAPR01CA0064.jpnprd01.prod.outlook.com
+ (2603:1096:404:2b::28) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|MN0PR12MB6341:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee6b8fc1-8dc9-4668-5db4-08ddbacbefbb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QlFHeTNGNHhWM0pMTTJjYnI4QXQ4K1Rvbjh5eXlBQ2lmOHhjVDcweURUVWpB?=
+ =?utf-8?B?M2xLV092TDZpb09ieFFScHNQM0RXcU9RRG1VQmJyKzluUXJ3OThBTGUxUldI?=
+ =?utf-8?B?d01zMGx5RytwdktVVFgxOHI0YWRmdlhaYUw1SDR6ekxvak5qZnllMjBaTGlF?=
+ =?utf-8?B?MWJ4dENLbERiVTJhWXJqZ1JLNnkvazQrYXVFK0dMazVqSkJhdThicWZXdFlj?=
+ =?utf-8?B?UEVEUHpoUVdUdXo0d2pxZDZlK1NFTE03OWluWkF4QWxpd2d5Q3diZ1I0b05h?=
+ =?utf-8?B?M0N2SEhPdW5vcG4xUjVRQ2Z1UzlSVHRxOGVPVENLVS9lblUzZ3hLQlppWktM?=
+ =?utf-8?B?WHJ6ZVNPSENOeUwxSTU1U3JuRUp4YmUwZ0xxSlkzamxMbzJ4WXk5TXF4UEZw?=
+ =?utf-8?B?WkFjNlhNcDR3QXdJeXA3VGhJdGQzWnppdzV5V0gxbjRPclNwQXJUTTJWeSs2?=
+ =?utf-8?B?bThRWHYxNWpUeWxnNm1UUmlEQW5uMFVUKzgrVjdLcEVWdEcrb2NLZ2xpYnBX?=
+ =?utf-8?B?RXVxaHBaRy92QkgwQ3hDelEranBZeXEvb29DWkwrWUhVVzdzci9QNzk4NlBn?=
+ =?utf-8?B?ampFMnpyZmZrc3ZBemxDWDMzSHJLYlRJOGcvUWZqWTFSSnpxdEFzWGVuc0hT?=
+ =?utf-8?B?VGs0Rkgva1JRbjYzNmo1OTVKekVMQm5HemtZY1JLdmNTbjVSSmR3dmlWQmhH?=
+ =?utf-8?B?WjlIc0VKYVZVdjc5WWdvdU9uSmFPdFFRcTI0RGFQVWJZQ0swZ3kzR1RIL2dr?=
+ =?utf-8?B?aG5IWU80aklCQTJjUm1PMFk2M0w3cUU3VTV6QUFYT0JodjJxNklWWDdlWjFW?=
+ =?utf-8?B?Y2xPQTVOMzBhNkIxOFRMWk1EZlhGUStKWG53MnNMVTNpSGdRK3hVZGc1Q01m?=
+ =?utf-8?B?SExrSXRwNUEzT0d3Q2gwMnc2NkpKeTZRZGVMUlJCS0F5S2xuOHNFTTZIWktx?=
+ =?utf-8?B?NEhEd2s4YUNyYkViT0NUS0JGZlE3NzBJSEFWd1FMZU9MYUl2V1JzZ0RGK1BS?=
+ =?utf-8?B?Zm1uQXFJZUpjMVd4MjBVUVhjd2VxQlNDQzFYb3FTUVcyZ1lORkY0ZFdkc2lh?=
+ =?utf-8?B?SzJUWmh5cldaUlhNSkk1ZVZNQzM5ZTBTNFE4dFJqWlpsenlaSmRpN2VMaVFJ?=
+ =?utf-8?B?Q2tObFRFcHNSa3ZFUFBTMVFUZi9ackJLY1lLMTBwUVhqTldQNEZBUjA0Vjg3?=
+ =?utf-8?B?d0ZkbzZETjhpcnppWDlJWThCUVFiSFlCQ1FDUjBsVFlnOFhmeGloYm1iYVVT?=
+ =?utf-8?B?SkFWYWFnUEdBcm4vWUFPYXAvKzJXUUxVaXd1YTVzQ1MvQUI1Q3JQcE5XYyt4?=
+ =?utf-8?B?b05VU3dhdHczZFpLZnFwMnduOTEvYkZ0QjFyVmhpRGdjVlRRWUk2K2FwQ0Yx?=
+ =?utf-8?B?M0dUQlhGNGVDeDFMbGRUYlc1a2FRLzZDMGkzZmFPbnY4M3pBKzdBNlFUYkk0?=
+ =?utf-8?B?KzBucmt5TkJ4Wk1KUDB3UWNaNzI3dkVSaTJXNmFOcVNXRFg0emw1QlVWRVhQ?=
+ =?utf-8?B?TmJCS2JHTHM3VVpDY3YvVDJLN1NpREt2RFEwSUpYcCtUN0xVWERRZlNCTTdK?=
+ =?utf-8?B?VVVsUHZpdkpnb1Z3czZielNKMURieUhLTmgrakV5UG10b0dTQlViRXBINVhl?=
+ =?utf-8?B?VXRoTFdvc1U0bFRGbVNQZU5GTmxGNUoyNDZVZHBkZjBtYVBPeU9sLzJlbUN5?=
+ =?utf-8?B?aWlwazV2clJJY0VVZG5qNjlMM3RaYndWaDRINi9wdGxITVhRSTBma3dRVjNG?=
+ =?utf-8?B?MytoK2N3SnpMT2Q4c3lEUCsvWTZacVBSNzR2TkQ0V1Y2N3lLMWorWWZVOU5Q?=
+ =?utf-8?B?aGo4SUYvb3NsVFFZQTFNaFFRRDRtcHFsTGNrZXJVOVFISTF3dWpRdHZlZ0xa?=
+ =?utf-8?B?dXFpUlBCYURPVUp5bHRkZWJtZXRac2NrQ2xFTTFsMXBWQ0RxU2hsOFJUb3dm?=
+ =?utf-8?Q?Y7xLwSg36O0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Nk1HVmcrSzlvSmhUVEl3MzArazJJQ1B5cnZabFFpSjlaZ2hmbDRXZFE2TFlH?=
+ =?utf-8?B?dXdmVnNqYjdrL1Q5YlFqTVhDVVIzbFljT01kV21aYzd6TDFjN3A0bld4MmxB?=
+ =?utf-8?B?N25vVzBIWGU2dW9QcHVwRXc5ZVhOeFRzWlFuelZpblhUbmN5V1RrOUs3N2Ix?=
+ =?utf-8?B?Sjh2MmhjTmRHR1ZsbVV5ZERNbWJNY1pxdFdlVGlrNWdWU0FUWFZnWXByWVFS?=
+ =?utf-8?B?b0wyTjV3VjhwSk5sTmNDMmtVVEhOeVRtSkdFUGt2YngvSkFzM29hRXUvQjND?=
+ =?utf-8?B?MXpzb05rMFF2aUdwRmRPYVNvWTVudWRnVHZNakd4SHhuekNiVDMxNWNkTWYw?=
+ =?utf-8?B?ZXdiRjY1TTJ5SGh4L3lLOWNlai95Mlh4emhKM1BSZ2NiK0QzbGVsa081Y05X?=
+ =?utf-8?B?TXBNQkVsMjdhL1drMDYwbkVVYUtNOHhTdHF3Mk9XSTZFdnc3RHY4Y1RuN3A3?=
+ =?utf-8?B?S3o1TGZ6UFhueU9CSVR1Sng4UHhKWmhhWE5taVIxQTZCNVNCZkd2U3A4ZU9J?=
+ =?utf-8?B?ems2dkJHL0JuWDl3STBHVy9KTlB0SEpOeGQvMnAvbkdESjhRbUsyY3puRFJU?=
+ =?utf-8?B?a0NqVHBBQmFjKys4UU9TUDFDZTFxVHBLbEk2bFpxd1Y5V2Y0SFAvUkVVMzBi?=
+ =?utf-8?B?M01GMUxkUjZZenNmeEpLRTU3SUpWKzFoc1UwSjNKeDZ5WnErMTM5TDFmSmwr?=
+ =?utf-8?B?aXF6dUV2NkI3OWtTQ2hobE1aZjBtNWZtUDQ2d2J6UUdvcWVxMkt1a01wVjhU?=
+ =?utf-8?B?TGhFWmpvVUtzMFEyZzRqd2NkQnZwQm9PNGkrL3hLc2RwWE5IWEN6MjIzS0RG?=
+ =?utf-8?B?OWlMK2NlUWtCWDVmQjdFN3ZrQkw3Z2t0WS9aTGYxQTVCUmpBNXp6aXl1Ym1x?=
+ =?utf-8?B?Q2N3U0dKSUdkd2NRU0Z5UEVyN0w0QUdQSVBXNFZTMUxOMUo3UEY1eUVVdUNI?=
+ =?utf-8?B?VTNMRno1TFhuOGJmOUhRelk4aGhtcDBncTlvVTg4R2FMV3dQYWllUTUrQXdz?=
+ =?utf-8?B?UGcxd1JXTTF2Yy9KOU53RmlnNW9tUVAxL05zVytDSFpJZ3JlcDEwUXhGdU5H?=
+ =?utf-8?B?ZVNxdzZZM2hvOTNjdU9FTkhsQndIWXdmWHJoVS9PaHFsVHBsTnM1TDRXSzln?=
+ =?utf-8?B?ZU41UVZpb1ZHa3hCa05FcERUR2ZXbWNYTFloMGRqM1F4bFVPWi9LTU9EVUNL?=
+ =?utf-8?B?OWQyaklUM2MyZ3hXNDFFTHFEcE9jWS9yVDJaUlZLNDFoczE4YVJKTDFodzh1?=
+ =?utf-8?B?Vkxmbk5Tb0FvT1NXZWt6N2tMVTlwRFloSHJJdlZ0YnVYb1FNWkhodGNHOUo5?=
+ =?utf-8?B?L0E3UjU1K0x6bUp1d0JIbEdaT1NKS1lrNG8vS1dEbldTMXQ2NjFqUndlNllv?=
+ =?utf-8?B?dnd3SmMxV1VDM3FYSm1ZQW13VldreWdyYmxobTFuSU1oMG1vUS9kWlJjckx3?=
+ =?utf-8?B?ZmdiNEFLVno0OHF4VllUNUt6aVVzemExZC8vc0oyK3lQTmJaVWtSWk42aFR3?=
+ =?utf-8?B?Tzh0VWtFNFo1MUlMckZVWTZvcmg5eTMyMTYxK1hFVUM0Ry9xN0lMaWc1MXB2?=
+ =?utf-8?B?MUhJelVTQkNYVGJNWUpacDJ2amlSK1lLZlRWOVBiVjJKZEJsUURqZ3lrOSs4?=
+ =?utf-8?B?ZFRTYU5FRGJRNlJDNXlNTFJsVG83MnpEWFZkamZYZnhWOUY3Z0ZlTWhSTHVk?=
+ =?utf-8?B?dHZOUW1EUDhuK3NRTHpsRFVib2Z0VUxsRjYydkMvbWVQVDByUEFtQy9lTWRo?=
+ =?utf-8?B?RTFGcU1NUlNEK3hTY1RaNTFvSUs3bGR3VTN6TlIzdGh1NFhUK2F0eXlzZlAx?=
+ =?utf-8?B?QnlKdDlINlFzU0lqRCtwUWxBdC9JRzh1V2hnZk9lbG1abFNnRkdjRzFZc1Fa?=
+ =?utf-8?B?eXIycUg5MnlFUDBVVXRYeGV4ck9mSURPbWhDM2pWOUdGTk54UWxXZytXNVJ3?=
+ =?utf-8?B?aCsvTXJaN2F5Tjh5cWVIWld0MDRhNjhMdWtDWTYzTFhlbWJobEg1SDRtdlBa?=
+ =?utf-8?B?Y3EvTGphbm9idG5paGdJbm1WR1dzV3NMeEVXTEUySDdwVUhCMUlPNW9RTmRu?=
+ =?utf-8?B?MTdzTXlHSjdIR2x3TStrOG9VU2ZLUnVwdXY0eXltR2pCZ1c2akM3QU5KU2g4?=
+ =?utf-8?B?TEpBSlZoMUd6MGhwQUQxbjhuMnBZbWlXaHFyc08wR29FTSsxZm5Dem9Ycm4z?=
+ =?utf-8?Q?gCzT2jrJIB8KCKVCNFXBhfMReiGQwRK5SQveud/lvhm4?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee6b8fc1-8dc9-4668-5db4-08ddbacbefbb
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2025 07:25:22.6042
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: eLMJAkMPff9S5f9Z5PUg7viFKhlxcV6W+Qn+GqU+pfhsRva/yBMHSKEWNIqg9G4nBnrurl2YzxLOwSiXWHSPDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6341
 
-"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+This patch series introduces a number of improvements to nova-core's
+register!() macro in order to make it more useful to Nova itself, and to
+bring it closer to graduation into the wider kernel crate.
 
-> On Wed, 25 Jun 2025 10:19:59 +0200
-> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->
->> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
->>
->>> On Tue, 24 Jun 2025 21:03:24 +0200
->>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>>
->>>> Andreas Hindborg <a.hindborg@kernel.org> writes:
->>>>
->>>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
->>>>>
->>>>>> On Tue, 24 Jun 2025 15:11:31 +0200
->>>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
->>>>>>
->>>>>>>> and already introduces pain for
->>>>>>>> others (and likely even more pain when we need to rename it back n=
-ext
->>>>>>>> cycle), it doesn't look like a good idea to keep it.
->>>>>>>
->>>>>>> Ok, I'll drop it.
->>>>>>
->>>>>> Do you want me to send the updated hrtimer conversion patchset
->>>>>> (using as_* names)?
->>>>>
->>>>> No, I am just about finished fixing up the rest. You can check if it =
-is
->>>>> OK when I push.
->>>>
->>>> I pushed it, please check.
->>>
->>> Thanks!
->>>
->>> The commit d9fc00dc7354 ("rust: time: Add HrTimerExpires trait") adds
->>> to Instant structure:
->>>
->>> +    #[inline]
->>> +    pub(crate) fn as_nanos(&self) -> i64 {
->>> +        self.inner
->>> +    }
->>>
->>> Would it be better to take self instead of &self?
->>>
->>> pub(crate) fn as_nanos(self) -> i64 {
->>>
->>> Because the as_nanos method on the Delta struct takes self, wouldn=E2=
-=80=99t it
->>> be better to keep it consistent? I think that my original patch adds
->>> into_nanos() that takes self.
->>>
->>> This commit also adds HrTimerExpire strait, which as_nanos() method
->>> takes &self:
->>>
->>> +/// Time representations that can be used as expiration values in [`Hr=
-Timer`].
->>> +pub trait HrTimerExpires {
->>> +    /// Converts the expiration time into a nanosecond representation.
->>> +    ///
->>> +    /// This value corresponds to a raw ktime_t value, suitable for pa=
-ssing to kernel
->>> +    /// timer functions. The interpretation (absolute vs relative) dep=
-ends on the
->>> +    /// associated [HrTimerMode] in use.
->>> +    fn as_nanos(&self) -> i64;
->>> +}
->>>
->>> That's because as I reported, Clippy warns if as_* take self.
->>>
->>> As Alice pointed out, Clippy doesn't warn if a type implements
->>> Copy. So we can add Copy to HrTimerExpires trait, then Clippy doesn't
->>> warn about as_nanos method that takes self:
->>>
->>> +/// Time representations that can be used as expiration values in [`Hr=
-Timer`].
->>> +pub trait HrTimerExpires: Copy {
->>> +    /// Converts the expiration time into a nanosecond representation.
->>> +    ///
->>> +    /// This value corresponds to a raw ktime_t value, suitable for pa=
-ssing to kernel
->>> +    /// timer functions. The interpretation (absolute vs relative) dep=
-ends on the
->>> +    /// associated [HrTimerMode] in use.
->>> +    fn as_nanos(self) -> i64;
->>> +}
->>>
->>> I'm fine with either (taking &self or Adding Copy).
->>
->> Let's wait for the whole naming discussion to resolve before we do
->> anything. I am honestly a bit confused as to what is the most idiomatic
->> resolution here.
->>
->> I think taking `&self` vs `self` makes not difference in codegen if we
->> mark the function `#[inline(always)]`.
->
-> I believe we've reached a consensus on the discussion about `&self` vs
-> `self`.
+The first half is trivial fixes and code reorganization to let the
+following patches apply more cleanly.
 
-But not on the function name, right?
+The interesting stuff begins with the introduction of proper `Debug` and
+`Default` implementations leveraging the field information that is made
+available by the first half of the patchset. `Debug` now displays the
+interpreted values of all the fields on top of the hexadecimal
+representation of the register; and `Default` now initializes all the
+fields to their declared default value instead of just zeroes.
 
->
-> Miguel summarized nicely:
->
-> https://lore.kernel.org/lkml/CANiq72nd6m3eOxF+6kscXuVu7uLim4KgpONupgTsMcA=
-F9TNhYQ@mail.gmail.com/
->
->>> Yes, I would prefer taking by value. I think Alice mentioned earlier in
->>> this thread that the compiler will be smart about this and just pass the
->>> value. But it still feels wrong to me.
->>
->> If inlined/private, yes; but not always.
->>
->> So for small ("free") functions like this, it should generally not
->> matter, since they should be inlined whether by manual marking or by
->> the compiler.
->
->> But, in general, it is not the same, and you can see cases where the
->> compiler will still pass a pointer, and thus dereferences and writes
->> to memory to take an address to pass it.
->>
->> Which means that, outside small things like `as_*`, one should still
->> probably take by value. Which creates an inconsistency.
->
->
-> I think that another consensus from this discussion is that the table
-> in the API naming guidelines doesn't cover this particular case.
-> Therefore, it makes sense to keep the current function name and move
-> forward.
->
-> Delta already provides `fn as_nanos(self)` (and drm uses in
-> linux-next, as you know) so I believe that Instant should use the same
-> interface.
->
->
-> That table needs improvement, but reaching consensus will likely take
-> time, it makes sense to address it independently.
+Then goes a complete redesign of the way relative registers work. The
+previous way was very unsafe as it accepted any literal value as the
+base. Now, valid bases can (and must) be explicitly defined for specific
+group of relative registers. All these bases are belong to us, and thus
+can be validated at build-time.
 
-I am still uncertain what guidelines to follow inside the kernel. Last
-time I applied a patch in this situation, I had to remove it again. I
-would rather not have to do that.
+Next come arrays of registers, a useful feature to represent contiguous
+groups of registers that are interpreted identically. For these we have
+both build-time and runtime checked accessors. We immediately make use
+of them to clean up the FUSE registers code, which was a bit unsightly
+due to the lack of this feature.
 
-Perhaps the best way forward is if you send the patch with the naming
-and argument type you think is best, and then we continue the discussion
-on that patch?
+Finally, combining the two features: arrays of relative registers, which
+we don't really need at the moment, but will become needed for GSP
+booting.
 
+There are still features that need to be implemented before this macro
+can be considered ready for other drivers:
+
+- Make I/O accessors optional,
+- Support other sizes than `u32`,
+- Allow visibility control for registers and individual fields,
+- Convert the range syntax to inclusive slices instead of NVIDIA's
+  OpenRM format,
+- ... and proper suitability assessment by other driver contributors.
+
+These should be trivial compared to the work that is done in this
+series.
+
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+---
+Alexandre Courbot (17):
+      gpu: nova-core: register: fix typo
+      gpu: nova-core: register: fix alias documentation
+      gpu: nova-core: register: simplify @leaf_accessor rule
+      gpu: nova-core: register: remove `try_` accessors for relative registers
+      gpu: nova-core: register: move OFFSET declaration to I/O impl block
+      gpu: nova-core: register: fix documentation and indentation
+      gpu: nova-core: register: add missing doccomments for fixed registers I/O accessors
+      gpu: nova-core: register: add fields dispatcher internal rule
+      gpu: nova-core: register: improve `Debug` implementation
+      gpu: nova-core: register: generate correct `Default` implementation
+      gpu: nova-core: register: split @io rule into fixed and relative versions
+      gpu: nova-core: register: use #[inline(always)] for all methods
+      gpu: nova-core: register: redesign relative registers
+      gpu: nova-core: falcon: add distinct base address for PFALCON2
+      gpu: nova-core: register: add support for register arrays
+      gpu: nova-core: falcon: use register arrays for FUSE registers
+      gpu: nova-core: registers: add support for relative array registers
+
+John Hubbard (1):
+      gpu: nova-core: register: minor grammar and spelling fixes
+
+ Documentation/gpu/nova/core/todo.rst      |   2 -
+ drivers/gpu/nova-core/falcon.rs           |  72 +--
+ drivers/gpu/nova-core/falcon/gsp.rs       |  16 +-
+ drivers/gpu/nova-core/falcon/hal/ga102.rs |  47 +-
+ drivers/gpu/nova-core/falcon/sec2.rs      |  13 +-
+ drivers/gpu/nova-core/gpu.rs              |   2 +-
+ drivers/gpu/nova-core/regs.rs             |  79 ++--
+ drivers/gpu/nova-core/regs/macros.rs      | 736 +++++++++++++++++++++++++-----
+ 8 files changed, 749 insertions(+), 218 deletions(-)
+---
+base-commit: 4092e1b41202ff39aad75a40a03ac1d318443670
+change-id: 20250703-nova-regs-24dddef5fba3
 
 Best regards,
-Andreas Hindborg
-
+-- 
+Alexandre Courbot <acourbot@nvidia.com>
 
