@@ -1,174 +1,121 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52E52D23A4
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Jul 2025 12:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA1B2857EE;
+	Fri,  4 Jul 2025 12:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751630549; cv=none; b=pUjiHdmdCHbuqQWbUiOGMAsRsgsqcPhbzLbcHbjUekXiRV6Hi/OnFU/lnZzLAFZg5ooHSx7LWIvdN0+A+l9Av649YfCWA4hbOezUqXZr5TH7mkC9wGX54Z3nNFxnhVKYc1fvNxX3Aa7mZgIu6z0J2eEPZ1OhTr5XnC6CCe0Mnl0=
+	t=1751631342; cv=none; b=lXo6/qjiySAJMz0aXg5PwvL0m0/hVxcNfT8Gg44o8pEnP0STrHHGBWMonpbF038zfvG8NPLXSPO1+gc9qTK/nD5Lp88c/y+wGgdG6aTNc4mIu8QwUAH8Z6IW95SNiY3rFnrIcgke7jGFaazYMmHhCikxm/PYWXWy/1FzSegXkyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751630549; c=relaxed/simple;
-	bh=OWGxcklWWo0vv0ZQ8Q6Q56zQqcy4rZKZZq9hhvEnZuk=;
-	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
-	 Content-Type:References; b=Fdvryysu5+/ToQVCZLGBVparlwx/tXM987OqBlxwG0tM9UvC4MCjmkaQYX3OIVXQUPIaUyH9O50sfnC8LuEHCSzL2IPlQb8yZLXbminyhLy+lLb5e9VDM2r3wAc7yxf8cvdsevET7KoWuBTWWAeIutRFNW02UNKDUwiogFrQCcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=DtTPSh8l; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1751631342; c=relaxed/simple;
+	bh=JTF27XEasyApS1nP/vyqUwBctBYmx+jAOL8SGdjCGlg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NL7l+yFVRQb1BgGZMsHp3uVnwSiD5n9SrHdGay1ZhpI/CgRdgbMBBHlE8HlLHPviBx8Dptf+UfJ9Yz67PCzQtAAFqzusmrnZ/e3/RvI/moigWE8pvyO5IpnO5GtzYpNs3ldhQ9OzYHkstpxdvtHnOQ5aI8J9A83zcOZ5TCivKDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FkL/oiQn; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="DtTPSh8l"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250704120220euoutp01f4e41049ffa915d79de5121af737e543~PCrIt-5fs2176721767euoutp01I
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Jul 2025 12:02:20 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250704120220euoutp01f4e41049ffa915d79de5121af737e543~PCrIt-5fs2176721767euoutp01I
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1751630540;
-	bh=nmhVn6OSCj5podj8kRrzheU5aifoU9hBWKaGqoQKYps=;
-	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
-	b=DtTPSh8lsZB3AJsQlxZqlVhiO6R6C2/zYqA+OVfPlRijzoJ3BdlmHjEoIiRR+8I+S
-	 PeVWzQ5fBBIBQd9+OPTZfciIrVuPRATVQ2VfX6IJC9Hm7xjuZA7EajBUgHdNIKBhmZ
-	 lclsRnV8vtWCDeenXNG737BoWZIfDdnQN6BYW7LI=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250704120219eucas1p1d8160ac9692bccdbf1a41e63a875c056~PCrIFwcXZ2805128051eucas1p1f;
-	Fri,  4 Jul 2025 12:02:19 +0000 (GMT)
-Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
-	[106.210.136.40]) by eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250704120218eusmtip154dcc24571efde3c7d5f443c0a0040fb~PCrG-28OI0505005050eusmtip1w;
-	Fri,  4 Jul 2025 12:02:18 +0000 (GMT)
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-Date: Fri, 04 Jul 2025 14:01:17 +0200
-Subject: [PATCH v8 7/7] riscv: dts: thead: Add PWM fan and thermal control
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FkL/oiQn"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-31384c8ba66so182827a91.1;
+        Fri, 04 Jul 2025 05:15:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751631340; x=1752236140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JTF27XEasyApS1nP/vyqUwBctBYmx+jAOL8SGdjCGlg=;
+        b=FkL/oiQn8+kDzCgydhCMh5sbMGoAsteUYk0dlyafVM7AHP9G9qtvyNA+b5ZmYPhuYG
+         btN0M8+zOmqF9cPCrU9a1ac3jvrmlw6EFNAb3eyT3r2dyEV2Vjy2wAOOmvIJ6GT2aSUE
+         HUH0gxOZ6Gf6qt8/PbMPZec5hIaLtPEmW1Asz77y1GlguvaoCO7LQfqdi8vIDv9i49W9
+         6tS2tB8y658AYEyL2hD+AMIKmnGT+hHua06VDa1CCaIJjL2V1iB9pcTVm0ENqZem1YSt
+         AiD4AYqdEtmXEjEiPI0gpIjaPKoBSx7y/UOYwAr702Z9eIQfEw413Eh5y5ix5DQcTF48
+         YXpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751631340; x=1752236140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JTF27XEasyApS1nP/vyqUwBctBYmx+jAOL8SGdjCGlg=;
+        b=YWUqONY+M4kOA+9r50ACx58YgRTlRinicAHf8X0f4KGsQjIDIgvk7tKVfRq+/PcOdH
+         pt44pNcWGu97lpEJkrfup6ix1kq+Qf7eWn91kVf2RMwB0mg1SbzC6HlmrMYGpvdvi7oh
+         x+1l7UJp6uxkAy/5LhLYSO7rHWF35CswHIVhSigVx2POm1SlNM9B5StyQVAvUuP8kkza
+         Oab5FVwwvLAY7jbRLc7Ce5MuovN29zX1CFxpVvVdHkjsTQPcpPqjc4NCYPuEeWBZEE05
+         lhr3HI96paYXAos6IZcSI+O7FLtdcWPho0z1yD7+Qc9k0kyYST78NQPkOcpxci6pkN6k
+         G28Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUA5w0bp25swTMAFZAqa/uWiBK2n3SG+SMfu9a9EEXAW3vFUkuJEBxTAcO9Z+sxmRzW4gkJe4F1PakCfveUu/t4@vger.kernel.org, AJvYcCULTCGDRt/g9EJpzcCocZSpwrVzr2qyjAaIORtvq2aJfDqVHWPkiSr6ev9Oe1u4q3D7UEqcnTIndblR@vger.kernel.org, AJvYcCUVYUxGDzu3pydous8AWgd/Yz7tUWbLovRP5yIlxGacscbuEXM5i2Kc+1NFetlYPyhFjYNz+NKzWxTtPnhmDLU=@vger.kernel.org, AJvYcCV5rfhRSK+7tZ5uEa7GllVDRRNqMpwBhUq5QpX+tG/cOb5fDFUhL0hdJktGfZ7xRfPP3Vwe8BluBZJPg5/z@vger.kernel.org, AJvYcCVVX7SksVdlWxNBWf8Pe2Xedp4gX4Jm1yHfE7yT9Akkv+LsF4ArtrOvVUAVjGzBXrwiylLKWdVgte0lWuE=@vger.kernel.org, AJvYcCVm0PakMMXiIEh0J/5cCkr2UBGCA+oKRIFkYtWeoQGliwWNTsdWYD2qDfHwc2UfRbcOffXD4Rhp0Hrn@vger.kernel.org, AJvYcCWBkTTxzoWvSb0mcTIQWCKtMEmUPy8bEWv6tmSHpQZ6za0ZPGyqCWbBIeaxYGwWcahJ+lNJHAVt@vger.kernel.org, AJvYcCWDZIZPVYMRSfwTd1+BBCJ9dVrORSOAoBSUqr6kM6wRf7fseXVtn4kd+o1+KRQZZHDzoKUOxY6LozDB@vger.kernel.org, AJvYcCXU9tsEYqJf49QNExAc1cixFf7Jl4Gv+viM3YGx2xHIw6nwBGzXOSbQ3vTSjVrsmocu1VLlH/hcasw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx3zZNgIxKQeRJhPDlbzog2V22j+I9G3ITwE9Z97eeIjLbYleB
+	3v7qgSHH9mMA57X4vWQTmQqEf6TYPUwzKSfo54m+IeUfE41o9Y9mAu1WM/CsvfTjBz1Bp+8UIHt
+	H+KZ32lTGsguApOsZnLbkZHmPxSLhuqA=
+X-Gm-Gg: ASbGnctWCCOJRA/sRvPxlzm1wtu+hxwSfqBtOSJsSIIygEYHpKQVJnzFaBvi41c3a+3
+	yKi/+EozAhwOGcsc3/EJD+1BF21hi0l/O4g5IVFiJdutgcSjgebo+f/lkO4ZX+kuMX3EnOqx+CA
+	yh9ynqZdAYg6iGNhALsoZTkbVq1oDqZmCp4v5ftwKpiaY=
+X-Google-Smtp-Source: AGHT+IGMzjCKsb3QoFjzETIEVKGlrEiZLPHE+Z9w68l6rNpjdGz0kB0KwvlouvJt/ly+yLKAz3cW4FDCb2lbzAAjjzI=
+X-Received: by 2002:a17:90b:3fc3:b0:311:a314:c2c9 with SMTP id
+ 98e67ed59e1d1-31aac44a149mr1478613a91.1.1751631340480; Fri, 04 Jul 2025
+ 05:15:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250704-rust-next-pwm-working-fan-for-sending-v8-7-951e5482c9fd@samsung.com>
-In-Reply-To: <20250704-rust-next-pwm-working-fan-for-sending-v8-0-951e5482c9fd@samsung.com>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,  Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,  Michal
-	Wilczynski <m.wilczynski@samsung.com>, Guo Ren <guoren@kernel.org>,  Fu Wei
-	<wefu@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Paul Walmsley
-	<paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>,  Alexandre Ghiti <alex@ghiti.fr>,  Marek Szyprowski
-	<m.szyprowski@samsung.com>,  Benno Lossin <lossin@kernel.org>,  Michael
-	Turquette <mturquette@baylibre.com>,  Drew Fustini <fustini@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,  Drew Fustini <fustini@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	devicetree@vger.kernel.org
-X-Mailer: b4 0.15-dev
-X-CMS-MailID: 20250704120219eucas1p1d8160ac9692bccdbf1a41e63a875c056
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250704120219eucas1p1d8160ac9692bccdbf1a41e63a875c056
-X-EPHeader: CA
-X-CMS-RootMailID: 20250704120219eucas1p1d8160ac9692bccdbf1a41e63a875c056
-References: <20250704-rust-next-pwm-working-fan-for-sending-v8-0-951e5482c9fd@samsung.com>
-	<CGME20250704120219eucas1p1d8160ac9692bccdbf1a41e63a875c056@eucas1p1.samsung.com>
+References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
+ <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com> <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
+ <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
+ <DB2IJ9HBIM0W.3N0JVGKX558QI@kernel.org> <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
+ <DB2PIGAQHCJR.3BF8ZHECYH3KB@kernel.org> <CAJ-ks9=WmuXLJ6KkMEOP2jTvM_YBJO10SNsq0DU2J+_d4jp7qw@mail.gmail.com>
+ <CAJ-ks9kNiOgPO7FF3cAbaSNtTWs0_PzQ4k4W0AxjHNFuMJnDcQ@mail.gmail.com>
+ <DB36T5JWBL10.2F56EDJ1XKAD0@kernel.org> <CAJ-ks9=Jutg+UAwCVER_X91BGxWzmVq=OdStDgLZjTyMQSEX6Q@mail.gmail.com>
+In-Reply-To: <CAJ-ks9=Jutg+UAwCVER_X91BGxWzmVq=OdStDgLZjTyMQSEX6Q@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 4 Jul 2025 14:15:26 +0200
+X-Gm-Features: Ac12FXzPtonKP26H72mazeNQheIxGcJYasTsJs3cNwtUf90Sdk9qUBYY8YzvhN4
+Message-ID: <CANiq72nZhgpbWOD4Evy-qw2J=G=RY4Hsoq9_rj6HGWMQW=2kTw@mail.gmail.com>
+Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>, Michal Rostecki <vadorovsky@protonmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Stephen Boyd <sboyd@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, dri-devel@lists.freedesktop.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-pci@vger.kernel.org, nouveau@lists.freedesktop.org, 
+	linux-block@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-clk@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add Device Tree nodes to enable a PWM controlled fan and it's associated
-thermal management for the Lichee Pi 4A board.
+On Fri, Jul 4, 2025 at 1:59=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
+>
+> That would probably work. We will probably see regressions because we
+> can't just replace `core::fmt` imports with `kernel::fmt`, so new code
+> may appear that uses the former.
 
-This enables temperature-controlled active cooling for the Lichee Pi 4A
-board based on SoC temperature.
+That is fine -- it happens all the time with this sort of approach.
 
-Reviewed-by: Drew Fustini <fustini@kernel.org>
-Tested-by: Drew Fustini <fustini@kernel.org>
-Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
----
- arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts | 67 +++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
-
-diff --git a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-index 4020c727f09e8e2286fdc7fecd79dbd8eba69556..c58c2085ca92a3234f1350500cedae4157f0c35f 100644
---- a/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-+++ b/arch/riscv/boot/dts/thead/th1520-lichee-pi-4a.dts
-@@ -28,9 +28,76 @@ aliases {
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
-+
-+	thermal-zones {
-+		cpu-thermal {
-+			polling-delay = <1000>;
-+			polling-delay-passive = <1000>;
-+			thermal-sensors = <&pvt 0>;
-+
-+			trips {
-+				fan_config0: fan-trip0 {
-+					temperature = <39000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config1: fan-trip1 {
-+					temperature = <50000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+
-+				fan_config2: fan-trip2 {
-+					temperature = <60000>;
-+					hysteresis = <5000>;
-+					type = "active";
-+				};
-+			};
-+
-+			cooling-maps {
-+				map-active-0 {
-+					cooling-device = <&fan 1 1>;
-+					trip = <&fan_config0>;
-+				};
-+
-+				map-active-1 {
-+					cooling-device = <&fan 2 2>;
-+					trip = <&fan_config1>;
-+				};
-+
-+				map-active-2 {
-+					cooling-device = <&fan 3 3>;
-+					trip = <&fan_config2>;
-+				};
-+			};
-+		};
-+	};
-+
-+	fan: pwm-fan {
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&fan_pins>;
-+		compatible = "pwm-fan";
-+		#cooling-cells = <2>;
-+		pwms = <&pwm 1 10000000 0>;
-+		cooling-levels = <0 66 196 255>;
-+	};
-+
- };
- 
- &padctrl0_apsys {
-+	fan_pins: fan-0 {
-+		pwm1-pins {
-+			pins = "GPIO3_3"; /* PWM1 */
-+			function = "pwm";
-+			bias-disable;
-+			drive-strength = <25>;
-+			input-disable;
-+			input-schmitt-disable;
-+			slew-rate = <0>;
-+		};
-+	};
-+
- 	uart0_pins: uart0-0 {
- 		tx-pins {
- 			pins = "UART0_TXD";
-
--- 
-2.34.1
-
+Cheers,
+Miguel
