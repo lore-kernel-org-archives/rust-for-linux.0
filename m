@@ -1,143 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4B1293B61;
-	Fri,  4 Jul 2025 10:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8760C2EE96F;
+	Fri,  4 Jul 2025 10:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751623798; cv=none; b=XBdrhpDa/+z3W56N2gbnzZhJllid9a+HCRKtMsdD97Hugb2PDGjMAcrMRwiVUpKrhwiQfJcQvjpMb5TgGYpm1cVwOzpq87bbbdwCpObo1UDUPL0ljJHkmmAK39tHHHEj/gt+jIhU0+sTZTLwNSIA0/c6avMPOPr9/GzAW8BR4eU=
+	t=1751623866; cv=none; b=gZAhsV7pt3bnQbxKMkrX1yNVoPTqsHHN3PwCIDBpE9QiyFdkaAvLRvmDY0zbQuCT+0M03QK4nAGbe3EN2QFvDFHJ2tdYw9YRGPH5vLPC9PDBmQQjBDpHxKEwsyQPSDNMHv80Tgwq8+vPDBqrq85CC0lznAg/oHzs/Tznfv0PODE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751623798; c=relaxed/simple;
-	bh=sErifeomiBisSrJ5F/Z1EiOE+yjyaoOoLVJmALiwIss=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=QBSQrQtDxl3khpvRlIPU5qS8NjGQcj8bGfiG/4VLzik4oLgXwc2074TM6uBfJ6SgTIqix4uNEDSeMVkZzCLHc0Rh6MdthBE2RcCXqdqwRLBxsoLarlHh4+ZwhuqZwHzHjigPU/LkbovziNf9+Nbw1oaGQuvoXCNP18CP7DrmY1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjHFAeZa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751623866; c=relaxed/simple;
+	bh=vpOW6eWpnMOvFjCRArTBEY2dAsyhhAeZds1DtDRWzFo=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qdqN33JrVk5LdePjU42NP7sWcOhMQ4+DUpzPQNnpJNXcY4Hcz96FJ80Pl1M38acav+q3aR01WDTx1UJO10d9O71YJc8wSUe+8pBVWsqeXaa2xuZzuoe5W7nd6vAMg/GbOInCtMSS8LUeLgyTxWAG6a5x3pak+MmbC5cVDYlPNCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AVCxfwuT; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjHFAeZa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB26C4CEE3;
-	Fri,  4 Jul 2025 10:09:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751623797;
-	bh=sErifeomiBisSrJ5F/Z1EiOE+yjyaoOoLVJmALiwIss=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=bjHFAeZaJFAnmlfy0BXQom4D2g8nROdZRV9VSgmHVyp34hx86laW5qYZ9hJt1xRQW
-	 0K0KO2yByzLe4dQZLFhD35Ow6d8OFCvrtXqBJsfVoIIfyv2UGdJYm4h3q0G5Jkpw5z
-	 wGhbmAF7CZg/+Usn4oPgUWLuVpcLqO00+9bczIkO/xSH+5IJAtnA1+gQ91n+wiBcP6
-	 B7oDcHjP2qL77G1iVen1zde1nv2qXrbY4ckstCIFg4BI/BrUjKystwvqi6oNlmq8/O
-	 6gVbjWvcNhrRjps2Q90t25m0FTomyUvTA0EnLcqcQEkGdXcBV9HXEB+8pGkJCpLBEg
-	 +vGw4nMjPXgxg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AVCxfwuT"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-553dceb342fso800438e87.0;
+        Fri, 04 Jul 2025 03:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751623863; x=1752228663; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6hFh51BLuZwCFkzcHxtYDUVh7kL90TvhT7DOkfO+fT4=;
+        b=AVCxfwuT6TMOCWmfni5pLytlkhquHL4hTL3tkbzForkwm/W1+khK1ilSKf+sHAsCVt
+         MIrYxa5+heyEJZ9gWgpgbN72LMOP/CmRo39zldE/+WpORQQ4T/IMv7OX6aumNtdIpKsO
+         JzHJ5k9AalQ+TltbF1ouDF6H/UJIMyvZlsgBSBu5t3Z1MYYDXOwB7QQbDJgNOB7VVw3w
+         VheQ/CBnigt5wtePzL0VvQvwlTonrC3TxNwnGT4je3d3cJvI2Y1r8885eyhWqj5h9soT
+         NApIlIFtBbj3yOavbtg7b/wG52MtMGHn5nC53H7TIf2GTBQ6wlUPIwjPR9e4d6Vv40uB
+         rEGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751623863; x=1752228663;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6hFh51BLuZwCFkzcHxtYDUVh7kL90TvhT7DOkfO+fT4=;
+        b=uThStsKdUCW6KJedmfQxlW8hYjIeHX7rRrGJh7kVqwYTeUwnP6vZ3wC9FW4QEF1QjW
+         KTLI7ZyX6jvuvEgge8vAI0OwvJFyuQqF7mfxrZEhyXsjOxCobAqRUZMr5J0BKzIewwpi
+         fbF+pVly1mlIEvYI2R5JIDFug9l+ojT1J+gVkzEIBkafQIzg+v4AJvChBiJ2BHjDHppM
+         OFfqsbOcpN3hZLmwfJFh/J8TzruuwK4NOk1QXPvmbRC274qh7GmVstIiRS0XRFUiGiD1
+         wE7oqwVg5fMfKs+Cicx3VUyJCiy4hzCo0nk5aeQMqVlCekx4y4d0JgMLNBnuzFhy/0lS
+         KXMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4ztmL3gDQcxpP/tQbltE1qJrmPhhyRCLlB2tle/Wdgq0sgiHvYpnC5urEjITJwlFuv9GweJX+dsFDCeo=@vger.kernel.org, AJvYcCX2X9ywdloOoRmh3lJevanZkGA5wJb/25GKKTMLeAjIVCEj3Inky21SoAjVa3RlYsuFBHnxd1C1mqLVb4qqo9I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeiqwEl72mXNjsYvzWDipfqgN+9r5MwYy4gkTRqBYZMkvWrYMx
+	QJzNe2frllU04cG/uC3EU1nyv719HvWydH3COr5EQ09uMBRU27TajO3e
+X-Gm-Gg: ASbGncuWVOjXDgKbYJGEFuZ7tjluWp5JQOuzEq1j85n9xqZq0nWZGSHBrJR1xFLBg+o
+	ji9klevnUCVjRXvE6HHt3HJCElbnBEywgvV9KoOm/mPpHjWfFh/H80ocL59sizIEZt9hGEXjMk9
+	fKNVTRV/7X4k1H6x3j1I3Z8cMkKEHCIC2M83dG7HKHDoIisPwrP0oSyK/JLXQCF+wAVW1oAoX6f
+	nZ/ghUkcAX9fS4KywiP9rXwI1GwOTjhZrpT8TH1VXfQ+FJF211zoBSxJHgRQ/ZEfp1OMnFPeYJw
+	fBHSNw7dFiysysMEQePD0OPh8IIngwC6B+i0UjwDkF39/tszNQFiwT884nGg1D/PLWRTcWPZCk/
+	lw0UikJUHLxb+XA==
+X-Google-Smtp-Source: AGHT+IEPipxgigrzCJYt18EpBU6h7oYOkJ72QENXkAwAV5zTFI/u66qor5gv6Sk3B2jTSy9z5DRvrg==
+X-Received: by 2002:a05:6512:3b1f:b0:553:a469:3fed with SMTP id 2adb3069b0e04-556dc2653b3mr561385e87.11.1751623862368;
+        Fri, 04 Jul 2025 03:11:02 -0700 (PDT)
+Received: from pc636 (host-78-77-210-196.mobileonline.telia.com. [78.77.210.196])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-556384b83a3sm209662e87.199.2025.07.04.03.11.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Jul 2025 03:11:01 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Fri, 4 Jul 2025 12:10:59 +0200
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v10 1/4] mm/vmalloc: allow to set node and align in
+ vrealloc
+Message-ID: <aGeos0WWKEdjmhQr@pc636>
+References: <20250702160758.3609992-1-vitaly.wool@konsulko.se>
+ <20250702160824.3610055-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 04 Jul 2025 12:09:43 +0200
-Message-Id: <DB36T5JWBL10.2F56EDJ1XKAD0@kernel.org>
-Subject: Re: [PATCH v13 2/5] rust: support formatting of foreign types
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>
-Cc: "Michal Rostecki" <vadorovsky@protonmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Brendan Higgins"
- <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Rae Moar"
- <rmoar@google.com>, "Danilo Krummrich" <dakr@kernel.org>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>, "Russ Weight"
- <russ.weight@linux.dev>, "FUJITA Tomonori" <fujita.tomonori@gmail.com>,
- "Rob Herring" <robh@kernel.org>, "Saravana Kannan" <saravanak@google.com>,
- "Peter Zijlstra" <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Will Deacon" <will@kernel.org>, "Waiman Long" <longman@redhat.com>,
- "Nathan Chancellor" <nathan@kernel.org>, "Nick Desaulniers"
- <nick.desaulniers+lkml@gmail.com>, "Bill Wendling" <morbo@google.com>,
- "Justin Stitt" <justinstitt@google.com>, "Andrew Lunn" <andrew@lunn.ch>,
- "Heiner Kallweit" <hkallweit1@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Bjorn Helgaas" <bhelgaas@google.com>, "Arnd
- Bergmann" <arnd@arndb.de>, "Jens Axboe" <axboe@kernel.dk>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Dave
- Ertman" <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>,
- "Leon Romanovsky" <leon@kernel.org>, "Breno Leitao" <leitao@debian.org>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Michael Turquette"
- <mturquette@baylibre.com>, "Stephen Boyd" <sboyd@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
- <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <llvm@lists.linux.dev>,
- <linux-pci@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <linux-block@vger.kernel.org>, <linux-pm@vger.kernel.org>,
- <linux-clk@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250701-cstr-core-v13-0-29f7d3eb97a6@gmail.com>
- <20250701-cstr-core-v13-2-29f7d3eb97a6@gmail.com>
- <DB2BDSN1JH51.14ZZPETJORBC6@kernel.org>
- <CAJ-ks9nC=AyBPXRY3nJ0NuZvjFskzMcOkVNrBEfXD2hZ5uRntQ@mail.gmail.com>
- <DB2IJ9HBIM0W.3N0JVGKX558QI@kernel.org>
- <CAJ-ks9nF5+m+_bn0Pzi9yU0pw0TyN7Fs4x--mQ4ygyHz4A6hzg@mail.gmail.com>
- <DB2PIGAQHCJR.3BF8ZHECYH3KB@kernel.org>
- <CAJ-ks9=WmuXLJ6KkMEOP2jTvM_YBJO10SNsq0DU2J+_d4jp7qw@mail.gmail.com>
- <CAJ-ks9kNiOgPO7FF3cAbaSNtTWs0_PzQ4k4W0AxjHNFuMJnDcQ@mail.gmail.com>
-In-Reply-To: <CAJ-ks9kNiOgPO7FF3cAbaSNtTWs0_PzQ4k4W0AxjHNFuMJnDcQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250702160824.3610055-1-vitaly.wool@konsulko.se>
 
-On Fri Jul 4, 2025 at 1:23 AM CEST, Tamir Duberstein wrote:
-> On Thu, Jul 3, 2025 at 6:41=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
->> On Thu, Jul 3, 2025 at 4:36=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
-wrote:
->> >
->> > I don't understand, can't you just do:
->> >
->> > * add `rust/kernel/fmt.rs`,
->> > * add `rust/macros/fmt.rs`,
->> > * change all occurrences of `core::fmt` to `kernel::fmt` and
->> >   `format_args!` to `fmt!`.
->>
->> Yes, such a split could be done - I will do so in the next spin
->>
->>
->> > The last one could be split by subsystem, no? Some subsystems might
->> > interact and thus need simultaneous splitting, but there should be som=
-e
->> > independent ones.
->>
->> Yes, it probably can. As you say, some subsystems might interact - the
->> claimed benefit of doing this subsystem-by-subsystem split is that it
->> avoids conflicts with ongoing work that will conflict with a large
->> patch, but this is also the downside; if ongoing work changes the set
->> of interactions between subsystems then a maintainer may find
->> themselves unable to emit the log message they want (because one
->> subsystem is using kernel::fmt while another is still on core::fmt).
->
-> I gave this a try. I ran into the problem that `format_args!` (and,
-> after this patch, `fmt!`) is at the center of `print_macro!`, which
-> itself underpins various other formatting macros. This means we'd have
-> to bifurcate the formatting infrastructure to support an incremental
-> migration. That's quite a bit of code, and likely quite a mess in the
-> resulting git history -- and that's setting aside the toil required to
-> figure out the correct combinations of subsystems that must migrate
-> together.
+On Wed, Jul 02, 2025 at 06:08:24PM +0200, Vitaly Wool wrote:
+> Reimplement vrealloc() to be able to set node and alignment should
+> a user need to do so. Rename the function to vrealloc_node_align()
+> to better match what it actually does now and introduce macros for
+> vrealloc() and friends for backward compatibility.
+> 
+> With that change we also provide the ability for the Rust part of
+> the kernel to set node and alignment in its allocations.
+> 
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> ---
+>  include/linux/vmalloc.h | 12 +++++++++---
+>  mm/nommu.c              |  3 ++-
+>  mm/vmalloc.c            | 28 +++++++++++++++++++++++-----
+>  3 files changed, 34 insertions(+), 9 deletions(-)
+> 
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index fdc9aeb74a44..68791f7cb3ba 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -197,9 +197,15 @@ extern void *__vcalloc_noprof(size_t n, size_t size, gfp_t flags) __alloc_size(1
+>  extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, 2);
+>  #define vcalloc(...)		alloc_hooks(vcalloc_noprof(__VA_ARGS__))
+>  
+> -void * __must_check vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> -		__realloc_size(2);
+> -#define vrealloc(...)		alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+> +void *__must_check vrealloc_node_align_noprof(const void *p, size_t size,
+> +		unsigned long align, gfp_t flags, int nid) __realloc_size(2);
+> +#define vrealloc_node_noprof(_p, _s, _f, _nid)	\
+> +	vrealloc_node_align_noprof(_p, _s, 1, _f, _nid)
+> +#define vrealloc_noprof(_p, _s, _f)		\
+> +	vrealloc_node_align_noprof(_p, _s, 1, _f, NUMA_NO_NODE)
+> +#define vrealloc_node_align(...)		alloc_hooks(vrealloc_node_align_noprof(__VA_ARGS__))
+> +#define vrealloc_node(...)			alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
+> +#define vrealloc(...)				alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+>  
+>  extern void vfree(const void *addr);
+>  extern void vfree_atomic(const void *addr);
+> diff --git a/mm/nommu.c b/mm/nommu.c
+> index 87e1acab0d64..8359b2025b9f 100644
+> --- a/mm/nommu.c
+> +++ b/mm/nommu.c
+> @@ -119,7 +119,8 @@ void *__vmalloc_noprof(unsigned long size, gfp_t gfp_mask)
+>  }
+>  EXPORT_SYMBOL(__vmalloc_noprof);
+>  
+> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align,
+> +				 gfp_t flags, int node)
+>  {
+>  	return krealloc_noprof(p, size, (flags | __GFP_COMP) & ~__GFP_HIGHMEM);
+>  }
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 6dbcdceecae1..412664656870 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4089,13 +4089,22 @@ void *vzalloc_node_noprof(unsigned long size, int node)
+>  EXPORT_SYMBOL(vzalloc_node_noprof);
+>  
+>  /**
+> - * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
+> + * vrealloc_node_align_noprof - reallocate virtually contiguous memory; contents
+> + * remain unchanged
+>   * @p: object to reallocate memory for
+>   * @size: the size to reallocate
+> + * @align: requested alignment
+>   * @flags: the flags for the page level allocator
+> + * @nid: node number of the target node
+> + *
+> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). If @size is
+> + * 0 and @p is not a %NULL pointer, the object pointed to is freed.
+>   *
+> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
+> - * @p is not a %NULL pointer, the object pointed to is freed.
+> + * if @nid is not NUMA_NO_NODE, this function will try to allocate memory on
+> + * the given node. If reallocation is not necessary (e. g. the new size is less
+> + * than the current allocated size), the current allocation will be preserved
+> + * unless __GFP_THISNODE is set. In the latter case a new allocation on the
+> + * requested node will be attempted.
+>   *
+>   * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
+>   * initial memory allocation, every subsequent call to this API for the same
+> @@ -4111,7 +4120,8 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+>   * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
+>   *         failure
+>   */
+> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align,
+> +				 gfp_t flags, int nid)
+>  {
+>  	struct vm_struct *vm = NULL;
+>  	size_t alloced_size = 0;
+> @@ -4135,6 +4145,12 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>  		if (WARN(alloced_size < old_size,
+>  			 "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
+>  			return NULL;
+> +		if (WARN(!IS_ALIGNED((unsigned long)p, align),
+> +			 "will not reallocate with a bigger alignment (0x%lx)\n", align))
+> +			return NULL;
+> +		if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
+> +			     nid != page_to_nid(vmalloc_to_page(p)))
+> +			goto need_realloc;
+>  	}
+>  
+>  	/*
+> @@ -4165,8 +4181,10 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>  		return (void *)p;
+>  	}
+>  
+> +need_realloc:
+>  	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
+> -	n = __vmalloc_noprof(size, flags);
+> +	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
+> +
+>  	if (!n)
+>  		return NULL;
+>  
+> -- 
+> 2.39.2
+> 
+This one LGTM. Let's see what folk think about SLUB changes. We need to
+be aligned with naming and approach on both sides.
 
-So here is what we can do without duplicating the logic, though it
-requires multiple cycles:
+Reviewed-by: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 
-1. We merge the two `fmt.rs` files & each subsystem merges an
-   implementation of `kernel::fmt::Display` for their types, but keeps
-   the `core::fmt::Display` impl around.
-2. After all subsystems have merged the previous step, we change the
-   implementations of `print_macro!` to use `fmt!` instead of
-   `format_args!`.
-3. We remove all occurrences of `core::fmt` (& replace them with
-   `kernel::fmt`), removing the `core::fmt::Display` impls.
-
----
-Cheers,
-Benno
+--
+Uladzislau Rezki
