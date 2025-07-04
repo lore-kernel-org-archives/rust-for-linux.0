@@ -1,71 +1,69 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A4328137E
-	for <rust-for-linux@vger.kernel.org>; Fri,  4 Jul 2025 07:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0EC283C82
+	for <rust-for-linux@vger.kernel.org>; Fri,  4 Jul 2025 07:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751614979; cv=none; b=tfxesFnZDm06CWoDUzgf3Wcaatt9LDMKZoBapR1ipm5bWsexbXvJVHDrTg48O66dMVwDJBoy2vIXGx5ZLxnIUL/IBr5i8c/snuL54C/K/aVXcEmApAESPw1Hx5bs/+oUvjiDa4+YgucHc30XwHD1vE9iyNIAMl6A1dJYIVYCmuI=
+	t=1751614999; cv=none; b=QyfwcBRlZLmo9oOtTCURYSPCVO8DaUsA+xA/kKWbhezG/4sPwqfqKW8HekVk0+8vGN4s2ZK3rO2D7nDkSE4JkwBnybHA3ZvMke4r/5e8UuNPxsZyaZrEB9abSYnHAqCO5S0ZGwtRi7y4tsx7ijHtf5axDyG8QcJGbsLDg5QXUaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751614979; c=relaxed/simple;
-	bh=EyQLopdaeuTERfCjyDX1RB58tHyhweNO8CjnstLUYcY=;
+	s=arc-20240116; t=1751614999; c=relaxed/simple;
+	bh=1BRiW96rUpghvx6qICZQHHMHu/XS/upL65W6e5iOCgs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=T/94CEJwrDrckwrd3OppoUDxRHayvLGYA3uqbN166Wy7+vOzxPAoDFX16gqSyGo8GOOcy6eqe37PRczOy3dvKZGk+jmc5YnbLU0h0dzYNJ8P9aKqU1NBxR4QMK8YNwOveoypqk+IeCafMb2pxEciP6R/l/pSUA9k+wVqqbdRFfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Yh0OHdj2; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=VZ32xwgEUZxOyO1gGSgdyRBGSqUikU8+vKzQxKFAw5YoTAhYvUADgudUxRRufXUR6DF+pG+XzRz5y6wfO8ltDoIqhJdCWHD/pXXj8MMPyNHRT6Ho4iwe4I8dab+XBVufo8RCpXMdFyaTv94oER1YaUg5c5R0jqorTts8uSHNrh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QqKkNXTR; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Yh0OHdj2"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-453018b4ddeso3574915e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 04 Jul 2025 00:42:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QqKkNXTR"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-453a5d50b81so4237175e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 04 Jul 2025 00:43:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751614975; x=1752219775; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1751614995; x=1752219795; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=camNvxFIEl2ZnilHFyd5vJLomyvuXbAyAAA9+dCBwRk=;
-        b=Yh0OHdj2x/5dobS3e0IYb/wzFPkD/Q/j+gomI/PCukTIfTUxk0NxPqmst+J/zFYtDi
-         rbjo6S/jAgyjH5zmTL53J36J9Nzru1a8TcfZDIR4U4JcdothxycXX28ntOc14wvSxlMT
-         Yj8t7j/4yIvkzqeYV/NAoNrdUJLDjX3TX40cAYE0YRa3mW/QzADjMvcn9Ul+QBtOUUWi
-         fOazyaV2UiCprvYVhUQtIdXPUfP7fz88YRZi+9Lzd+zYz7GO0Kx5fWg8Ukgd197khViV
-         YjrCnfMAStcbQNMk14kq7/KvNGMS7yDLj6Q6KyDfqQQxI/DYlNiFGfSI3ExzWwr83Leo
-         k8IQ==
+        bh=Trbkf5L2/nBS7LLO18/vGBZSMaVa1rVVnPz6wCKHNqA=;
+        b=QqKkNXTRMqATY85UkFun18dUHYYJbcWiFyHsrStPz6Y5pD7VOHxgNj+99hy2ujjks8
+         tx7x54lb6DtGpNNFznkk8EI2WpxiCmELOiRsBj4DraGhI63Tslyo/G9smTuQLlm2kivl
+         WHjKGw5cL+Dm8d2uUjhIgWjZrR0BGm+qP+GbVF+U+V4DmxJjwp6wBPP/OxUvRCrgp5tb
+         eL+S+rTMNWo0kQPs5YDHfKpuv3+HnazHTBSZXaGet0+QYEFBpsHD6cGhMlfO7eJwKzb1
+         +BEtfpmRTH8b82O1g4oVkIqTDcd5iPr3lInrHeZyrsFfTCnzgZfaLhslwpUjiId4X8J5
+         EqhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751614975; x=1752219775;
+        d=1e100.net; s=20230601; t=1751614995; x=1752219795;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=camNvxFIEl2ZnilHFyd5vJLomyvuXbAyAAA9+dCBwRk=;
-        b=jwsmi8BUe73k1y5+akInQ481w1UAbS9Um+DNwbXH6R1M3r91jzYGNaLto6hP+lUlvC
-         g0X7c1aYTwkUWz1sJfYAw1TUwqGdsC+nsB0Urlk/iSCt64i7ivasX0tmzcVZE1qMj5Ie
-         U55E7H0M9KP9XkJ296OHa3IsBENp7j7WdXu0njalAl2oG1uFrrlNWCERMWeDoUxGgiyQ
-         rv6cPN9xZNymIK0INT2VdBXHUS3JoWVcJ/6+zU0pgA8YX0CfLN7a/184K9D+SHqFdtOw
-         MMFhsPplbtqvvB3uyPnvnkjht2iFWHFUd3JEp+NbJjRKsIVUHupee6t8xmHP1+n5uPQ+
-         K1vw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8IQ/Vp41VuZklDl+g2DS5Jlt32SiI2O+FPsrpI6DC3353m2ZyaD4bmyydrzEV9EASFNEY2OEJCBTmPlkk+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrEMiBNtgBjCOUj4KzNK5aP2uSMou09B68aPmLTGWLQPSfVTh7
-	YZPwm8X7yh6bj4etl0CwPRS1jVfblsxYW5S04z1R6kcOn7UUJb6pz/fjO7FxhddnjZjHQu3saZn
-	GvfWVRcdMUwDQMo/n3w==
-X-Google-Smtp-Source: AGHT+IEaYSraVJ6sZtkAl+0ugpmkdJfooBiBpMK4mkQLrv/OlSZBW7BofC2dgtjJxBr8tWhlM0xayMRReusEiag=
-X-Received: from wmbfp26.prod.google.com ([2002:a05:600c:699a:b0:450:d398:f3ff])
+        bh=Trbkf5L2/nBS7LLO18/vGBZSMaVa1rVVnPz6wCKHNqA=;
+        b=lVPglP/lp0DaCf+4iW97VioK6J8f1QMjh7WGjbS+3wNf5hhcbwWt8LWss0kQfHbCji
+         zwAV8mqnzwjEgTYNQPcPV6Uvo8dp1ZMU8yWNk9r3QMIPvNWyL0t2qC71N4R29zg1Hy2D
+         nntNy4upDXITPpjt4wQXf5DLKWpzTf92quvbTC84zoRd4P3r91D23wZNMDMebxsoEXwi
+         nmOZxU/LTLdZHS/q/LALR3RARgOtxMwxZZ0QZxJ8FbI6BvESFQoRuGtwrtz7m6QQ7z0A
+         rDkpkPGen4yv2j+cecy/jqPtecW/6nxocWPWjX9vmt+TrODhSoUOmxx3/byE3f7/iOBV
+         Jh5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWJD3wBXdQdy2U8On3C4gbGUGDMTTYHcV8HWlNei9hMKvnJdjK/eTYY0suDJxeROk5zB8lVT2HMNtUflSTXNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIrjRZtRnW56qyZ+ulg030TDA/gcvb8+PDZqUHlLXkc2Ujah82
+	4c5nkvqmr6+8jyeQRHIkAenjctcq2xfbg1Jhyj9HMA07NH6tZyDwuWaufJjowl30T5mitnTLRXa
+	RT5PvIVyLWudikcIlYA==
+X-Google-Smtp-Source: AGHT+IGvb0vLGZH3H8NELYBKZnOLf+QcL2G3KHfh+CH2+bafytEWalGS+i6LYIUc1+KQFnyWHN2Tzjq3rWi21Gw=
+X-Received: from wmbeq7.prod.google.com ([2002:a05:600c:8487:b0:450:dcfd:1870])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8218:b0:450:d3b9:a5fc with SMTP id 5b1f17b1804b1-454b31134d2mr15309935e9.27.1751614974821;
- Fri, 04 Jul 2025 00:42:54 -0700 (PDT)
-Date: Fri, 4 Jul 2025 07:42:53 +0000
-In-Reply-To: <fcdae3ca-104d-4e8b-8588-2452783ed09a@sedlak.dev>
+ 2002:a05:600c:45cf:b0:441:d2d8:bd8b with SMTP id 5b1f17b1804b1-454b4e779camr8985075e9.8.1751614995067;
+ Fri, 04 Jul 2025 00:43:15 -0700 (PDT)
+Date: Fri, 4 Jul 2025 07:43:14 +0000
+In-Reply-To: <20250703-topics-tyr-request_irq-v6-1-74103bdc7c52@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
- <20250703-topics-tyr-request_irq-v6-2-74103bdc7c52@collabora.com> <fcdae3ca-104d-4e8b-8588-2452783ed09a@sedlak.dev>
-Message-ID: <aGeF_W74OfhRbkoR@google.com>
-Subject: Re: [PATCH v6 2/6] rust: irq: add flags module
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com> <20250703-topics-tyr-request_irq-v6-1-74103bdc7c52@collabora.com>
+Message-ID: <aGeGEth0mmVNLWwg@google.com>
+Subject: Re: [PATCH v6 1/6] rust: irq: add irq module
 From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Sedlak <daniel@sedlak.dev>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
@@ -75,43 +73,10 @@ Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.or
 	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jul 04, 2025 at 08:14:11AM +0200, Daniel Sedlak wrote:
-> Hi Daniel,
+On Thu, Jul 03, 2025 at 04:29:59PM -0300, Daniel Almeida wrote:
+> Add the IRQ module. Future patches will then introduce support for IRQ
+> registrations and handlers.
 > 
-> On 7/3/25 9:30 PM, Daniel Almeida wrote:
-> > +/// Flags to be used when registering IRQ handlers.
-> > +///
-> > +/// They can be combined with the operators `|`, `&`, and `!`.
-> > +#[derive(Clone, Copy, PartialEq, Eq)]
-> > +pub struct Flags(u64);
-> 
-> Why not Flags(u32)? You may get rid of all unnecessary casts later, plus
-> save some extra bytes.
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-It looks like the C methods take an `unsigned long`. In that case, I'd
-probably write the code to match that.
-
-	pub struct Flags(c_ulong);
-
-and git rid of the cast when calling bindings::request_irq.
-
-As for all the constants in this file, maybe it would be nice with a
-private constructor that uses the same type as bindings to avoid the
-casts?
-
-	impl Flags {
-	    const fn new(value: u32) -> Flags {
-	    	...
-	    }
-	}
-	
-	/// Use the interrupt line as already configured.
-	pub const TRIGGER_NONE: Flags = Flags::new(bindings::IRQF_TRIGGER_NONE);
-
-Not a big deal, but avoiding the cast when calling bindings::request_irq
-is a good idea I think.
-
-With that:
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-Alice
