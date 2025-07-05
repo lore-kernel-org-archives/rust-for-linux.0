@@ -1,169 +1,248 @@
-Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA625175A5;
-	Sat,  5 Jul 2025 07:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E493C26CE21;
+	Sat,  5 Jul 2025 08:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751700698; cv=none; b=qnwLVdJmJYJMJdagDwKZfYPVxLGf4mWLYKsaRWy7CSnl7b8mMNG7NSSuXBjXesW1i8RmEL5i+DPC3VuOHVf3ncLUrHfZKjBL1T8vTzBj03a4YohfPEyiYYxg/Vwbwin/ZWBpA4OeYTIZAa8LqZDIWWICTLNdeYexTQByb3mKcCc=
+	t=1751702652; cv=none; b=KokvcGeid0vCuFpA0JnsE36NhigsJA6hawzCI1IGVReuo8bI4dvOxl7r+fh1KADtLqFquVj2eDdkKsQmKV87sBZVVADEfoJSlgtfTduI9HqejBtCoFJF/vNmRWm7n8HDGl7KtHO+ooqvmePwz2BVhsVK8kzpNHmUczDkdiYfh54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751700698; c=relaxed/simple;
-	bh=9ZoUw5Hl/3qhmjyhcjKqY9i+D8ng2zzbXo8jy3DQEhQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xo4ZhOiwpcFIQ8hoXehkAYySRKaa9MGp8YTRqbBdxRCIfC9GNFYRkiD4qYEhrZeeXDRGcI3xiIoccyq2zDiay6H22W+WtIXiFeDjtBq83r9n/pGI15QY2bw9ftT1m7HgpOhqQqYYrAJ9EL+uYPx9od9UIJCCGmYvzA4O/76LAno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=zfNQ1xla; arc=none smtp.client-ip=79.135.106.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1751702652; c=relaxed/simple;
+	bh=hjqxLW+6zaIDAMkFuFqYlRa/pAYfVX2EP7QP35RoaRk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=llqUStnKjbKP01HLlOdg46J67RpqYZ6RcMn26WzbxWapb3zOz9N6SMHRrSeMbZ96bcgYvDp+H9vvS6EfShVyfN7/V6K58qCBR3oi6pzt2gHC9Pv2BIe4XKbhqoMnL8H5FCbH5iiq8rtCLmhPjjSEEWTM8ZmlTohrUd04uBMkPm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bo0fd4s5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="zfNQ1xla"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1751700686; x=1751959886;
-	bh=J3XdgSpKZ1wBoY+0lETsQNnQofaKx79OW1d3zjVSCLg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=zfNQ1xlaNx7V8yLaz4lP7xIsaqQS0wZ/47g+El+5IFtYPIDixJbEbLaOYrs4CcfIN
-	 dxViWsblCSzmIriZS7/Np/Yc5OkT7oZfjzmJaLtXPL9+ZKLmdi3YN/0wibt4/exvDk
-	 FxPtHQNvkCuAXOrMOYlzuRSRziADWUrfOWAopMG1WPc+B5XrC5+ZIsCAgrEPJuBnuQ
-	 QaiGul/jxAwtpGmyb49Y/VAFcRPNbXQYIE9QQfCGDDKBWXb8XhxGTM2WRvimmdW1qS
-	 Z+PQz1MFJEBHIY8d3THmBPsxzCFQFyl7QlLk13TD/rExsnoOO2vjGZ9GreUHSlIgJd
-	 PoWwtnUywdqww==
-Date: Sat, 05 Jul 2025 07:31:21 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Benjamin Tissoires <bentiss@kernel.org>, Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Brooks <db48x@db48x.net>
-Subject: Re: [PATCH v1 2/3] rust: core abstractions for HID drivers
-Message-ID: <87frfbksam.fsf@protonmail.com>
-In-Reply-To: <0b7c2a9b-9cdc-41e9-bdaa-ddd8b0807449@kernel.org>
-References: <20250629045031.92358-2-sergeantsagara@protonmail.com> <20250629045031.92358-4-sergeantsagara@protonmail.com> <aGD9OIZ_xE6h3199@pollux> <8os57581-8q0n-p226-836s-52610166qq02@xreary.bet> <p2tuq2a77dpl3ku7a6dbwqgsk5yybemqcfyoozjl5k3auijxqk@7myvbre2aam4> <0b7c2a9b-9cdc-41e9-bdaa-ddd8b0807449@kernel.org>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: 90fe8011a0209a46b8686dc6cc7f4d0288e76faf
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bo0fd4s5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBD2C4CEE7;
+	Sat,  5 Jul 2025 08:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751702651;
+	bh=hjqxLW+6zaIDAMkFuFqYlRa/pAYfVX2EP7QP35RoaRk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bo0fd4s5G5LQ8U4f1mCg4SSfOz/umJz5KDpQoD40okSaurUC4WHv2qIL1U5ULhk2Q
+	 TMhfHy1DsbYVZJI1h97cEbwajKrMkAhD/W9ZsqkWUq1aCY31wL7T37Y2RvRvVog7fg
+	 9+tire7gfBEpj68z5f6gkNebkbZO90bHSg70mhTB2PbXwoc1cXo5pKFOfjMLS0mbVP
+	 upkbV3HWrGGts2GQBfH+yW/15HVyjVMtavgoc1+KL2jfmKy3oBqXfGd4IDMW4wWI6z
+	 Obv1pevn9CPwz40WL+4DoRpUMMylkWHpNw0/L0xJrCDm4MP0vyK6CWeKT9AnIc7vor
+	 tTp0phV9ScfEQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 05 Jul 2025 10:04:04 +0200
+Message-Id: <DB3YRHR9RN8Z.29926G08T7KZ0@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: "Gary Guo" <gary@garyguo.net>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
+ <linux-arch@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
+ "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
+Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
+X-Mailer: aerc 0.20.1
+References: <20250618164934.19817-1-boqun.feng@gmail.com>
+ <20250618164934.19817-5-boqun.feng@gmail.com>
+ <20250621123212.66fb016b.gary@garyguo.net> <aFjj8AV668pl9jLN@Mac.home>
+ <20250623193019.6c425467.gary@garyguo.net> <aFmmYSAyvxotYfo7@tardis.local>
+ <aGg4sIORQiG02IoD@Mac.home> <DB3KC64NSYK7.31KZXSNO1XOGM@kernel.org>
+ <aGhFAlpOZJaLNekS@Mac.home> <DB3MQ54N1FLA.3RTNYKTJFDNYY@kernel.org>
+ <aGhiEZ4uNzEs4nah@Mac.home>
+In-Reply-To: <aGhiEZ4uNzEs4nah@Mac.home>
 
-On Thu, 03 Jul, 2025 10:20:19 +0200 "Danilo Krummrich" <dakr@kernel.org> wr=
-ote:
-> On 7/3/25 10:01 AM, Benjamin Tissoires wrote:
->> On Jul 03 2025, Jiri Kosina wrote:
->>> On Sun, 29 Jun 2025, Danilo Krummrich wrote:
->>>
->>>> (Cc: +Jiri)
->>>
->>> Thanks.
->>>
->>>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>>> index c3f7fbd0d67a..487750d9fd1e 100644
->>>>> --- a/MAINTAINERS
->>>>> +++ b/MAINTAINERS
->>>>> @@ -10686,6 +10686,13 @@ F:=09include/uapi/linux/hid*
->>>>>   F:=09samples/hid/
->>>>>   F:=09tools/testing/selftests/hid/
->>>>>
->>>>> +HID CORE LAYER [RUST]
->>>>> +M:=09Rahul Rameshbabu <sergeantsagara@protonmail.com>
->>>>> +L:=09linux-input@vger.kernel.org
->>>>> +S:=09Maintained
->>>>> +T:=09git git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git
->>>>> +F:=09rust/kernel/hid.rs
->>>>
->>>> I assume this is agreed with the HID CORE LAYER maintainers?
->>>>
->>>> There are multiple possible options, for instance:
->>>>
->>>>    1) Maintain the Rust abstractions as part of the existing MAINTAINE=
-RS entry.
->>>>       Optionally, the author can be added as another maintainer or rev=
-iewer.
->>>>
->>>>    2) Add a separate MAINTAINERS entry; patches still go through the s=
-ame
->>>>       subsystem tree.
->>>>
->>>>    3) Add a separate MAINTAINERS entry; patches don't go through the s=
-ubsystem
->>>>       tree (e.g. because the subsystem maintainers don't want to deal =
-with it).
->>>
->>> I can't speak for Benjamin, but as far as I am concerned, I'd personall=
+On Sat Jul 5, 2025 at 1:21 AM CEST, Boqun Feng wrote:
+> On Sat, Jul 05, 2025 at 12:38:05AM +0200, Benno Lossin wrote:
+> [..]
+>> >> >   (This is not a safety requirement)
+>> >> >
+>> >> >   from_repr() and into_repr(), if exist, should behave like transmu=
+te()
+>> >> >   on the bit pattern of the results, in other words, bit patterns o=
+f `T`
+>> >> >   or `T::Repr` should stay the same before and after these operatio=
+ns.
+>> >> >
+>> >> >   Of course if we remove them and replace with transmute(), same re=
+sult.
+>> >> >
+>> >> >   This reflects the fact that customized atomic types should store
+>> >> >   unmodified bit patterns into atomic variables, and this make atom=
+ic
+>> >> >   operations don't have weird behavior [1] when combined with new()=
+,
+>> >> >   from_ptr() and get_mut().
+>> >>=20
+>> >> I remember that this was required to support types like `(u8, u16)`? =
+If
+>> >
+>> > My bad, I forgot to put the link to [1]...
+>> >
+>> > [1]: https://lore.kernel.org/rust-for-linux/20250621123212.66fb016b.ga=
+ry@garyguo.net/
+>> >
+>> > Basically, without requiring from_repr() and into_repr() to act as a
+>> > transmute(), you can have weird types in Atomic<T>.
+>>=20
+>> Ah right, I forgot some context... Is this really a problem? I mean it's
+>
+> It's not a problem for safety, so it's not a safety requirement. But I
+> really don't see a reason why we want to support this. Not supporting
+> this makes the atomic implementation reasoning easier.
+
+Yeah.
+
+>> weird sure, but if someone needs this, then it's fine?
+>>=20
+>
+> They can always play the !value game outside atomic, i.e. !value before
+> store and !value after load, so I don't think it's reasonable request.
+
+That's true, yeah let's forbid this :)
+
+>> > `(u8, u16)` (in case it's not clear to other audience, it's tuple with=
+ a
+>> > `u8` and a `u16` in it, so there is a 8-bit hole) is not going to
+>> > support until we have something like a `Atomic<MaybeUninit<i32>>`.
+>>=20
+>> Ahh right we also had this issue, could you also include that in your
+>> writeup? :)
+>>=20
+>
+> Sure, I will put it in a limitation section maybe.
+>
+>> >> yes, then it would be good to include a paragraph like the one above =
+for
+>> >> enums :)
+>> >>=20
+>> >> > * Provenance preservation.
+>> >> >
+>> >> >   (This is not a safety requirement for Atomic itself)
+>> >> >
+>> >> >   For a `Atomic<*mut T>`, it should preserve the provenance of the
+>> >> >   pointer that has been stored into it, i.e. the load result from a
+>> >> >   `Atomic<*mut T>` should have the same provenance.
+>> >> >
+>> >> >   Technically, without this, `Atomic<*mut T>` still work without an=
 y
->>> prefer option (3).
->>
->> I understand Jiri's concerns, but I'm slighlty worried (3) will end up
->> also having the leaf drivers in a separate tree, which means that 2
->> trees will fight for the same resource.
->>
->> First patch of this series is a first example where some changes are
->> needed in the HID bus for making rust life's easier.
->>
->> Personally, I'd like to have a say and an eye on the rust abstractions
->> and most of it, on the leaf drivers. I can't say I'll proactively
->> review/merge things (these past few months have shown that I merely
->> manage to follow things happening ATM), but at least I can keep an eye
->> and shout if something is wrong.
->>
->> OTOH, the HID tree (the core part) is a low change tree now, so maybe a
->> separate tree can be handled correctly without too much troubles.
->>
->> Danilo, if a separate tree is chosen, is the common practice to directly
->> send the PR to Linus or does it need to got through the subsystem tree
->> first (like bpf with net for example).
+>> >> >   safety issue itself, but the user of it must maintain the provena=
+nce
+>> >> >   themselves before store or after load.
+>> >> >
+>> >> >   And it turns out it's not very hard to prove the current
+>> >> >   implementation achieve this:
+>> >> >
+>> >> >   - For a non-atomic operation done on the atomic variable, they ar=
+e
+>> >> >     already using pointer operation, so the provenance has been
+>> >> >     preserved.
+>> >> >   - For an atomic operation, since they are done via inline asm cod=
+e, in
+>> >> >     Rust's abstract machine, they can be treated as pointer read an=
+d
+>> >> >     write:
+>> >> >
+>> >> >     a) A load of the atomic can be treated as a pointer read and th=
+en
+>> >> >        exposing the provenance.
+>> >> >     b) A store of the atomic can be treated as a pointer write with=
+ a
+>> >> >        value created with the exposed provenance.
+>> >> >
+>> >> >     And our implementation, thanks to no arbitrary type coercion,
+>> >> >     already guarantee that for each a) there is a from_repr() after=
+ and
+>> >> >     for each b) there is a into_repr() before. And from_repr() acts=
+ as
+>> >> >     a with_exposed_provenance() and into_repr() acts as a
+>> >> >     expose_provenance(). Hence the provenance is preserved.
+>> >>=20
+>> >> I'm not sure this point is correct, but I'm an atomics noob, so maybe
+>> >> Gary should take a look at this :)
+>> >>=20
+>> >
+>> > Basically, what I'm trying to prove is that we can have a provenance-
+>> > preserved Atomic<*mut T> implementation based on the C atomics. Either
+>> > that is true, or we should write our own atomic pointer implementation=
+.
+>>=20
+>> That much I remembered :) But since you were going into the specifics
+>> above, I think we should try to be correct. But maybe natural language
+>> is the wrong medium for that, just write the rust code and we'll see...
+>>=20
 >
-> We usually fall back to the global Rust tree, which is ultimately maintai=
-ned by
-> Miguel, so it's his call in the end.
+> I don't thinking writing rust code can help us here other than duplicate
+> my reasoning above, so like:
 >
-> However, IMHO this is more like a "last resort" in case any other approac=
-hes
-> within the same subsystem are not desired.
+>     ipml *mut() {
+>         pub fn xchg(ptr: *mut *mut (), new: *mut ()) -> *mut () {
+> 	    // SAFTEY: ..
+> 	    // `atomic_long_xchg()` is implemented as asm(), so it can
+> 	    // be treated as a normal pointer swap() hence preserve the
+> 	    // provenance.
+
+Oh I think Gary was talking specifically about Rust's `asm!`. I don't
+know if C asm is going to play the same way... (inside LLVM they
+probably are the same thing, but in the abstract machine?)
+
+> 	    unsafe { atomic_long_xchg(ptr.cast::<atomic_long_t>(), new as ffi:c_=
+long) }
+> 	}
 >
->  From what I can read above, it feels to me as if having a separate tree
-> (maintained by Rahul) with him sending pull requests to you guys seems li=
-ke a
-> good option. What do you think about that?
+>         pub fn cmpxchg(ptr: *mut *mut (), old: *mut (), new: *mut ()) -> =
+*mut () {
+> 	    // SAFTEY: ..
+> 	    // `atomic_long_xchg()` is implemented as asm(), so it can
+> 	    // be treated as a normal pointer compare_exchange() hence preserve =
+the
+> 	    // provenance.
+> 	    unsafe { atomic_long_cmpxchg(ptr.cast::<atomic_long_t>(), old as ffi=
+::c_long, new as ffi:c_long) }
+> 	}
+>
+> 	<do it for a lot of functions>
+>     }
+>
+> So I don't think that approach is worth doing. Again the provenance
+> preserving is a global property, either we have it as whole or we don't
+> have it, and adding precise comment of each function call won't change
+> the result. I don't see much difference between reasoning about a set of
+> functions vs. reasoning one function by one function with the same
+> reasoning.
+>
+> If we have a reason to believe that C atomic doesn't support this we
+> just need to move to our own implementation. I know you (and probably
+> Gary) may feel the reasoning about provenance preserving a bit handwavy,
 
-First wanted to say thanks to everyone who responded to this series.
-I am personally open to any of the above.
+YES :)
 
-From what I can tell, Jiri and Benjamin would prefer pull
-requests/discussion of the Rust for Linux bindings not contaminate the
-hid git tree or linux-input mailing list. Patches will instead be
-submitted through the rust-for-linux mailing list and pull requests
-would be sent through the Rust for Linux tree. I can make Benjamin a
-reviewer for this effort, so he will be explicitly CCed to take a look
-at how the bindings are taking shape. I can make Jiri a reviewer if he
-would like to participate (I was assuming maybe not based on the desire
-for option 3 listed above). Maybe with this model, I have a
-rust-for-linux-hid tree where I send pull requests to the rust-for-linux
-tree?
+> but this is probably the best we can get, and it's technically better
 
-On the other hand, Danilo would prefer something similar to the above
-with the caveat of pull requests going through the hid tree and patches
-through linux-input mailing list.
+I think we can at improve the safety docs situation.
 
-I am open to either personally.
+> than using Rust native atomics, because that's just UB and no one would
+> help you.
 
-I will be sending a v2 hopefully soon based on Danilo's and Peter's
-feedback.
+I'm not arguing using those :)
 
-In parallel, I am thinking about how to design a Drop trait for handling
-HID device unplug instead of needing a C style remove callback. This
-will be crucial for implementing sophisticated leaf drivers. The driver
-implemented here purely does report fixup. In my ideal world, all pure
-report fixup work would be done in HID-BPF space and only sophisticated
-drivers would be implemented as a Rust leaf driver. I have some separate
-scratch work playing around HID-BPF that I have not had time to clean
-up. Right now, it's just samples for doing things like key remapping on
-a keyboard. I am envisioning an Alsa UCM like model for HID-BPF for
-dealing with report fixups.
+> (I made a copy-pasta on purpose above, just to make another point why
+> writing each function out is not worth)
 
---=20
-Thanks,
+Yeah that's true, but at the moment that safety comment is on the `impl`
+block? I don't think that's the right place...
 
-Rahul Rameshbabu
-
+---
+Cheers,
+Benno
