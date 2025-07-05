@@ -1,47 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EF42CA9;
-	Sat,  5 Jul 2025 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7980A2AD00;
+	Sat,  5 Jul 2025 15:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751727975; cv=none; b=BY20yDectHuDWc1HzMumTUPvZeY7LhajUVNq3iNG2B+/uMLL19auM6t0WGGiqpgBTABlWZx2qSnndsXVjxDFNTj9oaQ3AJP0stsLXYLRGIoAPbWpCL+zipGB2xJ/GzsgbDPIG5vmf/nt4x38eU3uCsIq+4imZp3lVkzuF6fRsWU=
+	t=1751728371; cv=none; b=TUmI1kiAey/OBeu5yeJlqzs4MX/jjD9LPVAqOo2clrQQuVpAsLukyK9J/ZASkYp8FaH38h71CD9ZwsN1sZMdVNRrJHmXcMaftEQJSBoXFrPb5guHiudJTlb6fwBhOSpae7HUkstFUQqnJYxVM7E7qpL09kP/YXMRs2sI6HwmxnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751727975; c=relaxed/simple;
-	bh=0RAT1QzWcZIXw2i/MINS/triAT6nnVcva9zpNrI0LLU=;
+	s=arc-20240116; t=1751728371; c=relaxed/simple;
+	bh=TIM6e5qHp/6nVvPVrYN8jvey9AfXNCweNKEmC77aLFs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iwLcXnlIb1wzn+3k9wx04DfLabDY1veFOagEcbLW0lww26EmDcBCWNQuvhsBR6bn0NKyklw1CA2mH2NppQGQe3ErfbiB/ZCgVduTZ81hqP6Bf0PoTRI9Pqf9y2Mcgoc2cPxZvRo+0DK7v2FOGQ3uqRZpshAK6EokPoI2GcyOuvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLcAqjQk; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=P/xb9ieF3DZtvJzl/Pem9v8MKMt/WzxFOzm+tDYAQiZyw4tdaasYARbYrqBo6ItT1BbrY8Mjl+GTns/MXGOIVxaeYRmnyoPdOmZxh3Pn4gjtwZcEjUuCDgQcIiz0QtkaRmJ6yr3Wzu8+DX3aSf7xeqTfYPwKvHHRcEP0eFTVOv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NA/UlB7Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLcAqjQk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14241C4CEE7;
-	Sat,  5 Jul 2025 15:06:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NA/UlB7Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD51C4CEE7;
+	Sat,  5 Jul 2025 15:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751727975;
-	bh=0RAT1QzWcZIXw2i/MINS/triAT6nnVcva9zpNrI0LLU=;
+	s=k20201202; t=1751728371;
+	bh=TIM6e5qHp/6nVvPVrYN8jvey9AfXNCweNKEmC77aLFs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cLcAqjQkbE5VH+oStc615DdfriNe9c6q+qG+6fXcpOAwGEl5rjzUbsy4FwGmikAVM
-	 MLHY/egV/Sqoijv6+RWZ8HiE2IJFqskiZpcJ4TNbbYoR+doxy4M5sGIEb/LJKYfw8X
-	 PDPi+9J7IGf+Zp34umbVD6EyZKKsh37qeDGNMlZa79Pr/nV/64rybeLxf861FVWvfx
-	 NXNEpqjj5U3sNrD5Q2kIGVp1/2mqHMDBuJxlf6G86wFmZrydGNVu9j0mlPusVxYXx2
-	 s7bT3YObs1o0j5QIgAXtJv3c4qAB5AWcSk6yDNp4frVHcVWj9lcvKMNEyUpIAF3ipP
-	 S5iTxB0C10AMA==
-Date: Sat, 5 Jul 2025 17:06:08 +0200
+	b=NA/UlB7QiZpeWNcrZwQlf84fg6QQ799YFRTI9mAodcDoB3oYDBUyry7zpB8olc4UW
+	 fb91VGwsySk+oi7By0Iq5rThNTgpHEFGNYhHGxocD5HR95rvin6BitEKStsPLgknBf
+	 0RIAZyGOPeGdEHTF/2zekkmt1ar/73UUvMr7D1J5zBQXQ8o3sN8zQZxsOlv35Lvemx
+	 KEQmn6f5psx/wO2acJvMVMCR8JTMXyDOuu2XTVAZy7M0VwpWwyCNGr4VqsNcHhbSuz
+	 +ux/VYhoPBf0rb4xcrv2brI4mX5QdNpf/qAIyeXrhwZSHWwLvVAhdLV1rCX6mIMQRx
+	 uqJAzbUUMkpVA==
+Date: Sat, 5 Jul 2025 17:12:45 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
-	david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
-	kwilczynski@kernel.org, bhelgaas@google.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH 2/8] rust: device: add drvdata accessors
-Message-ID: <aGk_YBCGqrO-A6bG@cassiopeiae>
-References: <20250621195118.124245-1-dakr@kernel.org>
- <20250621195118.124245-3-dakr@kernel.org>
- <DB42TQY2E57U.1PKC16LW38MH9@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: devres: remove unused import
+Message-ID: <aGlA7aGiMC9o-bCo@cassiopeiae>
+References: <20250704-cstr-include-devres-v1-1-4ee9e56fca09@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,52 +50,11 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DB42TQY2E57U.1PKC16LW38MH9@kernel.org>
+In-Reply-To: <20250704-cstr-include-devres-v1-1-4ee9e56fca09@gmail.com>
 
-On Sat, Jul 05, 2025 at 01:15:06PM +0200, Benno Lossin wrote:
-> On Sat Jun 21, 2025 at 9:43 PM CEST, Danilo Krummrich wrote:
-> > +impl Device<Internal> {
-> > +    /// Store a pointer to the bound driver's private data.
-> > +    pub fn set_drvdata(&self, data: impl ForeignOwnable) {
-> > +        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-> > +        unsafe { bindings::dev_set_drvdata(self.as_raw(), data.into_foreign().cast()) }
-> > +    }
-> > +
-> > +    /// Take ownership of the private data stored in this [`Device`].
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// - Must only be called once after a preceding call to [`Device::set_drvdata`].
-> > +    /// - The type `T` must match the type of the `ForeignOwnable` previously stored by
-> > +    ///   [`Device::set_drvdata`].
-> > +    pub unsafe fn drvdata_obtain<T: ForeignOwnable>(&self) -> T {
-> > +        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-> > +        let ptr = unsafe { bindings::dev_get_drvdata(self.as_raw()) };
-> > +
-> > +        // SAFETY: By the safety requirements of this function, `ptr` comes from a previous call to
-> > +        // `into_foreign()`.
+On Fri, Jul 04, 2025 at 04:11:02PM -0400, Tamir Duberstein wrote:
+> As far as I can tell, this was never used.
 > 
-> Well, you're also relying on `dev_get_drvdata` to return the same
-> pointer that was given to `dev_set_drvdata`.
-> 
-> Otherwise the safety docs look fine.
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Great! What do you think about:
-
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index 146eba147d2f..b01cb8e8dab3 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -80,8 +80,11 @@ pub unsafe fn drvdata_obtain<T: ForeignOwnable>(&self) -> T {
-         // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer to a `struct device`.
-         let ptr = unsafe { bindings::dev_get_drvdata(self.as_raw()) };
-
--        // SAFETY: By the safety requirements of this function, `ptr` comes from a previous call to
--        // `into_foreign()`.
-+        // SAFETY:
-+        // - By the safety requirements of this function, `ptr` comes from a previous call to
-+        //   `into_foreign()`.
-+        // - `dev_get_drvdata()` guarantees to return the same pointer given to `dev_set_drvdata()`
-+        //   in `into_foreign()`.
-         unsafe { T::from_foreign(ptr.cast()) }
-     }
+Applied to driver-core-testing, thanks!
