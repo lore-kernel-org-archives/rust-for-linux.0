@@ -1,124 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B01D1F0E47;
-	Sat,  5 Jul 2025 07:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB4D18C31;
+	Sat,  5 Jul 2025 07:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751698899; cv=none; b=MlHVlRT3GxwfHJM4XrfRT3KyddlNuKGIkEzfcoJZTMztHHNNKBmYhVDWlsLlU1N30k5JSC5SH5+cOE1NBhnS9x8eWgm2eplFtxEIZvs8SxV36gwMITwNY8gm6dFy9iF0x1a6oxaNOJyDpUS2m1bktpaEyTSwn8aHdzAupW6vdJo=
+	t=1751699148; cv=none; b=IaxFght6qVM7FWPOoa8azUzVaqfG9u6POUv+j0EiXtleZzds7Inxi2t+fkwBcD4+8E39TXJEISwfvLutyRK9jaCXm1xgnHcFpVZehGhBaTI6uJRFBRkfHls6JPkU+F3Zl1NYkaJ2Ca7mK63yPxhZwdxmLnn8HgoA/uw5MzZakFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751698899; c=relaxed/simple;
-	bh=Idmu/dCAYI+cgqBEYepV+Mv0IJ2ByJnr314LV8QmSKk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=u3VQCiaQzRFDnB7b7f3SxYi/3Rc98A//K9OtFoREF4FP4JjAszR6OL7eya09uDv8kYVmgMSIoNU7JinoC+zHHZylQV3DmE2JyjMEylEzEjL0gKFk92u/Pq93rfoeyL18KeymGgCjtjG/CFo7hEuBF3HYw3zKZwaQEg49n8qTkGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ot5FtxDd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751699148; c=relaxed/simple;
+	bh=c0yPK2qi3aMbOXUEzuaqa0eXAMlIXuWfoYKTwJWiU/0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OqLCwFUDHPyohsOvNnf3UdeVEAG5shwzwvEElYJmvDdeGkF3kNKfSBxBif4u6OKWlIVjIYjk+w0O11Z3CBvTNVIykm72UzyT8Rn4zE5Bj5YiTuCi7cNGUMH1uXBTRhQ27DGzwN9F7NdjU9a1vRDt/Lpm8PnaRtsSATvoyGGpchk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=h36uczKm; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ot5FtxDd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D1DC4CEE7;
-	Sat,  5 Jul 2025 07:01:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751698897;
-	bh=Idmu/dCAYI+cgqBEYepV+Mv0IJ2ByJnr314LV8QmSKk=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Ot5FtxDd/DzDG+uyjUTdveMYO13QXkaaamkCO+pyezWTNJXS7NJVaY6jt/fDXh3BI
-	 yrvzzzNAO9Zj/yTXLmdAhrN48kcAvAOeuXiQ/eWpYmTGyArutMm0zRtAwTYiAv6OX5
-	 jWQmMWBQhnAcDw6k2lpRTzFL9lkUHyqlVu7nGOlxIYFHW7mOSFTyjz82nsVI88x8l8
-	 qcNuHgA8x/bcvuWHnj3Ck2+Sy3zdFO2TPPizEYNHLn5Q3iGgttXYDG17e75IfLLKk6
-	 NeFShxy/bVLLaiy7Gs+V8aMJ+b+vzRiWXLnbgQpjVHG+s6Sb7Xxpvg4j693n76fk4k
-	 EMg2seiqYVyOw==
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="h36uczKm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1751699138; x=1751958338;
+	bh=pDDVT0J53yssnmK+K39Xfz1t/T50bxi9dCd7/B+xsXU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=h36uczKmp2RgiYJHPsvxYgDX7LPqm+yyxoe6ZFFALZoty295QpC4sbxS+Tyc8Vd3B
+	 MRmEil8QCpaGJS9gpcDV1Wz678EkWH+flZmjGUR3RontFtJejzc49XIkFmkhx5PhO1
+	 tX8BY/i+qItFUs4n87VgCQIDssIcTJgeYlMoIojGaeLwkRlAd1+39W9qfZEqnAMX8j
+	 gvwQOiVfPoMHmTmLjz2Tv0ubPbL/TJCbf4HNAmMg3+SpdLLiSDQ6BA8AiSifshM85K
+	 T5hthcqnEqSbS07Ar4jMBmx1qQ04FOy6AW2RKRG/+oOxQk3OP4E7VbqoWnxlQrHVg4
+	 y3xKhEjboxJJA==
+Date: Sat, 05 Jul 2025 07:05:33 +0000
+To: Wren Turkal <wt@penguintechs.org>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
+Subject: Re: [PATCH] rust: pci: fix documentation related to Device instances
+Message-ID: <87ldp3kthk.fsf@protonmail.com>
+In-Reply-To: <954c0915-25d9-4bc3-ac82-452650902a3c@penguintechs.org>
+References: <20250629055729.94204-2-sergeantsagara@protonmail.com> <954c0915-25d9-4bc3-ac82-452650902a3c@penguintechs.org>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 15e123e953ee8fb71684dc4554f9e42dfb2b359f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 05 Jul 2025 09:01:33 +0200
-Message-Id: <DB3XFMG7M4SO.J6A2LVOAOJDX@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <dakr@kernel.org>, <ojeda@kernel.org>, <skhan@linuxfoundation.org>,
- <linux-kernel-mentees@lists.linuxfoundation.org>,
- <~lkcamp/patches@lists.sr.ht>
-Subject: Re: [PATCH v5 0/2] rust: revocable: documentation and refactorings
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250626165927.66498-1-marcelomoreira1905@gmail.com>
- <DB29YAYDK6YW.1NF5I2WSI1BPR@kernel.org>
- <CAPZ3m_iqCRYh+XhMip3h=ZWKpw4VPfnRQ6ofmoAnrzKDbOO-PA@mail.gmail.com>
-In-Reply-To: <CAPZ3m_iqCRYh+XhMip3h=ZWKpw4VPfnRQ6ofmoAnrzKDbOO-PA@mail.gmail.com>
 
-On Sat Jul 5, 2025 at 7:09 AM CEST, Marcelo Moreira wrote:
-> Em qui., 3 de jul. de 2025 =C3=A0s 05:24, Benno Lossin <lossin@kernel.org=
-> escreveu:
+On Sun, 29 Jun, 2025 00:14:18 -0700 "Wren Turkal" <wt@penguintechs.org> wro=
+te:
+> On 6/28/25 10:57 PM, Rahul Rameshbabu wrote:
+>> Device instances in the pci crate represent a valid struct pci_dev, not =
+a struct
+>> device.
 >>
->> On Thu Jun 26, 2025 at 6:59 PM CEST, Marcelo Moreira wrote:
->> > This patch series brings documentation and refactorings to the `Revoca=
-ble` type.
->> >
->> > Changes include:
->> > - Clarifying the write invariant and updating associated safety commen=
-ts for `Revocable<T>`.
->> > - Splitting the internal `revoke_internal` function into two distinct,=
- explicit functions: `revoke()` (safe, synchronizing with RCU) and `revoke_=
-nosync()` (unsafe, without RCU synchronization), now returning `bool` to in=
-dicate revocation status.
+>> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+>> ---
 >>
->> Could you wrap your text to a more readable column? Thanks!
+>> Notes:
+>>      Notes:
+>>
+>>      I noticed this while working on my HID abstraction work and figured=
+ it would be
+>>      a small fixup I could send afterwards.
+>>
+>>      Link: https://lore.kernel.org/rust-for-linux/20250629045031.92358-2=
+-sergeantsagara@protonmail.com/
+>>
+>>   rust/kernel/pci.rs | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+>> index 6b94fd7a3ce9..af25a3fe92e5 100644
+>> --- a/rust/kernel/pci.rs
+>> +++ b/rust/kernel/pci.rs
+>> @@ -254,7 +254,7 @@ pub trait Driver: Send {
+>>   ///
+>>   /// # Invariants
+>>   ///
+>> -/// A [`Device`] instance represents a valid `struct device` created by=
+ the C portion of the kernel.
+>> +/// A [`Device`] instance represents a valid `struct pci_dev` created b=
+y the C portion of the kernel.
 >
-> Sure! Thanks!
+> Should this not just be a "a valid pci device" and let the type in the
+> function definition speak for the type instead of duplicating the type
+> name in the  doc comment?
 >
->>
->> >
->> > Marcelo Moreira (2):
->> >   rust: revocable: Refactor revocation mechanism to remove generic
->> >     revoke_internal
->> >   rust: revocable: Clarify write invariant and update safety comments
->> >
->> > Changelog
->> > ---------
->> >
->> > Changes since v4:
->> > - Rebased the series onto the latest `rfl/rust-next` to integrate rece=
-nt changes, specifically the `bool` return for `revoke()` and `revoke_nosyn=
-c()`.
->> > - Dropped the "rust: revocable: simplify RevocableGuard for internal s=
-afety" patch, as the approach of using a direct reference (`&'a T`) for `Re=
-vocableGuard` was found to be unsound due to Rust's aliasing rules and LLVM=
-'s `dereferencable` attribute guarantees, which require references to remai=
-n valid for the entire function call duration, even if the internal RCU gua=
-rd is dropped earlier.
->> > - Refined the `PinnedDrop::drop` `SAFETY` comment based on Benno Lossi=
-n's and Miguel Ojeda's feedback, adopting a more concise and standard Kerne=
-l-style bullet point format.
->> > - Corrected a duplicated line in the commit message of the second patc=
-h.
->>
->> Now since we had to drop the `RevocableGuard` change, its safety
->> invariant & comment in `deref` is insufficient. It shouldn't have the
->> invariant that the rcu lock is held (since it owns an `rcu::Guard`, that
->> already is guaranteed), but instead it should require that the
->> `data_ref` pointer is valid. That invariant is then used by the safety
->> comment in `deref` to justify dereferencing the pointer.
->>
->> Also, I think it's better to reorder the patches again (since the
->> current first one relies on changes from the second one), the first one
->> should be the change to the invariants section of `Revocable` (so
->> currently the second patch). Then the second and third patches can be
->> the removal of `revoke_internal` and the `RevocableGuard` safety
->> documentation fix.
->
-> All right Benno, I'll prepare the comment for `RevocableGuard` and send v=
-6.
->
-> The order now is:
-> 1- Documentation for invariant and updates associated `SAFETY` comments
-> 2- Remove `revoke_internal` (Refactoring)
-> 3- `RevocableGuard` safety documentation fix.
 
-Sounds good!
+My theory is that this comment is explicitly done for folks reading this
+code from the C side. Rust tuple structs are not exactly a common
+semantic in other programming languages. That said, I am open to
+changing the comments if Danillo or others think that would be better as
+well. Either way, I appreciate you taking the time to respond.
 
----
-Cheers,
-Benno
+>>   #[repr(transparent)]
+>>   pub struct Device<Ctx: device::DeviceContext =3D device::Normal>(
+>>       Opaque<bindings::pci_dev>,
+
+--=20
+Thanks,
+
+Rahul Rameshbabu
+
