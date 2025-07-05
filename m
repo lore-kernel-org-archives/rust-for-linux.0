@@ -1,86 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D7E2E371C;
-	Sat,  5 Jul 2025 10:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF251E4AE;
+	Sat,  5 Jul 2025 11:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751712889; cv=none; b=Tf7ftEZhH9+cMhtBwGzHleab6sNE4pOGwWkj06Z0D0d/Q5MEkoxuZE7+vXEB+DHGIOWFSUheeJbMZJMzkvzWNfZTdL3sCvdmRDvOsO6CKOYbu7iQI1N7nFVuXdhDLlGZMrNo3rT18AYz8n96bVO+30w3iOTb8opmdr4H2QjYDI4=
+	t=1751713588; cv=none; b=um6/7ZRwXg6kVpaCsN8sd/mAE7xHsjzvA4hZdr+TZJfOzhcyaKY1x9rdH204CrjcwNGbgEHju+QkjqsLNkJNckR6AGpDbv+eCS7+XBRUTSPpk4IVk8KB/HE4ta4vYxhMAhup+oi30N4AKACl8PZ9UHEj9LhK8cTwuagi3y8tUSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751712889; c=relaxed/simple;
-	bh=fm293cnHVd262ggoebSzQlIMy5g0sp5/WmDYhXVQYso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hFgBPTmB4VrQ6ZyL1n3LG7KAnqCf7GnWO1RfoGlPm8o7Hs+k2gZ2WCTWVac3fc4upMiBdfIRotCbji41EOqjWRHHG8zoZyZgh7Pndx1Nj9OPgLiQkm23Z9r8awim9hvVNuXYwxz8lNbqF3t/EsKqiWYhUrtrCgoVSFm+QCyjCTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HF8RzZ4U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751713588; c=relaxed/simple;
+	bh=9mv0UxhGjH2mL6KMOypiQnTrOj6P8HKSW5WCnLKIHyo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=btBl7pN5UIcb0Tv/kqw4cqKSYShGWL+xteThnkNn7hLWruC5intkwG9XazwJ85R843h+z3XE93Sn4cZ1RkNs0ZOmTFFoO/MgB2iAtGjisF5BZm3g2ZA3AAWRAQmJnY1mFUsduRA3UWuvAogMLQ5YqkBOub9+57kEaGvPJKCoXHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aafTTmDm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HF8RzZ4U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71998C4CEE7;
-	Sat,  5 Jul 2025 10:54:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aafTTmDm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0E3C4CEE7;
+	Sat,  5 Jul 2025 11:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751712888;
-	bh=fm293cnHVd262ggoebSzQlIMy5g0sp5/WmDYhXVQYso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HF8RzZ4U5+/6NKIY5e1vBo8whJ/MVRlzrcyDYV5r0kwFMvEMKZwoBc48+59g0JaGa
-	 hUv14bbwBr+CRvk97pTY09NxEZAPR2DC1CqcJvKzrJLcDgrXzuLuCBbf6IEPeTRIvv
-	 fy3timtcVmlDRNmFqLmDeM9VCqcG/JHVkxGvbv8ArT5x7NDV1Q9eQ0JL/nqMtIp6VB
-	 mjIk/G7TEVoEK9WqfQ0F5n8jZxdqLr7y2++6gUT5mt8Kx9TG4SWfGhRNP2E8ZJusD1
-	 WFHg05WeF5cVdQU3YOMPp/TXWnZ70bbEd5FBLOq+JdlJ0KtveWhDIUwV9xpl4BKd57
-	 jZe+yhQTlbznA==
-Date: Sat, 5 Jul 2025 12:54:42 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Benjamin Tissoires <bentiss@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	linux-input@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Daniel Brooks <db48x@db48x.net>
-Subject: Re: [PATCH v1 2/3] rust: core abstractions for HID drivers
-Message-ID: <aGkEcrKJsvFelWju@pollux>
-References: <20250629045031.92358-2-sergeantsagara@protonmail.com>
- <20250629045031.92358-4-sergeantsagara@protonmail.com>
- <aGD9OIZ_xE6h3199@pollux>
- <8os57581-8q0n-p226-836s-52610166qq02@xreary.bet>
- <p2tuq2a77dpl3ku7a6dbwqgsk5yybemqcfyoozjl5k3auijxqk@7myvbre2aam4>
- <0b7c2a9b-9cdc-41e9-bdaa-ddd8b0807449@kernel.org>
- <87frfbksam.fsf@protonmail.com>
+	s=k20201202; t=1751713588;
+	bh=9mv0UxhGjH2mL6KMOypiQnTrOj6P8HKSW5WCnLKIHyo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aafTTmDmBLWRKGomxX2C4LHrmnv/oV98ZkaEj/FkfFxKgK4ZeAx3vbutrx+H1jDfV
+	 oDBvmttYEiCi/VTvZ0DTba295JD/uAOcDTkzCkD9HIYvXG/aTMWDXOL7+JISi/B/+C
+	 IYjv4VznW8PA3o6bBBYNiS2sX13T5FqW03KM/YQp4iDMN6CgPuybf09N9pO5kwDblQ
+	 /Lad6++1ZQ9PzfmpuUX8AT8Z8Rc8GMX1lqnnpfAyxWRBmYGiI+wRd0PwZ6x8Sfhkpj
+	 RmWqx4TlyUj0ffFYalN0H2yybq79thzskSWo9Hv00Zji5g6oY0NkUwccJIapo18hqM
+	 r4xu14tfn231g==
+Message-ID: <07058db5-e56f-4771-9d6d-93c5e853af6d@kernel.org>
+Date: Sat, 5 Jul 2025 13:06:22 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87frfbksam.fsf@protonmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: drm: remove unnecessary imports
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20250704-cstr-include-drm-v1-1-a279dfc4d753@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250704-cstr-include-drm-v1-1-a279dfc4d753@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jul 05, 2025 at 07:31:21AM +0000, Rahul Rameshbabu wrote:
-> In parallel, I am thinking about how to design a Drop trait for handling
-> HID device unplug instead of needing a C style remove callback. This
-> will be crucial for implementing sophisticated leaf drivers.
+On 7/4/25 9:50 PM, Tamir Duberstein wrote:
+> `kernel::str::CStr` is included in the prelude.
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Please have a look at how other bus abstractions are implemented, e.g. platform,
-pci, auxiliary.
-
-They all have a probe() function in the Driver trait, which returns a
-Pin<KBox<Self>>, i.e. the drivers private data.
-
-This ForeignOwnable is then stored in the private data pointer of the C struct
-device, which I'm adding generic accessors for in [1].
-
-On driver remove() this ForeignOwnable is extracted back into a Pin<KBox<Self>>
-and dropped.
-
-This means there's already Driver::drop() which is called on device unplug.
-
-However, this is not sufficient, because Driver::drop() only gives you a &mut
-self, i.e. a reference to Pin<KBox<Self>>, but not a Core context reference to
-the Device, i.e. &Device<Core>. Hence you need a separate Driver::unbind()
-callback. Please see [2] for that.
-
-[1] https://lore.kernel.org/all/20250621195118.124245-3-dakr@kernel.org/
-[2] https://lore.kernel.org/all/20250621195118.124245-7-dakr@kernel.org/
+Applied to drm-misc-next, thanks!
