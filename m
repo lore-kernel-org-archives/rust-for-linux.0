@@ -1,194 +1,169 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96661F91E3
-	for <rust-for-linux@vger.kernel.org>; Sat,  5 Jul 2025 07:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA625175A5;
+	Sat,  5 Jul 2025 07:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751699852; cv=none; b=ukEbv3WtqZCvWWo260BSIjXknv7FYKH8NPINDMNHksPizwFWpDf0uzlD2pPKG9eODKZiCUUAzZapJmN/XeX93TUkdivSuFGSbQR3bbnICbaEllR8R14RS0HC5LMY8n41I29mKf4bvxJDjo5Bw+37ySnXJoi+LWsBJEcZyJiO7sc=
+	t=1751700698; cv=none; b=qnwLVdJmJYJMJdagDwKZfYPVxLGf4mWLYKsaRWy7CSnl7b8mMNG7NSSuXBjXesW1i8RmEL5i+DPC3VuOHVf3ncLUrHfZKjBL1T8vTzBj03a4YohfPEyiYYxg/Vwbwin/ZWBpA4OeYTIZAa8LqZDIWWICTLNdeYexTQByb3mKcCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751699852; c=relaxed/simple;
-	bh=Q/gP1ee5h4zuoHWtTz9IDaf9f/qI6rqm7Uef+xT279w=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Kw4sUvG9HDs594jR8kqzhgvhxnahVuYywZgCAvDSsVwAuK+cvOitdUqeMGIVyFHcZk3O0auK7fVigZ8svIBdvGZ7QSySm/Oej16/jbAGVqlHtffx4m6jxFTy97lVt7FyU9jF4/e9ablccx4FVaFoQkUke1BGIvD2iv6dwet/qZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=IINvfj+C; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=A0EWOTTC; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1751700698; c=relaxed/simple;
+	bh=9ZoUw5Hl/3qhmjyhcjKqY9i+D8ng2zzbXo8jy3DQEhQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xo4ZhOiwpcFIQ8hoXehkAYySRKaa9MGp8YTRqbBdxRCIfC9GNFYRkiD4qYEhrZeeXDRGcI3xiIoccyq2zDiay6H22W+WtIXiFeDjtBq83r9n/pGI15QY2bw9ftT1m7HgpOhqQqYYrAJ9EL+uYPx9od9UIJCCGmYvzA4O/76LAno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=zfNQ1xla; arc=none smtp.client-ip=79.135.106.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="IINvfj+C";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="A0EWOTTC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751699841; x=1752304641;
-	d=konsulko.se; s=rsa1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=0dF08nZ5AD94cqmTG2oD0kbPc0AyPxw2HHR1baJXYOw=;
-	b=IINvfj+C2bWDaUPKaeQ1dp124mX5RlbM2RmbMnDyDotbJvcQNyb/bDNcgdB8yTEETYpj1kKAV/3QM
-	 I29dOHvkouxSZI5kfF254SmD0bTUS3kN+91/2C1HyehRGePIBjZm6qJMR0xlrZVmvbbWiLN8c3QUXy
-	 Ib66Zyg/eLvppeS70jCNdgtsH0UnNpaXhDX8Pdg/rAkhWJJVticB5XJUHhk9k5LsUwaAZWFkD5r2E0
-	 x6d9XvEi9EN4E5W0cITxN80BplO6UkfVuC2BFdClu1ldQARZl9dMYkXrvQt/oU/g3fAqv3f4WvUzy0
-	 4tVI7Kjs9kMYbqBwqLySjJgc6VX+yYA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751699841; x=1752304641;
-	d=konsulko.se; s=ed1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=0dF08nZ5AD94cqmTG2oD0kbPc0AyPxw2HHR1baJXYOw=;
-	b=A0EWOTTCHcbh2Whz4NRwaAMrW8SmMbqKP0RmpN38wNQC1MDBxxPf59eA8ZD4nsnqLfeJvMVUcbTjQ
-	 nm3e4qWCw==
-X-HalOne-ID: 16b71226-5970-11f0-b992-f78b1f841584
-Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
-	by mailrelay1.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 16b71226-5970-11f0-b992-f78b1f841584;
-	Sat, 05 Jul 2025 07:17:20 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="zfNQ1xla"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1751700686; x=1751959886;
+	bh=J3XdgSpKZ1wBoY+0lETsQNnQofaKx79OW1d3zjVSCLg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=zfNQ1xlaNx7V8yLaz4lP7xIsaqQS0wZ/47g+El+5IFtYPIDixJbEbLaOYrs4CcfIN
+	 dxViWsblCSzmIriZS7/Np/Yc5OkT7oZfjzmJaLtXPL9+ZKLmdi3YN/0wibt4/exvDk
+	 FxPtHQNvkCuAXOrMOYlzuRSRziADWUrfOWAopMG1WPc+B5XrC5+ZIsCAgrEPJuBnuQ
+	 QaiGul/jxAwtpGmyb49Y/VAFcRPNbXQYIE9QQfCGDDKBWXb8XhxGTM2WRvimmdW1qS
+	 Z+PQz1MFJEBHIY8d3THmBPsxzCFQFyl7QlLk13TD/rExsnoOO2vjGZ9GreUHSlIgJd
+	 PoWwtnUywdqww==
+Date: Sat, 05 Jul 2025 07:31:21 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: Benjamin Tissoires <bentiss@kernel.org>, Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Brooks <db48x@db48x.net>
+Subject: Re: [PATCH v1 2/3] rust: core abstractions for HID drivers
+Message-ID: <87frfbksam.fsf@protonmail.com>
+In-Reply-To: <0b7c2a9b-9cdc-41e9-bdaa-ddd8b0807449@kernel.org>
+References: <20250629045031.92358-2-sergeantsagara@protonmail.com> <20250629045031.92358-4-sergeantsagara@protonmail.com> <aGD9OIZ_xE6h3199@pollux> <8os57581-8q0n-p226-836s-52610166qq02@xreary.bet> <p2tuq2a77dpl3ku7a6dbwqgsk5yybemqcfyoozjl5k3auijxqk@7myvbre2aam4> <0b7c2a9b-9cdc-41e9-bdaa-ddd8b0807449@kernel.org>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 90fe8011a0209a46b8686dc6cc7f4d0288e76faf
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v10 3/4] rust: add support for NUMA ids in allocations
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <aGfx6c72FgHn3NNW@pollux>
-Date: Sat, 5 Jul 2025 09:17:10 +0200
-Cc: linux-mm@kvack.org,
- akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5BDED328-4E79-4E39-95C3-21C3FB80593C@konsulko.se>
-References: <20250702160758.3609992-1-vitaly.wool@konsulko.se>
- <20250702160910.3610134-1-vitaly.wool@konsulko.se> <aGfx6c72FgHn3NNW@pollux>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.200.121)
 
+On Thu, 03 Jul, 2025 10:20:19 +0200 "Danilo Krummrich" <dakr@kernel.org> wr=
+ote:
+> On 7/3/25 10:01 AM, Benjamin Tissoires wrote:
+>> On Jul 03 2025, Jiri Kosina wrote:
+>>> On Sun, 29 Jun 2025, Danilo Krummrich wrote:
+>>>
+>>>> (Cc: +Jiri)
+>>>
+>>> Thanks.
+>>>
+>>>>> diff --git a/MAINTAINERS b/MAINTAINERS
+>>>>> index c3f7fbd0d67a..487750d9fd1e 100644
+>>>>> --- a/MAINTAINERS
+>>>>> +++ b/MAINTAINERS
+>>>>> @@ -10686,6 +10686,13 @@ F:=09include/uapi/linux/hid*
+>>>>>   F:=09samples/hid/
+>>>>>   F:=09tools/testing/selftests/hid/
+>>>>>
+>>>>> +HID CORE LAYER [RUST]
+>>>>> +M:=09Rahul Rameshbabu <sergeantsagara@protonmail.com>
+>>>>> +L:=09linux-input@vger.kernel.org
+>>>>> +S:=09Maintained
+>>>>> +T:=09git git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git
+>>>>> +F:=09rust/kernel/hid.rs
+>>>>
+>>>> I assume this is agreed with the HID CORE LAYER maintainers?
+>>>>
+>>>> There are multiple possible options, for instance:
+>>>>
+>>>>    1) Maintain the Rust abstractions as part of the existing MAINTAINE=
+RS entry.
+>>>>       Optionally, the author can be added as another maintainer or rev=
+iewer.
+>>>>
+>>>>    2) Add a separate MAINTAINERS entry; patches still go through the s=
+ame
+>>>>       subsystem tree.
+>>>>
+>>>>    3) Add a separate MAINTAINERS entry; patches don't go through the s=
+ubsystem
+>>>>       tree (e.g. because the subsystem maintainers don't want to deal =
+with it).
+>>>
+>>> I can't speak for Benjamin, but as far as I am concerned, I'd personall=
+y
+>>> prefer option (3).
+>>
+>> I understand Jiri's concerns, but I'm slighlty worried (3) will end up
+>> also having the leaf drivers in a separate tree, which means that 2
+>> trees will fight for the same resource.
+>>
+>> First patch of this series is a first example where some changes are
+>> needed in the HID bus for making rust life's easier.
+>>
+>> Personally, I'd like to have a say and an eye on the rust abstractions
+>> and most of it, on the leaf drivers. I can't say I'll proactively
+>> review/merge things (these past few months have shown that I merely
+>> manage to follow things happening ATM), but at least I can keep an eye
+>> and shout if something is wrong.
+>>
+>> OTOH, the HID tree (the core part) is a low change tree now, so maybe a
+>> separate tree can be handled correctly without too much troubles.
+>>
+>> Danilo, if a separate tree is chosen, is the common practice to directly
+>> send the PR to Linus or does it need to got through the subsystem tree
+>> first (like bpf with net for example).
+>
+> We usually fall back to the global Rust tree, which is ultimately maintai=
+ned by
+> Miguel, so it's his call in the end.
+>
+> However, IMHO this is more like a "last resort" in case any other approac=
+hes
+> within the same subsystem are not desired.
+>
+>  From what I can read above, it feels to me as if having a separate tree
+> (maintained by Rahul) with him sending pull requests to you guys seems li=
+ke a
+> good option. What do you think about that?
 
+First wanted to say thanks to everyone who responded to this series.
+I am personally open to any of the above.
 
-> On Jul 4, 2025, at 5:23=E2=80=AFPM, Danilo Krummrich <dakr@kernel.org> =
-wrote:
->=20
-> On Wed, Jul 02, 2025 at 06:09:10PM +0200, Vitaly Wool wrote:
->> /// The kernel's [`Allocator`] trait.
->> ///
->> /// An implementation of [`Allocator`] can allocate, re-allocate and =
-free memory buffers described
->> @@ -148,7 +172,7 @@ pub unsafe trait Allocator {
->>     ///
->>     /// When the return value is `Ok(ptr)`, then `ptr` is
->>     /// - valid for reads and writes for `layout.size()` bytes, until =
-it is passed to
->> -    ///   [`Allocator::free`] or [`Allocator::realloc`],
->> +    ///   [`Allocator::free`], [`Allocator::realloc`] or =
-[`Allocator::realloc_node`],
->>     /// - aligned to `layout.align()`,
->>     ///
->>     /// Additionally, `Flags` are honored as documented in
->> @@ -159,7 +183,41 @@ fn alloc(layout: Layout, flags: Flags) -> =
-Result<NonNull<[u8]>, AllocError> {
->>         unsafe { Self::realloc(None, layout, Layout::new::<()>(), =
-flags) }
->>     }
->>=20
->> -    /// Re-allocate an existing memory allocation to satisfy the =
-requested `layout`.
->> +    /// Allocate memory based on `layout`, `flags` and `nid`.
->> +    ///
->> +    /// On success, returns a buffer represented as `NonNull<[u8]>` =
-that satisfies the layout
->> +    /// constraints (i.e. minimum size and alignment as specified by =
-`layout`).
->> +    ///
->> +    /// This function is equivalent to `realloc_node` when called =
-with `None`.
->> +    ///
->> +    /// # Guarantees
->> +    ///
->> +    /// When the return value is `Ok(ptr)`, then `ptr` is
->> +    /// - valid for reads and writes for `layout.size()` bytes, =
-until it is passed to
->> +    ///   [`Allocator::free`], [`Allocator::realloc`] or =
-[`Allocator::realloc_node`],
->> +    /// - aligned to `layout.align()`,
->> +    ///
->> +    /// Additionally, `Flags` are honored as documented in
->> +    /// =
-<https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
->> +    fn alloc_node(
->> +        layout: Layout,
->> +        flags: Flags,
->> +        nid: NumaNode,
->> +    ) -> Result<NonNull<[u8]>, AllocError> {
->> +        // SAFETY: Passing `None` to `realloc_node` is valid by its =
-safety requirements and
->> +        // asks for a new memory allocation.
->> +        unsafe { Self::realloc_node(None, layout, =
-Layout::new::<()>(), flags, nid) }
->> +    }
->> +
->> +    /// Re-allocate an existing memory allocation to satisfy the =
-requested `layout` and
->> +    /// a specific NUMA node request to allocate the memory for.
->> +    ///
->> +    /// Systems employing a Non Uniform Memory Access (NUMA) =
-architecture contain collections of
->> +    /// hardware resources including processors, memory, and I/O =
-buses, that comprise what is
->> +    /// commonly known as a NUMA node.
->> +    ///
->> +    /// `nid` stands for NUMA id, i. e. NUMA node identifier, which =
-is a non-negative
->> +    /// integer if a node needs to be specified, or NO_NODE if the =
-caller doesn't care.
->>     ///
->>     /// If the requested size is zero, `realloc` behaves equivalent =
-to `free`.
->>     ///
->> @@ -191,13 +249,27 @@ fn alloc(layout: Layout, flags: Flags) -> =
-Result<NonNull<[u8]>, AllocError> {
->>     ///   and old size, i.e. `ret_ptr[0..min(layout.size(), =
-old_layout.size())] =3D=3D
->>     ///   p[0..min(layout.size(), old_layout.size())]`.
->>     /// - when the return value is `Err(AllocError)`, then `ptr` is =
-still valid.
->> -    unsafe fn realloc(
->> +    unsafe fn realloc_node(
->>         ptr: Option<NonNull<u8>>,
->>         layout: Layout,
->>         old_layout: Layout,
->>         flags: Flags,
->> +        nid: NumaNode,
->>     ) -> Result<NonNull<[u8]>, AllocError>;
->>=20
->> +    /// Re-allocate an existing memory allocation to satisfy the =
-requested `layout`. This
->> +    /// function works exactly as realloc_node() but it doesn't give =
-the ability to specify
->> +    /// the NUMA node in the call.
->> +    unsafe fn realloc(
->> +        ptr: Option<NonNull<u8>>,
->> +        layout: Layout,
->> +        old_layout: Layout,
->> +        flags: Flags,
->> +    ) -> Result<NonNull<[u8]>, AllocError> {
->> +        // SAFETY: guaranteed by realloc_node()
->> +        unsafe { Self::realloc_node(ptr, layout, old_layout, flags, =
-NumaNode::NO_NODE) }
->> +    }
->=20
-> I think Alice suggested to just drop alloc_node() and realloc_node() =
-and make
-> alloc() and realloc() always take a NumaNode argument.
->=20
-> I don't have a strong preference, but keeping only alloc() and =
-realloc() for
-> seems indeed simpler, so let's remove the _node() variants.
+From what I can tell, Jiri and Benjamin would prefer pull
+requests/discussion of the Rust for Linux bindings not contaminate the
+hid git tree or linux-input mailing list. Patches will instead be
+submitted through the rust-for-linux mailing list and pull requests
+would be sent through the Rust for Linux tree. I can make Benjamin a
+reviewer for this effort, so he will be explicitly CCed to take a look
+at how the bindings are taking shape. I can make Jiri a reviewer if he
+would like to participate (I was assuming maybe not based on the desire
+for option 3 listed above). Maybe with this model, I have a
+rust-for-linux-hid tree where I send pull requests to the rust-for-linux
+tree?
 
-I don=E2=80=99t have a strong preference either but if I modify alloc() =
-and realloc(), I=E2=80=99ll have to change KVec and KBox in the same =
-patch, would that be okay with you?
+On the other hand, Danilo would prefer something similar to the above
+with the caveat of pull requests going through the hid tree and patches
+through linux-input mailing list.
 
-~Vitaly
+I am open to either personally.
 
-<snip>
+I will be sending a v2 hopefully soon based on Danilo's and Peter's
+feedback.
+
+In parallel, I am thinking about how to design a Drop trait for handling
+HID device unplug instead of needing a C style remove callback. This
+will be crucial for implementing sophisticated leaf drivers. The driver
+implemented here purely does report fixup. In my ideal world, all pure
+report fixup work would be done in HID-BPF space and only sophisticated
+drivers would be implemented as a Rust leaf driver. I have some separate
+scratch work playing around HID-BPF that I have not had time to clean
+up. Right now, it's just samples for doing things like key remapping on
+a keyboard. I am envisioning an Alsa UCM like model for HID-BPF for
+dealing with report fixups.
+
+--=20
+Thanks,
+
+Rahul Rameshbabu
+
