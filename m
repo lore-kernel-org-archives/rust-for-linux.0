@@ -1,43 +1,39 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CE9A932
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Jul 2025 03:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E914F9FB
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Jul 2025 04:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751771036; cv=none; b=mU7746Lr7lgJYN6psTeLKxZqhKZKUMlfxUa7x3BkNqUW34zwBDmPeod4RcLCZ6qJpiFiV0lSVVJbsbQncs1AWVswCSbffkIW2qEeba0G77IJ55AjPnBKuNU3hCGpqWZdYXVEXLIfZgVZsII5HH7gKu106Q6oSPKbUv6rQaK3+L4=
+	t=1751774449; cv=none; b=Vwwqk0xkIG1NBdm3SlAWnq0S8r/5RS3U/I41go8ISD9eJNKbweKtbdVCRLNEhG7U5kKLNbL2IOaLN2uWUh2rp3uBv30J004wX0jURCuB73nBJ/y1hDQTEFDPhrw33cXBHtd67siy/IB+bgbKojAexHGQaoH6n9thq4F/St+BsPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751771036; c=relaxed/simple;
-	bh=ALjpGFXWNIhlCT+suPuMkDBykJol/ftI/bue5KrQITc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jTTLNCx9JS4C6Ua2hKoMnGxHY/eDr3laXdzBNAhzw/0YJRibuLeYBhJ9y3OdpG2s9dWnUtSEnewGsUMhUflXRoPKwjENSpYEMlrhnH93HD5h+EpYm2eG/StwPlge4b2PTyIWrYlHLaZlQhZ0UTrF2TAc6lYjb1u3Ak+9noajzZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=xosBv5Ej; arc=none smtp.client-ip=185.70.43.16
+	s=arc-20240116; t=1751774449; c=relaxed/simple;
+	bh=rI/kI0oAHIyuWvj9cLhxLiqFjgAQNmnf7gDVSGfxKsI=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=NrLDj9VyxlA9VF/GxP/fMoACvz+dfoT0MOUTBUxBwpETNESFmAOdZFxCXAM7i3NqlaQoREQ1RUYNjEJkSbB39vEW2PmA6504TeTJPDSDHSmlD5PaDsE+boJSEMc9RTh9uBal74Ii9l/ITrg4cgGF4OQFLW/nmKSuFFO2cfAcoQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=r6Dmio5j; arc=none smtp.client-ip=79.135.106.31
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="xosBv5Ej"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="r6Dmio5j"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1751771026; x=1752030226;
-	bh=ALjpGFXWNIhlCT+suPuMkDBykJol/ftI/bue5KrQITc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=xosBv5EjCeYzuzIT1cPtxx6x8qd5hOTaAhjgkVAElD7GkU7Z9G2ZtcU8NKKPc4RmN
-	 KC3IykpzxY5J/uhJr32f3bvIxJ1ogzbRIZ7P11vUwp6cQp3vi96pZVzSFf4DD9CK6y
-	 Hlgmf2UJsRy4L8rfWIKkTEykLJ3rgoQMNuhUSm6orJvRUD3sPm+bjr5S+6ZCqdTyK2
-	 kwvaNdtvG1pFCuFriDdtNxFIeJkUnn7a4ooJr9fih0rz9wcKVWGfRZsyUNV6Y9m5Xo
-	 TClNPeT9jtzV/l4SllJ/UBb/uEavlbuVKcJoWdMC44nt0o+4QQgrUHsWY2lMwlft1z
-	 jgtsVKULHEieQ==
-Date: Sun, 06 Jul 2025 03:03:29 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+	s=protonmail3; t=1751774439; x=1752033639;
+	bh=gpd/usl0o6RHpKBvVUocgfEZk9/4I4i5Mm7Q5TNKVm0=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=r6Dmio5jwAzk2lrH7eODpHW/s/eMvEwKsCKWKMc0MsVTpDLH7wZnagu0XLdJQwVk6
+	 4AY5/hFqYIersJo8N5szBg3CXV8t9nOwDVHGbgKi77FoREqHroP+zaGygmOdXvBcoy
+	 X76AIJcXYAq9xGzZpH/EfyRWXmfbp8VzJvO1+llLOmHVJWfyAIgCK9tCqX+gqT+y1J
+	 5CuHqGGhDTRJoDLPTJ2dCVaeNqbGpk8JYPWqGqlxKo9mAETjWeoHyYsWLJt7V50n5L
+	 PnYBtsGtdrolbx8NQ7EJt8npvhYemo4R4mceahKMTltc8NWIuFcU321lqik3oY4NlJ
+	 h3h5AuqodvMOw==
+Date: Sun, 06 Jul 2025 04:00:32 +0000
+To: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
 From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, Jiri Kosina <jikos@kernel.org>, linux-input@vger.kernel.org, rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Daniel Brooks <db48x@db48x.net>
-Subject: Re: [PATCH v1 2/3] rust: core abstractions for HID drivers
-Message-ID: <87y0t281hi.fsf@protonmail.com>
-In-Reply-To: <CANiq72=+UUFVemSGHvzkX5FoOv-U5YRDKQkbKjYwqEfex-ey6w@mail.gmail.com>
-References: <20250629045031.92358-2-sergeantsagara@protonmail.com> <20250629045031.92358-4-sergeantsagara@protonmail.com> <aGD9OIZ_xE6h3199@pollux> <8os57581-8q0n-p226-836s-52610166qq02@xreary.bet> <p2tuq2a77dpl3ku7a6dbwqgsk5yybemqcfyoozjl5k3auijxqk@7myvbre2aam4> <0b7c2a9b-9cdc-41e9-bdaa-ddd8b0807449@kernel.org> <87frfbksam.fsf@protonmail.com> <CANiq72=+UUFVemSGHvzkX5FoOv-U5YRDKQkbKjYwqEfex-ey6w@mail.gmail.com>
+Cc: dakr@kernel.org, alex.gaynor@gmail.com, bhelgaas@google.com, kwilczynski@kernel.org, ojeda@kernel.org, wt@penguintechs.org, Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Subject: [PATCH v2] rust: pci: fix documentation related to Device instances
+Message-ID: <20250706035944.18442-3-sergeantsagara@protonmail.com>
 Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: de4c091f4f8b2a1ae3cf244d19e3d0fdb0ef2afd
+X-Pm-Message-ID: 3aa994d710a1d3aae738648b2fb2df6668803f52
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,50 +43,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 05 Jul, 2025 12:41:02 +0200 "Miguel Ojeda" <miguel.ojeda.sandonis@g=
-mail.com> wrote:
-> On Sat, Jul 5, 2025 at 9:31=E2=80=AFAM Rahul Rameshbabu
-> <sergeantsagara@protonmail.com> wrote:
->>
->> From what I can tell,
->
-> I think Benjamin wants to keep an eye on things but may not have much
-> time to take care of patches and so on.
->
-> So it sounds like having a separate `MAINTAINERS` subentry under them
-> is best, with you applying patches and then sending PRs to them.
->
-> That way, they remain in control, they can coordinate any changes that
-> involve both the C and the Rust side if any, and so on; while they
-> don't need to handle directly Rust patches themselves, fixing issues
-> with the Rust side, etc., thus removing work from their side; i.e. you
-> would be doing that since you want to drive and use those Rust
-> abstractions.
->
-> That arrangement is great and what other subsystems have done (most of
-> the entries with "... [RUST]"). It also helps more people
-> involved/trained in the overall subsystem too (should they want more
-> reviewers/maintainers), and also allows you to become a maintainer
-> yourself, learning to send PRs, etc. (which you may welcome -- if you
-> already took patches, sent PRs etc., then please excuse me! I only did
-> a quick search so I may have missed it.)
+Device instances in the pci crate represent a valid struct pci_dev, not a
+struct device.
 
-Thanks Miguel. I would really enjoy the opportunity. Like you noticed, I
-do not have this experience on the mailing list. I also want to give
-Benjamin and Jiri time to consider these options. Let me get my v2
-patches sent out in the meantime.
+Fixes: 7b948a2af6b5 ("rust: pci: fix unrestricted &mut pci::Device")
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+---
 
-Thanks,
-Rahul Rameshbabu
+Notes:
+    Changes:
+   =20
+      v1->v2:
+        * Added Fixes: git trailer
+        * Fixed warnings from ./scripts/checkpatch.pl
 
->
-> We try to reserve the global Rust tree fallback for cases where there
-> is really no other way, e.g. when a key subsystem doesn't want
-> anything to do with Rust at all and thus would block many others
-> otherwise.
->
-> Thanks!
->
-> Cheers,
-> Miguel
+ rust/kernel/pci.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 6b94fd7a3ce9..b991fb440882 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -254,7 +254,8 @@ pub trait Driver: Send {
+ ///
+ /// # Invariants
+ ///
+-/// A [`Device`] instance represents a valid `struct device` created by th=
+e C portion of the kernel.
++/// A [`Device`] instance represents a valid `struct pci_dev` created by t=
+he C portion of the
++/// kernel.
+ #[repr(transparent)]
+ pub struct Device<Ctx: device::DeviceContext =3D device::Normal>(
+     Opaque<bindings::pci_dev>,
+
+base-commit: 2009a2d5696944d85c34d75e691a6f3884e787c0
+--=20
+2.47.2
+
 
