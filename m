@@ -1,43 +1,101 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC321362
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Jul 2025 04:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AD514386D;
+	Sun,  6 Jul 2025 08:29:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751774577; cv=none; b=u/89AAyUpPd5LgK7BLVu8rdUAOqYmHe4YbnFV0hKNl3QbgkOOU1AihFMoweRxjiSxSx9R/FqBIALuwULfeu2/xLn2rrpg7e2cb5Y+709CsNIlTc4NfnrUZWIs6N1jNIRldIJbVmtz8WloiXnCjlf8veae6ZjsBgTpoLGHn+qYsw=
+	t=1751790551; cv=none; b=tMCJeiv1z8BzSu7RUpUz4HKvlPXXz8SugHpBq3N0hhWALLwM/vtUr4J1Hv4PZNR5DAGhYHFynH4trCjF3zlEkug2FwTM/BAr33HeEkkZTWDycXPoiNFdIvZ005dyn1ujzbyG4vvd6687cb5j3HySuWFT8d6JX3GTFImvGEuCVvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751774577; c=relaxed/simple;
-	bh=XUcla0D10S+FckZ5tz4NRtTk78TPjbZ56REYXBR5dfE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BzEZj9tt3bC6dNp88InB6YiULgC+pcsB3iERZz9VG/Ld216k/NpVEXaMPD5JZ+wmujgRwYzzUvgq13rDplkIyB6fjWVNy8zlqvQSWE5Ox8Kx+Rlz++xoq+kTMmPkzN0vm7KPGBu+bsCKXMlFygjBDNKKmEp9oA4Rl18JC9lPKN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Xh6af3Gm; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1751790551; c=relaxed/simple;
+	bh=X204WyJpXGJE8pcg02RS6uMl/7b6/IB2aPkZ6MPIwSk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=esQOTIHjaHNVuOG7SSQw+VP+TCwTGRJKzz6OqMs0e4hzdjkkLQAYLO9wIEqc7/TIyfmyDnqHDbXwGe/S/ZBhY97U0XGS6p3m8h4DSXDtaITOInN3DC2u/dAJ7Ori0EVsV7hqXoygFarR7nVJN8De/4taj6OM60ZqQtO9xKZzhCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=UmS58mOU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mvPlRr+R; arc=none smtp.client-ip=202.12.124.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Xh6af3Gm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1751774567; x=1752033767;
-	bh=XUcla0D10S+FckZ5tz4NRtTk78TPjbZ56REYXBR5dfE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Xh6af3GmW36yM4lBbp46Kezb5/LM8ouSJjQ3u4MGb5E7AddAIMnG0Uf6f9/sCvxFy
-	 SGDonGKjugDI/gTpbzhpcThcJfprXhKaI45twJhUVLFU5ohoDDEDk+zElZoIKw1w1w
-	 n8P6pcg35i+WAD8cpxCHSkTp67a4Bnx1oasAz5+LyYwG9Hua0POEnhuY/K3SLIB5c8
-	 vhUaI5rP6+EdUnx/8AhYCU/llFjBPTJttdHp2pyoY0GOWh+WMekX2QNIbeXRszHuwF
-	 rzigVazRpTtQv5W+2ltmy1tzE8O7vGFix50NbZKbJeJFpZMgAlNG/ufnXoRrjoyqSy
-	 73umzYYEk5/kA==
-Date: Sun, 06 Jul 2025 04:02:41 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>, =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-Subject: Re: [PATCH] rust: pci: fix documentation related to Device instances
-Message-ID: <87seja7yqs.fsf@protonmail.com>
-In-Reply-To: <aGkJCix2VPaawyP-@pollux>
-References: <20250629055729.94204-2-sergeantsagara@protonmail.com> <aGkJCix2VPaawyP-@pollux>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: eb9a5b0037f81516df17176bb2cf4c90669c86e5
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="UmS58mOU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mvPlRr+R"
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfout.stl.internal (Postfix) with ESMTP id BAB9C1D00241;
+	Sun,  6 Jul 2025 04:29:07 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Sun, 06 Jul 2025 04:29:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1751790547;
+	 x=1751876947; bh=AleHfUjihkJKz/UBvekuq0kDimlhUhmI5K7F26DJ5Qc=; b=
+	UmS58mOUpr4TqTiC47XKB9WBXhZg7pvgAkfYrTCzJa0AXKXAyXH2qsoDxyhSNjGw
+	TO4kNDzXvwEtv6L4gwBljepPS0fPzP/vg2UfxphXA3EMNv+w8M/EIzjNxPVhCSt7
+	j6os2b7otepCCtg8rAYW3XpeixE/GdybZ/Nh5XHvPA+YDcg5svkwIS7SEP7BZ49u
+	VQ1QdIoq9Gu/z11tK60AkltLENvLtXIiuXg+LhGZTARPDGmHwg7SXmX8YawE0GUv
+	xzChn2Xz5PleGzI/8bpzFx1N7kQNpregnXfcDXFyp7ZgmA692zAn2j4asJZu4DAk
+	Niq5LDqaPLHSwKk6IOEIBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1751790547; x=
+	1751876947; bh=AleHfUjihkJKz/UBvekuq0kDimlhUhmI5K7F26DJ5Qc=; b=m
+	vPlRr+RUWK7Hk8c5FinYxV9Hk63QqIScOpNS2zosSGZycSdOpAkUquNfPs7gNgVj
+	JHxzsUbi42WDorrWkMPu19v3sP6SixNZax8RtyOFJFB0SDE+klQCVJVH7NbPynRp
+	1QHpxpyyb72xjR/QS7SWTl1+isL40xLQd0cch+LPxlZl71W4dL80vLDd86Hl7YG9
+	0pTgBIYwMQxm3eSIH6geAwyAzFKg7uG5RTzbQE96XUtIddrPUzu+Fg0MBdb0FUUJ
+	isCDIJ3gHCRYBwzldQpvExHwSj2VcyQJj8lyLhIHZ4pNTGovXAQfbWszP6eIJc9t
+	I+GYGCa/HkH/LFjLEmmgA==
+X-ME-Sender: <xms:0jNqaKFELhcDIL94s7J2JkEJRpQ7EEGTSEEhva-FyBNH7sUC6M6LBA>
+    <xme:0jNqaLX6vZovBLcLKxZhu-qpklsHuV7rSM26StKiPhcR6a6mvL_CPrElXY3fLQEd4
+    Pi70XgmhEXK5ZEMUFM>
+X-ME-Received: <xmr:0jNqaEK1Xp7Lpj_5Rmm4gGp5BTXhiEzKHq8vSbSs8dEEYrmGHzA4XP-ySClmLZrkDMbwLERyrTRLJChxBRTZwwGOVZfizNV_j0k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddvkeeggecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomheplfgrnhhnvgcu
+    ifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpeevfe
+    ekuedutedtvdffvefhvedvkefhgfevheefhfffheeftefgteffuefgveefhfenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjsehjrghnnhgruh
+    drnhgvthdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopehmihhguhgvlhdrohhjvggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtohhmpd
+    hrtghpthhtohepthgrmhhirhgusehgmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhi
+    nhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoh
+    epghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhes
+    phhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlh
+    drohhrgh
+X-ME-Proxy: <xmx:0zNqaEHl5x5GZzeiP-lkezzO9vIeOgNZeK4XlXPuaduT13rAi2Td0A>
+    <xmx:0zNqaAXH5HIFqo_nJnrJq0uctLseIFKbY5n0n9YvkCnRFwh-D93hDA>
+    <xmx:0zNqaHPXucWx3H_i9bdlnKup1MfPzWONLXltrpnAeaxfDQYcma1H0Q>
+    <xmx:0zNqaH2fU_LuhBcOMQrsfLy3ez917N95wPrjGAZWivND0mAQG_t_gg>
+    <xmx:0zNqaEdJL74sOBC4AI8aI1s_A3l3G0EWkMpQilbyUbtHg6ELWqEv8Pbb>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 6 Jul 2025 04:29:06 -0400 (EDT)
+Date: Sun, 6 Jul 2025 10:29:04 +0200
+From: Janne Grunau <j@jannau.net>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Tamir Duberstein <tamird@gmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH 3/3] rust: xarray: add `insert` and `reserve`
+Message-ID: <20250706082904.GB1546990@robin.jannau.net>
+References: <20250701-xarray-insert-reserve-v1-0-25df2b0d706a@gmail.com>
+ <20250701-xarray-insert-reserve-v1-3-25df2b0d706a@gmail.com>
+ <CANiq72nf-h86GszE3=mLpWHi5Db+Tj0TRyUe9ANfjdNbesBEEg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,28 +103,21 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nf-h86GszE3=mLpWHi5Db+Tj0TRyUe9ANfjdNbesBEEg@mail.gmail.com>
 
-On Sat, 05 Jul, 2025 13:14:18 +0200 "Danilo Krummrich" <dakr@kernel.org> wr=
-ote:
-> On Sun, Jun 29, 2025 at 05:57:56AM +0000, Rahul Rameshbabu wrote:
->> Device instances in the pci crate represent a valid struct pci_dev, not =
-a struct
->> device.
->>
->> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
->
-> This commit has two checkpatch warnings, can you please fix them, add a '=
-Fixes:'
-> tag and send a v2?
+On Tue, Jul 01, 2025 at 06:56:17PM +0200, Miguel Ojeda wrote:
+> On Tue, Jul 1, 2025 at 6:27 PM Tamir Duberstein <tamird@gmail.com> wrote:
+> >
+> > Add `Guard::{insert,reserve}` and `Guard::{insert,reserve}_limit`, which
+> > are akin to `__xa_{alloc,insert}` in C.
+> 
+> Who will be using this? i.e. we need to justify adding code, typically
+> by mentioning the users.
 
-Sorry about that. I was traveling with a new laptop when I drafted this
-patch, so my setup was not correct. Should have run checkpatch either
-way before sending this out.
+xa_alloc() / reserve() is used by asahi. It's still using our own
+abstraction but I'm in the progress of rebase onto the upstream xarray
+abstractions from v6.16-rc1. Once I'm done I'll reply with "Tested-by:".
 
-v2: https://lore.kernel.org/rust-for-linux/20250706035944.18442-3-sergeants=
-agara@protonmail.com/
-
-Thanks,
-Rahul Rameshbabu
-
+Janne
