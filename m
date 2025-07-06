@@ -1,109 +1,100 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77F04A3E;
-	Sun,  6 Jul 2025 15:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789A42BCF70;
+	Sun,  6 Jul 2025 20:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751815204; cv=none; b=UXp17Gc0kRPq+lde61BQpHvA4F5A2JStyLP+OP+HdlxOwHGmpNLbhQooyeIZ80RasUcpOLYHNK4Cgldy33K8kxiKTQbWrL7iXV8tsExaV8GnKHSp8sCPTIGDLgX/zXO51x1a9nPUMcjRsB0560a9NJFGdN6WTGvXNIdwEVbAWgk=
+	t=1751832065; cv=none; b=fqE+woIXD39KAijy/7dwrBWE676vUBwXgoEYgAhoeECLdVcbfBNYbkaVwTcS0ytHipCwmhIwCKK4yAoHTR4Rp8muzDOxgT91zaKu7Kb4Si2lzxBF3GE8sQXiRmxmG5/6A4jrdudrNcvZwhTLlZ8wq9lUAaIFhmr1JbQeR6X9bJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751815204; c=relaxed/simple;
-	bh=rRlIVBAtFf1QpBmX0FDu8fSBrvpcpNmcc/tPcQIikPY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rfl47HFRYf7hqdQ7wj8eex16SGnLVW8guHQe3V+7M6foM8lQMCZiRAJWydgC0FnZXXpfC91pNRyp084gp3VGTPi9cyEhYtpr7Fs4dFCsLdxgA9m5ziSwGZCPk1EwWKK+G+wI37yXR4y1oY46EW1CLd2wZMWIWnynAJ8U2A9y9N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PuJ88t5l; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1751832065; c=relaxed/simple;
+	bh=XKbWsh6+0c/j+3Ee8yYRQNiq+fXjdF4zPjnJ/9wrZLE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KVyRClupkSIWELMTqfrl2wa0ko+9lojalgG7slLczSGxnttgBFlojozbj5ON9JrjBOOFoXJTg/h2tdUkOqeGyp/RrZ243knORa43jiVPHAndTg7mDAUEzRc5I7N1Z+gbDVa2AFA3nRi6F2zFH1Iv3d2wik/Xio2oR/Bg8tgG9KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BHObELFw; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PuJ88t5l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751815202; x=1783351202;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rRlIVBAtFf1QpBmX0FDu8fSBrvpcpNmcc/tPcQIikPY=;
-  b=PuJ88t5lUIQ3ZQhcf78R9T+XegfUkBmiwOlhbP7tOovpjv1BSuNPPrZC
-   N4YSQ/yjx+cEawPoJytfcvkaU4ByFQ+fPOi5jGFkkpbOzwmfjXcrTMniZ
-   FQNAS2E0DrSIRFDHjgIvKOGzE2PjZFNh30HL0xCl7tn9SRSA3Jv7nOhma
-   0tYe3pMrX85smutmtqzPyuv2JAygpSOKzSh6wT/tp2qpp5tdoTgeXrPhr
-   VQO2FjinFhVBT6PehwBwhyZGafD9vFYiDGHQRYt/L62voxyVx+5fIUKWa
-   QH7Lr9W3jjjhhwDp1RICZKlGNtvCGelsyP8s15KVCEgKar4qvZuu+HMHq
-   g==;
-X-CSE-ConnectionGUID: 4A3QKvnxSCOXWxTIUftpqQ==
-X-CSE-MsgGUID: dm6pjphvSGOXHjFBf0RBoA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11486"; a="71485533"
-X-IronPort-AV: E=Sophos;i="6.16,292,1744095600"; 
-   d="scan'208";a="71485533"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2025 08:20:01 -0700
-X-CSE-ConnectionGUID: bahLTSSdQtu9b/81V2d4+Q==
-X-CSE-MsgGUID: L5gboo2DQuyeGUbY+Da46Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,292,1744095600"; 
-   d="scan'208";a="192196154"
-Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 06 Jul 2025 08:19:59 -0700
-Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uYR9o-000575-1G;
-	Sun, 06 Jul 2025 15:19:56 +0000
-Date: Sun, 6 Jul 2025 23:18:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	Vitaly Wool <vitaly.wool@konsulko.se>
-Subject: Re: [PATCH v10 3/4] rust: add support for NUMA ids in allocations
-Message-ID: <202507062327.TsP3JVhL-lkp@intel.com>
-References: <20250702160910.3610134-1-vitaly.wool@konsulko.se>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BHObELFw"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-312a806f002so484209a91.3;
+        Sun, 06 Jul 2025 13:01:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751832064; x=1752436864; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XKbWsh6+0c/j+3Ee8yYRQNiq+fXjdF4zPjnJ/9wrZLE=;
+        b=BHObELFwIkQBwAg+UeeziFS3MWOcTyYn8gGhxbqJLKlfgjAbVk6yHFgiUKSdyqy5tS
+         kGRqblfRXxfOzm7s02cmfndNwJGEtyiC66vlRL9UgjAEtCXkfCA3Xl54lzZk9op9fzr0
+         TMUV+a+4YdZSS1BOFcHsT6Mu4AtYWiW82y3BoaxAePi4zBrKWlcJjkOySGVy13hj2j0z
+         cjzLOyeQJ81UBBBghY8bi3c6YnABiyukx1vvtQ6XHuZhv11sPNc2GvnTvFNzWiO/2x5r
+         VIPYpn2U6/6jO+amxrRnEvTqbhp9zxZYFXYexq6Ws9u2mbDs/kcj1ectGtox11rBbFTL
+         sZ5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751832064; x=1752436864;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XKbWsh6+0c/j+3Ee8yYRQNiq+fXjdF4zPjnJ/9wrZLE=;
+        b=M3ZBv851RciDYRNO7XJj7mEt5xAQpeEkEZo8gqMrOlbK1zZdvksWaUsbpuxMveGkJp
+         +a5O3jw7XZ4vn8MUvGOVxFl5YGrAZa2iykCJJIQA0oh226cwAGyGoy6DCJ55EMGuDHxf
+         ktfz5EERFpAky6ys5YgKWhfu2h1a/tx0fE1rEpH12RNxJOqTJwi0hM2Ioag/sr1podcL
+         Yathz9WNDJvfINrXXCRLV1PBzXjIxaSpZMukp/PhQRrpGFEEX3r5WzCDQQMxexkSy2YJ
+         SacQL+rX4STm38g4+XX83afLkSq/Itay0J9ConisL2GAYVA+TissnANgxf/I8R+rlUFs
+         Mu7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU9l6qGmECBaFyEUTDZBKwTGqKmm5/GVhiN5NGJM+Hd67K7LqPP8+12AStH5qwQpCPE4zE7JIfl1ESKSnHwpos=@vger.kernel.org, AJvYcCVi7zFGvgWctsQslBpOUowP0TVsVt/wJPIiG+01b5jFSJGHmTcBHxis9zBwfT0iSm+R2V0ceYeewCcVhTL6cQ==@vger.kernel.org, AJvYcCWalPmCVPpZeoZanp9IUMRJsvfEgiJ81/W4oR1o0SQqWmK+CZ3+yuQ8kq35o225rzRbFQWPzw8EK4WQaHUe@vger.kernel.org, AJvYcCXluGAGXCpQBFNRm33+f4cdLsPECtc1mOIawK3pzWde0KThsNi2lpsMXBmUfr6GoeI1Izdmt5LJoKqlCOY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7XUTShWmbexyzZVhXYCGLe8qy2yFy5clh2or5Uf1wlKtNTLQi
+	Fbu20tRPdQLqZoGe5L+FCPIzcWSbC0r9AiyPuMevzb37zmUPPbc23BaVQu/ei1rAnfF220w6DCS
+	wfwsORrZyFkcNPn+go5YPcCLZLPkMiz8=
+X-Gm-Gg: ASbGncuXi63Bf4oWpWbj2xDjR3kF6CCXwp8wyt5lGeT5+LZV+L+sh/Dg9j0EzoVt98z
+	/Il07875iA+zGY8Xf5f5OM/p4cEt1jT2gCd3+MaBidywk3H3C37TzrvZlQMb+5mm1O1cseR07Je
+	7WJGgW0CEURf2nCpZaLsQOghvZA2nOwelh+nBeaZoP+78R
+X-Google-Smtp-Source: AGHT+IEx+FxLj3+Jq0qZjgdDOleKi4gj1nVhQ/EsMEOeW2WW/Y1EUb9umr2TPWyV6moDYtw6xdPtuSS9czsfPDQPv3U=
+X-Received: by 2002:a17:90a:c105:b0:312:e9d:4001 with SMTP id
+ 98e67ed59e1d1-31aaccdb82dmr5740695a91.8.1751832063576; Sun, 06 Jul 2025
+ 13:01:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702160910.3610134-1-vitaly.wool@konsulko.se>
+References: <20250702-module-params-v3-v14-0-5b1cc32311af@kernel.org>
+ <20250702-module-params-v3-v14-3-5b1cc32311af@kernel.org> <dR1azql_mfbkqYH2GgSR3NoChU-VhgRMnWzZg_hWmpVx6P3-fLsrU8M06AwCzQPdrTSyCw0gzxG1bbGr7Wc_Dg==@protonmail.internalid>
+ <DB1O6I32IYI4.OFHKKMD9JV40@kernel.org> <87jz4orxh9.fsf@kernel.org>
+In-Reply-To: <87jz4orxh9.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 6 Jul 2025 22:00:51 +0200
+X-Gm-Features: Ac12FXzLCHMIAhvH08Ro5_kqwe96eI9obFV_WsRVejA5HvmzDAV3HeSyhZ8Y0iE
+Message-ID: <CANiq72=p4ciaaGQeB90qgykuLhv5BO-MKT3rfvZ5ni64jsrKBQ@mail.gmail.com>
+Subject: Re: [PATCH v14 3/7] rust: introduce module_param module
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>, 
+	Trevor Gross <tmgross@umich.edu>, Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Vitaly,
+On Fri, Jul 4, 2025 at 1:45=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
+>
+> It is an inherited name from way back.
 
-kernel test robot noticed the following build warnings:
+Yeah, that name comes from one of the very first PRs. I think we may
+have discussed its name in one of the early calls or maybe I just came
+up with the name.
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on rust/rust-next linus/master v6.16-rc4 next-20250704]
-[cannot apply to vbabka-slab/for-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Either way, it is almost 5 years old so I would suggest taking a look
+at naming etc. with fresh eyes.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vitaly-Wool/mm-vmalloc-allow-to-set-node-and-align-in-vrealloc/20250703-001116
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20250702160910.3610134-1-vitaly.wool%40konsulko.se
-patch subject: [PATCH v10 3/4] rust: add support for NUMA ids in allocations
-config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250706/202507062327.TsP3JVhL-lkp@intel.com/config)
-compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
-rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250706/202507062327.TsP3JVhL-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202507062327.TsP3JVhL-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> warning: missing documentation for an associated constant
-   --> rust/kernel/alloc.rs:139:5
-   |
-   139 |     pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
-   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   |
-   = note: requested on the command line with `-W missing-docs`
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
+Miguel
