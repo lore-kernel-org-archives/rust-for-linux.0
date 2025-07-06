@@ -1,158 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EFC1FDA92;
-	Sun,  6 Jul 2025 12:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82E74430;
+	Sun,  6 Jul 2025 13:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751804593; cv=none; b=H5uuK/kydsg6w5dKFmnDS9SX4nZeIzl4PFCq5247qzfA5c7lycu2bUaCq9I/h7Q0o22HYj6NQ/HERQRFzEKBZA5vgZaUUjdVwxn8P857xEzxCf7XGaToC7oSZkhmViTB5dGEGk/9GosICyukdGXiuJoCNxyaC/QM7fRP6rcgvJA=
+	t=1751809348; cv=none; b=lFHap2Ff6RdjUh05+wgDMZ6JtjEpL33vSH9j60jNhUt0aUHIEmPweQn8pTZA4kfU0qGKIiSwfdXKmFEyUyNAU6OuNo8JjpeC0zwkQG3dSlbRm8Iw1H2L7t6t+U0lTuVhFw+4A29A0KJzBcZgcegbrU4mxDBa01FibivURIgSxGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751804593; c=relaxed/simple;
-	bh=N9UmR9j9pvw9tZRtfgFGkozm66WwP+U632CwPMwSDvs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f7cFlvh9oAIcQ/V6zHkX/S4ekkmDZ5gGI++LggYo+ojhz6LYNlXrYpoqUhpcUHxYl00qYFv9T1tjelYFnguDTvwrTTz2RsRIIeREGRJlhUp9JxbBQGAMkKzwkIXKdLrUNWtAuix+jfCfs0SGbr0vfsI2IfHSsGiMsSIIq25hQgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvKzmebU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751809348; c=relaxed/simple;
+	bh=Cy4aTnm0PK/yKFsyGAYaEAZDr6+UCRqKUiOSIDFcSU4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cRl6kcI9QFYxm5DgFFHvOZYXjzVVgrjciQmMDg/3mb9AXd4b+kLoWxlhuGlq2u9x/RkNmnQRTFmvC6O8uAGnmnjKN0LF/Cf5TjelDCsNv1wZj99yTTRSubesvmW9xIf82DNglv2fRYTueEbKHz/WWmXL1938HgVDTNVUpPodN8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ijpd0ays; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvKzmebU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEFFC4CEED;
-	Sun,  6 Jul 2025 12:23:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751804593;
-	bh=N9UmR9j9pvw9tZRtfgFGkozm66WwP+U632CwPMwSDvs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tvKzmebUf9otplXwr5ryEJ4O83J9v6x8lvkereRCNeDd8gDPRBFo1mcWtF7/OX9LL
-	 Bw1/h5LEZK6GU3oHQmZZfvmvId9/n4Bdbxn4Lcp0Ua8G3YgxAt/8zpxr3JI8VvP3JT
-	 nKHL7qs8l+zj0k0M25yOxa1wl6xpsq8s9ph4q+Rz6SUCUqzO7Pa4HHzREUaA4qTUDA
-	 JQ3R+egY/vsznt0t/gU82DuJE5eckmxDai8NSTOGByegZQ0luomY93iOS1hXJCkGi5
-	 P10tVzcnjC6bfk1gresM7dcJOnCgcdmWNOI7wucpLFXPpmNwKAvssg9KU9j6tOA1eR
-	 bPwoN9NSA4QPQ==
-Date: Sun, 6 Jul 2025 14:23:04 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Drew Fustini <fustini@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v9 2/6] rust: pwm: Add complete abstraction layer
-Message-ID: <aGpqqGMTU3a3O8cn@pollux>
-References: <20250706-rust-next-pwm-working-fan-for-sending-v9-0-42b5ac2101c7@samsung.com>
- <CGME20250706114605eucas1p17d1cbd035d14d95f4ad0588c2572b3e2@eucas1p1.samsung.com>
- <20250706-rust-next-pwm-working-fan-for-sending-v9-2-42b5ac2101c7@samsung.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ijpd0ays"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7481adb0b90so404185b3a.1;
+        Sun, 06 Jul 2025 06:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751809346; x=1752414146; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x9p/OUC5tbbC2lQw5VTLyJND4KlM7wvMWqPSiwnuyFw=;
+        b=ijpd0aysuCKfeJjUVGU/e3t/GEAbTdARAKTngx1LF5PUix0bdbZnNeIrJEXCYsW1Sj
+         NbFUBftXT+thXS8PuE+bwWGAzyVrWu3IqAaNFdZLWuYn8TXiWYrTRRi9MOwgSQVDQ5z9
+         ZrnyaOrTRZLUI0fboBNBEfLH/GducV0t/ne0/mZ7fI+wCNSmH9+bG4nJK+fDEffG59nM
+         TFcp8EvrfTeeH9/TJk+sn26s8rOLT2wJDLLPbQi822nUrUEKfxP4XJw82SV/UyM+gETo
+         wFnCPn+qtSDHROlkJZuvI5V+jWXubeF7a7HWijYuOrssxx3X9Gmv/5x7WsxXFNUhHlBF
+         ziOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751809346; x=1752414146;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=x9p/OUC5tbbC2lQw5VTLyJND4KlM7wvMWqPSiwnuyFw=;
+        b=eNW/d7BYVyfqKOAI9bwMh1iXLbJVjIN1yR7ELOjZ9uJM3e10mwg7I9GEgtIzqW9Sfi
+         MOwES1Lx962Sua1Y1mqg6zpvwB4pZHA6KgYAE1XIN03ODSZ23AgzKq/kxF+fNMagXrxm
+         PlcqeIyOAJjjfUO5eCUi+qLPZZBy8dcrOJwRgRQ2ZybHXPC3XrNRlXS87hptQ2a5Btjd
+         SvThDvcOeVkfKSQLP1Middb1q6APbQryjWELjnn4p/WuCjtEe4gGTVYGC6KWv36e7N76
+         R2PxJdOYAo37zH8x9ywFGy+lCpHK/gu8Fm+S2GjbvFj+zQ8eWqhxzA+rJyyFT8Du0sxM
+         6+TA==
+X-Forwarded-Encrypted: i=1; AJvYcCWYWMfiqEV3s2N6mJuDVp9w5ogdjPbVg9CjzniiYkSwTHB6GyJwGeZYjDEPYzgBIhLBxcxp0jBJUXz79D2E@vger.kernel.org, AJvYcCWe4pxLqekgK5v6D06JPrYuJ372PkMYScmMF5JHdfpnoDjdlaS1OFdsZX9dbBeqWiWFmuZkQw+gFbg=@vger.kernel.org, AJvYcCXpKc/vB3yOxI08OcOJe+fXa0zXMY/fNEhfxv37YzrKr4m9a9O9sDR/cU7+EBIjokzynGTclNjQ7iq+5se9lUk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5BVMI0BLkKRyWalJNUcRQyTmVm2nT7kNxWsreskRG09GSjJfa
+	uwaqGEtG4Yoqz3AKWi1b24zHO9IfFYhguxXAYzSWp0RNBfynZ4LHvqB7PX0gOC+Qr/AyZzm6iay
+	tteUv+xqu8tt1UYPXRG9fwQWDEMKZkJE=
+X-Gm-Gg: ASbGncuJS1YeIMtbMZFX+XnW7qrxMNL6Aq1XV32XdQAP3auS3Zp2+pPN5ZcXEwvdPD0
+	GaK0weIgGIbejsGEO8IHbn3xI9VoIi4BAvx8K/XwtzGH7cby9DvRHtbsMmoFwHxAKLCQ7Bm6+aM
+	95DyELlHckJ6NHwIAsWOIkbQjohye292gC422oT/9874+H
+X-Google-Smtp-Source: AGHT+IEUJFZL2JU8xJSFulzsZPwp7Y5KKKb4k5Vl4oukDhrgiu5ve9lkLrK/mtQ4PMRZ7/XS+4qg94PJ9RHtwPTgAOs=
+X-Received: by 2002:a17:90b:258c:b0:312:1ae9:1537 with SMTP id
+ 98e67ed59e1d1-31aaca78f48mr5496701a91.0.1751809346077; Sun, 06 Jul 2025
+ 06:42:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250706-rust-next-pwm-working-fan-for-sending-v9-2-42b5ac2101c7@samsung.com>
+References: <20250702-nova-docs-v3-0-f362260813e2@nvidia.com> <20250702-nova-docs-v3-1-f362260813e2@nvidia.com>
+In-Reply-To: <20250702-nova-docs-v3-1-f362260813e2@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 6 Jul 2025 15:42:13 +0200
+X-Gm-Features: Ac12FXy1CaP3o3WtkbtVOog3-QiqhLt2Ifo86odUyVkUt2_fgezqFSeaSXeO-AY
+Message-ID: <CANiq72kUoyhbwiTeB3Bwv3X0iGLbiVWeQCBvKshOaNMqkEsUPw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] gpu: nova-core: Add code comments related to devinit
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Jonathan Corbet <corbet@lwn.net>, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Joel Fernandes <joelagnelf@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 06, 2025 at 01:45:13PM +0200, Michal Wilczynski wrote:
-> +/// Trait defining the operations for a PWM driver.
-> +pub trait PwmOps: 'static + Sized {
-> +    /// The type of the owned driver data (e.g., `Pin<KBox<...>>`).
-> +    type DrvData: 'static + ForeignOwnable;
-> +    /// The driver-specific hardware representation of a waveform.
-> +    ///
-> +    /// This type must be [`Copy`], [`Default`], and fit within `PWM_WFHWSIZE`.
-> +    type WfHw: Copy + Default;
-> +
-> +    /// Optional hook for when a PWM device is requested.
-> +    fn request(
-> +        _chip: &Chip<Self::DrvData>,
-> +        _pwm: &Device,
-> +        _parent_dev: &device::Device<Bound>,
-> +    ) -> Result {
-> +        Ok(())
-> +    }
-> +
-> +    /// Optional hook for when a PWM device is freed.
-> +    fn free(_chip: &Chip<Self::DrvData>, _pwm: &Device, _parent_dev: &device::Device<Bound>) {}
+On Wed, Jul 2, 2025 at 1:04=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
+>
+> +        // Check that FWSEC has lowered its protection level before read=
+ing the GFW_BOOT status.
 
-NIT: I can't think of a case providing this callback in Rust is useful. Do you
-have a clear use-case in mind? Otherwise, I'd not provide this callback until
-you have one. Should be trivial to add later on.
+`GFW_BOOT` (another one below), since it is written like that above.
 
-> +impl<T: PwmOps> Adapter<T> {
+> -/* PGC6 */
+> +/*
+> + * PGC6 register space.
+> + *
+> + * `GC6` is a GPU low-power state where VRAM is in self-refresh and the =
+GPU is powered down (except
+> + * for power rails needed to keep self-refresh working and important reg=
+isters and hardware
+> + * blocks).
+> + *
+> + * These scratch registers remain powered on even in a low-power state a=
+nd have a designated group
+> + * number.
+> + */
 
-<snip>
+I noticed the file uses `/*` in a couple files -- could `//` be used
+or there is a reason for it?
 
-> +    /// # Safety
-> +    ///
-> +    /// `dev` must be a valid pointer to a `bindings::device` embedded within a
-> +    /// `bindings::pwm_chip`. This function is called by the device core when the
-> +    /// last reference to the device is dropped.
-> +    unsafe extern "C" fn release_callback(dev: *mut bindings::device) {
-> +        // SAFETY: The function's contract guarantees that `dev` points to a `device`
-> +        // field embedded within a valid `pwm_chip`. `container_of!` can therefore
-> +        // safely calculate the address of the containing struct.
-> +        let c_chip_ptr = unsafe { container_of!(dev, bindings::pwm_chip, dev) };
-> +
-> +        // SAFETY: `c_chip_ptr` is a valid pointer to a `pwm_chip` as established
-> +        // above. Calling this FFI function is safe.
-> +        let drvdata_ptr = unsafe { bindings::pwmchip_get_drvdata(c_chip_ptr) };
-> +
-> +        if !drvdata_ptr.is_null() {
+(I guess maybe in a different series, since it is already there for
+PMC in mainline. It could be a good first issue.)
 
-Is this check needed? I think one can't create a pwm::Chip instance without
-providing a T, so this pointer can't be NULL I think.
+The idea is to only use `/*` when `//` cannot be used, e.g. within
+code, so that they have a different purpose.
 
-> +            // SAFETY: `drvdata_ptr` was stored by `Chip::new` from an owned `T::DrvData`
-> +            // and is guaranteed to be valid if non-null. `from_foreign` can safely
-> +            // reclaim ownership to allow Rust to drop and free the data.
-> +            let _owned_drvdata = unsafe { T::DrvData::from_foreign(drvdata_ptr.cast()) };
-> +        }
-> +    }
-
-If you overwrite this callback (as you do below) you're leaking the memory
-allocated by pwmchip_alloc().
-
-The simple way to solve this would be to call pwmchip_release() from here.
-
-<snip>
-
-> +impl<T: 'static + ForeignOwnable> Chip<T> {
-> +    /// Allocates and wraps a PWM chip using `bindings::pwmchip_alloc`.
-> +    ///
-> +    /// Returns an [`ARef<Chip>`] managing the chip's lifetime via refcounting
-> +    /// on its embedded `struct device`.
-> +    pub fn new<O: PwmOps<DrvData = T>>(
-> +        parent_dev: &device::Device,
-> +        npwm: u32,
-> +        sizeof_priv: usize,
-> +        drvdata: T,
-> +    ) -> Result<ARef<Self>> {
-> +        // SAFETY: `parent_device_for_dev_field.as_raw()` is valid.
-> +        // `bindings::pwmchip_alloc` returns a valid `*mut bindings::pwm_chip` (refcount 1)
-> +        // or an ERR_PTR.
-> +        let c_chip_ptr_raw =
-> +            unsafe { bindings::pwmchip_alloc(parent_dev.as_raw(), npwm, sizeof_priv) };
-> +
-> +        let c_chip_ptr: *mut bindings::pwm_chip = error::from_err_ptr(c_chip_ptr_raw)?;
-> +
-> +        // Set the custom release function on the embedded device. This is the crucial step
-> +        // to ensure `drvdata` is freed when the chip's refcount reaches zero, regardless
-> +        // of whether `Registration::register` was called.
-> +        // SAFETY: `c_chip_ptr` points to a valid chip.
-> +        unsafe { (*c_chip_ptr).dev.release = Some(Adapter::<O>::release_callback); }
-
-This overwrites [1].
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pwm/core.c?h=v6.16-rc4#n1601
+Cheers,
+Miguel
