@@ -1,200 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD19E217709;
-	Sat,  5 Jul 2025 21:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECAA171C9;
+	Sun,  6 Jul 2025 00:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751751805; cv=none; b=BBFGL4RGDhq2pm4CrlySY6DJnO2UayEDlo+lm+o4zs3aPFHwAwSPCNprINDeL/oZUeoUvnnrQ8NvBHycBz7trisQ+aEBU58RLXFSMtgX791qpfYNOJVODzoz9vQfdpMc+NZ0Z0YFEcVfJ1ii1rLY2UtfLEZov6v9msnCNEovGvc=
+	t=1751762398; cv=none; b=DFZiv/QRPFmStuxlCuIZbDAygjPbYaF+MWN7iyE72AkY+hDnERN3suBpbg34JtyzJQliUt6KSJ5hCMBrUq8UgBzHHMT24uxADG9v6LfE2HMuxGNADk5q27CI+xcr14MLnqM21o2XcaZv/rHSaygv4KcTRUPQ3nM1q8CeaNvEshE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751751805; c=relaxed/simple;
-	bh=8JEvEGM9sNm9zynsk/02xiiJGM43gFUDp52vEHIyfyo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=K5s8HG9fHgal+FHxOCDWGwgw/Sa4N4/YJtpnEMaqWAsWkwdJlbFIcumbcdAKm63pU4E5HJyAdF/JN82aSxN4d8T8YA6vDAZ31LNgqxK4qTZbZ4iq5N3dyWDWjSLaM4eRvm3UAPbuEKuDw/z2Hc4G78dWnh2tKT1ScCL9QN5cuQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCAKay3Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751762398; c=relaxed/simple;
+	bh=k5Q8CAwOKFNOsPElv+8SUntbshG34ohpUNhd1JdxujA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hU1lNsgriQ9STCSYnNTgVgCQ+O7QkTLqNUiQNfuleOU3JFvEqFWbEwpvvuepAaqwnVJmWdzVqKDI1pqgwrXwJM7EvueeMULdl/ffYJXfcsf7KuAeF1SY7zYH10BH31HKSWnUWBFCWW5LB1SyMD+tndkJtNVNzCZDcAfNbfGZavQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dtc+Z/HU; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCAKay3Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AEAC4CEE7;
-	Sat,  5 Jul 2025 21:43:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751751805;
-	bh=8JEvEGM9sNm9zynsk/02xiiJGM43gFUDp52vEHIyfyo=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=ZCAKay3ZSzt2NQCOhXdlOV5I+U5DxCLFKGodf/OXmgCuZAZioawqIau4IXWSAlLji
-	 amgn1Pr7KDHCA4+PTCpF8wmYGD57Be0vsHYViKLAzZ0oAeaOCIj7vt4ZQllomBy84/
-	 46Igzn8mg8VF6dMxxF/HyWYX6NBnzT0Y6dBGxXHjr4Wvx+DUyEgZrjTUxq4DSAh0Ld
-	 VVbKr7/eqfYBpcnt04K5aAgKeAok8u6lwgF6mf0WTuFxrOR2T7hN041mn4mbUWREgh
-	 WsqmhiPXipA+nmaW0LaK93107Ivoj16UafqLv+ApbQhf3OJwRSSN1wBQKO4+UVHAdH
-	 lUp+PNAs9mBxg==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dtc+Z/HU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751762398; x=1783298398;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=k5Q8CAwOKFNOsPElv+8SUntbshG34ohpUNhd1JdxujA=;
+  b=Dtc+Z/HUfeAXxH+9O449mERow4uYoazCfqtTBmHGgYd5SICfsL+Xlmhg
+   jwBKBp70olrPxKD+gRjsjl8Qia93hfaacyBPCadoum1YzGCGCiv63rJ1p
+   JZcyLrgpBVUWSCll0I/v1C/RDeQJrzQjD8LQZJGYk+Z8h4sCFQUGHWJJm
+   4AIBdjWfJoV5BLGeJPLjWUdKZlGUVF57QDNyT/amseQI63pyEAkfVdCsA
+   9yYT1pI+h8wDFaoTzZdq5F5YFTkvRYGP3p85h7q5KNqwSLNYpPBtfic+6
+   CbQntslreEp9q7O7HUUbjjVmWr0pqje2Nwv5woNChxSS6svdEoOetAkL6
+   Q==;
+X-CSE-ConnectionGUID: i7VtxurzQRKWj2Q4OTrp1w==
+X-CSE-MsgGUID: cXKAI/RGSc+eBZPJ/7JHTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11485"; a="76573367"
+X-IronPort-AV: E=Sophos;i="6.16,291,1744095600"; 
+   d="scan'208";a="76573367"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2025 17:39:57 -0700
+X-CSE-ConnectionGUID: P1JUXQxVSwaB1oDYr25lqA==
+X-CSE-MsgGUID: KeKRc6SFStiPqE0L1FBWlA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,291,1744095600"; 
+   d="scan'208";a="154642095"
+Received: from lkp-server01.sh.intel.com (HELO 0b2900756c14) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 05 Jul 2025 17:39:52 -0700
+Received: from kbuild by 0b2900756c14 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uYDQ5-0004mt-2m;
+	Sun, 06 Jul 2025 00:39:49 +0000
+Date: Sun, 6 Jul 2025 08:39:07 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, Benno Lossin <lossin@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v7 1/2] rust: regulator: add a bare minimum regulator
+ abstraction
+Message-ID: <202507060837.ziqhqXVk-lkp@intel.com>
+References: <20250704-topics-tyr-regulator-v7-1-77bfca2e22dc@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 05 Jul 2025 23:43:18 +0200
-Message-Id: <DB4G6QHBZIQ2.BFT3RFRRHYB0@kernel.org>
-Subject: Re: [PATCH v5 04/10] rust: sync: atomic: Add generic atomics
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "Gary Guo" <gary@garyguo.net>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
- <linux-arch@vger.kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>
-X-Mailer: aerc 0.20.1
-References: <20250621123212.66fb016b.gary@garyguo.net>
- <aFjj8AV668pl9jLN@Mac.home> <20250623193019.6c425467.gary@garyguo.net>
- <aFmmYSAyvxotYfo7@tardis.local> <aGg4sIORQiG02IoD@Mac.home>
- <DB3KC64NSYK7.31KZXSNO1XOGM@kernel.org> <aGhFAlpOZJaLNekS@Mac.home>
- <DB3MQ54N1FLA.3RTNYKTJFDNYY@kernel.org> <aGhiEZ4uNzEs4nah@Mac.home>
- <DB3YRHR9RN8Z.29926G08T7KZ0@kernel.org> <aGlHBqoqTA2PCXbJ@Mac.home>
-In-Reply-To: <aGlHBqoqTA2PCXbJ@Mac.home>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250704-topics-tyr-regulator-v7-1-77bfca2e22dc@collabora.com>
 
-On Sat Jul 5, 2025 at 5:38 PM CEST, Boqun Feng wrote:
-> On Sat, Jul 05, 2025 at 10:04:04AM +0200, Benno Lossin wrote:
-> [...]
->> >> >
->> >> > Basically, what I'm trying to prove is that we can have a provenanc=
-e-
->> >> > preserved Atomic<*mut T> implementation based on the C atomics. Eit=
-her
->> >> > that is true, or we should write our own atomic pointer implementat=
-ion.
->> >>=20
->> >> That much I remembered :) But since you were going into the specifics
->> >> above, I think we should try to be correct. But maybe natural languag=
-e
->> >> is the wrong medium for that, just write the rust code and we'll see.=
-..
->> >>=20
->> >
->> > I don't thinking writing rust code can help us here other than duplica=
-te
->> > my reasoning above, so like:
->> >
->> >     ipml *mut() {
->> >         pub fn xchg(ptr: *mut *mut (), new: *mut ()) -> *mut () {
->> > 	    // SAFTEY: ..
->
-> Note: provenance preserving is not about the safety of Atomic<*mut T>
-> implementation, even if we don't preserve the provenance, calling
-> `Atomic<*mut T>` function won't cause UB, it's just that any pointer you
-> get from `Atomic<*mut T>` is a pointer without provenance.
->
-> So what I meant in this example is all the safey comment is above and=20
-> the rest is not a safe comment.
+Hi Daniel,
 
-Yeah it's not a safety requirement, but a guarantee.
+kernel test robot noticed the following build errors:
 
-> Hope it's clear.
->
->> > 	    // `atomic_long_xchg()` is implemented as asm(), so it can
->> > 	    // be treated as a normal pointer swap() hence preserve the
->> > 	    // provenance.
->>=20
->> Oh I think Gary was talking specifically about Rust's `asm!`. I don't
->> know if C asm is going to play the same way... (inside LLVM they
->> probably are the same thing, but in the abstract machine?)
->>=20
->
-> You need to understand why Rust abstract machine model `asm!()` in
-> that way: Rust abstract machine cannot see through `asm!()`, so it has
-> to assume that `asm!() block can do anything that some equivalent Rust
-> code does. Further more, this "can do anything that some equivalent Rust
-> code does" is only one way to reason, the core part about this is Rust
-> will be very conservative when using the `asm!()` result for
-> optimization.
+[auto build test ERROR on 2009a2d5696944d85c34d75e691a6f3884e787c0]
 
-Yes that makes sense.
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-regulator-add-a-bare-minimum-regulator-abstraction/20250705-024526
+base:   2009a2d5696944d85c34d75e691a6f3884e787c0
+patch link:    https://lore.kernel.org/r/20250704-topics-tyr-regulator-v7-1-77bfca2e22dc%40collabora.com
+patch subject: [PATCH v7 1/2] rust: regulator: add a bare minimum regulator abstraction
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250706/202507060837.ziqhqXVk-lkp@intel.com/config)
+compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250706/202507060837.ziqhqXVk-lkp@intel.com/reproduce)
 
-> It should apply to C asm!() as well because LLVM cannot know see through
-> the asm block either. And based on the spirit, it might apply to any C
-> code as well, because it's outside Rust abstract machine. But if you
-> don't agree the reasoning, then we just cannot implement Atomic<*mut T>
-> with the existing C API.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507060837.ziqhqXVk-lkp@intel.com/
 
-We probably should run this by t-opsem on the Rust zulip or ask about
-this in the next Meeting with the Rust folks.
+All errors (new ones prefixed by >>):
 
->> > 	    unsafe { atomic_long_xchg(ptr.cast::<atomic_long_t>(), new as ffi=
-:c_long) }
->> > 	}
->> >
->> >         pub fn cmpxchg(ptr: *mut *mut (), old: *mut (), new: *mut ()) =
--> *mut () {
->> > 	    // SAFTEY: ..
->> > 	    // `atomic_long_xchg()` is implemented as asm(), so it can
->> > 	    // be treated as a normal pointer compare_exchange() hence preser=
-ve the
->> > 	    // provenance.
->> > 	    unsafe { atomic_long_cmpxchg(ptr.cast::<atomic_long_t>(), old as =
-ffi::c_long, new as ffi:c_long) }
->> > 	}
->> >
->> > 	<do it for a lot of functions>
->> >     }
->> >
->> > So I don't think that approach is worth doing. Again the provenance
->> > preserving is a global property, either we have it as whole or we don'=
-t
->> > have it, and adding precise comment of each function call won't change
->> > the result. I don't see much difference between reasoning about a set =
-of
->> > functions vs. reasoning one function by one function with the same
->> > reasoning.
->> >
->> > If we have a reason to believe that C atomic doesn't support this we
->> > just need to move to our own implementation. I know you (and probably
->> > Gary) may feel the reasoning about provenance preserving a bit handwav=
-y,
->>=20
->> YES :)
->>=20
->> > but this is probably the best we can get, and it's technically better
->>=20
->> I think we can at improve the safety docs situation.
->>=20
->
-> Once again, it's not about the safety of Atomic<*mut T> implementation.
+>> error[E0425]: cannot find function `regulator_set_voltage` in crate `bindings`
+   --> rust/kernel/regulator.rs:258:23
+   |
+   258 |             bindings::regulator_set_voltage(self.inner.as_ptr(), min_uv.0, max_uv.0)
+   |                       ^^^^^^^^^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `regulator_get_voltage` in crate `bindings`
+   --> rust/kernel/regulator.rs:265:42
+   |
+   265 |         let voltage = unsafe { bindings::regulator_get_voltage(self.inner.as_ptr()) };
+   |                                          ^^^^^^^^^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `regulator_get` in crate `bindings`
+   --> rust/kernel/regulator.rs:276:53
+   |
+   276 |         let inner = from_err_ptr(unsafe { bindings::regulator_get(dev.as_raw(), name.as_ptr()) })?;
+   |                                                     ^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `regulator_enable` in crate `bindings`
+   --> rust/kernel/regulator.rs:290:38
+   |
+   290 |         to_result(unsafe { bindings::regulator_enable(self.inner.as_ptr()) })
+   |                                      ^^^^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `regulator_disable` in crate `bindings`
+   --> rust/kernel/regulator.rs:295:38
+   |
+   295 |         to_result(unsafe { bindings::regulator_disable(self.inner.as_ptr()) })
+   |                                      ^^^^^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `regulator_is_enabled` in crate `bindings`
+   --> rust/kernel/regulator.rs:379:28
+   |
+   379 |         unsafe { bindings::regulator_is_enabled(self.inner.as_ptr()) != 0 }
+   |                            ^^^^^^^^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `regulator_disable` in crate `bindings`
+   --> rust/kernel/regulator.rs:389:32
+   |
+   389 |             unsafe { bindings::regulator_disable(self.inner.as_ptr()) };
+   |                                ^^^^^^^^^^^^^^^^^ not found in `bindings`
+--
+>> error[E0425]: cannot find function `regulator_put` in crate `bindings`
+   --> rust/kernel/regulator.rs:393:28
+   |
+   393 |         unsafe { bindings::regulator_put(self.inner.as_ptr()) };
+   |                            ^^^^^^^^^^^^^ not found in `bindings`
 
-"Safety docs" to me means all of these:
-* `SAFETY` comments & `# Safety` sections,
-* `INVARIANT` comments & `# Invariants` sections,
-* `GUARANTEE` comments & `# Guarantees` sections.
-
-Maybe there is a better name...
-
->> > than using Rust native atomics, because that's just UB and no one woul=
-d
->> > help you.
->>=20
->> I'm not arguing using those :)
->>=20
->> > (I made a copy-pasta on purpose above, just to make another point why
->> > writing each function out is not worth)
->>=20
->> Yeah that's true, but at the moment that safety comment is on the `impl`
->> block? I don't think that's the right place...
->>=20
->
-> Feel free to send any patch that improves this in your opinion ;-)
-
-I'd prefer we do it right away. But we should just have one big comment
-explaining it on the impl and then in the functions refer to it from a
-`GUARANTEE` comment?
-
----
-Cheers,
-Benno
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
