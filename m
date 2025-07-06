@@ -1,100 +1,354 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE7B192B66
-	for <rust-for-linux@vger.kernel.org>; Sun,  6 Jul 2025 08:32:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F876200B99
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Jul 2025 11:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751790735; cv=none; b=pCFsc5iTgmIQ1LjpJqUHJR5L2eVHPmDX/ZA71tDDHfjXisVdENPAqXdHoayHygXfIl/JZ8vh9CqMcb/QQSv1DIo+Y8yUBlw/5WVz2Y22FgEqELUEhkBCLxKmg2ToAERDPMwTz0uAroa91OsZB5G+CUXLVYad1HC4wXMLlKonxP4=
+	t=1751802374; cv=none; b=uj3miCQuOSGBS7wqXm2jnKsFK5mQWHGmq6fy/zJVXf9VnZ9RckY/IBvUqsvdxWqrkEXMBHXCG4q1qWus/pNb6LhbGDoEPB6wrP02dTN0A1pvI+lqQxH81KPZtMmlU1gEszm66/ReUCRhOKQXE+OJxpG2Ld3aptcb4lZHLZaMr0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751790735; c=relaxed/simple;
-	bh=SCh0rlkNZFhJ5wI2jry030Huq/MRz92c4m2UkAahWbU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nTz3XxRgkcJaymV1AhFbjVkKIarFmHr98vuFMsde22NdyC5A9WKGCuMxxAIdoTut7xctQcWyzw0N0f3Ou6vMa7HZt9oUZqh55hW0WJhZUFqwVN0/ydc8uvb995WPWfo/TArZ/EgPyVDk0tAYfN/cHdT6SNyzCYDxbAT6ApqZY6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=swpvIHgR; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1751802374; c=relaxed/simple;
+	bh=AeD2hBgLfIFq8qXOrFtRk8yGOWuOGR54JxGrKux9P9w=;
+	h=From:Date:Subject:MIME-Version:Message-Id:In-Reply-To:To:Cc:
+	 Content-Type:References; b=EzJ+ixKaOA8724334VX7YEH6CKgkRYvnj8v5sz8YIjDWIeQqH6oDnQ7T/RcN3386piXZmgboBpXiqcYLqvdsYP3SwiPwqoLjLUpu1Xd2fATfJzhpjJadSu4nExtuPtzEs8XSgvjolUyTjct/XsThNd+AU1MVm2QDpJLh8Y98tI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=OoHt4FWm; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="swpvIHgR"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a57c8e247cso1571589f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 06 Jul 2025 01:32:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751790732; x=1752395532; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SCh0rlkNZFhJ5wI2jry030Huq/MRz92c4m2UkAahWbU=;
-        b=swpvIHgRiP0Z8YZPjJ4tUiHt7S9FtIc3r6BOnkc8TsPmePUqxRx64/IJSqlvBTrVy3
-         CbVigymHiF5wNJxJqL/t9oWBBa+q0j0R7kXUw0igP5lt6l53iExiDbMx4dgdCp8Rigca
-         VI+sD1kE6bKbzty6jwXXNLKK5DfZtg2jD7i039B7hkwOlKqN3udxoHMeF2qKbKFqb3Oe
-         FE9huP9Aur0ocTsl23mNbSO03Zb0yorzUtj2PwvorsUCiXV5Mx0BY0cWQQPCmZlOAGUO
-         BmFCNdPjpX0QpgFagqE0SVXSWLAFm5bJ5bjipFPWTWbzIgaagfrHKUkzUsXmZ+/3acdF
-         +Z3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751790732; x=1752395532;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SCh0rlkNZFhJ5wI2jry030Huq/MRz92c4m2UkAahWbU=;
-        b=G5AyTRfw499+kpnbdQoXhWHeEf4Ss5KgbMUIjRuXb5zYPg2eOgC+aijbmQVKSBTo31
-         zCQnsxoPJSdswNjcqxkVfN6oaERQgpWZelEa6MSWILBJgf7unwZaXrbYf+GJq7PQzRr5
-         sPV+6xDqoryvj1sYk25PBae/nGoZBsPREsxFVF+ME9yMrOikh+3CxVmvexAiu5u258Gb
-         x9nMt5AuaMzuaZiDWOVW1FT5/rZLaPVh2Vo+v8fMFW7WdJ0ukPw5nU6uUOEwWMOw+cOy
-         v26+qYdDki4i9JDLAVJ8D4+Gbe9GsXj1VCyK958ILGhaWuDvn/EygkCyELOP2KyCZU2d
-         2bKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3ob8wrkc+obOWMZcKBLDOTv6HiQtI5E5bUvX/zcYHs1Inbbd5qkssBOS03IxD6MaTL27rf43y39lKeS+VxA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKkmrl+MvrHO9Kqw+zh7vgqS+2pNQqYeN357eC9Ip3YucHKWuV
-	K7caJZyQoSSlhUS5ysP8NC7j5kj44oNO1LQCNGsRkleRTgtNTh4Qmu7pahSRLhBfE0DqQmB2Igu
-	kSJTnyhnBT5uHW6QyFUMotNXKlhx/56h8rxeMrBd/
-X-Gm-Gg: ASbGnctA99NTDUdKSkUbjYVpckesgsZG5Yc8KEY65y9tnvAUlL8taOwiu23dd+njCr4
-	W1KTUMjnG5eDrIX6V7vW87Re9CXmTLKrGU+cMWjK0QmnY6h7e/poHs69C81tKw3YqfthFxK3HKR
-	Ef1NpZc79Z098q8DMIxQjfqEP4yNYYR5npqVKxzAijRXHU
-X-Google-Smtp-Source: AGHT+IEGQ1yvGh1y3CB0u/RmI8WwsZH40VLDWwCw3/I8DzRJFsL4891+0YGeKbVlHlDbDSg+hBTaNvwCq+RYP2UKi8U=
-X-Received: by 2002:a05:6000:2f85:b0:3a4:e5fa:73f0 with SMTP id
- ffacd0b85a97d-3b4970195f6mr6202610f8f.20.1751790731838; Sun, 06 Jul 2025
- 01:32:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="OoHt4FWm"
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250706114604euoutp02b6e2a6502153e2b73b387add2581bdb2~Ppvgheh540210202102euoutp028
+	for <rust-for-linux@vger.kernel.org>; Sun,  6 Jul 2025 11:46:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250706114604euoutp02b6e2a6502153e2b73b387add2581bdb2~Ppvgheh540210202102euoutp028
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1751802364;
+	bh=7IOdcpqFPt15Yboz3/CwL2I2Kh3Mg9UFi2hzSn3688A=;
+	h=From:Date:Subject:In-Reply-To:To:Cc:References:From;
+	b=OoHt4FWmssIlQeehDg+ZZEoHRI173dRdUM5Zh1m3/SwdhLGxhNTQF7ZoFJTUoJzmr
+	 wpI7ABOsND4BunTgJPkvvsEsI2gJ0jJkb+I13ArBWhHRTkU6mfssN4qpTk3BYbcAZq
+	 erqrdwMIUnd/6+Sw7ElhQIQm7u4Eqff7mkWzCtaA=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250706114604eucas1p260108a0f45a8273ae98afe05cc9a1288~Ppvf3kHfL2602826028eucas1p2m;
+	Sun,  6 Jul 2025 11:46:04 +0000 (GMT)
+Received: from AMDC4942.eu.corp.samsungelectronics.net (unknown
+	[106.210.136.40]) by eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250706114602eusmtip2f0d5964d9dab8f808eb9cb73f61b8599~PpvevWwNy1086010860eusmtip21;
+	Sun,  6 Jul 2025 11:46:02 +0000 (GMT)
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+Date: Sun, 06 Jul 2025 13:45:12 +0200
+Subject: [PATCH v9 1/6] rust: pwm: Add Kconfig and basic data structures
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-xarray-insert-reserve-v1-0-25df2b0d706a@gmail.com>
- <20250701-xarray-insert-reserve-v1-3-25df2b0d706a@gmail.com> <CANiq72nf-h86GszE3=mLpWHi5Db+Tj0TRyUe9ANfjdNbesBEEg@mail.gmail.com>
-In-Reply-To: <CANiq72nf-h86GszE3=mLpWHi5Db+Tj0TRyUe9ANfjdNbesBEEg@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sun, 6 Jul 2025 10:31:59 +0200
-X-Gm-Features: Ac12FXwwPurn4FW_8RxwpWJr25A9vazCDxaz3GDmuhMxLJA4Vob4fuczPZdPUVM
-Message-ID: <CAH5fLgjmUXUcXFFYdrM4f2iZeD-JbEuSV1DuFbGERNQNM+V51w@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: xarray: add `insert` and `reserve`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Daniel Almeida <daniel.almeida@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250706-rust-next-pwm-working-fan-for-sending-v9-1-42b5ac2101c7@samsung.com>
+In-Reply-To: <20250706-rust-next-pwm-working-fan-for-sending-v9-0-42b5ac2101c7@samsung.com>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,  Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,  Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,  Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,  Michal
+	Wilczynski <m.wilczynski@samsung.com>, Guo Ren <guoren@kernel.org>,  Fu Wei
+	<wefu@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Paul Walmsley
+	<paul.walmsley@sifive.com>,  Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>,  Alexandre Ghiti <alex@ghiti.fr>,  Marek Szyprowski
+	<m.szyprowski@samsung.com>,  Benno Lossin <lossin@kernel.org>,  Michael
+	Turquette <mturquette@baylibre.com>,  Drew Fustini <fustini@kernel.org>,
+	Benno Lossin <lossin@kernel.org>,  Drew Fustini <fustini@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	devicetree@vger.kernel.org
+X-Mailer: b4 0.15-dev
+X-CMS-MailID: 20250706114604eucas1p260108a0f45a8273ae98afe05cc9a1288
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250706114604eucas1p260108a0f45a8273ae98afe05cc9a1288
+X-EPHeader: CA
+X-CMS-RootMailID: 20250706114604eucas1p260108a0f45a8273ae98afe05cc9a1288
+References: <20250706-rust-next-pwm-working-fan-for-sending-v9-0-42b5ac2101c7@samsung.com>
+	<CGME20250706114604eucas1p260108a0f45a8273ae98afe05cc9a1288@eucas1p2.samsung.com>
 
-On Tue, Jul 1, 2025 at 6:56=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Tue, Jul 1, 2025 at 6:27=E2=80=AFPM Tamir Duberstein <tamird@gmail.com=
-> wrote:
-> >
-> > Add `Guard::{insert,reserve}` and `Guard::{insert,reserve}_limit`, whic=
-h
-> > are akin to `__xa_{alloc,insert}` in C.
->
-> Who will be using this? i.e. we need to justify adding code, typically
-> by mentioning the users.
+Introduce the foundational support for PWM abstractions in Rust.
 
-Rust Binder does have a user for `reserve`. As for xa_alloc, Rust
-Binder may end up using it, but the current plan is to use Burak's
-bitmap work instead.
+This commit adds the `RUST_PWM_ABSTRACTIONS` Kconfig option to enable
+the feature, along with the necessary build-system support and C
+helpers.
 
-Alice
+It also introduces the first set of safe wrappers for the PWM
+subsystem, covering the basic data carrying C structs and enums:
+- `Polarity`: A safe wrapper for `enum pwm_polarity`.
+- `Waveform`: A wrapper for `struct pwm_waveform`.
+- `Args`: A wrapper for `struct pwm_args`.
+- `State`: A wrapper for `struct pwm_state`.
+
+These types provide memory safe, idiomatic Rust representations of the
+core PWM data structures and form the building blocks for the
+abstractions that will follow.
+
+Tested-by: Drew Fustini <fustini@kernel.org>
+Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
+---
+ MAINTAINERS                     |   6 ++
+ drivers/pwm/Kconfig             |  13 ++++
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/pwm.c              |  20 ++++++
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/pwm.rs              | 137 ++++++++++++++++++++++++++++++++++++++++
+ 7 files changed, 180 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 92e9d8c7708ff4874efaa9727814ad7f1c9f6b0c..494de42ca8c36b30d80e14b03d3c9e0e054fb267 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -20196,6 +20196,12 @@ F:	include/linux/pwm.h
+ F:	include/linux/pwm_backlight.h
+ K:	pwm_(config|apply_might_sleep|apply_atomic|ops)
+ 
++PWM SUBSYSTEM BINDINGS [RUST]
++M:	Michal Wilczynski <m.wilczynski@samsung.com>
++S:	Maintained
++F:	rust/helpers/pwm.c
++F:	rust/kernel/pwm.rs
++
+ PXA GPIO DRIVER
+ M:	Robert Jarzmik <robert.jarzmik@free.fr>
+ L:	linux-gpio@vger.kernel.org
+diff --git a/drivers/pwm/Kconfig b/drivers/pwm/Kconfig
+index 3ef1757502ebd92b30584cd10611311a0fbfc03b..c32655566d6ab9eff9d10f29e469f9aef89cecfa 100644
+--- a/drivers/pwm/Kconfig
++++ b/drivers/pwm/Kconfig
+@@ -799,4 +799,17 @@ config PWM_XILINX
+ 	  To compile this driver as a module, choose M here: the module
+ 	  will be called pwm-xilinx.
+ 
++ config RUST_PWM_ABSTRACTIONS
++	bool "Rust PWM abstractions support"
++	depends on RUST
++	depends on PWM=y
++	help
++	  This option enables the safe Rust abstraction layer for the PWM
++	  subsystem. It provides idiomatic wrappers and traits necessary for
++	  writing PWM controller drivers in Rust.
++
++	  The abstractions handle resource management (like memory and reference
++	  counting) and provide safe interfaces to the underlying C core,
++	  allowing driver logic to be written in safe Rust.
++
+ endif
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 5f795e60e889b9fc887013743c81b1cf92a52adb..6a6e1b1736b38f36c1dbdd875defb3b526372b67 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -66,6 +66,7 @@
+ #include <linux/pm_opp.h>
+ #include <linux/poll.h>
+ #include <linux/property.h>
++#include <linux/pwm.h>
+ #include <linux/refcount.h>
+ #include <linux/sched.h>
+ #include <linux/security.h>
+diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+index 1f800e78920145fc5149befb15579179dfb6e02e..c449d72fa8b19b2ab084be520466ab916c63cea7 100644
+--- a/rust/helpers/helpers.c
++++ b/rust/helpers/helpers.c
+@@ -35,6 +35,7 @@
+ #include "pid_namespace.c"
+ #include "poll.c"
+ #include "property.c"
++#include "pwm.c"
+ #include "rbtree.c"
+ #include "rcu.c"
+ #include "refcount.c"
+diff --git a/rust/helpers/pwm.c b/rust/helpers/pwm.c
+new file mode 100644
+index 0000000000000000000000000000000000000000..d75c588863685d3990b525bb1b84aa4bc35ac397
+--- /dev/null
++++ b/rust/helpers/pwm.c
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) 2025 Samsung Electronics Co., Ltd.
++// Author: Michal Wilczynski <m.wilczynski@samsung.com>
++
++#include <linux/pwm.h>
++
++struct device *rust_helper_pwmchip_parent(const struct pwm_chip *chip)
++{
++	return pwmchip_parent(chip);
++}
++
++void *rust_helper_pwmchip_get_drvdata(struct pwm_chip *chip)
++{
++	return pwmchip_get_drvdata(chip);
++}
++
++void rust_helper_pwmchip_set_drvdata(struct pwm_chip *chip, void *data)
++{
++	pwmchip_set_drvdata(chip, data);
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 5bbf3627212f0a26d34be0d6c160a370abf1e996..9f7038d3d501982a843d6d86571d20f1213ba9ee 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -106,6 +106,8 @@
+ pub mod seq_file;
+ pub mod sizes;
+ mod static_assert;
++#[cfg(CONFIG_RUST_PWM_ABSTRACTIONS)]
++pub mod pwm;
+ #[doc(hidden)]
+ pub mod std_vendor;
+ pub mod str;
+diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..3fad101406eac728d9b12083fad7abf7b7f89b25
+--- /dev/null
++++ b/rust/kernel/pwm.rs
+@@ -0,0 +1,137 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) 2025 Samsung Electronics Co., Ltd.
++// Author: Michal Wilczynski <m.wilczynski@samsung.com>
++
++//! PWM subsystem abstractions.
++//!
++//! C header: [`include/linux/pwm.h`](srctree/include/linux/pwm.h).
++
++use crate::{
++    bindings,
++    prelude::*,
++    types::Opaque,
++};
++use core::convert::TryFrom;
++
++/// PWM polarity. Mirrors [`enum pwm_polarity`](srctree/include/linux/pwm.h).
++#[derive(Copy, Clone, Debug, PartialEq, Eq)]
++pub enum Polarity {
++    /// Normal polarity (duty cycle defines the high period of the signal).
++    Normal,
++
++    /// Inversed polarity (duty cycle defines the low period of the signal).
++    Inversed,
++}
++
++impl TryFrom<bindings::pwm_polarity> for Polarity {
++    type Error = Error;
++
++    fn try_from(polarity: bindings::pwm_polarity) -> Result<Self, Error> {
++        match polarity {
++            bindings::pwm_polarity_PWM_POLARITY_NORMAL => Ok(Polarity::Normal),
++            bindings::pwm_polarity_PWM_POLARITY_INVERSED => Ok(Polarity::Inversed),
++            _ => Err(EINVAL),
++        }
++    }
++}
++
++impl From<Polarity> for bindings::pwm_polarity {
++    fn from(polarity: Polarity) -> Self {
++        match polarity {
++            Polarity::Normal => bindings::pwm_polarity_PWM_POLARITY_NORMAL,
++            Polarity::Inversed => bindings::pwm_polarity_PWM_POLARITY_INVERSED,
++        }
++    }
++}
++
++/// Represents a PWM waveform configuration.
++/// Mirrors struct [`struct pwm_waveform`](srctree/include/linux/pwm.h).
++#[derive(Copy, Clone, Debug, Default, PartialEq, Eq)]
++pub struct Waveform {
++    /// Total duration of one complete PWM cycle, in nanoseconds.
++    pub period_length_ns: u64,
++
++    /// Duty-cycle active time, in nanoseconds.
++    ///
++    /// For a typical normal polarity configuration (active-high) this is the
++    /// high time of the signal.
++    pub duty_length_ns: u64,
++
++    /// Duty-cycle start offset, in nanoseconds.
++    ///
++    /// Delay from the beginning of the period to the first active edge.
++    /// In most simple PWM setups this is `0`, so the duty cycle starts
++    /// immediately at each period’s start.
++    pub duty_offset_ns: u64,
++}
++
++impl From<bindings::pwm_waveform> for Waveform {
++    fn from(wf: bindings::pwm_waveform) -> Self {
++        Waveform {
++            period_length_ns: wf.period_length_ns,
++            duty_length_ns: wf.duty_length_ns,
++            duty_offset_ns: wf.duty_offset_ns,
++        }
++    }
++}
++
++impl From<Waveform> for bindings::pwm_waveform {
++    fn from(wf: Waveform) -> Self {
++        bindings::pwm_waveform {
++            period_length_ns: wf.period_length_ns,
++            duty_length_ns: wf.duty_length_ns,
++            duty_offset_ns: wf.duty_offset_ns,
++        }
++    }
++}
++
++/// Wrapper for board-dependent PWM arguments [`struct pwm_args`](srctree/include/linux/pwm.h).
++#[repr(transparent)]
++pub struct Args(Opaque<bindings::pwm_args>);
++
++impl Args {
++    /// Creates an `Args` wrapper from a C struct pointer.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that `c_args_ptr` is a valid, non-null pointer
++    /// to `bindings::pwm_args` and that the pointed-to data is valid
++    /// for the duration of this function call (as data is copied).
++    unsafe fn from_c_ptr(c_args_ptr: *const bindings::pwm_args) -> Self {
++        // SAFETY: Caller guarantees `c_args_ptr` is valid. We dereference it to copy.
++        Args(Opaque::new(unsafe { *c_args_ptr }))
++    }
++
++    /// Returns the period of the PWM signal in nanoseconds.
++    pub fn period(&self) -> u64 {
++        // SAFETY: `self.0.get()` returns a pointer to the `bindings::pwm_args`
++        // managed by the `Opaque` wrapper. This pointer is guaranteed to be
++        // valid and aligned for the lifetime of `self` because `Opaque` owns a copy.
++        unsafe { (*self.0.get()).period }
++    }
++
++    /// Returns the polarity of the PWM signal.
++    pub fn polarity(&self) -> Result<Polarity, Error> {
++        // SAFETY: `self.0.get()` returns a pointer to the `bindings::pwm_args`
++        // managed by the `Opaque` wrapper. This pointer is guaranteed to be
++        // valid and aligned for the lifetime of `self`.
++        let raw_polarity = unsafe { (*self.0.get()).polarity };
++        Polarity::try_from(raw_polarity)
++    }
++}
++
++/// Wrapper for PWM state [`struct pwm_state`](srctree/include/linux/pwm.h).
++#[repr(transparent)]
++pub struct State(bindings::pwm_state);
++
++impl State {
++    /// Creates a `State` wrapper by taking ownership of a C `pwm_state` value.
++    pub(crate) fn from_c(c_state: bindings::pwm_state) -> Self {
++        State(c_state)
++    }
++
++    /// Returns `true` if the PWM signal is enabled.
++    pub fn enabled(&self) -> bool {
++        self.0.enabled
++    }
++}
+
+-- 
+2.34.1
+
