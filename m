@@ -1,116 +1,80 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB7428A3F7;
-	Mon,  7 Jul 2025 09:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE16A28DB73;
+	Mon,  7 Jul 2025 09:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751881125; cv=none; b=nMXfzyPYMHrJDVg2E/MySyk3JhPmaX2gfeFXzrpWX0JrN5NY2cDDUF48XNtnmAd+sDcOzfG7DSj3qkRllw159FGnOtfqpNiDy+gHi3w7XrLFeqmH5PiJL2WV1tvL0nE81Ww0nUJp71GGZNjoJoq3xrg24TxalKZyxEAZqOSQHS0=
+	t=1751881208; cv=none; b=Ybs/UNKalmdh0rmIVV/URWvZb6WjV2zMwAAk9xpZ0ruzraiFUISG51r7FHM+E6yXO9GmCSSH4c1QttLdxXelqAmIdpZTH8cOhIYODRilKa2GfsowcB3R5dHeUkLMdsjIXFJn1RDPAoO9Scmf5fN1qYXuqnwNt1bvv7ZzpwXcv3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751881125; c=relaxed/simple;
-	bh=eGMGtY8ZcvE6kdxR6zf4DXyrCWsxcR1zoU1mF8oQHX4=;
+	s=arc-20240116; t=1751881208; c=relaxed/simple;
+	bh=dgjjYLEuj7l6qhjPxNywBOI0/nZUYsYye4YLqE96zn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DjFEgNXx7dnngEVE+PIIW+YSWWzo9BNselKW/PDoba4XBh+k1bDVtt9aBJ3Tt17ozU4IPF4OoJpeXXDbgSL82p2HtpM7BGlOaI+ixvGwhRyUhe+8b4G0M3kxLl5jzkqc9FSbrUeo2MWwSytk+GWJaDB+NtD6ipJi88KJ8ZloJtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=VOKYxamp; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=KB8MqfF0hlRhSxhJlrYqFQDePUBs1uEMp1fLxJz1+8trAg4pjK+UDsmjx5sMaDUcTw/JJRAlNhXuRl05MwDwHe4P2+qpev1Gm5kvoiUTWLOHIRruk+O02a3B856Z/nz9ttUvuBtPdLcJiM3RpMLyM4lJ7v3qsZ10yA/0WlIJ6bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ed1Fsqur; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="VOKYxamp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=bnHKyhC36yAuLX6uSscvM/f8yvBTgryKRaB9hZf72J0=; b=VOKYxampysmmx2FpOmvFeZFZXE
-	XcNrfBP8l94SJG34Dudptd7RmDgg37N4vlfUEQib8MprbM9hkVELnKTysNyRPiBPOjvM+DTEH/N6T
-	nfvaueNhTRCbMKthYwv7UlRPJcwmGOPr6x8eGOTCI8cUTr8E1t/l5dmnSg54clW0O+Ly8jO4wHNet
-	lXxAXneCdBKL6B5tbqTGgbK2dKchFD8x5NsIXnDTawEj9SD2J0zJjIK5C3v4kYQg5q1dRzrBbEzme
-	C2LYaSPsFWP3CPkbFdC3jiw0lHFsHzq1UL/4s85SZju3E0a5iErt128zyI5yEFDZeFOXVadcqDM1e
-	IF0X/RtQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uYiJ2-00000008Rd3-3z0o;
-	Mon, 07 Jul 2025 09:38:37 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 689DD300399; Mon, 07 Jul 2025 11:38:36 +0200 (CEST)
-Date: Mon, 7 Jul 2025 11:38:36 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sergio =?iso-8859-1?Q?Gonz=E1lez?= Collado <sergio.collado@gmail.com>
-Cc: David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>, Randy Dunlap <rdunlap@infradead.org>,
-	rust-for-linux@vger.kernel.org,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, x86@kernel.org,
-	linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v3 RESEND] kunit: fix longest symbol length test
-Message-ID: <20250707093836.GC1099709@noisy.programming.kicks-ass.net>
-References: <20250706201855.232451-1-sergio.collado@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ed1Fsqur"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4693C4CEEF;
+	Mon,  7 Jul 2025 09:40:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751881208;
+	bh=dgjjYLEuj7l6qhjPxNywBOI0/nZUYsYye4YLqE96zn8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ed1FsqursUWjZXkujG+et8Sp/r0TJtSZMdS6pnA8uulWf2kamvZVD489AMVjouzH1
+	 kB+rsKsgD8d+Q/BR+5NA1Mhwhuoa+1lAPTGTiVhA4YHuen+hhtdcyLbvDaZdQxk/hx
+	 47xDmB97i9YZA49l21lFom+AReCDf1Q2WneprO8c4HJ1b+ERb7vTN6alQtd1EiG609
+	 6ZjVMUmRhTLewCueds1TUseOFwVLEoRG9GobHcxK3dmsPC8DJDJUaCnn6MucH5R7oj
+	 /EU1o/TwRgU+oA2fl9pssqBWU3wQIQrhh1BE5isPWEKMsd0B5vWK9QvNaxDqLUoYv4
+	 raRtOmASOa59w==
+Date: Mon, 7 Jul 2025 11:40:01 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	david.m.ertman@intel.com, ira.weiny@intel.com, leon@kernel.org,
+	kwilczynski@kernel.org, bhelgaas@google.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH 2/8] rust: device: add drvdata accessors
+Message-ID: <aGuV8QVN1HGGvnwC@pollux>
+References: <20250621195118.124245-1-dakr@kernel.org>
+ <20250621195118.124245-3-dakr@kernel.org>
+ <DB5NMUV07ECB.2PQN70X9OWVTQ@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250706201855.232451-1-sergio.collado@gmail.com>
+In-Reply-To: <DB5NMUV07ECB.2PQN70X9OWVTQ@nvidia.com>
 
-On Sun, Jul 06, 2025 at 10:18:55PM +0200, Sergio González Collado wrote:
-> The kunit test that checks the longests symbol length [1], has triggered
-> warnings in some pilelines when symbol prefixes are used [2][3]. The test
-> will to depend on !PREFIX_SYMBOLS and !CFI_CLANG as sujested in [4] and
-> on !GCOV_KERNEL.
-> 
-> [1] https://lore.kernel.org/rust-for-linux/CABVgOSm=5Q0fM6neBhxSbOUHBgNzmwf2V22vsYC10YRBT=kN1g@mail.gmail.com/T/#t
-> [2] https://lore.kernel.org/all/20250328112156.2614513-1-arnd@kernel.org/T/#u
-> [3] https://lore.kernel.org/rust-for-linux/bbd03b37-c4d9-4a92-9be2-75aaf8c19815@infradead.org/T/#t
-> [4] https://lore.kernel.org/linux-kselftest/20250427200916.GA1661412@ax162/T/#t
-> 
-> Reviewed-by: Rae Moar <rmoar@google.com>
-> Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
-> Acked-by: Randy Dunlap <rdunlap@infradead.org>
-> Tested-by: Randy Dunlap <rdunlap@infradead.org>
-> ---
->  lib/Kconfig.debug                | 1 +
->  lib/tests/longest_symbol_kunit.c | 3 +--
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index ebe33181b6e6..4a75a52803b6 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -2885,6 +2885,7 @@ config FORTIFY_KUNIT_TEST
->  config LONGEST_SYM_KUNIT_TEST
->  	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
->  	depends on KUNIT && KPROBES
-> +	depends on !PREFIX_SYMBOLS && !CFI_CLANG && !GCOV_KERNEL
->  	default KUNIT_ALL_TESTS
->  	help
->  	  Tests the longest symbol possible
-> diff --git a/lib/tests/longest_symbol_kunit.c b/lib/tests/longest_symbol_kunit.c
-> index e3c28ff1807f..9b4de3050ba7 100644
-> --- a/lib/tests/longest_symbol_kunit.c
-> +++ b/lib/tests/longest_symbol_kunit.c
-> @@ -3,8 +3,7 @@
->   * Test the longest symbol length. Execute with:
->   *  ./tools/testing/kunit/kunit.py run longest-symbol
->   *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
-> - *  --kconfig_add CONFIG_RETPOLINE=n --kconfig_add CONFIG_CFI_CLANG=n
-> - *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=n
-> + *  --kconfig_add CONFIG_CPU_MITIGATIONS=n --kconfig_add CONFIG_GCOV_KERNEL=n
->   */
->  
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> 
-> base-commit: 772b78c2abd85586bb90b23adff89f7303c704c7
+On Mon, Jul 07, 2025 at 04:46:09PM +0900, Alexandre Courbot wrote:
+>     let pdev = unsafe { &*pdev.cast::<Device<InternalSet<Pin<KBox<T>>>>>() };
+>     ...
+>     // The type of the driver data is already known from `pdev`'s type,
+>     // so this can be safe.
+>     let foo = pdev.as_ref().drvdata_borrow();
 
-So this will obviously 'work'. But what I don't understand is the
-purpose of this test. Why can't we amend the test itself to use
-KSYM_NAME_LEN-8 (or whatever the actual magic value is) and recognise
-that we don't have full control over the symbol names; despite using C.
+I think this doesn't remove the safety requirement. drvdata_borrow() or
+drvdata_obtain() would still require CoreInternal<Pin<KBox<T>>> to have the
+correct type generic.
+
+Maybe we could have some invariant on CoreInternal that the generic type is
+*always* the bound driver's private data type. But then we have an
+`// INVARIANT` comment on the `Device<CoreInternal<...>>` cast, which would need
+the same justification as the current safety requirement.
+
+So, I don't think this safety requirement goes away. You can only move it
+around.
+
+> I don't see any use of `drvdata_borrow` in this patchset, so I cannot
+> really assess the benefit of making it safe, but for your consideration.
+> ^_^;
+
+It will be used from other bus callbacks, such as shutdown(). (There are bus
+abstractions on the list (e.g. I2C) that will start using it in the next
+cycle.)
