@@ -1,115 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A88B293C7B;
-	Mon,  7 Jul 2025 13:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D467E9;
+	Mon,  7 Jul 2025 13:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751894516; cv=none; b=deKTZS2M4aYn2z2xk5Z04CCbyHdlI+cLTpiWtfB3ufMHkKUOY9lgasygQb0nSJEgGVE22YfVbkT2v5U7HZd+wQ3Yu85SlVfL1OZsuiXd2+GGPkzmKrubbaC+vY4deIUiE5ssPz/Hs1LpSCMG8CtxkVOkOzkFHN+0CD2Ttbk5joU=
+	t=1751895112; cv=none; b=azJoY+04A8X6siEdH13flZA3+V7lrv7uG5+dgFOZxYOr4cxIQG+D2rxyNFIJ96aIi/fO+ZJVThd6k8CLzhme4Nzd4LYoa/rDvPQxxthLyQi+hyy6zw8Nz2kCvMKL8GxtyNxxxA8J9flxu7QmZnq39f3oDgdGz23thY8FdgH6gIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751894516; c=relaxed/simple;
-	bh=O8gKTPusiNWU2XmABv5gVEiO4iBU5ihMnEudx0J/PpM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=TBRkW4iG4Nc5rbYhT/1KKHz3dujUG69G8OUJx+4vfA3J0kcJxPoo/jSKZVkvmGFFf133xUSRRUFY2dnEa2dl5HQVK7R0PmX+WRDRw/OTU2FuOMEUfimaMr9S0Zoo9axPc8VNAoZPNRxfFo973ySNj7AV6EBLHFJijmVx5LZLMv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UTVboYih; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751895112; c=relaxed/simple;
+	bh=4Rj9VzFcMjV2b2FKGGXgH+pSxDEnRIoZbc9nYVS6Nl0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BXoAbdQfNijCvlcYwPkELvpt06KkCbTu60/xM9AL4vCLBuNshw87zw0H23DsZvYrXTSZxiej8/kJXvHBBfgGXNHskvoRLf5jSM63O/bJx8t+BGj/ylRRUVlLuZQfUY7dGAaycjTCh/av4E4UShrP8mEYBNa7sCpVwK6l+rb2Q78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vBTiuLAL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UTVboYih"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEC7C4CEE3;
-	Mon,  7 Jul 2025 13:21:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vBTiuLAL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1683C4CEE3;
+	Mon,  7 Jul 2025 13:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751894514;
-	bh=O8gKTPusiNWU2XmABv5gVEiO4iBU5ihMnEudx0J/PpM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UTVboYih8KCZp86e7YK6dkzIr6DOvjLXy4zl7OVQoGbYT177ZlLMav1Y3tDFEYM9g
-	 gg5JaBMJLCUukpFEBJbqR8Ve77MN8CvvmOtx79Gg61RSRPgBPEi+xfla8H/PSsX8Hq
-	 SdVTQDDUJloTZOvGTKZbXOjeYZd6zfQygvJ2iyD+vnPagiSj83/MJ66Y190iXEG/nF
-	 EcPorWDR5r6mr6azPXcRn8VD4HPLMtfLPGgJSKSTQPR4Z83+L9LiqJw5u/Y8xjMxVb
-	 lmM+DbIIi+HTSQvGRWewy7o5t4w16o3m9F+hZb9OKQkbZfG1dKCUUrm3I98xIYza3q
-	 Le/Hg6o2U8IQQ==
+	s=k20201202; t=1751895110;
+	bh=4Rj9VzFcMjV2b2FKGGXgH+pSxDEnRIoZbc9nYVS6Nl0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=vBTiuLALarVF0Dt1NF2pO9KbF2zrU1dKcEeY7MLjPwarJS7TpzSVEvJBOcssY60m1
+	 MaAoF5M0Pjcu1or+17Uho/JG7lKFgAdpdnK0uWXh0dvzw0yPzQ1vBd/zsCXedIyvYq
+	 TlEjJnaIWEpvFG+sY7puPE2h3r5yGPwlg3BJVA+WLdtH98pj7dM2TDfBUt59T1K/s+
+	 F4d4efCocsPrK2Gcsz7ms0GghVvys1GjidWhDJY+TjgcB5od9ipizCYT1WSWKK3jl+
+	 DLzLiUrAdJFivBtIxTu0IOxoqdGqbVzN+PvwwD+BnlUhXfefNuCt/aAHf1CqGzgOU9
+	 R6yJ65dWDUzZg==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Oliver Mangold" <oliver.mangold@pm.me>,  "Miguel Ojeda"
- <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
- <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
- Gross" <tmgross@umich.edu>,  "Asahi Lina" <lina+kernel@asahilina.net>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
-In-Reply-To: <DB5SRE5S7AR3.QUF369W9JYGJ@kernel.org> (Benno Lossin's message of
-	"Mon, 07 Jul 2025 13:47:10 +0200")
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
-	<20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me>
-	<DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org> <aGuAR7JCrlmzQrx4@mango>
-	<gFz7glX0UIHGffQdm4_vD_XkT5GZEKB0Lx0cd8-TCR8glMzIIY7VBIvppFVr2RURNBnGx9lKJqrE5av7xSUcbA==@protonmail.internalid>
-	<DB5PX74OB3DX.1UNT8MIBWNC2G@kernel.org> <87bjpwqmo5.fsf@kernel.org>
-	<gUxXEpuPZ0HXQ-cptykcSOV4dVbZNFvDq4Ey5YR1GT8exNFK0qhYAg4HFgWTvTpDk8HXMGl5XThvR7f4m-T6Sg==@protonmail.internalid>
-	<DB5SRE5S7AR3.QUF369W9JYGJ@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Mon, 07 Jul 2025 15:21:44 +0200
-Message-ID: <87zfdgp253.fsf@kernel.org>
+Date: Mon, 07 Jul 2025 15:29:10 +0200
+Subject: [PATCH v15 6/7] rust: samples: add a module parameter to the
+ rust_minimal sample
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250707-module-params-v3-v15-6-c1f4269a57b9@kernel.org>
+References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
+In-Reply-To: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+ Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+ Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>
+Cc: Trevor Gross <tmgross@umich.edu>, 
+ Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+ Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+ Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+ Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ linux-modules@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1268; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=4Rj9VzFcMjV2b2FKGGXgH+pSxDEnRIoZbc9nYVS6Nl0=;
+ b=owEBbQKS/ZANAwAIAeG4Gj55KGN3AcsmYgBoa8u4LFemyRPjAmVKu3zSjovuiQLeEyy8Yu++T
+ kDM3pzk4AeJAjMEAAEIAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaGvLuAAKCRDhuBo+eShj
+ d2gVEACuKT0KcPyN2Jwv1F3/qNbhhCQ9WHRJqZcOa50EQzdxQ5VyYAAPlAiJIPNBAPP3Ksmjfwn
+ 4cGn0X9PVIosA95n8rkqrOJQdnbqBmfQdTQugVuOLRs0huNINSa/HTFw1b28ncXRhWR1eJ4McMN
+ YxIut2wR6FoIxnvkgI1Zyd2OLXYsgBPmpD0ccKZAwGlTQa9BF+TIX+baKoB5FeYc32ZsOErrLTB
+ SJbLbrq8nKPR0POCN4Sl3YKdVmZA+RGCWM8agn/VbFFSaU3+Gaphq0/VM+/tgYaK9fZARQpivK6
+ rv28Nd3danlAx2f2xLJQ/m3za0GboZVlLltUhlU2l/HNrJTpZYHxEo1oAT1NrGEEGv6V6E2lFbM
+ r5vaBYbNK9yzJMbX0Lv6/IQllxNJD8M6O2/RklhYKHZ1J4CPQd59dX4gObAKkNglaxGKOA3TlL2
+ jlDGQru09k+38Djr4x75axmGPVxlCQHEyVsjitwWeIenp9SYW5nZdu6MLQrBsUp2UnGmw04pXsP
+ f7wlpyEYdTjFm7Pa2g7fWpvxgrLzbj+X5oRDC4BXzsea9Kx+YnB7tIAGzcd2X6S32OM5VIV9lzW
+ eaYRN9UEIBnKdTHhypS2ZaUTkf4rZz8I78Oai/wrkOcUnMDpfkK+mikU+fSzcGeUbTubljilHHF
+ nqNavY1zff/ri1A==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 
-"Benno Lossin" <lossin@kernel.org> writes:
+Showcase the rust module parameter support by adding a module parameter to
+the `rust_minimal` sample.
 
-> On Mon Jul 7, 2025 at 1:12 PM CEST, Andreas Hindborg wrote:
->> "Benno Lossin" <lossin@kernel.org> writes:
->>> Ah right, I forgot about this. What was the refcount characteristics of
->>> this again?
->>>
->>> *  1 = in flight, owned by C
->>> *  2 = in flight, owned by Rust
->>> * >2 = in flight, owned by Rust + additional references used by Rust
->>>        code
->>>
->>> Correct? Maybe @Andreas can check.
->>
->> We have been a bit back and forth on this. This is how we would like it
->> going forward:
->>
->>
->> /// There are three states for a request that the Rust bindings care about:
->> ///
->> /// - 0: The request is owned by C block layer or is uniquely referenced (by [`Owned<_>`]).
->> /// - 1: The request is owned by Rust abstractions but is not referenced.
->> /// - 2+: There is one or more [`ARef`] instances referencing the request.
->
-> Huh, now I'm more confused... Could you go into the details again?
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ samples/rust/rust_minimal.rs | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Well, there is not much to it. We found out we can alias "unique" and
-"owned by C".
+diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+index 1fc7a1be6b6d7..8eb9583571d72 100644
+--- a/samples/rust/rust_minimal.rs
++++ b/samples/rust/rust_minimal.rs
+@@ -10,6 +10,12 @@
+     authors: ["Rust for Linux Contributors"],
+     description: "Rust minimal sample",
+     license: "GPL",
++    params: {
++        test_parameter: i64 {
++            default: 1,
++            description: "This parameter has a default of 1",
++        },
++    },
+ }
+ 
+ struct RustMinimal {
+@@ -20,6 +26,10 @@ impl kernel::Module for RustMinimal {
+     fn init(_module: &'static ThisModule) -> Result<Self> {
+         pr_info!("Rust minimal sample (init)\n");
+         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
++        pr_info!(
++            "test_parameter: {}\n",
++            *module_parameters::test_parameter.value()
++        );
+ 
+         let mut numbers = KVec::new();
+         numbers.push(72, GFP_KERNEL)?;
 
-We initialize the refcount to 0 when we initialize the request
-structure. This happens at queue creation time.
-
-When C block layer hands over a request for processing to a Rust driver,
-we `debug_assert!` that the refcount is 0. We unsafely invent an
-`Owned<Request<_>>` and pass that to the driver.
-
-The driver has the option of `into_shared` to obtain an
-`ARef<Request<_>>`. We use this for remote completion and timer
-completion in rnull.
-
-In most drivers, when the driver hands off the request to the hardware,
-the driver will stop accounting for the request. The `Owned<Request<_>>`
-is consumed when issuing to the driver, or the driver could simply drop
-it. Refcount goes to 1. An ID is passed along to hardware.
-
-When a completion comes back from hardware, it carries the ID. We use
-the C block layer `tag_to_rq` machinery to turn this ID back into an
-`Owned<Request<_>>`. In that process, we check that `refcount == 1` and
-if so, we set refcount to 0 and invent an `Owned<Request<_>>`.
-
-There was simply no need to have two separate values for "owned by C"
-and "owned by Rust, not referenced".
-
-Best regards,
-Andreas Hindborg
+-- 
+2.47.2
 
 
