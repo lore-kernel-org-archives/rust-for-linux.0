@@ -1,114 +1,78 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FA8273D89
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5575C25DD1E
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751872817; cv=none; b=F0eavamKkut1n0P/7kcu34OxA63c7a9FRe5z0lV9YvAmUzxGVBOUJe5EXh+Kpy7BDa2PyMboeHmhdWPyCOvBt4nMIKC2fjqKXAKX/xNhNgX1ds/vG90UgP3FS9YHAO6bArwigIAdH8OlAlthAiF7EbNjUttQLcccNZuzyqTkGpg=
+	t=1751873013; cv=none; b=Xic9FEVR9SgzlEqjh0Tn1Ye4BXNApQwH+YwOXlkUmySIBEYpnDYdHvJp30J4l9OtKjsn80jn1pBaxjuZqOB9SBV+DoyI+vE4Hr2NrZBXvrwaQmvyqaLadmj4OvcQQCWZY3xlwhrQ5hs4F+MleEWxIYldX0UFIp7PtPKicHmwOFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751872817; c=relaxed/simple;
-	bh=87Ke5nC7A24u7KtVf8kqJVSYbabKjGlRuRbxRJNwnno=;
+	s=arc-20240116; t=1751873013; c=relaxed/simple;
+	bh=ZQ7FGvyNi674pAYjL4ReUOP3C6SVJoAIRH3247HGKWw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=U9zqX9vrthLH5ngudeqRgp4Ga8us2ILBu2n0P7kQCHPmMTVEZA4iHOuIVuD7KjMud9LHD8Zk1uIzfHnFIRdqfGmH003rLf8U8c+8+02LlgwHp61HJ0g/hongJOBcDQXdrLbqW/oSkdhooyrj1BhRLPAhbSQlF4SKo5k5dXl3swA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XI/WP+1U; arc=none smtp.client-ip=209.85.221.74
+	 To:Cc:Content-Type; b=Wc415J1JZOs9CERni0zP71iaBwY2IrOnYjI60mH64RzbLr0yXdLNhXutuTviFm7A8Rs3omwRjy6L2eIyVQcddrbVjfL3t8t/f7ZNTf5owG+BcOKfn4MnALtEL+Ycb0E+axrv2Fe7EolsmFcif69jnpSIE21VDhbE9Ro8juEdDnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mbm+HAm7; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XI/WP+1U"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4eb6fcd88so1687687f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Jul 2025 00:20:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mbm+HAm7"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4539b44e7b1so17042225e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Jul 2025 00:23:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751872814; x=1752477614; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1751873011; x=1752477811; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CPa/GNPaGoYDS7VJTJPTGS9zhlJrJsTcMsk83eU4tMI=;
-        b=XI/WP+1UkgUgJQNXkAtnfoLImU/pkNWnfWbpDMdSDX7j/C3YsKu+zakYq7hXMpHPrv
-         plbr79oP2v9o004Nl/DNaEMqirGgruRowsyRrT8DTYm8JKDN/U6zn0y4LoTKYl+qE7ar
-         HHxviqGRLg+IfV65VLWBzJXs1OoW0/+f3+Oxum/p82REndjaZvg1oRwRvZUifGg5rijd
-         u2ZYrCpvgxmphBfgUXrkWmpE8xvQchqtaTmUzN/3lmHyDM7PtaFG4fC3ShviCV2uXWsm
-         tBSUkSAZkmXFW/xso6G3WvqCA4vAQc2YdK5MTrCahAgrXpIOaJRcahJBu6MzipB0Ysgd
-         kOvA==
+        bh=zgKz4iiUGDuolubNPTok/KwMVlCqv/dhLafyDJaDX88=;
+        b=Mbm+HAm7Lu14VYc9rBNeDdQIS+CZFfoehGGl+q1nkKn71D1+otkOS/LDuHX0cssKiA
+         uVzwD9IKgi6Ny8kxBxr/E6t5d7WoyhAYzBFh4i83FT2zqJete0OEdHuhDyqQdBnExonD
+         mK2yDX4X2V481IxXBWgc/kAMxJdYYYMih9YlMu0G+hTR2XbwsIcS8TSq8dcPmiEzOIXQ
+         N3ZjpTagLojyH5q/oqZHuiPTWHHA0Uds24FeEopR97bE1J0gYxJGE6uAYo8FbK0ic80G
+         zzhahzT0FJlj/YWIHTelQc9CoLBtdkXF56BJ7Q1IuR4H7YROlX2aYiVwi+5bSa9UbSg/
+         zEgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751872814; x=1752477614;
+        d=1e100.net; s=20230601; t=1751873011; x=1752477811;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CPa/GNPaGoYDS7VJTJPTGS9zhlJrJsTcMsk83eU4tMI=;
-        b=men9AsL3D/X9caOPZIvuduNBsCdObnQDHdyA3Hi3XPiWSl0HCjVWDn2y4dxcHLTXS1
-         /o871qTrJ14/PzxBtUtnfHA5T+G1ziCkBktHpmMKjb/LpMEVP40DlJ/dcrChklXpLcw3
-         5A8jpcjqEkkZ1WJXS5kPgTZ8aoLRIx4BZXROvd0QgZXbUJ//3DbIcbhNNzwb/qsU21PY
-         jiKypho4zLvZA4UTKVWASEoPH8ACn2pSjx3UUFRV9J/jG3cJo5S4q1PA4KtWpiQMr27B
-         KjFwRQlRKztTpRqdogHVyI1YwOruyKxsl5j7VmGfMccpabWIl5XMmbwSCjCLaW7GGNlc
-         6l3A==
-X-Forwarded-Encrypted: i=1; AJvYcCV2HTA/TJJ5RvopGoPGyEasR5PVhLQ12/jqMvuOMjJTecTkVrqzhRF3TzwdSFpVPso/ncZp0d+FP1gK9q8/sA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVDQi3tKHON2YjEfA0A3Eg6xx5Y6bcWTLXgtpVUU7uwOV/3HrA
-	MAk84EAR6IFmxEy0o5GPRuJYfXqjRrOskxvG/K/mfYEW4KxwLp7LuxgPNzcIibJXXv3FShq7xG4
-	NIfjW06WP8Q7Jfk0cQw==
-X-Google-Smtp-Source: AGHT+IFc7KjdNjSAMcYeehUHBQshvYidNFTTtOkCBEt+IJunO64ZHKge3ng0VY/1tFIuP98OJUwpkNE/tVUytCk=
-X-Received: from wrbep8.prod.google.com ([2002:a05:6000:42c8:b0:3a4:f6c6:e37f])
+        bh=zgKz4iiUGDuolubNPTok/KwMVlCqv/dhLafyDJaDX88=;
+        b=UyRwcaXMZgGe+wNDiMatu88Knwsxfvv4VahLE766Vj3zFrXxrKT0TRoLasJGdZ0Deb
+         SFiyMZTIkO8Om/ogw8pLWjUQNG7aL/KC8EHqjul6nI1j6++uNXLeXwsc4COcVMIgNUxe
+         txBP0cE3Z6OOnMQdFdtcQXDYrh2cfCNQE0DizsDLrQl/0TXSOV1XdTTaqtZM05bzFotg
+         guLUIjgOihHNqjl+geRBX5g89iNGFvqV7QJIGYU3F0Sl/U965K4SaAuTVzDIYmHcixKn
+         DZebPHt65r4jdkobJho/tBFmApa/bUpaxc6HKrCsXC8m33RXGpOwYK5JnAYS37JcNN0U
+         sWPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnS9UQUeYB27GXhZuCyPrchdtHwFAq8qPociL2F4f99XhkyOA9g/O8tR3VQu3UFbP39Md4JjSCQyhFoRMj/A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3KumzPxU4Xn7uOVXDmZ8LInotwB0ZUtd3k5NgbNO+ZH6E99h7
+	k0O9hspaQO8dh/gaYa/B22Jiv9A4bnt2IdejsVwEgPka9B42QiPYlCgQcQR0YYK1UfW6HQaM5Mv
+	2hiQ5Xu8H8OeYRMiVQQ==
+X-Google-Smtp-Source: AGHT+IE23hKiWkk2sz/wg+10wBKjGUvS93mpq9trAuCpJUs9QkWeqbOXsATTXcUUvzRYDfGsXneFK0cUD05KQQI=
+X-Received: from wmbdv27.prod.google.com ([2002:a05:600c:621b:b0:450:dca1:cf91])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:1a8b:b0:3a5:27ba:479c with SMTP id ffacd0b85a97d-3b49702e827mr8298792f8f.43.1751872814443;
- Mon, 07 Jul 2025 00:20:14 -0700 (PDT)
-Date: Mon, 7 Jul 2025 07:20:12 +0000
-In-Reply-To: <aGgETV_-MgEiZDHC@Mac.home>
+ 2002:a05:600c:5247:b0:453:b1c:442a with SMTP id 5b1f17b1804b1-454c0fc516bmr37449705e9.27.1751873010725;
+ Mon, 07 Jul 2025 00:23:30 -0700 (PDT)
+Date: Mon, 7 Jul 2025 07:23:29 +0000
+In-Reply-To: <20250704-cstr-include-miscdevice-v1-1-bb9e9b17c892@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
- <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
- <aGgDpWkU6xAn5IFN@Mac.home> <aGgETV_-MgEiZDHC@Mac.home>
-Message-ID: <aGt1LLA8acAzDAGU@google.com>
-Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and handlers
+References: <20250704-cstr-include-miscdevice-v1-1-bb9e9b17c892@gmail.com>
+Message-ID: <aGt18amK4FKhQLp0@google.com>
+Subject: Re: [PATCH] rust: miscdevice: remove unnecessary import
 From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, 
-	"Krzysztof =?utf-8?Q?Wilczy=C2=B4nski?=" <kwilczynski@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jul 04, 2025 at 09:41:49AM -0700, Boqun Feng wrote:
-> On Fri, Jul 04, 2025 at 09:39:01AM -0700, Boqun Feng wrote:
-> > On Thu, Jul 03, 2025 at 04:30:01PM -0300, Daniel Almeida wrote:
-> > [...]
-> > > +#[pin_data]
-> > > +pub struct Registration<T: Handler + 'static> {
-> > > +    #[pin]
-> > > +    inner: Devres<RegistrationInner>,
-> > > +
-> > > +    #[pin]
-> > > +    handler: T,
-> > 
-> > IIRC, as a certain point, we want this to be a `UnsafePinned<T>`, is
-> > that requirement gone or we still need that but 1) `UnsafePinned` is not
-> > available and 2) we can rely on the whole struct being !Unpin for the
-> > address stability temporarily?
-> > 
-> > I think it was not a problem until we switched to `try_pin_init!()`
-> > instead of `pin_init_from_closure()` because we then had to pass the
-> > address of `handler` instead of the whole struct.
-> > 
-> > Since we certainly want to use `try_pin_init!()` and we certainly will
-> > have `UnsafePinned`, I think we should just keep this as it is for now,
+On Fri, Jul 04, 2025 at 03:50:11PM -0400, Tamir Duberstein wrote:
+> `kernel::str::CStr` is included in the prelude.
 > 
-> Of course the assumption is we want to it in before `UnsafePinned` ;-)
-> Alternatively we can do what `Devres` did:
-> 
-> 	https://lore.kernel.org/rust-for-linux/20250626200054.243480-4-dakr@kernel.org/
-> 
-> using an `Opaque` and manually drop for now.
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-The struct uses PhantomPinned, so the code is correct as-is. Using a
-common abstraction for UnsafePinned is of course nice, but I suggest
-that we keep it like this if both patches land in the same cycle. We can
-always have it use UnsafePinned in a follow-up.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
