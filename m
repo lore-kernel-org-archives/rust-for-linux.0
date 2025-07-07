@@ -1,207 +1,132 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75855800
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 08:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77101A0BF1
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 08:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751875676; cv=none; b=GNx4QeqtPpoDiKQEO9MqkGi+kuroyFeYkXRdcbU2DBZPmI2vTluwbfa3O/ZUGAyirkVKOWrfj3DdSH2z5ngcZDzwEE4QdbzP0KveDlethtFJXsthk5qvO8Yvae2pGlVACSDVVxPgYjl4YzVm2IuvlGNvDVxMyyksIVWvrvKofbw=
+	t=1751875947; cv=none; b=nhFh6Aq8giI4Ha+V3ZCWh2DiYXjzszioPnWRngNNe0Coy0S2eUi8L/No5khN8oYWOCZ/vX+O2WUct3etVZe5LbHtbl/Trs3V1E5DmeYxIkls5lxZe/OT12Zpv1qnLU39XXOiQ7flnt1nzcOuKlMT9tcLkkciV1V3yhu+QXNO0gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751875676; c=relaxed/simple;
-	bh=BreYJuDfZoFdRiabZxtNWF9SABVBZKncFsrha+MOSMw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q2OW+7V0GIDJIAUu8F5JkH6aUJqa3TRYlVEPI2vhV/Ru41FEya1gaH7M9s0dx5LolCAREYxD6xFXnJkLSztQNj+8nGatw1wlkUHsi+uXEbzmwAor6eq0l/pDabaOoS0Y6oE9hVZBmKAoX/pcZctUv0fO7u7gbwM8LCf3oGkJkPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=GSgjWZWa; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1751875947; c=relaxed/simple;
+	bh=yOqRICLmRYtNzZiWecQrP66gB25Vi58BwOuruBWa+IU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=hGxoFGAe7EvzRj5DR8/FJgGQw9sCNO532PnOnAQgHCZ6B+rYSozu5DT6JsYbDl1yP31Jo0+vjK1rOaB7ZzdkXGzJpLv1CZu6CPq02E9nIkLdKGbUSLxKhtSYhpQHf/D07qzVEvPt54YZSvu1LReinx6oOQ2GU/SGhE9i7XHtu4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=gJeqK7e3; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="GSgjWZWa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1751875666; x=1752134866;
-	bh=eTGqtzCvOXwTu3qziUAcUbBhhfKcqKOqyU9syJBnr6M=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=GSgjWZWavYTnlP1AW4PKEQag9P5elGs/5VhwUpQAnf1Hii942CYuSJEvTfRyO28XS
-	 9dQywgyfGftoz07t+Na6ebjSbH+ln2RtD6k/UIJ6UChsSTqe19vkUdV2GomHbXPb2o
-	 kv014ypTHGbjerukjjFBjP5brP5BdBCegDT3woKf6+BBnLccspuIF3bn1TP0VmyCtI
-	 RZbfkz5oMWpJmIDasGEhvFWEdZ/g0aroEETv3vhnFe59yKVo0/ehsu03Sh4J+cDas6
-	 vFQeDXgtwp/spPXJQCHDfWq5hmhtmFKtLc9PVVyPSvyy/dO9Z0Or5HriU5KUfEJFb+
-	 QgRYZr55oN/EA==
-Date: Mon, 07 Jul 2025 08:07:40 +0000
-To: Benno Lossin <lossin@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
-Message-ID: <aGuAR7JCrlmzQrx4@mango>
-In-Reply-To: <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me> <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 84a19212b4ee4925539886f811bb5b09e24fb104
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="gJeqK7e3"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250707081224euoutp0227aae405b3d48840e1c48e6915fb5bce~P6eOt2oGV0030000300euoutp027
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 08:12:24 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250707081224euoutp0227aae405b3d48840e1c48e6915fb5bce~P6eOt2oGV0030000300euoutp027
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1751875944;
+	bh=dnqfahgdX+avAWwRgYn51cRHDYqFSaWYH3r+HyZbJc8=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=gJeqK7e3jDPeVpycraAkwzXkgeJ6egUTI8EfY/qJ4rrdgpNX3mkIiI3++hO4huJVT
+	 FTMvgYO8vE5z6vBQP4BTPHmKyH09L6kO5GEay51OavXiZ39FsgvAveWa80D3d3UHUQ
+	 zUibBhrSui29xcxj3q7yQkIWIAIvvlnLBdMKAcIw=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250707081223eucas1p170446baf185b93004844de16952f1225~P6eOCmy__0035700357eucas1p1v;
+	Mon,  7 Jul 2025 08:12:23 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250707081222eusmtip127c52a8d31ab35fe240938c0c347f713~P6eM6tJWH2076020760eusmtip1L;
+	Mon,  7 Jul 2025 08:12:22 +0000 (GMT)
+Message-ID: <9ec72ebf-33cb-466d-a41b-ea593e63b5e2@samsung.com>
+Date: Mon, 7 Jul 2025 10:12:21 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 2/6] rust: pwm: Add complete abstraction layer
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Danilo
+	Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Guo Ren <guoren@kernel.org>, Fu Wei
+	<wefu@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <yxtnwax73wkliqkbq5736tswbxrblpwx4bn6z257tyd2xu23jx@y6k6iwdhmsgy>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250707081223eucas1p170446baf185b93004844de16952f1225
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250706114605eucas1p17d1cbd035d14d95f4ad0588c2572b3e2
+X-EPHeader: CA
+X-CMS-RootMailID: 20250706114605eucas1p17d1cbd035d14d95f4ad0588c2572b3e2
+References: <20250706-rust-next-pwm-working-fan-for-sending-v9-0-42b5ac2101c7@samsung.com>
+	<CGME20250706114605eucas1p17d1cbd035d14d95f4ad0588c2572b3e2@eucas1p1.samsung.com>
+	<20250706-rust-next-pwm-working-fan-for-sending-v9-2-42b5ac2101c7@samsung.com>
+	<aGpqqGMTU3a3O8cn@pollux>
+	<yxtnwax73wkliqkbq5736tswbxrblpwx4bn6z257tyd2xu23jx@y6k6iwdhmsgy>
 
-On 250702 1524, Benno Lossin wrote:
-> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
-> > diff --git a/rust/kernel/types/ownable.rs b/rust/kernel/types/ownable.r=
-s
-> > index 80cd990f6601767aa5a742a6c0997f4f67d06453..b5626dead6bb25ea76a0ae5=
-77db1b130308d98b1 100644
-> > --- a/rust/kernel/types/ownable.rs
-> > +++ b/rust/kernel/types/ownable.rs
-> > @@ -2,6 +2,7 @@
-> >
-> >  //! Owned reference types.
-> >
-> > +use crate::types::{ARef, RefCounted};
-> >  use core::{
-> >      marker::PhantomData,
-> >      mem::ManuallyDrop,
-> > @@ -18,8 +19,9 @@
-> >  ///
-> >  /// Note: Implementing this trait allows types to be wrapped in an [`O=
-wned<Self>`]. This does not
-> >  /// provide reference counting but represents a unique, owned referenc=
-e. If reference counting is
-> > -/// required [`RefCounted`](crate::types::RefCounted) should be implem=
-ented which allows types to be
-> > -/// wrapped in an [`ARef<Self>`](crate::types::ARef).
-> > +/// required [`RefCounted`] should be implemented which allows types t=
-o be wrapped in an
-> > +/// [`ARef<Self>`]. Implementing the trait [`OwnableRefCounted`] allow=
-s to convert between unique
-> > +/// and shared references (i.e. [`Owned<Self>`] and [`ARef<Self>`]).
->=20
-> This change should probably be in the earlier patch.
 
-Ah, yes. Must have happened while splitting the patches.
 
-> >  ///
-> >  /// # Safety
-> >  ///
-> > @@ -132,3 +134,124 @@ fn drop(&mut self) {
-> >          unsafe { T::release(self.ptr) };
-> >      }
-> >  }
-> > +
-> > +/// A trait for objects that can be wrapped in either one of the refer=
-ence types [`Owned`] and
-> > +/// [`ARef`].
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that:
-> > +///
-> > +/// - [`try_from_shared()`](OwnableRefCounted::into_shared) only retur=
-ns an [`Owned<Self>`] if
-> > +///   exactly one [`ARef<Self>`] exists.
->=20
-> This shouldn't be required?
+On 7/7/25 08:57, Uwe Kleine-König wrote:
+> Hello Danilo,
+> 
+> On Sun, Jul 06, 2025 at 02:23:04PM +0200, Danilo Krummrich wrote:
+>> On Sun, Jul 06, 2025 at 01:45:13PM +0200, Michal Wilczynski wrote:
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// `dev` must be a valid pointer to a `bindings::device` embedded within a
+>>> +    /// `bindings::pwm_chip`. This function is called by the device core when the
+>>> +    /// last reference to the device is dropped.
+>>> +    unsafe extern "C" fn release_callback(dev: *mut bindings::device) {
+>>> +        // SAFETY: The function's contract guarantees that `dev` points to a `device`
+>>> +        // field embedded within a valid `pwm_chip`. `container_of!` can therefore
+>>> +        // safely calculate the address of the containing struct.
+>>> +        let c_chip_ptr = unsafe { container_of!(dev, bindings::pwm_chip, dev) };
+>>> +
+>>> +        // SAFETY: `c_chip_ptr` is a valid pointer to a `pwm_chip` as established
+>>> +        // above. Calling this FFI function is safe.
+>>> +        let drvdata_ptr = unsafe { bindings::pwmchip_get_drvdata(c_chip_ptr) };
+>>> +
+>>> +        if !drvdata_ptr.is_null() {
+>>
+>> Is this check needed? I think one can't create a pwm::Chip instance without
+>> providing a T, so this pointer can't be NULL I think.
+> 
+> There are currently a few C drivers, that don't use a private data
+> struct that is managed by the pwmchip. One of them doesn't make use of
+> the pwmchip's drvdata at all. The latter is drivers/pwm/pwm-twl-led.c.
 
-Ehm, why not? `Owned<T>` is supposed to be unique.
+Thank you both for the feedback on this point.
 
-> > +/// - [`into_shared()`](OwnableRefCounted::into_shared) set the refere=
-nce count to the value which
-> > +///   the returned [`ARef<Self>`] expects for an object with a single =
-reference in existence. This
-> > +///   implies that if [`into_shared()`](OwnableRefCounted::into_shared=
-) is left on the default
-> > +///   implementation, which just rewraps the underlying object, the re=
-ference count needs not to be
-> > +///   modified when converting an [`Owned<Self>`] to an [`ARef<Self>`]=
-.
->=20
-> This also seems pretty weird...
->=20
-> I feel like `OwnableRefCounted` is essentially just a compatibility
-> condition between `Ownable` and `RefCounted`. It ensures that the
-> ownership declared in `Ownable` corresponds to exactly one refcount
-> declared in `RefCounted`.
->=20
-> That being said, I think a `RefCounted` *always* canonically is
-> `Ownable` by the following impl:
->=20
->     unsafe impl<T: RefCounted> Ownable for T {
->         unsafe fn release(this: NonNull<Self>) {
->             T::dec_ref(this)
->         }
->     }
->=20
-> So I don't think that we need this trait at all?
+My interpretation aligns with Danilo's: the null check is unnecessary
+within the context of this Rust abstraction.
 
-No. For an `ARef<T>` to be converted to an `Owned<T>` it requires a
-`try_from_shared()` implementation. It is not even a given that the
-function can implemented, if all the kernel exposes are some kind of
-`inc_ref()` and `dec_ref()`.
+The pwm::Chip::new() API as designed guarantees that driver data is
+always provided. For the cases Uwe mentioned, where a C driver might not
+use private data, the idiomatic Rust solution would be to use a
+zero sized type (e.g., an empty struct or ()) for the PwmOps::DrvData.
+This approach still results in a valid, non null pointer being passed to
+the C core.
 
-Also there are more complicated cases like with `Mq::Request`, where the
-existence of an `Owned<T>` cannot be represented by the same refcount value
-as the existence of exactly one `ARef<T>`.
+Given that all paths within this abstraction lead to a non null drvdata
+pointer, I believe removing the redundant check is the correct approach.
 
-> > +///
-> > +/// # Examples
->=20
-> If we're having an example here, then we should also have on on `Owned`.
+> 
+> Best regards
+> Uwe
 
-Yes, maybe. I mostly felt the need to create one for `OwnableRefCounted`
-because it is a more complex idea than `Ownable`.
-
-If I remember correctly, I didn't create one for `Owned`, as it should
-probably more or less the same as for `ARef` and the one there has even
-more problems of the kind you are pointing out. So maybe it would be best
-to wait until someone fixes that and have the fixed version copied over to
-`Owned` in the process?
-
-> > +///
-> > +/// A minimal example implementation of [`OwnableRefCounted`], [`Ownab=
-le`] and its usage with
-> > +/// [`ARef`] and [`Owned`] looks like this:
-> > +///
-> > +/// ```
-> > +/// # #![expect(clippy::disallowed_names)]
-> > +/// use core::cell::Cell;
-> > +/// use core::ptr::NonNull;
-> > +/// use kernel::alloc::{flags, kbox::KBox, AllocError};
-> > +/// use kernel::types::{
-> > +///     ARef, RefCounted, Owned, Ownable, OwnableRefCounted,
-> > +/// };
-> > +///
-> > +/// struct Foo {
-> > +///     refcount: Cell<usize>,
-> > +/// }
-> > +///
-> > +/// impl Foo {
-> > +///     fn new() -> Result<Owned<Self>, AllocError> {
-> > +///         // Use a `KBox` to handle the actual allocation.
-> > +///         let result =3D KBox::new(
-> > +///             Foo {
-> > +///                 refcount: Cell::new(1),
-> > +///             },
-> > +///             flags::GFP_KERNEL,
-> > +///         )?;
-> > +///         let result =3D NonNull::new(KBox::into_raw(result))
-> > +///             .expect("Raw pointer to newly allocation KBox is null,=
- this should never happen.");
->=20
-> I'm not really convinced that an example using `KBox` is a good one...
-> Maybe we should just have a local invisible `bindings` module that
-> exposes a `-> *mut foo`. (internally it can just create a KBox`)
-
-The example would become quite a bit more complicated then, no?
-
-> > +///         // SAFETY: We just allocated the `Foo`, thus it is valid.
->=20
-> This isn't going through all the requirements on `from_raw`...
-
-Yes, this comment should probably be detailed.
-
-Best,
-
-Oliver
-
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
