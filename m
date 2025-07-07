@@ -1,182 +1,433 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD9028643E
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEBC279DC0
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751873423; cv=none; b=ODazqbgckYW1o2gWu6Q0E6yqBLJN+xbdbm4cfy+m+gLkt+ItK0sAHshZHuZPci46+3bo3hxZ+g+8j2LzGjFZ+FxGVKx/gDAXPEkSyXkPN1BILTWdlC79li6hQAUdtdIEUUTyXcIprdMaVjyT1OiQKbD2Qn9CRZetMWvUtbB5Ck4=
+	t=1751874061; cv=none; b=AyWv5DK3Qlqwf74VSCQaDWKXAzkSP/DvEmAEDp6uTSwohgcbdmRyVIJ/xK0jj1ZMbrhDSccPzMVUDzXdu5S2njpbgjdt0NNcF6FoixKPFUrU5pmLxbaU/wQTNEOJbhO2Met18gg/7bL24WLp69iKyUK0QNDae56w93NDrR3HJG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751873423; c=relaxed/simple;
-	bh=aSpnSLUsKoIud4TMn2Bqvcleyy0rBk7G0hRpyIo8X6c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=XVvuwvooVApNTPe8c7bOBslhy7SnpfrwQPqQJh/+QJOINCCqBPoSqZpiIpVlNMFTav+q/xM/w9vOFU3EAAHo/JxqqxEiLp8hHnvw7sSYMZjO4y7Mlc1ZVHS7wDIwmDokhJf0P4sJyOOYEQCF/jaJoyE7EFFZkdWWFs+SOiv4t0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=nTcmJlWE; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1751874061; c=relaxed/simple;
+	bh=LsdlC/42pE4V9Y6Nzuv1hDJnzZVdXiyEY91obs/3TbA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=KoNLHD1cEgRiuBNo1zuuBlRAe6IC2gz4EvQQoIWpEUoylG6BH8e0PLeLi3BbgKcDRtpGWiGPSPDcnaP9CI0BqD6emy/oPXo3TUOjs0HnBjuUK+KwD81eG+awC3gdwNEp24u5W+NrB1eFjiE23vk13bgYKtrPVAOQfBt8biLGBHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZibA7NCC; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="nTcmJlWE"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250707073019euoutp02095a33cc869cedc8e38505dae2eee182~P55fdtui21519215192euoutp024
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:30:19 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250707073019euoutp02095a33cc869cedc8e38505dae2eee182~P55fdtui21519215192euoutp024
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1751873419;
-	bh=Q5MiDO4kvDAjyRPyePkrhFPW14vb6d7EHum8/0WQ8v4=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=nTcmJlWE9ADFjtTB8/5dbhfElVYFVx1jEthmk7Ctq63wpWZA0y3SsvT87qm57mCtz
-	 rUjt3bDhvweBckPVDFw5OznBTOS+vV7+8SZ9nHBpYZQENs4/FWNurFGCw+oFHkPpQ1
-	 XHWI3W7f3PQJvFFlwDzHrIxWLH38TC9yfJ59Mtd0=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250707073018eucas1p1a0c2e714826a2571f8c5281b8ef0457c~P55eomzep1941219412eucas1p1u;
-	Mon,  7 Jul 2025 07:30:18 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250707073017eusmtip20a0a1f63bf89beef337da1edc73632c1~P55dgBGZm2165621656eusmtip2K;
-	Mon,  7 Jul 2025 07:30:17 +0000 (GMT)
-Message-ID: <002c8275-f17d-4a4e-b6b8-4dc74c4d510d@samsung.com>
-Date: Mon, 7 Jul 2025 09:30:17 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZibA7NCC"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a5058f9ef4so1095768f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Jul 2025 00:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751874058; x=1752478858; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oJUD6X4GS4YlprJU4Nu4OFQVyc8HR9vGBcNZ8yZyQEE=;
+        b=ZibA7NCCEFW4/4IXlVEBS+gzynCtY/TuX3QtWnmY6zPaPfDx76aj+w1gI/eQmGUx3Q
+         0VPMorTAiPVTLM2Vy+TsOl66ToeG9nXEhcxwdAgJBHusSBYAGjB2xrYp20jZ8CpC+Eo9
+         1dZQmYRcNl/111L8Cz7q9zteeZKhpLe/MNoKaXMIGF7TRAPE25Gl5thEoybqRtaRHoYz
+         y8dXZDNA2o+GzxfAEZx8AhpZc2gAKiTmhMwupnRZYV1RAFbj1jcNkvPyArnHzBxT9wtB
+         V2YSh7Kw/7f+qiNPWpcDxdwic4pwHWL0hE++TuD3tIDhaH/6sehmOOVqG1Vm0DnQsmSK
+         whDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751874058; x=1752478858;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oJUD6X4GS4YlprJU4Nu4OFQVyc8HR9vGBcNZ8yZyQEE=;
+        b=PZKWJOatXMbkhMLXFMs5CZg2SSnN5vTIG9DCD+WiW6/oLZMS2O4VDicUr8JI64J4pa
+         7OKQdsVbSBRO8vM8mvLkEknGSSMtjO4zIg0ocaWarBfKkfvvj3HJ7LHv34Ytbtj/ZZOT
+         1Uk+Umf+bsWknou6o4TjEXGt/cMV6l0nuKVZGVaScaylcRn2Djv5krCRkP5li009pxYV
+         AxYfHRMA1tzEHSDS/BhjpRjiefiMA9aK6+X6Xck9s3Y31DYZQGfh5+JoDkE3aIbFJNtx
+         vtte0voRxz5erQXZD2XPcpzKeFWqJR5dtUMkaTfzciw1+m1m6XEBXeyQboejN6SioEZh
+         LB7w==
+X-Forwarded-Encrypted: i=1; AJvYcCWjcMOD60Kr06xESweCrbZTkY2hUyKOSsHLJ3bgR9v0i+lJ6yDczihun57Fas2d75NChBSKlq5SXmEM/ZoH4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvU2GhJprLWBV5lBS3p2ARw6qQsukkoMAH5lEz7Z6DpGj9cvTg
+	PEKbVWYFpP/Ig8gBRmIPwrmS7dHxmuezOBuquYOJTSzFCDJdmFsyzKE6kb8hhuqC6QKPahMI51Q
+	yNL/bBMADka3GjPWqBQ==
+X-Google-Smtp-Source: AGHT+IEQf7gF3CDATeAkdxoy1lakbmpl77+ngHJbtFgvj6kukP1PTmvKUpxaBaaF51Ybn0pIXIPzIN7ozusSR84=
+X-Received: from wmbej15.prod.google.com ([2002:a05:600c:3e8f:b0:454:abf8:a8aa])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:4a01:b0:3a3:67bb:8f3f with SMTP id ffacd0b85a97d-3b49aa8a304mr6237280f8f.53.1751874058223;
+ Mon, 07 Jul 2025 00:40:58 -0700 (PDT)
+Date: Mon, 7 Jul 2025 07:40:57 +0000
+In-Reply-To: <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/6] rust: pwm: Add complete abstraction layer
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Guo Ren <guoren@kernel.org>, Fu Wei
-	<wefu@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Paul Walmsley
-	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
-	Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <aGpqqGMTU3a3O8cn@pollux>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20250707073018eucas1p1a0c2e714826a2571f8c5281b8ef0457c
-X-Msg-Generator: CA
+Mime-Version: 1.0
+References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
+ <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
+Message-ID: <aGt6CZAUeuK0XnmP@google.com>
+Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, 
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250706114605eucas1p17d1cbd035d14d95f4ad0588c2572b3e2
-X-EPHeader: CA
-X-CMS-RootMailID: 20250706114605eucas1p17d1cbd035d14d95f4ad0588c2572b3e2
-References: <20250706-rust-next-pwm-working-fan-for-sending-v9-0-42b5ac2101c7@samsung.com>
-	<CGME20250706114605eucas1p17d1cbd035d14d95f4ad0588c2572b3e2@eucas1p1.samsung.com>
-	<20250706-rust-next-pwm-working-fan-for-sending-v9-2-42b5ac2101c7@samsung.com>
-	<aGpqqGMTU3a3O8cn@pollux>
 
+On Fri, Jul 04, 2025 at 01:25:26PM -0300, Daniel Almeida wrote:
+> In preparation for ioremap support, add a Rust abstraction for struct
+> resource.
+> 
+> A future commit will introduce the Rust API to ioremap a resource from a
+> platform device. The current abstraction, therefore, adds only the
+> minimum API needed to get that done.
+> 
+> Co-developed-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
+Overall looks reasonable, but some comments below:
 
-On 7/6/25 14:23, Danilo Krummrich wrote:
-> On Sun, Jul 06, 2025 at 01:45:13PM +0200, Michal Wilczynski wrote:
->> +/// Trait defining the operations for a PWM driver.
->> +pub trait PwmOps: 'static + Sized {
->> +    /// The type of the owned driver data (e.g., `Pin<KBox<...>>`).
->> +    type DrvData: 'static + ForeignOwnable;
->> +    /// The driver-specific hardware representation of a waveform.
->> +    ///
->> +    /// This type must be [`Copy`], [`Default`], and fit within `PWM_WFHWSIZE`.
->> +    type WfHw: Copy + Default;
->> +
->> +    /// Optional hook for when a PWM device is requested.
->> +    fn request(
->> +        _chip: &Chip<Self::DrvData>,
->> +        _pwm: &Device,
->> +        _parent_dev: &device::Device<Bound>,
->> +    ) -> Result {
->> +        Ok(())
->> +    }
->> +
->> +    /// Optional hook for when a PWM device is freed.
->> +    fn free(_chip: &Chip<Self::DrvData>, _pwm: &Device, _parent_dev: &device::Device<Bound>) {}
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/io.c               |  36 +++++++
+>  rust/kernel/io.rs               |   4 +
+>  rust/kernel/io/resource.rs      | 209 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 250 insertions(+)
 > 
-> NIT: I can't think of a case providing this callback in Rust is useful. Do you
-> have a clear use-case in mind? Otherwise, I'd not provide this callback until
-> you have one. Should be trivial to add later on.
-> 
->> +impl<T: PwmOps> Adapter<T> {
-> 
-> <snip>
-> 
->> +    /// # Safety
->> +    ///
->> +    /// `dev` must be a valid pointer to a `bindings::device` embedded within a
->> +    /// `bindings::pwm_chip`. This function is called by the device core when the
->> +    /// last reference to the device is dropped.
->> +    unsafe extern "C" fn release_callback(dev: *mut bindings::device) {
->> +        // SAFETY: The function's contract guarantees that `dev` points to a `device`
->> +        // field embedded within a valid `pwm_chip`. `container_of!` can therefore
->> +        // safely calculate the address of the containing struct.
->> +        let c_chip_ptr = unsafe { container_of!(dev, bindings::pwm_chip, dev) };
->> +
->> +        // SAFETY: `c_chip_ptr` is a valid pointer to a `pwm_chip` as established
->> +        // above. Calling this FFI function is safe.
->> +        let drvdata_ptr = unsafe { bindings::pwmchip_get_drvdata(c_chip_ptr) };
->> +
->> +        if !drvdata_ptr.is_null() {
-> 
-> Is this check needed? I think one can't create a pwm::Chip instance without
-> providing a T, so this pointer can't be NULL I think.
-> 
->> +            // SAFETY: `drvdata_ptr` was stored by `Chip::new` from an owned `T::DrvData`
->> +            // and is guaranteed to be valid if non-null. `from_foreign` can safely
->> +            // reclaim ownership to allow Rust to drop and free the data.
->> +            let _owned_drvdata = unsafe { T::DrvData::from_foreign(drvdata_ptr.cast()) };
->> +        }
->> +    }
-> 
-> If you overwrite this callback (as you do below) you're leaking the memory
-> allocated by pwmchip_alloc().
-> 
-> The simple way to solve this would be to call pwmchip_release() from here.
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 7e8f2285064797d5bbac5583990ff823b76c6bdc..5f795e60e889b9fc887013743c81b1cf92a52adb 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -53,6 +53,7 @@
+>  #include <linux/file.h>
+>  #include <linux/firmware.h>
+>  #include <linux/fs.h>
+> +#include <linux/ioport.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/jump_label.h>
+>  #include <linux/mdio.h>
+> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+> index 15ea187c5466256effd07efe6f6995a1dd95a967..404776cf6717c8570c7600a24712ce6e4623d3c6 100644
+> --- a/rust/helpers/io.c
+> +++ b/rust/helpers/io.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>  
+>  #include <linux/io.h>
+> +#include <linux/ioport.h>
+>  
+>  void __iomem *rust_helper_ioremap(phys_addr_t offset, size_t size)
+>  {
+> @@ -99,3 +100,38 @@ void rust_helper_writeq_relaxed(u64 value, void __iomem *addr)
+>  	writeq_relaxed(value, addr);
+>  }
+>  #endif
+> +
+> +resource_size_t rust_helper_resource_size(struct resource *res)
+> +{
+> +	return resource_size(res);
+> +}
+> +
+> +struct resource *rust_helper_request_mem_region(resource_size_t start,
+> +						resource_size_t n,
+> +						const char *name)
+> +{
+> +	return request_mem_region(start, n, name);
+> +}
+> +
+> +void rust_helper_release_mem_region(resource_size_t start, resource_size_t n)
+> +{
+> +	release_mem_region(start, n);
+> +}
+> +
+> +struct resource *rust_helper_request_region(resource_size_t start,
+> +					    resource_size_t n, const char *name)
+> +{
+> +	return request_region(start, n, name);
+> +}
+> +
+> +struct resource *rust_helper_request_muxed_region(resource_size_t start,
+> +						  resource_size_t n,
+> +						  const char *name)
+> +{
+> +	return request_muxed_region(start, n, name);
+> +}
+> +
+> +void rust_helper_release_region(resource_size_t start, resource_size_t n)
+> +{
+> +	release_region(start, n);
+> +}
+> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+> index 72d80a6f131e3e826ecd9d2c3bcf54e89aa60cc3..7b70d5b5477e57d6d0f24bcd26bd8b0071721bc0 100644
+> --- a/rust/kernel/io.rs
+> +++ b/rust/kernel/io.rs
+> @@ -7,6 +7,10 @@
+>  use crate::error::{code::EINVAL, Result};
+>  use crate::{bindings, build_assert};
+>  
+> +pub mod resource;
+> +
+> +pub use resource::Resource;
+> +
+>  /// Raw representation of an MMIO region.
+>  ///
+>  /// By itself, the existence of an instance of this structure does not provide any guarantees that
+> diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..a8ad04b1abf8e46928ed98564e64a07180250024
+> --- /dev/null
+> +++ b/rust/kernel/io/resource.rs
+> @@ -0,0 +1,209 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Abstractions for [system
+> +//! resources](https://docs.kernel.org/core-api/kernel-api.html#resources-management).
+> +//!
+> +//! C header: [`include/linux/ioport.h`](srctree/include/linux/ioport.h)
+> +
+> +use core::ops::Deref;
+> +use core::ptr::NonNull;
+> +
+> +use crate::str::CStr;
+> +use crate::types::Opaque;
+> +
+> +/// Resource Size type.
+> +///
+> +/// This is a type alias to either `u32` or `u64` depending on the config option
+> +/// `CONFIG_PHYS_ADDR_T_64BIT`.
+> +#[cfg(CONFIG_PHYS_ADDR_T_64BIT)]
+> +pub type ResourceSize = u64;
+> +
+> +/// Resource Size type.
+> +///
+> +/// This is a type alias to either `u32` or `u64` depending on the config option
+> +/// `CONFIG_PHYS_ADDR_T_64BIT`.
+> +#[cfg(not(CONFIG_PHYS_ADDR_T_64BIT))]
+> +pub type ResourceSize = u32;
+> +
+> +/// A region allocated from a parent [`Resource`].
+> +///
+> +/// # Invariants
+> +///
+> +/// - `self.0` points to a valid `bindings::resource` that was obtained through
+> +///   `bindings::__request_region`.
+> +pub struct Region(NonNull<bindings::resource>);
+> +
+> +impl Deref for Region {
+> +    type Target = Resource;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: Safe as per the invariant of `Region`.
+> +        unsafe { Resource::as_ref(self.0.as_ptr()) }
+> +    }
+> +}
+> +
+> +impl Drop for Region {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Safe as per the invariant of `Region`.
+> +        let res = unsafe { Resource::as_ref(self.0.as_ptr()) };
+> +        let flags = res.flags();
+> +
+> +        let release_fn = if flags.contains(flags::IORESOURCE_MEM) {
+> +            bindings::release_mem_region
+> +        } else {
+> +            bindings::release_region
+> +        };
 
-Thanks, a pwmchip_release() is static though, so it's either expose the
-pwmchip_release in the header, or call kfree() here directly on pwmchip.
+You can avoid this unsafe via the deref() impl.
 
-> 
-> <snip>
-> 
->> +impl<T: 'static + ForeignOwnable> Chip<T> {
->> +    /// Allocates and wraps a PWM chip using `bindings::pwmchip_alloc`.
->> +    ///
->> +    /// Returns an [`ARef<Chip>`] managing the chip's lifetime via refcounting
->> +    /// on its embedded `struct device`.
->> +    pub fn new<O: PwmOps<DrvData = T>>(
->> +        parent_dev: &device::Device,
->> +        npwm: u32,
->> +        sizeof_priv: usize,
->> +        drvdata: T,
->> +    ) -> Result<ARef<Self>> {
->> +        // SAFETY: `parent_device_for_dev_field.as_raw()` is valid.
->> +        // `bindings::pwmchip_alloc` returns a valid `*mut bindings::pwm_chip` (refcount 1)
->> +        // or an ERR_PTR.
->> +        let c_chip_ptr_raw =
->> +            unsafe { bindings::pwmchip_alloc(parent_dev.as_raw(), npwm, sizeof_priv) };
->> +
->> +        let c_chip_ptr: *mut bindings::pwm_chip = error::from_err_ptr(c_chip_ptr_raw)?;
->> +
->> +        // Set the custom release function on the embedded device. This is the crucial step
->> +        // to ensure `drvdata` is freed when the chip's refcount reaches zero, regardless
->> +        // of whether `Registration::register` was called.
->> +        // SAFETY: `c_chip_ptr` points to a valid chip.
->> +        unsafe { (*c_chip_ptr).dev.release = Some(Adapter::<O>::release_callback); }
-> 
-> This overwrites [1].
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pwm/core.c?h=v6.16-rc4#n1601
-> 
+let (flags, start, size) = {
+    let res = &**self;
+    (res.flags(), res.start(), res.size())
+};
 
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+> +        // SAFETY: Safe as per the invariant of `Region`.
+> +        unsafe { release_fn(res.start(), res.size()) };
+> +    }
+> +}
+> +
+> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
+> +// any thread.
+> +unsafe impl Send for Region {}
+> +
+> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
+> +// safe to be used from any thread.
+> +unsafe impl Sync for Region {}
+> +
+> +/// A resource abstraction.
+> +///
+> +/// # Invariants
+> +///
+> +/// [`Resource`] is a transparent wrapper around a valid `bindings::resource`.
+> +#[repr(transparent)]
+> +pub struct Resource(Opaque<bindings::resource>);
+> +
+> +impl Resource {
+> +    /// Creates a reference to a [`Resource`] from a valid pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that for the duration of 'a, the pointer will
+> +    /// point at a valid `bindings::resource`.
+> +    ///
+> +    /// The caller must also ensure that the [`Resource`] is only accessed via the
+> +    /// returned reference for the duration of 'a.
+> +    pub(crate) const unsafe fn as_ref<'a>(ptr: *mut bindings::resource) -> &'a Self {
+
+We usually call this method `from_raw`.
+
+> +        // SAFETY: Self is a transparent wrapper around `Opaque<bindings::resource>`.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Requests a resource region.
+> +    ///
+> +    /// Exclusive access will be given and the region will be marked as busy.
+> +    /// Further calls to [`Self::request_region`] will return [`None`] if
+> +    /// the region, or a part of it, is already in use.
+> +    pub fn request_region(
+> +        &self,
+> +        start: ResourceSize,
+> +        size: ResourceSize,
+> +        name: &'static CStr,
+
+Is this name used for a lookup or stored? If just a lookup, then it
+doesn't need to be 'static.
+
+> +        flags: Flags,
+> +    ) -> Option<Region> {
+> +        // SAFETY: Safe as per the invariant of `Resource`.
+> +        let region = unsafe {
+> +            bindings::__request_region(
+> +                self.0.get(),
+> +                start,
+> +                size,
+> +                name.as_char_ptr(),
+> +                flags.0 as i32,
+
+I would use `as c_int` here. (Or change the type stored in Flags.)
+
+> +            )
+> +        };
+> +
+> +        Some(Region(NonNull::new(region)?))
+> +    }
+> +
+> +    /// Returns the size of the resource.
+> +    pub fn size(&self) -> ResourceSize {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`.
+> +        unsafe { bindings::resource_size(inner) }
+> +    }
+> +
+> +    /// Returns the start address of the resource.
+> +    pub fn start(&self) -> u64 {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`.
+> +        unsafe { *inner }.start
+
+This needs to be
+
+unsafe { (*inner).start }
+
+What you wrote is not equivalent. (*inner) is a place expression, but
+when you write `unsafe { <place expr> }` that turns it into a value
+expression by reading the value. So this code copies the entire struct
+to the stack, and then you read `start` from the copy on the stack.
+
+> +    }
+> +
+> +    /// Returns the name of the resource.
+> +    pub fn name(&self) -> &'static CStr {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`
+> +        unsafe { CStr::from_char_ptr((*inner).name) }
+> +    }
+> +
+> +    /// Returns the flags associated with the resource.
+> +    pub fn flags(&self) -> Flags {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`
+> +        let flags = unsafe { *inner }.flags;
+> +
+> +        Flags(flags)
+> +    }
+> +}
+> +
+> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, which is
+> +// safe to be used from any thread.
+> +unsafe impl Send for Resource {}
+> +
+> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, references
+> +// to which are safe to be used from any thread.
+> +unsafe impl Sync for Resource {}
+> +
+> +/// Resource flags as stored in the C `struct resource::flags` field.
+> +///
+> +/// They can be combined with the operators `|`, `&`, and `!`.
+> +///
+> +/// Values can be used from the [`flags`] module.
+> +#[derive(Clone, Copy, PartialEq)]
+> +pub struct Flags(usize);
+
+Based on usage it looks like the correct type is c_int?
+
+> +impl Flags {
+> +    /// Check whether `flags` is contained in `self`.
+> +    pub fn contains(self, flags: Flags) -> bool {
+> +        (self & flags) == flags
+> +    }
+> +}
+> +
+> +impl core::ops::BitOr for Flags {
+> +    type Output = Self;
+> +    fn bitor(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 | rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::BitAnd for Flags {
+> +    type Output = Self;
+> +    fn bitand(self, rhs: Self) -> Self::Output {
+> +        Self(self.0 & rhs.0)
+> +    }
+> +}
+> +
+> +impl core::ops::Not for Flags {
+> +    type Output = Self;
+> +    fn not(self) -> Self::Output {
+> +        Self(!self.0)
+> +    }
+> +}
+> +
+> +/// Resource flags as stored in the `struct resource::flags` field.
+> +pub mod flags {
+
+You can do:
+
+impl Flags {
+    pub const IORESOURCE_IO: Flags = Flags(bindings::IORESOURCE_IO as usize);
+}
+
+instead of a module.
+
+> +    use super::Flags;
+> +
+> +    /// PCI/ISA I/O ports.
+> +    pub const IORESOURCE_IO: Flags = Flags(bindings::IORESOURCE_IO as usize);
+> +
+> +    /// Resource is software muxed.
+> +    pub const IORESOURCE_MUXED: Flags = Flags(bindings::IORESOURCE_MUXED as usize);
+> +
+> +    /// Resource represents a memory region.
+> +    pub const IORESOURCE_MEM: Flags = Flags(bindings::IORESOURCE_MEM as usize);
+> +
+> +    /// Resource represents a memory region that must be ioremaped using `ioremap_np`.
+> +    pub const IORESOURCE_MEM_NONPOSTED: Flags = Flags(bindings::IORESOURCE_MEM_NONPOSTED as usize);
+> +}
+> 
+> -- 
+> 2.50.0
+> 
