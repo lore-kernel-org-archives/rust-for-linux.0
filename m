@@ -1,433 +1,157 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEBC279DC0
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7F128A3E2
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751874061; cv=none; b=AyWv5DK3Qlqwf74VSCQaDWKXAzkSP/DvEmAEDp6uTSwohgcbdmRyVIJ/xK0jj1ZMbrhDSccPzMVUDzXdu5S2njpbgjdt0NNcF6FoixKPFUrU5pmLxbaU/wQTNEOJbhO2Met18gg/7bL24WLp69iKyUK0QNDae56w93NDrR3HJG4=
+	t=1751874147; cv=none; b=e6iUfAWwH1+oLFNzTRmmbM3Md1bintrXBTv4Ypz+o0L7zrZBpdtQTfgj35hpp1BxuxYZ4dHqG77C5f/K7L4tjWkEUC6h662pM53qe8VmPljgpBTdM4PeTFHPSV3il9saOGyRGWFFpgNAre1ZFIrYYUrQwYJts34nHiZSp7WrwwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751874061; c=relaxed/simple;
-	bh=LsdlC/42pE4V9Y6Nzuv1hDJnzZVdXiyEY91obs/3TbA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KoNLHD1cEgRiuBNo1zuuBlRAe6IC2gz4EvQQoIWpEUoylG6BH8e0PLeLi3BbgKcDRtpGWiGPSPDcnaP9CI0BqD6emy/oPXo3TUOjs0HnBjuUK+KwD81eG+awC3gdwNEp24u5W+NrB1eFjiE23vk13bgYKtrPVAOQfBt8biLGBHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZibA7NCC; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1751874147; c=relaxed/simple;
+	bh=yVwJr8aTR432s0rBM+n7RBaGuFfXXDj39+PJzBsRSa8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WNTBhDTMhnadr6VUg9k2U8CJ0jWZvfCMno2mTRfv7fECJrpqUPeyX1o8H2RUxnmmMxtzYuylueTXdsowXHSNdyGigYdA2Hd2Z/i6kBUE0hgHyCRPEo0S+R0eT0bQZVBteAzaN1nM4LGdMB1NgwGh0akZ1zKKkKkWX4OIYjBYfU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=aKSXO0BV; arc=none smtp.client-ip=109.224.244.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZibA7NCC"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a5058f9ef4so1095768f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Jul 2025 00:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751874058; x=1752478858; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oJUD6X4GS4YlprJU4Nu4OFQVyc8HR9vGBcNZ8yZyQEE=;
-        b=ZibA7NCCEFW4/4IXlVEBS+gzynCtY/TuX3QtWnmY6zPaPfDx76aj+w1gI/eQmGUx3Q
-         0VPMorTAiPVTLM2Vy+TsOl66ToeG9nXEhcxwdAgJBHusSBYAGjB2xrYp20jZ8CpC+Eo9
-         1dZQmYRcNl/111L8Cz7q9zteeZKhpLe/MNoKaXMIGF7TRAPE25Gl5thEoybqRtaRHoYz
-         y8dXZDNA2o+GzxfAEZx8AhpZc2gAKiTmhMwupnRZYV1RAFbj1jcNkvPyArnHzBxT9wtB
-         V2YSh7Kw/7f+qiNPWpcDxdwic4pwHWL0hE++TuD3tIDhaH/6sehmOOVqG1Vm0DnQsmSK
-         whDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751874058; x=1752478858;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oJUD6X4GS4YlprJU4Nu4OFQVyc8HR9vGBcNZ8yZyQEE=;
-        b=PZKWJOatXMbkhMLXFMs5CZg2SSnN5vTIG9DCD+WiW6/oLZMS2O4VDicUr8JI64J4pa
-         7OKQdsVbSBRO8vM8mvLkEknGSSMtjO4zIg0ocaWarBfKkfvvj3HJ7LHv34Ytbtj/ZZOT
-         1Uk+Umf+bsWknou6o4TjEXGt/cMV6l0nuKVZGVaScaylcRn2Djv5krCRkP5li009pxYV
-         AxYfHRMA1tzEHSDS/BhjpRjiefiMA9aK6+X6Xck9s3Y31DYZQGfh5+JoDkE3aIbFJNtx
-         vtte0voRxz5erQXZD2XPcpzKeFWqJR5dtUMkaTfzciw1+m1m6XEBXeyQboejN6SioEZh
-         LB7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWjcMOD60Kr06xESweCrbZTkY2hUyKOSsHLJ3bgR9v0i+lJ6yDczihun57Fas2d75NChBSKlq5SXmEM/ZoH4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvU2GhJprLWBV5lBS3p2ARw6qQsukkoMAH5lEz7Z6DpGj9cvTg
-	PEKbVWYFpP/Ig8gBRmIPwrmS7dHxmuezOBuquYOJTSzFCDJdmFsyzKE6kb8hhuqC6QKPahMI51Q
-	yNL/bBMADka3GjPWqBQ==
-X-Google-Smtp-Source: AGHT+IEQf7gF3CDATeAkdxoy1lakbmpl77+ngHJbtFgvj6kukP1PTmvKUpxaBaaF51Ybn0pIXIPzIN7ozusSR84=
-X-Received: from wmbej15.prod.google.com ([2002:a05:600c:3e8f:b0:454:abf8:a8aa])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4a01:b0:3a3:67bb:8f3f with SMTP id ffacd0b85a97d-3b49aa8a304mr6237280f8f.53.1751874058223;
- Mon, 07 Jul 2025 00:40:58 -0700 (PDT)
-Date: Mon, 7 Jul 2025 07:40:57 +0000
-In-Reply-To: <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="aKSXO0BV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1751874137; x=1752133337;
+	bh=B36w5AqVLdS7ID+Qou3MMKc+btIXvIpkpVMniRAbSVI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=aKSXO0BVIPGBLR0xuo/P5yD6wONOOrOk5VIoSJOTk/euuMIX4CNTH9Yt5klyEO5dJ
+	 tvVLRClKLPMcAA906aUSHa1gcb81S7EJz+ET8sEnwRN0vhVtjz/f+y86gikaIZIfTS
+	 17VBIRxTH6x+5BZhzc7HDbbqOTcGPK931GHjaZ/NN0QeGMyfA5TMRH12wTp2GMNCxY
+	 8YV5bI4MnAtIeX6hUULo/r9J05gHOH9Sb4JI/KzSrn31h61tYqQoAXgfugHVwBsk8R
+	 3Nclmi9FylU051GeWrEWtTscNGrMnVkA+l3x7oo6pdpqA59F87+skc3/C7dEqnct+/
+	 LUKi3Y5ZnftMw==
+Date: Mon, 07 Jul 2025 07:42:14 +0000
+To: Benno Lossin <lossin@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 2/4] rust: Split `AlwaysRefCounted` into two traits
+Message-ID: <aGt6U2jCDnU7dzRA@mango>
+In-Reply-To: <DB1J4UQLG76V.69HKATSZZVNO@kernel.org>
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-2-49eadcdc0aa6@pm.me> <DB1J4UQLG76V.69HKATSZZVNO@kernel.org>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 7f80a12fdc11ce419642d5cb2b1a3f748f0744db
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
- <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
-Message-ID: <aGt6CZAUeuK0XnmP@google.com>
-Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, 
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 04, 2025 at 01:25:26PM -0300, Daniel Almeida wrote:
-> In preparation for ioremap support, add a Rust abstraction for struct
-> resource.
-> 
-> A future commit will introduce the Rust API to ioremap a resource from a
-> platform device. The current abstraction, therefore, adds only the
-> minimum API needed to get that done.
-> 
-> Co-developed-by: Fiona Behrens <me@kloenk.dev>
-> Signed-off-by: Fiona Behrens <me@kloenk.dev>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+On 250702 1323, Benno Lossin wrote:
+> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
+> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> > index c12ff4d2a3f2d79b760c34c0b84a51b507d0cfb1..40c0138bd336057e7d3a835=
+a9e81391baa2fd2b1 100644
+> > --- a/rust/kernel/types.rs
+> > +++ b/rust/kernel/types.rs
+> > @@ -418,11 +418,9 @@ pub const fn raw_get(this: *const Self) -> *mut T =
+{
+> >      }
+> >  }
+> >
+> > -/// Types that are _always_ reference counted.
+> > +/// Types that are internally reference counted.
+> >  ///
+> >  /// It allows such types to define their own custom ref increment and =
+decrement functions.
+> > -/// Additionally, it allows users to convert from a shared reference `=
+&T` to an owned reference
+> > -/// [`ARef<T>`].
+> >  ///
+> >  /// This is usually implemented by wrappers to existing structures on =
+the C side of the code. For
+> >  /// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) =
+to create reference-counted
+> > @@ -438,9 +436,8 @@ pub const fn raw_get(this: *const Self) -> *mut T {
+> >  /// at least until matching decrements are performed.
+> >  ///
+> >  /// Implementers must also ensure that all instances are reference-cou=
+nted. (Otherwise they
+> > -/// won't be able to honour the requirement that [`AlwaysRefCounted::i=
+nc_ref`] keep the object
+> > -/// alive.)
+> > -pub unsafe trait AlwaysRefCounted {
+> > +/// won't be able to honour the requirement that [`RefCounted::inc_ref=
+`] keep the object alive.)
+> > +pub unsafe trait RefCounted {
+> >      /// Increments the reference count on the object.
+> >      fn inc_ref(&self);
+>=20
+> This seems a bit problematic for `Owned`, since now I can do:
+>=20
+>     fn bad<T: Ownable + RefCounted>(t: &Owned<T>) {
+>         t.inc_ref();
+>     }
+>=20
+> And now the `Owned<T>` is no longer "unique" in the sense that the
+> refcount is 1...
 
-Overall looks reasonable, but some comments below:
+Yes, that is clear. But that isn't a soundness issue or is it? It just
+means the `T` can be leaked, but that cannot be prevented anyway.
 
->  rust/bindings/bindings_helper.h |   1 +
->  rust/helpers/io.c               |  36 +++++++
->  rust/kernel/io.rs               |   4 +
->  rust/kernel/io/resource.rs      | 209 ++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 250 insertions(+)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index 7e8f2285064797d5bbac5583990ff823b76c6bdc..5f795e60e889b9fc887013743c81b1cf92a52adb 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -53,6 +53,7 @@
->  #include <linux/file.h>
->  #include <linux/firmware.h>
->  #include <linux/fs.h>
-> +#include <linux/ioport.h>
->  #include <linux/jiffies.h>
->  #include <linux/jump_label.h>
->  #include <linux/mdio.h>
-> diff --git a/rust/helpers/io.c b/rust/helpers/io.c
-> index 15ea187c5466256effd07efe6f6995a1dd95a967..404776cf6717c8570c7600a24712ce6e4623d3c6 100644
-> --- a/rust/helpers/io.c
-> +++ b/rust/helpers/io.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
->  #include <linux/io.h>
-> +#include <linux/ioport.h>
->  
->  void __iomem *rust_helper_ioremap(phys_addr_t offset, size_t size)
->  {
-> @@ -99,3 +100,38 @@ void rust_helper_writeq_relaxed(u64 value, void __iomem *addr)
->  	writeq_relaxed(value, addr);
->  }
->  #endif
-> +
-> +resource_size_t rust_helper_resource_size(struct resource *res)
-> +{
-> +	return resource_size(res);
-> +}
-> +
-> +struct resource *rust_helper_request_mem_region(resource_size_t start,
-> +						resource_size_t n,
-> +						const char *name)
-> +{
-> +	return request_mem_region(start, n, name);
-> +}
-> +
-> +void rust_helper_release_mem_region(resource_size_t start, resource_size_t n)
-> +{
-> +	release_mem_region(start, n);
-> +}
-> +
-> +struct resource *rust_helper_request_region(resource_size_t start,
-> +					    resource_size_t n, const char *name)
-> +{
-> +	return request_region(start, n, name);
-> +}
-> +
-> +struct resource *rust_helper_request_muxed_region(resource_size_t start,
-> +						  resource_size_t n,
-> +						  const char *name)
-> +{
-> +	return request_muxed_region(start, n, name);
-> +}
-> +
-> +void rust_helper_release_region(resource_size_t start, resource_size_t n)
-> +{
-> +	release_region(start, n);
-> +}
-> diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-> index 72d80a6f131e3e826ecd9d2c3bcf54e89aa60cc3..7b70d5b5477e57d6d0f24bcd26bd8b0071721bc0 100644
-> --- a/rust/kernel/io.rs
-> +++ b/rust/kernel/io.rs
-> @@ -7,6 +7,10 @@
->  use crate::error::{code::EINVAL, Result};
->  use crate::{bindings, build_assert};
->  
-> +pub mod resource;
-> +
-> +pub use resource::Resource;
-> +
->  /// Raw representation of an MMIO region.
->  ///
->  /// By itself, the existence of an instance of this structure does not provide any guarantees that
-> diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..a8ad04b1abf8e46928ed98564e64a07180250024
-> --- /dev/null
-> +++ b/rust/kernel/io/resource.rs
-> @@ -0,0 +1,209 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Abstractions for [system
-> +//! resources](https://docs.kernel.org/core-api/kernel-api.html#resources-management).
-> +//!
-> +//! C header: [`include/linux/ioport.h`](srctree/include/linux/ioport.h)
-> +
-> +use core::ops::Deref;
-> +use core::ptr::NonNull;
-> +
-> +use crate::str::CStr;
-> +use crate::types::Opaque;
-> +
-> +/// Resource Size type.
-> +///
-> +/// This is a type alias to either `u32` or `u64` depending on the config option
-> +/// `CONFIG_PHYS_ADDR_T_64BIT`.
-> +#[cfg(CONFIG_PHYS_ADDR_T_64BIT)]
-> +pub type ResourceSize = u64;
-> +
-> +/// Resource Size type.
-> +///
-> +/// This is a type alias to either `u32` or `u64` depending on the config option
-> +/// `CONFIG_PHYS_ADDR_T_64BIT`.
-> +#[cfg(not(CONFIG_PHYS_ADDR_T_64BIT))]
-> +pub type ResourceSize = u32;
-> +
-> +/// A region allocated from a parent [`Resource`].
-> +///
-> +/// # Invariants
-> +///
-> +/// - `self.0` points to a valid `bindings::resource` that was obtained through
-> +///   `bindings::__request_region`.
-> +pub struct Region(NonNull<bindings::resource>);
-> +
-> +impl Deref for Region {
-> +    type Target = Resource;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        // SAFETY: Safe as per the invariant of `Region`.
-> +        unsafe { Resource::as_ref(self.0.as_ptr()) }
-> +    }
-> +}
-> +
-> +impl Drop for Region {
-> +    fn drop(&mut self) {
-> +        // SAFETY: Safe as per the invariant of `Region`.
-> +        let res = unsafe { Resource::as_ref(self.0.as_ptr()) };
-> +        let flags = res.flags();
-> +
-> +        let release_fn = if flags.contains(flags::IORESOURCE_MEM) {
-> +            bindings::release_mem_region
-> +        } else {
-> +            bindings::release_region
-> +        };
+> Similarly, we should probably make this an associated function, such
+> that people don't accidentally call `.inc_ref()` on `ARef<T>`.
+>=20
+> > @@ -453,11 +450,21 @@ pub unsafe trait AlwaysRefCounted {
+> >      /// Callers must ensure that there was a previous matching increme=
+nt to the reference count,
+> >      /// and that the object is no longer used after its reference coun=
+t is decremented (as it may
+> >      /// result in the object being freed), unless the caller owns anot=
+her increment on the refcount
+> > -    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then call=
+s
+> > -    /// [`AlwaysRefCounted::dec_ref`] once).
+> > +    /// (e.g., it calls [`RefCounted::inc_ref`] twice, then calls [`Re=
+fCounted::dec_ref`] once).
+> >      unsafe fn dec_ref(obj: NonNull<Self>);
+> >  }
+> >
+> > +/// An extension to RefCounted, which declares that it is allowed to c=
+onvert from a shared reference
+> > +/// `&T` to an owned reference [`ARef<T>`].
+>=20
+> This is a bit too long for the first sentence... How about
+>=20
+>     Always reference counted type.
+>=20
+>     Allows the creation of `ARef<T>` from `&T`.
+>=20
+> Feel free to add more information.
 
-You can avoid this unsafe via the deref() impl.
+Yes, should be okay.
 
-let (flags, start, size) = {
-    let res = &**self;
-    (res.flags(), res.start(), res.size())
-};
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementers must ensure that no safety invariants are violated by=
+ upgrading an `&T` to an
+> > +/// [`ARef<T>`]. In particular that implies [`AlwaysRefCounted`] and [=
+`Ownable`] cannot be
+> > +/// implemented for the same type, as this would allow to violate the =
+uniqueness guarantee of
+> > +/// [`Owned<T>`] by derefencing it into an `&T` and obtaining an [`ARe=
+f`] from that.
+> > +pub unsafe trait AlwaysRefCounted: RefCounted {}
+>=20
+> It's a bit sad that we can't just say `: !Ownable` (or rather a
+> blanket-implemented marker trait, since that might land earlier). Anyone
+> aware of progress in this area?
 
-> +        // SAFETY: Safe as per the invariant of `Region`.
-> +        unsafe { release_fn(res.start(), res.size()) };
-> +    }
-> +}
-> +
-> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
-> +// any thread.
-> +unsafe impl Send for Region {}
-> +
-> +// SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
-> +// safe to be used from any thread.
-> +unsafe impl Sync for Region {}
-> +
-> +/// A resource abstraction.
-> +///
-> +/// # Invariants
-> +///
-> +/// [`Resource`] is a transparent wrapper around a valid `bindings::resource`.
-> +#[repr(transparent)]
-> +pub struct Resource(Opaque<bindings::resource>);
-> +
-> +impl Resource {
-> +    /// Creates a reference to a [`Resource`] from a valid pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that for the duration of 'a, the pointer will
-> +    /// point at a valid `bindings::resource`.
-> +    ///
-> +    /// The caller must also ensure that the [`Resource`] is only accessed via the
-> +    /// returned reference for the duration of 'a.
-> +    pub(crate) const unsafe fn as_ref<'a>(ptr: *mut bindings::resource) -> &'a Self {
+Yes. But as far as I am aware negative constraints are considered to be
+deeply problematic because of combinatoric explosion in binary logic.
 
-We usually call this method `from_raw`.
+Best,
 
-> +        // SAFETY: Self is a transparent wrapper around `Opaque<bindings::resource>`.
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    /// Requests a resource region.
-> +    ///
-> +    /// Exclusive access will be given and the region will be marked as busy.
-> +    /// Further calls to [`Self::request_region`] will return [`None`] if
-> +    /// the region, or a part of it, is already in use.
-> +    pub fn request_region(
-> +        &self,
-> +        start: ResourceSize,
-> +        size: ResourceSize,
-> +        name: &'static CStr,
+Oliver
 
-Is this name used for a lookup or stored? If just a lookup, then it
-doesn't need to be 'static.
-
-> +        flags: Flags,
-> +    ) -> Option<Region> {
-> +        // SAFETY: Safe as per the invariant of `Resource`.
-> +        let region = unsafe {
-> +            bindings::__request_region(
-> +                self.0.get(),
-> +                start,
-> +                size,
-> +                name.as_char_ptr(),
-> +                flags.0 as i32,
-
-I would use `as c_int` here. (Or change the type stored in Flags.)
-
-> +            )
-> +        };
-> +
-> +        Some(Region(NonNull::new(region)?))
-> +    }
-> +
-> +    /// Returns the size of the resource.
-> +    pub fn size(&self) -> ResourceSize {
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`.
-> +        unsafe { bindings::resource_size(inner) }
-> +    }
-> +
-> +    /// Returns the start address of the resource.
-> +    pub fn start(&self) -> u64 {
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`.
-> +        unsafe { *inner }.start
-
-This needs to be
-
-unsafe { (*inner).start }
-
-What you wrote is not equivalent. (*inner) is a place expression, but
-when you write `unsafe { <place expr> }` that turns it into a value
-expression by reading the value. So this code copies the entire struct
-to the stack, and then you read `start` from the copy on the stack.
-
-> +    }
-> +
-> +    /// Returns the name of the resource.
-> +    pub fn name(&self) -> &'static CStr {
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`
-> +        unsafe { CStr::from_char_ptr((*inner).name) }
-> +    }
-> +
-> +    /// Returns the flags associated with the resource.
-> +    pub fn flags(&self) -> Flags {
-> +        let inner = self.0.get();
-> +        // SAFETY: safe as per the invariants of `Resource`
-> +        let flags = unsafe { *inner }.flags;
-> +
-> +        Flags(flags)
-> +    }
-> +}
-> +
-> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, which is
-> +// safe to be used from any thread.
-> +unsafe impl Send for Resource {}
-> +
-> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, references
-> +// to which are safe to be used from any thread.
-> +unsafe impl Sync for Resource {}
-> +
-> +/// Resource flags as stored in the C `struct resource::flags` field.
-> +///
-> +/// They can be combined with the operators `|`, `&`, and `!`.
-> +///
-> +/// Values can be used from the [`flags`] module.
-> +#[derive(Clone, Copy, PartialEq)]
-> +pub struct Flags(usize);
-
-Based on usage it looks like the correct type is c_int?
-
-> +impl Flags {
-> +    /// Check whether `flags` is contained in `self`.
-> +    pub fn contains(self, flags: Flags) -> bool {
-> +        (self & flags) == flags
-> +    }
-> +}
-> +
-> +impl core::ops::BitOr for Flags {
-> +    type Output = Self;
-> +    fn bitor(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 | rhs.0)
-> +    }
-> +}
-> +
-> +impl core::ops::BitAnd for Flags {
-> +    type Output = Self;
-> +    fn bitand(self, rhs: Self) -> Self::Output {
-> +        Self(self.0 & rhs.0)
-> +    }
-> +}
-> +
-> +impl core::ops::Not for Flags {
-> +    type Output = Self;
-> +    fn not(self) -> Self::Output {
-> +        Self(!self.0)
-> +    }
-> +}
-> +
-> +/// Resource flags as stored in the `struct resource::flags` field.
-> +pub mod flags {
-
-You can do:
-
-impl Flags {
-    pub const IORESOURCE_IO: Flags = Flags(bindings::IORESOURCE_IO as usize);
-}
-
-instead of a module.
-
-> +    use super::Flags;
-> +
-> +    /// PCI/ISA I/O ports.
-> +    pub const IORESOURCE_IO: Flags = Flags(bindings::IORESOURCE_IO as usize);
-> +
-> +    /// Resource is software muxed.
-> +    pub const IORESOURCE_MUXED: Flags = Flags(bindings::IORESOURCE_MUXED as usize);
-> +
-> +    /// Resource represents a memory region.
-> +    pub const IORESOURCE_MEM: Flags = Flags(bindings::IORESOURCE_MEM as usize);
-> +
-> +    /// Resource represents a memory region that must be ioremaped using `ioremap_np`.
-> +    pub const IORESOURCE_MEM_NONPOSTED: Flags = Flags(bindings::IORESOURCE_MEM_NONPOSTED as usize);
-> +}
-> 
-> -- 
-> 2.50.0
-> 
