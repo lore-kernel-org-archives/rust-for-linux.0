@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB2E28DB69;
-	Mon,  7 Jul 2025 09:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170EB285CB8;
+	Mon,  7 Jul 2025 09:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751880445; cv=none; b=BrB2vQW7I6AG44cNnXt1aNbTZKqf0m2G/46uIjlstMyy6lZnCquaXGIEvS9jUQRTCMzeEXOQablntUEAWeXOFf3B24GibbhhZcb9s6MovxrJ0UC1EKi2KwUCcwt2JbZlvnHB1OSKOcVQf0wrGIA8MEjarak7Y8AYivBqvwxuhFo=
+	t=1751880826; cv=none; b=odiyNieSlJYl/RjjNbwrG7hQL2HN/Hlk/zuUBFae4ZLG5IlcQNc3ujpO7ukEka/XwIYprJ4EI6tN0eOYG3geyqQ+BQEsKx/XR0pNnji7u2knVLazpw2+SYWeT8AY96YyLOoNUs/1md0jd01MQp4mYDdVuXyRBMqn37FQ8VkTc80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751880445; c=relaxed/simple;
-	bh=3N+dxJ/pYp0RztBAu4k2bBGj9JOro7842A4Q2y3OIW8=;
+	s=arc-20240116; t=1751880826; c=relaxed/simple;
+	bh=kiswASZbpY5UWMvyVnBUg3s9ZvADixZDR11+evJdR9o=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Bdoh0TwywHma+gOdgpMS5cf7YtIj8QQCeJMznQYGxCZGh5m4D5sHx9ccmMxLEGYMCHT7lbGg/22tkQA034F2gXNkXWG2sYWtSYWxChoefanf5EAxAGzGnmkN7JtDKdK9KWH1m1wxWBxTne7oFL3r7uppUnf9zIq7/zs6ZeXa9p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QPbXu681; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Ef04yeY8fs/+yR3F0Pg27EDmQgzq2vnbyaMV7i457bHYhf7hfn+V0RUj9DNp7YZD4To6almcoUz+KPB0038avAetKfg9o8+c4h0L7T3A67a1cuKSj6Oud5XwYLhdd6u8PRa4D42jEbtlhBmkZPgnSfKCuZUbvVxzFOdvXhU3n7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hUWLnZqr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QPbXu681"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57438C4CEE3;
-	Mon,  7 Jul 2025 09:27:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hUWLnZqr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545AEC4CEE3;
+	Mon,  7 Jul 2025 09:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751880445;
-	bh=3N+dxJ/pYp0RztBAu4k2bBGj9JOro7842A4Q2y3OIW8=;
+	s=k20201202; t=1751880825;
+	bh=kiswASZbpY5UWMvyVnBUg3s9ZvADixZDR11+evJdR9o=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=QPbXu681niYrGCdH6O4zB1oOc3IRT2lXTf09EACqLHRM4iWd/vkCxj6R9GQ+3HRUT
-	 tHf3ygnS86/OwVZ6k25Itrlq18y7x3dpaHJFbHTIImd6E/isRIZVw8Io9oYnMjHLZg
-	 M7Oak+mrM0vJ/jOGjrJ+fysJXUOzHW3satj8lQve0PcffeE6bqPZ0/Yc4c2OTtMMtZ
-	 QXBFi3ZYHrraDH7kr3bGbr2E2PLAFFFGT8j6juZfvhjDIXwBZUg4GUpadU1fSoPT9/
-	 i+IbnQIs+XO7ILpR4Z46yb8v0UGNTymnCmeOfttGjFw1gTcYyVaDKM9FR2yJPSf0Fq
-	 2+QB0eUr7wb5g==
+	b=hUWLnZqrltWqHSw4akA0MajvS+rhSQQMgmGdPOm4acAT9Wsj2o7L5eqLcUlDe7vfF
+	 AT+FBV5Xhj9QWupvjcCESyhvtNKkjhgJFJ3J6sjdHWcYOHIuEZDmLrtgdCJOgx08lO
+	 lJ7ASrmhMfvbwesTj0oCQLrG7m2mBZcUQfP8ouWgdn/ddQy8KARwa1kV++zWBspuTf
+	 A0+vo7QpAUPSzhl/6HlGFnlRZ4FDFGdLVQu3gjQ9QcSj9rfl7cFbN/YwjmeacNwQxq
+	 sbHK/jTorBZRpMl3XDj+sv0pukARbRcAXGTOfPTfi+3IWe66cKoJvywff78q1eJmi6
+	 p8ZHeMQBi3MGw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 07 Jul 2025 11:27:21 +0200
-Message-Id: <DB5PSCBJA3YW.29RU3J2CT4ZPM@kernel.org>
+Date: Mon, 07 Jul 2025 11:33:41 +0200
+Message-Id: <DB5PX74OB3DX.1UNT8MIBWNC2G@kernel.org>
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
@@ -43,75 +43,152 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
  "Asahi Lina" <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 2/4] rust: Split `AlwaysRefCounted` into two traits
+Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Oliver Mangold" <oliver.mangold@pm.me>
 X-Mailer: aerc 0.20.1
 References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <20250618-unique-ref-v11-2-49eadcdc0aa6@pm.me>
- <DB1J4UQLG76V.69HKATSZZVNO@kernel.org> <aGt6U2jCDnU7dzRA@mango>
-In-Reply-To: <aGt6U2jCDnU7dzRA@mango>
+ <20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me>
+ <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org> <aGuAR7JCrlmzQrx4@mango>
+In-Reply-To: <aGuAR7JCrlmzQrx4@mango>
 
-On Mon Jul 7, 2025 at 9:42 AM CEST, Oliver Mangold wrote:
-> On 250702 1323, Benno Lossin wrote:
+On Mon Jul 7, 2025 at 10:07 AM CEST, Oliver Mangold wrote:
+> On 250702 1524, Benno Lossin wrote:
 >> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
->> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
->> > index c12ff4d2a3f2d79b760c34c0b84a51b507d0cfb1..40c0138bd336057e7d3a83=
-5a9e81391baa2fd2b1 100644
->> > --- a/rust/kernel/types.rs
->> > +++ b/rust/kernel/types.rs
->> > @@ -418,11 +418,9 @@ pub const fn raw_get(this: *const Self) -> *mut T=
- {
+>> > @@ -132,3 +134,124 @@ fn drop(&mut self) {
+>> >          unsafe { T::release(self.ptr) };
 >> >      }
 >> >  }
->> >
->> > -/// Types that are _always_ reference counted.
->> > +/// Types that are internally reference counted.
->> >  ///
->> >  /// It allows such types to define their own custom ref increment and=
- decrement functions.
->> > -/// Additionally, it allows users to convert from a shared reference =
-`&T` to an owned reference
->> > -/// [`ARef<T>`].
->> >  ///
->> >  /// This is usually implemented by wrappers to existing structures on=
- the C side of the code. For
->> >  /// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc)=
- to create reference-counted
->> > @@ -438,9 +436,8 @@ pub const fn raw_get(this: *const Self) -> *mut T =
-{
->> >  /// at least until matching decrements are performed.
->> >  ///
->> >  /// Implementers must also ensure that all instances are reference-co=
-unted. (Otherwise they
->> > -/// won't be able to honour the requirement that [`AlwaysRefCounted::=
-inc_ref`] keep the object
->> > -/// alive.)
->> > -pub unsafe trait AlwaysRefCounted {
->> > +/// won't be able to honour the requirement that [`RefCounted::inc_re=
-f`] keep the object alive.)
->> > +pub unsafe trait RefCounted {
->> >      /// Increments the reference count on the object.
->> >      fn inc_ref(&self);
+>> > +
+>> > +/// A trait for objects that can be wrapped in either one of the refe=
+rence types [`Owned`] and
+>> > +/// [`ARef`].
+>> > +///
+>> > +/// # Safety
+>> > +///
+>> > +/// Implementers must ensure that:
+>> > +///
+>> > +/// - [`try_from_shared()`](OwnableRefCounted::into_shared) only retu=
+rns an [`Owned<Self>`] if
+>> > +///   exactly one [`ARef<Self>`] exists.
 >>=20
->> This seems a bit problematic for `Owned`, since now I can do:
+>> This shouldn't be required?
+>
+> Ehm, why not? `Owned<T>` is supposed to be unique.
+
+It's not needed as a safety requirement for implementing the trait. If
+the implementation only contains sound code, then `Owned::from_raw`
+should already ensure that `Owned<Self>` is only created if there is
+exactly one reference to it.
+
+>> > +/// - [`into_shared()`](OwnableRefCounted::into_shared) set the refer=
+ence count to the value which
+>> > +///   the returned [`ARef<Self>`] expects for an object with a single=
+ reference in existence. This
+>> > +///   implies that if [`into_shared()`](OwnableRefCounted::into_share=
+d) is left on the default
+>> > +///   implementation, which just rewraps the underlying object, the r=
+eference count needs not to be
+>> > +///   modified when converting an [`Owned<Self>`] to an [`ARef<Self>`=
+].
 >>=20
->>     fn bad<T: Ownable + RefCounted>(t: &Owned<T>) {
->>         t.inc_ref();
+>> This also seems pretty weird...
+>>=20
+>> I feel like `OwnableRefCounted` is essentially just a compatibility
+>> condition between `Ownable` and `RefCounted`. It ensures that the
+>> ownership declared in `Ownable` corresponds to exactly one refcount
+>> declared in `RefCounted`.
+>>=20
+>> That being said, I think a `RefCounted` *always* canonically is
+>> `Ownable` by the following impl:
+>>=20
+>>     unsafe impl<T: RefCounted> Ownable for T {
+>>         unsafe fn release(this: NonNull<Self>) {
+>>             T::dec_ref(this)
+>>         }
 >>     }
 >>=20
->> And now the `Owned<T>` is no longer "unique" in the sense that the
->> refcount is 1...
+>> So I don't think that we need this trait at all?
 >
-> Yes, that is clear. But that isn't a soundness issue or is it? It just
-> means the `T` can be leaked, but that cannot be prevented anyway.
+> No. For an `ARef<T>` to be converted to an `Owned<T>` it requires a
+> `try_from_shared()` implementation. It is not even a given that the
+> function can implemented, if all the kernel exposes are some kind of
+> `inc_ref()` and `dec_ref()`.
 
-Yeah that is true.
+I don't understand this paragraph.
 
->> Similarly, we should probably make this an associated function, such
->> that people don't accidentally call `.inc_ref()` on `ARef<T>`.
+> Also there are more complicated cases like with `Mq::Request`, where the
+> existence of an `Owned<T>` cannot be represented by the same refcount val=
+ue
+> as the existence of exactly one `ARef<T>`.
 
-Filed https://github.com/Rust-for-Linux/linux/issues/1177
+Ah right, I forgot about this. What was the refcount characteristics of
+this again?
+
+*  1 =3D in flight, owned by C
+*  2 =3D in flight, owned by Rust
+* >2 =3D in flight, owned by Rust + additional references used by Rust
+       code
+
+Correct? Maybe @Andreas can check.
+
+>> > +///
+>> > +/// # Examples
+>>=20
+>> If we're having an example here, then we should also have on on `Owned`.
+>
+> Yes, maybe. I mostly felt the need to create one for `OwnableRefCounted`
+> because it is a more complex idea than `Ownable`.
+>
+> If I remember correctly, I didn't create one for `Owned`, as it should
+> probably more or less the same as for `ARef` and the one there has even
+> more problems of the kind you are pointing out. So maybe it would be best
+> to wait until someone fixes that and have the fixed version copied over t=
+o
+> `Owned` in the process?
+
+Wait which problems on `ARef` do you mean? I disagree that `Owned` and
+`ARef` have the same example. `Owned` should expose operations that
+`ARef` can't otherwise there would be no value in using `Owned`.
+
+>> > +///
+>> > +/// A minimal example implementation of [`OwnableRefCounted`], [`Owna=
+ble`] and its usage with
+>> > +/// [`ARef`] and [`Owned`] looks like this:
+>> > +///
+>> > +/// ```
+>> > +/// # #![expect(clippy::disallowed_names)]
+>> > +/// use core::cell::Cell;
+>> > +/// use core::ptr::NonNull;
+>> > +/// use kernel::alloc::{flags, kbox::KBox, AllocError};
+>> > +/// use kernel::types::{
+>> > +///     ARef, RefCounted, Owned, Ownable, OwnableRefCounted,
+>> > +/// };
+>> > +///
+>> > +/// struct Foo {
+>> > +///     refcount: Cell<usize>,
+>> > +/// }
+>> > +///
+>> > +/// impl Foo {
+>> > +///     fn new() -> Result<Owned<Self>, AllocError> {
+>> > +///         // Use a `KBox` to handle the actual allocation.
+>> > +///         let result =3D KBox::new(
+>> > +///             Foo {
+>> > +///                 refcount: Cell::new(1),
+>> > +///             },
+>> > +///             flags::GFP_KERNEL,
+>> > +///         )?;
+>> > +///         let result =3D NonNull::new(KBox::into_raw(result))
+>> > +///             .expect("Raw pointer to newly allocation KBox is null=
+, this should never happen.");
+>>=20
+>> I'm not really convinced that an example using `KBox` is a good one...
+>> Maybe we should just have a local invisible `bindings` module that
+>> exposes a `-> *mut foo`. (internally it can just create a KBox`)
+>
+> The example would become quite a bit more complicated then, no?
+
+Just hide those parts behind `#` lines in the example.
 
 ---
 Cheers,
