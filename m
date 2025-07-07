@@ -1,204 +1,107 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0E41E5B88
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A07728640A
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751873149; cv=none; b=X0+uO6usDI2GBSN8JVoterg23vAd+MKg8XD+zF8HhcKQrNVcq+AIIzNUKVBQeCdXdXsa2408WATZ66EsBZKMe3kDkNQI1xoBdbRRU4RJ1STEy8aceRmBJ1/CNlTCBWsHcJ2LkzNjsgzKWFuwtH9gwZNdJhOzvtGLvgN9zOr+uGo=
+	t=1751873413; cv=none; b=L2b6a53A5N9zo3SmSFdYuxF4KvF3o/T6pZkShSgHUrpLGvSLNvAZA323aPgvPUobsnhv0C/EaiDC2herwuPIV46zEA1kwUWbWT4MrdCkB0V0NowUZFYjWa2CAXyQ6EqZ14enemTETO6WZYAJwqIiwPcVMBz4r0rnufQj81NMZzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751873149; c=relaxed/simple;
-	bh=+/qqoD9FJAu0i59brRod/F5ZmcH0ib5nPtPj2KCibdw=;
+	s=arc-20240116; t=1751873413; c=relaxed/simple;
+	bh=pgLYMyGHLNeV2wGGNHnI3FUm05yQj+XGapiC7w3Q5Ec=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OcI0VKbimOY6T3wTRvH5r4HnfvUaxg+UAtZ6foWUc+ZQMYokBvtFZ6AOn10SZYlSL1VZZrXev1uhkjJrV3lO+hLbVMj3MhWjt5RKQPY6SKdpJaQe8JkUAJficiDj7K7K0BLH+vnP9D3tXPsbIcpbGuHIWZfyjqXL7aXytaohp80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ly31rAGh; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=MOAGew1syNKaSk85aDCFomAxHAT5Ri3DWGEVofsvPPlRYtCC8a38KCnh3KwYtIBfZAmXqwv1crJ93Ad8bq0KMax/FLDHQZYOzGbQoNuaHnQsIgdDrwMTDUXfkbl64pXK+9PM3CXrbVhdvGFgg+YfKinxBcktBcMK29t+JodIfvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4TqsciHp; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ly31rAGh"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-450d6768d4dso14730495e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 07 Jul 2025 00:25:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4TqsciHp"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a5780e8137so1961336f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 07 Jul 2025 00:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1751873146; x=1752477946; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HjXBHIGCko1Walk5rVzDSoSA5fXEne2gWaZ0Ckd/Q/c=;
-        b=ly31rAGhDNHOFfgCKYgjmSzjz2FQRKFr4HkxZmyLgeFaXCUrbUqNrzswB9IACEvGZX
-         nS6o7RuTgYDY8kA9ODpuADO4Zehvb8W5YGe7uCDUEeFGdr29jCFhRE+7P+JFWmlb4NU2
-         3Qroq6p4S9ugQ+0Bvr5al2bhvx9IVTCS+ICL+dC//NeZRck1FIMjE/e8nR9hax0OpvZE
-         GuoYCd1pdtS0phJZCOk5NKSmEJruxXN+UipUdciEVaFRPuofys96Otvqby/gX+4KpKo/
-         65PV4R972JOoDghfn01ztrrtM8pn0joN78mDwclBItUzA/Y9r3pdYGbLr4rwBVswxHrN
-         1c9w==
+        d=google.com; s=20230601; t=1751873410; x=1752478210; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SwLel3oj580C8N1fRuRBXYbCfvfOLh56/Z9RsgGJodE=;
+        b=4TqsciHpe/LihS/U2gXzkNbGzEN3pysavc5xaUe/1jBACMqCHlTeoCGTm3Ffb7FPYG
+         3MEuoH6D50scBmMPk0SsnoTlXPKjp32G36FGd6V+tf8G7PJobsHFZFi/xnHjCmHwIreU
+         qYX/CwDd+0igE1JhJ2HtR/3Nnwjn8Nk6EmPeRCVxilQOEYYzvxObe1xAj3KCrO+19yk4
+         WG+3+8vgsILOzw5D1WIoYlwBrwpf1sas4m9D671r8wGORORvcp8IPvqd72p3ep1133Nb
+         u1808RsS3sN9fN0VK1Wrya2ySAVgaSl1PtNT9WQRIdzCmNvY1hxz9WPgLD5B/+4rBoub
+         Nf2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751873146; x=1752477946;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HjXBHIGCko1Walk5rVzDSoSA5fXEne2gWaZ0Ckd/Q/c=;
-        b=HKCzniXmQjGEfJKPr3BIeaCTE525CY1e+Or6UU03HVz9QxZZ7DT5n1Axr3Y1UiAqb0
-         ELJSDfZqVWk93ezl7nZyqQvv9pqc5YV8XlDT9psuxRqFn99p439zKswK81FeASg3FSGZ
-         D5yOmichvKCy0nmClaeN9RnV5q95lCZ+2wwQW8krZaz7CqohzUmeO4HYePAWi6mGWW/U
-         ws+RzrToD6Q/JEpNl2K3HOYrNMti67VYm7YFaoVpz4HkEp3qw28J83ZQV5V7ESPXn8+P
-         +OtQVy17PYgwOfL61WRq74H4yw/sqEC1nDiUf9LDtVPXEWf57FKJxCU1eeau0I4vz49f
-         8JVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXdxrzWTEUTZIIzJoP+8salF/w639+BfgPY2zDqG7Mr7qlXqvTbTUXr0DTuXTXYQ2k8xOaBa7ruNaZ8bvvfWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUSXl/OnKOiuaVqyaQF35604SS2qiyGYtJRp8QolExQF/6L8Ud
-	d7CxaghXlReAZ7nfAFnRZeifD4LkqhMwlqSSnCxoShNJ4UAUrEgSiPkfzjOhWYI5GdSuuNZUUwx
-	OVZtj2tiZ88wPp2z4gA==
-X-Google-Smtp-Source: AGHT+IHnB4goyApbwUk03PZ8amZ+9lz0KfhPl/FnIn9n3QVNQffOoWFFNjsjkGnHrSVq3Tb+2bkKpL9KjoAAl3Y=
-X-Received: from wmsp32.prod.google.com ([2002:a05:600c:1da0:b0:442:fa3c:8612])
+        d=1e100.net; s=20230601; t=1751873410; x=1752478210;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SwLel3oj580C8N1fRuRBXYbCfvfOLh56/Z9RsgGJodE=;
+        b=m9hc7rDgeNPYrV4bpEi1KiKz5jYxrHGFqsF6TuqvJUc9cCtz6fmVwt2+X2whgswz9R
+         Aqej88mk0HkoNzjKTlyKIw2EqxqLvwGIbpH5qiugZUMn/sQ3lJlsPoOs2SMQgOl9jHAc
+         JvXYoLL2Nwlc5YI3deijOUBpB4nahWFAj9U2JgXbQyr4DQyTNhN1jw221eRShHS3Bj7x
+         EBshwFVeHvd3dQDCs+aSJKxOJQl/mTc30vSmJENmah00rTs1e8BI9+D6l16pcLKN+OZN
+         q4pC4PUSkQWptV0n2NmrxSAOhktzmsssfj0GO/VQnpRbMq2byxG2VeNkynZo8lZVUO/+
+         f+DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXsroi+4bNug/9BvR37QnPLw5vSp6h4VcjY9FjANdWAEPPgMD++KbunEa7aIowHfarw+vOZ53PsAzzQr5O6w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWU+0AsnOQtZbYxqDzFh8lFE0pL2N4mcD8Aa9SbsEbOWRTlUSx
+	YbVwQOUJqBc8fBZxIvrnDvOF0rK1C6brrov6CLFRvZjwRXHBuVIkEAFdaLbdav4p0vzWcMGnZmU
+	JBebhStGi24IwLivPQg==
+X-Google-Smtp-Source: AGHT+IH3sHQSTPT6qkcRPl99+vS+dV0MBa5vxmJeSjdd/cUZL8GfFrqHDPKIvhdS958mINyUuAOllmYPCuUOyFY=
+X-Received: from wran1.prod.google.com ([2002:adf:8b01:0:b0:3a4:ead6:8232])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:190c:b0:442:f482:c42d with SMTP id 5b1f17b1804b1-454c6531885mr18514585e9.9.1751873146473;
- Mon, 07 Jul 2025 00:25:46 -0700 (PDT)
-Date: Mon, 7 Jul 2025 07:25:45 +0000
-In-Reply-To: <5BDED328-4E79-4E39-95C3-21C3FB80593C@konsulko.se>
+ 2002:a05:6000:2484:b0:3a3:6478:e08 with SMTP id ffacd0b85a97d-3b495cc168fmr8923049f8f.23.1751873410477;
+ Mon, 07 Jul 2025 00:30:10 -0700 (PDT)
+Date: Mon, 7 Jul 2025 07:30:09 +0000
+In-Reply-To: <aGlgpyuz2JKErAUj@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250702160758.3609992-1-vitaly.wool@konsulko.se>
- <20250702160910.3610134-1-vitaly.wool@konsulko.se> <aGfx6c72FgHn3NNW@pollux> <5BDED328-4E79-4E39-95C3-21C3FB80593C@konsulko.se>
-Message-ID: <aGt2eWaXH1tlh_4c@google.com>
-Subject: Re: [PATCH v10 3/4] rust: add support for NUMA ids in allocations
+References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
+ <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com> <aGlgpyuz2JKErAUj@cassiopeiae>
+Message-ID: <aGt3gRsnwfNs6jHT@google.com>
+Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
 From: Alice Ryhl <aliceryhl@google.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
-	rust-for-linux@vger.kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, 
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 05, 2025 at 09:17:10AM +0200, Vitaly Wool wrote:
->=20
->=20
-> > On Jul 4, 2025, at 5:23=E2=80=AFPM, Danilo Krummrich <dakr@kernel.org> =
-wrote:
-> >=20
-> > On Wed, Jul 02, 2025 at 06:09:10PM +0200, Vitaly Wool wrote:
-> >> /// The kernel's [`Allocator`] trait.
-> >> ///
-> >> /// An implementation of [`Allocator`] can allocate, re-allocate and f=
-ree memory buffers described
-> >> @@ -148,7 +172,7 @@ pub unsafe trait Allocator {
-> >>     ///
-> >>     /// When the return value is `Ok(ptr)`, then `ptr` is
-> >>     /// - valid for reads and writes for `layout.size()` bytes, until =
-it is passed to
-> >> -    ///   [`Allocator::free`] or [`Allocator::realloc`],
-> >> +    ///   [`Allocator::free`], [`Allocator::realloc`] or [`Allocator:=
-:realloc_node`],
-> >>     /// - aligned to `layout.align()`,
-> >>     ///
-> >>     /// Additionally, `Flags` are honored as documented in
-> >> @@ -159,7 +183,41 @@ fn alloc(layout: Layout, flags: Flags) -> Result<=
-NonNull<[u8]>, AllocError> {
-> >>         unsafe { Self::realloc(None, layout, Layout::new::<()>(), flag=
-s) }
-> >>     }
-> >>=20
-> >> -    /// Re-allocate an existing memory allocation to satisfy the requ=
-ested `layout`.
-> >> +    /// Allocate memory based on `layout`, `flags` and `nid`.
-> >> +    ///
-> >> +    /// On success, returns a buffer represented as `NonNull<[u8]>` t=
-hat satisfies the layout
-> >> +    /// constraints (i.e. minimum size and alignment as specified by =
-`layout`).
-> >> +    ///
-> >> +    /// This function is equivalent to `realloc_node` when called wit=
-h `None`.
-> >> +    ///
-> >> +    /// # Guarantees
-> >> +    ///
-> >> +    /// When the return value is `Ok(ptr)`, then `ptr` is
-> >> +    /// - valid for reads and writes for `layout.size()` bytes, until=
- it is passed to
-> >> +    ///   [`Allocator::free`], [`Allocator::realloc`] or [`Allocator:=
-:realloc_node`],
-> >> +    /// - aligned to `layout.align()`,
-> >> +    ///
-> >> +    /// Additionally, `Flags` are honored as documented in
-> >> +    /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flag=
-s>.
-> >> +    fn alloc_node(
-> >> +        layout: Layout,
-> >> +        flags: Flags,
-> >> +        nid: NumaNode,
-> >> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> >> +        // SAFETY: Passing `None` to `realloc_node` is valid by its s=
-afety requirements and
-> >> +        // asks for a new memory allocation.
-> >> +        unsafe { Self::realloc_node(None, layout, Layout::new::<()>()=
-, flags, nid) }
-> >> +    }
-> >> +
-> >> +    /// Re-allocate an existing memory allocation to satisfy the requ=
-ested `layout` and
-> >> +    /// a specific NUMA node request to allocate the memory for.
-> >> +    ///
-> >> +    /// Systems employing a Non Uniform Memory Access (NUMA) architec=
-ture contain collections of
-> >> +    /// hardware resources including processors, memory, and I/O buse=
-s, that comprise what is
-> >> +    /// commonly known as a NUMA node.
-> >> +    ///
-> >> +    /// `nid` stands for NUMA id, i. e. NUMA node identifier, which i=
-s a non-negative
-> >> +    /// integer if a node needs to be specified, or NO_NODE if the ca=
-ller doesn't care.
-> >>     ///
-> >>     /// If the requested size is zero, `realloc` behaves equivalent to=
- `free`.
-> >>     ///
-> >> @@ -191,13 +249,27 @@ fn alloc(layout: Layout, flags: Flags) -> Result=
-<NonNull<[u8]>, AllocError> {
-> >>     ///   and old size, i.e. `ret_ptr[0..min(layout.size(), old_layout=
-.size())] =3D=3D
-> >>     ///   p[0..min(layout.size(), old_layout.size())]`.
-> >>     /// - when the return value is `Err(AllocError)`, then `ptr` is st=
-ill valid.
-> >> -    unsafe fn realloc(
-> >> +    unsafe fn realloc_node(
-> >>         ptr: Option<NonNull<u8>>,
-> >>         layout: Layout,
-> >>         old_layout: Layout,
-> >>         flags: Flags,
-> >> +        nid: NumaNode,
-> >>     ) -> Result<NonNull<[u8]>, AllocError>;
-> >>=20
-> >> +    /// Re-allocate an existing memory allocation to satisfy the requ=
-ested `layout`. This
-> >> +    /// function works exactly as realloc_node() but it doesn't give =
-the ability to specify
-> >> +    /// the NUMA node in the call.
-> >> +    unsafe fn realloc(
-> >> +        ptr: Option<NonNull<u8>>,
-> >> +        layout: Layout,
-> >> +        old_layout: Layout,
-> >> +        flags: Flags,
-> >> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> >> +        // SAFETY: guaranteed by realloc_node()
-> >> +        unsafe { Self::realloc_node(ptr, layout, old_layout, flags, N=
-umaNode::NO_NODE) }
-> >> +    }
-> >=20
-> > I think Alice suggested to just drop alloc_node() and realloc_node() an=
-d make
-> > alloc() and realloc() always take a NumaNode argument.
-> >=20
-> > I don't have a strong preference, but keeping only alloc() and realloc(=
-) for
-> > seems indeed simpler, so let's remove the _node() variants.
->=20
-> I don=E2=80=99t have a strong preference either but if I modify alloc() a=
-nd
-> realloc(), I=E2=80=99ll have to change KVec and KBox in the same patch, w=
-ould
-> that be okay with you?
+On Sat, Jul 05, 2025 at 07:28:07PM +0200, Danilo Krummrich wrote:
+> On Fri, Jul 04, 2025 at 01:25:26PM -0300, Daniel Almeida wrote:
+> > +/// Resource Size type.
+> > +///
+> > +/// This is a type alias to either `u32` or `u64` depending on the config option
+> > +/// `CONFIG_PHYS_ADDR_T_64BIT`.
+> > +#[cfg(CONFIG_PHYS_ADDR_T_64BIT)]
+> > +pub type ResourceSize = u64;
+> > +
+> > +/// Resource Size type.
+> > +///
+> > +/// This is a type alias to either `u32` or `u64` depending on the config option
+> > +/// `CONFIG_PHYS_ADDR_T_64BIT`.
+> > +#[cfg(not(CONFIG_PHYS_ADDR_T_64BIT))]
+> > +pub type ResourceSize = u32;
+> 
+> I think someone commented on this previously, but maybe I also do not remember
+> correctly.
+> 
+> Anyways, can't we just do:
+> 
+> 	pub type ResourceSize = bindings::phys_addr_t;
+> 
+> Given that phys_addr_t is already either u32 or u64.
 
-That's okay with me.
+In addition, it would be nice for the documentation to mention that it
+can be 64-bit even on a 32-bit machine.
 
 Alice
