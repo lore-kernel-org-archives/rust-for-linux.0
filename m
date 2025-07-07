@@ -1,106 +1,121 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3816CD33;
-	Mon,  7 Jul 2025 13:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBE017A31B;
+	Mon,  7 Jul 2025 14:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751896141; cv=none; b=CDx6LyV9d/ZRoJnWPt6MTqCXX3B+IRy6DTCH+v70D8ooTInmHm8lE7L+m7gKANmoOSvaQWnaAh0e+kZOsPPRNHSN2rEloSSwoVTUCW9BuXuXB93wagzj9kb68/erayVfW2qwzuNnOrZtXMDZ5/cQZlmy64lD2NcgJccJndGAASM=
+	t=1751897172; cv=none; b=CCGn9LGR9B4nc4O5L9T8s5Hjo6bbxZ1l4PUeiaAoViKyKJAKQ5I8sM015zbHCnTZUPt/gPsCOhjiFYh+K1Z+/wiBvy4iV9HKFaO8GLB01ZKsnZlf2muA186Ae++f8ynRsxiDQNJJEi64022fyHO2YSzT+jiZZd7L25om4yKl0hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751896141; c=relaxed/simple;
-	bh=iBv6okUseyiTdjt3XFNpy+qoASB9X2reY393kqaQui8=;
+	s=arc-20240116; t=1751897172; c=relaxed/simple;
+	bh=WjLJQ8DJG9dk9LY4/WcdTGq2agiZKN8nJ1UypqgJtcU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QK9BjwvjGDjKfOUDktP5tZmZpKgrJxDh64t15YEilHZQGS2n2M3Yjd/CrFj8fCIFS605L2WuH/5Xwnn6WIYpu6/WBKl3d/OFIiBa78/KRMHXlvrPAl9Oe+K1VIEWpY5+DAhuHHCXvYS7rCVpS1trnIflJts6Lv25hmv0kQZF7v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YzSGrTOT; arc=none smtp.client-ip=209.85.208.182
+	 To:Cc:Content-Type; b=XIaJQ3u4u+rNDwt4hNzqTIRzbdNL/5Ulg80vCHHIAEW9tIkT4VXsLIxDdkI2+/cIScBK7rg849UJknjZugBgRc1mCEIQNlhDG+DE+X/lzdEyAb0YnSqXvB54iNJUPFprqYgmY1LsA3lyTNjiVrgwws2DXNCXEB2T6XhZ82zUJrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kru11H6h; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YzSGrTOT"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32b3a3a8201so26275511fa.0;
-        Mon, 07 Jul 2025 06:48:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kru11H6h"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-31306794b30so710729a91.2;
+        Mon, 07 Jul 2025 07:06:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751896137; x=1752500937; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751897170; x=1752501970; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iBv6okUseyiTdjt3XFNpy+qoASB9X2reY393kqaQui8=;
-        b=YzSGrTOTWMH8Pi5gYbdOqfS9bFk17Nsc4qmcPoRSQAP1pX9iP+h0Eh/007a28JXcFO
-         MtMpSieBONvhMrlp0L/TqizKWPiz8R3wRvGmhzj6iaMFGaTlcf1ujt6ZQQviA1iT6fb1
-         wX/H97RIAoHiPEivQbT5wCIYfi202RG5cuj8Hch7BUVLhu8S6dDOHlGw3vy/0uikfix4
-         s80EDIDVQ0G7ylfCTKV6/ROCTMyrz1jhao5aYLeXKhT+ticRzUvMMcZ8U9KE6Y4ILlcq
-         +COcDrQZLlWGRGPOxoPBTk84QqzJU230UVnbG31umrWM+LVkdkD9rST9mXtmJZ0LtQq/
-         rIBw==
+        bh=z5eHXbB0tLWoYkJp+N7tByAI0f211iSmpcNJkEa+CDI=;
+        b=kru11H6h65fP6wlHsnsE0kR+r+VHP4n16TjURr6Vf6VtgFplwNVRH760k4/eZk9VYe
+         TXQDrvNh/xVo5OFrO1BaCviV9zvmNpogJTJi3J/wN/oi7NR9jXbZPLtbOZ5XXGqtzrT+
+         7VQTrX+xF9gfzswtG4fXnmREzgD6AIuvlmVtUYJJb9SZtNLZcZh8jbL91jvwjYgdEb1K
+         5TBmoY+VX6Ir4rnrFbU164lCPH+CLF/1U7ddQAosuWEW5WYUiv40lZ/oXv9nA2CljDua
+         xna0K8q+86zU8dV6Mg9Y6xLtgHG2sE4r3srXCjHOPfYhWSR1DxLChYysxSmp3n2t56/w
+         Rw3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751896137; x=1752500937;
+        d=1e100.net; s=20230601; t=1751897170; x=1752501970;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iBv6okUseyiTdjt3XFNpy+qoASB9X2reY393kqaQui8=;
-        b=ct+y8/rtDpMBfZiDwpMWohddEmZY3hswfXaI60Zl8EfgPqXNtXM/yj41YWqwbBrJ9U
-         u6NewZEv6hUd87+iJa5JSwQ8TdZW44aQ3Hp4SNp92DdDfb/JySIIrO8ZJsm4IImbGr9H
-         wv18z36lxRg7BQnbOlYGJGF5gmneoqrUPhMBNeeMCc/FatOMOSr+QKaRnzJMCenMP/qw
-         3s8L2p1EZFv4kHmIZVMgUTwJILIRAEQF77v59W1Bt1cpCr8E62MwUMaQRoo1pcljiM7V
-         J0Cxw+4j6Oh4n6r7G5k2Zl2Zdda6ngHPlDo3i21iSlTleFC5uH1G9y/uAFuj2kNfMcyb
-         spqg==
-X-Forwarded-Encrypted: i=1; AJvYcCUIbZRvhgMmrzeigCqe+yjQ6cvqXOWVuoNgzLicRMb5/4rNBb2kCXh0k4C9ZcFKmTbYGQ31l97f5VWcE7aE@vger.kernel.org, AJvYcCUZNfA61PoL1KwpRuWEffcCNeztrVXWozUZeEadmNLQtdrdhmNLeCRy2aJbT+UrePAv+nEVAazkGStylaL3@vger.kernel.org, AJvYcCWnnp1VvMzEMSWe4AsF5NOpQ5U79WJQYn2rIUz1yOiqfChXUsmQr4J9Jsr3j7m0Ajq3JLvUsOKFGc47WGvBOTs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCA3YNH2u8kE7l96kjBMAmNZTYlwWfMV2AFzbaUxy1EojcvIS2
-	4SUtqT9MJu410hXaVHGiK1zDqPfEWcmFnF1ec0bmM7iVBYcS5AfXz7uA0AJ/xhv7/ANf4Ta9GRX
-	og3AsDgv7FTIbKHcFeWu5Ic0AJ+TcoeA=
-X-Gm-Gg: ASbGnctRJHdX+lTuGR/FlMC0DiQ6pxFjrYVHa9rpOYAlCWoJusjY5xM+vrvP3wVAx/7
-	W/HWUTf6kvKwKN4zyYkl5Mm1E+XlsMJ0JeVT6lnu9D1CBhLKT4JsY8BCEVa3FiZQ+7+s20HJe9a
-	jQCXOJIr5i8papMs9KAZq2x/q3fuuyYO7r+HIrVMq4JgazXY7X4ei6GkoTs5tI7fOZCEwfxT0ZB
-	IwKZLXGX6yNYFk=
-X-Google-Smtp-Source: AGHT+IG6mESRFwHrjMPB8IJhsBDIv7jvEhAZYhXGS/YJrBI7hE2OE3eUCK3Rsd7KBGcxdf0IEh0SQDDfRzDFGBXXLEc=
-X-Received: by 2002:a05:651c:418a:b0:32b:2f4a:35e4 with SMTP id
- 38308e7fff4ca-32e610eae45mr32663681fa.34.1751896136651; Mon, 07 Jul 2025
- 06:48:56 -0700 (PDT)
+        bh=z5eHXbB0tLWoYkJp+N7tByAI0f211iSmpcNJkEa+CDI=;
+        b=BXhBSMQOoFcFLEAwt18h5RZa23l4weZyz3x/EZcmCa+HdKLZjLeQzR190QsNVWgg/7
+         PnNEUEMr7+0pChfUW456bROklETSgRTB7+QryE0V7qQgHYOCnhl1x6Q++Js0itBgRmBb
+         52QZ8YilPbdhkdZiWf0DXbV0Oe8j36GWWzQA9dpt1oSLvUn1iuOJucDDaEJ4he+IGQ2h
+         0d3khZw4uMtIPLJsoHPx+fdtbMY4ViDdgch+LNCvoUG0KkYBmKT6y7hpzPd5mRBNLQmo
+         nBapW2jB5s2mWd8pt0iD5Qp8pHzonZJFRW00f3mAxS+OcefulP78W1qkYBjJlPuQH31O
+         Syow==
+X-Forwarded-Encrypted: i=1; AJvYcCUA+zJx1pvuzcwigIhLrQ2DOTwN7tYAWqyXZy3WsEuKZeAmrnWoHYfP7kBEa4RsMr3d762Uzrnnn2byCnwvb5I=@vger.kernel.org, AJvYcCWAfRtwQf7i6xa8QPrGFO68iw5fP1FT6lLNoKJbydKD4iV6g+dWVN+20wNUaaUNXvTXnC/Y7ewqdxOuT9DZTw==@vger.kernel.org, AJvYcCWb7xr7ok02SkUnfJ6sMAF9Awvw8ipLypxYnMuQTul5OreU3egBzDWZvB+HEC6EK9y9E0Ra/l1Ewv0m3sk=@vger.kernel.org, AJvYcCWhW73cbkYSU1ij/FtZaI5NOUIRmCtVhXx64N0X9a/1BcbbUSG3BInPrA8vxHMNOivQO2ludn6aHRuFiL3I@vger.kernel.org
+X-Gm-Message-State: AOJu0YxElf4xE0sWYAGQSS19qlj4kY7FppN1ZE+A8uEP+fe0M6paWxgk
+	7pzIshnRliYWA9lbHo+6FfZZR/N4bzqkiP8X8tuiSJN5qWOJpc4k7FFNFkDKSmVZ+Cg65lc+d8R
+	9pnJpvYGIircw6gWOKX+Bd0pBoS+3eWE=
+X-Gm-Gg: ASbGncuUcyiNDCHWhYQar0IHhWFOP0pEU1QTIzUJ0z7lQSo6l2zNVJ0QpfanG3im5G/
+	NL70T5xKNIAwvUqhZ+k6LlE4iLZrkSGKo2B874P7IS2oKd06tbziVtYVw6AeX+vQ2O8kdksKqQp
+	RvkGvT0Lyr5k95/qwer3zfBnWsahAZ7lC6pCA3OoWgyrL57tXvg+zy4U8=
+X-Google-Smtp-Source: AGHT+IHYDP2ItVDS65gAYycZ9ux53Zh85xSymAbd42Tqj326gWzFunD0tX8YRk4m/jajtZi6K8fatKyug2zlraKKOWU=
+X-Received: by 2002:a17:90b:5408:b0:2ff:7970:d2b6 with SMTP id
+ 98e67ed59e1d1-31aac545128mr7024651a91.5.1751897170250; Mon, 07 Jul 2025
+ 07:06:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250701-xarray-insert-reserve-v1-0-25df2b0d706a@gmail.com>
- <20250701-xarray-insert-reserve-v1-3-25df2b0d706a@gmail.com>
- <CANiq72nf-h86GszE3=mLpWHi5Db+Tj0TRyUe9ANfjdNbesBEEg@mail.gmail.com> <20250706082904.GB1546990@robin.jannau.net>
-In-Reply-To: <20250706082904.GB1546990@robin.jannau.net>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 7 Jul 2025 09:48:20 -0400
-X-Gm-Features: Ac12FXxKbt56dwBuo7MeSvdevPz34_ZeU8dMdxkb0P_S_eSO5uofzl8509YIRo4
-Message-ID: <CAJ-ks9mkYR118njo9rvFaqZMhEa+uQusUBAYTSH_1gCxTy-2ag@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: xarray: add `insert` and `reserve`
-To: Janne Grunau <j@jannau.net>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>
+References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
+In-Reply-To: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 7 Jul 2025 16:05:56 +0200
+X-Gm-Features: Ac12FXx9s4CqlK2pHGTaw_tDQW6E2_Qdww9gpUjj8n34vHnupqPLYoqsVo1mv7E
+Message-ID: <CANiq72k5mU7cACFh8TZC1+NfUQpdrZBToZ-jd75DfCNTfMU1fA@mail.gmail.com>
+Subject: Re: [PATCH v15 0/7] rust: extend `module!` macro with integer
+ parameter support
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Benno Lossin <lossin@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, Trevor Gross <tmgross@umich.edu>, 
+	Adam Bratschi-Kaye <ark.email@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Greg KH <gregkh@linuxfoundation.org>, Fiona Behrens <me@kloenk.dev>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 6, 2025 at 4:29=E2=80=AFAM Janne Grunau <j@jannau.net> wrote:
+On Mon, Jul 7, 2025 at 3:31=E2=80=AFPM Andreas Hindborg <a.hindborg@kernel.=
+org> wrote:
 >
-> On Tue, Jul 01, 2025 at 06:56:17PM +0200, Miguel Ojeda wrote:
-> > On Tue, Jul 1, 2025 at 6:27=E2=80=AFPM Tamir Duberstein <tamird@gmail.c=
-om> wrote:
-> > >
-> > > Add `Guard::{insert,reserve}` and `Guard::{insert,reserve}_limit`, wh=
-ich
-> > > are akin to `__xa_{alloc,insert}` in C.
-> >
-> > Who will be using this? i.e. we need to justify adding code, typically
-> > by mentioning the users.
->
-> xa_alloc() / reserve() is used by asahi. It's still using our own
-> abstraction but I'm in the progress of rebase onto the upstream xarray
-> abstractions from v6.16-rc1. Once I'm done I'll reply with "Tested-by:".
->
-> Janne
+> Based on code by Adam Bratschi-Kaye lifted from the original `rust` branc=
+h [1].
 
-Thanks Janne. I'll wait for your Tested-by before sending v2.
-Tamir
+I would suggest adding this sort of note to the commit messages,
+especially since the commits have no Co-developed-by/Link tags
+otherwise.
+
+From our discussion in Zulip: the code itself is older than that the
+merge above. I think you wanted an example sentence for this --
+something simple could be e.g.
+
+    Based on the original module parameter support by Miguel [1],
+later extended and generalized by Adam for more types [2][3].
+Originally tracked at [4].
+
+    Link: https://github.com/Rust-for-Linux/linux/pull/7 [1]
+    Link: https://github.com/Rust-for-Linux/linux/pull/82 [2]
+    Link: https://github.com/Rust-for-Linux/linux/pull/87 [3]
+    Link: https://github.com/Rust-for-Linux/linux/issues/11 [4]
+
+By the way, I guess you should inherit that issue in the last link :)
+It had some details about things we may or may not want to support
+etc. that I looked up back then. If you prefer that we close it or
+that we create sub-issues, that is fine -- up to you!
+
+Finally, if you end up adding strings, please link to Adam's
+https://github.com/Rust-for-Linux/linux/pull/110.
+
+Thanks!
+
+Cheers,
+Miguel
