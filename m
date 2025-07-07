@@ -1,159 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E706D81724;
-	Mon,  7 Jul 2025 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58772E1730;
+	Mon,  7 Jul 2025 14:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751899170; cv=none; b=JLcQ2M1UE2yH7u5n/qNeZMdSlyNY2GanwFwJYO1hEFpOi0RPfTgx3wVl8xpRY8L9H8Ofg49cgCwdyyctzdDrnw78cL8YVj+tAZNZO9ZE6DiL6o4aWzmKmb6s/XGo3x71zJwA1KqGQNCRLIA8Z4YVVJN7uQZ6ecGQH+fd/YCcFwA=
+	t=1751900300; cv=none; b=UFOcNPbzgbJVDdydDHs/aFMXvc/0P0vus9wfguBEzgGImrS71zFTOkg1jVEyKKQh29r5MWNG6Hg9wA00CP9O9MIWZIT+JrOpa7Agm7nEGXq9tAJVVOYP+dSWJX6sov3Vfd3z/x1/UdZHNNX7nksPTYGCE5ohltOvolOPGEYqhXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751899170; c=relaxed/simple;
-	bh=4eYOHHUs3yvdAM0l6wT72s9g3/4rtU1j05xlxZwX9UU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hZ9b9f7PtQ4IAHRVY0ctPvo7P2qLOkfCcbMDJrLRcO02sBTlIszSc2NKQCriqvn6iYNAOSk46fWiuIf4c4Mq2FZTS6V6mky8wh1Da7ufETQ6dT1CaAoYFqniqHVP5yANikPFZ80XbUDyDNj2xFbttCUsN8BObEJlCUWE+K/VZQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSWylTnQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751900300; c=relaxed/simple;
+	bh=PhN12gIU8BIJ5VKiBnTir2bDTMuW0pc6OzWU1moQax4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S8t77TJWq5vAratTxhtW98mSFBKMd/dGunIWYFj5OyU+4iL+vqFleQpYF3+vujLncs4NiPoIRyKhHHjJVn9aCAQ9tFwZ9JtxmkuYXmL7QUKYZCjKlSXJqlFUoPGiE1jQOncX0FcCQlEl8gPJr6o3AWYOehAJrZfM8TxYhZl95ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pE4LfnzD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSWylTnQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E71C4CEE3;
-	Mon,  7 Jul 2025 14:39:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pE4LfnzD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3398DC4CEE3;
+	Mon,  7 Jul 2025 14:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751899169;
-	bh=4eYOHHUs3yvdAM0l6wT72s9g3/4rtU1j05xlxZwX9UU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SSWylTnQcOOjyrZlUpjfMgWuR2rUdKWxCo1Skzo9hjssxv4+SVlyr1dCrZe1TX2yl
-	 3zCCjWoyDn+BsW7LK7HJUKKJdhHAJc/EA8prxS7dRUSFK0a4Nl/ot/BCtq0cmoQEzX
-	 DxscVWDPucf0SJqUZsicRicqcaLJ8L5hLCyaGcRDXiw8ZsmC9uxaTOSpdctXlgifAd
-	 ehunIrsI9gY8eOpFo/fQLAG5/b29xnO0yxPl7CC+UoFCqaohbdB/69ZmCi9n/bfrN+
-	 9oRj1YZtqceRewu17f2RzhvU9I23VnTYQ0uEnDzyTMm26jLobRZ9IrMfQMrNS0lcId
-	 uh0D4CBCVVnJA==
-Message-ID: <7390bc96-0049-4f8a-899e-64fe2105fa8d@kernel.org>
-Date: Mon, 7 Jul 2025 16:39:23 +0200
+	s=k20201202; t=1751900300;
+	bh=PhN12gIU8BIJ5VKiBnTir2bDTMuW0pc6OzWU1moQax4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=pE4LfnzDkmD442B5l+oZOIrTprN4zD/ARoX0ruGGAdbpGolBgjhgC/F+vVUk+V0ik
+	 TutR/i4p4dYO+XnY1tMUxvokNDeQc0fl7hc66xdknBFLBYO4NWMvJVgGqVIq0R8usd
+	 Um1G0mFhuH8c61sDTkRqRWx8z8KK4s8FdMmAAUl23/mNaw0fx0vj6VDu9eR2jOcjZm
+	 l10oH8NaD6DXl7JwPIv6fEhLeNtDDo/+NuZc0XHvKUrzBlYE5i2UkNLxe/FufqmJpe
+	 kTgXGqSkx656sX7FymFZ6smj+LJmwrL+h4dfnPBH2r3r+B9pwziTmmgDrvKHEOih7p
+	 XwyEGPC3VEBRA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin"
+ <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross"
+ <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,  "Jens Axboe"
+ <axboe@kernel.dk>,  <linux-block@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/9] rust: block,core: rename `RawWriter` to `BufferWriter`
+In-Reply-To: <CANiq72nfeGwm17kp8OsmpgO-U6xMsuL9KBNwX34Rt1xz-Nxa1Q@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Mon, 07 Jul 2025 16:18:13 +0200")
+References: <20250616-rnull-up-v6-16-v1-0-a4168b8e76b2@kernel.org>
+	<20250616-rnull-up-v6-16-v1-3-a4168b8e76b2@kernel.org>
+	<bpbFNIoKHyMEJSNSRBaq96hzfyrWNtFJIotbYdqEAcPhLhPf_sg-1kNlty_Uj-1tPs0ZQHcGrT-wlVRHYbANqg==@protonmail.internalid>
+	<CANiq72nfeGwm17kp8OsmpgO-U6xMsuL9KBNwX34Rt1xz-Nxa1Q@mail.gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Mon, 07 Jul 2025 16:58:11 +0200
+Message-ID: <87o6twoxoc.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] rust: i2c: add manual I2C device creation
- abstractions
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-i2c@vger.kernel.org
-References: <20250704153332.1193214-1-igor.korotin.linux@gmail.com>
- <20250704153912.1197034-1-igor.korotin.linux@gmail.com>
- <aGgxfNh-sgkJls_h@cassiopeiae>
- <954a40a4-2f5a-4ef8-84ea-3d2ba2c85cfe@gmail.com> <aGu3O8QzboCQiKSL@pollux>
- <0ae470c0-49c3-4ee9-913c-19e58a505b13@gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <0ae470c0-49c3-4ee9-913c-19e58a505b13@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 7/7/25 4:31 PM, Igor Korotin wrote:
-> On 7/7/25 13:02, Danilo Krummrich wrote:
->> On Mon, Jul 07, 2025 at 12:20:15PM +0100, Igor Korotin wrote:
->>>
->>>
->>> On 7/4/25 20:54, Danilo Krummrich wrote:
->>>> On Fri, Jul 04, 2025 at 04:39:12PM +0100, Igor Korotin wrote:
->>>>> -pub struct Device<Ctx: device::DeviceContext = device::Normal>(
->>>>> +pub struct Device<Ctx: device::DeviceContext = device::Normal, State: DeviceState = state::Borrowed>(
->>>>>       Opaque<bindings::i2c_client>,
->>>>>       PhantomData<Ctx>,
->>>>> +    PhantomData<State>,
->>>>>   );
->>>>
->>>> I see what you're doing here, but I think you're thinking this way too
->>>> complicated.
->>>>
->>>> I recommend not to reuse the Device type to register a new I2C client device,
->>>> it's adding too much complexity without any real value.
->>>>
->>>> You also don't want the DeviceContext types for a device registration, since the
->>>> registration will never have any other DeviceContext than device::Normal (see
->>>> also my comment on the sample module).
->>>>
->>>> DeviceContext types are only useful for &Device (i.e. references) given out for
->>>> a specific scope, such as probe(), remove(), etc.
->>>>
->>>> The only thing you really want to do is to register a new I2C client device, get
->>>> a i2c::Registration instance and call i2c_unregister_device() when the
->>>> i2c::Registration is dropped.
->>>>
->>>> This is exactly the same use-case as we have in the auxiliary bus. I highly
->>>> recommend looking at what auxiliary::Registration does [1].
->>>>
->>>> Also note that if you want a reference to the device in the i2c::Registration,
->>>> you can also add a i2c::Registration::device() method that returns an
->>>> &i2c::Device, which through into() you can obtain an ARef<i2c::Device> from.
->>>>
->>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/auxiliary.rs?h=v6.16-rc4#n299
->>>
->>> I took a quick look at the auxiliary Registration abstraction and I see
->>> that it is not applicable for I2C subsystem. The issue here is that I2C
->>> C code doesn't provide with an API that can registers an I2C client from
->>> already existing `struct i2c_client`.
->>
->> I don't see why the following wouldn't work:
->>
->> 	struct Registration(NonNull<bindings::i2c_client>);
->>
->> 	impl Registration {
->> 	   pub fn new(adp: &I2cAdapterRef, info: &I2cBoardInfo) -> Result<Self> {
->> 	      // SAFETY: [...]
->> 	      let cli = unsafe { bindings::i2c_new_client_device(adp.as_raw(), info.as_raw()) };
->> 	
->> 	      // Handle ERR_PTR()
->> 	
->> 	      Self(NonNull::new(cli))
->> 	   }
->> 	}
->> 	
->> 	impl Drop for Registration {
->> 	   fn drop(&mut self) {
->> 	      // SAFETY: [...]
->> 	      unsafe { bindings::i2c_unregister_device(self.as_ptr()) };
->> 	   }
->> 	}
->>
->> And in you sample driver you can still the exactly the same as you did before:
->>
->> 	struct SampleDriver {
->> 	   _reg: i2c::Registration,
->> 	}
->> 	
->> 	impl kernel::Module for SampleDriver {
->> 	    fn init(_module: &'static ThisModule) -> Result<Self> {
->> 	        let adapter = i2c::I2cAdapterRef::get(0).ok_or(EINVAL)?;
->> 	
->> 	        let reg = i2c::Registration::new(&adapter, &BOARD_INFO)?;
->> 	
->> 	        Ok(Self { _reg: reg })
->> 	    }
->> 	}
->>
-> 
-> Ok, I think I've caught the idea. In general I worried that if one has
-> link to an i2c::Device which is a transparent representation of `struct
-> i2c_client` he could somehow cast that `i2c::Device` to
-> `Registration(NonNull<bindings::i2c_client>)`. After some experiments, I
-> found out that this is not possible due to scope of the
-> `i2c::Device::as_raw()`. So the simple NonNull implementation is as safe
-> as my "super-puper secured" DeviceOwned implementation.
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-Well, with unsafe and raw pointer casts you can basically break anything,
-including this design. Don't worry about it. The important part is that the
-design does not allow "illegal" operations while sticking to safe code.
+> On Mon, Jun 16, 2025 at 3:26=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
+el.org> wrote:
+>>
+>> Rename the `RawWriter` to `BufferWriter`, wihich is a more suitable name.
+>> Also move the module from `block` to `str`.
+>
+> The prefix should probably be "rust: block,str", or just "rust:".
+
+OK =F0=9F=91=8D
+
+>
+> (This patch would be ideally first in the series rather than in the
+> middle, by the way)
+
+I'll move it.
+
+>
+>> -pub(crate) struct RawWriter<'a> {
+>> +pub struct BufferWriter<'a> {
+>
+> Since you are re-exporting, can this be kept for the crate?
+
+Yep.
+
+>
+>> +    /// Create a new [`Self`] instance.
+>
+> It is not a big deal here, but when you have a "move" commit, please
+> try to keep changes to the minimum, e.g. type renaming could be done
+> before or after.
+
+Will do.
+
+>
+>> +    /// Return the position of the write pointer in the underlying buff=
+er.
+>> +    pub fn pos(&self) -> usize {
+>> +        self.pos
+>> +    }
+>
+> This is not mentioned in the commit message (and should have been a
+> different patch too).
+
+Right.
+
+> By the way, cannot you use `{Raw,}Formatter`? You could add a
+> formatter that null-terminates automatically and/or that tracks the
+> lifetime, but we add the null manually elsewhere.
+
+I'll look into that. It looks like I could just use `RawFormatter`. I
+don't recall the reason for `RawWriter`, it's been years and it was
+Wedson who introduced it originally.
+
+>
+> Speaking of which, aren't you null-terminating manually anyway in `gen_di=
+sk.rs`?
+>
+> Ah, no, you are adding two nulls -- one at the end of the buffer, and
+> one in the middle. So the current code will fail if it needs one final
+> byte (i.e. when the last null would have been enough).
+
+The null insertion at the call site should be removed, it's a leftover
+from before `BufferWriter` handled that.
+
+>
+> Given all that, I would say just drop this one, and use the one we
+> have. Then we can add a fancier formatter later on independently if
+> needed.
+
+Will try that. Thanks for taking a look.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
