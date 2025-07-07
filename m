@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29192DEA6E;
-	Mon,  7 Jul 2025 15:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FDC881E;
+	Mon,  7 Jul 2025 15:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751902037; cv=none; b=I7Y4npO5C+nwBndPfmMwoZDTTr7gpXcq8BGAFlRJu+TbaQqqNSqvwautgGSlEn3PVDR6eqahdcuRXgC45B1hpaWwiyWlTecrmDjOW6aQTHmQaqmdE6VUQ2EKMpMAXw6zAXOl13G87nF4wH/hfMHFn9G9HJJGuRptfo1LITPlz0A=
+	t=1751902276; cv=none; b=m2vCLu+XhgENgSJ2HiHlfInP9UV+5b6rBjK3vA9NAQFoEzbdmhiG4/C1G73tNNKL0jBAoEgHR/jF0v4C8ZXpnof4atCJQlyeFUPF62ev9dxR6S1agKBQfpL9AkPunuo36p4KK/l2VEhP0NtRM5XrZ4kTv3gwqv688d4lV4MZqkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751902037; c=relaxed/simple;
-	bh=XTTqaEp0xafiyS7dlnHkY4aFyy248oxQcyqSoJYTI7Q=;
+	s=arc-20240116; t=1751902276; c=relaxed/simple;
+	bh=O2TjwfiPXObkuPcjCvRAD8xMf8sZ9AOTnhhKKSuQN34=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=pOHsH9ESadS+WBd8Ni+L0DEE35z9lKvh3yPLSLETefeqxSIE/4943C/YLEji8Q1GejAQZVtTK5NutMxqTljTZWJ0nxofqIftkqyKwJxDtNbN8PhNiUrpoDnxV/asF3nyJwRz5X154CK4zCvXWlbVTuCiZOGr4DxS3cpscaawxF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fq925sbS; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=U89yLqPLoHwXzjxI4GDcOsigotT0M11M0EsQ3kZAMb8a8/g9u+3qV03HiJ5Szn4QXuUinLRracjA7XREK8rvrqpu0V+N8gxs2+M8neRFRXVVn0TxURu8PLOwWVdR4dZMCu2JartjhtbTDmPH3qA85oJsyb5Xj+3KuxcwDfxyXFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X/rLsM8n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fq925sbS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00D5C4CEF4;
-	Mon,  7 Jul 2025 15:27:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X/rLsM8n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B02C4CEF1;
+	Mon,  7 Jul 2025 15:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751902034;
-	bh=XTTqaEp0xafiyS7dlnHkY4aFyy248oxQcyqSoJYTI7Q=;
+	s=k20201202; t=1751902275;
+	bh=O2TjwfiPXObkuPcjCvRAD8xMf8sZ9AOTnhhKKSuQN34=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Fq925sbSf3Hrv6F+NdFa+r85sG3BXr/dwNpwGKjYJwf0VwwAStOMFK5FSy8V6unl/
-	 oPJo+O2SPVpwcNxAPeOBlI4YOnpQgfpTq+dEW2x+69aiLWeIFMay+SoYMO8y5gyMAX
-	 WTE7SMgVWMSU0C5uVdATRjQMZ2eY73UOY1mD3Zw17YyKEbPp1x94AfUZsIZOjWnsKg
-	 tia1KlS49e9ZKOmkee0PkxqbP+WEsIGIqjksawVXivlEJOJjvq4xcyWog0w2XrkdW2
-	 yWedYXv3seWrwBhcCO/cL8gK8yiToTGYLH+xLt/PQg5JMU4DH6m/KKbecml8V4ZU6S
-	 Kkf62LDouTm/Q==
+	b=X/rLsM8nH7EKvl4qlWRM+6fK2wtiF+7Td45AouDH0S5l8xXipckWEUPue+nvBlFG7
+	 RNFUUKEPh+dhwS5lO14nT6Cghww2nfBt4hGEpTj+QkQXOPiBAUpZFvLHcBrWpd1WOO
+	 6y9Y07Kgs0DGqLENYD06G2kfy2FZfhrDAQfsXEZDqEmuFO7zSdG/5Z2yJEQHHeUb9k
+	 jWQ6M4rWxp/CrVnfaPjvdorykiEYRep5MKcf3cEA6olLLyW7TNySSb9bTWdUJnlUrj
+	 UucWXQGXvGKauSuSrAg5RTBlur9z7/9+E7bz4QA3It3LP2YlQtVaXojDsZ1CCHt5hD
+	 0uArupmUwTjOA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,44 +34,81 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 07 Jul 2025 17:27:08 +0200
-Message-Id: <DB5XFT4E3CBH.1LOP1V3IMNDXK@kernel.org>
-Cc: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pm@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <kunit-dev@googlegroups.com>, <airlied@gmail.com>, <simona@ffwll.ch>,
- <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <rafael@kernel.org>,
- <viresh.kumar@linaro.org>, <gregkh@linuxfoundation.org>,
- <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
- <tzimmermann@suse.de>, <davidgow@google.com>, <nm@ti.com>
-Subject: Re: [PATCH v4 2/6] rust: switch to `#[expect(...)]` in init and
- kunit
+Date: Mon, 07 Jul 2025 17:31:10 +0200
+Message-Id: <DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <gary@garyguo.net>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
+ <peterz@infradead.org>, <mingo@redhat.com>, <will@kernel.org>,
+ <longman@redhat.com>, <felipe_life@live.com>, <daniel@sedlak.dev>,
+ <bjorn3_gh@protonmail.com>
+Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+To: "Onur" <work@onurozkan.dev>
 X-Mailer: aerc 0.20.1
-References: <20250701053557.20859-1-work@onurozkan.dev>
- <20250701053557.20859-3-work@onurozkan.dev>
- <DB1SKFOR9W3I.1MBT3C6FGBWH7@kernel.org>
- <CANiq72kqmMTLQaE03WEFzi2UN=Sk31TLDPi3S5UuuA5bHj3O9g@mail.gmail.com>
-In-Reply-To: <CANiq72kqmMTLQaE03WEFzi2UN=Sk31TLDPi3S5UuuA5bHj3O9g@mail.gmail.com>
+References: <20250621184454.8354-1-work@onurozkan.dev>
+ <20250621184454.8354-3-work@onurozkan.dev>
+ <DASY7BECFRCT.332X5ZHZMV2W@kernel.org> <aFlQ7K_mYYbrG8Cl@Mac.home>
+ <DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org> <aFlpFQ4ivKw81d-y@Mac.home>
+ <DAU0ELV91E2Q.35FZOII18W44J@kernel.org>
+ <20250707163913.5ffc046d@nimda.home>
+In-Reply-To: <20250707163913.5ffc046d@nimda.home>
 
-On Mon Jul 7, 2025 at 3:02 PM CEST, Miguel Ojeda wrote:
-> On Wed, Jul 2, 2025 at 8:47=E2=80=AFPM Benno Lossin <lossin@kernel.org> w=
-rote:
->>
->> @Miguel are you going to pick this eventually, or do you think it should
->> have a new version with the right splitting?
+On Mon Jul 7, 2025 at 3:39 PM CEST, Onur wrote:
+> On Mon, 23 Jun 2025 17:14:37 +0200
+> "Benno Lossin" <lossin@kernel.org> wrote:
 >
-> I guess I could take it since the series can only introduce build
-> failures at worst.
+>> > We also need to take into consideration that the user want to drop
+>> > any lock in the sequence? E.g. the user acquires a, b and c, and
+>> > then drop b, and then acquires d. Which I think is possible for
+>> > ww_mutex.
+>>=20
+>> Hmm what about adding this to the above idea?:
+>>=20
+>>     impl<'a, Locks> WwActiveCtx<'a, Locks>
+>>     where
+>>         Locks: Tuple
+>>     {
+>>         fn custom<L2>(self, action: impl FnOnce(Locks) -> L2) ->
+>> WwActiveCtx<'a, L2>; }
+>>=20
+>> Then you can do:
+>>=20
+>>     let (a, c, d) =3D ctx.begin()
+>>         .lock(a)
+>>         .lock(b)
+>>         .lock(c)
+>>         .custom(|(a, _, c)| (a, c))
+>>         .lock(d)
+>>         .finish();
 >
-> However, I thought we were going to do the proper split (as
-> independent patches, too) and then let each maintainer pick each on
-> their own pace.
+>
+> Instead of `begin` and `custom`, why not something like this:
+>
+> 	let (a, c, d) =3D ctx.init()
+> 	    .lock(a)
+>             .lock(b)
+>             .lock(c)
+>             .unlock(b)
+>             .lock(d)
+>             .finish();
+>
+> Instead of `begin`, `init` would be better naming to imply `fini` on the
+> C side, and `unlock` instead of `custom` would make the intent clearer
+> when dropping locks mid chain.
 
-I also think it's better to split it correctly.
+I don't think that this `unlock` operation will work. How would you
+implement it?
+
+> I guess `lock()` is going to use the slow path since it's infallible? It
+> might be good to provide a `try_lock` that returns -DEADLOCK
+> immediately without blocking when it can't acquire the lock.
+
+I think `lock` would first try the fast path and if it fails, it would
+unlock all locks taken before & then re-try the slow path. (if that is
+how ww_mutex is usually used, if not, I'd need to see the most common
+use-case)
 
 ---
 Cheers,
