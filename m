@@ -1,157 +1,259 @@
-Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2051.outbound.protection.outlook.com [40.107.237.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7F128A3E2
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751874147; cv=none; b=e6iUfAWwH1+oLFNzTRmmbM3Md1bintrXBTv4Ypz+o0L7zrZBpdtQTfgj35hpp1BxuxYZ4dHqG77C5f/K7L4tjWkEUC6h662pM53qe8VmPljgpBTdM4PeTFHPSV3il9saOGyRGWFFpgNAre1ZFIrYYUrQwYJts34nHiZSp7WrwwE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751874147; c=relaxed/simple;
-	bh=yVwJr8aTR432s0rBM+n7RBaGuFfXXDj39+PJzBsRSa8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WNTBhDTMhnadr6VUg9k2U8CJ0jWZvfCMno2mTRfv7fECJrpqUPeyX1o8H2RUxnmmMxtzYuylueTXdsowXHSNdyGigYdA2Hd2Z/i6kBUE0hgHyCRPEo0S+R0eT0bQZVBteAzaN1nM4LGdMB1NgwGh0akZ1zKKkKkWX4OIYjBYfU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=aKSXO0BV; arc=none smtp.client-ip=109.224.244.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0661E4AE;
+	Mon,  7 Jul 2025 07:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751874379; cv=fail; b=rHrYbFGpsqH2hRGYkLU7glL5Y6LPFNjONMaMP1P/xiIGxBfMVH+99okBxtWB71h3rn+dm/gvqNPMxNFyUjAoKGUhuynuZSHC3MGak5ssRAfy1XfsQZyuONPZ9dfDmbB7TuIyXcjumjZ6tnwh31ofE3P2S3BD3OaGy5mCITm+3AY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751874379; c=relaxed/simple;
+	bh=DyvP1qEFQXof9tHqeO+FNqLGmaAZOm6XuRYccn/OTP4=;
+	h=Content-Type:Date:Message-Id:From:To:Cc:Subject:References:
+	 In-Reply-To:MIME-Version; b=p6uaIzhdixpbXT5KN94b6uISuwPZzhLac507YklPgNc+WgEfBXECPGH6D9f/hHRT/fp+mQ4yso9wvpmiWi1aV72YtpXgwiXPQ3IQpMqtP448AMEVFiBo7p9DgV4szmnYjiLXMssWS8vkLaL2Qk9rwhN5rTw6Q0+myz1eMYeKdNA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YZ0OiInd; arc=fail smtp.client-ip=40.107.237.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="aKSXO0BV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1751874137; x=1752133337;
-	bh=B36w5AqVLdS7ID+Qou3MMKc+btIXvIpkpVMniRAbSVI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=aKSXO0BVIPGBLR0xuo/P5yD6wONOOrOk5VIoSJOTk/euuMIX4CNTH9Yt5klyEO5dJ
-	 tvVLRClKLPMcAA906aUSHa1gcb81S7EJz+ET8sEnwRN0vhVtjz/f+y86gikaIZIfTS
-	 17VBIRxTH6x+5BZhzc7HDbbqOTcGPK931GHjaZ/NN0QeGMyfA5TMRH12wTp2GMNCxY
-	 8YV5bI4MnAtIeX6hUULo/r9J05gHOH9Sb4JI/KzSrn31h61tYqQoAXgfugHVwBsk8R
-	 3Nclmi9FylU051GeWrEWtTscNGrMnVkA+l3x7oo6pdpqA59F87+skc3/C7dEqnct+/
-	 LUKi3Y5ZnftMw==
-Date: Mon, 07 Jul 2025 07:42:14 +0000
-To: Benno Lossin <lossin@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 2/4] rust: Split `AlwaysRefCounted` into two traits
-Message-ID: <aGt6U2jCDnU7dzRA@mango>
-In-Reply-To: <DB1J4UQLG76V.69HKATSZZVNO@kernel.org>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-2-49eadcdc0aa6@pm.me> <DB1J4UQLG76V.69HKATSZZVNO@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 7f80a12fdc11ce419642d5cb2b1a3f748f0744db
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YZ0OiInd"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CczI2loRiH0ppYIh4ZJADrzsI24CoN89LNBpMt7nNDGFSYNJReVublMMs60sFYHu/Mw0lgaku8sT441KAQULJfb1e+SM+0rolC15XwXU7xUBmyWFh3jcDeihdufUbiMEoEeq8JoNlNtxGnWgkGMLwKgV9jDMZ3HOFZEMxxtVoiiA/nsZt99ju4+cBGBQl9GoqmjSQi4NTcyHC2Uvq/750y3SYCqEKCJ+/Ou2O7yOx19woSbFrPQ29Xrek3ZJzUfsYJ7ESMEfy/1elTyWR+XWD6TlfgwQwhqcHyON/o/yIYL713c4qVVoAAvMLapbuwsPxvxvdTXGl3k1/AY0r+damQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VJj/Rwz+axk+GYPIFtEkf8SLbuiS+bs+Mh2qdks5Mnc=;
+ b=VyxmiF4owGg1W7/iLygj1N3bTiTn2duc315J5FLSgwEsmHDSFudheGAowLHcpIAGZ4jqzgLKWEfos41TQKtMgez/zrtASmhw1MTiDO96NI6Ym9CZgLD1/D4ChZqABpwELJgi4sFF6GFWyUTVFz9YlEMzscj3p+KshhStFXzP0/M8tw0efqtYmj9f9uN+NX1k4C6m5rOOuuy9wyNwiQAD5m4AIICH1L14y6e9QYwJ6cnOWtHqk7si7WITF+ilM9tZ+8GcHKtZ3pdljDnrFYsv9FQzLo11fQeJ5YlTkMnQH4H4SZpMrkpTmD1+wgCC7onTRbgiGasMmcX1GBUURgf/bw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VJj/Rwz+axk+GYPIFtEkf8SLbuiS+bs+Mh2qdks5Mnc=;
+ b=YZ0OiIndx4vMWHGxw5U36peu60o4I09FyaVs13e4OweVj6W0lAbMzUoOBDv6wegeWJZw2tCei2M7ahc4IaZgRLSVrQM6wpXBM0iVMgWimcAxZTWT9zOLL1FfalwuExE+pnKHQ+/f0U2JVeSGmqH8dqKGC356fPjtbPNUGCZtJYTtdg+hjU6NDbEGapeldAIThm7BfItFt2s0WjvWR/zsfFabdskEauMq8saT910xj6h2UamSUf00z7WtknM7JPdYcwB2Fzsa3HdilRJq4Dbg5CDcNq3x1kKXTxCvgY59doVCqlBDfU3YekZE9AFuVcH0M5gpkbTPdmtpRdDpvLQO1A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by SJ0PR12MB5634.namprd12.prod.outlook.com (2603:10b6:a03:429::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.22; Mon, 7 Jul
+ 2025 07:46:14 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8901.021; Mon, 7 Jul 2025
+ 07:46:14 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 07 Jul 2025 16:46:09 +0900
+Message-Id: <DB5NMUV07ECB.2PQN70X9OWVTQ@nvidia.com>
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Danilo Krummrich" <dakr@kernel.org>, <gregkh@linuxfoundation.org>,
+ <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
+ <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+ <benno.lossin@proton.me>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <david.m.ertman@intel.com>, <ira.weiny@intel.com>,
+ <leon@kernel.org>, <kwilczynski@kernel.org>, <bhelgaas@google.com>
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH 2/8] rust: device: add drvdata accessors
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250621195118.124245-1-dakr@kernel.org>
+ <20250621195118.124245-3-dakr@kernel.org>
+In-Reply-To: <20250621195118.124245-3-dakr@kernel.org>
+X-ClientProxiedBy: TYCP286CA0040.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29d::15) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ0PR12MB5634:EE_
+X-MS-Office365-Filtering-Correlation-Id: 914bc052-0a22-4bde-16fb-08ddbd2a581a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|376014|10070799003|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UVY4ZE9HZVJrbHV3clRRN3dwNGdua0oxMEFvZmZSaS8vQlRVV3Bpc1d2OHdX?=
+ =?utf-8?B?UHZLSU50Tmd2MkV4RUxMcG13aXQvWmtUc2t3WkNvOXVxeU91cGt4U01YS1ha?=
+ =?utf-8?B?Nko3NjIzdFJWMXloZVpqMzVKMld5bGN3VnQrSDJWK2M3aVRMaG15ckFxTFhp?=
+ =?utf-8?B?d0pDMzV2V0NqWHVTbXMxSW96MktHUkVMZ2tacVFiNGlBOUVCMHUrOVA4MTVa?=
+ =?utf-8?B?RS8wOUdOMjRMY0toNGF0ZXBBZnpkNjhlOXIyMm9lZE81S2lnYXUrSzZNbjg2?=
+ =?utf-8?B?Uis3NURvOEJobFpHU01RNm9ITUczRkxjUzFrZmtpT2pMSm1GRXZ0dVg4MUsv?=
+ =?utf-8?B?aHphb3lxT3k5Nm9SZlJ4VzV6MkYveW85cmwwV3BmMzVkbk5DYjc3NTNFV3M2?=
+ =?utf-8?B?R1NNT1RycTE2TXBLZVVRRVJOcExuaVB3R2g1U2dEWjhVM1JZV2RJa1g1Z3RL?=
+ =?utf-8?B?YlVCelduWkdEK3ErM0ZaRXYzdmtPMDFQQnBqNUJBOUYrbjMrNFNocW1zMjNa?=
+ =?utf-8?B?YjdnVk1idFNLVUlxd3FsU0d3ZG9lMkJqc3V3TjNnM2ZoZzdNQ1ltVHBJcTZV?=
+ =?utf-8?B?SE5ablZCSkJyWGN0MnROWEJzRHpTS0pkWEVLblp0Rm9mZHByVCszMWRkVVFx?=
+ =?utf-8?B?dXJkcmhJeHphL3M4Mktnc1dmVTRFaXpsb0Z3SHBuK0M1azVUenVlY3UrQ0Y1?=
+ =?utf-8?B?TlVEaEZOZldCdDE1eVBhbzNrNmptYllDbjVNd1pBczZnS2crMzdyL0F4Q1lJ?=
+ =?utf-8?B?Sllad096WGk4RCtRL1ovUnRTTDZMRG9Xb2phMG1OdkExNXpld2hBeXNMZjZ2?=
+ =?utf-8?B?ODl1N1pTRDBydGZrbnVoanhnOTNpM1lFM3paanhwTHhJWnJYaG9Od3JiNnVk?=
+ =?utf-8?B?T25zOHdsblBTeWhPUVdWSDNQdElGdlI2MTFSTjNaUWZrR3hOL0I0L2dRV0ZR?=
+ =?utf-8?B?RjlPWVNLMTR1VjJvc0kxdG9OdFVacUJrYlNBbnRXdEtFdmh1V3BqUTZsZ3Vi?=
+ =?utf-8?B?amJhVG5lMFBsbWdhTG53N3JUbzZ4RXovQkZXZis5aG5Jck5YY3dhVU1MS3VW?=
+ =?utf-8?B?Zmtmc3VmTjRGUTU3MkpMMEkxbzIrRnFDdC9CYkMvSXd2dHVZVituVHg0YVRB?=
+ =?utf-8?B?Vzd6NDRLQlliZmFPaHkzYUdiNjJKMkdRYXByRnJwTUZSVTZZTXRPeWhWa01X?=
+ =?utf-8?B?bHFiV0JaK1VjMHhIYXhEVUJpc2p4NHYvcnRBMTdNeEpGa1d2QkVHVE16bmlQ?=
+ =?utf-8?B?US8yeU1CWEttSmZrVndPOHlKZXBDQ1NVOE9BQ1JQS3M3aHNtSXFaMzNBTHcw?=
+ =?utf-8?B?QTRoaGRrOWk5akxPQVNMUEN4bUJ2V1RMbFF1bHl6d1A1d3BMR3JxZlFLZTRQ?=
+ =?utf-8?B?YVE0UjJvTzJUanVjSDkybHBkTkxlZyswelRxdDhLR2RwRzNnUTJ3d2Z2c2U2?=
+ =?utf-8?B?aU1qbXYxQmNabENkYnVuNmJIYXFnUVNIZ01JTHhqK2pVdW1zcmNNbkhHcHNq?=
+ =?utf-8?B?c1RsLy9TWG9UZmIwTjYzanhGQW42cUxvUUE1Nm1rNE1ucktNdGVHVWlSck9t?=
+ =?utf-8?B?UUxPbWl5ODZlWEh4amd4bXk3U3dPOFJUZ0Fvam5nY05ETS9jL3E2OExWdWt2?=
+ =?utf-8?B?VUVQYXYzMUZHVE1YS0Y5N0lrdUFXeUxqenFnOElNN3kyMGU0VXMrZEl2dy9E?=
+ =?utf-8?B?dllUQnpPK21lRjlWM3JiYWpBYytFaDdqOXI1RUhLa0FDN05pYkhRdDRHWEl6?=
+ =?utf-8?B?NkR5OEJwdE5uWVhOVnVTNHBjaURKZDNNc3h3dXlVWVV6cWxUcEs2UVZJSXNw?=
+ =?utf-8?B?SkNPeDRTSTdyWTZXR0RLRkh2QlhNMkNxY0U5RVZDS2JEMlBxWUcyT0Y0Wng3?=
+ =?utf-8?B?RWYvVyt6TjVqeU5BOXVHTnNMMVZxK1VqQzlmbXBDU2xSSnZ3SSs2VXgvOHJD?=
+ =?utf-8?B?U2IvNmRTVU1TZmxBS3dDeVNjMEtocXBQY2ZrS3NiZUN3bmU0M25OT0dEZWJ5?=
+ =?utf-8?B?dG5BWmdoUCtnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(10070799003)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZGEyOWxMM0w3UGN6L014OGI0MUZVaFNLbU9CL2dIY1d3SGNuSVdGNWRtRkIy?=
+ =?utf-8?B?WmRWWWxkaFBxUEw5UllhQ2swWlZtTSs2WFdpN3loUHhYdkNiYU93Uk9veU1o?=
+ =?utf-8?B?M25PSDZiQ0NuQWh0aWY1WGdOc3NaK1pDYlRnOWREbVlkUHRjRUxwZlU5UXhL?=
+ =?utf-8?B?ZjVKUkp6TTFMVEJBNGdwWVVOQ25qVWxQWjBZT2J1NzhGblhpeThLN1JJa2JF?=
+ =?utf-8?B?K2lqL1kwM29ITEl1OTJ1dzlFeDhndHJObjFvRkdvK2pldDNWU0FZZU9pQ3l1?=
+ =?utf-8?B?UkJYY3RUQ1dWMEtwM0dDQ21VcGVxT1EyNzNwTVNGM0FTZnhCZmFVV1RScGRP?=
+ =?utf-8?B?eVFMMmxVM0VTVWE0MjZoWHV2N1FPV2haZWZtWElvVWRxaHQ3OVYwZFNpWVBy?=
+ =?utf-8?B?Sm9qUHhDdDZCdmJhVDVDMWE5ZEZjTEJ4Q0tsWHlEWUVObTRONzk0a1ZMNDNR?=
+ =?utf-8?B?SEpaSXBxOE5aaFJ1UWs5MkRwY01YaDk5aXZzQkVsQTl4am1aUDRSelNocndJ?=
+ =?utf-8?B?cnJnQ2ZYanZLYVNMbW5BT2VHeXJTRXAxVVJ1VWZDVTE0YXJQUXVobnpzNzhz?=
+ =?utf-8?B?TklwM2duZEZ4elBsNURLSEh0U0pjUERDWXBjNnBHV3F0ZzRRZDd3NGVBRjhQ?=
+ =?utf-8?B?aTJ1L3Jlem4zaXIyejM5TEh6bmNReTdsTkw3N2h3ajFwSHVvM216N3lnblcy?=
+ =?utf-8?B?RkQ2M0VTY3IvN01jbFdXc1RpL0VseU51VjR0SGJhQm1iZGFxVW1HeHh2M1R5?=
+ =?utf-8?B?S2xZUTdUaStjU2M1TmxhQ1hsa0dsZ285VVlGRStxUU9RV2o4MnBwM3NzRGpD?=
+ =?utf-8?B?OHBqLzdXQSsrRmlEdlVjK291MXp2TGFKY05aTmU3dnBuNi9YSmxScGdadE56?=
+ =?utf-8?B?SHdNMkFzSXRpTmhKdXRsaEpNRHB0SVJkZWlkYWRqY3ZMQk9PL25JdzRUVlJz?=
+ =?utf-8?B?U2I3THhiNWxyQXd3N09EakJiRXpFRmQvV1h0dE9XeVY3aHl1d3N6ZzVYWUw2?=
+ =?utf-8?B?T08wWS9Fci9ySTZobTIrRWhJMFlQRGpKSEwveVI0U1Myd2JXU2VSZ2VWQW9B?=
+ =?utf-8?B?M2RZZGg3SDFPSVJiTHVpVFRrTmRqUm9VbWErazdTUDh5QnVZK0lVbkJ3d1Ux?=
+ =?utf-8?B?Y1ZITDNBWnhHTytqWEJhV21rMTdoa0d5YVY3VjZNY1J0dHJNTG9qOFloNGpp?=
+ =?utf-8?B?eW05N1d5amxQcDdubFFvaml3SWdqYVBXSStyaVhRc24yWjFFRktLUWdUdlc3?=
+ =?utf-8?B?UEUxTlVlbFVmZjZzNUNTdGlJRFV3WW1vT1F1NG92UGxXWm5lUnhGd3VWUFZ1?=
+ =?utf-8?B?NTNmUEF2enVnc212cUE1UlFhd0NLcHBtMWhuZEhnSmxuMHFFSE1WaE1zOTBn?=
+ =?utf-8?B?bTVGRXk4b1RhRityUG54M1dpdjZZZnhPQkNOeDdJVFBkRkFveHY1NzF1VDVu?=
+ =?utf-8?B?ZW8rblMyS0E1dUlQU09penExdTN4MGdZQUNqWXlpNGRzWG5WQWIwT2I1SUZQ?=
+ =?utf-8?B?NnFjcFQyTmMxeDZDZ1VyZld0M3kxbEE1dExXUmNDNDBOMWYzbUs4OVZwdktE?=
+ =?utf-8?B?ak9xYWI5bVlZdUs1Y2N1TExpbDRXT3ZQWUwvdG4wS3lDVy9vYjlpb1VUQnFa?=
+ =?utf-8?B?MUxjcVViN05vQXp1ZGpZNzFxTnMyMFAwYU00eGJnUHB1VUgreEpraUdIRTA3?=
+ =?utf-8?B?SUFzd2dsamhlZDAwSlNneUNNVXhBMCsxYW9Gb0djdXM4ZjZmVFNWRmlrL2ZY?=
+ =?utf-8?B?Mjg0S1BNRkxFUzZLWno5ZUhHMjZGSkxMZDAxaHlQR0o0VStGWVdHOHgwSWdO?=
+ =?utf-8?B?TlV4UzdGNFRKSFgyb2d3MTFIRE5Jb052NXlwdWxzL2RaOVNEMmpyblNvaEs2?=
+ =?utf-8?B?QmwwYmhHeGFmUzF5emNXL0c2Z3JwNVdlRGpZM254QzhwMUhrd1FBSW5aTTk0?=
+ =?utf-8?B?OGUrdU52UkwyWEJpUWlIWjl6YitEOUx0NnFWMjUwQk9yOXB4aXBIaTliYlIr?=
+ =?utf-8?B?ZEs5anIvc29BcXFlZFlVVGJ0Q1NNbitRaUpMNW1DM3I5TEpQeG44WlhrNS9Z?=
+ =?utf-8?B?eVFDNTF5TWlZZVNEYmhSMnlTZHlvdXJEdStDWlRUQS9OUEdFYWpIMG11ZTlJ?=
+ =?utf-8?B?RFVWOUZqUEN3aThxTkdFa0h1eXYyMGlnWG80TFlnR1ZjSDZqWDg3a0hXVnE4?=
+ =?utf-8?Q?0k942jCtlMlr2Qtb3ZTXUBk+bjVDlzuSs/gwvPXUtCax?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 914bc052-0a22-4bde-16fb-08ddbd2a581a
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jul 2025 07:46:14.1772
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pnolQ2xVl3866alUK1NpYFzFhlGtyvJ9mHiq1rAP1h04UmU/C5X+NZiyPw8gqAOH3qJxpbHsmg2lUr/ZgS9Ftw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5634
 
-On 250702 1323, Benno Lossin wrote:
-> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
-> > diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> > index c12ff4d2a3f2d79b760c34c0b84a51b507d0cfb1..40c0138bd336057e7d3a835=
-a9e81391baa2fd2b1 100644
-> > --- a/rust/kernel/types.rs
-> > +++ b/rust/kernel/types.rs
-> > @@ -418,11 +418,9 @@ pub const fn raw_get(this: *const Self) -> *mut T =
-{
-> >      }
-> >  }
-> >
-> > -/// Types that are _always_ reference counted.
-> > +/// Types that are internally reference counted.
-> >  ///
-> >  /// It allows such types to define their own custom ref increment and =
-decrement functions.
-> > -/// Additionally, it allows users to convert from a shared reference `=
-&T` to an owned reference
-> > -/// [`ARef<T>`].
-> >  ///
-> >  /// This is usually implemented by wrappers to existing structures on =
-the C side of the code. For
-> >  /// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) =
-to create reference-counted
-> > @@ -438,9 +436,8 @@ pub const fn raw_get(this: *const Self) -> *mut T {
-> >  /// at least until matching decrements are performed.
-> >  ///
-> >  /// Implementers must also ensure that all instances are reference-cou=
-nted. (Otherwise they
-> > -/// won't be able to honour the requirement that [`AlwaysRefCounted::i=
-nc_ref`] keep the object
-> > -/// alive.)
-> > -pub unsafe trait AlwaysRefCounted {
-> > +/// won't be able to honour the requirement that [`RefCounted::inc_ref=
-`] keep the object alive.)
-> > +pub unsafe trait RefCounted {
-> >      /// Increments the reference count on the object.
-> >      fn inc_ref(&self);
->=20
-> This seems a bit problematic for `Owned`, since now I can do:
->=20
->     fn bad<T: Ownable + RefCounted>(t: &Owned<T>) {
->         t.inc_ref();
->     }
->=20
-> And now the `Owned<T>` is no longer "unique" in the sense that the
-> refcount is 1...
+On Sun Jun 22, 2025 at 4:43 AM JST, Danilo Krummrich wrote:
+<snip>
+> +impl Device<Internal> {
+> +    /// Store a pointer to the bound driver's private data.
+> +    pub fn set_drvdata(&self, data: impl ForeignOwnable) {
+> +        // SAFETY: By the type invariants, `self.as_raw()` is a valid po=
+inter to a `struct device`.
+> +        unsafe { bindings::dev_set_drvdata(self.as_raw(), data.into_fore=
+ign().cast()) }
+> +    }
+> +
+> +    /// Take ownership of the private data stored in this [`Device`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - Must only be called once after a preceding call to [`Device::s=
+et_drvdata`].
+> +    /// - The type `T` must match the type of the `ForeignOwnable` previ=
+ously stored by
+> +    ///   [`Device::set_drvdata`].
+> +    pub unsafe fn drvdata_obtain<T: ForeignOwnable>(&self) -> T {
+> +        // SAFETY: By the type invariants, `self.as_raw()` is a valid po=
+inter to a `struct device`.
+> +        let ptr =3D unsafe { bindings::dev_get_drvdata(self.as_raw()) };
+> +
+> +        // SAFETY: By the safety requirements of this function, `ptr` co=
+mes from a previous call to
+> +        // `into_foreign()`.
+> +        unsafe { T::from_foreign(ptr.cast()) }
+> +    }
+> +
+> +    /// Borrow the driver's private data bound to this [`Device`].
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - Must only be called after a preceding call to [`Device::set_dr=
+vdata`] and before
+> +    ///   [`Device::drvdata_obtain`].
+> +    /// - The type `T` must match the type of the `ForeignOwnable` previ=
+ously stored by
+> +    ///   [`Device::set_drvdata`].
+> +    pub unsafe fn drvdata_borrow<T: ForeignOwnable>(&self) -> T::Borrowe=
+d<'_> {
+> +        // SAFETY: By the type invariants, `self.as_raw()` is a valid po=
+inter to a `struct device`.
+> +        let ptr =3D unsafe { bindings::dev_get_drvdata(self.as_raw()) };
+> +
+> +        // SAFETY: By the safety requirements of this function, `ptr` co=
+mes from a previous call to
+> +        // `into_foreign()`.
+> +        unsafe { T::borrow(ptr.cast()) }
+> +    }
+> +}
 
-Yes, that is clear. But that isn't a soundness issue or is it? It just
-means the `T` can be leaked, but that cannot be prevented anyway.
+This is a comment triggered by an intuition, so please ignore it if it
+doesn't make any sense (it probably doesn't :)).
 
-> Similarly, we should probably make this an associated function, such
-> that people don't accidentally call `.inc_ref()` on `ARef<T>`.
->=20
-> > @@ -453,11 +450,21 @@ pub unsafe trait AlwaysRefCounted {
-> >      /// Callers must ensure that there was a previous matching increme=
-nt to the reference count,
-> >      /// and that the object is no longer used after its reference coun=
-t is decremented (as it may
-> >      /// result in the object being freed), unless the caller owns anot=
-her increment on the refcount
-> > -    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then call=
-s
-> > -    /// [`AlwaysRefCounted::dec_ref`] once).
-> > +    /// (e.g., it calls [`RefCounted::inc_ref`] twice, then calls [`Re=
-fCounted::dec_ref`] once).
-> >      unsafe fn dec_ref(obj: NonNull<Self>);
-> >  }
-> >
-> > +/// An extension to RefCounted, which declares that it is allowed to c=
-onvert from a shared reference
-> > +/// `&T` to an owned reference [`ARef<T>`].
->=20
-> This is a bit too long for the first sentence... How about
->=20
->     Always reference counted type.
->=20
->     Allows the creation of `ARef<T>` from `&T`.
->=20
-> Feel free to add more information.
+I have a hunch that we could make more of the methods above safe by
+either introducing a typestate to `Internal`, or (which comes down to
+the same) using two separate device contexts, one used until
+`set_drvdata` is called, and one after, the latter being able to provide
+a safe implementation of `drvdata_borrow` (since we know that
+`set_drvdata` must have been called).
 
-Yes, should be okay.
+Since buses must do an unsafe cast to `Device<Internal>` anyway, why not
+encode the driver's data type and whether the driver data has been set
+or not in that cast as well. E.g, instead of having:
 
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that no safety invariants are violated by=
- upgrading an `&T` to an
-> > +/// [`ARef<T>`]. In particular that implies [`AlwaysRefCounted`] and [=
-`Ownable`] cannot be
-> > +/// implemented for the same type, as this would allow to violate the =
-uniqueness guarantee of
-> > +/// [`Owned<T>`] by derefencing it into an `&T` and obtaining an [`ARe=
-f`] from that.
-> > +pub unsafe trait AlwaysRefCounted: RefCounted {}
->=20
-> It's a bit sad that we can't just say `: !Ownable` (or rather a
-> blanket-implemented marker trait, since that might land earlier). Anyone
-> aware of progress in this area?
+    let pdev =3D unsafe { &*pdev.cast::<Device<Internal>>() };
+    ...
+    let foo =3D unsafe { pdev.as_ref().drvdata_borrow::<Pin<KBox<T>>>() };
 
-Yes. But as far as I am aware negative constraints are considered to be
-deeply problematic because of combinatoric explosion in binary logic.
+You would do:
 
-Best,
+    let pdev =3D unsafe { &*pdev.cast::<Device<InternalSet<Pin<KBox<T>>>>>(=
+) };
+    ...
+    // The type of the driver data is already known from `pdev`'s type,
+    // so this can be safe.
+    let foo =3D pdev.as_ref().drvdata_borrow();
 
-Oliver
+I don't see any use of `drvdata_borrow` in this patchset, so I cannot
+really assess the benefit of making it safe, but for your consideration.
+^_^;
 
+And if we can only move `set_drvdata` somewhere else (not sure where
+though), then we could assume that `Internal` always has its driver data
+set and deal with a single context.
+
+I don't think the design of `Device` allows us to work with anything
+else then references to it, so it is unlikely that we can make
+`set_drvdata` and `drvdata_obtain` morph its type, which is unfortunate
+as it would have allowed us to make these methods safe as well.
