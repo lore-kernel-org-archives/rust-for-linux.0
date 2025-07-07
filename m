@@ -1,109 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A510E279DC4
-	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 07:47:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75855800
+	for <rust-for-linux@vger.kernel.org>; Mon,  7 Jul 2025 08:07:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751874441; cv=none; b=Cf2zqyv7yLsb9WSHixtK+SSnTaV3JHrYILljmEY23FG0JjrY6D9OzxaMs2K3+0NLojNRwSLRQGJLfPmGKgv6mnm8S4ES9l+LggFv7TVPiPmiIqyDWNr9ZAN6gM9cg5TjBxOXQ4VZ5rxIh+lrbzQTx/kIitT0bDZaOZGu4bz3jvs=
+	t=1751875676; cv=none; b=GNx4QeqtPpoDiKQEO9MqkGi+kuroyFeYkXRdcbU2DBZPmI2vTluwbfa3O/ZUGAyirkVKOWrfj3DdSH2z5ngcZDzwEE4QdbzP0KveDlethtFJXsthk5qvO8Yvae2pGlVACSDVVxPgYjl4YzVm2IuvlGNvDVxMyyksIVWvrvKofbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751874441; c=relaxed/simple;
-	bh=9f1OIDyiMOGG+sJ0+utZUcOkV1Z2Vx//DRhMPVy8KsQ=;
-	h=From:To:Cc:Subject:Message-ID:Date:MIME-Version:Content-Type; b=B/r76FYaPEGAROHG7az9nGFTU9BNRBS4CN9WlDtv1ow94XXi5uwtjf4ChmxPcHOe8ZFGloIPPX2cePOsIiej/yNyKnlXBCDLnxYqwTeaCv3cMXjHuAhc5tWbIUR8/C/vgKG0v+gbHTV0M7qkUfVa27rJk0DmFPKAa4FwsaPiogM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0eRl2zC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751875676; c=relaxed/simple;
+	bh=BreYJuDfZoFdRiabZxtNWF9SABVBZKncFsrha+MOSMw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q2OW+7V0GIDJIAUu8F5JkH6aUJqa3TRYlVEPI2vhV/Ru41FEya1gaH7M9s0dx5LolCAREYxD6xFXnJkLSztQNj+8nGatw1wlkUHsi+uXEbzmwAor6eq0l/pDabaOoS0Y6oE9hVZBmKAoX/pcZctUv0fO7u7gbwM8LCf3oGkJkPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=GSgjWZWa; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0eRl2zC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA3DC4CEE3;
-	Mon,  7 Jul 2025 07:47:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751874441;
-	bh=9f1OIDyiMOGG+sJ0+utZUcOkV1Z2Vx//DRhMPVy8KsQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=f0eRl2zCKAvlc+3Y2SPN8fCsB7QMW+522gtpAKS7jsyHBjc6LGrxzj2pZPLJNL4l3
-	 S0B47Oa1i9FqaFeAaIOLbW+Vgj6HKb2dgnuR+705jA+lm5SkddnCjGo4h0B6z5fC5D
-	 sYYrYNV1K7S0CVTcaa238eIDrZZiyC7xdOVarxStzZ1/o4kVduuZqXwK5amVqwHNr9
-	 bbjfEOScdUl+iR4mn8xTCO9iLHS7nFYLRKcuN+E8Gf9RDMllur+RhyHieskowJzE07
-	 DL3Nm06LKVsCBRx3xZeAW3flRYHp95qOiHESodVrK+ghfPfzF5INzj1SFSjAu2Ec+Q
-	 O4i72AHsu6+PQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>, Lyude Paul <lyude@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	rust-for-linux@vger.kernel.org,
-Subject: [GIT PULL] Rust timekeeping for v6.17
-Message-ID: <87qzysqw99.fsf@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Mon, 07 Jul 2025 09:46:47 +0200
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="GSgjWZWa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1751875666; x=1752134866;
+	bh=eTGqtzCvOXwTu3qziUAcUbBhhfKcqKOqyU9syJBnr6M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=GSgjWZWavYTnlP1AW4PKEQag9P5elGs/5VhwUpQAnf1Hii942CYuSJEvTfRyO28XS
+	 9dQywgyfGftoz07t+Na6ebjSbH+ln2RtD6k/UIJ6UChsSTqe19vkUdV2GomHbXPb2o
+	 kv014ypTHGbjerukjjFBjP5brP5BdBCegDT3woKf6+BBnLccspuIF3bn1TP0VmyCtI
+	 RZbfkz5oMWpJmIDasGEhvFWEdZ/g0aroEETv3vhnFe59yKVo0/ehsu03Sh4J+cDas6
+	 vFQeDXgtwp/spPXJQCHDfWq5hmhtmFKtLc9PVVyPSvyy/dO9Z0Or5HriU5KUfEJFb+
+	 QgRYZr55oN/EA==
+Date: Mon, 07 Jul 2025 08:07:40 +0000
+To: Benno Lossin <lossin@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
+Message-ID: <aGuAR7JCrlmzQrx4@mango>
+In-Reply-To: <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org>
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me> <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 84a19212b4ee4925539886f811bb5b09e24fb104
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miguel,
+On 250702 1524, Benno Lossin wrote:
+> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
+> > diff --git a/rust/kernel/types/ownable.rs b/rust/kernel/types/ownable.r=
+s
+> > index 80cd990f6601767aa5a742a6c0997f4f67d06453..b5626dead6bb25ea76a0ae5=
+77db1b130308d98b1 100644
+> > --- a/rust/kernel/types/ownable.rs
+> > +++ b/rust/kernel/types/ownable.rs
+> > @@ -2,6 +2,7 @@
+> >
+> >  //! Owned reference types.
+> >
+> > +use crate::types::{ARef, RefCounted};
+> >  use core::{
+> >      marker::PhantomData,
+> >      mem::ManuallyDrop,
+> > @@ -18,8 +19,9 @@
+> >  ///
+> >  /// Note: Implementing this trait allows types to be wrapped in an [`O=
+wned<Self>`]. This does not
+> >  /// provide reference counting but represents a unique, owned referenc=
+e. If reference counting is
+> > -/// required [`RefCounted`](crate::types::RefCounted) should be implem=
+ented which allows types to be
+> > -/// wrapped in an [`ARef<Self>`](crate::types::ARef).
+> > +/// required [`RefCounted`] should be implemented which allows types t=
+o be wrapped in an
+> > +/// [`ARef<Self>`]. Implementing the trait [`OwnableRefCounted`] allow=
+s to convert between unique
+> > +/// and shared references (i.e. [`Owned<Self>`] and [`ARef<Self>`]).
+>=20
+> This change should probably be in the earlier patch.
 
-Please pull these changes for Rust timekeeping.
+Ah, yes. Must have happened while splitting the patches.
 
-This batch of changes makes `Instant` generic over the clock source.
-`HrTimer` also gets the generic treatment, allowing the API to type
-check the time stamps passed to the API, to statically check whether a
-relative or absolute time is required.
+> >  ///
+> >  /// # Safety
+> >  ///
+> > @@ -132,3 +134,124 @@ fn drop(&mut self) {
+> >          unsafe { T::release(self.ptr) };
+> >      }
+> >  }
+> > +
+> > +/// A trait for objects that can be wrapped in either one of the refer=
+ence types [`Owned`] and
+> > +/// [`ARef`].
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementers must ensure that:
+> > +///
+> > +/// - [`try_from_shared()`](OwnableRefCounted::into_shared) only retur=
+ns an [`Owned<Self>`] if
+> > +///   exactly one [`ARef<Self>`] exists.
+>=20
+> This shouldn't be required?
 
-We also have a fix for 32-bit divisions on 64-bit architectures.
+Ehm, why not? `Owned<T>` is supposed to be unique.
 
-The commits have been in linux-next for at least a week.
+> > +/// - [`into_shared()`](OwnableRefCounted::into_shared) set the refere=
+nce count to the value which
+> > +///   the returned [`ARef<Self>`] expects for an object with a single =
+reference in existence. This
+> > +///   implies that if [`into_shared()`](OwnableRefCounted::into_shared=
+) is left on the default
+> > +///   implementation, which just rewraps the underlying object, the re=
+ference count needs not to be
+> > +///   modified when converting an [`Owned<Self>`] to an [`ARef<Self>`]=
+.
+>=20
+> This also seems pretty weird...
+>=20
+> I feel like `OwnableRefCounted` is essentially just a compatibility
+> condition between `Ownable` and `RefCounted`. It ensures that the
+> ownership declared in `Ownable` corresponds to exactly one refcount
+> declared in `RefCounted`.
+>=20
+> That being said, I think a `RefCounted` *always* canonically is
+> `Ownable` by the following impl:
+>=20
+>     unsafe impl<T: RefCounted> Ownable for T {
+>         unsafe fn release(this: NonNull<Self>) {
+>             T::dec_ref(this)
+>         }
+>     }
+>=20
+> So I don't think that we need this trait at all?
 
-The following changes since commit e04c78d86a9699d136910cfc0bdcf01087e3267e:
+No. For an `ARef<T>` to be converted to an `Owned<T>` it requires a
+`try_from_shared()` implementation. It is not even a given that the
+function can implemented, if all the kernel exposes are some kind of
+`inc_ref()` and `dec_ref()`.
 
-  Linux 6.16-rc2 (2025-06-15 13:49:41 -0700)
+Also there are more complicated cases like with `Mq::Request`, where the
+existence of an `Owned<T>` cannot be represented by the same refcount value
+as the existence of exactly one `ARef<T>`.
 
-are available in the Git repository at:
+> > +///
+> > +/// # Examples
+>=20
+> If we're having an example here, then we should also have on on `Owned`.
 
-  ssh://github.com/Rust-for-Linux/linux.git tags/rust-timekeeping-for-v6.17
+Yes, maybe. I mostly felt the need to create one for `OwnableRefCounted`
+because it is a more complex idea than `Ownable`.
 
-for you to fetch changes up to d4b29ddf82a458935f1bd4909b8a7a13df9d3bdc:
+If I remember correctly, I didn't create one for `Owned`, as it should
+probably more or less the same as for `ARef` and the one there has even
+more problems of the kind you are pointing out. So maybe it would be best
+to wait until someone fixes that and have the fixed version copied over to
+`Owned` in the process?
 
-  rust: time: Add wrapper for fsleep() function (2025-06-30 13:22:05 +0200)
+> > +///
+> > +/// A minimal example implementation of [`OwnableRefCounted`], [`Ownab=
+le`] and its usage with
+> > +/// [`ARef`] and [`Owned`] looks like this:
+> > +///
+> > +/// ```
+> > +/// # #![expect(clippy::disallowed_names)]
+> > +/// use core::cell::Cell;
+> > +/// use core::ptr::NonNull;
+> > +/// use kernel::alloc::{flags, kbox::KBox, AllocError};
+> > +/// use kernel::types::{
+> > +///     ARef, RefCounted, Owned, Ownable, OwnableRefCounted,
+> > +/// };
+> > +///
+> > +/// struct Foo {
+> > +///     refcount: Cell<usize>,
+> > +/// }
+> > +///
+> > +/// impl Foo {
+> > +///     fn new() -> Result<Owned<Self>, AllocError> {
+> > +///         // Use a `KBox` to handle the actual allocation.
+> > +///         let result =3D KBox::new(
+> > +///             Foo {
+> > +///                 refcount: Cell::new(1),
+> > +///             },
+> > +///             flags::GFP_KERNEL,
+> > +///         )?;
+> > +///         let result =3D NonNull::new(KBox::into_raw(result))
+> > +///             .expect("Raw pointer to newly allocation KBox is null,=
+ this should never happen.");
+>=20
+> I'm not really convinced that an example using `KBox` is a good one...
+> Maybe we should just have a local invisible `bindings` module that
+> exposes a `-> *mut foo`. (internally it can just create a KBox`)
 
+The example would become quite a bit more complicated then, no?
 
-Best regards,
-Andreas Hindborg
+> > +///         // SAFETY: We just allocated the `Foo`, thus it is valid.
+>=20
+> This isn't going through all the requirements on `from_raw`...
 
+Yes, this comment should probably be detailed.
 
+Best,
 
-----------------------------------------------------------------
-rust-timekeeping for v6.17
-
-----------------------------------------------------------------
-FUJITA Tomonori (10):
-      rust: time: Avoid 64-bit integer division on 32-bit architectures
-      rust: time: Replace ClockId enum with ClockSource trait
-      rust: time: Make Instant generic over ClockSource
-      rust: time: Add ktime_get() to ClockSource trait
-      rust: time: Replace HrTimerMode enum with trait-based mode types
-      rust: time: Add HrTimerExpires trait
-      rust: time: Make HasHrTimer generic over HrTimerMode
-      rust: time: Remove Ktime in hrtimer
-      rust: time: Seal the HrTimerMode trait
-      rust: time: Add wrapper for fsleep() function
-
- rust/helpers/helpers.c              |   1 +
- rust/helpers/time.c                 |  35 +++++
- rust/kernel/time.rs                 | 233 ++++++++++++++++++----------
- rust/kernel/time/delay.rs           |  49 ++++++
- rust/kernel/time/hrtimer.rs         | 302 ++++++++++++++++++++++++------------
- rust/kernel/time/hrtimer/arc.rs     |   8 +-
- rust/kernel/time/hrtimer/pin.rs     |   8 +-
- rust/kernel/time/hrtimer/pin_mut.rs |   8 +-
- rust/kernel/time/hrtimer/tbox.rs    |   8 +-
- 9 files changed, 466 insertions(+), 186 deletions(-)
- create mode 100644 rust/helpers/time.c
- create mode 100644 rust/kernel/time/delay.rs
+Oliver
 
