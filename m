@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABE61428E7;
-	Mon,  7 Jul 2025 19:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB96621ABB7;
+	Mon,  7 Jul 2025 20:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751917693; cv=none; b=J/bVIWX6sU7hl3gFrz7B5iUcsIVJMsKvLugSaIbZ8T7IE/DJICJdbLIrCFB8NIEIswrn53bPHGsXFpeR24WN23c8N/ZADAvBESgqpduC1tn3gV5FtLsBKUIwDfrdJWD8WV9RUs7e28bJmMEv4dpwEBQhw+QdQ+784YYRKSbDPC4=
+	t=1751920232; cv=none; b=IRJuqDfj8koryThlqF+ocHSRrX3h1PzlWut52mcsLZaLmrMChAgkTM/UHtGPoBEh71kLMA0KQvXH656Nw4eAWK+DZRH7xUEqow/59h0bvnUDZeWJTCDpCSp9p99TRIQdDguxfQD37gXiipYG6mbMV5WbkwlKTyAdLi9yVDbqKTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751917693; c=relaxed/simple;
-	bh=ecdVWzxZIierHezK9JWfxYPiiYP/s+IBBE/NxnEUh0k=;
+	s=arc-20240116; t=1751920232; c=relaxed/simple;
+	bh=C0ELEEnglIhvtCBJRI+7bckrda+P++efeIdBibyAEps=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=mGt6bYfitstygCdbjT4ptP4ptI40Fn7CIfE3NFNI8zj27gzEAhQsHUGn3KWPXylCoOlbPSb6A6itDUFKKrEXiI+OlN5Ad664FcPlGp3TIVGv6+/rwdLIfbVNEEgAkZIDvR1V3UrMM1cntRzXfa4Ug8E6wwHOMO4kCulgG3SXL3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bVJB0nyi; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Xxg9VD49UYwviqvKjTPC9Br8uaInwau/Lbj0vHq2Ue+rTAmiIO7oE/mcWyfZuQZ/mVJfQkCtAis3Bi8brx06IbfyDu85AMG15qQSbGWkarTTSphDyUfZnasex4+vkXT0yFzfVVKoZ7fy/ZLzKOXDN5XBcVP4nBuSq9GoD5ZXa4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJ4zCZAl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bVJB0nyi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68626C4CEE3;
-	Mon,  7 Jul 2025 19:48:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJ4zCZAl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E052BC4CEE3;
+	Mon,  7 Jul 2025 20:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751917692;
-	bh=ecdVWzxZIierHezK9JWfxYPiiYP/s+IBBE/NxnEUh0k=;
+	s=k20201202; t=1751920232;
+	bh=C0ELEEnglIhvtCBJRI+7bckrda+P++efeIdBibyAEps=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=bVJB0nyiTvMUX98Qa8rWx97izZFRkRGX2NJ7U+Rk/j/xgMZaasL4jGUpwrcAuQ3IY
-	 CfLExvGXJUC7g3NE82DhJeh3aIHOj/RlBXZmjVmrbMjKdT/D98rlo0VzzIfPfADB3L
-	 7g7XM6+FKiMb0+bLlAMM9kuO/k5kFBoDC4/kgycmEQeWDsRpvUfwTsSqdI5BPTwz0P
-	 pAiHBV2OYl8ohN7m88bYmSnXlaFwtPYm6Nt8X3SHQwxqR/13rsBJBevxxUaBGPJk/9
-	 97jjqygPtRw4S8Ts4WrE2xDIqu157tSBkFhUvE9QVf1xBnmEPJtFw1uz2sfISu2FHg
-	 GgBz9XsZWwmxg==
+	b=nJ4zCZAlyjGDjSCdRpyeWnC9SZbTFHChqTTXnkuVzo3j+0OK3cZvcyI3vg66gaHSY
+	 vAml93ZPMQqFwYI/ZAqmQWf/MJNW2D0SWocat7HYl9Zspml/2dvaJtK2hdFFPVtId1
+	 znrzTeXDRuh5zqfQkJrXKmMPbINE71zCxBUVbLdBOGvYkdcXngWTUk8ZoTv3syRhMk
+	 6W3zYC2hfxTRKXSYxvkgNZHSZMArIkyIJdmSsBlIXpGKzAKC+dVuBzGnikxVIh8lH9
+	 2IhUaADWeJ7Y5I02NWIRyshagX7BaJpp0rbdmf3rmQEk7OtYIpUd0dvSyH67zr27Xl
+	 up2f60jGraCNw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,117 +34,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 07 Jul 2025 21:48:07 +0200
-Message-Id: <DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <gary@garyguo.net>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <peterz@infradead.org>, <mingo@redhat.com>, <will@kernel.org>,
- <longman@redhat.com>, <felipe_life@live.com>, <daniel@sedlak.dev>,
- <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
+Date: Mon, 07 Jul 2025 22:30:27 +0200
+Message-Id: <DB63W1N89KFT.2J2X3Y7SEX1KF@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Onur" <work@onurozkan.dev>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Alice Ryhl"
+ <aliceryhl@google.com>
 X-Mailer: aerc 0.20.1
-References: <20250621184454.8354-1-work@onurozkan.dev>
- <20250621184454.8354-3-work@onurozkan.dev>
- <DASY7BECFRCT.332X5ZHZMV2W@kernel.org> <aFlQ7K_mYYbrG8Cl@Mac.home>
- <DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org> <aFlpFQ4ivKw81d-y@Mac.home>
- <DAU0ELV91E2Q.35FZOII18W44J@kernel.org>
- <20250707163913.5ffc046d@nimda.home>
- <DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org>
- <20250707210613.2fd5bb55@nimda.home>
-In-Reply-To: <20250707210613.2fd5bb55@nimda.home>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com> <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com> <aGeIF_LcesUM9DHk@google.com> <F3D3BD51-65D8-44BE-9007-FBA556DFB7E5@collabora.com>
+In-Reply-To: <F3D3BD51-65D8-44BE-9007-FBA556DFB7E5@collabora.com>
 
-On Mon Jul 7, 2025 at 8:06 PM CEST, Onur wrote:
-> On Mon, 07 Jul 2025 17:31:10 +0200
-> "Benno Lossin" <lossin@kernel.org> wrote:
+On Mon Jul 7, 2025 at 6:18 PM CEST, Daniel Almeida wrote:
+> Alice,
 >
->> On Mon Jul 7, 2025 at 3:39 PM CEST, Onur wrote:
->> > On Mon, 23 Jun 2025 17:14:37 +0200
->> > "Benno Lossin" <lossin@kernel.org> wrote:
->> >
->> >> > We also need to take into consideration that the user want to
->> >> > drop any lock in the sequence? E.g. the user acquires a, b and
->> >> > c, and then drop b, and then acquires d. Which I think is
->> >> > possible for ww_mutex.
->> >>=20
->> >> Hmm what about adding this to the above idea?:
->> >>=20
->> >>     impl<'a, Locks> WwActiveCtx<'a, Locks>
->> >>     where
->> >>         Locks: Tuple
->> >>     {
->> >>         fn custom<L2>(self, action: impl FnOnce(Locks) -> L2) ->
->> >> WwActiveCtx<'a, L2>; }
->> >>=20
->> >> Then you can do:
->> >>=20
->> >>     let (a, c, d) =3D ctx.begin()
->> >>         .lock(a)
->> >>         .lock(b)
->> >>         .lock(c)
->> >>         .custom(|(a, _, c)| (a, c))
->> >>         .lock(d)
->> >>         .finish();
->> >
->> >
->> > Instead of `begin` and `custom`, why not something like this:
->> >
->> > 	let (a, c, d) =3D ctx.init()
->> > 	    .lock(a)
->> >             .lock(b)
->> >             .lock(c)
->> >             .unlock(b)
->> >             .lock(d)
->> >             .finish();
->> >
->> > Instead of `begin`, `init` would be better naming to imply `fini`
->> > on the C side, and `unlock` instead of `custom` would make the
->> > intent clearer when dropping locks mid chain.
-
-Also, I'm not really fond of the name `init`, how about `enter`?
-
+> [=E2=80=A6]
+>
+>>> +/// The value that can be returned from an IrqHandler or a ThreadedIrq=
+Handler.
+>>> +pub enum IrqReturn {
+>>> +    /// The interrupt was not from this device or was not handled.
+>>> +    None,
+>>> +
+>>> +    /// The interrupt was handled by this device.
+>>> +    Handled,
+>>> +}
+>>> +
+>>> +impl IrqReturn {
+>>> +    fn into_inner(self) -> u32 {
+>>> +        match self {
+>>> +            IrqReturn::None =3D> bindings::irqreturn_IRQ_NONE,
+>>> +            IrqReturn::Handled =3D> bindings::irqreturn_IRQ_HANDLED,
 >>=20
->> I don't think that this `unlock` operation will work. How would you
->> implement it?
+>> One option is to specify these in the enum:
+>>=20
+>> /// The value that can be returned from an IrqHandler or a ThreadedIrqHa=
+ndler.
+>> pub enum IrqReturn {
+>>    /// The interrupt was not from this device or was not handled.
+>>    None =3D bindings::irqreturn_IRQ_NONE,
+>>=20
+>>    /// The interrupt was handled by this device.
+>>    Handled =3D bindings::irqreturn_IRQ_HANDLED,
+>> }
 >
->
-> We could link mutexes to locks using some unique value, so that we can
-> access locks by passing mutexes (though that sounds a bit odd).
->
-> Another option would be to unlock by the index, e.g.,:
->
-> 	let (a, c) =3D ctx.init()
-> 	    .lock(a)
->             .lock(b)
->             .unlock::<1>()
->             .lock(c)
->             .finish();
+> This requires explicitly setting #[repr(u32)], which is something that wa=
+s
+> reverted at an earlier iteration of the series on Benno=E2=80=99s request=
+.
 
-Hmm yeah that's interesting, but probably not very readable...
+Yeah I requested this, because it increases the size of the enum to 4
+bytes and I think we should try to make rust enums as small as possible.
 
-    let (a, c, e) =3D ctx
-        .enter()
-        .lock(a)
-        .lock(b)
-        .lock_with(|(a, b)| b.foo())
-        .unlock::<1>()
-        .lock(c)
-        .lock(d)
-        .lock_with(|(.., d)| d.bar())
-        .unlock::<2>();
-
-> The index approach would require us to write something very similar
-> to `Tuple` (with macro obviously) you proposed sometime ago.
->
-> We could also just go back to your `custom` but find a better name
-> for it (such as `retain`).
-
-Oh yeah the name was just a placeholder.
-
-The advantage of custom is that the user can do anything in the closure.
+@Alice what's the benefit of doing it directly in the enum?
 
 ---
 Cheers,
