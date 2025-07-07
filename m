@@ -1,121 +1,85 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3951296155;
-	Mon,  7 Jul 2025 11:23:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C428B288502;
+	Mon,  7 Jul 2025 11:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751887403; cv=none; b=nszmMEHPD1TdpGu2x9euPyeRtiqlE+7ObzxDaezqGHkywzMeH4zlOKkX5XDkLV1kqfCO4gN9GckpStvwuaoEAqsVYT/IJJTVyfB3O1d2ZF9WaXPX/JAayH/ofigFv65A2c6oJXQU6LAV3qXLjaEd3Jkj738jwOhyqXP25SdO/Ec=
+	t=1751888837; cv=none; b=EW4YX495dqEcYBcMtHju1GiMpK7gQD9ZATZJDeIeUCYxPU4uh13nTJGGGQMje3GuZtHCimGxhavcULgRB4Muw01Ig82LlyGLCQYhyZ3ZePLLp66fEiBAxitluLgzqvwHtctlxcl6im0wNEPxFkgei3dzUUPOScA7qEGV8nYRKjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751887403; c=relaxed/simple;
-	bh=zYpKy3zoXx6tFNa3dHkNJBWhDM4hWDk5bp7SFg+ilIk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=azSuQ7qyzyc8KF9AJMa68gSQ52Pqi1oghgUwmc7vDcZG7qslV2qxHIYfpNyHMvJZ1M3JEXZIAJZVC1fMFdEwVcbquP6Gbb9ER346SufSWAuLdudhzh5mbmlpALQBZ5O9n4FlirkwB1Pex3O+pLiL3HoZNFArv1BYahu95zFumkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OydWPQIS; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1751888837; c=relaxed/simple;
+	bh=bgmRsHFXr3fo3AGaLI1p8hckikEtVGcRSofBWPQefFo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=Ybp5EIe85f2wuCby1s1jJrKTMUFJ889vhsZ1P9UWf6QvU8ZfTLfcjlzwro4eMmxrF3b/TItBCmkcDux7+N8e0wUkE8SX7vHTGwB8ZofkEBj4G8FV5c+rvVhdZnhsetPPOrtaBBrPgXg+IYF2FAtlfw51Y0mdDTqM2qs8hK+bPIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZ4jQQrw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OydWPQIS"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-454aaade1fbso33677825e9.3;
-        Mon, 07 Jul 2025 04:23:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751887400; x=1752492200; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6TPVjeNQlRzgAMgy//+OuyCJbbVfiaWjK7V9mAikz/0=;
-        b=OydWPQIS+B3iYohTF8e/7A3XxUZHNYreGtj2YXpepapBVfFE/tC9+RVnMfOAIpWZSa
-         PFvILpJQ3vn6g4clONYtXMrWnSWmcALNVwq0zFtqXN3d9eqN1rheDr7ESU9TVK47GiRl
-         TLB20jlsT1+fuCy4aJ0d/B6lxNbH2FFr6xaxes8piOhOqdUaHT3K++NXwgs4vSuTt+/8
-         Gcpsm4JLBJH6Gvl9CMObi5pfXS1KKBfaDFEL9NMJhI85EPE/9c+AtADSpBNaEFFtMXBD
-         Lim+wSrA8ofnPH7gc2Oxm7O1nAPRFNbBJvD+e2TfpmrdRGMDRbz+HUMYqud9dvaJrYYC
-         F3OA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751887400; x=1752492200;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6TPVjeNQlRzgAMgy//+OuyCJbbVfiaWjK7V9mAikz/0=;
-        b=Ex2KfmuzzftGGM9MAg1MA8t2CQWd221f3/N0+YylSd1Kh9gFhWY2kslWv3K1HnvXYo
-         zNNbcVLQ5xk8du3+WgJhauHqxV1W+bGhjagwTLyZw+dqMiCqx58XMsBS0m6tyTyC4qAD
-         FpHIwfhnP3n17c0xTvK+sFoCqEKYi4Qtt0c/SRlYT5fGnZeXyyU9hXyuNH9f6+GFmnH/
-         B9PugTZtnvm1sDlIv8duL718AwpimTEqJaxCEWM0oM2OrXoq8zf7Z0Tl++Gfn61W6r7K
-         iUgkfXuicmpZSXbLiCXSLuiWuxzSyjdDEvjpVj2/81wK2r0Rhgne2lg7cImIXOeqITuW
-         j8qA==
-X-Forwarded-Encrypted: i=1; AJvYcCVGCFSZA2dFkV6r0MR5DIqKfWQae/yqT3+nDHP7lMwUVBh1p5+KKxaWKtjxPsPKPhCWSKLvIQoE/gE=@vger.kernel.org, AJvYcCWBtYnqMoE40E9WvQkYadpizIR6CeRk8ZVfSgokSJrp0LYvPIesBlRvLFjw5LU/h74i1pWgEz0fHYJypTNk@vger.kernel.org, AJvYcCX/M42s/V362lNPy5uQwr1/nf+ZzKO482DPa2pow/PZyPcqcyN4ThkuZjRwfpi+iL4wJGiyLH4yhm0qvl0hIOM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJjKSoxLCrXc7EBkvWGiFSfAwfB0nzDF3cvJtyurDSOLqt/PTI
-	lp3VSE3C1NdMPCRcjW1N7n05ptVOKMqHeIhCMsdpKu8NjJvdG+qV6Gl6JKP1BaCE
-X-Gm-Gg: ASbGncuRtJwDp+in7GKtW8npcaPvc7FP1GFpWnsYl+xPZZvb3g1ln/34h0GtHbscA+Y
-	UOQxWlUFp2rGNk1wU236Ivyxx0jGXVM1eTa/jVQiKHF8O6E0UF8IqWYs/+2RixQ1yEBc8jQYTNv
-	xLqew0nL8nIJyNthUw9m76WvWsqT/xDFO8h7rWjk388WhihFIc9DAJJfqFxCEHWuA7VoYvUa1Bh
-	LWwypi8Kf8GEEtbr7NZccBwg7ynlJBwmVCng2588c2D4dk3yoMlIrzMwlHTkNumZx3UX5yrrkK6
-	v1UpxBrHRg+K6lffxyo37lQ5SXjFvqcmzfxscRHKlwD9TUqmaIyxy6kfWkVGTGSzT81j
-X-Google-Smtp-Source: AGHT+IGC9dHI7hG34Y33iS7Tohcxr0UIkxnnLlR/ZbwCJnzdqWYCXb792UejIfSJCcUscd30OWtpsg==
-X-Received: by 2002:a05:600c:8b2f:b0:43c:fe5e:f03b with SMTP id 5b1f17b1804b1-454b4ec3e6fmr123912525e9.30.1751887399813;
-        Mon, 07 Jul 2025 04:23:19 -0700 (PDT)
-Received: from [10.38.1.85] ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b47030ba48sm9998966f8f.13.2025.07.07.04.23.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Jul 2025 04:23:19 -0700 (PDT)
-Message-ID: <420eff5c-e569-4aec-81fe-ac8ad2060768@gmail.com>
-Date: Mon, 7 Jul 2025 12:23:18 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZ4jQQrw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097C1C4CEE3;
+	Mon,  7 Jul 2025 11:47:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751888835;
+	bh=bgmRsHFXr3fo3AGaLI1p8hckikEtVGcRSofBWPQefFo=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=EZ4jQQrwmKLeb8V4cNw+W3x8rgGj8hzjRNvpF2z6Hh0PASWz8W2RUVWADANB5nuYx
+	 e9tWDt1sGeomZyzdRn6jCe3jIPfdCDBaeci9B3gZjLZmoELJBnl3gAFmcIKD37fZlv
+	 ga4ArZwczuWtehv4j1MOIMVpM6yzcu29BdFIa4bCSy/u/pJBB4gAtySaZZCMZ8tMjl
+	 D3pZsXHcXDSP06gXVqytx6WUYe8cvG+Ry1tqVGIfntLuBpaoBIPfp895JvEBr18/Yj
+	 cNNeVn7WBM21aLf9ZioPzpkaMGZkakJ/t4hZR2PB3FkLS8qxIrDtihY1olu1VIe83f
+	 RKlb1t49XRLiw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] rust: i2c: add basic I2C device and driver
- abstractions
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-i2c@vger.kernel.org
-References: <20250704153332.1193214-1-igor.korotin.linux@gmail.com>
- <20250704153657.1195687-1-igor.korotin.linux@gmail.com>
- <aGg2qkyrKBIPiSeE@cassiopeiae>
- <0ae92ad8-810f-4c10-a442-c403755cbab7@gmail.com>
- <CANiq72knUt_=vcvVqWaFz_VJEQ9W=4RiTzwSNyxwC_pyBoHB1Q@mail.gmail.com>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <CANiq72knUt_=vcvVqWaFz_VJEQ9W=4RiTzwSNyxwC_pyBoHB1Q@mail.gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Mon, 07 Jul 2025 13:47:10 +0200
+Message-Id: <DB5SRE5S7AR3.QUF369W9JYGJ@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+Cc: "Oliver Mangold" <oliver.mangold@pm.me>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Asahi Lina"
+ <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me>
+ <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org> <aGuAR7JCrlmzQrx4@mango>
+ <gFz7glX0UIHGffQdm4_vD_XkT5GZEKB0Lx0cd8-TCR8glMzIIY7VBIvppFVr2RURNBnGx9lKJqrE5av7xSUcbA==@protonmail.internalid> <DB5PX74OB3DX.1UNT8MIBWNC2G@kernel.org> <87bjpwqmo5.fsf@kernel.org>
+In-Reply-To: <87bjpwqmo5.fsf@kernel.org>
 
-
-
-On 7/7/25 11:47, Miguel Ojeda wrote:
-> On Mon, Jul 7, 2025 at 12:31 PM Igor Korotin
-> <igor.korotin.linux@gmail.com> wrote:
+On Mon Jul 7, 2025 at 1:12 PM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>> Ah right, I forgot about this. What was the refcount characteristics of
+>> this again?
 >>
->> As for being added as a reviewer or co-maintainer, I’m not yet confident
->> in my Rust skills. I’m learning Rust from scratch and, given my
->> extensive C-kernel background, I thought I’d start by contributing
->> something useful to the Rust side.
-> 
-> At the moment, for any given subsystem, it is possible that
-> maintainers have even less Rust experience than you do :)
-> 
-> In general, it never hurts to offer to help with maintenance -- it
-> shows you are committed to the code you want to add etc.
-> 
+>> *  1 =3D in flight, owned by C
+>> *  2 =3D in flight, owned by Rust
+>> * >2 =3D in flight, owned by Rust + additional references used by Rust
+>>        code
+>>
+>> Correct? Maybe @Andreas can check.
+>
+> We have been a bit back and forth on this. This is how we would like it
+> going forward:
+>
+>
+> /// There are three states for a request that the Rust bindings care abou=
+t:
+> ///
+> /// - 0: The request is owned by C block layer or is uniquely referenced =
+(by [`Owned<_>`]).
+> /// - 1: The request is owned by Rust abstractions but is not referenced.
+> /// - 2+: There is one or more [`ARef`] instances referencing the request=
+.
 
-Sounds reasonable from this perspective. In that case waiting for a
-@Wolfram's response.
+Huh, now I'm more confused... Could you go into the details again?
 
-Best Regards
-Igor
-
-
+---
+Cheers,
+Benno
