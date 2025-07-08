@@ -1,100 +1,97 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709081C6FEC;
-	Tue,  8 Jul 2025 10:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F08917CA17;
+	Tue,  8 Jul 2025 10:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751969793; cv=none; b=Hlo6vl8GqvwpFX4v9UpopdDhuCFYnRcQUl2GuwC3JUHMGghM+lJj+cjYDVupyscTVMW95EqPOwbTXNsTwrPN6WDWE1MNGC54l7Xfv4OqdWw5ccjRqDkhjaZjIGNWSF2oKm3X9wjhNDwRp8KbiiwBKnJWPa+IQOFq85b+cbHlLD4=
+	t=1751971536; cv=none; b=qEk7fNBw24zibqBX+QUSRaM3+2Zorb3VtNBzoOK63u01HfEZb3kgxb2laFKFr30bW6XOjXQqPBR20oYDGQvDJqEMhyrnOt2wWzfZtl3ylZum2+9r5vt4RVmTCZAn8TL+ycbRZDluEXybT6JZYaO8WIACVMVvYz2sSmeHi/XRqao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751969793; c=relaxed/simple;
-	bh=Mu2agmfNzU1947N28qDPAD2DRXup4PY6h7Z5E3r0lUI=;
+	s=arc-20240116; t=1751971536; c=relaxed/simple;
+	bh=HSewAqhrTyK3ZVdcaOzrW5/o9Q0lTTzZYLPkKS9Ox8E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cRdZ7+R6XTgJd6lonYKtfxtqYXCEv2T0QNWjONkrCQl+wDH2Ruy/JawMlAOLGleSOXeglo1f8pGzWa03YxGP3v2avYSp5de3rzo9PlMfV/jyoVqM45irDiQCqz+notEfAp5Q/PAycAUo7suyH8FuWdWzPzFl4tv4wkog+ZudpJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=heDJNNvB; arc=none smtp.client-ip=209.85.214.178
+	 To:Cc:Content-Type; b=ZrdScENM8odznKJ6MgE8RkLCVo6oHc4RmiO+kuC5NvEAVIchuNIn3uZPgBMVpIJM3LzXow7be7lUX25NbR4rOH0Mo01VnjAD2K1dA/bw9J28wFm70RgyeKrbZCmVqE5r5UBg72mZcLV4G6AgOtFqdjvMy93oy2oi56w/jYORIJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IAxNgi4H; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="heDJNNvB"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-237f5c7f4d7so5871195ad.2;
-        Tue, 08 Jul 2025 03:16:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IAxNgi4H"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-235248ba788so3316875ad.0;
+        Tue, 08 Jul 2025 03:45:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751969792; x=1752574592; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1751971534; x=1752576334; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Mu2agmfNzU1947N28qDPAD2DRXup4PY6h7Z5E3r0lUI=;
-        b=heDJNNvBvLNIjStZ4hphML3HbKBPKhtxDHZtKY0GEIAITSZOnYWO7/DgPNRc5DDIem
-         4ICEY96ZqmBC0FXMIzjUeT4udUTas+B9I+Bkv1ZopRqieVUNOmx2cBti91fgeuFeIBJl
-         60/xNFU0fbpoe+RnLsSaWK+PHoCoJMLrywIJojSqM2zFROtLdKb/ev0kb1nMX5e1tJJ8
-         1SAPzjBZiulVak1v7j3PzN+TLGU4kK9Ew9YP9io8FhjapqKi6Y5cs2mwl2eG8fa0H1A1
-         dZ+zUCDBTs7jUHCiHVR0BeesuKc+Pit56Sd3fkQhcMtK+aOMNG3kRb2WCa8Du5uL0qSk
-         CATg==
+        bh=HSewAqhrTyK3ZVdcaOzrW5/o9Q0lTTzZYLPkKS9Ox8E=;
+        b=IAxNgi4HIKGbQ/aUU+AbpOwHwd6lw5U2RGEVYDuVAXKgG+y3bymw9tZGQ+H0+AmhcZ
+         wV1XluQ3ua/uxQPUUEpix0h1vcXKi/GIYu6BIIFtmtjW8UZfmp7OgfR631+Hltt+5EjL
+         BVNEALKGlyf3tp7+uJtqKqeCZc/oDGXjJknb41t04cIz5cPf+VkN23vQOQKxcla9vf1A
+         muVT66yY9WEHvBrCtUSYn+IFVfI4t2GUOuij1o8vjhUF1vOAbmt/nufiEg/wi7ieexjz
+         kA062RcuaIwqa0aXDDBu13UQgFhcTyvgUpprWu6NbtUhGaccMI5dkX1UzUXYIWrVX0uu
+         YscQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751969792; x=1752574592;
+        d=1e100.net; s=20230601; t=1751971534; x=1752576334;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Mu2agmfNzU1947N28qDPAD2DRXup4PY6h7Z5E3r0lUI=;
-        b=WmBg4/xkmCfy+Hxb/pVPFbmdOGgezSBALLaFgjESkRlv9sHqCiPgzoFKsEMRdSpWJ5
-         zXrWoWHwPxtILJ/5s5y2ll7oc6kH5vK6z4tlOiHi0y9duMpm+Uk5BwKBpQ6RIAg1awyU
-         QO2gvOfdov98mQDMET9/mOWg5A3y9AWJt7S5Y+o/rEt7dvKiWOZpqvxBtPCJHFxtbQAF
-         8iuUzw3docBdkwu7kyaFpMEHg7j2mQFNPLgSzG/Y+6KAhf9gmQjC0yKYIEMCFclNqhGd
-         voCqAcsIvpqbqJeYUdLZtCwE0mVPFUnpILoOh90KI9BmT1adfo1yp4OuZaJURonkOz9X
-         LmiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUcP7GAuH6RoQLcinOGeJWCHIx6EbwDLlfiwucJZsQ4YsHUAU/0/SMJsuMPGpJmM1zkWdMItFuK6a+9vew=@vger.kernel.org, AJvYcCWfWxYSDXgjNkeFk2WSnoZlgNlrhoAwmxSqmxPUMuCWf37VL/mjn6iEoAI9pf+h+jCQAk6LAOEiE/OrDR8Oy1o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7q3S4U8zdZ7F+G+OV5A3E7fUiwdFWc/2ZUYM3EqE+2qvqzx2x
-	20uKGznHUQc4FlwXV81o7LIUG5ionGNgbM4/7mcofnp4lUc/PLjij7LvFZGKdE6hAZR2Pvl7H1T
-	YRVJeVszYr+4KdmNAGAamEQ736gS4d3I=
-X-Gm-Gg: ASbGncshyXRN5sdaFu9y7rUVWx8wf6HAe8hPCijLyNzmA9mvfnUEyhFppZ80OjJjLua
-	Mi7r1KpLfruc1lNk21shvRzl+7moceDLebOZqlFmayecllAjuzKdDwDOm/8iaNbjnjhnQsmrSzT
-	smuiMZfDgC2phhmzuxI8Ynk4XAxS4IYwfTGbLBykkRqnC5
-X-Google-Smtp-Source: AGHT+IEtiSDbVtVY2B0pLNW44Ytg7MQuZSNigbC2JZeHZUhFXRF5LQyHh/k8dU/GxbIoUGVN8Hqb+K3w2wT9wrlhH/I=
-X-Received: by 2002:a17:903:94c:b0:23d:d2d2:b51f with SMTP id
- d9443c01a7336-23dd2d2b7dfmr9180415ad.10.1751969791683; Tue, 08 Jul 2025
- 03:16:31 -0700 (PDT)
+        bh=HSewAqhrTyK3ZVdcaOzrW5/o9Q0lTTzZYLPkKS9Ox8E=;
+        b=Tw8m4QgbKzlXkxhyb7jHulHWRkrNK8s0bM/Aq9V5stsN9g4cW36tjINUuBpeNb04eS
+         Nc6UaZIBsiMxUkky27RwlKNgIrqsOqfbAn8hNAD7+ttLK8K0JZVdmGShczKsgpCTm5QQ
+         WklicEg5MPZ1i2zz1NgIQnC9gxE3c78WC5h3bP8YSRKLq+KqDbMqpFz3+Qt5kv0IZJdB
+         dxGXdR+4P1sDME4VmlnEHInBX1yB635L5yKCOZXNMERwST13tr8Gtu/zmZjb3B+IDjOQ
+         ESH97QFw4xNGaQZnUT/MbB2245rtkvjPHI36cbXsOTalcUZiUbpWYbfmh+2GA4jcbyqu
+         KNMw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ7pUiz7ZE/j4YHIQqJ6vmNM5OQLwn3LWoU80M0VjeVMN2l8lODXJKNOhPo0bU4/Qf8SMTd91u10st@vger.kernel.org, AJvYcCVRLod7NL8nj8rS/I2lfvBQKay7R1wnVsxeB+S4fil4AY+bMtK76i7IQXZyy5mjgrm2LYEZVk3VgDHXyfoW@vger.kernel.org, AJvYcCVTpXOMLsNMgFjY/piNSQ0hWOMgDs68GMtvRhbzGO4siObE6Kc94KITzAHyaCKWoHIwmOD8VGMf98Yr@vger.kernel.org, AJvYcCWI9P/T8kr+N0c86EtmeqU0nd7onR/idHp8HPyj+sA38yfic/uI33+bNQTsdp8KRziF82b8fNj3@vger.kernel.org, AJvYcCXJ//ytmM12ZVB8H+yDVQbbnsd737UVsKGmIVtj2u2b08UaLOpU1SSkYLH57p46S+tOGb/cL0HxPbz5Aowpr2k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOUGVUCpX68xuKruetSkWa6Z8FPofrsB0bk/NPtgRVc7TTa25O
+	PZ4JeDUwUoLoI3roif10XbqDTulown1ol1dl0I+85oJp6X/5CLzFJcNNI4EC5XrL55acAAzlH2P
+	/6jgfhX72qsHY5jZbbyQzQQDkiSik9ns=
+X-Gm-Gg: ASbGncuGO4qhHZYGPqeIpRoefwOx+hDB5yh2EnaW5GBbnsoaiPZh4aiu5Vbf33Emg6j
+	gc+nSA1Vg5Z3qbMX1fxzmhrBSGri3/Ldf3BW1Daw9fD2EdvwADzCqyZPE8StGa1KQQruXD3Y9CM
+	nkNxOwXt38LdI7VG/CKZZRKTSgRr4Tp3qK+jvCvm4ou9T0
+X-Google-Smtp-Source: AGHT+IEm3L7c8trcBPYqjxR6Ocp3T5kI3YMJkezrxQ89TyjzbFAZ+sfEnGRzsDPR5wrlqq6qJ/XkY9027ytzzYYdHeg=
+X-Received: by 2002:a17:902:e806:b0:234:bfe3:c4b8 with SMTP id
+ d9443c01a7336-23c85eae541mr82553265ad.2.1751971533736; Tue, 08 Jul 2025
+ 03:45:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
- <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
- <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
-In-Reply-To: <aGzrZqIrStGD_UBp@mango>
+References: <20250704041003.734033-1-fujita.tomonori@gmail.com> <20250707175350.1333bd59@kernel.org>
+In-Reply-To: <20250707175350.1333bd59@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 8 Jul 2025 12:16:19 +0200
-X-Gm-Features: Ac12FXws6e6wjl4VXaStMJYjDvz_KB3jEXK4Nq0GnlHUnilneuNT3cDnqmhb8V4
-Message-ID: <CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-To: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 8 Jul 2025 12:45:20 +0200
+X-Gm-Features: Ac12FXyxXkuLp9PUeC-mS4nwqMQ5TUf2kfGzbt31LyPz8JoP83cE9x-RhgyyVJM
+Message-ID: <CANiq72=LUKSx6Sb4ks7Df6pyNMVQFnUY8Jn6TpoRQt-Eh5bt8w@mail.gmail.com>
+Subject: Re: [PATCH v3 0/3] rust: Build PHY device tables by using
+ module_device_table macro
+To: Jakub Kicinski <kuba@kernel.org>, gregkh@linuxfoundation.org, robh@kernel.org, 
+	saravanak@google.com
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, alex.gaynor@gmail.com, dakr@kernel.org, 
+	ojeda@kernel.org, rafael@kernel.org, a.hindborg@kernel.org, 
+	aliceryhl@google.com, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, david.m.ertman@intel.com, devicetree@vger.kernel.org, 
+	gary@garyguo.net, ira.weiny@intel.com, kwilczynski@kernel.org, 
+	leon@kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	lossin@kernel.org, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	tmgross@umich.edu
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 8, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold@pm.m=
-e> wrote:
+On Tue, Jul 8, 2025 at 2:53=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
+te:
 >
-> Note, though, that I already moved it from types.rs to types/ownable.rs o=
-n
-> request. It seems to me different people here have different ideas where =
-it
-> should be placed. I feel now, that it would make sense to come to an
-> agreement between the interested parties about where it should finally be
-> placed, before I move it again. Could I ask that we settle that question
-> once and for all before my next revision?
+> Does not apply to networking trees so I suspect someone else will take
+> these:
+>
+> Acked-by: Jakub Kicinski <kuba@kernel.org>
 
-Yeah, if there is a disagreement with something said previously, then
-it should be resolved before starting to ping-pong between approaches
-with more and more patch versions. Reviewers can forget or they may
-not have read an earlier comment, but you did the right thing
-mentioning there is such a conflict in opinions.
+Thanks! Happy to take it through Rust tree if that is best.
+
+Greg, Rob/Saravana: Acked-by's for auxiliary and OF (in patch #1)
+appreciated, thanks!
 
 Cheers,
 Miguel
