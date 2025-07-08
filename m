@@ -1,80 +1,82 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7241F92A;
-	Tue,  8 Jul 2025 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335001E521B;
+	Tue,  8 Jul 2025 14:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751986080; cv=none; b=XEExTuJoJZK0575PFtKhPY8us0HTkoK24XL/GYIfN4EoQDT1qH9QAiKn+HwPtU5oESZ2+vQJTM5SoJAkDMAECkAqBr6JJxgD4j/gVF5a5NuZ0E4kn5paD216gTBu+m61c8t/G7JXHjvtY87rxJ5Cvg0SkabXFqD/E0VHYFaWGRw=
+	t=1751986207; cv=none; b=I4JHyJeh/mSwc55fCRAuvCG1tnDKlvE94cDUP63aawNt8fN+d80YlJEgiiVZRI5zf2T2B41e/Ot/8KlN/Ep5joPN4lltEc5XPzdiRt/CCYVJs6v2f8uqsx+Kfp6qugwLvJ9ey5yMzKtYJnK5IqYiYbk69kIwIrLSYo09Rw0lCXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751986080; c=relaxed/simple;
-	bh=T6VmvvO9uFBClL8HdGKSaxVqmPmXpFF9bfQy6YorpP8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JdsYITIlgewaIs6uQHPnKoZEaVt8hOK/jwMUVXXmerdOZW72og9BvR7kiPtnv9c6dxAnJEBiY9MN+ELEL2YLuW46OeamCovjs6iijXY3N9wb001N3aYlo78R7R80bfQEX20/3+hmMIjTHnrEBLYwWdo4hR/u9rNdydWebVUFP1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KxaIU4tH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751986207; c=relaxed/simple;
+	bh=ezh2zl6HDyPzIhBi2hSZkhA1V0ccwMsmC19iEajzmGk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=GHpPZawgkgetGvNdwCUMIbF3Ce5U2Uy2HcMv7eYC38x6DEAwfsYmVOu+yxJ9f1ebue0jet7ju1WGbcHNq3U/eT8hBsUVTB8D7UD0FJnf5DuiH4qv7/Qqv6LXWsJmi1u9mDjNI/buwDRXE0CgxyOSLjZPSbGbVzdU4x0rlCQtOEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9MU7JoV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KxaIU4tH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAAE0C4CEED;
-	Tue,  8 Jul 2025 14:47:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9MU7JoV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A649FC4CEED;
+	Tue,  8 Jul 2025 14:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751986079;
-	bh=T6VmvvO9uFBClL8HdGKSaxVqmPmXpFF9bfQy6YorpP8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KxaIU4tH7PaM9FiQRSMz2qq45QfZpQak5HRDUM/L3o+QXQTFkRANKCvPX0Fc8mkCv
-	 peCwHHp65swdRdJC1VF6oUINSkQSEyvimjmLWvEKNMp3v4wKvRfa7KNfRukg/gn+fQ
-	 gmdOq/fvT9p+LCmxhktGwcrKqmd6oR07vFQCqXPTUBDjuC44zwYU/UyUkwQm0N9ERu
-	 nA8S4E9qJXCZYMyAwUcnN7fv/32HgtXH3BSgFtzA7IPOA3t+U5QqLLFiM6VP+wEagG
-	 ORFgx098hqDjg57XN4ikS8XfT1pa9/mLnG6fhk7Oh0Vi5ejNh4HTtWHk+9q9by+F8B
-	 dLlGP3MdFEAiw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Alexander Viro"
- <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
- Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
- Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Matthew Maurer" <mmaurer@google.com>,  "Lee Jones"
- <lee@kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <rust-for-linux@vger.kernel.org>,  "Benno Lossin" <lossin@kernel.org>
-Subject: Re: [PATCH v2 2/4] rust: iov: add iov_iter abstractions for ITER_DEST
-In-Reply-To: <20250704-iov-iter-v2-2-e69aa7c1f40e@google.com> (Alice Ryhl's
-	message of "Fri, 04 Jul 2025 09:26:01 +0000")
-References: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
-	<bzRIJnmP3zwPCPlJ4GG9diQ2CKzp-7bKbOIEHrtXVfmQ5ImkOBNAxI8wlg0jdrT4nzELpnE3rVzr6T7cJ3xVFg==@protonmail.internalid>
-	<20250704-iov-iter-v2-2-e69aa7c1f40e@google.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 08 Jul 2025 16:47:51 +0200
-Message-ID: <8734b6oi20.fsf@kernel.org>
+	s=k20201202; t=1751986206;
+	bh=ezh2zl6HDyPzIhBi2hSZkhA1V0ccwMsmC19iEajzmGk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y9MU7JoVUbZTXEjugSIvpthmjEXx3J5U+fHEOSa88BAP9l4qnHwDTBD1lOfBTjL8Y
+	 99jTrTchlIpOkip9DZsHATY0nsaXdLXONKYNIorpOjXouUuQRhWHy6S/ex5W6rAAAc
+	 aYEVqLC6BR4MXOQWLbH2Ye7nx/1RJUHQSg2XBOfb4gLjbD8Z3RFcNquk+VI0w5Qdje
+	 lK+AkZ18FhLIloUm6xSYQPy+odLKTcJWXiQSAxxzutlYNSHYoUUMNsQAaKhh/r6sty
+	 fjklWSHuS+G7bHh3z5P2zn1zHWyf1QoDUV3BaCXrgfDs3CWjpgKqXfRrIU5EmOLdwX
+	 IkDot8hxMaj+Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Jul 2025 16:50:03 +0200
+Message-Id: <DB6R9YNA7TD5.FR3PSOX7SPI1@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+Cc: "Oliver Mangold" <oliver.mangold@pm.me>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Asahi Lina"
+ <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
+X-Mailer: aerc 0.20.1
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me>
+ <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org> <aGuAR7JCrlmzQrx4@mango>
+ <gFz7glX0UIHGffQdm4_vD_XkT5GZEKB0Lx0cd8-TCR8glMzIIY7VBIvppFVr2RURNBnGx9lKJqrE5av7xSUcbA==@protonmail.internalid> <DB5PX74OB3DX.1UNT8MIBWNC2G@kernel.org> <87bjpwqmo5.fsf@kernel.org> <gUxXEpuPZ0HXQ-cptykcSOV4dVbZNFvDq4Ey5YR1GT8exNFK0qhYAg4HFgWTvTpDk8HXMGl5XThvR7f4m-T6Sg==@protonmail.internalid> <DB5SRE5S7AR3.QUF369W9JYGJ@kernel.org> <87zfdgp253.fsf@kernel.org> <Kl9_mnIVP7OY9TWELXIwOVkotanEt7IsdpMx-IbaRfjHf6EF0tC06PzcC8-Z9pDiw1FQHulknmgbS9eQU28kQw==@protonmail.internalid> <DB5XPFYBATZZ.5EH3TWGPHTDB@kernel.org> <87jz4iomc9.fsf@kernel.org>
+In-Reply-To: <87jz4iomc9.fsf@kernel.org>
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
-
-> This adds abstractions for the iov_iter type in the case where
-> data_source is ITER_DEST. This will make Rust implementations of
-> fops->read_iter possible.
+On Tue Jul 8, 2025 at 3:15 PM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>> On Mon Jul 7, 2025 at 3:21 PM CEST, Andreas Hindborg wrote:
+>>> When a completion comes back from hardware, it carries the ID. We use
+>>> the C block layer `tag_to_rq` machinery to turn this ID back into an
+>>> `Owned<Request<_>>`. In that process, we check that `refcount =3D=3D 1`=
+ and
+>>> if so, we set refcount to 0 and invent an `Owned<Request<_>>`.
+>>
+>> (because if not, this would be wrong)
 >
-> This series only has support for using existing IO vectors created by C
-> code. Additional abstractions will be needed to support the creation of
-> IO vectors in Rust code.
->
-> These abstractions make the assumption that `struct iov_iter` does not
-> have internal self-references, which implies that it is valid to move it
-> between different local variables.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> I hope it is not wrong =F0=9F=98=86 You can see the latest and greatest h=
+ere [1].
 
-Please see the comments on v1 [1].
+Thanks for the pointer, the "implementation details" in the docs on
+`Request` were very helpful! This is another argument for not having the
+blanket impl for `Ownable` when `T: Refcount` I mentioned in the other
+thread.
 
-Best regards,
-Andreas Hindborg
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/=
+tree/rust/kernel/block/mq/request.rs?h=3Drnull-v6.15#n398
 
+The comment in line 424 looks wrong?
 
-[1] https://lore.kernel.org/all/439baec2-dba8-4dab-abb5-faa14fbda943@gmail.com
-
+---
+Cheers,
+Benno
