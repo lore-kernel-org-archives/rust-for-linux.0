@@ -1,108 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251E2356A4;
-	Tue,  8 Jul 2025 19:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AB7E55B;
+	Tue,  8 Jul 2025 19:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752002337; cv=none; b=kTNJOXpVkEV+j+vUC5p0HFnS9edmRuYh4a5f9jf1JNDtwsW/DpP7tuSI1PQkbgws2SAQxYBFdnrH1AAuCpDb/SFywFDzI8i8tq/en5zuKnl1Xj4rq/HmTGwb0W9CkABSapt7/Kfm6SQJIefgsQVvN1GQAR8Y31HUjsnrljHau3s=
+	t=1752003069; cv=none; b=OrKATknaNZlA7f3/L7b87hjmFTt4kX667MxtOPW1Hx00v9MDQkDMVZm8P2ELPURcQ3bc15uSuz1Hae0xrInZxxD+0FhAeT8p3CsaIVXgUxOiwtlLHjT5WfzcMFiTBaj8dQFwnGGrJjjb/PYa+7YSGVD/xgR0hbjSz3/P9jejUi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752002337; c=relaxed/simple;
-	bh=eZ+Vz8Em/OjOuWZ5o526dAej5vcRoSqRc9QSKjRGsKo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=Hr0GGcgCf4Tb1gzdtda5RaVUtBHsyylDFX9TNcj0NrzMr80OHGWnP+2RXZvmKrOE1ewB8pUdN08nkBOMy5U/X/Brsy1vb2aS1gMZjOa7/r8Dq41ybno7QiUoOhdi//6nIH8/bAclv7KAsjJPvkwG7NfnTfZbUMFtZn2yFvMCLV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuiPiGRN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752003069; c=relaxed/simple;
+	bh=BqOK8MX/2bkxDW77bV+hqSHjpVcRKdgW74773rhjp7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iG3E19n+roSgMV5KbchauWZE68BnglLNeM9ytLocuj7FvD1oT5cjtcYZUeHcuwDIfouK6KQsIVOByM91w7IfABO1e5A0TiSVP5imVTO1yezIvrfvNctNboI5dmo2W3NxNAhedXxTVUesZYzqIsHJEnTnfcTPQvdYkFbc8GAW/9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j1ijntGR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuiPiGRN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B15C4CEED;
-	Tue,  8 Jul 2025 19:18:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j1ijntGR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7076BC4CEED;
+	Tue,  8 Jul 2025 19:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752002337;
-	bh=eZ+Vz8Em/OjOuWZ5o526dAej5vcRoSqRc9QSKjRGsKo=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=CuiPiGRNr89Jbd52JUMhPzyNO0qXf8R3Piy1kGDMf1d3PEr5VQiK6ZTGenHVjEaL0
-	 bFH/iBIAUl5rxaVH9bZFVmvCc127lZPXL6J6MLJfbZ2xxygM9t1jjXMMEbprNSackW
-	 mKQLA+rPEusr989d5+wtvJffDuD7+ukz1Seqf7eNYBD0n0M1HZg0njJOD45xQXoJoH
-	 OkxmrWCJSalSYd6VmlfRt5yErv0rjz58XQ9B7mCFKJ3T+NkCpb+AJcLzmv2fpaEVH0
-	 p1LIPY1xebJgAMfB2EZmJ2vBYzkwGZza994Yi/fKo63beUlMFSbEN5sTOAY27GpcRZ
-	 ANGMiP4/gTWuw==
+	s=k20201202; t=1752003069;
+	bh=BqOK8MX/2bkxDW77bV+hqSHjpVcRKdgW74773rhjp7Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=j1ijntGR4WATssYtHyzEAOTbtobujQQ2Js9iLxwlkcQtndfE+Ygl3FJBSrYbLvBvL
+	 BrudquSVz4slvXBlboKvsVm4B03ZsBDrBDuQuQotYz6uRWjW3o7V+gRXuRE9YnLY51
+	 SLT+YKcGisgtGPA4Of+AKIlMLmLlFH76Xg3MlWS8KUVZFhTaGtvtcgbmWWHI4tLXKG
+	 rnH3A5d5YnLhDClJwwepmAASxe3VxwPOLaCN4qtXmxgOngJ3OHNk0bnGX/QlaM5hA7
+	 qWzDdp4tZ0XHCyIM96WGYklp5TvKvvfwUf4nn2ZcW6lvUvO/lJQBoDkzOe65U/xUNb
+	 uO7bC5JJoodHQ==
+Message-ID: <676fbd97-8de5-49e1-b378-18f9c918a51b@kernel.org>
+Date: Tue, 8 Jul 2025 21:31:05 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 21:18:52 +0200
-Message-Id: <DB6WZSFEJ6N1.SMX5O3QTJVDJ@kernel.org>
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Oliver Mangold"
- <oliver.mangold@pm.me>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Asahi Lina" <lina+kernel@asahilina.net>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
- <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
- <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
- <CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
- <O_XE8MhYyfjIfrx0uca8YoUIWQ6z4SjdK_wLXfzZ8gfzOvUBrH1-0cRRuT7pwh6eMjsXrVXuBwary36TIkUzlg==@protonmail.internalid> <DB6P2UQM08LH.2ALUM6EKC3Q45@kernel.org> <87cyaamt6y.fsf@kernel.org>
-In-Reply-To: <87cyaamt6y.fsf@kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: add mm folks as reviewers to rust alloc
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>
+References: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue Jul 8, 2025 at 8:30 PM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->
->> On Tue Jul 8, 2025 at 12:16 PM CEST, Miguel Ojeda wrote:
->>> On Tue, Jul 8, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold@=
-pm.me> wrote:
->>>>
->>>> Note, though, that I already moved it from types.rs to types/ownable.r=
-s on
->>>> request. It seems to me different people here have different ideas whe=
-re it
->>>> should be placed. I feel now, that it would make sense to come to an
->>>> agreement between the interested parties about where it should finally=
- be
->>>> placed, before I move it again. Could I ask that we settle that questi=
-on
->>>> once and for all before my next revision?
->>>
->>> Yeah, if there is a disagreement with something said previously, then
->>> it should be resolved before starting to ping-pong between approaches
->>> with more and more patch versions. Reviewers can forget or they may
->>> not have read an earlier comment, but you did the right thing
->>> mentioning there is such a conflict in opinions.
->>
->> Yeah, I checked and that was Andreas on v9. @Andreas what do you think?
->>
->> I think we should just get rid of `types.rs` and split it into:
->>
->> * `opaque.rs`
->> * `foreign.rs`
->> * `scope_guard.rs` (this might need a better name)
->>
->> `Either` can just be removed entirely, `AlwaysRefcounted` & `ARef`
->> should be in the `sync` module (I already created an issue for this) as
->> well as `NotThreadSafe` (or we could create a `marker` module for that).
->> Thoughts?
->
-> Sounds good. I just wanted to prevent us from cramming everything into
-> types.rs.
+Hi Lorenzo,
 
-Yeah me too :)
+On 7/8/25 8:37 PM, Lorenzo Stoakes wrote:
+> The alloc implementation is a thin wrapper over slab/vmalloc, so to help
 
-> But we should probably move `Owned` into `sync` with `ARef` et. al.,
-> right?
+It's much more than that, as far as MM is concerned this is true (no need to
+change this in the commit message).
 
-I don't think it fits into `sync`... It's more like a `Box` and could
-very well store something that is `!Send` & `!Sync`.
+> out on the mm side of things and to be cc'd on changes, add some mm people
+> as reviewers.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
----
-Cheers,
-Benno
+Thanks a lot for sending this patch, it is very welcome! I will apply it once I
+have an ACK from Vlastimil, Liam and Uladzislau.
+
+> ---
+>   MAINTAINERS | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 71599ab6bd56..54dd937160ac 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -21751,6 +21751,10 @@ K:	\b(?i:rust)\b
+>   
+>   RUST [ALLOC]
+>   M:	Danilo Krummrich <dakr@kernel.org>
+> +R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> +R:	Vlastimil Babka <vbabka@suse.cz>
+> +R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> +R:	Uladzislau Rezki <urezki@gmail.com>
+>   L:	rust-for-linux@vger.kernel.org
+>   S:	Maintained
+>   T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
+
