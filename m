@@ -1,82 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335001E521B;
-	Tue,  8 Jul 2025 14:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046313957E;
+	Tue,  8 Jul 2025 14:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751986207; cv=none; b=I4JHyJeh/mSwc55fCRAuvCG1tnDKlvE94cDUP63aawNt8fN+d80YlJEgiiVZRI5zf2T2B41e/Ot/8KlN/Ep5joPN4lltEc5XPzdiRt/CCYVJs6v2f8uqsx+Kfp6qugwLvJ9ey5yMzKtYJnK5IqYiYbk69kIwIrLSYo09Rw0lCXc=
+	t=1751986281; cv=none; b=fZHAfZBlyHh1s5+N1MOQmG/4AIkpLbnsaVlRgKdTIxVAAJZBmzT5jVEgAdQ03zGG5yCI3JvG7viQRISL5gpr1Xuu5GYBnakSkxUmS//scQOObeV0MLwmtu6QWAsEfdW3uF2Opwdkdvw5ODM8RDcw7gib8mRhuT/N8JQbMGupUtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751986207; c=relaxed/simple;
-	bh=ezh2zl6HDyPzIhBi2hSZkhA1V0ccwMsmC19iEajzmGk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=GHpPZawgkgetGvNdwCUMIbF3Ce5U2Uy2HcMv7eYC38x6DEAwfsYmVOu+yxJ9f1ebue0jet7ju1WGbcHNq3U/eT8hBsUVTB8D7UD0FJnf5DuiH4qv7/Qqv6LXWsJmi1u9mDjNI/buwDRXE0CgxyOSLjZPSbGbVzdU4x0rlCQtOEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y9MU7JoV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751986281; c=relaxed/simple;
+	bh=2dWFtmfC/Fk3lQKdvmV4x8eA0P4RAU40VOp0+/3rNuc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=m3itDTigVk7DPyHi48M+h+HmAYcOvn+yRIoDY2oqOI0iMmdgvomJXzvrqluPHmT83l/VBD7wmZY5U8vQuiBJXF4saUNOB9mE9iUl+Oc9HeMS62ICAq5kkQuERCdi/aQPVeey1yUZHF6logV0jC53wad1OcAoMBRC4vytmEU0UHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADi6aOhy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y9MU7JoV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A649FC4CEED;
-	Tue,  8 Jul 2025 14:50:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADi6aOhy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38830C4CEED;
+	Tue,  8 Jul 2025 14:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751986206;
-	bh=ezh2zl6HDyPzIhBi2hSZkhA1V0ccwMsmC19iEajzmGk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y9MU7JoVUbZTXEjugSIvpthmjEXx3J5U+fHEOSa88BAP9l4qnHwDTBD1lOfBTjL8Y
-	 99jTrTchlIpOkip9DZsHATY0nsaXdLXONKYNIorpOjXouUuQRhWHy6S/ex5W6rAAAc
-	 aYEVqLC6BR4MXOQWLbH2Ye7nx/1RJUHQSg2XBOfb4gLjbD8Z3RFcNquk+VI0w5Qdje
-	 lK+AkZ18FhLIloUm6xSYQPy+odLKTcJWXiQSAxxzutlYNSHYoUUMNsQAaKhh/r6sty
-	 fjklWSHuS+G7bHh3z5P2zn1zHWyf1QoDUV3BaCXrgfDs3CWjpgKqXfRrIU5EmOLdwX
-	 IkDot8hxMaj+Q==
+	s=k20201202; t=1751986280;
+	bh=2dWFtmfC/Fk3lQKdvmV4x8eA0P4RAU40VOp0+/3rNuc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ADi6aOhyGMPJWJ8ylzPN7+2KDsBNsV5AycLQj3o5QMvj5qkJl6OsFrjhjkhPspmEH
+	 aaE21wlwxTEgJhtis13dD2wb2rLJgP4qDYHKzBf+MIABfl4hzwHkWQjGt1TFsfh03Z
+	 OYlqkuPUPmllsUVRHGcFc8t5gEYBpODoh0AqZrlZEK+twgIScGvHG6iuVzQ+0pzH50
+	 dh8+zRwTNL5p6dSsEGajSZCzpiVbo9h3Z2CFUiURh87vJroXijVFQrQjCPdgT/axv6
+	 6l9fvC45/cIEeygbfi8Lr0v/fKOEZWSDognYi6WfIfFTMj4U8fbN3ngHbW9AgTur2p
+	 C5NRsc4q/NA5Q==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Alexander Viro"
+ <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
+ Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
+ Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Matthew Maurer" <mmaurer@google.com>,  "Lee Jones"
+ <lee@kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>,  "Benno Lossin" <lossin@kernel.org>
+Subject: Re: [PATCH v2 3/4] rust: miscdevice: Provide additional
+ abstractions for iov_iter and kiocb structures
+In-Reply-To: <20250704-iov-iter-v2-3-e69aa7c1f40e@google.com> (Alice Ryhl's
+	message of "Fri, 04 Jul 2025 09:26:02 +0000")
+References: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
+	<A6L7hDRsDyJJvX_NuoUG_Zb-Jy_BMdGLhjsq5xUSRkl6hpItQD9ZvX5ChAr9QIFH4eeDBpW-Q-582Tt4Nef5SA==@protonmail.internalid>
+	<20250704-iov-iter-v2-3-e69aa7c1f40e@google.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 08 Jul 2025 16:51:11 +0200
+Message-ID: <87wm8in3c0.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 16:50:03 +0200
-Message-Id: <DB6R9YNA7TD5.FR3PSOX7SPI1@kernel.org>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-Cc: "Oliver Mangold" <oliver.mangold@pm.me>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Asahi Lina"
- <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
-X-Mailer: aerc 0.20.1
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me>
- <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org> <aGuAR7JCrlmzQrx4@mango>
- <gFz7glX0UIHGffQdm4_vD_XkT5GZEKB0Lx0cd8-TCR8glMzIIY7VBIvppFVr2RURNBnGx9lKJqrE5av7xSUcbA==@protonmail.internalid> <DB5PX74OB3DX.1UNT8MIBWNC2G@kernel.org> <87bjpwqmo5.fsf@kernel.org> <gUxXEpuPZ0HXQ-cptykcSOV4dVbZNFvDq4Ey5YR1GT8exNFK0qhYAg4HFgWTvTpDk8HXMGl5XThvR7f4m-T6Sg==@protonmail.internalid> <DB5SRE5S7AR3.QUF369W9JYGJ@kernel.org> <87zfdgp253.fsf@kernel.org> <Kl9_mnIVP7OY9TWELXIwOVkotanEt7IsdpMx-IbaRfjHf6EF0tC06PzcC8-Z9pDiw1FQHulknmgbS9eQU28kQw==@protonmail.internalid> <DB5XPFYBATZZ.5EH3TWGPHTDB@kernel.org> <87jz4iomc9.fsf@kernel.org>
-In-Reply-To: <87jz4iomc9.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Tue Jul 8, 2025 at 3:15 PM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->> On Mon Jul 7, 2025 at 3:21 PM CEST, Andreas Hindborg wrote:
->>> When a completion comes back from hardware, it carries the ID. We use
->>> the C block layer `tag_to_rq` machinery to turn this ID back into an
->>> `Owned<Request<_>>`. In that process, we check that `refcount =3D=3D 1`=
- and
->>> if so, we set refcount to 0 and invent an `Owned<Request<_>>`.
->>
->> (because if not, this would be wrong)
+"Alice Ryhl" <aliceryhl@google.com> writes:
+
+> These will be used for the read_iter() and write_iter() callbacks, which
+> are now the preferred back-ends for when a user operates on a char device
+> with read() and write() respectively.
 >
-> I hope it is not wrong =F0=9F=98=86 You can see the latest and greatest h=
-ere [1].
+> Co-developed-by: Lee Jones <lee@kernel.org>
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/miscdevice.rs | 97 ++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 96 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> index 22f291211636f66efca6b33b675833236332719e..a49954c9b0d14117645be8139db792f1fd22589d 100644
+> --- a/rust/kernel/miscdevice.rs
+> +++ b/rust/kernel/miscdevice.rs
+> @@ -14,13 +14,14 @@
+>      error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+>      ffi::{c_int, c_long, c_uint, c_ulong},
+>      fs::File,
+> +    iov::{IovIterDest, IovIterSource},
+>      mm::virt::VmaNew,
+>      prelude::*,
+>      seq_file::SeqFile,
+>      str::CStr,
+>      types::{ForeignOwnable, Opaque},
+>  };
+> -use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin};
+> +use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin, ptr::NonNull};
+>
+>  /// Options for creating a misc device.
+>  #[derive(Copy, Clone)]
+> @@ -136,6 +137,16 @@ fn mmap(
+>          build_error!(VTABLE_DEFAULT_ERROR)
+>      }
+>
+> +    /// Read from this miscdevice.
+> +    fn read_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIterDest<'_>) -> Result<usize> {
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+> +    /// Write to this miscdevice.
+> +    fn write_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIterSource<'_>) -> Result<usize> {
+> +        build_error!(VTABLE_DEFAULT_ERROR)
+> +    }
+> +
+>      /// Handler for ioctls.
+>      ///
+>      /// The `cmd` argument is usually manipulated using the utilities in [`kernel::ioctl`].
+> @@ -177,6 +188,36 @@ fn show_fdinfo(
+>      }
+>  }
+>
+> +/// Wrapper for the kernel's `struct kiocb`.
+> +///
+> +/// The type `T` represents the private data of the file.
 
-Thanks for the pointer, the "implementation details" in the docs on
-`Request` were very helpful! This is another argument for not having the
-blanket impl for `Ownable` when `T: Refcount` I mentioned in the other
-thread.
 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/=
-tree/rust/kernel/block/mq/request.rs?h=3Drnull-v6.15#n398
+Could you give more context? Please describe the purpose for the type
+and intended use. Perhaps give an example that can be compile tested.
 
-The comment in line 424 looks wrong?
 
----
-Cheers,
-Benno
+Best regards,
+Andreas Hindborg
+
+
+
