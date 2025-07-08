@@ -1,170 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C923C01;
-	Tue,  8 Jul 2025 20:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993CE242D64
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 20:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752007499; cv=none; b=qnpsSG+M+r27PTRezf3kaVLo/SLwBNVdc5mcOIW52b4U+75Kw+ZgR6NE4Zb8IsN7ZEM6dxBs3cpybWEpbEgpuf1RiKuFu3yihsT0wXwUBMtF57gNVwFb7qo6RXo6KeYK+pNib/6cj68VRimu2BNKnSV0cpPOkySfBhPcStG/U74=
+	t=1752007739; cv=none; b=dZPUco5vpA7PmFQQcVB9hXyDaRao/Zui47750RgiRbavrdCBaGKf8wbrqZ9nJEF9wWFrNemFeq7OooIpulCgrLPooDRhxRjosvWv0m6XwzH11XRUIQXANb99kqN2Hh7Y4xqRCwVc4k9KKzeJQ4IeDm2H9xO1wIHib6+v8DlVruc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752007499; c=relaxed/simple;
-	bh=8Q6sDL9TC7gEBxbyHgPrZGhIvXltjl2WkEW6qmKlx0g=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ckbbsPJYS/wuLIaEubhTJl9/d/6gAmgZmk0CdvRh3fmTPYk52uIBoBBky9hOvTCqVhqspoyRHrJcg34L8yaeZ82bzI+HZ9htd7IgDXjP6ODcOgdt2MTC5w4r1RThNscLdO7MLId4XZBeJKWtW2c/TeGEE0DqJsg5UUwG/Hl0hTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m55/GDKj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752007739; c=relaxed/simple;
+	bh=qm/GpJrttlqtY5GHGfwpxBU5KIRlvv2IFGm/6vaBjMo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f42XhC4nvCHzuoztRKlyP/3+fjycaLk6uPN5lwteanl4DlpacOhcQp0/gYMR6wrZee20+2Q+XyMhLa5o4t3DreppDSIAUmXtE/C0I/2kUL7dbdLD2++XFoz02Je6V7cORs0YPxgh1+WPul+piYoqTSf7gLMGB40ClBCwkZn4XUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c87+sGKB; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=qc6BtjmG; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=1NbQ6u4r; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=G0QoVCRH; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m55/GDKj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B111C4CEF6;
-	Tue,  8 Jul 2025 20:44:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752007499;
-	bh=8Q6sDL9TC7gEBxbyHgPrZGhIvXltjl2WkEW6qmKlx0g=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=m55/GDKj4PvSQ65+fgCgndruc1M3w+T+pL0o0muv4kE0AFlCPydzJTZcIjKMGCcZm
-	 ZVOkR9+7J+4/MUgAyI0tlIZsoep9h11OViW1YLxHygMqmVnDJVc9mzRT9HseX5WItX
-	 ymstfQa8mGaWbtjS379p1pYnZGg60puYFebjIoak8Zl5y0tK/hvVx5A/8ca86LCGGV
-	 OLBS8BrlEV9lgydk7q6YP8PDbgxT75DbI761ZHNykt+5nVsJFV8HrYVkxSeQmK9Ave
-	 532S+LQ1Uks6uzhgE8hWEKrbECHdd+3nWrOEWoooFSSU/NoN4z2KigPLo5yiv9KOSV
-	 2+XoDVMaRv3rQ==
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c87+sGKB";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="qc6BtjmG";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="1NbQ6u4r";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="G0QoVCRH"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D11A821167;
+	Tue,  8 Jul 2025 20:48:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1752007734; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rSsadujEFtMorFlXBKn4QXXPoGqR+qQ2MvQ89dlpYSk=;
+	b=c87+sGKBc84puINuO5jttu7pbLK2V+fEcr66dCYfQcQ+IAZCeylXohl9gnguPcnSIuyK0k
+	7vrXGHpRjJvfZ0uYpphXjR+jShOSLXRKS+q/8Ox4YmLt37YkCt5CeA7I25HxvmwpuCo6Dl
+	M9fxjO3IANwNUZpWP/KYkeoLbLcbilI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1752007734;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rSsadujEFtMorFlXBKn4QXXPoGqR+qQ2MvQ89dlpYSk=;
+	b=qc6BtjmGNk0PtJ1kBIxfBRl7QnUJLy/CJ55yJ+2zjc0wEpCZwPFxUmLfWZxGDCQQXUvzsp
+	ISGP0+W54fyMXNDA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1752007733; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rSsadujEFtMorFlXBKn4QXXPoGqR+qQ2MvQ89dlpYSk=;
+	b=1NbQ6u4rUEeuXp7o0DzMdMbWHwmwBbRqQG4fSNX6yi6Cu4fBLNJ34F6J8Leax9y3jbuCuP
+	MsewNqi/8CHMNJz0iU5OY+ARvzkYktUBAuXPjulizeBU6IkerG/SyQaeiangd1K6hlbFp2
+	86KC9NRRAS688CL3FI3AOrPoupUU+WU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1752007733;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=rSsadujEFtMorFlXBKn4QXXPoGqR+qQ2MvQ89dlpYSk=;
+	b=G0QoVCRHYiaG7R8IHOnhYMXLGrl9d0padQzt57mAL+BaiL4fNJJrZNnu+9C/exPmWrpAr7
+	xIK+r7ZcOecInEDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B901513A54;
+	Tue,  8 Jul 2025 20:48:53 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wQZYKzWEbWhmNwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 08 Jul 2025 20:48:53 +0000
+Message-ID: <e4b71105-733a-4096-b7ed-474548066a29@suse.cz>
+Date: Tue, 8 Jul 2025 22:48:53 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: add mm folks as reviewers to rust alloc
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Danilo Krummrich <dakr@kernel.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
+ linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 22:44:53 +0200
-Message-Id: <DB6YTN5P23X3.2S0NH4YECP1CP@kernel.org>
-Subject: Re: [PATCH 1/2] rust: Add dma_set_mask() and
- dma_set_coherent_mask() bindings
-Cc: <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Alexandre
- Courbot" <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250708060451.398323-1-apopple@nvidia.com>
- <DB6JF2JLZEO8.4HZPDC26F3G8@kernel.org>
- <DB6KV5SVWIYG.2FAIFGZ90ZR2I@kernel.org>
-In-Reply-To: <DB6KV5SVWIYG.2FAIFGZ90ZR2I@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-8.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[oracle.com,gmail.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,imap1.dmz-prg2.suse.org:helo,suse.cz:mid,suse.cz:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
+X-Spam-Score: -8.30
 
-On Tue Jul 8, 2025 at 11:48 AM CEST, Danilo Krummrich wrote:
-> On Tue Jul 8, 2025 at 10:40 AM CEST, Danilo Krummrich wrote:
->> On Tue Jul 8, 2025 at 8:04 AM CEST, Alistair Popple wrote:
->>> Add bindings to allow setting the DMA masks for both a generic device
->>> and a PCI device.
->>
->> Nice coincidence, I was about to get back to this. I already implemented=
- this in
->> a previous patch [1], but didn't apply it yet.
->>
->> I think the approach below is thought a bit too simple:
->>
->>   (1) We want the DMA mask methods to be implemented by a trait in dma.r=
-s.
->>       Subsequently, the trait should only be implemented by bus devices =
-where
->>       the bus actually supports DMA. Allowing to set the DMA mask on any=
- device
->>       doesn't make sense.
->
-> Forgot to mention, another reason for a trait is that we can also use it =
-as a
-> trait bound on dma::CoherentAllocation::new(), such that people can't pas=
-s
-> arbitrary devices to dma::CoherentAllocation::new(), but only those that
-> actually sit on a DMA capable bus.
->
->>
->>   (2) We need to consider that with this we do no prevent
->>       dma_set_coherent_mask() to concurrently with dma_alloc_coherent() =
-(not
->>       even if we'd add a new `Probe` device context).
->>
->> (2) is the main reason why I didn't follow up yet. So far I haven't foun=
-d a nice
->>     solution for a sound API that doesn't need unsafe.
->>
->> One thing I did consider was to have some kind of per device table (simi=
-lar to
->> the device ID table) for drivers to specify the DMA mask already at comp=
-ile
->> time. However, I'm pretty sure there are cases where the DMA mask has to=
- derived
->> dynamically from probe().
->>
->> I think I have to think a bit more about it.
+On 7/8/25 20:37, Lorenzo Stoakes wrote:
+> The alloc implementation is a thin wrapper over slab/vmalloc, so to help
+> out on the mm side of things and to be cc'd on changes, add some mm people
+> as reviewers.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Ok, there are multiple things to consider in the context of (2) above.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-  (a) We have to ensure that the dev->dma_mask pointer is properly initiali=
-zed,
-      which happens when the corresponding bus device is initialized. This =
-is
-      definitely the case when probe() is called, i.e. when the device is b=
-ound.
+> ---
+>  MAINTAINERS | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 71599ab6bd56..54dd937160ac 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -21751,6 +21751,10 @@ K:	\b(?i:rust)\b
+>  
+>  RUST [ALLOC]
+>  M:	Danilo Krummrich <dakr@kernel.org>
+> +R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> +R:	Vlastimil Babka <vbabka@suse.cz>
+> +R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> +R:	Uladzislau Rezki <urezki@gmail.com>
+>  L:	rust-for-linux@vger.kernel.org
+>  S:	Maintained
+>  T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
 
-      So the solutions here is simple, we just implement the dma::Device tr=
-ait
-      (which implements dma_set_mask() and dma_set_coherent_mask()) for
-      &Device<Bound>.
-
-  (b) When dma_set_mask() or dma_set_coherent_mask() are called concurrentl=
-y
-      with e.g. dma_alloc_coherent(), there is a data race with dev->dma_ma=
-sk,
-      dev->coherent_dma_mask and dev->dma_skip_sync (also set by
-      dma_set_mask()).
-
-      However, AFAICT, this does not necessarily make the Rust API unsafe i=
-n the
-      sense of Rust's requirements. I.e. a potential data race does not lea=
-d to
-      undefined behavior on the CPU side of things, but may result into a n=
-ot
-      properly functioning device.
-
-      It would be possible to declare dma_set_mask() and dma_set_coherent_m=
-ask()
-      Rust accessors as safe with the caveat that the device may not be abl=
-e to
-      use the memory concurrently allocated with e.g.
-      dma::CoherentAllocation::new() properly.
-
-      The alternative would be to make dma_set_mask() and
-      dma_set_coherent_mask() unsafe to begin with.
-
-      I don't think there's a reasonable alternative given that the mask ma=
-y be
-      derived on runtime in probe() by probing the device itself.
-
-      I guess we could do something with type states and cookie values etc.=
-, but
-      that's unreasonable overhead for something that is clearly more a
-      theoretical than a practical concern.
-
-      My conclusion is that we should just declare dma_set_mask() and
-      dma_set_coherent_mask() as safe functions (with proper documentation =
-on
-      the pitfalls), given that the device is equally malfunctioning if the=
-y're
-      not called at all.
-
-@Alistair: If that is fine for you I'll pick up my old patches ([1] and rel=
-ated
-ones) and re-send them.
-
-If there is more discussion on (b) I'm happy to follow up either here or in=
- the
-mentioned patches once I re-visited and re-sent them.
-
->> [1] https://lore.kernel.org/all/20250317185345.2608976-7-abdiel.janulgue=
-@gmail.com/
