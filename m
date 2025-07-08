@@ -1,126 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B615B2DE1FE;
-	Tue,  8 Jul 2025 14:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068FA223DE7;
+	Tue,  8 Jul 2025 15:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751986411; cv=none; b=cfoHFd8MG7mfvU0h8hayLQYhJ+4ke5/8jd426BV1JILUwT1ta1mwiuv1O6/pLwscoZ1bqAzZXBqpn/fvZq+dIkIK4VWDf6QNK9iapYHehOF2Z4tqWfSPnquVwiucm9yGXHWZ6mwqPzNyqyWn40kNOhasmla65GiZcKb/ps2hj98=
+	t=1751986809; cv=none; b=f0Z8ZO6nj4KnQYpuPl7PlpwMNfzX/kwZNd6ik4M+dBNHYyDxdmjUM+A/yL6wCrI8qOWmc9U/KuosUlkG9cMcIOnhHgBUOXVHx4ZVNcRpkPMJTp/JZ8EvEru+usEzdQto8fRXpmCj+FFY93VRcIuhpwMX7aLicaasRobdZqe9rHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751986411; c=relaxed/simple;
-	bh=CbchSDI0+aXY4EcxahPrJAQQLeD1XK9toKpKKPgC/r4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Mz4mvOvh9rXdzJTp1zbjCAsw+me01ffuTYbjzreWfNfqye0XfZJaQq6UdQgjRPIs2Jw+fLq+dxhiJS6bMM+fofXkF4I6Aj6ydJnNob6rZxmGBLelEII+k2ekZcbphVHwn7/oLnYxEztdrwsrsAmxNn8VAQn9y3W0wMvk6g3RgVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VU9TvYfB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751986809; c=relaxed/simple;
+	bh=8zhdXKTkB9Q4veJXhlqQ8WPtuFRRjdAu8mZrNb0FZIM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=hCOTakkvcZLjl3/gepX3W8GFzLoDxUHnUj0xZxPDg2HrlA6qP+v8oEIUwoDNYZ8hk97kQTMP+jsS8GCQAvqIJGDuDslN3kl19gHLSG70xQ8p5NsDQJpPYO4IpkDBiQpnzBCLTbBfbHkwP5RzWtOHG6N3mhdAes7qd6AtzyiGhDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABGeFg8I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VU9TvYfB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBD9C4CEED;
-	Tue,  8 Jul 2025 14:53:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABGeFg8I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5426FC4CEEF;
+	Tue,  8 Jul 2025 15:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751986411;
-	bh=CbchSDI0+aXY4EcxahPrJAQQLeD1XK9toKpKKPgC/r4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=VU9TvYfB/sR5o/H8+5SBmbHOIYr+zhTJUFM9mUALq2q1Ik0irotNea2VkFFtVKZ3Z
-	 EdHBskIh3M6fLrga8tlkeyzVV/HPkFB4noS8HpnYYkMXjsvtEj7z25ASy0BDN8/ROt
-	 HXJ+HUzqUrWFWYsId8luypld+gg0lcfUJEQ8I80WAtWKPfmSG2PneF4eb26Wxxz7IB
-	 WdCLzBAJrIHZT+PVSI0M+AQHyoUDTFNuTogdfGPKA88PNiCScWWJmYNYmEvy+AdGKv
-	 p16ZYqM32jmk7VOqJHKb++enKyjHHIGNsw10OGuKLqx5lkExXg63B6xqNf7N0wNyhQ
-	 7vc94RVVQumNQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Alexander Viro"
- <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
- Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
- Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
- <dakr@kernel.org>,  "Matthew Maurer" <mmaurer@google.com>,  "Lee Jones"
- <lee@kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <rust-for-linux@vger.kernel.org>,  "Benno Lossin" <lossin@kernel.org>
-Subject: Re: [PATCH v2 3/4] rust: miscdevice: Provide additional
- abstractions for iov_iter and kiocb structures
-In-Reply-To: <20250704-iov-iter-v2-3-e69aa7c1f40e@google.com> (Alice Ryhl's
-	message of "Fri, 04 Jul 2025 09:26:02 +0000")
-References: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
-	<A6L7hDRsDyJJvX_NuoUG_Zb-Jy_BMdGLhjsq5xUSRkl6hpItQD9ZvX5ChAr9QIFH4eeDBpW-Q-582Tt4Nef5SA==@protonmail.internalid>
-	<20250704-iov-iter-v2-3-e69aa7c1f40e@google.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 08 Jul 2025 16:53:23 +0200
-Message-ID: <87qzyqn38c.fsf@kernel.org>
+	s=k20201202; t=1751986808;
+	bh=8zhdXKTkB9Q4veJXhlqQ8WPtuFRRjdAu8mZrNb0FZIM=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ABGeFg8IZcrpiwF2E5/VAvkRG+wMvkvFc2Ddba5FN/gXW/iwOBuVdp6OTkqN3dwjO
+	 uWSDMs9o0RbluEucdgQi/Qg334hI4dOlr/+eey3nPQIUywQ6Vohzx+oq1rxszOMGNx
+	 Tn3aQJKZgoy4dR8u8wF5I496GfCTu/vDtiV+FO67BgKVOLhAV3+OCqb4PecIQg3wEJ
+	 S8+ZIqWxLo1ycJ6NveVnpztGPoihkyS3QRPYpxXaUwLhjUYpj7vgSuZBxi1uAEkAVo
+	 UpK3bLYur6v0I/qfPkVlZsxRNSyg32bvDeg2vZrLJLiGQldfK2aeW5xHv13HuX+n2+
+	 ECB60jByno6Zw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Jul 2025 17:00:03 +0200
+Message-Id: <DB6RHMJJ5I4F.3LB85KT35FO5C@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Asahi Lina" <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Oliver Mangold" <oliver.mangold@pm.me>
+X-Mailer: aerc 0.20.1
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
+ <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
+ <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
+In-Reply-To: <aGzrZqIrStGD_UBp@mango>
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
-
-> These will be used for the read_iter() and write_iter() callbacks, which
-> are now the preferred back-ends for when a user operates on a char device
-> with read() and write() respectively.
+On Tue Jul 8, 2025 at 11:56 AM CEST, Oliver Mangold wrote:
+> On 250707 1123, Benno Lossin wrote:
+>> On Mon Jul 7, 2025 at 8:58 AM CEST, Oliver Mangold wrote:
+>> > On 250702 1303, Benno Lossin wrote:
+>> >> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
+>> >> > +///
+>> >> > +/// # Invariants
+>> >> > +///
+>> >> > +/// The pointer stored in `ptr` can be considered owned by the [`O=
+wned`] instance.
+>> >>
+>> >> What exactly is "owned" supposed to mean? It depends on the concrete =
+`T`
+>> >> and that isn't well-defined (since it's a generic)...
+>> >
+>> > "owned" means that access to the `T` is exclusive through the `Owned<T=
+>`,
+>> > so normal Rust semantics can be applied.
+>>=20
+>> Okay, in that case just say that `ptr` has exclusive access.
 >
-> Co-developed-by: Lee Jones <lee@kernel.org>
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/miscdevice.rs | 97 ++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 96 insertions(+), 1 deletion(-)
+> Or, ehm, sorry, I forgot, ownership also implies that the allocation of t=
+he
+> underlying resource/object is now under the responsibility of the owner,
+> i.e. the owner should free it at the appropriate time.
 >
-> diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> index 22f291211636f66efca6b33b675833236332719e..a49954c9b0d14117645be8139db792f1fd22589d 100644
-> --- a/rust/kernel/miscdevice.rs
-> +++ b/rust/kernel/miscdevice.rs
-> @@ -14,13 +14,14 @@
->      error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
->      ffi::{c_int, c_long, c_uint, c_ulong},
->      fs::File,
-> +    iov::{IovIterDest, IovIterSource},
->      mm::virt::VmaNew,
->      prelude::*,
->      seq_file::SeqFile,
->      str::CStr,
->      types::{ForeignOwnable, Opaque},
->  };
-> -use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin};
-> +use core::{marker::PhantomData, mem::MaybeUninit, pin::Pin, ptr::NonNull};
+> In short, just the standard meaning of ownership in Rust.
 >
->  /// Options for creating a misc device.
->  #[derive(Copy, Clone)]
-> @@ -136,6 +137,16 @@ fn mmap(
->          build_error!(VTABLE_DEFAULT_ERROR)
->      }
->
-> +    /// Read from this miscdevice.
-> +    fn read_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIterDest<'_>) -> Result<usize> {
-> +        build_error!(VTABLE_DEFAULT_ERROR)
-> +    }
-> +
-> +    /// Write to this miscdevice.
-> +    fn write_iter(_kiocb: Kiocb<'_, Self::Ptr>, _iov: &mut IovIterSource<'_>) -> Result<usize> {
-> +        build_error!(VTABLE_DEFAULT_ERROR)
-> +    }
-> +
->      /// Handler for ioctls.
->      ///
->      /// The `cmd` argument is usually manipulated using the utilities in [`kernel::ioctl`].
-> @@ -177,6 +188,36 @@ fn show_fdinfo(
->      }
->  }
->
-> +/// Wrapper for the kernel's `struct kiocb`.
-> +///
-> +/// The type `T` represents the private data of the file.
-> +pub struct Kiocb<'a, T> {
-> +    inner: NonNull<bindings::kiocb>,
-> +    _phantom: PhantomData<&'a T>,
-> +}
+> https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
 
-Also, `kiocb` is not miscdevice specific. It should probably not live here.
+Okay that's good to hear. I think what tripped me up the most was the
+"can be considered" wording. Let's just say:
 
+    /// # Invariants
+    ///
+    /// - `ptr` is valid,
+    /// - `*ptr` is owned by `self`,
+    /// - `ptr` is an "owning pointer" according to the [`Ownable`] impleme=
+ntation for `T`.
 
-Best regards,
-Andreas Hindborg
+And then on `Ownable` we add:
 
+    /// # Invariants
+    ///
+    /// An implementer of this trait needs to define which pointers can be =
+supplied to
+    /// [`Self::release`]. These pointers are called "owning pointers".
 
+This should be as general as possible and still give us exactly the
+guarantees that we need to implement `Owned`.
+
+`Owned::from_raw` can then require that the pointer is an owning
+pointer (& it's valid) and that the caller yields ownership to
+`from_raw`.
+
+---
+Cheers,
+Benno
