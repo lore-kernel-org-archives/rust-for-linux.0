@@ -1,60 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C592DECC4;
-	Tue,  8 Jul 2025 13:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41A01E3761;
+	Tue,  8 Jul 2025 13:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751980180; cv=none; b=smoam1mrtMws+xfni5vg9b7ogCgvyDwMqUuR7D+s0u2Lyzx6uvqmkHt4ECEbkWx5ugaSGp+OaWjcmvpNFJbhtd0RL6r9I/fsIGCeEcr2ztVaKDQAkTtQ37ZfgRgFgbS/0Hxnjqf40JMUhM1yA0znq3+/N1Y202gClsdsBmudSwo=
+	t=1751980526; cv=none; b=WJtJeifWXeAxiVECU62FNH2y7Hb5u8YSN1BJNG3fRo93cR/eIi0TwSY03r6NiqYwRDKG2CQ+h/IS6cw/UVRZxd+zAayY+fdxrFYEipgbEnKJLNB4O1AcI+/EpNzjwyNGfZlNjKJjeLLriOb9TxTRKl8ZBds6NfmQGv/jglSkQ5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751980180; c=relaxed/simple;
-	bh=em6CDDok4e4eRQnEnKOyatrW3DlF+63ZOcjwUW/BfdE=;
+	s=arc-20240116; t=1751980526; c=relaxed/simple;
+	bh=iwohD2gi79jnQPLDi27JHRgJNFiXkk8YiPmOVC98f/E=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=m32BIvvCoCWRJ8CZCx6LSGflPwyhTWkpPzEpKsE37fh0Uj5LyeHIjD5y/5Vc2YfxqyG+njZFCLByyrw6Ns5JiGdujnjKIGv2uA8gIpHjox4TnVJpVrdZLauE8eE6mIZJBgmKG0M+/dvBNbPvczJjmL6H3edXRD9ZCLi/ELMemHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qCTT12mR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=nOEkw/RPlikMD9stlkaXbUTFasj0PvWVj/jV4ahpZ3uhXfpl9E7ESPNJvjSgb9SIdQu26IiXi8BxN+sh5NG9hQi8/GZh83JcZ36bHa4bXZRUxQBu/Wi/p9ri6HP9rpNglOLM8wDjkjdRDJfMsLopS7vpUMxHzdzipDR9onb0VqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwL3+wp8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qCTT12mR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702BBC4CEED;
-	Tue,  8 Jul 2025 13:09:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwL3+wp8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BA2C4CEF0;
+	Tue,  8 Jul 2025 13:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751980179;
-	bh=em6CDDok4e4eRQnEnKOyatrW3DlF+63ZOcjwUW/BfdE=;
+	s=k20201202; t=1751980525;
+	bh=iwohD2gi79jnQPLDi27JHRgJNFiXkk8YiPmOVC98f/E=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qCTT12mR4V/PgGwYFoDC76R2337Y9C3q6GcSmBVhTjpRpQrumQOy5OEY1UHxRuoBy
-	 adfkAYjFztx6o3cNAR6nczyTOSz934aIuh/S01UBIZZiUqDsL6ed8Yt6ccRPDCakw/
-	 Bu721CHtOsPOye2U88XxTuAVhhMFuKoF4DYJYxQd0CrslxOZyiSKWcofklnamKzyeB
-	 5Ti6EQR4925ifjKxZVPknOlKCPz+Am90mNH9KPwYWvKtOSj8VlvBJoGeFqdHwJfe6K
-	 CsPja0ASF7R0Xz5Z6oExcq1e284ER1nWEQMiHEDyeDovZue+zLrjn7hxYvwEF19Q6W
-	 wy8C/jYttLkKg==
+	b=LwL3+wp86tjF5p8jv9VOtDqKyFRSh5NfWEKUJKyfXztdzY6f7GqdaiffVmJ0TYOM8
+	 i/XFFI3Bk7Pj4HFFNp7abFCnzfTzhTYrCE5gBUv6meFPaV0SRztNTKykGrqcNXMKzN
+	 /pbtAQoOoX/FwhsserusxY7jq5tSzpML0T0pFc/p/kp1EOhJSVizniLyAMulwp/wIr
+	 o2Wv6zLAEE313nBC7E6A/7stg24mRHvWjus89mqWBRZuQD7kMlAcBnDq5ronLzYpP7
+	 tV366vil8FA3JbDTctfjIinbYGS3HqCTocDX9Rdq3u5Sa5xGc8BDY8L1Pq02GIjR8Y
+	 vox86mPHLb09w==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Benno
- Lossin" <lossin@kernel.org>,  "Nicolas Schier" <nicolas.schier@linux.dev>,
-  "Trevor Gross" <tmgross@umich.edu>,  "Adam Bratschi-Kaye"
- <ark.email@gmail.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <linux-kbuild@vger.kernel.org>,  "Petr
- Pavlu" <petr.pavlu@suse.com>,  "Sami Tolvanen" <samitolvanen@google.com>,
-  "Daniel Gomez" <da.gomez@samsung.com>,  "Simona Vetter"
- <simona.vetter@ffwll.ch>,  "Greg KH" <gregkh@linuxfoundation.org>,  "Fiona
- Behrens" <me@kloenk.dev>,  "Daniel Almeida"
- <daniel.almeida@collabora.com>,  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v15 0/7] rust: extend `module!` macro with integer
- parameter support
-In-Reply-To: <CANiq72k5mU7cACFh8TZC1+NfUQpdrZBToZ-jd75DfCNTfMU1fA@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Mon, 07 Jul 2025 16:05:56 +0200")
-References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
-	<1vsVHgS-gcJkvff9ZHVrTNATc83NdHhjpU_wmZI0SBLEGyRqIWQ6abSeg5mirXiji2lnuqJorzjD2ow05c9naA==@protonmail.internalid>
-	<CANiq72k5mU7cACFh8TZC1+NfUQpdrZBToZ-jd75DfCNTfMU1fA@mail.gmail.com>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Oliver Mangold" <oliver.mangold@pm.me>,  "Miguel Ojeda"
+ <ojeda@kernel.org>,  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Boqun Feng"
+ <boqun.feng@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor
+ Gross" <tmgross@umich.edu>,  "Asahi Lina" <lina+kernel@asahilina.net>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
+In-Reply-To: <DB5XPFYBATZZ.5EH3TWGPHTDB@kernel.org> (Benno Lossin's message of
+	"Mon, 07 Jul 2025 17:39:43 +0200")
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+	<20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me>
+	<DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org> <aGuAR7JCrlmzQrx4@mango>
+	<gFz7glX0UIHGffQdm4_vD_XkT5GZEKB0Lx0cd8-TCR8glMzIIY7VBIvppFVr2RURNBnGx9lKJqrE5av7xSUcbA==@protonmail.internalid>
+	<DB5PX74OB3DX.1UNT8MIBWNC2G@kernel.org> <87bjpwqmo5.fsf@kernel.org>
+	<gUxXEpuPZ0HXQ-cptykcSOV4dVbZNFvDq4Ey5YR1GT8exNFK0qhYAg4HFgWTvTpDk8HXMGl5XThvR7f4m-T6Sg==@protonmail.internalid>
+	<DB5SRE5S7AR3.QUF369W9JYGJ@kernel.org> <87zfdgp253.fsf@kernel.org>
+	<Kl9_mnIVP7OY9TWELXIwOVkotanEt7IsdpMx-IbaRfjHf6EF0tC06PzcC8-Z9pDiw1FQHulknmgbS9eQU28kQw==@protonmail.internalid>
+	<DB5XPFYBATZZ.5EH3TWGPHTDB@kernel.org>
 User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 08 Jul 2025 15:09:30 +0200
-Message-ID: <87pleaomlx.fsf@kernel.org>
+Date: Tue, 08 Jul 2025 15:15:18 +0200
+Message-ID: <87jz4iomc9.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -64,43 +59,103 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+"Benno Lossin" <lossin@kernel.org> writes:
 
-> On Mon, Jul 7, 2025 at 3:31=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
+> On Mon Jul 7, 2025 at 3:21 PM CEST, Andreas Hindborg wrote:
+>> "Benno Lossin" <lossin@kernel.org> writes:
 >>
->> Based on code by Adam Bratschi-Kaye lifted from the original `rust` bran=
-ch [1].
+>>> On Mon Jul 7, 2025 at 1:12 PM CEST, Andreas Hindborg wrote:
+>>>> "Benno Lossin" <lossin@kernel.org> writes:
+>>>>> Ah right, I forgot about this. What was the refcount characteristics =
+of
+>>>>> this again?
+>>>>>
+>>>>> *  1 =3D in flight, owned by C
+>>>>> *  2 =3D in flight, owned by Rust
+>>>>> * >2 =3D in flight, owned by Rust + additional references used by Rust
+>>>>>        code
+>>>>>
+>>>>> Correct? Maybe @Andreas can check.
+>>>>
+>>>> We have been a bit back and forth on this. This is how we would like it
+>>>> going forward:
+>>>>
+>>>>
+>>>> /// There are three states for a request that the Rust bindings care a=
+bout:
+>>>> ///
+>>>> /// - 0: The request is owned by C block layer or is uniquely referenc=
+ed (by [`Owned<_>`]).
+>>>> /// - 1: The request is owned by Rust abstractions but is not referenc=
+ed.
+>>>> /// - 2+: There is one or more [`ARef`] instances referencing the requ=
+est.
+>>>
+>>> Huh, now I'm more confused... Could you go into the details again?
+>>
+>> Well, there is not much to it. We found out we can alias "unique" and
+>> "owned by C".
+>>
+>> We initialize the refcount to 0 when we initialize the request
+>> structure. This happens at queue creation time.
 >
-> I would suggest adding this sort of note to the commit messages,
-> especially since the commits have no Co-developed-by/Link tags
-> otherwise.
->
-> From our discussion in Zulip: the code itself is older than that the
-> merge above. I think you wanted an example sentence for this --
-> something simple could be e.g.
->
->     Based on the original module parameter support by Miguel [1],
-> later extended and generalized by Adam for more types [2][3].
-> Originally tracked at [4].
->
->     Link: https://github.com/Rust-for-Linux/linux/pull/7 [1]
->     Link: https://github.com/Rust-for-Linux/linux/pull/82 [2]
->     Link: https://github.com/Rust-for-Linux/linux/pull/87 [3]
->     Link: https://github.com/Rust-for-Linux/linux/issues/11 [4]
->
-> By the way, I guess you should inherit that issue in the last link :)
-> It had some details about things we may or may not want to support
-> etc. that I looked up back then. If you prefer that we close it or
-> that we create sub-issues, that is fine -- up to you!
->
-> Finally, if you end up adding strings, please link to Adam's
-> https://github.com/Rust-for-Linux/linux/pull/110.
+> And IIRC this refcount is only on the Rust side, since you store it in
+> some private data, right?
 
-Thanks, I'll add this!
+Yes.
+
+>
+>> When C block layer hands over a request for processing to a Rust driver,
+>> we `debug_assert!` that the refcount is 0. We unsafely invent an
+>> `Owned<Request<_>>` and pass that to the driver.
+>
+> And you don't increment the refcount?
+
+No, we leave it at 0.
+
+>
+>> The driver has the option of `into_shared` to obtain an
+>> `ARef<Request<_>>`. We use this for remote completion and timer
+>> completion in rnull.
+>
+> This operation will set the refcount to 2?
+
+Yes.
+
+>
+>> In most drivers, when the driver hands off the request to the hardware,
+>> the driver will stop accounting for the request. The `Owned<Request<_>>`
+>> is consumed when issuing to the driver, or the driver could simply drop
+>> it. Refcount goes to 1. An ID is passed along to hardware.
+>
+> And with the current API design it must let go of all `ARef<Request<_>>`
+> because otherwise it can't call `end_ok` (or some other method?).
+
+Exactly. That one will take an `Owned<Request<_>>` (previously `Unique`).
+
+>
+>> When a completion comes back from hardware, it carries the ID. We use
+>> the C block layer `tag_to_rq` machinery to turn this ID back into an
+>> `Owned<Request<_>>`. In that process, we check that `refcount =3D=3D 1` =
+and
+>> if so, we set refcount to 0 and invent an `Owned<Request<_>>`.
+>
+> (because if not, this would be wrong)
+
+I hope it is not wrong =F0=9F=98=86 You can see the latest and greatest her=
+e [1].
+
+>
+> I have some idea what we should do for the safety requirements of
+> `Ownable`, but still need some time to write it down.
+
+Great!
 
 
 Best regards,
 Andreas Hindborg
 
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/tr=
+ee/rust/kernel/block/mq/request.rs?h=3Drnull-v6.15#n398
 
