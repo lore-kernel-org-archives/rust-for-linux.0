@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB12C2DAFD5;
-	Tue,  8 Jul 2025 12:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE46230BEB;
+	Tue,  8 Jul 2025 12:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751976952; cv=none; b=NP3bjSNZwt/dfcOEvEu2WYFgBXi0DbHU8kRa76jIrBq5LniIDOa1jSvOId0GMv0j9WTO9kmY9QYirEv+Hz/uwv4R8HzGwZ14E/rP42PIx4kybBeyIt9wUIwflvFZytQ8ENFyV+tnLPvz8isb0L8opep6dvWxehj3EzKk7jECEXQ=
+	t=1751977015; cv=none; b=CoIlmTvcWK9+QIj8zmcdpON1c5kDmpl9a+B+MzDgyXHLWzJYPz6q5TcGByczNe+l9noCSWdwdruOzlmVEprMnYstLluw4TyLI9yG/mYb1FVSnK+YGtC/4V3BzI6P7VAE0daq2gAgXr7nkN4RJoz8S3m484Ne6Se0Gmx1vcRla+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751976952; c=relaxed/simple;
-	bh=m8jMT2BEQLMLsLrNG9jsh0N0UL2As4Pb8eDEvx4vGD4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=t78TzTVTOXabnZOdJjgb5mD8wp1tOdi9D2z9ydE28LGsP7wcXA7JSYp9/ROjF/1TUIEwky7IbpOKH+3iPKPs4SbixlH8dFr1/zHAE/FbObtH4Na1gIjLjZAmcQcfBhbBWcUuPXaFbNohpIi9brc/JIeLTq24CD7a9UXCSictrss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mH1/bH1u; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751977015; c=relaxed/simple;
+	bh=UX5SL30m1Xk0f/z9EjIAeXqtJadRzsa/f1YsG2h4mZ8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=VPq84dsY7V4+7zZfdkFFar7KZipkFNK+nwTjl7/3ezRNn5/Q4UvJS6kp9VXNh9+DuJ3smL35cm4iqs21qfdDBEV2b4OjJIYM4mrPqXMOo2xPsiy6DMULWWGsH/OyOFgHAymK6y777mOYZaNW/gZjtlzl1q1JkFP2kOg1125pJfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8Oh47Jy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mH1/bH1u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4186C4CEED;
-	Tue,  8 Jul 2025 12:15:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8Oh47Jy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAADC4CEED;
+	Tue,  8 Jul 2025 12:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751976952;
-	bh=m8jMT2BEQLMLsLrNG9jsh0N0UL2As4Pb8eDEvx4vGD4=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=mH1/bH1uyhkPjienjN6dRpgS3sSmH+GLONi2pBMMJlyv28uWczofciZYlufjnhLYN
-	 /YwzLBDZw/yhGPv21Zy0qk/GJQSYubbZBTD2LlhPv2GbPvLazPwCZnkV1h6khaYh4y
-	 sH4WmLYLG1kejyYNDQ62Wdg3Uu24UywXLtrgrKQU3m4oCNk8A2s+ffxgFuFJeI6+qD
-	 8WvJ4jJEk7r5L5ZQNVzpMEYv8OV8kgz0ltCLslpT5rgAACskbdGT97JY6LddgHPuVI
-	 mlX6q2d4Fc45/ehgY6AJw2uar4aUrSabg0xU/s/g5PtZ+2Ya9QWv8zNhgdxm9NZlVn
-	 3eY6y6/o7R7Qg==
+	s=k20201202; t=1751977014;
+	bh=UX5SL30m1Xk0f/z9EjIAeXqtJadRzsa/f1YsG2h4mZ8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=H8Oh47JyYF5FOH7w8PE1aJfcC5j6Ba7j6+kVL7hvPjKkwyDw0FrUF17CcuMny+Ual
+	 8EyC/M9mOdIcNuCdbqvmxheE2VeIhcfA42yfUYdN96nOwlxZguU0JtNlXmUTFxz3kg
+	 i1MU5VhXNu/QhKzy3NFOtpw3Q7BrYN7WaL+nsund1VvbKR+2jthvgYPRP/IJEr7qDz
+	 XLP81ZVyj/cF1O9ZMj19RJAmy8jFRJFVeWrAMF6irRhFsSCyv3r7pkTEBNVSbLJFMn
+	 aHRvc+d2jiXPWwvYtDVLy67jeYt6uNobeDYO0MX0gipUcFrvydQC4vBCHskSiionBG
+	 rx+Yi7hiH41VQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,124 +34,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 14:15:49 +0200
-Message-Id: <DB6NZVF1X99Q.FWK3057UYE63@kernel.org>
+Date: Tue, 08 Jul 2025 14:16:51 +0200
+Message-Id: <DB6O0NWIIQT8.28POWW36WI5Z1@kernel.org>
+Subject: Re: [PATCH v11 4/4] rust: support large alignments in allocations
 Cc: <linux-mm@kvack.org>, <akpm@linux-foundation.org>,
  <linux-kernel@vger.kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>,
  "Alice Ryhl" <aliceryhl@google.com>, "Vlastimil Babka" <vbabka@suse.cz>,
  <rust-for-linux@vger.kernel.org>
 To: "Vitaly Wool" <vitaly.wool@konsulko.se>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v11 3/4] rust: add support for NUMA ids in allocations
 References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
- <20250707164934.631500-1-vitaly.wool@konsulko.se>
-In-Reply-To: <20250707164934.631500-1-vitaly.wool@konsulko.se>
+ <20250707164948.631563-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250707164948.631563-1-vitaly.wool@konsulko.se>
 
 On Mon Jul 7, 2025 at 6:49 PM CEST, Vitaly Wool wrote:
-> +/// Specify necessary constant to pass the information to Allocator that=
- the caller doesn't care
-> +/// about the NUMA node to allocate memory from.
-> +impl NumaNode {
-> +    /// No node preference
-
-Please end the comment with a period.
-
-> +    pub const NO_NODE: NumaNode =3D NumaNode(bindings::NUMA_NO_NODE);
-> +}
-> +
->  /// The kernel's [`Allocator`] trait.
->  ///
->  /// An implementation of [`Allocator`] can allocate, re-allocate and fre=
-e memory buffers described
-> @@ -137,7 +162,7 @@ pub mod flags {
->  /// - Implementers must ensure that all trait functions abide by the gua=
-rantees documented in the
->  ///   `# Guarantees` sections.
->  pub unsafe trait Allocator {
-> -    /// Allocate memory based on `layout` and `flags`.
-> +    /// Allocate memory based on `layout`, `flags` and `nid`.
->      ///
->      /// On success, returns a buffer represented as `NonNull<[u8]>` that=
- satisfies the layout
->      /// constraints (i.e. minimum size and alignment as specified by `la=
-yout`).
-> @@ -153,13 +178,21 @@ pub unsafe trait Allocator {
->      ///
->      /// Additionally, `Flags` are honored as documented in
->      /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
-> -    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, Allo=
-cError> {
-> +    fn alloc(layout: Layout, flags: Flags, nid: NumaNode) -> Result<NonN=
-ull<[u8]>, AllocError> {
->          // SAFETY: Passing `None` to `realloc` is valid by its safety re=
-quirements and asks for a
->          // new memory allocation.
-> -        unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags)=
- }
-> +        unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags,=
- nid) }
->      }
-> =20
-> -    /// Re-allocate an existing memory allocation to satisfy the request=
-ed `layout`.
-> +    /// Re-allocate an existing memory allocation to satisfy the request=
-ed `layout` and
-> +    /// a specific NUMA node request to allocate the memory for.
-> +    ///
-> +    /// Systems employing a Non Uniform Memory Access (NUMA) architectur=
-e contain collections of
-> +    /// hardware resources including processors, memory, and I/O buses, =
-that comprise what is
-> +    /// commonly known as a NUMA node.
-> +    ///
-> +    /// `nid` stands for NUMA id, i. e. NUMA node identifier, which is a=
- non-negative
-
-s/i. e./i.e./
-
-> +    /// integer if a node needs to be specified, or NO_NODE if the calle=
-r doesn't care.
-
-s/NO_NODE/[`NumaNode::NO_NODE`]/
-
->      ///
->      /// If the requested size is zero, `realloc` behaves equivalent to `=
-free`.
->      ///
-> @@ -196,6 +229,7 @@ unsafe fn realloc(
-
-<snip>
-
-> @@ -58,18 +58,23 @@ fn aligned_size(new_layout: Layout) -> usize {
->  ///
->  /// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
-
-You have to adjust those as well, given that you refer to this invariant be=
-low.
-
->  struct ReallocFunc(
-> -    unsafe extern "C" fn(*const crate::ffi::c_void, usize, u32) -> *mut =
-crate::ffi::c_void,
-> +    unsafe extern "C" fn(
-> +        *const crate::ffi::c_void,
-> +        usize,
-> +        u32,
-> +        crate::ffi::c_int,
-> +    ) -> *mut crate::ffi::c_void,
->  );
-> =20
 >  impl ReallocFunc {
-> -    // INVARIANT: `krealloc` satisfies the type invariants.
-> -    const KREALLOC: Self =3D Self(bindings::krealloc);
-> +    // INVARIANT: `krealloc_node` satisfies the type invariants.
-> +    const KREALLOC: Self =3D Self(bindings::krealloc_node);
+> -    // INVARIANT: `krealloc_node` satisfies the type invariants.
+> -    const KREALLOC: Self =3D Self(bindings::krealloc_node);
+> +    // INVARIANT: `krealloc_node_align` satisfies the type invariants.
+> +    const KREALLOC: Self =3D Self(bindings::krealloc_node_align);
 > =20
-> -    // INVARIANT: `vrealloc` satisfies the type invariants.
-> -    const VREALLOC: Self =3D Self(bindings::vrealloc);
-> +    // INVARIANT: `vrealloc_node` satisfies the type invariants.
-> +    const VREALLOC: Self =3D Self(bindings::vrealloc_node);
+> -    // INVARIANT: `vrealloc_node` satisfies the type invariants.
+> -    const VREALLOC: Self =3D Self(bindings::vrealloc_node);
+> +    // INVARIANT: `vrealloc_node_align` satisfies the type invariants.
+> +    const VREALLOC: Self =3D Self(bindings::vrealloc_node_align);
 > =20
-> -    // INVARIANT: `kvrealloc` satisfies the type invariants.
-> -    const KVREALLOC: Self =3D Self(bindings::kvrealloc);
-> +    // INVARIANT: `kvrealloc_node` satisfies the type invariants.
-> +    const KVREALLOC: Self =3D Self(bindings::kvrealloc_node);
+> -    // INVARIANT: `kvrealloc_node` satisfies the type invariants.
+> -    const KVREALLOC: Self =3D Self(bindings::kvrealloc_node);
+> +    // INVARIANT: `kvrealloc_node_align` satisfies the type invariants.
+> +    const KVREALLOC: Self =3D Self(bindings::kvrealloc_node_align);
+
+Please also adjust the corresponding type invariant. With that,
+
+	Acked-by: Danilo Krummrich <dakr@kernel.org>
