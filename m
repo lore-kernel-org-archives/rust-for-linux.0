@@ -1,125 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C6CAD21;
-	Tue,  8 Jul 2025 09:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965092BE654
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 09:05:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751965343; cv=none; b=eygvw311KIGO4zQM+INj1uIr5r9EWL2EccCWHrHZCiZbOwf6XA6LeGW0PAopuMoAU1LF+5iU2Fi6OzM5FSSwp6qDk3ovHiy7GU3+5VT2+MKdoRR0tvNRkUeJGeLRjfUjPHKrtShFSwox1JwRaFh7cjpdZeEWLtskDlhvpDzXsUs=
+	t=1751965528; cv=none; b=jHVIaKQKQbnFewxwlRNkHLdaF542TcCApNO8dG7Qu458fyIjadxYcNA7nvbccfFl8fmRX4+/1IVXBQ+7EPHqOkJemK8ZVkXZUAJJpy/scQi8aaYycLNkHfplPYfBRsWAzn7jAgCO1/0171J/SDLOom/3AKkVYxhZEKs8Nfic26Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751965343; c=relaxed/simple;
-	bh=fxQd2+OWUan7qyi7wSVssPmsqSKltN1CKBdFtlAHRTs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=EUT9qhz3NZqkpw+bb4X1HbYlj/lMtHsaf0aOHNy38aMf54Rn70Rh+wh7NnVZsfoQRPEY2kladeydtCQ7PY/mJWNyYH+EJ1uHXWbkd5P85kkDGhTXDtIux6FbEnXuVzLERZQIeoKAJVZN98erNod9ac9uBvDdsAxAw8uTdV1vZ8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzn7e3yX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751965528; c=relaxed/simple;
+	bh=93hWr3CW10tqHIXDYbrSHPvQwrzoKnMzBCJG3Vf4aGs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GQQG/RErIv3besZIZ6hNzEv/PDHeQd02/6lsrZAfiWB/oL1Mpm1XZK97n8lgvI4domIn9o3Q7FwyTxoLg8d0oSqnXiOuNLYKkM+S7LISJ3JxkWmhgLJPpv9qn9vksfSeYoyhK5tMf3PZ0sIRqFvIZvjEqP2uTzPlEomkIO+w2uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Nvvb4IA6; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzn7e3yX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE750C4CEF1;
-	Tue,  8 Jul 2025 09:02:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751965343;
-	bh=fxQd2+OWUan7qyi7wSVssPmsqSKltN1CKBdFtlAHRTs=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=lzn7e3yX1ntJVvV2/OEHqBTG5Ao/rTm9/O9KiaQ5MJH/bFBhaOwV7WK4VCuLlU9gO
-	 G21NHbTLptGsy8vmBnSlQRAowsnv/K1kIhdaK0/B3xibvXWgQLYWJnbN4Bc0S0+Xi7
-	 87dwC3IvK+HQZP6erpMkmHZCmQNKS9PSOKJUv/GkIiXwnznBvh+TjlyOabO+La9cmp
-	 HStx2pkQOib2FVHJmm0y7vy3qGVtXl5+LIZq7NxQjg775QrewHjhz2fLpRnHpCf9O3
-	 iIVlezGaesCsaEl3sczvvdr7Jzc7UETXoQlA+rS6pu2gGwECPwWlWH3PX5oAIG3ppg
-	 IwasUefNPkntw==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Nvvb4IA6"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-451d54214adso28850415e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 08 Jul 2025 02:05:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1751965525; x=1752570325; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=93hWr3CW10tqHIXDYbrSHPvQwrzoKnMzBCJG3Vf4aGs=;
+        b=Nvvb4IA6lDYWNoigOanTVKL4KfMgfq5kH2Lyg9qz1OFF5zPKZHHh04ZqRXNln5QEQ3
+         /QfUMlm6EkVPQcN178SVPuHIK/P5tLPR88RAObw+HPCogbRech/KufkZayZohEyKJKEd
+         j1lDnq3pYQG6WO3sOkZehWmY9QvE34BagOhCilW5Vs0X69eDH2qJKbP7F87M67JVcC5U
+         9jNcWv8SWwB/IS632I7FVS8QUvbIc/5AEAZNa6jBKBY+IyNaLBcf3ZsjgHSyOnLIdnpV
+         EtxGTEtXfklJ2fjm7WkHTLvSO4ssliP4I4/sWW2Sdr7cqgtIkb3wwrXyCPlFj6vsSvr1
+         Bbiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751965525; x=1752570325;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=93hWr3CW10tqHIXDYbrSHPvQwrzoKnMzBCJG3Vf4aGs=;
+        b=Djt3iUpehiB2BTmblFWXFpia7BnDAu/1SPZP0mMQed8m6NpkmfnUw2a9M0MGNcZBN+
+         HmSM+ltfmaIsg5bpI1Rhuq9Bt7+QYpQM/NvGyMnPT5DTmWcktTdJGTgSEUL5KxvcBFy7
+         uHnODuw9PoprL7YLc7SUhjy6KwpjcT1cHc9Ng+DXTFYR0n1uMKb0nrjcijD2f3w2wOOe
+         Ed5qec5VapD3+pxY4zZmeOpobIdYB+AHqMFIowXNZc0cdtmyiPJxBkNgCBTlHfV16Jv0
+         450SbZszrCywRT7Q7frA/phV+JA3PBwm3h0fcbAofk9SMqVYj5VyjyF+Q5tdBx5b2ptq
+         iafw==
+X-Gm-Message-State: AOJu0Yw72MJiCmrhmpy1/ZiPjNRigPc4ygmBGfzsdc80nGcGzH1jFYoZ
+	zP8oVAgbTswMClpwydGRRNny+FKEGGxe1mDAqckeXpiq/JiM4mFFhy9a2VZg9h5y4IGepSlFWGk
+	l1B3g6HXARV1nsVAOk5sMtGQiC6uep4nyt6K6XWsW
+X-Gm-Gg: ASbGncsl0kIPRIjYJ5MuUXm85C1F8I/YrT3dw8o0mPVmzO1TCjDUICYXKQ8YBl2Q7Xx
+	JK068YhuW1di4Ydjxo6dDmECsAQvfvREmIQMGTGet0NEu7viR7aab0yPOoZ//h87qxdeoJAZ8O4
+	kqd2aTD/C/vX6FMVmFiYqfCWPeKylxTBue2sEj4E/qd8D5PDYDTBd1NaT6WylV3xzgOgvroo3H
+X-Google-Smtp-Source: AGHT+IGLZb2WPMNKWHvsNO2QvMWcnHAsOXW81tbgNp4vh0OL2k38REWdnZHTCfmUYHNCVV2Tu+hxKU2X2ApzXrJkrOI=
+X-Received: by 2002:a05:6000:290a:b0:3a5:58a5:6a83 with SMTP id
+ ffacd0b85a97d-3b5dde95755mr1690036f8f.13.1751965524785; Tue, 08 Jul 2025
+ 02:05:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250708075850.25789-1-work@onurozkan.dev>
+In-Reply-To: <20250708075850.25789-1-work@onurozkan.dev>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 8 Jul 2025 11:05:12 +0200
+X-Gm-Features: Ac12FXzqyncHcpbewNp5JPkS05kMqf8uEOtDV_4zdHcXeFMjqppR223yAjXeBoE
+Message-ID: <CAH5fLgiBd7iHiQ6UrMoU_4zxr84UbC6-q+Tve-3mhWJ5ZCr3zw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: rbtree: simplify finding `current` in `remove_current`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org, 
+	mattgilbride@google.com, wedsonaf@gmail.com, daniel@sedlak.dev, 
+	tamird@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 11:02:17 +0200
-Message-Id: <DB6JVOZLCMBL.3EZQJP50UUB86@kernel.org>
-Subject: Re: [PATCH v15 1/7] rust: sync: add `SetOnce`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Masahiro Yamada" <masahiroy@kernel.org>, "Nathan
- Chancellor" <nathan@kernel.org>, "Luis Chamberlain" <mcgrof@kernel.org>,
- "Danilo Krummrich" <dakr@kernel.org>, "Nicolas Schier"
- <nicolas.schier@linux.dev>
-Cc: "Trevor Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye"
- <ark.email@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-kbuild@vger.kernel.org>, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Sami Tolvanen" <samitolvanen@google.com>,
- "Daniel Gomez" <da.gomez@samsung.com>, "Simona Vetter"
- <simona.vetter@ffwll.ch>, "Greg KH" <gregkh@linuxfoundation.org>, "Fiona
- Behrens" <me@kloenk.dev>, "Daniel Almeida" <daniel.almeida@collabora.com>,
- <linux-modules@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
- <20250707-module-params-v3-v15-1-c1f4269a57b9@kernel.org>
-In-Reply-To: <20250707-module-params-v3-v15-1-c1f4269a57b9@kernel.org>
 
-On Mon Jul 7, 2025 at 3:29 PM CEST, Andreas Hindborg wrote:
-> Introduce the `SetOnce` type, a container that can only be written once.
-> The container uses an internal atomic to synchronize writes to the intern=
-al
-> value.
+On Tue, Jul 8, 2025 at 9:59=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev>=
+ wrote:
 >
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-
-One nit and a safety comment fix below. (feel free to ignore the nit)
-With the safety comment fixed:
-
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-> ---
->  rust/kernel/sync.rs          |   2 +
->  rust/kernel/sync/set_once.rs | 125 +++++++++++++++++++++++++++++++++++++=
-++++++
->  2 files changed, 127 insertions(+)
+> The previous version used a verbose `match` to get
+> `current`, which may be slightly confusing at first
+> glance.
 >
-> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> index 81e3a806e57e2..13e6bc7fa87ac 100644
-> --- a/rust/kernel/sync.rs
-> +++ b/rust/kernel/sync.rs
-> @@ -18,6 +18,7 @@
->  mod locked_by;
->  pub mod poll;
->  pub mod rcu;
-> +mod set_once;
+> This change makes it shorter and more clearly expresses
+> the intent: prefer `next` if available, otherwise fall
+> back to `prev`.
+>
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 
-I would have named this `once`.
-
->  pub use arc::{Arc, ArcBorrow, UniqueArc};
->  pub use completion::Completion;
-
-> +    /// Get a reference to the contained object.
-> +    ///
-> +    /// Returns [`None`] if this [`SetOnce`] is empty.
-> +    pub fn as_ref(&self) -> Option<&T> {
-> +        if self.init.load(Acquire) =3D=3D 2 {
-> +            // SAFETY: By the type invariants of `Self`, `self.init =3D=
-=3D 2` means that `self.value`
-> +            // contains a valid value.
-
-And the type invariants also ensure that the value of `self.init`
-doesn't change.
-
-So probably
-
-    // SAFETY: By the type invariants of `Self`, `self.init =3D=3D 2` means=
- that `self.value`
-    // contains a valid value. They also guarantee that `self.init` doesn't=
- change.
-
-If you come up with something better, feel free to use it.
-
----
-Cheers,
-Benno
-
-> +            Some(unsafe { &*self.value.get() })
-> +        } else {
-> +            None
-> +        }
-> +    }
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
