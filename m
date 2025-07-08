@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2D3204583;
-	Tue,  8 Jul 2025 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FC12DF3F2;
+	Tue,  8 Jul 2025 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751984213; cv=none; b=bS3nxZ9gQIc/F1T/zEOV/p81Wb9UBF6+Tr7X27EuIq//8SpF3xYrAIBYGoLMKoEPJkWPvkrox7XYZW2y1px8kcO9taDUmuMBQekQ+r8gwi5L7OqTNBJF4XNoBTo0UpypN5rCi1hDg+uJbcrTFmOTkyDuRdY9pwmGVrz8Xra+zkA=
+	t=1751984351; cv=none; b=krbmhkARTA8mFq6aQSgPOMj/uDcA86lISZRrHr134EJVuWi2Vstgtiqz2ovAJ6ceqvsadwaqK2h6Xg572aPYmxp+MKf+d9nro0XUr9QKwPKe3XjTheVLUgn01xl14CPUj4T+yrY++CWCId6wSpP+M3q7PoOsq8VHrw5vjkW1O98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751984213; c=relaxed/simple;
-	bh=HVdq9Ob+LWkVTvYMozCbo8YOzRFhxR/8PVag/iaD52Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=fztLQT61Buf9tduoPSpwl310X1Nixq2Jxotay1WugIF16gH2FQA68MpEdpKd4dQCFH7ypMpbBOhqhDk46UQwez9gOclCVZdW7b7tNbifjWs8lkSXKFzYnZmrW0BTEgyYiIDBtnMCX2IJUzpwuCmyI87u8lH20rJqDTpJeErril4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLsIDOX/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751984351; c=relaxed/simple;
+	bh=Iq0j90w5GB1UMwIBCu5T3PMb/N7aK9m/YbQtD24djNI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=EiGFdUnL8kSq7U6lrJJlktpKj99u1tNdGvSvq8mt5r35Hu5LUA+2JS1EzaKztUFxbmFYDw8huF3tPBr4BitT//LIDYhl+WBU+JZd4RdOI8BjzHkCa3729Hz7NpJ/a2laxJnWbXeN94Qrvau2/9YhmREVkN6qucuik4G8fYMpXrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mJdG0bwe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLsIDOX/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D93C4CEED;
-	Tue,  8 Jul 2025 14:16:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mJdG0bwe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423C3C4CEED;
+	Tue,  8 Jul 2025 14:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751984212;
-	bh=HVdq9Ob+LWkVTvYMozCbo8YOzRFhxR/8PVag/iaD52Y=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=KLsIDOX/gO9gG5yNmE+GW0qVHE/PNhaZHFFwlrCyDDCFkutAzCkrzOykvoHW3463T
-	 0NO9tgXfSPuECNSQ2RX6wZEtw/YNP0eGdP3ZHy7hFFgjuAQ0JntIcs3Bays0bsEmRk
-	 Q/OP9PCQXMyudlDjCZo3dPudakfShLV24LYYKScir4ftFY1XBoNEWlOeE/x8kH3Qkq
-	 fTESNZ+SwKP8Hz/z4t1+tzI/r7Vr0PihIIPl+I1Gx7kRihMnwGFW9Axt1/7ZpKJXY+
-	 QnXQuX44/xMRwhQlenMpyWOus49Arjo+bNLe80idPHPu8d+jT7HYVRHeGaInSgjGFt
-	 eet+zAlI36iGQ==
+	s=k20201202; t=1751984350;
+	bh=Iq0j90w5GB1UMwIBCu5T3PMb/N7aK9m/YbQtD24djNI=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=mJdG0bwexKPHDEAqDwqRF+Htv4NmJ/nfvmsx9gOvX+HSlsF4nm1vAmj+qfaPO35ej
+	 jRNUi+VHLoaWeDIEmZ8q+iRKi1LC8mfbuIon3R95/CJf1+7V+6pde9EfkqCX3wBsq3
+	 OJbBBBDnpWwpIEYw4986afQ2+J3v21rGxjV6XbLDD/ZWupktHImThisdm4c9UHKl88
+	 aJSdYeNtaGKImxqNPY3HMvnK/ITr7tMid6bO/erPrAMxdOACWEJt/ZOUu2K2RyQrZ9
+	 e88djzdFXGQA/sciXWLMPAeoTKEULYpueW1Aw0KjQGb+CYfy4p52F6SbbiIRA4xsyz
+	 Fg7O7fV3g046g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,106 +34,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 16:16:48 +0200
-Message-Id: <DB6QKIHD2VGS.AHEOXL25SSXW@kernel.org>
-Subject: Re: [PATCH v11 0/4] support large align and nid in Rust allocators
-Cc: "Vitaly Wool" <vitaly.wool@konsulko.se>, <linux-mm@kvack.org>,
- <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Vlastimil
- Babka" <vbabka@suse.cz>, <rust-for-linux@vger.kernel.org>, "Liam Howlett"
- <liam.howlett@oracle.com>
-To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
- <824065ea-1f5c-4cd4-9917-4b7a91882af8@lucifer.local>
- <aG0HJte0Xw55z_y4@pollux>
- <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
-In-Reply-To: <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
+Date: Tue, 08 Jul 2025 16:19:04 +0200
+Message-Id: <DB6QM8WOX9FS.2W36R3YF2VS0F@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Masahiro
+ Yamada" <masahiroy@kernel.org>, "Nathan Chancellor" <nathan@kernel.org>,
+ "Luis Chamberlain" <mcgrof@kernel.org>, "Danilo Krummrich"
+ <dakr@kernel.org>, "Nicolas Schier" <nicolas.schier@linux.dev>, "Trevor
+ Gross" <tmgross@umich.edu>, "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kbuild@vger.kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Sami
+ Tolvanen" <samitolvanen@google.com>, "Daniel Gomez" <da.gomez@samsung.com>,
+ "Simona Vetter" <simona.vetter@ffwll.ch>, "Greg KH"
+ <gregkh@linuxfoundation.org>, "Fiona Behrens" <me@kloenk.dev>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v15 1/7] rust: sync: add `SetOnce`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
+ <20250707-module-params-v3-v15-1-c1f4269a57b9@kernel.org>
+ <MsrRzRcWQU4DLY5mlpwajZZaSx_kPRSJTuMGxtI4igY_8NpNBSAbb9v5BcFv2WKZoRkr8QDlcfjlGlH4NwpB8w==@protonmail.internalid> <DB6JVOZLCMBL.3EZQJP50UUB86@kernel.org> <87v7o2omqf.fsf@kernel.org>
+In-Reply-To: <87v7o2omqf.fsf@kernel.org>
 
-On Tue Jul 8, 2025 at 3:19 PM CEST, Lorenzo Stoakes wrote:
-> On Tue, Jul 08, 2025 at 01:55:18PM +0200, Danilo Krummrich wrote:
->> On Tue, Jul 08, 2025 at 11:58:06AM +0100, Lorenzo Stoakes wrote:
->> > +cc Liam
->> >
->> > Hi guys,
->> >
->> > We have a section in MAINTAINERS for mm rust (MEMORY MANAGEMENT - RUST=
-), so
->> > it's slightly concerning to find a series (at v11!) like this that cha=
-nges
->> > mm-related stuff and it involves files not listed there and nobody bot=
-hered
->> > to cc- the people listed there.
+On Tue Jul 8, 2025 at 3:06 PM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+>> On Mon Jul 7, 2025 at 3:29 PM CEST, Andreas Hindborg wrote:
+>>> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+>>> index 81e3a806e57e2..13e6bc7fa87ac 100644
+>>> --- a/rust/kernel/sync.rs
+>>> +++ b/rust/kernel/sync.rs
+>>> @@ -18,6 +18,7 @@
+>>>  mod locked_by;
+>>>  pub mod poll;
+>>>  pub mod rcu;
+>>> +mod set_once;
 >>
->> What files are you referring to? Are you referring to:
->>
->> 	rust/kernel/alloc.rs
->> 	rust/kernel/alloc/*
->>
->> If so, they're indeed not under the "MEMORY MANAGEMENT - RUST" entry, wh=
-ich
->> so far seems correct.
+>> I would have named this `once`.
 >
-> Looking at these, they seem to be intended to be the primary means by whi=
-ch
-> slab/vmalloc allocations will be managed in rust kernel code correct?
->
-> There's also stuff relating to NUMA etc.
->
-> I really do wonder where the line between this and the mm stuff is. Becau=
-se
-> if the idea is 'well this is just a wrapper around slab/vmalloc' surely t=
-he
-> same can be said of what's in rust/kernel/mm.rs re: VMAs?
->
-> So if this is the rust equivalent of include/linux/slab.h and mm/slub.c
-> then that does seem to me to suggest this should be considered an mm/rust
-> thing right?
->
-> It'd be good to know exactly what is considered mm rust and should go
-> through the mm tree and what isn't.
+> So module `once` and struct `SetOnce`? Struct name `Once` would lead
+> thoughts to `std::sync::Once`, which is a different thing.
 
-(Please also see the explanation in [1].)
+Hmm I thought that `Once` and `SetOnce` would live in the same module,
+but if they don't then I think it's better to keep the `set_once`
+module as-is.
 
-There's a thin abstraction layer for allocators in Rust, represented by the
-kernel's Allocator trait [2] (which has a few differences to the Allocator =
-trait in
-upstream Rust, which, for instance, can't deal with GFP flags).
-
-This allocator trait is implemented by three backends, one for each of
-krealloc(), vrealloc() and kvrealloc() [3].
-
-Otherwise, the alloc module implements Rust's core allocation primitives Bo=
-x and
-Vec, which each of them have a type alias for allocator backends. For insta=
-nce,
-there is KBox, VBox and KVBox [4].
-
-This was also mentioned in the mm rework in [5] and in the subsequent patch
-series reworking the Rust allocator module [6].
-
-Before [6], the Rust allocator module only covered the kmalloc allocator (i=
-.e.
-krealloc()) and was maintained under the "RUST" entry.
-
-Since [6], this is maintained under the "RUST [ALLOC]" entry by me.
-
-Given that, there is a clear and documented responsibility, which also Andr=
-ew is
-aware of.
-
-To me the current setup looks reasonable, but feel free to take a look at t=
-he
-code and its relationship to mm and Rust core infrastructure and let me kno=
-w
-what you think -- I'm happy to discuss other proposals.
-
-[1] https://lore.kernel.org/all/aG0HJte0Xw55z_y4@pollux/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/rust/kernel/alloc.rs#n139
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/rust/kernel/alloc/allocator.rs#n130
-[4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/rust/kernel/alloc/kbox.rs
-[5] https://lore.kernel.org/all/20240722163111.4766-1-dakr@kernel.org/
-[6] https://lore.kernel.org/all/20241004154149.93856-1-dakr@kernel.org/
+---
+Cheers,
+Benno
