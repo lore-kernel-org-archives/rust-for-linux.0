@@ -1,93 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B5A286D7D;
-	Tue,  8 Jul 2025 08:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2CB2BE626;
+	Tue,  8 Jul 2025 08:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751964040; cv=none; b=YZ4uPLUDmIOkcqENNV6dV8xJoHMRL77T6iphvhOYWGdJmOiVLMJXzJ+YbLcG+3+9UXs0V4cd49fQk0RDGkmAS6CIczvRP10Y2FLIg5VOjQNS/5dO262JC4yJeRp4edG91YInAfKlALxhL/0xzV961+5B5XOTBc6ZUBzxRQjFZIs=
+	t=1751964285; cv=none; b=b1LaFYgJtdhQaRVdWZZE4WkIv4DQgNIi3vXdGuxQlyjmMxciwsBwWAI4HInNQrLusgJ9hW3auGKbGxum/GR+WWFO4E/rMMntI+W3kG50olwKLZhuQhBK0CIDZGsh258tfCiQFrr5/8IOvDeIISe8i5tpQmKfRrT3EP/aU/rhI0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751964040; c=relaxed/simple;
-	bh=isJPiXKLK8ij/L1W0olww0VEgqaDb+I2fExhbAsSBig=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=iBk+hhaXKZ/Oq4xR0xX2FgxSTtXgyJszOd7RMP4aW7hbZUy3Xv/Krw2JhfnESQvX4NdQ00SQIFWQ0RGw69NoMu+iv3DBwSQbHU6xc+d/SuHeB9DqvP3YVUn8PypFckwY/8mYt1fpURTYn25qfPA3jNuwl2nFqiV5Yztg/u+hPjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dB7jWleD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751964285; c=relaxed/simple;
+	bh=k1SPmXB5+lk94ERCX0iCOSE7q/kATspEm3dKYBqOT3c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pPMaG9Vj7pTVOTRdlGELJri08z7QYUhBe/YZd3oOeB8qoE7DNqGxbbU2mDGyxyBEIQrRjM0EsPKJQEbqbA1qpxVTZiUzeevXXcAxHz/Hs0NIzqMI5An2CiSiMcSYSey6WTSIJBXKfAcshr4Ah01fZxwN1f2TUbM7xkw3ebqW484=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CwuNKy9w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dB7jWleD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE37C4CEED;
-	Tue,  8 Jul 2025 08:40:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CwuNKy9w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C339AC4CEF0;
+	Tue,  8 Jul 2025 08:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751964039;
-	bh=isJPiXKLK8ij/L1W0olww0VEgqaDb+I2fExhbAsSBig=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=dB7jWleDGo5v9F5/q/5qSI7Bic5FAWJWnNU6szBin/XwqNhE4Lxicq5zZO9KStgvV
-	 xJzpzG0kcvIPlfLFr7m4iUECFV16aHBUQIjpF5j/K1mFkKXCk7op/huAkVV3OjRe2d
-	 2LEJpyNIQrLB0zsq7yfuVh9YZDJ+PltHCM4oyKB2Ktv72PVn7eEFwC5M34bszjPmf1
-	 zrUzRniQRIdICX5HurttGX/+PD2KUjRQBkyiGOm6x5ItglS+2aJk7hSBS+KW9miCBv
-	 YrWfGOBXQq8RS48nmjaRqh6/yX1iXXG6miJoE+lbjz/uw+unnMgVtQ8m/idVJBq5ul
-	 JyLI5hr44CY9g==
+	s=k20201202; t=1751964284;
+	bh=k1SPmXB5+lk94ERCX0iCOSE7q/kATspEm3dKYBqOT3c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CwuNKy9w+yk8nmAAK2eZGO8yOFr2E7OFXXQz2IrSGDV4+SngkFxQKvFAVQ9xdw6jG
+	 Ji85XMm1KGhiHWh8AM/L3X0GZWI1mgfSZBNJLyPdUq5RnRAA+L02rMOwv7NwQW65lE
+	 us7eb7vZ+7jo/56ZFyAzovCNk1oKq1NwLHG8NDX/eWjWgosgANEeYROsZAEqutWPeT
+	 dJ/IPcpu98i/Xhj4ybYLB4bp1UaCchOsPbzacB0wAdW2cYKC30NHRh4i/OuJykwuaW
+	 sAvkh/5T1IyMrNQDmTwkE3FnGgRVMVGQq9mg2R8FTdj6jh5ivxBhyvuU3aQQGITEUr
+	 GKocRuoYmSImA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin"
+ <lossin@kernel.org>,  "Alice Ryhl" <aliceryhl@google.com>,  "Trevor Gross"
+ <tmgross@umich.edu>,  "Danilo Krummrich" <dakr@kernel.org>,  "Jens Axboe"
+ <axboe@kernel.dk>,  <linux-block@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/9] rust: block,core: rename `RawWriter` to `BufferWriter`
+In-Reply-To: <CANiq72kcR2Mct=uTzDQrWzAFOePsxG8Y=pS_6aGocbAe+Xaimw@mail.gmail.com>
+ (Miguel
+	Ojeda's message of "Mon, 07 Jul 2025 20:25:27 +0200")
+References: <20250616-rnull-up-v6-16-v1-0-a4168b8e76b2@kernel.org>
+	<20250616-rnull-up-v6-16-v1-3-a4168b8e76b2@kernel.org>
+	<bpbFNIoKHyMEJSNSRBaq96hzfyrWNtFJIotbYdqEAcPhLhPf_sg-1kNlty_Uj-1tPs0ZQHcGrT-wlVRHYbANqg==@protonmail.internalid>
+	<CANiq72nfeGwm17kp8OsmpgO-U6xMsuL9KBNwX34Rt1xz-Nxa1Q@mail.gmail.com>
+	<87o6twoxoc.fsf@kernel.org>
+	<snLGzUjHdzR0CIkyYFQU_2xo43YPtNEaZkf26_cO9O82_NKvYEg2upJVhQbuea50Rnunu5Yd-uEA43fwfHbsWA==@protonmail.internalid>
+	<CANiq72kcR2Mct=uTzDQrWzAFOePsxG8Y=pS_6aGocbAe+Xaimw@mail.gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 08 Jul 2025 10:44:34 +0200
+Message-ID: <87ikk3oyvh.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 10:40:34 +0200
-Message-Id: <DB6JF2JLZEO8.4HZPDC26F3G8@kernel.org>
-Subject: Re: [PATCH 1/2] rust: Add dma_set_mask() and
- dma_set_coherent_mask() bindings
-Cc: <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Alexandre
- Courbot" <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250708060451.398323-1-apopple@nvidia.com>
-In-Reply-To: <20250708060451.398323-1-apopple@nvidia.com>
 
-On Tue Jul 8, 2025 at 8:04 AM CEST, Alistair Popple wrote:
-> Add bindings to allow setting the DMA masks for both a generic device
-> and a PCI device.
+"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
 
-Nice coincidence, I was about to get back to this. I already implemented th=
-is in
-a previous patch [1], but didn't apply it yet.
+> On Mon, Jul 7, 2025 at 4:58=E2=80=AFPM Andreas Hindborg <a.hindborg@kerne=
+l.org> wrote:
+>>
+>> The null insertion at the call site should be removed, it's a leftover
+>> from before `BufferWriter` handled that.
+>
+> Just in case -- I think that if you do that then you would only get
+> the null terminator at the end of the buffer.
+>
+> i.e. the one your formatter (`RawWriter`) places is really at the end
+> of the buffer, rather than immediately after your formatted text, so
+> if you don't have the one at the call site, you would end with garbage
+> in the middle unless the disk name fits perfectly into the buffer.
 
-I think the approach below is thought a bit too simple:
+I'll be sure to thoroughly check everything. Thanks for taking a look.
 
-  (1) We want the DMA mask methods to be implemented by a trait in dma.rs.
-      Subsequently, the trait should only be implemented by bus devices whe=
-re
-      the bus actually supports DMA. Allowing to set the DMA mask on any de=
-vice
-      doesn't make sense.
 
-  (2) We need to consider that with this we do no prevent
-      dma_set_coherent_mask() to concurrently with dma_alloc_coherent() (no=
-t
-      even if we'd add a new `Probe` device context).
+Best regards,
+Andreas Hindborg
 
-(2) is the main reason why I didn't follow up yet. So far I haven't found a=
- nice
-    solution for a sound API that doesn't need unsafe.
 
-One thing I did consider was to have some kind of per device table (similar=
- to
-the device ID table) for drivers to specify the DMA mask already at compile
-time. However, I'm pretty sure there are cases where the DMA mask has to de=
-rived
-dynamically from probe().
 
-I think I have to think a bit more about it.
-
-[1] https://lore.kernel.org/all/20250317185345.2608976-7-abdiel.janulgue@gm=
-ail.com/
