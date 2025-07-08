@@ -1,223 +1,100 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8F4268688
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 09:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709081C6FEC;
+	Tue,  8 Jul 2025 10:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751968632; cv=none; b=ZpzNj0Y3bZN0bOWjfm846KcwZicIXydpv2VEd7MtiXhEBdoOAqMjxgA/P+jYDJS/T69j6OSRODffbvfKn4/PWVDYs2bR8wZcObtMsk5swNNzL23UDJiwp+Q7v4c4qti4mvA3eVeJKIHxhMNubliLdALMuqk0sawFscNlDZaEtec=
+	t=1751969793; cv=none; b=Hlo6vl8GqvwpFX4v9UpopdDhuCFYnRcQUl2GuwC3JUHMGghM+lJj+cjYDVupyscTVMW95EqPOwbTXNsTwrPN6WDWE1MNGC54l7Xfv4OqdWw5ccjRqDkhjaZjIGNWSF2oKm3X9wjhNDwRp8KbiiwBKnJWPa+IQOFq85b+cbHlLD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751968632; c=relaxed/simple;
-	bh=UARk+kQbFmDW+kvV8YFNkg+2xZuu+oxOEUbZAp5I8mA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f64TFKP0/EWGneg6gBzReTTg3SoFwxo7+5eHCf6AmMNyRSRGJkTL9bJmY+jB4pUeFKqVqsGyszffS153sr+oKS6U8tHZdvActhaS7rHoMJFlzjTMG8O7EC3PKqIrfFuIWPNb37dD8PH9l4DykM4H+3X1vUjh1g0Iv+cHpu4HxRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=QQLNDysn; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+	s=arc-20240116; t=1751969793; c=relaxed/simple;
+	bh=Mu2agmfNzU1947N28qDPAD2DRXup4PY6h7Z5E3r0lUI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cRdZ7+R6XTgJd6lonYKtfxtqYXCEv2T0QNWjONkrCQl+wDH2Ruy/JawMlAOLGleSOXeglo1f8pGzWa03YxGP3v2avYSp5de3rzo9PlMfV/jyoVqM45irDiQCqz+notEfAp5Q/PAycAUo7suyH8FuWdWzPzFl4tv4wkog+ZudpJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=heDJNNvB; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="QQLNDysn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1751968621; x=1752227821;
-	bh=2l3TkfjvjCWEDCpP4Te5SG1hFwqAhL+8OiIAkKRAXM4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=QQLNDysnjPtAe4YwLvngov1AJZUMLVT2hOYvLiAz/yIyJZQx9wBiKIncBkqFTEmPq
-	 6ofUkBqH9dsAdW1WV3OSWZ1MILYLXS/nuFMPCxnNmvZvMsPphwNy1iz+RQrYEa/h9k
-	 Pas3HX9XA6/uLQtQXHwhyIz3zM2cSwGooIscJnhut3wrj7Cjo4yffstWEY79mL2Cn2
-	 lLqD4I0EjP9fcarZFR/LJh8e4KChZWMLe269MeOHLftr1qi5u2YGlmkClP2BT1fc2W
-	 NM27xVVK1IPbrGOpij6kXoA6FQQO1VseUInQfLC5hxqiOsE06fJjyZeJfpoTsOP8bi
-	 qg+Zx/t9IrXIQ==
-Date: Tue, 08 Jul 2025 09:56:57 +0000
-To: Benno Lossin <lossin@kernel.org>
-From: Oliver Mangold <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-Message-ID: <aGzrZqIrStGD_UBp@mango>
-In-Reply-To: <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org>
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango> <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org>
-Feedback-ID: 31808448:user:proton
-X-Pm-Message-ID: 54e28f62d3ea56697116c9fa07669e83e4c37aad
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="heDJNNvB"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-237f5c7f4d7so5871195ad.2;
+        Tue, 08 Jul 2025 03:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751969792; x=1752574592; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mu2agmfNzU1947N28qDPAD2DRXup4PY6h7Z5E3r0lUI=;
+        b=heDJNNvBvLNIjStZ4hphML3HbKBPKhtxDHZtKY0GEIAITSZOnYWO7/DgPNRc5DDIem
+         4ICEY96ZqmBC0FXMIzjUeT4udUTas+B9I+Bkv1ZopRqieVUNOmx2cBti91fgeuFeIBJl
+         60/xNFU0fbpoe+RnLsSaWK+PHoCoJMLrywIJojSqM2zFROtLdKb/ev0kb1nMX5e1tJJ8
+         1SAPzjBZiulVak1v7j3PzN+TLGU4kK9Ew9YP9io8FhjapqKi6Y5cs2mwl2eG8fa0H1A1
+         dZ+zUCDBTs7jUHCiHVR0BeesuKc+Pit56Sd3fkQhcMtK+aOMNG3kRb2WCa8Du5uL0qSk
+         CATg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751969792; x=1752574592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Mu2agmfNzU1947N28qDPAD2DRXup4PY6h7Z5E3r0lUI=;
+        b=WmBg4/xkmCfy+Hxb/pVPFbmdOGgezSBALLaFgjESkRlv9sHqCiPgzoFKsEMRdSpWJ5
+         zXrWoWHwPxtILJ/5s5y2ll7oc6kH5vK6z4tlOiHi0y9duMpm+Uk5BwKBpQ6RIAg1awyU
+         QO2gvOfdov98mQDMET9/mOWg5A3y9AWJt7S5Y+o/rEt7dvKiWOZpqvxBtPCJHFxtbQAF
+         8iuUzw3docBdkwu7kyaFpMEHg7j2mQFNPLgSzG/Y+6KAhf9gmQjC0yKYIEMCFclNqhGd
+         voCqAcsIvpqbqJeYUdLZtCwE0mVPFUnpILoOh90KI9BmT1adfo1yp4OuZaJURonkOz9X
+         LmiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcP7GAuH6RoQLcinOGeJWCHIx6EbwDLlfiwucJZsQ4YsHUAU/0/SMJsuMPGpJmM1zkWdMItFuK6a+9vew=@vger.kernel.org, AJvYcCWfWxYSDXgjNkeFk2WSnoZlgNlrhoAwmxSqmxPUMuCWf37VL/mjn6iEoAI9pf+h+jCQAk6LAOEiE/OrDR8Oy1o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7q3S4U8zdZ7F+G+OV5A3E7fUiwdFWc/2ZUYM3EqE+2qvqzx2x
+	20uKGznHUQc4FlwXV81o7LIUG5ionGNgbM4/7mcofnp4lUc/PLjij7LvFZGKdE6hAZR2Pvl7H1T
+	YRVJeVszYr+4KdmNAGAamEQ736gS4d3I=
+X-Gm-Gg: ASbGncshyXRN5sdaFu9y7rUVWx8wf6HAe8hPCijLyNzmA9mvfnUEyhFppZ80OjJjLua
+	Mi7r1KpLfruc1lNk21shvRzl+7moceDLebOZqlFmayecllAjuzKdDwDOm/8iaNbjnjhnQsmrSzT
+	smuiMZfDgC2phhmzuxI8Ynk4XAxS4IYwfTGbLBykkRqnC5
+X-Google-Smtp-Source: AGHT+IEtiSDbVtVY2B0pLNW44Ytg7MQuZSNigbC2JZeHZUhFXRF5LQyHh/k8dU/GxbIoUGVN8Hqb+K3w2wT9wrlhH/I=
+X-Received: by 2002:a17:903:94c:b0:23d:d2d2:b51f with SMTP id
+ d9443c01a7336-23dd2d2b7dfmr9180415ad.10.1751969791683; Tue, 08 Jul 2025
+ 03:16:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
+ <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
+ <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
+In-Reply-To: <aGzrZqIrStGD_UBp@mango>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 8 Jul 2025 12:16:19 +0200
+X-Gm-Features: Ac12FXws6e6wjl4VXaStMJYjDvz_KB3jEXK4Nq0GnlHUnilneuNT3cDnqmhb8V4
+Message-ID: <CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+To: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 250707 1123, Benno Lossin wrote:
-> On Mon Jul 7, 2025 at 8:58 AM CEST, Oliver Mangold wrote:
-> > On 250702 1303, Benno Lossin wrote:
-> >> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
-> >> > From: Asahi Lina <lina+kernel@asahilina.net>
-> >> >
-> >> > By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
-> >> > (typically C FFI) type that *may* be owned by Rust, but need not be.=
- Unlike
-> >> > `AlwaysRefCounted`, this mechanism expects the reference to be uniqu=
-e
-> >> > within Rust, and does not allow cloning.
-> >> >
-> >> > Conceptually, this is similar to a `KBox<T>`, except that it delegat=
-es
-> >> > resource management to the `T` instead of using a generic allocator.
-> >> >
-> >> > Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe5=
-5e@asahilina.net/
-> >> > Signed-off-by: Asahi Lina <lina@asahilina.net>
-> >> > [ om:
-> >> >   - split code into separate file and `pub use` it from types.rs
-> >> >   - make from_raw() and into_raw() public
-> >> >   - fixes to documentation and commit message
-> >> > ]
-> >> > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-> >> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> >> > ---
-> >> >  rust/kernel/types.rs         |   7 +++
-> >> >  rust/kernel/types/ownable.rs | 134 ++++++++++++++++++++++++++++++++=
-+++++++++++
-> >>
-> >> I think we should name this file `owned.rs` instead. It's also what
-> >> we'll have for `ARef` when that is moved to `sync/`.
-> >>
-> >> Also, I do wonder does this really belong into the `types` module? I
-> >> feel like it's becoming our `utils` module and while it does fit, I
-> >> think we should just make this a top level module. So
-> >> `rust/kernel/owned.rs`. Thoughts?
-> >
-> > I don't have much of an opinion on on that. But maybe refactoring types=
-.rs
-> > should be an independent task?
->=20
-> But you're adding the new file there? Just add it under
-> `rust/kernel/owned.rs` instead.
+On Tue, Jul 8, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold@pm.m=
+e> wrote:
+>
+> Note, though, that I already moved it from types.rs to types/ownable.rs o=
+n
+> request. It seems to me different people here have different ideas where =
+it
+> should be placed. I feel now, that it would make sense to come to an
+> agreement between the interested parties about where it should finally be
+> placed, before I move it again. Could I ask that we settle that question
+> once and for all before my next revision?
 
-To be honest, I don't really mind.
+Yeah, if there is a disagreement with something said previously, then
+it should be resolved before starting to ping-pong between approaches
+with more and more patch versions. Reviewers can forget or they may
+not have read an earlier comment, but you did the right thing
+mentioning there is such a conflict in opinions.
 
-Note, though, that I already moved it from types.rs to types/ownable.rs on
-request. It seems to me different people here have different ideas where it
-should be placed. I feel now, that it would make sense to come to an
-agreement between the interested parties about where it should finally be
-placed, before I move it again. Could I ask that we settle that question
-once and for all before my next revision?
-
-> >> > +/// - It is safe to call [`core::mem::swap`] on the [`Ownable`]. Th=
-is excludes pinned types
-> >> > +///   (i.e. most kernel types).
-> >>
-> >> Can't we implicitly pin `Owned`?
-> >
-> > I have been thinking about that. But this would mean that the blanket
-> > implementation for `Deref` would conflict with the one for `OwnableMut`=
-.
->=20
-> Yeah we could not implement `DerefMut` in that case (or only for `T:
-> Unpin`).
->=20
-> >> > +/// - The kernel will never access the underlying object (excluding=
- internal mutability that follows
-> >> > +///   the usual rules) while Rust owns it.
-> >> > +pub unsafe trait OwnableMut: Ownable {}
-> >> > +
-> >> > +/// An owned reference to an ownable kernel object.
-> >>
-> >> How about
-> >>
-> >>     An owned `T`.
-> >
-> >     A wrapper around `T`.
-> >
-> > maybe?
->=20
-> "wrapper" seems wrong, since a wrapper in my mind is a newtype. So it
-> would be `struct Owned(T)` which is wrong. The `T` is stored elsewhere.
->=20
-> >> > +///
-> >> > +/// The object is automatically freed or released when an instance =
-of [`Owned`] is
-> >> > +/// dropped.
-> >>
-> >> I don't think we need to say this, I always assume this for all Rust
-> >> types except they document otherwise (eg `ManuallyDrop`, `MaybeUninit`
-> >> and thus also `Opaque`.)
-> >
-> > Hmm, it is an important feature of the wrapper that it turns the `*Owna=
-ble`
-> > into an object that is automatically dropped. So shouldn't that be
-> > mentioned here?
->=20
-> I would expect that that happens, but sure we can leave it here.
->=20
-> >> How about we provide some examples here?
-> >>
-> >> > +///
-> >> > +/// # Invariants
-> >> > +///
-> >> > +/// The pointer stored in `ptr` can be considered owned by the [`Ow=
-ned`] instance.
-> >>
-> >> What exactly is "owned" supposed to mean? It depends on the concrete `=
-T`
-> >> and that isn't well-defined (since it's a generic)...
-> >
-> > "owned" means that access to the `T` is exclusive through the `Owned<T>=
-`,
-> > so normal Rust semantics can be applied.
->=20
-> Okay, in that case just say that `ptr` has exclusive access.
-
-Or, ehm, sorry, I forgot, ownership also implies that the allocation of the
-underlying resource/object is now under the responsibility of the owner,
-i.e. the owner should free it at the appropriate time.
-
-In short, just the standard meaning of ownership in Rust.
-
-https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
-
-> >> Maybe we should give `Ownable` the task to document the exact ownershi=
-p
-> >> semantics of `T`?
-> >>
-> >> > +pub struct Owned<T: Ownable> {
-> >> > +    ptr: NonNull<T>,
-> >> > +    _p: PhantomData<T>,
-> >> > +}
-> >> > +
-> >> > +// SAFETY: It is safe to send `Owned<T>` to another thread when the=
- underlying `T` is `Send` because
-> >> > +// it effectively means sending a `&mut T` (which is safe because `=
-T` is `Send`).
-> >>
-> >> How does this amount to sending a `&mut T`?
-> >
-> > Good point. That documentation hasn't been updated since `&mut T` acces=
-s
-> > has been split out into `OwnableMut`. Not sure how to phrase it now.
->=20
-> I'm also unsure, also for the correct trait bounds on this impl.
->=20
-> ---
-> Cheers,
-> Benno
->=20
-> >> I guess this also needs to be guaranteed by `Owned::from_raw`... ah th=
-e
-> >> list grows...
-> >>
-> >> I'll try to come up with something to simplify this design a bit wrt t=
-he
-> >> safety docs.
-> >>
-> >> > +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
-> >> > +
-> >> > +// SAFETY: It is safe to send `&Owned<T>` to another thread when th=
-e underlying `T` is `Sync`
-> >> > +// because it effectively means sharing `&T` (which is safe because=
- `T` is `Sync`).
-> >>
-> >> Same here.
-> >>
-> >> > +unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
-
+Cheers,
+Miguel
