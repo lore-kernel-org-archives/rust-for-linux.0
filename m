@@ -1,69 +1,71 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2053.outbound.protection.outlook.com [40.107.237.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BBE236451;
-	Tue,  8 Jul 2025 06:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADF335957;
+	Tue,  8 Jul 2025 07:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751957425; cv=fail; b=oiBUXitmDiWL7ZQALW7VvP/gjDBxRkXq/mJKFuxSNvxvCW2xt20Fm7eMKQai0vnw1GJnY2b9Qao+8ly4MZR1xVN8NgdPkuswNpVbvEhlD3ghgE3YB/gv4D/NhbpSIXL6nCYj+ujXcRFAN+Og8862K6AxJ/T47dN6R41zyL7zHqI=
+	t=1751958089; cv=fail; b=QSFYUqeHxFoIV0aDQTg3n5OGWNBsC/h6nzJDgaHw2Tq0JRBTmGu35zfKaNosonDPFH7Guj90DKVLPhMxIPTlZr77Q1LB3C7XkW27bJEmNjZYIzXqC+ybZUaIkLmna8bfstzEtL74mOL1ewFVe2LAVkiyvoBjs2erMohH4SNsiJg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751957425; c=relaxed/simple;
-	bh=5hsUSQO5rgZd6557NG49zVSK8UG0TgYYnh/gkMWTsfs=;
-	h=From:Date:Subject:Content-Type:Message-Id:References:In-Reply-To:
-	 To:Cc:MIME-Version; b=ruAk7o3EZm49mgL9dz6v03wDboDP86n8gsGZ1jDdZ70nRzjgq378J3ZEV4nvdg4O7Tm9vUjh5kjy9LUpRkKtNmeDp6wq8pLDauxqOsew0On6D6Mzd10pQUUybWd/xnJyKatm2JkuI1zb0uAmKYEEDvHV5H7eiMAZZ2NU0d5xKPM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EcmGrWwH; arc=fail smtp.client-ip=40.107.236.41
+	s=arc-20240116; t=1751958089; c=relaxed/simple;
+	bh=v0Aa7RZG+2JS0NqEH2by6qMewo4UiiB9kaZXoePsRlE=;
+	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
+	 In-Reply-To:MIME-Version; b=u+ng196h9mpuC4OAKunuTksbL9b1fmX6TEt9KeAnQNZuOFqZuXBtiSielQb/1gJoTAKuyTxyx75rDSk6OwRRW/UTMWXp7Kf83pQWRj6pKdq/m/OLFSr97Wf0M5luBgmN+EkZaC4RRVboEi7mPmYdWqDefg1M2opmo5eDLBqHGpk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QKmj4iVH; arc=fail smtp.client-ip=40.107.237.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EcmGrWwH"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QKmj4iVH"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WtYDngunMWiXdoBL3OOXjXJS43Nc7jHUe75cBetfkDiiUOGvtSCThpYLy5J3I3Kq9IG2JxLQ1yzsGfTUNikE3x0M5GR5V2iXheSACsHZ444J/Wld8NZGRUDkIleChe8/WXCy6GXXrlWXupW/UPaD/rkv+hzTqFJMRH7PolMUaa6fa67E1aUtvnhbf/R+B5Ut+kEM6wjwglayWvKLjlOZLKlErpPiMAz3KDp4b50AjoXU2pObFmzAZ7B1f8WZMS9AaEcDKUI/Hd7rPXKVkwgThEDtK9i+lqP2lxiRCSX/T0oPzzvpGdVHgoiGU45FF2xX6V9m2cjNNHqguEKVB6n35g==
+ b=aYnPMqNS7FmYW2sMoT1g9/Hs0uO3shyp2wdtwtKUmvvE3n5QUWBI8xZegnwx8Psc2OwwOqfTMRj3E8DPDw1p05qY2VQjWWABt0gV8PyDogn+tiqvCYBAC23vUNuw+R7vCTiIuJw9t15iBMMWAHCQNQua5LVRBmR7NbZnGyOGecJh0ectWOa5N+8aYVCJrSsBMW+s91Y1uTUJw7CVjigmEzYf3cFWaQB2zVpMB/XXXk5hsNkK4XxTrpQYkdqhrgpGBE3VMkCQlONXnsiLyQ1MTVVz+9L8L8UeYX8lsqOmgm5z63qBKpTB39ao6MMTt4r6NgAk/K9ZmYuA0RvDTJaNRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fqqvMGehSSegS97UBu8iWP2iGx638ghw8px5XVVp+E8=;
- b=sNrCJxnvyWmf1vwqjCXzBHsrTYr5uqV/BOobF5/fhQCg8ik7Ol2zuk+R2+KoTzhE86sdDOWVql7qXmp9xpS4MKja4AxQtT1b/n0Sw3dqpv4VG2M4ES/Vhki4GqH83bJT38KdE3JeK/fGGJJxWZJWkVgoWze/9aYnh3RkRxzpg/PxhcVtHZM/iKm5Iw3arIQnzNOI4kUORbe3uz0BSmP8/hwFaCmdmIVz96FVvF/sSJLbRSmXKh65pK5XvwDV2XgglFX1BL4GvZMeyDWup0w9G909OhFUOBseR5baZQ8tGpnBBZgvdAS+c0mwqMi+WZoA8EjgxaAZydS47/Rk6mrxrw==
+ bh=+iG3U02I8HPsElrTzOlWpnlb+skXj5XneH7NcEQqPWA=;
+ b=azLxqM+ZR/WDOhOmwppfT2iGWTwM+sRNIY0MMJx/8fwOVH/a1I1QkVoDMMTlEDxxkf3OPVqGXkpk3KEZvHeqFbhz6kwioi+LTzzrgYcGNWx2APraPIIw2zOUONupdFHky34b1jgq1LjH0B/zUBIxcBdl42B13L1T7Gd7HRak627aR8IL2jAkpYFyqmTRxII+Pdzlic6y0regC6tP0aiUYkOZw4TYLCnNy09wAJGpXnsCWsIH6coPBnUC2W0UP6H7VWTqfLJv1X+18QEvKF5/8AIGWGXLA2rfFk5afc9+gf16rqQ9GDnjPsYcdsdjbBoc8Es5d2Yedv7KZiZQGMSx/w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fqqvMGehSSegS97UBu8iWP2iGx638ghw8px5XVVp+E8=;
- b=EcmGrWwH/CA3DYSXG2AQXm7K0W5iY2t+ZWImfQ4vxixkKqBuHEKXhdPOyiiVX5vLlWcnfSEoGeN7dBd4xmcSBkhZ0loob/YmeRDf2zgP0aU/w1+1waq6XaQ96lvZzHrLTOsiec0dT3QZOFe/qbeIcWvZtm8uVsj03QCQi15sA4J4GRvWP1HVouHfhvnxfo+utqcXRrlhZszqVYqns9JI8HnxgR9bGiJrl6DXiWAt0J8xbH7VeB0pY+knImFYAmRR7Xy7l++woPzGVcnDLEFnIUlbbSnaBpRkBqXt5kSjC4waRJZteCcGPxiNFTUjMOGKNCJ9JjERDZj4I8gadwEO9g==
+ bh=+iG3U02I8HPsElrTzOlWpnlb+skXj5XneH7NcEQqPWA=;
+ b=QKmj4iVH7IVgCS+D6PJeDI9cLLN2ILr/e0KqNR9Oyuq72bJq7urDyaJyy0KuH3yuBxl1f0tUAkF9k7Ff0u3G5HZp/4cxCsSDHVB52FxVRRpHpgHQvSR5IQ43P0HA5Ow6pCBQM+f7NEoojUQYMlQ/9T0w7eKfVzRIhZRB3zBIPp+zSPOukdIhNJQNh5hHCDKhK3wegZO/QEHXJ+Hv2byxImYBSxSd+YjsjUNT8WJHz/f4/DUTCaHSObHHe+y1YfmgiAlhqBd2IY7pAlnYtUwDhPh3OPdW4qxSAcYM+izAEDnCHcHZLZyQimG9lqxbdkqsXqa1zwscHp1M4qdfS1w03Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by CY8PR12MB8412.namprd12.prod.outlook.com (2603:10b6:930:6f::11) with
+ by SN7PR12MB7178.namprd12.prod.outlook.com (2603:10b6:806:2a6::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Tue, 8 Jul
- 2025 06:50:18 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.24; Tue, 8 Jul
+ 2025 07:01:23 +0000
 Received: from CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
  ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8901.021; Tue, 8 Jul 2025
- 06:50:18 +0000
-From: Alexandre Courbot <acourbot@nvidia.com>
-Date: Tue, 08 Jul 2025 15:49:48 +0900
-Subject: [PATCH v4 8/8] Documentation: gpu: nova-core: Document basics of
- the Falcon
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250708-nova-docs-v4-8-9d188772c4c7@nvidia.com>
-References: <20250708-nova-docs-v4-0-9d188772c4c7@nvidia.com>
-In-Reply-To: <20250708-nova-docs-v4-0-9d188772c4c7@nvidia.com>
-To: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, Joel Fernandes <joelagnelf@nvidia.com>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- Bagas Sanjaya <bagasdotme@gmail.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: TYCP286CA0024.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:263::14) To CH2PR12MB3990.namprd12.prod.outlook.com
+ 07:01:22 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Jul 2025 16:01:19 +0900
+Message-Id: <DB6HB2VCI9CO.LCNRYZD6HWOJ@nvidia.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "John Hubbard" <jhubbard@nvidia.com>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] rust: Add dma_set_mask() and
+ dma_set_coherent_mask() bindings
+From: "Alexandre Courbot" <acourbot@nvidia.com>
+To: "Alistair Popple" <apopple@nvidia.com>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
+References: <20250708060451.398323-1-apopple@nvidia.com>
+In-Reply-To: <20250708060451.398323-1-apopple@nvidia.com>
+X-ClientProxiedBy: TYCP286CA0247.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:456::18) To CH2PR12MB3990.namprd12.prod.outlook.com
  (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -72,289 +74,221 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|CY8PR12MB8412:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ae7b893-dd02-410a-c30e-08ddbdebb3b4
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB7178:EE_
+X-MS-Office365-Filtering-Correlation-Id: 42f66299-1d26-4a56-7aac-08ddbded3f7d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|366016|376014|7416014;
+	BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UzdlMFYyd1BYb1BvLzU0YXlrVTVmaTJmVGlQaDBpT0RVdjgvMmtIb2ZOK28r?=
- =?utf-8?B?LzJjN002VTYzczBkT2wwSk5sTk5SNHJJRDYxSnpWaENUd3REVnFEVk93RDJj?=
- =?utf-8?B?SFhzb0J1NVIrdFFJRUpHM2x3Q25OWmVERWVVekRhUU00ZmRkd2NiNmZqdWVF?=
- =?utf-8?B?V2N2VXA5cnpkVFVkRE0xSURPbVhRbHpud3diZFRzbWhxSTVLb3p6QWxJWFZa?=
- =?utf-8?B?Sk5LNUtDemRIcmFEQ0J0K3BUbWJGRXJqMlFHZk9tVGtPNkNRWldNY3JackJD?=
- =?utf-8?B?VXR2NkxmZ3BJNTlsV1p3anlVcWFSdnkybFZBc1JKcVUrYmlKcXFwUEZLMXNI?=
- =?utf-8?B?aFJaUk5BWUd1S2xxdEl6VWZHS3RXMHpxQllUKzJRclUrM3lQcHUrbGUxdjh0?=
- =?utf-8?B?TjlqMmp2MmhMYlNsM2pYSnVWOTU0eWVmVGMwWUplUHpiQ2NtSEZIRm90QjFD?=
- =?utf-8?B?WlNHd2ZaTGNvVXZjZjVmUWVYazJlYUhpTXFtM3JidWlFZ2JoanlCZ293Zlhv?=
- =?utf-8?B?dTVtWmFyYlRtd29WWEV3ZGZvYWZDZmxkN053S1hqSGk4NTh0a3oyQlNNaVJV?=
- =?utf-8?B?OUwzWkMxaXk3RGtpS29VN1dvNFYwUkZxWGNQSzNYVGg0ZnBEZnlJOStNYUlz?=
- =?utf-8?B?MnVudWNSUnNDSHQ1TkNrSk9rT2pjVC9DWGluNmRUSURicW1aT2V1T0NGUzl3?=
- =?utf-8?B?MUtTK25kblNqMHJMVGZMaFZBM3BUaUpZeDc3c0NXMjBUV1U3L1VIdXJLN1h6?=
- =?utf-8?B?ekNNWFNLSkhDSTNxMUdLTURzK05vejhwZzBlL205Zis3K2ZMN09wZnJYMHQv?=
- =?utf-8?B?cnJzaWZsVjgxbldTR2EwM1pRV2M3Nm1ESGQ3VGQ1VU41UUNtNVd3N21iWmxj?=
- =?utf-8?B?RmRadXhiT0I5UFlRcUY2cWRERHBIK2ZtZmoyNjkreUNYWmEwVHZMTnNhWFN6?=
- =?utf-8?B?T1JIZWY5OUcrMkthbnkyRTNIdUVMZEVGZy9YK1IxRlJHSFkrczZOZGRQdStU?=
- =?utf-8?B?emFGcVk3RnZxSTMwNmlUVlk3bzNReVhYMmE3ayswcHhzME13SU1vRGMxbG15?=
- =?utf-8?B?REZVcFB2MWVOVHRCZkhLOWxFZlpFY2NZbGJwclE3Zk1jdGg5eDNZaHJVTHc5?=
- =?utf-8?B?Qm9BTmNvTUd5anVJc3p6Qit3eGt6WjRPZXFGYm5teGgxSk84V1U4bFZ0cmlR?=
- =?utf-8?B?a1lXamlEbXRBYWxISmJxbmltOVhjRStXa1BwYW0vRnhsSDN6dEdsZlZlTk4w?=
- =?utf-8?B?ZlhwTDd6KzdBWlkrUXR3c3RkYi9SOGoydnorYldacU1JMEtVSlozWUdrYXJL?=
- =?utf-8?B?NW1yVE1Zc1ZoeEVrOFZmU3RBSk9nSUhZVFA3WEpZTmFVWFlKdVJ3SEc5ZUxC?=
- =?utf-8?B?dzBkbmVJRUp1L2NXRlJSSjBjQnI4SUlsUkpQcmZReUNCNVVCZ1BwY3N1Wlkw?=
- =?utf-8?B?MDlXWHYxMDlCRGpIYnJRcHdaY3ZrVEtLS3lRbXlCQ2VQV3lvcUp6YVJ3NEhY?=
- =?utf-8?B?MnNjelpQdWEzVTB4RDlwZ0hDZGtBenpOQk1tKzUzRFg0VWh1eklWeVl6QXZj?=
- =?utf-8?B?UkJxa0M2bk1MYy9HTnRqWFdEenp6QkloNGlobFc1ZFN2SG0yOVFUcjltK2FX?=
- =?utf-8?B?dlYvdnZra0xtTTRNMWZRcCtOWEtlNEE2VS95UmNNdEw3ZlFPR29nNkU3NW9a?=
- =?utf-8?B?OTQxY2NDeTF0RSt2cWdBbXBIa3dMNndHcml1M1JsbzlaMWJPSHVodk53ZnJk?=
- =?utf-8?B?aWFJQWRuQXE2M01lU1NyZVJ5NytGUGdGbUh3eEY5OWZQcTJtbER3eXhRVGdD?=
- =?utf-8?B?bW1sZ0NKeTdSdFVXSWc0SEtlcVo1ODBvRTNzWkpRQzBwMzROWVVEWFpiUnJD?=
- =?utf-8?B?VkMrSWZpbG9BYjNaQllIR2lGeTA5a01palJTajNhV2Vwc005V3U0bjFLeGhk?=
- =?utf-8?Q?/l/lu/CdpGA=3D?=
+	=?utf-8?B?MnJvWXNsSDd3SktqZFZZTUtnak1BYStJSVFHeWRjMTVYNjBmQnJFS1pvK3d1?=
+ =?utf-8?B?ekN3YU1NeFFuS01NWitZaDdOU2tIdHVLTlpwUTQxMU9LZW9hRzM1SlhUVVFG?=
+ =?utf-8?B?dm0wUU00M0ZnaGVLMHMvTmgwOHRYU0VWdUFNMGpzZDIzVWRkczhmVzNMMVRk?=
+ =?utf-8?B?djloUCt3TkRIWFBkSnFwbzFFQXhhUkNkSHNmdTBFVUl3SDhhNGxUTkUxdVBV?=
+ =?utf-8?B?dkd0QmRvZGVQUjBoOGIyUkcvUDFqbTljWE1YOVZyK0NEY0ZkY3FnV29sQVF2?=
+ =?utf-8?B?ZmRvdW5UcG5XbVFJcXBwSzlxOGpkS1BJZnl3TjZ5bTAvTGhqVUdZNEhHNEZy?=
+ =?utf-8?B?cVQxY0NaSWZUMkRFWWpMYU1uK3krandKSWZuTVE2Y2IrWHRWaXJFaFQ3VFFJ?=
+ =?utf-8?B?T2FUb3RWa2FZTW1DOEhPNjk4K21CdWJPYVRmSm9FVlhTNHpsc0RVQ3EwMnFG?=
+ =?utf-8?B?enFseCtrV0dGVzN3R1c1bU4wemdUTGQvd1BzY3NJNWtLdjVpYlVkL1RHWUNv?=
+ =?utf-8?B?Wk5BRnE5Y3I2dFFZdjdIZTlUQ1JITUZqODMrWWxISHVzdmJmUDBuNVRCMkI0?=
+ =?utf-8?B?bXlqQytMN3FzUUxsZ05QbXdCRHB5TFkzcmY3K3NMbHlZU3Q4U3IrMjN4NW9F?=
+ =?utf-8?B?OWhBRy9zSHYzS0srejlvTlV1TGx5aXdHaTYzZnRhTFdFNDR2Wno3SmtYTnY0?=
+ =?utf-8?B?cy9xS3F4eW1Qb25pNEh2OWNlQ0pkb2dEWVo1RFBBVWZxYXkvdDlBbVlSY01p?=
+ =?utf-8?B?S3NYVjFTeUsxNm1TeTVwbmo3Mmttd1hxdG91RVFWRENtSlBkWkxENngzVlBx?=
+ =?utf-8?B?cXJqbUdBaUJuc3JjRzRscjdtYzhIWU5XYlB3M3NpT2lvOVFiTHFjVSt5STB3?=
+ =?utf-8?B?dW5HNWtEWnBDbkg4N0NMN2U2dFNQM3JwTEswK0hKMnI5SDRxZ1ZVRXZVcVBV?=
+ =?utf-8?B?STNZTFlpblNMblJhcXVRUWVyNEJUNWJwMW1sRnRFVjdJV2t1Q1JuM25Eell6?=
+ =?utf-8?B?RmFwNW1Lcnhsb0JzNmxSbngwczM3VmF2SUh6ME1ndmp4ZGtXeEttM0FEb0hI?=
+ =?utf-8?B?dnpBR2VGb0Q3Y21YVVlIbFlUN0txNVNEcmNOamVUdmxBU0gwWlQ5VEsxYnI4?=
+ =?utf-8?B?ckE3UGFMSnZpbjcwc2Z0NjIwWlFkSGNIRERnS1pleGJJenRhdklXSEFKbXZZ?=
+ =?utf-8?B?REdBNjliMmVmaE16OGsyR3hrNzNnUFN4UWtlQUdrd1BraG40MzJxYnRzT2dC?=
+ =?utf-8?B?T3JmUXNPUzcwcnkxV1V5VG5tNll6cnN5VzM3a1RnZVd3cnc4OHVYUWNmbTd2?=
+ =?utf-8?B?cXl6NlYvZXN4ZGZORmVHYUZqZzVtdHJwa2d6dGJjSWJXakh2YWlsZjV3YkJK?=
+ =?utf-8?B?alVXZ1U4LzRDTVJodEtabVJPYXNvcFFnMkZZTEhJQytHd1g2ajVLQmMvK25r?=
+ =?utf-8?B?TXQyMGNEQUQzQ1pNVVc3aStkTXJ2MGN6cEhSZEFvS0J1dGd5dHF4NVV5bGhj?=
+ =?utf-8?B?WGdSQXY0bnlZWUF4eGp6TGFYUUhTUG0wa2JzTWRGRVVZMzRwRWplVVZtMldK?=
+ =?utf-8?B?WFZEQThtVkNyV2JCUzNYNFNTZmpxblFOVGJKdSt1Z3lhOGhKaDdjcVRxL2dF?=
+ =?utf-8?B?YWR5QjIzcDRUYkM4WFZRSXJ0WXErWEpCV2M0Z3dRejlyWmEyOVU2RDlCTnFj?=
+ =?utf-8?B?cTdicHpZWjRyd3JDK1llUXJWSjQ2SXZCRy94QWZxMlNTdWIwZm8raVBydXdy?=
+ =?utf-8?B?WWp1YSt0SmZpWXFzd2loYlRkbFlkWFpsUGh6ZVlrdlJqUFY1a2hZVEZNQUFN?=
+ =?utf-8?B?N01ZczJQOGgzaEJqTXZ4RENxQlJFdnh1N2ZlY3FMR0Mxb0ttN0JHeGVFSm1n?=
+ =?utf-8?B?WC9PVkhQMVkwekoxa1FOTEFEeTd1RmFBTXhYbjlacUcrYVR5YjZHUW5seFJz?=
+ =?utf-8?Q?yk2X7U6sYqw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wm5HODUxcU5HdGh0cEpQajJRQ3FJbVFFbGtkNXJTeEtjOStBSGdVWFNjRC9s?=
- =?utf-8?B?a0ZNOTA3NGowVFBzVmRERy9MOVc1d0NWRHpYTk93TDgrcTB1clRLc1VTck9U?=
- =?utf-8?B?QTh6K0UraTlpM1FlT2U2QmU4MlMySGs3OWFMaTRTZDNBOTVLWjN3NUJtWVkw?=
- =?utf-8?B?QXQ1aWcvZHFKWFgxUmpBTmw2N244aFd4ZXVhU1FxRGdYVnoybzNSZzVFaDBk?=
- =?utf-8?B?UGNrVndWNmtXYnZ3UzVHKzhYVmxrWmt5d1dHME40dkUwaHZMQkd3aU1KTE85?=
- =?utf-8?B?MFlDaHBLM01WN0FuMm0xdkgrZ09iM2J2MHcrZWlLejYyL3NvWjc0S2hqb1lm?=
- =?utf-8?B?ZGFIL3dNcUhxNEVidkJJdHRrams4MnJTM2ZNUkx0M3lxeERiT2hGSUgxNnZk?=
- =?utf-8?B?Ky9RWnlyRWVMSzZWdTJ2YnhMLzBCN1BaWmNnOHJsLzRNSWVpc2pTNTNMbFVl?=
- =?utf-8?B?ZVhrVmRMcVlhZmpiMnlmTWtETktsdTg2Y0VMVlBKUnpNQUxrb1RBdzR0RWhs?=
- =?utf-8?B?YVB2QjBmWlV1K1FnOFRNcTdBZ1VMNVJxVWVEcUp3dUlEakNrbFhreG4wUHlh?=
- =?utf-8?B?cEhLZUNQSTN2VmR5Z2tXUm5QaEhxYnVYb0hYUlBvNlR5Unp0YWdxUk5sa0th?=
- =?utf-8?B?dUljL1lGb3hMTUZ3TFlwano1b2dQU0t5NThCbm1TazE4RjBHSlJUWjA3cDdr?=
- =?utf-8?B?STkrQjZLVitqNzhsdm1BdkZJeC9MUmEvQUZvZkJQOHJxN0pQZ2R3WWtsSXIx?=
- =?utf-8?B?bU9IcFVDWlArZFJYMXBHMTVIVjlRZmxZTkc2NjhWWjhrdDZqbDZja29OWVRO?=
- =?utf-8?B?OFFtVnMxaTJZV3A0R0ErWStQNy93TVY1M0tMbjVCZmVoZ1FMbjNQN0tpeFpX?=
- =?utf-8?B?QUV1YSt4ZFhVSUhGdE5QazFlNW1OMVFQTmVIZmdFck11TE9YZzQvU1I2WStY?=
- =?utf-8?B?WXFoT2hNYXkvRDdzWE4zRysrdzR3Yi9BckZZNlVKcjJmanpaRjNNbDRkdGJV?=
- =?utf-8?B?Zks3U1RSN0JzUTl3ZUtmN2dQRzlaVmw0cURKNUl6eEUxTXJLSWRuV204SnJY?=
- =?utf-8?B?MERxSUlneWtraHRiMXRYMDRCeFZFSnU0WVIvS2RLNWEweU03ajJON0I0T3JJ?=
- =?utf-8?B?NnZDTjdyVi81T1FQamNWcG1MN3JzUkxMZW5IeU1qVmJadDlEYm9pKzFGS2w4?=
- =?utf-8?B?bkNKdkUxeDNxVmp0M3NYL1lxQnNZclNzYVF1bVhOQVBHY2JJZWFJNU5kbkFr?=
- =?utf-8?B?bkN6RkpHeTc1TExSSFphZmdXM0ZLdEhIc3YxcDQzMVN0ejdhL3NJYVMzSit1?=
- =?utf-8?B?cjROMi83TUM1d1FxU1Q4Sy9QT1J1eEw5WE1oUkx2SlR4ZDZyQWduQVRoa0Y0?=
- =?utf-8?B?SEpUa0xYbmdES1FKbWp6MWh6YWkwcVVJRnZhaE1tclBKT1F2K2NtMC9GcUMx?=
- =?utf-8?B?VngwS2x6Q0V3RTFSZFpNdm9ONXlySUxwVHFwYWR0aGNWbmc0cytLVnNkRHMz?=
- =?utf-8?B?OC94UGdyYU1ia2J2WFBJWGtuSWZlRmFReG9aSkc2SzlHd01iaTRRM3FOKzIz?=
- =?utf-8?B?eWg5WnFzdUNNNCtrbExrVmNoRGw2Tm5YMWR2bzc0V3hmelFhSG9qT085RmJ4?=
- =?utf-8?B?clVNQjR1S2NadmdIRkMrOFZjU3Q1UVF2ZW1aLzErbFJOUTNuT0hYZlBFZzBM?=
- =?utf-8?B?S2luekVMQnBTMTVUVVJieldRcUtZbkI0NEVFOHcvdUVXMGpBSC8yUm83K3lB?=
- =?utf-8?B?b0FDNVc4eXRuSXZIVEhCQitCUjRvc1VIY0Z1YVJ4R1J4OS9rNEgyaG0xaWQ2?=
- =?utf-8?B?YzRIeGFvMTFoNkplWCtMSjFhVkVsd25uRTQ3THdyVndpM2NVbEt6WW4zVUgy?=
- =?utf-8?B?V3Q4N25tNURkNUx3TmFzZURpMHg1bjVzL3hhZjNYUUZKRmpFWkN5LzA5Qy9Q?=
- =?utf-8?B?SGd0S0kyRVp0REpiQlZXZCt3MGN6SjZBejVONjEvZkZ0cE90L2NlRnVRYWtO?=
- =?utf-8?B?RWhLbXFKd1pzR1VNZ0lKc1hXYTN5cE9JcldxZGdBRFVUZVZyMlBRdEh4S285?=
- =?utf-8?B?TWFidEcwdjBLT01jcVlKYnZ4enlUQTVScjlvTHMyR0RYaW5BOGZXNG92SHJI?=
- =?utf-8?B?bzNJRG9qMTdJQ3dydkZWdDd4Zys5QjBzNVMvc296amd6dUpuR0NyeThNQW9B?=
- =?utf-8?Q?E+rBabqensEz7SAOWdZ7z4SjNNkaXbVBy9Sxj+GFsY2d?=
+	=?utf-8?B?RE1TS3RDcmR4YXhOc0lwOTNHVkFQUThoSFNtZDJ4ZEVVamRhZUdiQkd5MEs3?=
+ =?utf-8?B?enVzS3l1VEdObUNKR3ltWkhvU0Y4Z2M1U2NvQ2VJV0VoRVdvMzcvZnVmc2dV?=
+ =?utf-8?B?YTJCZ1NrOFJjL2FLOTNVcFVvTHRFenM3Y254a3JEaFlVU1grM0tsNEJnVE5n?=
+ =?utf-8?B?V3VSNWQ4U3Z6UDdWNGgzbmlGcUczTytqNmk1ekFtTjc4YnFMNll2OVh2WlNC?=
+ =?utf-8?B?Tk8xS2oyNlI0b3g2K3YzVGsvSU5XcldJT0Y5M203UEtBTjlwS2ppREZTSWxH?=
+ =?utf-8?B?RENOZzgvYVRXZFFSa0IvblpLd2lvSXF5RUxXMGhFM1NtcFZ6djRLdkk1ZGY3?=
+ =?utf-8?B?WHpmaGhqOW0xaVJLeks0bDc1azB6VGcwakdOVktBRTc0eWRkRnJlMGpydmJC?=
+ =?utf-8?B?K09ZcUlTTGJNeW1Na0dtN1RxejNQT2hJZzFTTEl3aDJ3WGZqOGZ3TEF2VlhY?=
+ =?utf-8?B?TXIxZ2lLQ0NvK0JZTUhXTTIwaC9wU0pLV09jTmRQVWZvU0JYWEZQb2JlVWdG?=
+ =?utf-8?B?TXk0NThrY1NIMW5LTEUyTEsyV1VsUHhFK1E2cVZ5U2UvMERXOHVtbjNIVHdT?=
+ =?utf-8?B?cGdUbG14YjlqcnF4UEhlV3UwdmNmWUdNY3kvSTdPQk43dXV5WnZTVEhvZ1lx?=
+ =?utf-8?B?Tm9IS2FJeVFaQm0vY0loTnM1ajZKbDF6S1ZaSksrbnc5dGZId1ViV1hURStJ?=
+ =?utf-8?B?UExqZ1RQeEQ5SlZZNEJQalR2a3Y3d1c1ZThFa2tQcXBvamNhVWdkUUEvYjFz?=
+ =?utf-8?B?bm5SU3ZQMXFrTHBRRmJXVi9RZmJoV09lTlhBRWFZZUxEUDNiOHhUOUhmVHlQ?=
+ =?utf-8?B?N3YwZS91VDFLU1V4QlIzU1krVC9PZm1RYlMzN0Yva3VRZk5WUS9VR0tNbmkv?=
+ =?utf-8?B?WUFHVk9VWDFBUTlmTVBDQ2N4dENIYzBXM3A4cGthZytZd2RBaEVRdzM3R25w?=
+ =?utf-8?B?UVVxdzZNeGJXYy9xTFRZTXFkRlFNS0NoSG5pU1ord0pOaXkzaU8za3Vlc0pY?=
+ =?utf-8?B?OW5rS3dvb09qczAxMXJrNjZnaFJIaXNKQUpxUHJUZ1V0SFdZa0J6L0srKzUv?=
+ =?utf-8?B?QWlEL2dPSzNCYmRCcitnYTg0dmoxcXZ4WEhwbU9zS0k0cjBsWElERnVnQ3RH?=
+ =?utf-8?B?L3RQQnJaTGtxbnRzTWp1RUsxRGVpdjBZSUZDL2wrTk12b091VEdOMmZ3UlJG?=
+ =?utf-8?B?TWZWQU4zc1pLcXUwb3Y1bjRpWFFmcG5UVmd5MXR6b3JSb0ZEdXRTcHZnbWdk?=
+ =?utf-8?B?MVdnWjUzaFA5Q3Q0U3F6cG85YTRXajduL1JsemwyWVY2eko2TkhLN2lyd0py?=
+ =?utf-8?B?Z2RRWEFCMHdvZDZEcWZ0VVNJNjBKbWtTRmFCblVXRlNRbm4vdTI5Q3U3SkQr?=
+ =?utf-8?B?WWYvYUc1ZEtBMUpZb01tYWpVZURhMEVqdGpNbmJKMmJZNk44VGxLOVpQWGVW?=
+ =?utf-8?B?WTI5Y08rTnVlL2NyRmFuSHJWVFdMTWhnRUtDNXdWcHY1OHZEUUxPSWdpSFp0?=
+ =?utf-8?B?TzIxc3JtQlUvSXdiV2tzMnpWRWo0VkIzWnlPRWYxSHZDemYvWk1GRG5jTGRz?=
+ =?utf-8?B?bGttbW1KQ3Z2KzZhS1d4aTBqM3pnWjRoOUdKVDVJS3V1alNLckt6OUpjQ3Jv?=
+ =?utf-8?B?cHVNUGRxeUI1WVA1dklTaFRhanZrdCt0VnplWFpMRUVWM3VSZzRlVGd4ZEFn?=
+ =?utf-8?B?SEh5cW9sLzFJUzFyc1NhWmNDclF1L3gxeWlGWFU1Nk1TWkVNVWVNaU43ZDJ3?=
+ =?utf-8?B?QllIeW5CcWpNRVZJb3c3dGx3ekxCQmJQV2lTKzVjNjJzTWtLb3JVOUc3Yjkr?=
+ =?utf-8?B?SHJjUWZ5aGkxaUpLay8wQWFRQlZtNGtEVDlZejRXU3p6S2dGcHoxMlQ1blF1?=
+ =?utf-8?B?ekZOY2tlc2lsQS9HOFNranBWaFpJZ3VwR3BheUowZDkvc3hINDNHbWJ5SHYw?=
+ =?utf-8?B?VWQ4cytZa09td09NTGRMS2pPRkhKUkRFWUgxQys3NzFMVmFsV242L09pUURL?=
+ =?utf-8?B?K1dxZ0NYa1RLV3l4bC9DOFFYR3Q3UzJ4MGxVMlcrOXdLR05aUkhFSFJ4OVBC?=
+ =?utf-8?B?L290OW5tamJlZXAzUitUdVBFOHZoYytIWEMwSkFSZTl4eGxRQVp3V3V2RktK?=
+ =?utf-8?B?NncwenAzT1BIUlpuZm1qdmt4UHhOSU1KNEdmcVQ5Q1ErYXMvYVFHbHlBUDRW?=
+ =?utf-8?Q?RJup7GkQYyeFs7qhZYMyvY2nEFZTR65+PWT5UCQUeuxs?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ae7b893-dd02-410a-c30e-08ddbdebb3b4
+X-MS-Exchange-CrossTenant-Network-Message-Id: 42f66299-1d26-4a56-7aac-08ddbded3f7d
 X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 06:50:18.7766
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 07:01:22.7909
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O+MakmoYhlHnNXWtfCkng7S1np4w5hQnNMfvTnjIRzprwqud0DywBf+4bqKZoMwolGCwja6apmlgVF7R6oyGeg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8412
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1qkNa6MvdbAVa+nzDvdQc2VCg7sIbhcK9s4Z/4fDJAFdBmMadvjfJVySAQY2sgowWyM/MrlMLXwzKQvKYlNEtA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7178
 
-From: Joel Fernandes <joelagnelf@nvidia.com>
+Hi Alistair,
 
-Instances of the Falcon microcontroller appear in modern Nvidia GPUs and
-are crucial to the GPU boot process. Document some concepts which will
-make nova-core boot code easier to digest. All the information is
-derived from public sources such as public documents, OpenRM and Nouveau
-code.
+On Tue Jul 8, 2025 at 3:04 PM JST, Alistair Popple wrote:
+> Add bindings to allow setting the DMA masks for both a generic device
+> and a PCI device.
+>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Cc: Danilo Krummrich <dakr@kernel.org>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: "Krzysztof Wilczy=C5=84ski" <kwilczynski@kernel.org>
+> Cc: Miguel Ojeda <ojeda@kernel.org>
+> Cc: Alex Gaynor <alex.gaynor@gmail.com>
+> Cc: Boqun Feng <boqun.feng@gmail.com>
+> Cc: Gary Guo <gary@garyguo.net>
+> Cc: "Bj=C3=B6rn Roy Baron" <bjorn3_gh@protonmail.com>
+> Cc: Benno Lossin <lossin@kernel.org>
+> Cc: Andreas Hindborg <a.hindborg@kernel.org>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: Trevor Gross <tmgross@umich.edu>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Alexandre Courbot <acourbot@nvidia.com>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  rust/kernel/device.rs | 25 +++++++++++++++++++++++++
+>  rust/kernel/pci.rs    | 23 +++++++++++++++++++++++
+>  2 files changed, 48 insertions(+)
+>
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> index dea06b79ecb5..77a1293a1c82 100644
+> --- a/rust/kernel/device.rs
+> +++ b/rust/kernel/device.rs
+> @@ -10,6 +10,7 @@
+>      types::{ARef, Opaque},
+>  };
+>  use core::{fmt, marker::PhantomData, ptr};
+> +use kernel::prelude::*;
+> =20
+>  #[cfg(CONFIG_PRINTK)]
+>  use crate::c_str;
+> @@ -67,6 +68,30 @@ pub(crate) fn as_raw(&self) -> *mut bindings::device {
+>          self.0.get()
+>      }
+> =20
+> +    /// Sets the DMA mask for the device.
+> +    pub fn dma_set_mask(&self, mask: u64) -> Result {
+> +        // SAFETY: By the type invariant of `device::Device`, `self.as_r=
+ef().as_raw()` is valid.
+> +        let ret =3D unsafe { bindings::dma_set_mask(&(*self.as_raw()) as=
+ *const _ as *mut _, mask) };
+> +        if ret !=3D 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(())
+> +        }
 
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
----
- Documentation/gpu/nova/core/falcon.rst | 158 +++++++++++++++++++++++++++++++++
- Documentation/gpu/nova/index.rst       |   1 +
- 2 files changed, 159 insertions(+)
+I think you want to use `kernel::error::to_result()` here?
 
-diff --git a/Documentation/gpu/nova/core/falcon.rst b/Documentation/gpu/nova/core/falcon.rst
-new file mode 100644
-index 0000000000000000000000000000000000000000..33137082eb6c14cecda2fbe6fdb79e63ee9ca2e6
---- /dev/null
-+++ b/Documentation/gpu/nova/core/falcon.rst
-@@ -0,0 +1,158 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+==============================
-+Falcon (FAst Logic Controller)
-+==============================
-+The following sections describe the Falcon core and the ucode running on it.
-+The descriptions are based on the Ampere GPU or earlier designs; however, they
-+should mostly apply to future designs as well, but everything is subject to
-+change. The overview provided here is mainly tailored towards understanding the
-+interactions of nova-core driver with the Falcon.
-+
-+NVIDIA GPUs embed small RISC-like microcontrollers called Falcon cores, which
-+handle secure firmware tasks, initialization, and power management. Modern
-+NVIDIA GPUs may have multiple such Falcon instances (e.g., GSP (the GPU system
-+processor) and SEC2 (the security engine)) and also may integrate a RISC-V core.
-+This core is capable of running both RISC-V and Falcon code.
-+
-+The code running on the Falcon cores is also called 'ucode', and will be
-+referred to as such in the following sections.
-+
-+Falcons have separate instruction and data memories (IMEM/DMEM) and provide a
-+small DMA engine (via the FBIF - "Frame Buffer Interface") to load code from
-+system memory. The nova-core driver must reset and configure the Falcon, load
-+its firmware via DMA, and start its CPU.
-+
-+Falcon security levels
-+======================
-+Falcons can run in Non-secure (NS), Light Secure (LS), or Heavy Secure (HS)
-+modes.
-+
-+Heavy Secured (HS) also known as Privilege Level 3 (PL3)
-+--------------------------------------------------------
-+HS ucode is the most trusted code and has access to pretty much everything on
-+the chip. The HS binary includes a signature in it which is verified at boot.
-+This signature verification is done by the hardware itself, thus establishing a
-+root of trust. For example, the FWSEC-FRTS command (see fwsec.rst) runs on the
-+GSP in HS mode. FRTS, which involves setting up and loading content into the WPR
-+(Write Protect Region), has to be done by the HS ucode and cannot be done by the
-+host CPU or LS ucode.
-+
-+Light Secured (LS or PL2) and Non Secured (NS or PL0)
-+-----------------------------------------------------
-+These modes are less secure than HS. Like HS, the LS or NS ucode binary also
-+typically includes a signature in it. To load firmware in LS or NS mode onto a
-+Falcon, another Falcon needs to be running in HS mode, which also establishes the
-+root of trust. For example, in the case of an Ampere GPU, the CPU runs the "Booter"
-+ucode in HS mode on the SEC2 Falcon, which then authenticates and runs the
-+run-time GSP binary (GSP-RM) in LS mode on the GSP Falcon. Similarly, as an
-+example, after reset on an Ampere, FWSEC runs on the GSP which then loads the
-+devinit engine onto the PMU in LS mode.
-+
-+Root of trust establishment
-+---------------------------
-+To establish a root of trust, the code running on a Falcon must be immutable and
-+hardwired into a read-only memory (ROM). This follows industry norms for
-+verification of firmware. This code is called the Boot ROM (BROM). The nova-core
-+driver on the CPU communicates with Falcon's Boot ROM through various Falcon
-+registers prefixed with "BROM" (see regs.rs).
-+
-+After nova-core driver reads the necessary ucode from VBIOS, it programs the
-+BROM and DMA registers to trigger the Falcon to load the HS ucode from the system
-+memory into the Falcon's IMEM/DMEM. Once the HS ucode is loaded, it is verified
-+by the Falcon's Boot ROM.
-+
-+Once the verified HS code is running on a Falcon, it can verify and load other
-+LS/NS ucode binaries onto other Falcons and start them. The process of signature
-+verification is the same as HS; just in this case, the hardware (BROM) doesn't
-+compute the signature, but the HS ucode does.
-+
-+The root of trust is therefore established as follows:
-+     Hardware (Boot ROM running on the Falcon) -> HS ucode -> LS/NS ucode.
-+
-+On an Ampere GPU, for example, the boot verification flow is:
-+     Hardware (Boot ROM running on the SEC2) ->
-+          HS ucode (Booter running on the SEC2) ->
-+               LS ucode (GSP-RM running on the GSP)
-+
-+.. note::
-+     While the CPU can load HS ucode onto a Falcon microcontroller and have it
-+     verified by the hardware and run, the CPU itself typically does not load
-+     LS or NS ucode and run it. Loading of LS or NS ucode is done mainly by the
-+     HS ucode. For example, on an Ampere GPU, after the Booter ucode runs on the
-+     SEC2 in HS mode and loads the GSP-RM binary onto the GSP, it needs to run
-+     the "SEC2-RTOS" ucode at runtime. This presents a problem: there is no
-+     component to load the SEC2-RTOS ucode onto the SEC2. The CPU cannot load
-+     LS code, and GSP-RM must run in LS mode. To overcome this, the GSP is
-+     temporarily made to run HS ucode (which is itself loaded by the CPU via
-+     the nova-core driver using a "GSP-provided sequencer") which then loads
-+     the SEC2-RTOS ucode onto the SEC2 in LS mode. The GSP then resumes
-+     running its own GSP-RM LS ucode.
-+
-+Falcon memory subsystem and DMA engine
-+======================================
-+Falcons have separate instruction and data memories (IMEM/DMEM)
-+and contains a small DMA engine called FBDMA (Framebuffer DMA) which does
-+DMA transfers to/from the IMEM/DMEM memory inside the Falcon via the FBIF
-+(Framebuffer Interface), to external memory.
-+
-+DMA transfers are possible from the Falcon's memory to both the system memory
-+and the framebuffer memory (VRAM).
-+
-+To perform a DMA via the FBDMA, the FBIF is configured to decide how the memory
-+is accessed (also known as aperture type). In the nova-core driver, this is
-+determined by the `FalconFbifTarget` enum.
-+
-+The IO-PMP block (Input/Output Physical Memory Protection) unit in the Falcon
-+controls access by the FBDMA to the external memory.
-+
-+Conceptual diagram (not exact) of the Falcon and its memory subsystem is as follows::
-+
-+               External Memory (Framebuffer / System DRAM)
-+                              ^  |
-+                              |  |
-+                              |  v
-+     +-----------------------------------------------------+
-+     |                           |                         |
-+     |   +---------------+       |                         |
-+     |   |     FBIF      |-------+                         |  FALCON
-+     |   | (FrameBuffer  |   Memory Interface              |  PROCESSOR
-+     |   |  InterFace)   |                                 |
-+     |   |  Apertures    |                                 |
-+     |   |  Configures   |                                 |
-+     |   |  mem access   |                                 |
-+     |   +-------^-------+                                 |
-+     |           |                                         |
-+     |           | FBDMA uses configured FBIF apertures    |
-+     |           | to access External Memory
-+     |           |
-+     |   +-------v--------+      +---------------+
-+     |   |    FBDMA       |  cfg |     RISC      |
-+     |   | (FrameBuffer   |<---->|     CORE      |----->. Direct Core Access
-+     |   |  DMA Engine)   |      |               |      |
-+     |   | - Master dev.  |      | (can run both |      |
-+     |   +-------^--------+      | Falcon and    |      |
-+     |           |        cfg--->| RISC-V code)  |      |
-+     |           |        /      |               |      |
-+     |           |        |      +---------------+      |    +------------+
-+     |           |        |                             |    |   BROM     |
-+     |           |        |                             <--->| (Boot ROM) |
-+     |           |       /                              |    +------------+
-+     |           |      v                               |
-+     |   +---------------+                              |
-+     |   |    IO-PMP     | Controls access by FBDMA     |
-+     |   | (IO Physical  | and other IO Masters         |
-+     |   | Memory Protect)                              |
-+     |   +-------^-------+                              |
-+     |           |                                      |
-+     |           | Protected Access Path for FBDMA      |
-+     |           v                                      |
-+     |   +---------------------------------------+      |
-+     |   |       Memory                          |      |
-+     |   |   +---------------+  +------------+   |      |
-+     |   |   |    IMEM       |  |    DMEM    |   |<-----+
-+     |   |   | (Instruction  |  |   (Data    |   |
-+     |   |   |  Memory)      |  |   Memory)  |   |
-+     |   |   +---------------+  +------------+   |
-+     |   +---------------------------------------+
-+     +-----------------------------------------------------+
-diff --git a/Documentation/gpu/nova/index.rst b/Documentation/gpu/nova/index.rst
-index e3650f53ff53113f31f63f67cf26116b5c070693..e39cb3163581ea4ff5b441b82e9efa4282c946f8 100644
---- a/Documentation/gpu/nova/index.rst
-+++ b/Documentation/gpu/nova/index.rst
-@@ -31,3 +31,4 @@ vGPU manager VFIO driver and the nova-drm driver.
-    core/vbios
-    core/devinit
-    core/fwsec
-+   core/falcon
+> +    }
+> +
+> +    /// Sets the coherent DMA mask for the device.
+> +    pub fn dma_set_coherent_mask(&self, mask: u64) -> Result {
+> +        // SAFETY: By the type invariant of `device::Device`, `self.as_r=
+ef().as_raw()` is valid.
+> +        let ret =3D unsafe {
+> +            bindings::dma_set_coherent_mask(&(*self.as_raw()) as *const =
+_ as *mut _, mask)
+> +        };
+> +        if ret !=3D 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(())
+> +        }
 
--- 
-2.50.0
+And here as well.
 
+> +    }
+> +
+>      /// Returns a reference to the parent device, if any.
+>      #[cfg_attr(not(CONFIG_AUXILIARY_BUS), expect(dead_code))]
+>      pub(crate) fn parent(&self) -> Option<&Self> {
+> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+> index 8435f8132e38..7f640ba8f19c 100644
+> --- a/rust/kernel/pci.rs
+> +++ b/rust/kernel/pci.rs
+> @@ -369,6 +369,17 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
+>      }
+>  }
+> =20
+> +impl<'a, Ctx: device::DeviceContext> From<&'a kernel::pci::Device<Ctx>>
+> +    for &'a device::Device<Ctx>
+> +{
+> +    fn from(pdev: &kernel::pci::Device<Ctx>) -> &device::Device<Ctx> {
+> +        // SAFETY: The returned reference has the same lifetime as the
+> +        // pci::Device which holds a reference on the underlying device
+> +        // pointer.
+> +        unsafe { device::Device::as_ref(&(*pdev.as_raw()).dev as *const =
+_ as *mut _) }
+> +    }
+> +}
+
+IIUC pci::Device has an `AsRef<device::Device>` implementation, why not
+use that in the code below?
+
+> +
+>  impl Device {
+>      /// Returns the PCI vendor ID.
+>      pub fn vendor_id(&self) -> u16 {
+> @@ -393,6 +404,18 @@ pub fn resource_len(&self, bar: u32) -> Result<bindi=
+ngs::resource_size_t> {
+>          // - by its type invariant `self.as_raw` is always a valid point=
+er to a `struct pci_dev`.
+>          Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_in=
+to()?) })
+>      }
+> +
+> +    /// Set the DMA mask for PCI device.
+> +    pub fn dma_set_mask(&self, mask: u64) -> Result {
+> +        let dev: &device::Device =3D self.into();
+> +        dev.dma_set_mask(mask)
+
+Yup, I have tried and `self.as_ref().dma_set_mask(mask)` works just
+fine, so I don't think we need the `From` implementation above.
