@@ -1,254 +1,324 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011013.outbound.protection.outlook.com [52.101.70.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08CE274651
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 12:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751976744; cv=none; b=HRHmy85FDqIIcRMY18/CupN2eO83FW+Li+z0bL2O0O8/lJ7h+g7cKfP1dZSBm6oW/XVeV2f1BTit4FHi7+YtE0XFfv5X8z0NeOOLOjfLC8JUOHz96Wq6w36CxEP5K/8v5zgpg7ZjScWQBHRZoYKI9qtL9aiu26E5kZ6cIuEXfFM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751976744; c=relaxed/simple;
-	bh=c04L3iUAIPiI15KxDDXZC5Zg2kHOcVtpq+1i1QbUISU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LdcdmAFRajQydbeo0eFYBjFZ87xpY1ryJuQYkEVgayHSJzLFz4Xj7BgX+TniXJmOd7UG1SR4AKSJQz7evoKT9tpMG10c1FklTmkjSg9fsgAvRIYgdz/6NP2WZJbzGGCpOIepD5X9uUoNYEsF7Pbyp2Phqwm1KLFSR2ANTB5KTMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qpswLP0u; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=sJlQRrkd; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ng1zuW7r; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=7fDkh8ds; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBBF206F23;
+	Tue,  8 Jul 2025 12:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1751976950; cv=fail; b=po6bmwkoCgVxIzBXmsXIXbP/SBAFPOqarmVxiCrcvNHpohpFbsa6KfDysIUEfqjfUML5invPg+VoHCnAqn9egWk/BaLqVDTEBvgH8KoekTNZIv4/RsqWVSH05zbnbTbAKX39jh5UaJIYdx4tf5kZGxyP5Ctd1oJT3/zUixG/7BU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1751976950; c=relaxed/simple;
+	bh=sGugLmDTvMwSNQoH95dHUVVEMnSVrsQxmRn2/Jw2Hsk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=c1tsViHCMICx2Az+fL1qSmwSmxK1ZbkuEtIH6nJMX9HjhJ/hNWASdmyUNKNz4sKChNqYCEYdR3/o7T2vOHzaLiVgKag8ldGX2Cn3urt93BYKE51nhHtPZJ6agzyC6DHfz3T/qt84jm3gzJOOHoBlvXOzKDF4ekghc7WSb02qSPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=vqSELylt; arc=fail smtp.client-ip=52.101.70.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qpswLP0u";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="sJlQRrkd";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ng1zuW7r";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="7fDkh8ds"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C0B131F38D;
-	Tue,  8 Jul 2025 12:12:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1751976741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jvXwVBSd1AJJG+tu7OkjqSWOH8Ox3gBNgCJ8ii7IyfU=;
-	b=qpswLP0uPO9lmq5Apj4Tp5+Qcs4bOnbnVZ/y8iM3w5CaGnwImRZZseMjkWnvTsEpJ6qW9F
-	83e8W11gE+5ynBU82by9/yuIy6BRr/Bat9mVNhydxgRIZUAFkopS8zIy65PcK5CXOOi8+2
-	TwCZXC07pI/UxJ+fEPjlRmDFUggJOhk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1751976741;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jvXwVBSd1AJJG+tu7OkjqSWOH8Ox3gBNgCJ8ii7IyfU=;
-	b=sJlQRrkd4R8MHahyl9fZIYW+xI8BzxFkM1ckmQKnSKm5oe+v12h+txVWYJCYKzQc9alKvN
-	UG/ZP2ZlHoUdJlAA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ng1zuW7r;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7fDkh8ds
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1751976740; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jvXwVBSd1AJJG+tu7OkjqSWOH8Ox3gBNgCJ8ii7IyfU=;
-	b=ng1zuW7r8ZN8xfc+Ui9FfbhVFudowpVdH4oCh8j7pjkcmWyP2qoPC8aCe+IjfGsIMnx/3n
-	bYmVc6xkQjHDH4uyB2NpuhEK19UugyHEi5VLtFfjph39mz7v3kPDSUuCgU2OUjURrerNWf
-	7EUyNHW7UfsyBw2jQAt0K+PSeHc90cc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1751976740;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jvXwVBSd1AJJG+tu7OkjqSWOH8Ox3gBNgCJ8ii7IyfU=;
-	b=7fDkh8dsVx+H4tqX1VEo7wG7ehiAClNUQHNDY+o/uV/ZbXZMdJiqqXzZVtZF5WxmbQPDws
-	eRaEuojlI/8NsBCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A73C713A54;
-	Tue,  8 Jul 2025 12:12:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id W2LSJyQLbWhfHgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 08 Jul 2025 12:12:20 +0000
-Message-ID: <628e8c0d-2bc5-4cc8-893a-0b8388ba98f9@suse.cz>
-Date: Tue, 8 Jul 2025 14:12:20 +0200
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="vqSELylt"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q2yrrk2IvdxD6zvjdwUUX4R2qmvb3a/tiCgmKNzgmf/d6HU1CU9qulltWU/DXEFjUiU3oL8WBmx/OamWOZNurxE4XeU3xgfUIhKjm1laNJYbAMfE3IZSmgXinO/G+FG3/UW4b58tltQtyYheRXunL7v3Io5//dfwcFrQc82Q8j+bxQGKSf1HKxG+rG8FAG76fNwb9khC8WqkgSf3fIS6zHiOpmzaaSA6CN/nQ378vV+Gg/w95McDEPpWkxUkWvO4mllWqPojvhJbuuoIkFi4XJfUhJ0yyuQqHuvxff/YynQVkDe+8pJ5eiUN3yJUyVMff87IHBuwm1ba4A7RuVRLIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DTLabRGCg9S8JvfF9/ZRrHd6FR3OemQsEsMQcL+dSDE=;
+ b=T1b0vjtcIt2lYevk1HVPM0E90qgb4e1rEdunj3BGlzopvOCrHNmMXpHBqMU1p1Ptw5G1MpFxZvUapmyYluLxAOs4aVB0I6NpNFq2thVQ1UxLIRdqvM5JGvjcHnNR/9wQYaeC2xbiSUzmch25/ol7lNZwASbWfxeIwmpLKOYh5oFOA1nzX6ounjJOVzoS/RZQayubN6p6nTp/w/1jTPzPaRv9vy4pOM+iDuO3Zjnj58gW5CxyKaixJTDGdW3fc6DyLsXEM4bPtCESwaNv5/5vHunjrFcY7+Q8YtBb1F+J1YSzBoCcCFfovMev+07Ac1vTv89OBpmYPuzTgMvxlTl8mQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=collabora.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DTLabRGCg9S8JvfF9/ZRrHd6FR3OemQsEsMQcL+dSDE=;
+ b=vqSELyltIK6xwwzBqZHCnsKNQQfN+mv1Y8qJJyuc/nMCz6ludo45QxLMnWrw+EKYfrAYVECBRylhklJNt0iIzvR9EbdRbNAzLJJ0Zgvigy7srk/PoXtgRkZAGygKu6qTsOGtQ5FH47cGH/brKU6COVMAObYIsFs96OQI2XZB36BkUhSg8Df69x1mFSYXGb5tt+O787khkDaXEzOBzpbzQHleKYF8fp2jGXoMdDI0FMbEHWapoPdLp0e1A8WAF43nSKSt8wmc/SU/PSILpTO3KiaqxHIKuN2jzqu/q7eGbrRHJ81sQBqymdpqGTgolKgPFqGv0mYqMhqS8Bt3Ylir7Q==
+Received: from DU6P191CA0016.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:540::10)
+ by PAWPR10MB7149.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:2e3::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.23; Tue, 8 Jul
+ 2025 12:15:43 +0000
+Received: from DB3PEPF0000885C.eurprd02.prod.outlook.com
+ (2603:10a6:10:540:cafe::a2) by DU6P191CA0016.outlook.office365.com
+ (2603:10a6:10:540::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8922.21 via Frontend Transport; Tue,
+ 8 Jul 2025 12:15:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DB3PEPF0000885C.mail.protection.outlook.com (10.167.242.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8901.15 via Frontend Transport; Tue, 8 Jul 2025 12:15:42 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 8 Jul
+ 2025 14:15:31 +0200
+Received: from RNGMBX3003.de.bosch.com (10.124.11.208) by
+ SI-EXCAS2001.de.bosch.com (10.139.217.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.57; Tue, 8 Jul 2025 14:15:30 +0200
+Received: from [10.34.219.93] (10.34.219.93) by smtp.app.bosch.com
+ (10.124.11.208) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 8 Jul
+ 2025 14:15:23 +0200
+Message-ID: <abf29ebe-996e-47f6-8548-afc61ad29a89@de.bosch.com>
+Date: Tue, 8 Jul 2025 14:15:18 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 1/4] mm/vmalloc: allow to set node and align in
- vrealloc
-Content-Language: en-US
-To: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
- <20250707164843.631434-1-vitaly.wool@konsulko.se>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250707164843.631434-1-vitaly.wool@konsulko.se>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,vger.kernel.org,gmail.com,kernel.org,google.com];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: C0B131F38D
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.51
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+To: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg
+	<a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
+	<tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Thomas
+ Gleixner <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?=
+	<kwilczynski@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
+ <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
+Content-Language: en-GB
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885C:EE_|PAWPR10MB7149:EE_
+X-MS-Office365-Filtering-Correlation-Id: a570a0e2-fe97-4424-0363-08ddbe19291b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|82310400026|376014|36860700013|1800799024|7053199007|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WkhGNHZsMG1TZWUyanJmWVlVTTh2OElTV1R3ZHBWd2dnZjFLOVgzQmU4djJ6?=
+ =?utf-8?B?bGs1RElyV3VDcXJ1UGs0SnlsNVRwM1lSWXdxWlJteEZpajd1U1g4OG1hMHRw?=
+ =?utf-8?B?bmIxanM4SXVmaGVQQ3JtaGtjSlBCYVBnM2VudG8vMmR6K0o5TDVsWStiaGdJ?=
+ =?utf-8?B?Zm95NVBVU2RkNVlNR28rZzVXcTIyUU1UemZhT3BXWE5xeWFteGdUU0VCcGha?=
+ =?utf-8?B?QS92TWkzMTdBZzNoZnl4WjlFaXo3T1doNGZjcWIwQ2d0L2dKbWM3VXBBb0xq?=
+ =?utf-8?B?MWY3SUYxYTdDblNaUEdTZFhFRk12WCt3em8rbkpBWGhlRS83Y09IV3J6am51?=
+ =?utf-8?B?UkZYMjNrQ055eUZ5RmR2NzJoajVLUmQ5bUdsaG5EVWpodmtiSjN5Tk85YVlp?=
+ =?utf-8?B?NTVsamR1RzhDOGJEQ285Q2c5R0tLbmF2aFBoSGZWeDVIODNHWHFxOC9OQ1pt?=
+ =?utf-8?B?dTEyanN6WEVYTTMvZjEyZDRTWVNFMDljL3Rqa29pekdyOVJEcDF6Wm9kOTBR?=
+ =?utf-8?B?OGt4U2k3YlRSVUZtKzBNb0gyWjJCMTJnQkxJRWF6NnpLclJBWVFtZnVZT2tF?=
+ =?utf-8?B?U0dyOVIxRVVGdEVhSEprOVk3OGEzcVk3L3Z5Sm1ZYkQ5M2xKWFJvTkhPOGRX?=
+ =?utf-8?B?Vlg4ZUduRU81aGdhSng1L0lpVUNPZk8rNWF4S0pQMnVRckxubjdCYVJIcG1p?=
+ =?utf-8?B?WFpHQkh3cjNvd0lpcWxNV0tKREs1NkVyKzJxWHdMQ3hQdlk5VzF3bHJlTnNN?=
+ =?utf-8?B?bVFHaW9rais4OFhvRFBvOVpnK3JiQnN3UlNVRi8xTytsRFlad0ZqTFhLd21G?=
+ =?utf-8?B?ZEMycDRjaFdSbjNXNWFLUHl2S2I4QWttcXJwekJ1TEVBazU0aEplQ0tEaDNH?=
+ =?utf-8?B?bmJWaHhJWW8yTkxJdmlXYWZnSmpiRlN1elVRbmZjNUkwSXpXYjh0TmhRdHRV?=
+ =?utf-8?B?Y0htSHJPZWpjcGR3d1dWaW9pNVI1dEpEdjR1WWZIQjFiOFVxRk9kcGdEVzdp?=
+ =?utf-8?B?ckRCbys2dEJySERITmtrT2RNYUFWRi9EcHlSYjgyZWxwY1RsT21qODlzRlRR?=
+ =?utf-8?B?ZXZIekRrNFR3MmV6Qmd0LzFEdUsvalIwc0MvZUh4N1FEKzJLSk9UVjdmclNT?=
+ =?utf-8?B?a3g0eHo3VmlCWFU3ekFwVFB0VlE1OFovSG9mNGN2cGw1M2J3Rkh5VHhoelFm?=
+ =?utf-8?B?NlFjcEpoeHVBRHZscFJTU3AzMkpEMmdZQkFxY2wyaDE4QlF3Zk1rdTgra0hw?=
+ =?utf-8?B?NTdYYVl0aXYzM3ZzckF2RkI2MEFQa3l1UTZ0WWR4MjN0d09nNVZOSmlMMVN0?=
+ =?utf-8?B?NE14Qy8zZTlybEgvbUFIZTNpbENIeU14NHhUZGdJajBkZHAxcUxsdmRwWkJM?=
+ =?utf-8?B?d0NoOVBPTnVkNC9vQ3VxNkNDbU1kM1UzQjhodlFpWEp5MERnajhScVlYalJx?=
+ =?utf-8?B?bjA0THJVd2t4ZHkwYi9XK0pNTHBOeEpQaDQvZTRZTGsrUlk1QlliMkRHQXRp?=
+ =?utf-8?B?aG5yZklRMjFoYUIwcWdXcmZSVmVsUkFUZkNLL2gyM0xtUjBvTmRtaUpNeDZ2?=
+ =?utf-8?B?VmpUSTRwTkc4Ky82eTZFTEdGcWxOOVZCM2RRTTI0V1VnbFJnTGJnK21QSndP?=
+ =?utf-8?B?YWlYUXlJTC9vM1Z0UHpsdENZRDFLYlhNcFZkeDNQZWQyZHRwZDhLb3Q4dEI5?=
+ =?utf-8?B?d3MzMDJPOUZyRjJrMXZLcGpUb0xOUVgvcmRMYW9tWkJZRXYvSitOQUhUUTRM?=
+ =?utf-8?B?TUtBSXZjcXQrZ25jbE03WkRzYmxlKzd6dVJSWjhXaXhlaVZLVG5YWkRGZmw0?=
+ =?utf-8?B?YkxWb3Z2RDdlNXRIN3ExUG9rOVFNY1ZWamlnUDlEMmpiejhScUZ3eDNWZ24z?=
+ =?utf-8?B?d3VaVzNGcDdiTlIyUHhUYktHQnN4L2ZKaDUxbitJM1lmeEtNRjBnY29jNUhs?=
+ =?utf-8?B?dHhWLzA2Qlh6SnJxQklSZ0k5WE52aldXYlF5WVVSaGxiTCtiUEhXeTltK1hu?=
+ =?utf-8?B?eTBYWWdoOTNsWllPTE5PTEhvWnA4TVgvSldFUHorOUdET3o4ZHF1T0MzNUpO?=
+ =?utf-8?B?NEU5QVVqOEFnNG81ZTdOcitTc1ltTEhOZjZvUT09?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(82310400026)(376014)(36860700013)(1800799024)(7053199007)(921020);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 12:15:42.8474
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a570a0e2-fe97-4424-0363-08ddbe19291b
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885C.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR10MB7149
 
-On 7/7/25 18:48, Vitaly Wool wrote:
-> Reimplement vrealloc() to be able to set node and alignment should
-> a user need to do so. Rename the function to vrealloc_node_align()
-> to better match what it actually does now and introduce macros for
-> vrealloc() and friends for backward compatibility.
+Hi Daniel,
+
+On 03/07/2025 21:30, Daniel Almeida wrote:
+> This patch adds support for non-threaded IRQs and handlers through
+> irq::Registration and the irq::Handler trait.
 > 
-> With that change we also provide the ability for the Rust part of
-> the kernel to set node and alignment in its allocations.
+> Registering an irq is dependent upon having a IrqRequest that was
+> previously allocated by a given device. This will be introduced in
+> subsequent patches.
 > 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-Nit:
-
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4089,13 +4089,22 @@ void *vzalloc_node_noprof(unsigned long size, int node)
->  EXPORT_SYMBOL(vzalloc_node_noprof);
->  
->  /**
-> - * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
-> + * vrealloc_node_align_noprof - reallocate virtually contiguous memory; contents
-> + * remain unchanged
->   * @p: object to reallocate memory for
->   * @size: the size to reallocate
-> + * @align: requested alignment
->   * @flags: the flags for the page level allocator
-> + * @nid: node number of the target node
-> + *
-> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). If @size is
-> + * 0 and @p is not a %NULL pointer, the object pointed to is freed.
->   *
-> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
-> - * @p is not a %NULL pointer, the object pointed to is freed.
-> + * if @nid is not NUMA_NO_NODE, this function will try to allocate memory on
-> + * the given node. If reallocation is not necessary (e. g. the new size is less
-> + * than the current allocated size), the current allocation will be preserved
-> + * unless __GFP_THISNODE is set. In the latter case a new allocation on the
-> + * requested node will be attempted.
->   *
->   * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
->   * initial memory allocation, every subsequent call to this API for the same
-> @@ -4111,7 +4120,8 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
->   * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
->   *         failure
->   */
-> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align,
-> +				 gfp_t flags, int nid)
->  {
->  	struct vm_struct *vm = NULL;
->  	size_t alloced_size = 0;
-> @@ -4135,6 +4145,12 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->  		if (WARN(alloced_size < old_size,
->  			 "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
->  			return NULL;
-> +		if (WARN(!IS_ALIGNED((unsigned long)p, align),
-> +			 "will not reallocate with a bigger alignment (0x%lx)\n", align))
-> +			return NULL;
-
-Maybe this should be mentioned in the doc comment above?
-
-> +		if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
-> +			     nid != page_to_nid(vmalloc_to_page(p)))
-> +			goto need_realloc;
->  	}
->  
->  	/*
-> @@ -4165,8 +4181,10 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->  		return (void *)p;
->  	}
->  
-> +need_realloc:
->  	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
-> -	n = __vmalloc_noprof(size, flags);
-> +	n = __vmalloc_node_noprof(size, align, flags, nid, __builtin_return_address(0));
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+...
+> diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..4f4beaa3c7887660440b9ddc52414020a0d165ac
+> --- /dev/null
+> +++ b/rust/kernel/irq/request.rs
+> @@ -0,0 +1,273 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
 > +
->  	if (!n)
->  		return NULL;
->  
+> +//! This module provides types like [`Registration`] which allow users to
+> +//! register handlers for a given IRQ line.
+> +
+> +use core::marker::PhantomPinned;
+> +
+> +use crate::alloc::Allocator;
+> +use crate::device::Bound;
+> +use crate::device::Device;
+> +use crate::devres::Devres;
+> +use crate::error::to_result;
+> +use crate::irq::flags::Flags;
+> +use crate::prelude::*;
+> +use crate::str::CStr;
+> +use crate::sync::Arc;
+> +
+> +/// The value that can be returned from an IrqHandler or a ThreadedIrqHandler.
+> +pub enum IrqReturn {
+> +    /// The interrupt was not from this device or was not handled.
+> +    None,
+> +
+> +    /// The interrupt was handled by this device.
+> +    Handled,
+> +}
+> +
+> +impl IrqReturn {
+> +    fn into_inner(self) -> u32 {
+> +        match self {
+> +            IrqReturn::None => bindings::irqreturn_IRQ_NONE,
+> +            IrqReturn::Handled => bindings::irqreturn_IRQ_HANDLED,
+> +        }
+> +    }
+> +}
+> +
+> +/// Callbacks for an IRQ handler.
+> +pub trait Handler: Sync {
+> +    /// The hard IRQ handler.
+> +    ///
+> +    /// This is executed in interrupt context, hence all corresponding
+> +    /// limitations do apply.
+> +    ///
+> +    /// All work that does not necessarily need to be executed from
+> +    /// interrupt context, should be deferred to a threaded handler.
+> +    /// See also [`ThreadedRegistration`].
+> +    fn handle(&self) -> IrqReturn;
+> +}
+> +
+> +impl<T: ?Sized + Handler + Send> Handler for Arc<T> {
+> +    fn handle(&self) -> IrqReturn {
+> +        T::handle(self)
+> +    }
+> +}
+> +
+> +impl<T: ?Sized + Handler, A: Allocator> Handler for Box<T, A> {
+> +    fn handle(&self) -> IrqReturn {
+> +        T::handle(self)
+> +    }
+> +}
+> +
+> +/// # Invariants
+> +///
+> +/// - `self.irq` is the same as the one passed to `request_{threaded}_irq`.
+> +/// - `cookie` was passed to `request_{threaded}_irq` as the cookie. It
+> +/// is guaranteed to be unique by the type system, since each call to
+> +/// `new` will return a different instance of `Registration`.
+> +#[pin_data(PinnedDrop)]
+> +struct RegistrationInner {
+> +    irq: u32,
+> +    cookie: *mut kernel::ffi::c_void,
+> +}
+> +
+> +impl RegistrationInner {
+> +    fn synchronize(&self) {
+> +        // SAFETY: safe as per the invariants of `RegistrationInner`
+> +        unsafe { bindings::synchronize_irq(self.irq) };
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl PinnedDrop for RegistrationInner {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        // SAFETY:
+> +        //
+> +        // Safe as per the invariants of `RegistrationInner` and:
+> +        //
+> +        // - The containing struct is `!Unpin` and was initialized using
+> +        // pin-init, so it occupied the same memory location for the entirety of
+> +        // its lifetime.
+> +        //
+> +        // Notice that this will block until all handlers finish executing,
+> +        // i.e.: at no point will &self be invalid while the handler is running.
+> +        unsafe { bindings::free_irq(self.irq, self.cookie) };
+> +    }
+> +}
+> +
+> +// SAFETY: We only use `inner` on drop, which called at most once with no
+> +// concurrent access.
+> +unsafe impl Sync for RegistrationInner {}
+> +
+> +// SAFETY: It is safe to send `RegistrationInner` across threads.
+> +unsafe impl Send for RegistrationInner {}
+> +
+> +/// A request for an IRQ line for a given device.
+> +///
+> +/// # Invariants
+> +///
+> +/// - `ìrq` is the number of an interrupt source of `dev`.
+> +/// - `irq` has not been registered yet.
+> +pub struct IrqRequest<'a> {
+> +    dev: &'a Device<Bound>,
+> +    irq: u32,
+> +}
+> +
+> +impl<'a> IrqRequest<'a> {
+> +    /// Creates a new IRQ request for the given device and IRQ number.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `irq` should be a valid IRQ number for `dev`.
+> +    pub(crate) unsafe fn new(dev: &'a Device<Bound>, irq: u32) -> Self {
+> +        IrqRequest { dev, irq }
+> +    }
+> +}
 
+
+For example for Resource the elements size, start, name and flags are
+accessible. Inspired by that, what do you think about exposing the irq
+number here, as well?
+
+diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+index bd489b8d2386..767d66e3e6c7 100644
+--- a/rust/kernel/irq/request.rs
++++ b/rust/kernel/irq/request.rs
+@@ -123,6 +123,11 @@ impl<'a> IrqRequest<'a> {
+     pub(crate) unsafe fn new(dev: &'a Device<Bound>, irq: u32) -> Self {
+         IrqRequest { dev, irq }
+     }
++
++    /// Returns the IRQ number of an [`IrqRequest`].
++    pub fn irq(&self) -> u32 {
++        self.irq
++    }
+ }
+
+
+I'm using that for some dev_info!().
+
+Best regards
+
+Dirk
