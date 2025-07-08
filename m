@@ -1,105 +1,223 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF051FBEBE;
-	Tue,  8 Jul 2025 09:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8F4268688
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 09:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751968123; cv=none; b=LMF3rnrJaHmcV8BGTL0zCjzAFVbO4awP7NPljy/gD2YeJCG6nV1Wr3qwb6QLU0dOQ5Yf3RYQIyVaxIKtp7OV51AHi8E6aymnZqYbVpmhf6fr84euqMqU5Z/H6vby0o6kB1UVyu/+stPR6N62+otWJr3+MqdZqoY2U6mIsddrR30=
+	t=1751968632; cv=none; b=ZpzNj0Y3bZN0bOWjfm846KcwZicIXydpv2VEd7MtiXhEBdoOAqMjxgA/P+jYDJS/T69j6OSRODffbvfKn4/PWVDYs2bR8wZcObtMsk5swNNzL23UDJiwp+Q7v4c4qti4mvA3eVeJKIHxhMNubliLdALMuqk0sawFscNlDZaEtec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751968123; c=relaxed/simple;
-	bh=nJZziPt5NASkQ4VYndMG5RDb3+l0adF6BWLpXEqDyZU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=c14SmepZu10GP9ahyo+XjDQUbkZSzKuel72e5ad1IJ5ag8dB/KDhYKqheILbNNsNC96sXkH4aHN/PV8xHtpZRiHSXIuXCkYpJRVsXThLe7ItUPeNcMt8YSKILc/88SCEEUS/vl97oJD7V4p3/ORoGzACo4AQLXpaA06Yuk7Zm7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g3A7YfYI; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751968632; c=relaxed/simple;
+	bh=UARk+kQbFmDW+kvV8YFNkg+2xZuu+oxOEUbZAp5I8mA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f64TFKP0/EWGneg6gBzReTTg3SoFwxo7+5eHCf6AmMNyRSRGJkTL9bJmY+jB4pUeFKqVqsGyszffS153sr+oKS6U8tHZdvActhaS7rHoMJFlzjTMG8O7EC3PKqIrfFuIWPNb37dD8PH9l4DykM4H+3X1vUjh1g0Iv+cHpu4HxRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=QQLNDysn; arc=none smtp.client-ip=79.135.106.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g3A7YfYI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EAF5C4CEED;
-	Tue,  8 Jul 2025 09:48:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751968121;
-	bh=nJZziPt5NASkQ4VYndMG5RDb3+l0adF6BWLpXEqDyZU=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=g3A7YfYIR1aOagAlboL6HhqaKSUdo2bf5X4jag77WB+jDmeVQEPk4JDkTaUvw7zlO
-	 pMGZaLeP3bnedwWmfyK/vlEq1jTRveKAvnd2EZSLCbLbaInkp6eqHTbPWpt7Vq+L9g
-	 YzFsapvWf3y6o55TK2kPvqx0z98UO+3cq8IHXJEd/EaoJqW7OQbwf1jqZR1m3f2sNn
-	 ag+eQKS2cdQf4vDnafUSdrfHc9OuUcpTP0NJ6uSQ6Hk1O73u/h+eGXt2D4dQNRjyMV
-	 Ndq+dVFK5ppz+TmRcfyOEIfj5fGbSzuQEOzUXhuf8cBfrh7BQD2YWunc0ESV9fwsfU
-	 +4XQ8u+tVjfuw==
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="QQLNDysn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1751968621; x=1752227821;
+	bh=2l3TkfjvjCWEDCpP4Te5SG1hFwqAhL+8OiIAkKRAXM4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=QQLNDysnjPtAe4YwLvngov1AJZUMLVT2hOYvLiAz/yIyJZQx9wBiKIncBkqFTEmPq
+	 6ofUkBqH9dsAdW1WV3OSWZ1MILYLXS/nuFMPCxnNmvZvMsPphwNy1iz+RQrYEa/h9k
+	 Pas3HX9XA6/uLQtQXHwhyIz3zM2cSwGooIscJnhut3wrj7Cjo4yffstWEY79mL2Cn2
+	 lLqD4I0EjP9fcarZFR/LJh8e4KChZWMLe269MeOHLftr1qi5u2YGlmkClP2BT1fc2W
+	 NM27xVVK1IPbrGOpij6kXoA6FQQO1VseUInQfLC5hxqiOsE06fJjyZeJfpoTsOP8bi
+	 qg+Zx/t9IrXIQ==
+Date: Tue, 08 Jul 2025 09:56:57 +0000
+To: Benno Lossin <lossin@kernel.org>
+From: Oliver Mangold <oliver.mangold@pm.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+Message-ID: <aGzrZqIrStGD_UBp@mango>
+In-Reply-To: <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org>
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me> <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me> <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango> <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org>
+Feedback-ID: 31808448:user:proton
+X-Pm-Message-ID: 54e28f62d3ea56697116c9fa07669e83e4c37aad
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 11:48:36 +0200
-Message-Id: <DB6KV5SVWIYG.2FAIFGZ90ZR2I@kernel.org>
-Subject: Re: [PATCH 1/2] rust: Add dma_set_mask() and
- dma_set_coherent_mask() bindings
-Cc: <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Alexandre
- Courbot" <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250708060451.398323-1-apopple@nvidia.com>
- <DB6JF2JLZEO8.4HZPDC26F3G8@kernel.org>
-In-Reply-To: <DB6JF2JLZEO8.4HZPDC26F3G8@kernel.org>
 
-On Tue Jul 8, 2025 at 10:40 AM CEST, Danilo Krummrich wrote:
-> On Tue Jul 8, 2025 at 8:04 AM CEST, Alistair Popple wrote:
->> Add bindings to allow setting the DMA masks for both a generic device
->> and a PCI device.
->
-> Nice coincidence, I was about to get back to this. I already implemented =
-this in
-> a previous patch [1], but didn't apply it yet.
->
-> I think the approach below is thought a bit too simple:
->
->   (1) We want the DMA mask methods to be implemented by a trait in dma.rs=
+On 250707 1123, Benno Lossin wrote:
+> On Mon Jul 7, 2025 at 8:58 AM CEST, Oliver Mangold wrote:
+> > On 250702 1303, Benno Lossin wrote:
+> >> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
+> >> > From: Asahi Lina <lina+kernel@asahilina.net>
+> >> >
+> >> > By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+> >> > (typically C FFI) type that *may* be owned by Rust, but need not be.=
+ Unlike
+> >> > `AlwaysRefCounted`, this mechanism expects the reference to be uniqu=
+e
+> >> > within Rust, and does not allow cloning.
+> >> >
+> >> > Conceptually, this is similar to a `KBox<T>`, except that it delegat=
+es
+> >> > resource management to the `T` instead of using a generic allocator.
+> >> >
+> >> > Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe5=
+5e@asahilina.net/
+> >> > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> >> > [ om:
+> >> >   - split code into separate file and `pub use` it from types.rs
+> >> >   - make from_raw() and into_raw() public
+> >> >   - fixes to documentation and commit message
+> >> > ]
+> >> > Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> >> > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> >> > ---
+> >> >  rust/kernel/types.rs         |   7 +++
+> >> >  rust/kernel/types/ownable.rs | 134 ++++++++++++++++++++++++++++++++=
++++++++++++
+> >>
+> >> I think we should name this file `owned.rs` instead. It's also what
+> >> we'll have for `ARef` when that is moved to `sync/`.
+> >>
+> >> Also, I do wonder does this really belong into the `types` module? I
+> >> feel like it's becoming our `utils` module and while it does fit, I
+> >> think we should just make this a top level module. So
+> >> `rust/kernel/owned.rs`. Thoughts?
+> >
+> > I don't have much of an opinion on on that. But maybe refactoring types=
+.rs
+> > should be an independent task?
+>=20
+> But you're adding the new file there? Just add it under
+> `rust/kernel/owned.rs` instead.
+
+To be honest, I don't really mind.
+
+Note, though, that I already moved it from types.rs to types/ownable.rs on
+request. It seems to me different people here have different ideas where it
+should be placed. I feel now, that it would make sense to come to an
+agreement between the interested parties about where it should finally be
+placed, before I move it again. Could I ask that we settle that question
+once and for all before my next revision?
+
+> >> > +/// - It is safe to call [`core::mem::swap`] on the [`Ownable`]. Th=
+is excludes pinned types
+> >> > +///   (i.e. most kernel types).
+> >>
+> >> Can't we implicitly pin `Owned`?
+> >
+> > I have been thinking about that. But this would mean that the blanket
+> > implementation for `Deref` would conflict with the one for `OwnableMut`=
 .
->       Subsequently, the trait should only be implemented by bus devices w=
-here
->       the bus actually supports DMA. Allowing to set the DMA mask on any =
-device
->       doesn't make sense.
+>=20
+> Yeah we could not implement `DerefMut` in that case (or only for `T:
+> Unpin`).
+>=20
+> >> > +/// - The kernel will never access the underlying object (excluding=
+ internal mutability that follows
+> >> > +///   the usual rules) while Rust owns it.
+> >> > +pub unsafe trait OwnableMut: Ownable {}
+> >> > +
+> >> > +/// An owned reference to an ownable kernel object.
+> >>
+> >> How about
+> >>
+> >>     An owned `T`.
+> >
+> >     A wrapper around `T`.
+> >
+> > maybe?
+>=20
+> "wrapper" seems wrong, since a wrapper in my mind is a newtype. So it
+> would be `struct Owned(T)` which is wrong. The `T` is stored elsewhere.
+>=20
+> >> > +///
+> >> > +/// The object is automatically freed or released when an instance =
+of [`Owned`] is
+> >> > +/// dropped.
+> >>
+> >> I don't think we need to say this, I always assume this for all Rust
+> >> types except they document otherwise (eg `ManuallyDrop`, `MaybeUninit`
+> >> and thus also `Opaque`.)
+> >
+> > Hmm, it is an important feature of the wrapper that it turns the `*Owna=
+ble`
+> > into an object that is automatically dropped. So shouldn't that be
+> > mentioned here?
+>=20
+> I would expect that that happens, but sure we can leave it here.
+>=20
+> >> How about we provide some examples here?
+> >>
+> >> > +///
+> >> > +/// # Invariants
+> >> > +///
+> >> > +/// The pointer stored in `ptr` can be considered owned by the [`Ow=
+ned`] instance.
+> >>
+> >> What exactly is "owned" supposed to mean? It depends on the concrete `=
+T`
+> >> and that isn't well-defined (since it's a generic)...
+> >
+> > "owned" means that access to the `T` is exclusive through the `Owned<T>=
+`,
+> > so normal Rust semantics can be applied.
+>=20
+> Okay, in that case just say that `ptr` has exclusive access.
 
-Forgot to mention, another reason for a trait is that we can also use it as=
- a
-trait bound on dma::CoherentAllocation::new(), such that people can't pass
-arbitrary devices to dma::CoherentAllocation::new(), but only those that
-actually sit on a DMA capable bus.
+Or, ehm, sorry, I forgot, ownership also implies that the allocation of the
+underlying resource/object is now under the responsibility of the owner,
+i.e. the owner should free it at the appropriate time.
 
->
->   (2) We need to consider that with this we do no prevent
->       dma_set_coherent_mask() to concurrently with dma_alloc_coherent() (=
-not
->       even if we'd add a new `Probe` device context).
->
-> (2) is the main reason why I didn't follow up yet. So far I haven't found=
- a nice
->     solution for a sound API that doesn't need unsafe.
->
-> One thing I did consider was to have some kind of per device table (simil=
-ar to
-> the device ID table) for drivers to specify the DMA mask already at compi=
-le
-> time. However, I'm pretty sure there are cases where the DMA mask has to =
-derived
-> dynamically from probe().
->
-> I think I have to think a bit more about it.
->
-> [1] https://lore.kernel.org/all/20250317185345.2608976-7-abdiel.janulgue@=
-gmail.com/
+In short, just the standard meaning of ownership in Rust.
+
+https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
+
+> >> Maybe we should give `Ownable` the task to document the exact ownershi=
+p
+> >> semantics of `T`?
+> >>
+> >> > +pub struct Owned<T: Ownable> {
+> >> > +    ptr: NonNull<T>,
+> >> > +    _p: PhantomData<T>,
+> >> > +}
+> >> > +
+> >> > +// SAFETY: It is safe to send `Owned<T>` to another thread when the=
+ underlying `T` is `Send` because
+> >> > +// it effectively means sending a `&mut T` (which is safe because `=
+T` is `Send`).
+> >>
+> >> How does this amount to sending a `&mut T`?
+> >
+> > Good point. That documentation hasn't been updated since `&mut T` acces=
+s
+> > has been split out into `OwnableMut`. Not sure how to phrase it now.
+>=20
+> I'm also unsure, also for the correct trait bounds on this impl.
+>=20
+> ---
+> Cheers,
+> Benno
+>=20
+> >> I guess this also needs to be guaranteed by `Owned::from_raw`... ah th=
+e
+> >> list grows...
+> >>
+> >> I'll try to come up with something to simplify this design a bit wrt t=
+he
+> >> safety docs.
+> >>
+> >> > +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
+> >> > +
+> >> > +// SAFETY: It is safe to send `&Owned<T>` to another thread when th=
+e underlying `T` is `Sync`
+> >> > +// because it effectively means sharing `&T` (which is safe because=
+ `T` is `Sync`).
+> >>
+> >> Same here.
+> >>
+> >> > +unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
 
