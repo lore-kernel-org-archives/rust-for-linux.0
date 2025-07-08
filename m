@@ -1,317 +1,517 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803E62E1C52;
-	Tue,  8 Jul 2025 15:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFCF2E1C74;
+	Tue,  8 Jul 2025 16:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751989267; cv=fail; b=GBwlVs91gRUDGMZKyPLNbA/muAQQFECOSjgso4uxJ7xYGxQoZ4E68yjBb5SNDFHxmsndjMJuqu7lqjv/BKvHgV/UtRx9Fo+AivbpKRHE7SdajYfcC4UekAwcoStL0C2k1DN83amOmvDEFqkCh3cC7euSRuFsfQY2JsVQkhAEULY=
+	t=1751993462; cv=pass; b=HKZ74SQ8JwpD89BzE9g255ZtZkxOJaDFUTPqjujafcONZlKWHOvixL4qzgcALDTcn/05/fYNSEguQjCk5STf30GZZ8tLwwU0z1Wb6FtgdTq2FYzi7QD+Tbsre0Zw5/6sGMN2p5utV1kqNLaDOaqZ5aVM5+xvz33+hzEctEgkznc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751989267; c=relaxed/simple;
-	bh=7pJRQjEoFSF4DW2jpZ69dabwtGHRjmtlx822kUtOjd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GVGY/iqwdGlsutkyM8Cg2XiDWjzT0jnADomabpxzGyhvSlkO18tXz7EqtyHfOhGuEafOwRbrvPsaD4+oZf5u4xDaLuatvjLuLi5k113SjiKwURQGK4Jw1GYhmqLH8kpODvWNB3M8VZMK2pPfG++3JEpPdbAv6CPgDWDTz+d/ODw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=jNu6OK3b; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=S3nnoWBR; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	s=arc-20240116; t=1751993462; c=relaxed/simple;
+	bh=f4JiMAA42+gkfm68SETRJYKf1coMlGVZdFUVPz+MJGk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=toUZLmdt5pEvLazVrE/mud3OeC8U4VzHfcbeEzyAyrI1Ze1jEfHsOhdW0Rccb6MUs80nL6qhcF/2RDq+jmVMEd7OxnlYUC96QzVQN1Ict88TDRcc4oDEXVJ9TrDlz+JXDGTk+Qua5XcvTFK+hIb3iB5m8fipXJA+5joxym4Dkho=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=lTQuzCzg; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="jNu6OK3b";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="S3nnoWBR"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 568FVr9l012616;
-	Tue, 8 Jul 2025 15:40:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=LUfKq1KbgIR9tuRiPG
-	o2STuxEMHX2iuD4L2oMVYmusg=; b=jNu6OK3bLpF5WsCraBJ49SSWjEkayctuaR
-	fe0X3hPFmP9otqG/lJ/6ELUaPdW7jIGrkAut5uHhBiQgFIgTv/W3i24gFltASheL
-	YvXbgfuYyW6V3eeD3CImpFgSDm2D2E6BXdQxomFQFfYcsRrTKQyM5NdVQQU57ckE
-	nK9va1y+hO3thkRrp+Sxkh4Qbxx1yHy4VvqMTJUL+ZajBBLHuY4tFAWMzJc9sW4g
-	gmBUTSEjOLNdTLVIkPiia9zcipy6r6rdNZo2LI81tUQRKVYi87i2ujv9Um06qcBI
-	/J63iKJ/PwwldJrpd0fMLPsVywpfKGIhH47LUgCWGhGp29G5/iMA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47s62300q2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 08 Jul 2025 15:40:48 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 568FG9mZ027339;
-	Tue, 8 Jul 2025 15:40:47 GMT
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02on2081.outbound.protection.outlook.com [40.107.95.81])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 47ptg9s939-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 08 Jul 2025 15:40:47 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jS/ZoGkmUQk1tQ7n7sw56Va1EIDi2TLqnST1shHmZU0daJJa1ack1NaZ5G2jDydACx946jpw541rQlcjsKNTSrvy+4h48KW4yrtdaVGS/fYi6Q2JGfu2yp9L+k6dCmQ5gSdrtU1XxXG8BGkkhQDVP2+AF3Kcpu14UaxzDURgukBjhUzyl7rpbCo+07q/ebs7LTcdUXul9Sf5bmtCZlJUiq1HsFA0blqFi5PIjSuQ6xh/WhoBZUiBzuH4URx5gfUaWr7H8tyYUtBLgY1u/vEcA8kj4PsAKMc5hlZhyjNip7zuyoIsrs9EjpudJZfqmXdzWgteCHj2Z1yARWL45Jsmbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LUfKq1KbgIR9tuRiPGo2STuxEMHX2iuD4L2oMVYmusg=;
- b=cQKMC+CXQQ8zUVZ5rdpABUu3SCDjNrNpDsWekiztPVFkBEUXSfFb+i3gFHjWlw3eblegrWD9uTQtHydNhK5s70I1FuHNSz3G/sYGdDCUcpQNXAVXA6PVqsfga+7dptdLXXA1qG9/18+B2OhynMNuRYS7TqK8/M8JAfiSFDbzLegQDm5zFBdLN6T7yImvvzhrkRgW8N3PnESR9lLtaGIjQs2s5dZlHFduc/r0Ywjju7XsX0saP+KjoIQwR5InVHoLTOkMaIgF3DQrL3LNxvjVJ9xsY6bXc4qCz4qUG/mJUM2okRzCJlJxJtNI75R8Jp7EI4nLVbd7atreP3zqpaFLRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LUfKq1KbgIR9tuRiPGo2STuxEMHX2iuD4L2oMVYmusg=;
- b=S3nnoWBRAUSt9FOx76zwWMkT8QsfefuaaYZVZDIbU1+p+Mbvj18v78hBcnvMAKMSyi7JJRrn71XDVrYgFH336JYp4+E2FZX4AqV8IYColn/rLfvVQNbV2qmLmi5OzPndq5EuebTj3nX0kxOM1WQHZqQglrg7qO6zck682fRDqCc=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CO1PR10MB4564.namprd10.prod.outlook.com (2603:10b6:303:6f::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Tue, 8 Jul
- 2025 15:40:44 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%6]) with mapi id 15.20.8901.024; Tue, 8 Jul 2025
- 15:40:44 +0000
-Date: Tue, 8 Jul 2025 16:40:34 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org,
-        akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-        Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org,
-        Liam Howlett <liam.howlett@oracle.com>
-Subject: Re: [PATCH v11 0/4] support large align and nid in Rust allocators
-Message-ID: <8b014021-0e6d-4649-995e-97be774d59b8@lucifer.local>
-References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
- <824065ea-1f5c-4cd4-9917-4b7a91882af8@lucifer.local>
- <aG0HJte0Xw55z_y4@pollux>
- <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
- <DB6QKIHD2VGS.AHEOXL25SSXW@kernel.org>
- <4c122436-db58-4ca5-bc64-5ca596f03952@lucifer.local>
- <DB6RQCZYHPSA.1UEPUVMC3FBBI@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DB6RQCZYHPSA.1UEPUVMC3FBBI@kernel.org>
-X-ClientProxiedBy: LO2P123CA0042.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600::30)
- To DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="lTQuzCzg"
+ARC-Seal: i=1; a=rsa-sha256; t=1751993434; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=JySceOHPhEyiSJcBvz1Aq/Zktj40lTMnV4wLnKKp3o8p+a0Us6AYctwHp2x+R2HIGO11ucq+aAZF1DEE+xbebnKGAwIS1WasmJp7pNFt01VXO32V3q5TJnxzSSAtMyncGxQcllDNN6L1XOCj/gEvxTv+ma3vByDYv5V0E1yU8fw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1751993434; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=dMSTDH86ME1uDWCzoqd2QelxqPViWMU1b5yi59VY6VU=; 
+	b=jjeTAYBVFYAh4+SFJ4juMOhk3rA2tC6w2+91ic/EeHCp6OuxuG/K/NlwfGbqJZCtuIXGuU1+V5053YdPKUQ2G7jYISqXQzs7L2qOFz4/ghl/s7e5BxEHFunJJyf0uvJ5WoLcTP2Ma4g5XxOj8BYDYIu5TVTRIxTBo9Tko88/KxI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1751993434;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+	bh=dMSTDH86ME1uDWCzoqd2QelxqPViWMU1b5yi59VY6VU=;
+	b=lTQuzCzg0G/vw6kg/ejU+sblAFxADswOufXQfUeQXNfkuhkKfq5IOQtsD9aIpjdR
+	Gj5qEz0DPq2zT945mDKgepVr0EBUz1TEsgfz+hWaAx9QP8bs7PIrmzmK+bSVefUyczQ
+	eiGPwOMfKfCMSaSS8cp+Jswfje8fY68uzeGijmeY=
+Received: by mx.zohomail.com with SMTPS id 175199343190214.552385521455903;
+	Tue, 8 Jul 2025 09:50:31 -0700 (PDT)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Date: Tue, 08 Jul 2025 13:50:23 -0300
+Subject: [PATCH v8] rust: kernel: add support for bits/genmask macros
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CO1PR10MB4564:EE_
-X-MS-Office365-Filtering-Correlation-Id: 530e2997-f502-45f5-04e6-08ddbe35cd4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?9yegaZDr3JuiOrrz5rvp6PFYBLhEg8nkDSaR4b1Mm8WrziHeWg6TF77/bdJj?=
- =?us-ascii?Q?fzIa/q6PpZWSA3g//0xbA4j75SzxsX8G6bLsBSJM1mTU8XbgWegnAkahxSUY?=
- =?us-ascii?Q?WeFExHkGLTNifybkYWAAmC+5A2C90PR28oeih6ylILjOePCFZND4fcC7FOAz?=
- =?us-ascii?Q?Y0p3cj+sSP7g4JVKhzU63ZhFjkdig9p3FDiIPKevVtjFwMtgz5X0H0bRuxBo?=
- =?us-ascii?Q?WX+auWr5mNDtflaiEV8P6AiL/aT+SxFdJeTqAuc5vFeTnL1iFj8EEsg5wm8M?=
- =?us-ascii?Q?IwJqW378hJBcwzKO36sCCMBCwpV7szOj2dONmiqekNivfUG/Z1rxgDS5sej8?=
- =?us-ascii?Q?lcbOZ/ntrmxZBeNJioqzrLJcuItoOhIFgN9dj0NWmh9NBYQYLgU72q3mpscA?=
- =?us-ascii?Q?F57l0xKaWBn1Zd3i61I4FXlebPzAlxKlkjx8aFkceGlSiXQBpHH9iGIOA/YX?=
- =?us-ascii?Q?C0V03gpIcUxBtv3GlLOE+JeNDZL7JvqF1+/7qBbJpJOFyiB78yi9WC2Z+91+?=
- =?us-ascii?Q?1pY6UskSD/mDUZTheRaziGrxpHD1W1rGKWKv8Bjduo7gTJ8CHzNjkjSaW0G2?=
- =?us-ascii?Q?jJz33BLJUhPpQNSuApf4xW2oXP6r3K5+V2C/APT81b8rIlGWESK6hePRIDoG?=
- =?us-ascii?Q?8493dLlqUj/qYmc2YdHvSmcCvPs7XFJr16v8k72riyIEo5EGFoKTxIB+Mvtt?=
- =?us-ascii?Q?VUzUFYEyDAvJC5lpHdn3kIhF43CLzwE70igHI75s2WyEoBXazUnRTnB1V3R3?=
- =?us-ascii?Q?IflN/kmh0h6kHSGWYDbpxAmN37mmZhSBQ+9mHgwU47domvdtLtC9Sk7xV5qn?=
- =?us-ascii?Q?R1yeE6ryhTOCMAaZIoxcQ88x4CGZPnjmVIjAxNA+LGIMaW+l0AiVPHpbKUk2?=
- =?us-ascii?Q?5/HX0rnWbAMhqxX4JjZ8hONOVKMjr9iBRlRrfRcE1qyv0ksURtNHSEuFjXsN?=
- =?us-ascii?Q?o4xogos9IZoxdkZ8hfLygLl3k94YVn47GILOIPXjQ09BajkhUsG0kMzeiLo1?=
- =?us-ascii?Q?aLVsC2J+Qpzt5NDtOGsqWf3DeHuIDbzm+b4PtfynSH2nTWTG3f0u4LhC1fzh?=
- =?us-ascii?Q?RtwpLSWWkUqPxG0xzQQuvX76wqZCSso0hCS5/XGrjj1KDkDE6Rgpo8EvrKJg?=
- =?us-ascii?Q?OKY7dSziEQFjps7m9iRgFXfj4f0e+XVpNSDOsNnzGb9jnydyzOFHIzej+BnC?=
- =?us-ascii?Q?mzJbWiLaCeGzc6uAJTzZyGo5K0y/GHyK0giM3vzOp2azBV63xOcQsH61rAqP?=
- =?us-ascii?Q?6GsWd4Gw9HY/m7JKp9UP8OSR15juCDnvSW8+KN2mv2QS/zIStRBDDGxu0E97?=
- =?us-ascii?Q?zR99HG1tDJy97U2Ajan9Iyu2jXCGTxij9QhqRE7FK+IylM8tbPYBKpUB+SD0?=
- =?us-ascii?Q?Pu6x6RsFlYyQVNp6Ic2RvhrOSk31?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?D+MrfG8Db0wd5CccG29vcJY2cYNvo6Gc/PQJWqYceAIGmyRhu8KpdTGYDKM/?=
- =?us-ascii?Q?H0I8n3w03IEmm86OQVtKJSGQFxJLHrMukaTEzjWNk4KhmbdBnaSy41VkZ8nL?=
- =?us-ascii?Q?0nbbC+iTUTq6Tt2odNDwp9PQyxXFqQAUS7+1iTzdC1cwhJbLzlzDxw2f01ii?=
- =?us-ascii?Q?Om+8CEy8e7eMWSwgDS+CeB/GlSs5a5HvqgvFTvb1HiLKkyUwPSsA0Todt3Pv?=
- =?us-ascii?Q?poqkfY+sSQdEBVfHyvvgIt5DPMHgIhbKZL1HJK6QObKOLouYFzfswQsNgnJw?=
- =?us-ascii?Q?Jy4jB0wQBbomKwM5VWI9MCa1EzVerDl6etdhJvaBXMW4Bnk0APdAYEDgbLE6?=
- =?us-ascii?Q?LtV5QejhmUGmOsQfdQJDS6lOQuVSqZPXqlkv2SRlcd+XoZ4qRukoZQCzWXwT?=
- =?us-ascii?Q?4rqgO/VUDzaZOzJch9CbpgCKKaHoHYQG49NH3MKNaEA49NOmMKJgiRiYeJgv?=
- =?us-ascii?Q?Hc6C0e2mwvYnGMM5xQHJh0VDssKuakUtDmFzUjkMcvPq13GRX5+RsRDHXT7x?=
- =?us-ascii?Q?AA1AJyh3th2K55NjERB4NVpzFlJxA3vvZXCGASYzwKg39Ih9n0nQcGDcNKId?=
- =?us-ascii?Q?5zEL8zNhtCqgyfZBrbuc2eUBBT3WDn5X5ios1sQD7spttC1Faesi0vUH31xI?=
- =?us-ascii?Q?ZdFusHIk0FPe9KxRFS24O69U/26CrRngRdPRYfwZTzfCUeGv6tf50bBXc9pp?=
- =?us-ascii?Q?nPj8Dtl8+FE8veYgRILL0z+/icW0xX43v1ooc/jqZgvrUUCYtbeK0cB0QG7j?=
- =?us-ascii?Q?yzh2TEtC2a+bk0Q2ophZivF7fAlSwomhf/Hejw5HZb18LDpUOEoLCod9pCh+?=
- =?us-ascii?Q?JivqK26TWLZ29J1j5xSB67/Z4hOjgc4AtfxLY5a7RlfdOKE0WYFcZd58/lzs?=
- =?us-ascii?Q?kFoYQTGwC+rOYgVrMsQG8pIttmWamHCfe4wGfPa0QRM0OMyZTl1YKt5dbUth?=
- =?us-ascii?Q?jDZMEGH+iI3Y4saeN8+o064RqBbTZsin/d6Vcgytd2nlNdonO9r6SJtXDbE1?=
- =?us-ascii?Q?mRCWkmFQKMmph/c5iSX2KiUs/TpnkJjXqYujj+vhQ9VbJVsOfPqdn9cDua8T?=
- =?us-ascii?Q?u24ABOMRJGq+vIBZ2Kw83VZpZ8l7uI2HBnBewgYSK2uPAJ/0pMRbXf72xp2A?=
- =?us-ascii?Q?YUXqRhz73QUiQM07Yw0VTx5tx8uQGGJR0p+F93FVbSzWtxw+AGp9/ftSj5Lc?=
- =?us-ascii?Q?l+6qzGddsd7tIV+lAF6UUMIh1fmT0o7ouseTCGPZCk6TLF2m1DtCD4Ctz7Zk?=
- =?us-ascii?Q?TbRIwY4gj4uQ/9uUopBc7ooWK9RgKflF8qc6YHRB3uPC6KNefYRI/gAksTL7?=
- =?us-ascii?Q?1Ui2zbIyJlc3qZMpw1//yQuPugYlWdhb54yjM+ZAyWC2w/ix6dgC8VetPnHW?=
- =?us-ascii?Q?hobPAzMvt5uscqIgeiFBGNY4ySQjVYfwB694tvFovZU4jm6Tms4kUIqjTR0H?=
- =?us-ascii?Q?53LxSd3L17CXwk/Ybw6Rf3AeEF+r7q9f4MHHCBY43ndWt1yMMTUZDfsENLLy?=
- =?us-ascii?Q?Qj7uVO/PeAZ3qlGy5R2mWguR3yI/IFIN9dVF+9rQXl/8tUFHWB+ynwMHspyM?=
- =?us-ascii?Q?j+pT1rZ0oQk2AxJqUar0QrpnTjV3QD7BKQyCG6d/PPYi3eziBRZbzQ0EmatO?=
- =?us-ascii?Q?ew=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	ovDKE0GzkWDi+DbBwiBS1Yxjki4j7UaFstOtkQZFipTVCO9Ox8n/f4A7nmIciVm/I9kPQn3qWfvBwX59axKyay7pBhgYW+jK32TzCE+aCpmtu0KcL4l/dLWZ8IKKbfuEWCz8n53WLVC0k/ZnzJI9hWYqQX/KhykTg9TfkEPPuQhTh9jKKn3QjGEU2is3xdJnSDTtPB4gLg4fbcWV/r+hH6lB66sZSxBRhuWfoN7fZwk9zROjuYRq+8qDgTslCtIOkFBINGrZW63I0bIjnMOe644tRdjwCx8rSdr4PqxdR5U+qcRkyKEoGxaQ2QvWEYC6X6EscpVJb6Km/illrT5UJwmHh3/m7zfSdU8qOSmRkivqbdSCjIjdZCaSOGe4yyvrqCwYsLSZjR1LK85bNqsD7kSj6YHV2PFjCwlWc1Q8u8I6WJnzM0AQhso3354OPIExfBrpie3oSusYpMRiZ9KaopyHtUJrUjTYNZ/H9SeZBWYTmdpybx8o2pUH4TUprHSHodc3DxD6jxDO5SNRZCGphfRo72egQrIhiUqHXUhispY6wHg8dQH4ufHRYz94naVJmi01TjzKLy7Pl1K6AKwMHx/g4cI+mVb/1K7/OkKhn24=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 530e2997-f502-45f5-04e6-08ddbe35cd4e
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jul 2025 15:40:44.4430
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CytRC0+V8FyPJeVM7GB1PE/llBgqOzSlFDPB5WuI+d9BpOZqNTs6UlwmqGEVcGnEV+wd5p0Zo8E+wnHVF+ap+UdUYCJJuIqAGzaDPsChbGs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4564
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-08_04,2025-07-07_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
- suspectscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2507080132
-X-Proofpoint-ORIG-GUID: 08BFRrWOCzwjgAPUspRGiFAl-HOu3qj1
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA4MDEzMiBTYWx0ZWRfX6TwZIkTD17zt q82xZqdL8yMLiLcDZPQ4YVpV3nsBPhyrWKp5bj6vZ/rb18gEuEtlqkENKtcA7rswgHKtbFRnj6P 5GVlNfraT/Xkajov0ojrSrIbmRQ+hTzz59jvUjYeriFUwfxWBv4yciHplVe0kiNFIbzIxaHp68n
- Rf9rarizZD+baT1nKU7jtCJzwQnO6b+OFpwBtkesle0lWWOI84ekMLxGs3CTJR6/Q1IZpNfIxKX LglluNVI9NGdyyASDyxPMNSbpift+p1BqgKrBVpNTJcVvbqIDc78TRxqfPHJJb7pqXNmQTsUCzH MPoh4eEJMWtiUARvLpOsz6bMx1PN+Iqd4srDvRFxNAD0pK2CnZ38Jx1ZM9fdeXGCBTPZjgcuR2e
- HYI/ryXcMzyo/CZYeFtX2o7QDihDJzqnSEDZq9tRal7H9SSKT7y8AuhmeGzNPz7HKW9tA1hf
-X-Proofpoint-GUID: 08BFRrWOCzwjgAPUspRGiFAl-HOu3qj1
-X-Authority-Analysis: v=2.4 cv=aMvwqa9m c=1 sm=1 tr=0 ts=686d3c00 b=1 cx=c_pps a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=sBcvgdA3ldTV9jqk8kAA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12057
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250708-topic-panthor-rs-genmask-v8-1-fb4256744c9b@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAE5MbWgC/33RTWrDMBAF4KsEraui0Z/trnqP0sVoLCWiiWUkY
+ 1qC7145EBKo6+UbmG94zJUVn6Mv7O1wZdnPscQ01NC+HBidcDh6HvuamRRSg5CKT2mMxEccplP
+ KPBd+9MMFyxcP6Mg0KvigFavrY/Yhft/oj8+aT7FMKf/cLs1ynd5R/T86Sw68NVI1BEGQx3dK5
+ zO6lPGV0oWt8KzumBEgYQdTFTOkXB8kkBdmC9MPTEG7g+mKKSOEDoQWaRMzT5i0O5ipmAtoQQs
+ Jut+saR+YBbGD2bWmCAjYteAItrDmCdv76txUrAtdazsDvnF/ai7L8gu6jnx4RQIAAA==
+X-Change-ID: 20241023-topic-panthor-rs-genmask-fabc573fef43
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Alexandre Courbot <acourbot@nvidia.com>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
+X-ZohoMailClient: External
 
-On Tue, Jul 08, 2025 at 05:11:28PM +0200, Danilo Krummrich wrote:
-> On Tue Jul 8, 2025 at 4:39 PM CEST, Lorenzo Stoakes wrote:
-> > On Tue, Jul 08, 2025 at 04:16:48PM +0200, Danilo Krummrich wrote:
-> >> (Please also see the explanation in [1].)
-> >>
-> >> There's a thin abstraction layer for allocators in Rust, represented by the
-> >> kernel's Allocator trait [2] (which has a few differences to the Allocator trait in
-> >> upstream Rust, which, for instance, can't deal with GFP flags).
-> >>
-> >> This allocator trait is implemented by three backends, one for each of
-> >> krealloc(), vrealloc() and kvrealloc() [3].
-> >>
-> >> Otherwise, the alloc module implements Rust's core allocation primitives Box and
-> >> Vec, which each of them have a type alias for allocator backends. For instance,
-> >> there is KBox, VBox and KVBox [4].
-> >>
-> >> This was also mentioned in the mm rework in [5] and in the subsequent patch
-> >> series reworking the Rust allocator module [6].
-> >>
-> >> Before [6], the Rust allocator module only covered the kmalloc allocator (i.e.
-> >> krealloc()) and was maintained under the "RUST" entry.
-> >>
-> >> Since [6], this is maintained under the "RUST [ALLOC]" entry by me.
-> >>
-> >> Given that, there is a clear and documented responsibility, which also Andrew is
-> >> aware of.
-> >>
-> >> To me the current setup looks reasonable, but feel free to take a look at the
-> >> code and its relationship to mm and Rust core infrastructure and let me know
-> >> what you think -- I'm happy to discuss other proposals.
-> >
-> > Thanks for the explanation.
-> >
-> > To me this is clearly mm rust code. This is an abstraction over mm bits to
-> > provide slab or vmalloc allocations for rust bits.
-> >
-> > To be clear - I'm not suggesting anything dramatic here, nor in any way
-> > suggesting you ought not maintain this (apologies if this wasn't clear :)
-> >
-> > It's really a couple points:
-> >
-> > 1. Purely pragmatically - how can we make sure relevant people are pinged?
->
-> I'm very happy to add more reviewers to the RUST [ALLOC] entry for this purpose.
+In light of bindgen being unable to generate bindings for macros, and
+owing to the widespread use of these macros in drivers, manually define
+the bit and genmask C macros in Rust.
 
-Thanks!
+The *_checked version of the functions provide runtime checking while
+the const version performs compile-time assertions on the arguments via
+the build_assert!() macro.
 
->
-> Can you please send a patch for this?
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+---
+Changes in v8:
+Thanks, Alex {
+  - Added examples to genmask_checked_*
+  - Removed the term "compile-checked" from the _checked variants
+  - Add "or is out of the representable range for the type"
+  - Change to "if start > end" in genmask_checked_* (as n..=n is valid)
+  - Removed the extra check to $ty::BITS (which is already checked by
+    the bit macro)
+  - Changed the build_assert condition to "start <= end" in genmask_*
+  - Added examples for min and max, i.e. 0..=0 and 0..=$ty::BITS-1
+  - Separated hex values using underscore where applicable
+}
+- Link to v7: https://lore.kernel.org/r/20250623-topic-panthor-rs-genmask-v7-1-9f986951e7b5@collabora.com
 
-Ack will do.
+Changes in v7:
+- Rebase on top of latest rust-next
+- Use RangeInclusive
+- Fix formatting
+- Fix checks of start/end to account for RangeInclusive
+- Use the paste macro to simplify the implementation
+- Get rid of the _unbounded versions (they were not const fns anyway, so
+  users can just write it themselves)
+- Change the examples to account for RangeInclusive
+- Link to v6: https://lore.kernel.org/r/20250610-topic-panthor-rs-genmask-v6-1-50fa1a981bc1@collabora.com
 
->
-> > 2. Having clarity on what does/does not constitute 'MEMORY MANAGEMENT - RUST'
-> >    (again, perhaps Alice best placed to give some input here from her point of
-> >    view).
->
-> In the end that's a question of definition.
->
-> The reason RUST [ALLOC] is a thing is because it is very closely related to Rust
-> core infrastructure with only a thin backend using {k,v}realloc().
->
-> Compared to other abstractions, the main purpose is not to expose a Rust
-> interface for an existing kernel specific API, but rather implement a very Rust
-> specific concept while being a user of an existing kernel C API.
+Changes in v6:
+Thanks, Alex {
+  - Added _checked and _unbounded versions of the functions
+  - Implemented the functions through a macro
+  - Changed the genmask logic to prevent over/underflow (hopefully)
+  - Genmask now takes a range instead of "h" and "l" arguments
+  - Made all functions #[inline]
+  - +cc Alex directly
+  - Removed all panics
+}
+- Link to v5: https://lore.kernel.org/r/20250326-topic-panthor-rs-genmask-v5-1-bfa6140214da@collabora.com
 
-Right sure. this stuff gets blurry...
+Changes in v5:
+- Added versions for u16 and u8 in order to reduce the amount of casts
+  for callers. This came up after discussing the issue with Alexandre
+  Courbot in light of his "register" abstractions.
+- Link to v4: https://lore.kernel.org/r/20250318-topic-panthor-rs-genmask-v4-1-35004fca6ac5@collabora.com
 
->
-> > We could solve 1 very simply by just using the fact we can have files in
-> > multiple sections in MAINTAINERS.
->
-> Please not -- I don't want to have files in multiple entries in MAINTAINERS,
-> especially when there are different maintainers and different trees. I prefer
-> clear responsibility.
+Changes in v4:
+- Split bits into bits_u32 and bits_u64
+- Added r-b's
+- Rebased on top of rust-next
+- Link to v3: https://lore.kernel.org/r/20250121-topic-panthor-rs-genmask-v3-1-5c3bdf21ce05@collabora.com
 
-Ack :) No probs.
+Changes in v3:
+- Changed from declarative macro to const fn
+- Added separate versions for u32 and u64
+- Link to v2: https://lore.kernel.org/r/20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com
 
->
-> > Doing a scripts/get_maintainers.pl invocation will very clearly tell you
-> > who's in charge of what so there'd be no lack of clarity on this.
->
-> How's that when a file is in multiple entries?
+Changes in v2:
 
-Well you can see which is directly related which not. But I get this is not what
-you want! :)
+- Added ticks around `BIT`, and `h >=l` (Thanks, Benno).
+- Decided to keep the arguments as `expr`, as I see no issues with that
+- Added a proper example, with an assert_eq!() (Thanks, Benno)
+- Fixed the condition h <= l, which should be h >= l.
+- Checked that the assert for the condition above is described in the
+  docs.
+---
+ rust/kernel/bits.rs | 346 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs  |   1 +
+ 2 files changed, 347 insertions(+)
 
->
-> > It's a bit messy, obviously. But it'd solve the issue of mm people not
-> > getting notified when things change.
-> >
-> > However, at this stage you might want to just limit this to people who have
-> > _opted in_ to look at mm/rust stuff. In which case then it'd make sense to
-> > add only to the "MEMORY MANAGEMENT - RUST" section (but here we need to
-> > address point 2 obviously).
-> >
-> > Alternatively we could just add reviewers to the rust alloc bit.
->
-> Yeah, let's do that instead please.
+diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..63ed5e60b79aa4199acc20cf843cc17d8d3897d6
+--- /dev/null
++++ b/rust/kernel/bits.rs
+@@ -0,0 +1,346 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Bit manipulation macros.
++//!
++//! C header: [`include/linux/bits.h`](srctree/include/linux/bits.h)
++
++use crate::prelude::*;
++use core::ops::RangeInclusive;
++use macros::paste;
++
++macro_rules! impl_bit_fn {
++    (
++        $ty:ty
++    ) => {
++        paste! {
++            /// Computes `1 << n` if `n` is in bounds, i.e.: if `n` is smaller than
++            /// the maximum number of bits supported by the type.
++            ///
++            /// Returns [`None`] otherwise.
++            #[inline]
++            pub fn [<checked_bit_ $ty>](n: u32) -> Option<$ty> {
++                (1 as $ty).checked_shl(n)
++            }
++
++            /// Computes `1 << n` by performing a compile-time assertion that `n` is
++            /// in bounds.
++            ///
++            /// This version is the default and should be used if `n` is known at
++            /// compile time.
++            #[inline]
++            pub const fn [<bit_ $ty>](n: u32) -> $ty {
++                build_assert!(n < <$ty>::BITS);
++                (1 as $ty) << n
++            }
++        }
++    };
++}
++
++impl_bit_fn!(u64);
++impl_bit_fn!(u32);
++impl_bit_fn!(u16);
++impl_bit_fn!(u8);
++
++macro_rules! impl_genmask_fn {
++    (
++        $ty:ty,
++        $(#[$genmask_checked_ex:meta])*,
++        $(#[$genmask_ex:meta])*
++    ) => {
++        paste! {
++            /// Creates a contiguous bitmask for the given range by validating
++            /// the range at runtime.
++            ///
++            /// Returns [`None`] if the range is invalid, i.e.: if the start is
++            /// greater than or equal to the end or if the range is outside of
++            /// the representable range for the type.
++            $(#[$genmask_checked_ex])*
++            #[inline]
++            pub fn [<genmask_checked_ $ty>](range: RangeInclusive<u32>) -> Option<$ty> {
++                let start = *range.start();
++                let end = *range.end();
++
++                if start > end {
++                    return None;
++                }
++
++                let high = [<checked_bit_ $ty>](end)?;
++                let low = [<checked_bit_ $ty>](start)?;
++                Some((high | (high - 1)) & !(low - 1))
++            }
++
++            /// Creates a compile-time contiguous bitmask for the given range by
++            /// performing a compile-time assertion that the range is valid.
++            ///
++            /// This version is the default and should be used if the range is known
++            /// at compile time.
++            $(#[$genmask_ex])*
++            #[inline]
++            pub const fn [<genmask_ $ty>](range: RangeInclusive<u32>) -> $ty {
++                let start = *range.start();
++                let end = *range.end();
++
++                build_assert!(start <= end);
++
++                let high = [<bit_ $ty>](end);
++                let low = [<bit_ $ty>](start);
++                (high | (high - 1)) & !(low - 1)
++            }
++        }
++    };
++}
++
++impl_genmask_fn!(
++    u64,
++    /// # Examples
++    ///
++    /// The example below highlights the default use case, i.e., when the range
++    /// is being built from non-constant values, which are represented here as
++    /// the function arguments `a` and `b`.
++    ///
++    /// ```
++    /// fn build_mask(a: u32, b: u32) -> Option<u64> {
++    ///     # use kernel::bits::genmask_checked_u64;
++    ///     // Ensures that a valid mask can be constructed for the range
++    ///     // `a..=b` by performing runtime checks.
++    ///     genmask_checked_u64(a..=b)
++    /// }
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u64;
++    /// let mask = genmask_checked_u64(0..=0);
++    /// assert_eq!(mask, Some(0b1));
++    /// ```
++    ///
++    /// This example tests the edge case in which all bits are supposed to be
++    /// set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u64;
++    /// let mask = genmask_checked_u64(0..=63);
++    /// assert_eq!(mask, Some(u64::MAX));
++    /// ```
++    ,
++    /// # Examples
++    ///
++    /// This example highlights the default use case, i.e., when the range can
++    /// be built from two constant values.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u64;
++    /// let mask = genmask_u64(21..=39);
++    /// assert_eq!(mask, 0x0000_00ff_ffe0_0000);
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u64;
++    /// let mask = genmask_u64(0..=0);
++    /// assert_eq!(mask, 0b1);
++    /// ```
++    ///
++    /// This example tests an edge case where all bits are supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u64;
++    /// let mask = genmask_u64(0..=63);
++    /// assert_eq!(mask, u64::MAX);
++    /// ```
++);
++
++impl_genmask_fn!(
++    u32,
++    /// # Examples
++    ///
++    /// The example below highlights the default use case, i.e., when the range
++    /// is being built from non-constant values, which are represented here as
++    /// the function arguments `a` and `b`.
++    ///
++    /// ```
++    /// fn build_mask(a: u32, b: u32) -> Option<u32> {
++    ///     # use kernel::bits::genmask_checked_u32;
++    ///     // Ensures that a valid mask can be constructed for the range
++    ///     // `a..=b` by performing runtime checks.
++    ///     genmask_checked_u32(a..=b)
++    /// }
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u32;
++    /// let mask = genmask_checked_u32(0..=0);
++    /// assert_eq!(mask, Some(0b1));
++    /// ```
++    ///
++    /// This example tests the edge case in which all bits are supposed to be
++    /// set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u32;
++    /// let mask = genmask_checked_u32(0..=31);
++    /// assert_eq!(mask, Some(u32::MAX));
++    /// ```
++    ,
++    /// # Examples
++    ///
++    /// This example highlights the default use case, i.e., when the range can
++    /// be built from two constant values.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u32;
++    /// let mask = genmask_u32(21..=31);
++    /// assert_eq!(mask, 0xffe0_0000);
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u32;
++    /// let mask = genmask_u32(0..=0);
++    /// assert_eq!(mask, 0b1);
++    /// ```
++    ///
++    /// This example tests an edge case where all bits are supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u32;
++    /// let mask = genmask_u32(0..=31);
++    /// assert_eq!(mask, u32::MAX);
++    /// ```
++);
++
++impl_genmask_fn!(
++    u16,
++    /// # Examples
++    ///
++    /// The example below highlights the default use case, i.e., when the range
++    /// is being built from non-constant values, which are represented here as
++    /// the function arguments `a` and `b`.
++    ///
++    /// ```
++    /// fn build_mask(a: u32, b: u32) -> Option<u16> {
++    ///     # use kernel::bits::genmask_checked_u16;
++    ///     // Ensures that a valid mask can be constructed for the range
++    ///     // `a..=b` by performing runtime checks.
++    ///     genmask_checked_u16(a..=b)
++    /// }
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u16;
++    /// let mask = genmask_checked_u16(0..=0);
++    /// assert_eq!(mask, Some(0b1));
++    /// ```
++    ///
++    /// This example tests the edge case in which all bits are supposed to be
++    /// set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u16;
++    /// let mask = genmask_checked_u16(0..=15);
++    /// assert_eq!(mask, Some(u16::MAX));
++    /// ```
++    ,
++    /// # Examples
++    ///
++    /// This example highlights the default use case, i.e., when the range can
++    /// be built from two constant values.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u16;
++    /// let mask = genmask_u16(6..=15);
++    /// assert_eq!(mask, 0xffc0);
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    /// ```
++    /// # use kernel::bits::genmask_u16;
++    /// let mask = genmask_u16(0..=0);
++    /// assert_eq!(mask, 0b1);
++    /// ```
++    ///
++    /// This example tests an edge case where all bits are supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u16;
++    /// let mask = genmask_u16(0..=15);
++    /// assert_eq!(mask, u16::MAX);
++    /// ```
++);
++
++impl_genmask_fn!(
++    u8,
++    /// # Examples
++    ///
++    /// The example below highlights the default use case, i.e., when the range
++    /// is being built from non-constant values, which are represented here as
++    /// the function arguments `a` and `b`.
++    ///
++    /// ```
++    /// fn build_mask(a: u32, b: u32) -> Option<u8> {
++    ///     # use kernel::bits::genmask_checked_u8;
++    ///     // Ensures that a valid mask can be constructed for the range
++    ///     // `a..=b` by performing runtime checks.
++    ///     genmask_checked_u8(a..=b)
++    /// }
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u8;
++    /// let mask = genmask_checked_u8(0..=0);
++    /// assert_eq!(mask, Some(0b1));
++    /// ```
++    ///
++    /// This example tests the edge case in which all bits are supposed to be
++    /// set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_checked_u8;
++    /// let mask = genmask_checked_u8(0..=7);
++    /// assert_eq!(mask, Some(u8::MAX));
++    /// ```
++    ,
++    /// # Examples
++    ///
++    /// This example highlights the default use case, i.e., when the range can
++    /// be built from two constant values.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u8;
++    /// let mask = genmask_u8(6..=7);
++    /// assert_eq!(mask, 0xc0);
++    /// ```
++    ///
++    /// This example tests an edge case where only the first bit is
++    /// supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u8;
++    /// let mask = genmask_u8(0..=0);
++    /// assert_eq!(mask, 0b1);
++    /// ```
++    ///
++    /// This example tests an edge case where all bits are supposed to be set.
++    ///
++    /// ```
++    /// # use kernel::bits::genmask_u8;
++    /// let mask = genmask_u8(0..=7);
++    /// assert_eq!(mask, u8::MAX);
++    /// ```
++);
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 6b4774b2b1c37f4da1866e993be6230bc6715841..1bb294de8cb000120a0d04f61d6f7262fbc9f600 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -54,6 +54,7 @@
+ pub mod alloc;
+ #[cfg(CONFIG_AUXILIARY_BUS)]
+ pub mod auxiliary;
++pub mod bits;
+ #[cfg(CONFIG_BLOCK)]
+ pub mod block;
+ #[doc(hidden)]
 
-Sure.
+---
+base-commit: dc35ddcf97e99b18559d0855071030e664aae44d
+change-id: 20241023-topic-panthor-rs-genmask-fabc573fef43
 
->
-> >>
-> >> [1] https://lore.kernel.org/all/aG0HJte0Xw55z_y4@pollux/
-> >> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/alloc.rs#n139
-> >> [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/alloc/allocator.rs#n130
-> >> [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/alloc/kbox.rs
-> >> [5] https://lore.kernel.org/all/20240722163111.4766-1-dakr@kernel.org/
-> >> [6] https://lore.kernel.org/all/20241004154149.93856-1-dakr@kernel.org/
-> >
-> >
-> > I feel it's really important to not separate rust _too much_ from the
-> > subsystems it utilises - if we intend to have rust be used more and more
-> > and integrated further in the kernel (something I'd like to see, more so
-> > when I learn it :P) - the only practical way forward is for the rust stuff
-> > to be considered a first class citizen and managed hand-in-glove with the
-> > not-rust stuff.
->
-> You're preaching to the choir with this on my end. I'm recommending subsystems
-> that receive the first Rust bits to get involved in one or the other way all
-> the time. And if it's only by reading along. :)
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
 
-:)))
-
-Yes well I like to think we in mm are forward thinking about this!
-
-In the end rust is here to stay and it's important to embrace it and find the
-best means of collaborating!
-
-Cheers, Lorenzo
