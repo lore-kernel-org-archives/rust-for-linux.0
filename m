@@ -1,69 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE46230BEB;
-	Tue,  8 Jul 2025 12:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA972DAFD6;
+	Tue,  8 Jul 2025 12:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751977015; cv=none; b=CoIlmTvcWK9+QIj8zmcdpON1c5kDmpl9a+B+MzDgyXHLWzJYPz6q5TcGByczNe+l9noCSWdwdruOzlmVEprMnYstLluw4TyLI9yG/mYb1FVSnK+YGtC/4V3BzI6P7VAE0daq2gAgXr7nkN4RJoz8S3m484Ne6Se0Gmx1vcRla+M=
+	t=1751977182; cv=none; b=naNenjRimpL1jCcYv5tNVH7ifrUt3uTaLnhpDEs84fBzkbRJyQ/ZCEIV6Uaw47A916S5bR99IFEfX2Z/iI/wRL0f+AcDWnWIjmIQtMxGDkClUer/C6CrUjWTqUX/cFvpiqBCJHJXSSHF3WcB1q3ZFP/xUmFgGc9bQdsvfYuLlvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751977015; c=relaxed/simple;
-	bh=UX5SL30m1Xk0f/z9EjIAeXqtJadRzsa/f1YsG2h4mZ8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=VPq84dsY7V4+7zZfdkFFar7KZipkFNK+nwTjl7/3ezRNn5/Q4UvJS6kp9VXNh9+DuJ3smL35cm4iqs21qfdDBEV2b4OjJIYM4mrPqXMOo2xPsiy6DMULWWGsH/OyOFgHAymK6y777mOYZaNW/gZjtlzl1q1JkFP2kOg1125pJfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8Oh47Jy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751977182; c=relaxed/simple;
+	bh=Y0tx0EqPvKxbehRPywzbQ+5cZgkvvq1HBIkZ2VN76bI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dNu0bU23H9auLJamggDpV51ivDPs23ATRe2hyQEuyEzOzCVabv9JSRHr926LEzfJNsiX1nqAk5JMLi88l+fEBDW/29ICOvzTIYXKV1TSb1vxGkV4/tDiaquiZlULWJ8Tnp03ObQ/gTp21YNFe3JdhZkQpag4cCpz4euqxPjb17I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ozAnVNHI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8Oh47Jy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAADC4CEED;
-	Tue,  8 Jul 2025 12:16:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ozAnVNHI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06506C4CEF0;
+	Tue,  8 Jul 2025 12:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751977014;
-	bh=UX5SL30m1Xk0f/z9EjIAeXqtJadRzsa/f1YsG2h4mZ8=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=H8Oh47JyYF5FOH7w8PE1aJfcC5j6Ba7j6+kVL7hvPjKkwyDw0FrUF17CcuMny+Ual
-	 8EyC/M9mOdIcNuCdbqvmxheE2VeIhcfA42yfUYdN96nOwlxZguU0JtNlXmUTFxz3kg
-	 i1MU5VhXNu/QhKzy3NFOtpw3Q7BrYN7WaL+nsund1VvbKR+2jthvgYPRP/IJEr7qDz
-	 XLP81ZVyj/cF1O9ZMj19RJAmy8jFRJFVeWrAMF6irRhFsSCyv3r7pkTEBNVSbLJFMn
-	 aHRvc+d2jiXPWwvYtDVLy67jeYt6uNobeDYO0MX0gipUcFrvydQC4vBCHskSiionBG
-	 rx+Yi7hiH41VQ==
+	s=k20201202; t=1751977182;
+	bh=Y0tx0EqPvKxbehRPywzbQ+5cZgkvvq1HBIkZ2VN76bI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ozAnVNHIzqETLDXhpZCG89MPrOOYSHfaBye6kqsGuu1tB+jM0BrM09AV2Yw/3jb56
+	 rgZ/M3jzjEtVWPZByBjK5N1SMedO9fmymiBhG4UPf2y9S9GMWpxhLf26RZgGa2JhQ4
+	 BJcPA0+O986jLCtaywlvLRXE7bw+wPrydKjc0ZyK80LPvyOKFMGBbtRICLvMovwMya
+	 dMCaIQn3WIoCe18kP3XcMAFVoa/UItVgoA0vI3vqLlnWZhyL2XIFaURTCR20nFEj5t
+	 iPwEKEJsX82ECqKlPJPB5wHC6AB9/fs7PX11WZDx9nTBQEGlkXMAj4J+zivndoUbzk
+	 nImiChjTIuMTQ==
+Message-ID: <dd81bc6d-5694-4051-a4aa-9d01e1cfb488@kernel.org>
+Date: Tue, 8 Jul 2025 14:19:37 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 14:16:51 +0200
-Message-Id: <DB6O0NWIIQT8.28POWW36WI5Z1@kernel.org>
-Subject: Re: [PATCH v11 4/4] rust: support large alignments in allocations
-Cc: <linux-mm@kvack.org>, <akpm@linux-foundation.org>,
- <linux-kernel@vger.kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "Vlastimil Babka" <vbabka@suse.cz>,
- <rust-for-linux@vger.kernel.org>
-To: "Vitaly Wool" <vitaly.wool@konsulko.se>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
- <20250707164948.631563-1-vitaly.wool@konsulko.se>
-In-Reply-To: <20250707164948.631563-1-vitaly.wool@konsulko.se>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>, Benno Lossin <lossin@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
+ <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
+ <abf29ebe-996e-47f6-8548-afc61ad29a89@de.bosch.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <abf29ebe-996e-47f6-8548-afc61ad29a89@de.bosch.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon Jul 7, 2025 at 6:49 PM CEST, Vitaly Wool wrote:
->  impl ReallocFunc {
-> -    // INVARIANT: `krealloc_node` satisfies the type invariants.
-> -    const KREALLOC: Self =3D Self(bindings::krealloc_node);
-> +    // INVARIANT: `krealloc_node_align` satisfies the type invariants.
-> +    const KREALLOC: Self =3D Self(bindings::krealloc_node_align);
-> =20
-> -    // INVARIANT: `vrealloc_node` satisfies the type invariants.
-> -    const VREALLOC: Self =3D Self(bindings::vrealloc_node);
-> +    // INVARIANT: `vrealloc_node_align` satisfies the type invariants.
-> +    const VREALLOC: Self =3D Self(bindings::vrealloc_node_align);
-> =20
-> -    // INVARIANT: `kvrealloc_node` satisfies the type invariants.
-> -    const KVREALLOC: Self =3D Self(bindings::kvrealloc_node);
-> +    // INVARIANT: `kvrealloc_node_align` satisfies the type invariants.
-> +    const KVREALLOC: Self =3D Self(bindings::kvrealloc_node_align);
+On 7/8/25 2:15 PM, Dirk Behme wrote:
+> For example for Resource the elements size, start, name and flags are
+> accessible. Inspired by that, what do you think about exposing the irq
+> number here, as well?
+> 
+> diff --git a/rust/kernel/irq/request.rs b/rust/kernel/irq/request.rs
+> index bd489b8d2386..767d66e3e6c7 100644
+> --- a/rust/kernel/irq/request.rs
+> +++ b/rust/kernel/irq/request.rs
+> @@ -123,6 +123,11 @@ impl<'a> IrqRequest<'a> {
+>       pub(crate) unsafe fn new(dev: &'a Device<Bound>, irq: u32) -> Self {
+>           IrqRequest { dev, irq }
+>       }
+> +
+> +    /// Returns the IRQ number of an [`IrqRequest`].
+> +    pub fn irq(&self) -> u32 {
+> +        self.irq
+> +    }
+>   }
+> 
+> 
+> I'm using that for some dev_info!().
 
-Please also adjust the corresponding type invariant. With that,
-
-	Acked-by: Danilo Krummrich <dakr@kernel.org>
+Not sure that's a reasonable candidate for dev_info!() prints, but maybe it can
+be useful for some debug prints.
