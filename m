@@ -1,100 +1,134 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC552E03F1;
-	Tue,  8 Jul 2025 14:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C0222127E;
+	Tue,  8 Jul 2025 14:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751984525; cv=none; b=Jz8gGb2ftybKWt3Jz5tvcfuVW56RqhGZW6hONDpokApcHUdkdaE73yy98/iXHUaX9cyKE4nX0P/TcUCW8HGDvPvl87R4cviH6svQRzvUOFEquZSOZBPYWSTeXEK8+Ml7ERWS3oscnmfis7axZFdnJHKIjmiY7IBzzUIuaKNIpKs=
+	t=1751985208; cv=none; b=irnBvY/z9ZDmZfxC6ZY7IWakI4hLYX+HluXqhzf4qxiJX33JnjtNKmxC8hMx6VbGnypXUI+8Q1LEFKSNmWMvf33NF70pKrV9TpQXJLc1EKR+/bBXtn1m800YSXxuBeklOnSJxsF11FNi5b2sWtVNt9aELVLIXtlpTnxV6a6DugQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751984525; c=relaxed/simple;
-	bh=DH6dfVAww/N3ud1HbrtA6oaDaN+wQqsJ2R2Jm6z9coY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b89pah88nhGj10sdY/chvLCI2QIY+4lkYJ95sdLhtQrX0vELIYwAkge+1xRCVIOorjXYCwOFHZid8GeBtwVeKVfGIoSe/nOdh3hs2kBOjhTx2Rso9MzVVhRYqVKaFIxs9GCh51t0qzuCCh29XVp0KxIbK3GY6PyQZtDIv5Uuxow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=Sd6+l4ET; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1751985208; c=relaxed/simple;
+	bh=jq8UW/oXK9a4f8Ww539jeWCh+2ltVHEiop7wKc5ohmk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=usgghdcQ/8jWZt25cnc436MVuKh1GGvySt/S9CVO/avt79cHHX3CTlstcN7Ce02FswezG4O5KXnV4fYAM9fqiN6PhEPNY5Qr2e9ePHe/NEKhls0q6cYaQ1zc3DRh5rQ+CL1YoXSV1POP6uUTvNSe/6iwVac/u0U1RBOQQB8wXSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NOkBWj+b; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="Sd6+l4ET"
-Received: from mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:e0cb:0:640:3e34:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 6A82061208;
-	Tue,  8 Jul 2025 17:21:54 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id nLidoEgMOKo0-Z2M3B1ca;
-	Tue, 08 Jul 2025 17:21:53 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1751984513;
-	bh=oLyaLZbxnfJRaG45+ieXAi9qVb5FUUkzxh78rrfH43E=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=Sd6+l4ETRk2kbA4Ht8CpdvvJAu78Qc9M6TGMzsN3mciY3M8o5YOGdHLRI+xgDoi31
-	 qijbMtWq5vzjm22/pxf0uCOjOxxEgXfotVbylobrCJwRgfo4d2CFH+98WSpwTi5eEc
-	 FbkiWHAu9P5/+UiCz+TkfiRtLvf9SOxAWtzyFIFA=
-Authentication-Results: mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 8 Jul 2025 17:21:47 +0300
-From: Onur <work@onurozkan.dev>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <gary@garyguo.net>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <peterz@infradead.org>, <mingo@redhat.com>, <will@kernel.org>,
- <longman@redhat.com>, <felipe_life@live.com>, <daniel@sedlak.dev>,
- <bjorn3_gh@protonmail.com>
-Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
-Message-ID: <20250708172147.1d694eb1@nimda.home>
-In-Reply-To: <DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org>
-References: <20250621184454.8354-1-work@onurozkan.dev>
-	<20250621184454.8354-3-work@onurozkan.dev>
-	<DASY7BECFRCT.332X5ZHZMV2W@kernel.org>
-	<aFlQ7K_mYYbrG8Cl@Mac.home>
-	<DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org>
-	<aFlpFQ4ivKw81d-y@Mac.home>
-	<DAU0ELV91E2Q.35FZOII18W44J@kernel.org>
-	<20250707163913.5ffc046d@nimda.home>
-	<DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org>
-	<20250707210613.2fd5bb55@nimda.home>
-	<DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NOkBWj+b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD192C4CEED;
+	Tue,  8 Jul 2025 14:33:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751985207;
+	bh=jq8UW/oXK9a4f8Ww539jeWCh+2ltVHEiop7wKc5ohmk=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=NOkBWj+b9vFN6R58mjMBnju3lsvdMBgXePf5tezo9q7ik4cGIBO5yj/2iL/9bgvTy
+	 zRCC30OVEBQ7Jc1mcsc5iNK6xZs8KCv5QzvMHzzzWoy4oLH0owx1/o0An1a2EQNRHA
+	 cdu8Ah59yv5z/Ga5zygw27+JsvkyM2BL9A1/DKCTS1KzOmiNjj+SmFVRenEKu6TtfD
+	 42g+iAU/h0a+S/9ycOBnQjwgeK/cGvdU0MyLl7KMRZ5Onm7Ig1kwTlYXQ+aSmpHUIe
+	 UlsXJ9ju3uPc/MvjRDENO26nytkXuirdM318jfW9mc3nd0XdIiGzGqvevojWm4tdrO
+	 qPL5Jr4A6z8Fg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Jul 2025 16:33:23 +0200
+Message-Id: <DB6QX7AK77DQ.1OOCW0I0VLRXA@kernel.org>
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+X-Mailer: aerc 0.20.1
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com> <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com> <aGeIF_LcesUM9DHk@google.com> <F3D3BD51-65D8-44BE-9007-FBA556DFB7E5@collabora.com> <DB63W1N89KFT.2J2X3Y7SEX1KF@kernel.org> <aG0F2nFpjrW1HmKR@google.com>
+In-Reply-To: <aG0F2nFpjrW1HmKR@google.com>
 
-On Mon, 07 Jul 2025 21:48:07 +0200
-"Benno Lossin" <lossin@kernel.org> wrote:
+On Tue Jul 8, 2025 at 1:49 PM CEST, Alice Ryhl wrote:
+> On Mon, Jul 07, 2025 at 10:30:27PM +0200, Benno Lossin wrote:
+>> On Mon Jul 7, 2025 at 6:18 PM CEST, Daniel Almeida wrote:
+>> > Alice,
+>> >
+>> > [=E2=80=A6]
+>> >
+>> >>> +/// The value that can be returned from an IrqHandler or a Threaded=
+IrqHandler.
+>> >>> +pub enum IrqReturn {
+>> >>> +    /// The interrupt was not from this device or was not handled.
+>> >>> +    None,
+>> >>> +
+>> >>> +    /// The interrupt was handled by this device.
+>> >>> +    Handled,
+>> >>> +}
+>> >>> +
+>> >>> +impl IrqReturn {
+>> >>> +    fn into_inner(self) -> u32 {
+>> >>> +        match self {
+>> >>> +            IrqReturn::None =3D> bindings::irqreturn_IRQ_NONE,
+>> >>> +            IrqReturn::Handled =3D> bindings::irqreturn_IRQ_HANDLED=
+,
+>> >>=20
+>> >> One option is to specify these in the enum:
+>> >>=20
+>> >> /// The value that can be returned from an IrqHandler or a ThreadedIr=
+qHandler.
+>> >> pub enum IrqReturn {
+>> >>    /// The interrupt was not from this device or was not handled.
+>> >>    None =3D bindings::irqreturn_IRQ_NONE,
+>> >>=20
+>> >>    /// The interrupt was handled by this device.
+>> >>    Handled =3D bindings::irqreturn_IRQ_HANDLED,
+>> >> }
+>> >
+>> > This requires explicitly setting #[repr(u32)], which is something that=
+ was
+>> > reverted at an earlier iteration of the series on Benno=E2=80=99s requ=
+est.
+>>=20
+>> Yeah I requested this, because it increases the size of the enum to 4
+>> bytes and I think we should try to make rust enums as small as possible.
+>>=20
+>> @Alice what's the benefit of doing it directly in the enum?
+>
+> Basically all uses of this enum are going to look like this:
+>
+> 	fn inner() -> IrqReturn {
+> 	    if !should_handle() {
+> 	        return IrqReturn::None;
+> 	    }
+> 	    // .. handle the irq
+> 	    IrqReturn::Handled
+> 	}
+> =09
+> 	fn outer() -> u32 {
+> 	    match inner() {
+> 	        IrqReturn::None =3D> bindings::irqreturn_IRQ_NONE,
+> 	        IrqReturn::Handled =3D> bindings::irqreturn_IRQ_HANDLED,
+> 	    }
+> 	}
+>
+> Setting the discriminant to the values ensures that the match in outer()
+> is a no-op. The enum is never going to be stored long-term anywhere so
+> its size doesn't matter.
 
-> >> > Instead of `begin` and `custom`, why not something like this:
-> >> >
-> >> > 	let (a, c, d) = ctx.init()
-> >> > 	    .lock(a)
-> >> >             .lock(b)
-> >> >             .lock(c)
-> >> >             .unlock(b)
-> >> >             .lock(d)
-> >> >             .finish();
-> >> >
-> >> > Instead of `begin`, `init` would be better naming to imply `fini`
-> >> > on the C side, and `unlock` instead of `custom` would make the
-> >> > intent clearer when dropping locks mid chain.
-> 
-> Also, I'm not really fond of the name `init`, how about `enter`?
+Hmm in this particular case, I think the optimizer will be able to
+remove the additional branch too. But I haven't checked.
 
-I don't have a strong feeling on any of them, they are all the same
-at some point. The reason why I suggested `init` was to keep it as
-close/same as possible to the C implementation so people with C
-knowledge would adapt to Rust implementation easier and quicker.
+I usually give the advice to not explicitly set the discriminants and
+let the compiler do it. I don't have a strong opinion on this, but we
+should figure out which one is better in which cases.
 
-> Oh yeah the name was just a placeholder.
-> 
-> The advantage of custom is that the user can do anything in the
-> closure.
-
-Right, that is a good plus compared to alternatives. :)
-
-Regards,
-Onur
-
+---
+Cheers,
+Benno
