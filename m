@@ -1,95 +1,107 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E44317C21E;
-	Tue,  8 Jul 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F57126CE02;
+	Tue,  8 Jul 2025 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751980954; cv=none; b=CxVCPLkjmptcoe0OsStzPXgb1E24c5TLUoWmsQwaMSLUGDeDyZwCIDZoupDyI/yw0UlaOy04wS9Tmuqvu//geCMP8aKT8pgDm1uoLWtUiST1tJVEkAze2dzgKEGd2KxGo+FE1qLfe5cMBtD2icvp64DZqM7OSMXEoishDREKLys=
+	t=1751982095; cv=none; b=Hq14DkcI/wvXK7zyhNWFrRfmv2hyNA2s6ROut1nfOwWBUUFXyJO7H26Vh/a/jIzn3ON+kNRCCU7AVITxn1nKtbEb2IcPVFu3BSiw7SwTpGLHPbiTk8MNz98mmjK9OM8JZ7QSg9jrFAVvQYZwwfegdCLL/1z6konUd138UHPvYXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751980954; c=relaxed/simple;
-	bh=+T7k4pW9zu9L9kYieKGcZhmdFngMDzLfDLPI/Y816oo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UWByW4lBcvkB0pM+pHZg7tCN1ijnQtZrbLPrwEXsG63sxpTmkpYUUfnNeOC+B4FaXJbygmZ8VbNPAXn47LrSObvBrMZf6ep35AqLh5/TWihGSchwsEyytkb4BmaAWWS5xFDxZytfVumXP7uz7ZI71xURzi/2ce4TmmvLMkxt5M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLebeMfV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751982095; c=relaxed/simple;
+	bh=lQ+lFAMmkEa2z0Mr2+RjJhawqs2r65qSuiDH/oxq0cs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=kShbeHPMnJdpBRDvtit1bP5WzFI86dZhvQqPF0FJMiKsPnJ1MHTlZ9Xkm8zsewk4HPcF24M2Jy44jfHh93dCzFKvg22kVSEd//lVIyUQ6bmdjoQ2wJ/k09MTbSLKcrPFLQ1oyYB04q36tDXUCzXVua7q8FrzQCkiKjQo7/QFh0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHRTauG6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLebeMfV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12298C4CEED;
-	Tue,  8 Jul 2025 13:22:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHRTauG6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE109C4CEED;
+	Tue,  8 Jul 2025 13:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751980953;
-	bh=+T7k4pW9zu9L9kYieKGcZhmdFngMDzLfDLPI/Y816oo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FLebeMfVVuXhCgT8P3SHPbIzW4hPVNUbPFYWcLJXNSBk04spAGa2H8uq84xBo8Cuh
-	 7wqfk0zqhwCa9LmqP3A7IE9scxBtVrv2N4OYgzjF9r0XUg6aAqFX8BGwGer6deBJlV
-	 vymHhORihOfuvjORkBD2jAiXVyexoVoXoC1s7JtlFgfUlHLw5vs+e2X0GhpZTk1NhR
-	 1Pu+gHhZHgA5YjjvbQ2TFEqGlWaP1zUqEu2+mzHSAbWYNmjKp3ZviRGA02hvLmib/K
-	 yDY/Y3r4TlVigQ9yKqvqYoHU3rVO8dgVZ20S0h82qgmcJxqZ1vTRlSqVjAqdXW4j5N
-	 EIlY3Tsi/mpuw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Oliver Mangold" <oliver.mangold@pm.me>,  "Benno Lossin"
- <lossin@kernel.org>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,  "Asahi
- Lina" <lina+kernel@asahilina.net>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-In-Reply-To: <CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Tue, 08 Jul 2025 12:16:19 +0200")
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
-	<20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
-	<DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
-	<DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
-	<XIUikJ12Zp37g2qKiSTF2q3jsq6PBPyhXcd_TDUgKfXYSLTG6ob0IxTuWkdNGuqq_bnb034eXyJ3j7MpETb83g==@protonmail.internalid>
-	<CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 08 Jul 2025 15:22:26 +0200
-Message-ID: <87ecuqom0d.fsf@kernel.org>
+	s=k20201202; t=1751982094;
+	bh=lQ+lFAMmkEa2z0Mr2+RjJhawqs2r65qSuiDH/oxq0cs=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=PHRTauG6I9s0l5DAhv3NTmrlI3xWnX3hXzoBcm9i6vLM70lEpXtmUiqZMy7i98F92
+	 ZvQaRw6iV82rlgGXkCT0vBbHCpPgcViJd4OWUHuJJzBrdkDhyNu8XQ9dmsu8F+vP6e
+	 LU3fhKzYhg6d24RMcrXIBBURVkpgZ/DpVJ97Q4SwgCcDjo4yTUneT+0QRaakQkgElY
+	 zcBAqR4EsDnZL/aaQAiHtJnDEDw/nqphmC1tDRqpdAYioKLhsGeulSGxoGAXP0Y04H
+	 9AGZeqtubsw4MmrgIm2FUe5FOx8PRl8BMfStKdTwuVRAuDWLUJhrXOztUXk/BCaqE7
+	 m/m9GTcbXUR0Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Jul 2025 15:41:31 +0200
+Message-Id: <DB6PTHLBMET8.2TN916HUP10X9@kernel.org>
+Cc: "Vitaly Wool" <vitaly.wool@konsulko.se>, <linux-mm@kvack.org>,
+ <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Vlastimil
+ Babka" <vbabka@suse.cz>, <rust-for-linux@vger.kernel.org>, "Liam Howlett"
+ <liam.howlett@oracle.com>
+To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v11 0/4] support large align and nid in Rust allocators
+References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
+ <824065ea-1f5c-4cd4-9917-4b7a91882af8@lucifer.local>
+ <aG0HJte0Xw55z_y4@pollux>
+ <8a08931c-ce54-4e96-9e99-e7c696389dc3@lucifer.local>
+In-Reply-To: <8a08931c-ce54-4e96-9e99-e7c696389dc3@lucifer.local>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On Tue Jul 8, 2025 at 2:36 PM CEST, Lorenzo Stoakes wrote:
+> TL;DR - the real issue here is not cc'ing the right people (Vlastimil was
+> not cc'd until v11 for instance).
 
-> On Tue, Jul 8, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold@pm=
-me> wrote:
+Since Andrew was Cc'd and also did reply, but didn't mention anything about
+missing receipients on the -mm side of things, I did not see a reason to br=
+ing
+anything up regarding this from my end.
+
+Thanks for bringing this up.
+
+> On Tue, Jul 08, 2025 at 01:55:18PM +0200, Danilo Krummrich wrote:
+>> On Tue, Jul 08, 2025 at 11:58:06AM +0100, Lorenzo Stoakes wrote:
+>> > +cc Liam
+>> >
+>> > Hi guys,
+>> >
+>> > We have a section in MAINTAINERS for mm rust (MEMORY MANAGEMENT - RUST=
+), so
+>> > it's slightly concerning to find a series (at v11!) like this that cha=
+nges
+>> > mm-related stuff and it involves files not listed there and nobody bot=
+hered
+>> > to cc- the people listed there.
 >>
->> Note, though, that I already moved it from types.rs to types/ownable.rs =
-on
->> request. It seems to me different people here have different ideas where=
- it
->> should be placed. I feel now, that it would make sense to come to an
->> agreement between the interested parties about where it should finally be
->> placed, before I move it again. Could I ask that we settle that question
->> once and for all before my next revision?
+>> What files are you referring to? Are you referring to:
+>>
+>> 	rust/kernel/alloc.rs
+>> 	rust/kernel/alloc/*
 >
-> Yeah, if there is a disagreement with something said previously, then
-> it should be resolved before starting to ping-pong between approaches
-> with more and more patch versions. Reviewers can forget or they may
-> not have read an earlier comment, but you did the right thing
-> mentioning there is such a conflict in opinions.
+> this ---> rust/helpers/slab.c            | 10 +++---
+> this ---> rust/helpers/vmalloc.c         |  5 +--
 
-Didn't we start with this placed in the top level kernel crate?
+So, your concern is about those?
 
-Anyway, I think it should go next to `ARef` and `AlwaysRefCounted`,
-which is in `types`. I think I asked to have it moved to a submodule at
-some point to keep types.rs manageable.
+> These are clearly specifically related to mm no?
 
-If we place this one to top level, we should move `ARef` and
-`AlwaysRefCounted` as well.
+Yes, and if the maintainers of slab and vmalloc agree we can add them there=
+.
 
+But again, they're just re-exporting inline functions and macros from heade=
+r
+files, which bindgen does not pick up automatically. They do not carry any =
+logic
+and purely are a workaround for bindgen.
 
-Best regards,
-Andreas Hindborg
+For instance,
 
+void * __must_check __realloc_size(2)
+	rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
+	{
+	        return vrealloc(p, size, flags);
+	}
 
-
+works around bindgen not picking up the vrealloc() macro.
