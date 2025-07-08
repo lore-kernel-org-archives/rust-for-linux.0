@@ -1,165 +1,139 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C7E2E03ED;
-	Tue,  8 Jul 2025 14:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2D3204583;
+	Tue,  8 Jul 2025 14:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751984133; cv=none; b=iVrDywq3004CCNh59IrBGX6kXK4msg3QpiyTebWai425QbEwBrC37/v5bbbvmxybxZgNnvwa2hnGsxJAXB3c8Yh+1ec6uNhx/CqgwzuAGHJ0vRT6hTvPaC0UQi6bJ9t8NLpZJVDcIMbyTAoksr4f0/ncFOzidD8dZUWSU5yj4Lk=
+	t=1751984213; cv=none; b=bS3nxZ9gQIc/F1T/zEOV/p81Wb9UBF6+Tr7X27EuIq//8SpF3xYrAIBYGoLMKoEPJkWPvkrox7XYZW2y1px8kcO9taDUmuMBQekQ+r8gwi5L7OqTNBJF4XNoBTo0UpypN5rCi1hDg+uJbcrTFmOTkyDuRdY9pwmGVrz8Xra+zkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751984133; c=relaxed/simple;
-	bh=LjqQwO6EMtttFZ01h5W9YCZvdVVY5sFtNrc3+SiL3PE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhCvUJmrJ5vk7S6jcLIsAUVB1GLCzygxd13bqKP7CaQDS9O1XOK5DAVvK/pBUVRTWOVH9I4RTYd/W1mCYxLrn2YCyoXPQKeM83AQlnqLgGn1nOBG8A/HbYNY/hwyRGqcPbM/++OJucn57jvmojf52ch8V0pu9JyhHbvjUb/vMIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/uXl8TL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751984213; c=relaxed/simple;
+	bh=HVdq9Ob+LWkVTvYMozCbo8YOzRFhxR/8PVag/iaD52Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=fztLQT61Buf9tduoPSpwl310X1Nixq2Jxotay1WugIF16gH2FQA68MpEdpKd4dQCFH7ypMpbBOhqhDk46UQwez9gOclCVZdW7b7tNbifjWs8lkSXKFzYnZmrW0BTEgyYiIDBtnMCX2IJUzpwuCmyI87u8lH20rJqDTpJeErril4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLsIDOX/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/uXl8TL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA5FC4CEEF;
-	Tue,  8 Jul 2025 14:15:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLsIDOX/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D93C4CEED;
+	Tue,  8 Jul 2025 14:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751984132;
-	bh=LjqQwO6EMtttFZ01h5W9YCZvdVVY5sFtNrc3+SiL3PE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n/uXl8TL3y1ZZeqXjJeC/DFx54bM8uo97Gb5kJgnhGiRwjvzZVZt02O88xA3/+FPF
-	 NpNz6c1fDvZwbXzihXHrJP0Yela7u0nw8z/AJMDRalCkzIuTIovyyeI9V25mh/4PlT
-	 6Ex/LEwF/inveVBRPNZZmojL0uwhQVaSmycE/pieH1hhOIue56P+zYS6/icCDB+MDq
-	 asOtj5QweyI2Bdm32SmQCK4HA89Z01mh4ccYsWMdbYpE0JdOeXaJe5ScZmizhlcTZV
-	 OlEyQxLwL6jvi/klcUPu1wb81X5trd1hapBzwMriOjwC26J8qL9W4mWr9HHTQuyJlt
-	 9R3rcp1Gnr63Q==
-From: Benno Lossin <lossin@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Fiona Behrens <me@kloenk.dev>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Alban Kurti <kurti@invicto.ai>,
-	Michael Vetter <jubalh@iodoru.org>
-Cc: linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust pin-init for v6.17
-Date: Tue,  8 Jul 2025 16:14:40 +0200
-Message-ID: <20250708141442.1339091-1-lossin@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=k20201202; t=1751984212;
+	bh=HVdq9Ob+LWkVTvYMozCbo8YOzRFhxR/8PVag/iaD52Y=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=KLsIDOX/gO9gG5yNmE+GW0qVHE/PNhaZHFFwlrCyDDCFkutAzCkrzOykvoHW3463T
+	 0NO9tgXfSPuECNSQ2RX6wZEtw/YNP0eGdP3ZHy7hFFgjuAQ0JntIcs3Bays0bsEmRk
+	 Q/OP9PCQXMyudlDjCZo3dPudakfShLV24LYYKScir4ftFY1XBoNEWlOeE/x8kH3Qkq
+	 fTESNZ+SwKP8Hz/z4t1+tzI/r7Vr0PihIIPl+I1Gx7kRihMnwGFW9Axt1/7ZpKJXY+
+	 QnXQuX44/xMRwhQlenMpyWOus49Arjo+bNLe80idPHPu8d+jT7HYVRHeGaInSgjGFt
+	 eet+zAlI36iGQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Jul 2025 16:16:48 +0200
+Message-Id: <DB6QKIHD2VGS.AHEOXL25SSXW@kernel.org>
+Subject: Re: [PATCH v11 0/4] support large align and nid in Rust allocators
+Cc: "Vitaly Wool" <vitaly.wool@konsulko.se>, <linux-mm@kvack.org>,
+ <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Vlastimil
+ Babka" <vbabka@suse.cz>, <rust-for-linux@vger.kernel.org>, "Liam Howlett"
+ <liam.howlett@oracle.com>
+To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
+ <824065ea-1f5c-4cd4-9917-4b7a91882af8@lucifer.local>
+ <aG0HJte0Xw55z_y4@pollux>
+ <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
+In-Reply-To: <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
 
-Hi Miguel,
+On Tue Jul 8, 2025 at 3:19 PM CEST, Lorenzo Stoakes wrote:
+> On Tue, Jul 08, 2025 at 01:55:18PM +0200, Danilo Krummrich wrote:
+>> On Tue, Jul 08, 2025 at 11:58:06AM +0100, Lorenzo Stoakes wrote:
+>> > +cc Liam
+>> >
+>> > Hi guys,
+>> >
+>> > We have a section in MAINTAINERS for mm rust (MEMORY MANAGEMENT - RUST=
+), so
+>> > it's slightly concerning to find a series (at v11!) like this that cha=
+nges
+>> > mm-related stuff and it involves files not listed there and nobody bot=
+hered
+>> > to cc- the people listed there.
+>>
+>> What files are you referring to? Are you referring to:
+>>
+>> 	rust/kernel/alloc.rs
+>> 	rust/kernel/alloc/*
+>>
+>> If so, they're indeed not under the "MEMORY MANAGEMENT - RUST" entry, wh=
+ich
+>> so far seems correct.
+>
+> Looking at these, they seem to be intended to be the primary means by whi=
+ch
+> slab/vmalloc allocations will be managed in rust kernel code correct?
+>
+> There's also stuff relating to NUMA etc.
+>
+> I really do wonder where the line between this and the mm stuff is. Becau=
+se
+> if the idea is 'well this is just a wrapper around slab/vmalloc' surely t=
+he
+> same can be said of what's in rust/kernel/mm.rs re: VMAs?
+>
+> So if this is the rust equivalent of include/linux/slab.h and mm/slub.c
+> then that does seem to me to suggest this should be considered an mm/rust
+> thing right?
+>
+> It'd be good to know exactly what is considered mm rust and should go
+> through the mm tree and what isn't.
 
-This time there are a couple of interesting changes, see below. Most
-importantly, we can now use `Result` as an initializer. And implement
-`Zeroable` via the `MaybeZeroable` derive macro. When the second part of
-[1] is merged, this will make all types in bindings that can be zeroed
-implement `Zeroable`.
+(Please also see the explanation in [1].)
 
-There is one small mistake in the second commit e832374ccadf ("rust:
-pin-init: change blanket impls for `[Pin]Init` and add one for
-`Result<T, E>`") I forgot to ping Andreas about the changes in Rust
-block and thus don't have his Acked-by. We discussed this privately
-and he his okay with the changes. I didn't rebase due to the fact that
-the commit already is pretty old and that Danilo already merged that
-commit into driver-core-next, see below. Sorry about this!
+There's a thin abstraction layer for allocators in Rust, represented by the
+kernel's Allocator trait [2] (which has a few differences to the Allocator =
+trait in
+upstream Rust, which, for instance, can't deal with GFP flags).
 
-All commits have been in linux-next for over three weeks.
+This allocator trait is implemented by three backends, one for each of
+krealloc(), vrealloc() and kvrealloc() [3].
 
-No conflicts expected.
+Otherwise, the alloc module implements Rust's core allocation primitives Bo=
+x and
+Vec, which each of them have a type alias for allocator backends. For insta=
+nce,
+there is KBox, VBox and KVBox [4].
 
-Note that driver-core-next is also merging the tag
-`pin-init-v6.17-result-blanket` that includes the first two commits.
+This was also mentioned in the mm rework in [5] and in the subsequent patch
+series reworking the Rust allocator module [6].
 
-Please pull for v6.17 -- thanks!
+Before [6], the Rust allocator module only covered the kmalloc allocator (i=
+.e.
+krealloc()) and was maintained under the "RUST" entry.
 
-[1]: https://lore.kernel.org/all/20250523145125.523275-1-lossin@kernel.org
+Since [6], this is maintained under the "RUST [ALLOC]" entry by me.
 
----
-Cheers,
-Benno
+Given that, there is a clear and documented responsibility, which also Andr=
+ew is
+aware of.
 
-The following changes since commit 19272b37aa4f83ca52bdf9c16d5d81bdd1354494:
+To me the current setup looks reasonable, but feel free to take a look at t=
+he
+code and its relationship to mm and Rust core infrastructure and let me kno=
+w
+what you think -- I'm happy to discuss other proposals.
 
-  Linux 6.16-rc1 (2025-06-08 13:44:43 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/pin-init-v6.17
-
-for you to fetch changes up to fc3870dc5cadb701b4122e4a8daa85f9fa2f57b9:
-
-  rust: pin-init: examples, tests: use `ignore` instead of conditionally compiling tests (2025-06-11 21:13:57 +0200)
-
-----------------------------------------------------------------
-pin-init changes for v6.17
-
-Added:
-
-- 'impl<T, E> [Pin]Init<T, E> for Result<T, E>', so results are now
-  (pin-)initializers.
-
-- 'Zeroable::init_zeroed()' delegating to 'init_zeroed()'.
-
-- New 'zeroed()', a safe version of 'mem::zeroed()' and also provide
-  it via 'Zeroable::zeroed()'.
-
-- Implement 'Zeroable' for 'Option<&T>' and 'Option<&mut T>'.
-
-- Implement 'Zeroable' for 'Option<[unsafe] [extern "abi"]
-  fn(...args...) -> ret>' for '"Rust"' and '"C"' ABIs and up to 20
-  arguments.
-
-Changed:
-
-- Blanket impls of 'Init' and 'PinInit' from 'impl<T, E> [Pin]Init<T, E>
-  for T' to 'impl<T> [Pin]Init<T> for T'.
-
-- Renamed 'zeroed()' to 'init_zeroed()'.
-
-Upstream dev news:
-
-- More CI improvements to deny warnings, use '--all-targets'. Also check
-  the synchronization status of the two '-next' branches in upstream and
-  the kernel.
-
-----------------------------------------------------------------
-Benno Lossin (12):
-      rust: pin-init: improve safety documentation for `impl<T> [Pin]Init<T> for T`
-      rust: pin-init: change blanket impls for `[Pin]Init` and add one for `Result<T, E>`
-      rust: pin-init: examples, tests: add conditional compilation in order to compile under any feature combination
-      rust: pin-init: examples: pthread_mutex: disable the main test for miri
-      rust: pin-init: feature-gate the `stack_init_reuse` test on the `std` feature
-      rust: pin-init: rename `zeroed` to `init_zeroed`
-      rust: pin-init: add `Zeroable::init_zeroed`
-      rust: pin-init: add `zeroed()` & `Zeroable::zeroed()` functions
-      rust: pin-init: implement `ZeroableOption` for `&T` and `&mut T`
-      rust: pin-init: change `impl Zeroable for Option<NonNull<T>>` to `ZeroableOption for NonNull<T>`
-      rust: pin-init: implement `ZeroableOption` for function pointers with up to 20 arguments
-      rust: pin-init: examples, tests: use `ignore` instead of conditionally compiling tests
-
-Miguel Ojeda (2):
-      rust: init: re-enable doctests
-      rust: init: remove doctest's `Error::from_errno` workaround
-
- rust/kernel/block/mq/tag_set.rs               |  12 +-
- rust/kernel/configfs.rs                       |   4 +-
- rust/kernel/init.rs                           |  28 ++---
- rust/pin-init/README.md                       |   2 +-
- rust/pin-init/examples/big_struct_in_place.rs |  28 +++--
- rust/pin-init/examples/linked_list.rs         |  10 +-
- rust/pin-init/examples/mutex.rs               |  97 +++++++++-------
- rust/pin-init/examples/pthread_mutex.rs       |   4 +
- rust/pin-init/examples/static_init.rs         |  75 ++++++------
- rust/pin-init/src/__internal.rs               |   1 +
- rust/pin-init/src/lib.rs                      | 158 ++++++++++++++++++++++----
- rust/pin-init/src/macros.rs                   |  16 +--
- 12 files changed, 287 insertions(+), 148 deletions(-)
+[1] https://lore.kernel.org/all/aG0HJte0Xw55z_y4@pollux/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/rust/kernel/alloc.rs#n139
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/rust/kernel/alloc/allocator.rs#n130
+[4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/rust/kernel/alloc/kbox.rs
+[5] https://lore.kernel.org/all/20240722163111.4766-1-dakr@kernel.org/
+[6] https://lore.kernel.org/all/20241004154149.93856-1-dakr@kernel.org/
