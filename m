@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068FA223DE7;
-	Tue,  8 Jul 2025 15:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411862BE026
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 15:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751986809; cv=none; b=f0Z8ZO6nj4KnQYpuPl7PlpwMNfzX/kwZNd6ik4M+dBNHYyDxdmjUM+A/yL6wCrI8qOWmc9U/KuosUlkG9cMcIOnhHgBUOXVHx4ZVNcRpkPMJTp/JZ8EvEru+usEzdQto8fRXpmCj+FFY93VRcIuhpwMX7aLicaasRobdZqe9rHc=
+	t=1751987056; cv=none; b=gcb/RwgwGCaBkvgXGW02WY8Zv/d1HrkxjCiaD8un25QHhx7NwQGShmrL7qOMEYOMiHL669NzYE/5OhryQoshplsIFgiqrdce2hMp90vukeHzwIX/430wDvcdwD6IJTGIvzMuR1zyP29rKSpK3EYAtwnmwPFECw6MkfwmUyyh9eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751986809; c=relaxed/simple;
-	bh=8zhdXKTkB9Q4veJXhlqQ8WPtuFRRjdAu8mZrNb0FZIM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=hCOTakkvcZLjl3/gepX3W8GFzLoDxUHnUj0xZxPDg2HrlA6qP+v8oEIUwoDNYZ8hk97kQTMP+jsS8GCQAvqIJGDuDslN3kl19gHLSG70xQ8p5NsDQJpPYO4IpkDBiQpnzBCLTbBfbHkwP5RzWtOHG6N3mhdAes7qd6AtzyiGhDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ABGeFg8I; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751987056; c=relaxed/simple;
+	bh=WK0WbKAepmJH2IHvMqiUX75fgCZn9Ax6+qg1K5L/nMQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:
+	 References:In-Reply-To; b=N6WfO/r7BV/QzUyDQuuahW0veqW884ikz1jn6o1P3g69URBP2/BBxHnoCGv7JjTRv0zfUh0CDdWZHNgMtbpfuNZ1XX6U/Rro0lDX75VIR7szsS7aB6YJiJ/yJ+7NQvXV2zWbuEkzsEOfPxicW3EA2/m8/mRk3a9hSng2kHZFA+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbkZoa/s; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ABGeFg8I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5426FC4CEEF;
-	Tue,  8 Jul 2025 15:00:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbkZoa/s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B06AC4CEED;
+	Tue,  8 Jul 2025 15:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751986808;
-	bh=8zhdXKTkB9Q4veJXhlqQ8WPtuFRRjdAu8mZrNb0FZIM=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ABGeFg8IZcrpiwF2E5/VAvkRG+wMvkvFc2Ddba5FN/gXW/iwOBuVdp6OTkqN3dwjO
-	 uWSDMs9o0RbluEucdgQi/Qg334hI4dOlr/+eey3nPQIUywQ6Vohzx+oq1rxszOMGNx
-	 Tn3aQJKZgoy4dR8u8wF5I496GfCTu/vDtiV+FO67BgKVOLhAV3+OCqb4PecIQg3wEJ
-	 S8+ZIqWxLo1ycJ6NveVnpztGPoihkyS3QRPYpxXaUwLhjUYpj7vgSuZBxi1uAEkAVo
-	 UpK3bLYur6v0I/qfPkVlZsxRNSyg32bvDeg2vZrLJLiGQldfK2aeW5xHv13HuX+n2+
-	 ECB60jByno6Zw==
+	s=k20201202; t=1751987055;
+	bh=WK0WbKAepmJH2IHvMqiUX75fgCZn9Ax6+qg1K5L/nMQ=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=bbkZoa/sbwIMOy03ni80VuY1+6JGD0ly+qZjpHuulHsFY95hFd2Z2ydG4zKzcr1Z7
+	 A7lSz+hAHpWp7kUk76YNyYfg6vHJ9BdRIlKu7jccl5kY3KrFRkzCaQnPw0o+gVEiDd
+	 X6j+qVdh4QoRzmHBvrGUUS/OBAhixZDj+tfIYkeKG2z5jhLiwJYJY1OFaE9MFgqtpD
+	 FbyQADheR7y3uk7IfPh33cuPj/xGcC6NSefEbFGdG39+4+AckFxfME5UuA7PKEtxFz
+	 GG9z3KPrTIcl4JIjTUAp3o0GjpuFov7BckDqT8YVX4wppSQJvQAAICjUXT2otxq7n4
+	 Nx765leT7WpEA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,80 +34,84 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 17:00:03 +0200
-Message-Id: <DB6RHMJJ5I4F.3LB85KT35FO5C@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Asahi Lina" <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+Date: Tue, 08 Jul 2025 17:04:12 +0200
+Message-Id: <DB6RKSNTHUZ8.DW0EBFDU6L1I@kernel.org>
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Oliver Mangold" <oliver.mangold@pm.me>
+To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>,
+ <aliceryhl@google.com>, <dakr@kernel.org>, <ojeda@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ <~lkcamp/patches@lists.sr.ht>
+Subject: Re: [PATCH v6 3/3] rust: revocable: Document RevocableGuard
+ invariants and refine Deref safety
 X-Mailer: aerc 0.20.1
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
- <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
- <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
-In-Reply-To: <aGzrZqIrStGD_UBp@mango>
+References: <20250708003428.76783-1-marcelomoreira1905@gmail.com>
+ <20250708003428.76783-4-marcelomoreira1905@gmail.com>
+In-Reply-To: <20250708003428.76783-4-marcelomoreira1905@gmail.com>
 
-On Tue Jul 8, 2025 at 11:56 AM CEST, Oliver Mangold wrote:
-> On 250707 1123, Benno Lossin wrote:
->> On Mon Jul 7, 2025 at 8:58 AM CEST, Oliver Mangold wrote:
->> > On 250702 1303, Benno Lossin wrote:
->> >> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
->> >> > +///
->> >> > +/// # Invariants
->> >> > +///
->> >> > +/// The pointer stored in `ptr` can be considered owned by the [`O=
-wned`] instance.
->> >>
->> >> What exactly is "owned" supposed to mean? It depends on the concrete =
-`T`
->> >> and that isn't well-defined (since it's a generic)...
->> >
->> > "owned" means that access to the `T` is exclusive through the `Owned<T=
->`,
->> > so normal Rust semantics can be applied.
->>=20
->> Okay, in that case just say that `ptr` has exclusive access.
+On Tue Jul 8, 2025 at 2:33 AM CEST, Marcelo Moreira wrote:
+> Improves the `RevocableGuard` documentation by explicitly stating that
+> its `data_ref` member is a valid pointer as an invariant. Additionally,
+> the `Deref` implementation's `SAFETY` comment is refined to justify
+> the `unsafe` dereference based on this new invariant and the
+> `_rcu_guard` ensuring data accessibility.
 >
-> Or, ehm, sorry, I forgot, ownership also implies that the allocation of t=
-he
-> underlying resource/object is now under the responsibility of the owner,
-> i.e. the owner should free it at the appropriate time.
+> These changes address feedback regarding the clarity and completeness
+> of `RevocableGuard`'s safety guarantees.
 >
-> In short, just the standard meaning of ownership in Rust.
+> Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+> ---
+>  rust/kernel/revocable.rs | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 >
-> https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> index 6d8e9237dbdf..64fe44b4f5a3 100644
+> --- a/rust/kernel/revocable.rs
+> +++ b/rust/kernel/revocable.rs
+> @@ -233,7 +233,8 @@ fn drop(self: Pin<&mut Self>) {
+>  ///
+>  /// # Invariants
+>  ///
+> -/// The RCU read-side lock is held while the guard is alive.
+> +/// - `data_ref` is a valid pointer to a `T` object for the entire lifet=
+ime of this guard.
 
-Okay that's good to hear. I think what tripped me up the most was the
-"can be considered" wording. Let's just say:
+This should be:
 
-    /// # Invariants
-    ///
-    /// - `ptr` is valid,
-    /// - `*ptr` is owned by `self`,
-    /// - `ptr` is an "owning pointer" according to the [`Ownable`] impleme=
-ntation for `T`.
+    /// - `data_ref` is a valid pointer for as long as the RCU read-side lo=
+ck is held.
 
-And then on `Ownable` we add:
+> +/// - The RCU read-side lock is held while the guard is alive.
 
-    /// # Invariants
-    ///
-    /// An implementer of this trait needs to define which pointers can be =
-supplied to
-    /// [`Self::release`]. These pointers are called "owning pointers".
+And this invariant is unnecessary.
 
-This should be as general as possible and still give us exactly the
-guarantees that we need to implement `Owned`.
+>  pub struct RevocableGuard<'a, T> {
+>      // This can't use the `&'a T` type because references that appear in=
+ function arguments must
+>      // not become dangling during the execution of the function, which c=
+an happen if the
+> @@ -258,8 +259,8 @@ impl<T> Deref for RevocableGuard<'_, T> {
+>      type Target =3D T;
+> =20
+>      fn deref(&self) -> &Self::Target {
+> -        // SAFETY: By the type invariants, we hold the rcu read-side loc=
+k, so the object is
+> -        // guaranteed to remain valid.
+> +        // SAFETY: `self.data_ref` is valid for writes because of `Self`=
+'s type invariants,
+> +        // and `_rcu_guard` ensures the data's accessibility for the lif=
+etime of this guard.
 
-`Owned::from_raw` can then require that the pointer is an owning
-pointer (& it's valid) and that the caller yields ownership to
-`from_raw`.
+This also needs to be adjusted.
+
+Also this patch should fix any invariant comments needed to construct
+`RevocableGuard`.
 
 ---
 Cheers,
 Benno
+
+>          unsafe { &*self.data_ref }
+>      }
+>  }
+
