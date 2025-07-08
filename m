@@ -1,267 +1,266 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143001F949;
-	Tue,  8 Jul 2025 13:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F332C15A6
+	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 14:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751982136; cv=none; b=g6GCBbW7g8fboMsCiH96vcs+50i/EA7txFhctyKB+Zo0DPL7Ng3xHqD/7xW4H2PRTvjTVM1NdEqdxS2PY7lsYZDiTZAHrTK8n8qze/wgjnLVTfXBBlcma0dqJzNgkvzZKSjl7TGtkojNfZDK/yO2uX65WUjFDMmUjCLVk7B72IY=
+	t=1751983438; cv=none; b=lK1+u8r72Jo/E7IaNsG9uDUrlZwHW+v6a0/ejqmHS0gKk3xkRn1/0jhacHAIQHNFYhymNxa2qbCxjzzgSTqJveMd9zcgXxgEqlzaNGlmDohXxa13BRVoRfp17qTkpHDgTRJJIzUfYFE0lFIWKrPRTPNiYvOi/sxBBkhZOgQc2u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751982136; c=relaxed/simple;
-	bh=4OB+fvC6xINHXBjWi2+D07sb7phDCGROqvwbPea3V1g=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=c9cBW0pccl+LBzVPLlE7Hu4ykvcEEH3xKEX6Pue5IwwidYczSwuvEtYLncs7KBRXN/cjgxANrJ/i4x+Um/2R9qsf6Lutm6kIYKa4+G9JuY/pl83VDrYwl1E5ZVc+KC9RupSYRnGboufA+TPUHp8rbN07UYGKWIgTKsfYMv78Bik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Glm03Xc8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751983438; c=relaxed/simple;
+	bh=Agv17X3mvAYieMcLI+E8qE5OMCSksgIJ5+HvJwwulNI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=OErowRzZYCvRvh/+lgzv2TCagoFpN3flXmE9naNiSnLOdLR3/vBC9QSwXeblCcfCuSM3V3AJTPxNqDTT6FEpeGiymPPf8fS08ALbeeCFpkkndDhlUNu4Qf8ze91TWbnRJpJhLgOetHOQ9DSBFA8+7M1fWUWRIJJpmH/xMu7QiZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=lG2RiA0k; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=XNOynaG7; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Glm03Xc8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7D5C4CEED;
-	Tue,  8 Jul 2025 13:42:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751982135;
-	bh=4OB+fvC6xINHXBjWi2+D07sb7phDCGROqvwbPea3V1g=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=Glm03Xc8B+tbxdytL9QIk5GBHAPU/V/h0gPg4XQkFoNuz/fGRqVYbmU6VhTVO7y3z
-	 75+Md/kxHCOFGCneWq8c1TUZb6NvSQOF4zdCMqOuRLzP6IXa7oZVyp9mYXktmbxvBh
-	 WUMwX021u8efCucTDRwk2mRaciGcjg1jW3NIopYjee8CzxAu+PToPN7xeKc3MW27KC
-	 2ShOKhmmVbIbTujg0E45T+OeInWqnISmqh+8G8LGUUD1CcHU205UGEHlGkGstFQoo2
-	 j7dlTQH3UMQPeoYam7aAzsK3gsJ2WTZG5V3n8hgRl7/yxPyEtaWbVLUsMJMbFhtJfe
-	 8Le1O6ajhhwLw==
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="lG2RiA0k";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="XNOynaG7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1751983433; x=1752588233;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=qZUWksruLaSEO+NHp3fF03+PfoUOrcJmckXB6q0rWxo=;
+	b=lG2RiA0knTFgs+6fK3rSxfikHOgQxVE1PQOecN28LbbjX9c5zhaJOQkq8VOHGJqIVDYy8bpNPwteC
+	 XsOplf2BG4JQkwbpg87rh65l53+oTjBxue3AYdeujAPM4g/yhjMdCoHvPc0OwBAl7McWogR63Ys4+Q
+	 UzMdiazKEgCJg9ncHXxNA+Tmr0AUVZ3uGVGkgnm5BX3kvaUCbVlCj9uXnZUqlbd/KSkKAXW51CSujU
+	 5b0iwyiW/AEYKUw8AdH9wvNz+Nfd/lOQhkEDzwar85TPZC1y/5SMFXCg5qU0Mpqv2V0+n3920AUpO5
+	 mf5VJT8yS+FDj8f6tX8VgI9+k2zH4vA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1751983433; x=1752588233;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=qZUWksruLaSEO+NHp3fF03+PfoUOrcJmckXB6q0rWxo=;
+	b=XNOynaG7bnNGKzwhY1g4GLaq1BIIeOpEAw8hGBruVXlIIBNNYI/KTR1BEYAYabDDciiWRVcoQji3W
+	 fd93vaHBQ==
+X-HalOne-ID: 60bc3ac4-5c04-11f0-a53e-494313b7f784
+Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay6.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 60bc3ac4-5c04-11f0-a53e-494313b7f784;
+	Tue, 08 Jul 2025 14:03:52 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v11 2/4] mm/slub: allow to set node and align in
+ k[v]realloc
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <4c5852cc-2ca5-432b-8426-01c108df66cb@suse.cz>
+Date: Tue, 8 Jul 2025 16:03:41 +0200
+Cc: linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 15:42:11 +0200
-Message-Id: <DB6PU07CUFZK.9JEG3423922O@kernel.org>
-To: "Oliver Mangold" <oliver.mangold@pm.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Asahi Lina" <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 4/4] rust: Add `OwnableRefCounted`
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <20250618-unique-ref-v11-4-49eadcdc0aa6@pm.me>
- <DB1LPFAX66WG.1QL5JDCWI7RN4@kernel.org> <aGuAR7JCrlmzQrx4@mango>
- <DB5PX74OB3DX.1UNT8MIBWNC2G@kernel.org> <aGzmoMWvy1v7ayyn@mango>
-In-Reply-To: <aGzmoMWvy1v7ayyn@mango>
+Message-Id: <76FFFF68-15F3-4A36-BF1D-A33CF36FDC9E@konsulko.se>
+References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
+ <20250707164908.631462-1-vitaly.wool@konsulko.se>
+ <4c5852cc-2ca5-432b-8426-01c108df66cb@suse.cz>
+To: Vlastimil Babka <vbabka@suse.cz>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-On Tue Jul 8, 2025 at 11:36 AM CEST, Oliver Mangold wrote:
-> On 250707 1133, Benno Lossin wrote:
->> On Mon Jul 7, 2025 at 10:07 AM CEST, Oliver Mangold wrote:
->> > On 250702 1524, Benno Lossin wrote:
->> >> On Wed Jun 18, 2025 at 2:27 PM CEST, Oliver Mangold wrote:
->> >> > @@ -132,3 +134,124 @@ fn drop(&mut self) {
->> >> >          unsafe { T::release(self.ptr) };
->> >> >      }
->> >> >  }
->> >> > +
->> >> > +/// A trait for objects that can be wrapped in either one of the r=
-eference types [`Owned`] and
->> >> > +/// [`ARef`].
->> >> > +///
->> >> > +/// # Safety
->> >> > +///
->> >> > +/// Implementers must ensure that:
->> >> > +///
->> >> > +/// - [`try_from_shared()`](OwnableRefCounted::into_shared) only r=
-eturns an [`Owned<Self>`] if
->> >> > +///   exactly one [`ARef<Self>`] exists.
->> >>
->> >> This shouldn't be required?
->> >
->> > Ehm, why not? `Owned<T>` is supposed to be unique.
+
+
+> On Jul 8, 2025, at 2:52=E2=80=AFPM, Vlastimil Babka <vbabka@suse.cz> =
+wrote:
+>=20
+> On 7/7/25 18:49, Vitaly Wool wrote:
+>> Reimplement k[v]realloc_node() to be able to set node and
+>> alignment should a user need to do so. In order to do that while
+>> retaining the maximal backward compatibility, add
+>> k[v]realloc_node_align() functions and redefine the rest of API
+>> using these new ones.
 >>=20
->> It's not needed as a safety requirement for implementing the trait. If
->> the implementation only contains sound code, then `Owned::from_raw`
->> should already ensure that `Owned<Self>` is only created if there is
->> exactly one reference to it.
->
-> Okay, got it now. I guess you are right, it is not strictly needed. If th=
-e
-> requirement should be removed, not sure, though. Isn't it error-prone if =
-it
-> explicitly stated here (again) that it is required?
-
-You can move it to the normal docs of the trait, but it shouldn't be a
-safety requirement.
-
->> >> > +/// - [`into_shared()`](OwnableRefCounted::into_shared) set the re=
-ference count to the value which
->> >> > +///   the returned [`ARef<Self>`] expects for an object with a sin=
-gle reference in existence. This
->> >> > +///   implies that if [`into_shared()`](OwnableRefCounted::into_sh=
-ared) is left on the default
->> >> > +///   implementation, which just rewraps the underlying object, th=
-e reference count needs not to be
->> >> > +///   modified when converting an [`Owned<Self>`] to an [`ARef<Sel=
-f>`].
->> >>
->> >> This also seems pretty weird...
->> >>
->> >> I feel like `OwnableRefCounted` is essentially just a compatibility
->> >> condition between `Ownable` and `RefCounted`. It ensures that the
->> >> ownership declared in `Ownable` corresponds to exactly one refcount
->> >> declared in `RefCounted`.
->> >>
->> >> That being said, I think a `RefCounted` *always* canonically is
->> >> `Ownable` by the following impl:
->> >>
->> >>     unsafe impl<T: RefCounted> Ownable for T {
->> >>         unsafe fn release(this: NonNull<Self>) {
->> >>             T::dec_ref(this)
->> >>         }
->> >>     }
->> >>
->> >> So I don't think that we need this trait at all?
->> >
->> > No. For an `ARef<T>` to be converted to an `Owned<T>` it requires a
->> > `try_from_shared()` implementation. It is not even a given that the
->> > function can implemented, if all the kernel exposes are some kind of
->> > `inc_ref()` and `dec_ref()`.
+>> With that change we also provide the ability for the Rust part of
+>> the kernel to set node and alignment in its K[v]xxx
+>> [re]allocations.
 >>=20
->> I don't understand this paragraph.
->
-> What I mean is, to convert from an `ARef` to an `Owned`, it is necessary =
-to
-> check that there is only one reference. The API of the underlying object
-> might not provide that.
->
-> About the above documentation, it is a bit convoluted, because I had the
-> case of `mq::Request` in mind, where the refcount needs to be changed
-> during conversion.
-
-So I think I got a bit confused with my initial question. We do need
-this trait in order to enable the `ARef -> Owned` conversion. But the
-other way is going to be fine if we choose to add the blanket impl
-above.
-
-Now the question is do we want `T: RefCounted` to imply `T: Ownable`? I
-think the answer is yes, but it sadly conflicts with `AlwaysRefCounted`,
-since if `T: AlwaysRefCounted` it must not implement `Ownable`.
-
-So to me it seems this point has become moot.
-
->> > Also there are more complicated cases like with `Mq::Request`, where t=
-he
->> > existence of an `Owned<T>` cannot be represented by the same refcount =
-value
->> > as the existence of exactly one `ARef<T>`.
+>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+>> ---
+>> include/linux/slab.h | 40 ++++++++++++++++++---------
+>> mm/slub.c            | 64 =
+++++++++++++++++++++++++++++++--------------
+>> 2 files changed, 71 insertions(+), 33 deletions(-)
 >>=20
->> Ah right, I forgot about this. What was the refcount characteristics of
->> this again?
+>> diff --git a/include/linux/slab.h b/include/linux/slab.h
+>> index d5a8ab98035c..13abcf4ada22 100644
+>> --- a/include/linux/slab.h
+>> +++ b/include/linux/slab.h
+>> @@ -465,9 +465,15 @@ int kmem_cache_shrink(struct kmem_cache *s);
+>> /*
+>>  * Common kmalloc functions provided by all allocators
+>>  */
+>> -void * __must_check krealloc_noprof(const void *objp, size_t =
+new_size,
+>> -     gfp_t flags) __realloc_size(2);
+>> -#define krealloc(...) alloc_hooks(krealloc_noprof(__VA_ARGS__))
+>> +void * __must_check krealloc_node_align_noprof(const void *objp, =
+size_t new_size,
+>> +        unsigned long align,
+>> +        gfp_t flags, int nid) __realloc_size(2);
+>> +#define krealloc_node_noprof(_p, _s, _f, _n) \
+>> + krealloc_node_align_noprof(_p, _s, 1, _f, _n)
+>> +#define krealloc_noprof(...) krealloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>> +#define krealloc_node_align(...) =
+alloc_hooks(krealloc_node_align_noprof(__VA_ARGS__))
+>> +#define krealloc_node(...) =
+alloc_hooks(krealloc_node_noprof(__VA_ARGS__))
+>> +#define krealloc(...) alloc_hooks(krealloc_noprof(__VA_ARGS__))
+>=20
+> Hm wonder if krealloc() and krealloc_node_align() would be enough. Is
+> krealloc_node() only used between patch 3 and 4?
+> Also perhaps it would be more concise to only have
+> krealloc_node_align_noprof() with alloc_hooks wrappers filling the
+> NUMA_NO_NODE (and 1), so we don't need to #define the _noprof variant =
+of
+> everything. The _noprof callers are rare so they can just always use
+> krealloc_node_align_noprof() directly and also fill in the =
+NUMA_NO_NODE (and 1).
+
+I don=E2=80=99t think that krealloc_node() is used at all at the moment. =
+I thought I=E2=80=99d define these to be symmetrical to vmalloc() but if =
+you believe these are redundant, I=E2=80=99m all for removing them.
+
+>=20
+>> void kfree(const void *objp);
+>> void kfree_sensitive(const void *objp);
+>> @@ -1041,18 +1047,23 @@ static inline __alloc_size(1) void =
+*kzalloc_noprof(size_t size, gfp_t flags)
+>> #define kzalloc(...) alloc_hooks(kzalloc_noprof(__VA_ARGS__))
+>> #define kzalloc_node(_size, _flags, _node) kmalloc_node(_size, =
+(_flags)|__GFP_ZERO, _node)
 >>=20
->> *  1 =3D in flight, owned by C
->> *  2 =3D in flight, owned by Rust
->> * >2 =3D in flight, owned by Rust + additional references used by Rust
->>        code
+>> -void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t =
+flags, int node) __alloc_size(1);
+>> -#define kvmalloc_node_noprof(size, flags, node) \
+>> - __kvmalloc_node_noprof(PASS_BUCKET_PARAMS(size, NULL), flags, node)
+>> +void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned =
+long align,
+>> +      gfp_t flags, int node) __alloc_size(1);
+>> +#define kvmalloc_node_align_noprof(_size, _align, _flags, _node) \
+>> + __kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, NULL), _align, =
+_flags, _node)
+>> +#define kvmalloc_node_noprof(_size, _flags, _node) \
+>> + kvmalloc_node_align_noprof(_size, 1, _flags, _node)
+>> +#define kvmalloc_node_align(...) \
+>> + alloc_hooks(kvmalloc_node_align_noprof(__VA_ARGS__))
+>> #define kvmalloc_node(...) =
+alloc_hooks(kvmalloc_node_noprof(__VA_ARGS__))
+>=20
+> Ditto.
+>=20
 >>=20
->> Correct? Maybe @Andreas can check.
+>> -#define kvmalloc(_size, _flags) kvmalloc_node(_size, _flags, =
+NUMA_NO_NODE)
+>> -#define kvmalloc_noprof(_size, _flags) kvmalloc_node_noprof(_size, =
+_flags, NUMA_NO_NODE)
+>> +#define kvmalloc_noprof(...) kvmalloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>> +#define kvmalloc(...) alloc_hooks(kvmalloc_noprof(__VA_ARGS__))
+>> #define kvzalloc(_size, _flags) kvmalloc(_size, (_flags)|__GFP_ZERO)
 >>=20
->> >> > +///
->> >> > +/// # Examples
->> >>
->> >> If we're having an example here, then we should also have on on `Owne=
-d`.
->> >
->> > Yes, maybe. I mostly felt the need to create one for `OwnableRefCounte=
-d`
->> > because it is a more complex idea than `Ownable`.
->> >
->> > If I remember correctly, I didn't create one for `Owned`, as it should
->> > probably more or less the same as for `ARef` and the one there has eve=
-n
->> > more problems of the kind you are pointing out. So maybe it would be b=
-est
->> > to wait until someone fixes that and have the fixed version copied ove=
-r to
->> > `Owned` in the process?
+>> -#define kvzalloc_node(_size, _flags, _node) kvmalloc_node(_size, =
+(_flags)|__GFP_ZERO, _node)
+>> +#define kvzalloc_node(_s, _f, _n) kvmalloc_node(_s, (_f)|__GFP_ZERO, =
+_n)
+>> #define kmem_buckets_valloc(_b, _size, _flags) \
+>> - alloc_hooks(__kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), =
+_flags, NUMA_NO_NODE))
+>> + alloc_hooks(__kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), =
+1, _flags, NUMA_NO_NODE))
 >>=20
->> Wait which problems on `ARef` do you mean? I disagree that `Owned` and
->> `ARef` have the same example. `Owned` should expose operations that
->> `ARef` can't otherwise there would be no value in using `Owned`.
->
-> I mean it uses a `struct Empty {}`, which doesn't do any refcounting and
-> the safety requirements of `ARef::from_raw()` are also not fulfilled.
-
-Right.
-
-> The point of `Owned` is not that it provides more operations than `ARef`
-> but rather that it provides less. The reference cannot be cloned. Actuall=
-y
-> it is not supposed to provide much features at all, except for freeing th=
-e
-> underlying object when it is dropped.
-
-Both our statements are true at the same time: `Owned<T>` itself has
-less operations available compared to `ARef`, but `Owned<Specific>` has
-potentially more operations than `ARef<Speceific>`. So eg in the
-`Request` case, one can only call `end_ok` if you have an `Owned` one.
-
-> It is supposed to just be a safe wrapper around a `*T`, marking that the
-> reference is Owned/Unique. Safe functions defined elsewhere can then take=
- a
-> `Owned<T>` or `&mut Owned<T>` which provides the assurance of
-> ownership/uniqueness.
-
-Well it should also have compatibility with `RefCounted` if it
-implements `OwnableRefCounted`.
-
->> >> > +///
->> >> > +/// A minimal example implementation of [`OwnableRefCounted`], [`O=
-wnable`] and its usage with
->> >> > +/// [`ARef`] and [`Owned`] looks like this:
->> >> > +///
->> >> > +/// ```
->> >> > +/// # #![expect(clippy::disallowed_names)]
->> >> > +/// use core::cell::Cell;
->> >> > +/// use core::ptr::NonNull;
->> >> > +/// use kernel::alloc::{flags, kbox::KBox, AllocError};
->> >> > +/// use kernel::types::{
->> >> > +///     ARef, RefCounted, Owned, Ownable, OwnableRefCounted,
->> >> > +/// };
->> >> > +///
->> >> > +/// struct Foo {
->> >> > +///     refcount: Cell<usize>,
->> >> > +/// }
->> >> > +///
->> >> > +/// impl Foo {
->> >> > +///     fn new() -> Result<Owned<Self>, AllocError> {
->> >> > +///         // Use a `KBox` to handle the actual allocation.
->> >> > +///         let result =3D KBox::new(
->> >> > +///             Foo {
->> >> > +///                 refcount: Cell::new(1),
->> >> > +///             },
->> >> > +///             flags::GFP_KERNEL,
->> >> > +///         )?;
->> >> > +///         let result =3D NonNull::new(KBox::into_raw(result))
->> >> > +///             .expect("Raw pointer to newly allocation KBox is n=
-ull, this should never happen.");
->> >>
->> >> I'm not really convinced that an example using `KBox` is a good one..=
-.
->> >> Maybe we should just have a local invisible `bindings` module that
->> >> exposes a `-> *mut foo`. (internally it can just create a KBox`)
->> >
->> > The example would become quite a bit more complicated then, no?
+>> static inline __alloc_size(1, 2) void *
+>> kvmalloc_array_node_noprof(size_t n, size_t size, gfp_t flags, int =
+node)
+>> @@ -1068,13 +1079,16 @@ kvmalloc_array_node_noprof(size_t n, size_t =
+size, gfp_t flags, int node)
+>> #define kvmalloc_array_noprof(...) =
+kvmalloc_array_node_noprof(__VA_ARGS__, NUMA_NO_NODE)
+>> #define kvcalloc_node_noprof(_n,_s,_f,_node) =
+kvmalloc_array_node_noprof(_n,_s,(_f)|__GFP_ZERO,_node)
+>> #define kvcalloc_noprof(...) kvcalloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>> -
+>> #define kvmalloc_array(...) =
+alloc_hooks(kvmalloc_array_noprof(__VA_ARGS__))
+>> #define kvcalloc_node(...) =
+alloc_hooks(kvcalloc_node_noprof(__VA_ARGS__))
+>> #define kvcalloc(...) alloc_hooks(kvcalloc_noprof(__VA_ARGS__))
 >>=20
->> Just hide those parts behind `#` lines in the example.
->
-> I don't know about this method. Can you give an example on how that works=
-?
+>> -void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>> - __realloc_size(2);
+>> +void *kvrealloc_node_align_noprof(const void *p, size_t size, =
+unsigned long align,
+>> +   gfp_t flags, int nid) __realloc_size(2);
+>> +#define kvrealloc_node_align(...) =
+kvrealloc_node_align_noprof(__VA_ARGS__)
+>> +#define kvrealloc_node_noprof(_p, _s, _f, _n) =
+kvrealloc_node_align_noprof(_p, _s, 1, _f, _n)
+>> +#define kvrealloc_node(...) =
+alloc_hooks(kvrealloc_node_noprof(__VA_ARGS__))
+>> +#define kvrealloc_noprof(...) kvrealloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>> #define kvrealloc(...) alloc_hooks(kvrealloc_noprof(__VA_ARGS__))
+>=20
+> Ditto.
+>=20
+>> extern void kvfree(const void *addr);
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index c4b64821e680..881244c357dd 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -4845,7 +4845,7 @@ void kfree(const void *object)
+>> EXPORT_SYMBOL(kfree);
+>>=20
+>> static __always_inline __realloc_size(2) void *
+>> -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
+>> +__do_krealloc(const void *p, size_t new_size, unsigned long align, =
+gfp_t flags, int nid)
+>> {
+>> void *ret;
+>> size_t ks =3D 0;
+>> @@ -4859,6 +4859,20 @@ __do_krealloc(const void *p, size_t new_size, =
+gfp_t flags)
+>> if (!kasan_check_byte(p))
+>> return NULL;
+>>=20
+>> + /* refuse to proceed if alignment is bigger than what kmalloc() =
+provides */
+>> + if (!IS_ALIGNED((unsigned long)p, align) || new_size < align)
+>> + return NULL;
+>> +
+>> + /*
+>> +  * If reallocation is not necessary (e. g. the new size is less
+>> +  * than the current allocated size), the current allocation will be
+>> +  * preserved unless __GFP_THISNODE is set. In the latter case a new
+>> +  * allocation on the requested node will be attempted.
+>> +  */
+>> + if (unlikely(flags & __GFP_THISNODE) && nid !=3D NUMA_NO_NODE &&
+>> +      nid !=3D page_to_nid(vmalloc_to_page(p)))
+>=20
+> We need virt_to_page() here not vmalloc_to_page().
 
-See the second code block in [1].
+Indeed, thanks. It is a c=E2=80=99n=E2=80=99p error, we had =
+virt_to_page() in earlier patchsets (i. e. up until v10).
 
-[1]: https://doc.rust-lang.org/rustdoc/write-documentation/what-to-include.=
-html#examples
+>=20
+>> + goto alloc_new;
+>> +
+>> if (is_kfence_address(p)) {
+>> ks =3D orig_size =3D kfence_ksize(p);
+>> } else {
 
----
-Cheers,
-Benno
+
