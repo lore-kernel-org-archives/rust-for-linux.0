@@ -1,109 +1,108 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F426221FA0;
-	Tue,  8 Jul 2025 18:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251E2356A4;
+	Tue,  8 Jul 2025 19:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752000448; cv=none; b=TI25Jk1Cjgkzb0gd1cd72yaP1qLZYmi8h7iCWt9yctuHDWA8PAHZmo8FL5O5mh9Otkg/JkFYp2BefWYOXQ2HaMog5d7bqv37cd4irzG9WYeNFJB1j352hOva/r4ySPVrQHURClDvE7i35QTBQpDs3uPJthR/oRd+0D2SEJ5zGTY=
+	t=1752002337; cv=none; b=kTNJOXpVkEV+j+vUC5p0HFnS9edmRuYh4a5f9jf1JNDtwsW/DpP7tuSI1PQkbgws2SAQxYBFdnrH1AAuCpDb/SFywFDzI8i8tq/en5zuKnl1Xj4rq/HmTGwb0W9CkABSapt7/Kfm6SQJIefgsQVvN1GQAR8Y31HUjsnrljHau3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752000448; c=relaxed/simple;
-	bh=/mqj7Ed3H8Bkoymh26BH44kgyey94FHD1a9v525/9xs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=irwxGY+xR9rVgRHYWQx4UC+wjLg+GhriWxXhf/4nYsvVxm7x2HRwK0hzySzinePNSaoQwE9bwMRf+sy56dDvZLavBhkbGFCTr4gGHUiW6tBt0InB9Zb1iWxgdjyCuK8tP1vrh4LaKl4irTtwpMQcedzhWuVj0mo2ziXhJIEqGOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T6FADIep; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752002337; c=relaxed/simple;
+	bh=eZ+Vz8Em/OjOuWZ5o526dAej5vcRoSqRc9QSKjRGsKo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=Hr0GGcgCf4Tb1gzdtda5RaVUtBHsyylDFX9TNcj0NrzMr80OHGWnP+2RXZvmKrOE1ewB8pUdN08nkBOMy5U/X/Brsy1vb2aS1gMZjOa7/r8Dq41ybno7QiUoOhdi//6nIH8/bAclv7KAsjJPvkwG7NfnTfZbUMFtZn2yFvMCLV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuiPiGRN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T6FADIep"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-312a806f002so816772a91.3;
-        Tue, 08 Jul 2025 11:47:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752000446; x=1752605246; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/mqj7Ed3H8Bkoymh26BH44kgyey94FHD1a9v525/9xs=;
-        b=T6FADIepPPVjbB6Tn/P7qAnlrEy050vGGpIqYfasriBg/TF/639JGn6Ck37jklPvPS
-         I4Gf1d+fxa7dz3387t5W6RNuNMY4RbZ1tVWVJLvQHdRn3sl2/rt6Uf8BExpgza2a6dpW
-         gs4n/3l81zt3+NngARC2rpIeMT6ZloCVojYFg2eVEm1m0nJ0bMjbz5v9uwdwAme55JFJ
-         3b6vg/qRS43bQL//2ojjGD5wdKBA9AWdIy+U1pS0ND8UHpUHQ6qNUCu+mtA01+aMPIqA
-         p/RAWlulRtD6dLkUJ3cTCqtR3Av7jKJc2kEPCRPPxvkBK1LmeibAoP7BL0VcF1E6Orer
-         cM+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752000446; x=1752605246;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/mqj7Ed3H8Bkoymh26BH44kgyey94FHD1a9v525/9xs=;
-        b=sItmjYtEhtKVfPtWwdMvYvFLfxzK0FF2Rn0WFN+1tlMe5htvB+eywe83hsnbzVoNdh
-         MU1TjhaeYhhYrSHpTAbIo7szL9uMHBn7NKKAjnUwrJHKEQBYaAsuq1nJbtfAPd2+WY/x
-         fhTll4C/8FuBC541pfBNTA4xe+BIU/fxgbzxXixCEXaTV7G+gaG3fimbVIxavG9lg+aR
-         2U4RRx1sffX+g6Srk+yj8NeFW3BJLe71GnTG8c7XA7C87igB5Twp6mjFCdu2c185EX/h
-         6vkJMvN0tAPFhGxcHInszzVYo+wnz1TLRvJ1RupF+2sJkAt8tRtO8kuh2lzrzOngiwQm
-         ymfw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBHLUjWzBQDcjJZr0rBHMGftfmkHVKILzdJ+JleV5Kbdhg91ASilikzgABeIw4WiKwYYEp9OpdSgvM+Xr59C4=@vger.kernel.org, AJvYcCUI+8KASJJUckt1BDqKPxjA1DuoOEL140+O7z2eKaioAsugbmA6ktHqrSVXFV0AiJUmmS4H4OEC@vger.kernel.org, AJvYcCUYoCpQAluLFyMz6efkaP1sZPGBrfR2RvLQchw8g/z8Xb3AD45V1Fed6uTv3jmpGHshHxVkNe2ldQ22@vger.kernel.org, AJvYcCVjD/vROJwnoXJ6EKQWPpSFfMiQSSM2NUEcgzrT/tA9CLjaOjLik0hvOG0qN3a/3xske6rWLye2G9Qc@vger.kernel.org, AJvYcCWGfZlv8ZoUyPrJ8j7KRFKiSYuWXg6ceEgBqXvJuwNeWSKMEE4F6LhJGpZbqPB8eR4KiHspcSjx4WumDjGm@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+Ee982syI/gmejhjKunPtVvdQualBSsGBSJq5ORx1occmiyLI
-	BhnhvnXX/rhaTLlNNIDPFGrriqzYI8t4mzMdK9ns9NK6jxr6E78nxcGsA4a6rnf5mEvwZ+dfy5F
-	Iu62YMp9PC0LsblvlXXsjo1HgQQ4JNnw=
-X-Gm-Gg: ASbGnct724EsgEXVlN1/BTRhtKj6prRk0bvMz63MnEMcJP2BaRP13otRA9AKA/oPujw
-	FzVKahQ0YmlCPw9vLXMuLO5eEE0pmfuqhkdGlmiCtasJtjg6KCk1x/WyGZOoSvondNK5YNCO+HE
-	cqdGX3z2CchCFqgtn3x+S5KfVSWqdXMdoIBcK5sReRJWGt
-X-Google-Smtp-Source: AGHT+IGUVcR05B57Q2PyTCBv4j3P2juR85r1CT0ZhYq7HOZlRPbkeuFO/S7LGG5xpRMh/FmIYfXyYHyAkMtPuSrUpyE=
-X-Received: by 2002:a17:90b:3e44:b0:311:c939:c842 with SMTP id
- 98e67ed59e1d1-31aaccd7e36mr9090114a91.7.1752000446452; Tue, 08 Jul 2025
- 11:47:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuiPiGRN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B15C4CEED;
+	Tue,  8 Jul 2025 19:18:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752002337;
+	bh=eZ+Vz8Em/OjOuWZ5o526dAej5vcRoSqRc9QSKjRGsKo=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=CuiPiGRNr89Jbd52JUMhPzyNO0qXf8R3Piy1kGDMf1d3PEr5VQiK6ZTGenHVjEaL0
+	 bFH/iBIAUl5rxaVH9bZFVmvCc127lZPXL6J6MLJfbZ2xxygM9t1jjXMMEbprNSackW
+	 mKQLA+rPEusr989d5+wtvJffDuD7+ukz1Seqf7eNYBD0n0M1HZg0njJOD45xQXoJoH
+	 OkxmrWCJSalSYd6VmlfRt5yErv0rjz58XQ9B7mCFKJ3T+NkCpb+AJcLzmv2fpaEVH0
+	 p1LIPY1xebJgAMfB2EZmJ2vBYzkwGZza994Yi/fKo63beUlMFSbEN5sTOAY27GpcRZ
+	 ANGMiP4/gTWuw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250704041003.734033-1-fujita.tomonori@gmail.com>
- <20250707175350.1333bd59@kernel.org> <CANiq72=LUKSx6Sb4ks7Df6pyNMVQFnUY8Jn6TpoRQt-Eh5bt8w@mail.gmail.com>
- <20250708.195908.2135845665984133268.fujita.tomonori@gmail.com> <DB6OOFKHIXQB.3PYJZ49GXH8MF@kernel.org>
-In-Reply-To: <DB6OOFKHIXQB.3PYJZ49GXH8MF@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 8 Jul 2025 20:47:13 +0200
-X-Gm-Features: Ac12FXyuqXTkap0XT6noQoywOzfC2SM2sN6p2wIUc2hHZAxerMZXVAG3UPPF_Sg
-Message-ID: <CANiq72=Cbvrcwqt6PQHwwDVTx1vnVnQ7JBzzXk+K-7Va_OVHEQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] rust: Build PHY device tables by using
- module_device_table macro
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, kuba@kernel.org, gregkh@linuxfoundation.org, 
-	robh@kernel.org, saravanak@google.com, alex.gaynor@gmail.com, 
-	ojeda@kernel.org, rafael@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, bhelgaas@google.com, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, david.m.ertman@intel.com, devicetree@vger.kernel.org, 
-	gary@garyguo.net, ira.weiny@intel.com, kwilczynski@kernel.org, 
-	leon@kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	lossin@kernel.org, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Jul 2025 21:18:52 +0200
+Message-Id: <DB6WZSFEJ6N1.SMX5O3QTJVDJ@kernel.org>
+Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Oliver Mangold"
+ <oliver.mangold@pm.me>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
+ Gross" <tmgross@umich.edu>, "Asahi Lina" <lina+kernel@asahilina.net>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
+ <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
+ <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
+ <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
+ <CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
+ <O_XE8MhYyfjIfrx0uca8YoUIWQ6z4SjdK_wLXfzZ8gfzOvUBrH1-0cRRuT7pwh6eMjsXrVXuBwary36TIkUzlg==@protonmail.internalid> <DB6P2UQM08LH.2ALUM6EKC3Q45@kernel.org> <87cyaamt6y.fsf@kernel.org>
+In-Reply-To: <87cyaamt6y.fsf@kernel.org>
 
-On Tue, Jul 8, 2025 at 2:48=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
+On Tue Jul 8, 2025 at 8:30 PM CEST, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
 >
-> Had a brief look.
+>> On Tue Jul 8, 2025 at 12:16 PM CEST, Miguel Ojeda wrote:
+>>> On Tue, Jul 8, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold@=
+pm.me> wrote:
+>>>>
+>>>> Note, though, that I already moved it from types.rs to types/ownable.r=
+s on
+>>>> request. It seems to me different people here have different ideas whe=
+re it
+>>>> should be placed. I feel now, that it would make sense to come to an
+>>>> agreement between the interested parties about where it should finally=
+ be
+>>>> placed, before I move it again. Could I ask that we settle that questi=
+on
+>>>> once and for all before my next revision?
+>>>
+>>> Yeah, if there is a disagreement with something said previously, then
+>>> it should be resolved before starting to ping-pong between approaches
+>>> with more and more patch versions. Reviewers can forget or they may
+>>> not have read an earlier comment, but you did the right thing
+>>> mentioning there is such a conflict in opinions.
+>>
+>> Yeah, I checked and that was Andreas on v9. @Andreas what do you think?
+>>
+>> I think we should just get rid of `types.rs` and split it into:
+>>
+>> * `opaque.rs`
+>> * `foreign.rs`
+>> * `scope_guard.rs` (this might need a better name)
+>>
+>> `Either` can just be removed entirely, `AlwaysRefcounted` & `ARef`
+>> should be in the `sync` module (I already created an issue for this) as
+>> well as `NotThreadSafe` (or we could create a `marker` module for that).
+>> Thoughts?
 >
-> There will be two trivial conflicts with the driver-core tree, which fixe=
-d up
-> some of the safety comments you modify in this series as well.
->
-> The other way around, there is one trivial conflict with Tamir patch in t=
-he rust
-> tree fixing up an `as _` cast.
->
-> So, either way works fine.
+> Sounds good. I just wanted to prevent us from cramming everything into
+> types.rs.
 
-Thanks Danilo -- ditto. Even netdev could make sense as you said.
+Yeah me too :)
 
-Since it touched several subsystems and it is based on rust-next, I am
-happy to do so, but driver-core makes sense given that is the main
-change after all.
+> But we should probably move `Owned` into `sync` with `ARef` et. al.,
+> right?
 
-So if I don't see you picking it, I will eventually do it.
+I don't think it fits into `sync`... It's more like a `Box` and could
+very well store something that is `!Send` & `!Sync`.
 
+---
 Cheers,
-Miguel
+Benno
