@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411862BE026
-	for <rust-for-linux@vger.kernel.org>; Tue,  8 Jul 2025 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C67F26FA56;
+	Tue,  8 Jul 2025 15:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751987056; cv=none; b=gcb/RwgwGCaBkvgXGW02WY8Zv/d1HrkxjCiaD8un25QHhx7NwQGShmrL7qOMEYOMiHL669NzYE/5OhryQoshplsIFgiqrdce2hMp90vukeHzwIX/430wDvcdwD6IJTGIvzMuR1zyP29rKSpK3EYAtwnmwPFECw6MkfwmUyyh9eA=
+	t=1751987492; cv=none; b=ConqLpzOAQaihNszo1EiMByG3oSZqdocr5vg3mEBiV0Akjjv7rae4RGpXd3SYYzqTRZf1FoJbkmRrL8rkSrNResGbNvNf8KgK05O7rGWE5sjHzkKzBxINJFDuVgIJCqwOSpYbfxXiezV8uetErWR3DoBs5fbIWfPbXCZhTxw4lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751987056; c=relaxed/simple;
-	bh=WK0WbKAepmJH2IHvMqiUX75fgCZn9Ax6+qg1K5L/nMQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:
-	 References:In-Reply-To; b=N6WfO/r7BV/QzUyDQuuahW0veqW884ikz1jn6o1P3g69URBP2/BBxHnoCGv7JjTRv0zfUh0CDdWZHNgMtbpfuNZ1XX6U/Rro0lDX75VIR7szsS7aB6YJiJ/yJ+7NQvXV2zWbuEkzsEOfPxicW3EA2/m8/mRk3a9hSng2kHZFA+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbkZoa/s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1751987492; c=relaxed/simple;
+	bh=NRRNtg6vb+K/sjejePJsbFo5EUJno2MwHh8cVe80W/M=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=vBiOT6GCGlmxK9zKo8EjvyH2EqjxLdIL39kvxIkwDKaJ9mrEKx31FoiZA/XI3BK3+Jz1Tm4Sjn+AYdbH5ReRd71+o8j+NnOnM2UMBM3VzAIQkX66WcOoHVNEq8g/8usAyuyie8UXsgsc9yhveT43QhK7Ihqw3/wY+/Oxi6N0EJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ohnQET+e; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbkZoa/s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B06AC4CEED;
-	Tue,  8 Jul 2025 15:04:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ohnQET+e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11743C4CEED;
+	Tue,  8 Jul 2025 15:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751987055;
-	bh=WK0WbKAepmJH2IHvMqiUX75fgCZn9Ax6+qg1K5L/nMQ=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=bbkZoa/sbwIMOy03ni80VuY1+6JGD0ly+qZjpHuulHsFY95hFd2Z2ydG4zKzcr1Z7
-	 A7lSz+hAHpWp7kUk76YNyYfg6vHJ9BdRIlKu7jccl5kY3KrFRkzCaQnPw0o+gVEiDd
-	 X6j+qVdh4QoRzmHBvrGUUS/OBAhixZDj+tfIYkeKG2z5jhLiwJYJY1OFaE9MFgqtpD
-	 FbyQADheR7y3uk7IfPh33cuPj/xGcC6NSefEbFGdG39+4+AckFxfME5UuA7PKEtxFz
-	 GG9z3KPrTIcl4JIjTUAp3o0GjpuFov7BckDqT8YVX4wppSQJvQAAICjUXT2otxq7n4
-	 Nx765leT7WpEA==
+	s=k20201202; t=1751987491;
+	bh=NRRNtg6vb+K/sjejePJsbFo5EUJno2MwHh8cVe80W/M=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=ohnQET+eQxGJXcUGGacq3S9BmTACp9gcbeanlc8UFNYikvcNwBLqA3wp7IAx88NDN
+	 mQhwZ4Fbv+SNQRI33D6CAj2qHgR/VWgyyiz/QUgLfAWeGrmNlrCeS+U/sq27ocWSgW
+	 2w97t8GUtWaa8YpBO37ZY/4go8HuwLheGNZPEfbkI7O5goC3AyWTLI90fuNqt0iyo6
+	 Y/HZ4haLXe4nBArO7sOiuxZLJ78+vt4pH6OMF4YtUVJiVrDBD1NHTFy5QFkaJlpoGJ
+	 C2ThD/lJMOH1clYyfb7uz6zVdH1teZ8xik/B+iAv9NadUV4To5lgasIkriO5/UZL58
+	 g4oo/teCrkyYA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,84 +34,149 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 17:04:12 +0200
-Message-Id: <DB6RKSNTHUZ8.DW0EBFDU6L1I@kernel.org>
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>,
- <aliceryhl@google.com>, <dakr@kernel.org>, <ojeda@kernel.org>,
- <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
- <linux-kernel-mentees@lists.linuxfoundation.org>,
- <~lkcamp/patches@lists.sr.ht>
-Subject: Re: [PATCH v6 3/3] rust: revocable: Document RevocableGuard
- invariants and refine Deref safety
-X-Mailer: aerc 0.20.1
-References: <20250708003428.76783-1-marcelomoreira1905@gmail.com>
- <20250708003428.76783-4-marcelomoreira1905@gmail.com>
-In-Reply-To: <20250708003428.76783-4-marcelomoreira1905@gmail.com>
+Date: Tue, 08 Jul 2025 17:11:28 +0200
+Message-Id: <DB6RQCZYHPSA.1UEPUVMC3FBBI@kernel.org>
+Subject: Re: [PATCH v11 0/4] support large align and nid in Rust allocators
+Cc: "Vitaly Wool" <vitaly.wool@konsulko.se>, <linux-mm@kvack.org>,
+ <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Vlastimil
+ Babka" <vbabka@suse.cz>, <rust-for-linux@vger.kernel.org>, "Liam Howlett"
+ <liam.howlett@oracle.com>
+To: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
+ <824065ea-1f5c-4cd4-9917-4b7a91882af8@lucifer.local>
+ <aG0HJte0Xw55z_y4@pollux>
+ <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
+ <DB6QKIHD2VGS.AHEOXL25SSXW@kernel.org>
+ <4c122436-db58-4ca5-bc64-5ca596f03952@lucifer.local>
+In-Reply-To: <4c122436-db58-4ca5-bc64-5ca596f03952@lucifer.local>
 
-On Tue Jul 8, 2025 at 2:33 AM CEST, Marcelo Moreira wrote:
-> Improves the `RevocableGuard` documentation by explicitly stating that
-> its `data_ref` member is a valid pointer as an invariant. Additionally,
-> the `Deref` implementation's `SAFETY` comment is refined to justify
-> the `unsafe` dereference based on this new invariant and the
-> `_rcu_guard` ensuring data accessibility.
+On Tue Jul 8, 2025 at 4:39 PM CEST, Lorenzo Stoakes wrote:
+> On Tue, Jul 08, 2025 at 04:16:48PM +0200, Danilo Krummrich wrote:
+>> (Please also see the explanation in [1].)
+>>
+>> There's a thin abstraction layer for allocators in Rust, represented by =
+the
+>> kernel's Allocator trait [2] (which has a few differences to the Allocat=
+or trait in
+>> upstream Rust, which, for instance, can't deal with GFP flags).
+>>
+>> This allocator trait is implemented by three backends, one for each of
+>> krealloc(), vrealloc() and kvrealloc() [3].
+>>
+>> Otherwise, the alloc module implements Rust's core allocation primitives=
+ Box and
+>> Vec, which each of them have a type alias for allocator backends. For in=
+stance,
+>> there is KBox, VBox and KVBox [4].
+>>
+>> This was also mentioned in the mm rework in [5] and in the subsequent pa=
+tch
+>> series reworking the Rust allocator module [6].
+>>
+>> Before [6], the Rust allocator module only covered the kmalloc allocator=
+ (i.e.
+>> krealloc()) and was maintained under the "RUST" entry.
+>>
+>> Since [6], this is maintained under the "RUST [ALLOC]" entry by me.
+>>
+>> Given that, there is a clear and documented responsibility, which also A=
+ndrew is
+>> aware of.
+>>
+>> To me the current setup looks reasonable, but feel free to take a look a=
+t the
+>> code and its relationship to mm and Rust core infrastructure and let me =
+know
+>> what you think -- I'm happy to discuss other proposals.
 >
-> These changes address feedback regarding the clarity and completeness
-> of `RevocableGuard`'s safety guarantees.
+> Thanks for the explanation.
 >
-> Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
-> ---
->  rust/kernel/revocable.rs | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+> To me this is clearly mm rust code. This is an abstraction over mm bits t=
+o
+> provide slab or vmalloc allocations for rust bits.
 >
-> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
-> index 6d8e9237dbdf..64fe44b4f5a3 100644
-> --- a/rust/kernel/revocable.rs
-> +++ b/rust/kernel/revocable.rs
-> @@ -233,7 +233,8 @@ fn drop(self: Pin<&mut Self>) {
->  ///
->  /// # Invariants
->  ///
-> -/// The RCU read-side lock is held while the guard is alive.
-> +/// - `data_ref` is a valid pointer to a `T` object for the entire lifet=
-ime of this guard.
+> To be clear - I'm not suggesting anything dramatic here, nor in any way
+> suggesting you ought not maintain this (apologies if this wasn't clear :)
+>
+> It's really a couple points:
+>
+> 1. Purely pragmatically - how can we make sure relevant people are pinged=
+?
 
-This should be:
+I'm very happy to add more reviewers to the RUST [ALLOC] entry for this pur=
+pose.
 
-    /// - `data_ref` is a valid pointer for as long as the RCU read-side lo=
-ck is held.
+Can you please send a patch for this?
 
-> +/// - The RCU read-side lock is held while the guard is alive.
+> 2. Having clarity on what does/does not constitute 'MEMORY MANAGEMENT - R=
+UST'
+>    (again, perhaps Alice best placed to give some input here from her poi=
+nt of
+>    view).
 
-And this invariant is unnecessary.
+In the end that's a question of definition.
 
->  pub struct RevocableGuard<'a, T> {
->      // This can't use the `&'a T` type because references that appear in=
- function arguments must
->      // not become dangling during the execution of the function, which c=
-an happen if the
-> @@ -258,8 +259,8 @@ impl<T> Deref for RevocableGuard<'_, T> {
->      type Target =3D T;
-> =20
->      fn deref(&self) -> &Self::Target {
-> -        // SAFETY: By the type invariants, we hold the rcu read-side loc=
-k, so the object is
-> -        // guaranteed to remain valid.
-> +        // SAFETY: `self.data_ref` is valid for writes because of `Self`=
-'s type invariants,
-> +        // and `_rcu_guard` ensures the data's accessibility for the lif=
-etime of this guard.
+The reason RUST [ALLOC] is a thing is because it is very closely related to=
+ Rust
+core infrastructure with only a thin backend using {k,v}realloc().
 
-This also needs to be adjusted.
+Compared to other abstractions, the main purpose is not to expose a Rust
+interface for an existing kernel specific API, but rather implement a very =
+Rust
+specific concept while being a user of an existing kernel C API.
 
-Also this patch should fix any invariant comments needed to construct
-`RevocableGuard`.
+> We could solve 1 very simply by just using the fact we can have files in
+> multiple sections in MAINTAINERS.
 
----
-Cheers,
-Benno
+Please not -- I don't want to have files in multiple entries in MAINTAINERS=
+,
+especially when there are different maintainers and different trees. I pref=
+er
+clear responsibility.
 
->          unsafe { &*self.data_ref }
->      }
->  }
+> Doing a scripts/get_maintainers.pl invocation will very clearly tell you
+> who's in charge of what so there'd be no lack of clarity on this.
 
+How's that when a file is in multiple entries?
+
+> It's a bit messy, obviously. But it'd solve the issue of mm people not
+> getting notified when things change.
+>
+> However, at this stage you might want to just limit this to people who ha=
+ve
+> _opted in_ to look at mm/rust stuff. In which case then it'd make sense t=
+o
+> add only to the "MEMORY MANAGEMENT - RUST" section (but here we need to
+> address point 2 obviously).
+>
+> Alternatively we could just add reviewers to the rust alloc bit.
+
+Yeah, let's do that instead please.
+
+>>
+>> [1] https://lore.kernel.org/all/aG0HJte0Xw55z_y4@pollux/
+>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
+ree/rust/kernel/alloc.rs#n139
+>> [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
+ree/rust/kernel/alloc/allocator.rs#n130
+>> [4] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/t=
+ree/rust/kernel/alloc/kbox.rs
+>> [5] https://lore.kernel.org/all/20240722163111.4766-1-dakr@kernel.org/
+>> [6] https://lore.kernel.org/all/20241004154149.93856-1-dakr@kernel.org/
+>
+>
+> I feel it's really important to not separate rust _too much_ from the
+> subsystems it utilises - if we intend to have rust be used more and more
+> and integrated further in the kernel (something I'd like to see, more so
+> when I learn it :P) - the only practical way forward is for the rust stuf=
+f
+> to be considered a first class citizen and managed hand-in-glove with the
+> not-rust stuff.
+
+You're preaching to the choir with this on my end. I'm recommending subsyst=
+ems
+that receive the first Rust bits to get involved in one or the other way al=
+l
+the time. And if it's only by reading along. :)
