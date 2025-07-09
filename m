@@ -1,131 +1,144 @@
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781AC248879;
-	Wed,  9 Jul 2025 22:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356C5944F;
+	Wed,  9 Jul 2025 22:49:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752100615; cv=none; b=TmMikUvRxH5sovPHyaBmGo14b9KhipqrnQbrrQt4m6YH7QU7Rrfev/Y+QkxuU/BVg+wx8u4n8QOuYWkApMT89hTksZUt5LyqshYgna8w13UgmKWgUvSKBOcgvCV8QzwTh4yf4V9/C5F542XcqG9VkCIybeGFSoIxbFJrh9YXuXg=
+	t=1752101385; cv=none; b=tXmhKuP5ENX+LZ+946Seq6o3loB4Z47JCsUM8U9JTuK+4CNDdsDvXHXbooNSUp55BJtVCRlEpXBp/LBygggMVxRXStnnEfkFJfYGVgKJZ5BmXgD/8E/R+cets5xgJyIu0vnVegcVnNjj71CmDaGJIpehhFASz1MCfmii/vzllBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752100615; c=relaxed/simple;
-	bh=CLm/0pb5W4sPJtUgUjYFJoNYPSIUT2mYJQmNysMDGeA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oxlL6L0RCP0iTOh3m/X2lLcpiNzi7MVIMe5pCARBbp1/nlkcQ0mIqmJAB6X6Zv0foRklbc4rp9lbLz/1odU9QdlKwsEBS5EejtNotM7tLk99HMz6NNH3erUk8Tsys9x22jepeYAYZDjvXbEszIEaWrSCCG3RcqmtO6uQdWvWJFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+/VCJ1u; arc=none smtp.client-ip=209.85.208.170
+	s=arc-20240116; t=1752101385; c=relaxed/simple;
+	bh=BwRCvm3BgZ80hq9tbXA3a3WNynye8CYtFvwrmxpCQcE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rbRzdcJSxHA22lZ9QV54Kn4uuAYF9MrMyNH7Cg18468wWuBWl7nzuyHK3ULKR0bC30jkFmOiGF5CLhmwdiVDhcQ8oQW4zgTCVs3i83JdZHBFPo3EaJbODyR2Kdd9o6Qf4Qdoo7h8HswPX+Bg1IBIh7NwuQrmpOrKGXj44CEod4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CTxoiFkF; arc=none smtp.client-ip=209.85.219.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+/VCJ1u"
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-32f1df5b089so2902501fa.3;
-        Wed, 09 Jul 2025 15:36:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CTxoiFkF"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6facc3b9559so5710986d6.0;
+        Wed, 09 Jul 2025 15:49:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752100611; x=1752705411; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xhfrvtOMsoaE+gDC4ofthavQSM3N4fj7JS72/QkCgSI=;
-        b=g+/VCJ1uGfkQj9JcQrzLxlsFBk5CCfujYG/i2fyTiii37udq9kj772t6H8x+E5o2AH
-         B+HFX0RJlTF/DUqL/sYeOL7qYhuqBfV4pc4MgMzIfWj5zZcx8PYiC4AA/s0ZSP94ZZP4
-         PLcx/KSOC90sVippNKsN5vSiRwAlH4Bpq12iaeJ+LnofT99i++8vdHNfe6lkKyqXQqOy
-         LVtOXpRU5mu5wZaRe7jWcgC45IBw2yyNUFF9UBq1qoFNRD6Okh+hlZqQe6LZJP3Nzk3s
-         gK/8cRY9Cnuxikv4hFFncOU2PWAiZdb0/N1vd7q3J+CBeWQaNhehqwFm6inxe84r23Up
-         YARg==
+        d=gmail.com; s=20230601; t=1752101383; x=1752706183; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m8/TzuqQbF0zeJ7arRjJ5OhvWeIWrAayC5nQjxauL6Y=;
+        b=CTxoiFkF57Om2sGwhjkuNqm38II0Aty4bKhlxvjFzQnx5N2UIf1ycoXbqPHbEJcUBC
+         7OIPjfcx44qpTMQsmRofcb5x4XFaUc2/bqxtJkru4kD+4LUjUNPnVjdaFsiCb0hr5cRq
+         I0ClMMdHPzoZQESFiDs4F8pFy7qLBTbfKH4YnUtQuZrkvBW0tMQDzv7G4XbaTT5i38p1
+         RhUX+Asv+Ux31jO3aMwmLc8KYNtxPs6SxNbYqddMoshV2forOBhxQ/CNvBfzw+MMapNj
+         dDaiCuqVC3cSaFMoa/MjW07nsyX7eCarQg/I7PaXODnDgisSCAz10ThVN6jqchvSiO5K
+         TL0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752100611; x=1752705411;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752101383; x=1752706183;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xhfrvtOMsoaE+gDC4ofthavQSM3N4fj7JS72/QkCgSI=;
-        b=vpz6rO04/v/CTsIMUhNZfb7az2s80BcFRCVNB/HYQy8Rft1InHMQFjRCvfoxccOIci
-         j7Rc/y2ubJOPAXdD5Igjdnj3symA90B2tvfAKbhiLUqSaMUdlaHJzzRUOCBISoJVXJxH
-         cOfOFvlLGMF17EJ6NNfI4tl6uWeymq4mDuFW0n3MKvWNmGvSm0fB7SdBX0vKSS07MdZ1
-         GVOHzO4aVVftM++fEsjYrR0jucLTvWQUBzwHyE3Pe3ksCy17V+TM0IP/hEqi1BVzfoN0
-         5wV2ZH64QZbG/VlyUla+/8Fqq+mzd8xdhBGaJR+bWPZsXZzpD282GtoCrak43Wdqyt9z
-         k8Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVuURpgTcnYodTTnMz09+mT3+3Rj8rSHHAY9kM4O3Gz7NYNu7+0ABPS53Q5Hq2/Zyo6aK3sEANw5EENli6P@vger.kernel.org, AJvYcCWqvCpPMjRl5DEpWlk1f1ixFBOioztRa1JLrDey1j/9u+MHI7+QXXlA47+19bNO/VBhNQ1LGlwAnVbhEjWMtUs=@vger.kernel.org, AJvYcCXMl2sE6pD97Qu3hmOppNL6PMwXAu7y2jWxFhlyqplTZzyOJD6ynMSVNXjLyvKDjkzUmTwRhiuAAa3vwU5jDACT@vger.kernel.org, AJvYcCXryPjniUMF/mWzDIWOkuLZxpvWJcMvQ4TXx9E0C/frtAFlajQhSpwk5R2yZWwXbbh6Tdr4zwJDeY8W8A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzdi+dKUaCWElMmvnGBZL5MK1DyK2aTJ6I22xv9q9ca2Do8vVCj
-	1Oj6oOs7u2XFocHbtQIBjoT+wi47bGcsafR4YmyBl+2hdh9tryKVLsJ0etDL6IAgo1jAXtQzn4q
-	aSUfY6JrSE9k51Gp7qTkQ/xkzgAFYuHU=
-X-Gm-Gg: ASbGnctWIoGORbzLjhOC8FAv6Dibo4GMTM9nA0783zX5rGvu+OPOVh1Cvm77KXBR6JG
-	7pQ3muGjJVB0jaAD7ce5zU3WXUZgDPK8YfwtwjcYjcM/HGXDlz0FXQOTwpBtFKze3qP/Q+YDg5x
-	aa+UCtrqrevDzSN2BSjWuCI0+DtlOnQ9kPQ/lLYzVhA6oa3BVTeOjaPwHqQpUJKwd62OBvGddWH
-	C7tXw==
-X-Google-Smtp-Source: AGHT+IFONhq6F+DbkzpsEpK1WwNv3QQhAm3j21ralGrjpCechN0UN+rtIDTk39PxuYI9EYRr21JY2C6Wn5OzerY5ENU=
-X-Received: by 2002:a05:651c:49c:b0:32b:80e1:300d with SMTP id
- 38308e7fff4ca-32f4fdaa020mr4072561fa.0.1752100611215; Wed, 09 Jul 2025
- 15:36:51 -0700 (PDT)
+        bh=m8/TzuqQbF0zeJ7arRjJ5OhvWeIWrAayC5nQjxauL6Y=;
+        b=YGgAASBdHVLyeGM6Pm6VZDYvAmKwf05Nh/ikwacopgGC3Cphra2C2/MOPNx74xxA5P
+         6Z146irTCvLMCggTCIx+DOuwVy2P4LJRS/PTYj0on4V8tM5HdRZc/zHIKBwdFvSzi/wu
+         d0qBmPfL1XSx6wXlEnhpBvnxgRpXxAIdKU0MwVvAmyL9shFV4JPNVXugcyTObVPqrR9Z
+         4buw6AmnurBrmsjRqtntLcQx8SbAMaHEuCGeNNuPDur3qVM/S7EDqD7FrFnbG/4ydfdV
+         xAWyMHOUEBBU4JzpYNhcx7uD2lq5xdaSbOgTX4po3JPtw/rZzdrCyp00uTYaiArbYXAM
+         dU3A==
+X-Forwarded-Encrypted: i=1; AJvYcCXdyWFKnmlovjix5zgM/+WIvokhbpX8CjuuqaXSEdM6CPLpSYbBFOjalZ30eFbKtM2zTKzqgdfprk95k+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMWSnqYzVhzgsWVcygzZlQWAGNwaPQlSx9AgWzPdKcSv/g2Uef
+	dOJ7+wR/1wTwvsqWDm1MMrHPa+F8bXeSCcmpFS9+4HnAdCZsG6bp7eDl
+X-Gm-Gg: ASbGncslkEVHNkHBLAouZsnfIg4YcLTb1X52lEtRebBRvC0J0jUi66RrVh+YK6CG2x1
+	ES9eFE0e4yJf5VXF5x7OrsDc8wQRQX1BqT+pdcE394/+3fOOc5CDHIXCEumiQpiuo3vw+CPx2OS
+	VoTsap47Kj5DkGM6N1cZQYmf2UiCJlOdnLIie4BI5QTi08W5SRNw6MHhBr5RRXAcnNP1Ak74O57
+	lifEHPBV2PoAggB4YX7bWV4eW3HfDUcsSFFv/ll2hn9tvbOATcA0JnJyZVgNu2MxuzDBtQOg9Om
+	NXJrgdIQsI6OMMX43K56zPlt6cchSWH7K/EWZze/0Qylq2uviVOXxPzV47u/M9ae+dbMxNTAgdS
+	wK1k=
+X-Google-Smtp-Source: AGHT+IH8OHVbbUMlAkzWHWT4AfeFFO1DMg6+0YJXc2uaqJbAGWNPNR9yaeXXNKwaFn4eqwZJlWXARg==
+X-Received: by 2002:a05:6214:1bcf:b0:6fb:4e82:6e8 with SMTP id 6a1803df08f44-7049801ce5amr4756626d6.14.1752101382896;
+        Wed, 09 Jul 2025 15:49:42 -0700 (PDT)
+Received: from [192.168.1.156] ([2600:4041:5c29:e400:5085:1d69:8814:72d4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70498090248sm1025986d6.90.2025.07.09.15.49.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jul 2025 15:49:42 -0700 (PDT)
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 09 Jul 2025 18:49:34 -0400
+Subject: [PATCH v2 1/2] rust: init: compile examples
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709-core-cstr-fanout-1-v1-0-64308e7203fc@gmail.com>
- <20250709-core-cstr-fanout-1-v1-7-64308e7203fc@gmail.com> <DB7SVTBZ46QB.31WTHFLWDHPZY@kernel.org>
- <CAJ-ks9nNc_pThtb+gHUcjEnvR6V0RAEG0tkv+_DHYYjXs1N7=A@mail.gmail.com> <DB7V0GL2HVMV.BR1JSWQPDMC3@kernel.org>
-In-Reply-To: <DB7V0GL2HVMV.BR1JSWQPDMC3@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 9 Jul 2025 18:36:15 -0400
-X-Gm-Features: Ac12FXy3ucGydWQMIVi5coi-DwzxVJ4W0f_hIIoGG4YPbQ2PMfi0zxdVxhB4wD8
-Message-ID: <CAJ-ks9n9Z0PtBmqNupS2390B+gq7UJuV0npD+3Ri0tJrQZVB9g@mail.gmail.com>
-Subject: Re: [PATCH 7/9] rust: pin-init: use `kernel::{fmt,prelude::fmt!}`
-To: Benno Lossin <lossin@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250709-init-remove-old-workaround-v2-1-a3b1be8fd490@gmail.com>
+References: <20250709-init-remove-old-workaround-v2-0-a3b1be8fd490@gmail.com>
+In-Reply-To: <20250709-init-remove-old-workaround-v2-0-a3b1be8fd490@gmail.com>
+To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1752101380; l=1442;
+ i=tamird@gmail.com; h=from:subject:message-id;
+ bh=BwRCvm3BgZ80hq9tbXA3a3WNynye8CYtFvwrmxpCQcE=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QAEAKByke0NS+RQGlNtlLgCllmhP020mu9LT7C5FFDwzTczq7mKzCC5TtkRR2ZqfYh64TmY+gon
+ jk2Ok4T+tGQE=
+X-Developer-Key: i=tamird@gmail.com; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On Wed, Jul 9, 2025 at 5:58=E2=80=AFPM Benno Lossin <lossin@kernel.org> wro=
-te:
->
-> On Wed Jul 9, 2025 at 11:01 PM CEST, Tamir Duberstein wrote:
-> > On Wed, Jul 9, 2025 at 4:18=E2=80=AFPM Benno Lossin <lossin@kernel.org>=
- wrote:
-> >>
-> >> On Wed Jul 9, 2025 at 10:00 PM CEST, Tamir Duberstein wrote:
-> >> > Reduce coupling to implementation details of the formatting machiner=
-y by
-> >> > avoiding direct use for `core`'s formatting traits and macros.
-> >> >
-> >> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> >> > ---
-> >> >  rust/kernel/init.rs | 4 ++--
-> >> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >>
-> >> I usually prefix patches to init.rs with `rust: init`. I'll fix it up
-> >> when picking the patch or Miguel can do it if he takes it:
-> >>
-> >> Acked-by: Benno Lossin <lossin@kernel.org>
-> >
-> > Actually, squinting at this patch more closely now, I think this isn't
-> > what you had in mind. The comment says "Dummy error that can be
-> > constructed outside the `kernel` crate." but the error now comes from
-> > the kernel crate :(
->
-> It's a re-export, so the comment still holds.
->
-> > Perhaps you could suggest a different modification that would both
-> > meet the original intent and allow references to core::fmt to
-> > disappear?
->
-> The code comes from a time when `Error::from_errno` was `pub(crate)`,
-> but that was changed some time ago... Now we can just remove the
-> `FromErrno` trait entirely from that example. Feel free to do that in
-> this series or as a standalone patch.
+It's not exactly clear to me why these were `ignore`d. There are many
+others like this in pin-init, but I'm only touching the kernel-specific
+ones here.
 
-Ack, sent https://lore.kernel.org/all/20250709-init-remove-old-workaround-v=
-1-1-a922d32338d2@gmail.com/.
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+ rust/kernel/init.rs | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-With that patch, this one can be dropped (since it is just a comment).
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 8d228c237954..f8402c818d30 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -29,15 +29,16 @@
+ //!
+ //! ## General Examples
+ //!
+-//! ```rust,ignore
++//! ```rust
+ //! # #![allow(clippy::disallowed_names)]
++//! # #![allow(clippy::undocumented_unsafe_blocks)]
+ //! use kernel::types::Opaque;
+ //! use pin_init::pin_init_from_closure;
+ //!
+ //! // assume we have some `raw_foo` type in C:
+ //! #[repr(C)]
+ //! struct RawFoo([u8; 16]);
+-//! extern {
++//! extern "C" {
+ //!     fn init_foo(_: *mut RawFoo);
+ //! }
+ //!
+@@ -66,12 +67,13 @@
+ //! });
+ //! ```
+ //!
+-//! ```rust,ignore
++//! ```rust
+ //! # #![allow(unreachable_pub, clippy::disallowed_names)]
+ //! use kernel::{prelude::*, types::Opaque};
+ //! use core::{ptr::addr_of_mut, marker::PhantomPinned, pin::Pin};
+ //! # mod bindings {
+ //! #     #![allow(non_camel_case_types)]
++//! #     #![allow(clippy::missing_safety_doc)]
+ //! #     pub struct foo;
+ //! #     pub unsafe fn init_foo(_ptr: *mut foo) {}
+ //! #     pub unsafe fn destroy_foo(_ptr: *mut foo) {}
+
+-- 
+2.50.0
+
