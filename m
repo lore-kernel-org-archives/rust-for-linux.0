@@ -1,46 +1,31 @@
-Received: from epicurean-pwyll.relay-egress.a.mail.umich.edu (relay-egress-host.us-east-2.a.mail.umich.edu [18.217.159.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF77AD517;
-	Wed,  9 Jul 2025 03:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.217.159.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538A5625
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 08:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752032946; cv=none; b=dSiCw6THFSyQp3IABuL7Cwr0v1rZegfJzi4qLA0sNcePBiLxKz8YkN+cMYGsX0KRnVAc9NNXIWZVC4t4+OvgmbAeMcNTk363fRFrWgkEP/J0NAJVscuh7rfN+wS0wn+BntszsWsGCKMlJ5maWokFLMktUrXr1Wp4RYTxdP6S46M=
+	t=1752048302; cv=none; b=FPcI91X1kZZ+ShdnwReH4LYmyDkKR9nBFgwgooj6ZErv9DuVXObq2/Fh/ipczs73Ciwxk4yOzF3y6c0b7dsjXHDZyENzw4CjTxc08LkJ9vP5tl01UKfzi3+UkE0ZjAljx/g5JvPI3RGb6mtep8r6J6Y4bssf+juuF1N+wpJGBZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752032946; c=relaxed/simple;
-	bh=zjvjUcwS5qfI9jHWRzf+0fkXmbuLjmAbMYytraR6Tao=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=NhJZS7D6Anq9ooTwUr3B1njh/XUOEYgoG9N5sClGWlKjNDn0THsfA065UOyaXBG3vyryPdYY1OP0K0+TUM7OqQLAgkIYlgnQSGi7J3C6T7mkRQOYDm3Becp8jhOqXSh1HEqh0viS1Aw5vslbN1jbIPCh4jDgGdl9DwOtlqJNJe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=c2WhWLj2; arc=none smtp.client-ip=18.217.159.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1752048302; c=relaxed/simple;
+	bh=A5F7lsTYr8WzzKN0V1G4Qhmzzhzkqy3tyBEFq5W+5po=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=jhode8nesbSlZNZV4BsAp8op5H3E4pxr9Dxnpya3JX5mZa41l74tptI0ROJdMXYjpGzBhoeU4fd9EdLqExCc+ODAVGKYWXEipk7m/2SJeBdsBeS6NuLwsQLT/dhHle9A/Ge5C25v4VdYkjPmYdNqFhWTfN4QLLwmHZbo2cLrk/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtfmutvY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="c2WhWLj2"
-Received: from advisable-myrddin.jail.a.mail.umich.edu (ip-10-0-73-63.us-east-2.compute.internal [10.0.73.63])
-	by epicurean-pwyll.relay-egress.a.mail.umich.edu with ESMTPS
-	id 686DE6AD.359AA137.4E5FB9A4.222246;
-	Tue, 08 Jul 2025 23:49:01 -0400
-Received: from inspiring-wechuge.authn-relay.a.mail.umich.edu (ip-10-0-74-32.us-east-2.compute.internal [10.0.74.32])
-	by advisable-myrddin.jail.a.mail.umich.edu with ESMTPS
-	id 686DE47B.1ED842D5.6149EC18.933264;
-	Tue, 08 Jul 2025 23:39:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=umich.edu;
-	s=relay-1; t=1752032375;
-	bh=zjvjUcwS5qfI9jHWRzf+0fkXmbuLjmAbMYytraR6Tao=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=c2WhWLj2RRdNo3XYLXv5lxWvlmKbu/Bul0xOA1Tw6gXVdnZCqwEgoUPCMH5W86YMm
-	 ffM1Toa2+jAj+9FeLpxlKQlZvXt761mFqXIehtfh2rRY/UiNk4t16hiw1fJCCAJ3YO
-	 axsAaSDygz4JOXhtGagWeCgl8yJbecaMrwjNVPva3HAbvNA6wJcTSqVXHp6uOhTx1m
-	 accbNpYlhCvMkura/1cobgjggz44qOLJPIPEcrAR1GBTGqr92oLODzXAKf6inK8MJ0
-	 H9xzrATJuaOOEene4+oFC5TzJC3HxaiVqTsMHEwi7xPnwT3YbkEK8WjmNIlr3SXmgJ
-	 nSjjJvQeEwa8w==
-Authentication-Results: inspiring-wechuge.authn-relay.a.mail.umich.edu; 
-	iprev=pass policy.iprev=185.104.139.75 (ip-185-104-139-75.ptr.icomera.net);
-	auth=pass smtp.auth=tmgross
-Received: from localhost (ip-185-104-139-75.ptr.icomera.net [185.104.139.75])
-	by inspiring-wechuge.authn-relay.a.mail.umich.edu with ESMTPSA
-	id 686DE474.2AFF1CF8.852C2E6.1056699;
-	Tue, 08 Jul 2025 23:39:35 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtfmutvY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B69C4CEF0;
+	Wed,  9 Jul 2025 08:05:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752048301;
+	bh=A5F7lsTYr8WzzKN0V1G4Qhmzzhzkqy3tyBEFq5W+5po=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=PtfmutvYfdBqAB9pw5+f01vaxo3V9cz3EsypO7g8gg4AyG4D52QfQ8JNBFFZctb0B
+	 8FvVjbq9vhADwhK6QuH1yupgRDASMPxrP17Xrbep0B9F/z0fUDMc5lUNg6MOgUhVbd
+	 N672+y2KGydlHKxQFdTYfj2/bc4vjsrELIcUvaeSunJT17IqQe0f0UJYp96lYs6c8r
+	 AHazA/Kn8ckuVw0xiqGlaf+ZPJQJJKTcEQyd7856EkEqNPasqRkaQ9N53p/KNNaw7Z
+	 BsTQhKB3LdgEtapctWBgeqVD7d95+jvJQtm64ZwNCgXbznHFfZXvxCsw3ztPA8Ly8r
+	 6r/OtZ0gO5HKA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,30 +34,55 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Jul 2025 23:39:30 -0400
-Message-Id: <DB77N3PDLA0W.26YMMAHG8LIVF@umich.edu>
-From: "Trevor Gross" <tmgross@umich.edu>
-To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <alex.gaynor@gmail.com>,
- <dakr@kernel.org>, <gregkh@linuxfoundation.org>, <ojeda@kernel.org>,
- <rafael@kernel.org>, <robh@kernel.org>, <saravanak@google.com>
-Cc: <a.hindborg@kernel.org>, <aliceryhl@google.com>, <bhelgaas@google.com>,
- <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>,
- <david.m.ertman@intel.com>, <devicetree@vger.kernel.org>,
- <gary@garyguo.net>, <ira.weiny@intel.com>, <kwilczynski@kernel.org>,
- <leon@kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <lossin@kernel.org>, <netdev@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 3/3] rust: net::phy Change module_phy_driver macro to
- use module_device_table macro
+Date: Wed, 09 Jul 2025 10:04:58 +0200
+Message-Id: <DB7DACSKLCI6.1YONOEGQZ08T7@kernel.org>
+Cc: <aliceryhl@google.com>, <dakr@kernel.org>, <ojeda@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ <~lkcamp/patches@lists.sr.ht>
+Subject: Re: [PATCH v6 3/3] rust: revocable: Document RevocableGuard
+ invariants and refine Deref safety
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250704041003.734033-1-fujita.tomonori@gmail.com>
- <20250704041003.734033-4-fujita.tomonori@gmail.com>
-In-Reply-To: <20250704041003.734033-4-fujita.tomonori@gmail.com>
+References: <20250708003428.76783-1-marcelomoreira1905@gmail.com>
+ <20250708003428.76783-4-marcelomoreira1905@gmail.com>
+ <DB6RKSNTHUZ8.DW0EBFDU6L1I@kernel.org>
+ <CAPZ3m_hArv5MA7H4RYRj1FHUaaFF9+2QAuo03xhUKGQ-YZ8uFg@mail.gmail.com>
+In-Reply-To: <CAPZ3m_hArv5MA7H4RYRj1FHUaaFF9+2QAuo03xhUKGQ-YZ8uFg@mail.gmail.com>
 
-On Fri Jul 4, 2025 at 12:10 AM EDT, FUJITA Tomonori wrote:
-> Change module_phy_driver macro to build device tables which are
-> exported to userspace by using module_device_table macro.
+On Wed Jul 9, 2025 at 12:24 AM CEST, Marcelo Moreira wrote:
+> Em ter., 8 de jul. de 2025 =C3=A0s 12:04, Benno Lossin <lossin@kernel.org=
+> escreveu:
+>> On Tue Jul 8, 2025 at 2:33 AM CEST, Marcelo Moreira wrote:
+>> >  pub struct RevocableGuard<'a, T> {
+>> >      // This can't use the `&'a T` type because references that appear=
+ in function arguments must
+>> >      // not become dangling during the execution of the function, whic=
+h can happen if the
+>> > @@ -258,8 +259,8 @@ impl<T> Deref for RevocableGuard<'_, T> {
+>> >      type Target =3D T;
+>> >
+>> >      fn deref(&self) -> &Self::Target {
+>> > -        // SAFETY: By the type invariants, we hold the rcu read-side =
+lock, so the object is
+>> > -        // guaranteed to remain valid.
+>> > +        // SAFETY: `self.data_ref` is valid for writes because of `Se=
+lf`'s type invariants,
+>> > +        // and `_rcu_guard` ensures the data's accessibility for the =
+lifetime of this guard.
+>>
+>> This also needs to be adjusted.
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> oh, of course, &T is an immutable reference, mb.
+>
+> What about:
+> // SAFETY: `self.data_ref` is valid because of `Self`'s type invariants
+> // and the active RCU read-side lock held via `_rcu_guard`, ensuring
+> the data's accessibility.
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Sounds good.
+
+---
+Cheers,
+Benno
