@@ -1,90 +1,282 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF01292B33
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 13:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CBFB28C2D6
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 13:40:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752068251; cv=none; b=fozrOj8xAnJT6U3Y+vMgByE1idFkjfGpESeSmihPJ4xi8EaE0kWqmwvo0/smdbwPztI62SySLYGM4pIHWk6xMP8dyy9OcOcwZr4QE/Y43vMV4OUMPAumwxUk7ywPf1Mg1NLIENdwqDw1HBhIuduWoDkRJmmnDCKQyDa9353KKek=
+	t=1752068433; cv=none; b=RjtZg1bNswCeq398f7qciKsnvzwpy9/URdlyjyQBMRGQg0a+D64YbxK16OTjh46uqVjWE26rwNbkEM0C1AOYV7juNVk0tBbo4J1r828xqw2n9JtpSimiXonxjibe4l1ftm4vl8WehQBvAodoXs5IIYBhm5RODht8oMRQDkFx2qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752068251; c=relaxed/simple;
-	bh=x1O3yV0tYWPYFSK8SczYbxy40k33Giz5zO0qk0GiNPk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gU3NevsWi73w5x9T8CLQgOld8QVG76MBnGxShcc2cG1HL+UQJwbwiDzHYXMADDtYS2Li3rIOhjlmuTNAfDAU8YbJktXNSjxxQ5cACJWak/YELmgEKO4XoDeKWvsSYosqjN0H2ZzWKeWrYpzycQakaDQNTcwiNK33RaLd36Q/NyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hf5W1YXP; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752068433; c=relaxed/simple;
+	bh=aQZymKyUrc/5I7EINX0x89zpUBG4TPzjuyZgGXp8cJA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=JKRp5DXcRmSFZQZf/w8yeve5+yrXuyA7U74VIXoi8OBymFfiaLqKBhHp4pQ7KD2V7WJvjvqp++c3EE+3cVyJ4bv52BuYKP08fggYK3VD5gk/2H/4or4jUJOgeiW+2+oY+X3SUJ9gpFzXkOTyys5qGVlQQ326fRQPjXR/ZJ/cpR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=yQGPicK6; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=HClRKehy; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hf5W1YXP"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-453643020bdso43911745e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 06:37:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752068248; x=1752673048; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x1O3yV0tYWPYFSK8SczYbxy40k33Giz5zO0qk0GiNPk=;
-        b=hf5W1YXPtxZSSzDSdszBMY8gTXr/oFFGyWLDNSCCQ0dOvd7B+VCaY9Ql19NRv9oPUL
-         A3plrVSFhLytYsY7m3teRtBFNpiU2F5vA6gy9z7ruqr9MqXv2P/7evyOR3KHNY1Q8h/d
-         1mPa3JlegriI6WyRoOb9jZB9EGdFTx2s6f6Hb4r+7d3g1m6u22pWS74nG+61m45NtzT9
-         rfGOe0WASEkT15p+I7xF8ORURKai/JhaIoJ9AdhWNbvIExpXS2PA+LTQWx2SDoeYBpfa
-         oacEByb7Eo4Udj2Lq5gnxgq1VLWCK7YvfXs72XsDa+/htpIC481oQyLso1MZsygt6b3j
-         ssOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752068248; x=1752673048;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x1O3yV0tYWPYFSK8SczYbxy40k33Giz5zO0qk0GiNPk=;
-        b=hznbvWDydJz3NTOo+m42PBvPtpkoSsbPVWogy/M6DFtCoSkKHeSzWOgc0OQsjWXB0G
-         85xctd88vlp1ZdZyvCh+ma7yFXMn98JJ++IA5tV2+UnIQiDuFYdpcaSaNVXz5cYUO4o3
-         VBFB5zj7PkIiFNb8Yp+6j1o4cMXqZBfJ+0Glw4vdN/D3QZKmR2XAM3/0vd1JlgZgi3lK
-         k1idlyVY8BVA4m1gZmp99L/nvVmzbp3K9kePOHOfsH/fBsLEEez0oQ/UW3F7j4Om//wZ
-         YiuJARl6W533tFyl6HYl+pSlgQq5GccWG8gkcINF5UbqSBJMsWVAUQ+6qIZUhEjaMyoW
-         v93g==
-X-Forwarded-Encrypted: i=1; AJvYcCXgHoSfPnlK3Gdt5xGJ8JS+QM4cGfOt3JYynHaFYJEo0j6ODBty8rY7qveboCQTG1vBPDltPOJElf9QJG97MQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxhj+e3ptqZ4eUjsX6NxYB2zFcqoCqcIGHF5uxfyaTmH+Z1hacG
-	LrmPNC7mdABKRMtfrT7KNzPFBlFJ3TneqgDwP6Lgkuec3g0u6pWtF3ez8qNnFk/3RCW8W7ToeG9
-	0KbzAHxly5N8N3psAZd13ybAp+WAtHNrIKXeLoi4a
-X-Gm-Gg: ASbGncu98CDepaAx0agMaG3k+gynAf2St66/qkjCKjhC4fciuGuCnwamlD08jH2QbMB
-	ehOyi+IR0B5qM99yPzOWU8TN/bgIdYS7fUrRuoY6cs1h1Rfrk2Q7Dfdd05mw7ZKZODbqrXHyNC9
-	lRmo0TVH+VQvFPgefrCiZWCyfoXa69YAloMTElowi1+K/eielkaGKF8bkFo32zH6UnAU3A5NCrv
-	Q==
-X-Google-Smtp-Source: AGHT+IEA716nulAqRa5a2S60pK57wjynJP6MZeuoqr0aItMDvDtiVKvSCOQ7tPSH50CZIlyU0jurvE61IyCCQaR9h4E=
-X-Received: by 2002:a05:6000:178f:b0:3a5:25e0:1851 with SMTP id
- ffacd0b85a97d-3b5e44e3f6amr2141108f8f.7.1752068248159; Wed, 09 Jul 2025
- 06:37:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="yQGPicK6";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="HClRKehy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752068428; x=1752673228;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=9wNmXzsT2Qm51iGkMW4W5Cj/ccZe0He2BomSiCEZkp4=;
+	b=yQGPicK6w3+28Yo5sIl58kfKYkdW1IWfx00KTopXUszMdQcH41UNa9nmn8KcgR+qdkHF/btI5xuz/
+	 etbJKDvR5BwYmOxdc247JXKwUqFfGpQzg45l9wKNb1G9B+B8KcJf2np9xg/JkTFnNf82SjHu90oSxz
+	 3cU6NMetiMOSZYNBFOmAumLiWF3jeeulgBdZsWKVdw/rygP5hwBeslZf5cW3SXqU2ffLLvELROOcQ2
+	 J7RwO4b1egyy/WjOC1JYKrX9ZUuuPuYI1+J4tW9eMZolC12GVmODmuP6bLn7ridnsu7lvOmchjvucu
+	 4l8Jqur4xU2hVOmfqr+O+nHDjuUcgxw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752068428; x=1752673228;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=9wNmXzsT2Qm51iGkMW4W5Cj/ccZe0He2BomSiCEZkp4=;
+	b=HClRKehyLxD+atMHjqjFXjYpFGiwwHdAYs1D322FiACSdZUNRNlg9hMQ0NJXj9dFNv4cfeAHDm/Eg
+	 G4FsTXMBg==
+X-HalOne-ID: 45a67a1f-5cca-11f0-a5c1-81a63d10fb2d
+Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay5.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 45a67a1f-5cca-11f0-a5c1-81a63d10fb2d;
+	Wed, 09 Jul 2025 13:40:28 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250423-list-no-offset-v3-0-9d0c2b89340e@gmail.com>
-In-Reply-To: <20250423-list-no-offset-v3-0-9d0c2b89340e@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 9 Jul 2025 15:37:16 +0200
-X-Gm-Features: Ac12FXyCr_gESQ0NBGSVDz1Tvd9THD57xkpCcUipxVzlzPqqz_epCDTU0SghXaQ
-Message-ID: <CAH5fLghgRy_B6kJ9c4HDWw-EUTcUQC6qhm81zizeRk+mZPu_0w@mail.gmail.com>
-Subject: Re: [PATCH v3 0/6] rust: list: remove HasListLinks::OFFSET
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v11 2/4] mm/slub: allow to set node and align in
+ k[v]realloc
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <76FFFF68-15F3-4A36-BF1D-A33CF36FDC9E@konsulko.se>
+Date: Wed, 9 Jul 2025 15:40:17 +0200
+Cc: linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <7099B4C7-311F-466D-B12C-BDC52FE34A65@konsulko.se>
+References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
+ <20250707164908.631462-1-vitaly.wool@konsulko.se>
+ <4c5852cc-2ca5-432b-8426-01c108df66cb@suse.cz>
+ <76FFFF68-15F3-4A36-BF1D-A33CF36FDC9E@konsulko.se>
+To: Vlastimil Babka <vbabka@suse.cz>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-On Wed, Apr 23, 2025 at 6:30=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
->
-> The bulk of this change occurs in the last commit, please its commit
-> messages for details.
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+> On Jul 8, 2025, at 4:03=E2=80=AFPM, Vitaly Wool =
+<vitaly.wool@konsulko.se> wrote:
+>=20
+>=20
+>=20
+>> On Jul 8, 2025, at 2:52=E2=80=AFPM, Vlastimil Babka <vbabka@suse.cz> =
+wrote:
+>>=20
+>> On 7/7/25 18:49, Vitaly Wool wrote:
+>>> Reimplement k[v]realloc_node() to be able to set node and
+>>> alignment should a user need to do so. In order to do that while
+>>> retaining the maximal backward compatibility, add
+>>> k[v]realloc_node_align() functions and redefine the rest of API
+>>> using these new ones.
+>>>=20
+>>> With that change we also provide the ability for the Rust part of
+>>> the kernel to set node and alignment in its K[v]xxx
+>>> [re]allocations.
+>>>=20
+>>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+>>> ---
+>>> include/linux/slab.h | 40 ++++++++++++++++++---------
+>>> mm/slub.c            | 64 =
+++++++++++++++++++++++++++++++--------------
+>>> 2 files changed, 71 insertions(+), 33 deletions(-)
+>>>=20
+>>> diff --git a/include/linux/slab.h b/include/linux/slab.h
+>>> index d5a8ab98035c..13abcf4ada22 100644
+>>> --- a/include/linux/slab.h
+>>> +++ b/include/linux/slab.h
+>>> @@ -465,9 +465,15 @@ int kmem_cache_shrink(struct kmem_cache *s);
+>>> /*
+>>> * Common kmalloc functions provided by all allocators
+>>> */
+>>> -void * __must_check krealloc_noprof(const void *objp, size_t =
+new_size,
+>>> -     gfp_t flags) __realloc_size(2);
+>>> -#define krealloc(...) alloc_hooks(krealloc_noprof(__VA_ARGS__))
+>>> +void * __must_check krealloc_node_align_noprof(const void *objp, =
+size_t new_size,
+>>> +        unsigned long align,
+>>> +        gfp_t flags, int nid) __realloc_size(2);
+>>> +#define krealloc_node_noprof(_p, _s, _f, _n) \
+>>> + krealloc_node_align_noprof(_p, _s, 1, _f, _n)
+>>> +#define krealloc_noprof(...) krealloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>>> +#define krealloc_node_align(...) =
+alloc_hooks(krealloc_node_align_noprof(__VA_ARGS__))
+>>> +#define krealloc_node(...) =
+alloc_hooks(krealloc_node_noprof(__VA_ARGS__))
+>>> +#define krealloc(...) alloc_hooks(krealloc_noprof(__VA_ARGS__))
+>>=20
+>> Hm wonder if krealloc() and krealloc_node_align() would be enough. Is
+>> krealloc_node() only used between patch 3 and 4?
+>> Also perhaps it would be more concise to only have
+>> krealloc_node_align_noprof() with alloc_hooks wrappers filling the
+>> NUMA_NO_NODE (and 1), so we don't need to #define the _noprof variant =
+of
+>> everything. The _noprof callers are rare so they can just always use
+>> krealloc_node_align_noprof() directly and also fill in the =
+NUMA_NO_NODE (and 1).
+>=20
+> I don=E2=80=99t think that krealloc_node() is used at all at the =
+moment. I thought I=E2=80=99d define these to be symmetrical to =
+vmalloc() but if you believe these are redundant, I=E2=80=99m all for =
+removing them.
+>=20
+Well, krealloc_noprof() appears to be used by nommu.c and it feels a bit =
+weird to make nommu code deal with NUMA nodes. So unless you feel =
+strongly about it, I would keep krealloc_noprof().
+
+~Vitaly
+
+>>=20
+>>> void kfree(const void *objp);
+>>> void kfree_sensitive(const void *objp);
+>>> @@ -1041,18 +1047,23 @@ static inline __alloc_size(1) void =
+*kzalloc_noprof(size_t size, gfp_t flags)
+>>> #define kzalloc(...) alloc_hooks(kzalloc_noprof(__VA_ARGS__))
+>>> #define kzalloc_node(_size, _flags, _node) kmalloc_node(_size, =
+(_flags)|__GFP_ZERO, _node)
+>>>=20
+>>> -void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), gfp_t =
+flags, int node) __alloc_size(1);
+>>> -#define kvmalloc_node_noprof(size, flags, node) \
+>>> - __kvmalloc_node_noprof(PASS_BUCKET_PARAMS(size, NULL), flags, =
+node)
+>>> +void *__kvmalloc_node_noprof(DECL_BUCKET_PARAMS(size, b), unsigned =
+long align,
+>>> +      gfp_t flags, int node) __alloc_size(1);
+>>> +#define kvmalloc_node_align_noprof(_size, _align, _flags, _node) \
+>>> + __kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, NULL), _align, =
+_flags, _node)
+>>> +#define kvmalloc_node_noprof(_size, _flags, _node) \
+>>> + kvmalloc_node_align_noprof(_size, 1, _flags, _node)
+>>> +#define kvmalloc_node_align(...) \
+>>> + alloc_hooks(kvmalloc_node_align_noprof(__VA_ARGS__))
+>>> #define kvmalloc_node(...) =
+alloc_hooks(kvmalloc_node_noprof(__VA_ARGS__))
+>>=20
+>> Ditto.
+>>=20
+>>>=20
+>>> -#define kvmalloc(_size, _flags) kvmalloc_node(_size, _flags, =
+NUMA_NO_NODE)
+>>> -#define kvmalloc_noprof(_size, _flags) kvmalloc_node_noprof(_size, =
+_flags, NUMA_NO_NODE)
+>>> +#define kvmalloc_noprof(...) kvmalloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>>> +#define kvmalloc(...) alloc_hooks(kvmalloc_noprof(__VA_ARGS__))
+>>> #define kvzalloc(_size, _flags) kvmalloc(_size, (_flags)|__GFP_ZERO)
+>>>=20
+>>> -#define kvzalloc_node(_size, _flags, _node) kvmalloc_node(_size, =
+(_flags)|__GFP_ZERO, _node)
+>>> +#define kvzalloc_node(_s, _f, _n) kvmalloc_node(_s, =
+(_f)|__GFP_ZERO, _n)
+>>> #define kmem_buckets_valloc(_b, _size, _flags) \
+>>> - alloc_hooks(__kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), =
+_flags, NUMA_NO_NODE))
+>>> + alloc_hooks(__kvmalloc_node_noprof(PASS_BUCKET_PARAMS(_size, _b), =
+1, _flags, NUMA_NO_NODE))
+>>>=20
+>>> static inline __alloc_size(1, 2) void *
+>>> kvmalloc_array_node_noprof(size_t n, size_t size, gfp_t flags, int =
+node)
+>>> @@ -1068,13 +1079,16 @@ kvmalloc_array_node_noprof(size_t n, size_t =
+size, gfp_t flags, int node)
+>>> #define kvmalloc_array_noprof(...) =
+kvmalloc_array_node_noprof(__VA_ARGS__, NUMA_NO_NODE)
+>>> #define kvcalloc_node_noprof(_n,_s,_f,_node) =
+kvmalloc_array_node_noprof(_n,_s,(_f)|__GFP_ZERO,_node)
+>>> #define kvcalloc_noprof(...) kvcalloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>>> -
+>>> #define kvmalloc_array(...) =
+alloc_hooks(kvmalloc_array_noprof(__VA_ARGS__))
+>>> #define kvcalloc_node(...) =
+alloc_hooks(kvcalloc_node_noprof(__VA_ARGS__))
+>>> #define kvcalloc(...) alloc_hooks(kvcalloc_noprof(__VA_ARGS__))
+>>>=20
+>>> -void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>>> - __realloc_size(2);
+>>> +void *kvrealloc_node_align_noprof(const void *p, size_t size, =
+unsigned long align,
+>>> +   gfp_t flags, int nid) __realloc_size(2);
+>>> +#define kvrealloc_node_align(...) =
+kvrealloc_node_align_noprof(__VA_ARGS__)
+>>> +#define kvrealloc_node_noprof(_p, _s, _f, _n) =
+kvrealloc_node_align_noprof(_p, _s, 1, _f, _n)
+>>> +#define kvrealloc_node(...) =
+alloc_hooks(kvrealloc_node_noprof(__VA_ARGS__))
+>>> +#define kvrealloc_noprof(...) kvrealloc_node_noprof(__VA_ARGS__, =
+NUMA_NO_NODE)
+>>> #define kvrealloc(...) alloc_hooks(kvrealloc_noprof(__VA_ARGS__))
+>>=20
+>> Ditto.
+>>=20
+>>> extern void kvfree(const void *addr);
+>>> diff --git a/mm/slub.c b/mm/slub.c
+>>> index c4b64821e680..881244c357dd 100644
+>>> --- a/mm/slub.c
+>>> +++ b/mm/slub.c
+>>> @@ -4845,7 +4845,7 @@ void kfree(const void *object)
+>>> EXPORT_SYMBOL(kfree);
+>>>=20
+>>> static __always_inline __realloc_size(2) void *
+>>> -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
+>>> +__do_krealloc(const void *p, size_t new_size, unsigned long align, =
+gfp_t flags, int nid)
+>>> {
+>>> void *ret;
+>>> size_t ks =3D 0;
+>>> @@ -4859,6 +4859,20 @@ __do_krealloc(const void *p, size_t new_size, =
+gfp_t flags)
+>>> if (!kasan_check_byte(p))
+>>> return NULL;
+>>>=20
+>>> + /* refuse to proceed if alignment is bigger than what kmalloc() =
+provides */
+>>> + if (!IS_ALIGNED((unsigned long)p, align) || new_size < align)
+>>> + return NULL;
+>>> +
+>>> + /*
+>>> +  * If reallocation is not necessary (e. g. the new size is less
+>>> +  * than the current allocated size), the current allocation will =
+be
+>>> +  * preserved unless __GFP_THISNODE is set. In the latter case a =
+new
+>>> +  * allocation on the requested node will be attempted.
+>>> +  */
+>>> + if (unlikely(flags & __GFP_THISNODE) && nid !=3D NUMA_NO_NODE &&
+>>> +      nid !=3D page_to_nid(vmalloc_to_page(p)))
+>>=20
+>> We need virt_to_page() here not vmalloc_to_page().
+>=20
+> Indeed, thanks. It is a c=E2=80=99n=E2=80=99p error, we had =
+virt_to_page() in earlier patchsets (i. e. up until v10).
+>=20
+>>=20
+>>> + goto alloc_new;
+>>> +
+>>> if (is_kfence_address(p)) {
+>>> ks =3D orig_size =3D kfence_ksize(p);
+>>> } else {
+
+
