@@ -1,141 +1,198 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29AE2D97BF
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 11:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575A12C2AA5;
+	Wed,  9 Jul 2025 11:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752060696; cv=none; b=sFi2O64oJdH25xTwGrrt+hrit6Z2EB5Q5qoj60lvq3C+w227JkAT5HX6R3o3EfbvWX/tEHL4frykQdkYrYLgChtr2YUKneGG2YYZIJ5BGb9QqsBGTLp+q2pdUdZmfhWb2rTkxyFrW8ThbkPQT4gEotxGSROn15++O5mgWZ/jlGg=
+	t=1752062208; cv=none; b=GVuzkMxNUzifbQmUrejkOlrD89SCuq2y4D5DEc8JpkW0bOJiha7E7yo0Yw7qgOUpdNhxsUB0GMGBVLh0/0D55Kly53HkxRYgR/9pNWWStkBvhsAyyl0voDGJyrEIk7W3Y3UIJZwkrV1zQmECDq4R11o2JuifL5L8N3Sx6tZ05oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752060696; c=relaxed/simple;
-	bh=l0yiT6vi8kNmvnaFH6vL9llbWszqITt9K9QRgcAtPgw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tUkocUsLj0ROnYJZy2ocuzjcm74lGOYQyTjhrD/R4M35BExYRrRvtxU3OvpV6QuVT2I88UWFmzYv6c3KMqwu7Ty7TPQ2bguhvHGVpC6vCrZIFl2NKEwKyAh+q1D+wUSteND6VtwwM6WobAfNExczEnIQ+GkMCgyZ6Ht0v3XycE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oIzBKjCI; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1752062208; c=relaxed/simple;
+	bh=q2Su56yH/l+hwqndapbmNWubb3102oNRjJGNKporqno=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=pycUSZVFTsC1f2gl65KDqpNMNHsFHjVsh4oqwGcSkdhKDtUuN6W0yXSzyEx9o2IP7LAsRRZS+kRwhBNmBK0ou9qdezVlfeThAolAQa7KAA54TbZrImbV/Bm6to06K46uhjgHOBAaO577wPxDB0ATWjyw4CegmD/VJgivIjCkQI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bL8U51j1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oIzBKjCI"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-60c6d568550so4715596a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 04:31:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752060693; x=1752665493; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nKz/jr4sAvlzW8F+pdFxeU0JpTncvrCm+GmYbMwH7v0=;
-        b=oIzBKjCIyT7LMBvcK8DawbzM/FsZWc051YlR55RtrS/COmsfrsOU2TMIKAhlqp9Kko
-         HwjK8+y8SZWMmyELf9hOiYUjzF3Of4HX36yeCTQjSuF/0k7Q8exJVsTEQBHg0wI8eR1S
-         TP6J7hj4XxKXvz6MeWww9niCPcskTIYAyHE0Jsbr/ZRrBRttZiQDfFVLSEYjbms2Q4Ab
-         ICp+igrpYMNJYFQQU5t2HKn07EHj116a76gYW/29HeNpe2lv2AErCJsBBhfmhNZQB/Oe
-         SGI82sWWkIoU2MYQaHkU4xrw+a/hTeImjVpLzqw9PVhPsJ4niogxAPJ+AruJPNsz3asm
-         5/2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752060693; x=1752665493;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nKz/jr4sAvlzW8F+pdFxeU0JpTncvrCm+GmYbMwH7v0=;
-        b=HUbBncGN2QsIWt/wprklBxOp/+oDAsprRT/UOYmeswfw5nXGe33d4y1irSf88XIO6g
-         MtnnecUJ/sjwvkTLZ/SMYJ2osH+iF1eiK2p6Y+Elr7+gHVzI7GbYTWf1K/ZjbZxh26p5
-         08xyoA0PdJzdYTbBV00I1EPKQ+4YUDh0nwdElWB4SliVXxKE2isotq77zXgd/vkXFMwd
-         Q8v3McebkyWpZhw/T2qT0X+0Cf4BNE7ghqjQoN5GHKnSwVxyXE6hsh5JXbqeS3mje7qo
-         U3dfb0i8lY9HMSDgrxTdGZbNkaiOyU0MWsMmQG+b+lvAtxovzRjD1Y+wNnZDvci/6SlQ
-         yfVw==
-X-Forwarded-Encrypted: i=1; AJvYcCWYg5Lx8HM2XmciIp5Qzf8w5CE/tYyJyckUKYRjkXVmEPhvbC80gtAKdFlJ2v7mK/xMTYrlluE4v41UDMhkdA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvKbfytQ3TvVhfsrimIy7gMwMgErDBM07r1oM/jU5dIDO1zbvu
-	NtwB5VPXspjupj1ErRCyNGbxSsslpON1hzRZIguSAmGrwbI5L1InCEOxaMaRmfublj9kybFpMNH
-	Ou17vW3rs2HAnSn0tIg==
-X-Google-Smtp-Source: AGHT+IFLvrS3jBzSiTmt44t7b5t9NsWfnRbSj5JtycWej5ry/u4kAdaGE1886+VS9sRjahoYLkPT0J9aqR8+j/0=
-X-Received: from edji11.prod.google.com ([2002:a50:d74b:0:b0:609:464e:83f8])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2745:b0:604:e85d:8bb4 with SMTP id 4fb4d7f45d1cf-611a714c11fmr1541664a12.21.1752060692970;
- Wed, 09 Jul 2025 04:31:32 -0700 (PDT)
-Date: Wed, 9 Jul 2025 11:31:31 +0000
-In-Reply-To: <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bL8U51j1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7698C4CEEF;
+	Wed,  9 Jul 2025 11:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752062207;
+	bh=q2Su56yH/l+hwqndapbmNWubb3102oNRjJGNKporqno=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=bL8U51j1eucp0DJTCFh0LCSGMDZ37S9+6o1RcAYc6WUv5MNWvQwc4ZCpmp6+YQXWK
+	 j4ReuvUYeGNt2EOvIZxCPVKQz5A6wgocFyJa5SutJFKdCO/7baWX0JnN+w9kujk0jJ
+	 maNiM6r+M2mnLqj8jG5ci4L+W+EG+P3bRaJ8BiDOv/6c2rUTPpATrjdmvwWdXhIKYj
+	 RxZTVNBYmeUkdx6bGRzPzqDSMA3+o58Xaqokfwu2tcyFrbBaFLihNJtoF55kzx6ncK
+	 aNKYPOhCgLpTR6ZD1jDnQK96HvNXP2d1BPnkHPZHlh7P5LiSezfL2Z/elmtUVZ2GvS
+	 ipB/xlIZJPaqA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,  "Alexander Viro"
+ <viro@zeniv.linux.org.uk>,  "Arnd Bergmann" <arnd@arndb.de>,  "Miguel
+ Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary
+ Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+  "Trevor Gross" <tmgross@umich.edu>,  "Danilo Krummrich"
+ <dakr@kernel.org>,  "Matthew Maurer" <mmaurer@google.com>,  "Lee Jones"
+ <lee@kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <rust-for-linux@vger.kernel.org>,  "Benno Lossin" <lossin@kernel.org>
+Subject: Re: [PATCH v2 1/4] rust: iov: add iov_iter abstractions for
+ ITER_SOURCE
+In-Reply-To: <aG5NdqmUdvUHqUju@google.com> (Alice Ryhl's message of "Wed, 09
+	Jul 2025 11:07:34 +0000")
+References: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
+	<U16UjMBBh1b7dLeO-Nhqw__nw_JwypctB1ze_G44BtsX0l_eVK6Sp-efbobmnuF44J0wQNgnK7b8nCmBX0KS_Q==@protonmail.internalid>
+	<20250704-iov-iter-v2-1-e69aa7c1f40e@google.com>
+ <878qkyoi6d.fsf@kernel.org>
+	<0Y9Bjahrc6dbxzIFtBKXUxv-jQtuvM2UWShaaSUsjKBuC1KKeGIpBFTC4a89oNrOLBP66SXtC7kQx1gtt04CMg==@protonmail.internalid>
+	<aG5NdqmUdvUHqUju@google.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Wed, 09 Jul 2025 13:56:37 +0200
+Message-ID: <87ecuplgqy.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
- <824065ea-1f5c-4cd4-9917-4b7a91882af8@lucifer.local> <aG0HJte0Xw55z_y4@pollux>
- <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
-Message-ID: <aG5TE3oq1w1cSdOy@google.com>
-Subject: Re: [PATCH v11 0/4] support large align and nid in Rust allocators
-From: Alice Ryhl <aliceryhl@google.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, 
-	Liam Howlett <liam.howlett@oracle.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Tue, Jul 08, 2025 at 02:19:38PM +0100, Lorenzo Stoakes wrote:
-> On Tue, Jul 08, 2025 at 01:55:18PM +0200, Danilo Krummrich wrote:
-> > On Tue, Jul 08, 2025 at 11:58:06AM +0100, Lorenzo Stoakes wrote:
-> > > +cc Liam
-> > >
-> > > Hi guys,
-> > >
-> > > We have a section in MAINTAINERS for mm rust (MEMORY MANAGEMENT - RUST), so
-> > > it's slightly concerning to find a series (at v11!) like this that changes
-> > > mm-related stuff and it involves files not listed there and nobody bothered
-> > > to cc- the people listed there.
-> >
-> > What files are you referring to? Are you referring to:
-> >
-> > 	rust/kernel/alloc.rs
-> > 	rust/kernel/alloc/*
-> >
-> > If so, they're indeed not under the "MEMORY MANAGEMENT - RUST" entry, which
-> > so far seems correct.
-> 
-> Looking at these, they seem to be intended to be the primary means by which
-> slab/vmalloc allocations will be managed in rust kernel code correct?
-> 
-> There's also stuff relating to NUMA etc.
-> 
-> I really do wonder where the line between this and the mm stuff is. Because
-> if the idea is 'well this is just a wrapper around slab/vmalloc' surely the
-> same can be said of what's in rust/kernel/mm.rs re: VMAs?
-> 
-> So if this is the rust equivalent of include/linux/slab.h and mm/slub.c
-> then that does seem to me to suggest this should be considered an mm/rust
-> thing right?
-> 
-> It'd be good to know exactly what is considered mm rust and should go
-> through the mm tree and what isn't.
-> 
-> Maybe Alice has some insights on this?
+"Alice Ryhl" <aliceryhl@google.com> writes:
 
-The Rust standard library has three pieces:
+> On Tue, Jul 08, 2025 at 04:45:14PM +0200, Andreas Hindborg wrote:
+>> "Alice Ryhl" <aliceryhl@google.com> writes:
+>> > +/// # Invariants
+>> > +///
+>> > +/// Must hold a valid `struct iov_iter` with `data_source` set to `ITER_SOURCE`. For the duration
+>> > +/// of `'data`, it must be safe to read the data in this IO vector.
+>>
+>> In my opinion, the phrasing you had in v1 was better:
+>>
+>>   The buffers referenced by the IO vector must be valid for reading for
+>>   the duration of `'data`.
+>>
+>> That is, I would prefer "must be valid for reading" over "it must be
+>> safe to read ...".
+>
+> If it's backed by userspace data, then technically there aren't any
+> buffers that are valid for reading in the usual sense. We need to call
+> into special assembly to read it, and a normal pointer dereference would
+> be illegal.
 
-- core. Defines standard types that can work anywhere. (such as ints)
-- alloc. Defines standard types that require an allocator. (such as vectors)
-- std. Defines standard types that require an OS. (such as File or TcpStream)
+If you go with "safe to read" for this reason, I think you should expand
+the statement along the lines you used here.
 
-In the kernel we used to use both core and alloc, but we switched away
-from alloc because it doesn't support GFP flags well. The 'RUST [ALLOC]'
-subsystem originates from that transition from the Rust stdlib alloc to
-our own implementation. It contains essentially three pieces:
+What is the special assembly that is used to read this data? From a
+quick scan it looks like that if `CONFIG_UACCESS_MEMCPY` is enabled, a
+regular `memcpy` call is used.
 
-- Two data structures Vec and Box.
-  - The Box data structure is the simplest possible user of allocation:
-    A Box<T> stores a single instance of the struct T in its own
-    allocation.
-  - The Vec data structure stores a resizable array and maintains a
-    pointer, length, capacity triplet. There is a bunch of logic to
-    manipulate these to correctly keep track of which parts of the
-    vector are in use.
-- The Allocator trait.
-  - This trait defines what functions an allocator must provide.
-  - The data structures Box or Vec require you to specify an allocator,
-    and internally it calls into the allocator to manage the backing
-    memory for its data.
-- Three concrete implementations of the Allocator trait.
-  - These are kmalloc, vmalloc, and kvmalloc respectively.
+>
+>> > +    /// Returns the number of bytes available in this IO vector.
+>> > +    ///
+>> > +    /// Note that this may overestimate the number of bytes. For example, reading from userspace
+>> > +    /// memory could fail with `EFAULT`, which will be treated as the end of the IO vector.
+>> > +    #[inline]
+>> > +    pub fn len(&self) -> usize {
+>> > +        // SAFETY: It is safe to access the `count` field.
+>>
+>> Reiterating my comment from v1: Why?
+>
+> It's the same reason as why this is safe:
+>
+> struct HasLength {
+>     length: usize,
+> }
+> impl HasLength {
+>     fn len(&self) -> usize {
+>         // why is this safe?
+>         self.length
+>     }
+> }
+>
+> I'm not sure how to say it concisely. I guess it's because all access to
+> the iov_iter goes through the &IovIterSource.
 
-In my eyes, the further down this list you get, the more likely it is
-that the patch needs to go through the MM tree.
+So "By existence of a shared reference to `self`, `count` is valid for read."?
 
-Alice
+>
+>> > +        unsafe {
+>> > +            (*self.iov.get())
+>> > +                .__bindgen_anon_1
+>> > +                .__bindgen_anon_1
+>> > +                .as_ref()
+>> > +                .count
+>> > +        }
+>> > +    }
+>> > +
+>> > +    /// Returns whether there are any bytes left in this IO vector.
+>> > +    ///
+>> > +    /// This may return `true` even if there are no more bytes available. For example, reading from
+>> > +    /// userspace memory could fail with `EFAULT`, which will be treated as the end of the IO vector.
+>> > +    #[inline]
+>> > +    pub fn is_empty(&self) -> bool {
+>> > +        self.len() == 0
+>> > +    }
+>> > +
+>> > +    /// Advance this IO vector by `bytes` bytes.
+>> > +    ///
+>> > +    /// If `bytes` is larger than the size of this IO vector, it is advanced to the end.
+>> > +    #[inline]
+>> > +    pub fn advance(&mut self, bytes: usize) {
+>> > +        // SAFETY: `self.iov` is a valid IO vector.
+>> > +        unsafe { bindings::iov_iter_advance(self.as_raw(), bytes) };
+>> > +    }
+>> > +
+>> > +    /// Advance this IO vector backwards by `bytes` bytes.
+>> > +    ///
+>> > +    /// # Safety
+>> > +    ///
+>> > +    /// The IO vector must not be reverted to before its beginning.
+>> > +    #[inline]
+>> > +    pub unsafe fn revert(&mut self, bytes: usize) {
+>> > +        // SAFETY: `self.iov` is a valid IO vector, and `bytes` is in bounds.
+>> > +        unsafe { bindings::iov_iter_revert(self.as_raw(), bytes) };
+>> > +    }
+>> > +
+>> > +    /// Read data from this IO vector.
+>> > +    ///
+>> > +    /// Returns the number of bytes that have been copied.
+>> > +    #[inline]
+>> > +    pub fn copy_from_iter(&mut self, out: &mut [u8]) -> usize {
+>> > +        // SAFETY: We will not write uninitialized bytes to `out`.
+>>
+>> Can you provide something to back this claim?
+>
+> I guess the logic could go along these lines:
+>
+> * If the iov_iter reads from userspace, then it's because we always
+>   consider such reads to produce initialized data.
+
+I don't think it is enough to just state that we consider the reads to
+produce initialized data.
+
+> * If the iov_iter reads from a kernel buffer, then the creator of the
+>   iov_iter must provide an initialized buffer.
+>
+> Ultimately, if we don't know that the bytes are initialized, then it's
+> impossible to use the API correctly because you can never inspect the
+> bytes in any way. I.e., any implementation of copy_from_iter that
+> produces uninit data is necessarily buggy.
+
+I would agree. How do we fix that? You are more knowledgeable than me in
+this field, so you probably have a better shot than me, at finding a
+solution.
+
+As far as I can tell, we need to read from a place unknown to the rust
+abstract machine, and we need to be able to have the abstract machine
+consider the data initialized after the read.
+
+Is this volatile memcpy [1], or would that only solve the data race
+problem, not uninitialized data problem?
+
+
+Best regards,
+Andreas Hindborg
+
+[1] https://lore.kernel.org/all/25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de
+
