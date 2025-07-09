@@ -1,140 +1,106 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A77F2580F2;
-	Wed,  9 Jul 2025 10:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A5E286D74
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 10:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752057283; cv=none; b=Jil/jENeoztEObk0Bd02gD0GL57oT8al6HuefZjHf/IGoM8Df4p0ZEwoR8OcR4n9lCSd0UVV6G/DsMlyYPpbK/8aor3SO5Blelt0MtMs3sE02GU/Zh2GaF5S4w9HFYuXKfzALCNPpXDX4AOxGvoFkcF1S5hizL5boaMq3aZ3snk=
+	t=1752058732; cv=none; b=Q0u6DjcZJsoWhcHJg+NNohedM+BfWfSawobQ+8dasnXX6+tyoHpv6WLE3JuoRn8lAKTBcfG2zQJtVwE7pSjVI8bsv5VVro0iYZuXkucYeJ8/IGi/b8rcyPumIDLBzCb7H/mjCkSAGCmAmL8ASKARtoF5JW8eA4eBK3ijBnQLzbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752057283; c=relaxed/simple;
-	bh=kiasbQlkUMVYMuc++fP1ijtrR3D41MICitEQNficfYk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hTFxiUElAel0oEcTD38JTD/u7Eg5sdqHKucRxScJW+bXpZ6gMhSuxBmiqERy1JnOuCSo676WqeeSEccu63BGk93iSnV4nk+HS+U4hEpAjJN2aPBUSbf8LdDpObakx1E94m/3DPUTIWbqGTJpODgNswvPnE408d+pULc4i+jv37k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilMihSIc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752058732; c=relaxed/simple;
+	bh=gHzWcOCz3sc3VIt6v1K7pqU3nk+zsaBzIN3PIAfwD0c=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OIinJWajB4AhFPAhaqZkDE7TEBCmIqNTYmYPAhUi+zF34zxjX6tubfPEGkWUuY9Yca7cY6wuQqDNhMoDTyPWahsfmLVt8bgpkJDOrXfphioqd8tCVCSoH33DG79EQHDh2qDVaNDr3ku2wh7WYJ6xeHHoFx1LZ5peT1+JDsYB9P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X7jDIuaX; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilMihSIc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A326C4CEEF;
-	Wed,  9 Jul 2025 10:34:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752057283;
-	bh=kiasbQlkUMVYMuc++fP1ijtrR3D41MICitEQNficfYk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ilMihSIcYkU4Cv4P11ai3g+j5nc1UofGFcPqXvK8tI6zmAc0ckzIg9tvriwCf3IsP
-	 WgjzC8z0RXXdqbpoMeso7jsg2Omr0RaxLUda+ZePVjDPsuGaL5CKOi20QRlnfDVhhj
-	 8sqNwxavMBQJ8E0vvn64C1g4qUbI9AqGJCHoaCL8DfHzqcmZvAgBlbNhkYuvggyVG5
-	 xaaZFAA4fbDvjKrb1KvXgzchqyMJHV3b/nXe4LScDzEI4mwLeAxcHNsZXTIJK9dv50
-	 uYIUe5O9k7lanuZ+rnNaTvLhBKfJiMY7fR/LKYBj6ThjsH57w1hP4CByU29bc8XH+e
-	 yVNdq9a5Wlkmg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Alice Ryhl"
- <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
- =?utf-8?Q?=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
-  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
- <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
- Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
-  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
-  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
-  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
-  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
- <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
- KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
-  "Daniel Almeida" <daniel.almeida@collabora.com>,
-  <linux-modules@vger.kernel.org>
-Subject: Re: [PATCH v15 1/7] rust: sync: add `SetOnce`
-In-Reply-To: <DB6JZBUSWGKX.3M3M5TSWPLLFN@kernel.org> (Benno Lossin's message
-	of "Tue, 08 Jul 2025 11:07:02 +0200")
-References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
-	<20250707-module-params-v3-v15-1-c1f4269a57b9@kernel.org>
-	<CAH5fLgiKo=jN_V5cAe_AJqxxp7mQWqhKx7knkEj6js3yiU9sqA@mail.gmail.com>
-	<KNYMPkLfLvLb8ocrLqSmk-5hRGhRaaPQ2sDHN5JoPAUxYJWlHNiOW4HRmtDDGkoMRfNwpziT8mkRzlPkdxDVaQ==@protonmail.internalid>
-	<aGvkFbs5caxLSQxa@Mac.home> <877c0joyfo.fsf@kernel.org>
-	<lsO9eeoR7qtPcjbhow9WfkrujYbxWh9JwZCHDO9K4VU6gtpl4pNYJisLImSI7OrRxW7qu-soEy9zjF_3snXZGQ==@protonmail.internalid>
-	<DB6JZBUSWGKX.3M3M5TSWPLLFN@kernel.org>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 09 Jul 2025 12:34:32 +0200
-Message-ID: <87ple9lkjr.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X7jDIuaX"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-451d5600a54so43230125e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 03:58:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752058729; x=1752663529; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Ufzj6YqaxPGXZ7DCvWZzYpEGIMdPZyH+W75nyNg9CQ=;
+        b=X7jDIuaXV1m3GgTHf2YfBmQxRnYrm17CcW8aXRI4nt0FoFA3wbtJvBO54V4v0Hzj9Q
+         5yDK8Q4e+L6OykFB3pXytPqI1HjNg6zDd54wVQ3HPmeTeCtlAAXmwNg6okhGs58wdi6g
+         G/L+nWnAYv7cXq2cCgBu22aVsalqjIvhCP0rSivtWNxtkGKi+91ESoXvBD+jDw6grKOk
+         aw4bhPhvs4FMEp5ex24T1eLhUNOGtup47sycTW2KzVki1KTLSlM2FiNFl7zo7xy9VJFC
+         9+6wH8HbbTEs2BZyzszIDGQiDYKcc99wpIWn1RljRaE1slOctrKhsancvEksNpe+FA6P
+         5NeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752058729; x=1752663529;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Ufzj6YqaxPGXZ7DCvWZzYpEGIMdPZyH+W75nyNg9CQ=;
+        b=cuLXpT51r7CfOx2U33fo3lbbR+fYhgNH14GBawttnuzXFoiUbponsqwE466EnO+qvy
+         hY5zmmcmP5rcncwFN3U9HNYE4VsKqPYwEbUewpUCI7uk6p5uzAqk2guPe+gND2fTf1Tm
+         XuYIvYMOWjVkCVpa+NREMDjpDnMsE5f5UsBL3qzj5dBo6vdhuuRpRchSZxSuS0xyActN
+         gM8aUSCmYoiTRXGWii7YV1xv3pNQVNdlNN5NOWMubVcPqM2FjVA6wA72313Fvxhbub2k
+         jna88pUL/OLm/rcpPDru+bVUmbgh5OIHuqKBPQBod7vIwL8uTVlEtONXloKTnW4xB0EM
+         QBPg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvR5GAM8xhbObas1f5p2R8lZr6jUhzc+BXsJ3z/7gqnGN2HAxqrkUbEQ4WgPEXeo7F8cB5vWPWSn/ktt9wpA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLed/3pPSveB05O8vVdrYr3lvFtaH+svDxSX3oo/JPA6z56eP+
+	pm5+MGJH1UP6e9Xm8Wo0l5+FHSew9f/rf+NgEHAGg+hLJd5X2f8fbtBeo+m6SX5aRR25nfmUf6C
+	9iz7dX6am9EqEDTUXqg==
+X-Google-Smtp-Source: AGHT+IGN7sIoCCk3NlTPmMYAv3Z3q38BFYn7msCvXHPNFB6alJvoxsbzz2fZGF3mfwttj2Fs1vKU2gG3U3nXuTw=
+X-Received: from wmdd5.prod.google.com ([2002:a05:600c:a205:b0:454:acb0:359a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:5305:b0:453:d3d:d9fd with SMTP id 5b1f17b1804b1-454d531e49fmr17268565e9.12.1752058729385;
+ Wed, 09 Jul 2025 03:58:49 -0700 (PDT)
+Date: Wed, 9 Jul 2025 10:58:48 +0000
+In-Reply-To: <8734b6oi20.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
+ <bzRIJnmP3zwPCPlJ4GG9diQ2CKzp-7bKbOIEHrtXVfmQ5ImkOBNAxI8wlg0jdrT4nzELpnE3rVzr6T7cJ3xVFg==@protonmail.internalid>
+ <20250704-iov-iter-v2-2-e69aa7c1f40e@google.com> <8734b6oi20.fsf@kernel.org>
+Message-ID: <aG5LaDgyv2dowPjL@google.com>
+Subject: Re: [PATCH v2 2/4] rust: iov: add iov_iter abstractions for ITER_DEST
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-"Benno Lossin" <lossin@kernel.org> writes:
+On Tue, Jul 08, 2025 at 04:47:51PM +0200, Andreas Hindborg wrote:
+> "Alice Ryhl" <aliceryhl@google.com> writes:
+> 
+> > This adds abstractions for the iov_iter type in the case where
+> > data_source is ITER_DEST. This will make Rust implementations of
+> > fops->read_iter possible.
+> >
+> > This series only has support for using existing IO vectors created by C
+> > code. Additional abstractions will be needed to support the creation of
+> > IO vectors in Rust code.
+> >
+> > These abstractions make the assumption that `struct iov_iter` does not
+> > have internal self-references, which implies that it is valid to move it
+> > between different local variables.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> Please see the comments on v1 [1].
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
+> [1] https://lore.kernel.org/all/439baec2-dba8-4dab-abb5-faa14fbda943@gmail.com
 
-> On Tue Jul 8, 2025 at 10:54 AM CEST, Andreas Hindborg wrote:
->> "Boqun Feng" <boqun.feng@gmail.com> writes:
->>
->>> On Mon, Jul 07, 2025 at 03:38:58PM +0200, Alice Ryhl wrote:
->>>> On Mon, Jul 7, 2025 at 3:32=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
-rnel.org> wrote:
->>>> >
->>>> > Introduce the `SetOnce` type, a container that can only be written o=
-nce.
->>>> > The container uses an internal atomic to synchronize writes to the i=
-nternal
->>>> > value.
->>>> >
->>>> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>>>
->>>> LGTM:
->>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->>>>
->>>> > +impl<T> Drop for SetOnce<T> {
->>>> > +    fn drop(&mut self) {
->>>> > +        if self.init.load(Acquire) =3D=3D 2 {
->>>> > +            // SAFETY: By the type invariants of `Self`, `self.init=
- =3D=3D 2` means that `self.value`
->>>> > +            // contains a valid value. We have exclusive access, as=
- we hold a `mut` reference to
->>>> > +            // `self`.
->>>> > +            unsafe { drop_in_place(self.value.get()) };
->>>>
->>>> This load does not need to be Acquire. It can be a Relaxed load or
->>>> even an unsynchronized one since the access is exclusive.
->>>
->>> Right, I think we can do the similar as Revocable here:
->>>
->>>         if *self.init.get_mut() =3D=3D 2 { }
+Sorry I should probably have articulated this somewhere. After I looked
+at this code with fresh eyes, I realized that the only things the two
+types have in common are len, advance, and revert. I didn't think that
+attempting to deduplicate the logic was worth it.
 
-Ok, now I got it. You are saying I don't need to use the atomic load
-method, because I have mutable access. Sounds good.
-
-But I guess a relaxed load and access through a mutable reference should
-result in the same code generation on most (all?) platforms?
-
->>>
->>> Further, with my following Benno's suggestion and making `Atomic<T>` an
->>> `UnsafeCell<T>:
->>>
->>> 	https://lore.kernel.org/rust-for-linux/aGhh-TvNOWhkt0JG@Mac.home/
->>>
->>> compiler can generate a noalias reference here, which allows further
->>> optimization.
->>>
->>
->> You would like to remove `PhantomPinned` to enable noalias? I guess that
->> makes sense in this case. I'll fix that for next spin.
->
-> I think you two are talking about different things. Boqun is saying that
-> the `Atomic<T>` will use `UnsafeCell` rather than `Opaque`, which will
-> potentially allow more optimizations.
->
-> But you are talking about `SetOnce`, right? I think it makes more sense
-> for `SetOnce` to use `UnsafeCell<MaybeUninit<T>>` rather than `Opaque`
-> too. So feel free to change it in the next version.
-
-Exactly. We don't need `UnsafePinned` mechanics here.
-
-
-Best regards,
-Andreas Hindborg
-
-
-
+Alice
