@@ -1,188 +1,118 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECF92C2ABF
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 14:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273DF2DE216
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 14:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752070407; cv=none; b=lFF2xa0qLPstxwFnzHuuwpXhKGMU4qYVK838CR8QA7MtQN0dVHJx8VWsAqzU4zfVBISd2OxCrZWAU1d19q8GEXUlf5YrxOaTARAu6pStGesc9vxEfUdL+Vyg5UWUoeJ0tDWIUdUCdilo+1NN3UaK/uMDG61BMijKwjq0R9tJeVw=
+	t=1752070800; cv=none; b=fSR00IBTAFBL2NFDg7b4uyyQIDQHbcxhKg/nMqSqYMHDNn70EInK5SLkVg6G8u54KOOUgcnMbsu32FFgT0WaVmS5G28t661GA1VdCEq05+Nzd93WVGOAaf+0KnuBODg0r0W8hqNXnqNEUCObU7bJbucZ5tQ3zwsuhSLU/6IHeCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752070407; c=relaxed/simple;
-	bh=DzvJefRIyMMbavCuTd0c67m3pxghhdd6M9Zhy5wS+Fw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QyMQb8KNlZiaPUt7acI1VMcRqszPiaoaBbv9aocffA+9K348gegioNQdGDTVfr5jiyLfh45BcmQ+zMmIbOxCttOFVfhTxQCtww39uM3cV+ebZMMxFUVDD30Eeiz5h145PHmI/5pl6HnbtZKDqR0uo+63961qpkURpNYp0RDWKE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=To0vAOte; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=OSZurXNH; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=n1cCiEzV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=usatz/tT; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1752070800; c=relaxed/simple;
+	bh=onxQyqbXg2+8eNUdjRi8yLtGmLMnVsEDz+kKPNPRjAo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qxynh3fFf40hO2M5SLkK5rRdfF+DPfxiclMC90HlMStBb5bp5tUlkTsNe9JluXhj98zqdxZiVVsqrIe5Ed/gI4eKV8lOyv9caSkiAl9l1Cux5jhJ2+Z5YYesaF4hDlXDdEsoFrLHUlnpFhNTaWAjftopELtj10Q/YSfNUqGnig4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rAXtNAZ1; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="To0vAOte";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="OSZurXNH";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="n1cCiEzV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="usatz/tT"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E9C822118A;
-	Wed,  9 Jul 2025 14:13:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1752070404; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O9xPEVbKBl8nwHs3uX8qyvflxZIWls9igiOMBLBrdWc=;
-	b=To0vAOtecu/VLF5EbCw15JfpUUWVFCYP4jpJD8BXOPuFVyMndhoCDZLA/3ptQMGTg1dHeT
-	NBR2SCKUNegqpKO6hjRom+bXZ5Y7CJJxCT1FcFhXl8O7z0aJisa4yOppBeGN/4invK6C8F
-	GnljmaIY47VYVUK3BZtyBbmCL4vgf3g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1752070404;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O9xPEVbKBl8nwHs3uX8qyvflxZIWls9igiOMBLBrdWc=;
-	b=OSZurXNHbFMFVgIE8BOsWCwrxjNpvjN1AOQCZFlEPppnSKSWqDtwZhi0ylhGbF1BrJoiZY
-	YE2Ci33JmlDBgJDA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n1cCiEzV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="usatz/tT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1752070402; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O9xPEVbKBl8nwHs3uX8qyvflxZIWls9igiOMBLBrdWc=;
-	b=n1cCiEzV6WreyE/tRmPvU1t+dwdDz1QzdVyWYeyhcw91DGbjfr6qACUEoFbfb0MSwOxsrV
-	VN2oV58COtCFGxsg5bdT9cL1Uj9JrwfOTShoAHIJFyuo0HpJZBBwtSG9DhRAPOStbzpzBx
-	NHUwGtqh+mjiPqebQ1Ly3sQAybogZAk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1752070402;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=O9xPEVbKBl8nwHs3uX8qyvflxZIWls9igiOMBLBrdWc=;
-	b=usatz/tTUcMyefwQX3SXgUmwDQ20rNUBY1bMmTz81kTjyywurJltXww4nOpmffuQX+aI6r
-	P/eo5I2+E4/bOICg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CBCB8136DC;
-	Wed,  9 Jul 2025 14:13:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 2a5CMQJ5bmiaaQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 09 Jul 2025 14:13:22 +0000
-Message-ID: <5ceee3d7-6e9b-4a28-a170-195f1451211c@suse.cz>
-Date: Wed, 9 Jul 2025 16:13:22 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rAXtNAZ1"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a57c8e247cso4337999f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 07:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752070797; x=1752675597; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=onxQyqbXg2+8eNUdjRi8yLtGmLMnVsEDz+kKPNPRjAo=;
+        b=rAXtNAZ1g38J888WZ3JPtxhSSjvhtdzBT1x84EFomAUxBE5XsMEuj5EzF1YBe0YK3R
+         eRGUZdXOC6gmvdSzsmcuVT9w4YyX/YcmvUwbs2uSJ10DZA6UFZtVH45NGFbFOdNlizYo
+         Na6SszQyri6aH4k0JkhSo7t69kDtPMvKDHtCUnOkB0oMJkdeCB4iv7jTrt31DSzDBSyB
+         jAGmJ4jCVn8KXtonYHCJZRooTAhJ4bV3fq9ocZRwR62QuLAycEuOOb7I02DF0O1dYiUw
+         uz7+9WjQObcbcMoPoXaEQr3U/ama0oJ4aHrqU1juD2cdJOVpbMwy4roMg6j5Qs8w5P1B
+         iPKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752070797; x=1752675597;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=onxQyqbXg2+8eNUdjRi8yLtGmLMnVsEDz+kKPNPRjAo=;
+        b=VrCXEvLnOFhYVQMxupvZZCPWGEr3K/gq2bCmfRyTlyY+uLsiRcCYq5/pyvsooCKtS+
+         f6Bd3oOpE4ln+QYXdplLdQp1wey+Tzlwrtar7dk2oqq0MB6jnQwGOV7/20MVjkvfyxNZ
+         A/FflqBYbV4hrKqnJWn3oQ/bOBGLIkm45XJb3JnYX4Kk6qfNdOm5XEzZdQ+VFdABCkwh
+         FlS5WeW/LCNS3jlRDxyZiXGDSZo0YSQDSIk9qt40Vp4Iz8ZeW/uH9/oKmb1e9aFeVCnD
+         +kYbul7a6U/Mi6+/6VrjRWK6dhnVjfapokrzzGd56rzuhyPTizZpjvAVcLO7ik6Vk7+V
+         GhmA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKh+sNTVLR9+D/GFB7gIXvWo/LVoCI452zk/8bsfeuLk6pnPXyoU9NumU1GEMBvDFHNzxVq8ZkXN+AabHNRQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyP5XvcBKHzRjW3PTP4/LBd1MnASYRqksYiI/g4d4NS7VqP/OIm
+	DKlDJKcjrMt4YJaQ88g3HbJzkrc79+MjHm1y0wgoOgMhxAjC45+1+hKOyks8uNOiJRAb/a6l/Gb
+	1hJK7F9einBYDt8q71NV7RGT5e0wS0Di+9Llni16k
+X-Gm-Gg: ASbGncsLTOiRiKr1CQhiCwhZrADnr15bHvMAMT2tBe6QGVEWOhL8s+aB9bVVXasG3R6
+	OwsmowCuhiIrckv1mNJykaiN4k8nf7vcN+eEGpg8wY7L6ajaGHD+7FXYGrhkLLA/PxV/7XcDuCZ
+	9GO0C+DUqHmRBpw2TTaefx4H68zYo+0+lTnzUz+67QO2AcT/cnwdfkB4b3AnpaMyIMW6+augP57
+	w==
+X-Google-Smtp-Source: AGHT+IHymgYqf5Be4dPgTGavXNkdAqtCHlNw8IloAmJ/sAoTV++LmztnNSzx86sJhSRZfMqHeXmmwb/R6uZnNJhr5Ts=
+X-Received: by 2002:a05:6000:4712:b0:3b4:9721:2b13 with SMTP id
+ ffacd0b85a97d-3b5e450988cmr2292725f8f.14.1752070796982; Wed, 09 Jul 2025
+ 07:19:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/4] mm/slub: allow to set node and align in
- k[v]realloc
-Content-Language: en-US
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>
-References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
- <20250707164908.631462-1-vitaly.wool@konsulko.se>
- <4c5852cc-2ca5-432b-8426-01c108df66cb@suse.cz>
- <76FFFF68-15F3-4A36-BF1D-A33CF36FDC9E@konsulko.se>
- <7099B4C7-311F-466D-B12C-BDC52FE34A65@konsulko.se>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <7099B4C7-311F-466D-B12C-BDC52FE34A65@konsulko.se>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[kvack.org,linux-foundation.org,vger.kernel.org,gmail.com,kernel.org,google.com,linux.dev,oracle.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid,suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Spam-Flag: NO
-X-Spam-Level: 
-X-Rspamd-Queue-Id: E9C822118A
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
+References: <20250709-device-as-ref-v1-1-ebf7059ffa9c@google.com> <DB7KZXKOP5F0.1RMMCBJNR43KO@kernel.org>
+In-Reply-To: <DB7KZXKOP5F0.1RMMCBJNR43KO@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 9 Jul 2025 16:19:45 +0200
+X-Gm-Features: Ac12FXzkjhW6iD-XDuQYdQEQJTvTDaPwURvqNJ0qQ1PU5t7-VlkiVmA2ozb6b7I
+Message-ID: <CAH5fLghf1zwmR_hLVAxYU0khmeTGEejTL8qE_BaF3d-Ncg3HAg@mail.gmail.com>
+Subject: Re: [PATCH] drm: rust: rename Device::as_ref() to Device::from_raw()
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Thomas Gleixner <tglx@linutronix.de>, 
+	Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/9/25 15:40, Vitaly Wool wrote:
->> 
->> I don’t think that krealloc_node() is used at all at the moment. I thought I’d define these to be symmetrical to vmalloc() but if you believe these are redundant, I’m all for removing them.
->> 
-> Well, krealloc_noprof() appears to be used by nommu.c and it feels a bit weird to make nommu code deal with NUMA nodes. So unless you feel strongly about it, I would keep krealloc_noprof().
+On Wed, Jul 9, 2025 at 4:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> On Wed Jul 9, 2025 at 3:53 PM CEST, Alice Ryhl wrote:
+> > The prefix as_* should not be used for a constructor. Constructors
+> > usually use the prefix from_* instead.
+> >
+> > Some prior art in the stdlib: Box::from_raw, CString::from_raw,
+> > Rc::from_raw, Arc::from_raw, Waker::from_raw, File::from_raw_fd.
+> >
+> > There is also prior art in the kernel crate: cpufreq::Policy::from_raw,
+> > fs::File::from_raw_file, Kuid::from_raw, ARef::from_raw,
+> > SeqFile::from_raw, VmaNew::from_raw, Io::from_raw.
+> >
+> > Link: https://lore.kernel.org/r/aCZYcs6Aj-cz81qs@pollux
+>
+> I think the link you actually wanted to refer to is probably [1]. :)
+>
+> [1] https://lore.kernel.org/all/aCd8D5IA0RXZvtcv@pollux/
 
-Oh well, let's keep it then.
+I can update.
 
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> Can you please split this patch up in one for the DRM renames, i.e. drm::=
+Device,
+> gem::Object and drm::File, and one for device::Device?
+
+Sure I will split into two patches.
+
+Alice
