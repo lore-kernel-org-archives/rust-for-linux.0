@@ -1,118 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECFE27D779;
-	Wed,  9 Jul 2025 08:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DDC28031C;
+	Wed,  9 Jul 2025 08:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752051213; cv=none; b=YhvBu5S3mG3hWjERtBaMLhWVXsmx5m22RbjYy1J6I+fjLWTy5yffQaYLHwZXaTfHEwnzv07ga7VhHVu5sCDBoGXfDDIJoc+xHYUjgBLhRH3Wm1nKhcy3TB1EDHJIOBTYzXa8hfZWei1hhLlSKHRRCKGFE8t5LV1J274d30bztJ4=
+	t=1752051427; cv=none; b=h/188yXssiUYjQpX7DClTK4Z5Ag/dX4SeHPdKza2LnzFNBS27Z6kEh3spwVEXlWKI48lr5MuftYrmjWkFtgKUoQoxT1TAbLpk48jssks3yyPOZehLIilcqBwzD9NnZq3ueqdImUzY0Os/6RjS1LhhD0prPLX7g17MX/Vs9Z6nIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752051213; c=relaxed/simple;
-	bh=swsziq72OW3PZugJ10Vm8I5zDwAnDVZuksTJsWgpync=;
+	s=arc-20240116; t=1752051427; c=relaxed/simple;
+	bh=2BSarhHtE6GcWhGBbHI94MeCDx8b0rV3Swg56q7qjeA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tqBSGLJVA4ku32+4q5W8RM/pry/6NjSwf07fePdEkQtSz03heWK4u9XaaPthszWOexr+CfmPTdGDziJefqJ4qBvtsSqxpMBvGXzI7zV/GB1a25K6/cq6fQ/IX/HGO67s14dyyb+olHoRCOFy9v0TxjNucjqspNAJx0VOjZM+2cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M//GSB+n; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=fLV62UT8jKnQIXx9YpSshbXU7UKPkFY75Qm0Wz4ASEoJ+mePzFEI08MOTC64LWO3AdyywX6iP5zCKsFJVnI9Qt09p0b4e3E6LCxKhPcQQyrk2Q5BLZHpw5Y75qQfGTg1w2qkm3JnwZAMmqU2bRFPMT7ObmfimaZti0i9KgjvqPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qS7iiP+j; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M//GSB+n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301D1C4CEEF;
-	Wed,  9 Jul 2025 08:53:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qS7iiP+j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8C0C4CEF0;
+	Wed,  9 Jul 2025 08:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752051212;
-	bh=swsziq72OW3PZugJ10Vm8I5zDwAnDVZuksTJsWgpync=;
+	s=k20201202; t=1752051426;
+	bh=2BSarhHtE6GcWhGBbHI94MeCDx8b0rV3Swg56q7qjeA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=M//GSB+nNal1ll9dFsnurxecM3t4l35XSVsfjwjbcjHwlRnjAG/JFY/I1/h9yldQu
-	 uSCDJvfZVEqKu9Ev0FKQP7PnjXDxEfMRP/v3OzV2LnFwMJtIG5bVmUZAexYUnQKDyK
-	 b1UzC5mVn5qhcb5W+TPs0W5vEC++aShvwMW7Nco6VdTIVWnqIXRJK/v56QFA9PGR1Q
-	 uOTfhEk0VLuc9F4AIPvV8Xu+249UGcx0AXBNEyWsNNYjIVQmscmeYYnadOWWZimvTY
-	 uweb+Kyt9oJgBWfsTQZw9x1sh3ZQczaVQkzz8Zyw0ocC/a41nUKeJkfzZzia8b+dd+
-	 QkluhdcpqApsQ==
+	b=qS7iiP+jT9vkogTOeAPZNKTAholTL15z65delebDh/e9P9GBQyhD5x2snK947D410
+	 vQHZOW71HBjwoQhrJ7X7ClT7Po/2ceeobJcWeWfpPxy2GU/UdGgnWziSB+tbRHd8OH
+	 XGDqmip+QceUX/GmOgeU+BpBv0xXGJPhRzxnzxs64UXvVUKS0AJlYShJUCkqnjCn7D
+	 eybh7KJTT14unqLbSEYUCNMfBKYXhRNaiT8yYYTqeXHpVQ3qQoZK+GEUyzX1aT+YZl
+	 vrwQqNw6sdJVq8biaFjyTaW/DeE7rK8HjsRId07CbMj9Vz1UE03NOLY5j5Nj0/4iVl
+	 6KDsqAvv5H4uQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: "Benno Lossin" <lossin@kernel.org>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,  "Oliver Mangold"
- <oliver.mangold@pm.me>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
  <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
  <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  "Trevor Gross" <tmgross@umich.edu>,  "Asahi
- Lina" <lina+kernel@asahilina.net>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-In-Reply-To: <DB6WZSFEJ6N1.SMX5O3QTJVDJ@kernel.org> (Benno Lossin's message of
-	"Tue, 08 Jul 2025 21:18:52 +0200")
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
-	<20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
-	<DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
-	<DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
-	<CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
-	<O_XE8MhYyfjIfrx0uca8YoUIWQ6z4SjdK_wLXfzZ8gfzOvUBrH1-0cRRuT7pwh6eMjsXrVXuBwary36TIkUzlg==@protonmail.internalid>
-	<DB6P2UQM08LH.2ALUM6EKC3Q45@kernel.org> <87cyaamt6y.fsf@kernel.org>
-	<gIlzl-AnkJlcHeysZo5H8xkls4gUo9xCmQDouCh1lf_HpIrU8a4qhBP9YjdtUEq5A5fZ8zQNAllNTOd5Qu-Plg==@protonmail.internalid>
-	<DB6WZSFEJ6N1.SMX5O3QTJVDJ@kernel.org>
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v15 1/7] rust: sync: add `SetOnce`
+In-Reply-To: <DB6QM8WOX9FS.2W36R3YF2VS0F@kernel.org> (Benno Lossin's message
+	of "Tue, 08 Jul 2025 16:19:04 +0200")
+References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
+	<20250707-module-params-v3-v15-1-c1f4269a57b9@kernel.org>
+	<MsrRzRcWQU4DLY5mlpwajZZaSx_kPRSJTuMGxtI4igY_8NpNBSAbb9v5BcFv2WKZoRkr8QDlcfjlGlH4NwpB8w==@protonmail.internalid>
+	<DB6JVOZLCMBL.3EZQJP50UUB86@kernel.org> <87v7o2omqf.fsf@kernel.org>
+	<lD3JbMPS7zWoGdRTDujIdJVoSh88nL71zGM_GrDDtARQ72mKzElYG1tZjZpi3bv_AchFrQMg0kFpAEBdB6Hl9w==@protonmail.internalid>
+	<DB6QM8WOX9FS.2W36R3YF2VS0F@kernel.org>
 User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Wed, 09 Jul 2025 10:53:21 +0200
-Message-ID: <871pqpn3su.fsf@kernel.org>
+Date: Wed, 09 Jul 2025 10:56:55 +0200
+Message-ID: <87v7o1lp2g.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
 "Benno Lossin" <lossin@kernel.org> writes:
 
-> On Tue Jul 8, 2025 at 8:30 PM CEST, Andreas Hindborg wrote:
+> On Tue Jul 8, 2025 at 3:06 PM CEST, Andreas Hindborg wrote:
 >> "Benno Lossin" <lossin@kernel.org> writes:
+>>> On Mon Jul 7, 2025 at 3:29 PM CEST, Andreas Hindborg wrote:
+>>>> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+>>>> index 81e3a806e57e2..13e6bc7fa87ac 100644
+>>>> --- a/rust/kernel/sync.rs
+>>>> +++ b/rust/kernel/sync.rs
+>>>> @@ -18,6 +18,7 @@
+>>>>  mod locked_by;
+>>>>  pub mod poll;
+>>>>  pub mod rcu;
+>>>> +mod set_once;
+>>>
+>>> I would have named this `once`.
 >>
->>> On Tue Jul 8, 2025 at 12:16 PM CEST, Miguel Ojeda wrote:
->>>> On Tue, Jul 8, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangold=
-@pm.me> wrote:
->>>>>
->>>>> Note, though, that I already moved it from types.rs to types/ownable.=
-rs on
->>>>> request. It seems to me different people here have different ideas wh=
-ere it
->>>>> should be placed. I feel now, that it would make sense to come to an
->>>>> agreement between the interested parties about where it should finall=
-y be
->>>>> placed, before I move it again. Could I ask that we settle that quest=
-ion
->>>>> once and for all before my next revision?
->>>>
->>>> Yeah, if there is a disagreement with something said previously, then
->>>> it should be resolved before starting to ping-pong between approaches
->>>> with more and more patch versions. Reviewers can forget or they may
->>>> not have read an earlier comment, but you did the right thing
->>>> mentioning there is such a conflict in opinions.
->>>
->>> Yeah, I checked and that was Andreas on v9. @Andreas what do you think?
->>>
->>> I think we should just get rid of `types.rs` and split it into:
->>>
->>> * `opaque.rs`
->>> * `foreign.rs`
->>> * `scope_guard.rs` (this might need a better name)
->>>
->>> `Either` can just be removed entirely, `AlwaysRefcounted` & `ARef`
->>> should be in the `sync` module (I already created an issue for this) as
->>> well as `NotThreadSafe` (or we could create a `marker` module for that).
->>> Thoughts?
->>
->> Sounds good. I just wanted to prevent us from cramming everything into
->> types.rs.
+>> So module `once` and struct `SetOnce`? Struct name `Once` would lead
+>> thoughts to `std::sync::Once`, which is a different thing.
 >
-> Yeah me too :)
->
->> But we should probably move `Owned` into `sync` with `ARef` et. al.,
->> right?
->
-> I don't think it fits into `sync`... It's more like a `Box` and could
-> very well store something that is `!Send` & `!Sync`.
+> Hmm I thought that `Once` and `SetOnce` would live in the same module,
+> but if they don't then I think it's better to keep the `set_once`
+> module as-is.
 
-Good point. My primary use case is `OwnableRefCounted`. Where do you
-want tput that? It is strongly tied to `Ownable` and `Owned`, but
-revolving around refcounts.
+I guess they could live together. I was thinking a module for each. We
+can always move it, the module name is not part of a public API.
+
+Let's go with `set_once` for now and we can change it later, if we
+decide it is for the better?
 
 
 Best regards,
