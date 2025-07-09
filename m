@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A6C221DB4;
-	Wed,  9 Jul 2025 21:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDBF221DB4;
+	Wed,  9 Jul 2025 21:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752098220; cv=none; b=arkUMav1BGIswXf+jXZXN9jMQbgkRBMiOfoMJ5IWrREZlQRwvSLm1OQcYPAjCOp39VC4QPnD6XjJIgCykm7YFD8DFcB19jTkrLY0Mu3FqWACkjaGgdg81RKeGoO6ASlynt6AQcLCpr07QictYmNrCNbagH+JM6sagwXah1rSlN8=
+	t=1752098309; cv=none; b=f8IRrXrsUzp4OznqcmoFnBSXTQQ3BF7//HrXxRx2v0IpIuq+LzIlkyTw1vJtSoztFZIfmd0ytSt6tDxxlarQUI7leXRJj2GatgKa707n/dlIhJg5CGBOYnLskQLbonMnnWyadMslZ5XMfygXTPCKygGcnTYkHxjTFTwtENX2yZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752098220; c=relaxed/simple;
-	bh=x/oR2L6ZzEbzrswP/5d6Ev5HJ7o6BugogSH7USoFYlg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=maGV7GfCSiGnYkOMmtjt08AwW5w+0b8ZEl32a3oxi1hZHq+vKU6F+1F7xqwfkgme7GLZhbBYqGSt4g87RvS9IaZpCJtvE56vYwN1GLyrj7JG6roOmrs0MQ9oz94ur2UE467DlHkBXp4gNApD3sga+pSR4bzPOq3q79NJsx86v/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYTg17Nw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752098309; c=relaxed/simple;
+	bh=zjFlENAgBdh7xP1fuuUD0RuYSpO5zOXpYVPNVEcU4zg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=EG81XgAVH4X4DoJwxKRFMRwPhA0D/wmbz2NLI2+KOOhjhlFjyhEWKXe+FnRKr2xY6+WnNKoXbPAkrSzWi7PidF2Ug3IPlKXPogWuIu/cdQ9YGUeEY00mpkB8W26pNtmex97XAGNbvbLej/BpxMbjnwvNoyVa1T6sA0XYi2PFiKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HF7v+HHj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYTg17Nw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 594C1C4CEEF;
-	Wed,  9 Jul 2025 21:56:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HF7v+HHj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C68C4CEEF;
+	Wed,  9 Jul 2025 21:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752098220;
-	bh=x/oR2L6ZzEbzrswP/5d6Ev5HJ7o6BugogSH7USoFYlg=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=uYTg17NwYSKT1f+gpwsEtqcpwauG1lRnWWGPnTJYQy6PSU72DF7c0DOqCm1Lsf8RD
-	 4XMEe9tgQHw/mW6ZhwyensUh9Bv03jB2nc8DQepnUG55tHLiq67a7VvjvUn2V//AS8
-	 ++yz1nawCXq12LHzch5pqgYHbyv4PUp3G83dvCZxT9rrYEOySM52HtRJa4fz15/QTd
-	 vw66pWK/FlJ5qXUhRkWeqdz29jWKoseXhSvYcSAMPEbaZ7q2bDwBCZz/K2/995buIE
-	 VJq2pUPmSfxzaulnApXIKTFGCR+fX8nVurvpqo8l0oxxg6YyImzcrQMNOm157L612A
-	 2voCmk0wz5nMQ==
+	s=k20201202; t=1752098308;
+	bh=zjFlENAgBdh7xP1fuuUD0RuYSpO5zOXpYVPNVEcU4zg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=HF7v+HHj1/uWYrZ1jHPBmeinlOFXd700YJB/0ji8rRD5yDDGO2vc4Zmp3mIQ1eZrJ
+	 dp32A945DkIzZftJkqzV/nrGFQPURiSIYC3nwMmCaWYInptJZsU9hjWMZTg+ay6gXe
+	 P7m1scf30QQMKycBWbPTIpa4yEGP9Zu/McyS3TIIgvBJTmi9TMYJtnyo9iREx4G/LD
+	 0qNjId+h+yzw3HhhgiXqsCKYA0O6XamG+OuGd2KI+D3jI3n8aHE9/hRLnryDnnBg84
+	 zdQ0kiNXyPfZyNIyJPLJUlKCkSoc4ivbeUTyBJITG+QmdoSnpRXn/WztQ1n8dEf4SD
+	 QndKJGpaSnYXA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,105 +34,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Jul 2025 23:56:55 +0200
-Message-Id: <DB7UZCKSQ4G2.ZZBIWS6YJAOF@kernel.org>
-Subject: Re: [PATCH v9 5/5] rust: samples: Add debugfs sample
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, "Benno Lossin" <lossin@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Matthew Maurer" <mmaurer@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
- <20250709-debugfs-rust-v9-5-92b9eab5a951@google.com>
-In-Reply-To: <20250709-debugfs-rust-v9-5-92b9eab5a951@google.com>
+Date: Wed, 09 Jul 2025 23:58:22 +0200
+Message-Id: <DB7V0GL2HVMV.BR1JSWQPDMC3@kernel.org>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Jens Axboe" <axboe@kernel.dk>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Brendan Higgins" <brendan.higgins@linux.dev>, "David
+ Gow" <davidgow@google.com>, "Rae Moar" <rmoar@google.com>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-block@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <kunit-dev@googlegroups.com>
+Subject: Re: [PATCH 7/9] rust: pin-init: use `kernel::{fmt,prelude::fmt!}`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20250709-core-cstr-fanout-1-v1-0-64308e7203fc@gmail.com>
+ <20250709-core-cstr-fanout-1-v1-7-64308e7203fc@gmail.com>
+ <DB7SVTBZ46QB.31WTHFLWDHPZY@kernel.org>
+ <CAJ-ks9nNc_pThtb+gHUcjEnvR6V0RAEG0tkv+_DHYYjXs1N7=A@mail.gmail.com>
+In-Reply-To: <CAJ-ks9nNc_pThtb+gHUcjEnvR6V0RAEG0tkv+_DHYYjXs1N7=A@mail.gmail.com>
 
-On Wed Jul 9, 2025 at 9:09 PM CEST, Matthew Maurer wrote:
-> +// This data structure would be unlikely to be there in a real driver - =
-it's to hook up mutation
-> +// that would normally be driven by whatever the driver was actually ser=
-vicing and show how that
-> +// would work. We're assuming here that those methods would have access =
-to a `&RustDebugFs`.
+On Wed Jul 9, 2025 at 11:01 PM CEST, Tamir Duberstein wrote:
+> On Wed, Jul 9, 2025 at 4:18=E2=80=AFPM Benno Lossin <lossin@kernel.org> w=
+rote:
+>>
+>> On Wed Jul 9, 2025 at 10:00 PM CEST, Tamir Duberstein wrote:
+>> > Reduce coupling to implementation details of the formatting machinery =
+by
+>> > avoiding direct use for `core`'s formatting traits and macros.
+>> >
+>> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+>> > ---
+>> >  rust/kernel/init.rs | 4 ++--
+>> >  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> I usually prefix patches to init.rs with `rust: init`. I'll fix it up
+>> when picking the patch or Miguel can do it if he takes it:
+>>
+>> Acked-by: Benno Lossin <lossin@kernel.org>
+>
+> Actually, squinting at this patch more closely now, I think this isn't
+> what you had in mind. The comment says "Dummy error that can be
+> constructed outside the `kernel` crate." but the error now comes from
+> the kernel crate :(
 
-Please see also [1]. I think you're making this too complicated, and due to=
- the
-missing write() support you have to create workarounds because of that, whi=
-ch
-serve as a bad reference.
+It's a re-export, so the comment still holds.
 
-Keep it simple, Create some driver private data in probe() and export a cou=
-ple
-of fields of this driver private data through debugfs.
+> Perhaps you could suggest a different modification that would both
+> meet the original intent and allow references to core::fmt to
+> disappear?
 
-If you really want to showcase that those values can change, queue some wor=
-k and
-modify the counter and / or the Inner type that is protected by a mutex.
+The code comes from a time when `Error::from_errno` was `pub(crate)`,
+but that was changed some time ago... Now we can just remove the
+`FromErrno` trait entirely from that example. Feel free to do that in
+this series or as a standalone patch.
 
-[1] https://lore.kernel.org/lkml/DB7US8G7ISG0.20430M3P7I0K0@kernel.org/
-
-> +#[pin_data]
-> +struct Wrapper {
-> +    _dir: Dir,
-> +    #[pin]
-> +    _wrapped: File<File<RustDebugFs>>,
-> +}
-> +
-> +#[pin_data]
-> +struct RustDebugFs {
-> +    pdev: ARef<platform::Device>,
-> +    // As we only hold these for drop effect (to remove the directory/fi=
-les) we have a leading
-> +    // underscore to indicate to the compiler that we don't expect to us=
-e this field directly.
-> +    _debugfs: Dir,
-> +    #[pin]
-> +    _compatible: File<CString>,
-> +    #[pin]
-> +    counter: File<File<AtomicUsize>>,
-> +    #[pin]
-> +    inner: File<Mutex<Inner>>,
-> +}
-> +
-> +#[derive(Debug)]
-> +struct Inner {
-> +    x: u32,
-> +    y: u32,
-> +}
-> +
-> +kernel::of_device_table!(
-> +    OF_TABLE,
-> +    MODULE_OF_TABLE,
-> +    <Wrapper as platform::Driver>::IdInfo,
-> +    [(of::DeviceId::new(c_str!("test,rust-debugfs-device")), ())]
-> +);
-
-I don't think we need both, ACPI should be much simpler with QEMU.
-
-> +kernel::acpi_device_table!(
-> +    ACPI_TABLE,
-> +    MODULE_ACPI_TABLE,
-> +    <Wrapper as platform::Driver>::IdInfo,
-> +    [(acpi::DeviceId::new(c_str!("LNUXDEBF")), ())]
-> +);
-> +
-> +impl platform::Driver for Wrapper {
-> +    type IdInfo =3D ();
-> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D Some(&OF_TA=
-BLE);
-> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D Some(&A=
-CPI_TABLE);
-> +
-> +    fn probe(
-> +        pdev: &platform::Device<Core>,
-> +        _info: Option<&Self::IdInfo>,
-> +    ) -> Result<Pin<KBox<Self>>> {
-> +        KBox::try_pin_init(Wrapper::new(RustDebugFs::new(pdev)), GFP_KER=
-NEL)
-> +    }
-> +}
+---
+Cheers,
+Benno
