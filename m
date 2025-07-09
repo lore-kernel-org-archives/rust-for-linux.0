@@ -1,120 +1,140 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554A578F36;
-	Wed,  9 Jul 2025 09:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A77F2580F2;
+	Wed,  9 Jul 2025 10:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752052310; cv=none; b=r86V6rmySly8KmJQjiaLBKdYZihfaU86+RDA5qfbGwQx4spRKuRBAG/jWCUGtMGjPKPcLQGWKpvO6ZzCnghfXwqnafXLkitDWiIIdICKbJ687qEid2TNC6Hxe+MVyrF+O43t+UZauwDEuNjVLK4pVn+d3T0T76LyDcjBa69mpK4=
+	t=1752057283; cv=none; b=Jil/jENeoztEObk0Bd02gD0GL57oT8al6HuefZjHf/IGoM8Df4p0ZEwoR8OcR4n9lCSd0UVV6G/DsMlyYPpbK/8aor3SO5Blelt0MtMs3sE02GU/Zh2GaF5S4w9HFYuXKfzALCNPpXDX4AOxGvoFkcF1S5hizL5boaMq3aZ3snk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752052310; c=relaxed/simple;
-	bh=vnipX9GoYx3/y1Xa0VtwcO3BGX4bvKshgpGfk00TKQs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JpH7gnHQbHzhHt6tEUqpgeZl1afJZOME9WIbOrqYcaRWuzC08ICItGqlSBgSIfdAF/lrdp2QNZHU1ahv/qChOP89OYwHvwrn9XbdZjeYxYvAe+0j8f91WJNQGOZq//9M7MH4xjLf2WVYxZU0/xa5W2ifKr4aLkIxuXdPW3es6zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5ZO2yZg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752057283; c=relaxed/simple;
+	bh=kiasbQlkUMVYMuc++fP1ijtrR3D41MICitEQNficfYk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hTFxiUElAel0oEcTD38JTD/u7Eg5sdqHKucRxScJW+bXpZ6gMhSuxBmiqERy1JnOuCSo676WqeeSEccu63BGk93iSnV4nk+HS+U4hEpAjJN2aPBUSbf8LdDpObakx1E94m/3DPUTIWbqGTJpODgNswvPnE408d+pULc4i+jv37k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilMihSIc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5ZO2yZg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D423C4CEEF;
-	Wed,  9 Jul 2025 09:11:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilMihSIc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A326C4CEEF;
+	Wed,  9 Jul 2025 10:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752052309;
-	bh=vnipX9GoYx3/y1Xa0VtwcO3BGX4bvKshgpGfk00TKQs=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=n5ZO2yZgpzQqWTM8SeLwqNh7TTMM+lV49qGx6Ei98xYfpOCAJdnW9XG0gASb26I1A
-	 lXwkA1HCM8yhTzJgGhaTAkP/Ap40g3YDdfJfgBdzdPaeFFSFYTvk2elKhJvZRV4pZm
-	 NdqZpHF7YbC/NP/rQWV5pR2oxqIxOTSE4fH5rfBxhyUTy9Ee7KRuJLs0IH7VNgVlc+
-	 vejTBR6uH/l+URGKYAewMq1XGtK70/VkUDKU4neg7CHJ/eDzCjwn87QPP0h6g80NpR
-	 4yNHBOKUpMk8OILKruWPfG3UjDkhnVlDwJ8T7NccDQdYPC3PsLfw38DQ54WLOyojvV
-	 q4TcW35ReHGyQ==
+	s=k20201202; t=1752057283;
+	bh=kiasbQlkUMVYMuc++fP1ijtrR3D41MICitEQNficfYk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ilMihSIcYkU4Cv4P11ai3g+j5nc1UofGFcPqXvK8tI6zmAc0ckzIg9tvriwCf3IsP
+	 WgjzC8z0RXXdqbpoMeso7jsg2Omr0RaxLUda+ZePVjDPsuGaL5CKOi20QRlnfDVhhj
+	 8sqNwxavMBQJ8E0vvn64C1g4qUbI9AqGJCHoaCL8DfHzqcmZvAgBlbNhkYuvggyVG5
+	 xaaZFAA4fbDvjKrb1KvXgzchqyMJHV3b/nXe4LScDzEI4mwLeAxcHNsZXTIJK9dv50
+	 uYIUe5O9k7lanuZ+rnNaTvLhBKfJiMY7fR/LKYBj6ThjsH57w1hP4CByU29bc8XH+e
+	 yVNdq9a5Wlkmg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Alice Ryhl"
+ <aliceryhl@google.com>,  "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,  =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v15 1/7] rust: sync: add `SetOnce`
+In-Reply-To: <DB6JZBUSWGKX.3M3M5TSWPLLFN@kernel.org> (Benno Lossin's message
+	of "Tue, 08 Jul 2025 11:07:02 +0200")
+References: <20250707-module-params-v3-v15-0-c1f4269a57b9@kernel.org>
+	<20250707-module-params-v3-v15-1-c1f4269a57b9@kernel.org>
+	<CAH5fLgiKo=jN_V5cAe_AJqxxp7mQWqhKx7knkEj6js3yiU9sqA@mail.gmail.com>
+	<KNYMPkLfLvLb8ocrLqSmk-5hRGhRaaPQ2sDHN5JoPAUxYJWlHNiOW4HRmtDDGkoMRfNwpziT8mkRzlPkdxDVaQ==@protonmail.internalid>
+	<aGvkFbs5caxLSQxa@Mac.home> <877c0joyfo.fsf@kernel.org>
+	<lsO9eeoR7qtPcjbhow9WfkrujYbxWh9JwZCHDO9K4VU6gtpl4pNYJisLImSI7OrRxW7qu-soEy9zjF_3snXZGQ==@protonmail.internalid>
+	<DB6JZBUSWGKX.3M3M5TSWPLLFN@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Wed, 09 Jul 2025 12:34:32 +0200
+Message-ID: <87ple9lkjr.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 09 Jul 2025 11:11:45 +0200
-Message-Id: <DB7EPHQO844E.RQ2E9FAOU7CD@kernel.org>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Oliver Mangold"
- <oliver.mangold@pm.me>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor
- Gross" <tmgross@umich.edu>, "Asahi Lina" <lina+kernel@asahilina.net>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v11 1/4] rust: types: Add Ownable/Owned types
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me>
- <20250618-unique-ref-v11-1-49eadcdc0aa6@pm.me>
- <DB1IPFNLFDWV.2V5O73DOB2RV6@kernel.org> <aGtv9qs682gTyQWX@mango>
- <DB5PPGOWNW4K.2C5A4UE9V9IEF@kernel.org> <aGzrZqIrStGD_UBp@mango>
- <CANiq72kWFYS-inzFPTQAGdPRBr7MffZLR9q7iWiT_j2w_e99MQ@mail.gmail.com>
- <O_XE8MhYyfjIfrx0uca8YoUIWQ6z4SjdK_wLXfzZ8gfzOvUBrH1-0cRRuT7pwh6eMjsXrVXuBwary36TIkUzlg==@protonmail.internalid> <DB6P2UQM08LH.2ALUM6EKC3Q45@kernel.org> <87cyaamt6y.fsf@kernel.org> <gIlzl-AnkJlcHeysZo5H8xkls4gUo9xCmQDouCh1lf_HpIrU8a4qhBP9YjdtUEq5A5fZ8zQNAllNTOd5Qu-Plg==@protonmail.internalid> <DB6WZSFEJ6N1.SMX5O3QTJVDJ@kernel.org> <871pqpn3su.fsf@kernel.org>
-In-Reply-To: <871pqpn3su.fsf@kernel.org>
 
-On Wed Jul 9, 2025 at 10:53 AM CEST, Andreas Hindborg wrote:
-> "Benno Lossin" <lossin@kernel.org> writes:
->
->> On Tue Jul 8, 2025 at 8:30 PM CEST, Andreas Hindborg wrote:
->>> "Benno Lossin" <lossin@kernel.org> writes:
+"Benno Lossin" <lossin@kernel.org> writes:
+
+> On Tue Jul 8, 2025 at 10:54 AM CEST, Andreas Hindborg wrote:
+>> "Boqun Feng" <boqun.feng@gmail.com> writes:
+>>
+>>> On Mon, Jul 07, 2025 at 03:38:58PM +0200, Alice Ryhl wrote:
+>>>> On Mon, Jul 7, 2025 at 3:32=E2=80=AFPM Andreas Hindborg <a.hindborg@ke=
+rnel.org> wrote:
+>>>> >
+>>>> > Introduce the `SetOnce` type, a container that can only be written o=
+nce.
+>>>> > The container uses an internal atomic to synchronize writes to the i=
+nternal
+>>>> > value.
+>>>> >
+>>>> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>>>
+>>>> LGTM:
+>>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>>>>
+>>>> > +impl<T> Drop for SetOnce<T> {
+>>>> > +    fn drop(&mut self) {
+>>>> > +        if self.init.load(Acquire) =3D=3D 2 {
+>>>> > +            // SAFETY: By the type invariants of `Self`, `self.init=
+ =3D=3D 2` means that `self.value`
+>>>> > +            // contains a valid value. We have exclusive access, as=
+ we hold a `mut` reference to
+>>>> > +            // `self`.
+>>>> > +            unsafe { drop_in_place(self.value.get()) };
+>>>>
+>>>> This load does not need to be Acquire. It can be a Relaxed load or
+>>>> even an unsynchronized one since the access is exclusive.
 >>>
->>>> On Tue Jul 8, 2025 at 12:16 PM CEST, Miguel Ojeda wrote:
->>>>> On Tue, Jul 8, 2025 at 11:57=E2=80=AFAM Oliver Mangold <oliver.mangol=
-d@pm.me> wrote:
->>>>>>
->>>>>> Note, though, that I already moved it from types.rs to types/ownable=
-.rs on
->>>>>> request. It seems to me different people here have different ideas w=
-here it
->>>>>> should be placed. I feel now, that it would make sense to come to an
->>>>>> agreement between the interested parties about where it should final=
-ly be
->>>>>> placed, before I move it again. Could I ask that we settle that ques=
-tion
->>>>>> once and for all before my next revision?
->>>>>
->>>>> Yeah, if there is a disagreement with something said previously, then
->>>>> it should be resolved before starting to ping-pong between approaches
->>>>> with more and more patch versions. Reviewers can forget or they may
->>>>> not have read an earlier comment, but you did the right thing
->>>>> mentioning there is such a conflict in opinions.
->>>>
->>>> Yeah, I checked and that was Andreas on v9. @Andreas what do you think=
-?
->>>>
->>>> I think we should just get rid of `types.rs` and split it into:
->>>>
->>>> * `opaque.rs`
->>>> * `foreign.rs`
->>>> * `scope_guard.rs` (this might need a better name)
->>>>
->>>> `Either` can just be removed entirely, `AlwaysRefcounted` & `ARef`
->>>> should be in the `sync` module (I already created an issue for this) a=
-s
->>>> well as `NotThreadSafe` (or we could create a `marker` module for that=
-).
->>>> Thoughts?
+>>> Right, I think we can do the similar as Revocable here:
 >>>
->>> Sounds good. I just wanted to prevent us from cramming everything into
->>> types.rs.
+>>>         if *self.init.get_mut() =3D=3D 2 { }
+
+Ok, now I got it. You are saying I don't need to use the atomic load
+method, because I have mutable access. Sounds good.
+
+But I guess a relaxed load and access through a mutable reference should
+result in the same code generation on most (all?) platforms?
+
+>>>
+>>> Further, with my following Benno's suggestion and making `Atomic<T>` an
+>>> `UnsafeCell<T>:
+>>>
+>>> 	https://lore.kernel.org/rust-for-linux/aGhh-TvNOWhkt0JG@Mac.home/
+>>>
+>>> compiler can generate a noalias reference here, which allows further
+>>> optimization.
+>>>
 >>
->> Yeah me too :)
->>
->>> But we should probably move `Owned` into `sync` with `ARef` et. al.,
->>> right?
->>
->> I don't think it fits into `sync`... It's more like a `Box` and could
->> very well store something that is `!Send` & `!Sync`.
+>> You would like to remove `PhantomPinned` to enable noalias? I guess that
+>> makes sense in this case. I'll fix that for next spin.
 >
-> Good point. My primary use case is `OwnableRefCounted`. Where do you
-> want tput that? It is strongly tied to `Ownable` and `Owned`, but
-> revolving around refcounts.
+> I think you two are talking about different things. Boqun is saying that
+> the `Atomic<T>` will use `UnsafeCell` rather than `Opaque`, which will
+> potentially allow more optimizations.
+>
+> But you are talking about `SetOnce`, right? I think it makes more sense
+> for `SetOnce` to use `UnsafeCell<MaybeUninit<T>>` rather than `Opaque`
+> too. So feel free to change it in the next version.
 
-Yeah... Let's just put it in owned.rs too.
+Exactly. We don't need `UnsafePinned` mechanics here.
 
----
-Cheers,
-Benno
+
+Best regards,
+Andreas Hindborg
+
+
+
