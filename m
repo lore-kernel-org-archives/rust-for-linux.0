@@ -1,109 +1,141 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E6D298CD2;
-	Wed,  9 Jul 2025 11:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29AE2D97BF
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 11:31:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752059710; cv=none; b=KUFRtO+dL8Bo2YEA3dMUCgZLvIB3Dt0oE+7UFCymGUFOboos5AZ9nPtVw+iD15toiFjXilKgU2DK14y+Kz7z3503vBTJTbdesLzsbDqzqF6tFT38dX+G0vhEd0n6aBPChhtdfIFIDkyCbezSMubdIGyfHDrHr2qHL1IgSN4FiCg=
+	t=1752060696; cv=none; b=sFi2O64oJdH25xTwGrrt+hrit6Z2EB5Q5qoj60lvq3C+w227JkAT5HX6R3o3EfbvWX/tEHL4frykQdkYrYLgChtr2YUKneGG2YYZIJ5BGb9QqsBGTLp+q2pdUdZmfhWb2rTkxyFrW8ThbkPQT4gEotxGSROn15++O5mgWZ/jlGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752059710; c=relaxed/simple;
-	bh=a8DMwP9O0e1/Ks1uaUvyjR9ZwVN8Yzfcz4uS0h2kHS0=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gyAjXx0YO1/46B0U2HSYX29VXZilrL7RmvdM3sjj+5GIxXy0ioedioQCZtKIUGzA9Pr3+BveUxC0UetmV3iKgBhi/eqVfZxfHArhtSD3ZIjCG1L5YMBmlCFsz/4fmudgOSSNWUU3bf9zIa0yQyUPlSni3uzX5RErq3cycnDqagg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XC6lacEi; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752060696; c=relaxed/simple;
+	bh=l0yiT6vi8kNmvnaFH6vL9llbWszqITt9K9QRgcAtPgw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tUkocUsLj0ROnYJZy2ocuzjcm74lGOYQyTjhrD/R4M35BExYRrRvtxU3OvpV6QuVT2I88UWFmzYv6c3KMqwu7Ty7TPQ2bguhvHGVpC6vCrZIFl2NKEwKyAh+q1D+wUSteND6VtwwM6WobAfNExczEnIQ+GkMCgyZ6Ht0v3XycE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oIzBKjCI; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XC6lacEi"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-553e5df44f8so4754343e87.3;
-        Wed, 09 Jul 2025 04:15:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oIzBKjCI"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-60c6d568550so4715596a12.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 04:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752059706; x=1752664506; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZtDkh085fWauG5Pjux6pyT6Ge2pLuEpYKgqPvj2je3A=;
-        b=XC6lacEiZahMApqR04NRXQJdaadZaOGIhlrVeX17+4ZPyBFx5PN7uERLS+RCGDHCFZ
-         glHpm4fst90HrtRDeNuJF+d8TvlqOgv17eOpbu1+Psl60LZ6gH2KuHUYYxVFOhq78855
-         Gn5w8pBuriXmVA2sES2a8UE4fjsf93GSd72SKzW2IkDxD0QV2VeorM/ng5MSPMa8kXJ4
-         XgyCYmkMdL0DDz+L9eIh1lLQbLP59OaDf43eKA1vEsxJqBHDJq6dzZ93Hhy+o9aXE3jJ
-         G9pTcMBWeLHaIxJ4ogan2AFHA2XCNTf/uYZWEl7I5jmN3PaFO2fB7jmVxgAJKqPNBg1m
-         hWTQ==
+        d=google.com; s=20230601; t=1752060693; x=1752665493; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nKz/jr4sAvlzW8F+pdFxeU0JpTncvrCm+GmYbMwH7v0=;
+        b=oIzBKjCIyT7LMBvcK8DawbzM/FsZWc051YlR55RtrS/COmsfrsOU2TMIKAhlqp9Kko
+         HwjK8+y8SZWMmyELf9hOiYUjzF3Of4HX36yeCTQjSuF/0k7Q8exJVsTEQBHg0wI8eR1S
+         TP6J7hj4XxKXvz6MeWww9niCPcskTIYAyHE0Jsbr/ZRrBRttZiQDfFVLSEYjbms2Q4Ab
+         ICp+igrpYMNJYFQQU5t2HKn07EHj116a76gYW/29HeNpe2lv2AErCJsBBhfmhNZQB/Oe
+         SGI82sWWkIoU2MYQaHkU4xrw+a/hTeImjVpLzqw9PVhPsJ4niogxAPJ+AruJPNsz3asm
+         5/2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752059706; x=1752664506;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZtDkh085fWauG5Pjux6pyT6Ge2pLuEpYKgqPvj2je3A=;
-        b=EgequrUMYlG2UV0voCjlRAEmfFgOigYPiid3KD0WI1YJpaggyML48dbWjqmv5wcDGG
-         9mtUInXSb5eJx1wb9ERlMhzAdrljpeEzshV1YM8ID672Zg4EQjIBn5fOT8MHn3XpVVjt
-         96sLdf9w7G4ed1QVsHwMTidDDeKgX7y0u5OsCerGHTb9Y85DkN6N6h1NRWHXHuacDl3w
-         HNVIuweusAd2lC9kqiB3BJoidB3Tip3jFTY/idvenYJtK/cLW1xxJHGfcVH9KqdtM0rc
-         ZNdZ1qo0rgf8zD/XA/dhv5y7EpgQSh5MNJxhZLCTt/6ehZFJdkdskRcUt3iGGz8XmPlP
-         fF2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWGx9BZRngll9gtsCvqi4bYZeUt7dYOOQSJXvATjNQUUUhKTTqGD5dPAUP1pm+BbLQTxgs2VDzhANFcFRLsI4k=@vger.kernel.org, AJvYcCXPhsIzPUPimf4ovUCyLAKFk9jBEs7EzxGUSBM0Lz5iZxb/fl8LjO+FHD6WyNZAalbxjMkiNEsBmyyNyA8=@vger.kernel.org, AJvYcCXc7JdKJyoUGkLKL8VmkMOH/gqbnmQWmg6WNwJVbH1QH+vJG62Na9zpascvLayGkJvcnmRXm1Xw+v2B@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1O45bpNISX0mmfugbnmfZW8JdsTH6fjKxwlW4MUoySMgrgmQg
-	a2l/Rb/uPEajNoIFxOSfLbjwU1dVHisk/tFPdv5Q3j/uHAiFsInWIr/0
-X-Gm-Gg: ASbGnctRRTYfFIqbcCwzxie2PGpJcK0sR3UkARBSHQqT19YNK5S3L3co74Ht/IvCDCQ
-	XamQYl03LynIjB1Ri0Rxr1/rDW5lWSqCY6DqbGdk0TDtJ96YcTFyYNq1HjkvjKHjuulpCFvdxbl
-	3DX1yIlWrtlFjKHIPvBF9TEbvJztcf6DV6GxCGtr4ygDN5n0hJ1EQbUay6BwbtAQ21nrRH8RMDp
-	XvcsarzELE4oMFewdCy0dopubD3k0I1niJcjju5aTBec6k1+2tkwXp6KzL8BWWqu6Jkt+ciAJLF
-	gALPhaervVBaUlP1nyBLrFlv0IVeEW9l/RuIBiN+mPvFFgzRU/As9+q0CtdD10YmpQPFCOc0j6l
-	2MAqEOmywyUW/R56L
-X-Google-Smtp-Source: AGHT+IFDmGVILm6QvnmVsRRbSuqd61cRV/xvyf97TV77g1DEUM9cN9dTUuaPpm2HVcKr88VWPuNZAw==
-X-Received: by 2002:a05:6512:b8e:b0:553:2dce:3aab with SMTP id 2adb3069b0e04-558fa909857mr689591e87.40.1752059705735;
-        Wed, 09 Jul 2025 04:15:05 -0700 (PDT)
-Received: from pc636 (host-90-233-203-201.mobileonline.telia.com. [90.233.203.201])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-556383bb3fdsm1948129e87.44.2025.07.09.04.15.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jul 2025 04:15:04 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 9 Jul 2025 13:15:03 +0200
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: add mm folks as reviewers to rust alloc
-Message-ID: <aG5PN42vPXbeNyn1@pc636>
-References: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
+        d=1e100.net; s=20230601; t=1752060693; x=1752665493;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nKz/jr4sAvlzW8F+pdFxeU0JpTncvrCm+GmYbMwH7v0=;
+        b=HUbBncGN2QsIWt/wprklBxOp/+oDAsprRT/UOYmeswfw5nXGe33d4y1irSf88XIO6g
+         MtnnecUJ/sjwvkTLZ/SMYJ2osH+iF1eiK2p6Y+Elr7+gHVzI7GbYTWf1K/ZjbZxh26p5
+         08xyoA0PdJzdYTbBV00I1EPKQ+4YUDh0nwdElWB4SliVXxKE2isotq77zXgd/vkXFMwd
+         Q8v3McebkyWpZhw/T2qT0X+0Cf4BNE7ghqjQoN5GHKnSwVxyXE6hsh5JXbqeS3mje7qo
+         U3dfb0i8lY9HMSDgrxTdGZbNkaiOyU0MWsMmQG+b+lvAtxovzRjD1Y+wNnZDvci/6SlQ
+         yfVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWYg5Lx8HM2XmciIp5Qzf8w5CE/tYyJyckUKYRjkXVmEPhvbC80gtAKdFlJ2v7mK/xMTYrlluE4v41UDMhkdA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvKbfytQ3TvVhfsrimIy7gMwMgErDBM07r1oM/jU5dIDO1zbvu
+	NtwB5VPXspjupj1ErRCyNGbxSsslpON1hzRZIguSAmGrwbI5L1InCEOxaMaRmfublj9kybFpMNH
+	Ou17vW3rs2HAnSn0tIg==
+X-Google-Smtp-Source: AGHT+IFLvrS3jBzSiTmt44t7b5t9NsWfnRbSj5JtycWej5ry/u4kAdaGE1886+VS9sRjahoYLkPT0J9aqR8+j/0=
+X-Received: from edji11.prod.google.com ([2002:a50:d74b:0:b0:609:464e:83f8])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:2745:b0:604:e85d:8bb4 with SMTP id 4fb4d7f45d1cf-611a714c11fmr1541664a12.21.1752060692970;
+ Wed, 09 Jul 2025 04:31:32 -0700 (PDT)
+Date: Wed, 9 Jul 2025 11:31:31 +0000
+In-Reply-To: <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
+Mime-Version: 1.0
+References: <20250707164755.631374-1-vitaly.wool@konsulko.se>
+ <824065ea-1f5c-4cd4-9917-4b7a91882af8@lucifer.local> <aG0HJte0Xw55z_y4@pollux>
+ <54fc10ce-c3b6-4571-93e7-eebfc538d0c7@lucifer.local>
+Message-ID: <aG5TE3oq1w1cSdOy@google.com>
+Subject: Re: [PATCH v11 0/4] support large align and nid in Rust allocators
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	Uladzislau Rezki <urezki@gmail.com>, Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, 
+	Liam Howlett <liam.howlett@oracle.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jul 08, 2025 at 07:37:47PM +0100, Lorenzo Stoakes wrote:
-> The alloc implementation is a thin wrapper over slab/vmalloc, so to help
-> out on the mm side of things and to be cc'd on changes, add some mm people
-> as reviewers.
+On Tue, Jul 08, 2025 at 02:19:38PM +0100, Lorenzo Stoakes wrote:
+> On Tue, Jul 08, 2025 at 01:55:18PM +0200, Danilo Krummrich wrote:
+> > On Tue, Jul 08, 2025 at 11:58:06AM +0100, Lorenzo Stoakes wrote:
+> > > +cc Liam
+> > >
+> > > Hi guys,
+> > >
+> > > We have a section in MAINTAINERS for mm rust (MEMORY MANAGEMENT - RUST), so
+> > > it's slightly concerning to find a series (at v11!) like this that changes
+> > > mm-related stuff and it involves files not listed there and nobody bothered
+> > > to cc- the people listed there.
+> >
+> > What files are you referring to? Are you referring to:
+> >
+> > 	rust/kernel/alloc.rs
+> > 	rust/kernel/alloc/*
+> >
+> > If so, they're indeed not under the "MEMORY MANAGEMENT - RUST" entry, which
+> > so far seems correct.
 > 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  MAINTAINERS | 4 ++++
->  1 file changed, 4 insertions(+)
+> Looking at these, they seem to be intended to be the primary means by which
+> slab/vmalloc allocations will be managed in rust kernel code correct?
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 71599ab6bd56..54dd937160ac 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -21751,6 +21751,10 @@ K:	\b(?i:rust)\b
->  
->  RUST [ALLOC]
->  M:	Danilo Krummrich <dakr@kernel.org>
-> +R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> +R:	Vlastimil Babka <vbabka@suse.cz>
-> +R:	Liam R. Howlett <Liam.Howlett@oracle.com>
-> +R:	Uladzislau Rezki <urezki@gmail.com>
->  L:	rust-for-linux@vger.kernel.org
->  S:	Maintained
->  T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
-> -- 
-> 2.50.0
+> There's also stuff relating to NUMA etc.
 > 
-Acked-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> I really do wonder where the line between this and the mm stuff is. Because
+> if the idea is 'well this is just a wrapper around slab/vmalloc' surely the
+> same can be said of what's in rust/kernel/mm.rs re: VMAs?
+> 
+> So if this is the rust equivalent of include/linux/slab.h and mm/slub.c
+> then that does seem to me to suggest this should be considered an mm/rust
+> thing right?
+> 
+> It'd be good to know exactly what is considered mm rust and should go
+> through the mm tree and what isn't.
+> 
+> Maybe Alice has some insights on this?
+
+The Rust standard library has three pieces:
+
+- core. Defines standard types that can work anywhere. (such as ints)
+- alloc. Defines standard types that require an allocator. (such as vectors)
+- std. Defines standard types that require an OS. (such as File or TcpStream)
+
+In the kernel we used to use both core and alloc, but we switched away
+from alloc because it doesn't support GFP flags well. The 'RUST [ALLOC]'
+subsystem originates from that transition from the Rust stdlib alloc to
+our own implementation. It contains essentially three pieces:
+
+- Two data structures Vec and Box.
+  - The Box data structure is the simplest possible user of allocation:
+    A Box<T> stores a single instance of the struct T in its own
+    allocation.
+  - The Vec data structure stores a resizable array and maintains a
+    pointer, length, capacity triplet. There is a bunch of logic to
+    manipulate these to correctly keep track of which parts of the
+    vector are in use.
+- The Allocator trait.
+  - This trait defines what functions an allocator must provide.
+  - The data structures Box or Vec require you to specify an allocator,
+    and internally it calls into the allocator to manage the backing
+    memory for its data.
+- Three concrete implementations of the Allocator trait.
+  - These are kmalloc, vmalloc, and kvmalloc respectively.
+
+In my eyes, the further down this list you get, the more likely it is
+that the patch needs to go through the MM tree.
+
+Alice
