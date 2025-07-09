@@ -1,240 +1,107 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C752D320E
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 12:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FDA2DCF7D
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 12:59:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752064562; cv=none; b=nakBLQ+T78OUrpt/ac3KZuXonaGXRdXOQdTgAB+ZlT8/dYtioUFM7bkxX6ioiqCY8stVqrgtszd98wQ+Oe/qRYtwDYfrhh8JraLzLJxHpcIgY3mFllMlP5B8AuiywG+uXSdv/+zkgh0yLsEWL0dwUA01nFg1Ec95T+76rNC9yKM=
+	t=1752065994; cv=none; b=lykHObSWQyqFkzN8GTplVq5DQlxaTDt/1pjpAYZeKuTFNmTgH3LzXGxrzCvfhWueZ0mk0ImE9O2htGa9kpWYGHINNz/W0XNCAhPAxxpRhRfE8C07QtXDfGRts2mRH+qgJi8s0DRem5jgqsIeiCYf8bLHbOO5EWH91BTDTnfSYC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752064562; c=relaxed/simple;
-	bh=wd/qNz7WyhKf3bMX6G1qHHU6RUMyYpRH/AnK/WBT+CA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L0XTtFsXRGfopkuI9YULjbUGU18XimI55PWuCEbGaaDRv3YgzhIHgOTlnMzfrjcN90G2h/SHYFMeb4b3lUFMUiy9lUBW3TBJclKlxediZr+D1ySZ405AcV3S6EJbG43PEp+QnGM8lWqjz+kUpIWfkzRf8gbeUBJmcdYz2/h6ykc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iJawIXL5; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1752065994; c=relaxed/simple;
+	bh=73HvCjZMR3NAONLsS+S3QA3LeRAsQsSR67UYbxWMLaQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=uCiLNx6jJhv4osLrfM3cboSVo5HhQLioUDlzJqcGN33ViyR4T/9SDw+cYmyyYma+mQbRrRr7qSWef8BbtE+cg0rjETnkOxaQmYZU8ZQANHWSUvCE6iJDw9YWoMHiWEWK3PHk8+GD7lJBBSiGcAwPdvjBdzpHW0/8L/LGRupy1SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=d0DVuRhx; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=0aj/edMY; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iJawIXL5"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4f65a705dso3288605f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 05:36:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752064559; x=1752669359; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PzMQHSy9JLo2QGlJbPTZapiM88FLqMBKfBHKtJNkziE=;
-        b=iJawIXL5eL8EmjCw2sX4Aizqi8/9LP/cj2GNwkh6dhbWpy/6oN5zKVpj4ChRGxTgFO
-         bUKADbIR+Zq2nYnJt+LMG/tR0L05rdussEFd26ib0y9SQz+jLXJEfwq10pQjUNThoEJ8
-         r0rnbldGIqGuwcPa5g/LLJx3XZ8+OYAFW0kxMPR1Kcgusa3GH5B/BFmsv7Zhy9Ipy1NZ
-         zRnoHiHtwwJM/WFn0Xsl0voTrM31+LAKm7SO8947GLaWBiGa2wc5AQ8xCYGNUQvtu6g/
-         S+asP1aLtoPKXTowWg9p0Vx96fEVqaiR+MIsp+qsKnKETCOVHHAtze9aUicKbC5bW988
-         SZiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752064559; x=1752669359;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PzMQHSy9JLo2QGlJbPTZapiM88FLqMBKfBHKtJNkziE=;
-        b=gVNeGPPqSavnjJLpIsW4qSV9/nN21M6jdiwSS33bslFo94Z7rmBuQ1Z3SsuQq15F+W
-         uPQGfwAnV9sioy8XZQeYM3KrjBL1mjs60L14msdBGPdGmba1qUOHSGfA/UaXRA8+VCdj
-         9IEBsUf1uBvCVHc6OsoaYpAXGEHnNv3wBTOQTGEmw72a0cA7ZBmBz0YUufB4vKKvvVpO
-         +WeBhPsNnB2SZ4DiQyWPi4huTZTC+pTzZkn+nEKnRyhCggXD/ZSNO3mAx/YY8YZDTzx9
-         lIBgOWsJrh73u98pux2jhXSgmmPnIuK1fpE1ZWKc08DFUs6dD8nx9515ps2DBG/WJbqC
-         ImoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlQ/sQu0eEclMPtEyYpLcGvthlW3jWYZ9POBWciQwqRQPj26YL6GRiDdYnCHAxIhdWnKLoGHdF9wZ1r5TaAg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxROaHKUP4HztBMOzHe9O9S/4MFKGvoOiEuMGczLTsqMOZldpq0
-	PSej2miQMWo0Y360cY1cLyF4YdTPQEHeq9kQiArlissFwanxX0dtGHS1ET2Xpz11d5BcNXtoiwx
-	WDAO0Dk5KL/Px463bDw==
-X-Google-Smtp-Source: AGHT+IF7QHhjUXjHwJksOrL/orpdHi4Kes3SJuAJrzIJBlL3WdIgqqtU+4Lgj0bT7jgo2Q+FCveakmLmMeOH064=
-X-Received: from wmbes22.prod.google.com ([2002:a05:600c:8116:b0:453:8a72:e19e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:588c:0:b0:3a4:d6ed:8e00 with SMTP id ffacd0b85a97d-3b5e4537e82mr1931665f8f.33.1752064558922;
- Wed, 09 Jul 2025 05:35:58 -0700 (PDT)
-Date: Wed, 9 Jul 2025 12:35:58 +0000
-In-Reply-To: <87ecuplgqy.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="d0DVuRhx";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="0aj/edMY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752065989; x=1752670789;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=qvgF4Vfu8p4aaVuABgyc+Dl6SwSN6dTAercSz7+X1S4=;
+	b=d0DVuRhxoRcIwWofcKJ7HElAXr5N6lXBnI4A0501KhSwYAVP6ftxztpmA4k+NH6+KoejY66xArC9C
+	 8rsStUfp6rsb+UONX7jOer5SCQK5e9OlnLBZMVxlzEYidz6vwlHZqehJMk1m+5RZdYGnt+NO05LhAp
+	 CKV18v6Eps3rtryhFOmVk9J7zbrV0vO4SFY0jwpNORvBH78jMQpB1Y9ZtGhcSvEZv9WM6nNp11IyhH
+	 khkA1IQGpFyDANkqw1lzE3MEkYXbN4Jr+552eNA45weItTuBXwMKZ29XGS5BeYbyqGW65KjP2LS3pI
+	 dl/vi2tU0sIW39/Cu6Oo/iG2eAQ1z4A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752065989; x=1752670789;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=qvgF4Vfu8p4aaVuABgyc+Dl6SwSN6dTAercSz7+X1S4=;
+	b=0aj/edMYvElvZ1eCqng8u1sxgfhXl6kn2ngXQFgreGmi5deYnPSV77kYaHVOpnjMRAlwYzm+aErNu
+	 wbECpttDg==
+X-HalOne-ID: 974e8fe1-5cc4-11f0-9748-f3c0f7fef5ee
+Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay4.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 974e8fe1-5cc4-11f0-9748-f3c0f7fef5ee;
+	Wed, 09 Jul 2025 12:59:49 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
- <U16UjMBBh1b7dLeO-Nhqw__nw_JwypctB1ze_G44BtsX0l_eVK6Sp-efbobmnuF44J0wQNgnK7b8nCmBX0KS_Q==@protonmail.internalid>
- <20250704-iov-iter-v2-1-e69aa7c1f40e@google.com> <878qkyoi6d.fsf@kernel.org>
- <0Y9Bjahrc6dbxzIFtBKXUxv-jQtuvM2UWShaaSUsjKBuC1KKeGIpBFTC4a89oNrOLBP66SXtC7kQx1gtt04CMg==@protonmail.internalid>
- <aG5NdqmUdvUHqUju@google.com> <87ecuplgqy.fsf@kernel.org>
-Message-ID: <aG5iLiUJg_cHtB8r@google.com>
-Subject: Re: [PATCH v2 1/4] rust: iov: add iov_iter abstractions for ITER_SOURCE
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Benno Lossin <lossin@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH] MAINTAINERS: add mm folks as reviewers to rust alloc
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
+Date: Wed, 9 Jul 2025 14:59:38 +0200
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ rust-for-linux@vger.kernel.org,
+ linux-mmc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5B9E265F-A29D-42BB-BA61-E7258AF8E8A5@konsulko.se>
+References: <20250708183747.104286-1-lorenzo.stoakes@oracle.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-On Wed, Jul 09, 2025 at 01:56:37PM +0200, Andreas Hindborg wrote:
-> "Alice Ryhl" <aliceryhl@google.com> writes:
-> 
-> > On Tue, Jul 08, 2025 at 04:45:14PM +0200, Andreas Hindborg wrote:
-> >> "Alice Ryhl" <aliceryhl@google.com> writes:
-> >> > +/// # Invariants
-> >> > +///
-> >> > +/// Must hold a valid `struct iov_iter` with `data_source` set to `ITER_SOURCE`. For the duration
-> >> > +/// of `'data`, it must be safe to read the data in this IO vector.
-> >>
-> >> In my opinion, the phrasing you had in v1 was better:
-> >>
-> >>   The buffers referenced by the IO vector must be valid for reading for
-> >>   the duration of `'data`.
-> >>
-> >> That is, I would prefer "must be valid for reading" over "it must be
-> >> safe to read ...".
-> >
-> > If it's backed by userspace data, then technically there aren't any
-> > buffers that are valid for reading in the usual sense. We need to call
-> > into special assembly to read it, and a normal pointer dereference would
-> > be illegal.
-> 
-> If you go with "safe to read" for this reason, I think you should expand
-> the statement along the lines you used here.
-> 
-> What is the special assembly that is used to read this data? From a
-> quick scan it looks like that if `CONFIG_UACCESS_MEMCPY` is enabled, a
-> regular `memcpy` call is used.
 
-When reading from userspace, you're given an arbitrary untrusted address
-that could point anywhere. The memory could be swapped out and need to
-be loaded back from disk. The memory could correspond to an mmap region
-for a file on a NFS mount and reading it could involve a network call.
-The address could be dangling, which must be properly handled and turned
-into an EFAULT error instead of UB. Every architecture has its own asm
-for handling all of this safely so that behavior is safe no matter what
-pointer we are given from userspace.
 
-As for CONFIG_UACCESS_MEMCPY, I don't think it is used on any real
-system today. It would require you to be on a NOMMU system where the
-userspace and the kernel are in the same address space.
+> On Jul 8, 2025, at 8:37=E2=80=AFPM, Lorenzo Stoakes =
+<lorenzo.stoakes@oracle.com> wrote:
+>=20
+> The alloc implementation is a thin wrapper over slab/vmalloc, so to =
+help
+> out on the mm side of things and to be cc'd on changes, add some mm =
+people
+> as reviewers.
+>=20
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-> >> > +    /// Returns the number of bytes available in this IO vector.
-> >> > +    ///
-> >> > +    /// Note that this may overestimate the number of bytes. For example, reading from userspace
-> >> > +    /// memory could fail with `EFAULT`, which will be treated as the end of the IO vector.
-> >> > +    #[inline]
-> >> > +    pub fn len(&self) -> usize {
-> >> > +        // SAFETY: It is safe to access the `count` field.
-> >>
-> >> Reiterating my comment from v1: Why?
-> >
-> > It's the same reason as why this is safe:
-> >
-> > struct HasLength {
-> >     length: usize,
-> > }
-> > impl HasLength {
-> >     fn len(&self) -> usize {
-> >         // why is this safe?
-> >         self.length
-> >     }
-> > }
-> >
-> > I'm not sure how to say it concisely. I guess it's because all access to
-> > the iov_iter goes through the &IovIterSource.
-> 
-> So "By existence of a shared reference to `self`, `count` is valid for read."?
-> 
-> >
-> >> > +        unsafe {
-> >> > +            (*self.iov.get())
-> >> > +                .__bindgen_anon_1
-> >> > +                .__bindgen_anon_1
-> >> > +                .as_ref()
-> >> > +                .count
-> >> > +        }
-> >> > +    }
-> >> > +
-> >> > +    /// Returns whether there are any bytes left in this IO vector.
-> >> > +    ///
-> >> > +    /// This may return `true` even if there are no more bytes available. For example, reading from
-> >> > +    /// userspace memory could fail with `EFAULT`, which will be treated as the end of the IO vector.
-> >> > +    #[inline]
-> >> > +    pub fn is_empty(&self) -> bool {
-> >> > +        self.len() == 0
-> >> > +    }
-> >> > +
-> >> > +    /// Advance this IO vector by `bytes` bytes.
-> >> > +    ///
-> >> > +    /// If `bytes` is larger than the size of this IO vector, it is advanced to the end.
-> >> > +    #[inline]
-> >> > +    pub fn advance(&mut self, bytes: usize) {
-> >> > +        // SAFETY: `self.iov` is a valid IO vector.
-> >> > +        unsafe { bindings::iov_iter_advance(self.as_raw(), bytes) };
-> >> > +    }
-> >> > +
-> >> > +    /// Advance this IO vector backwards by `bytes` bytes.
-> >> > +    ///
-> >> > +    /// # Safety
-> >> > +    ///
-> >> > +    /// The IO vector must not be reverted to before its beginning.
-> >> > +    #[inline]
-> >> > +    pub unsafe fn revert(&mut self, bytes: usize) {
-> >> > +        // SAFETY: `self.iov` is a valid IO vector, and `bytes` is in bounds.
-> >> > +        unsafe { bindings::iov_iter_revert(self.as_raw(), bytes) };
-> >> > +    }
-> >> > +
-> >> > +    /// Read data from this IO vector.
-> >> > +    ///
-> >> > +    /// Returns the number of bytes that have been copied.
-> >> > +    #[inline]
-> >> > +    pub fn copy_from_iter(&mut self, out: &mut [u8]) -> usize {
-> >> > +        // SAFETY: We will not write uninitialized bytes to `out`.
-> >>
-> >> Can you provide something to back this claim?
-> >
-> > I guess the logic could go along these lines:
-> >
-> > * If the iov_iter reads from userspace, then it's because we always
-> >   consider such reads to produce initialized data.
-> 
-> I don't think it is enough to just state that we consider the reads to
-> produce initialized data.
+Thanks for bringing more clarity to this, appreciated.
 
-See above re userspace.
+~Vitaly
 
-> > * If the iov_iter reads from a kernel buffer, then the creator of the
-> >   iov_iter must provide an initialized buffer.
-> >
-> > Ultimately, if we don't know that the bytes are initialized, then it's
-> > impossible to use the API correctly because you can never inspect the
-> > bytes in any way. I.e., any implementation of copy_from_iter that
-> > produces uninit data is necessarily buggy.
-> 
-> I would agree. How do we fix that? You are more knowledgeable than me in
-> this field, so you probably have a better shot than me, at finding a
-> solution.
+> ---
+> MAINTAINERS | 4 ++++
+> 1 file changed, 4 insertions(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 71599ab6bd56..54dd937160ac 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -21751,6 +21751,10 @@ K:	\b(?i:rust)\b
+>=20
+> RUST [ALLOC]
+> M:	Danilo Krummrich <dakr@kernel.org>
+> +R:	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> +R:	Vlastimil Babka <vbabka@suse.cz>
+> +R:	Liam R. Howlett <Liam.Howlett@oracle.com>
+> +R:	Uladzislau Rezki <urezki@gmail.com>
+> L:	rust-for-linux@vger.kernel.org
+> S:	Maintained
+> T:	git https://github.com/Rust-for-Linux/linux.git alloc-next
+> --=20
+> 2.50.0
+>=20
+>=20
 
-I think there is nothing to fix. If there exists a callsite on the C
-side that creates an iov_iter that reads from an uninitialized kernel
-buffer, then we can fix that specific call-site. I don't think anything
-else needs to be done.
-
-> As far as I can tell, we need to read from a place unknown to the rust
-> abstract machine, and we need to be able to have the abstract machine
-> consider the data initialized after the read.
-> 
-> Is this volatile memcpy [1], or would that only solve the data race
-> problem, not uninitialized data problem?
-> 
-> [1] https://lore.kernel.org/all/25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de
-
-Volatile memcpy deals with data races.
-
-In general, we can argue all we want about wording of these safety
-comments, but calling copy_from_iter is the right way to read from an
-iov_iter. If there is a problem, the problem is specific call-sites that
-construct an iov_iter with an uninit buffer. I don't know whether such
-call-sites exist.
-
-Alice
