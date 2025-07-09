@@ -1,124 +1,98 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEB5229B18;
-	Wed,  9 Jul 2025 22:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B978801;
+	Wed,  9 Jul 2025 22:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752101388; cv=none; b=ezIbYy8aD695toxbO+BFq8YzGo3Cwvhk7DvTkOb5PwdpfCVlzkLGnZ2/wHSpGM1AJslYZhdKoq+oo30CzkyAdNf5SG8w+yroJE9XgyUbktKTgus001XNra6g20UKvm4ZoJhaNF3vUXyKEy7OxHT3z1+G9pFxsnItl9sbMWt4zxM=
+	t=1752101496; cv=none; b=K3S1Pa+g2d5Gmvehxivv16vBh6sWsXCcOAayyJdG0tDUoBOjQ9vynApZNDmxrIXOpfk61itUNNG0JW5kBz11P5Q2OyYjwulIeHuuewZUQzrJ/h8zI36XAAenMVoAF9ehSVmwGsOL6iTqY4f2kv5qKsoLXtOsMtJtNJ1Y2jpCh14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752101388; c=relaxed/simple;
-	bh=ATy8JEXnyswf/aDrAW5bwnanptnddshi+MTE+uEsKGI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GB7qusAVSLrWWh82ShYauj5Zat6NcTCs9jpzjHj8ry+wQAuitjNQN9GwZn+qE3xC2Zy8RdydL0sKDGgNkTRZzI0KgMmsqAjBNQ7cTHYoiTd2yNAvHFLC02UgME5dr95WHFikqoctEx4WPFBI+CQHlKkimrWxfrQQfPV8VD8qz9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XNE2vqY1; arc=none smtp.client-ip=209.85.222.170
+	s=arc-20240116; t=1752101496; c=relaxed/simple;
+	bh=AT7zdgEz0XpzQD4/Kb0V7s5h4j2xaoLGpeNlxuiDd50=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MpV2MY0T8OBOOYM78rz+yA9X0qmML5zoxoM5C5FIq68c7f9xhEC3RRBqComcunKXAGjrNV4MnOmJid5vw/Sfn9M9zufPL8IW+I9NM82hd03ZLKZf3ydbk5PLFoVJ7ARRsbJGirAjRr3q7lxk/8ZNPaOwlkMXezUej97lBpwuwaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hr5HDwF8; arc=none smtp.client-ip=209.85.208.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XNE2vqY1"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7d3f1bd7121so41401785a.3;
-        Wed, 09 Jul 2025 15:49:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hr5HDwF8"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32f1df5703aso2514151fa.3;
+        Wed, 09 Jul 2025 15:51:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752101384; x=1752706184; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MUZbEndeYISoLEHqNCHvlPZoI7WUvlxd+2hFgjozkso=;
-        b=XNE2vqY1BKuUAW0t9PQm2/25iCsKg7GyJuQMAiALg+LJv8jyXjoiCS1LCy/EsaHUgT
-         bSuxYcSaPgbOceii85z+N7RYZVi79FmxMyPYsqF2cElGUAxtRGz1fMbr3OcOxETuvUQC
-         MY1mS3/lkgMckxgz4rkQX/1vYplkUoM2SU1eEI1z0wuTKJorycwq6iEDvWVjz9bg64mQ
-         EUtMvoPy4l9RYpPS9lecgW/mj6hUH7pD9B9O+LBNm9/t6yWj1GiC1SiVD1PySnfHv3S9
-         xV1grubrQ/2X3el188bpxorO07KJRtIKsqXTeTZ9VkB776Bw+YymT/gX9W6Z9fm5QoGF
-         FERA==
+        d=gmail.com; s=20230601; t=1752101493; x=1752706293; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AT7zdgEz0XpzQD4/Kb0V7s5h4j2xaoLGpeNlxuiDd50=;
+        b=Hr5HDwF8CY+CWdmx0FV8RuoB9auBYi8mv1lKnmLKtSjAjMEtEu26jUvkONYpgKInWm
+         VRCSjrSfoi7bbWy1qTtASppkGaq8SxbJdNJZhRhsnljlEm0iySD1AqOrjR4QyCSENLyF
+         VR6Nj/cEEBKGx5xRWauR4/WuVhKAn/bV9qOSjNDhDpicqYgaW6AsDPFNAKbLoJ59I98E
+         dWg2ufMuccrOZGciN+v99R84ql4G1vLO5ndNg1mf01UDPG+W57I29fRrjCio137p/hWW
+         2wmpK3bUfntLAj7BPBU2ced/Hd0thAWqrbmwg+HkqY/GFRTPMF76l45x0uPRQdC8wo6F
+         EwXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752101384; x=1752706184;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752101493; x=1752706293;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MUZbEndeYISoLEHqNCHvlPZoI7WUvlxd+2hFgjozkso=;
-        b=kvHCgLh7wePUp9c2sL17w3/Oxo9j1buKrSEInMUWQHCOYM06KlZAo4d6jhJoPrBCNq
-         eQTLrXXXOLRIFUg0gAyJR2USRyS2aKnjzdbUmVVMLLDDn742eW9h//gG/ZDAWXR0OoLa
-         /rI53RPN2ScmqUsEotEVP1u97LWXn/YCzun1M/hY4EXQo20Jl62MBWN1LanRDI5JNav/
-         5br6pf0llcqweXSPbyPcCn5yeZ3WGdZg8HQazY5ITyOdxdkAHLv4NsauiRJwFWkKvfwo
-         YWQAYL0zx0Yz6fJ+zOcFCA11R5BIhXyU68tQqSyNTXFFwgwbHTcUtLH0EdvPSyqq/n5R
-         tgDg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUr2efVN+Z0zv4nV3xcW+NTtuaLrPA/dmWrwYCK5PVzU/CxtlfPGDpZgPepWsF9jlBGwWsw9Lvryic8Yw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX5aPvPBw689CryBFiaIWM3agAFioQGLjXr5wquGBK0EuwZhIA
-	Cl7DlSOBEV5NRZWpWb+dL4bHVKZbnJcg1IO9DYFI/KjzeWgir5lEUOEv
-X-Gm-Gg: ASbGncvRRoWvPanlWJjT8KJKYGQFcIId/95Uy682MtKxXPkP2PozkYCdQMeuHH0Oqzh
-	wl6WdaSqPaje/2WuADWnUlAESaU3NN5oGguoKTB1sxU8PVS61hOfBx/PvyYSTmrTf2oDZmF7kh/
-	rInq9BI4H8VWhminIftYMLQrimgubS4ZIji5v2iAwOcP7BKdlYl6aPZ9GBpgJQ+U4ej4KVcrb+o
-	t+aXyf4NnRAI2NEZ+CtGCRehgdxArEZwyhWMmgoBdvEvdvJZwOJnWsi70dlrBN9M5o+Hgb96Q8O
-	XTl8vy751tEAx68wcJn5T6GIhc6Jj8U61LKrYZWHnuvqQKbKT0hvGIbGYVaBcWTw5Yix
-X-Google-Smtp-Source: AGHT+IEpZ2O7vHtHKtjhT5gt0BYxTQkRRV4qDet17w1YQfxWHTCrMRXTs3Ao6mQ55CoB1Fm0LuoMCg==
-X-Received: by 2002:a05:620a:1728:b0:7d4:1f5a:b24c with SMTP id af79cd13be357-7dcca6f0393mr78049285a.22.1752101384089;
-        Wed, 09 Jul 2025 15:49:44 -0700 (PDT)
-Received: from [192.168.1.156] ([2600:4041:5c29:e400:5085:1d69:8814:72d4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70498090248sm1025986d6.90.2025.07.09.15.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jul 2025 15:49:43 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 09 Jul 2025 18:49:35 -0400
-Subject: [PATCH v2 2/2] rust: init: remove old workaround
+        bh=AT7zdgEz0XpzQD4/Kb0V7s5h4j2xaoLGpeNlxuiDd50=;
+        b=UqTiwvPq0OAV4A4oxjlNzZ8lfhKOEmrQfZ8ctDjT1ih36WGBvb5v7OzIlX5l0hXu5m
+         ZWJk0+57+hRTxDaAX4JVkeZl5r4IYoOXYKOORprq4rdhNM6ckNkRGs0wIMuwXAFIJVkl
+         VOUpwh9oE5gthIqWFYrhRRt/ByRUPQhwo+Yo3pmNdCMiIsfbjstNvUUslnGHUoL23r/V
+         zj2NpFg1md9bkLEG/yLdjIccBEkDR/g9E9/BlyeDDsZ39HV+W9pLSqNg1pnpBzHDPJ+q
+         3p6rAt7fffFjXXYNkAxakAqHIeDtdarlZ7MnR2BIzqqdUV2EvLm1NH+qGshefPL2u4Sj
+         vasA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+0qe8I3/GZifxXyh3jTmRp01GpOYi43PXP2a4UYjaPTZJAUrpEqAkXzKEG/mYWbIst29nDz/FLboSTz7s4GOl@vger.kernel.org, AJvYcCW30P0Dl+j19PHv2bvG9kIYY4+zkLeEdUj6V+jqj4QBXpQhOlC12yqi98SVroJ2rbizFoqo6nscs/9/kl3T@vger.kernel.org, AJvYcCW3zF6EEXALZXvCC76FaMFZrzeyMPdMtIW9nHN5K0YyGjRbZvwAgjI6/JwCgL8/2uZtHFCIpLicKk3Gkg==@vger.kernel.org, AJvYcCX5zs1QLzVTxjYsWLCoFp7HPMTPgZdm/ceBH+7rKDCRYTMZ/ZbUDujESsRLyQ16ikRzURbjrmB/L7sq2MRdQnU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynKva+nqN4nEEMQP6riOKYkIO9U9yXWo+3qXNin0R7pC1j770F
+	17cQy0iCtQXbJWIfukD0n0fOzwp7wV7CCcAeVo4repjHtVCSUzXnwoDBDoVPMDRRCHGNfK3ERoy
+	/E9GHlMPlclZbQw4msUlF4A+NF4g7iWw=
+X-Gm-Gg: ASbGncu6g7cLXFwgFXIzSAASkf1J5p4vHTgCIcyXis4cWkNpz0HqxbZbUVeSEYQHrBH
+	JT8ivKkI6nw9/WSDTbujoCHRvWJtmkROOMu0OGdXgNEXbiwTa9Go/axsFwj3wiB2NEvAOVN4yQ6
+	eyVkih8fWEGoDtw9SKYshiDKcyvXfXASSHzqGQBiCNaMLpTjTRLVHBbjkmYUo7sfCLEG9VUfKsM
+	d+qZgb/uFeNnerk
+X-Google-Smtp-Source: AGHT+IF27+KrVs2nw7zMxm/lAjmI7ad0idRyIl1c4CvKZ8/UEyE7oxDB/OUDydZblbt7SfQMSlfdwda0M1ohVpNso+I=
+X-Received: by 2002:a05:651c:220d:b0:32f:41a4:5584 with SMTP id
+ 38308e7fff4ca-32f48584db9mr13809651fa.27.1752101492829; Wed, 09 Jul 2025
+ 15:51:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250709-init-remove-old-workaround-v2-2-a3b1be8fd490@gmail.com>
-References: <20250709-init-remove-old-workaround-v2-0-a3b1be8fd490@gmail.com>
-In-Reply-To: <20250709-init-remove-old-workaround-v2-0-a3b1be8fd490@gmail.com>
-To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1752101380; l=1070;
- i=tamird@gmail.com; h=from:subject:message-id;
- bh=ATy8JEXnyswf/aDrAW5bwnanptnddshi+MTE+uEsKGI=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QP3ssS88jSbSCYWkPXUNUoiGsdxDrF6CaSRQUvNySM0Kjl8P+QlLPVrQwPGbDKrhvnem/NAKzHG
- xioCNRj8CqgY=
-X-Developer-Key: i=tamird@gmail.com; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+References: <20250709-core-cstr-fanout-1-v1-0-64308e7203fc@gmail.com>
+ <20250709-core-cstr-fanout-1-v1-7-64308e7203fc@gmail.com> <DB7SVTBZ46QB.31WTHFLWDHPZY@kernel.org>
+ <CAJ-ks9nNc_pThtb+gHUcjEnvR6V0RAEG0tkv+_DHYYjXs1N7=A@mail.gmail.com>
+ <DB7V0GL2HVMV.BR1JSWQPDMC3@kernel.org> <CAJ-ks9n9Z0PtBmqNupS2390B+gq7UJuV0npD+3Ri0tJrQZVB9g@mail.gmail.com>
+In-Reply-To: <CAJ-ks9n9Z0PtBmqNupS2390B+gq7UJuV0npD+3Ri0tJrQZVB9g@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 9 Jul 2025 18:50:56 -0400
+X-Gm-Features: Ac12FXy4ZkLQdVyOcORlDTRU2dOMP13FGi20G8_0yikxCOUmMBlYgA2CbZFOSII
+Message-ID: <CAJ-ks9=hdDghvG5d2sK6SWz3OME6BFxZEmrDmfkrAV7Dse8wXQ@mail.gmail.com>
+Subject: Re: [PATCH 7/9] rust: pin-init: use `kernel::{fmt,prelude::fmt!}`
+To: Benno Lossin <lossin@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-`Error::from_errno` is `pub` since commit 5ed147473458 ("rust: error:
-make conversion functions public"), thus remove this workaround which is
-no longer needed.
+On Wed, Jul 9, 2025 at 6:36=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
+>
+>
+> Ack, sent https://lore.kernel.org/all/20250709-init-remove-old-workaround=
+-v1-1-a922d32338d2@gmail.com/.
 
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- rust/kernel/init.rs | 8 --------
- 1 file changed, 8 deletions(-)
-
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index f8402c818d30..9b3f3e29cc6a 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -79,14 +79,6 @@
- //! #     pub unsafe fn destroy_foo(_ptr: *mut foo) {}
- //! #     pub unsafe fn enable_foo(_ptr: *mut foo, _flags: u32) -> i32 { 0 }
- //! # }
--//! # // `Error::from_errno` is `pub(crate)` in the `kernel` crate, thus provide a workaround.
--//! # trait FromErrno {
--//! #     fn from_errno(errno: core::ffi::c_int) -> Error {
--//! #         // Dummy error that can be constructed outside the `kernel` crate.
--//! #         Error::from(core::fmt::Error)
--//! #     }
--//! # }
--//! # impl FromErrno for Error {}
- //! /// # Invariants
- //! ///
- //! /// `foo` is always initialized
-
--- 
-2.50.0
-
+Messed it up, sent v2:
+https://lore.kernel.org/all/20250709-init-remove-old-workaround-v2-0-a3b1be=
+8fd490@gmail.com/.
