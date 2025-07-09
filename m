@@ -1,98 +1,99 @@
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B978801;
-	Wed,  9 Jul 2025 22:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873E6801;
+	Wed,  9 Jul 2025 22:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752101496; cv=none; b=K3S1Pa+g2d5Gmvehxivv16vBh6sWsXCcOAayyJdG0tDUoBOjQ9vynApZNDmxrIXOpfk61itUNNG0JW5kBz11P5Q2OyYjwulIeHuuewZUQzrJ/h8zI36XAAenMVoAF9ehSVmwGsOL6iTqY4f2kv5qKsoLXtOsMtJtNJ1Y2jpCh14=
+	t=1752101642; cv=none; b=cmFcHbbF9DZb6wOmgHSN+CHngToDtZsl38/Na5ug6bRUHQ7s4+QwPbk5CNaeWVOxs8TXuoZIsX7er8DyLdf4VX/tTq+/LrQ5kMb995gQWVPlxWuJET8Ol0/Xz5LwdX6JT9CcVARIeuKuPCSkWwvMd7snscGytRAVdv5ybznAnGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752101496; c=relaxed/simple;
-	bh=AT7zdgEz0XpzQD4/Kb0V7s5h4j2xaoLGpeNlxuiDd50=;
+	s=arc-20240116; t=1752101642; c=relaxed/simple;
+	bh=Ck7M9kjFGroRgtLiIjkzu/4Z/tLPPWCGWsdGNFjqJ3g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MpV2MY0T8OBOOYM78rz+yA9X0qmML5zoxoM5C5FIq68c7f9xhEC3RRBqComcunKXAGjrNV4MnOmJid5vw/Sfn9M9zufPL8IW+I9NM82hd03ZLKZf3ydbk5PLFoVJ7ARRsbJGirAjRr3q7lxk/8ZNPaOwlkMXezUej97lBpwuwaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hr5HDwF8; arc=none smtp.client-ip=209.85.208.174
+	 To:Cc:Content-Type; b=TrbE6tMufm+QHTunwiOXbsrERyxi68EvlkkItnegflMe2TeOu1DKtx7n/7VX7e9C82IGBVvIBwYMN3xaTJnymog3mYhY+tzoDEqTuBa41GA0nTsk6+/fFCJ1meRxqVkvuabiopcdYrkOZqWpRC/kwLo98auw+xXGZYlZZbOV1ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MJxigi8k; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hr5HDwF8"
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-32f1df5703aso2514151fa.3;
-        Wed, 09 Jul 2025 15:51:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MJxigi8k"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a582e09144so273514f8f.1;
+        Wed, 09 Jul 2025 15:54:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752101493; x=1752706293; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752101639; x=1752706439; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AT7zdgEz0XpzQD4/Kb0V7s5h4j2xaoLGpeNlxuiDd50=;
-        b=Hr5HDwF8CY+CWdmx0FV8RuoB9auBYi8mv1lKnmLKtSjAjMEtEu26jUvkONYpgKInWm
-         VRCSjrSfoi7bbWy1qTtASppkGaq8SxbJdNJZhRhsnljlEm0iySD1AqOrjR4QyCSENLyF
-         VR6Nj/cEEBKGx5xRWauR4/WuVhKAn/bV9qOSjNDhDpicqYgaW6AsDPFNAKbLoJ59I98E
-         dWg2ufMuccrOZGciN+v99R84ql4G1vLO5ndNg1mf01UDPG+W57I29fRrjCio137p/hWW
-         2wmpK3bUfntLAj7BPBU2ced/Hd0thAWqrbmwg+HkqY/GFRTPMF76l45x0uPRQdC8wo6F
-         EwXA==
+        bh=N9iJnt4WkpfToovTZMYNbYtyMvKSLn0aTix0qiRAhhs=;
+        b=MJxigi8kc9x/gSPcu0shR/8vV8WS+mHrXaxAw3ON6oy5oUfGR6nfaAq1VLgBVKn4wj
+         OLoDZBOyDFGmC4WVGByWCmIihfMJiV/cg+rYovZNWxyspfksTLEQ+5nLfiNnKaG+CzNG
+         bTT8cT4KpwmYDXy2NKpVYYLEoo1ZHXGUc2ZW6WS0jYJIE4CpKQzTElboxzXJkwmUQZPP
+         C8PjJ+4PDNyI3iLWqCvPt5tgh21IXVeCKDBtfwhx+bQq6lGbKv/M02fOSVIQvwb/uYyG
+         tUWleXqLrBbLqwQ36JyVQDH3gkXjvszU30H+Zxd7xp525vT3euTRdLpGrl6pz/6KrprE
+         /yZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752101493; x=1752706293;
+        d=1e100.net; s=20230601; t=1752101639; x=1752706439;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AT7zdgEz0XpzQD4/Kb0V7s5h4j2xaoLGpeNlxuiDd50=;
-        b=UqTiwvPq0OAV4A4oxjlNzZ8lfhKOEmrQfZ8ctDjT1ih36WGBvb5v7OzIlX5l0hXu5m
-         ZWJk0+57+hRTxDaAX4JVkeZl5r4IYoOXYKOORprq4rdhNM6ckNkRGs0wIMuwXAFIJVkl
-         VOUpwh9oE5gthIqWFYrhRRt/ByRUPQhwo+Yo3pmNdCMiIsfbjstNvUUslnGHUoL23r/V
-         zj2NpFg1md9bkLEG/yLdjIccBEkDR/g9E9/BlyeDDsZ39HV+W9pLSqNg1pnpBzHDPJ+q
-         3p6rAt7fffFjXXYNkAxakAqHIeDtdarlZ7MnR2BIzqqdUV2EvLm1NH+qGshefPL2u4Sj
-         vasA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+0qe8I3/GZifxXyh3jTmRp01GpOYi43PXP2a4UYjaPTZJAUrpEqAkXzKEG/mYWbIst29nDz/FLboSTz7s4GOl@vger.kernel.org, AJvYcCW30P0Dl+j19PHv2bvG9kIYY4+zkLeEdUj6V+jqj4QBXpQhOlC12yqi98SVroJ2rbizFoqo6nscs/9/kl3T@vger.kernel.org, AJvYcCW3zF6EEXALZXvCC76FaMFZrzeyMPdMtIW9nHN5K0YyGjRbZvwAgjI6/JwCgL8/2uZtHFCIpLicKk3Gkg==@vger.kernel.org, AJvYcCX5zs1QLzVTxjYsWLCoFp7HPMTPgZdm/ceBH+7rKDCRYTMZ/ZbUDujESsRLyQ16ikRzURbjrmB/L7sq2MRdQnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynKva+nqN4nEEMQP6riOKYkIO9U9yXWo+3qXNin0R7pC1j770F
-	17cQy0iCtQXbJWIfukD0n0fOzwp7wV7CCcAeVo4repjHtVCSUzXnwoDBDoVPMDRRCHGNfK3ERoy
-	/E9GHlMPlclZbQw4msUlF4A+NF4g7iWw=
-X-Gm-Gg: ASbGncu6g7cLXFwgFXIzSAASkf1J5p4vHTgCIcyXis4cWkNpz0HqxbZbUVeSEYQHrBH
-	JT8ivKkI6nw9/WSDTbujoCHRvWJtmkROOMu0OGdXgNEXbiwTa9Go/axsFwj3wiB2NEvAOVN4yQ6
-	eyVkih8fWEGoDtw9SKYshiDKcyvXfXASSHzqGQBiCNaMLpTjTRLVHBbjkmYUo7sfCLEG9VUfKsM
-	d+qZgb/uFeNnerk
-X-Google-Smtp-Source: AGHT+IF27+KrVs2nw7zMxm/lAjmI7ad0idRyIl1c4CvKZ8/UEyE7oxDB/OUDydZblbt7SfQMSlfdwda0M1ohVpNso+I=
-X-Received: by 2002:a05:651c:220d:b0:32f:41a4:5584 with SMTP id
- 38308e7fff4ca-32f48584db9mr13809651fa.27.1752101492829; Wed, 09 Jul 2025
- 15:51:32 -0700 (PDT)
+        bh=N9iJnt4WkpfToovTZMYNbYtyMvKSLn0aTix0qiRAhhs=;
+        b=qEL+iSCp+tkaXNKcYIVfCUSYKfadNf6F20moPYJiTnbUBmAsYZFsWD0jniMIlQKApf
+         52sQoGVgc01S927LLtb9nsCXNNYUBo5arkpcwvoh4d/zyMRrQmct1ozkO4SbZ3BuJAjk
+         Y4RUxh7kS6B9b5IXO3tb0rAazOBqbSFF5/i556H3WyGrJkchz8okHHb4V2C6tgMF7kkz
+         H6E5wPPBLjEsLkI5RDADLyzsp/crDks9e/k/dWRawCRcrls2X7XibwWAs0Jbwic5kMb/
+         XybVrpVL6mO/dXHGIk3XzWbrkHgEah49vLL0WFhBb+jZCO0R9VW20imob5l2R9a9gPt0
+         Bz5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUe0PPrbvg8HaynizY/ZxXLoxU8gqhBFnj6CyoJVWpuG8A/riW3rPR3cJMh7Z4e18Oqyg75Cj/Lbq2nvdKBsN0=@vger.kernel.org, AJvYcCWP2rMJZoJcjtEiBDqZvLo3MFTodZABUC+Kz0WgsqYZC+n8fgzaLjMvHGt4Txl4idXAVTI=@vger.kernel.org, AJvYcCWbLlRG1VjJFymXWNh0kkeaaeKaLNGF9VTlamiJLc6RtSQgRJhuGjAacwmLIts8fSmJzsOebQ/hPWniOhGbfBU=@vger.kernel.org, AJvYcCXF/lOcQs6bVr5QqSPUe41qPHD1X7C7juyC32t7MGo0chA9HM3jcKD7w9dvpX3bpJmDWVLFl69QOdeY4AJH@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv9nEC6/nrhsQbqqw38oTtMjSZiAxqC+bT9qiR+q7ZDkAgkHUU
+	I4pAs5Qhf6UjBiRfLFV22VHI93fgTxMR3fGNYl5tKjvNT+dsGN1RzAk74p8oCuJZV5Y4RHhmSSB
+	xTzvERX7mgIFwL8BBdNDcUN6WI0i/1QNTUw==
+X-Gm-Gg: ASbGncv9MwqPEQ/a040TLjUCnXjmJodcj7XJlCtnARj02+iKFnV06voW0/RSxeR7slB
+	M4E1HGejUHqTKRtJNgue5nkb+gbflJRLFJ9ejBUZWATJnp0sVSJEGBCAy1B5sYnbwunpVQsItvz
+	5O0JF/QC9BsJWFsKJ3IXl3bO1wV2WMwdQq+ydbVbO4Kl9u/5ttiptmRScCqrFUhf/a/Eh83O4Bu
+	1haAc9mrJo=
+X-Google-Smtp-Source: AGHT+IHDoCCRbQwoVIBCKCBT14ZzPnGvut13NQFhw59jUbLavByhjz0wHOG/UJnidp46oUKDyQonZwNPRHpvQmXcL5Q=
+X-Received: by 2002:a05:6000:991:b0:3a4:e609:dc63 with SMTP id
+ ffacd0b85a97d-3b5e867f6e4mr389008f8f.20.1752101638580; Wed, 09 Jul 2025
+ 15:53:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709-core-cstr-fanout-1-v1-0-64308e7203fc@gmail.com>
- <20250709-core-cstr-fanout-1-v1-7-64308e7203fc@gmail.com> <DB7SVTBZ46QB.31WTHFLWDHPZY@kernel.org>
- <CAJ-ks9nNc_pThtb+gHUcjEnvR6V0RAEG0tkv+_DHYYjXs1N7=A@mail.gmail.com>
- <DB7V0GL2HVMV.BR1JSWQPDMC3@kernel.org> <CAJ-ks9n9Z0PtBmqNupS2390B+gq7UJuV0npD+3Ri0tJrQZVB9g@mail.gmail.com>
-In-Reply-To: <CAJ-ks9n9Z0PtBmqNupS2390B+gq7UJuV0npD+3Ri0tJrQZVB9g@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 9 Jul 2025 18:50:56 -0400
-X-Gm-Features: Ac12FXy4ZkLQdVyOcORlDTRU2dOMP13FGi20G8_0yikxCOUmMBlYgA2CbZFOSII
-Message-ID: <CAJ-ks9=hdDghvG5d2sK6SWz3OME6BFxZEmrDmfkrAV7Dse8wXQ@mail.gmail.com>
-Subject: Re: [PATCH 7/9] rust: pin-init: use `kernel::{fmt,prelude::fmt!}`
-To: Benno Lossin <lossin@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com
+References: <20250709172345.1031907-1-vitaly.wool@konsulko.se> <20250709172416.1031970-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250709172416.1031970-1-vitaly.wool@konsulko.se>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 9 Jul 2025 15:53:47 -0700
+X-Gm-Features: Ac12FXyuwwXk41iu49XWkmvEY5dPL8zCHicyZww6svC_W6iI9a-7d53GSWyAAdg
+Message-ID: <CAADnVQ+bikqCO7D+5_rAtiJXv3F6xn=0_hgGH5CkoTPpdi8j6Q@mail.gmail.com>
+Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in vrealloc
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	rust-for-linux <rust-for-linux@vger.kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org, 
+	bpf <bpf@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 9, 2025 at 6:36=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
+On Wed, Jul 9, 2025 at 10:25=E2=80=AFAM Vitaly Wool <vitaly.wool@konsulko.s=
+e> wrote:
 >
 >
-> Ack, sent https://lore.kernel.org/all/20250709-init-remove-old-workaround=
--v1-1-a922d32338d2@gmail.com/.
+> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned lo=
+ng align,
+> +                                gfp_t flags, int node)
+>  {
 
-Messed it up, sent v2:
-https://lore.kernel.org/all/20250709-init-remove-old-workaround-v2-0-a3b1be=
-8fd490@gmail.com/.
+imo this is a silly pattern to rename functions because they
+got new arguments.
+The names of the args are clear enough "align" and "node".
+I see no point in adding the same suffixes to a function name.
+In the future this function will receive another argument and
+the function would be renamed again?!
+"_noprof" suffix makes sense, since it's there for alloc_hooks,
+but "_node_align_" is unnecessary.
