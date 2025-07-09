@@ -1,118 +1,76 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273DF2DE216
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 14:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3462E717B;
+	Wed,  9 Jul 2025 15:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752070800; cv=none; b=fSR00IBTAFBL2NFDg7b4uyyQIDQHbcxhKg/nMqSqYMHDNn70EInK5SLkVg6G8u54KOOUgcnMbsu32FFgT0WaVmS5G28t661GA1VdCEq05+Nzd93WVGOAaf+0KnuBODg0r0W8hqNXnqNEUCObU7bJbucZ5tQ3zwsuhSLU/6IHeCI=
+	t=1752073910; cv=none; b=r2CFBeJWns3mMp290a3u3XH8GItn7h2S6tqpbH2rmrD8z35owTt4+Eu6+ZVZZFvqMKzNSdDnHuKKDmKofTtSGd9C9s8GhuHOXZq2TVyQjnllEq6ufqQAw0s9pfrbOglSBw0mUG75hbc8HTy2IEjv57EO7rqWgZEEMMnzGr2WcOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752070800; c=relaxed/simple;
-	bh=onxQyqbXg2+8eNUdjRi8yLtGmLMnVsEDz+kKPNPRjAo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qxynh3fFf40hO2M5SLkK5rRdfF+DPfxiclMC90HlMStBb5bp5tUlkTsNe9JluXhj98zqdxZiVVsqrIe5Ed/gI4eKV8lOyv9caSkiAl9l1Cux5jhJ2+Z5YYesaF4hDlXDdEsoFrLHUlnpFhNTaWAjftopELtj10Q/YSfNUqGnig4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rAXtNAZ1; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752073910; c=relaxed/simple;
+	bh=HN/A+MnroCUkLAvblyMBj2F9v7tw8Kej5OqPbBp4+5w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=erhxJOutgooNXj6qJye1UShkD+wbTWJin7knRoTX5EVlw0BfW4dn9frFR5hy/8KOccIt09ng53Q6YPrMa0jU+HBJgBFk+03JY4NyMluuC8TbqjBv//cVZeprtmNaazjoQaLtKiol6opq/2pYPlLgR3Vv/v7zNsSdQr/jIbnjTwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glCiv403; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rAXtNAZ1"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a57c8e247cso4337999f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 07:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752070797; x=1752675597; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=onxQyqbXg2+8eNUdjRi8yLtGmLMnVsEDz+kKPNPRjAo=;
-        b=rAXtNAZ1g38J888WZ3JPtxhSSjvhtdzBT1x84EFomAUxBE5XsMEuj5EzF1YBe0YK3R
-         eRGUZdXOC6gmvdSzsmcuVT9w4YyX/YcmvUwbs2uSJ10DZA6UFZtVH45NGFbFOdNlizYo
-         Na6SszQyri6aH4k0JkhSo7t69kDtPMvKDHtCUnOkB0oMJkdeCB4iv7jTrt31DSzDBSyB
-         jAGmJ4jCVn8KXtonYHCJZRooTAhJ4bV3fq9ocZRwR62QuLAycEuOOb7I02DF0O1dYiUw
-         uz7+9WjQObcbcMoPoXaEQr3U/ama0oJ4aHrqU1juD2cdJOVpbMwy4roMg6j5Qs8w5P1B
-         iPKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752070797; x=1752675597;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=onxQyqbXg2+8eNUdjRi8yLtGmLMnVsEDz+kKPNPRjAo=;
-        b=VrCXEvLnOFhYVQMxupvZZCPWGEr3K/gq2bCmfRyTlyY+uLsiRcCYq5/pyvsooCKtS+
-         f6Bd3oOpE4ln+QYXdplLdQp1wey+Tzlwrtar7dk2oqq0MB6jnQwGOV7/20MVjkvfyxNZ
-         A/FflqBYbV4hrKqnJWn3oQ/bOBGLIkm45XJb3JnYX4Kk6qfNdOm5XEzZdQ+VFdABCkwh
-         FlS5WeW/LCNS3jlRDxyZiXGDSZo0YSQDSIk9qt40Vp4Iz8ZeW/uH9/oKmb1e9aFeVCnD
-         +kYbul7a6U/Mi6+/6VrjRWK6dhnVjfapokrzzGd56rzuhyPTizZpjvAVcLO7ik6Vk7+V
-         GhmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWKh+sNTVLR9+D/GFB7gIXvWo/LVoCI452zk/8bsfeuLk6pnPXyoU9NumU1GEMBvDFHNzxVq8ZkXN+AabHNRQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyP5XvcBKHzRjW3PTP4/LBd1MnASYRqksYiI/g4d4NS7VqP/OIm
-	DKlDJKcjrMt4YJaQ88g3HbJzkrc79+MjHm1y0wgoOgMhxAjC45+1+hKOyks8uNOiJRAb/a6l/Gb
-	1hJK7F9einBYDt8q71NV7RGT5e0wS0Di+9Llni16k
-X-Gm-Gg: ASbGncsLTOiRiKr1CQhiCwhZrADnr15bHvMAMT2tBe6QGVEWOhL8s+aB9bVVXasG3R6
-	OwsmowCuhiIrckv1mNJykaiN4k8nf7vcN+eEGpg8wY7L6ajaGHD+7FXYGrhkLLA/PxV/7XcDuCZ
-	9GO0C+DUqHmRBpw2TTaefx4H68zYo+0+lTnzUz+67QO2AcT/cnwdfkB4b3AnpaMyIMW6+augP57
-	w==
-X-Google-Smtp-Source: AGHT+IHymgYqf5Be4dPgTGavXNkdAqtCHlNw8IloAmJ/sAoTV++LmztnNSzx86sJhSRZfMqHeXmmwb/R6uZnNJhr5Ts=
-X-Received: by 2002:a05:6000:4712:b0:3b4:9721:2b13 with SMTP id
- ffacd0b85a97d-3b5e450988cmr2292725f8f.14.1752070796982; Wed, 09 Jul 2025
- 07:19:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glCiv403"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB73C4CEEF;
+	Wed,  9 Jul 2025 15:11:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752073910;
+	bh=HN/A+MnroCUkLAvblyMBj2F9v7tw8Kej5OqPbBp4+5w=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=glCiv403F5rktJnGzHeOLi35qbzOXC40V3Bt3ZbXLJj5KMApYDL87/1saKM8rDryo
+	 ZmGo9QH6jEtVAbkSNqkS9Wn6/F/QeEQg9x8diUdyOyG7u4BLwVqa4ZEdZUN7IgcxTV
+	 Aqjb1dYD8DDR0Fe/PFEPKHPL1mluYY/vYAKtsR2D+CPhNEFq/Cj5vlZXzDcDeEM/Gn
+	 NlvgfreGuDTi9d2ORL08O7OiYNeabvSjHbDCZa1FoR415hmorvLUXpRIeqb2RT9s6W
+	 mQjJq3zmIiqXSgY7L++FNrD5z1EUA7moqDwtLxW+OLiW8v9KysSqhBmPo3pIqrZfiz
+	 JXMM5D+pWy6wg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
+  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
+ Lossin"
+ <lossin@kernel.org>,  "Trevor Gross" <tmgross@umich.edu>,  "Danilo
+ Krummrich" <dakr@kernel.org>,  "Jens Axboe" <axboe@kernel.dk>,
+  <linux-block@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 02/14] rust: str: introduce `BorrowFormatter`
+In-Reply-To: <aG5rTNGn_NbnCISe@google.com> (Alice Ryhl's message of "Wed, 09
+	Jul 2025 13:14:52 +0000")
+References: <20250708-rnull-up-v6-16-v2-0-ab93c0ff429b@kernel.org>
+	<20250708-rnull-up-v6-16-v2-2-ab93c0ff429b@kernel.org>
+	<zr4gYI-Z4wTdXvcQMqGuUgU5Z47a3b4VgVtckO7APEwzIfvLTQzn7I92gu-bBhnNylJHkiPgTSCdIxhWNUZxzw==@protonmail.internalid>
+	<aG5rTNGn_NbnCISe@google.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Wed, 09 Jul 2025 17:11:40 +0200
+Message-ID: <87wm8hjt5f.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709-device-as-ref-v1-1-ebf7059ffa9c@google.com> <DB7KZXKOP5F0.1RMMCBJNR43KO@kernel.org>
-In-Reply-To: <DB7KZXKOP5F0.1RMMCBJNR43KO@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 9 Jul 2025 16:19:45 +0200
-X-Gm-Features: Ac12FXzkjhW6iD-XDuQYdQEQJTvTDaPwURvqNJ0qQ1PU5t7-VlkiVmA2ozb6b7I
-Message-ID: <CAH5fLghf1zwmR_hLVAxYU0khmeTGEejTL8qE_BaF3d-Ncg3HAg@mail.gmail.com>
-Subject: Re: [PATCH] drm: rust: rename Device::as_ref() to Device::from_raw()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Thomas Gleixner <tglx@linutronix.de>, 
-	Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Wed, Jul 9, 2025 at 4:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
+"Alice Ryhl" <aliceryhl@google.com> writes:
+
+> On Tue, Jul 08, 2025 at 09:44:57PM +0200, Andreas Hindborg wrote:
+>> Add `BorrowFormatter`, a formatter that writes to an array or slice buffer.
+>> This formatter is backed by the existing `Formatter`.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-> On Wed Jul 9, 2025 at 3:53 PM CEST, Alice Ryhl wrote:
-> > The prefix as_* should not be used for a constructor. Constructors
-> > usually use the prefix from_* instead.
-> >
-> > Some prior art in the stdlib: Box::from_raw, CString::from_raw,
-> > Rc::from_raw, Arc::from_raw, Waker::from_raw, File::from_raw_fd.
-> >
-> > There is also prior art in the kernel crate: cpufreq::Policy::from_raw,
-> > fs::File::from_raw_file, Kuid::from_raw, ARef::from_raw,
-> > SeqFile::from_raw, VmaNew::from_raw, Io::from_raw.
-> >
-> > Link: https://lore.kernel.org/r/aCZYcs6Aj-cz81qs@pollux
->
-> I think the link you actually wanted to refer to is probably [1]. :)
->
-> [1] https://lore.kernel.org/all/aCd8D5IA0RXZvtcv@pollux/
+> I don't think we need a separate BorrowFormatter. We can instead add a
+> lifetime to Formatter and give it a safe constructor from a mutable
+> slice.
 
-I can update.
+Ah, good idea.
 
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> Can you please split this patch up in one for the DRM renames, i.e. drm::=
-Device,
-> gem::Object and drm::File, and one for device::Device?
 
-Sure I will split into two patches.
+Best regards,
+Andreas Hindborg
 
-Alice
+
+
