@@ -1,269 +1,222 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4271F63D9;
-	Wed,  9 Jul 2025 19:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752087743; cv=fail; b=d2EsEc42yrSe2L3ryQjlltApQkJ64sspzwgs4s0RsJbPmtsUxRGY9cmIQ6//BcvPDAIReLLHIs/bfcKBwlnF0boxapuywftIiQCbUQO2n4Oiymm+3SXW0w/YjpT/IcdCvAeDFifPVzlup7qSuxIYInOG4prhPagBbTtq5m2l7+4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752087743; c=relaxed/simple;
-	bh=clnCS9UX7fYod/Kg+U28kHexLELDUrlZT9wCT7RIhvc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Nnyb480MN9LLMInMgJL6mjAbsWEg4NQyrKWIhD+sOeD/81UbZa2zAO5Ekp4NfKbwUXDSp3JLu74Hv1jlio5g6bG3WQepO5aZHJiF2VoFBfz3UwSgJksZEfAY4/ZwzudK5kO2y9lsOYSqleY1FAJN6wYYEoVufOLhuNGEA+O5R2I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=fe2kVKR5; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=NrPxdmJT; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FBC23ED63
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 19:09:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752088188; cv=none; b=KpiBVEEd5/XvBxO8+5ZhOr8UeQbDAElEjZrmWHZ/A0tdVEHaWgE7nc4WkI09/e8JeL9WtM9JKrwuo85h2g/qoY/9SJQHFl1SUDov+I/MNaSX1YBUCB7/HVKrXq9H5y6FXGWTo6ZzhvPBU86r2N+EXNN650dkVTyl7tqlpbE6oIM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752088188; c=relaxed/simple;
+	bh=RQ6WlSJ5huRIlq7brHPoei5H/RzfutY8mWggxP7frgc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZyFtWhn1LiauGD0sE9HE0YtQDdMb+i0ZKq+dEB56GJBBLeny5joF2xpWK2OaEBcaPrz8FPFkJ+s7m7VbF+jakg4N9gRhfMnyKRR/XVN0MtW3WmThPgQ6TLoUBq9dJ3k9Q/r8e2Cgna5Ct5NWyozSNV+nEGbgGcZ5Q39pcIihNws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3vd2pBn2; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="fe2kVKR5";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="NrPxdmJT"
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 569Hr08A027471;
-	Wed, 9 Jul 2025 19:01:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=qYZgN44GQnwUdZsJEV
-	ghUrdeIGFsL6Xvd0j5qTmEfKM=; b=fe2kVKR5dg4jTTHBIiOeB+QmcaIId5l3p4
-	A9w4nM884eEIA69OoZmpkDvZcya+QlyDrAkgHG/vm6E9z1Fp99UkcpxhxD2U7gGF
-	+oQTNsVAPy7bzF1gYRslnTc/Mcp877fpNROviElJPPPzABCImHXnwDjZQ+XCS97D
-	d3eqofRXaDvyrVtwXD9bSlIY1GCCsJ8rnfWftUQEebcE0bwPoMObpc8zC6gdvLQy
-	CR09tfvwFYZq8gVs9+oryX0gKzGXpr0shqu2EQAr/y0iRGq1wJX+rxriI03t6/LG
-	Yf3zb6KfdtSsdpPut6lheNpYHX/Zf5TNJ1ueiS8jsekNZ4orVGZg==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47sw6t04jy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 09 Jul 2025 19:01:48 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 569HKqZ4013978;
-	Wed, 9 Jul 2025 19:01:47 GMT
-Received: from cy4pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11010062.outbound.protection.outlook.com [40.93.198.62])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 47ptgbc5bm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 09 Jul 2025 19:01:47 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fePU1I17Y/JwpVY1JO4lpxM4PLoA1oi1St8YiAvNXeIaMZhX18gbocS68wkgEe7Zi0ooEmKrtcRDDtjeLvu8Hjv6qnaX/bThez6sPsZwNOMbn1bOAvrLZC20fBPu+02uNHPAQu8195/52M+e+19lwXHbi7qdXDdQgTiow53GDVRXOjR7Bj3nbE9GBFiWEoMncrby4480oSN0dyt3XaEZ5ri8MjTkdnjEsAgVRDIdUXFW4awNF25MYxYtMR6XqFHDK1IFzKA2VH0PKbc/0/CV4xv78bwQLUqKKb6+VouYR47Syaq9l6K/xdW3ogLoBwPoBaqPXh+gWZHdvl2i5y0mcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qYZgN44GQnwUdZsJEVghUrdeIGFsL6Xvd0j5qTmEfKM=;
- b=F9MBS+UM7A8d+5CHsI5CrWzkJDNhSVQ6mZJM2nN/Q3kRUjzxoDih/i/2mXTdUgLL/tMzHcK+Y2pMO4f7UEUmFCiKm0jr8HDbMoYeYx+zwj8PSKVeDjFkSfkYRVK7EwPIH9ihOCYroAZA3FCevxjqy9bWASj0Y+X3XNMqxLhJKFteGBAzF3gAZw9X4fn8XWq2ElDdyuLpMaDUaY5c0c2zjdBaWD8e86dRXbnkvLjIjX5unfAqJbeWVN20N7kbDKb964RUBqyhqQMRsORG/1ZOZ+Y24EGnxU/b88ar+nW0gum2wPWvihTk5QAvxZm+1abMAadhgbPlZ5Z0CoT9fYBZ0w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3vd2pBn2"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-748d96b974cso135380b3a.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 12:09:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qYZgN44GQnwUdZsJEVghUrdeIGFsL6Xvd0j5qTmEfKM=;
- b=NrPxdmJTje1wB+rzGynFn6+n4H9wxfLAUBQbDzesptUsaE6JHJnUwEGElYjU2fIVQ4bHWK1iCcghBbLJVZNOfQI6/AvhsWavjGevScb1JZ51dXCJj20RVa4QWE51mRshUuxM9lAMeMnWgqvReDKEBTqNcVzSm0xzIABD9j29qc0=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by MN0PR10MB5936.namprd10.prod.outlook.com (2603:10b6:208:3cc::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.27; Wed, 9 Jul
- 2025 19:01:43 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::75a8:21cc:f343:f68c%6]) with mapi id 15.20.8880.015; Wed, 9 Jul 2025
- 19:01:43 +0000
-Date: Wed, 9 Jul 2025 15:01:39 -0400
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
-        linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-        Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        linux-bcachefs@vger.kernel.org, bpf@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in
- vrealloc
-Message-ID: <nsacpwgldqdidsqkqalxdhwptikk7srnhjncmjaulnzcf6nsmu@fisb5w4aamhl>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	linux-bcachefs@vger.kernel.org, bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172416.1031970-1-vitaly.wool@konsulko.se>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250709172416.1031970-1-vitaly.wool@konsulko.se>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT4P288CA0028.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d3::14) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=google.com; s=20230601; t=1752088185; x=1752692985; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VNAElYoeZ//XwlLTtUYFDMEB3pxtENpE+6ocThKiP9w=;
+        b=3vd2pBn2uR4acd+cSpjq/Axo39svtf0JX4/vwIiL9i42Dod39UFi8sBu/dip+4rZIh
+         yKyl7UTnTIzFAToF2lc4FVIsJD6Hyq/iyEye2JMGt9vZ7P+i5dC1Gx+EpA4qsPAF3QKa
+         zxXqy7XdzgjyYd7rq6awAj07xtsDduT6JkrobVHBjGau37UXf6N1yDzMww20iEUleQ8/
+         rLkmYGnPA68dYsU0JetCAfwpG7K8LYk359DTBj2g7IsJ1wn1uSae257jN35gAHn82QcC
+         GtHq+SZnjULeWJ/e9x7EQdo8iKJroHrFv/+EREJjOcA/TFnlinqkfnNVeNcFwl57DBdO
+         ACyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752088185; x=1752692985;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VNAElYoeZ//XwlLTtUYFDMEB3pxtENpE+6ocThKiP9w=;
+        b=FNey/eE3wk26j3wOFEhKvYMsmH3EEBl4FfTnUF78LqWNdtpDlsSorb3+dLX06cp8nC
+         yYgF3BEPDhR2LKMbudZoyEfwv+iG+p85a+LveQr1vSP+LDq42tuRyFMgAms0FXeXs4YI
+         Ni/xpENSkHIn4W9JQmzogBFbOKR2NhFNGyzhCj+Dq91pQSVU1C0cSqGnEUEsYut+0+Vv
+         mZPTdB2HGUeAZpML6BBYbGDR8uV1KqFueSbedqUw/Uo7TRA49lKdNrhtILnIqQmn5uID
+         zDoCS7rQUeEF0wQiDEbO0yWt9+MjTKe8pim4jxZR/XAyMp9esgsBjSCshMNsr/VKUwI6
+         COmw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+p0iErly5CpzBo5O6MgCDkNAAQq6ZzRTMFZXjWdFj4EUBsC8kGkpcSgXhjOfj0W1Jvh8hdNeAsCy1Dpu3sA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeISdKCQ54CLPIosysqEZCHcrOYXRziq7qOYsjZRPzmHZd23IR
+	78i9fcT/xW9yCoW/iJMXIXxBxHIuAe9uX0aRv+7bZn9g+U3gQ/tjbGz/CWaQLgJTSwpASjh7duS
+	hR+TbVCddbA==
+X-Google-Smtp-Source: AGHT+IE5vRO3Q3eFARbezu5DXeGqmMT1wM6O0/smswHpoXmYxUGOFfc7aAnR8SkyJrPWJdB98kY2RQmYgCJS
+X-Received: from pfbg22.prod.google.com ([2002:a05:6a00:ae16:b0:746:2d8f:cac1])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4516:b0:74e:ab26:aa81
+ with SMTP id d2e1a72fcca58-74eab26ad4dmr4449406b3a.13.1752088184824; Wed, 09
+ Jul 2025 12:09:44 -0700 (PDT)
+Date: Wed, 09 Jul 2025 19:09:27 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|MN0PR10MB5936:EE_
-X-MS-Office365-Filtering-Correlation-Id: 93f99ea3-1cd2-498a-ec55-08ddbf1b0b86
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Cx4/3QWDVucwohpg70/m4U6bhkFVdST2/IZwipN4hf5pjqOaU0qZS6ulSyaw?=
- =?us-ascii?Q?69QA3yLtvYGb/hku9zuEfJM7YzrSEkVrxB36AIF41+JpV8rIvOOLc/GPQfh8?=
- =?us-ascii?Q?Eu76y66G2IUoM4cFCdicGqPUDHx0D+oCd9lL/Z2XH4nzy8vtuEoyQhyNtVmg?=
- =?us-ascii?Q?jR7o5v5D1HBthvIDarv+rAqBfoGW2ryWqNtLbqoz1EEBJcW2risaGNTEuPO5?=
- =?us-ascii?Q?RNGoPzYTYnG4V9Q9a8RZOsyrWyDtDBMWgmMZHjajvCETmhDj6mTwcBtD1T9J?=
- =?us-ascii?Q?TgAQm7e/LoeCUmJfbEnNzIYm+EWwnh+GeCeQyYgB75U/mMon1kNbQu/V2Q/P?=
- =?us-ascii?Q?2Msn4Y3x4TG7mkDlf0P4Gj8guVkeW0jysBdiD7gMw+dMVw1w2dt0ukEvtmCV?=
- =?us-ascii?Q?KN+b2Y0cmu1OD7r3crOtBSw+WQTNTWgbvxKC6Lg4PrLgvdAv/BfMFspG3H22?=
- =?us-ascii?Q?oeMgQyYbEZb0HEhRqUJMKkCqVuVMgmb5sJgdcTPGxidSIBGj+T4X90p5BiYb?=
- =?us-ascii?Q?EqfGwXIdY5H2qzbh8SW6TviGbiEUxKjw/w9N/qlqtWEdLskGcLF7ZuOno+o6?=
- =?us-ascii?Q?nUZ13qL/9FvHWFyIp+F7kmM8y9dRVRiJWtTytCuS6p4GfswMpIJVfdJXKGep?=
- =?us-ascii?Q?HlLr8YIPUhG7F/THv+2mQMEUWj/8briiUExaKmfIy/vOMvCCUQZKMp49WQzq?=
- =?us-ascii?Q?vPG+79qA4oBVwuw9No2QyZmg8PfQ0c8VpZ9nWFIL8cG89E2Wg9gPF7/dmT/G?=
- =?us-ascii?Q?h+v3B4f+9aexHGyNoJrqdyNijcdT82qZ5Fb/kQZVrNXXS7h2n7E7hA3NJ6/T?=
- =?us-ascii?Q?QBMk4UO9lY+m4uI4UPnSThHKMZ1B5UCGMjx1ZbzqnPmpp6XN68WclIw8IdBx?=
- =?us-ascii?Q?tE6jz5ZcO1XkkISVxQ0BFbVfmiYP3TCThTuki0BFEm/MwYtoG/4QhG7V5+rq?=
- =?us-ascii?Q?VPwst6Gk3AB7SHK+z5+UJT4vJms7wkRS8zOO/lJ0JmsJT0uvcY96vxb9QFW5?=
- =?us-ascii?Q?iQuPseEVTrVJ8vqt6mMG/U0HJPFlsWaQGgKJrogBMnNFLJfjIsn44FYnL24A?=
- =?us-ascii?Q?eS49nB3jZFJenrm/WPE/OdNyL4x1cf89D/R66fLYjQi+0t/hfT4M1v9Ois9V?=
- =?us-ascii?Q?8dy8R7KPBWONezvA2/u4edl/5URuTnC1UIohRUoJlsXC+z6HmWTCf++R4hQH?=
- =?us-ascii?Q?4Kw10wrjKuj1+A64kCMr8tGLc4fuE5aiMZ3qp/RTG8dEWfR9tIPAhi+KUtL1?=
- =?us-ascii?Q?5vocSu6H6qwYo+dnLMxoL7qLqBVo9VlFvGGtg7mleazbrIslPZQd/OIOyduY?=
- =?us-ascii?Q?KSaU8jmSwf3TK02el0Oky92OGClVdtU/ygR0gH3WzVkYnMXw8hUO57Ds0BZm?=
- =?us-ascii?Q?hGldG5gBrkzTB82tvL2jjX5XaZBiEpPewSA8w1aDq9Dv+L+uTalZNmL+7Abs?=
- =?us-ascii?Q?BsOnd310B3M=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?kNp8rc7Esc0J8J+yC0bJfPT9NzOdlaq4Xrw7g7ngRBrmjFNziDFH5w8dygnG?=
- =?us-ascii?Q?N6Iha7hR9TrU2lE919jU0gndXkR8rYFN51+J2xx/LpPYd5CTY0LJdPUCJ2iY?=
- =?us-ascii?Q?7GhPDCC1POr84XRYNdAWnBGxx14vnzzEZ5Je4hNuGROqTaPmVN26BaY4v8ek?=
- =?us-ascii?Q?M/LQCVaLkgOQOWjNrF2zs1/iuxFt3R8E5Lfdzne+vYXQgAu1X4ktSO+V52iS?=
- =?us-ascii?Q?XfjYxjuBlLJ8I59dHyufvh0cKh06FXqEAltwiQtuog2iNf3al/8HhCbsGbWg?=
- =?us-ascii?Q?VaRDit6/BZBK/Op8cQHhDnTsJQIdu2Xf3OR8YHnyuzgdf9UKpIhIIa6/ry5A?=
- =?us-ascii?Q?ADYdlTpcIXVlvrjDHw5WCpEcR5ZAnDx99Px+C6HXHLAUbPNnYky8t9u/uSCz?=
- =?us-ascii?Q?9KULM4GqgxF6bFm84A361R231xEnChK1hDQwykiG9tUb1rVudLg/i+wEEM3q?=
- =?us-ascii?Q?PJKBn+OdQNvVJTYtch8O+tlWMYZMmr/4OMpXuSXX3p3uMeNU47S82VL4n4kz?=
- =?us-ascii?Q?VLwbgfCTwcwYikFHT5oRqeP3PooYw2luw0DGwvM1avDzFSNndBBjuHkvxEvx?=
- =?us-ascii?Q?aL4TlRXV/4EBkrtazfpd7ObshA85z+5+zhq1g3byIyIry6r/mMGJE2OUKObW?=
- =?us-ascii?Q?KYBCmNH67eCDoSV/SxFLxanGdGVgRnOZPEiaIDZ3FGNdR4OpE9LGJq95WR0U?=
- =?us-ascii?Q?xdQ0o5ZoQbOArWJasPvmm56QFVSCM1yo5aDd2yNWYov1dD0mY0zCzrefc3U+?=
- =?us-ascii?Q?Ckk/ChgGS/5W0Usdlks3UgY8CRxdERO8tjtvzcdq/YeDlu3HQF5MG5nkeJPI?=
- =?us-ascii?Q?E4v2Q4Q5zD/qNoLtb68GDvCjg+N6px8mxaAz2XptcKLww9YzyW1hKfnhH/wK?=
- =?us-ascii?Q?+Ew8iSOZkitrjWGOX0tWdcBtJfnX6yqeJDp5a0Cwf64do30DNyOkvJuoGOuY?=
- =?us-ascii?Q?cPI3i77wBh72uX2b/6gusAzRZnYS8T8FM54IOq0UVwHkjA0set7yA7n28KF/?=
- =?us-ascii?Q?saDfjZ0VIwXtMJHtzsjHzQdFSu5QoNN9m+kFgKhJ9rZld/KA8rh0c6Q+guY1?=
- =?us-ascii?Q?cuWt00aXKLaEOdcmlRytHzGLV5s4x1jP2LPSUb2Eu7xPghLaWUnyZxt/vHyF?=
- =?us-ascii?Q?73zcqwFqgsQADfYbVRPVh/d60a3z7lz3gJmBFv3MdAnK8idflgAuVk8K9P/8?=
- =?us-ascii?Q?b3Eysuhodz6+CIO+9aiDnInWnTecMpJTrk9cI0nY+X9ckVeaYyhwSF/nY/FS?=
- =?us-ascii?Q?/FJE60spgnjO7TptYoGvqcFzqn9KYhv1igvWsC57Mk0R1IAnkp5iQU0IsArD?=
- =?us-ascii?Q?hO1MBP7n7SVMUFnshpUpANDmshPudv8YulTpU5dAdDb1IM2gpc9Y93Y820dM?=
- =?us-ascii?Q?yC72+PxN3tobWyNUlyRZBsAmjr8He0jFHUI26qai0+tuh+JO8Zi6ovfhwtSV?=
- =?us-ascii?Q?A5rKqKb2//pTgDknC5mte+haBnsrgWqY6zeRsNfTVjLEppGJuE7zvZZCitnr?=
- =?us-ascii?Q?Jj7Ohsl6kHcCyQeKvia7c/aAqmk0JYCf3sf8EjicojHK0397SqirEeqFDVij?=
- =?us-ascii?Q?b2kRB2gWPkB5sTvHyLWGlJ/ZbYaAg1DNBWzk2LEg?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	OREaKV0Okin7lN8Z9cOp206MVJ0XzE+C4RvLloGG+sgos1du9yP0xNsTLifVJ3yfqKTm0nliSL0q+KOhw3QxZUNkHFr7Tz9FcJfmV0VxqTKhzTRNWWvFRETsuCexfiQYeNkSe0UM493KOLkgqWuo+LNetjkFtuaP5LdVzcJn0LdZWApX1IEzHgYKTo9tuYOI28vw34JIc9VEa2yLpYP5GNI/BlrkRQFnxq+Gx1XLbHHzE5b//ULXoSUZXUFjhhJTynW6eOdwI77DbPEd/po8CaJsOnvEQMspOqqc0EuSiGcul6xqyhzHu1WVjq9MNN55x7IMkx3ZjIHNtkBOVxG4zciQ11XnP1tUUmN4uLro+dMecmfR8TYFC/Y81JfxOVGLK/7XI3cL69p3c+Tmy5BBjDnyGnWgs5X5Zhd4D7EC6tWCHP+tPgBeYvdJTnTAukrEBBl3LjKJeK66eqFC6F9cX3dfI4Uysqd8CqQkRqGj5F0c1HkacrcWSNckTrkJ5nbZPXTCfD+VrRFmsnK7pkuoIuKy93LQdsN0lWMiXV6wVUTZGMEIdr77c2Wshr+gi4KH6P2SCDvB4+vwmZ/jut691RFy9brQx7lkxxjjavJwaX8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 93f99ea3-1cd2-498a-ec55-08ddbf1b0b86
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2025 19:01:43.6442
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NerYdokQLN4UfC5tTDTwaaUegeqJOVZxfiyHobk2hQzY1VTAPST2TsWjqtsGJEp3BmG1/QlS83iU/lHFQv7wbA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR10MB5936
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-09_04,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2505160000 definitions=main-2507090170
-X-Authority-Analysis: v=2.4 cv=UPvdHDfy c=1 sm=1 tr=0 ts=686ebc9c b=1 cx=c_pps a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=pGLkceISAAAA:8 a=A0BLgDPCf4KvOeyUQaQA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:12058
-X-Proofpoint-ORIG-GUID: L5TZXIR4L8ppaL8Eihf4F7JpEdCgKl6t
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA5MDE3MCBTYWx0ZWRfX9iyi79QyMGP+ RgoyxugBatwQhUF0BCqkZFwNibXA9JmDSvQg6SDEdka1sth3vbvNDoMbHyHpb4m8I06TnVIWEMV SxhGfzsA7Wf5rydKbzHWzqgiGDD+BzWWrr/cxT90sSlhpacprfWpABNQGlLNfMarUGKDBjcHZbF
- /aOmFAUf0Q4JrMdIL7Ome3/jhb8YLrE89vect6LFcV5JiZg+YwPL0+thgc8/ejflb1GtL+CaEs8 uH8kX/N/8/oh0wU1tEvkoUboYaD2Xq2ABPn9zgRxPYniqhbMg+8jFkn0XKndDfnndVDElegtzGz sA286x8FowXo/OmVcZ8mUCZ9gfS9NBZb8XjC04wuy92jhngXXZQEFXgbS02n4WSwFV5pkPNofJN
- 4T4rLCjAO06rnfvG620MSUvQ2KZlRhSOCevLL6/NhrYtw/zVUNJ33A8QcAEk7bBfQyqtU2Bx
-X-Proofpoint-GUID: L5TZXIR4L8ppaL8Eihf4F7JpEdCgKl6t
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGi+bmgC/2XSy27DIBAF0F+JWJcWBvPKqv9RdcFj7CA1cQuOl
+ SrKv5ckquLgHRd0LtJozqRgTljIdnMmGedU0niowb5sSNi5w4A0xZoJMJCsA0Mj+uPQF5qPZaI
+ iRBmsRq8jJ5V8Z+zT6Vb38VnzLpVpzL+39plfb/+L7HPRzCmjyivUwWsLtn8fxnH4wtcw7sm1a
+ YaFFqzRUDWgicIaaTj4lRYPLRlvtKjaSGaU7Z1XGla6W2podFe1NsbZoAKg1istl1o2WlYt0Iq
+ A2nutcKXVQyvejH9W178hOATOPRdipfVCQ9doXbUNxgjptAO2nrlZat1oU3VQEhR2XMSOPenLf Rky/hzrSk33jSDeFaT1fZ+m7SbmNGOuMePb4kwPeJpqweUPVyqay5sCAAA=
+X-Change-Id: 20250428-debugfs-rust-3cd5c97eb7d1
+X-Developer-Key: i=mmaurer@google.com; a=ed25519; pk=2Ezhl7+fEjTOMVFpplDeak2AdQ8cjJieLRVJdNzrW+E=
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1752088183; l=5227;
+ i=mmaurer@google.com; s=20250429; h=from:subject:message-id;
+ bh=RQ6WlSJ5huRIlq7brHPoei5H/RzfutY8mWggxP7frgc=; b=MCsonrHNemnUNxWIXxJtxnYsrLWXWN1R7U6v6Oqy0JmnTY2cMPbO+6bbH+DVG/WO6kIMqCs3R
+ ct5ADTZYEgjAPOW+J0PQtCvV1QPKycKZlmHZP7Bv1Sg2DJb6go6+r9W
+X-Mailer: b4 0.14.2
+Message-ID: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
+Subject: [PATCH v9 0/5] rust: DebugFS Bindings
+From: Matthew Maurer <mmaurer@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Timur Tabi <ttabi@nvidia.com>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-* Vitaly Wool <vitaly.wool@konsulko.se> [250709 13:24]:
-> Reimplement vrealloc() to be able to set node and alignment should
-> a user need to do so. Rename the function to vrealloc_node_align()
-> to better match what it actually does now and introduce macros for
-> vrealloc() and friends for backward compatibility.
-> 
-> With that change we also provide the ability for the Rust part of
-> the kernel to set node and alignment in its allocations.
-> 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  include/linux/vmalloc.h | 12 +++++++++---
->  mm/nommu.c              |  3 ++-
->  mm/vmalloc.c            | 31 ++++++++++++++++++++++++++-----
->  3 files changed, 37 insertions(+), 9 deletions(-)
-> 
-...
+This series provides safe DebugFS bindings for Rust, with a sample
+module using them.
 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 6dbcdceecae1..03dd06097b25 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4089,19 +4089,31 @@ void *vzalloc_node_noprof(unsigned long size, int node)
->  EXPORT_SYMBOL(vzalloc_node_noprof);
->  
->  /**
-> - * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
-> + * vrealloc_node_align_noprof - reallocate virtually contiguous memory; contents
-> + * remain unchanged
->   * @p: object to reallocate memory for
->   * @size: the size to reallocate
-> + * @align: requested alignment
->   * @flags: the flags for the page level allocator
-> + * @nid: node number of the target node
-> + *
-> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). If @size is
-> + * 0 and @p is not a %NULL pointer, the object pointed to is freed.
->   *
-> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
-> - * @p is not a %NULL pointer, the object pointed to is freed.
-> + * if @nid is not NUMA_NO_NODE, this function will try to allocate memory on
-> + * the given node. If reallocation is not necessary (e. g. the new size is less
-> + * than the current allocated size), the current allocation will be preserved
-> + * unless __GFP_THISNODE is set. In the latter case a new allocation on the
-> + * requested node will be attempted.
+Example interaction with the sample driver:
+~ # mount -t debugfs debugfs /debug
+~ # cat /debug/sample_debugfs/*
+"sample-debugfs"
+0
+0
+Inner { x: 3, y: 10 }
+~ # cat /debug/sample_debugfs/inc_counter
+1
+~ # cat /debug/sample_debugfs/inc_counter
+2
+~ # cat /debug/sample_debugfs/inc_counter
+3
+~ # cat /debug/sample_debugfs/*
+"sample-debugfs"
+4
+4
+Inner { x: 3, y: 10 }
+~ # cat /debug/sample_control/swap
+Swapped!
+~ # cat /debug/sample_debugfs/*
+"sample-debugfs"
+5
+5
+Inner { x: 10, y: 3 }
+~ # cat /debug/sample_control/add_counter 
+Counter added!
+~ # cat /debug/sample_debugfs/*
+"sample-debugfs"
+6
+6
+Inner { x: 16, y: 3 }
+~ # 
 
-I am having a very hard time understanding what you mean here.  What is
-the latter case?
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+Changes in v9:
+- Switched to `PinInit` backing instead of `ForeignOwnable`
+- Changed sample to be a platform driver
+- Exported a static property
+- Demonstrated runtime mutation in platform driver (`inc_counter`)
+- Demonstrated how driver code would interact with data structures
+  exported through DebugFS (`Wrapper`)
+- Link to v8: https://lore.kernel.org/r/20250627-debugfs-rust-v8-0-c6526e413d40@google.com
 
-If @nis is !NUMA_NO_NODE, the allocation will be attempted on the given
-node.  Then things sort of get confusing.  What is the latter case?
+Changes in v8:
+- Switched from casts to `core::from_{ref, mut}` in type change
+- Link to v7: https://lore.kernel.org/r/20250624-debugfs-rust-v7-0-9c8835a7a20f@google.com
 
->   *
->   * If __GFP_ZERO logic is requested, callers must ensure that, starting with the
->   * initial memory allocation, every subsequent call to this API for the same
->   * memory allocation is flagged with __GFP_ZERO. Otherwise, it is possible that
->   * __GFP_ZERO is not fully honored by this API.
->   *
-> + * If the requested alignment is bigger than the one the *existing* allocation
-> + * has, this function will fail.
-> + *
+Changes in v7:
+- Rewrote `entry::Entry` -> `Entry`
+- Use `c_int` and `c_void` from kernel prelude rather than core
+- Removed unnecessary `display_open` cast
+- Switched from `Deref` + an explicit box to `ForeignOwnable` for
+  attaching owned data.
+- Made `&'static` and `&'static mut` implement `ForeignOwnable`
+- Swapped "driver" to "module" in sample code
+- Link to v6: https://lore.kernel.org/r/20250618-debugfs-rust-v6-0-72cae211b133@google.com
 
-It might be better to say something like:
-Requesting an alignment that is bigger than the alignment of the
-*existing* allocation will fail.
+Changes in v6:
+- Replaced explicit lifetimes with children keeping their parents alive.
+- Added support for attaching owned data.
+- Removed recomendation to only keep root handles and handles you want
+  to delete around.
+- Refactored some code into separate files to improve clarity.
+- Link to v5: https://lore.kernel.org/r/20250505-debugfs-rust-v5-0-3e93ce7bb76e@google.com
 
-...
+Changes in v5:
+- Made Dir + File wrappers around Entry
+- All functions return owning handles. To discard without drop, use
+  `forget`. To keep a handle without drop, use `ManuallyDrop`.
+- Fixed bugs around `not(CONFIG_DEBUG_FS)`
+- Removed unnecessary `addr_of!`
+- Link to v4: https://lore.kernel.org/r/20250502-debugfs-rust-v4-0-788a9c6c2e77@google.com
 
-Thanks,
-Liam
+Changes in v4:
+- Remove SubDir, replace with type-level constant.
+- Add lifetime to Dir to prevent subdirectories and files from outliving
+  their parents and triggering an Oops when accessed.
+- Split unsafe blocks with two calls into two blocks
+- Access `private` field through direct pointer dereference, avoiding
+  creation of a reference to it.
+- Notably not changed - owning/non-owning handle defaults. The best read
+  I had from the thread was to continue with this mode, but I'm willing
+  to change if need be.
+- Comment changes
+  - More comment markdown
+  - Remove scopes from examples
+  - Put `as_ptr` properties into a `# Guarantees` section.
+- Link to v3: https://lore.kernel.org/r/20250501-debugfs-rust-v3-0-850869fab672@google.com
+
+Changes in v3:
+- Split `Dir` into `Dir`/`SubDir`/`File` to improve API.
+- Add "." to end of all comments.
+- Convert INVARIANT to # Invariants on types.
+- Add backticks everywhere I found variables/types in my comments.
+- Promoted invariant comment to doc comment.
+- Extended sample commenting to make it clearer what is happening.
+- Link to v2: https://lore.kernel.org/r/20250430-debugfs-rust-v2-0-2e8d3985812b@google.com
+
+Changes in v2:
+- Drop support for builder / pinned bindings in initial series
+- Remove `ARef` usage to abstract the dentry nature of handles
+- Remove error handling to discourage users from caring whether DebugFS
+  is enabled.
+- Support CONFIG_DEBUG_FS=n while leaving the API available
+- Fixed mistaken decimal/octal mixup
+- Doc/comment cleanup
+- Link to v1: https://lore.kernel.org/r/20250429-debugfs-rust-v1-0-6b6e7cb7929f@google.com
+
+---
+Matthew Maurer (5):
+      rust: debugfs: Bind DebugFS directory creation
+      rust: debugfs: Bind file creation for long-lived Display
+      rust: debugfs: Support `PinInit` backing for `File`s.
+      rust: debugfs: Support format hooks
+      rust: samples: Add debugfs sample
+
+ MAINTAINERS                         |   3 +
+ rust/bindings/bindings_helper.h     |   1 +
+ rust/kernel/debugfs.rs              | 286 ++++++++++++++++++++++++++++++++++++
+ rust/kernel/debugfs/display_file.rs | 100 +++++++++++++
+ rust/kernel/debugfs/entry.rs        |  66 +++++++++
+ rust/kernel/lib.rs                  |   1 +
+ samples/rust/Kconfig                |  11 ++
+ samples/rust/Makefile               |   1 +
+ samples/rust/rust_debugfs.rs        | 182 +++++++++++++++++++++++
+ 9 files changed, 651 insertions(+)
+---
+base-commit: 6d16cd5769bbb5eb62974e8eddb97fca830b49fd
+change-id: 20250428-debugfs-rust-3cd5c97eb7d1
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
