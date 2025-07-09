@@ -1,65 +1,65 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2036A2DE20E
-	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 13:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C852E3AF9
+	for <rust-for-linux@vger.kernel.org>; Wed,  9 Jul 2025 13:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752067584; cv=none; b=FbW0fqIhpbEl9HeLdNDRhEK+DivGf64dIdlet57/FeQ2jErAC/SNlfi2HOFUFFSwWRk2R6E2Eb7o7RAvnSExvNT79hvSPLe5xxLBMvn52Xsy7GSgaWFU79Qbj86/hwz6cedKQUteNhLy6COwtkLKVah9sJB4l7mzZ0FxuZJRwm4=
+	t=1752067595; cv=none; b=GzVK0+YN4+4WMBolDiErlyQlcUlQOy/8oHAiHeQPWIHvzKyL1Shysy5UOaK4HOL8xHnbx6kgDbRd8zakA/RP0vOYvYghvzB2hNf6F095Dhwy6aLfW5LMaI0reqKxhrOT+F+QJ4+9eBSanMtw19Kf+en3YQCeVRMAsxRIpi+DsEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752067584; c=relaxed/simple;
-	bh=EpIPSnFL3zxtw4E9KyJjVoSQ5FEr+FAlGgdFcHUVawA=;
+	s=arc-20240116; t=1752067595; c=relaxed/simple;
+	bh=Mwk7EQIGinazovFKy6rm1e4ck2Eb4n2+egCG14FKWyk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mUdVTAtVVuq41o34gqX/yiKmWSn594wcMK3+Dsf1sC9ASJJb/rcaH0xHRdMYNW9V4C31o8c2CBU3UqIN8ON3sIFiwOx3cAMFawCoS/xFCCOXcVjzIO7hd5emTmoPfIiROI7qUfnZ0vmlzv+tCJPnthQ+/yngO4Y18RlItVj8ojo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hdfwN97u; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=FpiYbR9UueDn9uVAHHWnJBjZlMoYjcOsFAne8rkw63EcqSkJm1QJdFd9sn0oO1qxCCKunGNK+OdKQ/8Ksz5/zyp7xkk9vnc6C84cvcgZI+sfwZvyxXXhbyeXuhIxR2sJTgAYnDpp/QZbMT0svoaTlr5IR3xlzSFxTL7+Lp22fLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CTlApoUm; arc=none smtp.client-ip=209.85.208.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hdfwN97u"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4536962204aso24066385e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 06:26:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CTlApoUm"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-606f507ede7so6044468a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 09 Jul 2025 06:26:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752067580; x=1752672380; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752067592; x=1752672392; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/2XZ5Qh0Y8/xBI8hFk5wtj+oH/ehg5gQNl0hSLZ7V4U=;
-        b=hdfwN97ueykNPqM9h7gIbIpwras/T9IxChYMMHvdZLmjnZU0Fj/Cz61jMSuuzwxPfU
-         PhzeQpzO+B+jVYmC/l+KksYF0PEhbTVBK8S0gCoz7Mi6eT/njDRjYB2oiM5n+1+o4NQu
-         QupOVJrgqdlm7k7RBxjh54/wzOcG6zpe+3VhH0c1iJxBCHzyZhWyROUPO7Cs/tAz15vO
-         44LziQSzP+gVT+Gtm5GVKJcJ1aTaLieYAulRzg/LNGyQ6vFuPthUGdwqeULWDijSNmBf
-         DW8UvLd0LBXD8znDbHnNDPZXkDYMjFDJRFq74FGCeFXDYMbi32CSTx5J1XFShtXkaU8G
-         VA6Q==
+        bh=d+AWzaFX7X0IoBwJtsGal3/qiXcwEGzW/IG/WeYHir0=;
+        b=CTlApoUmOKxj0bnZRcmHuqd9PXPCyOvRc1Cdd4WlPCnpAbYxXhEAmTylbHbRKFRBlC
+         PziBAEioJlRmuudj9E27szrRL2r3jM0ktGUMEDBBcxoCkM2uACLV37v7++A2q1R1pWFw
+         XUcyEqkKO/0MoDbAyq4uGUn2aMq6uoulrqRq30HqwlhCGOw2BLt2dlycxhS3Vrj7HZRY
+         jZQsJMFnqz+FBO7jyPByP4xPO60pgS/UXnFH3VVBlhU9+CYTGbQ1Rm9MOC9Vmfrhobdm
+         HXQgFqI7D3ejfO1qxooNu2Uv1SIhpE28s34sT4tu6VS5szpniPrXldhEQ/N/n13FIkvu
+         f4vA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752067580; x=1752672380;
+        d=1e100.net; s=20230601; t=1752067592; x=1752672392;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/2XZ5Qh0Y8/xBI8hFk5wtj+oH/ehg5gQNl0hSLZ7V4U=;
-        b=rFN46r+3yOK3Z548fQzYQXXdDPwj3+Sj6ZXHit2nvjWYvcBZZCRuNTbyArEof+aMxo
-         s+QcbDYhOy+b3Wwrw5tsIPehHZAH0S6m9S0xnNLhcS8RvnUOXY61ljmrun0OKc697iCo
-         FAIIweeiZsv+quwBX2heFQfuqQlvjkGlM4kFn+Ue2jJcJRmXhLxBBAIfOvpFdEdSkBlG
-         Bu68cB7pLp5WEqoI23lXD8g0mWot8U1voD7wy218X/53JKn0EpbaBUWl4N7DdLWXe3wy
-         HyTDJJ41/D5mhjZAOJ3SiJjo5cXA6Qp4acCpze00CAvk4t/9GGANeJAOv3AI2XCFBn6X
-         Cg1g==
-X-Forwarded-Encrypted: i=1; AJvYcCV5bBk6aKPTy/6zc9wxLZS8Dx80qsqT3xVgjpCqsv843p/KOrVU2BSb3+0s02OHhqaDLPswxcZyyq5vd3HGYw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu61KlHDTcEWdv5O6NiQXg/hYlBFhL5go0zRHLLzCVV1t0/XT4
-	/PZknWyjCfUUmsEbA21NkxBbw/WJWHVkNw8GGgAhNzGDHsZqIHmChICrSCmqhPJBCYL3TyRgZkW
-	WuWq7Ks6PiRYYVix3Mg==
-X-Google-Smtp-Source: AGHT+IF+xK3vC0GxnM5YgdFqU78a1/83sM+KndWW9pR/GYUNx+a3eu0I/KM87az6bLdBJy/RPRIBoTlPLaO8DO4=
-X-Received: from wmpz13.prod.google.com ([2002:a05:600c:a0d:b0:43c:f8ae:4d6c])
+        bh=d+AWzaFX7X0IoBwJtsGal3/qiXcwEGzW/IG/WeYHir0=;
+        b=VLPY4LbSgxr+FJ0/W+b7WNRkCdKgyCc+wWbKzPuQnyDrJmXafU0xd/xes1GnhG/hdn
+         2VFZVBhhqDmJgJpUiZNWyDL/EyAuQoibnG6ma2mqoFPJrqyuk4wsQq2CiAwiUdopT0cD
+         XsuCmiynGJ59JSudDjWppCk65ZXSEsE6gmxJhB0CCgLA1tYVvmRjaUbMi9kkTUWhdzvU
+         NmqJNSnZbLmUCSfpLf4VUtVGYcHPumq7eKV/DXLTtDFT6dNLY2TfPn1HHgOPN2sDq2aR
+         DArcTIPMuocjuu54IcQe1meKO3hEei4klvYicAoJzKBTiJjAklZ+o++RFHNz3jlRmo0c
+         soYg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2o4HuWgDA6Q4mouncMnh45+NclL2alh2Zb4j/lyeqJoUzYXek05IF6slTpiZ2MQ87AjlGNwsYm9escv8RmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzLLkp64Te2PQOgAoHVft1bB0zSJKt24Whn5vQ+iC2TygWKPjK
+	6uh6s27L+nolvFlooFNWgKwzbGd9OcuU/jaWzf5ig8MaV3oGwnfsipn7FVT/kYRBP8yPNy/ExgH
+	NW0DwVFw4O7183pWliw==
+X-Google-Smtp-Source: AGHT+IFaIoO2aQ/ITtjF6XALcWJVnX8Rw7wLdSLQbLPowQYEildPkBPfx8TmVXR/yD9aSmB3fybHDe1guOBaPfE=
+X-Received: from edbeg18.prod.google.com ([2002:a05:6402:2892:b0:60e:7792:da2b])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4287:b0:3a4:f66a:9d31 with SMTP id ffacd0b85a97d-3b5e4514e3fmr2393240f8f.16.1752067580535;
- Wed, 09 Jul 2025 06:26:20 -0700 (PDT)
-Date: Wed, 9 Jul 2025 13:26:19 +0000
-In-Reply-To: <20250708-rnull-up-v6-16-v2-4-ab93c0ff429b@kernel.org>
+ 2002:a05:6402:34d5:b0:60c:3f77:3f4e with SMTP id 4fb4d7f45d1cf-611a6e36b64mr2162510a12.22.1752067592574;
+ Wed, 09 Jul 2025 06:26:32 -0700 (PDT)
+Date: Wed, 9 Jul 2025 13:26:31 +0000
+In-Reply-To: <20250708-rnull-up-v6-16-v2-1-ab93c0ff429b@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250708-rnull-up-v6-16-v2-0-ab93c0ff429b@kernel.org> <20250708-rnull-up-v6-16-v2-4-ab93c0ff429b@kernel.org>
-Message-ID: <aG5t-1nadCfvD9uF@google.com>
-Subject: Re: [PATCH v2 04/14] rust: block: normalize imports for `gen_disk.rs`
+References: <20250708-rnull-up-v6-16-v2-0-ab93c0ff429b@kernel.org> <20250708-rnull-up-v6-16-v2-1-ab93c0ff429b@kernel.org>
+Message-ID: <aG5uB2mK5b_WaI3B@google.com>
+Subject: Re: [PATCH v2 01/14] rust: str: normalize imports in `str.rs`
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -70,9 +70,9 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jul 08, 2025 at 09:44:59PM +0200, Andreas Hindborg wrote:
-> Clean up the import statements in `gen_disk.rs` to make the code easier to
-> maintain.
+On Tue, Jul 08, 2025 at 09:44:56PM +0200, Andreas Hindborg wrote:
+> Clean up imports in `str.rs`. This makes future code manipulation more
+> manageable.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
