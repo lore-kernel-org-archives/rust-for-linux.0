@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBE7245005;
-	Thu, 10 Jul 2025 11:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A262877C1;
+	Thu, 10 Jul 2025 11:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752145706; cv=none; b=UkCqhItp32YIOzg9FyU/UFM2SM9OcMdU5ja+VsueZGEozmC9C7Z8sM4eBWbUsOvW6LRECZ0OBFvnOrCraGzU7rzyJskqJ0wZEROhw8V8PiANTFBQFGYlF1P3g/kqmF0VnuPN4Glqz/v+iRZD5lR4eXHZNjF0w9vypEHfDQ46T0Y=
+	t=1752145791; cv=none; b=kbDw3HZMJHXnieXYrgMDbNgCxuUFTeaFKb/qhwIa9RSxPFfzCcfjQ4bgy5QkGLwKYGEUHNfnkrB1ayB92f/fwgXoDQd/PgDVRbe4IAFdrEwKmxjiAflOfVvUpSZlhKOwYTfBAV0UyB8bD4BTotKgR1Nuwl4+eyRkpJWaX6ctex8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752145706; c=relaxed/simple;
-	bh=06vmJVYbLt+NdxRw+Ts2u7M9TMq+jFYPoVoc4jfx5DE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=C6tToaH9RnaG6hGP5O4dh+QA7arGBiRaWBZVDeUEa1scwSFwfTkJHNuabxD4i9jcynCSkDn2V3RzMGBTxrqlgt2y7JurjOzXOJwBPr7vOeo7MPk/d7rpixeGI5hf8BmX0z3DZefwk44gQsh9WtPlyuXpwTzWrGGyXgijg2sSlVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THu2ivw0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752145791; c=relaxed/simple;
+	bh=cyo8TvLqzhnMM+YzZI++zzXnIEvpHErhbOfzHNNWuRc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=i0mQSqPT0gSjJoAFq/bEIRtdaELI9F10YQDcQe5t38/sExOL3Er6UF1nMnAjJKdH/HNFCgi6VQk8g+mb8ptrMqxaNJAaOh9Bj4u83AK56lMHnDul36+v1RAvaRtNp68iz8iFva8wmi4LU71+avLD7VdVTJoH73IMJmFx3U5+ap4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GR8jxhjS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THu2ivw0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0C9C4CEF5;
-	Thu, 10 Jul 2025 11:08:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GR8jxhjS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7E7C4CEE3;
+	Thu, 10 Jul 2025 11:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752145705;
-	bh=06vmJVYbLt+NdxRw+Ts2u7M9TMq+jFYPoVoc4jfx5DE=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=THu2ivw0Azp6h1Coq9LNqnWIQJt2eeAuvAMfMDk/1Pl949Jy6p4pagXuo50tkjfcb
-	 MUxi3hvEJL+yzuyk5grkP1oOktMR/nXgOqEBvHCLDFdKoeEVra7ujiSmyYiUvrNrKI
-	 c5lPmrB/dYkfX9Ghbvzn+4/JDX6i5bUyhefwKKw+GkSWJ3biK/MpFBBebKaPZliXyH
-	 r8ZIiSl0c8ElnFWmxhGNCynTnWB3w7WyJ3c4Amkhp3FYoO6ZTYug0k4XA2r2OULrOQ
-	 JVAVxWs1pz0isQ6AYUImqPWmQp6N/OD7XgxNTaFlj2BbEG0wfXfnkgkLkZjm3/z7n+
-	 tqmrhcmMDsXDQ==
+	s=k20201202; t=1752145790;
+	bh=cyo8TvLqzhnMM+YzZI++zzXnIEvpHErhbOfzHNNWuRc=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=GR8jxhjS+77T7Tw/3+VKZHxuDGUV9TM886m7kNNd7K+2Ot77ZwLIIVGc4QZCI4ywl
+	 qNGJqqqNA6PQl7NEz51DdY/czTLQvp89C2Wxi++dHqDslKhlhSzXhLBLXG9o4b0MpQ
+	 5vt2pbzTvtAeAuJspiUfzO9VlSoxpRF17Fh90wKdFvA5QVPUCk3uoqisBqqmo2HIzu
+	 oCOxwjupcCSlTBtRKh9BBkiAq9Z0i/Nqqd2CLG8XCzeZzIrlrplyCKz1/rWEUap4Z1
+	 OZqLTF5y6LXajm94MYNdCve/NCPA7qluSgRUQ6GuPiNfaNt2DEXYmUYkpI6mcbzplJ
+	 RbQGk4M9z3G7Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,86 +34,84 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Jul 2025 13:08:19 +0200
-Message-Id: <DB8BTA477Z2V.1J7XFLDXHMN2S@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+Date: Thu, 10 Jul 2025 13:09:46 +0200
+Message-Id: <DB8BUDZQJOM5.2WS6MCW6I0XES@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
+Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
- Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v6 3/9] rust: sync: atomic: Add ordering annotation
- types
+ "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
+ Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v9 0/5] rust: DebugFS Bindings
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
- <linux-arch@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250710060052.11955-1-boqun.feng@gmail.com>
- <20250710060052.11955-4-boqun.feng@gmail.com>
-In-Reply-To: <20250710060052.11955-4-boqun.feng@gmail.com>
+References: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
+ <DB7US8G7ISG0.20430M3P7I0K0@kernel.org>
+ <CAGSQo01hORWAtrGaYp-_xxrAiN47JkJg=jiqnqdpw87QKzt9jg@mail.gmail.com>
+ <DB7V19QE6KFB.3MR0BAOWXT7M7@kernel.org>
+ <CAGSQo01drZoy1-j-+Y-BHHOX5AzCG4A5KiUOu5TJ40JOdfcB0g@mail.gmail.com>
+ <aG7pP1BTLQKInFrl@cassiopeiae> <2025071014-radiantly-dreamland-4017@gregkh>
+ <DB89V15HIG8C.2HL9JVKFNEDTK@kernel.org>
+In-Reply-To: <DB89V15HIG8C.2HL9JVKFNEDTK@kernel.org>
 
-On Thu Jul 10, 2025 at 8:00 AM CEST, Boqun Feng wrote:
-> Preparation for atomic primitives. Instead of a suffix like _acquire, a
-> method parameter along with the corresponding generic parameter will be
-> used to specify the ordering of an atomic operations. For example,
-> atomic load() can be defined as:
+On Thu Jul 10, 2025 at 11:36 AM CEST, Danilo Krummrich wrote:
+> On Thu Jul 10, 2025 at 7:27 AM CEST, Greg Kroah-Hartman wrote:
+>> Ugh.
+>>
+>> Yes we need write.  And read, and custom file-ops, and the like as
+>> that's what debugfs is doing today for C code!  We need this to be as
+>> simple as, or almost as simple as, what we have today in C or no one is
+>> going to use this stuff and go off and attempt to write their own mess.
 >
-> 	impl<T: ...> Atomic<T> {
-> 	    pub fn load<O: AcquireOrRelaxed>(&self, _o: O) -> T { ... }
+> I agree, we really want the helpers you're referring to below. I think we
+> discussed this in previous iterations already.
+>
+>> While I would love to have something as simple as:
+>> 	void debugfs_create_u8(const char *name, umode_t mode, struct dentry *p=
+arent, u8 *value);
+>> like we do today.  I understand that this makes all sorts of
+>> "assumptions" that Rust really doesn't like (i.e. lifetime of *value and
+>> the like), BUT we MUST have something like this for Rust users, as
+>> that's going to ensure that people actually use this api.
+>
+> I think it can be as simple as
+>
+> 	void debugfs_create_u8(const char *name, umode_t mode, struct dentry *pa=
+rent, u8 *value);
+>
+> in Rust as well. Declaring this in a structure looks like this.
+>
+> 	struct Data {
+> 	   counter: File<u8>,
 > 	}
 >
-> and acquire users would do:
+> Given that we have some Dir instance, this can be as simple as:
 >
-> 	let r =3D x.load(Acquire);
+> 	dir.create_file_u8(...);
 >
-> relaxed users:
+> Which uses default callbacks for read(), write(), etc.
 >
-> 	let r =3D x.load(Relaxed);
+>> Look at an in-kernel function today, like ath9k_init_debug() that
+>> creates a metric-ton of debugfs files and binds them to different
+>> variables that are owned by a structure and more complex data structures
+>> and memory dumps and other random file interactions.  We need, in Rust,
+>> a way to do everything that that function can do today, in a SIMPLE
+>> manner that reads just as easily as ath9k_init_debug() does.
 >
-> doing the following:
->
-> 	let r =3D x.load(Release);
->
-> will cause a compiler error.
->
-> Compared to suffixes, it's easier to tell what ordering variants an
-> operation has, and it also make it easier to unify the implementation of
-> all ordering variants in one method via generic. The `TYPE` associate
-> const is for generic function to pick up the particular implementation
-> specified by an ordering annotation.
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> That's possible with the current design and code, it misses the helpers, =
+such as
+> create_file_u8() above, to reduce the boilerplate though. With that, it s=
+hould
+> look pretty similar.
 
-One naming comment below, with that fixed:
-
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-> ---
->  rust/kernel/sync/atomic.rs          |  3 +
->  rust/kernel/sync/atomic/ordering.rs | 97 +++++++++++++++++++++++++++++
->  2 files changed, 100 insertions(+)
->  create mode 100644 rust/kernel/sync/atomic/ordering.rs
-
-> +/// The trait bound for annotating operations that support any ordering.
-> +pub trait Any: internal::Sealed {
-
-I don't like the name `Any`, how about `AnyOrdering`? Otherwise we
-should require people to write `ordering::Any` because otherwise it's
-pretty confusing.
+Can't you just implement the traits directly on `u8` and then just call
+`create_file`?
 
 ---
 Cheers,
 Benno
-
-> +    /// Describes the exact memory ordering.
-> +    const TYPE: OrderingType;
-> +}
