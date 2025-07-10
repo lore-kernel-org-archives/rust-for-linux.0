@@ -1,127 +1,220 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D95219E8D;
-	Thu, 10 Jul 2025 11:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C20524DCF8;
+	Thu, 10 Jul 2025 11:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752145892; cv=none; b=FOgnCPHbobsmX678F9S/SIitlcCDGT6XvUZs32LxtFf1aHZi6pgpqW1GygnmKG/rpHpunseeGAOTWXC5Z7dTTQgoCIBi0X2zLrE4erAfIVjoRytE7uQsKfj3Y9TdEyKQrTmrCIAuRNqE59h8IBJeXf4EIrJQeuELaCpgKTlXLhg=
+	t=1752148771; cv=none; b=sZHK+xwOWN1scZ3H1z8rAzqt3IDf5/hVHRk9TM3vTEGIOU4k4ygcrmqVbnBou6I4S6pcvy7TyxZEb8+Nv73ggkiZNnX1B46pkflD9ugNG7LIJaJgv9ZHtj/MFXeaKPFyG7VIcf1fW0/6HQyi1G1ALyUPwCmdJNu62UaSwWiPbe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752145892; c=relaxed/simple;
-	bh=TMZWOnSmjSdk9YHVst53o79sncIxUMvkU8tLCD3rYZc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=dwZ+Y5gQAxvyJhGruEUOkBAzF5JmHx9KgIJKMVbacth47hiZsstwgMrORKNmc1J4TiaDoqz+176yX1gPkft0Smppl6nsKPRniaelmDRPjh5IQ1rmhhPFyxXBLSEtWX9iwS7EYTpjN2PfZZtaLGckEpVzedVH1x+R3bhzJeuuTCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLF1Vq9K; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752148771; c=relaxed/simple;
+	bh=rsy5WZacwZWU86OvNk0YvSH3NT8R8QHi3tjqaMIzFls=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nKVageZvO7oHbdhkX0NsqDmaOAJ1ATzs6A2E1uzMoro3ZfhWTHdhC6zXPYI8QqDOlVXI0zCYWCFGQfZcKpv2Yz5G6OYwboGoIPcLANJN3huT9BovqLZIyYgdM9VBDo1u4ikbS5KasnjQHB8QF48eGVHKEggN17mj8kkzAVYeNJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIwoMnsQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLF1Vq9K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B463C4CEE3;
-	Thu, 10 Jul 2025 11:11:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIwoMnsQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C0EC4CEE3;
+	Thu, 10 Jul 2025 11:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752145892;
-	bh=TMZWOnSmjSdk9YHVst53o79sncIxUMvkU8tLCD3rYZc=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=oLF1Vq9KNmhaRndTqN690GtnqErDToecQacnKoLk7brnR9YyftnHBD3iiXOE1K7tO
-	 mVBEAmsPRtBWn+8TRpepDAMCfxgI12wEU0/iftKxkRUphKrMk96cUNP8tARwPjySGm
-	 DsjuhyQ5xd4XBEcif/2G2JFWxEoNuxoFqlXvy5O0DkAsaRD3RXHWyck2rW03oT0zHc
-	 zhlpUstnqoxrMG4SJmR9TdaACuJWDtxfSMc9cLN3ma3bamikE9dIspcR30CbnvGCYw
-	 R0/1Sj3m6GcNBl4zjVTTXrm61aP8vRQ9h9QlshbXHdzqQslcjdZr8KgSmmqb18e1uX
-	 +Y6QLk7+YVtVQ==
+	s=k20201202; t=1752148771;
+	bh=rsy5WZacwZWU86OvNk0YvSH3NT8R8QHi3tjqaMIzFls=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EIwoMnsQEQyfkRpQ8S5T5vRXNvGXOEeK7l7tXySw6Ucaz3EdZYvY+AQpJDYGSPOTF
+	 G7c7r4KwjA8ffR/6V+Zq5dG0C/I8a+fk1v+aK3nQoYB6QBjI5Ub+70vS/ToGlViDc1
+	 ZQjv4m/8jrTrFderf5/6eC6E0uMwJCVHFSzlpfhngYJb20Fds3Bo3j/iWkOJElzeYl
+	 2cpi/x4pufka+PFfeAUU7u4yRjWfxLgzWygU74Wjm7gHd9npapE9bDMTX9aYMKPA4x
+	 QiDk41QnqsQmvOubTXlBoE3OealLT7RXiDrw4KBGqoMtCX9x2bN5dQFZ42BSK2unjd
+	 +QDFlgHjlzHGA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Cc: <miguel.ojeda.sandonis@gmail.com>,  <alex.gaynor@gmail.com>,
+  <ojeda@kernel.org>,  <aliceryhl@google.com>,  <anna-maria@linutronix.de>,
+  <bjorn3_gh@protonmail.com>,  <boqun.feng@gmail.com>,  <dakr@kernel.org>,
+  <frederic@kernel.org>,  <gary@garyguo.net>,  <jstultz@google.com>,
+  <linux-kernel@vger.kernel.org>,  <lossin@kernel.org>,
+  <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
+  <sboyd@kernel.org>,  <tglx@linutronix.de>,  <tmgross@umich.edu>
+Subject: Re: [PATCH v3 0/5] rust: time: Convert hrtimer to use Instant and
+ Delta
+In-Reply-To: <87h5zstoaq.fsf@kernel.org> (Andreas Hindborg's message of "Fri,
+	04 Jul 2025 09:20:29 +0200")
+References: <94kOZwdYnRPRMO6SAHAvEFEygT4dU-njfBxTMC6BiPQ-u49pyL5hLgbLQBGOct1ruxVJPtYGJ0Dq0Ns2mh-sMQ==@protonmail.internalid>
+	<20250625.082020.1714542193051382332.fujita.tomonori@gmail.com>
+	<877c102pxs.fsf@kernel.org>
+	<ZFASmKV5PIQgMyCMtprnQhN2MklF9_-3RwUFGLemFqvv23Cm3vyKh-spm0PhKWFjc8vixGNYrAlz93Dw_ruczw==@protonmail.internalid>
+	<20250626.091248.526065656918619245.fujita.tomonori@gmail.com>
+	<87h5zstoaq.fsf@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 10 Jul 2025 13:59:17 +0200
+Message-ID: <871pqojlyi.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Jul 2025 13:11:27 +0200
-Message-Id: <DB8BVOLRNDQU.SMTSAMKQ6WVH@kernel.org>
-Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Timur
- Tabi" <ttabi@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v9 0/5] rust: DebugFS Bindings
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>
-X-Mailer: aerc 0.20.1
-References: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
- <DB7US8G7ISG0.20430M3P7I0K0@kernel.org>
- <CAGSQo01hORWAtrGaYp-_xxrAiN47JkJg=jiqnqdpw87QKzt9jg@mail.gmail.com>
- <DB7V19QE6KFB.3MR0BAOWXT7M7@kernel.org>
- <CAGSQo01drZoy1-j-+Y-BHHOX5AzCG4A5KiUOu5TJ40JOdfcB0g@mail.gmail.com>
- <aG7pP1BTLQKInFrl@cassiopeiae> <2025071014-radiantly-dreamland-4017@gregkh>
- <DB89V15HIG8C.2HL9JVKFNEDTK@kernel.org>
- <DB8BUDZQJOM5.2WS6MCW6I0XES@kernel.org>
-In-Reply-To: <DB8BUDZQJOM5.2WS6MCW6I0XES@kernel.org>
 
-On Thu Jul 10, 2025 at 1:09 PM CEST, Benno Lossin wrote:
-> On Thu Jul 10, 2025 at 11:36 AM CEST, Danilo Krummrich wrote:
->> On Thu Jul 10, 2025 at 7:27 AM CEST, Greg Kroah-Hartman wrote:
->>> Ugh.
->>>
->>> Yes we need write.  And read, and custom file-ops, and the like as
->>> that's what debugfs is doing today for C code!  We need this to be as
->>> simple as, or almost as simple as, what we have today in C or no one is
->>> going to use this stuff and go off and attempt to write their own mess.
->>
->> I agree, we really want the helpers you're referring to below. I think w=
-e
->> discussed this in previous iterations already.
->>
->>> While I would love to have something as simple as:
->>> 	void debugfs_create_u8(const char *name, umode_t mode, struct dentry *=
-parent, u8 *value);
->>> like we do today.  I understand that this makes all sorts of
->>> "assumptions" that Rust really doesn't like (i.e. lifetime of *value an=
-d
->>> the like), BUT we MUST have something like this for Rust users, as
->>> that's going to ensure that people actually use this api.
->>
->> I think it can be as simple as
->>
->> 	void debugfs_create_u8(const char *name, umode_t mode, struct dentry *p=
-arent, u8 *value);
->>
->> in Rust as well. Declaring this in a structure looks like this.
->>
->> 	struct Data {
->> 	   counter: File<u8>,
->> 	}
->>
->> Given that we have some Dir instance, this can be as simple as:
->>
->> 	dir.create_file_u8(...);
->>
->> Which uses default callbacks for read(), write(), etc.
->>
->>> Look at an in-kernel function today, like ath9k_init_debug() that
->>> creates a metric-ton of debugfs files and binds them to different
->>> variables that are owned by a structure and more complex data structure=
-s
->>> and memory dumps and other random file interactions.  We need, in Rust,
->>> a way to do everything that that function can do today, in a SIMPLE
->>> manner that reads just as easily as ath9k_init_debug() does.
->>
->> That's possible with the current design and code, it misses the helpers,=
- such as
->> create_file_u8() above, to reduce the boilerplate though. With that, it =
-should
->> look pretty similar.
+Andreas Hindborg <a.hindborg@kernel.org> writes:
+
+> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 >
-> Can't you just implement the traits directly on `u8` and then just call
-> `create_file`?
+>> On Wed, 25 Jun 2025 10:19:59 +0200
+>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>>>
+>>>> On Tue, 24 Jun 2025 21:03:24 +0200
+>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>>
+>>>>> Andreas Hindborg <a.hindborg@kernel.org> writes:
+>>>>>
+>>>>>> "FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
+>>>>>>
+>>>>>>> On Tue, 24 Jun 2025 15:11:31 +0200
+>>>>>>> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>>>>>>
+>>>>>>>>> and already introduces pain for
+>>>>>>>>> others (and likely even more pain when we need to rename it back =
+next
+>>>>>>>>> cycle), it doesn't look like a good idea to keep it.
+>>>>>>>>
+>>>>>>>> Ok, I'll drop it.
+>>>>>>>
+>>>>>>> Do you want me to send the updated hrtimer conversion patchset
+>>>>>>> (using as_* names)?
+>>>>>>
+>>>>>> No, I am just about finished fixing up the rest. You can check if it=
+ is
+>>>>>> OK when I push.
+>>>>>
+>>>>> I pushed it, please check.
+>>>>
+>>>> Thanks!
+>>>>
+>>>> The commit d9fc00dc7354 ("rust: time: Add HrTimerExpires trait") adds
+>>>> to Instant structure:
+>>>>
+>>>> +    #[inline]
+>>>> +    pub(crate) fn as_nanos(&self) -> i64 {
+>>>> +        self.inner
+>>>> +    }
+>>>>
+>>>> Would it be better to take self instead of &self?
+>>>>
+>>>> pub(crate) fn as_nanos(self) -> i64 {
+>>>>
+>>>> Because the as_nanos method on the Delta struct takes self, wouldn=E2=
+=80=99t it
+>>>> be better to keep it consistent? I think that my original patch adds
+>>>> into_nanos() that takes self.
+>>>>
+>>>> This commit also adds HrTimerExpire strait, which as_nanos() method
+>>>> takes &self:
+>>>>
+>>>> +/// Time representations that can be used as expiration values in [`H=
+rTimer`].
+>>>> +pub trait HrTimerExpires {
+>>>> +    /// Converts the expiration time into a nanosecond representation.
+>>>> +    ///
+>>>> +    /// This value corresponds to a raw ktime_t value, suitable for p=
+assing to kernel
+>>>> +    /// timer functions. The interpretation (absolute vs relative) de=
+pends on the
+>>>> +    /// associated [HrTimerMode] in use.
+>>>> +    fn as_nanos(&self) -> i64;
+>>>> +}
+>>>>
+>>>> That's because as I reported, Clippy warns if as_* take self.
+>>>>
+>>>> As Alice pointed out, Clippy doesn't warn if a type implements
+>>>> Copy. So we can add Copy to HrTimerExpires trait, then Clippy doesn't
+>>>> warn about as_nanos method that takes self:
+>>>>
+>>>> +/// Time representations that can be used as expiration values in [`H=
+rTimer`].
+>>>> +pub trait HrTimerExpires: Copy {
+>>>> +    /// Converts the expiration time into a nanosecond representation.
+>>>> +    ///
+>>>> +    /// This value corresponds to a raw ktime_t value, suitable for p=
+assing to kernel
+>>>> +    /// timer functions. The interpretation (absolute vs relative) de=
+pends on the
+>>>> +    /// associated [HrTimerMode] in use.
+>>>> +    fn as_nanos(self) -> i64;
+>>>> +}
+>>>>
+>>>> I'm fine with either (taking &self or Adding Copy).
+>>>
+>>> Let's wait for the whole naming discussion to resolve before we do
+>>> anything. I am honestly a bit confused as to what is the most idiomatic
+>>> resolution here.
+>>>
+>>> I think taking `&self` vs `self` makes not difference in codegen if we
+>>> mark the function `#[inline(always)]`.
+>>
+>> I believe we've reached a consensus on the discussion about `&self` vs
+>> `self`.
+>
+> But not on the function name, right?
+>
+>>
+>> Miguel summarized nicely:
+>>
+>> https://lore.kernel.org/lkml/CANiq72nd6m3eOxF+6kscXuVu7uLim4KgpONupgTsMc=
+AF9TNhYQ@mail.gmail.com/
+>>
+>>>> Yes, I would prefer taking by value. I think Alice mentioned earlier in
+>>>> this thread that the compiler will be smart about this and just pass t=
+he
+>>>> value. But it still feels wrong to me.
+>>>
+>>> If inlined/private, yes; but not always.
+>>>
+>>> So for small ("free") functions like this, it should generally not
+>>> matter, since they should be inlined whether by manual marking or by
+>>> the compiler.
+>>
+>>> But, in general, it is not the same, and you can see cases where the
+>>> compiler will still pass a pointer, and thus dereferences and writes
+>>> to memory to take an address to pass it.
+>>>
+>>> Which means that, outside small things like `as_*`, one should still
+>>> probably take by value. Which creates an inconsistency.
+>>
+>>
+>> I think that another consensus from this discussion is that the table
+>> in the API naming guidelines doesn't cover this particular case.
+>> Therefore, it makes sense to keep the current function name and move
+>> forward.
+>>
+>> Delta already provides `fn as_nanos(self)` (and drm uses in
+>> linux-next, as you know) so I believe that Instant should use the same
+>> interface.
+>>
+>>
+>> That table needs improvement, but reaching consensus will likely take
+>> time, it makes sense to address it independently.
+>
+> I am still uncertain what guidelines to follow inside the kernel. Last
+> time I applied a patch in this situation, I had to remove it again. I
+> would rather not have to do that.
+>
+> Perhaps the best way forward is if you send the patch with the naming
+> and argument type you think is best, and then we continue the discussion
+> on that patch?
 
-Ah I guess for write support you need `Atomic<u8>` and that doesn't
-implement `Display`...
+This was discussed [1] and consensus was reached that `as_*` iwth pass
+by value plus a `Copy` bound on the trait is the way to go for this
+method.
 
-Maybe `Display` is the wrong trait for this...
 
----
-Cheers,
-Benno
+Best regards,
+Andreas Hindborg
+
+
+[1] https://hackmd.io/ZXXSbxxQRpiWzX61sJFlcg?view#API-Naming-guidelines-for=
+-conversion-functions
+
