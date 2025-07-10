@@ -1,125 +1,175 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40A5270552;
-	Thu, 10 Jul 2025 14:07:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02F326B09F
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 14:07:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752156438; cv=none; b=qKDBExODVQaq87EhgPRjjBdkX7cMNt83/K10jXzD+5BrZFFATEIWKvyh0uOrtfmlwrnsh37zQSTSSkT8DF+ZGMZ+7redUu8IBM4p1anpc/wNN9B7VmrbUUAfKqRj2fpv0NNr0wFYmiRJNT21twpyEYxGzXQXzvUTIB1xeJ5g0Sc=
+	t=1752156461; cv=none; b=hC6SfnQiwgIXVeny4weZp5Qym7L+OKSduOXxbSsOV/7EHYVvs/jZci8tDji1n9/en5qjA3KeP0bB91OaSfKhhM1Ith+TCLTzyJKE2OFCnr3C2t6QxVlG97k3lPeEAoXv1wXO0ULzeWEw4N2qhwxvvlteHjIbZ3S/27eYYE9IBhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752156438; c=relaxed/simple;
-	bh=YpUIlnVX18vUrhXKaq83Q1Cvx4LaW7PKMg/2Q6O/gQw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DFCe/Q1sgmC0OM/hhjU/MOO4ba+rOg3f0fFNoBNk1BWgi/cokch9E3/WWOJilRimA4ttejf81QeCi9QRl9f4FzUIId3kRc2pV5w2kbML6GuImg8pZB/ebRm8P50c00whtvjy7BTNcfP6PIxBHb0Ew59bWi/AzhRs1nlp4y0ZRKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OOezLADa; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752156461; c=relaxed/simple;
+	bh=fEk+AE6/WEqc/2Z+GVzvG2frW2My/PwWPejaD2SJCKQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=qSLGGovdWz6WBPtxIqZCjk/ISCk0SX8MRjcMt9uq4jJXrhs/a1V/1tl2kef1XocQ/ATnQGtbFaLc+/kSC4bQAnKvA1/mmxvckyi0MbPjxbyjU3l4FrEMKJ0tB018S7Jd8Wu3m8aZ1FeqxXDpXwrf4IDfIMeXFHOGkunP6J0bUy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=VHpubo+O; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=71llo6v6; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OOezLADa"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a5257748e1so832367f8f.2;
-        Thu, 10 Jul 2025 07:07:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752156435; x=1752761235; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VkH5D2yTeKtqsP3Kkn65OGOaWxvX3yQ9gDnCFmnTyDk=;
-        b=OOezLADaHA0eZ+utNqqHfzPqkGsARUOmmN/kDWfJa36GEF4EJmke3bH62Vs3TJ54m2
-         8xTi9rlnFWvAzo9T1Xt/+0+fZfBJxHKhSbKeRz/mxUFqs+j8KTjWOFjwJeH11VIdYXhg
-         IF0/ayxNyDjQw0l4rOEeXJwK+6yNWlZayj2qXt9DQDRlinQFCi1tU4pCALwKvKU5c+os
-         VRda1z2HChSl1FSD+rB4UQ6JlBHL2pgtX2xMjiPDl1wTnCCUbDv5VT2IWdL9XC6zE8JL
-         Bz236vEnfrsEu0C5wHBH8+5seo+JzirNFITyuXQvSjFnFzKix4q3PS88FZ7QFkmqoEGv
-         f/Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752156435; x=1752761235;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VkH5D2yTeKtqsP3Kkn65OGOaWxvX3yQ9gDnCFmnTyDk=;
-        b=l0FXazlf3mBxmoLy7emkCOh83IpOEEefm5/B5/ac0wx34dOaWR/Qd8Ub22Zacj0WtX
-         JXtDXKKCueF27rs6ZPGCLyhv0iAVRqNLuldMV5+IziRP0Mal9xMDu2Rxbou65vnw6wBA
-         cK615bLkGUKMUR3p+m/oKCudTODry283cJbywUGaW8rG9SJUDc+nwXk7qL+4Cqzt6SAI
-         mlzz0rlWUfRWR5+D4L31cJApTtaiRpC6Eu9U/nG450VW7XJ/6/NvXBw9hWyZ1BfbUlsZ
-         +6bpVPmbpYbfl6UupyT39cigHkVy6x1tdB5B6n/Zw2nbwdxJI4X9pgzYpxbM4H/iocxR
-         Kp3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUxsiehJya71LfC5O2RnH3JzOBTM0bsda5Qv9S+u/QjeKHVAnkwFI2UR85j1n8+NHQJnv9kIvK/wU7NSkcI@vger.kernel.org, AJvYcCVCdKSJ7lmXjCBYrZQfxzQaPIWZEqUTJBgW3/xkZMX8jQKnpfYyBMYcPzjOoxpq41k7yghc70sOF+lo8fxKNRM=@vger.kernel.org, AJvYcCW9AJZSCilt6bjg2+0mhDv/q67bXhibo1YhzwbLhXWxwi8cYA4gkFKD9P/czbwx18Gl9YbsYeGoSFo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoY4fMEKoT3kpnQ8j0nPWt+OVwZj9q7DJs6pP88e+xU6fCS4bV
-	VJlkf7wxCixxaYv87Rhueo6mKt2Tshd7FgNztPmNmbBNOVuYVj6+ykldZQ+mxg==
-X-Gm-Gg: ASbGncsYqKJHeqW9rSYAQVsuIf5KT3Xa67OVu3QjhhrZWmJfapqabOBT369mwoFjlqo
-	682u+cchveP1NxmFAIzfCs+Ewjc3247eHpx98NcpHgvNvGluysR99NVuHU2bgjRDqg1vLRmUh4l
-	0Cuj5dgEr60/UcbaVlzFMEtp2O/BSRJCiXIvCp8skOtKsJXNdRAg31ILV3y3q9h0o6Tnm+5D6tb
-	F7s6Wl6yrqNE9sIqRNieHR21C6X06yZmbLfZnx9Q+RQ92EeWsfwrs2DG0VhHxlT1js7+qHMzkjI
-	KTftdf7zb1v28v2l1OajJQr4IzVgUX6w7gC+rCVG5i0xvG1SUesf0KeJhQUQK7YQhsvx8dQ=
-X-Google-Smtp-Source: AGHT+IGjez2SNgNCYmZ0Jlw10C2JNG4uevbVN0NcIHGZ15GkF2ZzKz+TF7OSoxW+cLofnGQdfvtbUQ==
-X-Received: by 2002:adf:a394:0:b0:3a4:c8c1:aed8 with SMTP id ffacd0b85a97d-3b5e86c4f5dmr2108836f8f.39.1752156434760;
-        Thu, 10 Jul 2025 07:07:14 -0700 (PDT)
-Received: from [10.38.1.85] ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454d50fa9b4sm61706965e9.27.2025.07.10.07.07.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Jul 2025 07:07:14 -0700 (PDT)
-Message-ID: <dd850b46-1e9f-4812-a356-41ae6fd0ce59@gmail.com>
-Date: Thu, 10 Jul 2025 15:04:59 +0100
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="VHpubo+O";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="71llo6v6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752156450; x=1752761250;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=z6CYkY/mnHsPc1zlAI1YQ9WMPDSlzYrFWMeZlYj4cpw=;
+	b=VHpubo+OBZhzjd4PXBL2vtOFLMM2bRHh5EeEz+IBCjXyVL4Ukh6jyp1csiboGxXQ1tLHFoINMJ5C4
+	 1ctcoTuCpgQyNoAT2oGWAp0T0NmCmxu63oSdgyLLwlpIjYGksuqtkH5l39quLXxeJSQOPmZ8U4wiAE
+	 /hNmU9nqubJ0lOMKO6+bRyz+c9m0eXYUBliSymIBdoTt4jyKXhqNh75iley3u6crCOjr+Sxk4ex/4c
+	 g97BlnCT9qmhal31kJyh9KRJvuigslwTrELthNmRmAmMLWHIAWkJPj69oMzx/eRYQJJ65LtLzrGnrY
+	 r+ABRS9dN1OjMes5PM4HJ3WcgJdb/Mw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752156450; x=1752761250;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=z6CYkY/mnHsPc1zlAI1YQ9WMPDSlzYrFWMeZlYj4cpw=;
+	b=71llo6v6/l7OTXw3SNLSRYkfbg1Wmiisu+BttGsr8RLc6NHuwz5OHPiG6WSlNgNzzVcW0wzjID+ca
+	 FxpPsbOAg==
+X-HalOne-ID: 363fb403-5d97-11f0-9d28-c9fa7b04d629
+Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay1.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 363fb403-5d97-11f0-9d28-c9fa7b04d629;
+	Thu, 10 Jul 2025 14:07:30 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] rust: i2c: add basic I2C device and driver
- abstractions
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Asahi Lina <lina+kernel@asahilina.net>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Hung <alex.hung@amd.com>,
- Tamir Duberstein <tamird@gmail.com>,
- Xiangfei Ding <dingxiangfei2009@gmail.com>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-i2c@vger.kernel.org
-References: <20250704153332.1193214-1-igor.korotin.linux@gmail.com>
- <20250704153657.1195687-1-igor.korotin.linux@gmail.com>
- <aGg2qkyrKBIPiSeE@cassiopeiae>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <aGg2qkyrKBIPiSeE@cassiopeiae>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in
+ vrealloc
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <nsacpwgldqdidsqkqalxdhwptikk7srnhjncmjaulnzcf6nsmu@fisb5w4aamhl>
+Date: Thu, 10 Jul 2025 16:07:19 +0200
+Cc: linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ rust-for-linux@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ linux-bcachefs@vger.kernel.org,
+ bpf@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C240E394-C3F6-4A46-A9F3-E6D95A3F4DF3@konsulko.se>
+References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
+ <20250709172416.1031970-1-vitaly.wool@konsulko.se>
+ <nsacpwgldqdidsqkqalxdhwptikk7srnhjncmjaulnzcf6nsmu@fisb5w4aamhl>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+X-Mailer: Apple Mail (2.3826.200.121)
 
 
 
-On 7/4/25 21:16, Danilo Krummrich wrote:
->> +
->> +        0
->> +    }
->> +
->> +    extern "C" fn remove_callback(pdev: *mut bindings::i2c_client) {
->> +        // SAFETY: `pdev` is a valid pointer to a `struct i2c_client`.
->> +        let ptr = unsafe { bindings::i2c_get_clientdata(pdev) }.cast();
->> +
->> +        // SAFETY: `remove_callback` is only ever called after a successful call to
->> +        // `probe_callback`, hence it's guaranteed that `ptr` points to a valid and initialized
->> +        // `KBox<T>` pointer created through `KBox::into_foreign`.
->> +        let _ = unsafe { KBox::<T>::from_foreign(ptr) };
-> 
-> I like to do that as well, but I usually get asked to use drop() instead, let's
-> do that here as well. :)
-> 
+> On Jul 9, 2025, at 9:01=E2=80=AFPM, Liam R. Howlett =
+<Liam.Howlett@oracle.com> wrote:
+>=20
+> * Vitaly Wool <vitaly.wool@konsulko.se> [250709 13:24]:
+>> Reimplement vrealloc() to be able to set node and alignment should
+>> a user need to do so. Rename the function to vrealloc_node_align()
+>> to better match what it actually does now and introduce macros for
+>> vrealloc() and friends for backward compatibility.
+>>=20
+>> With that change we also provide the ability for the Rust part of
+>> the kernel to set node and alignment in its allocations.
+>>=20
+>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+>> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+>> ---
+>> include/linux/vmalloc.h | 12 +++++++++---
+>> mm/nommu.c              |  3 ++-
+>> mm/vmalloc.c            | 31 ++++++++++++++++++++++++++-----
+>> 3 files changed, 37 insertions(+), 9 deletions(-)
+>>=20
+> ...
+>=20
+>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+>> index 6dbcdceecae1..03dd06097b25 100644
+>> --- a/mm/vmalloc.c
+>> +++ b/mm/vmalloc.c
+>> @@ -4089,19 +4089,31 @@ void *vzalloc_node_noprof(unsigned long size, =
+int node)
+>> EXPORT_SYMBOL(vzalloc_node_noprof);
+>>=20
+>> /**
+>> - * vrealloc - reallocate virtually contiguous memory; contents =
+remain unchanged
+>> + * vrealloc_node_align_noprof - reallocate virtually contiguous =
+memory; contents
+>> + * remain unchanged
+>>  * @p: object to reallocate memory for
+>>  * @size: the size to reallocate
+>> + * @align: requested alignment
+>>  * @flags: the flags for the page level allocator
+>> + * @nid: node number of the target node
+>> + *
+>> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). If =
+@size is
+>> + * 0 and @p is not a %NULL pointer, the object pointed to is freed.
+>>  *
+>> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If =
+@size is 0 and
+>> - * @p is not a %NULL pointer, the object pointed to is freed.
+>> + * if @nid is not NUMA_NO_NODE, this function will try to allocate =
+memory on
+>> + * the given node. If reallocation is not necessary (e. g. the new =
+size is less
+>> + * than the current allocated size), the current allocation will be =
+preserved
+>> + * unless __GFP_THISNODE is set. In the latter case a new allocation =
+on the
+>> + * requested node will be attempted.
+>=20
+> I am having a very hard time understanding what you mean here.  What =
+is
+> the latter case?
+>=20
+> If @nis is !NUMA_NO_NODE, the allocation will be attempted on the =
+given
+> node.  Then things sort of get confusing.  What is the latter case?
 
-Danilo, could you, please, explain this one a little bit more? I see the
-same pattern for all the implemented subsystems so far: auxiliary,
-platform, pci.
-If this pattern for these subsystems is to be changed, then I'm fine.
-Otherwise I'm not sure I understand the difference between these 3 and
-I2C Adapter abstraction
+The latter case is __GFP_THISNODE present in flags. That=E2=80=99s the =
+latest if-clause in this paragraph.
 
-Thanks
-Igor
+>=20
+>>  *
+>>  * If __GFP_ZERO logic is requested, callers must ensure that, =
+starting with the
+>>  * initial memory allocation, every subsequent call to this API for =
+the same
+>>  * memory allocation is flagged with __GFP_ZERO. Otherwise, it is =
+possible that
+>>  * __GFP_ZERO is not fully honored by this API.
+>>  *
+>> + * If the requested alignment is bigger than the one the *existing* =
+allocation
+>> + * has, this function will fail.
+>> + *
+>=20
+> It might be better to say something like:
+> Requesting an alignment that is bigger than the alignment of the
+> *existing* allocation will fail.
+>=20
+The whole function description in fact consists of several if-clauses =
+(some of which are nested) so I am just following the pattern here.
 
+~Vitaly
 
 
