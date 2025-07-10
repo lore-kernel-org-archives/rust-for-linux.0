@@ -1,119 +1,247 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46FC198E9B;
-	Thu, 10 Jul 2025 16:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6E417A303;
+	Thu, 10 Jul 2025 16:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752163594; cv=none; b=h5Bad3qassyEPCQcuHBDei4fDhV2YSNN9s8eeNO9fwp9EJTT7YhbvH+EtEFft8P0IIswEBr54byxdE0lgfhzOoZAtLRY1FvwsLj4ObgFS/XquTBGXPbCiq+VWnEjcCad9AjnyksDIyDg2GjQR1h0OR016Wo0dnybo1njOsYlkac=
+	t=1752164181; cv=none; b=iaX+o/eMMR0XuxLjAcvuw04rF5WOJ6OdODYxB0b9T9JVyltp/2O8/h2CPEzFdmzpn70eKE1+S2wYANKrD9vHEk8kgRTSimsX3vJD8D9R/wNIkXJIUDqjUanS/k3o2jbAHj22yyCByuTnCZCT6nVfupJ/Y4kQcqFrjZpfAuco8hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752163594; c=relaxed/simple;
-	bh=Fk52qRo41GJW4xL0+HTc/RNFLjudUlL2qsEG2/excFE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=MCcrpgCqrv907+dMX8wF/XwZ9FpdcC+xtV4cRAjkBuBH9L5+C/CkpnKKvkglzJMCETuhdH/FSnLb2773YS1gkyAXnXV3Um7wl4ukGmr36vUD2g8jUUJ7D6mwki59+vnxemwHEWIDl13TukDHmp+AO5kc9lFM0bkrqeTkgiut6SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wn+yU0e9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752164181; c=relaxed/simple;
+	bh=qJz6fbDEwKR2n0fhRoYqJTEv9xrZ4rc7vxiYqtlCqFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fm6HLeyXoogIyrc/z7NJcM2lPoXmuvboVr8+05JrslTkZ3Kg1OuZqPwDm5RaUHhHWw2zO15O07lEBf2QlkQHDoYDuXHhpAkmKvODexMdr3n2mGzl21nJScOpTaq9yc6uzXc+pJwk2qhom9axeRtAjt6BR+pf11Zkp6645CEVAyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agWVMjGu; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wn+yU0e9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171ABC4CEE3;
-	Thu, 10 Jul 2025 16:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752163593;
-	bh=Fk52qRo41GJW4xL0+HTc/RNFLjudUlL2qsEG2/excFE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=Wn+yU0e9Luzl4qwqU/u3K5hKm02tu5Ou1bSFcFxwq+rE28/Xfjm1wXJgV9FN+FOb0
-	 HC4uxzA8QyZCfr5uiSqpnoIBrR8PXgtmNqfzaTHN1laNLrd6I00yRAizy+pDUXjr/K
-	 +UzGmKFxbomOecwvxWoDUQawtejSWMMKKlxkd8UhswNKpmf1e5yNMqFlAG75B3Xm22
-	 3Vyj+IDc8fhD+OuWBvL/3LDjfgtT7FnMgyz33vo3afhvFQDc9R31KrHgkbbShA352H
-	 7oDEsTn90JoGAPNLkS4i6A6DvnFLq9b+4UCMLMD1gxGNDAHF4HNx9nWUGQ7c0DtXpN
-	 1qzZqWBlfsHag==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agWVMjGu"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7d3dd14a7edso174101985a.2;
+        Thu, 10 Jul 2025 09:16:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752164179; x=1752768979; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1e38L05MDqdYlj/kHUFQccsi1c7uERaQIJKOoZdkmzQ=;
+        b=agWVMjGurqRtKQHzJzRqyURIzAiIHNpzOkrXPNq6O10eb/XWNjV3fnl+0MLctesUOS
+         /3Za563UwUz+yMr7tUz2hl4t/enHDSSACymj2h8bm3/3ZPEeBJI214PkW5pcmU6Cxlon
+         fazaWr/Jx/jNNM+AdUFE2etbqZXdidL2yyyPfNki+Y1R8AFBt/EENPsnovk5e0DCrCjS
+         41BfUV1DtFw8yoLRs4b5g0ZQ12n7s6LlH133N97bpVCdhNOF3HQsMreMtdSzRV7+H2ji
+         UhfgHmGhkSEWnhaJpUJu9C6Q9+A7GWrw5ls1OHElxp5Z3RJjmdTXoesgUm4ZyCJKQ2I0
+         RhXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752164179; x=1752768979;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1e38L05MDqdYlj/kHUFQccsi1c7uERaQIJKOoZdkmzQ=;
+        b=Ub+81sPdnDTqals2GCGaBi6zUXE+3e92hbUYfLI1PVz9bzU73AtdXq0FCFurpHcp2O
+         bMcpUIMzOtP1jpDh3+w+9uWhL5Ud7Ge5MpRXhjM9dQVDRHTBSrMwIyfqlHo2fIgM1sPh
+         2Uh8XEm2JpryXfe1i4DzlPuvNQfvA88lF1myRdmG3y0RNisWw1U6sgPzvwtar9GbPdZN
+         aiUMlLJ1Wft99Nk6Rawfbn42AuSNnIcKEyOMIXmpgPOLXSsUOaZdsdSk0w5AmNpIvUM+
+         XGtQi0SI5kftPYX0g+SU5bzNRpgLyd4HIUPm8fohFr4ynQrez00/GyJsmw7J5BaFQXWL
+         SF7w==
+X-Forwarded-Encrypted: i=1; AJvYcCW+9NJY+eMP70R20QXQ/lo+32SrybdHDyAsuDZk9LTf4xHZzAdRio7SEqp5ppfbOXoiCs7vYA1PoLBJN9cz+yA=@vger.kernel.org, AJvYcCXpJaQLUvugQtYmXn9Y63lWQESwMqFxV/IvAalIDIVgt8yFnOwvqayB6p8dFPM7qVKS57fVWx/woXcB@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeX25Alaz3c63xBdq6XIUhuID9MdjR6jAJj0y10EGrVzpWVrfy
+	QmWxrF6xpp+yG305n+HIAQbHCE31EjKB2tY52AbGytY/JzqVKoSIkXLN
+X-Gm-Gg: ASbGncuIFXAYafEs62cj8mQO4f1Lzn1G7hMejyNwfzkSAjB3HGzSH4IVi6InSd0ve/P
+	RZ2aC91AMTsshCSlvez3hmezA+trbRlqUkBQ0qsXGyy5hHVy/u5oAmsD/Pi5GOGh1zbCXvhjYlZ
+	hkqubbW33x1fTcbqdm7CEhPxkOOWZ1nSLEWCcb2cvYSs7enIm2wTix11l66k+w6kx2NRYoKtGCN
+	jrT/sEzXxB608gSfWtRfmQ6xNtFu/bdg5xjfAD4Dom0nHL5kQ5nxN6FbJ+DAQVKcvG0AsAbZob7
+	OErvVGTj7vqLpykgkaTe5TheraGBuCSR6mNYWfdh93DkNEptVuaY7BhKMfDLAuiyIkSq+aQNLv6
+	//53msnDpxtgEGFCyQ8Rea8g1HrRbkdaymDF9mv6R2Tg3ywIWkno8
+X-Google-Smtp-Source: AGHT+IHJozt3f+ojIXaL0YmFLWxTUamIZY9TjGksGKQkUrOQV9kg9o5Js9x38WbBIRg4VOWyeYCXew==
+X-Received: by 2002:a05:620a:3726:b0:7d4:451:b8cb with SMTP id af79cd13be357-7dde9b5e387mr16954485a.4.1752164178277;
+        Thu, 10 Jul 2025 09:16:18 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7dcdebeb7fasm110680985a.109.2025.07.10.09.16.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 09:16:17 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 34CD6F40069;
+	Thu, 10 Jul 2025 12:16:17 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 10 Jul 2025 12:16:17 -0400
+X-ME-Sender: <xms:UedvaAZzkqA4y-cGMCDXhpnP5iUm7BEXqqGZ0eUqDCTSALRe49hJKg>
+    <xme:UedvaM7GC3k1K3EeNd_1dLbW8KFVJom3BlpOnEXM0NDKo10dLzU80gt52cAFyO8Ws
+    v4q1uC6yHqSxTlP7g>
+X-ME-Received: <xmr:UedvaPgYmEx6Hjh4M-dt6OV_SzTufwnw2GgvL_ZqOLOG-PFgxQSlK10aCg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdeltdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdq
+    fhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkh
+    hmmheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgt
+    hhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
+    pdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjoh
+    hrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:UedvaKIbw_sHaSckgITENpmw56Jjxg6e8QxxTssYV4es8AlV5ddMAQ>
+    <xmx:UedvaJqnNSqPoM8DT1t1bKQi0m22-aumA3PfFbujDO8bkh7SoOohYg>
+    <xmx:UedvaAzPCMXdsGHR10Wv25vwkPCt4m5eysWGDiSlx34Xt7hgapAl1Q>
+    <xmx:UedvaNf5hWVSwyquZXYio9wVymOgYsWVBCoYi5YXTeaDwoaunvBkAw>
+    <xmx:UedvaMdrZFotRxzxKBSQ7xt2JlnMdNGnIWZMFnBUhOZvMNlJ2lnxViCs>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Jul 2025 12:16:16 -0400 (EDT)
+Date: Thu, 10 Jul 2025 09:16:15 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v6 2/9] rust: sync: Add basic atomic operation mapping
+ framework
+Message-ID: <aG_nT3H8J-h2qwr5@Mac.home>
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-3-boqun.feng@gmail.com>
+ <DB8BQGJNFDAY.BGQ8CZSFFOLH@kernel.org>
+ <aG_Yah5FFHcA3IZy@Mac.home>
+ <DB8HQLY48DFX.3PBBUTQLV14PC@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Jul 2025 18:06:26 +0200
-Message-Id: <DB8I5J8ZY7QF.2D8HEN6JX4HSZ@kernel.org>
-Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-Cc: "Michal Wilczynski" <m.wilczynski@samsung.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Guo Ren" <guoren@kernel.org>, "Fu Wei"
- <wefu@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Paul Walmsley"
- <paul.walmsley@sifive.com>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
- Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Benno Lossin" <lossin@kernel.org>,
- "Michael Turquette" <mturquette@baylibre.com>, "Drew Fustini"
- <fustini@kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-riscv@lists.infradead.org>, <devicetree@vger.kernel.org>, "Krzysztof
- Kozlowski" <krzysztof.kozlowski@linaro.org>
-To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <CGME20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6@eucas1p1.samsung.com> <20250707-rust-next-pwm-working-fan-for-sending-v10-0-d0c5cf342004@samsung.com> <e8a4a821-e7e4-4bcd-a2ac-f6b684b6ceea@samsung.com> <ipvaegqlkco5qinhvn33mqvg7ev2walvs74xtzvhimxsfsfzhv@gcmpxcdtetdn> <e77eab1c-446f-4620-95be-d343684d1e95@samsung.com> <4hmb3di5x2iei43nmrykrj5wzlltrf3vrnqvexiablonbscn57@4bbsz5c76t63>
-In-Reply-To: <4hmb3di5x2iei43nmrykrj5wzlltrf3vrnqvexiablonbscn57@4bbsz5c76t63>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DB8HQLY48DFX.3PBBUTQLV14PC@kernel.org>
 
-On Thu Jul 10, 2025 at 5:25 PM CEST, Uwe Kleine-K=C3=B6nig wrote:
-> Hello Michal,
->
-> On Thu, Jul 10, 2025 at 03:48:08PM +0200, Michal Wilczynski wrote:
->> On 7/10/25 15:10, Uwe Kleine-K=C3=B6nig wrote:
->> > On Thu, Jul 10, 2025 at 10:42:07AM +0200, Michal Wilczynski wrote:
->> >> On 7/7/25 11:48, Michal Wilczynski wrote:
->> >>> The series is structured as follows:
->> >>>  - Expose static function pwmchip_release.
->> >=20
->> > Is this really necessary? I didn't try to understand the requirements
->> > yet, but I wonder about that. If you get the pwmchip from
->> > __pwmchip_add() the right thing to do to release it is to call
->> > pwmchip_remove(). Feels like a layer violation.
->>=20
->> It's required to prevent a memory leak in a specific, critical failure
->> scenario. The sequence of events is as follows:
->>=20
->>     pwm::Chip::new() succeeds, allocating both the C struct pwm_chip and
->>     the Rust drvdata.
->>=20
->>     pwm::Registration::register() (which calls pwmchip_add()) fails for
->>     some reason.
->
+On Thu, Jul 10, 2025 at 05:46:56PM +0200, Benno Lossin wrote:
+> On Thu Jul 10, 2025 at 5:12 PM CEST, Boqun Feng wrote:
+> > On Thu, Jul 10, 2025 at 01:04:38PM +0200, Benno Lossin wrote:
+> >> On Thu Jul 10, 2025 at 8:00 AM CEST, Boqun Feng wrote:
+> >> > +declare_and_impl_atomic_methods!(
+> >> > +    AtomicHasBasicOps ("Basic atomic operations") {
+> >> > +        read[acquire](ptr: *mut Self) -> Self {
+> >> > +            call(ptr.cast())
+> >> > +        }
+> >> > +
+> >> > +        set[release](ptr: *mut Self, v: Self) {
+> >> > +            call(ptr.cast(), v)
+> >> > +        }
+> >> > +    }
+> >> 
+> >> I think this would look a bit better:
+> >> 
+> >>     /// Basic atomic operations.
+> >>     pub trait AtomicHasBasicOps {
+> >>         unsafe fn read[acquire](ptr: *mut Self) -> Self {
+> >>             bindings::#call(ptr.cast())
+> >>         }
+> >> 
+> >>         unsafe fn set[release](ptr: *mut Self, v: Self) {
+> >>             bindings::#call(ptr.cast(), v)
+> >>         }
+> >>     }
+> >> 
+> >
+> > Make sense, I've made `pub trait`, `bindings::#` and `unsafe fn`
+> > hard-coded:
+> >
+> > macro_rules! declare_and_impl_atomic_methods {
+> >     (#[doc = $doc:expr] pub trait $ops:ident {
+> 
+> You should allow any kind of attribute (and multiple), that makes it
+> much simpler.
+> 
 
-(Just trying to help clear up the confusion.)
+I didn't know I could do that, updated:
 
-> If you called pwmchip_alloc() but not yet pwmchip_add(), the right
-> function to call for cleanup is pwmchip_put().
+    ($(#[$attr:meta])* pub trait $ops:ident {
+        $(
+            unsafe fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
+                bindings::#call($($arg:tt)*)
+            }
+        )*
+    }) => {
+        $(#[$attr])*
 
-That is exactly what is happening when ARef<Chip> is dropped. If the refere=
-nce
-count drops to zero, pwmchip_release() is called, which frees the chip. How=
-ever,
-this would leave the driver's private data allocation behind, which is owne=
-d by
-the Chip instance.
+Thanks!
 
-So, in Rust we not only have to free the chip itself on release, but also t=
-he
-driver's private data. The solution Michal went for is overwriting the PWM
-chip's dev->release() with a callback that drops the driver's private data =
-and
-subsequently calls the "original" pwmchip_release().
+> >         $(
+> >             unsafe fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
+> >                 bindings::#call($($arg:tt)*)
+> >             }
+> >         )*
+> >     }) => {
+> >
+> > It shouldn't be very hard to make use of the actual visibility or
+> > unsafe, but we currently don't have other visibility or safe function,
+> > so it's simple to keep it as it is.
+[..]
+> >> I'm not sure if this is worth it, but for reading the definitions of
+> >> these operations directly in the code this is going to be a lot more
+> >> readable. I don't think it's too bad to duplicate it.
+> >> 
+> >> I'm also not fully satisfied with the safety comment on
+> >> `bindings::#call`...
+> >> 
+> >
+> > Based on the above, I'm not going to do the change (i.e. duplicating
+> > the safe comments and improve them), and I would make an issue tracking
+> > it, and we can revisit it when we have time. Sounds good?
+> 
+> Sure, I feel like some kind of method duplication macro might be much
+> better here, like:
+> 
+>     multi_functions! {
+>         pub trait AtomicHasBasicOps {
+>             /// Atomic read
+>             ///
+>             /// # Safety
+>             /// - Any pointer passed to the function has to be a valid pointer
+>             /// - Accesses must not cause data races per LKMM:
+>             ///   - Atomic read racing with normal read, normal write or atomic write is not a data race.
+>             ///   - Atomic write racing with normal read or normal write is a data race, unless the
+>             ///     normal access is done from the C side and considered immune to data races, e.g.
+>             ///     `CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC`.
+>             unsafe fn [<read, read_acquire>](ptr: *mut Self) -> Self;
+> 
+>             // ...
+>         }
+>     }
+> 
+> And then also allow it on impls. I don't really like the idea of
+> duplicating and thus hiding the safety docs... But I also see that just
 
-This is a common pattern in Rust that we use in DRM as well. One thing that=
- is
-different in DRM is, that a struct drm_device (equivalent of struct pwm_chi=
-p in
-this case), has it's own release callback for drivers that we can attach to=
-.
+At least the rustdoc has safety section for each function. ;-)
 
-PWM does not have such a callback AFAICS, hence the Rust abstraction uses t=
-he
-underlying device's release callback and then forwards to pwmchip_release()=
-.
+> copy pasting them everywhere isn't really a good solution either...
+> 
 
-Hope this helps. :)
+Yeah, perhaps there is no immediate resolution, but open to any
+suggestion.
+
+Regards,
+Boqun
+
+> ---
+> Cheers,
+> Benno
