@@ -1,110 +1,135 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69237221F29;
-	Thu, 10 Jul 2025 13:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752153433; cv=pass; b=H81ag8SA/qPtFc+wqj+cpgQE0hymp7FpNZhF/ldUEnumk4EtuLMtzCW5GfOs9/itagO6DUZQ/8wV5kHtUXe2dy2odiIflETVvdhtQVU1E+nUcKGdnudCYxnjG30Y4R8Pu0uM6Lb5XaZJKhBRRQqAxK/5FYdA6Sdn2u+f7KBHF+w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752153433; c=relaxed/simple;
-	bh=lMlH0CkVmMtMpfmR+DhnUvRnkI8F6sCWPShVUe4gBQU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=T2s83KhAm0IEXiV3XL43UjoXWOi0iHrXwZ5wd55KC0PGSfnKAv+IkLEzkCwVZvMfoxd4HCPpsLB5N2DdRbrQdFbKnKMhvZHb+yo1wNhAjEY8YEu/qZeb2GVcfpdnKVevdKqzSqcWoVEf8DRNZxJkfdDa8uRseydKutC49oS1D4w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZaJHaMbr; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CC717741
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 13:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752153658; cv=none; b=Fqc55weL4preiZBsnTXxMW2V8oTVzVX9LTITHB1wkvb9uxvU0sUSOAK+Hu3iQC5zZVYeNLrI+1c6oMXeix82EYbtK5MFbAP82dFYie8gda+bdldyodOxUdYb2Tx/NR6YzX5twXG9J7rpivSqqWdOCloL2L0c+z+OQ0Epx4gE76o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752153658; c=relaxed/simple;
+	bh=bj9Gfo/3Jr9EZIY9fK3lkcHewhYwv0doXs2kKiWDFPE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fPNETHC3HiF5yLmAdjELdvKW88cdXfljPL6stEjI6R7PRqa63oQyKd+5Ca+I2L4dOqKMuzS+Mc3ituHy3yfOo1smK6jH8R3rQFa+k2CL1g6OoXOmMg7nIKh8K+4czzQ0b6SjO42V9HDAmu1h22MlW2/mnndzewnGTnd5AVwx9AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SO1ZSiUe; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZaJHaMbr"
-ARC-Seal: i=1; a=rsa-sha256; t=1752153402; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Kuq6Ieb/UfY2uh+Sg5DtsPMvV1wK9CtE+b5zxph8TQEk3DMWGpT56wJI9d61oYQ+GrLL1XERSJq1KTktzH98ywha1g2/VN6Sr3RM8bhceU1KUM+xS53cr2O6xXD9nytkH+G4zCcW7SSIJ2Z5ecmeFkfL+H4WDmi4/e0LHLFqYHI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752153402; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=SFPxdbWPvOwzpJJw2wS8FEYjCUqBehpDqU3KFQNmQW8=; 
-	b=lKtmVToCftGtCk6UTR+1GRvy9S+kvyfStKznX8akbv8X0MuwDQgMsreNjhyVTtKdCyOMCSWPefS5dKeyJ7Pd0XGkxU+6mScgvdbO5KmrXSx3Ou/2Gx2yvjN9/MZIdJjYMGHKbY4UPNvTqk945QNHIC0HiI1W9/YLDjSaVRJzRTQ=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752153402;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=SFPxdbWPvOwzpJJw2wS8FEYjCUqBehpDqU3KFQNmQW8=;
-	b=ZaJHaMbrWeE7xZw8FwFQpE/sp86nHH4GlI0N69B6tNtPFG//QB4I1Xavk4JCdD/+
-	BcOBVMnuL+KBSj2n4d6+tL3GjuA4NAVYyMAzfpIKUaWvQv0A+SQsRT1G5NIAIqfUigZ
-	dL3n6AX/WOURnsa8A1nDA9e3kTWuMEvt/+ValCc8=
-Received: by mx.zohomail.com with SMTPS id 1752153398901356.9197818711657;
-	Thu, 10 Jul 2025 06:16:38 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SO1ZSiUe"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a52874d593so831478f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 06:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752153654; x=1752758454; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/d3JWJXTPbcoiacIjfsqcFG5gW+YCew8k+ctgwhFlQI=;
+        b=SO1ZSiUeXMtF9VJrlr6TVVAJueG/bcEFu6R61NrM5yK5eY/lFQBr4Xle8DLkpN1nTh
+         icZso3d8rcwHB2PNDwby+uf6RS8Vgq+BGSESjX8j6NE+UCWMgAEEeCVfZSaDaU6bEOPx
+         vn4zmaMNIl0Yd+Ff+RTrnNGUgF41EQ3SU8W0d4unGA0sKrnFsTrxQG1sVRV6SoExRwLp
+         ooYVzniDtlSroGx4Y9NRMFYigkhOdIazMGOHuPGZl7dF+0+ch9GuLA8Ybd/MzdTnTkau
+         rLfaDLY+/7rvuCNc/sNf3KFjteMucuqglpyomVg0JOLHwGaR/2OTB63Jhgb6rvWiwRai
+         MU6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752153654; x=1752758454;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/d3JWJXTPbcoiacIjfsqcFG5gW+YCew8k+ctgwhFlQI=;
+        b=GlKidaAhYKAmzfPCyXLxXXwSYe+km6zT8bNAtjLHMmXQ1fregOQQjWuP6A4h9KsvWJ
+         EtUx0usIfU28pe7PiaddRy+bBzg5UClk71jYCixD6ZrhwBUfOUXNl/3vL4UKdMgRbdYc
+         oAfhBVLfufM+F40KUdzjtOze10gtu8v+wh3/Mik15+sa0U3BjM/DQjiYmXrB06hqJCvw
+         JDwKIysxg+c9iEFadAjs3s3rf2kEItVWc2miPY9Wq36zzFchd4IiAs+XnlcIwPHy2HcE
+         JlyxJeHAEfTK8bB0+Ofi6UaSM+Pg+ekJl+DxmSnlEiHrgyKBSYlrMCUD8L49vk7s5TfU
+         a+RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUM9ftQFzwcgELIH+XtNCggP70XAb41HCulIthc6aWzupQ3mxC0DfZF3w6/2syrNy9tUXeDCZ19cePiUTUDWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkjPsNpL+NkdZSbStjlK/QFUXfIrJVU8u40/v/n8k/+RZttgIJ
+	4PqO/dBGwGMT0vsTrF8RYyBY0KYKjL6qLlZwaOdjHxGJkxG5KSmGHwjcgKAsNwH52nAHP3oAtUS
+	/5+Qhzro/D7iWyapHAeKo7YNGCsNTUHGj3RJLCtqS
+X-Gm-Gg: ASbGncvkI0P7/HjBXnK+GhWuqJkNzNhvY6cqByeL3to1GVBkvZrpcnBxuSOW6YUohil
+	YVNFh1goUUDeIgg6LIJyDhVtQQeuXpbvQDY88U0VBOktvLrxJflzwwj53MAXAwc/bDl8z3qOjRX
+	Ufd9M0ZVDxKEpivCzp3kRKs0V6ldxSC7uO2XLvJVuO7atVBeYXq6d7a5uOrXNutuBbhvS1dbJf0
+	A==
+X-Google-Smtp-Source: AGHT+IFujM42vH3V09euhJ0T7/vZlUGl5l2Mqd+XJHCpPSNb1kApqRjCh9Jtd3SgLVxJgkK09tgAyiBl1EsMOOSUJIA=
+X-Received: by 2002:a05:6000:2806:b0:3b2:e07f:757 with SMTP id
+ ffacd0b85a97d-3b5e788d3d0mr2685032f8f.1.1752153654256; Thu, 10 Jul 2025
+ 06:20:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aGt6CZAUeuK0XnmP@google.com>
-Date: Thu, 10 Jul 2025 10:16:21 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Ying Huang <huang.ying.caritas@gmail.com>,
- Benno Lossin <lossin@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- Fiona Behrens <me@kloenk.dev>
+MIME-Version: 1.0
+References: <20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com>
+In-Reply-To: <20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 10 Jul 2025 15:20:41 +0200
+X-Gm-Features: Ac12FXzitYxvRbQjbTDWexl7FT9vfcJPNeta0DSIvcawfTODepd7_rNw8p5wCA4
+Message-ID: <CAH5fLggU_DsJ4-gj_xBeGgG8mS4CSrypNsmOqu6c677Lyyvqxw@mail.gmail.com>
+Subject: Re: [PATCH 0/6] Replace `kernel::str::CStr` with `core::ffi::CStr`
+ (cycle 1)
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <8A2EA665-F738-4C5D-914E-11380422038A@collabora.com>
-References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
- <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
- <aGt6CZAUeuK0XnmP@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
 
-Hi Alice,
+On Fri, Jul 4, 2025 at 10:16=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
+ wrote:
+>
+> This series makes preparations for the replacement of our custom `CStr`
+> type with the analogous type available in `core`.
+>
+> As this is a large migration that touches many subsystems, it will take
+> place in several cycles, each of which may see multiple series:
+> 1. introduces facades in the kernel crate that downstream
+>    code can reference. [this series]
+> 2. migrate downstream code to kernel crate facades. (N series, divided
+>    by subsystem).
+> 3. replace kernel crate facades to allow `Display`ing foreign types
+>    (such as `core::ffi::CStr`). Replace `CStr` with `core::ffi::CStr`.
+> 4. migrate uses of `c_str!` to C-String literals. Replace references to
+>    `kernel::str::CStr` with `kernel::ffi::CStr`. (N series, divided by
+>    subsystem).
+> 5. rename `c_str!` to discourage use. Remove `CStr` reexport from
+>    `kernel/str.rs`.
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> Tamir Duberstein (6):
+>       rust: kernel: remove `fmt!`, fix clippy::uninlined-format-args
+>       rust: kernel: add `fmt` module
+>       rust: use `kernel::{fmt,prelude::fmt!}`
+>       rust: str: remove unnecessary qualification
+>       rust: add `CStr` methods matching `core::ffi::CStr`
+>       rust: use `core::ffi::CStr` method names
+>
+>  drivers/cpufreq/rcpufreq_dt.rs    |  3 +-
+>  drivers/gpu/nova-core/firmware.rs |  5 +-
+>  rust/kernel/error.rs              |  8 ++--
+>  rust/kernel/fmt.rs                |  7 +++
+>  rust/kernel/lib.rs                |  1 +
+>  rust/kernel/opp.rs                |  2 +-
+>  rust/kernel/prelude.rs            |  2 +-
+>  rust/kernel/print.rs              |  6 +--
+>  rust/kernel/str.rs                | 97 ++++++++++++++++++++++++---------=
+------
+>  samples/rust/rust_print_main.rs   |  2 +-
+>  10 files changed, 83 insertions(+), 50 deletions(-)
+> ---
+> base-commit: 769e324b66b0d92d04f315d0c45a0f72737c7494
+> change-id: 20250704-core-cstr-prepare-9b9e6a7bd57e
+>
+> Best regards,
+> --
+> Tamir Duberstein <tamird@gmail.com>
+>
 
-> Is this name used for a lookup or stored? If just a lookup, then it
-> doesn't need to be 'static.
->=20
->> +        flags: Flags,
->> +    ) -> Option<Region> {
->> +        // SAFETY: Safe as per the invariant of `Resource`.
->> +        let region =3D unsafe {
->> +            bindings::__request_region(
->> +                self.0.get(),
->> +                start,
->> +                size,
->> +                name.as_char_ptr(),
->> +                flags.0 as i32,
->=20
-
-JFYI, this is stored:
-
-static int __request_region_locked(struct resource *res, struct resource =
-*parent,
-				   resource_size_t start, =
-resource_size_t n,
-				   const char *name, int flags)
-{
-	DECLARE_WAITQUEUE(wait, current);
-
-	res->name =3D name;
-
-
-=E2=80=94 Daniel=
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
