@@ -1,73 +1,73 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6E417A303;
-	Thu, 10 Jul 2025 16:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B067F2F0031;
+	Thu, 10 Jul 2025 16:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752164181; cv=none; b=iaX+o/eMMR0XuxLjAcvuw04rF5WOJ6OdODYxB0b9T9JVyltp/2O8/h2CPEzFdmzpn70eKE1+S2wYANKrD9vHEk8kgRTSimsX3vJD8D9R/wNIkXJIUDqjUanS/k3o2jbAHj22yyCByuTnCZCT6nVfupJ/Y4kQcqFrjZpfAuco8hg=
+	t=1752165027; cv=none; b=MSjMGQIGX61t3RvUzRE4b3uj3QO7GPYK4TzTcYuee6zqnt/39xpw3t9yqJ249pGbhe+WVrgm0+WT2P/vF4zDFO7gOhsJKRtWY5OFA7SXyp02VBjVoXUUtTdXY2ymWBucUt07S/P61YYmngbrS+rLesGm8l36TbIsBf38Gxx/J4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752164181; c=relaxed/simple;
-	bh=qJz6fbDEwKR2n0fhRoYqJTEv9xrZ4rc7vxiYqtlCqFQ=;
+	s=arc-20240116; t=1752165027; c=relaxed/simple;
+	bh=dXEx8C4zdMhNe5T9SlUrwVutUxjfS1FZbZI+sOaRdN0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fm6HLeyXoogIyrc/z7NJcM2lPoXmuvboVr8+05JrslTkZ3Kg1OuZqPwDm5RaUHhHWw2zO15O07lEBf2QlkQHDoYDuXHhpAkmKvODexMdr3n2mGzl21nJScOpTaq9yc6uzXc+pJwk2qhom9axeRtAjt6BR+pf11Zkp6645CEVAyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agWVMjGu; arc=none smtp.client-ip=209.85.222.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=DDkkVKoR+iJUpCGSqLgHqN2Cay/d5qsShiALjPY/43x3u+aiaDo+qPBR8l4zVX56rKQAT/TiVogLdCBtdF8b2YMeIan0T/g80+Yfc/P4nc8zFSSofWOtFEsCl2b3uMaeX9LMBSAVE5XIz7qxRYFSw9soJHcpYF7br0oZy+4HaFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ASr+D8vW; arc=none smtp.client-ip=209.85.219.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agWVMjGu"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7d3dd14a7edso174101985a.2;
-        Thu, 10 Jul 2025 09:16:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ASr+D8vW"
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6fb1be9ba89so11823656d6.2;
+        Thu, 10 Jul 2025 09:30:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752164179; x=1752768979; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752165024; x=1752769824; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1e38L05MDqdYlj/kHUFQccsi1c7uERaQIJKOoZdkmzQ=;
-        b=agWVMjGurqRtKQHzJzRqyURIzAiIHNpzOkrXPNq6O10eb/XWNjV3fnl+0MLctesUOS
-         /3Za563UwUz+yMr7tUz2hl4t/enHDSSACymj2h8bm3/3ZPEeBJI214PkW5pcmU6Cxlon
-         fazaWr/Jx/jNNM+AdUFE2etbqZXdidL2yyyPfNki+Y1R8AFBt/EENPsnovk5e0DCrCjS
-         41BfUV1DtFw8yoLRs4b5g0ZQ12n7s6LlH133N97bpVCdhNOF3HQsMreMtdSzRV7+H2ji
-         UhfgHmGhkSEWnhaJpUJu9C6Q9+A7GWrw5ls1OHElxp5Z3RJjmdTXoesgUm4ZyCJKQ2I0
-         RhXg==
+        bh=KZgmAU4thp0bHztOR8076veA3tx3tbvAjmteD5mC51w=;
+        b=ASr+D8vWtmmSJNM/fQLCQbPcRwj8Q9eDVt6bkkhnTpog5HZFzFBOZ9MCtxbGwxyjY+
+         MozE9IxqWBEiMGDGI9GLTpK87GMmLBHINYlvL3PPNzfnBsKvRghnbhNHuhNKPlRcQSNR
+         E7yJDVpjRf9ROELeicFN2obhsZvxJic4S1aQxqY/QU/Nx8YIz6iHgu1UatzXhMHlVzfI
+         +6xa2wURwJHxQdsreJB01QsxBe9y8sK06o/b5l1qTmfx0vA6wFLGmJI0qmfoR4h0XvhL
+         oU0LPSJ5MdwKztWiYijVr4Q8yFHPZwoSx4Hj1Gfd9tGBaj+eQ4RvlAzjb3IeEXJbN7x1
+         ANtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752164179; x=1752768979;
+        d=1e100.net; s=20230601; t=1752165024; x=1752769824;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1e38L05MDqdYlj/kHUFQccsi1c7uERaQIJKOoZdkmzQ=;
-        b=Ub+81sPdnDTqals2GCGaBi6zUXE+3e92hbUYfLI1PVz9bzU73AtdXq0FCFurpHcp2O
-         bMcpUIMzOtP1jpDh3+w+9uWhL5Ud7Ge5MpRXhjM9dQVDRHTBSrMwIyfqlHo2fIgM1sPh
-         2Uh8XEm2JpryXfe1i4DzlPuvNQfvA88lF1myRdmG3y0RNisWw1U6sgPzvwtar9GbPdZN
-         aiUMlLJ1Wft99Nk6Rawfbn42AuSNnIcKEyOMIXmpgPOLXSsUOaZdsdSk0w5AmNpIvUM+
-         XGtQi0SI5kftPYX0g+SU5bzNRpgLyd4HIUPm8fohFr4ynQrez00/GyJsmw7J5BaFQXWL
-         SF7w==
-X-Forwarded-Encrypted: i=1; AJvYcCW+9NJY+eMP70R20QXQ/lo+32SrybdHDyAsuDZk9LTf4xHZzAdRio7SEqp5ppfbOXoiCs7vYA1PoLBJN9cz+yA=@vger.kernel.org, AJvYcCXpJaQLUvugQtYmXn9Y63lWQESwMqFxV/IvAalIDIVgt8yFnOwvqayB6p8dFPM7qVKS57fVWx/woXcB@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeX25Alaz3c63xBdq6XIUhuID9MdjR6jAJj0y10EGrVzpWVrfy
-	QmWxrF6xpp+yG305n+HIAQbHCE31EjKB2tY52AbGytY/JzqVKoSIkXLN
-X-Gm-Gg: ASbGncuIFXAYafEs62cj8mQO4f1Lzn1G7hMejyNwfzkSAjB3HGzSH4IVi6InSd0ve/P
-	RZ2aC91AMTsshCSlvez3hmezA+trbRlqUkBQ0qsXGyy5hHVy/u5oAmsD/Pi5GOGh1zbCXvhjYlZ
-	hkqubbW33x1fTcbqdm7CEhPxkOOWZ1nSLEWCcb2cvYSs7enIm2wTix11l66k+w6kx2NRYoKtGCN
-	jrT/sEzXxB608gSfWtRfmQ6xNtFu/bdg5xjfAD4Dom0nHL5kQ5nxN6FbJ+DAQVKcvG0AsAbZob7
-	OErvVGTj7vqLpykgkaTe5TheraGBuCSR6mNYWfdh93DkNEptVuaY7BhKMfDLAuiyIkSq+aQNLv6
-	//53msnDpxtgEGFCyQ8Rea8g1HrRbkdaymDF9mv6R2Tg3ywIWkno8
-X-Google-Smtp-Source: AGHT+IHJozt3f+ojIXaL0YmFLWxTUamIZY9TjGksGKQkUrOQV9kg9o5Js9x38WbBIRg4VOWyeYCXew==
-X-Received: by 2002:a05:620a:3726:b0:7d4:451:b8cb with SMTP id af79cd13be357-7dde9b5e387mr16954485a.4.1752164178277;
-        Thu, 10 Jul 2025 09:16:18 -0700 (PDT)
+        bh=KZgmAU4thp0bHztOR8076veA3tx3tbvAjmteD5mC51w=;
+        b=adNROcD8kFRC7qvZbZB1/L1jBBFOXZSB5wgDsd0IkQd9ZTNURHM43vi/wjgUL3Lepl
+         FG9tiQ7RPvVy8XCqRBbsV22FC2MnJzwWPJLViJNVUO7l9w1x9T/b17FPfJbT7Grr6oAS
+         r8hOSLMoPAl8nDWZeVw2sn0h4GHSgNgEGz1si8kfhfnOo0ywsTJcPXV74xAPZqxcO0cN
+         JJD58uya3LZGo3SWgk3DezIEcmRbXrl5MxE0fciIaZvVNVYwR49j1IszbUT6eZduP+Y1
+         hOffan8IBrh4LDUfE1FXtwcCKufglZ1VVop3W5KzviMJZ8baQxEM+g+Y9uWo3b4oCvLQ
+         oYYw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTbQ49KHZTs77FYn/DEyR5VRDZKWtyuPZgbPobb4aQRszyXyOXIUbx8wVrkBPRPxfgjEC/Swr4aP57T7M=@vger.kernel.org, AJvYcCX2Umo4gWe+V3HqtIhEcv6iI+MiTScnbWY6Wkt9qZW1k8nig+Y5FH7l9JijJ1cjPPGyolZyC1AOLpwBVrR74Zk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziPSh166E2NSrLxmDK01BxLDtYQbNLD3Lgbmh5Y3CKE411V9i3
+	v8sZGoZCmE8ziIGgvTZIiStqdUhX06TQYv+lEZUgN5BbcHxN43yFxEr9
+X-Gm-Gg: ASbGnct7PlgUdaUWjtQxGj1XyP/t4uX0KdI3FOLblH4ozQ2AnTzwPN4sfARfF32N92I
+	SKebYLA1Zz2kLo4IIwfPqldkRqzbEpapY1SJhkdHbWIvlL71CjcFswWyTlKd7Uh3Hh0/DBCX3wR
+	j49tEyYB6Yzfr7QQZ0VkGTCH3Idpilh8sXiLuGDAzrVK5v9vHWUWgtZZunSCkhqBiZqE/nD9qPd
+	nNiMan4yBNDjPv+VcWOlmqm3p1XT2mNBkxTjKvTmHg6M/JthxmsKS5ceBOJMv30XZWrASPrgV7F
+	iayapy+DyzlbMr9yXC+2IsvvjQOYEFw0QLKWeLJB5JKfG8Jrfa4gXMgo0cHQMRfej0UdeFdLXd0
+	py2Q+BRwmQjrl+14X46PS6Js8PsFOzhDAKUbJG9JArye66bFeA1ScNCq6nW1AYBg=
+X-Google-Smtp-Source: AGHT+IH44LgXLQeB0ubyR4yUU2OUERWsV2U+tjNpfzw60bECm7IdvvtdKDYi+L38Ia2m2UuV3Yxxcw==
+X-Received: by 2002:a05:6214:226a:b0:704:84de:9640 with SMTP id 6a1803df08f44-704a34044a4mr427646d6.18.1752165023556;
+        Thu, 10 Jul 2025 09:30:23 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7dcdebeb7fasm110680985a.109.2025.07.10.09.16.17
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497db4acbsm9894686d6.109.2025.07.10.09.30.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 09:16:17 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 34CD6F40069;
-	Thu, 10 Jul 2025 12:16:17 -0400 (EDT)
+        Thu, 10 Jul 2025 09:30:23 -0700 (PDT)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 8A170F4006A;
+	Thu, 10 Jul 2025 12:30:22 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Thu, 10 Jul 2025 12:16:17 -0400
-X-ME-Sender: <xms:UedvaAZzkqA4y-cGMCDXhpnP5iUm7BEXqqGZ0eUqDCTSALRe49hJKg>
-    <xme:UedvaM7GC3k1K3EeNd_1dLbW8KFVJom3BlpOnEXM0NDKo10dLzU80gt52cAFyO8Ws
-    v4q1uC6yHqSxTlP7g>
-X-ME-Received: <xmr:UedvaPgYmEx6Hjh4M-dt6OV_SzTufwnw2GgvL_ZqOLOG-PFgxQSlK10aCg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdeltdcutefuodetggdotefrod
+  by phl-compute-06.internal (MEProxy); Thu, 10 Jul 2025 12:30:22 -0400
+X-ME-Sender: <xms:nupvaKJbFnonf-W1cZ-YRR3wFhrIC6kq6b1p2WshFO2Kxqdg5_Eq1w>
+    <xme:nupvaKCa2yEVGWxBxhLVtBYs7AfoSxjZf31qgx0gPdAeMKhY-MOYz0gKvheWwaE-E
+    WIW3MiLnKOgS7Yjag>
+X-ME-Received: <xmr:nupvaKH1n7ZsjqEM5GyICTA4w1fO6DLrKRTdRAKy0rxhsxJajQY0rKYUfA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdelfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
@@ -76,53 +76,40 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdeltdcutefuodetgg
     necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
     hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
     jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdq
-    fhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkh
-    hmmheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgt
-    hhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjoh
-    hrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:UedvaKIbw_sHaSckgITENpmw56Jjxg6e8QxxTssYV4es8AlV5ddMAQ>
-    <xmx:UedvaJqnNSqPoM8DT1t1bKQi0m22-aumA3PfFbujDO8bkh7SoOohYg>
-    <xmx:UedvaAzPCMXdsGHR10Wv25vwkPCt4m5eysWGDiSlx34Xt7hgapAl1Q>
-    <xmx:UedvaNf5hWVSwyquZXYio9wVymOgYsWVBCoYi5YXTeaDwoaunvBkAw>
-    <xmx:UedvaMdrZFotRxzxKBSQ7xt2JlnMdNGnIWZMFnBUhOZvMNlJ2lnxViCs>
+    drnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepthhjse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtoh
+    epjhhirghnghhshhgrnhhlrghisehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhih
+    sehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtoh
+    hnmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:nupvaHLDh5sk4sxAWD4fc4EJHIYcwPajsAalAt29uyqq76v3zXy5xA>
+    <xmx:nupvaJrhBBss2oTmhNinMTaiZkZuQTEbYWqco2m9xV_6vaZR7Cm_DA>
+    <xmx:nupvaGiGuN8j07MvPJkjTVlKqLywmunlVovm3AcyAHqSwOTesdsluA>
+    <xmx:nupvaAb2mPORQYmlwoEdLC_cFvd7bNkltnzk_Fy5jyCBqWUquSkS4g>
+    <xmx:nupvaGlisfYrgowJzi02oMhFi9tnSB11eKlmcTJpbozlxRpn_6ecyYVx>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 10 Jul 2025 12:16:16 -0400 (EDT)
-Date: Thu, 10 Jul 2025 09:16:15 -0700
+ 10 Jul 2025 12:30:21 -0400 (EDT)
+Date: Thu, 10 Jul 2025 09:30:21 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v6 2/9] rust: sync: Add basic atomic operation mapping
- framework
-Message-ID: <aG_nT3H8J-h2qwr5@Mac.home>
-References: <20250710060052.11955-1-boqun.feng@gmail.com>
- <20250710060052.11955-3-boqun.feng@gmail.com>
- <DB8BQGJNFDAY.BGQ8CZSFFOLH@kernel.org>
- <aG_Yah5FFHcA3IZy@Mac.home>
- <DB8HQLY48DFX.3PBBUTQLV14PC@kernel.org>
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
+Subject: Re: [PATCH v2] workqueue: rust: add delayed work items
+Message-ID: <aG_qnYSu4DU5xnP1@Mac.home>
+References: <20250627-workqueue-delay-v2-1-84b046fdb4fc@google.com>
+ <aF7YWE4bz98Gqh1y@tardis.local>
+ <aG-7402hh4CCN7vh@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -131,117 +118,26 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DB8HQLY48DFX.3PBBUTQLV14PC@kernel.org>
+In-Reply-To: <aG-7402hh4CCN7vh@google.com>
 
-On Thu, Jul 10, 2025 at 05:46:56PM +0200, Benno Lossin wrote:
-> On Thu Jul 10, 2025 at 5:12 PM CEST, Boqun Feng wrote:
-> > On Thu, Jul 10, 2025 at 01:04:38PM +0200, Benno Lossin wrote:
-> >> On Thu Jul 10, 2025 at 8:00 AM CEST, Boqun Feng wrote:
-> >> > +declare_and_impl_atomic_methods!(
-> >> > +    AtomicHasBasicOps ("Basic atomic operations") {
-> >> > +        read[acquire](ptr: *mut Self) -> Self {
-> >> > +            call(ptr.cast())
-> >> > +        }
-> >> > +
-> >> > +        set[release](ptr: *mut Self, v: Self) {
-> >> > +            call(ptr.cast(), v)
-> >> > +        }
-> >> > +    }
-> >> 
-> >> I think this would look a bit better:
-> >> 
-> >>     /// Basic atomic operations.
-> >>     pub trait AtomicHasBasicOps {
-> >>         unsafe fn read[acquire](ptr: *mut Self) -> Self {
-> >>             bindings::#call(ptr.cast())
-> >>         }
-> >> 
-> >>         unsafe fn set[release](ptr: *mut Self, v: Self) {
-> >>             bindings::#call(ptr.cast(), v)
-> >>         }
-> >>     }
-> >> 
-> >
-> > Make sense, I've made `pub trait`, `bindings::#` and `unsafe fn`
-> > hard-coded:
-> >
-> > macro_rules! declare_and_impl_atomic_methods {
-> >     (#[doc = $doc:expr] pub trait $ops:ident {
+On Thu, Jul 10, 2025 at 01:10:59PM +0000, Alice Ryhl wrote:
+[...]
+> > 
+> > 
+> >     unsafe { Opaque::cast_from(&raw const (*ptr).dwork) };
+> > 
+> > > +        // SAFETY: The caller promises that the pointer is aligned and not dangling.
+> > > +        let wrk: *mut bindings::work_struct = unsafe { core::ptr::addr_of_mut!((*dw).work) };
+> > 
+> > Ditto.
 > 
-> You should allow any kind of attribute (and multiple), that makes it
-> much simpler.
+> The rest of the file still uses addr_of!. I think we should stay
+> consistent. We can update the entire file in one go.
 > 
 
-I didn't know I could do that, updated:
-
-    ($(#[$attr:meta])* pub trait $ops:ident {
-        $(
-            unsafe fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
-                bindings::#call($($arg:tt)*)
-            }
-        )*
-    }) => {
-        $(#[$attr])*
-
-Thanks!
-
-> >         $(
-> >             unsafe fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) $( -> $ret:ty)? {
-> >                 bindings::#call($($arg:tt)*)
-> >             }
-> >         )*
-> >     }) => {
-> >
-> > It shouldn't be very hard to make use of the actual visibility or
-> > unsafe, but we currently don't have other visibility or safe function,
-> > so it's simple to keep it as it is.
-[..]
-> >> I'm not sure if this is worth it, but for reading the definitions of
-> >> these operations directly in the code this is going to be a lot more
-> >> readable. I don't think it's too bad to duplicate it.
-> >> 
-> >> I'm also not fully satisfied with the safety comment on
-> >> `bindings::#call`...
-> >> 
-> >
-> > Based on the above, I'm not going to do the change (i.e. duplicating
-> > the safe comments and improve them), and I would make an issue tracking
-> > it, and we can revisit it when we have time. Sounds good?
-> 
-> Sure, I feel like some kind of method duplication macro might be much
-> better here, like:
-> 
->     multi_functions! {
->         pub trait AtomicHasBasicOps {
->             /// Atomic read
->             ///
->             /// # Safety
->             /// - Any pointer passed to the function has to be a valid pointer
->             /// - Accesses must not cause data races per LKMM:
->             ///   - Atomic read racing with normal read, normal write or atomic write is not a data race.
->             ///   - Atomic write racing with normal read or normal write is a data race, unless the
->             ///     normal access is done from the C side and considered immune to data races, e.g.
->             ///     `CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC`.
->             unsafe fn [<read, read_acquire>](ptr: *mut Self) -> Self;
-> 
->             // ...
->         }
->     }
-> 
-> And then also allow it on impls. I don't really like the idea of
-> duplicating and thus hiding the safety docs... But I also see that just
-
-At least the rustdoc has safety section for each function. ;-)
-
-> copy pasting them everywhere isn't really a good solution either...
-> 
-
-Yeah, perhaps there is no immediate resolution, but open to any
-suggestion.
+Sounds good. Thanks!
 
 Regards,
 Boqun
 
-> ---
-> Cheers,
-> Benno
+> Alice
