@@ -1,160 +1,173 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03EC2FE32E;
-	Thu, 10 Jul 2025 20:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCE82FD877;
+	Thu, 10 Jul 2025 20:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752179376; cv=none; b=oXDlOhS4p8STPrP9T45GkSKzJFa5Ror6+jjS8IXNj5VuAInzVfLuzPZwCMudKoy3rSW7vgzCMEPmrhJAT8W4IIc79C7IjcrU3KiOB93LkzdFDAwP+XU6d73gV/kwAxBdQLtrofy6XkgbjVjSOOdjmtwaKsWoLK1P2ktbl2tIk1A=
+	t=1752179990; cv=none; b=G9y+vapamA+/4koI/cKywRIk4RgHv51h9g789EdczcrclXa7xhRfrr6+Ji0hTdfLfi9iQo1HeGyx3NjvASX6rzeYJDDC4j7ERVyp/tnyW6kxRzAPSDxYIkoUH20pL0CAKyPZbqhIuBAK+RFc6RwZHv8fdFmhgNh5mWoEsEf0FlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752179376; c=relaxed/simple;
-	bh=hI6kF2VsYpQSxed7fWUz+U28xt0SkXt5Eiurxvo0eFo=;
+	s=arc-20240116; t=1752179990; c=relaxed/simple;
+	bh=vUrm0DBYVmQsNEyQ5kp5t9UXVn/4E5ekId4XN8uE1E4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gRJQLgwWeq3T56m7Y4mNNqj02csOdKAz8INHJSDMCikthcKOX5iXR/hLMBWYFvd3kP/HU43GiV8/VAVbSk2wYws6bQvfnh3Pbpi30k5x+QBbuoljOqAfzaX9xBTXSjiabrdmPEr93A/j6F80KIpBhXi5Vl3E1cfMA2QwHmdsK48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cIIbQi31; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=kkY2Rie4nrUdBmj7OMPPrISnC0heouIDnOiP3br7eMvHFCz82Lhq45qCwBitxU1hFFa3E4D3C7Z5jwZiBe02zRbq34z7hy1fTYN5HmydZV/sL7mSkhHYJbWrpWaAxOOelCF5sB1C60pz7RyfYSbK42UW0Fcg/eJIQp8fL/qowWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhnowvdL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cIIbQi31"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7d9e2f85b77so223244985a.2;
-        Thu, 10 Jul 2025 13:29:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752179373; x=1752784173; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n9Kows6//5K1XKbUlD36iwUd832otL138Wso87VJRuU=;
-        b=cIIbQi31LZuVzcNQ0x/HdpbbyX4/Cn49YzqR4uKBrtyztqXNhVxS8rf8E15zKA8JJu
-         Hk4heajay498ixqaET+pXmWDrgDf05oCk2PIL/dQ0DAcIlw7iGydohEPKi9bqZd8GR9j
-         mJoPziPqqeletdVXKsCSO2iR5goE0Qvpe3XIUOFbbpPczrP0MlGstcn8p9+2QTEnilto
-         q1Abg0HVIvwV0NHTTzcTAsjpV9Z4SLE4TgPcvQejUV2eWFT9JXh9YqFbRitNDwcqx5hZ
-         Nts52sqrJNYcjueFQhKEX6D5JqGdpp0mXuE9hEvJ/R26aEiYOdydnIpj4/GZEaDvt8FB
-         zMnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752179373; x=1752784173;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n9Kows6//5K1XKbUlD36iwUd832otL138Wso87VJRuU=;
-        b=MMSC/V9TeZIBBdKMPILTslICQ/x5Xx4iLqDMIE8Fog8lXSoEEXUnN9uvxa0SegotQt
-         2o55hyQnRpmtLLPeuCe8pOd8LjMcVkN9hBENq+Qjf7pqDl0q46QrDwTfFa44rY7d28F0
-         mv3oa/7IiZqPJtFsV90yJfqhy1maT9VVJm8I9cb89+GK7JvLLy6CfnG2kL7ssgfuuT2u
-         TscHYsPc71pYuoFBp1OCWV4xBOMxfzWjrcoEc4hw/C3s2dxWRCp82ZznEYpyuTDXTi2B
-         8QqjhHopOVENO2oPssPWlBV7Ss7BZLo/sbrP92SGnZ6vPk5H+v8Yo81kaJDcgVLlAd30
-         T/XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ2iKJgJqF+L0LTEep8LeF2OImOA5v6NmTAq8QC5gSj3QxLEarZE/UiO2W0QcyGq+w8UAnWg38dLrd+jjlJ1U=@vger.kernel.org, AJvYcCVcyXRdIRdEL9KL6XMYpZmgkNUjtIhKxXrFRrjwAw0JZ5EIn1uY0hO9Jy2DqFfuDWpotuuc6w37gbzE@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXMSWSnfbiCIStVpHLdI0ARupLcLhOUiqDzltKK2yO0txc4kRz
-	SV0PO5cFRFc0a+SQ0FIRUOfr9Foonz+hI2tRUm3p5kQgwo3ZSldjzaKv
-X-Gm-Gg: ASbGncs1aa8RBaKUDtXaGPQlpQ6d64t22bpX7M6db5AH14GsVymXI/dNafN+hiF1q9w
-	BkX8EXxMJS1LpfgjfD3jOdWBEw1NJ2Yz3UVz2zWQ0fWERisz1FLTStlVZ2ejvGemZpeE3Y1Ju8r
-	V4864vgPDZzK3AzZTen5+1Msq7vdgLvbPwLMJEmq7ODwX/b9Ic7CHX1NgOpGxYUu0dPAroHytpT
-	/f5TfDCmlY0D+tBmmVIO3fYVzvuUZuDr8xFyuiLq0F717jOW7awXtf5MT4OgHkd4jTJAzO9Fz44
-	GBNyjIQXiyYKYn5tT+RRGLD2yvLSlE6mzxvMHyFZj2Ofu0CDegmglVJ8Rcfo4byMVLBtjTQDY0y
-	susZeQhEtmDteaElM9r+dVZNty5XB5Fxhic61D8Ht2X+MNcGgptvt
-X-Google-Smtp-Source: AGHT+IHTxHpV0SwGmDFllmbTBLgJt+IQPK8l4umZTYz9F0x4Va7+5/8tlYrHthE4s2dROSDM9gkudA==
-X-Received: by 2002:a05:620a:a118:b0:7d4:57b7:bc12 with SMTP id af79cd13be357-7dde9d4b464mr115881485a.10.1752179373431;
-        Thu, 10 Jul 2025 13:29:33 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7dcdebeadb5sm136572885a.113.2025.07.10.13.29.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 13:29:33 -0700 (PDT)
-Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 26EFEF40066;
-	Thu, 10 Jul 2025 16:29:32 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Thu, 10 Jul 2025 16:29:32 -0400
-X-ME-Sender: <xms:rCJwaApMAG3WehairgMCq8kOSYcKvMddKt9s7szDEwvLTogrYO4TDw>
-    <xme:rCJwaILFerzZGDlmOTkw4csLP2SdPJPzHC7jmO8TG3CRlnOR_6U2lkLa-nijzVRJw
-    chnhFI0VM5NPb_5Iw>
-X-ME-Received: <xmr:rCJwaJxDoKHRCxVqWXHTBIs6llhd7KG1GACW0EPSONc5jKvUnmOxWxwhYF3anoVz6UbHpEMUvdey0hWHD_L5ezcPi24>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegudegtdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdq
-    fhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkh
-    hmmheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgt
-    hhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjoh
-    hrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:rCJwaHabvA280zNgmWRCUYxiiRtxOB7BFdP3fzB8P0egKRMvSLaxTg>
-    <xmx:rCJwaN6MuakdEsUfkF6v6aCHEK7TRJKsVZ8ewUsMpmy_EqhSIzDx2A>
-    <xmx:rCJwaACF3OI3zx8uVHhJ-JWze1x5lpppwZs0aLk65pMEvBhDhBSWBw>
-    <xmx:rCJwaLuqE6Nqlit1Cv77HRIYlf2VTRDVoSiSvt_B6klWLtN4nPPuyA>
-    <xmx:rCJwaNuU1aYnFxMo6iLrDLg7_BdA_kdupz1-vus4I2wi46AAq4QRP1cu>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 10 Jul 2025 16:29:31 -0400 (EDT)
-Date: Thu, 10 Jul 2025 13:29:30 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v6 2/9] rust: sync: Add basic atomic operation mapping
- framework
-Message-ID: <aHAiqhPe5OwVioUe@tardis-2.local>
-References: <20250710060052.11955-1-boqun.feng@gmail.com>
- <20250710060052.11955-3-boqun.feng@gmail.com>
- <DB8BQGJNFDAY.BGQ8CZSFFOLH@kernel.org>
- <aG_Yah5FFHcA3IZy@Mac.home>
- <DB8HQLY48DFX.3PBBUTQLV14PC@kernel.org>
- <aG_nT3H8J-h2qwr5@Mac.home>
- <DB8MAQC4V57F.1GGYO1PNPOV2X@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhnowvdL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2451DC4CEE3;
+	Thu, 10 Jul 2025 20:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752179989;
+	bh=vUrm0DBYVmQsNEyQ5kp5t9UXVn/4E5ekId4XN8uE1E4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QhnowvdLwGxO5FcGiyEC/iTheG2sll0XVDRFDuo9968chhMNDZ2xDbMkK4lxAGRjE
+	 +FPhnb8SmOCleRMMKyWU9qS9Uwfz8nonGFsHNjrGIQCgH8Lq6zSbflBBCbdvno7CfL
+	 RH6/wB5hpeSJTFs3VRzwVo2/vLXpyHOGBauoRhhXcpLM1iWniCoJRuCH/uoy+GXQ6M
+	 4LfYHRF2zmPbSw8vLcMRfyntkrB3SVWSnafdSW608uHstNLzmIS/QunPLsos0oXg0g
+	 UBGfqZeMy/m1OCPJEDD0MsXyPwYup3i/fwUaauNKLYUSxu7GC4XQEQTqtNtzt8eZkz
+	 jcC90wEB2wqyA==
+Date: Thu, 10 Jul 2025 22:39:46 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Benno Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>, 
+	Drew Fustini <fustini@kernel.org>, linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+Message-ID: <i5ee2u45kmcb2su743th744ofnmk4lkfq44iqvfwdjwscv3bz7@pjakppae22na>
+References: <CGME20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6@eucas1p1.samsung.com>
+ <20250707-rust-next-pwm-working-fan-for-sending-v10-0-d0c5cf342004@samsung.com>
+ <e8a4a821-e7e4-4bcd-a2ac-f6b684b6ceea@samsung.com>
+ <ipvaegqlkco5qinhvn33mqvg7ev2walvs74xtzvhimxsfsfzhv@gcmpxcdtetdn>
+ <e77eab1c-446f-4620-95be-d343684d1e95@samsung.com>
+ <4hmb3di5x2iei43nmrykrj5wzlltrf3vrnqvexiablonbscn57@4bbsz5c76t63>
+ <ad17dc8a-80b7-4344-a1be-6cf780567aaa@samsung.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jtthsjazjtpn3zg5"
 Content-Disposition: inline
-In-Reply-To: <DB8MAQC4V57F.1GGYO1PNPOV2X@kernel.org>
+In-Reply-To: <ad17dc8a-80b7-4344-a1be-6cf780567aaa@samsung.com>
 
-On Thu, Jul 10, 2025 at 09:21:17PM +0200, Benno Lossin wrote:
-> On Thu Jul 10, 2025 at 6:16 PM CEST, Boqun Feng wrote:
-> > At least the rustdoc has safety section for each function. ;-)
-> 
-> I don't usually use rustdoc to read function safety sections. Instead I
-> jump to their definition and read the code.
-> 
 
-Understood. It's probalby the first time we use macros to generate a few
-unsafe functions, so this is something new.
+--jtthsjazjtpn3zg5
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+MIME-Version: 1.0
 
-But let me ask you a question, as a programmer yourself, when you run
-into a code base, and see something repeat in a similar pattern for 10+
-times, what's your instinct? You would try to combine the them together,
-right? That's why duplication seems not compelling to me. But surely, we
-don't need to draw conclusion right now, however that's my opinion.
- 
-Regards,
-Boqun
+Hello,
 
-> ---
-> Cheers,
-> Benno
+On Thu, Jul 10, 2025 at 06:58:41PM +0200, Michal Wilczynski wrote:
+> On 7/10/25 17:25, Uwe Kleine-K=F6nig wrote:
+> > On Thu, Jul 10, 2025 at 03:48:08PM +0200, Michal Wilczynski wrote:
+> >> On 7/10/25 15:10, Uwe Kleine-K=F6nig wrote:
+> >>> On Thu, Jul 10, 2025 at 10:42:07AM +0200, Michal Wilczynski wrote:
+> >>>> On 7/7/25 11:48, Michal Wilczynski wrote:
+> >>>>> The series is structured as follows:
+> >>>>>  - Expose static function pwmchip_release.
+> >>>
+> >>> Is this really necessary? I didn't try to understand the requirements
+> >>> yet, but I wonder about that. If you get the pwmchip from
+> >>> __pwmchip_add() the right thing to do to release it is to call
+> >>> pwmchip_remove(). Feels like a layer violation.
+> >>
+> >> It's required to prevent a memory leak in a specific, critical failure
+> >> scenario. The sequence of events is as follows:
+> >>
+> >>     pwm::Chip::new() succeeds, allocating both the C struct pwm_chip a=
+nd
+> >>     the Rust drvdata.
+> >>
+> >>     pwm::Registration::register() (which calls pwmchip_add()) fails for
+> >>     some reason.
+> >=20
+> > If you called pwmchip_alloc() but not yet pwmchip_add(), the right
+> > function to call for cleanup is pwmchip_put().
+> >=20
+> >>     The ARef<Chip> returned by new() is dropped, its reference count
+> >>     goes to zero, and our custom release_callback is called.
+> >>
+> >> [...]
+> >>>>> ---
+> >>>>> base-commit: 47753b5a1696283930a78aae79b29371f96f5bca
+> >>>
+> >>> I have problems applying this series and don't have this base commit =
+in
+> >>> my repo.
+> >>
+> >> Sorry for the confusion. Base commit doesn't exist in the mainline
+> >> kernel or linux-next, cause I've added some dependecies for compilatio=
+n,
+> >> like IoMem for the driver (uploaded full branch on github [1]). The
+> >> bindings however doesn't depend on anything that's not in linux-next.
+> >=20
+> > The series didn't apply to my pwm/for-next branch.
+> >=20
+> > Note that the base-commit should always be a publically known commit.
+> > See the chapter about "Base Tree Information" in git-format-patch(1).
+>=20
+> Hello Uwe,
+>=20
+> Okay, thank you for the clarification. I understand the requirement for
+> a public base commit.
+>=20
+> My intention was to include the TH1520 driver primarily as a practical
+> demonstration of the new abstractions. However the driver can't be
+> merged as is, since it depends on the unmerged IoMem series and won't
+> compile against a public commit.
+>=20
+> I will rebase the series on pwm/for-next and drop the driver and its
+> associated device tree patches for now. I'll send a new version
+> containing just the core PWM abstraction patches, which apply cleanly.
+>=20
+> I will resubmit the driver patches once their dependencies are available
+> in a public tree.
+
+If you base your tree on (say) v6.16-rc1, then add some Rust
+dependencies up to 47753b5a1696283930a78aae79b29371f96f5bca and then add
+your series, you just do:
+
+	git format-patch --base v6.16-rc1 47753b5a1696283930a78aae79b29371f96f5bca=
+=2E.
+
+=2E This results in a base-commit line that I (and maybe also build bots)
+can use and a bunch of further lines listing the commits between
+v6.16-rc1 and 47753b5a1696283930a78aae79b29371f96f5bca that might be
+findable on lore.k.o.
+
+Best regards
+Uwe
+
+--jtthsjazjtpn3zg5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhwJQ8ACgkQj4D7WH0S
+/k5+KwgAhf54BP4kesXyQExjra+S+O0lY+TfKRFwYNc0TlA1mA4Rm+cVJOx2VqWa
+frCc5VeKCFE6+c89m85REdWNNdsSopomRCf0mrCVF+X8VkDLyCPKl3Lj7Yx0ZfVn
+RFZl4QKG9y3843FRVetY6MtTIU8DXamyeY/Pr2yFfM94BfoDgaagQGuuQzuChQ9h
+ydq075UFuzYr0pGEIMmKkNhBqPOKfy2TeahxEHiBe8pxLUugu+LMbcVeqPlcCXU1
+igrkXeJ/DfKhdGvhywQXWazl/93kK0TbRncw/zdvGgB8hbS0NXSQk/qQMDt0mvwa
+fB2HOYIpHDD3dNuiyoC/+lgbRGfHgA==
+=L5lu
+-----END PGP SIGNATURE-----
+
+--jtthsjazjtpn3zg5--
