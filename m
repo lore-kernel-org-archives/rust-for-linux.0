@@ -1,154 +1,108 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CD6285062
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 16:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE1C1E0489;
+	Thu, 10 Jul 2025 18:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752166727; cv=none; b=sTuFqTE+o0YMBF1eEoRJNVeCz+9Hq0YgywNbSR9vy4midH1hd8nPQxipFScdkXpx4QC16uZ/3kej648nG8UvNBP9FPufAPJydld69MtO/8yhTQUVFBTelQ2oYBaXKwdDOI2uZaKuOwy77RLGHlsrCSiCBwn1E+8RfoWzj8G8PJ0=
+	t=1752172375; cv=none; b=CSKaeqJw42VarKHs8j7Q7hYXtnWk5905haDzYbkhx1ymf+OPQsldrvqIO/BXWlVCr2v3YwDYBBXOwUW1U98GZ5NktbyUILWCKhY6hMYiZbElBVMJE9OmQYJx9kkV96Bpmmk7Td8jndE2K9h/XNUZjxh9RRK3bxqQ3csjRq2Mm4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752166727; c=relaxed/simple;
-	bh=MyftItMtY36JRBZeZdaONyuNfHOcQetVYlvXfauWP9k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=KnF1+B7vhLFulVKpzsE513lkHm/UhbV/S9WgmAvv5LTKbNWK9B6QDw9PR/tO9+QEw6INMEAYcSQfqb5ycGpgxHTbubiVv6RcRhr6CGbswqxCLOixVRIQHZoff5BQIIB75XbyQe0VCgxnF3vl/W9xgJ4gWBqCXmsNJHcnkwetVyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=N+iQ/IgK; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1752172375; c=relaxed/simple;
+	bh=WepPI1QEsb7KVPco0eNErLMr0WYuLRbteu135zLMSYg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=knCVVmgpW+LFKTXv/HbPOoWta+uwP4gxXvTXZJnG/7UXCLB1mnra1/0ecBHvaZX4hAmwjvmJcuTJ9RvqetUVGypSuFIiyijSm79KoZ41E3oBOQdTeq/QYV6CCs5znKBzDHTl+hWLvJlFtgLbxWB8OY9Zw02b//70lca1BBC40PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WOtLXRKS; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="N+iQ/IgK"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250710165843euoutp01e5ee8f0467b2c1fbb5c4693655abfbf9~Q8lofcBVw2193521935euoutp01u
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 16:58:43 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250710165843euoutp01e5ee8f0467b2c1fbb5c4693655abfbf9~Q8lofcBVw2193521935euoutp01u
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1752166723;
-	bh=ZgLkHoYpMZXGlyM12JkaB3eUvSr6n7CdDmsdbr4Effk=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=N+iQ/IgKJDR12WkLkSHfzHnREv0EVSZqpC/v+RNieKTsC8JifH8dnuKu2sW+z6FjV
-	 OwUEFYe1Ay6A/lvzDK1ycZJdVXnFfxGk9K2gSLNhFZYzkZXoBhI7thHgygQCg6n5Ki
-	 GIc/Si12W4H0WBZcklPpbKg+MTIOitNRPdoVQKuc=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250710165843eucas1p228bef8c7cfef0151b9f27161df285873~Q8ln10Tqr0901609016eucas1p2H;
-	Thu, 10 Jul 2025 16:58:43 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250710165842eusmtip2966419c222cc783df17946c63fd3c343~Q8lmxbv6y2112221122eusmtip29;
-	Thu, 10 Jul 2025 16:58:42 +0000 (GMT)
-Message-ID: <ad17dc8a-80b7-4344-a1be-6cf780567aaa@samsung.com>
-Date: Thu, 10 Jul 2025 18:58:41 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WOtLXRKS"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-234b122f2feso1108375ad.0;
+        Thu, 10 Jul 2025 11:32:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752172373; x=1752777173; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WepPI1QEsb7KVPco0eNErLMr0WYuLRbteu135zLMSYg=;
+        b=WOtLXRKS8u2QY0/zPyBP/SU7lqkJu3mkcXI42Pk3Ng61I6VeBO5oaCZh3drRqlJrrL
+         RGYJiaFkeOx2Y9UDIMQIcOg9tleFuRmBwHckfdhDFYRwKr6ENdUlyiYxWVHZbU09jJ4q
+         FoIsmub/J5ipNwUo9D1Mcw4slSTDvSlIw+etGn2jQLIgQVwYe+1uBVKF88emrbAnk9xJ
+         8M+/S1+Zpxf+Tif7mVJPlZwkXxPEka8VpugVsz+///mHH332NH/H1UiCoIBq5EJkrcER
+         6K24+V2U9QtOHpoI/RNtlw4jonDPqDHjz37NdFm/s/34QjHrqdNALAdRplVfBS9qO2YX
+         3heg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752172373; x=1752777173;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WepPI1QEsb7KVPco0eNErLMr0WYuLRbteu135zLMSYg=;
+        b=R9v5MRjLx1mNS4orjpnO4S2GK8ixky4sWV1FJqhgNrxRsny8W5/g0aJHe5tDYmnz+g
+         aegqsjdVHBjUmg59fqso0v5HY0ddbFYer79nF31rSiEbKSt0gmlhv5VXQyEmYeFHcXC2
+         3U2yFih58ED4kQ1VJU0h0k90xeboOzIzBxEhSAHIpCqAs7LLPblw8CkvwAkFY36b2mUI
+         bt96ZXWcwckeSA3lsWtWDKiqmrI+9qWek404Fdf+BEwzjiDB4EEcIew9oi6bUrBWU+PG
+         8lw8B0jMoE6OzKYkXamoNadvn4kqEGcXj3obLhqfRPzfPD8+yfHHwcXwZBzFwtUh/7xU
+         MHXA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0pWz3grwPZ+Zz8Z40SDkhPBmFuo5ynG2+VsYnZwm5Q8Fn+55Dp9Q7Uho0DbsuNUVPpdEcSSfZgO4Su8CF@vger.kernel.org, AJvYcCVfrdG/SGJv3G1PwBXMIIjy+VtAYp0RTZUWWhBavZfmbIl8v/D2NeYxbBNY4vnjZoTI8AJ27AElIQVa@vger.kernel.org, AJvYcCXos4JRX2w7e7Ugl/dqhsvZdjpBu+09Esirs50PTWL3fIMmq+jdIoPTIT5svD2L5wjoS3T48wEKEkbaiDK1sfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5CbU9ylubf+ByGbMui5dkmU8mqz00A3ufHbqDdFUuJVgWj6ou
+	+QsIQSESqlPx0RnZUc8Jkw0zBVQOyZFcXFGVV4g2eR0aF1xGL65f66pM0HqDKdQpOkT3JY0EUq8
+	VXwdNUGyLSE+GHsJfR4agOcv2JSc8sbQ=
+X-Gm-Gg: ASbGnct3ak6wcS1CSTZJermz4oOwfs2l9h4UofvIS1ox1KXrU69nJIqDEU5Pw/x7F6t
+	UJuCqEqMYt6dCFkMxLhMPouHTZAMtLzZ4rE83qRgr7MEd91UCUNu1F5Jobl6t5cEpNHOtlV3ovx
+	whS18njdPrbqkcTcOUlZ5fdLjyTa3ScCwSYzFiMgPC
+X-Google-Smtp-Source: AGHT+IFTkKMM44D0WTx8T2njTBo+Lj4fPVbE0SyMH8GHthy2NxnMMGZoDLNlGDght6fNtjTJq1SCULKC7PXatR5fYYs=
+X-Received: by 2002:a17:902:d504:b0:236:9302:bf11 with SMTP id
+ d9443c01a7336-23dede81473mr1222765ad.13.1752172373216; Thu, 10 Jul 2025
+ 11:32:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Guo Ren
-	<guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
-	Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre
-	Ghiti <alex@ghiti.fr>, Marek Szyprowski <m.szyprowski@samsung.com>, Benno
-	Lossin <lossin@kernel.org>, Michael Turquette <mturquette@baylibre.com>,
-	Drew Fustini <fustini@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, Krzysztof
-	Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <4hmb3di5x2iei43nmrykrj5wzlltrf3vrnqvexiablonbscn57@4bbsz5c76t63>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250710165843eucas1p228bef8c7cfef0151b9f27161df285873
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6
-X-EPHeader: CA
-X-CMS-RootMailID: 20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6
-References: <CGME20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6@eucas1p1.samsung.com>
-	<20250707-rust-next-pwm-working-fan-for-sending-v10-0-d0c5cf342004@samsung.com>
-	<e8a4a821-e7e4-4bcd-a2ac-f6b684b6ceea@samsung.com>
-	<ipvaegqlkco5qinhvn33mqvg7ev2walvs74xtzvhimxsfsfzhv@gcmpxcdtetdn>
-	<e77eab1c-446f-4620-95be-d343684d1e95@samsung.com>
-	<4hmb3di5x2iei43nmrykrj5wzlltrf3vrnqvexiablonbscn57@4bbsz5c76t63>
+References: <20250710060052.11955-1-boqun.feng@gmail.com> <20250710060052.11955-4-boqun.feng@gmail.com>
+ <4Ql5DIvfmXBHoUA428q2PelaaLNBI5Mi0jE3y3YPObJLRgY73zNZzQ8Pdl2qq25VWsMQFKUpYRHHQ1e7wFaGUw==@protonmail.internalid>
+ <DB8BTA477Z2V.1J7XFLDXHMN2S@kernel.org> <87v7o0i7b8.fsf@kernel.org>
+ <aG_RcB0tcdnkE_v4@Mac.home> <DB8GUTJA9QU1.X112WTV7ABZN@kernel.org>
+In-Reply-To: <DB8GUTJA9QU1.X112WTV7ABZN@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Jul 2025 20:32:40 +0200
+X-Gm-Features: Ac12FXxC1iNg6z30MULXJfC5bntwimdqt0Ot5Oz7qXD1RzXTBtdQy9P9OvPMxcw
+Message-ID: <CANiq72=Oq-JHkBuTAZPVYO5omuXswgGfLXu+nAGwEdRdgkU-0w@mail.gmail.com>
+Subject: Re: [PATCH v6 3/9] rust: sync: atomic: Add ordering annotation types
+To: Benno Lossin <lossin@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Lyude Paul <lyude@redhat.com>, 
+	Ingo Molnar <mingo@kernel.org>, Mitchell Levy <levymitchell0@gmail.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Alan Stern <stern@rowland.harvard.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Jul 10, 2025 at 5:05=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
+>
+> I don't think we have a lint for that, so I'd prefer if we avoid that...
+>
+> Someone is going to just `use ...::ordering::Any` and then have a
+> function `fn<T: Any>(_: T)` in their code and that will be very
+> confusing.
 
+I guess there could be a lint that detects a given item being `use`d
+which we could use in some cases like this.
 
-On 7/10/25 17:25, Uwe Kleine-König wrote:
-> Hello Michal,
-> 
-> On Thu, Jul 10, 2025 at 03:48:08PM +0200, Michal Wilczynski wrote:
->> On 7/10/25 15:10, Uwe Kleine-König wrote:
->>> On Thu, Jul 10, 2025 at 10:42:07AM +0200, Michal Wilczynski wrote:
->>>> On 7/7/25 11:48, Michal Wilczynski wrote:
->>>>> The series is structured as follows:
->>>>>  - Expose static function pwmchip_release.
->>>
->>> Is this really necessary? I didn't try to understand the requirements
->>> yet, but I wonder about that. If you get the pwmchip from
->>> __pwmchip_add() the right thing to do to release it is to call
->>> pwmchip_remove(). Feels like a layer violation.
->>
->> It's required to prevent a memory leak in a specific, critical failure
->> scenario. The sequence of events is as follows:
->>
->>     pwm::Chip::new() succeeds, allocating both the C struct pwm_chip and
->>     the Rust drvdata.
->>
->>     pwm::Registration::register() (which calls pwmchip_add()) fails for
->>     some reason.
-> 
-> If you called pwmchip_alloc() but not yet pwmchip_add(), the right
-> function to call for cleanup is pwmchip_put().
-> 
->>     The ARef<Chip> returned by new() is dropped, its reference count
->>     goes to zero, and our custom release_callback is called.
->>
->> [...]
->>>>> ---
->>>>> base-commit: 47753b5a1696283930a78aae79b29371f96f5bca
->>>
->>> I have problems applying this series and don't have this base commit in
->>> my repo.
->>
->> Sorry for the confusion. Base commit doesn't exist in the mainline
->> kernel or linux-next, cause I've added some dependecies for compilation,
->> like IoMem for the driver (uploaded full branch on github [1]). The
->> bindings however doesn't depend on anything that's not in linux-next.
-> 
-> The series didn't apply to my pwm/for-next branch.
-> 
-> Note that the base-commit should always be a publically known commit.
-> See the chapter about "Base Tree Information" in git-format-patch(1).
+I took a quick look, and I see `enum_glob_use`, but that seems global
+without a way to filter, and it doesn't cover direct `use`s.
 
-Hello Uwe,
+Then there is `wildcard_imports`, and that seems fairly usable (it has
+an allowed list), but of course doesn't cover non-wildcard ones.
 
-Okay, thank you for the clarification. I understand the requirement for
-a public base commit.
-
-My intention was to include the TH1520 driver primarily as a practical
-demonstration of the new abstractions. However the driver can't be
-merged as is, since it depends on the unmerged IoMem series and won't
-compile against a public commit.
-
-I will rebase the series on pwm/for-next and drop the driver and its
-associated device tree patches for now. I'll send a new version
-containing just the core PWM abstraction patches, which apply cleanly.
-
-I will resubmit the driver patches once their dependencies are available
-in a public tree.
-
-> 
-> Best regards
-> Uwe
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+Cheers,
+Miguel
