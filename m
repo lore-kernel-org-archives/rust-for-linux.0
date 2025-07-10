@@ -1,153 +1,205 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33442EA490;
-	Thu, 10 Jul 2025 15:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE6F26FD91;
+	Thu, 10 Jul 2025 15:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752161532; cv=none; b=jawckSZGJfW+bz0w7li0FQ4O15negEcWxCbNJn7CgEEdhQiYyKHIIS28H4549LTBQoIZ8rXfG/1cpCgSLWmC3StU8F6PxTyzHuIoSc9DJ19ogn+ynlFZc9nRihGNwtSEbvAor+DNUG/bpyjkt+P8EibDcW+JDyURF2PySjm7OIg=
+	t=1752162423; cv=none; b=Qg0jcQIndxjrmKGl0nWYH1d825h+ACIcRRYGpf+5XW/A80GmdHZDPT0tR9wVqwx/HGR2dgvfYyKunyHd0pd593G+4NWs2sV/qe2Qer6yNEP1wvhXEPIQ4p8/v7Uf8dnmBtA9tk+kejsjWUxzWniWjWG9Ida084bjERgk65QSJqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752161532; c=relaxed/simple;
-	bh=Y04H46Vkhl20b1wCTfgyVZYYKhXv1+IODFSBq3p+QNY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DFLda7Syxlikg0ChsBawlz2PVMXydnwn+8/b7WoQl3hggIMZlyVGuEGSePUqIJ+tw+q73rUTvitJZFIj7RLKg319q12G/566nv9vzuYn0KWXv2+fnop4pAEe1jT33NdPqGI8TJTOYHsKYGaha5rIDCx6Mi3HLcGfjsQcOFmF4lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FQdkpDO7; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752162423; c=relaxed/simple;
+	bh=dj/zefq/c/lty1/gzqNGCChSOInPa4AmaihOcg4LMic=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=svhrapVWFKqRMWdqx9U/5G8ML8is4ngRNrHdfYsGoM1n5E4kK65HAr/du68Isx1/nOgcbDjyUsUFQ//fHFy/b0ECKo7oX+OHAuLJi3iqcVr2JeNUeXkkHdhPvulIebGfMd+3Nm+iVBz/CJLH3vVM1Hh+9aFK4dIt2lyODY4vOTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tiOxgfCx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FQdkpDO7"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7d9e2f85b77so171073985a.2;
-        Thu, 10 Jul 2025 08:32:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752161527; x=1752766327; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hTPDeQ3MzYVsL9l7pIRQLeK6xoOi/0dqJ+7kw94Xeno=;
-        b=FQdkpDO7tL/ohueIW+kWqMuI/8hA1SNArlFh+ibvAhocpOBRDm1KMKf1+YV2uhJI0b
-         fnikBj5nmCmje9Y/fs/6zy4N5io9s/qwPnA9Qgy8lH6upxJIFB/ZitNRHIf8bq/5qAoI
-         31eU+MvdhgZ8nMvH5wB0yGd+4EXoq9pviZXpkGI83xnByaNfL4JtRdkiN6dqLhC+eVzf
-         EJig4PXUneSuY1z6Zp+Pr07XHoP72lUjp83TdtgoURvZxtVOwrIknxp+djxzTBqsRrdS
-         CtUh+govDJ8VUfKfvGEdRHlF+NIOG5dWY7APDwFStriAZo4DgQl2MI9FzcYJGHXtDjG4
-         KYsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752161527; x=1752766327;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hTPDeQ3MzYVsL9l7pIRQLeK6xoOi/0dqJ+7kw94Xeno=;
-        b=SkpCD0wXaHEZmp1XoUPL+ttBM1+wkZ/fk+s4ueBEgmlGyIFdHSOthOxDRbgzWSlwp0
-         mNjeGuJgG78DLU5/I3GTPgH8mESBESV8EVo/H5QW7yMA8Z4eNxyR004E5WYdp35RGCwV
-         tCXNMaH44tLE5MuUJPWbYM3gf1plG2MpecULfpwXLYyK4EvTbkjOykizbDwNsKdC6uWl
-         tZ9ef4d18u/WDmwBgJnzTOywfIq4yfFc9x5RBRXrKFgQni8sJkJAeA+MgDPi+zo5ZR1s
-         I8nK3x7RENnPOHwS+0P6iSUcawTY87gd6f7pZ20pSvj/daEF57mvlddlIhDJBndEHHW0
-         cnVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUg2BTGvkdjXCifRa911yugkcZYxxS7V0KBXTYS5B50f4kngaqAVIe/SBR8MFZW3murKKXZOUz5PchRQA==@vger.kernel.org, AJvYcCV9j/rso8NLm0HYIBOzPBQAAw0ThoztGfLfem5F0EqBMUcLP1Aq+rbmZFYi7frDMkYTTBoNWR7JbURm@vger.kernel.org, AJvYcCVBtvlDvMM+McXHKocOyncIB7bmLRKLl9iDtQLSXYrchFCGZg3Ojlr/0N1texXo3v9kyPkT+WFlN3tvUzLH@vger.kernel.org, AJvYcCW8k76O5QV/pb/ZE57ngRXMHTSH8/c1vEu97EpJIaqRYw08I1t89LkU2+XGetrqdtTKOEZIa+4P4e62@vger.kernel.org, AJvYcCXbndWgD/GxAvZ4HHVcpZs/h5xl3TwKLsLkeCq9fBqaHPb+TsMwfWR33CKUhJBMICDK2ZjWcPixUakHANWQILA=@vger.kernel.org, AJvYcCXkOYhHeYXb+8tcAm9BcG0ZhrkN2xG1cwZHtqqek0MtRH7E1hnHFqS5dGsUbBbfjf39+SrKfqs/0D1GAHYNkbVK@vger.kernel.org, AJvYcCXsLXKCJT5KVq928rkwgJXcm9Gwk9HVwF3R0CDRMsKKX4cQl/CzdU7/2ZiQ6dxOdjfkj/pEwlMx@vger.kernel.org
-X-Gm-Message-State: AOJu0YwnJ9YefCSD38m1DYq7VvFs7jYUMCzPTIZmCxRqvlWUnpJJ8wVx
-	8K69v1zqSVcTyRpuq/nQX8w+SKhyMLrVeHhoMZ2gn5f12U7D0csPR4tu
-X-Gm-Gg: ASbGncuh7CgmUClg8C8ZDvkbxJTPvhjWi8HVWU89mws/RB04jI4HMWohcxn0+fUA6Zu
-	BcS/42IkzXLwI9F39V5NOq3Iw4iqVz6auTiuJUTeVyMz9tvIDE9YZpezr85Lsl5FiuZ2h0hHAc4
-	Q+SBlspUvjFmhGNWy2P4LeVqtmBqSSiIAYx9/Ery7IfvTnEkC2sGtLGB3G8Hd+wGvko9CWaHjvn
-	UKZff+WSed/evwoFEV+xEPMQR/MbYH9k3eIio1YuStmRgKcVhE8z4aLhEcTJkDQvLtPiU47NOJm
-	RwZYo8iUxSOQservY6g57maewIYSh/Tfu0e1HSEkIfm/JuDpvqo9gz9xNazA97uS/wCQSZAAbOp
-	rKyCwd0JrL22TNXJO2H0x9dtKbMiMmxaWc0IqjAhZrr0jQv4W1CaHyRQVOA==
-X-Google-Smtp-Source: AGHT+IFwb1eDl83RWRgNOPiI2xnO3+DJqfkH5CNG1RfiaGeJvrTkceoGSYcx57ApRt9niHfqfPdvrw==
-X-Received: by 2002:a05:620a:1726:b0:7d9:7096:4910 with SMTP id af79cd13be357-7dc999b341bmr564287385a.1.1752161527419;
-        Thu, 10 Jul 2025 08:32:07 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([148.76.185.197])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-704979dbc3asm9449496d6.38.2025.07.10.08.32.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 08:32:07 -0700 (PDT)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 10 Jul 2025 11:31:19 -0400
-Subject: [PATCH 16/17] rust: str: replace `kernel::c_str!` with C-Strings
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tiOxgfCx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F11C4CEE3;
+	Thu, 10 Jul 2025 15:46:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752162422;
+	bh=dj/zefq/c/lty1/gzqNGCChSOInPa4AmaihOcg4LMic=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=tiOxgfCxr2rALjGlJZ0lnUQamjwLinJkFLMVpq/P5AgYYAXWFPc6AfqEBrmtuRJus
+	 AFEOKQwmYCz3X9VjcIPJaYF+Q71WMi9zLmtXPTDgeI4abQPFyooFJVYf13BykHHkvZ
+	 TjUhB9qlxy6Q92ZthME7pzMBWcYBNtQo1Gqhm0MfIiP5Yah/1b6fxP2GgIy3D/WEs3
+	 FgYl5TMCbmUIHxIassSBpygpCtAnN+BaAjZjzPXYP01E8kdrmEWU5axr4A39UYx7qc
+	 zcNl5cekAtdnfB3DNPVOaa8yQ4dx4H1/v0vaDWsSHKFXI5oWrgvCWVOEm7ubT+DK2e
+	 RBRpXPYSONXxQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250710-core-cstr-cstrings-v1-16-027420ea799e@gmail.com>
-References: <20250710-core-cstr-cstrings-v1-0-027420ea799e@gmail.com>
-In-Reply-To: <20250710-core-cstr-cstrings-v1-0-027420ea799e@gmail.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Breno Leitao <leitao@debian.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Brendan Higgins <brendan.higgins@linux.dev>, 
- David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, 
- Jens Axboe <axboe@kernel.dk>
-Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, netdev@vger.kernel.org, 
- linux-clk@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
- linux-block@vger.kernel.org, Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openssh-sha256; t=1752161490; l=1304;
- i=tamird@gmail.com; h=from:subject:message-id;
- bh=Y04H46Vkhl20b1wCTfgyVZYYKhXv1+IODFSBq3p+QNY=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
- MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QN/x43LOGtGcE5XoKlHGuC7ORRj2DN1CIT42OvTRD/0MaEaE8FrNbcFi6fQDB5xIRVLz4YRHP6h
- Lk3wiyMArwww=
-X-Developer-Key: i=tamird@gmail.com; a=openssh;
- fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 10 Jul 2025 17:46:56 +0200
+Message-Id: <DB8HQLY48DFX.3PBBUTQLV14PC@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
+ "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
+ "Alan Stern" <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v6 2/9] rust: sync: Add basic atomic operation mapping
+ framework
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-3-boqun.feng@gmail.com>
+ <DB8BQGJNFDAY.BGQ8CZSFFOLH@kernel.org> <aG_Yah5FFHcA3IZy@Mac.home>
+In-Reply-To: <aG_Yah5FFHcA3IZy@Mac.home>
 
-C-String literals were added in Rust 1.77. Replace instances of
-`kernel::c_str!` with C-String literals where possible.
+On Thu Jul 10, 2025 at 5:12 PM CEST, Boqun Feng wrote:
+> On Thu, Jul 10, 2025 at 01:04:38PM +0200, Benno Lossin wrote:
+>> On Thu Jul 10, 2025 at 8:00 AM CEST, Boqun Feng wrote:
+>> > +declare_and_impl_atomic_methods!(
+>> > +    AtomicHasBasicOps ("Basic atomic operations") {
+>> > +        read[acquire](ptr: *mut Self) -> Self {
+>> > +            call(ptr.cast())
+>> > +        }
+>> > +
+>> > +        set[release](ptr: *mut Self, v: Self) {
+>> > +            call(ptr.cast(), v)
+>> > +        }
+>> > +    }
+>>=20
+>> I think this would look a bit better:
+>>=20
+>>     /// Basic atomic operations.
+>>     pub trait AtomicHasBasicOps {
+>>         unsafe fn read[acquire](ptr: *mut Self) -> Self {
+>>             bindings::#call(ptr.cast())
+>>         }
+>>=20
+>>         unsafe fn set[release](ptr: *mut Self, v: Self) {
+>>             bindings::#call(ptr.cast(), v)
+>>         }
+>>     }
+>>=20
+>
+> Make sense, I've made `pub trait`, `bindings::#` and `unsafe fn`
+> hard-coded:
+>
+> macro_rules! declare_and_impl_atomic_methods {
+>     (#[doc =3D $doc:expr] pub trait $ops:ident {
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+You should allow any kind of attribute (and multiple), that makes it
+much simpler.
+
+>         $(
+>             unsafe fn $func:ident [$($variant:ident),*]($($arg_sig:tt)*) =
+$( -> $ret:ty)? {
+>                 bindings::#call($($arg:tt)*)
+>             }
+>         )*
+>     }) =3D> {
+>
+> It shouldn't be very hard to make use of the actual visibility or
+> unsafe, but we currently don't have other visibility or safe function,
+> so it's simple to keep it as it is.
+
+Yeah I also meant hardcoding them.
+
+>> And then we could also put the safety comments inline:
+>>=20
+>>     /// Basic atomic operations.
+>>     pub trait AtomicHasBasicOps {
+>>         /// Atomic read
+>>         ///
+>>         /// # Safety
+>>         /// - Any pointer passed to the function has to be a valid point=
+er
+>>         /// - Accesses must not cause data races per LKMM:
+>>         ///   - Atomic read racing with normal read, normal write or ato=
+mic write is not a data race.
+>>         ///   - Atomic write racing with normal read or normal write is =
+a data race, unless the
+>>         ///     normal access is done from the C side and considered imm=
+une to data races, e.g.
+>>         ///     `CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC`.
+>>         unsafe fn read[acquire](ptr: *mut Self) -> Self {
+>>             // SAFETY: Per function safety requirement, all pointers are=
+ valid, and accesses won't
+>>             // cause data race per LKMM.
+>>             unsafe { bindings::#call(ptr.cast()) }
+>>         }
+>>=20
+>>         /// Atomic read
+>
+> Copy-pasta ;-)
+>
+>>         ///
+>>         /// # Safety
+>>         /// - Any pointer passed to the function has to be a valid point=
+er
+>>         /// - Accesses must not cause data races per LKMM:
+>>         ///   - Atomic read racing with normal read, normal write or ato=
+mic write is not a data race.
+>>         ///   - Atomic write racing with normal read or normal write is =
+a data race, unless the
+>>         ///     normal access is done from the C side and considered imm=
+une to data races, e.g.
+>>         ///     `CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC`.
+>>         unsafe fn set[release](ptr: *mut Self, v: Self) {
+>>             // SAFETY: Per function safety requirement, all pointers are=
+ valid, and accesses won't
+>>             // cause data race per LKMM.
+>>             unsafe { bindings::#call(ptr.cast(), v) }
+>>         }
+>>     }
+>>=20
+>> I'm not sure if this is worth it, but for reading the definitions of
+>> these operations directly in the code this is going to be a lot more
+>> readable. I don't think it's too bad to duplicate it.
+>>=20
+>> I'm also not fully satisfied with the safety comment on
+>> `bindings::#call`...
+>>=20
+>
+> Based on the above, I'm not going to do the change (i.e. duplicating
+> the safe comments and improve them), and I would make an issue tracking
+> it, and we can revisit it when we have time. Sounds good?
+
+Sure, I feel like some kind of method duplication macro might be much
+better here, like:
+
+    multi_functions! {
+        pub trait AtomicHasBasicOps {
+            /// Atomic read
+            ///
+            /// # Safety
+            /// - Any pointer passed to the function has to be a valid poin=
+ter
+            /// - Accesses must not cause data races per LKMM:
+            ///   - Atomic read racing with normal read, normal write or at=
+omic write is not a data race.
+            ///   - Atomic write racing with normal read or normal write is=
+ a data race, unless the
+            ///     normal access is done from the C side and considered im=
+mune to data races, e.g.
+            ///     `CONFIG_KCSAN_ASSUME_PLAIN_WRITES_ATOMIC`.
+            unsafe fn [<read, read_acquire>](ptr: *mut Self) -> Self;
+
+            // ...
+        }
+    }
+
+And then also allow it on impls. I don't really like the idea of
+duplicating and thus hiding the safety docs... But I also see that just
+copy pasting them everywhere isn't really a good solution either...
+
 ---
- rust/kernel/str.rs | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 61ebaacddc23..26bb3d916ba6 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -266,15 +266,14 @@ impl fmt::Display for CStr {
-     /// Formats printable ASCII characters, escaping the rest.
-     ///
-     /// ```
--    /// # use kernel::c_str;
-     /// # use kernel::prelude::fmt;
-     /// # use kernel::str::CStr;
-     /// # use kernel::str::CString;
--    /// let penguin = c_str!("🐧");
-+    /// let penguin = c"🐧";
-     /// let s = CString::try_from_fmt(fmt!("{penguin}"))?;
-     /// assert_eq!(s.to_bytes_with_nul(), "\\xf0\\x9f\\x90\\xa7\0".as_bytes());
-     ///
--    /// let ascii = c_str!("so \"cool\"");
-+    /// let ascii = c"so \"cool\"";
-     /// let s = CString::try_from_fmt(fmt!("{ascii}"))?;
-     /// assert_eq!(s.to_bytes_with_nul(), "so \"cool\"\0".as_bytes());
-     /// # Ok::<(), kernel::error::Error>(())
-
--- 
-2.50.0
-
+Cheers,
+Benno
