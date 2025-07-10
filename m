@@ -1,150 +1,85 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991E22594B4
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 13:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305C726A0B3;
+	Thu, 10 Jul 2025 13:41:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752154819; cv=none; b=FEGJ4vGVT6dnOuL8o5HvG5+NH6oLAn2br1oGVe5bq5sitpPQ8bzhKqXaHWKoHz9qHScnNebXSGsQFliGyNanRj/cIUU5u9i8sJ3XRBSIYSqaHA7jPxM+b5scez+Sf25DB5SOfPOLBcMbdGw49FwK6qBdQiF9J7iyxZX2ESkHtiM=
+	t=1752154918; cv=none; b=SuyyvChZMTcQT9bf75rLsj6RyLglLqYV4vuSu/W6tuzvh37iLhq0oftI+7Qwx8UcdEjnwzt8pT7gTJo6QVx1T6yiNiEvPqBBVsyCLzj3olg+ymJporPixcZbud2wMSuW1J937iW+LDzo79+oVHYVNUHB+EDUjKDCKXs9Rq0yZf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752154819; c=relaxed/simple;
-	bh=L8NAxkisOrUvB5X45MszjRrn1WdpFGJZaTdDegwtsNA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UJfFeyLm0sB5MbQNZPzVd01a4mr/gX55Y8O7ENL85q3000IOxSXR1M+o43RaqIrmGydrJC+hgRUUttzCaeYHUW7+AKmQBdOPnyqa5D4oBjXc8jO6HElSUfuutZ21UQIB5uKcrh/vBX+Flth8OH1WARyXwClf9D+qui4HVPFdaQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J6kWbWwh; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752154918; c=relaxed/simple;
+	bh=SlMbXo298xvQjkFJyCKDy58mImmJ1m24txuya44+l64=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=kIt72RsL/qYaAY4uRPCJhL9zj6llBBtVQOv06B/JvCdo7gx2J77DlaMs2FxU2ZC1Q1izwF6XnVXAW9qj37FA0VZnuhB8RmykbAuAM/5DLa9gcIdd+F1eTTshiMuGJh6riRf5PO3stuxTO1nDoP75BtCrvj1pIGv7qpRZr29F8lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qnatzMaX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J6kWbWwh"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3ab112dea41so605886f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 06:40:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752154814; x=1752759614; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4gK8SxTWD7UWQltVg6xSQeiZZywuBSSmhBPrVCrZSpc=;
-        b=J6kWbWwhktu0zn0rmqPAT+d9t4PWigrqg4hIj2hrJUjrjk7ZqZXDXHaMBOg4y8hmUo
-         wn7n8hxlyD73imVFAO9m3vdk6TtMd766+zqCYYyPX5/t0TVsZLy3VQRzBD29pe/4Ibm/
-         M92I/QT+pw8NZhmIknNOn1u2rYAo+8Yz0GjyfGliuTeh4IFo6+LfVgWuRuH0/3nrGGFR
-         DR3bhpB52lFRSWRVUlLEd4AWzkdrvGXHaORqu0ucsX5caWKWvD2QH2w8OK5iUPZDNuK6
-         YQOOWjl72+gLSg2i5NW7WNqQZR/BMgJ3YTLdynYxGMVX85awrRbsK02ioAfDCj86lqCx
-         RkoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752154814; x=1752759614;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4gK8SxTWD7UWQltVg6xSQeiZZywuBSSmhBPrVCrZSpc=;
-        b=qtEIxOjXrbalhL5/Iwo60xmTnpU56rRP401fwhB4lhF66sPgLItR5Lfasp+qjhstHl
-         kWjyzmmx7Bo1d9pW12+V2jHF5cl1QE9ptgK6Ac0cCapAw/IppX/MQn8J6NbT8MeK0LgQ
-         DaDYno2wf+eLHOwHpdet7m9lWaSVqXv259scsAjMmFZtPdeRmGabhxxDGi51yIgSLhR0
-         /7CZsueVibgIjDfbMYEFD/1iDQsoVliJEytqoSMltV0V4jpaw631gw+0J+CwDMg/P8F1
-         tOTt3H6FQ5b4dg1cPAeJBt4DKkg8pErnSmyQBaXNckKuplE2el+KbSypcIsOe1Mq7DEH
-         eFug==
-X-Forwarded-Encrypted: i=1; AJvYcCVjD/RF1Tb94w0vg9CSYoBP6sFPk5pCwT5SCZEHnYiPEvM+U60vYs10XjAEAfx1biMXEU4uRj6bJ09u9c+f+w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuHkydH385+UByKejOpJmggd7EmMG9dXiz2PoKJ5ZD4pSxRRdJ
-	KWoOHYbjAYITjDVsl0IOywn1TgkNawyJriUhdX9GWxcSGX55uF1ASFrnHV5zJpfut7mEk/0yGYf
-	GnGZ/mSL+uPgNIJoy2wrUCArTJovMCxaVHRnUTGJK
-X-Gm-Gg: ASbGncvfT4XfjE1j2MmvP1b091Je6POASJV2QyNf7zzP9Y3N3jexO5elkNvWF1g6vVB
-	uG8aICSNqXik62/raMsSPAWxQm1nnQDfTIbZKaphrKTmih2Iv8RKNdKjgR7fMqGbNvu/0snco/6
-	IbewaeoUTSiENDro4HM4UGr2aPGWo51NpUEZTQuj/JwykrLohf71FW3zRe/f1688p9jnTD+b4Jq
-	Q==
-X-Google-Smtp-Source: AGHT+IHWb1Xq0/Oarnazs9jnrq9g3D/RI7LYjXDzHlYykaJcgX83KF6n4sioYqT/vG6R3lN9oMhfwlrmUvLkIfVqi5w=
-X-Received: by 2002:a05:6000:220d:b0:3a4:ed10:c14 with SMTP id
- ffacd0b85a97d-3b5e44e94damr5777078f8f.14.1752154813861; Thu, 10 Jul 2025
- 06:40:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qnatzMaX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B423C4CEE3;
+	Thu, 10 Jul 2025 13:41:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752154916;
+	bh=SlMbXo298xvQjkFJyCKDy58mImmJ1m24txuya44+l64=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=qnatzMaX9jyeMlbtDSEDGQ07J49VSiUNdF+y1WazyHlLZV2GgDtI9RcZhYCPMCTf4
+	 L8NKGsccmI494iYQNXLWTHQx9yuXRJ22gB5/PFdV8vk1xW+uwYh8KGxWRMhhNIB3so
+	 xYjo5/tiLvjFAOpfGqhtKMliOdmm3o0I/TPpoANt7U8fT8VHZwBteo18iBi68Df2NX
+	 KDzIKmz9RousA36qqfDWNGr+bwQPvWJ7XT5fyr9RvSVZpE1uQxNEvIcAPLUYT1wCdh
+	 3SAGXOTU1G8EbIYacwTLVeMzqsm7qY4W+d86IdE7yZZdxnsWF63i39LMlaN13d/YSt
+	 Fk5lmQRLqokMw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
- <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
- <aGt6CZAUeuK0XnmP@google.com> <D7735793-D99E-44D4-945C-2AC0B500E1F9@collabora.com>
-In-Reply-To: <D7735793-D99E-44D4-945C-2AC0B500E1F9@collabora.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 10 Jul 2025 15:40:01 +0200
-X-Gm-Features: Ac12FXx_E1R9f789vX3XKeepzt_E4gBqlYxHx9ZWW5DK1vZvG_UyCpsA_of1z9Y
-Message-ID: <CAH5fLghe0-s2SQ+_cwNmagw8depC+=6kUwUm_epLFz30k9gQJw@mail.gmail.com>
-Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 10 Jul 2025 15:41:49 +0200
+Message-Id: <DB8F2T9YIJ1B.13Q6T3CW0MV6U@kernel.org>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
+ PWM driver
+Cc: "Michal Wilczynski" <m.wilczynski@samsung.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Guo Ren" <guoren@kernel.org>, "Fu Wei"
+ <wefu@redhat.com>, "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Paul Walmsley"
+ <paul.walmsley@sifive.com>, "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert
+ Ou" <aou@eecs.berkeley.edu>, "Alexandre Ghiti" <alex@ghiti.fr>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Michael Turquette" <mturquette@baylibre.com>, "Drew Fustini"
+ <fustini@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pwm@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-riscv@lists.infradead.org>, <devicetree@vger.kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@linaro.org>
+References: <CGME20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6@eucas1p1.samsung.com> <20250707-rust-next-pwm-working-fan-for-sending-v10-0-d0c5cf342004@samsung.com> <e8a4a821-e7e4-4bcd-a2ac-f6b684b6ceea@samsung.com> <DB8AQ15RTAJ2.3QXX8Q2FTFGCP@kernel.org> <e494422b-b989-4dc3-9828-b080dbf4c34d@samsung.com> <judbbl4d3z7nd2wi3grlwf3cmqgdycb5ljyyqx6r4w2zluhmwy@yxrqnf2hcnzw>
+In-Reply-To: <judbbl4d3z7nd2wi3grlwf3cmqgdycb5ljyyqx6r4w2zluhmwy@yxrqnf2hcnzw>
 
-On Thu, Jul 10, 2025 at 3:34=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Thu Jul 10, 2025 at 3:36 PM CEST, Uwe Kleine-K=C3=B6nig wrote:
+> On Thu, Jul 10, 2025 at 12:29:59PM +0200, Michal Wilczynski wrote:
+>> On 7/10/25 12:17, Danilo Krummrich wrote:
+>> > I see that there is a new MAINTAINERS entry:
+>> >=20
+>> > 	PWM SUBSYSTEM BINDINGS [RUST]
+>> > 	M:	Michal Wilczynski <m.wilczynski@samsung.com>
+>> > 	S:	Maintained
+>> > 	F:	rust/helpers/pwm.c
+>> > 	F:	rust/kernel/pwm.rs
+>> >=20
+>> > I assume this is agreed with Uwe?
 >
-> [=E2=80=A6]
+> I suggest to add
 >
-> >
-> >> +    }
-> >> +
-> >> +    /// Returns the name of the resource.
-> >> +    pub fn name(&self) -> &'static CStr {
-> >> +        let inner =3D self.0.get();
-> >> +        // SAFETY: safe as per the invariants of `Resource`
-> >> +        unsafe { CStr::from_char_ptr((*inner).name) }
-> >> +    }
-> >> +
-> >> +    /// Returns the flags associated with the resource.
-> >> +    pub fn flags(&self) -> Flags {
-> >> +        let inner =3D self.0.get();
-> >> +        // SAFETY: safe as per the invariants of `Resource`
-> >> +        let flags =3D unsafe { *inner }.flags;
-> >> +
-> >> +        Flags(flags)
-> >> +    }
-> >> +}
-> >> +
-> >> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, =
-which is
-> >> +// safe to be used from any thread.
-> >> +unsafe impl Send for Resource {}
-> >> +
-> >> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, =
-references
-> >> +// to which are safe to be used from any thread.
-> >> +unsafe impl Sync for Resource {}
-> >> +
-> >> +/// Resource flags as stored in the C `struct resource::flags` field.
-> >> +///
-> >> +/// They can be combined with the operators `|`, `&`, and `!`.
-> >> +///
-> >> +/// Values can be used from the [`flags`] module.
-> >> +#[derive(Clone, Copy, PartialEq)]
-> >> +pub struct Flags(usize);
-> >
-> > Based on usage it looks like the correct type is c_int?
+> 	L:	linux-pwm@vger.kernel.org
 >
-> Shouldn=E2=80=99t this be c_ulong because of:
->
-> #[repr(C)]
-> #[derive(Copy, Clone)]
-> pub struct resource {
->     pub start: resource_size_t,
->     pub end: resource_size_t,
->     pub name: *const ffi::c_char,
->     pub flags: ffi::c_ulong, <=E2=80=94=E2=80=94
->
-> In any case, we will have to cast this because __request_region
-> expects c_int.
+> then I'm happy with it. I'm definitively not capable to review the Rust
+> details of Rust code. But I think Rust is readable enough that I can
+> judge the algorithmic parts.
 
-I saw that you called a C function that expects an int, so that's why
-I suggested c_int. It sounds like the cast from int to long happens in
-C code.
-
-Alice
+What about the merge strategy? Do you want to pick up patches yourself (thr=
+ough
+your tree), receive PRs from Michal or none of those?
