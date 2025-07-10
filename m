@@ -1,124 +1,137 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8F719D8A2
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 13:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752153886; cv=none; b=INqQKphYcmqf4SQYm82uG19nUOrmWZ7CvuL8Fs1Tsct1BUsVFKJS6j+zBY1Q16ZvS2qWUa9apMFL5/Tpfy9wBjq2tHs8UDJlf5GufzB15iFCfs2k9hg0TbBByuQe79swMc2jcFYiIrMKN3ukBkDW6CBMHUgJ6cFwy+XgD1pXb58=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752153886; c=relaxed/simple;
-	bh=0lZER0YsOdsgUsMyG0eelhSWqdVgnWXzTW5vrH5Chqs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=isXx3fyPJ+1M0r9eAgetKjZyd9zIGJS6NFFsymlibic7Oy386Q4dM7t2UiU9B2Nh6bWmvTA6xfH/MEV1zLc0RsWRmch1yneVo3r5IVQmRpQfvC7XeyhxFlEqKFJX3hidt/hGXGh9x21MjEQzlvFpOj33ojFqdjrcKwY/vncN++Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bGTYL41O; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2BA259C92;
+	Thu, 10 Jul 2025 13:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752154472; cv=pass; b=umePTkAuN1a+n3l/UpQtHDbeX/vBoNmHMwweODuH4woqTfq6fUKoTbMnLuX/sUPEd75g6aPRFDny0ONr96ESE0fyL/wTc48yeKQZEvHrvqLBmS5qWbVx6++J1DMwWjNw37vPoMgnoJDiNw1XZIJJq44/Pn9C89w2IJHhKMnya+c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752154472; c=relaxed/simple;
+	bh=Nxjw+T1n4EsFTBt+Qhwe1cqn8ER3+UeUuzBXZDsiNYY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ckUbYy7L3GT7BSNh0+0GxDVRZbNAuTchMtVe0Y3MXTPovPYnDOYAojI56p0/XVDKZ/nT4ZHKzL6e1l9U8C7E5tZ60UC10DiD57JUkC0XIXqe0YW1o20fITASrRM+RPvqdd68PUATsxt2Hxwudkua/4LRXCd/mCSmyca/htKMTPo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Q0GSggId; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bGTYL41O"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a6d77b43c9so964064f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 06:24:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752153883; x=1752758683; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wOzZI8nwjN1BdAUiFGa5oGbSqqmiUrxoW/ObZNPwb5A=;
-        b=bGTYL41O3FV1oTI+WLIvlBwZAHSuRnIZGHeb350gieVx4ug2BDqjGckrtPIuGYtNqQ
-         X0N4isfOy1EQQqRoDS7Zf1jAlZo6GigMzZfshLHUxFRhp/aESA3M615ZXAksi02FarBW
-         ngpBlUFCpK6lMLAaZpqJjc6PJBrdb/a8iytBwrnZ80EBGejdx/lQ1JXdZZUSPNbLbmwW
-         3nb9RMfQ2ovahRZrh3l8TYosgZgNWwa9eZhYkkKlaTobhd9pt1LFy2OwxNpPkTWQhZaE
-         FsScKDKFtDoS2i+qdEtLiG6MjS6yWV/wNkO36Xzt34ozED7FojAdrxyuMrrxy5T9oPKd
-         /+Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752153883; x=1752758683;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wOzZI8nwjN1BdAUiFGa5oGbSqqmiUrxoW/ObZNPwb5A=;
-        b=Ihcg3meUI9/oY5tSniminJTp0uBZnqj8s1IdKQK/89tfFLI5FnE+WDaTrp5lMw0s67
-         EXiLdKB23v6oucS0e60UYfdC+wJle43Oe62ZamV3INhBwffv7rMwY5MOYKvT9pec+PdT
-         16GvNTqt9xhySAMxczAOSXPsHSE+qzyjMq2K+g5uz9wOPb+YgVdK16dFyIuchRBgAyvZ
-         a3YznBIZ45Xl87VLFMMlOwoNKVrxEI3d2vEr/gMiDj7g++EQHSreGCFODGJCDJJWJ4Vg
-         WWiT14s3RwqFxgsigT2xlDwGmcDthiptt7dKTZnGwzHSqcZw7WVT67UjiRe4L+AAgOCe
-         wZ3g==
-X-Forwarded-Encrypted: i=1; AJvYcCXF2P0felNA6hqvtTtt6tkwfdlWm/1pDbZEkgmMsg/fqPyn7EsbM7lgpzrea80K1hhMI6pF4gOdb0JSnxm/BQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzN+C5kHXtna1REWPiWI/uK7g7Tw4No1NzDx1W/l+5NQlkAzvUL
-	P7SeeX+TqFY1gqTm4+qEhpn2g7dco6/iqeOs4PnziSOa1fYzzpEK+yaT+x1v2Tj3ZtpKPilw/kY
-	2Vk0gqE76kTmRU6ZQcLTFO7vHHBiupis8tObpLZy3
-X-Gm-Gg: ASbGncuc/ukxb6QImKsI630rnJ4I/wVyYfxQ7SmZZOIOu7s3siNymfEYQyP9Uwqmdm1
-	EsZeSM1FFDhQK3KPj2hnTLVwpib+LUwmPOdSb4x8bfQHHt/FVOq/Xg2vZ4FoV6Dl2VEpIlo77vq
-	VwF7J8r1lIFTceLE9JQKimh4+44Q3q+Y7xbUuC/WjVHfd+Vs+fBo+oSPHHxflc83a7xjEJBryXt
-	g==
-X-Google-Smtp-Source: AGHT+IGTOGXVet50spxQ8UB0i3z2/GXNnHjLpChP0OonDZKe4QRR02sCDV3qt2xMz0CTN2csaEjbPSliur3/SF50biE=
-X-Received: by 2002:a05:6000:22c8:b0:3b1:3466:6734 with SMTP id
- ffacd0b85a97d-3b5e78d8e4dmr4323322f8f.44.1752153882869; Thu, 10 Jul 2025
- 06:24:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Q0GSggId"
+ARC-Seal: i=1; a=rsa-sha256; t=1752154450; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=FHFqKTx5NAiFnuObcP4T/bITxfXJuaLI/VL8OD5VfzwLZVJg4qBXVdzp0kIOKFF7aWiDkg0M1/cnxfBpUMSTzl3M5Aa7Y4qdMpmkP0ytG3FtEJvDex6kqCWYOfK5p/QnRJIeiOZyPRzZQwi8+YKzoy5NKie/u6Dwzd/g1T7pmUY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752154450; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Jnokwj1iwVq0KKKajiTm1xVOKLUaFB96+sjBk1UptGU=; 
+	b=P3ySmjieVyLPJI9CAeg4UmWNwt9yG4V50loEPjZew9JIP1HN3qpYF1BfDahorb5H+VHGppK/c7HEDgjbmUY3Dh/HHJxEquHFaPmIhP5Bntl7DiZQ+xF223wJxeK7fm8zzQ0onEyU284/bwEQyKonLcCRPxSDFAbVe/JGlZp+eic=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752154450;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Jnokwj1iwVq0KKKajiTm1xVOKLUaFB96+sjBk1UptGU=;
+	b=Q0GSggId8tZf8xc8UH57JpSB/LZdkeQMAwDBEa0Bj+rpp1SoCw15eE6rArXbC8uv
+	7olAa8swju+hoHGxGttT05whrxx0DdY/tRP46rLSu1txgEfq6hy0eiNL+NPvvtn10vb
+	Hv0FnWtfMJDejbMeO+Uoq+XYCy12O5jVgMRPOIqg=
+Received: by mx.zohomail.com with SMTPS id 1752154447317218.32548583021992;
+	Thu, 10 Jul 2025 06:34:07 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aGt6CZAUeuK0XnmP@google.com>
+Date: Thu, 10 Jul 2025 10:33:50 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Fiona Behrens <me@kloenk.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D7735793-D99E-44D4-945C-2AC0B500E1F9@collabora.com>
 References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
  <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
- <aGt6CZAUeuK0XnmP@google.com> <8A2EA665-F738-4C5D-914E-11380422038A@collabora.com>
-In-Reply-To: <8A2EA665-F738-4C5D-914E-11380422038A@collabora.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 10 Jul 2025 15:24:29 +0200
-X-Gm-Features: Ac12FXzlexagSsiLDCYZGksBTABnulDDAEIfZUoBgVnAcSZLbz79wUfV9rstBCc
-Message-ID: <CAH5fLgg_11gFtGG=0zjhyYhK1JvChFxdXvwxKkAEUGxOpC-Ljw@mail.gmail.com>
-Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <aGt6CZAUeuK0XnmP@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Thu, Jul 10, 2025 at 3:16=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Hi Alice,
->
-> > Is this name used for a lookup or stored? If just a lookup, then it
-> > doesn't need to be 'static.
-> >
-> >> +        flags: Flags,
-> >> +    ) -> Option<Region> {
-> >> +        // SAFETY: Safe as per the invariant of `Resource`.
-> >> +        let region =3D unsafe {
-> >> +            bindings::__request_region(
-> >> +                self.0.get(),
-> >> +                start,
-> >> +                size,
-> >> +                name.as_char_ptr(),
-> >> +                flags.0 as i32,
-> >
->
-> JFYI, this is stored:
->
-> static int __request_region_locked(struct resource *res, struct resource =
-*parent,
->                                    resource_size_t start, resource_size_t=
- n,
->                                    const char *name, int flags)
-> {
->         DECLARE_WAITQUEUE(wait, current);
->
->         res->name =3D name;
+[=E2=80=A6]
 
-I think it would be useful for the safety comment to say something
-along the lines of "it's okay that __request_region stashes a copy of
-the string because it is static".
+>=20
+>> +    }
+>> +
+>> +    /// Returns the name of the resource.
+>> +    pub fn name(&self) -> &'static CStr {
+>> +        let inner =3D self.0.get();
+>> +        // SAFETY: safe as per the invariants of `Resource`
+>> +        unsafe { CStr::from_char_ptr((*inner).name) }
+>> +    }
+>> +
+>> +    /// Returns the flags associated with the resource.
+>> +    pub fn flags(&self) -> Flags {
+>> +        let inner =3D self.0.get();
+>> +        // SAFETY: safe as per the invariants of `Resource`
+>> +        let flags =3D unsafe { *inner }.flags;
+>> +
+>> +        Flags(flags)
+>> +    }
+>> +}
+>> +
+>> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, =
+which is
+>> +// safe to be used from any thread.
+>> +unsafe impl Send for Resource {}
+>> +
+>> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, =
+references
+>> +// to which are safe to be used from any thread.
+>> +unsafe impl Sync for Resource {}
+>> +
+>> +/// Resource flags as stored in the C `struct resource::flags` =
+field.
+>> +///
+>> +/// They can be combined with the operators `|`, `&`, and `!`.
+>> +///
+>> +/// Values can be used from the [`flags`] module.
+>> +#[derive(Clone, Copy, PartialEq)]
+>> +pub struct Flags(usize);
+>=20
+> Based on usage it looks like the correct type is c_int?
 
-Alice
+Shouldn=E2=80=99t this be c_ulong because of:
+
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct resource {
+    pub start: resource_size_t,
+    pub end: resource_size_t,
+    pub name: *const ffi::c_char,
+    pub flags: ffi::c_ulong, <=E2=80=94=E2=80=94
+
+In any case, we will have to cast this because __request_region
+expects c_int.
+
+=E2=80=94 Daniel
+
