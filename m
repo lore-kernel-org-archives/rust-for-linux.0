@@ -1,151 +1,178 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377D121B9F4
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 19:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042702F4A19;
+	Thu, 10 Jul 2025 19:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752175820; cv=none; b=GuOYWRLd5qd7MPTS1YM77Rttf8up58xaTIuwCOBSxCYoAw3XqJT3YfaJ36aAsHv2S9760DXbLvPjoJ+zIXuC8l7O2GIwYtsq8Jsb7mbuw6XXgovFR5cWRkuAB7ef9y4/+d8j9Vmfd7IcaeXSoG8RklZspbo0ylFHmD7plobEahc=
+	t=1752176349; cv=none; b=i7/K9B+TlmFdhfByIdThr4pALl77DZFHcaDsJ+GC88FsR3VVeQFFaYLCgDcLGxwuFNFBd4CoyOhTYLIrAQsF0kTH0n0jkFDIa5nomr8c3O/y/EiKg+JE/x58ZpRlpwzoo5fOF/SsxmGEfl/NjxtvDZE+ouHiWuLby/xXWUAc1jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752175820; c=relaxed/simple;
-	bh=EJ6s4tjHUT6RtbgUP+qOWodtQci0cx0J74QsTYz4VVo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ogGJmA8As5K9CxYI6Fu+gi+KB6YP816n6yP/1SCw1G9IZFyBrqaj/k4nxDDZMq2QQLIdhtEnZDjPDC3CXaaZ96o3yhlzk9EdVqD7J76vzFKelXjesOuY0ph1jSzjvF5guVO/M7RfZPvg89pD6loOdjsfBiOKmceUHJtpnaS+AbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D99Dt27d; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752176349; c=relaxed/simple;
+	bh=B9XoDqFdJaX9Edg0FmLsZBwvxJIU8v6zJAUrrMr8Qbs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=M1rfBKqSKnqYvYa6ABvM02I8mLwmmaiGJg8NRzRbH8o4UziP/xkVAJ4WHGDxN7D1PPFPLGPM5/uQVzN3zH2rGF2yIFme45cqAcKOXUsyjG6C1oJFR/ntzWKw1syf949SzN/0XNp5AkN1A1DGYDg4zLZ22w1cDOJXxJJrz2l+iU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwxDQ7UU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D99Dt27d"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6face367320so12795896d6.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 12:30:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752175817; x=1752780617; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=USEIpL4apCBHIBMoQ7JPvYpW1LrAcOYziqZdXP5+KWM=;
-        b=D99Dt27d141/r5XQ/AIfIN8sEKybEgVy7KPWWfLB2K8kxh9YeXPGm4liw6icOra0Az
-         RIrzbkR6FkuMImrnm5UBZj3oYgGJ5pDuTkqnjW85R6LZUEeIrG6lTLLCHkbmakuFi/nt
-         5St2wwFFjszvFIhC6rB5PcvHyjNm/+Cta8yC9FYvUus+k8SeQGVSzjmOVyc+8rZtyR19
-         0r+ztu1MFTnXkSE0DKGmZ6QO9K4RusOtR2F1lUDdceRC9W3fpkopsgMkFLPl1lBw80cY
-         L4WmSlDwQf9WrLvhmx6w13iLs2Qc9KMuFcdTVCr5xEfsNwYrXm5d6SMgRN1EhMo0T06C
-         Yp/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752175817; x=1752780617;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=USEIpL4apCBHIBMoQ7JPvYpW1LrAcOYziqZdXP5+KWM=;
-        b=Wf7IDNblQknGJ3iiG8hjn3JMqgnLny+pIlKkZJlMEVS33T4t41hfqoZXv4H23hv8df
-         8Yuq1lDw1AwygWkbL8QdAKwBbE4YDcSrdAxz9rB+T7kpp3dyxRt+D1PWEX1e+T8V9xry
-         EIFTS+Dwf53gsdPMgFmNIRstxSR11F+skQtHfaUgIrLqNVqZDtUnO8wuC00bhR370wmp
-         7ot86UwsFxHu5jTMEE3rRwSFfbcRXHhrY0oZpALpuP5gkqWc3/wiovXBF+vWQ+0x4p9O
-         fXsqR6BsuLdz00F6UkN624CauTuzoD+Oec1jAmnfDqhyedZHc1b+VnY/nSnB8WKe8+A1
-         7hBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWUTy+vZoI1ueDmJGoHUPH4dOs0Zjm02NMLZPbXxS/bPZ2FgCMh/juOlrWkAqC3N/jHug+xNm+V3Dw28g9g+g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfBsoNu3XP0rn2vVIetDTjoy5NSlObwIDOyrxTwtem+Bn23t7Y
-	h/l4MC7Zp9fccBQIhtnQnVFrInmnO+XqJXRaRd7qOK4yfpczpChPXFs2vAAovZr27Pbzk32JpNI
-	XUDbl5tL8y1dWXERtr9DQ6hKtyS2t7i46lDPP/bzu
-X-Gm-Gg: ASbGnctW7p004ZRNJqBdCG8CFstT91OW2Cuih2oPISu4nvtxSE5ZxnvVDG7IM8HEtxx
-	GMAgtiyCdXanTLykoiklZ8deEuDati95Y58atfgxtFXL5B+MSW7NrtwXsnXEYEPZj1k+DWGHu+H
-	6j31Ie+d8+VySTbAFj3AMa7o1eb8comd3eBBLIWDVZg233gR8KVg5GGEBTh6u0byMG5gHrN2Np
-X-Google-Smtp-Source: AGHT+IGZ42wCwYI6/mUsKs5W1wwGLVBaIdQX9pYAG5+GOjYCAt5QsHm7XxQOSQrB76f5N4QqzG2xfswRS2/KVu8ypPA=
-X-Received: by 2002:a05:6214:1d2b:b0:704:778c:3b9d with SMTP id
- 6a1803df08f44-704a3976eb8mr7470116d6.30.1752175816350; Thu, 10 Jul 2025
- 12:30:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwxDQ7UU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AE1C4CEE3;
+	Thu, 10 Jul 2025 19:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752176348;
+	bh=B9XoDqFdJaX9Edg0FmLsZBwvxJIU8v6zJAUrrMr8Qbs=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=mwxDQ7UUFIGtq6oyJNziwz1adWhaC1WBF/Eq8hckn8nVcD2qBWK4lUy+HQuXlslYC
+	 00mqwDQ2wAGYh2ZvsR1m86Wf/RJFF5dP39ZwtzlJQGdefLxuyBqx3N1bq+ntr2+/h0
+	 dJqiC3MB7wavzFwqqISODZatCJiXDUAOwq0NssohRv9eVudSF4lkEbnG9sj6A2c2aN
+	 9O3/9a4dMpsvOkmtlhaTytF/g+WmJXMTA08twQQOe3E7i5gHILVhuciwpUtyi6Wt2s
+	 NbUlbbYoDEyrZYT3upcYbFz+EgQ9meO6exB4S4OcXUqcn2cWY/i24o9RvM48oGrfJm
+	 1F5aNbMSCME7g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250706201855.232451-1-sergio.collado@gmail.com>
-In-Reply-To: <20250706201855.232451-1-sergio.collado@gmail.com>
-From: Rae Moar <rmoar@google.com>
-Date: Thu, 10 Jul 2025 15:30:05 -0400
-X-Gm-Features: Ac12FXx5GXs_yCw2SDS55fJaE3Sbr8VfcBVMKoEwWHmO2efRO1bMOT4Nye6j_po
-Message-ID: <CA+GJov5eXsoKG2eYch8h5HgLCwnE8+9RA0v-+9DW9TpP5SordA@mail.gmail.com>
-Subject: Re: [PATCH v3 RESEND] kunit: fix longest symbol length test
-To: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Cc: David Gow <davidgow@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Randy Dunlap <rdunlap@infradead.org>, rust-for-linux@vger.kernel.org, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Nathan Chancellor <nathan@kernel.org>, 
-	David Laight <david.laight.linux@gmail.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, x86@kernel.org, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 10 Jul 2025 21:39:02 +0200
+Message-Id: <DB8MOBBJGM0N.DESF9OJ8YNZZ@kernel.org>
+Subject: Re: [PATCH 1/2] rust: Add dma_set_mask() and
+ dma_set_coherent_mask() bindings
+Cc: <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Alexandre
+ Courbot" <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alistair Popple" <apopple@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250708060451.398323-1-apopple@nvidia.com>
+ <DB6JF2JLZEO8.4HZPDC26F3G8@kernel.org>
+ <DB6KV5SVWIYG.2FAIFGZ90ZR2I@kernel.org>
+ <DB6YTN5P23X3.2S0NH4YECP1CP@kernel.org>
+In-Reply-To: <DB6YTN5P23X3.2S0NH4YECP1CP@kernel.org>
 
-On Sun, Jul 6, 2025 at 4:19=E2=80=AFPM Sergio Gonz=C3=A1lez Collado
-<sergio.collado@gmail.com> wrote:
+On Tue Jul 8, 2025 at 10:44 PM CEST, Danilo Krummrich wrote:
+> On Tue Jul 8, 2025 at 11:48 AM CEST, Danilo Krummrich wrote:
+>> On Tue Jul 8, 2025 at 10:40 AM CEST, Danilo Krummrich wrote:
+>>> On Tue Jul 8, 2025 at 8:04 AM CEST, Alistair Popple wrote:
+>>>> Add bindings to allow setting the DMA masks for both a generic device
+>>>> and a PCI device.
+>>>
+>>> Nice coincidence, I was about to get back to this. I already implemente=
+d this in
+>>> a previous patch [1], but didn't apply it yet.
+>>>
+>>> I think the approach below is thought a bit too simple:
+>>>
+>>>   (1) We want the DMA mask methods to be implemented by a trait in dma.=
+rs.
+>>>       Subsequently, the trait should only be implemented by bus devices=
+ where
+>>>       the bus actually supports DMA. Allowing to set the DMA mask on an=
+y device
+>>>       doesn't make sense.
+>>
+>> Forgot to mention, another reason for a trait is that we can also use it=
+ as a
+>> trait bound on dma::CoherentAllocation::new(), such that people can't pa=
+ss
+>> arbitrary devices to dma::CoherentAllocation::new(), but only those that
+>> actually sit on a DMA capable bus.
+>>
+>>>
+>>>   (2) We need to consider that with this we do no prevent
+>>>       dma_set_coherent_mask() to concurrently with dma_alloc_coherent()=
+ (not
+>>>       even if we'd add a new `Probe` device context).
+>>>
+>>> (2) is the main reason why I didn't follow up yet. So far I haven't fou=
+nd a nice
+>>>     solution for a sound API that doesn't need unsafe.
+>>>
+>>> One thing I did consider was to have some kind of per device table (sim=
+ilar to
+>>> the device ID table) for drivers to specify the DMA mask already at com=
+pile
+>>> time. However, I'm pretty sure there are cases where the DMA mask has t=
+o derived
+>>> dynamically from probe().
+>>>
+>>> I think I have to think a bit more about it.
 >
-> The kunit test that checks the longests symbol length [1], has triggered
-> warnings in some pilelines when symbol prefixes are used [2][3]. The test
-> will to depend on !PREFIX_SYMBOLS and !CFI_CLANG as sujested in [4] and
-> on !GCOV_KERNEL.
+> Ok, there are multiple things to consider in the context of (2) above.
 >
-> [1] https://lore.kernel.org/rust-for-linux/CABVgOSm=3D5Q0fM6neBhxSbOUHBgN=
-zmwf2V22vsYC10YRBT=3DkN1g@mail.gmail.com/T/#t
-> [2] https://lore.kernel.org/all/20250328112156.2614513-1-arnd@kernel.org/=
-T/#u
-> [3] https://lore.kernel.org/rust-for-linux/bbd03b37-c4d9-4a92-9be2-75aaf8=
-c19815@infradead.org/T/#t
-> [4] https://lore.kernel.org/linux-kselftest/20250427200916.GA1661412@ax16=
-2/T/#t
+>   (a) We have to ensure that the dev->dma_mask pointer is properly initia=
+lized,
+>       which happens when the corresponding bus device is initialized. Thi=
+s is
+>       definitely the case when probe() is called, i.e. when the device is=
+ bound.
 >
-> Reviewed-by: Rae Moar <rmoar@google.com>
-> Signed-off-by: Sergio Gonz=C3=A1lez Collado <sergio.collado@gmail.com>
-> Acked-by: Randy Dunlap <rdunlap@infradead.org>
-> Tested-by: Randy Dunlap <rdunlap@infradead.org>
+>       So the solutions here is simple, we just implement the dma::Device =
+trait
+>       (which implements dma_set_mask() and dma_set_coherent_mask()) for
+>       &Device<Bound>.
+>
+>   (b) When dma_set_mask() or dma_set_coherent_mask() are called concurren=
+tly
+>       with e.g. dma_alloc_coherent(), there is a data race with dev->dma_=
+mask,
+>       dev->coherent_dma_mask and dev->dma_skip_sync (also set by
+>       dma_set_mask()).
+>
+>       However, AFAICT, this does not necessarily make the Rust API unsafe=
+ in the
+>       sense of Rust's requirements. I.e. a potential data race does not l=
+ead to
+>       undefined behavior on the CPU side of things, but may result into a=
+ not
+>       properly functioning device.
 
-Hello!
+Apparently, this is wrong, and it might indeed result in undefined behavior=
+ on
+the CPU side of things. :(
 
-Thanks for resending! I don't believe this has been accepted yet.  So
-I've added it to the list of patches to get accepted for the
-kselftest/kunit branch.
+>
+>       It would be possible to declare dma_set_mask() and dma_set_coherent=
+_mask()
+>       Rust accessors as safe with the caveat that the device may not be a=
+ble to
+>       use the memory concurrently allocated with e.g.
+>       dma::CoherentAllocation::new() properly.
+>
+>       The alternative would be to make dma_set_mask() and
+>       dma_set_coherent_mask() unsafe to begin with.
+>
+>       I don't think there's a reasonable alternative given that the mask =
+may be
+>       derived on runtime in probe() by probing the device itself.
+>
+>       I guess we could do something with type states and cookie values et=
+c., but
+>       that's unreasonable overhead for something that is clearly more a
+>       theoretical than a practical concern.
+>
+>       My conclusion is that we should just declare dma_set_mask() and
+>       dma_set_coherent_mask() as safe functions (with proper documentatio=
+n on
+>       the pitfalls), given that the device is equally malfunctioning if t=
+hey're
+>       not called at all.
+>
+> @Alistair: If that is fine for you I'll pick up my old patches ([1] and r=
+elated
+> ones) and re-send them.
+>
+> If there is more discussion on (b) I'm happy to follow up either here or =
+in the
+> mentioned patches once I re-visited and re-sent them.
+>
+>>> [1] https://lore.kernel.org/all/20250317185345.2608976-7-abdiel.janulgu=
+e@gmail.com/
 
-Thanks!
--Rae
-
-> ---
->  lib/Kconfig.debug                | 1 +
->  lib/tests/longest_symbol_kunit.c | 3 +--
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index ebe33181b6e6..4a75a52803b6 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -2885,6 +2885,7 @@ config FORTIFY_KUNIT_TEST
->  config LONGEST_SYM_KUNIT_TEST
->         tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
->         depends on KUNIT && KPROBES
-> +       depends on !PREFIX_SYMBOLS && !CFI_CLANG && !GCOV_KERNEL
->         default KUNIT_ALL_TESTS
->         help
->           Tests the longest symbol possible
-> diff --git a/lib/tests/longest_symbol_kunit.c b/lib/tests/longest_symbol_=
-kunit.c
-> index e3c28ff1807f..9b4de3050ba7 100644
-> --- a/lib/tests/longest_symbol_kunit.c
-> +++ b/lib/tests/longest_symbol_kunit.c
-> @@ -3,8 +3,7 @@
->   * Test the longest symbol length. Execute with:
->   *  ./tools/testing/kunit/kunit.py run longest-symbol
->   *  --arch=3Dx86_64 --kconfig_add CONFIG_KPROBES=3Dy --kconfig_add CONFI=
-G_MODULES=3Dy
-> - *  --kconfig_add CONFIG_RETPOLINE=3Dn --kconfig_add CONFIG_CFI_CLANG=3D=
-n
-> - *  --kconfig_add CONFIG_MITIGATION_RETPOLINE=3Dn
-> + *  --kconfig_add CONFIG_CPU_MITIGATIONS=3Dn --kconfig_add CONFIG_GCOV_K=
-ERNEL=3Dn
->   */
->
->  #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
->
-> base-commit: 772b78c2abd85586bb90b23adff89f7303c704c7
-> --
-> 2.39.2
->
