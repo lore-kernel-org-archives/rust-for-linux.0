@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A262877C1;
-	Thu, 10 Jul 2025 11:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D95219E8D;
+	Thu, 10 Jul 2025 11:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752145791; cv=none; b=kbDw3HZMJHXnieXYrgMDbNgCxuUFTeaFKb/qhwIa9RSxPFfzCcfjQ4bgy5QkGLwKYGEUHNfnkrB1ayB92f/fwgXoDQd/PgDVRbe4IAFdrEwKmxjiAflOfVvUpSZlhKOwYTfBAV0UyB8bD4BTotKgR1Nuwl4+eyRkpJWaX6ctex8=
+	t=1752145892; cv=none; b=FOgnCPHbobsmX678F9S/SIitlcCDGT6XvUZs32LxtFf1aHZi6pgpqW1GygnmKG/rpHpunseeGAOTWXC5Z7dTTQgoCIBi0X2zLrE4erAfIVjoRytE7uQsKfj3Y9TdEyKQrTmrCIAuRNqE59h8IBJeXf4EIrJQeuELaCpgKTlXLhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752145791; c=relaxed/simple;
-	bh=cyo8TvLqzhnMM+YzZI++zzXnIEvpHErhbOfzHNNWuRc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=i0mQSqPT0gSjJoAFq/bEIRtdaELI9F10YQDcQe5t38/sExOL3Er6UF1nMnAjJKdH/HNFCgi6VQk8g+mb8ptrMqxaNJAaOh9Bj4u83AK56lMHnDul36+v1RAvaRtNp68iz8iFva8wmi4LU71+avLD7VdVTJoH73IMJmFx3U5+ap4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GR8jxhjS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752145892; c=relaxed/simple;
+	bh=TMZWOnSmjSdk9YHVst53o79sncIxUMvkU8tLCD3rYZc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=dwZ+Y5gQAxvyJhGruEUOkBAzF5JmHx9KgIJKMVbacth47hiZsstwgMrORKNmc1J4TiaDoqz+176yX1gPkft0Smppl6nsKPRniaelmDRPjh5IQ1rmhhPFyxXBLSEtWX9iwS7EYTpjN2PfZZtaLGckEpVzedVH1x+R3bhzJeuuTCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLF1Vq9K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GR8jxhjS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7E7C4CEE3;
-	Thu, 10 Jul 2025 11:09:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLF1Vq9K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B463C4CEE3;
+	Thu, 10 Jul 2025 11:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752145790;
-	bh=cyo8TvLqzhnMM+YzZI++zzXnIEvpHErhbOfzHNNWuRc=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=GR8jxhjS+77T7Tw/3+VKZHxuDGUV9TM886m7kNNd7K+2Ot77ZwLIIVGc4QZCI4ywl
-	 qNGJqqqNA6PQl7NEz51DdY/czTLQvp89C2Wxi++dHqDslKhlhSzXhLBLXG9o4b0MpQ
-	 5vt2pbzTvtAeAuJspiUfzO9VlSoxpRF17Fh90wKdFvA5QVPUCk3uoqisBqqmo2HIzu
-	 oCOxwjupcCSlTBtRKh9BBkiAq9Z0i/Nqqd2CLG8XCzeZzIrlrplyCKz1/rWEUap4Z1
-	 OZqLTF5y6LXajm94MYNdCve/NCPA7qluSgRUQ6GuPiNfaNt2DEXYmUYkpI6mcbzplJ
-	 RbQGk4M9z3G7Q==
+	s=k20201202; t=1752145892;
+	bh=TMZWOnSmjSdk9YHVst53o79sncIxUMvkU8tLCD3rYZc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=oLF1Vq9KNmhaRndTqN690GtnqErDToecQacnKoLk7brnR9YyftnHBD3iiXOE1K7tO
+	 mVBEAmsPRtBWn+8TRpepDAMCfxgI12wEU0/iftKxkRUphKrMk96cUNP8tARwPjySGm
+	 DsjuhyQ5xd4XBEcif/2G2JFWxEoNuxoFqlXvy5O0DkAsaRD3RXHWyck2rW03oT0zHc
+	 zhlpUstnqoxrMG4SJmR9TdaACuJWDtxfSMc9cLN3ma3bamikE9dIspcR30CbnvGCYw
+	 R0/1Sj3m6GcNBl4zjVTTXrm61aP8vRQ9h9QlshbXHdzqQslcjdZr8KgSmmqb18e1uX
+	 +Y6QLk7+YVtVQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,10 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Jul 2025 13:09:46 +0200
-Message-Id: <DB8BUDZQJOM5.2WS6MCW6I0XES@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>
+Date: Thu, 10 Jul 2025 13:11:27 +0200
+Message-Id: <DB8BVOLRNDQU.SMTSAMKQ6WVH@kernel.org>
 Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
  <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
@@ -49,6 +47,8 @@ Cc: "Matthew Maurer" <mmaurer@google.com>, "Miguel Ojeda"
  <rust-for-linux@vger.kernel.org>
 Subject: Re: [PATCH v9 0/5] rust: DebugFS Bindings
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>
 X-Mailer: aerc 0.20.1
 References: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
  <DB7US8G7ISG0.20430M3P7I0K0@kernel.org>
@@ -57,60 +57,70 @@ References: <20250709-debugfs-rust-v9-0-92b9eab5a951@google.com>
  <CAGSQo01drZoy1-j-+Y-BHHOX5AzCG4A5KiUOu5TJ40JOdfcB0g@mail.gmail.com>
  <aG7pP1BTLQKInFrl@cassiopeiae> <2025071014-radiantly-dreamland-4017@gregkh>
  <DB89V15HIG8C.2HL9JVKFNEDTK@kernel.org>
-In-Reply-To: <DB89V15HIG8C.2HL9JVKFNEDTK@kernel.org>
+ <DB8BUDZQJOM5.2WS6MCW6I0XES@kernel.org>
+In-Reply-To: <DB8BUDZQJOM5.2WS6MCW6I0XES@kernel.org>
 
-On Thu Jul 10, 2025 at 11:36 AM CEST, Danilo Krummrich wrote:
-> On Thu Jul 10, 2025 at 7:27 AM CEST, Greg Kroah-Hartman wrote:
->> Ugh.
+On Thu Jul 10, 2025 at 1:09 PM CEST, Benno Lossin wrote:
+> On Thu Jul 10, 2025 at 11:36 AM CEST, Danilo Krummrich wrote:
+>> On Thu Jul 10, 2025 at 7:27 AM CEST, Greg Kroah-Hartman wrote:
+>>> Ugh.
+>>>
+>>> Yes we need write.  And read, and custom file-ops, and the like as
+>>> that's what debugfs is doing today for C code!  We need this to be as
+>>> simple as, or almost as simple as, what we have today in C or no one is
+>>> going to use this stuff and go off and attempt to write their own mess.
 >>
->> Yes we need write.  And read, and custom file-ops, and the like as
->> that's what debugfs is doing today for C code!  We need this to be as
->> simple as, or almost as simple as, what we have today in C or no one is
->> going to use this stuff and go off and attempt to write their own mess.
->
-> I agree, we really want the helpers you're referring to below. I think we
-> discussed this in previous iterations already.
->
->> While I would love to have something as simple as:
+>> I agree, we really want the helpers you're referring to below. I think w=
+e
+>> discussed this in previous iterations already.
+>>
+>>> While I would love to have something as simple as:
+>>> 	void debugfs_create_u8(const char *name, umode_t mode, struct dentry *=
+parent, u8 *value);
+>>> like we do today.  I understand that this makes all sorts of
+>>> "assumptions" that Rust really doesn't like (i.e. lifetime of *value an=
+d
+>>> the like), BUT we MUST have something like this for Rust users, as
+>>> that's going to ensure that people actually use this api.
+>>
+>> I think it can be as simple as
+>>
 >> 	void debugfs_create_u8(const char *name, umode_t mode, struct dentry *p=
 arent, u8 *value);
->> like we do today.  I understand that this makes all sorts of
->> "assumptions" that Rust really doesn't like (i.e. lifetime of *value and
->> the like), BUT we MUST have something like this for Rust users, as
->> that's going to ensure that people actually use this api.
+>>
+>> in Rust as well. Declaring this in a structure looks like this.
+>>
+>> 	struct Data {
+>> 	   counter: File<u8>,
+>> 	}
+>>
+>> Given that we have some Dir instance, this can be as simple as:
+>>
+>> 	dir.create_file_u8(...);
+>>
+>> Which uses default callbacks for read(), write(), etc.
+>>
+>>> Look at an in-kernel function today, like ath9k_init_debug() that
+>>> creates a metric-ton of debugfs files and binds them to different
+>>> variables that are owned by a structure and more complex data structure=
+s
+>>> and memory dumps and other random file interactions.  We need, in Rust,
+>>> a way to do everything that that function can do today, in a SIMPLE
+>>> manner that reads just as easily as ath9k_init_debug() does.
+>>
+>> That's possible with the current design and code, it misses the helpers,=
+ such as
+>> create_file_u8() above, to reduce the boilerplate though. With that, it =
+should
+>> look pretty similar.
 >
-> I think it can be as simple as
->
-> 	void debugfs_create_u8(const char *name, umode_t mode, struct dentry *pa=
-rent, u8 *value);
->
-> in Rust as well. Declaring this in a structure looks like this.
->
-> 	struct Data {
-> 	   counter: File<u8>,
-> 	}
->
-> Given that we have some Dir instance, this can be as simple as:
->
-> 	dir.create_file_u8(...);
->
-> Which uses default callbacks for read(), write(), etc.
->
->> Look at an in-kernel function today, like ath9k_init_debug() that
->> creates a metric-ton of debugfs files and binds them to different
->> variables that are owned by a structure and more complex data structures
->> and memory dumps and other random file interactions.  We need, in Rust,
->> a way to do everything that that function can do today, in a SIMPLE
->> manner that reads just as easily as ath9k_init_debug() does.
->
-> That's possible with the current design and code, it misses the helpers, =
-such as
-> create_file_u8() above, to reduce the boilerplate though. With that, it s=
-hould
-> look pretty similar.
+> Can't you just implement the traits directly on `u8` and then just call
+> `create_file`?
 
-Can't you just implement the traits directly on `u8` and then just call
-`create_file`?
+Ah I guess for write support you need `Atomic<u8>` and that doesn't
+implement `Display`...
+
+Maybe `Display` is the wrong trait for this...
 
 ---
 Cheers,
