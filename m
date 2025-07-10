@@ -1,125 +1,150 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABA225A620;
-	Thu, 10 Jul 2025 13:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991E22594B4
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 13:40:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752154568; cv=none; b=dkFLXwYWSDsNpib7UzrlJksH99cEnpXv4i71myIvUOsiGriGMMwEAoBNPjADJ3gWebvQUsru2agnhF+pMIPpxFLgXiISkgr6pJ70KrIeAizs1Va8tSiRoiZ0OQ7pdJkiJVOcCHfkeielAuS2yAP48DbFiV0a2CpcL2aN70oHD7o=
+	t=1752154819; cv=none; b=FEGJ4vGVT6dnOuL8o5HvG5+NH6oLAn2br1oGVe5bq5sitpPQ8bzhKqXaHWKoHz9qHScnNebXSGsQFliGyNanRj/cIUU5u9i8sJ3XRBSIYSqaHA7jPxM+b5scez+Sf25DB5SOfPOLBcMbdGw49FwK6qBdQiF9J7iyxZX2ESkHtiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752154568; c=relaxed/simple;
-	bh=9U/HceOPkg0DS9fAXJ0Lfad9nJhdWKPl5eqrIs+HbC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fgYHDnxCXSiAdjnl4ch3MoK9cbi/cnA6iCpVM7w170iNo6/LViCcGWEjudVb/UZkXHcF8L1jKbuUR/2lEV5kRVg1uMxvWVWSzc/+LP+IzZ850EEZmrocK6X5ivy0YzHtAH+lBHCaSo/Kyy7l8c7OUsQbOlb//5FHH7ihIBQkz0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bDXrnUIW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752154819; c=relaxed/simple;
+	bh=L8NAxkisOrUvB5X45MszjRrn1WdpFGJZaTdDegwtsNA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UJfFeyLm0sB5MbQNZPzVd01a4mr/gX55Y8O7ENL85q3000IOxSXR1M+o43RaqIrmGydrJC+hgRUUttzCaeYHUW7+AKmQBdOPnyqa5D4oBjXc8jO6HElSUfuutZ21UQIB5uKcrh/vBX+Flth8OH1WARyXwClf9D+qui4HVPFdaQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J6kWbWwh; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bDXrnUIW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87626C4CEE3;
-	Thu, 10 Jul 2025 13:36:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752154568;
-	bh=9U/HceOPkg0DS9fAXJ0Lfad9nJhdWKPl5eqrIs+HbC4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bDXrnUIWdk1WEgpplj4B8WExCpP0vcKx4ik4gldCnSqOgryb1RG1xkQEXfYhpdFv6
-	 VCjpJyxFAoclIKLaBUfrVd2k18sdkmrg4r77Tcfjxm64JxcjOBkV4QxUojNm5gjsvI
-	 OiYBZyBF15RGRSopWzXvNnlDCz+/zJgbBCSPtweXitgbNCcfGtZHku5Bq85nLt0Sta
-	 1BwPCvP0TJ72khmbLEk/gF/HHv3pqyQWKwubjviWCLkdpQBUaByqPqmiNvo43yPaVh
-	 EqEaXYduyC69WHePdnY+gs+Ak8JqcTyrf4NVORSoWw8uip8YfBigPz+/8anspyLe9R
-	 ByYxi9TL/3pSw==
-Date: Thu, 10 Jul 2025 15:36:05 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Guo Ren <guoren@kernel.org>, 
-	Fu Wei <wefu@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, 
-	Michael Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-pwm@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	devicetree@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-Message-ID: <judbbl4d3z7nd2wi3grlwf3cmqgdycb5ljyyqx6r4w2zluhmwy@yxrqnf2hcnzw>
-References: <CGME20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6@eucas1p1.samsung.com>
- <20250707-rust-next-pwm-working-fan-for-sending-v10-0-d0c5cf342004@samsung.com>
- <e8a4a821-e7e4-4bcd-a2ac-f6b684b6ceea@samsung.com>
- <DB8AQ15RTAJ2.3QXX8Q2FTFGCP@kernel.org>
- <e494422b-b989-4dc3-9828-b080dbf4c34d@samsung.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J6kWbWwh"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3ab112dea41so605886f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 06:40:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752154814; x=1752759614; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4gK8SxTWD7UWQltVg6xSQeiZZywuBSSmhBPrVCrZSpc=;
+        b=J6kWbWwhktu0zn0rmqPAT+d9t4PWigrqg4hIj2hrJUjrjk7ZqZXDXHaMBOg4y8hmUo
+         wn7n8hxlyD73imVFAO9m3vdk6TtMd766+zqCYYyPX5/t0TVsZLy3VQRzBD29pe/4Ibm/
+         M92I/QT+pw8NZhmIknNOn1u2rYAo+8Yz0GjyfGliuTeh4IFo6+LfVgWuRuH0/3nrGGFR
+         DR3bhpB52lFRSWRVUlLEd4AWzkdrvGXHaORqu0ucsX5caWKWvD2QH2w8OK5iUPZDNuK6
+         YQOOWjl72+gLSg2i5NW7WNqQZR/BMgJ3YTLdynYxGMVX85awrRbsK02ioAfDCj86lqCx
+         RkoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752154814; x=1752759614;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4gK8SxTWD7UWQltVg6xSQeiZZywuBSSmhBPrVCrZSpc=;
+        b=qtEIxOjXrbalhL5/Iwo60xmTnpU56rRP401fwhB4lhF66sPgLItR5Lfasp+qjhstHl
+         kWjyzmmx7Bo1d9pW12+V2jHF5cl1QE9ptgK6Ac0cCapAw/IppX/MQn8J6NbT8MeK0LgQ
+         DaDYno2wf+eLHOwHpdet7m9lWaSVqXv259scsAjMmFZtPdeRmGabhxxDGi51yIgSLhR0
+         /7CZsueVibgIjDfbMYEFD/1iDQsoVliJEytqoSMltV0V4jpaw631gw+0J+CwDMg/P8F1
+         tOTt3H6FQ5b4dg1cPAeJBt4DKkg8pErnSmyQBaXNckKuplE2el+KbSypcIsOe1Mq7DEH
+         eFug==
+X-Forwarded-Encrypted: i=1; AJvYcCVjD/RF1Tb94w0vg9CSYoBP6sFPk5pCwT5SCZEHnYiPEvM+U60vYs10XjAEAfx1biMXEU4uRj6bJ09u9c+f+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuHkydH385+UByKejOpJmggd7EmMG9dXiz2PoKJ5ZD4pSxRRdJ
+	KWoOHYbjAYITjDVsl0IOywn1TgkNawyJriUhdX9GWxcSGX55uF1ASFrnHV5zJpfut7mEk/0yGYf
+	GnGZ/mSL+uPgNIJoy2wrUCArTJovMCxaVHRnUTGJK
+X-Gm-Gg: ASbGncvfT4XfjE1j2MmvP1b091Je6POASJV2QyNf7zzP9Y3N3jexO5elkNvWF1g6vVB
+	uG8aICSNqXik62/raMsSPAWxQm1nnQDfTIbZKaphrKTmih2Iv8RKNdKjgR7fMqGbNvu/0snco/6
+	IbewaeoUTSiENDro4HM4UGr2aPGWo51NpUEZTQuj/JwykrLohf71FW3zRe/f1688p9jnTD+b4Jq
+	Q==
+X-Google-Smtp-Source: AGHT+IHWb1Xq0/Oarnazs9jnrq9g3D/RI7LYjXDzHlYykaJcgX83KF6n4sioYqT/vG6R3lN9oMhfwlrmUvLkIfVqi5w=
+X-Received: by 2002:a05:6000:220d:b0:3a4:ed10:c14 with SMTP id
+ ffacd0b85a97d-3b5e44e94damr5777078f8f.14.1752154813861; Thu, 10 Jul 2025
+ 06:40:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gtidwru4q5xzuxiv"
-Content-Disposition: inline
-In-Reply-To: <e494422b-b989-4dc3-9828-b080dbf4c34d@samsung.com>
-
-
---gtidwru4q5xzuxiv
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
+References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
+ <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
+ <aGt6CZAUeuK0XnmP@google.com> <D7735793-D99E-44D4-945C-2AC0B500E1F9@collabora.com>
+In-Reply-To: <D7735793-D99E-44D4-945C-2AC0B500E1F9@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 10 Jul 2025 15:40:01 +0200
+X-Gm-Features: Ac12FXx_E1R9f789vX3XKeepzt_E4gBqlYxHx9ZWW5DK1vZvG_UyCpsA_of1z9Y
+Message-ID: <CAH5fLghe0-s2SQ+_cwNmagw8depC+=6kUwUm_epLFz30k9gQJw@mail.gmail.com>
+Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>, Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Ying Huang <huang.ying.caritas@gmail.com>, Benno Lossin <lossin@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Fiona Behrens <me@kloenk.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-MIME-Version: 1.0
 
-Hello,
+On Thu, Jul 10, 2025 at 3:34=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> [=E2=80=A6]
+>
+> >
+> >> +    }
+> >> +
+> >> +    /// Returns the name of the resource.
+> >> +    pub fn name(&self) -> &'static CStr {
+> >> +        let inner =3D self.0.get();
+> >> +        // SAFETY: safe as per the invariants of `Resource`
+> >> +        unsafe { CStr::from_char_ptr((*inner).name) }
+> >> +    }
+> >> +
+> >> +    /// Returns the flags associated with the resource.
+> >> +    pub fn flags(&self) -> Flags {
+> >> +        let inner =3D self.0.get();
+> >> +        // SAFETY: safe as per the invariants of `Resource`
+> >> +        let flags =3D unsafe { *inner }.flags;
+> >> +
+> >> +        Flags(flags)
+> >> +    }
+> >> +}
+> >> +
+> >> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, =
+which is
+> >> +// safe to be used from any thread.
+> >> +unsafe impl Send for Resource {}
+> >> +
+> >> +// SAFETY: `Resource` only holds a pointer to a C `struct resource`, =
+references
+> >> +// to which are safe to be used from any thread.
+> >> +unsafe impl Sync for Resource {}
+> >> +
+> >> +/// Resource flags as stored in the C `struct resource::flags` field.
+> >> +///
+> >> +/// They can be combined with the operators `|`, `&`, and `!`.
+> >> +///
+> >> +/// Values can be used from the [`flags`] module.
+> >> +#[derive(Clone, Copy, PartialEq)]
+> >> +pub struct Flags(usize);
+> >
+> > Based on usage it looks like the correct type is c_int?
+>
+> Shouldn=E2=80=99t this be c_ulong because of:
+>
+> #[repr(C)]
+> #[derive(Copy, Clone)]
+> pub struct resource {
+>     pub start: resource_size_t,
+>     pub end: resource_size_t,
+>     pub name: *const ffi::c_char,
+>     pub flags: ffi::c_ulong, <=E2=80=94=E2=80=94
+>
+> In any case, we will have to cast this because __request_region
+> expects c_int.
 
-On Thu, Jul 10, 2025 at 12:29:59PM +0200, Michal Wilczynski wrote:
-> On 7/10/25 12:17, Danilo Krummrich wrote:
-> > On Thu Jul 10, 2025 at 10:42 AM CEST, Michal Wilczynski wrote:
-> >> I was hoping you could clarify the intended merge path for this series,
-> >> as it introduces changes to both the Rust and PWM subsystems.
-> >>
-> >> Is the expectation that the Rust maintainers will take the abstraction
-> >> patches into the Rust tree first? Or would Uwe, as the PWM maintainer,
-> >> pull the entire series? Any guidance on the coordination would be very
-> >> helpful.
-> >=20
-> > Except for the helpers I only see PWM code, so this is fully on Uwe's p=
-urview I
-> > think.
-> >=20
-> > I see that there is a new MAINTAINERS entry:
-> >=20
-> > 	PWM SUBSYSTEM BINDINGS [RUST]
-> > 	M:	Michal Wilczynski <m.wilczynski@samsung.com>
-> > 	S:	Maintained
-> > 	F:	rust/helpers/pwm.c
-> > 	F:	rust/kernel/pwm.rs
-> >=20
-> > I assume this is agreed with Uwe?
+I saw that you called a C function that expects an int, so that's why
+I suggested c_int. It sounds like the cast from int to long happens in
+C code.
 
-I suggest to add
-
-	L:	linux-pwm@vger.kernel.org
-
-then I'm happy with it. I'm definitively not capable to review the Rust
-details of Rust code. But I think Rust is readable enough that I can
-judge the algorithmic parts.
-
-Best regards
-Uwe
-
---gtidwru4q5xzuxiv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmhvwbkACgkQj4D7WH0S
-/k6yoAgAk02SY03Ptnis1ix+FQupN4IF3FlEmjwh1sv3okzPCCkoQoHQEmR40NWi
-hahNNioLOEuKJVHAtFowU5tIW79zPiNHaUTuByh44Xb/NHRRxHQTlhT612aDJmKl
-2tOvGdt4YPLK3V9abpk+kaAwwZ5QoWjs8YexssyffZMRxzAmE4e80plkC8yrm922
-tRgumP0GJBQNGaH9vDCweni2vkAM46xznNv0XqDfuDSTEETTavkinGz/sB0BI3aL
-w6UM96f1Pn7Q9q3lGis7kmUyQKNaImE/qklsv+K0khHEOsa2j8wRdbHFKpJPjnt8
-lZs6tH/nHMHVffYc6B0fL1FUiFsMOg==
-=P4yP
------END PGP SIGNATURE-----
-
---gtidwru4q5xzuxiv--
+Alice
