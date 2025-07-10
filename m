@@ -1,175 +1,212 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02F326B09F
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 14:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E187E27056F;
+	Thu, 10 Jul 2025 14:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752156461; cv=none; b=hC6SfnQiwgIXVeny4weZp5Qym7L+OKSduOXxbSsOV/7EHYVvs/jZci8tDji1n9/en5qjA3KeP0bB91OaSfKhhM1Ith+TCLTzyJKE2OFCnr3C2t6QxVlG97k3lPeEAoXv1wXO0ULzeWEw4N2qhwxvvlteHjIbZ3S/27eYYE9IBhU=
+	t=1752158582; cv=none; b=BzHSMm2Eg4KgCi16EE5AlyQEAeaEC+e9uCjKFmDHNsyj3nKh2qPPOOQvvkHkm/e5CxnX4HnCg1g5/On8nf4muhWAoXir1tKZa+lPRBqNILRuv06n5Y9fsa6frzORjpQ5kYA4yLlJEToxFI8cjdbr4gmzSzZYfZilT/HYQrDOF+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752156461; c=relaxed/simple;
-	bh=fEk+AE6/WEqc/2Z+GVzvG2frW2My/PwWPejaD2SJCKQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=qSLGGovdWz6WBPtxIqZCjk/ISCk0SX8MRjcMt9uq4jJXrhs/a1V/1tl2kef1XocQ/ATnQGtbFaLc+/kSC4bQAnKvA1/mmxvckyi0MbPjxbyjU3l4FrEMKJ0tB018S7Jd8Wu3m8aZ1FeqxXDpXwrf4IDfIMeXFHOGkunP6J0bUy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=VHpubo+O; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=71llo6v6; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1752158582; c=relaxed/simple;
+	bh=5szyi6yH0oGGrfKIg9Xi5xiZ5wKO/TDCmsZjQgVklsw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rT7mKNZssvShnCQzYuYin1tTJEAZvBksjuHXufTdxiNxYX/FP/HlPtCsbp7zLSkZ06Dl40MLGFjfOjxEKsa0KqcoCPt0IPloEUS4IhBetMJ9nuivlXSPrOiklMFEkQmOYGnB9xQhjEpg7lZ8zCvQ/RkvDK/oE7iH6NUyyVUUg00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dhqrnv+6; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="VHpubo+O";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="71llo6v6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752156450; x=1752761250;
-	d=konsulko.se; s=rsa1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=z6CYkY/mnHsPc1zlAI1YQ9WMPDSlzYrFWMeZlYj4cpw=;
-	b=VHpubo+OBZhzjd4PXBL2vtOFLMM2bRHh5EeEz+IBCjXyVL4Ukh6jyp1csiboGxXQ1tLHFoINMJ5C4
-	 1ctcoTuCpgQyNoAT2oGWAp0T0NmCmxu63oSdgyLLwlpIjYGksuqtkH5l39quLXxeJSQOPmZ8U4wiAE
-	 /hNmU9nqubJ0lOMKO6+bRyz+c9m0eXYUBliSymIBdoTt4jyKXhqNh75iley3u6crCOjr+Sxk4ex/4c
-	 g97BlnCT9qmhal31kJyh9KRJvuigslwTrELthNmRmAmMLWHIAWkJPj69oMzx/eRYQJJ65LtLzrGnrY
-	 r+ABRS9dN1OjMes5PM4HJ3WcgJdb/Mw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752156450; x=1752761250;
-	d=konsulko.se; s=ed1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=z6CYkY/mnHsPc1zlAI1YQ9WMPDSlzYrFWMeZlYj4cpw=;
-	b=71llo6v6/l7OTXw3SNLSRYkfbg1Wmiisu+BttGsr8RLc6NHuwz5OHPiG6WSlNgNzzVcW0wzjID+ca
-	 FxpPsbOAg==
-X-HalOne-ID: 363fb403-5d97-11f0-9d28-c9fa7b04d629
-Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
-	by mailrelay1.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 363fb403-5d97-11f0-9d28-c9fa7b04d629;
-	Thu, 10 Jul 2025 14:07:30 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dhqrnv+6"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6fadb9a0325so8812276d6.2;
+        Thu, 10 Jul 2025 07:43:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752158580; x=1752763380; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z4R+5ty4AWv2gsK8CU8Hv/60eryRGjAiYmsZeghCD00=;
+        b=dhqrnv+6RRWhQ0go3+hNNlLLLEJsKgIAJvKXtYK/MhCRhCymFAQHlox0ulxFW4+J+Z
+         ybuQLBN0bRC/c0A4GUWmO+RO/giS1KFcIo7sePOl63k0WMrZU/S1FPFKngNVgUm91KgY
+         cw8iQjGplZjMoNk6bCBHXcPup7OosYaQfjYm9i9WJAz7GWOVEydtcyn7ZqzPkKoCM9Lt
+         MR85WWQ3/MFaHsTMCWXlVWpDX+fDYAhhXno9gvLEt4IrbPVzzDEGHG6fjT3qAJNH+wL3
+         RDetdf0OBYb5yQcqVDzzRI1JLlr/6ysecjqEoFYOLncR9V57LLhB6lPDSMwxoNy5F/nE
+         RWCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752158580; x=1752763380;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z4R+5ty4AWv2gsK8CU8Hv/60eryRGjAiYmsZeghCD00=;
+        b=KHQZo8qLjxIlKOtyHpKlP4MBCMYMupY/cB7v7Sq+zpDBZ9ryNbKfFfIW3pmmfaZN29
+         yb5ML5i5H0LyHHtmhtrJtg2WsegMbIy9J8hzYCf9mT2D7sSRgXMtdpZ9l8o43iO6twJe
+         nwg/84RGibA7/qcu23gqFhSzLAUR/+aT4gQIbXpWcWv/0cqq4HZ9Y6W8bR6EWLocWVA5
+         hnNg8f4J6ejjPjmsNYA0idteINGtoIzeJOTAGF+FtDiVxF6yN8bAtH5Lvf+wBTfd0UHo
+         GPOimvFWBLYTrDg/6CUPkuSVPVnmCGiQxMT5uncEjWgraxAhAhTf+CpXjDHmIJPpE+bl
+         K9bg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUlPSxAMwsN7kFUTxhXl+63rIbnssTtm8oZYbfurtGsFVbKuCym1cZs+BJ6qqRfam8log4b8kSQQy2N+hA@vger.kernel.org, AJvYcCW7ffr7NqktxGhhoLJOuzbxCzWSQVFXOwFPkUljCzbdgdOT76aw2foLABqQ45B4INNjQQrsM8Me1vSu@vger.kernel.org, AJvYcCXcjNOG6BdLPiPE4B8qMCa++FkOFcatCFuN6w6jt+fdDjE3jI3pK8q+BLwz94C3vkOAsDaIa6H82oOWl9l4x/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDog4bcq5ZU/zbMEBqA3D1Zsx5yJScxUpPnOkZlP7rDNSN5v8g
+	wYpMklcXaY9mP8HKPLuB9CeGYxETNCiX2EjquRdUd9224LKC0y0knBPn
+X-Gm-Gg: ASbGncuPQE0AcTREvfHewQEl/mFwhUEo+cO54Q1CHTUiNhd/J9jtCJ61JaAXbnDun5H
+	cupR77ABNwDVFQ+l+dlTEri+gbDPoyJac3XzSV20aLfuWQ+BiYfPEv+VFB0ZrdEIemWNpJ8goIZ
+	xBO1DezFRBg9VQ5qYGwySBJwVlgp0Hy63TwvA3pj4qwx+Md+H533FIyaZ0xSwGuY5vRb4dkVk9k
+	IN2gFFX4h8xeIMiI3zAtm6tyU2wtWOqunmY4wRTF2ou4StqkzKj2zqc4BXv7q5m/vjwilApLJub
+	3G5or+jiZvMwsBLe88qe5lH0AeJNMti04duJFXLVMmmbmIB4IhAiL1FrMRBVQ+zAHx2ncv/t7oK
+	SoZe5an8HHTqKLbllO4VqB4nT73UWX2pQS+p/nkhSMSaoAe3Uuzab
+X-Google-Smtp-Source: AGHT+IGI9wrJlk/EdUfzrnlCQdEcpgrX6ATeWyNj8eMASX/i9ZN1VLo/n+ONfa1cHmdrIXJcsnr9cg==
+X-Received: by 2002:a05:6214:4015:b0:6fb:5f97:510f with SMTP id 6a1803df08f44-7049506ab79mr54563026d6.44.1752158579491;
+        Thu, 10 Jul 2025 07:42:59 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497dcfc37sm8761616d6.115.2025.07.10.07.42.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Jul 2025 07:42:59 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 524EFF40067;
+	Thu, 10 Jul 2025 10:42:58 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Thu, 10 Jul 2025 10:42:58 -0400
+X-ME-Sender: <xms:ctFvaAcE0iyTokvcj511T3GmrdPd12ZhuaIp6jzMZ4lL4EI73Vsa3w>
+    <xme:ctFvaDtqT9dkquEesECpobe1DIsR3AMO4gzuMpqX4BF5DaGpvuHO680seBbsUow1T
+    k-Xx6HPw13mXOmE3A>
+X-ME-Received: <xmr:ctFvaGGctGKiFLg56nZeqHmXGhiSenZf9gEPnMEs0LX_inggxd56PBRFww>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegtdejudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehloh
+    hsshhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghl
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlih
+    hnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhkmhhmsehlihhs
+    thhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqrghrtghhsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtth
+    hopehgrghrhiesghgrrhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:ctFvaFdlwzav-bMXb6DU3p5OMDDaBu6zYT4n09Dg6KyC6BpaTQ2ufw>
+    <xmx:ctFvaKunaXRztOHCjPKQIQUqTpzdkw05qe7fEqzODp_3hlqV1ZZewg>
+    <xmx:ctFvaEkc6OKIzkTs6cP7sNAmZxzY7Z0pXF-QEFBAmzJ1kmHM_pgncw>
+    <xmx:ctFvaNCqOtcdGugFVUn0bTcYLYGE5JfFgr9eNYz5Kp7SwJ3B0ntc7A>
+    <xmx:ctFvaMx73y5lXNEzdvWTfjWGV9hlBQSccSHDi-o4dFNhhkoabp-dwiRQ>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 10 Jul 2025 10:42:57 -0400 (EDT)
+Date: Thu, 10 Jul 2025 07:42:56 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev,
+	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v6 3/9] rust: sync: atomic: Add ordering annotation types
+Message-ID: <aG_RcB0tcdnkE_v4@Mac.home>
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-4-boqun.feng@gmail.com>
+ <4Ql5DIvfmXBHoUA428q2PelaaLNBI5Mi0jE3y3YPObJLRgY73zNZzQ8Pdl2qq25VWsMQFKUpYRHHQ1e7wFaGUw==@protonmail.internalid>
+ <DB8BTA477Z2V.1J7XFLDXHMN2S@kernel.org>
+ <87v7o0i7b8.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in
- vrealloc
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <nsacpwgldqdidsqkqalxdhwptikk7srnhjncmjaulnzcf6nsmu@fisb5w4aamhl>
-Date: Thu, 10 Jul 2025 16:07:19 +0200
-Cc: linux-mm@kvack.org,
- akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- rust-for-linux@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- linux-bcachefs@vger.kernel.org,
- bpf@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C240E394-C3F6-4A46-A9F3-E6D95A3F4DF3@konsulko.se>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172416.1031970-1-vitaly.wool@konsulko.se>
- <nsacpwgldqdidsqkqalxdhwptikk7srnhjncmjaulnzcf6nsmu@fisb5w4aamhl>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-X-Mailer: Apple Mail (2.3826.200.121)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87v7o0i7b8.fsf@kernel.org>
 
+On Thu, Jul 10, 2025 at 02:00:59PM +0200, Andreas Hindborg wrote:
+> "Benno Lossin" <lossin@kernel.org> writes:
+> 
+> > On Thu Jul 10, 2025 at 8:00 AM CEST, Boqun Feng wrote:
+> >> Preparation for atomic primitives. Instead of a suffix like _acquire, a
+> >> method parameter along with the corresponding generic parameter will be
+> >> used to specify the ordering of an atomic operations. For example,
+> >> atomic load() can be defined as:
+> >>
+> >> 	impl<T: ...> Atomic<T> {
+> >> 	    pub fn load<O: AcquireOrRelaxed>(&self, _o: O) -> T { ... }
+> >> 	}
+> >>
+> >> and acquire users would do:
+> >>
+> >> 	let r = x.load(Acquire);
+> >>
+> >> relaxed users:
+> >>
+> >> 	let r = x.load(Relaxed);
+> >>
+> >> doing the following:
+> >>
+> >> 	let r = x.load(Release);
+> >>
+> >> will cause a compiler error.
+> >>
+> >> Compared to suffixes, it's easier to tell what ordering variants an
+> >> operation has, and it also make it easier to unify the implementation of
+> >> all ordering variants in one method via generic. The `TYPE` associate
+> >> const is for generic function to pick up the particular implementation
+> >> specified by an ordering annotation.
+> >>
+> >> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> >
+> > One naming comment below, with that fixed:
+> >
+> > Reviewed-by: Benno Lossin <lossin@kernel.org>
+> >
+> >> ---
+> >>  rust/kernel/sync/atomic.rs          |  3 +
+> >>  rust/kernel/sync/atomic/ordering.rs | 97 +++++++++++++++++++++++++++++
+> >>  2 files changed, 100 insertions(+)
+> >>  create mode 100644 rust/kernel/sync/atomic/ordering.rs
+> >
+> >> +/// The trait bound for annotating operations that support any ordering.
+> >> +pub trait Any: internal::Sealed {
+> >
+> > I don't like the name `Any`, how about `AnyOrdering`? Otherwise we
+> > should require people to write `ordering::Any` because otherwise it's
+> > pretty confusing.
+> 
+> I agree with this observation.
+> 
 
+I'm OK to do the change, but let me show my arguments ;-)
 
-> On Jul 9, 2025, at 9:01=E2=80=AFPM, Liam R. Howlett =
-<Liam.Howlett@oracle.com> wrote:
->=20
-> * Vitaly Wool <vitaly.wool@konsulko.se> [250709 13:24]:
->> Reimplement vrealloc() to be able to set node and alignment should
->> a user need to do so. Rename the function to vrealloc_node_align()
->> to better match what it actually does now and introduce macros for
->> vrealloc() and friends for backward compatibility.
->>=20
->> With that change we also provide the ability for the Rust part of
->> the kernel to set node and alignment in its allocations.
->>=20
->> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
->> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
->> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
->> include/linux/vmalloc.h | 12 +++++++++---
->> mm/nommu.c              |  3 ++-
->> mm/vmalloc.c            | 31 ++++++++++++++++++++++++++-----
->> 3 files changed, 37 insertions(+), 9 deletions(-)
->>=20
-> ...
->=20
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index 6dbcdceecae1..03dd06097b25 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -4089,19 +4089,31 @@ void *vzalloc_node_noprof(unsigned long size, =
-int node)
->> EXPORT_SYMBOL(vzalloc_node_noprof);
->>=20
->> /**
->> - * vrealloc - reallocate virtually contiguous memory; contents =
-remain unchanged
->> + * vrealloc_node_align_noprof - reallocate virtually contiguous =
-memory; contents
->> + * remain unchanged
->>  * @p: object to reallocate memory for
->>  * @size: the size to reallocate
->> + * @align: requested alignment
->>  * @flags: the flags for the page level allocator
->> + * @nid: node number of the target node
->> + *
->> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). If =
-@size is
->> + * 0 and @p is not a %NULL pointer, the object pointed to is freed.
->>  *
->> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If =
-@size is 0 and
->> - * @p is not a %NULL pointer, the object pointed to is freed.
->> + * if @nid is not NUMA_NO_NODE, this function will try to allocate =
-memory on
->> + * the given node. If reallocation is not necessary (e. g. the new =
-size is less
->> + * than the current allocated size), the current allocation will be =
-preserved
->> + * unless __GFP_THISNODE is set. In the latter case a new allocation =
-on the
->> + * requested node will be attempted.
->=20
-> I am having a very hard time understanding what you mean here.  What =
-is
-> the latter case?
->=20
-> If @nis is !NUMA_NO_NODE, the allocation will be attempted on the =
-given
-> node.  Then things sort of get confusing.  What is the latter case?
+* First, we are using a language that supports namespaces,
+  so I feel it's a bit unnecessary to use a different name just because
+  it conflicts with `core::any::Any`. Doing so kinda undermines the
+  namespace concepts. And we may have other `Any`s in the future, are we
+  sure at the moment we should keyword `Any`?
 
-The latter case is __GFP_THISNODE present in flags. That=E2=80=99s the =
-latest if-clause in this paragraph.
+* Another thing is that this trait won't be used very often outside
+  definition of functions that having ordering variants, currently the
+  only users are all inside atomic/generic.rs.
 
->=20
->>  *
->>  * If __GFP_ZERO logic is requested, callers must ensure that, =
-starting with the
->>  * initial memory allocation, every subsequent call to this API for =
-the same
->>  * memory allocation is flagged with __GFP_ZERO. Otherwise, it is =
-possible that
->>  * __GFP_ZERO is not fully honored by this API.
->>  *
->> + * If the requested alignment is bigger than the one the *existing* =
-allocation
->> + * has, this function will fail.
->> + *
->=20
-> It might be better to say something like:
-> Requesting an alignment that is bigger than the alignment of the
-> *existing* allocation will fail.
->=20
-The whole function description in fact consists of several if-clauses =
-(some of which are nested) so I am just following the pattern here.
+I probably choose the `ordering::Any` approach if you guys insist.
 
-~Vitaly
+Regards,
+Boqun
 
-
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
+> 
