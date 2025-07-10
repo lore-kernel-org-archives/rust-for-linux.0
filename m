@@ -1,103 +1,71 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3246F2FD889;
-	Thu, 10 Jul 2025 19:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FDD3D6F;
+	Thu, 10 Jul 2025 20:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752176790; cv=none; b=U5MI6EsxQ5yQWkLsunfUd09H2H5BreElUN32uBTy7FBPlyP+XeNqmrggNJ/paYI5S+Tf6igDNf6iC2C84yN3J09QCr0CzxLC6kWcVCdqgOol8iY0IX7FBT4k4GCa8MRnwn1xsyYwXNA8om2rUdxo29OdUmFB8Lm6ZFcNo05tslY=
+	t=1752177723; cv=none; b=ta9Y6pGFjnPPJw4UB2x5aMVQ6wVhJ0EahMeKFQsdd5ZgHW3eT9m+n0Yp+xXBLhy/LD+EVF3midCHYF1PEdN1WF5aR2VEFDt9S3D6yGeVN+klMZ3NldUf4+SUOcOwitpHORviwJf5zpUoG5dXreB84QeXkoky7OK1niDLlpoqZ5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752176790; c=relaxed/simple;
-	bh=Y2jZgyG/X4B2hLyeKjERv+lNNYhceJlVSnkd7lE+GaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c5CN4JNfh3uEH0Ltf0PbXPGIkgl4nhzfyL+MpY+7Pwa/sIXPgTwlTGOEFkaXwNVqG8BrMR+U/+SVtHM67OlfEbxBGETLlMYXM+JbdFW29/6TCUinZnfAUoFgavzOLLcJFLbIbG8gY0Rj4SAGZo3dRR0lquYbONOVsea55rl+PBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HtgdAefa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752177723; c=relaxed/simple;
+	bh=Ov1Gn09ZPG7kbc6CFvLpiuhTtSdn7773uGLpPwjb6qo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ogOZ/wvIAtfWt0DWIYOZ/K3KBhLpa146vQc931A8880YFDFgNa43cwb0fkg3EWdzsWC4nehBUu27JgwTQvOM19MnsutP6/Q97c25abuKD0g7W2EyEjENaGgl/JiYW9BB/rxZUFdEc6oU2elx9SJ3FwKYTpD+bOyX5OJFDtxVsgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jvqQXMeH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HtgdAefa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61BFC4CEE3;
-	Thu, 10 Jul 2025 19:46:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jvqQXMeH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7353C4CEE3;
+	Thu, 10 Jul 2025 20:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752176789;
-	bh=Y2jZgyG/X4B2hLyeKjERv+lNNYhceJlVSnkd7lE+GaI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtgdAefaT7Ecs/25JhW14NOW/h/V0xIZAVRM+XxSA08cTljOq1RrwRHJwE1iIgbaS
-	 Jvl7KTnTg7jwrxioqyHtLiDpgccCeguaTDmnX9Fkw2t9VW3O8zKHxNyfysyWeT6OE+
-	 vDigOgE/F0OtxrnIOpRhn5vS0GAzfrPovh3wol8PG2i0BpaGBmtJvrogiZxfnBQ8aW
-	 WwYtAokedgDDjx5phm4tKkKhqh+m3ura9CiB0DL/NUoG36brX7zFQPanBdr9qq68a+
-	 F9cDe5gbTjF85lpHLHusWlmBpa9vTFolykdugKchjQ9E+3zTllDWzvaxG2GA61cL+v
-	 TbVxXjpHjS5zg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: abdiel.janulgue@gmail.com,
-	daniel.almeida@collabora.com,
-	robin.murphy@arm.com,
-	a.hindborg@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5/5] rust: samples: dma: set DMA mask
-Date: Thu, 10 Jul 2025 21:45:47 +0200
-Message-ID: <20250710194556.62605-6-dakr@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250710194556.62605-1-dakr@kernel.org>
-References: <20250710194556.62605-1-dakr@kernel.org>
+	s=k20201202; t=1752177722;
+	bh=Ov1Gn09ZPG7kbc6CFvLpiuhTtSdn7773uGLpPwjb6qo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jvqQXMeHZpO89kQcIpD7CqpIG61+ix9rEzi8WlCWGhXh8H9pcBwNv7vWfyNWs4sxA
+	 pTuI5xOJZu7qXKOlmRtxiap1bidD8Hee9Y0q6iBInH8nCmpL87GiOKXZ8lGn9BKEFk
+	 l/L8TcOtjmpZecg7//wAqMGAvStOC6NNFCGxHvLjSv/p6nKrUiGpEucHG9Zn7w77LJ
+	 3TOnB/V6RK066hUVg7TxaLz4l1XpaK6ER4Q5tlHRiy84olO6olBPyhN9s1QAHf8dsU
+	 F1j+p5hzklpKUraafF8DbcUSuIN6wcMGs3cEO3Z9CjOGeLoeOHjgK9Zn304LbhOZC+
+	 VFLgKC+78c77g==
+Message-ID: <bbd52251-a2ac-4d9a-9b3d-62f968c646bd@kernel.org>
+Date: Thu, 10 Jul 2025 22:01:56 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/3] rust: Build PHY device tables by using
+ module_device_table macro
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: miguel.ojeda.sandonis@gmail.com, kuba@kernel.org,
+ gregkh@linuxfoundation.org, robh@kernel.org, saravanak@google.com,
+ alex.gaynor@gmail.com, ojeda@kernel.org, rafael@kernel.org,
+ a.hindborg@kernel.org, aliceryhl@google.com, bhelgaas@google.com,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, david.m.ertman@intel.com,
+ devicetree@vger.kernel.org, gary@garyguo.net, ira.weiny@intel.com,
+ kwilczynski@kernel.org, leon@kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, lossin@kernel.org, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu
+References: <DB6OOFKHIXQB.3PYJZ49GXH8MF@kernel.org>
+ <CANiq72=Cbvrcwqt6PQHwwDVTx1vnVnQ7JBzzXk+K-7Va_OVHEQ@mail.gmail.com>
+ <aG2g7HgDdvmFJpMz@pollux>
+ <20250709.110837.298179611860747415.fujita.tomonori@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250709.110837.298179611860747415.fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Set a DMA mask for the `pci::Device` in the Rust DMA sample driver.
+On 7/9/25 4:08 AM, FUJITA Tomonori wrote:
+> On Wed, 9 Jul 2025 00:51:24 +0200
+> Danilo Krummrich <dakr@kernel.org> wrote:
+>> Here's the diff to fix up both, I already fixed it up on my end -- no need to
+>> send a new version.
+> 
+> Thanks a lot!
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- samples/rust/rust_dma.rs | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+Given the comments from Trevor, do you want me to wait for a respin, consider
+the few nits when applying, or apply as is?
 
-diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-index 9e05d5c0cdae..b295c346252f 100644
---- a/samples/rust/rust_dma.rs
-+++ b/samples/rust/rust_dma.rs
-@@ -4,7 +4,14 @@
- //!
- //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
- 
--use kernel::{bindings, device::Core, dma::CoherentAllocation, pci, prelude::*, types::ARef};
-+use kernel::{
-+    bindings,
-+    device::Core,
-+    dma::{CoherentAllocation, Device, dma_bit_mask},
-+    pci,
-+    prelude::*,
-+    types::ARef,
-+};
- 
- struct DmaSampleDriver {
-     pdev: ARef<pci::Device>,
-@@ -51,6 +58,9 @@ impl pci::Driver for DmaSampleDriver {
-     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-         dev_info!(pdev.as_ref(), "Probe DMA test driver.\n");
- 
-+        // SAFETY: There are no concurrent calls to DMA allocation and mapping primitives.
-+        unsafe { pdev.dma_set_mask_and_coherent(dma_bit_mask(64))? };
-+
-         let ca: CoherentAllocation<MyStruct> =
-             CoherentAllocation::alloc_coherent(pdev.as_ref(), TEST_VALUES.len(), GFP_KERNEL)?;
- 
--- 
-2.50.0
-
+- Danilo
