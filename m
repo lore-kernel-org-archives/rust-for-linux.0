@@ -1,189 +1,110 @@
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50A427055C
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 13:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752153141; cv=none; b=mbetZDzeH4flk2/DTMtVI8bku8u5p62OHp79GQSv3u7fIRpu3Mtp2Q07VciQSNEHF9+yf76KPe+ifpD3FhhbbKFec62waRuH4x5Jn8yuPfD6IycG7CMgxxPE0FBVYG148yVFJpKBYZj4q07JRYlXKbsgL0R1BPDkyioZQ9UqUvI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752153141; c=relaxed/simple;
-	bh=v5jQ3s/R87Vhp/eDVWaCk7wmbifWJ7wiNyzKE7pAD0Y=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Th5jjY8NBaztICw694SqaTdlmtrSMzYJZFkqVuNNSM5jSBkpzCFz7D/qaaDSF+nIxhMRDDQy9y2/KOVF2Bfxw14+nahhaGjYKSN3SxaCc8DFTt7oKQDr/PWAnfr2vECfemc3Oc4IWgcQSgh1VGGuH6GJwMWnencCgEEc7gpP6OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uRH+8VwZ; arc=none smtp.client-ip=209.85.208.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69237221F29;
+	Thu, 10 Jul 2025 13:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752153433; cv=pass; b=H81ag8SA/qPtFc+wqj+cpgQE0hymp7FpNZhF/ldUEnumk4EtuLMtzCW5GfOs9/itagO6DUZQ/8wV5kHtUXe2dy2odiIflETVvdhtQVU1E+nUcKGdnudCYxnjG30Y4R8Pu0uM6Lb5XaZJKhBRRQqAxK/5FYdA6Sdn2u+f7KBHF+w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752153433; c=relaxed/simple;
+	bh=lMlH0CkVmMtMpfmR+DhnUvRnkI8F6sCWPShVUe4gBQU=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=T2s83KhAm0IEXiV3XL43UjoXWOi0iHrXwZ5wd55KC0PGSfnKAv+IkLEzkCwVZvMfoxd4HCPpsLB5N2DdRbrQdFbKnKMhvZHb+yo1wNhAjEY8YEu/qZeb2GVcfpdnKVevdKqzSqcWoVEf8DRNZxJkfdDa8uRseydKutC49oS1D4w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ZaJHaMbr; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uRH+8VwZ"
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-60724177a1fso1095752a12.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 06:12:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752153138; x=1752757938; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ap1R9e/cDQ1sEqkKOWD4Vp82gWlwuZouO7xiUWeKWnA=;
-        b=uRH+8VwZICmekMwyQ4BX4a93ftHBwjajKSVFtYiX9lMZ40FhIB0qJUJT2tC2U8Jehm
-         /9WRPLElJbFf0kH66SsBx36j/zcVvJdAWsI4a5lPAPgRfBaiTB6pcpO6W5qBlsSMz09D
-         BmvuBRt7P2cQ1dzPNOhneNwnnX51X4jueVb14DqeukDuXUe1N0LcBeebmHj6d7NGZbkB
-         1x5+MSE++XkHA339xGl6q6bkBN8+g+qPMyYAi/Vg+CBnMnwCgi8W4tX7cH4DHjpEQF9o
-         pmDkNZm6u/zPyxMNF3faSHPcAy8TXccKWrOlI84vqw8GsQkj9ffLeR0GTSclsvTODxC+
-         OQ/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752153138; x=1752757938;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ap1R9e/cDQ1sEqkKOWD4Vp82gWlwuZouO7xiUWeKWnA=;
-        b=nSUx82pZCN/RY+zOazLYPIevaCkVKSSrwTsVSxRT/q5xnzySecpFzLGog9ZsVYX87q
-         LWfrWnxYLGeTrEVsBjNFNz3W6jrrR0r2Ne7DUtAiU3b3ZFYbi+HPjuJNSSwc8z9UgxQy
-         +g2v83X+Jp/3E3v/5Gl7+TN6Afn83oStg1i983bLex0mf6rmrZQnHAkSCHFJYuoWARWt
-         NGq5Y6u9MKNP4AXWR7z103sgduGBzUecbLNicLeQjj+h4EzDG7tz31d3y62AbHs6H6qG
-         qbYqFbMK05kzOzeaNdEV/ffIgGP6ek/15Qv1CZubBOCx+vMvJ88q1RS5mbqJBdpkoCI2
-         4jBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXF0Or3/MbRxMwSXjPW8CgjQMY+WJcMFHsJLw39D/5cTvNkL6PuDDLEkV0saWjoBO7R5+LY9PfpSaErfkGl4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSMKXNqwkQkL7zDedHHUESSDqMweg2zoVxoD+DatmD90i6mB8z
-	bWUq7jCjD9Qq2EabGdh3Up2v/Hm+EAKINCSrT/Cfv7qRTAOy6cBFE/0RtthZu1Q6JFJHaa2GCrv
-	pdKdb0s3EduLaS6m7yg==
-X-Google-Smtp-Source: AGHT+IG0ILLj9d8WnJNXkj7H5NLxRVP6OhdcLw4cNDXGREqcAS6SJ6UaZjs49uvxkvSDmNG27zZCPWaafelN2HA=
-X-Received: from ejad26.prod.google.com ([2002:a17:906:41a:b0:adf:d372:c8df])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:f87:b0:ad5:8412:1c9 with SMTP id a640c23a62f3a-ae6e1459573mr328776666b.59.1752153137929;
- Thu, 10 Jul 2025 06:12:17 -0700 (PDT)
-Date: Thu, 10 Jul 2025 13:12:17 +0000
-In-Reply-To: <aF7lVYl7p33kByoK@tardis.local>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ZaJHaMbr"
+ARC-Seal: i=1; a=rsa-sha256; t=1752153402; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Kuq6Ieb/UfY2uh+Sg5DtsPMvV1wK9CtE+b5zxph8TQEk3DMWGpT56wJI9d61oYQ+GrLL1XERSJq1KTktzH98ywha1g2/VN6Sr3RM8bhceU1KUM+xS53cr2O6xXD9nytkH+G4zCcW7SSIJ2Z5ecmeFkfL+H4WDmi4/e0LHLFqYHI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752153402; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=SFPxdbWPvOwzpJJw2wS8FEYjCUqBehpDqU3KFQNmQW8=; 
+	b=lKtmVToCftGtCk6UTR+1GRvy9S+kvyfStKznX8akbv8X0MuwDQgMsreNjhyVTtKdCyOMCSWPefS5dKeyJ7Pd0XGkxU+6mScgvdbO5KmrXSx3Ou/2Gx2yvjN9/MZIdJjYMGHKbY4UPNvTqk945QNHIC0HiI1W9/YLDjSaVRJzRTQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752153402;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=SFPxdbWPvOwzpJJw2wS8FEYjCUqBehpDqU3KFQNmQW8=;
+	b=ZaJHaMbrWeE7xZw8FwFQpE/sp86nHH4GlI0N69B6tNtPFG//QB4I1Xavk4JCdD/+
+	BcOBVMnuL+KBSj2n4d6+tL3GjuA4NAVYyMAzfpIKUaWvQv0A+SQsRT1G5NIAIqfUigZ
+	dL3n6AX/WOURnsa8A1nDA9e3kTWuMEvt/+ValCc8=
+Received: by mx.zohomail.com with SMTPS id 1752153398901356.9197818711657;
+	Thu, 10 Jul 2025 06:16:38 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250627-workqueue-delay-v2-1-84b046fdb4fc@google.com> <aF7lVYl7p33kByoK@tardis.local>
-Message-ID: <aG-8MVc8SumJoWSk@google.com>
-Subject: Re: [PATCH v2] workqueue: rust: add delayed work items
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Benno Lossin <lossin@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aGt6CZAUeuK0XnmP@google.com>
+Date: Thu, 10 Jul 2025 10:16:21 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Fiona Behrens <me@kloenk.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8A2EA665-F738-4C5D-914E-11380422038A@collabora.com>
+References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
+ <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
+ <aGt6CZAUeuK0XnmP@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Fri, Jun 27, 2025 at 11:39:17AM -0700, Boqun Feng wrote:
-> On Fri, Jun 27, 2025 at 09:38:42AM +0000, Alice Ryhl wrote:
-> [...]
-> > diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> > index d092112d843f3225ea582e013581b39e36652a84..3a7ab7d078fc2091ad556bfde997b9f73f618773 100644
-> > --- a/rust/kernel/workqueue.rs
-> > +++ b/rust/kernel/workqueue.rs
-> > @@ -131,10 +131,69 @@
-> >  //! # print_2_later(MyStruct::new(41, 42).unwrap());
-> >  //! ```
-> >  //!
-> > +//! This example shows how you can schedule delayed work items:
-> > +//!
-> > +//! ```
-> > +//! use kernel::sync::Arc;
-> > +//! use kernel::workqueue::{self, impl_has_delayed_work, new_delayed_work, DelayedWork, WorkItem};
-> > +//!
-> > +//! #[pin_data]
-> > +//! struct MyStruct {
-> > +//!     value: i32,
-> > +//!     #[pin]
-> > +//!     work: DelayedWork<MyStruct>,
-> > +//! }
-> > +//!
-> > +//! impl_has_delayed_work! {
-> > +//!     impl HasDelayedWork<Self> for MyStruct { self.work }
-> > +//! }
-> > +//!
-> > +//! impl MyStruct {
-> > +//!     fn new(value: i32) -> Result<Arc<Self>> {
-> > +//!         Arc::pin_init(
-> > +//!             pin_init!(MyStruct {
-> > +//!                 value,
-> > +//!                 work <- new_delayed_work!("MyStruct::work"),
-> > +//!             }),
-> > +//!             GFP_KERNEL,
-> > +//!         )
-> > +//!     }
-> > +//! }
-> > +//!
-> > +//! impl WorkItem for MyStruct {
-> > +//!     type Pointer = Arc<MyStruct>;
-> > +//!
-> > +//!     fn run(this: Arc<MyStruct>) {
-> > +//!         pr_info!("The value is: {}\n", this.value);
-> > +//!     }
-> > +//! }
-> > +//!
-> > +//! /// This method will enqueue the struct for execution on the system workqueue, where its value
-> > +//! /// will be printed 42 jiffies later.
-> > +//! fn print_later(val: Arc<MyStruct>) {
-> > +//!     let _ = workqueue::system().enqueue_delayed(val, 42);
-> 
-> Nit: maybe use a different jiffies value? Because you call
-> MyStruct::new(42) later, and we want to demonstrate that the '42' in
-> enqueue_delayed() is the value for delay, not the '42' in
-> MyStruct::new() ;-)
-> 
-> Just use 10 jiffies, maybe?
-> 
-> > +//! }
-> > +//!
-> > +//! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
-> > +//! /// is equivalent to calling `enqueue_delayed` with a delay of zero.
-> > +//! fn print_now(val: Arc<MyStruct>) {
-> > +//!     let _ = workqueue::system().enqueue(val);
-> > +//! }
-> > +//! # print_later(MyStruct::new(42).unwrap());
-> > +//! # print_now(MyStruct::new(42).unwrap());
-> > +//! ```
-> > +//!
-> >  //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
-> >  
-> > -use crate::alloc::{AllocError, Flags};
-> > -use crate::{prelude::*, sync::Arc, sync::LockClassKey, types::Opaque};
-> > +use crate::{
-> > +    alloc::{AllocError, Flags},
-> > +    container_of,
-> > +    prelude::*,
-> > +    sync::Arc,
-> > +    sync::LockClassKey,
-> > +    time::Jiffies,
-> > +    types::Opaque,
-> > +};
-> >  use core::marker::PhantomData;
-> >  
-> >  /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
-> > @@ -146,6 +205,33 @@ macro_rules! new_work {
-> >  }
-> >  pub use new_work;
-> >  
-> > +/// Creates a [`DelayedWork`] initialiser with the given name and a newly-created lock class.
-> > +#[macro_export]
-> > +macro_rules! new_delayed_work {
-> > +    () => {
-> > +        $crate::workqueue::DelayedWork::new(
-> > +            $crate::c_str!(::core::concat!(::core::file!(), ":", ::core::line!())),
-> 
-> We can use `optional_name!()` for this.
-> 
-> > +            $crate::static_lock_class!(),
-> > +            $crate::c_str!(::core::concat!(
-> > +                ::core::file!(),
-> > +                ":",
-> > +                ::core::line!(),
-> > +                "_timer"
-> > +            )),
-> 
-> and maybe extend `optional_name!()` to support a suffix? Or we make a
-> concat!() for `CStr`? Anyway I don't think this blocks the patch, if you
-> don't have time, I will create an issue for this.
+Hi Alice,
 
-I'll use optional_name!() for the first one. We can add suffix support
-separately.
+> Is this name used for a lookup or stored? If just a lookup, then it
+> doesn't need to be 'static.
+>=20
+>> +        flags: Flags,
+>> +    ) -> Option<Region> {
+>> +        // SAFETY: Safe as per the invariant of `Resource`.
+>> +        let region =3D unsafe {
+>> +            bindings::__request_region(
+>> +                self.0.get(),
+>> +                start,
+>> +                size,
+>> +                name.as_char_ptr(),
+>> +                flags.0 as i32,
+>=20
 
-Alice
+JFYI, this is stored:
+
+static int __request_region_locked(struct resource *res, struct resource =
+*parent,
+				   resource_size_t start, =
+resource_size_t n,
+				   const char *name, int flags)
+{
+	DECLARE_WAITQUEUE(wait, current);
+
+	res->name =3D name;
+
+
+=E2=80=94 Daniel=
