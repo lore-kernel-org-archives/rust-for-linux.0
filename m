@@ -1,171 +1,99 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81512036FF
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 06:16:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576D72877FB
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 07:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752128199; cv=none; b=gJ+aGqQm3qh0vNWVVyu49+ywIgGKoBM/XsQpblDRSVkgXMseiup8c7j4Xq7l/uKTY8WsC1yEkkUPmgU8Ac96uoqyh350WlsSy19Ih3KCuMBONQd0u1rkw7JhgAEvblyM6SqC76Zcl1BGzA48mhDew4Az3VFjVE9t2ueTu1Sr+M8=
+	t=1752131906; cv=none; b=Jabn/A7WnniNpUkpNDB9z9mqbso3LvKlrsEsS9P3/eEw8oSlI89CNrVMKwTjIfvCHFzv91WOyi60eKwyAdGqT9Si/ZY6LGezAzLr2SeVt2UsSnJIf7SmuS7E2bAY3t2VWeOHxP6aSW55N2LGW1k2Isq1xZRa3nd9tFTwGoS/QZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752128199; c=relaxed/simple;
-	bh=H8ClmTjjEb9bsVONNg4zE004ClDGd+aXBH4tHScxEms=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=YFF88L8yYb7R25fNdFlzN96thWZVEUvPAE2paXArfyI+Flj9d3HMyUDU5mnjLkGeaF3UQzysjGwN90k9uU6jr2LhWqTvYYsTPQPqISoYwX6nHXdO870bVzPIEtoSRf2wnCXtDVCaaRWuQibmiOLQsh8Op444dolqBvHnrjMhHd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=j38hk03L; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=25EqmBEl; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1752131906; c=relaxed/simple;
+	bh=HBa2adEyKxMu02uV9WlhTzEefFCJ1PJj/Mae4yiFm24=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sFj4O3pa7mNtYm4CS12vQt+/gRs3p+3mTKUhNDmJis3XadELDz2BBjIs8Q4BUCUN/+l7YGiYBe6WcMC+ySNnvNj9nOWnkUf6EnOPbRt+fRdA3Ku4M4/+Ms6KF1uJpmyXh5LVhJOobcw02WgSGmCtoCKJNwC6iJgGPlNbqVY/TIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n0V3JY3R; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="j38hk03L";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="25EqmBEl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752128194; x=1752732994;
-	d=konsulko.se; s=rsa1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=bbG2eOYm0nVPoiyoh0kqZFxhcAwfAfhJmOsqqTLYURg=;
-	b=j38hk03LBQ49WWec0sDiZUsKSxLsQrfrEaZMs1r573dhGXIx+sVrsXxu/HgQlR7k0yJSRB4ON1Ice
-	 tG0FJEY2wjQbCIUE4gv4IohxNaKPGMHh+F/2lzjaBJKHS0mg4Kn7Mj9HQ53w3Zur6DelJBbQXiTI+U
-	 BQRIvFJEnohGKdB5mrpRP6EgiC+LMzfOgLUlEaNlBkCAd9cujAPvnz8yjNg7+0Zn2g1JxNxWqyfIW3
-	 oN0jo/sjn6fZjtmkBaLvQOZTBqheYe/wI4NN2w2BLVGqj74qypbRrmwR54e0wlcpIZqoKdxrm8c+5x
-	 zJfPhXRb//Kze4IWNZpY7y7Rr1hujUQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752128194; x=1752732994;
-	d=konsulko.se; s=ed1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=bbG2eOYm0nVPoiyoh0kqZFxhcAwfAfhJmOsqqTLYURg=;
-	b=25EqmBEl3UcQ3f9/U1QLHscuEdIF/PGEea91SZXE194mrLPt5Tl4+oxQwNJYCjyaqeBF95E9WOm64
-	 lcFHs7eAg==
-X-HalOne-ID: 6c6be782-5d55-11f0-8215-f7376af24660
-Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
-	by mailrelay6.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 6c6be782-5d55-11f0-8215-f7376af24660;
-	Thu, 10 Jul 2025 06:16:34 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n0V3JY3R"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-ae3c8477f1fso64567666b.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 00:18:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752131903; x=1752736703; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oxg8f/PDVYM5f6gQgLUHldV3ztA+mO+3Y8DtTKzWoFk=;
+        b=n0V3JY3RStlwhaK/3wxwVsYkmFfUPZXem+WTyGSy7zMRc0t1tJvn7CdTfs+FIjXoJG
+         SxbsjgxpsTNgwFz2BbV72F6pvDnomXMhBPQEPrEIGZUvuHS27p+mfw1EDRFuKRCn5Sht
+         APOsmZHRYAtu+CUjoPCsV2Z/PWVxEyZ1z0TKn7j/gX1Y8JCwpqbAiPZDQdb4rycANe+j
+         Q9/9JjyPCQ7mIFMp75GSrss8aNeyipx3Q2TIAj9lhHYyt7gPLGjq+DmfHDTHHGDlxTvX
+         kF1mhDA4F6frJeLO+9wHixxt1rC11ttdf96ekUvSsJmOj/tQ49KF21o/R1meDe+iuPeX
+         SFhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752131903; x=1752736703;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oxg8f/PDVYM5f6gQgLUHldV3ztA+mO+3Y8DtTKzWoFk=;
+        b=C7DJSsnjC8nv4hPBO4ct+oVYumfMojE6op3FralMG6l5sQrCW0XrEmp2nf8opz/ICB
+         8HE2JCd4m9PteaK9ZYBWpdcA1/g+rSgMjITxHc8FVQXGyRVJmua9ZVpknEd5iOWOyk6y
+         JJwEpVQFOLR6fHIeSly/4umXhOlPOBuLo8Gjg1NIhg2AlMP3f9PXhhT6g1T6bb7Bbxil
+         fSNMGZn1oUIfoTH/ifyBu5yrRv3qvTOIslUDZvrhONV5fp1mkfMftf0OrN5jgufI9rDK
+         FRg2FXWduRE08RAOios7/SpCviDKMGJxgKxCsjU37842DEEyldpw2tXgM7eOkE0UWiPF
+         Bw1w==
+X-Forwarded-Encrypted: i=1; AJvYcCX5JtSV0LzXzhj+s6GDnIwO2OkI4I1bfcUGJgJsWKhgbDS3Cd74PHT7Cyl9J1SF1psTRW3auZWt3x98Shvm3A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk9lfq24x1oHqeeR5leVSINQtpdcQIzgtqNhLc08E+Mt8DE8vz
+	uEGVK+gUwE5yRIALWw3u4B+1++GUDZObD9998GO91RR9FS85UxN5QlML8E0du5sV3ab0Z3NoCRr
+	n8Hv2pcnHAG6jIZEBFA==
+X-Google-Smtp-Source: AGHT+IEXz0/88MQD9EVmv4Umg3MHo3aNQ1cvCFnTgh7/3/7gNI/iV14K18vDlwPGNV6DX36q+v7bOenoGWX6ZNE=
+X-Received: from edbbd27.prod.google.com ([2002:a05:6402:207b:b0:60c:1c92:cbd2])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:3f0a:b0:ae0:d804:236a with SMTP id a640c23a62f3a-ae6cf5753a4mr591593366b.3.1752131902776;
+ Thu, 10 Jul 2025 00:18:22 -0700 (PDT)
+Date: Thu, 10 Jul 2025 07:18:21 +0000
+In-Reply-To: <F1EA22CF-1C01-495D-97ED-59D51A45A8B0@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in
- vrealloc
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <CAADnVQ+iZbKzx8bje=CLO=OnpmGHmQHpDNC=UjWYfN59bWoN3A@mail.gmail.com>
-Date: Thu, 10 Jul 2025 08:16:23 +0200
-Cc: Danilo Krummrich <dakr@kernel.org>,
- linux-mm <linux-mm@kvack.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Alice Ryhl <aliceryhl@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- rust-for-linux <rust-for-linux@vger.kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Kent Overstreet <kent.overstreet@linux.dev>,
- linux-bcachefs@vger.kernel.org,
- bpf <bpf@vger.kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9F14B44F-6073-4F12-875A-9E07EFC16E20@konsulko.se>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172416.1031970-1-vitaly.wool@konsulko.se>
- <CAADnVQ+bikqCO7D+5_rAtiJXv3F6xn=0_hgGH5CkoTPpdi8j6Q@mail.gmail.com>
- <14b08e7c-c2e8-435c-a1dd-bd51cfb42060@kernel.org>
- <CAADnVQ+qCNfm3aucBrkXRXrUjjYeYQb09Oobx+pgOXNDny4s8w@mail.gmail.com>
- <DB7WW886UVAJ.I58517CYL8G7@kernel.org>
- <CAADnVQ+iZbKzx8bje=CLO=OnpmGHmQHpDNC=UjWYfN59bWoN3A@mail.gmail.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-X-Mailer: Apple Mail (2.3826.200.121)
+Mime-Version: 1.0
+References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
+ <20250704-topics-tyr-platform_iomem-v12-1-1d3d4bd8207d@collabora.com>
+ <aGt6CZAUeuK0XnmP@google.com> <F1EA22CF-1C01-495D-97ED-59D51A45A8B0@collabora.com>
+Message-ID: <aG9pPW-cjnPQouBp@google.com>
+Subject: Re: [PATCH v12 1/3] rust: io: add resource abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, 
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+Content-Type: text/plain; charset="utf-8"
 
+On Tue, Jul 08, 2025 at 02:43:33PM -0300, Daniel Almeida wrote:
+> > What you wrote is not equivalent. (*inner) is a place expression, but
+> > when you write `unsafe { <place expr> }` that turns it into a value
+> > expression by reading the value. So this code copies the entire struct
+> > to the stack, and then you read `start` from the copy on the stack.
+> 
+> To be honest, I've seen a bug where the opposite was going on, a field was
+> being written on the value that was copied to the stack, leaving the original unchanged.
+> 
+> In any case, I thought this would be optimized away by the compiler. Also, IMHO
+> there should be a lint for this, because it does not make sense to copy a struct
+> just to read a field if we can just read the original location.
+> 
+> Thanks for catching that though, I will fix it on the next iteration :)
 
+Yes, it is probably optimized out. However, the main problem is that
+when you read the entire struct, that could be a data race of another
+field which may be UB.
 
-> On Jul 10, 2025, at 2:39=E2=80=AFAM, Alexei Starovoitov =
-<alexei.starovoitov@gmail.com> wrote:
->=20
-> On Wed, Jul 9, 2025 at 4:26=E2=80=AFPM Danilo Krummrich =
-<dakr@kernel.org> wrote:
->>=20
->> On Thu Jul 10, 2025 at 1:14 AM CEST, Alexei Starovoitov wrote:
->>> On Wed, Jul 9, 2025 at 3:57=E2=80=AFPM Danilo Krummrich =
-<dakr@kernel.org> wrote:
->>>>=20
->>>> On 7/10/25 12:53 AM, Alexei Starovoitov wrote:
->>>>> On Wed, Jul 9, 2025 at 10:25=E2=80=AFAM Vitaly Wool =
-<vitaly.wool@konsulko.se> wrote:
->>>>>>=20
->>>>>>=20
->>>>>> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->>>>>> +void *vrealloc_node_align_noprof(const void *p, size_t size, =
-unsigned long align,
->>>>>> +                                gfp_t flags, int node)
->>>>>>  {
->>>>>=20
->>>>> imo this is a silly pattern to rename functions because they
->>>>> got new arguments.
->>>>> The names of the args are clear enough "align" and "node".
->>>>> I see no point in adding the same suffixes to a function name.
->>>>> In the future this function will receive another argument and
->>>>> the function would be renamed again?!
->>>>> "_noprof" suffix makes sense, since it's there for alloc_hooks,
->>>>> but "_node_align_" is unnecessary.
->>>>=20
->>>> Do you have an alternative proposal given that we also have =
-vrealloc() and
->>>> vrealloc_node()?
->>>=20
->>> vrealloc_node()?! There is no such thing in the tree.
->>> There are various k[zm]alloc_node() which are artifacts of the past
->>> when NUMA just appeared and people cared about CONFIG_NUMA vs not.
->>> Nowadays NUMA is everywhere and any new code must support NUMA
->>> from the start. Hence no point in carrying old baggage and obsolete =
-names.
->>=20
->> This patch adds it; do you suggest to redefine vrealloc_noprof() to =
-take align
->> and nid? If we don't mind being inconsistent with krealloc_noprof() =
-and
->> kvrealloc_noprof() that's fine I guess.
->>=20
->> FWIW, I prefer consistency.
->=20
-> What inconsistency are you talking about? That
-> krealloc_noprof(const void *p, size_t new_size, gfp_t flags)
-> and
-> vrealloc_noprof(const void *p, size_t size, unsigned long align,
->                gfp_t flags, int node)
-> have different number of arguments?!
->=20
-> See:
-> alloc_pages_noprof(gfp_t gfp, unsigned int order);
-> __alloc_pages_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
->                nodemask_t *nodemask);
->=20
-> Adding double underscore to keep all existing callers of
-> vrealloc_noprof() without changes and do:
->=20
-> vrealloc_noprof(const void *p, size_t size, gfp_t flags);
-> __vrealloc_noprof(const void *p, size_t size, unsigned long align,
-> gfp_t flags, int node);
->=20
-> is fine and consistent with how things were done in the past,
-> but adding "_node_align_" to the function name and code churn to all
-> callsites is a cargo cult.
->=20
-
-I see your point but your approach is currently only applicable to =
-vmalloc and it will not work for slub because the latter already has =
-__kmalloc_node, __kvmalloc_node etc. and we want to keep at least some =
-naming consistency between k[v]* and v* functions.
-
-This whole patchset is only intended to add the capability to set node =
-and properly handle alignment requests in Rust allocators, and is thus =
-well aligned with your idea that the new code must support NUMA (which I =
-do share). I would suggest that we get this in as it is, and then I can =
-take the burden of straightening out the naming which will inevitably =
-lead to many modifications in other parts of the kernel. The latter I am =
-fine with, too, but not in this series.
-
-~Vitaly=
+Alice
