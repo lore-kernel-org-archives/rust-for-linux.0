@@ -1,216 +1,92 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00311547CC
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 18:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1523B25760;
+	Thu, 10 Jul 2025 19:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752173885; cv=none; b=cIEgg4UvV+QLVR4mNARgAIiQ05iNvwJuv6i2AA4XeRVaX2ZBJRbzHZxynb2SNR3JQZ8bHVbDrFjg5MAlNmS3s52Ou8lp1o6BVtOML/joe8LcKfmMYsEnyi2Od7oAYg4sV6BoVasxymz3Gjmc/s7L62L5qJK4Vs94oyCyMZdDAEA=
+	t=1752174401; cv=none; b=fZEnLGLc0lsYg5sJkwGb4aXSkyz1P2lIQlclqPFxZnsRrATlpQz/e0HWWOvShKUOZWP31kBnQpdgXF3BE7E0+4560aBsbuLF21+oU76W53TzNZpgPZWHNt2wcgbkV7XuuRdcj++EzDus7yaEyi1HE7HMJIGbdoG5ZRWW2ozfxxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752173885; c=relaxed/simple;
-	bh=pe4AI+RI8fgZTAcJ20G+kMV/6FPxTNz+kibld3PNvek=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=T88Rh/V9xhni/E7j+CP4Pmu1p90S6LMGTObOABCEMO9D8k/abfk/fPrfktH9i1/lo1sBKDqWlYsxegSQ1LdvrSsiPwynFy52IMmCFbeeAriYfomeJryJDcUG2W4VDOP9x4s6FjJIGkm2TLyY59uo7hM94YRW8yvtbfBeaHvJbxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=59u0gWhR; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Z6euGjn8; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1752174401; c=relaxed/simple;
+	bh=94AYtTCHcgB+G/hSLDjAbZ7gRATPaUUGIZo3omc7D5w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A1LEakrWp/0rH7hwhO/SNrje1Ljimh89nxHUREVSsL+BQUBfx297jUuVJFEjlxao8W9L5BQ46A7xnDmwa0o/pwujcQdijC9KMbn9PY2ihxP7FQ+QutAAPOszgqfDCPziKvD0dIzg/dtmV2ylmgAm/1h0cgYs7vAGAZTgI2JAr/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EM6Scgdc; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="59u0gWhR";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Z6euGjn8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752173879; x=1752778679;
-	d=konsulko.se; s=rsa1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=qOROnEfbRMkEU9HUIlrw8G/gc7MbaqKeDQV/AuFw0LU=;
-	b=59u0gWhR/XhR/i5COmwjWdLGRDxP9xDXHDopl2OUB0iq94dLbpEeYI7Vz1wimKDxihVFX59SQmx+V
-	 4IrlXC7v64t9gScthV2gZhTtx+AzVXPmuO6lqlvgbUHCRVJurwRE6W+yLK+m71O/CWRks6wFn7wvyC
-	 1srhBrdDsj6lXbdNNVWqQbs26VS/nXQH6SzfgsR8amVggugx648AYHZmJAThmuZnloO6LgMLB/Myxg
-	 XY3CWlKactui0SrgVoLBfB2EhQBLRH+fqfQDGSqv9uzvosBsOgiC9Yp9gqFZlT1s4cJKfnT9bRXKmG
-	 lD7N51RK0yaCSc/InhrGXh4Jfb4SIJg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752173879; x=1752778679;
-	d=konsulko.se; s=ed1;
-	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
-	 subject:mime-version:content-type:from;
-	bh=qOROnEfbRMkEU9HUIlrw8G/gc7MbaqKeDQV/AuFw0LU=;
-	b=Z6euGjn8Mwt0J/TG8fUhvLbVRpyUb5j4Wf9Bv9akAk10Z6B/49l8SclhsQwGW5lI0CgIAMtsb89gN
-	 /5kL9yNBA==
-X-HalOne-ID: cb161d63-5dbf-11f0-b814-e90f2b8e16ca
-Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
-	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id cb161d63-5dbf-11f0-b814-e90f2b8e16ca;
-	Thu, 10 Jul 2025 18:57:58 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EM6Scgdc"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-748e60725fcso254302b3a.3;
+        Thu, 10 Jul 2025 12:06:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752174399; x=1752779199; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=68qpC4Y4uSheoQEbmMxx5RKOE+wIAn+KKwc+9lT74pM=;
+        b=EM6ScgdcK7FV1BRjt+cspskLfjrBzEXkA0Iu/LxKX7ZFi2ODlxif5iY9XvcEFAwc+p
+         E+ii9/AmeQioRfyJ8vPDHkavO6e0mdLlAeZ7Y1hfpsdggS6pAXDD+TlLhEIO9AA4N90y
+         kk5WnVsyypNUns5sq86y3K1HsxFwNKvy83CAJtNEJHzaDP8hWQHmkc1DAzRd58EYDhjB
+         WnBxn2m0xlZrNaJqVu1RrsbAIz+tA0oXRhwi1CdrDmbYBEVJT/nAPiiiwhPe+5HiHm81
+         LE00aaUD1/XkGU5pobaDZcYseAWX9WVTGDa69Tjwq3hNmZNNQuHrB5n3Qr2XgaCCz3JE
+         pCUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752174399; x=1752779199;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=68qpC4Y4uSheoQEbmMxx5RKOE+wIAn+KKwc+9lT74pM=;
+        b=hrAEUpj9eCbbpwZzeBs13kUrPpXUndFDomxrkXiAcauvgZAwV9R3D+RkiSOD/ElbBj
+         FneEwt/mrnCascjgs5sz36nT9CR5PYzfm3ggNAU64W0rxfmoTMcWGLtaNthj83hHBs7I
+         dpqoRZrwbgwFdpy91dgCM0QG6Ggla3yUOFy1Ucb0ZcbzMPFQ1+wIlaizCKXi9jvw8R5o
+         9ET+PTVbXKUb9dMtHzvAcA54c6qYpEUJNRRGHCh/z4l9P/MeLjQDyuHJJDa9uGVr9WCY
+         cHJ++koAbEgmlfPTu72DtqaPr+7OuIFaVeueTxLtOt30OSmOwFBBuO5Rb1eZ+fhFE2V7
+         sfbg==
+X-Forwarded-Encrypted: i=1; AJvYcCUWH8JtuOwIfBlGKKEydiLyY8eNjn1P6LdTtLPbu2S/sIwO0+BJQHC7s5v8XZeJL475uX5mWzTMr+nGmXYz@vger.kernel.org, AJvYcCWvb7cMBUpYciNrsF5049I6Ahc4dxSO0/LEYhL622XwQOiQoDwEt/4gX42eeQxnysVMdtBuDFhH3Kw=@vger.kernel.org, AJvYcCX0yRjrX3Rk7TFPH8iNLADX0Vha+kx7F2WUaTaEbAWkCDz31PlNvikw410Fp0CPp3ECVu3xSlAcoP8t/Uyao6M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9hzbE6yRKyFBZUPBQLwhD1rMup6X2kn0ACD5FI8J8NT34h+j5
+	4ADRRALB3z5hQaAkcB1nsbU1jeRPjGo5k7MKGJi1pbj0hgsk86LL9OUwPUqb6Ca8LoOelK9qKse
+	718nzF3nAd7usB5dFAwK2KHwSIrYgd8M=
+X-Gm-Gg: ASbGncuk+kRVHmmJBcDqCUNI5tPOpUDe1B1fQxwOj+mh6auRgIcLJPn65nRKKD6IXuU
+	F1DoV+qavGnPxivyXcjZaq42zKXKtjQEecORSOMVBDsERqkLBaBel4zBPfU4IrT2ehaEoK1224A
+	8rbI19rL0H53hBOc39K8KE1HZo9hLdDN8VF3f3KZnI
+X-Google-Smtp-Source: AGHT+IG0VJqe3uNAcjU3Xxte+v+hYbWn4ghp69RsSsnwscX/+eeuYBtfenFCSddGxjjaiQm1KOImr0VmDgF/3kDaWcw=
+X-Received: by 2002:a17:90b:5645:b0:312:1ae9:1537 with SMTP id
+ 98e67ed59e1d1-31c4c972591mr333377a91.0.1752174399128; Thu, 10 Jul 2025
+ 12:06:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in
- vrealloc
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <aedc2b36-b3b0-4367-aa68-ba9f8a110b52@lucifer.local>
-Date: Thu, 10 Jul 2025 20:57:48 +0200
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- linux-mm@kvack.org,
- akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Vlastimil Babka <vbabka@suse.cz>,
- rust-for-linux@vger.kernel.org,
- Kent Overstreet <kent.overstreet@linux.dev>,
- linux-bcachefs@vger.kernel.org,
- bpf@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>
+MIME-Version: 1.0
+References: <20250702-nova-docs-v3-0-f362260813e2@nvidia.com>
+ <20250702-nova-docs-v3-2-f362260813e2@nvidia.com> <CANiq72nh71s9to5v1KHJWN79bEFv97zN6jcGJyEQkaJZ5UuJfg@mail.gmail.com>
+In-Reply-To: <CANiq72nh71s9to5v1KHJWN79bEFv97zN6jcGJyEQkaJZ5UuJfg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 10 Jul 2025 21:06:25 +0200
+X-Gm-Features: Ac12FXw_q-goG-jOjFcf1y4t2ncn8eM_tujmaC9ue0dJR_ud1nXJSMx9bb--WFg
+Message-ID: <CANiq72n6759SXO4_8jUryge3s0scp00hiKBnkhnbieObQdqL7Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/7] gpu: nova-core: Clarify sysmembar operations
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Jonathan Corbet <corbet@lwn.net>, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Joel Fernandes <joelagnelf@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <2D8A1A29-C847-479F-B732-A7CB13A46FA7@konsulko.se>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172416.1031970-1-vitaly.wool@konsulko.se>
- <nsacpwgldqdidsqkqalxdhwptikk7srnhjncmjaulnzcf6nsmu@fisb5w4aamhl>
- <D0D76B82-E390-498E-AE84-1B2CA6C0F809@konsulko.se>
- <aedc2b36-b3b0-4367-aa68-ba9f8a110b52@lucifer.local>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-X-Mailer: Apple Mail (2.3826.200.121)
 
+On Sun, Jul 6, 2025 at 3:46=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> Added the possibility of catching this automatically in e.g. `rustdoc` to=
+:
+>
+>     https://github.com/Rust-for-Linux/linux/issues/350
 
+Filled: https://github.com/rust-lang/rust-clippy/issues/15245 so that
+they have it upstream.
 
-> On Jul 10, 2025, at 5:19=E2=80=AFPM, Lorenzo Stoakes =
-<lorenzo.stoakes@oracle.com> wrote:
->=20
-> On Thu, Jul 10, 2025 at 08:21:19AM +0200, Vitaly Wool wrote:
->>=20
->>=20
->>> On Jul 9, 2025, at 9:01=E2=80=AFPM, Liam R. Howlett =
-<Liam.Howlett@oracle.com> wrote:
->>>=20
->>> * Vitaly Wool <vitaly.wool@konsulko.se =
-<mailto:vitaly.wool@konsulko.se>> [250709 13:24]:
->>>> Reimplement vrealloc() to be able to set node and alignment should
->>>> a user need to do so. Rename the function to vrealloc_node_align()
->>>> to better match what it actually does now and introduce macros for
->>>> vrealloc() and friends for backward compatibility.
->>>>=20
->>>> With that change we also provide the ability for the Rust part of
->>>> the kernel to set node and alignment in its allocations.
->>>>=20
->>>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
->>>> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
->>>> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
->>>> ---
->>>> include/linux/vmalloc.h | 12 +++++++++---
->>>> mm/nommu.c              |  3 ++-
->>>> mm/vmalloc.c            | 31 ++++++++++++++++++++++++++-----
->>>> 3 files changed, 37 insertions(+), 9 deletions(-)
->>>>=20
->>> ...
->>>=20
->>>> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->>>> index 6dbcdceecae1..03dd06097b25 100644
->>>> --- a/mm/vmalloc.c
->>>> +++ b/mm/vmalloc.c
->>>> @@ -4089,19 +4089,31 @@ void *vzalloc_node_noprof(unsigned long =
-size, int node)
->>>> EXPORT_SYMBOL(vzalloc_node_noprof);
->>>>=20
->>>> /**
->>>> - * vrealloc - reallocate virtually contiguous memory; contents =
-remain unchanged
->>>> + * vrealloc_node_align_noprof - reallocate virtually contiguous =
-memory; contents
->>>> + * remain unchanged
->>>> * @p: object to reallocate memory for
->>>> * @size: the size to reallocate
->>>> + * @align: requested alignment
->>>> * @flags: the flags for the page level allocator
->>>> + * @nid: node number of the target node
->>>> + *
->>>> + * If @p is %NULL, vrealloc_XXX() behaves exactly like vmalloc(). =
-If @size is
->>>> + * 0 and @p is not a %NULL pointer, the object pointed to is =
-freed.
->>>> *
->>>> - * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If =
-@size is 0 and
->>>> - * @p is not a %NULL pointer, the object pointed to is freed.
->>>> + * if @nid is not NUMA_NO_NODE, this function will try to allocate =
-memory on
->>>> + * the given node. If reallocation is not necessary (e. g. the new =
-size is less
->>>> + * than the current allocated size), the current allocation will =
-be preserved
->>>> + * unless __GFP_THISNODE is set. In the latter case a new =
-allocation on the
->>>> + * requested node will be attempted.
->=20
-> Agreed with Liam, this is completely unreadable.
->=20
-> I think the numa node stuff is unnecesasry, that's pretty much =
-inferred.
->=20
-> I'd just go with something like 'if the function can void having to =
-reallocate
-> then it does'.
->=20
-> Nice and simple :)
-
-I think it is important to stress that the function is not always =
-following the specified nid.
-How about =E2=80=9CIf the caller wants the new memory to be on specific =
-node *only*, __GFP_THISNODE flag should be set, otherwise the function =
-will try to avoid reallocation and possibly disregard the specified =
-@nid=E2=80=9D ?
-
->=20
->>>=20
->>> I am having a very hard time understanding what you mean here.  What =
-is
->>> the latter case?
->>>=20
->>> If @nis is !NUMA_NO_NODE, the allocation will be attempted on the =
-given
->>> node.  Then things sort of get confusing.  What is the latter case?
->>=20
->> The latter case is __GFP_THISNODE present in flags. That=E2=80=99s =
-the latest if-clause in this paragraph.
->>>=20
->>>> *
->>>> * If __GFP_ZERO logic is requested, callers must ensure that, =
-starting with the
->>>> * initial memory allocation, every subsequent call to this API for =
-the same
->>>> * memory allocation is flagged with __GFP_ZERO. Otherwise, it is =
-possible that
->>>> * __GFP_ZERO is not fully honored by this API.
->>>> *
->>>> + * If the requested alignment is bigger than the one the =
-*existing* allocation
->>>> + * has, this function will fail.
->>>> + *
->>>=20
->>> It might be better to say something like:
->>> Requesting an alignment that is bigger than the alignment of the
->>> *existing* allocation will fail.
->>>=20
->>=20
->> The whole function description in fact consists of several if-clauses =
-(some of which are nested) so I am just following the pattern here.
->=20
-> Right, but in no sane world is essentially describing a series of =
-if-clauses in
-> a kerneldoc a thing.
->=20
-> Just it keep it simple, this is meant to be an overview, people can go =
-read the
-> code if they need details :)
->=20
-Alright, no strong feelings about it anyway. Will reword as you guys =
-suggest.
-
-Thanks,
-Vitaly
-
+Cheers,
+Miguel
