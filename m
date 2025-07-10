@@ -1,150 +1,232 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2074.outbound.protection.outlook.com [40.107.101.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B088F54;
-	Thu, 10 Jul 2025 00:40:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752108002; cv=none; b=VFkgZornRT9xh9AeajeeqBaMzxI//xDEOCYaFXF47qgGZCIdl9BZtTb+kyLOmE8WTfnrBeZfvfvXprKHLtz4X64K5FoPoF27A0yib/Mb1MWY7TXqKuieeITFLS2iRSz+7tbAXCIyYSO6kit3wzEHvnLtZlncIbT652ffMCft1Cg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752108002; c=relaxed/simple;
-	bh=5xrWVx1C9s45tbIV36ojtnaAGXS4aJVjxBP/Z8QyPxE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dXoU83nDfAHgeSlWcYnZ0c3RbOJBG4jWIEpBnTOLGXHZ3i12e6jpo5C94NjnPCcdwA9NU0qLhxRzQcBsRayHFHiX840p2CuEhv6Tc3sZDqWTSBMaVVmlctMISzsdUm3FCTU2jHjJrAZdxATebTYpA41HySDOClSQ2DqTZ5feUB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I6eke5UL; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831EC27FB03;
+	Thu, 10 Jul 2025 02:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752114267; cv=fail; b=r0itygyUdsLVhqMWB4uCj8DcBO9Kq0Pk1bMcVikMnwdhbMSs4p5WEXC4lvstSKeptsCPTzbKxcPptm7jptqJBgHLxIl8P9CWtsIP5gDF0CA4zwY0EkB9g1nL8n8nSlkj51531UVsvzKTjvtcvKGbeo/M95qvr6nyH/m6gUiZsR8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752114267; c=relaxed/simple;
+	bh=qpytoVE1z6Ooco8vYTQ0SCUBsJqbzXxkE8qVRtfAYRw=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=uv56CEdAZ/JJqt4PNGogtdYvllmFQ5Do5XUyELHCtaU064lnvv1urbaHyIVk7wZAlnfrijfIhOiCF2eaZdLlJEBNvuSVGxiMtWQvLfBe9BqlqC9Qupky7DAi393SnQ2dRKaHVK1fV5HEXWC7bALn4lT9zjMYlyrZAUfaP8WG2ns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=arq2gkkC; arc=fail smtp.client-ip=40.107.101.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I6eke5UL"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3a4fb9c2436so300015f8f.1;
-        Wed, 09 Jul 2025 17:40:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752107999; x=1752712799; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8+EH9We4Q8uZNtUfBicIKlMK3P33lcOOMogm1wF7Hgw=;
-        b=I6eke5ULShzQt77sqJZ5FK65QkG9AkFy2SFVQUDDoU+5875HLhiVnlkRfjbJYq25eH
-         O3feeB7uDUniT0tYu3xrpTkB8hkDDupEx59mT+K8Swn607apk/ncj65Fo8YaaHbf6wTc
-         FL9t4lxBcGei+mufz7K/yk98LrsLo4bsH7YfZhJPVu9LdxXG6xpWK0AF6X4704bnb6Ar
-         5zBosYqJ3gPof1K28sTIAEN302ZP3pCXp0nr0eMF1AJgRcucXQ89CEqI1JK9Uht93+/p
-         /Ga4bV+L//dP1j2BUYvJYPf4MDMKcgL8h6BGAb9vwI2bnYwjrRd4GQzr0hUA9WW0PzgM
-         g+oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752107999; x=1752712799;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8+EH9We4Q8uZNtUfBicIKlMK3P33lcOOMogm1wF7Hgw=;
-        b=jrbAJxmyVR58tI5SOk3P9KwezecqjNz+tVYZC0yx/oLOCB3Sz5EXXp3fVmUgw55Y33
-         Kpi/glcngPPHCSxGjapdcC6JtLTV/9bzzjuEDFis2wF4iFhDHO3IF1bDpuEBBH2eGoBV
-         r2HgS1tN7KvJmHyMfI/OG9pUh4wm8BKHgYJdtbMknAZjaujYl+4xQRhyGXyTWI4nDDfh
-         +5z73wQ/wr1QEvHSkqEiCcB9Xhh5MiSKdG3j96cLC2BOauvF+MMA3HPYJGZDlC/MnqcC
-         lrABx9/mz2zPyJm1MJAL279/zCN4m1OHI7mq6Z/OjanlkW5TNF9muS1vpqA6rtX1Bj2g
-         SIsA==
-X-Forwarded-Encrypted: i=1; AJvYcCV9BZoZ3k2amguNw31gkIY+G2dVgk1wnejNEYMPxp2Czo5tSvjuHbc505SZXkCEqitpMe0=@vger.kernel.org, AJvYcCW4mI0EQ8MgIrhHUkKcHkHrWNhWCnp2TKSTsZO8nZbcOD70Ve7PpIXp7w5kJEqsV+jt4kDmd7cj6whjmUtD@vger.kernel.org, AJvYcCWHQJ1c2Gq+iBYHtMWTPAUend3Tg+LAoW2r+BryMLnltYhYddQC3z3Q2n/fokupnPSgtjrbF10PW7nkL2Nexyk=@vger.kernel.org, AJvYcCWi6VSvNfHAF7rW23noc3xLfXC+9IMqKm/or/QukRIhIo12F7W5ComVlFEOwE+r+gSFi04jtGtywqdvinr+lH8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqLL80JkVQ09XRkM/FUSletnBIrfYlmi2E9GCIsWT9J0e5GRn7
-	Y0e+Ejory48jyV3ZiYGEBw3aLDg7Ibz9T0QsagplRTNx0caD4qvWBm9drHMNi6EK45khhknxnGx
-	EC8UvA6azQak7LjDtblSe8pE3sb24O2I=
-X-Gm-Gg: ASbGnct4IgfPbofnYGrenc0Bq9PTqQMa5vrG/qmqOyB2i6BVVdWsXDqv2M22Bew4oxV
-	niIwG4en2kYrRgEtY+vP2l5MvVq92GcL1WiLgKqLet8Pl+zMHRGqZ8pU9SN8Ks3yz+hUPsnvmJz
-	eroZlf+FAwIE1MBV3vGm8PlMYpjmqVDTcvRNVlcoi3FxQtaKLNpUZBenOEkwgUsmFoKUFk/fLE
-X-Google-Smtp-Source: AGHT+IGl307g/Cb4M8ys7xRkMqsB4P7qgaJ2qzazbro0cQv4i2hb8605y1TULKlRw0ArBOPaqrTdi/ue/nQVGUiy4P4=
-X-Received: by 2002:a5d:64ef:0:b0:3a4:f7e6:284b with SMTP id
- ffacd0b85a97d-3b5e788110cmr2130070f8f.10.1752107998781; Wed, 09 Jul 2025
- 17:39:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="arq2gkkC"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VGZ2nsLNqKhesyFbQ9y6lbwRYCCfSisoFhHVXPP76RHPuASnqMaS548wBWC7OvGil4C02H2E5Yt9I00bYTiOorj3i5oJZlbMgO604thkqYcfJwdbkA5fbqwkKnF58VmmAz5CWr5F1ZpIakNUOTiBO419OUrNVDaqTKRTAkSTZyANAEtNk18rnoAy3t9t0rfXDYGdYVkBjqBnvEtjDhPKmOlgByPx2mGoVahxFzO/naFJnM3Dd9RiwtcXyyAMArT4cq2HwqEipAhEceRYYzDinfoGoIBz7BbOho4gcO2O0HCR65vLaoDe/Kkjf68uJe7dpGCsEVym9+GebRfExR8nrA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QyOD3xkh2Zgrin7mV9YQO6Pg0tnX7jz1UCtIjGmmjSM=;
+ b=KpN5fhC5zBVVzxwYU7C49Zc9cb5jwS5upit8uaVnEwGlyswMEQPAXOeVoQXCayrIJ91FNIjqTg6m6TEiH0gDWlerCkPbjn6nuMoDui6bOAVies/t+dWdjwBJakJgJT5/ixZa5tDmVcLu1pc4O0eb5A8Gzldl7g8zPWlvqE8CpgswlzGBD2uK1uaZucaUCs2YF1qpN7QZqmlSXJR8RZ79gJfcoqSIl/exXQKWETyPksshT9BeEmfhwz9zhSiNn6upQ1BGftFpcmH3Fs7RL1R2ob1Ccx3iiBX0BaVSw+8RVq+3H2U45OdXfwQrY5jn5FN7wVN/AGL+pidjtCzqTEz2YA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QyOD3xkh2Zgrin7mV9YQO6Pg0tnX7jz1UCtIjGmmjSM=;
+ b=arq2gkkCHLWsWLj8miihPsvAJbdX7ufZCAL5auVXUfpsLM9C4StUAO3FR/PFysFDSWOam75Q2IQCiLMJB9FffnEzGoXjiWVk6ake2WnkH5JzxYuZTMPRy5vkfTyY3E6yYBTcCiC/MmJPgqWgbp25MWK/OuDMZf2sdGQ36vxTxL05GJuOAO2PD498ZfqWRxjzgQz/SH+zqxdm9PnyiQv98CObK2kAR1jkrS3CWZHADtlO2jjLJXcodBLkfiopRj/GYMcZHZoYo2PfPSv2UnsZdJqBzNGTcFvfmgzJAGVvTDLWm9TbvaTFLS1tJP8QQ42KM6OYXRmXaStIb9aWlhlTTw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ BY5PR12MB4132.namprd12.prod.outlook.com (2603:10b6:a03:209::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.24; Thu, 10 Jul
+ 2025 02:24:21 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%3]) with mapi id 15.20.8901.023; Thu, 10 Jul 2025
+ 02:24:21 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] rust: Update PCI binding safety comments and add inline compiler hint
+Date: Thu, 10 Jul 2025 12:24:14 +1000
+Message-ID: <20250710022415.923972-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.47.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: CH0PR03CA0081.namprd03.prod.outlook.com
+ (2603:10b6:610:cc::26) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172416.1031970-1-vitaly.wool@konsulko.se> <CAADnVQ+bikqCO7D+5_rAtiJXv3F6xn=0_hgGH5CkoTPpdi8j6Q@mail.gmail.com>
- <14b08e7c-c2e8-435c-a1dd-bd51cfb42060@kernel.org> <CAADnVQ+qCNfm3aucBrkXRXrUjjYeYQb09Oobx+pgOXNDny4s8w@mail.gmail.com>
- <DB7WW886UVAJ.I58517CYL8G7@kernel.org>
-In-Reply-To: <DB7WW886UVAJ.I58517CYL8G7@kernel.org>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 9 Jul 2025 17:39:47 -0700
-X-Gm-Features: Ac12FXyQfyO3szxMDVVNHvlOhNb_Gbvf_td5xMFONVF3fAKwKJRT2QZYiRmaY0s
-Message-ID: <CAADnVQ+iZbKzx8bje=CLO=OnpmGHmQHpDNC=UjWYfN59bWoN3A@mail.gmail.com>
-Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in vrealloc
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm <linux-mm@kvack.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, rust-for-linux <rust-for-linux@vger.kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org, 
-	bpf <bpf@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|BY5PR12MB4132:EE_
+X-MS-Office365-Filtering-Correlation-Id: 903e7ecc-f8ae-4041-3dc7-08ddbf58e15d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?andEeXNUZmpvdUVnc2VQaFhQZ2NTTXEwQlZxUXRTU3VvUlJLQWp0MTRwQ1Rm?=
+ =?utf-8?B?b2N1Y08rRGhXdmNWYnRQdVFoZzRXYmVHckxISC9Fa3VFMGRaUFBlVmZZSWtt?=
+ =?utf-8?B?aVZVVXJKblRvTURZTUpRT2MwZGNDRlVZMmo0WFo2MEEwUEFkRmJTZ2RSOUZh?=
+ =?utf-8?B?L0M4UE9wUGpkcVBzdCtTU05pZzFXWG94R05tQU9Yd1pYVUVJMC9SK0RsS0lO?=
+ =?utf-8?B?QVhueGt1Skx0blJRZUlUL3lyVVFWY0ZjUWxjN0JyL045aVJmU0RndFZlb3Nw?=
+ =?utf-8?B?YnFvSTJLd0pxbm9yYkNJK2dKWUpUOC83TmVoRG5qTmdBY2hNQ01zSkxWd0Q3?=
+ =?utf-8?B?NXd4ZEVubXlWNXA2TFRHUzNqcjEyaXRTRlcvVHR3Ri9sejFFZVBVNlE4dFQ5?=
+ =?utf-8?B?SndFS2lHZ1RyVnhhWUgvU2FRUzU0NDFKV3Mra2NlU2hUS2xiTWI1NUZIVXJ3?=
+ =?utf-8?B?U0FmRllDMERmS1J3eGFWSDdpR2dpUzNhSGhFQWNKbzFFTGZVUjJEd09WZWVR?=
+ =?utf-8?B?cGp4eDVMSlVVTkQzMnMvVUV3TEVvd1YvYmVZdlFWZ2w5RFRGQ2VhZVc0RCsv?=
+ =?utf-8?B?c3laWHpaVGU0ck9XOTJZQUF4WnNSTWU0aVBHc3c0bjl4Zmh1d2RNQW90MkJU?=
+ =?utf-8?B?VFg3bHA4VEU4KzNDdEFSYUJ4Q25ZR3QvSS9ER2x4TVk1YWZxOW9TWExzYWR6?=
+ =?utf-8?B?N3V1REgxRW1jNG5IazJ6Mk9pNTZlNWNwY1RlR3ZUMnlzNHR1aVRKL09qOXpB?=
+ =?utf-8?B?RUQ2K2tDSGloeW9yc0YzZDRnc2ExazViU1ZsV0lLcHJNSkF4S1Z1WXZhR0tu?=
+ =?utf-8?B?anpvM2VOR2pta1BJaE1jUWtkRjh3SVZOc1U2ancxYjF3ZnhyL0x2b2VaVklu?=
+ =?utf-8?B?WHJkOWtvMk54Q0xTNkRxQzA1ek50bk92cmpmUnNObGtFdEZGQ3NTYjlCd0dW?=
+ =?utf-8?B?cFdWaFR6bkEzQlZPdm9WRCtPUGJpSWlTWFhOcllRU3gyYzZ2eS92ZUdVdjZr?=
+ =?utf-8?B?ZHVkWDBoSDVFTmdiSW8zVzVXVVlkckZzMzFFVkZCT2pNaVVNcTVIQTIwcmtQ?=
+ =?utf-8?B?c2lLU1o2b05IbDIzMm5DaTNlOVFXM1VtcUkvdU0wWVRmMUR3ZUs0NFJUaVdm?=
+ =?utf-8?B?Q1EvVU1BM1Yxdkt4VkxHdTZJK2p1ei9hKy9NOUYxK2tabXpiSGFFNkFUaUMy?=
+ =?utf-8?B?UGYwNzVZK2NSMzdhYklNUEI1aEhmN1FBeEQ5M2FnT016anZLSWNQelg2RW5v?=
+ =?utf-8?B?WXpCWlZHM3llSTVNdGU3YnV0RnZLemlFdnJuRkg1UVF6d1B1eGgxaFZPVWxs?=
+ =?utf-8?B?REN6UzB0OVVuWkJNaG5lT0Rudk1XekEwK0ZFVmlrbGdRenpDSFFqcXNaTHpY?=
+ =?utf-8?B?K1psOGxxUnFGV1hXSS96WHlzelJucFJGTXBkUFArUGpDakFLZi9tRnZuT1JR?=
+ =?utf-8?B?M2R6aU9aNkhhR2F5Ri9tTnN1NHJIUTR4ekRaV3hwMkZtdERCbVBFOFBncnJq?=
+ =?utf-8?B?UzAvN0drT1hsN0lzcGtUTGV4bEdUeHduUDgyczBoT0phcmZUeUJpYTNaS3lJ?=
+ =?utf-8?B?c1VpNkZyZFhTblN5c0l1ellGZU0xMHB3SEY0SHY5S1dUQ1lZNXZXSkJ6S3RZ?=
+ =?utf-8?B?V011ZlFzZW5RbjQ4cjFlSE1jaWFqRFRvZEdRSnZKUzB6bXA2RE5QRXIvaDFm?=
+ =?utf-8?B?VTdDc0QvS2VIQUZIMGY5cmxQVTIraUJtZTQyOHBYWHRtTVFubC9VMUt2MGdD?=
+ =?utf-8?B?L2hUYmtmUGt1OTFTM2RqR2VPbXhJdytZZlBRVVJLai9OT3NwYUQybEJqZE1E?=
+ =?utf-8?B?UndMa2NKeENRUTdmN0svRG5QRXVNVUMxWFQxemhINVdWZ1VvaXFodWNZeGVL?=
+ =?utf-8?B?c2Y2dko4K0N4dlplSEE5bDZ0NEducXpHQXZjdWpSYjJLN3dZTEVoNVRQL1kx?=
+ =?utf-8?Q?uskO/w3Golg=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Nk1sRHpIcTF6RTBzTDVOeVhCVTNTblIySTFEeERmUm1ndVRyUVljSHBaQktD?=
+ =?utf-8?B?RmxtYnBKUjVOTlhVY1JMS0xXNGJRcFgzVENLdmd2dEV4NnNtRGlUK2tkTnVl?=
+ =?utf-8?B?ck02UlBKais4eFlvaTJTSy9Ec0dKeFNXUmpLeGxQMk5zRXQ5MWs4R3U4SmJD?=
+ =?utf-8?B?QWhla0UrUmQvb1h5NW05S1drVWliY1BSSmpEVzE0ZmVhaSsrb2hqWU95cG9k?=
+ =?utf-8?B?UGdSZ1hoMlFxSEJHS3J4bnlzMzEwQ0Q5aUY2VU9JS1Bva2FsQlJ4ckVHVXNk?=
+ =?utf-8?B?anlIbGx2U21NSGRDbHkwb2xMbWYyZFV3RjF4ZXJWQmN0Y0dkUHpZVHV6bEJT?=
+ =?utf-8?B?WXN6QjI4aGxZcmZqUGdKNHkwSGRSQm9tSGtDVkR5eG1iOTZ1NVB3QjE2UEdD?=
+ =?utf-8?B?R3BmQTRwY0tsVytFWHA3WllnRExRSm5YdnB6dk11NlhYZGpyZUJGeFVqNHV2?=
+ =?utf-8?B?UEdOOGcwcGhWdGhidmFXdXFHK3VHK3ZSZkM1bGFaaTdreDlaRmx4Vyt0WGNq?=
+ =?utf-8?B?bDdyc0lPYTVueXlYWmxrTzUrUDNNaG5XOC90YnlGbTB0K3RWVkRYZUdUbTQy?=
+ =?utf-8?B?WVdlaUpkbWh6NTRhV2VJdTRaUVFGZHovOCtSY2FqMnQ1RWJzT3lFazVNeGdO?=
+ =?utf-8?B?QUJEQlFIaXZZaHBFejQwRVpsL3RXRkUwWGxlaXJYSDdtdHBvVndoOUJ3MzRX?=
+ =?utf-8?B?ejQ3U2ZaeHozZGhkOFBCZlA2ajQ1Z1IyV3BlcXVRbkRuVnVnQnlYOVd4L3JF?=
+ =?utf-8?B?VnJWSi9YVS81ZGVVVTZpYmRVaWZQTlVwd2xjbU5FazdDTm9EbUVZdHhZQWZV?=
+ =?utf-8?B?T05ySEtCS0Q0QVZ5Z3JTbE1xaldQYkR6dncyNStVVU1KQ2NpVlROOTdOb1Bw?=
+ =?utf-8?B?M0ovVU9hRmhFZmFxeTNjQWthc3pucmw3VFJFaEJDbTVHdjVCUXJUNGM5clhR?=
+ =?utf-8?B?alpEM1pNMjZiTGxnN01ka0Q4R3hWUUUrNFNWdmloenRhWDhXcnpFVHpiNExw?=
+ =?utf-8?B?ckJvSFU4RjlmT21WSlFNZm5QaVVtQmsyeXI2T1FicWQwZGhnUyszVlE5YkVn?=
+ =?utf-8?B?RS9OSW1UZUJKNGR5T2RWc3MyZ0VWTVp0b1FSeHNYcHd2dGloajRUZW1PbElx?=
+ =?utf-8?B?aWRWSlM0eExIcTJ0Z2tqd1hJbk9wckc1ZWZoWks2aDhVRXh1MXY2THRnWkZa?=
+ =?utf-8?B?RTA1cHB6M2R1SFlzNEw2RWx1eTljeG9RNUM2QkFyOTd6Q1huUzFmRERBYmEy?=
+ =?utf-8?B?ZmdMdjZhYzVkbkJLTFZqZWprQVZsaENKOEpOTVhqZWR3YlNGclorazhFVEY2?=
+ =?utf-8?B?TGNLSklTK2dIWlZReUo2MTUwczczSjRRYndhMkJKNDRTOGIrVloyV3gwM1Vh?=
+ =?utf-8?B?S2E2QlhreTh4T0VIRXJpUFJKb0V5TnJrZjdGSWNFNmNBcjhCUW0zMlA1ZytT?=
+ =?utf-8?B?ZGt2dzZmOXhnOHNJTEJFZjQzOW0zSVhPVEIzQUh6a0VBemdaT0tXelhtWGVZ?=
+ =?utf-8?B?bUs3eG9FK2R1Y1lWWU9Wem9ybXpsMk1WY2NWbFJuSjAyNi9WT0ZWTzZJeEEz?=
+ =?utf-8?B?YVRuT0UrTGx0S3krNnVVTFJNRlkwa0l4Q2Q3eG1FSXpIVUtCc2FOTWJNN01n?=
+ =?utf-8?B?L3dUNTVYWEc3YkJ6RkYwcU5zdXNGa0NGNGlMbTY4cWlQTzNvRUdiL0o4NU01?=
+ =?utf-8?B?WFFES3FrMXRGYlFUaTJ4UDlsUjlSd3pXQVcwYmJCUmdJK21jNGxNNm8vcDdH?=
+ =?utf-8?B?V2FhRHlrUWl4WVVDVkJyKzZKNlZleFd1Wm1mSXlmYXFIb09jRzhHSVNFSW5L?=
+ =?utf-8?B?dFlZMVJlYm1TQS81anlUdDJmUXRGcXNNaUJTL1JPSGcvYmJWL3o1MGxzenN6?=
+ =?utf-8?B?WkNyelAvZ1ZxK1E1cXEyRURZdENueUttTllBYkJUbFBQbk1zZGppcExiRXhF?=
+ =?utf-8?B?cWJoSmRiNlNIQnBXM2ttVHBHc25SYkRIM0FzaHZqRmpaZXB2d2NDbzFuRHdV?=
+ =?utf-8?B?dS81ZEcyeE03bkN5c3BhNUQ2YXdvVjNKOUFZaGxtNWIxWDlvSnBRRGQvSmF1?=
+ =?utf-8?B?ZjZ3dEZnUjh6ZEZlRlpnQzlkSDNQWDUxN3JSQTF5dnJNRVB6bS8xOEpzamxn?=
+ =?utf-8?Q?+XvF2p79IFYnhHGnhO4tT39LP?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 903e7ecc-f8ae-4041-3dc7-08ddbf58e15d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2025 02:24:21.8180
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vWb8W+r/qKTljaE0myo89SSTTHh0Tqu9evyc0KOvcZF7iZ8iVKMBA88/uEYtVwdY0WaQb16w1QlrQjYEY389mQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4132
 
-On Wed, Jul 9, 2025 at 4:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
->
-> On Thu Jul 10, 2025 at 1:14 AM CEST, Alexei Starovoitov wrote:
-> > On Wed, Jul 9, 2025 at 3:57=E2=80=AFPM Danilo Krummrich <dakr@kernel.or=
-g> wrote:
-> >>
-> >> On 7/10/25 12:53 AM, Alexei Starovoitov wrote:
-> >> > On Wed, Jul 9, 2025 at 10:25=E2=80=AFAM Vitaly Wool <vitaly.wool@kon=
-sulko.se> wrote:
-> >> >>
-> >> >>
-> >> >> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> >> >> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsig=
-ned long align,
-> >> >> +                                gfp_t flags, int node)
-> >> >>   {
-> >> >
-> >> > imo this is a silly pattern to rename functions because they
-> >> > got new arguments.
-> >> > The names of the args are clear enough "align" and "node".
-> >> > I see no point in adding the same suffixes to a function name.
-> >> > In the future this function will receive another argument and
-> >> > the function would be renamed again?!
-> >> > "_noprof" suffix makes sense, since it's there for alloc_hooks,
-> >> > but "_node_align_" is unnecessary.
-> >>
-> >> Do you have an alternative proposal given that we also have vrealloc()=
- and
-> >> vrealloc_node()?
-> >
-> > vrealloc_node()?! There is no such thing in the tree.
-> > There are various k[zm]alloc_node() which are artifacts of the past
-> > when NUMA just appeared and people cared about CONFIG_NUMA vs not.
-> > Nowadays NUMA is everywhere and any new code must support NUMA
-> > from the start. Hence no point in carrying old baggage and obsolete nam=
-es.
->
-> This patch adds it; do you suggest to redefine vrealloc_noprof() to take =
-align
-> and nid? If we don't mind being inconsistent with krealloc_noprof() and
-> kvrealloc_noprof() that's fine I guess.
->
-> FWIW, I prefer consistency.
+Update the safety comments to be consistent with other safety comments
+in the PCI bindings. Also add an inline compiler hint.
 
-What inconsistency are you talking about? That
-krealloc_noprof(const void *p, size_t new_size, gfp_t flags)
-and
-vrealloc_noprof(const void *p, size_t size, unsigned long align,
-                gfp_t flags, int node)
-have different number of arguments?!
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: "Krzysztof Wilczyński" <kwilczynski@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: "Björn Roy Baron" <bjorn3_gh@protonmail.com>
+Cc: Benno Lossin <lossin@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Trevor Gross <tmgross@umich.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-pci@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 
-See:
-alloc_pages_noprof(gfp_t gfp, unsigned int order);
-__alloc_pages_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
-                nodemask_t *nodemask);
+---
 
-Adding double underscore to keep all existing callers of
-vrealloc_noprof() without changes and do:
+Changes for v2:
 
-vrealloc_noprof(const void *p, size_t size, gfp_t flags);
-__vrealloc_noprof(const void *p, size_t size, unsigned long align,
-gfp_t flags, int node);
+ - New for v2
+---
+ rust/kernel/pci.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-is fine and consistent with how things were done in the past,
-but adding "_node_align_" to the function name and code churn to all
-callsites is a cargo cult.
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 8435f8132e38..5c35a66a5251 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -371,14 +371,18 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
+ 
+ impl Device {
+     /// Returns the PCI vendor ID.
++    #[inline]
+     pub fn vendor_id(&self) -> u16 {
+-        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
++        // SAFETY: by its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
+         unsafe { (*self.as_raw()).vendor }
+     }
+ 
+     /// Returns the PCI device ID.
++    #[inline]
+     pub fn device_id(&self) -> u16 {
+-        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
++        // SAFETY: by its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
+         unsafe { (*self.as_raw()).device }
+     }
+ 
+-- 
+2.47.2
+
