@@ -1,127 +1,93 @@
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2AF223DF1
-	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 12:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0715C17A2F8
+	for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 12:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752151039; cv=none; b=Vp4mHYsVatENlwGqwThHkYb9IMyO+x2borxVhHd2qMnRY9NidfnzGHJlKQTr0Eq7WgNcPVzCd9ig8/YefKP1fd4GDuZtA6pASeBlqOJtvW7YpBdRRpCp5bLXaVseR7MyjAD6ZzN0SGwBxK94O2nH8tFVeY8Sn/1ASEPuUk1Zrd8=
+	t=1752151281; cv=none; b=SdynuQvVdIGu3azvFoKBPIMF6QCIUfzJwm985dYoq88dPio0+Wg9zfOR6uXwNo7jgZ07u+daTilCkDFsae5W5tmuZuUQRr7kkpsmPdNA6Dgde+IfjsPPo7zSO9qQg15lowecZYfejr6vRQENNzAd/mn4hfR+7wK2FDzIfVCf/o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752151039; c=relaxed/simple;
-	bh=Og1yz/M22j7KCr3KXGbUronD/j14psa6uLKq5GMhcJ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bOovwm5Uru0+gD2BOQ7gU7rOcJ4uiInCsndW1k3YauOyrtWohFkPQJOLVksNyB5t4c/pYRHJm3UNzYCQnAuspO4JUu4STbQAhKq56cjNXUH2PAY7NrnLweTASK8E3FNGx+Y5MlH5hxTW8qObCC708lojyPkAkGuaAeXSuG+Bwjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ejm2NaVL; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752151281; c=relaxed/simple;
+	bh=HqlAUFcHrrbHvDoYzTjT/B/XJBlGnvNe0GVJy560fes=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b9PGITeWyLLezdI5Q9EyRFPB3lYk+9o5q/bK1HFM/Eb4pe+/TW9HVKg5U0rPNV51+KnwpFsz8GbFitzg77lNKyeMng/nE7sU4QrZs8XsQjST7isqYUSSNvsxrkx8BVb0xqS03OJl1qpTf8x1fuTz2GqNSK+ybE8hElooVNzGl/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cZE2JJq+; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ejm2NaVL"
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7170344c100so8845187b3.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 05:37:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cZE2JJq+"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b45edf2303so916292f8f.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 10 Jul 2025 05:41:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752151036; x=1752755836; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5zOLNdXLvXxVtoIWMnBKLvF0WB3PMzZJIOz9EzcurUU=;
-        b=Ejm2NaVLgDdnxdouisdQE0m2YRq+zgARnhK1waTDEaz4xgedlNNy+iWyMCXNwaLf6h
-         G26YmjwtDoAD06khdXW55WOjauhO0fUi3g2CGSjzM2wTnbZRVIs7I+pzxbLMLzfKtNi3
-         e4tlpB/YOe96m2og7iQsiqKvy5BvkTPtmhL/O0ICHviLiqi0eeHR2KWuAwafPdx6464p
-         SD8YTawF9WEvcUcj3c3JMdhWVS+0aB0ZoIt3gHm/VM6nu5pCtpBCsQa27YeticerB8Vk
-         ZRS6qlv0aKvQlahs8kpwnq+dD8HTjeePqLBghZzzNaaG8QBgrGEEASqDXQboz5+38KFe
-         93Dg==
+        d=google.com; s=20230601; t=1752151278; x=1752756078; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HqlAUFcHrrbHvDoYzTjT/B/XJBlGnvNe0GVJy560fes=;
+        b=cZE2JJq+MJiiuLP5Nfofio8TzGYkh/q/Y4NAiLI1lufPb7er4B8VPTH5YBjRlggIhu
+         Q7x36O6XCQZ3EBLEuS6TLXPXyDgynTf3wj9yAhVMvdK8WyuQu7HYDZel0mW8ZniiK2Cl
+         hb4fIg2ytQWrc124cXmAYVJpmvzbkTGgJFBEwnBSEPb9Q0WZ9MkDu608/wg5xmMTU8CE
+         zAtmR7V0FDMlW9JRtooyibho6fq6Ad1ufp92JeeV0VIattyMSBHK17jNYjYLyXyH0Q2O
+         s/QOb9+0QMh3Q5CWduF1RmNzKHVEjtRzxFuqRyFbEyLp7AdgBkjSZ/eqvtUwEp3hYWsN
+         ZJ9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752151036; x=1752755836;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5zOLNdXLvXxVtoIWMnBKLvF0WB3PMzZJIOz9EzcurUU=;
-        b=aq0eXc9ri4JLdtrqzjIzItRFfj1FI+GtJcdES8pfH/WzQLVGd644cITRy6tkVpiid0
-         vBTZDZ7sGR48RKHArplVYDMYeQ5al9G2Q+FEXpDRopT1pJ2kWm9UpNGRhI1pwmcpOBfw
-         WC/QNByeMOlIb+wWcXB0wZD77cyQXwxqB6ZLhCkAzMtUNUPZgoMQAzXWhaoB5go8Glu9
-         IGs2H1mRTcFJTLCUT4xog0eDW6eolDLqflw85hWMVgdguZO7XyKNRN2Vcs0qG7X658bl
-         dG7yryNyWtPT0R0Cx6k2rOhSil1gGRu65RSHmNMd0uGvnQFZolCSTtnbDM1pCd2J4vN8
-         7o1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUVPq1qho3vCu/JozEh9xbbN0I8WbLkciZz4x6/cDMIW4v/SfftpFJGkgu57Qo5wlYWKFNxCwWnpxDiWsmy6w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YybAuY47Xbdj2rfcZI93PUMShwLIcd/1xvI4ktfiHFBp32HnqRC
-	obWCBNrxHAIwjbA045qoZwsxI3zJKVV8Nxo89Kl3T89KZ18WX049ZdEc
-X-Gm-Gg: ASbGncv9PPjzvm+V1shrUrxYjClwI0/qs2Y0ngV63J6JxwKcNi8zc8aFj8+T/bLvB6c
-	LoMlTunvmwb7woFUvR0/Ayg5TKlNpnpFNy8hBke1tm9O+UXdfDQGFilm1kLYSGO54UN3PT0lKl4
-	jMqRc7zIqHwdvzb+ErZSU40pTMK/Rt3JpgqVeYSh0H1GprOV9SfdeS9mwFrlXshIVWkfSBdPpgL
-	UYekrZszbd/Cl0RxH6nzTQ9uiDZcBHJwuni8jX/UxFOOW1tOk4N4gHkGe/sh04S/StFM3QlcE6A
-	VubTaEyDv/gLfHBxkj/Mb9SrReCtxTyUkJm2N+rlFyM/CBEvjx1kRsZY2E8=
-X-Google-Smtp-Source: AGHT+IEkfwUwEo1rXgAOmOAIP0WMmfXBZd/p4CD1HnjSrtfTHkVjWTr7N1Wvvg6xFwbtKzuI2FfbrQ==
-X-Received: by 2002:a05:690c:3809:b0:70e:7882:ea91 with SMTP id 00721157ae682-717c47f4ae8mr39800547b3.35.1752151036373;
-        Thu, 10 Jul 2025 05:37:16 -0700 (PDT)
-Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-717c5d710d1sm2625107b3.33.2025.07.10.05.37.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 05:37:15 -0700 (PDT)
-From: Ritvik Gupta <ritvikfoss@gmail.com>
-To: viresh.kumar@linaro.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com
-Cc: yury.norov@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	Benno Lossin <benno.lossin@proton.me>
-Subject: [PATCH] rust: cpumask: Replace `MaybeUninit` with `Opaque::uninit`
-Date: Thu, 10 Jul 2025 18:08:36 +0530
-Message-ID: <20250710123836.146825-1-ritvikfoss@gmail.com>
-X-Mailer: git-send-email 2.50.0
+        d=1e100.net; s=20230601; t=1752151278; x=1752756078;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HqlAUFcHrrbHvDoYzTjT/B/XJBlGnvNe0GVJy560fes=;
+        b=Vb6An2UAqQmxm2YZRX/0GW2PRZjjkEgRLQUnnSpgcMpewpTu64+i2cxK4fwsuNTAzg
+         okC8G/io7KPc50mXEVUZ7Mnp8ig7EnGd4YkSzTqJKwL3B9KzukygoxZbf+ccXr12oUhL
+         QuCPghX4NkeV3cWY/yewNpPi9ahBU8r5gvg5mXRz2dgp74p3gOa1jTK7D3tE0VSdaKYq
+         rpphVyWvNjRt8IqauM03Bkbmj6AqEZSy721BfsTKnFqut85q4KGYSbknHhABXBL1Hift
+         QGsuSs5jBR7G6mP6psRNE5g1Gka8Nc4tm4M74XmWdyJPMvlefK/9FEqy4t1Aa+nm3BLe
+         2uJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX8+g7Gr58VVefF60j/5043w2xhMWK7I98xMbTMA7OEJ5zoxwdjAQnGLTbdRjyD1ZM2jzy10GeDkkXVuGkR8A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNikOkpf5xG961MS1HfJWeRTL9kKg05BOvWNtMUt8DzyLWZgNK
+	9EWwwx7DUq+lATflhxi2BmWE0lBCABaswn6vT1SsEkavhkQxy5VsZbmJgXuxoYstJuSO7rX0Zl4
+	l07IJlNDSITxwzf10txO1j9A5pF+X9iW9iBp8G06c
+X-Gm-Gg: ASbGnctjuJ1GM2psNYdwQ4kr53PlSbo8GDMkZKh7fyM5i7j7MMTd7Ktzp7gpM/2ke97
+	5hNYNWf6lKfhafax4v64oDxzS92hARy6Y+pcYXqVkZl3989yActA/AqiGziuWShMohF3YpmYpht
+	oNeILngd954ug4bzQHXkRhY1GZ30N4SA984QlBuDOaiiRBmTSdopSU2fOAIaaT6aJbC3oD5fm90
+	w==
+X-Google-Smtp-Source: AGHT+IFLIbga8JU2ENvBJO9B/MynT8A45DG9mcMiQWUe7qUmca8JdVmV4h1zlAY0fgwa02Xiso+9pPQcI6ASulR7ZwY=
+X-Received: by 2002:a05:6000:2511:b0:3a4:f513:7f03 with SMTP id
+ ffacd0b85a97d-3b5e452cb62mr6367307f8f.44.1752151278155; Thu, 10 Jul 2025
+ 05:41:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250710123836.146825-1-ritvikfoss@gmail.com>
+In-Reply-To: <20250710123836.146825-1-ritvikfoss@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 10 Jul 2025 14:41:06 +0200
+X-Gm-Features: Ac12FXzAXT061xqPULqdlVySs14BlEjhJvaW0qiZRVVJUy6d_RTeAHIuBsg0uNQ
+Message-ID: <CAH5fLgj0OoCn56OkNUmiPQ=RAVa_VmS-yMZ4TNBSpGPNtZ5D0A@mail.gmail.com>
+Subject: Re: [PATCH] rust: cpumask: Replace `MaybeUninit` with `Opaque::uninit`
+To: Ritvik Gupta <ritvikfoss@gmail.com>
+Cc: viresh.kumar@linaro.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	yury.norov@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org, rust-for-linux@vger.kernel.org, 
+	skhan@linuxfoundation.org, Benno Lossin <benno.lossin@proton.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Replace unsafe `MaybeUninit::uninit().assume_init()`
-initialization with `Opaque::uninit()`, which is an
-abstraction for handling opaque FFI types.
+On Thu, Jul 10, 2025 at 2:37=E2=80=AFPM Ritvik Gupta <ritvikfoss@gmail.com>=
+ wrote:
+>
+> Replace unsafe `MaybeUninit::uninit().assume_init()`
+> initialization with `Opaque::uninit()`, which is an
+> abstraction for handling opaque FFI types.
+>
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1178
+> Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
 
-Suggested-by: Benno Lossin <benno.lossin@proton.me>
-Link: https://github.com/Rust-for-Linux/linux/issues/1178
-Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
----
- rust/kernel/cpumask.rs | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+I would make the same change to the mem::zeroed() call in
+CpumaskVar::new_zeroed().
 
-diff --git a/rust/kernel/cpumask.rs b/rust/kernel/cpumask.rs
-index 4bce230a73b68..5f84b8797c2a7 100644
---- a/rust/kernel/cpumask.rs
-+++ b/rust/kernel/cpumask.rs
-@@ -14,9 +14,6 @@
- #[cfg(CONFIG_CPUMASK_OFFSTACK)]
- use core::ptr::{self, NonNull};
- 
--#[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
--use core::mem::MaybeUninit;
--
- use core::ops::{Deref, DerefMut};
- 
- /// A CPU Mask.
-@@ -266,10 +263,7 @@ pub unsafe fn new(_flags: Flags) -> Result<Self, AllocError> {
-                 NonNull::new(ptr.cast()).ok_or(AllocError)?
-             },
-             #[cfg(not(CONFIG_CPUMASK_OFFSTACK))]
--            // SAFETY: Guaranteed by the safety requirements of the function.
--            //
--            // INVARIANT: The associated memory is freed when the `CpumaskVar` goes out of scope.
--            mask: unsafe { MaybeUninit::uninit().assume_init() },
-+            mask: Cpumask(Opaque::uninit()),
-         })
-     }
- 
-
-base-commit: 2009a2d5696944d85c34d75e691a6f3884e787c0
--- 
-2.50.0
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
