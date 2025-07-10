@@ -1,157 +1,270 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB9A1E505;
-	Thu, 10 Jul 2025 09:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5982D9792;
+	Thu, 10 Jul 2025 10:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752141475; cv=none; b=Nmunq82PgMraQgWRvrN4NAEK/69BSEnJPniIbGpFVpRbdkV6obWbdPqe96Cz7Lb40pWq5o/OB8xalr7slq0LVu5niCJnnPDKytWqKNkcY7N9Bv0JH7IcqEDmVHHTX1ZnJ8nJre5j2K7369KFszgS/stRC/iS1CZXEXhDPA8K5As=
+	t=1752142495; cv=none; b=BgPhQpKdxzqYEx4sQiUOWWsG5xDpVbWzcq0aIiVM+cXzSWNTAVYrB9Mf7erQTKSX3KOu1H4CAqSvlEWB1ENhobMiaGBEMODNTlA2jiWkFDnf/HV/PtBp4epxIJfGrASLcCe01YQ0MgXDBn9XsJhq5AKfKp8Lk3xoIVjnE3ZWjjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752141475; c=relaxed/simple;
-	bh=B5Te1MOfraVVrSpjVQqFSGNLCQuc3hLW//SrxwQmFCI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=cAIHhW2y63JaOf304BAbwwSE9iQhn9jgC/DvAW7qbdJ3/8lw3yW7NIBcqmsoEz5xheD9vO5wdF5VNT9jaUwYW43nQIsUeKzJld97YWjvCXWm0bKi3is60g3NynUyADQbCnekCBfSSxBKQEDN59YKqkoc//ZPZ3unSfYPPHKLyHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vNulD8l8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752142495; c=relaxed/simple;
+	bh=88rsh88mpW5gcwA7FMx0qvwMnXGoQaLQuq1H0aQocyg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=otdx7EO6yAUjHGpQH9QLprfhSq5+RS0Xgy++Askzt/OpVjF89+tA8g1Rtp9JUB1KvZt5og0aakHgGfEGUzxnw4bPyrA8xPM2XqhvN0t6Cv4FHcQeAfKEpaa7mrQqdKXccKeyoeW13cBjlRPAbrLcE3Y7d8+AdjuzV0WPGr5Qgz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SY6blPnP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vNulD8l8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D741BC4CEE3;
-	Thu, 10 Jul 2025 09:57:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SY6blPnP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DACDC4CEF8;
+	Thu, 10 Jul 2025 10:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752141475;
-	bh=B5Te1MOfraVVrSpjVQqFSGNLCQuc3hLW//SrxwQmFCI=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=vNulD8l8X0acklVEmHYF6S8BVnK+45pS2sUQfSezAQwOQ7uZUtMKG0RIvwIuOwqVN
-	 CiszKPKYAXRasB/EQD8VLrBkthqNMWby/2oKdjxD5gv3C2g97D/FDWbfFXA+cOmhsv
-	 V9CdxRiVg110RYC6k55Kue7ZF7Jw8UKm5vV1eYgg6YOUTzYpAz86ImrNbywCl5VUkx
-	 JybQaalrWBLrVRURMZpZn74AZEnRHX61sNITP9ygx/c6s3btRxcqBOBFQCx72C0eHG
-	 AkJQlrzblaVCzMwsY0KqRuc1wbybmnyeB4ESYj/5yyiQJ+PB5XKQdGH7qHIS9aWhv9
-	 XRKR6B3glJhWA==
+	s=k20201202; t=1752142495;
+	bh=88rsh88mpW5gcwA7FMx0qvwMnXGoQaLQuq1H0aQocyg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=SY6blPnPbTmwB4sDAlK0OqG/Or1ix1Bk/GL9MoAJ5cD0inWZ7+8jWKq9WMaRgnktJ
+	 KXrtNH9VP/Rwup+Q4VeOlfFoaI6LUjDtNaavHZ+ixMUrbSp6VuZqXbqy56Gh5jgPLy
+	 FtPOwxtKtK+WXMc4mg88eaY+u5RQe8jKhYlNoeUttqkVA7N+Xo3+3ciYDxR0tPiPai
+	 IbHEaqd5Sa9AhVX1NWu1OP2PNjHKTMUAmXQwyHNJ2cvDB9/XCF4xdjpUG4nC/Ojzzh
+	 R1jQ1W26mtFx/727ckjEaQJFPtJVmORHvz0d0s8sag02MSUtpkc3HbKALCEMTxh2nb
+	 8CuePCkWuVivg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  "Masahiro Yamada" <masahiroy@kernel.org>,
+  "Nathan Chancellor" <nathan@kernel.org>,  "Luis Chamberlain"
+ <mcgrof@kernel.org>,  "Danilo Krummrich" <dakr@kernel.org>,  "Nicolas
+ Schier" <nicolas.schier@linux.dev>,  "Trevor Gross" <tmgross@umich.edu>,
+  "Adam Bratschi-Kaye" <ark.email@gmail.com>,
+  <rust-for-linux@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-kbuild@vger.kernel.org>,  "Petr Pavlu" <petr.pavlu@suse.com>,
+  "Sami Tolvanen" <samitolvanen@google.com>,  "Daniel Gomez"
+ <da.gomez@samsung.com>,  "Simona Vetter" <simona.vetter@ffwll.ch>,  "Greg
+ KH" <gregkh@linuxfoundation.org>,  "Fiona Behrens" <me@kloenk.dev>,
+  "Daniel Almeida" <daniel.almeida@collabora.com>,
+  <linux-modules@vger.kernel.org>
+Subject: Re: [PATCH v16 1/7] rust: sync: add `SetOnce`
+In-Reply-To: <DB7SUDRTDJK7.2TXKP6EQJ77FL@kernel.org> (Benno Lossin's message
+	of "Wed, 09 Jul 2025 22:16:24 +0200")
+References: <20250709-module-params-v3-v16-0-4f926bcccb50@kernel.org>
+	<20250709-module-params-v3-v16-1-4f926bcccb50@kernel.org>
+	<9xgynwGn-IAcmiUICPvPtOFa-TV5IRH8pu3WLdvQRLG56Q_DXBvxy0q_9Ykmgff1LbRXht1XoYaQq13av21T2A==@protonmail.internalid>
+	<DB7SUDRTDJK7.2TXKP6EQJ77FL@kernel.org>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Thu, 10 Jul 2025 12:14:45 +0200
+Message-ID: <87cya8jqsq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Jul 2025 11:57:50 +0200
-Message-Id: <DB8ABBBNMMVB.1QWW942P0MRJP@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v12 1/4] mm/vmalloc: allow to set node and align in
- vrealloc
-Cc: "Vitaly Wool" <vitaly.wool@konsulko.se>, "linux-mm"
- <linux-mm@kvack.org>, "Andrew Morton" <akpm@linux-foundation.org>, "LKML"
- <linux-kernel@vger.kernel.org>, "Uladzislau Rezki" <urezki@gmail.com>,
- "Alice Ryhl" <aliceryhl@google.com>, "Vlastimil Babka" <vbabka@suse.cz>,
- "rust-for-linux" <rust-for-linux@vger.kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Kent Overstreet" <kent.overstreet@linux.dev>,
- <linux-bcachefs@vger.kernel.org>, "bpf" <bpf@vger.kernel.org>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "Jann Horn" <jannh@google.com>, "Pedro
- Falcato" <pfalcato@suse.de>
-To: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172416.1031970-1-vitaly.wool@konsulko.se>
- <CAADnVQ+bikqCO7D+5_rAtiJXv3F6xn=0_hgGH5CkoTPpdi8j6Q@mail.gmail.com>
- <14b08e7c-c2e8-435c-a1dd-bd51cfb42060@kernel.org>
- <CAADnVQ+qCNfm3aucBrkXRXrUjjYeYQb09Oobx+pgOXNDny4s8w@mail.gmail.com>
- <DB7WW886UVAJ.I58517CYL8G7@kernel.org>
- <CAADnVQ+iZbKzx8bje=CLO=OnpmGHmQHpDNC=UjWYfN59bWoN3A@mail.gmail.com>
-In-Reply-To: <CAADnVQ+iZbKzx8bje=CLO=OnpmGHmQHpDNC=UjWYfN59bWoN3A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Thu Jul 10, 2025 at 2:39 AM CEST, Alexei Starovoitov wrote:
-> On Wed, Jul 9, 2025 at 4:26=E2=80=AFPM Danilo Krummrich <dakr@kernel.org>=
- wrote:
+"Benno Lossin" <lossin@kernel.org> writes:
+
+> On Wed Jul 9, 2025 at 7:52 PM CEST, Andreas Hindborg wrote:
+>> Introduce the `SetOnce` type, a container that can only be written once.
+>> The container uses an internal atomic to synchronize writes to the internal
+>> value.
 >>
->> On Thu Jul 10, 2025 at 1:14 AM CEST, Alexei Starovoitov wrote:
->> > On Wed, Jul 9, 2025 at 3:57=E2=80=AFPM Danilo Krummrich <dakr@kernel.o=
-rg> wrote:
->> >>
->> >> On 7/10/25 12:53 AM, Alexei Starovoitov wrote:
->> >> > On Wed, Jul 9, 2025 at 10:25=E2=80=AFAM Vitaly Wool <vitaly.wool@ko=
-nsulko.se> wrote:
->> >> >>
->> >> >>
->> >> >> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->> >> >> +void *vrealloc_node_align_noprof(const void *p, size_t size, unsi=
-gned long align,
->> >> >> +                                gfp_t flags, int node)
->> >> >>   {
->> >> >
->> >> > imo this is a silly pattern to rename functions because they
->> >> > got new arguments.
->> >> > The names of the args are clear enough "align" and "node".
->> >> > I see no point in adding the same suffixes to a function name.
->> >> > In the future this function will receive another argument and
->> >> > the function would be renamed again?!
->> >> > "_noprof" suffix makes sense, since it's there for alloc_hooks,
->> >> > but "_node_align_" is unnecessary.
->> >>
->> >> Do you have an alternative proposal given that we also have vrealloc(=
-) and
->> >> vrealloc_node()?
->> >
->> > vrealloc_node()?! There is no such thing in the tree.
->> > There are various k[zm]alloc_node() which are artifacts of the past
->> > when NUMA just appeared and people cared about CONFIG_NUMA vs not.
->> > Nowadays NUMA is everywhere and any new code must support NUMA
->> > from the start. Hence no point in carrying old baggage and obsolete na=
-mes.
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>
+> A couple notes on safety documentation below. Also one pretty subtle
+> functionality change from last version. With everything fixed:
+>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+>
+>> ---
+>>  rust/kernel/sync.rs          |   2 +
+>>  rust/kernel/sync/set_once.rs | 122 +++++++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 124 insertions(+)
 >>
->> This patch adds it; do you suggest to redefine vrealloc_noprof() to take=
- align
->> and nid? If we don't mind being inconsistent with krealloc_noprof() and
->> kvrealloc_noprof() that's fine I guess.
+>> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+>> index 81e3a806e57e2..13e6bc7fa87ac 100644
+>> --- a/rust/kernel/sync.rs
+>> +++ b/rust/kernel/sync.rs
+>> @@ -18,6 +18,7 @@
+>>  mod locked_by;
+>>  pub mod poll;
+>>  pub mod rcu;
+>> +mod set_once;
 >>
->> FWIW, I prefer consistency.
+>>  pub use arc::{Arc, ArcBorrow, UniqueArc};
+>>  pub use completion::Completion;
+>> @@ -26,6 +27,7 @@
+>>  pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
+>>  pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
+>>  pub use locked_by::LockedBy;
+>> +pub use set_once::SetOnce;
+>>
+>>  /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+>>  #[repr(transparent)]
+>> diff --git a/rust/kernel/sync/set_once.rs b/rust/kernel/sync/set_once.rs
+>> new file mode 100644
+>> index 0000000000000..73706abfe9991
+>> --- /dev/null
+>> +++ b/rust/kernel/sync/set_once.rs
+>> @@ -0,0 +1,122 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +
+>> +//! A container that can be initialized at most once.
+>> +
+>> +use super::atomic::{
+>> +    ordering::{Acquire, Relaxed, Release},
+>> +    Atomic,
+>> +};
+>> +use core::{cell::UnsafeCell, mem::MaybeUninit, ptr::drop_in_place};
+>> +
+>> +/// A container that can be populated at most once. Thread safe.
+>> +///
+>> +/// Once the a [`SetOnce`] is populated, it remains populated by the same object for the
+>> +/// lifetime `Self`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// - `init` may only increase in value.
+>> +/// - `init` may only assume values in the range `0..=2`.
+>> +/// - `init == 0` if and only if the container is empty.
+>> +/// - `init == 1` if and only if being initialized.
+>> +/// - `init == 2` if and only if the container is populated and valid for shared access.
 >
-> What inconsistency are you talking about? That
-> krealloc_noprof(const void *p, size_t new_size, gfp_t flags)
-> and
-> vrealloc_noprof(const void *p, size_t size, unsigned long align,
->                 gfp_t flags, int node)
-> have different number of arguments?!
+> I think I have a better idea for the last three invariants:
 >
-> See:
-> alloc_pages_noprof(gfp_t gfp, unsigned int order);
-> __alloc_pages_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
->                 nodemask_t *nodemask);
+> - `init == 0` if and only if `value` is uninitialized.
+> - `init == 1` if and only if there is exactly one thread with exclusive
+>   access to `self.value`.
+> - `init == 2` if and only if `value` is initialized and valid for shared
+>   access.
+
+Sounds good to me.
+
 >
-> Adding double underscore to keep all existing callers of
-> vrealloc_noprof() without changes and do:
+>> +///
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// # use kernel::sync::SetOnce;
+>> +/// let value = SetOnce::new();
+>> +/// assert_eq!(None, value.as_ref());
+>> +///
+>> +/// let status = value.populate(42u8);
+>> +/// assert_eq!(true, status);
+>> +/// assert_eq!(Some(&42u8), value.as_ref());
+>> +/// assert_eq!(Some(42u8), value.copy());
+>> +///
+>> +/// let status = value.populate(101u8);
+>> +/// assert_eq!(false, status);
+>> +/// assert_eq!(Some(&42u8), value.as_ref());
+>> +/// assert_eq!(Some(42u8), value.copy());
+>> +/// ```
+>> +pub struct SetOnce<T> {
+>> +    init: Atomic<u32>,
+>> +    value: UnsafeCell<MaybeUninit<T>>,
+>> +}
+>> +
+>> +impl<T> Default for SetOnce<T> {
+>> +    fn default() -> Self {
+>> +        Self::new()
+>> +    }
+>> +}
+>> +
+>> +impl<T> SetOnce<T> {
+>> +    /// Create a new [`SetOnce`].
+>> +    ///
+>> +    /// The returned instance will be empty.
+>> +    pub const fn new() -> Self {
+>> +        // INVARIANT: The container is empty and we initialize `init` to `0`.
+>> +        Self {
+>> +            value: UnsafeCell::new(MaybeUninit::uninit()),
+>> +            init: Atomic::new(0),
+>> +        }
+>> +    }
+>> +
+>> +    /// Get a reference to the contained object.
+>> +    ///
+>> +    /// Returns [`None`] if this [`SetOnce`] is empty.
+>> +    pub fn as_ref(&self) -> Option<&T> {
+>> +        if self.init.load(Acquire) == 2 {
+>> +            // SAFETY: By the type invariants of `Self`, `self.init == 2` means that `self.value`
+>> +            // contains a valid value.
 >
-> vrealloc_noprof(const void *p, size_t size, gfp_t flags);
-> __vrealloc_noprof(const void *p, size_t size, unsigned long align,
-> gfp_t flags, int node);
+> s/contains a valid value/is initialized and valid for shared access/
+
+OK.
+
 >
-> is fine and consistent with how things were done in the past,
-> but adding "_node_align_" to the function name and code churn to all
-> callsites is a cargo cult.
+>> +            Some(unsafe { &*self.value.get().cast() })
+>> +        } else {
+>> +            None
+>> +        }
+>> +    }
+>> +
+>> +    /// Populate the [`SetOnce`].
+>> +    ///
+>> +    /// Returns `true` if the [`SetOnce`] was successfully populated.
+>> +    pub fn populate(&self, value: T) -> bool {
+>> +        // INVARIANT: If the swap succeeds:
+>> +        //  - We increase `init`.
+>> +        //  - We write the valid value `1` to `init`.
+>> +        //  - Only one thread can succeed in this write, so we have exclusive access after the
+>> +        //    write.
+>> +        if let Ok(0) = self.init.cmpxchg(0, 1, Relaxed) {
+>> +            // SAFETY: By the type invariants of `Self`, the fact that we succeeded in writing `1`
+>> +            // to `self.init` means we obtained exclusive access to the contained object.
+>
+> s/to the contained object/to `self.value`/
 
-As Vitaly mentioned in a different reply, this would be inconsistent with t=
-he
-'k' and 'kv' variants, which have the suffix '_node'.
+OK.
 
-Anyways, in general I don't think that adding underscores for functions tha=
-t
-basically do the same thing but are getting more specialized is a great pat=
-tern
-for things that are not strictly limited to a narrow context.
+>
+>> +            unsafe { core::ptr::write(self.value.get().cast(), value) };
+>> +            // INVARIANT:
+>> +            //  - We increase `init`.
+>> +            //  - We write the valid value `2` to `init`.
+>> +            //  - We release our exclusive access to the contained object and the object is now
+>> +            //    valid for shared access.
+>> +            self.init.store(2, Release);
+>> +            true
+>> +        } else {
+>> +            false
+>> +        }
+>> +    }
+>> +
+>> +    /// Get a copy of the contained object.
+>> +    ///
+>> +    /// Returns [`None`] if the [`SetOnce`] is empty.
+>> +    pub fn copy(&self) -> Option<T>
+>> +    where
+>> +        T: Copy,
+>> +    {
+>> +        self.as_ref().copied()
+>> +    }
+>> +}
+>> +
+>> +impl<T> Drop for SetOnce<T> {
+>> +    fn drop(&mut self) {
+>> +        if *self.init.get_mut() == 2 {
+>> +            // SAFETY: By the type invariants of `Self`, `self.init == 2` means that `self.value`
+>> +            // contains a valid value. We have exclusive access, as we hold a `mut` reference to
+>> +            // `self`.
+>> +            unsafe { drop_in_place(self.value.get()) };
+>
+> This is sadly doing the wrong thing now since you changed the type of
+> `value`: `self.value.get()` is of type `MaybeUninit<T>` and dropping
+> that has (obviously) no effect. So we probably need to do
+>
+>     let value = unsafe { &mut *self.value.get() };
+>     unsafe { value.assume_init_drop() };
+>
+> I almost overlooked this :)
 
-Please note, I'm not saying we should encode additional arguments in the na=
-me
-either. I think it really depends on the actual case.
+Oops.
 
-In this case, it seems to make sense to me that there is e.g. kmalloc() and
-kmalloc_node().
 
-For a caller that's much more useful, i.e. I want classic kmalloc(), but wa=
-nt to
-set the node, hence kmalloc_node(). Calling it __kmalloc() instead seems a =
-bit
-random.
+Best regards,
+Andreas Hindborg
 
-Or do you only refer to the *_noprof() variants, which are not exported to
-users? But even then, underscores still don't seem very expressive.
 
-I'm not maintaining this code though, so just take it FWIW. :)
