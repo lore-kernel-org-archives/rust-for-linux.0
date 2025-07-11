@@ -1,207 +1,154 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C314D2BE622
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 12:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326653209;
+	Fri, 11 Jul 2025 12:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752237403; cv=none; b=PrglwSFgxUhDKwGRtcb0G4fjSktfz1kjA0TXXYXIOvrQlnVgYNSe4Or0dT9UK57FEW8l7kVlFQ1eciC8SJm364kPYYkgTIleT4wgKHWrhq1Y02RYBN7voajrfbx3HccZQezhPPGO9FGFLe8VlXgRTOW1/EhEsUr/cpNP5LgZaZg=
+	t=1752237861; cv=none; b=fFjwmTz/952O8NvuXl177kLxm2V5Q26DHniGBmW5lBHi6ynZ8Su4Xnp/7/ny8UPjDarp5KO+SUrZ0kKNfZrY5oy0f1JgMe3CBnUX7f0kIfpSw4m17pMc4ErfyIB2b6Glcti5S1pArXQYLXcQtbRQayoqK1BafNAemGrbWHfWcEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752237403; c=relaxed/simple;
-	bh=3k7zeyqd7SmF+I9Quix2UZLh1NAmpJ08rR0/1iKfNfc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=UXxoYM/egU5zIqOZwnUcuTAZwFO0pL3JXv+3VAjjWj5FWm9DFbG4qi0lfx8PzQgjuca9P/uPNEHGqZYduQeVO/WJRivdbW6bdRLaPd18x5FaDmT1s/sf85ucwYM5aZTlaFqisQrFX//PYHWLst/VFQKWHawwxJ2Apd18dEn9fXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=C1irTKJK; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1752237861; c=relaxed/simple;
+	bh=teZJaqxYI5b4Zi5Q3t/5mosyvGb3FX+DYiKRW0d6N6s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=boeNj87B25QnNn94n0ufDiJHOZ5laYoBd+TLCRqnLoasFuVNdOdFmYv/BDybyucAL0huboW6HmfJ7HtrDRNk60kMCevbm0yjOQyM2F8NzQFsfDcneOl3u3UkFHDYomKDBMWYSAvAq2fQ9qKckSdYeqV6adDRKHQObx6Y64eSH+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJDmPs2c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="C1irTKJK"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250711123640euoutp020952ac098128d16332d4f4dda68bcc6d~RMqGxCKKD0786407864euoutp02n
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 12:36:40 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250711123640euoutp020952ac098128d16332d4f4dda68bcc6d~RMqGxCKKD0786407864euoutp02n
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1752237400;
-	bh=K0K/KtJbTXHNw0pmcTrwWsLkly4FuPuuoVVC7z5NRQU=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=C1irTKJKR6dh7Zyb0hzv5ZIWVDUNbUFWxCqT3Z09Oirx/34YrJ7RKqeNSd3wCC3Ji
-	 IJHkR0vLQvRNN+rNzQJgYvbmdLrcjiJiV5ZFOgtOudkwD5LrcsUnataJLfTIPiwJIC
-	 vNXQ5zUwT/XPaG02QKWIcb1NAG85KB7+rU74SHTY=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250711123639eucas1p1941aef7a8b0e49493b430463f97136db~RMqF-42Wd2355023550eucas1p1H;
-	Fri, 11 Jul 2025 12:36:39 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250711123637eusmtip2a6e5e3c4f720153c14660001342b34a8~RMqEx1kL50333203332eusmtip2h;
-	Fri, 11 Jul 2025 12:36:37 +0000 (GMT)
-Message-ID: <020b8036-8959-4733-a5ab-ce8c963ce869@samsung.com>
-Date: Fri, 11 Jul 2025 14:36:37 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJDmPs2c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244B9C4CEED;
+	Fri, 11 Jul 2025 12:44:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752237860;
+	bh=teZJaqxYI5b4Zi5Q3t/5mosyvGb3FX+DYiKRW0d6N6s=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=IJDmPs2c3NbqO3wxva11UXJLk9zZYU+B2fZtvtfwnFwoEOyxy64podMGkXpF4Srr3
+	 3GctEfA87rhazleam3+lU8Q7ILT1r5aaQAIGUeaQMKwml83rX69qG61ch5ThQyXrfr
+	 gPjD9Nb7q3B3sHaOfG16wjiXJpZwHmHh4BnSbqysc8Xl91V0iLPjwhf5mZ4Ii3AJr3
+	 ALKh/mpgnKqGHTLc+6he887VpV6qrxjkJe0D57+XI880GRuTPANwid4VbJbkUPpjyl
+	 umhId6gP+TabFKBnQ2H8FvO2WONWNIJtxCD87joyUgyy0ukGUP/qAUsGwkTBOM2wb6
+	 qUYmv0wyaRYhQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/7] Rust Abstractions for PWM subsystem with TH1520
- PWM driver
-To: Danilo Krummrich <dakr@kernel.org>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
-	<ukleinek@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Guo Ren <guoren@kernel.org>, Fu Wei
-	<wefu@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Paul Walmsley
-	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
-	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
-	Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, Krzysztof Kozlowski
-	<krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <DB8OT5ZZ4SRO.WP5PBFLML683@kernel.org>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250711123639eucas1p1941aef7a8b0e49493b430463f97136db
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6
-X-EPHeader: CA
-X-CMS-RootMailID: 20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6
-References: <CGME20250707094926eucas1p155bd967b6986c4a999776839b1aa1fc6@eucas1p1.samsung.com>
-	<20250707-rust-next-pwm-working-fan-for-sending-v10-0-d0c5cf342004@samsung.com>
-	<e8a4a821-e7e4-4bcd-a2ac-f6b684b6ceea@samsung.com>
-	<ipvaegqlkco5qinhvn33mqvg7ev2walvs74xtzvhimxsfsfzhv@gcmpxcdtetdn>
-	<e77eab1c-446f-4620-95be-d343684d1e95@samsung.com>
-	<4hmb3di5x2iei43nmrykrj5wzlltrf3vrnqvexiablonbscn57@4bbsz5c76t63>
-	<DB8I5J8ZY7QF.2D8HEN6JX4HSZ@kernel.org>
-	<cbxpqormchajfcnf7xxopd7j7igriqus4cuu5jfvxb3mbfb5tu@qz4rc67vjyif>
-	<DB8OT5ZZ4SRO.WP5PBFLML683@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Jul 2025 14:44:09 +0200
+Message-Id: <DB98H7EGG96J.2FC3ZWDENYWW5@kernel.org>
+Cc: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
+ <linux-clk@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
+ <linux-block@vger.kernel.org>
+Subject: Re: [PATCH 00/17] rust: replace `kernel::c_str!` with C-Strings
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Tamir Duberstein" <tamird@gmail.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Andrew Lunn" <andrew@lunn.ch>,
+ "Heiner Kallweit" <hkallweit1@gmail.com>, "Russell King"
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, "Michael Turquette" <mturquette@baylibre.com>,
+ "Stephen Boyd" <sboyd@kernel.org>, "Breno Leitao" <leitao@debian.org>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Brendan Higgins" <brendan.higgins@linux.dev>,
+ "David Gow" <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Jens
+ Axboe" <axboe@kernel.dk>
+X-Mailer: aerc 0.20.1
+References: <20250710-core-cstr-cstrings-v1-0-027420ea799e@gmail.com>
+In-Reply-To: <20250710-core-cstr-cstrings-v1-0-027420ea799e@gmail.com>
 
+On Thu Jul 10, 2025 at 5:31 PM CEST, Tamir Duberstein wrote:
+> This series depends on step 3[0] which depends on steps 2a[1] and 2b[2]
+> which both depend on step 1[3].
+>
+> This series also has a minor merge conflict with a small change[4] that
+> was taken through driver-core-testing. This series is marked as
+> depending on that change; as such it contains the post-conflict patch.
+>
+> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
+> can be taken through Miguel's tree (where the previous series must go).
+>
+> Link  https://lore.kernel.org/all/20250710-cstr-core-v14-0-ca7e0ca82c82@g=
+mail.com/ [0]
+> Link: https://lore.kernel.org/all/20250709-core-cstr-fanout-1-v1-0-64308e=
+7203fc@gmail.com/ [1]
+> Link: https://lore.kernel.org/all/20250709-core-cstr-fanout-1-v1-0-fd793b=
+3e58a2@gmail.com/ [2]
+> Link: https://lore.kernel.org/all/20250704-core-cstr-prepare-v1-0-a915240=
+37783@gmail.com/ [3]
+> Link: https://lore.kernel.org/all/20250704-cstr-include-aux-v1-1-e1a404ae=
+92ac@gmail.com/ [4]
+>
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+> Tamir Duberstein (17):
+>       drivers: net: replace `kernel::c_str!` with C-Strings
+>       gpu: nova-core: replace `kernel::c_str!` with C-Strings
+>       rust: auxiliary: replace `kernel::c_str!` with C-Strings
+>       rust: clk: replace `kernel::c_str!` with C-Strings
+>       rust: configfs: replace `kernel::c_str!` with C-Strings
+>       rust: cpufreq: replace `kernel::c_str!` with C-Strings
+>       rust: device: replace `kernel::c_str!` with C-Strings
+>       rust: firmware: replace `kernel::c_str!` with C-Strings
+>       rust: kunit: replace `kernel::c_str!` with C-Strings
+>       rust: macros: replace `kernel::c_str!` with C-Strings
+>       rust: miscdevice: replace `kernel::c_str!` with C-Strings
+>       rust: net: replace `kernel::c_str!` with C-Strings
+>       rust: pci: replace `kernel::c_str!` with C-Strings
+>       rust: platform: replace `kernel::c_str!` with C-Strings
+>       rust: seq_file: replace `kernel::c_str!` with C-Strings
+>       rust: str: replace `kernel::c_str!` with C-Strings
+>       rust: sync: replace `kernel::c_str!` with C-Strings
+>
+>  drivers/block/rnull.rs                |  2 +-
+>  drivers/cpufreq/rcpufreq_dt.rs        |  5 ++---
+>  drivers/gpu/drm/nova/driver.rs        | 10 +++++-----
+>  drivers/gpu/nova-core/driver.rs       |  6 +++---
+>  drivers/net/phy/ax88796b_rust.rs      |  7 +++----
+>  drivers/net/phy/qt2025.rs             |  5 ++---
+>  rust/kernel/clk.rs                    |  6 ++----
+>  rust/kernel/configfs.rs               |  5 ++---
+>  rust/kernel/cpufreq.rs                |  3 +--
+>  rust/kernel/device.rs                 |  4 +---
+>  rust/kernel/firmware.rs               |  6 +++---
+>  rust/kernel/kunit.rs                  | 11 ++++-------
+>  rust/kernel/net/phy.rs                |  6 ++----
+>  rust/kernel/platform.rs               |  4 ++--
+>  rust/kernel/seq_file.rs               |  4 ++--
+>  rust/kernel/str.rs                    |  5 ++---
+>  rust/kernel/sync.rs                   |  5 ++---
+>  rust/kernel/sync/completion.rs        |  2 +-
+>  rust/kernel/workqueue.rs              |  8 ++++----
+>  rust/macros/kunit.rs                  | 10 +++++-----
+>  rust/macros/module.rs                 |  2 +-
+>  samples/rust/rust_configfs.rs         |  5 ++---
+>  samples/rust/rust_driver_auxiliary.rs |  4 ++--
+>  samples/rust/rust_driver_faux.rs      |  4 ++--
+>  samples/rust/rust_driver_pci.rs       |  4 ++--
+>  samples/rust/rust_driver_platform.rs  |  4 ++--
+>  samples/rust/rust_misc_device.rs      |  3 +--
+>  scripts/rustdoc_test_gen.rs           |  4 ++--
+>  28 files changed, 63 insertions(+), 81 deletions(-)
 
+For the entire series:
 
-On 7/10/25 23:19, Danilo Krummrich wrote:
-> On Thu Jul 10, 2025 at 10:57 PM CEST, Uwe Kleine-König wrote:
->> On Thu, Jul 10, 2025 at 06:06:26PM +0200, Danilo Krummrich wrote:
->>> On Thu Jul 10, 2025 at 5:25 PM CEST, Uwe Kleine-König wrote:
->>>> Hello Michal,
->>>>
->>>> On Thu, Jul 10, 2025 at 03:48:08PM +0200, Michal Wilczynski wrote:
->>>>> On 7/10/25 15:10, Uwe Kleine-König wrote:
->>>>>> On Thu, Jul 10, 2025 at 10:42:07AM +0200, Michal Wilczynski wrote:
->>>>>>> On 7/7/25 11:48, Michal Wilczynski wrote:
->>>>>>>> The series is structured as follows:
->>>>>>>>  - Expose static function pwmchip_release.
->>>>>>
->>>>>> Is this really necessary? I didn't try to understand the requirements
->>>>>> yet, but I wonder about that. If you get the pwmchip from
->>>>>> __pwmchip_add() the right thing to do to release it is to call
->>>>>> pwmchip_remove(). Feels like a layer violation.
->>>>>
->>>>> It's required to prevent a memory leak in a specific, critical failure
->>>>> scenario. The sequence of events is as follows:
->>>>>
->>>>>     pwm::Chip::new() succeeds, allocating both the C struct pwm_chip and
->>>>>     the Rust drvdata.
->>>>>
->>>>>     pwm::Registration::register() (which calls pwmchip_add()) fails for
->>>>>     some reason.
->>>>
->>>
->>> (Just trying to help clear up the confusion.)
->>
->> Very appreciated!
->>
->>>> If you called pwmchip_alloc() but not yet pwmchip_add(), the right
->>>> function to call for cleanup is pwmchip_put().
->>>
->>> That is exactly what is happening when ARef<Chip> is dropped. If the reference
->>> count drops to zero, pwmchip_release() is called, which frees the chip. However,
->>> this would leave the driver's private data allocation behind, which is owned by
->>> the Chip instance.
->>
->> I don't understand that. The chip and the driver private data both are
->> located in the same allocation. How is this a problem of the driver
->> private data only then? The kfree() in pwmchip_release() is good enough
->> for both?!
-> 
-> Not in the current abstractions, there are two allocations, one for the Chip and
-> one for the driver's private data, or in other words the abstraction uses
-> pwmchip_set_drvdata() and pwmchip_get_drvdata().
-> 
-> Having a brief look at pwmchip_alloc(), it seems to me that PWM supports the
-> subclassing pattern with pwmchip_priv().
-> 
-> We should probably take advantage of that. Assuming we do that, the Rust
-> abstraction still needs a release() callback because we still need to call
-> drop_in_place() in order to get the destructor of the driver's private data
-> type called. We actually missed this in DRM and I fixed it up recently [1].
-> 
-> @Michal: With the subclassing pattern the Chip structure would look like this:
-> 
-> 	#[repr(C)]
-> 	#[pin_data]
-> 	pub struct Chip<T> {
-> 	   inner: Opaque<bindings::pwm_chip>,
-> 	   #[pin]
-> 	   data: T,
-> 	}
-}
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
-Hello
-
-Thank you both for the detailed feedback and suggestions.
-
-Danilo, you are right, we should absolutely use the subclassing pattern
-to have a single allocation for the chip and driver data. This is a much
-cleaner design.
-
-As I looked into this, the main difference is that the C struct pwm_chip
-doesn't have a fixed size because of the pwms[] array at the end. This
-prevents us from using the exact struct layout you suggested.
-
-pub pwms: __IncompleteArrayField<pwm_device>,
-
-Therefore, to correctly implement the subclassing pattern, it would be
-sufficient to leave the current struct as is and use pwmchip_get_drvdata to
-acquire pointers to the allocated drvdata.
-
-pub struct Chip<T: PwmOps>(Opaque<bindings::pwm_chip>, PhantomData<T>);
-
-This will still achieve the goal of a single allocation via
-pwmchip_alloc's sizeof_priv argument, while working around the DST
-limitation.
-
-> 
-> And in the release() callback would look like this:
-> 
->     extern "C" fn release(ptr: *mut bindings::pwm_chip) {
->         // CAST: Casting `ptr` to `Chip<T>` is valid, since [...].
->         let this = ptr.cast<Chip<T>>();
-
-I think this would use pwmchip_get_drvdata instead.
-
-> 
->         // SAFETY:
->         // - When `release` runs it is guaranteed that there is no further access to `this`.
->         // - `this` is valid for dropping.
->         unsafe { core::ptr::drop_in_place(this) };
->     }
-> 
-> This is exactly what we're doing in DRM as well, I would have recommended this
-> to begin with, but I didn't recognize that PWM supports subclassing. :)
-> 
-> I recommend having a look at [2].
-> 
-> [1] https://lore.kernel.org/all/20250629153747.72536-1-dakr@kernel.org/
-> [2] https://gitlab.freedesktop.org/drm/misc/kernel/-/blob/drm-misc-fixes/rust/kernel/drm/device.rs
-> 
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+---
+Cheers,
+Benno
