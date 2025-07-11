@@ -1,110 +1,93 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36DAA920
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 11:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AA4146585
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 11:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752232331; cv=none; b=jLnRFGLJCQrVoFVydIiSUePGhpmA2+Zul+lykeg8KShrELkRrxev8pnLHvQxcEgLIVEkVtviGne46dwQeTo0+79hmL+DhaB13TQz7BepX/zubRTL/R1V1af+50l/kHCAwloIFz13mNSCFTrGqIgs1n4UMBRoRtaxS6QCkr6z2lA=
+	t=1752233658; cv=none; b=iPAeCpeLe19DQRqkCb/yVw3CE+h7v9fkd+fgDB0zw7+v1/T9tassofFt1Yf4akZyRJ0YGCvplQ1Q5zCobpkeGzAmnKu06x32ySZVVlmDU+BtVnKR0qR6SY4h8itq51S301oJVCgpjGDisSWw4l8xKRZaYwEsmaE+rOd9c5vp9GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752232331; c=relaxed/simple;
-	bh=i1zamw8OxrbK1pmX8AUAnMJhV/OqLlLcVIZD8H6BljY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sl9jtlBt3YdfDIUYmDvpLTrBqV3VwbyeDSWsDbJhgy/hJfrKOVOzGLcDPvTXcdffDe2oTRwpPVKYBXoSBFkqiZLiLl5jV6lq7ThC4RpHe8O+NAYOs/aALf5jnByLG6jjccPm5Qxt7isyoXuCo9ZaggnRlMkp+dgfREyJIV+UKCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DLkvah+C; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1752233658; c=relaxed/simple;
+	bh=273r/EkrmyFgvjq2eddTpmIrLwHZixqBi8aD3JsodNA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fB+c/K2cuLubM+adlGVvMHRWW32fLWDDxJoykrtR4VTC0buIHGeGldItITFuBWOZG/4hSKuWv+kjDeaTG/Nm7ewtdFXMAUMp+JeSzOCs5TrILWnvrjo88soyoVU75Hebu5ZSux8eXZY5mIPP9sewKtCjnrz+wQqthTYAgifiofo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YnD3qFnM; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DLkvah+C"
-Date: Fri, 11 Jul 2025 07:11:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1752232326;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hmvwVX29UC54z92FzAiIHfQJoLjVbikCZHEZdUt1Xvc=;
-	b=DLkvah+Ci1VSJWI4/B4C7WOGb5TdMdc9dSeZ9dK00ZecpACf0ZdEUCsqcGwjBYJHYjIaoZ
-	KEXe5G1id1Mo7NIyyIBpd/+vk1z25JzlHziVBL6phT9ji3SwNxXBtBcKCx6lnkPXEGAu3q
-	2XwN2jD7fl3/bU8/nzOqQrS3+Gn1n+w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org, 
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
-	Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	linux-bcachefs@vger.kernel.org, bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-Subject: Re: [PATCH v12 2/4] mm/slub: allow to set node and align in
- k[v]realloc
-Message-ID: <2hiakuk5r3daujixvriejrc3nfqo4oiwmdygvyoxprsec3p6wv@k5i6nckj5tcu>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172441.1032006-1-vitaly.wool@konsulko.se>
- <aHDSLyHZ8b1ELeWe@hyeyoo>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YnD3qFnM"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-23c703c471dso26907755ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 04:34:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752233656; x=1752838456; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8wFTFvOPl9z0oMG+Q2qe8rihqJLxAx1U3xn0MBTrYNM=;
+        b=YnD3qFnMllgVj+hKtKD7uBD8iQWuOUNLi6q+eNKenU+N6/AoKx83etMEbEtceNyz2F
+         rpTEe/aYtdfWtmihgKyNPIaeoMQY1gtE0qR8tZDThCrrcadBlNgcpFyUw92KEiS2Dnjo
+         i/3cOVbTMqCk/hthrq1l99Y5YOZiCzmqkpFBoAoCC0r4lyrCfb+IGv36MIzJx445y0Mi
+         ClRrxt5X78/aRfEbSOqSMyjJyUzerT9pCugyS2+Q5Ul5O0F+/0w6Un0upmCu1BtySTKt
+         vg0lhs5H89kCBgEx2zdJwadcFVKXLvU71PEVXym0bfmyiZbPzxC8wuwEVpL4zo0kTQ4k
+         M/Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752233656; x=1752838456;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8wFTFvOPl9z0oMG+Q2qe8rihqJLxAx1U3xn0MBTrYNM=;
+        b=o0eZFgrNl+9uo4StD8iT8OX7TTu0bY/rF7Y37VGVDjFkLHB+Dk4YGqaDJFKdT0+NL7
+         Wbv969hL/B+mjc/8L24T4sZdo0l9wIHSaxiROFpMhRUNkwnG/3yILqUbR1/wIc2KBNTe
+         AjmlAIItNEHwORvvihWOvtRC3F4DXpmLwWBm568crvOgSme4dcav4yryd1oXWbrPZg+n
+         661bcO+kuwMP+UW+Nan7Ghljp79iIcjhZJg+Hy+04B6oxtn7aFIFhB4RFqhcrb6sSMAA
+         wqvPEWcJo9HKon1GTxk7ojgFx9DAj2ngMqQnlzYpG9cG/3r0LmhpcckF5W0Er41lM3qk
+         qMig==
+X-Gm-Message-State: AOJu0Yywlczs65h7o4ZNiQ2HM2ZWdBVhiVCVL7QBFje5wgbMZ1qoWlWy
+	bv1OJlwxz/er4ERCrMU7dZ6O2T3y30YakmARf9YImTH3gLGYznT4pCvL
+X-Gm-Gg: ASbGncvE2Mp2VHtK2879E80Su/WP6ZW0rB00HQd/VJXet2/enLDPzz2Oly2RfOb/2Gs
+	B4HvmAVDTlLKulW7j8iz5d9DKqmIzikk63RdGxW+HAZVeBmgscVb+zv2kWcyK2Kc6mn62duUnby
+	pTu67GazxnI3aZGHhlilNMbE6bgsZnttS/n2AqX32tN91s56F4k4nJAPxWFxnJXRVelpuBOEguR
+	sik8e8AFyhGHQtluKKkFXj7DBNg+BlvvmUBNuN84SAGa+2yYKms6Nj4yH+tao86ruexwMQ44gSB
+	sY9pe1NA/b+7wOI/wGWwfIkSat5Bk9j6FadMGoxZymztMne04h27vCJZPCgZT2haEjo8mnWIjYM
+	om5ATTOImYT+5zqAUjLwppj4i
+X-Google-Smtp-Source: AGHT+IHi/2v3d4D0niLSXVfJBurK7ik6yfS2C/Nk2uOVVVzuNXttGT4YdRjf4pKn117w/IWULOA2qw==
+X-Received: by 2002:a17:903:230d:b0:21f:5063:d3ca with SMTP id d9443c01a7336-23de2fc7394mr105884465ad.16.1752233656319;
+        Fri, 11 Jul 2025 04:34:16 -0700 (PDT)
+Received: from quat-desktop ([2001:569:514a:9100:3f23:7b0f:f6a2:1ebd])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4334005sm45480825ad.158.2025.07.11.04.34.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Jul 2025 04:34:16 -0700 (PDT)
+From: Quaternions <krakow20@gmail.com>
+To: acourbot@nvidia.com
+Cc: rust-for-linux@vger.kernel.org,
+	Quaternions <krakow20@gmail.com>
+Subject: [PATCH] gpu: nova-core: fix bounds check In PmuLookupTableEntry::new, data is sliced from 2..6, but the bounds check data.len() < 5 does not satisfy those bounds.
+Date: Fri, 11 Jul 2025 04:33:26 -0700
+Message-ID: <20250711113327.39201-1-krakow20@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aHDSLyHZ8b1ELeWe@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 11, 2025 at 05:58:23PM +0900, Harry Yoo wrote:
-> On Wed, Jul 09, 2025 at 07:24:41PM +0200, Vitaly Wool wrote:
-> > Reimplement k[v]realloc_node() to be able to set node and
-> > alignment should a user need to do so. In order to do that while
-> > retaining the maximal backward compatibility, add
-> > k[v]realloc_node_align() functions and redefine the rest of API
-> > using these new ones.
-> > 
-> > While doing that, we also keep the number of  _noprof variants to a
-> > minimum, which implies some changes to the existing users of older
-> > _noprof functions, that basically being bcachefs.
-> > 
-> > With that change we also provide the ability for the Rust part of
-> > the kernel to set node and alignment in its K[v]xxx
-> > [re]allocations.
-> > 
-> > Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> > ---
-> >  fs/bcachefs/darray.c   |  2 +-
-> >  fs/bcachefs/util.h     |  2 +-
-> >  include/linux/bpfptr.h |  2 +-
-> >  include/linux/slab.h   | 38 +++++++++++++++----------
-> >  lib/rhashtable.c       |  4 +--
-> >  mm/slub.c              | 64 +++++++++++++++++++++++++++++-------------
-> >  6 files changed, 72 insertions(+), 40 deletions(-)
->  
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index c4b64821e680..6fad4cdea6c4 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -4845,7 +4845,7 @@ void kfree(const void *object)
-> >  EXPORT_SYMBOL(kfree);
-> >  
-> >  static __always_inline __realloc_size(2) void *
-> > -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
-> > +__do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags, int nid)
-> >  {
-> >  	void *ret;
-> >  	size_t ks = 0;
-> > @@ -4859,6 +4859,20 @@ __do_krealloc(const void *p, size_t new_size, gfp_t flags)
-> >  	if (!kasan_check_byte(p))
-> >  		return NULL;
-> >  
-> > +	/* refuse to proceed if alignment is bigger than what kmalloc() provides */
-> > +	if (!IS_ALIGNED((unsigned long)p, align) || new_size < align)
-> > +		return NULL;
-> 
-> Hmm but what happens if `p` is aligned to `align`, but the new object is not?
-> 
-> For example, what will happen if we  allocate object with size=64, align=64
-> and then do krealloc with size=96, align=64...
-> 
-> Or am I missing something?
+Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
+---
+ drivers/gpu/nova-core/vbios.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-You generally need size to be a multiple of align...
+diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
+index 663fc50e8b66..5b5d9f38cbb3 100644
+--- a/drivers/gpu/nova-core/vbios.rs
++++ b/drivers/gpu/nova-core/vbios.rs
+@@ -901,7 +901,7 @@ struct PmuLookupTableEntry {
+
+ impl PmuLookupTableEntry {
+     fn new(data: &[u8]) -> Result<Self> {
+-        if data.len() < 5 {
++        if data.len() < 6 {
+             return Err(EINVAL);
+         }
+
+--
+2.50.1
