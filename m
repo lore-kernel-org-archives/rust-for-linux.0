@@ -1,160 +1,117 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87498223327;
-	Fri, 11 Jul 2025 22:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501E66BFCE;
+	Fri, 11 Jul 2025 22:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752273166; cv=none; b=V64CBd9HNe/iGYhy4FjxYlcPMWtXZ9tdtAJkUeCM3OCSk60+gDwi0t09e+uCyXJidFy89yCx6W0tAL3MarRbDwvp75lKMueJsfWiG/MJ3w6ax1bCurpQtcZW/nzBrD2FDMbETurhxkmJweu5/eYHluVBWHeNKXiooLDx0gcgP1w=
+	t=1752274404; cv=none; b=CmfdaqhM6qtdzx42GauizLnKFXjOEGXcNepO4xXaPkbMGtkFELsSqsQAjH+1468qbEolnIGjToqm6juKyepAwCELBmUYbflCT0YKW3SCUNfesHy3c3fiuscXrwDJA8JKYFkvRmfMQc6p3Tu6FPHju3ZlNK7PCX63/fllDiRNsBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752273166; c=relaxed/simple;
-	bh=yPSOgNyoGmgWCeMxGnn15uBykHIufP1j0ynDY2EjCpk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Vi9x5zpZmr6izTGBc/ulnMYf1DNedAxdr0ODi0+bEXweV7LJ8RdMfn3fFxXxheFjeg8ZRi5QliRYcPSRFUwlj2oqSgj1KjlK+vs4PLQeu8Of5/KoCplXKpvqARlU67x25NX0XzvtocyMTguhP1wfeV2bYr4k1LrQEgIIsAitIqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=mG5NJ/yf; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1752274404; c=relaxed/simple;
+	bh=Dce+jjWbrq9nliEsy0qLQENP2zNYFENdhnn90MXxnSE=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ptMuoinCzO/E8u04EhC9SOWVFbGK4BxnbCRAnpUR/QtWUcRgGUXLzZhrG7wYcc5+T/iBRn7G2z3kX1Nu5+ld7MMoPQnUEgEGsOKPxy/WV/ooTUIH+7lFHb+Z7tALgLUqOXmqxR5bTkFaVoiURK+dj4Ey3d803crAavc4F0qq0lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cVE9Djw3; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="mG5NJ/yf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1752273161;
-	bh=yPSOgNyoGmgWCeMxGnn15uBykHIufP1j0ynDY2EjCpk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mG5NJ/yfitDbaIaKIvmyfZBIKU/60H4CoQrSqNKTPQEMfPuggJsrsJLWCcHNA3hQy
-	 ZN9JGHpNQs/ffe1P2lnm9DUggFzMCPkkFjunCG6YJOYlaaHM9S6DIHHwEtllhUvUBj
-	 QXyLH3sUg3RdxSwmmnHXDyhfsarKpxSaqpjtgdZAKYWwWqGVHhOmJ0bw4mCt5Ezq9t
-	 Qrzlo/iHbHKXe40ZUvY7pvvWVslEG7V7pLK3wex5heo2E6DsEURUmIJg7CdWOaD0o7
-	 ip0oHlNNsIEBQ1XKTmE3nTgqsofmKjaZazjTbpGDFzk4HJJkZGBTFpAHzDZ1lJoOK6
-	 LmkfWHXYpowjA==
-Received: from [192.168.0.2] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id A507B17E1110;
-	Sat, 12 Jul 2025 00:32:39 +0200 (CEST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Fri, 11 Jul 2025 19:32:29 -0300
-Subject: [PATCH v13 3/3] rust: platform: add resource accessors
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cVE9Djw3"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-748d982e97cso2373568b3a.1;
+        Fri, 11 Jul 2025 15:53:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752274402; x=1752879202; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YtNC6XkkO/jON8C2oec+eMDF/ZX7E6/nGcX0kOFU6yY=;
+        b=cVE9Djw3WR7zlZT90CgB3aLnJ+DedYQte4bs9MEn1FVM9ileI1qFggTzAYzr7Ytkga
+         Ppr29CBjm7ZSwtMYyl+BmwPRcQtvmCYC/O4pIAyNsnpw+NAOg+vpeNF9GeUD0Hpia/T4
+         cFJGEq91fzHPI0KLJYCWncNqqGCefv68KUihZgfi2q0CwBNIEw6ATR82sspUh2Xhh/bk
+         a01n1DgLQJV3ycci8exmaoiGsgJ3eSJC9+PhdONv8F+35A/s1cRAG/9MbMfyW0Q5Y/Z8
+         0MQ2qx6ffM/nGP/HSEZ1baEBAi+QDg3AJnC9mFvJny/JS8ihphoi7pX22g/hwYfpPYPE
+         S2ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752274402; x=1752879202;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YtNC6XkkO/jON8C2oec+eMDF/ZX7E6/nGcX0kOFU6yY=;
+        b=bk9+xsHDc+roqIoXmqfbsUa4YPtt5znUx7tAA/w1oM40+2CqLm3tthvbciEx28J6+8
+         Hz95gNBdKSEVC2cLTOqlyZJadxNHyhJFj6hed9UR2DB7BkHZCX8iFLPVpAtEycGtYGLs
+         dXYGfbEeX7EXRzNKEr2lm0kbUbtreJ3hXchHNQQJUS634qoA3PQXaRQze14636B53VWL
+         GXaXtrsHwAjK1mWpfBZKLZ8O2J1lbv5kEIBwIm0eS7tBdp1EHjng5iKGCpdsVLhDEIod
+         sAURNhM1xqPHKyIG+B7jhEkpP2CQTdzEtE76padIFcioPwxban+lM+4k0Ew68ieaBPie
+         2QAg==
+X-Forwarded-Encrypted: i=1; AJvYcCW8hsO+vhN2Xf4qs13eGJcRlt4ZEB4zIpWBIa/g6y0IYN18ons3+r6z+Bl3GYfsoljeC3aER6QSGGeNt0Pg@vger.kernel.org, AJvYcCX2veo+IUw98j8jRFQd9JXUV+DX0kDRCGmKhr051Dn0Eet7UIuiVsKJvsrlEfXx9Opy+N5DrbU5@vger.kernel.org, AJvYcCX9YcQZsqgbh+tftUY6ZGEMDaEjfzufj2A5I+v7DJesx/rpV9yKW7hnPIi3TZXqTujHNl9Mou73WuWq@vger.kernel.org, AJvYcCXYgcIwrFpHYvDF4Cb+k1o+4dbHL1M6V1Y4+yuW5Imc6ReDc/Xk09jz7Vdnbn+AFpcmX5fifpzBhGkj@vger.kernel.org, AJvYcCXtPBzd/ISa5YBoZOn9ICILPbsiSo73M7ODIJ7fnABssvkFnB9TCofMhS+oDrBtQnldXwOwSW/Ml8e/bA==@vger.kernel.org, AJvYcCXys2xQQCCVXgeEXqRfcpTF+aal14Fbpnc41lZELyPVPBMg2Bu/W4LlqMKckiuJpWNuSqeEWAVO++MOb2d4+tc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZhIUOEgOUrxzqLKiUXuCAgW7VsebBQYNQJqTLLzjDcWtme4n0
+	WLaIFs3JRDt3p7fBiNBk4yvPBGjNbWgfxmVHtMJyXYBEwZHytPkbOpP2
+X-Gm-Gg: ASbGncsTwYr1vbGqxpt5IXYrCbNcj/r0PEVOVfsUl2yams9aZcAHPr4jtbjLNdkaH36
+	gjyLIFFCdxey+tmxQxJAL7lx6wvsZqShcYC5+t3zNSfT/zIxJnq+Pxknj07sd98x/N9fhXog+lE
+	NrObAZJp5MGJX9nd/vLvZ380CmuIv78a36IasxQUGeAxSb4MUe2ceIug6ViUSA5CYTRYbFacFjr
+	OfxES3IgPuEMXwfotuBQufK5TJWk9qR7mE1OxCYq47SbeAdUOSTTarIaHh1JwNObOV487spk/2P
+	yCE+SWOenPT7nrR8ftSig6EXtoFmzV+D2fE2yFQxdtfiR0NEsXZtKna0jZWp6ae5XyqNzoXSsQO
+	okG/QDK/LZZoxwQgkWs7G6PZLC5TdAXtuiiSKoQUsZc0J6PRc2MKbiQuUS+BEdx9VNPiSyHk34F
+	+v
+X-Google-Smtp-Source: AGHT+IFZEQKk5zMLg8zX6aCQinn3vPgxwhVf4C1XvTSJbDH1J4csn2qqped+eTtejLbHorSkHbd8lQ==
+X-Received: by 2002:a05:6a20:6f03:b0:21c:fbf0:21bb with SMTP id adf61e73a8af0-2311ee4b155mr8323398637.24.1752274402391;
+        Fri, 11 Jul 2025 15:53:22 -0700 (PDT)
+Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe6f56a9sm5620815a12.59.2025.07.11.15.53.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Jul 2025 15:53:21 -0700 (PDT)
+Date: Sat, 12 Jul 2025 07:53:05 +0900 (JST)
+Message-Id: <20250712.075305.1992034457870738678.fujita.tomonori@gmail.com>
+To: dakr@kernel.org
+Cc: fujita.tomonori@gmail.com, alex.gaynor@gmail.com,
+ gregkh@linuxfoundation.org, ojeda@kernel.org, rafael@kernel.org,
+ robh@kernel.org, saravanak@google.com, tmgross@umich.edu,
+ a.hindborg@kernel.org, aliceryhl@google.com, bhelgaas@google.com,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, david.m.ertman@intel.com,
+ devicetree@vger.kernel.org, gary@garyguo.net, ira.weiny@intel.com,
+ kwilczynski@kernel.org, lenb@kernel.org, leon@kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, lossin@kernel.org, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] rust: Build PHY device tables by using
+ module_device_table macro
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <83b1b2f4-f87c-4b3f-ab4d-84ec429abd79@kernel.org>
+References: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
+	<83b1b2f4-f87c-4b3f-ab4d-84ec429abd79@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250711-topics-tyr-platform_iomem-v13-3-06328b514db3@collabora.com>
-References: <20250711-topics-tyr-platform_iomem-v13-0-06328b514db3@collabora.com>
-In-Reply-To: <20250711-topics-tyr-platform_iomem-v13-0-06328b514db3@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
 
-The previous patches have added the abstractions for Resources and the
-ability to map them and therefore read and write the underlying memory .
+On Sat, 12 Jul 2025 00:19:54 +0200
+Danilo Krummrich <dakr@kernel.org> wrote:
 
-The only thing missing to make this accessible for platform devices is
-to provide accessors that return instances of IoRequest<'a>. These
-ensure that the resource are valid only for the lifetime of the platform
-device, and that the platform device is in the Bound state.
+> On 7/11/25 6:09 AM, FUJITA Tomonori wrote:
+>> Build PHY device tables by using module_device_table macro.
+>> The PHY abstractions have been generating their own device tables
+>> manually instead of using the module_device_table macro provided by
+>> the device_id crate. However, the format of device tables occasionally
+>> changes [1] [2], requiring updates to both the device_id crate and the
+>> custom
+>> format used by the PHY abstractions, which is cumbersome to maintain.
+>> [1]:
+>> https://lore.kernel.org/lkml/20241119235705.1576946-14-masahiroy@kernel.org/
+>> [2]:
+>> https://lore.kernel.org/lkml/6e2f70b07a710e761eb68d089d96cee7b27bb2d5.1750511018.git.legion@kernel.org/
+>> Danilo, I incorporated your fixes into the first patch and mentioned
+>> them in the commit message. Let me know if you'd rather take a
+>> different approach.
+> 
+> Thanks FUJITA -- no need to mention it though. :)
+> 
+> Did you forget to pick up Jakub's ACK or was this intentional?
 
-Therefore, add these accessors. Also make it possible to retrieve
-resources from platform devices in Rust using either a name or an index.
+Oops, please add his ACK when applying.
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/platform.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 86f9d73c64b38ffe067be329a77b2fc04564c7fe..57f9964bb736cf5749ec3954def03c0d02873642 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,8 +5,11 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    acpi, bindings, container_of, device, driver,
-+    acpi, bindings, container_of,
-+    device::{self, Bound},
-+    driver,
-     error::{to_result, Result},
-+    io::{mem::IoRequest, Resource},
-     of,
-     prelude::*,
-     str::CStr,
-@@ -211,6 +214,61 @@ impl<Ctx: device::DeviceContext> Device<Ctx> {
-     fn as_raw(&self) -> *mut bindings::platform_device {
-         self.0.get()
-     }
-+
-+    /// Returns the resource at `index`, if any.
-+    pub fn resource_by_index(&self, index: u32) -> Option<&Resource> {
-+        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct platform_device`.
-+        let resource = unsafe {
-+            bindings::platform_get_resource(self.as_raw(), bindings::IORESOURCE_MEM, index)
-+        };
-+
-+        if resource.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-+        // returned by `platform_get_resource`.
-+        Some(unsafe { Resource::from_raw(resource) })
-+    }
-+
-+    /// Returns the resource with a given `name`, if any.
-+    pub fn resource_by_name(&self, name: &CStr) -> Option<&Resource> {
-+        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct
-+        // platform_device` and `name` points to a valid C string.
-+        let resource = unsafe {
-+            bindings::platform_get_resource_byname(
-+                self.as_raw(),
-+                bindings::IORESOURCE_MEM,
-+                name.as_char_ptr(),
-+            )
-+        };
-+
-+        if resource.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-+        // returned by `platform_get_resource`.
-+        Some(unsafe { Resource::from_raw(resource) })
-+    }
-+}
-+
-+impl Device<Bound> {
-+    /// Returns an `IoRequest` for the resource at `index`, if any.
-+    pub fn io_request_by_index(&self, index: u32) -> Option<IoRequest<'_>> {
-+        // SAFETY: `resource` is a valid resource for `&self` during the
-+        // lifetime of the `IoRequest`.
-+        self.resource_by_index(index)
-+            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
-+    }
-+
-+    /// Returns an `IoRequest` for the resource with a given `name`, if any.
-+    pub fn io_request_by_name(&self, name: &CStr) -> Option<IoRequest<'_>> {
-+        // SAFETY: `resource` is a valid resource for `&self` during the
-+        // lifetime of the `IoRequest`.
-+        self.resource_by_name(name)
-+            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
-+    }
- }
- 
- // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
-
--- 
-2.50.0
+Thanks,
 
