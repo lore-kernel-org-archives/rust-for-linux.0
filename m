@@ -1,113 +1,92 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523B91D7E41;
-	Fri, 11 Jul 2025 06:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCA82110E;
+	Fri, 11 Jul 2025 06:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752215867; cv=none; b=E4NfvRPww5nXvUluGo9i1r5LP6T+DrJ3n96B4BJwVB8gqHnFGuk0dMfCC0+fhHVQdwKSq+StXnTNA6gnfBJm7KJ0RT90EKu6vBakx5ZbNy0pL5h9MBzKoVvDVOlwvncNxGIudMJXsRLlDTxeg02xWtT2o6qhdtTGVr8n7V0apMw=
+	t=1752216554; cv=none; b=Lfs7ss4qzCDJacDhdhEGcLeqGhwi5pC8LWDoKs1kIVqTXhy0Y/JKpCs2kZKdrXZPf+D6JvNT5CKgd/QvaWjR3JmbSUWsPKZx+0gSYtxvkJNGu/pGvNmv4ErEXSVGIXf94OiTJpN4I6ZZYp5wfLNDDHk/y9wnHz/mWl+vZRKulbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752215867; c=relaxed/simple;
-	bh=+92Z+FUUoypQuqY5xz/8dtqwZymTQ0o9rqfuQb7P+GQ=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=VHWGXzN6m6KIoTSrrObjNh50VFR2hdNaw+LKeP7xySZOiG4gp+NLQxQUik4FmzaoKileek8Amdk4RoxDg9oGCmjeUHFqmiiMhI3xCRTLmikWS0aA4npYcl9v8LHnw0Kb+dVHRIZNvyVABz2WzCBmkNZi/iODcJDiG15exKkOC2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QipzuUiJ; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752216554; c=relaxed/simple;
+	bh=laUJFAuvCxqKC4pikdP+ObtJ2n95s8pB5xklDm1IXEc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=nHo9aQc2xhkXeHJSp2mKQ8ZM8YHEcIh2J4+OJgeqIPmbGSu+U+Z3tJf81paHA1Z6dQWlZF1HvNXjUBn6NuS8qlMca0yQtK0Q0wSyCclzXYNPydyH9mF2e2HeUGP388+aFUqL707/Rp+g5BFULbGk7VmrF+Tbyuh9ZECnEYt17us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rUAb/EvO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QipzuUiJ"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-74b50c71b0aso1091426b3a.0;
-        Thu, 10 Jul 2025 23:37:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752215865; x=1752820665; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MWVBYX+9nANi9PWFhLvg2cm2pn50jQ0pbBq///a1828=;
-        b=QipzuUiJaH0mgBsQ3jiVCveSeR6nV5pMBrhNm4ygbb3u/95JFfcqybTvwkMU2HXYy2
-         I83zcExHDfc9tZbD9nbJ4Nfngs9yTN4D28NRZCcaesfqxJDzh5Ym66MQarg1dDM+bXrt
-         /X78g2f57H+JhHHg4l7nqIxl0INnPVcUwXivHGJxGORcO/x53akA91LVQO0Vkt+piMNz
-         mnCznxMz9i7Vxm0tvlk+aHvMpPm+Gvp8ZIMVHqCAwsl06ml5trMgClCxg/xYFddyQAn7
-         uAo+vup5fBqArTKtNmyEuR7rLr5r+6d/lm+QWxYiFAMU/iLVeUShrq2haTvJq6BZBVmY
-         M4tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752215865; x=1752820665;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MWVBYX+9nANi9PWFhLvg2cm2pn50jQ0pbBq///a1828=;
-        b=NGD1coBRx0Xk+SDGgmqBT86FN18u5d46DbPHCCHexjZGbLYcvJNfXfW59h343SwmUO
-         GWnErrqEaSBUSr0M+laEBJVJSN5puADDsMWL2IvjwsRcYBaS5GUdViaPytAKz9MtRaeP
-         bB16SI0O7FvgVk0jV6kVNKA3U//57TPESlfyMultQu31gHQkjTqbidlqpEB0vdW5u1Cp
-         JeCXDYpD2hZz49kFfYMsc27gBz0BdlVdWNgMQ15lfPHsQtQi9JQfDW8NPaAN3iIriM2h
-         O6PQzTqmAhqhyl/pMbXbmSUbwYX7GcwED0NEcWBmAcAju1PaLBiXS8MeGk8Z6DW3ARnO
-         reeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUm2U4vHcbHK3axKb4Kj3u1sRA0dJ6AZxDg8Qg+nogouWteqylcDefAOMeqr6Na6PnbZl3/wCLWJKsnwbw=@vger.kernel.org, AJvYcCVj/TUMoiO7cnxS5ucNdgNYOBrf/QIuIpm83sCwc8ogZN5TSWRQMFJtOZEFbKwHb5+n1QhVEyK3wmZqELOdzag=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq2ygkYX1Cj7UHbdpd+hn4MifSXY/38S1ybdQHxrZoJXBpb4Bf
-	jQe3dB3gFxUtpZq6gqOrrgXAM/F2ot0Og4s0jZWT4XKI7Uvp8523G8fp
-X-Gm-Gg: ASbGncvclsbKN2GG+vSUbTkEpdAg6LRMbjs4ifiLkve4WVMTAUY69zoG9cJd+gYVie7
-	XAPrNFOFn7kXqv+qC1VRiVrt+i0luxkJ3mmWX6opUtTbFCfujEaz0VDs5AsNZFZiPG1oQrQt84e
-	NdGW5RfsRAG+EwY0A+QQA7eGBa02J/SrpxH6YcuBqjiiOPxLV+orCVss7tNfOrRqmxZ3LSU36I1
-	SG5moaJo0DlTpZwCm46NwXaIl7Mxk2CPwU4EFHRLI6yKFcUxIJdUXi59eQgzV+Qy1QQNDCRuQRN
-	Ai7tHF/6ZelA/SNafeAUHC3acySFbubs79mT6K9+YxkjWqhQ/cnEYq3RQjfH8rnHPGZKStAepKC
-	yV/s3gj2jdz1n0R8jYOI1lZIermk69S5Sz9+HR7tdEvqNFvK6l+0xa5iSeOVI1dnZK+tYxnER3s
-	QQ
-X-Google-Smtp-Source: AGHT+IEl4Ywkt/9PNpGKhiAIs79JkWdF66D+n8fpCi/tOVoJS4t3LUjPub04mIJIqxrggB2UQ5NtZQ==
-X-Received: by 2002:a05:6a20:43a2:b0:220:2d0f:f8e1 with SMTP id adf61e73a8af0-23134c5569fmr3447826637.3.1752215865507;
-        Thu, 10 Jul 2025 23:37:45 -0700 (PDT)
-Received: from localhost (p5332007-ipxg23901hodogaya.kanagawa.ocn.ne.jp. [180.34.120.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe6bc84asm4114972a12.44.2025.07.10.23.37.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 23:37:45 -0700 (PDT)
-Date: Fri, 11 Jul 2025 15:37:29 +0900 (JST)
-Message-Id: <20250711.153729.1327324726276230605.fujita.tomonori@gmail.com>
-To: a.hindborg@kernel.org
-Cc: lyude@redhat.com, rust-for-linux@vger.kernel.org,
- fujita.tomonori@gmail.com, boqun.feng@gmail.com, frederic@kernel.org,
- tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com,
- sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rUAb/EvO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF82C4CEED;
+	Fri, 11 Jul 2025 06:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752216553;
+	bh=laUJFAuvCxqKC4pikdP+ObtJ2n95s8pB5xklDm1IXEc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=rUAb/EvOLKSwN5WSl9Wa1es/g6L8F1sgse1yXo/CKy1Ws0Ay4jOsxPQbfOHYEV7BD
+	 KLOwrP9bFKhkTWTHLN9T6LQwrfZbDj+MAcPlHwD0wxTCsIkucy4bG8u5mJJd+LKo6N
+	 d071CUVmitGAXpfdN+OUo4qx+MTRvNDrvCSW5KkDDw38g4t5jzYf4QXQQNS3ysNIBR
+	 72qZ2ObEFP/RZXgwmF9XDKpx3FnlPw/0R4HejBiSH061At9egBPWpcGjCcWDGt03LD
+	 +UPfQa/sJFs2gfObGRN/u6SJoyUf5PRcx/JZ5x/RhdxchDt7SZUdAJX9Dc3Z8HW5gj
+	 Z5c8pVp8oBJxw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "FUJITA Tomonori" <fujita.tomonori@gmail.com>
+Cc: <lyude@redhat.com>,  <rust-for-linux@vger.kernel.org>,
+  <boqun.feng@gmail.com>,  <frederic@kernel.org>,  <tglx@linutronix.de>,
+  <anna-maria@linutronix.de>,  <jstultz@google.com>,  <sboyd@kernel.org>,
+  <ojeda@kernel.org>,  <alex.gaynor@gmail.com>,  <gary@garyguo.net>,
+  <bjorn3_gh@protonmail.com>,  <lossin@kernel.org>,
+  <aliceryhl@google.com>,  <tmgross@umich.edu>,  <dakr@kernel.org>,
+  <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] rust: time: Pass correct timer mode ID to
  hrtimer_start_range_ns
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <87jz4fi72a.fsf@kernel.org>
+In-Reply-To: <20250711.153729.1327324726276230605.fujita.tomonori@gmail.com>
+	(FUJITA Tomonori's message of "Fri, 11 Jul 2025 15:37:29 +0900")
 References: <U1GgPfpPwSjzh5jPpFlN22bT2BSjlaH8vLHYY6hAt_vJ5w4irwIYRPV46r73Cs5Dx73Ikz5ku7_qPWrl8Tntfw==@protonmail.internalid>
-	<20250710225129.670051-1-lyude@redhat.com>
-	<87jz4fi72a.fsf@kernel.org>
+	<20250710225129.670051-1-lyude@redhat.com> <87jz4fi72a.fsf@kernel.org>
+	<Jlcb2BYQGgrQ9n7-UEbh-tmbIbJdg2ju8RIXRLNH4cdkdqloip3e8e3jbQbdpNkFDxNZD_5Oqq_uNoNySv0hXg==@protonmail.internalid>
+	<20250711.153729.1327324726276230605.fujita.tomonori@gmail.com>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Fri, 11 Jul 2025 08:49:01 +0200
+Message-ID: <87ecuni5nm.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Fri, 11 Jul 2025 08:18:37 +0200
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+"FUJITA Tomonori" <fujita.tomonori@gmail.com> writes:
 
-> "Lyude Paul" <lyude@redhat.com> writes:
-> 
->> While rebasing rvkms I noticed that timers I was setting seemed to have
->> pretty random timer values that amounted slightly over 2x the time value I
->> set each time. After a lot of debugging, I finally managed to figure out
->> why: it seems that since we moved to Instant and Delta, we mistakenly
->> began passing the clocksource ID to hrtimer_start_range_ns, when we should
->> be passing the timer mode instead. Presumably, this works fine for simple
->> relative timers - but immediately breaks on other types of timers.
+> On Fri, 11 Jul 2025 08:18:37 +0200
+> Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>
+>> "Lyude Paul" <lyude@redhat.com> writes:
 >>
->> So, fix this by passing the ID for the timer mode instead.
+>>> While rebasing rvkms I noticed that timers I was setting seemed to have
+>>> pretty random timer values that amounted slightly over 2x the time value I
+>>> set each time. After a lot of debugging, I finally managed to figure out
+>>> why: it seems that since we moved to Instant and Delta, we mistakenly
+>>> began passing the clocksource ID to hrtimer_start_range_ns, when we should
+>>> be passing the timer mode instead. Presumably, this works fine for simple
+>>> relative timers - but immediately breaks on other types of timers.
+>>>
+>>> So, fix this by passing the ID for the timer mode instead.
+>>>
+>>> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>>> Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>>> Fixes: fcc1dd8c8656 ("rust: time: Make HasHrTimer generic over HrTimerMode")
 >>
->> Signed-off-by: Lyude Paul <lyude@redhat.com>
->> Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> Fixes: fcc1dd8c8656 ("rust: time: Make HasHrTimer generic over HrTimerMode")
-> 
-> Wow, thanks! Miguel, can you take this through rust-fixes?
+>> Wow, thanks! Miguel, can you take this through rust-fixes?
+>
+> I think that this patch fixes the commit in timekeeping-next.
+>
+> `fcc1dd8c8656` doesn't match to the commit in the current
+> timekeeping-next (this patch might have been made against the tree
+> before it was rebased).
 
-I think that this patch fixes the commit in timekeeping-next.
+Maybe Miguel can put the correct hash when he applies the patch.
 
-`fcc1dd8c8656` doesn't match to the commit in the current
-timekeeping-next (this patch might have been made against the tree
-before it was rebased).
+
+Best regards,
+Andreas Hindborg
+
+
