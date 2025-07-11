@@ -1,109 +1,91 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8D42EA477
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 14:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D9117A2EB;
+	Fri, 11 Jul 2025 15:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752245750; cv=none; b=uDym32fGBHFwOxiwPmjw368+GvKk49H4rNqTo8hicUtZm2F9Pkd73V4CtqLRVtpHGLYgdQYyc09GEE+TpzFgGJ+PC8+BKV0zWnjV92MZ9WwdBww6OYnjphtYFydTbUVK8hPuNqmBbGZw7covzeBAliqN7ZfiYM63jgeYIpnTszI=
+	t=1752246161; cv=none; b=Hq/Req9mMvIo9PrD5VpnakSelwQrUTh+1lFBfyrXu4dLmDGMbxK8xI3GvO3OQAgqTc7W/hTEZSKKYMHPXa4ddudos9tNbvVhVwsNS3VgdHX8J6Gj4A+e+gralP4UfYWmFdfaanjM/uS4UhiPjTXtB0OmV58Hd2NSoL2wgpLWrHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752245750; c=relaxed/simple;
-	bh=eCSi2L4WyoAMySerHlQc+ejrRguS3bcg7KrqF+uk5jQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RFq1FNQpFjEI+XtbJaxif8m+c/7ZyRCoYNF8bjIiXUtr3YdV3ipRmzm+ibHoCGC4N62TFEkuJqvidhVVlxXQaOpTFKuG+1/wfl7qGzvk79JSjCqcVF1auQBbsdSjuvy6owKYxI1GK+r9iWg3YIoe9gWW6nL9A2wXOsOOcHdRkhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YTqU9eYz; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752246161; c=relaxed/simple;
+	bh=WkohEzGpgCArM8YpDzlmzXmA4tTufR/VfgsN4+NpprY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=UtB//G+v0hPVRCXamrbKcnDBBEGPQwK7krXRkxFLP0mtV1bMKEwY7faA1adOzkLvzZPMvfUv29jZHN+7OgEOdD0JzfnufSyb80p/juwMXeVijnm4tGEpyoa0s23A98KWzEAz/TxfoLYDp8kpzNJbVsLMMmHOLBV7FLbOs4iVqBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ry+7g0E6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YTqU9eYz"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-313862d48e7so337541a91.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 07:55:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752245748; x=1752850548; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uYqPy8m3YKOoS4o1WapYoZS9oHfgx+nbzVu+hMO6FXA=;
-        b=YTqU9eYz+fprW/KVWEsu8yHC6vvg0ripSCIM1wb3C8tKit6e74sosIGP/miEM2OdJI
-         aCQJGQA5Bsk8sqjFJGCT/aOr2aXgZ4NZUYMAv5AXgocxL4rgnOd7BKjhDsueoX9GRKBj
-         rw5ytH691FIQs3II4EIuF2VFrSxJxRzovWQGXejiuN5gne6BlQbANDgiUVFCzHtvsdzC
-         fw3pktuAAym1G5bP8w38OP4dsn/amHp3mVuc68BLFWh9Swgi/2Ap+75RUGkWGJrCTAQ2
-         qFVQcpKVWO4kmDp/hqmbXZ92P8kqjB7+oMhR1nmqaPG02Tdt6XBPNggs1zr7VzG32lX9
-         QOqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752245748; x=1752850548;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uYqPy8m3YKOoS4o1WapYoZS9oHfgx+nbzVu+hMO6FXA=;
-        b=C30nl8iTZ+CgPig5TqbPRbJLS5n3MMlgxeyljpCKRgQQm8RRWgVWfjoBcGet47+0to
-         4z5q34/PHJRZB+L12h32DSEeSWFC/2YOKxRptpZm6TKnybxGXeqHYvCm9B4HCC2mPakC
-         lg7T4TX2Yn4rBrY61z5uR5MsCj5T14RhHGBLJwIlIhoxewFvXewq3LZIb/j3YLAwQwE1
-         vh/cHK+5LX2XlD5kxfV0lbUyE13M7B3RGOtg88VE81sBL8L/slE232qLB42is2ye1ik+
-         +k9Cx0xW4wBmGsiqFHZMVLfiv9JRZfFHmV427N2egp6bH4XvG1uTdcyxN4royojQ4f9i
-         3xYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUa+lKdV4olLDttzlKBH7Po4wkjFvnbuQWIc40iNtwyiSujl17A2O0PlVP1kIFmkMe5hqBeuK4deQxo4KqFEQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzv9yMCJkklt2SBVkAikfuRWW6FoszVeVJssKKMZAsNmgDh5bOI
-	oNAcWHFaSLY+wGCZbgoWPiQFkY8xNIe1+BYUTu2iR6Nvr5UfOpeW3C100LAiX+rplvxgcEgUlwm
-	vt0gIYpQUfGa5gQh5OoJuMFc2R+nCPaw=
-X-Gm-Gg: ASbGnctSEEareHMnaVqYbV9zikxJ9/hBNpDZuL67zMg+0flWxOKv2FjdQhoqc3TcbdA
-	kh+qD+RnIRtfkP6G3lp0tIs55BPp8g8e+i8RxNtIRROESyEajvik5ZjVH+OKekgw/X8oLxlEkEv
-	B95EQ8a9oIWLRMIiKSePsvH1ODIT4MhjTIL0uTvjwr9hl+c5C3rjdLvCKcxDhRnHFhDqx/OPp5/
-	KGPCjf+
-X-Google-Smtp-Source: AGHT+IH4AjwQKtxzZ8Mf5uM45/Hg9sfli3i+wlPcdS7HqGnsEbUMHjb94ykt6Lfs+j8xg/6Aa6DNW4VnuzYy9vXp8CI=
-X-Received: by 2002:a17:90b:180e:b0:313:2bfc:94c with SMTP id
- 98e67ed59e1d1-31c4cd5dbd7mr2015974a91.8.1752245747921; Fri, 11 Jul 2025
- 07:55:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ry+7g0E6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE29C4CEED;
+	Fri, 11 Jul 2025 15:02:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752246160;
+	bh=WkohEzGpgCArM8YpDzlmzXmA4tTufR/VfgsN4+NpprY=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=Ry+7g0E65o6dOo6nnTBWd6S831aTVgPT8/KIJIkRdgO9AEOqsQ7VUYbZs9DiLbGFX
+	 m5ryFOPFxE84O8k4i0NIQ/t9IB5aq4MS+lGH4hsnEJbL8VXoA4t3F3bpFFYwItfXej
+	 PpI1KC7xoXKcZSYJIsqWBJWSDVKVueFzziKjHsCAEtOvtl440Ad3cqv7PwFJFp6MPH
+	 UfTKkzjUQxD2iv0+ndywQyiQt7fkabBh2h9YqjYSnxu3TJwFzCfFG7K4EiZJ6YZIvP
+	 +I6+AvS9Fa+sDJroykgaff8vRNRMkXKWM/aghGlMQcBUAAQbvmLZP6xu1lGWI2n7rp
+	 5tMjWOB2Cx2Uw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250711113327.39201-1-krakow20@gmail.com> <DB97N2MN47L3.1F7450280ONEB@nvidia.com>
- <DB97YVI7QEEC.4YC9S6BZ1PGG@nvidia.com> <CAH7AjUz7YBkBJWiriNVN2q4ZxkDV1bo2dF1yVYCKq6u3Sk50dA@mail.gmail.com>
-In-Reply-To: <CAH7AjUz7YBkBJWiriNVN2q4ZxkDV1bo2dF1yVYCKq6u3Sk50dA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 11 Jul 2025 16:55:35 +0200
-X-Gm-Features: Ac12FXxzmHXkaN7CZt3IPVG1_A5pjhg_ezXL9GukovX8ONVwfyt3Wpnmtw4Eq9g
-Message-ID: <CANiq72n6vWfgaT-fkm8Ue+0d92C=S5kavQg9LC+5a+k+SULj6w@mail.gmail.com>
-Subject: Re: [PATCH] gpu: nova-core: fix bounds check In PmuLookupTableEntry::new,
- data is sliced from 2..6, but the bounds check data.len() < 5 does not
- satisfy those bounds.
-To: Rhys Lloyd <krakow20@gmail.com>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Jul 2025 17:02:35 +0200
+Message-Id: <DB9BF6WK8KMH.1RQOOMYBL6UAO@kernel.org>
+Cc: "Alistair Popple" <apopple@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: Update PCI binding safety comments and add
+ inline compiler hint
+References: <20250710022415.923972-1-apopple@nvidia.com>
+ <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
+In-Reply-To: <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
 
-On Fri, Jul 11, 2025 at 4:34=E2=80=AFPM Rhys Lloyd <krakow20@gmail.com> wro=
-te:
+On Thu Jul 10, 2025 at 10:01 AM CEST, Benno Lossin wrote:
+> On Thu Jul 10, 2025 at 4:24 AM CEST, Alistair Popple wrote:
+>> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+>> index 8435f8132e38..5c35a66a5251 100644
+>> --- a/rust/kernel/pci.rs
+>> +++ b/rust/kernel/pci.rs
+>> @@ -371,14 +371,18 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
+>> =20
+>>  impl Device {
+>>      /// Returns the PCI vendor ID.
+>> +    #[inline]
+>>      pub fn vendor_id(&self) -> u16 {
+>> -        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_de=
+v`.
+>> +        // SAFETY: by its type invariant `self.as_raw` is always a vali=
+d pointer to a
 >
-> Hi, this is my first contribution so thanks for pointing out my
-> mistakes.  It looks like there was only one newline between the commit
-> message and description, so the description spilled into the message.
+> s/by its type invariant/by the type invariants of `Self`,/
+> s/always//
+>
+> Also, which invariant does this refer to? The only one that I can see
+> is:
+>
+>     /// A [`Device`] instance represents a valid `struct device` created =
+by the C portion of the kernel.
+>
+> And this doesn't say anything about the validity of `self.as_raw()`...
 
-You're welcome!
-
-> If `git send-email` was supposed to add a From: line, I couldn't tell
-> you why it didn't, but I'll change the commit author to my full name
-> instead of my handle.
-
-Yeah, if you have the correct Git author in the commit, then it should
-all work smoothly.
-
-> I don't know if I can submit v2 in a reply, so I'll attempt another
-> `send-email` shortly.
-
-Personally I suggest to avoid nesting threads, especially when there
-is a long discussion or they are a long series, and instead sending
-versions as independent email threads -- it reads better in some
-clients (including in lore.kernel.org, in my opinion).
-
-As for `send-email`, yeah, I would suggest always using the same way
-to submit your patches -- doing things differently is prone to
-mistakes. You may also want to check `b4` for that, by the way.
-
-I hope that helps.
-
-Cheers,
-Miguel
+Hm...why not? If an instance of Self always represents a valid struct pci_d=
+ev,
+then consequently self.as_raw() can only be a valid pointer to a struct pci=
+_dev,
+no?
