@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A7E1FE470;
-	Fri, 11 Jul 2025 08:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9811A5B99;
+	Fri, 11 Jul 2025 08:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752221498; cv=none; b=lx2+sHbGrSxWFax204Di1PWdTd4Et3G2LPTkX+YSbOZYmSbi+GNtyStTTaz2WUdjcwwqeAp5FAbNsxKQkCHVj/skU0Q+FYf6MdyT3irRYioP5c8FbDfa3FGyFzSxRnFj8yYtEPf9Zz9M3bSS3Vg9GS863IFtw3dRjbq7BGrTCxw=
+	t=1752221724; cv=none; b=Xt76YNvXt+V38PvHBFdlZo/vvMjbLDkvkRk3Twk4sHaT9L1Xh4qcS5aFcmuerYUMC0Pf3vPvxP9home2Gi4qmm2jcW3GVxNcfk27Qz9REoyCLOAmJu07RS70eZAZNN3zcsWqnhwGYIg+rnOB9xG4IYqs+N7hWNQZ8J0LwcPhQ3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752221498; c=relaxed/simple;
-	bh=NYMZKphf96SaACDAe3JOHuWxhHs54wMKot7UA1Cf+W4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=sjEIvLNMQ51BfbXeH1ZmIX+wDNZW6MjLS+aYd3tUJuH+NvPyQf3ynUqSXw5uTOEDFv1oF2bCFeLRyKhissJ/agVn9BjvAz7G5Tl1xvrOinrOADPqzZ2WeQVEFEcg1ASaQk1f8+K7xR7FQ5kFVUOmttk4p3jwkfe2Z4vBWWrp/o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTTboOzr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752221724; c=relaxed/simple;
+	bh=MdlvamzqR242whEfiL7qVmBGWnd92BiQRP9xljkyRVM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=GZbG++adxwrpVDSSB/02O1qpPGK1C87QLA7/YCFK3suVY5KoKqNOV87eEDCG5ODZ+DejDk8SJ9aqR2oeGnDt32VQqEd27MCuBp99NlowsAxkUk6xye9E6UBa1u1nYcwH3l3/xLuwFLvuOwSYCc2a+iGlq0JuFwd0IuNSRnxmRLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EaT0U+td; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTTboOzr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E026CC4CEED;
-	Fri, 11 Jul 2025 08:11:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EaT0U+td"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE862C4CEED;
+	Fri, 11 Jul 2025 08:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752221498;
-	bh=NYMZKphf96SaACDAe3JOHuWxhHs54wMKot7UA1Cf+W4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KTTboOzrT3xIHW5CFqTcS3I3Y8Xc9QzbyfTOEl4EvtSCpkHjNr9HlgNA892bGsKaP
-	 n3t+tF++oeVpoTnNrOgzJuB9MZNF8EfMKQbF2bIVqUJcuQ1vDqYOYMAQh/PgPzQNG4
-	 WT17cS1K8u718+Lq83ypLsod06qp2yflWGZxwgJMF77NIa/RSnBss44o+mYvOK7mTA
-	 r3ykAd4trXpDRbsJccxrWBtTi3Ftwds2MMzZ50WGqfP0lfxlmQ5X3pDSsku6XVK11S
-	 vJOPe0C/RmNAvTTHONMvOOkCV1Z5LBFz3O97DMmoc92LKpmqHmuRtSMIWjI9ROBrH8
-	 up0C6d1SYFXFw==
+	s=k20201202; t=1752221724;
+	bh=MdlvamzqR242whEfiL7qVmBGWnd92BiQRP9xljkyRVM=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=EaT0U+tdfBpDCGPtDKQKdvVxcnrOIpjzTJm6UEmUMwxPR2XaFzGbkho3DtsJiyVTE
+	 cGaqFt/OK9b6VCrYwDdnDP3zkp7gwJ1bX+EjCR2O2CXzyWOTep5jxW5VsIFtJtxXke
+	 cH6y6yNVvN7mI2i9p9LlBn2/oHL4NAcw7iqZeSpG7LkgaPI56GCumaWaXAp+oigRe1
+	 AZMcI4sfIKLIdgIaKgt9QacVKuswGoRHEp8q+mPB5nccOmV3wtMn8xZCk9tS4xo4lp
+	 ioW572vK21Ju30YwMY7mFXKhDvlb4noC7g47iYREbargre8QWKEvxZfz0d/cTnlXjm
+	 OaJAX7i6xWXhQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,119 +34,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Jul 2025 10:11:33 +0200
-Message-Id: <DB92OHEUBB06.2VTHW9KQVV52X@kernel.org>
+Date: Fri, 11 Jul 2025 10:15:17 +0200
+Message-Id: <DB92RCJX0C6E.352SUWSV7VBE9@kernel.org>
+Subject: Re: [PATCH v6 2/9] rust: sync: Add basic atomic operation mapping
+ framework
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-Cc: <rust-for-linux@vger.kernel.org>, "Danilo Krummrich" <dakr@kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: Update PCI binding safety comments and add
- inline compiler hint
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
+ "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
+ "Alan Stern" <stern@rowland.harvard.edu>
 X-Mailer: aerc 0.20.1
-References: <20250710022415.923972-1-apopple@nvidia.com>
- <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
- <cgh5cj42vkxc66f2utpa3eznvqaqtdo3gszahfhempujj3kxdc@zaor2sx4cosp>
-In-Reply-To: <cgh5cj42vkxc66f2utpa3eznvqaqtdo3gszahfhempujj3kxdc@zaor2sx4cosp>
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-3-boqun.feng@gmail.com>
+ <DB8BQGJNFDAY.BGQ8CZSFFOLH@kernel.org> <aG_Yah5FFHcA3IZy@Mac.home>
+ <DB8HQLY48DFX.3PBBUTQLV14PC@kernel.org> <aG_nT3H8J-h2qwr5@Mac.home>
+ <DB8MAQC4V57F.1GGYO1PNPOV2X@kernel.org> <aHAiqhPe5OwVioUe@tardis-2.local>
+In-Reply-To: <aHAiqhPe5OwVioUe@tardis-2.local>
 
-On Fri Jul 11, 2025 at 1:22 AM CEST, Alistair Popple wrote:
-> On Thu, Jul 10, 2025 at 10:01:05AM +0200, Benno Lossin wrote:
->> On Thu Jul 10, 2025 at 4:24 AM CEST, Alistair Popple wrote:
->> > diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
->> > index 8435f8132e38..5c35a66a5251 100644
->> > --- a/rust/kernel/pci.rs
->> > +++ b/rust/kernel/pci.rs
->> > @@ -371,14 +371,18 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
->> > =20
->> >  impl Device {
->> >      /// Returns the PCI vendor ID.
->> > +    #[inline]
->> >      pub fn vendor_id(&self) -> u16 {
->> > -        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_=
-dev`.
->> > +        // SAFETY: by its type invariant `self.as_raw` is always a va=
-lid pointer to a
+On Thu Jul 10, 2025 at 10:29 PM CEST, Boqun Feng wrote:
+> On Thu, Jul 10, 2025 at 09:21:17PM +0200, Benno Lossin wrote:
+>> On Thu Jul 10, 2025 at 6:16 PM CEST, Boqun Feng wrote:
+>> > At least the rustdoc has safety section for each function. ;-)
 >>=20
->> s/by its type invariant/by the type invariants of `Self`,/
->> s/always//
+>> I don't usually use rustdoc to read function safety sections. Instead I
+>> jump to their definition and read the code.
 >>=20
->> Also, which invariant does this refer to? The only one that I can see
->> is:
->>=20
->>     /// A [`Device`] instance represents a valid `struct device` created=
- by the C portion of the kernel.
 >
-> Actually isn't that wrong? Shouldn't that read for "a valid `struct pci_d=
-ev`"?
-
-Yeah it should probably be changed, I'm not sure what exactly is
-required here, but this already would be an improvement:
-
-    /// `self.0` is a valid `struct pci_dev`.
-
->> And this doesn't say anything about the validity of `self.as_raw()`...
+> Understood. It's probalby the first time we use macros to generate a few
+> unsafe functions, so this is something new.
 >
-> Isn't it up to whatever created this pci::Device to ensure the underlying=
- struct
-> pci_dev remains valid for at least the lifetime of `Self`?
+> But let me ask you a question, as a programmer yourself, when you run
+> into a code base, and see something repeat in a similar pattern for 10+
+> times, what's your instinct? You would try to combine the them together,
+> right? That's why duplication seems not compelling to me. But surely, we
+> don't need to draw conclusion right now, however that's my opinion.
 
-Well yes and no. It is up to the creator of this specific `pci::Device`
-to ensure that it is valid, but that is true for all creators of
-`pci::Device`. In other words this property doesn't change while the
-`pci::Device` is alive so we call it an "invariant".
+It all depends, if the definition never changes for a long time, I don't
+mind the duplication. It's probably more effort to write macros to then
+have less overall code.
 
-When creating a `pci::Device`, you have to ensure all invariants are met
-and then anyone using it can rely on them being true.
-
-Now in this particular instance the `as_raw` function is just calling
-`self.0.get()`. I'm not sure that's worth it, since it isn't even
-shorter and it makes the safety docs a bit worse. So my suggestion would
-be to remove it.
-
-> Sorry I'm quite new to Rust (and especially Rust in the kernel), so
-> not sure what the best way to express that in a SAFETY style comment
-> would be. Are you saying the list of invariants for pci::Device also
-> needs expanding?
-
-No worries, safety documentation is pretty hard :)
+It also makes it harder to read especially wrt safety docs. So if you
+think you will have to make constant tweaks & additions to these, then
+we should go a macro-heavy route. But if not, then I think making it
+more readable is the way to go.
 
 ---
 Cheers,
 Benno
-
->
-> Thanks.
->
->> > +        // `struct pci_dev`.
->> >          unsafe { (*self.as_raw()).vendor }
->> >      }
->> > =20
->> >      /// Returns the PCI device ID.
->> > +    #[inline]
->> >      pub fn device_id(&self) -> u16 {
->> > -        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_=
-dev`.
->> > +        // SAFETY: by its type invariant `self.as_raw` is always a va=
-lid pointer to a
->> > +        // `struct pci_dev`.
->>=20
->> Ditto here.
->>=20
->> ---
->> Cheers,
->> Benno
->>=20
->> >          unsafe { (*self.as_raw()).device }
->> >      }
->> > =20
->>=20
-
