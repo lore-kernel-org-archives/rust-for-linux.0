@@ -1,211 +1,77 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38C11FECB4;
-	Fri, 11 Jul 2025 21:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C36919995E;
+	Fri, 11 Jul 2025 22:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752269701; cv=none; b=OcdIq67vFRWWJWdyQnqScHVZRLnWrMuWxOgH47UIIne+vOMJN7cWDLrYpL5uIABmXSR8ElSMNuOeuM3iM0yCJjXPV7a3hwMPpQ+sc5+UBb7zDrC3AB2Z+jNXy1RxlU926MuKzofsnZn6RqCMzhymaBBPuc1DtdMc4fNRW8JR1ik=
+	t=1752272401; cv=none; b=I/fzDRbs+Zm6Gjd1XUZEXq6pZOyxohslqjlu/Znjof9YW/wtQRbZWTK5MsFZCQy+IAHbnY0BL/dK1yjXcModNBfN2WIclhh2GYJx6FwGY/nbbACG8f9wlAdUTUPX/d31G8Uhr/lzwIk1dlim6P1u8SjJMGMmBBT0y+eKJWE4aNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752269701; c=relaxed/simple;
-	bh=8V8ejNYB3QXOIEBL61iMBdPzyE+6vjhOjCy9tOR4HWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OorZHFjNaDhsZ89Yl0YvrSKSm5twJWAr06DTlCJHiOhHmFxXITezmEPtI0Vfln87+OL5bFV44C19Bjkh9w/u3RAStzrafmu1YnQAfE+oiid8iRLa6GQuaJRCoR6m4ksivnG3rhtxsih0CZLngQN3VKA6AfLwV0/4SluaTNbziz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jb9k42uB; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752272401; c=relaxed/simple;
+	bh=ZNNcFzRipWqzofqATgYvWqb1uZJlEkUcE28AXULW/VE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MqHBYs1myz9lDNRjB2UVQBMg1e8tFvfqzeZRjsIsUZBdXGl7isDw/jRBhvdDimpy+VzMLzJ8Lj9LLwH/cm5Mr+8/A2JjvCfn9hDIIoIlrOcE2DKI5ZTnZc77nRWIh35tL0MggLzgScy/AkDaw3aZjab9TwyTpL0Gf3G8HTrJ2qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdQ+/TOl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jb9k42uB"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6fb0eb0f0fbso30311386d6.1;
-        Fri, 11 Jul 2025 14:34:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752269699; x=1752874499; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Lxb4wH8x/KAvU0TG5QbcaePRN/pYWDrgWrEuOMXDQ90=;
-        b=jb9k42uBzi97howxu1JCRMcCw1eXQaOONQtNIrjwgZRjhdvMPPFrTxITvVNY9b4Ym/
-         M1c6LiZGsQHmDt1JvVFRdiRd/4Z5tc4b/jVq9p9u6nnre6znGxCf8DqmiywhI830VbmL
-         j7YCdHhdoFQXjvyRy7hyawzGalI7CKVmCcJkH6h6amrQ/MqLxAcjgYOCNBRFzCA5nS4x
-         x3bAtyY5j7v8HaHj+vryV8YbQP2wjkXVWB24gt+J7yPFqDza4s4czsmtq7QPYN9YaKU+
-         6FrGeRD47kAwkJfa73Tzb6lRgk66u+ZsjPakQdI13PFORhqcRCz8CDutiOKauziMFcfU
-         jEMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752269699; x=1752874499;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Lxb4wH8x/KAvU0TG5QbcaePRN/pYWDrgWrEuOMXDQ90=;
-        b=nQxFIq8FO+KFj20YUjtDrVlYbV4eramvadHd02HnMpue+TbLvr6mM/CaOicGXfbbvk
-         j9iRTqnHI3Fdb3FoHVNLmq0Z82/+qvDfWhodZc5FjY5DZKflCxCf4Y9SD15kduQ0HiOy
-         V3AywF6hVZ3mAFDMorYLx4A9U3qV1SEFaljyHNpo/aNk7bg7e60GbrfydrZT/irQcFKz
-         sj3V8jmfg0cHCMSl1SyEUSobZ5CW0hiaIatFTazD+gO8QxJ2jkGFp6YlxAKqgrL4yTVK
-         AxMjzop/V00n4l5PnDJLKAADtsT1t+ENM73chsoOxDykE6SN6J8q+YpvNbDfIf3Zw8cb
-         Gt2w==
-X-Forwarded-Encrypted: i=1; AJvYcCW3FfXEiY02e6zmAGCnglI1mTcefvo+FDNOqvsHh2aaQU/9vWQHpAfsOoHlEEVRPuHBmtVyKV3Wc30J9L+6+ig=@vger.kernel.org, AJvYcCWbsBxGMipPNi9PL558VbeDJAlTTK4c1VFH6HBV+OwQWmrGFn2dZctrVgqtYsiqo5qo7VaDwnG0o8ln@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsF6afi9gGRsP/rdj+S6c9Jvpr3JA7ueRZZOd7lpgPq5jEFO/e
-	OQZRk5EImAQH+7tQHTMHOQTcdEZGtEDXrEo21lRIanIFaqZdvWP5mfK7
-X-Gm-Gg: ASbGncsJWjqJP49zwF++yhWpgk6faoCWgorxBoH9M8pCEknCXwzAVvBeMndCw1KgkYJ
-	RZoMRxNvJcU2DTDZETweD/kTjU5sL+r3VCjUIl5gNxDqL6GBp3GdxiD5/PDDTe2D5wLfWgBSBCx
-	fImOip/3LcvQ1xFk4t0LZ4Fdlf5F5wdMCyrpl4Fu7DP1C8IKm0dlQnyhzLQAGqAkV+LwsKQMOIA
-	gr+2LDAQkWLVz6QbCoBZjMHfKxNagzbRrePOHxzkZn7DW/WRey+SgPeqoZAnRnN8EKowXBZ4Dlq
-	A5pKWQ1OKB+yVTDdJJ/TwDRxXjUvO/QInPJSvz9PwSDhScDVbx1PDwJ8x9HtDjFJWp7+OgyQ2HN
-	SeslgiF3IPghgGyaQgS0ZqBMsNgnQnsEgDn7t71VGER+vsbJ+7ElSockRs6gFyK7S/Qm4FkgvpU
-	5IxOnFuCdMbKrQ
-X-Google-Smtp-Source: AGHT+IHMED6K5lGCMSJ0yq1rcoBeti2f+RCAxN+T/qCub0Cjg/418vwbxIe/+Pn9uN9IhYOad0ZNFQ==
-X-Received: by 2002:a05:6214:2f85:b0:6fa:b468:caf4 with SMTP id 6a1803df08f44-704a37c07eemr78816456d6.0.1752269698538;
-        Fri, 11 Jul 2025 14:34:58 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d3d3b0sm23705646d6.80.2025.07.11.14.34.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Jul 2025 14:34:58 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 77DC2F40066;
-	Fri, 11 Jul 2025 17:34:57 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 11 Jul 2025 17:34:57 -0400
-X-ME-Sender: <xms:gYNxaGdBvTM2s0Cwz0fafm6GKM784HD_5eeJRdKuYE9mPCRcnZIy2w>
-    <xme:gYNxaBvMHPdbNOmnyVNPtQdPtQq3qN4VWc5chnt765TQDk9Bjb9U-fGQvJLleFwQY
-    GS4H8SsnlNSI4EfPQ>
-X-ME-Received: <xmr:gYNxaMGIlu2mFzSUvC0MC5YgUisahE0Xrv42czcc7lJz4eLvF5dQJscyG00K>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeggeegudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdq
-    fhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkh
-    hmmheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgt
-    hhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjoh
-    hrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:gYNxaDdK03s5QNpo2cDyrHAsP8fp3x0TejBuUDEihB_RRTg3Sqq3uA>
-    <xmx:gYNxaAtbT2KVKtTimwFiV8DkQkVW-wjD09WBKFaX8LW5AQanefDXXQ>
-    <xmx:gYNxaCm8XSnaeJD0UodY7h2R6CNrSOmBpCjmoL538_vaF53_cDsejg>
-    <xmx:gYNxaDD9cidslKocyagtnuUA9V_raJr4OQhLPREwhdQFwFV9LRv4pg>
-    <xmx:gYNxaKzOXCGgQDgcNDWR25KxBuPJQwO9H4zaj24T3gCLLh1ydye-9qK1>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Jul 2025 17:34:56 -0400 (EDT)
-Date: Fri, 11 Jul 2025 14:34:56 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v6 8/9] rust: sync: Add memory barriers
-Message-ID: <aHGDgEFXIx-aPQ_V@tardis.local>
-References: <20250710060052.11955-1-boqun.feng@gmail.com>
- <20250710060052.11955-9-boqun.feng@gmail.com>
- <DB93NWEAK46D.2YW5P9MSAWVCN@kernel.org>
- <aHESYzVOTCwADqpP@Mac.home>
- <DB9GF0U3JJWL.3FQFMRTBO52C1@kernel.org>
- <aHFlS96FTRgS0dH_@tardis-2.local>
- <DB9J417F3XRT.1XGPA6VLF9T8K@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdQ+/TOl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3398C4CEED;
+	Fri, 11 Jul 2025 22:19:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752272401;
+	bh=ZNNcFzRipWqzofqATgYvWqb1uZJlEkUcE28AXULW/VE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HdQ+/TOlwSXvOEhWjv9PvM3sB5j6JEp0QzCwNaT0I11ryUIPdBxSWiH4YO2Glm2JN
+	 OaZ5tK42tXau/wQZ9Ojtb3ak+fRKM9gUbGOhHVN027JqPmkElS6HyS+BaJyNdoN7b9
+	 SZL6FUCVvBcipsAKQuCAOBmEge6Dip89zlkrysm2d9fx3JpNGY4D0TiRPRDzLc+xyC
+	 SsqL0/GZxd9ZOeAG2CC0BGbVogzSWsAaKoG7Ci2vspZ7yXZu96xiGLtc2s76X6eKZm
+	 la0JCtV5I7AIzDwzGgYujMy4R7FmbChGuCwxt5xCEo4QrXF36fyHJl/mWGTgGPOIRQ
+	 G9OgoLll/xo/w==
+Message-ID: <83b1b2f4-f87c-4b3f-ab4d-84ec429abd79@kernel.org>
+Date: Sat, 12 Jul 2025 00:19:54 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DB9J417F3XRT.1XGPA6VLF9T8K@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] rust: Build PHY device tables by using
+ module_device_table macro
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: alex.gaynor@gmail.com, gregkh@linuxfoundation.org, ojeda@kernel.org,
+ rafael@kernel.org, robh@kernel.org, saravanak@google.com, tmgross@umich.edu,
+ a.hindborg@kernel.org, aliceryhl@google.com, bhelgaas@google.com,
+ bjorn3_gh@protonmail.com, boqun.feng@gmail.com, david.m.ertman@intel.com,
+ devicetree@vger.kernel.org, gary@garyguo.net, ira.weiny@intel.com,
+ kwilczynski@kernel.org, lenb@kernel.org, leon@kernel.org,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org, lossin@kernel.org, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 11, 2025 at 11:04:09PM +0200, Benno Lossin wrote:
-> On Fri Jul 11, 2025 at 9:26 PM CEST, Boqun Feng wrote:
-> > On Fri, Jul 11, 2025 at 08:57:27PM +0200, Benno Lossin wrote:
-> >> On Fri Jul 11, 2025 at 3:32 PM CEST, Boqun Feng wrote:
-> >> > On Fri, Jul 11, 2025 at 10:57:48AM +0200, Benno Lossin wrote:
-> >> > [...]
-> >> >> > +}
-> >> >> > +
-> >> >> > +/// A full memory barrier.
-> >> >> > +///
-> >> >> > +/// A barrier that prevents compiler and CPU from reordering memory accesses across the barrier.
-> >> >> > +pub fn smp_mb() {
-> >> >> > +    if cfg!(CONFIG_SMP) {
-> >> >> > +        // SAFETY: `smp_mb()` is safe to call.
-> >> >> > +        unsafe {
-> >> >> > +            bindings::smp_mb();
-> >> >> 
-> >> >> Does this really work? How does the Rust compiler know this is a memory
-> >> >> barrier?
-> >> >> 
-> >> >
-> >> > - Without INLINE_HELPER, this is an FFI call, it's safe to assume that
-> >> >   Rust compiler would treat it as a compiler barrier and in smp_mb() a
-> >> >   real memory barrier instruction will be executed. 
-> >> >
-> >> > - With INLINE_HELPER, this will be inlined as an asm block with "memory"
-> >> >   as clobber, and LLVM will know it's a compiler memory barrier, and the
-> >> >   real memory barrier instruction guarantees it's a memory barrier at
-> >> >   CPU reordering level as well.
-> >> >
-> >> > Think about this, SpinLock and Mutex need memory barriers for critical
-> >> > section, if this doesn't work, then SpinLock and Mutex don't work
-> >> > either, then we have a bigger problem ;-)
-> >> 
-> >> By "this not working" I meant that he barrier would be too strong :)
-> >> 
-> >> So essentially without INLINE_HELPER, all barriers in this file are the
-> >> same, but with it, we get less strict ones?
-> >
-> > Not the same, each barrier function may generate a different hardware
-> > instruction ;-)
-> >
-> > I would say for a Rust function (e.g. smp_mb()), the difference between
-> > with and without INLINE_HELPER is:
-> >
-> > - with INLINE_HELPER enabled, they behave exactly like a C function
-> >   calling a C smp_mb().
-> >
-> > - without INLINE_HELPER enabled, they behave like a C function calling 
-> >   a function that never inlined:
-> >
-> >   void outofline_smp_mb(void)
-> >   {
-> >     smp_mb();
-> >   }
-> >
-> >   It might be stronger than the "with INLINE_HELPER" case but both are
-> >   correct regarding memory ordering.
+On 7/11/25 6:09 AM, FUJITA Tomonori wrote:
+> Build PHY device tables by using module_device_table macro.
 > 
-> Yes, this is exactly what I meant with "not working" :)
+> The PHY abstractions have been generating their own device tables
+> manually instead of using the module_device_table macro provided by
+> the device_id crate. However, the format of device tables occasionally
+> changes [1] [2], requiring updates to both the device_id crate and the custom
+> format used by the PHY abstractions, which is cumbersome to maintain.
 > 
-
-But be stronger is still "working" ;-)
-
-BTW, replying you made me realize I should make these function
-#[inline(always)] so thank you ;-)
-
-Regards,
-Boqun
-
-> ---
-> Cheers,
-> Benno
+> [1]: https://lore.kernel.org/lkml/20241119235705.1576946-14-masahiroy@kernel.org/
+> [2]: https://lore.kernel.org/lkml/6e2f70b07a710e761eb68d089d96cee7b27bb2d5.1750511018.git.legion@kernel.org/
 > 
+> Danilo, I incorporated your fixes into the first patch and mentioned
+> them in the commit message. Let me know if you'd rather take a
+> different approach.
+
+Thanks FUJITA -- no need to mention it though. :)
+
+Did you forget to pick up Jakub's ACK or was this intentional?
+
+- Danilo
