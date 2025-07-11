@@ -1,243 +1,217 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8A32ED163
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 15:43:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737792E7BD4;
+	Fri, 11 Jul 2025 15:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752248600; cv=none; b=OG6v5eDM2dvCbppcgFqrlvfV6MN9tUYJJskgGnZRg6jOkyNy2i1lzty4tsNtxwqxETgKF+sxKPmzWDmXLRaYWp2FXgxXq4iBk05XG45ppdeVfjXvUlSs6k25W+bT5u41zZmNHs5XyBRok9eCaO36607NN46/K9EqFM1M1wxFKfA=
+	t=1752248826; cv=none; b=gWbwh2cvjjFCbAJ72Nv8wjOhn7MilX0XRmbsPgg4NSR/eR+jswcgPCcwJGZ48JiwXVVhcbTVULLdwuvLmRUL+CBLTiCY1j8EV1clVOR15qdlVpUCx4l9/fr3uh0nuBopxrPB7btd+8JoGpnQVsq6OqCHgTVrn7ymBxjceMyHWM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752248600; c=relaxed/simple;
-	bh=X4OMalfak3+mVNJ6hPZvojzo4/zMhqoNofhoFoNgwK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TnIrbflqpbV4mVggtQ4G0czxw91BQMpkKpeLHWg8RDeU5ZjLOGYw5Q0588p9h5c6tMhbJKgMJl/0+ngP4GLWYNntaFlFYwIwcUcRawVwx6wKKN4w2qKDUhlJZIWMAVO2ehuORpKDNdFmjim5VhW4GFeApnbrDIkqRvKFeunqbxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=buVz6wBK; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lrfIPlZn; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=buVz6wBK; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lrfIPlZn; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1752248826; c=relaxed/simple;
+	bh=2Nh8QxkXw0V2Fc735JNOnhnIyUYWwQyxa7yIKpxASWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fa2jCOgYtRii5UaQ7eVe3icWmaw8pnbcJsES5Zx6p5coXN3CbXAH6TzUVWQLjSRQmDbm+vJuICgBy7MA2ASPgOPysMnGfPAMqquIeQqS2jFlFhXxI1zY9iTz5syL9R+kVPhWrYel24dNQzavNhgtUWY+YgCfPVvGlPkLWF0hfZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VccFEfCm; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="buVz6wBK";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lrfIPlZn";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="buVz6wBK";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lrfIPlZn"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C8F1B1F451;
-	Fri, 11 Jul 2025 15:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1752248596; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QX0qRN0p/QGgY/SoU9mRpHTPekrDiV+O8fwwSQc0kC0=;
-	b=buVz6wBKiiIiyZM6vaFmOTWIxruB5hgLycrzUnFIP3i05lNHYTeXKflgPgUvyQkE5sBN7/
-	5egUzgt10/7IGx6jvx3sEv7Z2dsjcu03b49CnR6FNEFnhWXKtum5YJfwkLtR0kMbhzHbme
-	mWkaIPjCBZFp2bnXjMUdJy00Y4uBPGQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1752248596;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QX0qRN0p/QGgY/SoU9mRpHTPekrDiV+O8fwwSQc0kC0=;
-	b=lrfIPlZnuLcoU0b08zNg2VqqtM69xC64NHT8F4dxTn1rduqBgJcfhnotwiM4FFB1Y8kIWw
-	1s4eBVHL3UJ9mTAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1752248596; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QX0qRN0p/QGgY/SoU9mRpHTPekrDiV+O8fwwSQc0kC0=;
-	b=buVz6wBKiiIiyZM6vaFmOTWIxruB5hgLycrzUnFIP3i05lNHYTeXKflgPgUvyQkE5sBN7/
-	5egUzgt10/7IGx6jvx3sEv7Z2dsjcu03b49CnR6FNEFnhWXKtum5YJfwkLtR0kMbhzHbme
-	mWkaIPjCBZFp2bnXjMUdJy00Y4uBPGQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1752248596;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QX0qRN0p/QGgY/SoU9mRpHTPekrDiV+O8fwwSQc0kC0=;
-	b=lrfIPlZnuLcoU0b08zNg2VqqtM69xC64NHT8F4dxTn1rduqBgJcfhnotwiM4FFB1Y8kIWw
-	1s4eBVHL3UJ9mTAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3C0B1388B;
-	Fri, 11 Jul 2025 15:43:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VtBYJxQxcWhtawAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 11 Jul 2025 15:43:16 +0000
-Message-ID: <5bc89531-ab09-4690-aae4-a44f9ddb4a68@suse.cz>
-Date: Fri, 11 Jul 2025 17:43:16 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VccFEfCm"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6f8aa9e6ffdso18357946d6.3;
+        Fri, 11 Jul 2025 08:47:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752248823; x=1752853623; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=VLMgwaCu/YbQoZ28wKXJbxPWWcQ4iAAOMGkARakw1GA=;
+        b=VccFEfCmB3zhRVpWos9+eNxQhTcUpwSqdGL0nUv7PMxPMduyybjMU0g1ype5dfYeFa
+         fi61M0wFk7Ddyi1x+WWRcq2jQLac+FfkE8a/dcQvxJ79J819uFLIAR/OQbTdFVGw8Qn3
+         856zLDJHHgo46DnMfedNAmafVoQ3ZMRixPFK5Ny3DzMoKVaqyz60eGnBDA6d4AG1letg
+         N9biiZjtIsS6XJOyxVd+DtFrQmtM4hq6fSLfL1sXqi3gATSYMkJjL/AhW/LgD1oFoSdu
+         tVGZDb41AEy0bQwyXWoKdChBMtcA3WcgAs7/3ERM/BnOdhMhK5qB+eyrVKV3UbB1xwto
+         i7Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752248823; x=1752853623;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VLMgwaCu/YbQoZ28wKXJbxPWWcQ4iAAOMGkARakw1GA=;
+        b=uLZ+ACDcRNF7wD7ymwpmkwQyuImg0vVJl9RkoZRQrfgEkfn2oe299j5y15ztJFxevj
+         TI4vfClPM+4wPn5/0IBpX78RQ5rFWTWZfs4dg0sFHmr8h95w5A3OAFJHEd8so1jL4P1a
+         zeR/dbvRt79atoJq0TZplr7haHSofQoFAzMIbtFVxbEBvgWK5p3L6BsaZYvAychuBGPJ
+         G1PQ6ax0LXL9H95GZ5wO6o8gcWMc3pMeWxYmRxYCVK8hYKE48jGKZWwTGhpRJGwRLA8h
+         3K18BYdtxHLtYdX9yKCLNI6uN95iLtd5JedAKKLYNgNG8bbcrOCakr3BPFN3uJVfmAZL
+         m3RA==
+X-Forwarded-Encrypted: i=1; AJvYcCU/M9kPaDpl/s1r4p/q92fwz9S4QDWJxcsEmp1Z86lvhNxSOcwdI4opDXNGYjzEnQLaw7d+361/Gd/7seUEkPU=@vger.kernel.org, AJvYcCWnlVaIm6TEm4nwmdQeFJm3vqR7s/ObAI9WzK/OdS4f5bc8zMs55cLENDft87pzOuWgRROgZURiMihy@vger.kernel.org, AJvYcCXpWg1F89pim/fkqtw0atO+PaX7HXxE1nn/5r3mfETc+Fmmvtno5Bw9hyktTnznxAIlJjJuh90twZ63HwjO@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyzrx+Hiqsq15B1QFrMQSGJ9EDoQR2yRZeltfCnYM1MjR4Hf4aI
+	XDrX5C1j45NGbTiaVIoEH98EI+KUGdvpUYpUjTwywi0CQFxWUC30nL19
+X-Gm-Gg: ASbGncuSZFCCUbWbv1o/Pm5THCMT3RZnYBA7E6dcwZOwvf7WU2/IdNJPP8rhyR3vsTC
+	M3yz5oM0z87+7SfjTFELn5XFDKhUhXxEyjE2dckR0Ntv9ZrusN9eTQSdLX4WOhMhHz6rUv+gBcb
+	MZSCyIZ/ljhusx0ViR6n4SMEsBEsIghrPk+JcmCcPSrHS/Qf+NefqQ0i8H2uMo/Q2gCaX+Y263j
+	PVSiEKEiuVFVqV0lRG/rvTxhtFJADdnqaYZJLzTxXqY4nUVYJGSXtcYcJ0YOLWz1JoJFTmjbs0g
+	6DuONd1EhI5dDJCqSiRuxyHIb2vOYMZttRR5XToFiLp31XpLEKhxyGJRVXvnv7wyClSVc33iPAw
+	e3SdlnS2zMfI2Vs8XopkPPdIS++GQLMA1+GjHoMo4PWw5s/4Ope/FiZPl+bHVcpjlENCuCbBlM3
+	CMvPcwcq3a6Hka5dJkqE/YUQo=
+X-Google-Smtp-Source: AGHT+IGD27pr09cflx9frzlgFAEaJ4AeFDZGrtrkynny/esKSQ0wpel1jyRetyn3dDVhnw+i2wYpQQ==
+X-Received: by 2002:ad4:5f8e:0:b0:6e8:fe16:4d44 with SMTP id 6a1803df08f44-704a702e122mr56408506d6.31.1752248823001;
+        Fri, 11 Jul 2025 08:47:03 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d3d3b0sm20963706d6.80.2025.07.11.08.47.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Jul 2025 08:47:02 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C75A2F4006A;
+	Fri, 11 Jul 2025 11:47:01 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Fri, 11 Jul 2025 11:47:01 -0400
+X-ME-Sender: <xms:9TFxaLfoAuUzSgkJdsc_R_Q37-SP3uv9Kwku44mVQJ3GZLdXkpUOzg>
+    <xme:9TFxaD2_-u3Ar8XALMADKUune2_1vpn-MzPQOune0kf2OWcxXJ4xy75cZjID6RGew
+    ZyzAgAWtZjXl0LgTw>
+X-ME-Received: <xmr:9TFxaEDp6SeAaYOlRppcEgQpO34hHcBeZ4M09naATqb1XO9R2vVdsoOwxg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegfeejvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeekhedtgfejteetueelveduhfehffevteeitefhleetteetfeejleejfefgudel
+    ueenucffohhmrghinhepfhhfihdrrhhsnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
+    rghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpe
+    epghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvledp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrg
+    hnughonhhishesghhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdr
+    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhkmhhmsehlihhsthhsrdhlihhnuhigrd
+    guvghvpdhrtghpthhtoheplhhinhhugidqrghrtghhsehvghgvrhdrkhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprg
+    hlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgr
+    rhihghhuohdrnhgvth
+X-ME-Proxy: <xmx:9TFxaOTDrVx2RvfOXizuR7D4-A2mjWI5QXuLzjPPv0kLentSBirg9g>
+    <xmx:9TFxaGJmncVZFV-1QKB_Nb0K9S8jOxb8MgO8oaKdnLQNkhwkzmV1VQ>
+    <xmx:9TFxaFGl6-Vbgrec-C2j0Vt0fjwxrXiL99rnXZlYsm_Dv9ZWSQwUag>
+    <xmx:9TFxaNLUSMzLAe60re4pibZTX_gx_PClVURYLpeHJYljl8Qt_92v-A>
+    <xmx:9TFxaJ5SQvmd-G7SG5iqcO4NXyJoSb-R3vnngkJ4Ouy0qmv_dxeM5C8D>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 11 Jul 2025 11:47:01 -0400 (EDT)
+Date: Fri, 11 Jul 2025 08:46:59 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev,
+	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,	Lyude Paul <lyude@redhat.com>,
+ Ingo Molnar <mingo@kernel.org>,	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v6 9/9] rust: sync: atomic: Add Atomic<{usize,isize}>
+Message-ID: <aHEx85VKv4F_9S61@Mac.home>
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-10-boqun.feng@gmail.com>
+ <DB93Q0CXTA0G.37LQP5VCP9IGP@kernel.org>
+ <CANiq72m9AeqFKHrRniQ5Nr9vPv2MmUMHFTuuj5ydmqo+OYn60A@mail.gmail.com>
+ <aHEasoyGKJrjYFzw@Mac.home>
+ <CANiq72kvZ7-fMoE9g7SBUrBZy4QMbSL1p8KgBqGhOkenrsr=3w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 2/4] mm/slub: allow to set node and align in
- k[v]realloc
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
- Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org,
- bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172441.1032006-1-vitaly.wool@konsulko.se> <aHDSLyHZ8b1ELeWe@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aHDSLyHZ8b1ELeWe@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[kvack.org,linux-foundation.org,vger.kernel.org,gmail.com,kernel.org,google.com,oracle.com,linux.dev,gondor.apana.org.au,suse.de];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kvZ7-fMoE9g7SBUrBZy4QMbSL1p8KgBqGhOkenrsr=3w@mail.gmail.com>
 
-On 7/11/25 10:58, Harry Yoo wrote:
-> On Wed, Jul 09, 2025 at 07:24:41PM +0200, Vitaly Wool wrote:
->> Reimplement k[v]realloc_node() to be able to set node and
->> alignment should a user need to do so. In order to do that while
->> retaining the maximal backward compatibility, add
->> k[v]realloc_node_align() functions and redefine the rest of API
->> using these new ones.
->> 
->> While doing that, we also keep the number of  _noprof variants to a
->> minimum, which implies some changes to the existing users of older
->> _noprof functions, that basically being bcachefs.
->> 
->> With that change we also provide the ability for the Rust part of
->> the kernel to set node and alignment in its K[v]xxx
->> [re]allocations.
->> 
->> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
->> ---
->>  fs/bcachefs/darray.c   |  2 +-
->>  fs/bcachefs/util.h     |  2 +-
->>  include/linux/bpfptr.h |  2 +-
->>  include/linux/slab.h   | 38 +++++++++++++++----------
->>  lib/rhashtable.c       |  4 +--
->>  mm/slub.c              | 64 +++++++++++++++++++++++++++++-------------
->>  6 files changed, 72 insertions(+), 40 deletions(-)
->  
->> diff --git a/mm/slub.c b/mm/slub.c
->> index c4b64821e680..6fad4cdea6c4 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -4845,7 +4845,7 @@ void kfree(const void *object)
->>  EXPORT_SYMBOL(kfree);
->>  
->>  static __always_inline __realloc_size(2) void *
->> -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
->> +__do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags, int nid)
->>  {
->>  	void *ret;
->>  	size_t ks = 0;
->> @@ -4859,6 +4859,20 @@ __do_krealloc(const void *p, size_t new_size, gfp_t flags)
->>  	if (!kasan_check_byte(p))
->>  		return NULL;
->>  
->> +	/* refuse to proceed if alignment is bigger than what kmalloc() provides */
->> +	if (!IS_ALIGNED((unsigned long)p, align) || new_size < align)
->> +		return NULL;
+On Fri, Jul 11, 2025 at 04:40:15PM +0200, Miguel Ojeda wrote:
+> On Fri, Jul 11, 2025 at 4:07 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > Thanks Miguel.
+> >
+> > Maybe we can do even better: having a type alias mapping to the exact
+> > i{32,64,128} based on kernel configs? Like
+> >
+> > (in kernel/lib.rs or ffi.rs)
+> >
+> > // Want to buy a better name ;-)
+> > #[cfg(CONFIG_128BIT)]
+> > type isize_mapping = i128;
+> > #[cfg(CONFIG_64BIT)]
+> > type isize_mapping = i64;
+> > #[cfg(not(any(CONFIG_128BIT, CONFIG_64BIT)))]
+> > type isize_mapping = i32;
+> >
+> > similar for usize.
+> >
+> > Thoughts?
 > 
-> Hmm but what happens if `p` is aligned to `align`, but the new object is not?
-> 
-> For example, what will happen if we  allocate object with size=64, align=64
-> and then do krealloc with size=96, align=64...
-> 
-> Or am I missing something?
+> Yeah, I wondered about that too, but I don't know how common it will
+> be (so you may want to keep it local anyway), and I wasn't sure what
 
-Good point. We extended the alignment guarantees in commit ad59baa31695
-("slab, rust: extend kmalloc() alignment guarantees to remove Rust padding")
-for rust in a way that size 96 gives you alignment of 32. It assumes that
-rust side will ask for alignments that are power-of-two and sizes that are
-multiples of alignment. I think if that assumption is still honored than
-this will keep working, but the check added above (is it just a sanity check
-or something the rust side relies on?) doesn't seem correct?
+Sounds good, I will put it locally.
 
->> +	/*
->> +	 * If reallocation is not necessary (e. g. the new size is less
->> +	 * than the current allocated size), the current allocation will be
->> +	 * preserved unless __GFP_THISNODE is set. In the latter case a new
->> +	 * allocation on the requested node will be attempted.
->> +	 */
->> +	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
->> +		     nid != page_to_nid(virt_to_page(p)))
->> +		goto alloc_new;
->> +
->>  	if (is_kfence_address(p)) {
->>  		ks = orig_size = kfence_ksize(p);
->>  	} else {
+> to call it either, because e.g. something like `isize_mapping` sounds
+> like we are talking about `c_long`.
+> 
+> What we want is a Rust fixed-width integer of the same size of `isize`
+> -- so I think you should try to pick a word that evokes a bit that
+> part. Something like `fixed_isize` or words like `underlying` or
+> `repr` perhaps?
 > 
 
+I end up calling it `isize_atomic_repr`, and create the diff as below:
+
+------------>8
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 7ff87b2b49d6..bb0d3d49e3f7 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -53,14 +53,21 @@ fn delta_into_repr(d: Self::Delta) -> Self::Repr {
+     }
+ }
+
++#[allow(non_camel_case_types)]
++#[cfg(not(CONFIG_64BIT))]
++type isize_atomic_repr = i32;
++#[allow(non_camel_case_types)]
++#[cfg(CONFIG_64BIT)]
++type isize_atomic_repr = i64;
++
++crate::static_assert!(core::mem::size_of::<isize>() == core::mem::size_of::<isize_atomic_repr>());
++crate::static_assert!(core::mem::align_of::<isize>() == core::mem::align_of::<isize_atomic_repr>());
++
+ // SAFETY: For 32bit kernel, `isize` has the same size and alignment with `i32` and is round-trip
+ // transmutable to it, for 64bit kernel `isize` has the same size and alignment with `i64` and is
+ // round-trip transmutable to it.
+ unsafe impl generic::AllowAtomic for isize {
+-    #[cfg(not(CONFIG_64BIT))]
+-    type Repr = i32;
+-    #[cfg(CONFIG_64BIT)]
+-    type Repr = i64;
++    type Repr = isize_atomic_repr;
+ }
+
+ // SAFETY: `isize` is always sound to transmute back from `i32` or `i64` when their sizes are the
+
+
+Seems good?
+
+Regards,
+Boqun
+
+> Cheers,
+> Miguel
