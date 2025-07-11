@@ -1,543 +1,538 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBC11F150B
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 07:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDC21A0BE0;
+	Fri, 11 Jul 2025 08:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752220797; cv=none; b=D0MaSPv4zTadzQUX7Qxo9+FxGPDaJoFNNiarNkXEpUxsLRNpveMNHGDLb6TQ6lx2uBLIfeafahVFqYaGw5Fd0vansJQaoqtx6amBucbK4RhgUT449jgaWg0y0x9OyR/JdSRnndhMwQdXwiw5I/nsOlWznmc4E+7obFeeeh4YB2E=
+	t=1752220994; cv=none; b=GkeR9oKw5dRslNbu7HMp6jVR8DLMP8du4tGMsyDEkM9U17Sn8s1RVKfIY3YHywloKiKDvPLVkFZmxDzwiiKXJGF3lZzWRhhqgc57mUHO/ObVrXZGuXizAQGL1tqeT8MA/NiCtJ5g8zawPeLDaIE32qmDysqILI6FBGTNAUXzZL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752220797; c=relaxed/simple;
-	bh=meOWtz10ZubHsvhWutUrpcEUvqcCA66Q0seTG5HoT6w=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BSPwDIm00vEXJW1rZ3vvEQBw3ykCdeWSOZiJed3mpGSt8i2o7+ioGngwOwGsfaGq1ees+b7E9hctRspJkFqRTvZOd/agroRb9GxSuGmhLT4JcPIfW77HseixGq6FbuwWawnbWqwQs5oW2lnhfgzcZR+WYJ8+E18JxithVyzmMJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Rk08rZ+2; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1752220994; c=relaxed/simple;
+	bh=q5kzjw4pdZnlOm1O17X4pF0mstSdCM/tt79sh7n2vWo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=brAUAhclM0O4uTO9g64+2XGiU/mCFMl2Sg/T+k78EW2kWgkEmxO57I0dbet2Jx2pFsjGNM6PzQ2iIOHiPOPeoR/zAnV4MBwxPGDPrqUkrKj0zqQeAki30sSXNlEz0H5GPaD5EcpoebixiD0A6K9wrTX2RaP7hVp5UObs34JMRlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kkzR4m+5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Rk08rZ+2"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3a50816ccc6so1215692f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 00:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752220794; x=1752825594; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=obXhWEVIVAGxuRyoSerNF8wGzpmpf96LcuiO93QSmmU=;
-        b=Rk08rZ+2FYQhWf3kDMN2keX+3PZyn58UcF9F2+F1l2mWkDwLqR9dvv9d8coNsYghID
-         mR77uyonGy7GH4IEAs0TmUqMv9IFfN7fhduS+QEZovuUz8UZcELLKWL6xk4BXFSVDAy2
-         d83TmfHeil+nSuRVT7fNr/OzX+h32CLUfnLOBsNHmyMTGrWsiv8xRANjQ8XcHSRmMqkF
-         nKQMsBQSiSkB4jBPVraIuKFNaMYGZDuPHyprFyW3YB8gx5ix/K5Ds/BEn7deTWKQvRlE
-         16dro2JsqCG6FvV+tDTzSlzPV5T0LBy7T9UbQpUYbpEYIUe+6fRpFHIEUTNemTMB+fOC
-         nP1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752220794; x=1752825594;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=obXhWEVIVAGxuRyoSerNF8wGzpmpf96LcuiO93QSmmU=;
-        b=nz2LVWAMFbT+uPKf+9jz2WH50BWORREc9LCpsYKxfYq4hXxw18LCoI7nMtJ7lgEnFt
-         cQ+ilppMd7J1zl8xWc6GNKrumvV/ZJT5fvjAc38k2IWhM/Sc1NABf6ZlUwtxFChT3Kle
-         8dzp3sC+ELFxIEvncolFvP2aYU7ZPHjM+CAzXttjvJc33BOWk+WGlgkbjhQ47oNObyJO
-         mOvA/AfQi7WnxWHBQKXJGVb9OiZMXzVHYe/BICCaq/qiix7KH9slaF5mai0rRqXvxi6J
-         rkbZwumvQIae9Sk/RZfYOdBHeoe2KlCQLCxL/zOurQVyWWKGirAY8fEwNFV0mAf62khU
-         VGxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXK6pAp7FNDRR7q9QCJd5ePJ7xMw4irZJv6hEyFVOpTPbZjlCS6Nw62XUHGPgb1zYUcJZzzdW1EZRa8eU7hYg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG9IoxsHn2tV2wDwJouwICNxqKLE0/1oTHz3LbXbTEQza4/UG7
-	6mlPoMY+pRdOrx/0awyqBNdAT2rxmBs3aFFLZh/V1XtgTSjVvL77dWgmzcKvbQkfQFm9RJySHZS
-	S3zsockG3GyxqFF38sA==
-X-Google-Smtp-Source: AGHT+IE2u5pEBkYblzuQrldRINmzbfoGKfR4zcd2q5danruEhP6rtQJBl7y+zt24j4OSRs3V7tf4JQLw6AiV6/8=
-X-Received: from wrrc17.prod.google.com ([2002:adf:fb11:0:b0:3a5:7a4e:8e1e])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:2dc6:b0:3a5:2e84:cc7b with SMTP id ffacd0b85a97d-3b5f2dac5ebmr1330964f8f.11.1752220793846;
- Fri, 11 Jul 2025 00:59:53 -0700 (PDT)
-Date: Fri, 11 Jul 2025 07:59:40 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kkzR4m+5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CF9C4CEED;
+	Fri, 11 Jul 2025 08:03:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752220993;
+	bh=q5kzjw4pdZnlOm1O17X4pF0mstSdCM/tt79sh7n2vWo=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=kkzR4m+5JpsKlfx5a0BWgL8es5hW0oaj8naNBScNdVP6hyKhTHurQDEouumHWDjgX
+	 eNAQnwuW4E1hmImXPXezPqVj+awaEqYEknSBc+TYO/UQ+ZRovLKoJj1gqrm/8rBbYr
+	 TlxwQMt6pj9Mx8pt2WFgO276fw0PBQuQUEd5c4OmPSVHA4b5SPQVW9+RdXTALaSEhI
+	 INo0qRD08pRaDJcw2JUUHl/xZu7CUTVq39Gwt4mhR6eBiDihYixuA4XZd9Y1E4GoJ+
+	 aJla0vC27lAxdL9WH9xXpu3OQAsXWtLQhjtgagETdwt/m/rPEI52hnLOZLAoF+qjCL
+	 BohyOuU0BubaQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAGvEcGgC/2WQzY7CMAyEX6XKGaMkpCn0tO+x4pAfp0RQAkkbQ
- KjvTqBI7Irj2PI3M76ThNFjIm11JxGzTz4ci1gtKmJ26tgheFs04ZTXVNANXELcn0ccESwe1A0
- ERU2NbYy0lJSrU0Tnry/i77bonU9DiLeXQWbP6ZvF2BcrM2DApd4I3mhGa/HThdAdcGlCT56wz
- D8AyZtvAC+AtdBUSGe1cOYfYJrjRTyPpecwZyRaJYSy7/3QVlkumYRoVuTvA9pqdmQNhJMqhuB i6CGqCyhT6zU66ZTibYm3naYHvOY0QVQBAAA=
-X-Change-Id: 20250409-workqueue-delay-40eb0cd7c6d0
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18039; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=meOWtz10ZubHsvhWutUrpcEUvqcCA66Q0seTG5HoT6w=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBocMR0Fk+dTcayuG7HkerjncEFHpu7wZfBcFLgM
- fITL9LakBWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaHDEdAAKCRAEWL7uWMY5
- RhX5D/9ou5e9DHhpzz1ysbO64jtVlBo06N1j5gUN8MOgh+TFBFFkU2HeEQt1GCUN7gHWh/uA087
- NqdajlOUQKyvr5POp6R22Z4iP9RZMFnuKGe6U4BZ4HFnSsQ4xM2AykRgWLppIBlQjzfRvsThDdp
- ccA56KU4PrnfUMq1qVXsUZr8YxNDn9YED0vmutqSJ7NajIQ8PyNePqtIfh6O1kNPCPI0AhTpnqY
- QPPrKfnn7Ok7PYulVLGDp1oVigPgA4upU3B0W39Xxa1VtpBDekHBorZV6JP5i4cuRnO78LkZJ8p
- bk/8Y7WA6EIyMj1jIeNuB9y2Hi3JCXOtWwUuF630XnwLo20O9pwbggdSuAyRawfKtaUyfLT2Tbi
- MtO5xFH+RFjuYqWnpg1SoUErs0VQkz7tFiskzEkJCM8TdAQdfPN/0HsHo4hDJZbH3UiAEb1bbVg
- YYTO15n5tNBJy29wv6Jm9PMVw4SP4fMMtQTo7D3aq6VZucZ2I9mHn8uFDe0uq9Pz0Gc00nUEUf4
- 7rtJgUtuhXhetgMFExcw2PwITcheorBCbwHHtvZ7GmpKmCKX/eTQVRiPVMv/q+NV5MoyF6Z5G0E
- 6vn5SzhpKrHAKK41NG0auvoEXEYNFgJpdw3tDvpy/PHHrnw0p+uafsgEswkBrLkHEiheFkgP/Gr c1PT1+wskAdHSaQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20250711-workqueue-delay-v3-1-3fe17b18b9d1@google.com>
-Subject: [PATCH v3] workqueue: rust: add delayed work items
-From: Alice Ryhl <aliceryhl@google.com>
-To: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Jul 2025 10:03:07 +0200
+Message-Id: <DB92I10114UN.33MAFJVWIX4AB@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
+ <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
+ Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
+ "Alan Stern" <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v6 4/9] rust: sync: atomic: Add generic atomics
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
+ <linux-arch@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-5-boqun.feng@gmail.com>
+In-Reply-To: <20250710060052.11955-5-boqun.feng@gmail.com>
 
-This patch is being sent for use in the various Rust GPU drivers that
-are under development. It provides the additional feature of work items
-that are executed after a delay.
+On Thu Jul 10, 2025 at 8:00 AM CEST, Boqun Feng wrote:
+> diff --git a/rust/kernel/sync/atomic/generic.rs b/rust/kernel/sync/atomic=
+/generic.rs
+> new file mode 100644
+> index 000000000000..e044fe21b128
+> --- /dev/null
+> +++ b/rust/kernel/sync/atomic/generic.rs
+> @@ -0,0 +1,289 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Generic atomic primitives.
+> +
+> +use super::ops::*;
+> +use super::ordering::*;
+> +use crate::build_error;
+> +use core::cell::UnsafeCell;
+> +
+> +/// A generic atomic variable.
 
-The design of the existing workqueue is rather extensible, as most of
-the logic is reused for delayed work items even though a different work
-item type is required. The new logic consists of:
+How about we copy upstream rust on this:
 
-* A new DelayedWork struct that wraps struct delayed_work.
-* A new impl_has_delayed_work! macro that provides adjusted versions of
-  the container_of logic, that is suitable with delayed work items.
-* A `enqueue_delayed` method that can enqueue a delayed work item.
+    A memory location which can be safely modified from multiple threads.
 
-This patch does *not* rely on the fact that `struct delayed_work`
-contains `struct work_struct` at offset zero. It will continue to work
-even if the layout is changed to hold the `work` field at a different
-offset.
+> +///
+> +/// `T` must impl [`AllowAtomic`], that is, an [`AtomicImpl`] has to be =
+chosen.
 
-Please see the example introduced at the top of the file for example
-usage of delayed work items.
+s/impl/implement/
 
-Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+I don't really think this sentence is that valuable... I think you could
+mention several things before this:
+
+* compatibility with LKMM (or that it is implemented through LKMM
+  atomics)
+* "what is an atomic"
+* how big (relative to `T`) is this type? what about alignment?
+
+> +///
+> +/// # Examples
+> +///
+> +/// A customized type stored in [`Atomic`]:
+> +///
+> +/// ```rust
+> +/// use kernel::sync::atomic::{generic::AllowAtomic, Atomic, Relaxed};
+> +///
+> +/// #[derive(Clone, Copy, PartialEq, Eq)]
+> +/// #[repr(i32)]
+> +/// enum State {
+> +///     Uninit =3D 0,
+> +///     Working =3D 1,
+> +///     Done =3D 2,
+> +/// };
+> +///
+> +/// // SAFETY: `State` and `i32` has the same size and alignment, and it=
+'s round-trip
+> +/// // transmutable to `i32`.
+> +/// unsafe impl AllowAtomic for State {
+> +///     type Repr =3D i32;
+> +/// }
+> +///
+> +/// let s =3D Atomic::new(State::Uninit);
+> +///
+> +/// assert_eq!(State::Uninit, s.load(Relaxed));
+> +/// ```
+
+This example doesn't really seem like a good idea on this type... Maybe
+on `AllowAtomic` instead? This type should just have examples of how to
+use `Atomic<T>`.
+
+> +///
+> +/// # Guarantees
+> +///
+> +/// Doing an atomic operation while holding a reference of [`Self`] won'=
+t cause a data race,
+> +/// this is guaranteed by the safety requirement of [`Self::from_ptr()`]=
+ and the extra safety
+> +/// requirement of the usage on pointers returned by [`Self::as_ptr()`].
+
+I'd rather think we turn this into an invariant that says any operations
+on `self.0` through a shared reference is atomic.
+
+> +#[repr(transparent)]
+> +pub struct Atomic<T: AllowAtomic>(UnsafeCell<T>);
+> +
+> +// SAFETY: `Atomic<T>` is safe to share among execution contexts because=
+ all accesses are atomic.
+> +unsafe impl<T: AllowAtomic> Sync for Atomic<T> {}
+> +
+> +/// Types that support basic atomic operations.
+> +///
+> +/// # Round-trip transmutability
+
+This can stay here for the moment, but it should probably be somewhere
+more central.
+
+> +///
+> +/// Implementing [`AllowAtomic`] requires that the type is round-trip tr=
+ansmutable to its
+> +/// representation:
+
+I would remove this sentence and just define round-trip transmutability
+in a standalone fashion.
+
+> +///
+> +/// - Any value of [`Self`] must be sound to [`transmute()`] to a [`Self=
+::Repr`], and this also
+> +///   means that a pointer to [`Self`] can be treated as a pointer to [`=
+Self::Repr`] for reading.
+> +/// - If a value of [`Self::Repr`] is a result a [`transmute()`] from a =
+[`Self`], it must be
+> +///   sound to [`transmute()`] the value back to a [`Self`].
+
+This seems a bit verbose. How about this:
+
+    `T` is round-trip transmutable to `U` if and only if all of these prope=
+rties hold:
+    * Any valid bit pattern for `T` is also a valid bit pattern for `U`.
+    * Transmuting a value of type `T` to `U` and then to `T` again yields a=
+ value that is in all aspects
+      equivalent to the original value.
+
+> +///
+> +/// This essentially means a valid bit pattern of `T: AllowAtomic` has t=
+o be a valid bit pattern
+> +/// of `T::Repr`. This is needed because [`Atomic<T: AllowAtomic>`] oper=
+ates on `T::Repr` to
+> +/// implement atomic operations on `T`.
+> +///
+> +/// Note that this is more relaxed than bidirectional transmutability (i=
+.e. [`transmute()`] is
+> +/// always sound between `T` and `T::Repr`) because of the support for a=
+tomic variables over
+
+s/between `T` and `T::Repr`/from `T` to `T::Repr` and back/
+
+> +/// unit-only enums:
+
+What are "unit-only" enums? Do you mean enums that don't have associated
+data?
+
+> +///
+> +/// ```
+> +/// #[repr(i32)]
+> +/// enum State { Init =3D 0, Working =3D 1, Done =3D 2, }
+> +/// ```
+> +///
+> +/// # Safety
+> +///
+> +/// - [`Self`] must have the same size and alignment as [`Self::Repr`].
+> +/// - [`Self`] and [`Self::Repr`] must have the [round-trip transmutabil=
+ity].
+
+s/have the/be/
+s/transmutability/transmutable/
+
+> +///
+> +/// # Limitations
+> +///
+> +/// Because C primitives are used to implement the atomic operations, an=
+d a C function requires a
+> +/// valid object of a type to operate on (i.e. no `MaybeUninit<_>`), hen=
+ce at the Rust <-> C
+> +/// surface, only types with no uninitialized bits can be passed. As a r=
+esult, types like `(u8,
+> +/// u16)` (a tuple with a `MaybeUninit` hole in it) are currently not su=
+pported. Note that
+> +/// technically these types can be supported if some APIs are removed fo=
+r them and the inner
+> +/// implementation is tweaked, but the justification of support such a t=
+ype is not strong enough at
+> +/// the moment. This should be resolved if there is an implementation fo=
+r `MaybeUninit<i32>` as
+> +/// `AtomicImpl`.
+> +///
+> +/// [`transmute()`]: core::mem::transmute
+> +/// [round-trip transmutability]: AllowAtomic#round-trip-transmutability
+> +pub unsafe trait AllowAtomic: Sized + Send + Copy {
+> +    /// The backing atomic implementation type.
+> +    type Repr: AtomicImpl;
+> +}
+> +
+> +#[inline(always)]
+> +const fn into_repr<T: AllowAtomic>(v: T) -> T::Repr {
+> +    // SAFETY: Per the safety requirement of `AllowAtomic`, the transmut=
+e operation is sound.
+> +    unsafe { core::mem::transmute_copy(&v) }
+> +}
+> +
+> +/// # Safety
+> +///
+> +/// `r` must be a valid bit pattern of `T`.
+> +#[inline(always)]
+> +const unsafe fn from_repr<T: AllowAtomic>(r: T::Repr) -> T {
+> +    // SAFETY: Per the safety requirement of the function, the transmute=
+ operation is sound.
+> +    unsafe { core::mem::transmute_copy(&r) }
+> +}
+> +
+> +impl<T: AllowAtomic> Atomic<T> {
+> +    /// Creates a new atomic.
+
+s/atomic/atomic `T`/
+
+> +    pub const fn new(v: T) -> Self {
+> +        Self(UnsafeCell::new(v))
+> +    }
+> +
+> +    /// Creates a reference to [`Self`] from a pointer.
+
+s/[`Self`]/an atomic `T`/
+
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `ptr` has to be a valid pointer.
+
+s/has to be a/is/
+s/pointer//
+
+> +    /// - `ptr` has to be valid for both reads and writes for the whole =
+lifetime `'a`.
+
+s/has to be/is/
+s/both//
+s/the whole lifetime//
+
+> +    /// - For the duration of `'a`, other accesses to the object cannot =
+cause data races (defined
+
+s/the object/`*ptr`/
+s/cannot/must not/
+
+> +    ///   by [`LKMM`]) against atomic operations on the returned referen=
+ce. Note that if all other
+> +    ///   accesses are atomic, then this safety requirement is trivially=
+ fulfilled.
+> +    ///
+> +    /// [`LKMM`]: srctree/tools/memory-model
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// Using [`Atomic::from_ptr()`] combined with [`Atomic::load()`] or=
+ [`Atomic::store()`] can
+> +    /// achieve the same functionality as `READ_ONCE()`/`smp_load_acquir=
+e()` or
+> +    /// `WRITE_ONCE()`/`smp_store_release()` in C side:
+> +    ///
+> +    /// ```rust
+
+`rust` is the default, so you can just omit it.
+
+> +    /// # use kernel::types::Opaque;
+> +    /// use kernel::sync::atomic::{Atomic, Relaxed, Release};
+> +    ///
+> +    /// // Assume there is a C struct `Foo`.
+
+s/F/f/
+
+> +    /// mod cbindings {
+> +    ///     #[repr(C)]
+> +    ///     pub(crate) struct foo { pub(crate) a: i32, pub(crate) b: i32=
+ }
+
+Why not format this normally?
+
+> +    /// }
+> +    ///
+> +    /// let tmp =3D Opaque::new(cbindings::foo { a: 1, b: 2});
+
+Missing space before `}`.
+
+> +    ///
+> +    /// // struct foo *foo_ptr =3D ..;
+> +    /// let foo_ptr =3D tmp.get();
+> +    ///
+> +    /// // SAFETY: `foo_ptr` is a valid pointer, and `.a` is in bounds.
+> +    /// let foo_a_ptr =3D unsafe { &raw mut (*foo_ptr).a };
+> +    ///
+> +    /// // a =3D READ_ONCE(foo_ptr->a);
+> +    /// //
+> +    /// // SAFETY: `foo_a_ptr` is a valid pointer for read, and all acce=
+sses on it is atomic, so no
+> +    /// // data race.
+> +    /// let a =3D unsafe { Atomic::from_ptr(foo_a_ptr) }.load(Relaxed);
+> +    /// # assert_eq!(a, 1);
+> +    ///
+> +    /// // smp_store_release(&foo_ptr->a, 2);
+> +    /// //
+> +    /// // SAFETY: `foo_a_ptr` is a valid pointer for write, and all acc=
+esses on it is atomic, so
+> +    /// // no data race.
+> +    /// unsafe { Atomic::from_ptr(foo_a_ptr) }.store(2, Release);
+> +    /// ```
+> +    ///
+> +    /// However, this should be only used when communicating with C side=
+ or manipulating a C struct.
+> +    pub unsafe fn from_ptr<'a>(ptr: *mut T) -> &'a Self
+> +    where
+> +        T: Sync,
+> +    {
+> +        // CAST: `T` is transparent to `Atomic<T>`.
+> +        // SAFETY: Per function safety requirement, `ptr` is a valid poi=
+nter and the object will
+> +        // live long enough. It's safe to return a `&Atomic<T>` because =
+function safety requirement
+> +        // guarantees other accesses won't cause data races.
+> +        unsafe { &*ptr.cast::<Self>() }
+> +    }
+> +
+> +    /// Returns a pointer to the underlying atomic variable.
+> +    ///
+> +    /// Extra safety requirement on using the return pointer: the operat=
+ions done via the pointer
+> +    /// cannot cause data races defined by [`LKMM`].
+
+I don't think this is correct. I could create an atomic and then share
+it with the C side via this function, since I have exclusive access, the
+writes to this pointer don't need to be atomic.
+
+We also don't document additional postconditions like this... If you
+really would have to do it like this (which you shouldn't given the
+example above), you would have to make this function `unsafe`, otherwise
+there is no way to ensure that people adhere to it (since it isn't part
+of the safety docs).
+
+> +    ///
+> +    /// [`LKMM`]: srctree/tools/memory-model
+> +    pub const fn as_ptr(&self) -> *mut T {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Returns a mutable reference to the underlying atomic variable.
+> +    ///
+> +    /// This is safe because the mutable reference of the atomic variabl=
+e guarantees the exclusive
+> +    /// access.
+> +    pub fn get_mut(&mut self) -> &mut T {
+> +        // SAFETY: `self.as_ptr()` is a valid pointer to `T`. `&mut self=
+` guarantees the exclusive
+> +        // access, so it's safe to reborrow mutably.
+> +        unsafe { &mut *self.as_ptr() }
+> +    }
+> +}
+> +
+> +impl<T: AllowAtomic> Atomic<T>
+> +where
+> +    T::Repr: AtomicHasBasicOps,
+> +{
+> +    /// Loads the value from the atomic variable.
+
+s/variable/`T`/
+
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// Simple usages:
+
+I would remove this.
+
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{Atomic, Relaxed};
+> +    ///
+> +    /// let x =3D Atomic::new(42i32);
+> +    ///
+> +    /// assert_eq!(42, x.load(Relaxed));
+> +    ///
+> +    /// let x =3D Atomic::new(42i64);
+> +    ///
+> +    /// assert_eq!(42, x.load(Relaxed));
+> +    /// ```
+> +    #[doc(alias("atomic_read", "atomic64_read"))]
+> +    #[inline(always)]
+> +    pub fn load<Ordering: AcquireOrRelaxed>(&self, _: Ordering) -> T {
+> +        // CAST: Per the safety requirement of `AllowAtomic`, a valid po=
+inter of `T` is also a
+> +        // valid pointer of `T::Repr`.
+
+Well not exactly... The cast is fine due to the round-trip
+transmutability, but you're not allowed to write arbitrary values to it.
+Only values that are transmutable to `T`. So it is valid for reads and
+valid for writes of values transmutable to `T`.
+
+> +        let a =3D self.as_ptr().cast::<T::Repr>();
+> +
+> +        // SAFETY:
+> +        // - For calling the atomic_read*() function:
+> +        //   - `a` is a valid pointer for the function per the CAST just=
+ification above.
+> +        //   - Per the type guarantees, the following atomic operation w=
+on't cause data races.
+
+Which type guarantees? `Self`?
+
+> +        // - For extra safety requirement of usage on pointers returned =
+by `self.as_ptr()`:
+> +        //   - Atomic operations are used here.
+> +        let v =3D unsafe {
+> +            match Ordering::TYPE {
+> +                OrderingType::Relaxed =3D> T::Repr::atomic_read(a),
+> +                OrderingType::Acquire =3D> T::Repr::atomic_read_acquire(=
+a),
+> +                _ =3D> build_error!("Wrong ordering"),
+> +            }
+> +        };
+> +
+> +        // SAFETY: The atomic variable holds a valid `T`, so `v` is a va=
+lid bit pattern of `T`,
+> +        // therefore it's safe to call `from_repr()`.
+
+    // SAFETY: `v` comes from reading `a` which was derived from `self.as_p=
+tr()` which points at a
+    // valid `T`.
+
+> +        unsafe { from_repr(v) }
+> +    }
+> +
+> +    /// Stores a value to the atomic variable.
+
+s/variable/`T`/
+
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```rust
+> +    /// use kernel::sync::atomic::{Atomic, Relaxed};
+> +    ///
+> +    /// let x =3D Atomic::new(42i32);
+> +    ///
+> +    /// assert_eq!(42, x.load(Relaxed));
+> +    ///
+> +    /// x.store(43, Relaxed);
+> +    ///
+> +    /// assert_eq!(43, x.load(Relaxed));
+> +    /// ```
+> +    #[doc(alias("atomic_set", "atomic64_set"))]
+> +    #[inline(always)]
+> +    pub fn store<Ordering: ReleaseOrRelaxed>(&self, v: T, _: Ordering) {
+> +        let v =3D into_repr(v);
+> +        // CAST: Per the safety requirement of `AllowAtomic`, a valid po=
+inter of `T` is also a
+> +        // valid pointer of `T::Repr`.
+
+Ditto.
+
+> +        let a =3D self.as_ptr().cast::<T::Repr>();
+> +
+> +        // SAFETY:
+> +        // - For calling the atomic_set*() function:
+> +        //   - `a` is a valid pointer for the function per the CAST just=
+ification above.
+> +        //   - Per the type guarantees, the following atomic operation w=
+on't cause data races.
+> +        // - For extra safety requirement of usage on pointers returned =
+by `self.as_ptr()`:
+> +        //   - Atomic operations are used here.
+> +        // - For the bit validity of `Atomic<T>`:
+> +        //   - `v` is a valid bit pattern of `T`, so it's sound to store=
+ it in an `Atomic<T>`.
+
+Ditto.
+
 ---
-To avoid conflicts with the rename of Opaque::raw_get, this is based on
-top of the patch that renames it. Due to this conflict, I think it's
-easier to land this through Miguel's tree if it lands this cycle.
+Cheers,
+Benno
 
-Of course if it does not land this cycle, it can go through Tejun's
-tree.
----
-Changes in v3:
-- Rebase on [PATCH v2 0/2] Add Opaque::cast_from.
-- Use optional_name!().
-- Use a different number of jiffies.
-- Link to v2: https://lore.kernel.org/r/20250627-workqueue-delay-v2-1-84b046fdb4fc@google.com
-
-Changes in v2:
-- Rebase on v6.16-rc2.
-- There are no longer any dependencies as they were merged into
-  v6-16-rc1.
-- Fix some compilation errors related to changes to container_of! and
-  lock class keys.
-- Link to v1: https://lore.kernel.org/r/20250411-workqueue-delay-v1-1-26b9427b1054@google.com
----
- rust/kernel/workqueue.rs | 330 ++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 327 insertions(+), 3 deletions(-)
-
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index a3085a56419db9a7d4c4b757ddd0964b59e453f9..50d57be8f92af418145f44b5b6d2abea27c73119 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -131,10 +131,69 @@
- //! # print_2_later(MyStruct::new(41, 42).unwrap());
- //! ```
- //!
-+//! This example shows how you can schedule delayed work items:
-+//!
-+//! ```
-+//! use kernel::sync::Arc;
-+//! use kernel::workqueue::{self, impl_has_delayed_work, new_delayed_work, DelayedWork, WorkItem};
-+//!
-+//! #[pin_data]
-+//! struct MyStruct {
-+//!     value: i32,
-+//!     #[pin]
-+//!     work: DelayedWork<MyStruct>,
-+//! }
-+//!
-+//! impl_has_delayed_work! {
-+//!     impl HasDelayedWork<Self> for MyStruct { self.work }
-+//! }
-+//!
-+//! impl MyStruct {
-+//!     fn new(value: i32) -> Result<Arc<Self>> {
-+//!         Arc::pin_init(
-+//!             pin_init!(MyStruct {
-+//!                 value,
-+//!                 work <- new_delayed_work!("MyStruct::work"),
-+//!             }),
-+//!             GFP_KERNEL,
-+//!         )
-+//!     }
-+//! }
-+//!
-+//! impl WorkItem for MyStruct {
-+//!     type Pointer = Arc<MyStruct>;
-+//!
-+//!     fn run(this: Arc<MyStruct>) {
-+//!         pr_info!("The value is: {}\n", this.value);
-+//!     }
-+//! }
-+//!
-+//! /// This method will enqueue the struct for execution on the system workqueue, where its value
-+//! /// will be printed 12 jiffies later.
-+//! fn print_later(val: Arc<MyStruct>) {
-+//!     let _ = workqueue::system().enqueue_delayed(val, 12);
-+//! }
-+//!
-+//! /// It is also possible to use the ordinary `enqueue` method together with `DelayedWork`. This
-+//! /// is equivalent to calling `enqueue_delayed` with a delay of zero.
-+//! fn print_now(val: Arc<MyStruct>) {
-+//!     let _ = workqueue::system().enqueue(val);
-+//! }
-+//! # print_later(MyStruct::new(42).unwrap());
-+//! # print_now(MyStruct::new(42).unwrap());
-+//! ```
-+//!
- //! C header: [`include/linux/workqueue.h`](srctree/include/linux/workqueue.h)
- 
--use crate::alloc::{AllocError, Flags};
--use crate::{prelude::*, sync::Arc, sync::LockClassKey, types::Opaque};
-+use crate::{
-+    alloc::{AllocError, Flags},
-+    container_of,
-+    prelude::*,
-+    sync::Arc,
-+    sync::LockClassKey,
-+    time::Jiffies,
-+    types::Opaque,
-+};
- use core::marker::PhantomData;
- 
- /// Creates a [`Work`] initialiser with the given name and a newly-created lock class.
-@@ -146,6 +205,33 @@ macro_rules! new_work {
- }
- pub use new_work;
- 
-+/// Creates a [`DelayedWork`] initialiser with the given name and a newly-created lock class.
-+#[macro_export]
-+macro_rules! new_delayed_work {
-+    () => {
-+        $crate::workqueue::DelayedWork::new(
-+            $crate::optional_name!(),
-+            $crate::static_lock_class!(),
-+            $crate::c_str!(::core::concat!(
-+                ::core::file!(),
-+                ":",
-+                ::core::line!(),
-+                "_timer"
-+            )),
-+            $crate::static_lock_class!(),
-+        )
-+    };
-+    ($name:literal) => {
-+        $crate::workqueue::DelayedWork::new(
-+            $crate::c_str!($name),
-+            $crate::static_lock_class!(),
-+            $crate::c_str!(::core::concat!($name, "_timer")),
-+            $crate::static_lock_class!(),
-+        )
-+    };
-+}
-+pub use new_delayed_work;
-+
- /// A kernel work queue.
- ///
- /// Wraps the kernel's C `struct workqueue_struct`.
-@@ -206,6 +292,42 @@ pub fn enqueue<W, const ID: u64>(&self, w: W) -> W::EnqueueOutput
-         }
-     }
- 
-+    /// Enqueues a delayed work item.
-+    ///
-+    /// This may fail if the work item is already enqueued in a workqueue.
-+    ///
-+    /// The work item will be submitted using `WORK_CPU_UNBOUND`.
-+    pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::EnqueueOutput
-+    where
-+        W: RawDelayedWorkItem<ID> + Send + 'static,
-+    {
-+        let queue_ptr = self.0.get();
-+
-+        // SAFETY: We only return `false` if the `work_struct` is already in a workqueue. The other
-+        // `__enqueue` requirements are not relevant since `W` is `Send` and static.
-+        //
-+        // The call to `bindings::queue_delayed_work_on` will dereference the provided raw pointer,
-+        // which is ok because `__enqueue` guarantees that the pointer is valid for the duration of
-+        // this closure, and the safety requirements of `RawDelayedWorkItem` expands this
-+        // requirement to apply to the entire `delayed_work`.
-+        //
-+        // Furthermore, if the C workqueue code accesses the pointer after this call to
-+        // `__enqueue`, then the work item was successfully enqueued, and
-+        // `bindings::queue_delayed_work_on` will have returned true. In this case, `__enqueue`
-+        // promises that the raw pointer will stay valid until we call the function pointer in the
-+        // `work_struct`, so the access is ok.
-+        unsafe {
-+            w.__enqueue(move |work_ptr| {
-+                bindings::queue_delayed_work_on(
-+                    bindings::wq_misc_consts_WORK_CPU_UNBOUND as _,
-+                    queue_ptr,
-+                    container_of!(work_ptr, bindings::delayed_work, work),
-+                    delay,
-+                )
-+            })
-+        }
-+    }
-+
-     /// Tries to spawn the given function or closure as a work item.
-     ///
-     /// This method can fail because it allocates memory to store the work item.
-@@ -298,6 +420,16 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-         F: FnOnce(*mut bindings::work_struct) -> bool;
- }
- 
-+/// A raw delayed work item.
-+///
-+/// # Safety
-+///
-+/// If the `__enqueue` method in the `RawWorkItem` implementation calls the closure, then the
-+/// provided pointer must point at the `work` field of a valid `delayed_work`, and the guarantees
-+/// that `__enqueue` provides about accessing the `work_struct` must also apply to the rest of the
-+/// `delayed_work` struct.
-+pub unsafe trait RawDelayedWorkItem<const ID: u64>: RawWorkItem<ID> {}
-+
- /// Defines the method that should be called directly when a work item is executed.
- ///
- /// This trait is implemented by `Pin<KBox<T>>` and [`Arc<T>`], and is mainly intended to be
-@@ -407,7 +539,7 @@ pub unsafe fn raw_get(ptr: *const Self) -> *mut bindings::work_struct {
-     }
- }
- 
--/// Declares that a type has a [`Work<T, ID>`] field.
-+/// Declares that a type contains a [`Work<T, ID>`].
- ///
- /// The intended way of using this trait is via the [`impl_has_work!`] macro. You can use the macro
- /// like this:
-@@ -506,6 +638,178 @@ unsafe fn work_container_of(
-     impl{T} HasWork<Self> for ClosureWork<T> { self.work }
- }
- 
-+/// Links for a delayed work item.
-+///
-+/// This struct contains a function pointer to the [`run`] function from the [`WorkItemPointer`]
-+/// trait, and defines the linked list pointers necessary to enqueue a work item in a workqueue in
-+/// a delayed manner.
-+///
-+/// Wraps the kernel's C `struct delayed_work`.
-+///
-+/// This is a helper type used to associate a `delayed_work` with the [`WorkItem`] that uses it.
-+///
-+/// [`run`]: WorkItemPointer::run
-+#[pin_data]
-+#[repr(transparent)]
-+pub struct DelayedWork<T: ?Sized, const ID: u64 = 0> {
-+    #[pin]
-+    dwork: Opaque<bindings::delayed_work>,
-+    _inner: PhantomData<T>,
-+}
-+
-+// SAFETY: Kernel work items are usable from any thread.
-+//
-+// We do not need to constrain `T` since the work item does not actually contain a `T`.
-+unsafe impl<T: ?Sized, const ID: u64> Send for DelayedWork<T, ID> {}
-+// SAFETY: Kernel work items are usable from any thread.
-+//
-+// We do not need to constrain `T` since the work item does not actually contain a `T`.
-+unsafe impl<T: ?Sized, const ID: u64> Sync for DelayedWork<T, ID> {}
-+
-+impl<T: ?Sized, const ID: u64> DelayedWork<T, ID> {
-+    /// Creates a new instance of [`DelayedWork`].
-+    #[inline]
-+    pub fn new(
-+        work_name: &'static CStr,
-+        work_key: Pin<&'static LockClassKey>,
-+        timer_name: &'static CStr,
-+        timer_key: Pin<&'static LockClassKey>,
-+    ) -> impl PinInit<Self>
-+    where
-+        T: WorkItem<ID>,
-+    {
-+        pin_init!(Self {
-+            dwork <- Opaque::ffi_init(|slot: *mut bindings::delayed_work| {
-+                // SAFETY: The `WorkItemPointer` implementation promises that `run` can be used as
-+                // the work item function.
-+                unsafe {
-+                    bindings::init_work_with_key(
-+                        core::ptr::addr_of_mut!((*slot).work),
-+                        Some(T::Pointer::run),
-+                        false,
-+                        work_name.as_char_ptr(),
-+                        work_key.as_ptr(),
-+                    )
-+                }
-+
-+                // SAFETY: The `delayed_work_timer_fn` function pointer can be used here because
-+                // the timer is embedded in a `struct delayed_work`, and only ever scheduled via
-+                // the core workqueue code, and configured to run in irqsafe context.
-+                unsafe {
-+                    bindings::timer_init_key(
-+                        core::ptr::addr_of_mut!((*slot).timer),
-+                        Some(bindings::delayed_work_timer_fn),
-+                        bindings::TIMER_IRQSAFE,
-+                        timer_name.as_char_ptr(),
-+                        timer_key.as_ptr(),
-+                    )
-+                }
-+            }),
-+            _inner: PhantomData,
-+        })
-+    }
-+
-+    /// Get a pointer to the inner `delayed_work`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The provided pointer must not be dangling and must be properly aligned. (But the memory
-+    /// need not be initialized.)
-+    #[inline]
-+    pub unsafe fn raw_as_work(ptr: *const Self) -> *mut Work<T, ID> {
-+        // SAFETY: The caller promises that the pointer is aligned and not dangling.
-+        let dw: *mut bindings::delayed_work =
-+            unsafe { Opaque::cast_into(core::ptr::addr_of!((*ptr).dwork)) };
-+        // SAFETY: The caller promises that the pointer is aligned and not dangling.
-+        let wrk: *mut bindings::work_struct = unsafe { core::ptr::addr_of_mut!((*dw).work) };
-+        // CAST: Work and work_struct have compatible layouts.
-+        wrk.cast()
-+    }
-+}
-+
-+/// Declares that a type contains a [`DelayedWork<T, ID>`].
-+///
-+/// # Safety
-+///
-+/// The `HasWork<T, ID>` implementation must return a `work_struct` that is stored in the `work`
-+/// field of a `delayed_work` with the same access rules as the `work_struct`.
-+pub unsafe trait HasDelayedWork<T, const ID: u64 = 0>: HasWork<T, ID> {}
-+
-+/// Used to safely implement the [`HasDelayedWork<T, ID>`] trait.
-+///
-+/// This macro also implements the [`HasWork`] trait, so you do not need to use [`impl_has_work!`]
-+/// when using this macro.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::sync::Arc;
-+/// use kernel::workqueue::{self, impl_has_delayed_work, DelayedWork};
-+///
-+/// struct MyStruct<'a, T, const N: usize> {
-+///     work_field: DelayedWork<MyStruct<'a, T, N>, 17>,
-+///     f: fn(&'a [T; N]),
-+/// }
-+///
-+/// impl_has_delayed_work! {
-+///     impl{'a, T, const N: usize} HasDelayedWork<MyStruct<'a, T, N>, 17>
-+///     for MyStruct<'a, T, N> { self.work_field }
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! impl_has_delayed_work {
-+    ($(impl$({$($generics:tt)*})?
-+       HasDelayedWork<$work_type:ty $(, $id:tt)?>
-+       for $self:ty
-+       { self.$field:ident }
-+    )*) => {$(
-+        // SAFETY: The implementation of `raw_get_work` only compiles if the field has the right
-+        // type.
-+        unsafe impl$(<$($generics)+>)?
-+            $crate::workqueue::HasDelayedWork<$work_type $(, $id)?> for $self {}
-+
-+        // SAFETY: The implementation of `raw_get_work` only compiles if the field has the right
-+        // type.
-+        unsafe impl$(<$($generics)+>)? $crate::workqueue::HasWork<$work_type $(, $id)?> for $self {
-+            #[inline]
-+            unsafe fn raw_get_work(
-+                ptr: *mut Self
-+            ) -> *mut $crate::workqueue::Work<$work_type $(, $id)?> {
-+                // SAFETY: The caller promises that the pointer is not dangling.
-+                let ptr: *mut $crate::workqueue::DelayedWork<$work_type $(, $id)?> = unsafe {
-+                    ::core::ptr::addr_of_mut!((*ptr).$field)
-+                };
-+
-+                // SAFETY: The caller promises that the pointer is not dangling.
-+                unsafe { $crate::workqueue::DelayedWork::raw_as_work(ptr) }
-+            }
-+
-+            #[inline]
-+            unsafe fn work_container_of(
-+                ptr: *mut $crate::workqueue::Work<$work_type $(, $id)?>,
-+            ) -> *mut Self {
-+                // SAFETY: The caller promises that the pointer points at a field of the right type
-+                // in the right kind of struct.
-+                let ptr = unsafe { $crate::workqueue::Work::raw_get(ptr) };
-+
-+                // SAFETY: The caller promises that the pointer points at a field of the right type
-+                // in the right kind of struct.
-+                let delayed_work = unsafe {
-+                    $crate::container_of!(ptr, $crate::bindings::delayed_work, work)
-+                };
-+
-+                let delayed_work: *mut $crate::workqueue::DelayedWork<$work_type $(, $id)?> =
-+                    delayed_work.cast();
-+
-+                // SAFETY: The caller promises that the pointer points at a field of the right type
-+                // in the right kind of struct.
-+                unsafe { $crate::container_of!(delayed_work, Self, $field) }
-+            }
-+        }
-+    )*};
-+}
-+pub use impl_has_delayed_work;
-+
- // SAFETY: The `__enqueue` implementation in RawWorkItem uses a `work_struct` initialized with the
- // `run` method of this trait as the function pointer because:
- //   - `__enqueue` gets the `work_struct` from the `Work` field, using `T::raw_get_work`.
-@@ -567,6 +871,16 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-     }
- }
- 
-+// SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
-+// `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
-+// the `delayed_work` has the same access rules as its `work` field.
-+unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Arc<T>
-+where
-+    T: WorkItem<ID, Pointer = Self>,
-+    T: HasDelayedWork<T, ID>,
-+{
-+}
-+
- // SAFETY: TODO.
- unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Pin<KBox<T>>
- where
-@@ -617,6 +931,16 @@ unsafe fn __enqueue<F>(self, queue_work_on: F) -> Self::EnqueueOutput
-     }
- }
- 
-+// SAFETY: By the safety requirements of `HasDelayedWork`, the `work_struct` returned by methods in
-+// `HasWork` provides a `work_struct` that is the `work` field of a `delayed_work`, and the rest of
-+// the `delayed_work` has the same access rules as its `work` field.
-+unsafe impl<T, const ID: u64> RawDelayedWorkItem<ID> for Pin<KBox<T>>
-+where
-+    T: WorkItem<ID, Pointer = Self>,
-+    T: HasDelayedWork<T, ID>,
-+{
-+}
-+
- /// Returns the system work queue (`system_wq`).
- ///
- /// It is the one used by `schedule[_delayed]_work[_on]()`. Multi-CPU multi-threaded. There are
-
----
-base-commit: 7204503c922cfdb4fcfce4a4ab61f4558a01a73b
-change-id: 20250409-workqueue-delay-40eb0cd7c6d0
-prerequisite-change-id: 20250617-opaque-from-raw-ac5b8ef6faa2:v2
-prerequisite-patch-id: 10c681492e723b206b10b86744227a41c6fc8279
-prerequisite-patch-id: 2bd3f821d3cbfd752fe5018bdbc4891004339baa
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
+> +        unsafe {
+> +            match Ordering::TYPE {
+> +                OrderingType::Relaxed =3D> T::Repr::atomic_set(a, v),
+> +                OrderingType::Release =3D> T::Repr::atomic_set_release(a=
+, v),
+> +                _ =3D> build_error!("Wrong ordering"),
+> +            }
+> +        };
+> +    }
+> +}
 
