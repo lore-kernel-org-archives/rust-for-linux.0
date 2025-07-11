@@ -1,171 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C494C279DB8;
-	Fri, 11 Jul 2025 09:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0107A207E1D;
+	Fri, 11 Jul 2025 09:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752226196; cv=none; b=jwMXnN61KVHwi4O7/QlxbAjatrBRd+9TuB/ciKzEhXzrXW8XzCzdcm06wo1U2Ugakyx7EOXSYSVB0fgRNVlbcVwksv4MuhTt35tkqCR0IgxJEobQXrZsI/AHcdg4rwYFDUEksJSgCqGmGVogYeTf/k2sXzvXNa39gZYWR7n7JdI=
+	t=1752227637; cv=none; b=VLV1cLoIJuCJpH7QnfOIi+mqWgUQr4sKNT1TtKulAenAkY+A0PdF+kOIC1sRL0Ji7L53wsMv2Yz6+VhrM7FSc63JCvABC9faSeC/004OIYM0DKJ0/SXbwXVfh+HLsxTB3n8gXcclgV/VtQnd8cpbcAlB1JVLxnwlFeaiWPnwtxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752226196; c=relaxed/simple;
-	bh=g635AuROiIJUsnlRuPb0NpgIXG9FJEv+7lx2i4prxN8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DAiWFeVyk14VUyv2uMY+D4Lu5n/duvhneEkyGSQPlOLFbtkgUVJtshKm1bm4UT44104fPpbIvwOS461SrVaML0nwZp328hnVhl+OSVNRwAq+ugC+TGNYVtHEpiUBTHqbegQssyNADj17f6GQCGT8cTvH622RvVJW7U90do6AMVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lE9NDK9O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752227637; c=relaxed/simple;
+	bh=m8MYZ1wxGz3uPQ6cveXwC5uWnUUMhf+ew8hWrU5utDA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OqeOiQQzoY+6xkOY9f778SWsIYFW/98lzDjyBnON5uQxm1Co17xd3FEDAgiexNr23yPEKobXQ5JvrXJbHzHLg7vhy3nhPZr+iopfBVupD20h2eWBZqFOMGyXN98Edusaf+mBteDcT+HLDi0E2WGd6sJ76h6U/JxyiK9WQJbj3MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BOqSru6f; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lE9NDK9O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D190FC4CEF5;
-	Fri, 11 Jul 2025 09:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752226196;
-	bh=g635AuROiIJUsnlRuPb0NpgIXG9FJEv+7lx2i4prxN8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=lE9NDK9Oqx9H593Fkd6BUGxrwcePtgfvnCJ4HjUbRKYaTOlnHH4m7zdDIVhH7pJU0
-	 bjC70qQg+2NhJvwfgAsO9aGW2BsMASEhzugg6Ysy2RCCBfuXsmZ7tKtYVepA9ADVf4
-	 paI5r7yCC4wmNrdH6yvyASgWKIrIjoHqU58pqHcuugsPhVoDYdgkkBz07tFZgZk004
-	 eWcQLgZ7+IGRPCfCn+x1tg4vu6Nx7MuiHV3HNu8a09D8ITF3jo8ywkjnw+p3W1urS+
-	 jTgCHvo+YD3dzx/JDGZl51bEMGHpgxUnuOBVAFMdq1BrxFOknyxkWNqoLA58EGpFFS
-	 JKbeTyJ5VWD1Q==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Boqun Feng" <boqun.feng@gmail.com>,  "Miguel Ojeda" <ojeda@kernel.org>,
-  "Alex Gaynor" <alex.gaynor@gmail.com>,  "Gary Guo" <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron <bjorn3_gh@protonmail.com>,  "Benno
- Lossin"
- <lossin@kernel.org>,  "Trevor Gross" <tmgross@umich.edu>,  "Danilo
- Krummrich" <dakr@kernel.org>,  "Jens Axboe" <axboe@kernel.dk>,
-  <linux-block@vger.kernel.org>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 05/14] rust: block: use `NullBorrowFormatter`
-In-Reply-To: <aG5ttHBYW3SQlSv7@google.com> (Alice Ryhl's message of "Wed, 09
-	Jul 2025 13:25:08 +0000")
-References: <20250708-rnull-up-v6-16-v2-0-ab93c0ff429b@kernel.org>
-	<20250708-rnull-up-v6-16-v2-5-ab93c0ff429b@kernel.org>
-	<1RnkSkM82_BGKhOM4PKNTPqEQdSFQhpr6UlkVOD7EDhmTJxZ_hlNFhVuiqpUtKKW1uFUFSB7Ow3LJ31nvHUnDQ==@protonmail.internalid>
-	<aG5ttHBYW3SQlSv7@google.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Fri, 11 Jul 2025 11:29:46 +0200
-Message-ID: <878qkvhy7p.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BOqSru6f"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-31306794b30so318185a91.2;
+        Fri, 11 Jul 2025 02:53:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752227635; x=1752832435; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m8MYZ1wxGz3uPQ6cveXwC5uWnUUMhf+ew8hWrU5utDA=;
+        b=BOqSru6fQ06ZIzBGsboJOrnW6bBDFlgdbM/Tsuxg/VGoOpVcaH1Eiky8QnsAUqTcdc
+         N3WPzgwtVFbf1feWDm5WiciRFC2dKYyz327nCz/8D9ph0hHC1r0c7g/QbbBKB5uKRfZ6
+         UkNBVtKMlalF1MhLbrjQolbcTkEd/0zIlgpTiCmTKqJnG5Ptz14d/trxYNHoS4AkqsUR
+         TMLLpWL8uZgxqfFI7Tped/c8yHFD10Y/ItGgpbsWWXBnPjdxIhu/NA658mfVxBm/eRKJ
+         eRbS8iBWixcD53CyWSBLS2HSwFjomxM2q5y5lPr/mWJHhwadhru4q8qW7VG3WvH1vl9K
+         CH4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752227635; x=1752832435;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m8MYZ1wxGz3uPQ6cveXwC5uWnUUMhf+ew8hWrU5utDA=;
+        b=mQw7BTz0s8D5ZIDZLvAiOw1fmmMnb3tibhlPBvjTMGvS4lgGJuGDtMA4BRvpDwWvnR
+         OC/FuoszCQ5kMjiFjkikDQSjro7Ci3j7LxKH9vEZQY9IhQAO+lz/ii2eTKV8Ttz2qcfU
+         khxWMHHZM9Btwd+3Bas24zwBlnBE9zem0Auy5dc+y+uAuiNDjCglA/XIXbUwQTW2Ihr1
+         S6lkM9Z1Ay1E3k4jC+UvPptylbXcWibrcFIK1DI70q0QB8Q4W1pcaG43NKnZe25Ktqi0
+         l5vIIN9QJIjl77+Uxd5EU2ap81x6FJR+HBfgQxHNed6HTEXM+yNcI/y0F9CT2D5qk9Pu
+         nm+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU1i58ZGk2rRIod8QIMb5R7iB6fO+qDvbZSr/VAsBha1O5wqsZ7N32YAxhrmgnIAvqULNLZ0bEZ+G/OQ3FAnaI=@vger.kernel.org, AJvYcCUvxgbwI0c9OkQaiOhJb4sYx1YWn9HZ6XdG9hlfhpKjLcCAChTUVzGUPFvXmOyizV2+jqz2TFVg+2GQMlc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7be3QJO2xZBDVCn/w3OEFbp8uu0nvVHHY6m54u0VksqNC+rrA
+	P8rg2w81FSQ7334NgOQaobdgmqw85MjbvPWoWgqgmBaDkdThnAv4KdW+zKtEMRGi6fDOq73JEpM
+	KKF+pWNlaNL9b5b25JgdQrEQaYuTEIyg=
+X-Gm-Gg: ASbGncu4bnhajA2kb0YkQnxDAA6zHRvKBc+zO8LxJF+iamkYBtJ+bF/JIYsSegl8zLn
+	jTgcEUv/7u7a53lGiTrpWaffl78cuiTVnw1EQZsKnMyn1KlgcHynO5eoBsqbNjvT8c6lATO/o+u
+	JIMjGA0fRvcmCoO/h/ypJoz4mZKwhgKcK7FtQUtjBm83vWA1j6+N7Q5Gsr+T/AZ/OIYqRsz/hii
+	ABDAah/
+X-Google-Smtp-Source: AGHT+IHAs8gD7Hnw4b1Mb/GTjCgGqVuJnU9oiM7mUSzCTTWO/khmcmo5hLwVQpWXPnYqDvCfubKbf2gOfdrLrVp9JIQ=
+X-Received: by 2002:a17:90b:554f:b0:310:8d79:dfe4 with SMTP id
+ 98e67ed59e1d1-31c4f511f5amr1059138a91.4.1752227635260; Fri, 11 Jul 2025
+ 02:53:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <U1GgPfpPwSjzh5jPpFlN22bT2BSjlaH8vLHYY6hAt_vJ5w4irwIYRPV46r73Cs5Dx73Ikz5ku7_qPWrl8Tntfw==@protonmail.internalid>
+ <20250710225129.670051-1-lyude@redhat.com> <87jz4fi72a.fsf@kernel.org>
+ <Jlcb2BYQGgrQ9n7-UEbh-tmbIbJdg2ju8RIXRLNH4cdkdqloip3e8e3jbQbdpNkFDxNZD_5Oqq_uNoNySv0hXg==@protonmail.internalid>
+ <20250711.153729.1327324726276230605.fujita.tomonori@gmail.com> <87ecuni5nm.fsf@kernel.org>
+In-Reply-To: <87ecuni5nm.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 11 Jul 2025 11:53:41 +0200
+X-Gm-Features: Ac12FXzJuyEggL4BH04l_cy61e1G0kk5UqfFcZ0u9yRMdEwNOm5OagMjBYidm7A
+Message-ID: <CANiq72kanRbho6m6ps7Q4qaLkBmxLYy-cHMADZmjx3YiGuHBNg@mail.gmail.com>
+Subject: Re: [PATCH] rust: time: Pass correct timer mode ID to hrtimer_start_range_ns
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, lyude@redhat.com, 
+	rust-for-linux@vger.kernel.org, boqun.feng@gmail.com, frederic@kernel.org, 
+	tglx@linutronix.de, anna-maria@linutronix.de, jstultz@google.com, 
+	sboyd@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-"Alice Ryhl" <aliceryhl@google.com> writes:
-
-> On Tue, Jul 08, 2025 at 09:45:00PM +0200, Andreas Hindborg wrote:
->> Use the new `NullBorrowFormatter` to write the name of a `GenDisk` to the
->> name buffer. This new formatter automatically adds a trailing null marker
->> after the written characters, so we don't need to append that at the call
->> site any longer.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->>  rust/kernel/block/mq/gen_disk.rs   | 8 ++++----
->>  rust/kernel/block/mq/raw_writer.rs | 1 +
->>  rust/kernel/str.rs                 | 7 -------
->>  3 files changed, 5 insertions(+), 11 deletions(-)
->>
->> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
->> index 679ee1bb21950..e0e42f7028276 100644
->> --- a/rust/kernel/block/mq/gen_disk.rs
->> +++ b/rust/kernel/block/mq/gen_disk.rs
->> @@ -7,9 +7,10 @@
->>
->>  use crate::{
->>      bindings,
->> -    block::mq::{raw_writer::RawWriter, Operations, TagSet},
->> +    block::mq::{Operations, TagSet},
->>      error::{self, from_err_ptr, Result},
->>      static_lock_class,
->> +    str::NullBorrowFormatter,
->>      sync::Arc,
->>  };
->>  use core::fmt::{self, Write};
->> @@ -143,14 +144,13 @@ pub fn build<T: Operations>(
->>          // SAFETY: `gendisk` is a valid pointer as we initialized it above
->>          unsafe { (*gendisk).fops = &TABLE };
->>
->> -        let mut raw_writer = RawWriter::from_array(
->> +        let mut writer = NullBorrowFormatter::from_array(
->>              // SAFETY: `gendisk` points to a valid and initialized instance. We
->>              // have exclusive access, since the disk is not added to the VFS
->>              // yet.
->>              unsafe { &mut (*gendisk).disk_name },
->>          )?;
->> -        raw_writer.write_fmt(name)?;
->> -        raw_writer.write_char('\0')?;
->> +        writer.write_fmt(name)?;
+On Fri, Jul 11, 2025 at 8:49=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> Although this is nicer than the existing code, I wonder if it should
-> just be a function rather than a whole NullBorrowFormatter struct? Take
-> a slice and a fmt::Arguments and write it with a nul-terminator. Do you
-> need anything more complex than what you have here?
+> Maybe Miguel can put the correct hash when he applies the patch.
 
-I don't need anything more complex right now. But I think the
-`NullTerminatedFormatter` could be useful anyway:
+Sure:
 
-  +/// A mutable reference to a byte buffer where a string can be written into.
-  +///
-  +/// The buffer will be automatically null terminated after the last written character.
-  +///
-  +/// # Invariants
-  +///
-  +/// `buffer` is always null terminated.
-  +pub(crate) struct NullTerminatedFormatter<'a> {
-  +    buffer: &'a mut [u8],
-  +}
-  +
-  +impl<'a> NullTerminatedFormatter<'a> {
-  +    /// Create a new [`Self`] instance.
-  +    pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
-  +        *(buffer.first_mut()?) = 0;
-  +
-  +        // INVARIANT: We null terminated the buffer above.
-  +        Some(Self { buffer })
-  +    }
-  +
-  +    pub(crate) fn from_array<const N: usize>(
-  +        buffer: &'a mut [crate::ffi::c_char; N],
-  +    ) -> Option<NullTerminatedFormatter<'a>> {
-  +        Self::new(buffer)
-  +    }
-  +}
-  +
-  +impl Write for NullTerminatedFormatter<'_> {
-  +    fn write_str(&mut self, s: &str) -> fmt::Result {
-  +        let bytes = s.as_bytes();
-  +        let len = bytes.len();
-  +
-  +        // We want space for a null terminator. Buffer length is always at least 1, so no overflow.
-  +        if len > self.buffer.len() - 1 {
-  +            return Err(fmt::Error);
-  +        }
-  +
-  +        let buffer = core::mem::take(&mut self.buffer);
-  +        // We break the null termination invariant for a short while.
-  +        buffer[..len].copy_from_slice(bytes);
-  +        self.buffer = &mut buffer[len..];
-  +
-  +        // INVARIANT: We null terminate the buffer.
-  +        self.buffer[0] = 0;
-  +
-  +        Ok(())
-  +    }
-  +}
-  +
+Fixes: e0c0ab04f678 ("rust: time: Make HasHrTimer generic over HrTimerMode"=
+)
 
-If you insist, I can write something like
-
-  fn format_to_buffer(buffer: &mut [u8], args: fmt::Arguments) -> fmt::Result
-
-although I am not sure I see the point of this change.
-
-
-Best regards,
-Andreas Hindborg
-
-
+Cheers,
+Miguel
