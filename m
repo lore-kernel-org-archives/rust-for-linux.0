@@ -1,154 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326653209;
-	Fri, 11 Jul 2025 12:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C538370810;
+	Fri, 11 Jul 2025 13:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752237861; cv=none; b=fFjwmTz/952O8NvuXl177kLxm2V5Q26DHniGBmW5lBHi6ynZ8Su4Xnp/7/ny8UPjDarp5KO+SUrZ0kKNfZrY5oy0f1JgMe3CBnUX7f0kIfpSw4m17pMc4ErfyIB2b6Glcti5S1pArXQYLXcQtbRQayoqK1BafNAemGrbWHfWcEo=
+	t=1752240174; cv=none; b=IitN+ehx1VdiAv2G6aoIcVuDrVcKRg8zuOeJ2I5ZnrkVWkF9aAabkeU6RUofglDf/8ZKmsp7Vq+hCQkIoENk9e3midoZsRVInOovSYhaWSh8WrgBSHGD9/LattpbE7A2Evp1tR3iT+fioJO4j2KoYMFSf8z0EkeEmhKucC8XvO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752237861; c=relaxed/simple;
-	bh=teZJaqxYI5b4Zi5Q3t/5mosyvGb3FX+DYiKRW0d6N6s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=boeNj87B25QnNn94n0ufDiJHOZ5laYoBd+TLCRqnLoasFuVNdOdFmYv/BDybyucAL0huboW6HmfJ7HtrDRNk60kMCevbm0yjOQyM2F8NzQFsfDcneOl3u3UkFHDYomKDBMWYSAvAq2fQ9qKckSdYeqV6adDRKHQObx6Y64eSH+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJDmPs2c; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752240174; c=relaxed/simple;
+	bh=Z8xQn+iT3A5r4r5jVPej3tH0r1ytgXiZ3ITRDRty50c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YojsqugFBv5Qlb0lx75zaTcMwKfenmiiLmBga4SjDU4aSs/7OVauEla+8bgu+Pifh76NB2AutLndjsOCMl6mkgbrgX6lNlb2fVKMmZdtttKWhOVjvZyaMNSwrwUN7IMW6Q5e0Mv72ATDTIYZmgE0n2gDLgBmZVj9orD+q3QToN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cGubWbc6; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJDmPs2c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244B9C4CEED;
-	Fri, 11 Jul 2025 12:44:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752237860;
-	bh=teZJaqxYI5b4Zi5Q3t/5mosyvGb3FX+DYiKRW0d6N6s=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=IJDmPs2c3NbqO3wxva11UXJLk9zZYU+B2fZtvtfwnFwoEOyxy64podMGkXpF4Srr3
-	 3GctEfA87rhazleam3+lU8Q7ILT1r5aaQAIGUeaQMKwml83rX69qG61ch5ThQyXrfr
-	 gPjD9Nb7q3B3sHaOfG16wjiXJpZwHmHh4BnSbqysc8Xl91V0iLPjwhf5mZ4Ii3AJr3
-	 ALKh/mpgnKqGHTLc+6he887VpV6qrxjkJe0D57+XI880GRuTPANwid4VbJbkUPpjyl
-	 umhId6gP+TabFKBnQ2H8FvO2WONWNIJtxCD87joyUgyy0ukGUP/qAUsGwkTBOM2wb6
-	 qUYmv0wyaRYhQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cGubWbc6"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4a76ea97cefso21639361cf.2;
+        Fri, 11 Jul 2025 06:22:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752240171; x=1752844971; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sYtOPsEZ+CQsVOIfnHqDEBe70N1WUVtu0akdEwqTHbE=;
+        b=cGubWbc6CYl7O6Qeo3KH7lOWQHRqKX2+Aq8HT2m8nrugAdWdDKWhbVWLYvs77uiy5B
+         bKG+Ab89I/nZcizvUnIU4BkTlDBquqb8/GSHx5rKenf8OSEuGdJgFXL78GK/T+FlHRF+
+         F0kkzYK/4nOPsSClMu5adMI9MECDuXERqoU3HMOx40WwebAZQ26hdML80ZxNkgD5afCF
+         ghyamKfVChZp/FwE434uyp77+gZE9Vn1zsjSxlP8TmxCcEWjvnMHWGrq/9QG2uiFSQmR
+         bJgIbYCeSiDDaRnFD/9iSGdvrFVXEIXjKLZOK8KxlP1qEdCPLvPD6youNFjwN2Y075LX
+         PBFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752240171; x=1752844971;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sYtOPsEZ+CQsVOIfnHqDEBe70N1WUVtu0akdEwqTHbE=;
+        b=nMODfdKj1JRZybMYM06SeQpi+VOKx3RBixnzmc1xteyVumXqkHAz7lsNezc1ugmCwB
+         Wv+kuSvTqnEsmrz2i1aoDsYJr7qnfh7v267AwuxKiON0Nv2ZvBgcYW12sdmF5iTzMjTf
+         GfGo68wuL/9BChjuOcoHrk5EM6L6WFK8SUqi3nrUHMG7ouU2Gpoc+An81RjRUJZcYEbE
+         vfJoB33qDhEjeBtN4/pEcPRml5/yDt4V5hqUX00Jv+NmRSdizPa5OU1O73L+HqJ9yhqk
+         UF2VCVDRpQoMabSXYGif8sfnWxbdFIMNvmw9dTIR1wwuUg8plNF6HA8HR6P7zzbzym3a
+         gj4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUmJtbSSQYegij3bFAaNoGsgbaLJ41f4wesePZbPRpRIrG/urBHYf3e0u4A4WuAqXDK4f3TP375N7Ij@vger.kernel.org, AJvYcCV1/PcTeVTTqHg3f6kXXy35NcFi39hfQhNmY9FYowwuh0WuN80ZYrRsZ/074ySSw6wyRf0av52ZUMFtdKYIt+A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+kDFKftNy1HhPyPNrcyvZuZNCV9SM7YGbH9UZYiiCyBPw/sFS
+	mvtxHqfp6cwDwYrLSRVU/RlfloNGf/22AYTBf2PBrsdCa0ZYMVmEsTgj
+X-Gm-Gg: ASbGnctWcxiDPnhb69544G58kWH1e/5TFW8CRGE2vg0PtN4NMic3tdW39YmGHcLqvaG
+	un5Fus1gReT1POgDBUjk2uWn/pjiUuKJnOsJ/F3/FaHN0JLFk1Giw2ccOVJ+jyZZtGvCfQQIZ6+
+	ACzl779cc0CzOtc26EL8uIQ1v27Cbo/085kVMrNcXheICThp5EcmPhVZDOnxPFUMWHAW+FRvny1
+	k6GXvaf9Rek+uJAE4vnpBPm1YXXMNND13wWHmsvldVSybw+n803tC04JbqBWP2trE0KVHFPUqTK
+	A3PVnX7CxXqVy0Hg91e5sSx6UqTXsHW4hUAqcZYX8cRoQ94RySqBigjhFjZmapJrYL/2DBHCI4R
+	Sqgt+GscrOjgjEGTr+qIcHk6lSWhN/5cTO03cmqSYrm1lhDz1FC8/MMZsoH3Q/MYpVcJAvXLtkY
+	mnMOf2WP9/fSH8
+X-Google-Smtp-Source: AGHT+IGmUHLQtt4/Ao6E8L4tLE0MefjpXF7XEULDetINGFZ/Jy/Bf0GiAFzHKLdLVH4nwoSXYOFI1w==
+X-Received: by 2002:ac8:5d47:0:b0:4a7:6215:37f5 with SMTP id d75a77b69052e-4aa4158b43cmr37499891cf.48.1752240171472;
+        Fri, 11 Jul 2025 06:22:51 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4a9edea8e66sm21040151cf.54.2025.07.11.06.22.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Jul 2025 06:22:50 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 2C2E8F40066;
+	Fri, 11 Jul 2025 09:22:50 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Fri, 11 Jul 2025 09:22:50 -0400
+X-ME-Sender: <xms:KhBxaMQbn9roFh1stN7y4wNzPoAgB95S-EdDhrqKjYKglgHvAlMd_Q>
+    <xme:KhBxaLRTMuOkOdpunXWir1nZHZsn1A5_oOIr2DoFDAoMQsOP_j8PdIXrnzUFjiUyn
+    12tmFklFsttZ8rdDw>
+X-ME-Received: <xmr:KhBxaOa6oHlf5rEjRYt0nrvYKuR5mtCpa0sNhbfyyfzF8ZeJzY1GJzKZLg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegfeegfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdtkeeihedv
+    necuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphht
+    thhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhoshhsihhnsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkhhmmheslhhishhtshdrlhhinhhu
+    gidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihse
+    hgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhn
+    mhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:KhBxaPjhU5V0uxs42b41h0X8L75Gg_ZolvNTIBBShC26NW4v-xGHgg>
+    <xmx:KhBxaDheUwpn0JHcg24jSRJwCN0JgA2-PGMr4y76DqB_FOe35e0w3Q>
+    <xmx:KhBxaFKEaUG4yGuG6kPbY8dPU534TRt6meUhVxf7sNuvyERonwi_fA>
+    <xmx:KhBxaKUMGA7aQBjZp8woKmSUqsC8ZKPDCJMqrVPZ_ebGh114O4pgLw>
+    <xmx:KhBxaH2BY1eZZSH11TvWrxvNYITjGxmmvqOF7Lb2l40y42pf5aIJVXms>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 11 Jul 2025 09:22:49 -0400 (EDT)
+Date: Fri, 11 Jul 2025 06:22:48 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v6 4/9] rust: sync: atomic: Add generic atomics
+Message-ID: <aHEQKBT68xvqIIjW@Mac.home>
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-5-boqun.feng@gmail.com>
+ <DB92I10114UN.33MAFJVWIX4AB@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Jul 2025 14:44:09 +0200
-Message-Id: <DB98H7EGG96J.2FC3ZWDENYWW5@kernel.org>
-Cc: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <netdev@vger.kernel.org>,
- <linux-clk@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <kunit-dev@googlegroups.com>,
- <linux-block@vger.kernel.org>
-Subject: Re: [PATCH 00/17] rust: replace `kernel::c_str!` with C-Strings
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "FUJITA
- Tomonori" <fujita.tomonori@gmail.com>, "Andrew Lunn" <andrew@lunn.ch>,
- "Heiner Kallweit" <hkallweit1@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, "Michael Turquette" <mturquette@baylibre.com>,
- "Stephen Boyd" <sboyd@kernel.org>, "Breno Leitao" <leitao@debian.org>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Russ Weight" <russ.weight@linux.dev>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Arnd
- Bergmann" <arnd@arndb.de>, "Brendan Higgins" <brendan.higgins@linux.dev>,
- "David Gow" <davidgow@google.com>, "Rae Moar" <rmoar@google.com>, "Jens
- Axboe" <axboe@kernel.dk>
-X-Mailer: aerc 0.20.1
-References: <20250710-core-cstr-cstrings-v1-0-027420ea799e@gmail.com>
-In-Reply-To: <20250710-core-cstr-cstrings-v1-0-027420ea799e@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DB92I10114UN.33MAFJVWIX4AB@kernel.org>
 
-On Thu Jul 10, 2025 at 5:31 PM CEST, Tamir Duberstein wrote:
-> This series depends on step 3[0] which depends on steps 2a[1] and 2b[2]
-> which both depend on step 1[3].
->
-> This series also has a minor merge conflict with a small change[4] that
-> was taken through driver-core-testing. This series is marked as
-> depending on that change; as such it contains the post-conflict patch.
->
-> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
-> can be taken through Miguel's tree (where the previous series must go).
->
-> Link  https://lore.kernel.org/all/20250710-cstr-core-v14-0-ca7e0ca82c82@g=
-mail.com/ [0]
-> Link: https://lore.kernel.org/all/20250709-core-cstr-fanout-1-v1-0-64308e=
-7203fc@gmail.com/ [1]
-> Link: https://lore.kernel.org/all/20250709-core-cstr-fanout-1-v1-0-fd793b=
-3e58a2@gmail.com/ [2]
-> Link: https://lore.kernel.org/all/20250704-core-cstr-prepare-v1-0-a915240=
-37783@gmail.com/ [3]
-> Link: https://lore.kernel.org/all/20250704-cstr-include-aux-v1-1-e1a404ae=
-92ac@gmail.com/ [4]
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> Tamir Duberstein (17):
->       drivers: net: replace `kernel::c_str!` with C-Strings
->       gpu: nova-core: replace `kernel::c_str!` with C-Strings
->       rust: auxiliary: replace `kernel::c_str!` with C-Strings
->       rust: clk: replace `kernel::c_str!` with C-Strings
->       rust: configfs: replace `kernel::c_str!` with C-Strings
->       rust: cpufreq: replace `kernel::c_str!` with C-Strings
->       rust: device: replace `kernel::c_str!` with C-Strings
->       rust: firmware: replace `kernel::c_str!` with C-Strings
->       rust: kunit: replace `kernel::c_str!` with C-Strings
->       rust: macros: replace `kernel::c_str!` with C-Strings
->       rust: miscdevice: replace `kernel::c_str!` with C-Strings
->       rust: net: replace `kernel::c_str!` with C-Strings
->       rust: pci: replace `kernel::c_str!` with C-Strings
->       rust: platform: replace `kernel::c_str!` with C-Strings
->       rust: seq_file: replace `kernel::c_str!` with C-Strings
->       rust: str: replace `kernel::c_str!` with C-Strings
->       rust: sync: replace `kernel::c_str!` with C-Strings
->
->  drivers/block/rnull.rs                |  2 +-
->  drivers/cpufreq/rcpufreq_dt.rs        |  5 ++---
->  drivers/gpu/drm/nova/driver.rs        | 10 +++++-----
->  drivers/gpu/nova-core/driver.rs       |  6 +++---
->  drivers/net/phy/ax88796b_rust.rs      |  7 +++----
->  drivers/net/phy/qt2025.rs             |  5 ++---
->  rust/kernel/clk.rs                    |  6 ++----
->  rust/kernel/configfs.rs               |  5 ++---
->  rust/kernel/cpufreq.rs                |  3 +--
->  rust/kernel/device.rs                 |  4 +---
->  rust/kernel/firmware.rs               |  6 +++---
->  rust/kernel/kunit.rs                  | 11 ++++-------
->  rust/kernel/net/phy.rs                |  6 ++----
->  rust/kernel/platform.rs               |  4 ++--
->  rust/kernel/seq_file.rs               |  4 ++--
->  rust/kernel/str.rs                    |  5 ++---
->  rust/kernel/sync.rs                   |  5 ++---
->  rust/kernel/sync/completion.rs        |  2 +-
->  rust/kernel/workqueue.rs              |  8 ++++----
->  rust/macros/kunit.rs                  | 10 +++++-----
->  rust/macros/module.rs                 |  2 +-
->  samples/rust/rust_configfs.rs         |  5 ++---
->  samples/rust/rust_driver_auxiliary.rs |  4 ++--
->  samples/rust/rust_driver_faux.rs      |  4 ++--
->  samples/rust/rust_driver_pci.rs       |  4 ++--
->  samples/rust/rust_driver_platform.rs  |  4 ++--
->  samples/rust/rust_misc_device.rs      |  3 +--
->  scripts/rustdoc_test_gen.rs           |  4 ++--
->  28 files changed, 63 insertions(+), 81 deletions(-)
+On Fri, Jul 11, 2025 at 10:03:07AM +0200, Benno Lossin wrote:
+[...]
+> > +
+> > +    /// Returns a pointer to the underlying atomic variable.
+> > +    ///
+> > +    /// Extra safety requirement on using the return pointer: the operations done via the pointer
+> > +    /// cannot cause data races defined by [`LKMM`].
+> 
+> I don't think this is correct. I could create an atomic and then share
+> it with the C side via this function, since I have exclusive access, the
+> writes to this pointer don't need to be atomic.
+> 
 
-For the entire series:
+that's why it says "the operations done via the pointer cannot cause
+data races .." instead of saying "it must be atomic".
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+> We also don't document additional postconditions like this... If you
 
----
-Cheers,
-Benno
+Please see how Rust std document their `as_ptr()`:
+
+	https://doc.rust-lang.org/std/sync/atomic/struct.AtomicI32.html#method.as_ptr
+
+It mentions that "Doing non-atomic reads and writes on the resulting
+integer can be a data race." (although the document is a bit out of
+date, since non-atomic read and atomic read are no longer data race now,
+see [1])
+
+I think we can use the similar document structure here: providing more
+safety requirement on the returning pointers, and...
+
+> really would have to do it like this (which you shouldn't given the
+> example above), you would have to make this function `unsafe`, otherwise
+> there is no way to ensure that people adhere to it (since it isn't part
+> of the safety docs).
+> 
+
+...since dereferencing pointers is always `unsafe`, users need to avoid
+data races anyway, hence this is just additional information that helps
+reasoning.
+
+Regards,
+Boqun
+
+> > +    ///
+> > +    /// [`LKMM`]: srctree/tools/memory-model
+> > +    pub const fn as_ptr(&self) -> *mut T {
+> > +        self.0.get()
+> > +    }
+[...]
