@@ -1,68 +1,72 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AA4146585
-	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 11:34:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0970283141
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 11:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752233658; cv=none; b=iPAeCpeLe19DQRqkCb/yVw3CE+h7v9fkd+fgDB0zw7+v1/T9tassofFt1Yf4akZyRJ0YGCvplQ1Q5zCobpkeGzAmnKu06x32ySZVVlmDU+BtVnKR0qR6SY4h8itq51S301oJVCgpjGDisSWw4l8xKRZaYwEsmaE+rOd9c5vp9GM=
+	t=1752233675; cv=none; b=gDsR+7CfgyhRj202Z5bJTRP0gN2lVkL+WSyI85ZbVbteEgjJcTGWjGQhqT2LohfvFWVG6UWYXYA2vQ/O3ZK5JeTTXXTNnGWVZb2CQz5QOO/Lt+QxFk6lkVyjRgn8Ki6CmBy93EkyEgU17RFp1+CwGTbCk0cL/EtGjYheC4MaF9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752233658; c=relaxed/simple;
-	bh=273r/EkrmyFgvjq2eddTpmIrLwHZixqBi8aD3JsodNA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fB+c/K2cuLubM+adlGVvMHRWW32fLWDDxJoykrtR4VTC0buIHGeGldItITFuBWOZG/4hSKuWv+kjDeaTG/Nm7ewtdFXMAUMp+JeSzOCs5TrILWnvrjo88soyoVU75Hebu5ZSux8eXZY5mIPP9sewKtCjnrz+wQqthTYAgifiofo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YnD3qFnM; arc=none smtp.client-ip=209.85.214.181
+	s=arc-20240116; t=1752233675; c=relaxed/simple;
+	bh=ZrPry9dibIB1e6E2fTbzDxhn7O5lslZh8d2sy47SFP8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=s1ZfJDDybyYXZ7i3UkKo3cACsQpOn88RKA+aO7hsGIlf41cMeSeob3lGFzR3EhZ5gYvVNwaan5ogdiTLxrK+O/ROsMb2l73i6WR3BIhzSVe/HKT/ztIMeu2AxZK4qzMAZa4rGVpahszUZ4LY2ODG72C+WxHeYi/HNwu7goOh354=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TR1+fB0L; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YnD3qFnM"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-23c703c471dso26907755ad.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 04:34:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TR1+fB0L"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-234fcadde3eso25410655ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 04:34:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752233656; x=1752838456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8wFTFvOPl9z0oMG+Q2qe8rihqJLxAx1U3xn0MBTrYNM=;
-        b=YnD3qFnMllgVj+hKtKD7uBD8iQWuOUNLi6q+eNKenU+N6/AoKx83etMEbEtceNyz2F
-         rpTEe/aYtdfWtmihgKyNPIaeoMQY1gtE0qR8tZDThCrrcadBlNgcpFyUw92KEiS2Dnjo
-         i/3cOVbTMqCk/hthrq1l99Y5YOZiCzmqkpFBoAoCC0r4lyrCfb+IGv36MIzJx445y0Mi
-         ClRrxt5X78/aRfEbSOqSMyjJyUzerT9pCugyS2+Q5Ul5O0F+/0w6Un0upmCu1BtySTKt
-         vg0lhs5H89kCBgEx2zdJwadcFVKXLvU71PEVXym0bfmyiZbPzxC8wuwEVpL4zo0kTQ4k
-         M/Mw==
+        d=gmail.com; s=20230601; t=1752233673; x=1752838473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h5iCt+AL9f4UNEya1UkmziIpzAIFx+Cs0OtkGEYlA34=;
+        b=TR1+fB0LCHtyrh0EQn/9OMRfAB1BiXr04X6brauUS9LczHZOVGrLI11VwNtKpGJCYA
+         HjGem3iHJvRodcq5qpZP8fmkRU6JrpT7UpoPM4o24a5r49tHYL14xll6YgmkIoNpXiSs
+         CJflZT72BZLWptiot9IL5Rht4inFlYzYLyvF999yJp2G0Ls8L0CxzWgSZmVXg6dX9SSl
+         tNPWcoArm1CB+wIqrcSm9N7QiHdIro6wXItNtCx/1cLUaz3nQo549J7CXH+hXukv0qqh
+         WwV38YL734VLyWNfe8xEVlFCQWzxmpkbsUEx/nlWC0AC5EQcTzelLTaaC6jYoFN1G9dE
+         Orgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752233656; x=1752838456;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8wFTFvOPl9z0oMG+Q2qe8rihqJLxAx1U3xn0MBTrYNM=;
-        b=o0eZFgrNl+9uo4StD8iT8OX7TTu0bY/rF7Y37VGVDjFkLHB+Dk4YGqaDJFKdT0+NL7
-         Wbv969hL/B+mjc/8L24T4sZdo0l9wIHSaxiROFpMhRUNkwnG/3yILqUbR1/wIc2KBNTe
-         AjmlAIItNEHwORvvihWOvtRC3F4DXpmLwWBm568crvOgSme4dcav4yryd1oXWbrPZg+n
-         661bcO+kuwMP+UW+Nan7Ghljp79iIcjhZJg+Hy+04B6oxtn7aFIFhB4RFqhcrb6sSMAA
-         wqvPEWcJo9HKon1GTxk7ojgFx9DAj2ngMqQnlzYpG9cG/3r0LmhpcckF5W0Er41lM3qk
-         qMig==
-X-Gm-Message-State: AOJu0Yywlczs65h7o4ZNiQ2HM2ZWdBVhiVCVL7QBFje5wgbMZ1qoWlWy
-	bv1OJlwxz/er4ERCrMU7dZ6O2T3y30YakmARf9YImTH3gLGYznT4pCvL
-X-Gm-Gg: ASbGncvE2Mp2VHtK2879E80Su/WP6ZW0rB00HQd/VJXet2/enLDPzz2Oly2RfOb/2Gs
-	B4HvmAVDTlLKulW7j8iz5d9DKqmIzikk63RdGxW+HAZVeBmgscVb+zv2kWcyK2Kc6mn62duUnby
-	pTu67GazxnI3aZGHhlilNMbE6bgsZnttS/n2AqX32tN91s56F4k4nJAPxWFxnJXRVelpuBOEguR
-	sik8e8AFyhGHQtluKKkFXj7DBNg+BlvvmUBNuN84SAGa+2yYKms6Nj4yH+tao86ruexwMQ44gSB
-	sY9pe1NA/b+7wOI/wGWwfIkSat5Bk9j6FadMGoxZymztMne04h27vCJZPCgZT2haEjo8mnWIjYM
-	om5ATTOImYT+5zqAUjLwppj4i
-X-Google-Smtp-Source: AGHT+IHi/2v3d4D0niLSXVfJBurK7ik6yfS2C/Nk2uOVVVzuNXttGT4YdRjf4pKn117w/IWULOA2qw==
-X-Received: by 2002:a17:903:230d:b0:21f:5063:d3ca with SMTP id d9443c01a7336-23de2fc7394mr105884465ad.16.1752233656319;
-        Fri, 11 Jul 2025 04:34:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752233673; x=1752838473;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h5iCt+AL9f4UNEya1UkmziIpzAIFx+Cs0OtkGEYlA34=;
+        b=jzDs7xHXnk8EgeFCQVxB4U/tF4WkkCn9iyjR9EMjCLkJHx1CkJwoyfKadhSlAOmnpA
+         6LDFGgz/rgKXoAQRuBelWLmuvb55D60fIhnP52OdFolVqXfV4msWopU3/sN/BdG960Q8
+         /s9gw9ge1NXdKzC2DGjwhC8qUdznsbVv75PBEttYhET0G3pbyOjP9Xf0h8vRPJscPHiN
+         wloiDlqsSBTYlLHbvkLTcdKo/91ftoKGthvXTHS4dWnoE5XYcrexzD/g0tLkrUz72o7g
+         nKI1SF5C7RfVylUh8tBsEY+kIvHwp2xhYhKzCYrYlbYPmY6hcfdKuxJay/s705KcSxLZ
+         PaVg==
+X-Gm-Message-State: AOJu0YwduXLGyVNmqSQKFmxziI+fV+h4y3xMzRHG7p/cofv6XcEIXGAi
+	UTrA0WSpUZgCbOXKqrNQDKMDFrIp8oIGIOVXbaab824gORm0PGus9GUU
+X-Gm-Gg: ASbGnctcFbAe3ANifosWr0pROW/PBSdF65nA/zwVlJIKkVSiOjISVsc1Jyn3sgAVCId
+	TD4WhmKwy7R6Kj8ulrbgl3B9w7V3Wt+hyXGEjlCojqdLbDfwqzNuwy6f20h4XIO0GLw7/jY+EQ+
+	9MltKf0WmehEnLYeRWMA6twqu1pzFkmh0jxcr0va/ZX3p7fe/sF30jqolVFdLD+s2wRKtGZ4xjS
+	rSF8vNSs++wb4UgA71EjuVfXJ9O1sFdeKlKeEgz2RR/l1a07oOGy+ZODonaFXbgLM7yKSqQKlaY
+	0RGyFe09DhXLo0kELH/EqfO0H4lmDgRgsqtiQA4QN42hdDeCoRbwM8olT9qixeV+IKc9kSInhTq
+	VPxdCXXwi+RHRjewKL06NfiH69XpfENEo5pU=
+X-Google-Smtp-Source: AGHT+IGi+Vvmr97ZvJ+Y5+BpKBpsR883hN1robqRgupXWnlJMU7lHHhGpyhS5NtkWHY7cZdz/WPcBQ==
+X-Received: by 2002:a17:902:fc87:b0:234:b44c:d3c8 with SMTP id d9443c01a7336-23dee263c5emr38401515ad.37.1752233673009;
+        Fri, 11 Jul 2025 04:34:33 -0700 (PDT)
 Received: from quat-desktop ([2001:569:514a:9100:3f23:7b0f:f6a2:1ebd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4334005sm45480825ad.158.2025.07.11.04.34.15
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4334005sm45480825ad.158.2025.07.11.04.34.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Jul 2025 04:34:16 -0700 (PDT)
+        Fri, 11 Jul 2025 04:34:32 -0700 (PDT)
 From: Quaternions <krakow20@gmail.com>
 To: acourbot@nvidia.com
 Cc: rust-for-linux@vger.kernel.org,
 	Quaternions <krakow20@gmail.com>
-Subject: [PATCH] gpu: nova-core: fix bounds check In PmuLookupTableEntry::new, data is sliced from 2..6, but the bounds check data.len() < 5 does not satisfy those bounds.
-Date: Fri, 11 Jul 2025 04:33:26 -0700
-Message-ID: <20250711113327.39201-1-krakow20@gmail.com>
+Subject: [PATCH] gpu: nova-core: define named constants for magic numbers
+Date: Fri, 11 Jul 2025 04:33:27 -0700
+Message-ID: <20250711113327.39201-2-krakow20@gmail.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20250711113327.39201-1-krakow20@gmail.com>
+References: <20250711113327.39201-1-krakow20@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -73,19 +77,67 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
 ---
- drivers/gpu/nova-core/vbios.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/nova-core/vbios.rs | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index 663fc50e8b66..5b5d9f38cbb3 100644
+index 5b5d9f38cbb3..d456c494374d 100644
 --- a/drivers/gpu/nova-core/vbios.rs
 +++ b/drivers/gpu/nova-core/vbios.rs
-@@ -901,7 +901,7 @@ struct PmuLookupTableEntry {
+@@ -364,8 +364,9 @@ struct BitHeader {
+ }
+
+ impl BitHeader {
++    const MIN_LEN: usize = 12;
+     fn new(data: &[u8]) -> Result<Self> {
+-        if data.len() < 12 {
++        if data.len() < Self::MIN_LEN {
+             return Err(EINVAL);
+         }
+
+@@ -467,8 +468,9 @@ struct PciRomHeader {
+ }
+
+ impl PciRomHeader {
++    const MIN_LEN: usize = 26;
+     fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
+-        if data.len() < 26 {
++        if data.len() < Self::MIN_LEN {
+             // Need at least 26 bytes to read pciDataStrucPtr and sizeOfBlock.
+             return Err(EINVAL);
+         }
+@@ -772,10 +774,11 @@ fn into_image(self) -> Result<BiosImage> {
+         BiosImage::try_from(self)
+     }
+
++    const MIN_LEN: usize = 26;
+     /// Creates a new BiosImageBase from raw byte data.
+     fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
+         // Ensure we have enough data for the ROM header.
+-        if data.len() < 26 {
++        if data.len() < Self::MIN_LEN {
+             dev_err!(pdev.as_ref(), "Not enough data for ROM header\n");
+             return Err(EINVAL);
+         }
+@@ -900,8 +903,9 @@ struct PmuLookupTableEntry {
+ }
 
  impl PmuLookupTableEntry {
++    const MIN_LEN: usize = 6;
      fn new(data: &[u8]) -> Result<Self> {
--        if data.len() < 5 {
-+        if data.len() < 6 {
+-        if data.len() < 6 {
++        if data.len() < Self::MIN_LEN {
+             return Err(EINVAL);
+         }
+
+@@ -928,8 +932,9 @@ struct PmuLookupTable {
+ }
+
+ impl PmuLookupTable {
++    const MIN_LEN: usize = 4;
+     fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
+-        if data.len() < 4 {
++        if data.len() < Self::MIN_LEN {
              return Err(EINVAL);
          }
 
