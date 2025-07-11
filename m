@@ -1,90 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760F52609D9;
-	Fri, 11 Jul 2025 09:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A464521CFF6
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 09:25:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752225100; cv=none; b=DuVw9ZntP/Du3YYsVdyiT6v4ayop5LQodnI7W3wm2cE/xZqzs1da/IbinAkNleCFAi8svirqL/zvfCxPL/0oK5doyfkgiohKUWQ5X6YQ85040slkuQGNUYmyIymY5nIHv5XjhaQ6df0dUB8RHdVQCtovP4PA+2xTkKsY5MZ32F0=
+	t=1752225925; cv=none; b=EFIq3KojStwqiF12XcGSP/gIOhh6dvMzX7q11AcxW7WlsMkfTJW8h9qvw1w4zgVFP3GrVOIQJyuo7ZaYrSVgB1N2/GteHAIPvVNHVpTBnFoAwnh+6Yisosh+OKdYO89uAG/h5pPVV5BQ98CzqDewzsqSj4Alui2AiQVD86hY+uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752225100; c=relaxed/simple;
-	bh=tudeVcSNoXzHGy2LFEpMNuqRRFSL77J7jE48/SmT3GE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=b/bws/LgZ0fMdtW/aPyvNaUst4Ioigg3ToHcoL3McFTNCjZ6A5V3ANpIR+Dm5vNYR91No+fJ7u503QJtA88wGBWqXYngBnXfcMcJ8IdO5nPXeylLeHZQuy2RZpLGK+Gntnkg3UMJCuFpfBodgfOSzcXAtEihwNjOX0xughoN3ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5zHYcJ6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752225925; c=relaxed/simple;
+	bh=9LHxuTI8hpxcflNdLOKFQbbQPPlJdw91dYnBuAXCxn0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=TEVEIRNBO5MaB+wE/rX9/aAJcVX/YzUHN/I/i1CgEzkNULy0yK5JZ8k4VJiM2yg2msx6TAIOkGPcGIuNxJfaFxNdkcndZI6pHmF0wtCao2BRLP4kqteEKI6gJEZ23r7/kcru4FzQc88rrwbxq699rpe2jHyZG/WBjw+epzPE+Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=lofho167; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5zHYcJ6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2042C4CEED;
-	Fri, 11 Jul 2025 09:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752225100;
-	bh=tudeVcSNoXzHGy2LFEpMNuqRRFSL77J7jE48/SmT3GE=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=t5zHYcJ6NmMa69kELTdf+KaS3dNYHjoWcKpG2Y2O9Gc5IhR2dRmmd8nNw/esLbwrT
-	 KqFf2FoMJI5CakGjKAfF+CouVfT0sqaZxzHQAUCKV/4IR3ZObCuXeFLfuSFXzbmVmG
-	 Yaj6gKOpcyThw772ug+LAVjyO0eOgm+0N8LrGCrZzSiQLYZRroEt/x3aoEhqpQsO7U
-	 7uK53atW8y5q4ul8Wgtiu+4+DEZG64S/CQ2hWPuJNhykFDeFbCrnL6wGSwkXEqKMB4
-	 f7H4rSZ1Cvgwn0dyVuoLjCPljpPWIUZhse4jBF9DhfDaHn8cnIc3feIDmyt5bOtJI1
-	 hIi0z+skNoajA==
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="lofho167"
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250711092520euoutp020094a380335d225db9d67a0e8123981f~RKDD0M-au1740017400euoutp02t
+	for <rust-for-linux@vger.kernel.org>; Fri, 11 Jul 2025 09:25:20 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250711092520euoutp020094a380335d225db9d67a0e8123981f~RKDD0M-au1740017400euoutp02t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1752225920;
+	bh=HzPkVcD7EBpLB077YuBkrkHkCg7R8v/lMTm610TXX5M=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=lofho167lt5+OYJKtBe7YUJJ6Lp8NKwqQQRQ7gDsuC9W+lVy6exTq5fHdfWYhe22o
+	 vEyaZAuzdXF8zK35Ok8wiQ6GXPvEe3pOz7xS/3yD6eQjEVnIw9Y9fMfMKUsSta1ehf
+	 RtER64Nyp3VUGFlwOF8ft24Iy/Ad9RidLep8Ptjg=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20250711092520eucas1p2c27be54c048556b3ce54242ab3d228e4~RKDDMne5X0267102671eucas1p2P;
+	Fri, 11 Jul 2025 09:25:20 +0000 (GMT)
+Received: from [192.168.1.44] (unknown [106.210.136.40]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250711092518eusmtip1c7e57196a1c1e0613b9ecfbad261718a~RKDCD2bkB3095630956eusmtip1K;
+	Fri, 11 Jul 2025 09:25:18 +0000 (GMT)
+Message-ID: <e6d85387-b46e-4e4f-90a3-f60a800f1c2e@samsung.com>
+Date: Fri, 11 Jul 2025 11:25:18 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Jul 2025 11:11:33 +0200
-Message-Id: <DB93YF5EJT58.EVSPYQ3ZJLUU@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Peter Zijlstra"
- <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten
- Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "FUJITA
- Tomonori" <fujita.tomonori@gmail.com>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <netdev@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] drm: rust: rename as_ref() to from_raw() for drm
- constructors
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250711-device-as-ref-v2-0-1b16ab6402d7@google.com>
- <20250711-device-as-ref-v2-2-1b16ab6402d7@google.com>
-In-Reply-To: <20250711-device-as-ref-v2-2-1b16ab6402d7@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 1/3] pwm: Export `pwmchip_release` for external use
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
+	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
+	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
+	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
+	Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org
+Content-Language: en-US
+From: Michal Wilczynski <m.wilczynski@samsung.com>
+In-Reply-To: <tepvopkizn4jezpqcbhwrcsnsrjacztv6kuv53hidcjbrnrs3c@pfcp45jarcoy>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250711092520eucas1p2c27be54c048556b3ce54242ab3d228e4
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250710185439eucas1p2684255d83d807dfd6f8b9b3caea65df6
+X-EPHeader: CA
+X-CMS-RootMailID: 20250710185439eucas1p2684255d83d807dfd6f8b9b3caea65df6
+References: <20250710-rust-next-pwm-working-fan-for-sending-v11-0-93824a16f9ec@samsung.com>
+	<CGME20250710185439eucas1p2684255d83d807dfd6f8b9b3caea65df6@eucas1p2.samsung.com>
+	<20250710-rust-next-pwm-working-fan-for-sending-v11-1-93824a16f9ec@samsung.com>
+	<tepvopkizn4jezpqcbhwrcsnsrjacztv6kuv53hidcjbrnrs3c@pfcp45jarcoy>
 
-On Fri Jul 11, 2025 at 10:04 AM CEST, Alice Ryhl wrote:
-> The prefix as_* should not be used for a constructor. Constructors
-> usually use the prefix from_* instead.
->
-> Some prior art in the stdlib: Box::from_raw, CString::from_raw,
-> Rc::from_raw, Arc::from_raw, Waker::from_raw, File::from_raw_fd.
->
-> There is also prior art in the kernel crate: cpufreq::Policy::from_raw,
-> fs::File::from_raw_file, Kuid::from_raw, ARef::from_raw,
-> SeqFile::from_raw, VmaNew::from_raw, Io::from_raw.
->
-> Link: https://lore.kernel.org/r/aCd8D5IA0RXZvtcv@pollux
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
 
----
-Cheers,
-Benno
+On 7/10/25 22:52, Uwe Kleine-König wrote:
+> Hello Michal,
+> 
+> On Thu, Jul 10, 2025 at 08:54:28PM +0200, Michal Wilczynski wrote:
+>> diff --git a/include/linux/pwm.h b/include/linux/pwm.h
+>> index 8cafc483db53addf95591d1ac74287532c0fa0ee..8f0698c09e62b893d63fc258da3c34781183056f 100644
+>> --- a/include/linux/pwm.h
+>> +++ b/include/linux/pwm.h
+>> @@ -478,6 +478,7 @@ static inline bool pwm_might_sleep(struct pwm_device *pwm)
+>>  
+>>  /* PWM provider APIs */
+>>  void pwmchip_put(struct pwm_chip *chip);
+>> +void pwmchip_release(struct device *dev);
+> 
+> I want this in a separate section because "normal" provider don't need
+> that. Please add a comment that this is only public for technical
+> reasons for the Rust wrappers.
 
-> ---
->  rust/kernel/drm/device.rs  |  2 +-
->  rust/kernel/drm/file.rs    |  8 ++++----
->  rust/kernel/drm/gem/mod.rs | 16 ++++++++--------
->  rust/kernel/drm/ioctl.rs   |  4 ++--
->  4 files changed, 15 insertions(+), 15 deletions(-)
+OK, thanks !
+
+> 
+> I understand you are eager to get this merged, but still I'd ask you to
+> slow down your patch sending frequency. Currently I tend to not apply it
+> for v6.17-rc1 as I'd like to have that in next for some time.
+
+Thank you for the feedback. All of your points make perfect sense.
+
+My apologies for the rapid pace of submissions; I will follow your
+suggestion and be sure to allow more time for discussion between future
+versions.
+
+> 
+> With you waiting a bit longer before v11 I would have written that in
+> reply to the explanation in the v10 thread and we might have saved
+> one iteration ...
+> 
+>>  struct pwm_chip *pwmchip_alloc(struct device *parent, unsigned int npwm, size_t sizeof_priv);
+>>  struct pwm_chip *devm_pwmchip_alloc(struct device *parent, unsigned int npwm, size_t sizeof_priv);
+>>  
+>> @@ -551,6 +552,10 @@ static inline void pwmchip_put(struct pwm_chip *chip)
+>>  {
+>>  }
+>>  
+>> +static inline void pwmchip_release(struct device *dev)
+>> +{
+>> +}
+>> +
+> 
+> Is this needed? There is no user of this function that doesn't depend
+> on CONFIG_PWM?!
+
+Since only Rust is using this it's not needed. Thanks !
+
+> 
+>>  static inline struct pwm_chip *pwmchip_alloc(struct device *parent,
+>>  					     unsigned int npwm,
+>>  					     size_t sizeof_priv)
+>>
+> 
+> Best regards
+> Uwe
+
+Best regards,
+-- 
+Michal Wilczynski <m.wilczynski@samsung.com>
