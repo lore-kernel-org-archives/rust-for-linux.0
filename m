@@ -1,248 +1,158 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBF02836B5;
-	Fri, 11 Jul 2025 14:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6FD2E0939;
+	Fri, 11 Jul 2025 14:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752242872; cv=none; b=SuT7FtDgUInKYGphoi0mEvcHfabyqlqdEksG7TMRxi4tYPPLWsBUeSqn2OnGDcvm47NnUJtCk025flowoF9psOtuNiNRhXEwGXEMp/n3EcfLwIop1nKVxgYrlzrDuuoubiEbtgofjng1JhKppUgyDZ7qpZgThTmkKEgACn65kZs=
+	t=1752243463; cv=none; b=Q0KkTFdMFrwDvcPGifLCcMbo21pFJLpPPfcMoG0zObBy/W4rsBRtVlkio9NFF7wksmenoVIZh9dy8oN3CbvUety40xzSbenxidlu8A2qM03is5LOyoslbtI+ldU1Js+zJsraFSrry+YYN/qgTxgCCF21KNIDGCmUNQOdJRz2Zdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752242872; c=relaxed/simple;
-	bh=BF2OSTIla5z7+/j39xtNnONebboZGK4PpqpWRQ9Eavc=;
+	s=arc-20240116; t=1752243463; c=relaxed/simple;
+	bh=drETIl/jROPzXvjFx0KylH8snG1xWmuuvGKx2AVrXwk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f67FIb19g9J1v52Dr2fGROXSk45m+shl1w7rSwcA00DMME48KNQs1XQ3s5N2StEbOz1Gt2KwickwET+gPf+KBRpWBnv4zNekkQXaZxZGYBhTqHyeeNLdQuGZz8ndsbWXS3/MZBy59gG8XhMy+0BaQjhPYyBzvnAdt8R2kb0Wx1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kBF+XYeG; arc=none smtp.client-ip=209.85.222.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=E4Kr7yfFk8kFEeFDV9eeoBoucbB0EZY4EXlWxJCNtpDtyyxQ91F9ipBziwwcJplsvHuMa11w0tbnsauaiMJkOBSlGsJVqu8t9k1fptPZR8H7giBfihFb3WMNFIir8mk4T33OGUBZPwqpsoX05iRmDCuVJmMhz8GlpSt9/1xmogY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KIqyLd+F; arc=none smtp.client-ip=209.85.160.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kBF+XYeG"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7d21cecc11fso378350185a.3;
-        Fri, 11 Jul 2025 07:07:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KIqyLd+F"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4a77ffcb795so20357761cf.0;
+        Fri, 11 Jul 2025 07:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752242870; x=1752847670; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1o4QOJvgTDr/+qtVAfA8JyDjjkgNnLqLh+c7VGsh8O0=;
-        b=kBF+XYeGp3OFo7zpgF0oLH4+IH2og45JsDCtHMraI7IkI+Pqj5QlauqJFF7PPOH/tr
-         a9EiDWGSzCMaY7onRJaAT8M9TyNfGNQZGbYlQ6PaJWRwVg2PARPvw5qd71MdiRmQPVZk
-         +TWk6Z7PA3ut4Sdq6XbAxvVskuibYu5p4HtsZ21xT6m72rk/Cz2CELt4VRtTo/EuslZW
-         OjBcodewS6uiGsAjX1fYxCJ/ghkrKbVWImwHZ7J2SgwHhDvhgIy5n+CTaK0FEU/jUYhr
-         3aTZkkhFLES+2xa04jEb7wAllQIY2Vz0tA9ajIV9a+IV9VagXBn7EETAXTprzM1/RCBB
-         jIog==
+        d=gmail.com; s=20230601; t=1752243460; x=1752848260; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N++RXEHjieQM0ci6ZaOLIBjfnKPwlA53QT2R6OroCSc=;
+        b=KIqyLd+F/DGMsgdInhWCcaRPe5Y9+E9lq0ay+w45rhWPnZrTUhzMk0QiEzHV387wxn
+         IPobTzTg039mW/jyqD2K3X2JYAR2SxMLNBdFUpdFx5/ybLThJ9JpJcb1DK3lcCJw+vXY
+         nT8lSNHzj7RnLmMtm6Df/559l4HlRDnXCKX/sGcBTLCnK7wsUEdJWxT1SQTi9EXidgmP
+         HghwWJh7QXiBb++cP4dAc14Qa4r6A4G1pW/8/kHgbIXeMNqUAlUrcrA4VeHt2oE+NHdF
+         jDMD+1YjS9BPiETLrJxgHY/hq1ty7NAHMP9QHgUbzeW1rO/q1hqQTdX8emTkwVagcz+D
+         OWgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752242870; x=1752847670;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1o4QOJvgTDr/+qtVAfA8JyDjjkgNnLqLh+c7VGsh8O0=;
-        b=Qji9ZU8TP77/TBZQBah0CjFG/b4B4QAE6bYgTPCzaHgPmpJT4ymdYdWauI0koMbatH
-         6a45COLT2KZnnVwESOAhYVfvsg+LKylywxobJ86AMlszwuN605F48fsbKKw2pX7v7qQW
-         hPiROCuHT1T1I0oBnbnrWcGM6X6/aGprje2nAY1jX9YARB4jsAsQsSbKDjAXJ7icdNd3
-         GHE4GDn+HdjRSH5C3iDSYSCe6Rcbaw4gSy88P+Co6FbaKjugZ9ibERZv27GWvhg1f+4p
-         ZyojSdFpnYAi+rdx0D2SE22kVsvm0h1W58Qx2pfJmOUt1Pjmu3gUDnGICqa6wXYtZ//h
-         V2WA==
-X-Forwarded-Encrypted: i=1; AJvYcCVyUWV8C//ib+pVAh3KGWnrpe+62AKx/nWOMzR693CeEXpZ9RyP2tR/eLjPYqAnlSLNXzwcF3wZ94LRTww/@vger.kernel.org, AJvYcCWH+z/kNQZYJJqpJuyeiiBLyd3R4IBcnmQe9Sc6NLnIT92HJcFiAHk3g8aK6Si+s+lSWeKHvqP8DT2x@vger.kernel.org, AJvYcCXCF1cr7rHc45NAIvGP/EDmOudDVW1hQ4y4CDSUhIkTyQp+kyNH5NJhyRMGZC4fOQ7Cz9Aa7knrZegO51eNJz4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxftzuoamHjW+Ay2hr5oubx38/CnEnzUcPnCBP894RoNcoKOWEa
-	QpzsQ7/VjniAB9s8dm/woO12uEEJi4oNyn9zDyYsf6P7FZzQry0tBwQ2
-X-Gm-Gg: ASbGncuyLyXUIQJR+EYzqbvgTEBxA9ZflrtmFXXpY/f+tsHxrhAJgu8DmKk9W/x1ZI+
-	JzqGXyx6GBWtSEb/K3JU4aezAnHYyBBCG9z3cGZVdVLq+CpqeHYuRf10ZwZ45YPfUFDkDrkYEsu
-	ygouv7h6TOhmkRFZMwv+fNxUf539gJAiHUZdJjxpnEsmqgjH/1+n1gGz14JYs90hMEtrcPgFJQw
-	Ucz6OWGoRCIFIeJWbRE5ox0vXqFyF8XV3z5rTuzwxO/hgzdlXkOrhQrdDqiqOOfwH8pv+TLhL8A
-	GEAzuJniPXKp3t9nASMqzr+aAHpoL3pemzGv4UybfgHtZ1E3z59hYRND+478V0HBwsdgWh9l4cg
-	6la9DJOEaCGRqg8o+gmokdyCcradoUxAL+pjPS3hjIyQRAC76/53eK4z6+lXca33VlKALe820cc
-	18OsHc3Z96zzLd
-X-Google-Smtp-Source: AGHT+IF6+2c6drwssbbyHedPCqYFE+1P3N4Vq4VaZMC4+LDbN999+fCyzgp647vBzgj+pkwfnRJ4KA==
-X-Received: by 2002:a05:620a:4049:b0:7d3:f68c:5778 with SMTP id af79cd13be357-7ddece114camr723075885a.54.1752242869934;
-        Fri, 11 Jul 2025 07:07:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752243460; x=1752848260;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N++RXEHjieQM0ci6ZaOLIBjfnKPwlA53QT2R6OroCSc=;
+        b=T8/g7rTTR3aKBdjq0OKhLVjwumuRn2bLLtNAAGn/S7whKkvr3dAfA6AnLT/vZW6qio
+         Cg7A0DXwLVNP+2x5Y+siCSHTvvK9R1rPTuySg7ZKlveXc7UAiWu3ROG7AeSq9po+Y9Hb
+         wbsh/uLyiaujC44y7xnOUY2/etngvMQYuJwuHFjJBG8cTjqWTryzbCjmMH2fOPFbQtBZ
+         Py5YAfd+rJTkFxTlLg/crz9G/exYrrLL0PTMDhbG8tG5a9oeIfcY0P+i5y9YhD750MHR
+         PfpNESYfGiW4j8JvYC1EevZqQeOizF6lKSCmixtfsSJ3P0aba6uIt2I9bK6oK6uXGSrn
+         jH7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXOC0QjrVVxHOfUnqgld1VgRji+VokeG0pXV9f2nvpXtihcFHEvimn5rYHHSRMPm8Bc8/XpU6ypqZulLCw=@vger.kernel.org, AJvYcCXkiH/3tSpboGWbRA3eIm3j+XQJ52n7y2BkjE1cAe19wBVOZfL6LpoaBFnzK+YfhKSW69uQmyuywrTkvHRzAU4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza8LbctXUikqG8IjCISNQkdtGoGjBziUKSj4YoO9/F1uBe/f0g
+	iaOV3CYl9xK6hvAiuyRA7pAxDIzTe7Cvmd5qWbZwWAZG1CyFaRhysVKP
+X-Gm-Gg: ASbGnctardwrPwlVbtzO3FatTFlU4nQX5XIvTM2Dsd6aCIJAescz9/NozRFAmBie4gO
+	QBzQggNkRyjZHG5anA1WdXPGoS5khch9HOmyTS1ET3Xopf63IxKUaq0d1TGZ8QLGcJ3gfejUykg
+	BJDK2jmGl8mN8xVuCA57U5GK02613aPN2sTEr2s/gHSVrXG+lg/GGe8n6tm9svdAQ0DUsx60cn5
+	0sl4+9x31RwlJFuO47CVX50LHjglKxGmz0xM+W7aWkClPOqL4DCJCfqCG3GhtVqgXlQqp5onGpi
+	Gw1dcXaHHuP2xNtr+LoSzyZFj2rJSf0pMQiDYQMkqteBf4CdaUhXv+hMxZumFJYsQ8Fx/S7fgrs
+	z/iRtCRTLLLD+XpsK+WxQCfoCK/l9b1TRgHxYZEiYDIoYGjuE+e7o4Es3tEmGAbD+NhpOiIQmfi
+	mT+3uYPqkoaxuR
+X-Google-Smtp-Source: AGHT+IHammHLjvAPSw5xRi4x+C3i99yFaWtFpkdnYjYGTd5oidZ1HIjVht49awOE5Bre9ZGo82z5mA==
+X-Received: by 2002:a05:6214:4587:b0:702:d83a:7148 with SMTP id 6a1803df08f44-704a70161d8mr57818256d6.23.1752243460121;
+        Fri, 11 Jul 2025 07:17:40 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7dcde421c82sm223903685a.56.2025.07.11.07.07.48
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7dcde32bfcasm225548885a.65.2025.07.11.07.17.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Jul 2025 07:07:48 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 25215F40066;
-	Fri, 11 Jul 2025 10:07:48 -0400 (EDT)
+        Fri, 11 Jul 2025 07:17:38 -0700 (PDT)
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id A4EA4F40066;
+	Fri, 11 Jul 2025 10:17:37 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-12.internal (MEProxy); Fri, 11 Jul 2025 10:07:48 -0400
-X-ME-Sender: <xms:tBpxaFdOOFeX2emfJHq_7At8LNuoLKEFgX6g3IEz3ITtzny5Syy08g>
-    <xme:tBpxaD_jZV53gl-IBhcZs5meDWin9TxwdqwOi8MQKdjY9P7jYwOkMyjp9F6FwhSqC
-    gpfcMdK4uJWX8RY1Q>
-X-ME-Received: <xmr:tBpxaCWblW_K-9L7XgpYdL_09wzIXNDsll--LMwKiLanjZSA7kazqoVxfQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegfeehvdcutefuodetggdotefrod
+  by phl-compute-07.internal (MEProxy); Fri, 11 Jul 2025 10:17:37 -0400
+X-ME-Sender: <xms:AR1xaLXCwOVWOEdpV4lGyqJk0D3LRKT2Q3nkLnzvhNTbxL7h4w0U6A>
+    <xme:AR1xaPYML4v8uFO4TOWa3kkqFDLgWWxCBrazU1Ej9lwBncxgyMmyjNwVhencw2MeO
+    jOvlJnsZwRhhV1q1A>
+X-ME-Received: <xmr:AR1xaM7G-67UOtBAQFaFpCcx6mW7OuyljK5nZHyiaUXB9ted_U6M6gf-CQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdegfeehgecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgesthekrodttddtjeenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeejjeeuieegueekheekffejgefhjeeuvdetfeefjeegfeeigfdugeeujeduvdek
-    gfenucffohhmrghinheplhifnhdrnhgvthdpfhhfihdrrhhsnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
-    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgt
-    phhtthhopedvledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhighhuvghlrd
-    hojhgvuggrrdhsrghnughonhhishesghhmrghilhdrtghomhdprhgtphhtthhopehlohhs
-    shhinheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlse
-    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhn
-    uhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhkmhhmsehlihhsth
-    hsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqrghrtghhsehvghgvrhdr
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthho
-    pehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:tBpxaAj7S2IUdaCBj_ThkVwBhYHUTMmVxGpCgg4tCKCJqsptuBra9g>
-    <xmx:tBpxaAwGySgKEYdOtkMBZdsdTdAwCljuasEVb0D7Ghxgh47OJ2CtIg>
-    <xmx:tBpxaGqBiNeR6cExwZDLESfXb0TGlPR3XWUStzBr1hUA4cPgZclHzQ>
-    <xmx:tBpxaLlXr5znpt8fwYHhCaFjXtlmoSXXO1V7OuZYWvNM-3iuOKkVHQ>
-    <xmx:tBpxaBo7xRdOCOPtvWkcy7VczTrNKVHJBf-hbzHgMpuNpPjjYcqTcT8n>
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopeduiedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhh
+    hlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehtjheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhirghngh
+    hshhgrnhhlrghisehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
+    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
+    gtohhmpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopehtmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:AR1xaIzVtBXbniCSkA0lDSmvHdbamgOtT-pje6rpSUfS_9eZVAiluA>
+    <xmx:AR1xaFoAUcwJe0xgkWJL633vk3pMnVuH0_imm4fEIfHTO-tMwRkmbA>
+    <xmx:AR1xaC1AxfPQ2sJwzETsqnIP1dZqXXZZSYfpGXqLvzRxHUyqnwCO5A>
+    <xmx:AR1xaGA_WW4pxsyhp51qlS3VajqA83J5rbtVjOLSr6KQciuvwjCmtw>
+    <xmx:AR1xaLNBHbZBfDaR8vZKSYXCVOz5yJmF18MEij2h14oV1X5nZA88V4SD>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 11 Jul 2025 10:07:47 -0400 (EDT)
-Date: Fri, 11 Jul 2025 07:07:46 -0700
+ 11 Jul 2025 10:17:37 -0400 (EDT)
+Date: Fri, 11 Jul 2025 07:17:36 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev,
-	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Tejun Heo <tj@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,	Lyude Paul <lyude@redhat.com>,
- Ingo Molnar <mingo@kernel.org>,	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH v6 9/9] rust: sync: atomic: Add Atomic<{usize,isize}>
-Message-ID: <aHEasoyGKJrjYFzw@Mac.home>
-References: <20250710060052.11955-1-boqun.feng@gmail.com>
- <20250710060052.11955-10-boqun.feng@gmail.com>
- <DB93Q0CXTA0G.37LQP5VCP9IGP@kernel.org>
- <CANiq72m9AeqFKHrRniQ5Nr9vPv2MmUMHFTuuj5ydmqo+OYn60A@mail.gmail.com>
+	Trevor Gross <tmgross@umich.edu>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: Re: [PATCH v3] workqueue: rust: add delayed work items
+Message-ID: <aHEdAPFNId2bgoKu@Mac.home>
+References: <20250711-workqueue-delay-v3-1-3fe17b18b9d1@google.com>
+ <DB9A8OPZK3DZ.YVQPQQSD12MU@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72m9AeqFKHrRniQ5Nr9vPv2MmUMHFTuuj5ydmqo+OYn60A@mail.gmail.com>
+In-Reply-To: <DB9A8OPZK3DZ.YVQPQQSD12MU@kernel.org>
 
-On Fri, Jul 11, 2025 at 03:45:32PM +0200, Miguel Ojeda wrote:
-> On Fri, Jul 11, 2025 at 11:00 AM Benno Lossin <lossin@kernel.org> wrote:
-> >
-> > Do we have a static assert with these cfgs that `isize` has the same
-> > size as these?
-> >
-> > If not, then it would probably make sense to add them now.
+[Cc Hamza]
+
+On Fri, Jul 11, 2025 at 04:07:04PM +0200, Danilo Krummrich wrote:
+> Hi Alice,
 > 
-> Yeah, according to e.g. Matthew et al., we may end up with 128-bit
-> pointers in the kernel fairly soon (e.g. a decade):
+> On Fri Jul 11, 2025 at 9:59 AM CEST, Alice Ryhl wrote:
+> > This patch is being sent for use in the various Rust GPU drivers that
+> > are under development. It provides the additional feature of work items
+> > that are executed after a delay.
 > 
->     https://lwn.net/Articles/908026/
+> I thought I commented on this in a previous version already, but apparently I
+> haven't (was it a different thread maybe?).
 > 
-> I rescued part of what I wrote in the old `mod assumptions` which I
-> never got to send back then -- most of the `static_asserts` are
-> redundant now that we define directly the types in the `ffi` crate (I
-> mean, we could still assert that `size_of::<c_char>() == 1` and so on,
-> but they are essentially a tautology now), so I adapted the comments.
-> Please see below (draft).
+> For drivers, we should also support 'scoped' work items and worqueues, where
+> 'scoped' means limit the lifetime to the driver being bound to a device.
 > 
+> For better understanding, in C one would call this devm_alloc_workqueue(), which
+> would guarantee that the workqueue is terminated on device unbind. Similar for
+> individual work items on shared workqueues (such as the system ones), which
+> would be canceled synchronously on driver unbind.
 
-Thanks Miguel.
+When using system workqueue, and at driver unbind time, you want to
+cancel the driver works instead of flushing them (i.e. wait until they
+get executed)? Canceling might be tricky (because currently we give away
+the ownership of the work item), and I think Hamaz has been looking into
+this as well, so add him.
 
-Maybe we can do even better: having a type alias mapping to the exact
-i{32,64,128} based on kernel configs? Like
-
-(in kernel/lib.rs or ffi.rs)
-
-// Want to buy a better name ;-)
-#[cfg(CONFIG_128BIT)]
-type isize_mapping = i128;
-#[cfg(CONFIG_64BIT)]
-type isize_mapping = i64;
-#[cfg(not(any(CONFIG_128BIT, CONFIG_64BIT)))]
-type isize_mapping = i32;
-
-similar for usize.
-
-Thoughts?
+But in general I agree scoped work is very useful.
 
 Regards,
 Boqun
 
-> Cheers,
-> Miguel
-
-> From afd58f3808bd41cfb92bf1acdf2a19081a439ca3 Mon Sep 17 00:00:00 2001
-> From: Miguel Ojeda <ojeda@kernel.org>
-> Date: Fri, 11 Jul 2025 15:27:27 +0200
-> Subject: [PATCH] rust: ffi: assert sizes and clarify 128-bit situation
 > 
-> Link: https://lwn.net/Articles/908026/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/ffi.rs | 32 ++++++++++++++++++++++++++++++++
->  1 file changed, 32 insertions(+)
-> 
-> diff --git a/rust/ffi.rs b/rust/ffi.rs
-> index d60aad792af4..bbda56c28ca8 100644
-> --- a/rust/ffi.rs
-> +++ b/rust/ffi.rs
-> @@ -38,11 +38,43 @@ macro_rules! alias {
->  
->      // In the kernel, `intptr_t` is defined to be `long` in all platforms, so we can map the type to
->      // `isize`.
-> +    //
-> +    // It is likely that the assumption that `long` is the size of a CPU register/pointer will stay
-> +    // when support for 128-bit architectures is added, thus these will still mapped to `{i,u}size`.
->      c_long = isize;
->      c_ulong = usize;
->  
-> +    // Since `long` will likely be 128-bit for 128-bit architectures, `long long` will likely be
-> +    // increased. Thus these may happen to be either 64-bit or 128-bit in the future, and thus new
-> +    // code should avoid relying on them being 64-bit.
->      c_longlong = i64;
->      c_ulonglong = u64;
->  }
->  
-> +// Thus, `long` may be 32-bit, 64-bit or 128-bit.
-> +const _: () = {
-> +    assert!(
-> +        core::mem::size_of::<c_long>()
-> +            == if cfg!(CONFIG_128BIT) {
-> +                core::mem::size_of::<u128>()
-> +            } else if cfg!(CONFIG_64BIT) {
-> +                core::mem::size_of::<u64>()
-> +            } else {
-> +                core::mem::size_of::<u32>()
-> +            }
-> +    );
-> +};
-> +
-> +// And `long long` may be 64-bit or 128-bit.
-> +const _: () = {
-> +    assert!(
-> +        core::mem::size_of::<c_longlong>()
-> +            == if cfg!(CONFIG_64BIT) {
-> +                core::mem::size_of::<u64>()
-> +            } else {
-> +                core::mem::size_of::<u128>()
-> +            }
-> +    );
-> +};
-> +
->  pub use core::ffi::c_void;
-> 
-> base-commit: d7b8f8e20813f0179d8ef519541a3527e7661d3a
-> -- 
-> 2.50.1
-> 
-
+> This is very useful for drivers, since it allows to provide a &Device<Bound>
+> within the work's callback, which allows drivers to access device resources
+> safely and directly without additional overhead.
