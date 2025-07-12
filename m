@@ -1,237 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A31E1EA7CE;
-	Sat, 12 Jul 2025 16:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752336091; cv=none; b=k4VEdItjDxO1EI78lk8p+zIbRH5M64nA6wB2Q0+Z61jrkvZMT+LXUb6zfm3fJpt2BUCkK9pRUV9mwuoIK8Sodx0ueFq1gCmDwqC67CnCqwexkA2nWUA5ryZUtHUJ9BLpnt3b5iGDhi4HbZL76Isw952JI+UrH3wqOrWXjmf2rUw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752336091; c=relaxed/simple;
-	bh=PMTOVbr1r7rTX0XGvBrv0Qgp90NaoreRhPBMkP7o4+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IVfbSCxSKzpY4gNGmCSKZ9GpFudXx1Awv6Z0zCXUGuhT3NgJ+9O1TARhX5NaLqcuLh1qmZklG9NG8CbFzTD13vvVm4NZjPCHqONkl2NlQhAEeWuc6aGuJOymjrHgsSw+5Y5Q4/dh+u0o0h3jQtdNEUM7q39YyVCd1N/yXEEnKp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tK7cRlTp; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C746277C8D;
+	Sat, 12 Jul 2025 16:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752337659; cv=pass; b=qWsZ2gOcHjYfdtXONLB+yqEPnmeQ5maRj/xwFshe0+qhORIo19Ny3SkCHIrMl5xRxlMw7/b/EeyzKsYCE/OgU0pGaSPPFRcWw+2ad5wHvhbqg1OXmJ+Qow/OkthIG0WePiJG22DAc0+M00HBtFNRNtFX+8ZABpiJFCGbvPKQpko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752337659; c=relaxed/simple;
+	bh=cmm53DOTdwyscPEqSRjwmv4mZIvw1nYR7Ua4IWjUbX0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=QlUPdmuI8webw8xtAP0YagwqDDC+sB1sfNCtMtsXjqdYXgQ/aakAmTPgTTW6Mig8QmLFNrn3NoGuCjXq0ak6FzGbIMCc+gLEWKOufPKwD1dz4WTgx14fdAQamHAZIEcOwsbm2/BT5XxFf3Fo9Hn5B3gTzmAGWW4FqbCV7wWpES0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=XZM72l+n; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tK7cRlTp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD18DC4CEF4;
-	Sat, 12 Jul 2025 16:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752336090;
-	bh=PMTOVbr1r7rTX0XGvBrv0Qgp90NaoreRhPBMkP7o4+0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tK7cRlTpc7X4Y9hYblmchRviWE1ReSfSoMBm/bOS6ZkXn7vbOOYu0Baf6IEXplKmj
-	 cesrJdybF2NgoX5HPQAuOFM1gi5d86FqU3VTzMoeYRiaILfezlA4AffXPFbfAZjbQN
-	 y95Ma5XsyYgD8bwBmuxyBi0HyFK8uhTbDqIfpeXan523+ma2N++YFMhh3YImJSKAWl
-	 7/O/WTzFbpIGLtj+wYIFWeszMM6cmkXt12oanXkRbEkhjGjeWUR1grch5bkgzoGJYj
-	 qLN1coj3Bjfef6HaZt4LZ9NvGH+QbazZSC38FT6fS1w35aT+AuXVl9bSGHeLIt0Vfw
-	 v5ror+h94+HoQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	David Wood <david@davidtw.co>,
-	Wesley Wiser <wwiser@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0
-Date: Sat, 12 Jul 2025 18:01:03 +0200
-Message-ID: <20250712160103.1244945-3-ojeda@kernel.org>
-In-Reply-To: <20250712160103.1244945-1-ojeda@kernel.org>
-References: <20250712160103.1244945-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="XZM72l+n"
+ARC-Seal: i=1; a=rsa-sha256; t=1752337631; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=G0O3epiDjil38rQ87refqbx3KSoHb3qzU7/D0YexeNi+D7UzSRtHwGOlYpBI54RVOVuKvInssd+9aq0R2mORBHTgA1IsiMhSqS1dHZ/V+C8+RVtx7mNRCc8c6ao0+3SvrMubnhgB2FjaLfNoHV63Tkxx7mylq024caya+/241VY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752337631; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ahPGOugGxG/E5vYH46Dw+PAn5bPxIFk9wceQiVsZgc4=; 
+	b=kkqMLDNmGZUv4ox2qs74gJpyuSyDCSlGCWpuiNoA7WjrIJj8LmwclPzYg+BpjCYoGIh5rXbZ9rpN/tO83BllSV/bDW6+rdkcdC5lOmEJ/3/WQp/72FZApFSOQeLvTZLtFwJiZdTfT06DqaXNiqH9bw9e5hdCAn5PZjBTFDoVZiE=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752337631;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=ahPGOugGxG/E5vYH46Dw+PAn5bPxIFk9wceQiVsZgc4=;
+	b=XZM72l+nNx5bBBbL+sXSR4bgxUrW94995cQTUfht63oAcIBoNPuO/l2RdbZ8f+mo
+	kkj5ipG69OOVKLZhXmGy/pT3349PoTuh4xsNjJ0mVzKr3hnSqg6Kee1K77yzg543Emb
+	MmNRl15nw5QsY8GAfECra+xi0aXVkW/4WIssrwUo=
+Received: by mx.zohomail.com with SMTPS id 1752337628723425.6395233683338;
+	Sat, 12 Jul 2025 09:27:08 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v6 2/6] rust: irq: add flags module
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aGeF_W74OfhRbkoR@google.com>
+Date: Sat, 12 Jul 2025 13:26:52 -0300
+Cc: Daniel Sedlak <daniel@sedlak.dev>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Benno Lossin <lossin@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <49ABD63B-05C6-4FDC-B825-5AA2ED323F1C@collabora.com>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
+ <20250703-topics-tyr-request_irq-v6-2-74103bdc7c52@collabora.com>
+ <fcdae3ca-104d-4e8b-8588-2452783ed09a@sedlak.dev>
+ <aGeF_W74OfhRbkoR@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler fails
-to build the `rusttest` target due to undefined references such as:
+Hi Alice,
 
-    kernel...-cgu.0:(.text....+0x116): undefined reference to
-    `rust_helper_kunit_get_current_test'
+> On 4 Jul 2025, at 04:42, Alice Ryhl <aliceryhl@google.com> wrote:
+>=20
+> On Fri, Jul 04, 2025 at 08:14:11AM +0200, Daniel Sedlak wrote:
+>> Hi Daniel,
+>>=20
+>> On 7/3/25 9:30 PM, Daniel Almeida wrote:
+>>> +/// Flags to be used when registering IRQ handlers.
+>>> +///
+>>> +/// They can be combined with the operators `|`, `&`, and `!`.
+>>> +#[derive(Clone, Copy, PartialEq, Eq)]
+>>> +pub struct Flags(u64);
+>>=20
+>> Why not Flags(u32)? You may get rid of all unnecessary casts later, =
+plus
+>> save some extra bytes.
+>=20
+> It looks like the C methods take an `unsigned long`. In that case, I'd
+> probably write the code to match that.
+>=20
+> pub struct Flags(c_ulong);
+>=20
+> and git rid of the cast when calling bindings::request_irq.
+>=20
+> As for all the constants in this file, maybe it would be nice with a
+> private constructor that uses the same type as bindings to avoid the
+> casts?
+>=20
+> impl Flags {
+>    const fn new(value: u32) -> Flags {
+>     ...
+>    }
+> }
 
-Moreover, tooling like `modpost` gets confused:
 
-    WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/nova/nova.o
-    ERROR: modpost: missing MODULE_LICENSE() in drivers/gpu/nova-core/nova_core.o
+Sure, but what goes here? This has to be "value as c_ulong=E2=80=9D =
+anyways so it
+doesn=E2=80=99t really reduce the number of casts.
 
-The reason behind both issues is that the Rust compiler will now [1]
-treat `#[used]` as `#[used(linker)]` instead of `#[used(compiler)]`
-for our targets. This means that the retain section flag (`R`,
-`SHF_GNU_RETAIN`) will be used and that they will be marked as `unique`
-too, with different IDs. In turn, that means we end up with undefined
-references that did not get discarded in `rusttest` and that multiple
-`.modinfo` sections are generated, which confuse tooling like `modpost`
-because they only expect one.
+We should probably switch to Flags(u32) as Daniel Sedlak suggested. Then
+it=E2=80=99s a matter of casting once for bindings::request_irq().
 
-Thus start using `#[used(compiler)]` to keep the previous behavior
-and to be explicit about what we want. Sadly, it is an unstable feature
-(`used_with_arg`) [2] -- we will talk to upstream Rust about it. The good
-news is that it has been available for a long time (Rust >= 1.60) [3].
-
-The changes should also be fine for previous Rust versions, since they
-behave the same way as before [4].
-
-Alternatively, we could use `#[no_mangle]` or `#[export_name = ...]`
-since those still behave like `#[used(compiler)]`, but of course it is
-not really what we want to express, and it requires other changes to
-avoid symbol conflicts.
-
-Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
-Cc: David Wood <david@davidtw.co>
-Cc: Wesley Wiser <wwiser@gmail.com>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust/pull/140872 [1]
-Link: https://github.com/rust-lang/rust/issues/93798 [2]
-Link: https://github.com/rust-lang/rust/pull/91504 [3]
-Link: https://godbolt.org/z/sxzWTMfzW [4]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/Makefile           |  1 +
- rust/kernel/firmware.rs |  2 +-
- rust/kernel/kunit.rs    |  2 +-
- rust/kernel/lib.rs      |  3 +++
- rust/macros/module.rs   | 10 +++++-----
- scripts/Makefile.build  |  3 ++-
- 6 files changed, 13 insertions(+), 8 deletions(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 27dec7904c3a..115b63b7d1e3 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -194,6 +194,7 @@ quiet_cmd_rustdoc_test = RUSTDOC T $<
- 	RUST_MODFILE=test.rs \
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(RUSTDOC) --test $(rust_common_flags) \
-+		-Zcrate-attr='feature(used_with_arg)' \
- 		@$(objtree)/include/generated/rustc_cfg \
- 		$(rustc_target_flags) $(rustdoc_test_target_flags) \
- 		$(rustdoc_test_quiet) \
-diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-index 2494c96e105f..4fe621f35716 100644
---- a/rust/kernel/firmware.rs
-+++ b/rust/kernel/firmware.rs
-@@ -202,7 +202,7 @@ macro_rules! module_firmware {
-             };
- 
-             #[link_section = ".modinfo"]
--            #[used]
-+            #[used(compiler)]
-             static __MODULE_FIRMWARE: [u8; $($builder)*::create(__MODULE_FIRMWARE_PREFIX)
-                 .build_length()] = $($builder)*::create(__MODULE_FIRMWARE_PREFIX).build();
-         };
-diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
-index 4b8cdcb21e77..b9e65905e121 100644
---- a/rust/kernel/kunit.rs
-+++ b/rust/kernel/kunit.rs
-@@ -302,7 +302,7 @@ macro_rules! kunit_unsafe_test_suite {
-                     is_init: false,
-                 };
- 
--            #[used]
-+            #[used(compiler)]
-             #[allow(unused_unsafe)]
-             #[cfg_attr(not(target_os = "macos"), link_section = ".kunit_test_suites")]
-             static mut KUNIT_TEST_SUITE_ENTRY: *const ::kernel::bindings::kunit_suite =
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 6b4774b2b1c3..e13d6ed88fa6 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -34,6 +34,9 @@
- // Expected to become stable.
- #![feature(arbitrary_self_types)]
- //
-+// To be determined.
-+#![feature(used_with_arg)]
-+//
- // `feature(derive_coerce_pointee)` is expected to become stable. Before Rust
- // 1.84.0, it did not exist, so enable the predecessor features.
- #![cfg_attr(CONFIG_RUSTC_HAS_COERCE_POINTEE, feature(derive_coerce_pointee))]
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 2ddd2eeb2852..75efc6eeeafc 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -57,7 +57,7 @@ fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
-                 {cfg}
-                 #[doc(hidden)]
-                 #[cfg_attr(not(target_os = \"macos\"), link_section = \".modinfo\")]
--                #[used]
-+                #[used(compiler)]
-                 pub static __{module}_{counter}: [u8; {length}] = *{string};
-             ",
-             cfg = if builtin {
-@@ -249,7 +249,7 @@ mod __module_init {{
-                     // key or a new section. For the moment, keep it simple.
-                     #[cfg(MODULE)]
-                     #[doc(hidden)]
--                    #[used]
-+                    #[used(compiler)]
-                     static __IS_RUST_MODULE: () = ();
- 
-                     static mut __MOD: ::core::mem::MaybeUninit<{type_}> =
-@@ -273,7 +273,7 @@ mod __module_init {{
- 
-                     #[cfg(MODULE)]
-                     #[doc(hidden)]
--                    #[used]
-+                    #[used(compiler)]
-                     #[link_section = \".init.data\"]
-                     static __UNIQUE_ID___addressable_init_module: unsafe extern \"C\" fn() -> i32 = init_module;
- 
-@@ -293,7 +293,7 @@ mod __module_init {{
- 
-                     #[cfg(MODULE)]
-                     #[doc(hidden)]
--                    #[used]
-+                    #[used(compiler)]
-                     #[link_section = \".exit.data\"]
-                     static __UNIQUE_ID___addressable_cleanup_module: extern \"C\" fn() = cleanup_module;
- 
-@@ -303,7 +303,7 @@ mod __module_init {{
-                     #[cfg(not(CONFIG_HAVE_ARCH_PREL32_RELOCATIONS))]
-                     #[doc(hidden)]
-                     #[link_section = \"{initcall_section}\"]
--                    #[used]
-+                    #[used(compiler)]
-                     pub static __{ident}_initcall: extern \"C\" fn() ->
-                         ::kernel::ffi::c_int = __{ident}_init;
- 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index a6461ea411f7..ba71b27aa363 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -312,10 +312,11 @@ $(obj)/%.lst: $(obj)/%.c FORCE
- #   - Stable since Rust 1.82.0: `feature(asm_const)`, `feature(raw_ref_op)`.
- #   - Stable since Rust 1.87.0: `feature(asm_goto)`.
- #   - Expected to become stable: `feature(arbitrary_self_types)`.
-+#   - To be determined: `feature(used_with_arg)`.
- #
- # Please see https://github.com/Rust-for-Linux/linux/issues/2 for details on
- # the unstable features in use.
--rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,raw_ref_op
-+rust_allowed_features := asm_const,asm_goto,arbitrary_self_types,lint_reasons,raw_ref_op,used_with_arg
- 
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
--- 
-2.50.1
-
+=E2=80=94 Daniel=
