@@ -1,122 +1,124 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C746277C8D;
-	Sat, 12 Jul 2025 16:27:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752337659; cv=pass; b=qWsZ2gOcHjYfdtXONLB+yqEPnmeQ5maRj/xwFshe0+qhORIo19Ny3SkCHIrMl5xRxlMw7/b/EeyzKsYCE/OgU0pGaSPPFRcWw+2ad5wHvhbqg1OXmJ+Qow/OkthIG0WePiJG22DAc0+M00HBtFNRNtFX+8ZABpiJFCGbvPKQpko=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752337659; c=relaxed/simple;
-	bh=cmm53DOTdwyscPEqSRjwmv4mZIvw1nYR7Ua4IWjUbX0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=QlUPdmuI8webw8xtAP0YagwqDDC+sB1sfNCtMtsXjqdYXgQ/aakAmTPgTTW6Mig8QmLFNrn3NoGuCjXq0ak6FzGbIMCc+gLEWKOufPKwD1dz4WTgx14fdAQamHAZIEcOwsbm2/BT5XxFf3Fo9Hn5B3gTzmAGWW4FqbCV7wWpES0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=XZM72l+n; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2691A5258;
+	Sat, 12 Jul 2025 17:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752340253; cv=none; b=m/Fb4QrvX7/SjwZipouYoGFKK4fNL/h14gWIr8A5nkIjBfErZrG+yCvFpnv/la3KpInEKT9zK/BYsTnkceXP2QQAJtOh0Egay45hRIkgD8gVmIAdyqbupzsvsvDz/VMsy+sz8O18wT/s3rDh+cTR+qj1LvukI/h16nQ/YO8YNko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752340253; c=relaxed/simple;
+	bh=E12GcqnaAwHtNnICUFIgNVDkr91Rl9UwJTcJJqqFwlA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mV8dxX3hUn895NG2v/XagGPweJBrxsRLTRqgp7yIggYS7x+pRTOTfhWhtsrRGPmYlOaQAzUxUkO4ks8CjbtpHrLNXxxpN0C0OJxp67btfwlrzIzpxXykoaaVTAo+OKZJt3oAVaIdheNc1vo5HJldqyW/HAwkTvhjpw73zIBWTLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VlyP1JrR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="XZM72l+n"
-ARC-Seal: i=1; a=rsa-sha256; t=1752337631; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=G0O3epiDjil38rQ87refqbx3KSoHb3qzU7/D0YexeNi+D7UzSRtHwGOlYpBI54RVOVuKvInssd+9aq0R2mORBHTgA1IsiMhSqS1dHZ/V+C8+RVtx7mNRCc8c6ao0+3SvrMubnhgB2FjaLfNoHV63Tkxx7mylq024caya+/241VY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752337631; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ahPGOugGxG/E5vYH46Dw+PAn5bPxIFk9wceQiVsZgc4=; 
-	b=kkqMLDNmGZUv4ox2qs74gJpyuSyDCSlGCWpuiNoA7WjrIJj8LmwclPzYg+BpjCYoGIh5rXbZ9rpN/tO83BllSV/bDW6+rdkcdC5lOmEJ/3/WQp/72FZApFSOQeLvTZLtFwJiZdTfT06DqaXNiqH9bw9e5hdCAn5PZjBTFDoVZiE=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752337631;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=ahPGOugGxG/E5vYH46Dw+PAn5bPxIFk9wceQiVsZgc4=;
-	b=XZM72l+nNx5bBBbL+sXSR4bgxUrW94995cQTUfht63oAcIBoNPuO/l2RdbZ8f+mo
-	kkj5ipG69OOVKLZhXmGy/pT3349PoTuh4xsNjJ0mVzKr3hnSqg6Kee1K77yzg543Emb
-	MmNRl15nw5QsY8GAfECra+xi0aXVkW/4WIssrwUo=
-Received: by mx.zohomail.com with SMTPS id 1752337628723425.6395233683338;
-	Sat, 12 Jul 2025 09:27:08 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VlyP1JrR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9ECC4CEEF;
+	Sat, 12 Jul 2025 17:10:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752340252;
+	bh=E12GcqnaAwHtNnICUFIgNVDkr91Rl9UwJTcJJqqFwlA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VlyP1JrRGEgm4SPzv13vPYKU+fukvi7XlfA/0MAPW9o+lmvDQCiPM1NJD6LZj6p5x
+	 w0SPWeXo1EmYu/68LbmLVRx+6mygg6iIXnwqsDGnG4gPP5y/6rTBEPqkKz0z8WRB9N
+	 cadaEDvcWltxygF8xK3GLjH/49cvIRA2kl9A28pDHEzU25oMXavpMk+d08YWJEqhlz
+	 ofDj8ieeKFjfyBDgaBWDObBZWBakzaG1TFytlTumLuMscqsBSnG1zVDzBd4Jz8EQgQ
+	 KulZUSdI6PHM9b5DkzVn2Y+D3v7CRmpa+zBkK2h/NFr1rIS5VISA8mfDvxpKsJsR+6
+	 nvFthzrf3gNdQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: stable@vger.kernel.org,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Benno Lossin <lossin@kernel.org>
+Subject: [PATCH 6.12.y] rust: init: allow `dead_code` warnings for Rust >= 1.89.0
+Date: Sat, 12 Jul 2025 19:10:38 +0200
+Message-ID: <20250712171038.1287789-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v6 2/6] rust: irq: add flags module
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aGeF_W74OfhRbkoR@google.com>
-Date: Sat, 12 Jul 2025 13:26:52 -0300
-Cc: Daniel Sedlak <daniel@sedlak.dev>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Benno Lossin <lossin@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <49ABD63B-05C6-4FDC-B825-5AA2ED323F1C@collabora.com>
-References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
- <20250703-topics-tyr-request_irq-v6-2-74103bdc7c52@collabora.com>
- <fcdae3ca-104d-4e8b-8588-2452783ed09a@sedlak.dev>
- <aGeF_W74OfhRbkoR@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Alice,
+Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler
+may warn:
 
-> On 4 Jul 2025, at 04:42, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> On Fri, Jul 04, 2025 at 08:14:11AM +0200, Daniel Sedlak wrote:
->> Hi Daniel,
->>=20
->> On 7/3/25 9:30 PM, Daniel Almeida wrote:
->>> +/// Flags to be used when registering IRQ handlers.
->>> +///
->>> +/// They can be combined with the operators `|`, `&`, and `!`.
->>> +#[derive(Clone, Copy, PartialEq, Eq)]
->>> +pub struct Flags(u64);
->>=20
->> Why not Flags(u32)? You may get rid of all unnecessary casts later, =
-plus
->> save some extra bytes.
->=20
-> It looks like the C methods take an `unsigned long`. In that case, I'd
-> probably write the code to match that.
->=20
-> pub struct Flags(c_ulong);
->=20
-> and git rid of the cast when calling bindings::request_irq.
->=20
-> As for all the constants in this file, maybe it would be nice with a
-> private constructor that uses the same type as bindings to avoid the
-> casts?
->=20
-> impl Flags {
->    const fn new(value: u32) -> Flags {
->     ...
->    }
-> }
+    error: trait `MustNotImplDrop` is never used
+       --> rust/kernel/init/macros.rs:927:15
+        |
+    927 |         trait MustNotImplDrop {}
+        |               ^^^^^^^^^^^^^^^
+        |
+       ::: rust/kernel/sync/arc.rs:133:1
+        |
+    133 | #[pin_data]
+        | ----------- in this procedural macro expansion
+        |
+        = note: `-D dead-code` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(dead_code)]`
+        = note: this error originates in the macro `$crate::__pin_data`
+                which comes from the expansion of the attribute macro
+                `pin_data` (in Nightly builds, run with
+                -Z macro-backtrace for more info)
 
+Thus `allow` it to clean it up.
 
-Sure, but what goes here? This has to be "value as c_ulong=E2=80=9D =
-anyways so it
-doesn=E2=80=99t really reduce the number of casts.
+This does not happen in mainline nor 6.15.y, because there the macro was
+moved out of the `kernel` crate, and `dead_code` warnings are not
+emitted if the macro is foreign to the crate. Thus this patch is
+directly sent to stable and intended for 6.12.y only.
 
-We should probably switch to Flags(u32) as Daniel Sedlak suggested. Then
-it=E2=80=99s a matter of casting once for bindings::request_irq().
+Similarly, it is not needed in previous LTSs, because there the Rust
+version is pinned.
 
-=E2=80=94 Daniel=
+Cc: Benno Lossin <lossin@kernel.org>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+Greg, Sasha: please note that an equivalent patch is _not_ in mainline.
+
+We could put these `allow`s in mainline (they wouldn't hurt), but it
+isn't a good idea to add things in mainline for the only reason of
+backporting them, thus I am sending this directly to stable.
+
+The patch is pretty safe -- there is no actual code change.
+
+ rust/kernel/init/macros.rs | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
+index b7213962a6a5..e530028bb9ed 100644
+--- a/rust/kernel/init/macros.rs
++++ b/rust/kernel/init/macros.rs
+@@ -924,6 +924,7 @@ impl<'__pin, $($impl_generics)*> ::core::marker::Unpin for $name<$($ty_generics)
+         // We prevent this by creating a trait that will be implemented for all types implementing
+         // `Drop`. Additionally we will implement this trait for the struct leading to a conflict,
+         // if it also implements `Drop`
++        #[allow(dead_code)]
+         trait MustNotImplDrop {}
+         #[expect(drop_bounds)]
+         impl<T: ::core::ops::Drop> MustNotImplDrop for T {}
+@@ -932,6 +933,7 @@ impl<$($impl_generics)*> MustNotImplDrop for $name<$($ty_generics)*>
+         // We also take care to prevent users from writing a useless `PinnedDrop` implementation.
+         // They might implement `PinnedDrop` correctly for the struct, but forget to give
+         // `PinnedDrop` as the parameter to `#[pin_data]`.
++        #[allow(dead_code)]
+         #[expect(non_camel_case_types)]
+         trait UselessPinnedDropImpl_you_need_to_specify_PinnedDrop {}
+         impl<T: $crate::init::PinnedDrop>
+
+base-commit: fbad404f04d758c52bae79ca20d0e7fe5fef91d3
+--
+2.50.1
