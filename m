@@ -1,111 +1,170 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCDF51C5A;
-	Sat, 12 Jul 2025 08:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4D32741A4
+	for <rust-for-linux@vger.kernel.org>; Sat, 12 Jul 2025 12:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752308829; cv=none; b=OCLG/D+PjDikN6IPRTpccRcgBIRgJbPiIvC1gIvKZTLh41YY6NVfFWthlg7h89BtnOpZMoZ9DdmykvZIm25h9jz8bzY9CuZiLkm2TyQowyQ8sYPWQcES5WLaTmUva2bwtt6nuwp4WtqtiBWM7OCmYmV0EFvuKjEzbEL5DI1qyWA=
+	t=1752324252; cv=none; b=jMtJQZs7+NL268EHanzjfRsyoWbVUEIC8sbYPGpuhWiSa7FUtD8u8mSwiYUOK/peQlo2vVWOE+BKxOkMHlilSH1eMuGF3fhnEQo8c2bQU+VMexGVMA+n5L4RtNHCjqb/zkJVF/YGxIhND95IQWTig19gLLu6v67uuITCVPEWulM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752308829; c=relaxed/simple;
-	bh=sAt6M/6dVGn+429g9VocZGFb50raWZLPION4ReTbBao=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=uvzvMjHEb2q0eNigRKGh6rxnbHy0x9lnzDSVYGQdveSa2om0WFJ5x3ABlRMW2OynFAc026RFUc1K93frbVMYf+Ks2X/cyAIjoqcKh+KsEorFZqBvk6y0l9wBxfvbDoU2t5l5JYAVv0k7B9RlPFvhUl7BzKjR3vn6nb+qUjjFX7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RHKpRx3X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752324252; c=relaxed/simple;
+	bh=2+tY9iG4ElbQ7e13afB6Qc+qfOOxZeWzcGD7fyq8lS4=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Lv8cxyXnVEvQu8KXDFE+ScyeHENvEZUmC2hsrDFLcZHSuvoDipEkdG6T4ADgyj4zyZC+U7Ce1sJWKHgTlzuJT+eHATEKLLOj/Utg1t29d09+kn1kMVyZnaP/edxldAioEyt36LTmMUfWU9W30GzxBkDekQqlMvJ8gwwFIBCKwmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=021r4Foq; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=nzRAI9Bm; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RHKpRx3X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1293C4CEEF;
-	Sat, 12 Jul 2025 08:27:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752308828;
-	bh=sAt6M/6dVGn+429g9VocZGFb50raWZLPION4ReTbBao=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=RHKpRx3XEbhUDq7hq1Yk8ORjJPPCCwPE2SbwiU7gs28q9YLhlUzZA6c6zd6ZbCyia
-	 sx+3JwHM75ViVOcGejPt2C+0owpMCEWMIfqScxQQsRlphT5dNWUYD/+A38GVpQZrSu
-	 PN6fnBkBhnxwU+gKtph+hOhourhad+6LuHrFqIClfTha4UQLii9VSmzbDIS3iNJp5T
-	 stU79tCWpSBwwvJeb99n0arV+6ywZn2NS1iXZQEAvK8usEQJUOwQARrPi3R/Z+AmOk
-	 GnAevKKsk7kwDUpp5JGOPeUSgeCKTF6AHTDLl0rD9OdR/rDsawbUNP8whC8ZWNzc1i
-	 54kW8pDVSyorQ==
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="021r4Foq";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="nzRAI9Bm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752324242; x=1752929042;
+	d=konsulko.se; s=rsa1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=3hsAftBbWhEHVqUIKPhJJLEw9P2gRr/T0ErS4BPPLBI=;
+	b=021r4Foqi/XPzdzuHHaBc/y43I6LhWARnZteRrjDdXyLagsCMHjGqpuI0z1jKAHp/bsoyGB3ypbKl
+	 nRZa336xwNRGhc1O/+ebjgEb5SFzsgVNTxVRuqwUNo5xrWQ3rF91M5Xu+PRq6m6hqaSB9IbkQI9R7q
+	 h4rWmJryPbxsrf+tcuS0DGoIikZzfrlFAHx7EUe/KhuUzs9FR7bLEBUp9E2Oi2gVyjgWRHLL49d/D6
+	 3J/R0fJE9LZCSRP4+DnwogDq+z9/y5TOVcE7+AwLNfcWu5u0QRWFMGf0McGwZgCqwim3+mdhkR7RH6
+	 Bo7/NgB0zJfAHhV4kYsCl9lrg/DrKqQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752324242; x=1752929042;
+	d=konsulko.se; s=ed1;
+	h=to:references:message-id:content-transfer-encoding:cc:date:in-reply-to:from:
+	 subject:mime-version:content-type:from;
+	bh=3hsAftBbWhEHVqUIKPhJJLEw9P2gRr/T0ErS4BPPLBI=;
+	b=nzRAI9Bmd8f+g3EqfvU7tY76SJchTfBnMo5Yh+77Sb5A6fJ1GUbyHxw6yupAh65rwqwMZ+0PVUXwO
+	 zFFy29sDA==
+X-HalOne-ID: e2b9d497-5f1d-11f0-b78d-85eb291bc831
+Received: from smtpclient.apple (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay5.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id e2b9d497-5f1d-11f0-b78d-85eb291bc831;
+	Sat, 12 Jul 2025 12:44:01 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [PATCH v12 2/4] mm/slub: allow to set node and align in
+ k[v]realloc
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+In-Reply-To: <5bc89531-ab09-4690-aae4-a44f9ddb4a68@suse.cz>
+Date: Sat, 12 Jul 2025 14:43:51 +0200
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org,
+ akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ linux-bcachefs@vger.kernel.org,
+ bpf@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 12 Jul 2025 10:27:00 +0200
-Message-Id: <DB9XMV1NE9F5.20SGV690NJ9DY@kernel.org>
-Cc: <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-block@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <kunit-dev@googlegroups.com>
-Subject: Re: [PATCH 0/9] rust: use `kernel::{fmt,prelude::fmt!}`
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Tamir Duberstein" <tamird@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Jens Axboe" <axboe@kernel.dk>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Brendan Higgins" <brendan.higgins@linux.dev>, "David Gow"
- <davidgow@google.com>, "Rae Moar" <rmoar@google.com>
-X-Mailer: aerc 0.20.1
-References: <20250709-core-cstr-fanout-1-v1-0-64308e7203fc@gmail.com>
-In-Reply-To: <20250709-core-cstr-fanout-1-v1-0-64308e7203fc@gmail.com>
+Message-Id: <3AD3F7B5-679F-4DC8-968F-9FE991B56A5C@konsulko.se>
+References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
+ <20250709172441.1032006-1-vitaly.wool@konsulko.se> <aHDSLyHZ8b1ELeWe@hyeyoo>
+ <5bc89531-ab09-4690-aae4-a44f9ddb4a68@suse.cz>
+To: Vlastimil Babka <vbabka@suse.cz>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-On Wed Jul 9, 2025 at 9:59 PM CEST, Tamir Duberstein wrote:
-> This is series 2a/5 of the migration to `core::ffi::CStr`[0].
-> 20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com.
->
-> This series depends on the prior series[0] and is intended to go through
-> the rust tree to reduce the number of release cycles required to
-> complete the work.
->
-> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
-> can be taken through Miguel's tree (where the other series must go).
->
-> [0] https://lore.kernel.org/all/20250704-core-cstr-prepare-v1-0-a91524037=
-783@gmail.com/
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> ---
-> Tamir Duberstein (9):
->       gpu: nova-core: use `kernel::{fmt,prelude::fmt!}`
->       rust: alloc: use `kernel::{fmt,prelude::fmt!}`
->       rust: block: use `kernel::{fmt,prelude::fmt!}`
->       rust: device: use `kernel::{fmt,prelude::fmt!}`
->       rust: file: use `kernel::{fmt,prelude::fmt!}`
->       rust: kunit: use `kernel::{fmt,prelude::fmt!}`
->       rust: pin-init: use `kernel::{fmt,prelude::fmt!}`
->       rust: seq_file: use `kernel::{fmt,prelude::fmt!}`
->       rust: sync: use `kernel::{fmt,prelude::fmt!}`
->
->  drivers/block/rnull.rs               | 2 +-
->  drivers/gpu/nova-core/gpu.rs         | 3 +--
->  drivers/gpu/nova-core/regs/macros.rs | 6 +++---
->  rust/kernel/alloc/kbox.rs            | 2 +-
->  rust/kernel/alloc/kvec.rs            | 2 +-
->  rust/kernel/alloc/kvec/errors.rs     | 2 +-
->  rust/kernel/block/mq.rs              | 2 +-
->  rust/kernel/block/mq/gen_disk.rs     | 2 +-
->  rust/kernel/block/mq/raw_writer.rs   | 3 +--
->  rust/kernel/device.rs                | 6 +++---
->  rust/kernel/fs/file.rs               | 5 +++--
->  rust/kernel/init.rs                  | 4 ++--
->  rust/kernel/kunit.rs                 | 8 ++++----
->  rust/kernel/seq_file.rs              | 6 +++---
->  rust/kernel/sync/arc.rs              | 3 +--
->  scripts/rustdoc_test_gen.rs          | 2 +-
->  16 files changed, 28 insertions(+), 30 deletions(-)
 
-For the entire series:
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+> On Jul 11, 2025, at 5:43=E2=80=AFPM, Vlastimil Babka <vbabka@suse.cz> =
+wrote:
+>=20
+> On 7/11/25 10:58, Harry Yoo wrote:
+>> On Wed, Jul 09, 2025 at 07:24:41PM +0200, Vitaly Wool wrote:
+>>> Reimplement k[v]realloc_node() to be able to set node and
+>>> alignment should a user need to do so. In order to do that while
+>>> retaining the maximal backward compatibility, add
+>>> k[v]realloc_node_align() functions and redefine the rest of API
+>>> using these new ones.
+>>>=20
+>>> While doing that, we also keep the number of  _noprof variants to a
+>>> minimum, which implies some changes to the existing users of older
+>>> _noprof functions, that basically being bcachefs.
+>>>=20
+>>> With that change we also provide the ability for the Rust part of
+>>> the kernel to set node and alignment in its K[v]xxx
+>>> [re]allocations.
+>>>=20
+>>> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+>>> ---
+>>> fs/bcachefs/darray.c   |  2 +-
+>>> fs/bcachefs/util.h     |  2 +-
+>>> include/linux/bpfptr.h |  2 +-
+>>> include/linux/slab.h   | 38 +++++++++++++++----------
+>>> lib/rhashtable.c       |  4 +--
+>>> mm/slub.c              | 64 =
++++++++++++++++++++++++++++++-------------
+>>> 6 files changed, 72 insertions(+), 40 deletions(-)
+>>=20
+>>> diff --git a/mm/slub.c b/mm/slub.c
+>>> index c4b64821e680..6fad4cdea6c4 100644
+>>> --- a/mm/slub.c
+>>> +++ b/mm/slub.c
+>>> @@ -4845,7 +4845,7 @@ void kfree(const void *object)
+>>> EXPORT_SYMBOL(kfree);
+>>>=20
+>>> static __always_inline __realloc_size(2) void *
+>>> -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
+>>> +__do_krealloc(const void *p, size_t new_size, unsigned long align, =
+gfp_t flags, int nid)
+>>> {
+>>> void *ret;
+>>> size_t ks =3D 0;
+>>> @@ -4859,6 +4859,20 @@ __do_krealloc(const void *p, size_t new_size, =
+gfp_t flags)
+>>> if (!kasan_check_byte(p))
+>>> return NULL;
+>>>=20
+>>> + /* refuse to proceed if alignment is bigger than what kmalloc() =
+provides */
+>>> + if (!IS_ALIGNED((unsigned long)p, align) || new_size < align)
+>>> + return NULL;
+>>=20
+>> Hmm but what happens if `p` is aligned to `align`, but the new object =
+is not?
+>>=20
+>> For example, what will happen if we  allocate object with size=3D64, =
+align=3D64
+>> and then do krealloc with size=3D96, align=3D64...
+>>=20
+>> Or am I missing something?
+>=20
+> Good point. We extended the alignment guarantees in commit =
+ad59baa31695
+> ("slab, rust: extend kmalloc() alignment guarantees to remove Rust =
+padding")
+> for rust in a way that size 96 gives you alignment of 32. It assumes =
+that
+> rust side will ask for alignments that are power-of-two and sizes that =
+are
+> multiples of alignment. I think if that assumption is still honored =
+than
+> this will keep working, but the check added above (is it just a sanity =
+check
+> or something the rust side relies on?) doesn't seem correct?
+>=20
 
----
-Cheers,
-Benno
+It is a sanity check and it should have looked like this:
+
+        if (!IS_ALIGNED((unsigned long)p, align) && new_size <=3D ks)
+                return NULL;
+
+and the reasoning for this is the following: if we don=E2=80=99t intend =
+to reallocate (new size is not bigger than the original size), but the =
+user requests a larger alignment, it=E2=80=99s a miss. Does that sound =
+reasonable?
+
+~Vitaly
+
