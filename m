@@ -1,149 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583DF13B284;
-	Sat, 12 Jul 2025 18:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92B01BC4E
+	for <rust-for-linux@vger.kernel.org>; Sat, 12 Jul 2025 18:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752343494; cv=none; b=l729u1KskcLwSMC6MKhg4Fa1MVGrjgxbMvccF89QxWEOan3XCgbA1Gf/kDvt6CfQAhS6cecJ9pSyHIzbtNa4b7Xl4KZNdb3f1FQ54tCSVP76ZXvgjGGBM2UWA7/leLbjJPABNBq/mIDipDjxlwXCMtkPD4I0CLSm2oUE0/tYklw=
+	t=1752346206; cv=none; b=Y1d73ocw8fYDOibVWYmiJhEuVW3huUEeQ/l+GKnrygA+ztTJnLAOm651swWy5EuT6NExGTmPeuEfn6UOjexxkKHb5TAijZ9qDReTVqhHuXeplKhyb+qq00D0U6Pb8Kk/nfvjRyKde0FtrxeunyhkPlSKgwDCxt691HDkq28ao0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752343494; c=relaxed/simple;
-	bh=qhXkoyHjTIqBuIjJ4a9EJ6EqyerxsPahaWb2KYK8qyk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=V2pJqH9N3KYzLcFi2hXtVtHc6U5Gmnszn/RpDE8/oEhaWTFBvBeoBGrQswhyHD17ZBR6UWe2qdOIEAlAajXgC36hkFfDXmXfWw4So9KnDadUpx7NFrrQ3R6Ou2OdRKyNVuWarNXSpQw8K16UIOrP7dFusssY9tnKnXBV3LLi2HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4encWvo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752346206; c=relaxed/simple;
+	bh=DB6Ga8bM7aygL1kZpLGO9sfqmiDJCBOeNWjASjzmSLM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lWAw2lBdXNb2We3ruZKbgRHQCYTMz+12S0SFCuHr8dlQ2tk/jDw+Tvt+nLyqK/9hF+aRVepIcn8ueca+FKKRtGkw6eI/kMK1K4YTYXvV+Z8GupGdjVgitmxALd4to/amkQl+XszhyyUReZlEXbyrm/Z2+hmBWLUAVZoUvGT34Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fjvEJnuN; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4encWvo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51CAC4CEEF;
-	Sat, 12 Jul 2025 18:04:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752343493;
-	bh=qhXkoyHjTIqBuIjJ4a9EJ6EqyerxsPahaWb2KYK8qyk=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=q4encWvoHB9ISf+RUY702PzOWs79L6eapmZckWNCyrDCcIVBG4daLk+o6gHCZ7cjB
-	 Eht5RZYBNLmRhu15wE1dw4Ek0xNr1E8equ2Fi+L9VnlQsz5aP+K06Sgq9u872vVblB
-	 O1MoSu3pG2/a3v6kw8td2AclawscpLtukdtQeYw+OTZV3yt7khVs+yUsGrqjMrIbWT
-	 rV/kYrz/GOYfrL+gQrPWyRVhOi1sFsqv99sRXn8L+vaqktrkyXSVPncz8MFaIuFrK4
-	 MW+oVkmURdTm8ctD9Oj1RixYm9uHULf13qC9zWfedKFtkh/0NA1a87xkxcApBqXFbM
-	 pH1CNCfn/1hUA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fjvEJnuN"
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-40b1f402deaso1744184b6e.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 12 Jul 2025 11:50:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752346204; x=1752951004; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wmITCC/KfIDuOyy8MkPRa7zW/SdFzcGJZzQ3YXREI8w=;
+        b=fjvEJnuNL1iOTR1RUq9oqJlCawIJIefkTkrsPYnPQReLw5/pYHgwv8QiaKDhRg+2F8
+         K1F9YFSK3QbNSqrKlNmN71O8/RYl1ZpgsbuUhgk2YL5vT79LlatM4xZcdbWXmw9GUTxR
+         RuTNHLrWGPOL85mIMjsRwkb6pdidEdlMRgOBEfQsK40Cip3ekQZtRNX0BWbqWDKRMEPL
+         AafwLC99Z4M3VweMpbyEUQsrMK9Qqa9LN3Rt3H/AfSrMRX6jnboc6zdxd3UVKmxGP0wa
+         oGPOP/ckO6/bKYOWk4rUfx4Hs9zSoDEPden0wtuoY3aJVKXxu9OojsxfN1Agbdy1QPHV
+         NKWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752346204; x=1752951004;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wmITCC/KfIDuOyy8MkPRa7zW/SdFzcGJZzQ3YXREI8w=;
+        b=cd5Xi6NyA6BaDK8msxtE9mmtJ9EEkbtj50XrSrOmVCQ+AUZZFWq3s30tX5vcIN3cHG
+         sB51Dcb4ai3zKxVyUvl4g2QkTb35z7icaWF/vW6lzLW5skYlkgFKbp/QXtYRxbnfCphx
+         BLMoa4glZg4ZOX8lpbiDuUPmvXY1/Ups3DbDmk4XpbWgWz1NZuhfZqbj9df6LHkZvTsn
+         xF5phQnXJYqUoZmVm6n9gGKaeMBkgBmB1JSK9uAwWQtfE34bHK8QNniu1HEkCVNwcSLz
+         q6GuyQgli89I7kMt8yGTI6dDdsr9W5NsAlwyE3uRr+WH4kyToVRAfmwQgTtg5cJctzx4
+         QZ6w==
+X-Forwarded-Encrypted: i=1; AJvYcCU6Leo5UOSlLwXsoa1u+Lz1+WHUSOG4TJ4DHEuRBMjcSzTEWx+pbzteZ4r12l1hjAAA3dOW+BLuwUy6N77/cg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMz2mrEGmJUG5hU4bC9hN7P2ccylkGVg3XHgdUMcmj8XRUpzws
+	7GHcoj0EvYN91FSDt5pFViTMkRqhUfV7idVbcH6OgeIwvxV3qUtX1djAeE5VcD1V/f2s9aQQSd3
+	jNGoWKNl7pD2bmIom/V8MdjkvAdpwlZY=
+X-Gm-Gg: ASbGncvdkhdhKSatzN3TPrtL9d7OmuzbgAfWaWzlCKadCjPXBP2FreeUvjQDjeI4krz
+	oLat0nBU57w2f0dzS5i0ZZ6mPI0JcMGaovafvZQ3Avm+LeMiyTXmfSzu7g2zJrdmocaXh5YYR6n
+	lfwBpXEYPlUKcI3WRcuYAVGp8j9KQspCLJR67aE8DMX0mhEbyrX0+/wU8AeNpMIJQSwKtIGJkzg
+	Fls12rKXD4lufZkJSw=
+X-Google-Smtp-Source: AGHT+IHrnGtltH6d/LHRfVMeejHGN49UH18y373XYXucdgMGhTHtMXV2dUQV7GZp/6Uns+6AEbERNSDwNpcuNgUXiN8=
+X-Received: by 2002:a05:6808:1307:b0:406:6d79:49d2 with SMTP id
+ 5614622812f47-41567b4d886mr4828348b6e.26.1752346203776; Sat, 12 Jul 2025
+ 11:50:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250708003428.76783-1-marcelomoreira1905@gmail.com>
+ <20250708003428.76783-4-marcelomoreira1905@gmail.com> <DB6RKSNTHUZ8.DW0EBFDU6L1I@kernel.org>
+ <CAPZ3m_h37mCRO7oZX3qLnc+iFNwUu_wgYqEu_r0g-gtOB0661w@mail.gmail.com> <DB9XM595UG4V.3N51HST2TFVW@kernel.org>
+In-Reply-To: <DB9XM595UG4V.3N51HST2TFVW@kernel.org>
+From: Marcelo Moreira <marcelomoreira1905@gmail.com>
+Date: Sat, 12 Jul 2025 15:49:52 -0300
+X-Gm-Features: Ac12FXyJ-xuhxJnQvJzFdVIc4nNkoqOGmBgB8Mc0t3TJ_NJLBm_WmDalyOBRRTo
+Message-ID: <CAPZ3m_grA_T_ixfHs7Z44nf5je4ftBcqCx=vcyvJOsJb+LaMFg@mail.gmail.com>
+Subject: Re: [PATCH v6 3/3] rust: revocable: Document RevocableGuard
+ invariants and refine Deref safety
+To: Benno Lossin <lossin@kernel.org>
+Cc: aliceryhl@google.com, dakr@kernel.org, ojeda@kernel.org, 
+	rust-for-linux@vger.kernel.org, skhan@linuxfoundation.org, 
+	linux-kernel-mentees@lists.linuxfoundation.org, ~lkcamp/patches@lists.sr.ht
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 12 Jul 2025 20:04:48 +0200
-Message-Id: <DBA9X9FU5M9A.14RBXD887DKB1@kernel.org>
-Cc: <stable@vger.kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>
-Subject: Re: [PATCH 6.12.y] rust: init: allow `dead_code` warnings for Rust
- >= 1.89.0
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Sasha Levin" <sashal@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250712171038.1287789-1-ojeda@kernel.org>
-In-Reply-To: <20250712171038.1287789-1-ojeda@kernel.org>
 
-On Sat Jul 12, 2025 at 7:10 PM CEST, Miguel Ojeda wrote:
-> Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler
-> may warn:
+Em s=C3=A1b., 12 de jul. de 2025 =C3=A0s 05:26, Benno Lossin <lossin@kernel=
+.org> escreveu:
 >
->     error: trait `MustNotImplDrop` is never used
->        --> rust/kernel/init/macros.rs:927:15
->         |
->     927 |         trait MustNotImplDrop {}
->         |               ^^^^^^^^^^^^^^^
->         |
->        ::: rust/kernel/sync/arc.rs:133:1
->         |
->     133 | #[pin_data]
->         | ----------- in this procedural macro expansion
->         |
->         =3D note: `-D dead-code` implied by `-D warnings`
->         =3D help: to override `-D warnings` add `#[allow(dead_code)]`
->         =3D note: this error originates in the macro `$crate::__pin_data`
->                 which comes from the expansion of the attribute macro
->                 `pin_data` (in Nightly builds, run with
->                 -Z macro-backtrace for more info)
+> On Sat Jul 12, 2025 at 1:06 AM CEST, Marcelo Moreira wrote:
+> > Em ter., 8 de jul. de 2025 =C3=A0s 12:04, Benno Lossin <lossin@kernel.o=
+rg> escreveu:
+> >> On Tue Jul 8, 2025 at 2:33 AM CEST, Marcelo Moreira wrote:
+> >> > Improves the `RevocableGuard` documentation by explicitly stating th=
+at
+> >> > its `data_ref` member is a valid pointer as an invariant. Additional=
+ly,
+> >> > the `Deref` implementation's `SAFETY` comment is refined to justify
+> >> > the `unsafe` dereference based on this new invariant and the
+> >> > `_rcu_guard` ensuring data accessibility.
+> >> >
+> >> > These changes address feedback regarding the clarity and completenes=
+s
+> >> > of `RevocableGuard`'s safety guarantees.
+> >> >
+> >> > Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+> >> > ---
+> >> >  rust/kernel/revocable.rs | 7 ++++---
+> >> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> >> >
+> >> > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> >> > index 6d8e9237dbdf..64fe44b4f5a3 100644
+> >> > --- a/rust/kernel/revocable.rs
+> >> > +++ b/rust/kernel/revocable.rs
+> >> > @@ -233,7 +233,8 @@ fn drop(self: Pin<&mut Self>) {
+> >> >  ///
+> >> >  /// # Invariants
+> >> >  ///
+> >> > -/// The RCU read-side lock is held while the guard is alive.
+> >> > +/// - `data_ref` is a valid pointer to a `T` object for the entire =
+lifetime of this guard.
+> >>
+> >> This should be:
+> >>
+> >>     /// - `data_ref` is a valid pointer for as long as the RCU read-si=
+de lock is held.
+> >>
+> >> > +/// - The RCU read-side lock is held while the guard is alive.
+> >>
+> >> And this invariant is unnecessary.
+> >>
+> >> >  pub struct RevocableGuard<'a, T> {
+> >> >      // This can't use the `&'a T` type because references that appe=
+ar in function arguments must
+> >> >      // not become dangling during the execution of the function, wh=
+ich can happen if the
+> >> > @@ -258,8 +259,8 @@ impl<T> Deref for RevocableGuard<'_, T> {
+> >> >      type Target =3D T;
+> >> >
+> >> >      fn deref(&self) -> &Self::Target {
+> >> > -        // SAFETY: By the type invariants, we hold the rcu read-sid=
+e lock, so the object is
+> >> > -        // guaranteed to remain valid.
+> >> > +        // SAFETY: `self.data_ref` is valid for writes because of `=
+Self`'s type invariants,
+> >> > +        // and `_rcu_guard` ensures the data's accessibility for th=
+e lifetime of this guard.
+> >>
+> >> This also needs to be adjusted.
+> >>
+> >> Also this patch should fix any invariant comments needed to construct
+> >> `RevocableGuard`.
+> >
+> > Regarding this point, "...fix any invariant comments needed to
+> > construct `RevocableGuard`."
+> >
+> > I looked at the function that constructs `RevocableGuard`
+> > (try_access->RevocableGuard::new) and I think it's correct.
+> >
+> > In `try_access`, the comment justifies the validity of self.data.get()
+> > by mentioning that `self.is_available` is true and that the RCU read
+> > lock prevents data from being dropped. This aligns well with what we
+> > already have in try_access_with_guard, for example (from patch 1/3).
 >
-> Thus `allow` it to clean it up.
-
-This is a bit strange, I can't directly reproduce the issue... I already
-get this warning in 1.88:
-
-    https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=3D202=
-4&gist=3D465f71a848e77ac3f7a96a0af6bc9e2a
-
-> This does not happen in mainline nor 6.15.y, because there the macro was
-> moved out of the `kernel` crate, and `dead_code` warnings are not
-> emitted if the macro is foreign to the crate. Thus this patch is
-> directly sent to stable and intended for 6.12.y only.
+> The comment seems wrong to me, it isn't even an `INVARIANT` comment. It
+> also talks about RCU in the wrong way and doesn't mention the type
+> invariants of `Self`...
 >
-> Similarly, it is not needed in previous LTSs, because there the Rust
-> version is pinned.
+> > Since there are no other code snippets that construct
+> > `RevocableGuard`, I thought I'd submit the patch with just the
+> > adjustments I made previously.
 >
-> Cc: Benno Lossin <lossin@kernel.org>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> There also is the `new` function of `RevocableGuard` that doesn't use an
+> invariant comment. It also isn't unsafe despite taking a raw pointer...
+> So either we make it unsafe, add the correct safety requirements which
+> should just be the type invariants of the guard or we remove it, since
+> we only use it once.
 
-Anyways the patch itself looks fine, nobody should care about the
-dead-code warning (since it is in fact used to prevent `Drop` being
-implemented).
+Even if it's only called once, I think it's better to make `new`
+unsafe because it can be used in the future, and keeping it unsafe
+gives us the advantage of maintainability.
 
-Acked-by: Benno Lossin <lossin@kernel.org>
+Understood, Benno. I'll change `new` to be unsafe, change
+`RevocableGuard::new` to an unsafe block, and adjust the `SAFEFY`
+comment.
+ok?
 
----
+--=20
 Cheers,
-Benno
-
-> ---
-> Greg, Sasha: please note that an equivalent patch is _not_ in mainline.
->
-> We could put these `allow`s in mainline (they wouldn't hurt), but it
-> isn't a good idea to add things in mainline for the only reason of
-> backporting them, thus I am sending this directly to stable.
->
-> The patch is pretty safe -- there is no actual code change.
->
->  rust/kernel/init/macros.rs | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/rust/kernel/init/macros.rs b/rust/kernel/init/macros.rs
-> index b7213962a6a5..e530028bb9ed 100644
-> --- a/rust/kernel/init/macros.rs
-> +++ b/rust/kernel/init/macros.rs
-> @@ -924,6 +924,7 @@ impl<'__pin, $($impl_generics)*> ::core::marker::Unpi=
-n for $name<$($ty_generics)
->          // We prevent this by creating a trait that will be implemented =
-for all types implementing
->          // `Drop`. Additionally we will implement this trait for the str=
-uct leading to a conflict,
->          // if it also implements `Drop`
-> +        #[allow(dead_code)]
->          trait MustNotImplDrop {}
->          #[expect(drop_bounds)]
->          impl<T: ::core::ops::Drop> MustNotImplDrop for T {}
-> @@ -932,6 +933,7 @@ impl<$($impl_generics)*> MustNotImplDrop for $name<$(=
-$ty_generics)*>
->          // We also take care to prevent users from writing a useless `Pi=
-nnedDrop` implementation.
->          // They might implement `PinnedDrop` correctly for the struct, b=
-ut forget to give
->          // `PinnedDrop` as the parameter to `#[pin_data]`.
-> +        #[allow(dead_code)]
->          #[expect(non_camel_case_types)]
->          trait UselessPinnedDropImpl_you_need_to_specify_PinnedDrop {}
->          impl<T: $crate::init::PinnedDrop>
->
-> base-commit: fbad404f04d758c52bae79ca20d0e7fe5fef91d3
-> --
-> 2.50.1
-
+Marcelo Moreira
