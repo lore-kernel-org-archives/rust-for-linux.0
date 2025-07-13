@@ -1,95 +1,87 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2157C13AD1C;
-	Sun, 13 Jul 2025 20:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E372E36F9
+	for <rust-for-linux@vger.kernel.org>; Sun, 13 Jul 2025 21:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752438837; cv=none; b=rD+gYeSvE6pGRffJPwOswFaZgcdyb+yI0wH8BkBYcsc/1D5hWTq3QztlAEp6z8QnV3oF2FxI8uBR1gOn5XIIApRzIWTZ57FmYcv9PoB/6Vv75+ZzADXmH5NjlVzHZ1mgIiAb6+H1M4/NL9vlzyjdfHLmfn4B6hfNFLGJ9yBu31M=
+	t=1752441088; cv=none; b=Zqaq7gZksTN62J8eOh2/hyhPgnktybYE9fpUsnTIxtVRbWR978ES5W4dQ7+vKpD0tQgc77tMqvANOqA+YnAn++sYIp44NIrvTw2YKGaF9wTIAIP34ibJZ8JHZw4+8MxXPx0IOzxIxbTi4gH1/GP7UTubebTUXyW6ned2YdI5fGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752438837; c=relaxed/simple;
-	bh=P6uc1vFP+hnSDoQ+DeA9YI99SP+F92h3RQ3e6uHt6oM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UpN1MDgI7/ocQ/NGFh2mgOAV1VX4oBE3eIUIboenpeh9QNEgfLrtyoPpC13SWXF/dzFlgA4dC+W99s/ghWfp7/2Gkfe8h3NcwJnSpFEkovO1oGj15cG437x7pCqYIFNNe8+nobyvvDqZccpBvJHTYZT9Au2kOYlGCt0CWneM768=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WrYCjA1E; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752441088; c=relaxed/simple;
+	bh=EBANmE8Tz5X2Y3eEDiLkuZ3rA3BG2whh4De4T84Wb4k=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=crWRXduUAoHYhLn10rP3txYdPNSls6AAOhaXKMln1iEIJ+rRMxPD2UUO9q8pRtJVfDAFh4nFMqhLt5qea28ZN2I6pHBsHa8odp+FaM8oP/9mdx6HWhn4mprsEhCJemhr4wQ5F42a3tdS9qHi5fujgVSZF/3SgI4f3R9gczbbFTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Gz0KQTus; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WrYCjA1E"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-234eaea2e4eso4347145ad.0;
-        Sun, 13 Jul 2025 13:33:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752438834; x=1753043634; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZmXBFNSCdNzdGebBofDUcBBgvM0eW9t5GlHoCUn8/mE=;
-        b=WrYCjA1EhVbrV+C7Cawz7d1Idmhbi2IZFmqhf/38dQ5vmuDD02vvNuuHzziMEPMa52
-         X4FAUhuf/7qKGoeJAv3audGHA6/3pdQ+u55h/r00QFytvRC5EG5aW+kuxLlNBMbI4hhE
-         7PK0UYCby8q4o9knDGpfljKGNcqUUUUTd9Wb2QabLZ7uDOKFM11B4bSSS0rTT/UW8Jmr
-         PzjkqV3l7mOR0XuQjMmvz6YavAbmejT7eqVCIst2QXe180G9vSJ33n4YxE5aJY7u238z
-         VdR/q0yYcZqFqSHMK/GkiZX5wVXvuRAUvwg//kh7OdFvjS4NLMXQrYOMQNiFHVaDSzyO
-         Zwyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752438834; x=1753043634;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZmXBFNSCdNzdGebBofDUcBBgvM0eW9t5GlHoCUn8/mE=;
-        b=SkWYsdNPoEy/yYNYdE9WAedaasaBkpHbzDpmQmpwufNLG4PmsO3YqVzMbd6QgjKtDx
-         wAk3wly7skctYFmGf+K/qX1WpGb2krhEBI4nx5MaRGhkVxClzlUj9cLtpIWFDnIwDOfY
-         +Vint3B6B0LfN5M8kf4h/STH0+SxPKJ7f2Kugq6oq4+UwoD+FQ038e2D4dgY+hXiNrHV
-         cdAhqGSrGSBzDRs4qaqNCKL94AdjwbIXidWS7Ld0SbknzoDFGdjGP3+frt5Bg8g+RJ8B
-         1ngIi8v1ADjPQKkHHdO3UDg4ll2r1bT0xgkoaekXh2LTW882EF+JwZvCIdR8vRxmBxZ5
-         27hw==
-X-Forwarded-Encrypted: i=1; AJvYcCVkt9jV+wVvSUZY5aBNTEPTlO9SW+tLpM2610HAdGltJzKlRnm1ctiUWQFmK/QBe09LUEj1NoEmwQ4oUAc=@vger.kernel.org, AJvYcCXHJepddDb0MjGyOZLNLaNHeR4ktCxuiE8Mz9FSWNb5PLua7LwoOSk44Vpzg+JspMZIcZsHIEuxmEzxHSpbulk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yze78Bg7FbhYzAQFsbyIwjq/gJMYk2iQLtLQmMeEUfVJk3Npr8r
-	LLDrARsgBA5Ai0RMVytGg7th6XGhd+X+yB2GZKpBSXoDprXeVDx8K/6Nnd+u6X3k8RMiqBY4Exa
-	k76RYBjxXDHecqMWJG+yQiwDwqEexUGywdP50Pa8=
-X-Gm-Gg: ASbGnct9D8G1hlbdgxGXGVRjrK3Z1TmYVWgBXUx44TZzUxtArXfzzEQQ6GSjKdBbGqo
-	k7nZqJmFuwV9c8Ip2np+LHnZym64zDmfw2QBemng9tRPWidgUMu0MHW70FX89jkgXVr89qS5N4x
-	HaAZzrOMiwIhkA49ESA0l6lJsgUSmbkL7/rSfdtq64/5Jvt4pWk6YZg3F5/lTCPEAmR6nI/+x+A
-	3v292J+
-X-Google-Smtp-Source: AGHT+IHN9gHToXFx7qSAICPfNo9uTuuKOtEdftwKY3pThhr0Bi6GfZTjIAB5CeEZl4h7fH9wpPuZOb7wU2SynSXiRCQ=
-X-Received: by 2002:a17:902:e5c1:b0:235:e8da:8f4 with SMTP id
- d9443c01a7336-23dedcaa7f5mr61698505ad.0.1752438834404; Sun, 13 Jul 2025
- 13:33:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Gz0KQTus"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1752441083; x=1752700283;
+	bh=3pTokk4KJ2mKwd22kxH2uGEjSSthsLoaPeScCOi1nNI=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=Gz0KQTusA9C7PAMZptKnCf6od4qjmmZaPBZv+5gYVx0DduKTlqPbaY3MKJbWETfgz
+	 v76KaWfbahXGvHwwNhGEmjlZnltKGvgSp3jAT9MShxUo45mYEWSRHYORAd00+Zfn24
+	 Ms/Fc3q/LiI1OMtNp4wABC/7yyt8NB4oQ6iHcoZbXbxOsJi6MGP1Kb0zV+0HbEO0ET
+	 8B+bOuaqBqo6KH5YHrB9bUKgtR9izuHDjgNoRF7iVP3z+ofj9qzDS7Yo9bRWcWBms3
+	 rmFJY8TDmIUfLtQ8zJg9BzrzqK4wEaXZIJJOj1w7c35H4XbtQgvFiz+k5L3r8JZrjY
+	 cYxxPuF6isJsA==
+Date: Sun, 13 Jul 2025 21:11:17 +0000
+To: rust-for-linux@vger.kernel.org, linux-input@vger.kernel.org
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: Jiri Kosina <jikos@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, Benjamin Tissoires <benjamin.tissoires@redhat.com>, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, db48x@db48x.net, gary@garyguo.net, ojeda@kernel.org, tmgross@umich.edu, peter.hutterer@who-t.net, Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Subject: [PATCH v2 0/4] Initial work for Rust abstraction for HID device driver development
+Message-ID: <20250713211012.101476-4-sergeantsagara@protonmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: f1ce38ddbfc13b7f430a916822e99508193e7a4f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709-init-remove-old-workaround-v1-1-a922d32338d2@gmail.com>
-In-Reply-To: <20250709-init-remove-old-workaround-v1-1-a922d32338d2@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 13 Jul 2025 22:33:42 +0200
-X-Gm-Features: Ac12FXzAOInvGmyWVwzT-OopSWzvIkNJ21Mv2hiw_SBJD06XKbosWHqvwtzqZsA
-Message-ID: <CANiq72nWZA_yb3G+E7TAcQTf431XfCEB_u8EMQg=x8EjvkxTkA@mail.gmail.com>
-Subject: Re: [PATCH] rust: init: remove old workaround
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 10, 2025 at 12:34=E2=80=AFAM Tamir Duberstein <tamird@gmail.com=
-> wrote:
->
-> `Error::from_errno` is `pub` since commit 5ed147473458 ("rust: error:
-> make conversion functions public"), thus remove this workaround which is
-> no longer needed.
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Hello again,
 
-This seems the same as this one applied a few weeks ago:
+I incorporated Danilo's and Peter's feedback from my v1. Additionally, I
+implemented the AlwaysRefCounted trait for kernel::hid::Device and needed s=
+ome
+bindings from kref.
 
-    https://lore.kernel.org/rust-for-linux/20250526152914.2453949-2-ojeda@k=
-ernel.org/
+Link: https://lore.kernel.org/rust-for-linux/20250629045031.92358-2-sergean=
+tsagara@protonmail.com/
+Link: https://lore.kernel.org/rust-for-linux/20250313160220.6410-2-sergeant=
+sagara@protonmail.com/
+Link: https://binary-eater.github.io/tags/usb-monitor-control/
 
-Cheers,
-Miguel
+Rahul Rameshbabu (4):
+  HID: core: Change hid_driver to use a const char* for name
+  rust: add kref bindings
+  rust: core abstractions for HID drivers
+  rust: hid: Glorious Gaming PC Race Model O and O- mice reference
+    driver
+
+ MAINTAINERS                      |  15 +
+ drivers/hid/Kconfig              |  16 ++
+ drivers/hid/Makefile             |   1 +
+ drivers/hid/hid-glorious.c       |   2 +
+ drivers/hid/hid_glorious_rust.rs |  59 ++++
+ include/linux/hid.h              |   2 +-
+ rust/bindings/bindings_helper.h  |   3 +
+ rust/helpers/helpers.c           |   1 +
+ rust/helpers/kref.c              |  13 +
+ rust/kernel/hid.rs               | 458 +++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs               |   2 +
+ 11 files changed, 571 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/hid/hid_glorious_rust.rs
+ create mode 100644 rust/helpers/kref.c
+ create mode 100644 rust/kernel/hid.rs
+
+
+base-commit: 2009a2d5696944d85c34d75e691a6f3884e787c0
+--=20
+2.47.2
+
+
