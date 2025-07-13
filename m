@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DC0C2E0;
-	Sun, 13 Jul 2025 09:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C6A4A00;
+	Sun, 13 Jul 2025 10:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752399037; cv=none; b=PlB/JZ8YxpXNMuxL5i6GPymlExmsPTypcw878q9eIMAMMKUKIVTDV3Pgts7FbGEAslHozhiN7LAJawCwRHHlfE8jQwu0VKQQ//6CY0Iqwvn2s0BuSnfTwdg0yZ/VzuDrjj2oMn+P6iDYF2c1BNZ16lDKkxwUSmRlckrIijzNKxs=
+	t=1752402274; cv=none; b=bD0aFstDeex4xj22bAErQ6Bv/O0HG+DDS7MTi4Rf0srGVv1o2U4YlB4oZhCayIyhIxaB46oKFGRsvWYI76va+9LCYrRpbH96pILAbsWRGri0qvPSUVH1d2b/8RrOFUOtM9w68HdDzg/ZvAtvPJ/4ULftQE34JRdGaHWzP9me/9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752399037; c=relaxed/simple;
-	bh=nKbk6E47aaqEXS0XKE/C976P4mu6SktTQNRnupN5EMs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=l9ElnrWIrbKPWS4A0Nm5cL3q8TqatQt3OIifnwvOjirASJAsk5da5y1xHMoXSgPsjhqcfbPSwpBmGWD4WCX9FWKn+2zG6/zsFLUMRuHCULnSQPpTBqn1U3tGwAuYvRCce9SkjrVemBl/LWdyDM1Pj/nNjQ4pFORK8qHMod6thnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJ1oCnWP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752402274; c=relaxed/simple;
+	bh=KR/f9WSoeyMeCEi914nzYR+kgzKbA9YtbzQh4WHJuOk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=XnFFww8blUulqdNjBOwS0kKwbrguM7DBAYVzhMNtAVmcKxp2463nvh3abqkImdVRNmf9IHDig2C43R0USfAVOxlbN6NDiiof/ojIgweVzbRE4mg9/BODRjc1Vy4lk7gz/Jdv7DKwuFtZNdgP7SsejFFhRkm3LiUuNCDqwgEFl8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ioAK7M8I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJ1oCnWP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E85C4CEE3;
-	Sun, 13 Jul 2025 09:30:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ioAK7M8I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF02BC4CEE3;
+	Sun, 13 Jul 2025 10:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752399036;
-	bh=nKbk6E47aaqEXS0XKE/C976P4mu6SktTQNRnupN5EMs=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=SJ1oCnWP7GGo8/oqSsTzDM10/zjCsKRghHncNrZIA3H/wDMnv8HVZPRB5ioeqc8QU
-	 x9XPmnpk4ANH8f44LGVmCp69KXLzaLYp2DCDxpieBqJUcjcQPmB1Pb/lxS8oD3RW9e
-	 XaSJYkvOTecnQetUNKlAaHJY8dBxuK4ckCZoCmPBeX3CBiazFnOQuFyAvrlsyp/jhS
-	 lGIa3GJnJEvs3ewACwYm6ZxSHgC3RpabeRtsxU5GJfmw1ryO/qXnIj074S/oA59xmY
-	 C7d+K7CFrFmUPAACLDtykOfLIzl4UXAtLBBB8lo0gwfhUl3lVlBM9PNbO9OSjuHKAk
-	 3l8iNb+AtNJdg==
+	s=k20201202; t=1752402274;
+	bh=KR/f9WSoeyMeCEi914nzYR+kgzKbA9YtbzQh4WHJuOk=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=ioAK7M8IZy4y/A4fPY8yWUOm8uackE21W1Xu67AaSioq/8T8xqB6MP6bmrCbtH2dv
+	 08fccUtb+lkp+YEiIOUXq9iX2ZgCirs6Y0LpwGo5xLy4QGoVHyDqHhsT3DlV1MrLmm
+	 Y73gW00D/57e863Os5EVHi1lvWfcXoGPs+TQEwwv0CotepqVyeFMn4O8FwjXq9z0wF
+	 TUa/bRZ7ZuwTufnPfA6bPQZihY1tZMIlCo8z6VaQfuU2cTA2kt0puOUC2Uj6hnUhQE
+	 WLTQatWeoohq9BKyKQnb9y/ipXVL1VlGhN7f74+JqCLITcSWcD8TB/eC7VVTUmNkvK
+	 jr41PGDIsYSnw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,125 +34,87 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 13 Jul 2025 11:30:31 +0200
-Message-Id: <DBATM1CUS704.28MKE6BIBQB7G@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 3/5] rust: percpu: add a rust per-CPU variable test
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Mitchell Levy" <levymitchell0@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Dennis Zhou" <dennis@kernel.org>, "Tejun Heo"
- <tj@kernel.org>, "Christoph Lameter" <cl@linux.com>, "Danilo Krummrich"
- <dakr@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250712-rust-percpu-v2-0-826f2567521b@gmail.com>
- <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
-In-Reply-To: <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
+Date: Sun, 13 Jul 2025 12:24:28 +0200
+Message-Id: <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org>
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>, "Benno Lossin"
+ <lossin@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com> <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com> <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org> <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
+In-Reply-To: <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
 
-On Sat Jul 12, 2025 at 11:31 PM CEST, Mitchell Levy wrote:
-> Add a short exercise for Rust's per-CPU variable API, modelled after
-> lib/percpu_test.c
+On Sun Jul 13, 2025 at 1:32 AM CEST, Daniel Almeida wrote:
 >
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
->  lib/Kconfig.debug       |   9 ++++
->  lib/Makefile            |   1 +
->  lib/percpu_test_rust.rs | 120 ++++++++++++++++++++++++++++++++++++++++++=
-++++++
+>
+>> On 12 Jul 2025, at 18:24, Danilo Krummrich <dakr@kernel.org> wrote:
+>>=20
+>> On Thu Jul 3, 2025 at 9:30 PM CEST, Daniel Almeida wrote:
+>>> +/// Callbacks for an IRQ handler.
+>>> +pub trait Handler: Sync {
+>>> +    /// The hard IRQ handler.
+>>> +    ///
+>>> +    /// This is executed in interrupt context, hence all corresponding
+>>> +    /// limitations do apply.
+>>> +    ///
+>>> +    /// All work that does not necessarily need to be executed from
+>>> +    /// interrupt context, should be deferred to a threaded handler.
+>>> +    /// See also [`ThreadedRegistration`].
+>>> +    fn handle(&self) -> IrqReturn;
+>>> +}
+>>=20
+>> One thing I forgot, the IRQ handlers should have a &Device<Bound> argume=
+nt,
+>> i.e.:
+>>=20
+>> fn handle(&self, dev: &Device<Bound>) -> IrqReturn
+>>=20
+>> IRQ registrations naturally give us this guarantee, so we should take ad=
+vantage
+>> of that.
+>>=20
+>> - Danilo
+>
+> Hi Danilo,
+>
+> I do not immediately see a way to get a Device<Bound> from here:
+>
+> unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *mut=
+ c_void) -> c_uint {
+>
+> Refall that we've established `ptr` to be the address of the handler. Thi=
+s
+> came after some back and forth and after the extensive discussion that Be=
+nno
+> and Boqun had w.r.t to pinning in request_irq().
 
-I don't know if this is the correct place, the code looks much more like
-a sample, so why not place it there instead?
+You can just wrap the Handler in a new type and store the pointer there:
 
->  rust/helpers/percpu.c   |  11 +++++
->  4 files changed, 141 insertions(+)
-> diff --git a/lib/percpu_test_rust.rs b/lib/percpu_test_rust.rs
-> new file mode 100644
-> index 000000000000..a9652e6ece08
-> --- /dev/null
-> +++ b/lib/percpu_test_rust.rs
-> @@ -0,0 +1,120 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +//! A simple self test for the rust per-CPU API.
-> +
-> +use core::ffi::c_void;
-> +
-> +use kernel::{
-> +    bindings::{on_each_cpu, smp_processor_id},
-> +    define_per_cpu,
-> +    percpu::{cpu_guard::*, *},
-> +    pr_info,
-> +    prelude::*,
-> +    unsafe_get_per_cpu,
-> +};
-> +
-> +module! {
-> +    type: PerCpuTestModule,
-> +    name: "percpu_test_rust",
-> +    author: "Mitchell Levy",
-> +    description: "Test code to exercise the Rust Per CPU variable API",
-> +    license: "GPL v2",
-> +}
-> +
-> +struct PerCpuTestModule;
-> +
-> +define_per_cpu!(PERCPU: i64 =3D 0);
-> +define_per_cpu!(UPERCPU: u64 =3D 0);
-> +
-> +impl kernel::Module for PerCpuTestModule {
-> +    fn init(_module: &'static ThisModule) -> Result<Self, Error> {
-> +        pr_info!("rust percpu test start\n");
-> +
-> +        let mut native: i64 =3D 0;
-> +        // SAFETY: PERCPU is properly defined
-> +        let mut pcpu: StaticPerCpu<i64> =3D unsafe { unsafe_get_per_cpu!=
-(PERCPU) };
+	#[pin_data]
+	struct Wrapper {
+	   #[pin]
+	   handler: T,
+	   dev: NonNull<Device<Bound>>,
+	}
 
-I don't understand why we need unsafe here, can't we just create
-something specially in the `define_per_cpu` macro that is then confirmed
-by the `get_per_cpu!` macro and thus it can be safe?
+And then pass a pointer to the Wrapper field to request_irq();
+handle_irq_callback() can construct a &T and a &Device<Bound> from this.
 
-> +        // SAFETY: We only have one PerCpu that points at PERCPU
-> +        unsafe { pcpu.get(CpuGuard::new()) }.with(|val: &mut i64| {
+Note that storing a device pointer, without its own reference count, is
+perfectly fine, since inner (Devres<RegistrationInner>) already holds a
+reference to the device and guarantees the bound scope for the handler
+callbacks.
 
-Hmm I also don't like the unsafe part here...
-
-Can't we use the same API that `thread_local!` in the standard library
-has:
-
-    https://doc.rust-lang.org/std/macro.thread_local.html
-
-So in this example you would store a `Cell<i64>` instead.
-
-I'm not familiar with per CPU variables, but if you're usually storing
-`Copy` types, then this is much better wrt not having unsafe code
-everywhere.
-
-If one also often stores `!Copy` types, then we might be able to get
-away with `RefCell`, but that's a small runtime overhead -- which is
-probably bad given that per cpu variables are most likely used for
-performance reasons? In that case the user might just need to store
-`UnsafeCell` and use unsafe regardless. (or we invent something
-specifically for that case, eg tokens that are statically known to be
-unique etc)
-
----
-Cheers,
-Benno
-
-> +            pr_info!("The contents of pcpu are {}\n", val);
-> +
-> +            native +=3D -1;
-> +            *val +=3D -1;
-> +            pr_info!("Native: {}, *pcpu: {}\n", native, val);
-> +            assert!(native =3D=3D *val && native =3D=3D -1);
-> +
-> +            native +=3D 1;
-> +            *val +=3D 1;
-> +            pr_info!("Native: {}, *pcpu: {}\n", native, val);
-> +            assert!(native =3D=3D *val && native =3D=3D 0);
-> +        });
+It makes sense to document this as an invariant of Wrapper (or whatever we =
+end
+up calling it).
