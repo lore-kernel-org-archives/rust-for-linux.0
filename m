@@ -1,74 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8D9211F;
-	Sun, 13 Jul 2025 23:04:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2022033A;
+	Sun, 13 Jul 2025 23:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752447896; cv=none; b=h466CnN7GDlxQ0eCYpgvyrFD2fTKwCQplqosNdWPMWK/W5ao1CW0jbtsJmzAZpssHbkkSApcq+pSo6fCj7m84teTgARrxJkT8Z3HSxorK1c7oEeiV0Vd4lhsytI1psXxpadAmKb9kvJMdukA1F16jgcB6EklktfIBtJAmgzqRBQ=
+	t=1752449836; cv=none; b=MxJlHfDYvMPq1PlY+9zzAFw80whXx5rOyekDU7A0+bnWumhQj0lxTAIS9zG2OcaVn7j1Vilc4/cqbCs6sxDU2S4qqaQkxr+G0U9tiRCs2GOzh4lV+ewD8dTj242//qg0grgSd34UFiCoiCHVRchUIqnuKmmKFEt1KzR0IRbY7uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752447896; c=relaxed/simple;
-	bh=Fqv0BupB3rYT98G+vYDHwAetAEXFNiBr8pDtjkgsfgw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=Zw6JJlKfmfKFpqaZ+O4+w6K5blExWExygtIkHS842MOnhIMkdGq3oVVvZN/rfN4VhOJIKqfaEvXvmAXw8yyHeZapDHAyzljtAxb8zNLU9U79ol+tbVtym3eGmu06HMnlrMXHxqbBZkINzD2+dSPMeUmafeV1eWYy03J0AniapxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5ynAb0o; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752449836; c=relaxed/simple;
+	bh=ia8YusRYqbv8u4jjDVxff6mRXlYfwdBKEdvfZsd8kaM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LoZZHcjVWH6OYYgMCJACHbZMYnIHq41IGdOs48InrSef4A0GA4P9oGUfRg1FbKZSZ/dXgL9zkZSjcPWK9z40Ls+yJiybjBIOsmhnX04YxVKX6JcagzYRBNhOjL7OWnbLev+YwKP60/7GPbb0C5/JdiSL61fkQ50UMc7SiyC4mSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kHsQj0IE; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5ynAb0o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE21C4CEE3;
-	Sun, 13 Jul 2025 23:04:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752447896;
-	bh=Fqv0BupB3rYT98G+vYDHwAetAEXFNiBr8pDtjkgsfgw=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=O5ynAb0oin4/w5zsKmM014gRASkjBtzG6QKhMr1dmJnAAfbBLy7B8M/d5ZpbpmnGn
-	 59MkeDCjpdjhFl7GnJqW8JhvltHesSwzO+Srj1uOQ1o37OTTsMKVlXoaWuUsZ6zqgG
-	 jKy/EQBnoKyBoOmoMTMipN2x2swtlLo4gSpJqt8Vzl/ofg/9A2nyeuhom04L35lPPZ
-	 JaxUefMWwr0O3SmsaOo5N+gbUvnc3TB1fW7DGgjzEAHl+tH4fGfZErjFE29oVSmISe
-	 xVcqB+NMZDOQDK+VSmaJ3VILEv8JhEft9Z6Ks7yj/wcj4BHzxeDFoRmDEEbpZsx7jD
-	 53bqSvTsIkF4A==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kHsQj0IE"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-313067339e9so743670a91.2;
+        Sun, 13 Jul 2025 16:37:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752449834; x=1753054634; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xki2w5eQHb1fLcDO93URZ4RBKttkZT0EQouQZSyMJfc=;
+        b=kHsQj0IEKz/purBWD94ehpiCU1EDI8leUwCVuzixiTsC1f11E7ep7Zrc9gIKCKJXJF
+         McRM8Kn1u9zwh51ZUeWiOluE0O9KnGJ4g2NFSYaLyc0QQyQ8tFSV1hk8fek5iRLLoSxj
+         3LrXq77JJD5OJN0evmMa7366p4HCj+jO5nklaVcHmctqqT2P0LZqili+dEUiHfoD9lbK
+         FP8fNHTLkhFU+Jo66Scwh/ih8kWmPVfX9siFGX//6/HjRqPtZMKJ+sLaRSP36RF06xuL
+         qPBzuARbhIM8xTI7ohpENQWc56JkuwY7EMd+QcnTv1la2mS9mclKfLTKemqidIQmdMWe
+         qnDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752449834; x=1753054634;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xki2w5eQHb1fLcDO93URZ4RBKttkZT0EQouQZSyMJfc=;
+        b=ByVMFvKzyah34mzgg0VcagOIzCIKr8AUaizt/R/kFGqHYkgf1XMhNiP3Cief4NHmkD
+         jih2oCA0HljQaFllQ40NqVl2+b4rkSIt1SQYn8c1wqVnaoTp6Yoe8mtAQ5rWztIaDPzk
+         lxT1mtYzq+PNiHUOfWY55vFGFXRuUYF95BFBV3bw/H8fERumLcV/E2BZaO8wRrfePN+z
+         k0+H7FPolXIYbw36J8L5NcFXsNygY0JWGfuwjNTDQKqYmL9VdRXecQ1nH/MMvvej2hfD
+         x4EAHe2vgBJ3OvBJwrXy1og+DKGoS+tz6aO5NeOwcOc/iIfg33gtW/xQYWliuesW4814
+         eN6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU4rceDExUMyp2ZVhPlp0ycICWeH22tKyiGRtF1x9q7QUiug/9taH28s5QPHPHbKCJv0Ax0p5ooSAHR7PU=@vger.kernel.org, AJvYcCXRVUEWjBKjVNaL9CGrJ1ktuPM6c6jobipu5Swj06NvFPjmM6elRuo1NGcJwQFC2GJl5Shwe/Ppc/zo8O9VGaU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdJZy/370TqvK6sOtAintEyb3nFPs3TiOP2SmgdkWddtBmXIY4
+	vL2C6aaFcxSE8Rk5gcjr4T+xzmmIpc4V1smWjeU3cnPBSqs3+YFvrjYOg1OBM+ntgITUsyVtn1i
+	hog131Rdf7d9UEGZPyWa0nmEUOGzLOIBzRhq/5Kw=
+X-Gm-Gg: ASbGncvwg+KY3Wx0xE0XZUTnlkybjisY37vh/sc3BSiTtcFEQEzusCFx+IwsQdKaaT7
+	LfSQmvccqMSUHp/uWwgoLwkVd/3v1EyO+mQNO2XuHl3Ag4QOcw2yzTrxkFxJwY8iVIkyAIx9jjU
+	11YT3lHU9XW+kUOJAUE6SmQuyPGoq4pbWrlHpjNPgmeZP4yqAY4bAif05CnQOmYKTeRG5vrEJ+U
+	Ezurvoe
+X-Google-Smtp-Source: AGHT+IGVnYdOmnvQAM3xQImU5seBhdG+QWcvE59fKe5VUpuLcAp36PUpTfD7+IpzMmXkXu+XtwTqCe8e7C4Je5dlxso=
+X-Received: by 2002:a17:90b:2711:b0:311:9c9a:58e2 with SMTP id
+ 98e67ed59e1d1-31c4f563077mr5444680a91.7.1752449834028; Sun, 13 Jul 2025
+ 16:37:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250616-strncpy-from-user-v5-0-2d3fb0e1f5af@google.com>
+In-Reply-To: <20250616-strncpy-from-user-v5-0-2d3fb0e1f5af@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Jul 2025 01:37:01 +0200
+X-Gm-Features: Ac12FXzOCsGxXB56fgbLYMskSiCz_Z_xUYfMnPoyv9J8VPmC5ClxWFQG2Aovnhk
+Message-ID: <CANiq72kG1TarXDJPbRnWJhBkUVdO+EOPEk70rAyDK6svt7TxNA@mail.gmail.com>
+Subject: Re: [PATCH v5 0/2] strncpy_from_user for Rust
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Benno Lossin <lossin@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 01:04:50 +0200
-Message-Id: <DBBAXIVZPB1K.2I3V9B4WNNBPA@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Tamir Duberstein"
- <tamird@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] rust: init: remove old workaround
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250709-init-remove-old-workaround-v2-0-a3b1be8fd490@gmail.com> <20250709-init-remove-old-workaround-v2-2-a3b1be8fd490@gmail.com> <CANiq72=6n0+uLJ-2_LGKW08r-uVKGbdkofoC09xHwfbwDsRzNQ@mail.gmail.com>
-In-Reply-To: <CANiq72=6n0+uLJ-2_LGKW08r-uVKGbdkofoC09xHwfbwDsRzNQ@mail.gmail.com>
 
-On Sun Jul 13, 2025 at 10:33 PM CEST, Miguel Ojeda wrote:
-> On Thu, Jul 10, 2025 at 12:49=E2=80=AFAM Tamir Duberstein <tamird@gmail.c=
-om> wrote:
->>
->> `Error::from_errno` is `pub` since commit 5ed147473458 ("rust: error:
->> make conversion functions public"), thus remove this workaround which is
->> no longer needed.
->>
->> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+On Mon, Jun 16, 2025 at 2:42=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> This seems the same as this one applied a few weeks ago:
+> There is currently no easy way to read NUL-terminated strings from
+> userspace. Trying to use the ordinary read function on an array of the
+> maximum length doesn't work because it could fail with EFAULT when the C
+> string is shorter than the maximum length. In this case,
+> strncpy_from_user is better because it doesn't return EFAULT even if it
+> encounters a page fault on bytes that are after the NUL-terminator but
+> before the maximum length.
 >
->     https://lore.kernel.org/rust-for-linux/20250526152914.2453949-2-ojeda=
-@kernel.org/
+> I don't see a clear owner of uaccess in MAINTAINERS, so I suggest that
+> it lands through Miguel's tree.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Oh yeah you're right, thanks for the heads-up! (seems like I forgot the
-patches after applying them so early in the cycle :)
+Applied to `rust-next` -- thanks everyone!
 
----
+    [ Reworded title. - Miguel ]
+
+    [ Use `from_mut` to clean `clippy::ref_as_ptr` lint. Reworded
+      title. - Miguel ]
+
 Cheers,
-Benno
+Miguel
