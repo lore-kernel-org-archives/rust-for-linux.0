@@ -1,132 +1,151 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006F2246BB6;
-	Mon, 14 Jul 2025 15:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752506015; cv=pass; b=IPz6loCuS8Ip+ikVeJOXQepNtHJ6sp+2sPSsGkOibRhH7EyF1fvBhyF1tmhlIjGYhA/5fKgBFLxWe8jQlrCutytRfpQJU3HZUpbPzumSZUc7L5ceHBprTad9dON0otmAebPKghEkSKoRX5xp5gkV0wpufRU7nzeomxbtCQNLIKQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752506015; c=relaxed/simple;
-	bh=nJiikquzfUrzFUhNIuX0ECRmGYdrZHV3lqYtqRvTxBs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=mpZWrVGSTP/1YtKGI52r7UabIIhAwTzS3oIrAmiPcoKNBWS/ukree69PI6h86g7MGGSaZUDz1ZkjulSheqX+NOMKDg76PjBjj2+xT4a2ftfjRafzgjrKFY87fHzGHh9KFES4e8EekkqMa+CIe+upRqFUhjfn2gKBuM3DzmFlDYY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JZjoEz6t; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A73725C82E;
+	Mon, 14 Jul 2025 15:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752506181; cv=none; b=Xdga1xbJoMvwbQDfDqpn1cLIT09D+xshkUusFK7RleaVJqXzfkcjMJicP3rZMZng1MQxewUaeEGc6IHtjE0JX5KPi5LzfCFu3ok0WX6yPzF9A1PbrS1rrIBEfj5JJGBeSjYyjQLAs2Lsm73rYqFwhPjsvlJdTJfCD3/OqxhiM1s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752506181; c=relaxed/simple;
+	bh=DYIpBX8VnAuNwWjILAB9UIK/+bNLzgpqHG3tl9P8+1k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=dpc4ONBzzZIvyvxq4TBIjZhemLsxKVbqaxS8Ibv8S2VmPjCYwCBCeWY7eCmm8bcbyW1CNPGib6xCLly3OB4iiOBrH/e+6U//4eTKvBotHH0YJIGFYoVW7cjZ56ZzeRYwi+C8b63wasFfL12EWecBEnA1+TLTeqyH4pZmDf/Bjc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VD4R/XRb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JZjoEz6t"
-ARC-Seal: i=1; a=rsa-sha256; t=1752505977; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=km5zAZoLfL/WUb967j5t6pTQLOqlE/hCyn4dfValQ33r2PPYF1clj4JizQQYVye64EJc9AaSBrz6mlDgJbILLGjJ6PpHTeNWPotaSD3VXu/wbIlGM9YBnKNIu9cC1iK9URk3uxOnsa359HKdD+v5flNBJaZGxbrSI8H4Q52+LQA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752505977; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=yBrlm4HyOYxQkzzRxHxRaO+Keb2kNTFdYZHjEVJuhcQ=; 
-	b=Tr/UWc97z9Yzs8IwsT9Y0vxxHidUvmLru3XRHR1hcVlxME9MJTHIepbdOH6H6RGEsaqmYMYfP60GG+//I5Td8c4bZw4RLvfa7gRk9xVpuzgY4rff4enlfMZM9M5UdEX5kkMQ5vFTUXboArZMVT9vOsKUQLi9ssTKHfyXLV51zd8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752505977;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=yBrlm4HyOYxQkzzRxHxRaO+Keb2kNTFdYZHjEVJuhcQ=;
-	b=JZjoEz6tslhhAyRvEcXPkQQ0Q4J294ajkKGf//YP5vKaaV4+f0z246Jq7QFFfoYX
-	62Q76oL9uB2FHdoJ4ybI8bcs5KlzG1/XgNZi3R6BDkfqJ/xIFVPxjCgU/wuArvAFiK6
-	+LxfaTyABQztaoAL2h7EsDCc9gstcNnIuPc4fvzg=
-Received: by mx.zohomail.com with SMTPS id 1752505974334461.4752414079642;
-	Mon, 14 Jul 2025 08:12:54 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VD4R/XRb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2706AC4CEED;
+	Mon, 14 Jul 2025 15:16:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752506181;
+	bh=DYIpBX8VnAuNwWjILAB9UIK/+bNLzgpqHG3tl9P8+1k=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=VD4R/XRbF/rTA1yEsFj7eJ3McbSzO0rpmbVdXcnktjIk23plNXE4IRcKcsdxbLhqg
+	 lfM6DZeKHJYRu31zdvKN8X4ISOZbaYKNmRnkNcjRMbOYcFXXtfaEqyWDIRqRuKsr6C
+	 sOe7kaJvui72ctvHkdGV/v7n4NQLmBCs8oYXfbJtmQEGWxbKsgFzE4n5U4nRGlNG6h
+	 UXrNpQOuQB3nQ/kGMQJS1+ORO5N/NRH72uq3pBV8O2YsPQH/7xCOiTSpxBpaXK3EAV
+	 rHC9EmOKIuhy5wuPZB3j6BtsYVza0LmKA09nXRbOpL8ZlmQYvUEGIz67Qj2pOm917i
+	 8l03mb/6wBJQA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
- handlers
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org>
-Date: Mon, 14 Jul 2025 12:12:37 -0300
-Cc: Benno Lossin <lossin@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <C72C6915-3BB2-431F-89ED-7743D8A62B7E@collabora.com>
-References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
- <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
- <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org>
- <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
- <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org>
- <DBAVXQTMR38Z.2782EGR84L7OP@kernel.org>
- <DBAWQG1PX5TO.6I2ARFGLX88N@kernel.org> <DBAX59YKO0FV.ANLOWRHDDS92@kernel.org>
- <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Jul 2025 17:16:14 +0200
+Message-Id: <DBBVL9ZPDU9P.3M2L8OB6SHBUE@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
+ "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
+ <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
+ "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
+ "Alan Stern" <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v7 3/9] rust: sync: atomic: Add ordering annotation
+ types
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250714053656.66712-1-boqun.feng@gmail.com>
+ <20250714053656.66712-4-boqun.feng@gmail.com>
+ <DBBP3E8PZ81U.2O0QHK1GQXKX2@kernel.org> <aHUbUZZ-8Z9kspds@Mac.home>
+In-Reply-To: <aHUbUZZ-8Z9kspds@Mac.home>
 
-Hi,
-
->=20
->>>=20
->>>  (2) It is guaranteed that the device pointer is valid because (1) =
-guarantees
->>>      it's even bound and because Devres<RegistrationInner> itself =
-has a
->>>      reference count.
+On Mon Jul 14, 2025 at 4:59 PM CEST, Boqun Feng wrote:
+> On Mon, Jul 14, 2025 at 12:10:46PM +0200, Benno Lossin wrote:
+>> On Mon Jul 14, 2025 at 7:36 AM CEST, Boqun Feng wrote:
+>> > Preparation for atomic primitives. Instead of a suffix like _acquire, =
+a
+>> > method parameter along with the corresponding generic parameter will b=
+e
+>> > used to specify the ordering of an atomic operations. For example,
+>> > atomic load() can be defined as:
+>> >
+>> > 	impl<T: ...> Atomic<T> {
+>> > 	    pub fn load<O: AcquireOrRelaxed>(&self, _o: O) -> T { ... }
+>> > 	}
+>> >
+>> > and acquire users would do:
+>> >
+>> > 	let r =3D x.load(Acquire);
+>> >
+>> > relaxed users:
+>> >
+>> > 	let r =3D x.load(Relaxed);
+>> >
+>> > doing the following:
+>> >
+>> > 	let r =3D x.load(Release);
+>> >
+>> > will cause a compiler error.
+>> >
+>> > Compared to suffixes, it's easier to tell what ordering variants an
+>> > operation has, and it also make it easier to unify the implementation =
+of
+>> > all ordering variants in one method via generic. The `TYPE` associate
+>> > const is for generic function to pick up the particular implementation
+>> > specified by an ordering annotation.
+>> >
+>> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+>> > ---
+>> > Benno, please take a good and if you want to provide your Reviewed-by
+>> > for this one. I didn't apply your Reviewed-by because I used
+>> > `ordering::Any` instead of `AnyOrdering`, I think you're Ok with it [1=
+],
+>> > but I could be wrong. Thanks!
+>> >
+>> > [1]: https://lore.kernel.org/rust-for-linux/DB8M91D7KIT4.14W69YK7108ND=
+@kernel.org/
 >>=20
->> Yeah but I would find it much more natural (and also useful in other
->> circumstances) if `Devres<T>` would give you access to `Device` (at
->> least the `Normal` type state).
->=20
-> If we use container_of!() instead or just pass the address of Self =
-(i.e.
-> Registration) to request_irq() instead,
+>> > +/// The trait bound for annotating operations that support any orderi=
+ng.
+>> > +pub trait Any: internal::Sealed {
+>>=20
+>> How about we just name this `Ordering`? Because that's what it is :)
+>>=20
+>
+> Seems OK to me, I then also followed Gary's suggestion:
+>
+> 	https://lore.kernel.org/rust-for-linux/20250621121842.0c3ca452.gary@gary=
+guo.net/
+>
+> and dropped `RelaxedOnly` trait.
 
+Sounds good.
 
-Boqun, Benno, are you ok with passing the address of Registration<T> as =
-the cookie?
+>> That sadly means you can't do
+>>=20
+>>     fn foo<Ordering: Ordering>() {}
+>>            --------  ^^^^^^^^ not a trait
+>>            |
+>>            found this type parameter
+>>=20
+>> But you can still do
+>>=20
+>>     fn foo<O: Ordering>(_: O) {}
+>>=20
+>> If we don't have the ordering module public and instead re-export from
+>
+> Keeping ordering mod public helps rustdoc readers to find the module and
+> read the module documentation (where is the best place to explain each
+> ordering), and also I made `Relaxed`, `Acquire`, `Release` and `Full`
+> refer to the module documentation in their doc, making `ordering` mod
+> private would cause rustdoc issues.
 
-Recall that this was a change requested in v4, so I am checking whether =
-we are
-all on the same page before going back to that.
+You could move those docs to the `Ordering` trait :) But I think having
+an ordering module is fine.
 
-See [0], i.e.:
-
-> > > >> Well yes and no, with the Devres changes, the `cookie` can just =
-be the
-> > > >> address of the `RegistrationInner` & we can do it this way :)
-> > > >>
-> > > >> ---
-> > > >> Cheers,
-> > > >> Benno
-> > > >
-> > > >
-> > > > No, we need this to be the address of the the whole thing (i.e.
-> > > > Registration<T>), otherwise you can=E2=80=99t access the handler =
-in the irq
-> > > > callback.
->=20
-> You only need the access of `handler` in the irq callback, right? I.e.
-> passing the address of `handler` would suffice (of course you need
-> to change the irq callback as well).
-
-
-=E2=80=94 Daniel
-
-[0] https://lore.kernel.org/all/aFq3P_4XgP0dUrAS@Mac.home/=
+---
+Cheers,
+Benno
