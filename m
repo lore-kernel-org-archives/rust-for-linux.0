@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CD52AE6A;
-	Mon, 14 Jul 2025 11:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A961A2545;
+	Mon, 14 Jul 2025 11:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752492348; cv=none; b=TkD6gMhqJkBBxICbPxDoDzN2zBtDl1smnznrqCdhr7RvL3f6P9dYcyNEQPkg4lAQjlgk0GUPOyExVWBPKCrwUAxmyfEnifvUZ5u6BGFaneK5LbssGQX2wad0PmTsaAfYe852Ww1MbowCdzKrLQeFHJHGOU7n6DPLep0EQEG6OiQ=
+	t=1752492501; cv=none; b=JfunUa9KMSEpCnSmYFLbGJailjTxsCt+ZpeMalXOkJ6Uq6SxIqTc11DIYT5TR2ch3fAsJ1xrPKtMt+8sWk0gL7N0rtMwnrEo6bKlAF4LEuKHe6/dXikgnrk0hqhGC+kjGVcUrBzR2BYjptbrQWFi5dQZSV/ds8jymWE3aThR3lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752492348; c=relaxed/simple;
-	bh=d0CF/6aQzH/rQNpNsktTzOYq6IzKLScD2DanqTY49v0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=BIZb6ZiF1gDtOx8t3dwAAV8O+RSXRB4saiSCsItb10wTqtSLnQoDWI2uM/rvriT5Sru/2keuUwyFwULgR2g7o+7ixcfQrfTq//26+ssm82XFBD4PcyYCid6FAsc+AXf7iOLBNynbNOf8l2jZjCa9A5L7EL7QYTyTG459vEMHXXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHtprIo6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752492501; c=relaxed/simple;
+	bh=sZqTm7pgCVsziSTCEnOE9O8yssbVDX/uReiosYE1Osw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=LeIlVbFAf19glZRnf12Sr45KzuSl4ZfKxBKULKgXVgTSVRM/juObbU76w2VrzOHmG2gIHH+o8kMurEL/qy/HFSRCbP0LCmLFwQSN8ty1atW+eKffax7vDp3vykHJq4DQ2wU+6e1ppjLYBUBcVYqQ8ETvsypvSNKxmGkydm+4xOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HuW58WgX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHtprIo6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2CEC4CEED;
-	Mon, 14 Jul 2025 11:25:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HuW58WgX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F58C4CEED;
+	Mon, 14 Jul 2025 11:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752492347;
-	bh=d0CF/6aQzH/rQNpNsktTzOYq6IzKLScD2DanqTY49v0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=XHtprIo6setBWMmBOgG1J8q9WxeYeHZXYkgYC8HXcILsLc47XoZ5APfE03L/i5Xd6
-	 urJmgpMhdIMs/kT8P0nBgeLtb434ABvf9Fg44bu/rqiLB8HWgeD9aCfxb7Wc/HY7ug
-	 ytRU+7rILaqp0jQ+lIec6Uih/wV4HIeYXnQHq89nnl7hcv5dwEUHQat91YfBq3pV8L
-	 soLlru8qCOxOU9fpC3qDwmRrl1Z0ALvG8ERTl00AETB13pbnJK+0Ilz1uihKVIXJu3
-	 taxIqY6Cx0I9f6gTRuFqvCwKfVeXrJVxwSCZQFnXUj98Q5OMC9X2oVKYRz5pwTAwgn
-	 7YfMPXhrHOqGg==
+	s=k20201202; t=1752492500;
+	bh=sZqTm7pgCVsziSTCEnOE9O8yssbVDX/uReiosYE1Osw=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=HuW58WgXG2BbO8yPE9bYbXlpN6MZJs20fuVRO0SaqTY1sNDGwNzaHzLkFfGd+KLfx
+	 rtaavlFYjZAAWQ+gHOWz17SiTK3NetlUcYZlcoswyddEspEhua2iYvuTFlHd7dnTTR
+	 J8ZKE3j6n2BOMj3QQr3nZwkNFZm7ZG6TNVcGV60vUopUaGS3IMu0pEdamJJOvcDQF2
+	 PuNQWr6wyu5kE5Xzr97AaVlHMJp727dkS6nU5GwMSyKE9yIWvJ+6hq3a99jbQN3Z49
+	 IUabrU77rVU6uCfjkGbNNUmV4hVEg+Y6dbz6Ckj/B3o8rwFII2vYNwfy6CIxLz135A
+	 8olHBUGzGR7RQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,34 +34,85 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 13:25:41 +0200
-Message-Id: <DBBQORC8GLOW.1NOJ8RVEQ5V7T@kernel.org>
-Subject: Re: [PATCH v14 0/3] rust: replace kernel::str::CStr w/
- core::ffi::CStr
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Luis Chamberlain" <mcgrof@kernel.org>, "Russ Weight"
- <russ.weight@linux.dev>, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
- Molnar" <mingo@redhat.com>, "Will Deacon" <will@kernel.org>, "Waiman Long"
- <longman@redhat.com>, "Nathan Chancellor" <nathan@kernel.org>, "Nick
- Desaulniers" <nick.desaulniers+lkml@gmail.com>, "Bill Wendling"
- <morbo@google.com>, "Justin Stitt" <justinstitt@google.com>, "Christian
- Brauner" <brauner@kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>
-To: "Tamir Duberstein" <tamird@gmail.com>
+Date: Mon, 14 Jul 2025 13:28:17 +0200
+Message-Id: <DBBQQQVVCTAC.I1OXFG4SVLRO@kernel.org>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250710-cstr-core-v14-0-ca7e0ca82c82@gmail.com>
-In-Reply-To: <20250710-cstr-core-v14-0-ca7e0ca82c82@gmail.com>
+Subject: Re: [PATCH v2] gpu: nova-core: vbios: change PmuLookupTableEntry to
+ relax alignment
+Cc: <acourbot@nvidia.com>, "Joel Fernandes" <joelagnelf@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>, <airlied@gmail.com>, <simona@ffwll.ch>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Rhys Lloyd" <krakow20@gmail.com>
+References: <20250714110229.141221-1-krakow20@gmail.com>
+In-Reply-To: <20250714110229.141221-1-krakow20@gmail.com>
 
-On Thu Jul 10, 2025 at 4:53 PM CEST, Tamir Duberstein wrote:
-> This picks up from Michal Rostecki's work[0]. Per Michal's guidance I
-> have omitted Co-authored tags, as the end result is quite different.
+(Cc: Joel)
 
-For device and firmware,
+On Mon Jul 14, 2025 at 1:02 PM CEST, Rhys Lloyd wrote:
+> Instead of the data field containing a u32 and changing the alignment,
+> change data to [u8; 4] and convert to u32 with a helper function.
+> Removes another magic number by making the struct the same size as
+> the data it needs to read, allowing the use of
+> `size_of::<PmuLookupTableEntry>()`
+>
+> Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
+> ---
+> Changes in v2:
+> - get_data helper function renamed to data
+>
+> ---
+>  drivers/gpu/nova-core/vbios.rs | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios=
+.rs
+> index 5b5d9f38cbb3..339c66e63c7e 100644
+> --- a/drivers/gpu/nova-core/vbios.rs
+> +++ b/drivers/gpu/nova-core/vbios.rs
+> @@ -896,21 +896,26 @@ fn try_from(base: BiosImageBase) -> Result<Self> {
+>  struct PmuLookupTableEntry {
+>      application_id: u8,
+>      target_id: u8,
+> -    data: u32,
+> +    data: [u8; 4],
+>  }
+> =20
+>  impl PmuLookupTableEntry {
+>      fn new(data: &[u8]) -> Result<Self> {
+> -        if data.len() < 6 {
+> +        if data.len() < core::mem::size_of::<Self>() {
+>              return Err(EINVAL);
+>          }
+> =20
+>          Ok(PmuLookupTableEntry {
+>              application_id: data[0],
+>              target_id: data[1],
+> -            data: u32::from_le_bytes(data[2..6].try_into().map_err(|_| E=
+INVAL)?),
+> +            data: [data[2], data[3], data[4], data[5]],
+>          })
+>      }
+> +
+> +    /// Construct a u32 from `self.data`.
+> +    fn data(&self) -> u32 {
+> +        u32::from_le_bytes(self.data)
+> +    }
+>  }
+> =20
+>  /// The [`PmuLookupTableEntry`] structure is used to find the [`PmuLooku=
+pTableEntry`] for a given
+> @@ -1037,7 +1042,7 @@ fn setup_falcon_data(
+>              .find_entry_by_type(FALCON_UCODE_ENTRY_APPID_FWSEC_PROD)
+>          {
+>              Ok(entry) =3D> {
+> -                let mut ucode_offset =3D entry.data as usize;
+> +                let mut ucode_offset =3D entry.data() as usize;
+>                  ucode_offset -=3D pci_at_image.base.data.len();
+>                  if ucode_offset < first_fwsec.base.data.len() {
+>                      dev_err!(pdev.as_ref(), "Falcon Ucode offset not in =
+second Fwsec.\n");
+>
+> base-commit: 215a3f91713383a3c0d2da82d223a608a3c17ac1
+> prerequisite-patch-id: d80f92d314a0693d4c89ffb7810d9ab6990336fa
 
-	Acked-by: Danilo Krummrich <dakr@kernel.org>
