@@ -1,116 +1,124 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B501EC014
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 12:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC121E0E1A;
+	Mon, 14 Jul 2025 13:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752497220; cv=none; b=OPw5R7BI1PFuSQFZCsgU9yYrL6YVp4wgte7NHHOFEWg3rv0gXoCMwUb55fLkvYZrQdALe82WOqD9ZFqnxQMh2OZbI2hVZ6GBDQQwGSRK+FgXRQDfyv/Az82rIF7COmOhXkaUOCCSb2fF79bRdXKgIXtbzvsHUPWKxz1H9RvVACA=
+	t=1752498054; cv=none; b=B7Tz+e04teDyIXYrdhCjM79iezdMy4GmuL5d9D19pdY17HAZhUEm3iUSiTHVoe5GkU1tafYGwMzh3iko/INgAHBCRfXSa/nNsnWi8lU7FYXL2DrUWKbfOGT5rt8IoDb3ZfgH7wutUFx4DCI3ReT9shXlvw/HVMFu8B1GcUfQO54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752497220; c=relaxed/simple;
-	bh=J91ZYjtbwaTMJpu11gGqhMzN1zmkSrrX3uRax3VQX4k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sNvXLpWT9+VOlVkGQn7lnYyHFA8BKRfb0ZvNd50OApO0wiFVgz9rZSqZ8wc7FaZ1vppxgsvsShIh04H8bWtIIA4evXXmKNnqXTO4g9iF8B/cH2KGMYNy1tXw4la3gSbu/x1gf+W3shOcFQyphqZ+GPZ7hWo78MGPlwIDt4e8OwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=djLVffo4; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1752498054; c=relaxed/simple;
+	bh=FhLzUPV+IQhuUV+99nvb8u2NjykX+6qBCI/EG/1mVy4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U92AwnCvrF1jerwpwkOoAvOOZS4JkU1fl0hnGCyBAka8/PeFC8wNZ3hdmCn1D2vHqWa6A03GU6Ik/PQgC/a5g33PZdZZrl9tN7wcwzQYMEk9iBIfkD4mlzo8XPj7zENiTKmRSiPjqYhRJv48X2AGDVPl5pS8BkJ3kyahicKA7Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UN0Vtiif; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="djLVffo4"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4eeed54c2so2322766f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 05:46:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UN0Vtiif"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-32f1aaf0d60so35295341fa.1;
+        Mon, 14 Jul 2025 06:00:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752497217; x=1753102017; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BCAU8VS25IOt9sYf9oIboq5yhkU4imPeOC08UrRhKsI=;
-        b=djLVffo41W3YCTKpLmP3i9fNpU9x+rcTwfEI3WVPVQQdUwUYZdLFjy9zvmd9WxgKJ6
-         cglgGllzX9rr9A/UB+5PcwfOdWpCfqlfGPxLaSwYdEK/FQI2wz4UO3hcjqlE4yH8dtWh
-         HzpXzcVn1SDspV10rK+mBa8T9HD9nlDQ+4mfP19t7SxqVM8yYrP4iXHg7jS0rkE9pft6
-         iXXxWs61pbsQDjdp2PwX0ChIxMq+F1nhVNa6khyBXPNZ0zQ90tzpx+euUZ+I9/ywmapP
-         WIamdZFBXpfCsw6jh1UDbYpd6J3678Z8NQoUouB3vyFGAxsi5uctaEE2rhm+g6zRqI32
-         HKcw==
+        d=gmail.com; s=20230601; t=1752498050; x=1753102850; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aQiKdw9EJHBJEChtzsNJX2kS4onV5OIHRGBDY+aFSqQ=;
+        b=UN0VtiifPrDrszPffu4fv2H4GKB4yVd4IZgvGZuPE06bCavLv2Dgf7IlSCxPG49WMs
+         3P7RZ5oSeDCkomhaox+PAYMCtXi00ewRinjrVfZ0LABRLrjH02Q6P1J8zvIIC1flfu2r
+         KWzgqfsP14OWmg4PUEpTJShwbb3E+nNbpOnxGSI4+v022B1Rlh+mQ7H4OiINXwSySEk8
+         TnIl5at+OPX8pH23U3308C+tsWZowTMJ/ft/4jcBo7selX22/WJ665GevkbzldObMWHW
+         JJepLfX5frB8J2SJj0oYFJ2neD9zoqNVZp+QHj7i18nGGF9nV+OoDVpxuSxkH6DPTH4F
+         StKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752497217; x=1753102017;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BCAU8VS25IOt9sYf9oIboq5yhkU4imPeOC08UrRhKsI=;
-        b=QUqzEIt2mqZpM21/3DK4CigPGtcNGvxHE75+9FoKQ5l7aEBb3pZt4Y5LevHBdRHO8t
-         mJ2J+RHwivsNtsh0XwTpsffV4D7OO940QXVjcl3sf38WQRlB6EVp4r/YIkmOIvDX9F/7
-         7qAAB2FevpJ2lPda6tfXBh7GEq0PoLAjdFig5DGjYLjB9kM1i/70K/meSwJac19LGLDP
-         9UQIzV0OUzfd8G1lxxRqWi/bS8KTGjlDuCqw4uuLwLlQLMOgnSkLriyd5sKfwF+0mip5
-         aBVvuP2P750wgsywANKj2Ke0M2KPvp3B47eJqCPac3Gq4W2QN9hT4uDdZJ6+L+I7+SyJ
-         8lvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZrj9eYVx186p/DvWUfPFKN7elA31VSP5Ce2XZ/T1kGuB+nFRDr9eSUQOOFcq+WaHuYIIzdvWlUOgrz4lUfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztjEGGAxJqU0BIHW59VpGjsuhjgp2Te2SYlJOexaVs3WkLMXYm
-	Q8RSUQJxRz1ux1owPcWG0WNs8LYB22iJXZyXqDKUoL+LLNRWLoQ3xFg6FcdeWmpGuGHI5rgK9MI
-	1K75vRVaH4jTWmbRg1g==
-X-Google-Smtp-Source: AGHT+IHmaElp4RBx+5dPs5oLMrkGNVDwKIXPHrM9xPeMMW0WD12ewivZSlrvWCFl9tPhmrJGiETmE9A+UXAq7kE=
-X-Received: from wruo9.prod.google.com ([2002:a5d:6709:0:b0:3a5:648f:da85])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4186:b0:3a5:2599:4178 with SMTP id ffacd0b85a97d-3b5f188e184mr9031238f8f.19.1752497217128;
- Mon, 14 Jul 2025 05:46:57 -0700 (PDT)
-Date: Mon, 14 Jul 2025 12:46:37 +0000
-In-Reply-To: <20250714124637.1905722-1-aliceryhl@google.com>
+        d=1e100.net; s=20230601; t=1752498050; x=1753102850;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aQiKdw9EJHBJEChtzsNJX2kS4onV5OIHRGBDY+aFSqQ=;
+        b=ftmenAlKwTpNdqeCMXgISMe6jYjRrSSoxL6Wy8wdmLzbKExx5exj5uxrjmgVjusnUe
+         4mAV+cPmGWrNOdfOKO0KFSH1/Elr11gs8s5kVdZTJMqbTpsHCD+NW/rzYo6ZKo64nEJu
+         sTFe4QpsXLGPH6wmEcggyqoAnsYAXx0Wcr+lgkPUr9UDTnGDOXyi6mmgI0mee8w3htIf
+         dzt6CEzEDOYZPuQyprn/aJabgGcs5kdA1TRkCwc2aQDewQ+yEZj5nq3170ova6vSTFbp
+         l0UED9Rgf9MogDTCg42EMY2COkyX179pJ6jPzU9G/7hANqrMuFZqftUeejzvdb2Pc54R
+         HkJg==
+X-Forwarded-Encrypted: i=1; AJvYcCXUmjmtrp/bp1GIR0KC/8NgoAf9b6irUKmDJ62SYjFc01yvqxBQjt8OYBQv8vC1YeGdWoRdf2dT6MmA3gU=@vger.kernel.org, AJvYcCXyvuavvoiWqfyoTZG3iUKrp4xZy0qu9E55YgkHiCAXY3vMFa7cg2CkhVfVtSR8mbd0R3PwyV6qzrtf@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGQnMrKwhJjzm/VLyXnen1zHexWWlK3xqq8ooa1cbitlqtzpFY
+	g9XlqrHJzRPZLiA2dar4vQWlk37J9oP9dbCXNmt8HI5Ylj97FBpjH9oa
+X-Gm-Gg: ASbGncvYYi6kDx7Cy/kspDVfgbJ7/xzbEkTvlpwSqtpM0diH0XY+5Ru1wmrkLWBg5iC
+	kgjQAbVeSCU3CtyIUQ1KEDPLzngfec2N3XsyQVCOknRxMf+6xf8zR3sXUCg2LN5yt8ZgyJHsn7g
+	Mh3QvLZRj6khp+Ervhdro3l0isKBzGzk5/8Knxig7FiV35BwEjTwKC3hpfImnAEYsRq2ef1OiaU
+	avIwd0bBUsz7m1pEXj9jtPZyvMqlhF9l1vNqZ7CgTCmmvol+a4irhcgxzIerIExDC1a8K6DIWE3
+	JpVN0QdF9/Y7VzjbGVZQb5ZCPsrR7fzg+Kmvv2TjOuzHh19+hEJsOO47PmrRroTUTx1+tOFeiyL
+	Foq4MjnRr7iTmEOXx1C+/C5tWXpJrG0BvWjqBpLbmY5s8raKwrL2eihj6saRcP/zXA4SjAdIeWH
+	Hvts1s+m3EhqGDKlriGbmsYKF7JBlB7pppOi/qq4rjkTyglsMJUecbc/A=
+X-Google-Smtp-Source: AGHT+IGRqXbDscGbqk1WtvSf+4EphHRV0CYH3BgplAP9nszGXadN2LS9nFQvxlFnZ0mP8NFTPKKZMQ==
+X-Received: by 2002:a2e:a556:0:b0:32b:755e:6cc7 with SMTP id 38308e7fff4ca-330534992e0mr45910221fa.28.1752498049539;
+        Mon, 14 Jul 2025 06:00:49 -0700 (PDT)
+Received: from ?IPV6:2001:999:698:624f:40f1:7eae:1c43:b112? (n74gsrcc1ueyaetveoi-1.v6.elisa-mobile.fi. [2001:999:698:624f:40f1:7eae:1c43:b112])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-32fab8bf2d6sm14811461fa.52.2025.07.14.06.00.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jul 2025 06:00:48 -0700 (PDT)
+Message-ID: <85d071e3-d66c-4ed0-b9ae-fdeee1d43ce9@gmail.com>
+Date: Mon, 14 Jul 2025 16:00:46 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250714124637.1905722-1-aliceryhl@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=855; i=aliceryhl@google.com;
- h=from:subject; bh=J91ZYjtbwaTMJpu11gGqhMzN1zmkSrrX3uRax3VQX4k=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBodPrWgeicSuKw5YfI3216ongBoxX9oo68m/mvN
- 72eamAoXryJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaHT61gAKCRAEWL7uWMY5
- RteZD/9cC7JpaRYcoO4yYDovl2LVXJIdg08abJiEQ5GKe7RflOOxPz9i8Xhjc2pAoz5uLlLwMp1
- 3QIXlEmBmgPjueunZy0Nx8YiIBFjXKhlYxAywf4Xkkc+7VuwXACh41AqjraAbBbfs3k3L+OybsC
- d+86l587FM/VSt/UTm42r1ygwMB0u6HmmCbC/UKq5ah55WLijo8a4ysA7Cnpfi5z25Qs0lVXLc9
- PX+HuDHsIpSBApHn6ToTWnI5If16Tp5kBjOT0ss7ZoXVoJHnVib030+P691keE85Hy3CUiNz1He
- aGsyzWeWqIiPxltTPD44vCD9+O8pDrnAESUjv7wD6tzIlG1BH3USVdBZ7pP2thmyS/WbH1CBvoV
- cn3h9aCFteU167LHG38IyRJnhLuplL3YTqmwEzOUa7HNTBtB/HYLP5QATADJ44WO/c1JzlKlLEB
- dVL8Q2UrIGC2+70P4e1HT5Y4O8/VUNAHRX7kY+4y9gqOiycTjAN2eZaRia6RSRW7eKnHKf08/JD
- YInGOsGT1QxfuwNrvyeWyd0tOd33ze6+GLDyS7nx83Y3VWBdEfp0sSfosEGVE0O1hB5oaZaMo9c
- bNdBXCQBZmU7xrCs8wM0NVAG6scGfrnHKSyWzuUUyrWHn9c4GSEAjT9d9Nf3dCpYIFgR7nIBnzP MoHsNxCnKsvdP8w==
-X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
-Message-ID: <20250714124637.1905722-2-aliceryhl@google.com>
-Subject: [PATCH 2/2] pid: add Rust files to MAINTAINERS
-From: Alice Ryhl <aliceryhl@google.com>
-To: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	linux-fsdevel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/5] dma::Device trait and DMA mask
+To: Danilo Krummrich <dakr@kernel.org>, daniel.almeida@collabora.com,
+ robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, bhelgaas@google.com, kwilczynski@kernel.org,
+ gregkh@linuxfoundation.org, rafael@kernel.org
+Cc: rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250710194556.62605-1-dakr@kernel.org>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <20250710194556.62605-1-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-This files is maintained by Christian Brauner, thus add it to the
-relevant MAINTAINERS entry.
+Thanks for completing this missing feature!
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+I've looked it into detail, and for patches 1, 2, and 5:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0f4e99716183..e46c90a52f83 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19510,12 +19510,13 @@ M:	Christian Brauner <christian@brauner.io>
- PIDFD API
- M:	Christian Brauner <christian@brauner.io>
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux.git
-+F:	rust/kernel/pid_namespace.rs
- F:	samples/pidfd/
- F:	tools/testing/selftests/clone3/
- F:	tools/testing/selftests/pid_namespace/
- F:	tools/testing/selftests/pidfd/
- K:	(?i)pidfd
- K:	(?i)clone3
- K:	\b(clone_args|kernel_clone_args)\b
--- 
-2.50.0.727.gbf7dc18ff4-goog
+Reviewed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
 
+On 7/10/25 22:45, Danilo Krummrich wrote:
+> This patch series adds the dma::Device trait to be implemented by bus devices on
+> DMA capable busses.
+> 
+> The dma::Device trait implements methods to set the DMA mask for for such
+> devices.
+> 
+> The first two bus devices implementing the trait are PCI and platform.
+> 
+> Unfortunately, the DMA mask setters have to be unsafe for now, since, with
+> reasonable effort, we can't prevent drivers from data races writing and reading
+> the DMA mask fields concurrently (see also [1]).
+> 
+> Link: https://lore.kernel.org/lkml/DB6YTN5P23X3.2S0NH4YECP1CP@kernel.org/ [1]
+> Link: https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/dma-mask
+> 
+> Danilo Krummrich (5):
+>    rust: dma: implement `dma::Device` trait
+>    rust: dma: add DMA addressing capabilities
+>    rust: pci: implement the `dma::Device` trait
+>    rust: platform: implement the `dma::Device` trait
+>    rust: samples: dma: set DMA mask
+> 
+>   rust/helpers/dma.c       |  5 +++
+>   rust/kernel/dma.rs       | 95 +++++++++++++++++++++++++++++++++++++---
+>   rust/kernel/pci.rs       |  2 +
+>   rust/kernel/platform.rs  |  2 +
+>   samples/rust/rust_dma.rs | 12 ++++-
+>   5 files changed, 109 insertions(+), 7 deletions(-)
+> 
+> 
+> base-commit: d49ac7744f578bcc8708a845cce24d3b91f86260
