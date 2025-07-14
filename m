@@ -1,84 +1,80 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467F4277035;
-	Mon, 14 Jul 2025 18:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752519151; cv=none; b=saGJdpFlwYPfRWhGxZZAyI00ADVbRGyvIA6k2fYVOtLYBdgRLL6WVXMFa3lKTIOuviuZtdNxFx0oQTJGmvW7Y1Qgvv68Wdo0402cZR3dBH9RUBY25kgC/UMifBXnYkMb5eDyyb9lIQ1pnKKVw3TA4KuDlxO2ILYpUIJmbmyya8c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752519151; c=relaxed/simple;
-	bh=U5mSk6Tmn99cFc1lFU5MvOtbQAzNFsG4TN70oXffbE4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iFFnsca4zQhI0hxplu4ySxqf/sHQwQhk2OVX4sLkkGqYA8jWW1Z3fMP/x+2+VG/63rvgdufR+uPyinEQt0Brc2kTT+iuMF+Q2n+gV40u7Bj3N2wBNklHLIrdCwo4qQJv8aq/MNbvKpCjx0XC+k9nzG1kwbeg6JPEutrkwJz4uN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Fbrh0eF5; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D484225D6;
+	Mon, 14 Jul 2025 18:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752519598; cv=pass; b=ElsfNT4v26QMDL34KPvBBsX2njESquLfRPsr8R9Y4TJjDmpJdn0s7HhVqhArn/0hl8ouGhWCMyuEVebC6Co5J0l4ycigySrg3RsDFZXZspiAyVpxdVX9ZtJo+lrIyMrwLHccCv6jRDgk8+ICOqIxv11OLyhrEhLyma2GGURlqig=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752519598; c=relaxed/simple;
+	bh=38mkXnq+GQi2cp1lObcn7RjfpS8eQBOP4ZN0QSiZR/E=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=UTL/QKfwQH2oBx7qC6fx6ObEL+FDvWe7rExVYfVs5uoqOs+TDak8lid5R/Gs+DHS8tNSU0zLR3S9CgMiooMT/mxQmfMtrRZOGUcQ0XqAQDyASE4hEtZX8DmesX13q5nVsPnqGGz65sx171EgwQEoAA2f20cX2AjdyYdDCpjhUkQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=QoqbvCKw; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Fbrh0eF5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1752519147;
-	bh=U5mSk6Tmn99cFc1lFU5MvOtbQAzNFsG4TN70oXffbE4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Fbrh0eF5KEi7IRjO19W6cuGcNNEal5ypIaIVb7JXnemgK/5JKKxXH9b7yoznhB4Jx
-	 Tar1IqgEJL2JxUo3vMAcgg/8fTM/78vOPYA5XrlE8rXBaL1ZYelR5HQUITAH0WDTrq
-	 6tnMezAn9svbtgxDhDHL69sVXeqbEEro0jSkJJsVsUEv00FjXjMVUFeZ1Yx41xSxO6
-	 XYRVdQHC0NZn84KnNcBSM5HcOz0po4N4cJhOjOlZqWY+xL67OrbDWasgkwMrJAvRNt
-	 r80+R9+7iiDHwWlZXWs0NWjLdjYfxUB38MPx37IF74iiNwI6XfGmS4XeOvz3ehVP1X
-	 bx3gJrfeHrRkQ==
-Received: from [192.168.0.2] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 4FDB017E1301;
-	Mon, 14 Jul 2025 20:52:25 +0200 (CEST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Mon, 14 Jul 2025 15:52:05 -0300
-Subject: [PATCH v8 2/2] MAINTAINERS: add regulator.rs to the regulator API
- entry
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="QoqbvCKw"
+ARC-Seal: i=1; a=rsa-sha256; t=1752519580; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=hxs/i5XFPAyLTm2xAL+SWvivVdOgHG716PjBUfKetBVlHMEmoR0adKcPF0BtahvCsKSkIh9JstsSNVivtYEABchumS/2eCwQN5/GPZMT0VvocNsSvVaRnAoHZ4RKRV8l8y7j1lbw6md++YVZHRSksLE1M1a+nUdhK1gofVL1TFY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752519580; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=38mkXnq+GQi2cp1lObcn7RjfpS8eQBOP4ZN0QSiZR/E=; 
+	b=NhycM1gm1jkd/h16kSc2EufNPLWhPvpLKYXTY/MdCo9NJNNGYaM/mTiaDajkscZBj6t0eIstnkJVrzkM6wgwzdPY+VaN+G57eyj7hym6LhmLnXHhWjQtt3S4kd9Cvizc8f9ZAst0MUmnWZyEoThbmRXWrm22C+Xvo4RaR26DS3I=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752519580;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=38mkXnq+GQi2cp1lObcn7RjfpS8eQBOP4ZN0QSiZR/E=;
+	b=QoqbvCKwwySEdzM5+mRD24dISOLWAUNeuzETVhcUKyGDS6XPW0wgOjnggDKj/L/y
+	YoBjZ7cqkujfCTOq6bW/6GailjVNR7IY4e7W8omWVN4EXxviFwJkYrm2+9s/vT3ZvWS
+	XICl1UPJAcnFfOJi91c/i4qgx7EIIZ7n1pVGFSzE=
+Received: by mx.zohomail.com with SMTPS id 1752519579138441.8147836702417;
+	Mon, 14 Jul 2025 11:59:39 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250714-topics-tyr-regulator2-v8-2-c7ab3955d524@collabora.com>
-References: <20250714-topics-tyr-regulator2-v8-0-c7ab3955d524@collabora.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v8 0/2] Add a bare-minimum Regulator abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
 In-Reply-To: <20250714-topics-tyr-regulator2-v8-0-c7ab3955d524@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+Date: Mon, 14 Jul 2025 15:59:23 -0300
+Cc: linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ Alexandre Courbot <acourbot@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A9FBBE84-DB81-4245-9FA9-8EEDBE391522@collabora.com>
+References: <20250714-topics-tyr-regulator2-v8-0-c7ab3955d524@collabora.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>,
  Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-Add this file to the regulator API entry as requested by Mark Brown.
+Mark, this looks like a good candidate for merging, how do you want to =
+go about
+this?
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+I believe that this should go through the regulator tree, but I guess it =
+can go
+through the Rust tree if you give your acked-by.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0c1d245bf7b84f8a78b811e0c9c5a3edc09edc22..e37c0fc523964171ab6a9bc59f155b6bf1ab79e0 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -26525,6 +26525,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git
- F:	Documentation/devicetree/bindings/regulator/
- F:	Documentation/power/regulator/
- F:	drivers/regulator/
-+F:	rust/kernel/regulator.rs
- F:	include/dt-bindings/regulator/
- F:	include/linux/regulator/
- K:	regulator_get_optional
-
--- 
-2.50.0
-
+-- Daniel=
