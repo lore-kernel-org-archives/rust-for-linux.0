@@ -1,140 +1,126 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595A023BF9C
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 11:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E202D8635C;
+	Mon, 14 Jul 2025 12:09:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752493877; cv=none; b=kClnChvxu5uM4186qwpTClqX0kQxnK+xYNIiSULokRrYmhK053M7oP+FHZZPAbtepMM6oEOyUo5/nIXwvsfDpMBhdZqM2yqrCjPkCqq5utqJkoyPvXY4SnaNuGNi68VX4+QsVXiobEwEBFi+qgfjMkHkEx8UIxfomVxcNju4TUI=
+	t=1752494953; cv=none; b=fWfhl7D81BtQkTLMqatVCxhbsbuNaaRbxpaNaCkG5E8UEt4YWaxkhGdNwjlDUKo1ISKhky9uLUX9klCsr6QkmFh/3RMNhMNz4R9ygmatrfPIecl57B60io7bP0wHzivIw+zCbQmSJEyvjjt2jQdnccjg8H0HjXLQXADyPXkNx60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752493877; c=relaxed/simple;
-	bh=1fOsxm8KmM+d67Cn3Rpd/LbmTkIxTdxW+gtVkoYk/EM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=A86WoQsMPJ2pKwuPeF8SMX74DjrJtxhaziNZ8e+H9FMY/Ru9l7vvZsRQObrj2S/wK9uiV+GAKkftlJrP4Oig4igijDYFRAxApS5PO2e1LK3flaj/vMRXUHDVpe7eztt3gHE4iO4ebrqoRb5LaZC/4ou6LBVY2OOKVT2AR+fetlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c8TbDo2l; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1752494953; c=relaxed/simple;
+	bh=790j4Ip2q5UeEyImLRL0KLjEyLZD54ZPHny1IERhf4w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=t+WnzDYx3soX4icI/FmKujBwx5zTP85f7Y0rLj9sgldMI2mXyo73CvgERE4Ph964M9f4Bhohg6c9htNsi7488CSDJN65IgETLlkML8HpJAqRk3oJUzIeyCQmRckwv59mtwXI5hNf3/hDmgUYrnC7kPts+u7EQXDJZ9w0m0ouQc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgYIuhCo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c8TbDo2l"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-450df53d461so32914925e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 04:51:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752493874; x=1753098674; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NO40oCgQSCqkHXjzs0s5Ot/ig0QEzwHdR9AJ2G+vIrQ=;
-        b=c8TbDo2laNPCLHRuD64xsmF0pIAJLUJGwrbOO1jr+qvgB3+JHf4XCXq5VzS3G2yYcn
-         FJChxJ0DypWrydJRVjhGuxCGDMJpJ4wrssa2OIUmRDypOEkIenLaVG4rlLPVsVxtQJ2P
-         PcMgPLfL+++oWGAdN0pv2uv0dYFAJcUWIse5OaWsVMq9/IZFzS/Rib+CKXrIXglVWHZ2
-         xd7t+FXds/6tH6O2Da+J6OHtV7OcTAyk0Q1QjmZIVuSLJDk84L6fncSpzyf9NKz3/0wZ
-         eoBWGSEVfEiR8CTf+PYUXhkaFezYg5Cm/UDpCbJoCBeSD99TV+B6rKRp1+mOBzCNO9xO
-         ClDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752493874; x=1753098674;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NO40oCgQSCqkHXjzs0s5Ot/ig0QEzwHdR9AJ2G+vIrQ=;
-        b=HO9OSVs8O9m59YF00H9WSUpeKS6iubz/FpTwsAucpla3rbPk3HrfQmxzMxaIKWig2Q
-         26tS/XNMIPN3r3MsEtEomD7MsFPi7yjTvkTN5+B3bYVv0POBhyLACfX9FNIT5zeVqxC/
-         DK8ocMfGWDddkuMX89HxCjPuipK4RTJMluxy568meXzPv5Rh/NlbNaN7a5onbzR1xeit
-         S0e/WFNAhuHS5blWc7TDiUX5Gs8xHNY4Alg61tCgMGBs55CKw6DUuh19JvKh2Jma3NGH
-         jFjx2UHz5qltdhT6BhKcJJWmEc7XM6yDFQYc8bzqY0BWzR2S02CQy0qeDcLDjyWmKYAN
-         JUyA==
-X-Forwarded-Encrypted: i=1; AJvYcCVkPTKNLCbhu1IGmTjAwJ3y+R7NraEYe9G8LWcatZEkvpD7OvCHJ0W3N1CAW4yQmLG+m3kWjciG5DXs3Terjg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8B7ofOqcIWlONWUsphT3Bxom2Clf2uQlHeQ3UQ8CqAGjKHwqy
-	j/Y36fCevRQSBmTOtPvLs3fORVK9vBmjXZb9y0UYRHEYqlOrGbCRVNSxJC0XjnIICdcGBLNxRCH
-	PgOQgvSTd3fBuBETy6Q==
-X-Google-Smtp-Source: AGHT+IEC1AXUVxbsXuFfTt+kmPJ2lYfWegg79vPCpBaWdc+ofzAvJ1LZKa5QpJGV+AetC0pRA+Pf3Rt8j/eWnog=
-X-Received: from wmbel18.prod.google.com ([2002:a05:600c:3e12:b0:456:1194:a7e7])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:314e:b0:456:1204:e7ec with SMTP id 5b1f17b1804b1-4561204e9d5mr60923015e9.10.1752493873725;
- Mon, 14 Jul 2025 04:51:13 -0700 (PDT)
-Date: Mon, 14 Jul 2025 11:51:12 +0000
-In-Reply-To: <7A0457FA-0E09-451E-B035-E739AED7B2C7@collabora.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgYIuhCo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB59C4CEF4;
+	Mon, 14 Jul 2025 12:09:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752494952;
+	bh=790j4Ip2q5UeEyImLRL0KLjEyLZD54ZPHny1IERhf4w=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=FgYIuhCot+kXZPqKZ3GZV+bptXq5GXUvlf9Z+F4wjculcls+xCDIvWMDz/iVblwiB
+	 2q/i6YLV2qHQhBFGWipPSbBWuJO0GXetI1Qp8wdI597XT+lGrpEHsQ39UoX+OJjehq
+	 RBSSMjXsxAvv+FQlRapvRCNaqwW14UOZyFskekdBplPv3FQsbmZzGxWWld+81/LQIF
+	 82Qic6TA8SyTVmI3MUqDYRW0j+yu5I/O0zSfxwjYIoWil+0w1gXTkUMOmKi2xMz5CR
+	 bpkcZHJeQkKRF3PG0YIjk+HyxvBAWW9nlJFHxpFrPxSxbk3d4io4xfUqurydNXhVBM
+	 +7T1CyvHJPDsA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
- <20250704-topics-tyr-platform_iomem-v12-2-1d3d4bd8207d@collabora.com>
- <aGt7aItuSINDzj2O@google.com> <7A0457FA-0E09-451E-B035-E739AED7B2C7@collabora.com>
-Message-ID: <aHTvMNIenbaGtBBt@google.com>
-Subject: Re: [PATCH v12 2/3] rust: io: mem: add a generic iomem abstraction
-From: Alice Ryhl <aliceryhl@google.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, 
-	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Jul 2025 14:09:06 +0200
+Message-Id: <DBBRM08HB0UO.3HTRN04ZSHVQ8@kernel.org>
+Subject: Re: [PATCH v12 2/3] rust: io: mem: add a generic iomem abstraction
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Andy
+ Shevchenko" <andriy.shevchenko@linux.intel.com>,
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, "Mika Westerberg"
+ <mika.westerberg@linux.intel.com>, "Ying Huang"
+ <huang.ying.caritas@gmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com> <20250704-topics-tyr-platform_iomem-v12-2-1d3d4bd8207d@collabora.com> <aGt7aItuSINDzj2O@google.com> <7A0457FA-0E09-451E-B035-E739AED7B2C7@collabora.com> <aHTvMNIenbaGtBBt@google.com>
+In-Reply-To: <aHTvMNIenbaGtBBt@google.com>
 
-On Thu, Jul 10, 2025 at 10:58:13AM -0300, Daniel Almeida wrote:
-> Hi Alice,
->=20
-> >> +impl<const SIZE: usize> IoMem<SIZE> {
-> >> +    fn ioremap(resource: &Resource) -> Result<Self> {
-> >> +        let size =3D resource.size();
-> >> +        if size =3D=3D 0 {
-> >> +            return Err(EINVAL);
-> >> +        }
-> >> +
-> >> +        let res_start =3D resource.start();
-> >> +
-> >> +        let addr =3D if resource
-> >> +            .flags()
-> >> +            .contains(io::resource::flags::IORESOURCE_MEM_NONPOSTED)
-> >> +        {
-> >> +            // SAFETY:
-> >> +            // - `res_start` and `size` are read from a presumably va=
-lid `struct resource`.
-> >> +            // - `size` is known not to be zero at this point.
-> >> +            unsafe { bindings::ioremap_np(res_start, size as usize) }
-> >=20
-> > Here you cast from ResourceSize to usize. Are you sure that is correct?
-> > I thought those types could be different.
->=20
-> This seems to what C is doing as well, i.e.:
->=20
-> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t o=
-ffset,
-> 				    resource_size_t size, <---------
-> 				    enum devm_ioremap_type type)
-> {
->=20
->         [=E2=80=A6]
->=20
-> 	case DEVM_IOREMAP_NP:
-> 		addr =3D ioremap_np(offset, size);
-> 		break;
-> 	}
->=20
->=20
-> Where:
->=20
-> `static inline void __iomem *ioremap_np(phys_addr_t offset, size_t size)`
->=20
-> IOW: this stems from the mix and match of types used the C API itself.
->=20
-> What do you suggest here? Maybe a try_into() then?
+On Mon Jul 14, 2025 at 1:51 PM CEST, Alice Ryhl wrote:
+> On Thu, Jul 10, 2025 at 10:58:13AM -0300, Daniel Almeida wrote:
+>> Hi Alice,
+>>=20
+>> >> +impl<const SIZE: usize> IoMem<SIZE> {
+>> >> +    fn ioremap(resource: &Resource) -> Result<Self> {
+>> >> +        let size =3D resource.size();
+>> >> +        if size =3D=3D 0 {
+>> >> +            return Err(EINVAL);
+>> >> +        }
+>> >> +
+>> >> +        let res_start =3D resource.start();
+>> >> +
+>> >> +        let addr =3D if resource
+>> >> +            .flags()
+>> >> +            .contains(io::resource::flags::IORESOURCE_MEM_NONPOSTED)
+>> >> +        {
+>> >> +            // SAFETY:
+>> >> +            // - `res_start` and `size` are read from a presumably v=
+alid `struct resource`.
+>> >> +            // - `size` is known not to be zero at this point.
+>> >> +            unsafe { bindings::ioremap_np(res_start, size as usize) =
+}
+>> >=20
+>> > Here you cast from ResourceSize to usize. Are you sure that is correct=
+?
+>> > I thought those types could be different.
+>>=20
+>> This seems to what C is doing as well, i.e.:
+>>=20
+>> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t =
+offset,
+>> 				    resource_size_t size, <---------
+>> 				    enum devm_ioremap_type type)
+>> {
+>>=20
+>>         [=E2=80=A6]
+>>=20
+>> 	case DEVM_IOREMAP_NP:
+>> 		addr =3D ioremap_np(offset, size);
+>> 		break;
+>> 	}
+>>=20
+>>=20
+>> Where:
+>>=20
+>> `static inline void __iomem *ioremap_np(phys_addr_t offset, size_t size)=
+`
+>>=20
+>> IOW: this stems from the mix and match of types used the C API itself.
+>>=20
+>> What do you suggest here? Maybe a try_into() then?
+>
+> What a mess.
 
-What a mess. It looks like there aren't any 32-bit architectures that
-define ioremap_np. This means that sometimes this cast will be lossy,
-but in those cases the function body just returns NULL and doesn't read
-the size.
+Yeah, it mixes up types describing CPU word width and bus address width. :(
 
-I would probably cast to an underscore instead of explicitly mentioning
-the target type and make a comment about it.
+> It looks like there aren't any 32-bit architectures that
+> define ioremap_np. This means that sometimes this cast will be lossy,
+> but in those cases the function body just returns NULL and doesn't read
+> the size.
+>
+> I would probably cast to an underscore instead of explicitly mentioning
+> the target type and make a comment about it.
 
-Alice
+I think fixing up the C side would be even nicer, but for the scope of this
+series that's fine. The comment should mention that, ultimately, we want to=
+ fix
+up the C side type wise.
