@@ -1,144 +1,90 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045081FDA94;
-	Mon, 14 Jul 2025 11:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65071DDC2B;
+	Mon, 14 Jul 2025 11:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752490971; cv=none; b=vElm8g/2IGEsSG0SLKBjccrV/9ZA/uD7/vggKGDvMmfQLnQtmfER6zI9g5a9nxq8L0hbipD8N7DeUNNx97+pOZyoJTZXi/c/kseQzzghCtuYo4uwzxrKWqHSbF/i7o1H4GPvGfqTHaIqMHdpJS42cRDgBw154HdPDPBnyNXt16s=
+	t=1752491176; cv=none; b=XtxzrP5MAeBXDLk4XRgwp/tIXmqXPiI8ebnY8IlJ3nKbLZzWh2L9T6/WVbspbiGIhKPg6983yLmn+9KuWOb9TCCp5/YY124TljgbIBmkkSiFLotEDvhpRTCRLIXrsCO+RbajE9IXyg6FG61uLQeqv4+Pg8DWRudJRj0vELFWKXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752490971; c=relaxed/simple;
-	bh=CT2d4fMV9MPKMzd1upFK9VFQswonWTdXm3cXWGJ2s/o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OSZzR/VGFwZfhjlMnZe6dNT6eqqOIIu5Xfj7rQNCChcyS3n7mplB6xXQBLa5V+m9rvlkbn/VggOmBr7na2OYapDnc5tclLZkqHoCP8e9WSKeLKOOR1DJhlurPlCRhxvUp+kVdjAg/kRrTTAksYjd1QJkpsnBlTrpq4/rWjNTlNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HOGz4nWl; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752491176; c=relaxed/simple;
+	bh=08FQX5jjC0fHpNbdzJ7L8aJDB8Exeg72PrRUtVL5D0I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=rQvd3Fb8ma9ekSM06UxduxN86dTsany4ZqNXkANoPLQ+9cpzO7SnvyEAbLapF8WQ1IPgXvKPXfXNQLzAulHj4krxLSPFgEVfRJiWqF8Iwt1GA8oDlAG/epoOMkVaNwwf8sFDJJwROpsuDTwcz8SLtW72VRnOBjwHE53s1FDao8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJriUBTi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HOGz4nWl"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23c8a5053c2so39259725ad.1;
-        Mon, 14 Jul 2025 04:02:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752490969; x=1753095769; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zY2RufSpt2fWThIm+JO9PtJKALSoq3fBtnelRxK+RwU=;
-        b=HOGz4nWl5GAwqmRyzovMHGqpJNc6fDntGadzsuytEmXV/YQmuugqIv13H0vBpMUwIL
-         Bpd7GeOCJ8PQaBYcELERm/JxFGvj8ggUHsMxopFmKQ6FtiNsMU1hU/Lqsw1puiH5qdGB
-         pNYB1hYp++GH5Fbv2BVd4JUD+uiczZWZJwGx3XSth+75lANjJ2tnvAf/2ngB/slk/OXU
-         elUxGU3BUnTk7Cm3IrHnTiBM0v5S0O3oExQt09sruqrMvPVMIYvAD6F10xHOjqC49O7T
-         dWLF0Jk6JQbRpM8S8BBIs5mXcgnaC3jz+WCBZSS2HIuqx7P7CRVmg6OtkHGOJI8xdK32
-         YUYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752490969; x=1753095769;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zY2RufSpt2fWThIm+JO9PtJKALSoq3fBtnelRxK+RwU=;
-        b=QbbEJqohoVPGJ8hn4PeN575I6SCpR5uwbnoMcDrTn+tCBmBQOSb4yRCyDsto8gB35g
-         cqIrJD2QvfsR30HcKJA0chudeMKhmO53c2UstJ1Naerjvdz34RAOpt0KorIoESavkdzv
-         RgUPAyxpBjxN1RvgLhLbaSrpdVhydSI0rnNR1JI6M1+VMyHuhKxmGIPqBo9OF0ZC1FZE
-         oNQvMQChs4eRqeGM+s+NDiFiBIwzeOtsUXA3Gqj8cO4fRbKDF98rKjY5Xgf2YkKwWhaf
-         TMMGPFqzTKFLHKijWtrOi6ZxD4W8B8VU+51/L1y+ly9SNPq3SPvv/WILkNt66PLZIG63
-         I9dw==
-X-Forwarded-Encrypted: i=1; AJvYcCV22GmD/xUDTEf7mfTEqbm+YNpzgGmI3r0eruNLRlIA7CO3zIO9ve8XUbnEh66TueNW6Ks3agrbEjIjzr4=@vger.kernel.org, AJvYcCXDrymWyjbXJtX9N1ZS2u56kvKgb7B9FL5dw7SpYpKbSdBP1XuhlQqF0o3Bn4Z9NNm4eVLth9srXEI0O7xaRFY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2GIPrd82qjbSyYV+ejKAMoYaY8jqGEovm2EfMrirRSGFBd+6k
-	GrfZYsOagGr8J+2AGL7+veT4f3PNk6v+Kdw1Bi4wS129MSh3JPmuhAk8
-X-Gm-Gg: ASbGncuxrXNZElAjOYzHnBDiAxfcIhxeF73aVdD0l5gHBD3uvwYpi+0RHTpxvm6GQmC
-	Mt4EjfHaa9GqTVBMRGGz+mSKxF5Borq9+mWzRWa3Qc4INvmOOeDUSSOvPRKmKQPpqDW+rS0G/SU
-	GqT3G5epbEM3AAULhPYxu82zsntaXTgTw5ghb9UnUK9h/9IdQC+NMPIlKrPvkyqJ/WoRxZ6m3I+
-	QW9oN0gKP3PpnMPAgr9MUyTFbN6m8OCslsSfjhMwkVtBrbZlTFdWKfjLpTo1FY8Lyu5k5O8RRH2
-	FnJcP9WDl+a73AcXYVWo+rbTQeUgpnLTSJaA6HgBVhqDVEplJ8CQyFsymho+fk6HTO2QbZZDTia
-	s+Vo3H5bDw0tXjRL5n2Ps7dZ7
-X-Google-Smtp-Source: AGHT+IG6MvbACALZhHxOleL2gcaqp+TEs087W9l8VZmEIwt1vhqvLmUpApCU4JU0NP+hWfxq2ez7lw==
-X-Received: by 2002:a17:902:e88c:b0:238:d19:864b with SMTP id d9443c01a7336-23df093eba5mr200332105ad.41.1752490968886;
-        Mon, 14 Jul 2025 04:02:48 -0700 (PDT)
-Received: from quat-desktop ([2001:569:514a:9100:3f23:7b0f:f6a2:1ebd])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de42ad2fesm95136035ad.70.2025.07.14.04.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 04:02:48 -0700 (PDT)
-From: Rhys Lloyd <krakow20@gmail.com>
-To: acourbot@nvidia.com,
-	dakr@kernel.org
-Cc: Rhys Lloyd <krakow20@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] gpu: nova-core: vbios: change PmuLookupTableEntry to relax alignment
-Date: Mon, 14 Jul 2025 04:02:23 -0700
-Message-ID: <20250714110229.141221-1-krakow20@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJriUBTi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2E8C4CEED;
+	Mon, 14 Jul 2025 11:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752491175;
+	bh=08FQX5jjC0fHpNbdzJ7L8aJDB8Exeg72PrRUtVL5D0I=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=NJriUBTieWUexKIrlILdx706I/ji3z01trEEwQbRcD0TqNLohg26/MZlnnID+2qV6
+	 9nYfK4H+KpMzISa+MUz0LyMyI2xztT+RHq8uTAo6V1SN+rU/1t0frisNEwiR31pm4W
+	 At5KG0KgW9kmv5lMHyr+GENu3ll6AV5JfeJxmMH4dqxo+vs/hcf68EE+vOcNZsqXLN
+	 /VWHnsQ9C7vXMhqUumm1ZCM+7sVczrhIsRipT1/HlkTnlkvkuD+K0oUipZLEgkM76M
+	 RQjH/9z555MqDIrWT8FsmfYcKdC0jD1XvBupPJo5YooZCeoIzW/NeRFVQ+AdxFjGH/
+	 7HWAxzO5VTeOg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Jul 2025 13:06:08 +0200
+Message-Id: <DBBQ9SLMWA2K.33BWRE1ME65MG@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
+ <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
+ Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
+ "Alan Stern" <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v7 9/9] rust: sync: atomic: Add Atomic<{usize,isize}>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
+ <linux-arch@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250714053656.66712-1-boqun.feng@gmail.com>
+ <20250714053656.66712-10-boqun.feng@gmail.com>
+In-Reply-To: <20250714053656.66712-10-boqun.feng@gmail.com>
 
-Instead of the data field containing a u32 and changing the alignment,
-change data to [u8; 4] and convert to u32 with a helper function.
-Removes another magic number by making the struct the same size as
-the data it needs to read, allowing the use of
-`size_of::<PmuLookupTableEntry>()`
+On Mon Jul 14, 2025 at 7:36 AM CEST, Boqun Feng wrote:
+> +// Defines an internal type that always maps to the integer type which h=
+as the same size alignment
+> +// as `isize` and `usize`, and `isize` and `usize` are always bi-directi=
+onal transmutable to
+> +// `isize_atomic_repr`, which also always implements `AtomicImpl`.
+> +#[allow(non_camel_case_types)]
+> +#[cfg(not(CONFIG_64BIT))]
+> +type isize_atomic_repr =3D i32;
+> +#[allow(non_camel_case_types)]
+> +#[cfg(CONFIG_64BIT)]
+> +type isize_atomic_repr =3D i64;
+> +
+> +// Ensure size and alignment requirements are checked.
+> +crate::static_assert!(core::mem::size_of::<isize>() =3D=3D core::mem::si=
+ze_of::<isize_atomic_repr>());
+> +crate::static_assert!(core::mem::align_of::<isize>() =3D=3D core::mem::a=
+lign_of::<isize_atomic_repr>());
+> +crate::static_assert!(core::mem::size_of::<usize>() =3D=3D core::mem::si=
+ze_of::<isize_atomic_repr>());
+> +crate::static_assert!(core::mem::align_of::<usize>() =3D=3D core::mem::a=
+lign_of::<isize_atomic_repr>());
 
-Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
+This is fine for now, but I would prefer for this to go into an
+`assumptions` module like Miguel proposed some time ago.
+
 ---
-Changes in v2:
-- get_data helper function renamed to data
-
----
- drivers/gpu/nova-core/vbios.rs | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index 5b5d9f38cbb3..339c66e63c7e 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -896,21 +896,26 @@ fn try_from(base: BiosImageBase) -> Result<Self> {
- struct PmuLookupTableEntry {
-     application_id: u8,
-     target_id: u8,
--    data: u32,
-+    data: [u8; 4],
- }
- 
- impl PmuLookupTableEntry {
-     fn new(data: &[u8]) -> Result<Self> {
--        if data.len() < 6 {
-+        if data.len() < core::mem::size_of::<Self>() {
-             return Err(EINVAL);
-         }
- 
-         Ok(PmuLookupTableEntry {
-             application_id: data[0],
-             target_id: data[1],
--            data: u32::from_le_bytes(data[2..6].try_into().map_err(|_| EINVAL)?),
-+            data: [data[2], data[3], data[4], data[5]],
-         })
-     }
-+
-+    /// Construct a u32 from `self.data`.
-+    fn data(&self) -> u32 {
-+        u32::from_le_bytes(self.data)
-+    }
- }
- 
- /// The [`PmuLookupTableEntry`] structure is used to find the [`PmuLookupTableEntry`] for a given
-@@ -1037,7 +1042,7 @@ fn setup_falcon_data(
-             .find_entry_by_type(FALCON_UCODE_ENTRY_APPID_FWSEC_PROD)
-         {
-             Ok(entry) => {
--                let mut ucode_offset = entry.data as usize;
-+                let mut ucode_offset = entry.data() as usize;
-                 ucode_offset -= pci_at_image.base.data.len();
-                 if ucode_offset < first_fwsec.base.data.len() {
-                     dev_err!(pdev.as_ref(), "Falcon Ucode offset not in second Fwsec.\n");
-
-base-commit: 215a3f91713383a3c0d2da82d223a608a3c17ac1
-prerequisite-patch-id: d80f92d314a0693d4c89ffb7810d9ab6990336fa
--- 
-2.50.1
-
+Cheers,
+Benno
