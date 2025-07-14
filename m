@@ -1,132 +1,74 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853E36FC3;
-	Mon, 14 Jul 2025 04:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E241F561D
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 04:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752466856; cv=none; b=YiNyUhoNx5XybRw4uh+t4hCuAgdWC7AI2B6ntWXfJj0UDjtPnoW6kpr5/nG6Urg8qzAdc7PV1ii5dvlKjt/g3bbJ3C7ionepNsHduKeToaCgcdiqKlbJt8mI4DcogVrj4KBHIex7xX602xEgxoBFHXfmhejUaYgKxL5PHS1CefQ=
+	t=1752468863; cv=none; b=kEkHBzIdmn9elDI67gNfDMPD57OeYFoeLNKMxuSWxXMGlYa/eHsDkDdJjMiCrVlFSAQcuwiPhK0TNmEjxVNNac4oKhW/N3hgKsh23RxIwzeLyr8i+K57ZgU86F19rfd3nep7m3bW6PCc17NNzU3OiR+tsAWrR4PWHPQTvr/GFZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752466856; c=relaxed/simple;
-	bh=SuP+qQVi/MxIQB/1CDIRKWnHRBYowFHJSKjU7kuP458=;
+	s=arc-20240116; t=1752468863; c=relaxed/simple;
+	bh=Vj3Ms133PDQIC7qPLBpWIxn/XUEv2EyDcAobH4/it94=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M9N8AT/iKTlwsPSigcYOaUCz6XPAG9Ld7vo0s5z36Go+tm7IDOoR0VnmNNFNqrNPToyhZRXB2qhXbvflfTUSE+8SkZrATc7VphA/ZM155MwZShw9AzMIu0O2dhuucpLmtycgETb5fp4N1sDmamjZYH3g/Q+zUx8FihBkr2zPqNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MT5KAQ2l; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=KI8QbQiQkdCsLUXgNkojbcm2+24VnuShgU3BoYOM3NCS5d5161zMjR+K6LUqFw+nDWgfAjhojWsfwLlAMxy00UDfFz3fAlh1/BK4NTtI+QTAn+79rzOgRFrR2546rZA3Xdq4VObRaj+PPAlQFIN37QdwY+fzsN+TB7eQFXw939c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xCHamEeG; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MT5KAQ2l"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6facf4d8ea8so31957986d6.0;
-        Sun, 13 Jul 2025 21:20:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xCHamEeG"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-748d982e92cso2437467b3a.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 13 Jul 2025 21:54:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752466853; x=1753071653; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1752468861; x=1753073661; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n7KPUZRfwzKm6vhoXm+OjqDoe1jPCZoU1nC9eh6TlIU=;
-        b=MT5KAQ2lNS6JEgsg4FJl3hGJIBjJqJ+pphzmP3wWObQ2B0IK+DTsYVs1IAkVoWBsQj
-         5F/b++gy4da9cO5UT8g9UiWTyfEKorlZerk70VmTsDjS/yGBambmmY8vR2OpnNDrmBI3
-         M0roNcv5Q5zWc4Y3gJmytcQf/99vuZCigsAKV59ON/0c5tuj3/BwYH79uCbcrsDjFTQQ
-         laSzUuZz66v16YcHZPFVE53lo3p4Ndc0avXdk5ZEz5L3UGfa17JK7FOkiKC+AAWd2zLW
-         tXqqUelIL/KGqU6qBAm16cWlwxyin8+SvzjPZ2BxgRSNrxf5yK+MfBnyhRbSbMEgo2UH
-         bYQw==
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IPg29/PBDnti2HUtmerkQVekf3ugG0dCwGFEPAPIzJc=;
+        b=xCHamEeGXu5ktAYDbFjCIsuyKeBP6TCKQGRjw0DZUuBjwRgeGY6g487wKyS/8nKq3o
+         aZUnEUkvSuppzq1ERpupPr68hoYj4iQ59UD40OtdI7HbfFv8T1gy9VoAgvW4FpeOQCdR
+         qxQB+lSrJvVm+wwhIvDX9jVzjkBtGYjs2pBBQ9WT845be5STYe+YKvc7IGn+uodW6Gtn
+         CBqbpdFaBMoVQDD6qRkYpB9YyBKRhxsrg7hMqferEuIWITx0+vLYLQ4fxwnLAjzgVOov
+         jaSh38KC0QjOd6rwC8wVoj16Aln/a0KHRI/mOtiD8AG1ZoTM7vbce1wAnltrATadQWoX
+         vtDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752466853; x=1753071653;
+        d=1e100.net; s=20230601; t=1752468861; x=1753073661;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n7KPUZRfwzKm6vhoXm+OjqDoe1jPCZoU1nC9eh6TlIU=;
-        b=MlTo00AjpbYnV3/qMgSdtxqeYce0YfFlijdDs5oqtSCatRa3SVZicz3/dQHmDzeNgJ
-         +IAU0jt3rrjIyu+1uYJ3Hj3mIENZkPGa3xb2t/aiUbdEpgZo090b/duF93XSW/s1czyS
-         nI90HU/4SQQOZNNTC1U/XgMlHfx7XlJvqm6ZJ2YjULP7fHtSd8THjCEIK6CQKW6ql9BA
-         MXskd6cQt5YZ91GFktBM3xjKoZu1asgtWlovfeuHeJ1omOFZJxxGwhZTCJYQ68oVQsb7
-         oUrMjidX+atdWoH9sKUruY443t+4G3KaPf8CFURkx1VWTFbIIO6pWZ5aVbt9kTzr57Px
-         U8iw==
-X-Forwarded-Encrypted: i=1; AJvYcCUl5VL4KP8YelIbnvsJdHh+Z4A3gu+CBUEQoWH76cPJlcE7T8AFfqmFPcV1eUFkeJEPMeemWK9rCcLf@vger.kernel.org, AJvYcCUoIRvG5tcZTcZ5jaPkzE9ikq8mgCrj76NjAcEhXspT2rYjb68cmLSL7GkOHA/jC3tf6RVfIpzfxzy/8wv6Ed0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn95Njcuyr14wZZNxRDToEvTHsXfUqJojsIAf2b1huA8fjJgm9
-	LgTB6ziIhrWhDw0IeW0pzG5pyFsiQJ5tTu6od6/d+4O9JUT3xYI2HSpg
-X-Gm-Gg: ASbGncvFr4kGVeoMxlHc2IjZ7SoKqQ0rKTo0g+SeqEId9PqPCpU5QkyGKdweZvcV3Kx
-	v9HEXdEavqdnO8MgbBom9i8TZ5wzo/QeWef+OjpdXeGhYf2my1iimLUxVJC/2pdDk8CoRrMJRUT
-	g0T9SqOXPJLWtlTZ3Lvm5xXtUO/MxMJxrNAFwtn58IFp63T2sNHpebdzsWz3pama5fNhyOt/fuj
-	aOwvR27LGf1OIdZRwpz7KoGmjVS0BlT9koDqY4HlQ2rW9mjsvmOf5WvD2eFOKY0CxePiVWiRkBI
-	1RvJ/s5csSUpACHQNRo5k2cIhAll0xeF+ArNTlJ+dWPOzDG6ioOn6K0yVQVflmOpMJog94VWeZ7
-	IOLw0Pg1DwLlLP7EQba/KsOzFyaCbiX4S7UmT/B+vRcA0X5OLQJqWkALj9X8MWXypTx+WeDMcBg
-	/wS3sDd85ee71i
-X-Google-Smtp-Source: AGHT+IHDDJtu8kjLF/zH3u5N6Plv3lcX73uCNtxm0f/WjVKubUEQQc4jhA6eH6Rs5519YEmB38XtbQ==
-X-Received: by 2002:ad4:5945:0:b0:704:9618:51d with SMTP id 6a1803df08f44-704a7065aacmr172694506d6.39.1752466853319;
-        Sun, 13 Jul 2025 21:20:53 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d39450sm42915536d6.75.2025.07.13.21.20.52
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IPg29/PBDnti2HUtmerkQVekf3ugG0dCwGFEPAPIzJc=;
+        b=Zi99UkbiRz7ckCTCySyx+qvQZd8c/jOrv5RJVA1SYyexC9709Hs5DOV5I76/EyNV7J
+         iqblrEuemmGYkDeKmv7FTI1vsUCQvjceLugFMteSjpMxc9ZcIYdIIXiut7DYNY7En2cK
+         8tb5AuRczeBX1GXP70phiUHSUuvNX8IAki/YZOcxqgJUlLOHpoQC4opSHscMpLleqyZE
+         XnC38kd2Y92a1nNVSN0KyLZNZAzW1ATYjQADS3HeJRD1wfTHpYWQQwGSS9pc72dYvokj
+         LHfzsQ/j4NVcSXsRF0cBsPTeXxtZkAj+9978Aq7B/egUnsatCS9HUlQ8tohNj/SiXDzn
+         TOjA==
+X-Forwarded-Encrypted: i=1; AJvYcCXtOA9kpzwsJcvk6DJMDrYsoYMdsrsHCFdn4OmYoLuysaueArVhnoK3mwoExxM04GVTo98etZJVtJqOJk9YoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyb929Oz+Ia2G3iBjwl3LLZrXeCz28d76zwOynmQhxRzVBjrNYP
+	gvWGJu5QcAhX+AbkY3qVpGjd81TPzua8i4idwMkWRuyBKZ3+XHlLFHfyJtFr3ketrcU=
+X-Gm-Gg: ASbGncvNtkuhRLQEzz/PUTXYgMz8/kXZSZB3kCWXXgjjuqg16F7NvfW8ymaaJyXoYjG
+	0RSSwHG4oL51uh1Eei/3Fe8IDdFY2niZkoHBnZnl6kDsk+qF0Rxxn8sazz6d9mZSf782AVW3ipY
+	+NVfeyX6IlOSkqXWtotfwL+ao0VkxJAwrbmMCXZ+vHXeJryWRxVtYVxkco91oiWSPnGfH8zIKD6
+	JLr4BlkeK5S9kjXM+1iDIeR5TPdxzqkwimdASg75/pSMbB/T/W2Wc8KNg1kbOJi8P+0BS8HDTBX
+	ULICLGvdxVkbiH/ewX0XcGm+/OLWXFvuCAW/hHUXHJMPIbz50vrDs0Bm9VLBdUKtz3cK7mCoKPJ
+	2hpaOn+uIKvvS6eQ8L49M1WI=
+X-Google-Smtp-Source: AGHT+IHbYBmdgephsncHVhQrNUohh1VKP9haNH16TwtXBK9MSBGkTvBfTqJiWE27Qm988lISPBMrRg==
+X-Received: by 2002:a05:6a20:158f:b0:222:d191:5bbd with SMTP id adf61e73a8af0-23120e028e2mr16266952637.39.1752468861555;
+        Sun, 13 Jul 2025 21:54:21 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe6f282esm9143383a12.54.2025.07.13.21.54.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Jul 2025 21:20:52 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C2CE5F40068;
-	Mon, 14 Jul 2025 00:20:51 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 14 Jul 2025 00:20:51 -0400
-X-ME-Sender: <xms:o4V0aKiB1Yw7Ddrs-kWGfndprpgdgr2L4ZwzQ1bpn3xOScxnW6O2kQ>
-    <xme:o4V0aMiNFkqdufkeyTRzHerJ32MkF7t-qTIVUX8DLu3rg7sM6jRmbbBVMvhspcwOI
-    VJwbZM5_uDHTD6gmg>
-X-ME-Received: <xmr:o4V0aGptazfK8y3G3bHmO2t0DIBwc0Ognkz1pQIMmEt5dYQJaZYAULhgcA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehtdelkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdq
-    fhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkh
-    hmmheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgt
-    hhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjoh
-    hrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:o4V0aCx8tIrHfRplnrskijHUbnjmpbNmW6HQXSp3MqqCbl2dGVu6Sw>
-    <xmx:o4V0aFy-744haymfbCRLccCE2OUtfmYIzSVyeymjGwgmyHIbByiZIg>
-    <xmx:o4V0aKbLjg8NsprenSkNmhPeXiNXzO378ZXxij6O6bhpTn9N15w8jA>
-    <xmx:o4V0aGnjfOsVAqLEaOGud3_0YQJQHJ1DbIekyMfBTdy0tpC1dB3OkA>
-    <xmx:o4V0aPEK9yjyqaJ155JtUU2KwuH3hswo_x5ZsYn5jREZow-089i7qi-2>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 14 Jul 2025 00:20:51 -0400 (EDT)
-Date: Sun, 13 Jul 2025 21:20:50 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
-	Mitchell Levy <levymitchell0@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v6 6/9] rust: sync: atomic: Add the framework of
- arithmetic operations
-Message-ID: <aHSFosU8tS1Oqj4l@Mac.home>
-References: <20250710060052.11955-1-boqun.feng@gmail.com>
- <20250710060052.11955-7-boqun.feng@gmail.com>
- <DB93KSS3F3AK.3R9RFOHJ4FSAQ@kernel.org>
- <aHEiE0OoA3w1FmCp@Mac.home>
- <DB9GDOR3AY9B.21YFXYHE4F0MP@kernel.org>
- <aHFrUa3VWaKTe0xr@tardis-2.local>
- <DB9J3GBDB2UK.2OHWT5AI5DXFD@kernel.org>
- <aHGAhbmgsb9f3ImR@tardis-2.local>
+        Sun, 13 Jul 2025 21:54:20 -0700 (PDT)
+Date: Mon, 14 Jul 2025 10:24:18 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Ritvik Gupta <ritvikfoss@gmail.com>
+Cc: yury.norov@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@kernel.org, tmgross@umich.edu, dakr@kernel.org,
+	rust-for-linux@vger.kernel.org, skhan@linuxfoundation.org,
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2] rust: cpumask: Replace `MaybeUninit` and
+ `mem::zeroed` with `Opaque` APIs
+Message-ID: <20250714045418.4ajeuetnjor4nhau@vireshk-i7>
+References: <20250713190244.143286-1-ritvikfoss@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -135,51 +77,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aHGAhbmgsb9f3ImR@tardis-2.local>
+In-Reply-To: <20250713190244.143286-1-ritvikfoss@gmail.com>
 
-On Fri, Jul 11, 2025 at 02:22:13PM -0700, Boqun Feng wrote:
-[...]
-> > >     pub unsafe trait AtomicAdd<Rhs>: AllowAtomic {
-> > >         type Delta = Self::Repr;
-> > >         fn rhs_into_delta(rhs: Rhs) -> Delta;
-> > >     }
-> > >
-> > > Note that I have to provide a `Delta` (or better named as `ReprDelta`?)
-> > > because of when pointer support is added, atomic addition is between
-> > > a `*mut ()` and a `isize`, not two `*mut()`.
-> > 
-> > Makes sense, but we don't have default associated types yet :(
-> > 
+On 14-07-25, 00:32, Ritvik Gupta wrote:
+> Replace the following unsafe initializations:
+> 1. `MaybeUninit::uninit().assume_init()` with `Opaque::uninit()`
+> 2. `core::mem::zeroed()` with `Opaque::zeroed()`
 > 
-> Oops, we are lucky enough to only have a few types to begin with ;-)
-> Maybe we can use `#[derive(AtomicAdd)] to select the default delta type
-> later.
-> 
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1178
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://lore.kernel.org/rust-for-linux/CAH5fLgj0OoCn56OkNUmiPQ=RAVa_VmS-yMZ4TNBSpGPNtZ5D0A@mail.gmail.com/
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
 
-Turn out I could give `AtomcImpl` an associate type:
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-    pub trait AtomicImpl: Sealed {
-    	type Delta;
-    }
-
-and then
-
-    pub unsafe trait AllowAtomicAdd<Rhs = Self>: AllowAtomic {
-        /// Converts `Rhs` into the `Delta` type of the atomic implementation.
-        fn rhs_into_delta(rhs: Rhs) -> <Self::Repr as AtomicImpl>::Delta;
-    }
-
-(Yeah, I named it `AllowAtomicAdd` ;-))
-
-and I only need to provide `Delta` for three types (i32, i64 and *mut
-()).
-
-BTW, since atomic arithmetic is wrapping, do we want things like `impl
-AllowAtomicAdd<u32> for i32`, similar to the concept of
-`i32::wrapping_add_unsigned()` ;-)
-
-Regards,
-Boqun
-
-> Regards,
-> Boqun
+-- 
+viresh
