@@ -1,145 +1,101 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A335723BF9B
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 08:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1189E18D;
+	Mon, 14 Jul 2025 08:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752482931; cv=none; b=Cjwfc0VB0q3J0zkbf+ZhHteANB6g3axQblEkTtk88l+odVqKqxmmjtLJcaTQ+VJl6gHJ1PVX7ay5dI9HKp19h3yAQ0DVAfc8X4tuufpGEVBb5FaCd8R8yzP7K2U3RzeGc752QXdGt4Cl4NTNSivCEHnKniDBkALLk8dq3REC8KY=
+	t=1752482941; cv=none; b=bI0eWRLBxxz4OybYwY6qil5L9HxZOdONJtfO5v8r0vL51ugsoF2fT/sBRsyVXFcvk3orrTeaoHP4pVpwtAqAeVIe7uki/q5FAWVRi/xafQMK+JDGmuIUFj/Cx9d0e7uVVXaL7IApOT4QBFQhpkhIYrxbTn3T2sow1qggCVOf3lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752482931; c=relaxed/simple;
-	bh=uEb/0VR0iaHwMvhSvE890850NYx60tZHhru27ZS4cjM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bGEdtP0i+hIGv9r6GhaU+HejNLjr4CJ13kTgqVVddjbvlYGi1t4ICHZoSFL1FCen8idMSFQHcwU4tQrxocwtt4T9A7u3ZV1WcSmJZTKxr8q5ab8mwpc/D5cZlvCEL/MOe7OZOEOZ9HccptOozUYnYb6kskpDh09hhDNobOfLYQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I3n8Eymi; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752482941; c=relaxed/simple;
+	bh=Z7PKqPXa5qmU1lyjB+OTmpDjY+Y6rO3Qon40Y4E9lKc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=X6VkPKgbDk3CUIlZa/Vd5fGlZrxRBv111kY/HG5iUZElg/qLcaxRCTarB9a0mFsRdVy7VjiHSXOf9zT1azK6DDUyIOCQmaL2XJyD9Ly/T62ZmvB24MRgbWGC80NVgG3ZMc3Y1jEuX3T6UpBhkgLwbWg+OehnA4CDH4uudHjJtfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNhzUOQp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I3n8Eymi"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3b49ffbb31bso2274744f8f.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 01:48:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752482928; x=1753087728; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V2eqVvWUGyRNHCflMNysYozlpMXxPdhkCEbZuAC8Zek=;
-        b=I3n8EymihNmdglcYcNwsS2/MPGOG7vVXFBzibnHNvjm5lkfjhFSAjzqaUtmm2e6BlD
-         9fo+j/Z+dvGxdk19LI0S9aPjkEcTCaLZpfuRkFZZtxTH/C0aK8F9ET4AZgUu3GYWZG5b
-         NWLz9fIlLEUU60YcQik9hrjrXzyo8Mdht053meqDCbLvH8E0gtqK92jVlKTMhlZEqXM4
-         zE7GZRaCRfI0ii97ruG7F1pTvtnSBpuAcUF8DnxOggZgeKPbP8qE4mmy8tU4Ad6KlO2F
-         U0Wh4lelHhyMnHwTYD7/7FhMIi7zeY1jkNijJBcN5O7tvMe9am1kRFqr5LB2LiB6JqnA
-         MRZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752482928; x=1753087728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V2eqVvWUGyRNHCflMNysYozlpMXxPdhkCEbZuAC8Zek=;
-        b=BuKfgR+pj6O1EC9Olwcs/lYwV8m8/sOMJBFeKAlGyF4dRKVL73ppMT55D/3huaM+cw
-         kEUePrLbewn7UaSYtgKJ85CwDDC5zY6RMu8GX1ulVdFRhuNuzm+Wfkj1bAm/bLDYwTQQ
-         +aa8SEBh4w2PjRnWk7bsiTpPKoIAM9py1XQXGuExw7oZFqWJK1DX6bQEqNCI6QAGidOZ
-         8rzhQ33PDix3apM1x/ZXB7LbH8212I0CMK2w56cZ5hEhSJsO/rMXpzlXWeZiaa3l+JPa
-         7/8M0Q2vVcY9u5JI2ylFUdazHQXctyCgc9542zxaOlk2R5IvTXafjLdFE5Kkz67bXaE6
-         WnUA==
-X-Forwarded-Encrypted: i=1; AJvYcCWl77xUwvSAUzc1antDDjskfzR0MdWAkJRmiq2izD1WCOLWiSX8OQwoPcEUCwGfB1KQC0n44T/bUeSehN3ddQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQpJQU0l5zl9ueFmnbcPi48BCe9VCnAeEkCSOhCkiIj5CISXpj
-	ICGT1polh/POkE9G/kKbHzidydeCkoRvpf0KMCALTPfFTgynuG0c7N6TFxmO3YPHjNQCBzDqgBO
-	ll04hzBUtsKlQ8KXvBdfvoZkZsCYdTUIpDioekRBx
-X-Gm-Gg: ASbGncugAoMkx1DaKC8OEKFK9773nJGHBLWMw+uD4W4gkWz0fqC7LlQyJBD7MX1sD54
-	hT2YI//nI8s7jHBqoZzFyguQHLkqwTBPWgNkc8VosSBdbTxCufu3GQFdaUhAFQZ5v7oNWsc9frJ
-	HztNT4mqeZjMJ+1Fkk5336jo4Jv7nXIaNsQlNTVtYMy4h/HKLdxWkDA6qUqvNo7VfyQIDEWzcCh
-	WL44hpnruuI8UhElPT2Qg94QN8ZznoBz2qHhg==
-X-Google-Smtp-Source: AGHT+IFbanDs448XsjcCBuRD1OV+c4gYqU1GnCMBsm0XxQ4lxhrcMIJOjMNwYVAs8QqAaAg2E2jmgkH/HpU2k0t6Gys=
-X-Received: by 2002:a05:6000:1ac5:b0:3a5:58a5:6a83 with SMTP id
- ffacd0b85a97d-3b5f187e264mr10159893f8f.13.1752482927867; Mon, 14 Jul 2025
- 01:48:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNhzUOQp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40504C4CEED;
+	Mon, 14 Jul 2025 08:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752482940;
+	bh=Z7PKqPXa5qmU1lyjB+OTmpDjY+Y6rO3Qon40Y4E9lKc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=gNhzUOQpkCDLaS58yx9AC9kpSlVRNO5zw1Wyf+ywvfKteTAaihJhT6gBfKZJKdwAQ
+	 4krsJJWx09cfvXgvDyj5y9dvQJvL7daGGv2HR6Vd0iagbsNvejQa2mLfSnd932B1OR
+	 A9wiM9tpskVcdDnx7jIepxLztK4IjXkP7TqcJ5skS+uiOQcVNRUM/nfaSHoYeuflEB
+	 j7RGv3W3PD2rXr8E2QE9MLTujYlblD6NpyALDfa0+kZHcKmb7Jowy+rLMcJXSNbCYz
+	 qYoEUZUsSZ5DTUI7itqxawJUQWz0gFvgRwxPcptDjIQ4t4pR+jd/g6tDQz+XKxU1ks
+	 8/EMbfT3oyuww==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250712160103.1244945-1-ojeda@kernel.org> <20250712160103.1244945-2-ojeda@kernel.org>
- <20250714084638.GL905792@noisy.programming.kicks-ass.net>
-In-Reply-To: <20250714084638.GL905792@noisy.programming.kicks-ass.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 14 Jul 2025 10:48:33 +0200
-X-Gm-Features: Ac12FXxMqzqa-86YzzJsOO2IogpXRlxWKeLa1kAAYOw4KPVk-KLgMAKuFCR7SWg
-Message-ID: <CAH5fLgjtU1u=h8FY3im364AsC21GitnrjhBT=YJMmipH_ZWnQA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] objtool/rust: add one more `noreturn` Rust function
- for Rust 1.89.0
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Jul 2025 10:48:56 +0200
+Message-Id: <DBBNCQQ5HF3N.3HXQWJR71RZ8S@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 2/2] rust: update ARef and AlwaysRefCounted call
+ sites to import from sync::aref
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Shankari Anand" <shankari.ak0208@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250713213614.188921-1-shankari.ak0208@gmail.com>
+ <20250713213614.188921-2-shankari.ak0208@gmail.com>
+In-Reply-To: <20250713213614.188921-2-shankari.ak0208@gmail.com>
 
-On Mon, Jul 14, 2025 at 10:46=E2=80=AFAM Peter Zijlstra <peterz@infradead.o=
-rg> wrote:
+On Sun Jul 13, 2025 at 11:36 PM CEST, Shankari Anand wrote:
+> Update call sites to import ARef and AlwaysRefCounted directly=20
+> from sync::aref instead of indirectly via types.
+> Remove the re-export of their definitions in types.rs.
 >
-> On Sat, Jul 12, 2025 at 06:01:02PM +0200, Miguel Ojeda wrote:
-> > Starting with Rust 1.89.0 (expected 2025-08-07), under
-> > `CONFIG_RUST_DEBUG_ASSERTIONS=3Dy`, `objtool` may report:
-> >
-> >     rust/kernel.o: warning: objtool: _R..._6kernel4pageNtB5_4Page8read_=
-raw()
-> >     falls through to next function _R..._6kernel4pageNtB5_4Page9write_r=
-aw()
-> >
-> > (and many others) due to calls to the `noreturn` symbol:
-> >
-> >     core::panicking::panic_nounwind_fmt
-> >
-> > Thus add the mangled one to the list so that `objtool` knows it is
-> > actually `noreturn`.
-> >
-> > See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions"=
-)
-> > for more details.
-> >
-> > Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned=
- in older LTSs).
-> > Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-> > Cc: Peter Zijlstra <peterz@infradead.org>
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
->
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->
-> > ---
-> >  tools/objtool/check.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-> > index f23bdda737aa..3257eefc41ed 100644
-> > --- a/tools/objtool/check.c
-> > +++ b/tools/objtool/check.c
-> > @@ -224,6 +224,7 @@ static bool is_rust_noreturn(const struct symbol *f=
-unc)
-> >              str_ends_with(func->name, "_4core9panicking14panic_explici=
-t")                            ||
-> >              str_ends_with(func->name, "_4core9panicking14panic_nounwin=
-d")                            ||
-> >              str_ends_with(func->name, "_4core9panicking18panic_bounds_=
-check")                        ||
-> > +            str_ends_with(func->name, "_4core9panicking18panic_nounwin=
-d_fmt")                        ||
-> >              str_ends_with(func->name, "_4core9panicking19assert_failed=
-_inner")                       ||
-> >              str_ends_with(func->name, "_4core9panicking30panic_null_po=
-inter_dereference")            ||
-> >              str_ends_with(func->name, "_4core9panicking36panic_misalig=
-ned_pointer_dereference")      ||
->
-> Just having "_4core9panicking" substring is not sufficient?
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1173
+> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> ---
+> v2 -> v3: solved the styling error triggered by the kernel bot.
+> ---
+>  drivers/block/rnull.rs               |  3 +--
+>  drivers/gpu/drm/nova/driver.rs       |  4 +++-
+>  drivers/gpu/drm/nova/gem.rs          |  2 +-
+>  rust/kernel/auxiliary.rs             |  2 +-
+>  rust/kernel/block/mq.rs              |  8 ++++----
+>  rust/kernel/block/mq/operations.rs   |  2 +-
+>  rust/kernel/block/mq/request.rs      |  3 ++-
+>  rust/kernel/cred.rs                  |  6 +-----
+>  rust/kernel/device.rs                | 10 +++-------
+>  rust/kernel/devres.rs                |  3 +--
+>  rust/kernel/dma.rs                   |  2 +-
+>  rust/kernel/drm/device.rs            |  3 ++-
+>  rust/kernel/drm/driver.rs            |  2 +-
+>  rust/kernel/drm/gem/mod.rs           |  3 ++-
+>  rust/kernel/fs/file.rs               |  3 ++-
+>  rust/kernel/mm.rs                    |  3 ++-
+>  rust/kernel/mm/mmput_async.rs        |  2 +-
+>  rust/kernel/opp.rs                   | 13 +++++++------
+>  rust/kernel/pci.rs                   |  5 +++--
+>  rust/kernel/pid_namespace.rs         |  5 +----
+>  rust/kernel/platform.rs              |  2 +-
+>  rust/kernel/task.rs                  |  7 ++++---
+>  rust/kernel/types.rs                 |  2 --
+>  samples/rust/rust_dma.rs             |  2 +-
+>  samples/rust/rust_driver_pci.rs      |  2 +-
+>  samples/rust/rust_driver_platform.rs |  2 +-
+>  samples/rust/rust_misc_device.rs     |  3 +--
+>  27 files changed, 49 insertions(+), 55 deletions(-)
 
-That prefix just means it is defined in the panicking.rs file, which
-also has a few functions that are not noreturn.
+We probably want to split this by subsystem and not remove the
+re-exports this cycle. @Miguel what do you think?
 
-Alice
+---
+Cheers,
+Benno
+
