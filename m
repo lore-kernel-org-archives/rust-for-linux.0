@@ -1,110 +1,117 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02A42459E3;
-	Mon, 14 Jul 2025 10:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2E32472A5
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 10:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752489953; cv=none; b=uSKaED8mSFOlBFHvnTHtrluBicbEss5RWgcIaLQps0DHfIKgHuRIIAyJ8dpDvExw11LtGugkLBsRRJwX1GhXbsznrfyNYt8OjVuhMw9FF1phRYEB8DB+AUw7kkt1Ur7XSF8EareqztRT3RG1iHloM7K7wxO7pIViC0e89XvKROM=
+	t=1752489956; cv=none; b=GQHU8eSDN9JydkE9jL8FYStDdwnKt+atqoYHGjWe/gXnPH9Ps/cRsCm1qMn+JitdQzt8mlmFtIdOQ5eiJ4Kb+CATG53PqDOJ+AZD9N4ybgAQgNQfjz/ur/FXhNwT3/cUaRlq8IZ4EKj71VtDoSSZPdD5pbCsn2fpljX8e9SVUzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752489953; c=relaxed/simple;
-	bh=CB5puZj3RBaasged2EVtetcUkyYF+GpbLfj3hezh1mo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiHzgj3dATXfiDvbqHrmNw0wDKrAqljYF3tSIGcYFvDm48ZLllNjrBmBisWvNcfWYhWDqhTNb1vi9WfvJ0GjachoNkj4jvxQBEaI+9nNu8bTqAJEgd+Y45pdRBVod6U7E8RE0qM4l1pRwZkvk2ruDH9neSIEyVoYcAXCqH83RGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UNeOEmbK; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752489956; c=relaxed/simple;
+	bh=CzH9y1iUWR4nDaqh3cxGyltvFXJQU1S8nDrbLaFGHY4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IfX5qAIQfA+FNJV7d8CBb9DJ2JwgelrLwmhEwMpkbwAGDB2Wdg84Hr91jxllJlx6Ncemv02pvkpg9Us8khhzn9mxx4ltFE2NX1DK3Dg2SUCvS2aR/5uJKoFNbfFkSZnMEfwgRe3dsMWJugCRlMrnLBmsSyFsqxPnZDwNO6f7fik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YXH3ndLq; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UNeOEmbK"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-74af4af04fdso3906074b3a.1;
-        Mon, 14 Jul 2025 03:45:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YXH3ndLq"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a6e2d85705so2405186f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 03:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752489951; x=1753094751; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1752489952; x=1753094752; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lACXWrIyx0XepFzYp8lYN3B6VObrUZBjQ6Rart3u69s=;
-        b=UNeOEmbKyLupy76kCL5Dnke1hsMMQ4+BwCHKyJ5xhYsgOwJvD0/A5i/TaJt5B88f5A
-         96836KeWIRHFwo6xSKmToRKjP5A7076aYkNUe9NhOVxR5oEe5y+/qKvXt7iYXCT4fOEP
-         9tBBSLnk4lxLsyexqhu+5vEoxaU+vZQKx0TUkpKOCVsjLxzCxBmdSeDHjfCnnbUvHF6g
-         HRWnh7fMm1PjhfmidEC2CL/izLU87ekx0Ks2qD5UnwM39CMcDyjcuajmrF+UBE0rOw0r
-         N2f5aUXi/M0q9zgY7z9uilwp0RiTqjvAzk8Zh0TG/G5Yzs0LtYFUHP3fGT2QLmSk/+9t
-         xcOg==
+        bh=CzH9y1iUWR4nDaqh3cxGyltvFXJQU1S8nDrbLaFGHY4=;
+        b=YXH3ndLqABBXUGqAl3oZ9cCH5fxiV5KSVs/UfVqjeKjnnrQRG11j7MGbGSWcmJLFQw
+         Ek5forruBccjkVZSg1TFrGjhP5AMPOxu8umCpz/cOqCyYNust+o1kimhkmbsecSNYc4n
+         JNkF3eH0qzrqmyHC9inAONkQxWBmYyiIxpsgXE8NiqphIl1g/Z8Ud2nQPNoe8zQdJtf9
+         qsX9Xll9Ba4tXLaw65fg/AE+dwrA5THT7M21Ujh/6TpsAP8dA6DMhLtxDKfzKrRoDEAV
+         Bb9puqvx4FEsxB2qag4Ufj5CTKxg2AvEi36UVYHX9AwTseEBWjtPxU6Rju2EKb3yBFTb
+         VuMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752489951; x=1753094751;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752489952; x=1753094752;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lACXWrIyx0XepFzYp8lYN3B6VObrUZBjQ6Rart3u69s=;
-        b=XILl7WeHbJYKlIjZxHlucDoqqZrlHlcIWR/nC75+LA0eRDMECSKu0vxb2AAEk4WqmY
-         4d6HNLN2ttpr7SN3llKyDlJ8aFwer1P1Vxh7ADshO/7vydC+Xl+wWM0bJWIlwWHYYYVD
-         LfB4TYBTgXGbd7MeSmSUFFvQviscmIdNamztCxU8MDvyQbEuSXzlSj+6qBVFC2CyKnXn
-         gP7lU6bDJgNYlvNUBgRoS4ztWC8I8+JdBB11u+OywIWXvLTYavY/PACeYGHQdigmvHTa
-         xvTdW8SB5lagIObJJAGCXbolGMR8a3+zjQIrduPw7O6eHZmL+celkAFBKftiEh7a2/+9
-         oA5w==
-X-Forwarded-Encrypted: i=1; AJvYcCUwavSkr4rJRdFvyS9KL4JBarat5SUT5PvD55L+Gts+3q5p1GYMHEUVd+c9aaKuwGdW/NCFCSXyy7sWbfE=@vger.kernel.org, AJvYcCX2ybGhI0MqLCzeiWNLVGnCiKiyp5DmzzhDZN7zuWbnMpY9a2ErR/uZa6E1CXFtjQBqy2MmjpiRjslrZf2xn4U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeqgglBcd1NoWG1oR02r11tWY90luGLbit3/BrFjEVsrKD8avF
-	PVKCwdnD6Rb5iCqb9iXuF1XqMnmGQcuy5DUkrWalbvTq8d//6I0brxZA
-X-Gm-Gg: ASbGncudkZmvsVJe4QlH/jSk3OQ3hbNJiRHRKA/b6J0DIxSJ3/xeazwN+vPyJ/RaK1z
-	3dDp6hz0GRrPxWLtvyf9LkjB4XlViM9o6Z25F9dGz1e/DaVo3fWUqUMgPDoqSPHR/ZzTynyXTdS
-	uTROBIJMytfgRCV3QnbWS0fajGbC7a6pHWACPWAEBdqKxZX1ZYEOe4cTFxriyGZWH+xSSwyKjZV
-	xGvUh1UlFUhGVun44S4i4myTGLgRU+fKP/SGyePbySDcT0OdORi0WWzuGbLROkGygNDCQIne/Fe
-	2uj08BX89KZokPpJI8PTY+GCoOIMOLao/znZYTLKar/UyldRnq8tQMt2nLlkwqTNPEQQBFK4NPI
-	BlT9giiw48okSwqT7v3LjviFR
-X-Google-Smtp-Source: AGHT+IFLPKx1BZNNAyFNyKEkIkORD8Kmtj8nI6gAHdSOXogrL29N95gdsu5VKoCLvgamTF6GYkS1+Q==
-X-Received: by 2002:a05:6a20:9d96:b0:220:898b:2ca1 with SMTP id adf61e73a8af0-231285725fdmr17928439637.21.1752489951050;
-        Mon, 14 Jul 2025 03:45:51 -0700 (PDT)
-Received: from quat-desktop ([2001:569:514a:9100:3f23:7b0f:f6a2:1ebd])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9e058fesm10320909b3a.40.2025.07.14.03.45.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jul 2025 03:45:50 -0700 (PDT)
-From: Rhys Lloyd <krakow20@gmail.com>
-To: acourbot@nvidia.com,
-	dakr@kernel.org
-Cc: Rhys Lloyd <krakow20@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] gpu: nova-core: vbios: use size_of instead of magic number
-Date: Mon, 14 Jul 2025 03:43:14 -0700
-Message-ID: <20250714104322.100511-3-krakow20@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250714104322.100511-1-krakow20@gmail.com>
-References: <20250714104322.100511-1-krakow20@gmail.com>
+        bh=CzH9y1iUWR4nDaqh3cxGyltvFXJQU1S8nDrbLaFGHY4=;
+        b=cRNelEdKBoIcTFJp38f+F4cYLY54o4m+x/DOk5VJ8CNUZe6VA2nGdYY78Nr0YT/8Lf
+         Z5p54FSBVz9qRnOWqfpuL2KtrOux0DIZyrfY+Iy5OTT1J7I0s6peuIceqg6+9XYrH9So
+         qQ9hUFNiNYXzGrNjPCsapbFoUJ375Oq6e8BvQ6gpj6J5Q4AzhRpN+kjyX0y15IA/abcs
+         csc0Jph1O+oa+5/qvGNycWcA48nZvQzxdxuqDhu2wyTNLMZubSFptegPIGUiq6mVTbjm
+         l+HqloRnVgTa+o43i2P/TWV906AobdDAtRNz0oXS0K5j92Ft4GCKa3CHHfrGSspfr7DX
+         C9UQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzYzyxP66GHm6nfPrjVJ/DSZgjT9yN7aGu8dv/ddtqoZeMGLfbe0vAcuWW7Z+YodCDdyOLH2sY7RdN/gRhNA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLJMppTuHOEc2KMVwGgkdp5U8p2/rq4Zzg1QQuRuwUDlvnLuyx
+	fWofSvDIPgTtdHTen7c0mnyNIu5U80H5c1iyUkd1Ac5l3VImG9GHTj0NT7HOE7Ars9LH6q1NbgQ
+	kxe9RrmgEQpqiMbeorrLaCYy7OmU/xdkPWlwJMhER
+X-Gm-Gg: ASbGnctmVNjm+CAinWb68yj5Zp+LWbHVAqzPiv5qFOcZVopScqpxLTd+NBA9ftkYS6b
+	KOOPOiR8R+kfAMXjnibUAxytpQBhl8aLHl+HG8pzniQjDQm7igeMQfbhrTQ4hHkX3FjmQ5faWTc
+	s8KRBQ99AhSM/AIFARKhHuPJ6wGKHNtvyB8UIzNug2O+YVCxlS9wJNPZeAxyhdXFSDDa8xZkbWd
+	8is63b1x1V4nB058+gLkzSafahUx2a2nUjSVg==
+X-Google-Smtp-Source: AGHT+IFuaThDu6sKyZay+yZyfsQDiG54qBZB91b9a1e1KVBlRl/3l2slwG5BRUZ3u59AAqElcvYFV3Cdo7cbx5oqoMo=
+X-Received: by 2002:a05:6000:240e:b0:3a4:df80:7284 with SMTP id
+ ffacd0b85a97d-3b5f351d7camr8115012f8f.1.1752489952076; Mon, 14 Jul 2025
+ 03:45:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250711-workqueue-delay-v3-1-3fe17b18b9d1@google.com> <DB9A8OPZK3DZ.YVQPQQSD12MU@kernel.org>
+In-Reply-To: <DB9A8OPZK3DZ.YVQPQQSD12MU@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 14 Jul 2025 12:45:40 +0200
+X-Gm-Features: Ac12FXyTRcfTKMH9Mvagvy6AdIiMuzAfB1WBR_848IQMThGSsgAnTgtWRJa9d90
+Message-ID: <CAH5fLgg80eGbYQPeLtHsVqfQ4UmftUpzdhzWaah8qs5HwRhk6Q@mail.gmail.com>
+Subject: Re: [PATCH v3] workqueue: rust: add delayed work items
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-12 is identical to the value of `size_of::<BitHeader>()`,
-so use the latter instead.
+On Fri, Jul 11, 2025 at 4:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> Hi Alice,
+>
+> On Fri Jul 11, 2025 at 9:59 AM CEST, Alice Ryhl wrote:
+> > This patch is being sent for use in the various Rust GPU drivers that
+> > are under development. It provides the additional feature of work items
+> > that are executed after a delay.
+>
+> I thought I commented on this in a previous version already, but apparent=
+ly I
+> haven't (was it a different thread maybe?).
+>
+> For drivers, we should also support 'scoped' work items and worqueues, wh=
+ere
+> 'scoped' means limit the lifetime to the driver being bound to a device.
+>
+> For better understanding, in C one would call this devm_alloc_workqueue()=
+, which
+> would guarantee that the workqueue is terminated on device unbind. Simila=
+r for
+> individual work items on shared workqueues (such as the system ones), whi=
+ch
+> would be canceled synchronously on driver unbind.
+>
+> This is very useful for drivers, since it allows to provide a &Device<Bou=
+nd>
+> within the work's callback, which allows drivers to access device resourc=
+es
+> safely and directly without additional overhead.
 
-Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
----
- drivers/gpu/nova-core/vbios.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I believe that additional feature is more closely related to
+https://lore.kernel.org/rust-for-linux/20250411-create-workqueue-v1-1-f7dbe=
+7f1e05f@google.com/
 
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index 663fc50e8b66..ac35415b4ffb 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -365,7 +365,7 @@ struct BitHeader {
- 
- impl BitHeader {
-     fn new(data: &[u8]) -> Result<Self> {
--        if data.len() < 12 {
-+        if data.len() < core::mem::size_of::<Self>() {
-             return Err(EINVAL);
-         }
- 
-
-base-commit: 215a3f91713383a3c0d2da82d223a608a3c17ac1
--- 
-2.50.1
-
+Alice
