@@ -1,108 +1,88 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA74427470;
-	Mon, 14 Jul 2025 16:49:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C34E25E471
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 16:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752511772; cv=none; b=Ci3J0OAa6Yw9flTjN16JkO9/+UsaL9A22sLTre4zuwEgC7uHrxOns0tzQ/HUPKsFIlAFMm1KYV8Fp5tI6G3yWdlEWXdL9IcjQWyxtGRp+X2KgxVhN6UkyRp1XS+rPbUHydxXFgqaVnotiKJlCKwfvtRx9o5rvjUuPk6DFGzJ13U=
+	t=1752512050; cv=none; b=PLuDhYdLTIPVMMF9LEVasVfmGxRnjYIuZGR1uicPCJp7JVEQNdbNtMT6jR4XA3hDW6VZ660lzosW7AOnCPFQ7MenTt1blHY+eTgWDFAHi0fU8f61bKdF/8WaN2eEJETZkEAlcyYwGlPAlckIcOudjDKLRpyuLThKEfrA8BjBq8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752511772; c=relaxed/simple;
-	bh=F3n3V4Luz/JT6U4pUZqkAcRtEeYBFe3axNzOYeHa0To=;
+	s=arc-20240116; t=1752512050; c=relaxed/simple;
+	bh=NKE+o/JDa+ee+ZtcoTr5eoXt66DWRlZm3k1FjB+KJxE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cWOc5/bP2kkhJA3w8x0gUWXMSzbzpNny5nyUkoVBDTlElS7OZ2ovSe0JOSCw9XIQ6fxwjaJI9Y7SB6hTJfm3Ia0YYUtQh+4MABfGsfxyIfC2eaJ4bfWAkWCS7kzUaGnBQ9y0O/RUpeQMYrczIOcVjpJeGXv8pcxwXguj7F+YEGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AxJzWuim; arc=none smtp.client-ip=209.85.216.45
+	 To:Cc:Content-Type; b=CHSNGup+A+KrposB0AAGWuKorQK73VAU1SZIvlE8C9AzsQhSD4M/Qt8ebIhkkw5SPuEO0pzlNpodfOze9Y2SSLFyeuZBTyN5o9ZJyVdr16fEcmOv3h0DsIwHv+9Vq7oLb+GqgUVouJtiMsq36CwdNd9mfkjfxMIvZqOH2mVg66w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kdZmhzpX; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AxJzWuim"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-31306794b30so728026a91.2;
-        Mon, 14 Jul 2025 09:49:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kdZmhzpX"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2369dd5839dso7231725ad.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 09:54:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752511770; x=1753116570; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752512048; x=1753116848; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UMaGzs93jlELahs0rig1FTyg0FWKuWnjkUHeg3IWFQc=;
-        b=AxJzWuim/Mdj2lo63YbTvlK+Mnt9FY8xSJS0EQXdXV2ZBsyJ/LjcMNqN4nJ9sH6crO
-         U7ODOzVpU2nERKbZ1cWDNeuZKfgKXB+ro2RaeXleMAcHqutlHFUbwHT5YqVMOCKGsD8F
-         7WAEAn3JO3F36sdQ8sqtcoZ8VROIvaDuDoQawFnCkG3+nDiIM3+1DNSP/VE6vD4gd1BW
-         gEuXn5Jx5LU3QL+SefrHvV7rNQc+tgFuuVJ91LzdgglRCZwPqw2HpgBUOSwOyLyil2T2
-         0O8L7T3IaOabNpoVnd1TdhBieV/q1UCO7hk5h9fU+dxnxbMbRuTETq5UZRbwf87q2oc4
-         Dskw==
+        bh=NKE+o/JDa+ee+ZtcoTr5eoXt66DWRlZm3k1FjB+KJxE=;
+        b=kdZmhzpXW04Qqgk/yjkzz/x74Gw4o1b9UlzEyQxkOB6FRUUIp/2fjto3oovgkQns35
+         Ngz/ZJeWlDYvft0ivTGEASFjPHbQOf7+v+jusjRgK/Z0DMLY3NsZ9Xt/s7IAJn7/9iJG
+         BGFrojJM2DRzI9eA7KhI7xyqh8e6INKp27GdXP/70IVBDBlVOGOcTKSpJmGdfJThjArb
+         WmJTTXIHDp4yBoLLgVyhAPLMPNXsrXFjxUCmhqwHuw5it4yXJHImWe2YDuIDtS420Eex
+         Jyr5nz5rbRRSKonpsMRrGfe641MiwsOssuz7y8Va2c6HYdvhbmaxoUPphKcsr+YGCl05
+         4jmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752511770; x=1753116570;
+        d=1e100.net; s=20230601; t=1752512048; x=1753116848;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UMaGzs93jlELahs0rig1FTyg0FWKuWnjkUHeg3IWFQc=;
-        b=nDAmM9E/uVlYU6Qjy0DoSwpes0HMFF46tW/wQSSRQPsNqmnrmc6Cd9AkSrTuOXUvCT
-         nFbXMCvQZ6eb91bjn62nwStSpimYVw8RFWyTrBoCnpvkTPDO6FuxDp2EgGsyx/xOddNB
-         PrmRIYqINrz0q/WjF2Akd45P4i6gQXAfj1agfNFBp8jd8ZzyNtfdeSuEHSIe9uGIpDKh
-         a4t1aVaWx11QJuh/r5L+bksRjVlQvuiFJtAtLIn9VGQjaqt3L6e+YL8/eD/eBdRG5GSn
-         AwpDaZ/8nlL1dfwBkMGlpkRgxEO79hBTmqqeIKa/sBBdQbW+NIeWYbVNCB6my9h+uAOt
-         nkwA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5PQCogCUEv1Oa4UyNogPhD8IM+oG6LrGRD3+uBeMjRyprMagbP4vvQq9xgdliY863Ozl/8VfdwL1cnXDK5OY=@vger.kernel.org, AJvYcCWufSL3SaxbuAN0Ws6yKrUxt3hUEklSr3O0WuxFYnjQSIrh/8UNMFKMCxQisSmrjCQ+l8pa/GkeKPOPEtA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/Kh+e23l2cyhxM8pUvzbsd92L+tzINMGYIDE6Fc/VhLO25LMJ
-	lVw+V5tTlQ6LPoiXZHYH1jSthMJ0ZfyB9ZCSfElIp+GNB4Sqjmnv7dOEXOzmmBOYIBFlsNsp120
-	mpyreN44EacNgSZIZV+Knu3sqB31tBP4=
-X-Gm-Gg: ASbGncs4khlBchQhCXOE10lz3sFZxpZSZZtB2uQVHjVTqYpivV5GLjwlWNxZreHuIfv
-	HUeBroMAHchSZze6q/OmOFslQGyYiqYtHDVyunNWPA8bB8bQXqbc9hWE11yHziX0oHwA7hD86Wp
-	wZst6UxW/CsrpSivQ7qKeXVTfGedCXYyDUO9JRMymukX/mDEh7rg2h87O1R59LGoCYvbz5ir8Hc
-	zHwouYs
-X-Google-Smtp-Source: AGHT+IF9VUiu5LPlclakBgM3GjB0x7a7WdSL8pK58j4wRhwnqb6evRDCQ2/FJ1svGKQsOjvPuueCSoQoypWeAnUKwMU=
-X-Received: by 2002:a17:90b:5303:b0:2ff:7970:d2b6 with SMTP id
- 98e67ed59e1d1-31c4f545a20mr8544225a91.5.1752511769896; Mon, 14 Jul 2025
- 09:49:29 -0700 (PDT)
+        bh=NKE+o/JDa+ee+ZtcoTr5eoXt66DWRlZm3k1FjB+KJxE=;
+        b=WozlDvU2mmKryC/afu7JBZkhmIlw71gYVRtfvyqYudv6tPp6Tb8kHmoCrHzcGmmQV3
+         7ElzrY9CMIr7gqaharx4ZuxGeulWNb4SacVBv094MOhAj5HzjomIVnOrWftdkevX7oFc
+         AhzswcaOF0BsBAXOT+XDxCRsgnkvfYode7gd63y+s6VR68AXEKXZSLJrL3Hv1AT0wLU2
+         5yJc54Mkd+RgBgtNvRW4VNj9sM/Zhw6rbF3G3LDknyjGuiyTJS+YU1NVSX01a4Rbyk+i
+         Rv4pdugQcHNfBWSnvaFpBG7XkptbZTYZV3iqmgfKczqVti8zZLrp5zmGCdDhKmYRLkG6
+         j0MQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWokPyT7zDTv91dMdRM4GrfpItNF4upXoFcHNBzJuqZW5HkZAwrjMzfJDt8UAc0O7iLssWuwyPFDvSmz94kJQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOfwELuCZOXGajBS0RhsWmemre7yQLxzeCp0LJHsHAKjnDWd9o
+	hXTsbBadUAOgCKV8TA2uh5p4xmFb6nbKKMuPvk5dc16BpdIatFAcGzqGE5u94t/vdXhLbNAMUGl
+	yu9UGOUWKFh03hAq3A81uDUqNZOxYNJHCGjgQuN8=
+X-Gm-Gg: ASbGncsaXhXQOmJY7Wj0lVD/E+DvBu8O7m7Zv3/GqX7qyWUV5ZeQhtH6hWAN+33Lx2G
+	AWFOneZgl6SXPZRjAnXnM9eP2Z3J/VAWW9uxYI/EdPzOmLGjFYJ5hyjV7OUhz7otLdjUcIy+NiP
+	3kG6SRyzKFC9Mk4LNDCpcB7qymBXAf2i5n/LxSW4Ms2eLLyXvbCFxp4nV5K52Rvlg1M054iPu5U
+	KkgflSe
+X-Google-Smtp-Source: AGHT+IHWfr/3+o27WNttfY4rJ05lWE4VnVGrYl08TiGlXqY9I9xfRtYK8bSv9kCg2Jssg0ASuAHWrB8EQjhPp3JGOpY=
+X-Received: by 2002:a17:903:41c4:b0:235:f1e4:3381 with SMTP id
+ d9443c01a7336-23dede4e7b5mr72406965ad.8.1752512047808; Mon, 14 Jul 2025
+ 09:54:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250713213614.188921-1-shankari.ak0208@gmail.com>
- <20250713213614.188921-2-shankari.ak0208@gmail.com> <DBBNCQQ5HF3N.3HXQWJR71RZ8S@kernel.org>
-In-Reply-To: <DBBNCQQ5HF3N.3HXQWJR71RZ8S@kernel.org>
+References: <20250713190244.143286-1-ritvikfoss@gmail.com> <20250714045418.4ajeuetnjor4nhau@vireshk-i7>
+In-Reply-To: <20250714045418.4ajeuetnjor4nhau@vireshk-i7>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Jul 2025 18:49:16 +0200
-X-Gm-Features: Ac12FXwXO2KNcdQV3tlX-rY7Yz59jrBSbZYooFPejMZSrz3E3NZnZ7iFxrUjBHY
-Message-ID: <CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: update ARef and AlwaysRefCounted call sites
- to import from sync::aref
-To: Benno Lossin <lossin@kernel.org>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Date: Mon, 14 Jul 2025 18:53:54 +0200
+X-Gm-Features: Ac12FXwhOUVq1Ds-v5zcrfAbI6iXUqsmfLu3T8SCqpMWUvW9ixyXKzl23jWzahs
+Message-ID: <CANiq72nYqOGx7FEfMyp_8VnpZargzZ0uannbO9VMCk=kiEbd=g@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: cpumask: Replace `MaybeUninit` and `mem::zeroed`
+ with `Opaque` APIs
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Ritvik Gupta <ritvikfoss@gmail.com>, yury.norov@gmail.com, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org, tmgross@umich.edu, 
+	dakr@kernel.org, rust-for-linux@vger.kernel.org, skhan@linuxfoundation.org, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 14, 2025 at 10:49=E2=80=AFAM Benno Lossin <lossin@kernel.org> w=
-rote:
+On Mon, Jul 14, 2025 at 6:54=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
+rg> wrote:
 >
-> We probably want to split this by subsystem and not remove the
-> re-exports this cycle. @Miguel what do you think?
+> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Indeed, unless we get quick Acked-bys and so on, it is likely we want
-to do this (i.e. the second patch) in 2 kernel cycles.
-
-Shankari: i.e. one cycle that cleans up most of the code (which you
-can submit split by subsystem so that each maintainer picks on their
-own, which typically helps to get patches merged quicker), and then
-another kernel cycle that finally cleans anything new (which ideally
-are very few) that was added meanwhile and removes the re-export.
-
-There was recent discussion on this sort of split recently on Tamir's
-series, in this subthread, in case it helps:
-
-    https://lore.kernel.org/rust-for-linux/CANiq72kta=3DWk=3D3764A5SzxB6Mq=
-=3DsJfm9DyMZXFC91ojUSj1TeQ@mail.gmail.com/
-
-Sorry if this is (I think) one of your first series sent -- in Rust
-moving types around modules is a bit painful. At least the first patch
-should not have this issue.
+Wouldn't this go via your `pm` tree to Rafael? Or am I confused?
 
 Thanks!
 
