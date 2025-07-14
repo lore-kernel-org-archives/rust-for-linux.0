@@ -1,398 +1,126 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD241F418D;
-	Mon, 14 Jul 2025 23:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B705DF76;
+	Mon, 14 Jul 2025 23:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752535818; cv=none; b=tv0yMrcWFEpUFUtCnQACz7spbMQVSHKeAWq9OOiAY5x8hIlPStHcfsBifmqvjfr1N/BFySZlTdxSpwxC9ku68EolBgenGjjJORp0+dahXGO9Po8/6PT/s07GbloKUZiIKqq2QeHjI21avRRhw092MuajP86y52x8JS0Rx+02BPw=
+	t=1752535913; cv=none; b=uBFvW9NQK+1EBoqQyLDHU0/nOOA6+fHqsMYq6Ovdo4BTM7EbDvdpss8vEF9IphOLG17VHDOnYjgqAiEbtYgxIjGzF3sT0WAVFa/gOpq3BkcbTD/FhrjFjQaZHpllCUkwjXvyuWJ2tnMqsHmqcF13h3kRNBnErd2EzPAbaCSnj0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752535818; c=relaxed/simple;
-	bh=z3ooT2KPDhdMkiGlGwsaFN+rtbK61/Wvuy9m8OjMzDk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HpxFY+1YDHShu0S3+APf9ZBDXd0YwrK0DJwvBnNp3WQ3IgkNznIE/ySNRvjK1wUBJI+zkMbmKAVlcWr7sg+ZxMmw7Ua7qKHr46xdObE4ZB/O6w+3LIOye0HzySL0nYfA/HfI0AJw/ZITCpN3Wxg20hCnrlFRwEyJnK89mJ0uv08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bRC74D3H; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1752535913; c=relaxed/simple;
+	bh=VZcSFep2MkUzEp1HcwREjrWQXILilZW/IxidSrQV8ZY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y0awDJUZeokIDsoCfSOuXN5FC+7BuFs6jpgyxUFZ4OGBUEmtdx7qB4KT7tAcimorwG0Ib//SQKqEMoLu8IVK/LFZN9LNNbLSBNb+gz08fZtQVcUVIkqdgn11hO1vToR57azd8aP5FA64cF1x9GfEfU7HK7rlP1A/hcb7S31APw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0UjMoJ9; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bRC74D3H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1752535812;
-	bh=z3ooT2KPDhdMkiGlGwsaFN+rtbK61/Wvuy9m8OjMzDk=;
-	h=From:Date:Subject:To:Cc:From;
-	b=bRC74D3HeIxBmGRBeBpWkjtl9D35svPrpD1JsiRSDCUZx9AH2MLyQY4mFWMajBymB
-	 nUkgituno7Vwomo+mafAj8hw8+CKp5LTZKaVr9rhWAWFImp4ry84cStOpGSIXaSlRj
-	 2DKKAd4pmh4SIYcdpZNzyhFlkP0RuOhNuB3+zU5ySGPQDSw/pQmji1BD+vgM6cdFZK
-	 nfq8F9niCVOk6WG1EJNnj/2wVOoAGH/X4m1kJoLeuWehQUmLmbpTbM6Jn+1ka1lXk7
-	 3TPmj/fB8xAAndiA0vHPeNb7mcsTZD0Vu5utzIs8jZ7MyE227ZAPaTNLZ3gfJXSuMf
-	 bmFKrE45uTgXA==
-Received: from [192.168.0.2] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9B54017E1202;
-	Tue, 15 Jul 2025 01:30:10 +0200 (CEST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Mon, 14 Jul 2025 20:29:58 -0300
-Subject: [PATCH v9] rust: kernel: add support for bits/genmask macros
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0UjMoJ9"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-312a806f002so847449a91.3;
+        Mon, 14 Jul 2025 16:31:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752535911; x=1753140711; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aswGT4n6XBplotGt1P69i2Jxc64wbmKylvGdX6lFK2Q=;
+        b=I0UjMoJ9/zlo6mN+jyPvlfb8+5bL32/gziF558IA/B8bl7i8Fh9XMK0dg7MW4B6U1z
+         fndkbMCsF3/jC4viOcyRy6ZgwQE3iTuzKP76F0vUz/KmOfF1Z1OPWXh8VJA85Rg0h31P
+         QhQnPr+uUwb5qIfCaz3kKYRNsqatrzN1JvbxUNvkSdP45cO9YMumRe7PhVRGb1OrdYcN
+         yqGq7iG7zyCUaev/SjTWNyS4EfTwLxyHzCwgEd3WSO1T6Tn69NIpgVNV8VLOClTmIZ1i
+         jb3LjzIvpvINz4qD1zt/WGYTVAm+Lu5JqHoGzZkyl9p1Fo40CtmqcSnSNGDeRZBCmQ0m
+         8eGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752535911; x=1753140711;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aswGT4n6XBplotGt1P69i2Jxc64wbmKylvGdX6lFK2Q=;
+        b=TQHWK3sM5xIJSeKM24ybMIEYAClrOq49kABlTHXk1NWXkuNObI3AdVX5PYESSWeNZ8
+         rXb2QxEmFTcHZlNtGewcISTy+7xiwvSINvwZ5oQQrMFEr8kOL/yFI1mT0mHsNuIb0heV
+         46GIYyUmkfMdEmO1uqKWFw0u8CA8Qe0s9JmwvNDRSw3m81py87k8Gad03QEr3nuvg400
+         3CF7rKPkKBRRjOro0sAB2NIL9sWcWQ/p+BzzVJQe9Wpi6XuvnJoTf05fxRH0l6l9hkeu
+         Xwk5e5ybUNj2jqj6vFta5TzYwCbIRJj10NBGtZHXahkyFqftsDzf1LVGrDgo+/uhZnQS
+         DNJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBu2kp86ip53dRnzqjt7VBM20VQYk9HlOkytZce1m5FZ4MWQoxtY1UVY8+aAQ0elO+7cnxrc1GqZMgFm6OeaM=@vger.kernel.org, AJvYcCVjny5brLnxSVt8KO2LiaCpm3SdyNqCNmEwaFZFp5hPdINPMdfTpooA4Nm4LPG2S39D8M+gAicaLJ1qaDs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfJX6JiPMVWIo4Vevcd3dwK8TIUNjDa3I3/4SQCyEQUOuNAyOF
+	csbqbZiXJgXjc5uFVfJ/5kszuKJ96OKtZ6k076xz1Zg6SDJ0o1+zvZ13F1nYAEAnF7bGOcfBZuP
+	daTlcwS81hyDAaX/iUO90fnfQ0d2jC2U=
+X-Gm-Gg: ASbGncvjk60EbifLmLb2yBVhwWz4bt/+UgukJ86ladcumz035mEQXInFBdS3S2thhwi
+	AV/lAC15ZXKcj8TtIye9+9P3O8lElI3SgzyT9152VWgjLRvRGv0LJ0rT/ru8fAjHj826OM+zfwg
+	0wTiLIz1pFKvqY3eOpZRC9qjcf652l8OWGIwmI7NDdjUCHma3jFJUCNdXZrKNIJahdTPKEvK76f
+	qxRkce6
+X-Google-Smtp-Source: AGHT+IHIEq1inOGlKuw7g3qrwCn1OBeJnYOpvs6/i/7HrepT1d/pQi+yDLO/0GzSeX5sgezj5xjADr58sl5ninR08jA=
+X-Received: by 2002:a17:90b:2747:b0:314:29ff:6845 with SMTP id
+ 98e67ed59e1d1-31c4cce3657mr8967498a91.4.1752535910819; Mon, 14 Jul 2025
+ 16:31:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250714-topics-tyr-genmask2-v9-1-9e6422cbadb6@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAPWSdWgC/x3MSwqAMAwA0atI1gbaYvFzFXFRbdQgVmlEFPHuF
- pdvMfOAUGQSaLIHIp0svIWEOs9gmF2YCNkng1HGqlIXeGw7D4LHHXGisDpZDGpfOtU7pamykMo
- 90sjXf2279/0AA3utdGUAAAA=
-X-Change-ID: 20250714-topics-tyr-genmask2-1d7a0ba01e85
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
+References: <20250616-userptr-newtype-v3-1-5ff7b2d18d9e@google.com>
+In-Reply-To: <20250616-userptr-newtype-v3-1-5ff7b2d18d9e@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 15 Jul 2025 01:31:38 +0200
+X-Gm-Features: Ac12FXyGSEJpMaOYi_mHrkvH-SRpjq7JEvHXsyUH8zt6u9u17SJ98MTKjyCA8MY
+Message-ID: <CANiq72njeRLijF8Vt+Kgv_gCD6O4E67rH87bGOG6mZCs7wS+=g@mail.gmail.com>
+Subject: Re: [PATCH v3] uaccess: rust: use newtype for user pointers
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Christian Schrefl <chrisi.schrefl@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In light of bindgen being unable to generate bindings for macros, and
-owing to the widespread use of these macros in drivers, manually define
-the bit and genmask C macros in Rust.
+On Mon, Jun 16, 2025 at 3:46=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> Currently, Rust code uses a typedef for unsigned long to represent
+> userspace addresses. This is unfortunate because it means that userspace
+> addresses could accidentally be mixed up with other integers. To
+> alleviate that, we introduce a new UserPtr struct that wraps a raw
+> pointer to represent a userspace address. By using a struct, type
+> checking enforces that userspace addresses cannot be mixed up with
+> anything else.
+>
+> This is similar to the __user annotation in C that detects cases where
+> user pointers are mixed with non-user pointers.
+>
+> Note that unlike __user pointers in C, this type is just a pointer
+> without a target type. This means that it can't detect cases such as
+> mixing up which struct this user pointer references. However, that is
+> okay due to the way this is intended to be used - generally, you create
+> a UserPtr in your ioctl callback from the provided usize *before*
+> dispatching on which ioctl is in use, and then after dispatching on the
+> ioctl you pass the UserPtr into a UserSliceReader or UserSliceWriter;
+> selecting the target type does not happen until you have obtained the
+> UserSliceReader/Writer.
+>
+> The UserPtr type is not marked with #[derive(Debug)], which means that
+> it's not possible to print values of this type. This avoids ASLR
+> leakage.
+>
+> The type is added to the prelude as it is a fairly fundamental type
+> similar to c_int. The wrapping_add() method is renamed to
+> wrapping_byte_add() for consistency with the method name found on raw
+> pointers.
+>
+> Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-The *_checked version of the functions provide runtime checking while
-the const version performs compile-time assertions on the arguments via
-the build_assert!() macro.
+Applied to `rust-next` -- thanks everyone!
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
-Changes in v9:
-- Rebased on rust-next
-- Changed the examples to what Alex suggested (Alex)
-- Placed them in a single code block (Alex)
-- Fixed a minor typo in the docs, because a..=a is allowed (Alex)
-- Added Alex's r-b.
-- Link to v8: https://lore.kernel.org/rust-for-linux/20250708-topic-panthor-rs-genmask-v8-1-fb4256744c9b@collabora.com/
+    [ Reworded title. - Miguel ]
 
-Changes in v8:
-Thanks, Alex {
-  - Added examples to genmask_checked_*
-  - Removed the term "compile-checked" from the _checked variants
-  - Add "or is out of the representable range for the type"
-  - Change to "if start > end" in genmask_checked_* (as n..=n is valid)
-  - Removed the extra check to $ty::BITS (which is already checked by
-    the bit macro)
-  - Changed the build_assert condition to "start <= end" in genmask_*
-  - Added examples for min and max, i.e. 0..=0 and 0..=$ty::BITS-1
-  - Separated hex values using underscore where applicable
-}
-- Link to v7: https://lore.kernel.org/r/20250623-topic-panthor-rs-genmask-v7-1-9f986951e7b5@collabora.com
-
-Changes in v7:
-- Rebase on top of latest rust-next
-- Use RangeInclusive
-- Fix formatting
-- Fix checks of start/end to account for RangeInclusive
-- Use the paste macro to simplify the implementation
-- Get rid of the _unbounded versions (they were not const fns anyway, so
-  users can just write it themselves)
-- Change the examples to account for RangeInclusive
-- Link to v6: https://lore.kernel.org/r/20250610-topic-panthor-rs-genmask-v6-1-50fa1a981bc1@collabora.com
-
-Changes in v6:
-Thanks, Alex {
-  - Added _checked and _unbounded versions of the functions
-  - Implemented the functions through a macro
-  - Changed the genmask logic to prevent over/underflow (hopefully)
-  - Genmask now takes a range instead of "h" and "l" arguments
-  - Made all functions #[inline]
-  - +cc Alex directly
-  - Removed all panics
-}
-- Link to v5: https://lore.kernel.org/r/20250326-topic-panthor-rs-genmask-v5-1-bfa6140214da@collabora.com
-
-Changes in v5:
-- Added versions for u16 and u8 in order to reduce the amount of casts
-  for callers. This came up after discussing the issue with Alexandre
-  Courbot in light of his "register" abstractions.
-- Link to v4: https://lore.kernel.org/r/20250318-topic-panthor-rs-genmask-v4-1-35004fca6ac5@collabora.com
-
-Changes in v4:
-- Split bits into bits_u32 and bits_u64
-- Added r-b's
-- Rebased on top of rust-next
-- Link to v3: https://lore.kernel.org/r/20250121-topic-panthor-rs-genmask-v3-1-5c3bdf21ce05@collabora.com
-
-Changes in v3:
-- Changed from declarative macro to const fn
-- Added separate versions for u32 and u64
-- Link to v2: https://lore.kernel.org/r/20241024-topic-panthor-rs-genmask-v2-1-85237c1f0cea@collabora.com
-
-Changes in v2:
-
-- Added ticks around `BIT`, and `h >=l` (Thanks, Benno).
-- Decided to keep the arguments as `expr`, as I see no issues with that
-- Added a proper example, with an assert_eq!() (Thanks, Benno)
-- Fixed the condition h <= l, which should be h >= l.
-- Checked that the assert for the condition above is described in the
-  docs.
----
- rust/kernel/bits.rs | 223 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs  |   1 +
- 2 files changed, 224 insertions(+)
-
-diff --git a/rust/kernel/bits.rs b/rust/kernel/bits.rs
-new file mode 100644
-index 0000000000000000000000000000000000000000..a15cb4fc0fa93a309d73e822bfd5eb469f2077ef
---- /dev/null
-+++ b/rust/kernel/bits.rs
-@@ -0,0 +1,223 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Bit manipulation macros.
-+//!
-+//! C header: [`include/linux/bits.h`](srctree/include/linux/bits.h)
-+
-+use crate::prelude::*;
-+use core::ops::RangeInclusive;
-+use macros::paste;
-+
-+macro_rules! impl_bit_fn {
-+    (
-+        $ty:ty
-+    ) => {
-+        paste! {
-+            /// Computes `1 << n` if `n` is in bounds, i.e.: if `n` is smaller than
-+            /// the maximum number of bits supported by the type.
-+            ///
-+            /// Returns [`None`] otherwise.
-+            #[inline]
-+            pub fn [<checked_bit_ $ty>](n: u32) -> Option<$ty> {
-+                (1 as $ty).checked_shl(n)
-+            }
-+
-+            /// Computes `1 << n` by performing a compile-time assertion that `n` is
-+            /// in bounds.
-+            ///
-+            /// This version is the default and should be used if `n` is known at
-+            /// compile time.
-+            #[inline]
-+            pub const fn [<bit_ $ty>](n: u32) -> $ty {
-+                build_assert!(n < <$ty>::BITS);
-+                (1 as $ty) << n
-+            }
-+        }
-+    };
-+}
-+
-+impl_bit_fn!(u64);
-+impl_bit_fn!(u32);
-+impl_bit_fn!(u16);
-+impl_bit_fn!(u8);
-+
-+macro_rules! impl_genmask_fn {
-+    (
-+        $ty:ty,
-+        $(#[$genmask_checked_ex:meta])*,
-+        $(#[$genmask_ex:meta])*
-+    ) => {
-+        paste! {
-+            /// Creates a contiguous bitmask for the given range by validating
-+            /// the range at runtime.
-+            ///
-+            /// Returns [`None`] if the range is invalid, i.e.: if the start is
-+            /// greater than the end or if the range is outside of the
-+            /// representable range for the type.
-+            $(#[$genmask_checked_ex])*
-+            #[inline]
-+            pub fn [<genmask_checked_ $ty>](range: RangeInclusive<u32>) -> Option<$ty> {
-+                let start = *range.start();
-+                let end = *range.end();
-+
-+                if start > end {
-+                    return None;
-+                }
-+
-+                let high = [<checked_bit_ $ty>](end)?;
-+                let low = [<checked_bit_ $ty>](start)?;
-+                Some((high | (high - 1)) & !(low - 1))
-+            }
-+
-+            /// Creates a compile-time contiguous bitmask for the given range by
-+            /// performing a compile-time assertion that the range is valid.
-+            ///
-+            /// This version is the default and should be used if the range is known
-+            /// at compile time.
-+            $(#[$genmask_ex])*
-+            #[inline]
-+            pub const fn [<genmask_ $ty>](range: RangeInclusive<u32>) -> $ty {
-+                let start = *range.start();
-+                let end = *range.end();
-+
-+                build_assert!(start <= end);
-+
-+                let high = [<bit_ $ty>](end);
-+                let low = [<bit_ $ty>](start);
-+                (high | (high - 1)) & !(low - 1)
-+            }
-+        }
-+    };
-+}
-+
-+impl_genmask_fn!(
-+    u64,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_checked_u64;
-+    ///
-+    /// assert_eq!(genmask_checked_u64(0..=0), Some(0b1));
-+    ///
-+    /// assert_eq!(genmask_checked_u64(0..=63), Some(u64::MAX));
-+    ///
-+    /// assert_eq!(genmask_checked_u64(21..=39), Some(0x0000_00ff_ffe0_0000));
-+    ///
-+    /// // `80` is out of the supported bit range.
-+    /// assert_eq!(genmask_checked_u64(21..=80), None);
-+    ///
-+    /// // Invalid range where the start is bigger than the end.
-+    /// assert_eq!(genmask_checked_u64(15..=8), None);
-+    /// ```
-+    ,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_u64;
-+    ///
-+    /// assert_eq!(genmask_u64(21..=39), 0x0000_00ff_ffe0_0000);
-+    ///
-+    /// assert_eq!(genmask_u64(0..=0), 0b1);
-+    ///
-+    /// assert_eq!(genmask_u64(0..=63), u64::MAX);
-+    /// ```
-+);
-+
-+impl_genmask_fn!(
-+    u32,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_checked_u32;
-+    ///
-+    /// assert_eq!(genmask_checked_u32(0..=0), Some(0b1));
-+    ///
-+    /// assert_eq!(genmask_checked_u32(0..=31), Some(u32::MAX));
-+    ///
-+    /// assert_eq!(genmask_checked_u32(21..=31), Some(0xffe0_0000));
-+    ///
-+    /// // `40` is out of the supported bit range.
-+    /// assert_eq!(genmask_checked_u32(21..=40), None);
-+    ///
-+    /// // Invalid range where the start is bigger than the end.
-+    /// assert_eq!(genmask_checked_u32(15..=8), None);
-+    /// ```
-+    ,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_u32;
-+    ///
-+    /// assert_eq!(genmask_u32(21..=31), 0xffe0_0000);
-+    ///
-+    /// assert_eq!(genmask_u32(0..=0), 0b1);
-+    ///
-+    /// assert_eq!(genmask_u32(0..=31), u32::MAX);
-+    /// ```
-+);
-+
-+impl_genmask_fn!(
-+    u16,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_checked_u16;
-+    ///
-+    /// assert_eq!(genmask_checked_u16(0..=0), Some(0b1));
-+    ///
-+    /// assert_eq!(genmask_checked_u16(0..=15), Some(u16::MAX));
-+    ///
-+    /// assert_eq!(genmask_checked_u16(6..=15), Some(0xffc0));
-+    ///
-+    /// // `20` is out of the supported bit range.
-+    /// assert_eq!(genmask_checked_u16(6..=20), None);
-+    ///
-+    /// // Invalid range where the start is bigger than the end.
-+    /// assert_eq!(genmask_checked_u16(10..=5), None);
-+    /// ```
-+    ,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_u16;
-+    ///
-+    /// assert_eq!(genmask_u16(6..=15), 0xffc0);
-+    ///
-+    /// assert_eq!(genmask_u16(0..=0), 0b1);
-+    ///
-+    /// assert_eq!(genmask_u16(0..=15), u16::MAX);
-+    /// ```
-+);
-+
-+impl_genmask_fn!(
-+    u8,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_checked_u8;
-+    ///
-+    /// assert_eq!(genmask_checked_u8(0..=0), Some(0b1));
-+    ///
-+    /// assert_eq!(genmask_checked_u8(0..=7), Some(u8::MAX));
-+    ///
-+    /// assert_eq!(genmask_checked_u8(6..=7), Some(0xc0));
-+    ///
-+    /// // `10` is out of the supported bit range.
-+    /// assert_eq!(genmask_checked_u8(6..=10), None);
-+    ///
-+    /// // Invalid range where the start is bigger than the end.
-+    /// assert_eq!(genmask_checked_u8(5..=2), None);
-+    /// ```
-+    ,
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::bits::genmask_u8;
-+    ///
-+    /// assert_eq!(genmask_u8(6..=7), 0xc0);
-+    ///
-+    /// assert_eq!(genmask_u8(0..=0), 0b1);
-+    ///
-+    /// assert_eq!(genmask_u8(0..=7), u8::MAX);
-+    /// ```
-+);
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 6b4774b2b1c37f4da1866e993be6230bc6715841..1bb294de8cb000120a0d04f61d6f7262fbc9f600 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -54,6 +54,7 @@
- pub mod alloc;
- #[cfg(CONFIG_AUXILIARY_BUS)]
- pub mod auxiliary;
-+pub mod bits;
- #[cfg(CONFIG_BLOCK)]
- pub mod block;
- #[doc(hidden)]
-
----
-base-commit: a68a6bef0e75fb9e5aea1399d8538f4e3584dab1
-change-id: 20250714-topics-tyr-genmask2-1d7a0ba01e85
-
-Best regards,
--- 
-Daniel Almeida <daniel.almeida@collabora.com>
-
+Cheers,
+Miguel
