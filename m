@@ -1,121 +1,222 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF50E253F11
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 14:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF367234984;
+	Mon, 14 Jul 2025 14:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752504827; cv=none; b=fKILx94mxz8cLgG4GwrOZCxFov9DCma4856f/CkLuFllZuCcgPzrpjUs7v+Z6tdd+zIj2dntkBo1Ox+JYs5RcfhDoQfxklDpc+VlZ4pUCU7mUI/gTCRkUPql9Rlju10UXOXK4HJivOjJDxDTYNJ2co1boD6JTuZuBQ1gVWqvtWs=
+	t=1752505175; cv=none; b=GCAXsQWKCr9/OrdyXg7lElzzezy4Me772Y89nx5+1lqd/+Ja3DgU4t3hAjR9zdLpHdkF8LG+rgGSCZf4n6VAv2HI6oflI1GplgTK5171F4xvkNMxCvx4+eNHlc6MISihLCL2mwpIBrRvHBwK838Dc1cr3eXpQHoCeVr756IbW5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752504827; c=relaxed/simple;
-	bh=dmCH8nLpuvbR8C1ZmHGLNHxmpbcr2QrDgRWychPUdOQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MrXSRXBhieLRMXw1mS4Kouske+udFVwyX546tkk5K76EwaPRY5ud+M+XXka14Q4ph5uPlyyDN/JRgWcKheoct1tcV0HpXZ8oGiwMVDWIgmJ2LtC1/WxWeJQThYXYogvAhK/SX8SNFsyR/vslsyeAMbltL4Dh+Nk16663GIE1C50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BCWGotm9; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752505175; c=relaxed/simple;
+	bh=gnPNfGNhvz8u1TxFQVMlnCmvFMjVfxzTigxWK8CCFAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IHzz8n7gIMGgGrxOfFc9TJNGYg+KbYMMt4wMkTy3JG+OtHMd/A6a5BtYpK0qZ+Egackxn38+p3oM3kW1uFD8PT0SCgy6linKiBI0sqIjHtIl0tEZvLjUaCksJDkK5XczMho8wPImn1zEsQEiZrA1SPq98wRUtkQM/X1zCvIKPxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SDpgHVEB; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BCWGotm9"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-3137c2021a0so3532953a91.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 07:53:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SDpgHVEB"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6fabe9446a0so36416036d6.2;
+        Mon, 14 Jul 2025 07:59:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752504825; x=1753109625; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1752505173; x=1753109973; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eRS7KVxRS0W+fx13p1N+pmmO7RXDwXvW5xZaAlDLlWI=;
-        b=BCWGotm9/T7J/RJNrsSOt+cioBpvjoHY+diYRA2Ta72r6UREQAoXwB/QksiVzjUx9i
-         y4ucwzyXG6sti0xwVP1GrTnDFSMK9ap76rkj23IwN39BaOKrazMIw80YAv1E5qvMABXw
-         aGWl5Yb7sLLjKOoUv/c4Ci4tbVnjt0KadVPEjFvg28Oq5DXwM0krD5qBErjtUCeQg/74
-         eoa9T2EdXI1s7ZyT9/AQMo32vBvW41dh/ukzSwcmEA+sIDaWcl0bcLj76neHwtN/LTVb
-         xRahxkFGekmVE7s+p1sh9qqEPAoYeOPWZVnbKR9hCfHE65bZ58sL8hcYK00e8Yu67RzG
-         tyNw==
+        bh=Emm0Lj04Ala0s2Dvnm1J6cHglimWIHUYLnLqb+co8Ck=;
+        b=SDpgHVEBGR4y3fB7kWQ9gsQWNksFHV5a5JACXtyQ2zth3h+bVhsMk6rb5sOZnC/2q2
+         F11xcxc3hgebeEaG9gQCZs4Bsfut6mM0JEe44r/DWJ6WWjBG8FHBEYHc/UE9kn4ut+CC
+         9sPkzdMw02LKxW/mpIlC1qwWzNd5Ib9wdu4yLJ6I7Llspq/6i6e1v3Umy7Ey0srr8079
+         aP3hA/v/5RBL96oqFsVGgRdXHtk4wdyctkA8UFJbONZNtGuR9/wh6f5cpRZZ3TPnpjZv
+         ePCIomgAbmfxo1cxFo1VPOHS8vJ6EfPjcqmjkYwGQubNP1QinKwXMqnw+x3AyjSd6cbA
+         sZ+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752504825; x=1753109625;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752505173; x=1753109973;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eRS7KVxRS0W+fx13p1N+pmmO7RXDwXvW5xZaAlDLlWI=;
-        b=pXWp9S+ZLX19qKkVKehsmSSzGeKnpPAh2Luu1WcipFOUGoPBN4mgmC5QhVJM3HsOGR
-         8se5uRZWTgQfSYvtFJCYtDYSXiML4QEiEoVxlv0qiq2vcEjz2ddkx4By6hfg9NRnW+gu
-         D64MTRj2hdDAAhUtEazd+QRivUlZtzy9ds+Ed33dWgUtoBmvWQJG7Rv4rdr+Oc1AYIj2
-         3U56+ITMs4P9TrWarJMEtYVvxrJZdGD8ZeV25MsStSYtugXtIUd8p3YR2wBCJyZKvjyU
-         HUspsVNsHZk2xO3P1H4ZH+8jRwNfbF0D0XCzu60eoNnyKx5Xua6EviqjKiWqXMaEcgwh
-         ydCw==
-X-Forwarded-Encrypted: i=1; AJvYcCUiR3Iz7y2vzwwgKJFhbSa5M+HunqWZX+3eZNAFx2YpuIB2rYgJVPRBNFXGNdHNOh8l+IofIwxb8JaTfyeFqw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz7PbQHoVUFX6Pv2mcjcKNinZMkL9lbeFxfR9v+tACCNEpj7cD
-	L0VQ5ejlZ+xDHKyqBtG8yy1wdgffaJ4F0Nf40kTyPPuyxHTJPwrDZQT8k2tPAl8GjHoeWYu1tEH
-	9NonFA4MBAC0G7yaP+wjdIVsBAC2cyyNoebddI/CN
-X-Gm-Gg: ASbGncvsGXNuSOnQgDV4FTW7S3TZQAapZsyQkJkx95EP9SkfCJBRgSzIGhES1wgjFf6
-	CQ/GnRUeOwbkqbMyfzShK8RdG+M+5TMqfe4z2nLvdLFSusx9AFb8SgKrnjypoa45mgyniqPDPjf
-	4LkkRHcdpbGG8G/3NTrf+ohr9NZ7TH38fXpUTh8OvjBea+D/7OPyzfYlKuy6ctHMBqEvFT83Hg3
-	BW0/zSWw0uBEyXm2mQ1bs5J592RIWmeuFyIqA==
-X-Google-Smtp-Source: AGHT+IEmImtWKne0fXh/9EoZheSYc9ViDZzryJZ8eda866NF14PYMINb7G149CT3MobK1jQkkMisymqVEAyEM83YC5M=
-X-Received: by 2002:a17:90b:54cd:b0:313:d6d9:8891 with SMTP id
- 98e67ed59e1d1-31c4cca42e0mr19743605a91.3.1752504824807; Mon, 14 Jul 2025
- 07:53:44 -0700 (PDT)
+        bh=Emm0Lj04Ala0s2Dvnm1J6cHglimWIHUYLnLqb+co8Ck=;
+        b=WBKhAqOuwl/Jl1Nhju6tBGdCqMtgcGN8IlNkQ4/gJl21pTYsVbFr90gFzkLlSDf2l+
+         sDaEHVEk7GyCMr7e7+Jq5jYM1WjDPBMO1hqDUyvX5HYUaDC7I9fhW4fHkLm5QSYa7XJm
+         f1tV7ucQ7nXoEsdeCKlNR7iLExCsP/HmCAHJWzM1GI3TA8NMqiGk1ZeRS3TZhg7Oe0dm
+         47IRhDoaTu+AauImkNMhybQJheK8VX9H/HVytDXEOr+6eg2KHi9ThtfUqEA+GN0BV7l9
+         gPMX7AfMHPSoKjk+k0J8iARAsKg8z+WVObFz4g/fAJh++gcJwiOnDdqYJgpKz4YP2Hz1
+         gLzg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUk5heyZDc3xQ0M8iBXWift0JxXYaArjX30GqH1Q14ynVQtwSxhpGkkSLAtRYY3cY1qVI7QPfmDIJr@vger.kernel.org, AJvYcCX3y4x5p75aOnziI98wQ1PjOcY7KVtWrUtNESnQ8bvNZ9WFm+U/ZortdlXB0gAkwGI9uUuw2PEbuHn34hGCcxE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZDp+OGkyE6eCYNGJCLck6hP4nnX2La35ZOwCI5kkwo11nQXFg
+	iH31jEJ/a/LglwGAfAYUE+AkbwpRQnM10Ko6EvERQKkTRcSyzzNQ54/k
+X-Gm-Gg: ASbGncvgMAgyiBXYmXLhgV6rYDfTzqV+Zgvl21XlhzWZ4ar3QY96iCf8bxNZux4CJaQ
+	DQl/YRrQpgTZCU7MABgmFR5w+wZLjpaihSo05V/CeLqL58rUY2L9JcqQNONEwXiin+Iwqa/1bjf
+	E8N3G0BTSimBcBJKyT8EguQKH9Hdco3XVhhxmNK8ZXH6bsXeQnB5Up+XfF9Nalt7peEnFbxF4uJ
+	zvxg32/1hamtO2JP8RYd7R5SvUKk/YEih6+waxR9F+/zIs4yMGwnEcTOlFyX5HmpZOX001XPEyz
+	a9Ye0k5Lx0UMqVTIl3kYRoeKzrtiUjSE6uCjB/jfT7+zNeulgeE/kGTvoIik60JlpsslWCdT2X/
+	qZ2OpilriTnObq3K0LiwJu90mtTv3Tuj4deLQ6W4n4aWfF95dHiE3ygCCyoSfCw/vJ2wm0L0M07
+	ZRwrJTmTAbYf1b
+X-Google-Smtp-Source: AGHT+IEN00Lo4cBd6OwqcL4wVIeZqi3JBwRUPiSstExgyXkxrdsPV1jT8r+HnbjYVBvAiR/AWrB76w==
+X-Received: by 2002:a05:6214:f6f:b0:6fd:24e8:7b04 with SMTP id 6a1803df08f44-704a399524amr204039356d6.33.1752505172434;
+        Mon, 14 Jul 2025 07:59:32 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d39c9dsm47646236d6.66.2025.07.14.07.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jul 2025 07:59:31 -0700 (PDT)
+Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 37821F40066;
+	Mon, 14 Jul 2025 10:59:31 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Mon, 14 Jul 2025 10:59:31 -0400
+X-ME-Sender: <xms:Uxt1aFVrB1b9a65mM4HncjklN42eaCeYIqtMLk7twC7mStzpeMMU-Q>
+    <xme:Uxt1aHF6xD0N25-uQwxrGtiNrvTdqOE2CwT84bumWZZewDXRN3c3NhHJcyNULOsJD
+    4vCV4sZRxI7obTdwg>
+X-ME-Received: <xmr:Uxt1aF8H5fT_ce_BycXPBBPvUw1-0xqmM5N797Vzr2TnlpRt5A5C1DZ7Ug>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehvddvhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddvhedt
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
+    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
+    vdejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehlohhsshhinheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhkmhhmsehlihhsthhsrdhlihhnuhigrdgu
+    vghvpdhrtghpthhtoheplhhinhhugidqrghrtghhsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghl
+    vgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrh
+    ihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghi
+    lhdrtghomh
+X-ME-Proxy: <xmx:Uxt1aH0nqdtKBZvCAN9D2L86sDCr5vqgfF2PUzbw8g1v-6tSC14lsw>
+    <xmx:Uxt1aNl1swUhAY-1NAx43kNqACFPpgRYlV5FP1AVyuzngKBAto_15g>
+    <xmx:Uxt1aN85-gTrsC92OXjm1ngaNClxF9lR7_14s3_bChRk03f3MQ3PbQ>
+    <xmx:Uxt1aK4HzvkQqrlcqDP09uYidPt4KrBWYVMNeMKpMJOaeCYGBCuTjg>
+    <xmx:Uxt1aFJ6tW0cornniR3noqwb9WCuh3W4e6yqBrHQQ30jNoWDQr3iU-pu>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 14 Jul 2025 10:59:30 -0400 (EDT)
+Date: Mon, 14 Jul 2025 07:59:29 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v7 3/9] rust: sync: atomic: Add ordering annotation types
+Message-ID: <aHUbUZZ-8Z9kspds@Mac.home>
+References: <20250714053656.66712-1-boqun.feng@gmail.com>
+ <20250714053656.66712-4-boqun.feng@gmail.com>
+ <DBBP3E8PZ81U.2O0QHK1GQXKX2@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250714110229.141221-1-krakow20@gmail.com> <20250714144837.GA2996266@joelnvbox>
-In-Reply-To: <20250714144837.GA2996266@joelnvbox>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 14 Jul 2025 16:53:28 +0200
-X-Gm-Features: Ac12FXyf7w4PNNBTUqz17dhSkzaXwGCVMM7xX5_IyWW7AMetiwQzySVecf0ZfGo
-Message-ID: <CAH5fLgiFOFm+Lh0K_PDZ2eCFa0EAOMk9GRh0Cgh2sm8fay=qnA@mail.gmail.com>
-Subject: Re: [PATCH v2] gpu: nova-core: vbios: change PmuLookupTableEntry to
- relax alignment
-To: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Rhys Lloyd <krakow20@gmail.com>, acourbot@nvidia.com, dakr@kernel.org, 
-	rust-for-linux@vger.kernel.org, airlied@gmail.com, simona@ffwll.ch, 
-	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DBBP3E8PZ81U.2O0QHK1GQXKX2@kernel.org>
 
-On Mon, Jul 14, 2025 at 4:49=E2=80=AFPM Joel Fernandes <joelagnelf@nvidia.c=
-om> wrote:
->
-> Hello, Rhys,
->
-> On Mon, Jul 14, 2025 at 04:02:23AM -0700, Rhys Lloyd wrote:
-> > Instead of the data field containing a u32 and changing the alignment,
-> > change data to [u8; 4] and convert to u32 with a helper function.
-> > Removes another magic number by making the struct the same size as
-> > the data it needs to read, allowing the use of
-> > `size_of::<PmuLookupTableEntry>()`
+On Mon, Jul 14, 2025 at 12:10:46PM +0200, Benno Lossin wrote:
+> On Mon Jul 14, 2025 at 7:36 AM CEST, Boqun Feng wrote:
+> > Preparation for atomic primitives. Instead of a suffix like _acquire, a
+> > method parameter along with the corresponding generic parameter will be
+> > used to specify the ordering of an atomic operations. For example,
+> > atomic load() can be defined as:
 > >
-> > Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
+> > 	impl<T: ...> Atomic<T> {
+> > 	    pub fn load<O: AcquireOrRelaxed>(&self, _o: O) -> T { ... }
+> > 	}
+> >
+> > and acquire users would do:
+> >
+> > 	let r = x.load(Acquire);
+> >
+> > relaxed users:
+> >
+> > 	let r = x.load(Relaxed);
+> >
+> > doing the following:
+> >
+> > 	let r = x.load(Release);
+> >
+> > will cause a compiler error.
+> >
+> > Compared to suffixes, it's easier to tell what ordering variants an
+> > operation has, and it also make it easier to unify the implementation of
+> > all ordering variants in one method via generic. The `TYPE` associate
+> > const is for generic function to pick up the particular implementation
+> > specified by an ordering annotation.
+> >
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > > ---
-> > Changes in v2:
-> > - get_data helper function renamed to data
+> > Benno, please take a good and if you want to provide your Reviewed-by
+> > for this one. I didn't apply your Reviewed-by because I used
+> > `ordering::Any` instead of `AnyOrdering`, I think you're Ok with it [1],
+> > but I could be wrong. Thanks!
 > >
-> > ---
-> >  drivers/gpu/nova-core/vbios.rs | 13 +++++++++----
-> >  1 file changed, 9 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbi=
-os.rs
-> > index 5b5d9f38cbb3..339c66e63c7e 100644
-> > --- a/drivers/gpu/nova-core/vbios.rs
-> > +++ b/drivers/gpu/nova-core/vbios.rs
-> > @@ -896,21 +896,26 @@ fn try_from(base: BiosImageBase) -> Result<Self> =
-{
-> >  struct PmuLookupTableEntry {
-> >      application_id: u8,
-> >      target_id: u8,
-> > -    data: u32,
-> > +    data: [u8; 4],
->
-> Instead of this, could we make the struct as #repr[(C, packed)] or does t=
-hat
-> not work for some reason?
+> > [1]: https://lore.kernel.org/rust-for-linux/DB8M91D7KIT4.14W69YK7108ND@kernel.org/
+> 
+> > +/// The trait bound for annotating operations that support any ordering.
+> > +pub trait Any: internal::Sealed {
+> 
+> How about we just name this `Ordering`? Because that's what it is :)
+> 
 
-It would probably, but packed structs aren't very nice to work with
-because Rust has to be really careful to never generate a reference to
-unaligned fields.
+Seems OK to me, I then also followed Gary's suggestion:
 
-Alice
+	https://lore.kernel.org/rust-for-linux/20250621121842.0c3ca452.gary@garyguo.net/
+
+and dropped `RelaxedOnly` trait.
+
+> That sadly means you can't do
+> 
+>     fn foo<Ordering: Ordering>() {}
+>            --------  ^^^^^^^^ not a trait
+>            |
+>            found this type parameter
+> 
+> But you can still do
+> 
+>     fn foo<O: Ordering>(_: O) {}
+> 
+> If we don't have the ordering module public and instead re-export from
+
+Keeping ordering mod public helps rustdoc readers to find the module and
+read the module documentation (where is the best place to explain each
+ordering), and also I made `Relaxed`, `Acquire`, `Release` and `Full`
+refer to the module documentation in their doc, making `ordering` mod
+private would cause rustdoc issues.
+
+Regards,
+Boqun
+
+> atomic, you could also write:
+> 
+>     fn foo<Ordering: atomic::Ordering>(_: Ordering) {}
+> 
+> If you want it to be extra clear. What do you think?
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> > +    /// Describes the exact memory ordering.
+> > +    const TYPE: OrderingType;
+> > +}
