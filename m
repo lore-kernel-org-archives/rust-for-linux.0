@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F83242D6A;
-	Mon, 14 Jul 2025 10:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D89F1DD0C7;
+	Mon, 14 Jul 2025 10:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752490317; cv=none; b=WqzfQN3224iaRSsfAIpGK8qMkwuuSCXyAud4W5Nr611J2Xf54uOFOUhs1/9oxMvqD6wYB5XvOTrF84MpX5U/E9E+i8so3WlwOeutcJcRkiB+/shaHOBdIKHnHiPUM5NeFHQXhdFYLYEFXF3bwJ2YdFsjR2B9MxCM5K7pVXUURWs=
+	t=1752490568; cv=none; b=SznitT6gD7YGwT62vou7T9mp7soSmHMxWBMYtlvN0hMyl+Z3o9hk0Lj/HTun1u5k1b96xVHXeTWk8DgnYcCnw9WqFQL+m9VsKpxtvCOkcc9aiuOW+/MH7MJYfESM4xB3aegc/0J3jYEPle+yfLotxaROeNJpcnrLR3zwIuqlZhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752490317; c=relaxed/simple;
-	bh=NzSjl/05WZKp/TIPLA6jzybk7hA5tSKg1rNVsJpc5ek=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=OiBrZ0ocK5iCBnVMazN7GeMVYXnat0mqV44GQq3rJ/4ub+/oEc5BYjxzHfBZ+hUxaWXu8oWelpSy9tN4Ft1V6HbH6QLND3xKHXc2UGQ8XZkxXKabmNou9X/frNrBTD4TYQXYH/DjHYQQHChrjwf675NtV2aRllBHcv/Qa3mo5KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ayNdhBb6; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752490568; c=relaxed/simple;
+	bh=4WP0XcVaNLZoGGZ50rlIpOYekaVIX50HRb3NbB+zsac=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=Y/X40LicmrOZ3tI+uXhM+Sves1A1mihrWRknzgbzOOp541mBAktIXRDgOtO0hkjqI49V62Rc6ia9R9oyMmlV5gqyN/OHVK0Av3mrm3gMD45EscY6/00sFeORZGkU2YbqQcc8arYbZxdQ40RG/0tBAebjGGmo1fz01eVOrgukhLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IYorg/Ol; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayNdhBb6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD5CC4CEED;
-	Mon, 14 Jul 2025 10:51:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IYorg/Ol"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F1EC4CEED;
+	Mon, 14 Jul 2025 10:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752490316;
-	bh=NzSjl/05WZKp/TIPLA6jzybk7hA5tSKg1rNVsJpc5ek=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ayNdhBb6LyhPo3Ji0W92NfYmQ1myKEXwccEkSPhK/UvrRQXG4a0uoLsz1i2bwCP1Z
-	 uj//FhekwOZHW8o7fCIKbfU9m/rWcaOgG+6+dOiaH/Ei+X9n2h/4uGGz8Jld7n1sli
-	 kGMpM52lE6KIwUqY8Y5dWuzwauj+jnW2vQ+KQedJxHv/6aV/EIqACi72qlOWI5DCMc
-	 k4W8CYiQOd4oNULFF/L3FiV40p8kZtjJMvMVSU8cBMg5XKK+fxBIfbNR6Tr1lknZHj
-	 rMfN9M5X1Zz/LSRlHU9zkPQftdkdv1PFa1BLpBMO6fGjocTbrLEqn4OmQtwyBEeUVy
-	 5TFRZ2FzQZZ2g==
+	s=k20201202; t=1752490567;
+	bh=4WP0XcVaNLZoGGZ50rlIpOYekaVIX50HRb3NbB+zsac=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=IYorg/OlPjqE4WqeUB1T2oNI6bTt3J8SATqFUpSwielod/HIemhg2hI07oa+JMD6S
+	 Rma+xKPs43G8TgTnccukbiPSlpol0B4AhxQxEI3TNwy83I6v/u3uZ5NTcFkytrsAgh
+	 zWH7+ztNgoeeBGlLUH5zwG1Bl7M1+6SL+d1xaSak7d++PhBKu+D3Ts84EG+CKHq71Y
+	 GVkeQ0KF7qc/RrwhwQYA/etjoiu5u8uY37odogAcS/WWRisvvBIpyoVRSjezildkEb
+	 Zsb+AnUxDggcAFiE1DgncDKhZybsIF2nfuPPVeX6T0FF1A9e5ZSFibQJ6+RcjwaJd4
+	 XY6jpjWGBGVvA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,32 +34,51 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 12:51:52 +0200
-Message-Id: <DBBPYV1YV97X.OT2SPH3R67RS@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] gpu: nova-core: vbios: change PmuLookupTableEntry to
- relax alignment
+Date: Mon, 14 Jul 2025 12:56:01 +0200
+Message-Id: <DBBQ21NIC2I5.32X8ZVDIK3J4C@kernel.org>
+Subject: Re: [PATCH v7 5/9] rust: sync: atomic: Add atomic {cmp,}xchg
+ operations
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Rhys Lloyd" <krakow20@gmail.com>, <acourbot@nvidia.com>,
- <dakr@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
+ <linux-arch@vger.kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
+ "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
+ <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
+ Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
+ <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
+ "Alan Stern" <stern@rowland.harvard.edu>
 X-Mailer: aerc 0.20.1
-References: <20250714104322.100511-1-krakow20@gmail.com>
-In-Reply-To: <20250714104322.100511-1-krakow20@gmail.com>
+References: <20250714053656.66712-1-boqun.feng@gmail.com>
+ <20250714053656.66712-6-boqun.feng@gmail.com>
+In-Reply-To: <20250714053656.66712-6-boqun.feng@gmail.com>
 
-On Mon Jul 14, 2025 at 12:43 PM CEST, Rhys Lloyd wrote:
-> +
-> +    /// Construct a u32 from `self.data`.
-> +    fn get_data(&self) -> u32 {
+On Mon Jul 14, 2025 at 7:36 AM CEST, Boqun Feng wrote:
+> xchg() and cmpxchg() are basic operations on atomic. Provide these based
+> on C APIs.
+>
+> Note that cmpxchg() use the similar function signature as
+> compare_exchange() in Rust std: returning a `Result`, `Ok(old)` means
+> the operation succeeds and `Err(old)` means the operation fails.
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-Getters in Rust usually don't start with `get_`. Using `data(&self)`
-here also looks better IMO.
+Looks good except for the naming disputes :) So
+
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
 Benno
 
-> +        u32::from_le_bytes(self.data)
-> +    }
->  }
+> ---
+>  rust/kernel/sync/atomic/generic.rs | 181 ++++++++++++++++++++++++++++-
+>  1 file changed, 180 insertions(+), 1 deletion(-)
