@@ -1,174 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EF32594B4;
-	Mon, 14 Jul 2025 15:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752505547; cv=none; b=ZwtG4nmYUChg3Y4oYjCjckPLmVCLCd+uxBF9fJDTq0IUgL+kdoFzBPZ5kfjCT9eyvb4PtysDbYo0KiTUxoYOyFUGRqOIUUsujiyOQ9qhzKQKt2GQsRWRs2KSSyF/SemSDPT+WnW3hgivTsVnPRxkfFsPf2U3lYYEBizOGj3MjPw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752505547; c=relaxed/simple;
-	bh=8JHF2oaX32pB33OO8iIS6R4334am5Qgv2ejcIuPp9o0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=NrAvd5SjniD3fe0b6WuLLJMMrtRxTv3chWJnRULgt9CHwuwaueaGpVkZQYhWIJ2nvINFY1NyhPNTLGupbYt6phUbK1nlNjhWWUiDNAcas4lUsfhSJcFF8VgKXyMDy+KzzI53V5kQfoMRp0drap7rYxpuHHCp9g41R5gPhhGO4OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/HjJTwg; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006F2246BB6;
+	Mon, 14 Jul 2025 15:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752506015; cv=pass; b=IPz6loCuS8Ip+ikVeJOXQepNtHJ6sp+2sPSsGkOibRhH7EyF1fvBhyF1tmhlIjGYhA/5fKgBFLxWe8jQlrCutytRfpQJU3HZUpbPzumSZUc7L5ceHBprTad9dON0otmAebPKghEkSKoRX5xp5gkV0wpufRU7nzeomxbtCQNLIKQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752506015; c=relaxed/simple;
+	bh=nJiikquzfUrzFUhNIuX0ECRmGYdrZHV3lqYtqRvTxBs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=mpZWrVGSTP/1YtKGI52r7UabIIhAwTzS3oIrAmiPcoKNBWS/ukree69PI6h86g7MGGSaZUDz1ZkjulSheqX+NOMKDg76PjBjj2+xT4a2ftfjRafzgjrKFY87fHzGHh9KFES4e8EekkqMa+CIe+upRqFUhjfn2gKBuM3DzmFlDYY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=JZjoEz6t; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/HjJTwg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A804C4CEF6;
-	Mon, 14 Jul 2025 15:05:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752505547;
-	bh=8JHF2oaX32pB33OO8iIS6R4334am5Qgv2ejcIuPp9o0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=J/HjJTwg/JgRiWr8w9WBD8IyNRroWC6BjFDwFoNFoBLaIRBmMtiZWsd8+ayvrRXQA
-	 RSYcfZ3dK4UbbyDormP5SPFa1+OC1QNV6/paCERfTD/onVtxorxcS9spSTEU2pWdsH
-	 GccNObc6Xrm6CwEu4+1ruB1dV8UxQ8t6yWi5Rp8xSJpEUuosOf95Kw3Js4PZHZkkSO
-	 qc5OSt4oGhpskf1Re83u3YwTOzqx56SBDvwVxsnPkO2a7xJPWMERw63/wSyOjWaY6p
-	 +fhr8XnC7CnM+LTTXDhH4HfcjseChxnv7FGFEKYX8rW9TAnsK0DNB3+7eh/+GjIOA3
-	 WE6nOi4iwt6ng==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="JZjoEz6t"
+ARC-Seal: i=1; a=rsa-sha256; t=1752505977; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=km5zAZoLfL/WUb967j5t6pTQLOqlE/hCyn4dfValQ33r2PPYF1clj4JizQQYVye64EJc9AaSBrz6mlDgJbILLGjJ6PpHTeNWPotaSD3VXu/wbIlGM9YBnKNIu9cC1iK9URk3uxOnsa359HKdD+v5flNBJaZGxbrSI8H4Q52+LQA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752505977; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=yBrlm4HyOYxQkzzRxHxRaO+Keb2kNTFdYZHjEVJuhcQ=; 
+	b=Tr/UWc97z9Yzs8IwsT9Y0vxxHidUvmLru3XRHR1hcVlxME9MJTHIepbdOH6H6RGEsaqmYMYfP60GG+//I5Td8c4bZw4RLvfa7gRk9xVpuzgY4rff4enlfMZM9M5UdEX5kkMQ5vFTUXboArZMVT9vOsKUQLi9ssTKHfyXLV51zd8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752505977;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=yBrlm4HyOYxQkzzRxHxRaO+Keb2kNTFdYZHjEVJuhcQ=;
+	b=JZjoEz6tslhhAyRvEcXPkQQ0Q4J294ajkKGf//YP5vKaaV4+f0z246Jq7QFFfoYX
+	62Q76oL9uB2FHdoJ4ybI8bcs5KlzG1/XgNZi3R6BDkfqJ/xIFVPxjCgU/wuArvAFiK6
+	+LxfaTyABQztaoAL2h7EsDCc9gstcNnIuPc4fvzg=
+Received: by mx.zohomail.com with SMTPS id 1752505974334461.4752414079642;
+	Mon, 14 Jul 2025 08:12:54 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org>
+Date: Mon, 14 Jul 2025 12:12:37 -0300
+Cc: Benno Lossin <lossin@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 17:05:40 +0200
-Message-Id: <DBBVD70MASPW.2LUTJ51Y6SGMI@kernel.org>
-Subject: Re: [PATCH v7 4/9] rust: sync: atomic: Add generic atomics
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
-X-Mailer: aerc 0.20.1
-References: <20250714053656.66712-1-boqun.feng@gmail.com>
- <20250714053656.66712-5-boqun.feng@gmail.com>
- <DBBPI9ZJVO64.3A83G118BMVLI@kernel.org> <aHUSgXW9A6LzjBIS@Mac.home>
-In-Reply-To: <aHUSgXW9A6LzjBIS@Mac.home>
+Message-Id: <C72C6915-3BB2-431F-89ED-7743D8A62B7E@collabora.com>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
+ <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
+ <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org>
+ <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
+ <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org>
+ <DBAVXQTMR38Z.2782EGR84L7OP@kernel.org>
+ <DBAWQG1PX5TO.6I2ARFGLX88N@kernel.org> <DBAX59YKO0FV.ANLOWRHDDS92@kernel.org>
+ <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Mon Jul 14, 2025 at 4:21 PM CEST, Boqun Feng wrote:
-> On Mon, Jul 14, 2025 at 12:30:12PM +0200, Benno Lossin wrote:
->> On Mon Jul 14, 2025 at 7:36 AM CEST, Boqun Feng wrote:
->> > To provide using LKMM atomics for Rust code, a generic `Atomic<T>` is
->> > added, currently `T` needs to be Send + Copy because these are the
->> > straightforward usages and all basic types support this.
->> >
->> > Implement `AllowAtomic` for `i32` and `i64`, and so far only basic
->> > operations load() and store() are introduced.
->> >
->> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
->> > ---
->> >  rust/kernel/sync/atomic.rs         |  14 ++
->> >  rust/kernel/sync/atomic/generic.rs | 285 ++++++++++++++++++++++++++++=
-+
->> >  2 files changed, 299 insertions(+)
->> >  create mode 100644 rust/kernel/sync/atomic/generic.rs
->> >
->> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
->> > index e80ac049f36b..c5193c1c90fe 100644
->> > --- a/rust/kernel/sync/atomic.rs
->> > +++ b/rust/kernel/sync/atomic.rs
->> > @@ -16,7 +16,21 @@
->> >  //!
->> >  //! [`LKMM`]: srctree/tools/memory-model/
->> > =20
->> > +pub mod generic;
+Hi,
+
+>=20
+>>>=20
+>>>  (2) It is guaranteed that the device pointer is valid because (1) =
+guarantees
+>>>      it's even bound and because Devres<RegistrationInner> itself =
+has a
+>>>      reference count.
 >>=20
->> Hmm, maybe just re-export the stuff? I don't think there's an advantage
->> to having the generic module be public.
->>=20
->
-> If `generic` is not public, then in the kernel::sync::atomic page, it
-> won't should up, and there is no mentioning of struct `Atomic` either.
->
-> If I made it public and also re-export the `Atomic`, there would be a
-> "Re-export" section mentioning all the re-exports, so I will keep
-> `generic` unless you have some tricks that I don't know.
+>> Yeah but I would find it much more natural (and also useful in other
+>> circumstances) if `Devres<T>` would give you access to `Device` (at
+>> least the `Normal` type state).
+>=20
+> If we use container_of!() instead or just pass the address of Self =
+(i.e.
+> Registration) to request_irq() instead,
 
-Just use `#[doc(inline)]` :)
 
-    https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attribute=
-.html#inline-and-no_inline
+Boqun, Benno, are you ok with passing the address of Registration<T> as =
+the cookie?
 
-> Also I feel it's a bit naturally that `AllowAtomic` and `AllowAtomicAdd`
-> stay under `generic` (instead of re-export them at `atomic` mod level)
-> because they are about the generic part of `Atomic`, right?
+Recall that this was a change requested in v4, so I am checking whether =
+we are
+all on the same page before going back to that.
 
-Why is that more natural? It only adds an extra path layer in any import
-for atomics.
+See [0], i.e.:
 
-Unless you at some point want to add `concrete::Atomic<T>` etc, I would
-just re-export them.
+> > > >> Well yes and no, with the Devres changes, the `cookie` can just =
+be the
+> > > >> address of the `RegistrationInner` & we can do it this way :)
+> > > >>
+> > > >> ---
+> > > >> Cheers,
+> > > >> Benno
+> > > >
+> > > >
+> > > > No, we need this to be the address of the the whole thing (i.e.
+> > > > Registration<T>), otherwise you can=E2=80=99t access the handler =
+in the irq
+> > > > callback.
+>=20
+> You only need the access of `handler` in the irq callback, right? I.e.
+> passing the address of `handler` would suffice (of course you need
+> to change the irq callback as well).
 
->> > +/// The atomic operations are implemented in a way that is fully comp=
-atible with the [Linux Kernel
->> > +/// Memory (Consistency) Model][LKMM], hence they should be modeled a=
-s the corresponding
->> > +/// [`LKMM`][LKMM] atomic primitives. With the help of [`Atomic::from=
-_ptr()`] and
->> > +/// [`Atomic::as_ptr()`], this provides a way to interact with [C-sid=
-e atomic operations]
->> > +/// (including those without the `atomic` prefix, e.g. `READ_ONCE()`,=
- `WRITE_ONCE()`,
->> > +/// `smp_load_acquire()` and `smp_store_release()`).
->> > +///
->> > +/// [LKMM]: srctree/tools/memory-model/
->> > +/// [C-side atomic operations]: srctree/Documentation/atomic_t.txt
->>=20
->> Did you check that these links looks good in rustdoc?
->>=20
->
-> Yep.
 
-Nice :)
+=E2=80=94 Daniel
 
->> > +/// over unit-only enums, see [Examples].
->> > +///
->> > +/// # Limitations
->> > +///
->> > +/// Because C primitives are used to implement the atomic operations,=
- and a C function requires a
->> > +/// valid object of a type to operate on (i.e. no `MaybeUninit<_>`), =
-hence at the Rust <-> C
->> > +/// surface, only types with no uninitialized bits can be passed. As =
-a result, types like `(u8,
->>=20
->> s/no uninitialized/initialized/
->>=20
->
-> hmm.. "with initialized bits" seems to me saying "it's OK as long as
-> some bits are initialized", how about "with all the bits initialized"?
-
-Sounds good. The double negation sounded a bit weird to me.
-
->> > +    /// However, this should be only used when communicating with C s=
-ide or manipulating a C
->> > +    /// struct.
->>=20
->> This sentence should be above the `Safety` section.
->>=20
->
-> Hmm.. why? This is the further information about what the above
-> "Examples" section just mentioned?
-
-I thought "this" is referring to "this function", if not then please be
-more concrete :)
-
----
-Cheers,
-Benno
+[0] https://lore.kernel.org/all/aFq3P_4XgP0dUrAS@Mac.home/=
