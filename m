@@ -1,112 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07ECE23FC41;
-	Mon, 14 Jul 2025 11:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595A023BF9C
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 11:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752493045; cv=none; b=V67RZM3WBI2X4hIIAT0JyY4y6Hcfx+tamqVhEgFPgLZXHaJ5mJZ3N7gEjvBHS2aqBKfgdZEc3hLAlL+2qx5gdDdU8dGqNGKacqECUNvBhfirpNbBhR+ehG5OrKsiuCC2VaBeXM3tXO5Ap5BnksHzCLhvEhWnKUBIGRSU7BHl+t8=
+	t=1752493877; cv=none; b=kClnChvxu5uM4186qwpTClqX0kQxnK+xYNIiSULokRrYmhK053M7oP+FHZZPAbtepMM6oEOyUo5/nIXwvsfDpMBhdZqM2yqrCjPkCqq5utqJkoyPvXY4SnaNuGNi68VX4+QsVXiobEwEBFi+qgfjMkHkEx8UIxfomVxcNju4TUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752493045; c=relaxed/simple;
-	bh=cuv+2cfr+Bldf9Y19PH2++tRWlIqk+8yZoZ4chK+j7A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tgvSJzWt31L1iEtwN3QoMfOz4qPr8SDolHDgdYVjc3iF7pt8Djyp/nldNAWWCTxAVrZHgs/W7ccSNi6vYWge27WAbZOla66E7cn6gbt+Id/8bBLoYCUl0A2wjBuUfOdgAUMyyZmLjEOfHnCM75vfQSiwTcLm7zCTaWoTaoY8DOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mc+hqI8E; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752493877; c=relaxed/simple;
+	bh=1fOsxm8KmM+d67Cn3Rpd/LbmTkIxTdxW+gtVkoYk/EM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=A86WoQsMPJ2pKwuPeF8SMX74DjrJtxhaziNZ8e+H9FMY/Ru9l7vvZsRQObrj2S/wK9uiV+GAKkftlJrP4Oig4igijDYFRAxApS5PO2e1LK3flaj/vMRXUHDVpe7eztt3gHE4iO4ebrqoRb5LaZC/4ou6LBVY2OOKVT2AR+fetlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c8TbDo2l; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mc+hqI8E"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCAAC4CEF9;
-	Mon, 14 Jul 2025 11:37:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752493044;
-	bh=cuv+2cfr+Bldf9Y19PH2++tRWlIqk+8yZoZ4chK+j7A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mc+hqI8EDkOr+1SWtcEvwLszJC5vLmZpDSzCGY/2qs/wV4RhJBFZ6jAeNqy1kw0i/
-	 8ZoLXG1uOo+BIPk/zwEc5wJhBXE66hs7OgjzRx4eJN6rQKjF0tNVVahhl5jDOmrkxv
-	 ZuiMKAep2PFd2aP2geJ2aHhy+cBXIku8TfMxED2x+m8Ny0oZfvGh/R6dDt9BFM3WrE
-	 MANAUM0MNLKvZI7Lx9WAnJq9t9yS+y1gnVjDZH9pqx1GVwHFGNGGqhpmydS0OaH+Ad
-	 VUhMW8IqLXWKTJaNdoUCrhR1QIXE1CAUsxEOOiNguLj3pLiDUKxroi8SmTAttC3hd/
-	 TI7mgj6YukDIA==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	daniel.almeida@collabora.com,
-	m.wilczynski@samsung.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH] rust: devres: initialize Devres::inner::data last
-Date: Mon, 14 Jul 2025 13:32:35 +0200
-Message-ID: <20250714113712.22158-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c8TbDo2l"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-450df53d461so32914925e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 04:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752493874; x=1753098674; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NO40oCgQSCqkHXjzs0s5Ot/ig0QEzwHdR9AJ2G+vIrQ=;
+        b=c8TbDo2laNPCLHRuD64xsmF0pIAJLUJGwrbOO1jr+qvgB3+JHf4XCXq5VzS3G2yYcn
+         FJChxJ0DypWrydJRVjhGuxCGDMJpJ4wrssa2OIUmRDypOEkIenLaVG4rlLPVsVxtQJ2P
+         PcMgPLfL+++oWGAdN0pv2uv0dYFAJcUWIse5OaWsVMq9/IZFzS/Rib+CKXrIXglVWHZ2
+         xd7t+FXds/6tH6O2Da+J6OHtV7OcTAyk0Q1QjmZIVuSLJDk84L6fncSpzyf9NKz3/0wZ
+         eoBWGSEVfEiR8CTf+PYUXhkaFezYg5Cm/UDpCbJoCBeSD99TV+B6rKRp1+mOBzCNO9xO
+         ClDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752493874; x=1753098674;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NO40oCgQSCqkHXjzs0s5Ot/ig0QEzwHdR9AJ2G+vIrQ=;
+        b=HO9OSVs8O9m59YF00H9WSUpeKS6iubz/FpTwsAucpla3rbPk3HrfQmxzMxaIKWig2Q
+         26tS/XNMIPN3r3MsEtEomD7MsFPi7yjTvkTN5+B3bYVv0POBhyLACfX9FNIT5zeVqxC/
+         DK8ocMfGWDddkuMX89HxCjPuipK4RTJMluxy568meXzPv5Rh/NlbNaN7a5onbzR1xeit
+         S0e/WFNAhuHS5blWc7TDiUX5Gs8xHNY4Alg61tCgMGBs55CKw6DUuh19JvKh2Jma3NGH
+         jFjx2UHz5qltdhT6BhKcJJWmEc7XM6yDFQYc8bzqY0BWzR2S02CQy0qeDcLDjyWmKYAN
+         JUyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkPTKNLCbhu1IGmTjAwJ3y+R7NraEYe9G8LWcatZEkvpD7OvCHJ0W3N1CAW4yQmLG+m3kWjciG5DXs3Terjg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8B7ofOqcIWlONWUsphT3Bxom2Clf2uQlHeQ3UQ8CqAGjKHwqy
+	j/Y36fCevRQSBmTOtPvLs3fORVK9vBmjXZb9y0UYRHEYqlOrGbCRVNSxJC0XjnIICdcGBLNxRCH
+	PgOQgvSTd3fBuBETy6Q==
+X-Google-Smtp-Source: AGHT+IEC1AXUVxbsXuFfTt+kmPJ2lYfWegg79vPCpBaWdc+ofzAvJ1LZKa5QpJGV+AetC0pRA+Pf3Rt8j/eWnog=
+X-Received: from wmbel18.prod.google.com ([2002:a05:600c:3e12:b0:456:1194:a7e7])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:314e:b0:456:1204:e7ec with SMTP id 5b1f17b1804b1-4561204e9d5mr60923015e9.10.1752493873725;
+ Mon, 14 Jul 2025 04:51:13 -0700 (PDT)
+Date: Mon, 14 Jul 2025 11:51:12 +0000
+In-Reply-To: <7A0457FA-0E09-451E-B035-E739AED7B2C7@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
+ <20250704-topics-tyr-platform_iomem-v12-2-1d3d4bd8207d@collabora.com>
+ <aGt7aItuSINDzj2O@google.com> <7A0457FA-0E09-451E-B035-E739AED7B2C7@collabora.com>
+Message-ID: <aHTvMNIenbaGtBBt@google.com>
+Subject: Re: [PATCH v12 2/3] rust: io: mem: add a generic iomem abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	"Ilpo =?utf-8?B?SsOkcnZpbmVu?=" <ilpo.jarvinen@linux.intel.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, Ying Huang <huang.ying.caritas@gmail.com>, 
+	Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Users may want to access the Devres object from callbacks registered
-through the initialization of Devres::inner::data.
+On Thu, Jul 10, 2025 at 10:58:13AM -0300, Daniel Almeida wrote:
+> Hi Alice,
+>=20
+> >> +impl<const SIZE: usize> IoMem<SIZE> {
+> >> +    fn ioremap(resource: &Resource) -> Result<Self> {
+> >> +        let size =3D resource.size();
+> >> +        if size =3D=3D 0 {
+> >> +            return Err(EINVAL);
+> >> +        }
+> >> +
+> >> +        let res_start =3D resource.start();
+> >> +
+> >> +        let addr =3D if resource
+> >> +            .flags()
+> >> +            .contains(io::resource::flags::IORESOURCE_MEM_NONPOSTED)
+> >> +        {
+> >> +            // SAFETY:
+> >> +            // - `res_start` and `size` are read from a presumably va=
+lid `struct resource`.
+> >> +            // - `size` is known not to be zero at this point.
+> >> +            unsafe { bindings::ioremap_np(res_start, size as usize) }
+> >=20
+> > Here you cast from ResourceSize to usize. Are you sure that is correct?
+> > I thought those types could be different.
+>=20
+> This seems to what C is doing as well, i.e.:
+>=20
+> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t o=
+ffset,
+> 				    resource_size_t size, <---------
+> 				    enum devm_ioremap_type type)
+> {
+>=20
+>         [=E2=80=A6]
+>=20
+> 	case DEVM_IOREMAP_NP:
+> 		addr =3D ioremap_np(offset, size);
+> 		break;
+> 	}
+>=20
+>=20
+> Where:
+>=20
+> `static inline void __iomem *ioremap_np(phys_addr_t offset, size_t size)`
+>=20
+> IOW: this stems from the mix and match of types used the C API itself.
+>=20
+> What do you suggest here? Maybe a try_into() then?
 
-For those accesses to be valid, Devres::inner::data must be initialized
-last [1].
+What a mess. It looks like there aren't any 32-bit architectures that
+define ioremap_np. This means that sometimes this cast will be lossy,
+but in those cases the function body just returns NULL and doesn't read
+the size.
 
-Credit to Boqun for spotting this [2].
+I would probably cast to an underscore instead of explicitly mentioning
+the target type and make a comment about it.
 
-Link: https://lore.kernel.org/lkml/DBBPHO26CPBS.2OVI1OERCB2J5@kernel.org/ [1]
-Link: https://lore.kernel.org/lkml/aHSmxWeIy3L-AKIV@Mac.home/ [2]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/devres.rs | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index a8a2d24cac24..152a89b78943 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -137,14 +137,10 @@ pub fn new<'a, E>(
-         let callback = Self::devres_callback;
- 
-         try_pin_init!(&this in Self {
--            // INVARIANT: `inner` is properly initialized.
--            inner <- Opaque::pin_init(try_pin_init!(Inner {
--                data <- Revocable::new(data),
--                devm <- Completion::new(),
--                revoke <- Completion::new(),
--            })),
-+            dev: dev.into(),
-             callback,
--            dev: {
-+            // INVARIANT: `inner` is properly initialized.
-+            inner <- {
-                 // SAFETY: `this` is a valid pointer to uninitialized memory.
-                 let inner = unsafe { &raw mut (*this.as_ptr()).inner };
- 
-@@ -158,7 +154,11 @@ pub fn new<'a, E>(
-                     bindings::devm_add_action(dev.as_raw(), Some(callback), inner.cast())
-                 })?;
- 
--                dev.into()
-+                Opaque::pin_init(try_pin_init!(Inner {
-+                    devm <- Completion::new(),
-+                    revoke <- Completion::new(),
-+                    data <- Revocable::new(data),
-+                }))
-             },
-         })
-     }
-
-base-commit: 3964d07dd821efe9680e90c51c86661a98e60a0f
-prerequisite-patch-id: 12a88f7c46bec668e4f71ec0d94b1782d9446d0b
--- 
-2.50.0
-
+Alice
