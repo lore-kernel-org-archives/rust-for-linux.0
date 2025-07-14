@@ -1,144 +1,93 @@
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D210E13D521;
-	Mon, 14 Jul 2025 21:09:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D222777F1;
+	Mon, 14 Jul 2025 21:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752527362; cv=none; b=P6hmEzpQds+uWVuyiYQ/nqq2arsm1N8M0O8JDkRSOtNJBjUD87m8IUgc/2leyNWcSnw1xc/Ab/pSwAyWcF1x94PAW1BOFfSSonQ6ZX+B6xqEDTJAT6b/Hxukl3ocWdM6xDPcOQNE6tHSOE9a2gvglWKHa7jJ5rPuDi/foN4F61w=
+	t=1752529680; cv=none; b=MzEfCqUzszZAJgbFvlYVVPaf7uXoAJF8XtkXf55tdogR9UZQvkUnkfGgBNyAi9HxxmrX8ZWBu6PwlBM7OaVMFcts92RDLm0KKTa7N62Am47to6Vm/W7AKqF7Wtux0A9KNd/XOWET9L+p+2/dQLV+klqvyF2RiH5W3sKsxYhHrYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752527362; c=relaxed/simple;
-	bh=pp7EZJHNhKgZVRNgGdA+nKTDA2ZEIWR5JbdJfIvQgqk=;
+	s=arc-20240116; t=1752529680; c=relaxed/simple;
+	bh=WKM1aStfHEjc3YEA6JYF/VBtXRtStKPA4i9K5XphWi0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yrodm6r/2bES8u+ddEiewxATV1cbM3/NbU9jHQA/2nsgcGeLdYpaFEc7fVjL9EGAeJ03eaFlV9PMaNDcAqbtrvyaolkWjhp5HotUiDvpkBxfeK0lp2Rrg5jxN79Xa1IoYFWZB9Y0cSgQ1ESa1GQ933QkPRrX+qBpGDTc8ZdlsjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=giyJ68Je; arc=none smtp.client-ip=209.85.208.171
+	 To:Cc:Content-Type; b=DaKVYeOO3Gu49obtb2PQ6yFJlQj3oxc4kEuQpUvsb2jGdg18FueAk71/WoT8QFEcKB/NpY/cvCTpK3LH3+ucbgPGwNC74kFLFPt3skyRchVPTNw8Tn8UXDNJwYLEwxNU/3TvEskdO38Eg2OLk/Ojg00u0wIrTDUCdBhO/dcHm7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FmffT8M0; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="giyJ68Je"
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-32b5226e6beso41368691fa.2;
-        Mon, 14 Jul 2025 14:09:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FmffT8M0"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7493d4e0d01so188546b3a.1;
+        Mon, 14 Jul 2025 14:47:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752527359; x=1753132159; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752529678; x=1753134478; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=a2NGUJZIs6JXP/sAdJptIUUuAIdinFtA6zHN1UcDf48=;
-        b=giyJ68JeAIjFE3R1OsNHERrrF1kv4a/i4iIVcwZwJbH/vjZfEyDXWC8H8XG9lTBt51
-         akYCqGpkGqqnq5C85eUwf46/XVcVQQBmFzE6vXwr4ys+xRHuaWlVgNu8NVCBYq1tu1ZF
-         JEozwXi7YbpwvF5JX1rVjTeI25+E0jEKso/Nc3BW906bqAbagL9Dr6qcFLxrnzp5j/CM
-         jurUNWY6q2NGz/i5GePeNDgR/yDr8roWNcu6w6JMPtfod7k+b4Ua+nUDsNDyr7SGnHKJ
-         gB4tJSd3BTFTyNRvfWvtKSiqzkWPfVUr6zZRflzK9/ybMKz1NXfyb74x/7i92fO3bX9r
-         Vc0A==
+        bh=WKM1aStfHEjc3YEA6JYF/VBtXRtStKPA4i9K5XphWi0=;
+        b=FmffT8M0Lu1Gc092+Kc/gBgTODx1QTQO6DeouNsjY4pi6p8B8VmYhKvPdJHZ0VXyO2
+         uJnaUzglpsF5ZKfFLSH8yI1LSWJsLuawI6oalCuyfTkvYWcSHMTDpL88UwO7SQak+aK9
+         B3kWTvAKKnyVhvRBTBkAul//C7kNlPDZC5ngr7qIiYdc4fAH8txrCPmNxdAyOLU5kEdu
+         orNQacwiKbJHe2hLTGT6ZM8vixjWThzogxLgYk3kwRxOGh6xuWzxyITn3kOfXhuqzc0I
+         58LhCV1s5b36F1DmS+hdR1MmZKc2C5FO2ylHZBZwEuVszI6Wfr9x8D9X5r8gGm4nKF1i
+         6fOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752527359; x=1753132159;
+        d=1e100.net; s=20230601; t=1752529678; x=1753134478;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=a2NGUJZIs6JXP/sAdJptIUUuAIdinFtA6zHN1UcDf48=;
-        b=XrZ+xPbzd4OfnopCSOYN28IiGl3x14jJY6ypIHp1sI6ee7i1fGVm7mVgbQfpqyImQO
-         TiHRIuv2EZ98zpmscspz0tdeK46AQLdfRmdseclqYUdsm1tA/OvCvflc9vdWs5FuS7hY
-         jtPEKGzvka0W7boi7VEPROWAO9iNDhAoBgI+kgMga7q3t4nco0bcNLCjb4qe0ndeZ/ks
-         lnPMYAts/1E8peb2jKEAHv0wwaNMRwgUBe6H30bmUl5ScqJt5TnFB7oiT7m6I1yp2HwD
-         3Q7Li4lZ7+H140tXYeuz/rfRmOPZShMFuZSWWOmH1F3V7nEzI2VtxnzCjWrVUPIwuH+Y
-         zbtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPWti49PuUMZIwpwmXLvxIMtSEOpsWYKj1bRKXdxq2SLji3i9TnCJKLOSENtWqAhEF9C+nJQ33jhfZzg==@vger.kernel.org, AJvYcCV+lPWEr9aPYrSdNAc01p7voZ5X9VbqzNqm91wxXH3/rtueBJYy3qjtgNzzOx+JgEPVCc2W5K/NRC4xIJbFvkU=@vger.kernel.org, AJvYcCVuYgjYdbf3RjABhtNGmcLi0LzB8rVAjvOZmAzNibQOfG4pC91knFpEpnDQMSIHGVbdNPyNKP9r4kMBujvNWzX5@vger.kernel.org, AJvYcCXa0FKqi/kVtDA8z6o+fVmAaldCbkfePCHvNC0P/66NB1gunYOCzxN2iX5T2k+L0OukLzYIUX+U1V6OToNW@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgOcCTSpV+/0iQg5ib/kAZl5rw4VmqsCyuDIg3gsyYg7o0K219
-	KFzlaUlFhnpBsWqFzF6VxDSV3I3YwuAWXguM2zz3agz3QqrVsPvJJVWDKMO0APAnQbDlopxBPJy
-	9Ebl0zgWEmujDClkmePTs4Gyaj00FvnYc7Ws6BxVuAQQo
-X-Gm-Gg: ASbGnct+ST05Gw974zmgdGLIUK4WbSK7gp2728dHX9I2/wMFjCLg/k7EjumG2PBkxva
-	jXu3mbFpjk7pD9FoIvbdXkIyr4sTlJKYxdo+hOjrMm13p8H+1SCRbnHz8rFQ9pxZ8L5x7ZquiNR
-	cD1ZHdjwn+VLnC0kxRoXaaCCiGOYtAqNFN/Bp9TAtk11ifTx3W7s9JEOp13r3w/QhYC9hNNJ9YK
-	17uSqrF77fCl3gNJ9bpzzaVQ+eNQAjaecpvHyyn1g==
-X-Google-Smtp-Source: AGHT+IFIVDCB7L/eB3uWUEMPtrD+l6c9ix8jySxxyANfqPuxUfbMymVsdKjgYjWTiEHRsDI7xj3AbxpdXdL0khzdR6c=
-X-Received: by 2002:a2e:a594:0:b0:32b:7284:7b with SMTP id 38308e7fff4ca-3305329b33emr52619951fa.6.1752527358610;
- Mon, 14 Jul 2025 14:09:18 -0700 (PDT)
+        bh=WKM1aStfHEjc3YEA6JYF/VBtXRtStKPA4i9K5XphWi0=;
+        b=s/68ZchR3gS2YobKyIUEHfY5m4xQgV0VKweM8xw8f3ANUl+vAC73GcLT5PbQZhojgC
+         Wg/Pyipe6HFvKkCajnNVOeQzFp924ms69zWtErWOLo10bNAHahvHD3w1V1x6/VFbxHJ0
+         q24rJZAI2TGvw7rw7U4gVIZ1ZXK+7xjtOUWcltup3TtTkZsesdoGrjqJVfMz5eWDS23j
+         XIKMr9Ujnw9cADHcubwOSd2PvdsUdeVBIEG7p1TiyYXSil3JQ1vl9luh6oGEro4B4+eQ
+         fRyzjlj1YNVyRRdsEW9mHBoijO81ycZ1vfjZmkKCpAIxCwJNodS1G5xXE/JAE0jxtpyt
+         qqTA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxksu2J1MVPe+RXf6HJOOFnSSNADffrZAoXCsAk776QIn83KJtKnqfqNJ3vFOI1NGYXFrZ2WDCoq31CZo=@vger.kernel.org, AJvYcCWtCZNZ7OzCPNT76Pi9HC8Mkpb2+jnYvG3qg67mmSHezCTA8eZevCTozNBRWJG/1hDKc5g3XvzWZGXd5u9hRXI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqgcUDK5WmIRD8/MKcWB0lyj+HlglbY+rOfumSTeAKqpXcl0ib
+	hWJjO18g0XqxX+fEEr9/yxSBcaNSRnXmaH2owiy8cWLrCqxoteRe//52efGXav7DeQVhn3APtBL
+	uXLnV+e4Kq++xeLXRbiYmkuy10k3/Lhc=
+X-Gm-Gg: ASbGncuGyqiQHjDwr12eOIVgt48LFUawxoT56Li0QB5K1ZDrxcUGxgtoxsk3sb7YZtu
+	gQgLowlaM+5HRvHiN2gGQhsR0nGCgBFk89Y41MLJTWqX+Lz9eGcW2ruSJYEqixWzJG5J94inFWy
+	5ebjOKsw7ZTARoiGaELf14T30FKjiHTATLKuLyhxfIbPSvFV9lICh1fVl1BT0BZLWPLcLT1l2rm
+	cHFnnY8
+X-Google-Smtp-Source: AGHT+IF6qFK9jJfSuS6UfYow20fPhd5Ta6sQiyzw3W/fibck8ROrxCHMK/fBoG4m6++ObGEZYagGL1WA8m5GRBSPhzY=
+X-Received: by 2002:a17:90a:e7d0:b0:311:c939:c842 with SMTP id
+ 98e67ed59e1d1-31c4cd1cd40mr7642269a91.7.1752529678063; Mon, 14 Jul 2025
+ 14:47:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250709-core-cstr-fanout-1-v1-0-64308e7203fc@gmail.com> <20250709-core-cstr-fanout-1-v1-8-64308e7203fc@gmail.com>
-In-Reply-To: <20250709-core-cstr-fanout-1-v1-8-64308e7203fc@gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 14 Jul 2025 17:08:42 -0400
-X-Gm-Features: Ac12FXyyrImsukAEONZO1t5G1kFxNsU4eIQFIToYW9Gkgy7rbvMrpAOfWyMPO9c
-Message-ID: <CAJ-ks9=ux6BuPYmRVSjhfn7kuagxPWicBZbumDFKAqmHKd8+PQ@mail.gmail.com>
-Subject: Re: [PATCH 8/9] rust: seq_file: use `kernel::{fmt,prelude::fmt!}`
-To: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+References: <20250714-topics-tyr-regulator2-v8-0-c7ab3955d524@collabora.com> <20250714-topics-tyr-regulator2-v8-2-c7ab3955d524@collabora.com>
+In-Reply-To: <20250714-topics-tyr-regulator2-v8-2-c7ab3955d524@collabora.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 14 Jul 2025 23:47:45 +0200
+X-Gm-Features: Ac12FXxQ9k2LjwZThXlp4SFHTlVRRWXFwNx8PI5E-A-5a-u9bp_w_3EcblNcnnA
+Message-ID: <CANiq72nhMe8XqtgT5myf+jPyyAdaGOJFqMxAen+miYhQFmDRCQ@mail.gmail.com>
+Subject: Re: [PATCH v8 2/2] MAINTAINERS: add regulator.rs to the regulator API entry
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>
-Cc: nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, Christian Brauner <brauner@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 9, 2025 at 4:00=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
-wrote:
+On Mon, Jul 14, 2025 at 8:52=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
 >
-> Reduce coupling to implementation details of the formatting machinery by
-> avoiding direct use for `core`'s formatting traits and macros.
+> Add this file to the regulator API entry as requested by Mark Brown.
 >
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Oops, forgot to include Christian Brauner. Christian, could you please
-take a look?
+Great, thanks Mark!
 
-MAINTAINERS entry being added in
-https://lore.kernel.org/all/20250714124637.1905722-1-aliceryhl@google.com/.
-(Thanks Alice!)
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-> ---
->  rust/kernel/seq_file.rs | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/rust/kernel/seq_file.rs b/rust/kernel/seq_file.rs
-> index 8f199b1a3bb1..59fbfc2473f8 100644
-> --- a/rust/kernel/seq_file.rs
-> +++ b/rust/kernel/seq_file.rs
-> @@ -4,7 +4,7 @@
->  //!
->  //! C header: [`include/linux/seq_file.h`](srctree/include/linux/seq_fil=
-e.h)
->
-> -use crate::{bindings, c_str, types::NotThreadSafe, types::Opaque};
-> +use crate::{bindings, c_str, fmt, types::NotThreadSafe, types::Opaque};
->
->  /// A utility for generating the contents of a seq file.
->  #[repr(transparent)]
-> @@ -31,7 +31,7 @@ pub unsafe fn from_raw<'a>(ptr: *mut bindings::seq_file=
-) -> &'a SeqFile {
->
->      /// Used by the [`seq_print`] macro.
->      #[inline]
-> -    pub fn call_printf(&self, args: core::fmt::Arguments<'_>) {
-> +    pub fn call_printf(&self, args: fmt::Arguments<'_>) {
->          // SAFETY: Passing a void pointer to `Arguments` is valid for `%=
-pA`.
->          unsafe {
->              bindings::seq_printf(
-> @@ -47,7 +47,7 @@ pub fn call_printf(&self, args: core::fmt::Arguments<'_=
->) {
->  #[macro_export]
->  macro_rules! seq_print {
->      ($m:expr, $($arg:tt)+) =3D> (
-> -        $m.call_printf(format_args!($($arg)+))
-> +        $m.call_printf($crate::prelude::fmt!($($arg)+))
->      );
->  }
->  pub use seq_print;
->
-> --
-> 2.50.0
->
+Cheers,
+Miguel
