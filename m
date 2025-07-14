@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFCA1E5018;
-	Mon, 14 Jul 2025 10:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284ED4A1A;
+	Mon, 14 Jul 2025 10:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752487854; cv=none; b=ZFaeCpi86Pt2O3JJYlh58WwtkIqyzDSUNl6eiw5DJ/QTL3McKyrwuBi5VtV4nOvzAJvJG2oyTIS4dRqp29zSkO2Jqw+GsRW8FX6vcDi7odQEXWA43F+sNEvyQFBC1d0uY5dhu3z8anqSWagTWbCEual7si2I8TXh/ol2wlW2JsA=
+	t=1752488970; cv=none; b=dD2KNFPKwA2rG5jRoRJIvObX+Ipkr10vequE4l3lLB8PfVwEinOHBZ+RhjZwxuWPjD7YBzlzviegHffTf9j2YNPkSlMLIj5W0baYQC+A4AvrmAXlZpUTnZz5T+hchYZ/yc8LHvvQrGQMuDtsUKY/Wirt1ZMApdTxwL88YXgK9FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752487854; c=relaxed/simple;
-	bh=2FjgHRwrJ1gHWTE/gLdl+Fgz/qFZmAvlrqMcxusjD2I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Y5T/VF9PzYLSPgNfjnkayMSOWQv62QaQ156v1haoODE+Cst60wxGruvNprmzMWyuUjOjPlBw5YdIBXNQMhZKsYlPdFqe+T/QgIY7TI8UdAqZFIJc6MxueVmhSTwRWvb3WaLiMnJw6K2uFIB07UbjkzAsDlmw8RZUc69yxNATaOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mVboV4gP; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752488970; c=relaxed/simple;
+	bh=lj27nlcaTDFE43k/2WvSXLWWrtHCJ8JnG+RfrSLU4Ak=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=miy5U8wEVQ78qTtfXhySmd8MCde7zLyc5Bz7q4DiaYKbK7dzinpruKUHoFOSEwQiAmr1S9L42FzHup2Fa8dNTLDIleN3LVKhWD+cizq3fcctd5FMQqGGC5zSau2YJuFQaOqh3KvOcZMmmqpmYK1yQ2PCbuCGh3j5mKGiNat6Xjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apPJWHL5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mVboV4gP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B21C4CEED;
-	Mon, 14 Jul 2025 10:10:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apPJWHL5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FE6C4CEED;
+	Mon, 14 Jul 2025 10:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752487853;
-	bh=2FjgHRwrJ1gHWTE/gLdl+Fgz/qFZmAvlrqMcxusjD2I=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=mVboV4gPob7vdLun6cFtTTjGkfDajuNl+B6Xf+FtDdgm+fsiFi79OdSCpvF8cVkzA
-	 m7AIRQVDYwmbRVRXxytFqBXhlLDCyCkDvGdyd36GMtHEIrH7JhGS4HmVSbCC7Y1rAF
-	 D9Je7IiK1/Rr9N1CuxUApd9966P7T8FaEjyYYG64bjX7URlP9vLeXa1x727eqgh3x/
-	 PGA3vY/E81eHtsitRG2g9vAVCJ3WOcZN1f0ajwlqL5iYPvZcmYly8Js6QWQsXQXGDr
-	 yPUGv4JrjspmY+zbWx+DArmxfgQFft8lGHlFsU7m0qvBciSCyRzTITsIQa6oy25RwZ
-	 uhCGXMTJUKB6g==
+	s=k20201202; t=1752488969;
+	bh=lj27nlcaTDFE43k/2WvSXLWWrtHCJ8JnG+RfrSLU4Ak=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=apPJWHL5Wbqab+89FFaVegBHLgNtXnNPSwLqvEHWWZ1M9hQ28eKCJKkoGZz4Y8gSc
+	 pZdrMzCcsFuoOuO0lT3Vte8gcvoUzKg4GxmJvkn0h1thUdbo6fQSWxrsNWEgEPwaqj
+	 6k9afV10JzpUNBWJkrnFOeXl2iR9KMU9qiDfhoQTNxxibqcNUDt4GBN/1bauVdNmFw
+	 iWsQUKu30A173ENNrq5dcLwIJUBqNmDXQ2CASN2/DPgn3PpeW4cQvU/CQpIDawIluJ
+	 Fn481kK0h2DB4Gj4mMpvfqiuEU6+BpOYXO8yMyN37CtRBcw+V1gMSrKw69Je7THogD
+	 ef4O3uG6RL9UA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,100 +34,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 12:10:46 +0200
-Message-Id: <DBBP3E8PZ81U.2O0QHK1GQXKX2@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+Date: Mon, 14 Jul 2025 12:29:24 +0200
+Message-Id: <DBBPHO26CPBS.2OVI1OERCB2J5@kernel.org>
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+Cc: "Benno Lossin" <lossin@kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
+ Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Will Deacon" <will@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>,
- "Mark Rutland" <mark.rutland@arm.com>, "Wedson Almeida Filho"
- <wedsonaf@gmail.com>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude
- Paul" <lyude@redhat.com>, "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v7 3/9] rust: sync: atomic: Add ordering annotation
- types
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, <lkmm@lists.linux.dev>,
- <linux-arch@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250714053656.66712-1-boqun.feng@gmail.com>
- <20250714053656.66712-4-boqun.feng@gmail.com>
-In-Reply-To: <20250714053656.66712-4-boqun.feng@gmail.com>
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?=
+ <kwilczynski@kernel.org>, <linux-kernel@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com> <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com> <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org> <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com> <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org> <DBAVXQTMR38Z.2782EGR84L7OP@kernel.org> <DBAWQG1PX5TO.6I2ARFGLX88N@kernel.org> <DBAX59YKO0FV.ANLOWRHDDS92@kernel.org> <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org> <aHSmxWeIy3L-AKIV@Mac.home> <DBBO3VS9NXJR.3B2DZLDIJGLPS@kernel.org>
+In-Reply-To: <DBBO3VS9NXJR.3B2DZLDIJGLPS@kernel.org>
 
-On Mon Jul 14, 2025 at 7:36 AM CEST, Boqun Feng wrote:
-> Preparation for atomic primitives. Instead of a suffix like _acquire, a
-> method parameter along with the corresponding generic parameter will be
-> used to specify the ordering of an atomic operations. For example,
-> atomic load() can be defined as:
+On Mon Jul 14, 2025 at 11:24 AM CEST, Danilo Krummrich wrote:
+> On Mon Jul 14, 2025 at 8:42 AM CEST, Boqun Feng wrote:
+>> I think you need to reorder the initialization of `inner` to be after
+>> `dev` for this.
 >
-> 	impl<T: ...> Atomic<T> {
-> 	    pub fn load<O: AcquireOrRelaxed>(&self, _o: O) -> T { ... }
-> 	}
->
-> and acquire users would do:
->
-> 	let r =3D x.load(Acquire);
->
-> relaxed users:
->
-> 	let r =3D x.load(Relaxed);
->
-> doing the following:
->
-> 	let r =3D x.load(Release);
->
-> will cause a compiler error.
->
-> Compared to suffixes, it's easier to tell what ordering variants an
-> operation has, and it also make it easier to unify the implementation of
-> all ordering variants in one method via generic. The `TYPE` associate
-> const is for generic function to pick up the particular implementation
-> specified by an ordering annotation.
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
-> Benno, please take a good and if you want to provide your Reviewed-by
-> for this one. I didn't apply your Reviewed-by because I used
-> `ordering::Any` instead of `AnyOrdering`, I think you're Ok with it [1],
-> but I could be wrong. Thanks!
->
-> [1]: https://lore.kernel.org/rust-for-linux/DB8M91D7KIT4.14W69YK7108ND@ke=
-rnel.org/
+> Indeed, good catch!
 
-> +/// The trait bound for annotating operations that support any ordering.
-> +pub trait Any: internal::Sealed {
+Just to add, it's more than the order of inner and dev. For such use-cases =
+we
+have to ensure that Devres as a whole is properly initialized once
+Devres::inner::data is initialized.
 
-How about we just name this `Ordering`? Because that's what it is :)
-
-That sadly means you can't do
-
-    fn foo<Ordering: Ordering>() {}
-           --------  ^^^^^^^^ not a trait
-           |
-           found this type parameter
-
-But you can still do
-
-    fn foo<O: Ordering>(_: O) {}
-
-If we don't have the ordering module public and instead re-export from
-atomic, you could also write:
-
-    fn foo<Ordering: atomic::Ordering>(_: Ordering) {}
-
-If you want it to be extra clear. What do you think?
-
----
-Cheers,
-Benno
-
-> +    /// Describes the exact memory ordering.
-> +    const TYPE: OrderingType;
-> +}
+Going to send a patch for that.
