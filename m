@@ -1,93 +1,127 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D222777F1;
-	Mon, 14 Jul 2025 21:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCCA279785;
+	Mon, 14 Jul 2025 22:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752529680; cv=none; b=MzEfCqUzszZAJgbFvlYVVPaf7uXoAJF8XtkXf55tdogR9UZQvkUnkfGgBNyAi9HxxmrX8ZWBu6PwlBM7OaVMFcts92RDLm0KKTa7N62Am47to6Vm/W7AKqF7Wtux0A9KNd/XOWET9L+p+2/dQLV+klqvyF2RiH5W3sKsxYhHrYY=
+	t=1752531383; cv=none; b=fQ4JAbIYA6+gv7XwvI3PDRQ29vqdEF1ax7tQi6gOgkoH3GMfgqTYV/4IvfTv1RxHGW3UGWWh7hIhKXtQi2GY8KB2nq2o0sCQoajtLVnN3MveBWiSO+0vPQRYSJDCYPRAWMsq3oIhKUra46k+eo/UzKDxweKdO122n5pTReQrCNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752529680; c=relaxed/simple;
-	bh=WKM1aStfHEjc3YEA6JYF/VBtXRtStKPA4i9K5XphWi0=;
+	s=arc-20240116; t=1752531383; c=relaxed/simple;
+	bh=BX4aGpk7bRSOXa+qX2TZabthJLnJIj5XYr/A5yliKDc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DaKVYeOO3Gu49obtb2PQ6yFJlQj3oxc4kEuQpUvsb2jGdg18FueAk71/WoT8QFEcKB/NpY/cvCTpK3LH3+ucbgPGwNC74kFLFPt3skyRchVPTNw8Tn8UXDNJwYLEwxNU/3TvEskdO38Eg2OLk/Ojg00u0wIrTDUCdBhO/dcHm7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FmffT8M0; arc=none smtp.client-ip=209.85.210.182
+	 To:Cc:Content-Type; b=jQVOiXPHChNnRTuunu1Z4kXbR8fTTN6bUTX+vbj14birrTPxbm3QU/n1H/aHXkoA/H7W1d1dyw+iYUpt18qv9o+QuAttFiMlNAz3ndGUluLhk16OOwuqaMca2qYcYFvTGtEQk3ilspZg0LGuS0ltXBikBi1nO2d8qn/a+SJYaSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R1h3Sh9L; arc=none smtp.client-ip=209.85.221.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FmffT8M0"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7493d4e0d01so188546b3a.1;
-        Mon, 14 Jul 2025 14:47:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R1h3Sh9L"
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5331fdc1cf4so193420e0c.0;
+        Mon, 14 Jul 2025 15:16:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752529678; x=1753134478; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WKM1aStfHEjc3YEA6JYF/VBtXRtStKPA4i9K5XphWi0=;
-        b=FmffT8M0Lu1Gc092+Kc/gBgTODx1QTQO6DeouNsjY4pi6p8B8VmYhKvPdJHZ0VXyO2
-         uJnaUzglpsF5ZKfFLSH8yI1LSWJsLuawI6oalCuyfTkvYWcSHMTDpL88UwO7SQak+aK9
-         B3kWTvAKKnyVhvRBTBkAul//C7kNlPDZC5ngr7qIiYdc4fAH8txrCPmNxdAyOLU5kEdu
-         orNQacwiKbJHe2hLTGT6ZM8vixjWThzogxLgYk3kwRxOGh6xuWzxyITn3kOfXhuqzc0I
-         58LhCV1s5b36F1DmS+hdR1MmZKc2C5FO2ylHZBZwEuVszI6Wfr9x8D9X5r8gGm4nKF1i
-         6fOA==
+        d=gmail.com; s=20230601; t=1752531380; x=1753136180; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lD/9nxeI2AaJ6HCAD6gBRlNwjsIBFd+9JJLqM10a/7w=;
+        b=R1h3Sh9Llp29LKDZ9fxboU/74J2mYYmZSkV4pUq9lCPWtOyz3OYHxrPvtz+5WlZQdr
+         Thbb0IERFRP1VNcLoIvs8v7ue+VTjaFD4LOqiiaGJiAk3gxS2Dx/j3wZE00ga6ytsdFb
+         u3dLCqh+3+OOALajm4pXnB/rIWfG0nB1tjPTzjtILtyW4BbWdGVwWxBi83EQMwePV9Nd
+         qJRcQSCpoe8f/azD9TFakgragoJoJtUIh+lPjIt6gMofwG3bHB6MBIp0xAwgy2VJA29O
+         XBxkw8qtkVcJYxy+GBEKfQZ2MujIpvQFiUukhnj27Mms8lQCzz6tKaMNYI3Odiyy2Gd1
+         BraA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752529678; x=1753134478;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WKM1aStfHEjc3YEA6JYF/VBtXRtStKPA4i9K5XphWi0=;
-        b=s/68ZchR3gS2YobKyIUEHfY5m4xQgV0VKweM8xw8f3ANUl+vAC73GcLT5PbQZhojgC
-         Wg/Pyipe6HFvKkCajnNVOeQzFp924ms69zWtErWOLo10bNAHahvHD3w1V1x6/VFbxHJ0
-         q24rJZAI2TGvw7rw7U4gVIZ1ZXK+7xjtOUWcltup3TtTkZsesdoGrjqJVfMz5eWDS23j
-         XIKMr9Ujnw9cADHcubwOSd2PvdsUdeVBIEG7p1TiyYXSil3JQ1vl9luh6oGEro4B4+eQ
-         fRyzjlj1YNVyRRdsEW9mHBoijO81ycZ1vfjZmkKCpAIxCwJNodS1G5xXE/JAE0jxtpyt
-         qqTA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxksu2J1MVPe+RXf6HJOOFnSSNADffrZAoXCsAk776QIn83KJtKnqfqNJ3vFOI1NGYXFrZ2WDCoq31CZo=@vger.kernel.org, AJvYcCWtCZNZ7OzCPNT76Pi9HC8Mkpb2+jnYvG3qg67mmSHezCTA8eZevCTozNBRWJG/1hDKc5g3XvzWZGXd5u9hRXI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqgcUDK5WmIRD8/MKcWB0lyj+HlglbY+rOfumSTeAKqpXcl0ib
-	hWJjO18g0XqxX+fEEr9/yxSBcaNSRnXmaH2owiy8cWLrCqxoteRe//52efGXav7DeQVhn3APtBL
-	uXLnV+e4Kq++xeLXRbiYmkuy10k3/Lhc=
-X-Gm-Gg: ASbGncuGyqiQHjDwr12eOIVgt48LFUawxoT56Li0QB5K1ZDrxcUGxgtoxsk3sb7YZtu
-	gQgLowlaM+5HRvHiN2gGQhsR0nGCgBFk89Y41MLJTWqX+Lz9eGcW2ruSJYEqixWzJG5J94inFWy
-	5ebjOKsw7ZTARoiGaELf14T30FKjiHTATLKuLyhxfIbPSvFV9lICh1fVl1BT0BZLWPLcLT1l2rm
-	cHFnnY8
-X-Google-Smtp-Source: AGHT+IF6qFK9jJfSuS6UfYow20fPhd5Ta6sQiyzw3W/fibck8ROrxCHMK/fBoG4m6++ObGEZYagGL1WA8m5GRBSPhzY=
-X-Received: by 2002:a17:90a:e7d0:b0:311:c939:c842 with SMTP id
- 98e67ed59e1d1-31c4cd1cd40mr7642269a91.7.1752529678063; Mon, 14 Jul 2025
- 14:47:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752531380; x=1753136180;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lD/9nxeI2AaJ6HCAD6gBRlNwjsIBFd+9JJLqM10a/7w=;
+        b=Tb3OkdSrfi+quLv+vYMbhwcIyy8m8OomZmGYG6bKEI5xXtzZGERxNnToZI6kYUdy1b
+         NZCtWHDSiVcpj5G2uUHH5eEtXO/upYEklQQms2xjanXNNlg3w6PMO3PClkyaoIisguKH
+         yvXMIpTYereDoOFFKilXdQqzeL0KF/Ovqb06BhKTE8l5bugonwVNiOy5JRkDwVgPo41Z
+         Nq3ZvdXKA6H7C5RlqM3l8Zy6R1oRfIDgF+5W4w9A0qKsKDWabQZEDsLDT7/wBKlw2zE5
+         Ghu6f/jdHvIObdXyENPM/fu06pvLRa63njJ32TV4ZTrHD25R7LM0EyplgPS0wMlhWEoe
+         4y6A==
+X-Forwarded-Encrypted: i=1; AJvYcCWZ3vKgDhGsK96yRR8XsptjB3kitKdS7Xv+xGrgzHAX/spZtwXUSpzS839xf6PNOI7aGvkNXQAdjL/wOLE=@vger.kernel.org, AJvYcCXQDRyfwu6NH5FSY1+yvveOUcxOAxHDxNO4lKRPgj5ArvTsBijFbC73GwTV1y87qZex18NV4TA//1ZPdTlc7ik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFbkpClQqu5GciehqOMp9ggrpp8ymWsUE5nD0adtgbzOnAdRAA
+	zC9FrC07PqPa3QGhsBkb6+oNRthwublI03343MkJpNclahtn6P94finIz7X530+ucA3aRrhw4gO
+	wxbrE0/Kf+i8ZfopDCqug7AMHvxhvnBI=
+X-Gm-Gg: ASbGnctMGFKH2pdHxG38Tg13FH5mKUKmqeMl7yKqi3/nA3n9jDrT9JZGw//BO1P5WQp
+	ANxl6fTd/sLt/I7uuYUziT50MYJpTlCELE9SPyaG2spKj0ICoUwLdkbU+G9iRjOxWsyFr4P7Enw
+	ZsRlrBK3K3goQezF4Bl6GxzHqyUeYl4JQ7G9gmOAg9mcNZLLu7TkVLfA24Y/pLpoRI1YxQdsYii
+	JavLL6vNwV2/PK38bg=
+X-Google-Smtp-Source: AGHT+IEtegaV1kM6/2eLKcpj3YnxCpPwYOriAmnOSwvuuGJD0qRyytN8YsAqk2zDujqqqWicoDY8XH9Zq54w9g3oz7Q=
+X-Received: by 2002:a05:6102:d93:b0:4df:4ef8:8624 with SMTP id
+ ada2fe7eead31-4f684178557mr2417289137.7.1752531380313; Mon, 14 Jul 2025
+ 15:16:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250714-topics-tyr-regulator2-v8-0-c7ab3955d524@collabora.com> <20250714-topics-tyr-regulator2-v8-2-c7ab3955d524@collabora.com>
-In-Reply-To: <20250714-topics-tyr-regulator2-v8-2-c7ab3955d524@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 14 Jul 2025 23:47:45 +0200
-X-Gm-Features: Ac12FXxQ9k2LjwZThXlp4SFHTlVRRWXFwNx8PI5E-A-5a-u9bp_w_3EcblNcnnA
-Message-ID: <CANiq72nhMe8XqtgT5myf+jPyyAdaGOJFqMxAen+miYhQFmDRCQ@mail.gmail.com>
-Subject: Re: [PATCH v8 2/2] MAINTAINERS: add regulator.rs to the regulator API entry
-To: Daniel Almeida <daniel.almeida@collabora.com>
+References: <20250624042802.105623-1-christiansantoslima21@gmail.com> <DB5KEWX9EJ2Q.3CX5EGS66OVHH@nvidia.com>
+In-Reply-To: <DB5KEWX9EJ2Q.3CX5EGS66OVHH@nvidia.com>
+From: Christian <christiansantoslima21@gmail.com>
+Date: Mon, 14 Jul 2025 19:16:08 -0300
+X-Gm-Features: Ac12FXx35yH4yjasif5jRv2fvp6Y53qbDwQRjQeWgKsIPTvdXuP3ZJDxbt3EzHU
+Message-ID: <CABm2a9cfK+HuidwQwcD0Cs_n+dvd9Y71tFn=grz1ahGpbPpurA@mail.gmail.com>
+Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
+To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 14, 2025 at 8:52=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+Hi, Alexandre. No problem, take your time.
+
+> Let's elaborate on when it is "possible", i.e. the reference is properly
+> aligned, and the size of the slice is equal to that of `T`. Let's also
+> clarify that `None` is returned in other cases.
+
+I see, thanks for a better explanation, I'll include it in the next patch.
+
+> > +    fn from_mut_bytes(bytes: &mut [u8]) -> Option<&mut Self>
 >
-> Add this file to the regulator API entry as requested by Mark Brown.
+> `from_bytes_mut` sounds like a more idiomatic name for this method.
+
+It is done this way to match the zero copy API. [1]
+
+> > +    where
+> > +        Self: AsBytes;
+> > +}
 >
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Note that `samples/rust/rust_dma.rs` will fail to compile due to this
+> change - you must make it derive `FromBytesSized` instead. There may be
+> other implementors of `FromBytes` so please make sure to track and
+> update them to avoid breaking the build.
 
-Great, thanks Mark!
+In this case, if we don't include `AsBytes` the user can add padding
+bytes in the slice. [2]
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> nova-next also adds new implementations of `FromBytes`, and since they
+> are not in mainline yet this will make it harder to adapt them... I see
+> two possible solutions if we want this for the next cycle:
+>
+> - Take this patch into nova-next and update `FromBytes` implementations
+>   in lockstep,
+> - Add temporary default implementations for `from_bytes` and
+>   `from_mut_bytes` that simply return `None` so current implementors
+>   keep building.
 
-Cheers,
-Miguel
+I think the first option is better considering the current state.
+
+> I don't think this implementation takes care of arrays?
+
+Arrays are sized types implemented in `FromBytesSized`, I believe in
+this case arrays are implemented too.
+
+[1] https://lore.kernel.org/rust-for-linux/CAGSQo03teSsTa84Mx=4SFRAfa2=irBwgXXoh5eB_Q0RoixrF6Q@mail.gmail.com/
+[2] https://lore.kernel.org/rust-for-linux/D8FXFGYZTEXT.24UM4V3HZ5MWH@proton.me/
+
+Thanks,
+Christian
