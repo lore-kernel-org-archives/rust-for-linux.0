@@ -1,113 +1,119 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F7D20AF67;
-	Mon, 14 Jul 2025 12:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A199E139579
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 12:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752496538; cv=none; b=WSP+SrOLrUtkA52/yRePv9IzpAhPMzUOlZ5ni+gfDDJrNhTC6a2vYuHpFZO8Ah5kpf/g0fS+fl5q1z5Z9Go/Vltda7sCQe6Jw7+MAcsomlImZWNUO/fyJK2iDY7dwW78mReLpBF1WkHOfbq1Ry2pjnOGfIAigwOPSSoKjyg13s4=
+	t=1752497217; cv=none; b=aAIL3MJHxYfesSEDD7it10P3JddusdAV22rMaabm0arp6z+nz8uPp4kNLLVT+t9HWkPGtJfCoyVP4iKsjJU7KfqXFAM/pgltVQ9hyJhOuCYT2G5fuZz8BNGnYs/6fRO6KNcyG16D2n79AzcUOF6gg20C/Wh1AT+fI2MzNnqoSZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752496538; c=relaxed/simple;
-	bh=rKnLYV6EmHmE3mzoMHqDHoN8VPsmF1S4gphrWDmSfbw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CGnI4HktYvVhhlJz46hhInURiQFJqVHhCZ2zSiBgiDGvEi+3y2J7xGP9hpHj5SOsmmWQfm+ZscV2PwtucXz9pjl+VEg31AQUBZ+8xYF/sM/i9rV9TWKhSQve2XoqulA3z1pIyCxo1OlFubt4zI5yD9HvFL1uJzDfN5lyNxgFFeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HTAt0zcR; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752497217; c=relaxed/simple;
+	bh=NwaR9/Je7AdkfWw/1b2DE6uNLUshXOFDwHugnY+q+RQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TCj6ddwT88nReh227lKufjbwydV4a/lHiJ+0D9+5I/YtVNmqDFod247megjMlNtNz5RX+Uu+z4u+z3ijlyfkxU+OhxoB0GnV2UiWUWQCS9uFVd2ATj/Cng+CZ1hertVTnqa/PNe2XOFbJQe9JFnbUUxs9MaZATJasas3K5dCJLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MOYnfRSt; arc=none smtp.client-ip=209.85.221.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HTAt0zcR"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so7703239a12.2;
-        Mon, 14 Jul 2025 05:35:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MOYnfRSt"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b39cc43f15so2360146f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 05:46:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752496534; x=1753101334; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/JJkBY6StLlPiYYNcDOCRaSTmquHRBX1aQ9fP/9Yejg=;
-        b=HTAt0zcRenTTuIAy7QHrcU+NnxaEGPRAQN9tSIyMGU2SdFMzuERaYQkPMBRCKOybbw
-         0k8BpL9X/XScJYwSDCfdrF0KKHbp/B2nEzQaxsXKA8/NjJi07ke0ijq29Vl2QIRIC6Yg
-         QtV5qHL8h2Z/PvebG+ICoQfRVycUlL4205resx/Nx9/PJRBdVjQ9tProGmRMUnovfDnu
-         igDleclR2O207edI+QvD6KfccH+f3bZOX9DCtIW8amYahRj0Jkhy55yLUIkEPFxNskJv
-         MKt44ZoyH/p+yH9MZ8tAUa32+X1//Fmkd3shyBAJ7UnIQdtxehxMNpWN9MT7eVBbiLeS
-         eBWg==
+        d=google.com; s=20230601; t=1752497214; x=1753102014; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ccg/VW3jk6vHTqe8idOqc1Z4CEUc8mxrSFOjqsDu7cI=;
+        b=MOYnfRStU3Web5Ac2YvwK02vL2tkFYUmdqRhc5L2OBErHi4lCYKgVS7pyF5WgbnPas
+         GP4JV1J1yQ0MVw2sPnHVJNsr8pd263wgYKAmNxKnYFjfo0aXxrYW7wt2vOFIBXffyJvH
+         jd4b0e3kqK0R2CXMPKFzLTRrI8oWvNGGwOXi2C7TWS4vGsHU+wfjOSAeuNUy/Yhwgckk
+         pkQGoysdmnFyhswWtv24QGmRauCJu0l2AJ/fofaweRoRQAHzrgu+qismfAhJip5CBRuS
+         7zBM8NvBOlj+C4JCPNK+kG7d6bAgTImJMAAz/+Po4QJma8gC6KATVn15XvxLyphlSa44
+         yPFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752496534; x=1753101334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/JJkBY6StLlPiYYNcDOCRaSTmquHRBX1aQ9fP/9Yejg=;
-        b=kYJ1xbP+l5WXe9PtCXHI5Zz28Gg9Um6sBSTxWHHdhRSJ4ETTJAbKveK808FeTv/nVL
-         OVno4qOQhqxodsWPRdWXzAwftXlbA76ENN+6Gd615nIxQF1kIDUNSUhap9dF9+OYr2Y1
-         6MOltHL2uJ+G4QP8CECKG8A0MBAVo0ogsm+7WZV0wUKl8DXxkm4MSvUlbeWyBTCZBz/o
-         sXYG608Q0TiiNvY9c0YVjtXPV1vbFgPw5IlkZ4ja7FPODI483JNJgQeFnap1LCXochuB
-         PG+sl6Umwn5PJ5j8pu1xefw6hGb21wFAESVQsPm2babWBIe5CoHuVbv5koU1MR35a0au
-         FmcA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+3RgLUvf2NiU381lhtaSRkoWLEdJpTi6FmN8UGTjCURjAn1kRXksGHdXGZTOPvQMrhRWnTVEji3NeO7mb@vger.kernel.org, AJvYcCUhGBCuCfY+pNyWG4OtLUYeyOkH2+TEqGj8u07G/PaiJFSobQSiNQMWwPRqG0kv2pWonmTftT5DAOE=@vger.kernel.org, AJvYcCVNGUiRgJa3d4MjJmaVQ+3HaX87Bp9agYs9YFc2L6WcmqwYdSOLBxJjMtwamlkoud5eO4K3Ff3B+5ez5V3Jpno=@vger.kernel.org, AJvYcCXLlJTpvLULoU66O+bpqEMLejFaWROSk0YSdyYGrL0gALk/5JPT5kq5dSv+z85/24HS4J208GZY1OCi@vger.kernel.org, AJvYcCXWrTKpfQvGrIzreTDNoRWT8uqf1C9majubdMA6OSC+Jf7xcZlbg6GxVW58nWPR7a57QAT+tHtp@vger.kernel.org, AJvYcCXiSl7mbii0oZ3nc6nA/32wlOCYSPyGvILEe7z62cuowD4lTHCWwMJA0f+0FsFUBRdaXF8zBI55crjEIu72uZOc@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRY67yT44xp7eMkHjBIKftmuf6PvahA25X0nhhrlLOVRwLkJAc
-	3WV3chcsbeMt8Fdf+jE1p5ipzRgnf/6E810wE02yVxd4PUGNnF0fY+dxpcD24QhYrIrgjaSzZRq
-	SDjZqXnxEjMJdIC+UsAG/V7IILal3WHI=
-X-Gm-Gg: ASbGncsQvZBOTswBI3UQQaNwNy/oQT9c5D1K9S+CfGQlIjQl6+QKPqFvbaO7gSssTgr
-	A0bXv80UYm7/ueigk5wnlIxkTD2Q1WReGvCRFOCRjuUnbmx3NjVUzsMhZYNADaNffhPgZC/W2fh
-	XGbyuZA7vpTS9w3QyD9Y3BNZR3H59n4XsM966fIcnvVYwxZQ4FbhhJSGA/rH1Vg2zM4fJN2vM6r
-	rE1wiBgvyoW7bXzmU60uFOCsddBf1ZgScURuxKR1sjCYiMXbaAu
-X-Google-Smtp-Source: AGHT+IEHpxC5111y9Cj6JQaRaXgMXbAFzbh9lkbxM7Yb2ILuf+3IGoAWfMQm4cez9+Bj4NXuw+pe+X+/AUAJqf9Zudk=
-X-Received: by 2002:a17:906:d7d5:b0:ae3:6744:3675 with SMTP id
- a640c23a62f3a-ae6fc0c3796mr1235555966b.48.1752496533691; Mon, 14 Jul 2025
- 05:35:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752497214; x=1753102014;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ccg/VW3jk6vHTqe8idOqc1Z4CEUc8mxrSFOjqsDu7cI=;
+        b=ZdSP5nqvIuZ6CVHN9m56zj8Om37t9VK+/bNMDJCEmzeaaCw5qO8PXbCrqY682bSenf
+         1lRiPZMQNUm+aCb2NFU1J3gqCEoG54GGBClFiZQrnO6sn2VyGfoPS41vZcO2e/VPLeSr
+         zlYRRVkgaWvm8XA099C6+Vxmh24wsfJUBFPNIIkWHb6bGolBStW2aFQi+f7/luf3dq0g
+         rqbBBt7U/hpQ++/Hum+/D6qKWOJ30CnOXoeBsidbG9Vanb0F9Rg/4MVTnh2pXLIuAad8
+         CPeH216ldNpSSISt8DLDEdmKWrdEuqofz/xVwgKGtLoPXssoRYdt8JaXw1C3nB/XSib+
+         RKmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUW5ZIjFpmsVmL36Vobe4qnhyz4Lr/fLfxF1IeT4iyBlBwdtjoAqKDXcSuD9lBh92W4in9Tx6hX/JS5nXFtTw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEjwr4DdGApMJnrp9/gs1I3gCTx3O9Hv+qMd2iVsHVVx09LOyE
+	7Uo1BndLxexAxGAzOPuW76rtHpXMjp5tq7lzyejCOp+Vq01c0lmE8r9RECf022ECmJC6NzAoo2U
+	zUKvYaFF1WiWQFoN8eg==
+X-Google-Smtp-Source: AGHT+IEpsrPLmARnWG0wtS9HbqgJ/QuMlwRCzIc+Pa2sIBjddgiU/CUibBgEAh8mKJeMd3XXQbDdyEVvZ7B5DMs=
+X-Received: from wmbes26.prod.google.com ([2002:a05:600c:811a:b0:456:217f:2625])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2dc3:b0:3a4:f6ed:767a with SMTP id ffacd0b85a97d-3b5f18d989fmr11340308f8f.38.1752497214090;
+ Mon, 14 Jul 2025 05:46:54 -0700 (PDT)
+Date: Mon, 14 Jul 2025 12:46:36 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250709-core-cstr-fanout-1-v1-0-fd793b3e58a2@gmail.com>
- <20250709-core-cstr-fanout-1-v1-1-fd793b3e58a2@gmail.com> <DBBQE3GJ0CHT.5PEF7RLS6C33@kernel.org>
-In-Reply-To: <DBBQE3GJ0CHT.5PEF7RLS6C33@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Mon, 14 Jul 2025 08:34:56 -0400
-X-Gm-Features: Ac12FXyt7LMvW07NA5KJthMOxTToFChah-hJr4NBCGuAbPJrhV6AWz6kEkIvvTw
-Message-ID: <CAJ-ks9=ZHtzeyyFSZaVuA1t-3C8-hc40n6r8qFWxn628qT-OeA@mail.gmail.com>
-Subject: Re: [PATCH 01/10] gpu: nova-core: use `core::ffi::CStr` method names
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, Javier Martinez Canillas <javierm@redhat.com>
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1075; i=aliceryhl@google.com;
+ h=from:subject; bh=NwaR9/Je7AdkfWw/1b2DE6uNLUshXOFDwHugnY+q+RQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBodPrFMtDYlaKtIAaCblIupqTBYvaLYd97VcZJ6
+ 79BZGvcyA6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaHT6xQAKCRAEWL7uWMY5
+ RnfRD/4uT8Etu9wSyoy0yGLIXdzEUPphX1k2F5TDm3V0WmSBVEE97bKYg1pdD/ZnSn+kFFmfz8w
+ 3OidOftxqy12+pgS7M7m9ikQkjLaGvKVY/sAecJc5CBN+j9eyRy4y0O0XMZZirhPqMyDVc4m+fr
+ Tul3c9KCkL0g9Mc6MQfdYeLxJdMGwpuCwpq+/2Rk8DXZIU18nbG0k8QTogOxCfWfOM7srhlTG0O
+ 9B+WFJMqIkZAgxiYeA3/25yeYHvkb+Hof50r1PyJne3B6/kA6ciTtJVHiMCkxlkUoYOYHbGhyL5
+ 8IuAoHTxVTW+FcipkSJVJLQfyKd0A9xtouhZZETF/+7UYqlU1G6j5CSDLUEE0dOkQJS4//Vj0uk
+ D9/iZhYkMqvqD1jIVi8UOoj+O1J+hz69xAQkf0h/weqc1de7RK039xDFXuxa3AMYlBLvNrc9J1E
+ W9jZUUu/uC1k0EHXqQZyAICQY5OV713s1ZSVC7m6YEGXr3aIUai8XKiyJTbVB8jhDY9SwJEoPL9
+ 8SADujmmA01K+YjSxonhNt4xU+ovAxZB8DwL5qtPoieZQmrVCQixnHE4fDqtZ+YT6lzncPlddhm
+ elPNvlOWQKTHFvopT8R7W7nU5tDNcvInC3d8be07oAam4chEL1dRY8PFxMPQqS0LEmv7a6PPn8j eMNj3BoHFI02o3A==
+X-Mailer: git-send-email 2.50.0.727.gbf7dc18ff4-goog
+Message-ID: <20250714124637.1905722-1-aliceryhl@google.com>
+Subject: [PATCH 1/2] vfs: add Rust files to MAINTAINERS
+From: Alice Ryhl <aliceryhl@google.com>
+To: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	linux-fsdevel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 14, 2025 at 7:11=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Wed Jul 9, 2025 at 9:58 PM CEST, Tamir Duberstein wrote:
-> > Prepare for `core::ffi::CStr` taking the place of `kernel::str::CStr` b=
-y
-> > avoid methods that only exist on the latter.
-> >
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1075
-> > Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > ---
-> >  drivers/gpu/drm/drm_panic_qr.rs | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> This doesn't look like nova-core. :)
+These files are maintained by the VFS subsystem, thus add them to the
+relevant MAINTAINERS entry to ensure that the maintainers are ccd on
+relevant changes.
 
-Oops :(
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ MAINTAINERS | 3 +++
+ 1 file changed, 3 insertions(+)
 
-How should I respin this one? the subject should be drm/panic, I think.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c3f7fbd0d67a..0f4e99716183 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9234,15 +9234,18 @@ FILESYSTEMS (VFS and infrastructure)
+ FILESYSTEMS (VFS and infrastructure)
+ M:	Alexander Viro <viro@zeniv.linux.org.uk>
+ M:	Christian Brauner <brauner@kernel.org>
+ R:	Jan Kara <jack@suse.cz>
+ L:	linux-fsdevel@vger.kernel.org
+ S:	Maintained
+ T:	git https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+ F:	fs/*
+ F:	include/linux/fs.h
+ F:	include/linux/fs_types.h
+ F:	include/uapi/linux/fs.h
+ F:	include/uapi/linux/openat2.h
++F:	rust/kernel/fs.rs
++F:	rust/kernel/fs/
++F:	rust/kernel/seq_file.rs
+ F:	Documentation/driver-api/early-userspace/buffer-format.rst
+ F:	init/do_mounts*
+ F:	init/*initramfs*
+-- 
+2.50.0.727.gbf7dc18ff4-goog
+
