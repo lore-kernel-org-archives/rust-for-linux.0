@@ -1,101 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1189E18D;
-	Mon, 14 Jul 2025 08:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B1620AF67
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 08:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752482941; cv=none; b=bI0eWRLBxxz4OybYwY6qil5L9HxZOdONJtfO5v8r0vL51ugsoF2fT/sBRsyVXFcvk3orrTeaoHP4pVpwtAqAeVIe7uki/q5FAWVRi/xafQMK+JDGmuIUFj/Cx9d0e7uVVXaL7IApOT4QBFQhpkhIYrxbTn3T2sow1qggCVOf3lk=
+	t=1752483320; cv=none; b=A7g+A1bGRrTcbt5e63cKk5JgNKg3TfmpMuYQJYr94g2ibQ4hYKMsu9+sqKKISEKftdP2zOgJBvDisrx++JqITpu9JeFOUT49rq2t/3Sq4oJoJ2w+C+NgcvlahBAgGcL3wr2MwGMQLd5G9ZJExZvNXgcCh2hjJDely2AML6uEF3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752482941; c=relaxed/simple;
-	bh=Z7PKqPXa5qmU1lyjB+OTmpDjY+Y6rO3Qon40Y4E9lKc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=X6VkPKgbDk3CUIlZa/Vd5fGlZrxRBv111kY/HG5iUZElg/qLcaxRCTarB9a0mFsRdVy7VjiHSXOf9zT1azK6DDUyIOCQmaL2XJyD9Ly/T62ZmvB24MRgbWGC80NVgG3ZMc3Y1jEuX3T6UpBhkgLwbWg+OehnA4CDH4uudHjJtfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gNhzUOQp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752483320; c=relaxed/simple;
+	bh=dZxAbZ8ulWv334/QiHn19XkVOBuijNqEiiRbXClfk4E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=buinQBLzGhL+6HalDE3ESPCCH9G/9G4F96cCTKpSP2qW5RVMtKdY7bSnYMOuF0F3wmEQVD7jZwuklrCfAWAuc7TchZEi0XenFmssVaO05SXug5Ft4N8v1Bd3Y7N8CVVAZt6x24dsANZanjmnLxLLHGQzwaAEGS1G5J8+G9QubXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u+pZGC1e; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gNhzUOQp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40504C4CEED;
-	Mon, 14 Jul 2025 08:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752482940;
-	bh=Z7PKqPXa5qmU1lyjB+OTmpDjY+Y6rO3Qon40Y4E9lKc=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=gNhzUOQpkCDLaS58yx9AC9kpSlVRNO5zw1Wyf+ywvfKteTAaihJhT6gBfKZJKdwAQ
-	 4krsJJWx09cfvXgvDyj5y9dvQJvL7daGGv2HR6Vd0iagbsNvejQa2mLfSnd932B1OR
-	 A9wiM9tpskVcdDnx7jIepxLztK4IjXkP7TqcJ5skS+uiOQcVNRUM/nfaSHoYeuflEB
-	 j7RGv3W3PD2rXr8E2QE9MLTujYlblD6NpyALDfa0+kZHcKmb7Jowy+rLMcJXSNbCYz
-	 qYoEUZUsSZ5DTUI7itqxawJUQWz0gFvgRwxPcptDjIQ4t4pR+jd/g6tDQz+XKxU1ks
-	 8/EMbfT3oyuww==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u+pZGC1e"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-456108bf94bso7337885e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 01:55:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752483316; x=1753088116; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gj+niLV6OALorn2kYpyE8/uWxGl7XxWeivxdBGPq6ow=;
+        b=u+pZGC1eH2rAt6aQASXzBXuGeE9/05Y1VaneWtGHeBeJCpWisjmsCZ5nq7inhhJeNS
+         BbccsTVFfQ8sZuJFaCW4FS3LTKZJS7hPURFo95Sh48Vw+AojQxSR7OVjUGPE9iz2K7Nq
+         ldBlWX6NT6lcdpPyuEomW398zcit1MwEsebcOW7ESEYT7PQPK4weaHBEGg3+w85HSDpC
+         Zr3VhEVzUbtEzS5v2gZ6CJZCaK7HwsFNlpSNCVrmzhStYRaK6csVB8s4CjvbQhObfJ9U
+         dO7lhDkRIMJJUjRL3cVUwrdj3ucQjD0XPKEYp4YeuERXpKODP48mVo+x+SlYKoxrWzKf
+         Xu0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752483316; x=1753088116;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gj+niLV6OALorn2kYpyE8/uWxGl7XxWeivxdBGPq6ow=;
+        b=kauSj0UuRZZiwTrYmm28reyXIaFI154TQvsEHBoe6d0jxFvp+I6sVrq2S+7ediKuQf
+         7DV+IB8BM4RyHeRushAPTRoCmuV77wILP5ZNm7EOxlJESngtpJklBAPPMEmEvK3ydTKp
+         ijNyPTO/mQuHs+vVwgVv9h9ZH28HH+9DGHnWrsQr/ee4ZSXcEDt1pXRNrtHJVN7M8M71
+         soOAPlDqq2NMIwzGEP5nD21UTpl6elleVsNaChuyLfiK6EyegUlOcu2FqzasOqfl/to6
+         Z61Mrjzygq7fEC0T+eY5OdT/lYxuu6Y2NlR1bDZoEWwHAim4043ITRGQZU7efuPrsG+9
+         U1iA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWEVJoyHdU1biTLQ/vCjoyn534egQ9UNJdPYBcXUzEIaDfmdCZBTntpDiISUpChiBwFsNHsOv1/KMlbyQJwg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsKDCt8ChsgoaxE54mFtHJIO1fKW2PCqMMZ5iCrz8UO4HmCYL2
+	V1FDvGZx5nYPuw7XQKYX6uphc5cToI5QeedPNmeYwoCiGQQ+/ahObEKLXW5QX4F5+r0FCeZXsuk
+	y9H7UjimwJDbioYGxsoJMjwlgXalKkepQkZRHwouR
+X-Gm-Gg: ASbGnctRMxsH3IZfJ/M9Ueg9Abu/2xGh+1M/tJ5NBMC+uFnCgScT5tFo1BxcQ+jJuHs
+	YaDswFdMHf/1IAIPvRu7GrJz1VudvxEs9GNX0Idy1xEog+sgDolvWgvFhb2LRh7JwkzRivLXOZ8
+	64Dk36DdImDEhG5nLrlATvfjTGhhVq6iiIJjOVNweU3bljtnNHpKa2x9KXufFkq9eIKmmHlHZuR
+	rdTQhmAw7DtD0f3hlF0lTjLU47bZSpEFFbwBA==
+X-Google-Smtp-Source: AGHT+IGsQeQEfcu02S30Jll96c0wDwxxBcoxIYEXCRnd0CfJMcytsTVZIf/b8uy6EvvrTgZ3nUg/bsWlB2lNPIlFVmI=
+X-Received: by 2002:a05:600c:46d1:b0:456:e98:9d17 with SMTP id
+ 5b1f17b1804b1-4560e98a5ccmr52570005e9.5.1752483316042; Mon, 14 Jul 2025
+ 01:55:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250712160103.1244945-1-ojeda@kernel.org> <20250712160103.1244945-3-ojeda@kernel.org>
+In-Reply-To: <20250712160103.1244945-3-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 14 Jul 2025 10:55:03 +0200
+X-Gm-Features: Ac12FXymYzZFPEmEJ79-ojPY2RmA0JBZ1Q8D2S9b-wAnvsipbXwRr9MT_ii7c3E
+Message-ID: <CAH5fLgiZsdW+98-_kMmGcdujQzusDcLMdGJzPk-6VG7pkC2bcA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: use `#[used(compiler)]` to fix build and
+ `modpost` with Rust >= 1.89.0
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	David Wood <david@davidtw.co>, Wesley Wiser <wwiser@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 10:48:56 +0200
-Message-Id: <DBBNCQQ5HF3N.3HXQWJR71RZ8S@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 2/2] rust: update ARef and AlwaysRefCounted call
- sites to import from sync::aref
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Shankari Anand" <shankari.ak0208@gmail.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250713213614.188921-1-shankari.ak0208@gmail.com>
- <20250713213614.188921-2-shankari.ak0208@gmail.com>
-In-Reply-To: <20250713213614.188921-2-shankari.ak0208@gmail.com>
 
-On Sun Jul 13, 2025 at 11:36 PM CEST, Shankari Anand wrote:
-> Update call sites to import ARef and AlwaysRefCounted directly=20
-> from sync::aref instead of indirectly via types.
-> Remove the re-export of their definitions in types.rs.
+On Sat, Jul 12, 2025 at 6:02=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-> ---
-> v2 -> v3: solved the styling error triggered by the kernel bot.
-> ---
->  drivers/block/rnull.rs               |  3 +--
->  drivers/gpu/drm/nova/driver.rs       |  4 +++-
->  drivers/gpu/drm/nova/gem.rs          |  2 +-
->  rust/kernel/auxiliary.rs             |  2 +-
->  rust/kernel/block/mq.rs              |  8 ++++----
->  rust/kernel/block/mq/operations.rs   |  2 +-
->  rust/kernel/block/mq/request.rs      |  3 ++-
->  rust/kernel/cred.rs                  |  6 +-----
->  rust/kernel/device.rs                | 10 +++-------
->  rust/kernel/devres.rs                |  3 +--
->  rust/kernel/dma.rs                   |  2 +-
->  rust/kernel/drm/device.rs            |  3 ++-
->  rust/kernel/drm/driver.rs            |  2 +-
->  rust/kernel/drm/gem/mod.rs           |  3 ++-
->  rust/kernel/fs/file.rs               |  3 ++-
->  rust/kernel/mm.rs                    |  3 ++-
->  rust/kernel/mm/mmput_async.rs        |  2 +-
->  rust/kernel/opp.rs                   | 13 +++++++------
->  rust/kernel/pci.rs                   |  5 +++--
->  rust/kernel/pid_namespace.rs         |  5 +----
->  rust/kernel/platform.rs              |  2 +-
->  rust/kernel/task.rs                  |  7 ++++---
->  rust/kernel/types.rs                 |  2 --
->  samples/rust/rust_dma.rs             |  2 +-
->  samples/rust/rust_driver_pci.rs      |  2 +-
->  samples/rust/rust_driver_platform.rs |  2 +-
->  samples/rust/rust_misc_device.rs     |  3 +--
->  27 files changed, 49 insertions(+), 55 deletions(-)
+> Starting with Rust 1.89.0 (expected 2025-08-07), the Rust compiler fails
+> to build the `rusttest` target due to undefined references such as:
+>
+>     kernel...-cgu.0:(.text....+0x116): undefined reference to
+>     `rust_helper_kunit_get_current_test'
+>
+> Moreover, tooling like `modpost` gets confused:
+>
+>     WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpu/drm/nov=
+a/nova.o
+>     ERROR: modpost: missing MODULE_LICENSE() in drivers/gpu/nova-core/nov=
+a_core.o
+>
+> The reason behind both issues is that the Rust compiler will now [1]
+> treat `#[used]` as `#[used(linker)]` instead of `#[used(compiler)]`
+> for our targets. This means that the retain section flag (`R`,
+> `SHF_GNU_RETAIN`) will be used and that they will be marked as `unique`
+> too, with different IDs. In turn, that means we end up with undefined
+> references that did not get discarded in `rusttest` and that multiple
+> `.modinfo` sections are generated, which confuse tooling like `modpost`
+> because they only expect one.
+>
+> Thus start using `#[used(compiler)]` to keep the previous behavior
+> and to be explicit about what we want. Sadly, it is an unstable feature
+> (`used_with_arg`) [2] -- we will talk to upstream Rust about it. The good
+> news is that it has been available for a long time (Rust >=3D 1.60) [3].
+>
+> The changes should also be fine for previous Rust versions, since they
+> behave the same way as before [4].
+>
+> Alternatively, we could use `#[no_mangle]` or `#[export_name =3D ...]`
+> since those still behave like `#[used(compiler)]`, but of course it is
+> not really what we want to express, and it requires other changes to
+> avoid symbol conflicts.
+>
+> Cc: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Cc: David Wood <david@davidtw.co>
+> Cc: Wesley Wiser <wwiser@gmail.com>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
+n older LTSs).
+> Link: https://github.com/rust-lang/rust/pull/140872 [1]
+> Link: https://github.com/rust-lang/rust/issues/93798 [2]
+> Link: https://github.com/rust-lang/rust/pull/91504 [3]
+> Link: https://godbolt.org/z/sxzWTMfzW [4]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-We probably want to split this by subsystem and not remove the
-re-exports this cycle. @Miguel what do you think?
-
----
-Cheers,
-Benno
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
