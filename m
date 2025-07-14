@@ -1,117 +1,65 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2E32472A5
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 10:45:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F83242D6A;
+	Mon, 14 Jul 2025 10:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752489956; cv=none; b=GQHU8eSDN9JydkE9jL8FYStDdwnKt+atqoYHGjWe/gXnPH9Ps/cRsCm1qMn+JitdQzt8mlmFtIdOQ5eiJ4Kb+CATG53PqDOJ+AZD9N4ybgAQgNQfjz/ur/FXhNwT3/cUaRlq8IZ4EKj71VtDoSSZPdD5pbCsn2fpljX8e9SVUzc=
+	t=1752490317; cv=none; b=WqzfQN3224iaRSsfAIpGK8qMkwuuSCXyAud4W5Nr611J2Xf54uOFOUhs1/9oxMvqD6wYB5XvOTrF84MpX5U/E9E+i8so3WlwOeutcJcRkiB+/shaHOBdIKHnHiPUM5NeFHQXhdFYLYEFXF3bwJ2YdFsjR2B9MxCM5K7pVXUURWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752489956; c=relaxed/simple;
-	bh=CzH9y1iUWR4nDaqh3cxGyltvFXJQU1S8nDrbLaFGHY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IfX5qAIQfA+FNJV7d8CBb9DJ2JwgelrLwmhEwMpkbwAGDB2Wdg84Hr91jxllJlx6Ncemv02pvkpg9Us8khhzn9mxx4ltFE2NX1DK3Dg2SUCvS2aR/5uJKoFNbfFkSZnMEfwgRe3dsMWJugCRlMrnLBmsSyFsqxPnZDwNO6f7fik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YXH3ndLq; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752490317; c=relaxed/simple;
+	bh=NzSjl/05WZKp/TIPLA6jzybk7hA5tSKg1rNVsJpc5ek=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=OiBrZ0ocK5iCBnVMazN7GeMVYXnat0mqV44GQq3rJ/4ub+/oEc5BYjxzHfBZ+hUxaWXu8oWelpSy9tN4Ft1V6HbH6QLND3xKHXc2UGQ8XZkxXKabmNou9X/frNrBTD4TYQXYH/DjHYQQHChrjwf675NtV2aRllBHcv/Qa3mo5KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ayNdhBb6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YXH3ndLq"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3a6e2d85705so2405186f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 03:45:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752489952; x=1753094752; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CzH9y1iUWR4nDaqh3cxGyltvFXJQU1S8nDrbLaFGHY4=;
-        b=YXH3ndLqABBXUGqAl3oZ9cCH5fxiV5KSVs/UfVqjeKjnnrQRG11j7MGbGSWcmJLFQw
-         Ek5forruBccjkVZSg1TFrGjhP5AMPOxu8umCpz/cOqCyYNust+o1kimhkmbsecSNYc4n
-         JNkF3eH0qzrqmyHC9inAONkQxWBmYyiIxpsgXE8NiqphIl1g/Z8Ud2nQPNoe8zQdJtf9
-         qsX9Xll9Ba4tXLaw65fg/AE+dwrA5THT7M21Ujh/6TpsAP8dA6DMhLtxDKfzKrRoDEAV
-         Bb9puqvx4FEsxB2qag4Ufj5CTKxg2AvEi36UVYHX9AwTseEBWjtPxU6Rju2EKb3yBFTb
-         VuMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752489952; x=1753094752;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CzH9y1iUWR4nDaqh3cxGyltvFXJQU1S8nDrbLaFGHY4=;
-        b=cRNelEdKBoIcTFJp38f+F4cYLY54o4m+x/DOk5VJ8CNUZe6VA2nGdYY78Nr0YT/8Lf
-         Z5p54FSBVz9qRnOWqfpuL2KtrOux0DIZyrfY+Iy5OTT1J7I0s6peuIceqg6+9XYrH9So
-         qQ9hUFNiNYXzGrNjPCsapbFoUJ375Oq6e8BvQ6gpj6J5Q4AzhRpN+kjyX0y15IA/abcs
-         csc0Jph1O+oa+5/qvGNycWcA48nZvQzxdxuqDhu2wyTNLMZubSFptegPIGUiq6mVTbjm
-         l+HqloRnVgTa+o43i2P/TWV906AobdDAtRNz0oXS0K5j92Ft4GCKa3CHHfrGSspfr7DX
-         C9UQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzYzyxP66GHm6nfPrjVJ/DSZgjT9yN7aGu8dv/ddtqoZeMGLfbe0vAcuWW7Z+YodCDdyOLH2sY7RdN/gRhNA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLJMppTuHOEc2KMVwGgkdp5U8p2/rq4Zzg1QQuRuwUDlvnLuyx
-	fWofSvDIPgTtdHTen7c0mnyNIu5U80H5c1iyUkd1Ac5l3VImG9GHTj0NT7HOE7Ars9LH6q1NbgQ
-	kxe9RrmgEQpqiMbeorrLaCYy7OmU/xdkPWlwJMhER
-X-Gm-Gg: ASbGnctmVNjm+CAinWb68yj5Zp+LWbHVAqzPiv5qFOcZVopScqpxLTd+NBA9ftkYS6b
-	KOOPOiR8R+kfAMXjnibUAxytpQBhl8aLHl+HG8pzniQjDQm7igeMQfbhrTQ4hHkX3FjmQ5faWTc
-	s8KRBQ99AhSM/AIFARKhHuPJ6wGKHNtvyB8UIzNug2O+YVCxlS9wJNPZeAxyhdXFSDDa8xZkbWd
-	8is63b1x1V4nB058+gLkzSafahUx2a2nUjSVg==
-X-Google-Smtp-Source: AGHT+IFuaThDu6sKyZay+yZyfsQDiG54qBZB91b9a1e1KVBlRl/3l2slwG5BRUZ3u59AAqElcvYFV3Cdo7cbx5oqoMo=
-X-Received: by 2002:a05:6000:240e:b0:3a4:df80:7284 with SMTP id
- ffacd0b85a97d-3b5f351d7camr8115012f8f.1.1752489952076; Mon, 14 Jul 2025
- 03:45:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ayNdhBb6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD5CC4CEED;
+	Mon, 14 Jul 2025 10:51:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752490316;
+	bh=NzSjl/05WZKp/TIPLA6jzybk7hA5tSKg1rNVsJpc5ek=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=ayNdhBb6LyhPo3Ji0W92NfYmQ1myKEXwccEkSPhK/UvrRQXG4a0uoLsz1i2bwCP1Z
+	 uj//FhekwOZHW8o7fCIKbfU9m/rWcaOgG+6+dOiaH/Ei+X9n2h/4uGGz8Jld7n1sli
+	 kGMpM52lE6KIwUqY8Y5dWuzwauj+jnW2vQ+KQedJxHv/6aV/EIqACi72qlOWI5DCMc
+	 k4W8CYiQOd4oNULFF/L3FiV40p8kZtjJMvMVSU8cBMg5XKK+fxBIfbNR6Tr1lknZHj
+	 rMfN9M5X1Zz/LSRlHU9zkPQftdkdv1PFa1BLpBMO6fGjocTbrLEqn4OmQtwyBEeUVy
+	 5TFRZ2FzQZZ2g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250711-workqueue-delay-v3-1-3fe17b18b9d1@google.com> <DB9A8OPZK3DZ.YVQPQQSD12MU@kernel.org>
-In-Reply-To: <DB9A8OPZK3DZ.YVQPQQSD12MU@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 14 Jul 2025 12:45:40 +0200
-X-Gm-Features: Ac12FXyTRcfTKMH9Mvagvy6AdIiMuzAfB1WBR_848IQMThGSsgAnTgtWRJa9d90
-Message-ID: <CAH5fLgg80eGbYQPeLtHsVqfQ4UmftUpzdhzWaah8qs5HwRhk6Q@mail.gmail.com>
-Subject: Re: [PATCH v3] workqueue: rust: add delayed work items
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Benno Lossin <lossin@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Jul 2025 12:51:52 +0200
+Message-Id: <DBBPYV1YV97X.OT2SPH3R67RS@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <airlied@gmail.com>,
+ <simona@ffwll.ch>, <nouveau@lists.freedesktop.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] gpu: nova-core: vbios: change PmuLookupTableEntry to
+ relax alignment
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Rhys Lloyd" <krakow20@gmail.com>, <acourbot@nvidia.com>,
+ <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250714104322.100511-1-krakow20@gmail.com>
+In-Reply-To: <20250714104322.100511-1-krakow20@gmail.com>
 
-On Fri, Jul 11, 2025 at 4:07=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> Hi Alice,
->
-> On Fri Jul 11, 2025 at 9:59 AM CEST, Alice Ryhl wrote:
-> > This patch is being sent for use in the various Rust GPU drivers that
-> > are under development. It provides the additional feature of work items
-> > that are executed after a delay.
->
-> I thought I commented on this in a previous version already, but apparent=
-ly I
-> haven't (was it a different thread maybe?).
->
-> For drivers, we should also support 'scoped' work items and worqueues, wh=
-ere
-> 'scoped' means limit the lifetime to the driver being bound to a device.
->
-> For better understanding, in C one would call this devm_alloc_workqueue()=
-, which
-> would guarantee that the workqueue is terminated on device unbind. Simila=
-r for
-> individual work items on shared workqueues (such as the system ones), whi=
-ch
-> would be canceled synchronously on driver unbind.
->
-> This is very useful for drivers, since it allows to provide a &Device<Bou=
-nd>
-> within the work's callback, which allows drivers to access device resourc=
-es
-> safely and directly without additional overhead.
+On Mon Jul 14, 2025 at 12:43 PM CEST, Rhys Lloyd wrote:
+> +
+> +    /// Construct a u32 from `self.data`.
+> +    fn get_data(&self) -> u32 {
 
-I believe that additional feature is more closely related to
-https://lore.kernel.org/rust-for-linux/20250411-create-workqueue-v1-1-f7dbe=
-7f1e05f@google.com/
+Getters in Rust usually don't start with `get_`. Using `data(&self)`
+here also looks better IMO.
 
-Alice
+---
+Cheers,
+Benno
+
+> +        u32::from_le_bytes(self.data)
+> +    }
+>  }
