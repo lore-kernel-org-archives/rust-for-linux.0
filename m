@@ -1,126 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E202D8635C;
-	Mon, 14 Jul 2025 12:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE40580B
+	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 12:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752494953; cv=none; b=fWfhl7D81BtQkTLMqatVCxhbsbuNaaRbxpaNaCkG5E8UEt4YWaxkhGdNwjlDUKo1ISKhky9uLUX9klCsr6QkmFh/3RMNhMNz4R9ygmatrfPIecl57B60io7bP0wHzivIw+zCbQmSJEyvjjt2jQdnccjg8H0HjXLQXADyPXkNx60=
+	t=1752495486; cv=none; b=QvYmTiHYYlokpbuPmFK44QklcSkx8C7+NvB2zlSlSlRxn0lk1snncsLZszPIK4W44NBXVx0qZxMGNoDCwTX+6RSfYKFbOIqPVvC7FbdUGNJXVVA1U1SvFce2ebnSMRXG/9zi+8gFVc32KlH5YNm3sVNUr6t1BJJXRySOUIt8qAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752494953; c=relaxed/simple;
-	bh=790j4Ip2q5UeEyImLRL0KLjEyLZD54ZPHny1IERhf4w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=t+WnzDYx3soX4icI/FmKujBwx5zTP85f7Y0rLj9sgldMI2mXyo73CvgERE4Ph964M9f4Bhohg6c9htNsi7488CSDJN65IgETLlkML8HpJAqRk3oJUzIeyCQmRckwv59mtwXI5hNf3/hDmgUYrnC7kPts+u7EQXDJZ9w0m0ouQc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FgYIuhCo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752495486; c=relaxed/simple;
+	bh=jBIoviL7c6qON5XngvxGUEMK1KwwBLhlT+iDvFuQWk4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RGmoYk2qq+lPQtieLH57bYN5+CKhAFEdtOo5Ci5GKA1cqvbkdR+0YPRQQqQwzUBt1ef7Nt93x6MMzHmdB5IcPNUlPEbhVjPFziTpdJxp9CxqVEyD8+YIHh0c4z9g82BRO+yFil7nOSZjV174bhuQfW1Vug8qfvV4/btHKXD0MOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cBxjEI8s; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FgYIuhCo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB59C4CEF4;
-	Mon, 14 Jul 2025 12:09:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752494952;
-	bh=790j4Ip2q5UeEyImLRL0KLjEyLZD54ZPHny1IERhf4w=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=FgYIuhCot+kXZPqKZ3GZV+bptXq5GXUvlf9Z+F4wjculcls+xCDIvWMDz/iVblwiB
-	 2q/i6YLV2qHQhBFGWipPSbBWuJO0GXetI1Qp8wdI597XT+lGrpEHsQ39UoX+OJjehq
-	 RBSSMjXsxAvv+FQlRapvRCNaqwW14UOZyFskekdBplPv3FQsbmZzGxWWld+81/LQIF
-	 82Qic6TA8SyTVmI3MUqDYRW0j+yu5I/O0zSfxwjYIoWil+0w1gXTkUMOmKi2xMz5CR
-	 bpkcZHJeQkKRF3PG0YIjk+HyxvBAWW9nlJFHxpFrPxSxbk3d4io4xfUqurydNXhVBM
-	 +7T1CyvHJPDsA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cBxjEI8s"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4fabcafecso2062536f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 05:18:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752495483; x=1753100283; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hhrbngdtwLIZhz0yqQlqhovMpCwE60clz8fRz49E1Kw=;
+        b=cBxjEI8sheP1y3qYdH+5RullYK+KoBxGhdjTs1XfHbCaO7Inma/sQFrWd20I/r5Eqy
+         8+OmSxHwPOVSsaOn+hDDH17vzoWPSsxglgQEhPR0jzPWHsRFugLKaV/zkGqtepqHelg5
+         8E2D/gtGsacO+DSi+6QTlCajixwosFiXjr0CA3mnpN3Msy7hkEvs99vdHo6YbG+Enwaz
+         +GdE4jsYnPjVKb2nfPv5tocl8pFWP4YhXdktxabM+00CUoBj7dv6w7/ahN+BTWO6DUmO
+         gkycZKUGJJ18v0/amZt58h1/FWB4bS5Sta6CAUyREeGsjuxl3qGc7ArYzUgr/Q7BEIYD
+         0swQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752495483; x=1753100283;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hhrbngdtwLIZhz0yqQlqhovMpCwE60clz8fRz49E1Kw=;
+        b=LZ5UTilpBAQjiNmgdXHxvQ6FiDhYXvZaFEzpgGIkQF0zFThgN1Sx8RcEqDQ0s7Hbrq
+         EDzj80e//3auuW66D0j+gZf5Jz4eFhRqh7U4IY9XkRiyWICRb/SAyddTz1uJ/bvFqL9O
+         pV6mLeoaOPVoG8jjoDTPTQfXHAZJ2ryCznq2PfFarCrzK9sy8c+M3wUUxA84yVa9PE1K
+         D8JACJ74zd/mD4E9EsYhbgpA+Eiw00asEBkVVuGhICAhnCeVhS5kXU9LdgjH2VlcSRyD
+         Ysxy5Y1Ou5pWoO/TlcsvsnZTqFt1R9RHKghD6aJ/0AeyF3IWdRlcOlQFTjqjd524D4UA
+         sifw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTIGrTTT9AQ22osrSCiQ2+WOeBBWVe5TT7JGfL+Sx0Z0EjlPAfAf7I8WFK4LEe8pY76PHkqNpTHHbCEUC3CQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF82MBDxff5wRB6lgFurTYPG6QNRIlm+tqgfKVkBTraHDObfqR
+	MDfvc+X8O7XVU/v8tKE9T6y5SxxOS6hMlifVCKBg5P6glH39nykBlw3oaGAvDg/ZFEP9XEX0M5T
+	YhfTUFttoi8wPlZrBjA==
+X-Google-Smtp-Source: AGHT+IGuBf6UyD8vga60JCe+ASIW8IX5XzxF/f4ca+3Bx6VIwy7Y5Y4ucTQmymQ87F8Fh/x5SOphse9Y58mi4LI=
+X-Received: from wmbhh14.prod.google.com ([2002:a05:600c:530e:b0:456:1518:6d6e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2f87:b0:3a4:edf5:b942 with SMTP id ffacd0b85a97d-3b5f359b131mr10006200f8f.57.1752495483047;
+ Mon, 14 Jul 2025 05:18:03 -0700 (PDT)
+Date: Mon, 14 Jul 2025 12:18:02 +0000
+In-Reply-To: <87ikk1jnwi.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 14:09:06 +0200
-Message-Id: <DBBRM08HB0UO.3HTRN04ZSHVQ8@kernel.org>
-Subject: Re: [PATCH v12 2/3] rust: io: mem: add a generic iomem abstraction
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Andy
- Shevchenko" <andriy.shevchenko@linux.intel.com>,
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, "Mika Westerberg"
- <mika.westerberg@linux.intel.com>, "Ying Huang"
- <huang.ying.caritas@gmail.com>, "Benno Lossin" <lossin@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com> <20250704-topics-tyr-platform_iomem-v12-2-1d3d4bd8207d@collabora.com> <aGt7aItuSINDzj2O@google.com> <7A0457FA-0E09-451E-B035-E739AED7B2C7@collabora.com> <aHTvMNIenbaGtBBt@google.com>
-In-Reply-To: <aHTvMNIenbaGtBBt@google.com>
+References: <20250704-iov-iter-v2-0-e69aa7c1f40e@google.com>
+ <U16UjMBBh1b7dLeO-Nhqw__nw_JwypctB1ze_G44BtsX0l_eVK6Sp-efbobmnuF44J0wQNgnK7b8nCmBX0KS_Q==@protonmail.internalid>
+ <20250704-iov-iter-v2-1-e69aa7c1f40e@google.com> <878qkyoi6d.fsf@kernel.org>
+ <0Y9Bjahrc6dbxzIFtBKXUxv-jQtuvM2UWShaaSUsjKBuC1KKeGIpBFTC4a89oNrOLBP66SXtC7kQx1gtt04CMg==@protonmail.internalid>
+ <aG5NdqmUdvUHqUju@google.com> <87ecuplgqy.fsf@kernel.org> <q7QRbcFgb5yhmBOt4eLkkzqyckspc2L2g3e0pXhJxm0yBVeG2Hifi4O77gaxwpWss1Z_CUjSy1P22ppxcxo8jw==@protonmail.internalid>
+ <aG5iLiUJg_cHtB8r@google.com> <87ikk1jnwi.fsf@kernel.org>
+Message-ID: <aHT1etvG0R648EB9@google.com>
+Subject: Re: [PATCH v2 1/4] rust: iov: add iov_iter abstractions for ITER_SOURCE
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Matthew Maurer <mmaurer@google.com>, Lee Jones <lee@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Benno Lossin <lossin@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Jul 14, 2025 at 1:51 PM CEST, Alice Ryhl wrote:
-> On Thu, Jul 10, 2025 at 10:58:13AM -0300, Daniel Almeida wrote:
->> Hi Alice,
->>=20
->> >> +impl<const SIZE: usize> IoMem<SIZE> {
->> >> +    fn ioremap(resource: &Resource) -> Result<Self> {
->> >> +        let size =3D resource.size();
->> >> +        if size =3D=3D 0 {
->> >> +            return Err(EINVAL);
->> >> +        }
->> >> +
->> >> +        let res_start =3D resource.start();
->> >> +
->> >> +        let addr =3D if resource
->> >> +            .flags()
->> >> +            .contains(io::resource::flags::IORESOURCE_MEM_NONPOSTED)
->> >> +        {
->> >> +            // SAFETY:
->> >> +            // - `res_start` and `size` are read from a presumably v=
-alid `struct resource`.
->> >> +            // - `size` is known not to be zero at this point.
->> >> +            unsafe { bindings::ioremap_np(res_start, size as usize) =
-}
->> >=20
->> > Here you cast from ResourceSize to usize. Are you sure that is correct=
-?
->> > I thought those types could be different.
->>=20
->> This seems to what C is doing as well, i.e.:
->>=20
->> static void __iomem *__devm_ioremap(struct device *dev, resource_size_t =
-offset,
->> 				    resource_size_t size, <---------
->> 				    enum devm_ioremap_type type)
->> {
->>=20
->>         [=E2=80=A6]
->>=20
->> 	case DEVM_IOREMAP_NP:
->> 		addr =3D ioremap_np(offset, size);
->> 		break;
->> 	}
->>=20
->>=20
->> Where:
->>=20
->> `static inline void __iomem *ioremap_np(phys_addr_t offset, size_t size)=
-`
->>=20
->> IOW: this stems from the mix and match of types used the C API itself.
->>=20
->> What do you suggest here? Maybe a try_into() then?
->
-> What a mess.
+On Wed, Jul 09, 2025 at 07:05:01PM +0200, Andreas Hindborg wrote:
+> "Alice Ryhl" <aliceryhl@google.com> writes:
+> 
+> > On Wed, Jul 09, 2025 at 01:56:37PM +0200, Andreas Hindborg wrote:
+> >> "Alice Ryhl" <aliceryhl@google.com> writes:
+> >>
+> >> > On Tue, Jul 08, 2025 at 04:45:14PM +0200, Andreas Hindborg wrote:
+> >> >> "Alice Ryhl" <aliceryhl@google.com> writes:
+> >> >> > +/// # Invariants
+> >> >> > +///
+> >> >> > +/// Must hold a valid `struct iov_iter` with `data_source` set to `ITER_SOURCE`. For the duration
+> >> >> > +/// of `'data`, it must be safe to read the data in this IO vector.
+> >> >>
+> >> >> In my opinion, the phrasing you had in v1 was better:
+> >> >>
+> >> >>   The buffers referenced by the IO vector must be valid for reading for
+> >> >>   the duration of `'data`.
+> >> >>
+> >> >> That is, I would prefer "must be valid for reading" over "it must be
+> >> >> safe to read ...".
+> >> >
+> >> > If it's backed by userspace data, then technically there aren't any
+> >> > buffers that are valid for reading in the usual sense. We need to call
+> >> > into special assembly to read it, and a normal pointer dereference would
+> >> > be illegal.
+> >>
+> >> If you go with "safe to read" for this reason, I think you should expand
+> >> the statement along the lines you used here.
+> >>
+> >> What is the special assembly that is used to read this data? From a
+> >> quick scan it looks like that if `CONFIG_UACCESS_MEMCPY` is enabled, a
+> >> regular `memcpy` call is used.
+> >
+> > When reading from userspace, you're given an arbitrary untrusted address
+> > that could point anywhere. The memory could be swapped out and need to
+> > be loaded back from disk. The memory could correspond to an mmap region
+> > for a file on a NFS mount and reading it could involve a network call.
+> > The address could be dangling, which must be properly handled and turned
+> > into an EFAULT error instead of UB. Every architecture has its own asm
+> > for handling all of this safely so that behavior is safe no matter what
+> > pointer we are given from userspace.
+> 
+> I don't think that is relevant. My point is, you can't reference
+> "special assemby" without detailing what that means.
+> 
+> You have a safety requirement in `from_raw`:
+> 
+>     /// * For the duration of `'data`, the buffers backing this IO vector must be valid for
+>     ///   reading.
+> 
+> This should probably be promoted to invariant for the type, since
+> `from_raw` is the only way to construct the type?
 
-Yeah, it mixes up types describing CPU word width and bus address width. :(
+Sure, let's get the wording consistent, but that was the purpose of this
+line in the invariants:
 
-> It looks like there aren't any 32-bit architectures that
-> define ioremap_np. This means that sometimes this cast will be lossy,
-> but in those cases the function body just returns NULL and doesn't read
-> the size.
->
-> I would probably cast to an underscore instead of explicitly mentioning
-> the target type and make a comment about it.
+For the duration of `'data`, it must be safe to read the data in this IO vector.
 
-I think fixing up the C side would be even nicer, but for the scope of this
-series that's fine. The comment should mention that, ultimately, we want to=
- fix
-up the C side type wise.
+> But are you saying that the referenced buffers need not be mapped and
+> readable while this type exists? The mapping happens as part of
+> `bindings::_copy_to_iter`?
+
+Ultimately, it's an implementation detail.
+
+In our "# Invariants" section, we tend to "expand" the underlying C
+types and describe exactly what it means for that C type to be valid,
+even if those details are implementation details that nobody outside
+that C file should think about. Usually that's fine, but in this case,
+I don't think it is feasible.
+
+The iov_iter type is like a giant enum with a bunch of different
+implementations. Some implementations just read from a simple kernel
+buffer that must, of course, be mapped. Some implementations traverse
+complex data structures and stitch the data together from multiple
+buffers. Other implementations map the data into memory on-demand inside
+the copy_from_iter call, without requiring it to be mapped at other
+times. And finally, some implementations perform IO by reading from
+userspace, in which case it's valid for the userspace pointer to be
+*literally any 64-bit integer*. If the address is dangling, that's
+caught inside the call to copy_from_iter and is not a safety issue.
+
+I just want the type invariant to say that reading from it is valid, as
+long as the read happens before a certain lifetime expires, without
+elaborating on precisely what that means.
+
+> >> > * If the iov_iter reads from a kernel buffer, then the creator of the
+> >> >   iov_iter must provide an initialized buffer.
+> >> >
+> >> > Ultimately, if we don't know that the bytes are initialized, then it's
+> >> > impossible to use the API correctly because you can never inspect the
+> >> > bytes in any way. I.e., any implementation of copy_from_iter that
+> >> > produces uninit data is necessarily buggy.
+> >>
+> >> I would agree. How do we fix that? You are more knowledgeable than me in
+> >> this field, so you probably have a better shot than me, at finding a
+> >> solution.
+> >
+> > I think there is nothing to fix. If there exists a callsite on the C
+> > side that creates an iov_iter that reads from an uninitialized kernel
+> > buffer, then we can fix that specific call-site. I don't think anything
+> > else needs to be done.
+> 
+> If soundness of this code hinges on specific call site behavior, this
+> should be a safety requirement.
+
+Yes, when we add Rust constructors for this type, they will need
+appropriate soundness checks or safety requirements to verify that the
+provided buffer is valid for the chosen iter_type.
+
+For now, it is constructed in C and we usually don't have safety
+comments in C code.
+
+> >> As far as I can tell, we need to read from a place unknown to the rust
+> >> abstract machine, and we need to be able to have the abstract machine
+> >> consider the data initialized after the read.
+> >>
+> >> Is this volatile memcpy [1], or would that only solve the data race
+> >> problem, not uninitialized data problem?
+> >>
+> >> [1] https://lore.kernel.org/all/25e7e425-ae72-4370-ae95-958882a07df9@ralfj.de
+> >
+> > Volatile memcpy deals with data races.
+> >
+> > In general, we can argue all we want about wording of these safety
+> > comments, but calling copy_from_iter is the right way to read from an
+> > iov_iter. If there is a problem, the problem is specific call-sites that
+> > construct an iov_iter with an uninit buffer. I don't know whether such
+> > call-sites exist.
+> 
+> I am not saying it is the wrong way. I am asking that we detail in the
+> safety requirements _why_ it is the right way.
+> 
+> You have a type invariant
+> 
+>   For the duration of `'data`, it must be safe to read the data in this IO vector.
+> 
+> that says "safe to read" instead of "valid for read" because "special
+> assembly" is used to read the data, and that somehow makes it OK. We
+> should be more specific.
+> 
+> How about making the invariant:
+> 
+>   For the duration of `'data`, it must be safe to read the data in this
+>   IO vector with the C API `_copy_from_iter`.
+> 
+> And then your safety comment regarding uninit bytes can be:
+> 
+>   We write `out` with `copy_from_iter_raw`, which transitively writes
+>   `out` using `_copy_from_iter`. By C API contract, `_copy_from_iter`
+>   does not write uninitialized bytes to `out`.
+> 
+> In this way we can defer to the implementation of `_copy_from_user`,
+> which is what I think you want?
+
+Yes, this is pretty much what I want except that _copy_from_user isn't
+the only C function you could call to read from an iov_iter.
+
+Alice
