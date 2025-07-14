@@ -1,155 +1,195 @@
-Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C432A26460D
-	for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 15:28:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AFD258CED;
+	Mon, 14 Jul 2025 15:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752506893; cv=none; b=Traa586B1wQYvam8quVb3yJLbDIQh9uLgNBURIF26+4KaeLX6GAPtwD7uDx36HN1IGLmmCshqXJswBjt5hJgnOD6q6QYd0ERILbizzxTX+AaLPR1xbB+zEFdo6yFWwdTkODrn3y6pd8ZLJA9P9Z7TeHSQFYmqSSqZQEJU/wc6pw=
+	t=1752507175; cv=none; b=A27ND1uw5lBjDNR/fZLnWAu4Um4x/pyl+0eGoSss2+2HEFw/p/zHfp9Ws8ECQV381X28MEWs6zvosYN8OaSTQ8K19c6dHiZPrnvz1iobmeGow1cciCHCL7SukZuOz2pY/UJ6HhM7oZ2LQpbtg+VWowllXpEJxSiQHlaWSv7PZmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752506893; c=relaxed/simple;
-	bh=6/eBWxJ1QIgkIgwCwS+ng4W7G8JH+ooFJnVUfMl83dE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l1aQB7W0JhmKxSEeJONoe4dMglu19bZzSpOD1/0m62TgpqFI77jJh+hQ4kqU7Z/G2VsUXQB4lPKT9KXjts+Zv0p2GDZA763rIXtnjImuqHeAjmPfdJlgCQfdl2v87ZMPdVdYv2dmZ49en6vYuPmH6x3p15zUKXx4tPIgDUHaRn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=Z/BES+gk; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=AQxoKkTN; arc=none smtp.client-ip=46.30.212.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
+	s=arc-20240116; t=1752507175; c=relaxed/simple;
+	bh=/koeKlB/k0Uouo8pgg2T7oltVBCEzdoq4Vld2kRYayM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EbFLbJzK4hetUPYct+m0UV+zzON/aa5CDJappt8MjwqzmlSi+fszdzVoo+P1dGKgxvmmnjSwk1GcT9iE4CRhQaQqSXN+LcmdlN4aF6ujQHVz5pFK70dgBlNR65YrRUrRPsrH9j5CDvzSuMVxfrQmQWloiAv1jw2QNTUOSo3n4qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MFBnIkdd; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="Z/BES+gk";
-	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="AQxoKkTN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1752506881; x=1753111681;
-	d=konsulko.se; s=rsa1;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=CxNCFSgystRqkUUeIIO2FJHvWHtIjD7SOGJQsrFHYEE=;
-	b=Z/BES+gklQqP0Ut67CFd0O7AKDdxn7SzeAeP9sKo9hDxc5vHyaQluD8u4GBmORfa/K3k6FT/QNg5K
-	 +5pSyJLd1VjFqcGU04jt6VNqDAAKY3U2gnBYhHJ6CKvmCDjQu4vgMW4qZXRNtX3EmIVFOTqzZwJzXk
-	 zeb8JB1bgVleUMUYPfwoZcku/BGt2s7xNJaMnERDpWZcbDs0R3vrVJURffyKZK5uSNMVcOY8Da6QAH
-	 aky+odmUqXjx0O/6U3/CTVeIX0gYVFyMxMidO6cmQQq/CB7FbGRVLsUEonhUKu7GDT93zLKlHdMVZO
-	 TpEdBDsXq5yhp1IwW7irPS5z6/BDsZA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1752506881; x=1753111681;
-	d=konsulko.se; s=ed1;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=CxNCFSgystRqkUUeIIO2FJHvWHtIjD7SOGJQsrFHYEE=;
-	b=AQxoKkTNHwRxzS8AOTETVDzj4k4Jmbk8Yhmp3MgKFL7e8XlwIfsKyDurTcDTsSbvUFVkpLk9Df/aH
-	 3NS4YiLAQ==
-X-HalOne-ID: 1ed28d5b-60c7-11f0-bb53-e90f2b8e16ca
-Received: from [192.168.10.245] (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
-	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
-	id 1ed28d5b-60c7-11f0-bb53-e90f2b8e16ca;
-	Mon, 14 Jul 2025 15:28:00 +0000 (UTC)
-Message-ID: <45e705ef-e40b-4dd3-a9b9-1a713df5d4e5@konsulko.se>
-Date: Mon, 14 Jul 2025 17:27:59 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MFBnIkdd"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4ab61ecc1e8so10524181cf.1;
+        Mon, 14 Jul 2025 08:32:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752507173; x=1753111973; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5MfFqiSzZREdMyVsNgIAfk4F76Kub2bUvM9+BkEQL8A=;
+        b=MFBnIkddb+9KXceKX83Z4A3uM2Zqpi+mNWM750Gi/BQAODJU/YMflNSs/y0Q1p5Fdb
+         FAsPa4Aiw+wUFtAA98RG1M6/yuexlUtbK2cLU2m3CVGYWC+fldUG+NNG9jICv5DCv3U0
+         4ONuBSVQ9wsXmbDxSGx77WNy79HQxzL8z29s9b5WL+l0wnBa6I9MvasZg2XTAZpU2sV7
+         4dYj0vaVKlRboYMgShpIfXzlArlaCo/+jik5jJWXlHofKtXLPSOtICpvz7MFrqYj+w4c
+         +2SebQQLyTl0OltrOEzOspxUWFa8GB190PXOS3OD9fNQd428WnIM2wj8zjmNkNelPd4Z
+         x4wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752507173; x=1753111973;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5MfFqiSzZREdMyVsNgIAfk4F76Kub2bUvM9+BkEQL8A=;
+        b=jiJzG8GtI5b9Uq7nQyp8/M9EIv5rRhwXjFT/56uCZx2PGAp85LfRvvXtAWFj7O8rsC
+         gscL8zJ0U+cAv7ICSZZs06Q0GXEXmHWhHYwvieqf4t/j7LJ8WEX/hoAjP+6QI82oN+8b
+         d9xp9B8T6zOwVEbes0LeVfK6Q+60D25mfqsGi9dhOdVv+lufI5y6Lmrw1aw8QzJMZJUU
+         4dfTdMR+pxdDh3fvCeSYVgMFRP0W6ZF+hilZNhJPl+KnZdjNXTQOfGJmifLfS6wrBs2x
+         VeREKeBlq5bOA/qUC5zPNk8CMVEDokBSItoqVcaJWItMVmb4VYw7tRzvkQk6VQ5MCz84
+         6g2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWW1VO+7qd1rImRyLsJ8oaLfZpCGl6WZoV7/L9AswTEnR2OfMABzz6MCEPz7XhAFCEu8KU0IcikDRNp@vger.kernel.org, AJvYcCWmD1YsX5lqjs6sysOFU9uYXG1Ca1v+D0MwNCLPOBgZa6c9Mv/2J7qRCwyBsvoXHh53/Il0fmOTgJVTbIRtOxY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSFDMMXGRGNweeY2ItG00BlfBwasQpokn4cUPTr6a5s7dG8kn/
+	SPuankIOzgWMNgpYonKiflSGZQfhe9meBNzPtg0gCeZ1Cx9EvIknjzOp
+X-Gm-Gg: ASbGncsJMh7i/EtFZhrS79oKBP9JIj/cBAMzlPulDBcMpEPTf1UWCNKWwYZL6RH6GDD
+	4SkXwPt28LmwGMuP6mmK2JAVeJoGZAmwB1p3StetGDO2tJJYLyRYRwWZe/7t7a31TXA2Ze+LZWL
+	02ceDXrdn9m/WDkHipEa2zoriwJRFNp1q+H42Qj678+626sw0rDW6rnVLd1UxcFZeEWEHTrCsrP
+	D+dpgmoVVt/QRkIlf1AYVbCsZT6ERR90exB707GUQrd0GdkQw6ZU1UrD+zBEiErY1hE/nAjjiO1
+	ARXEX6L0nzGuYeu/SrYktHyc5kPVHLIVJT61ieF56QlpIEJWsbRaumDH3Av/0thjCDWbN8hJDPi
+	3F8WZrG4b6umM8pKynbVZ3G1NB2tyPkOwnsgAfNHze3KXN2vJE9AePb/KacTq2Jla8s0z/OQdYt
+	TcA5Sxe+2ZOePe
+X-Google-Smtp-Source: AGHT+IEiE/KhsLnwDtozknIyhsymCObeRf1LTZcI6ldZd1GqTFKQ2x8AfKPsdKBm3mDZ2dcM+KQJ6A==
+X-Received: by 2002:a05:622a:838c:b0:4ab:38c1:f9a9 with SMTP id d75a77b69052e-4ab38c1fc7emr172803891cf.19.1752507172595;
+        Mon, 14 Jul 2025 08:32:52 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ab3f1c9a2csm30869951cf.67.2025.07.14.08.32.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jul 2025 08:32:52 -0700 (PDT)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 83594F40066;
+	Mon, 14 Jul 2025 11:32:51 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Mon, 14 Jul 2025 11:32:51 -0400
+X-ME-Sender: <xms:IyN1aNZhQdTXlEwdUFRK6ixe11IsrGl9xQrPhCYt2MdciWQg-2N87A>
+    <xme:IyN1aF5V1ixT0MErGGOpS8ZDHhBAE-ASyclvhtA7ANSPsYQFZaeFm_Fo_jKMk6mpv
+    TW-gZDXrO6Ol2FAcw>
+X-ME-Received: <xmr:IyN1aEgsrCJ6UmyqHs1It-LK9ZJdmCqOQl4JHFw0IhhkfW6kCIniW78zqw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehvdefvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdtkeeihedv
+    necuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphht
+    thhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhoshhsihhnsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvg
+    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlkhhmmheslhhishhtshdrlhhinhhu
+    gidruggvvhdprhgtphhtthhopehlihhnuhigqdgrrhgthhesvhhgvghrrdhkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihse
+    hgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhn
+    mhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:IyN1aLI0aVk-31eig95s5X5IAwTfkC5opzO7TVO4o63Dxltb7RQpig>
+    <xmx:IyN1aGqzMj-aS-jBspJ99eptAKv-u_tP7EK0_blC3OdjvfW1sdhgUA>
+    <xmx:IyN1aJy2I1GGOeidWxfmC4_5la-hcr47Jg_T8wBKUXoDfP8TVg_o6w>
+    <xmx:IyN1aCfyxZHOaUh4scxy2MoqYe5CypGeJlzZFysocpLyN3her6pRcg>
+    <xmx:IyN1aNcFefTTQUTDjPW2XSJEq3GHvRHfEVHYBNt7FwOijMbUp8n62MlX>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 14 Jul 2025 11:32:50 -0400 (EDT)
+Date: Mon, 14 Jul 2025 08:32:49 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v7 4/9] rust: sync: atomic: Add generic atomics
+Message-ID: <aHUjIQlqphtgVP2g@Mac.home>
+References: <20250714053656.66712-1-boqun.feng@gmail.com>
+ <20250714053656.66712-5-boqun.feng@gmail.com>
+ <DBBPI9ZJVO64.3A83G118BMVLI@kernel.org>
+ <aHUSgXW9A6LzjBIS@Mac.home>
+ <DBBVD70MASPW.2LUTJ51Y6SGMI@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 2/4] mm/slub: allow to set node and align in
- k[v]realloc
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org,
- bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-References: <20250709172345.1031907-1-vitaly.wool@konsulko.se>
- <20250709172441.1032006-1-vitaly.wool@konsulko.se> <aHDSLyHZ8b1ELeWe@hyeyoo>
- <5bc89531-ab09-4690-aae4-a44f9ddb4a68@suse.cz>
- <3AD3F7B5-679F-4DC8-968F-9FE991B56A5C@konsulko.se>
- <1dedcee0-c5a2-47b3-ae13-315ad437ae1a@suse.cz>
-Content-Language: en-US
-From: Vitaly Wool <vitaly.wool@konsulko.se>
-In-Reply-To: <1dedcee0-c5a2-47b3-ae13-315ad437ae1a@suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DBBVD70MASPW.2LUTJ51Y6SGMI@kernel.org>
 
-
-
-On 7/14/25 10:14, Vlastimil Babka wrote:
-> On 7/12/25 14:43, Vitaly Wool wrote:
->>
->>
->>> On Jul 11, 2025, at 5:43 PM, Vlastimil Babka <vbabka@suse.cz> wrote:
->>>
->>> On 7/11/25 10:58, Harry Yoo wrote:
->>>> On Wed, Jul 09, 2025 at 07:24:41PM +0200, Vitaly Wool wrote:
->>>>> static __always_inline __realloc_size(2) void *
->>>>> -__do_krealloc(const void *p, size_t new_size, gfp_t flags)
->>>>> +__do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags, int nid)
->>>>> {
->>>>> void *ret;
->>>>> size_t ks = 0;
->>>>> @@ -4859,6 +4859,20 @@ __do_krealloc(const void *p, size_t new_size, gfp_t flags)
->>>>> if (!kasan_check_byte(p))
->>>>> return NULL;
->>>>>
->>>>> + /* refuse to proceed if alignment is bigger than what kmalloc() provides */
->>>>> + if (!IS_ALIGNED((unsigned long)p, align) || new_size < align)
->>>>> + return NULL;
->>>>
->>>> Hmm but what happens if `p` is aligned to `align`, but the new object is not?
->>>>
->>>> For example, what will happen if we  allocate object with size=64, align=64
->>>> and then do krealloc with size=96, align=64...
->>>>
->>>> Or am I missing something?
->>>
->>> Good point. We extended the alignment guarantees in commit ad59baa31695
->>> ("slab, rust: extend kmalloc() alignment guarantees to remove Rust padding")
->>> for rust in a way that size 96 gives you alignment of 32. It assumes that
->>> rust side will ask for alignments that are power-of-two and sizes that are
->>> multiples of alignment. I think if that assumption is still honored than
->>> this will keep working, but the check added above (is it just a sanity check
->>> or something the rust side relies on?) doesn't seem correct?
->>>
->>
->> It is a sanity check and it should have looked like this:
->>
->>          if (!IS_ALIGNED((unsigned long)p, align) && new_size <= ks)
->>                  return NULL;
->>
->> and the reasoning for this is the following: if we don’t intend to reallocate (new size is not bigger than the original size), but the user requests a larger alignment, it’s a miss. Does that sound reasonable?
+On Mon, Jul 14, 2025 at 05:05:40PM +0200, Benno Lossin wrote:
+[...]
+> >> >  //!
+> >> >  //! [`LKMM`]: srctree/tools/memory-model/
+> >> >  
+> >> > +pub mod generic;
+> >> 
+> >> Hmm, maybe just re-export the stuff? I don't think there's an advantage
+> >> to having the generic module be public.
+> >> 
+> >
+> > If `generic` is not public, then in the kernel::sync::atomic page, it
+> > won't should up, and there is no mentioning of struct `Atomic` either.
+> >
+> > If I made it public and also re-export the `Atomic`, there would be a
+> > "Re-export" section mentioning all the re-exports, so I will keep
+> > `generic` unless you have some tricks that I don't know.
 > 
-> So taking a step back indeed the align passed to krealloc is indeed used
-> only for this check. If it's really just a sanity check, then I'd rather not
-> add this parameter to krealloc functions at all - kmalloc() itself also
-> doesn't have it, so it's inconsistent that krealloc() would have it - but
-> only to return NULL and not e.g. try to reallocate for alignment.
+> Just use `#[doc(inline)]` :)
 > 
-> If it's not just a sanity check, it means it's expected that for some
-> sequence of valid kvrealloc_node_align() calls it can return NULL and then
-> rely on the fallback to vmalloc. That would be rather wasteful for the cases
-> like going from 64 to 96 bytes etc. So in that case it would be better if
-> krealloc did the reallocation, same as in cases when size increases. Of
-> course it would still have to rely on the documented alignment guarantees
-> only and not provide anything arbitrary. aligned_size() in
-> rust/kernel/alloc/allocator.rs is responsible for that, AFAIK.
+>     https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attribute.html#inline-and-no_inline
 > 
-> And I think it's not a sanity check but the latter - if the following is a
-> valid k(v)realloc sequence (from Rust POV). The individual size+align
-> combinations AFAIK are, but if it's valid to make them follow one another
-> them like this, I don't know.
+> > Also I feel it's a bit naturally that `AllowAtomic` and `AllowAtomicAdd`
+> > stay under `generic` (instead of re-export them at `atomic` mod level)
+> > because they are about the generic part of `Atomic`, right?
 > 
-> krealloc(size=96, align=32) -> can give object with 32 alignment only
-> krealloc(size=64, align=64) -> doesn't increase size but wants alignment 64
+> Why is that more natural? It only adds an extra path layer in any import
+> for atomics.
 > 
 
-We should be able to correctly process these. I agree that making such 
-cases fall back to vrealloc is suboptimal but it's a technically correct 
-behavior. I understand that you would rather have a reallocation on the 
-slub side in these cases, so this will look as
+Exactly, users need to go through extra steps if they want to use the
+"generic" part of the atomic, and I think that makes user more aware of
+what they are essentially doing:
 
-           if (!IS_ALIGNED((unsigned long)p, align) && new_size <= ks)
-                   goto alloc_new;
+- If you want to use the predefined types for atomic, just
 
-I'll modify/retest for the next patchset iteration.
+  use kernel::sync::atomic::Atomic;
 
-~Vitaly
+  and just operate on an `Atomic<_>`.
+
+- If you want to bring your own type for atomic operations, you need to
+
+  use kernel::sync::atomic::generic::AllowAtomic;
+
+  (essentially you go into the "generic" part of the atomic)
+
+  and provide your own implementation for `AllowAtomic` and then you
+  could use it for your own type.
+
+I feel it's natural because for extra features you fetch more modules
+in.
+
+Regards,
+Boqun
+
+> Unless you at some point want to add `concrete::Atomic<T>` etc, I would
+> just re-export them.
+> 
+[...]
