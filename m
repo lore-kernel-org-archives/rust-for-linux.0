@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA7323F41D;
-	Mon, 14 Jul 2025 09:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A184324291C;
+	Mon, 14 Jul 2025 09:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752486589; cv=none; b=AvQ3OMQje5CWDL2hFuMe2igK/K7CF+wyWzA/NT+L22iBUbc5CcxStpK9txG7f/2iugj0eKQ3/b5IZNaNJt1A9nS4s5tRp841UXdth8wnozDDbOpyNEhUoYnUmJv8ETi4JVYCLruGg3kaja+fkuFRi9iVqOE45we44zLoVQtMIPM=
+	t=1752486859; cv=none; b=dT4aNK+IKnXYMHhGdlacTZ7Dc8d+dm9d5rUc/XfJmHTV0xbIpNwav6Pg0SXJiDmCRsZi+A16k3aRkXfIPn9Qe0DuLHAbpiBpPCbnn+Mh+XP+G3ga09/waI3ElElHHbbVMucvKw8Rw76o6IinWmSDKTsFeOZNc35bibji8UmwCZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752486589; c=relaxed/simple;
-	bh=6Pi4vWH/FNwr6vj0hUHJc4WguZ+oLxIkRNeYBOuG9eA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=NSfMcp3URmcTJgqtVa0/s/sQgx4H/13EYVd3W8o0gbjJuzsR2MA+oujNKX1NLUK61j7JwmkwwYPuzfQnnOC+NfEOyOC+ZQ8sJSrL67wyuSYfHlklNvKaLvBd/A3bg+z4gk2FTh6fsNk9FfigOmI7XrDXTQ7gZgnIDN1BHF/7f+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9CUVXgs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752486859; c=relaxed/simple;
+	bh=Sm3eiLV4kStXDWKx6U4SBDM2lCQIVC/K/9Bi01tpfjY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=sO3NhAjn2hNh0cu/Ih/F47NIUJB8lCx/ZW1zOyFgvswmOQlsFRPTdLMWNbqXK2JnzadXlIK8dKvaesOz2f11ncIhR0YDBcbwWcozTU6N/aDFddeQXrn6VjdoBV0qy9/hJP5XOhY+4VhH5CltODXWI7xnIuH3um1woWz8V0Kv6ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WY/AEwHB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9CUVXgs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D569C4CEF4;
-	Mon, 14 Jul 2025 09:49:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WY/AEwHB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B672EC4CEED;
+	Mon, 14 Jul 2025 09:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752486588;
-	bh=6Pi4vWH/FNwr6vj0hUHJc4WguZ+oLxIkRNeYBOuG9eA=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=o9CUVXgsG8LGcukZyMpLGiPz/OfA65Vo7qmN1vvCnNJTNccD2LjjKG/wTAl0SFKY7
-	 G6QUqrRoKA+gA0cXlAyuSK5z41m1M9Qt4eWxMOy2vrqQwa6hJUZK7ujtE7vEYCkndp
-	 VdKk/ez88p+Qcr5X76SoLwBWk9UQA1bFmePkP7uS4L2Nuo3XxcKAW9IPl9KmaAJsHv
-	 37fja+9SzJwyu/2IP/umkHTJoQV1IdeCU8GFKhB+F4/bs1VteMITAc3ag9kO9KlA0B
-	 d9fx14MrmrUwqD47NGbMovZzEtBWatV3ddKTWDWwTpWuxaaTx0uhoYk8Mnfk0gFbJo
-	 hXUTCpz7bSjEw==
+	s=k20201202; t=1752486855;
+	bh=Sm3eiLV4kStXDWKx6U4SBDM2lCQIVC/K/9Bi01tpfjY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WY/AEwHBn0K4zxiVE/Mvzb4ddg1YNQchRTLCar/ssDK3RJZ0U+IsCmOn7eO2lGTyd
+	 k6BrxoVGUlNwyiVUepUPOo2R4kQEvof5v/nOegkkKFeTMwBBOEOLUz4S+8OkzF3cSa
+	 F6bzUgVF2GP0psgTnmZ5Mpg66HVoLA1LnG5K60YozrnxNm2R+WZFh4VYpnNRd45osF
+	 oqadaAwBc7PYLPGROGxylvfE4udBKMxXyo4IxlKyq1gRFvTX+v16HmkCXazeutl2nD
+	 zGieM0nEjmg6CYqUIqqfA2LoHkHM1weKXlSMjzdv+jBlniKYoQzjsEaJLeDojx9XG2
+	 SEONkHFiGhg9Q==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,60 +34,116 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Jul 2025 11:49:44 +0200
-Message-Id: <DBBONAMQ0C3X.825M3H3R2IUY@kernel.org>
-To: "Greg KH" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 2/2] rust: device: implement Device::as_bound()
-Cc: <rafael@kernel.org>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
- <lossin@kernel.org>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
- <tmgross@umich.edu>, <daniel.almeida@collabora.com>,
- <m.wilczynski@samsung.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-References: <20250713182737.64448-1-dakr@kernel.org>
- <20250713182737.64448-2-dakr@kernel.org>
- <2025071411-casually-cold-6aff@gregkh>
-In-Reply-To: <2025071411-casually-cold-6aff@gregkh>
+Date: Mon, 14 Jul 2025 11:54:10 +0200
+Message-Id: <DBBOQP2KELBM.IWOU5PB0KR27@kernel.org>
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Shankari Anand" <shankari.ak0208@gmail.com>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 1/4] rust: move ARef and AlwaysRefCounted to
+ sync::aref
+X-Mailer: aerc 0.20.1
+References: <20250713213614.188921-1-shankari.ak0208@gmail.com>
+In-Reply-To: <20250713213614.188921-1-shankari.ak0208@gmail.com>
 
-On Mon Jul 14, 2025 at 7:30 AM CEST, Greg KH wrote:
-> On Sun, Jul 13, 2025 at 08:26:54PM +0200, Danilo Krummrich wrote:
->> Provide an unsafe functions for abstractions to convert a regular
->> &Device to a &Device<Bound>.
->>=20
->> This is useful for registrations that provide certain guarantees for the
->> scope of their callbacks, such as IRQs or certain class device
->> registrations (e.g. PWM, miscdevice).
->
-> Do we have an example where this can be used today in the tree, or is
-> this only for new stuff going forward that would use it?
+On Sun Jul 13, 2025 at 11:36 PM CEST, Shankari Anand wrote:
+> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+> new file mode 100644
+> index 000000000000..c62dbb28282e
+> --- /dev/null
+> +++ b/rust/kernel/sync/aref.rs
+> @@ -0,0 +1,192 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Built-in Reference Counting Support
+> +
+> +/// Types that are _always_ reference counted.
+> +///
+> +/// It allows such types to define their own custom ref increment and de=
+crement functions.
+> +/// Additionally, it allows users to convert from a shared reference `&T=
+` to an owned reference
+> +/// [`ARef<T>`].
+> +///
+> +/// This is usually implemented by wrappers to existing structures on th=
+e C side of the code. For
+> +/// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to=
+ create reference-counted
+> +/// instances of a type.
+> +use core::{marker::PhantomData, mem::ManuallyDrop, ops::Deref, ptr::NonN=
+ull};
 
-There's miscdevice in tree, but to be fair, miscdevice doesn't need it with=
-out
-my patch series [1] adding driver support for the existing miscdevice
-abstractions; the patch in [2] out of this series would use it within
-args_from_registration().
+This line seems misplaced?
 
-The PWM abstractions [3] need it in bound_parent_device(). The use-case is =
-the
-same as everywhere else, PWM chips never out-live driver unbind, hence they=
- can
-provide the corresponding bus device as &Device<Bound>.
+> +
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that increments to the reference count keep=
+ the object alive in memory
+> +/// at least until matching decrements are performed.
+> +///
+> +/// Implementers must also ensure that all instances are reference-count=
+ed. (Otherwise they
+> +/// won't be able to honour the requirement that [`AlwaysRefCounted::inc=
+_ref`] keep the object
+> +/// alive.)
+> +pub unsafe trait AlwaysRefCounted {
+> +    /// Increments the reference count on the object.
+> +    fn inc_ref(&self);
+> +
+> +    /// Decrements the reference count on the object.
+> +    ///
+> +    /// Frees the object when the count reaches zero.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that there was a previous matching increment=
+ to the reference count,
+> +    /// and that the object is no longer used after its reference count =
+is decremented (as it may
+> +    /// result in the object being freed), unless the caller owns anothe=
+r increment on the refcount
+> +    /// (e.g., it calls [`AlwaysRefCounted::inc_ref`] twice, then calls
+> +    /// [`AlwaysRefCounted::dec_ref`] once).
+> +    unsafe fn dec_ref(obj: NonNull<Self>);
+> +}
 
-The same is true for IRQ registrations [4]. free_irq() is guaranteed to be
-called before driver unbind, hence we can provide a &Device<Bound> in the I=
-RQ
-callbacks.
+> +impl<T: AlwaysRefCounted> Drop for ARef<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: The type invariants guarantee that the `ARef` owns th=
+e reference we're about to
+> +        // decrement.
+> +        unsafe { T::dec_ref(self.ptr) };
+> +    }
+> +}
+> +
+> +/// A sum type that always holds either a value of type `L` or `R`.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::types::Either;
+> +///
+> +/// let left_value: Either<i32, &str> =3D Either::Left(7);
+> +/// let right_value: Either<i32, &str> =3D Either::Right("right value");
+> +/// ```
+> +pub enum Either<L, R> {
+> +    /// Constructs an instance of [`Either`] containing a value of type =
+`L`.
+> +    Left(L),
+> +
+> +    /// Constructs an instance of [`Either`] containing a value of type =
+`R`.
+> +    Right(R),
+> +}
 
-Ultimately, we want to provide this "cookie" in any driver scope that can b=
-e
-proven to be lifetime wise limited to device / driver unbind, so there'll b=
-e
-much more users.
+What is the `Either` type doing here? Maybe a copy-paste mistake?
 
-[1] https://lore.kernel.org/lkml/20250530142447.166524-1-dakr@kernel.org/
-[2] https://lore.kernel.org/lkml/20250530142447.166524-7-dakr@kernel.org/
-[3] https://lore.kernel.org/lkml/20250710-rust-next-pwm-working-fan-for-sen=
-ding-v11-3-93824a16f9ec@samsung.com/
-[4] https://lore.kernel.org/lkml/20250703-topics-tyr-request_irq-v6-3-74103=
-bdc7c52@collabora.com/
+---
+Cheers,
+Benno
