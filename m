@@ -1,278 +1,90 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B024271466
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 09:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4924C2D5C6B
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 10:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752573251; cv=none; b=kgY3tndszKFcPshFuVjN9/cbIvEHB4LsKpOYe5nHwN5OoDWPqFqxJumkvMq7Rerxk4n22iIBHoOfJdeLUclnYZXnVAPVpxjDBpCqIyBtXJl/y6RZFWWYILeDRubHp4aryScooC7UCHGlQ2gmsoFmhF7QLSVG94zmAgbZCeu17Fg=
+	t=1752573620; cv=none; b=Lul0ban1rpZXlQLihfy7r8dcAGTfJdnqhvaCnyYa4lvzFTu+FzP9MxpVf0QT7U4oBFGNfwEvxuFs4yPkFUVOLU/iq8UjbRJugb+EczGMbY3zFtk0OcWv0GfFBSSvRECsjBJiDtoEKuUgN7djKJ1E9CG4YcsDeAnQD9D+6uGKhAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752573251; c=relaxed/simple;
-	bh=FItGyW8nimCshTyrVdStcZ8wr8/YBuniLgbjSo3h7WQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KEZnQTzmCG/E2wO0N3PJUcsdwf+cp3z12F2NdRTQ1Bj7/fwUuK/CcwEtr21llQAwN/tDnkHgLRmHu0Qjs5SOxhM6q4Q/n6CRz0jOSkj3LzRhoEKXm053K/s3Yfut68BSGYGKQVPYol+ggOIalKsPn6n7FEMFed26c5s4G9SvUKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nYIDa0s9; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1752573620; c=relaxed/simple;
+	bh=unOJnRtpV5M6bJg+GHhZaizhNYUWqBr/lbEYY15USvM=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=XWFWnVLQoThSAHLFpoj5QH5AmMVhM9Hz7P7cvcMQeKnooJz+B8rANuHeipVqyS/BZLFayfHmD4+7jvbz6XeiVctY+1rgX92PZNxZEa4G0nRPDi+lWoWZQfbVivDHyoESnt0MtiDn8lA12AiQ89NYRjwKnByKZQjOFAPQRvfa5SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wg2T7P9p; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nYIDa0s9"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-451ecc3be97so27714335e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 02:54:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752573248; x=1753178048; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cp5GBgsM/GT6S6VKbK948jD04WLTfcMDMRyGqwJi5HU=;
-        b=nYIDa0s9EPbv0SG1k5u2P0TbXAv6RPl0uXt9Fdwu9THSi8axcq5BwtzzjO502tmBQG
-         94ZrOHG+fmKr96JMF2DMrZqjhSaw6Kbg4Kbui/ZVE2WXAy+OhEMT1dG5I8/K406T9Rwa
-         qqE37onECrJ3xuZ3qFkw6cwTcAczRJ+Jvb3kU09kZ0jF+6h8F3XSxNxEXE5gX1gAs06Q
-         MrOFiv3H6cyGHXNKkiBnd04SC0jfUkbPu02mgfFSf/ueGlSU+oR1ZsJp+azlk6pulHMc
-         j1rxdnbEPPn5zR9y85F5R86kYxtS+ba1rhTxLdJd/8bMMJig5iLgF1Xs4/wLAXyeRO4B
-         BlpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752573248; x=1753178048;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cp5GBgsM/GT6S6VKbK948jD04WLTfcMDMRyGqwJi5HU=;
-        b=AkUBEhRQznen2CTad+ix9ZsGrx7BXfcZgYSMKQnBWM8O62EEmBYW7N7BVif+2JM+2v
-         Aiz2X7IdOah3s+GCqVlxI7PQS9qS0W5Y/r0phscbAnCxwtHJkGmIbItBFinMLgbKiqZf
-         ZssWtYDxxB6f1xQR+PSP9QafSqZUU+Ewfvvmr1giSXPisgjjDHZw7DdeCb/kYDHelF5/
-         YIsd5T0IadpWvTYke5gTjilxcPmyHM1tyFoNQ64xp0Uf2F9ug5yItau2QoITQIeM/PHr
-         MQEjB30vReZLqwjdVJjPsuvY/2w/cHXZk+8ilub7p0AnEbLq8PZZ6sZbstkmt+dt5lsX
-         cUOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWb7f0p9qSl9QBRckSPwb4eJoQzvJXtFRGAvRAItq0m64QrkODOeiIwA9BnHb2hqeRJdFq/fCz6ZoF2/AnnKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzo4pwbukymvUcHlo5FeblTLi4Pl+8yb+A8qcdLL6ueYKBf2mkm
-	FmpiGcjdE6ZdCWvCj8L0fkxDhLkuevHir2quWuxTqpFTctkZa5g6ho2LoDBvBUWpz6oMZrJFdFS
-	wS5ZP2PmnHxR8VKV1ug==
-X-Google-Smtp-Source: AGHT+IGGxjE3JPjoWX6iYc3kdOka7g4M+LKkBFbtVuyY2sgGCBGSXjsN0V1abh1tiQmQYxqqwxXDiLdFIZRicAk=
-X-Received: from wmqb20.prod.google.com ([2002:a05:600c:4e14:b0:456:25e7:be1])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:34c5:b0:43c:fe5e:f040 with SMTP id 5b1f17b1804b1-45565edc8f4mr130514075e9.23.1752573247648;
- Tue, 15 Jul 2025 02:54:07 -0700 (PDT)
-Date: Tue, 15 Jul 2025 09:54:06 +0000
-In-Reply-To: <20250711-rnull-up-v6-16-v3-16-3a262b4e2921@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wg2T7P9p"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1752573615;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Nng2QLzQFaX12lzTkgmMSqRelbdU2mEPT5KatLQKsfI=;
+	b=Wg2T7P9peGdZRAPmgd9HZG5ovvA84Q+mbmetF2MYhCxQAH0TOli4/mbm2ZQWX5jaDgY0oK
+	u+vsxbDjglvAXiryksGT2qSt9Z2sveOHD3XI7c1KxdoxDCV9BrW0L51pzhtzhOQRdh7mnp
+	49okDzwuiiPtT7mVricleQsPO2o8sCM=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Hui Zhu <zhuhui@kylinos.cn>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/3] rust: allocator: Vmalloc: Support alignments larger than PAGE_SIZE
+Date: Tue, 15 Jul 2025 17:59:45 +0800
+Message-Id: <cover.1752573305.git.zhuhui@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org> <20250711-rnull-up-v6-16-v3-16-3a262b4e2921@kernel.org>
-Message-ID: <aHYlPkFKTafRypNu@google.com>
-Subject: Re: [PATCH v3 16/16] rnull: add soft-irq completion support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
-	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Jul 11, 2025 at 01:43:17PM +0200, Andreas Hindborg wrote:
-> rnull currently only supports direct completion. Add option for completing
-> requests across CPU nodes via soft IRQ or IPI.
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+There is a TODO in Vmalloc::realloc "Support alignments larger than
+PAGE_SIZE."
 
->  drivers/block/rnull/configfs.rs | 61 +++++++++++++++++++++++++++++++++++++++--
->  drivers/block/rnull/rnull.rs    | 32 +++++++++++++--------
->  2 files changed, 80 insertions(+), 13 deletions(-)
-> 
-> diff --git a/drivers/block/rnull/configfs.rs b/drivers/block/rnull/configfs.rs
-> index 6c0e3bbb36ec..3ae84dfc8d62 100644
-> --- a/drivers/block/rnull/configfs.rs
-> +++ b/drivers/block/rnull/configfs.rs
-> @@ -1,7 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0
->  
->  use super::{NullBlkDevice, THIS_MODULE};
-> -use core::fmt::Write;
-> +use core::fmt::{Display, Write};
->  use kernel::{
->      block::mq::gen_disk::{GenDisk, GenDiskBuilder},
->      c_str,
-> @@ -36,7 +36,7 @@ impl AttributeOperations<0> for Config {
->  
->      fn show(_this: &Config, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
->          let mut writer = kernel::str::Formatter::new(page);
-> -        writer.write_str("blocksize,size,rotational\n")?;
-> +        writer.write_str("blocksize,size,rotational,irqmode\n")?;
->          Ok(writer.bytes_written())
->      }
->  }
-> @@ -58,6 +58,7 @@ fn make_group(
->                  blocksize: 1,
->                  rotational: 2,
->                  size: 3,
-> +                irqmode: 4,
->              ],
->          };
->  
-> @@ -72,6 +73,7 @@ fn make_group(
->                      rotational: false,
->                      disk: None,
->                      capacity_mib: 4096,
-> +                    irq_mode: IRQMode::None,
->                      name: name.try_into()?,
->                  }),
->              }),
-> @@ -79,6 +81,34 @@ fn make_group(
->      }
->  }
->  
-> +#[derive(Debug, Clone, Copy)]
-> +pub(crate) enum IRQMode {
-> +    None,
-> +    Soft,
-> +}
-> +
-> +impl TryFrom<u8> for IRQMode {
-> +    type Error = kernel::error::Error;
-> +
-> +    fn try_from(value: u8) -> Result<Self> {
-> +        match value {
-> +            0 => Ok(Self::None),
-> +            1 => Ok(Self::Soft),
-> +            _ => Err(kernel::error::code::EINVAL),
-> +        }
-> +    }
-> +}
-> +
-> +impl Display for IRQMode {
-> +    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-> +        match self {
-> +            Self::None => f.write_str("0")?,
-> +            Self::Soft => f.write_str("1")?,
-> +        }
-> +        Ok(())
-> +    }
-> +}
-> +
->  #[pin_data]
->  pub(crate) struct DeviceConfig {
->      #[pin]
-> @@ -92,6 +122,7 @@ struct DeviceConfigInner {
->      block_size: u32,
->      rotational: bool,
->      capacity_mib: u64,
-> +    irq_mode: IRQMode,
->      disk: Option<GenDisk<NullBlkDevice>>,
->  }
->  
-> @@ -126,6 +157,7 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
->                  guard.block_size,
->                  guard.rotational,
->                  guard.capacity_mib,
-> +                guard.irq_mode,
->              )?);
->              guard.powered = true;
->          } else if guard.powered && !power_op {
-> @@ -218,3 +250,28 @@ fn store(this: &DeviceConfig, page: &[u8]) -> Result {
->          Ok(())
->      }
->  }
-> +
-> +#[vtable]
-> +impl configfs::AttributeOperations<4> for DeviceConfig {
-> +    type Data = DeviceConfig;
-> +
-> +    fn show(this: &DeviceConfig, page: &mut [u8; PAGE_SIZE]) -> Result<usize> {
-> +        let mut writer = kernel::str::Formatter::new(page);
-> +        writer.write_fmt(fmt!("{}\n", this.data.lock().irq_mode))?;
-> +        Ok(writer.bytes_written())
-> +    }
-> +
-> +    fn store(this: &DeviceConfig, page: &[u8]) -> Result {
-> +        if this.data.lock().powered {
-> +            return Err(EBUSY);
-> +        }
-> +
-> +        let text = core::str::from_utf8(page)?.trim();
-> +        let value = text
-> +            .parse::<u8>()
-> +            .map_err(|_| kernel::error::code::EINVAL)?;
+These commits make allocator vmalloc support alignments larger than
+PAGE_SIZE.
+The function vrealloc_align is added to vmalloc.c to support reallocating
+aligned vmap pages.
+When Vmalloc::realloc intends to reallocate memory aligned beyond PAGE_SIZE,
+vrealloc_align should be used instead of vrealloc, thus enabling support
+for alignments larger than PAGE_SIZE.
+And add a sample to the samples memory allocator usage.
 
-EINVAL is in the prelude.
+Hui Zhu (3):
+  vmalloc: Add vrealloc_align to support allocation of aligned vmap
+    pages
+  rust: allocator: Vmalloc: Support alignments larger than PAGE_SIZE
+  rust: add a sample allocator usage
 
-> +
-> +        this.data.lock().irq_mode = IRQMode::try_from(value)?;
-> +        Ok(())
-> +    }
-> +}
-> diff --git a/drivers/block/rnull/rnull.rs b/drivers/block/rnull/rnull.rs
-> index 371786be7f47..85b1509a3106 100644
-> --- a/drivers/block/rnull/rnull.rs
-> +++ b/drivers/block/rnull/rnull.rs
-> @@ -4,6 +4,7 @@
->  
->  mod configfs;
->  
-> +use configfs::IRQMode;
->  use kernel::{
->      alloc::flags,
->      block::{
-> @@ -54,35 +55,44 @@ fn new(
->          block_size: u32,
->          rotational: bool,
->          capacity_mib: u64,
-> +        irq_mode: IRQMode,
->      ) -> Result<GenDisk<Self>> {
->          let tagset = Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
->  
-> +        let queue_data = Box::new(QueueData { irq_mode }, flags::GFP_KERNEL)?;
-> +
->          gen_disk::GenDiskBuilder::new()
->              .capacity_sectors(capacity_mib << (20 - block::SECTOR_SHIFT))
->              .logical_block_size(block_size)?
->              .physical_block_size(block_size)?
->              .rotational(rotational)
-> -            .build(fmt!("{}", name.to_str()?), tagset, ())
-> +            .build(fmt!("{}", name.to_str()?), tagset, queue_data)
->      }
->  }
->  
-> +struct QueueData {
-> +    irq_mode: IRQMode,
-> +}
-> +
->  #[vtable]
->  impl Operations for NullBlkDevice {
-> -    type QueueData = ();
-> +    type QueueData = KBox<QueueData>;
->  
->      #[inline(always)]
-> -    fn queue_rq(_queue_data: (), rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result {
-> -        mq::Request::end_ok(rq)
-> -            .map_err(|_e| kernel::error::code::EIO)
-> -            // We take no refcounts on the request, so we expect to be able to
-> -            // end the request. The request reference must be unique at this
-> -            // point, and so `end_ok` cannot fail.
-> -            .expect("Fatal error - expected to be able to end request");
-> -
-> +    fn queue_rq(queue_data: &QueueData, rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result {
-> +        match queue_data.irq_mode {
-> +            IRQMode::None => mq::Request::end_ok(rq)
-> +                .map_err(|_e| kernel::error::code::EIO)
-> +                // We take no refcounts on the request, so we expect to be able to
-> +                // end the request. The request reference must be unique at this
-> +                // point, and so `end_ok` cannot fail.
-> +                .expect("Fatal error - expected to be able to end request"),
-> +            IRQMode::Soft => mq::Request::complete(rq),
-> +        }
->          Ok(())
->      }
->  
-> -    fn commit_rqs(_queue_data: ()) {}
-> +    fn commit_rqs(_queue_data: &QueueData) {}
->  
->      fn complete(rq: ARef<mq::Request<Self>>) {
->          mq::Request::end_ok(rq)
-> 
-> -- 
-> 2.47.2
-> 
-> 
+ include/linux/vmalloc.h        |   5 ++
+ mm/vmalloc.c                   |  80 ++++++++++++++++---------
+ rust/helpers/vmalloc.c         |   7 +++
+ rust/kernel/alloc/allocator.rs |  32 ++++++----
+ samples/rust/Kconfig           |  10 ++++
+ samples/rust/Makefile          |   1 +
+ samples/rust/rust_allocator.rs | 104 +++++++++++++++++++++++++++++++++
+ 7 files changed, 199 insertions(+), 40 deletions(-)
+ create mode 100644 samples/rust/rust_allocator.rs
+
+-- 
+2.43.0
+
