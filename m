@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B292459E5;
-	Tue, 15 Jul 2025 16:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5939F1EA7D2;
+	Tue, 15 Jul 2025 16:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752595220; cv=none; b=qkBVmz3cCF57ZLKJYdj8LYjz2ut0T9WtCghtQ3Tmx7h4D/Ao21GX8FsBzLI3WEePCDcayEPg/ZuBZNxYZTs/JSNonrxnJYm8U0h42TkhLEsfQxphrKgvwRReZk0OqDxIhQgfG+G6E9xrHwc3crPidEZGQ9QEKR27VWo2FzMQemA=
+	t=1752595310; cv=none; b=JhC65P3dS8H9FhGbm0vS3BGEn2zJ5V82ESgiBp9XHFfHRFdz4e4t994modw3fOhDPQq737hgBhsefBLsKdWFIqWmlV58nwQ4ZKBLV4vxmnCO9uWdj8jzLFXuUQuI4LMMMm1Pv6jdjxOolDE+gvlRsz2nYkoMUKO0cIHG3efliWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752595220; c=relaxed/simple;
-	bh=NFRRAPbroRcvQO7QrkrwIOxWqkuN0ik8gVTjoc3MuBU=;
+	s=arc-20240116; t=1752595310; c=relaxed/simple;
+	bh=DdqdkgiI5juyrgRHxtfAw0lfeAZe216KfAyarFrwOc0=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=VCLFsSGh2kMy5CEa28F9IbWbxMr59Lp/N85z3gPGG2/AvaUa/StQ44TjW/Ssq+9wjLzfzHu9ponoaLFMi/WqdeNk3d62RLMX4t3F7mGzztiX/Dekjry+bJgLajXfKmzE2KkauI6DDco/tJ+B5ZooKOS+8YESDmk394Xgiusb/Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jGaf+6DZ; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=u2uUFPJs623sXMLyjTpfzEa3V6fQlJdMRrk1pMjrrl2spYuuOuc1SpKs90oOewp3WQ6bLSqGYSSTvqQc5ocC68DiP6TpQbb3q91zzPX1+oN0CItfAm48XrrVP8uQPRxlFOaLNl7STgZrDsh+7Cda0eF//R/7GFFEMaxaDu+O1yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XzCmk5Mn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGaf+6DZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EDFC4CEF1;
-	Tue, 15 Jul 2025 16:00:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XzCmk5Mn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C570BC4CEE3;
+	Tue, 15 Jul 2025 16:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752595219;
-	bh=NFRRAPbroRcvQO7QrkrwIOxWqkuN0ik8gVTjoc3MuBU=;
+	s=k20201202; t=1752595309;
+	bh=DdqdkgiI5juyrgRHxtfAw0lfeAZe216KfAyarFrwOc0=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=jGaf+6DZBhfFDtMRlzIuwww6S27E7wxGMCcofLroSTG1Ehn//IjQfvrM7iYnaRAQt
-	 pzIXQhxzzIFeilFzRhmPpUDNRztCwE/0YnH5oY1xLvpRMrFr46+UiU5iUJvSSh+0v7
-	 9sMk0zr40AFePOi9hTnsUflJEWKXEASkox+ivR16tJ16FrGu8vbbMuwx1iDmzuznVn
-	 NWScGbnGI2DIY973GiIVaWPMaWXPx7wJJ6MOmEtXbS56c/IaoophlBlwjIhSUncALw
-	 b5MQkdC8qGpK/mnrKNLHEZT/5SUGIN1v/eUcHrLKFbbUumh5rjJm9j8RLZ1vwoaN6C
-	 pdqglOeP3JCNQ==
+	b=XzCmk5MnGIZ36EIsWFAYiW1J+lxwjGT0Oqt/W07MSBWmYxII9Qja8BCjuWncMg72t
+	 EvoMQFMWgZ+IlGN1jdFKE1JrU8kdHDz9tZunqOT4eVCq26bMiiLHQOKeNt2vsny+8A
+	 zyY1JRdhNAlx/4Gyk5yRI70JUSOman3CCJXJYs+7nHBClOwgw1Dib4SrfcKuows8iT
+	 xa/mjLfqY04mA7aCw+WfjaALm8TrmVZOsqNFES8lxzGrFQ1ijWjKlFaSKbYRAbqqEw
+	 +MwpOF99HDtU1lDdR6+Lq6KYrn1f4ezUtuKMS7TFFplPx/DyeBKvzfbRlkOrtf9U1m
+	 Uf/JceIi/JzPA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,14 +34,14 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 18:00:14 +0200
-Message-Id: <DBCR5IFQFMUU.23UNP95G4NKWA@kernel.org>
+Date: Tue, 15 Jul 2025 18:01:44 +0200
+Message-Id: <DBCR6O0P8QSZ.30WTN1G293YC4@kernel.org>
 Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Trevor Gross"
  <tmgross@umich.edu>, <linux-mm@kvack.org>,
  <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] rust: alloc: take the allocator into account for
- FOREIGN_ALIGN
+Subject: Re: [PATCH 1/2] rust: alloc: specify the minimum alignment of each
+ allocator
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>, "Lorenzo Stoakes"
  <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
@@ -51,61 +51,30 @@ To: "Alice Ryhl" <aliceryhl@google.com>, "Lorenzo Stoakes"
  "Miguel Ojeda" <ojeda@kernel.org>
 X-Mailer: aerc 0.20.1
 References: <20250715-align-min-allocator-v1-0-3e1b2a5516c0@google.com>
- <20250715-align-min-allocator-v1-2-3e1b2a5516c0@google.com>
-In-Reply-To: <20250715-align-min-allocator-v1-2-3e1b2a5516c0@google.com>
+ <20250715-align-min-allocator-v1-1-3e1b2a5516c0@google.com>
+In-Reply-To: <20250715-align-min-allocator-v1-1-3e1b2a5516c0@google.com>
 
 On Tue Jul 15, 2025 at 3:46 PM CEST, Alice Ryhl wrote:
-> When converting a Box<T> into a void pointer, the allocator might
-> guarantee a higher alignment than the type itself does, and in that case
-> it is guaranteed that the void pointer has that higher alignment.
+> The kernel's allocators sometimes provide a higher alignment than the
+> end-user requested, so add a new constant on the Allocator trait to let
+> the allocator specify what its minimum guaranteed alignment is.
 >
-> This is quite useful when combined with the XArray, which you can only
-> create using a ForeignOwnable whose FOREIGN_ALIGN is at least 4. This
-> means that you can now always use a Box<T> with the XArray no matter the
-> alignment of T.
+> This allows the ForeignOwnable trait to provide a more accurate value of
+> FOREIGN_ALIGN when using a pointer type such as Box, which will be
+> useful with certain collections such as XArray that store its own data
+> in the low bits of pointers.
 >
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Hey this is cool!
+With the wording changed according to Danilo's suggestion:
 
 Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-One question below.
-
-> ---
->  rust/kernel/alloc/kbox.rs | 15 +++++++++++----
->  rust/kernel/sync/arc.rs   |  6 +++---
->  2 files changed, 14 insertions(+), 7 deletions(-)
-
-> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> index 63a66761d0c7d752e09ce7372bc230661b2f7c6d..74121cf935f364c16799b5c31=
-cc88714dfd6b702 100644
-> --- a/rust/kernel/sync/arc.rs
-> +++ b/rust/kernel/sync/arc.rs
-> @@ -373,10 +373,10 @@ pub fn into_unique_or_drop(self) -> Option<Pin<Uniq=
-ueArc<T>>> {
->      }
->  }
-> =20
-> -// SAFETY: The pointer returned by `into_foreign` comes from a well alig=
-ned
-> -// pointer to `ArcInner<T>`.
-> +// SAFETY: The pointer returned by `into_foreign` was originally allocat=
-ed as an
-> +// `KBox<ArcInner<T>>`, so that type is what determines the alignment.
->  unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
-> -    const FOREIGN_ALIGN: usize =3D core::mem::align_of::<ArcInner<T>>();
-> +    const FOREIGN_ALIGN: usize =3D <KBox<ArcInner<T>> as ForeignOwnable>=
-::FOREIGN_ALIGN;
-
-Do we at some point also want to give people the option to use vmalloc
-for `Arc`?
 
 ---
 Cheers,
 Benno
 
-> =20
->      type Borrowed<'a> =3D ArcBorrow<'a, T>;
->      type BorrowedMut<'a> =3D Self::Borrowed<'a>;
-
+> ---
+>  rust/kernel/alloc.rs           | 8 ++++++++
+>  rust/kernel/alloc/allocator.rs | 8 ++++++++
+>  2 files changed, 16 insertions(+)
