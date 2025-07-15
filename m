@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C640E2561AE;
-	Tue, 15 Jul 2025 15:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D651DF99C;
+	Tue, 15 Jul 2025 15:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752594341; cv=none; b=ttDvt80r0YNWLOmjg5Q1HYdwd6eowFHorsocNSdWdawwvs5eYzvWGPXGAKMbj6/ql5L2NnlsBZJry1DuYMkO73YwbC4FvndhGwtfHxnHXGSYYgJS9o8ZDK+zEC5oyO2hmhPX/5jvT5tVlbdb1+fzdYFOoaSmeYuwlh9B4hGyNaA=
+	t=1752594498; cv=none; b=f2cEGYfuXjtjH2zF8xzGX5zzz3Mv8BCse5n+qkihRiFlos9U1d8Qght4c1h8foa3NCNT81sLFSVvC6IdLj95hfilu8cumlfLYTph1ZAOwQP4f52yojV7xYMyC3gFGY64rVlBkQSY3LuQ4sHk3fiYsIe9IM0lYLIgwVXoNhnfSe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752594341; c=relaxed/simple;
-	bh=SoTTWR6ZYPVzO+P1szw9alpdHsgJzaMP2zOCwQgnPoE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=QFDkemJdLKz8/o/9rOtyJNr6OEjFjR+dXBCFl/iYL3vrmdQ/QZyYtX5CJSFl63nfzNPXLXi6FCXNt0H4Yc+2boOHZ0WtHmlnP/akhuQd0YS1UwcMirwsf4MGMKKF6ZtQrqWxPql+5Ysgdi71ovzTkgQ1qlD6rqr0GM9seN5Z818=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g9tQs8nX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752594498; c=relaxed/simple;
+	bh=yDmUHWGgxGRLJjN/sJvcSFzoD0oqxgTLlj8Aakr+6zc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=QCnI5pock4KpAFClCNaY1Es6VGjDwFvy2w0gKFBvUnk6aLM3TbsDxcKPYv9ZOTWTPNymnl6ztRc3O0ovsdLn1XEnMV+VZ8mkoU3NF+kemhYwTjpCQ348jJKG51txRP6ekbt9I2mltKvq9BQRZ3yP9AT5JC6DYTpGO7hjgNnusJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ll5nqSFn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g9tQs8nX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E437C4CEF4;
-	Tue, 15 Jul 2025 15:45:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ll5nqSFn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F04C4CEE3;
+	Tue, 15 Jul 2025 15:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752594341;
-	bh=SoTTWR6ZYPVzO+P1szw9alpdHsgJzaMP2zOCwQgnPoE=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=g9tQs8nXOZpSPTy6wTPYimiG85CQwvghEN6iP5B787Cu4JXppPymJre+V6+gVnuIa
-	 r0pObQgssRddUBt+DxVjVMSc5ycgTu9hyTJhwvLEsA+0ixJ69bjGcfaFZEfc8yDkWa
-	 PGars/6u9wVPBD2q6GrnWCjzrkAdQOl6re6/+2ydLYyJok543bDEQd7W+LuJmL0mrt
-	 PhqpCw4SZ0sN/gLRr3TSli0Fj1OjM6TN8qSF5js7FOelHQ/425f35YaI6Yen/IWlm1
-	 X9v7D8uA1sFJfozdtBZtuhN8WYeiL/7s8uF8wkbUMXjUz854NFdruXO9eBjKDpzXbR
-	 /TSca0p65vqCw==
+	s=k20201202; t=1752594497;
+	bh=yDmUHWGgxGRLJjN/sJvcSFzoD0oqxgTLlj8Aakr+6zc=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=ll5nqSFnkHQRwDoKLvbKe//dMvkq9OGgdcszxpaJTiArXkMBFlBEGznIoL9ge1UqC
+	 tPNW6WABr+jUY3rf81U5zoaNpmrRK+D1Xh0rlRVG514AbLDqlG4YNK6ttjnHgFrNYU
+	 EyyCygEyO645JjBNy57Mzk+zWPur8Dk6bVgjp6YIHobOUWKGXE+8OFcc9+PEIZpO6g
+	 bVdgyi+HToePqiBI2Uq23KG+Ky8Uu8yrQnna/Lpx98z1wcnuXAuC9+Nd+tuCjXYHFL
+	 5g0d6/IiUJYoiDbpZart9nJhJyWh0hRgX7ts8SQSWemTGI0/SvZypERIvavb2NyXce
+	 1YKkrQHJUeE1g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,153 +34,74 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 17:45:34 +0200
-Message-Id: <DBCQUAA42DHH.23BNUVOKS38UI@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v7 6/9] rust: sync: atomic: Add the framework of
- arithmetic operations
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250714053656.66712-1-boqun.feng@gmail.com>
- <20250714053656.66712-7-boqun.feng@gmail.com>
- <DBCL7YUSRMXR.22SMO1P7D5G60@kernel.org> <aHZYt3Csy29GF2HM@Mac.home>
-In-Reply-To: <aHZYt3Csy29GF2HM@Mac.home>
+Date: Tue, 15 Jul 2025 17:48:12 +0200
+Message-Id: <DBCQWAOZIGXF.28L8WWU55L1E1@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v13 2/4] mm/slub: allow to set node and align in
+ k[v]realloc
+Cc: "Vitaly Wool" <vitaly.wool@konsulko.se>, "Linus Torvalds"
+ <torvalds@linux-foundation.org>, <linux-mm@kvack.org>,
+ <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ <rust-for-linux@vger.kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ <linux-bcachefs@vger.kernel.org>, <bpf@vger.kernel.org>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "Jann Horn" <jannh@google.com>, "Pedro
+ Falcato" <pfalcato@suse.de>, "Kent Overstreet" <kent.overstreet@linux.dev>
+To: "Vlastimil Babka" <vbabka@suse.cz>
+References: <20250715135645.2230065-1-vitaly.wool@konsulko.se>
+ <20250715135815.2230224-1-vitaly.wool@konsulko.se>
+ <DBCPB0BHKNTQ.K0NWNXIFKCT0@kernel.org>
+ <07d3689c-185e-496e-a0b8-53bb3194f0da@suse.cz>
+In-Reply-To: <07d3689c-185e-496e-a0b8-53bb3194f0da@suse.cz>
 
-On Tue Jul 15, 2025 at 3:33 PM CEST, Boqun Feng wrote:
-> On Tue, Jul 15, 2025 at 01:21:20PM +0200, Benno Lossin wrote:
->> On Mon Jul 14, 2025 at 7:36 AM CEST, Boqun Feng wrote:
->> > +/// Types that support atomic add operations.
->> > +///
->> > +/// # Safety
->> > +///
->> > +/// Wrapping adding any value of type `Self::Repr::Delta` obtained by=
- [`Self::rhs_into_delta()`] to
+On Tue Jul 15, 2025 at 5:34 PM CEST, Vlastimil Babka wrote:
+> On 7/15/25 16:33, Danilo Krummrich wrote:
+>> On Tue Jul 15, 2025 at 3:58 PM CEST, Vitaly Wool wrote:
+>>> diff --git a/fs/bcachefs/darray.c b/fs/bcachefs/darray.c
+>>> index e86d36d23e9e..928e83a1ce42 100644
+>>> --- a/fs/bcachefs/darray.c
+>>> +++ b/fs/bcachefs/darray.c
+>>> @@ -21,7 +21,7 @@ int __bch2_darray_resize_noprof(darray_char *d, size_=
+t element_size, size_t new_
+>>>  			return -ENOMEM;
+>>> =20
+>>>  		void *data =3D likely(bytes < INT_MAX)
+>>> -			? kvmalloc_noprof(bytes, gfp)
+>>> +			? kvmalloc_node_align_noprof(bytes, 1, gfp, NUMA_NO_NODE)
+>>>  			: vmalloc_noprof(bytes);
+>>>  		if (!data)
+>>>  			return -ENOMEM;
+>>> diff --git a/fs/bcachefs/util.h b/fs/bcachefs/util.h
+>>> index 0a4b1d433621..2d6d4b547db8 100644
+>>> --- a/fs/bcachefs/util.h
+>>> +++ b/fs/bcachefs/util.h
+>>> @@ -61,7 +61,7 @@ static inline void *bch2_kvmalloc_noprof(size_t n, gf=
+p_t flags)
+>>>  {
+>>>  	void *p =3D unlikely(n >=3D INT_MAX)
+>>>  		? vmalloc_noprof(n)
+>>> -		: kvmalloc_noprof(n, flags & ~__GFP_ZERO);
+>>> +		: kvmalloc_node_align_noprof(n, 1, flags & ~__GFP_ZERO, NUMA_NO_NODE=
+);
+>>>  	if (p && (flags & __GFP_ZERO))
+>>>  		memset(p, 0, n);
+>>>  	return p;
 >>=20
->> I don't like "wrapping adding", either we use "`wrapping_add`" or we use
->> some other phrasing.
+>> I assume this is because kvmalloc(), and hence kvrealloc(), does this:
 >>=20
->
-> Let's use `wrapping_add` then.
->
->     /// `wrapping_add` any value of type `Self::Repr::Delta` obtained by =
-[`Self::rhs_into_delta()`] to
->     /// any value of type `Self::Repr` obtained through transmuting a val=
-ue of type `Self` to must
->     /// yield a value with a bit pattern also valid for `Self`.
->
->> > +pub unsafe trait AllowAtomicAdd<Rhs =3D Self>: AllowAtomic {
+>> 	/* Don't even allow crazy sizes */
+>> 	if (unlikely(size > INT_MAX)) {
+>> 		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+>> 		return NULL;
+>> 	}
 >>=20
->> Why `Allow*`? I think `AtomicAdd` is better?
->>=20
+>> Do we still consider this a "crazy size"? :)
 >
-> To be consistent with `AllowAtomic` (the super trait), if we use
-> `AtomicAdd` here, should we change `AllowAtomic` to `AtomicBase`?
+> Yeah, with "we" including Linus:
+> https://lore.kernel.org/all/CAHk-=3Dwi=3DPrbZnwnvhKEF6UUQNCZdNsUbr+hk-jOW=
+Gr-q4Mmz=3DQ@mail.gmail.com/
 
-Ideally, we would name that trait just `Atomic` :) But it then
-conflicts with the `Atomic<T>` struct (this would be motivation to put
-them in different modules :). I like `AtomicBase` better than
-`AllowAtomic`, but maybe there is a better name, how about `AtomicType`?
-
->> > +    /// Converts `Rhs` into the `Delta` type of the atomic implementa=
-tion.
->> > +    fn rhs_into_delta(rhs: Rhs) -> <Self::Repr as AtomicImpl>::Delta;
->> > +}
->> > +
->> >  impl<T: AllowAtomic> Atomic<T> {
->> >      /// Creates a new atomic `T`.
->> >      pub const fn new(v: T) -> Self {
->> > @@ -462,3 +474,100 @@ fn try_cmpxchg<Ordering: ordering::Any>(&self, o=
-ld: &mut T, new: T, _: Ordering)
->> >          ret
->> >      }
->> >  }
->> > +
->> > +impl<T: AllowAtomic> Atomic<T>
->> > +where
->> > +    T::Repr: AtomicHasArithmeticOps,
->> > +{
->> > +    /// Atomic add.
->> > +    ///
->> > +    /// Atomically updates `*self` to `(*self).wrapping_add(v)`.
->> > +    ///
->> > +    /// # Examples
->> > +    ///
->> > +    /// ```
->> > +    /// use kernel::sync::atomic::{Atomic, Relaxed};
->> > +    ///
->> > +    /// let x =3D Atomic::new(42);
->> > +    ///
->> > +    /// assert_eq!(42, x.load(Relaxed));
->> > +    ///
->> > +    /// x.add(12, Relaxed);
->> > +    ///
->> > +    /// assert_eq!(54, x.load(Relaxed));
->> > +    /// ```
->> > +    #[inline(always)]
->> > +    pub fn add<Rhs, Ordering: ordering::RelaxedOnly>(&self, v: Rhs, _=
-: Ordering)
->> > +    where
->> > +        T: AllowAtomicAdd<Rhs>,
->> > +    {
->> > +        let v =3D T::rhs_into_delta(v);
->> > +        // CAST: Per the safety requirement of `AllowAtomic`, a valid=
- pointer of `T` is a valid
->> > +        // pointer of `T::Repr` for reads and valid for writes of val=
-ues transmutable to `T`.
->> > +        let a =3D self.as_ptr().cast::<T::Repr>();
->> > +
->> > +        // `*self` remains valid after `atomic_add()` because of the =
-safety requirement of
->> > +        // `AllowAtomicAdd`.
->>=20
->> This part should be moved to the CAST comment above, since we're not
->> only writing a value transmuted from `T` into `*self`.
->>=20
->
-> Hmm.. the CAST comment should explain why a pointer of `T` can be a
-> valid pointer of `T::Repr` because the atomic_add() below is going to
-> read through the pointer and write value back. The comment starting with
-> "`*self`" explains the value written is a valid `T`, therefore
-> conceptually atomic_add() below writes a valid `T` in form of `T::Repr`
-> into `a`.
-
-I see, my interpretation was that if we put it on the cast, then the
-operation that `atomic_add` does also is valid.
-
-But I think this comment should either be part of the `CAST` or the
-`SAFETY` comment. Going by your interpretation, it would make more sense
-in the SAFETY one, since there you justify that you're actually writing
-a value of type `T`.
-
----
-Cheers,
-Benno
-
-> Basically
->
-> // CAST
-> let a =3D ..
->
-> ^ explains what `a` is a valid for and why it's valid.
->
-> // `*self` remains
->
-> ^ explains that we write a valid value to `a`.
->
->
-> So I don't think we need to move?
+I don't know why bcachefs needs this, hence my question. But I agree that t=
+his
+clearly raises an eyebrow. :)
