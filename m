@@ -1,99 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063C02376E4
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 07:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A6018CC13
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 08:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752566283; cv=none; b=VFMZQyfbmjavTiOz7I+D9Jg7PqNa5yThGJLsoeaGnPUR2lAW0SeFAG1stQk/gxt2wNvaYDg6sq/NrGqyF5r0ZPBJR1Q5b0FV96LJe0AUBTEyeZMuTNhePWjZPTZNwbUQzvVPfoalwQ2yLK0xahOUhoLzorWtN0vFIvwZ/OjXWgs=
+	t=1752566621; cv=none; b=VbzWeyQIE5DnCe7HRZwXET/Rk/6J8nX3mS2yGTVDtPkX/3xCkj9fDRECn/IL70IxKwE12WBgv1yo4KsToOJc+Aok+5lGWScllx0LG7iX6b1WWN1p4mj+vuM+v3Vh6f2t6J3ENl9bywWbTNXW0mi53r2z9HOwRqUdf4l5F+NMLuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752566283; c=relaxed/simple;
-	bh=v+R9onskoOwsKY+WjK+kL5uHF3IZisC/6ZHcdjXZ6gA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=cwn84B3XOP+60x6OuA1xD92IMC5dur96/mT1PW3GMpo+8VB7TQSt7op05mnZj1LktxplPVuUEhfrQt47V7cH82ZhAAKH6VEivPQT+T08eyAniO4c1BGiHztAl0/XbwQjLe0kBAlLwIrECa8rYzZJauNNe8b+fGZvTiQY6JSJXVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wi3e5bHZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752566621; c=relaxed/simple;
+	bh=UZBwZ59CPBLYFwNPeLfjUvXYkBJQ3D4WxtoV2nfUiVk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=HbX5IlGEzWB3yUvjJ63p7Hb/N8aJRB9vBreTLv381/l8jS3Nyh8GO8TUWGCjZMVIc26lO+TS21G2Dufe2QCrghkZCoyVqGioA/0HxN1cRY/jQcBEI30rVk5wwuShuDQndh3qzzKt3mMYhhXdVmDJh7PilbykKDsTZoCHdZjuK/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jDNxy/st; arc=none smtp.client-ip=209.85.218.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wi3e5bHZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33463C4CEE3;
-	Tue, 15 Jul 2025 07:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752566282;
-	bh=v+R9onskoOwsKY+WjK+kL5uHF3IZisC/6ZHcdjXZ6gA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Wi3e5bHZeU462dicqEto8lJEQvQC/0Hui7ejw98a5NSogwLmZnsjk/QU/FY4PSrT5
-	 dVPzpxdVDr+lGMSXaS1RhsUCD+sRT6Z8bKQdWf7aNXcdmlUGtEdKFwsrDOXvbFEOIe
-	 xzvwfqsCrQg3f8VQQo4xMh6tLGc9Xy4Zh+cglnJlPhtRty0OzgBoarGAjakuKyCKBo
-	 3dnTUdJP+pSwK4SE192gYTK+smq/+8kHkA0g7eVQ+wzgP8bIZFv0RO7UrfMje/36Ch
-	 795TJNEbq89RiNTUHute5MgCd0WkSIESV5lA3OCQdKxpC7wS8n88hVEDWXV28dtHVo
-	 X1xYe6xCTb22g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Boqun Feng" <boqun.feng@gmail.com>,
-  "FUJITA Tomonori" <fujita.tomonori@gmail.com>,  "Frederic Weisbecker"
- <frederic@kernel.org>,  "Lyude Paul" <lyude@redhat.com>,  "Thomas
- Gleixner" <tglx@linutronix.de>,  "Anna-Maria Behnsen"
- <anna-maria@linutronix.de>,  "John Stultz" <jstultz@google.com>,  "Stephen
- Boyd" <sboyd@kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>
-Subject: Re: [GIT PULL] Rust timekeeping for v6.17
-In-Reply-To: <CANiq72mP7QAjnYuM44tu0ZaviWO4PNWV6Oba=LMwh8=FxJJU1w@mail.gmail.com>
- (Miguel
-	Ojeda's message of "Mon, 14 Jul 2025 00:04:20 +0200")
-References: <87qzysqw99.fsf@kernel.org>
-	<dMzjRfDkgj90HLRKVyXBm_Nlx98TlkiwW_FmbpiETAFOoQjihnqJRX2oNXYOlbr2DSVEM_uXHAHHysSOggqU8Q==@protonmail.internalid>
-	<CANiq72mP7QAjnYuM44tu0ZaviWO4PNWV6Oba=LMwh8=FxJJU1w@mail.gmail.com>
-User-Agent: mu4e 1.12.9; emacs 30.1
-Date: Tue, 15 Jul 2025 09:57:53 +0200
-Message-ID: <87wm89hon2.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jDNxy/st"
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-ae6d551ef64so416423466b.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 01:03:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752566618; x=1753171418; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ALgOJfM7Oe3hti1pkSfdPY9FKknayko8OLCQL/Qg9dU=;
+        b=jDNxy/stG7kCCyAmSAPCxxk85DfC1aN6UV5oR7hvFswiVpC11kzyFxzu6Vnwq3b4SK
+         7ji3SMtzIKLFnRSWJyqCIl736MS70tmQ8KCnM2TsOIDb4RdTC7fANdbGHkIRLQY+cJeL
+         b4/kSfRCULRal/1A6XMnx3PyBkAPUWNpGGG0JnDa9EAOSbT6NRT7sq5yuQ8lP1/R5gOx
+         +0I1HhsdG5Yll1MQJCt2FO9lMDYFXce96uHkzkoUznWVd41/JnX3yPqBRzG4CINbWKbp
+         Wt+k9qUvY1uzAyPGRYET4Nwwwj1Qhte/GPBc13K2qQ4AWgwP6w2mAsHd1GL9FFyB148z
+         xn5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752566618; x=1753171418;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ALgOJfM7Oe3hti1pkSfdPY9FKknayko8OLCQL/Qg9dU=;
+        b=uhpdaqvehchEiSn8fXrOvBgTg9j6B56FP5WAVxRXEsj62vzGt7+oBnX9gfITr+fggL
+         DI+86JY5PJlaP3TB57/MU659vdi1G6A54TPQdBHvo64UusdHLGkxNHlnfZwi05RA/qOv
+         lB6WwSyFrm+6VlGYN53GZS3b+jOMbBDMpUmxYj3c9bfH6iB2+nISVi3OfSJU/y0bS0nj
+         XojXCyyFzGVItQrRCtdwNZwDG6rP7K61t9+L20LRgVUdGhu8/+UpUzbaw8ED7WSpwH2s
+         qKTtxweE/bb7dMZabYEXdEXzUkhPeYdBxn8Qn/69GgDvkdK1AinAq5MpqEdLrRvFEEsg
+         BdBg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmVBImKWk7rLqYlvMotlaX/APIxJZgU5Do3kwD4+jC+Qhmug4Zuqh0pFVta+KX9Y47tQKlXEN1mspvPBAC4g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXzc6YAQwZiRG8X5wxoO+7BuK6VwJFaAxbnKUioicONOaygoHR
+	V28JWcI0Tog+ZJ159fxuDt6a2y0q+FZDQZOqRsJ+PQG9NkFD2UwNu5IVfZaezzPx6GFbNwF6L+r
+	oXpid8XDua+dOWjcf9g==
+X-Google-Smtp-Source: AGHT+IGXzCEeRLbwNqRQm5Ckx3fjlOe92BzWH43/qO1crcM1pk5L1WvDjbrrOCtG1P4K3A1uiO+4F3W14czD0ws=
+X-Received: from ejbce10.prod.google.com ([2002:a17:906:b24a:b0:ae0:cf75:d79c])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:c144:b0:ae0:d8f2:9065 with SMTP id a640c23a62f3a-ae701268ec3mr1498857866b.39.1752566618681;
+ Tue, 15 Jul 2025 01:03:38 -0700 (PDT)
+Date: Tue, 15 Jul 2025 08:03:37 +0000
+In-Reply-To: <20250711-topics-tyr-platform_iomem-v13-1-06328b514db3@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250711-topics-tyr-platform_iomem-v13-0-06328b514db3@collabora.com>
+ <20250711-topics-tyr-platform_iomem-v13-1-06328b514db3@collabora.com>
+Message-ID: <aHYLWc_KkMHj_jF-@google.com>
+Subject: Re: [PATCH v13 1/3] rust: io: add resource abstraction
+From: Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+Content-Type: text/plain; charset="utf-8"
 
-Hi Miguel,
+On Fri, Jul 11, 2025 at 07:32:27PM -0300, Daniel Almeida wrote:
+> In preparation for ioremap support, add a Rust abstraction for struct
+> resource.
+> 
+> A future commit will introduce the Rust API to ioremap a resource from a
+> platform device. The current abstraction, therefore, adds only the
+> minimum API needed to get that done.
+> 
+> Co-developed-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Fiona Behrens <me@kloenk.dev>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+Some nits below, but overall LGTM. With those fixed:
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-> On Mon, Jul 7, 2025 at 9:47=E2=80=AFAM Andreas Hindborg <a.hindborg@kerne=
-l.org> wrote:
->>
->> ----------------------------------------------------------------
->> rust-timekeeping for v6.17
->>
->> ----------------------------------------------------------------
->
-> The description is empty -- could you please provide a bit of text?
->
-> No need to send a new PR, since I know you may be away from your usual
-> office these days -- I can copy it from email.
->
-> (Worst case, I will write something myself, but there is still time.)
->
+> +    /// Requests a resource region.
+> +    ///
+> +    /// Exclusive access will be given and the region will be marked as busy.
+> +    /// Further calls to [`Self::request_region`] will return [`None`] if
+> +    /// the region, or a part of it, is already in use.
+> +    pub fn request_region(
+> +        &self,
+> +        start: ResourceSize,
+> +        size: ResourceSize,
+> +        name: &'static CStr,
+> +        flags: Flags,
+> +    ) -> Option<Region> {
+> +        // SAFETY:
+> +        // - Safe as per the invariant of `Resource`.
+> +        // - `__request_region` will store a reference to the name, but that is
+> +        // safe as the name is 'static.
+> +        let region = unsafe {
+> +            bindings::__request_region(
+> +                self.0.get(),
+> +                start,
+> +                size,
+> +                name.as_char_ptr(),
+> +                flags.0 as c_int,
+> +            )
+> +        };
+> +
+> +        Some(Region(NonNull::new(region)?))
+> +    }
+> +
+> +    /// Returns the size of the resource.
+> +    pub fn size(&self) -> ResourceSize {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`.
+> +        unsafe { bindings::resource_size(inner) }
+> +    }
+> +
+> +    /// Returns the start address of the resource.
+> +    pub fn start(&self) -> u64 {
 
-Sorry for the missing tag text. Let me know if you can use the following
-bullets:
+This should be a ResourceSize, right? You use the ResourceSize type for
+the `start` when calling `request_region`.
 
- - Make `Instant` generic over clock source. This allows the compiler to
-   assert that arithmetic expressions involving the `Instant` use
-   `Instants` based on the same clock source.
- - Make `HrTimer` generic over the timer mode. `HrTimer` timers take a
-   `Duration` or an `Instant` when setting the expiry time, depending on the
-   timer mode. With this change, the compiler can check the type matches the
-   timer mode.
- - Add an abstraction for `fsleep`. `fsleep` is a flexible sleep function t=
-hat
-   will select an appropriate sleep method depending on the requested sleep
-   time.
- - Avoid 64-bit divisions on 32-bit hardware when calculating timestamps.
- - Seal the `HrTimerMode` trait. This prevents users of the
-   `HrTimerMode` from implementing the trait on their own types.
+Or ... should we have another PhysAddr typedef that we can use here?
 
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`.
+> +        unsafe { (*inner).start }
+> +    }
+> +
+> +    /// Returns the name of the resource.
+> +    pub fn name(&self) -> &'static CStr {
+> +        let inner = self.0.get();
+> +        // SAFETY: safe as per the invariants of `Resource`
+> +        unsafe { CStr::from_char_ptr((*inner).name) }
 
-Best regards,
-Andreas Hindborg
+This is 'static? I would like this safety comment to explicitly say that
+the string always lives forever no matter what resource you call this
+on.
 
-
+Alice
