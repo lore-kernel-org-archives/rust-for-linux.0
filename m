@@ -1,162 +1,103 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9061F3BAC;
-	Mon, 14 Jul 2025 23:39:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752536395; cv=pass; b=tTPN9vWjHvq/FihJ2PFeLvGBbSORDLIzAlNH6i4tbVRkrrPJagcZHJ1plEyTpLSETWkY8ITzmxOesGHt/rg6Nq9wlPmmjgFWsK6KKSF3q/ptP4t3AsgWdN1tp7vWat5RnZOvDkmsIIXnW4HWCArQ/Dm6fBY5DsGHVINlD6E+0L4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752536395; c=relaxed/simple;
-	bh=dvi9mKmPim4SejXM+DbPQ6POkLNWnNWVm/KSb1hLr+Q=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Guf+959IkCVjYw1Jxe9J8LgugzmnO0YZ919XO7+kkzAjR/Vz604IRFHWs76vNJTQTXPw69lJtj/bp2WZhcumDrZnvvneV5RYkfV8NyYexxtQAX7nMsELzwmZgysGUOpBb1ykZ8fdEdZ7ixiihrfvm2/YFq5wXnJucl5/CuMnJ+M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=I6+2RY1g; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34EFE1DB95E
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 03:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752548783; cv=none; b=m7137QIb9b0FteEHsifNqaFDfe0GaIJCjD3Wbewt1JYY4IDbFvDuizciLc+0QkmMkg0Uu0qE3WKgxb90cis7q/tUrInatHvq19U2zyAtLjHQlrA9SgtG4Mv7vpZeCLJjG5E51kKsdU7JJPUMKhiUSwbPlvCkKTgOVFgNzLh/EVk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752548783; c=relaxed/simple;
+	bh=mdcR6VzA1y3ydE/dNUPQr44ycL2PjID27Z2ee89DxoI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VcYeg07RSBat2e1HPyP+8nkwdWZSBpb9tk6OZAHoU6sb3Isz78rt2TmWCOF2hZarb2OKpJTR6x0t3KAxJnD0w7uQGXd4g4+4KVJsSRnYq1+w/AwFsz1T+xSg06y3zA2BhiyNCwHKhJ3WsLL/4Fqw1JiT/wZ2sIQ8yMXP9FYJcGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UCvEW/5r; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="I6+2RY1g"
-ARC-Seal: i=1; a=rsa-sha256; t=1752536375; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=FXTAvhhkLQAZEVzoPyR1+y3T+2P8Z31NnoHCJJWtc8oASm9ZfQT//6H+/38tP0Zh6OoevTqxgRuQO/WJEl+0PcfW9yvBsxsiB2/E07Pme6s5sYtXqVQpuG8GOVvLM5ls/266L3SixcjxD7AJIbE6ykwk2B8ULSpJs1NR+egqbck=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752536375; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=kY/xppBaRcLOyIwmiqqLaKMA/JQNBE/a0JwDjzCDHD4=; 
-	b=S/+Una3FcWde6W150Jepjkr/fj3oaVg7+G+L2Z9Hqs+lx+FGCJ5R2+F7ktHMQaI8FMCCtKalJv3zZQq9ch/ZJ5lJoydM3kiRTs5qovpqu2s9K/oUKHohypAWI/KIrVOcAB3q05ibZCPHdO/Rj69SSj/f120ZFkAdd+dJLGfOLfY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752536375;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=kY/xppBaRcLOyIwmiqqLaKMA/JQNBE/a0JwDjzCDHD4=;
-	b=I6+2RY1g6TtBR0bdwf338H+ek2vq5dFjsV/FiqvQBXp2ZHc47z+t6zbjI8KZMCrY
-	Sa26yxEtf1gl7PuUl3J82SA44t6+JRR3WyrcFcIZ1J8STLz24W9rYGLcgpMBL7UJWlT
-	ZWYM8iYmOtgKjFG3DYZLqjiUDH8lCcvIQ4QpVMa0=
-Received: by mx.zohomail.com with SMTPS id 175253637260735.75271672467579;
-	Mon, 14 Jul 2025 16:39:32 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UCvEW/5r"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b3bad2f99f5so3930373a12.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 14 Jul 2025 20:06:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1752548781; x=1753153581; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0Q49+jBq0n+KhvM5tkCOlcThaB4jtnmKLs0K74l42yk=;
+        b=UCvEW/5rZFm3L9J3RI4c72AsqohkjB8GR73De6J9cWIxHfQfCUEXrX9Uu5O8rVpEZS
+         Th3RWJZz8iIocZQPk1Zl1AV9Dh93jOuqAvAiFwjGvgr2cD6RMYqqSwKy9bmHA0nLZpMn
+         4lyB9swxq9LeLxueIGGepbyl0e+P/NuAahvjUjse3DfiFbpTO/3Rhvao7X1mvdT6+BGJ
+         /YKv7GWBu14WX6RhjEovgItemkB1WeTR3uEtW+STPGAwBmVu8tneMmLuGtuqiMDI4Xp9
+         PPzqBQ/LzJ1bX8MIt0KGe3hxN4luMujpk7wI0M4g6jNCEID0VbFLHbc9QWkIwuQFzCQB
+         BmnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752548781; x=1753153581;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Q49+jBq0n+KhvM5tkCOlcThaB4jtnmKLs0K74l42yk=;
+        b=HR606+2kttJ3t7NODrzwxK9ZV0LWyBn1LXqu/cPoVXcB2Vmjl2tbJIfDpktCxEU4P3
+         CLI83Dt2DIdOdsEVBcYsgH7SoxE3hizUSI6muLvMro8dH3UyQQxYP59CGomImjoLH/3c
+         B0FfIGTVzY1xnoHJ1poDO/TKS9RbOA6pmDTousyoKHWogVfTExsBjmlYMEa9C4hU2LNW
+         joh4WVHF6AOSfBrjF1fSeoaWdmFvV9h+Rd3I+yOd8SVhsUEPK5OfsbHkgZPpOlgly6oq
+         MfHK/sCaDCUn5DdlhsBESta+d0WChMGqfLHRurq20X/obrx/Fr4dWuFvnjksEwd4IXSE
+         jtvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYlsR91mbmlmBZdXTzPAoy4I0DSDf3h6ozok0AIXquY6aeaxy+ZwXvmsWrczUk7eHuJXeNBMy0YveL50wk4Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+5qGnGTJVyOj+CPmPGRDhhvUAQ7CYf1CH5R2AGeuvIjT7usr3
+	qEo3sd0ky64DFp4kMZ/2ZQMXmqQPkQJH29CMO7muiStlePdDoMfjmwUkubl23PnHluc=
+X-Gm-Gg: ASbGncslX+EWV7sgsQBVnxRRPvHiz/A4TBdqVX2FJsyiQVJ+ySb7f3inprsu9cA6hqB
+	mqtezC8JyqxwksqgDBjSarMnTDfnb1I7YbG9rOlrkMsl+AMNiAGnJqvWEUCLD8QCjxIi7H2yleZ
+	FSWsCr9ylpm2xoeQr+P/GNs3qXXepX4Kxkm1ygChFYgrSD5t4cW+6e0H4P5OHMc/WzDR5kLHbcD
+	nqSf8IxqkZB/yXxCI8d1uibn4rg0xEam0bMV1Lv0J/4X4NAdlrSr3oBehhK6d+elhtHMg86x0AV
+	mTovleD+/ZhvjQHknCZH3x8vRioV+MornaQWLJyQBdtHo3BWLtx1noBXzLJOBDcm7YfOdcCzqlB
+	ODM5gM70q00sZ52IfesG3AfI=
+X-Google-Smtp-Source: AGHT+IEql4O65bX6tpWfTBLX9vUYHs9CktWCv9wPJNzqxkxP3ptffD3nnEZgTYdA1h+g25fPYhyXSg==
+X-Received: by 2002:a17:902:c405:b0:236:71a5:4417 with SMTP id d9443c01a7336-23e1a425e85mr28454745ad.5.1752548781454;
+        Mon, 14 Jul 2025 20:06:21 -0700 (PDT)
+Received: from localhost ([122.172.81.72])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe52ecd1sm10862745a12.12.2025.07.14.20.06.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Jul 2025 20:06:20 -0700 (PDT)
+Date: Tue, 15 Jul 2025 08:36:18 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Ritvik Gupta <ritvikfoss@gmail.com>, yury.norov@gmail.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	tmgross@umich.edu, dakr@kernel.org, rust-for-linux@vger.kernel.org,
+	skhan@linuxfoundation.org, Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2] rust: cpumask: Replace `MaybeUninit` and
+ `mem::zeroed` with `Opaque` APIs
+Message-ID: <20250715030618.ljqvviloypmfixfq@vireshk-i7>
+References: <20250713190244.143286-1-ritvikfoss@gmail.com>
+ <20250714045418.4ajeuetnjor4nhau@vireshk-i7>
+ <CANiq72nYqOGx7FEfMyp_8VnpZargzZ0uannbO9VMCk=kiEbd=g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v12 2/3] rust: io: mem: add a generic iomem abstraction
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aHTvMNIenbaGtBBt@google.com>
-Date: Mon, 14 Jul 2025 20:39:15 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- =?utf-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Ying Huang <huang.ying.caritas@gmail.com>,
- Benno Lossin <lossin@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <72809F34-033A-4A72-B56D-519D1D089299@collabora.com>
-References: <20250704-topics-tyr-platform_iomem-v12-0-1d3d4bd8207d@collabora.com>
- <20250704-topics-tyr-platform_iomem-v12-2-1d3d4bd8207d@collabora.com>
- <aGt7aItuSINDzj2O@google.com>
- <7A0457FA-0E09-451E-B035-E739AED7B2C7@collabora.com>
- <aHTvMNIenbaGtBBt@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nYqOGx7FEfMyp_8VnpZargzZ0uannbO9VMCk=kiEbd=g@mail.gmail.com>
 
-Alice,
+On 14-07-25, 18:53, Miguel Ojeda wrote:
+> On Mon, Jul 14, 2025 at 6:54 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> >
+> > Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> 
+> Wouldn't this go via your `pm` tree to Rafael? Or am I confused?
 
-> On 14 Jul 2025, at 08:51, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> On Thu, Jul 10, 2025 at 10:58:13AM -0300, Daniel Almeida wrote:
->> Hi Alice,
->>=20
->>>> +impl<const SIZE: usize> IoMem<SIZE> {
->>>> +    fn ioremap(resource: &Resource) -> Result<Self> {
->>>> +        let size =3D resource.size();
->>>> +        if size =3D=3D 0 {
->>>> +            return Err(EINVAL);
->>>> +        }
->>>> +
->>>> +        let res_start =3D resource.start();
->>>> +
->>>> +        let addr =3D if resource
->>>> +            .flags()
->>>> +            =
-.contains(io::resource::flags::IORESOURCE_MEM_NONPOSTED)
->>>> +        {
->>>> +            // SAFETY:
->>>> +            // - `res_start` and `size` are read from a presumably =
-valid `struct resource`.
->>>> +            // - `size` is known not to be zero at this point.
->>>> +            unsafe { bindings::ioremap_np(res_start, size as =
-usize) }
->>>=20
->>> Here you cast from ResourceSize to usize. Are you sure that is =
-correct?
->>> I thought those types could be different.
->>=20
->> This seems to what C is doing as well, i.e.:
->>=20
->> static void __iomem *__devm_ioremap(struct device *dev, =
-resource_size_t offset,
->>     resource_size_t size, <---------
->>     enum devm_ioremap_type type)
->> {
->>=20
->>        [=E2=80=A6]
->>=20
->> case DEVM_IOREMAP_NP:
->> addr =3D ioremap_np(offset, size);
->> break;
->> }
->>=20
->>=20
->> Where:
->>=20
->> `static inline void __iomem *ioremap_np(phys_addr_t offset, size_t =
-size)`
->>=20
->> IOW: this stems from the mix and match of types used the C API =
-itself.
->>=20
->> What do you suggest here? Maybe a try_into() then?
->=20
-> What a mess. It looks like there aren't any 32-bit architectures that
-> define ioremap_np. This means that sometimes this cast will be lossy,
-> but in those cases the function body just returns NULL and doesn't =
-read
-> the size.
->=20
-> I would probably cast to an underscore instead of explicitly =
-mentioning
-> the target type and make a comment about it.
->=20
-> Alice
+Applied now.
 
-You replied here but v13 was already out [0]. Can we shift the dicussion
-there? I ended up using try_into(), but feel free to suggest the cast to =
-_
-+ the TODO if you still feel like this is the right approach.
+I manage pull requests for cpufreq and OPP normally. I had to to
+cpumask, clk, etc., as dependencies for my Rust stuff but I am not
+sure about what's the best way to get them merged.
 
+For now I can take this one though.
 
--- Daniel
-
-[0] =
-https://lore.kernel.org/rust-for-linux/20250711-topics-tyr-platform_iomem-=
-v13-0-06328b514db3@collabora.com/
-
+-- 
+viresh
