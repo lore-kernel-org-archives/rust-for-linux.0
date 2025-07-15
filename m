@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE3A2727EC;
-	Tue, 15 Jul 2025 20:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A122919D081;
+	Tue, 15 Jul 2025 20:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752611400; cv=none; b=qAPN8/h9e7rejnAZjwPDavGdEbkRLmws1bUeK+FFn9sTvevLWwzrFmzJScLxqQ9rbNXuN2NROZ5xtlWdD/yC0Jff3klNwzrL1zf5KdTSCx708Jw5BJZG9uDs1kyDh/fa4p2OHjASJlArCa6FFeS3o4bdNf7300qXlvjV6WNA4Oo=
+	t=1752611434; cv=none; b=NjIJYl/pmAANQMQ20QHDA8sdKvHGmhLMaPRnRpGdDe33mmKahXKOgeFUXEduPbySyXXGNZX+M0mUSkBwZenVgQjuBfkDFjfq+iSE4gkP+bNX+3N7S0oTGG+74c9+T0jEWQiuzijmbzRaRK4Vfoe2rl2trRo0xlfg3MxXlUSQi74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752611400; c=relaxed/simple;
-	bh=s1AZC3mbmHb2undumjXjWb3GFUaGZlxyaMwiYR1evAo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=O3MxynR1sQRLAt57XtSGOvyQW8lO/IqR1DO0G33HpBQlKLc2yOhv8N56gX3ntPpE0ZLWDOXXamqGLozwZOROn6I7QweQEVxFlY3+uAAqWFighbaVWPoxL5LaxelG0pB83qDBANrBOiMUzDCSqbfPmWSV4Q55WVjcT/FYfdn1yKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e+VCbrIm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752611434; c=relaxed/simple;
+	bh=7K6+y0ij5VMil3iEvSkd7pvZyXQmaStMVyFFUEeu8zc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=DuNRJ/vwZHdlcBLBmArD8y2Jz5X1MpoN2v8VlNrARKh4J4dVfbqubXzR9ZgHzmaRkB307XgTMRuyRWNhZ9f76BRurbE/u+nryVrD/Hh+DxMt5co7vYOuF/P5sbHHXheFJlU9lwnYoiY5/vBiTIcmWIMaIR4fUONx8zPTCqMo+0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VsYyKRR5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+VCbrIm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9E4C4CEE3;
-	Tue, 15 Jul 2025 20:29:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VsYyKRR5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A12C4CEE3;
+	Tue, 15 Jul 2025 20:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752611400;
-	bh=s1AZC3mbmHb2undumjXjWb3GFUaGZlxyaMwiYR1evAo=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=e+VCbrIm8yAUY2nPpU0XmHKeewyFoIxrPMpkoi39p2KmvqZbyOmYKgD3ul4LKoqKF
-	 nBBH27Sjc8um1CWrjVbwGYfmWRuxeRmuY0mmyapVCD2yjVDPSK9V1xSMosc5jjNPUB
-	 88n3tzuRafkUqc0eiX2j/9ZF1fNv5iaLe7E6mO98TVp0POc+sDz7aqrcgvyFr6LviF
-	 3m8CXPtJsWrOHdIA0TVM3USnXL2jYIfzqg3Z3hW6mY7qaeaQhjcurXxhnpSNrKgiSX
-	 7XQgDx8ElW2VhS5MLqc9t12hTuzNbCHaFBlLNg6S6kDs2Ljimm5id7E33IXo8yohDx
-	 YZyHaqdNBrWKg==
+	s=k20201202; t=1752611434;
+	bh=7K6+y0ij5VMil3iEvSkd7pvZyXQmaStMVyFFUEeu8zc=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=VsYyKRR5ByX6dkme01E4wNfl2oIva428NDU2bTobNG5J4/DxZeQenAbGik/2SK97F
+	 XoP5TTOoz0PZCNCqQ+uBDCnsclYb7EK9XJTbqtoTdVo1cWA/vtp2zT9aRKPgFzYW3k
+	 b0vrjbgRcOCtPZ2tlZU7QmXuRd+KqZ8GC4gxU57oY1JvTLWB55i28gpXU4gKNanaAj
+	 Oo3I+b++CSrb7qDd5WSNBuO0gszXBehJou94qmyckyJnH7ju2pOTjqMnieHwF+LO/T
+	 4pyK+M3P6ZRC4gbXCWTmeuqtP1yOhkrDLH5s9pGoLkZQ0Va6glwNJhCuOc0COxGBD/
+	 bvWylUkJbS7gg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,27 +34,30 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 22:29:48 +0200
-Message-Id: <DBCWVWUNRR05.37YH3UZW1R0PW@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH 1/2] rust: devres: provide an accessor for the device
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Date: Tue, 15 Jul 2025 22:30:29 +0200
+Message-Id: <DBCWWFSD33HA.3UQ4NXBZR0VX7@kernel.org>
 To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
  <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
  <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
  <aliceryhl@google.com>, <tmgross@umich.edu>,
  <daniel.almeida@collabora.com>, <m.wilczynski@samsung.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 2/2] rust: device: implement Device::as_bound()
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 References: <20250713182737.64448-1-dakr@kernel.org>
-In-Reply-To: <20250713182737.64448-1-dakr@kernel.org>
+ <20250713182737.64448-2-dakr@kernel.org>
+In-Reply-To: <20250713182737.64448-2-dakr@kernel.org>
 
 On Sun Jul 13, 2025 at 8:26 PM CEST, Danilo Krummrich wrote:
-> Provide an accessor for the Device a Devres instance has been created
-> with.
+> Provide an unsafe functions for abstractions to convert a regular
+> &Device to a &Device<Bound>.
 >
-> For instance, this is useful when registrations want to provide a
-> &Device<Bound> for a scope that is protected by Devres.
+> This is useful for registrations that provide certain guarantees for the
+> scope of their callbacks, such as IRQs or certain class device
+> registrations (e.g. PWM, miscdevice).
 >
-> Suggested-by: Benno Lossin <lossin@kernel.org>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
 Applied to driver-core-testing, thanks!
+
+  [ Remove unnecessary cast(). - Danilo ]
