@@ -1,108 +1,124 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B697C533D6
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 12:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58061EDA09
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 12:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752581638; cv=none; b=IoF+p7ea/aRgZrRlLMnqG+wtIK9HpFAzhBWyGTZw1MZNE8BWQX/OiZhawKHV87HPi8NXByI17KhxfZZJLQ+FSAyZzPKbbpEtK72vuNBNtCopKZXe/8xohkFzv6e7wJOmSt4H0B21KKEE2/sGMk3wYeMe2C7tNFsxkbAYFMybWmY=
+	t=1752582808; cv=none; b=HbJ+hWy/vmDeu7BNPgVX0CA3dZKGSdCD6CrvDgm5VVdh58FlAKM/JoWgeFxOnwEU6NZWrXj3i3Avx9PC1WjAsq8jrD/AHhql9t6d+KnMvkjiHe/Vv9RIcOo6CCa1f6oX3u2OCWCwCqaGpM03Z7TyKvxKL5RkRj75avLX8jVRsbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752581638; c=relaxed/simple;
-	bh=jLXy7vlBx7cYAsSa5uQVBZocuvBpmf7jcdI8FKDXiu0=;
+	s=arc-20240116; t=1752582808; c=relaxed/simple;
+	bh=I6i/EyKtu9kTeHVvimXGCXVSzCMMytdEC5VDydgz9wc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I57X//jKYWTgeRBh9C8uQmWE2hL80Pob6v4aCf8skpTC8TnulvcAFtgEz2nRm5Xf+8KOlCsqvycGtmTO8zv1jIYAvDRmGpTUdtu8Gag2Bovx8HJtvdFqlAu1zOpUyXKU3+dtRPv54upm4Tf4CaZe8QmMnHBlINz4WCtxXcBmyyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WwPDIQpi; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=pMbDfmdNhlYiU2LzcLJUkRsS/Ad4ZQ4RU9MRHBrRNr5VLqpTb38HGEdvvzed8hfOcnMQ3Sf61F3KzObuyKexuRYVVixRwGkobhOKnsoSzXtMQZN6bi9z9IKZ+dHD6Yei7veHdkEAWAM1ut0C0rbjVDgE/cSjIEB09lk3vQ8eFic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YSvGlIdR; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WwPDIQpi"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2352b04c7c1so7922025ad.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 05:13:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YSvGlIdR"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-456108bf94bso17391845e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 05:33:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752581636; x=1753186436; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752582805; x=1753187605; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CnvEHZQlzN+r+6/15sEZKfG1Tor6pZWndYOX/7dnTLU=;
-        b=WwPDIQpiPgrW+e+3JArwvKnzRevv58ysskNAXADlTm694jE+ReoWh1lnYs8CrArA+l
-         AgRAF14z7mq+XL+w3ENQo+rOJAOb5vpyBfPO/rJjzh9I/h9MBIuR1G0IYmIYVYXIvTvR
-         zQSme1IyHcVpd5ADg1J3tHZ/P1QgP/Qh2RtZ53QTabqyb79y/4JumrImyMG3Ym/hczRu
-         /Js+0SNlubYW+cAzU7f/lo8ssKW+653CkrniaZIxgoYtnJY5sSVLnzjci38Jzh+dOvla
-         qXgz0LlctL9P6iy9CRk6rPzbfHigw6g1eD14hB198LiRyJYd3eUdcuNit/Lx8f4yiK8C
-         fqsQ==
+        bh=YxJvXzNAx/wxcXJMnx0rqVWrH9gKkRzFrMsFLcWu9f4=;
+        b=YSvGlIdRCBGTQXYI7PX2O77nbnREyCrdJA5UZqHUDJICCufmUytBCPjNG39NEzMfwe
+         PyTv8aKS4S80oBpns4XDobfg6QyL9cLVLZHbs0IvkK0cpBoF5Et+sDkIxKSicTMt/exK
+         kleA8PHdJNCOdDGUM9Lyma6l2mtUVjXoNEpdyF9t0mIDxZlPjtxdQzKoRfms66NL3ghp
+         ujzYoFHyxTUOL7k8yfzwShzbrUxou5pLXvmztWdqDf0B2FQoBSqerGboIqXxSUpdpqf4
+         Zv9c1wwKW31sfZQi5EhSmBl4XQbgY/ywnBG7GzFSuRkTc2wx0VY5Wd80/cqfLnLXpb5o
+         yOIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752581636; x=1753186436;
+        d=1e100.net; s=20230601; t=1752582805; x=1753187605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CnvEHZQlzN+r+6/15sEZKfG1Tor6pZWndYOX/7dnTLU=;
-        b=izwtuxN4RJgWfM02CYIm6fMwbshoNHDavtnwYxXmKpwZVnHQomNvDB8Z88pH5CINHN
-         8M2p37do9kg1GZ9pD6dAqM9tyTr+MkLsL8WKVc6niJywXwZuK7+Qxabso/VMTrN45kfs
-         GbH8xnC9YQPosGCG7vfiHNBiVcTVnbxUZ6dvnYXtj2YI7iwjxP2uP8J10yf0QDNR192p
-         0xj1qY6gNxfLixFBRStBQpGA7FIP2U72RIbbbR0+0eeNXyj5jZP2aI8l8Roeput5+ocr
-         nQw/0RqjVB6rU3rdbF8/MNvtVmUNZ+wsTIvOHGvIfh1jJFQRSGnc24M/Eoi0sA9svZUW
-         WtLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUbP1rBiJlg71Z/jWXqIIQYIClrikAXxrhiVeYk8a3DbYzWtHNd345D/ND4tMrw473DiDaf222nAvJ/xu3ZwQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnWx6UOgZcwNRxid4TZsEuJqiSJ77JXjjuWX8WnZpvA78SgMRu
-	UWEQQUCzgIvRcwwd5W3ejNMaWtS7y5pFB61AHyzAhkaQaRWTn7buGG2hg/HdGJWvsLEhKFUsBUS
-	D7BKEjwJBy6NaCeYplUux4ahtReOxkv8=
-X-Gm-Gg: ASbGncuDwk+XPemlvOIZqkyI6E02LuOBoFHx3Lz+TEwabYtP+8jtlN4ObbJMCPnI0HW
-	Mlb7sjyuJdRIjirnpMGSsapeQgTZd3fxRosJAM11kEjUSPViorovAaXhn+bC5HYSP7OFtBpDTF9
-	9ETL1nLrtwMINL7COjpvOSvCZLjle+TmUmP2ETk9sfFQd7vse7B4Xl6bhMIUn7wqiMp0lTB825/
-	Oprl8rw
-X-Google-Smtp-Source: AGHT+IFBs5bYYFxzAwWDjesNueVAOXX7E9SgDS2klfW/LpAxtaMXcLz7+AuogqrnDNKQX52CwV4pKlRCksDOqz+Xxi0=
-X-Received: by 2002:a17:902:e846:b0:234:ed31:fc97 with SMTP id
- d9443c01a7336-23e1e9b5891mr8699895ad.12.1752581635629; Tue, 15 Jul 2025
- 05:13:55 -0700 (PDT)
+        bh=YxJvXzNAx/wxcXJMnx0rqVWrH9gKkRzFrMsFLcWu9f4=;
+        b=gzwL1wSrmILnuc6iRrheAd1YBySi1Gtjsw7lioL6QkPtaY296uksn3Y1wpzRgCzcDr
+         rEZBe8z9e6vq+uHtZHmuL/wn+Np9pX08worNcq4AUuazbbr3cTMOJHyETf/NIJ424FF2
+         DZqZOOaY3WjU3iA5XLfZBtxOU9lmccfGOu4hbvJg4K+VbjedgvOlfbK50D+p8gA+dI9F
+         NJJV7wqXc0TMf+Ncb6lHK3sLMBy4bhV8X9LX9fmj0VoCw7IHhoidk1MQEUPBDdBA/ZsY
+         f4yu9fPBuvdCId3lyOjCaUryMbZjWfNKhlnl8dIawViFo9J5TnMBzWxj2BJm+bbt1vpV
+         Ilng==
+X-Forwarded-Encrypted: i=1; AJvYcCUktEZswyMDQi0uDEHbl4fsGC/EINM0BC5E6uWDyHCfM1yrqXL+0iXeoUouUMbKlQoR8PICy/hxSF0+oaOSMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUNUgoCttDo5iFw0soeLx6GXHPKutNSTLede/53uLhE0VQ3FUE
+	hXvwD0EOjeynGjfLCBg2+VozxKlv6zpxIJNZAqVdJmg41A3wMxYNHYmVnmSawVARDkF+nihXJID
+	0RaxkxVbsSVFD5ooiizXyAwaxM5Luus2tVdKEhYlT
+X-Gm-Gg: ASbGncvEbeaoPbg1stZB7P7kGkZu/g5epAJHli07dq6As6LerB3Byc0r87rMDoPXM15
+	K9c57QUPcrU0j1NKm/Xn4Y+7fsGYIhz8rrPswik/f2eNYiFVvN+mBa3OqbhRRhLywlBJujTdObA
+	0rD4gNTilJHkX4SCY1yvTrgRjsp3eKAD8EBg3M+z5PL+nAGqu4M4q2vvN1Zde/YidjbUjw3X0gW
+	3Q1UKM=
+X-Google-Smtp-Source: AGHT+IHsSxt/ccfq3IS8RwrKiSzpaPPIWfXeSHZBLdgXWILdsWaDM5Ybin3kG0LyFIgWQPN/jFP74RS5jphBMvGLCBw=
+X-Received: by 2002:a05:6000:1a86:b0:3a4:eda1:6c39 with SMTP id
+ ffacd0b85a97d-3b5f2dc216dmr11909192f8f.13.1752582804862; Tue, 15 Jul 2025
+ 05:33:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87qzysqw99.fsf@kernel.org> <dMzjRfDkgj90HLRKVyXBm_Nlx98TlkiwW_FmbpiETAFOoQjihnqJRX2oNXYOlbr2DSVEM_uXHAHHysSOggqU8Q==@protonmail.internalid>
- <CANiq72mP7QAjnYuM44tu0ZaviWO4PNWV6Oba=LMwh8=FxJJU1w@mail.gmail.com> <87wm89hon2.fsf@kernel.org>
-In-Reply-To: <87wm89hon2.fsf@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 15 Jul 2025 14:13:43 +0200
-X-Gm-Features: Ac12FXw-di26f-CMcZ2xrrw1oqABxDFP9MQ3qgS8mlXLsk23X6157Ck7guUIleg
-Message-ID: <CANiq72k3kihVyPsDqVVRdq-u+dOfMYpt523tTi=G2tT+VtCb3w@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust timekeeping for v6.17
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
-	Stephen Boyd <sboyd@kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
+ <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
+ <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org> <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
+ <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org> <DBAVXQTMR38Z.2782EGR84L7OP@kernel.org>
+ <DBAWQG1PX5TO.6I2ARFGLX88N@kernel.org> <DBAX59YKO0FV.ANLOWRHDDS92@kernel.org>
+ <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org> <C72C6915-3BB2-431F-89ED-7743D8A62B7E@collabora.com>
+In-Reply-To: <C72C6915-3BB2-431F-89ED-7743D8A62B7E@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 15 Jul 2025 14:33:11 +0200
+X-Gm-Features: Ac12FXzafqL5CgtuWo3knu-1K9vyMTCNfAik34wqBKJ35Mxv3Xe2G9Y-3oofZaA
+Message-ID: <CAH5fLgibCtmgFpKNrC+jcSEqSUctyVMuYwEC0QSo+vzyDXK0zg@mail.gmail.com>
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and handlers
+To: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 15, 2025 at 9:58=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Mon, Jul 14, 2025 at 5:13=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
 >
-> Sorry for the missing tag text. Let me know if you can use the following
-> bullets:
+> Hi,
 >
->  - Make `Instant` generic over clock source. This allows the compiler to
->    assert that arithmetic expressions involving the `Instant` use
->    `Instants` based on the same clock source.
->  - Make `HrTimer` generic over the timer mode. `HrTimer` timers take a
->    `Duration` or an `Instant` when setting the expiry time, depending on =
-the
->    timer mode. With this change, the compiler can check the type matches =
-the
->    timer mode.
->  - Add an abstraction for `fsleep`. `fsleep` is a flexible sleep function=
- that
->    will select an appropriate sleep method depending on the requested sle=
-ep
->    time.
->  - Avoid 64-bit divisions on 32-bit hardware when calculating timestamps.
->  - Seal the `HrTimerMode` trait. This prevents users of the
->    `HrTimerMode` from implementing the trait on their own types.
+> >
+> >>>
+> >>>  (2) It is guaranteed that the device pointer is valid because (1) gu=
+arantees
+> >>>      it's even bound and because Devres<RegistrationInner> itself has=
+ a
+> >>>      reference count.
+> >>
+> >> Yeah but I would find it much more natural (and also useful in other
+> >> circumstances) if `Devres<T>` would give you access to `Device` (at
+> >> least the `Normal` type state).
+> >
+> > If we use container_of!() instead or just pass the address of Self (i.e=
+.
+> > Registration) to request_irq() instead,
+>
+>
+> Boqun, Benno, are you ok with passing the address of Registration<T> as t=
+he cookie?
+>
+> Recall that this was a change requested in v4, so I am checking whether w=
+e are
+> all on the same page before going back to that.
+>
+> See [0], i.e.:
+> [0] https://lore.kernel.org/all/aFq3P_4XgP0dUrAS@Mac.home/
 
-No worries at all, looks good, thanks!
+After discussing this, Daniel and I agreed that I will implement the
+change adding a Device<Bound> argument to the callback. I will be
+sending a patch adding it separately as a follow-up to Daniel's work.
 
-Cheers,
-Miguel
+Alice
