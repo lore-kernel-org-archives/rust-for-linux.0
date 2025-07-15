@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274AA533D6;
-	Tue, 15 Jul 2025 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63331DF244;
+	Tue, 15 Jul 2025 15:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752590349; cv=none; b=HXAVVxPgav/RTZd4AvfsF123C88bqUzrp+29Vyz9n2F8FYA38b6bZjH5Rg0lQbMQAi5RDkOcvza+AnacLMhG35wfJslg3iSNPZuA5MrazTtWOyi9BZXoG0pU1yi3/9loHnW5+PoQ08EBPKQOYDkAaJLBiqIKyjECrxNO8pPjrm0=
+	t=1752591852; cv=none; b=YKbrTbIQh3VMCDTkM6o3n1vZX8oVcDuyL94ntXD8CaOd053h4WX+t1tKpX8BhQnUzvrYaVqKzWu+XhkAGInNzQHzqsXIjQJEgtth8oLeIUXbGwiv55EtEiRheXPNM6qlOGRBi8LQGp/LQqNPxlTN5yf8KkUvPXrR0YR8Qq4fIPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752590349; c=relaxed/simple;
-	bh=+F/FjcZLhdGEesSXP7Ra2Rc/6WNyx2PgrAKBD0xPUa4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=U5n9yFqZ6C/E3O0FNR8gGGfwmgVgTta4mqeK5m37A6tkcI5stO1OEA6R8MKr+8CFw1cBXCtnVy5S2BfVfCZPJl460q0t+csX1lWjHk6YKYI1LUVj610E09ihI4XmnnPldbevtFddKF7yQKN2IJL9AbYKOHXOykPGcSOj2u3xyj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h14/s75y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752591852; c=relaxed/simple;
+	bh=aAreeY7ue7odmfTN9APRw/KRypV/I5/p3R9EKMXFQPA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=aKRHLxaAwGcXPqojl8m0mJy2J0ZB8m/BPe+btf3hDp/z7Wkt5exRtmkJVtyTKqyTYjB6J5XWhWvVm49uRYAEk8/O+1Q2wFclciedaEbG+1c5MVsY27bFmbOQ0siFYtnILZyqQ7PNae7iB5KJLAaDXWs9r08bdSl7qZNO/PoRL+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6mpcnpU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h14/s75y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1929C4CEE3;
-	Tue, 15 Jul 2025 14:39:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6mpcnpU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608D3C4CEE3;
+	Tue, 15 Jul 2025 15:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752590348;
-	bh=+F/FjcZLhdGEesSXP7Ra2Rc/6WNyx2PgrAKBD0xPUa4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=h14/s75yEDLrwnjwdYL0Ago3PwmzhA/EX2HI54r1hms3qzFjQw7ApOQfT6qwLBtD6
-	 G1Wt2mUm+aPGWFcOzTMNW8vFqcmN5tXQsKuy/f/ZCB7zGk9lMsVVYhnWScpRIeHfSp
-	 2Gb3yYDhpyBeHVT2ZBQvfUN4/relEN6LIZgTUDR0JP2JcBAYf4oysCBDL0i8SEXRKr
-	 SnauiJ/E+vtimf1gZHC2tcD1D5/WlO7FLOZGZz7/p6guSlYDd4DBd4C7rRDExDFN1W
-	 w3Ugpuf314Tlafms1fW9NBSN2/h3LtKQFG0Om8TgtzLDxhLvMDi9WapjUC34ZPMZdU
-	 RYEqRsr/4/iMA==
+	s=k20201202; t=1752591852;
+	bh=aAreeY7ue7odmfTN9APRw/KRypV/I5/p3R9EKMXFQPA=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=a6mpcnpURyLp67IkgKp7Uo9Q4mbZWaW+CCX/jgmpobvSkfgU6uFuwV5tZI8xGLIa5
+	 jyXmbVqVg+T9yGhvjQrKOdv4Ll1wBBm768/FXN9KxVFauVyLbp1+Qo779yxIdOwvh9
+	 O+Ba0LUy3WfCRTGJahUf7z5ELhAS4fPDSsn4ykevwxX9ri/WnqdoND0fGgJhucYuxx
+	 poGIhhU70tSRSVAc+q+fgZOckrrqd8hcuCxdBlrWjMC+CGfTX+KYRbAUFEad88U1uT
+	 M9SFTLcPG2CyBxjFGihypm1fP+c5wk49sO9t0L4hO11TDGHzV8ZhBWmQ34Y96BFK/K
+	 fvxX5Py9Lb6yQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,61 +34,69 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 16:39:04 +0200
-Message-Id: <DBCPFD7LPG5R.1J7HDRK2CQHG5@kernel.org>
-Subject: Re: [PATCH 1/2] rust: alloc: specify the minimum alignment of each
- allocator
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Matthew Wilcox" <willy@infradead.org>, "Tamir Duberstein"
- <tamird@gmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, <linux-mm@kvack.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
+Date: Tue, 15 Jul 2025 17:04:07 +0200
+Message-Id: <DBCPYJW9852M.2KDHMO6QS6YPY@kernel.org>
+To: "Rahul Rameshbabu" <sergeantsagara@protonmail.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250715-align-min-allocator-v1-0-3e1b2a5516c0@google.com>
- <20250715-align-min-allocator-v1-1-3e1b2a5516c0@google.com>
- <DBCOPL040H7H.2MZO6ZBIR0Z2T@kernel.org>
- <CAH5fLgi+6Ahh_mKrdxyfc+SBKymEhqQhgg=6MxxG7MSvpJjveg@mail.gmail.com>
-In-Reply-To: <CAH5fLgi+6Ahh_mKrdxyfc+SBKymEhqQhgg=6MxxG7MSvpJjveg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] rust: core abstractions for HID drivers
+Cc: <rust-for-linux@vger.kernel.org>, <linux-input@vger.kernel.org>, "Jiri
+ Kosina" <jikos@kernel.org>, <a.hindborg@kernel.org>,
+ <alex.gaynor@gmail.com>, <aliceryhl@google.com>, <benno.lossin@proton.me>,
+ "Benjamin Tissoires" <benjamin.tissoires@redhat.com>,
+ <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <db48x@db48x.net>,
+ <gary@garyguo.net>, <ojeda@kernel.org>, <tmgross@umich.edu>,
+ <peter.hutterer@who-t.net>
+References: <20250713211012.101476-4-sergeantsagara@protonmail.com>
+ <20250713211012.101476-10-sergeantsagara@protonmail.com>
+In-Reply-To: <20250713211012.101476-10-sergeantsagara@protonmail.com>
 
-On Tue Jul 15, 2025 at 4:35 PM CEST, Alice Ryhl wrote:
-> On Tue, Jul 15, 2025 at 4:05=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
->>
->> On Tue Jul 15, 2025 at 3:46 PM CEST, Alice Ryhl wrote:
->> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
->> > index a2c49e5494d334bfde67328464dafcdb31052947..c12753a5fb1c7423a40635=
-53674b537a775c860e 100644
->> > --- a/rust/kernel/alloc.rs
->> > +++ b/rust/kernel/alloc.rs
->> > @@ -137,6 +137,14 @@ pub mod flags {
->> >  /// - Implementers must ensure that all trait functions abide by the =
-guarantees documented in the
->> >  ///   `# Guarantees` sections.
->> >  pub unsafe trait Allocator {
->> > +    /// The minimum alignment satisfied by all allocations from this =
-allocator.
->> > +    ///
->> > +    /// # Guarantees
->> > +    ///
->> > +    /// Any pointer allocated by this allocator must be aligned to `M=
-IN_ALIGN` even if the
->> > +    /// requested layout has a smaller alignment.
->>
->> I'd say "is guaranteed to be aligned to" instead, "must be" reads like a
->> requirement.
->
-> Yes I agree that sounds better.
->
->> Speaking of which, I think this also needs to be expressed as a safety
->> requirement of the Allocator trait itself, which the specific allocator
->> implementations need to justify.
->
-> The trait safety requirements already says that the implementation
-> must provide the guarantee listed on each item in the trait.
+On Sun Jul 13, 2025 at 11:12 PM CEST, Rahul Rameshbabu wrote:
+> +// SAFETY: Instances of `Device` are always reference-counted.
+> +unsafe impl crate::types::AlwaysRefCounted for Device {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference guarantees that t=
+he refcount is non-zero.
+> +        unsafe { bindings::kref_get(&mut ((*self.as_raw()).ref_)) }
 
-Oh, indeed, that's fine then. :)
+I'm confused, what's the lifecycle of a struct hid_device? It embedds a str=
+uct
+device, so it also inherits its reference count. Additionally it also has a
+struct kref. Can you elaborate please?
+
+I don't know what the struct kref is for, but I'm pretty sure you want to m=
+anage
+the reference count of the embedded struct device here.
+
+> +    }
+> +
+> +    unsafe fn dec_ref(obj: NonNull<Self>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount i=
+s non-zero.
+> +        unsafe {
+> +            bindings::kref_put(
+> +                &mut ((*obj.cast::<bindings::hid_device>().as_ptr()).ref=
+_),
+
+I think you want &raw mut instead.
+
+> +                Some(bindings::hiddev_free),
+> +            )
+> +        }
+> +    }
+> +}
+> +
+> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<C=
+tx> {
+> +    fn as_ref(&self) -> &device::Device<Ctx> {
+> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a=
+ pointer to a valid
+> +        // `struct hid_device`.
+> +        let dev =3D unsafe { addr_of_mut!((*self.as_raw()).dev) };
+
+You also use &raw mut meanwhile.
+
+> +
+> +        // SAFETY: `dev` points to a valid `struct device`.
+> +        unsafe { device::Device::as_ref(dev) }
+> +    }
+> +}
