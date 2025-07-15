@@ -1,66 +1,65 @@
 Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812B32D663D
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 09:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF68275118
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 09:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752572098; cv=none; b=rcnlxxWN6eTxUAuUOYXzVDFopPMB1TwSya29ja5Z0ybuRLEIADeCqbNpaUkkYglpRui/13fAPdGXdZHRZ9MPw0VlDeXp1D8Hu6tb/SPctlrfyhHsjqnRJlxJY7M5rBeNzrWt44QxkXQIfSgh4rhK7oNeUepyOACuc0yzpRdKlW8=
+	t=1752572136; cv=none; b=P1MxIi2mJmn+eHW1HcBKVTW1lIGo68QbsTOzdqpc/+Di79AHXYiBSczIvpLhkpBCBDcB4QNBWkWcztC1VK7SlDv42nFarVzmN1tEIK5M4xQDzTWadJTVcsM18WfL2CVMG8vdGyeticCDqvnLQEQxm9cB9J4XYWyXsQ9zGVsbrkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752572098; c=relaxed/simple;
-	bh=SW8g2sGzj8cOGWOFPcNcOjWxh1xRALfpblwtuQfW44w=;
+	s=arc-20240116; t=1752572136; c=relaxed/simple;
+	bh=yee2NYU6mBR5YlB4KQHX6ZVBUAyXy0AOr2Bpw507kC4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DKjqYJzBti7qKscrirRg6HKYANLk3iwZvs2znTVCDsbJOdZnhcOCNg6BepOTe3tcY7F8/308mLrIGTuIK5lQO3AgCBJFwD+VdlzfLSvEsobDHVJdjayHPEPv+rjAR7nrOD9wLqRaWZF8j341Cw3tbWA+sCbeUMhiEDbwcUksssg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eCCmsqYU; arc=none smtp.client-ip=209.85.128.74
+	 To:Cc:Content-Type; b=Q4dsysquq4MZJdGegNbN9H7pgwQmaIG1QgWHtCh9Fqq1ccx/3Gd6DK9F1kZCGSG7i2HWW4RCIARX4PwB5AYUOuizVUb5GT13JTp6gS7b4y9n82hdKoXmTUKFawHN0I4wAD4BsLn7Z+50OkR/WjIJID/JIZcKslUzwlISOi7Rhyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Whn1/o+1; arc=none smtp.client-ip=209.85.128.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eCCmsqYU"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-45526e19f43so14164885e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 02:34:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Whn1/o+1"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-453817323afso32886325e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 02:35:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752572095; x=1753176895; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1752572133; x=1753176933; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=l8yUNfVz2yZkexOKK7SEe5mo3/8fTwZuFskFLzVIPqc=;
-        b=eCCmsqYUqt4ZYJ/+b56w72eJU1V48L0rmx8d7Ez5A8en+WKqr/WE00Eao+nn9FVM72
-         w6pFcY6r09Wao/VTS32P/0pLsy3EKayqcz1KFjYzimDZlvB2HI8uksSxZXy/I1NlmY8j
-         Ljvs1zQK00jhVPbJeMcbHqMM+BYkOtIig4UVCzCVA3R8hVI7pzw57pGafju2ApCw5O9v
-         DvIiXm1BafCJegfrboMYZRY5NlYDGzpWLiBsUTVZGrqiYVATV+MPXzZxCWwBUUtFNXDf
-         rQOUmDfazugKU3Z0/cL1EJnAwvzkEHYuyGCjvbcfilxayFLNecTfWcVxG1n/7XQiUWfs
-         rbAg==
+        bh=F6OY5zMr/+IuOad0gM9u5Fh24EtyMZ2ZoxgNL4rh6sc=;
+        b=Whn1/o+10khwbshewiFqeyk+QKP9c3VN825OVZV/I9nVIBptUJl6hWLnMs1dKdZnJf
+         b/x6hcTzYMuzouSKTfd/78tdvvXNtljrvhD4cmXWFPgnQrYoy+X9Ii7IHzEpH4Htg804
+         U043dyrOjB+HPGye+UDIpwvil+q9IcOwuGSRiEzAiZQtI572NndlLa7qmyomujSZImdR
+         8OpLtbm9OAz70zVOwbs3LJjAhJoPtkqiKC4jl1Ih9FqlV+qhaR4lu/NcZ+JEM4m/+dyE
+         /IVORhpNuYNWUlQ2+T37mhaXVLpCU+Qw2ALfj3wrKls/S5o7rtmBV0EnuSTakEvG/fSe
+         66FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752572095; x=1753176895;
+        d=1e100.net; s=20230601; t=1752572133; x=1753176933;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l8yUNfVz2yZkexOKK7SEe5mo3/8fTwZuFskFLzVIPqc=;
-        b=AFU1EmJlFFIGLsCjhYp1p5sxgEDlxNmnrqGOC2V9qccOymOvZ52eaq4HRAdo86Qq3R
-         BdHothq4QFFzuqQiH+6EBqBiRAMKCd7sQvqHls/V0UWeWfox1fX6V+nvqPG2WC3xzprG
-         J4x9IHi1GpZIz48s67ws66q+DdVl1+DaJYewfZwM1G3uGozcBkM2hEZQu1KpVlkO4p6b
-         DpOEyIHG/v2EDZxoL+2HCbXO924boXuwSNHQrNr6Hsfp4PYzp/H1BKovZC1dglmJppev
-         3/Li4rqzH9rLe9xUMXUMZG90jWSO0jWMSCTj5Bit11PWtuc0BPVId1jR3n/OpK7l0H/q
-         Vc1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUNzI6MA4Jrg7E43/mH4Bn/xSgTz61n0aKiEJXIbmcTXM8kyzj4+MgBNJuxhce90EGc4gHHb/PyurT9Urxx9w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuJxgATyGggMYR2f5/kxoXpq0EzF98Z1XQHEW0WrL1QFA02N0v
-	WaXRkGxxYuCuIBZ3rIt3+xmoTDPTygwYORHeqKiPW02BHNLlKCSBqoSCD0ztO9ad7YrylhtsuWK
-	4aUdkwrihMYevsvB0MA==
-X-Google-Smtp-Source: AGHT+IG5JFdwYFqwZe2nCzfhShGuYrv1qI/g5T/gPRHpEuD7yOmiP4fFJ4+Bp8QT6JxHaKdpkkFLe5FdFIrw2eo=
-X-Received: from wmbes26.prod.google.com ([2002:a05:600c:811a:b0:456:217f:2625])
+        bh=F6OY5zMr/+IuOad0gM9u5Fh24EtyMZ2ZoxgNL4rh6sc=;
+        b=oA/ibmHdSLXQWv9ZNnmiq8voO0obqvGa6IVgkf1dyspM2xsjSGAlM+l0iy/x7DEO1h
+         V78e9oBaXcxUigQiDSV1AukhMY+drbbUNZGrc9NW/1abDtPaZ9gnxUMMGFHYzaj60Uh+
+         IoFIAMDsSfiCpqIq8MQuw09Zeb9cwg9OBxDEE1bnI9TJxUmBwTXv/jYge+h16tIp6zUq
+         OPtmagHl206WbSTlbNkb5KdYo9cIXD8Kzv9ydATwhMxfC9ZeYgCQZAvg+Qs8x2G2NjZp
+         +hmje87cQnnu6kit3OhR92QDnrqodYUAKUgMbqvNAa8bqlDymcy1eW/2XY/25zOp0L5d
+         0otg==
+X-Forwarded-Encrypted: i=1; AJvYcCU65Gt5MMsOwLPdk5KbHbNY+kA2jKbVSK0H9EhPymPaL23z7gzp6KI9oR2s+7Qpc6tJvldKmmXvZu2pY1LePg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgVdMbqArif4HlC1JX6vaBuFqswnMr1VmshOSsuVaOMXRIOnvv
+	5rSWFPM6kI87SXvUC4SNr13/jyIATAVaVl/BrRJvi4Je4tr/lB+m5UwZ/hd8MIxFr7/khzpvWLP
+	HRNknmTdh7mLpW6qZiQ==
+X-Google-Smtp-Source: AGHT+IHqUXC6pWZ+Cef1TJtAf8/IFZ+OtfsS+rQFzogwmB9VBY8LgiwqGFMX3G0NvakLHr9g7Xu55w+rZtDLxNk=
+X-Received: from wmbh2.prod.google.com ([2002:a05:600c:a102:b0:453:f66:5f37])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:8b25:b0:456:18cf:66b5 with SMTP id 5b1f17b1804b1-45618cf6c49mr61966405e9.22.1752572095033;
- Tue, 15 Jul 2025 02:34:55 -0700 (PDT)
-Date: Tue, 15 Jul 2025 09:34:53 +0000
-In-Reply-To: <20250711-rnull-up-v6-16-v3-2-3a262b4e2921@kernel.org>
+ 2002:a05:600c:a08c:b0:456:22f0:d9ca with SMTP id 5b1f17b1804b1-45622f0de79mr41125145e9.26.1752572132937;
+ Tue, 15 Jul 2025 02:35:32 -0700 (PDT)
+Date: Tue, 15 Jul 2025 09:35:32 +0000
+In-Reply-To: <20250711-rnull-up-v6-16-v3-3-3a262b4e2921@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org> <20250711-rnull-up-v6-16-v3-2-3a262b4e2921@kernel.org>
-Message-ID: <aHYgvZ0DEsF93zC9@google.com>
-Subject: Re: [PATCH v3 02/16] rust: str: allow `str::Formatter` to format into
- `&mut [u8]`.
+References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org> <20250711-rnull-up-v6-16-v3-3-3a262b4e2921@kernel.org>
+Message-ID: <aHYg5Lbw49-3k_tI@google.com>
+Subject: Re: [PATCH v3 03/16] rust: str: expose `str::Formatter::new` publicly.
 From: Alice Ryhl <aliceryhl@google.com>
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -71,14 +70,10 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jul 11, 2025 at 01:43:03PM +0200, Andreas Hindborg wrote:
-> Improve `Formatter` so that it can write to an array or slice buffer.
+On Fri, Jul 11, 2025 at 01:43:04PM +0200, Andreas Hindborg wrote:
+> rnull is going to make use of `str::Formatter`, so expose it with public
+> visibility.
 > 
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-> +    #[expect(dead_code)]
-
-This could just be a public type to avoid this.
-
