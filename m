@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2D225F973;
-	Tue, 15 Jul 2025 08:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D332253FE;
+	Tue, 15 Jul 2025 08:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752567776; cv=none; b=BTXI8uJKUrqHWUpMnVa1IsdqoB+51zHD9KGVidbESEi++9jUiCY1Tuzi7fwUn7ud7A6K2BIdukow3D5IGq5bqTEzDvgRhKJCNHTqzKOkBwGulyh9O7KTnpfTuEhmcuaSAS2cDtZskG5SP5UlWy20zDrZAr2jwQIAM5Z3G5k+VDY=
+	t=1752568071; cv=none; b=fpBCR0pGmw1STEwNN+BpwemAZgUP/e9T6d40p4Z9wX4VsRiojXQwl1yYpoSaysIehVE9j3Y31tHlNFanUTumIqe2QZW9UkXTlEOV8OVDuwQ97EBPExPItt56JySzavUdVuwosZ//VeBDDSqFJdlLN7pLSpB5FBCm6hcNW7ImE4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752567776; c=relaxed/simple;
-	bh=e+GveHWQsznhWVSVvbglpHmf7i2wCktpNbLp6nwd69E=;
+	s=arc-20240116; t=1752568071; c=relaxed/simple;
+	bh=y3xFDIGFBDQ7/2ZnpboVuHHoy99yqCXaJ44aZphq0Jw=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=RQRdpBXI/MgQIYTgn5/gS0fbaaKTmQopUVa4SboyhpCySKaSIiwHq+XxiNx41CwB2oLx1rgPGhKUbpHdQweIs0aYDMn0t1aY05vtVxZ8QfSvSgVckvmW9pJHz/DrMizLc3EODiO2uPE8t0YNtD1rP4qaLP8DV1koFDjJSGyU9/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uCSTFOay; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=SGUUcg5qGfqetZLE4xnD4+Pr1wLP5A2hlOSBNsh7Xqoa+CI9A+DidZ40dwOmO3q0+MUUPrHWKuyTORPzGq1D5ONAHOs8daOUD4u672uDdhUYRLfaoPWSeff8pMappUMANBDLN28N+67qsNFljHHUzODDbVHtuh9RA2NWOXq7QGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eGWM78GN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uCSTFOay"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B272C4CEF6;
-	Tue, 15 Jul 2025 08:22:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eGWM78GN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BADC4CEE3;
+	Tue, 15 Jul 2025 08:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752567776;
-	bh=e+GveHWQsznhWVSVvbglpHmf7i2wCktpNbLp6nwd69E=;
+	s=k20201202; t=1752568070;
+	bh=y3xFDIGFBDQ7/2ZnpboVuHHoy99yqCXaJ44aZphq0Jw=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=uCSTFOayI1PlYUOW/L/A7im4447V053jBVrUql8+jedyJUZ9yIWB31OCH6UR7MDyl
-	 mJcl+M+lD1aVOyxY2jTm+gqM3R0ie1h7Pz5MnEWVVTh4g0qehh4HxmDNIgKdzawyJ2
-	 gsMDtZ3Stl0zrm4utvXVJFoUt0nvXVkVmSni+Xs3f2XjXUCZsRHp2HN8t3unkfsFwy
-	 MQPaJUXyS/R4jg9aE6bz64uCaCthdNS8ObiDAwIU7JN0Y9gRTRtHSoIO6zDLJ6ltAc
-	 zfHn0uSDFkicPd+F08QcIMZe64uOWq8sy3wqTEOF+Yg+xgXHl0XkbQLwSkiIk/14Hs
-	 7NWylmfhk14hQ==
+	b=eGWM78GNXV7hk+5EcCroUVyNEdLqVqqYOj5L/Q0Wlw/lPp/gVYhpXOmbo1JakPY4G
+	 kCvv5s6BIEriJWxl+r8WuFvGfeI9/ZxWss3qzTNV3aA7ODM4jsq8u0sC9QNv39vwwY
+	 dDk7mTXRbNrM5egbBIK0JK+4WZg0xB+GTj9a1Q5mvvYrCJL5nCfQ81N2Wi2Sdd23Oz
+	 EbeGa/RdI8CMzmHQp6BbvUSRbm9inhtJ0g3gOAMJNXwlc92HcB0zYikZN/Qv6BjXs2
+	 cXXwH45Cm2Q/88kIVyq+KIcnAQST7Uj+2YgLtRonc/mXofzgphPemqkQTBxjRhxAeT
+	 Fe0WazcCb+5uw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,38 +34,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 10:22:51 +0200
-Message-Id: <DBCHFBDWRHZ1.96R3AMCDUX9S@kernel.org>
-Subject: Re: [PATCH] rust: devres: initialize Devres::inner::data last
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <daniel.almeida@collabora.com>,
- <m.wilczynski@samsung.com>, <rust-for-linux@vger.kernel.org>,
+Date: Tue, 15 Jul 2025 10:27:45 +0200
+Message-Id: <DBCHJ2HTJMQS.175D313DV5Q7Q@kernel.org>
+Subject: Re: [PATCH v2 0/2] Add Opaque::cast_from
+Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
+ <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250714113712.22158-1-dakr@kernel.org>
- <aHYCOFZZYbgP39nR@google.com>
-In-Reply-To: <aHYCOFZZYbgP39nR@google.com>
+References: <20250624-opaque-from-raw-v2-0-e4da40bdc59c@google.com>
+In-Reply-To: <20250624-opaque-from-raw-v2-0-e4da40bdc59c@google.com>
 
-On Tue Jul 15, 2025 at 9:24 AM CEST, Alice Ryhl wrote:
-> On Mon, Jul 14, 2025 at 01:32:35PM +0200, Danilo Krummrich wrote:
->> Users may want to access the Devres object from callbacks registered
->> through the initialization of Devres::inner::data.
->>=20
->> For those accesses to be valid, Devres::inner::data must be initialized
->> last [1].
->>=20
->> Credit to Boqun for spotting this [2].
->>=20
->> Link: https://lore.kernel.org/lkml/DBBPHO26CPBS.2OVI1OERCB2J5@kernel.org=
-/ [1]
->> Link: https://lore.kernel.org/lkml/aHSmxWeIy3L-AKIV@Mac.home/ [2]
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->> ---
->> base-commit: 3964d07dd821efe9680e90c51c86661a98e60a0f
+On Tue Jun 24, 2025 at 5:27 PM CEST, Alice Ryhl wrote:
+> Since commit b20fbbc08a36 ("rust: check type of `$ptr` in
+> `container_of!`") we have enforced that the field pointer passed to
+> container_of! must match the declared field. This caused mismatches when
+> using a pointer to bindings::x for fields of type Opaque<bindings::x>.
 >
-> I couldn't find this commit. Where does this apply?
+> This situation encourages the user to simply pass field.cast() to the
+> container_of! macro, but this is not great because you might
+> accidentally pass a *mut bindings::y when the field type is
+> Opaque<bindings::x>, which would be wrong.
+>
+> To help catch this kind of mistake, add a new Opaque::cast_from that
+> wraps a raw pointer in Opaque without changing the inner type. Also
+> rename raw_get() to cast_into() for naming consistency.
+>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-The commit is in driver-core-next.
+For the series,
+
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+
+For the DRM parts,
+
+Acked-by: Danilo Krummrich <dakr@kernel.org>
