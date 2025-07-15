@@ -1,102 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63331DF244;
-	Tue, 15 Jul 2025 15:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5CC1E833D;
+	Tue, 15 Jul 2025 15:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752591852; cv=none; b=YKbrTbIQh3VMCDTkM6o3n1vZX8oVcDuyL94ntXD8CaOd053h4WX+t1tKpX8BhQnUzvrYaVqKzWu+XhkAGInNzQHzqsXIjQJEgtth8oLeIUXbGwiv55EtEiRheXPNM6qlOGRBi8LQGp/LQqNPxlTN5yf8KkUvPXrR0YR8Qq4fIPQ=
+	t=1752592620; cv=none; b=tJuCbVQxACdKogu8Qzv5T7yxz57ukMRg2j8M/iQVwpeik7FZTn6iA0pW87S0DHVTttUB+p45AU13L7920AbfUUMwboDybIdpCgARxEcrthZnDi9B4KnGDZOI+gdwL1upfATYghRRYQ+Ux/qLQH2icq2bwnaEZDwQhgzdyiobMKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752591852; c=relaxed/simple;
-	bh=aAreeY7ue7odmfTN9APRw/KRypV/I5/p3R9EKMXFQPA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=aKRHLxaAwGcXPqojl8m0mJy2J0ZB8m/BPe+btf3hDp/z7Wkt5exRtmkJVtyTKqyTYjB6J5XWhWvVm49uRYAEk8/O+1Q2wFclciedaEbG+1c5MVsY27bFmbOQ0siFYtnILZyqQ7PNae7iB5KJLAaDXWs9r08bdSl7qZNO/PoRL+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6mpcnpU; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752592620; c=relaxed/simple;
+	bh=EST4cYesXMZbGywqKbNK6S9GKuXaukO6MiLR4YmxNL0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZkIEVjrruLh5HVQucq6MX0G4c2JiAVWoxOwQjOciKWgP5FRDqUkPkgYJltSSLvRQqc2xOM0oV6vrfl4bPcQVHiBzEep4Nukrqww3cCbOPAqFzV9WwpV+yMujvDnvvUIx2ApRDIuWr6Z/PBcZBMF4ZSkc5pWQVRohgUnMliHuo8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=kV0CjkH7; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6mpcnpU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608D3C4CEE3;
-	Tue, 15 Jul 2025 15:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752591852;
-	bh=aAreeY7ue7odmfTN9APRw/KRypV/I5/p3R9EKMXFQPA=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=a6mpcnpURyLp67IkgKp7Uo9Q4mbZWaW+CCX/jgmpobvSkfgU6uFuwV5tZI8xGLIa5
-	 jyXmbVqVg+T9yGhvjQrKOdv4Ll1wBBm768/FXN9KxVFauVyLbp1+Qo779yxIdOwvh9
-	 O+Ba0LUy3WfCRTGJahUf7z5ELhAS4fPDSsn4ykevwxX9ri/WnqdoND0fGgJhucYuxx
-	 poGIhhU70tSRSVAc+q+fgZOckrrqd8hcuCxdBlrWjMC+CGfTX+KYRbAUFEad88U1uT
-	 M9SFTLcPG2CyBxjFGihypm1fP+c5wk49sO9t0L4hO11TDGHzV8ZhBWmQ34Y96BFK/K
-	 fvxX5Py9Lb6yQ==
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="kV0CjkH7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1752592616;
+	bh=EST4cYesXMZbGywqKbNK6S9GKuXaukO6MiLR4YmxNL0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=kV0CjkH79oF3626XgMSysu56sox8sbBHhIjrV9w2EaSBS0fBxxoc4K11IPSXqMPZg
+	 t12tlaw//cCWi+l8LlQ8vtyOMPcx2ZhaBO+AXVTM/bL+evf9eL9AP/YNXxMKXC7AV+
+	 BRLS9Zgn7p6ucIWTQcpBI8d9e3wK5+giGtfno+kgbEjuqOK5K9JwYJefey35Qa44Bo
+	 8R99d6Qja+BNArO9UJEf/lapzVak+gv4z8nN5Jy513qlUZ1hwHdh+KDR/Oaf05r6g7
+	 yTYrGJpLJBxvfXiEiOEXjQ4h9WhBlOF0tX2UNCe2jj2KqdZVZYrtdpUVMulDihGXGT
+	 XXmsP9qcJCBwA==
+Received: from [192.168.0.2] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 9F92617E0188;
+	Tue, 15 Jul 2025 17:16:53 +0200 (CEST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH v7 0/6] rust: add support for request_irq
+Date: Tue, 15 Jul 2025 12:16:37 -0300
+Message-Id: <20250715-topics-tyr-request_irq2-v7-0-d469c0f37c07@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 17:04:07 +0200
-Message-Id: <DBCPYJW9852M.2KDHMO6QS6YPY@kernel.org>
-To: "Rahul Rameshbabu" <sergeantsagara@protonmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v2 3/4] rust: core abstractions for HID drivers
-Cc: <rust-for-linux@vger.kernel.org>, <linux-input@vger.kernel.org>, "Jiri
- Kosina" <jikos@kernel.org>, <a.hindborg@kernel.org>,
- <alex.gaynor@gmail.com>, <aliceryhl@google.com>, <benno.lossin@proton.me>,
- "Benjamin Tissoires" <benjamin.tissoires@redhat.com>,
- <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <db48x@db48x.net>,
- <gary@garyguo.net>, <ojeda@kernel.org>, <tmgross@umich.edu>,
- <peter.hutterer@who-t.net>
-References: <20250713211012.101476-4-sergeantsagara@protonmail.com>
- <20250713211012.101476-10-sergeantsagara@protonmail.com>
-In-Reply-To: <20250713211012.101476-10-sergeantsagara@protonmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANVwdmgC/x3MSwqDQBBF0a1IjS0wjU2rWwkSjD6TmvipaoNB3
+ LuNwzO49yCDCoya7CDFT0zmKSHkGfXfbvqAZUgmVzhfhIfjOC/SG8e/smLdYPElujruEID6Xfn
+ Kl5TqRTHKfp+f7Xle6GMtoGkAAAA=
+X-Change-ID: 20250712-topics-tyr-request_irq2-ae7ee9b85854
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-pci@vger.kernel.org, Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
 
-On Sun Jul 13, 2025 at 11:12 PM CEST, Rahul Rameshbabu wrote:
-> +// SAFETY: Instances of `Device` are always reference-counted.
-> +unsafe impl crate::types::AlwaysRefCounted for Device {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: The existence of a shared reference guarantees that t=
-he refcount is non-zero.
-> +        unsafe { bindings::kref_get(&mut ((*self.as_raw()).ref_)) }
+Changes in v7:
+- Rebased on top of driver-core-next
+- Added Flags::new(), which is a const fn. This lets us use build_assert!()
+  to verify the casts (hopefully this is what you meant, Alice?)
+- Changed the Flags inner type to take c_ulong directly, to minimize casts
+  (Thanks, Alice)
+- Moved the flag constants into Impl Flags, instead of using a separate
+  module (Alice)
+- Reverted to using #[repr(u32)] in Threaded/IrqReturn (Thanks Alice,
+  Benno)
+- Fixed all instances where the full path was specified for types in the
+  prelude (Alice)
+- Removed 'static from the CStr used to perform the lookup in the platform
+  accessor (Alice)
+- Renamed the PCI accessors, as asked by Danilo
+- Added more docs to Flags, going into more detail on what they do and how
+  to use them (Miguel)
+- Fixed the indentation in some of the docs (Alice)
+- Added Alice's r-b as appropriate
+- Link to v6: https://lore.kernel.org/rust-for-linux/20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com/
 
-I'm confused, what's the lifecycle of a struct hid_device? It embedds a str=
-uct
-device, so it also inherits its reference count. Additionally it also has a
-struct kref. Can you elaborate please?
+Changes in v6:
+- Fixed some typos in the docs (thanks, Dirk!)
+- Reordered the arguments for the accessors in platform.rs (Danilo)
+- Renamed handle_on_thread() to handle_threaded() (Danilo)
+- Changed the documentation for Handler and ThreadedHandler to what
+  Danilo suggested
+- Link to v5: https://lore.kernel.org/r/20250627-topics-tyr-request_irq-v5-0-0545ee4dadf6@collabora.com
 
-I don't know what the struct kref is for, but I'm pretty sure you want to m=
-anage
-the reference count of the embedded struct device here.
+Changes in v5:
 
-> +    }
-> +
-> +    unsafe fn dec_ref(obj: NonNull<Self>) {
-> +        // SAFETY: The safety requirements guarantee that the refcount i=
-s non-zero.
-> +        unsafe {
-> +            bindings::kref_put(
-> +                &mut ((*obj.cast::<bindings::hid_device>().as_ptr()).ref=
-_),
+Thanks, Danilo {
+  - Removed extra scope in the examples.
+  - Renamed Registration::register() to Registration::new(),
+  - Switched to try_pin_init! in Registration::new() (thanks for the
+    code and the help, Boqun and Benno)
+  - Renamed the trait functions to handle() and handle_on_thread().
+  - Introduced IrqRequest with an unsafe pub(crate) constructor
+  - Made both register() and the accessors that return IrqRequest public
+    the idea is to allow both of these to work:
+	// `irq` is an `irq::Registration`
+	let irq = pdev.threaded_irq_by_name()?
+  and
+	// `req` is an `IrqRequest`.
+	let req = pdev.irq_by_name()?;
+	// `irq` is an `irq::Registration`
+	let irq = irq::ThreadedRegistration::new(req)?;
 
-I think you want &raw mut instead.
+  - Added another name in the byname variants. There's now one for the
+    request part and the other one to register()
+  - Reworked the examples in request.rs
+  - Implemented the irq accessors in place for pci.rs
+  - Split the platform accessor macros into two
+}
 
-> +                Some(bindings::hiddev_free),
-> +            )
-> +        }
-> +    }
-> +}
-> +
-> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<C=
-tx> {
-> +    fn as_ref(&self) -> &device::Device<Ctx> {
-> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is a=
- pointer to a valid
-> +        // `struct hid_device`.
-> +        let dev =3D unsafe { addr_of_mut!((*self.as_raw()).dev) };
+- Added a rust helper for pci_irq_vectors if !CONFIG_PCI_MSI (thanks,
+Intel 0day bot)
+- Link to v4: https://lore.kernel.org/r/20250608-topics-tyr-request_irq-v4-0-81cb81fb8073@collabora.com
 
-You also use &raw mut meanwhile.
+Changes in v4:
 
-> +
-> +        // SAFETY: `dev` points to a valid `struct device`.
-> +        unsafe { device::Device::as_ref(dev) }
-> +    }
-> +}
+Thanks, Benno {
+  - Split series into more patches (see patches 1-4)
+  - Use cast() where possible
+  - Merge pub use statements.
+  - Add {Threaded}IrqReturn::into_inner() instead of #[repr(u32)]
+  - Used AtomicU32 instead of SpinLock to add interior mutability to the
+    handler's data. SpinLockIrq did not land yet.
+  - Mention that `&self` is !Unpin and was initialized using pin_init in
+    drop()
+  - Fix the docs slightly
+}
+
+- Add {try_}synchronize_irq().
+- Use Devres for the irq registration (see RegistrationInner). This idea
+  was suggested by Danilo and Alice.
+- Added PCI accessors (as asked by Joel Fernandez)
+- Fix a major oversight: we were passing in a pointer to Registration
+  in register_{threaded}_irq() but casting it to Handler/ThreadedHandler in
+  the callbacks.
+- Make register() pub(crate) so drivers can only retrieve registrations
+  through device-specific accessors. This forbids drivers from trying to
+  register an invalid irq.
+- I think this will still go through a few rounds, so I'll defer the
+  patch to update MAINTAINERS for now.
+
+- Link to v3: https://lore.kernel.org/r/20250514-topics-tyr-request_irq-v3-0-d6fcc2591a88@collabora.com
+
+Changes in v3:
+- Rebased on driver-core-next
+- Added patch to get the irq numbers from a platform device (thanks,
+  Christian!)
+- Split flags into its own file.
+- Change iff to "if and only if"
+- Implement PartialEq and Eq for Flags
+- Fix some broken docs/markdown
+- Reexport most things so users can elide ::request from the path
+- Add a blanket implementation of ThreadedHandler and Handler for
+  Arc/Box<T: Handler> that just forwards the call to the T. This lets us
+  have Arc<Foo> and Box<Foo> as handlers if Foo: Handler.
+- Rework the examples a bit.
+- Remove "as _" casts in favor of "as u64" for flags. This is needed to
+  cast the individual flags into u64.
+- Use #[repr(u32)] for ThreadedIrqReturn and IrqReturn.
+- Wrapped commit messages to < 75 characters
+
+- Link to v2: https://lore.kernel.org/r/20250122163932.46697-1-daniel.almeida@collabora.com
+
+Changes in v2:
+- Added Co-developed-by tag to account for the work that Alice did in order to
+figure out how to do this without Opaque<T> (Thanks!)
+- Removed Opaque<T> in favor of plain T
+- Fixed the examples
+- Made sure that the invariants sections are the last entry in the docs
+- Switched to slot.cast() where applicable,
+- Mentioned in the safety comments that we require that T: Sync,
+- Removed ThreadedFnReturn in favor of IrqReturn,
+- Improved the commit message
+
+Link to v1: https://lore.kernel.org/rust-for-linux/20241024-topic-panthor-rs-request_irq-v1-1-7cbc51c182ca@collabora.com/
+
+---
+Daniel Almeida (6):
+      rust: irq: add irq module
+      rust: irq: add flags module
+      rust: irq: add support for non-threaded IRQs and handlers
+      rust: irq: add support for threaded IRQs and handlers
+      rust: platform: add irq accessors
+      rust: pci: add irq accessors
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/helpers.c          |   1 +
+ rust/helpers/irq.c              |   9 +
+ rust/helpers/pci.c              |   8 +
+ rust/kernel/irq.rs              |  22 ++
+ rust/kernel/irq/flags.rs        | 124 ++++++++++
+ rust/kernel/irq/request.rs      | 490 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ rust/kernel/pci.rs              |  45 +++-
+ rust/kernel/platform.rs         | 146 +++++++++++-
+ 10 files changed, 844 insertions(+), 3 deletions(-)
+---
+base-commit: 3964d07dd821efe9680e90c51c86661a98e60a0f
+change-id: 20250712-topics-tyr-request_irq2-ae7ee9b85854
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
