@@ -1,125 +1,167 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFCB2D6402;
-	Tue, 15 Jul 2025 09:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D0F26D4CF
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 09:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752572216; cv=none; b=EzMRiFzsUT5/DzaxgCRJg5kadmuzJBQBWwJHANXRTfou/vWZHtShB6RhZ70N6f+frK8hvNhGNC1Zv1NV0oIAft6wxK8Vdk0gRq2m8WvNbYWnRFONAZnlq62TDMeMEFaX1RX6mkRvxy4XDhPbV9oMSe+Vmb7VD6fvttbp0PZjGVY=
+	t=1752572464; cv=none; b=M6/zXYrBeL1Ay/yRMNMCazxB+dhDMVW3Z4HhPz08+/ZCv3ZfzALkUtbVC2nL+vEFpWFSrt8BpU8ywu2Dc9OZ06OCgelSGh+ZbYP+OPGTHhVD5Z3vQynA+kqlQ256lo/xL5ftbI8sUIRnju5sGADBMACbrOwl529mT/EH2C8l7Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752572216; c=relaxed/simple;
-	bh=y62YdeKQb3Brz+vPDdJj6AAr/0IGdUwhUAr08AzvvCM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=cxjOSSa1ld1wOQRUvjK14jZq6BEbCmAfu8goKlkjV7teDsCtCUYigJT5oYFD8db6H4xR+76NkQj/inb+gHneznnUFRddfryZ7jnph55wTkvhBs9noRg06qF1fa/0nyHUV+NcRFC+qd2C8RsHFPLmzq3HCENWV+IDF9MsVAj0spk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=robPKuiH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752572464; c=relaxed/simple;
+	bh=JqDdcfQdEDJOh4OncebmRMNbfmeS+RyF0B608pIf4Tc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lnkUYZzbc50PMw2jcjUcC/DcX0Ls29dpZ8CK5F81KJsPAturXujGzRJLQno2IgwyrRcDD/0MD69X1FvfUWeWJHyKZhnq0woZf2vpvJaIExrug4BP61Rg95+bpMm2YKD80sS7hneoCNV+sflH6y2GXBrUAG8ZOErAbFS8ygFg1zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DuxESk9L; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="robPKuiH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 049EDC4CEF5;
-	Tue, 15 Jul 2025 09:36:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752572216;
-	bh=y62YdeKQb3Brz+vPDdJj6AAr/0IGdUwhUAr08AzvvCM=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=robPKuiHQGjfNsHS936U4Wh0KdyxNe6rQBPxbPs4WcCmJaZECEXUVROdOCxgrXdF3
-	 SbpLQN2KpTfZakdjTgd4c3zNP0TUqlFA5eTGi8YO2u5BX1srqI7WvXZoi4Q2IW/Pk+
-	 Gr5Ngk9c882ZUKNLaIV75TM0BpQfZskSC02fB0g7p+iSJs2rGuUExptnRqYoBDZ32t
-	 tM8p4R54r6bZpIlhV6JPC70qhuUNqSbFZrEd5mcxqCd81LvJSyR8dNfyYm1/u3Xv9b
-	 qLtqee/ZfevZDHAYMxGYJFbWOpMFFqIYun1MPYlAdeDBC1lm7YDJM3IMo6DUekJCVJ
-	 znl9emV8otw1w==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DuxESk9L"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-ae0cd07eeb2so449916766b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 02:41:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752572461; x=1753177261; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0aKhbD3D+7KTOT18UwrPb+VSeMuW0rSuyUidAagH1dk=;
+        b=DuxESk9LXLCTqw//q3zsLK6d59gyUavEnojy+HO8SJsl3NuXu9BHK9odO6yA/bMMLV
+         RNn3DV3Jz6c8Um+CLDwsgJRA0aaQ6yUtAh/mV2ndlxKPQbPm/C/uWUc5sz3zbNOF3FeJ
+         ADH8Lb3oXE5uJ7kzM7Lsj0CCp/gnSsxl+bLgToXjMnPACiNElqTK/mOHE3q7kq2Jipb0
+         DZh325yMnb52LEuLjfT4hQdTl3XJMGJ41yFhUszJeoL5t2oxLgJa9CEBHvLK2LdhK2JC
+         +WO+El/QEOsqye9L2aBwkWIEfTt07qS86nVSuI3YuVLM8qL2ykd6zu/UMUlj8Y0iXOCP
+         6XKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752572461; x=1753177261;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0aKhbD3D+7KTOT18UwrPb+VSeMuW0rSuyUidAagH1dk=;
+        b=WHXz6o6aCx9ukBUAMqszSekPk9ayknSMSdKeYv/3FYAd1xUs65VTgAXipAHy2/+BIQ
+         u2schXGTbanR267imkl+5rHj7imJDqEYZwTgEVAIyRq0rW1PZloqUzEtDQwJQFhXX/7F
+         wT9l13GYL14Qx2KykCnEChuY6BIzcjVYc6nOEpWN6YRe/3C9+W9/H1Z/nwH2OtffrV/d
+         jHQu9oArwb1g8YZHo4RVIDM7xoUAfxHe9lYbz9HN16Z6/RGzFfqCWiYc3gQCn9mYvkvj
+         wmG1qVX9jz+91sY0vwPKyXzpslkCqHpF9YXabps6c5IZF6qhi7xENASkZYrxiz3hYoBT
+         tKaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVpEIfL1+7iMYKozkR57Z/7TDTS2ZTE8myBpTMKoQw5uDcmPnuD8Ouyv+WpEsib8rXREyictSW4a9DocPdrlw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOXl/pYbkQwYKbdSMmJ50MiHn6YsyXMOg9CUTiMHNCnanpPipn
+	9EymT2RHcy1nBMvqqkap3qjGEBTezgoP+WcpBQnueZ2W4qtuKhW1srCI7FltSpyVpU/R6hhHgm1
+	DLia2bunum3ZGYsPCnA==
+X-Google-Smtp-Source: AGHT+IErrNlePgQ6rL1zFxiVjv41kdZLhL8lPvBaFoc/gkVv4LYI0ZeP76kWXRrZLOeY2AQR9VmxeP4Uuhyl8N0=
+X-Received: from ejctl10.prod.google.com ([2002:a17:907:c30a:b0:ae9:342d:ee72])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:906:7308:b0:ad8:a935:b905 with SMTP id a640c23a62f3a-ae6fbe7f231mr1714518266b.22.1752572460745;
+ Tue, 15 Jul 2025 02:41:00 -0700 (PDT)
+Date: Tue, 15 Jul 2025 09:40:59 +0000
+In-Reply-To: <20250711-rnull-up-v6-16-v3-5-3a262b4e2921@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 11:36:49 +0200
-Message-Id: <DBCIZY29JWTD.1G6AKZ08ZWBQG@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v7 4/9] rust: sync: atomic: Add generic atomics
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250714053656.66712-1-boqun.feng@gmail.com>
- <20250714053656.66712-5-boqun.feng@gmail.com>
- <DBBPI9ZJVO64.3A83G118BMVLI@kernel.org> <aHUSgXW9A6LzjBIS@Mac.home>
- <DBBVD70MASPW.2LUTJ51Y6SGMI@kernel.org> <aHUjIQlqphtgVP2g@Mac.home>
-In-Reply-To: <aHUjIQlqphtgVP2g@Mac.home>
+References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org> <20250711-rnull-up-v6-16-v3-5-3a262b4e2921@kernel.org>
+Message-ID: <aHYiK1cr3I_ShQU2@google.com>
+Subject: Re: [PATCH v3 05/16] rust: str: introduce `NullTerminatedFormatter`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>, 
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Jul 14, 2025 at 5:32 PM CEST, Boqun Feng wrote:
-> On Mon, Jul 14, 2025 at 05:05:40PM +0200, Benno Lossin wrote:
-> [...]
->> >> >  //!
->> >> >  //! [`LKMM`]: srctree/tools/memory-model/
->> >> > =20
->> >> > +pub mod generic;
->> >>=20
->> >> Hmm, maybe just re-export the stuff? I don't think there's an advanta=
-ge
->> >> to having the generic module be public.
->> >>=20
->> >
->> > If `generic` is not public, then in the kernel::sync::atomic page, it
->> > won't should up, and there is no mentioning of struct `Atomic` either.
->> >
->> > If I made it public and also re-export the `Atomic`, there would be a
->> > "Re-export" section mentioning all the re-exports, so I will keep
->> > `generic` unless you have some tricks that I don't know.
->>=20
->> Just use `#[doc(inline)]` :)
->>=20
->>     https://doc.rust-lang.org/rustdoc/write-documentation/the-doc-attrib=
-ute.html#inline-and-no_inline
->>=20
->> > Also I feel it's a bit naturally that `AllowAtomic` and `AllowAtomicAd=
-d`
->> > stay under `generic` (instead of re-export them at `atomic` mod level)
->> > because they are about the generic part of `Atomic`, right?
->>=20
->> Why is that more natural? It only adds an extra path layer in any import
->> for atomics.
->>=20
->
-> Exactly, users need to go through extra steps if they want to use the
-> "generic" part of the atomic, and I think that makes user more aware of
-> what they are essentially doing:
->
-> - If you want to use the predefined types for atomic, just
->
->   use kernel::sync::atomic::Atomic;
->
->   and just operate on an `Atomic<_>`.
->
-> - If you want to bring your own type for atomic operations, you need to
->
->   use kernel::sync::atomic::generic::AllowAtomic;
->
->   (essentially you go into the "generic" part of the atomic)
->
->   and provide your own implementation for `AllowAtomic` and then you
->   could use it for your own type.
->
-> I feel it's natural because for extra features you fetch more modules
-> in.
+On Fri, Jul 11, 2025 at 01:43:06PM +0200, Andreas Hindborg wrote:
+> Add `NullTerminatedFormatter`, a formatter that writes a null terminated
+> string to an array or slice buffer. Because this type needs to manage the
+> trailing null marker, the existing formatters cannot be used to implement
+> this type.
+> 
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/str.rs | 50 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 50 insertions(+)
+> 
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index b1bc584803b0..c58925438c6e 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -838,6 +838,56 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
+>      }
+>  }
+>  
+> +/// A mutable reference to a byte buffer where a string can be written into.
+> +///
+> +/// The buffer will be automatically null terminated after the last written character.
+> +///
+> +/// # Invariants
+> +///
+> +/// `buffer` is always null terminated.
 
-The same would apply if you had to import `AllowAtomic` from atomic
-directly? I don't really see the value in this.
+Since you modify the buffer range, the actual invariant is that the
+first byte of `buffer` is zero.
 
----
-Cheers,
-Benno
+> +pub(crate) struct NullTerminatedFormatter<'a> {
+
+Isn't it called "nul" rather than "null"? My understanding is that
+"null" is for the pointer case, and "nul" is the name of the ascii
+character at codepoint zero.
+
+> +    buffer: &'a mut [u8],
+> +}
+> +
+> +impl<'a> NullTerminatedFormatter<'a> {
+> +    /// Create a new [`Self`] instance.
+> +    pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFormatter<'a>> {
+> +        *(buffer.first_mut()?) = 0;
+> +
+> +        // INVARIANT: We null terminated the buffer above.
+> +        Some(Self { buffer })
+> +    }
+> +
+> +    #[expect(dead_code)]
+> +    pub(crate) fn from_array<const N: usize>(
+> +        buffer: &'a mut [crate::ffi::c_char; N],
+> +    ) -> Option<NullTerminatedFormatter<'a>> {
+
+Can't you just call `::new` where you use this method?
+
+> +        Self::new(buffer)
+> +    }
+> +}
+> +
+> +impl Write for NullTerminatedFormatter<'_> {
+> +    fn write_str(&mut self, s: &str) -> fmt::Result {
+> +        let bytes = s.as_bytes();
+> +        let len = bytes.len();
+> +
+> +        // We want space for a null terminator. Buffer length is always at least 1, so no overflow.
+
+overflow -> underflow
+
+> +        if len > self.buffer.len() - 1 {
+
+this is just `len >= self.buffer.len()`.
+
+> +            return Err(fmt::Error);
+> +        }
+> +
+> +        let buffer = core::mem::take(&mut self.buffer);
+> +        // We break the null termination invariant for a short while.
+> +        buffer[..len].copy_from_slice(bytes);
+> +        self.buffer = &mut buffer[len..];
+> +
+> +        // INVARIANT: We null terminate the buffer.
+> +        self.buffer[0] = 0;
+> +
+> +        Ok(())
+> +    }
+> +}
+> +
+>  /// An owned string that is guaranteed to have exactly one `NUL` byte, which is at the end.
+>  ///
+>  /// Used for interoperability with kernel APIs that take C strings.
+> 
+> -- 
+> 2.47.2
+> 
+> 
