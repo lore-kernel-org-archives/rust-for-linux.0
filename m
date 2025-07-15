@@ -1,117 +1,82 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2B913AD1C
-	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 14:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2433597E;
+	Tue, 15 Jul 2025 14:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752590171; cv=none; b=GvUHZAdg61051diFTasHUgbQxsQCSuhZRXBTsnPmFgJiuPtyUBAE9FHSWJ0kwTolItXT/XxGv0LvUU3rEOUXYCom0jSwPbD6WV0LeSIa4rtY9eoGU1eosgITOrg00XwQiXBr6HCIgXrye3clVerXfgFOl8I4flJAKvWzM7XM+h0=
+	t=1752590243; cv=none; b=FTZhzYvFAbo53BvqCb2XMYokuLCEdpIwE2jo8usrW22HZRSI2b3PJRvLoX/yUxjnIXmP3BxSTlviJivittXKFdz8sRcPviq3kF0SodIF0tZo5N/jnXUbBhUqKzUK8SDQLB48sItc7vrtb5pDy+YDFR6E9KnbFLnHyF2y6G1dmhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752590171; c=relaxed/simple;
-	bh=EecG0RfOgPK7guoEmHKkFnJxuOMZMfGIgo2mOHDfw1w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cB0U08OBpshMmelbz3+puFQyLMFwWab2U8HPlbkqveru5EyxYNJCUfpNvTNQZQIenr/CB1Z8V/UajWGfHgDSTQLgOLBVweG3BUWGt8EmhZZrii+IJkn9ZvKN8Emnk3Uysp+SJ5XiJNrCHtM1PKt8TVk1a31gi+85l0OpSGXYs7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TDScMyq7; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752590243; c=relaxed/simple;
+	bh=JB6srs0/hXmNXL29U5hBbo2e7jA6AoI8BkIfVhHHWKc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XnmLY4+VqMdfVWgkEu/7DdxZSCYi+RfqAOtHuGV29PLOd9nRB/1XAYvL5+ihBOXYKWjh9AjBIZzWM3Gw3vnF+lOU4g9MuPL7dhtQvkxCk6evdicVNj33RmDWZuIQVNIZGzglq0SHT8SJ58OAcihTt6Lc4rwcuHZv1s3JV3nCxuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=mIk1OZeg; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TDScMyq7"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3a57ae5cb17so3153878f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 07:36:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752590168; x=1753194968; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jGvfBdhqi/ZhPT44V9PeuAZ38V5//XMxkKdYPmm5xrM=;
-        b=TDScMyq7G4ZAkuHRue+1e5eFKgBcqEF1BKX23YP85NkYZktStaC1B2azhuyOHn+v8d
-         AQzq71dbQIDhf9NfHaBe1Bin/A+Sgoqnuj4DGfTPJIrEazGqvAKj0pZAVpTadsmu2Bob
-         vLWoucqStq7BtYCe9b+H1d4NJgW3P1gpw3NmN3Q8fp9rNEulLXgcO8UiV0EZ9LUVLxoQ
-         hOTI0epfWCBLa4siKuxuk1y7XROooVRmiC+6sVduHAIIgLU8vjt8uKzJro/Y96tkburU
-         srGx9xTAy37hxMBxjnnNxbX1jHBPsuSdWlBgXOWXapqCuKUfT22DamzA/zJebg4sK//y
-         8o4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752590168; x=1753194968;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jGvfBdhqi/ZhPT44V9PeuAZ38V5//XMxkKdYPmm5xrM=;
-        b=YgX4trd4tMyNZwD39ZMZvkQFlk3g2EDpVSZAy+nt6iOMvDGBsYrrj3F6TfvuxBQQyl
-         AEkTCXUpgJCV7tIncKk55E/CJd4pvdlpHaoUtZa1Ksb0ujjeB405IIMLnFNmj5E1mM6Y
-         FFPEmQE+udRFEeXm4BQKtdHHr/IBkxEQS9ETlFWhAEycniB5JBBNLSoLbh/THfC36beM
-         lMTzVon/BoZtJLMlFOoRawExbGXuNCDfM64TMTdfx4J03lXnLhecUJtlA6XYNv59GwQN
-         B/cIGGd5l20DMxfBXL+RT3GO9lNaZpn24SQpBiDPSTcuGpSOgZY74GE2YgtvsAOxn71V
-         DXTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWGvWBu7prellO7o2X2oicTK9xeFmy3pajaz0dbH5AP3x+IOH6yWd54BbnKB6m8duUQAzlk1QuLK+qtor/KTA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzU1bZu5B4BZ30p6hmqH5dpy2C07irtNsGnrFJ5aaFJsj8BQkld
-	8PiVoJriT68wlh3pR4OCsLeDF2qEkQrbjfcNoSK8h2Y5uP2l3WPwF3rjU+v9u7oJo5ad+LHtP/f
-	3DuTfNIELDUtTJVLtOztPVwy73hHgYq6mxfZHi+WK
-X-Gm-Gg: ASbGnctAVZDCVKcSjN2yPixkyr4vbg30yZiPiCZmTHNogH++MvQMROuoJLcy8KPZ0Ce
-	OYIkX/b/jumxHhOu4piX3/iBBYrlt7oFknpBalCuGEkWVJqejwwijDtQE+6eRF1aTFEepon3UBy
-	ZH4HHc+HqOLBe+zKgwoGW6FSCEHVKPvRdsPbYIIv7BTqauJInnM7u92dc50KyeZ3aHC9xB2Z/zf
-	M5LQ5BIthgCg2ojIe6dlkOgstBMNLeDL4jDY1HZYe7DA/jo
-X-Google-Smtp-Source: AGHT+IHchtZYVjwPT3Jbtde6bA8r0SM1a6NSKREDZEHuUKb1xV+X3nINxk5+iqwyl1LWyFSQCr/TULZEuO0NWNXPtg0=
-X-Received: by 2002:a05:6000:4022:b0:3b6:938:86b7 with SMTP id
- ffacd0b85a97d-3b6093886bbmr3936441f8f.35.1752590168224; Tue, 15 Jul 2025
- 07:36:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mIk1OZeg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ssm/Pf0xPS8BgVoBR78mDi4mbuFDFYdIquwSjn1ZXTQ=; b=mIk1OZegNjGFmNKH0vvGqh2HJC
+	gNi9amAkigliamcRDqa5VOXl0WVWqS4eKz50TizpcMpmoGdQLrtYrUdGsRy7h3TDjSjluNeuh0ZqZ
+	dteG+sFECDlnAR95RVR1TYBBdtHyFyV4UklwRMJLX6qjzIXjPM239izuwELzNqw5Uiw5BZNjMzzWc
+	pl/MEKGRNTyw/WUqc3q7FNX+YdQbjEBkG8ha6LspqZXgzCzGngvHMGCav1iSvNJVCnQgQO6Z0gdm7
+	vrx1wEoozQ4ZjLVoOB/Ghno5ah6rot72je1rV1bqdAm6ek9FLaQYsPCGFtiwfrvxAPFw22to8wbBU
+	mYgiInHQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ubgmP-0000000Cnat-4BGC;
+	Tue, 15 Jul 2025 14:37:14 +0000
+Date: Tue, 15 Jul 2025 15:37:13 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Vitaly Wool <vitaly.wool@konsulko.se>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	rust-for-linux@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	linux-bcachefs@vger.kernel.org, bpf@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Subject: Re: [PATCH v13 1/4] :mm/vmalloc: allow to set node and align in
+ vrealloc
+Message-ID: <aHZnmevtRYt26LBE@casper.infradead.org>
+References: <20250715135645.2230065-1-vitaly.wool@konsulko.se>
+ <20250715135724.2230116-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250715-align-min-allocator-v1-0-3e1b2a5516c0@google.com>
- <20250715-align-min-allocator-v1-1-3e1b2a5516c0@google.com> <DBCOPL040H7H.2MZO6ZBIR0Z2T@kernel.org>
-In-Reply-To: <DBCOPL040H7H.2MZO6ZBIR0Z2T@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 15 Jul 2025 16:35:56 +0200
-X-Gm-Features: Ac12FXxYoaHrfSJ6mWRMdg4R-V_viczknh-7oNSEIV-JL9gT_TR3g9iuEJIcalQ
-Message-ID: <CAH5fLgi+6Ahh_mKrdxyfc+SBKymEhqQhgg=6MxxG7MSvpJjveg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: alloc: specify the minimum alignment of each allocator
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	Tamir Duberstein <tamird@gmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250715135724.2230116-1-vitaly.wool@konsulko.se>
 
-On Tue, Jul 15, 2025 at 4:05=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> On Tue Jul 15, 2025 at 3:46 PM CEST, Alice Ryhl wrote:
-> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> > index a2c49e5494d334bfde67328464dafcdb31052947..c12753a5fb1c7423a406355=
-3674b537a775c860e 100644
-> > --- a/rust/kernel/alloc.rs
-> > +++ b/rust/kernel/alloc.rs
-> > @@ -137,6 +137,14 @@ pub mod flags {
-> >  /// - Implementers must ensure that all trait functions abide by the g=
-uarantees documented in the
-> >  ///   `# Guarantees` sections.
-> >  pub unsafe trait Allocator {
-> > +    /// The minimum alignment satisfied by all allocations from this a=
-llocator.
-> > +    ///
-> > +    /// # Guarantees
-> > +    ///
-> > +    /// Any pointer allocated by this allocator must be aligned to `MI=
-N_ALIGN` even if the
-> > +    /// requested layout has a smaller alignment.
->
-> I'd say "is guaranteed to be aligned to" instead, "must be" reads like a
-> requirement.
+On Tue, Jul 15, 2025 at 03:57:24PM +0200, Vitaly Wool wrote:
+> +void *__must_check vrealloc_node_align_noprof(const void *p, size_t size,
+> +		unsigned long align, gfp_t flags, int nid) __realloc_size(2);
+> +#define vrealloc_node_noprof(_p, _s, _f, _nid)	\
+> +	vrealloc_node_align_noprof(_p, _s, 1, _f, _nid)
+> +#define vrealloc_noprof(_p, _s, _f)		\
+> +	vrealloc_node_align_noprof(_p, _s, 1, _f, NUMA_NO_NODE)
+> +#define vrealloc_node_align(...)		alloc_hooks(vrealloc_node_align_noprof(__VA_ARGS__))
+> +#define vrealloc_node(...)			alloc_hooks(vrealloc_node_noprof(__VA_ARGS__))
+> +#define vrealloc(...)				alloc_hooks(vrealloc_noprof(__VA_ARGS__))
 
-Yes I agree that sounds better.
+I think we can simplify all of this.
 
-> Speaking of which, I think this also needs to be expressed as a safety
-> requirement of the Allocator trait itself, which the specific allocator
-> implementations need to justify.
+void *__must_check vrealloc_noprof(const void *p, size_t size,
+		unsigned long align, gfp_t flags, int nid) __realloc_size(2);
+#define vrealloc_node_align(...) \
+	alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+#define vrealloc_node(p, s, f, nid) \
+	alloc_hooks(vrealloc_noprof(p, s, 1, f, nid))
+#define vrealloc(p, s, f) \
+	alloc_hooks(vrealloc_noprof(p, s, 1, f, NUMA_NO_NODE))
 
-The trait safety requirements already says that the implementation
-must provide the guarantee listed on each item in the trait.
-
-Alice
