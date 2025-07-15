@@ -1,118 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5CF19DF6A;
-	Tue, 15 Jul 2025 11:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B697C533D6
+	for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 12:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752579203; cv=none; b=sLoWbKjcl16h1b9Q0AvcQQYKsne78k2HYIlucfhFjpJMfEFE/tPbZx61FWeQzcSwEj6hiMauMkMinKnFPCDIKJ8RVoldwNVx7nGMCieuuAUN7zgaaRibVSEmIdkcKM//DzLvsufu9gXfkMBOiRNJ0IauwkItjTT6tKnw7uvTLDQ=
+	t=1752581638; cv=none; b=IoF+p7ea/aRgZrRlLMnqG+wtIK9HpFAzhBWyGTZw1MZNE8BWQX/OiZhawKHV87HPi8NXByI17KhxfZZJLQ+FSAyZzPKbbpEtK72vuNBNtCopKZXe/8xohkFzv6e7wJOmSt4H0B21KKEE2/sGMk3wYeMe2C7tNFsxkbAYFMybWmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752579203; c=relaxed/simple;
-	bh=NzCrCCIRiXzzXCYv2+YzYKUDPlKO09ruOW1F7aYjYLs=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=RL9a0XEdZ4nzmdsLrEYwxPpG4VGcU2AZ8UnbhqHl2F1GZcGveiT+XEkeP64pMs556nn23il5UjNnvb+knpEroWXZw9NJDaZEshdpPdngg37i3Q4NJQRo0BskCLAB81ryxz1u3YaX5AQ80DBbtfaGwcyoaE84h95rlM5HfEShpnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j46ZgDXi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752581638; c=relaxed/simple;
+	bh=jLXy7vlBx7cYAsSa5uQVBZocuvBpmf7jcdI8FKDXiu0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I57X//jKYWTgeRBh9C8uQmWE2hL80Pob6v4aCf8skpTC8TnulvcAFtgEz2nRm5Xf+8KOlCsqvycGtmTO8zv1jIYAvDRmGpTUdtu8Gag2Bovx8HJtvdFqlAu1zOpUyXKU3+dtRPv54upm4Tf4CaZe8QmMnHBlINz4WCtxXcBmyyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WwPDIQpi; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j46ZgDXi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0947FC4CEE3;
-	Tue, 15 Jul 2025 11:33:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752579202;
-	bh=NzCrCCIRiXzzXCYv2+YzYKUDPlKO09ruOW1F7aYjYLs=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=j46ZgDXiRZfpxX5R7RQPn8zHxQCCPRgLc2OJAnsHHmOyXffxVpjwB86/xdaW7f9cw
-	 rh2pwCk99ahHNRST5JTvCI1WLejh4UrdQR6zzjLUMAH2FkOgMTiIaQn8i+V+wg6XhZ
-	 2F6oZGvY1HvERjih89nbnxE3eXLvkakdkUS0A+kiCMhJ2FkF9swg7GDGmp4pEyXXrk
-	 VUyOdZP7CgW5VRsWwqbjt5/zLxAGAInbgM2y8s+C+Z31msJhh4hlywzKu7/nUpuf0d
-	 Gq+V0JMLJZLhoFOliZiPWMsJnDtuk3GxtKECAbI+azp6B+f3LP1NXneKzrYrusnX9n
-	 y2Guxfk8/HLxQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WwPDIQpi"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2352b04c7c1so7922025ad.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 05:13:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752581636; x=1753186436; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CnvEHZQlzN+r+6/15sEZKfG1Tor6pZWndYOX/7dnTLU=;
+        b=WwPDIQpiPgrW+e+3JArwvKnzRevv58ysskNAXADlTm694jE+ReoWh1lnYs8CrArA+l
+         AgRAF14z7mq+XL+w3ENQo+rOJAOb5vpyBfPO/rJjzh9I/h9MBIuR1G0IYmIYVYXIvTvR
+         zQSme1IyHcVpd5ADg1J3tHZ/P1QgP/Qh2RtZ53QTabqyb79y/4JumrImyMG3Ym/hczRu
+         /Js+0SNlubYW+cAzU7f/lo8ssKW+653CkrniaZIxgoYtnJY5sSVLnzjci38Jzh+dOvla
+         qXgz0LlctL9P6iy9CRk6rPzbfHigw6g1eD14hB198LiRyJYd3eUdcuNit/Lx8f4yiK8C
+         fqsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752581636; x=1753186436;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CnvEHZQlzN+r+6/15sEZKfG1Tor6pZWndYOX/7dnTLU=;
+        b=izwtuxN4RJgWfM02CYIm6fMwbshoNHDavtnwYxXmKpwZVnHQomNvDB8Z88pH5CINHN
+         8M2p37do9kg1GZ9pD6dAqM9tyTr+MkLsL8WKVc6niJywXwZuK7+Qxabso/VMTrN45kfs
+         GbH8xnC9YQPosGCG7vfiHNBiVcTVnbxUZ6dvnYXtj2YI7iwjxP2uP8J10yf0QDNR192p
+         0xj1qY6gNxfLixFBRStBQpGA7FIP2U72RIbbbR0+0eeNXyj5jZP2aI8l8Roeput5+ocr
+         nQw/0RqjVB6rU3rdbF8/MNvtVmUNZ+wsTIvOHGvIfh1jJFQRSGnc24M/Eoi0sA9svZUW
+         WtLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbP1rBiJlg71Z/jWXqIIQYIClrikAXxrhiVeYk8a3DbYzWtHNd345D/ND4tMrw473DiDaf222nAvJ/xu3ZwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnWx6UOgZcwNRxid4TZsEuJqiSJ77JXjjuWX8WnZpvA78SgMRu
+	UWEQQUCzgIvRcwwd5W3ejNMaWtS7y5pFB61AHyzAhkaQaRWTn7buGG2hg/HdGJWvsLEhKFUsBUS
+	D7BKEjwJBy6NaCeYplUux4ahtReOxkv8=
+X-Gm-Gg: ASbGncuDwk+XPemlvOIZqkyI6E02LuOBoFHx3Lz+TEwabYtP+8jtlN4ObbJMCPnI0HW
+	Mlb7sjyuJdRIjirnpMGSsapeQgTZd3fxRosJAM11kEjUSPViorovAaXhn+bC5HYSP7OFtBpDTF9
+	9ETL1nLrtwMINL7COjpvOSvCZLjle+TmUmP2ETk9sfFQd7vse7B4Xl6bhMIUn7wqiMp0lTB825/
+	Oprl8rw
+X-Google-Smtp-Source: AGHT+IFBs5bYYFxzAwWDjesNueVAOXX7E9SgDS2klfW/LpAxtaMXcLz7+AuogqrnDNKQX52CwV4pKlRCksDOqz+Xxi0=
+X-Received: by 2002:a17:902:e846:b0:234:ed31:fc97 with SMTP id
+ d9443c01a7336-23e1e9b5891mr8699895ad.12.1752581635629; Tue, 15 Jul 2025
+ 05:13:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <87qzysqw99.fsf@kernel.org> <dMzjRfDkgj90HLRKVyXBm_Nlx98TlkiwW_FmbpiETAFOoQjihnqJRX2oNXYOlbr2DSVEM_uXHAHHysSOggqU8Q==@protonmail.internalid>
+ <CANiq72mP7QAjnYuM44tu0ZaviWO4PNWV6Oba=LMwh8=FxJJU1w@mail.gmail.com> <87wm89hon2.fsf@kernel.org>
+In-Reply-To: <87wm89hon2.fsf@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 15 Jul 2025 14:13:43 +0200
+X-Gm-Features: Ac12FXw-di26f-CMcZ2xrrw1oqABxDFP9MQ3qgS8mlXLsk23X6157Ck7guUIleg
+Message-ID: <CANiq72k3kihVyPsDqVVRdq-u+dOfMYpt523tTi=G2tT+VtCb3w@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust timekeeping for v6.17
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	FUJITA Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Lyude Paul <lyude@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Jul 2025 13:33:18 +0200
-Message-Id: <DBCLH4WXYTJL.FDZ9B39OO3TY@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v4] rust: move ARef and AlwaysRefCounted to sync::aref
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Shankari Anand" <shankari.ak0208@gmail.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250715110423.334744-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20250715110423.334744-1-shankari.ak0208@gmail.com>
 
-On Tue Jul 15, 2025 at 1:04 PM CEST, Shankari Anand wrote:
-> Move the definitions of `ARef` and `AlwaysRefCounted` from `types.rs`
-> to a new file `sync/aref.rs`.
-> Define the corresponding `aref` module under `rust/kernel/sync.rs`.
-> These types are better grouped in `sync`.
+On Tue, Jul 15, 2025 at 9:58=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
+.org> wrote:
 >
-> To avoid breaking existing imports, they are re-exported from `types.rs`.
-> Drop unused imports `mem::ManuallyDrop`, `ptr::NonNull` from `types.rs`,
-> they are now only used in `sync/aref.rs`, where they are already imported=
-.
+> Sorry for the missing tag text. Let me know if you can use the following
+> bullets:
 >
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+>  - Make `Instant` generic over clock source. This allows the compiler to
+>    assert that arithmetic expressions involving the `Instant` use
+>    `Instants` based on the same clock source.
+>  - Make `HrTimer` generic over the timer mode. `HrTimer` timers take a
+>    `Duration` or an `Instant` when setting the expiry time, depending on =
+the
+>    timer mode. With this change, the compiler can check the type matches =
+the
+>    timer mode.
+>  - Add an abstraction for `fsleep`. `fsleep` is a flexible sleep function=
+ that
+>    will select an appropriate sleep method depending on the requested sle=
+ep
+>    time.
+>  - Avoid 64-bit divisions on 32-bit hardware when calculating timestamps.
+>  - Seal the `HrTimerMode` trait. This prevents users of the
+>    `HrTimerMode` from implementing the trait on their own types.
 
-One comment below, but that can be fixed when applying the patch.
+No worries at all, looks good, thanks!
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
-
-> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-> new file mode 100644
-> index 000000000000..752eef31d45e
-> --- /dev/null
-> +++ b/rust/kernel/sync/aref.rs
-> @@ -0,0 +1,154 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Built-in Reference Counting Support
-> +
-> +use core::{marker::PhantomData, mem::ManuallyDrop, ops::Deref, ptr::NonN=
-ull};
-> +
-> +/// Types that are _always_ reference counted.
-> +///
-> +/// It allows such types to define their own custom ref increment and de=
-crement functions.
-> +/// Additionally, it allows users to convert from a shared reference `&T=
-` to an owned reference
-> +/// [`ARef<T>`].
-> +///
-> +/// This is usually implemented by wrappers to existing structures on th=
-e C side of the code. For
-> +/// Rust code, the recommendation is to use [`Arc`](crate::sync::Arc) to=
- create reference-counted
-> +/// instances of a type.
-> +
-
-There is a missing `///` in this line, but Miguel can fix that when
-picking the patch.
-
----
 Cheers,
-Benno
-
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that increments to the reference count keep=
- the object alive in memory
-> +/// at least until matching decrements are performed.
-> +///
-> +/// Implementers must also ensure that all instances are reference-count=
-ed. (Otherwise they
-> +/// won't be able to honour the requirement that [`AlwaysRefCounted::inc=
-_ref`] keep the object
-> +/// alive.)
-> +pub unsafe trait AlwaysRefCounted {
+Miguel
