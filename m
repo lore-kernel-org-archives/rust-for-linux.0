@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E599E219311;
-	Wed, 16 Jul 2025 10:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4528585260;
+	Wed, 16 Jul 2025 10:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752661538; cv=none; b=cy8XsXJszyOdCo02/ZOG7Q/zzsBfVMametUMgaoazJEPUPhpk2O1r7w2SxNrfmhNAO3tFWb1hE/SVkPoxFOxn+w2f3jaHSwQpLdB4QtDjsKz6Q/hThWPcLTO+uvbQbzBcVGmbYFgXmYsx4yDlaE+WlRsJ1ZffXc+rcdG+Kklg1A=
+	t=1752661930; cv=none; b=G6JQMXNENzylmPBk0kud6Ad2ZHTrNGBwr90q2L2LB9bg465KD1tgrWEhzdcT8zjrlM1onLDwiJ8JFtxR5wH3o7XUFEB8BUVDoi74DN2RZzoS/Uxnfe52o4/u9S4jBYDwDW/VlUQZIhA9E77fjqLo1yGexoeRsBSFhxfrtPL350k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752661538; c=relaxed/simple;
-	bh=473mc3MZXvs9Act5kTmKwMLGqXiBcGDDVJRhHEO7Ys4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=huEFQcEeULFEcY8PpscfujIdxoM8/9rvgoJuAtg4nr1Wqch0AhoNaEc38MeJ2ZfBXnXiC5SQnOQjcRCp3axUB3RkPRVmUfXjhOsk0k/ecHR4ZALbR835bmqbeXjAixZ8BlEhsmxX7goTa1WO/II7e3XRAjm4Xz0ZWytlkECmb18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNXJ7kO7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752661930; c=relaxed/simple;
+	bh=4MZ1bakhn2IrJDIzOvrnSvSgvN0+Mb+1IfcHUPCpa+Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=qlko8f76C4JcWbgPTMAb/hSoSX8R6BDM2kXmFizKhJqrr+DuhlqzQbfY3o64TGZIuynXboMfDtC5/vm3Muxzf5M4h6Sy9eEjlJ9wIR1HEOh6WVOsow/hm3wk3hzzrOMjoltNC8K9pn2oHjDvs00viTtreVW04rcmBQdsDMDaSos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvyQTHES; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNXJ7kO7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9961BC4CEF0;
-	Wed, 16 Jul 2025 10:25:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvyQTHES"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D3AC4CEF0;
+	Wed, 16 Jul 2025 10:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752661537;
-	bh=473mc3MZXvs9Act5kTmKwMLGqXiBcGDDVJRhHEO7Ys4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=KNXJ7kO7LGJI1r9yNP4C5/mN2N+02+5CVPLcdykvfjopwfG0v26zIpWZgD6yxB38w
-	 3uAd4qsc82nWkq5rEtBRzuxJ+3m5e35smpBgakpVJxFIlNNM+GlFCo5EfPGNxS2VOR
-	 WsfBneItZkNxuOxeAJz2ttBhQCx/EiXORxXd5H7Dx3u1D9kNirD91xvJUo2EvZn7sh
-	 dWimR4iEevzYjNY3yQWrtGLlTG+s6fU7aAQI4IC6XrN3l4T5+fIuhLXfJlngHHuaHe
-	 eNxS5i9z6tvuEPAz2qTqZe2LEZ7PAtjRQFUFc0BgZfsciquRhhyS1KwKMkVH/T89XH
-	 L/BZb7Ar9O+Yg==
+	s=k20201202; t=1752661929;
+	bh=4MZ1bakhn2IrJDIzOvrnSvSgvN0+Mb+1IfcHUPCpa+Y=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=bvyQTHESXLlAvBKivoq3pKLQrlaqma74imBvhg2c7VhpXXYKCTvuCpjn3U7ul+S4e
+	 dRtU2UQjMYlZIMH/ACKSn4+RDTa1gwitf0B+s/snWu0c7PrsG9Fn3sqUmxx3hDdgkL
+	 cKKgFsWEXs64aME/J2OPZNOygILHVpNuAuIIP3tS1RsmtMQOPopjO3uL8qdtqq9Jr4
+	 rxSCjetOzvZ4QQOJnl17nfHburlktXBzc05hje4nqrV1RaWe8EJ08FbREe32fh+fkL
+	 HndYM7E2MRWD1y+I/Zelma+KOp9ipCJjazfoXV8Am8g+XUCYxeww3tbbS+ofrSVtvi
+	 CAzBKjJ3hTskg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,162 +34,115 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Jul 2025 12:25:30 +0200
-Message-Id: <DBDENRP6Z2L7.1BU1I3ZTJ21ZY@kernel.org>
-Subject: Re: [PATCH v7 6/9] rust: sync: atomic: Add the framework of
- arithmetic operations
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
+Date: Wed, 16 Jul 2025 12:32:04 +0200
+Message-Id: <DBDESSQOH6MB.2I4GNLPBP5ORJ@kernel.org>
+Cc: "Mitchell Levy" <levymitchell0@gmail.com>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
+ "Andrew Morton" <akpm@linux-foundation.org>, "Dennis Zhou"
+ <dennis@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Christoph Lameter"
+ <cl@linux.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 3/5] rust: percpu: add a rust per-CPU variable test
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250714053656.66712-1-boqun.feng@gmail.com>
- <20250714053656.66712-7-boqun.feng@gmail.com>
- <DBCL7YUSRMXR.22SMO1P7D5G60@kernel.org> <aHZYt3Csy29GF2HM@Mac.home>
- <DBCQUAA42DHH.23BNUVOKS38UI@kernel.org> <aHZ-HP1ErzlERfpI@Mac.home>
- <DBCUJ4RNRNHP.W4QH5QM3TBHU@kernel.org> <aHa2he81nBDgvA5u@tardis-2.local>
-In-Reply-To: <aHa2he81nBDgvA5u@tardis-2.local>
+References: <20250712-rust-percpu-v2-0-826f2567521b@gmail.com>
+ <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
+ <DBATM1CUS704.28MKE6BIBQB7G@kernel.org>
+ <68762e19.170a0220.33e203.a0b7@mx.google.com>
+ <DBCLFG5F4MPW.2LF4T3KWOE12R@kernel.org> <aHZhcNCayTOQhvYh@Mac.home>
+ <DBCR1OCNYAUW.1VLAY1HWCHLGI@kernel.org> <aHaCUFNUd_mErL7S@Mac.home>
+ <DBCTCZ5HUZOF.2DJX63Q0VWWFN@kernel.org> <aHbJUfcsjHA92OlE@tardis-2.local>
+In-Reply-To: <aHbJUfcsjHA92OlE@tardis-2.local>
 
-On Tue Jul 15, 2025 at 10:13 PM CEST, Boqun Feng wrote:
-> On Tue, Jul 15, 2025 at 08:39:04PM +0200, Benno Lossin wrote:
+On Tue Jul 15, 2025 at 11:34 PM CEST, Boqun Feng wrote:
+> On Tue, Jul 15, 2025 at 07:44:01PM +0200, Benno Lossin wrote:
 > [...]
->> >> > Hmm.. the CAST comment should explain why a pointer of `T` can be a
->> >> > valid pointer of `T::Repr` because the atomic_add() below is going =
-to
->> >> > read through the pointer and write value back. The comment starting=
- with
->> >> > "`*self`" explains the value written is a valid `T`, therefore
->> >> > conceptually atomic_add() below writes a valid `T` in form of `T::R=
-epr`
->> >> > into `a`.
+>> >> >
+>> >> > First of all, `thread_local!` has to be implemented by some sys-spe=
+cific
+>> >> > unsafe mechanism, right? For example on unix, I think it's using
+>> >> > pthread_key_t:
+>> >> >
+>> >> > 	https://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_=
+key_create.html
+>> >> >
+>> >> > what we are implementing (or wrapping) is the very basic unsafe
+>> >> > mechanism for percpu here. Surely we can explore the design for a s=
+afe
+>> >> > API, but the unsafe mechanism is probably necessary to look into at
+>> >> > first.
 >> >>=20
->> >> I see, my interpretation was that if we put it on the cast, then the
->> >> operation that `atomic_add` does also is valid.
->> >>=20
->> >> But I think this comment should either be part of the `CAST` or the
->> >> `SAFETY` comment. Going by your interpretation, it would make more se=
-nse
->> >> in the SAFETY one, since there you justify that you're actually writi=
-ng
->> >> a value of type `T`.
->> >>=20
+>> >> But this is intended to be used by drivers, right? If so, then we sho=
+uld
 >> >
->> > Hmm.. you're probably right. There are two safety things about
->> > atomic_add():
->> >
->> > - Whether calling it is safe
->> > - Whether the operation on `a` (a pointer to `T` essentially) is safe.
+>> > Not necessarily only for drivers, we can also use it for implementing
+>> > other safe abstraction (e.g. hazard pointers, percpu counters etc)
 >>=20
->> Well part of calling `T::Repr::atomic_add` is that the pointer is valid.
+>> That's fair, but then it should be `pub(crate)`.
+>>=20
 >
-> Here by saying "calling `T::Repr::atomic_add`", I think you mean the
-> whole operation, so yeah, we have to consider the validy for `T` of the
-> result.
-
-I meant just the call to `atomic_add`.
-
-> But what I'm trying to do is reasoning this in 2 steps:
+> Fine by me, but please see below.
 >
-> First, let's treat it as an `atomic_add(*mut i32, i32)`, then as long as
-> we provide a valid `*mut i32`, it's safe to call.=20
+>> >> do our usual due diligence and work out a safe abstraction. Only fall
+>> >> back to unsafe if it isn't possible.
+>> >>=20
+>> >
+>> > All I'm saying is instead of figuring out a safe abstraction at first,
+>> > we should probably focus on identifying how to implement it and which
+>> > part is really unsafe and the safety requirement for that.
+>>=20
+>> Yeah. But then we should do that before merging :)
+>>=20
+>
+> Well, who's talknig about merging? ;-) I thought we just began reviewing
+> here ;-)
 
-But the thing is, we're not supplying a valid `*mut i32`. Because the
-pointer points to a value that is not actually an `i32`. You're only
-allowed to write certain values and so you basically have to treat it as
-a transmute + write. And so you need to include a justification for this
-transmute in the write itself.=20
+I understand [PATCH] emails as "I want to merge this" and [RFC PATCH] as
+"I want to talk about merging this". It might be that I haven't seen the
+RFC patch series, because I often mute those.
 
-For example, if we had `bool: AllowAtomic`, then writing a `2` in store
-would be insta-UB, since we then have a `&UnsafeCell<bool>` pointing at
-`2`.
+>> >> I'm not familiar with percpu, but from the name I assumed that it's
+>> >> "just a variable for each cpu" so similar to `thread_local!`, but it'=
+s
+>> >> bound to the specific cpu instead of the thread.
+>> >>=20
+>> >> That in my mind should be rather easy to support in Rust at least wit=
+h
+>> >> the thread_local-style API. You just need to ensure that no reference
+>> >> can escape the cpu, so we can make it `!Send` & `!Sync` + rely on kli=
+nt
+>> >
+>> > Not really, in kernel, we have plenty of use cases that we read the
+>> > other CPU's percpu variables. For example, each CPU keeps it's own
+>> > counter and we sum them other in another CPU.
+>>=20
+>> But then you need some sort of synchronization?
+>>=20
+>
+> Right, but the synchronization can exist either in the percpu operations
+> themselves or outside the percpu operations. Some cases, the data types
+> are small enough to fit in atomic data types, and operations are just
+> load/store/cmpxchg etc, then operations on the current cpu and remote
+> read will be naturally synchronized. Sometimes extra synchronization is
+> needed.
 
-This is part of library vs language UB, writing `2` into a bool and
-having a reference is language-UB (ie instant UB) and writing a `2` into
-a variable of type `i32` that is somewhere cast to `bool` is library-UB
-(since it will lead to language-UB later).=20
+Sure, so we probably want direct atomics support. What about "extra
+synchronization"? Is that using locks or RCU or what else?
 
-The safety comments become simpler when you use `UnsafeCell<T::Repr>`
-instead :) since that changes this language-UB into library-UB. (the
-only safety comment that is more complex then is `get_mut`, but that's
-only a single one)
+> Keyword find all these cases are `per_cpu_ptr()`:
+>
+> 	https://elixir.bootlin.com/linux/v6.15.6/A/ident/per_cpu_ptr
 
-If you don't want that, then we can solve this in two ways:
-
-(1) add a guarantee on `atomic_add` (and all other operations) that it
-    will write `*a + v` to `a` and nothing else.
-(2) make the safety requirement only require writes of the addition to
-    be valid.
-
-My preference precedence is: use `T::Repr`, (2) and finally (1). (2)
-will be very wordy on all operations & the safety comments in this file,
-but it's clean from a formal perspective. (1) works by saying "what
-we're supplying is actually not a valid `*mut i32`, but since the
-guarantee of the function ensures that only specific things are written,
-it's fine" which isn't very clean. And the `T::Repr` approach avoids all
-this by just storing value of `T::Repr` circumventing the whole issue.
-Then we only need to justify why we can point a `&mut T` at it and that
-we can do by having an invariant that should be simple to keep.
-
-We probably should talk about this in our meeting :)
+Could you explain to me how to find them? I can either click on one of
+the files with horrible C preprocessor macros or the auto-completion in
+the search bar. But that one only shows 3 suggestions `_hyp_sym`,
+`_nvhe_sym` and `_to_phys` which doesn't really mean much to me.
 
 ---
 Cheers,
 Benno
-
-> And second assume we call it with a valid pointer to `T::Repr`, and a
-> delta from `rhs_into_delta()`, then per the safety guarantee of
-> `AllowAtomicAdd`, the value written at the pointer is a valid `T`.
->
-> Based on these, we can prove the whole operation is safe for the given
-> input.
->
->> But it actually isn't valid for all operations, only for the specific
->> one you have here. If we want to be 100% correct, we actually need to
->> change the safety comment of `atomic_add` to say that it only requires
->> the result of `*a + v` to be writable... But that is most likely very
->> annoying... (note that we also have this issue for `store`)
->>=20
->> I'm not too sure on what the right way to do this is. The formal answer
->> is to "just do it right", but then safety comments really just devolve
->> into formally proving the correctness of the program. I think -- for now
->> at least :) -- that we shouldn't do this here & now (since we also have
->> a lot of other code that isn't using normal good safety comments, let
->> alone formally correct ones).
->>=20
->> > How about the following:
->> >
->> >         let v =3D T::rhs_into_delta(v);
->> >         // CAST: Per the safety requirement of `AllowAtomic`, a valid =
-pointer of `T` is a valid
->> >         // pointer of `T::Repr` for reads and valid for writes of valu=
-es transmutable to `T`.
->> >         let a =3D self.as_ptr().cast::<T::Repr>();
->> >
->> >         // `*self` remains valid after `atomic_add()` because of the s=
-afety requirement of
->> >         // `AllowAtomicAdd`.
->> >         //
->> >         // SAFETY:
->> >         // - For calling `atomic_add()`:
->> >         //   - `a` is aligned to `align_of::<T::Repr>()` because of th=
-e safety requirement of
->> >         //   `AllowAtomic` and the guarantee of `Atomic::as_ptr()`.
->> >         //   - `a` is a valid pointer per the CAST justification above=
-.
->> >         // - For accessing `*a`: the value written is transmutable to =
-`T`
->> >         //   due to the safety requirement of `AllowAtomicAdd`.
->> >         unsafe { T::Repr::atomic_add(a, v) };
