@@ -1,222 +1,110 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261EA28B503
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 07:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931F92459E5;
+	Wed, 16 Jul 2025 08:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752651227; cv=none; b=LMJHXAa/e0NsqHqc8lzbG40Kpxvxbwdi6qOihaavW06RjzqMWMgmXn8iqoj23pat0nhh9VpF5yZ5Io1uBSh8rCqG1TSB2KajqST2xmu7qnUaPj3P4AKmUIYzTOPq9LcQ3YkEZsI5GQzZW9cgznNQLi+Zy9DsAkkEYii3BEvN+QM=
+	t=1752653072; cv=none; b=ZKp1yeCbWaQeXqzUgNy8AXIt0RNl7NL9CpfOSOMPQQvMH++L+2epBWh3C3cwAYRTLOUYNoQWU0g3qjgEGQWVEp7BWdC4iIaR0xLqThwLX53E94TG5xchi8IDgNiloESgSdCIy91uK0+UxPs7YwxnsfU9ja0chbahzp4siFnAOTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752651227; c=relaxed/simple;
-	bh=J1fmkXzQhdy/B2HqE648pLqXswaIxo5hZ2X+m0elNBY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p6KKM2hLFXyaHvZ4fBDjtATaUfQWAnSxxxAcf/tabbBfQ76LQp0yOGCKSf6BYtm64Kf63rA+XZauJMpM6DxQgT3zKf3ej69WqntdFgirvNUWjlmdFiQPZZWxNS09Ib9xAxrl5U003n2BK1ERJmBMbROfbttSjCUV+cnQxvO2xVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=misSRJfn; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1752653072; c=relaxed/simple;
+	bh=ppdzzBKFjI7kQ1+tfDKaU9iIioZYEueihsIby5RUlvM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=CrYEgU86Ie6GFfKlqbR6oRnyvSL9K/v9x9zNFxmKowNYNzrhk0E+WpbSUPuViwkG7hZSE0JjvH44F7qXzdxPFF5jq0N6mFJcg8aHs/Qe4oj8Ud2z6aR/8M5AukmWjdK0OhOMKUpiLhf8ct8i7aEc1Bke8dhidp+Yq9C/Ft2kuYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZQ6Cde4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="misSRJfn"
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e82314f9a51so4611767276.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 00:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1752651224; x=1753256024; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PW8oj8yyNVG5XPISXOtfA3n2P3zOnfj4By+Eha4u0hU=;
-        b=misSRJfnE5w/pnaSiy1gvtx4w/fzsVlLI5ffuKbQa4C0hghm6aCyOH+Njhh0zrWR6V
-         5Qad0PQGyyfcE6wSPlkg4UNmwMzUU81aYaqyX6mLGRalwxRDBBtxAaWE4ngJLO4tJ/P2
-         Irl1oQ/q+xBDhXzGRfv2gzsTGtPKG5/oD+95gNnxODzG2IfLKoZxYW0iS5p7KeTEpSI7
-         cwi8hB0jW7kFj+C3OpAB74HroXqQiFRiT7pkDEXPsKYw6S8qHq/KWtOB0l8ybcjOjm0d
-         RVY5ljL2drR54iTwW5Ts6z+NiAP3DcrwRjJ1iO5hxNZGHHXjt7r2gKbCCWBwtlT2RG1X
-         ea2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752651224; x=1753256024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PW8oj8yyNVG5XPISXOtfA3n2P3zOnfj4By+Eha4u0hU=;
-        b=XEcuqGaHhv2NrAAFyWsXXKf7vJXJ7wAk5VzFlGnoDRDs7dx2BoI2z7KJB19v2zNHnm
-         OrHjQ2boHZx0Yizygft/3zGilO8qX1ReDrF1nED36C146lkF5V7Fg65FEGHzKtOf3EP4
-         Mn7SoC6+mDR16BJSJAoaC0ddJD5gTddgcv/FsHHrF6box8QyJ1nBsFTMXpPfvzyW8wfX
-         rTrlXlD7AKiQAGyZeAO0fAZZZtce8z5glWdMAJzT2P3cFhteXG7qlPqN7eufk8vx2AXb
-         ELiB5WwUeNR55ST7eGBw7g59E4XNXqwgk/PtJZ2/0tzFQss5zqlS+RHdngs3gIskdvqe
-         bWNA==
-X-Forwarded-Encrypted: i=1; AJvYcCXN/KIYuIV0rBHX/6Fm/1/Ji6eBRI9FfaAGNK3kkurRdM+idTiRpXrr5CKPropqSXMq6eEc7N91WT/aELqONw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YymsAOUdB0Nmi/NG5V6+wXMy8Sy8YDfzLsAA2b3FVCFzJfbxWcu
-	7rtdaoWNbubjHm8TMgqxtHPC/lVyEtRe0phz6oinBozSGcxD2PiNDqk+oGuAi/M/Qd+C5Bttqm6
-	GRRzum5+MH51Q+dHHg2qHf7FAD+vGFJxMx7OCz5l7aw==
-X-Gm-Gg: ASbGncvv8QIginmWLWOPaHVnDKjSvqoOVstMMyobMnzB+Tbx5Xqs9SC6wP45WTzKA4m
-	/67G1Nx6hG3Q6EsSnb8XAqQNJbPv5kZiLLwjbN1z5Qqv7qBL4KiwAwCtaHauAITkvBG0QNKkEbh
-	VWt16DlwAH/9gpt7zpyDGcidNPahOAS21Nth3cA75Fb86pgXNwB6u6FHkDylKYDsUJIhElKJ24R
-	s6tBP+N
-X-Google-Smtp-Source: AGHT+IEBFim0sebTg/GJVvyxJNrliMi5B8Z1CirXQugUtw/MAG7MtHjoXp3XBPYhkfJvHfUUj+zVmynVQDiKVlguiXc=
-X-Received: by 2002:a05:690c:6d0b:b0:6fb:b1dd:a00d with SMTP id
- 00721157ae682-7183516330bmr29836477b3.30.1752651223909; Wed, 16 Jul 2025
- 00:33:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZQ6Cde4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F2DC4CEF5;
+	Wed, 16 Jul 2025 08:04:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752653072;
+	bh=ppdzzBKFjI7kQ1+tfDKaU9iIioZYEueihsIby5RUlvM=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=SZQ6Cde4tKBs5gp02BFQ9EVkSWglErefqVfDkCkMu8lWX5LeLWDJX8ktww+9bfn2R
+	 9ww66zZqY5Z7F6cHKIQwMes6P1Voz0xw/dXWqeF34w3A3j5paM7yO1cHGd//BvSCBA
+	 SZ91RBqh0y40lVQ/DFnLLjufTvUlDJqKkdFQVYOUi6qrDbqZsyk9tPM/MLNkbnQHEb
+	 +/kejUWStkPBocshqEvZ602J6qxil6UPml7SV8SPFFdnI6M/Sz1tFhVl9ewWSFYhwA
+	 fLJMpOiwHwlVtgG+IQEojJ9WFAMQUk5VrbiE2L5FnD6UrV89JVpSUsp2Pb3IfVO4rh
+	 zQ3/OHTrxL03A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250604-v5_user_cfi_series-v17-0-4565c2cf869f@rivosinc.com>
- <20250604-v5_user_cfi_series-v17-15-4565c2cf869f@rivosinc.com>
- <CANXhq0pRXX_OMW2g2ui-k7Z_ZT+5a8Sra8oE28nBh5B9K2L5bQ@mail.gmail.com>
- <CANXhq0p3MVLMsr_r0RWMti476pT0EMx61PQArjo2fUauTdpXaQ@mail.gmail.com>
- <CAKC1njRNkSfb_0pUQoH0RwJQhWTsz9sdg_3o08w-NuSO5WypcA@mail.gmail.com> <CANXhq0oZz=TTT=py=1BO3OZf45Wg=-bFyNpn+JRLNufHceLjcQ@mail.gmail.com>
-In-Reply-To: <CANXhq0oZz=TTT=py=1BO3OZf45Wg=-bFyNpn+JRLNufHceLjcQ@mail.gmail.com>
-From: Deepak Gupta <debug@rivosinc.com>
-Date: Wed, 16 Jul 2025 00:33:29 -0700
-X-Gm-Features: Ac12FXyXP37ODEjfHSjK8_gGHbTe6nbCLu3r93joGlrq46qsQaqRghNBDnEKWgk
-Message-ID: <CAKC1njRqox8_YNEhQJT8NRMjGuqpDt55ck6QVV2aNPLwTsaj5w@mail.gmail.com>
-Subject: Re: [PATCH v17 15/27] riscv/traps: Introduce software check exception
- and uprobe handling
-To: Zong Li <zong.li@sifive.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
-	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Jul 2025 10:04:26 +0200
+Message-Id: <DBDBNRC9VEU5.2MXQF7KLR2HA7@kernel.org>
+Subject: Re: [PATCH 2/5] rust: dma: add DMA addressing capabilities
+Cc: <abdiel.janulgue@gmail.com>, <daniel.almeida@collabora.com>,
+ <robin.murphy@arm.com>, <a.hindborg@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <aliceryhl@google.com>,
+ <tmgross@umich.edu>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
+ <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250710194556.62605-1-dakr@kernel.org>
+ <20250710194556.62605-3-dakr@kernel.org>
+ <DBD5KXIOSD22.L4RPVLDQ7WDQ@nvidia.com>
+In-Reply-To: <DBD5KXIOSD22.L4RPVLDQ7WDQ@nvidia.com>
 
-On Tue, Jul 15, 2025 at 7:06=E2=80=AFPM Zong Li <zong.li@sifive.com> wrote:
+On Wed Jul 16, 2025 at 5:18 AM CEST, Alexandre Courbot wrote:
+> On Fri Jul 11, 2025 at 4:45 AM JST, Danilo Krummrich wrote:
+>> @@ -18,7 +18,83 @@
+>>  /// The [`dma::Device`](Device) trait should be implemented by bus spec=
+ific device representations,
+>>  /// where the underlying bus is DMA capable, such as [`pci::Device`](::=
+kernel::pci::Device) or
+>>  /// [`platform::Device`](::kernel::platform::Device).
+>> -pub trait Device: AsRef<device::Device<Core>> {}
+>> +pub trait Device: AsRef<device::Device<Core>> {
+>> +    /// Set up the device's DMA streaming addressing capabilities.
+>> +    ///
+>> +    /// This method is usually called once from `probe()` as soon as th=
+e device capabilities are
+>> +    /// known.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// This method must not be called concurrently with any DMA alloca=
+tion or mapping primitives,
+>> +    /// such as [`CoherentAllocation::alloc_attrs`].
 >
-> On Wed, Jul 16, 2025 at 5:34=E2=80=AFAM Deepak Gupta <debug@rivosinc.com>=
- wrote:
-> >
-> > Hi Zong,
-> >
-> >
-> > On Thu, Jun 19, 2025 at 7:16=E2=80=AFPM Zong Li <zong.li@sifive.com> wr=
-ote:
-> > >
-> > > On Mon, Jun 16, 2025 at 3:31=E2=80=AFPM Zong Li <zong.li@sifive.com> =
-wrote:
-> > > >
-> > > > On Thu, Jun 5, 2025 at 1:17=E2=80=AFAM Deepak Gupta <debug@rivosinc=
-.com> wrote:
-> > > > >
-> > > > > zicfiss / zicfilp introduces a new exception to priv isa `softwar=
-e check
-> > > > > exception` with cause code =3D 18. This patch implements software=
- check
-> > > > > exception.
-> > > > >
-> > .....
-> >
-> > > > When a user mode CFI violation occurs, the ELP state should be 1, a=
-nd
-> > > > the system traps into supervisor mode. During this trap, sstatus.SP=
-ELP
-> > > > is set to 1, and the ELP state is reset to 0. If we don=E2=80=99t c=
-lear
-> > > > sstatus.SPELP, the ELP state will become 1 again after executing th=
+> I'm a bit confused by the use of "concurrently" in this sentence. Do you
+> mean that it must be called *before* any DMA allocation of mapping
+> primitives? In this case, wouldn't it be clearer to make the order
+> explicit?
+
+Setting the mask before any DMA allocations might only be relevant from a
+semantical point of view, but not safety wise.
+
+We need to prevent concurrent accesses to dev->dma_mask and
+dev->coherent_dma_mask.
+
+>> +    unsafe fn dma_set_mask(&self, mask: u64) -> Result {
+>
+> Do we want to allow any u64 as a valid mask? If not, shall we restrict
+> the accepted values by taking either the parameter to give to
+> `dma_bit_mask`, or a bit range (similarly to Daniel's bitmask series
+> [1], which it might make sense to leverage)?
+>
+> [1]
+> https://lore.kernel.org/rust-for-linux/20250714-topics-tyr-genmask2-v9-1-=
+9e6422cbadb6@collabora.com/
+
+I think it would make sense to make dma_bit_mask() return a new type, e.g.
+DmaMask and take this instead.
+
+Taking the parameter dma_bit_mask() takes directly in dma_set_mask() etc. m=
+akes
+sense, but changes the semantics of the mask parameter *subtly* compared to=
+ the
+C versions, which I want to avoid.
+
+Using the infrastructure in [1] doesn't seem to provide much value, since w=
 e
-> > > > sret instruction. As a result, the system might trigger another
-> > > > forward CFI violation upon executing the next instruction in the us=
-er
-> > > > program, unless it happens to be a lpad instruction.
-> > > >
-> > > > The previous patch was tested on QEMU, but QEMU does not set the
-> > > > sstatus.SPELP bit to 1 when a forward CFI violation occurs. Therefo=
-re,
-> > > > I suspect that QEMU might also require some fixes.
-> > >
-> > > Hi Deepak,
-> > > The issue with QEMU was that the sw-check exception bit in medeleg
-> > > couldn't be set. This has been fixed in the latest QEMU mainline. I
-> > > have re-tested the latest QEMU version, and it works.
-> >
-> > What was this issue, can you point me to the patch in mainline?
->
-> Hi Deepak
-> The issue was that my QEMU setup somehow missed the change of
-> `target/riscv/csr.c` in your following patch:
-> https://github.com/qemu/qemu/commit/6031102401ae8a69a87b20fbec2aae666625d=
-96a
-> After I upgraded to the latest QEMU source, I found the kernel issue
-> if we didn't clear sstatus.SPELP in the handler
-> Thanks
-
-Aah ok, got it.
-
->
-> >
-> > >
-> > > >
-> > > > Thanks
-> > > >
-> > > > > +
-> > > > > +       if (is_fcfi || is_bcfi) {
-> > > > > +               do_trap_error(regs, SIGSEGV, SEGV_CPERR, regs->ep=
-c,
-> > > > > +                             "Oops - control flow violation");
-> > > > > +               return true;
-> > > > > +       }
-> > > > > +
-> > > > > +       return false;
-> > > > > +}
-> > > > > +
-> > > > > +/*
-> > > > > + * software check exception is defined with risc-v cfi spec. Sof=
-tware check
-> > > > > + * exception is raised when:-
-> > > > > + * a) An indirect branch doesn't land on 4 byte aligned PC or `l=
-pad`
-> > > > > + *    instruction or `label` value programmed in `lpad` instr do=
-esn't
-> > > > > + *    match with value setup in `x7`. reported code in `xtval` i=
-s 2.
-> > > > > + * b) `sspopchk` instruction finds a mismatch between top of sha=
-dow stack (ssp)
-> > > > > + *    and x1/x5. reported code in `xtval` is 3.
-> > > > > + */
-> > > > > +asmlinkage __visible __trap_section void do_trap_software_check(=
-struct pt_regs *regs)
-> > > > > +{
-> > > > > +       if (user_mode(regs)) {
-> > > > > +               irqentry_enter_from_user_mode(regs);
-> > > > > +
-> > > > > +               /* not a cfi violation, then merge into flow of u=
-nknown trap handler */
-> > > > > +               if (!handle_user_cfi_violation(regs))
-> > > > > +                       do_trap_unknown(regs);
-> > > > > +
-> > > > > +               irqentry_exit_to_user_mode(regs);
-> > > > > +       } else {
-> > > > > +               /* sw check exception coming from kernel is a bug=
- in kernel */
-> > > > > +               die(regs, "Kernel BUG");
-> > > > > +       }
-> > > > > +}
-> > > > > +
-> > > > >  #ifdef CONFIG_MMU
-> > > > >  asmlinkage __visible noinstr void do_page_fault(struct pt_regs *=
-regs)
-> > > > >  {
-> > > > >
-> > > > > --
-> > > > > 2.43.0
-> > > > >
+don't want a range [M..N], but [0..N], so we should rather only ask for N.
