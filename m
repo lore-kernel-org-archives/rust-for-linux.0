@@ -1,46 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C3E28A1C8;
-	Wed, 16 Jul 2025 09:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E1D2F199D;
+	Wed, 16 Jul 2025 09:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752657559; cv=none; b=J9qF8wbTTATUEQatOdBw7eIJhTLyzio5dUeOd07CLD6CUIowv9FveVizeo4SXRa2x/VwkrEdSYMVmLbJtukSgUV55sJIar0xCXAwGJX5s+X2usomPI2xJvuD7GJAsU5BKTAPkp1Wp0AdIOvaGFwRXbhzQCBGyzSKcf+cAJICVJA=
+	t=1752657792; cv=none; b=n4YyZvsjbxzoWjF1DFQfXVYS9xd2ES75JWav6ahklIFeoeRLec/IWbUIcWxvmSIWF/URsn4ei2EkhV+jmQyb8dwnJtHRTFZMXOtGRLbDT2t6kk86MZ+gxQV3EPKBteY9+24IMbwmrVTsjqufiMDkKRjh9HzALLdtBG+SCGf8t3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752657559; c=relaxed/simple;
-	bh=g5M4DpBVQH07/jGuPHNWNcGzZLf3cxeneqrXpulpu2k=;
+	s=arc-20240116; t=1752657792; c=relaxed/simple;
+	bh=4jltuwgu6UQqufrQ8GvuspkBPjXn1RWYCM93+tWOJVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NVlOtRI55IP1SuL3rsxEu3K13vfh152KLigFNnAnJJ1qMhnBAt4SkA8w5t4JL5/fcYJcafVDU3UYxSIKuHtDzT6Fs2jbm2YdJ9UAAuS0Es3t+5234qAcIdzI8W4kDzePLP15HGXYWltI67h4x1+52JHcwDXYuQbrofJk8UiD8bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9udJBz5; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=gH4fINc6P9mk61w0k6nGDBHx4fKLaYIMoclkDUJSbFqXkMRmN0/JQ9jZOmORqSjpW6aOKscG+O8Sq5aOfFFPR+i371gA9eiSLw42p5BCUH8UTxlBRWNeIlRAV2QOAvBREgjlB6PYnR+vBsz8+huglI9IRQRgPuERpd0wAIrhhuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4E4XvUn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9udJBz5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC09C4CEF0;
-	Wed, 16 Jul 2025 09:19:17 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4E4XvUn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F09C4CEF0;
+	Wed, 16 Jul 2025 09:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752657557;
-	bh=g5M4DpBVQH07/jGuPHNWNcGzZLf3cxeneqrXpulpu2k=;
+	s=korg; t=1752657792;
+	bh=4jltuwgu6UQqufrQ8GvuspkBPjXn1RWYCM93+tWOJVU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N9udJBz5nZcxDfwmUXs+fdNV+8yv55UAEnljdTtgpcm3HIpSkcNCQ/BHMyRqHQVDg
-	 Fb73Ax+AWYbI2Z1cWc8TD/nPIvmQ4AaXkLWMvjjo75YB1WVqYgrlLKCHN82+buQhnz
-	 WPQ50+L/T+7uc9ZR7tNamoSv11/VHYfBa09GSIC8=
-Date: Wed, 16 Jul 2025 11:19:15 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: alex.gaynor@gmail.com, dakr@kernel.org, ojeda@kernel.org,
-	rafael@kernel.org, robh@kernel.org, saravanak@google.com,
-	tmgross@umich.edu, a.hindborg@kernel.org, aliceryhl@google.com,
-	bhelgaas@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com,
-	david.m.ertman@intel.com, devicetree@vger.kernel.org,
-	gary@garyguo.net, ira.weiny@intel.com, kwilczynski@kernel.org,
-	lenb@kernel.org, leon@kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	lossin@kernel.org, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4 1/3] rust: device_id: split out index support into a
- separate trait
-Message-ID: <2025071607-theorize-charting-b29f@gregkh>
-References: <20250711040947.1252162-1-fujita.tomonori@gmail.com>
- <20250711040947.1252162-2-fujita.tomonori@gmail.com>
+	b=r4E4XvUnxanHChML6nxeDzNh9ns3fWEKEkH3oU7CfD2IHPiw5NUnT87sqj/8j8WUp
+	 XnpaJKcG8aoQcG4e3aE7i/B7m8B2dXedE/h/BdcX+Eedb/7RcB+aq36RNKwBHzo34L
+	 vimyJxjHVUEEqXR8GiE/Cz9HDSqRZFIefY8RyYOg=
+Date: Wed, 16 Jul 2025 11:23:09 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	lkmm@lists.linux.dev, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Lyude Paul <lyude@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v7 1/9] rust: Introduce atomic API helpers
+Message-ID: <2025071611-factsheet-sitter-93b6@gregkh>
+References: <20250714053656.66712-1-boqun.feng@gmail.com>
+ <20250714053656.66712-2-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,31 +57,42 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250711040947.1252162-2-fujita.tomonori@gmail.com>
+In-Reply-To: <20250714053656.66712-2-boqun.feng@gmail.com>
 
-On Fri, Jul 11, 2025 at 01:09:45PM +0900, FUJITA Tomonori wrote:
-> Introduce a new trait `RawDeviceIdIndex`, which extends `RawDeviceId`
-> to provide support for device ID types that include an index or
-> context field (e.g., `driver_data`). This separates the concerns of
-> layout compatibility and index-based data embedding, and allows
-> `RawDeviceId` to be implemented for types that do not contain a
-> `driver_data` field. Several such structures are defined in
-> include/linux/mod_devicetable.h.
+On Sun, Jul 13, 2025 at 10:36:48PM -0700, Boqun Feng wrote:
+> In order to support LKMM atomics in Rust, add rust_helper_* for atomic
+> APIs. These helpers ensure the implementation of LKMM atomics in Rust is
+> the same as in C. This could save the maintenance burden of having two
+> similar atomic implementations in asm.
 > 
-> Refactor `IdArray::new()` into a generic `build()` function, which
-> takes an optional offset. Based on the presence of `RawDeviceIdIndex`,
-> index writing is conditionally enabled. A new `new_without_index()`
-> constructor is also provided for use cases where no index should be
-> written.
-> 
-> This refactoring is a preparation for enabling the PHY abstractions to
-> use the RawDeviceId trait.
-> 
-> The changes to acpi.rs and driver.rs were made by Danilo.
-> 
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> Originally-by: Mark Rutland <mark.rutland@arm.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 > ---
+>  rust/helpers/atomic.c                     | 1040 +++++++++++++++++++++
+>  rust/helpers/helpers.c                    |    1 +
+>  scripts/atomic/gen-atomics.sh             |    1 +
+>  scripts/atomic/gen-rust-atomic-helpers.sh |   67 ++
+>  4 files changed, 1109 insertions(+)
+>  create mode 100644 rust/helpers/atomic.c
+>  create mode 100755 scripts/atomic/gen-rust-atomic-helpers.sh
+> 
+> diff --git a/rust/helpers/atomic.c b/rust/helpers/atomic.c
+> new file mode 100644
+> index 000000000000..cf06b7ef9a1c
+> --- /dev/null
+> +++ b/rust/helpers/atomic.c
+> @@ -0,0 +1,1040 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Generated by scripts/atomic/gen-rust-atomic-helpers.sh
+> +// DO NOT MODIFY THIS FILE DIRECTLY
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As this is auto-generated, how do we know when to auto-generate it
+again?  What files does it depend on?  And why can't we just
+auto-generate it at build time instead of having a static file in the
+tree that no one knows when to regenerate it?  :)
+
+thanks,
+
+greg k-h
