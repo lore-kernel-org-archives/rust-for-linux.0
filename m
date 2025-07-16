@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACBB285C97;
-	Wed, 16 Jul 2025 19:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30506264618;
+	Wed, 16 Jul 2025 20:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752695359; cv=none; b=cic/qw+IX8YE2u72h2eT2OEfkJNCNCi9KEOzo/EKu0bzjF2mHkez/FwZlgH6GeC3STRB8Hd/ytvapPQpLyIJkHETGP4g9+2bxuz7q7g+mJU5amPjBkP8CuXZ0WmpK8ppdmmzLpt5vv9fkzqZyDIMlkcdqreR8VqMpVOeOYZV4IU=
+	t=1752696419; cv=none; b=d5zhnPGhqJ6/oT4oZIuIyyYrAzjYrDerihr73diZ1jROkGHNm9/qJQr5Rdvnby+Nyx6EtNVa2tK0Z8YTGzgFSUuuTglq0eIZv7OPRTsikWERQlHf68rH5SNU4F9XJm/w1kvOz3wmiMrSdnOZcz4scwuU5INrdbAQPet+mPDJ3ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752695359; c=relaxed/simple;
-	bh=98eAA74NZUa1xoj0lpaxUpd2ScY1y0L8aj2pUiMsOUM=;
+	s=arc-20240116; t=1752696419; c=relaxed/simple;
+	bh=XnBmWX7GkRUoTQVZ0sClSDh7tgJspj9XYLtujPHUBSc=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=G0NvzLWNPh4e6UbS3H0flXZOdT0gPi5/8HKLJh/vEEvi8n+koHgYL+Fd+KaxjfEgMs0uqYqrw4KGfKteUxbN5ShoDeixlZdjzLVbY1FnZoz7Ngdsv8RYdW9CI9fQZopplzJ8RNa49sr0HJhzx1Bc73kiOvUUR+ktQWhNAPqB+Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ax/Dho5C; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=IJG5ijP0YtZK0KwlEywHJDOsNURUFBjIxihMlY1KMtG39NHsZRGYj+IxF+uiLgqlgi4r63GX3kiXaKOZ9p2Qrxfg9+gzifZuXI5sJQJEBicLDJVN8KYQbeHMj/sOtNqsHPzev8kIhSPB3+SEygksxeEA8rKLrnMLvYvCWrBV/UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKtFW5m7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ax/Dho5C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9855FC4CEF5;
-	Wed, 16 Jul 2025 19:49:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKtFW5m7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D58C4CEE7;
+	Wed, 16 Jul 2025 20:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752695357;
-	bh=98eAA74NZUa1xoj0lpaxUpd2ScY1y0L8aj2pUiMsOUM=;
+	s=k20201202; t=1752696418;
+	bh=XnBmWX7GkRUoTQVZ0sClSDh7tgJspj9XYLtujPHUBSc=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=Ax/Dho5CmKErIgSpo/gUNZAa4hSWtbNiI842kl+gpq3hkjsS/tUe3ZrFJzjh3UWK/
-	 zLgU6wF8GbfM2/hyA+mtCu+XphUjdIQ9G75ct/++d6j68ENsOGl63bJqQd72/vRcD3
-	 JZPc15vnm4B1oaSlOw/KLP96GVbf6O252SJny9Tlkr/AtouqFQlHa7eaR1EhiO96wy
-	 oEyB7SqC0pKq9dwQooh0M9SaFkDtWRrJTe/wB+mo+/t+nSN9hx3pzabJ+FR+HidQRN
-	 2Ts8qU6uPYIVQnmPsZ6gLdu4Qrk9icmCddsk/mvG9PSm+o03rz7A1LdTkivk1tCUfO
-	 JtTn2l1C/+qWQ==
+	b=NKtFW5m7K/CZk7pEqB0Z3ndUHmRqKddy+2pjJ0l9X7yNLmzlSi4Utmrgz9I1eBGZn
+	 5mMOOeFRJVq8YKROOH5jiTP6ilsMP7ZWvgCMCNoFCrWS/XPIoEfn/2TLexm71K+5Bx
+	 o+Q8bMUCcowujM/JlWBARli7ooDVGmWcWQixz4ppHEuKqJCgBapYukt7TSO5tJlcZR
+	 kqopylNtdsujZj9CfYj3eI07Dg4cE6Rmz6aZBBnLvFmrrygREePO5Ybu6XseQIH81k
+	 WmRqRSaE8/zrvCM0xmX6cndxkvMnY5cCG0TiZFolDKtZpAfgvtdflvaoIrjT8jcVrf
+	 Kse27JsTG/0hQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,8 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Jul 2025 21:49:12 +0200
-Message-Id: <DBDQNDJDV41H.I58GXBM55PVG@kernel.org>
+Date: Wed, 16 Jul 2025 22:06:54 +0200
+Message-Id: <DBDR0X23V1Z8.B3FYX0G7XTCZ@kernel.org>
 Subject: Re: [PATCH v9] rust: kernel: add support for bits/genmask macros
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
@@ -51,69 +51,18 @@ References: <20250714-topics-tyr-genmask2-v9-1-9e6422cbadb6@collabora.com>
  <705CD461-60D9-492E-B82F-C88A848A4348@collabora.com>
  <DBDQASMSS32U.FJBYKS3LWEQ6@kernel.org>
  <1DCA3EA2-5CBB-4193-B1D3-7E286C344A14@collabora.com>
-In-Reply-To: <1DCA3EA2-5CBB-4193-B1D3-7E286C344A14@collabora.com>
+ <DBDQNDJDV41H.I58GXBM55PVG@kernel.org>
+In-Reply-To: <DBDQNDJDV41H.I58GXBM55PVG@kernel.org>
 
-On Wed Jul 16, 2025 at 9:44 PM CEST, Daniel Almeida wrote:
+On Wed Jul 16, 2025 at 9:49 PM CEST, Danilo Krummrich wrote:
+> On Wed Jul 16, 2025 at 9:44 PM CEST, Daniel Almeida wrote:
+>> I guess this is the same problem as u64: drivers will usually have eithe=
+r
+>> i32s/u32s and this would require a cast.
 >
->
->> On 16 Jul 2025, at 16:32, Danilo Krummrich <dakr@kernel.org> wrote:
->>=20
->> On Wed Jul 16, 2025 at 9:11 PM CEST, Daniel Almeida wrote:
->>> Let=E2=80=99s transfer this discussion to this patch.
->>>=20
->>>> I also quickly tried genmask and I have a few questions:
->>>>=20
->>>> (1) Why does genmask not use a const generic? I think this makes it mo=
-re
->>>>     obvious that it's only intended to be used from const context.
->>>=20
->>> I guess none of us thought about it, since the current version also wor=
-ks.
->>=20
->> I think using a const generic would be a bit better for the mentioned re=
-ason.
->
-> Btw, how does monomorphization work here? Would we have to codegen all th=
-e
-> versions? Also, I don't think that you can take a range as a const generi=
-c
-> argument, i.e., I don't recall ever seeing this syntax:
->
-> genmask_u64::<0..=3D63>();
+> I don't understand this argument? We usualy use usize for such things, no=
+?
 
-Ah, of course, it's RangeInclusive, just scratch the const generic proposal=
-. :)
-
->>>> (2) Why is there no build_assert() when the range exceeds the number o=
-f bits
->>>>     of the target type? I would expect genmask_u64(0..100) to fail.
->>>=20
->>> Doesn=E2=80=99t it?
->>>=20
->>> There is a build_assert in the underlying bit implementation. It was re=
-dundant
->>> to have it both in bit_* and in genmask, because genmask calls bit().
->>>=20
->>> In your example, bit_u64(100) hits that assert, and so it shouldn't com=
-pile.
->>=20
->> Indeed, and it also works, except from doc-tests for some reason, which =
-is what
->> I tried real quick. :)
->>=20
->
-> Wait, this was a bit confusing :)
-> You=E2=80=99re confirming that it doesn=E2=80=99t compile, correct?
-
-Yes, except for in doc-tests for some reason.
-
->> I feel like usize would be a better fit, but not a strong opinion.
->
-> I guess this is the same problem as u64: drivers will usually have either
-> i32s/u32s and this would require a cast.
-
-I don't understand this argument? We usualy use usize for such things, no?
-
->
-> =E2=80=94 Daniel
-
+I already thought in terms of the register!() macro, which deals with targe=
+t
+types for us anyways. Without that, you're right, u32 is better.
