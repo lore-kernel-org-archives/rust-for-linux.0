@@ -1,41 +1,41 @@
 Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0C91C5D5A;
-	Wed, 16 Jul 2025 21:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14FD2ED84D;
+	Wed, 16 Jul 2025 21:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752702338; cv=none; b=kxKJqwy2/cMhYH0X0Fpn8MLsBkuvptnmeOBUQpyQ66OrqvbeTUIvEe4EzABgVCZvfJNtsqnM4tv03lBLXCoPQxE4jg78HsGfiim34yVtj2lRntrqdXOUK2KsCH4abrl1CX6CLQDUAjn/wTVG8cFyrShy7xCzD3t7aAJem1cLAq0=
+	t=1752702340; cv=none; b=evqfu7d6x3xMpMh8tnIYhzB4nus6D3zmpetYpuBjZVoiOY0xhi+cZUYNvL48t0zy5idK2mbqkSFk09mYvHrlPDMJOwUnbkNfkCxvTGbsKwnEi/LuVd4moISgN7vGeR3xwD4GZP1/r3lPmuiZI6dDEoBu1MdPZM6pHosUUtIE4/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752702338; c=relaxed/simple;
-	bh=31AqHo3GIvu3IzySTWWesuZK0J2sD7GkvCbF0fO1rZY=;
+	s=arc-20240116; t=1752702340; c=relaxed/simple;
+	bh=NVHP2L7I+F80S0iSXz7Ayio5SqCeQC1UYDi+yY/64nc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sMT8PKe3eZt5KinwQOuhl9oAcAEnt76z4U7kIQkicBkL0jMktSS9iI3rIhAveGqQ+WKuY+iDyIxfIGSuaENKce2fOmNMRx+bwRnqFLl7mCCoc5flHIPM0Uu/HW6TO1nHaYOFV4DFdP0eqUjLtJuGHTzL5dyaYCvv4/upf3zwFUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=G4Szcu1L; arc=none smtp.client-ip=148.251.105.195
+	 In-Reply-To:To:Cc; b=J6dYQz4z18W9WSd/kJYSR9ruS/VYba3GfZob6jShDFoQ9sKsdP6BYyqtyLLxZX9ehB6xUZrPRmMeCdgFhmjVbqxFaTfmyCDI6XCB3Lxw2/Uz+jUdjOWym7ed53viPLZW0jy7pOa1Jx0W3IiqVvfzjM97jU54R7NYIIjvKfl2U4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Hz2DBHig; arc=none smtp.client-ip=148.251.105.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="G4Szcu1L"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Hz2DBHig"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1752702334;
-	bh=31AqHo3GIvu3IzySTWWesuZK0J2sD7GkvCbF0fO1rZY=;
+	s=mail; t=1752702328;
+	bh=NVHP2L7I+F80S0iSXz7Ayio5SqCeQC1UYDi+yY/64nc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=G4Szcu1LofR5wX/87OEmXAmPhGGVzib+JrdT98ONSXtxbnyxjdydkBNpSyzzkmZ5d
-	 6hLzGZ6nZjxqYnK3JdgY9evHhGlxFb2BjCh4AOIj7h2Lx6/ewvp4B5LfsvmMFpM60x
-	 p+AcHTmSOmfAuh1G6U/16rVtz85+TDRhVs9YDsfrrjlfFxVICjYuyABAI2lBKzp4yD
-	 zBBn56YvusRWYHobYtSF0MXxR5+T2agtvcW7tzmvoL06lyfKFJRzakZshby42+O074
-	 SJ+csne4k/Ba8co+PFMrJ+XV79y6umLrI7+/dtr0yFk6TUMp2Oi0VaeftrlbOXSAyK
-	 V8vx05iOYsNVA==
+	b=Hz2DBHig2iA/huelh7HWjMNM9giutkfWS3ES2rK+8afcDcxTzmrYst9FeOBeA0nc0
+	 JDX7NTSwiCVQM4+Y8FPXG4BWNkUmdTOlRI8txI9NqsaI/om3b7EoidfPYs3OPO9USF
+	 eg+SS5hbOiw6qIM1lZ6h1/D1DkgbP+PDr5TCYo+EDIscw9D9qr2vzu0tJ1ldHsMVbU
+	 e2/I+BXAbSAVEW7pCvZrkItyCOoiGAaREFqlOGSPM34hITfE1He3R8pi7MKmIILEQT
+	 VjEoZseZ2uNOL86okc5kjyB5W+HsTb8ufTXOjF08jdSHt3rutuXjd4iGvgL3sQo1lM
+	 bgA8ytbk/cPwQ==
 Received: from [192.168.0.2] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id D04DE17E1298;
-	Wed, 16 Jul 2025 23:45:31 +0200 (CEST)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6F24E17E10D0;
+	Wed, 16 Jul 2025 23:45:26 +0200 (CEST)
 From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Wed, 16 Jul 2025 18:45:15 -0300
-Subject: [PATCH v14 3/3] rust: platform: add resource accessors
+Date: Wed, 16 Jul 2025 18:45:13 -0300
+Subject: [PATCH v14 1/3] rust: io: add resource abstraction
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250716-topics-tyr-platform_iomem-v14-3-2c2709135cb2@collabora.com>
+Message-Id: <20250716-topics-tyr-platform_iomem-v14-1-2c2709135cb2@collabora.com>
 References: <20250716-topics-tyr-platform_iomem-v14-0-2c2709135cb2@collabora.com>
 In-Reply-To: <20250716-topics-tyr-platform_iomem-v14-0-2c2709135cb2@collabora.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -56,105 +56,342 @@ To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
  "Rafael J. Wysocki" <rafael@kernel.org>
 Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Fiona Behrens <me@kloenk.dev>, 
  Daniel Almeida <daniel.almeida@collabora.com>
 X-Mailer: b4 0.14.2
 
-The previous patches have added the abstractions for Resources and the
-ability to map them and therefore read and write the underlying memory .
+In preparation for ioremap support, add a Rust abstraction for struct
+resource.
 
-The only thing missing to make this accessible for platform devices is
-to provide accessors that return instances of IoRequest<'a>. These
-ensure that the resource are valid only for the lifetime of the platform
-device, and that the platform device is in the Bound state.
-
-Therefore, add these accessors. Also make it possible to retrieve
-resources from platform devices in Rust using either a name or an index.
+A future commit will introduce the Rust API to ioremap a resource from a
+platform device. The current abstraction, therefore, adds only the
+minimum API needed to get that done.
 
 Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Co-developed-by: Fiona Behrens <me@kloenk.dev>
+Signed-off-by: Fiona Behrens <me@kloenk.dev>
 Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 ---
- rust/kernel/platform.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 1 deletion(-)
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers/io.c               |  36 +++++++
+ rust/kernel/io.rs               |   4 +
+ rust/kernel/io/resource.rs      | 229 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 270 insertions(+)
 
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 86f9d73c64b38ffe067be329a77b2fc04564c7fe..57f9964bb736cf5749ec3954def03c0d02873642 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,8 +5,11 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 7e8f2285064797d5bbac5583990ff823b76c6bdc..5f795e60e889b9fc887013743c81b1cf92a52adb 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -53,6 +53,7 @@
+ #include <linux/file.h>
+ #include <linux/firmware.h>
+ #include <linux/fs.h>
++#include <linux/ioport.h>
+ #include <linux/jiffies.h>
+ #include <linux/jump_label.h>
+ #include <linux/mdio.h>
+diff --git a/rust/helpers/io.c b/rust/helpers/io.c
+index 15ea187c5466256effd07efe6f6995a1dd95a967..404776cf6717c8570c7600a24712ce6e4623d3c6 100644
+--- a/rust/helpers/io.c
++++ b/rust/helpers/io.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
  
- use crate::{
--    acpi, bindings, container_of, device, driver,
-+    acpi, bindings, container_of,
-+    device::{self, Bound},
-+    driver,
-     error::{to_result, Result},
-+    io::{mem::IoRequest, Resource},
-     of,
-     prelude::*,
-     str::CStr,
-@@ -211,6 +214,61 @@ impl<Ctx: device::DeviceContext> Device<Ctx> {
-     fn as_raw(&self) -> *mut bindings::platform_device {
-         self.0.get()
-     }
+ #include <linux/io.h>
++#include <linux/ioport.h>
+ 
+ void __iomem *rust_helper_ioremap(phys_addr_t offset, size_t size)
+ {
+@@ -99,3 +100,38 @@ void rust_helper_writeq_relaxed(u64 value, void __iomem *addr)
+ 	writeq_relaxed(value, addr);
+ }
+ #endif
 +
-+    /// Returns the resource at `index`, if any.
-+    pub fn resource_by_index(&self, index: u32) -> Option<&Resource> {
-+        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct platform_device`.
-+        let resource = unsafe {
-+            bindings::platform_get_resource(self.as_raw(), bindings::IORESOURCE_MEM, index)
-+        };
++resource_size_t rust_helper_resource_size(struct resource *res)
++{
++	return resource_size(res);
++}
 +
-+        if resource.is_null() {
-+            return None;
-+        }
++struct resource *rust_helper_request_mem_region(resource_size_t start,
++						resource_size_t n,
++						const char *name)
++{
++	return request_mem_region(start, n, name);
++}
 +
-+        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-+        // returned by `platform_get_resource`.
-+        Some(unsafe { Resource::from_raw(resource) })
-+    }
++void rust_helper_release_mem_region(resource_size_t start, resource_size_t n)
++{
++	release_mem_region(start, n);
++}
 +
-+    /// Returns the resource with a given `name`, if any.
-+    pub fn resource_by_name(&self, name: &CStr) -> Option<&Resource> {
-+        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct
-+        // platform_device` and `name` points to a valid C string.
-+        let resource = unsafe {
-+            bindings::platform_get_resource_byname(
-+                self.as_raw(),
-+                bindings::IORESOURCE_MEM,
-+                name.as_char_ptr(),
-+            )
-+        };
++struct resource *rust_helper_request_region(resource_size_t start,
++					    resource_size_t n, const char *name)
++{
++	return request_region(start, n, name);
++}
 +
-+        if resource.is_null() {
-+            return None;
-+        }
++struct resource *rust_helper_request_muxed_region(resource_size_t start,
++						  resource_size_t n,
++						  const char *name)
++{
++	return request_muxed_region(start, n, name);
++}
 +
-+        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-+        // returned by `platform_get_resource`.
-+        Some(unsafe { Resource::from_raw(resource) })
++void rust_helper_release_region(resource_size_t start, resource_size_t n)
++{
++	release_region(start, n);
++}
+diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
+index 72d80a6f131e3e826ecd9d2c3bcf54e89aa60cc3..7b70d5b5477e57d6d0f24bcd26bd8b0071721bc0 100644
+--- a/rust/kernel/io.rs
++++ b/rust/kernel/io.rs
+@@ -7,6 +7,10 @@
+ use crate::error::{code::EINVAL, Result};
+ use crate::{bindings, build_assert};
+ 
++pub mod resource;
++
++pub use resource::Resource;
++
+ /// Raw representation of an MMIO region.
+ ///
+ /// By itself, the existence of an instance of this structure does not provide any guarantees that
+diff --git a/rust/kernel/io/resource.rs b/rust/kernel/io/resource.rs
+new file mode 100644
+index 0000000000000000000000000000000000000000..ec07af06effbb00d3db186513a0683b491df020b
+--- /dev/null
++++ b/rust/kernel/io/resource.rs
+@@ -0,0 +1,229 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Abstractions for [system
++//! resources](https://docs.kernel.org/core-api/kernel-api.html#resources-management).
++//!
++//! C header: [`include/linux/ioport.h`](srctree/include/linux/ioport.h)
++
++use core::ops::Deref;
++use core::ptr::NonNull;
++
++use crate::prelude::*;
++use crate::str::{CStr, CString};
++use crate::types::Opaque;
++
++/// Resource Size type.
++///
++/// This is a type alias to either `u32` or `u64` depending on the config option
++/// `CONFIG_PHYS_ADDR_T_64BIT`, and it can be a u64 even on 32-bit architectures.
++pub type ResourceSize = bindings::phys_addr_t;
++
++/// A region allocated from a parent [`Resource`].
++///
++/// # Invariants
++///
++/// - `self.0` points to a valid `bindings::resource` that was obtained through
++///   `bindings::__request_region`.
++pub struct Region {
++    /// The resource returned when the region was requested.
++    resource: NonNull<bindings::resource>,
++    /// The name that was passed in when the region was requested. We need to
++    /// store it for ownership reasons.
++    _name: CString,
++}
++
++impl Deref for Region {
++    type Target = Resource;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: Safe as per the invariant of `Region`.
++        unsafe { Resource::from_raw(self.resource.as_ptr()) }
 +    }
 +}
 +
-+impl Device<Bound> {
-+    /// Returns an `IoRequest` for the resource at `index`, if any.
-+    pub fn io_request_by_index(&self, index: u32) -> Option<IoRequest<'_>> {
-+        // SAFETY: `resource` is a valid resource for `&self` during the
-+        // lifetime of the `IoRequest`.
-+        self.resource_by_index(index)
-+            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
++impl Drop for Region {
++    fn drop(&mut self) {
++        let (flags, start, size) = {
++            let res = &**self;
++            (res.flags(), res.start(), res.size())
++        };
++
++        let release_fn = if flags.contains(Flags::IORESOURCE_MEM) {
++            bindings::release_mem_region
++        } else {
++            bindings::release_region
++        };
++
++        // SAFETY: Safe as per the invariant of `Region`.
++        unsafe { release_fn(start, size) };
++    }
++}
++
++// SAFETY: `Region` only holds a pointer to a C `struct resource`, which is safe to be used from
++// any thread.
++unsafe impl Send for Region {}
++
++// SAFETY: `Region` only holds a pointer to a C `struct resource`, references to which are
++// safe to be used from any thread.
++unsafe impl Sync for Region {}
++
++/// A resource abstraction.
++///
++/// # Invariants
++///
++/// [`Resource`] is a transparent wrapper around a valid `bindings::resource`.
++#[repr(transparent)]
++pub struct Resource(Opaque<bindings::resource>);
++
++impl Resource {
++    /// Creates a reference to a [`Resource`] from a valid pointer.
++    ///
++    /// # Safety
++    ///
++    /// The caller must ensure that for the duration of 'a, the pointer will
++    /// point at a valid `bindings::resource`.
++    ///
++    /// The caller must also ensure that the [`Resource`] is only accessed via the
++    /// returned reference for the duration of 'a.
++    pub(crate) const unsafe fn from_raw<'a>(ptr: *mut bindings::resource) -> &'a Self {
++        // SAFETY: Self is a transparent wrapper around `Opaque<bindings::resource>`.
++        unsafe { &*ptr.cast() }
 +    }
 +
-+    /// Returns an `IoRequest` for the resource with a given `name`, if any.
-+    pub fn io_request_by_name(&self, name: &CStr) -> Option<IoRequest<'_>> {
-+        // SAFETY: `resource` is a valid resource for `&self` during the
-+        // lifetime of the `IoRequest`.
-+        self.resource_by_name(name)
-+            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
++    /// Requests a resource region.
++    ///
++    /// Exclusive access will be given and the region will be marked as busy.
++    /// Further calls to [`Self::request_region`] will return [`None`] if
++    /// the region, or a part of it, is already in use.
++    pub fn request_region(
++        &self,
++        start: ResourceSize,
++        size: ResourceSize,
++        name: CString,
++        flags: Flags,
++    ) -> Option<Region> {
++        // SAFETY:
++        // - Safe as per the invariant of `Resource`.
++        // - `__request_region` will store a reference to the name, but that is
++        // safe as we own it and it will not be dropped until the `Region` is
++        // dropped.
++        let region = unsafe {
++            bindings::__request_region(
++                self.0.get(),
++                start,
++                size,
++                name.as_char_ptr(),
++                flags.0 as c_int,
++            )
++        };
++
++        Some(Region {
++            resource: NonNull::new(region)?,
++            _name: name,
++        })
 +    }
- }
- 
- // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
++
++    /// Returns the size of the resource.
++    pub fn size(&self) -> ResourceSize {
++        let inner = self.0.get();
++        // SAFETY: safe as per the invariants of `Resource`.
++        unsafe { bindings::resource_size(inner) }
++    }
++
++    /// Returns the start address of the resource.
++    pub fn start(&self) -> ResourceSize {
++        let inner = self.0.get();
++        // SAFETY: safe as per the invariants of `Resource`.
++        unsafe { (*inner).start }
++    }
++
++    /// Returns the name of the resource.
++    pub fn name(&self) -> Option<&CStr> {
++        let inner = self.0.get();
++
++        // SAFETY: safe as per the invariants of `Resource`
++        let name = unsafe { (*inner).name };
++
++        if name.is_null() {
++            return None;
++        }
++
++        // SAFETY: In the C code, `resource::name` either contains a null
++        // pointer or points to a valid NUL-terminated C string, and at this
++        // point we know it is not null, so we can safely convert it to a
++        // `CStr`.
++        Some(unsafe { CStr::from_char_ptr(name) })
++    }
++
++    /// Returns the flags associated with the resource.
++    pub fn flags(&self) -> Flags {
++        let inner = self.0.get();
++        // SAFETY: safe as per the invariants of `Resource`
++        let flags = unsafe { (*inner).flags };
++
++        Flags(flags)
++    }
++}
++
++// SAFETY: `Resource` only holds a pointer to a C `struct resource`, which is
++// safe to be used from any thread.
++unsafe impl Send for Resource {}
++
++// SAFETY: `Resource` only holds a pointer to a C `struct resource`, references
++// to which are safe to be used from any thread.
++unsafe impl Sync for Resource {}
++
++/// Resource flags as stored in the C `struct resource::flags` field.
++///
++/// They can be combined with the operators `|`, `&`, and `!`.
++///
++/// Values can be used from the [`flags`] module.
++#[derive(Clone, Copy, PartialEq)]
++pub struct Flags(c_ulong);
++
++impl Flags {
++    /// Check whether `flags` is contained in `self`.
++    pub fn contains(self, flags: Flags) -> bool {
++        (self & flags) == flags
++    }
++}
++
++impl core::ops::BitOr for Flags {
++    type Output = Self;
++    fn bitor(self, rhs: Self) -> Self::Output {
++        Self(self.0 | rhs.0)
++    }
++}
++
++impl core::ops::BitAnd for Flags {
++    type Output = Self;
++    fn bitand(self, rhs: Self) -> Self::Output {
++        Self(self.0 & rhs.0)
++    }
++}
++
++impl core::ops::Not for Flags {
++    type Output = Self;
++    fn not(self) -> Self::Output {
++        Self(!self.0)
++    }
++}
++
++impl Flags {
++    /// PCI/ISA I/O ports.
++    pub const IORESOURCE_IO: Flags = Flags::new(bindings::IORESOURCE_IO);
++
++    /// Resource is software muxed.
++    pub const IORESOURCE_MUXED: Flags = Flags::new(bindings::IORESOURCE_MUXED);
++
++    /// Resource represents a memory region.
++    pub const IORESOURCE_MEM: Flags = Flags::new(bindings::IORESOURCE_MEM);
++
++    /// Resource represents a memory region that must be ioremaped using `ioremap_np`.
++    pub const IORESOURCE_MEM_NONPOSTED: Flags = Flags::new(bindings::IORESOURCE_MEM_NONPOSTED);
++
++    const fn new(value: u32) -> Self {
++        crate::build_assert!(value as u64 <= c_ulong::MAX as u64);
++        Flags(value as c_ulong)
++    }
++}
 
 -- 
 2.50.0
