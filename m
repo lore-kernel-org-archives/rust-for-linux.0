@@ -1,106 +1,100 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3808E20F09C;
-	Wed, 16 Jul 2025 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EE028A1C8;
+	Wed, 16 Jul 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752678270; cv=none; b=RAE+c1o1eegOLrz1rLRQba1HzhYmhDiPEynSn7BckMNMG/iXxuS0KJvobRaZ8icNNkMzAkHqlhejWXZOzexQQf7DzdarGeSzNh7sKmYKiELSNHjXalwRk0S7Rr01ou6DKVsEmLBxS9abrr3N1Lh3Xw2aI1KOzVSH6hjSKZl9DYY=
+	t=1752679420; cv=none; b=QsaBk8gbbDnIyQ5hasmC6rpGB5yRN6QaZIng64P7OR2TT35zQlYSvlEPYZShoV/Mew3PrTs+cjm0YTFdeYl9OibHP16XKVUgIFfC1TT8wEaYV9PJWuIqe5IBIkBxeIKmRcYjXTpVdfeCSEyTrG0Hs9dN9zjEgUSHsWHrTx1BlfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752678270; c=relaxed/simple;
-	bh=8YbmoICxDHq8BmA5AG+ttKnGA2bK0YMKDQUYjpfZl1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fva0dseTIhYMm0v6xDtm50pjYSc85aXyrXQS/mOyr+OhFcc34xWhln5qwxt+FTXlPMHUEqiBT7iZFaqI/0/r/bveL/zhFkzOggqQ/SFK9aBttfe/Y57ZERMVuSoureuDEW4wHIVxVV3yNWUxEQsl3RDd4Nbg0E/ZLPzfDPHBOBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TuaDUPA1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752679420; c=relaxed/simple;
+	bh=tpTs+jX92sQ6oTJ59R/yyANwWHArExgRUeTRqrhTvYc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=VydqD5qqri3N+ptpxUTEAv5GOqOjlwwMTLshrvnxfg5PPvzgjjrXu4cdD0AkfjgH5jTV1KRdYUT1bJX/7GyWpUzGPXUhvdNt8u5DanaLuhGxW/mVZk/hfA00PsdSzYoNBKT58LArRIkAWJAwoRuxEtF0BNlW8fM7gI3MrUkaaQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPO42vlp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TuaDUPA1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6643C4CEEB;
-	Wed, 16 Jul 2025 15:04:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPO42vlp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB00CC4CEF0;
+	Wed, 16 Jul 2025 15:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752678269;
-	bh=8YbmoICxDHq8BmA5AG+ttKnGA2bK0YMKDQUYjpfZl1I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuaDUPA1RMXdRBoIH8EMUk/TxGAcdmpsHj8SlaUxRHh1igaFiYJvrVW0YSAInybi7
-	 DlAinAnB2yF3zZn4L4BtKJTYCgnEenmV8M5VQGiiEQMYNP3RctDsZGTqC92d61p6JH
-	 ie9Ubq/hAJ0XfcogZE+SoyHlAtIllk6Pn0p4pJYcYifbvr9TLWmcu1DwJhCuqTagJi
-	 rn2vVraS2y4G+JS4zN7WW7AaBo414b8waeFanCIF/iKesledQf++rjMycgOGxHsSCL
-	 VMgCunhPLo5Ptb8h+X3kB7YiPsiWOr05BWa3FGqFPnd+s2xox3yc1ge3l2VnpCs5N5
-	 3UPnVf7Z+gX6w==
-From: Danilo Krummrich <dakr@kernel.org>
-To: abdiel.janulgue@gmail.com,
-	daniel.almeida@collabora.com,
-	robin.murphy@arm.com,
-	a.hindborg@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 5/5] rust: samples: dma: set DMA mask
-Date: Wed, 16 Jul 2025 17:02:50 +0200
-Message-ID: <20250716150354.51081-6-dakr@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250716150354.51081-1-dakr@kernel.org>
-References: <20250716150354.51081-1-dakr@kernel.org>
+	s=k20201202; t=1752679419;
+	bh=tpTs+jX92sQ6oTJ59R/yyANwWHArExgRUeTRqrhTvYc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=iPO42vlpAyw1KrQJuE0mB7ZC9S0O1uik/YV91c1X/9+ES4NhNS8Uj5Ff79sMhHC61
+	 eTR8u9pNkHeiQkAmiDQKnvRXWmT+lBPOSWmGImKbHd2zO9A94fZPwRtIfVlRStS71w
+	 fJyDYuIYl+DoXowwaI/sOS1U22bCdpgsxx0F9plHz8lZb1sidOinJBPz37QWa5TRJG
+	 gMZXTjgyjoAE9bGAHpFTHsJuxyGOKbolMMqRvpq+MRN0i1ACyZo7rwL3EJGk5z8nkL
+	 eFcf2a2I1ddqEEE0dElkQH9XmyQClOHcOnc6eEYO3DAiMugVczgCwMVWTIzsBmp4c0
+	 xFDCGfLTGncsg==
+From: Mark Brown <broonie@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Alexandre Courbot <acourbot@nvidia.com>
+In-Reply-To: <20250714-topics-tyr-regulator2-v8-0-c7ab3955d524@collabora.com>
+References: <20250714-topics-tyr-regulator2-v8-0-c7ab3955d524@collabora.com>
+Subject: Re: [PATCH v8 0/2] Add a bare-minimum Regulator abstraction
+Message-Id: <175267941650.716137.1066495222892798076.b4-ty@kernel.org>
+Date: Wed, 16 Jul 2025 16:23:36 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
 
-Set a DMA mask for the `pci::Device` in the Rust DMA sample driver.
+On Mon, 14 Jul 2025 15:52:03 -0300, Daniel Almeida wrote:
+> Changes in v8:
+> - Added Alex's r-b
+> - Added helpers/regulator.c, since the stubs are declared as inline if
+>   CONFIG_REGULATOR is not set (Intel bot)
+> - Removed unneeded "regulator.enable()" line from docs: it was not needed
+>   and, ironically, it misused the API by choosing Regulator<Dynamic>
+>   and then not keeping the enabled count count balenced (Alex)
+> - Clarified that the "Enabled" state decreases the enabled refcount when it
+>   drops (Alex)
+> - Renamed "Microvolt" as "Voltage" and introduced
+>   from_microvolts/as_microvolts (Alex)
+> - Fixed the spelling for MAINTAINERS in the second commit (Alex)
+> - Link to v7: https://lore.kernel.org/rust-for-linux/20250704-topics-tyr-regulator-v7-0-77bfca2e22dc@collabora.com/
+> 
+> [...]
 
-Reviewed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- samples/rust/rust_dma.rs | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Applied to
 
-diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
-index 9e05d5c0cdae..9422ac68c139 100644
---- a/samples/rust/rust_dma.rs
-+++ b/samples/rust/rust_dma.rs
-@@ -4,7 +4,14 @@
- //!
- //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
- 
--use kernel::{bindings, device::Core, dma::CoherentAllocation, pci, prelude::*, types::ARef};
-+use kernel::{
-+    bindings,
-+    device::Core,
-+    dma::{CoherentAllocation, Device, DmaMask},
-+    pci,
-+    prelude::*,
-+    types::ARef,
-+};
- 
- struct DmaSampleDriver {
-     pdev: ARef<pci::Device>,
-@@ -51,6 +58,11 @@ impl pci::Driver for DmaSampleDriver {
-     fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self>>> {
-         dev_info!(pdev.as_ref(), "Probe DMA test driver.\n");
- 
-+        let mask = DmaMask::new(64)?;
-+
-+        // SAFETY: There are no concurrent calls to DMA allocation and mapping primitives.
-+        unsafe { pdev.dma_set_mask_and_coherent(mask)? };
-+
-         let ca: CoherentAllocation<MyStruct> =
-             CoherentAllocation::alloc_coherent(pdev.as_ref(), TEST_VALUES.len(), GFP_KERNEL)?;
- 
--- 
-2.50.0
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[1/2] rust: regulator: add a bare minimum regulator abstraction
+      commit: 9b614ceada7cb846de1a1c3bb0b29b0a2726ef45
+[2/2] MAINTAINERS: add regulator.rs to the regulator API entry
+      commit: d9f334fca5448907cc47ba8553926f9ba148512f
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
