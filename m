@@ -1,100 +1,99 @@
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9260249E5;
-	Wed, 16 Jul 2025 15:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0785929B8FE;
+	Wed, 16 Jul 2025 15:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752680029; cv=none; b=VHmAZuLJqPAMD2L4iwrwZUkSdIHzwSuNaYbQOaCD2dB3wJ0qOv0DaX46xopLDQQRj6E0JTKVfGXrk7mxGZ8HYG42fYmSQ5G2QNg5XTGgJNY6Pn4rIihC+Qh5rQRR2wfwoIh/F9SETtePk+dryV/dhH2RbpO61v8IO9+73k+SSZ8=
+	t=1752680131; cv=none; b=spgaeEOPsE/VFs1mktOshVSci+z9gZR3zyDYBEiDmaMKzUTQ/ORmyke4mg/iDQLeAQSVnVMzvc6ZB1mBhIObNnapU/U0mM+XXCFjQPLJxNtPuYvm8etWFoREX5QJjeQ48S4ekaLfFonspnFFs3HPV+/4fsefcpaFJrLPhnUW4rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752680029; c=relaxed/simple;
-	bh=dSUXBHlBb/oWnFxdydJ5t7D52qJvDSWnVooiknopvAw=;
+	s=arc-20240116; t=1752680131; c=relaxed/simple;
+	bh=cXmq5/AtROeA8Pn6qLC9YpfOIq4tZnkAEGzQmx/6E6o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=phXJAIwUrqsTsCRC4OpIK1vBYa08oOKfTGRwOX7nlcIdTkwTmxg884Hd4T/0SQApTI0wzCPyn8XUiIqGtX2CrQHE4mcSo2kImoqvi1rLMDTZtdcPwO3Kd9UAAzmvblJtogd+Ab3/GvEkrijU1f8GB1AQ1aLlNelbPygZouGGNBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EOjU5BiO; arc=none smtp.client-ip=209.85.222.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=OeiSTtYbs8ROQmvhZGO2D40TlYMQx0tSTZ0VL5Ofuo5BipCQ/dVbbJq2p3HRY7M/EK0cdpVtVvn/rlHvBKDvXgaAsri0JGIfrYBxzD2zJenwoxTxC205cHKLMFPpMzDj3WL2Tc0WBOOFHgIIwB2f4+twdXh3GKclLgsRBTRecXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NZORLPbA; arc=none smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EOjU5BiO"
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7e29616cc4fso352083585a.0;
-        Wed, 16 Jul 2025 08:33:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NZORLPbA"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4ab60e97cf8so405051cf.0;
+        Wed, 16 Jul 2025 08:35:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752680026; x=1753284826; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752680129; x=1753284929; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jHnbFfh1u32VDfmzatgR36A7Ry3U/16eay9Mf7feuDE=;
-        b=EOjU5BiOCMhWjZtOy4qRDJsuS+Idr5HVTVCTOAIlHshl+ZYQN8GzvCyyduTHiJxsh2
-         42ZZ3epze81ZgduU+RyUk/68arm8CJyYUoach19okswZBltqa9rALaZYL/FFHPJOtz/h
-         GtaGZIkSZhHE7gu1uOFf7abYaHWV/hRO4H/V0U3e5RzdF8ZN+s9+v4yaqQd0wRb+51H+
-         33o/BNRfyVspNUROZqqwy0egWzlDXt8IsqCsRnUBh2Vjrcf5sxGu+TfOIrVbQxsaEwSk
-         RWwLavbiOsNbNMHMwUa+OqPujeXp2qvhp9CpPbuhG20rkO9raOaAcjLjLStYmqSnDPKo
-         6jcQ==
+        bh=y80EpOl5xi6irCZLOI1hIGlhQgSnmXp79NlPigyetaU=;
+        b=NZORLPbACaFb6Y5qRElYuqx6yZ1sZL9iOb3YtxFCSkfdy/O1sorw68GNKc1Juv0ElE
+         RV+qfh/6/kv0xy3rAd04yh1DlyvKC7w6oRMUsKStCdgsOdP/Zg0/Jkn2tgvEB2v6I1e+
+         bpPhx9donKaDJDCa8E7aA4w6WpNpm/JDtt4JJPQuyvJyiRRtoL8Pmvvd/W3vXQSQPE6o
+         7j6f0L4ciGDQsV+QYWWPokoBVqfwGLebiCyuwAh/I6hxr9UIiwDN7Y9GOts64Ebe1a/+
+         Qc/MedKkEfp8tFlt6O+dkm1YX6wmnQzAGHm7VKkMU7Z1xZ7FBRMgpO5Ny8qUwL2ihMmC
+         ZChQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752680026; x=1753284826;
+        d=1e100.net; s=20230601; t=1752680129; x=1753284929;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jHnbFfh1u32VDfmzatgR36A7Ry3U/16eay9Mf7feuDE=;
-        b=VhIMJP+yrIhc9WV4qSpvqIKQAs7kwOcoyJfiDiAZn98g65RWMbb8CBuXQlBqGuiqXC
-         JF8VPphgys3F9hIPVzHmFpcDJN6SCW6sz2BpXWUbWDctwyKn/R2TwbnUQnkQ7AbThUlc
-         S3rSRH9cBsOPDHq2Z85nVTiABChulH0L7V22C572LFwJxJPlLs8HF6bBXbUyK3S6iA4g
-         sbtD1Y8tgZZ0sooh5Q3xo1P6Cnuc0NqOj/TcXs/WgWf5VtddlWaEHmTRAK3DGyXLygfJ
-         jOnVqZvho8Rt3iqDjKMSSjMFAwxI8y+h+LZj0lWx3BQPOdR6vRJvEyzO/2soYWFzwJB/
-         tR6w==
-X-Forwarded-Encrypted: i=1; AJvYcCW1f0WbAkt0BpamcgebmuWch8C05Ps+hfhCdkES4P02HNGJW6AqSx1TG1hofTWD6IjeXxNbFGB+XKjxNsX1//c=@vger.kernel.org, AJvYcCXf9Xkb39aWWOqQrBwYt0XLJ8UP0EpEpcSCFK/h82lw8T3HWqzg4Epu+Nw++bbSeHtM7sT8Q5AiJlBK1pc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRfcsmej/1oCmbUqm53FHyWAKWNuOMl0W7/Jd44PIM0nRl+t0R
-	zVZLJaRAH5JJGAnVOS76iiS5UBMOyv/0GldSongAgq9H2GkkAv6Ds3qv4qq3ZA==
-X-Gm-Gg: ASbGncte3iMIeQ/TXzExUOItYxFG7KxVvRDlbPaQisoPSXe8WzeIwOHZd8EkqjJw8xw
-	viuOEQPqgYujHWDVpTA9uc7wB/1ykuDhhuh1TkQXi50Fq560w0rDlAFzQADNvZtVmd2bGOYxdIN
-	ED/0Nck/pSSPB46T+tf26g3k/Q4qDNZ80x3nKDnCgYHND+UeE99pMLqE2+YV6RnZCsUGFLXjTOx
-	kZ4MsefUKe8/Irkzrcg7n7SzvSp7PND6oLoDn9Dn73DXZ6FaZAnQZeWXPyT0W/EARcPoec8gTcF
-	LZJzYhTNky+fmFciMt4Jv6h+ZAO4NZW0AHxKFD2tByXEVBn165KYOJxz4pKkHNvPGkbP33PNTbz
-	zXpY4ZrUdvdQR8d+gxEsCWgN72n4eW4IUisA7i7O4gz1TGHC3OEavexI3KiKIrg1AqQKaHcyduo
-	y5VVjn8ja4pWH6
-X-Google-Smtp-Source: AGHT+IHLL9KhRPo7ww1I8MiIJ3kjrjsG2TfTOMqhCWadQ5DtVvg9UMNuGxcaBW6P62o7IIztNVMbCw==
-X-Received: by 2002:a05:620a:268c:b0:7df:f84c:7dae with SMTP id af79cd13be357-7e342b6aef3mr377149385a.38.1752680026069;
-        Wed, 16 Jul 2025 08:33:46 -0700 (PDT)
+        bh=y80EpOl5xi6irCZLOI1hIGlhQgSnmXp79NlPigyetaU=;
+        b=FyLJLJfO+a0wVNaff+3VWnvdotXKoA3R18lvqDwlLTXAabo97vmgcwQtHHlzWA2JuV
+         v1wP5ViVxnqmA95Vzh5C44nXoXZNLZz08NOxYpBhqYWbPYJwPJB67kYMwTDc/kn74RfS
+         F7IvmK97aRrf18WAzBKH48p2N9QXajIIYnZQUXYgpaxUQw8s5JITujYbzhFOpqhRRjcb
+         PXceXpD27TkvTC+djJK5Coid8BiF8Gg6zFngLODBG+/0BYMeBNuwys6Nfn0lxVYfOYW6
+         MxRRokpD3uFiI3tYINjN43++wJdD2tVsliSX6xv0I574KV8TwmPsp3A2h2k+b3/MPThb
+         Rs3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUIw0ra0S0S4wn+heketcoVVK7594ch+7+lzL7pm62Cgnvii/QrqXC/eO1aQEgVAeI0GSlWQ8VcBvobJpHu51M=@vger.kernel.org, AJvYcCVvKSK3AuP1/adgLsAvpPnpp8ZzFIhbPXwruoKUoZE56fcDAoSn0XYEKeae0cAamW+ux6Bk9aqmh4DAXEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw49K53wPbKu8O6gW/LfCPF8dDpZ5QSzyKnvLlT7ndVFHfcFVoB
+	6R8wk9Kxs+ZqR4/haw14y7zQY7MpPryrcMdyp3B2bQ5pdlTJNFly+FdV
+X-Gm-Gg: ASbGncuYa2L3zbLIcOVh61ii8QflYKKD3yFJOTrJv/Y56txKl+D36qa64d0+cif5A7h
+	lRtq1/7F2TWc0nsY86vV4swxJgdTgVpJAyfSpTWHSS1qq+vGk02CHwY/dYKuMB+18/WUZcE3dTt
+	yrou6e6AfDiSxKZ2b6aVM/GatKXI9pI1h3tDunqp2r+JZTiAxYiOKq8dsD4torQu/56tAXk9Cdg
+	TtQd29mivptMcHa+tQ4s8zqD9XP+8crMTmaGgzMyHgQKzYYF2VSa8n/7Q6cdy1zIW4ww8JmldDS
+	DJiMLV9O1wP4gOiaFPQITt0AkWe5XmKPWAgw64beudrPtRQTEjqZqc6ZN1r2n2uZbD/+Q51JXo3
+	27+amGQ7XICjKcEEjXuqdTVmowcdkEksxBjw2jPBN/kvoL+TL+ca7Q5acaynHGU7YAQCWE4wklD
+	WJJ0qgU91RKIBeZ7zoqu3rPfU=
+X-Google-Smtp-Source: AGHT+IH9q3icJfvLBLkV9kbcK1h5N5XC/aPnicG4W2NRtLwYvPY24z5z3T/FHFOz0CxquUUyKcsehA==
+X-Received: by 2002:a05:622a:4894:b0:4ab:67fd:e323 with SMTP id d75a77b69052e-4ab93dd739fmr35321161cf.44.1752680128367;
+        Wed, 16 Jul 2025 08:35:28 -0700 (PDT)
 Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e2e29468d8sm374600285a.108.2025.07.16.08.33.45
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ab82242a82sm19477561cf.35.2025.07.16.08.35.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 08:33:45 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 0267CF40066;
-	Wed, 16 Jul 2025 11:33:45 -0400 (EDT)
+        Wed, 16 Jul 2025 08:35:28 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 731E1F40067;
+	Wed, 16 Jul 2025 11:35:27 -0400 (EDT)
 Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Wed, 16 Jul 2025 11:33:45 -0400
-X-ME-Sender: <xms:WMZ3aPKvAI7UUkoNehw38GqTrjMaSK1-db5tcF2Xijv_ZLU4JkS_SA>
-    <xme:WMZ3aEryV-a2vOumiA7obUUGl8D9LpLsYPIr6X-h1lKa1kg_EVj6wpDOM6ikBTvTN
-    dzzUmg8J5_CAmXXBw>
-X-ME-Received: <xmr:WMZ3aFV-_sFJEKKP_aI8zftn0PuNcGHEdrXJ0WWjwF2BM0ODchEfLusSdg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehkedtkecutefuodetggdotefrod
+  by phl-compute-05.internal (MEProxy); Wed, 16 Jul 2025 11:35:27 -0400
+X-ME-Sender: <xms:v8Z3aNce6BN84gUVs6L0lostUiSrjrjVt_lrxYXSX8IC0qbIXE_TdA>
+    <xme:v8Z3aMvnn6ilythR5hZYZEMSK7GqYgMOa-1JScK0LgeW9y6w8cAzoiHAuIiFHOrCc
+    uVtbX-_RaOi4XZH-w>
+X-ME-Received: <xmr:v8Z3aELsH1JbqIuYxE-WxorxyUmbFH5htqKZqDDpwbBGU1s0OnQ6KRcQOA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehkedtlecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
     vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephfegtdefveeljeeuueeltdevleehfeeludegteekhfehveeuleegkeelkedtjedt
-    necuffhomhgrihhnpehophgvnhhgrhhouhhprdhorhhgpdgsohhothhlihhnrdgtohhmne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgvpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghvhihmihht
-    tghhvghllhdtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdp
-    rhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorh
-    hnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnuggs
-    ohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
-    hglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
-X-ME-Proxy: <xmx:WMZ3aP3a93ftRqO_dkfvZ3OjcvGfw81mBQBpbtx1Bwmof7B9dJP3jA>
-    <xmx:WMZ3aG0nrKfvygp0Q5RnexciafGF0LzAqVNbbIbUdczkWkOqjSq9dw>
-    <xmx:WMZ3aOnW0zg234awIwBYumejWjtFnio9YUMIOBd4S52ivlFk3syelQ>
-    <xmx:WMZ3aHNuLhQp-TR4GtjvWaEnbBIu8FX7liZi4CAQ2QXxe6cxjipETg>
-    <xmx:WMZ3aF4Yu3Z5T6SDn8mQIzSmW_xqtXWS_UmAmCxeu0HphByOPdpJYYTb>
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlvghvhihmih
+    httghhvghllhdtsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomh
+    dprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhho
+    rhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegrrdhhihhnug
+    gsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlihgtvghrhihhlhesghho
+    ohhglhgvrdgtohhmpdhrtghpthhtohepthhmghhrohhsshesuhhmihgthhdrvgguuh
+X-ME-Proxy: <xmx:v8Z3aOaWcrvaLqFPOfbC_qb46vhiE5vNOpP4G5lFqOwdCCTbpjWjBA>
+    <xmx:v8Z3aKJ_jfAP3AQpDtw-ORO5FbiFaNwDRJ0ckqlA9P5RjLlf1sM_hg>
+    <xmx:v8Z3aHoD4vxYVx2cf11RfJM4hWAJB46oaoHEm2Zu2HQAx-K112NN1Q>
+    <xmx:v8Z3aDCu7R0wusuZgpTY0yGzGRp2BD9Tlq-fNt_mzg-0HxDK7welOg>
+    <xmx:v8Z3aNcJqRixfSwFa26WT2mJBv-2AnOXCsnow487Mmg6E46opHHI8tBj>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Jul 2025 11:33:44 -0400 (EDT)
-Date: Wed, 16 Jul 2025 08:33:43 -0700
+ 16 Jul 2025 11:35:26 -0400 (EDT)
+Date: Wed, 16 Jul 2025 08:35:26 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Benno Lossin <lossin@kernel.org>
 Cc: Mitchell Levy <levymitchell0@gmail.com>,
@@ -109,8 +108,9 @@ Cc: Mitchell Levy <levymitchell0@gmail.com>,
 	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [PATCH v2 3/5] rust: percpu: add a rust per-CPU variable test
-Message-ID: <aHfGV3l4NCmYSRuv@Mac.home>
-References: <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
+Message-ID: <aHfGvmq3zFWL6Hbe@Mac.home>
+References: <20250712-rust-percpu-v2-0-826f2567521b@gmail.com>
+ <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
  <DBATM1CUS704.28MKE6BIBQB7G@kernel.org>
  <68762e19.170a0220.33e203.a0b7@mx.google.com>
  <DBCLFG5F4MPW.2LF4T3KWOE12R@kernel.org>
@@ -118,8 +118,6 @@ References: <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
  <DBCR1OCNYAUW.1VLAY1HWCHLGI@kernel.org>
  <aHaCUFNUd_mErL7S@Mac.home>
  <DBCTCZ5HUZOF.2DJX63Q0VWWFN@kernel.org>
- <aHbJUfcsjHA92OlE@tardis-2.local>
- <DBDESSQOH6MB.2I4GNLPBP5ORJ@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -128,110 +126,24 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DBDESSQOH6MB.2I4GNLPBP5ORJ@kernel.org>
+In-Reply-To: <DBCTCZ5HUZOF.2DJX63Q0VWWFN@kernel.org>
 
-On Wed, Jul 16, 2025 at 12:32:04PM +0200, Benno Lossin wrote:
-> On Tue Jul 15, 2025 at 11:34 PM CEST, Boqun Feng wrote:
-> > On Tue, Jul 15, 2025 at 07:44:01PM +0200, Benno Lossin wrote:
-> > [...]
-> >> >> >
-> >> >> > First of all, `thread_local!` has to be implemented by some sys-specific
-> >> >> > unsafe mechanism, right? For example on unix, I think it's using
-> >> >> > pthread_key_t:
-> >> >> >
-> >> >> > 	https://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_key_create.html
-> >> >> >
-> >> >> > what we are implementing (or wrapping) is the very basic unsafe
-> >> >> > mechanism for percpu here. Surely we can explore the design for a safe
-> >> >> > API, but the unsafe mechanism is probably necessary to look into at
-> >> >> > first.
-> >> >> 
-> >> >> But this is intended to be used by drivers, right? If so, then we should
-> >> >
-> >> > Not necessarily only for drivers, we can also use it for implementing
-> >> > other safe abstraction (e.g. hazard pointers, percpu counters etc)
+On Tue, Jul 15, 2025 at 07:44:01PM +0200, Benno Lossin wrote:
+[...]
 > >> 
-> >> That's fair, but then it should be `pub(crate)`.
-> >> 
+> >> Sure we can do some experimentation, but I don't think we should put
+> >> unsafe abstractions upstream that we intend to replace with a safe
+> >> abstraction later. Otherwise people are going to depend on it and it's
 > >
-> > Fine by me, but please see below.
-> >
-> >> >> do our usual due diligence and work out a safe abstraction. Only fall
-> >> >> back to unsafe if it isn't possible.
-> >> >> 
-> >> >
-> >> > All I'm saying is instead of figuring out a safe abstraction at first,
-> >> > we should probably focus on identifying how to implement it and which
-> >> > part is really unsafe and the safety requirement for that.
-> >> 
-> >> Yeah. But then we should do that before merging :)
-> >> 
-> >
-> > Well, who's talknig about merging? ;-) I thought we just began reviewing
-> > here ;-)
+> > I doubt we can replace the unsafe abstraction with a safe one, if users
+> > really care the performance then they would really need to use some
+> > unsafe API to build their safe abstraction.
 > 
-> I understand [PATCH] emails as "I want to merge this" and [RFC PATCH] as
-
-But it doesn't mean "merge as it is", right? I don't think either I or
-Mitchell implied that, I'm surprised that you had to mention that, also
-based on "I often mute those" below, making it "[PATCH]" seems to be a
-practical way to get more attention if one wants to get some reviews.
-
-> "I want to talk about merging this". It might be that I haven't seen the
-> RFC patch series, because I often mute those.
+> That sounds pretty pessimistic, why do you think that?
 > 
 
-Well, then you cannot blame people to move from "RFC PATCH" to "PATCH"
-stage for more reviews, right? And you cannot make rules about what the
-difference between [PATCH] and [RFC PATCH] if you ignore one of them ;-)
-
-> >> >> I'm not familiar with percpu, but from the name I assumed that it's
-> >> >> "just a variable for each cpu" so similar to `thread_local!`, but it's
-> >> >> bound to the specific cpu instead of the thread.
-> >> >> 
-> >> >> That in my mind should be rather easy to support in Rust at least with
-> >> >> the thread_local-style API. You just need to ensure that no reference
-> >> >> can escape the cpu, so we can make it `!Send` & `!Sync` + rely on klint
-> >> >
-> >> > Not really, in kernel, we have plenty of use cases that we read the
-> >> > other CPU's percpu variables. For example, each CPU keeps it's own
-> >> > counter and we sum them other in another CPU.
-> >> 
-> >> But then you need some sort of synchronization?
-> >> 
-> >
-> > Right, but the synchronization can exist either in the percpu operations
-> > themselves or outside the percpu operations. Some cases, the data types
-> > are small enough to fit in atomic data types, and operations are just
-> > load/store/cmpxchg etc, then operations on the current cpu and remote
-> > read will be naturally synchronized. Sometimes extra synchronization is
-> > needed.
-> 
-> Sure, so we probably want direct atomics support. What about "extra
-> synchronization"? Is that using locks or RCU or what else?
-> 
-
-It's up to the users obviously, It could be some sort of locking or RCU,
-it's case by case.
-
-> > Keyword find all these cases are `per_cpu_ptr()`:
-> >
-> > 	https://elixir.bootlin.com/linux/v6.15.6/A/ident/per_cpu_ptr
-> 
-> Could you explain to me how to find them? I can either click on one of
-> the files with horrible C preprocessor macros or the auto-completion in
-> the search bar. But that one only shows 3 suggestions `_hyp_sym`,
-> `_nvhe_sym` and `_to_phys` which doesn't really mean much to me.
-> 
-
-You need to find the usage of `per_cpu_ptr()`, which is a function that
-gives you a pointer to a percpu variable on the other CPU, and then
-that's usually the case where a "remote" read of percpu variable
-happens.
+I could ask you the similar, you barely know the implementation and
+usage the percpu, why do you think it's possible? ;-)
 
 Regards,
 Boqun
-
-> ---
-> Cheers,
-> Benno
