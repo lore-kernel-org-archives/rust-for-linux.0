@@ -1,98 +1,77 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBFA2EE967;
-	Wed, 16 Jul 2025 22:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178D521421E;
+	Wed, 16 Jul 2025 22:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752706217; cv=none; b=hRf33Lu60R1TbCc91ljTPjwL1ny62u0dbNjWJ9+jwsKxG8YAUzty7pDAzR45C4XLuLEwHGiiZVYZdiny8GsE7XEILWVzA0SSdyY8Mw1HaFuOPgc4UZIFHxENaTBN12ibgH+nLeOTfMSkc6q+gh2m+8HbvYcx9EnxCW0fGOkBjGk=
+	t=1752706683; cv=none; b=s9B7kTpbUUxHVB/yxwOxFsZKH/X81ZlARiXVQw1lqMZ9xmjH+EshVad7VKPHy8HbVDBmkMS+IWH1J7cLTfFaH06aQERK2yJhwVGN9Md64ACe2akG5BGo9VINKrHh/e/Znl5TTSV9ZXV0i73cmQLb1E5DTbGvx4tgHqO3pDJrnNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752706217; c=relaxed/simple;
-	bh=VGfW1b163o/bmk0vuCJVz43+P2lP0gLVrXWVdf3Vg2I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FazeOSc6HL2Jd4KoM7XyImZ2p9ixwgemBocmFSLgiALEKw7GRZlqfOnCONA/RtfjREaINRADYQTIhFuw9UPL9btmTUCXXO0xwNU3zgT/yA68pxBF9JLpntGV4jTGD1EZw3jExusjoGuiHCvkY5qdJqaRDqDIGFtZ3Lci0fuXnMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gdApZz5A; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752706683; c=relaxed/simple;
+	bh=feyZUWnRLhI1C4HTdJ3yKYnq0VO/UBF9lovva/LkJx0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=GUc4g01nbVmqf+I2IQcg3AJB7wyxXh+2W6Cg/zUaj9DnhL/q5d7LKVqxLy1iiU2K3ryZV9yA4sNaRMX5K15ko77oFIWbuoQFxL15UXyLJb8cvjbCfLusJIsTyMRSmjDN8/yzleb32sdzFClC5ud7E4UwVb9cmnARYajkL6w2fSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DcoD2fcN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gdApZz5A"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b31d4886c50so49115a12.2;
-        Wed, 16 Jul 2025 15:50:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752706215; x=1753311015; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VGfW1b163o/bmk0vuCJVz43+P2lP0gLVrXWVdf3Vg2I=;
-        b=gdApZz5AZJc6nH6HOSU8v4/jBJQPUSPwjwLo0Xgdip9tcR1SsYZui5hn26L2X7RlBB
-         FnAhYLs3magIgpDQPioo3wX1bcleDv0Q/08KJD51jdBw7O49kEc2g/NaZz916zO5QYz2
-         i7ljAT7Cx1qMeUFjBYFHLiLnPyybJAi+i3B7UzyzKiKh9/EeltKxsREqV/8Y495Q3vHB
-         TCJOU9ZIkU99vIOAiISQdg6qdQw39iGFTiS/raxleFi04M6Pd75r0NNKoEHu4UqSaGTK
-         PkQD3UqlAW2RG38cdsgC/AaDpEWBdN/8N12fLE2egt/nL/Tz0JevLDMDfypBBta1noSX
-         wRsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752706215; x=1753311015;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VGfW1b163o/bmk0vuCJVz43+P2lP0gLVrXWVdf3Vg2I=;
-        b=Jn/p7314ysTqw+u2zAXZ4UH6sy8Q8YNhKR9xhnj00vhlAEML6zR6F5AKykg0l8/pxF
-         sZWr6gk5yFYceWFHinOmosxVmG33WbD8RSIEURgvzkW0Xck7t7Ds1EiLsO2OGcNS/Cjf
-         5aYi9Xb4Z3xa574nyNL20Aqb+r0IDUeyu8BiYxrktmsjI5V1IJQyJ4pWqAAOXePPy/+Y
-         RwyB54HTDGwmvo5TYCcE0Sd4XqlkIP3sjQ48/aqhnvqLBPKR64u/u+J5utz19lKQ14B6
-         IlTo6O1S+TidtDJZYHvsMcKgawArGPi2G4ylG5yxmNhXvqiss/EYv4A/gVOr4FGyXIDs
-         iExw==
-X-Forwarded-Encrypted: i=1; AJvYcCVifRPee+6htJ8M0Zdp0Kn4zjjhUYT3n0L31zYBQmBjY5yhE4NUqLguWClijWazz7tEVRjzgXRQSMbM8aeKyss=@vger.kernel.org, AJvYcCVtdFIKuO8FqDvBKiga2EmLa7vzVMS4uyeumVwLNoCNXarcB3Awa6VmYiw/EMM9X6WW04adLzH+ISGKco4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNaqAdEx0KlMqCcwjSkoqZSD9ZOuBVgptcQWANpMUTOudikmB1
-	UGaWkPu2eHVBUZrZMaQ0izotdyTak+/31pFw2uk2WrPoS2o+yplVtSa9D8RGvRWQuBHE1VTLrGm
-	tc3RZvxRtqlpueJ90vnQAvHoHU30uvcA=
-X-Gm-Gg: ASbGncsS92JHVMRUodpBvoIvv2Ft+LtMK4bSBYaRsZkQdQ88IPFehfnBYY5s7cO5cW4
-	p/DjgryeEstUbHWJ/d/V6alxe28wU/QEX04CMpahrM64OXCCzyZy/y2a/yaSGlLO16wY70uJBM1
-	x+vyd25rUchiK9sVVcHpCn2kRYzYU7YJPLPAkE1wvIPlpVRpyy/TYmsvk37Wv4Bw9t6CWzszWBE
-	tTO6A==
-X-Google-Smtp-Source: AGHT+IG5Z+fRJ8W2t4fa/a36mmLaxTU8BpLppbXFLnyWgohZej1ibLJCMSC+JjR/6igbPHO/gX8m3WMPtOyCm16tzLc=
-X-Received: by 2002:a17:902:f547:b0:234:ba37:87a3 with SMTP id
- d9443c01a7336-23e24ecc5bdmr25671355ad.3.1752706214973; Wed, 16 Jul 2025
- 15:50:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DcoD2fcN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F6AC4CEE7;
+	Wed, 16 Jul 2025 22:57:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752706683;
+	bh=feyZUWnRLhI1C4HTdJ3yKYnq0VO/UBF9lovva/LkJx0=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=DcoD2fcNUtdPrjQw90CoOSe4Dwwm2GyYFGYFHUQzSlRaZ2BnYS/u6XKoe1tvumfNO
+	 Ipb6Hphd6iiy4FuSrYLnaaTJQFlkLsf0JwPWmpJPATeV5L1JsI6fzJL9AJfA6I0t+k
+	 6E/6apYDZWLdtyoS6Q6DdMAVjWzB0Zg30b8cmyC396IoK3eFRfibOZcNjgKhRRY+ie
+	 zOU3A6QjLGZ/wtwQ1q/8iPoVaw2HqAByy+gmNq7q8CenPBLYxH3+ZGBPuptULx44qX
+	 JQ4RzWYxyxTr+TUkJXita5jK6kLtdOY8mzMPYBKv9vJdwd7iBoC1mnOf3mFTZFiqE9
+	 QZg4ji8xpMWLQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <DBCO0KQERIT5.GS89BZ9LY4TM@kernel.org>
-In-Reply-To: <DBCO0KQERIT5.GS89BZ9LY4TM@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 17 Jul 2025 00:50:02 +0200
-X-Gm-Features: Ac12FXyqv7LZlUjtj_1x2t4_1p9Q_Y8R5bMjLjzprWgI12VqkCYKLmE7O7k_BWw
-Message-ID: <CANiq72nnpBvtB=Q0sg1aXh0VKpfENarNgveK8OXSa=VjAsdO7Q@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust ALLOC & DMA for v6.17
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Jul 2025 00:57:55 +0200
+Message-Id: <DBDUNV3UWXNE.3KHTYC5BEZWYS@kernel.org>
+Subject: Re: [PATCH v2 1/2] device: rust: rename Device::as_ref() to
+ Device::from_raw()
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, "Thomas Gleixner" <tglx@linutronix.de>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "FUJITA
+ Tomonori" <fujita.tomonori@gmail.com>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <netdev@vger.kernel.org>, <linux-pci@vger.kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250711-device-as-ref-v2-0-1b16ab6402d7@google.com>
+ <20250711-device-as-ref-v2-1-1b16ab6402d7@google.com>
+In-Reply-To: <20250711-device-as-ref-v2-1-1b16ab6402d7@google.com>
 
-On Tue, Jul 15, 2025 at 3:32=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Fri Jul 11, 2025 at 10:04 AM CEST, Alice Ryhl wrote:
+> The prefix as_* should not be used for a constructor. Constructors
+> usually use the prefix from_* instead.
 >
-> Please pull the following ALLOC & DMA changes.
+> Some prior art in the stdlib: Box::from_raw, CString::from_raw,
+> Rc::from_raw, Arc::from_raw, Waker::from_raw, File::from_raw_fd.
 >
-> All commits have been in linux-next for a couple of weeks. I did a test m=
-erge
-> without any conflicts.
+> There is also prior art in the kernel crate: cpufreq::Policy::from_raw,
+> fs::File::from_raw_file, Kuid::from_raw, ARef::from_raw,
+> SeqFile::from_raw, VmaNew::from_raw, Io::from_raw.
+>
+> Link: https://lore.kernel.org/r/aCd8D5IA0RXZvtcv@pollux
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Merged (yesterday) into `rust-next` -- thanks!
-
-And, indeed, thanks to the MM folks.
-
-(I see you needed to merged the DMA ones into Nova too.)
-
-Cheers,
-Miguel
+Applied to driver-core-testing, thanks!
