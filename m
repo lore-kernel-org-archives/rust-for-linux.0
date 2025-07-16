@@ -1,110 +1,124 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB50267F58
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 23:19:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209D4289E16;
+	Wed, 16 Jul 2025 23:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752707977; cv=none; b=YrjutUviVUWsKDu6lUYlSs3TEy2jIjfBHaP+G9TYnIV7MLreGfgpE5q3JeTOafL3Hwdv3mj8MhlIN+lQPLukKUHJpmjMFgwXhazU1WepwaNxLYLZzgeFwf0QGUnQkHWw5km6yIHluHPmfcU7r/1HkOP+eMJB93KiODkTburR3bw=
+	t=1752709559; cv=none; b=TVKLtZ/xczL5e/yIhL+5hd4vhBtt/jsqNxH/CJYA0VxHx+W7ZLO2BFacYuVYz12R78fmdM9lLI9XdIcVZPmfOSC9jXKfK/37MZ+oC+TGPE9I8klsc9fSTnSs1JH1TJyl9I1LcYzBkKPOBfJTsOorSllpepjR0BQnPnO1pSVI6Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752707977; c=relaxed/simple;
-	bh=9/NnJDTcQwKH0nX4EoIsUlDscSEoGQ+CI3cGaPK+Ctg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t8HbOV+xTaxNlaMcb9DRMqCRt+wqh0eE6r6H8S7VgHlefUDcRCZkaG40xz0ed8x47mWex1Y70Wamv7JC9imM3ggecagkyP4a7s/ayKaQO2BAxC0gPGs5/hs932oHVi7k3kcOV3nPSoawn6GYntaA08EfqRhzqe9AUh43pfrsgMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ifm2d+JE; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1752709559; c=relaxed/simple;
+	bh=J3UG5GnJ5BjYLTM0CP7GT2WZiod9LqwrORLiSgAOFFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AwhxMXIKyM29NrJxN3vvUAxQlav3rGS6WrJhTbMcY2ROXDyJb38Gt4BgQTvY1Nrfx5lbKfH2dOQSuTIi14nIlAHXxyKdz/wAYXIBcnlQYP975cK6FvM4YhY44hrcvsr9j3QUL3XRinzIrMDoW1aiHqzgt/PdjBkOF4YU8m9qlOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YVp+G2pc; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ifm2d+JE"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-609b169834cso2619a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 16:19:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1752707974; x=1753312774; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/NnJDTcQwKH0nX4EoIsUlDscSEoGQ+CI3cGaPK+Ctg=;
-        b=Ifm2d+JE80BYbwXflvBz3bueuGj3YgIHqR4QY99jKgc8N95hmnd3shmqX6OmpFQVrp
-         p42Go6U4UFu0eZsm8GKKSWc3sik/JfpEwKdtvMq4wLN0z/UbAyoRyOHgN6cbdziZeudx
-         PIpjCiz/43rVxFPnOgSmsHrRO9Vsm/rjv3YibMQwiigD0v5YfPIXS6gyKHPf2q2uh2fh
-         o+A1mg7ZRVPctGbmLcTN8VXXsq+XAXLiiI9eaFQBFE1KFJdQhgP2FLXMYFSMMQ3DAu0E
-         zL+nMsHptOWKIGgciwtBOLFbVrarfsOIeUpWMmquKsPQ7iXBM39MywcAsBGCkiK3YGVy
-         n28Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752707974; x=1753312774;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9/NnJDTcQwKH0nX4EoIsUlDscSEoGQ+CI3cGaPK+Ctg=;
-        b=FRFakQMNcBvxjGAJm7G3xx1N9iVkspF0QnSFYx6azFEx4IZDtDcqcA5S+LhgBMec0E
-         Evg/v64FsilItTDNeJulufnyUkbib8SVRZpVNDr3LYwQOmz6+EsAFG5X4am9ZLehOhGR
-         ms3344HzQCTgMueBQMiOkMp9pjIOaHQbz8qK0YaPHHLba737c50s+182xt22kdROeHRC
-         z5KUNk9sNrpf3xdV2hKksDsprvlez0mPivsuAhX5/38VN5d+y4Ud3e0Qo1vTWdqSJqr0
-         2KmKpIOziIjkwBdDtC3/4oaA6A9NjusfN3XnQ17hJNETDlLWRFGTk/kQkDDhTHYS4AIe
-         05/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWK8fkCHgCJzjjzwtBzE/K+hHRWzAVgU3P3CVgzwG5ZxWbsOX5DX5Gku+SdyEL5Jsdo8+C4nV3chC+JGAt9Ig==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy85UlLqio0wJaO6gXzbgmfwFhroRPq6VOnompEDFZz9980inlF
-	raO7BnKk9TXFagjx6AuHdZGpou+yC4aWLGvJbmY9QBlWKxe83Ju0hYAEfgF+8rY28/WOWBAfBvm
-	NMnEIiXp8Np+jnxUDTFAS4QtX049d1VCKaUqc4hoO
-X-Gm-Gg: ASbGncupTp525GGOTxE2FBgU/2e4AEzJzD70LPcS/DXQp0ROApWucalfW94nNW5GeIF
-	4ylLCYCKVlKmy5GLDFcJcZheWrQQ1BMCApduZLRKrbKqOznnDNAvfkBrfz8hgEVsY4t9db5RIfk
-	HX7Ns1EPKLrmGhzbZYeWQ7O+cmfuk38GqPpnfXhR2cAUUu2MzjVv452wU1lVGcytOeh1aJTsB7O
-	Eog0QMk0JZzqJzLgn6G03BC/uWj55WQ2yaV/lOzUejZU40u
-X-Google-Smtp-Source: AGHT+IEWW6wSvnNGlneW8csSuEUINBhv5Xrj4krisO4j8KjigJe6weh6HtfKmo/FhQRiZhIVz1T5uW67ohk4ura9SHY=
-X-Received: by 2002:a50:d75b:0:b0:601:f23b:a377 with SMTP id
- 4fb4d7f45d1cf-612a4cf8fc8mr29145a12.6.1752707974101; Wed, 16 Jul 2025
- 16:19:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YVp+G2pc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1752709558; x=1784245558;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=J3UG5GnJ5BjYLTM0CP7GT2WZiod9LqwrORLiSgAOFFE=;
+  b=YVp+G2pcDDcGWQVucnhFCn6FavR1EdyisX/3G2ijnTX5Ok3UoDFjdoiT
+   GQb0APfmGNOs53VgRhrvLN27zdwGHHzh/LytCBGIBPeP7zsm8Bo9RLdsU
+   3ej2O7YoNKIrHFgvTcDOtnGO2TwSZXfQ0iq8y3gNPIaIlY2dc+zOjcwsU
+   i2s/30ME0GWcRENlF70LTPua/X2aIXn9sjgNGq3aXJOwntB8DAc0XPWJV
+   NCzBzltV0bLW8TIIdXV8gX6vAcGNI/KH7C7Xfg7hKO6TmfEYUB6iQJU8G
+   9QgRQfRnE/UNBxntiD5ejaBBpYqayvav7vYl5KMxb9pzoZyfkJ7ZRdN5d
+   A==;
+X-CSE-ConnectionGUID: gGM90jKOT8ynNiIA+jQNFQ==
+X-CSE-MsgGUID: 0k4WWt9zReigZShtvNfJ9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11493"; a="58780582"
+X-IronPort-AV: E=Sophos;i="6.16,317,1744095600"; 
+   d="scan'208";a="58780582"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2025 16:45:57 -0700
+X-CSE-ConnectionGUID: wzgqLGgTT62ROBCL6R80XQ==
+X-CSE-MsgGUID: O/jRKJFhSyq3YGSi9Gk1bw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,317,1744095600"; 
+   d="scan'208";a="157741471"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 16 Jul 2025 16:45:52 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ucBos-000Cxf-2v;
+	Wed, 16 Jul 2025 23:45:50 +0000
+Date: Thu, 17 Jul 2025 07:45:48 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Benno Lossin <lossin@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>
+Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+Message-ID: <202507170718.AVqYqRan-lkp@intel.com>
+References: <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4c459085b9ae42bdbf99b6014952b965@BJMBX01.spreadtrum.com>
- <202507150830.56F8U908028199@SHSPAM01.spreadtrum.com> <c34f4f606eb04c38b64e8f3a658cd051@BJMBX01.spreadtrum.com>
- <CANiq72=v6jkOasLiem7RXe-WUSg9PkNqrZneeMOTi1pzwXuHYg@mail.gmail.com>
- <24e87f60203c443abe7549ce5c0e9e75@BJMBX01.spreadtrum.com> <aHftocnJcLg64c29@google.com>
- <CAH5fLgiiZE_mFhB4J+G7-Jdz46+d-5NP15npjn2_H7DgSAynxw@mail.gmail.com>
-In-Reply-To: <CAH5fLgiiZE_mFhB4J+G7-Jdz46+d-5NP15npjn2_H7DgSAynxw@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 16 Jul 2025 16:19:22 -0700
-X-Gm-Features: Ac12FXxXgsXM-s4jPwxbK0qidi2uE_QL2umvn-Fdybn9nHdZCi0VGiyXjMukuYQ
-Message-ID: <CAGSQo03DH9L7OFZsGXU8gt_4iq2zo6gZbJtw3p2hD6tGp0KTzA@mail.gmail.com>
-Subject: Re: Meet compiled kernel binaray abnormal issue while enabling
- generic kasan in kernel 6.12 with some default KBUILD_RUSTFLAGS on
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>, =?UTF-8?B?5YiY5rW354eVIChIYWl5YW4gTGl1KQ==?= <haiyan.liu@unisoc.com>, 
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	=?UTF-8?B?5ZGo5bmzIChQaW5nIFpob3UvOTAzMik=?= <Ping.Zhou1@unisoc.com>, 
-	=?UTF-8?B?5Luj5a2Q5Li6IChaaXdlaSBEYWkp?= <Ziwei.Dai@unisoc.com>, 
-	=?UTF-8?B?5p2o5Li95aicIChMaW5hIFlhbmcp?= <lina.yang@unisoc.com>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, 
-	=?UTF-8?B?546L5Y+MIChTaHVhbmcgV2FuZyk=?= <shuang.wang@unisoc.com>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	"kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Christian Brauner <christian@brauner.io>, 
-	Suren Baghdasaryan <surenb@google.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
 
-The reason removing that code makes your build "work" is because it
-entirely disables pointer authentication in Rust code when you remove
-it. That is likely not what you want.
+Hi Daniel,
 
-> > We have KASAN builds with android16-6.12 and haven't seen this issue.
-> > Can you share your entire config file, so we can try to reproduce?
+kernel test robot noticed the following build errors:
 
-This - please provide the config file or instructions to reproduce the
-build. Since this is an upstream avenue, ideally provide instructions
-for reproducing against `linux-next`, or failing that (e.g. if it's
-not broken there) against v6.12.38. The default android16-6.12 build
-will work fine with ASAN. If you can't provide the entire config file
-in a public context, or if you only have instructions for building it
-with Kleaf + fragments, or can only reproduce with the Android tree,
-please reroute this request to our bug intake system (I am pretty sure
-unisoc has access) and cc myself, carlos, and Alice.
+[auto build test ERROR on 3964d07dd821efe9680e90c51c86661a98e60a0f]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-irq-add-irq-module/20250715-232121
+base:   3964d07dd821efe9680e90c51c86661a98e60a0f
+patch link:    https://lore.kernel.org/r/20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07%40collabora.com
+patch subject: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and handlers
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250717/202507170718.AVqYqRan-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250717/202507170718.AVqYqRan-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507170718.AVqYqRan-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> error[E0425]: cannot find value `SHARED` in module `flags`
+   --> rust/doctests_kernel_generated.rs:4790:58
+   |
+   4790 |     let registration = Registration::new(request, flags::SHARED, c_str!("my_device"), handler);
+   |                                                          ^^^^^^ not found in `flags`
+   |
+   help: consider importing this constant
+   |
+   3    + use kernel::mm::virt::flags::SHARED;
+   |
+   help: if you import `SHARED`, refer to it directly
+   |
+   4790 -     let registration = Registration::new(request, flags::SHARED, c_str!("my_device"), handler);
+   4790 +     let registration = Registration::new(request, SHARED, c_str!("my_device"), handler);
+   |
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
