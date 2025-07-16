@@ -1,186 +1,222 @@
-Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32424289E0E
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 07:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=222.66.158.135
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261EA28B503
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 07:33:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752649492; cv=none; b=px9ELJFfZmKbGyokZLxqWOXkHFZqltHLJqZGaZkC6LDSFrJBaZ/kaNDcjTUzCLki1jmShyXQ9yeBEo/HXPnXk8bY1WgpbqSfvSUiyjKkQ87Svi79+vi/xx3zS2B+55pUw8FSMfAz44LuP3gEFtZwrjU3H5BeEcnSdhpOWfZf+Wo=
+	t=1752651227; cv=none; b=LMJHXAa/e0NsqHqc8lzbG40Kpxvxbwdi6qOihaavW06RjzqMWMgmXn8iqoj23pat0nhh9VpF5yZ5Io1uBSh8rCqG1TSB2KajqST2xmu7qnUaPj3P4AKmUIYzTOPq9LcQ3YkEZsI5GQzZW9cgznNQLi+Zy9DsAkkEYii3BEvN+QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752649492; c=relaxed/simple;
-	bh=l1mCwU/UAqJpitjQKQAf0VtDhJtI7nZ/jUOaeDsPe6s=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=eFKeMCy2mAbrdZWQeuTKhWE/9yCt7o5NSRxyfv9OPmSgU6MSGOrEfJPj3CPDiW3phRXAoHIy3ODBmX6k9xDyPZ8nZra0wFTaOZdHYDHZ8cUbUZG7/h36VEngzcipgf+ETd6iwyrHX8MQpme0CCz1GtNSYG9V24CMi4WdITIwbyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=unisoc.com; spf=pass smtp.mailfrom=unisoc.com; arc=none smtp.client-ip=222.66.158.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=unisoc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unisoc.com
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 56G71YUo039376;
-	Wed, 16 Jul 2025 15:01:34 +0800 (+08)
-	(envelope-from haiyan.liu@unisoc.com)
-Received: from SHDLP.spreadtrum.com (bjmbx02.spreadtrum.com [10.0.64.8])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4bhn176KQXz2K5mNX;
-	Wed, 16 Jul 2025 14:57:15 +0800 (CST)
-Received: from BJMBX01.spreadtrum.com (10.0.64.7) by BJMBX02.spreadtrum.com
- (10.0.64.8) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 16 Jul
- 2025 15:01:29 +0800
-Received: from BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7]) by
- BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7%16]) with mapi id
- 15.00.1497.048; Wed, 16 Jul 2025 15:01:29 +0800
-From: =?utf-8?B?5YiY5rW354eVIChIYWl5YW4gTGl1KQ==?= <haiyan.liu@unisoc.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC: Miguel Ojeda <ojeda@kernel.org>,
-        =?utf-8?B?5ZGo5bmzIChQaW5nIFpob3UvOTAzMik=?= <Ping.Zhou1@unisoc.com>,
-        =?utf-8?B?5Luj5a2Q5Li6IChaaXdlaSBEYWkp?= <Ziwei.Dai@unisoc.com>,
-        =?utf-8?B?5p2o5Li95aicIChMaW5hIFlhbmcp?= <lina.yang@unisoc.com>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>,
-        =?utf-8?B?546L5Y+MIChTaHVhbmcgV2FuZyk=?=
-	<shuang.wang@unisoc.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        "Alexander Potapenko" <glider@google.com>,
-        Andrey Konovalov
-	<andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino
-	<vincenzo.frascino@arm.com>,
-        "kasan-dev@googlegroups.com"
-	<kasan-dev@googlegroups.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        =?utf-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?=
-	<arve@android.com>,
-        Todd Kjos <tkjos@android.com>, Martijn Coenen
-	<maco@android.com>,
-        Joel Fernandes <joelagnelf@nvidia.com>,
-        Christian Brauner
-	<christian@brauner.io>,
-        Carlos Llamas <cmllamas@google.com>,
-        "Suren
- Baghdasaryan" <surenb@google.com>,
-        Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: Meet compiled kernel binaray abnormal issue while enabling generic
- kasan in kernel 6.12 with some default KBUILD_RUSTFLAGS on
-Thread-Topic: Meet compiled kernel binaray abnormal issue while enabling
- generic kasan in kernel 6.12 with some default KBUILD_RUSTFLAGS on
-Thread-Index: Adv0awkF3quLQs5+RfaRTr3Yr7SnUQATGr8AACy4DEAAAOVlAAAqFjnw
-Date: Wed, 16 Jul 2025 07:01:29 +0000
-Message-ID: <24e87f60203c443abe7549ce5c0e9e75@BJMBX01.spreadtrum.com>
-References: <4c459085b9ae42bdbf99b6014952b965@BJMBX01.spreadtrum.com>
- <202507150830.56F8U908028199@SHSPAM01.spreadtrum.com>
- <c34f4f606eb04c38b64e8f3a658cd051@BJMBX01.spreadtrum.com>
- <CANiq72=v6jkOasLiem7RXe-WUSg9PkNqrZneeMOTi1pzwXuHYg@mail.gmail.com>
-In-Reply-To: <CANiq72=v6jkOasLiem7RXe-WUSg9PkNqrZneeMOTi1pzwXuHYg@mail.gmail.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-transport-fromentityheader: Hosted
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1752651227; c=relaxed/simple;
+	bh=J1fmkXzQhdy/B2HqE648pLqXswaIxo5hZ2X+m0elNBY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p6KKM2hLFXyaHvZ4fBDjtATaUfQWAnSxxxAcf/tabbBfQ76LQp0yOGCKSf6BYtm64Kf63rA+XZauJMpM6DxQgT3zKf3ej69WqntdFgirvNUWjlmdFiQPZZWxNS09Ib9xAxrl5U003n2BK1ERJmBMbROfbttSjCUV+cnQxvO2xVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=misSRJfn; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="misSRJfn"
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e82314f9a51so4611767276.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 00:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1752651224; x=1753256024; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PW8oj8yyNVG5XPISXOtfA3n2P3zOnfj4By+Eha4u0hU=;
+        b=misSRJfnE5w/pnaSiy1gvtx4w/fzsVlLI5ffuKbQa4C0hghm6aCyOH+Njhh0zrWR6V
+         5Qad0PQGyyfcE6wSPlkg4UNmwMzUU81aYaqyX6mLGRalwxRDBBtxAaWE4ngJLO4tJ/P2
+         Irl1oQ/q+xBDhXzGRfv2gzsTGtPKG5/oD+95gNnxODzG2IfLKoZxYW0iS5p7KeTEpSI7
+         cwi8hB0jW7kFj+C3OpAB74HroXqQiFRiT7pkDEXPsKYw6S8qHq/KWtOB0l8ybcjOjm0d
+         RVY5ljL2drR54iTwW5Ts6z+NiAP3DcrwRjJ1iO5hxNZGHHXjt7r2gKbCCWBwtlT2RG1X
+         ea2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752651224; x=1753256024;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PW8oj8yyNVG5XPISXOtfA3n2P3zOnfj4By+Eha4u0hU=;
+        b=XEcuqGaHhv2NrAAFyWsXXKf7vJXJ7wAk5VzFlGnoDRDs7dx2BoI2z7KJB19v2zNHnm
+         OrHjQ2boHZx0Yizygft/3zGilO8qX1ReDrF1nED36C146lkF5V7Fg65FEGHzKtOf3EP4
+         Mn7SoC6+mDR16BJSJAoaC0ddJD5gTddgcv/FsHHrF6box8QyJ1nBsFTMXpPfvzyW8wfX
+         rTrlXlD7AKiQAGyZeAO0fAZZZtce8z5glWdMAJzT2P3cFhteXG7qlPqN7eufk8vx2AXb
+         ELiB5WwUeNR55ST7eGBw7g59E4XNXqwgk/PtJZ2/0tzFQss5zqlS+RHdngs3gIskdvqe
+         bWNA==
+X-Forwarded-Encrypted: i=1; AJvYcCXN/KIYuIV0rBHX/6Fm/1/Ji6eBRI9FfaAGNK3kkurRdM+idTiRpXrr5CKPropqSXMq6eEc7N91WT/aELqONw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YymsAOUdB0Nmi/NG5V6+wXMy8Sy8YDfzLsAA2b3FVCFzJfbxWcu
+	7rtdaoWNbubjHm8TMgqxtHPC/lVyEtRe0phz6oinBozSGcxD2PiNDqk+oGuAi/M/Qd+C5Bttqm6
+	GRRzum5+MH51Q+dHHg2qHf7FAD+vGFJxMx7OCz5l7aw==
+X-Gm-Gg: ASbGncvv8QIginmWLWOPaHVnDKjSvqoOVstMMyobMnzB+Tbx5Xqs9SC6wP45WTzKA4m
+	/67G1Nx6hG3Q6EsSnb8XAqQNJbPv5kZiLLwjbN1z5Qqv7qBL4KiwAwCtaHauAITkvBG0QNKkEbh
+	VWt16DlwAH/9gpt7zpyDGcidNPahOAS21Nth3cA75Fb86pgXNwB6u6FHkDylKYDsUJIhElKJ24R
+	s6tBP+N
+X-Google-Smtp-Source: AGHT+IEBFim0sebTg/GJVvyxJNrliMi5B8Z1CirXQugUtw/MAG7MtHjoXp3XBPYhkfJvHfUUj+zVmynVQDiKVlguiXc=
+X-Received: by 2002:a05:690c:6d0b:b0:6fb:b1dd:a00d with SMTP id
+ 00721157ae682-7183516330bmr29836477b3.30.1752651223909; Wed, 16 Jul 2025
+ 00:33:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MAIL:SHSQR01.spreadtrum.com 56G71YUo039376
+References: <20250604-v5_user_cfi_series-v17-0-4565c2cf869f@rivosinc.com>
+ <20250604-v5_user_cfi_series-v17-15-4565c2cf869f@rivosinc.com>
+ <CANXhq0pRXX_OMW2g2ui-k7Z_ZT+5a8Sra8oE28nBh5B9K2L5bQ@mail.gmail.com>
+ <CANXhq0p3MVLMsr_r0RWMti476pT0EMx61PQArjo2fUauTdpXaQ@mail.gmail.com>
+ <CAKC1njRNkSfb_0pUQoH0RwJQhWTsz9sdg_3o08w-NuSO5WypcA@mail.gmail.com> <CANXhq0oZz=TTT=py=1BO3OZf45Wg=-bFyNpn+JRLNufHceLjcQ@mail.gmail.com>
+In-Reply-To: <CANXhq0oZz=TTT=py=1BO3OZf45Wg=-bFyNpn+JRLNufHceLjcQ@mail.gmail.com>
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Wed, 16 Jul 2025 00:33:29 -0700
+X-Gm-Features: Ac12FXyXP37ODEjfHSjK8_gGHbTe6nbCLu3r93joGlrq46qsQaqRghNBDnEKWgk
+Message-ID: <CAKC1njRqox8_YNEhQJT8NRMjGuqpDt55ck6QVV2aNPLwTsaj5w@mail.gmail.com>
+Subject: Re: [PATCH v17 15/27] riscv/traps: Introduce software check exception
+ and uprobe handling
+To: Zong Li <zong.li@sifive.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-DQoNCj4gLS0tLS3pgq7ku7bljp/ku7YtLS0tLQ0KPiDlj5Hku7bkuro6IE1pZ3VlbCBPamVkYSA8
-bWlndWVsLm9qZWRhLnNhbmRvbmlzQGdtYWlsLmNvbT4NCj4g5Y+R6YCB5pe26Ze0OiAyMDI15bm0
-N+aciDE25pelIDE6NTENCj4g5pS25Lu25Lq6OiDliJjmtbfnh5UgKEhhaXlhbiBMaXUpIDxoYWl5
-YW4ubGl1QHVuaXNvYy5jb20+DQo+IOaKhOmAgTogTWlndWVsIE9qZWRhIDxvamVkYUBrZXJuZWwu
-b3JnPjsg5ZGo5bmzIChQaW5nIFpob3UvOTAzMikgPFBpbmcuWmhvdTFAdW5pc29jLmNvbT47IOS7
-o+WtkOS4uiAoWml3ZWkgRGFpKQ0KPiA8Wml3ZWkuRGFpQHVuaXNvYy5jb20+OyDmnajkuL3lqJwg
-KExpbmEgWWFuZykgPGxpbmEueWFuZ0B1bmlzb2MuY29tPjsgbGludXgtYXJtLWtlcm5lbEBsaXN0
-cy5pbmZyYWRlYWQub3JnOw0KPiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBydXN0LWZv
-ci1saW51eEB2Z2VyLmtlcm5lbC5vcmc7IOeOi+WPjCAoU2h1YW5nIFdhbmcpIDxzaHVhbmcud2Fu
-Z0B1bmlzb2MuY29tPjsgQW5kcmV5IFJ5YWJpbmluDQo+IDxyeWFiaW5pbi5hLmFAZ21haWwuY29t
-PjsgQWxleGFuZGVyIFBvdGFwZW5rbyA8Z2xpZGVyQGdvb2dsZS5jb20+OyBBbmRyZXkgS29ub3Zh
-bG92IDxhbmRyZXlrbnZsQGdtYWlsLmNvbT47IERtaXRyeSBWeXVrb3YNCj4gPGR2eXVrb3ZAZ29v
-Z2xlLmNvbT47IFZpbmNlbnpvIEZyYXNjaW5vIDx2aW5jZW56by5mcmFzY2lub0Bhcm0uY29tPjsg
-a2FzYW4tZGV2QGdvb2dsZWdyb3Vwcy5jb207IEdyZWcgS3JvYWgtSGFydG1hbg0KPiA8Z3JlZ2to
-QGxpbnV4Zm91bmRhdGlvbi5vcmc+OyBBcnZlIEhqw7hubmV2w6VnIDxhcnZlQGFuZHJvaWQuY29t
-PjsgVG9kZCBLam9zIDx0a2pvc0BhbmRyb2lkLmNvbT47IE1hcnRpam4gQ29lbmVuDQo+IDxtYWNv
-QGFuZHJvaWQuY29tPjsgSm9lbCBGZXJuYW5kZXMgPGpvZWxhZ25lbGZAbnZpZGlhLmNvbT47IENo
-cmlzdGlhbiBCcmF1bmVyIDxjaHJpc3RpYW5AYnJhdW5lci5pbz47IENhcmxvcyBMbGFtYXMNCj4g
-PGNtbGxhbWFzQGdvb2dsZS5jb20+OyBTdXJlbiBCYWdoZGFzYXJ5YW4gPHN1cmVuYkBnb29nbGUu
-Y29tPjsgSmFtaWUgQ3VubGlmZmUgPEphbWllLkN1bmxpZmZlQGFybS5jb20+OyBDYXRhbGluIE1h
-cmluYXMNCj4gPGNhdGFsaW4ubWFyaW5hc0Bhcm0uY29tPg0KPiDkuLvpopg6IFJlOiBNZWV0IGNv
-bXBpbGVkIGtlcm5lbCBiaW5hcmF5IGFibm9ybWFsIGlzc3VlIHdoaWxlIGVuYWJsaW5nIGdlbmVy
-aWMga2FzYW4gaW4ga2VybmVsIDYuMTIgd2l0aCBzb21lIGRlZmF1bHQgS0JVSUxEX1JVU1RGTEFH
-Uw0KPiBvbg0KPiANCj4gDQo+IOazqOaEjzog6L+Z5bCB6YKu5Lu25p2l6Ieq5LqO5aSW6YOo44CC
-6Zmk6Z2e5L2g56Gu5a6a6YKu5Lu25YaF5a655a6J5YWo77yM5ZCm5YiZ5LiN6KaB54K55Ye75Lu7
-5L2V6ZO+5o6l5ZKM6ZmE5Lu244CCDQo+IENBVVRJT046IFRoaXMgZW1haWwgb3JpZ2luYXRlZCBm
-cm9tIG91dHNpZGUgb2YgdGhlIG9yZ2FuaXphdGlvbi4gRG8gbm90IGNsaWNrIGxpbmtzIG9yIG9w
-ZW4gYXR0YWNobWVudHMgdW5sZXNzIHlvdSByZWNvZ25pemUgdGhlIHNlbmRlcg0KPiBhbmQga25v
-dyB0aGUgY29udGVudCBpcyBzYWZlLg0KPiANCj4gDQo+IA0KPiBPbiBUdWUsIEp1bCAxNSwgMjAy
-NSBhdCAxMTo0MeKAr0FNIOWImOa1t+eHlSAoSGFpeWFuIExpdSkgPGhhaXlhbi5saXVAdW5pc29j
-LmNvbT4gd3JvdGU6DQo+ID4NCj4gPiBUaGUgY29tbWl0IGNoYW5nZXMgdGhlIGZyYWdtZW50IGFu
-ZCBkaWZmIGlzOg0KPiANCj4gQW4gQW5kcm9pZCBlbmdpbmVlciBzaG91bGQga25vdyBob3cgdG8g
-aGFuZGxlIHRoYXQsIGJ1dCBpZiB5b3UgYXJlIHJlcG9ydGluZyB1cHN0cmVhbSwgaXQgaXMgYmVz
-dCB0byB0cnkgdG8gcmVwcm9kdWNlIHRoZSBpc3N1ZSB3aXRoIHRoZQ0KPiB1cHN0cmVhbSBrZXJu
-ZWxzIChlLmcuIGFybTY0IGlzIG5vdCBpbiA2LjYueSkgYW5kIHByb3ZpZGUgdGhlIGZ1bGwga2Vy
-bmVsIGNvbmZpZyB1c2VkLg0KPiANCj4gPiBPbmx5IHR3byBydXN0LXJlbGF0ZWQgZ2xvYmFsIHZh
-cmlhYmxlcyBpbiBmbXIucnMgYW5kIGxheW91dC5ycyBoYXZlIHRoaXMgaXNzdWUuIFRoZWlyIGFz
-YW4ubW9kdWxlX2N0b3IgY29tcGxpZWQgYmluYXJpZXMgYXJlIHdyb25nLg0KPiANCj4gSSBhbSBu
-b3Qgc3VyZSB3aGF0IHlvdSBtZWFuIGJ5IGBmbXIucnNgLiBBcyBmb3IgYGxheW91dC5yc2AsIHRo
-YXQgaXMgaW4gdGhlIGBrZXJuZWxgIGNyYXRlIGluIDYuMTIueSAtLSBpc24ndCB0aGVyZSBhIHNp
-bmdsZSBgYXNhbi5tb2R1bGVfY3RvcmANCj4gcGVyIFRVPyBXaGljaCBvYmplY3QgZmlsZSBhcmUg
-eW91IHJlZmVycmluZyB0bz8gSSBnZXQgdGhlIHBhaXIgZm9yIG15IGBydXN0L2tlcm5lbC5vYC4N
-Cg0KICBOU1g6RkZGRkZGQzA4MDBBN0M5NHxGODAwODY1RSAgYXNhbi5tb2R1bGVfY3RvcjogICBz
-dHIgICAgIHgzMCxbeDE4XSwjMHg4ICAgOyB4MzAsW3gxOF0sIzgNCiAgIE5TWDpGRkZGRkZDMDgw
-MEE3Qzk4fEY4MUYwRkZFICAgICAgICAgICAgICAgICAgICAgIHN0ciAgICAgeDMwLFtzcCwjLTB4
-MTBdISAgIDsgeDMwLFtzcCwjLTE2XSENCiAgIE5TWDpGRkZGRkZDMDgwMEE3QzlDfEYwMDI0MEEw
-ICAgICAgICAgICAgICAgICAgICAgIGFkcnAgICAgeDAsMHhGRkZGRkZDMDg0OEJFMDAwDQogICBO
-U1g6RkZGRkZGQzA4MDBBN0NBMHw5MTFEODAwMCAgICAgICAgICAgICAgICAgICAgICBhZGQgICAg
-IHgwLHgwLCMweDc2MCAgICAgOyB4MCx4MCwjMTg4OA0KICAgTlNYOkZGRkZGRkMwODAwQTdDQTR8
-NTI4MDNENjEgICAgICAgICAgICAgICAgICAgICAgbW92ICAgICB3MSwjMHgxRUIgICAgICAgIDsg
-dzEsIzQ5MQ0KICAgTlNYOkZGRkZGRkMwODAwQTdDQTh8OTQyMzM4MTYgICAgICAgICAgICAgICAg
-ICAgICAgYmwgICAgICAweEZGRkZGRkMwODA5NzVEMDAgICA7IF9fYXNhbl9yZWdpc3Rlcl9nbG9i
-YWxzDQogICBOU1g6RkZGRkZGQzA4MDBBN0NBQ3xGODQxMDdGRSAgICAgICAgICAgICAgICAgICAg
-ICBsZHIgICAgIHgzMCxbc3BdLCMweDEwICAgOyB4MzAsW3NwXSwjMTYNCiAgIE5TWDpGRkZGRkZD
-MDgwMEE3Q0IwfEQ1MDMyM0JGICAgICAgICAgICAgICAgICAgICAgIGF1dGlhc3ANCiAgIE5TWDpG
-RkZGRkZDMDgwMEE3Q0I0fEQ2NUYwM0MwICAgICAgICAgICAgICAgICAgICAgIHJldA0KVGhlIGZp
-cnN0IF9fYXNhbl9nbG9iYWwgc3RydWN0IHZhbHVlIGlzIA0KIEVOQVhJOkZGRkZGRkMwODQ4QkU3
-NjB8PkZGRkZGRkMwODJFREIxODAgMDAwMDAwMDAwMDAwMDA1RiAuLi4uLi4uLl8uLi4uLi4uDQog
-RU5BWEk6RkZGRkZGQzA4NDhCRTc3MHwgMDAwMDAwMDAwMDAwMDA4MCBGRkZGRkZDMDgzNkRDNDMx
-IC4uLi4uLi4uMS5tLi4uLi4NCiBFTkFYSTpGRkZGRkZDMDg0OEJFNzgwfCBGRkZGRkZDMDgyRUVD
-NzgwIDAwMDAwMDAwMDAwMDAwMDAgLi4uLi4uLi4uLi4uLi4uLg0KIEVOQVhJOkZGRkZGRkMwODQ4
-QkU3OTB8IDAwMDAwMDAwMDAwMDAwMDAgRkZGRkZGRkZGRkZGRkZGRiAuLi4uLi4uLi4uLi4uLi4u
-DQpUaGUgYWRkcmVzcyBvZiB0aGUgZ2xvYmFsIGlzIDB4RkZGRkZGQzA4MkVEQjE4MCB3aGljaCB2
-YWx1ZSBpcyAnL3Byb2Mvc2VsZi9jd2QvcHJlYnVpbHRzL3J1c3QvbGludXgteDg2LzEuODIuMC9s
-aWIvcnVzdGxpYi9zcmMvcnVzdC9saWJyYXJ5L2NvcmUvc3JjL251bS9mbXQucnMnIGFuZCBpdHMg
-dmlld2luZm8gaXMgJ3ZtbGludXhcR2xvYmFsXF9fdW5uYW1lZF8zNTcnDQpUaGUgb3JpZ2luYWwg
-c2l6ZSBvZiB0aGUgZ2xvYmFsIGlzIDB4NUYNClRoZSBuYW1lIG9mIHRoZSBnbG9iYWwgaXMga21h
-bGxvYy0yaw0KVGhlIG1vZHVsZSBuYW1lIG9mIHRoZSBnbG9iYWwgaXMgJ2NvcmUuMjc3NTg5MDRj
-Y2VlNGM4MC1jZ3UubycNCg0KICAgTlNYOkZGRkZGRkMwODAwQTdENEN8RjgwMDg2NUUgIGFzYW4u
-bW9kLjpzdHIgICAgIHgzMCxbeDE4XSwjMHg4ICAgOyB4MzAsW3gxOF0sIzgNCiAgIE5TWDpGRkZG
-RkZDMDgwMEE3RDUwfEY4MUYwRkZFICAgICAgICAgICAgc3RyICAgICB4MzAsW3NwLCMtMHgxMF0h
-ICAgOyB4MzAsW3NwLCMtMTZdIQ0KICAgTlNYOkZGRkZGRkMwODAwQTdENTR8RjAwMjQwRTAgICAg
-ICAgICAgICBhZHJwICAgIHgwLDB4RkZGRkZGQzA4NDhDNjAwMA0KICAgTlNYOkZGRkZGRkMwODAw
-QTdENTh8OTEyRTgwMDAgICAgICAgICAgICBhZGQgICAgIHgwLHgwLCMweEJBMCAgICAgOyB4MCx4
-MCwjMjk3Ng0KICAgTlNYOkZGRkZGRkMwODAwQTdENUN8NTI4MDA5NjEgICAgICAgICAgICBtb3Yg
-ICAgIHcxLCMweDRCICAgICAgICAgOyB3MSwjNzUNCiAgIE5TWDpGRkZGRkZDMDgwMEE3RDYwfDk0
-MjMzN0U4ICAgICAgICAgICAgYmwgICAgICAweEZGRkZGRkMwODA5NzVEMDAgICA7IF9fYXNhbl9y
-ZWdpc3Rlcl9nbG9iYWxzDQogICBOU1g6RkZGRkZGQzA4MDBBN0Q2NHxGODQxMDdGRSAgICAgICAg
-ICAgIGxkciAgICAgeDMwLFtzcF0sIzB4MTAgICA7IHgzMCxbc3BdLCMxNg0KICAgTlNYOkZGRkZG
-RkMwODAwQTdENjh8RDUwMzIzQkYgICAgICAgICAgICBhdXRpYXNwDQogICBOU1g6RkZGRkZGQzA4
-MDBBN0Q2Q3xENjVGMDNDMCAgICAgICAgICAgIHJldA0KVGhlIHNlY29uZCBfX2FzYW5fZ2xvYmFs
-IHN0cnVjdCB2YWx1ZSBpcyANCiAgIE5TRDpGRkZGRkZDMDg0OEM2QkEwfD5GRkZGRkZDMDgyRUVD
-QTgwIDAwMDAwMDAwMDAwMDAwMjAgLi4uLi4uLi4gLi4uLi4uLg0KICAgTlNEOkZGRkZGRkMwODQ4
-QzZCQjB8IDAwMDAwMDAwMDAwMDAwNDAgRkZGRkZGQzA4MzZEQzQzMSBALi4uLi4uLjEubS4uLi4u
-DQogICBOU0Q6RkZGRkZGQzA4NDhDNkJDMHwgRkZGRkZGQzA4MkVFREE4MCAwMDAwMDAwMDAwMDAw
-MDAwIC4uLi4uLi4uLi4uLi4uLi4NCiAgIE5TRDpGRkZGRkZDMDg0OEM2QkQwfCAwMDAwMDAwMDAw
-MDAwMDAwIEZGRkZGRkZGRkZGRkZGRkYgLi4uLi4uLi4uLi4uLi4uLg0KVGhlIGFkZHJlc3Mgb2Yg
-dGhlIGdsb2JhbCBpcyAweEZGRkZGRkMwODJFRUNBODAgd2hpY2ggdmFsdWUgaXMgMCBhbmQgaXRz
-IHZpZXdpbmZvIGlzICc8JnVzaXplX2FzX2NvcmU6OmYuLnZtbGludXhca2VybmVsXzlhNmNiOWZk
-N2M4ZGZkNjZfY2d1XDwmdXNpemVfYXNfY29yZTo6Zm10OjpEZWJ1Zz46Ont2dGFibGV9Jw0KVGhl
-IG9yaWdpbmFsIHNpemUgb2YgdGhlIGdsb2JhbCBpcyAweDIwDQpUaGUgbmFtZSBvZiB0aGUgZ2xv
-YmFsIGlzIGttYWxsb2MtMmsNClRoZSBtb2R1bGUgbmFtZSBvZiB0aGUgZ2xvYmFsIGlzICdrZXJu
-ZWwuOWE2Y2I5ZmQ3YzhkZmQ2Ni1jZ3UubycNCg0KPiBDaGVlcnMsDQo+IE1pZ3VlbA0K
+On Tue, Jul 15, 2025 at 7:06=E2=80=AFPM Zong Li <zong.li@sifive.com> wrote:
+>
+> On Wed, Jul 16, 2025 at 5:34=E2=80=AFAM Deepak Gupta <debug@rivosinc.com>=
+ wrote:
+> >
+> > Hi Zong,
+> >
+> >
+> > On Thu, Jun 19, 2025 at 7:16=E2=80=AFPM Zong Li <zong.li@sifive.com> wr=
+ote:
+> > >
+> > > On Mon, Jun 16, 2025 at 3:31=E2=80=AFPM Zong Li <zong.li@sifive.com> =
+wrote:
+> > > >
+> > > > On Thu, Jun 5, 2025 at 1:17=E2=80=AFAM Deepak Gupta <debug@rivosinc=
+.com> wrote:
+> > > > >
+> > > > > zicfiss / zicfilp introduces a new exception to priv isa `softwar=
+e check
+> > > > > exception` with cause code =3D 18. This patch implements software=
+ check
+> > > > > exception.
+> > > > >
+> > .....
+> >
+> > > > When a user mode CFI violation occurs, the ELP state should be 1, a=
+nd
+> > > > the system traps into supervisor mode. During this trap, sstatus.SP=
+ELP
+> > > > is set to 1, and the ELP state is reset to 0. If we don=E2=80=99t c=
+lear
+> > > > sstatus.SPELP, the ELP state will become 1 again after executing th=
+e
+> > > > sret instruction. As a result, the system might trigger another
+> > > > forward CFI violation upon executing the next instruction in the us=
+er
+> > > > program, unless it happens to be a lpad instruction.
+> > > >
+> > > > The previous patch was tested on QEMU, but QEMU does not set the
+> > > > sstatus.SPELP bit to 1 when a forward CFI violation occurs. Therefo=
+re,
+> > > > I suspect that QEMU might also require some fixes.
+> > >
+> > > Hi Deepak,
+> > > The issue with QEMU was that the sw-check exception bit in medeleg
+> > > couldn't be set. This has been fixed in the latest QEMU mainline. I
+> > > have re-tested the latest QEMU version, and it works.
+> >
+> > What was this issue, can you point me to the patch in mainline?
+>
+> Hi Deepak
+> The issue was that my QEMU setup somehow missed the change of
+> `target/riscv/csr.c` in your following patch:
+> https://github.com/qemu/qemu/commit/6031102401ae8a69a87b20fbec2aae666625d=
+96a
+> After I upgraded to the latest QEMU source, I found the kernel issue
+> if we didn't clear sstatus.SPELP in the handler
+> Thanks
+
+Aah ok, got it.
+
+>
+> >
+> > >
+> > > >
+> > > > Thanks
+> > > >
+> > > > > +
+> > > > > +       if (is_fcfi || is_bcfi) {
+> > > > > +               do_trap_error(regs, SIGSEGV, SEGV_CPERR, regs->ep=
+c,
+> > > > > +                             "Oops - control flow violation");
+> > > > > +               return true;
+> > > > > +       }
+> > > > > +
+> > > > > +       return false;
+> > > > > +}
+> > > > > +
+> > > > > +/*
+> > > > > + * software check exception is defined with risc-v cfi spec. Sof=
+tware check
+> > > > > + * exception is raised when:-
+> > > > > + * a) An indirect branch doesn't land on 4 byte aligned PC or `l=
+pad`
+> > > > > + *    instruction or `label` value programmed in `lpad` instr do=
+esn't
+> > > > > + *    match with value setup in `x7`. reported code in `xtval` i=
+s 2.
+> > > > > + * b) `sspopchk` instruction finds a mismatch between top of sha=
+dow stack (ssp)
+> > > > > + *    and x1/x5. reported code in `xtval` is 3.
+> > > > > + */
+> > > > > +asmlinkage __visible __trap_section void do_trap_software_check(=
+struct pt_regs *regs)
+> > > > > +{
+> > > > > +       if (user_mode(regs)) {
+> > > > > +               irqentry_enter_from_user_mode(regs);
+> > > > > +
+> > > > > +               /* not a cfi violation, then merge into flow of u=
+nknown trap handler */
+> > > > > +               if (!handle_user_cfi_violation(regs))
+> > > > > +                       do_trap_unknown(regs);
+> > > > > +
+> > > > > +               irqentry_exit_to_user_mode(regs);
+> > > > > +       } else {
+> > > > > +               /* sw check exception coming from kernel is a bug=
+ in kernel */
+> > > > > +               die(regs, "Kernel BUG");
+> > > > > +       }
+> > > > > +}
+> > > > > +
+> > > > >  #ifdef CONFIG_MMU
+> > > > >  asmlinkage __visible noinstr void do_page_fault(struct pt_regs *=
+regs)
+> > > > >  {
+> > > > >
+> > > > > --
+> > > > > 2.43.0
+> > > > >
