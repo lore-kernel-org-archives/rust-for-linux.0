@@ -1,143 +1,83 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24D2F49E3;
-	Wed, 16 Jul 2025 09:10:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69C7157493;
+	Wed, 16 Jul 2025 09:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752657004; cv=none; b=EdNYxzs1zuiFHneiEViOdVzeuABDElf5pq/wgKY8dQw0t/rabSAdGDxOTAuV2Gug3ZfPHxod2RkflRhG1bL21RvE3K2p/CI+QWPPFUwZ5jCDprpDFCwV3skHwy97r5tmJUeTYXEzLXirrZ+K5zFLopJf7JRruAZkz3bPEqbV5rI=
+	t=1752657344; cv=none; b=cBTYHghUDzjW1qurX0lENqDzuDSRfoRHgCLbcJCur8OXYuEtYHzw5zzSWhuiXQSirOC47ILRh/sfJJ4KqcAGD+tl0wb/WLUz5fGPp55+R/waYTWhQ3DYacgKzAscB93JtSFnMWbLCh5dqWWSI06ObZmTUxlCHJAyBquaMuXpi+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752657004; c=relaxed/simple;
-	bh=zL8ahHipP6d7L0VyozPMcr3d+eAgsfQfsEFdgBE4zIA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hGkVX8NyKppCysPs9C2b2tLxCqR/oG6RKElZbiqPkAHxlbRQ5GBJ7n8lq/x9+/eYb3nd4NdYGBAkLEIVOzktN84piCwfAXnO2eFMvn5/vw+R4dNrAy75CyVVSmtroXyuZLqc0puptwuS4Q7FHmZUvujLLS/jRQU4TUjcjjJaLBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I6Q+DBjy; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752657344; c=relaxed/simple;
+	bh=ONPNBASW2TlNyQh0oBZI7v9HNhfprjI2hTF1LVI4XTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DnzLXLG2yUrZU3TkPlg24oHwwx4kfuf9BQHKPb89INkPxazbJs2YtdPMlPYWPx1g5ZCXffEYxyIVjc/XEboYWpamhNrRQgl+YVzvJC1O97UElVi4UmV7NHaptJPKYSd9f1onNc9O0koGuIVW1ADr4ixZ8mrVnIqyPu2QmposGJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnUBjipM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I6Q+DBjy"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-749248d06faso5375849b3a.2;
-        Wed, 16 Jul 2025 02:10:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752657002; x=1753261802; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bdGXm9SCphY8DlE94vXROEGjLyLoWcUww3peagjrA28=;
-        b=I6Q+DBjy/ZSf6+ppAM56eH0lstC284s5GY3argbClKvMO+UUF3Ib2S+No6tQkZjNOS
-         5CAdAI37uEbeeLiDZO0aArWnetwGzwI6QWwIyIm9Dwbiw5g3EGr55kGLwspbwcIwRb7B
-         HAPwnyvCPg1W8WOPlrjayuWpodaStYRv/jwagD94Q57a6+kh8R+sfrlvLzftK1Wh/7ky
-         lYboeesxKNvEEXYmsdsgXekKdc56ClxNEeRpqvqqeuHKvdF4BA3+VnpimQ30xNHyHNX4
-         SKayoXeCDqxDELiKRJYAkA0xBdeHUChtlg8WLHLh9X25Ipsd4vDoW/0FVgemU9DbS6nP
-         rWVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752657002; x=1753261802;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bdGXm9SCphY8DlE94vXROEGjLyLoWcUww3peagjrA28=;
-        b=bxHkfyvx9LIHs4930WWM4B9ElWh99tQrzFM8Hb3VCHds6j6YC2cN/qzkRjbABDplMv
-         yBGROc+VuyB1qFYRHczR24z03GVbp0+ZnD+9ecVjtkdhpOMTZ5/wECqCuEq1KUADCTKM
-         gjCzcHEeYqpORe2BdO+vazFGiwvMgJqeM75IqN/PLEvAoDxwjQTc+SDMT/+0R8ddOT3G
-         7kxua7EgN8SdHQLNADRCM4RQhD0MwYiTLn1k5DFXqANlbA2oNsDdG8KaaOlck7BhvECR
-         3GjnQZl15iS/09kKZ/insg8+VRiLgMJvaJs3Cf5Z5TR/dMAaxYsE5yYGb8G7UMCtwybZ
-         ZTkg==
-X-Forwarded-Encrypted: i=1; AJvYcCWG+2aUPxaDSbzMEcb/pxkzEfZr277cQrqMZ2cKJagZWdiFJbpOullbo4z6Tog0lnrIEv32iUlGEOLCevs=@vger.kernel.org, AJvYcCXNZKKVIcjVw9HW01dbZYybhlpal2oGr9aLCtAPKooFO7PBX6jYTPiABvVLp54hb+1vnCyXLDCnhcf9t7hFoYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMH2GeRgifwIVuoOXFbNmBTr8dfzwybhWueby2yV3YaDGqiqW0
-	u2I5nwC3F7uQLxuyeDuVFo9noqLEFW/KRF8TOlnX6G8TIii2z3AV4+xe
-X-Gm-Gg: ASbGnctxFM4JOqJcw1T9DXGdk5l413vJSG0b+IwAwmehRp6Rmy9PMznBU9be8Z3dpDc
-	SlHfh2UOYJ+mTYrGWct/yc7nuxZqWsh2xPm5bZVTzjERwLwNQI0b5VsbFTbsz2Wr78ZEiFJaIZh
-	gXyYtBnXVY63Nbd0Gh8yVuuj6jm67Mx/9Tfmm1e4DBqVxbdbB3pIiWF7LbepUYJa1UXUNhvGC0T
-	3bzP+Q/Ihf3IHoUs1L/23bn8OIJA3ocAgaCHgXbzAkzYxRMzKh0snBbuBDktWTby+rqrslZNY43
-	GFXUAaLn6HHGKjBYbTWqBaKQdqkQ1D9KEImJohRJu5ja0DPNPj2fppdwhqXCXCWa5eRi8z152oQ
-	38wvInrl/kIy5MKwiLjyKoRjNogCFJbCbSABN6BvS5A==
-X-Google-Smtp-Source: AGHT+IF8VHdQWd4VhFZ+U0x2R2wD3rpjE2LfC8/XJ0q5AiF6fsay8YUMtb+u8HbdtzrH5Ek3tMvkDg==
-X-Received: by 2002:a05:6a21:4593:b0:235:df1c:7b11 with SMTP id adf61e73a8af0-237d56ff576mr3602575637.12.1752657002093;
-        Wed, 16 Jul 2025 02:10:02 -0700 (PDT)
-Received: from shankari-IdeaPad.. ([2409:4080:410:5eb2:5b3d:132b:96fe:c1fc])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe72912asm13362473a12.71.2025.07.16.02.09.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 02:10:01 -0700 (PDT)
-From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH 2/7] rust: gpu: update ARef and AlwaysRefCounted imports from sync::aref
-Date: Wed, 16 Jul 2025 14:39:41 +0530
-Message-Id: <20250716090941.811418-1-shankari.ak0208@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnUBjipM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4243C4CEF1;
+	Wed, 16 Jul 2025 09:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1752657342;
+	bh=ONPNBASW2TlNyQh0oBZI7v9HNhfprjI2hTF1LVI4XTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nnUBjipMfPB2BJS84RlGSNZsB9Ay7VhRRQ32xD2SjO7iD2mOCg4UVNkCWF60AO6tK
+	 P9PWMcw2UA1/H9AlpuU++Y3qv0I4DzrpkVQgheexwOv9KjL6KHd5OAdeuFzX4tHkbH
+	 JMfcp2EGdO4c44eIJoMmu3ucEsk0nCqK14gtRdVg=
+Date: Wed, 16 Jul 2025 11:15:39 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com,
+	robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, bhelgaas@google.com, kwilczynski@kernel.org,
+	rafael@kernel.org, rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/5] rust: dma: add DMA addressing capabilities
+Message-ID: <2025071627-outlet-slacker-9382@gregkh>
+References: <20250710194556.62605-1-dakr@kernel.org>
+ <20250710194556.62605-3-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250710194556.62605-3-dakr@kernel.org>
 
-Update call sites under gpu to import `ARef` and
-`AlwaysRefCounted` from `sync::aref` instead of `types`.
+On Thu, Jul 10, 2025 at 09:45:44PM +0200, Danilo Krummrich wrote:
+> +/// Returns a bitmask with the lowest `n` bits set to `1`.
+> +///
+> +/// For `n` in `0..=64`, returns a mask with the lowest `n` bits set.
+> +/// For `n > 64`, returns `u64::MAX` (all bits set).
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::dma::dma_bit_mask;
+> +///
+> +/// assert_eq!(dma_bit_mask(0), 0);
+> +/// assert_eq!(dma_bit_mask(1), 0b1);
+> +/// assert_eq!(dma_bit_mask(64), u64::MAX);
+> +/// assert_eq!(dma_bit_mask(100), u64::MAX); // Saturates at all bits set.
+> +/// ```
+> +pub const fn dma_bit_mask(n: usize) -> u64 {
+> +    match n {
+> +        0 => 0,
+> +        1..=64 => u64::MAX >> (64 - n),
+> +        _ => u64::MAX,
+> +    }
+> +}
 
-This aligns with the ongoing effort to move `ARef` and
-`AlwaysRefCounted` to sync.
+This is just the C macro DMA_BIT_MASK(), right?  If so, can that be said
+here somewhere?  Or, how about turning DMA_BIT_MASK() into an inline
+function which could then be just called by the rust code directly
+instead?
 
-Suggested-by: Benno Lossin <lossin@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1173
-Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
----
-It part of a subsystem-wise split series, as suggested in:
-https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
-This split series is intended to ease review and subsystem-level maintenance.
+Just a minor thing, but it stood out to me here.
 
-The original moving patch is here:
-https://lore.kernel.org/rust-for-linux/20250625111133.698481-1-shankari.ak0208@gmail.com/
+thanks,
 
-Gradually the re-export from types.rs will be eliminated in the
-future cycle.
----
- drivers/gpu/drm/nova/driver.rs | 4 +++-
- drivers/gpu/drm/nova/gem.rs    | 2 +-
- 2 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-index b28b2e05cc15..91b7380f83ab 100644
---- a/drivers/gpu/drm/nova/driver.rs
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- 
--use kernel::{auxiliary, c_str, device::Core, drm, drm::gem, drm::ioctl, prelude::*, types::ARef};
-+use kernel::{
-+    auxiliary, c_str, device::Core, drm, drm::gem, drm::ioctl, prelude::*, sync::aref::ARef,
-+};
- 
- use crate::file::File;
- use crate::gem::NovaObject;
-diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
-index 33b62d21400c..cd82773dab92 100644
---- a/drivers/gpu/drm/nova/gem.rs
-+++ b/drivers/gpu/drm/nova/gem.rs
-@@ -4,7 +4,7 @@
-     drm,
-     drm::{gem, gem::BaseObject},
-     prelude::*,
--    types::ARef,
-+    sync::aref::ARef,
- };
- 
- use crate::{
--- 
-2.34.1
-
+greg k-h
