@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ACB2798EA;
-	Wed, 16 Jul 2025 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF59277030;
+	Wed, 16 Jul 2025 17:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752686169; cv=none; b=Mf3NKJbbRxO6WQ/bpzqtjqvgwCmPUa3jIFKM1HaQ9FSW38/0yAJ0N2mZsvEFO1D7McfWKC3Q4BvmOw1Boh65sxK/tKWIYviv9AM/pAH2L/ScvAFSA4JB7G9CId7jnsGbnZkaI2GJ1JGjvbtee+CE0hlvMc8yaqvAV8jBfuwbq8c=
+	t=1752686499; cv=none; b=k4ebCVe82OOTo2AXTnUwHD8O/H2EQRpZ0tJMSkTrhD2t0QiD1Z4Tbnwe8czRUif2ki2Vhc3HaJ6y+wgLJ3zpuYad9jMU/ZLXYNSqEfF6mNZenzCLrSZ2M8uySftE5Bw9KWf8WjBWciykoVRjV0zJeQ+slgJLLjMA2MejVAVbVI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752686169; c=relaxed/simple;
-	bh=WjN4ZftabKpQLXbiJ4dykt/E4neOL6d8HDXxD+KsYsg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=gz89g86y6qeZ0WGWR5atkn1xMcAU0/zTqBNNfEmD4nVBEU4gFKrIz+wrL5avAvG0cgM5OxSX0abojQf2ZoOTRZ120IH7umiuu1j1qYRGN5yjvU120pHkLcVSf6Bd0PoqPQ/+Vc2qFW8WsEDJBGbxj4e/P6AsEN7b9bGNeP/YOqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IA/Ii8Gr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752686499; c=relaxed/simple;
+	bh=2negnZkD72TZWe3BsPmibIcM1Vow8UKfserRA3k3YuA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=KYd+4u32Zhs8tIy8DU3ndz4/B3sTwAd9ZRsTyw1IsRwyvS6KY8w5SeQN3Z862H7G9qfG+4jWN2pN4AhXhscJwZtVL8F+++a+QEUHjEpBFmgBU5CmYC7ILJy5sXpgWNsnp+898FxFZyGzGOqIOmX0hoEuQAcYOwBrA0dV0eCHZ2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCfXXjU3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IA/Ii8Gr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51355C4CEE7;
-	Wed, 16 Jul 2025 17:16:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCfXXjU3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B7DC4CEE7;
+	Wed, 16 Jul 2025 17:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752686169;
-	bh=WjN4ZftabKpQLXbiJ4dykt/E4neOL6d8HDXxD+KsYsg=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=IA/Ii8Gr1Za8zAw0xmiaujSA2tjTH3ppWsobaRIC5xDJ4lz7/LrX4Z/YNh6SuUInl
-	 PMK4HGV001yLzrsg2LbYEhx9By4cRSW+CzwnX91J7W3NENGjWiRfqTaL/ohM7opau7
-	 jWxomSpQgWYJvxuWslffSJNpagRcv8Z2zgIQ7HgBWJaqnYyKHICkrih+m3reZPVlQF
-	 Q6ZuEnAtWuShSi9+SRKHv7M1Dq+4VcA8IFTAE04YpsK5gFXu7Xr0uOO4MM/wdH1BZY
-	 q7y+vcAjXZ+usJdExDd5IE80beP7X6xVLW8Skoknj8UAHGek0ZL9YrFIqOMBf8v9XS
-	 2WPgTnoMYEImg==
+	s=k20201202; t=1752686497;
+	bh=2negnZkD72TZWe3BsPmibIcM1Vow8UKfserRA3k3YuA=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=UCfXXjU3lbjom+okhpOsljp81vLHkWGlaWmae1qR96mYl372TUjEiuJRLvOBMmYzK
+	 h1vGipHbIGGghf3CL8Lfnlvb6bwMbhGpwOLbzYY3LCXya3d1Tjvx1lKnsTAxCan4aY
+	 G3hjFk+fLeA+H5LhNOrzVggbfaSZ3jEU9KSXyo2j4qzq7g0bkGe6cE6hyvBX9cLFn6
+	 A51OOAWDIrHGhgzDIr26/6ad0uXdWdcTZ2log3q7a3ASDWgk3Kowgt8et2m9bEeu4H
+	 bu/sir6KbdIjZnfaBxe8MraXhTsGLPN8djzl7aa5DO7T7wsSBEUXhZAaE/u3IT1f7y
+	 Xt7aLkCkgRwmg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,76 +34,165 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Jul 2025 19:16:02 +0200
-Message-Id: <DBDNE3CNUOZP.1H168Z8BD6ZKK@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <lkmm@lists.linux.dev>, <linux-arch@vger.kernel.org>, "Miguel Ojeda"
+Date: Wed, 16 Jul 2025 19:21:32 +0200
+Message-Id: <DBDNIAW09Z7W.EXO6C61HCNVP@kernel.org>
+Cc: "Mitchell Levy" <levymitchell0@gmail.com>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
  <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
  "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Will Deacon" <will@kernel.org>,
- "Peter Zijlstra" <peterz@infradead.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Viresh Kumar" <viresh.kumar@linaro.org>, "Lyude Paul" <lyude@redhat.com>,
- "Ingo Molnar" <mingo@kernel.org>, "Mitchell Levy"
- <levymitchell0@gmail.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Thomas Gleixner" <tglx@linutronix.de>,
- "Alan Stern" <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v7 6/9] rust: sync: atomic: Add the framework of
- arithmetic operations
+ "Andrew Morton" <akpm@linux-foundation.org>, "Dennis Zhou"
+ <dennis@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Christoph Lameter"
+ <cl@linux.com>, "Danilo Krummrich" <dakr@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 3/5] rust: percpu: add a rust per-CPU variable test
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250714053656.66712-7-boqun.feng@gmail.com>
- <DBCL7YUSRMXR.22SMO1P7D5G60@kernel.org> <aHZYt3Csy29GF2HM@Mac.home>
- <DBCQUAA42DHH.23BNUVOKS38UI@kernel.org> <aHZ-HP1ErzlERfpI@Mac.home>
- <DBCUJ4RNRNHP.W4QH5QM3TBHU@kernel.org> <aHa2he81nBDgvA5u@tardis-2.local>
- <DBDENRP6Z2L7.1BU1I3ZTJ21ZY@kernel.org> <aHezbbzk0FyBW9jS@Mac.home>
- <DBDL9KI7VNO2.1QZBWS222KQGP@kernel.org> <aHfJx5_kMcULUd7t@Mac.home>
-In-Reply-To: <aHfJx5_kMcULUd7t@Mac.home>
+References: <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
+ <DBATM1CUS704.28MKE6BIBQB7G@kernel.org>
+ <68762e19.170a0220.33e203.a0b7@mx.google.com>
+ <DBCLFG5F4MPW.2LF4T3KWOE12R@kernel.org> <aHZhcNCayTOQhvYh@Mac.home>
+ <DBCR1OCNYAUW.1VLAY1HWCHLGI@kernel.org> <aHaCUFNUd_mErL7S@Mac.home>
+ <DBCTCZ5HUZOF.2DJX63Q0VWWFN@kernel.org> <aHbJUfcsjHA92OlE@tardis-2.local>
+ <DBDESSQOH6MB.2I4GNLPBP5ORJ@kernel.org> <aHfGV3l4NCmYSRuv@Mac.home>
+In-Reply-To: <aHfGV3l4NCmYSRuv@Mac.home>
 
-On Wed Jul 16, 2025 at 5:48 PM CEST, Boqun Feng wrote:
-> On Wed, Jul 16, 2025 at 05:36:05PM +0200, Benno Lossin wrote:
-> [..]
+On Wed Jul 16, 2025 at 5:33 PM CEST, Boqun Feng wrote:
+> On Wed, Jul 16, 2025 at 12:32:04PM +0200, Benno Lossin wrote:
+>> On Tue Jul 15, 2025 at 11:34 PM CEST, Boqun Feng wrote:
+>> > On Tue, Jul 15, 2025 at 07:44:01PM +0200, Benno Lossin wrote:
+>> > [...]
+>> >> >> >
+>> >> >> > First of all, `thread_local!` has to be implemented by some sys-=
+specific
+>> >> >> > unsafe mechanism, right? For example on unix, I think it's using
+>> >> >> > pthread_key_t:
+>> >> >> >
+>> >> >> > 	https://pubs.opengroup.org/onlinepubs/009695399/functions/pthre=
+ad_key_create.html
+>> >> >> >
+>> >> >> > what we are implementing (or wrapping) is the very basic unsafe
+>> >> >> > mechanism for percpu here. Surely we can explore the design for =
+a safe
+>> >> >> > API, but the unsafe mechanism is probably necessary to look into=
+ at
+>> >> >> > first.
+>> >> >>=20
+>> >> >> But this is intended to be used by drivers, right? If so, then we =
+should
+>> >> >
+>> >> > Not necessarily only for drivers, we can also use it for implementi=
+ng
+>> >> > other safe abstraction (e.g. hazard pointers, percpu counters etc)
+>> >>=20
+>> >> That's fair, but then it should be `pub(crate)`.
+>> >>=20
 >> >
->> > I have a better solution:
+>> > Fine by me, but please see below.
 >> >
->> > in ops.rs
+>> >> >> do our usual due diligence and work out a safe abstraction. Only f=
+all
+>> >> >> back to unsafe if it isn't possible.
+>> >> >>=20
+>> >> >
+>> >> > All I'm saying is instead of figuring out a safe abstraction at fir=
+st,
+>> >> > we should probably focus on identifying how to implement it and whi=
+ch
+>> >> > part is really unsafe and the safety requirement for that.
+>> >>=20
+>> >> Yeah. But then we should do that before merging :)
+>> >>=20
 >> >
->> >     pub struct AtomicRepr<T: AtomicImpl>(UnsafeCell<T>)
->> >
->> >     impl AtomicArithmeticOps for i32 {
->> >         // a *safe* function
->> >         fn atomic_add(a: &AtomicRepr, v: i32) {
->> > 	    ...
->> > 	}
->> >     }
->> >
->> > in generic.rs
->> >
->> >     pub struct Atomic<T>(AtoimcRepr<T::Repr>);
->> >
->> >     impl<T: AtomicAdd> Atomic<T> {
->> >         fn add(&self, v: .., ...) {
->> > 	    T::Repr::atomic_add(&self.0, ...);
->> > 	}
->> >     }
->> >
->> > see:
->> >
->> > 	https://git.kernel.org/pub/scm/linux/kernel/git/boqun/linux.git/log/?=
-h=3Drust-atomic-impl
+>> > Well, who's talknig about merging? ;-) I thought we just began reviewi=
+ng
+>> > here ;-)
 >>=20
->> Hmm what does the additional indirection give you?
+>> I understand [PATCH] emails as "I want to merge this" and [RFC PATCH] as
+>
+> But it doesn't mean "merge as it is", right? I don't think either I or
+> Mitchell implied that, I'm surprised that you had to mention that,
+
+Yeah that is true, but it at least shows the intention :)
+
+> also based on "I often mute those" below, making it "[PATCH]" seems to
+> be a practical way to get more attention if one wants to get some
+> reviews.
+
+That is true, I do usually read the titles of RFC patches though and
+sometimes take a look eg your atomics series.
+
+>> "I want to talk about merging this". It might be that I haven't seen the
+>> RFC patch series, because I often mute those.
 >>=20
 >
-> What additional indirection you mean? You cannot make atomic_add() safe
-> with only `UnsafeCell<T::Repr>`.
+> Well, then you cannot blame people to move from "RFC PATCH" to "PATCH"
+> stage for more reviews, right? And you cannot make rules about what the
+> difference between [PATCH] and [RFC PATCH] if you ignore one of them ;-)
 
-What is the advantage of making it safe? It just moves the safety
-comments into `ops.rs` which makes it harder to read due to the macros.
+I'm not trying to blame anyone. I saw a lot of unsafe in the example and
+thought "we can do better" and since I haven't heard any sufficient
+arguments showing that it's impossible to improve, we should do some
+design work.
+
+>> >> >> I'm not familiar with percpu, but from the name I assumed that it'=
+s
+>> >> >> "just a variable for each cpu" so similar to `thread_local!`, but =
+it's
+>> >> >> bound to the specific cpu instead of the thread.
+>> >> >>=20
+>> >> >> That in my mind should be rather easy to support in Rust at least =
+with
+>> >> >> the thread_local-style API. You just need to ensure that no refere=
+nce
+>> >> >> can escape the cpu, so we can make it `!Send` & `!Sync` + rely on =
+klint
+>> >> >
+>> >> > Not really, in kernel, we have plenty of use cases that we read the
+>> >> > other CPU's percpu variables. For example, each CPU keeps it's own
+>> >> > counter and we sum them other in another CPU.
+>> >>=20
+>> >> But then you need some sort of synchronization?
+>> >>=20
+>> >
+>> > Right, but the synchronization can exist either in the percpu operatio=
+ns
+>> > themselves or outside the percpu operations. Some cases, the data type=
+s
+>> > are small enough to fit in atomic data types, and operations are just
+>> > load/store/cmpxchg etc, then operations on the current cpu and remote
+>> > read will be naturally synchronized. Sometimes extra synchronization i=
+s
+>> > needed.
+>>=20
+>> Sure, so we probably want direct atomics support. What about "extra
+>> synchronization"? Is that using locks or RCU or what else?
+>>=20
+>
+> It's up to the users obviously, It could be some sort of locking or RCU,
+> it's case by case.
+
+Makes sense, what do you need in the VMS driver?
+
+>> > Keyword find all these cases are `per_cpu_ptr()`:
+>> >
+>> > 	https://elixir.bootlin.com/linux/v6.15.6/A/ident/per_cpu_ptr
+>>=20
+>> Could you explain to me how to find them? I can either click on one of
+>> the files with horrible C preprocessor macros or the auto-completion in
+>> the search bar. But that one only shows 3 suggestions `_hyp_sym`,
+>> `_nvhe_sym` and `_to_phys` which doesn't really mean much to me.
+>>=20
+>
+> You need to find the usage of `per_cpu_ptr()`, which is a function that
+> gives you a pointer to a percpu variable on the other CPU, and then
+> that's usually the case where a "remote" read of percpu variable
+> happens.
+
+Ahh gotcha, I thought you pointed me to some definitions of operations
+on percpu pointers.
 
 ---
 Cheers,
