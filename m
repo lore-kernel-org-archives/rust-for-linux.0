@@ -1,80 +1,83 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6C72F2347;
-	Wed, 16 Jul 2025 09:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24D2F49E3;
+	Wed, 16 Jul 2025 09:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752656851; cv=none; b=rMlk0xr1CpvoTLh9UUMAnteUxR39leU6A2KEtDtfqhLcLwKm6duTew6TDZYRxUfqDYlwMyHf30csTDSUqVzJnLAfuwXovdXtb+gAQoCXH5OZQ6VEgSD/nVEJnzXYjlHY6AXd4SUvqqsGmPt3ho0Jn/DFT17viclMOZPlxyDkY+A=
+	t=1752657004; cv=none; b=EdNYxzs1zuiFHneiEViOdVzeuABDElf5pq/wgKY8dQw0t/rabSAdGDxOTAuV2Gug3ZfPHxod2RkflRhG1bL21RvE3K2p/CI+QWPPFUwZ5jCDprpDFCwV3skHwy97r5tmJUeTYXEzLXirrZ+K5zFLopJf7JRruAZkz3bPEqbV5rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752656851; c=relaxed/simple;
-	bh=5Ptgz3f9+MROL/CBA8PmM/l52N7ZDaPCRTd/bnU6Aik=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BomTB3w91TC4aV/KvNg1I+vtxNr+djK/sOSx3Fd+ZnVQxGLwHVEsgI7m5vVQ/Czx0Wqq4pkJFAD8zqAfHHV96BXntv09jOXYSg/ScV9P8RyT53sGFPBWNrmoMaYZMhwD7PHbHm08hAAuXrv6pWbwtmKjUQLQBufA3azAl6/M9KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jju/lRLS; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1752657004; c=relaxed/simple;
+	bh=zL8ahHipP6d7L0VyozPMcr3d+eAgsfQfsEFdgBE4zIA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hGkVX8NyKppCysPs9C2b2tLxCqR/oG6RKElZbiqPkAHxlbRQ5GBJ7n8lq/x9+/eYb3nd4NdYGBAkLEIVOzktN84piCwfAXnO2eFMvn5/vw+R4dNrAy75CyVVSmtroXyuZLqc0puptwuS4Q7FHmZUvujLLS/jRQU4TUjcjjJaLBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I6Q+DBjy; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jju/lRLS"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-73972a54919so5779216b3a.3;
-        Wed, 16 Jul 2025 02:07:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I6Q+DBjy"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-749248d06faso5375849b3a.2;
+        Wed, 16 Jul 2025 02:10:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752656849; x=1753261649; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752657002; x=1753261802; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vomQ2XAeV7E4V+uYTp7TsUwfXDHnmYQsX/lVNvXhnH0=;
-        b=jju/lRLSxVA555/mXephrgaQA0qXox+6HrsqlPra8D0KKkGzIRrX7qizIh6NUlpBFG
-         cemJ3cbmsKPldqa2KLCpWkdyFfIikAawfM03cG8cfJW/vqwkaE6IV7GNKyj+fD3YQdiZ
-         A0Hybu0ALX7zIPQhYvqEfqm3plRSSSpwaK2AtNNbyLSZhhbyXdDMnIZABUQuwmAn5zmq
-         i8TQzHh7FzS6tN+f8kqi0vvXvB6R/8Gxh8jNiYvNZlOv5NUu7gyRTMYJ0xXe1QmDp7jU
-         14Ipsfsgcbm212Vi2abqk6sBAgiKelpXbeejy8hK3t6jJj6i5KLPVEN6Cemr4qSTXNLw
-         EKSQ==
+        bh=bdGXm9SCphY8DlE94vXROEGjLyLoWcUww3peagjrA28=;
+        b=I6Q+DBjy/ZSf6+ppAM56eH0lstC284s5GY3argbClKvMO+UUF3Ib2S+No6tQkZjNOS
+         5CAdAI37uEbeeLiDZO0aArWnetwGzwI6QWwIyIm9Dwbiw5g3EGr55kGLwspbwcIwRb7B
+         HAPwnyvCPg1W8WOPlrjayuWpodaStYRv/jwagD94Q57a6+kh8R+sfrlvLzftK1Wh/7ky
+         lYboeesxKNvEEXYmsdsgXekKdc56ClxNEeRpqvqqeuHKvdF4BA3+VnpimQ30xNHyHNX4
+         SKayoXeCDqxDELiKRJYAkA0xBdeHUChtlg8WLHLh9X25Ipsd4vDoW/0FVgemU9DbS6nP
+         rWVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752656849; x=1753261649;
+        d=1e100.net; s=20230601; t=1752657002; x=1753261802;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vomQ2XAeV7E4V+uYTp7TsUwfXDHnmYQsX/lVNvXhnH0=;
-        b=t6wsViAhkcdQb7v6P+qYkwsRJonRCRCwqs1sMZlYqtqRZASYWo1HrS72DBx+8IjUYl
-         yvLhoDCj77JveMQFOmAf/LNRi+FrzOmtDkpCqcaabnaF5DsJh0VBiLCigI+6SEGDB3E4
-         hoUCnvbjmbB1vlAyFnsLFoPCvE6D27+SGFhGSSdyycjhGrPGYIW5mZgDafL+ltTd8y72
-         eCCrBs4tYae0l+BO+bexqrGKZhLDRvMkYxVKL4kNZ3vVWzK+0QwibSUTu5pP9xWboZiT
-         Zb001XD6GLRDFHQief7hV4v6oJT9/CDDZ1bhOna3mSRzdJiv1NCZsdWbGtHbM5l714Z7
-         eR/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVPG6eyIQelPi8Vz8HAGMEPC+OY8c/fZBdATpkVVHEV/zeDc87FOBz5rA5al6U+KQiiq4+mY4mSfnDZ+g==@vger.kernel.org, AJvYcCX4Rt+syVT4AR9x1vmDu2d++L3AufUd2b5rX3b+7+mwTiTAW0wV/ehVDqF3VsKNBuq7SMM5SZn1vog/g4K+3Us=@vger.kernel.org, AJvYcCXl6dehDZhahZL6OBxpEF36vR/LD6NmFh5RAlY7LuIafESoHbK0LsOzWpoClrjmFJWkBK2ZG9xYI7L6jMuQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxczB7qprANWHrFZDXanfM7FXtpCURBWFPzCn8fvJ4wE2i3LFwj
-	/QCgNusz8+I3Xeew1cssn7BtZUxxp6QW9fs55guVtU+JB2BjGGx1n4vL
-X-Gm-Gg: ASbGncsai0IrQASyd2voJYqP6qgoIqQOE61PrZYK0tr9qANlX8+Wti6bIG15EspMIsc
-	RT1NJ3srH8E5OQU/jAQ5YyoebiwTsdbgVWn1LmgU8RjBWHcaL54QDlO2s35mWpImZyeHdmNmFVS
-	3L4oTms5eoo8GsaXoez66F95xH0BwOzYth2uispQ3HooCtVMCddu5rE3iSpETlT864VX0eeZ/h4
-	xsrYDuLqZITIUszJTxe0qXMtoxr9ok6QibJL7j7zmktItKCQjQxYbGjgXYn3/yCn/x1TCm13TCJ
-	J83vvEqGthPK5bbmsrZXqQsgt7oRKn2Dsap0pXHp2jdn/9wpGcyAAR96nLO0mw9nCJdSIhNSYLw
-	BAbzc0zfuTJE8M/zM8ZBegwBdOKxwuDnJi0DQMgioOw==
-X-Google-Smtp-Source: AGHT+IE+lkGos/eOib4IJ67eb0STRYHcphDfNyAjb9PX948W5/Kn7Y8hVwDkGrkdolb4CGXnvwNc4A==
-X-Received: by 2002:a05:6a00:4fc3:b0:757:51d:9a18 with SMTP id d2e1a72fcca58-75724a82eccmr2427724b3a.16.1752656848715;
-        Wed, 16 Jul 2025 02:07:28 -0700 (PDT)
+        bh=bdGXm9SCphY8DlE94vXROEGjLyLoWcUww3peagjrA28=;
+        b=bxHkfyvx9LIHs4930WWM4B9ElWh99tQrzFM8Hb3VCHds6j6YC2cN/qzkRjbABDplMv
+         yBGROc+VuyB1qFYRHczR24z03GVbp0+ZnD+9ecVjtkdhpOMTZ5/wECqCuEq1KUADCTKM
+         gjCzcHEeYqpORe2BdO+vazFGiwvMgJqeM75IqN/PLEvAoDxwjQTc+SDMT/+0R8ddOT3G
+         7kxua7EgN8SdHQLNADRCM4RQhD0MwYiTLn1k5DFXqANlbA2oNsDdG8KaaOlck7BhvECR
+         3GjnQZl15iS/09kKZ/insg8+VRiLgMJvaJs3Cf5Z5TR/dMAaxYsE5yYGb8G7UMCtwybZ
+         ZTkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWG+2aUPxaDSbzMEcb/pxkzEfZr277cQrqMZ2cKJagZWdiFJbpOullbo4z6Tog0lnrIEv32iUlGEOLCevs=@vger.kernel.org, AJvYcCXNZKKVIcjVw9HW01dbZYybhlpal2oGr9aLCtAPKooFO7PBX6jYTPiABvVLp54hb+1vnCyXLDCnhcf9t7hFoYI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMH2GeRgifwIVuoOXFbNmBTr8dfzwybhWueby2yV3YaDGqiqW0
+	u2I5nwC3F7uQLxuyeDuVFo9noqLEFW/KRF8TOlnX6G8TIii2z3AV4+xe
+X-Gm-Gg: ASbGnctxFM4JOqJcw1T9DXGdk5l413vJSG0b+IwAwmehRp6Rmy9PMznBU9be8Z3dpDc
+	SlHfh2UOYJ+mTYrGWct/yc7nuxZqWsh2xPm5bZVTzjERwLwNQI0b5VsbFTbsz2Wr78ZEiFJaIZh
+	gXyYtBnXVY63Nbd0Gh8yVuuj6jm67Mx/9Tfmm1e4DBqVxbdbB3pIiWF7LbepUYJa1UXUNhvGC0T
+	3bzP+Q/Ihf3IHoUs1L/23bn8OIJA3ocAgaCHgXbzAkzYxRMzKh0snBbuBDktWTby+rqrslZNY43
+	GFXUAaLn6HHGKjBYbTWqBaKQdqkQ1D9KEImJohRJu5ja0DPNPj2fppdwhqXCXCWa5eRi8z152oQ
+	38wvInrl/kIy5MKwiLjyKoRjNogCFJbCbSABN6BvS5A==
+X-Google-Smtp-Source: AGHT+IF8VHdQWd4VhFZ+U0x2R2wD3rpjE2LfC8/XJ0q5AiF6fsay8YUMtb+u8HbdtzrH5Ek3tMvkDg==
+X-Received: by 2002:a05:6a21:4593:b0:235:df1c:7b11 with SMTP id adf61e73a8af0-237d56ff576mr3602575637.12.1752657002093;
+        Wed, 16 Jul 2025 02:10:02 -0700 (PDT)
 Received: from shankari-IdeaPad.. ([2409:4080:410:5eb2:5b3d:132b:96fe:c1fc])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9dd73d1sm13738806b3a.10.2025.07.16.02.07.21
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bbe72912asm13362473a12.71.2025.07.16.02.09.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 02:07:28 -0700 (PDT)
+        Wed, 16 Jul 2025 02:10:01 -0700 (PDT)
 From: Shankari Anand <shankari.ak0208@gmail.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+To: Danilo Krummrich <dakr@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
 Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Shankari Anand <shankari.ak0208@gmail.com>
-Subject: [PATCH 1/7] rust: block: update ARef and AlwaysRefCounted imports from sync::aref
-Date: Wed, 16 Jul 2025 14:37:12 +0530
-Message-Id: <20250716090712.809750-1-shankari.ak0208@gmail.com>
+Subject: [PATCH 2/7] rust: gpu: update ARef and AlwaysRefCounted imports from sync::aref
+Date: Wed, 16 Jul 2025 14:39:41 +0530
+Message-Id: <20250716090941.811418-1-shankari.ak0208@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -84,7 +87,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Update call sites in the block subsystem to import `ARef` and
+Update call sites under gpu to import `ARef` and
 `AlwaysRefCounted` from `sync::aref` instead of `types`.
 
 This aligns with the ongoing effort to move `ARef` and
@@ -104,81 +107,37 @@ https://lore.kernel.org/rust-for-linux/20250625111133.698481-1-shankari.ak0208@g
 Gradually the re-export from types.rs will be eliminated in the
 future cycle.
 ---
- drivers/block/rnull.rs             | 3 +--
- rust/kernel/block/mq.rs            | 8 ++++----
- rust/kernel/block/mq/operations.rs | 2 +-
- rust/kernel/block/mq/request.rs    | 3 ++-
- 4 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/nova/driver.rs | 4 +++-
+ drivers/gpu/drm/nova/gem.rs    | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
-index d07e76ae2c13..80a0f7aa949e 100644
---- a/drivers/block/rnull.rs
-+++ b/drivers/block/rnull.rs
-@@ -20,8 +20,7 @@
-     error::Result,
-     new_mutex, pr_info,
-     prelude::*,
--    sync::{Arc, Mutex},
--    types::ARef,
-+    sync::{aref::ARef, Arc, Mutex},
- };
+diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
+index b28b2e05cc15..91b7380f83ab 100644
+--- a/drivers/gpu/drm/nova/driver.rs
++++ b/drivers/gpu/drm/nova/driver.rs
+@@ -1,6 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0
  
- module! {
-diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-index 831445d37181..3e7e0de92604 100644
---- a/rust/kernel/block/mq.rs
-+++ b/rust/kernel/block/mq.rs
-@@ -20,7 +20,7 @@
- //! The kernel will interface with the block device driver by calling the method
- //! implementations of the `Operations` trait.
- //!
--//! IO requests are passed to the driver as [`kernel::types::ARef<Request>`]
-+//! IO requests are passed to the driver as [`kernel::sync::aref::ARef<Request>`]
- //! instances. The `Request` type is a wrapper around the C `struct request`.
- //! The driver must mark end of processing by calling one of the
- //! `Request::end`, methods. Failure to do so can lead to deadlock or timeout
-@@ -57,12 +57,12 @@
- //!
- //! ```rust
- //! use kernel::{
- //!     alloc::flags,
- //!     block::mq::*,
- //!     new_mutex,
- //!     prelude::*,
--//!     sync::{Arc, Mutex},
--//!     types::{ARef, ForeignOwnable},
-+//!     sync::{aref::ARef, Arc, Mutex},
-+//!     types::ForeignOwnable,
- //! };
- //!
- //! struct MyBlkDevice;
-diff --git a/rust/kernel/block/mq/operations.rs b/rust/kernel/block/mq/operations.rs
-index c2b98f507bcb..18d858763e08 100644
---- a/rust/kernel/block/mq/operations.rs
-+++ b/rust/kernel/block/mq/operations.rs
-@@ -10,7 +10,7 @@
-     block::mq::Request,
-     error::{from_result, Result},
+-use kernel::{auxiliary, c_str, device::Core, drm, drm::gem, drm::ioctl, prelude::*, types::ARef};
++use kernel::{
++    auxiliary, c_str, device::Core, drm, drm::gem, drm::ioctl, prelude::*, sync::aref::ARef,
++};
+ 
+ use crate::file::File;
+ use crate::gem::NovaObject;
+diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+index 33b62d21400c..cd82773dab92 100644
+--- a/drivers/gpu/drm/nova/gem.rs
++++ b/drivers/gpu/drm/nova/gem.rs
+@@ -4,7 +4,7 @@
+     drm,
+     drm::{gem, gem::BaseObject},
      prelude::*,
 -    types::ARef,
 +    sync::aref::ARef,
  };
- use core::{marker::PhantomData, sync::atomic::AtomicU64, sync::atomic::Ordering};
  
-diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
-index fefd394f064a..9cca7852b309 100644
---- a/rust/kernel/block/mq/request.rs
-+++ b/rust/kernel/block/mq/request.rs
-@@ -8,7 +8,8 @@
-     bindings,
-     block::mq::Operations,
-     error::Result,
--    types::{ARef, AlwaysRefCounted, Opaque},
-+    sync::aref::{ARef, AlwaysRefCounted},
-+    types::Opaque,
- };
- use core::{
-     marker::PhantomData,
+ use crate::{
 -- 
 2.34.1
 
