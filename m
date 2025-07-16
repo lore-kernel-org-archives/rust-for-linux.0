@@ -1,119 +1,55 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAE92F6F90;
-	Wed, 16 Jul 2025 14:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4C93596B;
+	Wed, 16 Jul 2025 15:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752677331; cv=none; b=AGECsfzCkEp6We4ZpD+eeVbY9ZtrRg2VlT/aEfJPEHC8/He4Immyq3bj3He4JTqPlNr3I6EVwBsxPgrbTb00Z8xoQhgfeCIB+/GauDFfct8QI9PGMHWU7jI5LzPAX1PvJXl15We72IyafeP8oFgbiDO9QTC3fwB/eZePEZIK6No=
+	t=1752678247; cv=none; b=fOiLJ5O8jHS/I2YFoF4SugW0iJdQi4by7vWTRIK2YsipeZvkKPO+grdjLWBJNJjamZt/xWAbghEyIW4YpxY0FIxxAE+y1K6aPPCurH4J5I4/M40NOMwMyC6MucErDh3sBWG/mSgjEO2qdJg/PvzPk6+QNlt3xz/6DvQI9YN3cSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752677331; c=relaxed/simple;
-	bh=B/G/h3DzTZ5l3gzwjOz1Y2kYUBFTft8COk37YBqvG8s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QAFqld6NcyURXOYMEMPD8XqQ3Y8utyPbV46k+C9p0euAr+uErySKuCBtLqw1NvfKDXQuNLoEnz9vw6YaIn4g/LAYFr1U83MhsJ+khbJxWsFZzN2UNPgaOJLiNsrSzEMn1mQiOhzThQ3ImjjSnIczzNNJDs8yeoI5nDbKCWJdbdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKHa4NUk; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1752678247; c=relaxed/simple;
+	bh=QSOfqXzuBlf+cL9JGG4N53loLu8Px4Wr4sqBfvUDY6g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mydX/PLeynBZVeBhUKSKD/bJd1xIBcHmPTWO4VXfbEpikXaiSDZfnPJgjBXodEeBwa2b9EbnGd5t7VzwB+pXsQU4lNijOc6uiqKGAaZ7U1K1ZoHH41izotjBaBpdpxEI8QqAo2gLluvksm1LHCbb/CutlWV915PMZUr7y5i4vKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eaPM0QwO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKHa4NUk"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6fafb6899c2so223276d6.0;
-        Wed, 16 Jul 2025 07:48:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752677329; x=1753282129; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fFUKul8TI0PZYiKj5Q3Utj0w+gDkfjmndLdV5N94D94=;
-        b=bKHa4NUkwqQcKHmLxQc5fMzjzY+s7W6xO7Hgvf0vGTYmphWnmpwa/ZBAf9jS2OGJ/X
-         NCmqt8QfF2TSHKyDWu/HHhT6UtP52ZAM8dEQqR7CSooeLj1IZSe8NIsBrmEH4vPxtVA1
-         lDFxcL0KFcXV+kqrly3iXf4/RDBVBogQErNaoTHwl83L9QBdCb0yAq2EVC/wuRUVFd5+
-         SlWVnxoHVkk3sGLGdFCWJc/I/z3hbY2S2QgAKKNXYSOfGaVsnWXA7/ALIORdMJ50iElt
-         SqJ3ni3E3gftYKsCZPtMqVoF+I+xPCIlXhLSJyrFg/S1Y0iLIns/ZI/32dd7+IHxD5Fx
-         ZKZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752677329; x=1753282129;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:feedback-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fFUKul8TI0PZYiKj5Q3Utj0w+gDkfjmndLdV5N94D94=;
-        b=NfebBtfmLh8KvNpLKwtHw/3IooxWZ1ltTPlauW43eX1mM9fvqbWJ3zQrQDsQhZez0j
-         81D4w+qFK+90ayj0yS+oup6nACyoUgF/Gx7PNMFfIhMJw3xHUDWMEd+h+fvViljHFBDu
-         JX8+1ibpLzP47HWqGBovp/za1H+1/hZEK5agnGMemxF45TgcSTLFtD4CcCP6VDsmQk/F
-         /d7/yPVIZdwWLmHZWmRMaNPxnjjlOCDQJEfSH+xLV1q2mWJq9AFI0sTjznmAsWIeBmnA
-         ieEyUQJgGSUGPhBi6J17IVmSm8QidhxuZV8/stSutDL7mMVIZmGs1Z69MZhSIPJwKCl+
-         dhIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhiBeY4WaY8fjsqijrVvJ9pE3HZ1NLtoGYctbAZ5K9+cS0qLOiuYfPzUaqUJJtSisLwJsk5l/5KJVeSQc=@vger.kernel.org, AJvYcCVu0BXTz/rzUESps23cgCIcrQNTptiwF21uyOgCH6W+n/hrTrM8YXckzm3+OqgPaoj+edGJ5SzfzEyV9HwFKf8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvMvYEPIvhPo+11vfg8qYP+54MkKvAuVsjk4vTGPK2/2iEgf/C
-	glZspxe52M5dBSviGGGyqx52lE7KSr5N0IFCnUIHJUUA8yNOvKq7B0nE
-X-Gm-Gg: ASbGncttRaVANLftK0WylyiC4Old/Lx83jPOY11qv6YlZlznfgDnBWyT+MwBaEugl4/
-	fq9PoDEdVJ8hzrAvRC3ti1/GulY7GYPswemmTEt25aUxfH1F3fwDD1nQKxg82JlZTZ15/9qygEY
-	/VePvX7vEGVd19/Wyt4WXE5Y32drye/5Dgl3z+LpmdmCa4EEQK9U+w/Agm1+qVugzbsEt8SZs1A
-	viXy6etfT8bJUaRMKzbIulydS+Ke91Ba+t/8jNxZPh2HT+P7dUu7umzAbJH7vdjL1JV4+bfH/Vf
-	fgj6I1H0a5ikruWgt0G7HlcmEVu7nZNuQupS/NEw6NtVJtZ80cdpVU0X0Gb1dxtdiC2i09IVb4x
-	c42o0Fv8y6AkGkEVjJ+x/zDp3uujKJTkgFYha0wPiK/e9zMSsvA09jLGwRXo8CRFSQJEFbaA/z9
-	3EXGdb7/+gGq+a
-X-Google-Smtp-Source: AGHT+IHeGtrBpWGhlH8jTxC3f6x5GH1RdbWlaCb4ayWLo/Ftp78eUXfDL3UH40PwYdL2VRUAWYkPWA==
-X-Received: by 2002:a05:6214:4787:b0:704:7cf0:5916 with SMTP id 6a1803df08f44-704e1c96802mr98849596d6.4.1752677329050;
-        Wed, 16 Jul 2025 07:48:49 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d39749sm70825116d6.58.2025.07.16.07.48.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jul 2025 07:48:48 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4AD0FF40068;
-	Wed, 16 Jul 2025 10:48:48 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 16 Jul 2025 10:48:48 -0400
-X-ME-Sender: <xms:0Lt3aNOpLgs2VlaATUoyNizkJ_X4jjIAeuPzHNaskyetXrnN1pSMSw>
-    <xme:0Lt3aKDr39AjZsnzsDTFM0BAu67Bwj9WBxfmljb67X76X4CuIFVF2fwfJjGSCFNsm
-    VNqxrSB4x6LURQTIg>
-X-ME-Received: <xmr:0Lt3aBNfMyKSbuoQpBP9RERGn2WDQuSgeanayK4Jcl4YgBEcuKo4Ec0WyA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdehjeellecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhepgffhffevhffhvdfgjefgkedvlefgkeegveeuheelhfeivdegffejgfetuefgheei
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
-    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohep
-    udefpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmihhnghhosehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgt
-    phhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgrnh
-    esrhgvughhrghtrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoh
-    eplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhgvihhtrghoseguvggsihgrnhdrohhrgh
-X-ME-Proxy: <xmx:0Lt3aBdwvFAaVTNZi6zO9t8JthDaSPErvALS1L732qOBx5oRxeAXTw>
-    <xmx:0Lt3aC5X6pH7BGrOwJEsrcoowjVX1IYHGL_eRhXmq5U4V2BbgB0V5A>
-    <xmx:0Lt3aDLA-bRchLTQM1FMQeti7lfpQNHQT3vlra25_7yYCfCQeu8rLA>
-    <xmx:0Lt3aMUInCtrGdQQw0u4GiEfMywefUMnmk1lt059sfe-BH85rdfGMw>
-    <xmx:0Lt3aPFBV8yHHrsTwbFrh7g0JUqmUbVE1m3gpBFeCsoMQWjFBw7d07Pa>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Jul 2025 10:48:47 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: "Will Deacon" <will@kernel.org>,
-	"Waiman Long" <longman@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eaPM0QwO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B38C4CEF0;
+	Wed, 16 Jul 2025 15:04:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752678247;
+	bh=QSOfqXzuBlf+cL9JGG4N53loLu8Px4Wr4sqBfvUDY6g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eaPM0QwO2ePNSemrCsNXs/6x6U+/GMKlUxMjSgNSfuVDcTg0Oqp9Nm7sGVRyjtQJ6
+	 rtLssTtb+7/RgKFIiBzULcs3CmE7V3euk4EfqnuqUhaopGSrwZRvmru4gBgvsy34zK
+	 3UEHkF5DfpFAQ4DVv+x4iNXf2vvMBD3xuW60QXGzFsMqW2/2KRy2t6Ot/uEfeEnn7g
+	 EyhxnkvoSdFcA7/UvFdxbs988egjupbM4LL24eGdi3yQLzldhWeo4Gejg+djGZ+9ie
+	 Gt27Ch8bynFqbcqqfBD+5+Q8uAqO7G0FhOyX8V+OP7YXuUQYv9ezPKN7md4N62ch+S
+	 5Y5KoBok/aLVA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: abdiel.janulgue@gmail.com,
+	daniel.almeida@collabora.com,
+	robin.murphy@arm.com,
+	a.hindborg@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Breno Leitao <leitao@debian.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Erik Lundgren <elundgren@meta.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH 9/9] lockdep: Speed up lockdep_unregister_key() with expedited RCU synchronization
-Date: Wed, 16 Jul 2025 07:48:18 -0700
-Message-Id: <20250716144818.47650-10-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250716144818.47650-1-boqun.feng@gmail.com>
-References: <20250716144818.47650-1-boqun.feng@gmail.com>
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 0/5] dma::Device trait and DMA mask
+Date: Wed, 16 Jul 2025 17:02:45 +0200
+Message-ID: <20250716150354.51081-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -122,74 +58,43 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+This patch series adds the dma::Device trait to be implemented by bus devices on
+DMA capable busses.
 
-lockdep_unregister_key() is called from critical code paths, including
-sections where rtnl_lock() is held. For example, when replacing a qdisc
-in a network device, network egress traffic is disabled while
-__qdisc_destroy() is called for every network queue.
+The dma::Device trait implements methods to set the DMA mask for for such
+devices.
 
-If lockdep is enabled, __qdisc_destroy() calls lockdep_unregister_key(),
-which gets blocked waiting for synchronize_rcu() to complete.
+The first two bus devices implementing the trait are PCI and platform.
 
-For example, a simple tc command to replace a qdisc could take 13
-seconds:
+Unfortunately, the DMA mask setters have to be unsafe for now, since, with
+reasonable effort, we can't prevent drivers from data races writing and reading
+the DMA mask fields concurrently (see also [1]).
 
-  # time /usr/sbin/tc qdisc replace dev eth0 root handle 0x1: mq
-    real    0m13.195s
-    user    0m0.001s
-    sys     0m2.746s
+Link: https://lore.kernel.org/lkml/DB6YTN5P23X3.2S0NH4YECP1CP@kernel.org/ [1]
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/dma-mask
 
-During this time, network egress is completely frozen while waiting for
-RCU synchronization.
+Changes in v2:
+  - replace dma_bit_mask() with a new type DmaMask
+  - mention that DmaMask is the Rust equivalent of the C macro DMA_BIT_MASK()
+  - make DmaMask::new() fallible
+  - inline DmaMask methods
 
-Use synchronize_rcu_expedited() instead to minimize the impact on
-critical operations like network connectivity changes.
+Danilo Krummrich (5):
+  rust: dma: implement `dma::Device` trait
+  rust: dma: add DMA addressing capabilities
+  rust: pci: implement the `dma::Device` trait
+  rust: platform: implement the `dma::Device` trait
+  rust: samples: dma: set DMA mask
 
-This improves 10x the function call to tc, when replacing the qdisc for
-a network card.
+ rust/helpers/dma.c       |   5 ++
+ rust/kernel/dma.rs       | 125 ++++++++++++++++++++++++++++++++++++---
+ rust/kernel/pci.rs       |   2 +
+ rust/kernel/platform.rs  |   2 +
+ samples/rust/rust_dma.rs |  14 ++++-
+ 5 files changed, 140 insertions(+), 8 deletions(-)
 
-   # time /usr/sbin/tc qdisc replace dev eth0 root handle 0x1: mq
-     real     0m1.789s
-     user     0m0.000s
-     sys      0m1.613s
 
-[boqun: Fixed the comment and add more information for the temporary
-workaround, and add TODO information for hazptr]
-
-Reported-by: Erik Lundgren <elundgren@meta.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250321-lockdep-v1-1-78b732d195fb@debian.org
----
- kernel/locking/lockdep.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 0c941418a215..2d4c5bab5af8 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -6616,8 +6616,16 @@ void lockdep_unregister_key(struct lock_class_key *key)
- 	if (need_callback)
- 		call_rcu(&delayed_free.rcu_head, free_zapped_rcu);
- 
--	/* Wait until is_dynamic_key() has finished accessing k->hash_entry. */
--	synchronize_rcu();
-+	/*
-+	 * Wait until is_dynamic_key() has finished accessing k->hash_entry.
-+	 *
-+	 * Some operations like __qdisc_destroy() will call this in a debug
-+	 * kernel, and the network traffic is disabled while waiting, hence
-+	 * the delay of the wait matters in debugging cases. Currently use a
-+	 * synchronize_rcu_expedited() to speed up the wait at the cost of
-+	 * system IPIs. TODO: Replace RCU with hazptr for this.
-+	 */
-+	synchronize_rcu_expedited();
- }
- EXPORT_SYMBOL_GPL(lockdep_unregister_key);
- 
+base-commit: d49ac7744f578bcc8708a845cce24d3b91f86260
 -- 
-2.39.5 (Apple Git-154)
+2.50.0
 
