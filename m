@@ -1,80 +1,124 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67960157493;
-	Wed, 16 Jul 2025 09:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F8C28A1C8;
+	Wed, 16 Jul 2025 09:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752657393; cv=none; b=HkWCOWgzAfQiOc1lW1fcsPOpDejQ8g7k2UYBYbZ8+0D88BBjzfCw9vICDCnHo/hL89cyv0DQJERrIuMHcheKToiPy5yYkulgLnpmKt7msLPdzKfbGOOPjDGAmsKQS7NYCTw3YtfRgxdxdtEGwtEDt37E2cpV9h54mwzj1uwfoI8=
+	t=1752657524; cv=none; b=L0TbxX0qa+u+FHC7m3DSFrljcyQL0CRj7ytJtgcSBFRpqnSX3DJTAl7XOd8JBnyvTuoGmELc6yA7CWxQ/iTxBmS9J9Az2Dv+i4dojTfSINWZ2h5wDAbkYgczU5qR2F3Nj70ihuYQLe+dwg7BXUP2GaPqoJW7SeCsQZ5IAd7NH/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752657393; c=relaxed/simple;
-	bh=Hfea+Wf59XZhqO9zfMH1UF/iDdhqNgx3KK5CietkH3k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QA4hQdiZehtAxLvgCgMMzbVmTBy3yIYKaiPV1TOZDGow/p7Ms0HqierLsNRvOBo4XCsyXffvWJvf8VG/EYDBVMpx61G8jkZ8jmUWhzEcRYOX3W8oT3ikWspo8h4WjuVGlWd6kCKb+Qatc0feiFRW9MuFurIt5CQyZHHINoypXGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y56dsiQ1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752657524; c=relaxed/simple;
+	bh=FmEN8qfIo9m3IHpTF4l3C4+ShBhgn9K28femGDj+sqk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=okrHtemiJTLRG0KPSkzpG98cWPlsGoRq7oN/4yZ747zu9yMRrVFGt9x4+R5h3bhPz6uUnY66+YTebaQdy/r51p8GxAiScXBdOyw1uaQjmaB5T5hDVGm7xXPH5wOfZUvP6u5ndMpssn5OEUJGxtyCFT5Ztf8rpAMIE7sHqjbZJ1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXntpoEG; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y56dsiQ1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEDFC4CEF0;
-	Wed, 16 Jul 2025 09:16:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752657393;
-	bh=Hfea+Wf59XZhqO9zfMH1UF/iDdhqNgx3KK5CietkH3k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=y56dsiQ1PjVkVp1XJED61755uulFZ4+msW57aAe4eHvbg/nbszwlABUifs2B5Bb+8
-	 Kym9V/L7DI+8IZKY0ud0kFnECSsJpabjgBuXJRe18zsopmP8z9ALihS03C+rVaoqJu
-	 BtBw3HNu3r8//9sAlIvmBxfsKQIIpVhM/OF5cimw=
-Date: Wed, 16 Jul 2025 11:16:30 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXntpoEG"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23649faf69fso52066525ad.0;
+        Wed, 16 Jul 2025 02:18:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752657519; x=1753262319; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BQ0KHkkJP3t+pYkS2EAcCSLwi7qvEYZO1/eDZ+QTODU=;
+        b=NXntpoEGDvVw8uxIxxiKyOk7POWY4WbJu519sz4UX/aXuUCtQZ1iGFiaKfjr5uIIlP
+         f667N5Ll5l6xhYFdIQ8Is9109bfDyqyibr0LGCAF9ZJVjeAepIjjcq/zphyiMRz/RwgB
+         SzShPSDVMTQF2P90tiLNC4tfBx0Zzf3jxe/1jyneCS3yunNT1vlOaUVq7CfI11q8xtjq
+         k0r+gRK6dYUZC/+uzcOHc5a5XJtwR6DBmf4Qs/QNmi+8Uf5q3v8u6xnn0/jDhpMoLEid
+         K5Y6Qh7TrnWfiDD/NAqImHu2kmlnu2FiDYFxidErY+5xQFgeclNQwB9SIBqXui1yqy3e
+         QtXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752657519; x=1753262319;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BQ0KHkkJP3t+pYkS2EAcCSLwi7qvEYZO1/eDZ+QTODU=;
+        b=ePwKQQcHmWZ0UgGoMoz/bItoC+0CHIb2MU0gtwGdsCLSdpuUBjZtwZnGradO6K/R1Z
+         hD3J7kD7fbPY5h6/q5lMmD/VFFI6x8+el6ym1SX7HtXZL9M6MhBv5/D1ySaaJL8C52/F
+         G9OQMNlYro1V9lrikBhKnYZsOF93616sNFlcWhjBwTesXtQTWOCkE3IMtmI3Abd0488m
+         6sPORfJrsrnivhtQFUmDC0ffS4E1i17TKP25nUVgo8AaMAdoC2V+QudYsoxLg1xBU2W7
+         y4AS1eMa9VOFeMBRbEoUFEdvXGYfO7eOcpWZwKYytWqO7wNKgXwmsqBaMMFDIRqVjIr1
+         3qwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBLPF4qJVKn5ttNbOgmHwKkfMiKdHJPdZ2fg7LjVYch5ws1J9Q9qWqSbCXBqmU1sR7E8gOebzmYM82f4Y=@vger.kernel.org, AJvYcCV4Jai+vUowrim24yTNqxMQBZJhC3CEbS3kVwt3Eg1Ugd6AdC312KKuEm/JWkykKm/nRVCzkqXo/oZqwlcfHMY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ3x5Nax2bUN/JGadJP+lC1dO5qWrVLXQPAi/Oblk8dvLVBWmX
+	QR1c0r+bQ4sY5TWlT+NyzaZP0hN4X1MQqRuhkosgixuw95uM9WMfqIZ1tKBcYhM7
+X-Gm-Gg: ASbGncvRnXm+qqa0PTurzLlLyDmHj6NAluC7h3ahCBcvzPh5wbw648hA7i6lAYCL2vq
+	bTexI6Pi6xPfxeu8T9O4uDuuJmlKhEbPT8/Tz/Ho5MBYCUxkwoR1sBaCPqs6loCWT26HWwGup9v
+	mg1vHQ962zv2wcyAfCQ0YzF/RkVXuCe4MsmQpueiDHZd4OsJjfIqWd+I+2seVP05qo8Z/q48kvc
+	Rrag+fZdD6vJTk9YON67wZvHyZG9wXerd1rhyQ3NFQr6A8hJwOPs+525IJNDkh0Z4/X5oQLMy1O
+	ZzG7exlEr942zH7uIFlujVI2lqRCGIfwWL8RMWHgWiIHPGSidm3qYKUgiG1ulhrhZisii8jwyfC
+	5gzJSd743otB5hTE6G3EdiTK/D5PHdKChnPX2E9oATg==
+X-Google-Smtp-Source: AGHT+IGhUtW8bAGAYLU/066dIi3oGvcDCgkjPJ/HIG78utXWmpR90D3xR9k2g5BL1NjbhLjbXyK3/g==
+X-Received: by 2002:a17:903:1c6:b0:235:779:edfa with SMTP id d9443c01a7336-23e2572fe66mr30326545ad.32.1752657519361;
+        Wed, 16 Jul 2025 02:18:39 -0700 (PDT)
+Received: from shankari-IdeaPad.. ([2409:4080:410:5eb2:5b3d:132b:96fe:c1fc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23de4323cd5sm121808585ad.126.2025.07.16.02.18.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jul 2025 02:18:38 -0700 (PDT)
+From: Shankari Anand <shankari.ak0208@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, netdev@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] device: rust: rename Device::as_ref() to
- Device::from_raw()
-Message-ID: <2025071622-recast-posing-ce98@gregkh>
-References: <20250711-device-as-ref-v2-0-1b16ab6402d7@google.com>
- <20250711-device-as-ref-v2-1-1b16ab6402d7@google.com>
+	Danilo Krummrich <dakr@kernel.org>,
+	Shankari Anand <shankari.ak0208@gmail.com>
+Subject: [PATCH 4/7] rust: fs: update ARef and AlwaysRefCounted imports from sync::aref
+Date: Wed, 16 Jul 2025 14:48:27 +0530
+Message-Id: <20250716091827.816971-1-shankari.ak0208@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250711-device-as-ref-v2-1-1b16ab6402d7@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jul 11, 2025 at 08:04:37AM +0000, Alice Ryhl wrote:
-> The prefix as_* should not be used for a constructor. Constructors
-> usually use the prefix from_* instead.
-> 
-> Some prior art in the stdlib: Box::from_raw, CString::from_raw,
-> Rc::from_raw, Arc::from_raw, Waker::from_raw, File::from_raw_fd.
-> 
-> There is also prior art in the kernel crate: cpufreq::Policy::from_raw,
-> fs::File::from_raw_file, Kuid::from_raw, ARef::from_raw,
-> SeqFile::from_raw, VmaNew::from_raw, Io::from_raw.
-> 
-> Link: https://lore.kernel.org/r/aCd8D5IA0RXZvtcv@pollux
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Update call sites in the fs subsystem to import `ARef` and
+`AlwaysRefCounted` from `sync::aref` instead of `types`.
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This aligns with the ongoing effort to move `ARef` and
+`AlwaysRefCounted` to sync.
+
+Suggested-by: Benno Lossin <lossin@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1173
+Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+---
+It part of a subsystem-wise split series, as suggested in:
+https://lore.kernel.org/rust-for-linux/CANiq72=NSRMV_6UxXVgkebmWmbgN4i=sfRszr-G+x3W5A4DYOg@mail.gmail.com/T/#u
+This split series is intended to ease review and subsystem-level maintenance.
+
+The original moving patch is here:
+https://lore.kernel.org/rust-for-linux/20250625111133.698481-1-shankari.ak0208@gmail.com/
+
+Gradually the re-export from types.rs will be eliminated in the
+future cycle.
+---
+ rust/kernel/fs/file.rs | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/fs/file.rs b/rust/kernel/fs/file.rs
+index 35fd5db35c46..18cf579d3312 100644
+--- a/rust/kernel/fs/file.rs
++++ b/rust/kernel/fs/file.rs
+@@ -11,7 +11,8 @@
+     bindings,
+     cred::Credential,
+     error::{code::*, Error, Result},
+-    types::{ARef, AlwaysRefCounted, NotThreadSafe, Opaque},
++    sync::aref::{ARef, AlwaysRefCounted},
++    types::{NotThreadSafe, Opaque},
+ };
+ use core::ptr;
+ 
+-- 
+2.34.1
+
