@@ -1,148 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4528585260;
-	Wed, 16 Jul 2025 10:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6C92F4A0F;
+	Wed, 16 Jul 2025 12:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752661930; cv=none; b=G6JQMXNENzylmPBk0kud6Ad2ZHTrNGBwr90q2L2LB9bg465KD1tgrWEhzdcT8zjrlM1onLDwiJ8JFtxR5wH3o7XUFEB8BUVDoi74DN2RZzoS/Uxnfe52o4/u9S4jBYDwDW/VlUQZIhA9E77fjqLo1yGexoeRsBSFhxfrtPL350k=
+	t=1752669403; cv=none; b=nQChGlH25PnSodEdy9sFiCza5F0LbewI8qIrNNztjqMDn17RZr9kvZBx73/qrYFmmNkSgAhmkSwKiWDjCfRT0qAly3hMuSbkVwBLem45tKwmGSzu+2cJenkoK6EbRPg+ZxNVQeLNYB+GQsQUqPBmLbMtNpGY9t7oLF/M6EBYYlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752661930; c=relaxed/simple;
-	bh=4MZ1bakhn2IrJDIzOvrnSvSgvN0+Mb+1IfcHUPCpa+Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=qlko8f76C4JcWbgPTMAb/hSoSX8R6BDM2kXmFizKhJqrr+DuhlqzQbfY3o64TGZIuynXboMfDtC5/vm3Muxzf5M4h6Sy9eEjlJ9wIR1HEOh6WVOsow/hm3wk3hzzrOMjoltNC8K9pn2oHjDvs00viTtreVW04rcmBQdsDMDaSos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvyQTHES; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752669403; c=relaxed/simple;
+	bh=wzq636UmBmkRt5jx0MGIBDFLizgfD0NqkzU8lhycQFI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JuCZ7j/RbD25hbPTN38GC8eLR84y4e7L77duvKZPGNBki8htWC9M7s0ojcXcCu4BtSQ/cYjSfJHd+4y4+uRznKx4MiYaFQPLEEF4TF8/G0jspudJKO12eYDHHmRc7rc0pB3xYPS8wSQTRGhBr0zBSR2uA+PNGOuQi4tmuRdjjKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IhkCVSLq; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvyQTHES"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D3AC4CEF0;
-	Wed, 16 Jul 2025 10:32:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752661929;
-	bh=4MZ1bakhn2IrJDIzOvrnSvSgvN0+Mb+1IfcHUPCpa+Y=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=bvyQTHESXLlAvBKivoq3pKLQrlaqma74imBvhg2c7VhpXXYKCTvuCpjn3U7ul+S4e
-	 dRtU2UQjMYlZIMH/ACKSn4+RDTa1gwitf0B+s/snWu0c7PrsG9Fn3sqUmxx3hDdgkL
-	 cKKgFsWEXs64aME/J2OPZNOygILHVpNuAuIIP3tS1RsmtMQOPopjO3uL8qdtqq9Jr4
-	 rxSCjetOzvZ4QQOJnl17nfHburlktXBzc05hje4nqrV1RaWe8EJ08FbREe32fh+fkL
-	 HndYM7E2MRWD1y+I/Zelma+KOp9ipCJjazfoXV8Am8g+XUCYxeww3tbbS+ofrSVtvi
-	 CAzBKjJ3hTskg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IhkCVSLq"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-313bcf6e565so898529a91.0;
+        Wed, 16 Jul 2025 05:36:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752669401; x=1753274201; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pbtdeD8Wnwaq/vjh/JXA9wDabfJkPgVSH5AlF8yNHxE=;
+        b=IhkCVSLqIkUZ8ExhGeSas/7WHtV7RR4GsW2trfvstcVvnSMWbtSC3mdwgljk9eGmxM
+         9xFFcVm7V1TYLzgi2HLOkH4aAzS6EwJW4g05JlWtfFciomTHN/VXM1BwJHMjLqYk01vA
+         8sWf62uVzZRXvsxX4irCdii8nI6RsfEi9lUmjEMK4uk7cEiWpIH2Tm9RtbUO8oWGIvSb
+         2uUmfxUoOE+DTavxehEqmBSwKalucuBnQiIgisp7gb1SRfbmvnOnT7UjISaRvYAseCuB
+         wEMoqO3pJPpMFYOT7+XVU/r+FUdsTjyISN50UACq6+bTjyNE80Pc0HGlgAxvz3vGeQ19
+         IqPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752669401; x=1753274201;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pbtdeD8Wnwaq/vjh/JXA9wDabfJkPgVSH5AlF8yNHxE=;
+        b=nLuCaWr3xUa8a5DHv3BIFCPO9ewksl4H8W0c4El2B7oOrkHuKmkZhahsIB6JoKWDQh
+         ZhszEzbfRIO85PUJ+JILuTP1Wjr8QcazyR6Mk9bturSvVd+qtHX4A+mD60JsgtiziiKU
+         rDH58LK8dUuKWpZKqGOjhob+urtQUby4yHsIVy6lqAE1oa4jlWLYP9VLvUoZufo8OL1G
+         pF4fX2eJghYlSgaO6TpG4s6xWYriIVOfWXYQF0kCl9bDCBUuTEU3yP7lq3C3Pt3kK7dz
+         wB8BttrPB/NGfmlVadr/7RMYIvzVvD25phAnZQkwSuX2L/GRlRz64XB4F30rwSIqEqOe
+         KoJA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaiUwjc0GsHe6r7b29XYQEKlEs67BmAUQc0mDCjAQ9bcv271m2aV3NF1xjpvBb0P7Swdritt7BDM748Z4m@vger.kernel.org, AJvYcCWh7WSMEXLgF2CFpQGupeA8WZQAG6Ma96F3EiwI28imFau++LnlMM05x+i/anvGGbl6DW5BsqLLFbgS@vger.kernel.org, AJvYcCXxVfU47xAw9sY08A+e6QSl9W6Njb7O3ShiE/tsjHms6vb8Vhh6uOah0jLGbYlN4uUJgLKe9oxZK0WgNMTdSFk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9lkjl1r4WlIEiq9D5Z/zry+po92TcAyiAYHcz1sBhKziZY1uW
+	NeJ0enijG6KOjQItmXLc6Cj3nkJrnfQV+3y/IKLQoZal82/TMRrwhpqesz9QOPDJ3on5MywRdVz
+	AgNljPuWHthJCrbsAoOTaLIXhAXk+hOE=
+X-Gm-Gg: ASbGnctAKWKsAabKNPPbaXSXXp7Zvf4SW6AUQBI+XYvFLdjLCfVfc1d55BdrtpHSkN8
+	agf+kmIfDqkjs71B59VZa8iQJ5Q3M3eock+QEp5rn8vcefZEabFhP5ReKaPB5zuJmeKjZg/zMdj
+	fqHrGlXQR7QGHFmY2aT/pdKOUTJzdkkOni4rtuADakLdB9AzqJ5WrpUfHUmQ4ywdapbgRziNpmt
+	hLSyA==
+X-Google-Smtp-Source: AGHT+IH1AfpX3+Ds/zOoz9tipktkM9wtu5kQ1XtmEodOHlUJdQwaip1Keu+KmvTAMMyBv0JDYAk8CTYSo9R9mjAWmxY=
+X-Received: by 2002:a17:90b:2d4c:b0:310:cf92:7899 with SMTP id
+ 98e67ed59e1d1-31c9e760e02mr1521980a91.3.1752669400814; Wed, 16 Jul 2025
+ 05:36:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250714053656.66712-1-boqun.feng@gmail.com> <20250714053656.66712-2-boqun.feng@gmail.com>
+ <2025071611-factsheet-sitter-93b6@gregkh>
+In-Reply-To: <2025071611-factsheet-sitter-93b6@gregkh>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 16 Jul 2025 14:36:27 +0200
+X-Gm-Features: Ac12FXxU7t4f3TmDU6568W4lxU0yBWR1CBpL3V_9M0bVOSQeTwuke3j6Ee5kfVQ
+Message-ID: <CANiq72nCm1-xELn=Z1x1LidKHtjhMtz4FNnakunQ9BqzcS89ew@mail.gmail.com>
+Subject: Re: [PATCH v7 1/9] rust: Introduce atomic API helpers
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev, 
+	linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Lyude Paul <lyude@redhat.com>, 
+	Ingo Molnar <mingo@kernel.org>, Mitchell Levy <levymitchell0@gmail.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Alan Stern <stern@rowland.harvard.edu>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Jul 2025 12:32:04 +0200
-Message-Id: <DBDESSQOH6MB.2I4GNLPBP5ORJ@kernel.org>
-Cc: "Mitchell Levy" <levymitchell0@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Andrew Morton" <akpm@linux-foundation.org>, "Dennis Zhou"
- <dennis@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Christoph Lameter"
- <cl@linux.com>, "Danilo Krummrich" <dakr@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 3/5] rust: percpu: add a rust per-CPU variable test
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250712-rust-percpu-v2-0-826f2567521b@gmail.com>
- <20250712-rust-percpu-v2-3-826f2567521b@gmail.com>
- <DBATM1CUS704.28MKE6BIBQB7G@kernel.org>
- <68762e19.170a0220.33e203.a0b7@mx.google.com>
- <DBCLFG5F4MPW.2LF4T3KWOE12R@kernel.org> <aHZhcNCayTOQhvYh@Mac.home>
- <DBCR1OCNYAUW.1VLAY1HWCHLGI@kernel.org> <aHaCUFNUd_mErL7S@Mac.home>
- <DBCTCZ5HUZOF.2DJX63Q0VWWFN@kernel.org> <aHbJUfcsjHA92OlE@tardis-2.local>
-In-Reply-To: <aHbJUfcsjHA92OlE@tardis-2.local>
 
-On Tue Jul 15, 2025 at 11:34 PM CEST, Boqun Feng wrote:
-> On Tue, Jul 15, 2025 at 07:44:01PM +0200, Benno Lossin wrote:
-> [...]
->> >> >
->> >> > First of all, `thread_local!` has to be implemented by some sys-spe=
-cific
->> >> > unsafe mechanism, right? For example on unix, I think it's using
->> >> > pthread_key_t:
->> >> >
->> >> > 	https://pubs.opengroup.org/onlinepubs/009695399/functions/pthread_=
-key_create.html
->> >> >
->> >> > what we are implementing (or wrapping) is the very basic unsafe
->> >> > mechanism for percpu here. Surely we can explore the design for a s=
-afe
->> >> > API, but the unsafe mechanism is probably necessary to look into at
->> >> > first.
->> >>=20
->> >> But this is intended to be used by drivers, right? If so, then we sho=
-uld
->> >
->> > Not necessarily only for drivers, we can also use it for implementing
->> > other safe abstraction (e.g. hazard pointers, percpu counters etc)
->>=20
->> That's fair, but then it should be `pub(crate)`.
->>=20
+On Wed, Jul 16, 2025 at 11:23=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Fine by me, but please see below.
->
->> >> do our usual due diligence and work out a safe abstraction. Only fall
->> >> back to unsafe if it isn't possible.
->> >>=20
->> >
->> > All I'm saying is instead of figuring out a safe abstraction at first,
->> > we should probably focus on identifying how to implement it and which
->> > part is really unsafe and the safety requirement for that.
->>=20
->> Yeah. But then we should do that before merging :)
->>=20
->
-> Well, who's talknig about merging? ;-) I thought we just began reviewing
-> here ;-)
+> As this is auto-generated, how do we know when to auto-generate it
+> again?  What files does it depend on?  And why can't we just
+> auto-generate it at build time instead of having a static file in the
+> tree that no one knows when to regenerate it?  :)
 
-I understand [PATCH] emails as "I want to merge this" and [RFC PATCH] as
-"I want to talk about merging this". It might be that I haven't seen the
-RFC patch series, because I often mute those.
+If Boqun confirms that there is no reason not to do that, then I can
+take a look at that.
 
->> >> I'm not familiar with percpu, but from the name I assumed that it's
->> >> "just a variable for each cpu" so similar to `thread_local!`, but it'=
-s
->> >> bound to the specific cpu instead of the thread.
->> >>=20
->> >> That in my mind should be rather easy to support in Rust at least wit=
-h
->> >> the thread_local-style API. You just need to ensure that no reference
->> >> can escape the cpu, so we can make it `!Send` & `!Sync` + rely on kli=
-nt
->> >
->> > Not really, in kernel, we have plenty of use cases that we read the
->> > other CPU's percpu variables. For example, each CPU keeps it's own
->> > counter and we sum them other in another CPU.
->>=20
->> But then you need some sort of synchronization?
->>=20
->
-> Right, but the synchronization can exist either in the percpu operations
-> themselves or outside the percpu operations. Some cases, the data types
-> are small enough to fit in atomic data types, and operations are just
-> load/store/cmpxchg etc, then operations on the current cpu and remote
-> read will be naturally synchronized. Sometimes extra synchronization is
-> needed.
-
-Sure, so we probably want direct atomics support. What about "extra
-synchronization"? Is that using locks or RCU or what else?
-
-> Keyword find all these cases are `per_cpu_ptr()`:
->
-> 	https://elixir.bootlin.com/linux/v6.15.6/A/ident/per_cpu_ptr
-
-Could you explain to me how to find them? I can either click on one of
-the files with horrible C preprocessor macros or the auto-completion in
-the search bar. But that one only shows 3 suggestions `_hyp_sym`,
-`_nvhe_sym` and `_to_phys` which doesn't really mean much to me.
-
----
 Cheers,
-Benno
+Miguel
