@@ -1,165 +1,264 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDCEFBF6
-	for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 04:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F5C286D46;
+	Wed, 16 Jul 2025 07:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752641925; cv=none; b=GpoE7DktG7hiTWUPFxacMcD0ZNhXqayP2Za+HSIXXpQqzom3VbpNg4hu55T7WYe3w1906b8+ThQ1GzM2UFF9mWkDYMzfr6/mji3JqjGjFj4aeamtuYQm46V1ChgKpMI1+xzaOk7sPfTkCoDh8IsHn2XMh1ql1oc3olWT+pKftB8=
+	t=1752649350; cv=none; b=mqgFXMdkhyieZJuJ9J93hJ36mtc3m4yab2xLWcKgq4NKqutO5m0UafOiLQMKTzIlNnjQ2kIfmJt1i0RuNuXzi5EDovWezs7YKd1xYfr4l+t0mLT+gQOk2hve1k1HjeYs+zfCtwZEVaXqLEXVkWbk+zBl+BpWJKUfq3cDLCb40cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752641925; c=relaxed/simple;
-	bh=RpxQjn0T81zoxVu/rfMKIpb0s0xELkOMlMQhav1p4ks=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J583O5np9DQR0HD0KDT7m1UMSuRSCALDVLT326qXJ8jam23EDKFtEZ7RwcyB7a+XwVaf+n9SXyMxTN/KY851C/Kq9q4rUxz+4xEQcF993Kt1SOg1+lxg3lgaItWgtb1Qzjh8KrKVYPI2fPCavrGXutqC3AHi6Gmqs7Ra9Z1/FOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4YYLt+q; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1752649350; c=relaxed/simple;
+	bh=R5O5qmAFz0qtF49w2X+xp+Ya0BKfWjBW4tGP1boIEXQ=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CzjFyG/OQiWlLx/lMamgWIVa0mV3U/xv2NJQgFmV9aQtrVRi8SWDK3PnBRKeasDNvB8DaCbgB21Go9FmtrQH5fwc0UidQpQ6qBuNqePBpQD5SaybqN0/1BKxmo8+AgTxBlP3JY5tfnQ4IQfDoI92iux7uVXOMhYUZfbf11cpiUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U4SHTMEn; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4YYLt+q"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-74b27c1481bso3948696b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 21:58:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U4SHTMEn"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54b10594812so6104223e87.1;
+        Wed, 16 Jul 2025 00:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752641924; x=1753246724; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OVb2wPCBSPQ2Ss9OwH3a/Y+sFpzdnkRNAjdlYA6Qukg=;
-        b=D4YYLt+qJWNARHcjmu9uTj8CqF2krFylb3nxjO6MzDN7KmobsDF/CkGSg4536jFDKx
-         Oh6tVTs5rClPqzSISy3QFlH2hYjFCZ82cMFRSYfOoYvm0q2q5PeWI+imM3mMkNqNxKah
-         MUKIzD3qyznI/pftl+Ra6ceVlYQuS+yHh5xqETOsOC9lmWNq8avyaMkei7rShZru+B6t
-         QO2ojitrb/QMqpJWfMOMVvk3qx4vGOhhkMXmUfYdy2vzuIBR5+0WwbFeoxmtOrNZctRn
-         LA+rvTWdxQEzN9mkyxVC48/sf3k/3lBhOCvHPPt/BcwOw/rpLIp4sbPyP0a5c2uEYJ8W
-         8nKA==
+        d=gmail.com; s=20230601; t=1752649346; x=1753254146; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IpbTFITF67s5ytx3WF8TIyUbw/oI1yuXLAr1FOz7XUE=;
+        b=U4SHTMEnfrZbKQWJQCegTqvMVL1zRxZnKyRLAvKWdtit2+ci2Hr4CWND38PCYX3ggt
+         RG1O2JOdD9z+sHqTvmAvZHRnL5R4ayqLmqTos3CIObKEJACk6KHSI+XF8Iw4omGpeKT/
+         lo3vdQCoCGdK8iPxZcqO+jklGWaLnC4oNsHmD9x0FzRR6MzQk4Ql+8krX61EpVzeksY6
+         3WIrNTiy48GC5yQLeXkh5pJvYhbbzQ7SlNRA+ty6Fn3xAJzQKJGPkFC4xCnaLvxJv2X1
+         KD5aaeETLc02tRgPBVLV/kiMSLGXTSCt5Dzq/p6DRFoYYzzlMsmPxUArRRi/FilI3Den
+         e9kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752641924; x=1753246724;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OVb2wPCBSPQ2Ss9OwH3a/Y+sFpzdnkRNAjdlYA6Qukg=;
-        b=Y/ACtP1woyp64MHM/72KEOc0CddEoON1jKK3avDOfw68fIRcOtmZIfusEWUg3r60bx
-         jjnjU4sAO2i5yhvhrWB8bjdw3u9JqUutC9xpGsdY24MxJfSVBjXcIFimykg8/SCVbGVp
-         4/xbZi/3gmQLQFJ9uxp/3/Ph4zReu+u2lMw8bbnk0+zx/Mc0eoH/Ee1+8oZugaE7Foy1
-         Hc9xX4SH11xsljX17AnHHEQWJzcxEv2W8r/pyPtwqFoUQKSp57B9oGk8EhcQYc078RIz
-         FQOY2FucGegUw8BU+ZJq8ZdHRKR+mm4R99D2Uw91IVFacbZu+CP6jjv+v99zLCe1CkHq
-         Z32A==
-X-Gm-Message-State: AOJu0YxvDUk+wOLVBm89enskNd7/6nXOkr8FQc/XQ/9+lNcKiurczpOv
-	bnv4qS1J+BjDIqcLE/ZW5qrP3bMTtl4ZAj9WCKgf4ZHPN0elQySY52R2
-X-Gm-Gg: ASbGncue3llKE5KeMVPZC1xwczPavvsjPyce89w80NI98PuqYqIIUTGGWWeqDzwsbdz
-	BggDOFd2kYqw1LL8wbPIm2sQdoChpMNop8m4Wqq8wtAiERF/zaNH5f7adE4zvFiecqs5ub6yVue
-	YYqkXexNSrOejwpHnSK63kWzTKPBGrjiPwqx6nqfoQC4arQrV3XnTyhrzqYRO0DE7TlCKoAIrOp
-	Py+Pgrz6VYoqnIhsKVCRH9eT1sVk+9bT7eQ8aBQNZdiDXgiTVUxvyxjxZVTbdsJlzWTbK6209eW
-	+83VXT2BfB/bS28nqh7Vsnwo9nJkpoTjE0eRYk/3U+tgRZdyapKmM/U2a+wKw2nkdVceCUzpe57
-	qAM1cHJzFmTeiif7k7pM=
-X-Google-Smtp-Source: AGHT+IEz+emx/3fj44jvsqSDxYKM7sigeFnnkeai8yTZWqJ3w6QVh+jXVroQzvNo4HWstX5HwG8+wg==
-X-Received: by 2002:a05:6a21:62c9:b0:232:817c:4c84 with SMTP id adf61e73a8af0-237d701a6e0mr3641182637.24.1752641923515;
-        Tue, 15 Jul 2025 21:58:43 -0700 (PDT)
-Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b3bc0fa6609sm10933430a12.60.2025.07.15.21.58.38
+        d=1e100.net; s=20230601; t=1752649346; x=1753254146;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IpbTFITF67s5ytx3WF8TIyUbw/oI1yuXLAr1FOz7XUE=;
+        b=eAiLlDbST+YWmp4Q/C75nNQIBEtoGOkpLtScbuNePfhpL8veYQSKGwF3VDTsWTTnLI
+         Y73cq2mkxtQ51I4ZPVOsOGikc0Lf9Pu4CjehphElJglpXD+Zfc9ipu6v2DjwsQbbtywP
+         +Amof3ucCvznYOgKOfUMpjZ22hKWrwWvIBoCgZfEPuXfyBCv/hMooE7jon7wHEMP0vD5
+         OCfaJbH0+sAwGG4M/PBIev/p9DhXAAEwjeFafjUlQl/q1PX+hZBhA5j53RuROy9FLFwB
+         d0oziKxK0p736cPnYda2SE2rL+sAk1DOUj3UhqlEx04mbQBL0vVMF5JGSyxDhXzPVJaO
+         IsXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAhz3ihUtK6arPnuWWILQmqapivjGuGgXapT6SWxuqMeX/+AF2r6BesxL/HZrOEb3Xhss90LL36i2KGMY=@vger.kernel.org, AJvYcCVxbMOxopWouT02vEn/EaZg7ZRlpQarVD5ILi9VGFkbvdXpMi1c1EG4MHPNP3KoQARAz50ZIHBRhlRyLKItNdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq+2Bk9xIXGr3W4GKax3YeueGsxhGWztQ2BqIx4pAIEc7/WmES
+	zfIMOoZUBSmxIoMgd5wp6GuS5wSxbbtHcUHMut9U+5ijBckj6d219fB1
+X-Gm-Gg: ASbGncuNR4x9wpEb1pZ82MgnxBmLu6DwBv1W4LpWxC72u8XPWVCZvmX2G+JIX8oJdZ2
+	wHs2X6fzAciZ3wBB3Rv0KH3XnprJUShelq7wTCj9dX7ILCGMHGjFTB8VpDY4oh5Hi8G8D+7ii5+
+	3Il4jKs92BtpXPHPH6s0FGFQ9Mi4kCquB2BpDWqnQ/XbppzUYlF5TuD95CywJ1erTor8Rcha/ml
+	ux2tkXqxZegsGJGcwwktpBUHo8EOAwdfNBl+CEukwK3iGliZyf0zJ4Ed0yZ0uFHM6juxBQ4jWLv
+	s6bpQDhyCIFpI0eSgPEI4ZLodp0MOz6VGDDHQAFi9IWZvUXyV5OOxGMsoOmwUYvIw3nq92Dx+Vc
+	SvXuv03poQ73dBDU6DyXLCbOHFqRD130mqpNJWHkY3eFw8pU=
+X-Google-Smtp-Source: AGHT+IEaQjkkeF2ySgsL9PJxlSd912c1e0hN8v81h0Xze53G9AuaujDLm7o/XYcnrMZzTnbqw1FiGw==
+X-Received: by 2002:a05:6512:118f:b0:553:37e7:867b with SMTP id 2adb3069b0e04-55a23f5660bmr595211e87.31.1752649345904;
+        Wed, 16 Jul 2025 00:02:25 -0700 (PDT)
+Received: from pc636 (host-95-203-27-91.mobileonline.telia.com. [95.203.27.91])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5593c9d32c1sm2531820e87.125.2025.07.16.00.02.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jul 2025 21:58:42 -0700 (PDT)
-From: Ritvik Gupta <ritvikfoss@gmail.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: [PATCH] rust: kernel: introduce `unsafe_precondition_assert!` macro
-Date: Wed, 16 Jul 2025 10:29:57 +0530
-Message-ID: <20250716045957.39732-1-ritvikfoss@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        Wed, 16 Jul 2025 00:02:25 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Wed, 16 Jul 2025 09:02:22 +0200
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Geliang Tang <geliang@kernel.org>, Hui Zhu <zhuhui@kylinos.cn>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/3] vmalloc: Add vrealloc_align to support allocation of
+ aligned vmap pages
+Message-ID: <aHdOfv1QyisOiAXL@pc636>
+References: <cover.1752573305.git.zhuhui@kylinos.cn>
+ <81647cce3b8e7139af47f20dbeba184b7a89b0cc.1752573305.git.zhuhui@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <81647cce3b8e7139af47f20dbeba184b7a89b0cc.1752573305.git.zhuhui@kylinos.cn>
 
-Introduce a new `safety` module containing `unsafe_precondition_assert!`
-macro. It is a wrapper around `debug_assert!`, intended for validating
-pre-conditions of unsafe code blocks and functions.
+On Tue, Jul 15, 2025 at 05:59:46PM +0800, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> This commit add new function vrealloc_align.
+> vrealloc_align support allocation of aligned vmap pages with
+> __vmalloc_node_noprof.
+> And vrealloc_align will check the old address. If this address does
+> not meet the current alignment requirements, it will also release
+> the old vmap pages and reallocate new vmap pages that satisfy the
+> alignment requirements.
+> 
+> Co-developed-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Geliang Tang <geliang@kernel.org>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+>  include/linux/vmalloc.h |  5 +++
+>  mm/vmalloc.c            | 80 ++++++++++++++++++++++++++---------------
+>  2 files changed, 57 insertions(+), 28 deletions(-)
+> 
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index fdc9aeb74a44..0ce0c1ea2427 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -201,6 +201,11 @@ void * __must_check vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>  		__realloc_size(2);
+>  #define vrealloc(...)		alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+>  
+> +void * __must_check vrealloc_align_noprof(const void *p, size_t size,
+> +					  size_t align, gfp_t flags)
+> +		__realloc_size(2);
+> +#define vrealloc_align(...)	alloc_hooks(vrealloc_align_noprof(__VA_ARGS__))
+> +
+>  extern void vfree(const void *addr);
+>  extern void vfree_atomic(const void *addr);
+>  
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index ab986dd09b6a..41cb3603b3cc 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4081,9 +4081,11 @@ void *vzalloc_node_noprof(unsigned long size, int node)
+>  EXPORT_SYMBOL(vzalloc_node_noprof);
+>  
+>  /**
+> - * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
+> + * vrealloc_align - reallocate virtually contiguous memory;
+> + *                  contents remain unchanged
+>   * @p: object to reallocate memory for
+>   * @size: the size to reallocate
+> + * @align: requested alignment
+>   * @flags: the flags for the page level allocator
+>   *
+>   * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
+> @@ -4103,7 +4105,8 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
+>   * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
+>   *         failure
+>   */
+> -void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +void *vrealloc_align_noprof(const void *p, size_t size, size_t align,
+> +			    gfp_t flags)
+>  {
+>  	struct vm_struct *vm = NULL;
+>  	size_t alloced_size = 0;
+> @@ -4116,49 +4119,65 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>  	}
+>  
+>  	if (p) {
+> +		if (!is_power_of_2(align)) {
+> +			WARN(1, "Trying to vrealloc_align() align is not power of 2 (%ld)\n",
+> +			     align);
+> +			return NULL;
+> +		}
+> +
+>  		vm = find_vm_area(p);
+>  		if (unlikely(!vm)) {
+> -			WARN(1, "Trying to vrealloc() nonexistent vm area (%p)\n", p);
+> +			WARN(1, "Trying to vrealloc_align() nonexistent vm area (%p)\n", p);
+>  			return NULL;
+>  		}
+>  
+>  		alloced_size = get_vm_area_size(vm);
+>  		old_size = vm->requested_size;
+>  		if (WARN(alloced_size < old_size,
+> -			 "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
+> +			 "vrealloc_align() has mismatched area vs requested sizes (%p)\n", p))
+>  			return NULL;
+>  	}
+>  
+> -	/*
+> -	 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
+> -	 * would be a good heuristic for when to shrink the vm_area?
+> -	 */
+> -	if (size <= old_size) {
+> -		/* Zero out "freed" memory, potentially for future realloc. */
+> -		if (want_init_on_free() || want_init_on_alloc(flags))
+> -			memset((void *)p + size, 0, old_size - size);
+> -		vm->requested_size = size;
+> -		kasan_poison_vmalloc(p + size, old_size - size);
+> -		return (void *)p;
+> -	}
+> +	if (IS_ALIGNED((unsigned long)p, align)) {
+> +		/*
+> +		 * TODO: Shrink the vm_area, i.e. unmap and free unused pages. What
+> +		 * would be a good heuristic for when to shrink the vm_area?
+> +		 */
+> +		if (size <= old_size) {
+> +			/* Zero out "freed" memory, potentially for future realloc. */
+> +			if (want_init_on_free() || want_init_on_alloc(flags))
+> +				memset((void *)p + size, 0, old_size - size);
+> +			vm->requested_size = size;
+> +			kasan_poison_vmalloc(p + size, old_size - size);
+> +			return (void *)p;
+> +		}
+>  
+> -	/*
+> -	 * We already have the bytes available in the allocation; use them.
+> -	 */
+> -	if (size <= alloced_size) {
+> -		kasan_unpoison_vmalloc(p + old_size, size - old_size,
+> -				       KASAN_VMALLOC_PROT_NORMAL);
+>  		/*
+> -		 * No need to zero memory here, as unused memory will have
+> -		 * already been zeroed at initial allocation time or during
+> -		 * realloc shrink time.
+> +		 * We already have the bytes available in the allocation; use them.
+> +		 */
+> +		if (size <= alloced_size) {
+> +			kasan_unpoison_vmalloc(p + old_size, size - old_size,
+> +					KASAN_VMALLOC_PROT_NORMAL);
+> +			/*
+> +			 * No need to zero memory here, as unused memory will have
+> +			 * already been zeroed at initial allocation time or during
+> +			 * realloc shrink time.
+> +			 */
+> +			vm->requested_size = size;
+> +			return (void *)p;
+> +		}
+> +	} else {
+> +		/*
+> +		 * p is not aligned with align.
+> +		 * Allocate a new address to handle it.
+>  		 */
+> -		vm->requested_size = size;
+> -		return (void *)p;
+> +		if (size < old_size)
+> +			old_size = size;
+>  	}
+>  
+>  	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
+> -	n = __vmalloc_noprof(size, flags);
+> +	n = __vmalloc_node_noprof(size, align, flags, NUMA_NO_NODE,
+> +				  __builtin_return_address(0));
+>  	if (!n)
+>  		return NULL;
+>  
+> @@ -4170,6 +4189,11 @@ void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+>  	return n;
+>  }
+>  
+> +void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +{
+> +	return vrealloc_align_noprof(p, size, 1, flags);
+> +}
+> +
+>  #if defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA32)
+>  #define GFP_VMALLOC32 (GFP_DMA32 | GFP_KERNEL)
+>  #elif defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA)
+> -- 
+> 2.43.0
+> 
+This is similar what Vitaly is doing. There is already v14
+but as example see it here: https://lkml.org/lkml/2025/7/9/1583
 
-When `CONFIG_RUST_DEBUG_ASSERTIONS` flag is enabled, this macro
-performs runtime checks to ensure that the pre-conditions for unsafe
-blocks hold. In release builds, the macro is a no-op.
-
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1162
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/topic/.60unsafe_precondition_assert.60.20macro/with/528457452
-Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
----
- rust/kernel/lib.rs    |  1 +
- rust/kernel/safety.rs | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
- create mode 100644 rust/kernel/safety.rs
-
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f61ac6f81f5d..a242f993f89b 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -101,6 +101,7 @@
- pub mod print;
- pub mod rbtree;
- pub mod revocable;
-+pub mod safety;
- pub mod security;
- pub mod seq_file;
- pub mod sizes;
-diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
-new file mode 100644
-index 000000000000..a115faa52539
---- /dev/null
-+++ b/rust/kernel/safety.rs
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! This module contains the kernel APIs for verifying invariants
-+//! required by the unsafe code.
-+
-+/// Checks that preconditions of an unsafe code are followed.
-+///
-+/// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DEBUG_ASSERTIONS`)
-+/// are enabled. In release builds, this macro is no-op.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// // SAFETY: The caller ensures the size and alignment
-+/// unsafe fn transmute_array<const N: usize, T: Copy, U: Copy>(input: [T; N]) -> [U; N] {
-+///     unsafe_precondition_assert!(
-+///         core::mem::size_of::<T>() == core::mem::size_of::<U>(),
-+///         "src and dst must have the same size"
-+///     );
-+///
-+///     unsafe_precondition_assert!(
-+///         core::mem::align_of::<T>() >= core::mem::align_of::<U>(),
-+///         "src alignment must be compatible with dst alignment"
-+///     );
-+///
-+///     core::mem::transmute_copy(&input)
-+/// }
-+/// ```
-+///
-+/// # Panics
-+///
-+/// This will invoke the [`panic!`] macro if the provided expression cannot be evaluated
-+/// to true at runtime.
-+#[macro_export]
-+macro_rules! unsafe_precondition_assert {
-+    ($($arg:tt)*) => {
-+        if cfg!(debug_assertions) {
-+            crate::pr_err!("unsafe precondition(s) violated");
-+            ::core::assert!($($arg)*);
-+        }
-+    };
-+}
-
-base-commit: 8ecb65b7b68ea48350833ba59c1257718e859768
--- 
-2.50.1
-
+--
+Uladzislau Rezki
