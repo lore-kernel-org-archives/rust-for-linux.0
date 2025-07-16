@@ -1,103 +1,233 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from r-passerv.ralfj.de (r-passerv.ralfj.de [109.230.236.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4F1288C2C;
-	Wed, 16 Jul 2025 19:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39FD286D46;
+	Wed, 16 Jul 2025 19:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.230.236.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752694371; cv=none; b=m2O2GIeM7m4F1TGme7+7oUepBxqlDV6mzZUl5lAJHV4Ztba4WgwD/gPqcyAYvjKZwPzy+O3QCOgayroYCzO7743bsrxEV8G/RL09ucMqjRliElyPnwhdyn8iBkbQw6dFNrn4WaO571Wai//kVw9uk2yP/V04uKMBZ2mOWVcV4Po=
+	t=1752694955; cv=none; b=fAy2f/OD3Wu9s92Kz4bXFKjmazFqGSB9j89z+xY15VQd/Ga66oe5aw/0LG9GTMLlYh1CX9IliG5AOTegXPkX7ihYHqwJqQeFk8NaK++4PTYivnDo85vwej9Nyf8NEDd5BYQl6MuouwL0+8Fsxg6isYPVq3a4OXGKz00emS24am8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752694371; c=relaxed/simple;
-	bh=2DyOKJP7aKBHWg3wvE3e/BAL/NCFCynaRLW4W2mN880=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=bbWizhRzCoT9rdNL3kzOFBjLPRZVOxsHedJLR1UMqQo/5RzamuCwt7f9LHXOWpU1PMwirfHZ1AT+y46lbktuv1z98w8zKp3Ib2U5uh4wZFR1BuNi5twrrGnsOWXa/7+uy2kZIKXFztaKi76Va0LzpTTSXStiQvfzFZVe1bIXPXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8MkCdBg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752694955; c=relaxed/simple;
+	bh=Pw1fBsv5/TECiWrU0V6LsQwsUBawWDhGo6/SS9Wf7zo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kfxUdUarQsbEf2FnIccjYqddC6rc+qEj7CifX63hAOzfeSDlTWqNuinOFm3wYgaKvql5RXTmq8tH8XuqBpiuzHsOgd3z7TSSTbAfLeEJ9rrCtENOXhd92NmW4Cmiv3rZyo15HhJfK5f2hJkzdIf8dWgWOhr/YEuVcCqUWnzbTxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de; spf=pass smtp.mailfrom=ralfj.de; dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b=ylVMaZtV; arc=none smtp.client-ip=109.230.236.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ralfj.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ralfj.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8MkCdBg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA276C4CEF1;
-	Wed, 16 Jul 2025 19:32:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752694371;
-	bh=2DyOKJP7aKBHWg3wvE3e/BAL/NCFCynaRLW4W2mN880=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=O8MkCdBgupOAeoBvlyzfaK/fVFPCcIcpMw0jxBuD3//hlUDEg9ok/V9bFdLpFsbDY
-	 AS+bVWxK9jH0pUYApv1W6QcaE9nagPmFPYIS3jZr6U56SrJ4sVcxm8bXBArLmlp+67
-	 pVCV5jZp8UAP9qyat+qg0udAjcH22Lzn1QmHuJo2POe7RjKiFbUrBXN36qK+bSgZ0q
-	 A6s7ichqOg7T1pc6/12eQK5FePmj6JIP1UgG0yIancC5WttzTZ3g9V/xRMkNcBI4AR
-	 eq1MvDxVuhZycChAW8wrs+um0T2U8k3tHIaP9RqMMWAyhogJDPbjM4m9JWyTjLDHEy
-	 bAePdCDBRRetA==
+	dkim=pass (1024-bit key) header.d=ralfj.de header.i=@ralfj.de header.b="ylVMaZtV"
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=ralfj.de; s=mail;
+	t=1752694946; bh=Pw1fBsv5/TECiWrU0V6LsQwsUBawWDhGo6/SS9Wf7zo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ylVMaZtVIVVxtiHibKwBdHuJo51ETftah3+pTgLa5GYZznGt01W6s1+Nuv8au7AjZ
+	 Z5gl7LuPDtR7FNNBiOF6E8xVYUYkXKgJS4Uqz0BA2815O2t9gx5Wh2fajPpVp0biES
+	 7uvth2RvhoqRIM+aeIAuBb8QLQBK0SoznmiuuwIk=
+Received: from [192.168.178.20] (53.206.40.145.ftth.as8758.net [145.40.206.53])
+	by r-passerv.ralfj.de (Postfix) with ESMTPSA id EE21020513AF;
+	Wed, 16 Jul 2025 21:42:25 +0200 (CEST)
+Message-ID: <5ac8d7e3-d778-4ef8-a7d7-1296ffda5dae@ralfj.de>
+Date: Wed, 16 Jul 2025 21:42:25 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Jul 2025 21:32:47 +0200
-Message-Id: <DBDQASMSS32U.FJBYKS3LWEQ6@kernel.org>
-Subject: Re: [PATCH v9] rust: kernel: add support for bits/genmask macros
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250714-topics-tyr-genmask2-v9-1-9e6422cbadb6@collabora.com>
- <DBDP54SLN4EZ.2EQ004NXWCX2L@kernel.org>
- <705CD461-60D9-492E-B82F-C88A848A4348@collabora.com>
-In-Reply-To: <705CD461-60D9-492E-B82F-C88A848A4348@collabora.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 8/9] rust: sync: Add memory barriers
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev,
+ linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Lyude Paul <lyude@redhat.com>,
+ Ingo Molnar <mingo@kernel.org>, Mitchell Levy <levymitchell0@gmail.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Alan Stern <stern@rowland.harvard.edu>
+References: <20250710060052.11955-1-boqun.feng@gmail.com>
+ <20250710060052.11955-9-boqun.feng@gmail.com>
+ <DB93NWEAK46D.2YW5P9MSAWVCN@kernel.org> <aHFWCsOfcGLSUPAP@tardis-2.local>
+ <4d373b56-0f36-4f8a-9052-cee38b90f59b@ralfj.de> <aHZyC4xr7jgN6Mgv@Mac.home>
+ <371882d2-3c31-4c5f-a12f-22945027ee33@ralfj.de> <aHZ6Rp4qdCXUoIZy@Mac.home>
+Content-Language: en-US, de-DE
+From: Ralf Jung <post@ralfj.de>
+In-Reply-To: <aHZ6Rp4qdCXUoIZy@Mac.home>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed Jul 16, 2025 at 9:11 PM CEST, Daniel Almeida wrote:
-> Let=E2=80=99s transfer this discussion to this patch.
->
->> I also quickly tried genmask and I have a few questions:
->>=20
->>  (1) Why does genmask not use a const generic? I think this makes it mor=
-e
->>      obvious that it's only intended to be used from const context.
->
-> I guess none of us thought about it, since the current version also works=
-.
+Hi Boqun,
 
-I think using a const generic would be a bit better for the mentioned reaso=
-n.
+On 15.07.25 17:56, Boqun Feng wrote:
+> On Tue, Jul 15, 2025 at 05:35:47PM +0200, Ralf Jung wrote:
+>> Hi all,
+>>
+>> On 15.07.25 17:21, Boqun Feng wrote:
+>>> On Mon, Jul 14, 2025 at 05:42:39PM +0200, Ralf Jung wrote:
+>>>> Hi all,
+>>>>
+>>>> On 11.07.25 20:20, Boqun Feng wrote:
+>>>>> On Fri, Jul 11, 2025 at 10:57:48AM +0200, Benno Lossin wrote:
+>>>>>> On Thu Jul 10, 2025 at 8:00 AM CEST, Boqun Feng wrote:
+>>>>>>> diff --git a/rust/kernel/sync/barrier.rs b/rust/kernel/sync/barrier.rs
+>>>>>>> new file mode 100644
+>>>>>>> index 000000000000..df4015221503
+>>>>>>> --- /dev/null
+>>>>>>> +++ b/rust/kernel/sync/barrier.rs
+>>>>>>> @@ -0,0 +1,65 @@
+>>>>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>>>>> +
+>>>>>>> +//! Memory barriers.
+>>>>>>> +//!
+>>>>>>> +//! These primitives have the same semantics as their C counterparts: and the precise definitions
+>>>>>>> +//! of semantics can be found at [`LKMM`].
+>>>>>>> +//!
+>>>>>>> +//! [`LKMM`]: srctree/tools/memory-model/
+>>>>>>> +
+>>>>>>> +/// A compiler barrier.
+>>>>>>> +///
+>>>>>>> +/// A barrier that prevents compiler from reordering memory accesses across the barrier.
+>>>>>>> +pub(crate) fn barrier() {
+>>>>>>> +    // By default, Rust inline asms are treated as being able to access any memory or flags, hence
+>>>>>>> +    // it suffices as a compiler barrier.
+>>>>>>
+>>>>>> I don't know about this, but it also isn't my area of expertise... I
+>>>>>> think I heard Ralf talk about this at Rust Week, but I don't remember...
+>>>>>>
+>>>>>
+>>>>> Easy, let's Cc Ralf ;-)
+>>>>>
+>>>>> Ralf, I believe the question here is:
+>>>>>
+>>>>> In kernel C, we define a compiler barrier (barrier()), which is
+>>>>> implemented as:
+>>>>>
+>>>>> # define barrier() __asm__ __volatile__("": : :"memory")
+>>>>>
+>>>>> Now we want to have a Rust version, and I think an empty `asm!()` should
+>>>>> be enough as an equivalent as a barrier() in C, because an empty
+>>>>> `asm!()` in Rust implies "memory" as the clobber:
+>>>>>
+>>>>> 	https://godbolt.org/z/3z3fnWYjs
+>>>>>
+>>>>> ?
+>>>>>
+>>>>> I know you have some opinions on C++ compiler_fence() [1]. But in LKMM,
+>>>>> barrier() and other barriers work for all memory accesses not just
+>>>>> atomics, so the problem "So, if your program contains no atomic
+>>>>> accesses, but some atomic fences, those fences do nothing." doesn't
+>>>>> exist for us. And our barrier() is strictly weaker than other barriers.
+>>>>>
+>>>>> And based on my understanding of the consensus on Rust vs LKMM, "do
+>>>>> whatever kernel C does and rely on whatever kernel C relies" is the
+>>>>> general suggestion, so I think an empty `asm!()` works here. Of course
+>>>>> if in practice, we find an issue, I'm happy to look for solutions ;-)
+>>>>>
+>>>>> Thoughts?
+>>>>>
+>>>>> [1]: https://github.com/rust-lang/unsafe-code-guidelines/issues/347
+>>>>
+>>>> If I understood correctly, this is about using "compiler barriers" to order
+>>>> volatile accesses that the LKMM uses in lieu of atomic accesses?
+>>>> I can't give a principled answer here, unfortunately -- as you know, the
+>>>> mapping of LKMM through the compiler isn't really in a state where we can
+>>>> make principled formal statements. And making principled formal statements
+>>>> is my main expertise so I am a bit out of my depth here. ;)
+>>>>
+>>>
+>>> Understood ;-)
+>>>
+>>>> So I agree with your 2nd paragraph: I would say just like the fact that you
+>>>> are using volatile accesses in the first place, this falls under "do
+>>>> whatever the C code does, it shouldn't be any more broken in Rust than it is
+>>>> in C".
+>>>>
+>>>> However, saying that it in general "prevents reordering all memory accesses"
+>>>> is unlikely to be fully correct -- if the compiler can prove that the inline
+>>>> asm block could not possibly have access to a local variable (e.g. because
+>>>> it never had its address taken), its accesses can still be reordered. This
+>>>> applies both to C compilers and Rust compilers. Extra annotations such as
+>>>> `noalias` (or `restrict` in C) can also give rise to reorderings around
+>>>> arbitrary code, including such barriers. This is not a problem for
+>>>> concurrent code since it would anyway be wrong to claim that some pointer
+>>>> doesn't have aliases when it is accessed by multiple threads, but it shows
+>>>
+>>> Right, it shouldn't be a problem for most of the concurrent code, and
+>>> thank you for bringing this up. I believe we can rely on the barrier
+>>> behavior if the memory accesses on both sides are done via aliased
+>>> references/pointers, which should be the same as C code relies on.
+>>>
+>>> One thing though is we don't use much of `restrict` in kernel C, so I
+>>> wonder the compiler's behavior in the following code:
+>>>
+>>>       let mut x = KBox::new_uninit(GFP_KERNEL)?;
+>>>       // ^ KBox is our own Box implementation based on kmalloc(), and it
+>>>       // accepts a flag in new*() functions for different allocation
+>>>       // behavior (can sleep or not, etc), of course we want it to behave
+>>>       // like an std Box in term of aliasing.
+>>>
+>>>       let x = KBox::write(x, foo); // A
+>>>
+>>>       smp_mb():
+>>>         // using Rust asm!() for explanation, it's really implemented in
+>>>         // C.
+>>>         asm!("mfence");
+>>>
+>>>       let a: &Atomic<*mut Foo> = ...; // `a` was null initially.
+>>>
+>>>       a.store(KBox::into_raw(x), Relaxed); // B
+>>>
+>>> Now we obviously want A and B to be ordered, because smp_mb() is
+>>> supposed to be stronger than Release ordering. So if another thread does
+>>> an Acquire read or uses address dependency:
+>>>
+>>>       let a: &Atomic<*mut Foo> = ...;
+>>>       let foo_ptr = a.load(Acquire); // or load(Relaxed);
+>>>
+>>>       if !foo_ptr.is_null() {
+>>>           let y: KBox<Foo> = unsafe { KBox::from_raw(foo_ptr) };
+>>> 	// ^ this should be safe.
+>>>       }
+>>>
+>>> Is it something Rust AM could guarantee?
+>>
+>> If we pretend these are normal Rust atomics, and we look at the acquire
+>> read, then yeah that should work -- the asm block can act like a release
+>> fence. With the LKMM, it's not a "guarantee" in the same sense any more
+>> since it lacks the formal foundations, but "it shouldn't be worse than in
+>> C".
+> 
+>>
+>> The Rust/C/C++ memory models do not allow that last example with a relaxed
+>> load and an address dependency. In C/C++ this requires "consume", which Rust
+> 
+> Sorry I wasn't clear, of course I wasn't going to start a discussion
+> about address dependency and formal guarantee about it ;-)
+> 
+> What I meant was the "prevent reordering A and B because of the asm!()"
+> at the release side, because normally we won't use a restrict pointer to
+> a kmalloc() result, so I'm curious whether Box make the behavior
+> different:
+> 
+>      let mut b = Box::new_uninit(...);
+>      let b = Box::write(b, ...); // <- this is a write done via noalias
+>      asm!(...);
+>      a.store(Box::from_raw(b), Relaxed);
+> 
+> But looks like we can just model the asm() as a Rust release fence, so
+> it should work. Thanks!
 
->>=20
->>  (2) Why is there no build_assert() when the range exceeds the number of=
- bits
->>      of the target type? I would expect genmask_u64(0..100) to fail.
->
-> Doesn=E2=80=99t it?
->
-> There is a build_assert in the underlying bit implementation. It was redu=
-ndant
-> to have it both in bit_* and in genmask, because genmask calls bit().
->
-> In your example, bit_u64(100) hits that assert, and so it shouldn't compi=
-le.
+Yeah... this is actually a subtle case and there are some adjacent compiler bugs 
+(when doing the same with local variables, not Box), but those are bugs (and 
+they affect both C and Rust).
 
-Indeed, and it also works, except from doc-tests for some reason, which is =
-what
-I tried real quick. :)
+Kind regards,
+Ralf
 
->>  (3) OOC, why did you choose u32 as argument type?
->
-> No reason. i32 is the default integer type and signed integers don=E2=80=
-=99t make
-> sense here, so I chose u32.
->
-> Also, we can trivially promote integers to wider types,  but the other wa=
-y
-> around is not true. So my reasoning was that if you had u8, or u16s you c=
-ould
-> trivially get u32s using into(), but if you had u32s and e.g. genmask_u16
-> required u16s, you'd have to resort to try_into() or `as`, which is annoy=
-ing.
->
-> In any case, feel free to suggest anything else, I think.
-
-I feel like usize would be a better fit, but not a strong opinion.
