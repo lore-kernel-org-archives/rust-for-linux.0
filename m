@@ -1,187 +1,212 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2048.outbound.protection.outlook.com [40.107.94.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6A8CA5A;
-	Wed, 16 Jul 2025 01:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752630228; cv=fail; b=QkzjYHpzAITNF+VZXHXzfWmnQHmrAw0+fmiszQqKQrVr/Bz7S7DVRGEyv/QA8OkxKZJu/QxXrMnUg97Z1JmqpaNFNEtRxX4O+oow5gIb5yGQXkRJ1ELB5Em7vqO64sFWCSUg4R7Tuqd5h7q68wQzQMHZico3vaS7mSvMLxhZtfA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752630228; c=relaxed/simple;
-	bh=odAos/Tav8mcaCIjEzR8UTm1o9ck3pOgaHKN0i6Grpo=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=mWQCShTxElkwexBakPtlzx4I7TmBLDeIWCSrotjN8qr321vHlrjU6o1Drg2eRidgnncPBiEuR6VLZsU9gDocHB4jfUkj9zPwtC/dHlDnYTptjpGdIUpJOFEXmPi/6N8519jeC1CMv+kbq5jrY4fm2q+JMZl2PGDa3m8WGPxF6gE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Du3M+c8+; arc=fail smtp.client-ip=40.107.94.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E197218EBA
+	for <rust-for-linux@vger.kernel.org>; Wed, 16 Jul 2025 02:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752631605; cv=none; b=f+Bauva1nuHPjSWM1QimuHVhOGSqscsZZJwAD9ttDPm6Y4VS4URP4aGWJK7H9yUrMhOeSfVERMjEVTdbRG7igXMZPJAkoSbfefxWXzBaV3Wc1ZIAuyRAmEYOW6bGNCEb/Myi1e00ryEsVPAAvh3V51l4BQTMDf0gs7U3wc6/1IU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752631605; c=relaxed/simple;
+	bh=TPISs9NBFDN53Y3aUroY0WGCUZDIWplP0R+8uYAH4bo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LX+CSyNFBo0DJDpkySmA1cafFrcgFKQiDPS6QcRemndJ/nC0FvRHeBN+7KcFpgfdYaMIY1oPC9MCipt6dn24f/K5DTwwWRe3efZcYiOBrr3KbeZFZY4gDwoPwvgKTdxAb0/fZCWjadldXyTyt1cH2s+LklWRu+A6EbMoxq8v/kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=DSjdlGhS; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Du3M+c8+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Sp7j92qaBqKu28bxwcaxvxPh1wWYJTfBjE/1XgOn4VbhEbUkNWID595wyV0Ngms+DuR4pu93SVd0tKm8Cl0EZTppUCk6zEp/Ks+FUQk4AzXFrZXdXbQnBWW+VbFGrctTQ9CdllhTOib2FnfnrISAVID9Goujq1pfbNV4BSNF4XFloLsOca9JTJV6znlZxMlHdhcswG495MV11RoQO3fvG1r/o5YDdKqobeNq7POd2jshw5vxSo/4MUlmTMSQM4hOdRcTiZvhcPSRE7b9wzCnhvcm7gVEddiHaEfn8pG3s751OmYb55P29723jUTOGXOb/1KkEnLDMGpJ/BVjERqdMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dU0Bq4utsJESg3vB7PtygPXEPXxHtcqZ/H5JOIQA02o=;
- b=d3VY4oSLkMyu9umg5L/ZHMJCANUsoLu0xPvzallnw2y0xPuAviUl24n7wYef2D+MGw2x+SIsF6j/TGUe8YuxvVtZfDzYEx7Wam9VKnrZ4V4grF2A6oihBKJcpG5T6GXnsf5TnJBQzw6pj5qVRB8J39NHOy4SVNiMA+OlRD62zMRpa5OHeUnD6QIAWlL51ND27uXV5VtSkpyIP9KjwnVa9HZMwi8oBhZmQCyr1dmEk3I6GpQNacL9YiB5QelNJ+NNQQ5M7KhpNyn/TR1zsLYSte5+PdBtf4s/y+8TleTXoKDoLhbJol42PSC2NybiNuvmZnzeY2X7PC6ONW+V58y88g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dU0Bq4utsJESg3vB7PtygPXEPXxHtcqZ/H5JOIQA02o=;
- b=Du3M+c8+IhZ0sxhHr2NqeRocP5e+YcqU/ZOk2fx4Vq4p7hASm+ug7EF8fC9lBjoxAip7AC+rjUba3XkbBcmjiDq2nZQHqQsZjRiQxJDdyMx9K6DMDX86Ogf5OoxP5y84zlMPmwSUVjHaNVkr0ECrZXfoMOMEdY9/6BwQJbOMYUyVcZCdomnGb4EtsHrEOdh2u/h67VrZWJ8rBmDgyTdDYyO+b6WBqsjhFxWGEOxZv+PhEDc0WOXdxENLAIQwIYQD1tenAh4pZqvXoV95ckc9rnaLqRtzlNjZwzQHDV+G62G0UDTxbcPQYXSafxu9vv3V497G5KEb+qUyEIQEcSKWhg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH0PR12MB8032.namprd12.prod.outlook.com (2603:10b6:510:26f::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.22; Wed, 16 Jul
- 2025 01:43:44 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8901.021; Wed, 16 Jul 2025
- 01:43:44 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Jul 2025 10:43:41 +0900
-Message-Id: <DBD3K8IK7UO5.2887TW6EM1CK5@nvidia.com>
-Cc: <rust-for-linux@vger.kernel.org>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] gpu: nova-core: vbios: use size_of instead of magic
- number
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Rhys Lloyd" <krakow20@gmail.com>, <dakr@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250714104322.100511-1-krakow20@gmail.com>
- <20250714104322.100511-3-krakow20@gmail.com>
-In-Reply-To: <20250714104322.100511-3-krakow20@gmail.com>
-X-ClientProxiedBy: TYCP301CA0056.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:384::18) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="DSjdlGhS"
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3df2ddd39c6so23152385ab.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 15 Jul 2025 19:06:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1752631601; x=1753236401; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5j+F9L1888D1/lTB0yjly7TVvzjMYjvETcZUaJXOGrM=;
+        b=DSjdlGhSODTU8fT6Aw9TLtMH3N/iEdSvZKxeVopfidb1K6wf7w5EDQ9Ap3T3hXmmm3
+         dbqTd+uHD6nWju+4hClirXyxT7tqwI1ClajTD27h2T+M20IeDnCBeUhVFFckars8M4Te
+         0tyqlNrmqeFfY//U9hCdO1XKgFiZurvto1vcWpZNHJFyoOwzcuGTn3aA3Pg4q+ioYjea
+         QaGfk09z9+T3438UoawbjtztZvyh8QXV+peewcAhO5zZyUQqPmyFm2ar2wVep5OrtEGB
+         GIMv1tx/LjrNBhHkjj1FMJFbD9C7zVsllD0sUJNs4zVrAS8X21N0MXCyaXGODKcnluG2
+         sv0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752631601; x=1753236401;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5j+F9L1888D1/lTB0yjly7TVvzjMYjvETcZUaJXOGrM=;
+        b=TfPXi6iIXKBll/TceS4WPZ5j8lwUXddAe4D/bIdeRzxhY4SmcIgp7sNyiLyxYtw3kS
+         b/qcLzlGMqKruNC0ePwN++PyUqnr58/k0GkhO075AdNd7bIPT0d3l2Tnplr1X51TQvP0
+         UWCYqGNYUSOwUKdrfQnuQnp6z30HMV4wURBGC3sAjysZQ4PW+ge+L3MMHXZ0ucuo7S3i
+         N2DoJB9ogJYwiP+BRNyR6QCimEZeYmU3K4iRs0GDh3m4AQkcPaK5w1YrYGyXqcHg+wSn
+         UYXXrH+qDCHG3aGlMuTlAZBiiTJF/JGMnrwIfr+c0H5X9QnYklfd6W3l8iTr44Cj5BTV
+         +1zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTcvZpbeSgRBrsT6QwcxrBOrc6oyztphqabQHk3NtSy1Bdc+2luT1czASILKs+TUUU6Hy/0StqTmCQHBOE0A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMPjKWKLa5V8fkwQ+k2ma8/3Dw6tBz8L4cZaEPTzfk218we3LE
+	CoJMaWDyAVHRhKwZ2ma798bXPYW7OwA/k6A+uqWUG1ZdMrcSwQwWGs2yLnf1fbR+z4ULPR9uD3J
+	d5mQVp/3SKa1zhC6AVDIbdzPytxOfJmjoV5z3UMh7dw==
+X-Gm-Gg: ASbGncu8FoNCGnOm95RIf9MTHyzpD6E7X647Ezb3nNFayqSoSV2uilHwrTbA+4mdIIC
+	3dWME/pmjexxfnV3kt8ROSx8KqNiBRjy1JjUT6j7M7m5nGHffghyRktLDjvO4IMdQYdE/US7nAB
+	o0BIWAiVRZPblyG7pxkagrTCcuYrPSgtDFPS3HHR8l+zLvcEe8dkMzw72tR10K3cZS+QF3AM6hV
+	RTPZgyitayDmnAqAWX2
+X-Google-Smtp-Source: AGHT+IH9/HXYsLu/DJVcgXHmyW23optDc6uoRoN2rcWn2HHkb7B7VzOcj2uDSKGa9qQvekhhenVwxhU+VuPhiZoGO+E=
+X-Received: by 2002:a05:6e02:1aa3:b0:3df:3886:ad6e with SMTP id
+ e9e14a558f8ab-3e282e65b61mr10740485ab.12.1752631601151; Tue, 15 Jul 2025
+ 19:06:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH0PR12MB8032:EE_
-X-MS-Office365-Filtering-Correlation-Id: e34c319a-1c5c-41fe-562d-08ddc40a3318
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bjFmL0VrRkZaMG1RMTd1YmViejhpSTU1M2NRNFU4blZCOGlQRm9FQzY3QTQw?=
- =?utf-8?B?MkFpdVBTMTNsZGdBVGdBODBSNmZsNU5zNEUyZ2FHejhYV2FWSk0rdnM0d3B0?=
- =?utf-8?B?STlXcHFCOVoxc1ZwcEdjWFl0aExQYzZrNFBwUHlxN2U1akh6c1A4ZDhJQk9o?=
- =?utf-8?B?ODVBYytYL0tNTlFHQVBLeWJlTjUwUHU5cm9lbnpLQ1RLbWs5KzAyRVYwSzhm?=
- =?utf-8?B?dmhvYllEVlp4Qm5DeENzZy9OREh2S1JUMXp6dU1MSlgweDNWcHJEY2dNcTZB?=
- =?utf-8?B?SzdtamYxcndxUzkzQ25jY1ExckRSK3U1bmx6YUx1ZWlYVEVScy9zQUNGV1NY?=
- =?utf-8?B?U2NGM1l6Z2FYMi80dmNXUTJtdERNenRDeUc3RThFemxhVUNsUFpOWXlkTGVC?=
- =?utf-8?B?Y1F2SjZUSkozcFdNUTlxeWZqZXpNQnZRdFVrVC9mVm5pdlhSUU5zS0Ric2Fm?=
- =?utf-8?B?ZEZpNnM5NTR0VGcwbVVHT3dyN05VTUZTcmh5Tkp4UU5mZUVGa0tvYlRqL1JX?=
- =?utf-8?B?TmlyenRBK0lmWFJha2lVY0dCTnNXQnRRYVZiYmN2ZlIxcGlMM2g3ZkdzdTc4?=
- =?utf-8?B?cGFBdlkrTkxyUS8rb0xSUmR4OFJJc2lrMGVvYjFCbFN6d1hFVGhjbStha1Uv?=
- =?utf-8?B?cUhyWHJnbTVWcmdmZVNDdW5SclM1dHlNbTRoTXFDcFozNDdiWHVHaXUvSEVN?=
- =?utf-8?B?cWt0aHZnczBGNlo1elpUNkxLSWFGby8xRlZLbDZ6MFlxTzdCL0MweUVyc21X?=
- =?utf-8?B?V2FyY2xFZDUyMy92OVUzTzN0ZU5GZ2luK0NVQzYvVENxMWovalRHU3d5M3dI?=
- =?utf-8?B?emNxMmhyOGtNYVhWNm5JYTIzOHZPYlgzbkIveUxNczFwM05EL2NIWlNHc0dM?=
- =?utf-8?B?MFhoSkprckUwd0J4NStRb0FhRUtjaDlxcWhxb3daT3FReEJkT3lOczkrWml4?=
- =?utf-8?B?S05jU1RKdnhJZFpMSk8yOUs5bkJEU2dNRVFmQ0FSZXJyd3B5bEJGcXFPcGZo?=
- =?utf-8?B?MTgzcUZucmJRYWdFM0J4UCsvMURSYjJBbUlFY2RlUGJON3d5STlaUVlwQTht?=
- =?utf-8?B?a1VvZzdZa093azZVMFJwTXRsaVhKRHB3L0g0S1ZhaDdLOFA4U0xmbXJlTU5i?=
- =?utf-8?B?QTVwKzVYT09GbklvMTJMcGdqTi9KWVV1Ry9KTUxZbmdSTEVKNmMxUjBzRDNs?=
- =?utf-8?B?OUZIZHFSbjI5Z2dJNEIvNUFQbExsejE3d1ZpdEcrQlNzNi9NUER0ZkhXaUxS?=
- =?utf-8?B?Wlo1bjNXbGVXTlBoaTZNT0oycWozaEZ4djdUQkdocjh6QTVXTDB1T014enVR?=
- =?utf-8?B?ZnNtOHpOaFZRZXRBTjlXOTdVTFpRamVxV2pNNTd3WHFaY3JPQk9IWnpnR3ly?=
- =?utf-8?B?NXJBKytsWUVXUmRBaG1yK29ZZkkwS1JDVm4zMFhYNGFURXY0cm5weC9COC9P?=
- =?utf-8?B?OC8xakNxd3Y2M0NYTGQyT3NWUCtCZ3g5cGJjemNQRGFhaEFqSUZab3RXQUll?=
- =?utf-8?B?d1RNbU5PTDNZbEZpdWRUWmhQcHkrNXg5RE9ybmpwT1NWMWg1YnFBRG5aMEZE?=
- =?utf-8?B?Y1Fqb2h0RFY5Y1prWmVUZ2RwTGJ4TVRWMWZiV25iaDhmRVF6NVY5YjNIZ1Ew?=
- =?utf-8?B?cXd2MHVKbGVieFliOXVZL1ZlYXFWVkZJSVBBZU9JbHRPb1JXWDZ0WXJrMmlZ?=
- =?utf-8?B?SFBuQm9SU2xoRlBoMlNMdVppR29oZkhXOVBjaSsrUDhzTkVkSmVNNG9IUlRo?=
- =?utf-8?B?aTFlWmNOYk9MUjZ3L2YzclMwMjllbEYzR2wwSkRmSVgrUmUrTEQxenZMa1ZY?=
- =?utf-8?B?em9YbSt6SXJDT1hwQ0RlbGNEZkFJbXRsY05WcDl0RjRWc01ZaWJERU81V2hW?=
- =?utf-8?B?V3F4OFFCRXZwYzhCRDhuUnpmNk83cUx0Z1hsTDBXcnAxVVpFVlJxazBzb0VM?=
- =?utf-8?Q?vgzc9OpXf7k=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VmJISmtYSjN3TWhiTHVab3dZaUVjTjhWRVh1OWx0R2RsdVVEdkptSmx3dUVv?=
- =?utf-8?B?dWVpeFFxMUd1MDhCbzRSZXB0MTIzeUFmRG1SbHlkN2QrYmdZcWFXRDBNRDRE?=
- =?utf-8?B?dlo1NkpudFNqRTNKTEgxdUZ4MG92UlVBK2MrejNzWERXTnVVd0tMajhGSmlJ?=
- =?utf-8?B?VnVSb1hBNzc3bnRuOHNvVk52M1czbS8wb25hSzVPUUlzMWp5bDVLVEJhVDhx?=
- =?utf-8?B?dGs3TVlyeUhHL2dzVGJOWUpLaHQvZlk0dUI1K1J5OHBVYW5lczRCVzBXQXFx?=
- =?utf-8?B?R3pyb25pUHhiSDdIWEMyaC84NFgyVjR5Q3FMYzQ4VHlESjdaN3JxVEltc010?=
- =?utf-8?B?Kyt6YWtzVTYzMlplNUdlRlEwK1doTTdVRG5ndTlyTXd5TDNxWGhoMUtVcE1B?=
- =?utf-8?B?eUlMU08wTkh5QUxHNytXb0UxdEtWaHNNbTRndVNoVzVOUnA2bzdBSm51bVFW?=
- =?utf-8?B?OFM4RWtsOVpIZjR5aThwVTN0TlJxUE1ZN3BXa0w5N3NtWlNZS0NXUHkyVllq?=
- =?utf-8?B?QTdrNHlYMFhmWi9SUDhXczRuYjd6RURIbDcyMXFrOWpRbncwa1pJYVIxVTF0?=
- =?utf-8?B?STkzYUlZY3R6MndmM3JvYnRxa2prSjIwSGM0Y3NrNWxPYlpKb21rYzFxMkg3?=
- =?utf-8?B?RUdaZjhCMXRoUEhwVjV4T1lSRUxsRHhPc0czbUVoWVZTbUhZZHlOSHN6Qld2?=
- =?utf-8?B?dWc3ajhFY2hkcE84cXR1L25lK1M3RGVOVEhDZk9oZm9nbURldzNVRVM0RWxM?=
- =?utf-8?B?dzVvU1VxOFdsUGRFOC9LK0ZwZWRiaC9abDBvMTVRZW9hOEw1L2xQeHc2QWd2?=
- =?utf-8?B?VENKaTVQc0xZejQyMzMyQ09HZ2tGM201ZmhyZ3U5NnhTR3ora1cwQjkrTFJS?=
- =?utf-8?B?c2hWbVlFdlp6cm9odDg5QjdGM3BYVW1va0kzUGhEeURzNUtyQVROQ0R2ZGxL?=
- =?utf-8?B?Y1RSTzdJMHpjeHk5b0FSWmEzYWFmQmNQY1E3N1dkclVHQVFxclNMYytYS21h?=
- =?utf-8?B?bDBGQkQ3WTVGWGg3OUFuRTl2cDVjVk40dEVhTGg1cHhwaERVL0lnbkRPeEtk?=
- =?utf-8?B?MmpZQTJQYk9RTXlQbmFyWjBza3FCaHBYay9vNFlTUEg0bzFMS0tmamxNL2ZW?=
- =?utf-8?B?azlGQW9CcytxeDA2QWJRcXR3ZmdpOGNGT3lraUtpYk1vOXd6MmQ3MC81d3lH?=
- =?utf-8?B?ZGpKR3FRd2NteW5DaHExMG9pbFJ3M1lydDRMMzZPWmx3My9zTUhIQTVWd21m?=
- =?utf-8?B?WTMra3krWk9qbkR4andld3d0QU5WNk05ejVjdmNuSEJZemhYSHNPU0NMOFh6?=
- =?utf-8?B?L1gzV0FGV2dmQVA0Q21ncWlUbGpHT25CZzV2UitFSkVuWnc5alQvL1BwQU9u?=
- =?utf-8?B?Mk4vMkRnbHprWHN1d0RML3owdlltMVNQM28vT1ZZbFFSNEROVjFLYkRWUWR0?=
- =?utf-8?B?REZJMjloM2thNzVsZkRORmlaWnB3YWtGcUhwTDdUNkZVRXR5ckpLUSsyRlVZ?=
- =?utf-8?B?RDQ2MFZWTGpHeVhLc0hEN1RtN01hQTQxN0VxbHNPZXdrWmowTUU5YmVaempU?=
- =?utf-8?B?NkdDanFhRXFVOXBKMGp5VWJEU1lFWlhBbHkzeTY2TjlDZTNLdDVRQlZVaVlB?=
- =?utf-8?B?MTZNYWRjZUY4VjZzOXRLQXI4TjNPZGFybU4raUp5b2VQTzZieGhLcEZTbkJU?=
- =?utf-8?B?Y2RENWUweEhPQmkvcjFJL251RzdHVTN6K0plekZwNlJUZThMUjgvWnNlR0FI?=
- =?utf-8?B?NW1BeGhhZGVBeDRrKzZRN3NtMFV6VW1LSGR4d2JqUDZLRDd2clN0L3Nmd0U3?=
- =?utf-8?B?NWNUa29JTHo5VlFJc0NMbFlhU21PL0lGdUhpbFBWZGJRUTR6ZEdKWlNjM21r?=
- =?utf-8?B?VVBjUTIzSlRqMllOVlNpemZHb1hWSkJ1M3JPcE0wMzN5Y2wwVi9YUUpPQS9V?=
- =?utf-8?B?ZTRITE9NTFUzSnVoWnB0WTJxbG9GMmVYaTBuOUhRRVVuUzVOU2poMzdoZ3lD?=
- =?utf-8?B?UFFyM2xvcjZsd1h5bXFSYnozWjhDQnlOd3dJVm12aUtiL2xHVkNlTzJJRmhM?=
- =?utf-8?B?YVpvQlNtLytXUVZxa0tTaGh6bzRFbzBvckhvbUlaamdDS09SeGg2VGZDbnRG?=
- =?utf-8?B?SkpYcnIwQ2tBZUJUUUNiNi80UTZtZGx4RUdtT3ZMS1J3OTMvbzdWRFc1R2Rs?=
- =?utf-8?Q?kseTl/z3hSQEwubbCvdVZR78GMTI6SY+2mLMBjzB6oip?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e34c319a-1c5c-41fe-562d-08ddc40a3318
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2025 01:43:44.3936
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fAMtOJXrqqTjwFumAf8PLFOKbIzMRf4utHwOjGeoz6yWm9BxaZ0CM02clPCrHgxtwn/rI1lnU16ZA+1I9GRTUA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8032
+References: <20250604-v5_user_cfi_series-v17-0-4565c2cf869f@rivosinc.com>
+ <20250604-v5_user_cfi_series-v17-15-4565c2cf869f@rivosinc.com>
+ <CANXhq0pRXX_OMW2g2ui-k7Z_ZT+5a8Sra8oE28nBh5B9K2L5bQ@mail.gmail.com>
+ <CANXhq0p3MVLMsr_r0RWMti476pT0EMx61PQArjo2fUauTdpXaQ@mail.gmail.com> <CAKC1njRNkSfb_0pUQoH0RwJQhWTsz9sdg_3o08w-NuSO5WypcA@mail.gmail.com>
+In-Reply-To: <CAKC1njRNkSfb_0pUQoH0RwJQhWTsz9sdg_3o08w-NuSO5WypcA@mail.gmail.com>
+From: Zong Li <zong.li@sifive.com>
+Date: Wed, 16 Jul 2025 10:06:28 +0800
+X-Gm-Features: Ac12FXxQabhbT3gOiwtrnSWdGCnuEDBYfeHbjfUOFZRTxM5oaqlSklQMtx6WBCk
+Message-ID: <CANXhq0oZz=TTT=py=1BO3OZf45Wg=-bFyNpn+JRLNufHceLjcQ@mail.gmail.com>
+Subject: Re: [PATCH v17 15/27] riscv/traps: Introduce software check exception
+ and uprobe handling
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Christian Brauner <brauner@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Oleg Nesterov <oleg@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, Jann Horn <jannh@google.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+	richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
+	kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
+	evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
+	samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon Jul 14, 2025 at 7:43 PM JST, Rhys Lloyd wrote:
-> 12 is identical to the value of `size_of::<BitHeader>()`,
-> so use the latter instead.
+On Wed, Jul 16, 2025 at 5:34=E2=80=AFAM Deepak Gupta <debug@rivosinc.com> w=
+rote:
 >
-> Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
-> ---
->  drivers/gpu/nova-core/vbios.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi Zong,
 >
-> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios=
-.rs
-> index 663fc50e8b66..ac35415b4ffb 100644
-> --- a/drivers/gpu/nova-core/vbios.rs
-> +++ b/drivers/gpu/nova-core/vbios.rs
-> @@ -365,7 +365,7 @@ struct BitHeader {
-> =20
->  impl BitHeader {
->      fn new(data: &[u8]) -> Result<Self> {
-> -        if data.len() < 12 {
-> +        if data.len() < core::mem::size_of::<Self>() {
+>
+> On Thu, Jun 19, 2025 at 7:16=E2=80=AFPM Zong Li <zong.li@sifive.com> wrot=
+e:
+> >
+> > On Mon, Jun 16, 2025 at 3:31=E2=80=AFPM Zong Li <zong.li@sifive.com> wr=
+ote:
+> > >
+> > > On Thu, Jun 5, 2025 at 1:17=E2=80=AFAM Deepak Gupta <debug@rivosinc.c=
+om> wrote:
+> > > >
+> > > > zicfiss / zicfilp introduces a new exception to priv isa `software =
+check
+> > > > exception` with cause code =3D 18. This patch implements software c=
+heck
+> > > > exception.
+> > > >
+> .....
+>
+> > > When a user mode CFI violation occurs, the ELP state should be 1, and
+> > > the system traps into supervisor mode. During this trap, sstatus.SPEL=
+P
+> > > is set to 1, and the ELP state is reset to 0. If we don=E2=80=99t cle=
+ar
+> > > sstatus.SPELP, the ELP state will become 1 again after executing the
+> > > sret instruction. As a result, the system might trigger another
+> > > forward CFI violation upon executing the next instruction in the user
+> > > program, unless it happens to be a lpad instruction.
+> > >
+> > > The previous patch was tested on QEMU, but QEMU does not set the
+> > > sstatus.SPELP bit to 1 when a forward CFI violation occurs. Therefore=
+,
+> > > I suspect that QEMU might also require some fixes.
+> >
+> > Hi Deepak,
+> > The issue with QEMU was that the sw-check exception bit in medeleg
+> > couldn't be set. This has been fixed in the latest QEMU mainline. I
+> > have re-tested the latest QEMU version, and it works.
+>
+> What was this issue, can you point me to the patch in mainline?
 
-I agree, but would feel better if we also made `BitHeader` `#[repr(C)]`
-to really guarantee this.
+Hi Deepak
+The issue was that my QEMU setup somehow missed the change of
+`target/riscv/csr.c` in your following patch:
+https://github.com/qemu/qemu/commit/6031102401ae8a69a87b20fbec2aae666625d96=
+a
+After I upgraded to the latest QEMU source, I found the kernel issue
+if we didn't clear sstatus.SPELP in the handler
+Thanks
 
-(or please educate me if this is unneeded :))
+>
+> >
+> > >
+> > > Thanks
+> > >
+> > > > +
+> > > > +       if (is_fcfi || is_bcfi) {
+> > > > +               do_trap_error(regs, SIGSEGV, SEGV_CPERR, regs->epc,
+> > > > +                             "Oops - control flow violation");
+> > > > +               return true;
+> > > > +       }
+> > > > +
+> > > > +       return false;
+> > > > +}
+> > > > +
+> > > > +/*
+> > > > + * software check exception is defined with risc-v cfi spec. Softw=
+are check
+> > > > + * exception is raised when:-
+> > > > + * a) An indirect branch doesn't land on 4 byte aligned PC or `lpa=
+d`
+> > > > + *    instruction or `label` value programmed in `lpad` instr does=
+n't
+> > > > + *    match with value setup in `x7`. reported code in `xtval` is =
+2.
+> > > > + * b) `sspopchk` instruction finds a mismatch between top of shado=
+w stack (ssp)
+> > > > + *    and x1/x5. reported code in `xtval` is 3.
+> > > > + */
+> > > > +asmlinkage __visible __trap_section void do_trap_software_check(st=
+ruct pt_regs *regs)
+> > > > +{
+> > > > +       if (user_mode(regs)) {
+> > > > +               irqentry_enter_from_user_mode(regs);
+> > > > +
+> > > > +               /* not a cfi violation, then merge into flow of unk=
+nown trap handler */
+> > > > +               if (!handle_user_cfi_violation(regs))
+> > > > +                       do_trap_unknown(regs);
+> > > > +
+> > > > +               irqentry_exit_to_user_mode(regs);
+> > > > +       } else {
+> > > > +               /* sw check exception coming from kernel is a bug i=
+n kernel */
+> > > > +               die(regs, "Kernel BUG");
+> > > > +       }
+> > > > +}
+> > > > +
+> > > >  #ifdef CONFIG_MMU
+> > > >  asmlinkage __visible noinstr void do_page_fault(struct pt_regs *re=
+gs)
+> > > >  {
+> > > >
+> > > > --
+> > > > 2.43.0
+> > > >
