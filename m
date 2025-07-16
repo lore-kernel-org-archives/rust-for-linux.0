@@ -1,105 +1,114 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10809295504;
-	Wed, 16 Jul 2025 22:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CC72B9BA;
+	Wed, 16 Jul 2025 22:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752706187; cv=none; b=jq6WJxhrV+8grjn60KLeo2lM5j30LNppth8/FdNo5olfIHOxtX4B1ptgCXHA7jrvxYCGbPx/4Tr/FRP/0+RSoo0fEfEe+jx9c+B7X5usoNqKYPria4d5/Se6esxQzwiegZ5QZeDNAcJeoG6XMI9XWkhr7oeU0gC+AUuQ8nHtnJU=
+	t=1752706204; cv=none; b=boR8RyLpmcWhqMQTRZqAdomfN+kuB2gKqNoRF5CmDwJ+AjLjfrfvxXgCL9aaNUJ6cF88rp4TNus0K982HnyHvawDMatGveQrmqXw07wlM1ldinhB/Y27NolGZAa1Bl2ANUPR9RB1x+htATqwW0IPntiJhGDq6IorZ4DzUR2tSX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752706187; c=relaxed/simple;
-	bh=EyJTuRR9KSK4RX5G5/kJLBZK7Ju6ILW5wpu/i9l2HkE=;
+	s=arc-20240116; t=1752706204; c=relaxed/simple;
+	bh=OfUMEMQOMzzSGQFLVdUDoMaa4cvjgwf9psymKx3Lkjg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DXbK+BHEkeYKL/FM96ydecvBhBlORNtQhcG/fBKYvJo0uqEI/o/9iUsIpLP1JL0Oqzvf1JMKG6wJr8KNCB7hAnn88KlWTzuDwsDPGZzDdztzbxmcCQ+w8nekIIe1Jp1YBvI/AUVv0G0KtOcKHLKynu/+r4lyyH8zHidV29+NHnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PpPd7o+L; arc=none smtp.client-ip=209.85.216.43
+	 To:Cc:Content-Type; b=QjQRvxQ0cqGcoOrqqPi7Fpt4vgD4YlMVh+zUeoqhJa8qhCx6bqVw8A2drqBP5ymC4vtLc4WbSOGiLDpHHglVKqn0uhkTwDXLCgC1WFyUfmi6AVV/Gdx2oJGEpY3znlFh5MaLjOXnxn+BOfBmsZKzmzMIZ5q3zMNPGYsIgw3dk0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YrfSYGoI; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PpPd7o+L"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-31306794b30so69276a91.2;
-        Wed, 16 Jul 2025 15:49:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YrfSYGoI"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-313290ea247so65856a91.3;
+        Wed, 16 Jul 2025 15:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752706185; x=1753310985; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752706202; x=1753311002; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v//3UBkCMbiLFLeuBtGql5RmFNCDtwUoFx4ncSofsIg=;
-        b=PpPd7o+LeRkk8v9OufDo1LpfId32/i2HjIvW8sD03ZZzT6HGTgCAv67SwATbG2qrrh
-         pfNyu7Fq7KuzhxjTnAEpMXYjgY2HF3r+SW1AuduoqYM+K//XiVzBGXoP4KHTYyg+YPhG
-         KutxabihZJslMsYlSzjXK9KG21UWrRED5XOs+FP8XZ/+KA3TrnqPyXWiNkO8LED2ECOV
-         nojfMH3iQpch69Gn9yTaDJH5E5k+92iPAvRiOUacBNlsTUmlyhks71rKpgOr63ca3fAu
-         xhn36/uIPLVni6vTOOICCsM/4ZQ66dmlYox+BaGr683rKJXLGJC/fNqSmb86+5xBMxvc
-         REYQ==
+        bh=MbH+u1rodwpAxNucK/64q5+dFLdR7tYEvjWaz3anAlk=;
+        b=YrfSYGoIM/+tV4v8nRqrhVWHhRygDH0ZkL/rqBXqDzjBylDtQHORjcXpomyGG4DkmU
+         OCD/NiiKRT7+bwe1tsPxG9rbnMXicwHPPE5Zf5kaop2Ke9WEoebFFC4E2SFPqHiISrmD
+         cDiJRsN1p8Fb1Io9JfT/tcT0tK/eBV58xyOM+xK8TJanse3gTJKVVbX7mG6jJP5x++Pi
+         fool7zGXmHKHPOrrWAlIruW5tD9lsjggMRgHTib01eW2EfvdAcf/G/NRWXP+3pCSq/H3
+         vND/e3xj1lIUFuEUoLOV7FHZSgF+daXmZPCloQRi+NXKiUrftn7xxamQnmaRaUra0hG3
+         P3Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752706185; x=1753310985;
+        d=1e100.net; s=20230601; t=1752706202; x=1753311002;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=v//3UBkCMbiLFLeuBtGql5RmFNCDtwUoFx4ncSofsIg=;
-        b=fEaURp8LsFMUthjNrPfACC9SMTAxGVrIojowE3GS/ouo1d99jeqGO/iXSWVa9t2j2U
-         peLCCAB1gkq49jClNlQOlaxKjEXDChDREW2eF0KgCc91PstXiv4ecDXU+q5FuerBQXbQ
-         J84Fw1v8dV/ynnkkJb6Ce9B1diI/ez6i6A0vfcsR6NaWykmc/08NDgJq06nQJIgOW2Wv
-         sYGMahtO2EU0STjggsvN3A5ERh3UHZjaTPXBFaojSp1ZtKfHeLO89KeDR1oevzmadc//
-         NmhuFeRNSNAQ+VO4o3io0z2G/6lkGOSOPde+IZss8Ulu14z20T2GFb51ts0ViknVccZv
-         JVdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUmzGMMxB+CswOPWgyPUVUjUFxMqvzmGMfKtsBsYAuKBzb2FEXS5eXUaNZ6E2y7RNzXv/w2TWb8S7jHkEOugGY=@vger.kernel.org, AJvYcCXTwKUTd6v6vgVATIWJ9nfAYtC2m3bLonZMFRapyBJuIelLlrRfnpVG0QC1G3mn/LUiLG4yJBCXq4U26JU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIJcjYLtYH3KqcEyKFaQNYfGEhCUNDf21JapAnEz0Q4nd6rCxL
-	WbEneMkc8g812XHDZ5OjTfinYTGtOL3Y6cBcQ5EbmPea90ISkIzWOJ9Rf20l+QR3bd2IxFY6K2G
-	Dkqb9CuoZoNL++cYHkJhdddddHwHX3M4=
-X-Gm-Gg: ASbGncvF1sHLNRao5A3Eky97ZkEidUPKZDO3k7bpR4ygmWMgEb4/jkh+JYBMJk7qw/T
-	4SdnrP5SWuRGlonsmvb/CBjAbMAOPk/bR0HtGGBNeMWo7jP2QkhHQCBpVNZoT3JH6Xab9lhAZeC
-	y3B1I51YMy6zhJqxHjqzmJTn8HgVZffjS4XL9LTtR5ElyRhbXLbG6kfTWMZSIzR8vjdW6FhODLG
-	aCsJA==
-X-Google-Smtp-Source: AGHT+IF2FyfdRt4/WjI7YWqu6cvz+ZQn0OnT19l1sxu4Z2oAw3gTfBbYI/cvlgLvUs3kU5QRfXuJ8gwGg8NFl38Sk+I=
-X-Received: by 2002:a17:903:1a68:b0:236:71f1:d345 with SMTP id
- d9443c01a7336-23e24ecb7damr28125495ad.1.1752706185220; Wed, 16 Jul 2025
- 15:49:45 -0700 (PDT)
+        bh=MbH+u1rodwpAxNucK/64q5+dFLdR7tYEvjWaz3anAlk=;
+        b=XNTNAeIg0n4ZBNJ2o1g2ohjPbi8ZgJZk/ePa5zJtGMgWib8XPGos1A1YmqWfk44ro7
+         shmFoCAUF/kNluCHe+BX1V7kwLpNgdfYqXOdRzBVGDtjO748tpBu5F1fCgjeeK5ytXll
+         J5ZNXLHZRSvdgyItB5N0QFZXe7KQjwGkW+jWZJz9aLTCXD4mXk6HVtXfO4YfWlU/9OVU
+         YNKRHoBVBLrPu/nVe0TMpfctVqL8iQyQ/xNUkaY50I2p2VnYGAA4hehlXDeuHLnOU0BL
+         qgeQpV1QzCidftyXv054AyHYsgOE3Vqh80re39kh1vXVTMZ+fvZbgSBpvlIyKNzxwMfn
+         4FZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVV1JPwTUOFUEC96k4JUBclCbLG0c+jf8/7Mj/IjFSnRFgpOIK4MZP5fCx8haBTt2CAX3eua/+5A2Ot1HIcihY=@vger.kernel.org, AJvYcCW3sDEF8+zhk1OWryj8G6X64QUG7s9mQofN8pWn8ArP2D0dJgrO3+SwLL4ZyOEf1zQoIOHqTk+ryZA4yCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5WnXj210zLrWPATJ+oT5ouxUbLaYBzuBvr8qFGfAXpgl4TBil
+	Ohha8hAXP7TnD6GjaXlplSm3nUmxbqb/vem/vduCi+T5endKUl9hi7nibRS/r4q4qRIMqeMn/Aw
+	QNmsj3EOCOIP2qh/htsWwl/+xPkZ27gc=
+X-Gm-Gg: ASbGncsU4EhkaeV1pckzXu++aTQgXD76xflCh2EOpH3OauB+fTr6iahIPUZ2LdzwhpL
+	GNpv7sj49ifQQwEbRGYEMqyTpSUKpiXa+L2CAku+tihCrmBjIKVAJ+FHcU21GllZ6Tfgtsdywdi
+	HTXlwz/moekxWB8MK4SmgJoR8PhmOEuYPxzdnTosqX2qXcXhL7KIpi6Yl5Soplvyrhh2kpqdp1O
+	x1LcA==
+X-Google-Smtp-Source: AGHT+IH/Ka6hw5E7gG36YyGJiFuuWuCKIIhNvFZcbhwn5egc+1wUI4lMTxD9cYoe0tsgADSzp//4XWshYb9b14UOmDY=
+X-Received: by 2002:a17:90b:3b4c:b0:312:e9d:3fff with SMTP id
+ 98e67ed59e1d1-31c9e6e8353mr2688611a91.1.1752706201861; Wed, 16 Jul 2025
+ 15:50:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624-opaque-from-raw-v2-0-e4da40bdc59c@google.com>
-In-Reply-To: <20250624-opaque-from-raw-v2-0-e4da40bdc59c@google.com>
+References: <20250711-workqueue-delay-v3-1-3fe17b18b9d1@google.com>
+In-Reply-To: <20250711-workqueue-delay-v3-1-3fe17b18b9d1@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 17 Jul 2025 00:49:32 +0200
-X-Gm-Features: Ac12FXz9BaX-Wl5vT6RJ3n-TUcpyTsdzFMKNs4pOPLbp14a-OstkS9DkN8Ggm-c
-Message-ID: <CANiq72kyhTMkZxizgL0Uu1NEbeGP=G09VP+Evb47mg4FyxZJZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Add Opaque::cast_from
+Date: Thu, 17 Jul 2025 00:49:48 +0200
+X-Gm-Features: Ac12FXwbBrk8wwAlRr13R4eh9A_hS75UpMEt3Vnbz8b2DxoYGuJFLuERBeNx7qo
+Message-ID: <CANiq72mwz1_CV9Gckcdg-WRa1ufOrKNU1Z8V9rM6POcwesD4KA@mail.gmail.com>
+Subject: Re: [PATCH v3] workqueue: rust: add delayed work items
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+Cc: Tejun Heo <tj@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Lai Jiangshan <jiangshanlai@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Benno Lossin <lossin@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 24, 2025 at 5:28=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+On Fri, Jul 11, 2025 at 9:59=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
 rote:
 >
-> Since commit b20fbbc08a36 ("rust: check type of `$ptr` in
-> `container_of!`") we have enforced that the field pointer passed to
-> container_of! must match the declared field. This caused mismatches when
-> using a pointer to bindings::x for fields of type Opaque<bindings::x>.
+> This patch is being sent for use in the various Rust GPU drivers that
+> are under development. It provides the additional feature of work items
+> that are executed after a delay.
 >
-> This situation encourages the user to simply pass field.cast() to the
-> container_of! macro, but this is not great because you might
-> accidentally pass a *mut bindings::y when the field type is
-> Opaque<bindings::x>, which would be wrong.
+> The design of the existing workqueue is rather extensible, as most of
+> the logic is reused for delayed work items even though a different work
+> item type is required. The new logic consists of:
 >
-> To help catch this kind of mistake, add a new Opaque::cast_from that
-> wraps a raw pointer in Opaque without changing the inner type. Also
-> rename raw_get() to cast_into() for naming consistency.
+> * A new DelayedWork struct that wraps struct delayed_work.
+> * A new impl_has_delayed_work! macro that provides adjusted versions of
+>   the container_of logic, that is suitable with delayed work items.
+> * A `enqueue_delayed` method that can enqueue a delayed work item.
 >
+> This patch does *not* rely on the fact that `struct delayed_work`
+> contains `struct work_struct` at offset zero. It will continue to work
+> even if the layout is changed to hold the `work` field at a different
+> offset.
+>
+> Please see the example introduced at the top of the file for example
+> usage of delayed work items.
+>
+> Acked-by: Tejun Heo <tj@kernel.org>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Applied (yesterday) to `rust-next` -- thanks everyone!
 
-    [ Removed `HrTimer::raw_get` change. - Miguel ]
+    [ Replaced `as _` with `as ffi::c_int` to clean warning. - Miguel ]
 
 Cheers,
 Miguel
