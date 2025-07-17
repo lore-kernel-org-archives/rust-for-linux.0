@@ -1,205 +1,210 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E9728B417;
-	Thu, 17 Jul 2025 10:39:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB61289367;
+	Thu, 17 Jul 2025 11:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752748748; cv=none; b=LmxhE5vieZquZTEitOKLFxMwsieNo4o1IFbc+9e4iqaYM+3wtQWtnSBmdptwerhe/geHWCycGGAKrxXJ5bJRU0Lz23ER/DDPGHpWS16Jt8hbPoubOvpStprfnMdSMYKunG2ocJyNUmz509k0fnA6H7dGa1eTMsCGHvwRrH+S29E=
+	t=1752751151; cv=none; b=pcj/Tusp2keBSjV5aw00j4eZGwdX/OW5wgeWxjfPpIex0kq7GVm7KhhLme19seRoxmYnjIe5JzjPEeTrmphOCVQ4Tt/wbT1ONkm801GTX5zshvsNJftX/KPnIPZpOl/ZJWxtrfhOTUvJOswXae58rAvJJwTZ3TgU/LbXoeeuWnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752748748; c=relaxed/simple;
-	bh=5kckD7qWJjoNwwtUMh9lLheMb6Y+w5XdwJimULnKoj0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IMdayJHVneybGhsV1eqHi77V1sWLJOCgN/J18p6bl4br2MRK5iqii85tKDZ1JOl4EldoMgBbfXI+U9iLFn7WDOiOPe1VvJ3InVn48hmeW93ezn4y0UU1X3VvRPDpPBgp8PYjE8Abwcz+wKrOvxBLouOVpe0jUkVep13SeKPj8Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8FEF1596;
-	Thu, 17 Jul 2025 03:38:57 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A4393F6A8;
-	Thu, 17 Jul 2025 03:39:03 -0700 (PDT)
-Date: Thu, 17 Jul 2025 11:38:56 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: =?utf-8?B?5YiY5rW354eVIChIYWl5YW4gTGl1KQ==?= <haiyan.liu@unisoc.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	=?utf-8?B?5Luj5a2Q5Li6IChaaXdlaSBEYWkp?= <Ziwei.Dai@unisoc.com>,
-	=?utf-8?B?5ZGo5bmzIChQaW5nIFpob3UvOTAzMik=?= <Ping.Zhou1@unisoc.com>,
-	=?utf-8?B?5p2o5Li95aicIChMaW5hIFlhbmcp?= <lina.yang@unisoc.com>,
-	=?utf-8?B?546L5Y+MIChTaHVhbmcgV2FuZyk=?= <shuang.wang@unisoc.com>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>
-Subject: Re: Meet compiled kernel binaray abnormal issue while enabling
- generic kasan in kernel 6.12 with some default KBUILD_RUSTFLAGS on
-Message-ID: <aHjSwCK98Bpgu_jb@J2N7QTR9R3>
-References: <4c459085b9ae42bdbf99b6014952b965@BJMBX01.spreadtrum.com>
+	s=arc-20240116; t=1752751151; c=relaxed/simple;
+	bh=UGme35FMYts4C+w0JEhpFk9WMpbpTAudZRkRDn7b2nw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qDI1jEeaTJuSdys2kkXgN62q17ftefZmpiH2CloPhb9sEzRbIq/KttA7zc5PBjy3BG1EJJg7g+Vere1lOhsJpyww8EZRTpsTmD7qGuXzEHeaH9i5jPsfTbO8JPii4spV0OTVblCbOyI385L++S/ZhInIlH1UT2t/Ov3tAby8t84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKzjy+23; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKzjy+23"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D773C4CEE3;
+	Thu, 17 Jul 2025 11:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752751151;
+	bh=UGme35FMYts4C+w0JEhpFk9WMpbpTAudZRkRDn7b2nw=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=OKzjy+233mvOwYar9R1WZxxyhXVS/VNF+OjpeRyyzXy+9AQVnO8C6tSNiTxNgN1JO
+	 LptR++4v6Aslau5497vxGp0yIwBV74Kcjl4DevatuT7ZqstnNKIcXBXqbEkhgiMAST
+	 qUdo4l+yxl6N+vtLQfyI7HcxLFQK7uFVHg4EWsWia4vX/2TZcMoqMuNSdiieDO5EE6
+	 Md9GGo64q7f+vktG8iQ2XE1iLrUk+AT53hRzS/jLx7T5PieDAJPjCq1qiyx5Pq6LEA
+	 o6wbbZbYJqPA0d29BO2SsItyvknesQ9KkyB4yTDXer7ZcCNvTBxWL2BnVv0R8CbiTY
+	 U8MxDSaWsmgLw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4c459085b9ae42bdbf99b6014952b965@BJMBX01.spreadtrum.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Jul 2025 13:19:05 +0200
+Message-Id: <DBEAFCFHFU35.1IZI3ZSJSIRAY@kernel.org>
+Subject: Re: [PATCH v2] rust: add a sample alloc usage
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Hui Zhu"
+ <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>
+To: "Hui Zhu" <hui.zhu@linux.dev>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250717095053.49239-1-hui.zhu@linux.dev>
+In-Reply-To: <20250717095053.49239-1-hui.zhu@linux.dev>
 
-Hi,
+(Cc: Lorenzo, Vlastimil, Liam, Uladzislau)
 
-From a quick scan, I think this might have something to do with
-UNWIND_PATCH_PAC_INTO_SCS, notes below.
+On Thu Jul 17, 2025 at 11:50 AM CEST, Hui Zhu wrote:
+> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> index bd2faad63b4f..7c3e68d9ada5 100644
+> --- a/samples/rust/Makefile
+> +++ b/samples/rust/Makefile
+> @@ -10,6 +10,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+=3D rust_dri=
+ver_platform.o
+>  obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+=3D rust_driver_faux.o
+>  obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+=3D rust_driver_auxiliary.o
+>  obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+=3D rust_configfs.o
+> +obj-$(CONFIG_SAMPLE_RUST_ALLOC)		+=3D rust_alloc.o
 
-On Mon, Jul 14, 2025 at 03:12:33AM +0000, 刘海燕 (Haiyan Liu) wrote:
-> I am enabling generic kasan feature in kernel 6.12, and met kernel boot crash.
-> Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
-> pc : do_basic_setup+0x6c/0xac
-> lr : do_basic_setup+0x88/0xac
-> sp : ffffffc080087e40
+I think adding an example for large alignment is fine, but let's do this in=
+ a
+doc-test on VBox in rust/kernel/alloc/kbox.rs. I think adding a separate mo=
+dule
+for this is overkill.
 
-Can you say which hardware this is on? Given this is a NULL-dereference,
-this looks ike a dodgy pointer (or memory corruption) rather than a PAC
-failure.
+Note that doc-tests are executed on boot if CONFIG_RUST_KERNEL_DOCTESTS=3Dy=
+.
 
-> After debug, I find some error in do_ctors().
-> Normally, the complier should insert the paciasp instruction at the function entry so that its corresponding autiasp instruction is used to validate the return address when the function returns.
-> NSX:FFFFFFC0800A840C|F800865E     asan.module_ctor:   str  x30,[x18],#0x8；x30,[x18],#8
-> NSX:FFFFFFC0800A8410|A9BF7BFD                       stp     x29,x30,[sp,#-0x10]!   ; x29,x30,[sp,#-16]!
-> NSX:FFFFFFC0800A8414|910003FD                       mov     x29,sp
-> NSX:FFFFFFC0800A8418|B0023420                       adrp    x0,0xFFFFFFC08472D000
-> NSX:FFFFFFC0800A841C|91390000                       add     x0,x0,#0xE40     ; x0,x0,#3648
-> NSX:FFFFFFC0800A8420|528000A1                       mov     w1,#0x5          ; w1,#5
-> NSX:FFFFFFC0800A8424|9422AF50                       bl      0xFFFFFFC080954164   ; __asan_register_globals
-> NSX:FFFFFFC0800A8428|A8C17BFD                       ldp     x29,x30,[sp],#0x10   ; x29,x30,[sp],#16
-> NSX:FFFFFFC0800A842C|F85F8E5E                       ldr     x30,[x18,#-0x8]!   ; x30,[x18,#-8]!    
-> NSX:FFFFFFC0800A8430|D65F03C0                       ret
+> diff --git a/samples/rust/rust_alloc.rs b/samples/rust/rust_alloc.rs
+> new file mode 100644
+> index 000000000000..61efde37b5f2
+> --- /dev/null
+> +++ b/samples/rust/rust_alloc.rs
+> @@ -0,0 +1,88 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (c) 2025, Kylin Software
+> +
+> +//! Rust alloc sample.
+> +
+> +use kernel::bindings;
+> +use kernel::prelude::*;
+> +
+> +module! {
+> +    type: RustAlloc,
+> +    name: "rust_alloc",
+> +    authors: ["Rust for Linux Contributors"],
+> +    description: "Rust alloc sample",
+> +    license: "GPL",
+> +}
+> +
+> +const VBOX_SIZE: usize =3D 1024;
+> +const VBOX_LARGE_ALIGN: usize =3D bindings::PAGE_SIZE * 4;
 
-Here you evidently have shadow call stack enabled...
+Please use kernel::page::PAGE_SIZE instead.
 
-> NSX:FFFFFFC0800A8478|D503233F  asan.module_ctor:    paciasp                                         
-> NSX:FFFFFFC0800A847C|A9BF7BFD                       stp     x29,x30,[sp,#-0x10]!   ; x29,x30,[sp,#-16]!
-> NSX:FFFFFFC0800A8480|910003FD                       mov     x29,sp
-> NSX:FFFFFFC0800A8484|B0023420                       adrp    x0,0xFFFFFFC08472D000
-> NSX:FFFFFFC0800A8488|913E0000                       add     x0,x0,#0xF80     ; x0,x0,#3968
-> NSX:FFFFFFC0800A848C|52800021                       mov     w1,#0x1          ; w1,#1
-> NSX:FFFFFFC0800A8490|9422AF35                       bl      0xFFFFFFC080954164   ; __asan_register_globals
-> NSX:FFFFFFC0800A8494|A8C17BFD                       ldp     x29,x30,[sp],#0x10   ; x29,x30,[sp],#16
-> NSX:FFFFFFC0800A8498|D50323BF                       autiasp                                         
-> NSX:FFFFFFC0800A849C|D65F03C0                       ret
+> +const KVEC_VAL: [usize; 3] =3D [10, 20, 30];
+> +
+> +#[repr(align(128))]
+> +struct VboxBlob([u8; VBOX_SIZE]);
+> +
+> +// This structure is used to test the allocation of alignments larger
+> +// than PAGE_SIZE.
+> +// Since this is not yet supported, avoid accessing the contents of
+> +// the structure for now.
+> +#[allow(dead_code)]
+> +#[repr(align(8192))]
+> +struct VboxLargeAlignBlob([u8; VBOX_LARGE_ALIGN]);
+> +
+> +struct RustAlloc {
+> +    vbox_blob: VBox<VboxBlob>,
+> +    kvec_blob: KVec<usize>,
+> +}
+> +
+> +fn check_align(addr: usize, align: usize) -> bool {
+> +    debug_assert!(align.is_power_of_two());
+> +    if addr & (align - 1) !=3D 0 {
+> +        pr_err!("Address {:#x} is not aligned with {:#x}.\n", addr, alig=
+n);
+> +        false
+> +    } else {
+> +        true
+> +    }
+> +}
 
-... but here you evidently don't, and have PAC instead.
+I think check_align() is unnecessary -- we don't need to test this in this
+context.
 
-Are these from the same kernel Image?
+Instead, I suggest to add some doc-tests to the `Allocator` impls for `Kmal=
+loc`,
+`Vmalloc` and `KVmalloc` in rust/kernel/alloc/allocator.rs testing that the=
+y
+return the expected alignment. This would be a valuable test case for those=
+. If
+you're interested in adding them, please feel free to do so. :)
 
-Are these decoded from the static kernel binary, or are these dumps from
-memory once a kernel has booted (or is in the process of booting)?
+> +impl kernel::Module for RustAlloc {
+> +    fn init(_module: &'static ThisModule) -> Result<Self> {
+> +        pr_info!("Rust allocator sample (init)\n");
+> +
+> +        let vbox_blob =3D VBox::<VboxBlob>::new_uninit(GFP_KERNEL)?;
+> +        if !check_align(vbox_blob.as_ptr() as usize, 128) {
+> +            return Err(EINVAL);
+> +        }
+> +        let vbox_blob =3D vbox_blob.write(VboxBlob([0xfeu8; VBOX_SIZE]))=
+;
 
-> But actually, in two asan.module_ctor functions, there is only autiasp  instruction inserted before return, for validation of return address, while paciasp instruction is missing before.
-> NSX:FFFFFFC0800A72D8|F800865E  asan.module_ctor:    str     x30,[x18],#0x8   ; x30,[x18],#8          
-> NSX:FFFFFFC0800A72DC|F81F0FFE                       str     x30,[sp,#-0x10]!   ; x30,[sp,#-16]!
-> NSX:FFFFFFC0800A72E0|B00233C0                       adrp    x0,0xFFFFFFC084720000
-> NSX:FFFFFFC0800A72E4|91350000                       add     x0,x0,#0xD40     ; x0,x0,#3392
-> NSX:FFFFFFC0800A72E8|52803D61                       mov     w1,#0x1EB        ; w1,#491
-> NSX:FFFFFFC0800A72EC|9422B39E                       bl      0xFFFFFFC080954164   ; __asan_register_globals
-> NSX:FFFFFFC0800A72F0|F84107FE                       ldr     x30,[sp],#0x10   ; x30,[sp],#16
-> NSX:FFFFFFC0800A72F4|D50323BF                       autiasp                                         
-> NSX:FFFFFFC0800A72F8|D65F03C0                       ret
+Given that you initialize it with a value anyways, you can just do
 
-Thas has a mixture of SCS and PAC; there's a shadow call stack prologue
-but a PAC epilogue:
+	let blob =3D VBox::new(Blob([0xfeu8; SIZE]), GFP_KERNEL)?;
 
-	str     x30, [x18], #8	// SCS
-	...
-	autiasp                 // PAC
+instead.
 
-... so I'll hazard a guess that these are dumps from memory, and you
-have UNWIND_PATCH_PAC_INTO_SCS selected. Assuming that is the case,
-either this dump has been made mid-patching, or the patching has gone
-wrong somehow and left the prologues/epilogues in an inconsistent state
-(and the NULL dereference could be a secondary effect of that).
+> +        if let Ok(_) =3D VBox::<VboxLargeAlignBlob>::new_uninit(GFP_KERN=
+EL) {
+> +            pr_err!("Allocations for VBox with alignments larger than PA=
+GE_SIZE should fail, but here it succeeded.\n");
+> +            return Err(EINVAL);
+> +        }
 
-Ard, does that sound plausible to you?
+This can just be
 
-I can't see why that would depend on KBUILD_RUSTFLAGS, but maybe the
-DWARF generated by rustc has confused the patching code somehow, or the
-linker has aggregated that in a suprising way.
+	assert!(VBox::<VboxLargeAlignBlob>::new_uninit(GFP_KERNEL).is_err());
 
-Mark.
+within a doc-test.
 
-> NSX:FFFFFFC0800A7390|F800865E  asan.module_ctor:    str     x30,[x18],#0x8   ; x30,[x18],#8          
-> NSX:FFFFFFC0800A7394|F81F0FFE                       str     x30,[sp,#-0x10]!   ; x30,[sp,#-16]!
-> NSX:FFFFFFC0800A7398|B0023400                       adrp    x0,0xFFFFFFC084728000
-> NSX:FFFFFFC0800A739C|91210000                       add     x0,x0,#0x840     ; x0,x0,#2112
-> NSX:FFFFFFC0800A73A0|528006E1                       mov     w1,#0x37         ; w1,#55
-> NSX:FFFFFFC0800A73A4|9422B370                       bl      0xFFFFFFC080954164   ; __asan_register_globals
-> NSX:FFFFFFC0800A73A8|F84107FE                       ldr     x30,[sp],#0x10   ; x30,[sp],#16
-> NSX:FFFFFFC0800A73AC|D50323BF                       autiasp                                          
-> NSX:FFFFFFC0800A73B0|D65F03C0                       ret
-> 
-> I compare kernel 6.6 and kernel 6.12 ARM Makefile, and find the difference.
-> Kernel6.6 Makefile
-> 66 ifeq ($(CONFIG_ARM64_BTI_KERNEL),y)
-> 67   KBUILD_CFLAGS += -mbranch-protection=pac-ret+bti
-> 68 else ifeq ($(CONFIG_ARM64_PTR_AUTH_KERNEL),y)
-> 69   ifeq ($(CONFIG_CC_HAS_BRANCH_PROT_PAC_RET),y)
-> 70     KBUILD_CFLAGS += -mbranch-protection=pac-ret
-> 71   else
-> 72     KBUILD_CFLAGS += -msign-return-address=non-leaf
-> 73   endif
-> 74 else
-> 75   KBUILD_CFLAGS += $(call cc-option,-mbranch-protection=none)
-> 76 endif
-> 
-> Kernel6.12  Makefile
-> 81 ifeq ($(CONFIG_ARM64_BTI_KERNEL),y)
-> 82   KBUILD_CFLAGS += -mbranch-protection=pac-ret+bti
-> 83   KBUILD_RUSTFLAGS += -Zbranch-protection=bti,pac-ret                                 
-> 84 else ifeq ($(CONFIG_ARM64_PTR_AUTH_KERNEL),y)
-> 85   KBUILD_RUSTFLAGS += -Zbranch-protection=pac-ret                                   
-> 86   ifeq ($(CONFIG_CC_HAS_BRANCH_PROT_PAC_RET),y)
-> 87     KBUILD_CFLAGS += -mbranch-protection=pac-ret
-> 88   else
-> 89     KBUILD_CFLAGS += -msign-return-address=non-leaf
-> 90   endif
-> 91 else
-> 92   KBUILD_CFLAGS += $(call cc-option,-mbranch-protection=none)
-> 93 endif
-> 
-> After I delete the rust build flags, the asan.module_ctor binary is right and kasan feature works fine.Could you help check why KBUILD_RUSTFLAGS impacts kernel complication with kasan feature enabled and how can this issue fixed?
-> 
-> I use the build.config.constants:
-> BRANCH=android16-6.12
-> KMI_GENERATION=4
-> CLANG_VERSION=r536225
-> RUSTC_VERSION=1.82.0
-> AARCH64_NDK_TRIPLE=aarch64-linux-android31
-> X86_64_NDK_TRIPLE=x86_64-linux-android31
-> ARM_NDK_TRIPLE=arm-linux-androideabi31
-> 
-> compile configuration is :
-> CONFIG_GCC_VERSION=0
-> CONFIG_CC_IS_CLANG=y
-> CONFIG_CLANG_VERSION=190001
-> CONFIG_AS_IS_LLVM=y
-> CONFIG_AS_VERSION=190001
-> CONFIG_LD_VERSION=0
-> CONFIG_LD_IS_LLD=y
-> CONFIG_LLD_VERSION=190001
-> CONFIG_RUSTC_VERSION=108200
-> CONFIG_RUST_IS_AVAILABLE=y
-> CONFIG_RUSTC_LLVM_VERSION=190001
-> CONFIG_CC_CAN_LINK=y
-> CONFIG_CC_CAN_LINK_STATIC=y
-> CONFIG_CC_HAS_ASM_GOTO_OUTPUT=y
-> CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT=y
-> CONFIG_TOOLS_SUPPORT_RELR=y
-> CONFIG_CC_HAS_ASM_INLINE=y
-> CONFIG_CC_HAS_NO_PROFILE_FN_ATTR=y
-> CONFIG_PAHOLE_VERSION=125
-> CONFIG_IRQ_WORK=y
-> CONFIG_BUILDTIME_TABLE_SORT=y
-> CONFIG_THREAD_INFO_IN_TASK=y
-> 
-> Thank you
+> +        let mut kvec_blob =3D KVec::new();
+> +        kvec_blob.extend_from_slice(&KVEC_VAL, GFP_KERNEL)?;
+
+We already have doc-tests for KVec::new() and KVec::extend_from_slice() in
+rust/kernel/alloc/kvec.rs.
+
+> +        Ok(Self {
+> +            vbox_blob,
+> +            kvec_blob,
+> +        })
+> +    }
+> +}
+> +
+> +impl Drop for RustAlloc {
+> +    fn drop(&mut self) {
+> +        pr_info!("Rust allocator sample (exit)\n");
+> +
+> +        // check the values
+> +        for b in self.vbox_blob.0.as_slice().iter() {
+> +            if *b !=3D 0xfeu8 {
+> +                pr_err!("vbox_blob contains wrong values\n");
+> +            }
+> +        }
+> +
+> +        if self.kvec_blob.as_slice() !=3D KVEC_VAL {
+> +            pr_err!("kvec_blob contains wrong values\n");
+> +        }
+
+Here you're basically testing Vec::as_slice(). We don't have doc-tests for
+as_slice() and as_slice_mut() in rust/kernel/alloc/kvec.rs. Please feel fre=
+e to
+add them. :)
+
+> +    }
+> +}
+
