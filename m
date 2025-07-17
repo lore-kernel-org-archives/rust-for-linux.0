@@ -1,161 +1,102 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C7B2FE320;
-	Thu, 17 Jul 2025 15:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7FA1F5413;
+	Thu, 17 Jul 2025 16:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752767760; cv=none; b=POt1Jmel8TQN2T4I0yucikBnUNz+kIbUQgKx8etoVIVx57W4dz/vAXmr4ZvRdiFdYNsVJ7FrvUpYt4C/0ndtR+atNlmjgYl6ASEWk1rStZYnDV82nUsbWfJNEpDJtGDynp8Idfq3n6RaI+Sj8xMqMbYqM3K1M/hAO+cjl+tR4ZI=
+	t=1752768792; cv=none; b=fH17k8pZxYNYLzaQI0OEi094zxqdS9DkPYf8ely5WaRA9GLej40gy7tx5wi1pMOK5c0s/umKIiYBZB+Vu/mGdodiJ0ReM/GkMTMlnzcENhfPUshLqesNbSyJ4ZoVss/Tvd3v94R7sygUxHSFgi6QMYxmV9Rk6D3Xjn9zrGiZkmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752767760; c=relaxed/simple;
-	bh=31AqHo3GIvu3IzySTWWesuZK0J2sD7GkvCbF0fO1rZY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FFrfDBUeFMM1Ny1aTfuHMthfz9NwGvEoowC74FYmKwwWFYZzlLT6/GahvFlHpX4F2umOcC5g4a82JjWiIsS4d3kebur/mPrNIvDjc7+6u/DRafQAp+vMvtltmCxr5waMVyXVTY0/+KT/E5Nj59gZdEmADWpPlV02tXYFWLBeYVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=MjlDAhTk; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1752768792; c=relaxed/simple;
+	bh=vsjhJ3z6EMjxDgXgT5LphTieOK5QpxV+BznRkq8kE8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vimu3kpwFrnuutqg7pdmDATfe0px/BDko34OiEzgX7e/I75+JRqMinPzBnZa3T33833pIRrNqnv3LWvJPft5+1mDBK3sLE6pfhLxBAiOjrH+BASwH0FZtQjcGYQqt119DwYG7+SO8db8ug0BZipDK6ZuLEy6t2+pBsNzi75od8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=CxK6CZTb; arc=none smtp.client-ip=178.154.239.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="MjlDAhTk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1752767757;
-	bh=31AqHo3GIvu3IzySTWWesuZK0J2sD7GkvCbF0fO1rZY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=MjlDAhTkQaYS7v9/hj5wXQWjOj7tBYWdWGw9lwWqc3ActlAfxw2JoRt2BdZf4GaHP
-	 7OX3BN+HvbOfubAcBhT1JMLg0x39rtpBda1O8MVqkV6ZoADLErHOEQgACDo7My3gR+
-	 HBH/GX3qf3Yc+XIBdBaKMYq83NpX/0zvHHfkhJK2CAnJ/c5jdgBwQN556PoUObOCge
-	 T2ut7xSmtwRzgbOr4VYQfrech7aU762XStbMeI6vudKqpyrjfDOwiNAzYyISp+nw+T
-	 S9b5YkBaJ/RhBd4PtU+Y+cKV6Hy+5+1I2CSBfx7GNc5rpjssR16Bs+ew0gY8qdZf8L
-	 iOkaVr1cWoB9Q==
-Received: from [192.168.0.2] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 105A417E1541;
-	Thu, 17 Jul 2025 17:55:54 +0200 (CEST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Thu, 17 Jul 2025 12:55:24 -0300
-Subject: [PATCH v15 3/3] rust: platform: add resource accessors
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="CxK6CZTb"
+Received: from mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:a3b4:0:640:7c50:0])
+	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 7991662E3A;
+	Thu, 17 Jul 2025 19:07:19 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id E7QHDKPL70U0-sE43Ks2P;
+	Thu, 17 Jul 2025 19:07:18 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1752768438;
+	bh=vsjhJ3z6EMjxDgXgT5LphTieOK5QpxV+BznRkq8kE8E=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=CxK6CZTbmXVsFLC/MApM7ePYDbXIKtmd//lEK82oAzuql1yRgcWfAp1hGsOovMOPn
+	 zthoq9LLms1UU0LBJ8F65c5CsXUHNiOy7t9/+eMRlkHkQgUWVRO7yexRkVDGJE9hB0
+	 vOxucQ6dkbJk+tm1pYbWI97X0acnP7nwtDG3xbQk=
+Authentication-Results: mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Thu, 17 Jul 2025 19:07:13 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: <jens.korinth@tuta.io>, "Jens Korinth via B4 Relay"
+ <devnull+jens.korinth.tuta.io@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "=?UTF-8?B?Qmo=?=
+ =?UTF-8?B?w7Zybg==?= Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
+ <tmgross@umich.edu>, "Rust For Linux" <rust-for-linux@vger.kernel.org>,
+ "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Dirk Behme"
+ <dirk.behme@gmail.com>, "Linux Kernel" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 0/3] rust: Add pr_*_once macros134
+Message-ID: <20250717190713.1f19043e@nimda.home>
+In-Reply-To: <87o6z8h4im.fsf@kernel.org>
+References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
+	<87zfish69f.fsf@kernel.org>
+	<XyUDgEm-do6Hd7zeR0J2gte301dYC_LTbQqJ85HUnf0DKGZoH4V9G9dgvmEw4fEadnu8CAZ4j4XWqLdn2YzkAw==@protonmail.internalid>
+	<OIpcOXB--F-9@tuta.io>
+	<87o6z8h4im.fsf@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250717-topics-tyr-platform_iomem-v15-3-beca780b77e3@collabora.com>
-References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
-In-Reply-To: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-The previous patches have added the abstractions for Resources and the
-ability to map them and therefore read and write the underlying memory .
+On Tue, 11 Feb 2025 16:42:25 +0100
+Andreas Hindborg <a.hindborg@kernel.org> wrote:
 
-The only thing missing to make this accessible for platform devices is
-to provide accessors that return instances of IoRequest<'a>. These
-ensure that the resource are valid only for the lifetime of the platform
-device, and that the platform device is in the Bound state.
+> <jens.korinth@tuta.io> writes:
+>=20
+> > Hi!
+> >
+> >>=C2=A0Thanks for the patch! Do you plan on sending a new version?=C2=A0=
+If
+> >>not, do you mind if I send v5?
+> >
+> > I think there is currently no consensus on how exactly it should be
+> > done (or at least I was confused about that). If you=E2=80=99re actively
+> > using the patch please go ahead! Active usage is always the best
+> > argument in such cases.
+>=20
+> I was informed this patch set is the correct way to emit a warning in
+> the module_params patch set [1].
+>=20
+> I did not follow all the discussion so I am not sure either. But I'll
+> look into the discussion then.
+>=20
+>=20
+> Best regards,
+> Andreas Hindborg
+>=20
+>=20
+>=20
+> [1]
+> https://lore.kernel.org/rust-for-linux/20250204-module-params-v3-v5-0-bf5=
+ec2041625@kernel.org/
+>=20
+>=20
 
-Therefore, add these accessors. Also make it possible to retrieve
-resources from platform devices in Rust using either a name or an index.
+I have reviewed the patch series from start to finish. I am not
+using or depending the patch actively but I can send v5 sometime
+soon (I will have some space next week) if you would like.
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/platform.rs | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 59 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/platform.rs b/rust/kernel/platform.rs
-index 86f9d73c64b38ffe067be329a77b2fc04564c7fe..57f9964bb736cf5749ec3954def03c0d02873642 100644
---- a/rust/kernel/platform.rs
-+++ b/rust/kernel/platform.rs
-@@ -5,8 +5,11 @@
- //! C header: [`include/linux/platform_device.h`](srctree/include/linux/platform_device.h)
- 
- use crate::{
--    acpi, bindings, container_of, device, driver,
-+    acpi, bindings, container_of,
-+    device::{self, Bound},
-+    driver,
-     error::{to_result, Result},
-+    io::{mem::IoRequest, Resource},
-     of,
-     prelude::*,
-     str::CStr,
-@@ -211,6 +214,61 @@ impl<Ctx: device::DeviceContext> Device<Ctx> {
-     fn as_raw(&self) -> *mut bindings::platform_device {
-         self.0.get()
-     }
-+
-+    /// Returns the resource at `index`, if any.
-+    pub fn resource_by_index(&self, index: u32) -> Option<&Resource> {
-+        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct platform_device`.
-+        let resource = unsafe {
-+            bindings::platform_get_resource(self.as_raw(), bindings::IORESOURCE_MEM, index)
-+        };
-+
-+        if resource.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-+        // returned by `platform_get_resource`.
-+        Some(unsafe { Resource::from_raw(resource) })
-+    }
-+
-+    /// Returns the resource with a given `name`, if any.
-+    pub fn resource_by_name(&self, name: &CStr) -> Option<&Resource> {
-+        // SAFETY: `self.as_raw()` returns a valid pointer to a `struct
-+        // platform_device` and `name` points to a valid C string.
-+        let resource = unsafe {
-+            bindings::platform_get_resource_byname(
-+                self.as_raw(),
-+                bindings::IORESOURCE_MEM,
-+                name.as_char_ptr(),
-+            )
-+        };
-+
-+        if resource.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: `resource` is a valid pointer to a `struct resource` as
-+        // returned by `platform_get_resource`.
-+        Some(unsafe { Resource::from_raw(resource) })
-+    }
-+}
-+
-+impl Device<Bound> {
-+    /// Returns an `IoRequest` for the resource at `index`, if any.
-+    pub fn io_request_by_index(&self, index: u32) -> Option<IoRequest<'_>> {
-+        // SAFETY: `resource` is a valid resource for `&self` during the
-+        // lifetime of the `IoRequest`.
-+        self.resource_by_index(index)
-+            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
-+    }
-+
-+    /// Returns an `IoRequest` for the resource with a given `name`, if any.
-+    pub fn io_request_by_name(&self, name: &CStr) -> Option<IoRequest<'_>> {
-+        // SAFETY: `resource` is a valid resource for `&self` during the
-+        // lifetime of the `IoRequest`.
-+        self.resource_by_name(name)
-+            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
-+    }
- }
- 
- // SAFETY: `Device` is a transparent wrapper of a type that doesn't depend on `Device`'s generic
-
--- 
-2.50.0
-
+Regards,
+Onur
