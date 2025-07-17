@@ -1,151 +1,148 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E68288C12;
-	Thu, 17 Jul 2025 16:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752768861; cv=none; b=Y8B5r8faTZDkc7LnsqCnEHeynm2V/jsnvjec/7fYOwerB5e3d0lMNsYs2Q9xr7n6sDtTRN76eoAlVOFGYNsRUabp+gUlqGoxkXWpqMzwEW/9dXHHX3+jw7SkYHXr2GvDsBSxB/UMXSrjpXiXh0TnePvnEXNtziUh86iLYUQxUYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752768861; c=relaxed/simple;
-	bh=/P/sV+sQCJwwTH0lx/U38MZ3P+zHFO7z6yDbHcy0kNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e/xkWyH17fstiOnjlhhEmvCDUnLKUbOR7gJWpFhs2W5abKdx5GdnuaofgOhCWk8sVFpIIq3LhlGSVdDxXb17WNt//LAmUnacNjOAXbYGr/jvIIgGFemJVWbDlac8m+hU3sAs/ZCumGclmttRStt5bOAVrb3Z0KSR78DCj3sS1n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aHRei6ps; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862572FC019;
+	Thu, 17 Jul 2025 16:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752769283; cv=pass; b=l2ess61jVePFyFjKhuryHshLPFcYLJV9K1L2lzJF/0KaJJIvOLbDxtcrNCsZytDHhyiPL9JWPGlr3ZROUwSukrh6Qq+O4dFQUT/iUXcXmbNBPnDzRJZUaFw544VZYLQw/Ao1n1tpbr6P8ivPRmWtfPQX/vTR5K+rLX/1ISQSyLk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752769283; c=relaxed/simple;
+	bh=xxLi7VZ6XfF9oiVfbnH3WcSEfX/GBfKqxLKORZPRKCE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=gf78NDq6ePSII3k0sSYmf7+Ae6AbpFUjtAxvdQPBqCGkq3uM0F+YQD+NhS1euvfKIrauUjSbra/grzoZ5X5AsUEjr75MWaGi4MO/Zvegea5z23zGSdk5KgRce+p6+WiA8+mWclzs3CM1W8y2PgHA8tppuf8Z3uKrLOIFoZiHfVc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=GYV33WQV; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aHRei6ps"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6facc3b9559so15369916d6.0;
-        Thu, 17 Jul 2025 09:14:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752768859; x=1753373659; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L+yz+W/V56qlFCu6Ortl7e+6CnAcr0ty8ni1aHJ/G24=;
-        b=aHRei6psRIS6wK/YPANELOJz8d9aWwSfHDqZqPi2V9W7IqBrWXekZxera6oogrOxCP
-         5U25mfgLd0Q5LY+NbaXJQGBueQ4/dkC6Ht9QbKTEf5sf17PJjPuShd6nlkwOSKKjAwqW
-         rDZuYt1SKPfATkCqha+vZ7mB4V3+0rkhwRCVUhlMYZDC+vPmcZx9dj0bgjuL7zckyNdf
-         BqwRnoSuCuHEBzKIwqL4hQ0+1LMGx3jSheQnrmoinhoXgOEZX0EwB1vOqOaSGs95NoCX
-         XP/YSqGXS0EcSuDDbtMO7nWNnZ2ooyYITxB+92sp//DBO7LjZVTLkUhZ27XEzapr2VoE
-         YYYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752768859; x=1753373659;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L+yz+W/V56qlFCu6Ortl7e+6CnAcr0ty8ni1aHJ/G24=;
-        b=aMbJm8e+ojhIiKE1aZCgt9O2b0rwb5kBbp/TfVkoAmP4vnEeDitpL/J/2FcgMOaEyS
-         GnRTJ3d8NAT7dnMm4yemAFjK1dOh+pdacT9tChbAdyjlBKLHfe8ZpCnKnZveJyoHsQb2
-         FAOxkJ/kGWzvYBpkqGMRMOvbmjspqCn9yxHEO3RdrGjanbLB+uwDVx0WchQx2vcYC/49
-         Wii9SQmuDfFvU9sS1QO8ElGsVHHn4hZkzmOx+fzicqsvaEAPBBIZK0svliWwz0/7W3Hx
-         7bScmyDOxSyXtft//C1ZuoVLZbG5J+nd1APD+sVokFC8yieg8vPYrvaUaLFLcZYlo5H6
-         25VA==
-X-Forwarded-Encrypted: i=1; AJvYcCWreoY41/R5Q5y1WcyrhBe4KM908xDYCzbrjZ/racnB1137Pt7IsCj5w38P8cSd+Tw47nnqUGSXFqyoVbI=@vger.kernel.org, AJvYcCXrgmMhwx8BCXpRG1Lf9RP0K2X+RN4RuNsx97EkpPjoUxPCms3wrgwyHTEDiYVVjAj5zbCbIiGTa6QIOD54Fl8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpHWU7lI+wFfy2EzBieQwdsYxOsvv6Lcqmkpvgu37aIL2qv5wl
-	IagNKdp2z3a+LyCMbfs3Smr+i+opCdoRc8khyZX8iEsextaEU6nH3LdX
-X-Gm-Gg: ASbGncsVoeHQXbrwac354GQTDxLoOluzyrhvjenEaXhf+aGuVpiw8YWtbS83c3DQ3Mw
-	WQOol55vPF1xo8zTJLh7oMs71FxhVAj1MhgjrijmrzG8HJkumQQUDpWGti4oPn2DVAtVRiQ2wrP
-	gWOfvxha8ANNebKhW6ALBbO2JOqrVhQAO1gY2mEowoKxDK/R6MyMP/6v6hSgs2cr4FrZEpkCPjT
-	ymJyyQRcHIh4jRpzo2zgQDlN2dX+1YwgrdUcpX1aG3kgZk0caf7jCKUqhCSrjmNWHHz/21KjTDb
-	KtxGPQRy/H2x/63OtjYwGAohsg20yDEjIKy3tLnLjnu1bHESK0mhga9bZKBSxlQtQQIMOErXSNS
-	r3TSVpNHZ8MeQA5nknHBhMuFWjaELXokGITGXEALz3CEjgg8shZK/qsD5G7FotFEt68amy9+8KA
-	jyODkMnc5XbWqG
-X-Google-Smtp-Source: AGHT+IGPXNss7QM/3gt8EaNhAyoHgBwLz/cvFQg+KILkOzEQ9CC5cn74rJSv6rbv4jcqqkFdPVow4g==
-X-Received: by 2002:ad4:4ee1:0:b0:702:d0e6:6e6b with SMTP id 6a1803df08f44-704f6bfd432mr111820616d6.45.1752768858643;
-        Thu, 17 Jul 2025 09:14:18 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d39d14sm86256086d6.76.2025.07.17.09.14.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jul 2025 09:14:18 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 50D6CF40068;
-	Thu, 17 Jul 2025 12:14:17 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Thu, 17 Jul 2025 12:14:17 -0400
-X-ME-Sender: <xms:WSF5aBq0IeXzv2Yh02VaaWVgfcxo6yej423YJ7xjyZo4iAjVdUhgDg>
-    <xme:WSF5aHnK1wY0eaadXUvWS-EEn3eOMQoO049h5pLab7DXztVWHZOM_YEu39sIXU-Pz
-    mH9HgtH_kuI2rm9rg>
-X-ME-Received: <xmr:WSF5aCyiTGOTpDGgCzV20ONDcDVASJ7hh8CnFMjLjc5sEWVCnTQ6iYHgYw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeiuddtfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
-    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
-    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
-    drnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhuhhirdiihhhuse
-    hlihhnuhigrdguvghvpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhope
-    hgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehp
-    rhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:WSF5aE2eit8GwdcxDzZsIkWPPFN4DKRNHoYnoO-mSWt9xU9axqthLA>
-    <xmx:WSF5aGDyHYJAW1kNxzJ6djBb2o2vI8DssiugjZPNAS9R8vXk9teT8g>
-    <xmx:WSF5aB_F8bBhYIC1qj4u4LV7aKfWRaKNyJwNRixVg_kr9qNPZWd4EQ>
-    <xmx:WSF5aE8AVU2Ck9YQAes6FLYPb1OgFNeQLDfWiaVUqGV-43FeI7maOw>
-    <xmx:WSF5aB0QqzAN9sDKSpgx3UWsOdl1XT7UyqDmQwn4j4NgJe_UlAQ3rsh->
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Jul 2025 12:14:16 -0400 (EDT)
-Date: Thu, 17 Jul 2025 09:14:15 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Hui Zhu <hui.zhu@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Hui Zhu <zhuhui@kylinos.cn>, Geliang Tang <geliang@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>
-Subject: Re: [PATCH v2] rust: add a sample alloc usage
-Message-ID: <aHkhVwD7WKm1dSsa@Mac.home>
-References: <20250717095053.49239-1-hui.zhu@linux.dev>
- <DBEAFCFHFU35.1IZI3ZSJSIRAY@kernel.org>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="GYV33WQV"
+ARC-Seal: i=1; a=rsa-sha256; t=1752769242; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=hqHJaKVpcklVJ5ujh9TyZ1C2RwXLMFcCZzuhcZDDHBJI468tyUwj269ewOZWBRbKgJKTHuyiP0P56hXruY64UjCiVMmDnqKEbNISs6hrDCXNEF8RfvKvlNDojtg3IlnW9CF8p64u5rigVKZW2UH3uM4AqMwC1lkAsWgj4H+blvU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752769242; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=cT2kqEKsp8nlH01nlREn5zAQtGgkfbFDvedreAfAxps=; 
+	b=Hd9LoJa7pXFft2ocoaDzl+jGNFnH2nOsFCiMpfr0i3pPP1fddApqggMjKEvx3CMuqFl5Pd/6Qu1mjpiWTpycdCqx1T0sj6XQLJjgzMtKL9WUrZfH+rjFoXL+iNp+nVWv1AbNNGnFCC3LvOePt0VuwGb2jcMHyhjBa2CDLhUt5cY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752769242;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=cT2kqEKsp8nlH01nlREn5zAQtGgkfbFDvedreAfAxps=;
+	b=GYV33WQVtsv9ltqXLJYvexwmlcFEEFES7LzghTw2Qe6DI6JTfqNJOh4u1XQ9rqXt
+	igXxKt1gbYFWE/y9YrtYREOmmnqPRD/RzNuaBOkT+RyHpMArOrEJMkEi4qiZZllOXAL
+	SVmiU4w0ZVjJ3OwK+eSEc7iVQz8r7vBgmxJMvwCQ=
+Received: by mx.zohomail.com with SMTPS id 1752769238879669.4169784081596;
+	Thu, 17 Jul 2025 09:20:38 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DBEAFCFHFU35.1IZI3ZSJSIRAY@kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <202507170718.AVqYqRan-lkp@intel.com>
+Date: Thu, 17 Jul 2025 13:20:20 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <helgaas@kernel.org>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Benno Lossin <lossin@kernel.org>,
+ llvm@lists.linux.dev,
+ oe-kbuild-all@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9834736F-F70F-4290-9DE8-755A6D0D5EB8@collabora.com>
+References: <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
+ <202507170718.AVqYqRan-lkp@intel.com>
+To: kernel test robot <lkp@intel.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Thu, Jul 17, 2025 at 01:19:05PM +0200, Danilo Krummrich wrote:
-> (Cc: Lorenzo, Vlastimil, Liam, Uladzislau)
-> 
-> On Thu Jul 17, 2025 at 11:50 AM CEST, Hui Zhu wrote:
-> > diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> > index bd2faad63b4f..7c3e68d9ada5 100644
-> > --- a/samples/rust/Makefile
-> > +++ b/samples/rust/Makefile
-> > @@ -10,6 +10,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
-> >  obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
-> >  obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
-> >  obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
-> > +obj-$(CONFIG_SAMPLE_RUST_ALLOC)		+= rust_alloc.o
-> 
-> I think adding an example for large alignment is fine, but let's do this in a
-> doc-test on VBox in rust/kernel/alloc/kbox.rs. I think adding a separate module
 
-I would suggest using #[kunit_tests(..)], which is similar to how
-doc-test run, for it if we only use it for test purposes.
 
-Regards,
-Boqun
+> On 16 Jul 2025, at 20:45, kernel test robot <lkp@intel.com> wrote:
+>=20
+> Hi Daniel,
+>=20
+> kernel test robot noticed the following build errors:
+>=20
+> [auto build test ERROR on 3964d07dd821efe9680e90c51c86661a98e60a0f]
+>=20
+> url:    =
+https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/rust-irq-add=
+-irq-module/20250715-232121
+> base:   3964d07dd821efe9680e90c51c86661a98e60a0f
+> patch link:    =
+https://lore.kernel.org/r/20250715-topics-tyr-request_irq2-v7-3-d469c0f37c=
+07%40collabora.com
+> patch subject: [PATCH v7 3/6] rust: irq: add support for non-threaded =
+IRQs and handlers
+> config: x86_64-rhel-9.4-rust =
+(https://download.01.org/0day-ci/archive/20250717/202507170718.AVqYqRan-lk=
+p@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project =
+87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+> reproduce (this is a W=3D1 build): =
+(https://download.01.org/0day-ci/archive/20250717/202507170718.AVqYqRan-lk=
+p@intel.com/reproduce)
+>=20
+> If you fix the issue in a separate patch/commit (i.e. not just a new =
+version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: =
+https://lore.kernel.org/oe-kbuild-all/202507170718.AVqYqRan-lkp@intel.com/=
 
-> for this is overkill.
-> 
-> Note that doc-tests are executed on boot if CONFIG_RUST_KERNEL_DOCTESTS=y.
-> 
-[...]
+>=20
+> All errors (new ones prefixed by >>):
+>=20
+>>> error[E0425]: cannot find value `SHARED` in module `flags`
+>   --> rust/doctests_kernel_generated.rs:4790:58
+>   |
+>   4790 |     let registration =3D Registration::new(request, =
+flags::SHARED, c_str!("my_device"), handler);
+>   |                                                          ^^^^^^ =
+not found in `flags`
+>   |
+>   help: consider importing this constant
+>   |
+>   3    + use kernel::mm::virt::flags::SHARED;
+>   |
+>   help: if you import `SHARED`, refer to it directly
+>   |
+>   4790 -     let registration =3D Registration::new(request, =
+flags::SHARED, c_str!("my_device"), handler);
+>   4790 +     let registration =3D Registration::new(request, SHARED, =
+c_str!("my_device"), handler);
+>   |
+>=20
+> --=20
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+>=20
+
+This is a single character fix, so I am waiting for the discussion on =
+the cover
+letter [0] to advance before sending a new version.
+
+[0] https://lore.kernel.org/all/DBCQKJIBVGGM.1R0QNKO3TE4N0@kernel.org/#t=
