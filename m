@@ -1,210 +1,238 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from SHSQR01.spreadtrum.com (unknown [222.66.158.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB61289367;
-	Thu, 17 Jul 2025 11:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C957145B27
+	for <rust-for-linux@vger.kernel.org>; Thu, 17 Jul 2025 11:25:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=222.66.158.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752751151; cv=none; b=pcj/Tusp2keBSjV5aw00j4eZGwdX/OW5wgeWxjfPpIex0kq7GVm7KhhLme19seRoxmYnjIe5JzjPEeTrmphOCVQ4Tt/wbT1ONkm801GTX5zshvsNJftX/KPnIPZpOl/ZJWxtrfhOTUvJOswXae58rAvJJwTZ3TgU/LbXoeeuWnM=
+	t=1752751559; cv=none; b=Je5iVaMHpl+Ub6ueC4YeLp0DROrq/xdkPhXRO1/Aspfp6mpHmsaQZKyaZ4nnbykQ0Op9ojz50Tjbk7DOvz8KdcBlxBhjdENI75MB36qmIpKaMpILftZ3x6ybEXC9LGLpaxnmPnvoCD4/JwVUUyXxgNh08puGlX/zbM5tPiEPfVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752751151; c=relaxed/simple;
-	bh=UGme35FMYts4C+w0JEhpFk9WMpbpTAudZRkRDn7b2nw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=qDI1jEeaTJuSdys2kkXgN62q17ftefZmpiH2CloPhb9sEzRbIq/KttA7zc5PBjy3BG1EJJg7g+Vere1lOhsJpyww8EZRTpsTmD7qGuXzEHeaH9i5jPsfTbO8JPii4spV0OTVblCbOyI385L++S/ZhInIlH1UT2t/Ov3tAby8t84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKzjy+23; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKzjy+23"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D773C4CEE3;
-	Thu, 17 Jul 2025 11:19:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752751151;
-	bh=UGme35FMYts4C+w0JEhpFk9WMpbpTAudZRkRDn7b2nw=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=OKzjy+233mvOwYar9R1WZxxyhXVS/VNF+OjpeRyyzXy+9AQVnO8C6tSNiTxNgN1JO
-	 LptR++4v6Aslau5497vxGp0yIwBV74Kcjl4DevatuT7ZqstnNKIcXBXqbEkhgiMAST
-	 qUdo4l+yxl6N+vtLQfyI7HcxLFQK7uFVHg4EWsWia4vX/2TZcMoqMuNSdiieDO5EE6
-	 Md9GGo64q7f+vktG8iQ2XE1iLrUk+AT53hRzS/jLx7T5PieDAJPjCq1qiyx5Pq6LEA
-	 o6wbbZbYJqPA0d29BO2SsItyvknesQ9KkyB4yTDXer7ZcCNvTBxWL2BnVv0R8CbiTY
-	 U8MxDSaWsmgLw==
+	s=arc-20240116; t=1752751559; c=relaxed/simple;
+	bh=gH/B4Syrc/gx/Qj2HDbJs0C2w1+VRdHj/3ux9GpgN4Y=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=N2DPxO+YP9bznY9/1RiwLuA72aidiYYpDAQuxSLWlRb9DsMWkd5ZX6acp7is8K2uRuPrX2eLZTEZPP6ikC7yKe5KXxxFunR81KhU5Q9dK1XxM9nUO7S6S7KBYgjox6fHdaGxkr/abjIuyV9m9trayddqQY5E0bDlT7WbrC/uDPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=unisoc.com; spf=pass smtp.mailfrom=unisoc.com; arc=none smtp.client-ip=222.66.158.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=unisoc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unisoc.com
+Received: from dlp.unisoc.com ([10.29.3.86])
+	by SHSQR01.spreadtrum.com with ESMTP id 56HBP2Ot080046;
+	Thu, 17 Jul 2025 19:25:02 +0800 (+08)
+	(envelope-from haiyan.liu@unisoc.com)
+Received: from SHDLP.spreadtrum.com (bjmbx01.spreadtrum.com [10.0.64.7])
+	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4bjVpf4qznz2K25V6;
+	Thu, 17 Jul 2025 19:20:42 +0800 (CST)
+Received: from BJMBX01.spreadtrum.com (10.0.64.7) by BJMBX01.spreadtrum.com
+ (10.0.64.7) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 17 Jul
+ 2025 19:25:01 +0800
+Received: from BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7]) by
+ BJMBX01.spreadtrum.com ([fe80::54e:9a:129d:fac7%16]) with mapi id
+ 15.00.1497.048; Thu, 17 Jul 2025 19:25:01 +0800
+From: =?utf-8?B?5YiY5rW354eVIChIYWl5YW4gTGl1KQ==?= <haiyan.liu@unisoc.com>
+To: Mark Rutland <mark.rutland@arm.com>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "rust-for-linux@vger.kernel.org"
+	<rust-for-linux@vger.kernel.org>,
+        =?utf-8?B?5Luj5a2Q5Li6IChaaXdlaSBEYWkp?=
+	<Ziwei.Dai@unisoc.com>,
+        =?utf-8?B?5ZGo5bmzIChQaW5nIFpob3UvOTAzMik=?=
+	<Ping.Zhou1@unisoc.com>,
+        =?utf-8?B?5p2o5Li95aicIChMaW5hIFlhbmcp?=
+	<lina.yang@unisoc.com>,
+        =?utf-8?B?546L5Y+MIChTaHVhbmcgV2FuZyk=?=
+	<shuang.wang@unisoc.com>,
+        Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda
+	<ojeda@kernel.org>,
+        Matthew Maurer <mmaurer@google.com>, Ard Biesheuvel
+	<ardb@kernel.org>,
+        Sami Tolvanen <samitolvanen@google.com>
+Subject: Meet compiled kernel binaray abnormal issue while enabling generic
+ kasan in kernel 6.12 with some default KBUILD_RUSTFLAGS on
+Thread-Topic: Meet compiled kernel binaray abnormal issue while enabling
+ generic kasan in kernel 6.12 with some default KBUILD_RUSTFLAGS on
+Thread-Index: Adv3DSICcwf62OtITcOZW4s1EETCgw==
+Date: Thu, 17 Jul 2025 11:25:00 +0000
+Message-ID: <3655537d80024fc8bccb7874dfed4c73@BJMBX01.spreadtrum.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-transport-fromentityheader: Hosted
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Jul 2025 13:19:05 +0200
-Message-Id: <DBEAFCFHFU35.1IZI3ZSJSIRAY@kernel.org>
-Subject: Re: [PATCH v2] rust: add a sample alloc usage
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Hui Zhu"
- <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>
-To: "Hui Zhu" <hui.zhu@linux.dev>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250717095053.49239-1-hui.zhu@linux.dev>
-In-Reply-To: <20250717095053.49239-1-hui.zhu@linux.dev>
+MIME-Version: 1.0
+X-MAIL:SHSQR01.spreadtrum.com 56HBP2Ot080046
 
-(Cc: Lorenzo, Vlastimil, Liam, Uladzislau)
-
-On Thu Jul 17, 2025 at 11:50 AM CEST, Hui Zhu wrote:
-> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
-> index bd2faad63b4f..7c3e68d9ada5 100644
-> --- a/samples/rust/Makefile
-> +++ b/samples/rust/Makefile
-> @@ -10,6 +10,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+=3D rust_dri=
-ver_platform.o
->  obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+=3D rust_driver_faux.o
->  obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+=3D rust_driver_auxiliary.o
->  obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+=3D rust_configfs.o
-> +obj-$(CONFIG_SAMPLE_RUST_ALLOC)		+=3D rust_alloc.o
-
-I think adding an example for large alignment is fine, but let's do this in=
- a
-doc-test on VBox in rust/kernel/alloc/kbox.rs. I think adding a separate mo=
-dule
-for this is overkill.
-
-Note that doc-tests are executed on boot if CONFIG_RUST_KERNEL_DOCTESTS=3Dy=
-.
-
-> diff --git a/samples/rust/rust_alloc.rs b/samples/rust/rust_alloc.rs
-> new file mode 100644
-> index 000000000000..61efde37b5f2
-> --- /dev/null
-> +++ b/samples/rust/rust_alloc.rs
-> @@ -0,0 +1,88 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (c) 2025, Kylin Software
-> +
-> +//! Rust alloc sample.
-> +
-> +use kernel::bindings;
-> +use kernel::prelude::*;
-> +
-> +module! {
-> +    type: RustAlloc,
-> +    name: "rust_alloc",
-> +    authors: ["Rust for Linux Contributors"],
-> +    description: "Rust alloc sample",
-> +    license: "GPL",
-> +}
-> +
-> +const VBOX_SIZE: usize =3D 1024;
-> +const VBOX_LARGE_ALIGN: usize =3D bindings::PAGE_SIZE * 4;
-
-Please use kernel::page::PAGE_SIZE instead.
-
-> +const KVEC_VAL: [usize; 3] =3D [10, 20, 30];
-> +
-> +#[repr(align(128))]
-> +struct VboxBlob([u8; VBOX_SIZE]);
-> +
-> +// This structure is used to test the allocation of alignments larger
-> +// than PAGE_SIZE.
-> +// Since this is not yet supported, avoid accessing the contents of
-> +// the structure for now.
-> +#[allow(dead_code)]
-> +#[repr(align(8192))]
-> +struct VboxLargeAlignBlob([u8; VBOX_LARGE_ALIGN]);
-> +
-> +struct RustAlloc {
-> +    vbox_blob: VBox<VboxBlob>,
-> +    kvec_blob: KVec<usize>,
-> +}
-> +
-> +fn check_align(addr: usize, align: usize) -> bool {
-> +    debug_assert!(align.is_power_of_two());
-> +    if addr & (align - 1) !=3D 0 {
-> +        pr_err!("Address {:#x} is not aligned with {:#x}.\n", addr, alig=
-n);
-> +        false
-> +    } else {
-> +        true
-> +    }
-> +}
-
-I think check_align() is unnecessary -- we don't need to test this in this
-context.
-
-Instead, I suggest to add some doc-tests to the `Allocator` impls for `Kmal=
-loc`,
-`Vmalloc` and `KVmalloc` in rust/kernel/alloc/allocator.rs testing that the=
-y
-return the expected alignment. This would be a valuable test case for those=
-. If
-you're interested in adding them, please feel free to do so. :)
-
-> +impl kernel::Module for RustAlloc {
-> +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> +        pr_info!("Rust allocator sample (init)\n");
-> +
-> +        let vbox_blob =3D VBox::<VboxBlob>::new_uninit(GFP_KERNEL)?;
-> +        if !check_align(vbox_blob.as_ptr() as usize, 128) {
-> +            return Err(EINVAL);
-> +        }
-> +        let vbox_blob =3D vbox_blob.write(VboxBlob([0xfeu8; VBOX_SIZE]))=
-;
-
-Given that you initialize it with a value anyways, you can just do
-
-	let blob =3D VBox::new(Blob([0xfeu8; SIZE]), GFP_KERNEL)?;
-
-instead.
-
-> +        if let Ok(_) =3D VBox::<VboxLargeAlignBlob>::new_uninit(GFP_KERN=
-EL) {
-> +            pr_err!("Allocations for VBox with alignments larger than PA=
-GE_SIZE should fail, but here it succeeded.\n");
-> +            return Err(EINVAL);
-> +        }
-
-This can just be
-
-	assert!(VBox::<VboxLargeAlignBlob>::new_uninit(GFP_KERNEL).is_err());
-
-within a doc-test.
-
-> +        let mut kvec_blob =3D KVec::new();
-> +        kvec_blob.extend_from_slice(&KVEC_VAL, GFP_KERNEL)?;
-
-We already have doc-tests for KVec::new() and KVec::extend_from_slice() in
-rust/kernel/alloc/kvec.rs.
-
-> +        Ok(Self {
-> +            vbox_blob,
-> +            kvec_blob,
-> +        })
-> +    }
-> +}
-> +
-> +impl Drop for RustAlloc {
-> +    fn drop(&mut self) {
-> +        pr_info!("Rust allocator sample (exit)\n");
-> +
-> +        // check the values
-> +        for b in self.vbox_blob.0.as_slice().iter() {
-> +            if *b !=3D 0xfeu8 {
-> +                pr_err!("vbox_blob contains wrong values\n");
-> +            }
-> +        }
-> +
-> +        if self.kvec_blob.as_slice() !=3D KVEC_VAL {
-> +            pr_err!("kvec_blob contains wrong values\n");
-> +        }
-
-Here you're basically testing Vec::as_slice(). We don't have doc-tests for
-as_slice() and as_slice_mut() in rust/kernel/alloc/kvec.rs. Please feel fre=
-e to
-add them. :)
-
-> +    }
-> +}
-
+DQoNCj4gLS0tLS3pgq7ku7bljp/ku7YtLS0tLQ0KPiDlj5Hku7bkuro6IE1hcmsgUnV0bGFuZCA8
+bWFyay5ydXRsYW5kQGFybS5jb20+DQo+IOWPkemAgeaXtumXtDogMjAyNeW5tDfmnIgxN+aXpSAx
+ODozOQ0KPiDmlLbku7bkuro6IOWImOa1t+eHlSAoSGFpeWFuIExpdSkgPGhhaXlhbi5saXVAdW5p
+c29jLmNvbT4NCj4g5oqE6YCBOiBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOyBsaW51eC1h
+cm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmc7IHJ1c3QtZm9yLWxpbnV4QHZnZXIua2VybmVs
+Lm9yZzsg5Luj5a2Q5Li6IChaaXdlaSBEYWkpDQo+IDxaaXdlaS5EYWlAdW5pc29jLmNvbT47IOWR
+qOW5syAoUGluZyBaaG91LzkwMzIpIDxQaW5nLlpob3UxQHVuaXNvYy5jb20+OyDmnajkuL3lqJwg
+KExpbmEgWWFuZykgPGxpbmEueWFuZ0B1bmlzb2MuY29tPjsg546L5Y+MDQo+IChTaHVhbmcgV2Fu
+ZykgPHNodWFuZy53YW5nQHVuaXNvYy5jb20+OyBBbGljZSBSeWhsIDxhbGljZXJ5aGxAZ29vZ2xl
+LmNvbT47IE1pZ3VlbCBPamVkYSA8b2plZGFAa2VybmVsLm9yZz47IE1hdHRoZXcgTWF1cmVyDQo+
+IDxtbWF1cmVyQGdvb2dsZS5jb20+OyBBcmQgQmllc2hldXZlbCA8YXJkYkBrZXJuZWwub3JnPjsg
+U2FtaSBUb2x2YW5lbiA8c2FtaXRvbHZhbmVuQGdvb2dsZS5jb20+DQo+IOS4u+mimDogUmU6IE1l
+ZXQgY29tcGlsZWQga2VybmVsIGJpbmFyYXkgYWJub3JtYWwgaXNzdWUgd2hpbGUgZW5hYmxpbmcg
+Z2VuZXJpYyBrYXNhbiBpbiBrZXJuZWwgNi4xMiB3aXRoIHNvbWUgZGVmYXVsdCBLQlVJTERfUlVT
+VEZMQUdTDQo+IG9uDQo+IA0KPiANCj4g5rOo5oSPOiDov5nlsIHpgq7ku7bmnaXoh6rkuo7lpJbp
+g6jjgILpmaTpnZ7kvaDnoa7lrprpgq7ku7blhoXlrrnlronlhajvvIzlkKbliJnkuI3opoHngrnl
+h7vku7vkvZXpk77mjqXlkozpmYTku7bjgIINCj4gQ0FVVElPTjogVGhpcyBlbWFpbCBvcmlnaW5h
+dGVkIGZyb20gb3V0c2lkZSBvZiB0aGUgb3JnYW5pemF0aW9uLiBEbyBub3QgY2xpY2sgbGlua3Mg
+b3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3MgeW91IHJlY29nbml6ZSB0aGUgc2VuZGVyDQo+IGFu
+ZCBrbm93IHRoZSBjb250ZW50IGlzIHNhZmUuDQo+IA0KPiANCj4gDQo+IEhpLA0KPiANCj4gRnJv
+bSBhIHF1aWNrIHNjYW4sIEkgdGhpbmsgdGhpcyBtaWdodCBoYXZlIHNvbWV0aGluZyB0byBkbyB3
+aXRoIFVOV0lORF9QQVRDSF9QQUNfSU5UT19TQ1MsIG5vdGVzIGJlbG93Lg0KPiANCj4gT24gTW9u
+LCBKdWwgMTQsIDIwMjUgYXQgMDM6MTI6MzNBTSArMDAwMCwg5YiY5rW354eVIChIYWl5YW4gTGl1
+KSB3cm90ZToNCj4gPiBJIGFtIGVuYWJsaW5nIGdlbmVyaWMga2FzYW4gZmVhdHVyZSBpbiBrZXJu
+ZWwgNi4xMiwgYW5kIG1ldCBrZXJuZWwgYm9vdCBjcmFzaC4NCj4gPiBVbmFibGUgdG8gaGFuZGxl
+IGtlcm5lbCBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2UgYXQgdmlydHVhbCBhZGRyZXNzDQo+ID4g
+MDAwMDAwMDAwMDAwMDAwOCBwYyA6IGRvX2Jhc2ljX3NldHVwKzB4NmMvMHhhYyBsciA6DQo+ID4g
+ZG9fYmFzaWNfc2V0dXArMHg4OC8weGFjIHNwIDogZmZmZmZmYzA4MDA4N2U0MA0KPiANCj4gQ2Fu
+IHlvdSBzYXkgd2hpY2ggaGFyZHdhcmUgdGhpcyBpcyBvbj8gR2l2ZW4gdGhpcyBpcyBhIE5VTEwt
+ZGVyZWZlcmVuY2UsIHRoaXMgbG9va3MgaWtlIGEgZG9kZ3kgcG9pbnRlciAob3IgbWVtb3J5IGNv
+cnJ1cHRpb24pIHJhdGhlciB0aGFuDQo+IGEgUEFDIGZhaWx1cmUuDQo+IA0KPiA+IEFmdGVyIGRl
+YnVnLCBJIGZpbmQgc29tZSBlcnJvciBpbiBkb19jdG9ycygpLg0KPiA+IE5vcm1hbGx5LCB0aGUg
+Y29tcGxpZXIgc2hvdWxkIGluc2VydCB0aGUgcGFjaWFzcCBpbnN0cnVjdGlvbiBhdCB0aGUgZnVu
+Y3Rpb24gZW50cnkgc28gdGhhdCBpdHMgY29ycmVzcG9uZGluZyBhdXRpYXNwIGluc3RydWN0aW9u
+IGlzIHVzZWQgdG8NCj4gdmFsaWRhdGUgdGhlIHJldHVybiBhZGRyZXNzIHdoZW4gdGhlIGZ1bmN0
+aW9uIHJldHVybnMuDQo+ID4gTlNYOkZGRkZGRkMwODAwQTg0MEN8RjgwMDg2NUUgICAgIGFzYW4u
+bW9kdWxlX2N0b3I6ICAgc3RyICB4MzAsW3gxOF0sIzB4OO+8m3gzMCxbeDE4XSwjOA0KPiA+IE5T
+WDpGRkZGRkZDMDgwMEE4NDEwfEE5QkY3QkZEICAgICAgICAgICAgICAgICAgICAgICBzdHAgICAg
+IHgyOSx4MzAsW3NwLCMtMHgxMF0hICAgOyB4MjkseDMwLFtzcCwjLTE2XSENCj4gPiBOU1g6RkZG
+RkZGQzA4MDBBODQxNHw5MTAwMDNGRCAgICAgICAgICAgICAgICAgICAgICAgbW92ICAgICB4Mjks
+c3ANCj4gPiBOU1g6RkZGRkZGQzA4MDBBODQxOHxCMDAyMzQyMCAgICAgICAgICAgICAgICAgICAg
+ICAgYWRycCAgICB4MCwweEZGRkZGRkMwODQ3MkQwMDANCj4gPiBOU1g6RkZGRkZGQzA4MDBBODQx
+Q3w5MTM5MDAwMCAgICAgICAgICAgICAgICAgICAgICAgYWRkICAgICB4MCx4MCwjMHhFNDAgICAg
+IDsgeDAseDAsIzM2NDgNCj4gPiBOU1g6RkZGRkZGQzA4MDBBODQyMHw1MjgwMDBBMSAgICAgICAg
+ICAgICAgICAgICAgICAgbW92ICAgICB3MSwjMHg1ICAgICAgICAgIDsgdzEsIzUNCj4gPiBOU1g6
+RkZGRkZGQzA4MDBBODQyNHw5NDIyQUY1MCAgICAgICAgICAgICAgICAgICAgICAgYmwgICAgICAw
+eEZGRkZGRkMwODA5NTQxNjQgICA7IF9fYXNhbl9yZWdpc3Rlcl9nbG9iYWxzDQo+ID4gTlNYOkZG
+RkZGRkMwODAwQTg0Mjh8QThDMTdCRkQgICAgICAgICAgICAgICAgICAgICAgIGxkcCAgICAgeDI5
+LHgzMCxbc3BdLCMweDEwICAgOyB4MjkseDMwLFtzcF0sIzE2DQo+ID4gTlNYOkZGRkZGRkMwODAw
+QTg0MkN8Rjg1RjhFNUUgICAgICAgICAgICAgICAgICAgICAgIGxkciAgICAgeDMwLFt4MTgsIy0w
+eDhdISAgIDsgeDMwLFt4MTgsIy04XSENCj4gPiBOU1g6RkZGRkZGQzA4MDBBODQzMHxENjVGMDND
+MCAgICAgICAgICAgICAgICAgICAgICAgcmV0DQo+IA0KPiBIZXJlIHlvdSBldmlkZW50bHkgaGF2
+ZSBzaGFkb3cgY2FsbCBzdGFjayBlbmFibGVkLi4uDQo+IA0KPiA+IE5TWDpGRkZGRkZDMDgwMEE4
+NDc4fEQ1MDMyMzNGICBhc2FuLm1vZHVsZV9jdG9yOiAgICBwYWNpYXNwDQo+ID4gTlNYOkZGRkZG
+RkMwODAwQTg0N0N8QTlCRjdCRkQgICAgICAgICAgICAgICAgICAgICAgIHN0cCAgICAgeDI5LHgz
+MCxbc3AsIy0weDEwXSEgICA7IHgyOSx4MzAsW3NwLCMtMTZdIQ0KPiA+IE5TWDpGRkZGRkZDMDgw
+MEE4NDgwfDkxMDAwM0ZEICAgICAgICAgICAgICAgICAgICAgICBtb3YgICAgIHgyOSxzcA0KPiA+
+IE5TWDpGRkZGRkZDMDgwMEE4NDg0fEIwMDIzNDIwICAgICAgICAgICAgICAgICAgICAgICBhZHJw
+ICAgIHgwLDB4RkZGRkZGQzA4NDcyRDAwMA0KPiA+IE5TWDpGRkZGRkZDMDgwMEE4NDg4fDkxM0Uw
+MDAwICAgICAgICAgICAgICAgICAgICAgICBhZGQgICAgIHgwLHgwLCMweEY4MCAgICAgOyB4MCx4
+MCwjMzk2OA0KPiA+IE5TWDpGRkZGRkZDMDgwMEE4NDhDfDUyODAwMDIxICAgICAgICAgICAgICAg
+ICAgICAgICBtb3YgICAgIHcxLCMweDEgICAgICAgICAgOyB3MSwjMQ0KPiA+IE5TWDpGRkZGRkZD
+MDgwMEE4NDkwfDk0MjJBRjM1ICAgICAgICAgICAgICAgICAgICAgICBibCAgICAgIDB4RkZGRkZG
+QzA4MDk1NDE2NCAgIDsgX19hc2FuX3JlZ2lzdGVyX2dsb2JhbHMNCj4gPiBOU1g6RkZGRkZGQzA4
+MDBBODQ5NHxBOEMxN0JGRCAgICAgICAgICAgICAgICAgICAgICAgbGRwICAgICB4MjkseDMwLFtz
+cF0sIzB4MTAgICA7IHgyOSx4MzAsW3NwXSwjMTYNCj4gPiBOU1g6RkZGRkZGQzA4MDBBODQ5OHxE
+NTAzMjNCRiAgICAgICAgICAgICAgICAgICAgICAgYXV0aWFzcA0KPiA+IE5TWDpGRkZGRkZDMDgw
+MEE4NDlDfEQ2NUYwM0MwICAgICAgICAgICAgICAgICAgICAgICByZXQNCj4gDQo+IC4uLiBidXQg
+aGVyZSB5b3UgZXZpZGVudGx5IGRvbid0LCBhbmQgaGF2ZSBQQUMgaW5zdGVhZC4NCj4gDQo+IEFy
+ZSB0aGVzZSBmcm9tIHRoZSBzYW1lIGtlcm5lbCBJbWFnZT8NCg0KIFllcywgdGhleSBhcmUgZnJv
+bSB0aGUgc2FtZSBrZXJuZWwgaW1hZ2UgYnV0IG5vdCB0aGUgc2FtZSBhc2FuLm1vZHVsZV9jdG9y
+IGZ1bmN0aW9uLiBUaGUgR2xvYmFsVmFyaWFibGUgYXJlIGRpZmZlcmVudC4NCg0KPiBBcmUgdGhl
+c2UgZGVjb2RlZCBmcm9tIHRoZSBzdGF0aWMga2VybmVsIGJpbmFyeSwgb3IgYXJlIHRoZXNlIGR1
+bXBzIGZyb20gbWVtb3J5IG9uY2UgYSBrZXJuZWwgaGFzIGJvb3RlZCAob3IgaXMgaW4gdGhlIHBy
+b2Nlc3Mgb2YNCj4gYm9vdGluZyk/DQoNCiBUaGVzZSBhcmUgZHVtcGVkIGZyb20gbWVtb3J5IGR1
+cmluZyB0aGUga2VybmVsIGJvb3RlZCBieSB0cmFjZTMyLg0KDQo+ID4gQnV0IGFjdHVhbGx5LCBp
+biB0d28gYXNhbi5tb2R1bGVfY3RvciBmdW5jdGlvbnMsIHRoZXJlIGlzIG9ubHkgYXV0aWFzcCAg
+aW5zdHJ1Y3Rpb24gaW5zZXJ0ZWQgYmVmb3JlIHJldHVybiwgZm9yIHZhbGlkYXRpb24gb2YgcmV0
+dXJuIGFkZHJlc3MsDQo+IHdoaWxlIHBhY2lhc3AgaW5zdHJ1Y3Rpb24gaXMgbWlzc2luZyBiZWZv
+cmUuDQo+ID4gTlNYOkZGRkZGRkMwODAwQTcyRDh8RjgwMDg2NUUgIGFzYW4ubW9kdWxlX2N0b3I6
+ICAgIHN0ciAgICAgeDMwLFt4MThdLCMweDggICA7IHgzMCxbeDE4XSwjOA0KPiA+IE5TWDpGRkZG
+RkZDMDgwMEE3MkRDfEY4MUYwRkZFICAgICAgICAgICAgICAgICAgICAgICBzdHIgICAgIHgzMCxb
+c3AsIy0weDEwXSEgICA7IHgzMCxbc3AsIy0xNl0hDQo+ID4gTlNYOkZGRkZGRkMwODAwQTcyRTB8
+QjAwMjMzQzAgICAgICAgICAgICAgICAgICAgICAgIGFkcnAgICAgeDAsMHhGRkZGRkZDMDg0NzIw
+MDAwDQo+ID4gTlNYOkZGRkZGRkMwODAwQTcyRTR8OTEzNTAwMDAgICAgICAgICAgICAgICAgICAg
+ICAgIGFkZCAgICAgeDAseDAsIzB4RDQwICAgICA7IHgwLHgwLCMzMzkyDQo+ID4gTlNYOkZGRkZG
+RkMwODAwQTcyRTh8NTI4MDNENjEgICAgICAgICAgICAgICAgICAgICAgIG1vdiAgICAgdzEsIzB4
+MUVCICAgICAgICA7IHcxLCM0OTENCj4gPiBOU1g6RkZGRkZGQzA4MDBBNzJFQ3w5NDIyQjM5RSAg
+ICAgICAgICAgICAgICAgICAgICAgYmwgICAgICAweEZGRkZGRkMwODA5NTQxNjQgICA7IF9fYXNh
+bl9yZWdpc3Rlcl9nbG9iYWxzDQo+ID4gTlNYOkZGRkZGRkMwODAwQTcyRjB8Rjg0MTA3RkUgICAg
+ICAgICAgICAgICAgICAgICAgIGxkciAgICAgeDMwLFtzcF0sIzB4MTAgICA7IHgzMCxbc3BdLCMx
+Ng0KPiA+IE5TWDpGRkZGRkZDMDgwMEE3MkY0fEQ1MDMyM0JGICAgICAgICAgICAgICAgICAgICAg
+ICBhdXRpYXNwDQo+ID4gTlNYOkZGRkZGRkMwODAwQTcyRjh8RDY1RjAzQzAgICAgICAgICAgICAg
+ICAgICAgICAgIHJldA0KPiANCj4gVGhhcyBoYXMgYSBtaXh0dXJlIG9mIFNDUyBhbmQgUEFDOyB0
+aGVyZSdzIGEgc2hhZG93IGNhbGwgc3RhY2sgcHJvbG9ndWUgYnV0IGEgUEFDIGVwaWxvZ3VlOg0K
+PiANCj4gICAgICAgICBzdHIgICAgIHgzMCwgW3gxOF0sICM4ICAvLyBTQ1MNCj4gICAgICAgICAu
+Li4NCj4gICAgICAgICBhdXRpYXNwICAgICAgICAgICAgICAgICAvLyBQQUMNCg0KWWVzLCB0aGlz
+IGlzIG15IGlzc3VlIGFuZCBJIHdhbnRlZCB0byByZXNvbHZlLg0KDQo+IC4uLiBzbyBJJ2xsIGhh
+emFyZCBhIGd1ZXNzIHRoYXQgdGhlc2UgYXJlIGR1bXBzIGZyb20gbWVtb3J5LCBhbmQgeW91IGhh
+dmUgVU5XSU5EX1BBVENIX1BBQ19JTlRPX1NDUyBzZWxlY3RlZC4gQXNzdW1pbmcgdGhhdCBpcyB0
+aGUNCj4gY2FzZSwgZWl0aGVyIHRoaXMgZHVtcCBoYXMgYmVlbiBtYWRlIG1pZC1wYXRjaGluZywg
+b3IgdGhlIHBhdGNoaW5nIGhhcyBnb25lIHdyb25nIHNvbWVob3cgYW5kIGxlZnQgdGhlIHByb2xv
+Z3Vlcy9lcGlsb2d1ZXMgaW4gYW4NCj4gaW5jb25zaXN0ZW50IHN0YXRlIChhbmQgdGhlIE5VTEwg
+ZGVyZWZlcmVuY2UgY291bGQgYmUgYSBzZWNvbmRhcnkgZWZmZWN0IG9mIHRoYXQpLg0KPg0KPiBB
+cmQsIGRvZXMgdGhhdCBzb3VuZCBwbGF1c2libGUgdG8geW91Pw0KPg0KPiBJIGNhbid0IHNlZSB3
+aHkgdGhhdCB3b3VsZCBkZXBlbmQgb24gS0JVSUxEX1JVU1RGTEFHUywgYnV0IG1heWJlIHRoZSBE
+V0FSRiBnZW5lcmF0ZWQgYnkgcnVzdGMgaGFzIGNvbmZ1c2VkIHRoZSBwYXRjaGluZyBjb2RlDQo+
+IHNvbWVob3csIG9yIHRoZSBsaW5rZXIgaGFzIGFnZ3JlZ2F0ZWQgdGhhdCBpbiBhIHN1cHJpc2lu
+ZyB3YXkuDQo+IE1hcmsuDQoNCiAgWWVzLCBUaGFuayB5b3UuIFdoYXQgY2FuIGNhdXNlIHRoaXMg
+aXNzdWU/IENhbiB5b3UgZ2l2ZSBzb21lIGRpcmVjdGlvbnMgc28gdGhhdCB3ZSBjYW4gZ3JhZHVh
+bGx5IGludmVzdGlnYXRlLg0KDQo+IA0KPiA+IE5TWDpGRkZGRkZDMDgwMEE3MzkwfEY4MDA4NjVF
+ICBhc2FuLm1vZHVsZV9jdG9yOiAgICBzdHIgICAgIHgzMCxbeDE4XSwjMHg4ICAgOyB4MzAsW3gx
+OF0sIzgNCj4gPiBOU1g6RkZGRkZGQzA4MDBBNzM5NHxGODFGMEZGRSAgICAgICAgICAgICAgICAg
+ICAgICAgc3RyICAgICB4MzAsW3NwLCMtMHgxMF0hICAgOyB4MzAsW3NwLCMtMTZdIQ0KPiA+IE5T
+WDpGRkZGRkZDMDgwMEE3Mzk4fEIwMDIzNDAwICAgICAgICAgICAgICAgICAgICAgICBhZHJwICAg
+IHgwLDB4RkZGRkZGQzA4NDcyODAwMA0KPiA+IE5TWDpGRkZGRkZDMDgwMEE3MzlDfDkxMjEwMDAw
+ICAgICAgICAgICAgICAgICAgICAgICBhZGQgICAgIHgwLHgwLCMweDg0MCAgICAgOyB4MCx4MCwj
+MjExMg0KPiA+IE5TWDpGRkZGRkZDMDgwMEE3M0EwfDUyODAwNkUxICAgICAgICAgICAgICAgICAg
+ICAgICBtb3YgICAgIHcxLCMweDM3ICAgICAgICAgOyB3MSwjNTUNCj4gPiBOU1g6RkZGRkZGQzA4
+MDBBNzNBNHw5NDIyQjM3MCAgICAgICAgICAgICAgICAgICAgICAgYmwgICAgICAweEZGRkZGRkMw
+ODA5NTQxNjQgICA7IF9fYXNhbl9yZWdpc3Rlcl9nbG9iYWxzDQo+ID4gTlNYOkZGRkZGRkMwODAw
+QTczQTh8Rjg0MTA3RkUgICAgICAgICAgICAgICAgICAgICAgIGxkciAgICAgeDMwLFtzcF0sIzB4
+MTAgICA7IHgzMCxbc3BdLCMxNg0KPiA+IE5TWDpGRkZGRkZDMDgwMEE3M0FDfEQ1MDMyM0JGICAg
+ICAgICAgICAgICAgICAgICAgICBhdXRpYXNwDQo+ID4gTlNYOkZGRkZGRkMwODAwQTczQjB8RDY1
+RjAzQzAgICAgICAgICAgICAgICAgICAgICAgIHJldA0KPiA+DQo+ID4gSSBjb21wYXJlIGtlcm5l
+bCA2LjYgYW5kIGtlcm5lbCA2LjEyIEFSTSBNYWtlZmlsZSwgYW5kIGZpbmQgdGhlIGRpZmZlcmVu
+Y2UuDQo+ID4gS2VybmVsNi42IE1ha2VmaWxlDQo+ID4gNjYgaWZlcSAoJChDT05GSUdfQVJNNjRf
+QlRJX0tFUk5FTCkseSkNCj4gPiA2NyAgIEtCVUlMRF9DRkxBR1MgKz0gLW1icmFuY2gtcHJvdGVj
+dGlvbj1wYWMtcmV0K2J0aQ0KPiA+IDY4IGVsc2UgaWZlcSAoJChDT05GSUdfQVJNNjRfUFRSX0FV
+VEhfS0VSTkVMKSx5KQ0KPiA+IDY5ICAgaWZlcSAoJChDT05GSUdfQ0NfSEFTX0JSQU5DSF9QUk9U
+X1BBQ19SRVQpLHkpDQo+ID4gNzAgICAgIEtCVUlMRF9DRkxBR1MgKz0gLW1icmFuY2gtcHJvdGVj
+dGlvbj1wYWMtcmV0DQo+ID4gNzEgICBlbHNlDQo+ID4gNzIgICAgIEtCVUlMRF9DRkxBR1MgKz0g
+LW1zaWduLXJldHVybi1hZGRyZXNzPW5vbi1sZWFmDQo+ID4gNzMgICBlbmRpZg0KPiA+IDc0IGVs
+c2UNCj4gPiA3NSAgIEtCVUlMRF9DRkxBR1MgKz0gJChjYWxsIGNjLW9wdGlvbiwtbWJyYW5jaC1w
+cm90ZWN0aW9uPW5vbmUpDQo+ID4gNzYgZW5kaWYNCj4gPg0KPiA+IEtlcm5lbDYuMTIgIE1ha2Vm
+aWxlDQo+ID4gODEgaWZlcSAoJChDT05GSUdfQVJNNjRfQlRJX0tFUk5FTCkseSkNCj4gPiA4MiAg
+IEtCVUlMRF9DRkxBR1MgKz0gLW1icmFuY2gtcHJvdGVjdGlvbj1wYWMtcmV0K2J0aQ0KPiA+IDgz
+ICAgS0JVSUxEX1JVU1RGTEFHUyArPSAtWmJyYW5jaC1wcm90ZWN0aW9uPWJ0aSxwYWMtcmV0DQo+
+ID4gODQgZWxzZSBpZmVxICgkKENPTkZJR19BUk02NF9QVFJfQVVUSF9LRVJORUwpLHkpDQo+ID4g
+ODUgICBLQlVJTERfUlVTVEZMQUdTICs9IC1aYnJhbmNoLXByb3RlY3Rpb249cGFjLXJldA0KPiA+
+IDg2ICAgaWZlcSAoJChDT05GSUdfQ0NfSEFTX0JSQU5DSF9QUk9UX1BBQ19SRVQpLHkpDQo+ID4g
+ODcgICAgIEtCVUlMRF9DRkxBR1MgKz0gLW1icmFuY2gtcHJvdGVjdGlvbj1wYWMtcmV0DQo+ID4g
+ODggICBlbHNlDQo+ID4gODkgICAgIEtCVUlMRF9DRkxBR1MgKz0gLW1zaWduLXJldHVybi1hZGRy
+ZXNzPW5vbi1sZWFmDQo+ID4gOTAgICBlbmRpZg0KPiA+IDkxIGVsc2UNCj4gPiA5MiAgIEtCVUlM
+RF9DRkxBR1MgKz0gJChjYWxsIGNjLW9wdGlvbiwtbWJyYW5jaC1wcm90ZWN0aW9uPW5vbmUpDQo+
+ID4gOTMgZW5kaWYNCj4gPg0KPiA+IEFmdGVyIEkgZGVsZXRlIHRoZSBydXN0IGJ1aWxkIGZsYWdz
+LCB0aGUgYXNhbi5tb2R1bGVfY3RvciBiaW5hcnkgaXMgcmlnaHQgYW5kIGthc2FuIGZlYXR1cmUg
+d29ya3MgZmluZS5Db3VsZCB5b3UgaGVscCBjaGVjayB3aHkNCj4gS0JVSUxEX1JVU1RGTEFHUyBp
+bXBhY3RzIGtlcm5lbCBjb21wbGljYXRpb24gd2l0aCBrYXNhbiBmZWF0dXJlIGVuYWJsZWQgYW5k
+IGhvdyBjYW4gdGhpcyBpc3N1ZSBmaXhlZD8NCj4gPg0KPiA+IEkgdXNlIHRoZSBidWlsZC5jb25m
+aWcuY29uc3RhbnRzOg0KPiA+IEJSQU5DSD1hbmRyb2lkMTYtNi4xMg0KPiA+IEtNSV9HRU5FUkFU
+SU9OPTQNCj4gPiBDTEFOR19WRVJTSU9OPXI1MzYyMjUNCj4gPiBSVVNUQ19WRVJTSU9OPTEuODIu
+MA0KPiA+IEFBUkNINjRfTkRLX1RSSVBMRT1hYXJjaDY0LWxpbnV4LWFuZHJvaWQzMQ0KPiA+IFg4
+Nl82NF9OREtfVFJJUExFPXg4Nl82NC1saW51eC1hbmRyb2lkMzENCj4gPiBBUk1fTkRLX1RSSVBM
+RT1hcm0tbGludXgtYW5kcm9pZGVhYmkzMQ0KPiA+DQo+ID4gY29tcGlsZSBjb25maWd1cmF0aW9u
+IGlzIDoNCj4gPiBDT05GSUdfR0NDX1ZFUlNJT049MA0KPiA+IENPTkZJR19DQ19JU19DTEFORz15
+DQo+ID4gQ09ORklHX0NMQU5HX1ZFUlNJT049MTkwMDAxDQo+ID4gQ09ORklHX0FTX0lTX0xMVk09
+eQ0KPiA+IENPTkZJR19BU19WRVJTSU9OPTE5MDAwMQ0KPiA+IENPTkZJR19MRF9WRVJTSU9OPTAN
+Cj4gPiBDT05GSUdfTERfSVNfTExEPXkNCj4gPiBDT05GSUdfTExEX1ZFUlNJT049MTkwMDAxDQo+
+ID4gQ09ORklHX1JVU1RDX1ZFUlNJT049MTA4MjAwDQo+ID4gQ09ORklHX1JVU1RfSVNfQVZBSUxB
+QkxFPXkNCj4gPiBDT05GSUdfUlVTVENfTExWTV9WRVJTSU9OPTE5MDAwMQ0KPiA+IENPTkZJR19D
+Q19DQU5fTElOSz15DQo+ID4gQ09ORklHX0NDX0NBTl9MSU5LX1NUQVRJQz15DQo+ID4gQ09ORklH
+X0NDX0hBU19BU01fR09UT19PVVRQVVQ9eQ0KPiA+IENPTkZJR19DQ19IQVNfQVNNX0dPVE9fVElF
+RF9PVVRQVVQ9eQ0KPiA+IENPTkZJR19UT09MU19TVVBQT1JUX1JFTFI9eQ0KPiA+IENPTkZJR19D
+Q19IQVNfQVNNX0lOTElORT15DQo+ID4gQ09ORklHX0NDX0hBU19OT19QUk9GSUxFX0ZOX0FUVFI9
+eQ0KPiA+IENPTkZJR19QQUhPTEVfVkVSU0lPTj0xMjUNCj4gPiBDT05GSUdfSVJRX1dPUks9eQ0K
+PiA+IENPTkZJR19CVUlMRFRJTUVfVEFCTEVfU09SVD15DQo+ID4gQ09ORklHX1RIUkVBRF9JTkZP
+X0lOX1RBU0s9eQ0KPiA+DQo+ID4gVGhhbmsgeW91DQo=
