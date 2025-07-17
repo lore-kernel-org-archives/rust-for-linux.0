@@ -1,102 +1,151 @@
-Received: from forward502d.mail.yandex.net (forward502d.mail.yandex.net [178.154.239.210])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7FA1F5413;
-	Thu, 17 Jul 2025 16:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E68288C12;
+	Thu, 17 Jul 2025 16:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752768792; cv=none; b=fH17k8pZxYNYLzaQI0OEi094zxqdS9DkPYf8ely5WaRA9GLej40gy7tx5wi1pMOK5c0s/umKIiYBZB+Vu/mGdodiJ0ReM/GkMTMlnzcENhfPUshLqesNbSyJ4ZoVss/Tvd3v94R7sygUxHSFgi6QMYxmV9Rk6D3Xjn9zrGiZkmk=
+	t=1752768861; cv=none; b=Y8B5r8faTZDkc7LnsqCnEHeynm2V/jsnvjec/7fYOwerB5e3d0lMNsYs2Q9xr7n6sDtTRN76eoAlVOFGYNsRUabp+gUlqGoxkXWpqMzwEW/9dXHHX3+jw7SkYHXr2GvDsBSxB/UMXSrjpXiXh0TnePvnEXNtziUh86iLYUQxUYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752768792; c=relaxed/simple;
-	bh=vsjhJ3z6EMjxDgXgT5LphTieOK5QpxV+BznRkq8kE8E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vimu3kpwFrnuutqg7pdmDATfe0px/BDko34OiEzgX7e/I75+JRqMinPzBnZa3T33833pIRrNqnv3LWvJPft5+1mDBK3sLE6pfhLxBAiOjrH+BASwH0FZtQjcGYQqt119DwYG7+SO8db8ug0BZipDK6ZuLEy6t2+pBsNzi75od8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=CxK6CZTb; arc=none smtp.client-ip=178.154.239.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1752768861; c=relaxed/simple;
+	bh=/P/sV+sQCJwwTH0lx/U38MZ3P+zHFO7z6yDbHcy0kNg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e/xkWyH17fstiOnjlhhEmvCDUnLKUbOR7gJWpFhs2W5abKdx5GdnuaofgOhCWk8sVFpIIq3LhlGSVdDxXb17WNt//LAmUnacNjOAXbYGr/jvIIgGFemJVWbDlac8m+hU3sAs/ZCumGclmttRStt5bOAVrb3Z0KSR78DCj3sS1n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aHRei6ps; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="CxK6CZTb"
-Received: from mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net [IPv6:2a02:6b8:c43:a3b4:0:640:7c50:0])
-	by forward502d.mail.yandex.net (Yandex) with ESMTPS id 7991662E3A;
-	Thu, 17 Jul 2025 19:07:19 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id E7QHDKPL70U0-sE43Ks2P;
-	Thu, 17 Jul 2025 19:07:18 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1752768438;
-	bh=vsjhJ3z6EMjxDgXgT5LphTieOK5QpxV+BznRkq8kE8E=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=CxK6CZTbmXVsFLC/MApM7ePYDbXIKtmd//lEK82oAzuql1yRgcWfAp1hGsOovMOPn
-	 zthoq9LLms1UU0LBJ8F65c5CsXUHNiOy7t9/+eMRlkHkQgUWVRO7yexRkVDGJE9hB0
-	 vOxucQ6dkbJk+tm1pYbWI97X0acnP7nwtDG3xbQk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-78.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 17 Jul 2025 19:07:13 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: <jens.korinth@tuta.io>, "Jens Korinth via B4 Relay"
- <devnull+jens.korinth.tuta.io@kernel.org>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "=?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7Zybg==?= Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Rust For Linux" <rust-for-linux@vger.kernel.org>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "Dirk Behme"
- <dirk.behme@gmail.com>, "Linux Kernel" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 0/3] rust: Add pr_*_once macros134
-Message-ID: <20250717190713.1f19043e@nimda.home>
-In-Reply-To: <87o6z8h4im.fsf@kernel.org>
-References: <20241126-pr_once_macros-v4-0-410b8ca9643e@tuta.io>
-	<87zfish69f.fsf@kernel.org>
-	<XyUDgEm-do6Hd7zeR0J2gte301dYC_LTbQqJ85HUnf0DKGZoH4V9G9dgvmEw4fEadnu8CAZ4j4XWqLdn2YzkAw==@protonmail.internalid>
-	<OIpcOXB--F-9@tuta.io>
-	<87o6z8h4im.fsf@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aHRei6ps"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6facc3b9559so15369916d6.0;
+        Thu, 17 Jul 2025 09:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752768859; x=1753373659; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L+yz+W/V56qlFCu6Ortl7e+6CnAcr0ty8ni1aHJ/G24=;
+        b=aHRei6psRIS6wK/YPANELOJz8d9aWwSfHDqZqPi2V9W7IqBrWXekZxera6oogrOxCP
+         5U25mfgLd0Q5LY+NbaXJQGBueQ4/dkC6Ht9QbKTEf5sf17PJjPuShd6nlkwOSKKjAwqW
+         rDZuYt1SKPfATkCqha+vZ7mB4V3+0rkhwRCVUhlMYZDC+vPmcZx9dj0bgjuL7zckyNdf
+         BqwRnoSuCuHEBzKIwqL4hQ0+1LMGx3jSheQnrmoinhoXgOEZX0EwB1vOqOaSGs95NoCX
+         XP/YSqGXS0EcSuDDbtMO7nWNnZ2ooyYITxB+92sp//DBO7LjZVTLkUhZ27XEzapr2VoE
+         YYYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752768859; x=1753373659;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L+yz+W/V56qlFCu6Ortl7e+6CnAcr0ty8ni1aHJ/G24=;
+        b=aMbJm8e+ojhIiKE1aZCgt9O2b0rwb5kBbp/TfVkoAmP4vnEeDitpL/J/2FcgMOaEyS
+         GnRTJ3d8NAT7dnMm4yemAFjK1dOh+pdacT9tChbAdyjlBKLHfe8ZpCnKnZveJyoHsQb2
+         FAOxkJ/kGWzvYBpkqGMRMOvbmjspqCn9yxHEO3RdrGjanbLB+uwDVx0WchQx2vcYC/49
+         Wii9SQmuDfFvU9sS1QO8ElGsVHHn4hZkzmOx+fzicqsvaEAPBBIZK0svliWwz0/7W3Hx
+         7bScmyDOxSyXtft//C1ZuoVLZbG5J+nd1APD+sVokFC8yieg8vPYrvaUaLFLcZYlo5H6
+         25VA==
+X-Forwarded-Encrypted: i=1; AJvYcCWreoY41/R5Q5y1WcyrhBe4KM908xDYCzbrjZ/racnB1137Pt7IsCj5w38P8cSd+Tw47nnqUGSXFqyoVbI=@vger.kernel.org, AJvYcCXrgmMhwx8BCXpRG1Lf9RP0K2X+RN4RuNsx97EkpPjoUxPCms3wrgwyHTEDiYVVjAj5zbCbIiGTa6QIOD54Fl8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpHWU7lI+wFfy2EzBieQwdsYxOsvv6Lcqmkpvgu37aIL2qv5wl
+	IagNKdp2z3a+LyCMbfs3Smr+i+opCdoRc8khyZX8iEsextaEU6nH3LdX
+X-Gm-Gg: ASbGncsVoeHQXbrwac354GQTDxLoOluzyrhvjenEaXhf+aGuVpiw8YWtbS83c3DQ3Mw
+	WQOol55vPF1xo8zTJLh7oMs71FxhVAj1MhgjrijmrzG8HJkumQQUDpWGti4oPn2DVAtVRiQ2wrP
+	gWOfvxha8ANNebKhW6ALBbO2JOqrVhQAO1gY2mEowoKxDK/R6MyMP/6v6hSgs2cr4FrZEpkCPjT
+	ymJyyQRcHIh4jRpzo2zgQDlN2dX+1YwgrdUcpX1aG3kgZk0caf7jCKUqhCSrjmNWHHz/21KjTDb
+	KtxGPQRy/H2x/63OtjYwGAohsg20yDEjIKy3tLnLjnu1bHESK0mhga9bZKBSxlQtQQIMOErXSNS
+	r3TSVpNHZ8MeQA5nknHBhMuFWjaELXokGITGXEALz3CEjgg8shZK/qsD5G7FotFEt68amy9+8KA
+	jyODkMnc5XbWqG
+X-Google-Smtp-Source: AGHT+IGPXNss7QM/3gt8EaNhAyoHgBwLz/cvFQg+KILkOzEQ9CC5cn74rJSv6rbv4jcqqkFdPVow4g==
+X-Received: by 2002:ad4:4ee1:0:b0:702:d0e6:6e6b with SMTP id 6a1803df08f44-704f6bfd432mr111820616d6.45.1752768858643;
+        Thu, 17 Jul 2025 09:14:18 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70497d39d14sm86256086d6.76.2025.07.17.09.14.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Jul 2025 09:14:18 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 50D6CF40068;
+	Thu, 17 Jul 2025 12:14:17 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-10.internal (MEProxy); Thu, 17 Jul 2025 12:14:17 -0400
+X-ME-Sender: <xms:WSF5aBq0IeXzv2Yh02VaaWVgfcxo6yej423YJ7xjyZo4iAjVdUhgDg>
+    <xme:WSF5aHnK1wY0eaadXUvWS-EEn3eOMQoO049h5pLab7DXztVWHZOM_YEu39sIXU-Pz
+    mH9HgtH_kuI2rm9rg>
+X-ME-Received: <xmr:WSF5aCyiTGOTpDGgCzV20ONDcDVASJ7hh8CnFMjLjc5sEWVCnTQ6iYHgYw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeiuddtfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopeduledpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehhuhhirdiihhhuse
+    hlihhnuhigrdguvghvpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhope
+    hgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehp
+    rhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:WSF5aE2eit8GwdcxDzZsIkWPPFN4DKRNHoYnoO-mSWt9xU9axqthLA>
+    <xmx:WSF5aGDyHYJAW1kNxzJ6djBb2o2vI8DssiugjZPNAS9R8vXk9teT8g>
+    <xmx:WSF5aB_F8bBhYIC1qj4u4LV7aKfWRaKNyJwNRixVg_kr9qNPZWd4EQ>
+    <xmx:WSF5aE8AVU2Ck9YQAes6FLYPb1OgFNeQLDfWiaVUqGV-43FeI7maOw>
+    <xmx:WSF5aB0QqzAN9sDKSpgx3UWsOdl1XT7UyqDmQwn4j4NgJe_UlAQ3rsh->
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 17 Jul 2025 12:14:16 -0400 (EDT)
+Date: Thu, 17 Jul 2025 09:14:15 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Hui Zhu <hui.zhu@linux.dev>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Hui Zhu <zhuhui@kylinos.cn>, Geliang Tang <geliang@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>
+Subject: Re: [PATCH v2] rust: add a sample alloc usage
+Message-ID: <aHkhVwD7WKm1dSsa@Mac.home>
+References: <20250717095053.49239-1-hui.zhu@linux.dev>
+ <DBEAFCFHFU35.1IZI3ZSJSIRAY@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DBEAFCFHFU35.1IZI3ZSJSIRAY@kernel.org>
 
-On Tue, 11 Feb 2025 16:42:25 +0100
-Andreas Hindborg <a.hindborg@kernel.org> wrote:
+On Thu, Jul 17, 2025 at 01:19:05PM +0200, Danilo Krummrich wrote:
+> (Cc: Lorenzo, Vlastimil, Liam, Uladzislau)
+> 
+> On Thu Jul 17, 2025 at 11:50 AM CEST, Hui Zhu wrote:
+> > diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> > index bd2faad63b4f..7c3e68d9ada5 100644
+> > --- a/samples/rust/Makefile
+> > +++ b/samples/rust/Makefile
+> > @@ -10,6 +10,7 @@ obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM)	+= rust_driver_platform.o
+> >  obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX)		+= rust_driver_faux.o
+> >  obj-$(CONFIG_SAMPLE_RUST_DRIVER_AUXILIARY)	+= rust_driver_auxiliary.o
+> >  obj-$(CONFIG_SAMPLE_RUST_CONFIGFS)		+= rust_configfs.o
+> > +obj-$(CONFIG_SAMPLE_RUST_ALLOC)		+= rust_alloc.o
+> 
+> I think adding an example for large alignment is fine, but let's do this in a
+> doc-test on VBox in rust/kernel/alloc/kbox.rs. I think adding a separate module
 
-> <jens.korinth@tuta.io> writes:
->=20
-> > Hi!
-> >
-> >>=C2=A0Thanks for the patch! Do you plan on sending a new version?=C2=A0=
-If
-> >>not, do you mind if I send v5?
-> >
-> > I think there is currently no consensus on how exactly it should be
-> > done (or at least I was confused about that). If you=E2=80=99re actively
-> > using the patch please go ahead! Active usage is always the best
-> > argument in such cases.
->=20
-> I was informed this patch set is the correct way to emit a warning in
-> the module_params patch set [1].
->=20
-> I did not follow all the discussion so I am not sure either. But I'll
-> look into the discussion then.
->=20
->=20
-> Best regards,
-> Andreas Hindborg
->=20
->=20
->=20
-> [1]
-> https://lore.kernel.org/rust-for-linux/20250204-module-params-v3-v5-0-bf5=
-ec2041625@kernel.org/
->=20
->=20
-
-I have reviewed the patch series from start to finish. I am not
-using or depending the patch actively but I can send v5 sometime
-soon (I will have some space next week) if you would like.
+I would suggest using #[kunit_tests(..)], which is similar to how
+doc-test run, for it if we only use it for test purposes.
 
 Regards,
-Onur
+Boqun
+
+> for this is overkill.
+> 
+> Note that doc-tests are executed on boot if CONFIG_RUST_KERNEL_DOCTESTS=y.
+> 
+[...]
