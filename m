@@ -1,158 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5EB306DC4
-	for <rust-for-linux@vger.kernel.org>; Thu, 17 Jul 2025 19:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7881799F;
+	Thu, 17 Jul 2025 19:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752779948; cv=none; b=jhfwCopnwpXsNpvGMMslUwSjc3DPiq8N2M4xeMNOiRtfviy5/hpR3UlmopJvV9+bBTMLxjKsmNqfZktEeMrrYe4EDUmJPheTBHEzbRws/szRfqo1D/vR61TZyaK7jiAopkCOQReOHyYWVHqxtNrd3qqyY41O+m8yRiB3NF3H73U=
+	t=1752781532; cv=none; b=nUS10SFQY5KN0sQxT0rtNYQBSi/fczrWHzBNjq6FuYivqPKtwQkGMM6wNfuCBqys5csjWsYT+1avW1rn3riJJ2xhe7uLEz1BJ4/IVvuoT40nHuMu2dvVjN2cXvOYxeM2FZ3NfiU3E/96uf1x0sWhEM7J98ukYZHvpAC5iteTo78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752779948; c=relaxed/simple;
-	bh=DaST+9cUmsGCdtFyk18p5644BIuAQrhi8nzLRfbJ/e4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lac5Wv5uO+gLS6k3YxVUgDFG3h3AquXz3Nqx2qHWUle49WqzKuyPRrs7+iB3m97trC1BRHX6GQsJ4UnMAwxqxituP8SsMhgPb00TEC0OwLsaN+MBQcreyKSKyAoo9rFdp4PAsUNXEgU/aZAKLkIR8b9DmbIr8un92dek0Dbdu28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DfV17k+Q; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1752781532; c=relaxed/simple;
+	bh=N2BisUfdTV1268goLzXHdBIJr+OPvUfSeFednAFAYYY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=eIPnEOg16k0impGe290NF0c0+Sgljo//xFZ/zDgSvXgYjWBw8zu7Bo2r0VntB7EBvWOg1D3/sjQmDx/ti6kamlV7N66yMHDmmhVvxZbDcB2Mtco8PmzFQlM3221kFedy9uFhlPpGcgF1eaTi/uqEgMD3/MjhNvSniMywd+Rdskw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sWz40BNV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DfV17k+Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752779945;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NGS/BoymqJmahU5rZHpUugUDz2OrVHzQcn6syXHrJVA=;
-	b=DfV17k+QXXBlPa88gYor3vomYIHZEerX5vwSkEkuj/wVJrt9UmB22Fi0QAAGSUuk514m9h
-	ONgnC5N2kAYstPFFNSeC/idUUPktUpRZIbCpxla77GOZPyMOK0FrXKj6GqXA23AdW1Dk+Q
-	stHjWgHE4j6vRuwnMElLKbEW+tQSmG8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-OqzwG0xLMWqdTWOTvvyjcg-1; Thu,
- 17 Jul 2025 15:19:00 -0400
-X-MC-Unique: OqzwG0xLMWqdTWOTvvyjcg-1
-X-Mimecast-MFC-AGG-ID: OqzwG0xLMWqdTWOTvvyjcg_1752779938
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AF3B61800C30;
-	Thu, 17 Jul 2025 19:18:58 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.66.69])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 80E53195609D;
-	Thu, 17 Jul 2025 19:18:56 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	linux-rt-devel@lists.linux.dev (open list:Real-time Linux (PREEMPT_RT):Keyword:PREEMPT_RT)
-Subject: [PATCH v12 15/15] locking: Switch to _irq_{disable,enable}() variants in cleanup guards
-Date: Thu, 17 Jul 2025 15:15:54 -0400
-Message-ID: <20250717191719.2076270-16-lyude@redhat.com>
-In-Reply-To: <20250717191719.2076270-1-lyude@redhat.com>
-References: <20250717191719.2076270-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sWz40BNV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB38C4CEE3;
+	Thu, 17 Jul 2025 19:45:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752781531;
+	bh=N2BisUfdTV1268goLzXHdBIJr+OPvUfSeFednAFAYYY=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=sWz40BNVuRx9LM1hNdjBIPpZL1908nl08MOxa5pbgC2FdijtwLIo7xV/Pr0A1z949
+	 L79Oz+I2I5b3OvMjQ/hLXdl0Hrw6Uy+zVW0smISUYeJ/tsCsu7xtYvFjt3HMNVH3v8
+	 f3iw61NLBhJElpMqTzm+Nyb78W3qLDQUHH52OIbKwVj6D1RnP5DDVlbR21U3sTPCRY
+	 EyfZoP9F998sGyZ4YMwgpNivXCZToKQ1EL4PFnjSWiR26nJY81n09ESSD9NrFMaQf8
+	 YZhd3m01k6r8wqrvUKOO6hFg4N5CHHiwDSAF+5UQYmZXDsrjEUAybJBvKEOmCOY4dL
+	 pR5sTZNPLMBWg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Jul 2025 21:45:26 +0200
+Message-Id: <DBEL719XP5CO.FKBDQ4QRZST0@kernel.org>
+Subject: Re: [PATCH v15 2/3] rust: io: mem: add a generic iomem abstraction
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com> <20250717-topics-tyr-platform_iomem-v15-2-beca780b77e3@collabora.com>
+In-Reply-To: <20250717-topics-tyr-platform_iomem-v15-2-beca780b77e3@collabora.com>
 
-From: Boqun Feng <boqun.feng@gmail.com>
+On Thu Jul 17, 2025 at 5:55 PM CEST, Daniel Almeida wrote:
+> +impl<const SIZE: usize> IoMem<SIZE> {
+> +    fn ioremap(resource: &Resource) -> Result<Self> {
+> +        // Note: It looks like there aren't any 32-bit architectures tha=
+t define
+> +        // ioremap_np. This means that sometimes this conversion will fa=
+il. If
+> +        // we performed a lossy cast, i.e., using `as`, then `bindings::=
+ioremap`
+> +        // would return NULL anyway.
 
-The semantics of various irq disabling guards match what
-*_irq_{disable,enable}() provide, i.e. the interrupt disabling is
-properly nested, therefore it's OK to switch to use
-*_irq_{disable,enable}() primitives.
+Why would ioremap() return NULL if you perform a lossy cast?
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Anyways, I find it a bit difficult to decode the actual problem from the ab=
+ove
+description.
 
----
-V10:
-* Add PREEMPT_RT build fix from Guangbo Cui
+I feel it would be better to just explain that some ioremap() implementatio=
+ns
+use types that depend on the CPU word width rather than the bus address wid=
+th.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- include/linux/spinlock.h | 26 ++++++++++++--------------
- 1 file changed, 12 insertions(+), 14 deletions(-)
+If you agree, no need to resend though, we can change it when applying the
+series.
 
-diff --git a/include/linux/spinlock.h b/include/linux/spinlock.h
-index b21da4bd51a42..7ff11c893940b 100644
---- a/include/linux/spinlock.h
-+++ b/include/linux/spinlock.h
-@@ -605,10 +605,10 @@ DEFINE_LOCK_GUARD_1(raw_spinlock_nested, raw_spinlock_t,
- 		    raw_spin_unlock(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(raw_spinlock_irq, raw_spinlock_t,
--		    raw_spin_lock_irq(_T->lock),
--		    raw_spin_unlock_irq(_T->lock))
-+		    raw_spin_lock_irq_disable(_T->lock),
-+		    raw_spin_unlock_irq_enable(_T->lock))
- 
--DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq(_T->lock))
-+DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irq, _try, raw_spin_trylock_irq_disable(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(raw_spinlock_bh, raw_spinlock_t,
- 		    raw_spin_lock_bh(_T->lock),
-@@ -617,12 +617,11 @@ DEFINE_LOCK_GUARD_1(raw_spinlock_bh, raw_spinlock_t,
- DEFINE_LOCK_GUARD_1_COND(raw_spinlock_bh, _try, raw_spin_trylock_bh(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(raw_spinlock_irqsave, raw_spinlock_t,
--		    raw_spin_lock_irqsave(_T->lock, _T->flags),
--		    raw_spin_unlock_irqrestore(_T->lock, _T->flags),
--		    unsigned long flags)
-+		    raw_spin_lock_irq_disable(_T->lock),
-+		    raw_spin_unlock_irq_enable(_T->lock))
- 
- DEFINE_LOCK_GUARD_1_COND(raw_spinlock_irqsave, _try,
--			 raw_spin_trylock_irqsave(_T->lock, _T->flags))
-+			 raw_spin_trylock_irq_disable(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
- 		    spin_lock(_T->lock),
-@@ -631,11 +630,11 @@ DEFINE_LOCK_GUARD_1(spinlock, spinlock_t,
- DEFINE_LOCK_GUARD_1_COND(spinlock, _try, spin_trylock(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(spinlock_irq, spinlock_t,
--		    spin_lock_irq(_T->lock),
--		    spin_unlock_irq(_T->lock))
-+		    spin_lock_irq_disable(_T->lock),
-+		    spin_unlock_irq_enable(_T->lock))
- 
- DEFINE_LOCK_GUARD_1_COND(spinlock_irq, _try,
--			 spin_trylock_irq(_T->lock))
-+			 spin_trylock_irq_disable(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(spinlock_bh, spinlock_t,
- 		    spin_lock_bh(_T->lock),
-@@ -645,12 +644,11 @@ DEFINE_LOCK_GUARD_1_COND(spinlock_bh, _try,
- 			 spin_trylock_bh(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(spinlock_irqsave, spinlock_t,
--		    spin_lock_irqsave(_T->lock, _T->flags),
--		    spin_unlock_irqrestore(_T->lock, _T->flags),
--		    unsigned long flags)
-+		    spin_lock_irq_disable(_T->lock),
-+		    spin_unlock_irq_enable(_T->lock))
- 
- DEFINE_LOCK_GUARD_1_COND(spinlock_irqsave, _try,
--			 spin_trylock_irqsave(_T->lock, _T->flags))
-+			 spin_trylock_irq_disable(_T->lock))
- 
- DEFINE_LOCK_GUARD_1(read_lock, rwlock_t,
- 		    read_lock(_T->lock),
--- 
-2.50.0
-
+> +        // TODO: Properly address this in the C code to avoid this `try_=
+into`.
+> +        let size =3D resource.size().try_into()?;
+> +        if size =3D=3D 0 {
+> +            return Err(EINVAL);
+> +        }
