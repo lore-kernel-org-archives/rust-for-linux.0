@@ -1,165 +1,258 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2050.outbound.protection.outlook.com [40.107.101.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7288A246761;
-	Thu, 17 Jul 2025 22:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752792507; cv=none; b=gP2OHWHqC3FWiXN8nGFBQLX6GTTDNSdjFmGGiV7B0ORWkCW0AiwEF37jHCBNJp8zTKvvCl+H3Abzvh21LobGrIE8fWL6PJ2O+KG/tejPsQCi6Fm3b8YqCj9tuvFlpgEPlmEeJgt9TG+pT858nTJTc68eNxSi0I0vcGTOZ5Wl4Ho=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752792507; c=relaxed/simple;
-	bh=Psy3Z91cjDmHHJS7M86ndvJxDQH2Gx0mX4Zz1cgIEcw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAzQ5QU+GsUO8k4K52u0H/1kIFZDKrSdbKt7AoMowq5yJMtvZjgiyXzCUufuQ/Znt7PRtP3OXnCKn73XbS70AFGGrHbXGaD8coDjb98F1D772DS++Zt7Oe1sb9SRDnDcvrz8O/ZzpfVmp/amQ69DTGdmGhfQKRWtppxTZfPpmlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pqvnImvn; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEBF20E6E2;
+	Fri, 18 Jul 2025 07:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752823585; cv=fail; b=Sz6ysGDt+1Hf2h0n5cYYC9GvCGSKAhaKUEChwWMCirr5LFsatsO0NfnKK5878vyLXgt27gDC9rYfels7T8VsS7tMvYxl2CyWd658esw1sqrxRj9+OTM0JLSNnTPusmnNYzzjLVlmlWz0iS9vzzuRuPzwP080X/phve3/2ftNHng=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752823585; c=relaxed/simple;
+	bh=zWavLLYdJkq2TAsKvVIc2PVSNxKzq92HU/GZ4v6PM5I=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=Cnzkyh7B+bBVbNX3WuArvfajK5qN3CgRjZIinQOXYOH71I2ssfttroLk889QwKEoyFnkyCRKSnp0xLbe0rCVOnyz+L7/ch3jy26hrGBG/AtXosCaSAapRJ2NMWGVfT2beBAquHCHQzhqsmxHHB71I5hTY8CinxnJ/IWwE+vTklk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ms5prnwL; arc=fail smtp.client-ip=40.107.101.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pqvnImvn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C164C4CEE3;
-	Thu, 17 Jul 2025 22:48:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752792507;
-	bh=Psy3Z91cjDmHHJS7M86ndvJxDQH2Gx0mX4Zz1cgIEcw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqvnImvnSer1Gge6lQzqMDGq8GzgNy5m1m0ykGAR9OwsR+dOGP3K/IKZoNFMsnsco
-	 9suPF5g80A7LwFlq857f8rNCl/nJ0lbUOZQDNGtxIkSojG88Zl5MS4HK2x+GZBL+FF
-	 +REFhPtdTDpkl3cQc7TnKlKRa/fWsNyqWMyDpMghmF6BZ+0VfTdRbhkoqn/RYlUvNR
-	 c9rpUe8XKcrCo5JMa/AN+pqgAJF0NLjGN5D7ewIEWZd4T1bc1+5lQTGgc2muRSWxVX
-	 3UG1KmgyXNqbeLT3LyfqujUg2rFXCvuwTuDi4qmzy6igag+u3ZTgTlAGXRwpUilPla
-	 /w/IhPz0gIdpg==
-From: Danilo Krummrich <dakr@kernel.org>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 3/3] driver: rust: expand documentation for driver infrastructure
-Date: Fri, 18 Jul 2025 00:45:39 +0200
-Message-ID: <20250717224806.54763-4-dakr@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250717224806.54763-1-dakr@kernel.org>
-References: <20250717224806.54763-1-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ms5prnwL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EvujyMub8wIog6ILKQ92fUI+OEiAZOFe/kzOCQT6aZZVUlmwC2TFyfKyd5/lky50HBTY9tgNSy9GMr6iYns5pffD/snVBGEhnvVhgl7KpchXgAdszT1Rq5UoDuqvf8n1DUrxD/A88Jmy3nyJU3zsUSSC7u6P37MBhF7vVVmQQPkvOUiHhksveGeuASZFPO/nnMDSUtv9VFFirGaLBR5ew/XKavv/LAbDe5eTiLGGCsPcKajsDo6W9L5jUvciM3SPHfGUC6uJ+fghGUrZ5DrldftYvMnlmKRDIN16kfqe694rfuwAqIZxtYoF0/urCiGfpmQ+41YidBrighyy8rA89g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zTTFd7MAq6g/U6VVaqsisaS0z8V5M2OjRG8f+zlV/5A=;
+ b=gM6IfcUzmXRx+1CRVYyuRPjFczCJ1TElTt73UIKxfqfb6Jk6SeLfR1WsQofYU/JIp6Jp/ScJntSVAFyYoBe9rjBBkh7CT+OmUYQZl132LVMzLsXhVhpg8KiACv0Gjc2lbUf+Dmo5r2Ar+02xumiIg00ym6jnDpiSR2UXbj/aaY956rMlfkvq9MC79AIHCu7kGKgRGwLZQjWR9qtcws/S1a8vp5kCaZ2X48I7a+Ebj6qyVgO/IY8FhA/Oa9K/qsuw1G8frH5uVme969xu37c30mh/KBdJS73j3rs9SRewBwzbCSIkWjxziuYj2H/TfAqGbz/Zm4sD/10Gi0TftHrWVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zTTFd7MAq6g/U6VVaqsisaS0z8V5M2OjRG8f+zlV/5A=;
+ b=Ms5prnwLI6IrsYci31OM8/vJkZ6cLLLZDRdr1GZBX9nE970SInKuO1FmaAgUWxJb8h2aiVr96gybb+BXZuiYPPALmZtNZrzJykHJVRdB4qmKNrlzB+JRJ4ljQG55KngCqTjyKMs/w/HIQObFqM9Y6toiba742hi4zj85Agi9uR9wkgoI9Qlmh3y3G5GLrA7nBFTp3Imbgrqgr6hMXdZCDhIWIRpoX/ETZFL17+SFrkHS4gPvpcWFU/KPzstqNrONUaBrBR/Lrq9P6aAxpznpN5tZopFgAOPluBl6eG2mXN3o/PeNBi6e9uEh4N+YLq3gzgi9he5QqqMk5Le/zWF+lg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
+ by DM6PR12MB4091.namprd12.prod.outlook.com (2603:10b6:5:222::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8943.25; Fri, 18 Jul
+ 2025 07:26:19 +0000
+Received: from CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
+ ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8922.037; Fri, 18 Jul 2025
+ 07:26:18 +0000
+From: Alexandre Courbot <acourbot@nvidia.com>
+Subject: [PATCH v2 00/19] gpu: nova-core: register!() macro improvements
+Date: Fri, 18 Jul 2025 16:26:05 +0900
+Message-Id: <20250718-nova-regs-v2-0-7b6a762aa1cd@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA33eWgC/03MQQrDIBCF4auEWXeKGkOkq96jZGHjmMyiWjRIS
+ /DutYFCl//j8e2QKTFluHQ7JCqcOYYW6tTBvNqwELJrDUqoQYyixxCLxURLRqWdc+QHf7c9tP8
+ zkefXYd2m1ivnLab3QRf5XX+K/lOKRIHeGCeUGY20+hoKO7bnOT5gqrV+ACuhMjOjAAAA
+X-Change-ID: 20250703-nova-regs-24dddef5fba3
+To: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, 
+ Beata Michalska <beata.michalska@arm.com>, nouveau@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Alexandre Courbot <acourbot@nvidia.com>, 
+ John Hubbard <jhubbard@nvidia.com>, Timur Tabi <ttabi@nvidia.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: TYCP286CA0169.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:3c6::12) To CH2PR12MB3990.namprd12.prod.outlook.com
+ (2603:10b6:610:28::18)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|DM6PR12MB4091:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f8b4d67-070f-453a-b929-08ddc5cc62c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?aFNqYlNacWhOTVI1dk05Um45WnkxbFVLdmU2cTlrWndDbENQdzdNQVNZcnlU?=
+ =?utf-8?B?M1JrTGtGcWU3VFVVVGpVMi9WV0lpazErcGlHeFBOaGJNNi9qKzB4NHZLejlh?=
+ =?utf-8?B?dE1MSCtTTmxERVlQYTdWbC90YWg1aFhqcEtPZ2dZbzBab3lCOFY0d0dYWmIy?=
+ =?utf-8?B?VEpHWjRBQ2xvVmhZdWlhSWx4SDllS0Z2bHZYVURnUGNacE5RQ1dFdnJrbFNN?=
+ =?utf-8?B?ajVxYkxQYkZac1NmTDljZFBtN2d5UzlkejRLa3JsME5NV1VoYUZSK2o4Rkty?=
+ =?utf-8?B?a0I1SDdxU0c3MXE5cS91TG1OL2sxbW9vV3RFcGl0Y05hdnpnWklyVjMwK1B3?=
+ =?utf-8?B?ZTNIRng4V1Y2L3dreWlKNTFpODR6dllkcmdLUjYxNTlBYnNKTEdKbmdYWEVW?=
+ =?utf-8?B?eWxLUUdoMVRtaHZ4TG9QUHRzeGFySlhjTG1VNjMvb3cxZFRnZTAxVXZpc3Vm?=
+ =?utf-8?B?S3Z0VjdkUlROUzJNb1BHUzJVN25TLy94VE81bE5vYjNycmZDQWZXR1hORUlt?=
+ =?utf-8?B?a0REUmVCT1Iwa1NpRk5PRTRNQ2ZzQ29GSUM5bDdhbzFCdUh3eHp6R2ErU0hS?=
+ =?utf-8?B?dXdMOFNzd3hNMFV5NzQxektMM3ZVTUdPUk5neGZYcDhtNmV4cm1mbmw2UzBI?=
+ =?utf-8?B?NjYrL3RaUzgxYWdISytQdTJOTzRScVlVUzQ4MlhTMnI1OERyeGlQSEI4WEU4?=
+ =?utf-8?B?UE1HN3F3MHhMdzM2NjZNUk9SWUE0cGFnWExTeksxaWE5K3h6TUJMUnFoU3pW?=
+ =?utf-8?B?RzlZQzNhcC9OWWppdlozVldlbVpqamxPTldaRUlHZFRkb1U0aWtyZTBRVXJO?=
+ =?utf-8?B?Ky8wZHlVdUtsWWl1dFVhTzFkRkowbXpmcGVMQ1NvdG1hS0tZWlZwMHd1aVBY?=
+ =?utf-8?B?Q3l1aE5oaXhVOE5RcEVuY1NYbmZGY0szWDNPcmhGb2YxNG5NNFhxbEY0VWtk?=
+ =?utf-8?B?VldkV3N3dVczUDNLQXVzT1lLamQxS0MrclJ3WHRBTEJlWkttcy9MbHljdWNT?=
+ =?utf-8?B?REs0elptbHMwNmJmTEdySmdDYUZVOVJwOGYwUnd0Q21Zbm0xSHRwWGpZUzB6?=
+ =?utf-8?B?ZW9DcFFURmdhTWlIRGpaQktJSTNkKytJRkJDdWU5MG82WkFFRndJWlgweWNT?=
+ =?utf-8?B?T3ZFcloyaFp3TWdidlRZTjVFdWs5MVpqYXVxMTFickZ5QXZycENRYk04TVVj?=
+ =?utf-8?B?VFVmWFgrVWtQU2FTNUxrMEdzZm1Lc2hUOUxkZU1JWUJsM0haK3Ayczd0TlZl?=
+ =?utf-8?B?aXY3RjR5UldjYnFrSmZ6NVV4OTRMZDdhMHRQUURhNU41RVE1VFVYOTVhYjNj?=
+ =?utf-8?B?aWRHOEpNT2tKRCtjMVNKZk9hME9YTU9oUE5LdjJtYWxhTGNLbEdJT1dWekVo?=
+ =?utf-8?B?OXNuYjBFclMvZHRITVhhQi92eVRRaDlNbThtbTlMRFhDL1JzWDRsMWNzWjRD?=
+ =?utf-8?B?eVZRaVR1VEI3SnN1aXR4eEtkMXlldStrY1VENDVCS2c2K2ZIVmxjeVJmWW41?=
+ =?utf-8?B?TG9PWi9vS00vTVp4SFNEZnNDSXpMSjVzbmQ3Z29wZjBLY2MwaU40VDh6VlZL?=
+ =?utf-8?B?OW9Xb1ZUZUxtdnJYWFdidFphUWo1TFVLMERWbTI4NWMxa25IcDdrREhXeXdR?=
+ =?utf-8?B?VDBvcGFBZXdNL01nL01SWlVPNnYxWnc5UWIxYXlFeTVwMDc0eHBsYmFpWkJK?=
+ =?utf-8?B?bmxZMmFiUDg2K1E3NSs0Y2Z4V01adlB5TjJSNkdBRFNYWEhySW1UM0NTUTlV?=
+ =?utf-8?B?M2xYOG9aaTY0TW9Nb2dWMytYQmIyN0F0WmpZYWxTUHdqM1pOd09ZcExRQitD?=
+ =?utf-8?B?NGNHLzZ5Z0ZiM1hLTWM2c3Juay9tUEMzZjFaUTlyUGI2djA4aTQ0S1pEbUhM?=
+ =?utf-8?B?VGtJekRxbXdYM0lvVjUra1JYTkI1UWx3NGlFd282aVBGNHpPS2M3d3ZOSmNO?=
+ =?utf-8?Q?jKvn1y3gnBU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WVl1aWVSenV6bkIzSHNvVlFibkVYUGtLVTIrVUJNazZNSXJObFNwU1I0STU0?=
+ =?utf-8?B?UURqMm9WUW5GaUg5cDEvT1IzcVJyZVVadXNJelA4bDZIK3dEc3B6L0piem9K?=
+ =?utf-8?B?bU91eDEyRytRcXhhcVF4QndrOHRrTUcvOXJoU1hwU3Q3ZENZQ0JSVWhwelF2?=
+ =?utf-8?B?RFhTYXVPWk12TzhXbUVmTW5oN2VZSm5GNFFKU0Z0ZFhyTFZNbTMxVDdRb1cr?=
+ =?utf-8?B?ZDduVmJYUVNDVlNnNHpVZFcxcG5Vd1V5RHdwU3pyczBVcjJpWmcycEIwNWw4?=
+ =?utf-8?B?ODF6VHhRZTlDVkNET1ExdHhMUUxERDA2eklXQStSYW9DOVZ3c2lLWlJmRW84?=
+ =?utf-8?B?WmJRcnRjcUs1R3QvR2ZsZzdSOXB1aU5BWk5UdWhxVE9ZVXc5dGhsMDkzZVJB?=
+ =?utf-8?B?SnhxUHErNTBlU1hNdGdwWFR1NWJwQ0JKQVNodUpIOE5DemRuQmxVTjN6aTBz?=
+ =?utf-8?B?emY0ditGNlkrRnUvK0RxZkROTVRoWlcxT0xQaXQvUEFCaHpSVHY3emNJajND?=
+ =?utf-8?B?ZW5qNHA0SE5ybkpOV29USmgwWXVFUCtRd0I1Sm1STDExdkE5MjNKOFNzSkpV?=
+ =?utf-8?B?NG5QNjE3UzQ0L1VPRGRvR20zdmdHVkxYS2RyTFVTclVQNHhvSjk1MFU0SGlk?=
+ =?utf-8?B?YXhLY1JVNmRUVTBKVnVSQldMV3VybnRtWm14OWlqbkNXNjY3c3hyK0JwSmxp?=
+ =?utf-8?B?NWUyWWJGWnRxcTRqVVpaRnRzcWppTzZCNUo4bFVTanBMRXFCSHFRZGI2aUd5?=
+ =?utf-8?B?QkxXTjF3NWxZd0xiWEZyS3VjWlIwRTdjZzFOTDJ3Mm5Ka3liMXhYZUpQaHdR?=
+ =?utf-8?B?cVIxNkVkMi9wOEpCYVVGRmRLMEY0WFFDTWo2KzdRZTFPbzBPWWZvVjNMNmUy?=
+ =?utf-8?B?Y2tFbmNtcWtya2FMYmI3NW1zQTlGQmVxb21jZzhTcmh0eW1rSWsxbEJvTk1D?=
+ =?utf-8?B?VUQ1MFJONU50OTE4U05jd2pGU0UxOXROMUY2V05keERTK2M5TnlJampsMjlB?=
+ =?utf-8?B?ZEJpWTFvZjJCRmN5ZWNGKy9UdjNMRkNEWkE1R1dkUWVUL2NkK2I2QVN3bERN?=
+ =?utf-8?B?ZklWTnB6SlU2OU1zcU1UMS9qejBxa2JxVTd1OUdva3luK2VmY2xZZUpQMTY1?=
+ =?utf-8?B?MlNpSTBpZmUyN2toNStDM0pYS1VBcWxSWmszMHJVUjcweGNlcDRaNnhXMmkz?=
+ =?utf-8?B?bVE0UGtmcDJ1UmZiOTJnbW5GbXAxcUpBSTAvN21keHdJcUNhb1JpaTlpVnBt?=
+ =?utf-8?B?aytMY04yS1JLYUZQaHE0Q25WOVhsdzI0MnBpdUFNK1hKZ3ZzY2RoYVpYVzVX?=
+ =?utf-8?B?L0trR2pFNWJ4U0dSbXk0VGpVWDRzM1FWZDB4WVFnZGRzYmN3SzZnRGgxRXJn?=
+ =?utf-8?B?NzNndGdXbFNLRU5IZStRNzZGeDFlTzN2bVM1UUJzdTZkdEtyNm1qM0VuN1My?=
+ =?utf-8?B?K1ZFOEs0L3ZlVEhMSkxyVDRLTi8rVTRsU2xqSEF6U0NMbS8xYTlteTZXbkNs?=
+ =?utf-8?B?SzY4RGZTQzIwdWZ5Zk0yWU9ZdFZaNkZLbkduYmRqQlZ5bExCdStZcCtVWmpQ?=
+ =?utf-8?B?cnFBbGhCTWpIOTRFWkgyTnU3azRLUjBJeGszbFBJNzEzemR6aG9Zc3p0dCtM?=
+ =?utf-8?B?WWc3cmtETDVkRkdGTVVobFlEWkZhdk9oRGlEYmxSb1YxeGJsSEJqT1pHcTdB?=
+ =?utf-8?B?V2x2RTJ1ZXNpaGhkSEhzSVdWaTFrL0NGcW1iSlB2WkRQSFhsamZLdG1zbDBv?=
+ =?utf-8?B?UGp2K2VaaGxSdk5oQnFQZ0lxZktoeWhzdE9FR3FrZUlUaEYxN1k5ZTgvZ2pj?=
+ =?utf-8?B?U1RhaytOdWltZnZ4bDhURnlwZmF1cnUwYmVnWjlZVnJNeWRpM2pJVEpMUDJq?=
+ =?utf-8?B?UTdCK1p3MngrS3JqQjJKMDdXckFBU2lTbkZneWQzMzlmYXYzZVRlbTZEaWJ4?=
+ =?utf-8?B?dGM1VXhGL2lFdGJiUnR3UnlEcjBQeWg2OHVTMTVUL2dxSDdvMWpNTnI3QnVP?=
+ =?utf-8?B?elc1aWFEOXJ1aDNtdS9zUkxnTmNtQ3hTY3dvQWRjaVAwenZPTkJTY0dWOEd6?=
+ =?utf-8?B?cHlsd0tXSWxUNlVYNVJLREExUXM5NTA1MVkwOEhrUzl5NGpVd2RUb0ZPV0FZ?=
+ =?utf-8?B?VDlKeUN6L0VBRDQwQ3cwOVJIMXRUTys4WXgxMStqZXdNQjVvam81N2hSK0Z3?=
+ =?utf-8?Q?AgbEJ94L1cQC5mYb79Tu1+OJy8YG7ZrGtSt4/Jn0tygi?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f8b4d67-070f-453a-b929-08ddc5cc62c6
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2025 07:26:18.1460
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kXjbDmVIZJEXY3abjRMyUm4+cD281lV6FQNKyPTqVWj8z8DlUs+jjbiaFZGHHIy4x9D+uWoty1HRbxTIG9um9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4091
 
-Add documentation about generic driver infrastructure, representing a
-guideline on how the generic driver infrastructure is intended to be
-used to implement bus specific driver APIs.
+This patch series introduces a number of improvements to nova-core's
+register!() macro in order to make it more useful to Nova itself, and to
+bring it closer to graduation into the wider kernel crate.
 
-This covers aspects such as the bus specific driver trait, adapter
-implementation, driver registration and custom device ID types.
+The first half is trivial fixes and code reorganization to let the
+following patches apply more cleanly.
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+The interesting stuff begins with the introduction of proper `Debug` and
+`Default` implementations leveraging the field information that is made
+available by the first half of the patchset. `Debug` now displays the
+interpreted values of all the fields on top of the hexadecimal
+representation of the register; and `Default` now initializes all the
+fields to their declared default value instead of just zeroes.
+
+Then goes a complete redesign of the way relative registers work. The
+previous way was very unsafe as it accepted any literal value as the
+base. Now, valid bases can (and must) be explicitly defined for specific
+group of relative registers. All these bases are belong to us, and thus
+can be validated at build-time.
+
+Next come arrays of registers, a useful feature to represent contiguous
+groups of registers that are interpreted identically. For these we have
+both build-time and runtime checked accessors. We immediately make use
+of them to clean up the FUSE registers code, which was a bit unsightly
+due to the lack of this feature.
+
+Finally, combining the two features: arrays of relative registers, which
+we don't really need at the moment, but will become needed for GSP
+booting.
+
+There are still features that need to be implemented before this macro
+can be considered ready for other drivers:
+
+- Make I/O accessors optional,
+- Support other sizes than `u32`,
+- Allow visibility control for registers and individual fields,
+- Convert the range syntax to inclusive slices instead of NVIDIA's
+  OpenRM format,
+- ... and proper suitability assessment by other driver contributors.
+
+These should be trivial compared to the work that is done in this
+series.
+
+Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 ---
- rust/kernel/driver.rs | 82 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 80 insertions(+), 2 deletions(-)
+Changes in v2:
+- Improve documentation and add layout diagram for the relative
+  registers example.
+- Fix build error when fields named `offset` are declared.
+- Link to v1: https://lore.kernel.org/r/20250704-nova-regs-v1-0-f88d028781a4@nvidia.com
 
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index a8f2675ba7a7..0bb80ad7aea4 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -2,8 +2,86 @@
- 
- //! Generic support for drivers of different buses (e.g., PCI, Platform, Amba, etc.).
- //!
--//! Each bus / subsystem is expected to implement [`RegistrationOps`], which allows drivers to
--//! register using the [`Registration`] class.
-+//! This documentation describes how to implement a bus specific driver API and how to align it with
-+//! the design of (bus specific) devices.
-+//!
-+//! Note: Readers are expected to know the content of the documentation of
-+//! [`Device`](device::Device) and [`device::DeviceContext`].
-+//!
-+//! # Driver Trait
-+//!
-+//! The main driver interface is defined by a bus specific driver trait. For instance:
-+//!
-+//! ```ignore
-+//! pub trait Driver: Send {
-+//!     /// The type holding information about each device ID supported by the driver.
-+//!     type IdInfo: 'static;
-+//!
-+//!     /// The table of OF device ids supported by the driver.
-+//!     const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> = None;
-+//!
-+//!     /// The table of ACPI device ids supported by the driver.
-+//!     const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> = None;
-+//!
-+//!     /// Driver probe.
-+//!     fn probe(dev: &Device<device::Core>, id_info: &Self::IdInfo) -> Result<Pin<KBox<Self>>>;
-+//!
-+//!     /// Driver unbind (optional).
-+//!     fn unbind(dev: &Device<device::Core>, this: Pin<&Self>) {
-+//!         let _ = (dev, this);
-+//!     }
-+//! }
-+//! ```
-+//!
-+//! For specific examples see [`pci::Driver`](kernel::pci::Driver),
-+//! [`platform::Driver`](kernel::platform::Driver) and
-+//! [`auxiliary::Driver`](kernel::auxiliary::Driver).
-+//!
-+//! The `probe()` callback should return a `Result<Pin<KBox<Self>>>`, i.e. the driver's private
-+//! data. The bus abstraction should store the pointer in the corresponding bus device. The generic
-+//! [`Device`](device::Device) infrastructure provides common helpers for this purpose on its
-+//! [`Device<CoreInternal>`](device::Device<device::CoreInternal>) implementation.
-+//!
-+//! All driver callbacks should provide a reference to the driver's private data. Once the driver
-+//! is unbound from the device, the bus abstraction should take back the ownership of the driver's
-+//! private data from the corresponding [`Device`](device::Device) and [`drop`] it.
-+//!
-+//! All driver callbacks should provide a [`Device<Core>`](device::Device<device::Core>) reference
-+//! (see also [`device::Core`]).
-+//!
-+//! # Adapter
-+//!
-+//! The adapter implementation of a bus represents the abstraction layer between the C bus
-+//! callbacks and the Rust bus callbacks. It therefore has to be generic over an implementation of
-+//! the [driver trait](#driver-trait).
-+//!
-+//! ```ignore
-+//! pub struct Adapter<T: Driver>;
-+//! ```
-+//!
-+//! There's a common [`Adapter`] trait that can be implemented to inherit common driver
-+//! infrastructure, such as finding the ID info from an [`of::IdTable`] or [`acpi::IdTable`].
-+//!
-+//! # Driver Registration
-+//!
-+//! In order to register C driver types (such as `struct platform_driver`) the [adapter](#adapter)
-+//! should implement the [`RegistrationOps`] trait.
-+//!
-+//! This trait implementation can be used to create the actual registration with the common
-+//! [`Registration`] type.
-+//!
-+//! Typically, bus abstractions want to provide a bus specific `module_bus_driver!` macro, which
-+//! creates a kernel module with exactly one [`Registration`] for the bus specific adapter.
-+//!
-+//! The generic driver infrastructure provides a helper for this with the
-+//! [`module_driver`](kernel::module_driver) macro.
-+//!
-+//! # Device IDs
-+//!
-+//! Besides the common device ID types, such as [`of::DeviceId`] and [`acpi::DeviceId`], most buses
-+//! may need to implement their own device ID types.
-+//!
-+//! For this purpose the generic infrastructure in [`device_id`](kernel::device_id) should be used.
- 
- use crate::error::{Error, Result};
- use crate::{acpi, device, of, str::CStr, try_pin_init, types::Opaque, ThisModule};
+---
+Alexandre Courbot (18):
+      gpu: nova-core: register: fix typo
+      gpu: nova-core: register: allow fields named `offset`
+      gpu: nova-core: register: improve documentation for basic registers
+      gpu: nova-core: register: simplify @leaf_accessor rule
+      gpu: nova-core: register: remove `try_` accessors for relative registers
+      gpu: nova-core: register: move OFFSET declaration to I/O impl block
+      gpu: nova-core: register: fix documentation and indentation
+      gpu: nova-core: register: add missing doccomments for fixed registers I/O accessors
+      gpu: nova-core: register: add fields dispatcher internal rule
+      gpu: nova-core: register: improve `Debug` implementation
+      gpu: nova-core: register: generate correct `Default` implementation
+      gpu: nova-core: register: split @io rule into fixed and relative versions
+      gpu: nova-core: register: use #[inline(always)] for all methods
+      gpu: nova-core: register: redesign relative registers
+      gpu: nova-core: falcon: add distinct base address for PFALCON2
+      gpu: nova-core: register: add support for register arrays
+      gpu: nova-core: falcon: use register arrays for FUSE registers
+      gpu: nova-core: register: add support for relative array registers
+
+John Hubbard (1):
+      gpu: nova-core: register: minor grammar and spelling fixes
+
+ Documentation/gpu/nova/core/todo.rst      |   2 -
+ drivers/gpu/nova-core/falcon.rs           |  72 +--
+ drivers/gpu/nova-core/falcon/gsp.rs       |  16 +-
+ drivers/gpu/nova-core/falcon/hal/ga102.rs |  47 +-
+ drivers/gpu/nova-core/falcon/sec2.rs      |  13 +-
+ drivers/gpu/nova-core/gpu.rs              |   2 +-
+ drivers/gpu/nova-core/regs.rs             |  83 ++--
+ drivers/gpu/nova-core/regs/macros.rs      | 789 +++++++++++++++++++++++++-----
+ 8 files changed, 795 insertions(+), 229 deletions(-)
+---
+base-commit: 14ae91a81ec8fa0bc23170d4aa16dd2a20d54105
+change-id: 20250703-nova-regs-24dddef5fba3
+
+Best regards,
 -- 
-2.50.0
+Alexandre Courbot <acourbot@nvidia.com>
 
