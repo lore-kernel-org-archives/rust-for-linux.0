@@ -1,201 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20542126BF1;
-	Fri, 18 Jul 2025 14:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652D72DCBF8
+	for <rust-for-linux@vger.kernel.org>; Fri, 18 Jul 2025 14:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752848216; cv=none; b=MFxJXYpr4Hh0KJUBdCvZiiRtEMRWHpqlKADWJRX+xnSciyfcGPuzNRBr5rPsh2yLK/Z7OndOOjjeByzlV+HIAeQ8UFqjvsgKyoyd1MfvzHYh9EvVFzDxAMUYWjDmRzli/1tHLV1e6Vdl96uoC+NRw7hfKk/OE0jvfvc6vRQGZ0U=
+	t=1752848457; cv=none; b=fvonaENT4uab6DExmjyp136gRYIe8ZIC8tlw0x6MVKx8uD4QhNrJ9EXjaekO9wXE9EoxYiYShEDIGVKmzPlXWBLXtakhXze392eF89qB0rOoidNixE9A3XmqFjPfUYygl7hZSacVb9ej5wfq5mqbvq+kFhW/xbsW0nPcWywsZpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752848216; c=relaxed/simple;
-	bh=yaVnoy5A+qoYzfBDN4n7KaNw47fkm7e6P0GY3j6YGBU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=jxoB1mLtRPtPGm4wSvg37TPPaLveWz+mwPA78b50ugY0UX9SKdN64tvM+wdN1bb1CC9XHrRtcErcUf2eIA5Gax7Ux2ptdibWKMku24Ij4AxNJ2fnr8cBzjpAaMpUTMKnocwbq67xbHBJqp8PUgPfrK2w5CTLQVsGeKby0YaIzy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKX2F10A; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752848457; c=relaxed/simple;
+	bh=UR/3lYqWlr6+TFIphcrSb08358WsAG5Jc3tmyhuBNUg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KHHwyMESysDTgPWZ7v/76cF4AhBWSD9QdkJsRSjNO0K5ybJmCP8DGuhU6O5K8ruI2pfXqp8Uh21fkLT6sSOh8QEIZAQUMPzj2C/54R2kHBubd5EWz8Uj3mokuC9RtS4hA/Krk72x5VSGfDbsIoMmU90UYH20b0/p6B+699dw92U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=truongsinh.pro; spf=pass smtp.mailfrom=truongsinh.pro; dkim=pass (1024-bit key) header.d=truongsinh.pro header.i=@truongsinh.pro header.b=dgvr9Rs0; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=truongsinh.pro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=truongsinh.pro
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKX2F10A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78B4C4CEEB;
-	Fri, 18 Jul 2025 14:16:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752848215;
-	bh=yaVnoy5A+qoYzfBDN4n7KaNw47fkm7e6P0GY3j6YGBU=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=PKX2F10AYgiy1es1h0IKtNpTs9bQc+zmhc1qFo2P6RBE8aImE7II61UjV5YO62Knc
-	 EwUfrHr65xGt9r69TeNCzYQk2YSSLfKA60DcCdQUPEL0r7gFHGRNv+F2KTbEAf+5b7
-	 p0N4p0NdfLO8v99dIWb/+qterAr6x11ZP0y99TOGhH6vdlV1rFPRkW+qODbiiW0Btj
-	 6eN2eZFM7sRRSwOUwSG8XHGnVSKAedNWUZp7D9m9ePXFY3l/vgvXxA7NBh5Dd7ges6
-	 bQ4G5ZTyQ8ZPI4m99jcVLnLL789xZE59RCNIiD6qrA7TFrf36yPLBOSE4tjQFM6wLf
-	 SnAqE1BpgehXA==
+	dkim=pass (1024-bit key) header.d=truongsinh.pro header.i=@truongsinh.pro header.b="dgvr9Rs0"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-23649faf69fso19648875ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 18 Jul 2025 07:20:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=truongsinh.pro; s=google; t=1752848455; x=1753453255; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tHc6EgBSaCyhHUt4iMs1slcS/3iZ0njcmmeqo15tlyw=;
+        b=dgvr9Rs0cXzqBZy48+wxsP50DX+Du2DdZQo4blS8VXuqAthHGQOCVp9ivff+q2fRHs
+         LcCYf2SQAQnLs03Dfe9/zkPeXeavKYFqgtZDalYQ3RLd8/x8jzAupVtGzYCX/pSl4zNv
+         yCTNEQ2UIncr/wM0aHeei9K9rItci6YIaC6uM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752848455; x=1753453255;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tHc6EgBSaCyhHUt4iMs1slcS/3iZ0njcmmeqo15tlyw=;
+        b=W5CQb4LW8XnhtPYp11rpos49jI+gn92ViQqNNPXYLV08YJCQf7ZKbsCZtxwdN4HvdU
+         hIQcuosF6p+64fUSpNCg1eoG8tZ9hZv86b2XS/Jbex9jq7f+qmG9u3tbMX9WhgeqMQDZ
+         74MJDfFrw1pVLSCYY/DVqtaeZTwHi6Fqs2aKpCZxyhb0gz9Xfs+FgQCeO8VPEITdhwq3
+         s16qUAQFN9drRCmUd4JOg/1X7Pl7txtO3N0sZGqLq4g5hlYuvxzQ5rxbR/b3MgTDinjD
+         dYIbg9aE4aQyUSeefY2qMfgbPOwKc8V2GvrLHaTn8Yd+ewOAEftHxI5+LpP8Hi8QUuzw
+         LQzw==
+X-Gm-Message-State: AOJu0Ywg0llTNQcETHu9tFKaLUHKyxFOTU1UHXOLnQWl0fE5cPnkhHEj
+	fNYbtq2t0Qja2c4YcM3d5BUaBP2JzOTk/7SkPD5siyuUO/gp95PeDTD0qTWpELoQ/6sE6NoKnGw
+	R4Gmy/TlVQw==
+X-Gm-Gg: ASbGnctk08mneow0DLVOxJJXq9rrxHQs2tkMUPmSTp2rx+uuwVhx491jKX7ET2CrA85
+	i9w772RK/uK/9m7oIleoVyz9NZzwtQIsh8PfPy29CuNuIVud7J+DFC41DLLtB+cnUYqMekxS2uM
+	Y33IBHxqWu1S95YY7igAc54/1+XYo7NRv9Uo4APAmw/xdIb7L7M8lbcLxlaPn/v1zW8IGnmArW+
+	ebyszes/wHBeYp+O/VJZHS/b5xWnO8wiAK3BKpfJIuBXf2XJ2g4MbwrsOLg1ywGdWj8n+bl3h7m
+	eu/fMVhzB/Ha6vz+hZJhicflyGy7Fiv4GTFdk7dpDob0s+FH13AlJlIQlSBSMeJx7S8+Y2XGg2f
+	gLuR2XBeUfTQfc2MeydDXKqEiErGlL6jY
+X-Google-Smtp-Source: AGHT+IE8URDevzEmHo34O8MknMpqxByTBGGoC9vivJaSg8dUHx3zY0Y6AH3iU7VKdlP+uWE4s+hcvw==
+X-Received: by 2002:a17:903:3bc5:b0:235:6e7:8df2 with SMTP id d9443c01a7336-23e2575a8d6mr154254985ad.41.1752848455514;
+        Fri, 18 Jul 2025 07:20:55 -0700 (PDT)
+Received: from gti14.tail9399b.ts.net ([71.212.150.249])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b5e3d5asm14070575ad.15.2025.07.18.07.20.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Jul 2025 07:20:55 -0700 (PDT)
+From: TruongSinh Tran-Nguyen <i@truongsinh.pro>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	TruongSinh Tran-Nguyen <i@truongsinh.pro>
+Subject: [PATCH] rust: Add #[must_use] to Lock::try_lock, GlobalLock::try_lock, and XArray::try_lock
+Date: Fri, 18 Jul 2025 07:20:26 -0700
+Message-ID: <20250718142026.2232366-1-i@truongsinh.pro>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 18 Jul 2025 16:16:50 +0200
-Message-Id: <DBF8TZJ2SFLR.1I57R8BX2A9ZN@kernel.org>
-Subject: Re: [PATCH 1/3] device: rust: documentation for DeviceContext
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250717224806.54763-1-dakr@kernel.org>
- <20250717224806.54763-2-dakr@kernel.org>
- <664AA6FF-4EFD-49FD-91A6-4D66B8614529@collabora.com>
-In-Reply-To: <664AA6FF-4EFD-49FD-91A6-4D66B8614529@collabora.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Jul 18, 2025 at 3:09 PM CEST, Daniel Almeida wrote:
-> Hi Danilo,
->
->> On 17 Jul 2025, at 19:45, Danilo Krummrich <dakr@kernel.org> wrote:
->>=20
->> Expand the documentation around DeviceContext states and types, in order
->> to provide detailed information about their purpose and relationship
->> with each other.
->>=20
->> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->> ---
->> rust/kernel/device.rs | 63 +++++++++++++++++++++++++++++++++++--------
->> 1 file changed, 52 insertions(+), 11 deletions(-)
->>=20
->> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
->> index ca82926fd67f..d7ac56628fe5 100644
->> --- a/rust/kernel/device.rs
->> +++ b/rust/kernel/device.rs
->> @@ -311,28 +311,69 @@ unsafe impl Send for Device {}
->> // synchronization in `struct device`.
->> unsafe impl Sync for Device {}
->>=20
->> -/// Marker trait for the context of a bus specific device.
->> +/// Marker trait for the context or scope of a bus specific device.
->> ///
->> -/// Some functions of a bus specific device should only be called from =
-a certain context, i.e. bus
->> -/// callbacks, such as `probe()`.
->> +/// [`DeviceContext`] is a marker trait for structures representing the=
- context of a bus specific
->> +/// [`Device`].
->> ///
->> -/// This is the marker trait for structures representing the context of=
- a bus specific device.
->> +/// The specific device context types are: [`CoreInternal`], [`Core`], =
-[`Bound`] and [`Normal`].
->> +///
->> +/// [`DeviceContext`] types are hierarchical, which means that there is=
- a strict hierarchy that
->> +/// defines which [`DeviceContext`] type can be derived from another. F=
-or instance, any
->> +/// [`Device<Core>`] can dereference to a [`Device<Bound>`].
->> +///
->> +/// The following enunumeration illustrates the dereference hierarchy o=
-f [`DeviceContext`] types.
->> +///
->> +/// - [`CoreInternal`] =3D> [`Core`] =3D> [`Bound`] =3D> [`Normal`]
->> +/// - [`Core`] =3D> [`Bound`] =3D> [`Normal`]
->> +/// - [`Bound`] =3D> [`Normal`]
->> +/// - [`Normal`]
->> +///
->> +/// Bus devices can automatically implement the dereference hierarchy b=
-y using
->> +/// [`impl_device_context_deref`](kernel::impl_device_context_deref).
->> pub trait DeviceContext: private::Sealed {}
->
-> Overall this looks good to me. I think that one point you could perhaps
-> consider is that, to me at least, it wasn't clear that the contexts were =
-only
-> valid for a given scope. Or what was precisely meant by =E2=80=9Cscope=E2=
-=80=9D.
+These methods return an RAII guard that unlocks the lock when dropped.
+If the return value is ignored, the lock is released immediately,
+which is likely not the intended behavior.
 
-Scope really means scope in the sense of programming languages, which is wh=
-y I
-didn't define it more specifically.
+This addresses issue #1133 in the rust-for-linux project.
 
-So, a reference to a Device<Bound> (i.e. &Device<Bound>) indicates that the
-device is guaranteed to be bound for the scope the reference is valid in.
+Signed-off-by: TruongSinh Tran-Nguyen <i@truongsinh.pro>
+---
+ rust/kernel/sync/lock.rs        | 1 +
+ rust/kernel/sync/lock/global.rs | 1 +
+ rust/kernel/xarray.rs           | 1 +
+ 3 files changed, 3 insertions(+)
 
-Please also note that the added documentation on Device already says:
-
-"This structure represents the Rust abstraction for a C `struct device`. A
-[`Device`] can either  exist as temporary reference (see also
-[`Device::from_raw`]), which is only valid within a certain scope or as
-[`ARef<Device>`], owning a dedicated reference count."
-
-I think this should clarify it already, or are you looking for something el=
-se?
-
-> I.e.: I thought that once you saw Device<Bound>, for example, that would =
-be
-> valid indefinitely. If we retrieve one of our past conversations at [0]:
-
-You can't create or have a Device<Bound>, but a &Device<Bound>, which has a
-defined lifetime that can't be extended arbitrarily with safe code.
-
->>=20
->> > Fine, but can=E2=80=99t you get a &Device<Bound> from a ARef<drm::Devi=
-ce>, for example?
->> > Perhaps a nicer solution would be to offer this capability instead?
->>=20
->> I think you're confusing quite some things here.
->>=20
->>   [...]
->>=20
->>   (2) Owning a reference count of a device (i.e. ARef<Device>) does *not=
-*
->>       guarantee that the device is bound. You can own a reference count =
-to the
->>       device object way beyond it being bound. Instead, the guarantee co=
-mes from
->>       the scope.
->>=20
->>       In this case, the scope is the IRQ callback, since the irq::Regist=
-ration
->>       guarantees to call and complete free_irq() before the underlying b=
-us
->>       device is unbound.
->
->
-> I see that you mention the word "scope" a few times, but perhaps it would=
- be
-> more instructional if you say a few more things on this topic.
->
-> For example, when you mention probe(), it would be useful to emphasize th=
-at the
-> Core state would only be guaranteed for the _scope of that function_, and=
- that
-> it wouldn't mean that "the state Core is active from now on", or "I can a=
-ssume
-> that we have a Device<Core> from now on in other parts of the driver".
->
-> Kind of like you do here:
->
->> +/// The core context indicates that the [`Device<Core>`] reference's sc=
-ope is limited to the bus
->> +/// callback it appears in.
->
-> But generalizing to all states if possible.
-
-That's not possible. Core is specific as in that it's really meant to be th=
-e
-context of a device when it appears in a bus callback.
-
-But the Bound context may appear whereever we it can be proven that within =
-a
-certain scope (e.g. the IRQ callback) the device is guaranteed to be bound.
-
-So the generalization really is to say "scope".
-
-> The difference is very subtle so this can sound a bit confusing. Let me k=
-now if
-> you want me to clarify this further.
->
->
-> [0] https://lore.kernel.org/rust-for-linux/DBB0NXU86D6G.2M3WZMS2NUV10@ker=
-nel.org/
->
-> =E2=80=94 Daniel
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index e82fa5be289c..1c2ddade6d6d 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -175,6 +175,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+     /// Tries to acquire the lock.
+     ///
+     /// Returns a guard that can be used to access the data protected by the lock if successful.
++    #[must_use = "the lock unlocks immediately when the guard is unused"]
+     pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+         // SAFETY: The constructor of the type calls `init`, so the existence of the object proves
+         // that `init` was called.
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index d65f94b5caf2..fdce038b5e0a 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -84,6 +84,7 @@ pub fn lock(&'static self) -> GlobalGuard<B> {
+     }
+ 
+     /// Try to lock this global lock.
++    #[must_use = "the lock unlocks immediately when the guard is unused"]
+     pub fn try_lock(&'static self) -> Option<GlobalGuard<B>> {
+         Some(GlobalGuard {
+             inner: self.inner.try_lock()?,
+diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+index 75719e7bb491..3cca717a3cb4 100644
+--- a/rust/kernel/xarray.rs
++++ b/rust/kernel/xarray.rs
+@@ -118,6 +118,7 @@ fn iter(&self) -> impl Iterator<Item = NonNull<T::PointedTo>> + '_ {
+     }
+ 
+     /// Attempts to lock the [`XArray`] for exclusive access.
++    #[must_use = "the lock unlocks immediately when the guard is unused"]
+     pub fn try_lock(&self) -> Option<Guard<'_, T>> {
+         // SAFETY: `self.xa` is always valid by the type invariant.
+         if (unsafe { bindings::xa_trylock(self.xa.get()) } != 0) {
+-- 
+2.43.0
 
