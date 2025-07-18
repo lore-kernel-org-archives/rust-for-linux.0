@@ -1,85 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05B672605;
-	Fri, 18 Jul 2025 10:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752835821; cv=none; b=r4wfBiz2/VQdnhMqv7bMoqMOKno48PG2IlHTvjFxdIOnKL8HEN3Z3xOLllEsfXhu3/5QOymBR7x7vHyVYl3XfipSC+/yxi0aq0VOuqdwvWT/cqgtrRMpQBAnYb8hWddNym3ekNFSdM9ChzdJn4NV58V47mFK1bkv4RLPb7clwgI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752835821; c=relaxed/simple;
-	bh=HebdHsS4n8w/p8M0w8SAL7pKxJdoLT/etZGGGL2VYMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A9KOBH257N2lqeM0cxUNAM+Z8g11HZOyULXfKL+X6ozqplCiGuR7IH3m8as+kI/5Y+ZOhVG4df25umpP9tRIKk3de+B3gHCbjlWuyIwawHqQwW6pO2cwJjZSALLC99o/art4PFlqcmJaNUoZH2YcpdWsMzFCSIUhjI68Ftzvbys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7gqLWkn; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7AF2D9ECE;
+	Fri, 18 Jul 2025 12:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752841444; cv=pass; b=X5vynIVBnv6CFZN6/NFbea3FzpGt9U8GgwmmGFKxqAwaw5QoIbUchZ9MYoXQZeSQSdrsirwnk3zZN5hbJBubfN2bTRnfwNvc7hp5xI7jFfQxE/407Oh0h1QPzPT+dKv9Fx87EjugzMi06B5L/q4IOU7ubPpo9Moa8lRCFMqjhmQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752841444; c=relaxed/simple;
+	bh=jrI5AabDOrUuIBCkIvF9I63MFIOO1I7vwZT6CJAMxcg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=FhdMotDWTW/mqF3RpV0UGTGnk4kwFpGHBlg2LmoaLscpjL1d71pi8X/lX4czF+Rfzqazp4nTZqQ08k8UxprMCX9H8tdBMEmm2EMh8dzvy245U6ckQy398fsvSS44L5ARwQu7iov0GSIOTSQHL5VMpa/Eujb9/cmHFV2hwFJD5bQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=MSkf02Jt; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7gqLWkn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57121C4CEEB;
-	Fri, 18 Jul 2025 10:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752835821;
-	bh=HebdHsS4n8w/p8M0w8SAL7pKxJdoLT/etZGGGL2VYMM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=X7gqLWknqtGGoKvEI+04i0epAm6MbvsEZpT4Xi13Y8XAyvckmWpLryvk5bpNNij0W
-	 MTQLLJXCJ62xYdvgts/BOxh8oyEFtqeaDciorCxhHo6FVLZVPdAvxnrbx0b60R68Vm
-	 JA8OjHCzc/6BelYn6lycjoeUTiCu0vwC9FxwOQWhRHc3+QvsjxjzxyeU8LvgIX5Lev
-	 eX2XIfm5ik8w91Ytx0CByvQVaQBWqooEynfTVE2E9PWrZyor+kv923isyFsgVutpjL
-	 OF/UJejhNohhci+gZlJV7VDwu1fiPB28ZarCY+kS6vsVyrqzSkIO83Rzp4IVelQuiS
-	 tYXQHASjX829w==
-Message-ID: <57e06aa7-4805-4b1e-bc46-e6f33582fb97@kernel.org>
-Date: Fri, 18 Jul 2025 12:50:14 +0200
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="MSkf02Jt"
+ARC-Seal: i=1; a=rsa-sha256; t=1752841427; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=BY918x/nUQ9QPpCREKZRwH9gSAgLS8wkJvSmKQoEyq+FKr/Xtec9BUdvXOsgKHLo1zQPaJUbXN5v4E8JHKsoRNyXgSivlwReSNGt87haKemu72cid/c/GXDDTQtR4QY4UmVOfU855VAwZ/qDocoY0vPFesI942Jgc8WE7R97WGw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1752841427; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=TqZE4bTVyXgmW6oDat3RiWKc61XOjH3Ymaf5axDnYJY=; 
+	b=iLaEjbJK/rjDFyL4mgDbe/E61BX9LhJP6F5CaNHxc/NeY2VdPwp1hD2KDcf3cpCFNq+/vlDkbCGOegyY5yBtltBRVphri/pIdJYME/cl+I07ceS1E0m8HWlZmxszPBnfQlB76Xp2H7Mt+gcQeetePI73Uak9ofEkdkK6y4wYe+A=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752841427;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=TqZE4bTVyXgmW6oDat3RiWKc61XOjH3Ymaf5axDnYJY=;
+	b=MSkf02JtC5xUkRHt7ByIk1pcka0ziXcwrzCKaAPXvyQgTpoI2j48HlhWO+PP9IbU
+	5uPpYojG8QH18KaPQnDg3wiUZf3lSfU1mZfG1K5sGo6nCafqUPf0kLILB1AASxFTBkw
+	S/32yvaSEdKLqdOk9B9b/wG3+q/rc9XntRa58Bk0=
+Received: by mx.zohomail.com with SMTPS id 1752841425219204.60076559284892;
+	Fri, 18 Jul 2025 05:23:45 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] rust: add initial scatterlist abstraction
-To: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: acourbot@nvidia.com, jgg@ziepe.ca, lyude@redhat.com,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Tamir Duberstein <tamird@gmail.com>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- open list <linux-kernel@vger.kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Caleb Sander Mateos <csander@purestorage.com>,
- Petr Tesarik <petr@tesarici.cz>, Sui Jingfeng <sui.jingfeng@linux.dev>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, airlied@redhat.com,
- "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v15 2/3] rust: io: mem: add a generic iomem abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DBEL719XP5CO.FKBDQ4QRZST0@kernel.org>
+Date: Fri, 18 Jul 2025 09:23:26 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
-References: <20250718103359.1026240-1-abdiel.janulgue@gmail.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20250718103359.1026240-1-abdiel.janulgue@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <19218014-4C48-4BE4-AE27-1DD309F8245F@collabora.com>
+References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
+ <20250717-topics-tyr-platform_iomem-v15-2-beca780b77e3@collabora.com>
+ <DBEL719XP5CO.FKBDQ4QRZST0@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On 7/18/25 12:33 PM, Abdiel Janulgue wrote:
-> Abdiel Janulgue (2):
->    rust: add initial scatterlist abstraction
->    samples: rust: add sample code for scatterlist abstraction
-> 
->   rust/bindings/bindings_helper.h |   1 +
->   rust/helpers/helpers.c          |   1 +
->   rust/helpers/scatterlist.c      |  30 +++
->   rust/kernel/dma.rs              |  18 ++
->   rust/kernel/lib.rs              |   1 +
->   rust/kernel/scatterlist.rs      | 405 ++++++++++++++++++++++++++++++++
->   samples/rust/rust_dma.rs        |  49 +++-
->   7 files changed, 504 insertions(+), 1 deletion(-)
->   create mode 100644 rust/helpers/scatterlist.c
->   create mode 100644 rust/kernel/scatterlist.rs
+Hi Danilo,
 
-I think this is missing a corresponding MAINTAINERS entry. I assume the
-scatterlist stuff should go under the "DMA MAPPING HELPERS DEVICE DRIVER API
-[RUST]" entry (which we may want to rename a bit for this purpose).
+> On 17 Jul 2025, at 16:45, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Thu Jul 17, 2025 at 5:55 PM CEST, Daniel Almeida wrote:
+>> +impl<const SIZE: usize> IoMem<SIZE> {
+>> +    fn ioremap(resource: &Resource) -> Result<Self> {
+>> +        // Note: It looks like there aren't any 32-bit architectures =
+that define
+>> +        // ioremap_np. This means that sometimes this conversion =
+will fail. If
+>> +        // we performed a lossy cast, i.e., using `as`, then =
+`bindings::ioremap`
+>> +        // would return NULL anyway.
+>=20
+> Why would ioremap() return NULL if you perform a lossy cast?
+>=20
+> Anyways, I find it a bit difficult to decode the actual problem from =
+the above
+> description.
+>=20
+> I feel it would be better to just explain that some ioremap() =
+implementations
+> use types that depend on the CPU word width rather than the bus =
+address width.
+>=20
+> If you agree, no need to resend though, we can change it when applying =
+the
+> series.
+>=20
+>> +        // TODO: Properly address this in the C code to avoid this =
+`try_into`.
+>> +        let size =3D resource.size().try_into()?;
+>> +        if size =3D=3D 0 {
+>> +            return Err(EINVAL);
+>> +        }
+>=20
 
-@Andrew: Any comments or other preferences from your end?
+Ok, I do agree that what you said is better. Feel free to use it then.
+
+=E2=80=94 Daniel=
