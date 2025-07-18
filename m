@@ -1,117 +1,164 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688582E7F08;
-	Fri, 18 Jul 2025 18:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F111BD9CE;
+	Fri, 18 Jul 2025 19:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752861613; cv=none; b=TBm7gdvAW9XuYSLpLCDVD7qcD76C8kf7SBm+kqbXcVlowUI79mRSARkPzkd5p/CTavDiN1nZXO9dZ4CTH3UOzWvVaM5RKtmXv6fmQAEvlAKHjY7mt+1AMlSxnhC1XmBJEqTdyghXG4QAQsKZaeyhgUXYtOTumFQZG7MwQ/ifoZY=
+	t=1752865509; cv=none; b=fUrDkJ6p9t72eo6fmbG7WeqZBP8m/XAvb85Cj6K5yZ8Y45OfozZGntCX8WwqeU1ApIhByx5ga9RgR3yIEizt37S6zI9cXoLvJQ0Pu+bIe3QuXvYpugrwbLsPBa4JR01+ZrQkiGOv0PqGkgchb4L9tnH0wbgSuaRXq8HRwgQwIhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752861613; c=relaxed/simple;
-	bh=/xwEHrobFmsCgGgMrYXQUSqVl/v8uLkGaDkEC1/OOeo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tZI2Q7HLXDRixwuePFAJy+xNYDlLRIUYLzCWhXZwCTu/H6SwxBp0WYAyuuqy/3bAVzX94G5CkNBbMFq21Yqw+Ohaq8YUNnhLr0j4nj9CpZCsod75qoX3cSW7E0F3iODCjSJ6+mc/yk41HD+Vn9sa+oFfnnW0wiuWRR381pQ/6Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vtx6ekOl; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1752865509; c=relaxed/simple;
+	bh=NBY/QIqmyBqwXj17OHad7123qq453xR4e4DzHxK31IQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cy1sLyIffXy/1KmTjqIwHlJd8NHPyjulMpgAKfnQ4jA1ghEpcoLKl1ysg4p2St9dgWcKkq3c0i0vCF9eVMs7ZDbXsst538a1FWY+hi4NAPlpv7KGH6uocKxrp+N8jgT+U5O33wz+von1ISKHpY+CKwVU3/73XWQqVPMFHV+7ioQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A8H+E9Jr; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vtx6ekOl"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-31308f52248so366457a91.2;
-        Fri, 18 Jul 2025 11:00:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A8H+E9Jr"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7e32c95778aso128344385a.3;
+        Fri, 18 Jul 2025 12:05:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752861610; x=1753466410; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1752865507; x=1753470307; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n5cDl7UpMn5NQofHAaSCQrMbbqbvIVxW1NOwevWmFtY=;
-        b=Vtx6ekOlXk3VzmxucYOlbJOuqXLs/3QCmAzZbtHaYeJRmg7/mvJ/g28aHyz1hQYGga
-         pXt0VybkKDh5roPtfKD514RJyzMkGJ4PxDv/e9OvSGhYhjdp9dqZrWa7+XL/SXjnRIzO
-         8K8Yd748ZInYFt3iwf6iHhlpF4LgQRMAZ22i0EzVFEXHVdkE76ogl3Gn1P0lekoHyT8A
-         wRu3p5ckL2dhP2EyBm6b8g8FxcW1UDQe83pGnDFVKLZ6zhPMq3EaES92aw55hxhkdvr8
-         IYj8NVI7r17ylnX0of/TclN1Hk6qPuqGOda0Ebj4jc8cKYCsA890okdVRII48vnohlsD
-         659g==
+        bh=5j79F8WX6g4zI7dhSEPRiOOy0m3FlFhAAbp2BrZjtaQ=;
+        b=A8H+E9JrxOBSKi5FaJO89JJ9kKTP/05fSqjrQEjjrbST+nL69M9pFLX1WVYVQXtbrZ
+         2bec4VyvOGwPZKYgoIf9rn33r9vEiPS3cBfC2bjzEuXVoc73QN3Rb8HwBPHlfrl/Tdz5
+         02uo388Hlg+P4X2+sEFC/4FaFWBpv1nnfICwh9Xgks9o81RcFQPAsO6zxt83+oVT1yqG
+         YiHYq5bA2owPl1EFgRQ9EcwuEVVTfCz1Yasz1i8yqaOulpo0afhcjdLMeMi0MA2YUOG0
+         l7lEi59z1K0ZguisGwuNNJizAVczJReGw0/om88QbktnPuN0xjn4RewraQTKKheTFPOR
+         /RQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752861610; x=1753466410;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752865507; x=1753470307;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n5cDl7UpMn5NQofHAaSCQrMbbqbvIVxW1NOwevWmFtY=;
-        b=sVxnBspaxMMIEGThMia/NulPQGU9Pifm88T9qRTPzLrgq2nPNGe+5IzmecSs/6c6+k
-         pSICYCIzUChUOITWbarsgNo5KgUf9lpBJpT6moXnwsMbWZbwDFkeYEyHbunNNWiIuRrA
-         Jg0yJaIiL3xZmqHbspZve0E4Agt4u2Y69QEE+YqdCHVxnCAy2Ze3+NV4sie6mSAa7sNm
-         jH3CCTsSvQtzJYdWiGa8jG2WbEBalvixh2P20UgAQ0XNmmqMdY0T74mAoyn04IBP0FX9
-         zqUw3K65UmdvGCLXaQJ1haEiD7zjSyqBgY/v2e9qufwXVvxJC3AaO8icV2/MtPeMdaje
-         qRdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVMHW1ouwNfCXCy/R42UrTvawMQKF3OFtLUFkTkHSmFt+XZA32vBiqdkYoX5vXLV5tpeXve4n4V1YFyOo4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywk9Moe39RCSfjWA8JqHZaGZIvh5+DGHLXM7AucyZD8StWMYBLQ
-	wbp//zmmom3SP6RaH0rdOoj2D/JlphmtF6b1YhpP8h82J9EXkpsYIFEeAtuqE63+dhhW5juj6lE
-	UIl12i2MRHxqrCHq2LN0x+J1Pr+b2/uA=
-X-Gm-Gg: ASbGncu8gLS6Aj5a6DUHXIz/1AskbI8GmWqHA28QCrJzic3vkf+cMIklj6zFZ0pGT1V
-	J/G1Y0IlY5FLLuKvcxy8i/vVfiqp6RXG93PPinTNbvFLjsbqDYdOpXnzBCkgvnsx6q+DOo0P+oD
-	YXhxn5+RMa/4XBw9JNDylgImCYQAVwB/Hs2tfIGayDI8XhassTFTiGWUG9Eg/9qBXUMIbR8/yMc
-	XOskI3H
-X-Google-Smtp-Source: AGHT+IE/iSXS0TSQ38cxLFT8YdjwjmWkNWDVWQ9+RczdwIy90TAHOWw+mDsFvXzbGOnKEAGkB5Cqqp9LtcPfLx389Kc=
-X-Received: by 2002:a17:90b:5285:b0:313:2bfc:94c with SMTP id
- 98e67ed59e1d1-31c9e7afd78mr6651737a91.8.1752861610158; Fri, 18 Jul 2025
- 11:00:10 -0700 (PDT)
+        bh=5j79F8WX6g4zI7dhSEPRiOOy0m3FlFhAAbp2BrZjtaQ=;
+        b=lPApErIMGAg0dvdmUPTouEZt+a/IxFG4mTGLrswrSH2XI6cdqlLIzrlqAyL9kk6jgC
+         20k29eAMf/yxL5ReL/LuHc1uQQqqmvCcRsXmGcqnMSdSdY3LYtLB7v0ltI+YRcQoBFIb
+         NBdbK2YhEqbPCWEXpUrQrYH5v3rG8c+bBaoeUUqPofZk01m9dXe2jWfcxA3o1tD4yXU2
+         FhdFpQsOX8pS/iKrmdxAUIZom1fBicFif7A5b4kO70jaUDrpeumlMuFzD0Sr4PzO6zNV
+         ntC3l0mSEg4fj2Cw1tg25MshZcpAOruU3SkEl6s5LD8Gj3eTo5vqPj8o9dRsX8IUT2Bc
+         YY3g==
+X-Forwarded-Encrypted: i=1; AJvYcCU5/4u9DyW2mUuW2H60pgej6is8Hb9RCyMPesZmszugD6iF9eGrQr3kBgHfJyTvfyE5FWUqQz7fpWLj9IjRcWM=@vger.kernel.org, AJvYcCVzkEI2j9YoluKwAmVU33ypqxaEZp9nI4GLtBAEeqCzDouptrXVdqTnNFu4+tPXSXcV/7kVT0oylrX/SOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK9EQjwkHLcSWr9itHqZYOWG4tPU+st7zyI6zKREjh77mx7sSU
+	OphapSxcb9pLs2UONGj8La6hNioI0UR2aWlvfdXWpF6IU0BFMgjzYz6X
+X-Gm-Gg: ASbGncsNZl0KcPObNCv4sJek0fSGn/N1LAJ4SyOAW7G99YdxuQpABM4m0AWPWpI1wQ1
+	4lfxGAuZ3uKGJhybqSW0ffEgWY+WA0MJzBgWO5lIibbpF/SpJnQTUUaWJghXoNuLBshOhhnyC4x
+	S35dx1adqStVHrsqPzUgb4svl6EfNE+hidkxecEQueZg+qnMlVhT53YemPTZ0v1Rt7qg46muQv8
+	7rR7q1vb1qxFHoG3DD+8Wawbz7HXXfvDfEonF74EGGykcSX0bMzt/Ne96G32+voEICeEmspi2Ev
+	+bU9Cl2mnzKQPYBhMTNkyGVbVea1P1N9C2WUoXNUQur++KJzwyJwKBOnuI6GCZE/UZf/uafrYbU
+	j7xSWpATBB4Yvm+r47EazdGrbbF5PLTcPztwITMK4mS62kSjMIOsKePqDhAh2HmtoaIa7tR+XTc
+	+oVrX3jvgmXcxFcSKt9mNL2WpekuYyyrgctA==
+X-Google-Smtp-Source: AGHT+IHH/NifKTKz2dbR90WbWGGqf2VV3ZDVe1t3kE2kVXHFT8QLOk9feQkrf4IyGuzEzg2JakRnyA==
+X-Received: by 2002:a05:620a:2811:b0:7e0:9977:a803 with SMTP id af79cd13be357-7e34363599dmr1583267185a.54.1752865506723;
+        Fri, 18 Jul 2025 12:05:06 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e356b62e63sm120881285a.47.2025.07.18.12.05.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Jul 2025 12:05:05 -0700 (PDT)
+Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3B879F40070;
+	Fri, 18 Jul 2025 15:05:03 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Fri, 18 Jul 2025 15:05:03 -0400
+X-ME-Sender: <xms:35p6aKs_0L9U1v9PEKDAHghrb8pBMTy6Y_CSJVs2sxTVoTEhmG7DLA>
+    <xme:35p6aLRdSW2XmEFlD9KxPuMSpgDYq67TpE8rivNKbQkE9g74EEG_frD4xNPenvUGl
+    2Fei3aKqk913i14VQ>
+X-ME-Received: <xmr:35p6aMPBwwc2QfgaCuu05VCiZPH9ydnYVNS_PW32DK9zsQg9Vu3wS2k--Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeigedvgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudffiedv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqh
+    hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
+    jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
+    drnhgrmhgvpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtoheprggtohhurhgsohhtsehnvhhiughirgdrtghomhdprhgtphhtthhopegurghkrh
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtgho
+    mhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghhpdhrtghpthhtohepmhgrrg
+    hrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphht
+    thhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehtiihimhhmvg
+    hrmhgrnhhnsehsuhhsvgdruggvpdhrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggr
+    segtohhllhgrsghorhgrrdgtohhmpdhrtghpthhtohepsggvrghtrgdrmhhitghhrghlsh
+    hkrgesrghrmhdrtghomh
+X-ME-Proxy: <xmx:35p6aB63XXyz8ju8xf2icVscA4L8vXiK6DrLQCcWzQsJgW3hZrYU2g>
+    <xmx:35p6aPVevi0ooEtaSNsSsdGrEIwePW1wWUAKNqsrfQDxpeWaSX1OZw>
+    <xmx:35p6aIP8HeSkU_tBsNcNzqWa9DUz1ZWFcxmvajorjI32IYqAaDLb2g>
+    <xmx:35p6aGgF-Moe335sqLuvWFUTe7_TofctfCedLXnMpuZiXJu9Uckhcw>
+    <xmx:35p6aO7HAIcMVeE7dESfP_QlvJHWJshyCbdI6rYJuOmvCkWz2WFBH-JW>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Jul 2025 15:05:02 -0400 (EDT)
+Date: Fri, 18 Jul 2025 12:05:00 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Beata Michalska <beata.michalska@arm.com>,
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 02/19] gpu: nova-core: register: fix typo
+Message-ID: <aHqa3HVUjIC7zHAr@tardis.local>
+References: <20250718-nova-regs-v2-0-7b6a762aa1cd@nvidia.com>
+ <20250718-nova-regs-v2-2-7b6a762aa1cd@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250718142026.2232366-1-i@truongsinh.pro>
-In-Reply-To: <20250718142026.2232366-1-i@truongsinh.pro>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 18 Jul 2025 19:59:57 +0200
-X-Gm-Features: Ac12FXzzo5cde_-LN0WM1hdYPeEwZmA_QiTaWUkRuViXzIZuiZzTey3yZzGz30I
-Message-ID: <CANiq72n8qdymDJnqtvFqoOsFXJqn1EuvRqBkT+A_ibZmmh7SYw@mail.gmail.com>
-Subject: Re: [PATCH] rust: Add #[must_use] to Lock::try_lock,
- GlobalLock::try_lock, and XArray::try_lock
-To: TruongSinh Tran-Nguyen <i@truongsinh.pro>, Jason Devers <dev.json2@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
-	aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250718-nova-regs-v2-2-7b6a762aa1cd@nvidia.com>
 
-On Fri, Jul 18, 2025 at 4:20=E2=80=AFPM TruongSinh Tran-Nguyen <i@truongsin=
-h.pro> wrote:
->
-> This addresses issue #1133 in the rust-for-linux project.
+On Fri, Jul 18, 2025 at 04:26:07PM +0900, Alexandre Courbot wrote:
+> A space was missing between arguments in this invocation.
+> 
 
-We typically use the "Suggested-by:" and "Links:" tags for this,
-please see e.g. how it was done in the patch linked below.
+It's obvious up to driver and Nova folks, but I feel this commit better
+folded into another patch or we make the title a bit more clear, say:
 
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index e82fa5be289c..1c2ddade6d6d 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -175,6 +175,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
->      /// Tries to acquire the lock.
->      ///
->      /// Returns a guard that can be used to access the data protected by=
- the lock if successful.
-> +    #[must_use =3D "the lock unlocks immediately when the guard is unuse=
-d"]
->      pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
->          // SAFETY: The constructor of the type calls `init`, so the exis=
-tence of the object proves
->          // that `init` was called.
+gpu: nova-core: register: add the missing space in register!()
 
-This part was done at:
+Otherwise my fear is we're going to end up with a few "fix typo" commits
+in the future.
 
-    https://lore.kernel.org/rust-for-linux/20241212154753.139563-1-dev.json=
-2@gmail.com/
+Anyway
 
-which is soon landing in mainline.
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-We may want to add the comment on top here like in that patch to the
-other 2, and possibly make the "reason string" after the `=3D` the same
-one too.
+Regards,
+Boqun
 
-Thanks for the patch!
-
-Cheers,
-Miguel
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+>  drivers/gpu/nova-core/regs/macros.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
+> index 864d1e83bed2979f5661e038f4c9fd87d33f69a7..93e9055d5ebd5f78ea534aafd44d884da0fce345 100644
+> --- a/drivers/gpu/nova-core/regs/macros.rs
+> +++ b/drivers/gpu/nova-core/regs/macros.rs
+> @@ -116,7 +116,7 @@ macro_rules! register {
+>      ) => {
+>          register!(@common $name @ $offset $(, $comment)?);
+>          register!(@field_accessors $name { $($fields)* });
+> -        register!(@io$name @ + $offset);
+> +        register!(@io $name @ + $offset);
+>      };
+>  
+>      // Creates a alias register of relative offset register `alias` with its own fields.
+> 
+> -- 
+> 2.50.1
+> 
+> 
