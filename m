@@ -1,76 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA35B33EC;
-	Sat, 19 Jul 2025 10:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68488148838;
+	Sat, 19 Jul 2025 10:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752920212; cv=none; b=Lh4KpnsyMepb2d8c+7HfX01DHpc+PSNFGWqEDAvrzKS3YdW8uLIbFssnITbyOSkPhd2qDyqIgTP9RYahXS2h6AScDE84u+A+7JZaAEkwUr62ogIE8aMXVtdDtcBMTMaQcLJeBpiLnP1XSti7Q0K6SsjlFoWVDYetLJ7+xlc0dzk=
+	t=1752921106; cv=none; b=AYK2t9NRIrsY0+M6nEJbRG6fpykiolPBvPXZVwuAhrEW7TK4L1PKAUFu7NaKT9z3rvjI9Udj7Ip0Tr/sNzgOY0U2YOEKHa6uiF8+KDlTOpmmG3EW9vpnOdeJ69b3yPTJ+29W5nQ5OQk9vFeGLrkCyeAtiw5H0v7NIayp9oRyaZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752920212; c=relaxed/simple;
-	bh=vMoSrYVq4474NS5oIs+mL25YlinUcBS1j/TwVMEVjqk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=KMJ3qwpFX697N9s7zrM6SA+WWwSULt42eE5ANu5qJB0curcGi9U0ix4uFZGyXMVrcEdNwUjDVQQoifbrls2zMU1jI9jkh2Rk94/5x/zRp43whKoEo9IPqS7E3hZclNI32WfubRQAQkIZnwrtB1Dl75M5A5++R/OQfA+kLMVy/LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R/dqqiMG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752921106; c=relaxed/simple;
+	bh=izNdIcFuvOrLt6cxGef2sjtELlmOZjtN6nfYIH9IpwI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c/nhfho2wPHlSzPD+49mxyF9cvfjy/XCbdJma8/fDaUHgcGEandEwno9BeOWXwbdx3fXbvygnAxDFxq8cavcA7sGIoA7MX8ASBEk3EXFY70r5EHChtUZrLHApDQTYdQIx8DyUCNNgisfYr4Eo+A3CZXZ3IH2gXA4OrsttliLcAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p+zmVadh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/dqqiMG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECA1C4CEE3;
-	Sat, 19 Jul 2025 10:16:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p+zmVadh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06242C4CEE3;
+	Sat, 19 Jul 2025 10:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752920211;
-	bh=vMoSrYVq4474NS5oIs+mL25YlinUcBS1j/TwVMEVjqk=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=R/dqqiMG2isc+jC4APHU3eeNpLn6X2GXuduDU11+G2e2UpcM1UC9HR4gRlL9bYaiO
-	 c+zFZOG8cs/Gf56QMROYtO715oaOxeibEXW3MuFAZ6yuR9PIGKVXYzankaGpFDiywh
-	 KPJh/n08FpmQBKubqKucrYxYwnrjQrlYwBDGPg3HTBvXrQFcWBvXnAVzr3E9WiKnKq
-	 YLs0/moCT2p6Zbs+I0loAZhb2DEvuFWwGwRdZbHeOaruuZjnJv6SG6sAxXY9ICqfvJ
-	 OANcvo0tSe117M7MhBUMqjZsxZVKcjv+ancdGF8Hw36ZGVxGvnkB5EWyIO4DaZ+6XT
-	 rygXkG2KoDuFQ==
+	s=k20201202; t=1752921105;
+	bh=izNdIcFuvOrLt6cxGef2sjtELlmOZjtN6nfYIH9IpwI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=p+zmVadhbTztJUOub3K++IayOI4UT5PuQX8+RF0022o3gNzwsSr0+Ylbj+wPE+dC7
+	 zzE2i7zo+Zxay3OE1ltJprr1PkpaTBgQpXFSfConxYQI/KXSXMW4xb14fhiGxxwKND
+	 Gz8H4W7QpBCCouHv+HHQobr0YRRg8iBbQouDxCU5F4zYtwEEistAkqnJXAgatCgOQI
+	 0SUBFVkctKMOaoqCBHNjfF+l0F/27+4omGiNSjTjWOtV42z+/NSWDql+VwNyass7Xo
+	 U0jAZpX9vF01qk9/oaRCxCrxBUtaWURiAeoByi7TU7KNe3ZfSrbWIqwEUaibLZB3st
+	 v5b2KtqcqEgMQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.16 (2nd)
+Date: Sat, 19 Jul 2025 12:31:09 +0200
+Message-ID: <20250719103109.155136-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 19 Jul 2025 12:16:46 +0200
-Message-Id: <DBFYCPVN29BQ.ODOJGUI54LV9@kernel.org>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v15 0/3] rust: platform: add Io support
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Rafael
- J. Wysocki" <rafael@kernel.org>, <linux-kernel@vger.kernel.org>,
- <rust-for-linux@vger.kernel.org>, "Fiona Behrens" <me@kloenk.dev>
-References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com> <2025071913-coach-prior-d71e@gregkh>
-In-Reply-To: <2025071913-coach-prior-d71e@gregkh>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sat Jul 19, 2025 at 10:01 AM CEST, Greg Kroah-Hartman wrote:
-> On Thu, Jul 17, 2025 at 12:55:21PM -0300, Daniel Almeida wrote:
->> ---
->> Daniel Almeida (3):
->>       rust: io: add resource abstraction
->>       rust: io: mem: add a generic iomem abstraction
->>       rust: platform: add resource accessors
->>=20
->>  rust/bindings/bindings_helper.h |   1 +
->>  rust/helpers/io.c               |  41 ++++++
->>  rust/kernel/io.rs               |   5 +
->>  rust/kernel/io/mem.rs           | 283 +++++++++++++++++++++++++++++++++=
-+++++++
->>  rust/kernel/io/resource.rs      | 229 ++++++++++++++++++++++++++++++++
->>  rust/kernel/platform.rs         |  60 ++++++++-
->>  6 files changed, 618 insertions(+), 1 deletion(-)
->
-> Who is going to be responsible for the new files you have added?
+Hi Linus,
 
-I'm going to take care of the Rust I/O stuff. We'll add an entry for this s=
-oon.
-Until then, it automatically defaults to the RUST entry, like the existing =
-I/O
-stuff.
+Please pull these fixes for Rust (second round).
+
+All commits have been in linux-next for four rounds.
+
+No conflicts expected.
+
+Thanks!
+
+Cheers,
+Miguel
+
+The following changes since commit 86731a2a651e58953fc949573895f2fa6d456841:
+
+  Linux 6.16-rc3 (2025-06-22 13:30:08 -0700)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.16-2
+
+for you to fetch changes up to 7498159226772d66f150dd406be462d75964a366:
+
+  rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0 (2025-07-14 23:30:44 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v6.16 (2nd)
+
+Toolchain and infrastructure:
+
+ - Fix build and modpost confusion for the upcoming Rust 1.89.0 release.
+
+ - Clean objtool warning for the upcoming Rust 1.89.0 release by adding
+   one more noreturn function.
+
+'kernel' crate:
+
+ - Fix build error when using generics in the 'try_{,pin_}init!' macros.
+
+----------------------------------------------------------------
+Janne Grunau (1):
+      rust: init: Fix generics in *_init! macros
+
+Miguel Ojeda (2):
+      objtool/rust: add one more `noreturn` Rust function for Rust 1.89.0
+      rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0
+
+ rust/Makefile           |  1 +
+ rust/kernel/firmware.rs |  2 +-
+ rust/kernel/init.rs     |  8 ++++----
+ rust/kernel/kunit.rs    |  2 +-
+ rust/kernel/lib.rs      |  3 +++
+ rust/macros/module.rs   | 10 +++++-----
+ scripts/Makefile.build  |  3 ++-
+ tools/objtool/check.c   |  1 +
+ 8 files changed, 18 insertions(+), 12 deletions(-)
