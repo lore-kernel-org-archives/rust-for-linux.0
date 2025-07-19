@@ -1,126 +1,111 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65FE1FDD;
-	Sat, 19 Jul 2025 21:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4560E7FD;
+	Sat, 19 Jul 2025 21:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752959177; cv=none; b=cSbj/38I157smRUjdS9jkjlADiyeDGQvnSu8s+WlVVsfTiMZ/Bn7wxyeGNeBQAzWibn5R+xk/+EdEYLzPpX80U4NuQdfOCprgmy0nD8y0IIPkaxdYFp9oLodJz2iWxWvfrOQ6EeRlFXbgFZ+/m9mbmYs/+6QbNhrGXkfohLd8CU=
+	t=1752959383; cv=none; b=Rt+7iuDRKIB2zEi2pzmBn/CZs3hKOH+T8v1Y31zY+iazKdcZW6DFc7bm9JpxccOr5D7s5+Lye0sG+6HL+8n/Vnwof6RCNLUO+mjMuOTPhbruruVG8apfnd1y9pjodqHgvQKkIaHzDcje7meayKNsQpXG5ol2QCHnmimu5amVDSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752959177; c=relaxed/simple;
-	bh=nyswjgChzex87fkUmGlz803mOXSUIG3Re0obcW/WBZk=;
+	s=arc-20240116; t=1752959383; c=relaxed/simple;
+	bh=dnChIfhrhkHOnL9w0Fd2w/pEB5uYL2PU8MaiXDFn9Eo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lAZDCM7J4I1J/DHRh/IzC02xVFZ+ptArdoJjyOfi8hwW1S2+UHU1rNsKWF+RQ/dmZK2knt/y6wm8lUVDthvV/dS6XUjXZUTwysTMXy51z8f9FmVLg37/KGbIXc1O6UTpm5zh7hwp5QOGlCUzpIyTZRgBAq7rG0e+Y3g/n1fo8l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gNlu+86D; arc=none smtp.client-ip=209.85.208.180
+	 To:Cc:Content-Type; b=gPBRkxrY44AsF3Ovo41VJCKkG9htJvHRysmJLiVxxGRMnjfy9rBw3lE0Exl5RCsIw97Qzon7A23aJh2FN54r4RkdAdHQe6qvPE527P+HKmuG+6xxCjRP85kxoNdtWiPgfcaBewnkPdWkC5IGAO6cFflTkcJmBEN17AZMwzDbFZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HSuT5un8; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gNlu+86D"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32f144d0db8so16486961fa.0;
-        Sat, 19 Jul 2025 14:06:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HSuT5un8"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-313290ea247so603807a91.3;
+        Sat, 19 Jul 2025 14:09:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752959174; x=1753563974; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752959380; x=1753564180; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KDD5lvVgbLQzMHEKqvD4drpjZqiteKdnziSv4nMIVYg=;
-        b=gNlu+86DYbRamez5QJVoSpcor7vbAtBZBywsW5qM31QW38a3M9WCZjKbXt9KoPLfr3
-         NPRfCZTwxAR4/4Hh/PpBOMNdvQmkGVVO/eh7EnWNV1cCGY8MUrfV439aHuBCiLTDf9Vt
-         bdTqs/cmNmSFnC4ssKBBm3vMBv7rqlH9Tlkm9hmYE2NB+gvRU9gCFGW2kwlDW+vqQXzb
-         Br9zjP1K0QNIl8YPqLr2zBXngCP+HfzjBVnolgBHTbuvcPD24VKyBuRoRAoJtlDmCLgG
-         6bWRecZ7acGns3y8RXtzr6ALCArIMluFlCQN1/gDNLlbWRft4VwC4zqnT/Uhe1hXqYJ6
-         8WlQ==
+        bh=dnChIfhrhkHOnL9w0Fd2w/pEB5uYL2PU8MaiXDFn9Eo=;
+        b=HSuT5un8I0UX4e+Ki4jgKap6ucOvwr+CJv3ivgqGjJld77eDOSPpPl8yG9aZxtSuoP
+         6Eein9YaGlgZqe0y2g7VMHfs7EKVmPFFqG0hkO/WV2fRgIm2tQ6v/oy4ylipuS+27p/m
+         PEq+z4TVP6CxD+WwLzYWxZ/kPXBm5Vgz7XnLYkyR8JvOdcbWnexvmwnWp7wdtSQjm02G
+         idc395VtPg/Mw8SMmVvzYx19QvCcyP2WjVfRjzAGlaxIWHU7ubRq8p0rNMTzzAdjn3Vx
+         Pxmn0sLoTuZafnQfiwymsAP/CA0NBTqHZlawGkmUk4/ItWJmc1+2Zgwl+PCYoShaNcG2
+         p7yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752959174; x=1753563974;
+        d=1e100.net; s=20230601; t=1752959380; x=1753564180;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KDD5lvVgbLQzMHEKqvD4drpjZqiteKdnziSv4nMIVYg=;
-        b=wGWLv8dt1fjmxHBj0LwLA5g8T2IM8tqdRaMg81NfI3Ram2JkO3eJDCaFd78mURNfdO
-         ybXlO0SuNvWNxI8AfckcMMymSoN+sk5Z+rbEvQesrce21EVJZf+S7nPoM+Gaml/Tx8zJ
-         I1EVbH39lmWVdHZzSOYNXbq6TJC934KhQ+aI9+IU/XaXDCPDbRi61ZPSD46nv1AM6Wrd
-         LekLcVZIoJML57NgqeRzIpxmayHwOoAW5MydfUAkpz58bJU0P9TSNwZM8dCXgjSXi4hb
-         DQDS+R4V1SfGZyqc7OhmU+0yr0dynjOTSj/ifz2YrEOO1jufzDN9XH4i4Lix5BrZ6rax
-         b4Sw==
-X-Forwarded-Encrypted: i=1; AJvYcCXVDIpOPqOEVr+UbUP0RjmaureCaQB3iehBJCBxvpi02Wia1u2MOkMuB6mrJyt9CL41ZtIYcJYzaUS0JGbSQOA=@vger.kernel.org, AJvYcCXzQmS/l3jdN/+d8B35XXDb/xFaQvHWjY7PaOMkrYVrFdJhvg7ppsVfByodeKKWNBJfNX0Hk98q9pupKcg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1PQCGVA+KQizmXfFiAoq4hWPbL8/YybXh+37SqzyfCCKP7oOa
-	dnGq/t0pwXD8Xw9x020a4g1Bo/iSvDd9w6QxKrQoZslVPJhdj2qmNvtNEdBLzeU+F1Otd5/rGXH
-	SrA0TDU3PjvBVuNPmaUyIyduaaI+y/pY=
-X-Gm-Gg: ASbGnctGajeTFlFvqHtDLrZywdPtIU/0FJw6vBZHcJHv0k9JF1nNqF3drATmoqK/2ih
-	7CbUNSBtP/K32magep+Nj6pW6mQP9PhKg/oI/c14Gk5L2augftihcdtI/8prkb0OE+p4m4JB8lV
-	O2WlZjUSYRg3ZJ0IMXzOB3ZGB32fWdG9i1LFrbcVaY8Z6k2MTMcgowJEl818i3M7lTf1ecN5X3g
-	Qbri1XzO4aDv9zlL2olPyrzOTk4NmG0sXj++z6DaA==
-X-Google-Smtp-Source: AGHT+IFel6LcPVo3L3MCsNHOrcdqbyyvw2loT4c8a3F8Eu9ST3sLv5A/WpAB8b1q4cUP+onWoJI49Fm8mHtQap8cx7Y=
-X-Received: by 2002:a05:651c:b28:b0:32b:9792:1029 with SMTP id
- 38308e7fff4ca-33098f6680amr28756151fa.14.1752959173475; Sat, 19 Jul 2025
- 14:06:13 -0700 (PDT)
+        bh=dnChIfhrhkHOnL9w0Fd2w/pEB5uYL2PU8MaiXDFn9Eo=;
+        b=MANqjmmhXRDQYTjNqR09zFvwPdA3R+fh3NA1ezIe+Ny4FYjiJ2R/U0Dyw0CAAXn7x7
+         impnSUKlHWEYvr0Uff12v8C5bXnVzU5B1E0CktRNCnjQnajAXIMcXgvXqIMZycZn349H
+         cmRulA/2FZvcsmrBAOmASO394nCDgGNQXJEF4bGItPa4J4mI+WkTz96ReV+GC+telOCK
+         F3xHTavciAm/bBFi8446oEmkEYK+iR2ghmdzOF61NrC2t83CPlCttFAJoSrVWqQa0xVQ
+         ArKs7+NK2kU5L2yWa1xsG2GzmK1TXBvrnFk2F1zYio5fjTRhW365gzllOLP4NCjiftV2
+         YhiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUB9N7NUOjFBT57ED88X1+QMuU+cK+jFrD80QrOTGDsS5jaDKxFHhqmlDy11CyfDvgDAf8nvCxMWeGTnzMkQO8=@vger.kernel.org, AJvYcCWfXqi4sH7d9NnGdxceNr/LveZRMRyRkBhYP1CFRJ0ZL9SfLjEe3rloFbBSZUrf/5NN3UnkJnVtEWEmn1s=@vger.kernel.org, AJvYcCXNOZCntxxkD+6sdpVZOCgrudKdA5v3fWCLQ6axhRmHXZ2VAgz0qPVXvdC3a5RoYszpTHMZP9nTeyGo@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/jBTj9To2ad/7MMDjaYG8nEcHSinDiOK129WHjtc92hJtCWqn
+	p5K4kxAvQr9tZ09w8FjrKXoEVbdxO0NofaXWO6Vl6Bw5BNCPlW1pZgEX/w+kV4Lb3CR5K4VPYU4
+	/ysII1z+ykUwoWp6H7sIVosDrtiws3pA=
+X-Gm-Gg: ASbGncvBONLOYUWhyoIGccl9rTykbeff1p4uR88ZgAEbmfxLWWnadYGcHj0pR7vAeQ+
+	aegn2sPQjnRttQ5QCIIXLCcXNXJDeKmt8Jtlf9+ddW5N/nQfBxwmOHrZ+ukKnZkd1EcVmuF2Pmd
+	wMpEwRfWKQwDYgWEZcA4mlr4VbNK+jhe/UCVhf84uz2B1Nc/kOlRph/eIXDbiu8Y3Ah1KTa+76G
+	Ze3VWLp
+X-Google-Smtp-Source: AGHT+IGpmg9BtjDqGzc5M8f83JkLT331Kqwy639s/VflPRU91b5jbw1UNTD+7Punsa8mUiG3b8HmZNmN6BqNOVV5ZgM=
+X-Received: by 2002:a17:90b:2e87:b0:313:14b5:2521 with SMTP id
+ 98e67ed59e1d1-31c9e79557cmr9206152a91.5.1752959380470; Sat, 19 Jul 2025
+ 14:09:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250719183649.596051-1-ojeda@kernel.org>
-In-Reply-To: <20250719183649.596051-1-ojeda@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 19 Jul 2025 17:05:37 -0400
-X-Gm-Features: Ac12FXwNuJFlNB4FrlOz_4LZnrwumCxbRuVE87wbB2tt8bbMYaX8TCEyZEcw5sk
-Message-ID: <CAJ-ks9=Ye4v4g0roTu_CJSveRwj6c6P95kGfzy29VEh2c8XHKA@mail.gmail.com>
-Subject: Re: [PATCH] rust: list: undo unintended replacement of method name
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250709-list-no-offset-v4-0-a429e75840a9@gmail.com> <20250709-list-no-offset-v4-6-a429e75840a9@gmail.com>
+In-Reply-To: <20250709-list-no-offset-v4-6-a429e75840a9@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 19 Jul 2025 23:09:27 +0200
+X-Gm-Features: Ac12FXzFnJLsKrgrCNMO8uO_1R3w2BRfx25-QSNNK7wbz-b5stC2LPrcTB4gBW0
+Message-ID: <CANiq72kvYuoSSOruDQiEo5ppSDvtxSzQ4R6rxdN9RBkucBRuew@mail.gmail.com>
+Subject: Re: [PATCH v4 6/6] rust: list: remove OFFSET constants
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Danilo Krummrich <dakr@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 19, 2025 at 2:37=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Wed, Jul 9, 2025 at 9:31=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> When we renamed `Opaque::raw_get` to `cast_into`, there was one
-> replacement that was not supposed to be there.
->
-> It does not cause an issue so far because it is inside a macro rule (the
-> `ListLinksSelfPtr` one) that is unused so far. However, it will start
-> to be used soon.
->
-> Thus fix it now.
->
-> Fixes: 64fb810bce03 ("rust: types: rename Opaque::raw_get to cast_into")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> -/// Declares that this type has a `ListLinks<ID>` field at a fixed offse=
+t.
+> +/// Declares that this type has a [`ListLinks<ID>`] field.
 
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+I was applying this series the other day, and I noticed these
+doc-related changes in the patch, which are appreciated (I think you
+did it to make it consistent with the other lines you were adding with
+intra-doc links), but I think in general it is better to clean those
+separately in a patch first.
 
-> ---
->  rust/kernel/list/impl_list_item_mod.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/im=
-pl_list_item_mod.rs
-> index c1edba0a9501..3f6c30e14904 100644
-> --- a/rust/kernel/list/impl_list_item_mod.rs
-> +++ b/rust/kernel/list/impl_list_item_mod.rs
-> @@ -252,7 +252,7 @@ unsafe fn view_value(links_field: *mut $crate::list::=
-ListLinks<$num>) -> *const
->                  // the pointer stays in bounds of the allocation.
->                  let self_ptr =3D unsafe { (links_field as *const u8).add=
-(spoff) }
->                      as *const ::core::cell::UnsafeCell<*const Self>;
-> -                let cell_inner =3D ::core::cell::UnsafeCell::cast_into(s=
-elf_ptr);
-> +                let cell_inner =3D ::core::cell::UnsafeCell::raw_get(sel=
-f_ptr);
->                  // SAFETY: This is not a data race, because the only fun=
-ction that writes to this
->                  // value is `prepare_to_insert`, but by the safety requi=
-rements the
->                  // `prepare_to_insert` method may not be called in paral=
-lel with `view_value` or
->
-> base-commit: 23b128bba76776541dc09efaf3acf6242917e1f0
-> --
-> 2.50.1
->
+I am mentioning it because the docs do not build due to those --
+please check the `rustdoc` target for patches, especially if it is a
+non-trivial change.
+
+I also did another change to make the examples (in the other patch)
+build with the minimum Rust version. It is good to test that too,
+since sometimes that can slip, especially as the window of versions
+grow.
+
+Anyway, the examples/series here caught another issue with a previous
+patch, so that is good news :)
+
+Thanks!
+
+Cheers,
+Miguel
