@@ -1,76 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AB31DE3D6;
-	Sat, 19 Jul 2025 08:13:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4411EB3D
+	for <rust-for-linux@vger.kernel.org>; Sat, 19 Jul 2025 08:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752912787; cv=none; b=N05/4BW4dpRscVwHSDrT7FdRbXMm+mZiDKnvBOIY6lJ3bm0dqVyx/sEACSWs3Nb4s0hC5/sc6a1Pwbyk/dAJo6TdOtO3OeXSZ5+od1tIgx53iCkLimp4SKxRgswDzPVuuCzpU/TqPD5tQuwnv4aF9OFRkBo3gSVJufL3ugp2iL0=
+	t=1752915393; cv=none; b=nCbgALlKZWScHuIKfi9EW69iDCPLWEUvm49EBUTp+lHB07dD1H8EXlo8QbCM67oSn21eaMSkGxKen/BtHUxMFEsT1CoylxeMU1dSOnFZoOQwEEjNMta8f4//z0arYfuELeRaEXtN+I3xiwz1P4k+lRo3ZeTRZnosgByXRw1F+zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752912787; c=relaxed/simple;
-	bh=6llgpNRlWD1HbICRpb1DHBgat6FAFKBqNPw7t1Kqkjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m8IFzpFhwDob+Y7UlWcciwuMC4124Ya4/H8bdBGIV384vaof6t6KIRsHpMWoa4Frj/Mww+knOw8dRxxaFraekrWPh9HcLEvrgX7HSNqFzmCJm1kHqnbdtu2fCyagFMos6aEuTBLWFR75gRSFNkxLokqWyNxHkAtFzfIz9WK3RMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKH+CVHu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752915393; c=relaxed/simple;
+	bh=bu6IVHlxz8T9eX0JAB357kfRyct50vWKJjthCK8dd0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DknILRg+KXTP6Bv/8HWOm07A4pmdVs45OuGjKf+HzmJzh2Un4OKwM/KZHo6FV8OsRXmosL6FJ/jJIIcrd1rEjGmoGhQaUvF5CIn08DK+mNVvZa+74RdxZqoq7bfDkilTDgFdrvi/TEkvLh4E5ocA2yKAHL6LXRWCpWs1DD0bouI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Pcr0XCxY; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKH+CVHu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D19C4CEE3;
-	Sat, 19 Jul 2025 08:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752912786;
-	bh=6llgpNRlWD1HbICRpb1DHBgat6FAFKBqNPw7t1Kqkjg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dKH+CVHuU9STrKNwuvfKeXl3KIEMZNprsuVKoJFuwQG6Vq7GtRmgPu9En36im2EZD
-	 HNOrw2u9TWn2xh+naOpjJ04yQFmoAZ3jBDG23UI0uyzJN9PXV96ijEfg4O09DGTXuz
-	 Sp9B2PGLAZDqP3p7gMv6GO1OtPTNrwrCoJ720Eaw=
-Date: Sat, 19 Jul 2025 10:01:36 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Fiona Behrens <me@kloenk.dev>
-Subject: Re: [PATCH v15 0/3] rust: platform: add Io support
-Message-ID: <2025071913-coach-prior-d71e@gregkh>
-References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pcr0XCxY"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a4fd1ba177so1784425f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 19 Jul 2025 01:56:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1752915390; x=1753520190; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nA7BcyCVIg8nNGJHvplQxuWV2btzC7Qx9ZorK281uz8=;
+        b=Pcr0XCxYE0h+CZvQyIBD4uK9k27asAKhuPQlORRtAIJdB3VCa8gsafTRCjLgUYTl+l
+         EbR7DDRTqKpIS3piQC3ojdWj3jY3VgC84rGC2ZM60kmimuKw1e75AQeAnAbTO1lv89g7
+         q42PDcBLXIpKwiTh+DK4bu5Kp0TU+6+bTAyD2pE+zXpQ6POvzqq43XG/XUlcZ7qVUDbJ
+         78YVKqsc7iCDXZV6EAe/nsTxiAQjFyhMLWL+7pDoo/8T5bZRhZCqLAo2uGVfVZKd2Z/k
+         zA4he8LQFKTRzsAtEM7fd73dg3vuxRPd4gVxCduhNW5QmF8OBS1NAoRnbd/fKSvVTHNC
+         L8xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752915390; x=1753520190;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nA7BcyCVIg8nNGJHvplQxuWV2btzC7Qx9ZorK281uz8=;
+        b=Af6QlDWGPA1g/A1zs/dydm2Kf0a5hHXR3beshhC7nSRyEQI9dfb2UXUHebsjZZMJJN
+         Nr6QMW/+trJjPb85dC0jUEgkGfcO0ebAFFTorJJxxg2qmyW/oaXmqSjU+ux356QQTmZf
+         +frUsiSlhVyzJscKYE8cAZpL+aU2dnCjKMJRDNHQv7YHMADJGYKm+kx/OSgywSbkGg8z
+         ZlCqRRZQ2Dxy1GSDqU+fP4iv5y7zMOSJEmffs7xXqjtX4IiYQqEt17Gi5eAVd9ml2WgX
+         R7S6ADEC5YjagTxyNfZXdeJW1jw+IJb2isj+s+yA0bJAlduTC6kLEyt4UTOD3QwijHf8
+         csxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUR/dmgeoKKwKNnV+zdSeSrjKhVJUpJMWwC5nbPPmB0OpOJB6H9ESVcrCon7BEtDbr2utY15f+XBQW1mJ1WNQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNJaa5XRhn0oqn8AStOHCykL4OfcNIuEmhOk6T3Jw2sbLTfFAa
+	eQrWCrw5tRSNUnL/w3myFlWwSzc+ZxNcHH8zsSl6Ox6qddtsaFUPKjw1nRXmoEBW+DOo8mXdhrc
+	39MnazetRGgy+DS8cjBFPr7sbGzY4156Gecyb8RUu
+X-Gm-Gg: ASbGncsWBj94YOna+mxXcmneJfgbA9a5dCmBtZSVg6OKeM2nx5X3z9x3KNsYrBi7YK5
+	LJ7zESCQAYzx7e5ZE4gPQZE3QV/iUpVcbb77nmNnOf1Nv8DRrkPYPawSHbVxVe0O9yqu3XxuPKL
+	flGsV5wlQJukRzpRtrFwul424MS2+LzwgQVFuGzUUbG3hzozIRpnVbTEck3QWxtAuriNpxN14Kq
+	K1vJS86
+X-Google-Smtp-Source: AGHT+IFtehjNq7i8/x9Cbu2UL2MqRAJ4BRyQNLHEL+cCznt6ml5hJKV6F3DuCiR6uxpaaWExnw62juPpLNSRmEU91NA=
+X-Received: by 2002:a05:6000:2410:b0:3b4:a001:38fc with SMTP id
+ ffacd0b85a97d-3b619ba8e44mr5429811f8f.9.1752915390203; Sat, 19 Jul 2025
+ 01:56:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
+ <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
+ <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org> <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
+ <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org> <DBAVXQTMR38Z.2782EGR84L7OP@kernel.org>
+ <DBAWQG1PX5TO.6I2ARFGLX88N@kernel.org> <DBAX59YKO0FV.ANLOWRHDDS92@kernel.org>
+ <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org> <C4A101A7-282D-4A67-A966-CF39850952EA@collabora.com>
+ <DBAZRNHGIGL8.3L2NGPCVXLI25@kernel.org> <DBAZXDRPYWPC.14RI91KYE16RM@kernel.org>
+ <18B23FD3-56E9-4531-A50C-F204616E7D17@collabora.com> <DBB0NXU86D6G.2M3WZMS2NUV10@kernel.org>
+ <1F0227F0-8554-4DD2-BADE-0184D0824AF8@collabora.com> <AACC99CD-086A-45AB-929C-7F25AABF8B6E@collabora.com>
+ <ce656239-08a1-49e8-86b1-b33d0cdfbcd3@gmail.com>
+In-Reply-To: <ce656239-08a1-49e8-86b1-b33d0cdfbcd3@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sat, 19 Jul 2025 10:56:17 +0200
+X-Gm-Features: Ac12FXziDTAPr7iQHl5XG-7N-BrpNtqsyfpXflvLScQegzDs48j1Kr5cC2Bsyfc
+Message-ID: <CAH5fLgi7846Yi1tg1qAZFLhwkwtftZsdEdk4c6snQXtGyTFr8Q@mail.gmail.com>
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and handlers
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>, 
+	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 17, 2025 at 12:55:21PM -0300, Daniel Almeida wrote:
-> ---
-> Daniel Almeida (3):
->       rust: io: add resource abstraction
->       rust: io: mem: add a generic iomem abstraction
->       rust: platform: add resource accessors
-> 
->  rust/bindings/bindings_helper.h |   1 +
->  rust/helpers/io.c               |  41 ++++++
->  rust/kernel/io.rs               |   5 +
->  rust/kernel/io/mem.rs           | 283 ++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/io/resource.rs      | 229 ++++++++++++++++++++++++++++++++
->  rust/kernel/platform.rs         |  60 ++++++++-
->  6 files changed, 618 insertions(+), 1 deletion(-)
+On Sat, Jul 19, 2025 at 7:47=E2=80=AFAM Dirk Behme <dirk.behme@gmail.com> w=
+rote:
+>
+> Hi Daniel,
+>
+> On 13.07.25 17:32, Daniel Almeida wrote:
+> >
+> >
+> >> On 13 Jul 2025, at 12:28, Daniel Almeida <daniel.almeida@collabora.com=
+> wrote:
+> >>
+> >>
+> >>
+> >>>
+> >>> (2) Owning a reference count of a device (i.e. ARef<Device>) does *no=
+t*
+> >>>     guarantee that the device is bound. You can own a reference count=
+ to the
+> >>>     device object way beyond it being bound. Instead, the guarantee c=
+omes from
+> >>>     the scope.
+> >>>
+> >>>     In this case, the scope is the IRQ callback, since the irq::Regis=
+tration
+> >>>     guarantees to call and complete free_irq() before the underlying =
+bus
+> >>>     device is unbound.
+> >>>
+> >>
+> >>
+> >> Oh, I see. I guess this is where I started to get a bit confused indee=
+d.
+> >>
+> >> =E2=80=94 Daniel
+> >
+> > Fine, I guess I can submit a newer version and test that on Tyr.
+> >
+> > Dirk, can you also test the next iteration on your driver? It will poss=
+ibly
+> > solve your use case as well.
+>
+>
+> Now, I'm slightly confused ;) I just saw your version 7 of this
+>
+> [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and handlers
+> https://lore.kernel.org/rust-for-linux/20250715-topics-tyr-request_irq2-v=
+7-3-d469c0f37c07@collabora.com/
+>
+> and somehow was expecting something like
+>
+> fn handle(&self, dev: &Device<Bound>) -> IrqReturn
+>
+> there. I.e. to get a bound device passed into the handler.
+>
+> If I misunderstood the discussion and this is supposed to not be
+> added: Any hint how to get the &Device<Bound> from the probe
+> function/irq registration into the irq handler, then? To be able to do
+> something like
+>
+> fn handle(&self) -> IrqReturn {
+>   let dev =3D ??;
+>   let io =3D self.iomem.access(dev);
 
-Who is going to be responsible for the new files you have added?
+Please see:
+https://lore.kernel.org/all/CAH5fLgibCtmgFpKNrC+jcSEqSUctyVMuYwEC0QSo+vzyDX=
+K0zg@mail.gmail.com/
 
-And no real objection, but no copyright info was added to them either,
-was that intentional?  I know some companies frown on that as it goes
-against their corporate policy (but some don't care, it's hard to keep
-track of who likes what at times...)
-
-thanks,
-
-greg k-h
+Alice
