@@ -1,153 +1,89 @@
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07B92288EA;
-	Sat, 19 Jul 2025 22:46:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C343D28EBFE;
+	Sat, 19 Jul 2025 23:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752965195; cv=none; b=H+lGR7bOJTZG7+InOqU+qEncziQBwzLfZO5QuxtD5By4pPdKaj8Jg8072rkbQ11lc/t30w5TPZJlAGFV8D0kx2ENrnMlCsCoFBhsLMgV7cQAhjA6t+0GkSW99lHjf3+11ymcVepPntOgLGoa0MCzra4QFB8Wph8Vqgr3bSnDtnI=
+	t=1752967530; cv=none; b=eziQUYpBm2TxY+WjpcJ+9h+W/YAnI4yadxGrprxjDpt9PDjBb4Z0jhQrmrNSBQMKqeuxjO2GRUPRgv9yWknVKSR+uQaBr1e5tzB6hdnISp7jpbxK7K6/xr8NJM2SxEMEnkzYKVTqpsz5Bebpu9veqfbukaC4LsTRr51OMJIEVAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752965195; c=relaxed/simple;
-	bh=kffTkW850VF5wGh6V7wd3o7vd5InBDrvMPVk+VWKD/Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q/YDt6OwB+8qGUxHLV2iYn5zFbTKpLYXLl5zgjgrlYX3CZsh91ltW1jnvbCJYhOxsSapwZNzDFRSPbEBYHrmwnsKI/AABX75a/5+2bc49VFj/aW3oJGqeWRzoMwdkj0pa7QQcfSVb6uLM1qHoIq+BQ62blLpo4UjNGdTSnDewRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Yvtn5EZ9; arc=none smtp.client-ip=79.135.106.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1752967530; c=relaxed/simple;
+	bh=peq7X5T5L9rleO+1sgszgJjNh6IB635WmU1jTfpTxO4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cxABsiiJX8+5j71bf0f+jMATsQ7ik1mfcQtFVWtrLof7F+0Rmm1XKLdPZSTiFlJw1SyMjsSiSA01prsu4POO/C9ofx5aM64rm0656ObtkRmCx8tB7cNT4oHgL/cdqhYFeoElmD5JcUJWAq5DIeAXdiX7SIndxh5gRAoiUB+Q2cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jg4RU7lE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Yvtn5EZ9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1752965182; x=1753224382;
-	bh=PtTdGXf4R6zktuL5D6QEHfNFozpK+VJyJk6OsGvtqvw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Yvtn5EZ9KLHE5TB6++QOqXMU71UGJvzCxbmmdjci+J+Jr/PFLQeOBJc2ecRzdzISx
-	 bYMG3hJcJo6WnXa6lltjyJewult+tD/YsRlFrotQxXF0POMKYtjowv3eF7xd4YBORf
-	 f2L9CR/7P8eigUoKcoNXCRfpXU+NWU0RRAATbBh2dn85ANE4Acnb8sOS/2rAGVv5SS
-	 8bAmdzo8YCG7ysdHVRMpv5sMJHfrc/Zy6wj7oLYu+iWya2i6Wcegmcoret0S5vpJDn
-	 cqTD8WvXz62549f61RGU8b5WZ3C3xb4CqV6INuob7vJO1svfgIXEKkUPxRtPWXj/A2
-	 06SCPVHOnWajg==
-Date: Sat, 19 Jul 2025 22:46:18 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-input@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, Benjamin Tissoires <benjamin.tissoires@redhat.com>, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, db48x@db48x.net, gary@garyguo.net, ojeda@kernel.org, tmgross@umich.edu, peter.hutterer@who-t.net
-Subject: Re: [PATCH v2 3/4] rust: core abstractions for HID drivers
-Message-ID: <871pqb7qa4.fsf@protonmail.com>
-In-Reply-To: <DBCPYJW9852M.2KDHMO6QS6YPY@kernel.org>
-References: <20250713211012.101476-4-sergeantsagara@protonmail.com> <20250713211012.101476-10-sergeantsagara@protonmail.com> <DBCPYJW9852M.2KDHMO6QS6YPY@kernel.org>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: 6cfca77322ca16b823db94f9275e78c63f54a7f0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jg4RU7lE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A313EC4CEE3;
+	Sat, 19 Jul 2025 23:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752967530;
+	bh=peq7X5T5L9rleO+1sgszgJjNh6IB635WmU1jTfpTxO4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Jg4RU7lEmQ4jX6Fx0S8H/+jdvExKWA11Bz68Q1EhxUlFku9BqA6aVDr6GS96uK8+6
+	 /IU0YJhiE2gR09bsH8NzfRZDY0LBIRSt0ljRNB5JmgoFTZGYcYQsuao8/7h4Tr2T5x
+	 +xrWnxgxWlhp1TxGCi2AdVXdrXwLFUo8sWUPFi1A8xwg/eS9KG5/IeYCv/1/QEkkmv
+	 CFzQJolyz+PPE7Kk39NERKGXGvVYyleBjm+0WinbLPeIkA6R3T8oOABYNDjuW8b6Rw
+	 x1PxJAcFkzGXpb/hSS3Zv6nOgdeL+7QP+KK/Tex/V6Gi27TyaH+WZI8FwYPURZAFSS
+	 AyKFw2F15ntsQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] rust: list: remove nonexistent generic parameter in link
+Date: Sun, 20 Jul 2025 01:25:00 +0200
+Message-ID: <20250719232500.822313-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 15 Jul, 2025 17:04:07 +0200 "Danilo Krummrich" <dakr@kernel.org> wr=
-ote:
-> On Sun Jul 13, 2025 at 11:12 PM CEST, Rahul Rameshbabu wrote:
->> +// SAFETY: Instances of `Device` are always reference-counted.
->> +unsafe impl crate::types::AlwaysRefCounted for Device {
->> +    fn inc_ref(&self) {
->> +        // SAFETY: The existence of a shared reference guarantees that =
-the refcount is non-zero.
->> +        unsafe { bindings::kref_get(&mut ((*self.as_raw()).ref_)) }
->
-> I'm confused, what's the lifecycle of a struct hid_device? It embedds a s=
-truct
-> device, so it also inherits its reference count. Additionally it also has=
- a
-> struct kref. Can you elaborate please?
->
-> I don't know what the struct kref is for, but I'm pretty sure you want to=
- manage
-> the reference count of the embedded struct device here.
->
+`ListLinks` does not take a `T` generic parameter, unlike
+`ListLinksSelfPtr`.
 
-Hi Danilo,
+Thus fix it, which makes it also consistent with the rest of the links
+in the file.
 
-The hid subsystem uses a separate ref counter from the one maintained by
-the embedded struct device. hid_device_release is assigned to the
-embedded struct device's release method and makes use of this separate
-reference (in drivers/hid/hid-core.c).
+Fixes: 40c53294596b ("rust: list: add macro for implementing ListItem")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/list/impl_list_item_mod.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-drivers/hid/hid-debug.c makes use of the same reference in a similar
-manner to what I do here in hid_debug_events_release and
-hid_debug_events_open.
+diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/impl_list_item_mod.rs
+index f4c91832a875..202bc6f97c13 100644
+--- a/rust/kernel/list/impl_list_item_mod.rs
++++ b/rust/kernel/list/impl_list_item_mod.rs
+@@ -17,13 +17,13 @@
+ /// [`ListLinks<ID>`]: crate::list::ListLinks
+ /// [`ListItem`]: crate::list::ListItem
+ pub unsafe trait HasListLinks<const ID: u64 = 0> {
+-    /// Returns a pointer to the [`ListLinks<T, ID>`] field.
++    /// Returns a pointer to the [`ListLinks<ID>`] field.
+     ///
+     /// # Safety
+     ///
+     /// The provided pointer must point at a valid struct of type `Self`.
+     ///
+-    /// [`ListLinks<T, ID>`]: crate::list::ListLinks
++    /// [`ListLinks<ID>`]: crate::list::ListLinks
+     unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut crate::list::ListLinks<ID>;
+ }
+ 
 
-Basically, the hid subsystem has a separate reference counter on top of
-the one embedded in the kobject of struct device;
-
-I decided to follow the same pattern used in the core C HID subsystem.
-This pattern is found in hid-core + hid_debug.
-
-However, thank you for bringing this up since I think that you are right
-that it would be better to increment the reference count for the
-underlying device rather than use this separate external reference
-count.
-
-It might even make sense to refactor core C HID to remove this separate
-kref and have hid_debug increase the reference count of the underlying
-struct device's kobject.
-
-Right now, we can have the following situation in the hid subsystem.
-
-1. struct device's kobject decrements to 0
-2. struct device's release callback is called
-3. This invokes hid_device_ref and decrements struct hid_device's ref
-4. hid_debug is in use, so the ref has not gone to 0 yet
-5. When hid_debug is ready to tear down the instance, hiddev_free will
-   get called
-
-The above creates a weird situation where the HID device can still be
-in-use even though the underlying device instance has reached a
-reference count of 0.
-
-I will first start with fixing this in my Rust code, but I will take a
-look at cleaning this up in the core HID subsystem as well.
-
->> +    }
->> +
->> +    unsafe fn dec_ref(obj: NonNull<Self>) {
->> +        // SAFETY: The safety requirements guarantee that the refcount =
-is non-zero.
->> +        unsafe {
->> +            bindings::kref_put(
->> +                &mut ((*obj.cast::<bindings::hid_device>().as_ptr()).re=
-f_),
->
-> I think you want &raw mut instead.
->
->> +                Some(bindings::hiddev_free),
->> +            )
->> +        }
->> +    }
->> +}
->> +
->> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<=
-Ctx> {
->> +    fn as_ref(&self) -> &device::Device<Ctx> {
->> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is =
-a pointer to a valid
->> +        // `struct hid_device`.
->> +        let dev =3D unsafe { addr_of_mut!((*self.as_raw()).dev) };
->
-> You also use &raw mut meanwhile.
->
->> +
->> +        // SAFETY: `dev` points to a valid `struct device`.
->> +        unsafe { device::Device::as_ref(dev) }
->> +    }
->> +}
-
-https://doc.rust-lang.org/std/primitive.pointer.html#3-create-it-using-raw
-
-Yes, I want &raw mut in the places you mentioned. Thanks :)
-
-Thanks,
-Rahul Rameshbabu
+base-commit: cc84ef3b88f407e8bd5a5f7b6906d1e69851c856
+-- 
+2.50.1
 
