@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533441B394F;
-	Sat, 19 Jul 2025 13:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239EA148838;
+	Sat, 19 Jul 2025 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752933126; cv=none; b=nCMsw1QQy+5bhNii9FyiJAwoW7c9l574NZBL/a+8BSb0Ai7aS2fOZgQXuSpTCmgZFhimm5q/OPlW5w1cdjF/G1YnUE4l3GqcXU3SaJ9Xv+HpiMaMTNz08gaNJr6RctpSngr+DWNS90VywRwyOrxhoTzgc0YvO1BqibbjbB7ijCM=
+	t=1752934101; cv=none; b=j5zP8BU4u4bQoIrWnFtc326hYrsdy0R8QKq54tvaIjuUB9YFi2aDGvKGkVzYVMryYLNwn60JMeamfHpSo7rBxNJFCeqc2ApfEBSiUl+qDiBWEmcFfrL50HpT7noHPGp95C/PZWaeKQhNZNOjKLovYgzZFXycQa6zV2DupUzrPvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752933126; c=relaxed/simple;
-	bh=Lpe/d4LJQNCz+MZxtwqRwKJ3NL/20iK0n3vUpy4+FE0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=OOF6N+zW5vH4P4u9NVdYW8/vQuOvndGrnt76+k1gi2iIqetbS0jVyjit/yma+G5okaHz8pIjXu5ES8VXSsf68LKLroqVUaCXcTIWZ04rADHrWVimbAFWpwcohG49lWBJD6mtovcrlOHD4/FMBt7SHtVTTYMQATiDg40Ihuye+yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdrJmJm3; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752934101; c=relaxed/simple;
+	bh=/ZE6qDBDE0e+mFjpEf4ZBiofYqJr75t+8cSnXB1mzMs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=JzBB9oipfQNy58uiH6Xc7vKVJdqKA2fvCPU5rqpNMSMJRUReUzXKs0ihx1Y0+wY5JsgKHZQI8xbLzmzoKrniVK5RspAYCKtLcGNZIZKxzInarJd3YlvEj0eLG7tWGTV5KLFuucNAPH/vA9go8+Olbj4AGxb2od6nSk7U4nVMG4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uuXE0B+T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdrJmJm3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C9FC4CEE3;
-	Sat, 19 Jul 2025 13:52:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uuXE0B+T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B47C4CEE3;
+	Sat, 19 Jul 2025 14:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752933125;
-	bh=Lpe/d4LJQNCz+MZxtwqRwKJ3NL/20iK0n3vUpy4+FE0=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=CdrJmJm3b7aoH0GPhMkEiMhoHXmqKh9vc8iCv6Sol2zyOlgYUO0w3XMMUYJpkwSdL
-	 IbVGhcgUmKdpd1MqddE26uk2soa18RHKylX1wh71O1BkzCSHe/DtsRm4OKHNTiUeVE
-	 4L/XtKcAvvSGNiZ/GWWswmUzeotgBEDxz6pTlGc/BOHgbC4hJ6rPv/LmanhWxj9sLj
-	 NgFs00SrcS/GLIDRknsqcEPkHIYu/onP1nGk7IHJmzXokQJE/c2V2+Cuf6ODEnvj6t
-	 defXbxUK12rG6AfI5OGr4Bna9nl+kXElDca7j9otSdc83CL10CpUFEMdgXUkW3gWFR
-	 VN3Us7sxcevmA==
+	s=k20201202; t=1752934100;
+	bh=/ZE6qDBDE0e+mFjpEf4ZBiofYqJr75t+8cSnXB1mzMs=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=uuXE0B+TMEj6SCMhTYLsjH6eDRsbFPmET+81Kb+vX/1auRC8y5cOBTV7k0wmwrXNk
+	 BvUOGus5IlzdV71bWQlrtfd20imGEHSvchyxKminV05KQU4gwf0OaOuyVDVIlTE9P1
+	 vkBOM7HdlFahXllHshqd7Cgc/ah4V17BCkUGfbpHxiVYcqiZ1kuVgkK6Rf8HlRCXxG
+	 Xw9LjortmFH7t1/nRgn5ZAWYmqQB3azz9/2XvKGHJg5NFHNt42wyxWgBORnYhkV+u7
+	 AxM/SCibnKdJVtUq20ntXKCq4XOQIMxJypwH7KFE+bBxOPuy3fEK0vSBMPfr2ih8h6
+	 I/BTfouQ1nemg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,9 +34,10 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 19 Jul 2025 15:51:59 +0200
-Message-Id: <DBG2XI0UZ3B5.I9KLFJUYQUMC@kernel.org>
-Subject: Re: [PATCH v15 2/3] rust: io: mem: add a generic iomem abstraction
+Date: Sat, 19 Jul 2025 16:08:16 +0200
+Message-Id: <DBG39YMN2TX6.1VR4PEQSI8PSG@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: [PATCH] rust: io: mem: enable IoRequest doc-tests
 Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
@@ -46,131 +47,44 @@ Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
  <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
 To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com> <20250717-topics-tyr-platform_iomem-v15-2-beca780b77e3@collabora.com>
-In-Reply-To: <20250717-topics-tyr-platform_iomem-v15-2-beca780b77e3@collabora.com>
+X-Mailer: aerc 0.20.1
+References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com> <20250717-topics-tyr-platform_iomem-v15-2-beca780b77e3@collabora.com> <DBG2XI0UZ3B5.I9KLFJUYQUMC@kernel.org>
+In-Reply-To: <DBG2XI0UZ3B5.I9KLFJUYQUMC@kernel.org>
 
-On Thu Jul 17, 2025 at 5:55 PM CEST, Daniel Almeida wrote:
-> +    /// Maps an [`IoRequest`] where the size is known at compile time.
-> +    ///
-> +    /// This uses the [`ioremap()`] C API.
-> +    ///
-> +    /// [`ioremap()`]: https://docs.kernel.org/driver-api/device-io.html=
-#getting-access-to-the-device
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// The following example uses a [`platform::Device`] for illustrati=
-on
-> +    /// purposes.
-> +    ///
-> +    /// ```no_run
-> +    /// use kernel::{bindings, c_str, platform, of, device::Core};
-> +    /// struct SampleDriver;
-> +    ///
-> +    /// impl platform::Driver for SampleDriver {
-> +    ///    # type IdInfo =3D ();
-> +    ///    # const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D No=
-ne;
-> +    ///
-> +    ///    fn probe(
-> +    ///       pdev: &platform::Device<Core>,
-> +    ///       info: Option<&Self::IdInfo>,
-> +    ///    ) -> Result<Pin<KBox<Self>>> {
-> +    ///       let offset =3D 0; // Some offset.
-> +    ///
-> +    ///       // If the size is known at compile time, use [`Self::iomap=
-_sized`].
-> +    ///       //
-> +    ///       // No runtime checks will apply when reading and writing.
-> +    ///       let request =3D pdev.io_request_by_index(0).ok_or(ENODEV)?=
-;
-> +    ///       let iomem =3D request.iomap_sized::<42>();
-> +    ///       let iomem =3D KBox::pin_init(iomem, GFP_KERNEL)?;
-> +    ///
-> +    ///       let io =3D iomem.access(pdev.as_ref())?;
-> +    ///
-> +    ///       // Read and write a 32-bit value at `offset`.
-> +    ///       let data =3D io.read32_relaxed(offset);
-> +    ///
-> +    ///       io.write32_relaxed(data, offset);
-> +    ///
-> +    ///       # Ok(KBox::new(SampleDriver, GFP_KERNEL)?.into())
-> +    ///     }
-> +    /// }
-> +    /// ```
-> +    pub fn iomap_sized<const SIZE: usize>(self) -> impl PinInit<Devres<I=
-oMem<SIZE>>, Error> + 'a {
-> +        IoMem::new(self)
-> +    }
+When introduced, the IoRequest doc-tests did depend on infrastructure
+added in subsequent patches, hence they temporarily had to be disabled.
 
-This doc-test and the one below break the build, since the used platform de=
-vice
-infrastructure is introduced with the next patch.
+Now that we have the corresponding platform device infrastructure,
+enable them.
 
-I can set them to `ignore` and we turn them into `no_run` with a subsequent
-patch.
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+---
+ rust/kernel/io/mem.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +    /// Maps an [`IoRequest`] where the size is not known at compile tim=
-e,
-> +    ///
-> +    /// This uses the [`ioremap()`] C API.
-> +    ///
-> +    /// [`ioremap()`]: https://docs.kernel.org/driver-api/device-io.html=
-#getting-access-to-the-device
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// The following example uses a [`platform::Device`] for illustrati=
-on
-> +    /// purposes.
-> +    ///
-> +    /// ```no_run
-> +    /// use kernel::{bindings, c_str, platform, of, device::Core};
-> +    /// struct SampleDriver;
-> +    ///
-> +    /// impl platform::Driver for SampleDriver {
-> +    ///    # type IdInfo =3D ();
-> +    ///    # const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D No=
-ne;
-> +    ///
-> +    ///    fn probe(
-> +    ///       pdev: &platform::Device<Core>,
-> +    ///       info: Option<&Self::IdInfo>,
-> +    ///    ) -> Result<Pin<KBox<Self>>> {
-> +    ///       let offset =3D 0; // Some offset.
-> +    ///
-> +    ///       // Unlike [`Self::iomap_sized`], here the size of the memo=
-ry region
-> +    ///       // is not known at compile time, so only the `try_read*` a=
-nd `try_write*`
-> +    ///       // family of functions should be used, leading to runtime =
-checks on every
-> +    ///       // access.
-> +    ///       let request =3D pdev.io_request_by_index(0).ok_or(ENODEV)?=
-;
-> +    ///       let iomem =3D request.iomap();
-> +    ///       let iomem =3D KBox::pin_init(iomem, GFP_KERNEL)?;
-> +    ///
-> +    ///       let io =3D iomem.access(pdev.as_ref())?;
-> +    ///
-> +    ///       let data =3D io.try_read32_relaxed(offset)?;
-> +    ///
-> +    ///       io.try_write32_relaxed(data, offset)?;
-> +    ///
-> +    ///       # Ok(KBox::new(SampleDriver, GFP_KERNEL)?.into())
-> +    ///     }
-> +    /// }
-> +    /// ```
-> +    pub fn iomap(self) -> impl PinInit<Devres<IoMem<0>>, Error> + 'a {
-> +        Self::iomap_sized::<0>(self)
-> +    }
-> +
-> +    /// Same as [`Self::iomap`] but with exclusive access to the underly=
-ing
-> +    /// region.
-> +    pub fn iomap_exclusive(self) -> impl PinInit<Devres<ExclusiveIoMem<0=
->>, Error> + 'a {
-> +        Self::iomap_exclusive_sized::<0>(self)
-> +    }
-> +}
+diff --git a/rust/kernel/io/mem.rs b/rust/kernel/io/mem.rs
+index 58c384291f15..ecef19f7d176 100644
+--- a/rust/kernel/io/mem.rs
++++ b/rust/kernel/io/mem.rs
+@@ -43,7 +43,7 @@ pub unsafe fn new(device: &'a Device<Bound>, resource: &'=
+a Resource) -> Self {
+     /// The following example uses a [`platform::Device`] for illustration
+     /// purposes.
+     ///
+-    /// ```ignore
++    /// ```no_run
+     /// use kernel::{bindings, c_str, platform, of, device::Core};
+     /// struct SampleDriver;
+     ///
+@@ -101,7 +101,7 @@ pub fn iomap_exclusive_sized<const SIZE: usize>(
+     /// The following example uses a [`platform::Device`] for illustration
+     /// purposes.
+     ///
+-    /// ```ignore
++    /// ```no_run
+     /// use kernel::{bindings, c_str, platform, of, device::Core};
+     /// struct SampleDriver;
+     ///
+--=20
+2.50.0
+
