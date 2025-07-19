@@ -1,108 +1,126 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26763BB48;
-	Sat, 19 Jul 2025 20:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65FE1FDD;
+	Sat, 19 Jul 2025 21:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752958502; cv=none; b=ewU56VaWztrxtfc9vYJXudL4L8JsKp6INvmoRE8+39qgKYP6ihJ0ROO+mc4+xTo3iqH1oiUfulqHdn2fFi4xNh8sZ+lToaPOdz/YodPCGMi8Cv+HLtnb+MYWLX1VV4JYsrZ4M748MYg0rwkEFvwRCjs4Q4Ia35aSkA8zF8LXCsY=
+	t=1752959177; cv=none; b=cSbj/38I157smRUjdS9jkjlADiyeDGQvnSu8s+WlVVsfTiMZ/Bn7wxyeGNeBQAzWibn5R+xk/+EdEYLzPpX80U4NuQdfOCprgmy0nD8y0IIPkaxdYFp9oLodJz2iWxWvfrOQ6EeRlFXbgFZ+/m9mbmYs/+6QbNhrGXkfohLd8CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752958502; c=relaxed/simple;
-	bh=GQBzpFMnqoLsh0Qg2t2pSTObf/g0qvnCU1a/voob+BY=;
+	s=arc-20240116; t=1752959177; c=relaxed/simple;
+	bh=nyswjgChzex87fkUmGlz803mOXSUIG3Re0obcW/WBZk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NaRC9j42cTX5ezLS1KPIYPLnP7wxtwv2cJuJRCboAxfEsEKbfZW64jKeWslupftBahzmm7RbH3e+76XAsqF+hg5Vb3fnoWe5Srown0ywufPO8pDaHO0p2BIy9zTakxS/yU+cU78ngFclQf09Vxvefu9f1rAYDSbilh1vHEozenE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kWZKUC55; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=lAZDCM7J4I1J/DHRh/IzC02xVFZ+ptArdoJjyOfi8hwW1S2+UHU1rNsKWF+RQ/dmZK2knt/y6wm8lUVDthvV/dS6XUjXZUTwysTMXy51z8f9FmVLg37/KGbIXc1O6UTpm5zh7hwp5QOGlCUzpIyTZRgBAq7rG0e+Y3g/n1fo8l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gNlu+86D; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kWZKUC55"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-31306794b30so576505a91.2;
-        Sat, 19 Jul 2025 13:55:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gNlu+86D"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32f144d0db8so16486961fa.0;
+        Sat, 19 Jul 2025 14:06:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752958500; x=1753563300; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1752959174; x=1753563974; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RYpMyf5txQ4BgkimxSYertgNk0vxadUizqxxBkE9GQ8=;
-        b=kWZKUC55rItRNfsWBV9afaIJtNmMlCaK37PTaTlm5wG0Aa1MRwPKQSPnm7TyHkfrZl
-         MHHxWIXO35/rjNdFva9l47uhD5OikKfRZ0LAqPhq8kDqQyIs6FJAsn2C519RAhvDkSnE
-         agiK86jlYye0u5KYKGTWMLJ07h62VvEGGcZHLHFY8j6txJegcElVR4t4XZwfnd8iJSO8
-         60B7qI7dZeehTxnfouQY79V7LC+c9cKE/K7Z5LIfnET88/5ex8HPao0cEXXuEDznqDrf
-         zqFoAQOk7E2c/iMMK4slPI7wBEPS3eLRZyukLtlaQmEnEo4DMJcsNQTArnl7n12+mCf8
-         IPkw==
+        bh=KDD5lvVgbLQzMHEKqvD4drpjZqiteKdnziSv4nMIVYg=;
+        b=gNlu+86DYbRamez5QJVoSpcor7vbAtBZBywsW5qM31QW38a3M9WCZjKbXt9KoPLfr3
+         NPRfCZTwxAR4/4Hh/PpBOMNdvQmkGVVO/eh7EnWNV1cCGY8MUrfV439aHuBCiLTDf9Vt
+         bdTqs/cmNmSFnC4ssKBBm3vMBv7rqlH9Tlkm9hmYE2NB+gvRU9gCFGW2kwlDW+vqQXzb
+         Br9zjP1K0QNIl8YPqLr2zBXngCP+HfzjBVnolgBHTbuvcPD24VKyBuRoRAoJtlDmCLgG
+         6bWRecZ7acGns3y8RXtzr6ALCArIMluFlCQN1/gDNLlbWRft4VwC4zqnT/Uhe1hXqYJ6
+         8WlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752958500; x=1753563300;
+        d=1e100.net; s=20230601; t=1752959174; x=1753563974;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RYpMyf5txQ4BgkimxSYertgNk0vxadUizqxxBkE9GQ8=;
-        b=qkaqoU3vRYnWn7fKL7PuddArvOsy8H00BZDLAVUf4dvVpRYHtJ1ahA4tD+3RyXwKbp
-         VjO7hbiIzHYZq2LawX+x9mUcALbAy743ch0YzBgFIx3JKWt0HZRzqshUK8Taync2B3Nm
-         2Vncpff18ovlDrpKfIjd9MJwpjaTuX08jr1gkMiHDdD4OaW0zqLVVmvnXUD5d/rW3SZW
-         A4R4ufc54KAEPQT+CmSJOd2ygH/eP7zEsGHNNdpOZJt3YpyLd2D4VcxB+Zf5soRVLcY9
-         tiR29R/WFPUGBi+kYlHrRGkO0CYAur8+15JzUoTJwsWlH6pCru8FAWXVg0e4S3lGO9Dq
-         Jl2A==
-X-Forwarded-Encrypted: i=1; AJvYcCX22AuZdyZak+y6wqvF6y5mfZrA/ZWKLXGJhDrQXKKyifqjysiVxsZOubhsQomPaE+Vswt9OWVtMBQxn2Y=@vger.kernel.org, AJvYcCXAjGdcgkwu6QqEYXJfkwgPVfYabPaMlOCFIJ0caHY7rG79aGHqPYp7sV79O0ba1DBTSYOubn/8EpJEaGx+GP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzBkn5Q+B67UIBsgXkKYSK8V++g3Q2N3gEWc3kasQLIHjipr2v
-	4pK/RaI1YCk99YjeGBNKc03mgQ6knpt70Q5/5PLWUkpV6swXyO34646rCecoBEsMPZzho8kWVoc
-	hGvHvbh51rDxnOnU2zWYlG37zTTmjvqk=
-X-Gm-Gg: ASbGnctun3amLoGrPMIm1AJN+JxkhFpZ8tw+FVArYBvqhppXcVLxc8WJ9aELOlFbAzR
-	36G2uiM/L68GjK3od7eZ/waIoCYC+rWT3MfkA2v46r9QXwcKI2w4NToFFzXHm9hC+xOoa25Fe63
-	dtzzCgwTaTuEOojqYqLr9Zj1RYoZfcfdE7vvPXFA1R9/lsi5rtKjnBhhLiUZsWM7IMTScu84Fin
-	ri8wAtSXf/v0zalCMg=
-X-Google-Smtp-Source: AGHT+IEuGXufeXJN9bMObQp6jtSAYdJYqpVKoAURpO4xc6KAolWmA2we5Guh8+1nihduy91vBpbyIBJzf1O5jVuBvGw=
-X-Received: by 2002:a17:90b:540e:b0:311:9c9a:58e8 with SMTP id
- 98e67ed59e1d1-31c9e79d3dcmr8495644a91.7.1752958500054; Sat, 19 Jul 2025
- 13:55:00 -0700 (PDT)
+        bh=KDD5lvVgbLQzMHEKqvD4drpjZqiteKdnziSv4nMIVYg=;
+        b=wGWLv8dt1fjmxHBj0LwLA5g8T2IM8tqdRaMg81NfI3Ram2JkO3eJDCaFd78mURNfdO
+         ybXlO0SuNvWNxI8AfckcMMymSoN+sk5Z+rbEvQesrce21EVJZf+S7nPoM+Gaml/Tx8zJ
+         I1EVbH39lmWVdHZzSOYNXbq6TJC934KhQ+aI9+IU/XaXDCPDbRi61ZPSD46nv1AM6Wrd
+         LekLcVZIoJML57NgqeRzIpxmayHwOoAW5MydfUAkpz58bJU0P9TSNwZM8dCXgjSXi4hb
+         DQDS+R4V1SfGZyqc7OhmU+0yr0dynjOTSj/ifz2YrEOO1jufzDN9XH4i4Lix5BrZ6rax
+         b4Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCXVDIpOPqOEVr+UbUP0RjmaureCaQB3iehBJCBxvpi02Wia1u2MOkMuB6mrJyt9CL41ZtIYcJYzaUS0JGbSQOA=@vger.kernel.org, AJvYcCXzQmS/l3jdN/+d8B35XXDb/xFaQvHWjY7PaOMkrYVrFdJhvg7ppsVfByodeKKWNBJfNX0Hk98q9pupKcg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1PQCGVA+KQizmXfFiAoq4hWPbL8/YybXh+37SqzyfCCKP7oOa
+	dnGq/t0pwXD8Xw9x020a4g1Bo/iSvDd9w6QxKrQoZslVPJhdj2qmNvtNEdBLzeU+F1Otd5/rGXH
+	SrA0TDU3PjvBVuNPmaUyIyduaaI+y/pY=
+X-Gm-Gg: ASbGnctGajeTFlFvqHtDLrZywdPtIU/0FJw6vBZHcJHv0k9JF1nNqF3drATmoqK/2ih
+	7CbUNSBtP/K32magep+Nj6pW6mQP9PhKg/oI/c14Gk5L2augftihcdtI/8prkb0OE+p4m4JB8lV
+	O2WlZjUSYRg3ZJ0IMXzOB3ZGB32fWdG9i1LFrbcVaY8Z6k2MTMcgowJEl818i3M7lTf1ecN5X3g
+	Qbri1XzO4aDv9zlL2olPyrzOTk4NmG0sXj++z6DaA==
+X-Google-Smtp-Source: AGHT+IFel6LcPVo3L3MCsNHOrcdqbyyvw2loT4c8a3F8Eu9ST3sLv5A/WpAB8b1q4cUP+onWoJI49Fm8mHtQap8cx7Y=
+X-Received: by 2002:a05:651c:b28:b0:32b:9792:1029 with SMTP id
+ 38308e7fff4ca-33098f6680amr28756151fa.14.1752959173475; Sat, 19 Jul 2025
+ 14:06:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250719183649.596051-1-ojeda@kernel.org> <20250719203646.84350-1-boqun.feng@gmail.com>
-In-Reply-To: <20250719203646.84350-1-boqun.feng@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 19 Jul 2025 22:54:45 +0200
-X-Gm-Features: Ac12FXxHqmkSLKpzkLvxms1iOKh3BC29spTi-sHdm1FLOjvWsRSZaYRN3fJIK5I
-Message-ID: <CANiq72niUM8YAiVWooxAPCy3c3Yqt6_1fjW2HN7TVLnmL_GQMQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: list: Add an example for `ListLinksSelfPtr` usage
-To: Boqun Feng <boqun.feng@gmail.com>, Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+References: <20250719183649.596051-1-ojeda@kernel.org>
+In-Reply-To: <20250719183649.596051-1-ojeda@kernel.org>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Sat, 19 Jul 2025 17:05:37 -0400
+X-Gm-Features: Ac12FXwNuJFlNB4FrlOz_4LZnrwumCxbRuVE87wbB2tt8bbMYaX8TCEyZEcw5sk
+Message-ID: <CAJ-ks9=Ye4v4g0roTu_CJSveRwj6c6P95kGfzy29VEh2c8XHKA@mail.gmail.com>
+Subject: Re: [PATCH] rust: list: undo unintended replacement of method name
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, I Hsin Cheng <richard120310@gmail.com>, 
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 19, 2025 at 10:36=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> =
-wrote:
+On Sat, Jul 19, 2025 at 2:37=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> It appears that the support for `ListLinksSelfPtr` is dead code at the
-> moment [1]. Hence add an example similar to `ListLinks` usage to help
-> catching bugs and demonstrating the usage.
+> When we renamed `Opaque::raw_get` to `cast_into`, there was one
+> replacement that was not supposed to be there.
 >
-> The example is mostly based on Alice's usage in binder driver[2].
+> It does not cause an issue so far because it is inside a macro rule (the
+> `ListLinksSelfPtr` one) that is unused so far. However, it will start
+> to be used soon.
 >
-> Link: https://lore.kernel.org/rust-for-linux/20250719183649.596051-1-ojed=
-a@kernel.org/ [1]
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-4-08=
-ba9197f637@google.com/ [2]
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Thus fix it now.
+>
+> Fixes: 64fb810bce03 ("rust: types: rename Opaque::raw_get to cast_into")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-I sent that one because I am applying Tamir's series, which triggered
-the error -- maybe you can put it on top of those?
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
 
-If you do, please note that you need a couple changes -- I will push
-them to `rust-next` so that you have them.
-
-    https://lore.kernel.org/rust-for-linux/20250709-list-no-offset-v4-5-a42=
-9e75840a9@gmail.com/
-
-Thanks!
-
-Cheers,
-Miguel
+> ---
+>  rust/kernel/list/impl_list_item_mod.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/im=
+pl_list_item_mod.rs
+> index c1edba0a9501..3f6c30e14904 100644
+> --- a/rust/kernel/list/impl_list_item_mod.rs
+> +++ b/rust/kernel/list/impl_list_item_mod.rs
+> @@ -252,7 +252,7 @@ unsafe fn view_value(links_field: *mut $crate::list::=
+ListLinks<$num>) -> *const
+>                  // the pointer stays in bounds of the allocation.
+>                  let self_ptr =3D unsafe { (links_field as *const u8).add=
+(spoff) }
+>                      as *const ::core::cell::UnsafeCell<*const Self>;
+> -                let cell_inner =3D ::core::cell::UnsafeCell::cast_into(s=
+elf_ptr);
+> +                let cell_inner =3D ::core::cell::UnsafeCell::raw_get(sel=
+f_ptr);
+>                  // SAFETY: This is not a data race, because the only fun=
+ction that writes to this
+>                  // value is `prepare_to_insert`, but by the safety requi=
+rements the
+>                  // `prepare_to_insert` method may not be called in paral=
+lel with `view_value` or
+>
+> base-commit: 23b128bba76776541dc09efaf3acf6242917e1f0
+> --
+> 2.50.1
+>
