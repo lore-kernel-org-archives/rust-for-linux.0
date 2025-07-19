@@ -1,108 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68488148838;
-	Sat, 19 Jul 2025 10:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BB72046B3;
+	Sat, 19 Jul 2025 13:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752921106; cv=none; b=AYK2t9NRIrsY0+M6nEJbRG6fpykiolPBvPXZVwuAhrEW7TK4L1PKAUFu7NaKT9z3rvjI9Udj7Ip0Tr/sNzgOY0U2YOEKHa6uiF8+KDlTOpmmG3EW9vpnOdeJ69b3yPTJ+29W5nQ5OQk9vFeGLrkCyeAtiw5H0v7NIayp9oRyaZw=
+	t=1752930945; cv=none; b=dUp5Ly8x8plGiOFiCt7adF60JNp8l75XnuOzQhDqRIEqJJ/in/liNZBPQiOgMMvxa5+oVNyBkykyLP2dccZQF1Iy0aycf65Hb1IZldsJ1PhMv2HKze/STd7xCEzY3/zs/cRGsvkOGoF4BVVO8Z+Neozs4yw/HFtlzwl67q+LqsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752921106; c=relaxed/simple;
-	bh=izNdIcFuvOrLt6cxGef2sjtELlmOZjtN6nfYIH9IpwI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c/nhfho2wPHlSzPD+49mxyF9cvfjy/XCbdJma8/fDaUHgcGEandEwno9BeOWXwbdx3fXbvygnAxDFxq8cavcA7sGIoA7MX8ASBEk3EXFY70r5EHChtUZrLHApDQTYdQIx8DyUCNNgisfYr4Eo+A3CZXZ3IH2gXA4OrsttliLcAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p+zmVadh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1752930945; c=relaxed/simple;
+	bh=Q9CjqBh6qRR1VX7PfQpXfa7t2Y7m39HLcLpR1Xe++J4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=aWoH4g92AovmiGgxeaNwq7T84wCF4BqYQwnjOGVmdfVmTM+y2vX4c9ur9jy8+/FZZYliKTSZirZO3hJd+UViDSDwNbUb+wAfBdxSYRqoZMlm1FL0Tkk3KjXuxkdl7eJUsodGCSev6QATuxZdBtjuSc5kUuHdeZQCBEobet71XSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LENUoug5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p+zmVadh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06242C4CEE3;
-	Sat, 19 Jul 2025 10:31:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LENUoug5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E438DC4CEE3;
+	Sat, 19 Jul 2025 13:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752921105;
-	bh=izNdIcFuvOrLt6cxGef2sjtELlmOZjtN6nfYIH9IpwI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=p+zmVadhbTztJUOub3K++IayOI4UT5PuQX8+RF0022o3gNzwsSr0+Ylbj+wPE+dC7
-	 zzE2i7zo+Zxay3OE1ltJprr1PkpaTBgQpXFSfConxYQI/KXSXMW4xb14fhiGxxwKND
-	 Gz8H4W7QpBCCouHv+HHQobr0YRRg8iBbQouDxCU5F4zYtwEEistAkqnJXAgatCgOQI
-	 0SUBFVkctKMOaoqCBHNjfF+l0F/27+4omGiNSjTjWOtV42z+/NSWDql+VwNyass7Xo
-	 U0jAZpX9vF01qk9/oaRCxCrxBUtaWURiAeoByi7TU7KNe3ZfSrbWIqwEUaibLZB3st
-	 v5b2KtqcqEgMQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.16 (2nd)
-Date: Sat, 19 Jul 2025 12:31:09 +0200
-Message-ID: <20250719103109.155136-1-ojeda@kernel.org>
+	s=k20201202; t=1752930944;
+	bh=Q9CjqBh6qRR1VX7PfQpXfa7t2Y7m39HLcLpR1Xe++J4=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=LENUoug5d0i4CU//Hmi6t/5JbY3FehDxlKxvS4BSHAAs2fd4XxTeI7FPsEybJhLCf
+	 HvPScU1xEvU09H3l2p6cmzlMqzgbMv31zvZJb/6vFa8d7QUd0Phjs/iZV7XqeAe1s5
+	 y2Hs9W58I8aa4HfEsTY7pHK4/Tq4+pkLvBuTT1reYWZRdLmoN44nd8G12O2baFJnxo
+	 nrFa8mwceSE8fJHRloAtoABIlRiGbT8oBpxcwcfFBwKzLKzIDCLZQ94qxdcfJmY4Ny
+	 /vLnfCEeGFihr1H2iM8VmkhwRPAwG0Tigpd1eue+jLcrlciWJS9Hz2HmPNrFIuuAcM
+	 zXLQ/LvxKjFTw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 19 Jul 2025 15:15:40 +0200
+Message-Id: <DBG25OQZJ18V.1W13FEOPX8MOH@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v15 3/3] rust: platform: add resource accessors
+References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com> <20250717-topics-tyr-platform_iomem-v15-3-beca780b77e3@collabora.com>
+In-Reply-To: <20250717-topics-tyr-platform_iomem-v15-3-beca780b77e3@collabora.com>
 
-Hi Linus,
+On Thu Jul 17, 2025 at 5:55 PM CEST, Daniel Almeida wrote:
+> +impl Device<Bound> {
+> +    /// Returns an `IoRequest` for the resource at `index`, if any.
+> +    pub fn io_request_by_index(&self, index: u32) -> Option<IoRequest<'_=
+>> {
+> +        // SAFETY: `resource` is a valid resource for `&self` during the
+> +        // lifetime of the `IoRequest`.
+> +        self.resource_by_index(index)
+> +            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resou=
+rce) })
 
-Please pull these fixes for Rust (second round).
+It seems there's a bug in some clippy versions we support. My regular testi=
+ng
+shows a warning for this with clippy 1.78:
 
-All commits have been in linux-next for four rounds.
+	warning: unsafe block missing a safety comment
+	   --> rust/kernel/platform.rs:275:29
+	    |
+	275 |             .map(|resource| unsafe { IoRequest::new(self.as_ref(), r=
+esource) })
+	    |                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^
+	    |
 
-No conflicts expected.
+However, there clearly is a safety comment.
 
-Thanks!
+It seems it gets confused by the multiline formatting. If I write this as
 
-Cheers,
-Miguel
+	self.resource_by_index(index)
+	    // SAFETY: `resource` is a valid resource for `&self` during the
+	    // lifetime of the `IoRequest`.
+	    .map(|resource| unsafe { IoRequest::new(self.as_ref(), resource) })
 
-The following changes since commit 86731a2a651e58953fc949573895f2fa6d456841:
+the warning goes away.
 
-  Linux 6.16-rc3 (2025-06-22 13:30:08 -0700)
+@Miguel: What's the preferred way dealing with this? I assume we just want =
+to
+ignore this warning for the affected compiler versions?
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git tags/rust-fixes-6.16-2
-
-for you to fetch changes up to 7498159226772d66f150dd406be462d75964a366:
-
-  rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0 (2025-07-14 23:30:44 +0200)
-
-----------------------------------------------------------------
-Rust fixes for v6.16 (2nd)
-
-Toolchain and infrastructure:
-
- - Fix build and modpost confusion for the upcoming Rust 1.89.0 release.
-
- - Clean objtool warning for the upcoming Rust 1.89.0 release by adding
-   one more noreturn function.
-
-'kernel' crate:
-
- - Fix build error when using generics in the 'try_{,pin_}init!' macros.
-
-----------------------------------------------------------------
-Janne Grunau (1):
-      rust: init: Fix generics in *_init! macros
-
-Miguel Ojeda (2):
-      objtool/rust: add one more `noreturn` Rust function for Rust 1.89.0
-      rust: use `#[used(compiler)]` to fix build and `modpost` with Rust >= 1.89.0
-
- rust/Makefile           |  1 +
- rust/kernel/firmware.rs |  2 +-
- rust/kernel/init.rs     |  8 ++++----
- rust/kernel/kunit.rs    |  2 +-
- rust/kernel/lib.rs      |  3 +++
- rust/macros/module.rs   | 10 +++++-----
- scripts/Makefile.build  |  3 ++-
- tools/objtool/check.c   |  1 +
- 8 files changed, 18 insertions(+), 12 deletions(-)
+> +    }
+> +
+> +    /// Returns an `IoRequest` for the resource with a given `name`, if =
+any.
+> +    pub fn io_request_by_name(&self, name: &CStr) -> Option<IoRequest<'_=
+>> {
+> +        // SAFETY: `resource` is a valid resource for `&self` during the
+> +        // lifetime of the `IoRequest`.
+> +        self.resource_by_name(name)
+> +            .map(|resource| unsafe { IoRequest::new(self.as_ref(), resou=
+rce) })
+> +    }
+>  }
