@@ -1,39 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB991DE3D6;
-	Sat, 19 Jul 2025 08:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AB31DE3D6;
+	Sat, 19 Jul 2025 08:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752912773; cv=none; b=Bd8zym57b33D2jzESrPwKBWVrFiBIfP+uqcW0856lsOM/9KFiWCj48LDcBqDf9LAFckeWWyezCgHlfRXL2uTj0GL2j+w+mU2pmL4L3VnRSZAywLP5rVsk6AFQCKX+fiUH13+iMeOmD3MVQaE+R+E3pwBfqYMkNOgRjI6pn3maUM=
+	t=1752912787; cv=none; b=N05/4BW4dpRscVwHSDrT7FdRbXMm+mZiDKnvBOIY6lJ3bm0dqVyx/sEACSWs3Nb4s0hC5/sc6a1Pwbyk/dAJo6TdOtO3OeXSZ5+od1tIgx53iCkLimp4SKxRgswDzPVuuCzpU/TqPD5tQuwnv4aF9OFRkBo3gSVJufL3ugp2iL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752912773; c=relaxed/simple;
-	bh=LEEcuXOJk/YHQ2LbF5XiqcQm+O5jC1MZBGi9wHIOdGo=;
+	s=arc-20240116; t=1752912787; c=relaxed/simple;
+	bh=6llgpNRlWD1HbICRpb1DHBgat6FAFKBqNPw7t1Kqkjg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fYpbu1fkbW/s0EBiPXR3oBiDSR3n6W8VhN6egNTF12ukbJbcWYjlLdHlkjnDBAkpcPO0o39bCVVxIqKiKADFVyjgsiBD/kmf16AEJ/dwXNLOWHcSPIPPOxnE3Ur3boOJTtcykitxawtnU6Sj9NVhbVyofyPC3L57Y+gmaNNG3OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYyrvCOz; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=m8IFzpFhwDob+Y7UlWcciwuMC4124Ya4/H8bdBGIV384vaof6t6KIRsHpMWoa4Frj/Mww+knOw8dRxxaFraekrWPh9HcLEvrgX7HSNqFzmCJm1kHqnbdtu2fCyagFMos6aEuTBLWFR75gRSFNkxLokqWyNxHkAtFzfIz9WK3RMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKH+CVHu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYyrvCOz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F2DC4CEE3;
-	Sat, 19 Jul 2025 08:12:52 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKH+CVHu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D19C4CEE3;
+	Sat, 19 Jul 2025 08:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1752912773;
-	bh=LEEcuXOJk/YHQ2LbF5XiqcQm+O5jC1MZBGi9wHIOdGo=;
+	s=korg; t=1752912786;
+	bh=6llgpNRlWD1HbICRpb1DHBgat6FAFKBqNPw7t1Kqkjg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KYyrvCOzGvwxPYFvNusB/GmcYlDzwiScqnO2ud13BfEpZvLfxmEXdeInRXv7K6925
-	 K+Z8Y9pDFQ/DupX0nbDVhHWaP4iTkDG/cqRvD1MMBBZmHTZRmEd2yv5bfYsxqFOeLc
-	 uVUsHB9O7KFPl415CKrjQDXUd2lN+NGHDckmgrNU=
-Date: Sat, 19 Jul 2025 09:56:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: rafael@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Documentation for Device / Driver infrastructure
-Message-ID: <2025071931-manger-earphone-a98d@gregkh>
-References: <20250717224806.54763-1-dakr@kernel.org>
+	b=dKH+CVHuU9STrKNwuvfKeXl3KIEMZNprsuVKoJFuwQG6Vq7GtRmgPu9En36im2EZD
+	 HNOrw2u9TWn2xh+naOpjJ04yQFmoAZ3jBDG23UI0uyzJN9PXV96ijEfg4O09DGTXuz
+	 Sp9B2PGLAZDqP3p7gMv6GO1OtPTNrwrCoJ720Eaw=
+Date: Sat, 19 Jul 2025 10:01:36 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Fiona Behrens <me@kloenk.dev>
+Subject: Re: [PATCH v15 0/3] rust: platform: add Io support
+Message-ID: <2025071913-coach-prior-d71e@gregkh>
+References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -42,15 +47,30 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250717224806.54763-1-dakr@kernel.org>
+In-Reply-To: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
 
-On Fri, Jul 18, 2025 at 12:45:36AM +0200, Danilo Krummrich wrote:
-> This patch series expands the documentation for the generic device and driver
-> infrastructure and provides a guideline on how to implement bus and class
-> specific devices as well as bus specific driver infrastructure, i.e. bus
-> abstractions. It also expands on the existing documentation of device context
-> types.
+On Thu, Jul 17, 2025 at 12:55:21PM -0300, Daniel Almeida wrote:
+> ---
+> Daniel Almeida (3):
+>       rust: io: add resource abstraction
+>       rust: io: mem: add a generic iomem abstraction
+>       rust: platform: add resource accessors
+> 
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/helpers/io.c               |  41 ++++++
+>  rust/kernel/io.rs               |   5 +
+>  rust/kernel/io/mem.rs           | 283 ++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/io/resource.rs      | 229 ++++++++++++++++++++++++++++++++
+>  rust/kernel/platform.rs         |  60 ++++++++-
+>  6 files changed, 618 insertions(+), 1 deletion(-)
 
-Looks great to me, thanks for writing this all up:
+Who is going to be responsible for the new files you have added?
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+And no real objection, but no copyright info was added to them either,
+was that intentional?  I know some companies frown on that as it goes
+against their corporate policy (but some don't care, it's hard to keep
+track of who likes what at times...)
+
+thanks,
+
+greg k-h
