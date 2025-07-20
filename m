@@ -1,107 +1,161 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D0E186A;
-	Sun, 20 Jul 2025 00:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752972406; cv=pass; b=pn8rsmt2CAn6LAJ1ryFIinssnIDesBQjF32oiLt3TmMSuShkoPm3lz0w9pOACh23uUeCZHOBEr201y1sZJ3yaXdBSQbxoohgozJ1/7HDuIASytePEYjnU/vy/YjLYTHwer69J55NWQI8kNkDzQmi7Cbdf0sZdRSsnyu9boiPGb0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752972406; c=relaxed/simple;
-	bh=RCMhaNF73IsXyuAJ+j6RrC60q8zTRTKwzopHxGIjgSY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=AA3dHaiTDyFDDol9nMZCGodiBpDA02Phv25KZ5/yg1XOiN3xvuWhm1Ka48d8qeR5mPzEA6zhu+E3xYBZVwRE3ebTBTbyhyqwmWjTlaMBn6rovPlsnDMce+2TeR4WLFFqQbYKtgLxWsM6h0aiaInVdx1F4ebZGGxEgJxllYO0efM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=QJ/wvtJv; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDBC1DDD1;
+	Sun, 20 Jul 2025 01:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1752974769; cv=none; b=JQ+b55+nPHXPSBfsv8GErq3nQuRyjdqrWNOMdRX56lfJw/yfQKRQu0knkJSha7gwWQrm7sR7gOXWptXxyUgHbPADMX2ldsm2TYsn1tgNn7/wzpIQE+DoVhZcIX9vpso4i7WOUH00+D45U77J7s+rw9uY+mTERa8VKwqRsl26xPk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1752974769; c=relaxed/simple;
+	bh=M5v8j/MbUJSw56NDaZKEqyXgTiM8XeO6qX4gT3RlSPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kr4cSwionyxmPBOrkcEXyMCi/iWJj0ukZNQrewSR6wro9WsLuPoWE8I9IDigOMIk3RWfh1PeeVoZAC37xNqulT0G93Tm+qRN3bZxGbULhTqFI8FbKVaibqG8ovsDqjXHYm/0sJ/pdTRcGF2G1K76/KaekiFIxWx/wJV5DP16LoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hioqQX6j; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="QJ/wvtJv"
-ARC-Seal: i=1; a=rsa-sha256; t=1752972362; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=g4COvUywzMSeRRyXvcFAnvKY3+hu+MDC6ae9mXd6c8fPl+us9VrDamaq6sC8XHEtJFsBmoY1Hzv4vZBMnc1gfarvsGsgU0DwXAmxSXJt/ijU+z92vQP1uoPNslX2Be7tyu1hatdu8+uzihvTEaOGqh3cOUDLglvij7zquiAubnw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752972362; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lMTx2r8Z+X9Aqblv0RaFBmOLKDhzz5NGNxEUj/Eml3Y=; 
-	b=h0bx7tYIXnVtHnMSs3vJSBueufe2O9QqnFm6QJL5Oa1bQ2hvOOB2vBHzAaCL8zkK83ED0jS9MkmmPfWWy9iF94RKpRFNU4NtxesuqJHBMARoDn8ByM2Bb994TSkLEPwO3mBbt6uZjT8kOCcKCVj6iHw6Z9GkjdsIw71aW/eSuwI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752972362;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=lMTx2r8Z+X9Aqblv0RaFBmOLKDhzz5NGNxEUj/Eml3Y=;
-	b=QJ/wvtJvq6UH1xOGLLwv+6div3lICXpcQn2gmnJ7CBkmvUrxhOWRmfmMQmgQIjg2
-	oFdO47uul6gfLZ3qQFCabDVEkJDj11+fwuoPTjxB8G0o4a/2S0mvmlL6ZzRERSEkfxC
-	S7fKehhSYTczceOfdvhCn9e91fFXXklCvWKKyYbk=
-Received: by mx.zohomail.com with SMTPS id 1752972361237945.5987989359068;
-	Sat, 19 Jul 2025 17:46:01 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hioqQX6j"
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4aaaf1a63c1so24124951cf.3;
+        Sat, 19 Jul 2025 18:26:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752974767; x=1753579567; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=H4YkocWtLM+MV9VqVW9r5H/qPxJMGyUCFlNySJ25hYk=;
+        b=hioqQX6jhz8yTho/iOzR2HrCiQFehHfMM8nOGWV4FvFsdiabbUEnFoHavG9GE/yflG
+         mVvMNITfsl4ZZ2BaG4ikX2IvIS8zUEEnAI06eyduBqbP5FeoJrOk/QQs0Lvw+HJDu+qI
+         ReKqvapARTnSjJAO+7Gx+QERVS+96aXhChIB24LH1CrKzlm6g6oLK0wxDQVsqczeI5IT
+         zzuuvOKWKUwcWvN7KsIHQO6n7N4g8itBkmiqIrYJ6p/RRW4s+oJu1Qn2AW8ru6tQQWnE
+         4e48aQyREh2292ieXIlIrINbcxpsizw9H4ervCZPka8/NfiEBCtRF+kUTfct5100Kdot
+         CZqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752974767; x=1753579567;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H4YkocWtLM+MV9VqVW9r5H/qPxJMGyUCFlNySJ25hYk=;
+        b=S19FAIzoLWC6L4XGx7jrnZgZ9sEDAqFyb+Ycy1/3GJKT5LQeHNNaqUFmCdFnYnl3V3
+         mpjM47mrgAP4PaL9yZm7DAj3ewb8F4EwrKTfSMkfgOeyFF66jLeDy7ro0/YWZhW/71uP
+         qAP8FKJ67ITpSIQkj49RFK/XxFS7w/ClBWWCFnL/WJZkbXsqcQPIV3spLa21RyxlDg/T
+         /r4kEv5QMqsf+eF4QECs+Y0er4/R/Fb2+fE3V5e6XD/WcRzPI3nVrgYckMUHNQkMpuV/
+         BGS6L++QajHV4R9TKDpOkbvq5YY+RnRxIh1NuFloDdgM1+Wga9f70zjIufjFsTIb75Rl
+         5z9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVdWjMIdjaUGAr92cBVyFKXw0SFAbrn69rb9TkiO+jEW0KNWXNrxJzdwaj4Mgd8b6lPp7nrZZVNoZM/U8vHny0=@vger.kernel.org, AJvYcCVg2XgvmP99iLMllLQB9CtdQrOuISUprl06uWNh7c0c5+i8u8qvN2r4wAgQCStT0hEdvbRT00SEthaPGY0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoHHQPqJz7ulOKx/w6Zqyh974IKLfzmwH3PsJvNWxQnLeclR2M
+	jGnGPABWR5pOqlMkGcFyk71LQiK74iV02qukOusl+455ATDF8g/mjP+2
+X-Gm-Gg: ASbGncu/JdJvqE7C8x4CH7KmL1+lAHCAX33Y+mMvX0KKnub9hU+BOmvKfLUMp3z51Go
+	idB1evKThyKFksGbjqDsID1ZucUQOlshQQ/GKlnZH3FXwB6TpvBKGUGOyPeADQLEas6qDUd8/CN
+	/bANA3a4UeVvARgSIl7MuPGN9ehCdTTDTqpH1Bk/52q7gJ1fVBH8I0k/VribLk8/9bcPsTpHuFe
+	e3wJuO9XnFIjhf4elKlLlOOOAFz/AvBcWzhgin76176+KVeYYTzwtBBRij6qxkKGWfTTZtzMCb7
+	4WAo/3ERSK1szTVBxNiXu8CqTdeK7RG/A1HXvGxskwcfwba962O0jtsXTgd8gcJPzUkb9F1eznC
+	VZqUzpm2HLLzH1xy6wdzf/81B3EfDwcjzUS1Sir6U9f3G27IrlFmA1UE+27F1SQ3x0prwUAW6sE
+	1w7QZgyWkdIAhSe5RaInFaJTg=
+X-Google-Smtp-Source: AGHT+IEWeJHBnozEVYV+zCWV/y44rQfzmFwYBgyuanGFP4F26GarMSuN2OTUeRI3QpjoEguzfIT7cw==
+X-Received: by 2002:a05:622a:13d2:b0:4a7:2f49:37d6 with SMTP id d75a77b69052e-4ab93c509a8mr229433761cf.5.1752974766930;
+        Sat, 19 Jul 2025 18:26:06 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4abb4b2643dsm24368211cf.53.2025.07.19.18.26.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Jul 2025 18:26:06 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id DB245F40068;
+	Sat, 19 Jul 2025 21:26:05 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Sat, 19 Jul 2025 21:26:05 -0400
+X-ME-Sender: <xms:rUV8aGtL_yI2duiIFRu3swL3rqMPKft3UOSRuXO2aayCLbl8RjcFbQ>
+    <xme:rUV8aGJExnP5Ar97sZVwfXJcLcY9JBuHOCK_N-OTGYyWJ4QEgTFMDTY4KPuEFeCFI
+    425fWlDRa6Wk0xFAA>
+X-ME-Received: <xmr:rUV8aKfztCBxfwfIgCebLBldkKVVwJRG6DXdFBe8PYNeX5a_K_MJ8Cu_pQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdeijeeklecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeejhfeikeekffejgeegueevffdtgeefudetleegjeelvdffteeihfelfeehvdeg
+    keenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    pedujedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhighhuvghlrdhojhgvug
+    grrdhsrghnughonhhishesghhmrghilhdrtghomhdprhgtphhtthhopehtrghmihhruges
+    ghhmrghilhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohep
+    ghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesph
+    hrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:rUV8aIVq3amHiwemn9ps7odTlSGCPiMOM_Bj247joP-p5M7gHC5f_Q>
+    <xmx:rUV8aIiX2hJYNu82rcdkrXJWUm5J5g-C4b7AiGkO-dRUFUsSyHTe1Q>
+    <xmx:rUV8aChReM-azl9rVPaXidEE8faUNNo2-_Pz8MvwohobH8ROzcDR7w>
+    <xmx:rUV8aNtWqhJYl4Z0xulD53gOaqci6Z0yOJBrULjOBJt1op-Qt8FNYQ>
+    <xmx:rUV8aAtwMwVwsXGfVnYHvV_e48zci7d-d9FdTnZF9s-nfgLlGcBbng-K>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 19 Jul 2025 21:26:05 -0400 (EDT)
+Date: Sat, 19 Jul 2025 18:26:04 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	I Hsin Cheng <richard120310@gmail.com>,
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: Re: [PATCH] rust: list: Add an example for `ListLinksSelfPtr` usage
+Message-ID: <aHxFrK39YKEpKV9x@Mac.home>
+References: <20250719183649.596051-1-ojeda@kernel.org>
+ <20250719203646.84350-1-boqun.feng@gmail.com>
+ <CANiq72niUM8YAiVWooxAPCy3c3Yqt6_1fjW2HN7TVLnmL_GQMQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
- handlers
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <ce656239-08a1-49e8-86b1-b33d0cdfbcd3@gmail.com>
-Date: Sat, 19 Jul 2025 21:45:43 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Benno Lossin <lossin@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <E1C5BFA7-9B72-4277-A7E9-BC6F19110AB7@collabora.com>
-References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
- <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
- <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org>
- <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
- <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org>
- <DBAVXQTMR38Z.2782EGR84L7OP@kernel.org>
- <DBAWQG1PX5TO.6I2ARFGLX88N@kernel.org> <DBAX59YKO0FV.ANLOWRHDDS92@kernel.org>
- <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org>
- <C4A101A7-282D-4A67-A966-CF39850952EA@collabora.com>
- <DBAZRNHGIGL8.3L2NGPCVXLI25@kernel.org>
- <DBAZXDRPYWPC.14RI91KYE16RM@kernel.org>
- <18B23FD3-56E9-4531-A50C-F204616E7D17@collabora.com>
- <DBB0NXU86D6G.2M3WZMS2NUV10@kernel.org>
- <1F0227F0-8554-4DD2-BADE-0184D0824AF8@collabora.com>
- <AACC99CD-086A-45AB-929C-7F25AABF8B6E@collabora.com>
- <ce656239-08a1-49e8-86b1-b33d0cdfbcd3@gmail.com>
-To: Dirk Behme <dirk.behme@gmail.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72niUM8YAiVWooxAPCy3c3Yqt6_1fjW2HN7TVLnmL_GQMQ@mail.gmail.com>
 
-Hi Dirk,
+On Sat, Jul 19, 2025 at 10:54:45PM +0200, Miguel Ojeda wrote:
+> On Sat, Jul 19, 2025 at 10:36 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > It appears that the support for `ListLinksSelfPtr` is dead code at the
+> > moment [1]. Hence add an example similar to `ListLinks` usage to help
+> > catching bugs and demonstrating the usage.
+> >
+> > The example is mostly based on Alice's usage in binder driver[2].
+> >
+> > Link: https://lore.kernel.org/rust-for-linux/20250719183649.596051-1-ojeda@kernel.org/ [1]
+> > Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-4-08ba9197f637@google.com/ [2]
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> 
+> I sent that one because I am applying Tamir's series, which triggered
+> the error -- maybe you can put it on top of those?
+> 
 
->=20
-> fn handle(&self) -> IrqReturn {
->  let dev =3D ??;
->  let io =3D self.iomem.access(dev);
->=20
-> Thanks,
->=20
-> Dirk
+Sure. I overlooked Tamir's series.
 
-FYI, until there is a patch to provide Device<Bound> as an argument, you =
-can
-resort to the slower try_access().
+> If you do, please note that you need a couple changes -- I will push
+> them to `rust-next` so that you have them.
+> 
 
-=E2=80=94 Daniel=
+Will do, thank you. ;-)
+
+Regards,
+Boqun
+
+>     https://lore.kernel.org/rust-for-linux/20250709-list-no-offset-v4-5-a429e75840a9@gmail.com/
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
