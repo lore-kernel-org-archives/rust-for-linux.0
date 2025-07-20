@@ -1,88 +1,116 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8141C33EC;
-	Sun, 20 Jul 2025 15:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753027086; cv=pass; b=FiWS8sgH8HA3TF7DHPzRgjiE4XMFDL5Pj9D3MlU3495M73ySHTl0O/5C8ehL3080MmGepEha8UPyQWlU5nrG3eWlmp7DqJ1V06dXd+r6c4kQwJw6NnC0K91WOSSiGjFvVnPtmqqv7x1g4YhBYLPR7MDePUF9JK20gdE8keS3bFI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753027086; c=relaxed/simple;
-	bh=C33JyrZ8qJl/+xZ7qldoQZL3cIHjbVwBfVLAKleuybE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=GB4Xb2J2BWKN9DmFa0Uot1RKoqeBGSxvgkadA8L6iJsam4j1YpFH74eLP5GFtFwgwGGmWWw5XEUsa4BGV/UFzo5J0uOsa9gAoG9NegfMGvbOb0jdCyOYdPfX03yWVmRmQu/H1f0rsIJzZDBqR9ORyhOTs3+wMemMA+TSRxAKm2A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V5yWvYoH; arc=pass smtp.client-ip=136.143.188.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CC22F50
+	for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 16:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753027354; cv=none; b=KeFMNX6TwR/hDNXP9ZU7dmBrsekiphnqd+f6oAEcmEiA35eRUFT5ueuq6rnt33NeTFBi+WGXXVSPXU6ZLtt6s9gMaGqmo1Hrxz34jcetTptjGusAMDZp48v1d7pRZRHanbdoUbLEkgzfk5LtX+/4cgf5TUki/UTzkSLETUl11sk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753027354; c=relaxed/simple;
+	bh=HB9pDR8JI4+/diTAM8GEEV0X3ihX1xzW4EbRPjb/Edc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U9fT3sDBZYFnFaoyhtHPaFwYCIwvbcqSfxrZ359cvZf7k3gkC08mO2Lx48HIWCG1lM0KlrgG1hX18zE/2qNFn42dcCNV94MZyxHzTFaD0YGl3RxNnX0vXZyhoeLVS3QNpLOqSyrQuHWwPdAEOG42ICRvq+M2Hxk0rmrRwzwhrn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=FRZlLUUF; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V5yWvYoH"
-ARC-Seal: i=1; a=rsa-sha256; t=1753027071; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ayHo4Mk9uUuyrK0r3FEU1eAlHwEbDDYjq/FJryh5bW79phAqe4DPEnktRggxesdEGy/zvthr5/PVPJ5Lm8z3P4g/k/M6wBsfeH1AhcG9HNwiwjuJ9nPaO+tCLbMIoA/M/Hdr9h7mnCkM2piMnwTjPK6LFqeqzlYLzEb0gE7SBiI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753027071; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=C33JyrZ8qJl/+xZ7qldoQZL3cIHjbVwBfVLAKleuybE=; 
-	b=SU1kAifHeiFe1vyer/8JdWxiFM0Kt7Mrh+VexNvbqM0tj0uSxLfElf5mMMkNlhVYgjCyAHHKFoiV0nEk05nSyk3JZaAuKFaEOf9/RjyUGZ3ZzvpmoO5eeLjAQ30MOXpPU0COG8Q1oXYaUu/1fBpwS2+prx0uJbNVB9LiKwb587U=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753027071;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=C33JyrZ8qJl/+xZ7qldoQZL3cIHjbVwBfVLAKleuybE=;
-	b=V5yWvYoHSK8s9KVaybq4OaO5hYKkauI3avvWWeDKLNhqoq953LPjm3H8OMWW9K4b
-	Q2DasfGpwR5hg2SAm3exaQoF00p09ozh5EcZ1ftYVC1eQUuDhGca1BSLzYLkM5CwA4z
-	uF5zaUVh/hFzm8YkR5ld2m9Y11Z3mIIt5BZKutRY=
-Received: by mx.zohomail.com with SMTPS id 1753027069575217.87290204128726;
-	Sun, 20 Jul 2025 08:57:49 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="FRZlLUUF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1753027336; x=1753286536;
+	bh=N88QyOCKp7DRd9CiDd/l6a6ni7EP6FK5/x7Gi+gNymo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=FRZlLUUFo5G8dKeKfjddlh9UYUY2U/OoPCtfJNDdCl0iwN30y7FBvl83Wn9dHjWoP
+	 /Bb+HYNBCaHoZgGIo9HIr7qH/eaGi3Hs0DhY38fdNtMutf/H6DlCci7tMVuC+u7dxa
+	 92i6gUUmtDJIVq5pqS0fjCnhezNJ20/MGLPa5PCRYIBdeQL3wTuIIXuoPzRjvw98Ob
+	 uDkPdH8OVrLvC+YG/IHIyLyFk7wOT27pPJ28jNrH58cMhZVO8+B0wcSaA7POjeBTPA
+	 mHFw9xtQxzIblOSzrp0Vr1Q3HSoEPkdgmE2WLEk8yqXVD56oNG845kh9lWTva/Aipb
+	 86zbTmQLsZz4w==
+Date: Sun, 20 Jul 2025 16:02:09 +0000
+To: rust-for-linux@vger.kernel.org
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: linux-input@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, Benjamin Tissoires <benjamin.tissoires@redhat.com>, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, db48x@db48x.net, gary@garyguo.net, ojeda@kernel.org, tmgross@umich.edu, peter.hutterer@who-t.net
+Subject: Re: [PATCH v2 2/4] rust: add kref bindings
+Message-ID: <87tt36sveu.fsf@protonmail.com>
+In-Reply-To: <20250713211012.101476-8-sergeantsagara@protonmail.com>
+References: <20250713211012.101476-4-sergeantsagara@protonmail.com> <20250713211012.101476-8-sergeantsagara@protonmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 46f5bb3ddce3804498b42fb3db004cbf41401080
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH 3/3] driver: rust: expand documentation for driver
- infrastructure
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250717224806.54763-4-dakr@kernel.org>
-Date: Sun, 20 Jul 2025 12:57:33 -0300
-Cc: gregkh@linuxfoundation.org,
- rafael@kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- bjorn3_gh@protonmail.com,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5A1A13D0-9990-41F2-9F3F-280A126512A1@collabora.com>
-References: <20250717224806.54763-1-dakr@kernel.org>
- <20250717224806.54763-4-dakr@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
 
-This also looks good to me.
+On Sun, 13 Jul, 2025 21:12:06 +0000 "Rahul Rameshbabu" <sergeantsagara@prot=
+onmail.com> wrote:
+> Introduce kref bindings for use in the Rust HID abstractions. Needed for
+> implementing the AlwaysRefCounted trait for kernel::hid::Device. Add rust
+> helpers for binding the kref_get and kref_put static inline C functions.
+>
+> Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+> ---
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/helpers/helpers.c          |  1 +
+>  rust/helpers/kref.c             | 13 +++++++++++++
+>  3 files changed, 15 insertions(+)
+>  create mode 100644 rust/helpers/kref.c
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 8cbb660e2ec2..41a98d5b6521 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -54,6 +54,7 @@
+>  #include <linux/fs.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/jump_label.h>
+> +#include <linux/kref.h>
+>  #include <linux/mdio.h>
+>  #include <linux/miscdevice.h>
+>  #include <linux/of_device.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index b15b3cddad4e..7f5403d6c51c 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -25,6 +25,7 @@
+>  #include "fs.c"
+>  #include "io.c"
+>  #include "jump_label.c"
+> +#include "kref.c"
+>  #include "kunit.c"
+>  #include "mm.c"
+>  #include "mutex.c"
+> diff --git a/rust/helpers/kref.c b/rust/helpers/kref.c
+> new file mode 100644
+> index 000000000000..25eeb0a724ac
+> --- /dev/null
+> +++ b/rust/helpers/kref.c
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/kref.h>
+> +
+> +void rust_helper_kref_get(struct kref *kref)
+> +{
+> +=09kref_get(kref);
+> +}
+> +
+> +void rust_helper_kref_put(struct kref *kref, void (*release)(struct kref=
+ *kref))
+> +{
+> +=09kref_put(kref, release);
+> +}
 
-> On 17 Jul 2025, at 19:45, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> Add documentation about generic driver infrastructure, representing a
-> guideline on how the generic driver infrastructure is intended to be
-> used to implement bus specific driver APIs.
->=20
-> This covers aspects such as the bus specific driver trait, adapter
-> implementation, driver registration and custom device ID types.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+I am about to send out my v3, and this patch will no longer be needed.
+Would it make sense to send this out separately? I can also just keep it
+stashed away till someone needs it.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Thanks,
+Rahul Rameshbabu
 
-=E2=80=94 Daniel=
