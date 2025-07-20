@@ -1,103 +1,74 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4781533EC
-	for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 16:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA1A72616
+	for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 16:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753027894; cv=none; b=eBoO6NiNf+yvQZ224vP+aygzdydQbdvYnRyH+9lk838U0TTHXvYh6TftLQ47hwJfgahRpTEOPyooOaMb42zyFy79hT+ZbkazriH586x9OWBfBFLcUFMjv6ecrkBi8MVwsP69g5jzC2uhBrTRFRBls6sq6nnZ0JHQI+5myt7aluc=
+	t=1753028270; cv=none; b=LPNqcF+yfb4suj18jQ5ILh57mFLH9W2OOLnFGAik/udCRazQ9wcNHZWDeHEgAXyCh05aOgMcEGYaL4qqF3F7UvC5mDA9nQy4xzhBkT61C9mXRvCtrP/ZgGdx19o/lAO7UYmudYBacA1TdQHsstdkirj0FZ4kVHN8P0oPNzOxihg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753027894; c=relaxed/simple;
-	bh=1kkgAJedVRmqE+NjlLS/JrjnCCyYksp2IzhgSl3fYFs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b5T1x+HuK1SxqwbkPt0+H0ADoOOPmxsXGiaT1UqPXUqlcM6Vs3y07M8oiP7nyphxVgFhpVDxhpE67iChCcGxVl78Mww3nzVUYmsSb4rnFJuaUmjsZqYK+7Cut5GgkglKNEFucjThVNEaN6rRdA+RLPQky0nmj1ZKfdY706YbIAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=gljd6VJg; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="gljd6VJg"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-747fba9f962so3207451b3a.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 09:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1753027892; x=1753632692; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X3sE27/WAqZP41FkkjgAc8UwvwE9+GItC8A+pDEL148=;
-        b=gljd6VJgL9tenY51GmrzISWJaspcwktvmmlnYdsPmJNkEmv8IbkkS2Iu8TUlkyroiA
-         X1oUNW+UCYOm+K3KXk5cuGKVeE854iqsCvxZAQKsHQf4yo6eY4H128qOYEsEVfQ6DEkC
-         mHt+/hum/JToqmEuhN6dagarFy4Zff18BR0pM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753027892; x=1753632692;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X3sE27/WAqZP41FkkjgAc8UwvwE9+GItC8A+pDEL148=;
-        b=r66akvreg/gQibzf682VU3a4aJdNAtc4Dxno5I4ty+6XJEMH0hWeN7brHz6GatuyUz
-         Rz5Cn2zs7/npnwCMckLOtgatHrDIkgLnxEHPu7k2D3gnYSOoFv4sQlf8oy/XFOQ70bFL
-         /R184B8BRLBsv/ZLfYtGzNI8gyuMdRuq83wHRLVe/9XBPHbURWsha4fZbVXWbEZx0UMC
-         ucabHc5/1YBvisxxil5bsZvwdUtpAr/2W6/k0BFGNG+PKrGhqO2DWZ5QLD77LjjsyDzt
-         yLOTaxvyAq5lXFIJDLRi2vQBhtj0VkFQLPIr0NCN8nZSKNmMu5p8WO1wD8TjNSCkNLxt
-         a5iw==
-X-Forwarded-Encrypted: i=1; AJvYcCVilLXIACUJEyDQgrGJJ0vafm7J9I8SIS8+HP+G5wjN354S/k4l4llQJWfUcali339Yc4gsg+tivj2Z7dsifw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yywyb2BOapBHKwkvDy5FaWugUdqNIfWP8UN+y3GdNFt5Ix/IGJz
-	ncz0D//LTSOAzV0q+ppYrtAsW1uVv/9P7VCJ8vHXOjGZBhVtemJIxAgbKB1539H5XhQ=
-X-Gm-Gg: ASbGnctpP0C4WKAGb28IYrmN5MOOjkjFe0gyABzIRw8Om9nmqz2j0NMcagMRWBmS6OR
-	UXDpfcDdIXGqcJTO5buwGc6K2iEb7t+JAqKmaDTtBEFB7a6s3qjKIfmYN1pUoRo5FL6Dzf/pO0L
-	6tJ10snIq2W6CtD5KLYuDY7jwIZ8By7o6EzK8BKOQlfJ+2tXSPHmf6dPkEMeP0wlVZX8WDuYLdL
-	Kk0rXAcwZ/ZggDR9rjopPSGH+b9VZXrXxn/n6M9YnePmFwEefHGIVxQEf3Cs7RYRZa4jKLYSAcL
-	rsaT8FAwbnk8e5iMYZDuVJ1DT+azZg1lEodm0hpDUThDA/WX21hFirqHVNev4ngpKfQFRw3rQHw
-	Kc8wfUv2H03MZqhi2w5tG/E2EMbSK9VTwGbm2eJWvIzhofrGAlfh7qiRcnw==
-X-Google-Smtp-Source: AGHT+IFF1fTWCOr6/BH6HO2z3c4L025UX0QqK8oCHrmmePFPB5CppScDYdz+haI97RiMoMTtOxzo2g==
-X-Received: by 2002:a05:6a00:3e15:b0:736:4d05:2e35 with SMTP id d2e1a72fcca58-75836faac4emr20252321b3a.3.1753027892574;
-        Sun, 20 Jul 2025 09:11:32 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c8acb61csm4358217b3a.64.2025.07.20.09.11.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 09:11:32 -0700 (PDT)
-Date: Mon, 21 Jul 2025 01:11:26 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [RFC PATCH 0/4] rust: miscdevice: abstraction for uring-cmd
-Message-ID: <aH0VLhYptH_Sw0Py@sidongui-MacBookPro.local>
-References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
- <a0a868ef-107e-4b1b-8443-f10b7a35aabb@kernel.org>
+	s=arc-20240116; t=1753028270; c=relaxed/simple;
+	bh=pYy85xJpgwrv5V05MA2BT6ezIz9RyEoyJpQKilqzLBs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LiTlkcMztwHrxWxRSY39MzODzv0+fvGh12Da2Rs4IWAzp7oC46+RKplBqJbBMJ/4QFTOHE7Ax0dG8JOFJk1z0BFXUCP/64QSyhYAHzA4ePTZMffq6GbAr3hv+Evz/008N9iGTWdxP+S696hHkuIHipL5cGrEUd0iOWHcaH7+wW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com; spf=pass smtp.mailfrom=antoniohickey.com; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antoniohickey.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antoniohickey.com
+Date: Sun, 20 Jul 2025 16:17:40 +0000
+To: tamird@gmail.com
+From: Antonio Hickey <contact@antoniohickey.com>
+Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, contact@antoniohickey.com, dakr@kernel.org, danielstonecote@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, lossin@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu
+Subject: Re: [PATCH v4 1/2] rust: kernel: create `overflow_assert!` macro
+Message-ID: <20250720161733.364025-1-contact@antoniohickey.com>
+In-Reply-To: <CAJ-ks9m45p9FHCvbuOS0zJvZfHMcXOLvN+rfjQfyNTHzDovspA@mail.gmail.com>
+References: <20250629024310.97937-1-contact@antoniohickey.com> <20250629024310.97937-2-contact@antoniohickey.com> <CAJ-ks9m45p9FHCvbuOS0zJvZfHMcXOLvN+rfjQfyNTHzDovspA@mail.gmail.com>
+Feedback-ID: 144211621:user:proton
+X-Pm-Message-ID: c33fc07c927ce71e25216eadeba531ebd346a7dc
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a0a868ef-107e-4b1b-8443-f10b7a35aabb@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 19, 2025 at 07:03:24PM +0200, Danilo Krummrich wrote:
-> Hi Sidong,
-> 
-> On 7/19/25 4:33 PM, Sidong Yang wrote:
-> > This patch series implemens an abstraction for io-uring sqe and cmd and
-> > adds uring_cmd callback for miscdevice. Also there is an example that use
-> > uring_cmd in rust-miscdevice sample.
-> 
-> Please also add Greg, maybe get_maintainer.pl does not list him, since the
-> entries for miscdevice were missing for a while I think.
-> 
-> For new abstractions I also recommend to Cc the RUST reviewers.
+Tamir Duberstein wrote:
+> On Sat, Jun 28, 2025 at 10:43=E2=80=AFPM Antonio Hickey
+> <contact@antoniohickey.com> wrote:
+> > +//! Overflow assertion.
+> > +
+> > +/// Verifies at runtime that an expression is within an expected bound=
+.
+>=20
+> This is a strange comment, imo. The only thing special about this
+> macro relative to a plain `assert` is that it disabled when
+> CONFIG_RUST_OVERFLOW_CHECKS=3Dn.
 
-Thanks for a advice. I've added Greg, and other RUST reviewers to Cc. 
+Special yes, but it also documents the intent of the `assert`.
+I did include a comment about the conditional behaviour with=20
+CONFIG_RUST_OVERFLOW_CHECKS being enabled/disabled.=20
 
-Thanks,
-Sidong
+I'm open to rewording this doc comment to be better though.=20
+I should also add information about the optional panic message=20
+like the `static_assert` does as well, what about something like:
 
-> 
-> Thanks,
-> Danilo
+```
+/// Overflow assertion.
+///
+/// Runtime assertion that an expression is within an expected bounds.
+///
+/// This macro is only enabled when `CONFIG_RUST_OVERFLOW_CHECKS` is true.
+///
+/// An optional panic message can be supplied after the expression.
+/// Currently only a string literal without formatting is supported
+/// due to constness limitations of the [`assert!`] macro.
+```
+
+Thanks
+
+>=20
+> > +///
+> > +/// This macro is only active when `CONFIG_RUST_OVERFLOW_CHECKS` is en=
+abled.
+
