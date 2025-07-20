@@ -1,104 +1,73 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A55C1B423D;
-	Sun, 20 Jul 2025 16:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD17519E7F9
+	for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 16:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753029681; cv=none; b=qzITAFuWIfzF1PBFI1sR/lTjd9GpHMaj5LP0Oqq3E5VxktLYmuJ2BuaMfokpBUflVIfBMrVyLdkOnV2cq/9/QXM5TpSM3DdOwf99bgzDXxBgUNTEKLDtuxZ6hOMgFAPWbG3oQYRgSfxmcUo5qebTl3wZeHPKoo6/+QshcXnJVqw=
+	t=1753029881; cv=none; b=O5YtRVTVfzq4EsxaxF+9RHJ6BZhtAmnzO6PhC4kaeRrLHMrYlpKtJbggv/xVi85jKl6Sw3dJ93ox/QbH5PeDDXoJG9l9Dmeapa8cs+XQd2SoSIlKKWSpES7mPuktwKv+WK3/cef7C/wEqisBkm200GCyHKmSMpanqMNVMwipwNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753029681; c=relaxed/simple;
-	bh=xEjlwgbQbOHqNZfDliNEW2Zpgg3sSwA/kbqHZJZ8p2s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qsvxV38SbgNWl8TyLUkTA49Ds7w41p4LnLZ56S1PZq16AGZx7DKYPg3sPpdoC0o0kdkoMEy37UNnqEc2WruWrEVlZ1uZwkiD6A0H2LqAMTKs3pZzzQHNaHujObPFAwDMfBcL8/mZ6704saobtB8KRVX2bYbL1YpivkehTlNyp5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZX2a0jGu; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753029881; c=relaxed/simple;
+	bh=qh+GvFzinSFnMqEm7gSFiBDrgcPsDhuxKpbQOeXxUo4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ctw/gJh/uxccYgOtN4HSaPtvfue3j+ngIvgR6S00Xd/e9f1fMb1HS05xAEbqEEmbuSzNKRRM6K6m35y2oSRQ/V+jHOcbsOTzZZf8fYOPQ+nUpZGm0EQ8H+vaTiUCPrHpYFEFBVgrGu1DiNsa1J9gv0vCZXw1A/bhZSzhOO2fBWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=cBXI5JAW; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZX2a0jGu"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-313067339e9so750643a91.2;
-        Sun, 20 Jul 2025 09:41:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753029679; x=1753634479; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u2R08B0M6B/bO5Z84OsszAkv0QNGB70mRleYsQvtc0U=;
-        b=ZX2a0jGu2A5CjbwH/G08qu2Uup6Th76wRJiLnD+npHoN94DaNrP35uEfDGgkXp5ASm
-         w45+WXeEeMuxS447Llfafu4ioO4WxmBlRD06StY0sGsDesoZqLAzzg+Y+BWwv4ZYnOYF
-         3cW4QCCmqZ6UBFh3othBXy2FkFC25QhEFRru813mSh/lCJquXpcTezYfsW2gC7otlz+b
-         rXsCsbr5jYeFCGdPb69uwm9WV/hr+YiIR+hKb05QWhkrnJgU9Ta/lasjPyv4PEIUYAJq
-         zKcBqLL+EU6oDnj2uUwqU58i1HzEu5p5R4Y7jOKd1X/xR0HO8C5S4wlv2bUM/3MA+SGC
-         4fOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753029679; x=1753634479;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u2R08B0M6B/bO5Z84OsszAkv0QNGB70mRleYsQvtc0U=;
-        b=DVLNV4onzwEHZfM4BP6zPu9iQmk9dk4LaPDnN1lr/KK34OKSo9GVsy96TOmqummCJy
-         vI5r/qhD20WYjmmJYUHkwDPXBgzz60ZrExnuhSL9N3Gj8Po+lBLcfIIkiMmDH7eNOPb7
-         IjV+71W4JHRa9lvl2ZT79+MFZOy3ekhOvl5XBE3BwfMNzfMvppzFFm2pTj+3I98RlaOV
-         UvRM2AUUrwQVx4f+t2f1N2/+8jZzBNdqkm9eJXD1exGQ/eVJz/cRgCdj4yJ2+IGMNC0D
-         13kg98poLGVixlxUCFnsDZtejK6lMF55i5fkBB+/LVFyBsIomfwW2Im3KxEaagdrQVpU
-         SqOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJUY1T3f0AtR5L7q6pYZf6G8qkUnd4hpGHwaZmPOf+eS+O2hr2DxFODOCSzk3vFr0b1uWF4dqg6g==@vger.kernel.org, AJvYcCUUjOlcxh4Rw12zh2/uHyh9q1YSpiJokqQ8VjvRNxljHYfHxinanJX7ntBsDiT6qPX2OSBIKv/0ONHiDaGg@vger.kernel.org, AJvYcCVGdokTqI2NVkbkrjhFeDs8yswkkW16FpLx8O07iIxRFi/CYz0RXvGMU1K5XqNj933mkdOVEo2AC6/ynome7+8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy68/uA663tSaQ0voXxpGGYNJUd9lAE0oDPbL6xvNZPHVE8fNc7
-	cpccIGSOLw83qeR5w+KnsxpXfAR+Xy2uSDF6GB/BUbOLhWK/RosP0G3RPP9tOEuYEdC5xuZg2hu
-	b47F5teMrCv+YbJ6mci8WRLPxLZojI3sOtAR52oD0wg==
-X-Gm-Gg: ASbGnctylrxDcyMB8LekAuwz6JU77ENjrc3K6wcHD63WWnVojspw+7qLPPW8xi8KNCv
-	sJtQxZxaqAIrGU5eHzrZAUGlocLqwK3eHMcsMPZGH4VwXIEEHCdA3A5sy2WP+/22OYIBRYu75rT
-	T7qioGd3VZMuGhHiyf7vZrx65/pdWAL87gxMUaZHmCPLqzx5DzyYWlqyqrzjkBjcLTkP3XSGewR
-	LilhaYH
-X-Google-Smtp-Source: AGHT+IFQqLKqY9GWASRnB+Q22pehsjordJutcnwFOx7nY7UOk4Lymr/qJvDFeYgIvx02ePKyDN8dAq7decQUqdMgnAY=
-X-Received: by 2002:a17:90b:4b8b:b0:311:9c9a:58e2 with SMTP id
- 98e67ed59e1d1-31c9e798695mr9601871a91.7.1753029678698; Sun, 20 Jul 2025
- 09:41:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="cBXI5JAW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1753029869; x=1753289069;
+	bh=IYED6AgoqeXMLSrrVNfUGjYtQksbwFsWBe298tj6Qug=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=cBXI5JAWd+XK7HGyhVFVIqvT3HNGyhd7dBHUYl0uLa9aEZZ+nj7mW/O/SXnTEr27w
+	 20Vr6hDEQ/imsPea0wfvMm59DRUkYTSRo8pGVDnd9IyaY3En2EDRdCbMwlLr1WyrAc
+	 zYjJuvvkLGikHirVic04RBr5N5R14HTKW+DIbmm2vY60oQxBNBL/fNznjE+KF36Hmb
+	 5f4ZHFc5/wgjXFyf++3Jg9RjQ7ThULIRc3kP4GWRviTAKcMwGTDtVK6DP9cxK+iw5u
+	 k1pe91j5gwqKQTatMunlK0HScp0exhDxEfUkLWgJcUSQg9MOZ0AkpEy/xr2F76GRek
+	 RcXsDaiQ0++Iw==
+Date: Sun, 20 Jul 2025 16:44:26 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-input@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me, Benjamin Tissoires <benjamin.tissoires@redhat.com>, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, db48x@db48x.net, gary@garyguo.net, ojeda@kernel.org, tmgross@umich.edu, peter.hutterer@who-t.net
+Subject: Re: [PATCH v2 3/4] rust: core abstractions for HID drivers
+Message-ID: <87o6testga.fsf@protonmail.com>
+In-Reply-To: <CANiq72m1itFYJgtyG02qnW1qyZU9UEo6OSLfzkXGesXNggxyBA@mail.gmail.com>
+References: <20250713211012.101476-4-sergeantsagara@protonmail.com> <20250713211012.101476-10-sergeantsagara@protonmail.com> <CANiq72m1itFYJgtyG02qnW1qyZU9UEo6OSLfzkXGesXNggxyBA@mail.gmail.com>
+Feedback-ID: 26003777:user:proton
+X-Pm-Message-ID: 5f8b50a2c120dd1d8a3fb39812c3489d8a1d148d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
- <CANiq72nWFW-5DFJA31ugMY7v0nRNk6Uyb1KuyJfp0RtxJh3ynQ@mail.gmail.com> <aH0UOiu4M3RjrPaO@sidongui-MacBookPro.local>
-In-Reply-To: <aH0UOiu4M3RjrPaO@sidongui-MacBookPro.local>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 20 Jul 2025 18:41:06 +0200
-X-Gm-Features: Ac12FXwdnXKdBtzyvJWb4t5_hzaLDwi_JJmL7-sgXMwqrJlQA-Fr-Cu7Jce5-Do
-Message-ID: <CANiq72kRQ5OF9oUvfbnj+cbXk+tPTmYpVxYofTuCY1a2bcJr3w@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/4] rust: miscdevice: abstraction for uring-cmd
-To: Sidong Yang <sidong.yang@furiosa.ai>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	io-uring@vger.kernel.org, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 20, 2025 at 6:07=E2=80=AFPM Sidong Yang <sidong.yang@furiosa.ai=
-> wrote:
+On Sun, 13 Jul, 2025 23:57:38 +0200 "Miguel Ojeda" <miguel.ojeda.sandonis@g=
+mail.com> wrote:
+>> +    /// Returns the HID report group.
+>> +    pub fn group(&self) -> u16 {
+>> +        // SAFETY: `self.as_raw` is a valid pointer to a `struct hid_de=
+vice`
+>> +        unsafe { *self.as_raw() }.group
+>> +    }
 >
-> Although some existing kernel modules already use uring_cmd, they aren=E2=
-=80=99t
-> implemented in Rust. Currently, no Rust code leverages this abstraction,
-> but it will enable anyone who wants to write kernel drivers in Rust using
-> uring_cmd.
+> Do you need to expose the group as a raw integer?
+>
+> Also, are these used currently?
 
-Do you have a concrete user in mind?
+Hi Miguel,
 
-i.e. I am asking because the kernel, in general, requires a user (in
-mainline) for code to be merged. So maintainers normally don't merge
-code unless it is clear who will use a feature upstream -- please see
-the last bullet of:
+I originally did not expose the report group in the Rust bindings since
+I did not make use of them. Benjamin has a preference access to them be
+exposed in the initial bindings. I exposed this before implementing the
+enum in a later revision. I agree that we should wrap this using the
+enum now.
 
-    https://rust-for-linux.com/contributing#submitting-new-abstractions-and=
--modules
+Thanks,
+Rahul Rameshbabu
 
-Thanks!
-
-Cheers,
-Miguel
