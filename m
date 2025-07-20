@@ -1,116 +1,137 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162D0A930
-	for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 16:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B64FBA27;
+	Sun, 20 Jul 2025 16:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753030375; cv=none; b=Cy0vDWFoaYQi/yH91XVDTcuQTO+BtM6YBp9ZePtu28WwhTUZuBqU9eeIjgqzyLIag/y6yiQOtwDT8lLTkYBIwhbWDOAAKUYntloIRdt/SdBnJxfsgM4C63dEtrkt/mn3p1SEo8PF6f4VLGieB0jKZNKeOd5Q/voNzxZW5x4u45Y=
+	t=1753030720; cv=none; b=ELNpz1cRxII1KpIpDIMZmQl9QTtuXxFb6K1cKP3hteTUEb31M6mEsA1KLDCgEzT5eJGk0on7d89pc9t1r6O//Me+A9W1YcyjjQ3/4miigRtwB89/uVWjoK1Rl9BGNkN+zrYHZI66/N0zYeL9oEGSAwgh14Up1imCOy6qgyshRgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753030375; c=relaxed/simple;
-	bh=4PwpNKH8Q2DpW937AT1LxyRZt2KyM12kPBSFFyk4+9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bUv8DGsTu0VNb+BFBhkP5Gyw5pM28vXlFyVyhe9PrG8J1EMUb5vfXLA0OAATYUzQocVv4Xu6/CwDp7NlTxleKSvLg2/e1ckvUJKV4tTojCszzH6NI2pnMGsUSqOXvBQa2jqCiaoGYGtZ9npIGbZUxCq41hA3pdGBPPpqBSNNrEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=TaLaf4Z1; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	s=arc-20240116; t=1753030720; c=relaxed/simple;
+	bh=2yubbmRxH5LsZ5ooN51JPkfNPv+HNZTZUvgg+LmM9Co=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RjeGT/4Uh/Q6C1A+zjHd5eY1VTMvntxEc2R4qUatAegt22JzU585d1EORTBjrLJA6XLdAlLX2FAH4lwyzU6rYhNJcTfv4FFmaa1AxyodptcLGyaDNvilg8UrDPpfMDhevBGROHDHlhHxhkQ5VCNbjY1JoRY9PByoIlqnpJXleM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bkLd7zup; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="TaLaf4Z1"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-235f9ea8d08so29182765ad.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 09:52:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bkLd7zup"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-313fab41fd5so962204a91.1;
+        Sun, 20 Jul 2025 09:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1753030373; x=1753635173; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5g9J6n730EaRvQ/cS6fHvI1K6/7KH11pjfrToDZxHXI=;
-        b=TaLaf4Z1Yyy3Nz179AmU/WHhYuMVea/Xayf2GVu/tV9O500k0s3ZYa3WtFO+T8yVDO
-         9R7FU5U2G6exsKfjazjdeM6tT6FITlrjO1XgPtTRo2aCH65rOhPIZvXd+mdkEwbKKVJk
-         vOktQekDvi6ohROhn5lP/e33j7ZxG8WYCLUx8=
+        d=gmail.com; s=20230601; t=1753030716; x=1753635516; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wdUYeYp5Z76EjDA83XxC6VbsBdz0bcceUKl/5FQeX1s=;
+        b=bkLd7zupxRT5mniNz23MN/1lA1jbZ5m7CACYHI/J/PhgFbOzF6dnSNzOTSLncvETZj
+         WaugwTwybxK6Se8jfwHO9i4lAmHhV7cjx48Uu+8xu2pZa9aYu0y2NLZTVYTNNT9Zrkx0
+         7UELct9AQ4/hFJRF/TGS8LkO6WBVlDZGxIwStjjOGBOTYb9Acm2y6VT1fwwjGnNOcQfx
+         IJMqYrg3cPBnO7UrFLgZgvsyN0qD0l/PD3ipy+Tn5PBfaRCItqGFpPWk3nUfiIy6PIN2
+         K70tRN36XWhmRi7wMuLjomtNnFp70wbjBNGZZcZdgppuu791z6fDFDSXCVrWGbACwZdw
+         YiPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753030373; x=1753635173;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5g9J6n730EaRvQ/cS6fHvI1K6/7KH11pjfrToDZxHXI=;
-        b=iuqYUI1vPKAKzI4xB6z4uwQXMVmXclXQDqjtItu/IXFco2mBOLzjM91D2OfxQB3tiN
-         8cqmoPjm+fewnz0oDtg6YiNVh4TRKrLSJP6Ht/BDCSwUH7EIeFdSzAuoyMtVMzXGLtL+
-         de1cAnqZwtUQKgRtLr3Pd/qvJ/U/FwOGiJZOb+YHw9+W+RP3G6bvwSNHDISledqDQ5Of
-         TJFZPylO72nhmokO8TOd5mbcIALNuej5UemJ5n/odasQ2c+XhO1cKWSimmBPAmSAxWe2
-         Q1jrlBxnKXXPRcYM3YM47d06efi5avMgZPzP0QW6ROrkPiWH7zCaU0NWLSS/3Lpdcyli
-         Vqzg==
-X-Forwarded-Encrypted: i=1; AJvYcCX8tdy6HxX8p6izgnrFRiiryuIosswtrgc17fxNTAvo4VuiLrE1Rn6GwzOKfuuE14aPQwxemKSvw0/oVYPKAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbsrpH3rMaTTuqsyw8hjPULiG3I8bTAZoTocGdiVc7xrA+WE1z
-	+PPA/m4V9rkE0gAZ3rMcmFIKiALyYxCBC0NaDp7XhE0dTmzt38v6Lvdgeh5bvfQF/WU=
-X-Gm-Gg: ASbGncvy3TntAe8ZdPJw8vKDsc8DB6g4CZ/QeWydZ1uv9hx7CaFMiFSjqZ7yUqdD5JJ
-	IqOjf5benB8vqnHQsypqd+9pm7O6yYiMMcqY1q0jSSVYKszCQ0oDhtO7Msw7Z3Q9Nw6zj99PojY
-	3vOtX5HldwXuTsCQXPa3oVHhN/I79oojc1ybhWLDoDMQU6Mp120P4G1Wi4Z2SjyL4PKpsKWFQI2
-	+OFi8IU+KF5tdqyPDBAsRCN7EsLY/A+WO9uO+fFYz/qIhvqKbKYwG9r/cxkD9SzVtjpYfr1KDak
-	eHzhfJswftMnwLE3Mye50g4kB8kwmeeRqRtnygNLqqJNCoV84SQFyUAmHrVItodWbCyqL0EV++L
-	s8LZGGvO7OquOdFv/w86Z+w7YoOoYo4uMKF7CTW/TK2yr2p8mkjEi
-X-Google-Smtp-Source: AGHT+IGu4j0mRiBMJYNMw/BPoiEqpd7qeKKASroav1OqR863hNB3giu6x7o/eqfqqXM0dWh+qfPxbA==
-X-Received: by 2002:a17:902:f745:b0:22e:421b:49b1 with SMTP id d9443c01a7336-23e24f9477dmr272435395ad.48.1753030373376;
-        Sun, 20 Jul 2025 09:52:53 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6d1ce0sm43778065ad.149.2025.07.20.09.52.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 09:52:52 -0700 (PDT)
-Date: Mon, 21 Jul 2025 01:52:46 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH 0/4] rust: miscdevice: abstraction for uring-cmd
-Message-ID: <aH0e3oyKvvOEkFCt@sidongui-MacBookPro.local>
-References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
- <CANiq72nWFW-5DFJA31ugMY7v0nRNk6Uyb1KuyJfp0RtxJh3ynQ@mail.gmail.com>
- <aH0UOiu4M3RjrPaO@sidongui-MacBookPro.local>
- <CANiq72kRQ5OF9oUvfbnj+cbXk+tPTmYpVxYofTuCY1a2bcJr3w@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1753030716; x=1753635516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wdUYeYp5Z76EjDA83XxC6VbsBdz0bcceUKl/5FQeX1s=;
+        b=erNl4OwQbEYcw8t9J29DazvR+473uEsZFoQUhMlpMryzOs/ZDZl1uerzf9J2c0Wbuz
+         bFVIofNMN6qFKpAhMnVhSxNfYa+6MUkoj2iqbQPqp1kDPxkWl5I8dFAnT9SHznKapfJW
+         cfoNO2SrxvBo2hsI5R15DjkUnbKBak9gd7tMcULowo9POttjRJu7c3AUqYZdQzEg8zJj
+         nCQ7C3Jvv0liwb8lylu3eWTsPEW0eDd4yz9ZgJ/2Jdt8DQo9gq491g+LFZ4JjojaO/cy
+         OlNrkUSELKGhjawkbWla2mWBKoH5edoX1RSSFgHNskLXJIgX44oZ0s/Cg1TV+9ztMhdJ
+         5PtA==
+X-Forwarded-Encrypted: i=1; AJvYcCUF1+CrTdRiqoJV7Up7EdNgjofW4f9ijbbQDxESsA8AUZH8hrVIQLCuoOWSMO7rBr+Jm2swvzsJHqnCwzw=@vger.kernel.org, AJvYcCX3zPqU9DTeaYXY/H5ZpHyYZH0l8OueXiRyBZueHsIyWzBOwNrwVA1IB10P2DwYedQH16G6pPLWyNHJHxZDUh4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkAbceD9x3mc8Ks2EwiGuu95npnKAbt2/ZpmMRNMQQKFTPjxO+
+	RmzO8LLw459OveZkC3NWgG9GxrmUAxOIaKwvnes5sIphQOkGiVcyhieuhd7yunZ0NeKRN4ZZjPc
+	Q+7AxsZ4aeTIrUY/x6eyAUYNCcbTkn2I=
+X-Gm-Gg: ASbGncuqyOAKWEeUycH91nx7HH98bH27nlComulzLX2w2KGCzX89TiztcuSpP2isex/
+	Z6JbpRTcYKHIgFaK7mETCZHLGn5+ywt34EICoPFkIYtjme4wW8ZkQBrzeQXRhrlKk0d5x9Oc0IP
+	a3HYHQChCIHgr7KdCTSW9VnIGAm7LqG0yCN0TVIq/7uX/gQjislWmGxtcrItU/YKRzPdNuNhpg3
+	IMmkp2w
+X-Google-Smtp-Source: AGHT+IGAc+gtLe8Qb4KNS8ONEk7Q/QSPFMu0n3d3UxXiHgpBsldkiiwmN5Y/vwVUneZ5jUXJn361lx7fu3zB8li3FyY=
+X-Received: by 2002:a17:90a:da8d:b0:311:e8cc:4250 with SMTP id
+ 98e67ed59e1d1-31c9e75ef95mr9753409a91.3.1753030716342; Sun, 20 Jul 2025
+ 09:58:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kRQ5OF9oUvfbnj+cbXk+tPTmYpVxYofTuCY1a2bcJr3w@mail.gmail.com>
+References: <20250629024310.97937-1-contact@antoniohickey.com> <20250629024310.97937-2-contact@antoniohickey.com>
+In-Reply-To: <20250629024310.97937-2-contact@antoniohickey.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 20 Jul 2025 18:58:23 +0200
+X-Gm-Features: Ac12FXyb3QGPSWcSpcqGY5NOR9WJVM0DYT_BhBpsFtG5MN0u6oZdRWYQ_Qy3j68
+Message-ID: <CANiq72mAODXhvakhvbSAWXi+Hb6AvVS+yRXGcqQtkykq5qTzcA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: kernel: create `overflow_assert!` macro
+To: Antonio Hickey <contact@antoniohickey.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Cote <danielstonecote@gmail.com>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 20, 2025 at 06:41:06PM +0200, Miguel Ojeda wrote:
-> On Sun, Jul 20, 2025 at 6:07 PM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >
-> > Although some existing kernel modules already use uring_cmd, they aren’t
-> > implemented in Rust. Currently, no Rust code leverages this abstraction,
-> > but it will enable anyone who wants to write kernel drivers in Rust using
-> > uring_cmd.
-> 
-> Do you have a concrete user in mind?
+Hi Antonio,
 
-Sadly, there isn’t a concrete user yet. I understand that an abstraction by itself
-won’t be merged without a real in-tree user.
-I’ll identify a suitable kernel module to port to Rust and follow up once I have one.
+Since you are sending likely a new version, a couple quick comments...
 
-Thanks,
-Sidong
+On Sun, Jun 29, 2025 at 4:43=E2=80=AFAM Antonio Hickey
+<contact@antoniohickey.com> wrote:
+>
+> Co-developed-by: Daniel Cote <danielstonecote@gmail.com>
+> Signed-off-by: Daniel Cote <danielstonecote@gmail.com>
+> Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1159
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 
-> 
-> i.e. I am asking because the kernel, in general, requires a user (in
-> mainline) for code to be merged. So maintainers normally don't merge
-> code unless it is clear who will use a feature upstream -- please see
-> the last bullet of:
-> 
->     https://rust-for-linux.com/contributing#submitting-new-abstractions-and-modules
-> 
-> Thanks!
-> 
-> Cheers,
-> Miguel
+The usual order of the tags would be:
+
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1159
+Co-developed-by: Daniel Cote <danielstonecote@gmail.com>
+Signed-off-by: Daniel Cote <danielstonecote@gmail.com>
+Signed-off-by: Antonio Hickey <contact@antoniohickey.com>
+
+> /// This macro is only active when `CONFIG_RUST_OVERFLOW_CHECKS` is enabl=
+ed.
+
+I would probably add another paragraph to clarify/warn that,
+therefore, one can only use this macro to add extra checks for users
+that don't mind panics in such a case, but that it cannot be relied
+for things that need to be always tested for (to prevent UB, access
+checks, etc.), similar to what the standard library says for
+`debug_assert!` like Tamir mentions or the `WARN*()` docs in C.
+
+> +/// # Examples
+> +///
+> +/// ```
+> +/// overflow_assert!(3 <=3D 10);
+> +/// overflow_assert!(5 <=3D 5);
+> +///
+> +/// const X: u8 =3D 5;
+> +/// overflow_assert!(X + 3 < 10);
+> +///
+> +/// const MAX: i32 =3D 42;
+> +/// const fn f(x: i32) -> i32 {
+> +///     x + 1
+> +/// }
+> +/// overflow_assert!(f(40) < MAX);
+> +/// overflow_assert!(f(40) < MAX, "f(x) must not overflow the max value.=
+");
+> +/// ```
+
+Since now the macro takes just a `bool`, I would probably try to keep
+two or so of these, and I would add a couple comments and try to have
+a more "real life" example if possible.
+
+Thanks!
+
+Cheers,
+Miguel
