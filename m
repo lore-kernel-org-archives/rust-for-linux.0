@@ -1,94 +1,73 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62551DE8A4;
-	Sun, 20 Jul 2025 22:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF713BB48;
+	Sun, 20 Jul 2025 22:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753050042; cv=none; b=soC1y6u7++itk3hkTZe1Iya05eZc/s9ZGomGEf/+mLvSqEoHV5xY/UUlZk3nzCwn5iJxB7LXyt4YlDeUbGQvqOvIYoSoTnFL006C2RrQ1rq15/hYXT3veL7JdYGY1NhzVMi8XMjQq3PoKlq1lL7w4Cy7+no8L1Xc5QVc9YJ7qnc=
+	t=1753051055; cv=none; b=lfI3b7de+3wl0dwrcAR5usaQ95RWnBT+2gKBc7OMnPI7+herfNEfHpBAro8V4kW3fsovianjlwH+xqmoe3kfkhPN+o7EevgQjZt80X1gIgk8NsFeywB3mDlt72juGdCbTgL/EK5lkNT0houHdrcp0mK01v1BcYkKdESY7rKYE2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753050042; c=relaxed/simple;
-	bh=mpgqK+O0m6zO53aSXcw4x5Rvxxj3q7jMk1YJQoBS47Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jVnKWSOlvh+zWF7JMcI1ZzQsbatQRyLWw5lX0iJzr1/qsAeQpAu2KPQwy2EsgYfXy5kg6wUToVUcMvsn+MpGBjxEibNdePBn01K78+5RQNVEKydVjaA+H7BDRwsPusZHiT41bWQhm4yEQmKkPMVXHqCttzvxtcGX0OuYn/ofatI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EdE7sah4; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753051055; c=relaxed/simple;
+	bh=kdUw/pZMaU0Ir4P1orWl8JNS6xpN1Y3f1hcA0PcAv5o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=rr1VaNXF6kEJXhcjD012y4LwwNk759l8z1ItPTWhBGlURFL1IAJKzFGbq7kCx0OSSkVZqlO1CzqsmY5zJCb/wtJlk3PYFQCkppVCw+PibC9LACE5W6UrdMdBzD8KzS3xBimRV/ztHstHB2EYMcGohEqm8XFna8pNTl7Vk0KqdR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCC6EGbt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EdE7sah4"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3138e64fc73so1022079a91.2;
-        Sun, 20 Jul 2025 15:20:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753050040; x=1753654840; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T2IA3sMXL8MfYHWrx6ejWU6QjqsZ3Jj7kffCWQM2MQg=;
-        b=EdE7sah4XaX1iBn4bNP4kBs7EXDLnTBbg3J9uibh1GMjOnpwqlMWAZNYWhNKpjZ6FZ
-         rtqa9x1NTS5AO6SwI2EiTvP4bWpxQc/jwYMXAfu+NzxMsc4orGh/LK0CB8YRBcO2KL/b
-         kdZScn7ekAONqvkspCRpxfVgDVg9ORJBm9HOM9LyK1YL2qKuNWAHvtqPqhvJqq6KOix7
-         lu04rh+iaSqlCLnph0LpINPmx049EQAIUM6KewTX0ggRtoH1rSk1HZsnYe+fCet2v/jI
-         68wNdTvxfgui/3f02Kz7OHF+ks1ycX87T9icArmSI8y0JqX0YKpg5SDCSjVmbZBYVTnR
-         DcGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753050040; x=1753654840;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T2IA3sMXL8MfYHWrx6ejWU6QjqsZ3Jj7kffCWQM2MQg=;
-        b=LyNE1jD+5HE1iRhOg8To69MLvOXSOs7CazQZOaerpd5jn18Gf1l3zAisfK47Jj9tbv
-         6y3j5/J/AF/nJfZR6z3PJVbIKOT7ihi2rtnxXR2VxUUlTLXYBfzQymEtBeaIrYfna5go
-         xs0uI8ilPEmpxtTqZWLNqCt+ODJnpIxUgxqzrCMuIG/pO6O0PM/mknNZ7hj3lETZDU1W
-         R3vbOKKSidR02CKElfjkJyEsrKtRRj4mPHb54o11IunrtwlmtAtJB10KsstZan8URVKh
-         ynSAbvsPQ7NYJ2aM1/S80vzSMmtr6d80Peo0MkIxiplCODGWXKzW0vpOKFYNxGhr0SEE
-         jJmA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+2tUsw9jpxl2A9c58+990ID6eh2w0Bm4ApaJOoHrsEfH7g6ocQg/DpKF622efYuGjumydJWQJgg+TAZQ=@vger.kernel.org, AJvYcCUq7FtUzNBTTEJndUeSr/iMIXQL0VgjeSe482Zc7L0EHTsS91WWVerWJya4nBTxEpf8OrLz7QJBIRwy3xGp016r@vger.kernel.org, AJvYcCXMiKoh7ydekB/i2QovnZujnH/OAUeFtT7eqaL7+PiSy/kXAbKMSqo7gtvTztpofIrCJL41Y/iGZ78XKZjRaKs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVKOB4Lh6qQLjfMoJVEhgej2BgAmi06ml4Md45mXPu2QAik65a
-	U5DKiz9OaN8TSki6Tty1yzbNEIozxHU1wonq9i7cakJ7AvGbUsfyTFhA9EUP6xN6s5gbO4wrQ3Z
-	pXwuMLSUgAFWFYW3sdXSSQiDDyahHTeg=
-X-Gm-Gg: ASbGnctS6ORvGarfMIS3SjpSSbLfJ+Q8uC5I8txHTycXGtBI3qzbUOuTJzGaxJWCHTd
-	ee3ih8FpN2vlaUppPqcYbcxMUCYhEyS8Ev3XR6bLv0mPP1OWvhnlNHBkXtLGdR5nCpjZxfm1BTY
-	/GlKhbdohUuuceIYlyRzIdNwGIsKWNXCiAMIsPyb+DLuidNRluIXG1jwvIiE1Us43eW7oE4fdaz
-	Jxm8QSS
-X-Google-Smtp-Source: AGHT+IHDtz6azWEF/xGmb9dqZOj2H3tX8J7UDfAhEpXoe7djUPf2x1euDZPU4WxseqamxBJUAo9cNkVVoajiO78BgtM=
-X-Received: by 2002:a17:90b:55cb:b0:312:e9d:4001 with SMTP id
- 98e67ed59e1d1-31c9e7a4b17mr10406175a91.8.1753050039987; Sun, 20 Jul 2025
- 15:20:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCC6EGbt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64BCC4CEE7;
+	Sun, 20 Jul 2025 22:37:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753051054;
+	bh=kdUw/pZMaU0Ir4P1orWl8JNS6xpN1Y3f1hcA0PcAv5o=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=aCC6EGbt783gh3Ztm0yFdCp6NSvd5ya72MZ2dbBq/7HauFmIu2yZ5IwkeUBmbyBfL
+	 SxN0FcNk+U3B4aEE5efAFFXdE+ia2+oFY2My1f8oOAhkrx5qSLaxbNl1EBz/iADoOt
+	 KsnOHptvYVt3TRmODE+w133jbsQmvVFqrRl/ZZ2KYvjmxVP7Q2g4yd4Zk0O84BMsb6
+	 0ELvo/ZXACZNNla4GRFHdLdifbk8L1sMAJYajKi6TQFQo3uj16VLY+DUF0RWW8JlLY
+	 NirS+fB23fTSf1tyMIv2lQDlTQDP2TXe3QbruOTQjFQ+RpQ4ilKOXiH3Y8kZQCnnjZ
+	 yBTec5gu9/Xqw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250529-idiomatic-match-slice-v2-0-4925ca2f1550@gmail.com> <20250529-idiomatic-match-slice-v2-2-4925ca2f1550@gmail.com>
-In-Reply-To: <20250529-idiomatic-match-slice-v2-2-4925ca2f1550@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 21 Jul 2025 00:20:27 +0200
-X-Gm-Features: Ac12FXyLsz1bmwVkFG-DrTCV5JzIvjpyMKUulmGV4UeLKeC-0LFpqJp96ApQGpI
-Message-ID: <CANiq72nb4LuwkZVjEseMubSX4VOMNTX-8wUV7LtS5FN80cMjyQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: emit path candidates in panic message
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 21 Jul 2025 00:37:28 +0200
+Message-Id: <DBH8QE1NZVB4.2VJDAL24XIHG4@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH 1/6] rust: kernel: remove `fmt!`, fix
+ clippy::uninlined-format-args
+Cc: "Tamir Duberstein" <tamird@gmail.com>, "Viresh Kumar"
+ <viresh.kumar@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Nishanth
+ Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>
+References: <20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com>
+ <20250704-core-cstr-prepare-v1-1-a91524037783@gmail.com>
+ <CANiq72mjiBK+DE-NOx1p+wWuZpnK=aPtgnMUUEzig+4jHZzemA@mail.gmail.com>
+In-Reply-To: <CANiq72mjiBK+DE-NOx1p+wWuZpnK=aPtgnMUUEzig+4jHZzemA@mail.gmail.com>
 
-On Thu, May 29, 2025 at 3:15=E2=80=AFPM Tamir Duberstein <tamird@gmail.com>=
- wrote:
+On Sun Jul 20, 2025 at 11:24 PM CEST, Miguel Ojeda wrote:
+> On Fri, Jul 4, 2025 at 10:16=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+>>
+>>  drivers/cpufreq/rcpufreq_dt.rs    |  3 +--
+>>  drivers/gpu/nova-core/firmware.rs |  5 +++--
+>>  rust/kernel/opp.rs                |  2 +-
 >
-> +                write!(&mut candidates, "    {path:?}").unwrap();
+> Danilo, Viresh: I assume you are OK with this, but let me know
+> otherwise, thanks!
 
-I assume this was supposed to be `writeln!`; otherwise, we lose the
-newlines and the indent does not make much sense.
+Sure, feel free to add
 
-I will fix it when applying.
-
-Cheers,
-Miguel
+Acked-by: Danilo Krummrich <dakr@kernel.org>
