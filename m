@@ -1,99 +1,118 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0B0CA4E;
-	Sun, 20 Jul 2025 23:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F008C74C08;
+	Sun, 20 Jul 2025 23:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753052543; cv=none; b=U/5nyZWfIAZTIX8SQYGAd2OmUJGNDLb3FwokfLD/j8etxMV+0LfOsBxa6VDbLC8hlrPmOyFdRiGYk8KGxj64b7q88i+YYvgrpGBGFKXwfzTMI/ZXNIqMpO3tlmPM9hB8Db3FuZnHck+N+vXFxXzULvnSBYuK1gSYXcF/3BRVCf8=
+	t=1753052680; cv=none; b=p611KJjarUNSqDq/OiY2ua67t4pmcdHGW25ovdP6Jxix0yoWnNfmdSK1g5j8J514wPLQzZCpYx0L5PzTVqcONbHmNDpDHXgImDPNBCzXKwTD391pWTlJZq94o7fKS7c4bfnUUWhYwG5eaBfg0ejP+RO7LjE81j4PAnzX7Iwt7cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753052543; c=relaxed/simple;
-	bh=bojz5YeZggk/9lojFQ3d6xcEP4ZQqP/6SS0bDQKkrxI=;
+	s=arc-20240116; t=1753052680; c=relaxed/simple;
+	bh=DqzhcMKuF4YJhM8qX6ANTGfJdeWxmY6ujyFF/XUbNew=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YNRlWTHvp3ryACAxcIs8C4+bTimXsg3DBv5HPreHTe+JUFpgfVgsOEuq79X3g6h6d/nweF2rkxQNXM5g3CasD9VBZzft+oPXJHA9U5/a2H+NfqupO4t/KDV+GNwfb+J+NsWbHUBQ/oYjcSHcxQPrBtiQ8/eEleit3Fo/mrI4UPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YhI1/6sI; arc=none smtp.client-ip=209.85.167.49
+	 To:Cc:Content-Type; b=dYJU13gp1B2EHpPxLqbffgGnIzbLK8drteStKKrvIBRk06LBjKNtjeSSQkA8spxo1F8Y0hzyJqZLDKbm5WvHeKV+Wv1FCwivsPY9Kjfo8qKMm7iUU0bg2i9/WRIX3LbHOm5zUXHI+yAxELfEAmfvwsvhush+w31gutdqD7j48k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fEEbA7qZ; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YhI1/6sI"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5561ab55c4dso3847122e87.2;
-        Sun, 20 Jul 2025 16:02:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fEEbA7qZ"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-32b2f5d91c8so28172281fa.0;
+        Sun, 20 Jul 2025 16:04:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753052540; x=1753657340; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753052675; x=1753657475; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AJ95xvQUm/kBpw7gVlmEOuHhj67FGfKcDHTGipklSuM=;
-        b=YhI1/6sIyJnRbLItWeUMeddwaSW1FwWbxdQtRCspQu5JR5y1mD+GAjbKuK/wYRT5CK
-         Sj+TYXEEJ04vnstafhH3CV7R/wXNAWrPZBTKqQuIbevHF3Uch2xsD3c6BngnypdM+eZr
-         nMhLpXeYcZ5JQ+XmMPlr536k2G+Qtyl/1q2gQCodAGgc+INu4Xn8v7YF8h9InVGdu2PG
-         qs1qymthlf8E+5pKgxWgVSzQrEjmONPc/3FdHm+YjhbrcFk2LWswEZF5MiBTYgdd73J0
-         jcR9pk7VEe7KjzGKhCgt/f6oE/mx7m+C5kuBpGrcxSAyE3j8cRAm8cK8oHnnGpLFox/6
-         68rQ==
+        bh=7Xkw3NwxWxg5J2ji88ScO8XA3YV0z1vRakGJn9oB0XE=;
+        b=fEEbA7qZeaPKmbSGc0LpfkgCNPpcE1/aFE4WJCoVqvmDM15Ww2TFq+jr3yJtGV9EGJ
+         5zM9u58hJobhjXsajqOarwNyfhhS1Frux9teDdv4ysDGX3MZhiKc+TTyOpbkp9sqYhCE
+         oRW7piJaJM80B3Eo5pCbJD6USc0mdZjpNnPrE6Dn28x2qKcPNvdctVhAU8VuzCYkRg3e
+         m2g+s8uRJoq3EoPozbMMVQU2cQv3CQcu8owZH9TuxUo9/Wdpq33Pb6+t8N2b9wlhHC5X
+         iev6YvHXabzE8q8IZGo8yymG08he/MKxsIMzK3+xiFRUHO0Uwp3EjoFURGKFedrqFPiP
+         GoQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753052540; x=1753657340;
+        d=1e100.net; s=20230601; t=1753052675; x=1753657475;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AJ95xvQUm/kBpw7gVlmEOuHhj67FGfKcDHTGipklSuM=;
-        b=R415/yaJToQ4eE+CmBCfY6y8Lk33xNrpvbjz3EUBgleEMQPaha+nPohUVqG/+Jjz69
-         +Gvp888YicWRidTzS0kODIHZjWGVfWDfz3DcgTdp+5Z3aQot6+QeYKvuBAiQt8RXaWMW
-         UsbTI9U//qNL8ozxQWipnMuPWSkAIRvBls5DeLcIEPohdRzsJ9QEAQNd3QV2he51N4Fe
-         rkmiqV9BLbTd6OwPXQQS2EaNPtlGttljTGKBvBkzVNulPuAn9Y9Vn9ICyIW9nE8i6TfP
-         0UvyfTGYUfALvQ1w/Ah7tE7Ozo3TvTK6DQZ1715NyYHgnyo38p2FpkdxqGSpoRuN1Wci
-         9Xvg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3E0sH2ai56o1+F7nx/40RvpXHPDCf4n3W16PSqMjz+XHisyT5DWwCxTYOWgvZsE/OPupslCUwTCiStLB/+tQB@vger.kernel.org, AJvYcCWnqk/D49s0YjNCi9IbObCrv3nAydcJ46YHT+O9P46roATtBD9KiChW8XljgO5NmL4VMCsIMysHM7em6Z8ABVQ=@vger.kernel.org, AJvYcCXa8D1WmPDPwEhjgf9J5gbP/s7YqaJjYrLFt7F/RB9FRbzs1XQ56KgI+DPPy2WkYMte+ZnNOHO+0U28hB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0zc3NcJawAWxZCtlgf+w5wz0yukZVxuofjZph9epogemN7Eje
-	s+jA7Z1Ifj6kpkEnXl2NDyKpNzqwmCxBHsN/PY8PrM4wKwJAM9dDDLFehiwPveYq5K3HqqCEOQd
-	SJrDJjr+Wrg+UMuoGit3ttjxbJg/hu2paVybkKEiCdA==
-X-Gm-Gg: ASbGncu8j8n/oWhAxGVuohQ2sR7l77pJRZ6AV0NbhpzdA7GdSMoc6i2JVPUQuL36Nqc
-	xpn41WRyzoO0AjcWWjFlJFhuvPnPzfiir3vnDON5MxEQHg5n7OAdf9UVrxlVNHzWvhMcfRHLygL
-	JS8iV9PuqqOfomcb0NywbV6hl1FGC4zaSOcZVysauzQa8nk76EVHquob9l0oyBxfyKJXoUwoA7x
-	7IyATZ2rt01tZ/L4rYDPuB2eyywW0v9m7PKvTIxWg==
-X-Google-Smtp-Source: AGHT+IE+FCX6UtXA190qovvKWqmj9Qc7kYrLAljsuFf21aT7QM/McGfFwDZUlU+YBrUNaOJ996gDs2QpBz6dlSHgjxE=
-X-Received: by 2002:a05:6512:3e0e:b0:55a:2735:fe6a with SMTP id
- 2adb3069b0e04-55a3177a061mr2942491e87.0.1753052539912; Sun, 20 Jul 2025
- 16:02:19 -0700 (PDT)
+        bh=7Xkw3NwxWxg5J2ji88ScO8XA3YV0z1vRakGJn9oB0XE=;
+        b=imTAg288hzkPG3KQYl1vuOXH2NoGPZuevBKbbBya4LE5tLRX5pku93SjuHPBXF5ewG
+         Ucb31tSR4Tc4R4wMm4zO6aaovl3o+hV0tSUf47OEDhQm0/KLiUhYXshz1lUdEsRUY0uD
+         SbNGi8bxsut4CB0MjneEvgllIHQDWuLQoFpMGG8a1Khu18JeK7Ld23hEAe6pax4gRuxs
+         z80KWlrgPP5moNQUXsS/UprTH/CSzQAn6ZL1aRx/OXkT+Uxq06obQwJuE9AXe1pID/Ng
+         xrdG1c0gzq6xWgsd9YFGZ3TvxH3UXvZSkb0j+w+gk9v3Ghss5p+Gw2KI+O1qs8tBfnil
+         yi9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUxt5Uip54nFm5RW4ghnUHoajYKL6h+RDFtmIELdPd+H10SaraTpWHOBJbhVtDojtL6O+dVvXK3gh7CLzY=@vger.kernel.org, AJvYcCXKId7rhchD3iQOWNLk5MLYTVpeZSj9/um7fR4GXpWbW0FIjlKGGCosZKDTqn0NAPtEd71FJk2HuR5QJzxhfUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwC735Uv96s7pK10PFzWzFtCf+zuOHx9/NAWF0X0Cw26crWcgFq
+	8gClesC+7IGHGI9lIzTkQfVGqbNnkepcpfcBXfX2qVJKw2gPg5KH4wWozTSQaA0D5nEDeWSnI65
+	6z3jDX4yg0LHVn43cMfPUWwNJFuNPDeY=
+X-Gm-Gg: ASbGncuViHeh4MkXXx66vWzUlIDT5SA32leQ8rRfLXZhzcZ5EPRo2nGTcqaa0tc/p0Z
+	XXovd11zym8vEMsj9mTRSvG+3Dmu4K9KdKOVSUOcPfUSzE9I1CoMU788W/VLxYMf8gjZ4OBRR+I
+	TtMbKPnlT0ypasc2EijKsoBX+BOrm0WCStO1+CXIP78h1SO8cOnCtDNzPxJDTGBqHSTggeRnrya
+	5fHW1FqKSTcjnu/lY1GhXo+2Q3ollpbbNQmxH7RWw==
+X-Google-Smtp-Source: AGHT+IHU8gAlgJi0gfSerHmpP+XVcJCFlizdHXk2oE9KNpuvqKE3vWLus6ifQ6OwXOlfO0aS5Oo9wOl6ZRFYMwgCbm0=
+X-Received: by 2002:a05:651c:41d5:b0:32a:6aa0:2173 with SMTP id
+ 38308e7fff4ca-3308f5b6b0emr51195791fa.20.1753052674651; Sun, 20 Jul 2025
+ 16:04:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250529-idiomatic-match-slice-v2-0-4925ca2f1550@gmail.com>
- <20250529-idiomatic-match-slice-v2-2-4925ca2f1550@gmail.com> <CANiq72nb4LuwkZVjEseMubSX4VOMNTX-8wUV7LtS5FN80cMjyQ@mail.gmail.com>
-In-Reply-To: <CANiq72nb4LuwkZVjEseMubSX4VOMNTX-8wUV7LtS5FN80cMjyQ@mail.gmail.com>
+References: <20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com> <20250704-core-cstr-prepare-v1-1-a91524037783@gmail.com>
+In-Reply-To: <20250704-core-cstr-prepare-v1-1-a91524037783@gmail.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sun, 20 Jul 2025 19:01:43 -0400
-X-Gm-Features: Ac12FXwksZ7ly4zRrODQBvaHDTk-pZqsw5wqhXOkkFG8bCEizzAQktr9SrphcoQ
-Message-ID: <CAJ-ks9mq_bPH84Mjb0csMQWNHMXuxBK3syuvAdkiRp5FiXOJLw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] rust: emit path candidates in panic message
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Sun, 20 Jul 2025 19:03:58 -0400
+X-Gm-Features: Ac12FXyBZv6-1-SR-r4N9df7hS6FD2nQrghFQr18iPYH2j0BNLVFQznx1RbMWtg
+Message-ID: <CAJ-ks9nBrT4C5xYk4eWUFX_nX5XXBYHEGo+fLtLWJE-D9Y5hKQ@mail.gmail.com>
+Subject: Re: [PATCH 1/6] rust: kernel: remove `fmt!`, fix clippy::uninlined-format-args
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Cc: linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 20, 2025 at 6:20=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Fri, Jul 4, 2025 at 4:16=E2=80=AFPM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> On Thu, May 29, 2025 at 3:15=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > +                write!(&mut candidates, "    {path:?}").unwrap();
+> Rather than export a macro that delegates to `core::format_args`, simply
+> re-export `core::format_args` as `fmt` from the prelude. This exposes
+> clippy warnings which were previously obscured by this macro, such as:
 >
-> I assume this was supposed to be `writeln!`; otherwise, we lose the
-> newlines and the indent does not make much sense.
+>     warning: variables can be used directly in the `format!` string
+>       --> ../drivers/cpufreq/rcpufreq_dt.rs:21:43
+>        |
+>     21 |     let prop_name =3D CString::try_from_fmt(fmt!("{}-supply", na=
+me)).ok()?;
+>        |                                           ^^^^^^^^^^^^^^^^^^^^^^=
+^
+>        |
+>        =3D help: for further information visit https://rust-lang.github.i=
+o/rust-clippy/master/index.html#uninlined_format_args
+>        =3D note: `-W clippy::uninlined-format-args` implied by `-W clippy=
+::all`
+>        =3D help: to override `-W clippy::all` add `#[allow(clippy::uninli=
+ned_format_args)]`
+>     help: change this to
+>        |
+>     21 -     let prop_name =3D CString::try_from_fmt(fmt!("{}-supply", na=
+me)).ok()?;
+>     21 +     let prop_name =3D CString::try_from_fmt(fmt!("{name}-supply"=
+)).ok()?;
+>        |
+>
+> Thus fix them in the same commit. This could possibly be fixed in two
+> stages, but the diff is small enough (outside of kernel/str.rs) that I
+> hope it can taken in a single commit.
 
-Duh, yes, that's right.
+Just noticed a tiny typo here: it should say "can *be* taken".
 
-> I will fix it when applying.
-
-Thank you!
+Miguel, if you can fix that on apply, please do - but if not, no worries.
