@@ -1,37 +1,36 @@
-Received: from forward202d.mail.yandex.net (forward202d.mail.yandex.net [178.154.239.219])
+Received: from forward205d.mail.yandex.net (forward205d.mail.yandex.net [178.154.239.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B69A194C86;
-	Sun, 20 Jul 2025 09:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF48194C86;
+	Sun, 20 Jul 2025 09:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753005334; cv=none; b=QHr+HZw7bol9tbrywK8owUDQ+h6Zj6qi0dIOoYYmiqw2Yi6JEn3SEC8Lc+1rs6vKKIPb+D9OsmuQhTrUcW2FfWmd88YxFxXF6qQD5f3xk2hU2hBJ/+/7ALpYHvfoezByc4to5UA4IH/WYpoZJCC8lLxBVGxIef4ke5gXb87rIDQ=
+	t=1753005356; cv=none; b=G7cC/nWImL8XEMbPZ5jJXT45qNedQwsXfTaTO5GDRUe9Y7CdqOyASd8EeT5P63pGbx820e5BK37fRdLJrTRo04KSkjSa+kSH4qC/0coBJKPV8VYd5I09WdKdrqpBjwKtBi7z+hBbSc+OCNyGhTiJJqtwCQiPrfhqeRbFgH+wYLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753005334; c=relaxed/simple;
-	bh=WkctRXxzP5UMPWQHUPe1aihz7uhRCVep2tbjby4NWu8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NK3oPy/PpbNBZuiNcrgCgI5K1I44/5hU5x+hehLAnemUDqlhOo8vsO1rnjn2ic8B+ARSGMNPk77w7kmnBgJswPtbjfIYJRVMFmSS2DzSfDQppbsAm95qShdahCSvkfxiIWb6wUw/9INCUYSvcM+MkJ4XNFJPjFsbGDKh2cV318M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=leUnF6WZ; arc=none smtp.client-ip=178.154.239.219
+	s=arc-20240116; t=1753005356; c=relaxed/simple;
+	bh=nVRWul7JznatP3FBPnvenoM5+A47fUh4a/yaCR3QUdE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FNeL2aamukIumcFjpF1AN6fdg0dzLoCG8pmLaMyLqxOW6KuIm7sPnqQv56375w6d/LRmV/o/5D4hSDKcbkLIsiyizYGz3j+kow86jHmgk/6RGvIvTk1rs0Ud2EsrbxNnKWirHzuEGXEf+tbmnbfLuO/NMiSp7V2ZPktR6w39gwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=b4Pe8rWd; arc=none smtp.client-ip=178.154.239.216
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="leUnF6WZ"
-Received: from forward102d.mail.yandex.net (forward102d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d102])
-	by forward202d.mail.yandex.net (Yandex) with ESMTPS id 078288AE08;
-	Sun, 20 Jul 2025 12:49:05 +0300 (MSK)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="b4Pe8rWd"
+Received: from forward100d.mail.yandex.net (forward100d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d100])
+	by forward205d.mail.yandex.net (Yandex) with ESMTPS id 2399B92E2D;
+	Sun, 20 Jul 2025 12:49:01 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:e0cb:0:640:3e34:0])
-	by forward102d.mail.yandex.net (Yandex) with ESMTPS id 4A7E4C0085;
-	Sun, 20 Jul 2025 12:48:55 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id emMPSZxMxuQ0-qXoac0t1;
-	Sun, 20 Jul 2025 12:48:54 +0300
+	by forward100d.mail.yandex.net (Yandex) with ESMTPS id E04E7C009B;
+	Sun, 20 Jul 2025 12:48:52 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id emMPSZxMxuQ0-98qbNwqf;
+	Sun, 20 Jul 2025 12:48:52 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1753004934;
-	bh=nElTx2N3XFovKfeAcDgMHY9SjrcZHcGdMY2vfvVQocA=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=leUnF6WZXVuUzVjrCN4LL64aALukOmc+Bc1MyenHcxzjhkHs1MCWQaM2L0fq3t6x2
-	 0t7wFoa6dh5vZuDJ0i95XAYz8OeARpnG/HVwfT/LYuF02tAV9JQhLQKuxSIgUBDUJp
-	 tfCtDqiJPejwsMr3VGPBSUBwg+onegncDOOqTACo=
+	s=mail; t=1753004932;
+	bh=T1S/pggF2BkEMZN47JeqSf908HoFqZB6KhYrW1p3Fps=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=b4Pe8rWdYrG5scKTMZiI8Y2DOL5gBIbiMPbZhbVszmYgcUuucxbKUbI8Pp9s5CuXh
+	 GOCcC0jE0ydERoQnxiHxgosuct6+0aCcZeXF8HAJIUJ6ZcT6lz+V8/Y00t7rtUcsNi
+	 P+JB/GeOpxQgxlpEhmhuFf0xbycwDwvaOCrQZtTM=
 Authentication-Results: mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
 From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
 To: rust-for-linux@vger.kernel.org
@@ -47,12 +46,10 @@ Cc: dakr@kernel.org,
 	tmgross@umich.edu,
 	linux-kernel@vger.kernel.org,
 	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v1 1/3] rust: make `allocator::aligned_size` a `const fn`
-Date: Sun, 20 Jul 2025 12:48:36 +0300
-Message-ID: <20250720094838.29530-2-work@onurozkan.dev>
+Subject: [PATCH v1 0/3] rust: make various `alloc` functions `const fn`
+Date: Sun, 20 Jul 2025 12:48:35 +0300
+Message-ID: <20250720094838.29530-1-work@onurozkan.dev>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250720094838.29530-1-work@onurozkan.dev>
-References: <20250720094838.29530-1-work@onurozkan.dev>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,26 +59,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Makes `allocator::aligned_size` a `const fn` to allow
-compile-time evaluation.
+This patch series makes various functions in the
+`alloc` crate const fn.
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/alloc/allocator.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Each patch corresponds to a different module within
+the same `alloc` crate.
 
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index aa2dfa9dca4c..aa2957fd585b 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -44,7 +44,7 @@
- pub struct KVmalloc;
+Onur Özkan (3):
+  rust: make `allocator::aligned_size` a `const fn`
+  rust: make `ArrayLayout::new_unchecked` a `const fn`
+  rust: make `kvec::Vec` functions `const fn`
 
- /// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
--fn aligned_size(new_layout: Layout) -> usize {
-+const fn aligned_size(new_layout: Layout) -> usize {
-     // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
-     let layout = new_layout.pad_to_align();
+ rust/kernel/alloc/allocator.rs |  2 +-
+ rust/kernel/alloc/kvec.rs      | 10 +++++-----
+ rust/kernel/alloc/layout.rs    |  2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
 --
 2.50.0
