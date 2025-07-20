@@ -1,41 +1,41 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622612770B;
-	Sun, 20 Jul 2025 00:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D0E186A;
+	Sun, 20 Jul 2025 00:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752971711; cv=pass; b=rLGcZh1Sloz0J4sejCbrQmeeJXX1CnqHAxMZTf2bI/+xoG68n+SjrQ/X9/Bi8AUdMl/9rb7Wu6I7fn93gS2Sy6baik1CMwERMN8QkDrRpyeotybjZokEf/h0aAlwp41Rr1NOpGro0i3EHtupx/N9RrR9yI33HH0/H1XglICfcyc=
+	t=1752972406; cv=pass; b=pn8rsmt2CAn6LAJ1ryFIinssnIDesBQjF32oiLt3TmMSuShkoPm3lz0w9pOACh23uUeCZHOBEr201y1sZJ3yaXdBSQbxoohgozJ1/7HDuIASytePEYjnU/vy/YjLYTHwer69J55NWQI8kNkDzQmi7Cbdf0sZdRSsnyu9boiPGb0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752971711; c=relaxed/simple;
-	bh=HDIoeqn9e+rYQnfJ067hljH9zFzxB0jCy8mHESmaUm0=;
+	s=arc-20240116; t=1752972406; c=relaxed/simple;
+	bh=RCMhaNF73IsXyuAJ+j6RrC60q8zTRTKwzopHxGIjgSY=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=JFToNO7DqekLNrfSwp7FNo6zsJHlcyu7GfR3RGS/8NZdmW5Z45BGfNOF19tHOJjJjHQt/wrCLZV6IBNZUAJqVg6UDYB1DuUdn6Vj/d40LKMFOoqHoCR1hB1+o6YaWQ3Xszp3BfRIKb1PUmgbEFQRDVyymtRjYyIndAkMlYxKBx4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=HhUbH1e+; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=AA3dHaiTDyFDDol9nMZCGodiBpDA02Phv25KZ5/yg1XOiN3xvuWhm1Ka48d8qeR5mPzEA6zhu+E3xYBZVwRE3ebTBTbyhyqwmWjTlaMBn6rovPlsnDMce+2TeR4WLFFqQbYKtgLxWsM6h0aiaInVdx1F4ebZGGxEgJxllYO0efM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=QJ/wvtJv; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="HhUbH1e+"
-ARC-Seal: i=1; a=rsa-sha256; t=1752971688; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="QJ/wvtJv"
+ARC-Seal: i=1; a=rsa-sha256; t=1752972362; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=DuQeVYCmDEKoan5ifO2S8SAfqvau9PZUj8NogYxheUnCA/GDaxag6taN6lyeANTLALMz00+HBxvpjU2j0cA1h9O9L9AvxTOK4JfG//VR//ZxUHLVLgAAjmCAihQVNggdGteL2nvWI0mW/YH5KWZmRFdDuGQ4+DwJDmFW0UP9154=
+	b=g4COvUywzMSeRRyXvcFAnvKY3+hu+MDC6ae9mXd6c8fPl+us9VrDamaq6sC8XHEtJFsBmoY1Hzv4vZBMnc1gfarvsGsgU0DwXAmxSXJt/ijU+z92vQP1uoPNslX2Be7tyu1hatdu8+uzihvTEaOGqh3cOUDLglvij7zquiAubnw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752971688; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=+oh6ARwng4DpdAfGJjaWcONvM1A731eJcDO1LFA43h0=; 
-	b=VJ06SxOm0A/O0iWq4nZIGeKWlS4BEQNtclq3VL0OTEoV6zna58upv/jxLtMfSUk7xBt+N2aPVSCa9//oH47zDWHOtMrBEzAmsKiDx/mW3HIMEHE/63RedAPrd6dAX4Z4jbP9Fqxpjm1unRn5OBUXHC6yY40ecYyBGQkpNR22+0I=
+	t=1752972362; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=lMTx2r8Z+X9Aqblv0RaFBmOLKDhzz5NGNxEUj/Eml3Y=; 
+	b=h0bx7tYIXnVtHnMSs3vJSBueufe2O9QqnFm6QJL5Oa1bQ2hvOOB2vBHzAaCL8zkK83ED0jS9MkmmPfWWy9iF94RKpRFNU4NtxesuqJHBMARoDn8ByM2Bb994TSkLEPwO3mBbt6uZjT8kOCcKCVj6iHw6Z9GkjdsIw71aW/eSuwI=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752971688;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752972362;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=+oh6ARwng4DpdAfGJjaWcONvM1A731eJcDO1LFA43h0=;
-	b=HhUbH1e+zVA8AiIZ6nY0R6/WjRnknEG+rdUe3hCbsIjXia6iMg42XoBbwb3CQArg
-	IVtAYukxJ2DUAc+XA1xid5iD0zKLeahQqxc1Adei8+0Tiniifb87et/jMqQu75lgNSh
-	O2XYiewgkkvfp0ZQ2jrtx2Ock/UrCE2JgtFv7RiI=
-Received: by mx.zohomail.com with SMTPS id 1752971686447615.9635102011046;
-	Sat, 19 Jul 2025 17:34:46 -0700 (PDT)
+	bh=lMTx2r8Z+X9Aqblv0RaFBmOLKDhzz5NGNxEUj/Eml3Y=;
+	b=QJ/wvtJvq6UH1xOGLLwv+6div3lICXpcQn2gmnJ7CBkmvUrxhOWRmfmMQmgQIjg2
+	oFdO47uul6gfLZ3qQFCabDVEkJDj11+fwuoPTjxB8G0o4a/2S0mvmlL6ZzRERSEkfxC
+	S7fKehhSYTczceOfdvhCn9e91fFXXklCvWKKyYbk=
+Received: by mx.zohomail.com with SMTPS id 1752972361237945.5987989359068;
+	Sat, 19 Jul 2025 17:46:01 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,72 +44,64 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v15 0/3] rust: platform: add Io support
+Subject: Re: [PATCH v6 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <2025071913-coach-prior-d71e@gregkh>
-Date: Sat, 19 Jul 2025 21:34:29 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
+In-Reply-To: <ce656239-08a1-49e8-86b1-b33d0cdfbcd3@gmail.com>
+Date: Sat, 19 Jul 2025 21:45:43 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ Benno Lossin <lossin@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Gary Guo <gary@garyguo.net>,
  =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
  Andreas Hindborg <a.hindborg@kernel.org>,
  Alice Ryhl <aliceryhl@google.com>,
  Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
  linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org,
- Fiona Behrens <me@kloenk.dev>
+ linux-pci@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <7C1E7AC4-67A0-4CD5-8B22-490F53BDBF1E@collabora.com>
-References: <20250717-topics-tyr-platform_iomem-v15-0-beca780b77e3@collabora.com>
- <2025071913-coach-prior-d71e@gregkh>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-Id: <E1C5BFA7-9B72-4277-A7E9-BC6F19110AB7@collabora.com>
+References: <20250703-topics-tyr-request_irq-v6-0-74103bdc7c52@collabora.com>
+ <20250703-topics-tyr-request_irq-v6-3-74103bdc7c52@collabora.com>
+ <DBAE5TCBT8F8.25XWHTO92R9V4@kernel.org>
+ <DAD3292B-2DBF-442A-8B60-A999AE0F6511@collabora.com>
+ <DBAURC9BEFI0.1LQCRIDT6ZBV9@kernel.org>
+ <DBAVXQTMR38Z.2782EGR84L7OP@kernel.org>
+ <DBAWQG1PX5TO.6I2ARFGLX88N@kernel.org> <DBAX59YKO0FV.ANLOWRHDDS92@kernel.org>
+ <DBAXP68U809C.2G8DMB52M3UZ7@kernel.org>
+ <C4A101A7-282D-4A67-A966-CF39850952EA@collabora.com>
+ <DBAZRNHGIGL8.3L2NGPCVXLI25@kernel.org>
+ <DBAZXDRPYWPC.14RI91KYE16RM@kernel.org>
+ <18B23FD3-56E9-4531-A50C-F204616E7D17@collabora.com>
+ <DBB0NXU86D6G.2M3WZMS2NUV10@kernel.org>
+ <1F0227F0-8554-4DD2-BADE-0184D0824AF8@collabora.com>
+ <AACC99CD-086A-45AB-929C-7F25AABF8B6E@collabora.com>
+ <ce656239-08a1-49e8-86b1-b33d0cdfbcd3@gmail.com>
+To: Dirk Behme <dirk.behme@gmail.com>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
-Hi Greg,
-
-> On 19 Jul 2025, at 05:01, Greg Kroah-Hartman =
-<gregkh@linuxfoundation.org> wrote:
->=20
-> On Thu, Jul 17, 2025 at 12:55:21PM -0300, Daniel Almeida wrote:
->> ---
->> Daniel Almeida (3):
->>      rust: io: add resource abstraction
->>      rust: io: mem: add a generic iomem abstraction
->>      rust: platform: add resource accessors
->>=20
->> rust/bindings/bindings_helper.h |   1 +
->> rust/helpers/io.c               |  41 ++++++
->> rust/kernel/io.rs               |   5 +
->> rust/kernel/io/mem.rs           | 283 =
-++++++++++++++++++++++++++++++++++++++++
->> rust/kernel/io/resource.rs      | 229 =
-++++++++++++++++++++++++++++++++
->> rust/kernel/platform.rs         |  60 ++++++++-
->> 6 files changed, 618 insertions(+), 1 deletion(-)
->=20
-> Who is going to be responsible for the new files you have added?
-
-As Danilo said, there will be a separate entry for the Rust I/O code, =
-which
-I=E2=80=99ve agreed to share the responsibility for.
+Hi Dirk,
 
 >=20
-> And no real objection, but no copyright info was added to them either,
-> was that intentional?  I know some companies frown on that as it goes
-> against their corporate policy (but some don't care, it's hard to keep
-> track of who likes what at times...)
+> fn handle(&self) -> IrqReturn {
+>  let dev =3D ??;
+>  let io =3D self.iomem.access(dev);
 >=20
-> thanks,
+> Thanks,
 >=20
-> greg k-h
->=20
+> Dirk
 
-Good catch. It wasn't intentional, but I don't think it will be a =
-problem.
+FYI, until there is a patch to provide Device<Bound> as an argument, you =
+can
+resort to the slower try_access().
 
--- Daniel=
+=E2=80=94 Daniel=
