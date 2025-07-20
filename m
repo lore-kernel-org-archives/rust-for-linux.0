@@ -1,53 +1,54 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273991A23B5;
-	Sun, 20 Jul 2025 15:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8141C33EC;
+	Sun, 20 Jul 2025 15:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753027003; cv=pass; b=d1ZgOOaF8uDKsD6oxgNgbJg6KkqxNjts73hYgS6i77jRDj4G5BpFzuASafJAABZKKLcJElXctl2DvDdICN5gi9/mnEmSCQljg/j+pnR0aDMBrNylHgwVD2joEMwkjrbYpn2myUXnOINqhYyexCDu9uQJGxU15nhYgNrHYpHpeNk=
+	t=1753027086; cv=pass; b=FiWS8sgH8HA3TF7DHPzRgjiE4XMFDL5Pj9D3MlU3495M73ySHTl0O/5C8ehL3080MmGepEha8UPyQWlU5nrG3eWlmp7DqJ1V06dXd+r6c4kQwJw6NnC0K91WOSSiGjFvVnPtmqqv7x1g4YhBYLPR7MDePUF9JK20gdE8keS3bFI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753027003; c=relaxed/simple;
-	bh=Kgf4ebbbmC8TJqXyyg3h4tJI/2IZL8J2RWSnHBNB46w=;
+	s=arc-20240116; t=1753027086; c=relaxed/simple;
+	bh=C33JyrZ8qJl/+xZ7qldoQZL3cIHjbVwBfVLAKleuybE=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=BTkwtGXG52Cx5tT2G2DJgmKYAEZBS4gLaCzsbojZTngUepXdwUNQibY3c4HESWO3/Qfs4Xaui3eNSBdjIqjWK0JNQXKyKu0mPL02G6ECeVSH1STd9ii6Ztu4dJXIL/rob/yARDPG+QOgxu3erM+cMQjpt1LE7BH9e3HJ1SJG0Fk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bs63e3Nl; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=GB4Xb2J2BWKN9DmFa0Uot1RKoqeBGSxvgkadA8L6iJsam4j1YpFH74eLP5GFtFwgwGGmWWw5XEUsa4BGV/UFzo5J0uOsa9gAoG9NegfMGvbOb0jdCyOYdPfX03yWVmRmQu/H1f0rsIJzZDBqR9ORyhOTs3+wMemMA+TSRxAKm2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=V5yWvYoH; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bs63e3Nl"
-ARC-Seal: i=1; a=rsa-sha256; t=1753026987; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="V5yWvYoH"
+ARC-Seal: i=1; a=rsa-sha256; t=1753027071; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=c0JEC5IJwdmsxYLINfk++Adwtmf3NvSn76tI1Ujh584KqxmypiSAvlqgnxf/JQbsGRg2ReJu/H07eUvoYAXrXXtlw8xxs48mrO3i+QVa3mZWwaqDhXppzANORNGK7vRjPC2tacn4SCY7oYsFF8INtm7Am61cA7UIALrTAeoUSUk=
+	b=ayHo4Mk9uUuyrK0r3FEU1eAlHwEbDDYjq/FJryh5bW79phAqe4DPEnktRggxesdEGy/zvthr5/PVPJ5Lm8z3P4g/k/M6wBsfeH1AhcG9HNwiwjuJ9nPaO+tCLbMIoA/M/Hdr9h7mnCkM2piMnwTjPK6LFqeqzlYLzEb0gE7SBiI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753026987; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=+cxba+U6S+zEpagJWyQeVlVivVci989TuaHo0BdsYdw=; 
-	b=SWWgfX5qvVkDBVGmWOlCGpGx06gTLcmfeoVcjg/ss54gxW2k1RFXTHiplXHrnWauO84glYFPU5z55T9IBcnad/SKwV2RIPzqxrEvLGsBCXmIOHLdTlZc/2UIIHndvbY2UpMt8W/xOZ4dVKRHpgLaszsgcHgqF2mI93uwmaMFqg0=
+	t=1753027071; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=C33JyrZ8qJl/+xZ7qldoQZL3cIHjbVwBfVLAKleuybE=; 
+	b=SU1kAifHeiFe1vyer/8JdWxiFM0Kt7Mrh+VexNvbqM0tj0uSxLfElf5mMMkNlhVYgjCyAHHKFoiV0nEk05nSyk3JZaAuKFaEOf9/RjyUGZ3ZzvpmoO5eeLjAQ30MOXpPU0COG8Q1oXYaUu/1fBpwS2+prx0uJbNVB9LiKwb587U=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753026987;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753027071;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=+cxba+U6S+zEpagJWyQeVlVivVci989TuaHo0BdsYdw=;
-	b=bs63e3NlZofJBnTsPFCfWUiE6J9z20YeLnn4ODvwxkAtC0XRT6PESq0nvhOh/jrt
-	gKYZmyeSWinuSAX24FeIm75mfS2Wla0WykS7w0llNhyz5z1LHzRHG4uyBhX0nvhQaHr
-	qM8DGjsGPsvRnLvQRMcDCHdT9AwLyB8LWP+a3JHw=
-Received: by mx.zohomail.com with SMTPS id 175302698407049.503546430246615;
-	Sun, 20 Jul 2025 08:56:24 -0700 (PDT)
+	bh=C33JyrZ8qJl/+xZ7qldoQZL3cIHjbVwBfVLAKleuybE=;
+	b=V5yWvYoHSK8s9KVaybq4OaO5hYKkauI3avvWWeDKLNhqoq953LPjm3H8OMWW9K4b
+	Q2DasfGpwR5hg2SAm3exaQoF00p09ozh5EcZ1ftYVC1eQUuDhGca1BSLzYLkM5CwA4z
+	uF5zaUVh/hFzm8YkR5ld2m9Y11Z3mIIt5BZKutRY=
+Received: by mx.zohomail.com with SMTPS id 1753027069575217.87290204128726;
+	Sun, 20 Jul 2025 08:57:49 -0700 (PDT)
 Content-Type: text/plain;
-	charset=us-ascii
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH 2/3] device: rust: expand documentation for Device
+Subject: Re: [PATCH 3/3] driver: rust: expand documentation for driver
+ infrastructure
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250717224806.54763-3-dakr@kernel.org>
-Date: Sun, 20 Jul 2025 12:56:07 -0300
+In-Reply-To: <20250717224806.54763-4-dakr@kernel.org>
+Date: Sun, 20 Jul 2025 12:57:33 -0300
 Cc: gregkh@linuxfoundation.org,
  rafael@kernel.org,
  ojeda@kernel.org,
@@ -61,26 +62,27 @@ Cc: gregkh@linuxfoundation.org,
  tmgross@umich.edu,
  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <E4FAF7C9-F210-4EFF-AC29-C969A991205B@collabora.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5A1A13D0-9990-41F2-9F3F-280A126512A1@collabora.com>
 References: <20250717224806.54763-1-dakr@kernel.org>
- <20250717224806.54763-3-dakr@kernel.org>
+ <20250717224806.54763-4-dakr@kernel.org>
 To: Danilo Krummrich <dakr@kernel.org>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
-This looks good to me!
+This also looks good to me.
 
 > On 17 Jul 2025, at 19:45, Danilo Krummrich <dakr@kernel.org> wrote:
-> 
-> The documentation for the generic Device type is outdated and deserves
-> much more detail.
-> 
-> Hence, expand the documentation and cover topics such as device types,
-> device contexts, as well as information on how to use the generic device
-> infrastructure to implement bus and class specific device types.
-> 
+>=20
+> Add documentation about generic driver infrastructure, representing a
+> guideline on how the generic driver infrastructure is intended to be
+> used to implement bus specific driver APIs.
+>=20
+> This covers aspects such as the bus specific driver trait, adapter
+> implementation, driver registration and custom device ID types.
+>=20
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+
+=E2=80=94 Daniel=
