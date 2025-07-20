@@ -1,124 +1,114 @@
-Received: from forward205d.mail.yandex.net (forward205d.mail.yandex.net [178.154.239.216])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFBE1DE3C0;
-	Sun, 20 Jul 2025 09:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.216
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E6F1DFE0B;
+	Sun, 20 Jul 2025 12:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753005356; cv=none; b=NnFkZAZOC87gp8sERERODcYtw8RBK+vCP206AOjNzbUUG66pcN7wO+pHqG8COgzCTcv7MrfAHnzlplexzLczisaFc1SGroyDQgwKlsgRTmXt7UM8BPdlZV9AJZh9B2FTdLEC1Q+UVN3xHaVR29Nazkj/G2LzwKC91ZOOtanqllQ=
+	t=1753014612; cv=none; b=j7M88TYcexN5GTnXsjUUVS1IAuF9fRLwevfHRhC01IQYUuAJzS72u34y6rvyQ+0Ol5F9jlwqXZzhDCcPsrVDGGRMN17UID0kKJyFTkqDnjc0+BHdY8Xodi65i11uAEHypASZ8894SXIOrizNweLVJDAi+FZE5UiaG04/kbr/ZfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753005356; c=relaxed/simple;
-	bh=GFa0YFh7rnF36crYZ8kQlad566/j64nA1pXdu2g/StA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mLA9kBjqtmxEN9Zcpc73kQKe60DmjK8fzIekcSaxe+P3P2PJZa5dt23Lp1LbUYRMcRV/DUga3eau2+1DyhLH0xglK0bcba2GrBHPkZAISIa0AqHI0IGb92FpzuAgOTnUKTW1y/5wS4Ysc/T++argF3OKZav09ZeDVWYR1iRp/LY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=c8a8UGXM; arc=none smtp.client-ip=178.154.239.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1753014612; c=relaxed/simple;
+	bh=Pi4SWubD7L9QbNR9J+qgTLLaeJVidEjGwCfMDjw9Lv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QNyjxzoLTNLJYv6UIF2XldYqk2B6IP1E2Yqp23wpqfL/eKnFv6P0Q1hTekLGD0h9I50K2Xx58lzgFr/y1qAu5UfKIrrDoGfGS3CT0Byt3mWrsvuFO7+w5D7fl6IcC/LuMb3O69somJUY0+aFPAqi12luVjUDNS0HDJbkRlDSu+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IvbgZWDA; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="c8a8UGXM"
-Received: from forward102d.mail.yandex.net (forward102d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d102])
-	by forward205d.mail.yandex.net (Yandex) with ESMTPS id 10393890AA;
-	Sun, 20 Jul 2025 12:49:07 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:e0cb:0:640:3e34:0])
-	by forward102d.mail.yandex.net (Yandex) with ESMTPS id 8C357C0093;
-	Sun, 20 Jul 2025 12:48:59 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id emMPSZxMxuQ0-BcJnzjcu;
-	Sun, 20 Jul 2025 12:48:58 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1753004938;
-	bh=xZmvch/RB2Pm8dA1QtMTs0vcuWppyiPWJBKMFB4UoSQ=;
-	h=Cc:Message-ID:References:Date:In-Reply-To:Subject:To:From;
-	b=c8a8UGXMIKhfXy5TBIbNo8NIsy7/e+w0j6q4yaOX5iyKCSR0QsEGzq3yWzMZxwuE8
-	 5hNAMPbv4HbA497L+QrOZyKUoYYIlgbCKihHXQaUkHKYH6s4FHTkUGcCeyi5nJa1KI
-	 376hH/jswNrU7XFy/oK/y38ZDWeDmQVeJjmjAW50=
-Authentication-Results: mail-nwsmtp-smtp-production-main-88.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: dakr@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v1 3/3] rust: make `kvec::Vec` functions `const fn`
-Date: Sun, 20 Jul 2025 12:48:38 +0300
-Message-ID: <20250720094838.29530-4-work@onurozkan.dev>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250720094838.29530-1-work@onurozkan.dev>
-References: <20250720094838.29530-1-work@onurozkan.dev>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IvbgZWDA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753014611; x=1784550611;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Pi4SWubD7L9QbNR9J+qgTLLaeJVidEjGwCfMDjw9Lv8=;
+  b=IvbgZWDAFn8FgrCpT3scjkQtLVsmmRBOg2nYx8kR0mTUMGzDH+RsuKN7
+   TZVTiLhD0wrASu4x7ycgFaz1Xy76xCXeMnnVO+1Zv8aPF0vxNAerB9zOP
+   Zf4cHSu3jilR8mf/azNzSOPiFrV/AbDPEtT43QrXj94x/+7FHbKD6nunl
+   Tl1liFYAO0LjG7AZW936dzybcc0rOZ2fsBaOusndxLtIuQQIwN6Hxk9i2
+   iNiaXoeGKVH3ASNoDW0opbnPxOaF/cDzBHcZqXAn2M1vBXCUZx5P/T+sg
+   epCYQpi7rmRjkV9TNq59ROFE9mqA+FXPkfYWAac7suvwhdxrDgHlOka/C
+   Q==;
+X-CSE-ConnectionGUID: CrYa+vTxRR2JuW+SJH/BIQ==
+X-CSE-MsgGUID: gwp7KCsHR3Wamh8rXYc8GQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11498"; a="72813836"
+X-IronPort-AV: E=Sophos;i="6.16,326,1744095600"; 
+   d="scan'208";a="72813836"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2025 05:30:10 -0700
+X-CSE-ConnectionGUID: vw7IUtZAQrmT/JKKal5jlg==
+X-CSE-MsgGUID: oeCuXcGERV6qLi/nIMCYdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,326,1744095600"; 
+   d="scan'208";a="158272059"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 20 Jul 2025 05:30:08 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1udTB7-000G65-2v;
+	Sun, 20 Jul 2025 12:30:05 +0000
+Date: Sun, 20 Jul 2025 20:29:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Sidong Yang <sidong.yang@furiosa.ai>, Miguel Ojeda <ojeda@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org, Sidong Yang <sidong.yang@furiosa.ai>
+Subject: Re: [PATCH 1/4] rust: bindings: add io_uring headers in
+ bindings_helper.h
+Message-ID: <202507202006.8ZnBwBsW-lkp@intel.com>
+References: <20250719143358.22363-2-sidong.yang@furiosa.ai>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250719143358.22363-2-sidong.yang@furiosa.ai>
 
-Makes various `kvec::Vec` functions `const fn`
-to allow compile-time evaluation.
+Hi Sidong,
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/alloc/kvec.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index 1a0dd852a468..af6e2564a194 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -174,7 +174,7 @@ const fn is_zst() -> bool {
+[auto build test WARNING on rust/rust-next]
+[also build test WARNING on char-misc/char-misc-testing char-misc/char-misc-next char-misc/char-misc-linus soc/for-next linus/master v6.16-rc6 next-20250718]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-     /// Returns the number of elements that can be stored within the vector without allocating
-     /// additional memory.
--    pub fn capacity(&self) -> usize {
-+    pub const fn capacity(&self) -> usize {
-         if const { Self::is_zst() } {
-             usize::MAX
-         } else {
-@@ -184,7 +184,7 @@ pub fn capacity(&self) -> usize {
+url:    https://github.com/intel-lab-lkp/linux/commits/Sidong-Yang/rust-bindings-add-io_uring-headers-in-bindings_helper-h/20250719-223630
+base:   https://github.com/Rust-for-Linux/linux rust-next
+patch link:    https://lore.kernel.org/r/20250719143358.22363-2-sidong.yang%40furiosa.ai
+patch subject: [PATCH 1/4] rust: bindings: add io_uring headers in bindings_helper.h
+config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/20250720/202507202006.8ZnBwBsW-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250720/202507202006.8ZnBwBsW-lkp@intel.com/reproduce)
 
-     /// Returns the number of elements stored within the vector.
-     #[inline]
--    pub fn len(&self) -> usize {
-+    pub const fn len(&self) -> usize {
-         self.len
-     }
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507202006.8ZnBwBsW-lkp@intel.com/
 
-@@ -195,7 +195,7 @@ pub fn len(&self) -> usize {
-     /// - `additional` must be less than or equal to `self.capacity - self.len`.
-     /// - All elements within the interval [`self.len`,`self.len + additional`) must be initialized.
-     #[inline]
--    pub unsafe fn inc_len(&mut self, additional: usize) {
-+    pub const unsafe fn inc_len(&mut self, additional: usize) {
-         // Guaranteed by the type invariant to never underflow.
-         debug_assert!(additional <= self.capacity() - self.len());
-         // INVARIANT: By the safety requirements of this method this represents the exact number of
-@@ -244,7 +244,7 @@ pub fn as_mut_ptr(&mut self) -> *mut T {
-     /// Returns a raw pointer to the vector's backing buffer, or, if `T` is a ZST, a dangling raw
-     /// pointer.
-     #[inline]
--    pub fn as_ptr(&self) -> *const T {
-+    pub const fn as_ptr(&self) -> *const T {
-         self.ptr.as_ptr()
-     }
+All warnings (new ones prefixed by >>):
 
-@@ -260,7 +260,7 @@ pub fn as_ptr(&self) -> *const T {
-     /// assert!(!v.is_empty());
-     /// ```
-     #[inline]
--    pub fn is_empty(&self) -> bool {
-+    pub const fn is_empty(&self) -> bool {
-         self.len() == 0
-     }
+>> warning: `extern` fn uses type `io_tw_state`, which is not FFI-safe
+   --> rust/bindings/bindings_generated.rs:109725:28
+   |
+   109725 |     ::core::option::Option<unsafe extern "C" fn(req: *mut io_kiocb, tw: io_tw_token_t)>;
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not FFI-safe
+   |
+   = help: consider adding a member to this struct
+   = note: this struct has no fields
+   note: the type is defined here
+   --> rust/bindings/bindings_generated.rs:109642:1
+   |
+   109642 | pub struct io_tw_state {}
+   | ^^^^^^^^^^^^^^^^^^^^^^
+   = note: `#[warn(improper_ctypes_definitions)]` on by default
 
---
-2.50.0
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
