@@ -1,72 +1,72 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAD621766A
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 05:23:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FBF1E489
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 05:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753075396; cv=none; b=pIlIwT1MJeUFAvRGwX8q4x1fYdKu8pDWJIXI9Mzs99p8kOKXNWYmmAfzpsAhzM6FxgcSfsYuF7p84hpz/PF5+UMTi2a5veAgrGoOqRqU8Lbfwplf5zyNP8MFn/7tosCxsD2niBVkDh59DwAm4dkY+sTFXJll68dOPyGIRk28IFY=
+	t=1753076574; cv=none; b=eJVrcp37XL9qq+8ToEpV7zPiQhMzWLuL1yDoJzu07FKUmmNo0n3PELmfGuhgGNB+IRnC5pKH//6hGOof/TuIqhUZcTWsSxDY1V/yCHdPHbwlsRzeSL8JB/sobzAu4nLX7w2d+Vml40ydToYXrED2+UcaSn0QZ8N5eTL61y3KvcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753075396; c=relaxed/simple;
-	bh=W4QbuNm3eHXcSH0Ex2QdyPj6OuSlzQfZcAHEkhea0pQ=;
+	s=arc-20240116; t=1753076574; c=relaxed/simple;
+	bh=JrKcpk3Qj3IVMgAVLgxJUQFX8REPMADjoTMxMUlt74E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T5nSdznhLqZ069AlXFxV7o2YqLXoA/hdcXtRSIq91GcU4kTlX/3Y/cPLIvWVHSyZm4jpS/wz/QI0Y6ChSZAIMtgfMcwASVp85Km4Lg248gG156c/UjmVw4a9PsWHv6F793z2OhQYp20TYO0PUDspf3EbIMMJYtxmqN+pVzes+PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=XlmQwrgA; arc=none smtp.client-ip=209.85.214.176
+	 Content-Type:Content-Disposition:In-Reply-To; b=FUM6vpdLDBahQftt+omING7Vg7cPo6jb3zI/ZkAvJPqGpotwdCsEqtyUdshqfckoWnDmrNdij+hD6r8wlHrj5WtWMQhkODmbnRZpCi5XFL8BNspa+NcN3lbWIlrp22P67tczGwmhZ6vy20M4O1ADMbhnFj08qUb+frDPIx93HC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=EqG9bz1o; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="XlmQwrgA"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23508d30142so46320895ad.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 22:23:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="EqG9bz1o"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-23c8a505177so34643125ad.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 22:42:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1753075392; x=1753680192; darn=vger.kernel.org;
+        d=furiosa.ai; s=google; t=1753076573; x=1753681373; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=0SHACbHK9K6txcaxkzR12JtCEcLywtnifQd4zOB/+rQ=;
-        b=XlmQwrgAiSNiklZDmhykzdoaEuOYqoytA8dsY+u2rmdbNDX4Ez5R5oy+eMZToNB4bU
-         SO7hx8xfUbuhd0hjv4hFvZpUBxapcM4P+IuYaCyQ02q0czKnX333neGBv93odtapggkD
-         smGUZwiVdvt1zrUu/zArwLmuVHMGT+UMrf+js=
+        bh=OINyTmS0kTaq+9cL6TTezFQf3vvpNluR/qiFYj4mJCI=;
+        b=EqG9bz1oWKHBTxcFcsD2oIKa6R7rBT5gGBsj0YVI+vYbhosis5JTTyEsUeKSp7m/Lc
+         eAoHwq+DVxTDNeff8ka8tHYm8P6d+AXusbecLyzKlKJ1PZNfRHueLs97lLU/bRXFwCBe
+         /DH6rcQnfreNL4KgDnHF/xcqo73Vn1KByd/o4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753075392; x=1753680192;
+        d=1e100.net; s=20230601; t=1753076573; x=1753681373;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0SHACbHK9K6txcaxkzR12JtCEcLywtnifQd4zOB/+rQ=;
-        b=ToNYRuhekr4XM8Auzrtdkp05b55imITiM/Y+U3jK/WOF3HtT/h1G2jVYYhbafw+QaT
-         j969/dNV72GbvDmcz0Wy6uE8Uz+8+euam7u5JlamHyeMLpN2HTCcr+S3J0Yb46zB+gsi
-         6W0YN7sleNtU+CeWb9lG/k4ky4UdwpmoPU1w3RxFNPI9Y6SXJBbT54Qryf/BgTwUeXfW
-         6LTVsg3/P9Rc4qQoH+U8SySO8dIzj2nGwJfZ/BuRsfHY09B672n+yZIB4O5IGhEu0AaI
-         wjCPQz8cQt1rKvMq0nY64KNh5x81omTjtTDoeE22l1/voUnPdVRtrENi1uPIlKhdtiIr
-         tlxA==
-X-Forwarded-Encrypted: i=1; AJvYcCVl4cmqAcupVlpVn1sdd8pwTD5U9QwMbhUrtmOxVLDomX3JMXKGvzYLlE33MeXx0Fe3KkdE30arUxDZ6f6ffQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj63bApDYFmQFTZiHLWxZJAJZ/Dnjw+rF6SIjZH9IhSXTMZKCM
-	BnxB9gXvayIDHOOO7vDHaOmdiYb0HRUrzkYQocaBnqKqvaWJW6z5SDeTXGOSjZIAGlg=
-X-Gm-Gg: ASbGncsHdpiztAOj3+esukp3O94iZwbdFHrQc4UHjzPo3fmMrVZbgXxJ8iAVgXxhy5y
-	7uZUrCbct3ISiZnTqqk+ZhpCQvi4U3j4KCOrNmX3AIJZK+yenT+ZNlmU9ajYfPrzC4wl1hjpebf
-	HxSzEZ0HVb7EC9w0wcBUfMqT/NbOGR9MFUOQENmM2YWOeumUb+hKFvolQKEY6zS8NXT3k/cY2mY
-	0hNrkTYJtORIS1XBJCdAE//RSfkI1T8aKU1KJLr9tOF9eESc9XBK7KOIigVQ+WT7RNZt+tNqtxe
-	4jCqwkllAdNU48+gditRTsG2BVrrXdXKm+cz86uxz9003TVzEgsxQglpcX0jrOmX7kIFPU+WEdk
-	24I6kvAVOQ1MBT7jwEhViSQKsXeKsAqQEWYoDRALqE7J6veoVevJ5Qw==
-X-Google-Smtp-Source: AGHT+IHrxllh4+pFRTAoM/w2vfKqHEkM0kNphKoafaqRUKxLzGi1JLa2ju8qrT+3ee2/EMRl3RAndA==
-X-Received: by 2002:a17:902:e790:b0:235:f70:fd39 with SMTP id d9443c01a7336-23e2566aec9mr280364645ad.10.1753075392332;
-        Sun, 20 Jul 2025 22:23:12 -0700 (PDT)
+        bh=OINyTmS0kTaq+9cL6TTezFQf3vvpNluR/qiFYj4mJCI=;
+        b=ovptEhxPzGn26mIJKBlsOwp2LY/4mIamAi7vNsQzr9Jn3cn5R3GIK2gfSB7uNSEeki
+         5dhOEtLaPhS5JKnEqcVcy3ROc7akqNo6FZLVxVJSOfkxIFUty+GLKJesBdfDRqW6NZc6
+         5mY/ZoMmsCQQ3wJv0SOemTex2C2NZkHVYV0YWk323/4lq+Tdk6ywJtI8Hm5eE95KW4KX
+         pXnKWTQPjmB/W3p7Mn7ruXlXof3NrmYPq9UEFZmqgL12ntM9O9KXEdy+3L5fwpR0C7cq
+         2G/J9AyL9ye1cfGK/wMzaBloki1bnUsVRMrnL65N3fjfO7/7yEN7s1RfYq4k4a1/0XBk
+         lK0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXVHOm+C61ofJr1N7JrTehhMlJmIbQ0CbgQ2T/CYMbxis/MHP5shIzw/HAKkVgh/Z6abBYRz9CiMPmcar8Nuw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZmR70zyeD0vFP3jHWw8m1klkzM6mx/T3LkgbQxegeLyQ7V8F3
+	YPX5OnshnwVcdRsiX59kCIqatx9mOEB5Y7naftjkUR2FHTYlfyZahxipTfziFmRokDU=
+X-Gm-Gg: ASbGncumFxhFn7ZMTKjtdCJDZPh5zuY64IWPfj8rQQZIHydrnM+aae8oSE2yM4BtQjF
+	whmKZFp3fHFR6hvs+W/yoWWt6QXG44JKz7l3vQj4Xj4mqyAQCteHaUQpfwnF136D7oO9pKeeYa/
+	p6JNWaJeJtqhTtxnMFYwnnotZ5/mnauEkaao9Pj+9LGvxUrXvxFceB0fTajl+DU9YFpiw2n2h5q
+	auIaWiDPi8d/cBiSBc1utD+YtJyu5hVoD0cZgPk3shrQq2wwC3z3O1p5WZERHrrRlWpd0GBtrmc
+	z7i2D21czbbws3b0Y9i6VhsgGrR6iYpljAQZ3AKuXgvvn9m9xOVcFk225ADddkNut6Onq3NrUqy
+	isToEinXW5Kmi+MC3ka3cHdNewjCKz+GCQ7zsFMIGQSddOmZIkqdYNg==
+X-Google-Smtp-Source: AGHT+IHtO0lcTnjLg7RoB8oempV8RRmalCV8Gc4fgDN+BPSBAehU6IhbE6a83mK5rPASvrdvcGJqIg==
+X-Received: by 2002:a17:902:e949:b0:237:d734:5642 with SMTP id d9443c01a7336-23e3b84f73emr154394105ad.41.1753076572632;
+        Sun, 20 Jul 2025 22:42:52 -0700 (PDT)
 Received: from sidongui-MacBookPro.local ([221.148.76.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b60ed72sm49769655ad.77.2025.07.20.22.23.09
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6ef82esm49929675ad.209.2025.07.20.22.42.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Jul 2025 22:23:11 -0700 (PDT)
-Date: Mon, 21 Jul 2025 14:22:56 +0900
+        Sun, 20 Jul 2025 22:42:52 -0700 (PDT)
+Date: Mon, 21 Jul 2025 14:42:47 +0900
 From: Sidong Yang <sidong.yang@furiosa.ai>
 To: Caleb Sander Mateos <csander@purestorage.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
 	Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-Message-ID: <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
+Subject: Re: [PATCH 3/4] rust: miscdevice: add uring_cmd() for MiscDevice
+ trait
+Message-ID: <aH3TVzxTlTUaDQXp@sidongui-MacBookPro.local>
 References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
- <20250719143358.22363-3-sidong.yang@furiosa.ai>
- <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
+ <20250719143358.22363-4-sidong.yang@furiosa.ai>
+ <CADUfDZpmD-WfVsrzNOt6T6132M+EHCGtRcnQH7p0z2f3f6dBvw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,224 +76,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
+In-Reply-To: <CADUfDZpmD-WfVsrzNOt6T6132M+EHCGtRcnQH7p0z2f3f6dBvw@mail.gmail.com>
 
-On Sun, Jul 20, 2025 at 03:10:28PM -0400, Caleb Sander Mateos wrote:
-> On Sat, Jul 19, 2025 at 10:34 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+On Sun, Jul 20, 2025 at 04:08:19PM -0400, Caleb Sander Mateos wrote:
+> On Sat, Jul 19, 2025 at 10:35 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
 > >
-> > This patch introduces rust abstraction for io-uring sqe, cmd. IoUringSqe
-> > abstracts io_uring_sqe and it has cmd_data(). and IoUringCmd is
-> > abstraction for io_uring_cmd. From this, user can get cmd_op, flags,
-> > pdu and also sqe.
+> > This patch adds uring_cmd() function for MiscDevice trait and its
+> > callback implementation. It uses IoUringCmd that io_uring_cmd rust
+> > abstraction.
 > >
 > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
 > > ---
-> >  rust/kernel/io_uring.rs | 114 ++++++++++++++++++++++++++++++++++++++++
-> >  rust/kernel/lib.rs      |   1 +
-> >  2 files changed, 115 insertions(+)
-> >  create mode 100644 rust/kernel/io_uring.rs
+> >  rust/kernel/miscdevice.rs | 34 ++++++++++++++++++++++++++++++++++
+> >  1 file changed, 34 insertions(+)
 > >
-> > diff --git a/rust/kernel/io_uring.rs b/rust/kernel/io_uring.rs
-> > new file mode 100644
-> > index 000000000000..7843effbedb4
-> > --- /dev/null
-> > +++ b/rust/kernel/io_uring.rs
-> > @@ -0,0 +1,114 @@
-> > +// SPDX-License-Identifier: GPL-2.0
+> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
+> > index 288f40e79906..5255faf27934 100644
+> > --- a/rust/kernel/miscdevice.rs
+> > +++ b/rust/kernel/miscdevice.rs
+> > @@ -14,6 +14,7 @@
+> >      error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
+> >      ffi::{c_int, c_long, c_uint, c_ulong},
+> >      fs::File,
+> > +    io_uring::IoUringCmd,
+> >      mm::virt::VmaNew,
+> >      prelude::*,
+> >      seq_file::SeqFile,
+> > @@ -175,6 +176,15 @@ fn show_fdinfo(
+> >      ) {
+> >          build_error!(VTABLE_DEFAULT_ERROR)
+> >      }
 > > +
-> > +// Copyright (C) 2025 Furiosa AI.
-> > +
-> > +//! Files and file descriptors.
-> > +//!
-> > +//! C headers: [`include/linux/io_uring/cmd.h`](srctree/include/linux/io_uring/cmd.h) and
-> > +//! [`include/linux/file.h`](srctree/include/linux/file.h)
-> > +
-> > +use core::mem::MaybeUninit;
-> > +
-> > +use crate::{fs::File, types::Opaque};
-> > +
-> > +pub mod flags {
-> > +    pub const COMPLETE_DEFER: i32 = bindings::io_uring_cmd_flags_IO_URING_F_COMPLETE_DEFER;
-> > +    pub const UNLOCKED: i32 = bindings::io_uring_cmd_flags_IO_URING_F_UNLOCKED;
-> > +
-> > +    pub const MULTISHOT: i32 = bindings::io_uring_cmd_flags_IO_URING_F_MULTISHOT;
-> > +    pub const IOWQ: i32 = bindings::io_uring_cmd_flags_IO_URING_F_IOWQ;
-> > +    pub const NONBLOCK: i32 = bindings::io_uring_cmd_flags_IO_URING_F_NONBLOCK;
-> > +
-> > +    pub const SQE128: i32 = bindings::io_uring_cmd_flags_IO_URING_F_SQE128;
-> > +    pub const CQE32: i32 = bindings::io_uring_cmd_flags_IO_URING_F_CQE32;
-> > +    pub const IOPOLL: i32 = bindings::io_uring_cmd_flags_IO_URING_F_IOPOLL;
-> > +
-> > +    pub const CANCEL: i32 = bindings::io_uring_cmd_flags_IO_URING_F_CANCEL;
-> > +    pub const COMPAT: i32 = bindings::io_uring_cmd_flags_IO_URING_F_COMPAT;
-> > +    pub const TASK_DEAD: i32 = bindings::io_uring_cmd_flags_IO_URING_F_TASK_DEAD;
-> > +}
-> > +
-> > +#[repr(transparent)]
-> > +pub struct IoUringCmd {
-> > +    inner: Opaque<bindings::io_uring_cmd>,
-> > +}
-> > +
-> > +impl IoUringCmd {
-> > +    /// Returns the cmd_op with associated with the io_uring_cmd.
-> > +    #[inline]
-> > +    pub fn cmd_op(&self) -> u32 {
-> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
-> > +        unsafe { (*self.inner.get()).cmd_op }
-> > +    }
-> > +
-> > +    /// Returns the flags with associated with the io_uring_cmd.
-> > +    #[inline]
-> > +    pub fn flags(&self) -> u32 {
-> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
-> > +        unsafe { (*self.inner.get()).flags }
-> > +    }
-> > +
-> > +    /// Returns the ref pdu for free use.
-> > +    #[inline]
-> > +    pub fn pdu(&mut self) -> MaybeUninit<&mut [u8; 32]> {
+> > +    fn uring_cmd(
+> > +        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
+> > +        _file: &File,
+> > +        _io_uring_cmd: &IoUringCmd,
+> > +        issue_flags: u32,
+> > +    ) -> Result<isize> {
 > 
-> Should be &mut MaybeUninit, right? It's the bytes that may be
-> uninitialized, not the reference.
-
-Yes, it should be &mut MaybeUninit.
-> 
-> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
-> > +        unsafe { MaybeUninit::new(&mut (*self.inner.get()).pdu) }
-> > +    }
-> > +
-> > +    /// Constructs a new `struct io_uring_cmd` wrapper from a file descriptor.
-> 
-> Why "from a file descriptor"?
-> 
-> Also, missing a comment documenting the safety preconditions?
-
-Yes, it's a mistake in comment and also ptr should be NonNull.
-> 
-> > +    #[inline]
-> > +    pub unsafe fn from_raw<'a>(ptr: *const bindings::io_uring_cmd) -> &'a IoUringCmd {
-> 
-> Could take NonNull instead of a raw pointer.
-> 
-> > +        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
-> > +        // duration of 'a. The cast is okay because `File` is `repr(transparent)`.
-> 
-> "File" -> "IoUringCmd"?
-> 
-> > +        unsafe { &*ptr.cast() }
-> > +    }
-> > +
-> > +    // Returns the file that referenced by uring cmd self.
-> 
-> I had a hard time parsing this comment. How about "Returns a reference
-> to the uring cmd's file object"?
+> Would i32 make more sense as the return value, since that's what
+> io_uring_cqe actually stores?
 
 Agreed. thanks.
 > 
-> > +    #[inline]
-> > +    pub fn file<'a>(&'a self) -> &'a File {
-> 
-> Could elide the lifetime.
-
-Thanks, I didn't know about this.
-> 
-> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
-> > +        let file = unsafe { (*self.inner.get()).file };
-> > +        unsafe { File::from_raw_file(file) }
-> 
-> Missing a SAFETY comment for File::from_raw_file()? I would expect
-> something about io_uring_cmd's file field storing a non-null pointer
-> to a struct file on which a reference is held for the duration of the
-> uring cmd.
-
-Yes, I missed. thanks.
-> 
+> > +        build_error!(VTABLE_DEFAULT_ERROR)
 > > +    }
+> >  }
+> >
+> >  /// A vtable for the file operations of a Rust miscdevice.
+> > @@ -332,6 +342,25 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+> >          T::show_fdinfo(device, m, file);
+> >      }
+> >
+> > +    unsafe extern "C" fn uring_cmd(
+> > +        ioucmd: *mut bindings::io_uring_cmd,
+> > +        issue_flags: ffi::c_uint,
+> > +    ) -> ffi::c_int {
+> > +        // SAFETY: The file is valid for the duration of this call.
+> > +        let ioucmd = unsafe { IoUringCmd::from_raw(ioucmd) };
+> > +        let file = ioucmd.file();
 > > +
-> > +    // Returns the sqe  that referenced by uring cmd self.
+> > +        // SAFETY: The file is valid for the duration of this call.
+> > +        let private = unsafe { (*file.as_ptr()).private_data }.cast();
+> > +        // SAFETY: Ioctl calls can borrow the private data of the file.
 > 
-> "Returns a reference to the uring cmd's SQE"?
+> "Ioctl" -> "uring cmd"?
 
-Agreed, thanks.
-> 
-> > +    #[inline]
-> > +    pub fn sqe(&self) -> &IoUringSqe {
-> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
-> > +        let ptr = unsafe { (*self.inner.get()).sqe };
-> 
-> "ptr" isn't very descriptive. How about "sqe"?
-
-Sounds good.
-> 
-> > +        unsafe { IoUringSqe::from_raw(ptr) }
-> 
-> Similar, missing SAFETY comment for IoUringSqe::from_raw()?
-
-Thanks. I missed.
-> 
-> > +    }
-> > +
-> > +    // Called by consumers of io_uring_cmd, if they originally returned -EIOCBQUEUED upon receiving the command
-> > +    #[inline]
-> > +    pub fn done(self, ret: isize, res2: u64, issue_flags: u32) {
-> 
-> I don't think it's safe to move io_uring_cmd. io_uring_cmd_done(), for
-> example, calls cmd_to_io_kiocb() to turn struct io_uring_cmd *ioucmd
-> into struct io_kiocb *req via a pointer cast. And struct io_kiocb's
-> definitely need to be pinned in memory. For example,
-> io_req_normal_work_add() inserts the struct io_kiocb into a linked
-> list. Probably some sort of pinning is necessary for IoUringCmd.
-
-Understood, Normally the users wouldn't create IoUringCmd than use borrowed cmd
-in uring_cmd() callback. How about change to &mut self and also uring_cmd provides
-&mut IoUringCmd for arg.
-
-> 
-> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
-> > +        unsafe {
-> > +            bindings::io_uring_cmd_done(self.inner.get(), ret, res2, issue_flags);
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +#[repr(transparent)]
-> > +pub struct IoUringSqe {
-> > +    inner: Opaque<bindings::io_uring_sqe>,
-> > +}
-> > +
-> > +impl<'a> IoUringSqe {
-> > +    pub fn cmd_data(&'a self) -> &'a [Opaque<u8>] {
-> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
-> > +        unsafe {
-> > +            let cmd = (*self.inner.get()).__bindgen_anon_6.cmd.as_ref();
-> > +            core::slice::from_raw_parts(cmd.as_ptr() as *const Opaque<u8>, 8)
-> 
-> Why 8? Should be 16 bytes for a 64-byte SQE and 80 bytes for a
-> 128-byte SQE, right?
-
-Yes, it should be 16 bytes or 80 bytes. I'll fix this.
-
-> 
-> > +        }
-> > +    }
-> > +
-> > +    #[inline]
-> > +    pub unsafe fn from_raw(ptr: *const bindings::io_uring_sqe) -> &'a IoUringSqe {
-> 
-> Take NonNull here too?
-
-Yes, Thanks.
-> 
-> > +        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
-> > +        // duration of 'a. The cast is okay because `File` is `repr(transparent)`.
-> > +        //
-> > +        // INVARIANT: The caller guarantees that there are no problematic `fdget_pos` calls.
-> 
-> Why "File" and "fdget_pos"?
-
-It's a bad mistake. thanks!
-
-Thank you so much for deatiled review!
+Thanks it's a bad mistake.
 
 Thanks,
 Sidong
@@ -301,21 +150,29 @@ Sidong
 > Best,
 > Caleb
 > 
-> > +        unsafe { &*ptr.cast() }
+> > +        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+> > +
+> > +        match T::uring_cmd(device, file, ioucmd, issue_flags) {
+> > +            Ok(ret) => ret as ffi::c_int,
+> > +            Err(err) => err.to_errno() as ffi::c_int,
+> > +        }
 > > +    }
-> > +}
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index 6b4774b2b1c3..fb310e78d51d 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -80,6 +80,7 @@
-> >  pub mod fs;
-> >  pub mod init;
-> >  pub mod io;
-> > +pub mod io_uring;
-> >  pub mod ioctl;
-> >  pub mod jump_label;
-> >  #[cfg(CONFIG_KUNIT)]
+> > +
+> >      const VTABLE: bindings::file_operations = bindings::file_operations {
+> >          open: Some(Self::open),
+> >          release: Some(Self::release),
+> > @@ -354,6 +383,11 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
+> >          } else {
+> >              None
+> >          },
+> > +        uring_cmd: if T::HAS_URING_CMD {
+> > +            Some(Self::uring_cmd)
+> > +        } else {
+> > +            None
+> > +        },
+> >          // SAFETY: All zeros is a valid value for `bindings::file_operations`.
+> >          ..unsafe { MaybeUninit::zeroed().assume_init() }
+> >      };
 > > --
 > > 2.43.0
 > >
