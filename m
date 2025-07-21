@@ -1,110 +1,190 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A80C28DEF8;
-	Mon, 21 Jul 2025 13:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AD32BE04F;
+	Mon, 21 Jul 2025 13:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753105691; cv=none; b=bY/538kbyeGCfw2ZkpJwXARYqDkAjpDKMKZRzoGmU7x0xtXvFvFCviZuAIfqMR44LRui3JFQQ1VxvUu+5uhvPDhlNO1IMG/Gtbo8gvFqkBqi3SFbUTgT/xY1tlKg5uXIgq9d0RxTR5bxr0I5m7OhxViZ+4UuaNf6TR1dTdG5nds=
+	t=1753105844; cv=none; b=g5avJAIOOy9GCsEuB+MoTH175IgCDm5NXRMwPY/OE3fKNPi4S7ltU0vU7YKaXUKqbsb5Lw4zXtMNvgD5kmgUiHEyQWJi+oGTXTyGIuQPCoKeV7/1W/d8sid6gxWvLsh7/wbXeuS8FgeBV41czy1CCkCDZUlS89cKuHf/yrZ7G+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753105691; c=relaxed/simple;
-	bh=VpKp5fA+cfu0K6mV/x0ED2EWSxOilnoSZia0h19Gcj4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=mCD/vFgyvlukMe8ZHjdo492Nr3J/A7gm871h5D9K7P/1xhbw3SDEXp58r1dGN8UyIxJb0QgbQ4EaHe0tV0KnTEpitRRnlIyMjdsBIePNYGAI/FKFYfKUkABrHRrRaFNyacl6R8TnlPSegY4IC0VD+bQq3TrTBmF9ztXo/g9V+EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ihrpzh3f; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753105844; c=relaxed/simple;
+	bh=Ouh+Rb2DpWa0BE8kZFuhuQSkkgiHTdJ5Enf6J0Q61q4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mhLGbdy7evSraVY2BNUjFy4OTKZ5H3DJ/CYE6MDwVBMAzuu1S9IZmbxoBKNAD/aQmWtYxHrzpVY37llgAFAHPyOR8seYeEZ+7x7cyT4nyDfS1zXm2ff83rYhEz7kydZJNqkz58JeI+XCb4Pd6oR8guEl99gYJRHK8jqVGFZHGYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQG5kiR9; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ihrpzh3f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D474C4CEED;
-	Mon, 21 Jul 2025 13:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753105690;
-	bh=VpKp5fA+cfu0K6mV/x0ED2EWSxOilnoSZia0h19Gcj4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=Ihrpzh3fUfUL9D9XzyKlJ1G5+ProsLiOEz6bfPXlaJ62kal3vgGVko39tYDe+3F9y
-	 cjhyQZmH48tLMPAshYYOB+Rty0uJsejMxN7jQPfhqbL2N4bPnsJJicpB2FRXvazTpI
-	 Ix40dumAkT75Zm1wkFAguAZ1Jp0AF5q3/OrvuNhok0rOirSWleWLqFA3EHefcTF+bM
-	 jbgcHkPATZvrutz80yMn0Frwh92L0hqVHqrXHZcZq40RDMHN0Od3WbbYaiof6dYQF6
-	 EmX6yxcNETEYZ2NHsZcsYbN/L2a8YqcEhagxTy1OnjgfyJGh2mT9wCEnzwCKcpeA9f
-	 PtyWLSmP8XoxQ==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQG5kiR9"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4ab81d0169cso60412011cf.2;
+        Mon, 21 Jul 2025 06:50:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753105842; x=1753710642; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=kDWJYEkMDweMn2MG5CYOHj9gUw0O9qH9V4td8BhypXE=;
+        b=ZQG5kiR9WXfGGjPpeyaRbPdW4R9ls1/xHON/yFdJPZNndJ3i+9OWRg+VKPTFD+cpWl
+         xTIuqpPUAq/kz2ZM5LWNzTEpjkHMeun5uRYy2RWmGCxfs4RFFcAFPF30SsFFRRMgAP3L
+         77k+z2E4Rf89YUn4nflfzZoUJl2fvSQ4ssndB8NygxJFd+itYcr5fYk/SW4z7fWGIRsX
+         t4CZ+ooxc613pq88XyQ8Dys+dsE/NzPsypuiMy/n/eRcOg/YDeh26G5H7YRSp+mpAPaz
+         EYZnahPVDzOMsr92hy7N80jlXRahZgCXFA34XP4BphG7wnAkiKfN/FtmQ65HBE5z6RVw
+         zUvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753105842; x=1753710642;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kDWJYEkMDweMn2MG5CYOHj9gUw0O9qH9V4td8BhypXE=;
+        b=Qv2jA+96fIoSt5Z6l7vh04wJo3qd01DNvQzTt8UxUtu6YxuR5Cs66TOmPYhX8N8MdO
+         6f48VKeNwHRiAYxe4mf18OQzLUFS3TFP7XWs1qcqVs7b3Yj8rb19v2TjuxlMYXepJ+Yn
+         CRifdS73PczUclHmGfPmmP+byC7qtipp85nuzCHyQcj4wqnOwRYI6JIMcHJqUinUjtoJ
+         epnxP200759uEF6BB3/SYVhRht18j/jxF9eLPHyQwud1btGDkESYybT0ih9XZGfn6v0I
+         YeD2hFpimw751iBlBC4RGR/o56bD8yzjFrHMWsCfQDZuGxnuopyEd3OmOq8FeK23iZOz
+         6i5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV2b/yULnBvqv5Pu3LagC2dhVgjJCYPoQIsRWUj0KrMoNafxgl9tMqQIypVljSoCW5XhuXS9qUj+yDbmZ0=@vger.kernel.org, AJvYcCVBQ4OHWEQa17xKoueO8BxtD++7eDbOveCLZ3Q3ykQAB31xz2W4Mc09UsNHPY1CO8YCK8S44IuTVaXpP+uT3kc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKrxTmRwNdJD8tLoipy0cVSVezwQ5uaK+0XEEb5ut3R03fxlA+
+	ITJRNHQFeX9R1i8dUu4fqxGzKqZhjU3szutaBxsGR+Hf5qGV2IBm5U19
+X-Gm-Gg: ASbGnctS2RkO1FSsN9oQXEb7oLnWOM1Oi1AW/e0iYairZ//zLIXgkPM32msbIJS/ESN
+	zBKSkxYTdBBk+8rIXlG0GBmQuOsn4WdovNRFq5vZ7v726DeNuXPRDLPDwoi0BduAH965jnUtLoY
+	1Xj1BJtfmlyMMtWXm+lkN7HhR2kl6mU8a63PV+YCXn284YXTXbyalfUqKhi6aFmUKsxI0Y8XF+1
+	a3H1qNWYbO3ARlzzVs9ZUPzuaqKhO/Ssj1vjiKVeaL8eZn9CljM8v7tv0lJ/zIfjW1MC7+LPjma
+	F0c6qO+uc57O54NNCmGTacEUm0PY+06fEXGnFMvK9dZNAYIIN0OR5jIJ4PaRPp/CTAuAWEj4d3O
+	X7mTxZV/OAd3QAASuHfQ14LQP8TTkcWxZOqYbkg4oobUgaqkfo5AtYnMOY6IrRFwK14yB/OjJ/s
+	U0HSpPs+IZydOeI3IGk1HVBRg=
+X-Google-Smtp-Source: AGHT+IFmrPwcjbXv7D6cvTSAvEa9bZ4UiiY9QfKEDHjEmYMvt6DyjTBIN4LKxmXUR6KBkas/qE7PnQ==
+X-Received: by 2002:a05:622a:2987:b0:4ab:50bf:e9d0 with SMTP id d75a77b69052e-4ab90987701mr241335011cf.8.1753105841389;
+        Mon, 21 Jul 2025 06:50:41 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4abb4b57d78sm42149441cf.73.2025.07.21.06.50.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Jul 2025 06:50:40 -0700 (PDT)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id ECD79F40066;
+	Mon, 21 Jul 2025 09:50:39 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 21 Jul 2025 09:50:39 -0400
+X-ME-Sender: <xms:r0V-aGwNuHBLUz9FIKEiQA9u5kwjtrMjUj5i-ydgJCJlsBesA5WY4Q>
+    <xme:r0V-aOYJ22wa2HiQImGDVi7Af5p7QW4lbpiSRU1KMq1VSHdRERXoYNRN8OMSFYyO6
+    fs8MGcjn_Gafkut4g>
+X-ME-Received: <xmr:r0V-aBn3hHX6w91J3-Axk5BrnCMzqmunPKSB0945WnQqc_X8tyL9aF4k-RA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdejvddvgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeejhfeikeekffejgeegueevffdtgeefudetleegjeelvdffteeihfelfeehvdeg
+    keenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    peefhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlihgtvghrhihhlhesgh
+    hoohhglhgvrdgtohhmpdhrtghpthhtohepmhhinhhgoheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepmh
+    hinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthhtohepjhhurhhirdhlvghllhhisehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopehvihhntggvnhhtrdhguhhithhtohhtsehlih
+    hnrghrohdrohhrghdprhgtphhtthhopeguihgvthhmrghrrdgvghhgvghmrghnnhesrghr
+    mhdrtghomhdprhgtphhtthhopehrohhsthgvughtsehgohhoughmihhsrdhorhhgpdhrtg
+    hpthhtohepsghsvghgrghllhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:r0V-aLkQjUzD63dh2EgEL3kRgcGo5g1Xjor2jwIJp6Ko2j59znGKlA>
+    <xmx:r0V-aMNLIoSkHAEHrwxwHn8l_1DsSO8Ja-9f5NzrZHvvYZMZpFQ8Wg>
+    <xmx:r0V-aNpoUdlAaTJtSiSPkH7ZE5GEb0wkRRwECI4CITcO_oJMrNhnmA>
+    <xmx:r0V-aHQDoAJm5WrK3Mh2iQtg05p296ka2jMluRSsqtFNoOxkSRBk-g>
+    <xmx:r0V-aFb8x-QJ1J1Hmcp20IJxKj61HAkTw8mGTL-jbxHiB5wswtbcQ5Zq>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 21 Jul 2025 09:50:39 -0400 (EDT)
+Date: Mon, 21 Jul 2025 06:50:38 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,	Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>,	Valentin Schneider <vschneid@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,	Justin Stitt <justinstitt@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Tamir Duberstein <tamird@gmail.com>,	Kunwu Chan <kunwu.chan@hotmail.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Borys Tyran <borys.tyran@protonmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Panagiotis Foliadis <pfoliadis@posteo.net>,	linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,	llvm@lists.linux.dev
+Subject: Re: [GIT PULL] [PATCH v2 0/5] rust: Task & schedule related changes
+ for v6.17
+Message-ID: <aH5FrrpORLWpDCkk@tardis.local>
+References: <20250625051518.15255-1-boqun.feng@gmail.com>
+ <aGKWIFVl4nwSl8SG@Mac.home>
+ <CAH5fLgj1C-BVAfK8Qoaxb4hV=s74-SNPUeHq9LtmQ5q8aqcd-g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 21 Jul 2025 15:48:06 +0200
-Message-Id: <DBHS3M032PU8.3UCTIWJB5COOZ@kernel.org>
-Subject: Re: [PATCH 1/3] device: rust: documentation for DeviceContext
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Danilo Krummrich" <dakr@kernel.org>, "Alexandre Courbot"
- <acourbot@nvidia.com>
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250717224806.54763-1-dakr@kernel.org>
- <20250717224806.54763-2-dakr@kernel.org>
- <DBF6M9BZUX3C.2VXBZJKQYGN84@nvidia.com>
- <DBF7IACHZEUW.29EHD3V4OF5GA@kernel.org>
-In-Reply-To: <DBF7IACHZEUW.29EHD3V4OF5GA@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgj1C-BVAfK8Qoaxb4hV=s74-SNPUeHq9LtmQ5q8aqcd-g@mail.gmail.com>
 
-On Fri Jul 18, 2025 at 3:14 PM CEST, Danilo Krummrich wrote:
-> On Fri Jul 18, 2025 at 2:32 PM CEST, Alexandre Courbot wrote:
->> On Fri Jul 18, 2025 at 7:45 AM JST, Danilo Krummrich wrote:
->>> +///
->>> +/// Bus devices can automatically implement the dereference hierarchy =
-by using
->>> +/// [`impl_device_context_deref`](kernel::impl_device_context_deref).
->>>  pub trait DeviceContext: private::Sealed {}
->>> =20
->>> -/// The [`Normal`] context is the context of a bus specific device whe=
-n it is not an argument of
->>> -/// any bus callback.
->>> +/// The [`Normal`] context is the default [`DeviceContext`] of any [`D=
-evice`].
->>> +///
->>> +/// The normal context does not indicate any specific scope. Any `Devi=
-ce<Ctx>` is also a valid
->>> +/// [`Device<Normal>`]. It is the only [`DeviceContext`] for which it =
-is valid to implement
->>> +/// [`AlwaysRefCounted`](kernel::types::AlwaysRefCounted) for.
->>>  pub struct Normal;
->>
->> `Normal` as a name can be interpreted in many different ways, and in the
->> case of a device context it is not clear what the "normal" state is. I
->> think it would be helpful if we can elaborate a bit more on what this
->> implies (i.e. what concretely speaking are the limitations), and if
->> possible why this name has been chosen.
->
-> It's the context that does not guarantee any specific scope. But that's a=
-lso
-> what the documentation says.
->
-> I also wouldn't speak of limitations, it's just that it doesn't allow to =
-make
-> *additional* assumptions compared to other device context types.
->
-> Yet, if you have suggestions on what to add specifically, please let me k=
-now
-> (maybe simply my previous sentence?).
->
-> Regarding the name, "Normal" seems reasonable for the device context that=
- does
-> not guarantee any specific scope. We could have also named it just "Defau=
-lt".
->
-> I think "Normal" is fine, as in "it's just a normal device reference, no
-> specific scope guaranteed".
+On Mon, Jul 21, 2025 at 01:00:49PM +0200, Alice Ryhl wrote:
+> On Mon, Jun 30, 2025 at 3:50 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > On Tue, Jun 24, 2025 at 10:15:13PM -0700, Boqun Feng wrote:
+> > > Hi Ingo & Peter,
+> > >
+> > > This is the updated version from my pull request last cycle:
+> > >
+> > > v1: https://lore.kernel.org/rust-for-linux/20250506045843.51258-1-boqun.feng@gmail.com/
+> > >
+> > > Please take a look, thanks!
+> > >
+> >
+> > Ping ;-) I forgot to add that this is a dependency for Rust version's
+> > read_poll_timeout(), which is a dependency to a few things:
+> >
+> > * In the `Tyr` driver:
+> >
+> >   https://lore.kernel.org/rust-for-linux/20250628.224928.690831629261546521.fujita.tomonori@gmail.com/
+> >
+> > * In Nova, the gpu driver:
+> >
+> >   https://lore.kernel.org/rust-for-linux/20250619-nova-frts-v6-24-ecf41ef99252@nvidia.com/
+> >
+> > * In the qt2025 phy driver:
+> >
+> >   https://lore.kernel.org/lkml/20250220070611.214262-9-fujita.tomonori@gmail.com/
+> >
+> > Thanks!
+> 
+> I would love to see this land to unblock the above users. I wanted to
 
-Not sure if this helps, but `Plain` might carry a slightly different
-meaning from `Normal` that is better in this case?
+Thanks, Alice. It's already merged in tip tree:
 
-(but you probably can't infer much from the name anyways)
+	https://lore.kernel.org/lkml/175153176741.406.14557081807475800171.tip-bot2@tip-bot2/
+	https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/commit/?id=7e611710acf966df1e14bcf4e067385e38e549a1
 
----
-Cheers,
-Benno
+> add that I fixed the Rust language so that it NUL-terminates these
+> filename strings, so Ingo's concern from the last cycle should not
+> apply to this version of the PR.
+> 
+
+Thanks a lot for pushing the changes at the Rust language side.
+
+Regards,
+Boqun
+
+> Thanks!
+> Alice
+> 
