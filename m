@@ -1,89 +1,375 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F3B28BA9A
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 14:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B48F28CF6C
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 15:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753109724; cv=none; b=HJWsN9UD+H4ERE0lvbjpUL4pxbJjkd8XS8H+M/13PUyzp5ot42LYWZQzus/xqq4rwQ5vSWoirtdu4okC0lwvGK/dDiNvVFUp2UGIPFbqWn7p87Rp0bTgIjHOr4DaRmBTtpUKlTViwkhB/KtccNRWNTKj8neuHM5pXnlKK8KLeLk=
+	t=1753110287; cv=none; b=p52IHzHBfuhAeTrvWOZXnIWsaNNEump5oLD0Ig3k3IrBMJ+8VtD0XODFYc3KtBnKzVgLzs9pPXuyitJ0GP3EckFg7C9eRHPI+kYjoCEvEuj0bi+RnEdEWRvQnHTXXRBBoFqiwFFHwTyGuk60vWYFsFu88ZN7BP4FsfizZDH4IM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753109724; c=relaxed/simple;
-	bh=ZgtVnJcOsoI+erHAB0O3e7e4PXz+r450oj9/Ov5DhpE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Y2B2UlJJHaBDNRHcEU+BarxLqhs/ZsYIdbHP7y2QbpeVBKhg/oeq9lZlxnyr87m3ykSfXv+0o1D0qqXZPYlqqhP/3NWFj9NbGPibxiHtrVURbnlf6oxLmcUnung7UZCLVCy9FaZ8Kqd1uYJ7bP4vXboM4Zrip2he8tKEZqNyaJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FSRFidng; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1753110287; c=relaxed/simple;
+	bh=tixhAVTruGjhh6AyMaRqhcxAHi0cSVcz3tj+sg7Q/tY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=enNs3s+fn2rpC/WYUaZdwVd0yWhuI8jcTbEFVHxW1Tnv83+yDKkPxGCRQ2RHpp5P+cZQlWz6kUvSx6fIqFUI1QCngAuIWfCBnVX85SyJMkcZR85Nf7PbaqRZcWxN4VbVR6O39tJZalwHMTZDCQ2nsm0incRY5oSvwjTPWZ5kaXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=fail smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=HUW1xVUy; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FSRFidng"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4561c67daebso16383195e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 07:55:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="HUW1xVUy"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-23c71b21f72so7837265ad.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 08:04:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753109721; x=1753714521; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nIkm8zbvd3d5B5IB10UU8koluangNArwbTcD9iZkkEg=;
-        b=FSRFidngDmIxSrlfMvvVTLfHlqBoladHwb+AbJK10FL1DOWbQ2tXdg1hrJo0fyuQCX
-         oFglg5dxH3hGSfYRt0ZxeJWqUFKNoECXw6QSXwZwxxVQjbmRfeySKh8Z6hUVDftrPtD9
-         fD9xQYiohowmMo6+3SuKBG0xIhWbuvA02m/Hqd3itAoq253i/3boOjJ1nLEXKoPB5d5S
-         hshJfTcK0rUqMFXXy8OFIHvHtQ8U9iIuQtmkx+uyvhe35bh/lrMrtwIJGKnT8u+b0soy
-         Xmp59tVDa4Son01DqOolaqhYXN42ut73SUD76Q7eA+Yyml2aAUhUmD88CdukWqKRfv9i
-         CA1Q==
+        d=purestorage.com; s=google2022; t=1753110284; x=1753715084; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9UeaBSMK627UpClfBs39gvk2M76/e+MwuexRd0FIWTo=;
+        b=HUW1xVUyF9ADTZKmyZ1+TPcThk2okDNaocY0WkWSKaW42GVGrgWOxnv/5e6CSrJpTs
+         jzRp3APvPGE5Qkbhx7I8V1O52jf5bTP35zy5oj3TP2FqFUDgVob95b/69nWh1qTCjI/H
+         aAOhiV56W4uWuqoudNp7QVlTF9AHbNkFAny/EK4VA1d/HJwtWW95RE72C99mHhR5g+tW
+         sQ3XaHWoqTC0FSFU2PH+FlLUrSN774sTyD/RyK8EwQ7g/YYKwmoRh6DsPxIH3OQoaL0j
+         CM6JTNeplMxSBXyXTEW62dB6H7zqNF8mZgLlk8CquiW6hrd2yCWKmcPLYp6yD4qALvfr
+         DI9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753109721; x=1753714521;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nIkm8zbvd3d5B5IB10UU8koluangNArwbTcD9iZkkEg=;
-        b=tt/dR209dKathPrjXC0lg+XlkVjZ1sF75VRse2vrJUtCTMGsZ2/1frXwkMqEYaCygf
-         T5NvroYCaelpsyvaWLd7ANv7gNPpYRXRzKNZUZhl/5sQdHeEc4eP460BBIIwWWUbWbPA
-         L06bgZN410k8oC8G60ycEF9AEdLSsS69o5eAbDGpTCmmcc6XEQJU9fIeF7QklFOYSPtx
-         BKCP9agd+fQkpydfhBTssgU8ZU8m6k70X8kUfj+iHDfTWBaZiY6JVEFA206mhEroide3
-         6xvDoj/mkYyfAygj8V3IqNNq7vF96gpMBb1248oSLtRW1UI6gwg1UAlvD/grFnpAaF7B
-         XROA==
-X-Forwarded-Encrypted: i=1; AJvYcCXh9Yudw0FDDknTwl6ik+wxC8fbyuR1ZOzAJlNqTluusvw4yA8dzhSBcuajA/VldBYT7ynpxhTF/x9T7cSS7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3XIhpsEpD5D6d8VK+YMgOV5LMnVOPNQ16os2v/otD8dQwp2PH
-	b1/yuYJYJKQKL5G7Jr+vnf4ybct6p6OnpaH2K1BF1j6DZ/acFkLFPiyKRBLl4Xa09f+socKz4gV
-	a7js6E7Hsf+Hv51vEHg==
-X-Google-Smtp-Source: AGHT+IEfUvqsUXX7mjN3ADzeqqjN+nnoq4umTFLEEX0oJHAoh0DUDSSefRyYrhyKMQYxAIrsPeFXqc82yi2VXIs=
-X-Received: from wmcq26.prod.google.com ([2002:a05:600c:c11a:b0:456:293d:55c5])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c285:b0:456:1122:8342 with SMTP id 5b1f17b1804b1-4563a51150emr80477435e9.5.1753109721212;
- Mon, 21 Jul 2025 07:55:21 -0700 (PDT)
-Date: Mon, 21 Jul 2025 14:55:20 +0000
-In-Reply-To: <20250626162313.2755584-1-beata.michalska@arm.com>
+        d=1e100.net; s=20230601; t=1753110284; x=1753715084;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9UeaBSMK627UpClfBs39gvk2M76/e+MwuexRd0FIWTo=;
+        b=G0kYBATc9bJjbiRSFtz/OYsG4k3MjNC+t0eiU+BGAfjIosRE37+naQZmjyN+P4l5je
+         MRFLySnH0vIEMsI+PnLb901SHSKL7bBEsEA0qx/n6jiCjqoJc0i8BPaVEizB5KweROnT
+         FIUHpc3/P7V6OU6Ii702xHxQmTG1c2orH4hSzRWOBxidToeJJA0jqRzVJvPoNgT85is5
+         XueQhz+rJ59Edp845A19F34wDL+2ZGvGdgMbX1lBfu4Ztk64nrm6p/mdCavyC0+DqoRX
+         58wh8CMr2LHhY/8FQl58G9jFkgfLNYeZ8eOUswL7qce2LbFndf+a+fCSxOZvhr9ZTsch
+         s3Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVE1PSObxiPlruWodTIzVS4/Z9Eh0/yCiOyaFJmPClS/EcmffP8o0ZO7X6NtC0+F3FU7P60j4C2x9HkGYIDMQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1bNHURLOmwofj9iLMMytzgmFfpwz9Sb3hIf2CHqQetJo2+kBv
+	D1QMFLDYCXXnkqvLT63caJpr/agU6z3syQA/kElR5nzA984MRPoW3NwqvrvJme1hjAom83xm0qF
+	/WWaq10en5Y0q3/rjp3hQayoXJ306riR7OuBYSwD7mA==
+X-Gm-Gg: ASbGnctn/4RSKwdaXbLLie0npHPioKcj6mWd0AZRi5rk5LGgagTc18336P1laKFFldo
+	qNh89VqFQy/dfyJyD3z6NQiKNxFVBCUCz4Tz2KARseS04JZY1d1GrnJjIjg7ryeE55dGNCglTgi
+	Rwek5UYyJ5IjbnckvZjavX2QgeRHkLwXrIGEkBbsEbGKzDHUsKsnxB8HQMLkm+0ZIeQksNLsztz
+	qRh/Igg
+X-Google-Smtp-Source: AGHT+IGQMsgTs+h38VNGeRp4OBs+iEwP7qVfnWaLEldl4Pisqq0+Oumy4EvlY7bd6zpZuTRjL+n+yLcQ2tpBpDLshOQ=
+X-Received: by 2002:a17:903:2341:b0:235:ee04:dd2e with SMTP id
+ d9443c01a7336-23e24f8ba34mr122336685ad.10.1753110284195; Mon, 21 Jul 2025
+ 08:04:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250626162313.2755584-1-beata.michalska@arm.com>
-Message-ID: <aH5U2Jm6Jpf5LyB9@google.com>
-Subject: Re: [PATCH v5] rust: drm: Drop the use of Opaque for ioctl arguments
-From: Alice Ryhl <aliceryhl@google.com>
-To: Beata Michalska <beata.michalska@arm.com>, Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, daniel.almeida@collabora.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	alyssa@rosenzweig.io, lyude@redhat.com, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
+ <20250719143358.22363-3-sidong.yang@furiosa.ai> <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
+ <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
+In-Reply-To: <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
+From: Caleb Sander Mateos <csander@purestorage.com>
+Date: Mon, 21 Jul 2025 11:04:31 -0400
+X-Gm-Features: Ac12FXyA6cLU8jmVhtv4LQWdrgKU4vzK4eqWcW4K2Iw9UXja1c9Q4CXydQeOCro
+Message-ID: <CADUfDZrLKrf6evTXQ03cJ1W4kj0gxsF9Bopu+i2SjkBObXKnMA@mail.gmail.com>
+Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
+ io-uring cmd
+To: Sidong Yang <sidong.yang@furiosa.ai>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	io-uring@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 26, 2025 at 06:23:13PM +0200, Beata Michalska wrote:
-> With the Opaque<T>, the expectations are that Rust should not
-> make any assumptions on the layout or invariants of the wrapped
-> C types. That runs rather counter to ioctl arguments, which must
-> adhere to certain data-layout constraints. By using Opaque<T>,
-> ioctl handlers are forced to use unsafe code where none is actually
-> needed. This adds needless complexity and maintenance overhead,
-> brining no safety benefits.
-> Drop the use of Opaque for ioctl arguments as that is not the best
-> fit here.
-> 
-> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+On Mon, Jul 21, 2025 at 1:23=E2=80=AFAM Sidong Yang <sidong.yang@furiosa.ai=
+> wrote:
+>
+> On Sun, Jul 20, 2025 at 03:10:28PM -0400, Caleb Sander Mateos wrote:
+> > On Sat, Jul 19, 2025 at 10:34=E2=80=AFAM Sidong Yang <sidong.yang@furio=
+sa.ai> wrote:
+> > >
+> > > This patch introduces rust abstraction for io-uring sqe, cmd. IoUring=
+Sqe
+> > > abstracts io_uring_sqe and it has cmd_data(). and IoUringCmd is
+> > > abstraction for io_uring_cmd. From this, user can get cmd_op, flags,
+> > > pdu and also sqe.
+> > >
+> > > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> > > ---
+> > >  rust/kernel/io_uring.rs | 114 ++++++++++++++++++++++++++++++++++++++=
+++
+> > >  rust/kernel/lib.rs      |   1 +
+> > >  2 files changed, 115 insertions(+)
+> > >  create mode 100644 rust/kernel/io_uring.rs
+> > >
+> > > diff --git a/rust/kernel/io_uring.rs b/rust/kernel/io_uring.rs
+> > > new file mode 100644
+> > > index 000000000000..7843effbedb4
+> > > --- /dev/null
+> > > +++ b/rust/kernel/io_uring.rs
+> > > @@ -0,0 +1,114 @@
+> > > +// SPDX-License-Identifier: GPL-2.0
+> > > +
+> > > +// Copyright (C) 2025 Furiosa AI.
+> > > +
+> > > +//! Files and file descriptors.
+> > > +//!
+> > > +//! C headers: [`include/linux/io_uring/cmd.h`](srctree/include/linu=
+x/io_uring/cmd.h) and
+> > > +//! [`include/linux/file.h`](srctree/include/linux/file.h)
+> > > +
+> > > +use core::mem::MaybeUninit;
+> > > +
+> > > +use crate::{fs::File, types::Opaque};
+> > > +
+> > > +pub mod flags {
+> > > +    pub const COMPLETE_DEFER: i32 =3D bindings::io_uring_cmd_flags_I=
+O_URING_F_COMPLETE_DEFER;
+> > > +    pub const UNLOCKED: i32 =3D bindings::io_uring_cmd_flags_IO_URIN=
+G_F_UNLOCKED;
+> > > +
+> > > +    pub const MULTISHOT: i32 =3D bindings::io_uring_cmd_flags_IO_URI=
+NG_F_MULTISHOT;
+> > > +    pub const IOWQ: i32 =3D bindings::io_uring_cmd_flags_IO_URING_F_=
+IOWQ;
+> > > +    pub const NONBLOCK: i32 =3D bindings::io_uring_cmd_flags_IO_URIN=
+G_F_NONBLOCK;
+> > > +
+> > > +    pub const SQE128: i32 =3D bindings::io_uring_cmd_flags_IO_URING_=
+F_SQE128;
+> > > +    pub const CQE32: i32 =3D bindings::io_uring_cmd_flags_IO_URING_F=
+_CQE32;
+> > > +    pub const IOPOLL: i32 =3D bindings::io_uring_cmd_flags_IO_URING_=
+F_IOPOLL;
+> > > +
+> > > +    pub const CANCEL: i32 =3D bindings::io_uring_cmd_flags_IO_URING_=
+F_CANCEL;
+> > > +    pub const COMPAT: i32 =3D bindings::io_uring_cmd_flags_IO_URING_=
+F_COMPAT;
+> > > +    pub const TASK_DEAD: i32 =3D bindings::io_uring_cmd_flags_IO_URI=
+NG_F_TASK_DEAD;
+> > > +}
+> > > +
+> > > +#[repr(transparent)]
+> > > +pub struct IoUringCmd {
+> > > +    inner: Opaque<bindings::io_uring_cmd>,
+> > > +}
+> > > +
+> > > +impl IoUringCmd {
+> > > +    /// Returns the cmd_op with associated with the io_uring_cmd.
+> > > +    #[inline]
+> > > +    pub fn cmd_op(&self) -> u32 {
+> > > +        // SAFETY: The call guarantees that the pointer is not dangl=
+ing and stays valid
+> > > +        unsafe { (*self.inner.get()).cmd_op }
+> > > +    }
+> > > +
+> > > +    /// Returns the flags with associated with the io_uring_cmd.
+> > > +    #[inline]
+> > > +    pub fn flags(&self) -> u32 {
+> > > +        // SAFETY: The call guarantees that the pointer is not dangl=
+ing and stays valid
+> > > +        unsafe { (*self.inner.get()).flags }
+> > > +    }
+> > > +
+> > > +    /// Returns the ref pdu for free use.
+> > > +    #[inline]
+> > > +    pub fn pdu(&mut self) -> MaybeUninit<&mut [u8; 32]> {
+> >
+> > Should be &mut MaybeUninit, right? It's the bytes that may be
+> > uninitialized, not the reference.
+>
+> Yes, it should be &mut MaybeUninit.
+> >
+> > > +        // SAFETY: The call guarantees that the pointer is not dangl=
+ing and stays valid
+> > > +        unsafe { MaybeUninit::new(&mut (*self.inner.get()).pdu) }
+> > > +    }
+> > > +
+> > > +    /// Constructs a new `struct io_uring_cmd` wrapper from a file d=
+escriptor.
+> >
+> > Why "from a file descriptor"?
+> >
+> > Also, missing a comment documenting the safety preconditions?
+>
+> Yes, it's a mistake in comment and also ptr should be NonNull.
+> >
+> > > +    #[inline]
+> > > +    pub unsafe fn from_raw<'a>(ptr: *const bindings::io_uring_cmd) -=
+> &'a IoUringCmd {
+> >
+> > Could take NonNull instead of a raw pointer.
+> >
+> > > +        // SAFETY: The caller guarantees that the pointer is not dan=
+gling and stays valid for the
+> > > +        // duration of 'a. The cast is okay because `File` is `repr(=
+transparent)`.
+> >
+> > "File" -> "IoUringCmd"?
+> >
+> > > +        unsafe { &*ptr.cast() }
+> > > +    }
+> > > +
+> > > +    // Returns the file that referenced by uring cmd self.
+> >
+> > I had a hard time parsing this comment. How about "Returns a reference
+> > to the uring cmd's file object"?
+>
+> Agreed. thanks.
+> >
+> > > +    #[inline]
+> > > +    pub fn file<'a>(&'a self) -> &'a File {
+> >
+> > Could elide the lifetime.
+>
+> Thanks, I didn't know about this.
+> >
+> > > +        // SAFETY: The call guarantees that the pointer is not dangl=
+ing and stays valid
+> > > +        let file =3D unsafe { (*self.inner.get()).file };
+> > > +        unsafe { File::from_raw_file(file) }
+> >
+> > Missing a SAFETY comment for File::from_raw_file()? I would expect
+> > something about io_uring_cmd's file field storing a non-null pointer
+> > to a struct file on which a reference is held for the duration of the
+> > uring cmd.
+>
+> Yes, I missed. thanks.
+> >
+> > > +    }
+> > > +
+> > > +    // Returns the sqe  that referenced by uring cmd self.
+> >
+> > "Returns a reference to the uring cmd's SQE"?
+>
+> Agreed, thanks.
+> >
+> > > +    #[inline]
+> > > +    pub fn sqe(&self) -> &IoUringSqe {
+> > > +        // SAFETY: The call guarantees that the pointer is not dangl=
+ing and stays valid
+> > > +        let ptr =3D unsafe { (*self.inner.get()).sqe };
+> >
+> > "ptr" isn't very descriptive. How about "sqe"?
+>
+> Sounds good.
+> >
+> > > +        unsafe { IoUringSqe::from_raw(ptr) }
+> >
+> > Similar, missing SAFETY comment for IoUringSqe::from_raw()?
+>
+> Thanks. I missed.
+> >
+> > > +    }
+> > > +
+> > > +    // Called by consumers of io_uring_cmd, if they originally retur=
+ned -EIOCBQUEUED upon receiving the command
+> > > +    #[inline]
+> > > +    pub fn done(self, ret: isize, res2: u64, issue_flags: u32) {
+> >
+> > I don't think it's safe to move io_uring_cmd. io_uring_cmd_done(), for
+> > example, calls cmd_to_io_kiocb() to turn struct io_uring_cmd *ioucmd
+> > into struct io_kiocb *req via a pointer cast. And struct io_kiocb's
+> > definitely need to be pinned in memory. For example,
+> > io_req_normal_work_add() inserts the struct io_kiocb into a linked
+> > list. Probably some sort of pinning is necessary for IoUringCmd.
+>
+> Understood, Normally the users wouldn't create IoUringCmd than use borrow=
+ed cmd
+> in uring_cmd() callback. How about change to &mut self and also uring_cmd=
+ provides
+> &mut IoUringCmd for arg.
 
-I'm guessing this should go through the DRM tree?
+I'm still a little worried about exposing &mut IoUringCmd without
+pinning. It would allow swapping the fields of two IoUringCmd's (and
+therefore struct io_uring_cmd's), for example. If a struct
+io_uring_cmd belongs to a struct io_kiocb linked into task_list,
+swapping it with another struct io_uring_cmd would result in
+io_uring_cmd_work() being invoked on the wrong struct io_uring_cmd.
+Maybe it would be okay if IoUringCmd had an invariant that the struct
+io_uring_cmd is not on the task work list. But I would feel safer with
+using Pin<&mut IoUringCmd>. I don't have much experience with Rust in
+the kernel, though, so I would welcome other opinions.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Best,
+Caleb
+
+>
+> >
+> > > +        // SAFETY: The call guarantees that the pointer is not dangl=
+ing and stays valid
+> > > +        unsafe {
+> > > +            bindings::io_uring_cmd_done(self.inner.get(), ret, res2,=
+ issue_flags);
+> > > +        }
+> > > +    }
+> > > +}
+> > > +
+> > > +#[repr(transparent)]
+> > > +pub struct IoUringSqe {
+> > > +    inner: Opaque<bindings::io_uring_sqe>,
+> > > +}
+> > > +
+> > > +impl<'a> IoUringSqe {
+> > > +    pub fn cmd_data(&'a self) -> &'a [Opaque<u8>] {
+> > > +        // SAFETY: The call guarantees that the pointer is not dangl=
+ing and stays valid
+> > > +        unsafe {
+> > > +            let cmd =3D (*self.inner.get()).__bindgen_anon_6.cmd.as_=
+ref();
+> > > +            core::slice::from_raw_parts(cmd.as_ptr() as *const Opaqu=
+e<u8>, 8)
+> >
+> > Why 8? Should be 16 bytes for a 64-byte SQE and 80 bytes for a
+> > 128-byte SQE, right?
+>
+> Yes, it should be 16 bytes or 80 bytes. I'll fix this.
+>
+> >
+> > > +        }
+> > > +    }
+> > > +
+> > > +    #[inline]
+> > > +    pub unsafe fn from_raw(ptr: *const bindings::io_uring_sqe) -> &'=
+a IoUringSqe {
+> >
+> > Take NonNull here too?
+>
+> Yes, Thanks.
+> >
+> > > +        // SAFETY: The caller guarantees that the pointer is not dan=
+gling and stays valid for the
+> > > +        // duration of 'a. The cast is okay because `File` is `repr(=
+transparent)`.
+> > > +        //
+> > > +        // INVARIANT: The caller guarantees that there are no proble=
+matic `fdget_pos` calls.
+> >
+> > Why "File" and "fdget_pos"?
+>
+> It's a bad mistake. thanks!
+>
+> Thank you so much for deatiled review!
+>
+> Thanks,
+> Sidong
+> >
+> > Best,
+> > Caleb
+> >
+> > > +        unsafe { &*ptr.cast() }
+> > > +    }
+> > > +}
+> > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > > index 6b4774b2b1c3..fb310e78d51d 100644
+> > > --- a/rust/kernel/lib.rs
+> > > +++ b/rust/kernel/lib.rs
+> > > @@ -80,6 +80,7 @@
+> > >  pub mod fs;
+> > >  pub mod init;
+> > >  pub mod io;
+> > > +pub mod io_uring;
+> > >  pub mod ioctl;
+> > >  pub mod jump_label;
+> > >  #[cfg(CONFIG_KUNIT)]
+> > > --
+> > > 2.43.0
+> > >
+> > >
