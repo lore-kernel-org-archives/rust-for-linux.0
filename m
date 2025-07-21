@@ -1,94 +1,107 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110EC2236FD;
-	Mon, 21 Jul 2025 20:13:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD45D19CC28;
+	Mon, 21 Jul 2025 20:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753128801; cv=none; b=f19PjLFUMtk+dNTKiuOCQ3SG1wJN1eb+A9fK4GUanqxChmSyn1dZK1y3JNWiJ0gy1/MoIfxsQZ+q8ic6+rRAPF9KdSYoWDTJthAx8nIVZAk0Rv9KDCKQOWCGv2YwvxyKrYmtiPE6oqpekCkKCNNhuH6M/PhJKuzIYBMnkGwOS5k=
+	t=1753129216; cv=none; b=WIAw/Mbr8N8BLvUi2j3wzKFvIiH6d+OjzPnl7WyZl9vGxwbaGgmz+aN1XmkP4CPhoQ6XK4H/59+bHoR+UmZ8G2XMSKLCcp1Z4L6yCkY88nkWlit902WDY1KGH2k7KfOArEDRszAjfViqNHHXyU10llH+5Fx5kIx4y0bRH2l6vTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753128801; c=relaxed/simple;
-	bh=la5LQMHSf9dwPtEfGuezlYjOUEGcVnsf/mlUepU+B1A=;
+	s=arc-20240116; t=1753129216; c=relaxed/simple;
+	bh=QhoaQFtxNxausfHipJnOzeN1CL5MUK8zNLHiVu3g8n8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ei2Nz24wMJJOiPr5BtPMkw6uQNLi/t4fz8xe/8ib/DKhL71yR9Jwv6i1YOserPts3ACXDhEmYIXpF7Zt61SYpGsxyTQdXvy/VcaYitVnDoavX9fwzbTLgDh/XrF/QVPP/ZlkKw979wxlYJsFU7o1+QeKc1HBDh8ukpgy84pQJ1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAhgpGlG; arc=none smtp.client-ip=209.85.214.181
+	 To:Cc:Content-Type; b=rGplBa72K1BD9NC5C3agOqWtGzA6zA02rAXFdL5IcuAmBVjocfQsU+XDjIyCP7PByDi0OZITQgiojLIvjvQjQCOCMCUTuMVbG+uu88bTSFRWcx5LPtfPr89caAbXjXFk8mqjE0uLLLFd8b7oU8VpKZeQR+C+CUeC1L2fhCDGn3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TNTs3Ys8; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAhgpGlG"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2355360ea88so4766165ad.2;
-        Mon, 21 Jul 2025 13:13:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TNTs3Ys8"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-31384c8ba66so48736a91.1;
+        Mon, 21 Jul 2025 13:20:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753128798; x=1753733598; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753129214; x=1753734014; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=la5LQMHSf9dwPtEfGuezlYjOUEGcVnsf/mlUepU+B1A=;
-        b=PAhgpGlG16P3ERuKfGfLdLLaaoU3SZSkBGaKeZVmI3Gew5bfW/useObY4ew4BOcqzg
-         BqhQk63HMDSnwTX5DjphPQnUN+DYgp91cMzwWmh21fNQCcZZboDD18ZE9k+zpfXay563
-         QBEIP4CBYCDSftX+vR+m49zJcK7MPRIViVcNHalHAHDyzP+mqDCNZEeLUtTGRRg3ogyY
-         H6Y/ysXSfk7FqyaaJvfzD+GHg09Nmh/Ut7LE0ny0MVFh4USZKVN2GusCLioJRkCiAGVK
-         KB3NsfU02GvudHO3w66Yh49XVfh7Pzzb3g9ZayZhfxWySJfIbpggGsEFDQ9aAq7oTuIj
-         c5Ow==
+        bh=QhoaQFtxNxausfHipJnOzeN1CL5MUK8zNLHiVu3g8n8=;
+        b=TNTs3Ys8eBGIIjsrjlhnaYufJnrq99cmDn7o8GfI1i3u7cv806dHTXqS9/uHR1f7JL
+         MeznwZg1nBEwjlu0rkjZwi7CmCKBV5SXsf8pVyGVX9BGR5c0C16zunPjJX2e9D2atbxi
+         JKB0QL5e/ikEz9nI6mEP1IsAeem2uPFF3dnDN/OAWx/xelHehKzkHRjo6eiO3bj4xI88
+         D5Nk2IcMkg0HW9ZRuAyXPp90CyDaQVgQlfVMp5mlyalLyhQn3/b3R+KS+44sc0VZ3g58
+         aiq8nkkPbEf3rhzkXpWdZnzUJ4LJEHSKbYuIHiTPRtpGlpCpcGyR0W7+xj2fkD58tObh
+         n+wQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753128798; x=1753733598;
+        d=1e100.net; s=20230601; t=1753129214; x=1753734014;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=la5LQMHSf9dwPtEfGuezlYjOUEGcVnsf/mlUepU+B1A=;
-        b=UurMP/vsnqghrdcK0rQCQy82RqGldyjSuldmq9Lly3/Ab11R63OPLWKx3aghfB79Eg
-         N76TMgv9XKYLu9X/3Z/Uvn1mbbpKq8oJmL9BE2+DkAMKZdd+xx+qBj80szNLlin6vs4Y
-         9LE7OQRCa/OEx+0peWR22aA12/TS2inGfSWXfzUQwkCJ3/TvpkJlJmoL7TOU/kCfdKYv
-         DGKHu/Azkx8CmvV8MiANH89QdyftWOUp2Asbm/JUjMX8ERXFjLBnlIDIg8nindsKgktb
-         qY16qAjNEuTeTtbloXMDDUSq0kOExTlp8DHk9zYnTn1OGxv4jLUYbJ5gEKISE2ND3uEU
-         d7xg==
-X-Forwarded-Encrypted: i=1; AJvYcCV7hnxIDr4lMr+CiNAMjR9jNCxSyHUahi0PA+6JEAqgQBCYqJsiuZp5jkxYZJSpTSWkUBpVRFM26JVgKZPy7JI=@vger.kernel.org, AJvYcCWY2m2/qG70+YTmbf7q/M2IrboMAGfN6FigyJcEF5qgbmrOVyr1iyAb/nUfd8RZ/K2YTjHGhJ5xtcQElvA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV/cxsL6ynpOht55uLOIKFKLrfYlCF4Ibo3VWg0wJbSAsWgEUe
-	pLHwL9ahtgLLy0VqnEgTUXdLtb8U5SJJJ6FfZ524oo/PMs8uQBi2pHc9kcjXbmWoXYUpwxSbrUy
-	VW2cFrdrvOszeCDjatwY7IpnJbejo4gk=
-X-Gm-Gg: ASbGncuTBEPeME+RrfGcU1r9AHjJB0X1sXdYjly+dFgjINjuScXupxXnVRB+BxQMafE
-	J/lOTAfUvdQLu1zC3hjWTfqaqO+YGMbIGnGSLZzVss6AmV/8pg+NAkpAgS8nm/IRMnUHe1P6kiP
-	1gXNyw3JK2d890yErqcNaN8AWNpkp6MsG8mYOLVI61XXYSqQRypz1/QTMVPiFSQabvIgRGWUn3B
-	0ZB0Vdn
-X-Google-Smtp-Source: AGHT+IESxN/8maSvQ3FE8zGtNbDZxmYPvYZ6CIbNbI+MwSZ8O3Car33dPWCPqyjmlw72QFrdTgwYpToCDUNBtFhpo5A=
-X-Received: by 2002:a17:903:166e:b0:234:f4a3:f73e with SMTP id
- d9443c01a7336-23e24f4f229mr124108655ad.9.1753128798207; Mon, 21 Jul 2025
- 13:13:18 -0700 (PDT)
+        bh=QhoaQFtxNxausfHipJnOzeN1CL5MUK8zNLHiVu3g8n8=;
+        b=lBetLDCKfsUdCL/pkD396yycrjBYvtykgm1WXnoxWLSZU/ylbpDbvSKGmamx9yO5Bu
+         cGGPawEtF4aKZmRFk8TXJVCqdQRYHROwDydiZ8ShNj+QujsUsRHZEGfOC7lF/aCS21gL
+         mbKpoqbdV5da2FovTnidY0GISH94A/wkvEoq+WCui03wWG5mBX06l19cDOO+nGKswxkL
+         viGUoxHWQhChlZd+U8RofFZ/mRH0KQDWpTkO4N6wtKHe5SKAWj1xkyTdRggPIZUX2wNj
+         Afzl8zYx/jMLpuGvJU3A51GuQM4SNyPXn4fQQTLtxfv9L3P8oVzj9s1kXSJ07E3nSdj2
+         WzYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvuPLFFM7Oo0Kj9qUGFZTF1e2XtTXPOaAWcPtaFhMKJWnerKMSQvTnFVkZeScGiC0U4CzWTgzSMbxZTP8JayKD@vger.kernel.org, AJvYcCUwucxTAENt8OWohoYuxPFWOSP1ZltU75Dyukqshx7n+uZpyehJUd4fWRse/KkXdhr7VdINcJEkYW2J/wonz3I=@vger.kernel.org, AJvYcCWFJ2XijynbTlFvXQuYNI3tHx8fQRHkcMIInfSoVGoAjA0dPGr/Hok0ftkLxeIrFEyaAw+qjkMjhNrD@vger.kernel.org, AJvYcCWSwPtDuF0nOlzFiVS4DpQxdZxM6OQTePhcGT2RZDZsZw6buJl8HLDlh0fFbw/wwwswOXEvJaNxH95HDVRY@vger.kernel.org, AJvYcCXuM5ONCpq68oLolwZMBA12je+WFsCN6dYUIUKLKxYePbUitCTSHBpjCwN8iuypKbNRWGUnfoSP6IM=@vger.kernel.org, AJvYcCXvC2UKbmpv9uh/rjOJ/LbequIE4IfzrwfjBwHgD0P6htu8fPamEjLMZP7CkwwRkfv0RRUxYlp0@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGP6BJJy2aYxL5MUAfeEiwqW3eRH824/Xx2yOtcCmCxE+3xnYb
+	KHXLUVxq6WiJYAnnlUAsFtDPskoNzhewp+4NmbLZCCZNkAhZEoQOGN3kqgh22KSVtQrvymv0LTV
+	HEP6KX9TP6fhVFPDVpXq/eV1+jE8gvoo=
+X-Gm-Gg: ASbGncuuLAbuvk2QygkKto1xHoaQe1OVxnsqAasMKAaN2lrollhNE8AgOKdw2MeJAba
+	oGXpqfKgfrRJFh+7yJQohMGwkrqh4mUiMVWuFWBS0YI/iDoBoQGSDJ7e+AWNY/zgihYPd0OV9h2
+	25TP0Ke2UIj/eWCWiodnSgUd5TU4FEAfQdJ7Gs1zm5MobEEo/2e8WKjh9JYwphswbfXbhooGZFT
+	ETMdp9f
+X-Google-Smtp-Source: AGHT+IGYWFzzB+EaA1sUPW0yxlHljqythmWNIpx8bVOSX58qriu4XgVDPxfn17/Rmpvzl5eSATKzzBGxAaQbrkHzpc8=
+X-Received: by 2002:a17:90b:57cf:b0:311:a314:c2c9 with SMTP id
+ 98e67ed59e1d1-31c9e6e5debmr12843850a91.1.1753129213894; Mon, 21 Jul 2025
+ 13:20:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250720094838.29530-1-work@onurozkan.dev> <DBGYNQJJ0JI6.P280ZLVZUSO6@kernel.org>
- <20250720181721.54ab9faf@nimda.home> <CANiq72mv2yiJW_AD-_F1JUP2QdJKGGg8SqZ5SgDWT2xc_tpbZg@mail.gmail.com>
- <20250721091358.7dda6b31@nimda.home>
-In-Reply-To: <20250721091358.7dda6b31@nimda.home>
+References: <20250719-core-cstr-fanout-1-v2-0-e1cb53f6d233@gmail.com>
+In-Reply-To: <20250719-core-cstr-fanout-1-v2-0-e1cb53f6d233@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 21 Jul 2025 22:13:05 +0200
-X-Gm-Features: Ac12FXx_d0P_BEjq17kEixmAKwgkn2-E13jX9861wBHQ2v3lFk5Ue23_wjO7FFM
-Message-ID: <CANiq72mi5H1NCGHCRtkpriH=a_G_a_Vuf6edQ8=U0=hVJc=o8Q@mail.gmail.com>
-Subject: Re: [PATCH v1 0/3] rust: make various `alloc` functions `const fn`
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, dakr@kernel.org
-Cc: Benno Lossin <lossin@kernel.org>, rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, linux-kernel@vger.kernel.org
+Date: Mon, 21 Jul 2025 22:20:01 +0200
+X-Gm-Features: Ac12FXwTjwqkUOe19S3QjijBkelsLmO-zTtTU8nCjXVYR5x32YJPDBd3Xx-BAUU
+Message-ID: <CANiq72mRWuQRFaouOSazi3GTXoHFaeVpyNMZcP0Lkymb+aXrqA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] rust: use `core::ffi::CStr` method names
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Leon Romanovsky <leon@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 21, 2025 at 8:14=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev=
+On Sun, Jul 20, 2025 at 12:42=E2=80=AFAM Tamir Duberstein <tamird@gmail.com=
 > wrote:
 >
-> I thought it had effects similar to inlining, but after digging into the
-> assembly output of a simple program (with and without `const`
-> expressions) and reading some related discussions [1], it seems I was
-> wrong about it, sorry.
+> Subsystem maintainers: I would appreciate your `Acked-by`s so that this
+> can be taken through Miguel's tree (where the other series must go).
 
-No worries at all, and thanks for taking a look into it!
+Did you apply this with `b4`? I think you picked Danilo's Acked-by,
+which was for a subset, for other patches too. I can remove it when I
+apply it.
 
-I think Danilo will take this eventually through `alloc`, but it
-sounds good to me.
+(Greg's Acked-by may also have been just for his bits back in the
+previous series, but in his case he didn't say anything explicitly)
 
 Cheers,
 Miguel
