@@ -1,43 +1,72 @@
-Received: from mail-24417.protonmail.ch (mail-24417.protonmail.ch [109.224.244.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A177215748F;
-	Mon, 21 Jul 2025 02:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAD621766A
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 05:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753063470; cv=none; b=BLKb3pbxFMggdZjPdaLX00ctYYSYqLcDFBqPo8u4mpxiTLLpyq8HyhnzaiowVkQus/g8GcQpGH6YC852nI81rLEXjsCHeQtiiHbzcyPlXU7v3RwuI+MVT1eR8XF6VZ6a5NHES+G/66xS8avGjXNol7zFn7iVJWCE2NcxDJvdA8o=
+	t=1753075396; cv=none; b=pIlIwT1MJeUFAvRGwX8q4x1fYdKu8pDWJIXI9Mzs99p8kOKXNWYmmAfzpsAhzM6FxgcSfsYuF7p84hpz/PF5+UMTi2a5veAgrGoOqRqU8Lbfwplf5zyNP8MFn/7tosCxsD2niBVkDh59DwAm4dkY+sTFXJll68dOPyGIRk28IFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753063470; c=relaxed/simple;
-	bh=JntV3RGjz1Jbe0FoUMzE5n20T/KBYLOoC0wvMbE0SQA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WdzBY4AJxG8afZWcjuTEOnZMczDlJdH4pUyoJCnvpi6L3SdvnGjOb/VpNpCUtZ2lFkUB0NbNv0KAeH2GyKAOXk14U1W1TAUem2Hn21qk72685p4jDIuZeRNhPSopeqhOdTPnOfkHtwhC6YZHcBKaVXycmvqh2CbVo+qgJgoU2Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=WU5GuecE; arc=none smtp.client-ip=109.224.244.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1753075396; c=relaxed/simple;
+	bh=W4QbuNm3eHXcSH0Ex2QdyPj6OuSlzQfZcAHEkhea0pQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T5nSdznhLqZ069AlXFxV7o2YqLXoA/hdcXtRSIq91GcU4kTlX/3Y/cPLIvWVHSyZm4jpS/wz/QI0Y6ChSZAIMtgfMcwASVp85Km4Lg248gG156c/UjmVw4a9PsWHv6F793z2OhQYp20TYO0PUDspf3EbIMMJYtxmqN+pVzes+PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=XlmQwrgA; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="WU5GuecE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1753063466; x=1753322666;
-	bh=xrSdxGPnLC2CBHkZSGp5i4YD6BUUlFfg9BJWTFd34G0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=WU5GuecEcEXPNz9Zf3jYuyx8ZjXIYj/0c8ptABmIFbAI2AtosM8iXqsDrp8LZBItr
-	 CfSPCi3QMZSCo8lxvkN2Un2Jy67h70Lsl3il2d8yWyih2uMgRU5PqCxZagV06HXuNA
-	 42BvAgoXwuSLXftW79XcfAZ7sZdqXUwNW5I00LUyZGTq91EC8FCh3VMcTuf3AFPt2S
-	 F/+P5xucqaDyPV5Tkz1ws8Z9VeJyl5y1Gf2a28y780jyhIzwj03r9MvyUCmPkvyPn2
-	 NmrSWbGpIojMPMDEs/t8qjSsLDZkuNUc3xLNIeVRO2HkY0bsTTN+1aRSd+kwZ7CtUd
-	 3jxc74uqWk3HA==
-Date: Mon, 21 Jul 2025 02:04:19 +0000
-To: linux-input@vger.kernel.org, rust-for-linux@vger.kernel.org
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, benjamin.tissoires@redhat.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dakr@kernel.org, db48x@db48x.net, gary@garyguo.net, jikos@kernel.org, ojeda@kernel.org, peter.hutterer@who-t.net, tmgross@umich.edu, Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Subject: [PATCH v3 3/3] rust: hid: Glorious PC Gaming Race Model O and O- mice reference driver
-Message-ID: <20250721020211.196394-5-sergeantsagara@protonmail.com>
-In-Reply-To: <20250721020211.196394-2-sergeantsagara@protonmail.com>
-References: <20250721020211.196394-2-sergeantsagara@protonmail.com>
-Feedback-ID: 26003777:user:proton
-X-Pm-Message-ID: 2f3f4229a94318008f7e57ba86d3bde5b9824782
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="XlmQwrgA"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23508d30142so46320895ad.0
+        for <rust-for-linux@vger.kernel.org>; Sun, 20 Jul 2025 22:23:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=furiosa.ai; s=google; t=1753075392; x=1753680192; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0SHACbHK9K6txcaxkzR12JtCEcLywtnifQd4zOB/+rQ=;
+        b=XlmQwrgAiSNiklZDmhykzdoaEuOYqoytA8dsY+u2rmdbNDX4Ez5R5oy+eMZToNB4bU
+         SO7hx8xfUbuhd0hjv4hFvZpUBxapcM4P+IuYaCyQ02q0czKnX333neGBv93odtapggkD
+         smGUZwiVdvt1zrUu/zArwLmuVHMGT+UMrf+js=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753075392; x=1753680192;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0SHACbHK9K6txcaxkzR12JtCEcLywtnifQd4zOB/+rQ=;
+        b=ToNYRuhekr4XM8Auzrtdkp05b55imITiM/Y+U3jK/WOF3HtT/h1G2jVYYhbafw+QaT
+         j969/dNV72GbvDmcz0Wy6uE8Uz+8+euam7u5JlamHyeMLpN2HTCcr+S3J0Yb46zB+gsi
+         6W0YN7sleNtU+CeWb9lG/k4ky4UdwpmoPU1w3RxFNPI9Y6SXJBbT54Qryf/BgTwUeXfW
+         6LTVsg3/P9Rc4qQoH+U8SySO8dIzj2nGwJfZ/BuRsfHY09B672n+yZIB4O5IGhEu0AaI
+         wjCPQz8cQt1rKvMq0nY64KNh5x81omTjtTDoeE22l1/voUnPdVRtrENi1uPIlKhdtiIr
+         tlxA==
+X-Forwarded-Encrypted: i=1; AJvYcCVl4cmqAcupVlpVn1sdd8pwTD5U9QwMbhUrtmOxVLDomX3JMXKGvzYLlE33MeXx0Fe3KkdE30arUxDZ6f6ffQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj63bApDYFmQFTZiHLWxZJAJZ/Dnjw+rF6SIjZH9IhSXTMZKCM
+	BnxB9gXvayIDHOOO7vDHaOmdiYb0HRUrzkYQocaBnqKqvaWJW6z5SDeTXGOSjZIAGlg=
+X-Gm-Gg: ASbGncsHdpiztAOj3+esukp3O94iZwbdFHrQc4UHjzPo3fmMrVZbgXxJ8iAVgXxhy5y
+	7uZUrCbct3ISiZnTqqk+ZhpCQvi4U3j4KCOrNmX3AIJZK+yenT+ZNlmU9ajYfPrzC4wl1hjpebf
+	HxSzEZ0HVb7EC9w0wcBUfMqT/NbOGR9MFUOQENmM2YWOeumUb+hKFvolQKEY6zS8NXT3k/cY2mY
+	0hNrkTYJtORIS1XBJCdAE//RSfkI1T8aKU1KJLr9tOF9eESc9XBK7KOIigVQ+WT7RNZt+tNqtxe
+	4jCqwkllAdNU48+gditRTsG2BVrrXdXKm+cz86uxz9003TVzEgsxQglpcX0jrOmX7kIFPU+WEdk
+	24I6kvAVOQ1MBT7jwEhViSQKsXeKsAqQEWYoDRALqE7J6veoVevJ5Qw==
+X-Google-Smtp-Source: AGHT+IHrxllh4+pFRTAoM/w2vfKqHEkM0kNphKoafaqRUKxLzGi1JLa2ju8qrT+3ee2/EMRl3RAndA==
+X-Received: by 2002:a17:902:e790:b0:235:f70:fd39 with SMTP id d9443c01a7336-23e2566aec9mr280364645ad.10.1753075392332;
+        Sun, 20 Jul 2025 22:23:12 -0700 (PDT)
+Received: from sidongui-MacBookPro.local ([221.148.76.1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b60ed72sm49769655ad.77.2025.07.20.22.23.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Jul 2025 22:23:11 -0700 (PDT)
+Date: Mon, 21 Jul 2025 14:22:56 +0900
+From: Sidong Yang <sidong.yang@furiosa.ai>
+To: Caleb Sander Mateos <csander@purestorage.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
+Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
+ io-uring cmd
+Message-ID: <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
+References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
+ <20250719143358.22363-3-sidong.yang@furiosa.ai>
+ <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,182 +74,249 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
 
-Demonstrate how to perform a report fixup from a Rust HID driver. The mice
-specify the const flag incorrectly in the consumer input report descriptor,
-which leads to inputs being ignored. Correctly patch the report descriptor
-for the Model O and O- mice.
+On Sun, Jul 20, 2025 at 03:10:28PM -0400, Caleb Sander Mateos wrote:
+> On Sat, Jul 19, 2025 at 10:34 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> >
+> > This patch introduces rust abstraction for io-uring sqe, cmd. IoUringSqe
+> > abstracts io_uring_sqe and it has cmd_data(). and IoUringCmd is
+> > abstraction for io_uring_cmd. From this, user can get cmd_op, flags,
+> > pdu and also sqe.
+> >
+> > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+> > ---
+> >  rust/kernel/io_uring.rs | 114 ++++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs      |   1 +
+> >  2 files changed, 115 insertions(+)
+> >  create mode 100644 rust/kernel/io_uring.rs
+> >
+> > diff --git a/rust/kernel/io_uring.rs b/rust/kernel/io_uring.rs
+> > new file mode 100644
+> > index 000000000000..7843effbedb4
+> > --- /dev/null
+> > +++ b/rust/kernel/io_uring.rs
+> > @@ -0,0 +1,114 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +// Copyright (C) 2025 Furiosa AI.
+> > +
+> > +//! Files and file descriptors.
+> > +//!
+> > +//! C headers: [`include/linux/io_uring/cmd.h`](srctree/include/linux/io_uring/cmd.h) and
+> > +//! [`include/linux/file.h`](srctree/include/linux/file.h)
+> > +
+> > +use core::mem::MaybeUninit;
+> > +
+> > +use crate::{fs::File, types::Opaque};
+> > +
+> > +pub mod flags {
+> > +    pub const COMPLETE_DEFER: i32 = bindings::io_uring_cmd_flags_IO_URING_F_COMPLETE_DEFER;
+> > +    pub const UNLOCKED: i32 = bindings::io_uring_cmd_flags_IO_URING_F_UNLOCKED;
+> > +
+> > +    pub const MULTISHOT: i32 = bindings::io_uring_cmd_flags_IO_URING_F_MULTISHOT;
+> > +    pub const IOWQ: i32 = bindings::io_uring_cmd_flags_IO_URING_F_IOWQ;
+> > +    pub const NONBLOCK: i32 = bindings::io_uring_cmd_flags_IO_URING_F_NONBLOCK;
+> > +
+> > +    pub const SQE128: i32 = bindings::io_uring_cmd_flags_IO_URING_F_SQE128;
+> > +    pub const CQE32: i32 = bindings::io_uring_cmd_flags_IO_URING_F_CQE32;
+> > +    pub const IOPOLL: i32 = bindings::io_uring_cmd_flags_IO_URING_F_IOPOLL;
+> > +
+> > +    pub const CANCEL: i32 = bindings::io_uring_cmd_flags_IO_URING_F_CANCEL;
+> > +    pub const COMPAT: i32 = bindings::io_uring_cmd_flags_IO_URING_F_COMPAT;
+> > +    pub const TASK_DEAD: i32 = bindings::io_uring_cmd_flags_IO_URING_F_TASK_DEAD;
+> > +}
+> > +
+> > +#[repr(transparent)]
+> > +pub struct IoUringCmd {
+> > +    inner: Opaque<bindings::io_uring_cmd>,
+> > +}
+> > +
+> > +impl IoUringCmd {
+> > +    /// Returns the cmd_op with associated with the io_uring_cmd.
+> > +    #[inline]
+> > +    pub fn cmd_op(&self) -> u32 {
+> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
+> > +        unsafe { (*self.inner.get()).cmd_op }
+> > +    }
+> > +
+> > +    /// Returns the flags with associated with the io_uring_cmd.
+> > +    #[inline]
+> > +    pub fn flags(&self) -> u32 {
+> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
+> > +        unsafe { (*self.inner.get()).flags }
+> > +    }
+> > +
+> > +    /// Returns the ref pdu for free use.
+> > +    #[inline]
+> > +    pub fn pdu(&mut self) -> MaybeUninit<&mut [u8; 32]> {
+> 
+> Should be &mut MaybeUninit, right? It's the bytes that may be
+> uninitialized, not the reference.
 
-Portions of the HID report post-fixup:
-device 0:0
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               84
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               112
-...
-0x81, 0x06,                    //  Input (Data,Var,Rel)               140
+Yes, it should be &mut MaybeUninit.
+> 
+> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
+> > +        unsafe { MaybeUninit::new(&mut (*self.inner.get()).pdu) }
+> > +    }
+> > +
+> > +    /// Constructs a new `struct io_uring_cmd` wrapper from a file descriptor.
+> 
+> Why "from a file descriptor"?
+> 
+> Also, missing a comment documenting the safety preconditions?
 
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
----
+Yes, it's a mistake in comment and also ptr should be NonNull.
+> 
+> > +    #[inline]
+> > +    pub unsafe fn from_raw<'a>(ptr: *const bindings::io_uring_cmd) -> &'a IoUringCmd {
+> 
+> Could take NonNull instead of a raw pointer.
+> 
+> > +        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
+> > +        // duration of 'a. The cast is okay because `File` is `repr(transparent)`.
+> 
+> "File" -> "IoUringCmd"?
+> 
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+> > +
+> > +    // Returns the file that referenced by uring cmd self.
+> 
+> I had a hard time parsing this comment. How about "Returns a reference
+> to the uring cmd's file object"?
 
-Notes:
-    Changelog:
-   =20
-        v2->v3:
-          * Fixed docstring formatting
-          * Updated MAINTAINERS file based on v1 and v2 discussion
-        v1->v2:
-          * Use vendor id and device id from drivers/hid/hid-ids.h bindings
-          * Make use for dev_err! as appropriate
+Agreed. thanks.
+> 
+> > +    #[inline]
+> > +    pub fn file<'a>(&'a self) -> &'a File {
+> 
+> Could elide the lifetime.
 
- MAINTAINERS                      |  7 ++++
- drivers/hid/Kconfig              |  8 +++++
- drivers/hid/Makefile             |  1 +
- drivers/hid/hid-glorious.c       |  2 ++
- drivers/hid/hid_glorious_rust.rs | 60 ++++++++++++++++++++++++++++++++
- 5 files changed, 78 insertions(+)
- create mode 100644 drivers/hid/hid_glorious_rust.rs
+Thanks, I didn't know about this.
+> 
+> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
+> > +        let file = unsafe { (*self.inner.get()).file };
+> > +        unsafe { File::from_raw_file(file) }
+> 
+> Missing a SAFETY comment for File::from_raw_file()? I would expect
+> something about io_uring_cmd's file field storing a non-null pointer
+> to a struct file on which a reference is held for the duration of the
+> uring cmd.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 6c60765f2aaa..eee9a33914ef 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10200,6 +10200,13 @@ L:=09platform-driver-x86@vger.kernel.org
- S:=09Maintained
- F:=09drivers/platform/x86/gigabyte-wmi.c
-=20
-+GLORIOUS RUST DRIVER [RUST]
-+M:=09Rahul Rameshbabu <sergeantsagara@protonmail.com>
-+L:=09linux-input@vger.kernel.org
-+S:=09Maintained
-+T:=09git git://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git rust
-+F:=09drivers/hid/hid_glorious_rust.rs
-+
- GNSS SUBSYSTEM
- M:=09Johan Hovold <johan@kernel.org>
- S:=09Maintained
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index 922e76e18af2..b8ef750fb8b6 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -406,6 +406,14 @@ config HID_GLORIOUS
- =09  Support for Glorious PC Gaming Race mice such as
- =09  the Glorious Model O, O- and D.
-=20
-+config HID_GLORIOUS_RUST
-+=09tristate "Glorious O and O- mice Rust reference driver"
-+=09depends on USB_HID
-+=09depends on RUST_HID_ABSTRACTIONS
-+=09help
-+=09  Support for Glorious PC Gaming Race O and O- mice
-+=09  in Rust.
-+
- config HID_HOLTEK
- =09tristate "Holtek HID devices"
- =09depends on USB_HID
-diff --git a/drivers/hid/Makefile b/drivers/hid/Makefile
-index 10ae5dedbd84..bd86b3db5d88 100644
---- a/drivers/hid/Makefile
-+++ b/drivers/hid/Makefile
-@@ -55,6 +55,7 @@ obj-$(CONFIG_HID_FT260)=09=09+=3D hid-ft260.o
- obj-$(CONFIG_HID_GEMBIRD)=09+=3D hid-gembird.o
- obj-$(CONFIG_HID_GFRM)=09=09+=3D hid-gfrm.o
- obj-$(CONFIG_HID_GLORIOUS)  +=3D hid-glorious.o
-+obj-$(CONFIG_HID_GLORIOUS_RUST)=09+=3D hid_glorious_rust.o
- obj-$(CONFIG_HID_VIVALDI_COMMON) +=3D hid-vivaldi-common.o
- obj-$(CONFIG_HID_GOODIX_SPI)=09+=3D hid-goodix-spi.o
- obj-$(CONFIG_HID_GOOGLE_HAMMER)=09+=3D hid-google-hammer.o
-diff --git a/drivers/hid/hid-glorious.c b/drivers/hid/hid-glorious.c
-index 5bbd81248053..d7362852c20f 100644
---- a/drivers/hid/hid-glorious.c
-+++ b/drivers/hid/hid-glorious.c
-@@ -76,8 +76,10 @@ static int glorious_probe(struct hid_device *hdev,
- }
-=20
- static const struct hid_device_id glorious_devices[] =3D {
-+#if !IS_ENABLED(CONFIG_HID_GLORIOUS_RUST)
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- =09=09USB_DEVICE_ID_GLORIOUS_MODEL_O) },
-+#endif
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- =09=09USB_DEVICE_ID_GLORIOUS_MODEL_D) },
- =09{ HID_USB_DEVICE(USB_VENDOR_ID_LAVIEW,
-diff --git a/drivers/hid/hid_glorious_rust.rs b/drivers/hid/hid_glorious_ru=
-st.rs
-new file mode 100644
-index 000000000000..8cffc1c605dd
---- /dev/null
-+++ b/drivers/hid/hid_glorious_rust.rs
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2025 Rahul Rameshbabu <sergeantsagara@protonmail.com>
-+
-+//! Rust reference HID driver for Glorious Model O and O- mice.
-+
-+use kernel::{self, bindings, device, hid, prelude::*};
-+
-+struct GloriousRust;
-+
-+kernel::hid_device_table!(
-+    HID_TABLE,
-+    MODULE_HID_TABLE,
-+    <GloriousRust as hid::Driver>::IdInfo,
-+    [(
-+        hid::DeviceId::new_usb(
-+            hid::Group::Generic,
-+            bindings::USB_VENDOR_ID_SINOWEALTH,
-+            bindings::USB_DEVICE_ID_GLORIOUS_MODEL_O,
-+        ),
-+        (),
-+    )]
-+);
-+
-+#[vtable]
-+impl hid::Driver for GloriousRust {
-+    type IdInfo =3D ();
-+    const ID_TABLE: hid::IdTable<Self::IdInfo> =3D &HID_TABLE;
-+
-+    /// Fix the Glorious Model O and O- consumer input report descriptor t=
-o use
-+    /// the variable and relative flag, while clearing the const flag.
-+    ///
-+    /// Without this fixup, inputs from the mice will be ignored.
-+    fn report_fixup<'a, 'b: 'a>(hdev: &hid::Device<device::Core>, rdesc: &=
-'b mut [u8]) -> &'a [u8] {
-+        if rdesc.len() =3D=3D 213
-+            && (rdesc[84] =3D=3D 129 && rdesc[85] =3D=3D 3)
-+            && (rdesc[112] =3D=3D 129 && rdesc[113] =3D=3D 3)
-+            && (rdesc[140] =3D=3D 129 && rdesc[141] =3D=3D 3)
-+        {
-+            dev_info!(
-+                hdev.as_ref(),
-+                "patching Glorious Model O consumer control report descrip=
-tor\n"
-+            );
-+
-+            rdesc[85] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATIV=
-E;
-+            rdesc[113] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATI=
-VE;
-+            rdesc[141] =3D hid::MAIN_ITEM_VARIABLE | hid::MAIN_ITEM_RELATI=
-VE;
-+        }
-+
-+        rdesc
-+    }
-+}
-+
-+kernel::module_hid_driver! {
-+    type: GloriousRust,
-+    name: "GloriousRust",
-+    authors: ["Rahul Rameshbabu <sergeantsagara@protonmail.com>"],
-+    description: "Rust reference HID driver for Glorious Model O and O- mi=
-ce",
-+    license: "GPL",
-+}
---=20
-2.47.2
+Yes, I missed. thanks.
+> 
+> > +    }
+> > +
+> > +    // Returns the sqe  that referenced by uring cmd self.
+> 
+> "Returns a reference to the uring cmd's SQE"?
 
+Agreed, thanks.
+> 
+> > +    #[inline]
+> > +    pub fn sqe(&self) -> &IoUringSqe {
+> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
+> > +        let ptr = unsafe { (*self.inner.get()).sqe };
+> 
+> "ptr" isn't very descriptive. How about "sqe"?
 
+Sounds good.
+> 
+> > +        unsafe { IoUringSqe::from_raw(ptr) }
+> 
+> Similar, missing SAFETY comment for IoUringSqe::from_raw()?
+
+Thanks. I missed.
+> 
+> > +    }
+> > +
+> > +    // Called by consumers of io_uring_cmd, if they originally returned -EIOCBQUEUED upon receiving the command
+> > +    #[inline]
+> > +    pub fn done(self, ret: isize, res2: u64, issue_flags: u32) {
+> 
+> I don't think it's safe to move io_uring_cmd. io_uring_cmd_done(), for
+> example, calls cmd_to_io_kiocb() to turn struct io_uring_cmd *ioucmd
+> into struct io_kiocb *req via a pointer cast. And struct io_kiocb's
+> definitely need to be pinned in memory. For example,
+> io_req_normal_work_add() inserts the struct io_kiocb into a linked
+> list. Probably some sort of pinning is necessary for IoUringCmd.
+
+Understood, Normally the users wouldn't create IoUringCmd than use borrowed cmd
+in uring_cmd() callback. How about change to &mut self and also uring_cmd provides
+&mut IoUringCmd for arg.
+
+> 
+> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
+> > +        unsafe {
+> > +            bindings::io_uring_cmd_done(self.inner.get(), ret, res2, issue_flags);
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +#[repr(transparent)]
+> > +pub struct IoUringSqe {
+> > +    inner: Opaque<bindings::io_uring_sqe>,
+> > +}
+> > +
+> > +impl<'a> IoUringSqe {
+> > +    pub fn cmd_data(&'a self) -> &'a [Opaque<u8>] {
+> > +        // SAFETY: The call guarantees that the pointer is not dangling and stays valid
+> > +        unsafe {
+> > +            let cmd = (*self.inner.get()).__bindgen_anon_6.cmd.as_ref();
+> > +            core::slice::from_raw_parts(cmd.as_ptr() as *const Opaque<u8>, 8)
+> 
+> Why 8? Should be 16 bytes for a 64-byte SQE and 80 bytes for a
+> 128-byte SQE, right?
+
+Yes, it should be 16 bytes or 80 bytes. I'll fix this.
+
+> 
+> > +        }
+> > +    }
+> > +
+> > +    #[inline]
+> > +    pub unsafe fn from_raw(ptr: *const bindings::io_uring_sqe) -> &'a IoUringSqe {
+> 
+> Take NonNull here too?
+
+Yes, Thanks.
+> 
+> > +        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
+> > +        // duration of 'a. The cast is okay because `File` is `repr(transparent)`.
+> > +        //
+> > +        // INVARIANT: The caller guarantees that there are no problematic `fdget_pos` calls.
+> 
+> Why "File" and "fdget_pos"?
+
+It's a bad mistake. thanks!
+
+Thank you so much for deatiled review!
+
+Thanks,
+Sidong
+> 
+> Best,
+> Caleb
+> 
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+> > +}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index 6b4774b2b1c3..fb310e78d51d 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -80,6 +80,7 @@
+> >  pub mod fs;
+> >  pub mod init;
+> >  pub mod io;
+> > +pub mod io_uring;
+> >  pub mod ioctl;
+> >  pub mod jump_label;
+> >  #[cfg(CONFIG_KUNIT)]
+> > --
+> > 2.43.0
+> >
+> >
