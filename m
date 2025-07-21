@@ -1,148 +1,94 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC0DBA36
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 19:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110EC2236FD;
+	Mon, 21 Jul 2025 20:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753126428; cv=none; b=Y/e97N2EKR+/bQB0P/kQWgF2NGWZg4a1p8aiITlK2jEIzUQ600mVfU+sDeOPKInSeeBppu5Y06Fmg2yJo+SjpKI+bpYtyYdNoE7P7qzrivC9ekpIyLu6+hzhmnLDdZ8XTTyr9mPu3MPTmOPUQEC01xT3/iIfX5MRKRU/iajQU1I=
+	t=1753128801; cv=none; b=f19PjLFUMtk+dNTKiuOCQ3SG1wJN1eb+A9fK4GUanqxChmSyn1dZK1y3JNWiJ0gy1/MoIfxsQZ+q8ic6+rRAPF9KdSYoWDTJthAx8nIVZAk0Rv9KDCKQOWCGv2YwvxyKrYmtiPE6oqpekCkKCNNhuH6M/PhJKuzIYBMnkGwOS5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753126428; c=relaxed/simple;
-	bh=b0Br9Ks6fXh5lsh6KkvcovDZWilidwwTqtBK+nHUNLI=;
+	s=arc-20240116; t=1753128801; c=relaxed/simple;
+	bh=la5LQMHSf9dwPtEfGuezlYjOUEGcVnsf/mlUepU+B1A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mlQKSNy5YC05dQ+2J6c+cbt51DM912Pxh+gKUqhPxo0OkOSDsusbO0T/AHwd0QvUXAtMt5iZ89H2qRsPR0keHAryhgR/m5zqvMZF0EZAC89aoNYKzhNzumSV8vwEVj+nLkj+HIyo06ozhHR4M9lwOubjmA9VwIN3T4qsQ9V1onU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tmRs6/gS; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=ei2Nz24wMJJOiPr5BtPMkw6uQNLi/t4fz8xe/8ib/DKhL71yR9Jwv6i1YOserPts3ACXDhEmYIXpF7Zt61SYpGsxyTQdXvy/VcaYitVnDoavX9fwzbTLgDh/XrF/QVPP/ZlkKw979wxlYJsFU7o1+QeKc1HBDh8ukpgy84pQJ1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAhgpGlG; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tmRs6/gS"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4561ca74829so52027645e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 12:33:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAhgpGlG"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2355360ea88so4766165ad.2;
+        Mon, 21 Jul 2025 13:13:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753126425; x=1753731225; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753128798; x=1753733598; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HBrX1LhQ4C9q6FY08bFZ+5XkQcWo67qB3JLKdiHTV0U=;
-        b=tmRs6/gSRQIKKgplNVfb9rW3B9zbsYsipI0QPcT1Fw2Nb+DUGUzU3JKmNxlaqBmPn5
-         zAK8UmB1zIaP9Gz9Jz2fbjt3allkZwFDBX4TFNjPW3ZQsfNTdnMHC05WfSezfhKdcAfY
-         SkC8pjVdBRV9mT8uEzCWVxl+mLIbRGtFLBWiYOHGQXyum7NntsUHin9oTXpIVI9slFAi
-         cGjd1QG2hxDMoxhNnuLcTkrAo9rTEVCAayg+7bcSwoJtZBIrQP4FJVytG9HDVKKjT9D8
-         RibmBH/IFpk6SRTf9imJ3i1VlSoOlBJShU3FBL7aTiVpcA85vCgbiF1CMZdZXYt6nbh3
-         R2Ug==
+        bh=la5LQMHSf9dwPtEfGuezlYjOUEGcVnsf/mlUepU+B1A=;
+        b=PAhgpGlG16P3ERuKfGfLdLLaaoU3SZSkBGaKeZVmI3Gew5bfW/useObY4ew4BOcqzg
+         BqhQk63HMDSnwTX5DjphPQnUN+DYgp91cMzwWmh21fNQCcZZboDD18ZE9k+zpfXay563
+         QBEIP4CBYCDSftX+vR+m49zJcK7MPRIViVcNHalHAHDyzP+mqDCNZEeLUtTGRRg3ogyY
+         H6Y/ysXSfk7FqyaaJvfzD+GHg09Nmh/Ut7LE0ny0MVFh4USZKVN2GusCLioJRkCiAGVK
+         KB3NsfU02GvudHO3w66Yh49XVfh7Pzzb3g9ZayZhfxWySJfIbpggGsEFDQ9aAq7oTuIj
+         c5Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753126425; x=1753731225;
+        d=1e100.net; s=20230601; t=1753128798; x=1753733598;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HBrX1LhQ4C9q6FY08bFZ+5XkQcWo67qB3JLKdiHTV0U=;
-        b=gbpo57J4rKtxFzXD8SmFya2P3wuAg2+wZGRriuKfoZ4Ffv/9DElaJhYLu0SHtkBzdU
-         cxJE1mkZUXOZ/5X02AHFyj97wcqs30StkjZm1FGNp5dhfhxWahJtBAH3LUvV/iYqSOB9
-         NxRL24lLtx+83C1dOK1jHwXU1GMK2NkTIMd4kVnLkQzxobBUScsJm02hYgZT9PS6DTKY
-         SI3x4BazJpAUrlqb17NiyjoG+/UxhNc8pZ5FK28eJS7CD9B3Hfhs0TGSqFUQ8psRT76G
-         v3awdmxWNvuUZeaFRaSHhi3rQJlrvwCJSgkAGSzt0O3OOMJ6YhBvQ2uLF31/kZUsnHpn
-         ZXEA==
-X-Forwarded-Encrypted: i=1; AJvYcCUc9m+Tpz/9Owqzz/RQtiIH6j58DAtLpv3e4k77OL26ZtJRSiJeFiItLRocx1P5yxNEfVjwhAl8tcSGcVeEow==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwIgxnENulv5c2D2hXqZ0fcT9BrZQXvVaexR/HXd9CHUAR4NJf
-	avbk0LaI2HaNmz7btv7OcRAGY31xd+8UKxDQTdfWUqHsP0QWoHCiuBGEi6f+DzwkmlGDBqLrLkV
-	YX7jGdqR5cqrqWBoVwRIdVXeOLfSwaOqnNzvOvM8W
-X-Gm-Gg: ASbGncuHVqhvI7x+wUBHvmp9KX8Cl/XaRuL/TBgkbY6Eav+WQ8go6eszL3BF84Q3caf
-	yKF5KOmO4P4rE+Amhkc0d0Lyv3kA6aGAmxnraByD6S+BtSo/fU65RV0c/ugbe9JYNh4J9xtuLLB
-	ooE1leatKIR++F/c3Yl7QTb9RAaHH6mvr72rRvgvowAG0QN7Oy1sWjE84XvAESPB2O6pMoIvTVG
-	N3od8za
-X-Google-Smtp-Source: AGHT+IGNspYtBPncBdW3w/SsuWiBzoraM8UjDYrcQv9P+WyMTcNLgDlaVPcW5XrC7nb2ZAo4MrVL17F2FHDqTh3VVdA=
-X-Received: by 2002:a05:6000:4804:b0:3a4:e5fa:73f0 with SMTP id
- ffacd0b85a97d-3b60e4d5533mr15467594f8f.20.1753126425187; Mon, 21 Jul 2025
- 12:33:45 -0700 (PDT)
+        bh=la5LQMHSf9dwPtEfGuezlYjOUEGcVnsf/mlUepU+B1A=;
+        b=UurMP/vsnqghrdcK0rQCQy82RqGldyjSuldmq9Lly3/Ab11R63OPLWKx3aghfB79Eg
+         N76TMgv9XKYLu9X/3Z/Uvn1mbbpKq8oJmL9BE2+DkAMKZdd+xx+qBj80szNLlin6vs4Y
+         9LE7OQRCa/OEx+0peWR22aA12/TS2inGfSWXfzUQwkCJ3/TvpkJlJmoL7TOU/kCfdKYv
+         DGKHu/Azkx8CmvV8MiANH89QdyftWOUp2Asbm/JUjMX8ERXFjLBnlIDIg8nindsKgktb
+         qY16qAjNEuTeTtbloXMDDUSq0kOExTlp8DHk9zYnTn1OGxv4jLUYbJ5gEKISE2ND3uEU
+         d7xg==
+X-Forwarded-Encrypted: i=1; AJvYcCV7hnxIDr4lMr+CiNAMjR9jNCxSyHUahi0PA+6JEAqgQBCYqJsiuZp5jkxYZJSpTSWkUBpVRFM26JVgKZPy7JI=@vger.kernel.org, AJvYcCWY2m2/qG70+YTmbf7q/M2IrboMAGfN6FigyJcEF5qgbmrOVyr1iyAb/nUfd8RZ/K2YTjHGhJ5xtcQElvA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxV/cxsL6ynpOht55uLOIKFKLrfYlCF4Ibo3VWg0wJbSAsWgEUe
+	pLHwL9ahtgLLy0VqnEgTUXdLtb8U5SJJJ6FfZ524oo/PMs8uQBi2pHc9kcjXbmWoXYUpwxSbrUy
+	VW2cFrdrvOszeCDjatwY7IpnJbejo4gk=
+X-Gm-Gg: ASbGncuTBEPeME+RrfGcU1r9AHjJB0X1sXdYjly+dFgjINjuScXupxXnVRB+BxQMafE
+	J/lOTAfUvdQLu1zC3hjWTfqaqO+YGMbIGnGSLZzVss6AmV/8pg+NAkpAgS8nm/IRMnUHe1P6kiP
+	1gXNyw3JK2d890yErqcNaN8AWNpkp6MsG8mYOLVI61XXYSqQRypz1/QTMVPiFSQabvIgRGWUn3B
+	0ZB0Vdn
+X-Google-Smtp-Source: AGHT+IESxN/8maSvQ3FE8zGtNbDZxmYPvYZ6CIbNbI+MwSZ8O3Car33dPWCPqyjmlw72QFrdTgwYpToCDUNBtFhpo5A=
+X-Received: by 2002:a17:903:166e:b0:234:f4a3:f73e with SMTP id
+ d9443c01a7336-23e24f4f229mr124108655ad.9.1753128798207; Mon, 21 Jul 2025
+ 13:13:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250721-irq-bound-device-v1-1-4fb2af418a63@google.com> <DCBBFAC5-A4B4-41BA-8732-32FA96EDE28E@collabora.com>
-In-Reply-To: <DCBBFAC5-A4B4-41BA-8732-32FA96EDE28E@collabora.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 21 Jul 2025 21:33:32 +0200
-X-Gm-Features: Ac12FXz3PAqla3h6HMW15ltSgos8jwB8mwZW-LrpptSGLIfz_bq8PvUKZkNYscI
-Message-ID: <CAH5fLghRi-QAqGdxOhPPdp6bMyGSuDifnxMFBn3a3NWzN4G4vQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: irq: add &Device<Bound> argument to irq callbacks
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
+References: <20250720094838.29530-1-work@onurozkan.dev> <DBGYNQJJ0JI6.P280ZLVZUSO6@kernel.org>
+ <20250720181721.54ab9faf@nimda.home> <CANiq72mv2yiJW_AD-_F1JUP2QdJKGGg8SqZ5SgDWT2xc_tpbZg@mail.gmail.com>
+ <20250721091358.7dda6b31@nimda.home>
+In-Reply-To: <20250721091358.7dda6b31@nimda.home>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 21 Jul 2025 22:13:05 +0200
+X-Gm-Features: Ac12FXx_d0P_BEjq17kEixmAKwgkn2-E13jX9861wBHQ2v3lFk5Ue23_wjO7FFM
+Message-ID: <CANiq72mi5H1NCGHCRtkpriH=a_G_a_Vuf6edQ8=U0=hVJc=o8Q@mail.gmail.com>
+Subject: Re: [PATCH v1 0/3] rust: make various `alloc` functions `const fn`
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, dakr@kernel.org
+Cc: Benno Lossin <lossin@kernel.org>, rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 21, 2025 at 9:14=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Mon, Jul 21, 2025 at 8:14=E2=80=AFAM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
 >
-> Alice,
->
-> > On 21 Jul 2025, at 11:38, Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > When working with a bus device, many operations are only possible while
-> > the device is still bound. The &Device<Bound> type represents a proof i=
-n
-> > the type system that you are in a scope where the device is guaranteed
-> > to still be bound. Since we deregister irq callbacks when unbinding a
-> > device, if an irq callback is running, that implies that the device has
-> > not yet been unbound.
-> >
-> > To allow drivers to take advantage of that, add an additional argument
-> > to irq callbacks.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> > This patch is a follow-up to Daniel's irq series [1] that adds a
-> > &Device<Bound> argument to all irq callbacks. This allows you to use
-> > operations that are only safe on a bound device inside an irq callback.
-> >
-> > The patch is otherwise based on top of driver-core-next.
-> >
-> > [1]: https://lore.kernel.org/r/20250715-topics-tyr-request_irq2-v7-0-d4=
-69c0f37c07@collabora.com
->
-> I am having a hard time applying this locally.
+> I thought it had effects similar to inlining, but after digging into the
+> assembly output of a simple program (with and without `const`
+> expressions) and reading some related discussions [1], it seems I was
+> wrong about it, sorry.
 
-Your irq series currently doesn't apply cleanly on top of
-driver-core-next and requires resolving a minor conflict. You can find
-the commits here:
-https://github.com/Darksonn/linux/commits/sent/20250721-irq-bound-device-c9=
-fdbfdd8cd9-v1/
+No worries at all, and thanks for taking a look into it!
 
-> > ///
-> > /// This function should be only used as the callback in `request_irq`.
-> > unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *m=
-ut c_void) -> c_uint {
-> > -    // SAFETY: `ptr` is a pointer to T set in `Registration::new`
-> > -    let handler =3D unsafe { &*(ptr as *const T) };
-> > -    T::handle(handler) as c_uint
-> > +    // SAFETY: `ptr` is a pointer to `Registration<T>` set in `Registr=
-ation::new`
-> > +    let registration =3D unsafe { &*(ptr as *const Registration<T>) };
-> > +    // SAFETY: The irq callback is removed before the device is unboun=
-d, so the fact that the irq
-> > +    // callback is running implies that the device has not yet been un=
-bound.
-> > +    let device =3D unsafe { registration.inner.device().as_bound() };
->
-> Where was this function introduced? i.e. I am missing the change that bro=
-ught
-> in RegistrationInner::device(), or maybe some Deref impl that would make =
-this
-> possible?
+I think Danilo will take this eventually through `alloc`, but it
+sounds good to me.
 
-In this series:
-https://lore.kernel.org/all/20250713182737.64448-2-dakr@kernel.org/
-
-> Also, I wonder if we can't make the scope of this unsafe block smaller?
-
-I guess we could with an extra `let` statement.
-
-Alice
+Cheers,
+Miguel
