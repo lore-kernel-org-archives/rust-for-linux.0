@@ -1,72 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EF31ADC90
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 15:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753112035; cv=none; b=uJhJ9r9jsZtg6wtDp6F+V784IJ/bOC3CTONTNbRUd3JWHQiRJt3rPfK6KctJ5krLs4JawkPt6AqvLpA97v1kUQ6Bv+fJ4jWiDYv9CUz0iNtnFYeyUZK7yqrG/dcZwLNRirGFcABIzLtyXyMZRXVCxvwsuuieVkpc38A14x+JmRA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753112035; c=relaxed/simple;
-	bh=hyyuyfbxHodKvSyqExb7ImrgCIZwTFL9rTdX6poyFrA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=ok4+a9qW6wysa1OKO91doI+0e6PdkM2A9P96V8e93I8WrQFKxKXKxZPqI16sHWIbAVOncMrdHFOsbfhVjR6AtzkNxZyiWvDtFODGlvM/rzJtSUQvnygoG0aJGSSjgkODix1BPtHY3IlvKnetRZqrcT/39pXrab01XMnK+4LLIvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKLmbz+C; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B837170A2B;
+	Mon, 21 Jul 2025 15:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753112413; cv=pass; b=fBssNIAl3LV5ZSeGVT8hf82blqLpeRyWHMHvhf+a5RxXWI9hN+01zS84ntFBHNLp6HSiSr7ofOjLHFWE4O7rBSzRjjIa64Gse5LYsUKmvTtCDCszv90vni2YU6NuUx4emGAtfGkuOr+zPSQGNlXCplI/yrCMPQSiIyeguhx5k4k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753112413; c=relaxed/simple;
+	bh=Oa3E9DZrZKrWi0b6xMSB/3xGFv+yRLURj6f7V19Xm20=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=rxby3PlK1ho6+YV3cKslLtJSlqqwOJ+sLdMZwCh2NKSJeKlgiLYlA84hOZk1YpgQMYO3zsaP9eFfLI4Qvxb6M+opg41+V8PE17TCHbENbyEYh++viaSNcN6AAU1Nz6fqSlfXnV9P5KJRzv2g3thxukaZml5S+LAkRgMkNN6EN5U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=ANGCruJu; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKLmbz+C"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596E8C4CEED;
-	Mon, 21 Jul 2025 15:33:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753112035;
-	bh=hyyuyfbxHodKvSyqExb7ImrgCIZwTFL9rTdX6poyFrA=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=FKLmbz+CxSiNML7F+p65oJIHLjvl95Pv/hVEblsYZTTWlg6gn+oXGNJIX02LFyhNp
-	 dCdS718g72JP2jUZgODe+lsRafSHI8B1NVsB/c+RkJhy78hxeiwLkUZMb41Uksd/jQ
-	 5q6ZrH7iMt0d1l+wQzZBq9JoyE5TqH6cru4LgW2R2OZLRSzM95tonuefJNuY3N/ElU
-	 aCT0x45l7ucQzuuFb/++Py7R21I6ckm84W/+wl3v5oHefDsQ1a8hErT1TL7nXd8c0b
-	 1yH54Yn0rmRQ4fZGAyBU03ZovYUIPFViunpxP8ao3gwRYPJFwj24Z7eBR1asyjActb
-	 +fjS6Sh+P5zoA==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="ANGCruJu"
+ARC-Seal: i=1; a=rsa-sha256; t=1753112391; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ObAS1cVnZe4GtB2Mw58Ew1pSljyXZYtNLhEh6Ahm5C0U2v5+fMUe6lkHaznuZKNG0VnnDRwiCniVdd66+WEeyWkImBGBX5KR843rOMOPby1+nv8VLzMGdSYZ/F3sldtGUSeblRzG/omRF2BLu4g8GNynVL1dDooShmBrAW+zjK8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753112391; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Oa3E9DZrZKrWi0b6xMSB/3xGFv+yRLURj6f7V19Xm20=; 
+	b=AZWcEnijkohVF4EG77WEsv379buoFNd32uQNLnnelafKsyObKhn5A2JkInWukWcPNOeEqGr0blCZMRbBbVIQlw9qxQ8qGeQ6tIjkNHf4FMYiUB31n9hXgi4L7XPg+/UQpieXu4OiMB1ypRmdkfyyea0mMkSfqDdas7KKhIwd+Aw=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753112391;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=Oa3E9DZrZKrWi0b6xMSB/3xGFv+yRLURj6f7V19Xm20=;
+	b=ANGCruJuodraWt9UzBZXqIRB2mcysZOiU7jsXetJbzpB+XxhTTxqVLuN0qKfddDc
+	HJicDM4XzIe+DEQljZ0NlFJgaUXuJrZQDYLcFZGouE4rcLtjtzyHK5KYfLYBSK3YAdo
+	b3RnVAW/8tseLkArYpI3U3d3RRzKWWoYxBMrZ44E=
+Received: by mx.zohomail.com with SMTPS id 1753112390371703.9991459836481;
+	Mon, 21 Jul 2025 08:39:50 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and
+ handlers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <DBHU8JNG1P7I.NNDX9ZDT9DNU@kernel.org>
+Date: Mon, 21 Jul 2025 12:39:33 -0300
+Cc: Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Trevor Gross <tmgross@umich.edu>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 21 Jul 2025 17:33:50 +0200
-Message-Id: <DBHUCKLO3YG6.3MFXYIE4XZMN1@kernel.org>
-Subject: Re: [PATCH v5] rust: drm: Drop the use of Opaque for ioctl
- arguments
-Cc: <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <aliceryhl@google.com>,
- <daniel.almeida@collabora.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <alyssa@rosenzweig.io>, <lyude@redhat.com>,
- <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-To: "Beata Michalska" <beata.michalska@arm.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250626162313.2755584-1-beata.michalska@arm.com>
-In-Reply-To: <20250626162313.2755584-1-beata.michalska@arm.com>
+Message-Id: <17DE1CFA-11D2-43B0-8710-A55983E2E918@collabora.com>
+References: <20250715-topics-tyr-request_irq2-v7-0-d469c0f37c07@collabora.com>
+ <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
+ <aH5SiKFESpnD4jvZ@google.com>
+ <1CC4638E-C682-4F68-A616-553169BB677C@collabora.com>
+ <DBHU8JNG1P7I.NNDX9ZDT9DNU@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Thu Jun 26, 2025 at 6:23 PM CEST, Beata Michalska wrote:
-> With the Opaque<T>, the expectations are that Rust should not
-> make any assumptions on the layout or invariants of the wrapped
-> C types. That runs rather counter to ioctl arguments, which must
-> adhere to certain data-layout constraints. By using Opaque<T>,
-> ioctl handlers are forced to use unsafe code where none is actually
-> needed. This adds needless complexity and maintenance overhead,
-> brining no safety benefits.
-> Drop the use of Opaque for ioctl arguments as that is not the best
-> fit here.
->
-> Signed-off-by: Beata Michalska <beata.michalska@arm.com>
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-The patch does not apply on top of drm-misc-next and does not have a base
-revision.
 
-Can you please let me know which commit this patch applies on top of or res=
-end?
+> On 21 Jul 2025, at 12:28, Danilo Krummrich <dakr@kernel.org> wrote:
+>=20
+> On Mon Jul 21, 2025 at 5:10 PM CEST, Daniel Almeida wrote:
+>> Hi Alice, thanks for looking into this again :)
+>>=20
+>>=20
+>> [=E2=80=A6]
+>>=20
+>>>> diff --git a/rust/kernel/irq/request.rs =
+b/rust/kernel/irq/request.rs
+>>>> new file mode 100644
+>>>> index =
+0000000000000000000000000000000000000000..2f4637d8bc4c9fda23cbc83076870359=
+57b0042a
+>>>> --- /dev/null
+>>>> +++ b/rust/kernel/irq/request.rs
+>>>> @@ -0,0 +1,267 @@
+>>>> +// SPDX-License-Identifier: GPL-2.0
+>>>> +// SPDX-FileCopyrightText: Copyright 2025 Collabora ltd.
+>>>> +
+>>>> +//! This module provides types like [`Registration`] which allow =
+users to
+>>>> +//! register handlers for a given IRQ line.
+>>>> +
+>>>> +use core::marker::PhantomPinned;
+>>>> +
+>>>> +use crate::alloc::Allocator;
+>>>> +use crate::device::Bound;
+>>>> +use crate::device::Device;
+>>>=20
+>>> The usual style is to write this as:
+>>>=20
+>>> use crate::device::{Bound, Device};
+>>=20
+>> I dislike this syntax because I think it is a conflict magnet. =
+Moreover, when
+>> you get conflicts, they are harder to solve than they are when each =
+import
+>> is in its own line, at least IMHO. =20
+>=20
+> Intuitively, I would agree. However, I think practically it's not that =
+bad.
+>=20
+> While it's true that Rust has generally more conflict potential - =
+especially in
+> the current phase - my feeling hasn't been that includes produce =
+significantly
+> more conflicts then any other code so far.
 
-- Danilo
+Hmm, I faced lots of conflicts for the platform I/O stuff, for example. =
+They
+were all on the imports and it was a bit hard to fix it by hand. i.e.: =
+it=E2=80=99s
+much simpler to discard the modifications and then ask rust-analyzer to =
+figure
+out what should be grouped where on the new code. This is a bit =
+undesirable.
+
+
+>=20
+>> In any case, I don't think we have a guideline for imports at the =
+moment?
+>=20
+> No, but I think we should try to be as consistent as possible (at =
+least within a
+> a certain logical unit, e.g. subsystem, module, etc.). Not sure where =
+exactly
+> the IRQ stuff will end up yet. :)
+
+
+Sure, I just think we should discuss this at the kernel crate level at a =
+future
+point then, at least IMHO. I think it's something that Andreas had =
+already
+commented on, by the way.
+
+=E2=80=94 Daniel
+
