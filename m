@@ -1,157 +1,154 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C44E2877F4
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 14:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A4E2DA76E
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 14:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753107466; cv=none; b=fy8fD5LNHL13iRS1qpESfTvhQLoZJC6zlobC9qAJv6CdWbze0Tt1x4xb58JFMaDvv4+2RKNhRkl8RZCL8ePmBmy9txgndIN8DqkNdbWz+VLjbUILK+XpbRSG8WjK7ReuSLWz0fXy0tjbh8fZX7Y/0+m9KaJzQh5AviO3kFv84BQ=
+	t=1753107667; cv=none; b=aEvL4qgh4DbXfuE1SpbL4dfR8byKyOCk48ZemomQyNTkHMLPnCv5hH0xac8wxDbRl1P96w6d7Ai/79vPburvcpCufiWVYu6jzXRme62hEIQxRYM7NDAcXTCtWprkRASO4P7i/zQfiRmX1vA4FP/cPFtf3GBmtSOYDtJxWOA81XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753107466; c=relaxed/simple;
-	bh=jx62/zzI69MGOw6Q1ltR2MwUC388v3A5IGqMmpKVPmI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c530s/djAb3Lm8RtZfZtH2clHgtQgXzsR27gaP7kVx2nAKCJa7Jo3p+b//CNYNcG2h1zFWP48FbqlfmX0pmVJrH7aDc2ObcndM1nJJtyqjWfpKIPmDOzFgZsnLr7FHRTWyXUnDpxCw9UDcQkXcdVmC9juRzM0fo0CdKJW71IFak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D++7aQYF; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1753107667; c=relaxed/simple;
+	bh=JcKaZoeKmA9SRzBDl6ydTbkoimw1MEhKUioDycAt8sQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=TYuxoeIiRhqswcep3Fy4DZaPXgDAE/RAsqLebNV3UqJtGJZ6TIGxuia+2ZO7GEdLPtseo2OE4EikyZLmQ52wUKb2/Hx+aQmVUf9z5ZgkxkY+gH1P1EHlQajDJT+1mnWtPPMBTtB9YKvMDYRAC4SBgYuoAUPE4x+eiZyGgtSMO4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ob7vNlfi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D++7aQYF"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4537edf2c3cso46065855e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 07:17:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753107462; x=1753712262; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aHTz2f/tCB5gJfHRUHusAnrHo0WkysiHKc8/HuxZcyk=;
-        b=D++7aQYFr5L68qNWwL/6zhUENYiKjmqUo1TJh2Z+2mF60qdLzy6CIZ+pGTEMtQM+HK
-         7YKl+TD5gKVwZ3EMqoX75nloA/j9A4+Ics/VJADr3c7MCue2dUtz2eDhJiPOeIDmj4Kj
-         woZ0BiltwOVZoVbDkT4AoIoq5NZlBAUoQu0I4sWUvmi6YoSdApdLKoHzn9h2mz+DKMKw
-         0DZYegFgRd+N6AxhW69vAmAJhKuWrX6zrBIEr4IL5AUpPzx8ZHobPTEvPFucknhKpSJ/
-         LMdwYMp2C5v812DMHr7QH0aWt7+fR96mCMpCJGDu18HnPppnpjQ7ayqkJvnUcBAr2RGI
-         EXMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753107462; x=1753712262;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aHTz2f/tCB5gJfHRUHusAnrHo0WkysiHKc8/HuxZcyk=;
-        b=bvJ9NBc19kxXNI3+pJeTgr686WvnpFOL4XVk99ThQ6BsYzxHPxb5ZRhoP1AX30eCwF
-         5B2yQHOsPjkAdLStrG1YMB8KcwDAaS3mYfzZMKTMT3KJZ0Uhl5VMyExCgUGFv3KCrZbL
-         Nq3ZkwSK4RD1FWMHZn0jQnxVlh2xMu+Yojy0VRp9JmeFvc7iu4Pr4fAFX7JHT1GPCXza
-         QL+VTUqiokyMczu1jrGpAiEXPtBZIzeWGHSR81CPp8+URzm+8U6VqKjU8gnW0++rKdI5
-         uL0CfOMCn7tmyDdvNaC7cV2Q06VzF9WJPMdhhRrEca9ab5vhEB0BhZCNbM2r7i5ItppH
-         blrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWwK4HZV0S5kGAc41GWYqtLvv0i+RSXo4Iuu2hAYmlezSLHsoyWi2nwEs+7SWl2XYWZTesmkHmDpBnhZx8rGw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJwxP2IU/9t0c56LXXcN6Vgfqcn9S7jdVCRPJ+F5BUwdIVsVCf
-	/d03U4AmUDQsC8nphvqaLm5/5u5FKPfDVhM+OeX0YjdArdpM/Sew8hia5/ogrDSU94EWq/S4Wgo
-	km3BKbJGdKC1Qn0y7SpHcwhRcWcFnm6q7N8HqJgUQ
-X-Gm-Gg: ASbGncvP4PARwZS2+/KAWgtH2rjCDd3zEeWmFtOX0UXvDGmBTWgfmfMtNe88ogF2CuV
-	xymADS4HF2Ed+EtMBZUgbBu3ZcLIU7NZ1C9B8ME8lSRM/gi7zdE209V51v1thRVggZwqOxybnk2
-	97xoetFUREyX42E19iIFd/qC2wsF7fhW87nL+C9yz/JbxIjVEgH4oTJL3ZmJrXk7/49YNveS30Y
-	jVxeCQQ6yqvtTqLImAnsggusgMg+qbnE6e+7g==
-X-Google-Smtp-Source: AGHT+IGjLzZ7/Km2FCbSNRsrArfXJV2GEMgIhjJN78UwwjSKkWJY+F2cHXQv40vfc3kSfYwQzfjjab4StDfPm4kGNEg=
-X-Received: by 2002:a05:600c:5253:b0:456:1efa:8fe9 with SMTP id
- 5b1f17b1804b1-4562e03a678mr216153965e9.2.1753107462190; Mon, 21 Jul 2025
- 07:17:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ob7vNlfi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17229C4CEF6;
+	Mon, 21 Jul 2025 14:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753107666;
+	bh=JcKaZoeKmA9SRzBDl6ydTbkoimw1MEhKUioDycAt8sQ=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=ob7vNlfi4oLjzH+erQ2Fcs4qmuGR6NaidSNJ4rZdyEaf+dM0jn3FKBdU8Dx2hKwjg
+	 1v8VP3z3jdJVIQhSbqvXg+hJu9O1GjTDQssFzy6eeO/uqj0ygrOtK2HdOR0W7Wb4S4
+	 QugC51TvZEufYKMUXfVQvI0VdXtyan/j9g/qzdHh0Xp8HtntHU37CJUPXGXPx93Wbb
+	 0Zv44c+B6KRbz1JGDmjPNznMNbfU4hRs1qVwt+QIJnwL4Ywn67Mn6di+0mLCTCyzna
+	 7woUtLLy7IC3c5RdX1HhKIsZxNNSFpPmIi9y24DkJIHaxV2cb2aMiY4bCFOuoBXFZ/
+	 4vdLA93kQX6Lw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
- <202507170718.AVqYqRan-lkp@intel.com> <9834736F-F70F-4290-9DE8-755A6D0D5EB8@collabora.com>
-In-Reply-To: <9834736F-F70F-4290-9DE8-755A6D0D5EB8@collabora.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 21 Jul 2025 16:17:29 +0200
-X-Gm-Features: Ac12FXzqc3WLYmS_rx0F_dtIhtQQ4LQMKVOtCM3xLb6rdTs9AmutrC95-1kYQiY
-Message-ID: <CAH5fLggfp36q0UmF_XNLCZKn+fc1xd2hMBsYX1UrtJqBFYrf+g@mail.gmail.com>
-Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and handlers
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: kernel test robot <lkp@intel.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Bjorn Helgaas <helgaas@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Benno Lossin <lossin@kernel.org>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 21 Jul 2025 16:20:55 +0200
+Message-Id: <DBHSSQS2IALW.2OEWVKX6PY9LZ@kernel.org>
+Subject: Re: [PATCH v7 3/3] rust: revocable: Document RevocableGuard
+ invariants/safety and refine Deref safety
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>,
+ <aliceryhl@google.com>, <dakr@kernel.org>, <ojeda@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ <~lkcamp/patches@lists.sr.ht>
+X-Mailer: aerc 0.20.1
+References: <20250721010258.70567-1-marcelomoreira1905@gmail.com>
+ <20250721010258.70567-4-marcelomoreira1905@gmail.com>
+In-Reply-To: <20250721010258.70567-4-marcelomoreira1905@gmail.com>
 
-On Thu, Jul 17, 2025 at 6:21=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
+On Mon Jul 21, 2025 at 3:01 AM CEST, Marcelo Moreira wrote:
+> Refinements include:
+> - `RevocableGuard`'s invariants are updated to precisely state that
+>   `data_ref` is valid as long as the RCU read-side lock is held.
+> - The `RevocableGuard::new` constructor is made `unsafe`, explicitly
+>   requiring callers to guarantee the validity of the raw pointer and
+>   RCU read-side lock lifetime.
+> - A new `SAFETY` comment is added to `Revocable::try_access` to
+>   justify the `unsafe` call to `RevocableGuard::new`, detailing how
+>   `Self`'s type invariants and the active RCU read-side lock ensure data
+>   validity for reads.
+> - The `Deref` implementation's `SAFETY` comment for `RevocableGuard`
+>   is refined.
 >
+> Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+> ---
+>  rust/kernel/revocable.rs | 25 ++++++++++++++++++-------
+>  1 file changed, 18 insertions(+), 7 deletions(-)
 >
->
-> > On 16 Jul 2025, at 20:45, kernel test robot <lkp@intel.com> wrote:
-> >
-> > Hi Daniel,
-> >
-> > kernel test robot noticed the following build errors:
-> >
-> > [auto build test ERROR on 3964d07dd821efe9680e90c51c86661a98e60a0f]
-> >
-> > url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Almeida/r=
-ust-irq-add-irq-module/20250715-232121
-> > base:   3964d07dd821efe9680e90c51c86661a98e60a0f
-> > patch link:    https://lore.kernel.org/r/20250715-topics-tyr-request_ir=
-q2-v7-3-d469c0f37c07%40collabora.com
-> > patch subject: [PATCH v7 3/6] rust: irq: add support for non-threaded I=
-RQs and handlers
-> > config: x86_64-rhel-9.4-rust (https://download.01.org/0day-ci/archive/2=
-0250717/202507170718.AVqYqRan-lkp@intel.com/config)
-> > compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87=
-f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> > rustc: rustc 1.88.0 (6b00bc388 2025-06-23)
-> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
-hive/20250717/202507170718.AVqYqRan-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
-rsion of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202507170718.AVqYqRan-l=
-kp@intel.com/
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >>> error[E0425]: cannot find value `SHARED` in module `flags`
-> >   --> rust/doctests_kernel_generated.rs:4790:58
-> >   |
-> >   4790 |     let registration =3D Registration::new(request, flags::SHA=
-RED, c_str!("my_device"), handler);
-> >   |                                                          ^^^^^^ not=
- found in `flags`
-> >   |
-> >   help: consider importing this constant
-> >   |
-> >   3    + use kernel::mm::virt::flags::SHARED;
-> >   |
-> >   help: if you import `SHARED`, refer to it directly
-> >   |
-> >   4790 -     let registration =3D Registration::new(request, flags::SHA=
-RED, c_str!("my_device"), handler);
-> >   4790 +     let registration =3D Registration::new(request, SHARED, c_=
-str!("my_device"), handler);
-> >   |
-> >
-> > --
-> > 0-DAY CI Kernel Test Service
-> > https://github.com/intel/lkp-tests/wiki
-> >
->
-> This is a single character fix, so I am waiting for the discussion on the=
- cover
-> letter [0] to advance before sending a new version.
->
-> [0] https://lore.kernel.org/all/DBCQKJIBVGGM.1R0QNKO3TE4N0@kernel.org/#t
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> index 6d8e9237dbdf..0048de23ab44 100644
+> --- a/rust/kernel/revocable.rs
+> +++ b/rust/kernel/revocable.rs
+> @@ -106,9 +106,12 @@ pub fn new(data: impl PinInit<T>) -> impl PinInit<Se=
+lf> {
+>      pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+>          let guard =3D rcu::read_lock();
+>          if self.is_available.load(Ordering::Relaxed) {
+> -            // Since `self.is_available` is true, data is initialised an=
+d has to remain valid
+> -            // because the RCU read side lock prevents it from being dro=
+pped.
+> -            Some(RevocableGuard::new(self.data.get(), guard))
+> +            // SAFETY:
+> +            // - `self.data` is valid for reads because of `Self`'s type=
+ invariants:
+> +            //   `self.is_available` is true.
+> +            // - The RCU read-side lock is active via `guard`, preventin=
+g `self.data`
+> +            //   from being dropped and ensuring its validity for the gu=
+ard's lifetime.
 
-My suggestion is to make the flags module private and re-export the
-Flags type from the irq module. That way you don't have to write
-use kernel::irq::flags::Flags;
+This shouldn't be needed.
 
-Alice
+> +            Some(unsafe { RevocableGuard::new(self.data.get(), guard) })
+>          } else {
+>              None
+>          }
+> @@ -233,7 +236,7 @@ fn drop(self: Pin<&mut Self>) {
+>  ///
+>  /// # Invariants
+>  ///
+> -/// The RCU read-side lock is held while the guard is alive.
+> +/// - `data_ref` is a valid pointer for as long as the RCU read-side loc=
+k is held.
+>  pub struct RevocableGuard<'a, T> {
+>      // This can't use the `&'a T` type because references that appear in=
+ function arguments must
+>      // not become dangling during the execution of the function, which c=
+an happen if the
+> @@ -245,7 +248,15 @@ pub struct RevocableGuard<'a, T> {
+>  }
+> =20
+>  impl<T> RevocableGuard<'_, T> {
+> -    fn new(data_ref: *const T, rcu_guard: rcu::Guard) -> Self {
+> +    /// Creates a new `RevocableGuard`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that `data_ref` is a valid pointer to a `T` =
+object,
+> +    /// and that it remains valid for as long as the returned `Revocable=
+Guard` is alive.
+> +    /// The RCU read-side lock must be held for the duration of the guar=
+d's lifetime,
+> +    /// as indicated by `rcu_guard`.
+
+This last part shouldn't be needed, as the `rcu::Guard` already
+guarantees it.
+
+---
+Cheers,
+Benno
+
+> +    unsafe fn new(data_ref: *const T, rcu_guard: rcu::Guard) -> Self {
+>          Self {
+>              data_ref,
+>              _rcu_guard: rcu_guard,
+> @@ -258,8 +269,8 @@ impl<T> Deref for RevocableGuard<'_, T> {
+>      type Target =3D T;
+> =20
+>      fn deref(&self) -> &Self::Target {
+> -        // SAFETY: By the type invariants, we hold the rcu read-side loc=
+k, so the object is
+> -        // guaranteed to remain valid.
+> +        // SAFETY: `self.data_ref` is valid because of `Self`'s type inv=
+ariants,
+> +        // and the active RCU read-side lock held via `_rcu_guard`, ensu=
+ring the data's accessibility.
+>          unsafe { &*self.data_ref }
+>      }
+>  }
+
