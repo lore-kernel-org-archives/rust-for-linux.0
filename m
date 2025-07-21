@@ -1,131 +1,95 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B062820BA
-	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 11:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9916828FFD0
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 11:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753095666; cv=none; b=R5VGkfnsV4EDP8Tgj7v0s1qzU61A4kEFd5Lboi2YAWBtWTQ5pikIiK21kIKh77SpBh3SNwaRQyItqK8BPGd+0Q6MAQl3ElKUUm1cMnqEMHEkMShEZuqxbrHAsxDstwijujM8YahIocjGnS6NEVW1JgDVNXq8SZbDpfEPRNWSATI=
+	t=1753095983; cv=none; b=YDe+kCtxfRwMpOslnq2V3cQV49qdpz+uPMdYCGX3XlV3iDunl+1Cn2wW7/SlsvdcH4uK4aFezSI3svcYlIobuxn2rOHHhVj6fBmByZTrHWuEQ/YCkTvh3Tbzm4U/uIw7apnXENYhIA3oIvg0NsUemyoR5aQKNsDusBWXzJAnwh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753095666; c=relaxed/simple;
-	bh=vvqRmzn5bsiLfDQPVMIJEqn98dYEOaVj5gPI9frgUKY=;
+	s=arc-20240116; t=1753095983; c=relaxed/simple;
+	bh=s8DwLMaxGVgo8hNq/g2EUh6Icsw4FGGLvVorXWdS1CQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kjhafWT18QrZDVDJzogWIkpMUrvBStk23ElPe3+Gpi5gHTGdzdtZ+NLKJW0Htcjf0S6poZOV3nT/2TC9kfEgLxmVGnYP/TFPMjKTzFog/hiN7MT/IIw0Xpo97v2I6U+kQpYVlGMUgIUNOgB8fgp19RWxs2lPqHvcHtg7wL7lS6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kIj8EYNa; arc=none smtp.client-ip=209.85.221.42
+	 To:Cc:Content-Type; b=O71DKlQp3lxOOgMWWm3WgyUpvvo/WUxXKYqU4EqwXAAOR5Wf54OJzAub7+viwtabuRPDah0ZSqiPVDaffdFGqMsztRCN6lMWhx2e8ttmkDyFsfcUEBxgVOL2W8RtXZVgmtQmnOPtsYe8kvIPqdlZ6UacAAF90Zq/CEfdGE1p+h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ou/Qu9ev; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kIj8EYNa"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a575a988f9so2432789f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 04:01:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ou/Qu9ev"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a50fc7ac4dso1893988f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 04:06:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753095664; x=1753700464; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1753095980; x=1753700780; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EmY+IpkmibE+BnldzW/yUpXObRNwKpLs/0Xryp2VLPA=;
-        b=kIj8EYNam8LXepRBDgJSj3+801Gr5i+Ne5Mn9YzQ6zos+RrvPGz834tJWd/1bvVqeA
-         cZ+uL3p04LdhBkeojVaCB1nvbAuK5LXZGtCIjt/bSucXW8fFTem9iKrq3Klgq7l031JS
-         m8pMecsz+POvIJxXmInzERk/Mz/AKT1iVgmEdrRNk0f5xk3kEop97mSkWDxRviFStMNE
-         7ZRD8SoYlb4drKToRnrHZiHR+YU6MnUm+709n1wnPrLqIiEXof/PjYAGHcevXUiOK4/p
-         DTLgfegP+7YeI/mfCX4VehrgqTFcGCmhBnCEelU5BSFku42uXXNKO7ZOmHzhEgLDDAEz
-         LZeQ==
+        bh=s8DwLMaxGVgo8hNq/g2EUh6Icsw4FGGLvVorXWdS1CQ=;
+        b=Ou/Qu9evJZNnwRhAhGKg/O6dbr43J+SqZRtoFn9zA+ialI5TUyFi7RERzuP9HjLxI/
+         HdtoFOMKCGsN87UU7dYCLjG3s/yUHx6VdFWmB3+qXf/yTeXvhRAhodBR+C+CzYzrnwjc
+         PB/lwjFjl7uqXlQunuQ/32/Fa3XpZfJeL83jBs1u6rGMbgeBg4Q8BIJmOa62HipNRMqe
+         tvp0E82CPYtKH24bKrERG5vKwpDPw01ikFlar8htBOuihInJXSMNvZMG2/T+WsOiGPR3
+         uxJj58ssZvbOD7e6cx9+6LJqEFDME6PZE1y2xVRKb2yCD4YZVgUUx/rVFgBIghd4B5Ew
+         e09w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753095664; x=1753700464;
+        d=1e100.net; s=20230601; t=1753095980; x=1753700780;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EmY+IpkmibE+BnldzW/yUpXObRNwKpLs/0Xryp2VLPA=;
-        b=IEDxx4m+BFr0bR0wwJTFKALxP8z/8iZ0+FYcR3P59nxjVzh8CK1WmbON2hsO3uvkoi
-         hVWu/mZ8kSKP6YCT58JkQgJ2qIknyna+dBbPJSXlN+3A5MrKtOKmqnD9HGOiCDdAM/Mt
-         Gqnbb1dJTQKNclWoGuPODa9Mf5noVdJBKUFLOE1AzepOyEzlSaNUURWmd7BN02Twhzyg
-         p1WYLfL4+tl00lTz1UpxjjHVCCLiN8Ri67npXhnyTaK97/LzIedgG2gOyxJ2OEdyvkiO
-         EdYAHgdYIAlMCYVEVqDNyE8Rdgu3uHS45hpKvOs/Pfu6lyqwmqcADfHlV/2h+OlSu8WH
-         qqGw==
-X-Forwarded-Encrypted: i=1; AJvYcCWi6tI3drwSdnnu9eLit6075lkhV0HVwJO8ymim8ZDaFnToOs3DlazeYUp3EGN+Q8Jy+NhljDR//zyd+59oNQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyotAiB4K9LZgLbm6vtaLCITNMrLQXxiw2h6kYt3IIerVYjDhB6
-	2S6gGxPJRsqHkxzQZh5z1TaWuY9sa2dsfkyEI/ANUwRuXWDnQRcIFT5dCCXn1pRagt5Ohxwpj9d
-	JfYLXmNcx4mtARq1bTDle0liy9RZpFOhxJDwWH37o
-X-Gm-Gg: ASbGncuyliQi8RcAYEy8CfAxisqBHzqcfwqnCc7QpJGEl3yMX2a5bQnODt6+XpvgTCl
-	uii3xOSINwahzS/OiK3T1HsQVQTBZkFCRy93vPelNnaYsFw6SpDCN4lMwWvuDPieqxRu0mXqT2d
-	FUwlQrRKtBLiAPR6DXRBePCeO89SYEMNWdKv9RIkIrv0qJW4xie2E7xAjsidMdFis/MXaBbBghR
-	DkSZdAboV2fbfyYvClMTtzaPnNyNLnNp9hb
-X-Google-Smtp-Source: AGHT+IEDEegBWf7D/JwjxXCNJSDo4l+APz+X0qs4pQdmNxde/72o3MOGn11+E/f6IP+htttyF0gaDT6zRxAPVq+4caU=
-X-Received: by 2002:a05:6000:2903:b0:3a5:2cb5:6429 with SMTP id
- ffacd0b85a97d-3b61b222600mr10029667f8f.43.1753095662535; Mon, 21 Jul 2025
- 04:01:02 -0700 (PDT)
+        bh=s8DwLMaxGVgo8hNq/g2EUh6Icsw4FGGLvVorXWdS1CQ=;
+        b=W8JUZjeNVSbrRwEAdlxl2HVfaIvdXCVblWDykXXj2xTLDtOGSm0DO90CjBG7Vv5PEg
+         9rNsHMPI5uywFa5xAwhVElRNaWiYYxHrtpaelO53nJfzpAeJScI2QSboLfPVnOByqH1R
+         biWvRfV2DeUFzEUMjai4O8tHP23NFVnO4arJoa7f4Vt2A9VoWs4nplMHuYQwIsH+lfu0
+         fJOT/YVhcHeW8gr9jI5zayF+Fyb8EqTlazHNQxXMJaJwM2v5VhS8IskcPxk3FUUMXQYy
+         Tb+440nQlVYG2LMVecLeXGd1Z7HVsdsfHMC4nmqeehY5IVHzEtNZUa3Tc55T5q3s0EZU
+         swEw==
+X-Gm-Message-State: AOJu0YxGycOoaXt5AxdS8fDSqv6kOwyEMdt9fSvCxkezyxv5j8GFYYjL
+	zxo6DTUKGvZV+hrS3lfIu7hhg9ht1LPlnlvycW0qF5U8sWRs83INboUABPsI+cZbrkZbeYlNoUf
+	NDbJWb2MKJEJ9hkkzHfcbxpvLbh8oCg/6JTmSX669
+X-Gm-Gg: ASbGncuokuAntCXkP+xDrwsTcNuj805R/X9Qt/7CH/Y70oD91Bs1htuipNT7FZNsmgS
+	4dPersnyVNqOyB/Xh1wo6QeYsEux4d1NwNDyNLwUnbkENsoUOuKIQks8A+FcBuvH6lzT3V/lkU4
+	YEIcKvMEeYDdOkE3JN3j8QRE+RQ6x4hLQKc7paA4ggiPIcuudwDKQKdujB4K4jDP3sYlzO7a7Ha
+	i4pzq4z2X0i+lMrHywSnpy7nqaW3n1zvhtA
+X-Google-Smtp-Source: AGHT+IF1riY517jNsBWworq6HoIm32GAqoCMfQTdA2WL/azNRCOSh84I+OHSTSXC9ydWwvuBVz7iqeGv1Yh0IPi/6P4=
+X-Received: by 2002:a05:6000:41ed:b0:3a3:6e62:d8e8 with SMTP id
+ ffacd0b85a97d-3b613eab461mr12459180f8f.55.1753095979751; Mon, 21 Jul 2025
+ 04:06:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250625051518.15255-1-boqun.feng@gmail.com> <aGKWIFVl4nwSl8SG@Mac.home>
-In-Reply-To: <aGKWIFVl4nwSl8SG@Mac.home>
+References: <20250718142026.2232366-1-i@truongsinh.pro>
+In-Reply-To: <20250718142026.2232366-1-i@truongsinh.pro>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 21 Jul 2025 13:00:49 +0200
-X-Gm-Features: Ac12FXwftzBCY7VjqfRESxSmTve-JCl6P7gakKhAmACJbgq-_ANGdiID8v6daPU
-Message-ID: <CAH5fLgj1C-BVAfK8Qoaxb4hV=s74-SNPUeHq9LtmQ5q8aqcd-g@mail.gmail.com>
-Subject: Re: [GIT PULL] [PATCH v2 0/5] rust: Task & schedule related changes
- for v6.17
-To: Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@redhat.com>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Tamir Duberstein <tamird@gmail.com>, 
-	Kunwu Chan <kunwu.chan@hotmail.com>, Mitchell Levy <levymitchell0@gmail.com>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Borys Tyran <borys.tyran@protonmail.com>, 
-	Christian Brauner <brauner@kernel.org>, Panagiotis Foliadis <pfoliadis@posteo.net>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Date: Mon, 21 Jul 2025 13:06:06 +0200
+X-Gm-Features: Ac12FXxH7sEDkUsQd6yCfdYvbgFR5hMpNbPBuNFYbo0S4ZhPZjZIN2YZsKV5KbM
+Message-ID: <CAH5fLghFCSS7HB7JqucpAPrExdttvcOSNJwuZMFNXspu0=4G4w@mail.gmail.com>
+Subject: Re: [PATCH] rust: Add #[must_use] to Lock::try_lock,
+ GlobalLock::try_lock, and XArray::try_lock
+To: TruongSinh Tran-Nguyen <i@truongsinh.pro>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org, 
+	tmgross@umich.edu, dakr@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 30, 2025 at 3:50=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Fri, Jul 18, 2025 at 4:20=E2=80=AFPM TruongSinh Tran-Nguyen <i@truongsin=
+h.pro> wrote:
 >
-> On Tue, Jun 24, 2025 at 10:15:13PM -0700, Boqun Feng wrote:
-> > Hi Ingo & Peter,
-> >
-> > This is the updated version from my pull request last cycle:
-> >
-> > v1: https://lore.kernel.org/rust-for-linux/20250506045843.51258-1-boqun=
-.feng@gmail.com/
-> >
-> > Please take a look, thanks!
-> >
+> These methods return an RAII guard that unlocks the lock when dropped.
+> If the return value is ignored, the lock is released immediately,
+> which is likely not the intended behavior.
 >
-> Ping ;-) I forgot to add that this is a dependency for Rust version's
-> read_poll_timeout(), which is a dependency to a few things:
+> This addresses issue #1133 in the rust-for-linux project.
 >
-> * In the `Tyr` driver:
->
->   https://lore.kernel.org/rust-for-linux/20250628.224928.6908316292615465=
-21.fujita.tomonori@gmail.com/
->
-> * In Nova, the gpu driver:
->
->   https://lore.kernel.org/rust-for-linux/20250619-nova-frts-v6-24-ecf41ef=
-99252@nvidia.com/
->
-> * In the qt2025 phy driver:
->
->   https://lore.kernel.org/lkml/20250220070611.214262-9-fujita.tomonori@gm=
-ail.com/
->
-> Thanks!
+> Signed-off-by: TruongSinh Tran-Nguyen <i@truongsinh.pro>
 
-I would love to see this land to unblock the above users. I wanted to
-add that I fixed the Rust language so that it NUL-terminates these
-filename strings, so Ingo's concern from the last cycle should not
-apply to this version of the PR.
+I like the reason string that the previous patch used:
+if unused, the lock will be immediately unlocked
 
-Thanks!
+Perhaps we could update this to use that wording for the remaining
+try_lock methods?
+
 Alice
