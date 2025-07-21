@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4992BDC27;
-	Mon, 21 Jul 2025 12:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1332D0C7E;
+	Mon, 21 Jul 2025 12:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753099680; cv=none; b=AtJQ0qEFudtd8t5m2uoaoeWFYlbYPTukaO1B67WVwiTQ4lwx7gJBIxaHXgNj+E01eaxJHZCNOJLWGJ2WsvXhtWescWGBU7U8LReWEYLAPvwDcrRkqVWFiq+yha98yE4Z51qUkjdG8xjt4bE0e3apD8at2Z4WkVR1tkdNzaw5HN0=
+	t=1753099999; cv=none; b=i1E1RfhuwWPtNe0yJWe9roIDPwbgvWYmGN7qnr+Wv+eCqnql4+1xPtRrOp+5yfHAnajFcxZ9X5cId5FfMgoRjbkAl65GhO+1iCOGsKOWWdcjaNTswr6zBUNPwkSdQq7LeCpYbMMDW+kKWXxSsz/5YTCUarC/0Q52TxJmg1CSrTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753099680; c=relaxed/simple;
-	bh=HGMdIo6oslYM4p8B6X+pRPlvN2oo4wPSsVdDxEgKdu4=;
+	s=arc-20240116; t=1753099999; c=relaxed/simple;
+	bh=u8UTmNNVfas1iThMeHBfFi6Lpp2ebrw8WQiuOJvC1Ow=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=QiydZXpXNFRlT1fFlmGfvO6jvjpjmIZrX0hhq23g+TBjtzNMHJ6/ugRC5weXXYLtVspkISRNGCzK7tP9t1pH471//hbffQlqUwFfEId8BreteWWoub6fozDXOZs7Wwnbkhnmm/T9QXFU0g9hoFvtJ9Nxv4SaIddSP+/mVwyhT74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WV3b4noW; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=WfZcEOnXQWiahHBA4CCqTnpZKbwK7tf2k9bbASy32Dn1yvIYAaekAkBM9yfO3GW1Z2xhAkPaTvek+6b8sNCrshFrvMMYHgw8gYyWgYpdrTDkDPsciGhgjadA3IVrEf6YBHR+tWg3FFBZnTFA4uWq644takqbMKcVicGsZn2yeYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3noD053; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WV3b4noW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD01BC4CEED;
-	Mon, 21 Jul 2025 12:07:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3noD053"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ECCC4CEF4;
+	Mon, 21 Jul 2025 12:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753099680;
-	bh=HGMdIo6oslYM4p8B6X+pRPlvN2oo4wPSsVdDxEgKdu4=;
+	s=k20201202; t=1753099998;
+	bh=u8UTmNNVfas1iThMeHBfFi6Lpp2ebrw8WQiuOJvC1Ow=;
 	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=WV3b4noWpn0PDAuAOKsYZBWGbhq9gF3v+w2cNBoK2iylzVDyrYQkEP3xVZ+/X9p1Q
-	 aeHkmP+F2HTMRcGvgORcPxQ0i+ZP3JOrVPH5miuPZXCp8mygkC/ee3k7Nz4cjcP6QD
-	 j7g62MvWGW3Phwdzh4xnEifRABEzVRYgIH747oteb5OdSgY6oP31/WdcOpjNqd+1Ks
-	 nbisqpNuBj4gpmQZO5a0zykGt3EFJy6uAyCeo/9/irGLWoHWFCAWzAfMuwHL8y6nnt
-	 eVAqvxk8NzdnUxZ/Zp+FUmR8s4ImFi3CjewDFuy47O7k1TYN0+TUubjY1ayJs6jqP/
-	 IP9Zahg/swxSQ==
+	b=c3noD0534WoM16ejSp+tS6w7M8GrQwMxtJesCf2swGjVeniYVy326zSP5SPzC3g0Y
+	 lFppHPRt4GW4qmvjQpDIUH+c9cqhyT8WkO/DQNVlw01Cq9sHsMP/tqCkFvpT3Glq2v
+	 LfS430ETT4AsQsx/gne7uAqY67PJalzhUzeeUbXPxZ/BXyiicXjEvFULbM5hL6ioqO
+	 6yJf1fiAoPMRFQvswAQJlQVobgeK0hIfVVpMsffvDI0gQ01pxOuPeaDoEUlOMV26Ii
+	 73kgvgDAkAr614feE/zrqPcKp32nQ/LcXhy/XzhmK1jznJziYjy4S586WlOQiXzn9U
+	 cbkyjSbkLnT4A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,100 +34,30 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 21 Jul 2025 14:07:56 +0200
-Message-Id: <DBHPYX0Y0NN5.2NMGLAY6PWBQU@kernel.org>
+Date: Mon, 21 Jul 2025 14:13:14 +0200
+Message-Id: <DBHQ2ZDUHLSW.LHWUTFQO1E60@kernel.org>
 Subject: Re: [PATCH 2/3] device: rust: expand documentation for Device
-Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
- <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
- <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
- <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
+Cc: "Greg KH" <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
 References: <20250717224806.54763-1-dakr@kernel.org>
  <20250717224806.54763-3-dakr@kernel.org> <aH4juIVmj8euE1CA@google.com>
-In-Reply-To: <aH4juIVmj8euE1CA@google.com>
+ <2025072125-twine-curling-db0b@gregkh> <aH4telYyyexiMbjx@google.com>
+In-Reply-To: <aH4telYyyexiMbjx@google.com>
 
-On Mon Jul 21, 2025 at 1:26 PM CEST, Alice Ryhl wrote:
-> On Fri, Jul 18, 2025 at 12:45:38AM +0200, Danilo Krummrich wrote:
->> +/// All [`DeviceContext`] types other than [`Normal`] are intended to b=
-e used with
->> +/// [bus devices](#bus-devices) only.
->
-> This raises a few questions for me.
->
-> The first one is "why"? On other series I have been told that interrupts
-> must be registered and deregistered before the device is unbound. Does
-> the same not apply to interrupts for an input device such as a USB
-> keyboard?
+On Mon Jul 21, 2025 at 2:07 PM CEST, Alice Ryhl wrote:
+> The connection is that to request an irq you must have a &Device<Bound>,
+> so if you can only obtain a &Device<Bound> to a bus device, then that
+> means that you can never request an irq for a class device.
 
-In your example there would be a USB device *and* an input device, where th=
-e
-former is a bus device and the latter a class device.
+As mentioned in my other reply, a class device never owns resources of a "r=
+eal"
+device such as an IRQ.
 
-Any resources from the "real" device on the bus are on the USB device, not =
-the
-input device.
-
-Or in other words, class devices do not own resources of a "real" device an=
-d
-consequently are never bound to or unbound from a "real" device on the bus.
-
-> The second one is why we use the same `Device` type for both cases?
-> Would it not make more sense to have a BusDevice and ClassDevice type?
-
-Not really, the generic struct device isn't one or the other until it's use=
-d by
-an actual higher level bus or class device implementation.
-
-There isn't really a difference between the two for a base device.
-
-Regarding the device context, a base device can inherit a device context fr=
-om
-the higher level bus or class device. In case of a class device, it's just =
-that
-there's nothing to inherit other than Normal.
-
->> +/// # Implementing Bus Devices
->> +///
->> +/// This section provides a guideline to implement bus specific devices=
-, such as
->> +/// [`pci::Device`](kernel::pci::Device) or [`platform::Device`](kernel=
-::platform::Device).
->> +///
->> +/// A bus specific device should be defined as follows.
->> +///
->> +/// ```ignore
->> +/// #[repr(transparent)]
->> +/// pub struct Device<Ctx: device::DeviceContext =3D device::Normal>(
->> +///     Opaque<bindings::bus_device_type>,
->> +///     PhantomData<Ctx>,
->> +/// );
->> +/// ```
->> +///
->> +/// Since devices are reference counted, [`AlwaysRefCounted`](kernel::t=
-ypes::AlwaysRefCounted)
->> +/// should be implemented for `Device` (i.e. `Device<Normal>`). Note th=
-at
->> +/// [`AlwaysRefCounted`](kernel::types::AlwaysRefCounted) must not be i=
-mplemented for any other
->> +/// [`DeviceContext`], since all other device context types are only va=
-lid in a certain scope.
->
-> As a general comment to all three patches, I would suggest separating
-> out the link locations.
->
-> /// Since devices are reference counted, [`AlwaysRefCounted`] should be
-> /// implemented for `Device` (i.e. `Device<Normal>`). Note that
-> /// [`AlwaysRefCounted`] must not be implemented for any other
-> /// [`DeviceContext`], since all other device context types are only
-> /// valid in a certain scope.
->
-> and then at the end:
->
-> /// [`AlwaysRefCounted`]: kernel::types::AlwaysRefCounted
->
-> I think it's a lot easier to read the markdown version when links are
-> separated out like this.
-
-That's a good suggestion, thanks!
+A USB device, which represents a real device on a bus, is a bus device, in =
+your
+example the class device is the input device.
