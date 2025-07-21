@@ -1,95 +1,81 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304332D63F3;
-	Mon, 21 Jul 2025 12:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206B519AD89;
+	Mon, 21 Jul 2025 13:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753102483; cv=none; b=NMRcY8G3y985wG36Ox8228emlqQv15riW0p3cQdXsYC3l6aM2gQcOtPXHNVWUPQj0u3ie/RmTas82V0zvqwBEUyEIQYqloagl6ZZU8GffHqvb2ACNHH1kgLgTT4CWmVE7Bs2VioFBe0IGNFqvjfDpT9c/4HOXYpGfmQc9/yYCh0=
+	t=1753103855; cv=none; b=Wo+Q7GGEGrUhL69TnJnyqgobcup/ZXkKV9CKp2ShXGcXpjOQebzngfDxqmsNGmxcPUFwiHpQPP67VGmAkDXWQHHyW7QGRMuucZgsNqSUNJCnq2n2F4nBTvqjL/KLpikQ1o49eK5/5NW/SHsKDMV+Ysb2XpXI0iyg+Ch9+CI0Oq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753102483; c=relaxed/simple;
-	bh=Bq5VgfjTkqyHZmMsa4CuFn3fXsUBDjAcxmYxO2xVUQQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u6SKVCc1VJuQ8QStNszNLawe51ZC2jZhlkFwPiKdpW0DDlMNETS1xRzD2yKG9EugOGh8wKsQaLb17CwLAdo13B0COhWxmD90KRv5z7WK6ADBKrmXxLbvmyoQWTaL1z2COFCsGaSp1GFGIF9rACDiJDBr7T2CRZHKSo384GGjcUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RjTTJYCm; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753103855; c=relaxed/simple;
+	bh=ZbNrEK5Ac7aDXRD4X0QwLxogwtUOq3b2VY3XlStGeE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j4jWOZau4ZzSV0U9cXFgKUrdN1ukZyxVlF6rYDH/ArdXVLZyN820S5vwJaBCwJOM2GwUvCsZU6wYtJYy2Lp6rnvyB4cEjaBu9qdy0qWySlEbFys2TE5BeqEoIlTrs4Yg7kfH6z5/10zCLdIOn4ykwjHvzfw3+9SfNY/mpUcu5g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ek8K+2Fw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RjTTJYCm"
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b34dde96cbfso242553a12.2;
-        Mon, 21 Jul 2025 05:54:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753102481; x=1753707281; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bq5VgfjTkqyHZmMsa4CuFn3fXsUBDjAcxmYxO2xVUQQ=;
-        b=RjTTJYCmZ/NPbd2kt1bt168pUdPJ9FFWUggiAluPZaUwSno8aldNeim5NoYXnw7JLs
-         +weY5AEIKikwhMpsYcCUUum8ZEyez1OFF3bykCAw8ZTcC87VDCXqZaTiWugoejrdIFx/
-         tqjTcqdo6nRIQuqjIhDjBM8AsDaCzFbb4Iwz8zJXbN2ZsqOGe45AILWxmSUofKJPOeWZ
-         u7e8IYfbrjrcoVB8ysxFpgS+fdqnwM5rRzNixGXX7FJMvv8NOz9wW190aGOxZfVA+MIC
-         lofYLT9dJzGhxddq+bLGJpqGekjSt+oT3tFbSxEUVTPbv+0UcmIA5qQpipxEce49A8Fh
-         eYRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753102481; x=1753707281;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bq5VgfjTkqyHZmMsa4CuFn3fXsUBDjAcxmYxO2xVUQQ=;
-        b=JT2K6kQYGwrGD4NwutlrXribZ7Lgk9YzQvT0KdiupulbG4tJODtu4VdIA5/dR91gAC
-         b4qFi3Q6Th60cUjBf6SCHGtDwcQAN+yWUjK6e7hz6rRzjYrNxdCYWLZ13A8rPEHMSU7H
-         LTEo+NfjJhTemZ8gbvA1vjvZnbBXESnznyGz5WIPaGJqbZPzDu6M3dySl2elNfzPwtNe
-         jDqO4CUaD0XjHGVpcZrFLedmU5nH5vppz8vkp+XZQQyUyRg4pjaRBA264dY5HMF1gPX3
-         aU39r0FowLkNzWa7zPITxmTO47anZCVnRwdI4LAxfuXwnYkcF91V2sPY7RgpcKg0RrVi
-         u6TA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMYpmBZ6tS19HodDEZnGseI3Hj++IBLnhOL0SCNaGeokAc+qeGGHxmC8fsztE8q4y+VfKw1m5QdU0TBvXn7pI=@vger.kernel.org, AJvYcCVzzjCI1jFSLdlIZUrIHYbAzWRY9CrxQFeGLgYPL6+gK2+dXqQ+Tb0z+yM1Ml/2yIL0YbZReIqwYahHPAo=@vger.kernel.org, AJvYcCX4z1i9mDeKgT/ECgKji/RH85W9DPHtXWic4Up3SGFqmzJ6tADOybwLMZNBsbl5zB0gw/a+b9wbe1o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwA3KnFRfq2qLB2GhP1qyuuHRt06DaSu1QW3gQMltXeb3MAys3F
-	Pz4/vI2t1Xl0W48AOnErbCNfw/F9NfsHUTjyzVaFo/W846rDEA/ZP7p2rDeL5FMy7CqlJafVOUS
-	nK3lnie4kmtHQyTFBlIPK48IxF1ko/fw=
-X-Gm-Gg: ASbGncsUxJ+bS99blCsMhmOHfs0l1FTZfpixRybTeRXUsn1kh1jUHAue0qvkTKxVYzb
-	Yxd2sT04emAye5I/saK959xinuaw37qghbwVQ/HDf9Qw3QbPA7iRprafNimTIw2v6xOmNatZlpx
-	XZn9aVe5qONRY88dsa5tjOED3nGYomVC9D3FDFCS2q3uNqTLRiuJ55wF+Rqih+Yn0LUfkQQbUMO
-	N9Nvb9MzRIC2B/BkZk=
-X-Google-Smtp-Source: AGHT+IFI0uNUbtO1EL18MgqcISBuZun5VUryvqrsQhtAKtldt6P/mlWmjlPr/GgmBjbnB7SvG/K7ChJXEi849ooHmqA=
-X-Received: by 2002:a17:90b:562c:b0:312:25dd:1c8a with SMTP id
- 98e67ed59e1d1-31c9e6e8348mr11443694a91.2.1753102481364; Mon, 21 Jul 2025
- 05:54:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ek8K+2Fw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F449C4CEED;
+	Mon, 21 Jul 2025 13:17:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1753103854;
+	bh=ZbNrEK5Ac7aDXRD4X0QwLxogwtUOq3b2VY3XlStGeE0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ek8K+2FwkjAJs45uIF9DxGomK3sl+BUXmYH9t858YrjdStAKpQdoL5JTsDIpkV8iU
+	 tVN3L/h+Se9vo5be8ZUcdffoIShKNMO7E0SA4prmpA/1Khjf1MP3Ev5H9EHYIiA8z8
+	 MeZBiJMZrC6FEEwT9tLzIpCfnzSkUjY2ZeGhuejs=
+Date: Mon, 21 Jul 2025 15:17:31 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, rafael@kernel.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] device: rust: expand documentation for Device
+Message-ID: <2025072110-buddhism-accompany-0682@gregkh>
+References: <20250717224806.54763-1-dakr@kernel.org>
+ <20250717224806.54763-3-dakr@kernel.org>
+ <aH4juIVmj8euE1CA@google.com>
+ <2025072125-twine-curling-db0b@gregkh>
+ <aH4telYyyexiMbjx@google.com>
+ <DBHQ2ZDUHLSW.LHWUTFQO1E60@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250704-core-cstr-prepare-v1-0-a91524037783@gmail.com>
- <20250704-core-cstr-prepare-v1-1-a91524037783@gmail.com> <20250721073717.i6hr4iesfupzvtwf@vireshk-i7>
-In-Reply-To: <20250721073717.i6hr4iesfupzvtwf@vireshk-i7>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 21 Jul 2025 14:54:29 +0200
-X-Gm-Features: Ac12FXy9X7WoYLkMFLbQ__okKUv8h09D5Y5ZLeDybojK9NFQlmOXBw1vbHf4mSI
-Message-ID: <CANiq72mZxcwDX2X3RfRpHzqkmU6GBVadKPLJYF03Hj14O2x4PA@mail.gmail.com>
-Subject: Re: [PATCH 1/6] rust: kernel: remove `fmt!`, fix clippy::uninlined-format-args
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nouveau@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DBHQ2ZDUHLSW.LHWUTFQO1E60@kernel.org>
 
-On Mon, Jul 21, 2025 at 9:37=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
+On Mon, Jul 21, 2025 at 02:13:14PM +0200, Danilo Krummrich wrote:
+> On Mon Jul 21, 2025 at 2:07 PM CEST, Alice Ryhl wrote:
+> > The connection is that to request an irq you must have a &Device<Bound>,
+> > so if you can only obtain a &Device<Bound> to a bus device, then that
+> > means that you can never request an irq for a class device.
+> 
+> As mentioned in my other reply, a class device never owns resources of a "real"
+> device such as an IRQ.
+> 
+> A USB device, which represents a real device on a bus, is a bus device, in your
+> example the class device is the input device.
 >
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-Thanks Viresh -- I will add this one if I rebase, since Stephen
-already solved a conflict with it (I should have pinged earlier I
-guess, sorry; I thought you guys didn't Ack so far since it was
-trivial, but thanks to you both for them).
+Just to confuse things a bit more (sorry), there are also "USB class
+devices" that represent USB devices that use the "generic" USB interface
+to userspace api.  You can find these by searching for
+usb_register_dev().
 
-Cheers,
-Miguel
+Note, this is different from the drivers/usb/class/ drivers, which
+represent various "USB class protocol" that the USB.org group defines,
+and those talk to userspace through the various common class apis
+depending on the specific device type (input, network, etc.) and are USB
+bus drivers.
+
+Naming is hard, wait until you learn about "usb gadget" a word we had to
+invent to describe the thing :)
+
+thanks,
+
+greg k-h
