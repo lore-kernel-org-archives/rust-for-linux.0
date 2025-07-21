@@ -1,81 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206B519AD89;
-	Mon, 21 Jul 2025 13:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF2043AB7;
+	Mon, 21 Jul 2025 13:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753103855; cv=none; b=Wo+Q7GGEGrUhL69TnJnyqgobcup/ZXkKV9CKp2ShXGcXpjOQebzngfDxqmsNGmxcPUFwiHpQPP67VGmAkDXWQHHyW7QGRMuucZgsNqSUNJCnq2n2F4nBTvqjL/KLpikQ1o49eK5/5NW/SHsKDMV+Ysb2XpXI0iyg+Ch9+CI0Oq8=
+	t=1753105299; cv=none; b=RJ1Vyi4ntYRqTFzfyRPCfoFO3uP+JD8wbzqDKoWfV23Wi5Bm4JSNLP7cVQxnSTE83lDWSkMhMP7YhD6PX3niy9XYmaMWjqDmSmw+2aYbMHbE4HahXdF8UfliZPLkRkrlKVLykT8QQUZQ9ykW5j82hCHGexpiMksSZWoN71Tm6N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753103855; c=relaxed/simple;
-	bh=ZbNrEK5Ac7aDXRD4X0QwLxogwtUOq3b2VY3XlStGeE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j4jWOZau4ZzSV0U9cXFgKUrdN1ukZyxVlF6rYDH/ArdXVLZyN820S5vwJaBCwJOM2GwUvCsZU6wYtJYy2Lp6rnvyB4cEjaBu9qdy0qWySlEbFys2TE5BeqEoIlTrs4Yg7kfH6z5/10zCLdIOn4ykwjHvzfw3+9SfNY/mpUcu5g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ek8K+2Fw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753105299; c=relaxed/simple;
+	bh=fCaUNy1bbmR7aJ36J+3WanaPnZLmOnroe61ros3lflQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=kGiI2A1OizdYgtMDNk/7SbSPOakcB6PqVAdvo6mTJQcUO6QF6IxRgOMk8ahKJRepzYFmxCgVikYjHRcDVSN2WqMPVEBlMbdl0e5kFJ5LHNIzz45ue1ujvuxQ1ozjFE+acQCAHQPOacxWbYQZ69f89aUSrDvAM0AqejTe7g/KNX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fqtu77+a; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ek8K+2Fw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F449C4CEED;
-	Mon, 21 Jul 2025 13:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753103854;
-	bh=ZbNrEK5Ac7aDXRD4X0QwLxogwtUOq3b2VY3XlStGeE0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ek8K+2FwkjAJs45uIF9DxGomK3sl+BUXmYH9t858YrjdStAKpQdoL5JTsDIpkV8iU
-	 tVN3L/h+Se9vo5be8ZUcdffoIShKNMO7E0SA4prmpA/1Khjf1MP3Ev5H9EHYIiA8z8
-	 MeZBiJMZrC6FEEwT9tLzIpCfnzSkUjY2ZeGhuejs=
-Date: Mon, 21 Jul 2025 15:17:31 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, rafael@kernel.org, ojeda@kernel.org,
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
-	tmgross@umich.edu, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] device: rust: expand documentation for Device
-Message-ID: <2025072110-buddhism-accompany-0682@gregkh>
-References: <20250717224806.54763-1-dakr@kernel.org>
- <20250717224806.54763-3-dakr@kernel.org>
- <aH4juIVmj8euE1CA@google.com>
- <2025072125-twine-curling-db0b@gregkh>
- <aH4telYyyexiMbjx@google.com>
- <DBHQ2ZDUHLSW.LHWUTFQO1E60@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fqtu77+a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51077C4CEED;
+	Mon, 21 Jul 2025 13:41:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753105298;
+	bh=fCaUNy1bbmR7aJ36J+3WanaPnZLmOnroe61ros3lflQ=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=Fqtu77+aaI2r2JSzT1Be6IbOUxE8+3ZW0S3gR9XI/WurgG7dBuF0WBwtaC75hHju7
+	 OjJSYip1YAq0+9ArXZ2L0MzmUJoGxoO59EvIsYpd3IozQbxUGOGbuaUWb/38IEoqVn
+	 tNIfQjw4QLKXlCLcypZVL5Qng7iZDnv6Kc8nod+BTGiaV+B13NPk5uXcbhNn5yUkT8
+	 OVLeLx8WXVdkMVl8dkMaOU80tZYUT+SOUxWpjSeu+96c1VywsSAANqee8JnSpkqmbn
+	 XTNIbW0RKOI8Zsj+ZMfovHmTdUWRg7503/RIMNYnWdiqGV5d+fg1KhFiZR19e6o1++
+	 Wo5dolFAOmppA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DBHQ2ZDUHLSW.LHWUTFQO1E60@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 21 Jul 2025 15:41:34 +0200
+Message-Id: <DBHRYM3JB4NK.1QLZ4RA7NVI25@kernel.org>
+Subject: Re: [PATCH 2/3] device: rust: expand documentation for Device
+Cc: "Alice Ryhl" <aliceryhl@google.com>, <rafael@kernel.org>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Greg KH" <gregkh@linuxfoundation.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250717224806.54763-1-dakr@kernel.org>
+ <20250717224806.54763-3-dakr@kernel.org> <aH4juIVmj8euE1CA@google.com>
+ <2025072125-twine-curling-db0b@gregkh> <aH4telYyyexiMbjx@google.com>
+ <DBHQ2ZDUHLSW.LHWUTFQO1E60@kernel.org>
+ <2025072110-buddhism-accompany-0682@gregkh>
+In-Reply-To: <2025072110-buddhism-accompany-0682@gregkh>
 
-On Mon, Jul 21, 2025 at 02:13:14PM +0200, Danilo Krummrich wrote:
-> On Mon Jul 21, 2025 at 2:07 PM CEST, Alice Ryhl wrote:
-> > The connection is that to request an irq you must have a &Device<Bound>,
-> > so if you can only obtain a &Device<Bound> to a bus device, then that
-> > means that you can never request an irq for a class device.
-> 
-> As mentioned in my other reply, a class device never owns resources of a "real"
-> device such as an IRQ.
-> 
-> A USB device, which represents a real device on a bus, is a bus device, in your
-> example the class device is the input device.
+On Mon Jul 21, 2025 at 3:17 PM CEST, Greg KH wrote:
+> On Mon, Jul 21, 2025 at 02:13:14PM +0200, Danilo Krummrich wrote:
+>> On Mon Jul 21, 2025 at 2:07 PM CEST, Alice Ryhl wrote:
+>> > The connection is that to request an irq you must have a &Device<Bound=
+>,
+>> > so if you can only obtain a &Device<Bound> to a bus device, then that
+>> > means that you can never request an irq for a class device.
+>>=20
+>> As mentioned in my other reply, a class device never owns resources of a=
+ "real"
+>> device such as an IRQ.
+>>=20
+>> A USB device, which represents a real device on a bus, is a bus device, =
+in your
+>> example the class device is the input device.
+>>
 >
+> Just to confuse things a bit more (sorry), there are also "USB class
+> devices" that represent USB devices that use the "generic" USB interface
+> to userspace api.  You can find these by searching for
+> usb_register_dev().
 
-Just to confuse things a bit more (sorry), there are also "USB class
-devices" that represent USB devices that use the "generic" USB interface
-to userspace api.  You can find these by searching for
-usb_register_dev().
+In this case the struct usb_interface represents a bus device, that can bec=
+ome
+associated with e.g. a class device of the usbmisc class. :)
 
-Note, this is different from the drivers/usb/class/ drivers, which
-represent various "USB class protocol" that the USB.org group defines,
-and those talk to userspace through the various common class apis
-depending on the specific device type (input, network, etc.) and are USB
-bus drivers.
+So, yeah, there are multiple USB devices, some of them are bus devices, som=
+e of
+them are class devices.
 
-Naming is hard, wait until you learn about "usb gadget" a word we had to
-invent to describe the thing :)
+I'm not sure about the exact topology, but AFAIK USB has different bus devi=
+ce
+types representing the hierarchy, i.e. a device structure for the entire "r=
+eal"
+USB device and another one for its interfaces.
 
-thanks,
+> Note, this is different from the drivers/usb/class/ drivers, which
+> represent various "USB class protocol" that the USB.org group defines,
+> and those talk to userspace through the various common class apis
+> depending on the specific device type (input, network, etc.) and are USB
+> bus drivers.
+>
+> Naming is hard, wait until you learn about "usb gadget" a word we had to
+> invent to describe the thing :)
+>
+> thanks,
+>
+> greg k-h
 
-greg k-h
