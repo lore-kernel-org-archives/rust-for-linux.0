@@ -1,135 +1,148 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B6321D3CD;
-	Mon, 21 Jul 2025 19:14:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753125251; cv=pass; b=OOxV7aLVhaji0fz8eqk3Dq004QD7ZMRJXRAoGzslLGiBvs7o9fEEvgvcMYR9uIRORphz14kaQskoBHFE9l1ICbFtQZL9HRqyJ1SI0MpTUDkKZRzztOQeCZ+uv1lYBkUPnyF397I6PPyHYkRgsdwSjxv1aD3oHV10Ezw6lkeUDFQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753125251; c=relaxed/simple;
-	bh=0h0SQouOS+2/ecprirETTnJHVqGqbMtPui7LsXV271w=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=XaSa6EVXMR5LI4GZDb4ortmiG9qlMO9AgZ9Z7vvsk4PBOk1oKuUyYAvSCR9uq8apBiC43FInpZV8Ny9/dYiUyOEacYbeEWmW4IfqkzbDArm8hRLI3IClflu8U5eh5isRnXVl6pF/JorpgZe4iqZr9jyo7cZAguUUl1D2A0IAlC8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=WOvb9k+n; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC0DBA36
+	for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 19:33:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753126428; cv=none; b=Y/e97N2EKR+/bQB0P/kQWgF2NGWZg4a1p8aiITlK2jEIzUQ600mVfU+sDeOPKInSeeBppu5Y06Fmg2yJo+SjpKI+bpYtyYdNoE7P7qzrivC9ekpIyLu6+hzhmnLDdZ8XTTyr9mPu3MPTmOPUQEC01xT3/iIfX5MRKRU/iajQU1I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753126428; c=relaxed/simple;
+	bh=b0Br9Ks6fXh5lsh6KkvcovDZWilidwwTqtBK+nHUNLI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mlQKSNy5YC05dQ+2J6c+cbt51DM912Pxh+gKUqhPxo0OkOSDsusbO0T/AHwd0QvUXAtMt5iZ89H2qRsPR0keHAryhgR/m5zqvMZF0EZAC89aoNYKzhNzumSV8vwEVj+nLkj+HIyo06ozhHR4M9lwOubjmA9VwIN3T4qsQ9V1onU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tmRs6/gS; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="WOvb9k+n"
-ARC-Seal: i=1; a=rsa-sha256; t=1753125229; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=UpwfzHxlshxi99vvcgDCdiC103IxjsttCljykHz944X1Pn2oh4lFWtl106yYg/5rNRqbNqk1yly5zqnSWM4JpQ6rl0MbKWDkH90pKl/C/GVgKpz2FrWbqqAJe8mR6hZpJ7+hyQLKl1f1uBzHSKbKjgxRUqJO+N6TXGMF4ex+lRw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753125229; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Ou8ViXoRaNCpJ3Be1xNdxsQtmjp1qCTLsimQKmnyD8w=; 
-	b=FijhhAiYB1Q0oQ41pMY6WaVQyBRSUGzmvzdbPw1ATf5TBJ9CKljLonKuGC1mFIC4UZ1yDgy20YKL6Ff5CJsUW4CUk9tA413uIgBaZ23X86v6ppRUeW/bD2wtefu1UgIlhHrCliv5pqQjLge+nG5aocrn2waS/gSqMqHQC8IwpTY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753125229;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=Ou8ViXoRaNCpJ3Be1xNdxsQtmjp1qCTLsimQKmnyD8w=;
-	b=WOvb9k+n7gaqvwL3fq68zIkrgXpoKVQcQi9cx2b3F1PD1Ea9kX/qNnJdxwD8fntr
-	gwCoxV4k/N7cJbWENd91hYVWIuntQx+DVt+LKF9pvNtZzA2T8lacQ5b0/1LyUvKuAvf
-	TSha05t+gRcuFVGBgL0PAeC4P+shtQJGnTQ7ZNOU=
-Received: by mx.zohomail.com with SMTPS id 1753125226406624.466779770213;
-	Mon, 21 Jul 2025 12:13:46 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tmRs6/gS"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4561ca74829so52027645e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 21 Jul 2025 12:33:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753126425; x=1753731225; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HBrX1LhQ4C9q6FY08bFZ+5XkQcWo67qB3JLKdiHTV0U=;
+        b=tmRs6/gSRQIKKgplNVfb9rW3B9zbsYsipI0QPcT1Fw2Nb+DUGUzU3JKmNxlaqBmPn5
+         zAK8UmB1zIaP9Gz9Jz2fbjt3allkZwFDBX4TFNjPW3ZQsfNTdnMHC05WfSezfhKdcAfY
+         SkC8pjVdBRV9mT8uEzCWVxl+mLIbRGtFLBWiYOHGQXyum7NntsUHin9oTXpIVI9slFAi
+         cGjd1QG2hxDMoxhNnuLcTkrAo9rTEVCAayg+7bcSwoJtZBIrQP4FJVytG9HDVKKjT9D8
+         RibmBH/IFpk6SRTf9imJ3i1VlSoOlBJShU3FBL7aTiVpcA85vCgbiF1CMZdZXYt6nbh3
+         R2Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753126425; x=1753731225;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HBrX1LhQ4C9q6FY08bFZ+5XkQcWo67qB3JLKdiHTV0U=;
+        b=gbpo57J4rKtxFzXD8SmFya2P3wuAg2+wZGRriuKfoZ4Ffv/9DElaJhYLu0SHtkBzdU
+         cxJE1mkZUXOZ/5X02AHFyj97wcqs30StkjZm1FGNp5dhfhxWahJtBAH3LUvV/iYqSOB9
+         NxRL24lLtx+83C1dOK1jHwXU1GMK2NkTIMd4kVnLkQzxobBUScsJm02hYgZT9PS6DTKY
+         SI3x4BazJpAUrlqb17NiyjoG+/UxhNc8pZ5FK28eJS7CD9B3Hfhs0TGSqFUQ8psRT76G
+         v3awdmxWNvuUZeaFRaSHhi3rQJlrvwCJSgkAGSzt0O3OOMJ6YhBvQ2uLF31/kZUsnHpn
+         ZXEA==
+X-Forwarded-Encrypted: i=1; AJvYcCUc9m+Tpz/9Owqzz/RQtiIH6j58DAtLpv3e4k77OL26ZtJRSiJeFiItLRocx1P5yxNEfVjwhAl8tcSGcVeEow==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwIgxnENulv5c2D2hXqZ0fcT9BrZQXvVaexR/HXd9CHUAR4NJf
+	avbk0LaI2HaNmz7btv7OcRAGY31xd+8UKxDQTdfWUqHsP0QWoHCiuBGEi6f+DzwkmlGDBqLrLkV
+	YX7jGdqR5cqrqWBoVwRIdVXeOLfSwaOqnNzvOvM8W
+X-Gm-Gg: ASbGncuHVqhvI7x+wUBHvmp9KX8Cl/XaRuL/TBgkbY6Eav+WQ8go6eszL3BF84Q3caf
+	yKF5KOmO4P4rE+Amhkc0d0Lyv3kA6aGAmxnraByD6S+BtSo/fU65RV0c/ugbe9JYNh4J9xtuLLB
+	ooE1leatKIR++F/c3Yl7QTb9RAaHH6mvr72rRvgvowAG0QN7Oy1sWjE84XvAESPB2O6pMoIvTVG
+	N3od8za
+X-Google-Smtp-Source: AGHT+IGNspYtBPncBdW3w/SsuWiBzoraM8UjDYrcQv9P+WyMTcNLgDlaVPcW5XrC7nb2ZAo4MrVL17F2FHDqTh3VVdA=
+X-Received: by 2002:a05:6000:4804:b0:3a4:e5fa:73f0 with SMTP id
+ ffacd0b85a97d-3b60e4d5533mr15467594f8f.20.1753126425187; Mon, 21 Jul 2025
+ 12:33:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+MIME-Version: 1.0
+References: <20250721-irq-bound-device-v1-1-4fb2af418a63@google.com> <DCBBFAC5-A4B4-41BA-8732-32FA96EDE28E@collabora.com>
+In-Reply-To: <DCBBFAC5-A4B4-41BA-8732-32FA96EDE28E@collabora.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 21 Jul 2025 21:33:32 +0200
+X-Gm-Features: Ac12FXz3PAqla3h6HMW15ltSgos8jwB8mwZW-LrpptSGLIfz_bq8PvUKZkNYscI
+Message-ID: <CAH5fLghRi-QAqGdxOhPPdp6bMyGSuDifnxMFBn3a3NWzN4G4vQ@mail.gmail.com>
 Subject: Re: [PATCH] rust: irq: add &Device<Bound> argument to irq callbacks
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250721-irq-bound-device-v1-1-4fb2af418a63@google.com>
-Date: Mon, 21 Jul 2025 16:13:30 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- Benno Lossin <lossin@kernel.org>,
- Dirk Behme <dirk.behme@gmail.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+	Benno Lossin <lossin@kernel.org>, Dirk Behme <dirk.behme@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <DCBBFAC5-A4B4-41BA-8732-32FA96EDE28E@collabora.com>
-References: <20250721-irq-bound-device-v1-1-4fb2af418a63@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
 
-Alice,
+On Mon, Jul 21, 2025 at 9:14=E2=80=AFPM Daniel Almeida
+<daniel.almeida@collabora.com> wrote:
+>
+> Alice,
+>
+> > On 21 Jul 2025, at 11:38, Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > When working with a bus device, many operations are only possible while
+> > the device is still bound. The &Device<Bound> type represents a proof i=
+n
+> > the type system that you are in a scope where the device is guaranteed
+> > to still be bound. Since we deregister irq callbacks when unbinding a
+> > device, if an irq callback is running, that implies that the device has
+> > not yet been unbound.
+> >
+> > To allow drivers to take advantage of that, add an additional argument
+> > to irq callbacks.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> > This patch is a follow-up to Daniel's irq series [1] that adds a
+> > &Device<Bound> argument to all irq callbacks. This allows you to use
+> > operations that are only safe on a bound device inside an irq callback.
+> >
+> > The patch is otherwise based on top of driver-core-next.
+> >
+> > [1]: https://lore.kernel.org/r/20250715-topics-tyr-request_irq2-v7-0-d4=
+69c0f37c07@collabora.com
+>
+> I am having a hard time applying this locally.
 
-> On 21 Jul 2025, at 11:38, Alice Ryhl <aliceryhl@google.com> wrote:
->=20
-> When working with a bus device, many operations are only possible =
-while
-> the device is still bound. The &Device<Bound> type represents a proof =
-in
-> the type system that you are in a scope where the device is guaranteed
-> to still be bound. Since we deregister irq callbacks when unbinding a
-> device, if an irq callback is running, that implies that the device =
-has
-> not yet been unbound.
->=20
-> To allow drivers to take advantage of that, add an additional argument
-> to irq callbacks.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> This patch is a follow-up to Daniel's irq series [1] that adds a
-> &Device<Bound> argument to all irq callbacks. This allows you to use
-> operations that are only safe on a bound device inside an irq =
-callback.
->=20
-> The patch is otherwise based on top of driver-core-next.
->=20
-> [1]: =
-https://lore.kernel.org/r/20250715-topics-tyr-request_irq2-v7-0-d469c0f37c=
-07@collabora.com
+Your irq series currently doesn't apply cleanly on top of
+driver-core-next and requires resolving a minor conflict. You can find
+the commits here:
+https://github.com/Darksonn/linux/commits/sent/20250721-irq-bound-device-c9=
+fdbfdd8cd9-v1/
 
-I am having a hard time applying this locally.
-
-> ///
-> /// This function should be only used as the callback in =
-`request_irq`.
-> unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: =
-*mut c_void) -> c_uint {
-> -    // SAFETY: `ptr` is a pointer to T set in `Registration::new`
-> -    let handler =3D unsafe { &*(ptr as *const T) };
-> -    T::handle(handler) as c_uint
-> +    // SAFETY: `ptr` is a pointer to `Registration<T>` set in =
-`Registration::new`
-> +    let registration =3D unsafe { &*(ptr as *const Registration<T>) =
-};
-> +    // SAFETY: The irq callback is removed before the device is =
-unbound, so the fact that the irq
-> +    // callback is running implies that the device has not yet been =
-unbound.
-> +    let device =3D unsafe { registration.inner.device().as_bound() };
-
-Where was this function introduced? i.e. I am missing the change that =
-brought
-in RegistrationInner::device(), or maybe some Deref impl that would make =
+> > ///
+> > /// This function should be only used as the callback in `request_irq`.
+> > unsafe extern "C" fn handle_irq_callback<T: Handler>(_irq: i32, ptr: *m=
+ut c_void) -> c_uint {
+> > -    // SAFETY: `ptr` is a pointer to T set in `Registration::new`
+> > -    let handler =3D unsafe { &*(ptr as *const T) };
+> > -    T::handle(handler) as c_uint
+> > +    // SAFETY: `ptr` is a pointer to `Registration<T>` set in `Registr=
+ation::new`
+> > +    let registration =3D unsafe { &*(ptr as *const Registration<T>) };
+> > +    // SAFETY: The irq callback is removed before the device is unboun=
+d, so the fact that the irq
+> > +    // callback is running implies that the device has not yet been un=
+bound.
+> > +    let device =3D unsafe { registration.inner.device().as_bound() };
+>
+> Where was this function introduced? i.e. I am missing the change that bro=
+ught
+> in RegistrationInner::device(), or maybe some Deref impl that would make =
 this
-possible?
+> possible?
 
-Also, I wonder if we can't make the scope of this unsafe block smaller?
+In this series:
+https://lore.kernel.org/all/20250713182737.64448-2-dakr@kernel.org/
 
-=E2=80=94 Daniel
+> Also, I wonder if we can't make the scope of this unsafe block smaller?
 
+I guess we could with an extra `let` statement.
 
+Alice
