@@ -1,140 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401D72DECB1;
-	Tue, 22 Jul 2025 09:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4672DE1E5;
+	Tue, 22 Jul 2025 10:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753177914; cv=none; b=MyLEmeyV20ubrtl3wkvVolblZne9SMneXeZugodZ09SjBkEUHxeGV3zo1Li0lTS6aN2CuKI2LI9NioB6s2H0JTyJdfDPZfCMRDhr2J9z75QAfhyvz8jIn/hWe+cKVq0OmbsKZdwxmVMfkcu9TLR+AVI/g7OqTm7+6JXNMvlTD94=
+	t=1753180142; cv=none; b=iRsfB6S0Ywhg4pLPLQj7zJHZImwRllelnrfP8CVCcusO+cu6wMQ3ok4LMJa9YvHhvSfMMZVE4stSksx4yfX0KhspZKx7cIK730H+yzjKcpwpR+wppDyRC4DdmWXqDIli/tcRHoJjlUH4ReLuoBAf5WvT92+xKtRrQtTlUhY8I5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753177914; c=relaxed/simple;
-	bh=g9Czfb6/NYPOxRMMj/Y+35i+ICwKvV5Vq7aeNekjp6E=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=gBI5toehtZyqi5VsN+d3t2vSLBM6q10exnF8USlNguJFJxX+0xJjYZHQXZqIFKgDyo/zhfTxZ7ABA8IDtWyl7QRmQKccqeuX/GB/BgqCARtmTe5d2l1aptiPbTawUZsUpRNxO3fTzAg/M+Jw9Ws82Ad+vDkP3LEke9ulGAsUHOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbyzv/mx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753180142; c=relaxed/simple;
+	bh=kmsBUmTbcFqMAlUGoznBkV3pnZIyizNNQNeCUvRN870=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g+OeGlAp9GiLogVV+QDpGQksXx2XK0RIRpx3JftQ/m9H/aSgKeLP44LqO2JXyVz3iCXz7VmmsIpOOZVd3y0QTQhK5xQXN3TjORpnU0qXQd7AOtegZIMHg/qqy60dwTXB1Cfck/FuZVw77ZLDxpZaVqZyE7tLJIGnqOLWIrdQ/jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=REpiLnab; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbyzv/mx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0C8C4CEEB;
-	Tue, 22 Jul 2025 09:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753177913;
-	bh=g9Czfb6/NYPOxRMMj/Y+35i+ICwKvV5Vq7aeNekjp6E=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=cbyzv/mxrBzEHhit25wf2Vl1yiDppfGeX+HJQtnUXsD86a+hxphTEp9xlqjL5FPcY
-	 veZer4iy1oL6RO/Dw1KlvU05Ctm8okCKnnV9+Kuj6hLxo5LDIyDYdMIoVjs7wmXi88
-	 9mYzBdaQeQBZLDP49SqotiBmnsDjcZfGSRqVsvvNAbGzcsmIqXhy65LfxrZRjklU2b
-	 8ePQoLF1iUAdQb1VN8mLC5Bq5vzDljA5IfslofyeSA8UAXD2VPl/cQceKD3ot7owlD
-	 +t5UzXz6rCViogRJfecaEnOZOHgV2iX1demFLog6Q7cFuuyXawqy96yYTEOHRxN2Ug
-	 rCVr21lZVq4Cg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="REpiLnab"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-312efc384fcso135580a91.3;
+        Tue, 22 Jul 2025 03:29:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753180140; x=1753784940; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Rw/ju9rvHXHnonIseX34aE2nlCCcwdEJg+zhSfxvjRE=;
+        b=REpiLnab2icGSng06mpj6cEBngLFhui4LEK2EErNzOfvmhzOYP9DTYitCyl6Fa8P/D
+         IXdBfx5fFD5JEQADzQJN/bwpwUcURKSeaK4UtLi/QCEh01BHa1O2Mb54t8mtZBd289Ec
+         u8kVxhoK5mGtfuyi7+nZFH3sQ1sjcv0ZSiEvYp2j+AC05w+Yz6n4/yAszIfhRh/utEsU
+         54N/e7FU7XwfHfB+E1v/2I89QbLCzKMPtjWhQZ3RzPGsRYIL9B/CDug93E65hiUqdLYD
+         Cz4Q9RruD+i0BTF7/iB/gkMVzSMibkUHoJCBfCC44oCUmP/HDFVLDj3KYXiDp+hzHOmp
+         LOAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753180140; x=1753784940;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Rw/ju9rvHXHnonIseX34aE2nlCCcwdEJg+zhSfxvjRE=;
+        b=KTbU36UyrmMaC9pKFXeGBslUtGW5+SxAWAxvuHdNGpYtiOFBXKbMmFyX+TmEDiF57o
+         bowSvOLDxDelxmURJlBzhfnYnGnPHu7w0G0eMqZFaPWjS2R44SrwpJu9+ke1z9dXlJI+
+         ytNUP8VbqgyK3W/VqnKZ5dsfR/zctVAjNVLNAEPimWmfNubDFal2O27c32XzRl54qW2A
+         UkFAO/LA5BqdqTk/TDxCOGIc2l7kLCHzlpZfEUNe31VHRZY9zqxOS1NJowKqL2er35f0
+         KeOyUlzAP1ZisWPNJ5gEv8utV8UPWkrKscuOkahQFh1xZxIiB/JtiqqDL7x1ztk18CjZ
+         2IIA==
+X-Forwarded-Encrypted: i=1; AJvYcCXAiJTlr5DnKCs0mKt/4iPyHalDJ/LFzCO/BF8n8+qw9z43eYtXOKxg+ensM6wwBob4RezSliLTNybWanBqvMk=@vger.kernel.org, AJvYcCXCOZnf2JT3AAq9aTx5jwbW74v/i8UG68MNnRLX+jiHucccdMST3gBAH5tgT14jgvrw8+DJCKOdjBUXY0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxswpSomQBAGm1roYoNanXoyNTkkZ9G1FsWfJsFEP6NeaYM22y
+	OJe9zM1Npt0IRdtNazzhxq7/ok12VUaVOa45W6nhLPOXmTM7Eay50A6EQ/5aszCeGPJQ2b9/v5t
+	xw9Wm9qKeUDb2RpcmWNxz0R2BwR6yKUA=
+X-Gm-Gg: ASbGncsiiJd9AZxoKZInX73AFXEo6QQtQA2F68TZ2FypOUmyeulQyhQZNGKveKsHP2/
+	jZLrzGi+pruxSZI1kw62GQxqFC/opjnZ1sweDSOoF21bbEdFP5qCHa+/EK8cbzlyQVT4qipRADK
+	GkGnj7zBrVPOp8uZfPnCWUXgGKITCekzsfExXwiXjXAJjWn7DdqjAH7ik9o65YGgavDLvmgbUh2
+	kQ6f+Tj
+X-Google-Smtp-Source: AGHT+IFZRUIcJKoJI1N/811uHl/+6xL1FcqAxJgYR5GedPqfBofKM11Z48fkZMwPdT7cuHhTbzif2+tsEl/CCkj4vuA=
+X-Received: by 2002:a17:90b:2542:b0:310:8d79:dfe4 with SMTP id
+ 98e67ed59e1d1-31c9e760d63mr12910238a91.4.1753180140334; Tue, 22 Jul 2025
+ 03:29:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250715110423.334744-1-shankari.ak0208@gmail.com>
+ <CANiq72nZMLghTj8bHerEfXyYMtbWDH_WVxYeQY65ymWjSuxA_g@mail.gmail.com> <DBIHASMYLFEZ.19R61CE8V745Q@kernel.org>
+In-Reply-To: <DBIHASMYLFEZ.19R61CE8V745Q@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 22 Jul 2025 12:28:47 +0200
+X-Gm-Features: Ac12FXyKBAbQXxGBytZnrKSboIFI-2NK3V0UTEhIkQk0DFie2t3OIpnw-M93LmM
+Message-ID: <CANiq72k-BaJFzY7bBci3Xqj6UKXEibpu5fGuxa2rkSZdjjvyRg@mail.gmail.com>
+Subject: Re: [PATCH v4] rust: move ARef and AlwaysRefCounted to sync::aref
+To: Benno Lossin <lossin@kernel.org>
+Cc: Shankari Anand <shankari.ak0208@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Jul 2025 11:51:48 +0200
-Message-Id: <DBIHP8IP3OHA.8Y1S9ZV1Y1SZ@kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: Update PCI binding safety comments and add
- inline compiler hint
-Cc: "Benno Lossin" <lossin@kernel.org>, <rust-for-linux@vger.kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250710022415.923972-1-apopple@nvidia.com>
- <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
- <DB9BF6WK8KMH.1RQOOMYBL6UAO@kernel.org>
- <DB9FUEJUOH3L.14CYPZ8YQT52E@kernel.org>
- <DB9H6HEF9CKG.2SAPXM8F9KOO3@kernel.org>
- <DB9IQAU4WPSP.XZL4ZDPT59KU@kernel.org>
- <bwbern2t7k5fcj6zxze6bjpasu3t26n6dmfptlmhbhd7qmligs@3fgwifsw7qai>
-In-Reply-To: <bwbern2t7k5fcj6zxze6bjpasu3t26n6dmfptlmhbhd7qmligs@3fgwifsw7qai>
 
-On Tue Jul 22, 2025 at 7:17 AM CEST, Alistair Popple wrote:
-> On Fri, Jul 11, 2025 at 10:46:13PM +0200, Benno Lossin wrote:
->> On Fri Jul 11, 2025 at 9:33 PM CEST, Danilo Krummrich wrote:
->> > On Fri Jul 11, 2025 at 8:30 PM CEST, Benno Lossin wrote:
->> >> On Fri Jul 11, 2025 at 5:02 PM CEST, Danilo Krummrich wrote:
->> >>> On Thu Jul 10, 2025 at 10:01 AM CEST, Benno Lossin wrote:
->> >>>> On Thu Jul 10, 2025 at 4:24 AM CEST, Alistair Popple wrote:
->> >>>>> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
->> >>>>> index 8435f8132e38..5c35a66a5251 100644
->> >>>>> --- a/rust/kernel/pci.rs
->> >>>>> +++ b/rust/kernel/pci.rs
->> >>>>> @@ -371,14 +371,18 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
->> >>>>> =20
->> >>>>>  impl Device {
->> >>>>>      /// Returns the PCI vendor ID.
->> >>>>> +    #[inline]
->> >>>>>      pub fn vendor_id(&self) -> u16 {
->> >>>>> -        // SAFETY: `self.as_raw` is a valid pointer to a `struct =
-pci_dev`.
->> >>>>> +        // SAFETY: by its type invariant `self.as_raw` is always =
-a valid pointer to a
->> >>>>
->> >>>> s/by its type invariant/by the type invariants of `Self`,/
->> >>>> s/always//
->> >>>>
->> >>>> Also, which invariant does this refer to? The only one that I can s=
-ee
->> >>>> is:
->> >>>>
->> >>>>     /// A [`Device`] instance represents a valid `struct device` cr=
-eated by the C portion of the kernel.
->> >>>>
->> >>>> And this doesn't say anything about the validity of `self.as_raw()`=
-...
->> >>>
->> >>> Hm...why not? If an instance of Self always represents a valid struc=
-t pci_dev,
->> >>> then consequently self.as_raw() can only be a valid pointer to a str=
-uct pci_dev,
->> >>> no?
->> >>
->> >> While it's true, you need to look into the implementation of `as_raw`=
-.
->> >> It could very well return a null pointer...
->> >>
->> >> This is where we can use a `Guarantee` on that function. But since it=
-'s
->> >> not shorter than `.0.get()`, I would just remove it.
->> >
->> > We have 15 to 20 as_raw() methods of this kind in the tree. If this re=
-ally needs
->> > a `Guarantee` to be clean, we should probably fix it up in a treewide =
-change.
->> >
->> > as_raw() is a common pattern and everyone knows what it does, `.0.get(=
-)` seems
->> > much less obvious.
+On Tue, Jul 22, 2025 at 11:33=E2=80=AFAM Benno Lossin <lossin@kernel.org> w=
+rote:
 >
-> Coming from a C kernel programming background I agree `.as_raw()` is more
-> obvious than `.0.get()`. However now I'm confused ... what if anything ne=
-eds
-> changing to get these two small patches merged?
+> `ARef` specifically is about supporting types that already have their
+> own "built-in" reference counting. I'm not sure if built-in is the best
+> word to describe that, some alternatives are inherent or internal.
 
-I think they're good, but we're pretty late in the cycle now. That should b=
-e
-fine though, we can probably take them through the nova tree, or in the wor=
-st
-case share a tag, if needed.
+Yeah, it is a bit ambiguous (e.g. it could also be understood as that
+the code is always built as built-in, which is true currently).
 
-Given that, it would probably be good to add the Guarantee section on as_ra=
-w(),
-as proposed by Benno, right away.
+> Maybe we can just expand the module level docs with:
+>
+>     //! Internal Reference Counting Support.
 
-@Benno: Any proposal on what this section should say?
+That would be nice, yeah, please send a patch. I will use "Internal"
+for the time being so that it matches what you have here. (Inherent
+sounded also good to me.)
 
-One minor nit would be to start the safety comments with a capital letter
-instead.
+Thanks!
+
+Cheers,
+Miguel
