@@ -1,104 +1,111 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227552E426F;
-	Tue, 22 Jul 2025 11:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE084199237;
+	Tue, 22 Jul 2025 12:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753185293; cv=none; b=RsivHQEoxFMcp9iZ+WIxH2uDjnqsBpKOim4zMLJKWTx2c57M6GajrqvfMnVocoY6Wo4MLuhU2Ub8iPx9Htuv9oWgq8s0fjFpWXlaCMXv/5GtEbUrB06H3gckh2aXI5S0rtJclO/16ZRVU1VDmN7f3agk1Y10L6Sr4RUQQGR54zw=
+	t=1753185810; cv=none; b=ZDyD1UXrKtVQsKxELPmZs0TVR4pYTZ0fKLM1Fz134CJcFHX8TxVc2uaPymN4PfKHQncLVt/Vd4ZcgaN2+fqPhjFxeVfygiHv2fD/aWSGC5IJRbBaE+mqyElJwYVp8qjrswlB1zwm4kUj0XzDUkdKZ8s5ElvlAV7H9sbo3mfY04M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753185293; c=relaxed/simple;
-	bh=E4Dkn7NcDpEWeXn2YLmxaE2xi8IMfWGpUCj/kG/FlVg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IqLqJmCIIcrHL/nCF1ESksrqZVASoO5/KM5mu8gO5FQZCsZdYAoF/IcuFX/X3PJgqmxg7t8BH2PeJ6eOGqXC6EbYGlv5nh7xK+fW2YaGPTBE4H5fJYibkmr+lkXzy+2YPYdJ7/UjMKQS0j2GPuU4XCeYoyDICHd6F/CJNwsFsBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfkfuBIj; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753185810; c=relaxed/simple;
+	bh=TXAjYkdUmXyPxBwsH1cflQGs0k1rSPQ8+883CPwRwOo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=h/aM44HVJHpwCdKvPGrh/C8cHLLsMBOiyj+CJC8VK4b2Ci+pxarl2rheNpKS6vXX0fJ/q2JhLhAe1rt2qmZNBbS15r7KBP26fBtDCZUVP1vqxCbhUd2KP7PJbwUr7PZEySOof0TYonEfilJO/QtzLZEqI8H+rQFc3QsgcoF+780=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jt5ETB0w; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfkfuBIj"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-31305ee3281so1028927a91.0;
-        Tue, 22 Jul 2025 04:54:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753185290; x=1753790090; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lsezFB7twUsX0ZLoOlHE3YcVFcZntXYTioAJAcm+CZA=;
-        b=DfkfuBIjQv6H5MD0UGQr8//Hh1jXe2ljnJoZU77s23F6aGAXsKOeN//5XrsYY5pOmc
-         PRBOtKUtycmt4pAad/aHZCbzmPps81XvJ6KOh0gIB7rZ02KeObNcbkBeWpzIkspQEP/0
-         r94agv92W2dluWDaswp51rmqQRi6NRWcFHMnpi9gwC2OhAx2uV7frM56XH6uSLFXv9/8
-         MrKddxHOt1IeAlQIrD/tHcs1usB3ZU+sFjoMXAljMYh52GbtLDK2rBA8IPjF3pd5GsqS
-         gTKVvVm0gesnwipg/KINeV7lYo6BsLu0UAuRdTXLDfa9OqSv4hu28HJ59nuerTTk/Ium
-         w22w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753185290; x=1753790090;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lsezFB7twUsX0ZLoOlHE3YcVFcZntXYTioAJAcm+CZA=;
-        b=RRictmgegHIW+oNi9cHS1j6+HK1ON2dgm9ZTsq25Jc6Rk15p5tgaCtg6vV6B0nceB5
-         Rj3YnHM2vaxU4BuSemCiNAjJffdnfZ0SfSMQvadIRu2IqLqu16rQkHYb91QoQVd5MNtI
-         gWI1aNit/eh6bgyUVBe/+B7ab/gs1RLzCxqPBBoekYDjhzXRd7kYV1GN1wBPmiAEtr+J
-         TPgiCBEuwGj8opC/pVYYMyZqATvub8uVAzaRyT02CD0odWR4EV/yqFpcGMy5i/ESCOhO
-         R4BozvvgYvf9AogR359xp2asuVy4YH/6zjLdECUzndJBIzrqOS6McMrO7lrb87ObALd9
-         3w6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXWgn05eUlw4Xzyt0EhcVK5MVBzENVvzHZO/ROv5baH46zBMJudWEyO21Q5YnKaiIYwKj7kGBoBZ78PzB0sIw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywo54EZhTmqzJlmstkqLfcVBytlCziv5bxu/RYOUE3aUlosLeE3
-	qXX6XGI9zMG98HX+JWTObClNJ/WqZmlr8V4kMFiVDFQ45AeCtpMChZxZ3COvC5l2hNUqryogA7A
-	F2D3PJFLJqqiurD4j2o2qRk9a85LEh6k=
-X-Gm-Gg: ASbGnctNHVmltBKLFvUB6oYa3AxTl+yZniHVQQww+xoxUmnruJskUGTfbnyMV+zIhzH
-	4fYgg2HXZNb5twm/nrhPOPaHL++ecxFC7TovF2e3vHMJztjCOWJ58p6dYlHUJzzxHLMCOf+7t7C
-	RSiUThN1eX6H1QpDNgBwdWhmkwxnI8ClCewCN/yYtuF0ssMPTicQ4PDE+shaIUIQOCJ1W3GH59L
-	zBqgEWA
-X-Google-Smtp-Source: AGHT+IFN8QsBpc9vqEF7CDmMc/H+QcSObQg2oPTwam+LdjpEjHnRaTYJ6LwjpNfNn87QDwhqb76qm0JnbW+q/EaeZTc=
-X-Received: by 2002:a17:90b:3f8d:b0:311:c939:c842 with SMTP id
- 98e67ed59e1d1-31c9e7a4012mr14165173a91.7.1753185290308; Tue, 22 Jul 2025
- 04:54:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jt5ETB0w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DA4C4CEEB;
+	Tue, 22 Jul 2025 12:03:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753185810;
+	bh=TXAjYkdUmXyPxBwsH1cflQGs0k1rSPQ8+883CPwRwOo=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Jt5ETB0wHQro9lz4ZFiHkk6tvmI/w4jvZLH/tR+MyNg4aU9LTRQ03V20uw0NPCK7r
+	 7ERTgdunLqC5ZSyOKRjNL9DKDgKxWzsqjeflPjujp9f/N97i1u04D/F/hbe7Rs6vqq
+	 YBuNTICWJtn1abp1UPA7v2TJWTGhXEdcH5ea+z6PlJ6qCjn2gi5k1iA6+JAyHuolvN
+	 5tXw6rXWZwVWGrjtAWUnAeKW2N5HJRmu+JG7kh9/8jRMSWxuiRmiXbYQqO/dD6DEob
+	 e1g9Q+srhAVSFSNLIq4lCQn9jYWO5ulSOdViZK11k9sC44ZI1YabAvm/h1IzsoxGGC
+	 8KYTgkfBFhJ3g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250715110423.334744-1-shankari.ak0208@gmail.com>
-In-Reply-To: <20250715110423.334744-1-shankari.ak0208@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 22 Jul 2025 13:54:37 +0200
-X-Gm-Features: Ac12FXygerF3kHBo_KQpx_Goa9PlBBf573EIFyf0aW1IbiSF0lAzga6Cro81Jtg
-Message-ID: <CANiq72=zy_EKX9gvnb3V3f9jrR2QpgAHpUFWgJWVadaumv2L+A@mail.gmail.com>
-Subject: Re: [PATCH v4] rust: move ARef and AlwaysRefCounted to sync::aref
-To: Shankari Anand <shankari.ak0208@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 22 Jul 2025 14:03:25 +0200
+Message-Id: <DBIKI0KDP1J8.3MOHF5G3A6JEH@kernel.org>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Lyude Paul"
+ <lyude@redhat.com>, "Mitchell Levy" <levymitchell0@gmail.com>, "Wedson
+ Almeida Filho" <wedsonaf@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust: sync: fix safety comment for `static_lock_class`
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>
+X-Mailer: aerc 0.20.1
+References: <20250520231714.323931-1-lossin@kernel.org>
+ <DBIJLR7XNI6U.21PMPODHE83DZ@kernel.org>
+ <CAH5fLgh9aEF5V9rNq2a8utS=NxSU8rdxpKsNbsuPoMpDfHN0fg@mail.gmail.com>
+In-Reply-To: <CAH5fLgh9aEF5V9rNq2a8utS=NxSU8rdxpKsNbsuPoMpDfHN0fg@mail.gmail.com>
 
-On Tue, Jul 15, 2025 at 1:04=E2=80=AFPM Shankari Anand
-<shankari.ak0208@gmail.com> wrote:
+On Tue Jul 22, 2025 at 1:34 PM CEST, Alice Ryhl wrote:
+> On Tue, Jul 22, 2025 at 1:21=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
+wrote:
+>> On Wed May 21, 2025 at 1:17 AM CEST, Benno Lossin wrote:
+>> > The safety comment mentions lockdep -- which from a Rust perspective
+>> > isn't important -- and doesn't mention the real reason for why it's
+>> > sound to create `LockClassKey` as uninitialized memory.
+>> >
+>> > Signed-off-by: Benno Lossin <lossin@kernel.org>
+>> > ---
+>> >
+>> > I don't think we need to backport this.
+>> >
+>> > ---
+>> >  rust/kernel/sync.rs | 7 +++++--
+>> >  1 file changed, 5 insertions(+), 2 deletions(-)
+>> >
+>> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+>> > index 36a719015583..a10c812d8777 100644
+>> > --- a/rust/kernel/sync.rs
+>> > +++ b/rust/kernel/sync.rs
+>> > @@ -93,8 +93,11 @@ fn drop(self: Pin<&mut Self>) {
+>> >  macro_rules! static_lock_class {
+>> >      () =3D> {{
+>> >          static CLASS: $crate::sync::LockClassKey =3D
+>> > -            // SAFETY: lockdep expects uninitialized memory when it's=
+ handed a statically allocated
+>> > -            // lock_class_key
+>> > +            // Lockdep expects uninitialized memory when it's handed =
+a statically allocated `struct
+>> > +            // lock_class_key`.
+>> > +            //
+>> > +            // SAFETY: `LockClassKey` transparently wraps `Opaque` wh=
+ich permits uninitialized
+>> > +            // memory.
+>> >              unsafe { ::core::mem::MaybeUninit::uninit().assume_init()=
+ };
+>>
+>> Looking at this patch with fresh eyes (thanks for the bump, Alice :) I
+>> think we should rather have a public unsafe function on `LockClassKey`
+>> that creates an uninitialized lock class key. I'd like to avoid the
+>> `MaybeUninit::uninit().assume_init()` pattern, as it might confuse
+>> people & it looks very wrong.
+>>
+>> We can take this patch, as it definitely is an improvement, but I think
+>> we should also just fix this properly. Any thoughts?
 >
-> Move the definitions of `ARef` and `AlwaysRefCounted` from `types.rs`
-> to a new file `sync/aref.rs`.
-> Define the corresponding `aref` module under `rust/kernel/sync.rs`.
-> These types are better grouped in `sync`.
->
-> To avoid breaking existing imports, they are re-exported from `types.rs`.
-> Drop unused imports `mem::ManuallyDrop`, `ptr::NonNull` from `types.rs`,
-> they are now only used in `sync/aref.rs`, where they are already imported=
-.
->
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
+> Could that constructor be used in non-static cases?
 
-Applied to `rust-next` -- thanks everyone!
+I don't know lockdep, so maybe yes? Or do you mean that it could be
+abused?
 
-    [ Added missing `///`. Changed module title. Reworded slightly. - Migue=
-l ]
-
+---
 Cheers,
-Miguel
+Benno
