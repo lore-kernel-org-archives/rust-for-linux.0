@@ -1,112 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA08528A1D5;
-	Tue, 22 Jul 2025 12:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC7C2E92B8
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 12:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753186140; cv=none; b=vGqpjUkXwCvePqcPV+Ge2O7+genlAFts4xD3SWotQNjt9GZKqDMwVdLVZ2iSLJpD0/AuRe6M6A9OTQKoAB0T5InblGGPoidL00yPsqb+6YYbbFCDGPyoDAcyCByizZmOvHzDDXC6Gmti0GX+jUeEKokOrZkmSULRmIFXf3Ys1zA=
+	t=1753186377; cv=none; b=l1f+V6T+oaWBZJhGWUboUQ1YsMbvEoCSFQTyxD6rzHyZ44DGgFoLZExD3LtuIRHukV/5s1EBEtQONIxG04IrpZYoTAn/tCakxBtYWgLjbkFKiZ80gVJ7QO2VWUjgCFYFmbYwH4yZhZl3zYSReJIQ224/h27W9QHnaxdS1vSwd7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753186140; c=relaxed/simple;
-	bh=9tnk65GQHOuj2Pt0uMyPZaXg1fEIkfzRLOs6t+AmPis=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Jy3lOXzzlEnozqfG2iqGAAvwbZjpjc+bdJCD5jKPBAhoo5S7cOZCpJLT5Fh2JeynmRxb7+4DM6KoRJl+axbiZcMttZzx6MMZ6W1WxuFXlGbr4Nocno5wFpeO0b0foUnYOVA8gzKrx6cwWXSZb+F/JVe+LuG72hjvFjJIGleQ218=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgh1FQ8v; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753186377; c=relaxed/simple;
+	bh=6Ey6oC/8Ly+VAsm6Gvez7GvAnCzp/oTs2lHcA4rFBiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WPxZK2zm4b808yQrwR6mR/c94PXYBVPgsg9+f+8vHOm1+SykaKTgiMG9kj5rlz2vIFOZsoQNB3D2a8CZIfIS9fApa7NhwUpt2xpY11DapUJR3YDFJHOD8ImVXxpxf86SojS6nrR+9gtLv2K8F2/cIP3Nm1W71TSaV1wnQKW2Wa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bE7SS3eN; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgh1FQ8v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6439C4CEEB;
-	Tue, 22 Jul 2025 12:08:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753186140;
-	bh=9tnk65GQHOuj2Pt0uMyPZaXg1fEIkfzRLOs6t+AmPis=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=tgh1FQ8vA1ApjRpCVZoxwWfdsxjI65drnmgyfCudJMagNtFQiuyKiPPzx0V6+D2eA
-	 ELWFlOlAJRPfiaf8Yk5ZbcSDY8Ea/W5OQYqTm9vc/MN7P6Lx31Suw9+PbFcwhwxDyj
-	 XkkQC4A6/WkcRpCHDKWrfEVxjYTNYp+UX+HZPaJu7dm2QXDWXi86C7P1n/48fWRzf8
-	 JgGnHqqOl1fhVjpgsaEF3y6A8TBoulnI8kcImHn1GUf1zpnUSILEx6ychMLLlJtsdA
-	 r0Zcla4jJPEq+Zy+6NwIo6sfFT5/vnMyuyDeT+4l56928DE5ZJOUPqdMwACmH+j3Uh
-	 fnML9SCe9s1YA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bE7SS3eN"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-234b440afa7so50355125ad.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 05:12:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753186375; x=1753791175; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R5LbFOFKy8jmL+D4YdMhEQT2dM0QposoqUlcZkfGFIA=;
+        b=bE7SS3eNpl6rqenXSwT+PgbV5ZZvo0RX7OW6KtS9MXsaxXJ8lSeIzUxiPhbADQ42AH
+         BI5ROFft8y6PSD7tXwiaBJplDbGIF97aHdNs+z5y67cy6x14F/UB58GoE3UvXZHgwQRC
+         scliWNSgszlkPexAcW7LJDNxQjQ4uI1tIJzpSLgMasWS/vkKiB6UP2K8jIAycZyZTaee
+         HzAGsZHhlwE/8AOOrsGP0MCvmtJnM5BVyUeHDQtDPfW7lmGtzJeeUJ5kLeFQMHVLl2D0
+         bp2M+AgHWE0fEtzw9ATB3mkW23sMD4bUM03jT0bHs3MaqOzd8EDELyOS8LSfMDnJcP62
+         1E+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753186375; x=1753791175;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R5LbFOFKy8jmL+D4YdMhEQT2dM0QposoqUlcZkfGFIA=;
+        b=f20iLNZMvkM2RUxZ15oClYApY6je0FUYiIbP8+Q/hZG0JzkHer+pls8U0cKK7RyFlv
+         ANmNved5ZiZgT9OIoiPeDYNccwywoFvz/U6Qk8tYEd8vbbqnwY6XB3GtSeU3DIutBJIV
+         OCx+EToOhV9TMTSuJzploGg1Ml1y95SnWwou4dWksWVPbtiBktExn1wYkzzQuEyUUqdM
+         yusFUh7H+Wv/3ZLzUHV/DjW7xX7OsX5/NBKYOePoxShix7sgz9RqxNb9bqBln67ZizqY
+         UiQjFhxhz4R1vJ1ov9sx2dduKhwjtHndXo+AvyPFGmjWdbxdWykUIdoLYSLTo6dZs2ot
+         Rf0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXC6hyZNg24rdd7LNIdjDlMLQ6kT2eLaGgs46WtNgwzyF2x7qlrAhnokRg/a+LPbUNjSm3d7HoeULloMgXbtg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPYx4lgYp+NthF04WwX8nsJK4n2Mg0EPceQEGkJeIDJcritq7R
+	l/JID4AYaM+8srrQInhpNYz9H1Elq37t0lvgJGaazdc2AxmtW7wkz5Kj
+X-Gm-Gg: ASbGnct23+IWrqza3wT2VlPNsHT2otsqkQjc1s6zkbW4nhVWb2A+AcNB4GD5DXiBYLY
+	kWUpMvWSopVz8s02GKR8YsPT5L5IuBIKkPiorx9QE9UNY8kqYaIdce2whCNuCHun+rel2kFWDlb
+	TUNoLFf14heNSRVrY7L/ws8QCtg4ViEJ3WtPflDcLzbXnyXO+GNIvBB+vpJ2ZFGHPhqS4cgFlnU
+	lXJnHpc6s8eGugLsJcynJyttbgI3E7pIhmwUpT0+udCjZgGgZ004dsNcp+taeBsTMA5gCXw1Tlx
+	sQZexOmVbAIE4gEdav7+LyeMh6dAzgsLF88+LmYFBVyCkt/3m7zPzT2KZVIo1Ri881lSkaK7yJy
+	MVV7McPgXv6rIkpwWu8I=
+X-Google-Smtp-Source: AGHT+IEJge1qD0SkW/ZXSH6Ejab7xajibrjASlPI2OoDoJ8spaNoSn9OGn8EX732viRbNzrjii6byg==
+X-Received: by 2002:a17:902:cecc:b0:234:d292:be7a with SMTP id d9443c01a7336-23e3028127bmr313860135ad.1.1753186375117;
+        Tue, 22 Jul 2025 05:12:55 -0700 (PDT)
+Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23e3b6f0da6sm74843235ad.214.2025.07.22.05.12.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 05:12:54 -0700 (PDT)
+Date: Tue, 22 Jul 2025 17:43:16 +0530
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org,
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+	dakr@kernel.org, rust-for-linux@vger.kernel.org,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH] rust: kernel: introduce `unsafe_precondition_assert!`
+ macro
+Message-ID: <aH-AXKaEqcN2Wuzg@fedora>
+References: <20250716045957.39732-1-ritvikfoss@gmail.com>
+ <CANiq72=C=VHGXFvGuSY7rnNOvW-2yAA_g5yQamVN-mG9btwMkg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Jul 2025 14:08:55 +0200
-Message-Id: <DBIKM7U4TSB8.17MTNSR81W8F3@kernel.org>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alistair Popple"
- <apopple@nvidia.com>, <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: Update PCI binding safety comments and add
- inline compiler hint
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-X-Mailer: aerc 0.20.1
-References: <20250710022415.923972-1-apopple@nvidia.com>
- <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
- <DB9BF6WK8KMH.1RQOOMYBL6UAO@kernel.org>
- <DB9FUEJUOH3L.14CYPZ8YQT52E@kernel.org>
- <DB9H6HEF9CKG.2SAPXM8F9KOO3@kernel.org>
- <DB9IQAU4WPSP.XZL4ZDPT59KU@kernel.org>
- <bwbern2t7k5fcj6zxze6bjpasu3t26n6dmfptlmhbhd7qmligs@3fgwifsw7qai>
- <DBIHP8IP3OHA.8Y1S9ZV1Y1SZ@kernel.org>
- <DBIJ3POBANNM.KSO1I5557PFV@kernel.org>
- <CAH5fLghic7MZd-BO=Z-ostGLgWmBciQmZp9VjQpLGWskFK_gyQ@mail.gmail.com>
-In-Reply-To: <CAH5fLghic7MZd-BO=Z-ostGLgWmBciQmZp9VjQpLGWskFK_gyQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANiq72=C=VHGXFvGuSY7rnNOvW-2yAA_g5yQamVN-mG9btwMkg@mail.gmail.com>
 
-On Tue Jul 22, 2025 at 1:35 PM CEST, Alice Ryhl wrote:
-> On Tue, Jul 22, 2025 at 12:57=E2=80=AFPM Benno Lossin <lossin@kernel.org>=
- wrote:
->>
->> On Tue Jul 22, 2025 at 11:51 AM CEST, Danilo Krummrich wrote:
->> > I think they're good, but we're pretty late in the cycle now. That sho=
-uld be
->> > fine though, we can probably take them through the nova tree, or in th=
-e worst
->> > case share a tag, if needed.
->> >
->> > Given that, it would probably be good to add the Guarantee section on =
-as_raw(),
->> > as proposed by Benno, right away.
->> >
->> > @Benno: Any proposal on what this section should say?
->>
->> At a minimum I'd say "The returned pointer is valid.", but that doesn't
->> really say for what it's valid... AFAIK you're mostly using this pointer
->> to pass it to the C side, in that case, how about:
->>
->>     /// # Guarantees
->>     ///
->>     /// The returned pointer is valid for reads and writes from the C si=
-de for as long as `self` exists.
->>
->> Maybe we need to change it a bit more, but let's just start with this.
->>
->> (If you're also using the pointer from Rust, then we need to make
->> changes)
->
-> Honestly I think this is a bit over the top. I wouldn't bother adding
-> a section like that to every single as_raw() method out there.
+Just to be clear for v2,
+the caller should be able to call this way?
 
-Hmm. And then just assume that these kinds of functions return valid
-pointers? I get that this is annoying to put on every function...
+```
+	// Allowed
+    unsafe_precondition_assert!(condition, "message");
+    unsafe_precondition_assert!(condition, "formatted message: {} {} {}", arg1, arg2, argn);
 
-Another option would be to have a `Ptr<'a, T>` type that is a valid
-pointer, but doesn't allow writing/reading safely (you need to justify
-why it's not a data race). And for FFI there could be an `as_ptr`
-function.
+	// Not allowed?
+    unsafe_precondition_assert!(condition)
+```
 
----
-Cheers,
-Benno
+When the assertion fails, this will be the output:
+
+```
+	precondition(s) violated: message passed by caller
+```
