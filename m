@@ -1,76 +1,119 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B112E92C7
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 14:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D7C2236E8;
+	Tue, 22 Jul 2025 14:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753194810; cv=none; b=RsXloPaYuK6NZRbHyOWPQvVFwUfRmJ5kG4xE1wq8xgC7pTsH3axc8J71sCfNjZOxiorFViyEjV+3tBvAt3ZR9iQeDOpNWsmPo1VyoNhcqfH8xapY/73qePqqS6hL4cboUhd9aodcFcNs1MnqswGUHbKZYCc2PQ76T0eyt0dow04=
+	t=1753194872; cv=none; b=sTM8T9UL7PrJ12jrze7KSsBPgBR/CMXNSKDOfGsNJaJhvB3qvejq1lt3hSgbPo+1aSpeXyF0tNSado2DD7cnEp30tI2enczIRUZ8+ckOfZAYVqOojYzcJtG3V37LgzlWKX4+4hYctWwkG6X2AmB7+icZebaRhuvb0onqVqNxpKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753194810; c=relaxed/simple;
-	bh=fv7AJ047lftjYrvdeOh9awJwbVijUB3ZG9yyk9jPZz0=;
+	s=arc-20240116; t=1753194872; c=relaxed/simple;
+	bh=WbS1AEBNeY7MKsTnTG+Fdp4S4p4dysRYufHASJvUyCY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TflFn/cxHe8AVKmqa0VhMG8I6RHKP4Ug5278yX0PewZGEgSkUWm4T/oG56kio0abYwX+0gkdKEycQ5wjNmd8TnG4rqWRPEXqxAhyEYF4atcjAvVp9U/5MQ2Oeife7YeMN26dQMNTDANztPR6wApbEOrhAykX1RMI+CWfGXuh9Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=BEtMaDSW; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	 Content-Type:Content-Disposition:In-Reply-To; b=kypXrdaAmvxPaBnZb05opBozk2ENZziI02CIGBblRFvZbBUAY97fspX/vHql1ut9x72W8uZOBbi98uxq10Q5PoWz530vR0nPvmplOK0miLKb3tSQaGCQjozCy6jKYurYsICv23l3FqDc4RrcTC7Wxl6CUs6GYGtQZ1RFWoBkM1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LTI1FH+0; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="BEtMaDSW"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-75ce780af03so1803141b3a.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 07:33:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LTI1FH+0"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7e2e3108841so654540785a.3;
+        Tue, 22 Jul 2025 07:34:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1753194808; x=1753799608; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=M7fGZKT3ggFMUdBYkzEIRO465LQFB1F7egGN40OaEMk=;
-        b=BEtMaDSWRnEErqlT7JMROzTBNDaniQfYpuvkkaLWdVuc8S/uZcH9ZMvOvWoCBql8j5
-         O0VLmGKvWpCx70qaln764Y2bXuHS7ZlA8U1kNnT421YQ7RFZojot5ittvwVjW5NsUMsr
-         ZKoy93gkMtr+TpKupcYAdB8wQtVIAcY/VnVWA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753194808; x=1753799608;
+        d=gmail.com; s=20230601; t=1753194870; x=1753799670; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7fGZKT3ggFMUdBYkzEIRO465LQFB1F7egGN40OaEMk=;
-        b=VsnifXrX95QLnOaXP3spcG2rxoIYjU++xH69EyMI5ThVTpGbaDrrXGz6IrO5evlJXT
-         NEaLKsm6RnLyGgxh6aQyO9mu/TXX0qFbhVlGunaR+zDR2jtBZoJPFk9daW2POiQjrSvu
-         jkftYvSbN2fzWHS6kGjH56+hIrGqnQoufBauhHL8cHhRmiL4tOBl0xOCeJs+XibUN+Qq
-         wh/al2QgUuCoZy4V92kqKgiZTESn5Gecb1vEYySwrBFQV5w0JO103Dyf3+QEWJouq5dC
-         GJgn0XeUCrTkaDjFFG0tQnmmEw/aSxl8/q9M0bPcj3luQoIazC0pWyTwf5iapnOZyBZd
-         rv1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUaEgKMf5nw5V/NUUhPpoWwa7km6lqZvSsl3UK5kw9JBOLvFbU/4iD+9uiRh9zziHqGzQ8plfVkH+npcWN+XA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiABh3PJ8I6WmPEEw+D4Wu2jMX9vHs89hMDPZz2VJ+Ah9N9nSV
-	LQ1Ic0LeIt3Wewe2IWcC63pjwS17MDTMA7wbbkFrMJZik1N6nCPUZm3t0IGNFvJanLc=
-X-Gm-Gg: ASbGnctU88bb9w1lZ3mvs9TGMRH5hH7wwqbw+tkb4OfxvAgoIjGwTxmeWQWgMQRV+/b
-	ZonypAdjw585whTOs1a5UmOdeF9nZ4h5Mw6vcGAWMuwT1Nou/KmrfeB6UN+7Km0lidkJ5IbcEnX
-	wnBZw+szl8yQVsJjWa3z0qWyNtX9aWt5SizSMsQ9MPt3e3nanPJef3n1V41qLqg0o6LznIKywZf
-	huAMQNLErIjFD5yqTvE2dn17JVGDk6CUqMCy//UilQXlv9WNxkHCxE0xx3HPi8sTNnbtyP2GqVE
-	DHPKTYrbWfFJiMRJU5efiDD7UyTdh1nj+1T20mOvv/Mnu9y7YQ7rR3DAn8PHOZV/WjGkD+SxpsJ
-	SGzNs6ZsZDyak7YYOtu6YHic0MQWW5XMwhIzR+J4PLFKBh5hANPcQBtGA1MlCEw67kUxhDg==
-X-Google-Smtp-Source: AGHT+IFWFM/ezEnw+gUjX3lXlEi7sZO9lCCQrwj/IgdE0HPpAyeUUj5d+7M3EkDn2sTRy7/yVS+0Jg==
-X-Received: by 2002:a05:6300:6199:b0:232:9550:128f with SMTP id adf61e73a8af0-23813237521mr37395363637.36.1753194807942;
-        Tue, 22 Jul 2025 07:33:27 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c84e2008sm7230211b3a.30.2025.07.22.07.33.24
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=XXA8ehJAeU9SuKzdIpK8b9KgCTF/AV+BxhlLom5+gUQ=;
+        b=LTI1FH+0tLEnWynB/b58clrKgfav6kGw6A5HcVeR33H50bq/+8lwxnKVU0WGTDYQjw
+         RWUatIGi4TekKlS4K7237DN7xlzVaJJBcGZZMX6sHzM7kdjfHyaukYe2+2134+MoMYIm
+         CpTfOwgo+Zm/56SKHeHXsxaVIRNFeCQeE2BzS9hVz9feNOsm5nQQ/r0CYXqzOU9ZuKNR
+         e19tGP9FOHwfR/AvhWxvUsjZAedd7XvdvZHAPCSGP1ayOotHVdJZ6Y0f+MP/E1Jh5JJG
+         s3M/OkmS8w98SIw0OkAbvh1oi4c8c65YXiNeK4e3FtFLwAVfsdNZgyvDYXbX/BHuPRBU
+         kq/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753194870; x=1753799670;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XXA8ehJAeU9SuKzdIpK8b9KgCTF/AV+BxhlLom5+gUQ=;
+        b=Rxyq0JHufUdyrZq4NKcvLfLwbQ7Bdp1ynvayRs3m4DVoK1e/SWalfmjkeEVqbf4AC0
+         9SpaTlvxmgnaMG3RKcdseWtOnQhq0XTEtYLc7wFwIwUvAPDcwM+flyRwMW/87MGuTWqX
+         47PE3eJjEr/7HKZj+wb9aPa3golDZqR0FsAKk4S6NMdCOM1F+uI9ODwHcdVdrVuGsy+5
+         L5fRUC5A9sbychzdG9rePOz7xBI8EPPkIq6mWIVGmD8tbMiZExywVR2xYJVTJIb6zo3E
+         ji6nggIjcNvt2YeHyutiNtlk5yNgxcWtfOwIUV211gILoGJKKv1IK9iOTCvAqPozbU8t
+         YFYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUhUf+tT1w2ni9gIyhW6qi5z70xZ672YOsF2tgMBSnTx23mXEZsh/27povpBbqTeorhbGtg/JUEgqFBI9g=@vger.kernel.org, AJvYcCVPRCz5WAoXAUBWc2jhWsuk17U8jUKlNaeQeWT4vEgjazb6+x8W4d2O+Z2f4gPVfrqCNHfc//VPLb4l5UE7Cvk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJ93Nzo2sZqk7+MPw8j6rY1rIjnlmBED/L/l+YZA8c1TGtchVs
+	nzs0J/+t69E33D7kMOiNWlBXYPe0CvfPHBzoazPoFPLu3pF9ZxIIDEOb
+X-Gm-Gg: ASbGncsXkdsUpXcvPL+PYdRxF/Q1bZo5Ent+HPkIwU1KK8DN7xTAJTAx6J+2QKHe01J
+	JSlQ5aSkyKl0nJ8s8XXstq63njPO0q1vtFNK3EAOQYyJI7FB+2xlJOt4Qq4XUH/mkzzSOMPyqtn
+	GFewGU5UQjdOLXr47r/kS4IeVoLD8EcdhmYetiWHgzBgTJQKhfSzKgOlfWVvxUfkBGP307wXAHM
+	q7iorv9D2ZMC9DYjHpdLgSKKrQWqBEmxtc03uLvoREBgP1MApB5p54z84yyHtmhx8Ll1yJNeFYR
+	SpzgUl0cKXaXYJNOkBUVliw1iIiS2aBCEKPtNIaeJBgy5dSjBuqpIIydOnSBYlbzyIMSDqgcP3R
+	qtB9fnfxL5oBdnqFQncg54Dxgjs+vuZWwK0a7LVP/MminlmYSa86D52O+9L01tleBmM//hFob6D
+	KiZ40D1S9xpUQ4WgTso2Vpwxs=
+X-Google-Smtp-Source: AGHT+IGC4psX7BFwVp5/EZt6AoO2fspksDrjm6JpJHYnD3pPfkeUYVyd8slfJ9SVHbiSFD5UxYWBkg==
+X-Received: by 2002:a05:6214:8113:b0:704:f7d8:703e with SMTP id 6a1803df08f44-704f7d88982mr248917056d6.50.1753194869529;
+        Tue, 22 Jul 2025 07:34:29 -0700 (PDT)
+Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7051bab2a55sm52170026d6.96.2025.07.22.07.34.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 07:33:27 -0700 (PDT)
-Date: Tue, 22 Jul 2025 23:33:21 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
+        Tue, 22 Jul 2025 07:34:29 -0700 (PDT)
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 826B2F40068;
+	Tue, 22 Jul 2025 10:34:28 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Tue, 22 Jul 2025 10:34:28 -0400
+X-ME-Sender: <xms:dKF_aNKo4bahADCRMV18cZHgHpDbozMzBWiWyqfShDKy0ETsRJ3xSg>
+    <xme:dKF_aBCYBHR-mpvo_F0dnHdqPU2WSv4ooDvp_IjZNe9sbg3Dx9OaaUCyGOyQ-pFNF
+    Gjql-Yo2h1Hy3UJHA>
+X-ME-Received: <xmr:dKF_aFF-Bkm_vXObk0kvYmDlaY_PYmapp-yM4FdscdTLU427xnj-4eYEPQo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdejheduhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeejhfeikeekffejgeegueevffdtgeefudetleegjeelvdffteeihfelfeehvdeg
+    keenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
+    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
+    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
+    peduiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhoshhsihhnsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdp
+    rhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgi
+    drghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihg
+    uhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrd
+    gtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhr
+    tghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    htmhhgrhhoshhssehumhhitghhrdgvughu
+X-ME-Proxy: <xmx:dKF_aGIWPrJxLP-tx3DeaeM3spRkxBO3bs1CsD8nYcx2Ih7SQTqOWQ>
+    <xmx:dKF_aMrRaSocZCYI943g00YAnmXPieb-1AwGiOiVCs-OvQH2JJiaWA>
+    <xmx:dKF_aNjqvSkKLM79YhvAHy5--BjuvGk-ucavxD50CiPvlZwUym_TxA>
+    <xmx:dKF_aLZZYQfJPS-EBunA9ZuMTd-2ezhPGEScIhH39Ku12IJ3Sme3Fg>
+    <xmx:dKF_aFn00_IUNKSSE19RlBILYXl6q97oG2bfsEpHr1kOR3p2VyQBov73>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 22 Jul 2025 10:34:27 -0400 (EDT)
+Date: Tue, 22 Jul 2025 07:34:26 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
 To: Benno Lossin <lossin@kernel.org>
-Cc: Caleb Sander Mateos <csander@purestorage.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-Message-ID: <aH-hMYr4u95x03H0@sidongui-MacBookPro.local>
-References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
- <20250719143358.22363-3-sidong.yang@furiosa.ai>
- <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
- <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
- <CADUfDZrLKrf6evTXQ03cJ1W4kj0gxsF9Bopu+i2SjkBObXKnMA@mail.gmail.com>
- <DBHUR00PDVO2.16BCDQ94SF29J@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: sync: fix safety comment for `static_lock_class`
+Message-ID: <aH-hcnZ3hiQIQj-5@tardis-2.local>
+References: <20250520231714.323931-1-lossin@kernel.org>
+ <DBIJLR7XNI6U.21PMPODHE83DZ@kernel.org>
+ <CAH5fLgh9aEF5V9rNq2a8utS=NxSU8rdxpKsNbsuPoMpDfHN0fg@mail.gmail.com>
+ <DBIKI0KDP1J8.3MOHF5G3A6JEH@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,62 +123,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DBHUR00PDVO2.16BCDQ94SF29J@kernel.org>
+In-Reply-To: <DBIKI0KDP1J8.3MOHF5G3A6JEH@kernel.org>
 
-On Mon, Jul 21, 2025 at 05:52:41PM +0200, Benno Lossin wrote:
-> On Mon Jul 21, 2025 at 5:04 PM CEST, Caleb Sander Mateos wrote:
-> > On Mon, Jul 21, 2025 at 1:23 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >> On Sun, Jul 20, 2025 at 03:10:28PM -0400, Caleb Sander Mateos wrote:
-> >> > On Sat, Jul 19, 2025 at 10:34 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >> > > +    }
-> >> > > +
-> >> > > +    // Called by consumers of io_uring_cmd, if they originally returned -EIOCBQUEUED upon receiving the command
-> >> > > +    #[inline]
-> >> > > +    pub fn done(self, ret: isize, res2: u64, issue_flags: u32) {
+On Tue, Jul 22, 2025 at 02:03:25PM +0200, Benno Lossin wrote:
+> On Tue Jul 22, 2025 at 1:34 PM CEST, Alice Ryhl wrote:
+> > On Tue, Jul 22, 2025 at 1:21 PM Benno Lossin <lossin@kernel.org> wrote:
+> >> On Wed May 21, 2025 at 1:17 AM CEST, Benno Lossin wrote:
+> >> > The safety comment mentions lockdep -- which from a Rust perspective
+> >> > isn't important -- and doesn't mention the real reason for why it's
+> >> > sound to create `LockClassKey` as uninitialized memory.
 > >> >
-> >> > I don't think it's safe to move io_uring_cmd. io_uring_cmd_done(), for
-> >> > example, calls cmd_to_io_kiocb() to turn struct io_uring_cmd *ioucmd
-> >> > into struct io_kiocb *req via a pointer cast. And struct io_kiocb's
-> >> > definitely need to be pinned in memory. For example,
-> >> > io_req_normal_work_add() inserts the struct io_kiocb into a linked
-> >> > list. Probably some sort of pinning is necessary for IoUringCmd.
+> >> > Signed-off-by: Benno Lossin <lossin@kernel.org>
+> >> > ---
+> >> >
+> >> > I don't think we need to backport this.
+> >> >
+> >> > ---
+> >> >  rust/kernel/sync.rs | 7 +++++--
+> >> >  1 file changed, 5 insertions(+), 2 deletions(-)
+> >> >
+> >> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> >> > index 36a719015583..a10c812d8777 100644
+> >> > --- a/rust/kernel/sync.rs
+> >> > +++ b/rust/kernel/sync.rs
+> >> > @@ -93,8 +93,11 @@ fn drop(self: Pin<&mut Self>) {
+> >> >  macro_rules! static_lock_class {
+> >> >      () => {{
+> >> >          static CLASS: $crate::sync::LockClassKey =
+> >> > -            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
+> >> > -            // lock_class_key
+> >> > +            // Lockdep expects uninitialized memory when it's handed a statically allocated `struct
+> >> > +            // lock_class_key`.
+> >> > +            //
+> >> > +            // SAFETY: `LockClassKey` transparently wraps `Opaque` which permits uninitialized
+> >> > +            // memory.
+> >> >              unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
 > >>
-> >> Understood, Normally the users wouldn't create IoUringCmd than use borrowed cmd
-> >> in uring_cmd() callback. How about change to &mut self and also uring_cmd provides
-> >> &mut IoUringCmd for arg.
+> >> Looking at this patch with fresh eyes (thanks for the bump, Alice :) I
+> >> think we should rather have a public unsafe function on `LockClassKey`
+> >> that creates an uninitialized lock class key. I'd like to avoid the
+> >> `MaybeUninit::uninit().assume_init()` pattern, as it might confuse
+> >> people & it looks very wrong.
+> >>
+> >> We can take this patch, as it definitely is an improvement, but I think
+> >> we should also just fix this properly. Any thoughts?
 > >
-> > I'm still a little worried about exposing &mut IoUringCmd without
-> > pinning. It would allow swapping the fields of two IoUringCmd's (and
-> > therefore struct io_uring_cmd's), for example. If a struct
-> > io_uring_cmd belongs to a struct io_kiocb linked into task_list,
-> > swapping it with another struct io_uring_cmd would result in
-> > io_uring_cmd_work() being invoked on the wrong struct io_uring_cmd.
-> > Maybe it would be okay if IoUringCmd had an invariant that the struct
-> > io_uring_cmd is not on the task work list. But I would feel safer with
-> > using Pin<&mut IoUringCmd>. I don't have much experience with Rust in
-> > the kernel, though, so I would welcome other opinions.
+> > Could that constructor be used in non-static cases?
 > 
-> Pinning in the kernel isn't much different from userspace. From your
-> description of what normally happens with `struct io_uring_cmd`, it
-> definitely must be pinned.
-> 
-> From a quick glance at the patch series, I don't see a way to create a
-> `IoUringCmd` by-value, which also means that the `done` function won't
-> be callable (also the `fn pdu(&mut self)` function won't be callable,
-> since you only ever create a `&IoUringCmd`). I'm not sure if I'm missing
-> something, do you plan on further patches in the future?
+> I don't know lockdep, so maybe yes? Or do you mean that it could be
 
-Sure, this version is full of nonsence. v2 will be better than this.
+Using in non-static cases is wrong. For static keys, lockdep could use
+it address as keys but for dynamic keys, since they can be freed, they
+have to be registered before use (that's what
+`LockClassKey::new_dynamic()` is about.
 
-> 
-> How (aside from `from_raw`) are `IoUringCmd` values going to be created
-> or exposed to the user?
+See this:
 
-Nomrally user would gets Pin<&mut IoUringCmd> from MiscDevice::uring_cmd().
+	https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@metaspace.dk/
 
-Thanks,
-Sidong
+We would need to add "for static only" for the proposed unsafe function.
 
+Regards,
+Boqun
+
+> abused?
 > 
 > ---
 > Cheers,
