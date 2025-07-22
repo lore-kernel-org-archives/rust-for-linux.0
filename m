@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA0521516E;
-	Tue, 22 Jul 2025 18:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CEA21516E;
+	Tue, 22 Jul 2025 18:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753210225; cv=none; b=EXfNHqUeGP8hA1lGr4o7CaJfa9vJlg8WCJWvs1fMAF6VTaKYIlnbs7IdVUCYG8gh3RtSWk9Cby03CNq1lErf9UVIT91rugVKIGlxbWlL3xkKtDnrgaYrkFehMk7HVeZeVUPeI/YgUxJPP8v8K/tUfkFdbcB6ntcTipMNb9T+g3w=
+	t=1753210329; cv=none; b=W23RLUK1e83qBo4Gx4+5Y61PF9iYF3sYz5gdzsNdplnr+5VDFuXKnsHnLbOiA9vA/OVn4Yy5DW5up1iA8I//H6lQuMui4R0USerfy0pvNv3Blq6BPfdFD1pmEKP8h5QJw1j8FWT/2QL19xfgT0emO+MZFoHGcVErlHdiWaUM8nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753210225; c=relaxed/simple;
-	bh=TKaehvJFYucpqRsCQiA/i3iI7bsv4bNIH/1U9NLuV6o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=PSDk4D4D11mfbTWhAHObnLqgO5sp6nsZbM/Ffk+K48KJps208MxdmJoEiAUfapGI03ylCyAEOyDr54U94k2UpF/Dr0yrtt86zXj0Dk9KGjQYuXjNiYvQakImCNKrXSie6RXi4qzG46UtBTwFhLnUbKI3upBWpHt9XdsnD1Dzs0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t07SyrOC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753210329; c=relaxed/simple;
+	bh=ncQDcwLtFXrjxRWbHOnOf177mQ7JXQHPpytEH3Fg8+w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=PHLS1asyK6fO67z3BipEgptEMpJBlrMt76NlDm6EkVmYos9+FggxVSeRgE9uWGPTJZoYyARq/m1yrMCsin0BmWTmaz6Ws7D6BTF9skHE3jOOEdQ/ih0QOJAixDqI1nKe//kkATxG/0kQF4jpA5SvTgvn0QJ90U6l0FGJF89UAGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnK2HYU7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t07SyrOC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E38C4CEEB;
-	Tue, 22 Jul 2025 18:50:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnK2HYU7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DE6C4CEEB;
+	Tue, 22 Jul 2025 18:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753210225;
-	bh=TKaehvJFYucpqRsCQiA/i3iI7bsv4bNIH/1U9NLuV6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t07SyrOCN+jt16upJhz/Zr7FzQyb5HRf810CZRhIbKO1AyVC8bQ8Lj9XY/xuE3Ogz
-	 Jru5i2/nryRgMYsWxsOMb47sim2naQv9yshKVY/Uxhn8pAXCEG/ejtGXpy0iqLVkz6
-	 Ili5KEOm0/DnqWZDiPGiJZV814av/KZa34XYs8uaYh2SDgax0m57iMVkLNutJz05ZJ
-	 4Cw1RtUToIcJyF9hmwrO5swBBtBx2R1EJHDaixm+b5MiuwFKUrdu7OU0f28vux5vKt
-	 fLKqyrMBjgfm4UdxTmXbfWzPdmjzu6fubZF1YkVlyBv0VnZU3KjfsX4xKPycc9Miy1
-	 /DB8DVaUyxvnA==
+	s=k20201202; t=1753210329;
+	bh=ncQDcwLtFXrjxRWbHOnOf177mQ7JXQHPpytEH3Fg8+w=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=SnK2HYU7grJiwjXNxheqxrKGhKHtJyDSZQuKzilLPG1K3UhEf+w8fLQEseNI/5JbS
+	 34L4mfJmoVzaL4jVzgmNyYZLm3ezaf0LhL4VrJ+aawt2U2MI17ye/IQ9lYaOHib13q
+	 uH8sFnySvRLuKw5nWXWTbfJiBP70cw3CaQqQ7kZ4Wqt4E/98t8XZsWbiuoFhyJme3C
+	 am38NQU5nhSpRVnZgN0xDyZurUaQBB2mFjg0qAu81XQGq0vSaE5leZ2x0BdB1pI6En
+	 g4wNLBDwD6WasTx4CJdD9TpxBNcp5e+wePvv2Zf9LDQy5LsWTxOCIYUR/BEcFJN9xw
+	 oeb2DJfxTWSwA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,97 +34,53 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Jul 2025 20:50:20 +0200
-Message-Id: <DBIT5KD4CXDZ.1MZUPQMAWL4Y8@kernel.org>
+Date: Tue, 22 Jul 2025 20:52:05 +0200
+Message-Id: <DBIT6WL2C5MG.2J7OBX6LCVYP7@kernel.org>
+Cc: "Caleb Sander Mateos" <csander@purestorage.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>, "Jens Axboe"
+ <axboe@kernel.dk>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <io-uring@vger.kernel.org>
+Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
+ io-uring cmd
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Lyude Paul" <lyude@redhat.com>, "Mitchell Levy" <levymitchell0@gmail.com>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: sync: fix safety comment for `static_lock_class`
+To: "Sidong Yang" <sidong.yang@furiosa.ai>
 X-Mailer: aerc 0.20.1
-References: <20250520231714.323931-1-lossin@kernel.org>
- <DBIJLR7XNI6U.21PMPODHE83DZ@kernel.org>
- <CAH5fLgh9aEF5V9rNq2a8utS=NxSU8rdxpKsNbsuPoMpDfHN0fg@mail.gmail.com>
- <DBIKI0KDP1J8.3MOHF5G3A6JEH@kernel.org> <aH-hcnZ3hiQIQj-5@tardis-2.local>
-In-Reply-To: <aH-hcnZ3hiQIQj-5@tardis-2.local>
+References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
+ <20250719143358.22363-3-sidong.yang@furiosa.ai>
+ <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
+ <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
+ <CADUfDZrLKrf6evTXQ03cJ1W4kj0gxsF9Bopu+i2SjkBObXKnMA@mail.gmail.com>
+ <aH5g-Q_hu6neI5em@sidongui-MacBookPro.local>
+ <DBHVI5WDLCY3.33K0F1UAJSHPK@kernel.org>
+ <aH-ga6WdOpkbRK3T@sidongui-MacBookPro.local>
+In-Reply-To: <aH-ga6WdOpkbRK3T@sidongui-MacBookPro.local>
 
-On Tue Jul 22, 2025 at 4:34 PM CEST, Boqun Feng wrote:
-> On Tue, Jul 22, 2025 at 02:03:25PM +0200, Benno Lossin wrote:
->> On Tue Jul 22, 2025 at 1:34 PM CEST, Alice Ryhl wrote:
->> > On Tue, Jul 22, 2025 at 1:21=E2=80=AFPM Benno Lossin <lossin@kernel.or=
-g> wrote:
->> >> On Wed May 21, 2025 at 1:17 AM CEST, Benno Lossin wrote:
->> >> > The safety comment mentions lockdep -- which from a Rust perspectiv=
-e
->> >> > isn't important -- and doesn't mention the real reason for why it's
->> >> > sound to create `LockClassKey` as uninitialized memory.
->> >> >
->> >> > Signed-off-by: Benno Lossin <lossin@kernel.org>
->> >> > ---
->> >> >
->> >> > I don't think we need to backport this.
->> >> >
->> >> > ---
->> >> >  rust/kernel/sync.rs | 7 +++++--
->> >> >  1 file changed, 5 insertions(+), 2 deletions(-)
->> >> >
->> >> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
->> >> > index 36a719015583..a10c812d8777 100644
->> >> > --- a/rust/kernel/sync.rs
->> >> > +++ b/rust/kernel/sync.rs
->> >> > @@ -93,8 +93,11 @@ fn drop(self: Pin<&mut Self>) {
->> >> >  macro_rules! static_lock_class {
->> >> >      () =3D> {{
->> >> >          static CLASS: $crate::sync::LockClassKey =3D
->> >> > -            // SAFETY: lockdep expects uninitialized memory when i=
-t's handed a statically allocated
->> >> > -            // lock_class_key
->> >> > +            // Lockdep expects uninitialized memory when it's hand=
-ed a statically allocated `struct
->> >> > +            // lock_class_key`.
->> >> > +            //
->> >> > +            // SAFETY: `LockClassKey` transparently wraps `Opaque`=
- which permits uninitialized
->> >> > +            // memory.
->> >> >              unsafe { ::core::mem::MaybeUninit::uninit().assume_ini=
-t() };
->> >>
->> >> Looking at this patch with fresh eyes (thanks for the bump, Alice :) =
-I
->> >> think we should rather have a public unsafe function on `LockClassKey=
-`
->> >> that creates an uninitialized lock class key. I'd like to avoid the
->> >> `MaybeUninit::uninit().assume_init()` pattern, as it might confuse
->> >> people & it looks very wrong.
->> >>
->> >> We can take this patch, as it definitely is an improvement, but I thi=
-nk
->> >> we should also just fix this properly. Any thoughts?
->> >
->> > Could that constructor be used in non-static cases?
+On Tue Jul 22, 2025 at 4:30 PM CEST, Sidong Yang wrote:
+> On Mon, Jul 21, 2025 at 06:28:09PM +0200, Benno Lossin wrote:
+>> On Mon Jul 21, 2025 at 5:47 PM CEST, Sidong Yang wrote:
+>> > It's safest to get NonNull from from_raw and it returns
+>> > Pin<&mut IoUringCmd>.
 >>=20
->> I don't know lockdep, so maybe yes? Or do you mean that it could be
+>> I don't think you need `NonNull<T>`.
 >
-> Using in non-static cases is wrong. For static keys, lockdep could use
-> it address as keys but for dynamic keys, since they can be freed, they
-> have to be registered before use (that's what
-> `LockClassKey::new_dynamic()` is about.
->
-> See this:
->
-> 	https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@meta=
-space.dk/
->
-> We would need to add "for static only" for the proposed unsafe function.
+> NonNull<T> gurantees that it's not null. It could be also dangling but it=
+'s
+> safer than *mut T. Could you tell me why I don't need it?
 
-Yeah sounds good, I like it better than using the pattern above. We can
-also make it `#[doc(hidden)]`, so people don't use it :)
+Raw pointers have better ergonomics and if you're just passing it back
+into ffi, I don't see the point of using `NonNull`...
+
+>> > from_raw() name is weird. it should be from_nonnnull()? Also, done()
+>> > would get Pin<&mut Self>.
+>>=20
+>> That sounds reasonable.
+>>=20
+>> Are you certain that it's an exclusive reference?
+>
+> As far as I know, yes.
+
+So the `IoUringCmd` is not refcounted and it is also not owned by the
+`done` callee?
 
 ---
 Cheers,
