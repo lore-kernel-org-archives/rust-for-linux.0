@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F242BEFE3;
-	Tue, 22 Jul 2025 09:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B732557A;
+	Tue, 22 Jul 2025 09:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753176552; cv=none; b=ckuSjqgAS8RqjwuTaLU4e9XHKSp9HwwV9pBaN6DG7YCIjxd3BeeYzkJUt86zHtRcWqhxNQSW0pW71jTrIM8M5MWgNe64517a0/2rLN2QtJzHq94CBn5/+E+sgNJ0VewNbnE+gNVuoNWSTZX6suLhAnQgwAflVd059eMhQ6wXQaQ=
+	t=1753176781; cv=none; b=WaJJ2+4RbNJ1dMUGsEkWuUTD+TsoMek1uZTbvjcUeGuFpSxk75ZjYbgNsrxNWd0oI/K/d5AaBM59Y78Sq+ycZO1AKeL29JEpoCfRXYMfuUDad8yZ1KKYxX5IDR3D4EaCWT/wCDwQhNuezukxZLzs4GKjtUmaE8xyI65Z3sfIeEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753176552; c=relaxed/simple;
-	bh=enVP14U28hE+PnqiYzRdLrXgVSE41+FcW7F4HH/TMug=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=D5NakjeSRobNl2zQis9f9E3ib7Ufa28LMOu+Maa5hPLsUP6rPLFCVjEip9VG0rjDS3fNA9rCzIXP9Z+Tcshgb3mn6eepURhSX3/nQKL2gB9tywPNiDSmPDYQXLyQnCeYHFji3Bijz6CJhxE2Uw8lGaujJxTFhTX864Sqx6RSDpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epOLk3cq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753176781; c=relaxed/simple;
+	bh=T/54e2GKIMBgth/Ma53cxRrBRLK1haj82m9epjW0LDs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=NJUXJUOdRgpvmvJqaDtlogEbrudrVcCriKxY0oYNnxDwUFH3OHMfWwyqSDlvIZ78cvox70BXFbajPtggQQmCIJ/qvZm8KSYSSv1huIqzQbZG2a3kCSwJUZmSgPZbHOBezvYojaet0qevyte7pfNUGVWa+YAXtdUgYapo4c0zKpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CY+NhB8D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epOLk3cq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EFCC4CEEB;
-	Tue, 22 Jul 2025 09:29:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CY+NhB8D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44DDC4CEEB;
+	Tue, 22 Jul 2025 09:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753176552;
-	bh=enVP14U28hE+PnqiYzRdLrXgVSE41+FcW7F4HH/TMug=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=epOLk3cqY1C1/UIHczxHBajXBQ7VAK5QENDgP7SOlW3GcnU7EDU9dsqQ+DMvpiTd6
-	 40R4RWsysPr4dEkLSRwobE22Z2CLghn529FXtvOftLptOlOjLxEA3CowZVyw921Vmk
-	 W94sIIEuarC5f0ixcqjJCAKeDR4Jho+YWoe/EoXUlTq5LPqeX9mtjPdmkgbFw7+ZHl
-	 wGoRcmiDDHHJaW6aKhKmq99ZXGiiAauy9fptjv4AproU/f3ZOZ38D1ge5e4Q29UcGo
-	 a0WoE0b5I+WGWFItv3SZ4ILXV1ls4mG8jTPTfLgj3tn0HYfrjY7D1bmRPd7dLvHMt2
-	 81V/qu8lhw8fA==
+	s=k20201202; t=1753176781;
+	bh=T/54e2GKIMBgth/Ma53cxRrBRLK1haj82m9epjW0LDs=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=CY+NhB8DTrw9xxzsjxSCR2ADIEQxmTkF63h7rnTfySvttx6+T9BOVyAbjoxjgaK/s
+	 qSK35/7eD9QdQV2Weg8jYoydjFw0GV9z3MILHQ8//p69+8HX7yJCnvNVFKi0c1rGgC
+	 jLpFpvVkW/5BQOgxgQCppTvowkPlSQgJRrbTZ0XlRHoRl0s9mwv9vR6dZS3q9EDh/8
+	 SBrBuewBK1tdOFStytyt28vfIjsMoAtlY3SNGlYAGCj59sxkV8pdaC1hQs1hynsGMd
+	 hgCXnelGzW/wWCe4FHQ7j8pT7lfi0qXkRdfWqMZDsFX6UBcfoXuCq4QdNDqQLbiFo0
+	 VyI8Ii5l++IzQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,34 +34,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Jul 2025 11:29:07 +0200
-Message-Id: <DBIH7VEMJY0E.4KMGP0KSLZHG@kernel.org>
-Subject: Re: [PATCH 1/2] rust: io: fix broken intra-doc link to missing
- `flags` module
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <patches@lists.linux.dev>
-To: "Miguel Ojeda" <ojeda@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250722085500.1360401-1-ojeda@kernel.org>
-In-Reply-To: <20250722085500.1360401-1-ojeda@kernel.org>
+Date: Tue, 22 Jul 2025 11:32:56 +0200
+Message-Id: <DBIHASMYLFEZ.19R61CE8V745Q@kernel.org>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>, "Shankari Anand"
+ <shankari.ak0208@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v4] rust: move ARef and AlwaysRefCounted to sync::aref
+From: "Benno Lossin" <lossin@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250715110423.334744-1-shankari.ak0208@gmail.com>
+ <CANiq72nZMLghTj8bHerEfXyYMtbWDH_WVxYeQY65ymWjSuxA_g@mail.gmail.com>
+In-Reply-To: <CANiq72nZMLghTj8bHerEfXyYMtbWDH_WVxYeQY65ymWjSuxA_g@mail.gmail.com>
 
-On Tue Jul 22, 2025 at 10:54 AM CEST, Miguel Ojeda wrote:
-> There is no `mod flags` in this case, unlike others. Instead, they are
-> associated constants for the `Flags` type.
+On Tue Jul 22, 2025 at 12:46 AM CEST, Miguel Ojeda wrote:
+> On Tue, Jul 15, 2025 at 1:04=E2=80=AFPM Shankari Anand
+> <shankari.ak0208@gmail.com> wrote:
+>>
+>> +//! Built-in Reference Counting Support
 >
-> Thus reword the sentence to fix the broken intra-doc link, providing
-> an example of constant and linking to it to clarify which ones we are
-> referring to.
->
-> Fixes: 493fc33ec252 ("rust: io: add resource abstraction")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> What is it meant by "built-in" here? Could we just use "Reference
+> counting support."? Or do you have another suggestion, Benno?
 
-Thanks for catching this and the other documentation warning.
+`ARef` specifically is about supporting types that already have their
+own "built-in" reference counting. I'm not sure if built-in is the best
+word to describe that, some alternatives are inherent or internal.
 
-Applied to driver-core-testing, thanks!
+Maybe we can just expand the module level docs with:
+
+    //! Internal Reference Counting Support.
+    //!
+    //! Many C types already have their own reference counting mechanism (e=
+.g. by storing a
+    //! `refcount_t`). This module provides support for directly using thei=
+r internal reference count
+    //! from Rust; instead of making users have to use an additional Rust-r=
+eference count in the form of
+    //! [`Arc`].
+    //!
+    //! The smart pointer [`ARef<T>`] acts similarly to [`Arc<T>`] in that =
+it holds a refcount on the
+    //! underlying object, but this refcount is internal to the object. It =
+essentially is a Rust
+    //! implementation of the `get_` and `put_` pattern used in C for refer=
+ence counting.
+    //!
+    //! To make use of [`ARef<MyType>`], `MyType` needs to implement [`Alwa=
+ysRefCounted`]. It is a trait
+    //! for accessing the internal reference count of an object of the `MyT=
+ype` type.
+
+Thoughts?
+
+---
+Cheers,
+Benno
