@@ -1,61 +1,61 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9762EA739
-	for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 14:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B112E92C7
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 14:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753194613; cv=none; b=kb5o3H7w18WmSkaL9uyHt06aQyG7dpu7F5pm79SqQ7uezI6en2cEIf6zBzpoDcVX+X7qfCe2VkCurNQs+JwMJbEyRM8Yu85YMX7mMBYw/3tWvMyOAGxVireSZO7eyha1q/hZf7sPe5zIJbUMIEnkIpmIBo5ewXWk4Xn9lPa9ldY=
+	t=1753194810; cv=none; b=RsXloPaYuK6NZRbHyOWPQvVFwUfRmJ5kG4xE1wq8xgC7pTsH3axc8J71sCfNjZOxiorFViyEjV+3tBvAt3ZR9iQeDOpNWsmPo1VyoNhcqfH8xapY/73qePqqS6hL4cboUhd9aodcFcNs1MnqswGUHbKZYCc2PQ76T0eyt0dow04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753194613; c=relaxed/simple;
-	bh=p7mRw0ExDuhcHRwUscU2zY43D+jma4R5i0QM1Sy7Cok=;
+	s=arc-20240116; t=1753194810; c=relaxed/simple;
+	bh=fv7AJ047lftjYrvdeOh9awJwbVijUB3ZG9yyk9jPZz0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MVG3u7r0MWHDvMTYR6W7hqVYDyQBhWI/2Hmn9cfydkTzvZIqebmwulGqaYsLV+pxdvYQbkjVmeVaBLokLlZR5/JZ0XdMmjoLkTZ2xfCfmlUjtYN55uMnC969quzYKDb7AvDLuwwiiO8FHizvRrfNq3fpmm7zmfEueSjJvZZkr5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=JWRNp8dS; arc=none smtp.client-ip=209.85.215.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=TflFn/cxHe8AVKmqa0VhMG8I6RHKP4Ug5278yX0PewZGEgSkUWm4T/oG56kio0abYwX+0gkdKEycQ5wjNmd8TnG4rqWRPEXqxAhyEYF4atcjAvVp9U/5MQ2Oeife7YeMN26dQMNTDANztPR6wApbEOrhAykX1RMI+CWfGXuh9Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=BEtMaDSW; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="JWRNp8dS"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b3bdab4bf19so4250106a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 07:30:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="BEtMaDSW"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-75ce780af03so1803141b3a.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 07:33:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1753194610; x=1753799410; darn=vger.kernel.org;
+        d=furiosa.ai; s=google; t=1753194808; x=1753799608; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=8DedHc8U3sGS0hetHRKcucqLT47kGDJbYOpKzUGUwhI=;
-        b=JWRNp8dSwOtl7MxJfBclJ4D/Mi/sBT39Jbjf9bfv409NrzDJf3ZgTUxWVFOE+/vTDV
-         StBykTY8eBHagQ8566j3fKVFjIANSCaWUVMgBifZ7wW55FUgtcMmtYTrZv6boyDpOm0Z
-         RM8B8SDIDqywPX3HldTKn0sDeu9aqoLl9blMM=
+        bh=M7fGZKT3ggFMUdBYkzEIRO465LQFB1F7egGN40OaEMk=;
+        b=BEtMaDSWRnEErqlT7JMROzTBNDaniQfYpuvkkaLWdVuc8S/uZcH9ZMvOvWoCBql8j5
+         O0VLmGKvWpCx70qaln764Y2bXuHS7ZlA8U1kNnT421YQ7RFZojot5ittvwVjW5NsUMsr
+         ZKoy93gkMtr+TpKupcYAdB8wQtVIAcY/VnVWA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753194610; x=1753799410;
+        d=1e100.net; s=20230601; t=1753194808; x=1753799608;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8DedHc8U3sGS0hetHRKcucqLT47kGDJbYOpKzUGUwhI=;
-        b=qXchz7sPzcWW4tb+btBJsFJ4ZcP6NGpcpQtQyNce9zYFEfGjP8IAGv22GqBdCrhg43
-         bFSGTYncf/YPrI+RZ9w7KVIGR0t1w/z5bj9QP9hP9nOgPjAeHIxQCxpH0aa3sfkro/u/
-         kzSPqZfPUAIsnzAOCGmHVwweRCimFYRKYklPM4L0YpP6potqkhlN2E8iagPooPvfCYsX
-         PtN41jtCiMWQKvgwgnYESDwgY8Y0uQ+KCqYOXF8a/5XZWRMC3/v7W4JM1loa5fP58x3s
-         W5hZhMAbaNlkcA0UKIvu3EAq1uXPvdJhSPA26KdUBJ6tTNkRdABYVhCFnSaOeIh1Td+t
-         Wl3g==
-X-Forwarded-Encrypted: i=1; AJvYcCX1FcIM6/Bv0YNTPJqdBxhuZGX7+JtBlfjUH5cKX5KOyuQEjzQBqwCZGGOQhBE0C5URiAIDLMU7hFrvaOORvQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMYL7ddwk3WKrqg124BDopbxuRz/gtkz0EBOpph0tKr76uG03J
-	7hxdRMfhFlSUfEGdQ3fuzRZ+Afc21BpobnZgBdbdjYpO6VoMh8fzszTGxu7m6huS4gk=
-X-Gm-Gg: ASbGncvA1wxcUQmV/w9XQc7HVVUMrgsB47xHDkzi5CTqjHuFecXnTufHr26HYuuGSH9
-	oZEecN2Jl2qKgVB2vA0aztX/hOC0ULcfruEVWlw2KJMSLta+M0zEABdnBix11nAs6zV7UMN8r/k
-	dzM8PfPIm9E52sZbl0YzShfvwMBzDsXSObc0BdYHm/E8tsJ5o/ha2IieUP+n0vUlvxn4ZCrHnq8
-	/DFdVbBn53t27oIfByekCL5LAuYVl2raIpj6Lr7nWxTVImf5bobEW/vbdn1qnP5D4FpgqJycFm1
-	IcdBxID45nKyysfv2+qjfx5Z6yVNCTvZHKWaUX0VtnwsUR0XpuMsgw+EQYgclNPKcPAUts29Uu5
-	Z1kfLHymvYHPtqLlTenWEYJsg/n5RjNr72fAk64+qZQbGAhDtJwBEHYqJXoY=
-X-Google-Smtp-Source: AGHT+IFPEQ8MNFfHaXUFgjDu3vJ32lBL2IqvUMLNtxAsQckcMo5/PtrbE2PCJLBx72Rm2QMrsmcvfw==
-X-Received: by 2002:a17:90b:180f:b0:2fe:e9c6:689e with SMTP id 98e67ed59e1d1-31c9e6fb9b9mr37249807a91.8.1753194610250;
-        Tue, 22 Jul 2025 07:30:10 -0700 (PDT)
+        bh=M7fGZKT3ggFMUdBYkzEIRO465LQFB1F7egGN40OaEMk=;
+        b=VsnifXrX95QLnOaXP3spcG2rxoIYjU++xH69EyMI5ThVTpGbaDrrXGz6IrO5evlJXT
+         NEaLKsm6RnLyGgxh6aQyO9mu/TXX0qFbhVlGunaR+zDR2jtBZoJPFk9daW2POiQjrSvu
+         jkftYvSbN2fzWHS6kGjH56+hIrGqnQoufBauhHL8cHhRmiL4tOBl0xOCeJs+XibUN+Qq
+         wh/al2QgUuCoZy4V92kqKgiZTESn5Gecb1vEYySwrBFQV5w0JO103Dyf3+QEWJouq5dC
+         GJgn0XeUCrTkaDjFFG0tQnmmEw/aSxl8/q9M0bPcj3luQoIazC0pWyTwf5iapnOZyBZd
+         rv1w==
+X-Forwarded-Encrypted: i=1; AJvYcCUaEgKMf5nw5V/NUUhPpoWwa7km6lqZvSsl3UK5kw9JBOLvFbU/4iD+9uiRh9zziHqGzQ8plfVkH+npcWN+XA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiABh3PJ8I6WmPEEw+D4Wu2jMX9vHs89hMDPZz2VJ+Ah9N9nSV
+	LQ1Ic0LeIt3Wewe2IWcC63pjwS17MDTMA7wbbkFrMJZik1N6nCPUZm3t0IGNFvJanLc=
+X-Gm-Gg: ASbGnctU88bb9w1lZ3mvs9TGMRH5hH7wwqbw+tkb4OfxvAgoIjGwTxmeWQWgMQRV+/b
+	ZonypAdjw585whTOs1a5UmOdeF9nZ4h5Mw6vcGAWMuwT1Nou/KmrfeB6UN+7Km0lidkJ5IbcEnX
+	wnBZw+szl8yQVsJjWa3z0qWyNtX9aWt5SizSMsQ9MPt3e3nanPJef3n1V41qLqg0o6LznIKywZf
+	huAMQNLErIjFD5yqTvE2dn17JVGDk6CUqMCy//UilQXlv9WNxkHCxE0xx3HPi8sTNnbtyP2GqVE
+	DHPKTYrbWfFJiMRJU5efiDD7UyTdh1nj+1T20mOvv/Mnu9y7YQ7rR3DAn8PHOZV/WjGkD+SxpsJ
+	SGzNs6ZsZDyak7YYOtu6YHic0MQWW5XMwhIzR+J4PLFKBh5hANPcQBtGA1MlCEw67kUxhDg==
+X-Google-Smtp-Source: AGHT+IFWFM/ezEnw+gUjX3lXlEi7sZO9lCCQrwj/IgdE0HPpAyeUUj5d+7M3EkDn2sTRy7/yVS+0Jg==
+X-Received: by 2002:a05:6300:6199:b0:232:9550:128f with SMTP id adf61e73a8af0-23813237521mr37395363637.36.1753194807942;
+        Tue, 22 Jul 2025 07:33:27 -0700 (PDT)
 Received: from sidongui-MacBookPro.local ([61.83.209.48])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c9f29ddcbsm12216798a91.36.2025.07.22.07.30.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c84e2008sm7230211b3a.30.2025.07.22.07.33.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Jul 2025 07:30:09 -0700 (PDT)
-Date: Tue, 22 Jul 2025 23:30:03 +0900
+        Tue, 22 Jul 2025 07:33:27 -0700 (PDT)
+Date: Tue, 22 Jul 2025 23:33:21 +0900
 From: Sidong Yang <sidong.yang@furiosa.ai>
 To: Benno Lossin <lossin@kernel.org>
 Cc: Caleb Sander Mateos <csander@purestorage.com>,
@@ -64,14 +64,13 @@ Cc: Caleb Sander Mateos <csander@purestorage.com>,
 	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
 Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
  io-uring cmd
-Message-ID: <aH-ga6WdOpkbRK3T@sidongui-MacBookPro.local>
+Message-ID: <aH-hMYr4u95x03H0@sidongui-MacBookPro.local>
 References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
  <20250719143358.22363-3-sidong.yang@furiosa.ai>
  <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
  <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
  <CADUfDZrLKrf6evTXQ03cJ1W4kj0gxsF9Bopu+i2SjkBObXKnMA@mail.gmail.com>
- <aH5g-Q_hu6neI5em@sidongui-MacBookPro.local>
- <DBHVI5WDLCY3.33K0F1UAJSHPK@kernel.org>
+ <DBHUR00PDVO2.16BCDQ94SF29J@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,71 +80,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <DBHVI5WDLCY3.33K0F1UAJSHPK@kernel.org>
+In-Reply-To: <DBHUR00PDVO2.16BCDQ94SF29J@kernel.org>
 
-On Mon, Jul 21, 2025 at 06:28:09PM +0200, Benno Lossin wrote:
-> On Mon Jul 21, 2025 at 5:47 PM CEST, Sidong Yang wrote:
-> > On Mon, Jul 21, 2025 at 11:04:31AM -0400, Caleb Sander Mateos wrote:
-> >> On Mon, Jul 21, 2025 at 1:23 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >> > On Sun, Jul 20, 2025 at 03:10:28PM -0400, Caleb Sander Mateos wrote:
-> >> > > On Sat, Jul 19, 2025 at 10:34 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> >> > > > +    }
-> >> > > > +
-> >> > > > +    // Called by consumers of io_uring_cmd, if they originally returned -EIOCBQUEUED upon receiving the command
-> >> > > > +    #[inline]
-> >> > > > +    pub fn done(self, ret: isize, res2: u64, issue_flags: u32) {
-> >> > >
-> >> > > I don't think it's safe to move io_uring_cmd. io_uring_cmd_done(), for
-> >> > > example, calls cmd_to_io_kiocb() to turn struct io_uring_cmd *ioucmd
-> >> > > into struct io_kiocb *req via a pointer cast. And struct io_kiocb's
-> >> > > definitely need to be pinned in memory. For example,
-> >> > > io_req_normal_work_add() inserts the struct io_kiocb into a linked
-> >> > > list. Probably some sort of pinning is necessary for IoUringCmd.
+On Mon, Jul 21, 2025 at 05:52:41PM +0200, Benno Lossin wrote:
+> On Mon Jul 21, 2025 at 5:04 PM CEST, Caleb Sander Mateos wrote:
+> > On Mon, Jul 21, 2025 at 1:23 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> >> On Sun, Jul 20, 2025 at 03:10:28PM -0400, Caleb Sander Mateos wrote:
+> >> > On Sat, Jul 19, 2025 at 10:34 AM Sidong Yang <sidong.yang@furiosa.ai> wrote:
+> >> > > +    }
+> >> > > +
+> >> > > +    // Called by consumers of io_uring_cmd, if they originally returned -EIOCBQUEUED upon receiving the command
+> >> > > +    #[inline]
+> >> > > +    pub fn done(self, ret: isize, res2: u64, issue_flags: u32) {
 > >> >
-> >> > Understood, Normally the users wouldn't create IoUringCmd than use borrowed cmd
-> >> > in uring_cmd() callback. How about change to &mut self and also uring_cmd provides
-> >> > &mut IoUringCmd for arg.
-> >> 
-> >> I'm still a little worried about exposing &mut IoUringCmd without
-> >> pinning. It would allow swapping the fields of two IoUringCmd's (and
-> >> therefore struct io_uring_cmd's), for example. If a struct
-> >> io_uring_cmd belongs to a struct io_kiocb linked into task_list,
-> >> swapping it with another struct io_uring_cmd would result in
-> >> io_uring_cmd_work() being invoked on the wrong struct io_uring_cmd.
-> >> Maybe it would be okay if IoUringCmd had an invariant that the struct
-> >> io_uring_cmd is not on the task work list. But I would feel safer with
-> >> using Pin<&mut IoUringCmd>. I don't have much experience with Rust in
-> >> the kernel, though, so I would welcome other opinions.
+> >> > I don't think it's safe to move io_uring_cmd. io_uring_cmd_done(), for
+> >> > example, calls cmd_to_io_kiocb() to turn struct io_uring_cmd *ioucmd
+> >> > into struct io_kiocb *req via a pointer cast. And struct io_kiocb's
+> >> > definitely need to be pinned in memory. For example,
+> >> > io_req_normal_work_add() inserts the struct io_kiocb into a linked
+> >> > list. Probably some sort of pinning is necessary for IoUringCmd.
+> >>
+> >> Understood, Normally the users wouldn't create IoUringCmd than use borrowed cmd
+> >> in uring_cmd() callback. How about change to &mut self and also uring_cmd provides
+> >> &mut IoUringCmd for arg.
 > >
-> > I've thought about this deeply. You're right. exposing &mut without
-> > pinning make it unsafe.
+> > I'm still a little worried about exposing &mut IoUringCmd without
+> > pinning. It would allow swapping the fields of two IoUringCmd's (and
+> > therefore struct io_uring_cmd's), for example. If a struct
+> > io_uring_cmd belongs to a struct io_kiocb linked into task_list,
+> > swapping it with another struct io_uring_cmd would result in
+> > io_uring_cmd_work() being invoked on the wrong struct io_uring_cmd.
+> > Maybe it would be okay if IoUringCmd had an invariant that the struct
+> > io_uring_cmd is not on the task work list. But I would feel safer with
+> > using Pin<&mut IoUringCmd>. I don't have much experience with Rust in
+> > the kernel, though, so I would welcome other opinions.
 > 
-> > User also can make *mut and memmove to anywhere without unsafe block.
+> Pinning in the kernel isn't much different from userspace. From your
+> description of what normally happens with `struct io_uring_cmd`, it
+> definitely must be pinned.
 > 
-> How so? Using `*mut T` always needs unsafe.
+> From a quick glance at the patch series, I don't see a way to create a
+> `IoUringCmd` by-value, which also means that the `done` function won't
+> be callable (also the `fn pdu(&mut self)` function won't be callable,
+> since you only ever create a `&IoUringCmd`). I'm not sure if I'm missing
+> something, do you plan on further patches in the future?
 
-You're right. Please forget about this.
-> 
-> > It's safest to get NonNull from from_raw and it returns
-> > Pin<&mut IoUringCmd>.
-> 
-> I don't think you need `NonNull<T>`.
-
-NonNull<T> gurantees that it's not null. It could be also dangling but it's
-safer than *mut T. Could you tell me why I don't need it?
+Sure, this version is full of nonsence. v2 will be better than this.
 
 > 
-> > from_raw() name is weird. it should be from_nonnnull()? Also, done()
-> > would get Pin<&mut Self>.
-> 
-> That sounds reasonable.
-> 
-> Are you certain that it's an exclusive reference?
+> How (aside from `from_raw`) are `IoUringCmd` values going to be created
+> or exposed to the user?
 
-As far as I know, yes.
+Nomrally user would gets Pin<&mut IoUringCmd> from MiscDevice::uring_cmd().
 
 Thanks,
 Sidong
+
 > 
 > ---
 > Cheers,
