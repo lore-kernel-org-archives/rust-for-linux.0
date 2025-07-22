@@ -1,95 +1,122 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A34623ED75;
-	Tue, 22 Jul 2025 12:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFE02E3361;
+	Tue, 22 Jul 2025 12:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753188048; cv=none; b=dWPFXizgsOUpRobVjv7be4jGtGZ6f1sA5m0EOOxkieFlmOZp39J8AK4qVO0QJ7wt1m8WytBVxrsQ4VZ41rNM8dG8v+IWEZVG2+CrUuuxPeN3II7NBoLQz2671diaMWSKmu36c9/WEUP/SCXoixZrlaidhX+6lLx81skaFjZ/qyk=
+	t=1753188579; cv=none; b=dbai6WvVwm2TdDZwFRqxpNQaT1Bb8U1dQ05iooLBUn8u1z+ueQaT478g6pKUiQRz7RMyKdIkh4HBwFPPwGdUkR8U08vuoj+r1NMLexW3cAtG5EGSr0Ym//FdwxViV7FvOA1lSZRNnIV0T6cmZcIjHTN52p+C7X+mIo7DC2MQ2FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753188048; c=relaxed/simple;
-	bh=VDLTJ4JaqkTlFkHKAd/+Wvw5xDGECLMRzDwEIjS4Kio=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PqupCk3BEIrUp8yQObqi25YdqBIXymLIc0WIqN84CV9OiKuCNHEEbHTIOnAf9mkNDssAGvc0FhCJEObYJB4pDqzPqW+ulHYnIop+wA6dTS17fS40dFDIB0nVFkgwxg8Te6OAzx+NWlS8jv3TJa+aXE+VY3jP2B8PDVafOE1lXnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZEa61EJi; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753188579; c=relaxed/simple;
+	bh=oNwMiBXgoxAtXhsHS6DKVIyV2eUv8rV5AOhnRZAWJ2E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=R9/oWEtuC+O1J2GUwem6W9lV2d6liskg3RvH+czQTeeXi/6cvs6hPwfjXK3QFhqUcNYT763CNYLm3RECocAxCqgz7hxnKBP/IHxtxd26AIa6nqe0waTwHIjd4SLZ1/i7otDauXRB5bLn0SYOakSqVLNpFZPv5uZqdJgQR8ceKJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JtyPEni2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZEa61EJi"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-31305ee3281so1034836a91.0;
-        Tue, 22 Jul 2025 05:40:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753188045; x=1753792845; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VDLTJ4JaqkTlFkHKAd/+Wvw5xDGECLMRzDwEIjS4Kio=;
-        b=ZEa61EJibNR2LKsLUWv3/dWJjUGPe0fvp5JTJaynh2DayJUaKWbcMf5a3jIcvwuOU3
-         ZKTAyrk+HhuOPa/gpntXBujpDkJvwTgO3cJYdUrADuDSOXBc3wzRgrUD+BLZIIJcIVqU
-         RozuFYOqJy324CmF52EG59byj5Pp96c97KrnRv1o9RWzD/eAn9oZ8GuI/vUqRin1Atz4
-         kmrADUbnObRRJ/5FsXxs5Z1wi0rvgaJrAHhodK0c1N+qslLl01WPx2IfQkksLbzwrGWt
-         2RArC0VzG4ozj/xRtjAiXgzpM4jKUt5LQCl2NFzJ5+Fgbjl8EqH3pi4hN/Mm7hW6X8YY
-         paNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753188045; x=1753792845;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VDLTJ4JaqkTlFkHKAd/+Wvw5xDGECLMRzDwEIjS4Kio=;
-        b=tMzUIfh61L1i1DYr2LDsGpgawMpfWA+x99SxScYi20A2cxkmqtx681r1hAv9nG6wxB
-         xi9TqNOo929H65YrtMPaMV7tU7Ro3t6qhCiWH9ZsBbxX0aA4teaW9KDhOrlI9DrjFhkJ
-         PXfTOcbQC1HiCMnZeMwl6aDktm2IRDdYpH+UwNaiTzD+KwX4+8/Tuz+jpRahZtjHJa1s
-         e3YxiwUusDYVUO7QLs8d93euuoY9sKyXLttm1iCJtHMdPGgiyMJCaBiSK/aZymNtJsJ0
-         tyVWYvzqjKRD71MxJV/NbUhQsjI8ZbVa/T2s4T0eNnqtXU7YCBC/bnGssDNhiB+p40h2
-         JKOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUicHA5QaVKjkDt6MYoYtOsRhDiuIE1iK9RXxmNKhuZSIbnnfrL3qP3ndo56fjRqZ6viXlSFE+q0s4QVPk=@vger.kernel.org, AJvYcCV56KP1eF7DkAa+43zoHooFFo8CSRNABmfR0qxbLrZTUG+S4t2e1yQrjvqE46l65nJS/CppcGTy/vsyK+VuZcU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPTjZCXdbw95eovDxkNfEp+gtvSCmt3U308x6e/y7Fvm8PXXNn
-	Wuc0H24AxYZfNCfQ6LgpnyfbAobwqj/hjppkT/lRfkkMpbGa/ynrRSI5fPZzD4cyLhCRVHeBwDt
-	BA2zj17I+yGPwWM3+wh0786MuVLsdhYo=
-X-Gm-Gg: ASbGnct4OmkYQrFWDDeB0aPqQTB0o4fjwJXNKbYWYyjdnAn5runrmGIB4VRVFJGT8ld
-	rcIu1OjOuMnYMiYHv97whfha8wFbUgIsUKvNapsdnlQmCeUInOj89lmc7XHN3Zh+NooHziBtgFj
-	l6B/1TLODyyVxDJk4lx4ZY7XSIlQglj0do92L4NRHLYL80v89+1PljfJy45Sm58bBifjextUFe0
-	D2cm8pM
-X-Google-Smtp-Source: AGHT+IFACK7o+Z26WT8LiGucLmTQRBZo/S3zz480G4PUIbrlOr/9C+t/qoGO1pdI2v+q7bfQi5GsvUvzeiPIIdCG8YM=
-X-Received: by 2002:a17:90b:1348:b0:313:f9fc:7214 with SMTP id
- 98e67ed59e1d1-31c9e6ec8c7mr14499113a91.1.1753188045545; Tue, 22 Jul 2025
- 05:40:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JtyPEni2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FF1C4CEEB;
+	Tue, 22 Jul 2025 12:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753188578;
+	bh=oNwMiBXgoxAtXhsHS6DKVIyV2eUv8rV5AOhnRZAWJ2E=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=JtyPEni2pn3zIZBbMRXsPZRCZxDuIZH+7lkzf9SixKAErZdKqkxbHXKyC5BNPKQrQ
+	 jKcmHIlHtAAEvKsGQEtFbKESYHoFWSsZIbWVUGGknV0ZGcDJw1Mfjd6F/GwFd+ub6+
+	 4G0cpruII5Etz3YAjHMXvaGJGkxlWT2cbx1FLzpUC8J8vx5QQP9cpwHqxj1a+9eJ4k
+	 dArNEBEpCx3acyQ15vyMWH4FadVVBoekvdVSKnWlL+nbsNqOsd0g6LDLakRgPRLi/t
+	 McOzDVtORpMv7PMbqlwkgi+qmETPr/PeZzklNhZKsn+2mvf6WDybNFBg2UnDYDJlUt
+	 h3F9uOCTLxSBQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <36cdc798-524f-4910-8b77-d7b9fac08d77@oss.qualcomm.com>
-In-Reply-To: <36cdc798-524f-4910-8b77-d7b9fac08d77@oss.qualcomm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 22 Jul 2025 14:40:32 +0200
-X-Gm-Features: Ac12FXxgxIjMIqIU92u4doFQQB7axsxV3ThHjftGuE0hacocSfI_djdRHTfRcGw
-Message-ID: <CANiq72nvbKiWiMx6XwRyLUOWxZAEAQgTY9MdqtpjAG+kbk72Sg@mail.gmail.com>
-Subject: Re: make ARCH=arm64 rustdoc fails on a x86 host with SCS enabled
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 22 Jul 2025 14:49:33 +0200
+Message-Id: <DBILHBVA0NKJ.3R2QIVE9QIMM3@kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: Update PCI binding safety comments and add
+ inline compiler hint
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Alistair Popple"
+ <apopple@nvidia.com>, <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Benno Lossin" <lossin@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250710022415.923972-1-apopple@nvidia.com>
+ <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
+ <DB9BF6WK8KMH.1RQOOMYBL6UAO@kernel.org>
+ <DB9FUEJUOH3L.14CYPZ8YQT52E@kernel.org>
+ <DB9H6HEF9CKG.2SAPXM8F9KOO3@kernel.org>
+ <DB9IQAU4WPSP.XZL4ZDPT59KU@kernel.org>
+ <bwbern2t7k5fcj6zxze6bjpasu3t26n6dmfptlmhbhd7qmligs@3fgwifsw7qai>
+ <DBIHP8IP3OHA.8Y1S9ZV1Y1SZ@kernel.org>
+ <DBIJ3POBANNM.KSO1I5557PFV@kernel.org>
+ <CAH5fLghic7MZd-BO=Z-ostGLgWmBciQmZp9VjQpLGWskFK_gyQ@mail.gmail.com>
+ <DBIKM7U4TSB8.17MTNSR81W8F3@kernel.org>
+In-Reply-To: <DBIKM7U4TSB8.17MTNSR81W8F3@kernel.org>
 
-On Tue, Jul 22, 2025 at 12:53=E2=80=AFPM Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
+On Tue Jul 22, 2025 at 2:08 PM CEST, Benno Lossin wrote:
+> On Tue Jul 22, 2025 at 1:35 PM CEST, Alice Ryhl wrote:
+>> On Tue, Jul 22, 2025 at 12:57=E2=80=AFPM Benno Lossin <lossin@kernel.org=
+> wrote:
+>>>
+>>> On Tue Jul 22, 2025 at 11:51 AM CEST, Danilo Krummrich wrote:
+>>> > I think they're good, but we're pretty late in the cycle now. That sh=
+ould be
+>>> > fine though, we can probably take them through the nova tree, or in t=
+he worst
+>>> > case share a tag, if needed.
+>>> >
+>>> > Given that, it would probably be good to add the Guarantee section on=
+ as_raw(),
+>>> > as proposed by Benno, right away.
+>>> >
+>>> > @Benno: Any proposal on what this section should say?
+>>>
+>>> At a minimum I'd say "The returned pointer is valid.", but that doesn't
+>>> really say for what it's valid... AFAIK you're mostly using this pointe=
+r
+>>> to pass it to the C side, in that case, how about:
+>>>
+>>>     /// # Guarantees
+>>>     ///
+>>>     /// The returned pointer is valid for reads and writes from the C s=
+ide for as long as `self` exists.
+>>>
+>>> Maybe we need to change it a bit more, but let's just start with this.
+>>>
+>>> (If you're also using the pointer from Rust, then we need to make
+>>> changes)
+>>
+>> Honestly I think this is a bit over the top. I wouldn't bother adding
+>> a section like that to every single as_raw() method out there.
 >
-> Trying to build rustdoc as part of an arm64 kernel build on an x86
-> host results in a number of errors. Looks like we're ignoring the
-> -Zfixed-18 flag (arch/arm64/Makefile) at some point in the build
-> process, but I wasn't able to track it down it myself. Found on
-> next-20250722 (today).
+> Hmm. And then just assume that these kinds of functions return valid
+> pointers? I get that this is annoying to put on every function...
 >
-> Disabling SCS works around the issue, but that's less than ideal.
+> Another option would be to have a `Ptr<'a, T>` type that is a valid
+> pointer, but doesn't allow writing/reading safely (you need to justify
+> why it's not a data race). And for FFI there could be an `as_ptr`
+> function.
 
-Thanks, I can reproduce it -- I will send a patch.
+I don't understand where's the difference between the two. For FFI calls we=
+'d
+also have to justify it's not a data race, no?
 
-Cheers,
-Miguel
+The only guarantee we take as granted from as_raw() is that it returns a ra=
+w
+pointer to the wrapped FFI type in Self, i.e. it points to valid memory. An=
+y
+additional guarantees may come from the context where the pointer is used a=
+nd
+which specific fields it is used to access.
