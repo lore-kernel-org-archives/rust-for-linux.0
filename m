@@ -1,87 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CEA21516E;
-	Tue, 22 Jul 2025 18:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4759285C9B;
+	Tue, 22 Jul 2025 21:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753210329; cv=none; b=W23RLUK1e83qBo4Gx4+5Y61PF9iYF3sYz5gdzsNdplnr+5VDFuXKnsHnLbOiA9vA/OVn4Yy5DW5up1iA8I//H6lQuMui4R0USerfy0pvNv3Blq6BPfdFD1pmEKP8h5QJw1j8FWT/2QL19xfgT0emO+MZFoHGcVErlHdiWaUM8nE=
+	t=1753218879; cv=none; b=GIAMAuUtOKZm+ks7jxXPmj5LbL5rDhkZqBHveqm95n3C/nU3uP2Iwl/02iBfV3VXNV0RQeYW6qS7ilZZFfy7qVJN4qB6o9mMViz27t7/BcQvjvt3PGpF52MepQhul75yLI3ERDjGvOHGmjqBzXgqxMr6wAvWA3BB4USl93G3lfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753210329; c=relaxed/simple;
-	bh=ncQDcwLtFXrjxRWbHOnOf177mQ7JXQHPpytEH3Fg8+w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=PHLS1asyK6fO67z3BipEgptEMpJBlrMt76NlDm6EkVmYos9+FggxVSeRgE9uWGPTJZoYyARq/m1yrMCsin0BmWTmaz6Ws7D6BTF9skHE3jOOEdQ/ih0QOJAixDqI1nKe//kkATxG/0kQF4jpA5SvTgvn0QJ90U6l0FGJF89UAGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnK2HYU7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753218879; c=relaxed/simple;
+	bh=HGUIucR5t5JQvms2cHXkmLuVFaDyqstMTCKJVqdWDpQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R1N9mbwvUcQNGIO5JzUkNs2q3tkN0JG8uLw5cJ+8tRWIli7srThpTUMJ/rb6MaLIxwJF5E0QViqFWNDJL/pf8an11nm0uoH02r1w9/9TPsImR15rzOJsEOxbIau8fvxpT9HtNw+N6pVBIAOifmxNhdP9EyzEFU8ZmVxS/bMOGfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmZdmW5W; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnK2HYU7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DE6C4CEEB;
-	Tue, 22 Jul 2025 18:52:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmZdmW5W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450A5C4CEEB;
+	Tue, 22 Jul 2025 21:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753210329;
-	bh=ncQDcwLtFXrjxRWbHOnOf177mQ7JXQHPpytEH3Fg8+w=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=SnK2HYU7grJiwjXNxheqxrKGhKHtJyDSZQuKzilLPG1K3UhEf+w8fLQEseNI/5JbS
-	 34L4mfJmoVzaL4jVzgmNyYZLm3ezaf0LhL4VrJ+aawt2U2MI17ye/IQ9lYaOHib13q
-	 uH8sFnySvRLuKw5nWXWTbfJiBP70cw3CaQqQ7kZ4Wqt4E/98t8XZsWbiuoFhyJme3C
-	 am38NQU5nhSpRVnZgN0xDyZurUaQBB2mFjg0qAu81XQGq0vSaE5leZ2x0BdB1pI6En
-	 g4wNLBDwD6WasTx4CJdD9TpxBNcp5e+wePvv2Zf9LDQy5LsWTxOCIYUR/BEcFJN9xw
-	 oeb2DJfxTWSwA==
+	s=k20201202; t=1753218877;
+	bh=HGUIucR5t5JQvms2cHXkmLuVFaDyqstMTCKJVqdWDpQ=;
+	h=From:Subject:Date:To:Cc:From;
+	b=nmZdmW5WmahGkQt3j2B1sR2g6tGq0E6vvDk9pRM/Q+cp7UZax7i0mUCxIJ48X2HaU
+	 NQ553tHD5cDIvrcNkL36AROahnrUWcTpDCRBqBMZnu3t8/1vqp6iLjRznhfJTrzdQ5
+	 6R2FAqug3P7Cbxl2qtHNIjlulGM8eRjirr1gT9GGz3CB172T15+xhKbjybzJ+g6yBi
+	 7X/hk6IeR7qpZrm0ZV8ZCbGoMOsKAPFfEeigjNjpvk8eYWL3jzI8FbL0JLN69xFAPY
+	 PMnHbnyyxKHqlTbzZvtBgLMX2e6Mc2VFda4kOUTjR9aXJ4XvpCvP11XTJlisXGJ7en
+	 HVZeEoMluaoZg==
+From: Konrad Dybcio <konradybcio@kernel.org>
+Subject: [PATCH 0/2] Add initial interconnect (icc_path) Rust abstractions
+Date: Tue, 22 Jul 2025 23:14:24 +0200
+Message-Id: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Jul 2025 20:52:05 +0200
-Message-Id: <DBIT6WL2C5MG.2J7OBX6LCVYP7@kernel.org>
-Cc: "Caleb Sander Mateos" <csander@purestorage.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>, "Jens Axboe"
- <axboe@kernel.dk>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <io-uring@vger.kernel.org>
-Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Sidong Yang" <sidong.yang@furiosa.ai>
-X-Mailer: aerc 0.20.1
-References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
- <20250719143358.22363-3-sidong.yang@furiosa.ai>
- <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
- <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
- <CADUfDZrLKrf6evTXQ03cJ1W4kj0gxsF9Bopu+i2SjkBObXKnMA@mail.gmail.com>
- <aH5g-Q_hu6neI5em@sidongui-MacBookPro.local>
- <DBHVI5WDLCY3.33K0F1UAJSHPK@kernel.org>
- <aH-ga6WdOpkbRK3T@sidongui-MacBookPro.local>
-In-Reply-To: <aH-ga6WdOpkbRK3T@sidongui-MacBookPro.local>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADD/f2gC/x3MMQqAMAxA0atIZgM2UgSvIiKaRs2ipRERine3O
+ L7h/wwmScWgrzIkudX0PApcXQHv87EJaigGasg3HRFeZ1RGZZ6S4RoWdq1n380CJYlJVn3+3TC
+ +7wdporgnXgAAAA==
+X-Change-ID: 20250722-topic-icc_rs-fdbc135c57ae
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Georgi Djakov <djakov@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>, 
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-pm@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1753218871; l=1193;
+ i=konrad.dybcio@oss.qualcomm.com; s=20230215; h=from:subject:message-id;
+ bh=HGUIucR5t5JQvms2cHXkmLuVFaDyqstMTCKJVqdWDpQ=;
+ b=OS7NeT9D5IF2GW3lZPgFH09givZNER6ON3Rfe/YUqsmbunIigLKmi41odgQOn18UgIqDrNW9z
+ DrewSbeOBcoAsgH4bR1aYLPtpqRJSolNePjDejeweHUrxytQAqtAAVg
+X-Developer-Key: i=konrad.dybcio@oss.qualcomm.com; a=ed25519;
+ pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 
-On Tue Jul 22, 2025 at 4:30 PM CEST, Sidong Yang wrote:
-> On Mon, Jul 21, 2025 at 06:28:09PM +0200, Benno Lossin wrote:
->> On Mon Jul 21, 2025 at 5:47 PM CEST, Sidong Yang wrote:
->> > It's safest to get NonNull from from_raw and it returns
->> > Pin<&mut IoUringCmd>.
->>=20
->> I don't think you need `NonNull<T>`.
->
-> NonNull<T> gurantees that it's not null. It could be also dangling but it=
-'s
-> safer than *mut T. Could you tell me why I don't need it?
+icc_path is in essence very similar to `struct clk`, so the newly
+propsed bindings are understandably based on the corresponding
+common_clk module.
+This is the interconnect consumer part, with the corresponding ICC
+provider changes coming in some near future.
 
-Raw pointers have better ergonomics and if you're just passing it back
-into ffi, I don't see the point of using `NonNull`...
+I attached a sample driver making use of these, to ease any testing
+or CI work (as the title says, please don't merge it though).
 
->> > from_raw() name is weird. it should be from_nonnnull()? Also, done()
->> > would get Pin<&mut Self>.
->>=20
->> That sounds reasonable.
->>=20
->> Are you certain that it's an exclusive reference?
->
-> As far as I know, yes.
+First contribution to kernel-rs, open to any and all suggestions.
 
-So the `IoUringCmd` is not refcounted and it is also not owned by the
-`done` callee?
-
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 ---
-Cheers,
-Benno
+Konrad Dybcio (2):
+      rust: Add initial interconnect framework abstractions
+      [DNM] interconnect: Add a test Rust consumer driver
+
+ MAINTAINERS                     |   1 +
+ drivers/interconnect/Makefile   |   1 +
+ drivers/interconnect/test.rs    |  47 +++++++++
+ rust/bindings/bindings_helper.h |   2 +
+ rust/kernel/icc.rs              | 225 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   1 +
+ 6 files changed, 277 insertions(+)
+---
+base-commit: 05adbee3ad528100ab0285c15c91100e19e10138
+change-id: 20250722-topic-icc_rs-fdbc135c57ae
+
+Best regards,
+-- 
+Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+
