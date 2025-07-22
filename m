@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7F028B4E7;
-	Tue, 22 Jul 2025 10:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D47230268
+	for <rust-for-linux@vger.kernel.org>; Tue, 22 Jul 2025 10:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753181370; cv=none; b=XXZ/9Z2zGBLaBEQU+YRXhnzOb04ebST3lDyslQc+pLU0vw4i2gPLinx6E+n0/Av9xD2Ff9xFkfvmfy8nGH35vXKOyvsac66iRRpqLxbq4iH77h+oLgJQSIci6QeaMzpfcTDCNS2FtE97j8p7U1YSmhbk93107dms4jhe5WGuWvo=
+	t=1753181503; cv=none; b=PL2UcHwyV1PxZclKugJpZGwwGOSpNSpEajzn3fw/tGd5T6zrxjegKiplMpevGUAyWqZYHSCPgTFheCcjMB8/nfNX1hPW1nT2U8k62NTOh+wyaIX8V9ExuKulZakzs6HlM1igiRvuI/RwRmUaxE4FYl3OFhR9NyRWe5zjj+Rl/vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753181370; c=relaxed/simple;
-	bh=T9qJH4S/R7Y9U7L1zcb7GfuX4Qq01/z/XzvsNVmzdUI=;
+	s=arc-20240116; t=1753181503; c=relaxed/simple;
+	bh=Hyc1trAOCpuoyMZSWHfzvSgwJSHoPY92F+XW5u9s1ww=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=GBbBUbWmIv2LApG7JBzN4RR3AYBjvYa53pVSLS3B8cIvgBSw0td42OM2xuT46FKuFM7NJIIjB9QfAyDNWUbZ4Nvx5X/dhdfDb7PsNWJZ69g2JRjWrvetoAljNMdF6vss/f3sUcRytMTe581R5WvfruWAXCby3eota3qqy1bvkU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gG92PNxZ; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=sos6KIoyqdDTtMcAnpzYbgyIjUHoSiekfnM58NuqN/AvyMsXcxXjm3rwmMO8AuWN1ICLanr8DyYD8+eujz/mbyBaNkofEYsXvvqNhlb+lczJp13laZwAWefAT0/7vPJNKZlOCO4k2RqgURZq1S+GaBrUOCFhr5tqDViS5iVY5yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dno6Kede; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gG92PNxZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA70C4CEEB;
-	Tue, 22 Jul 2025 10:49:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dno6Kede"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402C3C4CEEB;
+	Tue, 22 Jul 2025 10:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753181369;
-	bh=T9qJH4S/R7Y9U7L1zcb7GfuX4Qq01/z/XzvsNVmzdUI=;
+	s=k20201202; t=1753181502;
+	bh=Hyc1trAOCpuoyMZSWHfzvSgwJSHoPY92F+XW5u9s1ww=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=gG92PNxZ+3Q0VkLVNW2JOOKzinCjpvki4rDXhoOcW2qnYXCfj4dx5GqZZdhvbnirO
-	 Ju8tEV3WxLx3qlIdYs42rZrqRUKUUDZjtT2GcEUs8uy6JCfCWGh59Znq2mcT70kJnP
-	 RpSnA8OYkfXPFlcJCvb84MlFFlvbQs4ZXG8vs9cjT8grubEmsgfefxZA6p9J0F79Rd
-	 URIZQ03BFlJfv3UtINpoqeg2FLa7mqsOTDvaO1XmikN9QqIUoT4IlU3DEZYGyVgTd/
-	 4GJjp2XhIP/I7q4vm35QCson3HQTiiYjI4RghTGVvRVyLKA0ByOvjQVxpvMRAEAhGA
-	 BypGGT8BexvQA==
+	b=dno6Kede86Icrz9zr8C1hy/1fDfdFRd2MeGra15wBAnphYAKEYeip890tJ3DbdJcH
+	 i6Tdvh06pjeFXi7VLScrWu8Szv3zCPuoMl1Zs0qnt1JaYahJF9RKfrnQTkhlyUDz+i
+	 0ruB3CJ4wJpoQRSpbuOEdcb6x2RDNKNPnsQIEHifUn9jZi5qPoW7w92R0bDrR5zjs3
+	 8ovM35G8TScjtb8Bmmutn8TqnHEjUMZVPrNVwblT3JWHjG2x4I5RjC+kjjvW2g0Qzl
+	 MUr8FyjWFj290utjPtvd+L4+CeX6U48CxkWMIe/Af41W79ErZTeews4+952NOAviFJ
+	 GYy3pucMx5uOA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,102 +34,129 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Jul 2025 12:49:24 +0200
-Message-Id: <DBIIXC694S6P.18BOBCI4LZ4HA@kernel.org>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, <rust-for-linux@vger.kernel.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] rust: Update PCI binding safety comments and add
- inline compiler hint
+Date: Tue, 22 Jul 2025 12:51:39 +0200
+Message-Id: <DBIIZ28TA8SD.XY1W0S6G280F@kernel.org>
+Cc: <aliceryhl@google.com>, <dakr@kernel.org>, <ojeda@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
+ <linux-kernel-mentees@lists.linuxfoundation.org>,
+ <~lkcamp/patches@lists.sr.ht>
+Subject: Re: [PATCH v7 3/3] rust: revocable: Document RevocableGuard
+ invariants/safety and refine Deref safety
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Alistair Popple" <apopple@nvidia.com>
+To: "Marcelo Moreira" <marcelomoreira1905@gmail.com>
 X-Mailer: aerc 0.20.1
-References: <20250710022415.923972-1-apopple@nvidia.com>
- <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
- <DB9BF6WK8KMH.1RQOOMYBL6UAO@kernel.org>
- <DB9FUEJUOH3L.14CYPZ8YQT52E@kernel.org>
- <DB9H6HEF9CKG.2SAPXM8F9KOO3@kernel.org>
- <DB9IQAU4WPSP.XZL4ZDPT59KU@kernel.org>
- <bwbern2t7k5fcj6zxze6bjpasu3t26n6dmfptlmhbhd7qmligs@3fgwifsw7qai>
-In-Reply-To: <bwbern2t7k5fcj6zxze6bjpasu3t26n6dmfptlmhbhd7qmligs@3fgwifsw7qai>
+References: <20250721010258.70567-1-marcelomoreira1905@gmail.com>
+ <20250721010258.70567-4-marcelomoreira1905@gmail.com>
+ <DBHSSQS2IALW.2OEWVKX6PY9LZ@kernel.org>
+ <CAPZ3m_h4rvV8gfBi0ZQN=569FhB1+DsF2A6XkkLuWAFUEuKPDQ@mail.gmail.com>
+In-Reply-To: <CAPZ3m_h4rvV8gfBi0ZQN=569FhB1+DsF2A6XkkLuWAFUEuKPDQ@mail.gmail.com>
 
-On Tue Jul 22, 2025 at 7:17 AM CEST, Alistair Popple wrote:
-> On Fri, Jul 11, 2025 at 10:46:13PM +0200, Benno Lossin wrote:
->> On Fri Jul 11, 2025 at 9:33 PM CEST, Danilo Krummrich wrote:
->> > On Fri Jul 11, 2025 at 8:30 PM CEST, Benno Lossin wrote:
->> >> On Fri Jul 11, 2025 at 5:02 PM CEST, Danilo Krummrich wrote:
->> >>> On Thu Jul 10, 2025 at 10:01 AM CEST, Benno Lossin wrote:
->> >>>> On Thu Jul 10, 2025 at 4:24 AM CEST, Alistair Popple wrote:
->> >>>>> diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
->> >>>>> index 8435f8132e38..5c35a66a5251 100644
->> >>>>> --- a/rust/kernel/pci.rs
->> >>>>> +++ b/rust/kernel/pci.rs
->> >>>>> @@ -371,14 +371,18 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
->> >>>>> =20
->> >>>>>  impl Device {
->> >>>>>      /// Returns the PCI vendor ID.
->> >>>>> +    #[inline]
->> >>>>>      pub fn vendor_id(&self) -> u16 {
->> >>>>> -        // SAFETY: `self.as_raw` is a valid pointer to a `struct =
-pci_dev`.
->> >>>>> +        // SAFETY: by its type invariant `self.as_raw` is always =
-a valid pointer to a
->> >>>>
->> >>>> s/by its type invariant/by the type invariants of `Self`,/
->> >>>> s/always//
->> >>>>
->> >>>> Also, which invariant does this refer to? The only one that I can s=
-ee
->> >>>> is:
->> >>>>
->> >>>>     /// A [`Device`] instance represents a valid `struct device` cr=
-eated by the C portion of the kernel.
->> >>>>
->> >>>> And this doesn't say anything about the validity of `self.as_raw()`=
-...
->> >>>
->> >>> Hm...why not? If an instance of Self always represents a valid struc=
-t pci_dev,
->> >>> then consequently self.as_raw() can only be a valid pointer to a str=
-uct pci_dev,
->> >>> no?
->> >>
->> >> While it's true, you need to look into the implementation of `as_raw`=
-.
->> >> It could very well return a null pointer...
->> >>
->> >> This is where we can use a `Guarantee` on that function. But since it=
-'s
->> >> not shorter than `.0.get()`, I would just remove it.
+On Tue Jul 22, 2025 at 1:01 AM CEST, Marcelo Moreira wrote:
+> Em seg., 21 de jul. de 2025 =C3=A0s 11:21, Benno Lossin <lossin@kernel.or=
+g> escreveu:
+>> On Mon Jul 21, 2025 at 3:01 AM CEST, Marcelo Moreira wrote:
+>> > Refinements include:
+>> > - `RevocableGuard`'s invariants are updated to precisely state that
+>> >   `data_ref` is valid as long as the RCU read-side lock is held.
+>> > - The `RevocableGuard::new` constructor is made `unsafe`, explicitly
+>> >   requiring callers to guarantee the validity of the raw pointer and
+>> >   RCU read-side lock lifetime.
+>> > - A new `SAFETY` comment is added to `Revocable::try_access` to
+>> >   justify the `unsafe` call to `RevocableGuard::new`, detailing how
+>> >   `Self`'s type invariants and the active RCU read-side lock ensure da=
+ta
+>> >   validity for reads.
+>> > - The `Deref` implementation's `SAFETY` comment for `RevocableGuard`
+>> >   is refined.
 >> >
->> > We have 15 to 20 as_raw() methods of this kind in the tree. If this re=
-ally needs
->> > a `Guarantee` to be clean, we should probably fix it up in a treewide =
-change.
+>> > Signed-off-by: Marcelo Moreira <marcelomoreira1905@gmail.com>
+>> > ---
+>> >  rust/kernel/revocable.rs | 25 ++++++++++++++++++-------
+>> >  1 file changed, 18 insertions(+), 7 deletions(-)
 >> >
->> > as_raw() is a common pattern and everyone knows what it does, `.0.get(=
-)` seems
->> > much less obvious.
+>> > diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+>> > index 6d8e9237dbdf..0048de23ab44 100644
+>> > --- a/rust/kernel/revocable.rs
+>> > +++ b/rust/kernel/revocable.rs
+>> > @@ -106,9 +106,12 @@ pub fn new(data: impl PinInit<T>) -> impl PinInit=
+<Self> {
+>> >      pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
+>> >          let guard =3D rcu::read_lock();
+>> >          if self.is_available.load(Ordering::Relaxed) {
+>> > -            // Since `self.is_available` is true, data is initialised=
+ and has to remain valid
+>> > -            // because the RCU read side lock prevents it from being =
+dropped.
+>> > -            Some(RevocableGuard::new(self.data.get(), guard))
+>> > +            // SAFETY:
+>> > +            // - `self.data` is valid for reads because of `Self`'s t=
+ype invariants:
+>> > +            //   `self.is_available` is true.
+>> > +            // - The RCU read-side lock is active via `guard`, preven=
+ting `self.data`
+>> > +            //   from being dropped and ensuring its validity for the=
+ guard's lifetime.
+>>
+>> This shouldn't be needed.
 >
-> Coming from a C kernel programming background I agree `.as_raw()` is more
-> obvious than `.0.get()`.
+> hmm, about what exactly?
+>
+> Are you suggesting to:
+> 1. Simplify the content of the `SAFETY`, is it too verbose?
 
-Makes sense, then I wouldn't recommend changing it.
+It's not too verbose. The requirement of holding the RCU read-side lock
+is not a *safety requirement*. It's already guaranteed by the existence
+of the `rcu::Guard` instance, so we don't need to concern ourselves with
+it in the safety requirements.
 
-> However now I'm confused ... what if anything needs changing to get
-> these two small patches merged?
+Essentially you're just stating a tautology in the safety comment like
+saying "2 + 2 =3D 4".
 
-I'd like to see `as_raw` get a `Guarantee` section, but that is
-independent from this patch series.
+> 2. Or are you suggesting that the use of bullet points within the
+> `SAFETY` is not preferred here?
+
+No that is always preferred.
+
+>> > +            Some(unsafe { RevocableGuard::new(self.data.get(), guard)=
+ })
+>> >          } else {
+>> >              None
+>> >          }
+>> > @@ -233,7 +236,7 @@ fn drop(self: Pin<&mut Self>) {
+>> >  ///
+>> >  /// # Invariants
+>> >  ///
+>> > -/// The RCU read-side lock is held while the guard is alive.
+>> > +/// - `data_ref` is a valid pointer for as long as the RCU read-side =
+lock is held.
+>> >  pub struct RevocableGuard<'a, T> {
+>> >      // This can't use the `&'a T` type because references that appear=
+ in function arguments must
+>> >      // not become dangling during the execution of the function, whic=
+h can happen if the
+>> > @@ -245,7 +248,15 @@ pub struct RevocableGuard<'a, T> {
+>> >  }
+>> >
+>> >  impl<T> RevocableGuard<'_, T> {
+>> > -    fn new(data_ref: *const T, rcu_guard: rcu::Guard) -> Self {
+>> > +    /// Creates a new `RevocableGuard`.
+>> > +    ///
+>> > +    /// # Safety
+>> > +    ///
+>> > +    /// Callers must ensure that `data_ref` is a valid pointer to a `=
+T` object,
+>> > +    /// and that it remains valid for as long as the returned `Revoca=
+bleGuard` is alive.
+>> > +    /// The RCU read-side lock must be held for the duration of the g=
+uard's lifetime,
+>> > +    /// as indicated by `rcu_guard`.
+>>
+>> This last part shouldn't be needed, as the `rcu::Guard` already
+>> guarantees it.
+>
+> Ok, I can remove just that part and keep the rest.
+
+Thanks!
 
 ---
 Cheers,
