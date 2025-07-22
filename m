@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE084199237;
-	Tue, 22 Jul 2025 12:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA08528A1D5;
+	Tue, 22 Jul 2025 12:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753185810; cv=none; b=ZDyD1UXrKtVQsKxELPmZs0TVR4pYTZ0fKLM1Fz134CJcFHX8TxVc2uaPymN4PfKHQncLVt/Vd4ZcgaN2+fqPhjFxeVfygiHv2fD/aWSGC5IJRbBaE+mqyElJwYVp8qjrswlB1zwm4kUj0XzDUkdKZ8s5ElvlAV7H9sbo3mfY04M=
+	t=1753186140; cv=none; b=vGqpjUkXwCvePqcPV+Ge2O7+genlAFts4xD3SWotQNjt9GZKqDMwVdLVZ2iSLJpD0/AuRe6M6A9OTQKoAB0T5InblGGPoidL00yPsqb+6YYbbFCDGPyoDAcyCByizZmOvHzDDXC6Gmti0GX+jUeEKokOrZkmSULRmIFXf3Ys1zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753185810; c=relaxed/simple;
-	bh=TXAjYkdUmXyPxBwsH1cflQGs0k1rSPQ8+883CPwRwOo=;
+	s=arc-20240116; t=1753186140; c=relaxed/simple;
+	bh=9tnk65GQHOuj2Pt0uMyPZaXg1fEIkfzRLOs6t+AmPis=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=h/aM44HVJHpwCdKvPGrh/C8cHLLsMBOiyj+CJC8VK4b2Ci+pxarl2rheNpKS6vXX0fJ/q2JhLhAe1rt2qmZNBbS15r7KBP26fBtDCZUVP1vqxCbhUd2KP7PJbwUr7PZEySOof0TYonEfilJO/QtzLZEqI8H+rQFc3QsgcoF+780=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jt5ETB0w; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Jy3lOXzzlEnozqfG2iqGAAvwbZjpjc+bdJCD5jKPBAhoo5S7cOZCpJLT5Fh2JeynmRxb7+4DM6KoRJl+axbiZcMttZzx6MMZ6W1WxuFXlGbr4Nocno5wFpeO0b0foUnYOVA8gzKrx6cwWXSZb+F/JVe+LuG72hjvFjJIGleQ218=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgh1FQ8v; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jt5ETB0w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DA4C4CEEB;
-	Tue, 22 Jul 2025 12:03:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgh1FQ8v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6439C4CEEB;
+	Tue, 22 Jul 2025 12:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753185810;
-	bh=TXAjYkdUmXyPxBwsH1cflQGs0k1rSPQ8+883CPwRwOo=;
+	s=k20201202; t=1753186140;
+	bh=9tnk65GQHOuj2Pt0uMyPZaXg1fEIkfzRLOs6t+AmPis=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Jt5ETB0wHQro9lz4ZFiHkk6tvmI/w4jvZLH/tR+MyNg4aU9LTRQ03V20uw0NPCK7r
-	 7ERTgdunLqC5ZSyOKRjNL9DKDgKxWzsqjeflPjujp9f/N97i1u04D/F/hbe7Rs6vqq
-	 YBuNTICWJtn1abp1UPA7v2TJWTGhXEdcH5ea+z6PlJ6qCjn2gi5k1iA6+JAyHuolvN
-	 5tXw6rXWZwVWGrjtAWUnAeKW2N5HJRmu+JG7kh9/8jRMSWxuiRmiXbYQqO/dD6DEob
-	 e1g9Q+srhAVSFSNLIq4lCQn9jYWO5ulSOdViZK11k9sC44ZI1YabAvm/h1IzsoxGGC
-	 8KYTgkfBFhJ3g==
+	b=tgh1FQ8vA1ApjRpCVZoxwWfdsxjI65drnmgyfCudJMagNtFQiuyKiPPzx0V6+D2eA
+	 ELWFlOlAJRPfiaf8Yk5ZbcSDY8Ea/W5OQYqTm9vc/MN7P6Lx31Suw9+PbFcwhwxDyj
+	 XkkQC4A6/WkcRpCHDKWrfEVxjYTNYp+UX+HZPaJu7dm2QXDWXi86C7P1n/48fWRzf8
+	 JgGnHqqOl1fhVjpgsaEF3y6A8TBoulnI8kcImHn1GUf1zpnUSILEx6ychMLLlJtsdA
+	 r0Zcla4jJPEq+Zy+6NwIo6sfFT5/vnMyuyDeT+4l56928DE5ZJOUPqdMwACmH+j3Uh
+	 fnML9SCe9s1YA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,77 +34,78 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Jul 2025 14:03:25 +0200
-Message-Id: <DBIKI0KDP1J8.3MOHF5G3A6JEH@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+Date: Tue, 22 Jul 2025 14:08:55 +0200
+Message-Id: <DBIKM7U4TSB8.17MTNSR81W8F3@kernel.org>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Alistair Popple"
+ <apopple@nvidia.com>, <rust-for-linux@vger.kernel.org>, "Bjorn Helgaas"
+ <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
+ <kwilczynski@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
- <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>, "Lyude Paul"
- <lyude@redhat.com>, "Mitchell Levy" <levymitchell0@gmail.com>, "Wedson
- Almeida Filho" <wedsonaf@gmail.com>, <rust-for-linux@vger.kernel.org>,
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "John Hubbard" <jhubbard@nvidia.com>, "Alexandre Courbot"
+ <acourbot@nvidia.com>, <linux-pci@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust: sync: fix safety comment for `static_lock_class`
+Subject: Re: [PATCH v2 1/2] rust: Update PCI binding safety comments and add
+ inline compiler hint
 From: "Benno Lossin" <lossin@kernel.org>
 To: "Alice Ryhl" <aliceryhl@google.com>
 X-Mailer: aerc 0.20.1
-References: <20250520231714.323931-1-lossin@kernel.org>
- <DBIJLR7XNI6U.21PMPODHE83DZ@kernel.org>
- <CAH5fLgh9aEF5V9rNq2a8utS=NxSU8rdxpKsNbsuPoMpDfHN0fg@mail.gmail.com>
-In-Reply-To: <CAH5fLgh9aEF5V9rNq2a8utS=NxSU8rdxpKsNbsuPoMpDfHN0fg@mail.gmail.com>
+References: <20250710022415.923972-1-apopple@nvidia.com>
+ <DB87TX9Y5018.N1WDM8XRN74K@kernel.org>
+ <DB9BF6WK8KMH.1RQOOMYBL6UAO@kernel.org>
+ <DB9FUEJUOH3L.14CYPZ8YQT52E@kernel.org>
+ <DB9H6HEF9CKG.2SAPXM8F9KOO3@kernel.org>
+ <DB9IQAU4WPSP.XZL4ZDPT59KU@kernel.org>
+ <bwbern2t7k5fcj6zxze6bjpasu3t26n6dmfptlmhbhd7qmligs@3fgwifsw7qai>
+ <DBIHP8IP3OHA.8Y1S9ZV1Y1SZ@kernel.org>
+ <DBIJ3POBANNM.KSO1I5557PFV@kernel.org>
+ <CAH5fLghic7MZd-BO=Z-ostGLgWmBciQmZp9VjQpLGWskFK_gyQ@mail.gmail.com>
+In-Reply-To: <CAH5fLghic7MZd-BO=Z-ostGLgWmBciQmZp9VjQpLGWskFK_gyQ@mail.gmail.com>
 
-On Tue Jul 22, 2025 at 1:34 PM CEST, Alice Ryhl wrote:
-> On Tue, Jul 22, 2025 at 1:21=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
-wrote:
->> On Wed May 21, 2025 at 1:17 AM CEST, Benno Lossin wrote:
->> > The safety comment mentions lockdep -- which from a Rust perspective
->> > isn't important -- and doesn't mention the real reason for why it's
->> > sound to create `LockClassKey` as uninitialized memory.
->> >
->> > Signed-off-by: Benno Lossin <lossin@kernel.org>
->> > ---
->> >
->> > I don't think we need to backport this.
->> >
->> > ---
->> >  rust/kernel/sync.rs | 7 +++++--
->> >  1 file changed, 5 insertions(+), 2 deletions(-)
->> >
->> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
->> > index 36a719015583..a10c812d8777 100644
->> > --- a/rust/kernel/sync.rs
->> > +++ b/rust/kernel/sync.rs
->> > @@ -93,8 +93,11 @@ fn drop(self: Pin<&mut Self>) {
->> >  macro_rules! static_lock_class {
->> >      () =3D> {{
->> >          static CLASS: $crate::sync::LockClassKey =3D
->> > -            // SAFETY: lockdep expects uninitialized memory when it's=
- handed a statically allocated
->> > -            // lock_class_key
->> > +            // Lockdep expects uninitialized memory when it's handed =
-a statically allocated `struct
->> > +            // lock_class_key`.
->> > +            //
->> > +            // SAFETY: `LockClassKey` transparently wraps `Opaque` wh=
-ich permits uninitialized
->> > +            // memory.
->> >              unsafe { ::core::mem::MaybeUninit::uninit().assume_init()=
- };
+On Tue Jul 22, 2025 at 1:35 PM CEST, Alice Ryhl wrote:
+> On Tue, Jul 22, 2025 at 12:57=E2=80=AFPM Benno Lossin <lossin@kernel.org>=
+ wrote:
 >>
->> Looking at this patch with fresh eyes (thanks for the bump, Alice :) I
->> think we should rather have a public unsafe function on `LockClassKey`
->> that creates an uninitialized lock class key. I'd like to avoid the
->> `MaybeUninit::uninit().assume_init()` pattern, as it might confuse
->> people & it looks very wrong.
+>> On Tue Jul 22, 2025 at 11:51 AM CEST, Danilo Krummrich wrote:
+>> > I think they're good, but we're pretty late in the cycle now. That sho=
+uld be
+>> > fine though, we can probably take them through the nova tree, or in th=
+e worst
+>> > case share a tag, if needed.
+>> >
+>> > Given that, it would probably be good to add the Guarantee section on =
+as_raw(),
+>> > as proposed by Benno, right away.
+>> >
+>> > @Benno: Any proposal on what this section should say?
 >>
->> We can take this patch, as it definitely is an improvement, but I think
->> we should also just fix this properly. Any thoughts?
+>> At a minimum I'd say "The returned pointer is valid.", but that doesn't
+>> really say for what it's valid... AFAIK you're mostly using this pointer
+>> to pass it to the C side, in that case, how about:
+>>
+>>     /// # Guarantees
+>>     ///
+>>     /// The returned pointer is valid for reads and writes from the C si=
+de for as long as `self` exists.
+>>
+>> Maybe we need to change it a bit more, but let's just start with this.
+>>
+>> (If you're also using the pointer from Rust, then we need to make
+>> changes)
 >
-> Could that constructor be used in non-static cases?
+> Honestly I think this is a bit over the top. I wouldn't bother adding
+> a section like that to every single as_raw() method out there.
 
-I don't know lockdep, so maybe yes? Or do you mean that it could be
-abused?
+Hmm. And then just assume that these kinds of functions return valid
+pointers? I get that this is annoying to put on every function...
+
+Another option would be to have a `Ptr<'a, T>` type that is a valid
+pointer, but doesn't allow writing/reading safely (you need to justify
+why it's not a data race). And for FFI there could be an `as_ptr`
+function.
 
 ---
 Cheers,
