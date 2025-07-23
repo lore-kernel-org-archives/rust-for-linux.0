@@ -1,109 +1,146 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF5F28A706;
-	Wed, 23 Jul 2025 10:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE19528A73F
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 10:25:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753266176; cv=none; b=E8bbJ831xr2NaDGXWHMFkWPSZOtKPpQULl479nv2sQ4s+BoE5R1+5oglhOncwukUS5+G47GkQubNfI0Wi3D6puJaN4pyw0ibQy6Oriqn5Zl2GuKE4QNfGT4Ety/BKDiEgmDmpJ1FQwX67nqqHqHOdWLi5cFSu8Zv4PB5xQT1rBY=
+	t=1753266354; cv=none; b=oKPo4YHlEITC+3xSJnXn+33AMFDsygzt7pbu1QjPk/H5aq6+toAEd6/msMPmOs5dE11kRFiSDK2mArcRfMJoqrXbJm68rSNRi23UAKJD6/aNuc6swRJ9e6I3AR514/Wi8ZMB33rQvX3X5gzlAjQawOpOHUZuOXSjOvNpj/WH21Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753266176; c=relaxed/simple;
-	bh=Bfx76TzIghN5u+qtfFanMhMreHrl+v998hIMT1LtYtY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LnsuW76xrbLEeeyKarEeYd154tUoXNtzGsPnZWvASzWN5rK/Jq7mI65aWsD0jwWhqvdFAu05IjoWaUEYdu1QlimfWp9/zDEf5FPiwlXj/DGlIcqu3MOI6cebpAWAhh1ZreAa+3gPEh+cEZ+o966JHJ5zghkTQXWMQqMPHnSQHDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SnUunGsB; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753266354; c=relaxed/simple;
+	bh=VVjb6DUrAuickZ0G9yw7njNk5OG9V6OqIV0LVoFQeRM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oRCJmNvCi0kA1o0lsf5DuRfMi03CB5GR2y8KSZ/NV+yPWElnv60N9e491XtS5BdkodyFXPaQt+GoxhJEG2DWtUaq+CISg3FTkFJMSn5ij7HjI+Q2E30jO6MmhiZ5EGD67VHGSiYxYI6RNaFPy+YuOStKo2SYbQO1w7CTLV4iwIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=0/GAdPYh; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SnUunGsB"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-312efc384fcso304148a91.3;
-        Wed, 23 Jul 2025 03:22:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="0/GAdPYh"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-ae0dffaa8b2so1316517266b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 03:25:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753266174; x=1753870974; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bfx76TzIghN5u+qtfFanMhMreHrl+v998hIMT1LtYtY=;
-        b=SnUunGsBSQ3xVZtDwOq7DhkgWnOcE2yEdNovOQsx5uDKQSNFBBPSzDn/aLyxV8qUwh
-         Bjem6d2NA925+sD5FIzk49URh1iQynIcuvMOQvO0UivWYlO4VG3P6ljS3Mp369AWCKI9
-         zRjxZCXKh9iXUuDJIszS7FaiMW8nRf5BxHSraf6BMXdC8wNUVmnriyzPgt0IMTA3KM2d
-         OCuH0Vdj44UUK0Wt4ECLRiuZFW83i1JO/hA1mmmze9RHSSP0UsTqRuI0OcKf3TzZIzt8
-         Tflp9E2OSPf3yPcoA93PHSHgtXYcILpGprMckPBZrXz0JM5gr9UYgzf3fLqOgu7nihRS
-         5blg==
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1753266351; x=1753871151; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ga6K4SG1euhWTtbAS3BVYAi++JrAr1J3Z67aIAYOeBw=;
+        b=0/GAdPYhOG1SFsyVKTbvnlBQBb/W0Tynp3T3qsI4s0sruMzqXhLWqBNQvuM6Tcdi6t
+         YkR7vetJ4r37Dfme6dfgVZ5GEJVX3G3v0GxGxuajNlu1AaT9t0q60piJsN0eJvp0u9O2
+         1igUgPmcH7taPEmM/4qjnmyXzHakKYr6d3qCfQ7n2s4/Xu9aCwPpL1NUsp8RDlvCR+5g
+         FoQ61xcJC1PX6ShY2SUJDc316IcVj2mTKR6PeekoIT370LHZbigji0UAq4kEl6XS+ZL6
+         P/KDuhuwTAkGG/PBeO9I/S4RgRujDXjiXuAVLhDp86hXlJrr5HwGA7J6I6wtMCX2P3j4
+         Yn2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753266174; x=1753870974;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bfx76TzIghN5u+qtfFanMhMreHrl+v998hIMT1LtYtY=;
-        b=uEuRY1wFWujKuHtgAeoRfAOMdQHxAs/Och6q1vrRmPqyYi0Cu4GEEs4dyqbD3N//7i
-         6INiLTGrzd/kL12RHsQCzhatb7luSNk238dALjDNAayp6xzY4LIaa08utyiL5+5t54Qg
-         9nFmBwOez/uc+LXzJ2FFNsZqoFtQb4t0uzG9cV22oZugCwOrnoU3XuzT0tdL8czGYRHh
-         ZLoej795qS5s44zHnZHbd0i7GWx+nVN0To5ToFhCpLjqAxJQKTkU+z//k8WgdUC4fVC2
-         m8OApwD7IeqDbRYhv0yoEuKJDC43UUzMKBYNDgTufMgvEsTzmGG5D2kaXPSCYNhCGbCH
-         gwZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOtcbqiqZzawW/zY6ShJ6rPSU/xN7apBKKTDIeTe431Br2RB04fiL8GdQKgSBVhZTb7KWM/4ftxqR3SL+GwLw=@vger.kernel.org, AJvYcCW61yiD6jKI/sfdad9tVlhMXbb76JyfFAw9MQPtmsc7DAxJ9GAmSz3SiDm2z+SGaXTRzN5IankPHDU=@vger.kernel.org, AJvYcCWAZinCLX0lahdFfTnfy/xyCXVSbOmaGGirYfzhrtAEnxawqqkRw+a6w+lML9mqySiwjfNac3yVjRMVxf4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxztQb0yxctmPIQzPJW/Lm8Ss3exQQ1M2/TKrUNl87PIBDSbw48
-	8bSoqc1z8SImfbN+BjPQ5zTHkXrPNr3mhMiPUgB6oBh8c+v3QSwsv9ZCgNzYH6LhPeQxxDEV9pO
-	FNm1NrYHsefHNIIY8D0aWltDGoOvzrEo=
-X-Gm-Gg: ASbGncsW5LNUWeBT2LkN/wSL1Cl/wCOUlsKTxfTfC5PSsZ1Kc9sok0IfBeifgNxHMyK
-	m3jkzdVgtAEgPDwF8lsdAT2f7TIo2V+Dyk7jJIdF5RAQjmjWcyGLvWG8uGoFpd0blTiqlfGEELS
-	NuW2/8kf5oJqhogJAGGe/FUZTkA2P0tbMM25hLSdTqtralGBE3d1inDbcSMXbXy9hKPD9dxsjUT
-	DGXzaoH
-X-Google-Smtp-Source: AGHT+IFi6YW4dYbxSTyxUF0XmLqEjSwekl8kW2Ctm7AWzZEoUFjLYSBfJlYB0wSz623jmdDt3hYkJgZn1duQNrEVjFw=
-X-Received: by 2002:a17:90b:4d08:b0:310:cf92:7899 with SMTP id
- 98e67ed59e1d1-31e50812d7cmr1562432a91.3.1753266173942; Wed, 23 Jul 2025
- 03:22:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753266351; x=1753871151;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ga6K4SG1euhWTtbAS3BVYAi++JrAr1J3Z67aIAYOeBw=;
+        b=nGXSAx3pu5VMGr1c6QyW/GWQ8UOUnxyjZfIJby/0YHTJKejOgX5Ie59Ypx4Bgz8zRr
+         9IklmPu2bh0LytkKOWxcNg8qzBppKjnF8MdZKTFrGeaXZxig5tSIgAbOJ/8c/GvPYHvE
+         oI9Eyr5Lc86U81RNP/MerJA6MghLZ+KSfS9g2tlD86544DHZ7ZQl5sFjDnaPu2G+Xlel
+         jwaFCcTAas/MKqZQk1D1DvsAE/CoLMCdyJjB76+AqKYkEWMHkHJTC7Sw8JRdDkSBklPY
+         YhFYQVOcsjoah40Um6MRQZm4f9nFGnuiKyy0MLnA/QlBOTh4hFGwxHBaxbDH+OsvdNT8
+         9G7g==
+X-Gm-Message-State: AOJu0YxRXAuwMqQRcDOeMVjdp0yuNszg6WQlVXsDgq08VdFalD6idfzV
+	XoOUt8hdQ7Qy/rtvf9Sy303QhoU/Sx2rPt/b0NuH83GIfj1YIf7+spqfwf4cCzWoSV4=
+X-Gm-Gg: ASbGncsP0UeRUDZJtKOvpSNYFyaxCy1iId5Fd/PnAUaacUkiA2AyGaFg2CosVn4hdiC
+	yI2EEbGr5eOL28PVRFFmerJNNtWSN3MlvxXOnVHVJ1kw+1tDh0BqxCL1Fi9nkwaCSFjEW5URmdz
+	Hvz5MTgQGQVNE9I5GGkJIWlmfj53BCs1+ee3y1VSM1EmTlLamNM57/covBEwDAGXilAtvtJRtF1
+	u4N5fH6DtvJC5yMBDgM3X5/Xg48Z+RMpjENG1AHfwFncaLRhAaBC7Z9gsZVX1UxDGag0g9BM6+Q
+	5/Wupcnt1TvumEaqVRG9Sdp27cx/nu9OZIt5lRRMPE0qR8cwYHUL2SnMAIwSWnTqamkvgyl2TOV
+	p/482J4j4gKhjzTHgDprwu6akeif5m34f
+X-Google-Smtp-Source: AGHT+IGIX5w14miEveZpwRaz+qEMxxSq+qAWW1H+PTbm9ok6gDczq0hGu6EbnXSMSPUh0wki0hGG/w==
+X-Received: by 2002:a17:907:1c15:b0:ae0:da2d:1a53 with SMTP id a640c23a62f3a-af2f8d4d327mr227744266b.42.1753266350622;
+        Wed, 23 Jul 2025 03:25:50 -0700 (PDT)
+Received: from [10.0.5.28] (remote.cdn77.com. [95.168.203.222])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7dcf71sm1029261366b.64.2025.07.23.03.25.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 03:25:50 -0700 (PDT)
+Message-ID: <9bae0d3c-7900-474a-a0af-d2f90ec65012@sedlak.dev>
+Date: Wed, 23 Jul 2025 12:25:49 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
-In-Reply-To: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 23 Jul 2025 12:22:40 +0200
-X-Gm-Features: Ac12FXwI7UlrHyralsnPXb4_3WAFplt92eODvFMDKQ-62apnp249DejCbkOTgLg
-Message-ID: <CANiq72kxcEywL4L6HEqn7AZa-jOBsw08jr+Kvjdwrd+iTOO_uQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Add initial interconnect (icc_path) Rust abstractions
-To: Konrad Dybcio <konradybcio@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Georgi Djakov <djakov@kernel.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, 
-	Marijn Suijten <marijn.suijten@somainline.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: sync: extend module documentation of aref
+To: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Shankari Anand <shankari.ak0208@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250722121441.224439-1-lossin@kernel.org>
+Content-Language: en-US
+From: Daniel Sedlak <daniel@sedlak.dev>
+In-Reply-To: <20250722121441.224439-1-lossin@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 22, 2025 at 11:14=E2=80=AFPM Konrad Dybcio <konradybcio@kernel.=
-org> wrote:
->
-> icc_path is in essence very similar to `struct clk`, so the newly
-> propsed bindings are understandably based on the corresponding
-> common_clk module.
-> This is the interconnect consumer part, with the corresponding ICC
-> provider changes coming in some near future.
->
-> I attached a sample driver making use of these, to ease any testing
-> or CI work (as the title says, please don't merge it though).
+Hi Benno,
+
+On 7/22/25 2:14 PM, Benno Lossin wrote:
+> Commit 07dad44aa9a9 ("rust: kernel: move ARef and AlwaysRefCounted to
+> sync::aref") moved `ARef` and `AlwaysRefCounted` into their own module.
+> In that process only a short, single line description of the module was
+> added. Extend the description by explaining what is meant by "internal
+> reference counting", the two items in the trait & the difference to
+> `Arc`.
+> 
+> Signed-off-by: Benno Lossin <lossin@kernel.org>
+> ---
+>   rust/kernel/sync/aref.rs | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+> 
+> diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+> index dbd77bb68617..1c212238c0e5 100644
+> --- a/rust/kernel/sync/aref.rs
+> +++ b/rust/kernel/sync/aref.rs
+> @@ -1,6 +1,21 @@
+>   // SPDX-License-Identifier: GPL-2.0
+>   
+>   //! Internal reference counting support.
+> +//!
+> +//! Many C types already have their own reference counting mechanism (e.g. by storing a
+> +//! `refcount_t`). This module provides support for directly using their internal reference count
+> +//! from Rust; instead of making users have to use an additional Rust-reference count in the form of
+> +//! [`Arc`].
+> +//!
+> +//! The smart pointer [`ARef<T>`] acts similarly to [`Arc<T>`] in that it holds a refcount on the
+> +//! underlying object, but this refcount is internal to the object. It essentially is a Rust
+> +//! implementation of the `get_` and `put_` pattern used in C for reference counting.
+> +//!
+> +//! To make use of [`ARef<MyType>`], `MyType` needs to implement [`AlwaysRefCounted`]. It is a trait
+> +//! for accessing the internal reference count of an object of the `MyType` type.
+> +//!
+> +//! [`Arc`]: crate::sync::Arc
+> +//! [`Arc<T>`]: crate::sync::Arc
+
+It got me curios. Why is it required to declare the doc reference for 
+Arc and Arc<T>, but not ARef<MyType> and ARef<T>?
+
+Is it because ARef is in file scope but not the Arc?
+
+If so, you could just add
+
+	use crate::sync::Arc;
+
+in the file imports and you wouldn't have to duplicate the
+
+	//! [`Arc`]: crate::sync::Arc
+	//! [`Arc<T>`]: crate::sync::Arc
+
+And even cleanup it a bit by simplifying
+
+	[`Arc`](crate::sync::Arc) to [`Arc`]
+
+in the AlwaysRefCounted trait.
 
 Thanks!
+Daniel
 
-The usual two main questions for new abstractions are whether the
-maintainers of the C side want to see this happen (and how will it be
-maintained etc.) and what users of the abstractions are expected
-upstream.
-
-For the first part, some subsystems prefer to maintain it themselves,
-others prefer to have someone else lead a separate sub-entry in
-`MAINTAINERS` (e.g. "... [RUST]"), possibly with its own branch too.
-
-Cheers,
-Miguel
