@@ -1,225 +1,191 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8222E499B
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 11:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4654E290BD5
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 11:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753271393; cv=none; b=I9tAF8jWwe9pEk58ZwBGEaC9QSRfpaYHXBMWXYx9tHSFNxK67wjlBV9M4p7j+nYVaHutG/NIrP+NNsWUgtY9NcwuHQEWS/+Ra8y4uk9q7Rd1n2/9l8LzijmdXr5xP7JY4LVsqU+1fFiG3TjytR4eRkUi1zszdFck3MkKNHTlqdU=
+	t=1753271644; cv=none; b=AJhh4/jzOL9/4vTAhW8c8GI1E06qYmHH395SRZ+/C2f7x8lEmw/65+WHLkTnAkkLC415EIsjxqCLrb9vMC2O3OKN47HEqP8AevrLOY5xj00yui0OGrlbAfnKziBDgOPmJbnIF66X2RBT0dvmLXbNPKnyleSbKL1mEGyp5wx9pps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753271393; c=relaxed/simple;
-	bh=Jl3j2KN6FsmwfKPXawUT3dvR57fP7gvUZdiSB23zpd0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Mj445MTOXWrgFleLTazLOu5FPMN6GuRNZEcTgDejo41c1Z83INn2iwUkWwtJRz/If11cR7gfommcv88+O61h8ldht4ynh9zlgzHa6ED10wklKA38cGvuEeRFEZi3KNwFNjYKF2v1J35vs+woPdxdYHmp0B5kMskEPGIuIzpG4VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sZaOevE+; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1753271644; c=relaxed/simple;
+	bh=rXySEoTU7KAtMiOjzXdxrSBeSA0gWffUUZ3JRxa5cik=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=flxf/lOy5JwDsPWRCCl1mP3gjI6V5gI/6GFlbAZS6rBm4dOFGGShhpC7LuhnAaadwNYd4YU2Fw4zf2pg9l9txqKhFZDlEvqyro9333/6F3l06RZPTeCeQLEYmPoyymMoPaGol2DrktwDClorSMGwABR9VFwbTY2kl06kIvccplY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=XaMN/MU2; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sZaOevE+"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a4fabcafecso3090898f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 04:49:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753271390; x=1753876190; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PtSPCkq/PTayIKe2ZEyGHa8jliw50tdP9tCgSVooY1c=;
-        b=sZaOevE+xzy/Y4msjeas0hryz8EP8NwNt9LS3wl7NRY7ZU7GL6trEcnkn2sMMai4IZ
-         iZ3wnE1EwDFDP5omEjgEgkiR075UkE0duMIhpL6cdI9mfoUD5g6w+F33Z2rDr3sRorrh
-         1FsVnsb3qsdCI0ccsm+Vn7sNDFcxotphJMlMjZlqjeKCG1hpXjzmMh2fDkZaX6yfdkSZ
-         lxD1zuBHGOsgGGqxtAzM4gzZgYxPX2qubNmylXaHvD86pr5LQ88BuP7kfpiqPoIJTgZ6
-         XPMPCTPqXLJAUc9UVQLZWsUc+eQ41lGMUrnxu23H+Szsq9w5GDItnW4Tm/b9Kes3MjIJ
-         BabA==
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="XaMN/MU2"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56N9BVk4009376
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 11:54:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	1HOOC0bNmR+F/460DnWW5L8q0MQlsL1rN/kFiHrS7M4=; b=XaMN/MU2c9d3gc8P
+	SNYJIrYv/YPjShDxUqam3XnyolOXfZHOH7KePwLOR5BalXr+3ybCdhXTkdZr/wfQ
+	JkaNyLbbE0ovBMHF5X4PhnJBTnsN/e5FY1yzWBaRy+OPEPM5tkYQiEXFQIKTmSWp
+	eG1BLTF4LEUVXYa0gyTEmkClJbxoG/SBYHfB4O+p1fuxw1giSRS22Bmxl2ACOPZh
+	kbrJTO30zouVyRUEedp+JvfMgN6463O4QVG+oy4xYxzLq5G3V0ohwdAOFfRs9f2b
+	Hv7v1iLgW3mMEjeQu+e8HVYyDk5ZFRtsD8RswnESP9Bu+2Pj0+hXLpUaSVOk+u0t
+	ZrNPEQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4804na3e94-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 11:54:02 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6fabbaa1937so14085036d6.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 04:54:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753271390; x=1753876190;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PtSPCkq/PTayIKe2ZEyGHa8jliw50tdP9tCgSVooY1c=;
-        b=PwOJSeAqYfvHFSdoG2YBO5A4ilAzJOdM56PY/Dgqd9JFsFGLea8rq69Un3hj6ckmwn
-         RDGbo3ZlOMm6rdoTIwS8sZjQdnD6p7V2lLc3XOU80W2/bdQX6h+KSHd4Ml1Yom5+qYS2
-         cLZKOgBdHgzdBzZ/slRkbDKRJ42xVecf3VzsSCZtK6uz22RQAxYdshxY3negdcPpiGn5
-         uonXsCIKm+uak0VWYSimWS2fMEQ9yw1ofNi/0sDEjv1SGUrsinnf0DN5Md3LJxM+Sotg
-         SFUCp5QM6yZieRiTwIB15ab0mMmjTh0oBRZuP9LM6GkpoHvzsvv/5Y+O564PzjHx87QD
-         5bCg==
-X-Forwarded-Encrypted: i=1; AJvYcCWmXtFxVuyeNvIuoGS4tpOlm9FpywO2EEMSIPZxM0w8MZFh5tgETlGIC0BPQL56Sa34KcuetDX7KUd0ahl1/g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJ3BjcQoLgFyF145QXQb3eJKZkDGnNUKFiyAKYwOABuxx3C6vh
-	VdZgDvZgt0hRFvqetlKPIVEThcU/pX5al2gaS2yVA8gfa5QNSsE6lOT8kb3c6M9F17u5K/QPgLr
-	LHif/FneyolnvSUuOTw==
-X-Google-Smtp-Source: AGHT+IHdfq3jPSpw+Px+tgVOWhCEwJdlmL2XUuwVX92V/cTj6nyl4IBAnuKF3apb5y4KsYLbN+JzZcHjk59+CUc=
-X-Received: from wrbdq6.prod.google.com ([2002:a05:6000:cc6:b0:3a5:2a0b:d7a3])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4383:b0:3b6:489:b7e5 with SMTP id ffacd0b85a97d-3b768f08603mr2466747f8f.49.1753271390536;
- Wed, 23 Jul 2025 04:49:50 -0700 (PDT)
-Date: Wed, 23 Jul 2025 11:49:34 +0000
-In-Reply-To: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
+        d=1e100.net; s=20230601; t=1753271641; x=1753876441;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1HOOC0bNmR+F/460DnWW5L8q0MQlsL1rN/kFiHrS7M4=;
+        b=VokFxrXmgRw1CJ9/fJuXgneHzRD4nPwghxgSvtTJXonfkyeCcgY4bVFHLUNsGtadZF
+         HPTlhHhLQpjxloypqFDxMZJQHp2GEVajFDBpcj4W6UjLEwBlC7azrRhRgsjE4sFfYbLP
+         D4veRQC+zgOgLUrBg/X3kz+hqq+bCf2gRSmGN9jP/f15GbnYsa5Uxycs76jMtR7qIdXc
+         zB3obQS02SKTT4NY0QoB3gYHGEiL7W5Kd25ShBcooVsJ1d7YOSe1qH21BYhN9+P1cjyg
+         qIRYaHY711hBCVcp5EUT/1B9W9VbyanBgmPm07lK3f4RXJdKYZ++byWmmMb5dnWyUqdm
+         86NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjurLL3oA58EsipOWl/1YHFMPDUEgg28PwX2bJbX3Hd92aEfSp6pz+xSjxZ4KzLLDGv1gZo2yb4ub5JycszQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9fJGUCKjLkaUxQ/D4rYLpIRwqSFvvBoXoKZrTlS5D2XBv/6Iy
+	oA4aOARr0dr2Md2b8EnZaZKrwWcrCKIxB4DBpVB7skU/yK07btKkyPpV+8wZAKi+oUmcLEEIDS1
+	tSkX6xvMHHiToRqaMG9geA4CXnAh6YfZ9l41UaF6FSfJfEMrQdND+qQZypojD0UKzePqvCQ==
+X-Gm-Gg: ASbGncs3+ulA5sWpD3GOvUga4P/xjSAahKmy2MPHOEQ20P4BfzYMZcSoR0ZxQwSemcK
+	X7GbfuNhuTicNhuehFkVmyAzpgL254z9zSv7b5QFr4UAjh7EfSvYrSJusQqGFO06bWQvicBkcEe
+	QnmJQ8r7Daem+R8ysh4a/0z31KqijBHlRkTOQw/YVpl5gVjQvuKZ8pa+QCxjF0DHvJ7Ano2/Fwz
+	ARkdpXEbQyECfKPhVhMhZBzusZHvkeAmxvJ7eiTVI5SebU1X8781zMoDghtSwda7oTfvGpzm0Ah
+	OXt6hLPKP4HaBsXmwgUstB5o8aLZXrt7SjwZH5BNDM/tKTRJDlpIrVUiWiwjUiV2rMg9IPFBOHm
+	3RHGX22pSsw5KgMu7TA==
+X-Received: by 2002:ad4:574e:0:b0:6fa:be81:e18f with SMTP id 6a1803df08f44-70700247566mr16107136d6.0.1753271640957;
+        Wed, 23 Jul 2025 04:54:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErsIXK4HHXqWtzyFC/KxLwjfOu4VWCmFUGD5W3/VG0i9+BCNgG9KSeh+I3EPIKfADs2zQJlw==
+X-Received: by 2002:ad4:574e:0:b0:6fa:be81:e18f with SMTP id 6a1803df08f44-70700247566mr16106956d6.0.1753271640335;
+        Wed, 23 Jul 2025 04:54:00 -0700 (PDT)
+Received: from [192.168.43.16] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6cad5a85sm1038648966b.152.2025.07.23.04.53.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Jul 2025 04:53:59 -0700 (PDT)
+Message-ID: <aaf6dff3-30fc-44a9-b88f-da7347e0b7d4@oss.qualcomm.com>
+Date: Wed, 23 Jul 2025 13:53:56 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5236; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Jl3j2KN6FsmwfKPXawUT3dvR57fP7gvUZdiSB23zpd0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBogMxauPienb7eYP64sRlrEKiQW4+3oEuovSTdn
- 5ezk5T4NEaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaIDMWgAKCRAEWL7uWMY5
- Ro/nEACxtBqA4JBKPBWIOC09R19yxzSPlXAg0hSb1U58p/Q2qbjfGH5cNu6VkN/a/W2UViMblIr
- 3iPI2AOQGSvKsjwySN2YLcINDjD+3a+G5JsV0v5RPlI46XCFcaWzYWz4ZX3fp/ECjqXH52CmpWZ
- yYiAMr24AV8Ndna+AneHtoxAxY6FM2JpMZpMg6M+Rk8pK0I/m0aMtkJ7LlQqwNoN97mazqxts7L
- BkgKJ6wyL1keJuQg6sIVb6mfbaw/huh0P96TdasgLe4U7XLFBozPmwvslO9IMPPi7ZaNBC01LPq
- tEmCaPRUHl26/PSYzp3AYtNbJYFNFzF+ojanmgvWTubxa9w8YLHn0HGV0to+guTIEvA5u8NvQaO
- Oap9cqVN5hF4CFx60E7PlT4T9bbppZy39CgpQxDLzYhGiXhQqFV+nBj2/8dRt+3TGNtKiB+jIeG
- Ji7VZWu/m14w8dC+ye2dLZ2SFZ8HNj7RBWtau48T8Nb257qpESjU8TQ5I9PH9R7QGG6cso4ZyjC
- /opth9zFnacD2UcjErm5AKKsDJn4FwjgMOyInuhE0HR1EIdQTV+gUmhdNvJfiGhVa6oOROOIlv4
- P8qFvPPFY71BwM9FB1vnAyG5nbDaHLmV7u8ieTOZnsE5FQhu5jH8b5Dh7deHBXa6J1yXlbWNZZb QGD+5Jyvoxc0lWQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20250723-lock-class-key-cleanup-v1-2-85fa506b8ca4@google.com>
-Subject: [PATCH 2/2] rust: sync: clean up LockClassKey and its docs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] rust: Add initial interconnect framework abstractions
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Konrad Dybcio <konradybcio@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+        Danilo Krummrich <dakr@kernel.org>, Georgi Djakov <djakov@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        linux-pm@vger.kernel.org
+References: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
+ <20250722-topic-icc_rs-v1-1-9da731c14603@oss.qualcomm.com>
+ <CANiq72nPLn+3V_DhN9_dmKnRrb5mfjzQ67Utz7HdtOY3McpweA@mail.gmail.com>
+ <d80ebfbb-5fb5-4dde-a79b-adb22231a63e@oss.qualcomm.com>
+ <CANiq72m8QZCAC4ouwTCvOE26gmoTSZ5fgc9uTw0pxkcNnX+4CA@mail.gmail.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <CANiq72m8QZCAC4ouwTCvOE26gmoTSZ5fgc9uTw0pxkcNnX+4CA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: HKugOsmJYETAdppDg5Xl7KrEXRiGr3dY
+X-Proofpoint-ORIG-GUID: HKugOsmJYETAdppDg5Xl7KrEXRiGr3dY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDEwMSBTYWx0ZWRfXwOe62NvV/oOT
+ q59jBazTAh73XrHWPxbpF8f1oCOy3PVBm/XsezWgdsC7bILp/dihMWcUVXBjcBu45p+ydXH+rbV
+ JROjFWgG9DS30F8Zlv8laWvUgqidXLXnPKTogbVhKBxpEQ+k/BgBbX9aXQc6Njlehm8+4dEyXpR
+ wgS+3BNbbpS2kSgslrgJaItN9c6m9Q57U+XN/eHieJfOeeDEYVT6a4ZHhYRgJKPlzsTcwq1ZscH
+ 5stnCQu+wFIckprNmkR8IerjAywvStxofH0+mmByUNug8VC74li9shzxNaR9LrEKd5bK3kPEZxS
+ k4fr0R9/ASdA+W/C73uxX3RlCQqwQQRJHZNtWRvi96g2JF33M+8jYRAOo3FXPJf5xIqcuytINc+
+ /rNZ0zWSAj+5LnN1+ngGsMYczRMbO4ksaJwH+OiuL/YLdvs/8oSNrBZIdx0yRpBDxl4H8VUd
+X-Authority-Analysis: v=2.4 cv=DoFW+H/+ c=1 sm=1 tr=0 ts=6880cd5a cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=FpWmc02/iXfjRdCD7H54yg==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=EUspDBNiAAAA:8 a=3-_8KK4-WcFyCo7UW4AA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-23_02,2025-07-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 clxscore=1015 mlxscore=0 mlxlogscore=999
+ bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507230101
 
-Several aspects of the code and documentation for this type is
-incomplete. Also several things are hidden from the docs. Thus, clean it
-up and make it easier to read the rendered html docs.
+On 7/23/25 1:41 PM, Miguel Ojeda wrote:
+> On Wed, Jul 23, 2025 at 1:32 PM Konrad Dybcio
+> <konrad.dybcio@oss.qualcomm.com> wrote:
+>>
+>> The C framework makes no effort to check for that, so panicking is at
+>> least something.. That said, what would you suggest to do here?
+> 
+> If you want to mimic the C side, then you will need to use one of the
+> non-panicking operations, such as e.g. `wrapping_mul()`.
+> 
+> Otherwise, you could make it a fallible method, i.e. return `Result`.
+> 
+> Otherwise, I think the panic should be documented in the docs of the
+> methods (because callers then really need to be careful).
+> 
+> Which option to takes depends a bit on the use case and what C
+> maintainers consider best for a particular operation.
+> 
+> For instance, sometimes people have used `build_assert!` because they
+> expect that the value is always known at compile-time (after
+> optimizations).
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/sync.rs | 55 ++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 40 insertions(+), 15 deletions(-)
+build_assert sounds nice, but the value is often retrieved dynamically
+(e.g. from the device tree itself). Result seems like the best option.
+I'll also add a verse in the docs about the return variants.
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 9545bedf47b67976ab8c22d8368991cf1f382e42..5019a0bc95446fe30bad02ce040a1cbbe6d9ad5b 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -26,7 +26,9 @@
- pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
- pub use locked_by::LockedBy;
- 
--/// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-+/// Represents a lockdep class.
-+///
-+/// Wraps the kernel's `struct lock_class_key`.
- #[repr(transparent)]
- #[pin_data(PinnedDrop)]
- pub struct LockClassKey {
-@@ -34,6 +36,10 @@ pub struct LockClassKey {
-     inner: Opaque<bindings::lock_class_key>,
- }
- 
-+// SAFETY: Unregistering a lock class key from a different thread than where it was registered is
-+// allowed.
-+unsafe impl Send for LockClassKey {}
-+
- // SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
- // provides its own synchronization.
- unsafe impl Sync for LockClassKey {}
-@@ -41,28 +47,30 @@ unsafe impl Sync for LockClassKey {}
- impl LockClassKey {
-     /// Initializes a statically allocated lock class key.
-     ///
--    /// This is usually used indirectly through the [`static_lock_class!`] macro.
-+    /// This is usually used indirectly through the [`static_lock_class!`] macro. See its
-+    /// documentation for more information.
-     ///
-     /// # Safety
-     ///
-     /// The destructor must never run on the returned `LockClassKey`.
--    #[doc(hidden)]
-     pub const unsafe fn new_static() -> Self {
-         LockClassKey {
-             inner: Opaque::uninit(),
-         }
-     }
- 
--    /// Initializes a dynamically allocated lock class key. In the common case of using a
--    /// statically allocated lock class key, the static_lock_class! macro should be used instead.
-+    /// Initializes a dynamically allocated lock class key.
-+    ///
-+    /// In the common case of using a statically allocated lock class key, the
-+    /// [`static_lock_class!`] macro should be used instead.
-     ///
-     /// # Examples
-+    ///
-     /// ```
--    /// # use kernel::c_str;
--    /// # use kernel::alloc::KBox;
--    /// # use kernel::types::ForeignOwnable;
--    /// # use kernel::sync::{LockClassKey, SpinLock};
--    /// # use pin_init::stack_pin_init;
-+    /// use kernel::c_str;
-+    /// use kernel::types::ForeignOwnable;
-+    /// use kernel::sync::{LockClassKey, SpinLock};
-+    /// use pin_init::stack_pin_init;
-     ///
-     /// let key = KBox::pin_init(LockClassKey::new_dynamic(), GFP_KERNEL)?;
-     /// let key_ptr = key.into_foreign();
-@@ -80,7 +88,6 @@ impl LockClassKey {
-     /// // SAFETY: We dropped `num`, the only use of the key, so the result of the previous
-     /// // `borrow` has also been dropped. Thus, it's safe to use from_foreign.
-     /// unsafe { drop(<Pin<KBox<LockClassKey>> as ForeignOwnable>::from_foreign(key_ptr)) };
--    ///
-     /// # Ok::<(), Error>(())
-     /// ```
-     pub fn new_dynamic() -> impl PinInit<Self> {
-@@ -90,7 +97,10 @@ pub fn new_dynamic() -> impl PinInit<Self> {
-         })
-     }
- 
--    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-+    /// Returns a raw pointer to the inner C struct.
-+    ///
-+    /// It is up to the caller to use the raw pointer correctly.
-+    pub fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.inner.get()
-     }
- }
-@@ -98,14 +108,28 @@ pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
- #[pinned_drop]
- impl PinnedDrop for LockClassKey {
-     fn drop(self: Pin<&mut Self>) {
--        // SAFETY: self.as_ptr was registered with lockdep and self is pinned, so the address
--        // hasn't changed. Thus, it's safe to pass to unregister.
-+        // SAFETY: `self.as_ptr()` was registered with lockdep and `self` is pinned, so the address
-+        // hasn't changed. Thus, it's safe to pass it to unregister.
-         unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
-     }
- }
- 
- /// Defines a new static lock class and returns a pointer to it.
--#[doc(hidden)]
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::c_str;
-+/// use kernel::sync::{static_lock_class, Arc, SpinLock};
-+///
-+/// fn new_locked_int() -> Result<Arc<SpinLock<u32>>> {
-+///     Arc::pin_init(SpinLock::new(
-+///         42,
-+///         c_str!("new_locked_int"),
-+///         static_lock_class!(),
-+///     ), GFP_KERNEL)
-+/// }
-+/// ```
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
-@@ -117,6 +141,7 @@ macro_rules! static_lock_class {
-         $crate::prelude::Pin::static_ref(&CLASS)
-     }};
- }
-+pub use static_lock_class;
- 
- /// Returns the given string, if one is provided, otherwise generates one based on the source code
- /// location.
+> 
+>> I was debating that. icc_path represents the interconnect consumer part
+>> (i.e. used in device drivers that just need to toggle a bus endpoint),
+>> whereas the corresponding provider part (which manages said bus) is not
+>> yet abstracted.
+>>
+>> It would make logical sense to split these two.. with the latter going
+>> to icc_provider.rs, perhaps?
+> 
+> Ah, so I just meant that you could have the `icc_path` as a `mod
+> icc_path;`, and move it to its own file, rather than inline. Other
+> reorganizations makes sense, but I was only suggesting that :)
 
--- 
-2.50.0.727.gbf7dc18ff4-goog
+So, IccBwUnit stays in icc.rs and icc_path -> icc_path.rs?
 
+> 
+>> No, it compiles fine here.. Strangely, I didn't get any warnings or
+>> errors with this patch. Maybe because the struct is pub and within the
+>> same file?
+> 
+> It likely happens if `CONFIG_INTERCONNECT` is not set, because then
+> the entire module above is gone.
+
+OK that makes sense!
+
+> 
+>> I almost wanna say `make rustfmt` produced slightly different results
+>> (one or two lines of difference) than make rust-analyzer + vscode
+>> extension.. hmm.. Perhaps PEBKAC..
+> 
+> In mainline we currently enforce that code is formatted with `make ...
+> rustfmt` (there is `make ... rustfmtcheck` to check, too), so if some
+> extension gives you different formatting, please double-check before
+> submitting the code.
+
+I assumed that since the extension name is the same as the make target,
+they were meant to be ;)
+
+Konrad
