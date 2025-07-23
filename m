@@ -1,344 +1,101 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A026F2DA749
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 10:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1501F24DCF6;
+	Wed, 23 Jul 2025 10:51:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753267497; cv=none; b=euj7+Z4u5SJc05Cb8189X7+NtdfPrguf9Ix0JEaI+SKgY3hHolFXlmULAPNAm6AdRjOosCpPKUpuMhPgZIGqcJwmgMYjJit+xePAY7YlB0v48kDI9hkNbJW1vxi4KdFeB0SvK+g7EidmKK0qke5ekvgrxfUU0C5obXcu3K3qq64=
+	t=1753267914; cv=none; b=HLGmDYZNAYdLlP71IBvDRwO4hixENkNmwk/IMEZ1rf1oynwsBaGPDAu0A3u9MD9szlEDB7tPtyyMhVVe7PDeLJMU5XUgqYInnKilgwReQiLF4zJZ5DVbG/fqWuAmGh16lQAk7vgtGcFWRwQINOfiHfSDlHbGImFjJNYV4ThZ6ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753267497; c=relaxed/simple;
-	bh=qBX0JDeGTivbXtJf33doQUh6g6lQZVKlqiviu7KFJ/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RqpdGcvHSaG6ttUtnHS76bH9p3cagWYcMDnHQF9tcr/1jp7MLk3iDqpSoBC0VuzoOJE4lzHiO6wqpY+z5G2LTPpc/oIiKVko9BGNA0rgyyNobx2pKM16s/HjuOyH6B4EbHfLnO2d1VWzcR/3WP4l7rLVKG9OTAsONBXD2KVllTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=GyJ8d7He; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1753267914; c=relaxed/simple;
+	bh=DZfurw41CNNs9J3PkRReIrN8BqDiUci52fRvR95/8iA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fskFs2Kj27lmK3ZAjm5Sq05KNwumHmGl3+xtwaiCC17i4EksVz5fB1q2qXKr8trLFSv+7z7zGE9U2CchcIBF7x3TAgiunfhZs7vyhzD8l5qgXQNxdE5rgkR8HUUJHHgulrFHFY1p9U1BSI5kg+y1rzaLAIfW186BEKEx4lXNapo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gxGM2WYz; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="GyJ8d7He"
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6097d144923so1686269a12.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 03:44:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gxGM2WYz"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-312a806f002so1106325a91.3;
+        Wed, 23 Jul 2025 03:51:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1753267494; x=1753872294; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7xYOZXPRdiXsohCXzg0pxN0cIN0Hm/modECQR4pJ+7s=;
-        b=GyJ8d7HeXC4egm5bctPuZwDAZEZK6bnUMAnGp3yGP0G8Gz6tw4pLRJvUJ12ZuqYGKZ
-         766rLcSFyQyTuSlNCM6t2f3dGnEhdDNJEtrqhLRmh3ep/dgDLzkfywGEjiXN58E4sIhQ
-         Wv0hrXoilobUhT1esS4rnUnxZcmCmU35NPcYDqyvzAnRajPJx3ho/dBIJU9evFNt2Fa5
-         XbeKfD6P26vXT+lbo6EJ+unvJbuQaim8p1M4ESBIAGsILQua7qi82ocWhrXV5bXfEzSM
-         w5BqMv91e5Q4OIhRajnC0y343HrDm/BRmn7FEee3u6+wUyFsTtOXhfUCYI/xDqZLsaXn
-         XT8A==
+        d=gmail.com; s=20230601; t=1753267912; x=1753872712; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hIrdtlzwhoIuMLPg7/asNdEgduChv5Q6hEiZ2nKwrk4=;
+        b=gxGM2WYzoxowxQp1enMicw4vqMtCdzPcU05z6396yxHKIkHFATkJ0gu2PXYHmUJnMy
+         jJCm7+uSkN3sjNJU1zWgQtWI1hQpueS+J2/wRyNH3TQOEu8TmsxsQaoupr/1+l3OxwPJ
+         4THvvqXkNqQUgQIc/gAJct++ncUXyTIjL1hos8lc/a3tsPUgoJuhwe5rAiyUs5FwiEu3
+         xUPjVvjuiW8/yzm44d78VzXXmYJii4NBG0ujx9Mbty7jerLWhB7NfRVrWvzqf7P95PX7
+         ymPaOZjDrb+iFJgdow020mncUlVG3xIm8WY2px3bkLXYMqYcosUkRsQOzE7y06/YdcOH
+         98AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753267494; x=1753872294;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7xYOZXPRdiXsohCXzg0pxN0cIN0Hm/modECQR4pJ+7s=;
-        b=L0aNF5NFAWhBfCkiJXl5r09D9+HHdGPMFOfiMqYbpprK7aD8Z5NnMTdtYjmRkdtfRA
-         sGtd5uLywR0ZVwVuZ/ik1lXaEiSRJzXuFRR1jfrttWI30qfnBHWXfvhuB0RRKFf+RVND
-         Y2fNhg6eHZwiHY7/jEOVdKOlZWt6ue/J+zjUGJpo8JdQCL21gLjEKIWdCYwAkXW/1JvN
-         B7fjiitAmAIETSkk8URxLyaxw3prrT+aINdS5E47sjRlAli7ihYsKa/6t1V/YNk7DjgQ
-         gwoKG44B/mdlOncUmfbLUA+n5HJheKamK3cAT62Djost0QZZ+eTreBGqmg5/vrbsxNG8
-         UkUw==
-X-Forwarded-Encrypted: i=1; AJvYcCVRwUihf39hfzk1jcVd/XyPubp4vhxGuwTwyEcqkX6Msix9rqG2dMAxo2EoKOYqkYm85Js1Q6Huv6GNPFYACQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwspHuPxgn3+rFw1KznqbrwoCEuw7VSOJ9nuzC87gt+jhbnikgs
-	Azkx8TwEfidOuZZnYUzzzP1UdSWOW6Tnn5UMHWBx9Jqxz9teT63YwHBCgNM/gtJhp1U=
-X-Gm-Gg: ASbGncsNmlymgKYa34Z31lCS8VjbYAXpSY7Ck3t1jpBr35b0AMduNwKv/Mr7h9IU/Te
-	TTVhCuo12BWrF/NgTk4q6tScI8xA1j7JzBVyDY4NEs30g2Cd9RxOUKh/W3eqNp8XPdChqYwa41a
-	UFlFAjw//Pkom6XChBJw0wA0wVd17A9+gGjB0lKSvtzDuavpmA9rO6+AFlAnqvRBhyvtOk+o4io
-	lA0VUUiIVKlXj0ysWXKDuyt/KOReL/jabld0g0yWtEUIP9hvWOZLbU6dlEnabBs8/mlIy5J6LJm
-	RHbXww6nrNlFdDWFX74TUuQg5u5UeRNnmSibH0OtvnTkLMlZkXrEzt7o8G/srwrEgSLp+RYCz5Z
-	BbkVDRtxhdgYRohXDUWitkL8ohMGAWAKO
-X-Google-Smtp-Source: AGHT+IE23/w37kh2WpRE8noRTOloYfD2av2U6W+7NxUiHq7HRFeWTokOzqO4eVBP7cTthd6+wZ5C2g==
-X-Received: by 2002:a05:6402:50c7:b0:612:dfdd:4718 with SMTP id 4fb4d7f45d1cf-61346fe4392mr6180298a12.12.1753267493631;
-        Wed, 23 Jul 2025 03:44:53 -0700 (PDT)
-Received: from [10.0.5.28] (remote.cdn77.com. [95.168.203.222])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c9071069sm8214578a12.50.2025.07.23.03.44.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 03:44:53 -0700 (PDT)
-Message-ID: <d0891c62-6c9a-4036-bf63-f5070ebba084@sedlak.dev>
-Date: Wed, 23 Jul 2025 12:44:52 +0200
+        d=1e100.net; s=20230601; t=1753267912; x=1753872712;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hIrdtlzwhoIuMLPg7/asNdEgduChv5Q6hEiZ2nKwrk4=;
+        b=HsBUfEqpWN6TF+lYLCOUSIeOhMaD79USl91Z9kdpBdC7OevLVFKZs/fx6OxXysz8CK
+         maTo0nlw2/BXtMBNcSXYDOQGbZiZEXPU5zWUZkfLSmCJF5iG0x2uhYt1MqRk1BikwRKP
+         5TWpuj2nSXKFEEawklgdrFOHbrRT4/uFtju3jMEaJ3GcLTF9rZSRV8humlZ2tW1QTpH4
+         IpCDyFZ1GT9pnKPjeg19KPEZv5tRtwcztOYFjHY3PxxqQBWmFIxxbVhzAX2v7wIMWvpN
+         bWocCol8Mlh9L3iyyyhQzYFbuaEUnvy3gwYrztzD+FWy3NGrcrFHLrMhyiZJ3P9GhtgY
+         S72Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVlFntpPwDO77sOIFIUfaFhOukZbbpsJo1afIcaJphXeiFtheO0C9uQqqG+Eg42PD+KWsyy8nm+TNM0jTU=@vger.kernel.org, AJvYcCXQt+SucU/8MAEH5vVxb9rZ6yTzRkzEb9+cJKlMZb+vGpX+QiDjXUY/aEyVKFjxalxZw1KUohXtZb8dfRewxFY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMsIITCnpGCF83qAik1ufGufY10wgPrDKTM86PfTeEu5phDWic
+	SZtovZEdfvr4s1GiDQwcORRIcPX9sCuoNHbTbsPHtalz+JjtpdbO3OytCu36exc6W1K9zC4uzj1
+	pFLjciOevjral1Y5YyJ8fbZ6bb5p0Kso=
+X-Gm-Gg: ASbGncssIcvzZwLgFCCBl7cqBSUx9R9l9FH9l3FhO4pAQD7Idba1ZM8T+KdZA2gbtV6
+	Qnd6fR3cNIls1WIN763eQ4yG+uGzDZMWNVnyC5xhoxigpR/MCtNsn/YDmDTTXUW7eRBM2jpa6+x
+	9Z5URIAkQvpv9/iZIpWmB9rHwRyFwggIoXKRa+0bC0/rClUq9+Gn9QSyKIgjhZreyRyzbQCv48A
+	lwqJLwa
+X-Google-Smtp-Source: AGHT+IE+Ayr97X8dO8e1JeJQrjmyf0eziFiwpkLm1piCAGQtZnFVciegIVClUZDYatMUAw3Hg1nSby42QHwbmsgE7lA=
+X-Received: by 2002:a05:6a20:728a:b0:1ee:e1a4:2b4a with SMTP id
+ adf61e73a8af0-23d48fe046bmr1643455637.2.1753267912311; Wed, 23 Jul 2025
+ 03:51:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] rust: Add initial interconnect framework abstractions
-To: Konrad Dybcio <konradybcio@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- Georgi Djakov <djakov@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Cc: Marijn Suijten <marijn.suijten@somainline.org>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-pm@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-References: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
- <20250722-topic-icc_rs-v1-1-9da731c14603@oss.qualcomm.com>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <20250722-topic-icc_rs-v1-1-9da731c14603@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250722121441.224439-1-lossin@kernel.org> <9bae0d3c-7900-474a-a0af-d2f90ec65012@sedlak.dev>
+In-Reply-To: <9bae0d3c-7900-474a-a0af-d2f90ec65012@sedlak.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 23 Jul 2025 12:51:39 +0200
+X-Gm-Features: Ac12FXxy5OZhm75DAn8_gk5KWF_RQB5NU8tT5YcoQesECHG6jcfvbJRulCrfWaY
+Message-ID: <CANiq72=UqCnGzRgjigtEmsyh=7Ky7q6oNZRu3xZXummOTB2pTg@mail.gmail.com>
+Subject: Re: [PATCH] rust: sync: extend module documentation of aref
+To: Daniel Sedlak <daniel@sedlak.dev>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Shankari Anand <shankari.ak0208@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Konrad,
+On Wed, Jul 23, 2025 at 12:25=E2=80=AFPM Daniel Sedlak <daniel@sedlak.dev> =
+wrote:
+>
+> It got me curios. Why is it required to declare the doc reference for
+> Arc and Arc<T>, but not ARef<MyType> and ARef<T>?
+>
+> Is it because ARef is in file scope but not the Arc?
+>
+> If so, you could just add
+>
+>         use crate::sync::Arc;
 
-On 7/22/25 11:14 PM, Konrad Dybcio wrote:
+That would be unused -- i.e. we don't add imports in the actual code
+only for docs.
 
-> +//! Reference: <https://docs.kernel.org/driver-api/interconnect.html>
-> +
-> +/// The interconnect framework bandidth unit.
-> +///
-> +/// Represents a bus bandwidth request in kBps, wrapping a [`u32`] value.
-> +#[derive(Copy, Clone, PartialEq, Eq, Debug)]
-> +pub struct IccBwUnit(pub u32);
-
-IMO this is bit of an anti pattern for the newtype. Wouldn't be better 
-to have the inner type private instead of public to keep the u32 as an 
-implementation detail?
-
-> +
-> +impl IccBwUnit {
-> +    /// Create a new instance from bytes (B)
-> +    pub const fn from_bytes_per_sec(bps: u32) -> Self {
-> +        Self(bps / 1000)
-> +    }
-> +
-> +    /// Create a new instance from kilobytes (kB) per second
-> +    pub const fn from_kilobytes_per_sec(kbps: u32) -> Self {
-> +        Self(kbps)
-> +    }
-> +
-> +    /// Create a new instance from megabytes (MB) per second
-> +    pub const fn from_megabytes_per_sec(mbps: u32) -> Self {
-> +        Self(mbps * 1000)
-> +    }
-> +
-> +    /// Create a new instance from gigabytes (GB) per second
-> +    pub const fn from_gigabytes_per_sec(gbps: u32) -> Self {
-> +        Self(gbps * 1000 * 1000)
-> +    }
-> +
-> +    /// Create a new instance from bits (b) per second
-> +    pub const fn from_bits_per_sec(_bps: u32) -> Self {
-> +        Self(1)
-> +    }
-
-This is a very shady API. If I were to call
-
-	let bw = IccBwUnit::from_bits_per_sec(16);
-
-I would expect.
-
-	assert_eq!(bw.as_bytes_per_sec(), 2);
-
-But it would fail (assuming that 8 bits = 1 byte), since 
-IccBwUnit::from_bits_per_sec(), always assigns 1.
-
-
-> +
-> +    /// Create a new instance from kilobits (kb) per second
-> +    pub const fn from_kilobits_per_sec(kbps: u32) -> Self {
-> +        Self(kbps.div_ceil(8))
-> +    }
-> +
-> +    /// Create a new instance from megabits (Mb) per second
-> +    pub const fn from_megabits_per_sec(mbps: u32) -> Self {
-> +        Self(mbps * 1000 / 8)
-> +    }
-> +
-> +    /// Create a new instance from gigabits (Gb) per second
-> +    pub const fn from_gigabits_per_sec(mbps: u32) -> Self {
-> +        Self(mbps * 1000 * 1000 / 8)
-> +    }
-> +
-> +    /// Get the bandwidth in bytes (B) per second
-> +    pub const fn as_bytes_per_sec(self) -> u32 {
-> +        self.0 * 1000
-> +    }
-> +
-> +    /// Get the bandwidth in kilobytes (kB) per second
-> +    pub const fn as_kilobytes_per_sec(self) -> u32 {
-> +        self.0
-> +    }
-> +
-> +    /// Get the bandwidth in megabytes (MB) per second
-> +    pub const fn as_megabytes_per_sec(self) -> u32 {
-> +        self.0 / 1000
-> +    }
-> +
-> +    /// Get the bandwidth in gigabytes (GB) per second
-> +    pub const fn as_gigabytes_per_sec(self) -> u32 {
-> +        self.0 / 1000 / 1000
-> +    }
-> +
-> +    /// Get the bandwidth in bits (b) per second
-> +    pub const fn as_bits_per_sec(self) -> u32 {
-> +        self.0 * 8 / 1000
-> +    }
-> +
-> +    /// Get the bandwidth in kilobits (kb) per second
-> +    pub const fn as_kilobits_per_sec(self) -> u32 {
-> +        self.0 * 8
-> +    }
-> +
-> +    /// Get the bandwidth in megabits (Mb) per second
-> +    pub const fn as_megabits_per_sec(self) -> u32 {
-> +        self.0 * 8 * 1000
-> +    }
-> +
-> +    /// Get the bandwidth in gigabits (Gb) per second
-> +    pub const fn as_gigabits_per_sec(self) -> u32 {
-> +        self.0 * 8 * 1000 * 1000
-> +    }
-> +}
-> +
-> +impl From<IccBwUnit> for u32 {
-> +    fn from(bw: IccBwUnit) -> Self {
-> +        bw.0
-> +    }
-> +}
-> +
-> +#[cfg(CONFIG_INTERCONNECT)]
-> +mod icc_path {
-> +    use super::IccBwUnit;
-> +    use crate::{
-> +        device::Device,
-> +        error::{Result, from_err_ptr, to_result},
-> +        prelude::*,
-> +    };
-> +
-> +    use core::ptr;
-> +
-> +    /// A reference-counted interconnect path.
-> +    ///
-> +    /// Rust abstraction for the C [`struct icc_path`]
-> +    ///
-> +    /// # Invariants
-> +    ///
-> +    /// An [`IccPath`] instance holds either a pointer to a valid [`struct icc_path`] created by
-> +    /// the C portion of the kernel, or a NULL pointer.
-> +    ///
-> +    /// Instances of this type are reference-counted. Calling [`IccPath::of_get`] ensures that the
-> +    /// allocation remains valid for the lifetime of the [`IccPath`].
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// The following example demonstrates hwo to obtain and configure an interconnect path for
-> +    /// a device.
-> +    ///
-> +    /// ```
-> +    /// use kernel::icc_path::{IccPath, IccBwUnit};
-> +    /// use kernel::device::Device;
-> +    /// use kernel::error::Result;
-> +    ///
-> +    /// fn poke_at_bus(dev: &Device) -> Result {
-> +    ///     let bus_path = IccPath::of_get(dev, Some(c_str!("bus")))?;
-> +    ///
-> +    ///     bus_path.set_bw(
-> +    ///         IccBwUnit::from_megabits_per_sec(400),
-> +    ///         IccBwUnit::from_megabits_per_sec(800)
-> +    ///     )?;
-> +    ///
-> +    ///     // bus_path goes out of scope and self-disables if there are no other users
-> +    ///
-> +    ///     Ok(())
-> +    /// }
-> +    /// ```
-> +    #[repr(transparent)]
-> +    pub struct IccPath(*mut bindings::icc_path);
-> +
-> +    impl IccPath {
-> +        /// Get [`IccPath`] corresponding to a [`Device`]
-> +        ///
-> +        /// Equivalent to the kernel's of_icc_get() API.
-> +        pub fn of_get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
-> +            let id = name.map_or(ptr::null(), |n| n.as_ptr());
-> +
-> +            // SAFETY: It's always safe to call [`of_icc_get`]
-> +            //
-> +            // INVARIANT: The reference count is decremented when [`IccPath`] goes out of scope
-> +            Ok(Self(from_err_ptr(unsafe {
-> +                bindings::of_icc_get(dev.as_raw(), id)
-> +            })?))
-> +        }
-> +
-> +        /// Obtain the raw [`struct icc_path`] pointer.
-> +        #[inline]
-> +        pub fn as_raw(&self) -> *mut bindings::icc_path {
-> +            self.0
-> +        }
-> +
-> +        /// Enable the path.
-> +        ///
-> +        /// Equivalent to the kernel's icc_enable() API.
-> +        #[inline]
-> +        pub fn enable(&self) -> Result {
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for `icc_enable`].
-> +            to_result(unsafe { bindings::icc_enable(self.as_raw()) })
-> +        }
-> +
-> +        /// Disable the path.
-> +        ///
-> +        /// Equivalent to the kernel's icc_disable() API.
-> +        #[inline]
-> +        pub fn disable(&self) -> Result {
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for `icc_disable`].
-> +            to_result(unsafe { bindings::icc_disable(self.as_raw()) })
-> +        }
-> +
-> +        /// Set the bandwidth on a path
-> +        ///
-> +        /// Equivalent to the kernel's icc_set_bw() API.
-> +        #[inline]
-> +        pub fn set_bw(&self, avg_bw: IccBwUnit, peak_bw: IccBwUnit) -> Result {
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for [`icc_set_bw`].
-> +            to_result(unsafe {
-> +                bindings::icc_set_bw(
-> +                    self.as_raw(),
-> +                    avg_bw.as_kilobytes_per_sec(),
-> +                    peak_bw.as_kilobytes_per_sec(),
-> +                )
-> +            })
-> +        }
-> +    }
-> +
-> +    impl Drop for IccPath {
-> +        fn drop(&mut self) {
-> +            // SAFETY: By the type invariants, self.as_raw() is a valid argument for [`icc_put`].
-> +            unsafe { bindings::icc_put(self.as_raw()) }
-> +        }
-> +    }
-> +}
-> +
-> +// SAFETY: An `IccPath` is always reference-counted and can be released from any thread.
-> +unsafe impl Send for IccPath {}
-> +
-> +#[cfg(CONFIG_INTERCONNECT)]
-> +pub use icc_path::*;
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 87bcaa1c6b8a6291e71905e8dde60d945b654b98..60f6ac6e79cce57a8538ea0ad48f34f51af91731 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -89,6 +89,7 @@
->   pub mod fmt;
->   pub mod fs;
->   pub mod init;
-> +pub mod icc;
-
-Nit: formatting/missing space?
-
->   pub mod io;
->   pub mod ioctl;
->   pub mod jump_label;
-> 
+The compiler also warns about it (`unused_imports`).
 
 Thanks!
-Daniel
+
+Cheers,
+Miguel
