@@ -1,117 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2158A95C;
-	Wed, 23 Jul 2025 15:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753285927; cv=none; b=MH7OirecaDo+BxVXq7uwlZMtu3d9OyddliaP2Av01n+1Ki0CSzaLn1gzNy8Ks320M/QuvyEPxZfxDKWTzCbl5qQdC3S5xt4695frwrSmfe6vLOPX900dAZqgyBWLsN5pbwfski0cQkl9qdC25fFxns8GzU5IXv1Wbkgtg/QfP+E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753285927; c=relaxed/simple;
-	bh=qmx86GClRdTh+GmCFQ9s0XfZC0/2nNXkeIbHp8gEHAY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SuTRk8kFiHpLm91agQqPMsloVeZcomoQm25hlek/f7iqKKiahGjrlO+P+YR05vNyt4Xtww5P2LxKGQE2OG2QvMQl7wo9zayLcWtRlxjeUeCWBi1b+t6ukv0D7vlA55r/jUemdDDrdQ/LJiGW2Mvm3GUYXdwgMV7ktAU8DTEmuGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPEe0uZc; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDAA4A28;
+	Wed, 23 Jul 2025 16:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753286891; cv=pass; b=e3GV+mtPf+F+0CoYEas7bnJp/DsAr5wiW4Ior5Od0jHl6/IFbLSe/UQd0hihacvpfanpZQPdJCGdKHA1M7KbnP4dbFzvWngZXqiERHNqLADUHyT3jjeAOCoHRp4jiHickGJygzSDtVkWLci0iYjXM8Qm2pGqr2pRlAbHoTy7eQ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753286891; c=relaxed/simple;
+	bh=YsxEQ6Q7Rx0h54CXT9Nux+NoksdOzBkb/yyRR5d++vE=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=kem9V73StDFau3T57zeNwxa2DtlYAsw/75+xo6KFmleiKocF2B/jLpblKBbcwUVx0Rvug7TqX4U8iIgy2tCOQCoDkLmNMlHA3aUOtGN1WMEKfzxUGfm84z63X4hTgbvQBLqtVyu8BFA6yvHMJ8aoVi5RAUB8Iv9NqY87fMLNZXM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Wr4/+rr5; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPEe0uZc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C864BC4CEE7;
-	Wed, 23 Jul 2025 15:52:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753285927;
-	bh=qmx86GClRdTh+GmCFQ9s0XfZC0/2nNXkeIbHp8gEHAY=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=CPEe0uZchNTvxnafRpM7AFxu2Ioxl0xOwyIGJ3HBtJ3Xd4Yrc6TrlYeCTqLeemfvO
-	 2lHysHKURYajjzIDRE4LKHb04FVpOyqneT5a6Unoq05VmunQL1lYhjDB3s3/duoIH8
-	 q0eTkUvtOY98JL9IeXWiK+vLwGemTxAQ7pnZp5QTE5HopPWjqiEAswhtpFejkGJEMK
-	 vxwfo/om7nuVXa0F8GlQDuHb0KQnebXQZhSC3LZTtKU/qiuOzESxL0hYCnHsE3V86e
-	 BViQOMsbu198ff6bub+F2xKkGffbzJIM77Y8d8Ik4+RU6K8ZR+T5+4tTU7HkVUV+jU
-	 lkxaxSzLVESIQ==
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Wr4/+rr5"
+ARC-Seal: i=1; a=rsa-sha256; t=1753286870; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=QfCC2/+a3tzLaozm/pXkaPJx3cvaFYssQh5tenoBh3/0jbMgYv48sLymSJ0H+DPiRROFf0h/2cr468t7FnUc826c0JbzPWChF/omHcUo381QCTwCrHtX9HExwfhQEaTRYhx4zhCVzhyO6AiOt/FRCrOCT6kUhxRKJsO6C+Msp2s=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753286870; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=YsxEQ6Q7Rx0h54CXT9Nux+NoksdOzBkb/yyRR5d++vE=; 
+	b=irA3f94516eMpgLkTtEq+f3UDxB/x1yU4niyHWF1gyTF7R9M4e1DCmB7F9jcPBpkk/4GOyFs7kdoKSmuCqxxElCSuS+r31ju9Y/iNKUtr8G3awzJ87cUgnQWAl8EbjyO8hReDF8wETqTVhFDndJY6oytJaDMg2/ucWFa4u3u8Q0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753286870;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=YsxEQ6Q7Rx0h54CXT9Nux+NoksdOzBkb/yyRR5d++vE=;
+	b=Wr4/+rr5m62xvvrILqBHXmNvr9G/vUOnYc31SOcUXyBsPkMudu+HhvurboG9/njD
+	pdqWH3Q5EwMZuks59+c+yL4j2y7wSu7/opVHpup3bP/z2baePHh/9XKK+oAy1fUYdmZ
+	v4uLg12MbIm8ZZZSyNI4RavlfI8NXZlKCr6FAFPQ=
+Received: by mx.zohomail.com with SMTPS id 1753286868381777.8597804313176;
+	Wed, 23 Jul 2025 09:07:48 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 23 Jul 2025 17:52:02 +0200
-Message-Id: <DBJJZL9MXYSJ.3S4JQ14MK6N3B@kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
 Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and
  handlers
-Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, "Thomas Gleixner" <tglx@linutronix.de>, "Bjorn
- Helgaas" <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?=
- <kwilczynski@kernel.org>, "Benno Lossin" <lossin@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250715-topics-tyr-request_irq2-v7-0-d469c0f37c07@collabora.com> <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com> <aIBl6JPh4MQq-0gu@tardis-2.local> <ED19060D-265A-4DEF-A12B-3F5901BBF4F3@collabora.com> <aIDxFoQV_fRLjt3h@tardis-2.local> <7fa90026-d2ac-4d39-bbd8-4e6c9c935b34@kernel.org> <8742EFD5-1949-4900-ACC6-00B69C23233C@collabora.com> <DBJIY7IKSNVH.1Q2QD6X30GIRC@kernel.org> <aIEDbB_FcgHgzfKd@google.com>
-In-Reply-To: <aIEDbB_FcgHgzfKd@google.com>
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <aIEE4Tt7xtaX-9V9@tardis-2.local>
+Date: Wed, 23 Jul 2025 13:07:32 -0300
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?utf-8?Q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
+ Benno Lossin <lossin@kernel.org>,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ linux-pci@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CF821F27-7F78-4B3E-AF62-887341EAA7BE@collabora.com>
+References: <20250715-topics-tyr-request_irq2-v7-0-d469c0f37c07@collabora.com>
+ <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
+ <aIBl6JPh4MQq-0gu@tardis-2.local>
+ <ED19060D-265A-4DEF-A12B-3F5901BBF4F3@collabora.com>
+ <aIDxFoQV_fRLjt3h@tardis-2.local>
+ <95A7ACD9-8D0D-41FB-A0C0-691B699CBA17@collabora.com>
+ <aIEE4Tt7xtaX-9V9@tardis-2.local>
+To: Boqun Feng <boqun.feng@gmail.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Wed Jul 23, 2025 at 5:44 PM CEST, Alice Ryhl wrote:
-> On Wed, Jul 23, 2025 at 05:03:12PM +0200, Danilo Krummrich wrote:
->> On Wed Jul 23, 2025 at 4:56 PM CEST, Daniel Almeida wrote:
->> >> On 23 Jul 2025, at 11:35, Danilo Krummrich <dakr@kernel.org> wrote:
->> >> On 7/23/25 4:26 PM, Boqun Feng wrote:
->> >>> On Wed, Jul 23, 2025 at 10:55:20AM -0300, Daniel Almeida wrote:
->> >>> But sure, this and the handler pinned initializer thing is not a blo=
-cker
->> >>> issue. However, I would like to see them resolved as soon as possibl=
-e
->> >>> once merged.
->> >>=20
->> >> I think it would be trivial to make the T an impl PinInit<T, E> and u=
-se a
->> >> completion as example instead of an atomic. So, we should do it right=
- away.
->> >>=20
->> >> - Danilo
->> >
->> >
->> > I agree that this is a trivial change to make. My point here is not to=
- postpone
->> > the work; I am actually somewhat against switching to completions, as =
-per the
->> > reasoning I provided in my latest reply to Boqun. My plan is to switch=
- directly
->> > to whatever will substitute AtomicU32.
+[=E2=80=A6]
+
 >>=20
->> I mean, Boqun has a point. AFAIK, the Rust atomics are UB in the kernel.
 >>=20
->> So, this is a bit as if we would use spin_lock() instead of spin_lock_ir=
-q(),
->> it's just not correct. Hence, we may not want to showcase it until it's =
-actually
->> resolved.
+>> Because it is not as explicit. The main thing we should be conveying =
+to users
+>> here is how to get a &mut or otherwise mutate the data when running =
+the
+>> handler. When people see AtomicU32, it's a quick jump to "I can make =
+this work
+>> by using other locks, like SpinLockIrq". Completions hide this, IMHO.
 >>=20
->> The plain truth is, currently there's no synchronization primitive for g=
-etting
->> interior mutability in interrupts.
->
-> Is the actual argument here "we are getting rid of Rust atomics in the
-> next cycle, so please don't introduce any more users during the next
-> cycle because if you do it will take one cycle longer to get rid of
-> all Rust atomics"?
+>=20
+> I understand your argument. However, I'm not sure the example of
+> `irq::Registration` is the right place to do this. On one hand, it's =
+one
+> of the usage of interior mutability as you said, but on the other =
+hand,
+> for people who are familiar with interior mutability, the difference
+> between `AtomicU32` and `Completion` is not that much. That's kinda my
+> argument why using `Completion` in the example here is fine.
+>=20
+> Sounds reasonable?
+>=20
+>> It's totally possible for someone to see this and say "ok, I can call
+>> complete() on this, but how can I mutate the data in some random T =
+struct?",
+>> even though these are essentially the same thing from an interior =
+mutability
+>> point of view.
+>>=20
+>=20
+> We probably better assume that interior mutability is commmon =
+knowledge
+> or we could make an link to some documentation of interior mutability,
+> for example [1], in the documentation of `handler`. Not saying your
+> effort and consideration is not valid, but at the project level,
+> interior mutability should be widely acknowledged IMO.
+>=20
+> [1]: https://doc.rust-lang.org/reference/interior-mutability.html
+>=20
+> Regards,
+> Boqun
+>=20
+>> -- Daniel
 
-That's an argument as well, I guess.
+I do expect mostly everbody (except brand-new newcomers) to be aware of
+interior mutability. What I don't expect is for people _immediately_ see =
+that
+it's being used in Completion, and connect the dots from there.
 
-> I can accept that argument. But I don't accept the argument that we
-> shouldn't use them here because of the UB technicality. That is an
-> isolated demand for rigor and I think it is unreasonable. Using Rust
-> atomics is an accepted workaround until the LKMM atomics land.
+Keyword here being "immediately", users will naturally realize this in a =
+couple
+of minutes at max, of course.
 
-I think there's a difference between actually needing them and using them t=
-o
-showcase something. Or in other words, limiting workarounds to only those p=
-laces
-where we can't avoid them seems like the correct thing to do.
+Anyways, I guess we can use Completion then. TBH I wasn't aware of the =
+UB
+thing, so I can see how you also have a point. On top of that, we can =
+use the
+words "interior mutability" somewhere in the example as well to make it =
+even
+clearer.
 
-Using a completion in the hard IRQ and showing a spinlock or mutex example =
-in
-the threaded handler seems like a good mix to me.
+I'll change it for v8.
+
+-- Daniel
+
+
