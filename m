@@ -1,101 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF712F85FE;
-	Wed, 23 Jul 2025 15:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7A52F5085;
+	Wed, 23 Jul 2025 15:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753283001; cv=none; b=RMHNVwQ72OB97AZt+etlG7uUPbvnO/kOiIwKjzjjscqDkBhcwl5brQA/AV+aZr9EUq8DnRiQoQU9N/QimnXk9vup/JnbMZk7/OCo1rGXj3JNP6xV1G/+L18X5O0S+5kU61v+xCe64STaSw4Uu9nJ8mFn+8VuAJgaQk+6NxNzIM0=
+	t=1753283953; cv=none; b=ZiHsINpT6EYtOA2r6C60R3hTzRz7zE/yQS3oVuKs05uAa7HuZpXT/fcq0xHoQTTW8fq7GC6BcXE5up9KWJFHlUZ0l14D5vpgTQu+HhPilwC3QDYFJZB1EPZLOJ/znNW76A10GSvxrlLJSdQ2wJA0+SUuxOS2s6pv6BjDyADg7hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753283001; c=relaxed/simple;
-	bh=WWTb+6ti3vUKjHVhd54re/0m6tya3/HZoN8eV4EAb/o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=fwsdjZ+WAlGAXyvpzn6dgUInlgcSo44gDIqR2A5hxwNXP5SrSnducR07JwSH8Ol+LcJDL/mDkd+amfcsm42yXlVKTvXt/dTuZwVx+Nm6BiHEpl3x1geTpvM0XI7CdMIJSaHdJaKuImHU818aSSJP6cbbm/F7arS77ZgeiVHoEmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVLbBCAc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753283953; c=relaxed/simple;
+	bh=aKYxJLq4l/0NHHzMLA1J8KQdNp/rHfNp1Iie2v3oYAk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hn2O5RUmxvESRGloyJItrJXtTOhhxdneiu57arJWv+Y63fAk3Qx4vNCssYjM+BH+xb68gd+yKPFd9oMRUS4kOFTnAtJE3JJiLxjDeofoiVH+V8ZidfxJgKBV0lHsddB/FdcgES0XkxUj7Q1LrWgoWoUqNeZy9Z5pu6UQ9y6p354=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=La7ETE7D; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVLbBCAc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADEBC4CEE7;
-	Wed, 23 Jul 2025 15:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753282997;
-	bh=WWTb+6ti3vUKjHVhd54re/0m6tya3/HZoN8eV4EAb/o=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=hVLbBCAcYVOFDM3Nyy2EgZ5pZ/3YXoCq0ii5ijFaDiFBQqaXqkhnxkeTUugCyFx4z
-	 RPypRjiyLJwhKj3HfE+SMxuYbHm4mdO6Rq2R+0sRPj0WwMmNpoL7qFrQDtLLBeTsoF
-	 AMwDa0smanMdbwJLs5SRYWsUSPYUMCEpADLetJpZFGzeQF4QQJkhHpURZztRQT6btD
-	 /ky5+nrz6fow1kPuA2kgmOeNHInktm3LbTFmm+0T07MlYhfOntAjRrvzaEHw1+LWO8
-	 4sESgJX/PjiAyJ2xDGzQjvpJ+fU7ggTbcOBxbqdJS9ZsJ40RRd/05soWrIFPptKu8C
-	 NpJ8HZMJ1CmvA==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="La7ETE7D"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-32cdc9544ceso61019041fa.0;
+        Wed, 23 Jul 2025 08:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753283950; x=1753888750; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aKYxJLq4l/0NHHzMLA1J8KQdNp/rHfNp1Iie2v3oYAk=;
+        b=La7ETE7DNx4+5Au4Le2eQEpz3WjN76vVRlGZpvaPy6CaY20m160kRRofZqjViWFUnL
+         l6M9OEBR2/rImQMUDMS9/nCwJW0vpZBJ06GjCo7ijdfGE+SvrT9NAViOJtVtCdmIlfoQ
+         OJtHuw2NBz//7mtPJFsRhbIPum4+Qx9Yy55VWr/4AoHlNkYu/QkACyZ32QL/+RTOvHw+
+         o9OqY6jnFNB/D6OIUnMRJ3AVrXbko38EFl9FEZLdBpNbNduXLE7nP/TF1TpBJv8OphP7
+         mb3ow1LF4YdvIbr+t8BFlnYkrQ3G00D/04yl87rq0i1uedsxhcFjIkL+f058TgJ8lNJk
+         xH+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753283950; x=1753888750;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aKYxJLq4l/0NHHzMLA1J8KQdNp/rHfNp1Iie2v3oYAk=;
+        b=k+JHKHkynIqZnQHYCbI4O4qmS+ix+0aZ6dGXbDxmAcKg/7QVYty1Z/AVjCNNbCXCjt
+         zHCdN8KjmQILzWfVD4fF0ZznDu8rbLMSt5wMt1ku7UaTPsrqfDAGhjO8nMpCTaU26uhw
+         iheeXja8nZWiwYIYg6uOZOJ7ThQeoNYjKvbACW4JQ7WcCquIq7PiGxCO30sRc0D78UUf
+         4JS2KMQPn6ISPXd4f3YO5W6tDnwAiGFZpfsKMU3wZgtBs82AXXIotKKnlKgaGL2srvV7
+         2FagXFz/R7WWFHvHu5ROztk7eRs809n5qXuFEI9ic6Gz916NKdtc5DGC/sE0lVrengsj
+         isOA==
+X-Forwarded-Encrypted: i=1; AJvYcCU90x8LSHTf6hVb3Rs90ZZukRq0+59s3p6YjopwlRF5JX8iWxbp+YRUIxfL3ylcVLawMhC4KzEAJBy63nk=@vger.kernel.org, AJvYcCV9iuh1eWzMmDm2K5rICwKwWpZnxT2xRpixxtqaDk5Ib0lOn+EtLaZdO9hA1xB51VZhr4N7k21k7Rc2XRbjaD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL85R5kULNWDg1J45KRNVwVeDUenTA3CxlPU+7bTqviMX4vQJV
+	A0c9B1if8SqVLpC0w/06kgAKgPOz/RR6v5Ts/MQtXKSTF8TcPVTwOnLCeqmnhVce89haEdw3O3U
+	cCMGUCXqAA74bzGurICDmXzzDO2+TFVI=
+X-Gm-Gg: ASbGnctoD5Kbbhvsu8qGxtLMB/pVZugJfnb/SMUGqTHxChRZKAVfIf9e7vzu/GUxj51
+	RnAds0aoDK2qCHcZlLQuGMXtdiwBeFjhODfgwhtYyZRUgQH+hwIwFvVxRE1tHzP6VPGsPpCKucN
+	qF78grhs6AzSowe6pMkDBHoEG5gEAp7AE0fHIXu5SdwQXmw/EhWtb6r8XARms+OI1aMxLvfWB8r
+	5/oDZa9
+X-Google-Smtp-Source: AGHT+IGJk+cnSNB5dmZjA4F277uweM9qQmlzoDKYZhZ23tSm7g4ZL+8uSgmn2lon8w/gtCjba8umd38UVFMHQbqvdlA=
+X-Received: by 2002:a05:651c:904:b0:32c:a907:491f with SMTP id
+ 38308e7fff4ca-330dfcb6d4cmr9134451fa.15.1753283949057; Wed, 23 Jul 2025
+ 08:19:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250720-rust-remove-compiler-builtins-deps-v3-1-0df3a493973f@gmail.com>
+ <CANiq72m=vYbZZPwF9u9PQJ7Jce0KPR7jPybk3AHV50U9fOmEvQ@mail.gmail.com>
+In-Reply-To: <CANiq72m=vYbZZPwF9u9PQJ7Jce0KPR7jPybk3AHV50U9fOmEvQ@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Wed, 23 Jul 2025 11:18:32 -0400
+X-Gm-Features: Ac12FXwWBKGVYSeoUZtcO8393_I6OiMdBpRjfrnt92VkxrRDihDu3wCrwQiSyrY
+Message-ID: <CAJ-ks9kuCTnmhJRJyuuyGST-W_9TDQkg8iWm3YoOtP7_d_NR0w@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: remove spurious compiler_builtins dependents
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 23 Jul 2025 17:03:12 +0200
-Message-Id: <DBJIY7IKSNVH.1Q2QD6X30GIRC@kernel.org>
-Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and
- handlers
-Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C2=B4nski?=
- <kwilczynski@kernel.org>, "Benno Lossin" <lossin@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-pci@vger.kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250715-topics-tyr-request_irq2-v7-0-d469c0f37c07@collabora.com> <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com> <aIBl6JPh4MQq-0gu@tardis-2.local> <ED19060D-265A-4DEF-A12B-3F5901BBF4F3@collabora.com> <aIDxFoQV_fRLjt3h@tardis-2.local> <7fa90026-d2ac-4d39-bbd8-4e6c9c935b34@kernel.org> <8742EFD5-1949-4900-ACC6-00B69C23233C@collabora.com>
-In-Reply-To: <8742EFD5-1949-4900-ACC6-00B69C23233C@collabora.com>
 
-On Wed Jul 23, 2025 at 4:56 PM CEST, Daniel Almeida wrote:
->> On 23 Jul 2025, at 11:35, Danilo Krummrich <dakr@kernel.org> wrote:
->> On 7/23/25 4:26 PM, Boqun Feng wrote:
->>> On Wed, Jul 23, 2025 at 10:55:20AM -0300, Daniel Almeida wrote:
->>> But sure, this and the handler pinned initializer thing is not a blocke=
-r
->>> issue. However, I would like to see them resolved as soon as possible
->>> once merged.
->>=20
->> I think it would be trivial to make the T an impl PinInit<T, E> and use =
-a
->> completion as example instead of an atomic. So, we should do it right aw=
-ay.
->>=20
->> - Danilo
+On Mon, Jul 21, 2025 at 8:25=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
+> On Sun, Jul 20, 2025 at 7:20=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
+m> wrote:
+> >
+> > Remove these dependency edges.
 >
-> I agree that this is a trivial change to make. My point here is not to po=
-stpone
-> the work; I am actually somewhat against switching to completions, as per=
- the
-> reasoning I provided in my latest reply to Boqun. My plan is to switch di=
-rectly
-> to whatever will substitute AtomicU32.
+> I should have replied in previous versions: this is wrong -- the 3
+> changes each individually break the build.
+>
+> I guess that you are not cleaning everything in your tests before
+> testing the build.
 
-I mean, Boqun has a point. AFAIK, the Rust atomics are UB in the kernel.
+You're absolutely right, this patch is incorrect. I was indeed not
+blowing away build artifcats.
 
-So, this is a bit as if we would use spin_lock() instead of spin_lock_irq()=
-,
-it's just not correct. Hence, we may not want to showcase it until it's act=
-ually
-resolved.
-
-The plain truth is, currently there's no synchronization primitive for gett=
-ing
-interior mutability in interrupts.
-
-You can use a normal spinlock or mutex in the threaded handler though.
-
-And in the hard IRQ you can use a completion to indicate something has
-completed.
-
-Once we have proper atomics and spin_lock_irq() we can still change it.
-
-> The switch to impl PinInit is fine.
+Thanks Miguel.
