@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4343F221FD4
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 23:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A4D273817;
+	Thu, 24 Jul 2025 00:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753315199; cv=none; b=Rwt25NSXEVs6HN3ppMFeVBE+fMwSOqN7rkUvzms4tLA6i7gDPLGySqGJ410kEQ5l7uOv9aIq/hYzAte62+ftkfIkvuFzEnc90Q81gve3aK1L/nkxJnlg8vBSht4mZS4CY/2IiCjM7T8cTO+HWfIcTWFN8PzcaYBbaZlNnA84oCY=
+	t=1753315209; cv=none; b=nn4UbYD2s1FNhcjOan0gKIW0ZH8pEB8WZxVkndAlAFjlatCXif2ZD1TtvOAQUBuRcBAkxXRS/WN820YvFIJs02hOZv2gjx2iXlzQeD3qhDhu84ZT+fRLV92MuUZ/lTE37tVYTrbco1vbO1a7MqjHQM74Cy5eCT3RwBvjCWX+k7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753315199; c=relaxed/simple;
-	bh=UM8c77SlwLcQtJkFc/yXW/vvOkjnWnE/B8a7F1zHWS4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HzPIAOIEW0vTHeyE3vLM0FTS3TJo7yT19eXSBuX60YDZWV7cnVi8xbiBNsGG2WfWsylB9on/+Xb/6J6DBPFeKkwa8xiqgQGwOmmjYtqBIx4rlsX/GbB8hnYgyQdqmi+DzHGCelG28ljeyaMezPeYcWbJm0l9bOuspP+EyKpLZhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k2Xi+dqr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753315209; c=relaxed/simple;
+	bh=pdNqX9QyZwcd0g+aDfgqrfhZ2FNoP+4OScX7UxFdOA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=poHjRYo+uFfm3ttqgPBS1Jf2drcIOxaTk7tXftPtNjbyi/e5mj1NbJL5RwZsfpgh9f+wb3Z53+4QpWbeCT2a39HviPOBv4EZGfD1WZjlRYs1MlAIlNeMUX22Ood5XwsP1Q79CoSAbovJ9F7AjfhJ8rOHtGLoLx70tNjPnaq0lmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4E23MV3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k2Xi+dqr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACBCC4CEE7;
-	Wed, 23 Jul 2025 23:59:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4E23MV3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354BEC4CEEF;
+	Thu, 24 Jul 2025 00:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753315198;
-	bh=UM8c77SlwLcQtJkFc/yXW/vvOkjnWnE/B8a7F1zHWS4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=k2Xi+dqrpOXb+ZtA6fDze14tJ4d+EW8cmOD38GnXJGEMiIqtjOCqAltTFA2RO+sjs
-	 8GVLRI6UkEL8AH1jA5TEy/F6sRAbj6tGim7RZLzjyJdXKoNvGmYh2noQ2elcuqaLsw
-	 wgsBnmbGsypqGJFaC6XkxZcLdXw4vfEV4fpVTdpC7+0R/pHZhJ/n56cOembnNbfOEt
-	 XOuzTPt8yKJaods6/h0Yxsl9JV4aqWqYHe4dGTBK2lfMTsHMh2VSWwrcBRDJPrCYRr
-	 vRjgIlJvd35su7TR23yIcofcEZcZsyWO2qXR04khQ7YwPzmwqC1FixJM+Ki7TE+W5J
-	 dZsc4uygRuDYg==
+	s=k20201202; t=1753315208;
+	bh=pdNqX9QyZwcd0g+aDfgqrfhZ2FNoP+4OScX7UxFdOA8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K4E23MV3cUL0srDHgYn1MhJXINDyBsDUVgQ+0P+jspP31uleWJHYQPuc8kz0Qa7wu
+	 QJmbN+C7u52hNNTKTVpE96wcYuy8TGeshYgiLHbIQrxqbJ7f+3bC6tETmZDOp7VpLY
+	 WeMYxi1tSYdsofJIA8POoqVJ4NBjMIR4Pq/nMsQXRrSKhcg2U2AC3VeiSZ+uVJkpsV
+	 b6LbSbIgsVvfhoIoo1+ECn4y34SJjQgT31IOZyhUKGHkgKt5ckX8iPGdB/6KKtGfix
+	 SC+HUq0qGGDi0yu0JZ5saVwHJ+TlCvdLmZ5Ysd1Db+zoMe+q7vkPGCw92jN0YyIUoi
+	 BVrN9gqFSkFkg==
 From: Gary Guo <gary@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -35,15 +36,25 @@ To: Miguel Ojeda <ojeda@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: Will Deacon <will@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Mark Rutland <mark.rutland@arm.com>,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v5 0/5] implement `kernel::sync::Refcount` and convert users
-Date: Thu, 24 Jul 2025 00:32:53 +0100
-Message-ID: <20250723233312.3304339-1-gary@kernel.org>
+	Tamir Duberstein <tamird@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Mitchell Levy <levymitchell0@gmail.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Cc: rust-for-linux@vger.kernel.org,
+	Fiona Behrens <me@kloenk.dev>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 1/5] rust: implement `kernel::sync::Refcount`
+Date: Thu, 24 Jul 2025 00:32:54 +0100
+Message-ID: <20250723233312.3304339-2-gary@kernel.org>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250723233312.3304339-1-gary@kernel.org>
+References: <20250723233312.3304339-1-gary@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,71 +65,171 @@ Content-Transfer-Encoding: 8bit
 
 From: Gary Guo <gary@garyguo.net>
 
-Currently there're two refcount usage in rust/, `Arc` and `block::mq`.
-`Arc` uses `refcount_t` with FFI calls directly, and `block::mq` use
-Rust atomics and custom refcounting.
+This is a wrapping layer of `include/linux/refcount.h`. Currently the
+kernel refcount has already been used in `Arc`, however it calls into
+FFI directly.
 
-This series consolidate them to have a single `Refcount` which wraps
-`refcount_t` and have it used by both.
-
-With the removal of Rust `AtomicU64` this would also make the code work
-for 32-bit systems. See [1] as a previous attempt to fix this issue.
-
-Cc: Will Deacon <will@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/rust-for-linux/20240905061214.3954271-1-davidgow@google.com/ [1]
-
-Changes in v5:
-- Forbid using `Refcount::new()` with already-saturated initial value.
-  (`Refcount::set` can still set value to the saturated range, as
-  users may want to set it to a runtime value that the compiler cannot
-  easily determine to be non-negative).
-- Moved a documentation comment from one commit to another following
-  Benno's suggestion
-- Link to v4: https://lore.kernel.org/rust-for-linux/20250622125802.3224264-1-gary@kernel.org/
-
-Changes in v4:
-- Move justification on why `&Refcount` is okay when used for reference
-  coutning into the `Refcount::dec_and_test` documentation comment.
-- Split `Arc::into_unique_or_drop` signature change into another patch.
-- Wording/comment changes
-- Link to v3: https://lore.kernel.org/rust-for-linux/20250219201602.1898383-1-gary@garyguo.net/
-
-Changes in v3:
-- Drop `dec_not_one` and revert to `dec_and_test`/`set` as the former
-  lacks acquire semantics.
-- Move a `use` statement from patch 1 to correct place (patch 3).
-- Update maintainer entry to include refcount.rs and add myself as a
-  reviewer, as suggested by Boqun.
-- Link to v2: https://lore.kernel.org/rust-for-linux/20241221183024.3929500-1-gary@garyguo.net
-
-Changes in v2:
-- `Refcount::read` method is dropped
-- `Refcount::dec_not_one` method is added and `Arc::into_unique_or_drop`
-  is converted to use it.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20241004155247.2210469-1-gary@garyguo.net
-
-Gary Guo (5):
-  rust: implement `kernel::sync::Refcount`
-  rust: make `Arc::into_unique_or_drop` associated function
-  rust: convert `Arc` to use `Refcount`
-  rust: block: convert `block::mq` to use `Refcount`
-  MAINTAINERS: update atomic infrastructure entry to include Rust
-
- MAINTAINERS                        |   2 +
- rust/helpers/refcount.c            |  10 +++
- rust/kernel/block/mq/operations.rs |   7 +-
- rust/kernel/block/mq/request.rs    |  63 +++++-----------
- rust/kernel/sync.rs                |   2 +
- rust/kernel/sync/arc.rs            |  55 +++++---------
- rust/kernel/sync/refcount.rs       | 112 +++++++++++++++++++++++++++++
- 7 files changed, 165 insertions(+), 86 deletions(-)
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Signed-off-by: Gary Guo <gary@garyguo.net>
+---
+ rust/helpers/refcount.c      | 10 ++++
+ rust/kernel/sync.rs          |  2 +
+ rust/kernel/sync/refcount.rs | 98 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 110 insertions(+)
  create mode 100644 rust/kernel/sync/refcount.rs
 
-
-base-commit: cc84ef3b88f407e8bd5a5f7b6906d1e69851c856
+diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
+index d6adbd2e45a18..d175898ad7b81 100644
+--- a/rust/helpers/refcount.c
++++ b/rust/helpers/refcount.c
+@@ -7,11 +7,21 @@ refcount_t rust_helper_REFCOUNT_INIT(int n)
+ 	return (refcount_t)REFCOUNT_INIT(n);
+ }
+ 
++void rust_helper_refcount_set(refcount_t *r, int n)
++{
++	refcount_set(r, n);
++}
++
+ void rust_helper_refcount_inc(refcount_t *r)
+ {
+ 	refcount_inc(r);
+ }
+ 
++void rust_helper_refcount_dec(refcount_t *r)
++{
++	refcount_dec(r);
++}
++
+ bool rust_helper_refcount_dec_and_test(refcount_t *r)
+ {
+ 	return refcount_dec_and_test(r);
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 63c99e015ad6f..43bbc21134c14 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -16,6 +16,7 @@
+ mod locked_by;
+ pub mod poll;
+ pub mod rcu;
++mod refcount;
+ 
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+ pub use completion::Completion;
+@@ -24,6 +25,7 @@
+ pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
+ pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
+ pub use locked_by::LockedBy;
++pub use refcount::Refcount;
+ 
+ /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+ #[repr(transparent)]
+diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
+new file mode 100644
+index 0000000000000..3ff4585326b41
+--- /dev/null
++++ b/rust/kernel/sync/refcount.rs
+@@ -0,0 +1,98 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Atomic reference counting.
++//!
++//! C header: [`include/linux/refcount.h`](srctree/include/linux/refcount.h)
++
++use crate::build_assert;
++use crate::types::Opaque;
++
++/// Atomic reference counter.
++///
++/// This type is conceptually an atomic integer, but provides saturation semantics compared to
++/// normal atomic integers. Values in the negative range when viewed as a signed integer are
++/// saturation (bad) values. For details about the saturation semantics, please refer to top of
++/// [`include/linux/refcount.h`](srctree/include/linux/refcount.h).
++///
++/// Wraps the kernel's C `refcount_t`.
++#[repr(transparent)]
++pub struct Refcount(Opaque<bindings::refcount_t>);
++
++impl Refcount {
++    /// Construct a new [`Refcount`] from an initial value.
++    ///
++    /// The initial value should be non-saturated.
++    #[inline]
++    pub fn new(value: i32) -> Self {
++        build_assert!(value >= 0, "initial value saturated");
++        // SAFETY: There are no safety requirements for this FFI call.
++        Self(Opaque::new(unsafe { bindings::REFCOUNT_INIT(value) }))
++    }
++
++    #[inline]
++    fn as_ptr(&self) -> *mut bindings::refcount_t {
++        self.0.get()
++    }
++
++    /// Set a refcount's value.
++    #[inline]
++    pub fn set(&self, value: i32) {
++        // SAFETY: `self.as_ptr()` is valid.
++        unsafe { bindings::refcount_set(self.as_ptr(), value) }
++    }
++
++    /// Increment a refcount.
++    ///
++    /// It will saturate if overflows and `WARN`. It will also `WARN` if the refcount is 0, as this
++    /// represents a possible use-after-free condition.
++    ///
++    /// Provides no memory ordering, it is assumed that caller already has a reference on the
++    /// object.
++    #[inline]
++    pub fn inc(&self) {
++        // SAFETY: self is valid.
++        unsafe { bindings::refcount_inc(self.as_ptr()) }
++    }
++
++    /// Decrement a refcount.
++    ///
++    /// It will `WARN` on underflow and fail to decrement when saturated.
++    ///
++    /// Provides release memory ordering, such that prior loads and stores are done
++    /// before.
++    #[inline]
++    pub fn dec(&self) {
++        // SAFETY: `self.as_ptr()` is valid.
++        unsafe { bindings::refcount_dec(self.as_ptr()) }
++    }
++
++    /// Decrement a refcount and test if it is 0.
++    ///
++    /// It will `WARN` on underflow and fail to decrement when saturated.
++    ///
++    /// Provides release memory ordering, such that prior loads and stores are done
++    /// before, and provides an acquire ordering on success such that memory deallocation
++    /// must come after.
++    ///
++    /// Returns true if the resulting refcount is 0, false otherwise.
++    ///
++    /// # Notes
++    ///
++    /// A common pattern of using `Refcount` is to free memory when the reference count reaches
++    /// zero. This means that the reference to `Refcount` could become invalid after calling this
++    /// function. This is fine as long as the reference to `Refcount` is no longer used when this
++    /// function returns `false`. It is not necessary to use raw pointers in this scenario, see
++    /// https://github.com/rust-lang/rust/issues/55005.
++    #[inline]
++    #[must_use = "use `dec` instead if you do not need to test if it is 0"]
++    pub fn dec_and_test(&self) -> bool {
++        // SAFETY: `self.as_ptr()` is valid.
++        unsafe { bindings::refcount_dec_and_test(self.as_ptr()) }
++    }
++}
++
++// SAFETY: `refcount_t` is thread-safe.
++unsafe impl Send for Refcount {}
++
++// SAFETY: `refcount_t` is thread-safe.
++unsafe impl Sync for Refcount {}
 -- 
 2.49.0
 
