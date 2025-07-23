@@ -1,134 +1,109 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE8C286D62;
-	Wed, 23 Jul 2025 09:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF5F28A706;
+	Wed, 23 Jul 2025 10:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753264338; cv=none; b=sMVlv+1B3mEVkbyMY5OnmAsHTWikUPw+BwtaoaroCLgnlonLOAMOsWcX9DvAlvzh39IBUPgmvhhfkqwxhLPm8rM42bzJbRg4Y0GTOI5qE2lWcsdQR+3G79HIZqlk+I1MEaMUKRwNJswqV5EPXD+YpBSncu9oe9pgmizK03m4LTs=
+	t=1753266176; cv=none; b=E8bbJ831xr2NaDGXWHMFkWPSZOtKPpQULl479nv2sQ4s+BoE5R1+5oglhOncwukUS5+G47GkQubNfI0Wi3D6puJaN4pyw0ibQy6Oriqn5Zl2GuKE4QNfGT4Ety/BKDiEgmDmpJ1FQwX67nqqHqHOdWLi5cFSu8Zv4PB5xQT1rBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753264338; c=relaxed/simple;
-	bh=N/dbalNatsU+qJPlZyF8dzo8wixIe5QIEqdKyRkmytU=;
+	s=arc-20240116; t=1753266176; c=relaxed/simple;
+	bh=Bfx76TzIghN5u+qtfFanMhMreHrl+v998hIMT1LtYtY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T5TPqthmNoTnpWyeSFj5AeapZ6XhOOR1MMVwwlNme/G1qAex+5i1dPlqt0YAmgovhHOKpIjONrhE78i6MkhkfJNjx8FGmLKrBiLjOTdFbgAOSqHrL51nk7wqiqa8ng2CnJ/1ToF/UH0Zx0b2x6QNFru+WJkrRYcAsEgBI3g1Ixc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dTnl6RyJ; arc=none smtp.client-ip=209.85.216.54
+	 To:Cc:Content-Type; b=LnsuW76xrbLEeeyKarEeYd154tUoXNtzGsPnZWvASzWN5rK/Jq7mI65aWsD0jwWhqvdFAu05IjoWaUEYdu1QlimfWp9/zDEf5FPiwlXj/DGlIcqu3MOI6cebpAWAhh1ZreAa+3gPEh+cEZ+o966JHJ5zghkTQXWMQqMPHnSQHDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SnUunGsB; arc=none smtp.client-ip=209.85.216.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dTnl6RyJ"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-312efc384fcso300607a91.3;
-        Wed, 23 Jul 2025 02:52:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SnUunGsB"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-312efc384fcso304148a91.3;
+        Wed, 23 Jul 2025 03:22:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753264336; x=1753869136; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753266174; x=1753870974; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V+/dV0S/yM5ebUUQww27WfFYh9svGL82SiTI5/e7B7U=;
-        b=dTnl6RyJ4TUIVoJmqUuDJYhoEObZ+jPz20Uwkq4Ex0TwNhW82mw79oWBi3sdAkFlWv
-         LYdzUY71UlUuTTW5eBAYIiEtAx8sFaCBAgRIcxS7j6NU6ICaSjB+ZpFrCyHJu1ib6+jN
-         1nLYAt0UhfxMn51VlbBgUz2WRJXk/ZlfD2u+E+lJCi50bZHViwInbmr3jyQ1GYXiwv72
-         Oa0a/hlP+9BikAWge6Tdb0m/bOLIvjtjvdjJNrGNlnXutHeQHwnAwweEopcvN8xXzw1w
-         t8kGEsTBW8DdVb0krsGX4PXwYFRtLsAVwwo5m2oYKpbjoP3zuE04Spx8B8leBvbVSkKf
-         JVVg==
+        bh=Bfx76TzIghN5u+qtfFanMhMreHrl+v998hIMT1LtYtY=;
+        b=SnUunGsBSQ3xVZtDwOq7DhkgWnOcE2yEdNovOQsx5uDKQSNFBBPSzDn/aLyxV8qUwh
+         Bjem6d2NA925+sD5FIzk49URh1iQynIcuvMOQvO0UivWYlO4VG3P6ljS3Mp369AWCKI9
+         zRjxZCXKh9iXUuDJIszS7FaiMW8nRf5BxHSraf6BMXdC8wNUVmnriyzPgt0IMTA3KM2d
+         OCuH0Vdj44UUK0Wt4ECLRiuZFW83i1JO/hA1mmmze9RHSSP0UsTqRuI0OcKf3TzZIzt8
+         Tflp9E2OSPf3yPcoA93PHSHgtXYcILpGprMckPBZrXz0JM5gr9UYgzf3fLqOgu7nihRS
+         5blg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753264336; x=1753869136;
+        d=1e100.net; s=20230601; t=1753266174; x=1753870974;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V+/dV0S/yM5ebUUQww27WfFYh9svGL82SiTI5/e7B7U=;
-        b=X8otmHbftmGdNOH5Yqe4YuJQGdDDaw2o7WG4RgvRbVBrdwFRz4c7CfnNUpg1xPRqss
-         +8+5B1FFZQ6xr8qjcji2Xp/mv8FWnZmjgnpwF6hdJ66Iw8vCNAuuWmFU46NUmLUw2KDN
-         1sXLrX4rHoKGVs0S9xVPb0rKvLlx8V0BbfKyhX6Z7FXBcD4T9dgWZ29JRDrmP5LuWWWl
-         EH+n4Svca/DO1VIuSNs8CRnAMGOwa0nTbZ9pLJXHbKvt61kvPT5mRBjrPUlDxfDwMPjS
-         CB57gcOeFQDD/EeOqwjvWCvMeZYuc3J2CnzG3tQElOQ1iqRVsqzQOCnZ0jL9eUiuKY5z
-         RlZw==
-X-Forwarded-Encrypted: i=1; AJvYcCV6xzoJ3djBx5hodol06k67k/APIs8dQG6Hj1ePGiYQJgHQDFJ7ILbnBlFCRPqUtv0jvtvczC/xRwfoXtyM1w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEHE/NsZTFp+3hnpqVegBFrwhYo5o4IwA7dNN4t3p8NTaxrXOS
-	pigrp//6ljiMuFb4yY3cQoBaPLTehB/m3d9MVKD56xafFJLPB6ALkQNGabm0p+Dcj+qoqVrwkTy
-	8N+sOBznmNsPKCukARmZKKkKAzfYh2C0=
-X-Gm-Gg: ASbGncuzQT9f7pq6WyAeops+YTftB4FX9xmb83l4gnQguKiHgx4dkTt3eIcjr2LG8Vj
-	07zOLUcubUlM2udtB11IF88htKGKApYFNHArRzBaRzfCuOdun8389jlGJUvI+4ca4u24DxHSr0M
-	cusMRqyJC9l+I1YCQzE6kCmRXr9QeWp8Jmh1x4gQuzg8TdNsoeLBlK2RA8YEjSCihskqpir5pNP
-	RJGJyQr
-X-Google-Smtp-Source: AGHT+IF5yp3x1uoUnaGZMoJBe+fzYcdYddNENz2TuSijJoibHeDm9sWJWjMzhPHdSfVi3F/pn5nO7IChbp80rUU+c7Q=
-X-Received: by 2002:a17:90b:4a47:b0:312:e76f:520f with SMTP id
- 98e67ed59e1d1-31e5088598emr1376264a91.8.1753264336236; Wed, 23 Jul 2025
- 02:52:16 -0700 (PDT)
+        bh=Bfx76TzIghN5u+qtfFanMhMreHrl+v998hIMT1LtYtY=;
+        b=uEuRY1wFWujKuHtgAeoRfAOMdQHxAs/Och6q1vrRmPqyYi0Cu4GEEs4dyqbD3N//7i
+         6INiLTGrzd/kL12RHsQCzhatb7luSNk238dALjDNAayp6xzY4LIaa08utyiL5+5t54Qg
+         9nFmBwOez/uc+LXzJ2FFNsZqoFtQb4t0uzG9cV22oZugCwOrnoU3XuzT0tdL8czGYRHh
+         ZLoej795qS5s44zHnZHbd0i7GWx+nVN0To5ToFhCpLjqAxJQKTkU+z//k8WgdUC4fVC2
+         m8OApwD7IeqDbRYhv0yoEuKJDC43UUzMKBYNDgTufMgvEsTzmGG5D2kaXPSCYNhCGbCH
+         gwZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOtcbqiqZzawW/zY6ShJ6rPSU/xN7apBKKTDIeTe431Br2RB04fiL8GdQKgSBVhZTb7KWM/4ftxqR3SL+GwLw=@vger.kernel.org, AJvYcCW61yiD6jKI/sfdad9tVlhMXbb76JyfFAw9MQPtmsc7DAxJ9GAmSz3SiDm2z+SGaXTRzN5IankPHDU=@vger.kernel.org, AJvYcCWAZinCLX0lahdFfTnfy/xyCXVSbOmaGGirYfzhrtAEnxawqqkRw+a6w+lML9mqySiwjfNac3yVjRMVxf4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxztQb0yxctmPIQzPJW/Lm8Ss3exQQ1M2/TKrUNl87PIBDSbw48
+	8bSoqc1z8SImfbN+BjPQ5zTHkXrPNr3mhMiPUgB6oBh8c+v3QSwsv9ZCgNzYH6LhPeQxxDEV9pO
+	FNm1NrYHsefHNIIY8D0aWltDGoOvzrEo=
+X-Gm-Gg: ASbGncsW5LNUWeBT2LkN/wSL1Cl/wCOUlsKTxfTfC5PSsZ1Kc9sok0IfBeifgNxHMyK
+	m3jkzdVgtAEgPDwF8lsdAT2f7TIo2V+Dyk7jJIdF5RAQjmjWcyGLvWG8uGoFpd0blTiqlfGEELS
+	NuW2/8kf5oJqhogJAGGe/FUZTkA2P0tbMM25hLSdTqtralGBE3d1inDbcSMXbXy9hKPD9dxsjUT
+	DGXzaoH
+X-Google-Smtp-Source: AGHT+IFi6YW4dYbxSTyxUF0XmLqEjSwekl8kW2Ctm7AWzZEoUFjLYSBfJlYB0wSz623jmdDt3hYkJgZn1duQNrEVjFw=
+X-Received: by 2002:a17:90b:4d08:b0:310:cf92:7899 with SMTP id
+ 98e67ed59e1d1-31e50812d7cmr1562432a91.3.1753266173942; Wed, 23 Jul 2025
+ 03:22:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502094537.231725-1-fujita.tomonori@gmail.com>
- <CANiq72=Hr5rg7tYta8aUoxt8hOPjR2ik5_-xMWZwacr63=-7KA@mail.gmail.com> <20250723.152042.1300024463910400.fujita.tomonori@gmail.com>
-In-Reply-To: <20250723.152042.1300024463910400.fujita.tomonori@gmail.com>
+References: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
+In-Reply-To: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 23 Jul 2025 11:52:04 +0200
-X-Gm-Features: Ac12FXzZ5eWdKPVCRlnoxNrP6D3TFPlJaL8XzNsPkRFhVqP5xsNvOO-4LiDYGFY
-Message-ID: <CANiq72nLQkJo8voGONJBEgE8st7=A4RW7VP+W++SVCWse49n=Q@mail.gmail.com>
-Subject: Re: [PATCH v6 0/4] rust: Add bug/warn abstractions
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	x86@kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, peterz@infradead.org, hpa@zytor.com, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
-	kernel@xen0n.name, tangyouling@loongson.cn, hejinyang@loongson.cn, 
-	yangtiezhu@loongson.cn, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, dakr@kernel.org
+Date: Wed, 23 Jul 2025 12:22:40 +0200
+X-Gm-Features: Ac12FXwI7UlrHyralsnPXb4_3WAFplt92eODvFMDKQ-62apnp249DejCbkOTgLg
+Message-ID: <CANiq72kxcEywL4L6HEqn7AZa-jOBsw08jr+Kvjdwrd+iTOO_uQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Add initial interconnect (icc_path) Rust abstractions
+To: Konrad Dybcio <konradybcio@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Georgi Djakov <djakov@kernel.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 23, 2025 at 8:21=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Tue, Jul 22, 2025 at 11:14=E2=80=AFPM Konrad Dybcio <konradybcio@kernel.=
+org> wrote:
 >
-> The patch for arm64? I tried to minimize changes to the original code
-> so not intentional.
+> icc_path is in essence very similar to `struct clk`, so the newly
+> propsed bindings are understandably based on the corresponding
+> common_clk module.
+> This is the interconnect consumer part, with the corresponding ICC
+> provider changes coming in some near future.
+>
+> I attached a sample driver making use of these, to ease any testing
+> or CI work (as the title says, please don't merge it though).
 
-The riscv one, i.e. from the range diff:
+Thanks!
 
-    @@ arch/riscv/include/asm/bug.h: typedef u32 bug_insn_t;
-                "2:\n\t"                                        \
-     -                  __BUG_ENTRY "\n\t"                      \
-     -                  ".org 2b + %3\n\t"                      \
-    --                  ".popsection"                           \
-     +          __BUG_ENTRY(file, line, flags) "\n\t"           \
-     +                  ".org 2b + " size "\n\t"                \
-    -+                  ".popsection\n"                         \
-    +                   ".popsection"                           \
-     +
-     +#define __BUG_FLAGS(flags)                                        \
-     +do {                                                              \
+The usual two main questions for new abstractions are whether the
+maintainers of the C side want to see this happen (and how will it be
+maintained etc.) and what users of the abstractions are expected
+upstream.
 
-If you look into the `.popsection` line, your patch adds a newline,
-but I guess it was not intentional. In x86 there is a newline after
-the directive, but there we have `extra` afterwards.
-
-(I noticed since I went to expand the macros in a dummy file, given it
-can be something tricky to spot differences in the normal diff, but it
-is visible in the normal diff.)
-
-> Yeah, I followed the original code style.
-
-And here I meant (i.e. the first part of that paragraph) that:
-
-    -                    "\t.org 2b+%c1\n"                                 =
- \
-
-now generated those two spaces around it:
-
-    +       "\t.org 2b + " size "\n"                                       =
- \
-
-> I've just tested rust-next. Looks like all arches (x86, riscv, and
-> arm64) works as expected.
-
-Thanks a lot!
+For the first part, some subsystems prefer to maintain it themselves,
+others prefer to have someone else lead a separate sub-entry in
+`MAINTAINERS` (e.g. "... [RUST]"), possibly with its own branch too.
 
 Cheers,
 Miguel
