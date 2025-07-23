@@ -1,105 +1,126 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C571F582A;
-	Wed, 23 Jul 2025 20:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA13A22A1D4;
+	Wed, 23 Jul 2025 20:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753301604; cv=none; b=T+xgmTQsCNIkjAgQf68EGl4DOOT6vpJZm1CZDs5zuqOn0/16nNrPPJjj/J7lW9vN2xR4OkOInO3Ne3plptRXSDLeNtB9xR1HX4wXOeHMrPmIivTTV1VPcIIw6LdKumkSTT6QsK3KJ9FqknOj0IiGDh0m8PwbuZAZXyRzJGAUkXU=
+	t=1753303282; cv=none; b=MA0dVmy912QH/bqfIK/Q7+xUqL23nsiI8ePv9SnCbOcB8KnFobF+29EUg56gk7y7CK0oH6PxYaiRRZVur+9yDzQMZjAV6hpQuIMJoVGO8kzODpguE8d/5hcJQ8J4OK0vcl09S9mKwYP5HtDmLYQ4D4/3mJif2ACjfFP/GEnnvi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753301604; c=relaxed/simple;
-	bh=ylYanMq4QiH/Nuxn+ZxPn1KRHnHotyxLQy5lT3t7C3k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dIGxIamOOeOUkrSNQbJViL5QsYcVWSa8mZkX7DGWCKKEk4uFwkAbuFEJuCGauTUqX4ccZRBd8jMqg9jpyb4bdkW3jxeCb5JE0bUQkXGmscdBAnHpAp6DEWn0K13NqAWM6P8uQkdQ4nMWK0H/NIzAwPU1Hfy3fXW4TiB+vDhAch8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZYbfbELI; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753303282; c=relaxed/simple;
+	bh=jA45vF5Lp0rLmLRa/Yl9ngbausMkIJiAT+08WzTKMao=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=QhsK0e2v6orkVo7pyR6IJ6ZvdnmvADICpu/XOviWW8TVD3vJEmVxuGUzepxJKFJPf3AhuF1DP9MmkV9cZhl3J4cidgKk1x+4rLq03KTHUm10im28tkv+jHRwhb4l0/9a3ssMMsMUZogmJ5UmGP6oou41CMo7mwDDZpqad2W5J1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qM7nUZk9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZYbfbELI"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-32b31afa781so1615461fa.3;
-        Wed, 23 Jul 2025 13:13:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753301601; x=1753906401; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ylYanMq4QiH/Nuxn+ZxPn1KRHnHotyxLQy5lT3t7C3k=;
-        b=ZYbfbELI7a2bVuGyLo1r1Rbgc1O125H34h3kY5YfdUcM+eJlNPInDuYWZ8Skz1Xgnm
-         6hAEzNlUFfa4Ndm6hj5i4y3Kjo5p6qX/qHUNxo0NeWai1hWphHSD/7G8LXWmU13jjDUh
-         PNCK3kZ/n6R5Op3X304DK8LngnhVa/FeMkE2iskfkSQFZWYM0onzTCqKPHbAjJHW6icJ
-         G7sMvAKsfgI1rtaodQH4IAkA+IByaEG74Bj1xMQbeYnwYZo/tJLAl8xPdp7ZDnlaW0wR
-         qu6jjrkc2rE8Y2UcwhK8jY5HQUwWa868+KzFx+61TR9H/12NXSKXtqhiXkmJfL4PQbC9
-         ujVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753301601; x=1753906401;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ylYanMq4QiH/Nuxn+ZxPn1KRHnHotyxLQy5lT3t7C3k=;
-        b=NzdzcmZdWMEbGdop4D5RmwBN1EW7VARmgJP+uzF7iWjnHCggS5QztBJqiHPGpEww94
-         7XYzu9AzCuepE9EB9fDdImsM1qgIz4rBx/P9YxsEArBF0fGPkAlRyGSB4D2q+SiCzVc9
-         CCKVBhwReaeKpfrELpS01P1m0QAIRJMrvUf4LM3/3HQoD1PhBxqC38X9Nmyz+2wE9uR/
-         i3DqGa1NFVkeUJvDwelLW7iRTIkHjgBZQNjtYp87vxDRswkiocQIZsjpfptA6Y/mzpp4
-         mcaflFFgpC0aE/UHlgdXdeN3L4agMpM7mnzltgAWg7qPL28Jg0bIyXtv7ovCUdDEagfX
-         WRKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWD3cJ+uAXK38BuCUs5lrtMd2lbkb3UcCj5rt6kzW9UXjlE9FckUX6BNRvF6QyLsPkU8yVjGNClRLdcyVqAGOc=@vger.kernel.org, AJvYcCWhCnp3AAmnTs6kZO5tegCtq0lTaYLMLAX6sZ+smIRljTdpBgidXuWd80LXA5kOf03giCM0gwbywjIE8k4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOf2JRGShdY52gKpL25uAgUpYKFgqCPb8HS219YS2FQc62qO5E
-	YwyT/OhCv59RkNP4RRSghhDzYUAAFj7IRST/6YrQMPu84P/jvdkSx66xvvTb+FuoJXS80D8CQG+
-	UbPvisse3G7AowKvX1c17RtZKuo8CbME=
-X-Gm-Gg: ASbGncvXViZxVrWCdJ9eTnkSBLfMzdd7/V6WOa/p8nRcPm5k4Gt3U/o3vciH4eBEW64
-	JxLj/2mYhNy6hX/6rPyd304EWYImq77zRbRLRFUt4PrG9OoxvvKfRisZW8IJ4Fl+qnULqIdMfe8
-	PeupwcI6sXCMLiriS6inylDtWoX2ntg0wTjtaKu1WrV+ZZJBipPO1R2rwcjCkVqgch5NjJlmjNL
-	b0NRtsu
-X-Google-Smtp-Source: AGHT+IHlO6G7bCbrG9T5hhq16v8glKCdv3hfhn9O3kkyOZIuvZOWRcqBb7C98wTwk3/Qh4cF9V8eQKt4DMOvfGtuA5Y=
-X-Received: by 2002:a2e:be93:0:b0:32a:88b8:9bf with SMTP id
- 38308e7fff4ca-330dfc75adcmr13660331fa.9.1753301600965; Wed, 23 Jul 2025
- 13:13:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qM7nUZk9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46881C4CEE7;
+	Wed, 23 Jul 2025 20:41:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753303282;
+	bh=jA45vF5Lp0rLmLRa/Yl9ngbausMkIJiAT+08WzTKMao=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=qM7nUZk9Hjk/QGbxBEHp+XXQvh3BPYMwkIpEcd7MLN8x0QQnsqV2rYMy+uYt5H+pi
+	 3B1EFBWqO0TGE32362BYrdfAfb4z/td+b3vuMPxKhioxQPzldyIY8JRrL9up4Jzc2F
+	 0vvlw+/8Gu/1zpIaRIqpo5VuDy5vWaVr75/UOMXWTFx7UCY6bXk6Arazq+3A8D+dMu
+	 gIDp8cY6tayzFBjXsX6hb5qhbnz4YMbKQwFOBos5n427VXaihsGRNGnjmvaEN5bBb+
+	 xcBulznNyMkPrhY5URZ6nBVjjg1ix2wJoJKtjggHbikBXRHpYsjGpzq4E7qmMOU/bN
+	 9uboPoHkU+wDw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250720-rust-remove-compiler-builtins-deps-v3-1-0df3a493973f@gmail.com>
- <CANiq72m=vYbZZPwF9u9PQJ7Jce0KPR7jPybk3AHV50U9fOmEvQ@mail.gmail.com>
- <CAJ-ks9kuCTnmhJRJyuuyGST-W_9TDQkg8iWm3YoOtP7_d_NR0w@mail.gmail.com> <DBJP45SOWFQI.3FY7X96EZT2HG@kernel.org>
-In-Reply-To: <DBJP45SOWFQI.3FY7X96EZT2HG@kernel.org>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 23 Jul 2025 16:12:44 -0400
-X-Gm-Features: Ac12FXxRQU00yuNnZFxxh9RzuLjpTgjvTJ9XgiSmLDC7uF5fwyQxxPWxgmV2-tg
-Message-ID: <CAJ-ks9ns1nK9ZdYO4DBwp6JaC6DEVafXjW4OKnsF3mGEVc3X7Q@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: remove spurious compiler_builtins dependents
-To: Benno Lossin <lossin@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 23 Jul 2025 22:41:18 +0200
+Message-Id: <DBJQ52JWDGY0.37W393KWBWX6G@kernel.org>
+Cc: "Alice Ryhl" <aliceryhl@google.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] rust: sync: refactor static_lock_class!() macro
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Boqun Feng" <boqun.feng@gmail.com>
+X-Mailer: aerc 0.20.1
+References: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
+ <20250723-lock-class-key-cleanup-v1-1-85fa506b8ca4@google.com>
+ <DBJIDFSMYASO.3VRN4ZZEUI8EX@kernel.org>
+ <CAH5fLgjWFa8TjTL+rfv7Zd+OQqhkKqWvyTkGf60pMUyQ=c4sXg@mail.gmail.com>
+ <aIELxq_iVMfjszkh@tardis-2.local> <DBJOYRYFZJ5I.26IFPSP138T23@kernel.org>
+ <aIFBEUdGU0r05wC6@tardis-2.local>
+In-Reply-To: <aIFBEUdGU0r05wC6@tardis-2.local>
 
-On Wed, Jul 23, 2025 at 3:53=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
-ote:
+On Wed Jul 23, 2025 at 10:07 PM CEST, Boqun Feng wrote:
+> On Wed, Jul 23, 2025 at 09:46:03PM +0200, Benno Lossin wrote:
+>> On Wed Jul 23, 2025 at 6:20 PM CEST, Boqun Feng wrote:
+>> > On Wed, Jul 23, 2025 at 05:01:39PM +0200, Alice Ryhl wrote:
+>> >> On Wed, Jul 23, 2025 at 4:36=E2=80=AFPM Benno Lossin <lossin@kernel.o=
+rg> wrote:
+>> >> > On Wed Jul 23, 2025 at 1:49 PM CEST, Alice Ryhl wrote:
+>> >> > >  impl LockClassKey {
+>> >> > > +    /// Initializes a statically allocated lock class key.
+>> >> > > +    ///
+>> >> > > +    /// This is usually used indirectly through the [`static_loc=
+k_class!`] macro.
+>> >> > > +    ///
+>> >> > > +    /// # Safety
+>> >> > > +    ///
+>> >> > > +    /// The destructor must never run on the returned `LockClass=
+Key`.
+>> >> >
+>> >> > I don't know how lockdep works, but Boqun mentioned in the other th=
+read
+>> >> > that it uses the address of static keys. But AFAIK there is no mech=
+anism
+>> >> > to differentiate them, so does lockdep just check the address and i=
+f it
+>> >
+>> > In lockdep, we use `static_obj()` to tell whether it's a static obj or=
+ a
+>> > dynamic allocated one.
+>>=20
+>> So the code below will go in the non-static code path. Why doesn't it
+>> need to be initialized/registered? (but other cases need it?)
+>>=20
 >
-> On Wed Jul 23, 2025 at 5:18 PM CEST, Tamir Duberstein wrote:
-> > On Mon, Jul 21, 2025 at 8:25=E2=80=AFAM Miguel Ojeda
-> > <miguel.ojeda.sandonis@gmail.com> wrote:
-> >>
-> >> On Sun, Jul 20, 2025 at 7:20=E2=80=AFPM Tamir Duberstein <tamird@gmail=
-.com> wrote:
-> >> >
-> >> > Remove these dependency edges.
-> >>
-> >> I should have replied in previous versions: this is wrong -- the 3
-> >> changes each individually break the build.
-> >>
-> >> I guess that you are not cleaning everything in your tests before
-> >> testing the build.
-> >
-> > You're absolutely right, this patch is incorrect. I was indeed not
-> > blowing away build artifcats.
->
-> So is the `compiler_builtins` dependency correct for all crates?
+> Becasue all the dynamic lock class keys are put in a hash list (using an
+> intrusive single linked list), so you have to register it before use and
+> unregister after use.
 
-Looks that way to me.
+Gotcha.
+
+>> >> > is in a static segment it uses different behavior?
+>> >> >
+>> >> > Because from the safety requirements on this function, I could just=
+ do
+>> >> > this:
+>> >> >
+>> >> >     // SAFETY: we leak the box below, so the destructor never runs.
+>> >> >     let class =3D KBox::new(unsafe { LockClassKey::new_static() });
+>> >> >     let class =3D Pin::static_ref(KBox::leak(class));
+>> >> >     let lock =3D SpinLock::new(42, c_str!("test"), class);
+>> >
+>> > This will trigger a runtime error because `class` is not static, but
+>> > technically, it won't trigger UB, at least lockdep should be able to
+>> > handle this case.
+>>=20
+>> Could you go into more details? What is the "technically it won't
+>> trigger UB" part about?
+>>=20
+>
+> If a dynamic key is not registered, lockdep will simply just skip the
+> initialization of locks, report an error and disable itself entirely. So
+> it won't cause UB.
+
+So the code above would trigger lockdep to disable itself?
+
+And how does it detect that the class isn't registered? By checking for
+the address in the hash list? Otherwise it would be UB, right? Could
+there be a hash collision that induces UB?
+
+---
+Cheers,
+Benno
