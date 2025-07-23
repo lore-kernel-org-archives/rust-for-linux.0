@@ -1,110 +1,114 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3CF286880;
-	Wed, 23 Jul 2025 14:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753282673; cv=pass; b=lSy5DpCoW6PpwhLIvkFcMLBeYsPu0TF5RnuQEijSerVyN3HwqujEGk6iKGBH7TDWjbimsuI9XJ0Tl89trcfrfEcEXJOUdCXKLLnfy+WVtF3Gp7e3EmLm8xK29KlpxwEhbMPjB+FlvGhpVmdpcdixIYiTEySQFr3GS35YgcRM5QI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753282673; c=relaxed/simple;
-	bh=93tYYtpwGCS2CavJKfyj8zfhTq9hJX4RCX5dMS3I4bw=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=p9tsRXbEqGQlvV8NQTf8W/uGhmresA7+2DOHhPqTpg+N9XL2RryATyTH0oX9PTNFmCUP+rsy/lq/kFV4eZ/+ze+1nMgk7k0F7BioZdeLtjKBkjNWgfsUzB8vU2Sw4SGAqlmZpVnjHOUoyTR3upQm+otptDtX0El/N/cEmk+ZcwA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=kpzOOdKp; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CBE1ADC7E
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 15:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753282926; cv=none; b=KrFD/rvDZfkf0PXFq9x4v7QWbWY7sAIGeS2t7vFG8VGTCgRwNaoNW20fcouNKZOZnRDvXbsG/4O+mqZLIuuq5mDagkNWv0NWYV/tUNuVW5xjkF5yEtOz6wvxEkHBUd1nT5rL/vLHUlWqa7PoGpVuZtk52NgZyMQOe65MikHOy1c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753282926; c=relaxed/simple;
+	bh=iE1aBZYKqQwEYNiRMnq//IWDWufJ3w5YS/WloRgwiBU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Mn3GkaahlxZ+6j/A4jrd7rkbCMFLt5/cr/xTsQK1J3gcok22quN9ObbS4g6LTfFKczC80Je5goDMYOn0u06P0aZb5S90XNB/boCJD6Ucf1OKXi3LlYjZUC7nT5x+fKxRwNdUZukoA11Ng7OgkVOHrxZPw1nnzXXxfsPzZ1SFA+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mY8ORgke; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="kpzOOdKp"
-ARC-Seal: i=1; a=rsa-sha256; t=1753282619; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=eAaQE2jKp1gxGdO98JQjDgGFPVe8zalXpPAQI2Ja8Py69P0AaQJccIGqk/bnNDkjEvwYBrjXRnNxRJAYUAqy7ZdL3TunC9xsiv556dQMH8+c/umtC0R76uRp0MoBSBBbvOSupmVTSIJX5glDDYaYsvlycdbysCltyDl3p1hm8lU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753282619; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=93tYYtpwGCS2CavJKfyj8zfhTq9hJX4RCX5dMS3I4bw=; 
-	b=c8KaF9uHHh/Nf25tjZbEOipg3AZzNygZCx7b4dqM0ri+1MVlvoBH1Exyt8KWwtxphlDmCHvewCMbRkTv7ijrIYvSICx5d36WcOVXokSgmi/Be1xg3MHiR10Vo1TkiWHvKAmzD+7PAipRg8nboTEnMHehQCkMkY/s0TLlJf0ydtw=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753282619;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=93tYYtpwGCS2CavJKfyj8zfhTq9hJX4RCX5dMS3I4bw=;
-	b=kpzOOdKpfDWJJl4HlrJH7ghkAmSVNJdUNbR3ZjozbBPvAbl6xb/cze5BxwrEhaaO
-	GbpPDtHils3OWXGtwgkcOrinZrNladhzLgtF3l5w5B0zoT6TthvN5YKTlyyL1FukWVx
-	kqzUo9/Qo+B0LxuftwdhdQE28Y3z1w6QohAofym0=
-Received: by mx.zohomail.com with SMTPS id 1753282617127332.3516121893997;
-	Wed, 23 Jul 2025 07:56:57 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mY8ORgke"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-455b00339c8so49098985e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 08:01:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753282912; x=1753887712; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SkED1IFnrdQOrvPX+FEDqQyJbbz8ySr0pcHO2vzmZv4=;
+        b=mY8ORgkeMqot4uEjGnYMYmtPMYFU4yXkUjVRzbrGVaArMpIR5Bz+YFf/Ad3QNZQ5rP
+         5YpAoMUNAlKRE1/FZQxTjcE68GVbvBi/4douPtk1XB5wvozcRDHC1LeNXKofDSmMnbFf
+         esPoTpKXproQ1BR/qhYRoV24aW9JbAcUfzyiP6m//5U31+NP3y82NwDKULklwCWkvDJ9
+         LDdC5LJwfPO+m/i25r5JMaB3vIzFT/ug6iY85ZlIfnTCZsxhoDGk3mQMC7x0vU5MZwBK
+         MnwM9V9EC8Hlz9j3nLnZkr0h2dtoQ0mYvrct+pGQjtrex0PV6+NM/4LCTCPwyBrj6cvH
+         s1rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753282912; x=1753887712;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SkED1IFnrdQOrvPX+FEDqQyJbbz8ySr0pcHO2vzmZv4=;
+        b=eJan+t1dl4vfyWYfQ+Zz5vI5mfJTbtY5YHHs9fc5nsgM+SzhAXglHY3MrgQ9QmyF4z
+         Qcng7ej1imcvCdRwuai7/dbsb+7wvxNwA510iRclqIM5ZPpMfbAHSxDcOCSE9ek0CpU5
+         MseoCLdvmtzEgh5ArV/wrxphjOy0CLdUS7ILtz3MvLmvqfxY5vFXLHMmCuIC4XoWxlbo
+         idGHrLuivIcqKg65pRGmtYmex6+FBX8PiNOZIIzU6CWT8jT6nAdyUAa3aQDiuU9mPpFg
+         jshKNfXiE6H8EY+ta/YG0XcIR0MrTM+1WxQa8LbRKod9RL3XanF9F4UMuKtk9uh1dZSn
+         PQzw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcf8VMXDxf7BtVXJnUVL29h8mJxIyTyynNigMSM18kBesUMvgJEU/V7OiyzlM8h6Go9isf318r8A/4FAYOQQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9oX2TP1yNIm9dL7LUleMyU3QX1S6jweEZWH/NC7ETlieDsTVk
+	pE1yj5SIeScdxgJXc1YkQhvUhIf8O19LyLlJhFrHmwglLowV8SCg/FKdt0xtkiavAe9XfH5PEvQ
+	X/ImtbtqIC9J09Q+voVtLZh5cRJcbPdfZfDlfA/NY
+X-Gm-Gg: ASbGncusksDk5GP7cBMw3LpfkcHjGEFox1GPk/fE+GnIxDJJ7Ca2Iiszt8MEE/0GAaz
+	PgL1PlH9bOmHD1WzCjjrRzhaFedwRbFPLUi9MLHmmQyzn6hnDY1TzUXFNmyIT/EKHSKLieNMmqM
+	MxkSpvOnhHI0Uum0z5J9XFNGpGOQrAbFY/sJpxPfBGB+XtAO2YVvkA6ZgMfsnlZ8bJVqMtYPS5i
+	ZZ1NNXJIqBYxcy3fRw1YOfa+JWxIL+XUS56mKS12a5uKA6Z
+X-Google-Smtp-Source: AGHT+IFo6IwyLbR5G5tGGMDaDPd7c+A7mFM1EecPzUD9PrHXz7Z7GSYJhFYbhBZl9Tl4KwnUO6QlPYWlXLeyCswGE/g=
+X-Received: by 2002:a05:600c:3483:b0:456:1e5a:8879 with SMTP id
+ 5b1f17b1804b1-45868c9454fmr32278955e9.9.1753282911854; Wed, 23 Jul 2025
+ 08:01:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and
- handlers
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <7fa90026-d2ac-4d39-bbd8-4e6c9c935b34@kernel.org>
-Date: Wed, 23 Jul 2025 11:56:42 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?utf-8?Q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
- Benno Lossin <lossin@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-pci@vger.kernel.org
+MIME-Version: 1.0
+References: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
+ <20250723-lock-class-key-cleanup-v1-1-85fa506b8ca4@google.com> <DBJIDFSMYASO.3VRN4ZZEUI8EX@kernel.org>
+In-Reply-To: <DBJIDFSMYASO.3VRN4ZZEUI8EX@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 23 Jul 2025 17:01:39 +0200
+X-Gm-Features: Ac12FXyaXk0Tn1xnIVYCpD8QPrGtzpt5ky0enjvHtYvN2fs0RSIRfx2AoBIsbAU
+Message-ID: <CAH5fLgjWFa8TjTL+rfv7Zd+OQqhkKqWvyTkGf60pMUyQ=c4sXg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: sync: refactor static_lock_class!() macro
+To: Benno Lossin <lossin@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <8742EFD5-1949-4900-ACC6-00B69C23233C@collabora.com>
-References: <20250715-topics-tyr-request_irq2-v7-0-d469c0f37c07@collabora.com>
- <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
- <aIBl6JPh4MQq-0gu@tardis-2.local>
- <ED19060D-265A-4DEF-A12B-3F5901BBF4F3@collabora.com>
- <aIDxFoQV_fRLjt3h@tardis-2.local>
- <7fa90026-d2ac-4d39-bbd8-4e6c9c935b34@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
 
+On Wed, Jul 23, 2025 at 4:36=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
+>
+> On Wed Jul 23, 2025 at 1:49 PM CEST, Alice Ryhl wrote:
+> >  impl LockClassKey {
+> > +    /// Initializes a statically allocated lock class key.
+> > +    ///
+> > +    /// This is usually used indirectly through the [`static_lock_clas=
+s!`] macro.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// The destructor must never run on the returned `LockClassKey`.
+>
+> I don't know how lockdep works, but Boqun mentioned in the other thread
+> that it uses the address of static keys. But AFAIK there is no mechanism
+> to differentiate them, so does lockdep just check the address and if it
+> is in a static segment it uses different behavior?
+>
+> Because from the safety requirements on this function, I could just do
+> this:
+>
+>     // SAFETY: we leak the box below, so the destructor never runs.
+>     let class =3D KBox::new(unsafe { LockClassKey::new_static() });
+>     let class =3D Pin::static_ref(KBox::leak(class));
+>     let lock =3D SpinLock::new(42, c_str!("test"), class);
+>     let _ =3D lock.lock();
+>
+> Because if lockdep then expects this to be initialized, we need to
+> change the requirement to only be used from statics.
 
+My understanding is that it has to with correctly handling reuse of
+the same key. In your scenario it's not reused.
 
-> On 23 Jul 2025, at 11:35, Danilo Krummrich <dakr@kernel.org> wrote:
->=20
-> On 7/23/25 4:26 PM, Boqun Feng wrote:
->> On Wed, Jul 23, 2025 at 10:55:20AM -0300, Daniel Almeida wrote:
->> But sure, this and the handler pinned initializer thing is not a =
-blocker
->> issue. However, I would like to see them resolved as soon as possible
->> once merged.
->=20
-> I think it would be trivial to make the T an impl PinInit<T, E> and =
-use a
-> completion as example instead of an atomic. So, we should do it right =
-away.
->=20
-> - Danilo
-
-
-I agree that this is a trivial change to make. My point here is not to =
-postpone
-the work; I am actually somewhat against switching to completions, as =
-per the
-reasoning I provided in my latest reply to Boqun. My plan is to switch =
-directly
-to whatever will substitute AtomicU32.
-
-The switch to impl PinInit is fine.
-
-=E2=80=94 Daniel=
+Alice
