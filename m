@@ -1,99 +1,85 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7A52F5085;
-	Wed, 23 Jul 2025 15:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50B61A073F;
+	Wed, 23 Jul 2025 15:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753283953; cv=none; b=ZiHsINpT6EYtOA2r6C60R3hTzRz7zE/yQS3oVuKs05uAa7HuZpXT/fcq0xHoQTTW8fq7GC6BcXE5up9KWJFHlUZ0l14D5vpgTQu+HhPilwC3QDYFJZB1EPZLOJ/znNW76A10GSvxrlLJSdQ2wJA0+SUuxOS2s6pv6BjDyADg7hs=
+	t=1753285185; cv=none; b=i/aYw4tGgsk7C7v1UDZbKFth7kx+gB6ToPmSRbsShJTjtWwbrCATb6Xy5raLsgUkgvGoOA6m8lucIt9YAPMG6cMdoOD90O7SbYb4EpRkYw9IbQ3866XFdlGEEf05CUQWSB9Wg0HWGRjlsd+gvHDIua85LKme6pkRgCyYQd29qwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753283953; c=relaxed/simple;
-	bh=aKYxJLq4l/0NHHzMLA1J8KQdNp/rHfNp1Iie2v3oYAk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hn2O5RUmxvESRGloyJItrJXtTOhhxdneiu57arJWv+Y63fAk3Qx4vNCssYjM+BH+xb68gd+yKPFd9oMRUS4kOFTnAtJE3JJiLxjDeofoiVH+V8ZidfxJgKBV0lHsddB/FdcgES0XkxUj7Q1LrWgoWoUqNeZy9Z5pu6UQ9y6p354=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=La7ETE7D; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753285185; c=relaxed/simple;
+	bh=JDR0jcZ3hCvdnx4Nv+HhHC83x/f6C5vUo3Z7CFq8ZSI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=melzFNiLqsq2tnP2MhEnEv3fKU7N8J1bK2kLzbmsHoVLpf8iuMQ82YhTMnfh/LZqbGjVx4KF1xpe/xeGSwDgvLSRqSkCVFwJWdpSo9F/4loNYak855/ZGinQsTHrMs3ANSlIMENE1aH8gBs1NDaaC5nrpjnk1asgkVGKmPmRhbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qf9MIWZl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="La7ETE7D"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-32cdc9544ceso61019041fa.0;
-        Wed, 23 Jul 2025 08:19:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753283950; x=1753888750; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aKYxJLq4l/0NHHzMLA1J8KQdNp/rHfNp1Iie2v3oYAk=;
-        b=La7ETE7DNx4+5Au4Le2eQEpz3WjN76vVRlGZpvaPy6CaY20m160kRRofZqjViWFUnL
-         l6M9OEBR2/rImQMUDMS9/nCwJW0vpZBJ06GjCo7ijdfGE+SvrT9NAViOJtVtCdmIlfoQ
-         OJtHuw2NBz//7mtPJFsRhbIPum4+Qx9Yy55VWr/4AoHlNkYu/QkACyZ32QL/+RTOvHw+
-         o9OqY6jnFNB/D6OIUnMRJ3AVrXbko38EFl9FEZLdBpNbNduXLE7nP/TF1TpBJv8OphP7
-         mb3ow1LF4YdvIbr+t8BFlnYkrQ3G00D/04yl87rq0i1uedsxhcFjIkL+f058TgJ8lNJk
-         xH+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753283950; x=1753888750;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aKYxJLq4l/0NHHzMLA1J8KQdNp/rHfNp1Iie2v3oYAk=;
-        b=k+JHKHkynIqZnQHYCbI4O4qmS+ix+0aZ6dGXbDxmAcKg/7QVYty1Z/AVjCNNbCXCjt
-         zHCdN8KjmQILzWfVD4fF0ZznDu8rbLMSt5wMt1ku7UaTPsrqfDAGhjO8nMpCTaU26uhw
-         iheeXja8nZWiwYIYg6uOZOJ7ThQeoNYjKvbACW4JQ7WcCquIq7PiGxCO30sRc0D78UUf
-         4JS2KMQPn6ISPXd4f3YO5W6tDnwAiGFZpfsKMU3wZgtBs82AXXIotKKnlKgaGL2srvV7
-         2FagXFz/R7WWFHvHu5ROztk7eRs809n5qXuFEI9ic6Gz916NKdtc5DGC/sE0lVrengsj
-         isOA==
-X-Forwarded-Encrypted: i=1; AJvYcCU90x8LSHTf6hVb3Rs90ZZukRq0+59s3p6YjopwlRF5JX8iWxbp+YRUIxfL3ylcVLawMhC4KzEAJBy63nk=@vger.kernel.org, AJvYcCV9iuh1eWzMmDm2K5rICwKwWpZnxT2xRpixxtqaDk5Ib0lOn+EtLaZdO9hA1xB51VZhr4N7k21k7Rc2XRbjaD0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyL85R5kULNWDg1J45KRNVwVeDUenTA3CxlPU+7bTqviMX4vQJV
-	A0c9B1if8SqVLpC0w/06kgAKgPOz/RR6v5Ts/MQtXKSTF8TcPVTwOnLCeqmnhVce89haEdw3O3U
-	cCMGUCXqAA74bzGurICDmXzzDO2+TFVI=
-X-Gm-Gg: ASbGnctoD5Kbbhvsu8qGxtLMB/pVZugJfnb/SMUGqTHxChRZKAVfIf9e7vzu/GUxj51
-	RnAds0aoDK2qCHcZlLQuGMXtdiwBeFjhODfgwhtYyZRUgQH+hwIwFvVxRE1tHzP6VPGsPpCKucN
-	qF78grhs6AzSowe6pMkDBHoEG5gEAp7AE0fHIXu5SdwQXmw/EhWtb6r8XARms+OI1aMxLvfWB8r
-	5/oDZa9
-X-Google-Smtp-Source: AGHT+IGJk+cnSNB5dmZjA4F277uweM9qQmlzoDKYZhZ23tSm7g4ZL+8uSgmn2lon8w/gtCjba8umd38UVFMHQbqvdlA=
-X-Received: by 2002:a05:651c:904:b0:32c:a907:491f with SMTP id
- 38308e7fff4ca-330dfcb6d4cmr9134451fa.15.1753283949057; Wed, 23 Jul 2025
- 08:19:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qf9MIWZl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1142BC4CEE7;
+	Wed, 23 Jul 2025 15:39:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753285184;
+	bh=JDR0jcZ3hCvdnx4Nv+HhHC83x/f6C5vUo3Z7CFq8ZSI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Qf9MIWZl12Lq42hkpJGhWDjasE4yU0HKcbXhTFJ51QMvouaZyS5U4Rw2FBlsPyd1F
+	 Ecp9Jm+G656D763Vho2WFrMzDBBabIcuzRPJRRGVqyCKcNWIalnOCH562n82SYKfjA
+	 JkJP23FufRMBjfWA7cegnSTLu77qrbX0UB1dFIDfU3S52K6gjwqoBUhLb2PEZ3yt5y
+	 huxd4O6TX7WCVqVoVo3ItFNuNqQp9vt33ROMHSfzCWzXsTZTZspzF4qmsqoRKZCjQh
+	 4bAPkxdqugkBJRJtzP85CpMB7mBhM2+9wqN3RSkDIsI1YL/oJiQoPlApTIwj1Yokop
+	 iR/vJpcX1bDfw==
+From: Tamir Duberstein <tamird@kernel.org>
+Subject: [PATCH 0/3] scripts: generate_rust_analyzer: match rust/Makefile
+Date: Wed, 23 Jul 2025 11:39:39 -0400
+Message-Id: <20250723-rust-analyzer-pin-init-v1-0-3c6956173c78@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250720-rust-remove-compiler-builtins-deps-v3-1-0df3a493973f@gmail.com>
- <CANiq72m=vYbZZPwF9u9PQJ7Jce0KPR7jPybk3AHV50U9fOmEvQ@mail.gmail.com>
-In-Reply-To: <CANiq72m=vYbZZPwF9u9PQJ7Jce0KPR7jPybk3AHV50U9fOmEvQ@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Wed, 23 Jul 2025 11:18:32 -0400
-X-Gm-Features: Ac12FXwWBKGVYSeoUZtcO8393_I6OiMdBpRjfrnt92VkxrRDihDu3wCrwQiSyrY
-Message-ID: <CAJ-ks9kuCTnmhJRJyuuyGST-W_9TDQkg8iWm3YoOtP7_d_NR0w@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: remove spurious compiler_builtins dependents
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADsCgWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDcyNj3aLS4hLdxLzEnMqq1CLdgsw83cy8zBJdSyNTEzNzIzNLAwNDJaD
+ mgqLUtMwKsMHRsbW1AMy7ZoBoAAAA
+X-Change-ID: 20250723-rust-analyzer-pin-init-925467269001
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1753285182; l=745;
+ i=tamird@kernel.org; h=from:subject:message-id;
+ bh=JDR0jcZ3hCvdnx4Nv+HhHC83x/f6C5vUo3Z7CFq8ZSI=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QCPcor03iOgOg9LDvhCFO2jQnbv/SN8WY343yR6nTMz1e66ReIahTAQP4weshIxymgWU9eEO1qs
+ WxtQpubWF+wI=
+X-Developer-Key: i=tamird@kernel.org; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 
-On Mon, Jul 21, 2025 at 8:25=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Sun, Jul 20, 2025 at 7:20=E2=80=AFPM Tamir Duberstein <tamird@gmail.co=
-m> wrote:
-> >
-> > Remove these dependency edges.
->
-> I should have replied in previous versions: this is wrong -- the 3
-> changes each individually break the build.
->
-> I guess that you are not cleaning everything in your tests before
-> testing the build.
+Minor fixes in this series. The main one is fixing navigation in
+pin_init_internal.
 
-You're absolutely right, this patch is incorrect. I was indeed not
-blowing away build artifcats.
+This is my first series using tamird@kernel.org; please excude any
+hiccups.
 
-Thanks Miguel.
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+---
+Tamir Duberstein (3):
+      scripts: generate_rust_analyzer: Add compiler_builtins -> core dep
+      scripts: generate_rust_analyzer: Add pin_init -> compiler_builtins dep
+      scripts: generate_rust_analyzer: Add pin_init_internal deps
+
+ scripts/generate_rust_analyzer.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+---
+base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+change-id: 20250723-rust-analyzer-pin-init-925467269001
+
+Best regards,
+--  
+Tamir Duberstein <tamird@kernel.org>
+
