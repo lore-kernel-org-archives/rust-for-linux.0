@@ -1,72 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8330F1E1DFC;
-	Wed, 23 Jul 2025 14:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA3820E023;
+	Wed, 23 Jul 2025 14:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753281315; cv=none; b=tsq37vAA3r3rqhCMXAOIWLHUr7SkzHbiuPAc3WuB6t0YdbVkrk4+etH87BuKDo31NRCdlTYbU19rIz6ygH6RTvhm4Hvmj+53Kxcz3ZGsn+vzMzbjPqfH2pRS8M/JGPKxZ5jt0TS3WB4ck89Xy9/Nyn+ViSUz0CdOgI7f2Q+0wi0=
+	t=1753281369; cv=none; b=OfyK2k8edxUa5CN37izSBu0pRP0zGAStu5yfKs8fnaZXW9CuQDygUdGH3xsIC0Ifuv5SNTyHTIwz/pCx894hyg52VjH49aPqbDV+gbOw+nckty78/kXO+oImNwsMsf8fBjJYBwhVoEp09qMMFGFuHa5IGQMCwebZ3ORkpZP65vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753281315; c=relaxed/simple;
-	bh=xJym56oTvMq1mcxKBIzonpnQCj70oitN1cD+aRK/ddo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qbdkNrMfB+RsTPXIbkWf3u6SxEzEMAhiCVx3Lr1ydYfXzE8iP1fAd+ZMyNtRjnw1G5FamyYGzk23DRnKh9RjObulS+Kb8hlu70SgwqEnU082H6VRAXyXbWG4u+aGxwTABmm5I45FsG1Ns2CBJNPLq1MwH+HhaUnNpr1gYONVsPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aojR7DZ7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753281369; c=relaxed/simple;
+	bh=TfLI4hpAb/IcCHboE4yM4dKFzRS2cirqHqAIlnDgTGg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=u80j9vKcnIsOrLEUGkDHC9xZzH65my2X/jxRrx4cnu8FriMx9C0IYDIZPxZ9vzE56C9fY13jFlotwCyAiuUrwDfoI4vU2m37uB7o3lLA4BcjYCCr+KB5phmgfKss2NAps6PimHTD4iquHj6/8TGkGAJ8ZcPixC/a3tR6hfD2hg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMrIkLjb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aojR7DZ7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964D9C4CEE7;
-	Wed, 23 Jul 2025 14:35:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMrIkLjb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A890DC4CEEF;
+	Wed, 23 Jul 2025 14:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753281314;
-	bh=xJym56oTvMq1mcxKBIzonpnQCj70oitN1cD+aRK/ddo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aojR7DZ7bxyLE+5/qTN4yPDLC/oMLEyGSELJ8w+VK0jQTydCGNhC8bFeke4koFF6h
-	 vi1HxiYIpSEKfsMmpS3G4HqEor2C6j9My4E47C1dnwj6+PLRaZMyEw/gD7KjZtLjk0
-	 5q96WMVTKzzSPUmYNrM4tl4Ib5rejQGvgh9ldqISo3pGOGTOPp2vomjJ3CYmc8kvIi
-	 4uu54P1gv/kYF91gAntBZNMOIFDSrpylo024kf0bE5RlniQ6qURP2lc3h+x2nqa4P5
-	 crTCwcpOgDybWTVFmfFr3KAW2uwQVHPZv4YSnH1kOmZnHgOM4I5jTYkyrbp/iEg4C9
-	 k72ctk5TVOhHw==
-Message-ID: <7fa90026-d2ac-4d39-bbd8-4e6c9c935b34@kernel.org>
-Date: Wed, 23 Jul 2025 16:35:08 +0200
+	s=k20201202; t=1753281368;
+	bh=TfLI4hpAb/IcCHboE4yM4dKFzRS2cirqHqAIlnDgTGg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=FMrIkLjb1A20xcuUaefBE7BMQemq/dKlgpIi8I4hjl1vGcHzsd8ZcMIDIwKKazkzk
+	 p0jlBDlD8lje1j5VxLHIzHqwOJ7DhXc0szQTpnSyZAsOmXkOrOHPiJD7vmhN0mnxP1
+	 jvH3h0VGfnhMygM/LVgOX+alciq+9nM/jeNzm1wvbWuQghuDy4xlCuYJOFi/bBkLRB
+	 M05hSN/zy8lTB78R8zLyYREH8pyzMu2s5PPF/Cnkkr7z0QEoPHuy/OuOeQFMGoLspD
+	 E0LcWEK7OaMrFgdviTPXxntdKfIBBfTwCTHUy1DUuPe6tXaDigz9C2NIFXVfJeCLfi
+	 x/Hrw3zLgv5eQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/6] rust: irq: add support for non-threaded IRQs and
- handlers
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Thomas Gleixner
- <tglx@linutronix.de>, Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Krzysztof_Wilczy=C2=B4nski?= <kwilczynski@kernel.org>,
- Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-pci@vger.kernel.org
-References: <20250715-topics-tyr-request_irq2-v7-0-d469c0f37c07@collabora.com>
- <20250715-topics-tyr-request_irq2-v7-3-d469c0f37c07@collabora.com>
- <aIBl6JPh4MQq-0gu@tardis-2.local>
- <ED19060D-265A-4DEF-A12B-3F5901BBF4F3@collabora.com>
- <aIDxFoQV_fRLjt3h@tardis-2.local>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <aIDxFoQV_fRLjt3h@tardis-2.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 23 Jul 2025 16:36:05 +0200
+Message-Id: <DBJIDFSMYASO.3VRN4ZZEUI8EX@kernel.org>
+Cc: "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] rust: sync: refactor static_lock_class!() macro
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
+ <20250723-lock-class-key-cleanup-v1-1-85fa506b8ca4@google.com>
+In-Reply-To: <20250723-lock-class-key-cleanup-v1-1-85fa506b8ca4@google.com>
 
-On 7/23/25 4:26 PM, Boqun Feng wrote:
-> On Wed, Jul 23, 2025 at 10:55:20AM -0300, Daniel Almeida wrote:
-> But sure, this and the handler pinned initializer thing is not a blocker
-> issue. However, I would like to see them resolved as soon as possible
-> once merged.
+On Wed Jul 23, 2025 at 1:49 PM CEST, Alice Ryhl wrote:
+>  impl LockClassKey {
+> +    /// Initializes a statically allocated lock class key.
+> +    ///
+> +    /// This is usually used indirectly through the [`static_lock_class!=
+`] macro.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The destructor must never run on the returned `LockClassKey`.
 
-I think it would be trivial to make the T an impl PinInit<T, E> and use a
-completion as example instead of an atomic. So, we should do it right away.
+I don't know how lockdep works, but Boqun mentioned in the other thread
+that it uses the address of static keys. But AFAIK there is no mechanism
+to differentiate them, so does lockdep just check the address and if it
+is in a static segment it uses different behavior?
 
-- Danilo
+Because from the safety requirements on this function, I could just do
+this:
+
+    // SAFETY: we leak the box below, so the destructor never runs.
+    let class =3D KBox::new(unsafe { LockClassKey::new_static() });
+    let class =3D Pin::static_ref(KBox::leak(class));
+    let lock =3D SpinLock::new(42, c_str!("test"), class);
+    let _ =3D lock.lock();
+
+Because if lockdep then expects this to be initialized, we need to
+change the requirement to only be used from statics.
+
+---
+Cheers,
+Benno
+
+> +    #[doc(hidden)]
+> +    pub const unsafe fn new_static() -> Self {
+> +        LockClassKey {
+> +            inner: Opaque::uninit(),
+> +        }
+> +    }
