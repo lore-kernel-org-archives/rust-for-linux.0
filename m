@@ -1,80 +1,80 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8A4285CB8
-	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 11:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7CB285047
+	for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 11:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753271391; cv=none; b=Ov2Eq0iHGLmVswUzABvc3tlA4/SPLppbOJnByVfbjpx48L3CfCIs8N+Vmz0OLb97lnZnPgk90iRs03PsdKpd7EdBQuNjKTBBPEO4JZDgvnFQ5XYQ1BKDmxA7NhlWjlB/3MfNAA8RP+DTXIKKEXK6KAz2mAgn7VNbsSEewdK2GZQ=
+	t=1753271392; cv=none; b=UN1Cf9RlHghx0y+su9m5Jr8u6Hr97CU9i2T+LxIK/B+6U0CjfZV9Qo5RMnDN9+Nzb0ROVl0vfX9IEuq7vH5Fl5ytYf9Jin6K7HjZ1qyO3le3I4e6S4NHEjhms9X8/TJFTtPVQ3lLvxYEL8JkBxyNz9tb2vAeqhLzRkaQCJ/Li58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753271391; c=relaxed/simple;
-	bh=gMfyh3DhpP6QRqu6AP4hBRdSuZ0RPcKCCbNeQJQJEM8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cMPN7/rzCudeTVrC14YH6/1bJhIYQlpKkynwblGR1d8ivlJN9vT1V2SrWes+7dbe0dWzqU+c72vaCONydHAe6YkUhaQ8+Vb7CYSIfEXF4+uyuncGAPP3ekzazl9R6rXFPxcv4dCz6I8uLcYwKfwPe0zDxHVWPd6wWx0B9L9gyu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CM4tmZqv; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1753271392; c=relaxed/simple;
+	bh=uSIzTh2B9rBYN6WZod8iksXQFVhHUXx/CncWZE2dFG0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=EPwJ5c07RFWuqiYtD5H/opra+nSdp8ujQ2GXH2b7dBefqhJIHjwuEeVEUtZeD3afutN8sBx6jdVVefpYt+FPbvdlc8tWWG7526xr6yClo1wrd3YlE9g4nGzSS493CpVyqDp77KqArhZDfBaCxuO/MfN11DkmI3Tvw1nW90/nRr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0aVAwJ+R; arc=none smtp.client-ip=209.85.208.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CM4tmZqv"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-43e9b0fd00cso6239865e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 04:49:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0aVAwJ+R"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-60c4f7964c4so5027090a12.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 23 Jul 2025 04:49:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753271388; x=1753876188; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5LnxGqDbB7wAQRYWoQ7AYJR5RVrN0gy8dA3I4XCJfwA=;
-        b=CM4tmZqv9Nf168GfBNnxnC6gwcNfGZzLs38iLpf18ma6JDcU3bKBy+yn1orL4yiOLG
-         9RswSnt+WGXGBMBv5pbGP/OLkDpJo+OQeadgVfgfpzuZ6N185OguRwlxt8+TbFHp9JRC
-         p1DOPaKReE95dXQNekDf8VTtPKg//fL3vEjCbqzfk1pSLrWJNNjjyDhX2c4ri7sznae9
-         QMBEkncarli7JVh3P8juTPF82Tg15srjHhimOy+QpkZapj/h6/0wUehb5aw1fVipBokM
-         8/otfG03R3CFLpFCPXeudQxhJ68XE8ItyNs5iJAyIL93MTG1WZE+PurSgRd3CJudPP/n
-         Slgg==
+        d=google.com; s=20230601; t=1753271389; x=1753876189; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HXd/qCB8VS41ci4FOiH8r3Fnz/alprHme1ZlecJv9so=;
+        b=0aVAwJ+RymH3j6T6eyPOVc/0uLmg02afLIROxrgZ9ad8T2WBchknxY20ifVDPhI8Un
+         V68HiD8jjJyp1XShMSHqqVBMzflaleA7lZ/uQo0anBIhnHlKlsirWI8Te5SWiDcMH1s8
+         ixVtqC5BMwe+NohAml9kQxaHaiPHwvFkAVmDrCkVwN0sMRnOHXnoLT+hUWEMpBdkP8Eh
+         G6NtHBEe4wS1/RyaeL/nKn9oRuzXd8OAcaDAc1R35GLJZbLZs0rCzf9j9XlP4HSj+4+e
+         Wxo35hAfLH2lPPpGGfFr7fraHCpHANvcpMCrwAZdMcPfbaByzaLTPJOTABdzaART5glH
+         23+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753271388; x=1753876188;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5LnxGqDbB7wAQRYWoQ7AYJR5RVrN0gy8dA3I4XCJfwA=;
-        b=cXNR4fkJAJZxmMEibLFqWCoywiSGPcCVn8gKAhzN9t7IR2KhrSMseYnArAjV+gr0f1
-         ivactaJcfmGXunOqa3JpTkUOuHpy5s7SZ+7Mbwj8n5k3i5ale+LB6EeNY1JCA7gkdUlk
-         V7p9h0sIUv6aABnCEpXC74yLV+goC6a21qEZoQegWdgFMcyAK0ac3p5D9Sr69WueeyHe
-         /Ed5hQcgGUwaeZYfLjmRlibfdX2OBr4ezIDfO3XyqdwyaxWg3lrtjde5u91IDjzIr88n
-         ihOOimEQ3sqhml/e+5UNl8v4hNwAlwsyNvc+VFpydnFFot0zpUkjfdScbtNXIhW5wSG1
-         sIGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkVSCXFVwXUQK0j2KXm2aDjjlKJ6raMBULDw5JRLuebYA5K6F9VL9klclAc8dKWQ5BcZn450QDXCecTiHIIA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNYvHYMuRFvWGP0bbKGTRl3TmOX6ia5VzIIBh9MiExi/rXJIeb
-	XtUG8UulZ6+0arLX+zioYYnObWr7aL6kUeidNldAY6dUZmno+CkddXFLCZMtwoeTP4EhX6aK/KP
-	AJA+NkyVtFVLoYclEBQ==
-X-Google-Smtp-Source: AGHT+IH6DeHODF37loN+UROEj9Yy2H3Dx+J25V4vEnAzCpirCyXv1FFlN2BnrVJvgLP06iOmBz3R9UPogVNgETQ=
-X-Received: from wmpz20.prod.google.com ([2002:a05:600c:a14:b0:442:dc75:51ef])
+        d=1e100.net; s=20230601; t=1753271389; x=1753876189;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HXd/qCB8VS41ci4FOiH8r3Fnz/alprHme1ZlecJv9so=;
+        b=Fh4xKlYL5c5/IFILWW9L7t/97h2Govn6BdsxqsnllVmj6f55rGnBbSk0WvLIGMn/Xh
+         ShqLZqG7az/WbgBZbyrGZElGl0yOXOoZjOhNdgPo8QLiPCNjP+j7PWbPuyBnaDPE1Y3k
+         7hxyk+1ejyjyg4OCdHKKExuShdgTD22JjoJzPuzCLm2OBw8/Op+iearvg7HkU2GLIphy
+         t7B6liAy3o/4M7by1pL3vPYzH1Y2261rbXTYNaHCzefCialAcbiw868uGR5ACXyMmPbq
+         hgRj5FpCcWJjlyOt1syAkl2raZ4kNUsVEFdhKtgkBiJLYc3ClWkncc2UgR0sg9gjmE65
+         okSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUle2z1ho2tdEslf8Jl5W4NVHUsjNMMbjZ97I6vKPCGshhBQxPiW//nAQ6FM6yzslleoh3KIU2ZvlQZy67arA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg8T7g2keWp+VL9fkIzLYyC5ACHV+JhrQz85oFyFALa75HS+FG
+	yRjQxz/+u86J9eeon5aJ8jYyGM/tY9ERjt5nImSWpV1W4V3PDoX+z5Vyro0T0GtJfqgdykVCr+w
+	cpdgfafyjZ03ouT/huQ==
+X-Google-Smtp-Source: AGHT+IFtQ7TcGqfEKPMNSLFNbKS+z9hdY4P7P4/3Czm5sGi200J4k5yBunHeQD1BP7KEARfacjCrGUGRKD0DDvM=
+X-Received: from ejcvu11.prod.google.com ([2002:a17:907:a64b:b0:ae3:6cfa:d4e])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4fc9:b0:456:1157:59ac with SMTP id 5b1f17b1804b1-45868b23d24mr23002295e9.7.1753271388125;
- Wed, 23 Jul 2025 04:49:48 -0700 (PDT)
-Date: Wed, 23 Jul 2025 11:49:32 +0000
+ 2002:a17:907:3d4e:b0:aec:f8bb:abeb with SMTP id a640c23a62f3a-af2f8e514c7mr265695466b.42.1753271389379;
+ Wed, 23 Jul 2025 04:49:49 -0700 (PDT)
+Date: Wed, 23 Jul 2025 11:49:33 +0000
+In-Reply-To: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAEzMgGgC/x2MQQqAMAzAviI9W5gbIvgV8VBn1eKYsqIo4t8d3
- pJD8oByElZoiwcSn6KyxSxVWYBfKM6MMmYHa2xtGuswbH5FH0gVV74zMcVjR3IDTbUbKusIcrw nnuT6x13/vh+IyvQHaAAAAA==
-X-Change-Id: 20250723-lock-class-key-cleanup-a3baf53b123a
+References: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=732; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=gMfyh3DhpP6QRqu6AP4hBRdSuZ0RPcKCCbNeQJQJEM8=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBogMxRzeiBK5iPb/SCHumjhrn4wgDlorCxGJtBP
- bY1sk5ChaaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaIDMUQAKCRAEWL7uWMY5
- Ri0IEACN3TOlVEDUIhzYmfdHRK0ipwmWNr9jYatNpt5ZjQ8yt6cOJMAL0xmB7lyXP8lecS8kmPw
- cr02JoJlClQUZzVk0JVnMfyLd5aFh8IdeDC0Wm66aA6Mh9r+hM/y4gBOCKdedRQDbrZKseJJcKv
- aoqmRD/ltJydTeVBQNcG3gnBV/gnqJZmHETk2XZCC0HQbrgvF01auVBKzL6FKz8lIWWYXvTPcQ+
- LWykJCvwTFG/d+Lqut0ELq3CsNWnp21NmXlOO3Ljk2W/ikM/lMr/HQTVcNfQ5Xf7QZL4iMj5Gsu
- VRLl83xbrVT5rMM5qrv4RrBNMFpsc897VU1XHB2kJV0CRhJLuhXEa3FGMK/+R122HYwAwFIsGc1
- CBJegqitDaJKMA8H86iCURNjkF7WOZBbqJx6N7HDmC2duVtS9z81SyXGDqZ1PICltJwtRxwJ5yL
- WugfT1G9Ej9gmUTNB8eb9L6rmE6Tyj9xeV2m+cYtAuyLLG54UYqqehQ/HsXCB9veLuyhhRqRr1i
- BrIfvl3b3t9qna2h96g6ItbBiZfC2kdUKolf7jgpdqTz4LDxtla715LE4WdVqWaZ5rZ8YAxUwOo
- dg8jDbPUecBaeqzesCZ82cK2wGyKbojlAB1lDCq/XF6KO6rWjg6UFdE/yftE8DoJuli04wJ18Iq Gfipo1BEnUqDiug==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2485; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=uSIzTh2B9rBYN6WZod8iksXQFVhHUXx/CncWZE2dFG0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBogMxadMiaNob8bqYbU1vQHmR5HUyBFbqd6r/MB
+ tuSfDrzu/SJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaIDMWgAKCRAEWL7uWMY5
+ RuLCD/9t5cui5Y7HFtTLMbhmJxO8JDoxn3FyCGHdSYAA+dCeH2N7GxBIj3WnaA5w9h1Mywng4Sm
+ bTetWFniGPqDSMManJjEVNzdmZVkCvkyB/QnlHVTzsxA338nX6CYOBalAaqRxr13TifH4+XU5UR
+ nWy0bcKHwNtQiBcveFS56vYLFU6qwYRE7KSGfxG9ZG1L2yjqA+xs+quGUNXFb7pgOnTN3c5n3Yf
+ Q2nwQsaq6qjQQJd1trH4uzv1YFcdNVwmpsK5isM8wkz7nYe6wFVRliiY0t1q30054YuXgI7Ky6b
+ qWW5/vvZWkZyNV7LA6crMjaig3ggX7MTgxNdtC3GhexACs14/974WCk/xnh59H8MQGiLS2iB2Yv
+ dcVdjH2iTzJSq3UxPXeOwdcyi/TdtVcEzTrtui19Ne370am23ZefPbfipOmZ8U0lLy7dyK6QiCG
+ gGem3vpiVBhEmHhRIjZpMSUOvmATnIkTR5BdhfGTUt9kxngmThM50FcILwc7u2D25PF8cde0o/+
+ Y4DkO84SNvryiDRXpXUQ7FewMF+1EVYhLWdykLWZG0eL9Pl4TWWwAUGgUwF/ahrvRUiqWWD1IeY
+ uNRuvFDlm6DQnz861k5UL0NkuFhtBPzjBE/j7u6F9QY4iHyIzwDezQ+HmmwM7wid200Ok01HjCT Iotm2yN7tSbC/EQ==
 X-Mailer: b4 0.14.2
-Message-ID: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
-Subject: [PATCH 0/2] Clean up Rust LockClassKey
+Message-ID: <20250723-lock-class-key-cleanup-v1-1-85fa506b8ca4@google.com>
+Subject: [PATCH 1/2] rust: sync: refactor static_lock_class!() macro
 From: Alice Ryhl <aliceryhl@google.com>
 To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
 Cc: Gary Guo <gary@garyguo.net>, 
@@ -84,26 +84,66 @@ Cc: Gary Guo <gary@garyguo.net>,
 	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This series applies the suggestion from Benno [1] and various other
-improvements I found when looking over the LockClassKey implementation.
+By introducing a new_static() constructor, the macro does not need to go
+through MaybeUninit::uninit().assume_init(), which is a pattern that is
+best avoided when possible.
 
-Based on rust-next.
+That the destructor must never run is a sufficient safety requirement
+for new_static() because to actually use it you must also pin it.
+This implies that the memory location remains valid forever, which is
+what is needed when using a statically allocated lock class key.
 
-[1]: https://lore.kernel.org/all/DBIJLR7XNI6U.21PMPODHE83DZ@kernel.org/
-
+Suggested-by: Benno Lossin <lossin@kernel.org>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (2):
-      rust: sync: refactor static_lock_class!() macro
-      rust: sync: clean up LockClassKey and its docs
+ rust/kernel/sync.rs | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
- rust/kernel/sync.rs | 77 +++++++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 57 insertions(+), 20 deletions(-)
----
-base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
-change-id: 20250723-lock-class-key-cleanup-a3baf53b123a
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index 00f9b558a3ade19e442b32b46d05885b67e1d830..9545bedf47b67976ab8c22d8368991cf1f382e42 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -39,6 +39,20 @@ pub struct LockClassKey {
+ unsafe impl Sync for LockClassKey {}
+ 
+ impl LockClassKey {
++    /// Initializes a statically allocated lock class key.
++    ///
++    /// This is usually used indirectly through the [`static_lock_class!`] macro.
++    ///
++    /// # Safety
++    ///
++    /// The destructor must never run on the returned `LockClassKey`.
++    #[doc(hidden)]
++    pub const unsafe fn new_static() -> Self {
++        LockClassKey {
++            inner: Opaque::uninit(),
++        }
++    }
++
+     /// Initializes a dynamically allocated lock class key. In the common case of using a
+     /// statically allocated lock class key, the static_lock_class! macro should be used instead.
+     ///
+@@ -95,13 +109,11 @@ fn drop(self: Pin<&mut Self>) {
+ #[macro_export]
+ macro_rules! static_lock_class {
+     () => {{
+-        static CLASS: $crate::sync::LockClassKey =
+-            // Lockdep expects uninitialized memory when it's handed a statically allocated `struct
+-            // lock_class_key`.
+-            //
+-            // SAFETY: `LockClassKey` transparently wraps `Opaque` which permits uninitialized
+-            // memory.
+-            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
++        // SAFETY: The returned `LockClassKey` is stored in static memory, so its destructor will
++        // not run.
++        static CLASS: $crate::sync::LockClassKey = unsafe {
++            $crate::sync::LockClassKey::new_static()
++        };
+         $crate::prelude::Pin::static_ref(&CLASS)
+     }};
+ }
 
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.50.0.727.gbf7dc18ff4-goog
 
