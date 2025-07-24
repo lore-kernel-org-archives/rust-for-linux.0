@@ -1,83 +1,108 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78C628C871
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 09:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7A228136E
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 09:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753349241; cv=none; b=szulK68BrA2pVWVKQjKxKgzUmLjrYD6D+t9ppib0XEYJ0t6D9pFm/jWktkIj080Lwk2Ru/oRIifbcU/NOfRE0FvkSjGoWeFcXFeDik/QaeJ36MWE9l0zb74eirvjRamwjfJLxPSOGGKoAc/L8z70UjwLlWhj1pxJpDSxW8ctif0=
+	t=1753349343; cv=none; b=PMSt+88RV3+VwVHDb3Vec6ovzcLz4chiaqWRUzCKQM9LCvTnicKYlSblXRCHYIffR4pvN2mh3quU6ZqHRnYf67dgvPl6OBX1HiAnEjuxSFIIMBiTc2f5hzYoSwivoLcLIhXnpG1tnZJXyh4xSoqDJ8yuIcXk/s1+Yxvhfr/x950=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753349241; c=relaxed/simple;
-	bh=+ZnY3P2X7S+RjIK7x3kjMud65ddeKN8CGNIBvXvMncQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kUydLNjOHNTr6mQ6hhQ2AzfVfyWQH0R6Oj2LCujizGMMqDRdhg7Xsh5ALD/5t1Y+r1LeLNwFqYZ+DoYMQBKrmd6YbtQuy8tkrh/U3jCwPHKzyXF6UT4Jti5q0uBPC9XjS9E1Q12q0fGZ7HtWEzNPOAzWLbfO2FpAPOdYglQeG1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1UGICBqT; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1753349343; c=relaxed/simple;
+	bh=mvdxvHwnj2wsYWz4k1pqZ+LZ54XVClWdUrBL6s+YQf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uiMGeXWW5mDT53cJctOB7P3m4RvaGC+1CFvwnPcICQfZlHymQ4NLvGWk99qvKYB9TzCvx37E/SeAFFp1FPH7DZHJ3xTr0P3VZ5BFlLmzax6bv6zW6tXGHsEnqV9yU5aB9x8NstLGwZYrCVcuu5qnttH7P3/TmDqYR7H9UX+l7j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HPjFGbO7; arc=none smtp.client-ip=91.218.175.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1UGICBqT"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a523ce0bb2so416369f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 02:27:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753349238; x=1753954038; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PsrwKI3F7bGxyMyCeBsCzUls3NPftVxNs1GB3kxRYJM=;
-        b=1UGICBqT1ZIWgjiOXCuGr7zQ2PUhDBdeY/6pLHPij1lEpseCP2BOOaLdL6QNVl0r7m
-         eMsemEZVgVeWohE71HCszNVOm0L21zODEACYjbRd4ZkFJh5avwAGKRvJLiYjrpyFpsqk
-         2FVkPbXxv8cRSX8X9Cm3O573YU3y6Vg+HhnkSLY4bppxhf5V+3UMGwTcb9tyXasVgrXb
-         3o7DzIrouI78rOYIlDCMj9pqL28X1x7UN6TYnAIkzxzyJlRmvpV6MrvDzkKCh7VHYzMM
-         xleihsh3V4yBoVH6EiMxCrJiLTd2sCD13xJKeOcSspB3BBeNYmY0jhkGav/izNMuM/t4
-         eixg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753349238; x=1753954038;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PsrwKI3F7bGxyMyCeBsCzUls3NPftVxNs1GB3kxRYJM=;
-        b=SnCw4kOwgsstHqAB8+Z/T222i1bzU8m4Kc/uCoTsg0PxXcwuCE99B20XYzoSyLsi6c
-         uMWFL+WzMm5/2CtSV+Wz/JHXkg91yLXS2XTERpG9NUoV3wtRTr6vm1BtQDr+1wLQ8pcR
-         KP1IEN0/qsdxyR3yhHhPrO7DcbdU/r+EQMDhwnF6MtFZnl8PJPtVWxM4wr+4eQtGr9BN
-         bS75/w2bmhS447ff0yckTExXn4BsMkTvQttwj+5zKT3Q3LqzqoVZpgjii/5HfWMiUz6y
-         Gy2IlSCwIOgQ5xCLLCjaENWeOta4G9KbOGXA+stod9+fLy4vdPFjQ27fMIqggPrG8N4R
-         M6Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCWOH/jMtuHxxOp2+xKVYS6h/m5ByIMHRavLdZe0VefyIZX54vgV04AoVrZwHKS+CbxTwEy8wyKtoaVVxatUig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcjU/MoAcQQoAtOBaICuwDJd/EnXBd8GaIZnTpO0uRk+/bu2ON
-	fRuQmU/kX3sKA/KP6uHk29s5b+SR0hhGh18n6hkGLy5ebjGVPNkt8OZDzERoI+yT4mbG5SCswk1
-	k0NsG31e0E5Vs/mVJSg==
-X-Google-Smtp-Source: AGHT+IELtTR5XvjXT9CI/JkCboBp8PAzgWTU7RN+Nu/d1GBEMVnbisQm+epTaSt63SxD8yXeLjeB/JQjltpOZIg=
-X-Received: from wmbay36.prod.google.com ([2002:a05:600c:1e24:b0:456:1ccb:7fbc])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4022:b0:3a4:d6ed:8e2e with SMTP id ffacd0b85a97d-3b768efff13mr4278297f8f.41.1753349238077;
- Thu, 24 Jul 2025 02:27:18 -0700 (PDT)
-Date: Thu, 24 Jul 2025 09:27:17 +0000
-In-Reply-To: <20250715135845.2230333-1-vitaly.wool@konsulko.se>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HPjFGbO7"
+Date: Thu, 24 Jul 2025 17:28:32 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753349329;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zov/CwKu2g/aK1+NzqVWBL06syMbiKGO7EetdWyS+Dw=;
+	b=HPjFGbO7n3v0p1ZAIrJIxe4cFRd2tlR7bO8sCuk3GP7u7cw1oTchz8qrX9d0P43eILsU8u
+	2fkHqvHVca+GP3y2WUICqjaT2vbDvzFcn4CtkAVOug+y5WT9WGFqpb+DVpQSkRNfgpFiND
+	mxHt+lYBq4SGSHUQAo5Nq5KvCffUmH4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>,
+	Geliang Tang <geliang@kernel.org>
+Subject: Re: [PATCH v3 2/2] rust: alloc: kvec: add doc example for `as_slice`
+ method
+Message-ID: <aIH8wCbTP87ZMIUz@teawaterdeMacBook-Pro.local>
+References: <cover.1753339262.git.zhuhui@kylinos.cn>
+ <376014022fa799f5480f6f993f1e25b2561507e4.1753339262.git.zhuhui@kylinos.cn>
+ <CAH5fLgiYnZKtrHxtTHfw1n4VbRakNa1Nid9UHPWOwfNh-QHoUQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250715135645.2230065-1-vitaly.wool@konsulko.se> <20250715135845.2230333-1-vitaly.wool@konsulko.se>
-Message-ID: <aIH8dULJCe4FUd8I@google.com>
-Subject: Re: [PATCH v13 4/4] rust: support large alignments in allocations
-From: Alice Ryhl <aliceryhl@google.com>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org, 
-	bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgiYnZKtrHxtTHfw1n4VbRakNa1Nid9UHPWOwfNh-QHoUQ@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Jul 15, 2025 at 03:58:45PM +0200, Vitaly Wool wrote:
-> Add support for large (> PAGE_SIZE) alignments in Rust allocators.
-> All the preparations on the C side are already done, we just need
-> to add bindings for <alloc>_node_align() functions and start
-> using those.
+Hi Alice,
+
+On Thu, Jul 24, 2025 at 10:21:46AM +0200, Alice Ryhl wrote:
+> On Thu, Jul 24, 2025 at 9:54 AM Hui Zhu <hui.zhu@linux.dev> wrote:
+> >
+> > From: Hui Zhu <zhuhui@kylinos.cn>
+> >
+> > Add a practical usage example to the documentation of `KVec::as_slice()`
+> > showing how to:
+> > Create a new `KVec`
+> > Push elements into it
+> > Convert to a slice via `as_slice()`
+> >
+> > Co-developed-by: Geliang Tang <geliang@kernel.org>
+> > Signed-off-by: Geliang Tang <geliang@kernel.org>
+> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> > ---
+> >  rust/kernel/alloc/kvec.rs | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > index 3c72e0bdddb8..d384c34d1a5e 100644
+> > --- a/rust/kernel/alloc/kvec.rs
+> > +++ b/rust/kernel/alloc/kvec.rs
+> > @@ -224,6 +224,15 @@ unsafe fn dec_len(&mut self, count: usize) -> &mut [T] {
+> >      }
+> >
+> >      /// Returns a slice of the entire vector.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// let mut v = KVec::new();
+> > +    /// v.push(1, GFP_KERNEL);
+> > +    /// v.push(2, GFP_KERNEL);
 > 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
-> Acked-by: Danilo Krummrich <dakr@kernel.org>
+> These function calls are fallible, but you are ignoring the errors.
+> Please use the question mark operator.
+> 
+> Alice
 
-Acked-by: Alice Ryhl <aliceryhl@google.com>
+Just sent v4 according to your comments.
+
+Best,
+Hui
