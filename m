@@ -1,180 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3D32EA46F;
-	Thu, 24 Jul 2025 15:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F0A1DF247;
+	Thu, 24 Jul 2025 16:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753372785; cv=none; b=FLjb6JctT50wE5/ghbRArwnaQmejQxDH7RwnYujNfDDdb9Ds6f6XRGL0NlJSyn9iB5VDUuo0hvOgUk1vvEke7lzAEw6WGLdHtZ6QIgx4s1roSqSygNAP2R3P1/Bn8jNGcPLTnzbCD707dRbN33zj5OVGSnz4bu/MaFBLi/y0xrk=
+	t=1753372837; cv=none; b=TV0ZcCJcDJYbeB/uL87UiDzLlD3ZpO1y49Zk0lqdBqJ0/O3trScBAdrkfc1fWjhc5yMkrNg5C5D4NZtUswqvxtfIdwWCpNuVUchgIkjhxWMCbF0fjoRdJZEOclM6dfdLZOZboZROiXn4zwlSqFdesPfkiklNgJB7hcjj2lLeREU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753372785; c=relaxed/simple;
-	bh=vPgkIaLtjO1doCUcrl0hhXAj1VPgpSa7jaQfRG4kgro=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=ofMiEHnM0w2bTFQpqy+5bwlRz8yuqBPbkowbngjBKULEG3DrLqzW+RqIP5AGVLQvjOvIuQShtwFnz773ki8Ghx7gdvhyuWkpI7USTzgoayLiGp/ILvQtZ4XjgVupoBebhCHwum21FD2+B+s6r0MD7txmBnOWDBR2JsadAs/Iqd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijTHgvxx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753372837; c=relaxed/simple;
+	bh=FbPmgwrQmhELpPPQh/rwyTALm9IvfeHwHW8BTVv/FLQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Uju1IYFtd7KKjYSVZ8Ov87nfA5MBJiyoMrNjwZLhyxkPrrcz9k/a80AhnWURU+/PVj/NiU16p7H/3vNxpqwcWahrtLFnlVNa8ZTxD/BpItAWv+P8reN6OWiowZe8Egpx74BCBpMcogClGwVzyDOJgCIHd9y3GLS9fHKVjjjFzMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nwh1h535; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijTHgvxx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35589C4CEED;
-	Thu, 24 Jul 2025 15:59:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753372784;
-	bh=vPgkIaLtjO1doCUcrl0hhXAj1VPgpSa7jaQfRG4kgro=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=ijTHgvxxBLYxWJrky7SjcjcSkfm674OWc9WFlt2Ils/p2hq+T733wF93tMVvo0NbB
-	 K2WBua7zsgMNBKY38prUVdzSGEgLVbYZiLWYlQfot71oPRnUPqVmQSG8EcYBdHAkNo
-	 mXSKS3W0qadGqSH3Wpyk1JEC2an3o+MpULAxu1MUfdV8GYn+hR1AdEnUPZzZSM57Yn
-	 JNNmKYhrNnxQMDXjU2iwD8SvldhEuehkJZHru2Xy2BJarsrE1Gp7fkkp0KP2GgsNMg
-	 V/O5y8LMsmMoG0U1mA0sutg5qm1C/52/B8bfIS2cEOyC3kX1E8XvGhNDXZBEuftYlL
-	 2CCPWRSMwhF7A==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nwh1h535"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-b3510c22173so134130a12.0;
+        Thu, 24 Jul 2025 09:00:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753372835; x=1753977635; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FbPmgwrQmhELpPPQh/rwyTALm9IvfeHwHW8BTVv/FLQ=;
+        b=Nwh1h535QPw3DdEuQNdIkiUcXE97ZecNErN9SP7dqyG5Uj8NxI+S/4gjpl7zTTN1t2
+         SLEWK4qBAS547nnu1kJAPdzeEUaWgfxKbQTTEAaQPPCqVoracC8juXICSTd+d2cXVd6R
+         OE/mD0mDu8YjI7a6QSAA8sCQC4F2RrW6EZtfNHtuL5tJmVuhgw5QIR+Ss8jLtztnRGTc
+         GiDTw0yVlxl9obdp4BW1HdbgyrtbO5hloUto941sfTFwdDnyjhPhjTGNUpIK5rxt5dHJ
+         tbd8eMjNJyp3yoKOW6ZPp2J/N5RBL9eG8YefeOW0SsM+xWEUMsaRghBXEAop3Ix6ZLFR
+         vMdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753372836; x=1753977636;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FbPmgwrQmhELpPPQh/rwyTALm9IvfeHwHW8BTVv/FLQ=;
+        b=K6WSlxYAKA0lk8Zy/sHD8tv9LSOl0IdIDJXAbcK/0EHb+mEj+NIBvMqQB1J6oMB1/5
+         XWhEc72I0+nxdu4801bwY7CzF/G29suG81avDjGFNncOy7D4TgPiRiFWvq25Z0qlrxiG
+         YBXL5gggL0+3t+Li+jAEGnIhd8t5k9asEoYBrrVMPGeaNe2Ji26sDUU7Ft7dTh/PkkF+
+         cHTRQ4OXCbKq1JAahFO1zzD7Xq3u3PR4OiJCQA+FzV3IOsYiM0MygFuLl/tCXZ/KRBUV
+         SQao19JCAf7/Lx8JgOxK7jSyQY3Zqtq1wSXMRWxAQDcPTrXsRmKX1OJJB7PvM4hVlslj
+         ti7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVCyYxHtt0zSK45fhtn4yGg2WroA6eK3fMPCH7ajhD7T6g8L9cYJQ4aL95Q5tTV6xOVdJt69TqKhR9MY71a2Q==@vger.kernel.org, AJvYcCVDgPTVuhLffa37cqg0X60zfeavPKLbiTFwUByMRpg3bqnexB0dbCpc7yUcQUqBrKhw5R0CYgWsFjIy4ZY=@vger.kernel.org, AJvYcCW1/WuJPFudFgffNRLbJh57Bhnh1HdxT/TynkC74ukVmIVL2bwn43PSnsekzvLziYFf/8gciZFytmUDZ57qFPM=@vger.kernel.org, AJvYcCXbsJPWF0Zk32ko03lRGZfBgK4+xjF3EwwpqoxuEQxMJlrMavH6fxPDgaXO6bFndB0UA/NgvZTmesJOZJkw@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzygaw+Zmw5umUIKtbsavoacMjXSUPYmkiSoM7kLt/ZyblMjA2r
+	sk7mHu10BjN9/KGtT3IZIJ7Tr4sA3h+1LwJjD4/gQuEn2SbXT3al87oUcpKTuEADF11q5VqmIoR
+	oCk+NzL4A8he5j5DZOOAk2zeXfI/djCQ=
+X-Gm-Gg: ASbGnctoS43YjGXmlFecVYRhH/zViXqTOLCj37QsXUXFnVRaoEWOLhcaQbOk6QbY42e
+	56BFGXNrecq1GmQJBPLT1h6p0XAj1vqCCq4th0CT4TEo7vdZTO6WinUAxdzy4tWKPQ5AL4uw/9Z
+	kk3Xxj5nosz1m1OU8yyfqvuNmRZ6s+aIufW2G332khAb2b893hKq/Mdw3AbsRPJBqEISb2tjF2A
+	BODfOrH
+X-Google-Smtp-Source: AGHT+IEixyq95CchIezC/JloLVj0RsN+UyKsKMSCQC6gQRgajTHmeGZRSoEE5SqrPIOpBBTfzaC+/mr6yDfJmFLpCIY=
+X-Received: by 2002:a17:902:cec6:b0:23d:eb95:da15 with SMTP id
+ d9443c01a7336-23f9814bd03mr36628715ad.6.1753372835358; Thu, 24 Jul 2025
+ 09:00:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <cover.1753354215.git.legion@kernel.org> <e78d20afcc059cec3cd977ee74a0ec4df06de05b.1753354215.git.legion@kernel.org>
+In-Reply-To: <e78d20afcc059cec3cd977ee74a0ec4df06de05b.1753354215.git.legion@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 24 Jul 2025 18:00:22 +0200
+X-Gm-Features: Ac12FXzX-zdf43RhmmLozngcxIqMNsHW59ozas8iLUbpVV_D5V8Act7CA_O0LmM
+Message-ID: <CANiq72krLSP=xe9tMj5sPaBDmEK09x2J_CsbY5cU0wNAj_ffRw@mail.gmail.com>
+Subject: Re: [PATCH v5 07/10] modpost: Add modname to mod_device_table alias
+To: Alexey Gladkov <legion@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 24 Jul 2025 17:59:39 +0200
-Message-Id: <DBKERZ03P2WS.3HQ0NZC9OO5AZ@kernel.org>
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
- <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Hui Zhu"
- <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>
-To: "Hui Zhu" <hui.zhu@linux.dev>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v4 1/2] rust: allocator: add unit tests of kmalloc,
- vmalloc and kvmalloc
-References: <cover.1753348867.git.zhuhui@kylinos.cn>
- <32d7663b7d07d13564bdfb6a1ec4cde1be8b8f80.1753348867.git.zhuhui@kylinos.cn>
-In-Reply-To: <32d7663b7d07d13564bdfb6a1ec4cde1be8b8f80.1753348867.git.zhuhui@kylinos.cn>
 
-On Thu Jul 24, 2025 at 11:25 AM CEST, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+On Thu, Jul 24, 2025 at 3:50=E2=80=AFPM Alexey Gladkov <legion@kernel.org> =
+wrote:
 >
-> Add KUnit test cases to validate the functionality of Rust allocation
-> wrappers (kmalloc, vmalloc, kvmalloc).
+> At this point, if a symbol is compiled as part of the kernel,
+> information about which module the symbol belongs to is lost.
 >
-> The tests include:
-> Basic allocation tests for each allocator using a 1024-byte Blob
-> structure initialized with a 0xfe pattern.
-> Large alignment (> PAGE_SIZE) allocation testing using an 8192-byte
-> aligned LargeAlignBlob structure.
-> Verification of allocation constraints:
-> - kmalloc successfully handles large alignments.
-> - vmalloc and kvmalloc correctly fail for unsupported large alignments.
-> Content verification through byte-by-byte pattern checking.
+> To save this it is possible to add the module name to the alias name.
+> It's not very pretty, but it's possible for now.
 >
-> Co-developed-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> Cc: Miguel Ojeda <ojeda@kernel.org>
 
-Thanks for the patch, additional test are always welcome! :)
+Thanks for the ping -- Cc'ing as well Andreas who is working on module
+bits lately (but is away right now) and Danilo who maintains the
+modified file:
 
-> ---
->  rust/kernel/alloc/allocator.rs | 57 ++++++++++++++++++++++++++++++++++
->  1 file changed, 57 insertions(+)
->
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
-.rs
-> index aa2dfa9dca4c..430d1f664fdf 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -187,3 +187,60 @@ unsafe fn realloc(
->          unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, fl=
-ags) }
->      }
->  }
-> +
-> +#[macros::kunit_tests(rust_allocator_kunit)]
-> +mod tests {
-> +    use super::*;
-> +    use kernel::prelude::*;
-> +
-> +    const TEST_SIZE: usize =3D 1024;
-> +    const LARGE_ALIGN_TEST_SIZE: usize =3D kernel::page::PAGE_SIZE * 4;
-> +    #[repr(align(128))]
-> +    struct Blob([u8; TEST_SIZE]);
-> +    // This structure is used to test the allocation of alignments large=
-r
-> +    // than PAGE_SIZE.
-> +    // Since this is not yet supported, avoid accessing the contents of
-> +    // the structure for now.
-> +    #[allow(dead_code)]
-> +    #[repr(align(8192))]
-> +    struct LargeAlignBlob([u8; LARGE_ALIGN_TEST_SIZE]);
-> +
-> +    #[test]
-> +    fn test_kmalloc() -> Result<(), AllocError> {
-> +        let blob =3D KBox::new(Blob([0xfeu8; TEST_SIZE]), GFP_KERNEL)?;
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
 
-Since those are now actual unit tests on the Allocator implementations, it =
-would
-be fine to use them directly. However, for the case you are testing here, i=
-.e.
-alignment using Box is perfectly fine.
-
-Having that said, I wouldn't call those tests test_*malloc(), since they're=
- not
-really testing all aspects of a certain allocator, but only the success to
-allocate with certain alignment arguments.
-
-Instead, I propose to write just a single test, test_alignment(), with a fe=
-w
-helper functions.
-
-For instance, your Blob test structure could have a constructor that is gen=
-eric
-over A: Allocator.
-
-However, given that you really only want to check alignment, you probably w=
-ant a
-structure like this instead.
-
-	struct TestAlign<A: Allocator>(Box<MaybeUninit<[u8; TEST_SIZE]>, A>);
-
-	impl<A: Allocator> TestAlign<A> {
-	   fn new() -> Result<Self> {
-	      Box::<_, A>::new_uninit(GFP_KERNEL)
-	   }
-
-	   fn alignment_valid(&self) -> bool {
-	      ...
-	   }
-	}
-
-and then test_alignment() can just do
-
-	let test =3D TestAlign::<Kmalloc>::new()?;
-	assert!(test.alignment_valid());
-
-	...
-
-Given that this is now a unit test I also think that actually validating th=
-e
-alignment of the pointer Box wraps makes sense, similar to what you had in =
-v2.
-
-> +        for b in blob.0.as_slice().iter() {
-> +            assert_eq!(*b, 0xfeu8);
-> +        }
-
-I don't think that this has any valid in the context of testing alignment.
-
-> +        let blob =3D KBox::new(LargeAlignBlob([0xfdu8; LARGE_ALIGN_TEST_=
-SIZE]), GFP_KERNEL)?;
-
-For the large alignment case, you can consider to let TestAlign take a cons=
-t
-generic, additional to A: Allocator, e.g.
-
-	struct TestAlign<A: Allocator, const SIZE: usize>(Box<MaybeUninit<[u8; SIZ=
-E]>, A>);
-
-This way you can keep test_alignment() function very compact.
-
-- Danilo
+Cheers,
+Miguel
