@@ -1,303 +1,156 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19D61EF39F;
-	Thu, 24 Jul 2025 19:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C63B213E94
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 19:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753384341; cv=none; b=g3R+zJi1wZ2N02nkfppw7HuiESiBQmvK4f0Gzx0Vx07+130kqkyItCuOzcdZUBUlElrooqlBLiQknNmurK5RKCD64jATfv+Bh9MZEv1CTE+rDtrJHsoIdwynJTddI8pBkhmJsbrzehxwhSCT/L3++3sl3z9TnhLX2QmPyoswnfM=
+	t=1753384559; cv=none; b=urzjTGdSTREr+dRzLQ6EckrDLGpvvjIQIgebY6bK4WWOUaZuOfD7Hxgbt7KYsqhu3lIaVaJei6VozSpp7OOm83C9Mjbg3giS7d3L2ZXJMECsfhB8fjhBM70pHoUZTKDJ+bFzECvj73WqQ184bkgKb5bvXol4/UmYR55OY+mh5A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753384341; c=relaxed/simple;
-	bh=aMRcn5rJXp7J681Kc0p+uw6+VKakCm4py3S8T/uEAC8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rDHwE7k9f1YyepTGsPbw4LkTIpnWA50LpGM0nQOkcpAmJHlADxqey2QoyvpxMqGSfgzLDXUIY9MZ8AJr6mGlgnr5VqYi30VEfvuudRPSUpvfmBzYZHoryQ6L335kAlqpMSDlWr9oqX0SW0ETAs7DYCsvELw9bfeo8qot9Cekfo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOScjBE7; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753384559; c=relaxed/simple;
+	bh=KDENvryqaFfe+ipMBxs4HEr3VYyPiM26hvi5lpcTx/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bqgh8Kwx/xxHLcJ53F2ucNDGFT05sAdqFp0qlr7F2vDmVuYRUkX0jKMqHMDqlJ6Mr9hLgJqolBg58Uo0Frnnw/0kZG5LJN5lEczKUcDAOekKmZaIt4ucM/pu5EI5RWDtoK7KTlULSGV5lAsuc2VKC4YAGJaK8T34/P9hqhdsMlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T1kKsWBM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOScjBE7"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-32f3ef6178bso11338351fa.1;
-        Thu, 24 Jul 2025 12:12:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753384338; x=1753989138; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iQ/9/s8x4NtBPfpvcC8a0KX2n85o7HUfI6XdDdIAsIM=;
-        b=SOScjBE75dbtLD5zTgWlqhclv1y/MDe7UazaNjfqFX+D0DR6wVoKbL5EgY8+9yEUSX
-         HXzj1KWrKIgzDoIU98ET+dwAhPpacBcn6HfGAlgA7qqkXcEvElvqtEDf7VrKHZfb4s4x
-         7BfsFzpw4j5/H/dD2OOCXODIOzv+1A0tPCkIT/xViYYx0Q7XlBri21soLsbC2kJCxuy+
-         ySuEYrxSTqSWtsQw8sSOv6p27Ly4224wfSD+TQCyPKuPe3He3VEL2vBivYQoHnpbl3EK
-         05laXy+J3a9OrsK/25ed1hHz7KVXcI5Rd9hHzzHwUbbT2/U7POQeTixOkmxBfMSSd4ad
-         k85g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753384338; x=1753989138;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iQ/9/s8x4NtBPfpvcC8a0KX2n85o7HUfI6XdDdIAsIM=;
-        b=ZnImEUAIu1SudARS32DUP4VzJ5Ua+BZmUfcV2SiRmoxW48i0jPPtJNxEFfAIbVWYWA
-         1qtjevjQUDgxTkd8fvuK+n2prkom/ctuGlQhNopkAsR//E0KQUhmQCieHNm3kegTV4ld
-         b1UfGicVcrSWdklNBYdHTLEL2RzxoQ7zcEKsCQ3cFHkYyh+s8/9uqVb2fASuGS4JaJxa
-         +TxpXjC8dw7NSd6WRrHG7vdKw3mMKEd6H6Lyl1dpoPRb3FUBk4YYFPxK79KrTEp/DBsh
-         Ca8sldppU6ysvtomtY3ak+jE4GiEucG1o2FxSmfAwaC2B2DDSYXFqEP/C/tL8zUZO7We
-         eTEA==
-X-Forwarded-Encrypted: i=1; AJvYcCWz17xsl5jBxWhxQNl0DADXnskktC5R0C5xR82jxNPRsGA9uZoitnmc939+QllFd3yaxVLYRYv/LgVQQyAEgZc=@vger.kernel.org, AJvYcCXSyDf8SXvRcUs3VK4ys9hJUHAmBNVeuezgo+TTSkYdQe+xwid/Z/JtyuSsYCSG/cspZ8E8+mBXh5OfCGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywr5iJUFx6nHQsnnENQ4SaF/Gk9t74yCQ8vGKSc85yVnes5DSGY
-	zdYHgdp0maJqpf7P3SWtuQWbjDoMOcWs19OWHg5KEDljywmfDG3WhiDqSBMPCAAXtlNFn2qV/fn
-	n4TDIdlhaQad0dHSkXPJp2i6JKZTR554=
-X-Gm-Gg: ASbGncs+TSSA2yiYbCu7DuAbld/HLeMteolzG4J9isreRfP4QJJdzo4so5UZo7Ed+7u
-	DHerC5WWo/+oRIziuXZqjsranj18m4R/xbypf3NGeH9tV35JuAbA5wNc8/GO0mOAvx2cn/Ar1en
-	JAnrA9QkgwkrqPkm23UMDzlWFvgv5XfGOc82T3le/+USoBbgnzjxWtQ+TgfaXQoPhpgaMmOBcOl
-	K4B9yeJ
-X-Google-Smtp-Source: AGHT+IFLjSXgwd25t6/wqaoeOIAS4JZGWuCqqlOU7EZvZlrScf2D5sOOXKFeVrAIS+Dy3rATsWnRw+X6PI9GquwIkpI=
-X-Received: by 2002:a2e:a552:0:b0:330:d981:1755 with SMTP id
- 38308e7fff4ca-330dfbfc4c0mr24318931fa.6.1753384337413; Thu, 24 Jul 2025
- 12:12:17 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T1kKsWBM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753384556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rDZbSpivZvNtqNNz2nVMJ9AyhIB6jJidbuEul+8M8EM=;
+	b=T1kKsWBMVlX+YUf6pdnwKNLOnQBErfYC/urNBTy0xTbkZxwX+YNhkAlF3g2IyiE/mx1eHj
+	0x4D+ps+2g7qS8sfzSRgIY+JZUXhHIBoH5PmJszakDzCMvRStdaZpGfQtO2bVadZbt69Zl
+	V1tq2QWW9W8tgKjE8QdgwXBBsPXLu7g=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-_7VPjU56PVStwyCwyxYvTQ-1; Thu,
+ 24 Jul 2025 15:15:51 -0400
+X-MC-Unique: _7VPjU56PVStwyCwyxYvTQ-1
+X-Mimecast-MFC-AGG-ID: _7VPjU56PVStwyCwyxYvTQ_1753384549
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2213B1956056;
+	Thu, 24 Jul 2025 19:15:48 +0000 (UTC)
+Received: from chopper.lyude.net (unknown [10.22.88.223])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D5C4B1966665;
+	Thu, 24 Jul 2025 19:15:42 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Asahi Lina <lina+kernel@asahilina.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] Partially revert "rust: drm: gem: Implement AlwaysRefCounted for all gem objects automatically"
+Date: Thu, 24 Jul 2025 15:15:18 -0400
+Message-ID: <20250724191523.561314-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com>
- <20250723-lock-class-key-cleanup-v1-2-85fa506b8ca4@google.com>
- <aIDn8OFzUbVXQVTF@tardis.local> <CAJ-ks9mQJ5Ed-zd_p9aNAxACn7m-DhcacEpSCwtyixdjtG3gxg@mail.gmail.com>
- <aIJ_bJ5khAivH4kH@tardis-2.local>
-In-Reply-To: <aIJ_bJ5khAivH4kH@tardis-2.local>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 24 Jul 2025 15:11:41 -0400
-X-Gm-Features: Ac12FXzVvjNIxX-GP9eqHh0SKGv8wcb8H5EC5qbKpllb5WTFCUA3rZyZWRjOxXw
-Message-ID: <CAJ-ks9k-bJ7ENDXcj++KHzeefGjZAKLvn1QsbpDU-p=M-XtJ7Q@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: sync: clean up LockClassKey and its docs
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Jul 24, 2025 at 2:46=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> On Thu, Jul 24, 2025 at 02:14:59PM -0400, Tamir Duberstein wrote:
-> > On Wed, Jul 23, 2025 at 9:49=E2=80=AFAM Boqun Feng <boqun.feng@gmail.co=
-m> wrote:
-> > >
-> > > On Wed, Jul 23, 2025 at 11:49:34AM +0000, Alice Ryhl wrote:
-> > > > Several aspects of the code and documentation for this type is
-> > > > incomplete. Also several things are hidden from the docs. Thus, cle=
-an it
-> > > > up and make it easier to read the rendered html docs.
-> > > >
-> > > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > > ---
-> > >
-> > > This looks good to me. One thing below:
-> > >
-> > > >  rust/kernel/sync.rs | 55 ++++++++++++++++++++++++++++++++++++++---=
-------------
-> > > >  1 file changed, 40 insertions(+), 15 deletions(-)
-> > > >
-> > > > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-> > > > index 9545bedf47b67976ab8c22d8368991cf1f382e42..5019a0bc95446fe30ba=
-d02ce040a1cbbe6d9ad5b 100644
-> > > > --- a/rust/kernel/sync.rs
-> > > > +++ b/rust/kernel/sync.rs
-> > > > @@ -26,7 +26,9 @@
-> > > >  pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
-> > > >  pub use locked_by::LockedBy;
-> > > >
-> > > > -/// Represents a lockdep class. It's a wrapper around C's `lock_cl=
-ass_key`.
-> > > > +/// Represents a lockdep class.
-> > > > +///
-> > > > +/// Wraps the kernel's `struct lock_class_key`.
-> > > >  #[repr(transparent)]
-> > > >  #[pin_data(PinnedDrop)]
-> > > >  pub struct LockClassKey {
-> > > > @@ -34,6 +36,10 @@ pub struct LockClassKey {
-> > > >      inner: Opaque<bindings::lock_class_key>,
-> > > >  }
-> > > >
-> > > > +// SAFETY: Unregistering a lock class key from a different thread =
-than where it was registered is
-> > > > +// allowed.
-> > > > +unsafe impl Send for LockClassKey {}
-> > > > +
-> > > >  // SAFETY: `bindings::lock_class_key` is designed to be used concu=
-rrently from multiple threads and
-> > > >  // provides its own synchronization.
-> > > >  unsafe impl Sync for LockClassKey {}
-> > > > @@ -41,28 +47,30 @@ unsafe impl Sync for LockClassKey {}
-> > > >  impl LockClassKey {
-> > > >      /// Initializes a statically allocated lock class key.
-> > > >      ///
-> > > > -    /// This is usually used indirectly through the [`static_lock_=
-class!`] macro.
-> > > > +    /// This is usually used indirectly through the [`static_lock_=
-class!`] macro. See its
-> > > > +    /// documentation for more information.
-> > > >      ///
-> > > >      /// # Safety
-> > > >      ///
-> > > >      /// The destructor must never run on the returned `LockClassKe=
-y`.
-> > > > -    #[doc(hidden)]
-> > > >      pub const unsafe fn new_static() -> Self {
-> > > >          LockClassKey {
-> > > >              inner: Opaque::uninit(),
-> > > >          }
-> > > >      }
-> > > >
-> > > > -    /// Initializes a dynamically allocated lock class key. In the=
- common case of using a
-> > > > -    /// statically allocated lock class key, the static_lock_class=
-! macro should be used instead.
-> > > > +    /// Initializes a dynamically allocated lock class key.
-> > > > +    ///
-> > > > +    /// In the common case of using a statically allocated lock cl=
-ass key, the
-> > > > +    /// [`static_lock_class!`] macro should be used instead.
-> > > >      ///
-> > > >      /// # Examples
-> > > > +    ///
-> > > >      /// ```
-> > > > -    /// # use kernel::c_str;
-> > > > -    /// # use kernel::alloc::KBox;
-> > > > -    /// # use kernel::types::ForeignOwnable;
-> > > > -    /// # use kernel::sync::{LockClassKey, SpinLock};
-> > > > -    /// # use pin_init::stack_pin_init;
-> > > > +    /// use kernel::c_str;
-> > >
-> > > We can probably change the use `optional_name!()` to make
-> > > core::ffi::CStr -> kernel::str::CStr more smooth.
-> > >
-> > > > +    /// use kernel::types::ForeignOwnable;
-> > > > +    /// use kernel::sync::{LockClassKey, SpinLock};
-> > > > +    /// use pin_init::stack_pin_init;
-> > > >      ///
-> > > >      /// let key =3D KBox::pin_init(LockClassKey::new_dynamic(), GF=
-P_KERNEL)?;
-> > > >      /// let key_ptr =3D key.into_foreign();
-> > > > @@ -80,7 +88,6 @@ impl LockClassKey {
-> > > >      /// // SAFETY: We dropped `num`, the only use of the key, so t=
-he result of the previous
-> > > >      /// // `borrow` has also been dropped. Thus, it's safe to use =
-from_foreign.
-> > > >      /// unsafe { drop(<Pin<KBox<LockClassKey>> as ForeignOwnable>:=
-:from_foreign(key_ptr)) };
-> > > > -    ///
-> > > >      /// # Ok::<(), Error>(())
-> > > >      /// ```
-> > > >      pub fn new_dynamic() -> impl PinInit<Self> {
-> > > > @@ -90,7 +97,10 @@ pub fn new_dynamic() -> impl PinInit<Self> {
-> > > >          })
-> > > >      }
-> > > >
-> > > > -    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-> > > > +    /// Returns a raw pointer to the inner C struct.
-> > > > +    ///
-> > > > +    /// It is up to the caller to use the raw pointer correctly.
-> > > > +    pub fn as_ptr(&self) -> *mut bindings::lock_class_key {
-> > > >          self.inner.get()
-> > > >      }
-> > > >  }
-> > > > @@ -98,14 +108,28 @@ pub(crate) fn as_ptr(&self) -> *mut bindings::=
-lock_class_key {
-> > > >  #[pinned_drop]
-> > > >  impl PinnedDrop for LockClassKey {
-> > > >      fn drop(self: Pin<&mut Self>) {
-> > > > -        // SAFETY: self.as_ptr was registered with lockdep and sel=
-f is pinned, so the address
-> > > > -        // hasn't changed. Thus, it's safe to pass to unregister.
-> > > > +        // SAFETY: `self.as_ptr()` was registered with lockdep and=
- `self` is pinned, so the address
-> > > > +        // hasn't changed. Thus, it's safe to pass it to unregiste=
-r.
-> > > >          unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
-> > > >      }
-> > > >  }
-> > > >
-> > > >  /// Defines a new static lock class and returns a pointer to it.
-> > > > -#[doc(hidden)]
-> > > > +///
-> > > > +/// # Examples
-> > > > +///
-> > > > +/// ```
-> > > > +/// use kernel::c_str;
-> > > > +/// use kernel::sync::{static_lock_class, Arc, SpinLock};
-> > > > +///
-> > > > +/// fn new_locked_int() -> Result<Arc<SpinLock<u32>>> {
-> > > > +///     Arc::pin_init(SpinLock::new(
-> > > > +///         42,
-> > > > +///         c_str!("new_locked_int"),
-> > >
-> > > We could use `optional_name!()` here to avoid another usage of
-> > > `c_str!()`.
-> > >
-> > > That said, I'm not sure whether we should replace `c_str!()` in the
-> > > example of `new_dynamic()` right now in this series, I think that
-> > > depends on two things: 1) whether this series goes into tip or rust-n=
-ext
-> > > for 6.18 and 2) when we are expecting to land the replacement of
-> > > `c_str!()`.
-> > >
-> > > Miguel and Tamir, any thought?
-> > >
-> > > Regards,
-> > > Boqun
-> >
-> > I don't think this patch meaningfully changes the complexity of the
-> > cstr migration. The changes are just a few tokens.
-> >
->
-> Ok, so you're fine if I or someone else take this patch as it is
-> (including the new user of `c_str!()`), and get it merged via the tip
-> tree [1] in v6.18 merge window? That means if we remove `c_str!()` in
-> v6.18 merge window, there would be a non-trivial merge resolution to do.
+I made a very silly mistake with this commit that managed to slip by
+because I forgot to mzke sure rvkms was rebased before testing my work last
+- we can't do blanket implementations like this due to rust's orphan rule.
 
-The merge conflict would only arise at the very end of the migration,
-when we're using C-string literals everywhere *and* the macro has been
-renamed. I haven't even sent that final series yet. Regardless, the
-resolution would be quite trivial, I think:
-- remove the import that doesn't exist
-- replace `c_str!("new_locked_int")` with `c"new_locked_int"`
+The code -does- build just fine right now, but it doesn't with the ongoing
+bindings for gem shmem. So, just revert this and we'll introduce a macro
+for implementing AlwaysRefCounted individually for each type of gem
+implementation.
 
-In other words: yep, I'm fine with however this is taken.
+Note that we leave the IntoGEMObject since it is true that all gem objects
+are refcounted, so any implementations that are added should be
+implementing AlwaysRefCounted anyhow.
 
->
-> Of course, it'll be less problematic if this goes into rust tree instead
-> of tip.
+This reverts commit 38cb08c3fcd3f3b1d0225dcec8ae50fab5751549.
 
-This would be ideal, yep.
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
+ rust/kernel/drm/gem/mod.rs | 36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
 
->
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/
->
-> Regards,
-> Boqun
->
-> > >
-> > > > +///         static_lock_class!(),
-> > > > +///     ), GFP_KERNEL)
-> > > > +/// }
-> > > > +/// ```
-> > > >  #[macro_export]
-> > > >  macro_rules! static_lock_class {
-> > > >      () =3D> {{
-> > > > @@ -117,6 +141,7 @@ macro_rules! static_lock_class {
-> > > >          $crate::prelude::Pin::static_ref(&CLASS)
-> > > >      }};
-> > > >  }
-> > > > +pub use static_lock_class;
-> > > >
-> > > >  /// Returns the given string, if one is provided, otherwise genera=
-tes one based on the source code
-> > > >  /// location.
-> > > >
-> > > > --
-> > > > 2.50.0.727.gbf7dc18ff4-goog
-> > > >
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+index 4cd69fa84318c..db65807dbce88 100644
+--- a/rust/kernel/drm/gem/mod.rs
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -54,26 +54,6 @@ pub trait IntoGEMObject: Sized + super::private::Sealed + AlwaysRefCounted {
+     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self;
+ }
+ 
+-// SAFETY: All gem objects are refcounted.
+-unsafe impl<T: IntoGEMObject> AlwaysRefCounted for T {
+-    fn inc_ref(&self) {
+-        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
+-        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
+-    }
+-
+-    unsafe fn dec_ref(obj: NonNull<Self>) {
+-        // SAFETY: We either hold the only refcount on `obj`, or one of many - meaning that no one
+-        // else could possibly hold a mutable reference to `obj` and thus this immutable reference
+-        // is safe.
+-        let obj = unsafe { obj.as_ref() }.as_raw();
+-
+-        // SAFETY:
+-        // - The safety requirements guarantee that the refcount is non-zero.
+-        // - We hold no references to `obj` now, making it safe for us to potentially deallocate it.
+-        unsafe { bindings::drm_gem_object_put(obj) };
+-    }
+-}
+-
+ /// Trait which must be implemented by drivers using base GEM objects.
+ pub trait DriverObject: BaseDriverObject<Object<Self>> {
+     /// Parent `Driver` for this object.
+@@ -287,6 +267,22 @@ extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
+     }
+ }
+ 
++// SAFETY: Instances of `Object<T>` are always reference-counted.
++unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for Object<T> {
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
++        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
++    }
++
++    unsafe fn dec_ref(obj: NonNull<Self>) {
++        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
++        let obj = unsafe { obj.as_ref() };
++
++        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
++        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
++    }
++}
++
+ impl<T: DriverObject> super::private::Sealed for Object<T> {}
+ 
+ impl<T: DriverObject> Deref for Object<T> {
+
+base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+-- 
+2.50.0
+
