@@ -1,109 +1,109 @@
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E852DE70B;
-	Thu, 24 Jul 2025 14:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635D4274FE8;
+	Thu, 24 Jul 2025 15:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753365714; cv=none; b=hKKtV8GtuPMOr/4AINfcqw0VG16y/Pn/F2XwR7a5EKQQBkCs2VGA3xPHUbK6Pi8/qWSL18mIQ5w/19beotzTe+erl5jnk1PJ063lAL43P4Kqb41cdPG0fqmtRag9CD4mXkrlu0oorBH8xRnBSqSZgfF3MGNE4ce/Pakn3RD4Dc4=
+	t=1753372518; cv=none; b=Tahai+p9kTjDIIdY8kHYI2u5fWpKW8yDVQfZl8lBAdib8L73zKi5ZPdrEpWdPXNsX0VMBc/cUbWrzOaGxIct7cQmPJV2wCbhoSPZ/xvilSLeDJYop2cHzwd1HXA8Q89vzNdU74TM80EW4E6f2JZ7HVSkS0UgwtHblo5SM4fd2k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753365714; c=relaxed/simple;
-	bh=LHrZybXUzn7zDp/R54CFIe7FKl93yn8U5vdZRGns188=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ILgfnNr+BGO1M51U9LU0P4LsU1LosCwzY3TqFPU6afuGC5muBpyNUyXC9Z1jgHZo0UYeNZqIEqtJFgopUa1cmqLQk7fIul5xpTMr6l2fF2ETulmjcfm28s9sA7hzTUwZY02tb36p5JZu+kQXx203gtxG3bt5oQHBvDuwPEn4+iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=WT9unhE2; arc=none smtp.client-ip=178.154.239.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1753372518; c=relaxed/simple;
+	bh=EsIZpvN9Ch3cTP+9Ex/zXKHMeTPVN9yv0ivHS6Z8KKk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ENZO7JzrTVX6f3W+FtXKLk2EInuzYzRn6tKFyb4OWTTRd6bmsaDgx/J6bJ+M6dWhUMnU6s3lGZjtbGJH5OrnoXzYQ34vYWeGrXxfTuSwL9u/1DotsrzeSmeizFrrIvaF4PivCjZmgiAn5HadJ3aHHhn3ImDeBN9Zi4OC99EiXws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YJMzFNTp; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="WT9unhE2"
-Received: from mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net [IPv6:2a02:6b8:c10:2987:0:640:47b0:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id 88372C108A;
-	Thu, 24 Jul 2025 16:53:58 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id rrU2IQHMTKo0-lK3bD38L;
-	Thu, 24 Jul 2025 16:53:57 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1753365237;
-	bh=09JoW2beWYFP5LMbPMIkZ+GQKIeWeh1GWRRSwO8kTfg=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=WT9unhE2qaSclquXzea8JhpCe/36zx0V8K0JyMsE5RzRsHo1x2bqk8fbdlel8RffL
-	 cCrORXzfwy5mWwvxfoAmVQo68MJg/pr7u9kKhqQ8WK+SBCjHddkdrq3XUL9dEPIQCT
-	 NDdZJYybm/2Okq9boh+jfblViNFXbPFfcJfHMkB0=
-Authentication-Results: mail-nwsmtp-smtp-production-main-73.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Thu, 24 Jul 2025 16:53:51 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, dakr@kernel.org,
- peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com, Lyude <thatslyude@gmail.com>
-Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
-Message-ID: <20250724165351.509cff53@nimda.home>
-In-Reply-To: <20250621184454.8354-1-work@onurozkan.dev>
-References: <20250621184454.8354-1-work@onurozkan.dev>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YJMzFNTp"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-234d3103237so19735ad.0;
+        Thu, 24 Jul 2025 08:55:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753372517; x=1753977317; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nDNGFNvdoRGiaNnGVahZQG+zj4STjDcT82+GQkhVmQk=;
+        b=YJMzFNTpzjFzAOR+eBQolicNqScTnnpgp5Pv29+lwJVQzFTz3z676+szcGVT/SRoOt
+         sQFI3HPSJq2mMp6qJuLlGMbLf/Q2/O5C8Pq4O3xaINtZK4GJryh8klXuPowrhtfsfPo3
+         O6QVra2rouiBAwTYfGb/rDBoTLmMreiyoyr2K5bp9HDCIuT7vE62pQNqB7Mtq75Uo4wW
+         tYUpKxSAsUU3KKfu4LMpg1ShHm10xGexA0jWeWnt4ep88mv493f58kIiOP77c51okLQr
+         BBN+XJ9Rkhze4XDfTlAoIVnRJYMyUkqQsAffBJr7jUiV5sdLYUPQFT47IuUaUzhA3+Sb
+         +jyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753372517; x=1753977317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nDNGFNvdoRGiaNnGVahZQG+zj4STjDcT82+GQkhVmQk=;
+        b=DWkefm1wCkB/bwU0jA2dvOolUTJ0/M5ach+GzHdklwJt8UqQPocD6PEB3IX8tebSkh
+         +asiqeA+LSlTTOqTDZfOPPzONUe46sNLerYNkzvu0gYT14DzHIf803vNyaqWsUpKH/Rp
+         8ZBQU/v5vBACjY/rV374vUL/CXjyKv1OiT4QD8T1HNivCG3BzaULpiwgIT8/Zm7ySvmG
+         ziHv/yzrB5iY9LVkUq0pGkaaXhdmbT7kQADTb13F2Ew5n6mzULpLXl340nNSQrJgPOMu
+         BVp5Hqi3VvWFp3ad5zuaic14ORssk1U6HaCHdHW5jbkZA/Yn7WQK4/AWVB5Vj/uVkwjx
+         fuOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUNaO/kPo39IW43Rjq8cg0lUeNM78bH6yG/G5c91sQNhUN8oxqxnYiCqBnJUyLvPAGW8ndQkuAXWlwX+l2uLJw=@vger.kernel.org, AJvYcCVv6TO0WfRkxTJR+gFLevjvNhyD6WR98D76DjZ2+MyKoY7wkgsEyXcxRq/7oJ6P7c8f0a3F/ML9KwQ4aH0=@vger.kernel.org, AJvYcCW917WofPOXebN2RouEOlsTDTLnob0lP6JVqowi0g9iibB1sHKjA+6VYrUUl0+PsxY/9386MdnTzIg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxa/MYJw3lieUpvyqRLhVXYxjM12IOjQu8wD8zr7/Lw3XGEgBdZ
+	1+kmanGI3Q9eV4HkMoVEYh9Wpy3SMLGYJsxKeOrQOxmbsMOgrsSZLCqGlCcI7LRg+qCLZdNRyKn
+	g7Rhmk8ZAtSzrHWOTePMCjEUAK1ibtXA=
+X-Gm-Gg: ASbGncuiXh72pLuzbKYn7BTkY6If3YfrPPbyWngF5USZV7rkry0P8nGBfFaO47zZSWg
+	YX+GDIRUGdAGWbw1xpgZpnKd4MgFoVa0FR85Fpm1y+vI9H8ezXTPdBTv/qiBm673NxYpY7/m5lo
+	mAqN6Hru9WXdSDVVSk8D06gPJE3lb8sXYc9YR2kHLJEDMmjHOT1XafbBompNr741E2ZxeBJr/tw
+	GvAgOcV
+X-Google-Smtp-Source: AGHT+IE9TH8HU85JOWM2XUgTJeIUAyMZz1QgX87GmzRjEtJOV2NYpn5aqC+FGTCUCJ6G3NKU158izj5o14hVG+dK26U=
+X-Received: by 2002:a17:903:3e13:b0:234:d7b2:2abe with SMTP id
+ d9443c01a7336-23f9815353fmr31098505ad.7.1753372516448; Thu, 24 Jul 2025
+ 08:55:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250722-topic-icc_rs-v1-0-9da731c14603@oss.qualcomm.com>
+ <CANiq72kxcEywL4L6HEqn7AZa-jOBsw08jr+Kvjdwrd+iTOO_uQ@mail.gmail.com> <9884efc6-c6c5-49f1-b582-55bba8397521@oss.qualcomm.com>
+In-Reply-To: <9884efc6-c6c5-49f1-b582-55bba8397521@oss.qualcomm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 24 Jul 2025 17:55:03 +0200
+X-Gm-Features: Ac12FXzQMwnafpXjFV6CDFKO4uvN-01wgnqGuQBCiqSqrfTaP7C85N-A7DHR8uc
+Message-ID: <CANiq72n31LBnLdAtZH0VBzVGau-ddWCp=5=Bra=boRE4RiCZGw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Add initial interconnect (icc_path) Rust abstractions
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Cc: Konrad Dybcio <konradybcio@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Georgi Djakov <djakov@kernel.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>, 
+	Marijn Suijten <marijn.suijten@somainline.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi again,
+On Thu, Jul 24, 2025 at 2:36=E2=80=AFPM Konrad Dybcio
+<konrad.dybcio@oss.qualcomm.com> wrote:
+>
+> Regarding the users, I don't have any specific promises on a consumer
+> of these abstractions in a short term, although the ICC API is rather
+> common (especially across the major arm-based SoCs), so it shouldn't be
+> long before someone needs it.
 
-Just finished going over the C-side use of `ww_mutex` today and I
-wanted to share some notes and thoughts based on that.
+In general, abstractions cannot be added unless there is a known user
+that is coming upstream (or developed in-tree over time, like Nova and
+Tyr).
 
-To get the full context, you might want to take a look at this thread
-[1].
+There is also the "Rust reference driver" approach/exception to help C
+maintainers bootstrap the Rust side, which you may be able to take
+advantage of:
 
-- The first note I took is that we shouldn't allow locking without
-`WwAcquireCtx` (which is currently possible in v5). As explained in
-ww_mutex documentation [2], this basically turns it into a regular
-mutex and you don't get benefits of `ww_mutex`.
+    https://rust-for-linux.com/rust-reference-drivers
 
- From what I have seen on the C side, there is no real use-case for
- this. It doesn't make much sense to use `ww_mutex` just for
- single-locking scenarios. Unless a specific use-case comes up, I think
- we shouldn't support using it that way. I am planning to move the
- `lock*` functions under `impl WwAcquireCtx` (as we discussed in [1]),
- which will make `WwAcquireCtx` required by design and also simplify
- the implementation a lot.
+At the end of the day, it depends on the particular case and the
+maintainers, of course.
 
-- The second note is about how EDEADLK is handled. On the C side, it
-looks like some code paths may not release all the previously locked
-mutexes or have a special/custom logic when locking returns EDEADLK
-(see [3]). So, handling EDEADLK automatically (pointed
-in [1]) can be quite useful for most cases, but that could also be a
-limitation in certain scenarios.
+I hope that helps.
 
- I was thinking we could provide an alternative version of each `lock*`
- function that accepts a closure which is called on the EDEADLK error.
- This way, we can support both auto-release locks and custom logic for
- handling EDEADLK scenarios.
-
- Something like this (just a dummy code for demonstration):
-
-    ctx.lock_and_handle_edeadlk(|active_locks| {
-        // user-defined handling here
-    });
-
-
- That would let users handle the situation however they want if they
- need to.
-
-
-Would love to hear your thoughts or suggestions on any of this.
-
-[1]: https://lore.kernel.org/all/DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org/#t
-[2]:
-https://www.kernel.org/doc/Documentation/locking/ww-mutex-design.txt
-[3]:
-https://github.com/torvalds/linux/blob/25fae0b93d1d7/drivers/gpu/drm/drm_modeset_lock.c#L326-L329
-
-Regards,
-Onur
+Cheers,
+Miguel
