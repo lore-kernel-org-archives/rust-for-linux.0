@@ -1,156 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C63B213E94
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 19:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E572EE260
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 19:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753384559; cv=none; b=urzjTGdSTREr+dRzLQ6EckrDLGpvvjIQIgebY6bK4WWOUaZuOfD7Hxgbt7KYsqhu3lIaVaJei6VozSpp7OOm83C9Mjbg3giS7d3L2ZXJMECsfhB8fjhBM70pHoUZTKDJ+bFzECvj73WqQ184bkgKb5bvXol4/UmYR55OY+mh5A4=
+	t=1753386211; cv=none; b=KzWmr1s3oDk3NW+1P1k2Z56JQJtL05RCeJnpfhZP8HOFg6vE+6v47tBLvLxoLyqqIXKHjQxlwUc9Pz+VN9RRJWNKE2TkkhXAFyR1rc6khzh+t1cC+8iglcSo9rdm7LkZmv1fCQrTzaW3896B74N+OcnLPne8P0cP1WiMHlMjjio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753384559; c=relaxed/simple;
-	bh=KDENvryqaFfe+ipMBxs4HEr3VYyPiM26hvi5lpcTx/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bqgh8Kwx/xxHLcJ53F2ucNDGFT05sAdqFp0qlr7F2vDmVuYRUkX0jKMqHMDqlJ6Mr9hLgJqolBg58Uo0Frnnw/0kZG5LJN5lEczKUcDAOekKmZaIt4ucM/pu5EI5RWDtoK7KTlULSGV5lAsuc2VKC4YAGJaK8T34/P9hqhdsMlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T1kKsWBM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1753386211; c=relaxed/simple;
+	bh=N3/Qfff+MoqPwHhtX3FSg753RB58bl1HwzaHnvCqAwM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n3Or4XyfEI9XoOCuUMFxGmfzJdMU/MuyB2MLoPIsQ3EDFLT72yflWif0EKCPC19HuwYWm61KWdPAu0OFHNCuecIWkNwDRl14W01OHY9h0+8QuS+GLkKbaf0frTNQ6jBvMvw7rSW0S7i5cikSNFtwkt+mSCkHRKHG8/gs1XG7pDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i4AKkCYH; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T1kKsWBM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753384556;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rDZbSpivZvNtqNNz2nVMJ9AyhIB6jJidbuEul+8M8EM=;
-	b=T1kKsWBMVlX+YUf6pdnwKNLOnQBErfYC/urNBTy0xTbkZxwX+YNhkAlF3g2IyiE/mx1eHj
-	0x4D+ps+2g7qS8sfzSRgIY+JZUXhHIBoH5PmJszakDzCMvRStdaZpGfQtO2bVadZbt69Zl
-	V1tq2QWW9W8tgKjE8QdgwXBBsPXLu7g=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-399-_7VPjU56PVStwyCwyxYvTQ-1; Thu,
- 24 Jul 2025 15:15:51 -0400
-X-MC-Unique: _7VPjU56PVStwyCwyxYvTQ-1
-X-Mimecast-MFC-AGG-ID: _7VPjU56PVStwyCwyxYvTQ_1753384549
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2213B1956056;
-	Thu, 24 Jul 2025 19:15:48 +0000 (UTC)
-Received: from chopper.lyude.net (unknown [10.22.88.223])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D5C4B1966665;
-	Thu, 24 Jul 2025 19:15:42 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Asahi Lina <lina+kernel@asahilina.net>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] Partially revert "rust: drm: gem: Implement AlwaysRefCounted for all gem objects automatically"
-Date: Thu, 24 Jul 2025 15:15:18 -0400
-Message-ID: <20250724191523.561314-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i4AKkCYH"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3a51481a598so756907f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 12:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753386208; x=1753991008; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N3/Qfff+MoqPwHhtX3FSg753RB58bl1HwzaHnvCqAwM=;
+        b=i4AKkCYHaAGTBNBRqPnoJ0EQ6hto6LpYbJCUBmgLmvfQeuZTp5p3NLcrih/10DyIpz
+         NhSJ6yK+J0gAzLMCxkwV7Zrfeqyw5oUhD+EYNZeViV6FYRfHTvwddrSXxmk/L2ILJGiP
+         h40H0gbKyvRZprHlImX2DqogXzDtA0QFZniXaNOGM2YGkl6hbx7P/5ADlZllLoZnTu/x
+         qxXgZQb6ZGMEIdmZIIK2UP0sB8L31cmeyiRG4kjj0bYEIi6iQHo5wCFdZexQGcQHwrz9
+         QllzkoafHCCVgm+2gxQSALVXI6qGA2rziT7QKYlKA6f35cNxkU38+yBeAcbQLIfZJgbG
+         oIgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753386208; x=1753991008;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N3/Qfff+MoqPwHhtX3FSg753RB58bl1HwzaHnvCqAwM=;
+        b=YPKGjIoHkWZpuERNiiKjsvUbcWrvwMnQrwbkfeaScPOlcIoiuT0lNOk94ohKVi3LG7
+         fDb4eitbpe+E/GeA4xN7mZpsi2wsf4Vb/eymwW2EYZXp67LVsMsAOLAyXukSl+uh1jLe
+         k6+urzRJpXXD6tCkHLX5F4jC5gonKn12KZbE6dixvnwkwmPPdgirpTxDZTsRg8PgEsx8
+         sg40GsBM6gMx/VKRFEY0vS2g0oMOVCbKUNCU0/cpxG43uST/JPZsCHZhzoUh3SzINjiU
+         ojLLdNM1w2VuYFE3eLj36daz550QW60OoUyXX3UwyAs0wpO06IUbd9Jap5XUVZ50HHRH
+         1soA==
+X-Gm-Message-State: AOJu0YzoGp2IZy87SQ/+3OpxRm6XJThl6ROUwHsHIM7sYeJ29JeK5yBu
+	TwPPvGek7G9ruLtan4DRLj/G5vQb2llWxiSgQ6/DMSs3BFLrMsPh4lrcPmsX/vkfiSa0/PF7OA4
+	5n92UeOZPBJ8gIUslI6+WWEehGJ4ikLvszNZgwdqp
+X-Gm-Gg: ASbGnctmUcn0FlsIDH2gfJWmmUYhh+YTonLsKke+pAIpZhm/c5japSBvYM1w2hWugS5
+	sDe9T96tSNSh1n5M2R283PAIJO+/nf/zGsT5YGcGyfcQEcnlgsp3/RNOgx6mnaWDwd1/heXTrEw
+	y697ARxUUgKJ4Tq+I7PyUBTTAljhEBIn20agsRMlxT88hACK29umafR+LAezg8YnvLkpzMVIt6/
+	VvI+i2T
+X-Google-Smtp-Source: AGHT+IEJXTUMtKf9WUEYieIzzqOgdbbD44V9CUoTAHleAc1QgRFRzG63MnoYVM9dHoyIuJNxvwtK0SXAQAcx9FqkZIk=
+X-Received: by 2002:a05:6000:420e:b0:3b6:d6c:a740 with SMTP id
+ ffacd0b85a97d-3b768f12c2fmr7238924f8f.54.1753386207467; Thu, 24 Jul 2025
+ 12:43:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+References: <20250724172005.11641-1-boqun.feng@gmail.com>
+In-Reply-To: <20250724172005.11641-1-boqun.feng@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 24 Jul 2025 21:43:15 +0200
+X-Gm-Features: Ac12FXzSYxR8EsluxdqS7KPCR4B8Ka9Zn_z3dos28qvERgIXeElszOdjjbfHGcY
+Message-ID: <CAH5fLghU_3V4xS4npv3YtL891pLGcp=rp-CcBb0Tq3g4gbdSDQ@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: list: Add an example for `ListLinksSelfPtr` usage
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	I Hsin Cheng <richard120310@gmail.com>, 
+	Albin Babu Varghese <albinbabuvarghese20@gmail.com>, Tamir Duberstein <tamird@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I made a very silly mistake with this commit that managed to slip by
-because I forgot to mzke sure rvkms was rebased before testing my work last
-- we can't do blanket implementations like this due to rust's orphan rule.
+On Thu, Jul 24, 2025 at 7:20=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> It appears that the support for `ListLinksSelfPtr` is dead code at the
+> moment [1]. Altough some tests were added at [2] for impl `ListItem`
+> using `ListLinksSelfPtr` field, still we could use more examples
+> demonstrating and testing the usage of `ListLinksSelfPtr`. Hence add an
+> example similar to `ListLinks` usage.
+>
+> The example is mostly based on Alice's usage in binder driver [3].
+>
+> Link: https://lore.kernel.org/rust-for-linux/20250719183649.596051-1-ojed=
+a@kernel.org/ [1]
+> Link: https://lore.kernel.org/rust-for-linux/20250709-list-no-offset-v4-5=
+-a429e75840a9@gmail.com/ [2]
+> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-4-08=
+ba9197f637@google.com/ [3]
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-The code -does- build just fine right now, but it doesn't with the ongoing
-bindings for gem shmem. So, just revert this and we'll introduce a macro
-for implementing AlwaysRefCounted individually for each type of gem
-implementation.
-
-Note that we leave the IntoGEMObject since it is true that all gem objects
-are refcounted, so any implementations that are added should be
-implementing AlwaysRefCounted anyhow.
-
-This reverts commit 38cb08c3fcd3f3b1d0225dcec8ae50fab5751549.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/drm/gem/mod.rs | 36 ++++++++++++++++--------------------
- 1 file changed, 16 insertions(+), 20 deletions(-)
-
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
-index 4cd69fa84318c..db65807dbce88 100644
---- a/rust/kernel/drm/gem/mod.rs
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -54,26 +54,6 @@ pub trait IntoGEMObject: Sized + super::private::Sealed + AlwaysRefCounted {
-     unsafe fn as_ref<'a>(self_ptr: *mut bindings::drm_gem_object) -> &'a Self;
- }
- 
--// SAFETY: All gem objects are refcounted.
--unsafe impl<T: IntoGEMObject> AlwaysRefCounted for T {
--    fn inc_ref(&self) {
--        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
--        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
--    }
--
--    unsafe fn dec_ref(obj: NonNull<Self>) {
--        // SAFETY: We either hold the only refcount on `obj`, or one of many - meaning that no one
--        // else could possibly hold a mutable reference to `obj` and thus this immutable reference
--        // is safe.
--        let obj = unsafe { obj.as_ref() }.as_raw();
--
--        // SAFETY:
--        // - The safety requirements guarantee that the refcount is non-zero.
--        // - We hold no references to `obj` now, making it safe for us to potentially deallocate it.
--        unsafe { bindings::drm_gem_object_put(obj) };
--    }
--}
--
- /// Trait which must be implemented by drivers using base GEM objects.
- pub trait DriverObject: BaseDriverObject<Object<Self>> {
-     /// Parent `Driver` for this object.
-@@ -287,6 +267,22 @@ extern "C" fn free_callback(obj: *mut bindings::drm_gem_object) {
-     }
- }
- 
-+// SAFETY: Instances of `Object<T>` are always reference-counted.
-+unsafe impl<T: DriverObject> crate::types::AlwaysRefCounted for Object<T> {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-+        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: NonNull<Self>) {
-+        // SAFETY: `obj` is a valid pointer to an `Object<T>`.
-+        let obj = unsafe { obj.as_ref() };
-+
-+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+        unsafe { bindings::drm_gem_object_put(obj.as_raw()) }
-+    }
-+}
-+
- impl<T: DriverObject> super::private::Sealed for Object<T> {}
- 
- impl<T: DriverObject> Deref for Object<T> {
-
-base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
--- 
-2.50.0
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
