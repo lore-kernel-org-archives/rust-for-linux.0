@@ -1,102 +1,105 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6F421858A;
-	Thu, 24 Jul 2025 21:59:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499FB230BE4;
+	Thu, 24 Jul 2025 22:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753394394; cv=none; b=MgnIAgqhjASCvQJqhasahqZamxQ33f+RZrbkLWcya+AooST10bh7avIK4Jvz7bV4bUDKPsYid5iUQEvu2qhH9NjtU0OdxPl3xBxCnCdiLCtsk34EHgKN8SEZrxZVxrdS2/oHA6q6DBlmFrr/DzRVxof/8UiwAeno8XnvLiFd1lU=
+	t=1753396053; cv=none; b=LW8nyv7jiN8+/oIK0VwJZxHYb8lVOuBUz1aaunaCCdt34Fhfl9YdHiJcereApNfmE55OxpfJybtunwOFwGFn+uSSU/bszxIrtDLabjhWhUZkuJMJ12uOlrjWEbvaK+FL5yvGjcswh9rRFhb/Ml4eAvbnJJ+wtndnvXuBz3+RZvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753394394; c=relaxed/simple;
-	bh=enA0+R4KlVQsB2+gsMerGTr2ZGdR8MjJ8EpyD/BzHkc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=O27DbTgeLk3IMSwIBH2MRDWUKuBd9nkOV+Zjb2M97P7I8/mlbewObtdpnWCAx8/659lIInHFjcsHak12inj5ahwc0scKs+uTLZGLoAAPc+9+NnVMnaekYzWNXXChqI/i34fR/kBaRyTfMrZ2i/7yZ5mGPqFcbjBJ9hUjRpWZr1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nejusQ7G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RPgv96XF; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1753396053; c=relaxed/simple;
+	bh=zDBfkniel8YE1EvR07CT7m8wF9mkrhDRPaV4U3vQ8/w=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=jBdyiBodWCKOUp5xxHxtXY1o10lkkkIP+kGVvVOdSwgTTZH8oGyncIHbVIL1UHSq6+elPi2MFBHXvFlFvh29x6IbpN+D59ERr0DF5T9FYXaGio8b6qbLPuAxo3vJ6n/qWkLzvikr45RSOW/j1Zfo7o3DXTLAllwvcjDdXvr1wFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/8eTaLh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nejusQ7G";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RPgv96XF"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753394388;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enA0+R4KlVQsB2+gsMerGTr2ZGdR8MjJ8EpyD/BzHkc=;
-	b=nejusQ7GjW0lG9RPO1CF7sFmWk7heNnYtDgtu92R3MUQLyynbOxXgGMa+Y1XUhxaMGjKlL
-	hfXtUmyWzfv8oeOZ44Oi0cW77l4vYRyquh9Vt+S+/RHA47HbEcymuh9fXE98xJod6iYJZN
-	UJ+T5M78Uwxbyb3ombiEVuopskIUG4JjrA+JtLYfxb4HNB7kVNF63eZ7vFy0qEJYveLQ30
-	3F0ttK9MfuorP9ZCJaZxs6WmhUXyElWth0FXxYOqiGKrdXSQT+MtkkzBMgejDBlIC57DY2
-	38Q+aeFb1690mmD530z7Qjy+4vsQZqsMxHPikAkMdyFZ0R0bLOvbGs1YdGxDig==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753394388;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enA0+R4KlVQsB2+gsMerGTr2ZGdR8MjJ8EpyD/BzHkc=;
-	b=RPgv96XFx0+GjNQ+OWv50r4D2NDkzYXvPbVdEHBVaYwVlbHaxBD7Mej4cX5eY9PL+8krww
-	5yGhPvRojlJTzvCw==
-To: Lyude Paul <lyude@redhat.com>, Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Dirk Behme <dirk.behme@gmail.com>,
- rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
- airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, will@kernel.org,
- Waiman
- Long <longman@redhat.com>, linux-kernel@vger.kernel.org, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- wedsonaf@gmail.com, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
- aliceryhl@google.com, Trevor Gross <tmgross@umich.edu>
-Subject: Re: w/r/t "irq & spin_lock: Add counted interrupt
- disabling/enabling": holes in pcpu_hot?
-In-Reply-To: <012ccaab7df3d884f924d6af52dd36ebc4da80ce.camel@redhat.com>
-References: <20241018055125.2784186-2-boqun.feng@gmail.com>
- <87a5eu7gvw.ffs@tglx>
- <20241023195152.GE11151@noisy.programming.kicks-ass.net>
- <012ccaab7df3d884f924d6af52dd36ebc4da80ce.camel@redhat.com>
-Date: Thu, 24 Jul 2025 23:59:46 +0200
-Message-ID: <874iv1qmgd.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/8eTaLh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B6AC4CEED;
+	Thu, 24 Jul 2025 22:27:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753396052;
+	bh=zDBfkniel8YE1EvR07CT7m8wF9mkrhDRPaV4U3vQ8/w=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=N/8eTaLh4yXMe8AdptiqwYYUXbH9EnZrtrTvCVaylb4T4UYVDjCuYLg0/lvN100y9
+	 0UgOnDlekbLDkMSb3QhOxFOiyNa40lsqyqgzBd1N/RdU+rpuMk1qizFW1WsNG1ImLd
+	 Nc9VKhMbctvoRB3BTg7T7FQlDTBbxvpkp99dx2H8aZ2XqdGAbY7N3xCXJeYeV+X3mC
+	 aa8ze0RWEdaYx7LHaWZgqNh7iqSOOSC9myxwFiM1bbZnaAmJS7O2v3Cbwj9h+yRaPW
+	 sfH/Fc1LCv2h2ULEZpA3qMIErGp/FMuOUGOlJ5pbMYvcczCndCnqIb+BJWB1G+QL/W
+	 VSwud1LTuZ5Vw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 25 Jul 2025 00:27:26 +0200
+Message-Id: <DBKN0VSJH3TX.2FYLW17KL0SWW@kernel.org>
+Subject: Re: [PATCH] Partially revert "rust: drm: gem: Implement
+ AlwaysRefCounted for all gem objects automatically"
+Cc: <nouveau@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+ <rust-for-linux@vger.kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "David Airlie" <airlied@gmail.com>, "Simona
+ Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Asahi
+ Lina" <lina+kernel@asahilina.net>, "Alyssa Rosenzweig"
+ <alyssa@rosenzweig.io>, "open list" <linux-kernel@vger.kernel.org>
+To: "Lyude Paul" <lyude@redhat.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250724191523.561314-1-lyude@redhat.com>
+ <DBKJYLF9E3TY.IM6UZFA0BW9I@kernel.org>
+ <e7a4cb0cc55a2d19e6eb9bf5280c68c0dd04d61d.camel@redhat.com>
+In-Reply-To: <e7a4cb0cc55a2d19e6eb9bf5280c68c0dd04d61d.camel@redhat.com>
 
-On Thu, Jul 24 2025 at 16:36, Lyude Paul wrote:
-> Hey! Sorry to be a bit late here but I just noticed this comment in your email
-> that I didn't before
+On Thu Jul 24, 2025 at 11:06 PM CEST, Lyude Paul wrote:
+> On Thu, 2025-07-24 at 22:03 +0200, Danilo Krummrich wrote:
+>> On Thu Jul 24, 2025 at 9:15 PM CEST, Lyude Paul wrote:
+>> > -// SAFETY: All gem objects are refcounted.
+>> > -unsafe impl<T: IntoGEMObject> AlwaysRefCounted for T {
+>> > -    fn inc_ref(&self) {
+>> > -        // SAFETY: The existence of a shared reference guarantees tha=
+t the refcount is non-zero.
+>> > -        unsafe { bindings::drm_gem_object_get(self.as_raw()) };
+>> > -    }
+>> > -
+>> > -    unsafe fn dec_ref(obj: NonNull<Self>) {
+>> > -        // SAFETY: We either hold the only refcount on `obj`, or one =
+of many - meaning that no one
+>> > -        // else could possibly hold a mutable reference to `obj` and =
+thus this immutable reference
+>> > -        // is safe.
+>> > -        let obj =3D unsafe { obj.as_ref() }.as_raw();
+>> > -
+>> > -        // SAFETY:
+>> > -        // - The safety requirements guarantee that the refcount is n=
+on-zero.
+>> > -        // - We hold no references to `obj` now, making it safe for u=
+s to potentially deallocate it.
+>> > -        unsafe { bindings::drm_gem_object_put(obj) };
+>> > -    }
+>> > -}
+>>=20
+>> IIUC, you'll add rust/kernel/drm/gem/shmem.rs with a new type shmem::Obj=
+ect that
+>> implements IntoGEMObject, right?
+>>=20
+>> If this is correct, I think that should work.
 >
-> On Wed, 2024-10-23 at 21:51 +0200, Peter Zijlstra wrote:
->> We still have a few holes in pcpu_hot iirc.
->
-> I assume you mean we still have space for adding things into pcpu_hot? And if
-> so, where exactly are these holes? At some point when working on this series I
-> attempted adding a single unsigned long to pcpu_hot and the build failed as a
-> result of not having enough space. But if there's somewhere we can add
-> something else, that might actually help with a few of the issues in this
-> patch series
+> Do you mean you think the blanket implementation that we had would work, =
+or
+> that getting rid of it would work?
 
-That's the current lot we have.
+The former.
 
-ffffffff82f6a000 D __per_cpu_hot_start
-ffffffff82f6a000 D hardirq_stack_ptr
-ffffffff82f6a008 D __ref_stack_chk_guard
-ffffffff82f6a008 D __stack_chk_guard
-ffffffff82f6a010 D const_cpu_current_top_of_stack
-ffffffff82f6a010 D cpu_current_top_of_stack
-ffffffff82f6a018 D const_current_task
-ffffffff82f6a018 D current_task
-ffffffff82f6a020 D __x86_call_depth
-ffffffff82f6a028 D this_cpu_off
-ffffffff82f6a030 D __preempt_count
-ffffffff82f6a034 D cpu_number
-ffffffff82f6a038 D __softirq_pending
-ffffffff82f6a03a D hardirq_stack_inuse
-ffffffff82f6a03b D __per_cpu_hot_end
+> Since the blanket implementation we have
+> definitely doesn't compile on my machine once we add more then one
+> IntoGEMObject impl. (before adding it, it works just fine)
 
-So there is a 5 byte hole there at the end, which is obviously too small
-for an unsigned long on 64-bit :)
-
+Do you have a branch somewhere, where it doesn't compile?
