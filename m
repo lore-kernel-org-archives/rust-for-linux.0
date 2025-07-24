@@ -1,127 +1,161 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0D82D9EDC
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 16:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E1E2F29;
+	Thu, 24 Jul 2025 16:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753373134; cv=none; b=fjDpydxNQ5ZhzpNUCr+hsQa83/aD55Ggo3YNJp55qPZNUgMQV6rHTfFkmI0hZLmeoFw9fmTi/IoCiHvSFtVRjj4LR86MqHeWqez1paOd74DjnSJUEfxW1EAh9BVbzNqrhPT6nEGqeIUQbcJ1Cmku/vVZ/c6i3+WWNXGwKhLtvZ4=
+	t=1753375600; cv=none; b=YEm9YP5uCdFZ5Dvr5NXk0E+4cYtHR+/imOV9KVPKEsjOBMyl4h1xagfsOFRIIeQDdSFtRu2x06hVoNX7IqTXJIlXARY6s/8nrKuEmAVJ4f0DyKitPiMnP9DB40/fBn1Ai2l+cGGNBfMCGnYTZ+hytwhBqTdzyNwJ7qmf1UDKcgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753373134; c=relaxed/simple;
-	bh=0VUcTAlTKI8Uut+YrFJ9JnFPeuS1MyI+ehjEzU6u9SU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BSXLSZIa3X/rsVI4n6uxnUWbWZkCr7eKTpxE4n/8f5aw2Zxkg7YLsfZA4boQkVRytS5R23vQ51L3tyGxTuHkwMb8adZ9pcjxtTbg0vSZRDdaT3x9VKEXoIwukrVXB/f68y9hTjyi0JXyF2ea4zcaP4QEOqU2eEyU9HXD6N/xnR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=RTcZwWK0; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	s=arc-20240116; t=1753375600; c=relaxed/simple;
+	bh=K+AqzGtIgWKIryvlBVWOeLjTn5QGBwo090CF+oQ5Bis=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Fss9rvIV21ViRqkockfnrcOu/kLFwaV8jupF+3vL+L4id6zy6nUFyggPnbLsf5uaDcGYJfV9OOnAGxL3H6aM+8/24wKNZwuSZDAgb2Z4rdxJqMSvg+Hu2Sm3ryn3kG6YajyiYRFdxYrDHUaaMS1AF7Z2vihaPUwHrenjfTbZL9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lwtCcsFf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="RTcZwWK0"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-235ea292956so10843015ad.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 09:05:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1753373132; x=1753977932; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lPrDAQdM9SEh1PC8EgiE1RAI5sFJN3A+tD++JaDKFmM=;
-        b=RTcZwWK08KSyMDVKrfSebH8hoeuDIYUlw5feYTyayOgg2QYqwsMAVXlRuzUHzT0gGa
-         zh97hlaBLZd6JXnHS0NFBzg6Rph+ttaux0ByZIzet+MyJ9aSITzw04sUx4UlSlA2FSim
-         GofF3h7y09FlPRUGLA0dt1gPfICTmVsgF8I/0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753373132; x=1753977932;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lPrDAQdM9SEh1PC8EgiE1RAI5sFJN3A+tD++JaDKFmM=;
-        b=giHthBeXwgK+sDClIUqAZ/IgZjfQxBNbT135mcg1j9T7Gsn3cKDdeDOFlYB7RkajTS
-         YO5IVITyh3TAkZetW7Sk40TmbQtPcA9nyYprGVueB9d+Ic4QM5+NDb4iBOoZVOoxeO87
-         4UB1iAQZEIFJ4rT6CoHaux67o21KRhR1N+YeWMQEzQmSuqtx5b4ltoMsC5swoLMxskbY
-         OhRqMDPlkpLcja9htjPrMdqRCCmtPQtrAQvEhdF9b3uauDt/cfDbOneyiMjBDNdyFKyd
-         /ttJPGwncH8KywnkH876A+o4BEvEzjc07YhLTnck2li1DYwzTdUB82cxdW/eT4wd4+JM
-         jv2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXG4bN+gm345JbgYn5KLUMLwtW7guB0xrrseqyp6oDi5aoOez2eBinfZq8ciOwys2oxS641aa8s0rOw9KDz9Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLwwZ7844o2+ygq5ayTJHcPD3q+r032F7xln0vxNtAEBc6L9Hf
-	1U3sSDeJkU06nz9MM1hiN6Lkaw837Ez2oATHNvT7aQuAmNUyB7YS/LbubSlSb7kwKKE=
-X-Gm-Gg: ASbGncvPJxSpwup8DyOQQI33vsYW7F04dkaYW/MgQA5Dl7Wry8gX+wUyQVqxOqgJaY1
-	4pIJTtDgP1nQrHDh6uA79YV9D5QU33xosz/eb9GDBQXKjDCT/MpZtbWqmRH3+zIQ+/GNT9tHyUr
-	09ZzyJqwCBr9duZyh0TuJp54ARAdDkqG425Zr1i4LMiwpHGu8A12eXi4qHgxSomQqFC4UxmWEP/
-	4Sz7tK9Bg4eNXOhqQVSF2mnqGHgOke/Q5WuPvjVUlKuAwqR4WPvcwVBd1xmcZCBRZ76+cX+eM8s
-	6tEWuALUdTn0fXm4cG5WIry39ojY0kTdbTIH8VH31F17rN5M3DI/Qud8+qJ4zjeOloNrFV8nYgi
-	Kj3J4CzdTsJ08JWQ4uhent/2MHyM4H7A1OgDjUkHJIJ1yh68JxU0B+9tx
-X-Google-Smtp-Source: AGHT+IFOb7VV+hEvYr5JMOJR9pYJzMfOIn04UMDsdukQyZlKdVzKoT94AbgXvi68H4CvfhuA1xh5ag==
-X-Received: by 2002:a17:902:d2ca:b0:234:8c64:7885 with SMTP id d9443c01a7336-23f981efd84mr99141955ad.53.1753373132037;
-        Thu, 24 Jul 2025 09:05:32 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([175.195.128.78])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23fa475f3d3sm18905165ad.40.2025.07.24.09.05.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 09:05:31 -0700 (PDT)
-Date: Fri, 25 Jul 2025 01:05:10 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Caleb Sander Mateos <csander@purestorage.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-Subject: Re: [PATCH 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-Message-ID: <aIJZthYtM4e7-E4v@sidongui-MacBookPro.local>
-References: <20250719143358.22363-1-sidong.yang@furiosa.ai>
- <20250719143358.22363-3-sidong.yang@furiosa.ai>
- <CADUfDZoBrnDpnTOxiDq6pBkctJ3NDJq7Wcqm2pUu_ooqMy8yyw@mail.gmail.com>
- <aH3OsKD6l18pLG92@sidongui-MacBookPro.local>
- <CADUfDZrLKrf6evTXQ03cJ1W4kj0gxsF9Bopu+i2SjkBObXKnMA@mail.gmail.com>
- <aH5g-Q_hu6neI5em@sidongui-MacBookPro.local>
- <DBHVI5WDLCY3.33K0F1UAJSHPK@kernel.org>
- <aH-ga6WdOpkbRK3T@sidongui-MacBookPro.local>
- <DBIT6WL2C5MG.2J7OBX6LCVYP7@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lwtCcsFf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41371C4CEED;
+	Thu, 24 Jul 2025 16:46:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753375599;
+	bh=K+AqzGtIgWKIryvlBVWOeLjTn5QGBwo090CF+oQ5Bis=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=lwtCcsFfgKVktepqt9A5avf3QWtNg3LJcjjeoVUgp2HK6qqpBQ7FlcyYE7BdDhoUV
+	 fWd+AIFa9uPBowc+YWVEj4SMzcN09q8Bc+TcPejQ/RXMpO7xvQTU6z9sR9dHDFsoOL
+	 eGRjAJJq3+67tTnePxnWUXcj5WTBxJ+rOpQ74e96LO17wAqwAHARqeuSd9EAPtYPdB
+	 mzCHa/PAcpQnotT/iOcVv+41M4+xqBKvGKmy4D0tQgB5ixBg1Iyl0U/7FVEokt/iHm
+	 Q6Dew07gM5PD7sIc1otHDgo9qfQP2Nyl9cfYfmDsqzJmscoW/2J20AyfT8XRJUwn6b
+	 b4v0urc6a4kcA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DBIT6WL2C5MG.2J7OBX6LCVYP7@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Jul 2025 18:46:35 +0200
+Message-Id: <DBKFRWMPHM1I.2V12KE06FKNCO@kernel.org>
+Subject: Re: [PATCH v2 2/3] device: rust: expand documentation for Device
+Cc: <gregkh@linuxfoundation.org>, <rafael@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250722150110.23565-1-dakr@kernel.org>
+ <20250722150110.23565-3-dakr@kernel.org> <aIHa31DiaRvNK1Kb@google.com>
+In-Reply-To: <aIHa31DiaRvNK1Kb@google.com>
 
-On Tue, Jul 22, 2025 at 08:52:05PM +0200, Benno Lossin wrote:
-> On Tue Jul 22, 2025 at 4:30 PM CEST, Sidong Yang wrote:
-> > On Mon, Jul 21, 2025 at 06:28:09PM +0200, Benno Lossin wrote:
-> >> On Mon Jul 21, 2025 at 5:47 PM CEST, Sidong Yang wrote:
-> >> > It's safest to get NonNull from from_raw and it returns
-> >> > Pin<&mut IoUringCmd>.
-> >> 
-> >> I don't think you need `NonNull<T>`.
-> >
-> > NonNull<T> gurantees that it's not null. It could be also dangling but it's
-> > safer than *mut T. Could you tell me why I don't need it?
-> 
-> Raw pointers have better ergonomics and if you're just passing it back
-> into ffi, I don't see the point of using `NonNull`...
+On Thu Jul 24, 2025 at 9:03 AM CEST, Alice Ryhl wrote:
+> On Tue, Jul 22, 2025 at 05:00:00PM +0200, Danilo Krummrich wrote:
+>> The documentation for the generic Device type is outdated and deserves
+>> much more detail.
+>>=20
+>> Hence, expand the documentation and cover topics such as device types,
+>> device contexts, as well as information on how to use the generic device
+>> infrastructure to implement bus and class specific device types.
+>>=20
+>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>
+> A few nits below, but in general looks good.
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+>> -/// This structure represents the Rust abstraction for a C `struct devi=
+ce`. This implementation
+>> -/// abstracts the usage of an already existing C `struct device` within=
+ Rust code that we get
+>> -/// passed from the C side.
+>> +/// This structure represents the Rust abstraction for a C `struct devi=
+ce`. A [`Device`] can either
+>> +/// exist as temporary reference (see also [`Device::from_raw`]), which=
+ is only valid within a
+>> +/// certain scope or as [`ARef<Device>`], owning a dedicated reference =
+count.
+>
+> Doesn't there need to be a comma between "scope" and "or"?
+>
+> It's possible that I'm confusing the danish and english comma rules, but
+> I got confused when reading this.
 
-Agreed, from_raw() would be called in rust kernel unsafe condition not in safe
-driver. Thinking it over, using a raw pointer would be convenient.
+No, I think you're right.
 
-> 
-> >> > from_raw() name is weird. it should be from_nonnnull()? Also, done()
-> >> > would get Pin<&mut Self>.
-> >> 
-> >> That sounds reasonable.
-> >> 
-> >> Are you certain that it's an exclusive reference?
-> >
-> > As far as I know, yes.
-> 
-> So the `IoUringCmd` is not refcounted and it is also not owned by the
-> `done` callee?
+>> +/// # Implementing Class Devices
+>> +///
+>> +/// Class device implementations require less infrastructure and depend=
+ slightly more on the
+>> +/// specific subsystem.
+>> +///
+>> +/// An example implementation for a class device could look like this.
+>> +///
+>> +/// ```ignore
+>> +/// #[repr(C)]
+>> +/// #[pin_data]
+>> +/// pub struct Device<T: class::Driver> {
+>> +///     dev: Opaque<bindings::class_device_type>,
+>> +///     #[pin]
+>> +///     data: T::Data,
+>
+> Should the `dev` field not also be pinned?
 
-Yes, io_uring_cmd would be allocated in io_submit_sqes() and it's not accessed
-concurrently. io_uring_cmd_done() sets its result to io_uring_cmd and prepare
-some field to completion.
+I think we should just remove any pin stuff from the example, that's an
+implementation detail.
 
-Thanks,
-Sidong
+--
 
-> 
-> ---
-> Cheers,
-> Benno
+In case you're curious, the reason it's there is because that's how drm::De=
+vice
+is defined. However, drm::Device doesn't need the pin stuff either, but I f=
+orgot
+to remove it. See drm::Device::new():
+
+    /// Create a new `drm::Device` for a `drm::Driver`.
+    pub fn new(dev: &device::Device, data: impl PinInit<T::Data, Error>) ->=
+ Result<ARef<Self>> {
+        // SAFETY:
+        // - `VTABLE`, as a `const` is pinned to the read-only section of t=
+he compilation,
+        // - `dev` is valid by its type invarants,
+        let raw_drm: *mut Self =3D unsafe {
+            bindings::__drm_dev_alloc(
+                dev.as_raw(),
+                &Self::VTABLE,
+                mem::size_of::<Self>(),
+                mem::offset_of!(Self, dev),
+            )
+        }
+        .cast();
+        let raw_drm =3D NonNull::new(from_err_ptr(raw_drm)?).ok_or(ENOMEM)?=
+;
+
+        // SAFETY: `raw_drm` is a valid pointer to `Self`.
+        let raw_data =3D unsafe { ptr::addr_of_mut!((*raw_drm.as_ptr()).dat=
+a) };
+
+        // SAFETY:
+        // - `raw_data` is a valid pointer to uninitialized memory.
+        // - `raw_data` will not move until it is dropped.
+        unsafe { data.__pinned_init(raw_data) }.inspect_err(|_| {
+            // SAFETY: `__drm_dev_alloc()` was successful, hence `raw_drm` =
+must be valid and the
+            // refcount must be non-zero.
+            unsafe { bindings::drm_dev_put(ptr::addr_of_mut!((*raw_drm.as_p=
+tr()).dev).cast()) };
+        })?;
+
+        // SAFETY: The reference count is one, and now we take ownership of=
+ that reference as a
+        // `drm::Device`.
+        Ok(unsafe { ARef::from_raw(raw_drm) })
+    }
+
+While we use data.__pinned_init(), I don't think the drm::Device needs any =
+of
+the pin macros.
+
+- Danilo
