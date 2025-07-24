@@ -1,118 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E877E2D97AB
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 17:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06161B4F0A;
+	Thu, 24 Jul 2025 17:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753377991; cv=none; b=MyCaSYpq7qMm+HbZScMkrTEnZW4aKZeRjJFdZYhyRlRv6RKqOtyetDzv1j/HN6lT8RqGp4iJuHowrlI8i1Gh33lDKVuDQikZvjvmi3AbtVqawyWf9dDQpKmEiu0qt6OxmQDb2DQGmwiRQ88u+QfLvqiPr8WwOfdPoqdR5w0gi7E=
+	t=1753379683; cv=none; b=rrP0OfEGn0+8lgScPolLqQzHI/FOEp2wGdvWT0pyU+n0dc1dHxFtsagJswck23+6Yh+t51I7NDKf83dUoxvXQ5MCm1gytpMg2lF6Vqd1KDt9qGbKa+dMuPBzt5ojujnBl+DLeiuBklpQyU4Vw4q4jKefbl4wXgYIb0+GA0APZkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753377991; c=relaxed/simple;
-	bh=RlGbLmiNog8cWFHNbPKc7Ueq04LKxYJ9kEZFBWUJts8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a39Uxbnhq+47p9u+vOrd1/F6j3AJUFMG8Q6DajWGBfrRAQAio1AzexSJBPaSKtrs+Jo8s4qA4wp4+olnrk7p0qQZXepGfZUgnK3qCwX4ltQ+i2MwE+WSrb1Dq4qIWZldixssR9DhiIyaRB48Cu3vPd3/wzbD5U3O2t/D/UxQO9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xn5iagdg; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1753379683; c=relaxed/simple;
+	bh=SrbecWajszZ0E7Rg4tKhBbbcd9ooXEENh6iDv5K1md8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l4C2UZF0PzTAI2lgA6A7QjhE21A6UKSeBDz6VtuNM5J8g2AGPVqAG3v+9pwoq9UHKCD0PiBi+6RHFRELRIZge/2C39W1Fz7OwH3BoAmGKgwAMXufuMse/Wbn/5AkoYMi35NB+BT9OWLwsWgiCn4wtJU15snJJm+P3XW/regLi18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xutrl/IK; arc=none smtp.client-ip=209.85.222.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xn5iagdg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753377988;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=a9KFreOIoEfdmP377fh6fXKglMWYPDoj87FLjXMtoPQ=;
-	b=Xn5iagdgz4kSQHVKoqnJJBoHiLOihEU4SZMqEcyUT08VIPUizFCd/t0nGYnBuYKpL6Tc/m
-	QNcOv6+9FK1msWVViysftLT2hQBMxNerJwglwYWA1WNVFdWsjaYlCHG4fGP49lqyVQ+nol
-	xqcHSDPOrUo7Gzt4zpI6SKQYZhmDqK0=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-qTTgBXR_OHS3rJSWHLkTFQ-1; Thu,
- 24 Jul 2025 13:26:25 -0400
-X-MC-Unique: qTTgBXR_OHS3rJSWHLkTFQ-1
-X-Mimecast-MFC-AGG-ID: qTTgBXR_OHS3rJSWHLkTFQ_1753377983
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A9F82180036D;
-	Thu, 24 Jul 2025 17:26:22 +0000 (UTC)
-Received: from chopper.lyude.net (unknown [10.22.88.223])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 09D31195608D;
-	Thu, 24 Jul 2025 17:26:17 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	linux-kernel@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xutrl/IK"
+Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7e29d5f7672so113415385a.3;
+        Thu, 24 Jul 2025 10:54:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753379680; x=1753984480; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8rY/YBmfcluTP6Wi3nMV778eBkdB5PVNXljMRuZhg5g=;
+        b=Xutrl/IKIVoQS+O4Ow0wJxdknO1mnnvexoDo4Fmaz23AkmRyU5GjR3aTjMbfsgfiih
+         GTncjqMMrx79Iu6J5RshHH0zuXkw2utrbC6cjM2MYpwxWJJW0rjdwsQ99u+dt7J/jVnU
+         ogxiqslIAwAbv3O8qBSU5i3HWTO+cp93C+MF0cSIWbnw+8wZ7gyspbNroLjNnn1JBBIy
+         5bdNL/p+S8ywvbUcfSXX0HkcmjsTj6CZLDc3ux4RqV9ej3qojUHQO1D73bcnKqFpnyzF
+         u/tM0DxAiqRBtntW6L879CLMIYiZo7p4XBPjciZcu+SWEDTli6/CfJNVvAGz+MNspe3d
+         7EmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753379680; x=1753984480;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8rY/YBmfcluTP6Wi3nMV778eBkdB5PVNXljMRuZhg5g=;
+        b=Hy6rsfKzGI6D8QlBJi9HNUXbRpcs8fj8qng8z4btKGlG9MigsNlRJqd8k40Ep8anQp
+         bRM+EtJgOFD/yZ9IOwNd9xIniwOLIn9t1lnShDAA890Mby6NpTisJeAya0JfgdlUDwoh
+         LDTDE0BPgux+IT+U3JwpRfSKSnvwdaX/6P5wHHfbNU3q4R0gyOrsb7tjXKSAqGyrLv9W
+         UnekS7UM+rRp5WHkW3J7zGw3Fw0LJPr14jZeJn6EclXbhVmPujF+7KenWNelqmbkRLcj
+         HS5u32hUYFfJQwBLJrDKuIZFdGd4jK9cE3PylyEBCl+tVGnO7FE3+24RpMlo1/N5DtJs
+         p79A==
+X-Forwarded-Encrypted: i=1; AJvYcCXyw5nQVwWPW35FJhD7bk434rTQgXKrZseGDtJE2SPf6/Kjhz+5TmAD/Z1Pi7uz0z0ECZLi7pAFFo3ZTOU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJL3NYqszyrQ+EivpO2zdUipvvkTBSHPxhXmRK6LfT+YK/NoVN
+	Cvt6xi/ujhoQoxxZMRFD8OkgiBeEN5y69VjziI7naXmvswa7RD30W2/PmXtOKQ==
+X-Gm-Gg: ASbGnctPYXYCRaGNkHiCShT7UAUf0BC5duqw4FLpmHQ5ZgHTL6hb3X+sYhMkmW/RnqF
+	abBzeZsuXSgeK9hBzZWeXBunrtiTzh/xDgEz6L+QVybIE9cdbu3qoBtRepwj4gk92IJ99n07HTs
+	fY5BgQJVpuyu48cYQk5n2N0NhDUOzlZJaRK9D2hOJlu3PJrmGaJ6dY1WdjyiXhiEZARRje2zJll
+	j4tMtXcyaWvrFhwSbRSwi9g/osrsMgyAIaw/jy6IK85CBVJc7owHwn3EwGN2jaTj4nOPoxjRXyD
+	/2rlV32ORrijoEF264G30kUYCaWYNTRm/DxAtPTCX1/K4oDFpEqar7L678tFphBtY4BgIw1oXyb
+	coIUfgmpsUvGS2ICJTAxNi4J59/eEyc7bELH/iiibEiuRL9wqwDwkWDhQ+5rByw65exsb83IVT9
+	AeVR1u9nWuDY1H+qZbr39SnYo=
+X-Google-Smtp-Source: AGHT+IG5y4w2WgnuRSjklyIYU9frH4en/w0/K+mowFhQ8WZSo86SvdD0+GCUMBbv4+OvZCuP/lalVg==
+X-Received: by 2002:a05:620a:1986:b0:7e3:2d1d:bda0 with SMTP id af79cd13be357-7e62a096683mr931743085a.2.1753379680368;
+        Thu, 24 Jul 2025 10:54:40 -0700 (PDT)
+Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e632e4c4dfsm144051285a.89.2025.07.24.10.54.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Jul 2025 10:54:40 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 77A17F40068;
+	Thu, 24 Jul 2025 13:54:39 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Thu, 24 Jul 2025 13:54:39 -0400
+X-ME-Sender: <xms:X3OCaJXn_qfNVaSqHWgh7BJjkJbV5OB2SMaKvRD21VrynZAtSUFUWg>
+    <xme:X3OCaLEU1gEc8nnvljTB97R1NOsM3Uq1RTAsmzjZicsFJxFpl5IH28W7Ts24e3380
+    crKZZU_mRwBPNC0fg>
+X-ME-Received: <xmr:X3OCaDCuj9Ll2xDVu5PeDbCezjMFtsqfy1wwBms6_ijOP-09f1uaogY7heE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdekudeftdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
+    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
+    hrnheptdduvedtffevfefgleefveekgeetudeigffhkeegvefffeeikeehlefhtdeiteeu
+    necuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgpdgtrhhttgdrrhhsnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
+    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
+    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
+    mhgvpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    eplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhl
+    ihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlih
+    hnuhhtrhhonhhigidruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthht
+    ohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvg
+    guhhgrthdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:X3OCaDz9q_4BrfdQJTbBRxC8HcRpgXKNisu4L6zWZACNQUyt3K_v1A>
+    <xmx:X3OCaEBWNw1ch5obsD5RMgOgBO-r4sCbwMVguiAm286m6kZdEggkmg>
+    <xmx:X3OCaMBYrKVKc91oBp2uPFltNkABiS0tOm3l7-tz-OiaCrLKC3-JwA>
+    <xmx:X3OCaP7gOBXFAYpcXjMT3Bnrwl-icQd_w_sVOe-q4yCSI7nnf-M3UA>
+    <xmx:X3OCaI2_Om2DamPpGm_zMwdk-0kQWt7rIHFx4uDCoW4olsxVBZNJtcNH>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Jul 2025 13:54:38 -0400 (EDT)
+Date: Thu, 24 Jul 2025 10:54:37 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	linux-kernel@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH] rust: lock: Export Guard::do_unlocked()
-Date: Thu, 24 Jul 2025 13:25:00 -0400
-Message-ID: <20250724172615.436901-1-lyude@redhat.com>
+Subject: Re: [PATCH] rust: lock: Export Guard::do_unlocked()
+Message-ID: <aIJzXV8XyIo5O3F6@tardis-2.local>
+References: <20250724172615.436901-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250724172615.436901-1-lyude@redhat.com>
 
-In RVKMS, I discovered a silly issue where as a result of our HrTimer for
-vblank emulation and our vblank enable/disable callbacks sharing a
-spinlock, it was possible to deadlock while trying to disable the vblank
-timer.
+On Thu, Jul 24, 2025 at 01:25:00PM -0400, Lyude Paul wrote:
+> In RVKMS, I discovered a silly issue where as a result of our HrTimer for
+> vblank emulation and our vblank enable/disable callbacks sharing a
+> spinlock, it was possible to deadlock while trying to disable the vblank
+> timer.
+> 
+> The solution for this ended up being simple: keep track of when the HrTimer
+> could potentially acquire the shared spinlock, and simply drop the spinlock
+> temporarily from our vblank enable/disable callbacks when stopping the
+> timer. And do_unlocked() ended up being perfect for this.
+> 
+> Since this seems like it's useful, let's export this for use by the rest of
+> the world and write short documentation for it.
+> 
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-The solution for this ended up being simple: keep track of when the HrTimer
-could potentially acquire the shared spinlock, and simply drop the spinlock
-temporarily from our vblank enable/disable callbacks when stopping the
-timer. And do_unlocked() ended up being perfect for this.
+Seems reasonable.
 
-Since this seems like it's useful, let's export this for use by the rest of
-the world and write short documentation for it.
+> ---
+> You can find an example usage of this here:
+> 
+>   https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-slim/drivers/gpu/drm/rvkms/crtc.rs
+> 
+>  rust/kernel/sync/lock.rs | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index e82fa5be289c1..60eb98805a489 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -228,7 +228,13 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
+>          self.lock
+>      }
+>  
+> -    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+> +    /// Unlock this [`Guard`]'s lock temporarily, execute `cb`, and then re-lock it.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
-You can find an example usage of this here:
+I would like to change this line as the following to be consistent with
+other comments in the file.
 
-  https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-slim/drivers/gpu/drm/rvkms/crtc.rs
+/// Releases this [`Guard`]'s lock temporary, executes `cb` and then re-acquires it.
 
- rust/kernel/sync/lock.rs | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> +    ///
+> +    /// This can be useful for situations where you may need to do a temporary unlock dance to avoid
+> +    /// issues like circular locking dependencies.
+> +    ///
 
-diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index e82fa5be289c1..60eb98805a489 100644
---- a/rust/kernel/sync/lock.rs
-+++ b/rust/kernel/sync/lock.rs
-@@ -228,7 +228,13 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
-         self.lock
-     }
- 
--    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-+    /// Unlock this [`Guard`]'s lock temporarily, execute `cb`, and then re-lock it.
-+    ///
-+    /// This can be useful for situations where you may need to do a temporary unlock dance to avoid
-+    /// issues like circular locking dependencies.
-+    ///
-+    /// If the closure returns a value, it will be returned by this function.
-+    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-         // SAFETY: The caller owns the lock, so it is safe to unlock it.
-         unsafe { B::unlock(self.lock.state.get(), &self.state) };
- 
+Could you add an "# Examples" section here with a simple example?
+Thanks!
 
-base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
--- 
-2.50.0
+Otherwise it looks good to me, thanks!
 
+Regards
+Boqun
+
+> +    /// If the closure returns a value, it will be returned by this function.
+> +    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+>          // SAFETY: The caller owns the lock, so it is safe to unlock it.
+>          unsafe { B::unlock(self.lock.state.get(), &self.state) };
+>  
+> 
+> base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+> -- 
+> 2.50.0
+> 
