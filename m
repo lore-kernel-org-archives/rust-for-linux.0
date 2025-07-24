@@ -1,117 +1,66 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E227494;
-	Thu, 24 Jul 2025 17:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E877E2D97AB
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 17:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753377612; cv=none; b=XPYMFMJFQjcPMHcFqLg0NzwYEe0lAJO5zBYRHrGyvpo6GUAk8klRkj+KKXNdxJsR+RRjqh2JbdsUxvEEs7z0g1fw3R4J2h/XdElOe+Cff/HSKnmlYYctfr0aqyVDkJeJzT0mgT66emgCl3POmxCYcNmBYTyEcGORH6eBGMjhCwI=
+	t=1753377991; cv=none; b=MyCaSYpq7qMm+HbZScMkrTEnZW4aKZeRjJFdZYhyRlRv6RKqOtyetDzv1j/HN6lT8RqGp4iJuHowrlI8i1Gh33lDKVuDQikZvjvmi3AbtVqawyWf9dDQpKmEiu0qt6OxmQDb2DQGmwiRQ88u+QfLvqiPr8WwOfdPoqdR5w0gi7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753377612; c=relaxed/simple;
-	bh=wSQImFBpLS69jJ4HU4sKHhUpPk0xeD90ui+5TYFQMPc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aQQeurROFxo+PWjYWwgVXh+s7R6XkknHxPHcwUnWpLbpsxVJi0sat23pIjhNFvIoEZ2U3+M0ByNxv3zDYq8Emw2mSA3X6SeThpVMCQw5OMSzvQXAd1QiAUlkaUbvoBbKE5ldPP7qAUOlUU8u/FqxBGRxWd4xKDbcnT45K2rGMMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DU8fH2HB; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753377991; c=relaxed/simple;
+	bh=RlGbLmiNog8cWFHNbPKc7Ueq04LKxYJ9kEZFBWUJts8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a39Uxbnhq+47p9u+vOrd1/F6j3AJUFMG8Q6DajWGBfrRAQAio1AzexSJBPaSKtrs+Jo8s4qA4wp4+olnrk7p0qQZXepGfZUgnK3qCwX4ltQ+i2MwE+WSrb1Dq4qIWZldixssR9DhiIyaRB48Cu3vPd3/wzbD5U3O2t/D/UxQO9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xn5iagdg; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DU8fH2HB"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-704c5464aecso11737326d6.0;
-        Thu, 24 Jul 2025 10:20:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753377609; x=1753982409; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=V1jiyMjklgfhoAq++DmZ/54lpQnPivc+GcxoTyx1vys=;
-        b=DU8fH2HBGls4gWvP7hAmNmwAmyYt2omYKnwgSLw1QWx2cXXirNtAt4VgfvCUPAj424
-         I6asEtYS1XasyrMDUzOY9Iq3N8mnCAHHNgkYGu99pMyft5waFvp2zpZD2CtVCJuJGSsv
-         9s5X5xz1sC+0vycuKVIAlWmtroD/2v9KvC/RqcAE9KLZQMGSVDUcHU7R9ItvTtVGQGaa
-         3NvpTY8vIQ9CLhKjPqh+sI1en3XiE0ToUXn4fa2igHbZdeOOyclhWAki7Dd/Vak/wwgt
-         waw7ZdVZGTh75uHPPmATAneI7HWPmjO8VB1tgUEzLJm4sZm/J+sBnInUvauDoyYW9YBX
-         cc0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753377609; x=1753982409;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V1jiyMjklgfhoAq++DmZ/54lpQnPivc+GcxoTyx1vys=;
-        b=Wua4Ys5h99mr84UUDqYYv92QKZu0Es1ukrD9lt1gjcDVzDcmOWi6PI9MtpzguXqByF
-         zURVVbc+4VTV+1fsm7bYHCxRWyqnmFo6Y0eJ/puN9Z/X7+a5uroyAeLT12oLLB3aifjo
-         O9RYpW7h8TOBgrCo1G5awG7FEwfmAm4Eiyhm5AUe4MA1NFfq64zMjeVT37sqLCcB057U
-         r4SorOFeivgZm7u4EEERHap+5PRONYhKD3p3SWzTmphtW8zoNZKuCzu3qB3XlbYEpRkb
-         /rI1eqmc8r1WvYPahbAfZKC2J+UjqGAHsbdECpzjOKzwFpEpdLrByN5qlvS0nWdU6Wqa
-         nLOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaGynVtDJrwdWMiVVhtWtpf+Y+rtZ9drP1Yzd8jUyBFoyw2okWVAT+hpnUdJ6IdomiWCY6RHOMQrxln1A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzJv3UIUDe6P8p5EZImX8grVwXCXtjWD3J8pSL5Sg/ejajwwbB
-	8KRKMqGkUGEfW1XZoIx5XYHrIb1g4MIzO7nPwCGKSHkVujSgp8e89Ar9
-X-Gm-Gg: ASbGncvZGJkok0cdzUymmlvA+1gHuNtMVpVrOpODT8RdZhSoKQLv/1aiT5qUEGtLBLW
-	PESRPCu8LbFXf3Hczycp5zg2xEeoO1+2eZtFYcP02RrEU3cakGruraWhphsq06mPgM1rlBhZR7b
-	uytHAjQys+o64Uo7AqqsaFK2182CYmaATNCFJFj9OMWWJHEd2ZKfIADZL8+zeQrHDecUqvBIddL
-	DPv72tVobuehdVwGmY5IWo25LxdgFeYjdw8IKXeDQ/DuAA+Q9xP8kabfkClJHZpTnTP1dQTK5uK
-	QNPTsv3nyWSQ7OZ89XrHS1BUa1c1d0uLgFXMZQqeUIIrEMqSkozlvxHHgSxmUqnfpIeJqa2IfJr
-	Poej3H4VXQvhecmjTEur6c0fKIJTMI3/jRmFe1+H9OqGPhe0QDiem/TAiIfQ7yPi9AS5voiJMMX
-	+sXqcKrHMUFjszyQyxXuXtSLs=
-X-Google-Smtp-Source: AGHT+IGmdjBPiKCVhD0VgXdslFKkEiFX2j9qrPfUyQ3/mEJd65H3ue/PmeYIg6LHMKCeTIw+ZHu8+Q==
-X-Received: by 2002:a05:6214:501d:b0:707:915:acdf with SMTP id 6a1803df08f44-7070915b2b4mr68960806d6.44.1753377609017;
-        Thu, 24 Jul 2025 10:20:09 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7070fca2543sm16212006d6.58.2025.07.24.10.20.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 10:20:08 -0700 (PDT)
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id E4EE1F40066;
-	Thu, 24 Jul 2025 13:20:07 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Thu, 24 Jul 2025 13:20:07 -0400
-X-ME-Sender: <xms:R2uCaLT-Dx2UAg3qlZSeXoX40UIjR4-zb09TDxe1V1TFM67XccinAw>
-    <xme:R2uCaInKW1Fk7Y3J8tvFmamNv1mi0WxdKqPTo4yTW5U79DnLTrQEsl35dpzrvj2F9
-    _ElXWZYzZEZeNGPEg>
-X-ME-Received: <xmr:R2uCaHR2v7tczcQXwuVrupE4LPD40eBGqya24GXxSNPn_7Sc4G840XZ98eE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdekuddvfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfhvghn
-    ghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnh
-    epgeegueekgefhvedukedtveejhefhkeffveeufeduiedvleetledtkeehjefgieevnecu
-    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
-    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
-    nhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngh
-    eppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudeh
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugi
-    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgv
-    lhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhm
-    pdhrtghpthhtohepsghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoh
-    epghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnhefpghghhes
-    phhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:R2uCaHusDFSJ5DNOgiTDyHKjJQ-QpTtD5Y7XfjtvYiWtvE8E9EK2_A>
-    <xmx:R2uCaI5lagvpJJijfp7noM_0tvPTsZ1y14S_tI1eEAGt_ZBIQvyb4g>
-    <xmx:R2uCaKhBVpfsE8Xavy5J8aWf6Gb-XhcI6LZzUT4EAwHcGKTpjp49qg>
-    <xmx:R2uCaCm0KHxvpC0He34Hm9sI1oNbprtZi33wvdD2CPRvnpnCPGIpiw>
-    <xmx:R2uCaBuWqC3RUEHoI_jXxVvbsGGXU5ZZlfAiE5AU-0WkAVJ3LCnmJ3Hz>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Jul 2025 13:20:07 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xn5iagdg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1753377988;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a9KFreOIoEfdmP377fh6fXKglMWYPDoj87FLjXMtoPQ=;
+	b=Xn5iagdgz4kSQHVKoqnJJBoHiLOihEU4SZMqEcyUT08VIPUizFCd/t0nGYnBuYKpL6Tc/m
+	QNcOv6+9FK1msWVViysftLT2hQBMxNerJwglwYWA1WNVFdWsjaYlCHG4fGP49lqyVQ+nol
+	xqcHSDPOrUo7Gzt4zpI6SKQYZhmDqK0=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-25-qTTgBXR_OHS3rJSWHLkTFQ-1; Thu,
+ 24 Jul 2025 13:26:25 -0400
+X-MC-Unique: qTTgBXR_OHS3rJSWHLkTFQ-1
+X-Mimecast-MFC-AGG-ID: qTTgBXR_OHS3rJSWHLkTFQ_1753377983
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A9F82180036D;
+	Thu, 24 Jul 2025 17:26:22 +0000 (UTC)
+Received: from chopper.lyude.net (unknown [10.22.88.223])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 09D31195608D;
+	Thu, 24 Jul 2025 17:26:17 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Boqun Feng <boqun.feng@gmail.com>,
+	linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	I Hsin Cheng <richard120310@gmail.com>,
-	Albin Babu Varghese <albinbabuvarghese20@gmail.com>,
-	Tamir Duberstein <tamird@gmail.com>
-Subject: [PATCH v2] rust: list: Add an example for `ListLinksSelfPtr` usage
-Date: Thu, 24 Jul 2025 10:20:05 -0700
-Message-Id: <20250724172005.11641-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH] rust: lock: Export Guard::do_unlocked()
+Date: Thu, 24 Jul 2025 13:25:00 -0400
+Message-ID: <20250724172615.436901-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -119,167 +68,51 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-It appears that the support for `ListLinksSelfPtr` is dead code at the
-moment [1]. Altough some tests were added at [2] for impl `ListItem`
-using `ListLinksSelfPtr` field, still we could use more examples
-demonstrating and testing the usage of `ListLinksSelfPtr`. Hence add an
-example similar to `ListLinks` usage.
+In RVKMS, I discovered a silly issue where as a result of our HrTimer for
+vblank emulation and our vblank enable/disable callbacks sharing a
+spinlock, it was possible to deadlock while trying to disable the vblank
+timer.
 
-The example is mostly based on Alice's usage in binder driver [3].
+The solution for this ended up being simple: keep track of when the HrTimer
+could potentially acquire the shared spinlock, and simply drop the spinlock
+temporarily from our vblank enable/disable callbacks when stopping the
+timer. And do_unlocked() ended up being perfect for this.
 
-Link: https://lore.kernel.org/rust-for-linux/20250719183649.596051-1-ojeda@kernel.org/ [1]
-Link: https://lore.kernel.org/rust-for-linux/20250709-list-no-offset-v4-5-a429e75840a9@gmail.com/ [2]
-Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-4-08ba9197f637@google.com/ [3]
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Since this seems like it's useful, let's export this for use by the rest of
+the world and write short documentation for it.
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
-v1 -> v2:
+You can find an example usage of this here:
 
-* Rebased onto rust-next which has [2].
-* Minor formatting fixes.
-* v1: https://lore.kernel.org/rust-for-linux/20250719203646.84350-1-boqun.feng@gmail.com/
+  https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-slim/drivers/gpu/drm/rvkms/crtc.rs
 
- rust/kernel/list.rs | 120 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 120 insertions(+)
+ rust/kernel/sync/lock.rs | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index 44e5219cfcbc..7355bbac16a7 100644
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -38,6 +38,8 @@
- ///
- /// # Examples
- ///
-+/// Use [`ListLinks`] as the type of the intrusive field.
-+///
- /// ```
- /// use kernel::list::*;
- ///
-@@ -140,6 +142,124 @@
- /// }
- /// # Result::<(), Error>::Ok(())
- /// ```
-+///
-+/// Use [`ListLinksSelfPtr`] as the type of the intrusive field. This allows a list of trait object
-+/// type.
-+///
-+/// ```
-+/// use kernel::list::*;
-+///
-+/// trait Foo {
-+///     fn foo(&self) -> (&'static str, i32);
-+/// }
-+///
-+/// #[pin_data]
-+/// struct DTWrap<T: ?Sized> {
-+///     #[pin]
-+///     links: ListLinksSelfPtr<DTWrap<dyn Foo>>,
-+///     value: T,
-+/// }
-+///
-+/// impl<T> DTWrap<T> {
-+///     fn new(value: T) -> Result<ListArc<Self>> {
-+///         ListArc::pin_init(try_pin_init!(Self {
-+///             value,
-+///             links <- ListLinksSelfPtr::new(),
-+///         }), GFP_KERNEL)
-+///     }
-+/// }
-+///
-+/// impl_list_arc_safe! {
-+///     impl{T: ?Sized} ListArcSafe<0> for DTWrap<T> { untracked; }
-+/// }
-+/// impl_list_item! {
-+///     impl ListItem<0> for DTWrap<dyn Foo> { using ListLinksSelfPtr { self.links }; }
-+/// }
-+///
-+/// // Create a new empty list.
-+/// let mut list = List::<DTWrap<dyn Foo>>::new();
-+/// {
-+///     assert!(list.is_empty());
-+/// }
-+///
-+/// struct A(i32);
-+/// // `A` returns the inner value for `foo`.
-+/// impl Foo for A { fn foo(&self) -> (&'static str, i32) { ("a", self.0) } }
-+///
-+/// struct B;
-+/// // `B` always returns 42.
-+/// impl Foo for B { fn foo(&self) -> (&'static str, i32) { ("b", 42) } }
-+///
-+/// // Insert 3 element using `push_back()`.
-+/// list.push_back(DTWrap::new(A(15))?);
-+/// list.push_back(DTWrap::new(A(32))?);
-+/// list.push_back(DTWrap::new(B)?);
-+///
-+/// // Iterate over the list to verify the nodes were inserted correctly.
-+/// // [A(15), A(32), B]
-+/// {
-+///     let mut iter = list.iter();
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("a", 15));
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("a", 32));
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("b", 42));
-+///     assert!(iter.next().is_none());
-+///
-+///     // Verify the length of the list.
-+///     assert_eq!(list.iter().count(), 3);
-+/// }
-+///
-+/// // Pop the items from the list using `pop_back()` and verify the content.
-+/// {
-+///     assert_eq!(list.pop_back().ok_or(EINVAL)?.value.foo(), ("b", 42));
-+///     assert_eq!(list.pop_back().ok_or(EINVAL)?.value.foo(), ("a", 32));
-+///     assert_eq!(list.pop_back().ok_or(EINVAL)?.value.foo(), ("a", 15));
-+/// }
-+///
-+/// // Insert 3 elements using `push_front()`.
-+/// list.push_front(DTWrap::new(A(15))?);
-+/// list.push_front(DTWrap::new(A(32))?);
-+/// list.push_front(DTWrap::new(B)?);
-+///
-+/// // Iterate over the list to verify the nodes were inserted correctly.
-+/// // [B, A(32), A(15)]
-+/// {
-+///     let mut iter = list.iter();
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("b", 42));
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("a", 32));
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("a", 15));
-+///     assert!(iter.next().is_none());
-+///
-+///     // Verify the length of the list.
-+///     assert_eq!(list.iter().count(), 3);
-+/// }
-+///
-+/// // Pop the items from the list using `pop_front()` and verify the content.
-+/// {
-+///     assert_eq!(list.pop_back().ok_or(EINVAL)?.value.foo(), ("a", 15));
-+///     assert_eq!(list.pop_back().ok_or(EINVAL)?.value.foo(), ("a", 32));
-+/// }
-+///
-+/// // Push `list2` to `list` through `push_all_back()`.
-+/// // list: [B]
-+/// // list2: [B, A(25)]
-+/// {
-+///     let mut list2 = List::<DTWrap<dyn Foo>>::new();
-+///     list2.push_back(DTWrap::new(B)?);
-+///     list2.push_back(DTWrap::new(A(25))?);
-+///
-+///     list.push_all_back(&mut list2);
-+///
-+///     // list: [B, B, A(25)]
-+///     // list2: []
-+///     let mut iter = list.iter();
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("b", 42));
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("b", 42));
-+///     assert_eq!(iter.next().ok_or(EINVAL)?.value.foo(), ("a", 25));
-+///     assert!(iter.next().is_none());
-+///     assert!(list2.is_empty());
-+/// }
-+/// # Result::<(), Error>::Ok(())
-+/// ```
- pub struct List<T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
-     first: *mut ListLinksFields,
-     _ty: PhantomData<ListArc<T, ID>>,
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index e82fa5be289c1..60eb98805a489 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -228,7 +228,13 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
+         self.lock
+     }
+ 
+-    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
++    /// Unlock this [`Guard`]'s lock temporarily, execute `cb`, and then re-lock it.
++    ///
++    /// This can be useful for situations where you may need to do a temporary unlock dance to avoid
++    /// issues like circular locking dependencies.
++    ///
++    /// If the closure returns a value, it will be returned by this function.
++    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
+         // SAFETY: The caller owns the lock, so it is safe to unlock it.
+         unsafe { B::unlock(self.lock.state.get(), &self.state) };
+ 
+
+base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
 -- 
-2.39.5 (Apple Git-154)
+2.50.0
 
