@@ -1,209 +1,141 @@
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A571D149C41;
-	Thu, 24 Jul 2025 18:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753382997; cv=none; b=OzsVKOc69ampDwxL/YwFkhDeCtgKpOW+pJys2yL9fwqCPNL0JmYE5NplcFN1G97URpXG0aenK1Cgfwwm5xjqgxyKLWzz+6wJOQhr5uWxuuAygx1qAIyS8zA90lp2yb0pRU9i8PmwhnHPRrHvIVjn6kCFcAARj7667ecnc4dFIjc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753382997; c=relaxed/simple;
-	bh=0lk2Lj6jyZbOXJdoiM3hjw+pGLKCzikgY/IZEJ0q+Ac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jwwL5BuNMtI3sURozCr5lz5nL0m+kzonhy3Hb7cYrGYrFgPPkTr25HOO5nsXVRHwv0oeA9c2CIX95xCRP9pl6ftPkicgWGaKBTRGeZZuVnrIhgWy4wWtW1FqIf1+4aQrCmm4WqLszY9p/j2iTx6Hl0Jb1t8x81aI4HOxdM+SUxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aqobFAM8; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D96B19EEC2;
+	Thu, 24 Jul 2025 18:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753383057; cv=pass; b=Ko4/P6CCj//tnZrSNmCDPl7gtzhQXvmdpj73fBx7ZyiEB+5o3Y0vhjrfSB+rP6VQkS4Q4y+Vk9gQgz+XbcRMRQho/TIMKH44h3uTh8mAJSO5sqP1rki5MPEWv4WPUuuKs7GCmExTgpF2TVXnaANa4qRne1b8WS1MpmVf4kI4CR8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753383057; c=relaxed/simple;
+	bh=CatsMGrYaSqiZzxtwSkAxSfGncG9RI2XBUzXsQIDsi0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=fk6YUPJRQdI8E5Hmp3qSPhlHBHRvtUX3/KqO8RJ8FhyS/oPjYgRx8ipTjvD642OXm791ufkOn6LAuxNqQq8614EpqjrNAHQqIUF1zPW/ZiDZe8sdI6It5sMDNhCmTt8TD35Y4YR4vRT3MeQQBrPgco8+Cq9giB2ylLy5UYpbG0Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=bxtP0ehn; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aqobFAM8"
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7e32c5a174cso119173385a.1;
-        Thu, 24 Jul 2025 11:49:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753382994; x=1753987794; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FTufhQS+aSTpjbaFUEUSNVcWnKE4FWo1OV0otoG8kU8=;
-        b=aqobFAM8Z9BTr28A5RdKAg0OAbJUWwImDpXM16rz0NX56SFoJU0ZuGvErm39xy3g1v
-         wrh9UKvTnVUpIxB5Iz5lXRWU6UfiCRLUR1ZX4SHgDDTYpxECjB71WSWcaOJFIeQEeQzA
-         +aWHQgufZ0eMRCB+KIhfOpvwnVrnRNfWjb084MErF/gj8je7PbaV01s4V6rEiX/0VOYY
-         S6V7Vd7CYBNLMzyluFor9YHPkzh/Lk3kohmYec2peeMgxp8U46FQeWt8Vs8vaq//xcVf
-         vPQhhahhARFrua5quqalzluG0fjm135S+EDU0eJ5/a27KLGoT6pgmcaWUg5loZ4pfB8o
-         yBrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753382994; x=1753987794;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FTufhQS+aSTpjbaFUEUSNVcWnKE4FWo1OV0otoG8kU8=;
-        b=jjjGDfqA8pZOb4uvKiM7kBpPVUz2H2d6RX2pxgsQiE4yjkBtIT0W9WADnNq54uid+m
-         9VDaqlHVSp8MUsNJdJWWA13MZ1IanxGZr2EUfugOaUaRyFZKmIKALeV+nDR6nblBTO1d
-         OjbieqQS3kptxoHcgkoZHZNKB0eAe9VxIv85Yce4X0VaTm1DQxOdtowVjxOR3z33XCNy
-         jau7C5HmLjNbmHOJrVf1aCn4yFsFRYq9Y70fLPbScWOXhitfk6vMorsIOdeLeobfVlSt
-         Q2Nia2im04YPTRydkbZul0DKOFvTJnoI0dsWOGO/JRJnCpL6NV376ANn6MVmNXjmxbWs
-         AWSA==
-X-Forwarded-Encrypted: i=1; AJvYcCV3QOgeezjfGu7YgRb6yn7ywyg9RExboPBO3xoiuilfwtJI+4CDk6oVtYyC5rbq/JYeP1HI75fQVPBjG7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRtvTDi4ZlOvyVx3m9KAFd1j5Yb7DTz+mkkTuGnhmCQzoWiA1Q
-	Y98z0S4WHxY7wNrgaYsxcKhCj8z9J4uVQhYnEXXN37BQwVbyc5rLG06w
-X-Gm-Gg: ASbGncvsSAo1/MHVXvXYW74z6qz1KUNLnP4Da4U92Ht2tTw4rZqzfIaB4PmwsvVjVy+
-	9BmtDuRVnsYEslL5EiECHxtP6yEYCpwTu9MfSa0Jnf3lyNHSC4Wz7xjTpo9RUb+91ChoXgIbPBR
-	EeBCp5CiEazohQLdVOCWEfM1gZLdRTcSQoMArFzYfy3Nl3JbHeldyT9wlPDZa5PSsXHoaFbhFxd
-	W2JWa6+Vx1JmQW+96WWHoHC+f+nJnzTAufJ53dGjaAAmZQZjfza2gMf94h2c2V7fUazCl5ymAqi
-	pJznEaeD7Jv3nliBMwK6Z1j8e5a1ZKm2qniZ0SVwCzpqtlJgTvIatJPVXvT6h+C5zCBfQ4U/FDn
-	b3Nk5cKFtV+iz1EHsDku5PCjAnTH7/0+iQ86aXfe2zUSOi9Vgtxe5ZtyBn/Llisx+AHkdi1kWTo
-	4cJgpTcvHdHvOlim4FDi5DRwc=
-X-Google-Smtp-Source: AGHT+IE1XIBxV11BgOPejMYzaEDTuhxqFl6e/Qtbw1Rm2Vsz+GjFDSlGs5icKhT6BGddwAIko27Q5w==
-X-Received: by 2002:a05:620a:6a0b:b0:7d5:e4a2:2374 with SMTP id af79cd13be357-7e62a139b10mr673641485a.8.1753382993362;
-        Thu, 24 Jul 2025 11:49:53 -0700 (PDT)
-Received: from fauth-a2-smtp.messagingengine.com (fauth-a2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e632e4e336sm152235485a.88.2025.07.24.11.49.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Jul 2025 11:49:53 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8490EF40066;
-	Thu, 24 Jul 2025 14:49:52 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Thu, 24 Jul 2025 14:49:52 -0400
-X-ME-Sender: <xms:UICCaJHedA-V25PY9h63k-EoELWDOhMVcDqEvj4g7KLDtx-2BEcX6g>
-    <xme:UICCaP2lRkONFJ33LL--7t5YhJLCI9pgH-ZaA5qRNfYQ1DWcEnoLn3xyEPPmz4ei3
-    ucBO52u0r3szGw4cg>
-X-ME-Received: <xmr:UICCaIzTF6wKkzfjj1nnvjQgr1jcM5oA0Vmi0oMfGPYHoB4jA1XyK0y0TiA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdekudegudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnheptdduvedtffevfefgleefveekgeetudeigffhkeegvefffeeikeehlefhtdeiteeu
-    necuffhomhgrihhnpehfrhgvvgguvghskhhtohhprdhorhhgpdgtrhhttgdrrhhsnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
-    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
-    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
-    mhgvpdhnsggprhgtphhtthhopedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    eplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhl
-    ihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigsehlih
-    hnuhhtrhhonhhigidruggvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrg
-    gurdhorhhgpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgtohhmpdhrtghpthht
-    ohepfihilhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlohhnghhmrghnsehrvg
-    guhhgrthdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:UICCaGiNBChOgtdz0QHjFydrhgtpHoZLTf9j_WkZC3NQtYw8rVMVIQ>
-    <xmx:UICCaPxABEqCkXniJ5Bw4k1YqsXK8NcR9D-DF3xEZWnE_B7Wr7r1rg>
-    <xmx:UICCaMwyIRHcW8xWlPqKveF3-P5EpNXehyE_CkghqDblKFdse_peew>
-    <xmx:UICCaBqA8Dw2AG5ApY-PgPmjTto9h3mgQ0J4BfhSKWqY9xaepUQbvg>
-    <xmx:UICCaHmmLEWZZhfL1M99DRMkAS7hiGaoLRbpABCETyNTXw0soa3VblwI>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Jul 2025 14:49:51 -0400 (EDT)
-Date: Thu, 24 Jul 2025 11:49:50 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	linux-kernel@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH v2] rust: lock: Export Guard::do_unlocked()
-Message-ID: <aIKATmsHoXNy8BEM@tardis-2.local>
-References: <20250724182754.549489-1-lyude@redhat.com>
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="bxtP0ehn"
+ARC-Seal: i=1; a=rsa-sha256; t=1753383028; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MpHMTuxUAqb4oRCWw4ibpqbslIYGOdCazZtwvUhou1OXZ8UcOHL1jDnyjOYq6quPVc6X2e3YRCosgbooy4t1O8uXAZHe5+8lFcyIBUYWWllB95jiBTehOKAmGnmjadzWl4oq/dQ6TJHxUm/XH4zVFGFcygOUX53+Ph/GdOTq/H0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753383028; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=zUjBE1xSWZ/jaXPPwyRJK69aFYsYjVnhXaqAHUqMFpc=; 
+	b=JRnHo/nfYbYUnJAYa/e+kFNWBF6OinORZmnmc3L1XY64dlJyzq4UiObhqZD9fn/BdPZHEsKB5uzTrOh9c3oDF6NniEOXubLqS6sWVt1P21V/TZvbJEu+rDYO9SyRqCVquLkdbqLFv/vx+XPaP9uzjOhfLi/QjrtwdQvfFTWlbSs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753383028;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=zUjBE1xSWZ/jaXPPwyRJK69aFYsYjVnhXaqAHUqMFpc=;
+	b=bxtP0ehnEfzmHeG/v506SxjsNt1XHDdhkZCojKt2FXUy3LqfTQYc2JJp82Gg9G3R
+	yjjmxBytXehOSTFqGVYzkpG51l/Rhz6paVZBB6s8Mpyb3MMVg91Vf8jKaX1JBTF3Gce
+	aGJcT59TXhv31WDVUj65YkJe9jBWCIj0HEsQrE/k=
+Received: by mx.zohomail.com with SMTPS id 1753383025893371.2668099208014;
+	Thu, 24 Jul 2025 11:50:25 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250724182754.549489-1-lyude@redhat.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v2 0/3] rust: xarray: add `insert` and `reserve`
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
+Date: Thu, 24 Jul 2025 15:50:09 -0300
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org,
+ Janne Grunau <j@jannau.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <39015200-6AB5-4331-A679-C0CF6DB4B930@collabora.com>
+References: <20250713-xarray-insert-reserve-v2-0-b939645808a2@gmail.com>
+To: Tamir Duberstein <tamird@gmail.com>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-On Thu, Jul 24, 2025 at 02:27:16PM -0400, Lyude Paul wrote:
-> In RVKMS, I discovered a silly issue where as a result of our HrTimer for
-> vblank emulation and our vblank enable/disable callbacks sharing a
-> spinlock, it was possible to deadlock while trying to disable the vblank
-> timer.
-> 
-> The solution for this ended up being simple: keep track of when the HrTimer
-> could potentially acquire the shared spinlock, and simply drop the spinlock
-> temporarily from our vblank enable/disable callbacks when stopping the
-> timer. And do_unlocked() ended up being perfect for this.
-> 
-> Since this seems like it's useful, let's export this for use by the rest of
-> the world and write short documentation for it.
-> 
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> 
+Hi Tamir,
 
-Looks good to me. It'll probably go into v6.18 since we are at -rc7 now.
-I will wait for a few more reviews. Thanks!
+> On 13 Jul 2025, at 09:05, Tamir Duberstein <tamird@gmail.com> wrote:
+>=20
+> The reservation API is used by asahi; currently they use their own
+> abstractions but intend to use these when available.
+>=20
+> Rust Binder intends to use the reservation API as well.
+>=20
+> Daniel Almeida mentions a use case for `insert_limit`, but didn't name
+> it specifically.
 
-Regards,
-Boqun
+Here is a patch that tests your code on Tyr [0]. I sadly didn't realize =
+in time
+that you were using impl RangeBounds as an argument to insert_limit(), =
+which is
+even nicer :)
 
+Our internal tests still pass.
+
+I also double-checked that the kunit/doctests pass, just in case.
+
+>=20
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
 > ---
-> V2:
-> * Fix documentation for do_unlocked
-> * Add an example
-> 
-> You can find an example usage of this here:
-> 
-> https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-slim/drivers/gpu/drm/rvkms/crtc.rs
-> 
->  rust/kernel/sync/lock.rs | 36 +++++++++++++++++++++++++++++++++++-
->  1 file changed, 35 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index e82fa5be289c1..e43ee5e2e4b9f 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -228,7 +228,41 @@ pub fn lock_ref(&self) -> &'a Lock<T, B> {
->          self.lock
->      }
->  
-> -    pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
-> +    /// Releases this [`Guard`]'s lock temporary, executes `cb` and then re-acquires it.
-> +    ///
-> +    /// This can be useful for situations where you may need to do a temporary unlock dance to avoid
-> +    /// issues like circular locking dependencies.
-> +    ///
-> +    /// If the closure returns a value, it will be returned by this function.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// The following example shows how to use [`Guard::do_unlocked`] to temporarily release a lock,
-> +    /// do some work, then re-lock it.
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{new_spinlock, sync::lock::{Backend, Guard, Lock}};
-> +    /// # use pin_init::stack_pin_init;
-> +    ///
-> +    /// fn assert_held<T, B: Backend>(guard: &Guard<'_, T, B>, lock: &Lock<T, B>) {
-> +    ///     // Address-equal means the same lock.
-> +    ///     assert!(core::ptr::eq(guard.lock_ref(), lock));
-> +    /// }
-> +    ///
-> +    /// stack_pin_init! {
-> +    ///     let l = new_spinlock!(42)
-> +    /// }
-> +    ///
-> +    /// let mut g = l.lock();
-> +    /// let val = *g;
-> +    ///
-> +    /// // The lock will be released, but only temporarily
-> +    /// g.do_unlocked(|| assert_eq!(val, 42));
-> +    ///
-> +    /// // `g` originates from `l` and should be relocked now.
-> +    /// assert_held(&g, &l);
-> +    /// ```
-> +    pub fn do_unlocked<U>(&mut self, cb: impl FnOnce() -> U) -> U {
->          // SAFETY: The caller owns the lock, so it is safe to unlock it.
->          unsafe { B::unlock(self.lock.state.get(), &self.state) };
->  
-> 
-> base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
-> -- 
-> 2.50.0
-> 
+> Changes in v2:
+> - Explain the need to disambiguate `Iterator::chain`. (Boqun Feng)
+> - Mention what `Guard::alloc` does in the doc comment. (Miguel Ojeda)
+> - Include new APIs in the module-level example. (Miguel Ojeda)
+> - Mention users of these APIs in the cover letter.
+> - Link to v1: =
+https://lore.kernel.org/r/20250701-xarray-insert-reserve-v1-0-25df2b0d706a=
+@gmail.com
+>=20
+> ---
+> Tamir Duberstein (3):
+>      rust: xarray: use the prelude
+>      rust: xarray: implement Default for AllocKind
+>      rust: xarray: add `insert` and `reserve`
+>=20
+> include/linux/xarray.h |   2 +
+> lib/xarray.c           |  28 ++-
+> rust/helpers/xarray.c  |   5 +
+> rust/kernel/xarray.rs  | 533 =
+++++++++++++++++++++++++++++++++++++++++++++++---
+> 4 files changed, 536 insertions(+), 32 deletions(-)
+> ---
+> base-commit: 2009a2d5696944d85c34d75e691a6f3884e787c0
+> change-id: 20250701-xarray-insert-reserve-bd811ad46a1d
+>=20
+> Best regards,
+> -- =20
+> Tamir Duberstein <tamird@gmail.com>
+>=20
+>=20
+
+Thanks a lot for working on this. It will definitely be used by us.
+
+
+Tested-By: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-By: Daniel Almeida <daniel.almeida@collabora.com>
+
+[0] =
+https://gitlab.freedesktop.org/panfrost/linux/-/commit/791de453eb103af37e3=
+cc6825e042f26d4c76426
+
+
