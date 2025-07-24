@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFB7260578
-	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 18:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1369D27057D
+	for <rust-for-linux@vger.kernel.org>; Thu, 24 Jul 2025 18:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753383443; cv=none; b=Wu+RhZAxo8DH1mwK+4tVB++bgxw9cX8JuyS3TqYpFSI5mNld2MDcjpjRE9qMCGI3UU3aomw82qxhI2007Jt0EYdUqdICEH+rqCxTHy2xT2sny+MVrTgVdP4nzQpTPS9QyoDrknQr6TMKQJZ/to/UY0ha/QI8VR5S6hhzL6KALu0=
+	t=1753383448; cv=none; b=E+aj7HNu8utkHUCuhdPoJNJ5R4ojLI3qjLgwCiX91W9a7o5Czru7s54VY1PAm3xrVjdUe7BUiI9mZQqvfQH0nWsGiJX4R4WS5YB3TOSr71FkxztlQ/OHiqnY/Io5cC5+kfooJ16cvBn7ozv2+oVYYVSQL4GKeeWmppjjbez9ljc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753383443; c=relaxed/simple;
-	bh=WiRKoW3jEqRtZjwGPjsFDVXe43IHCEGeVUZFIvWIvuw=;
+	s=arc-20240116; t=1753383448; c=relaxed/simple;
+	bh=h5hI7HGml92xI3DYQSIePz1ZzE1Vq8x5F4sEEdPFz/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lw5SS+H/8liI2z4gPvO4tl4ie4Cb4ZwqyWdh18EFhVEGkft9ohdX1mQjtWG248sKuHHXZhf7oIAXTNJ87dVq9QanI3+dnCAIrhPL1dbqy8kA4pLgAJg1GZ7CF/HHUsqq7MjsNDcgi/vQTt51YFTkojRj1LTdMwgEyB1Ffb9IscQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SvT7mjVc; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=Sx9L5K30QsrDjAGefLQ2UJvLglpfJFc23ufRc7R23UAxgJgIcJ9Y/ws74WvHcapzAvgX2tEThHlFFovsqZWKP0pmCaeOeq2Q0I3P65PVHEnUzoCWIye8uNpxP2XI6CDMukba4qa1pm3NeqvLbZ3y+lKn5DNc13xeC5Wdgt1Z/4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hrs9n22P; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SvT7mjVc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hrs9n22P"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753383441;
+	s=mimecast20190719; t=1753383446;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4JYSxMYzK9rXZpTAuUNhhgT+UnDZ1iR5Hu7L994nIeI=;
-	b=SvT7mjVcYY92wl/+atbdhtJLzyKKau6ZCldpbIvzH2PUcjDERjxJ4bqSSwYaEfH647wgxT
-	9Vr9kigy1bJM/IaN3MOq1J/2OjQIwhNsva2mH+3BdGlexgphUT3QwaGwmxZOySrJ9hV3ay
-	/Oz868RSXsSdkz3dGWqRbdap5gfKucY=
+	bh=vggLTsKtvmQ811u+vNiK9glPzjIwTelZUeVe+TVbnL4=;
+	b=hrs9n22PwoSF8j0LbQfRw3YMXb3r03GxxRm7swMBrLUxNJIVz2pq3KD2Es20nTIo7hsAeU
+	jQvrGsD97LylbPrFmrUoMcZQ0eN3vA4547ImI9HYtZCNwHRTB+md3oDsK9FcVoSekPGkSm
+	alQrGyy31B6isMjpEyAt4mHOypjzn/E=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-480-0CFra9ivPg-qFj64AQlijw-1; Thu,
- 24 Jul 2025 14:57:17 -0400
-X-MC-Unique: 0CFra9ivPg-qFj64AQlijw-1
-X-Mimecast-MFC-AGG-ID: 0CFra9ivPg-qFj64AQlijw_1753383435
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-G8I2k22bMDyGD1SlaWUEyw-1; Thu,
+ 24 Jul 2025 14:57:21 -0400
+X-MC-Unique: G8I2k22bMDyGD1SlaWUEyw-1
+X-Mimecast-MFC-AGG-ID: G8I2k22bMDyGD1SlaWUEyw_1753383439
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2724F1800359;
-	Thu, 24 Jul 2025 18:57:15 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 20879180034B;
+	Thu, 24 Jul 2025 18:57:19 +0000 (UTC)
 Received: from chopper.lyude.net (unknown [10.22.88.223])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 148CE195608D;
-	Thu, 24 Jul 2025 18:57:10 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6E848195608D;
+	Thu, 24 Jul 2025 18:57:15 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -61,9 +61,9 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Trevor Gross <tmgross@umich.edu>,
 	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 1/2] rust: time: Implement Add<Delta>/Sub<Delta> for Instant
-Date: Thu, 24 Jul 2025 14:54:06 -0400
-Message-ID: <20250724185700.557505-2-lyude@redhat.com>
+Subject: [PATCH 2/2] rust: time: Implement basic arithmetic operations for Delta
+Date: Thu, 24 Jul 2025 14:54:07 -0400
+Message-ID: <20250724185700.557505-3-lyude@redhat.com>
 In-Reply-To: <20250724185700.557505-1-lyude@redhat.com>
 References: <20250724185700.557505-1-lyude@redhat.com>
 Precedence: bulk
@@ -75,69 +75,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-In order to maintain the invariants of Instant, we use saturating
-addition/subtraction that is clamped to the valid value range for a
-non-negative Ktime.
+While rvkms is only going to be using a few of these, since Deltas are
+basically the same as i64 it's easy enough to just implement all of the
+basic arithmetic operations for Delta types.
+
+Note that for division and remainders, we currently limit these operations
+to CONFIG_64BIT as u64 / u64 and u64 % u64 is not supported on all 32 bit
+platforms natively. The correct solution we want to aim for here in the
+future is to use the kernel's math library for performing these operations
+so they're emulated on 32 bit platforms.
 
 Signed-off-by: Lyude Paul <lyude@redhat.com>
 ---
- rust/kernel/time.rs | 29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ rust/kernel/time.rs | 86 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 86 insertions(+)
 
 diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 64c8dcf548d63..ac5cab62070c6 100644
+index ac5cab62070c6..8ece5a5d5a11b 100644
 --- a/rust/kernel/time.rs
 +++ b/rust/kernel/time.rs
-@@ -25,6 +25,7 @@
- //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
- 
- use core::marker::PhantomData;
-+use core::ops;
- 
- pub mod delay;
- pub mod hrtimer;
-@@ -202,7 +203,7 @@ pub(crate) fn as_nanos(&self) -> i64 {
-     }
+@@ -251,6 +251,92 @@ pub struct Delta {
+     nanos: i64,
  }
  
--impl<C: ClockSource> core::ops::Sub for Instant<C> {
-+impl<C: ClockSource> ops::Sub for Instant<C> {
-     type Output = Delta;
- 
-     // By the type invariant, it never overflows.
-@@ -214,6 +215,32 @@ fn sub(self, other: Instant<C>) -> Delta {
-     }
- }
- 
-+impl<T: ClockSource> ops::Add<Delta> for Instant<T> {
++impl ops::Add for Delta {
 +    type Output = Self;
 +
-+    #[inline]
-+    fn add(self, rhs: Delta) -> Self::Output {
-+        // INVARIANT: We clamp the resulting value to be between `0` and `KTIME_MAX`.
++    fn add(self, rhs: Self) -> Self {
 +        Self {
-+            inner: self.inner.saturating_add(rhs.nanos).clamp(0, i64::MAX),
-+            _c: PhantomData,
++            nanos: self.nanos + rhs.nanos,
 +        }
 +    }
 +}
 +
-+impl<T: ClockSource> ops::Sub<Delta> for Instant<T> {
++impl ops::AddAssign for Delta {
++    fn add_assign(&mut self, rhs: Self) {
++        self.nanos += rhs.nanos;
++    }
++}
++
++impl ops::Sub for Delta {
 +    type Output = Self;
 +
-+    #[inline]
-+    fn sub(self, rhs: Delta) -> Self::Output {
-+        // INVARIANT: We clamp the resulting value to be between `0` and `KTIME_MAX`.
++    fn sub(self, rhs: Self) -> Self::Output {
 +        Self {
-+            inner: self.inner.saturating_sub(rhs.nanos).clamp(0, i64::MAX),
-+            _c: PhantomData,
++            nanos: self.nanos - rhs.nanos,
 +        }
 +    }
 +}
 +
- /// A span of time.
- ///
- /// This struct represents a span of time, with its value stored as nanoseconds.
++impl ops::SubAssign for Delta {
++    fn sub_assign(&mut self, rhs: Self) {
++        self.nanos -= rhs.nanos;
++    }
++}
++
++impl ops::Mul for Delta {
++    type Output = Self;
++
++    fn mul(self, rhs: Self) -> Self::Output {
++        Self {
++            nanos: self.nanos * rhs.nanos,
++        }
++    }
++}
++
++impl ops::MulAssign for Delta {
++    fn mul_assign(&mut self, rhs: Self) {
++        self.nanos *= rhs.nanos;
++    }
++}
++
++// TODO: When we get support for u64/u64 division and remainders helpers remove this, until then
++// these ops only work on 64bit platforms.
++#[cfg(CONFIG_64BIT)]
++impl ops::Div for Delta {
++    type Output = Self;
++
++    fn div(self, rhs: Self) -> Self::Output {
++        Self {
++            nanos: self.nanos / rhs.nanos,
++        }
++    }
++}
++
++#[cfg(CONFIG_64BIT)]
++impl ops::DivAssign for Delta {
++    fn div_assign(&mut self, rhs: Self) {
++        self.nanos /= rhs.nanos;
++    }
++}
++
++#[cfg(CONFIG_64BIT)]
++impl ops::Rem for Delta {
++    type Output = Self;
++
++    fn rem(self, rhs: Self) -> Self::Output {
++        Self {
++            nanos: self.nanos % rhs.nanos,
++        }
++    }
++}
++
++#[cfg(CONFIG_64BIT)]
++impl ops::RemAssign for Delta {
++    fn rem_assign(&mut self, rhs: Self) {
++        self.nanos %= rhs.nanos;
++    }
++}
++
+ impl Delta {
+     /// A span of time equal to zero.
+     pub const ZERO: Self = Self { nanos: 0 };
 -- 
 2.50.0
 
