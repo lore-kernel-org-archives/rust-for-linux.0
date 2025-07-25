@@ -1,41 +1,41 @@
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B35224113D;
-	Fri, 25 Jul 2025 14:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15AE1B6CE9;
+	Fri, 25 Jul 2025 14:13:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753452728; cv=pass; b=TENbaD72a1K3+iBX1H3yuG/X+Sbubrk1C/DpK5rBL0FEaoZvwtpVWT4m2akO00uSSpvOQuSIdwBWgw4rn5BLh2DdoKecWnCYW0T6o+4MH+guUR/Apit60kJ4LFG4yI3BIVb9EATmLTZA5n6qtsT/+89Vqk2bFPBQUcceI8J4KFE=
+	t=1753452821; cv=pass; b=RZHN6okfeb/LSKSfkDMx5U73BPe+zuQ6uP9qB4X6TelebtKUuCd+mzG6NiqquXF8HzrdYI26Ndn7uRBpFCgRTSF4XkGr3uEKPalCB4i2MLBH6/yTPx0wTy8TO3x2Cwuq8GaS9wCCCR4pXLJeDBUi1KBHfiGFOeAiOCdudaBnBHU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753452728; c=relaxed/simple;
-	bh=YeTj+YW6w9bQywA5OZClqs+uucHXH7cd3EgxRqxiGJ4=;
+	s=arc-20240116; t=1753452821; c=relaxed/simple;
+	bh=+8mHHoqWPfakZvUKQJlGS1iEaCdlX+UMxzGntzN1kfI=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=lu/XXCc9v4WDY8bVFfrfG3/mzmeK2Jtoe4xgD/4enzKOcRfY2jrfHJdMm2gevitk1BLN+uCUNjio73smEVPYA7PELGNZ1PdIx4QDkWO/k69Cop2E5GD4AWXcDFOhX7VhDasLwqoFuy0O+CfbtxptCo5ueNyb7OunAQfCY31IGGo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=DuaQElRh; arc=pass smtp.client-ip=136.143.188.12
+	 Message-Id:References:To; b=AvwsHRf1iWgiLdTPPO/MSDHSdcOZ8Q81zogxWb9NR+x0coS6CUUCjJQAWqKYYfF2HR+vRNk2Qd22vX4qAlBFO5GvLikRlSu+cCXzxj+Dxn9CFTCFRDtt1TSH87iR53BJ1HhurpDYlTlpMPeq9vq+7+m3X6jT2EOOrTS2U5ZsC0g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=FqY2p5Dw; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="DuaQElRh"
-ARC-Seal: i=1; a=rsa-sha256; t=1753452687; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="FqY2p5Dw"
+ARC-Seal: i=1; a=rsa-sha256; t=1753452783; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=oJHxeyhUFkNnA+kTj4JHoa0RjBusxedCEUJL71oIOuhmyFImzC4qeYwrt3Vc2rkIq1o0QYfuGhX+5RoM7+C73kXVtz/snh/YLGbuDGnw1NIUPlkSBr+jEmyoDwILs/Xptld051AwxyVRKpmcKioOGdkSwE8DCBJwzQtjtH3LNjU=
+	b=jSaK8mppRizdIC4dmEgqfyv4h1h+nEhypRqXME1ONjOXv151HNF8q3/AsUi5CWYOcgbAsdUfsjOoeOYn2PiFZCbzkIRFUrKzkJrHxuSN1L37gwz3pwEQxdRKuQVr8Yx4xScs5FBgernCUGqpXVBbvAn/H+g6RbH+6P/gwhq/6uo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753452687; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=b6vZSmaipPpaQ40c+a24U3D4pklSo6qkSSQtDCDRTxY=; 
-	b=S0aREpd6FGA20JDu+dF/EhoTMLi2WJRM02ZmypP0J3Pxq7YIst96eQVY473eF/UfXXYW8SaIH7LKbpRMj5sV3fzmNFANKIB05fcNO4prvRayLfgvHyJ3zDUMQNLjE+Z+ksHOuorcEbRm1aMX93F5IFxTGstbncqAWgX7EkI9MdA=
+	t=1753452783; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=KZgW370kSmyKfPg+Nr+XVEFnkfSlEBBkCZNRQBFM3cc=; 
+	b=eOOlpwfcG7rmr/ec1J68US54HTP8Kyycv9YMiBnqIopqoSHqzmm8pPlmTrnVVBG1c6NwluLhPe1Qsj96gKVAe15Q/HcC9kFJl9ZPAen2QwhY7Kj/LBW3Tq1xgKdxAgY9tRSM+h/B1opgIqd14c9Lw8Y+d8vjuinhs34U1ISlSV8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753452687;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753452783;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=b6vZSmaipPpaQ40c+a24U3D4pklSo6qkSSQtDCDRTxY=;
-	b=DuaQElRhSGHQ12DpxRWXX5zRiXNznOpuhA1VQQbszUjzXtWPfFbRyqiOgmty1d7l
-	xpjHliC6y/vdOcridgquAWKrS5SvrjZf1eCFHLeitOlHwYEce1TSn2HkIbdNuykFNwp
-	z7n2karj2i3SWgplDNsUng7I/UGf0eE/AsWJ8q+E=
-Received: by mx.zohomail.com with SMTPS id 1753452684492985.4734408640252;
-	Fri, 25 Jul 2025 07:11:24 -0700 (PDT)
+	bh=KZgW370kSmyKfPg+Nr+XVEFnkfSlEBBkCZNRQBFM3cc=;
+	b=FqY2p5Dw725I/lzf4Mr51OYsQ+7utTsWGEUEZOQxDS1w+vvLsJD3Je5WiG7o9LRU
+	D/ytPFabS4bNF01p4hy+ITAMEP+cLQeyWg3McsXx46/63kRKoiYnvOX4tPdVPomLfoZ
+	mqhOI6SQPwqGOG9r7pq2GrIUaCSwpvZyrBo7NIYk=
+Received: by mx.zohomail.com with SMTPS id 1753452781206676.9579877298089;
+	Fri, 25 Jul 2025 07:13:01 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,16 +44,20 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v6 0/7] rust/hrtimer: Various hrtimer + time additions
+Subject: Re: [PATCH v6 6/7] rust: time: Add Instant::from_nanos()
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250724185236.556482-1-lyude@redhat.com>
-Date: Fri, 25 Jul 2025 11:11:09 -0300
+In-Reply-To: <20250724185236.556482-7-lyude@redhat.com>
+Date: Fri, 25 Jul 2025 11:12:46 -0300
 Cc: rust-for-linux@vger.kernel.org,
  Thomas Gleixner <tglx@linutronix.de>,
  Boqun Feng <boqun.feng@gmail.com>,
  linux-kernel@vger.kernel.org,
  Andreas Hindborg <a.hindborg@kernel.org>,
  FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ John Stultz <jstultz@google.com>,
+ Stephen Boyd <sboyd@kernel.org>,
  Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Gary Guo <gary@garyguo.net>,
@@ -63,70 +67,77 @@ Cc: rust-for-linux@vger.kernel.org,
  Trevor Gross <tmgross@umich.edu>,
  Danilo Krummrich <dakr@kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <71C2DE74-1BB7-4AC0-83BD-2CC8B871B078@collabora.com>
+Message-Id: <46A998B0-8101-4F51-91DE-857B237F6CC5@collabora.com>
 References: <20250724185236.556482-1-lyude@redhat.com>
+ <20250724185236.556482-7-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
-Hi Lyude,
+
 
 > On 24 Jul 2025, at 15:49, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> This is a collection of various bindings that I added to hrtimer when =
-I
-> was originally getting it ready to be used in rvkms. I've mostly been
-> waiting for Andreas's hrtimer series to go upstream before submitting
-> these.
+> For implementing Rust bindings which can return a point in time.
 >=20
-> All of these are currently being used within rvkms for vblank =
-emulation.
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 >=20
-> Previous versions:
->  Version 1: https://lkml.org/lkml/2025/4/2/1474
->  Version 2: https://lkml.org/lkml/2025/4/15/1750
->  Version 3 (only a revision of one patch): =
-https://lkml.org/lkml/2025/4/15/1780
->  Version 4: https://lkml.org/lkml/2025/4/29/1715
->  Version 5: https://lkml.org/lkml/2025/6/13/1785
+> ---
+> V4:
+> * Turn from_nanos() into an unsafe function in order to ensure that we
+>  uphold the invariants of Instant
+> V5:
+> * Add debug_assert!() to from_nanos
 >=20
-> Usage example:
-> (keep in mind, I haven't rebased the example entirely - but the only
->  differences there is a few comments)
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+> ---
+> rust/kernel/time.rs | 23 +++++++++++++++++++++++
+> 1 file changed, 23 insertions(+)
 >=20
->  =
-https://gitlab.freedesktop.org/lyudess/linux/-/tree/rvkms-slim/rust/kernel=
-?ref_type=3Dheads
+> diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+> index 64c8dcf548d63..75088d080b834 100644
+> --- a/rust/kernel/time.rs
+> +++ b/rust/kernel/time.rs
+> @@ -200,6 +200,29 @@ pub fn elapsed(&self) -> Delta {
+>     pub(crate) fn as_nanos(&self) -> i64 {
+>         self.inner
+>     }
+> +
+> +    /// Create an [`Instant`] from a time duration specified in =
+nanoseconds without checking if it
+> +    /// is positive.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// On debug builds, this function will panic if `nanos` violates =
+our safety contract.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller promises that `nanos` is in the range from 0 to =
+`KTIME_MAX`.
+> +    #[expect(unused)]
+> +    #[inline]
+> +    pub(crate) unsafe fn from_nanos(nanos: i64) -> Self {
+> +        debug_assert!(nanos >=3D 0);
+
+Since you=E2=80=99re already checking the lower bound, wouldn=E2=80=99t =
+it make sense to check the upper bound as well?=20
+
+> +
+> +        // INVARIANT: Our safety contract ensures that `nanos` is in =
+the range from 0 to
+> +        // `KTIME_MAX`.
+> +        Self {
+> +            inner: nanos as bindings::ktime_t,
+> +            _c: PhantomData,
+> +        }
+> +    }
+> }
 >=20
-> Lyude Paul (7):
->  rust: hrtimer: Document the return value for HrTimerHandle::cancel()
->  rust: hrtimer: Add HrTimerInstant
->  rust: hrtimer: Add HrTimer::raw_forward() and forward()
->  rust: hrtimer: Add HrTimerCallbackContext and ::forward()
->  rust: hrtimer: Add forward_now() to HrTimer and =
-HrTimerCallbackContext
->  rust: time: Add Instant::from_nanos()
->  rust: hrtimer: Add HrTimer::expires()
->=20
-> rust/kernel/time.rs                 |  22 ++++
-> rust/kernel/time/hrtimer.rs         | 152 +++++++++++++++++++++++++++-
-> rust/kernel/time/hrtimer/arc.rs     |   9 +-
-> rust/kernel/time/hrtimer/pin.rs     |   9 +-
-> rust/kernel/time/hrtimer/pin_mut.rs |  12 ++-
-> rust/kernel/time/hrtimer/tbox.rs    |   9 +-
-> 6 files changed, 204 insertions(+), 9 deletions(-)
->=20
->=20
-> base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+> impl<C: ClockSource> core::ops::Sub for Instant<C> {
 > --=20
 > 2.50.0
 >=20
 >=20
-
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-
-A few very minor nits will follow.
-
-=E2=80=94 Daniel
 
