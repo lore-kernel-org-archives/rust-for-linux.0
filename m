@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22271E86E;
-	Fri, 25 Jul 2025 14:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A67D1C5D59;
+	Fri, 25 Jul 2025 14:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753453013; cv=pass; b=rb0P3uipp7TOTKMIhDjjzNM/oZxheJPk4MT9LF8VquCO/NAWq+YWY0vwZ9DJg279jCU9ngZFVLblZG8crQHOqniAoXXerTKdgvZFHJgm01+BT0tifysBCGZTXbTdzIV2+CZPaOIbHTMp9JxGJHkLhprU9Ci02Wq/XuZdj+D97Z8=
+	t=1753453548; cv=pass; b=JlaNBFXgIkPbMJqy3LeptknrnCefPZUb/WXRwgW5PCUmnbYasa8t7Sm/1Re/qZ7DJuHmFzUOFQ/4SHVtKtHYckQCSuz1uubvJ3erfkda66lo/gPohKlNRu16GFwFrE0cuD3FYmV1QV/1X6cFh/kjaVdtimUb5f3FpPDS1BqeOMw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753453013; c=relaxed/simple;
-	bh=KnfWWrxdkFr01lZpxeJ4tuJauoEGSDa2fhth//QN9+c=;
+	s=arc-20240116; t=1753453548; c=relaxed/simple;
+	bh=UwBqImuFzVdzQ4tm7gdmNEey8slK+Q1XhPGQMpuQ8ik=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=awPaPMrAE5cMl65/e/xdbQlGSyAcDBHgMYYWti5FtwEvQrYpkvo2MkqLJOi2AwF4gyWLEr9+oPOeqUWng6AU4DwhISVMcxe8Ddqvrl7ti7B5vPdWubWTkTkYfRDEFZLKe+rn0M+oJXiBJJhADB+T7KOV9d4JH03XZhyTTco8054=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=gLszndTr; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=HzNUKnr0Z/Q8Rhul7IkK4IzjJC3N4bEfg8dOVBW89Y8DvB+GCRULmD4nnsARBvBbRrpLJr3/DjBbyX6igumgXLFV4Qk7rzSVoeBb+OtjDqX4p6+HfJGJUyiQt2Mu8klJ7il0bPRTRHohoDzNJwn4DeWI3q0fbAFgNgk9izdsg10=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UuOkwtnn; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="gLszndTr"
-ARC-Seal: i=1; a=rsa-sha256; t=1753452989; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UuOkwtnn"
+ARC-Seal: i=1; a=rsa-sha256; t=1753453522; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=bHcOJHwZ2XuYgp3rIkJZq4dzewkiFowJpFs76HWkEZCa74T3wIIjbEZOnQekvHTraTDDTYPEXBozue/RXkmEOa1ScFceaFdMVsvH0DEIOEqCyRvfBnb2s7JoDCaAOaTKFeQ5MKgAuWfqzTn6G7cBrW5pTqfBLvGSbTa6z7PDHNg=
+	b=KuJEIikpED5QWWp18eszUXUicw18U3pH49ohJow/j6ETktRN5uSlRde4bp0Lee5ihd8w5YwCE9efMnb9digbJY8pVH+d82rr3Ikp3nRKhCrx+H3Ftx7QwhegCpDf9U+HPQFmWwgIuW9xC38RE4Rsb0CSE5TvMl5+0FSFRWk8PHo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753452989; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=UWxWLezBsY4cXQqMdYfPx06eRZqfr604fuIaX3KcaUM=; 
-	b=nVPAc13ZoreZdx3EOCdREqzUnG5Fdas4HxnSN94v7Qx+S2QvjnYXL43tjLK71UfLIkeqnZenxgTG2YNFeM4zuAcKuHcLOUnf1Ab6QudBjNZBm3IpvheJn5BhNN/4BLNOAfZVeu/OJfmVPaUwfzNBinge7GTE4a3U6ckSwNn+Kdk=
+	t=1753453522; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=UwBqImuFzVdzQ4tm7gdmNEey8slK+Q1XhPGQMpuQ8ik=; 
+	b=LZ4t0LN8UG2Ics2bz3dtnFCyp0TT7/itNJBQVFE1KI2yvEj6xwcUsJ4SDS+q+qmCJv63EZUA0VuCjCYElmgKyAsR9SfdVAfvQ93aepueiJ5Jacoxr9hdDq8pw1/DDXvv+83A1/bAsjcGZqk9V7EeN10oVP2tZsm/cZjKimewCeg=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753452989;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753453522;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=UWxWLezBsY4cXQqMdYfPx06eRZqfr604fuIaX3KcaUM=;
-	b=gLszndTrdom+J/qq9ssYpEvT71TuA67TPlzUZHfTWmU/32aUoZiKhB8ri6T9Zn6x
-	MBU6eVhKoNS8a+Y5wMgHYLVTAJbs72Rb8X4w2Q1zSef/EfWTKbg7GYFheDe/N+hw+pu
-	epo9+3BgMJIeksXTkQ+IO8Q4bBiRJCB4kBwHMFiA=
-Received: by mx.zohomail.com with SMTPS id 1753452986756519.8609749819647;
-	Fri, 25 Jul 2025 07:16:26 -0700 (PDT)
+	bh=UwBqImuFzVdzQ4tm7gdmNEey8slK+Q1XhPGQMpuQ8ik=;
+	b=UuOkwtnnoSOQPIDVuqJ2BosnWmSyAorz2Qqv++I+tymeLOwIoft2Zn8zamGhaDOO
+	l7Q0kPzFWCuF4OuALeUTtawNFLlVCr7Mz56YtH+eRoPF2A9+f57ilEPg0fJ9SNkelzA
+	hA3DTAP8DKpLf+jCnCrEyehyKHh5xiMiDNzrA9SU=
+Received: by mx.zohomail.com with SMTPS id 1753453520277229.33671250289422;
+	Fri, 25 Jul 2025 07:25:20 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,11 +44,11 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v6 3/7] rust: hrtimer: Add HrTimer::raw_forward() and
- forward()
+Subject: Re: [PATCH v6 5/7] rust: hrtimer: Add forward_now() to HrTimer and
+ HrTimerCallbackContext
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250724185236.556482-4-lyude@redhat.com>
-Date: Fri, 25 Jul 2025 11:16:11 -0300
+In-Reply-To: <20250724185236.556482-6-lyude@redhat.com>
+Date: Fri, 25 Jul 2025 11:25:04 -0300
 Cc: rust-for-linux@vger.kernel.org,
  Thomas Gleixner <tglx@linutronix.de>,
  Boqun Feng <boqun.feng@gmail.com>,
@@ -68,58 +68,23 @@ Cc: rust-for-linux@vger.kernel.org,
  Trevor Gross <tmgross@umich.edu>,
  Danilo Krummrich <dakr@kernel.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <4A89EA6C-7683-42CB-BA0E-0ED538480991@collabora.com>
+Message-Id: <0E58916C-EAAB-4FE4-90A9-25CFA8293CD9@collabora.com>
 References: <20250724185236.556482-1-lyude@redhat.com>
- <20250724185236.556482-4-lyude@redhat.com>
+ <20250724185236.556482-6-lyude@redhat.com>
 To: Lyude Paul <lyude@redhat.com>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
-[=E2=80=A6]
 
 
-> +
-> +    /// Conditionally forward the timer.
-> +    ///
-> +    /// If the timer expires after `now`, this function does nothing =
-and returns 0. If the timer
-> +    /// expired at or before `now`, this function forwards the timer =
-by `interval` until the timer
-> +    /// expires after `now` and then returns the number of times the =
-timer was forwarded by
-> +    /// `interval`.
-> +    ///
-> +    /// Returns the number of overruns that occurred as a result of =
-the timer expiry change.
-> +    pub fn forward(self: Pin<&mut Self>, now: HrTimerInstant<T>, =
-interval: Delta) -> u64
-> +    where
-> +        T: HasHrTimer<T>,
-> +    {
-> +        // SAFETY:
-> +        // - `raw_forward` does not move `self`.
-> +        // - Self is a mutable reference and thus always points to a =
-valid `HrTimer`
-
-I get what you're trying to say, but IMHO using the word "mutable" here =
-is
-confusing. Mutability has nothing to do on whether something is valid. =
-This
-should be rephrased, IMHO.
-
-> +        // - The only way that we could hold a mutable reference to =
-`HrTimer<T>` is if we have
-> +        //   exclusive access to it - fulfilling the requirements of =
-the C API.
-> +        unsafe { Self::raw_forward(self.get_unchecked_mut(), now, =
-interval) }
-> +    }
-> }
+> On 24 Jul 2025, at 15:49, Lyude Paul <lyude@redhat.com> wrote:
 >=20
-> /// Implemented by pointer types that point to structs that contain a =
-[`HrTimer`].
-> --=20
-> 2.50.0
->=20
->=20
+> Using the HrTimer::raw_time_cb() function, we can now add an =
+equivalent to
+> hrtimer_forward_now() to both HrTimer and HrTimerCallbackContext.
 
+raw_time_cb is not in the patch itself, and grepping for it in =
+rust/kernel did not
+produce any results. There's nothing in bindings_generated.rs either.
+
+=E2=80=94 Daniel=
