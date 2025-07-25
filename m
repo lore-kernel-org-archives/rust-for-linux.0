@@ -1,183 +1,121 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338EC28FFC6
-	for <rust-for-linux@vger.kernel.org>; Fri, 25 Jul 2025 07:05:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD16291C3B
+	for <rust-for-linux@vger.kernel.org>; Fri, 25 Jul 2025 07:14:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753427145; cv=none; b=ND2rfH40vmi4U47N5Opk1RtBdpLnqNhN/EGtbm6U2JMl7ZVybqg567NdR+slodZE5ukwOI2tcbuvb9g4wa4IwKHcIKiNNOeOXRynyfVhW/IFsyrBSTMXDIY4ZPm0uRce21oTE6RUAK6rmgaJ/z67Evk256HzXEkoPhL90j8M7+k=
+	t=1753427662; cv=none; b=cJ/w50KuNIBda+b6/0w/FwWLYKlXiiRxhVm7K6e8C4Ib5DsauaOTIrWSEL77YajctUKsee29QB2ZThPe0HBKHG9X7Lmj8xe4tZZO3XIIhZ6KKHOgoWv290c0IbNCfNJslQuzQGrlGjYH8VRZ7tlawDwsNnAIavXRIY5UgJIr4fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753427145; c=relaxed/simple;
-	bh=Vky7jQoA9kpj0hrdkJQfui+4eJW/uww4NZANfwOsX/U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UNY6KSU82+R7Xu/UJhoCFSYvqFp/n6ejV40t0bQggJ3e6am/NCioxP0NRD2l/Wqcifb1Br2byv8+gN14HRKow5cOovagdlSRUDalZRzuHykcb/RI0KAtQNsdcjHl4YRexpSFw/mPbyIcCn+mmv3gif0/feCUA7xJZUsVbBnO+jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Amp2Czwq; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1753427662; c=relaxed/simple;
+	bh=E4YkhBRj1KR+XPLrBsHY5EKKqoJslsa67oYsFvhdDew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lZJbvW3yISWqkyrD/Op/IBmOpuqd5sCWbHARhX4FVwQkDv4Ol1cExX+7L1wixDDBXXNUr1cYdd2jzQQj4cvemoB1+mgTwoTSBJwb+tuT8ruqrK6977zxeIrQWEu4ADBrB8lCw9XoQniTxAjaPylN520X4W5YZ3JThptDsGLnRF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k3sRP6/o; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Amp2Czwq"
-Date: Fri, 25 Jul 2025 15:05:29 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753427141;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a/J2rAka31JUlEF/90YWFdrFVosETQBHcCeJLJq3OPw=;
-	b=Amp2CzwqLyWfSPazZt0IACQoO7dWoWzI57vW8bNJIX5uu724Vpn34l8x1zOZ366YBovRB9
-	5euhz0P9mL53I8rTIoT5/REJ1/3WjS8+38ZbPajCk0nm7aeNR9ZcqsLF2beYIGnPSnf/VZ
-	S9J80eXzlk2tuI/FoCVEFeVomVTzqHQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com, Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Hui Zhu <zhuhui@kylinos.cn>, Geliang Tang <geliang@kernel.org>
-Subject: Re: [PATCH v4 1/2] rust: allocator: add unit tests of kmalloc,
- vmalloc and kvmalloc
-Message-ID: <aIMsuS5XTvKpr-a6@teawaterdeMacBook-Pro.local>
-References: <cover.1753348867.git.zhuhui@kylinos.cn>
- <32d7663b7d07d13564bdfb6a1ec4cde1be8b8f80.1753348867.git.zhuhui@kylinos.cn>
- <DBKERZ03P2WS.3HQ0NZC9OO5AZ@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k3sRP6/o"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-45634205adaso8465835e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 25 Jul 2025 00:14:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753427659; x=1754032459; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L9vHt5UXfKsv8YlchEcAgj1SPpwPqe3D7/osin4AnlY=;
+        b=k3sRP6/obyvGWLd1Q6AGosndkTETfz2sdSF9CwFmyWN4t32775cHEFo6BbmKP3fnxD
+         dAQYD9VanTxwHMfpXUn0Ka0geZR02cYfev94PBTxi48cm/IvhWXGJvqL4FRCSIksBHLz
+         qILty51Crjf+Qh3utq2DD+evidx1hhgbYrduJjS9So+jYobpMCfl+KXQwu/M1LqMyd13
+         7gJGGnHVvAtEyWG2Dc8Xtg/TRkxHWAoXnvFXPtOjjjyHresfFCiCzFAXZcpM1OotWS6I
+         K3ArcUG21yRE4KrTknqgvduRuY0iIBymDThHAXPcC541gwvRulLRAvJSonpsr7NkTr4v
+         Kg8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753427659; x=1754032459;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L9vHt5UXfKsv8YlchEcAgj1SPpwPqe3D7/osin4AnlY=;
+        b=bPTgC2cHKL5bjJfqyrwkIa7xxaX2GY79eAWFBAx8kq2h5GahmSMC7Tv9rFEg1H/iOc
+         V2SSyY1STcAamR18jjgTGpUDmJEhXI8rmwrlyXmeC6QbyyIjYvrzwa0T5cKWrTahl/+J
+         W2ZAvBHDwFzliMcT8YNxq/DDcqzQmaIkuc02wJ75OZqhnhh/xmTm+QchhzO/Fbar33F3
+         wW0d/WRYWPgWMp02r9naEZBs7HQ4o/onEy+u83ta6Bph4w7rO/i5l7et1gWnjQs+3WGI
+         AglQyPCP2aOWBmP9tvvN/5IWn2sE2QMGww7UusDzGE+914xD2CXRC/T94jcwhrCSPXRV
+         Azyg==
+X-Forwarded-Encrypted: i=1; AJvYcCW+wEAFUu04SxGDnyEHor8QL8zGFLuo0WdR41hoeRveIvz7c0yV3vW7efWKaryGsR4x92pbY1+eVDz1evIoaA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRps38Wlu4hYYhoqv6OAq9am9Uzy5CJamA8DlOtMRqKtD/+q1F
+	/ZCD9VAtiNrBMKtCyKC50XaR65hu66hykE0njmKQZl9Or20aGjzCDrRnSuriOCN4lRZiJ47fBEL
+	HjFkQrYTY3ujZ2xugiQ1O4VoBt8xLfVQ7XUSZE3ys
+X-Gm-Gg: ASbGnctOHsUyRclXbumOtJOneMooMmGdVVaJyviC+ExvqfPvKCrauI6xtLdPsRAoOSy
+	qEobD3EnATMTdbQ5966ExDJlwtAX6R0Au8TQiTXAtwv59LpN6J62OjiYXizSTK2lwSIe1QXLYsh
+	4Z9Mrkl1yg+CdVnjD3LqZYnvNytkeUojtdPMgTJC6+lb+nSclQDWTnA6w486Ms8G7yFLqBUO1sy
+	eatcPgcuunMtH7ndRvRLuhePVWME3CG1Uxmjgri5DuhGwIa
+X-Google-Smtp-Source: AGHT+IE4kl/WAV/DJhHC0LW0odI/joljZCgor1iGezxfvCxEn51uKapoKTZqJK2GZ/JKTo8UOtRjEV7yfpgZ91zr4FI=
+X-Received: by 2002:a05:600c:4f07:b0:456:58:1114 with SMTP id
+ 5b1f17b1804b1-45877447996mr3587685e9.9.1753427658863; Fri, 25 Jul 2025
+ 00:14:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DBKERZ03P2WS.3HQ0NZC9OO5AZ@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+References: <20250715135645.2230065-1-vitaly.wool@konsulko.se> <20250724135449.2cb6457b90926cce1b903481@linux-foundation.org>
+In-Reply-To: <20250724135449.2cb6457b90926cce1b903481@linux-foundation.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 25 Jul 2025 09:14:05 +0200
+X-Gm-Features: Ac12FXy3-hBwFSqnBK583mYkueFJy_LL2mllk3DPkZ3jUCXGxkbYOdiRiOuntB4
+Message-ID: <CAH5fLgjatYenX_xPvRW11BnRw1wP_G19eY-7AqUctnuZ3rGBYA@mail.gmail.com>
+Subject: Re: [PATCH v13 0/4] support large align and nid in Rust allocators
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
+	Danilo Krummrich <dakr@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, rust-for-linux@vger.kernel.org, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org, 
+	bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Danilo,
-
-On Thu, Jul 24, 2025 at 05:59:39PM +0200, Danilo Krummrich wrote:
-> On Thu Jul 24, 2025 at 11:25 AM CEST, Hui Zhu wrote:
-> > From: Hui Zhu <zhuhui@kylinos.cn>
-> >
-> > Add KUnit test cases to validate the functionality of Rust allocation
-> > wrappers (kmalloc, vmalloc, kvmalloc).
-> >
-> > The tests include:
-> > Basic allocation tests for each allocator using a 1024-byte Blob
-> > structure initialized with a 0xfe pattern.
-> > Large alignment (> PAGE_SIZE) allocation testing using an 8192-byte
-> > aligned LargeAlignBlob structure.
-> > Verification of allocation constraints:
-> > - kmalloc successfully handles large alignments.
-> > - vmalloc and kvmalloc correctly fail for unsupported large alignments.
-> > Content verification through byte-by-byte pattern checking.
-> >
-> > Co-developed-by: Geliang Tang <geliang@kernel.org>
-> > Signed-off-by: Geliang Tang <geliang@kernel.org>
-> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> Thanks for the patch, additional test are always welcome! :)
-
-Great!
-
-> 
-> > ---
-> >  rust/kernel/alloc/allocator.rs | 57 ++++++++++++++++++++++++++++++++++
-> >  1 file changed, 57 insertions(+)
-> >
-> > diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> > index aa2dfa9dca4c..430d1f664fdf 100644
-> > --- a/rust/kernel/alloc/allocator.rs
-> > +++ b/rust/kernel/alloc/allocator.rs
-> > @@ -187,3 +187,60 @@ unsafe fn realloc(
-> >          unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags) }
-> >      }
-> >  }
-> > +
-> > +#[macros::kunit_tests(rust_allocator_kunit)]
-> > +mod tests {
-> > +    use super::*;
-> > +    use kernel::prelude::*;
-> > +
-> > +    const TEST_SIZE: usize = 1024;
-> > +    const LARGE_ALIGN_TEST_SIZE: usize = kernel::page::PAGE_SIZE * 4;
-> > +    #[repr(align(128))]
-> > +    struct Blob([u8; TEST_SIZE]);
-> > +    // This structure is used to test the allocation of alignments larger
-> > +    // than PAGE_SIZE.
-> > +    // Since this is not yet supported, avoid accessing the contents of
-> > +    // the structure for now.
-> > +    #[allow(dead_code)]
-> > +    #[repr(align(8192))]
-> > +    struct LargeAlignBlob([u8; LARGE_ALIGN_TEST_SIZE]);
-> > +
-> > +    #[test]
-> > +    fn test_kmalloc() -> Result<(), AllocError> {
-> > +        let blob = KBox::new(Blob([0xfeu8; TEST_SIZE]), GFP_KERNEL)?;
-> 
-> Since those are now actual unit tests on the Allocator implementations, it would
-> be fine to use them directly. However, for the case you are testing here, i.e.
-> alignment using Box is perfectly fine.
-> 
-> Having that said, I wouldn't call those tests test_*malloc(), since they're not
-> really testing all aspects of a certain allocator, but only the success to
-> allocate with certain alignment arguments.
-> 
-> Instead, I propose to write just a single test, test_alignment(), with a few
-> helper functions.
-> 
-> For instance, your Blob test structure could have a constructor that is generic
-> over A: Allocator.
-> 
-> However, given that you really only want to check alignment, you probably want a
-> structure like this instead.
-> 
-> 	struct TestAlign<A: Allocator>(Box<MaybeUninit<[u8; TEST_SIZE]>, A>);
-> 
-> 	impl<A: Allocator> TestAlign<A> {
-> 	   fn new() -> Result<Self> {
-> 	      Box::<_, A>::new_uninit(GFP_KERNEL)
-> 	   }
-> 
-> 	   fn alignment_valid(&self) -> bool {
-> 	      ...
-> 	   }
-> 	}
-> 
-> and then test_alignment() can just do
-> 
-> 	let test = TestAlign::<Kmalloc>::new()?;
-> 	assert!(test.alignment_valid());
-> 
-> 	...
-> 
-> Given that this is now a unit test I also think that actually validating the
-> alignment of the pointer Box wraps makes sense, similar to what you had in v2.
-> 
-> > +        for b in blob.0.as_slice().iter() {
-> > +            assert_eq!(*b, 0xfeu8);
-> > +        }
-> 
-> I don't think that this has any valid in the context of testing alignment.
-> 
-> > +        let blob = KBox::new(LargeAlignBlob([0xfdu8; LARGE_ALIGN_TEST_SIZE]), GFP_KERNEL)?;
-> 
-> For the large alignment case, you can consider to let TestAlign take a const
-> generic, additional to A: Allocator, e.g.
-> 
-> 	struct TestAlign<A: Allocator, const SIZE: usize>(Box<MaybeUninit<[u8; SIZE]>, A>);
-> 
-> This way you can keep test_alignment() function very compact.
+On Thu, Jul 24, 2025 at 10:54=E2=80=AFPM Andrew Morton
+<akpm@linux-foundation.org> wrote:
 >
+> On Tue, 15 Jul 2025 15:56:45 +0200 Vitaly Wool <vitaly.wool@konsulko.se> =
+wrote:
+>
+> > The coming patches provide the ability for Rust allocators to set
+> > NUMA node and large alignment.
+> >
+> > ...
+> >
+> >  fs/bcachefs/darray.c           |    2 -
+> >  fs/bcachefs/util.h             |    2 -
+> >  include/linux/bpfptr.h         |    2 -
+> >  include/linux/slab.h           |   39 ++++++++++++++++++++++----------=
+-----
+> >  include/linux/vmalloc.h        |   12 ++++++++---
+> >  lib/rhashtable.c               |    4 +--
+> >  mm/nommu.c                     |    3 +-
+> >  mm/slub.c                      |   64 ++++++++++++++++++++++++++++++++=
++++++++++--------------------
+> >  mm/vmalloc.c                   |   29 ++++++++++++++++++++++-----
+> >  rust/helpers/slab.c            |   10 +++++----
+> >  rust/helpers/vmalloc.c         |    5 ++--
+> >  rust/kernel/alloc.rs           |   54 ++++++++++++++++++++++++++++++++=
+++++++++++++++-----
+> >  rust/kernel/alloc/allocator.rs |   49 +++++++++++++++++++++-----------=
+--------------
+> >  rust/kernel/alloc/kbox.rs      |    4 +--
+> >  rust/kernel/alloc/kvec.rs      |   11 ++++++++--
+> >  15 files changed, 200 insertions(+), 90 deletions(-)
+>
+> I assume we're looking for a merge into mm.git?
+>
+> We're at -rc7 so let's target 6.17.  Please resend around the end of
+> the upcoming merge window?
 
-I sent new patches according to your comments.
- 
-> - Danilo
+I think it would make sense for this to land through mm.git, so yes
+that sounds like a good plan.
 
-Best,
-Hui
+Alice
