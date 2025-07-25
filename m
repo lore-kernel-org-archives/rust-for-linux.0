@@ -1,96 +1,186 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FD324BCF5;
-	Fri, 25 Jul 2025 18:38:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753468690; cv=none; b=B79UBZEXXhwMOjnnq4ExnFo50EUIFb1dVG0SyQTVd/jTXtB/WEpYOZDQD6Zy5rIGVmr8Yy8QYa6US4gW/jWU8uWIWfKxVNqUTX73OCI8o3yG+9vxIb9MN7A5JqhBuI407Y4I0CXQ+Hw35kO6MPkEngJP8ejOojOC8nRSVxx2MpQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753468690; c=relaxed/simple;
-	bh=gJ6ewcoQyVVGbVoSZRXYUYRi2X1SS8KIyXszP6Eldsw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PYbu9jfMmIcwXaVU0Qx6mUwc3PAqjBO57UlYPNHPI2ZQrizjQd5qdJWuNaMy+Ghf/NBFwSXsAE08i4ZY8UeuOctcKYVe7nLRD3V2OIwHPn0/YlC+faBLtQJAhylI2+epRNehRf23AGp5I2ugH9ZnC/G9982Svvtn9ZeUskHpbxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZLk2hFcp; arc=none smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D024225394C;
+	Fri, 25 Jul 2025 18:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753469809; cv=pass; b=iickW6fOWmda2KOj20SMNUWV7BR9ZfIELcBSfEMuy7l9om+maom6IDZQVinX6ngM1LoQ/kuUP3SQPY1y28dALSW2sLDquj5yMU29MCtYZYgHa3Zl8MSaeGrdhoCZoSvjos9hZGwk2oAt+0gAT9MtAG/ui3T3bJ2a5JcECZ893Go=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753469809; c=relaxed/simple;
+	bh=VigHQ5VbXX40LCqzfFLMODjqTGl9OmpTAQNkTErOBeI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Wqtg0wtZueBDtyjHA/gI1+dzDxiRFoQ0zx7ThFSVL4f2w+FPp3P1Dp98PTJX4uTVbGFtnkDTx7oc/Qym2ikjAb2EeyjrKBdxtk8RCN8+XAFV+aclI4AbhqX+TNzLf9bD6y4uq2+KxZvJ7NagLTvwVK1T33kZyg7D9wsil39+Wb0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NU3BDFUt; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZLk2hFcp"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-87ed1c2b487so63101241.3;
-        Fri, 25 Jul 2025 11:38:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753468688; x=1754073488; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gJ6ewcoQyVVGbVoSZRXYUYRi2X1SS8KIyXszP6Eldsw=;
-        b=ZLk2hFcpkKhLP8LLz0GwacAMZ4CIqpTlY8R8cuq52e1ZLXLMf7BcOEp2jIAXiuXFSP
-         BXmkd2lx9ySm0AdKq1qOu2lFNHkIwPG4PTlsfiVYGEz3c7n9OeaYfmFa8kB6L1Hn4m8p
-         jQ4ohgeAGLiz/Zn7AM41a3ax6S7BQoCMJIjlclT0dOWQh/Gr7DnmI1YheOFUDEUO6Mfl
-         //zPAlSCtAmZ/QrYGk0FSsFw0cMhlmBhPNpn61fTru8jhK8/q/dHtaU4pxIr9T13PVAu
-         gZgchS3+VjqmByxY7lZfX6YPDF/M8HpGAdTmWSq18cUUQhNGkfw+769taBgmxss+0dvC
-         ynAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753468688; x=1754073488;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gJ6ewcoQyVVGbVoSZRXYUYRi2X1SS8KIyXszP6Eldsw=;
-        b=lMfBFtsC1MZkQgR5AoIW21IZhE/JV9QObnKCMGjcuR5BFr3TUHeWjRHQ5MjJKMhBA3
-         s8n1n/NzHID2RkFuy1WSekiAcD6giu/1xuNnQliBUHPawTJJMrRuLlEfCfKp2hdIRo1h
-         7z4BTesqh0cMMV0Z/pQXLPfvjcFjZmp/AIRRsMOIpvE0Pxt1mUZgojGZm95qmBlO7Uvd
-         YxCuasdy4ftsJrNEZOysFZVPyalgluPiNP7xUM/x8ZJriZ9bVi/8G/rl2nu6GIwsKGyW
-         00+qSgc3+EpgVuNIV0HL2CnM0kwuSDLUJsN0gS8urjs4ENsLS4Z6dlqlo1EYwdkK4VdQ
-         bXqw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUVfzVpBi+pHDfluAkElBYeGJ62jsJwP2wFSkqh4Q04KWMB79tJX3FEg2jLS3weyjYTa9yLjuLuQFOVYQ=@vger.kernel.org, AJvYcCXlRMNP20kDVfwBcQVz/a5gzoD3ZIM0WNS3VZLxd3ExHuaW+YSUxb3zjgZ3O/szXnleTn0BjhvYxdq48m05mis=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2+lsHGiQoCVE54jwSvXSvg1bsjtpyN9iSlwm1MQIYtKl668Fv
-	ADN+m7HJZmwaFpyNXTSwL6J9QmtfhUWETw8HAoBMvaffRRiFiROnDZgs1U01dwYQUf07vfWkV3P
-	pluHIu9yQ9L0oRJ3CHvp7xnAUgJzuiuk=
-X-Gm-Gg: ASbGncuv2be0AwBHXyGhtVgfuFj6P0A1e930AJU/d0aRpp7EOEiqipAnV8U/d2Kf/KR
-	xm0RW6fnmkaXT/jUhrpJzLawziheBUuiTXJUPOs+r6f8OtdaaH+P0ktwV7cBVtuYlnp8qdMIOOe
-	51Z1PHCno74vWwy0NrC8pS0LYS92SiKMLLvx0IAFYsXbeaz3tPQi6B6HUauklyN85mVD7aqqWSV
-	n8dne2z
-X-Google-Smtp-Source: AGHT+IHOyHlRuQ3x55ePyfH2AA6lqIIvBIlu0lyTuTlDR7kqe3xOZQOI2yK5nmRKATmQr8yd8agn29yeBGIT58EvKw8=
-X-Received: by 2002:a05:6102:4429:b0:4f3:22ba:ac97 with SMTP id
- ada2fe7eead31-4fa3fda054bmr525200137.5.1753468688039; Fri, 25 Jul 2025
- 11:38:08 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NU3BDFUt"
+ARC-Seal: i=1; a=rsa-sha256; t=1753469792; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TWAFnRBmW5sG1SXFpDtSRFAUhdo6qQjgsCzmI9eQxxAKe+rLvdWr2odE6uX1eagrgCVAyEiRKiSbHvZZsLiCsL2wGmpPrWbm9pL9gCInGlzG2VlEfcZlnUIA7Yzg1DeMa4lx6elWrQvmxDP+oZAuR+sYR4lculwEPDOhLjm6HSU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753469792; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=X1uK2olKYL8ou4YyzWVOCVnW71YBYE+pWaxRKyBZkk4=; 
+	b=VkWRvd2nGX6QiUb4d04YIgjivySNXU+WWUsXtdNlWweFtse2271R3NW8sioKFDAnFD14Yq/U4DUc8u3g57ZMzy3CpohZ42nC4r8u5l3/D9iVUz4t3rKclE2+S3CqcJLi3D1xMeWWlAoRHjiau+/Bo2mYW02yr/T48LfUQrSPISk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753469792;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=X1uK2olKYL8ou4YyzWVOCVnW71YBYE+pWaxRKyBZkk4=;
+	b=NU3BDFUt11IbXyU2pj3v4ojTvXzbVWS4GaFa98M5+ndUR0jHdMhH6fpr/H53At79
+	RWbSogIoY0xPUu9BoFx089lbZE/heudpDjVGyshoDl0ODWnuugTgVsgbklwhoDHn9Xl
+	JaMYGhWeFKrVdAHyQOS9nWgfI1heGENozNk3d2f0=
+Received: by mx.zohomail.com with SMTPS id 1753469789200186.12466149981094;
+	Fri, 25 Jul 2025 11:56:29 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250624042802.105623-1-christiansantoslima21@gmail.com>
- <DB5KEWX9EJ2Q.3CX5EGS66OVHH@nvidia.com> <CABm2a9cfK+HuidwQwcD0Cs_n+dvd9Y71tFn=grz1ahGpbPpurA@mail.gmail.com>
- <DBIN4DXACVKW.2XJPQV4RNJD70@nvidia.com>
-In-Reply-To: <DBIN4DXACVKW.2XJPQV4RNJD70@nvidia.com>
-From: Christian <christiansantoslima21@gmail.com>
-Date: Fri, 25 Jul 2025 15:37:56 -0300
-X-Gm-Features: Ac12FXzugkAKot7ESTWJw_f_EiE5wEo42pvp2wD7tIjyb-cCsnpRq1STsEAwwrU
-Message-ID: <CABm2a9dh9wGPdh+HofM5uZts_O7kFMyKwtGRdxbEw7wsxHvAUQ@mail.gmail.com>
-Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [PATCH v2 15/19] gpu: nova-core: register: redesign relative
+ registers
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250718-nova-regs-v2-15-7b6a762aa1cd@nvidia.com>
+Date: Fri, 25 Jul 2025 15:56:14 -0300
+Cc: Danilo Krummrich <dakr@kernel.org>,
+ David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>,
+ Beata Michalska <beata.michalska@arm.com>,
+ nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F19649A8-3002-4BAC-8FBF-095CF67B3946@collabora.com>
+References: <20250718-nova-regs-v2-0-7b6a762aa1cd@nvidia.com>
+ <20250718-nova-regs-v2-15-7b6a762aa1cd@nvidia.com>
 To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-Hi, Alexandre.
+Hi Alex,
 
-> To clarify, I am not complaining about the `Self: AsBytes` requirement,
-> I am just pointing out that you will need to update the sample so it
-> keeps building. :)
+> On 18 Jul 2025, at 04:26, Alexandre Courbot <acourbot@nvidia.com> =
+wrote:
+>=20
+> The relative registers are currently very unsafe to use: callers can
+> specify any constant as the base address for access, meaning they can
+> effectively interpret any I/O address as any relative register.
+>=20
+> Ideally, valid base addresses for a family of registers should be
+> explicitly defined in the code, and could only be used with the =
+relevant
+> registers
+>=20
+> This patch changes the relative register declaration into this:
+>=20
+>    register!(REGISTER_NAME @ BaseTrait[offset] ...
+>=20
+> Where `BaseTrait` is the name of a ZST used as a parameter of the
+> `RegisterBase<>` trait to define a trait unique to a class of =
+register.
+> This specialized trait is then implemented for every type that =
+provides
+> a valid base address, enabling said types to be passed as the base
+> address provider for the register's I/O accessor methods.
+>=20
+> This design thus makes it impossible to pass an unexpected base =
+address
+> to a relative register, and, since the valid bases are all known at
+> compile-time, also guarantees that all I/O accesses are done within =
+the
+> valid bounds of the I/O range.
+>=20
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
 
-I see, I was just justifying the decision, sorry if it sounded a bit
-aggressive. English isn't my primary language, and mistakes happen.
-Now, about the patch. Should I submit a patch to fix the broken build?
 
-> Sounds good to me as well!
+I think it would be helpful to showcase a before/after in the commit =
+message. IIUC, we'd go from:
 
-Should I submit this patch to nova-next?
+/// Putting a `+` before the address of the register makes it relative =
+to a base: the `read` and
+/// `write` methods take a `base` argument that is added to the =
+specified address before access:
+///
+/// ```no_run
+/// register!(CPU_CTL @ +0x0000010, "CPU core control" {
+///    0:0     start as bool, "Start the CPU core";
+/// });
 
-Thanks,
-Christian
+
+To:
+
+/// ```no_run
+/// // Type used to identify the base.
+/// pub(crate) struct CpuCtlBase;
+///
+/// // ZST describing `CPU0`.
+/// struct Cpu0;
+/// impl RegisterBase<CpuCtlBase> for Cpu0 {
+///     const BASE: usize =3D 0x100;
+/// }
+/// // Singleton of `CPU0` used to identify it.
+/// const CPU0: Cpu0 =3D Cpu0;
+///
+/// // ZST describing `CPU1`.
+/// struct Cpu1;
+/// impl RegisterBase<CpuCtlBase> for Cpu1 {
+///     const BASE: usize =3D 0x200;
+/// }
+/// // Singleton of `CPU1` used to identify it.
+/// const CPU1: Cpu1 =3D Cpu1;
+
+So you can still pass whatever base you want, the difference (in this
+particular aspect) is whether it's specified in the macro itself, or as =
+an
+associated constant of RegisterBase<Foo>?
+
+In any case, have you considered what happens when the number of "CPUs" =
+in your
+example grows larger? I can only speak for Tyr, where (IIUC), I'd have =
+to
+define 16 structs, each representing a single AS region, i.e.:
+
++pub(crate) const MMU_BASE: usize =3D 0x2400;
++pub(crate) const MMU_AS_SHIFT: usize =3D 6;
++
++const fn mmu_as(as_nr: usize) -> usize {
++ MMU_BASE + (as_nr << MMU_AS_SHIFT)
++
++pub(crate) struct AsRegister(usize);
++
++impl AsRegister {
++    fn new(as_nr: usize, offset: usize) -> Result<Self> {
++        if as_nr >=3D 32 {
++            Err(EINVAL)
++        } else {
++            Ok(AsRegister(mmu_as(as_nr) + offset))
++        }
++    }
+
+It's still somewhat manageable, but I wonder if there are usecases out =
+there
+(in other drivers/devices) where this number will be even higher, which =
+will
+make this pattern impossible to implement.
+
+Or maybe I misunderstood the usecase?
+
+In any case, the patch itself looks fine to me.
+
+
+[=E2=80=A6]
+
+
+=E2=80=94 Daniel
+
