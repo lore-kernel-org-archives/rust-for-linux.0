@@ -1,90 +1,82 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A67D1C5D59;
-	Fri, 25 Jul 2025 14:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753453548; cv=pass; b=JlaNBFXgIkPbMJqy3LeptknrnCefPZUb/WXRwgW5PCUmnbYasa8t7Sm/1Re/qZ7DJuHmFzUOFQ/4SHVtKtHYckQCSuz1uubvJ3erfkda66lo/gPohKlNRu16GFwFrE0cuD3FYmV1QV/1X6cFh/kjaVdtimUb5f3FpPDS1BqeOMw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753453548; c=relaxed/simple;
-	bh=UwBqImuFzVdzQ4tm7gdmNEey8slK+Q1XhPGQMpuQ8ik=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=HzNUKnr0Z/Q8Rhul7IkK4IzjJC3N4bEfg8dOVBW89Y8DvB+GCRULmD4nnsARBvBbRrpLJr3/DjBbyX6igumgXLFV4Qk7rzSVoeBb+OtjDqX4p6+HfJGJUyiQt2Mu8klJ7il0bPRTRHohoDzNJwn4DeWI3q0fbAFgNgk9izdsg10=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UuOkwtnn; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F49218991C;
+	Fri, 25 Jul 2025 15:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753456046; cv=none; b=rgtpM6uvLOQcD9MpGO2dV1GVKxhHl54d+jf+OL8rZLGzTxqRCaYY5ng4dG8UESTLmPzmQ3r4w8qFAJErZTSGFVIFpA2CW5hIP74lnkTPNdFANoSN8FoiZeCYJ/I8fk8ZSXelDrQ8jXwKYzEK1kaR+vpXMp4ojdNbV2B1+JiERL4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753456046; c=relaxed/simple;
+	bh=Ba1sOIBAzvxqki+3uQJqRL0TrBLWOJfMHJfhHCh42yw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DXYny/EK1g78z8vu9iMgF6TkOE3SctDWWEoyZ54oK3EosEpeDhEHubbltuRmC2NZwJ3ka0BXXtfwnoM9thrf5xjchdPg7ybW2AZjAlbOasU2kZomgRp/UrAvewoSF7b0KEgv9tkNRfCGrvKXxia5A+IUGKNVfZpLEZb/spkiOsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KRByOjHn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UuOkwtnn"
-ARC-Seal: i=1; a=rsa-sha256; t=1753453522; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=KuJEIikpED5QWWp18eszUXUicw18U3pH49ohJow/j6ETktRN5uSlRde4bp0Lee5ihd8w5YwCE9efMnb9digbJY8pVH+d82rr3Ikp3nRKhCrx+H3Ftx7QwhegCpDf9U+HPQFmWwgIuW9xC38RE4Rsb0CSE5TvMl5+0FSFRWk8PHo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753453522; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=UwBqImuFzVdzQ4tm7gdmNEey8slK+Q1XhPGQMpuQ8ik=; 
-	b=LZ4t0LN8UG2Ics2bz3dtnFCyp0TT7/itNJBQVFE1KI2yvEj6xwcUsJ4SDS+q+qmCJv63EZUA0VuCjCYElmgKyAsR9SfdVAfvQ93aepueiJ5Jacoxr9hdDq8pw1/DDXvv+83A1/bAsjcGZqk9V7EeN10oVP2tZsm/cZjKimewCeg=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753453522;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=UwBqImuFzVdzQ4tm7gdmNEey8slK+Q1XhPGQMpuQ8ik=;
-	b=UuOkwtnnoSOQPIDVuqJ2BosnWmSyAorz2Qqv++I+tymeLOwIoft2Zn8zamGhaDOO
-	l7Q0kPzFWCuF4OuALeUTtawNFLlVCr7Mz56YtH+eRoPF2A9+f57ilEPg0fJ9SNkelzA
-	hA3DTAP8DKpLf+jCnCrEyehyKHh5xiMiDNzrA9SU=
-Received: by mx.zohomail.com with SMTPS id 1753453520277229.33671250289422;
-	Fri, 25 Jul 2025 07:25:20 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KRByOjHn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77589C4CEEB;
+	Fri, 25 Jul 2025 15:07:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753456046;
+	bh=Ba1sOIBAzvxqki+3uQJqRL0TrBLWOJfMHJfhHCh42yw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KRByOjHnYwZHgkjq4FRbprKJ5mdkn1qxfstLphLZGMBffWql3nQ1t4HMNQfvegH/j
+	 t/WEx6jJ+k7dostiBqmXmsBs+/spHyauVtlanb6/E2GWLWGy39ICBle2pNWN2BB4eE
+	 VjScY0QcW4UAIoUu+RzAoQ/LMagEKAvflEWK2FQjoHbXNX+s1kv79jZAhG0neUAyNp
+	 Nf/fn4txUHeT6ENIG6hkXGUHHWO83UqJvPXfeXpqBu9FEpJmVIaazCD6Cz+pxsvtnO
+	 983PaaxwT+G7ry4zjhpxLFGrptg5jt5fmQmd+bo04m/yBDoFfwD3u6O69mi0udgiI1
+	 I2/J0OItegL1w==
+Message-ID: <a05133e0-0331-46ce-ab50-c423e40a3879@kernel.org>
+Date: Fri, 25 Jul 2025 17:07:21 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v6 5/7] rust: hrtimer: Add forward_now() to HrTimer and
- HrTimerCallbackContext
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250724185236.556482-6-lyude@redhat.com>
-Date: Fri, 25 Jul 2025 11:25:04 -0300
-Cc: rust-for-linux@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>,
- Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org,
- Andreas Hindborg <a.hindborg@kernel.org>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>,
- Frederic Weisbecker <frederic@kernel.org>,
- Anna-Maria Behnsen <anna-maria@linutronix.de>,
- John Stultz <jstultz@google.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0E58916C-EAAB-4FE4-90A9-25CFA8293CD9@collabora.com>
-References: <20250724185236.556482-1-lyude@redhat.com>
- <20250724185236.556482-6-lyude@redhat.com>
-To: Lyude Paul <lyude@redhat.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] rust: transmute: add `as_bytes` method for `AsBytes`
+ trait
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg
+ <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ "Christian S. Lima" <christiansantoslima21@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250725-as_bytes-v2-1-c6584c211a6c@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20250725-as_bytes-v2-1-c6584c211a6c@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 7/25/25 3:08 PM, Alexandre Courbot wrote:
+> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+> index 1c7d43771a37b90150de86699f114a2ffb84db91..d4036986a3d7fb97e5da3e121e9590ad23b784e9 100644
+> --- a/rust/kernel/transmute.rs
+> +++ b/rust/kernel/transmute.rs
+> @@ -47,7 +47,16 @@ macro_rules! impl_frombytes {
+>   ///
+>   /// Values of this type may not contain any uninitialized bytes. This type must not have interior
+>   /// mutability.
+> -pub unsafe trait AsBytes {}
+> +pub unsafe trait AsBytes {
+> +    /// Returns `self` as a slice of bytes.
+> +    fn as_bytes(&self) -> &[u8] {
+> +        let data = (self as *const Self).cast::<u8>();
 
+I'd probably use from_ref() instead. With that,
 
-> On 24 Jul 2025, at 15:49, Lyude Paul <lyude@redhat.com> wrote:
->=20
-> Using the HrTimer::raw_time_cb() function, we can now add an =
-equivalent to
-> hrtimer_forward_now() to both HrTimer and HrTimerCallbackContext.
+	Reviewed-by: Danilo Krummrich <dakr@kernel.org>
 
-raw_time_cb is not in the patch itself, and grepping for it in =
-rust/kernel did not
-produce any results. There's nothing in bindings_generated.rs either.
-
-=E2=80=94 Daniel=
+> +        let len = size_of_val(self);
+> +
+> +        // SAFETY: `data` is non-null and valid for `len * sizeof::<u8>()` bytes.
+> +        unsafe { core::slice::from_raw_parts(data, len) }
+> +    }
+> +}
