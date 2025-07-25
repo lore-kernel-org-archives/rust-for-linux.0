@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36712242D6E;
-	Fri, 25 Jul 2025 10:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE992D4B57;
+	Fri, 25 Jul 2025 10:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753437752; cv=none; b=HNjHQHnoRha5Ndkby/7GR9bp0sH4IyZnR3LOTyFtCBv1z9zGKXSYu+/I5ZnUwk+TnXVSn76LWtCfr5YFgD18sO05FzIG4rPKyzE9x4gMmuHzwvxahcQCoNl1dLeR6O0FD3xWsPLnJeDO1diGTKweh8C7V4V+ep9B2g5HYdl+WGo=
+	t=1753438257; cv=none; b=L6b7ngzM45/cVj30f8jazSLDJNMCWuso0AEBSpO9QrzGKQD4LaaDWHC498ccElvo1pX5bJrhD7vCxCRXaXcnVszYngHHvHqd5BRjBLOEtmO1zSn/JGjEaAfa+Cn1BTl4pVi/jfR2wjdn50meHKlUpE2Ww4CZCfOYFuPSCyom8Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753437752; c=relaxed/simple;
-	bh=rjdf1EmEcZLC6LUqKHlIFrwJuxOuWTkU2p37sKAKiis=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=rYw5zWgKFZ3f1V59uqN6MTgtb3CCBeqjkqljEWlXLNGOsG3PHebX4wQFgphYijs1QVNyzMjAswNygkzEBz4dBAv4R83v3EpJiV1Am6s8o7ZHIm3MVbeb3lRs7jfU8K8sripO4SR5R8RzOUZwqbw9q63Ke5uhxGma52IjY9sZsEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kd5/fkN4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753438257; c=relaxed/simple;
+	bh=w/kRruVhK9RSEzYfppk9up+qBuWCPFlU/lKHshBF79g=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=eky6YybPgzFGDuTqXgMxqgZzwnqPqCFLOLmfBOd2RBIwCAn5694E1+qBTapZXmkySJgkFVAdvIbvwNdVc/JkeViOc1l5GY4LtUSB1dm0EtRIh9biWDKIv9PtEBQ040BKcdTi5drlPJU0wYrvGA6uKVYhc2WntZJbl8M3R8ILpcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtpcPhjI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kd5/fkN4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93586C4CEE7;
-	Fri, 25 Jul 2025 10:02:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtpcPhjI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9E9C4CEE7;
+	Fri, 25 Jul 2025 10:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753437752;
-	bh=rjdf1EmEcZLC6LUqKHlIFrwJuxOuWTkU2p37sKAKiis=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=Kd5/fkN4PhQysLsk06x3QhJ4weGZYlCjYFlO3DwEkc6hbXK1FosBcSxvNHXeKKxZF
-	 n9xCj4lB+xB5wCgYbN0os8/z81eS2oNprhrtnkUcy7S2uPgD/JAyBhAceKiqIfz85y
-	 qdWAQNdD3YsbqciM0yOXspobV2WVradUvzRBUvWZaq5eEblGWGR3mToJ69WbephaOd
-	 I3zmvM8zqZx5VGqDAZUCei48GvxEhQJod9aD2WHcv+AjAC33WNSskD1VY9QcfAkAms
-	 SIBCRhLSFV0l+dTE3BwL3Y/i6lCeWmJYCPakP5c63tYaCoANCwEiKiN5omiRmBb5Z1
-	 TNJXUY5OvkD5w==
+	s=k20201202; t=1753438257;
+	bh=w/kRruVhK9RSEzYfppk9up+qBuWCPFlU/lKHshBF79g=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=UtpcPhjIbcTnlS1etmvJ/1RTZWoOiLQdxYlUPXqlD4V8Jfr6+UA2GS0neiBQ1+1X/
+	 hnXAxu4oi4QNl4SMqd1T0bXMU2XfeuXdNmKR3Cw21ItGlKri4WbMrOHCmRK8zcmws6
+	 yQt/Svg+8/asO19ShIbMftrRz/fJE/6ZJmCfpOofTzM5gEDx04EBmeTvXOl1Bnu8gr
+	 yMHXVk4CucXhdX8clxxEwHpPwUMMwwsLbGjozicy2U8VOEGWuOBmoD4GnC9HMQH2fq
+	 2tKWnarDoPpug1+VINaK7BIAdadi4TctaoF0RUi2emunwHcU53FukF0a0b/5/kCuMH
+	 sQE24ABlqyTtA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,161 +34,64 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Jul 2025 12:02:26 +0200
-Message-Id: <DBL1T0JY1LUX.1606LM78FACYM@kernel.org>
-Subject: Re: [PATCH v5 1/2] rust: allocator: add KUnit tests for alignment
- guarantees
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
- <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Hui Zhu"
- <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>
-To: "Hui Zhu" <hui.zhu@linux.dev>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <cover.1753423953.git.zhuhui@kylinos.cn>
- <da9b2afca02124ec14fc9ac7f2a2a85e5be96bc7.1753423953.git.zhuhui@kylinos.cn>
- <DBL1JZEZB87H.1IMYO79R3H9UM@kernel.org>
-In-Reply-To: <DBL1JZEZB87H.1IMYO79R3H9UM@kernel.org>
+Date: Fri, 25 Jul 2025 12:10:52 +0200
+Message-Id: <DBL1ZGZCSJF3.29HNS9BSN89C6@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <nouveau@lists.freedesktop.org>
+Subject: Re: [PATCH 1/3] rust: add `num` module with `PowerOfTwo` type
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250620-num-v1-0-7ec3d3fb06c9@nvidia.com>
+ <20250620-num-v1-1-7ec3d3fb06c9@nvidia.com>
+ <DASWS1A63LYM.399CKUDL4Z7UC@kernel.org>
+ <DBKTNE4OF0IB.3C32NVHQ9UKQ3@nvidia.com>
+In-Reply-To: <DBKTNE4OF0IB.3C32NVHQ9UKQ3@nvidia.com>
 
-(Cc: Andrew)
+On Fri Jul 25, 2025 at 5:38 AM CEST, Alexandre Courbot wrote:
+> Hi Benno,
+>
+> Sorry, took some time to come back to this!
 
-On Fri Jul 25, 2025 at 11:50 AM CEST, Danilo Krummrich wrote:
-> On Fri Jul 25, 2025 at 9:02 AM CEST, Hui Zhu wrote:
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> Add comprehensive tests to verify correct alignment handling in Rust
->> allocator wrappers. The tests validate:
->>
->> That kmalloc respects both standard (128-byte) and page-size
->> (8192-byte) alignments when allocating structs with explicit alignment
->> attributes.
->>
->> That vmalloc correctly handles standard alignments but intentionally
->> rejects allocations requiring alignments larger than its capabilities.
->>
->> That kvmalloc mirrors vmalloc's constraints, accepting standard
->> alignments but rejecting excessive alignment requirements.
->>
->> The test infrastructure uses specialized aligned structs (Blob and
->> LargeAlignBlob) and a test harness (TestAlign) to validate pointer
->> alignment through different allocation paths. This ensures our Rust
->> allocators correctly propagate kernel allocation constraints.
->>
->> Co-developed-by: Geliang Tang <geliang@kernel.org>
->> Signed-off-by: Geliang Tang <geliang@kernel.org>
->> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->
-> Thanks, this looks good. I think it would be good to rebase onto [1], sin=
-ce it
-> will likely land in the same cycle. Additionally, two nits below.
+No worries!
 
-Please also Cc: Andrew for subsequent submissions, since this will, due to =
-the
-interaction with [1] likely go through his tree.
-
-> As a follow-up we could also test alignment in the context of
-> Allocator::realloc(), i.e. when growing and shrinking buffers or requesti=
-ng a
-> different NUMA node.
->
-> [1] https://lore.kernel.org/lkml/20250715135645.2230065-1-vitaly.wool@kon=
-sulko.se/
->
->> ---
->>  rust/kernel/alloc/allocator.rs | 58 ++++++++++++++++++++++++++++++++++
->>  1 file changed, 58 insertions(+)
+> On Sun Jun 22, 2025 at 5:11 PM JST, Benno Lossin wrote:
+>> On Fri Jun 20, 2025 at 3:14 PM CEST, Alexandre Courbot wrote:
+>>> +                /// Returns the value of this instance.
+>>> +                ///
+>>> +                /// It is guaranteed to be a power of two.
+>>> +                ///
+>>> +                /// # Examples
+>>> +                ///
+>>> +                /// ```
+>>> +                /// use kernel::num::PowerOfTwo;
+>>> +                ///
+>>> +                #[doc =3D concat!("let v =3D PowerOfTwo::<", stringify=
+!($t), ">::new(16);")]
+>>> +                /// assert_eq!(v.value(), 16);
+>>> +                /// ```
+>>> +                #[inline(always)]
+>>> +                pub const fn value(self) -> $t {
+>>> +                    self.0
 >>
->> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocato=
-r.rs
->> index aa2dfa9dca4c..bcc916240f11 100644
->> --- a/rust/kernel/alloc/allocator.rs
->> +++ b/rust/kernel/alloc/allocator.rs
->> @@ -187,3 +187,61 @@ unsafe fn realloc(
->>          unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, f=
-lags) }
->>      }
->>  }
->> +
->> +#[macros::kunit_tests(rust_allocator_kunit)]
->> +mod tests {
->> +    use super::*;
->> +    use core::mem::MaybeUninit;
->> +    use kernel::prelude::*;
->> +
+>> Let's add:
+>>
+>>     if !self.0.is_power_of_two() {
+>>         core::hint::unreachable_unchecked()
+>>     }
+>>     self.0
 >
-> --8<--
->
->> +    const TEST_SIZE: usize =3D 1024;
->> +    const TEST_LARGE_ALIGN_SIZE: usize =3D kernel::page::PAGE_SIZE * 4;
->> +
->> +    // These two structs are used to test allocating aligned memory.
->> +    // they don't need to be accessed, so they're marked as dead_code.
->> +    #[allow(dead_code)]
->
-> This should be #[expect(dead_code)].
->
->> +    #[repr(align(128))]
->> +    struct Blob([u8; TEST_SIZE]);
->> +    #[allow(dead_code)]
->> +    #[repr(align(8192))]
->> +    struct LargeAlignBlob([u8; TEST_LARGE_ALIGN_SIZE]);
->> +
->> +    struct TestAlign<T, A: Allocator>(Box<MaybeUninit<T>, A>);
->> +    impl<T, A: Allocator> TestAlign<T, A> {
->> +        fn new() -> Result<Self> {
->> +            Ok(Self(Box::<_, A>::new_uninit(GFP_KERNEL)?))
->> +        }
->> +
->> +        fn alignment_valid(&self, align: usize) -> bool {
->> +            assert!(align.is_power_of_two());
->> +
->> +            let addr =3D self.0.as_ptr() as usize;
->> +            if addr & (align - 1) !=3D 0 {
->> +                false
->> +            } else {
->> +                true
->> +            }
->
-> This can just be
->
-> 	addr & (align - 1) =3D=3D 0
->
-> instead of the conditional clause.
->
->> +        }
->> +    }
->
-> We could move all the above into test_alignment() given that it's likely =
-only
-> needed from there.
->
->> +
->> +    #[test]
->> +    fn test_alignment() -> Result<()> {
->> +        let ta =3D TestAlign::<Blob, Kmalloc>::new()?;
->> +        assert!(ta.alignment_valid(128));
->> +
->> +        let ta =3D TestAlign::<LargeAlignBlob, Kmalloc>::new()?;
->> +        assert!(ta.alignment_valid(8192));
->> +
->> +        let ta =3D TestAlign::<Blob, Vmalloc>::new()?;
->> +        assert!(ta.alignment_valid(128));
->> +
->> +        assert!(TestAlign::<LargeAlignBlob, Vmalloc>::new().is_err());
->> +
->> +        let ta =3D TestAlign::<Blob, KVmalloc>::new()?;
->> +        assert!(ta.alignment_valid(128));
->> +
->> +        assert!(TestAlign::<LargeAlignBlob, KVmalloc>::new().is_err());
->> +
->> +        Ok(())
->> +    }
->> +}
->> --=20
->> 2.43.0
+> Sure. Is it to enable compiler optimizations by making assumptions about
+> the returned value?
 
+Exactly, it will for example turn dividing by it into a right shift and
+prevent a branch for the zero check.
+
+---
+Cheers,
+Benno
