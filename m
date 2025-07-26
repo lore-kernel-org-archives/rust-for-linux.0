@@ -1,159 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28236229B28;
-	Sat, 26 Jul 2025 16:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2840B1D5CFE
+	for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 16:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753545929; cv=none; b=L0m7x7kDzlVMJ6DYjsKrAQAz+83Ii+cm3LdwmGFd5wbdVjre6crBzoaBXvHGIfGdx5l8EUmjhukbcovU8cwIXkJri20f5cZlWL5RSZpcpHfDJmtRZog/rHCGKP7HycotOJcbSKEMw5oc8ofFHzY/TnNgqpH1YZSAd4uMfPDgtdk=
+	t=1753546430; cv=none; b=gtZ0i8ASa4vgIkiXToMJ9qYkp7tkr9XP11JsBjQmT+qxMWmddo9Ixnh7kzWBsT4oxEoLldR2RhcZwTtvMvcLJOr8nY4M/QjdTNc3wgkUiPjt4ggVrOrKEr7+PluEx996lEfb0tr7q+wN9peE0XTmfEwG3DioCwEckYi4qVuA1Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753545929; c=relaxed/simple;
-	bh=6MpzxbPX27NadrsGk0zw216Oyyfxgmiy2Y1q0a0nRAg=;
+	s=arc-20240116; t=1753546430; c=relaxed/simple;
+	bh=KOVFTwTb/EuQIM6jQ7hDcils7oA9qFQIBrqpPTPpKw0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fNc4MSWjcjLZKx14+alle/hEB/fpdsS26S2Ug1NcPdKU28JH0PicelUlAKY3bZS5WYrwX+mceII8JOfqjyOvar77F9Sb6Ju//ow6Zq88nHWkXSTc2+u6xARV/h9yb+xQeGuUPUMdWbKFGnOkK4cT/mKdGCGdAb0YwaFK7WvMfmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nswe3jsq; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=CXKFW3UIBuetLgAJWVEpCmI8uYJXWc6LQvkz9eHxV33Qgw6HtHyeR3nSjbFMyYrhfekgYxGf8exzMHwsSB5jn2A2vIV+R6uae25wcBTcHOC2WelsCp/sBKHXn83jqLQHCapdhwUNx3u6jyLl2g1b5yeMzJJTLr6Vc2y7HPIrcos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ghxkkvlp; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nswe3jsq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30E6C4CEFB;
-	Sat, 26 Jul 2025 16:05:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753545928;
-	bh=6MpzxbPX27NadrsGk0zw216Oyyfxgmiy2Y1q0a0nRAg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Nswe3jsqp6uE7J1q7VAwlweFK/2EEUj7/yxpjrJQyvWTj4EeJEZBv0JpsuCBwmk9j
-	 KQGbwwXZkDzP3Cv/CmuBqW5czzXH4Amoedtr7f+H5hLT3PHXN7KteirmjuUQiZOAQl
-	 klNA3B27wfo4lQDjcAPDelN6tRNDHFIX5fF86m2sx5GTcFLgwLLiXX/d6P7PkMYoCj
-	 8kmhXu/aREl7k1k6ju8PWjjtBJetXCVS6rBAYEiiFnlB0QmrzDwj6nZ6ZsREF+y7qo
-	 u/Kn73NsPR4Njr7h9iAxCY18/TebJ9DGgoU2vR+YIAqUCF0naKkBNT6CMpQ2EJRehI
-	 jsQfyRqmURChQ==
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-32f2947ab0cso26092041fa.2;
-        Sat, 26 Jul 2025 09:05:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUm4wZU5Kjo9lk8+VOpDhKzgcRUhbghpshkKkeTR8aUr9pV6U0GTxnihuCgQ80c+qjuAYbN7OxP@vger.kernel.org, AJvYcCW9Pokhay7emdGiqHt7+BJ/vNl5y5V6r+W40XyCeLLDK8bbFakxcS/UJtbTcvs7LNXm5c1SnPIjMf8vhZth@vger.kernel.org, AJvYcCWF91BvpCTpnv5kZOC3Y5dPL5/yb2isbZZvB0iLccT+TCeM0bmCwQi9PagtnGmd66DsrYlfTWv9T2JjD8s=@vger.kernel.org, AJvYcCWbf7DbCWiWXoB8jmrimMnSPXUFJRQDH1whVbEsbSe4mWAtQyzOKvfJUiJvGkD4bklxoH7xLmavrjKUGj2Y4Po=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxk8Mj2Kx5qEffcXyyzK8fzSpczPBUvKo+MAv5wzxYPvon4TN1V
-	vSLU75P9yLkFpPa4hUpKtM+JN5bZSVKy3Z5fBpmK1tHGnBYWBq0svO9yfgv/WuwJACrcTCY8jod
-	z9CEp0VI8oodwxBeVzXY6CS5nHbk1Zqs=
-X-Google-Smtp-Source: AGHT+IG3EDvduZsc53+xFnV4ZnOEuNccFoxXRBW2DEcupA+kF+Dd/tDVGJKqs9SWSByGCvtmwfD4iZl2Wi/hY9T3Dvo=
-X-Received: by 2002:a05:651c:154b:b0:32a:8916:55af with SMTP id
- 38308e7fff4ca-331ee622688mr19317841fa.2.1753545927125; Sat, 26 Jul 2025
- 09:05:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ghxkkvlp"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-455b00339c8so20141615e9.3
+        for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 09:13:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753546427; x=1754151227; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xSmE2/IG78aP+245fYXp3PxN702DvxPZXYlkAkGpEZk=;
+        b=ghxkkvlp+WMayusNf93yr2OrOxrpaSQx5G23EGm+dH8giUTIBtO5oGOgjOYyZOOu4+
+         sMSBoJQtLbtstYX9/Qj4uU7vml6UEMv8YeXB8jFTTAkGFJAGuG27FOtYSbllmFdrL8ot
+         oTWxtydUooqUcUxXCUnuuxaWyUvpm2iqhIhlUz5n8chLyiTMp7LSG5TGXXHogZ5abCoY
+         2Kog4pVBHkBCMrCPfR6lu+S0w10eDL6S7LnDY2aDXOWn2uQ1Rnae4m1Hw7tuvNrrY0z/
+         apSHoP2TA1DByBfx8yEDvcLB0sKeKPFIoykwuOJ1O3b/n3AYjtz2ABCYNBQRUfZ8h9CZ
+         3ItA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753546427; x=1754151227;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xSmE2/IG78aP+245fYXp3PxN702DvxPZXYlkAkGpEZk=;
+        b=ZEyAeU8KFjp0utAzPdlBzkkRESxZKQHhlwQr6GiV4ZUez6hSjp9kxrS0HW4EFuAdIX
+         LrrA+H/v/+fgunmaL9OygNR3YjbkmjclAvdL/OIti4gJTNgUH2oArXwpEsDPPe/mCvZ9
+         YjHEFAsTsNcfCznCXgl4jE1AwLdko3PNaJJwp0W/Oo5z2Cd5DINVYICByATSKecSO7NZ
+         jmbCF626kPLks1IvNsV51pBPlpnTnq0prfMaaVaJkeMmw6T5a/CdolMXYrL44m5lVHF+
+         GT0StMw7j4mQfFBe+ZxIHwJ0ldOdg09k0T8HS5DjlL1y8nx3ePOgzYDFWfJR9n/xNel0
+         A9Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCX29x6UHrfiXRPLduEKYCCTNHsaEaMNWXMq3H5GUuIQ2mJKySAXTvu0N2wnLWsmy8rhII+w+eZbW2gPAJLa7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9G9spLxM5TRIxfmz0AtEsM2Kyi6c88JMHQDXvptwVM/w2RftG
+	c4bnX95MDebkC6Pb7IPF6qjGOh+qVmSrkLYICMRreHVSQmF1S0bMf1W+FT2w27o8aN5M7QVM3jn
+	B3tOKd+gSmL4T+jYmJOqR7oKy+Ls8FbrTqmRaMOaG
+X-Gm-Gg: ASbGncu7dqDdqaLrLxXlGDenmOoGGafESwW5Ka7Vv7zZnpmubO0GHCI1dHqtIXMbKNd
+	d1Ut81HJLhWWTibP2eWwSw4DnEOOzWf0jWMqmrmBIwOdY/uTLCiKcBO18Ty2a4VR9H70D3LvyVS
+	6AP3BvDHL44Nw9Q1PDTh5XEyJbl/Phmdv+HUnVioj3jtu0R4h9ixkxNy0VuZSucrya10ig1ILdX
+	MBwstgH
+X-Google-Smtp-Source: AGHT+IGjmxfhiuSOXZOdKrAjq/2iLUvcoITJyFtLrM3SVjwxEvIE+xW4uFMAM5xc3aH0PtQ9ZEiVJc9cs0p0ckcKSlA=
+X-Received: by 2002:a05:600c:4f87:b0:456:133f:a02d with SMTP id
+ 5b1f17b1804b1-4587644278emr60085665e9.17.1753546427335; Sat, 26 Jul 2025
+ 09:13:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250726133435.2460085-1-ojeda@kernel.org>
-In-Reply-To: <20250726133435.2460085-1-ojeda@kernel.org>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Sat, 26 Jul 2025 12:04:50 -0400
-X-Gmail-Original-Message-ID: <CAJ-ks9kneAWVxMNYcmQzks6NaprRPJZPyFkRBtLmtseemyJgbg@mail.gmail.com>
-X-Gm-Features: Ac12FXxAFNw0PPG_mgb-afX1RFMqeDfPaH7GOci4UnEY3JifxOIfnYstVIjNq5A
-Message-ID: <CAJ-ks9kneAWVxMNYcmQzks6NaprRPJZPyFkRBtLmtseemyJgbg@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: clean output before running `rustdoc`
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
+ <20250726-maple-tree-v1-3-27a3da7cb8e5@google.com> <20250726165446.2768c6ee.gary@garyguo.net>
+In-Reply-To: <20250726165446.2768c6ee.gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sat, 26 Jul 2025 18:13:34 +0200
+X-Gm-Features: Ac12FXxFtdvvjbSWz68LToYZuz9O8rpVTX_BUoiCo2Gz6b2RLEu8Wxik0sZefPk
+Message-ID: <CAH5fLghiXEvcAfdCRJ==i4JWE0DQh6fFD4ppVM2DytHTjwA8sQ@mail.gmail.com>
+Subject: Re: [PATCH 3/3] rust: maple_tree: add MapleTreeAlloc
+To: Gary Guo <gary@garyguo.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 26, 2025 at 9:35=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Sat, Jul 26, 2025 at 5:54=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> `rustdoc` can get confused when generating documentation into a folder
-> that contains generated files from other `rustdoc` versions.
+> On Sat, 26 Jul 2025 13:23:24 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> For instance, running something like:
+> > To support allocation trees, we introduce a new type MapleTreeAlloc for
+> > the case where the tree is created using MT_FLAGS_ALLOC_RANGE. To ensur=
+e
+> > that you can only call mtree_alloc_range on an allocation tree, we
+> > restrict thta method to the new MapleTreeAlloc type. However, all
+> > methods on MapleTree remain accessible to MapleTreeAlloc as allocation
+> > trees can use the other methods without issues.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/maple_tree.rs | 158 ++++++++++++++++++++++++++++++++++++++=
+++++++++
+> >  1 file changed, 158 insertions(+)
+> >
+> > diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+> > index c7ef504a9c78065b3d5752b4f5337fb6277182d1..8c025d2c395b6d57f1fb162=
+14b4e87d4e7942d6f 100644
+> > --- a/rust/kernel/maple_tree.rs
+> > +++ b/rust/kernel/maple_tree.rs
+> >
+> >  /// Error type for failure to insert a new value.
+> >  pub struct InsertError<T> {
+> >      /// The value that could not be inserted.
+> > @@ -378,3 +499,40 @@ fn from(insert_err: InsertError<T>) -> Error {
+> >          Error::from(insert_err.cause)
+> >      }
+> >  }
+> > +
+> > +/// Error type for failure to insert a new value.
+> > +pub struct AllocError<T> {
+> > +    /// The value that could not be inserted.
+> > +    pub value: T,
+> > +    /// The reason for the failure to insert.
+> > +    pub cause: AllocErrorKind,
+> > +}
+> > +
+> > +/// The reason for the failure to insert.
+> > +#[derive(PartialEq, Eq, Copy, Clone)]
+> > +pub enum AllocErrorKind {
+> > +    /// There is not enough space for the requested allocation.
+> > +    Busy,
+> > +    /// Failure to allocate memory.
+> > +    Nomem,
+> > +    /// The insertion request was invalid.
+> > +    InvalidRequest,
+> > +}
+> > +
+> > +impl From<AllocErrorKind> for Error {
+> > +    #[inline]
+> > +    fn from(kind: AllocErrorKind) -> Error {
+> > +        match kind {
+> > +            AllocErrorKind::Busy =3D> EBUSY,
+> > +            AllocErrorKind::Nomem =3D> ENOMEM,
+> > +            AllocErrorKind::InvalidRequest =3D> EINVAL,
+> > +        }
+> > +    }
+> > +}
+> > +
+> > +impl<T> From<AllocError<T>> for Error {
+> > +    #[inline]
+> > +    fn from(insert_err: AllocError<T>) -> Error {
+> > +        Error::from(insert_err.cause)
+> > +    }
+> > +}
+> >
 >
->     rustup default 1.78.0
->     make LLVM=3D1 rustdoc
->     rustup default 1.88.0
->     make LLVM=3D1 rustdoc
->
-> may generate errors like:
->
->     error: couldn't generate documentation: invalid template: last line e=
-xpected to start with a comment
->       |
->       =3D note: failed to create or modify "./Documentation/output/rust/r=
-ustdoc/src-files.js"
->
-> Thus just always clean the output folder before generating the
-> documentation -- we are anyway regenerating it every time the `rustdoc`
-> target gets called, at least for the time being.
->
-> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned i=
-n older LTSs).
-> Reported-by: Daniel Almeida <daniel.almeida@collabora.com>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/288089/topic=
-/x/near/527201113
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> This looks identical to `InsertError`?
 
-I've seen this as well.
+They differ on whether the error code is EBUSY or EEXIST.
 
-Reviewed-by: Tamir Duberstein <tamird@kernel.org>
-
-
-> ---
->  rust/Makefile | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 115b63b7d1e3..771246bc7ae6 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -103,14 +103,14 @@ rustdoc: rustdoc-core rustdoc-macros rustdoc-compil=
-er_builtins \
->  rustdoc-macros: private rustdoc_host =3D yes
->  rustdoc-macros: private rustc_target_flags =3D --crate-type proc-macro \
->      --extern proc_macro
-> -rustdoc-macros: $(src)/macros/lib.rs FORCE
-> +rustdoc-macros: $(src)/macros/lib.rs rustdoc-clean FORCE
->         +$(call if_changed,rustdoc)
->
->  # Starting with Rust 1.82.0, skipping `-Wrustdoc::unescaped_backticks` s=
-hould
->  # not be needed -- see https://github.com/rust-lang/rust/pull/128307.
->  rustdoc-core: private skip_flags =3D --edition=3D2021 -Wrustdoc::unescap=
-ed_backticks
->  rustdoc-core: private rustc_target_flags =3D --edition=3D$(core-edition)=
- $(core-cfgs)
-> -rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
-> +rustdoc-core: $(RUST_LIB_SRC)/core/src/lib.rs rustdoc-clean FORCE
->         +$(call if_changed,rustdoc)
->
->  rustdoc-compiler_builtins: $(src)/compiler_builtins.rs rustdoc-core FORC=
-E
-> @@ -122,7 +122,8 @@ rustdoc-ffi: $(src)/ffi.rs rustdoc-core FORCE
->  rustdoc-pin_init_internal: private rustdoc_host =3D yes
->  rustdoc-pin_init_internal: private rustc_target_flags =3D --cfg kernel \
->      --extern proc_macro --crate-type proc-macro
-> -rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs FORCE
-> +rustdoc-pin_init_internal: $(src)/pin-init/internal/src/lib.rs \
-> +    rustdoc-clean FORCE
->         +$(call if_changed,rustdoc)
->
->  rustdoc-pin_init: private rustdoc_host =3D yes
-> @@ -140,6 +141,9 @@ rustdoc-kernel: $(src)/kernel/lib.rs rustdoc-core rus=
-tdoc-ffi rustdoc-macros \
->      $(obj)/bindings.o FORCE
->         +$(call if_changed,rustdoc)
->
-> +rustdoc-clean: FORCE
-> +       $(Q)rm -rf $(rustdoc_output)
-> +
->  quiet_cmd_rustc_test_library =3D $(RUSTC_OR_CLIPPY_QUIET) TL $<
->        cmd_rustc_test_library =3D \
->         OBJTREE=3D$(abspath $(objtree)) \
->
-> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
-> --
-> 2.50.1
->
->
+Alice
