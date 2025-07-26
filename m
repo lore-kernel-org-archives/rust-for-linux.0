@@ -1,107 +1,176 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90ABCA5E;
-	Sat, 26 Jul 2025 16:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C0E1DA62E;
+	Sat, 26 Jul 2025 18:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753549005; cv=none; b=SGheu4HD/jtgAKr4WQ9kfZu/tSqND+je6zgVXVMuqkf0XsvRKfycOx3wgDaDlV8Z7k3rPKr+HYGNyBt/0DwY7JanoEdzDur7DNjMrFKuiR7Opxn0jfy6n/AUZ/66kC/PBk4k20QiRA6OfyJRD3PQKHH5k2j+Rlrv6xPFjMLB130=
+	t=1753553284; cv=none; b=V6zpTgwVamaHwJP5VMzuQp9Sj1ixwl3YUpZRL7CCYKcUkYv/HDcE8gC5X25uzD3nXOuSBGW9NWzMwL/XX9I4PMIDRESBu2K7k2mSarORTMxGgxGKnQgAKDzfPWSYSztM3tOybRF8DBcTuXxsDp4pbk4Ge+jBfKGpZrbNn+VsQrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753549005; c=relaxed/simple;
-	bh=xCg92gP7rQbNoUCfPTgJWW0kbd3zy4lJS0U+Oc7rzE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qje7zDH+c0AdVGoFr40Q6FexClFBeNmVDAzBrjRKPsya3oB0nRb+jm8quKlD4t1g0u8xtx2KKPzHdbDjYi07jKV0aJ7pq7lnsZdwYj1+WTpg7As1BBB8ehBleABFZhX9n5/aK0mfe4iTRLdnAD73k+5wAhrBArNnCUDUcz0oyMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAEP8Jjf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753553284; c=relaxed/simple;
+	bh=2HQCDh8l8G5D1AwzrgCWpThQCBs2spd9mekjd1oxUcc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mYkPV/Qj0DJh90WlITAeq5ujzyEMvgzsyDXrm9j3HzG0zgc42ExNhVPOdJJHO5WkI8UG4Yu6ZoinZ0UTuNWNrDuN7mIPfy247xOnkgUV7oS9ABkggmasup24Jn+g8L0C/m6NQP95TP7FrSb2RXiPyslwTEUEKkKSwIFwdM2fIBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hf2zXa9S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAEP8Jjf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CACC4CEED;
-	Sat, 26 Jul 2025 16:56:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hf2zXa9S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDB8C4CEED;
+	Sat, 26 Jul 2025 18:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753549005;
-	bh=xCg92gP7rQbNoUCfPTgJWW0kbd3zy4lJS0U+Oc7rzE4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DAEP8JjfEeyrcttfxZEbDEHjBgfO55KtsgsatqYzi1s6K0e+o0B9i+1HobATxhrgz
-	 +ju5skj6e7otHw/yFssY+Bjt70NO4bd/+izWVOuzcdrSOqa+uulPsxFTzoM3Xeq49V
-	 AGGzrn0xjrQ2UAQO8DSYY0CB+d6M/ybh2m8UPJPmDkIFBNYU+ynLBogKCzIrXibizM
-	 0BLOcNlvaozyGjCVPWnYPQxlseiKodg4+AZgL0GVhv3GwfECx11ZyV5LIsTlKji3CR
-	 gpUADD68JeDTNoH7ay0TTP1bPDXMBkhhg1l4F7f51c93YDevHyAcIBk8vb4tdScSmE
-	 jT2MsyR9WgQGw==
-Date: Sat, 26 Jul 2025 09:56:43 -0700
-From: Drew Fustini <fustini@kernel.org>
-To: Stephen Boyd <sboyd@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Alexandre Ghiti <alex@ghiti.fr>, Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
+	s=k20201202; t=1753553284;
+	bh=2HQCDh8l8G5D1AwzrgCWpThQCBs2spd9mekjd1oxUcc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Hf2zXa9S3SH9inWMxDx4H3qZy0WvG3uqmv0dqCyyGo+haVZVW9GzdoMYdA+82lnAJ
+	 /57x3MVjOIC4M1ueTFSZgKeC34elPyOT9T4O/nXgS0A8ykYMiJLxV2Mzg9t6UdqfFM
+	 ZRc8BSRdrmUpM601yLAwKqnHCP8VzobEO+dBo3KweuSsfBhwJDA4y1BPpdanzAg2pj
+	 e+7FExJLhAlox3MDjANDpseJ8bphDlypHprk3zneUYsoyxxjGfTPd4RVjhoMLQFExR
+	 ykdzapaeTLALvKVVDvelaX+gF2ZiOFNV0Jvr8RfVQBCyPNC2FlV/ZnaTTHVydKC9Gf
+	 ucxsGccE+Wv9w==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Drew Fustini <drew@pdp7.com>,
-	Fu Wei <wefu@redhat.com>, Gary Guo <gary@garyguo.net>,
-	Guo Ren <guoren@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Rob Herring <robh@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-clk@vger.kernel.org
-Subject: Re: [PATCH v5 8/9] riscv: dts: thead: Add PVT node
-Message-ID: <aIUIy5ykeZi+BNXA@x1>
-References: <20250623-rust-next-pwm-working-fan-for-sending-v5-0-0ca23747c23e@samsung.com>
- <CGME20250623180907eucas1p10c0ca6b667debcc8139402d97e4ef800@eucas1p1.samsung.com>
- <20250623-rust-next-pwm-working-fan-for-sending-v5-8-0ca23747c23e@samsung.com>
- <175340623531.3513.5896709502242556676@lazor>
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	Rae Moar <rmoar@google.com>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] rust: kernel: remove support for unused host `#[test]`s
+Date: Sat, 26 Jul 2025 20:07:50 +0200
+Message-ID: <20250726180750.2735836-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <175340623531.3513.5896709502242556676@lazor>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 24, 2025 at 06:17:15PM -0700, Stephen Boyd wrote:
-> Quoting Michal Wilczynski (2025-06-23 11:08:56)
-> > Add PVT DT node for thermal sensor.
-> > 
-> > Signed-off-by: Michal Wilczynski <m.wilczynski@samsung.com>
-> > ---
-> >  arch/riscv/boot/dts/thead/th1520.dtsi | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> > 
-> > diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
-> > index 26996422e1efe5d2dde68819c2cec1c3fa782a23..bef30780034e06b07aa29b27b0225ea891a4b531 100644
-> > --- a/arch/riscv/boot/dts/thead/th1520.dtsi
-> > +++ b/arch/riscv/boot/dts/thead/th1520.dtsi
-> > @@ -669,6 +669,17 @@ padctrl_aosys: pinctrl@fffff4a000 {
-> >                         thead,pad-group = <1>;
-> >                 };
-> >  
-> > +               pvt: pvt@fffff4e000 {
-> 
-> Node name should probably be 'thermal-sensor@fffff4e000' then.
+Since commit 028df914e546 ("rust: str: convert `rusttest` tests into
+KUnit"), we do not have anymore host `#[test]`s that run in the host.
 
-Thanks for pointing this out. It does seem like 'pvt@' is unusual:
+Moreover, we do not plan to add any new ones -- tests should generally
+run within KUnit, since there they are built the same way the kernel
+does. While we may want to have some way to define tests that can also
+be run outside the kernel, we still want to test within the kernel too
+[1], and thus would likely use a custom syntax anyway to define them.
 
-$ git grep -l 'thermal-sensor@' arch/*/boot/dts | wc -l
-57
-$ git grep -l 'pvt@' arch/*/boot/dts | wc -l
-1
+Thus simplify the `rusttest` target by removing support for host
+`#[test]`s for the `kernel` crate.
 
-$ git grep -l 'thermal-sensor@' Documentation/devicetree/bindings/ | wc -l
-14
-$ git grep -l 'pvt@' Documentation/devicetree/bindings/ | wc -l
-2
+This still maintains the support for the `macros` crate, even though we
+do not have any such tests there.
 
-The 6.17 PR for dts has already happened, so I'll do a fix once I can
-update my thead-dt-fixes branch to 6.17-rc1.
+Link: https://lore.kernel.org/rust-for-linux/CABVgOS=AKHSfifp0S68K3jgNZAkALBr=7iFb=niryG5WDxjSrg@mail.gmail.com/ [1]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/Makefile        | 9 +--------
+ rust/kernel/alloc.rs | 6 +++---
+ rust/kernel/error.rs | 4 ++--
+ rust/kernel/lib.rs   | 2 +-
+ 4 files changed, 7 insertions(+), 14 deletions(-)
 
-thanks,
-drew
+diff --git a/rust/Makefile b/rust/Makefile
+index 115b63b7d1e3..5290b37868dd 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -235,7 +235,7 @@ quiet_cmd_rustc_test = $(RUSTC_OR_CLIPPY_QUIET) T  $<
+ 	$(objtree)/$(obj)/test/$(subst rusttest-,,$@) $(rust_test_quiet) \
+ 		$(rustc_test_run_flags)
+ 
+-rusttest: rusttest-macros rusttest-kernel
++rusttest: rusttest-macros
+ 
+ rusttest-macros: private rustc_target_flags = --extern proc_macro \
+ 	--extern macros --extern kernel --extern pin_init
+@@ -245,13 +245,6 @@ rusttest-macros: $(src)/macros/lib.rs \
+ 	+$(call if_changed,rustc_test)
+ 	+$(call if_changed,rustdoc_test)
+ 
+-rusttest-kernel: private rustc_target_flags = --extern ffi --extern pin_init \
+-    --extern build_error --extern macros --extern bindings --extern uapi
+-rusttest-kernel: $(src)/kernel/lib.rs rusttestlib-ffi rusttestlib-kernel \
+-    rusttestlib-build_error rusttestlib-macros rusttestlib-bindings \
+-    rusttestlib-uapi rusttestlib-pin_init FORCE
+-	+$(call if_changed,rustc_test)
+-
+ ifdef CONFIG_CC_IS_CLANG
+ bindgen_c_flags = $(c_flags)
+ else
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index a2c49e5494d3..335ae3271fa8 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -2,16 +2,16 @@
+ 
+ //! Implementation of the kernel's memory allocation infrastructure.
+ 
+-#[cfg(not(any(test, testlib)))]
++#[cfg(not(testlib))]
+ pub mod allocator;
+ pub mod kbox;
+ pub mod kvec;
+ pub mod layout;
+ 
+-#[cfg(any(test, testlib))]
++#[cfg(testlib)]
+ pub mod allocator_test;
+ 
+-#[cfg(any(test, testlib))]
++#[cfg(testlib)]
+ pub use self::allocator_test as allocator;
+ 
+ pub use self::kbox::Box;
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 3dee3139fcd4..7812aca1b6ef 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -157,7 +157,7 @@ pub fn to_ptr<T>(self) -> *mut T {
+     }
+ 
+     /// Returns a string representing the error, if one exists.
+-    #[cfg(not(any(test, testlib)))]
++    #[cfg(not(testlib))]
+     pub fn name(&self) -> Option<&'static CStr> {
+         // SAFETY: Just an FFI call, there are no extra safety requirements.
+         let ptr = unsafe { bindings::errname(-self.0.get()) };
+@@ -174,7 +174,7 @@ pub fn name(&self) -> Option<&'static CStr> {
+     /// When `testlib` is configured, this always returns `None` to avoid the dependency on a
+     /// kernel function so that tests that use this (e.g., by calling [`Result::unwrap`]) can still
+     /// run in userspace.
+-    #[cfg(any(test, testlib))]
++    #[cfg(testlib)]
+     pub fn name(&self) -> Option<&'static CStr> {
+         None
+     }
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index e13d6ed88fa6..8a0153f61732 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -197,7 +197,7 @@ pub const fn as_ptr(&self) -> *mut bindings::module {
+     }
+ }
+ 
+-#[cfg(not(any(testlib, test)))]
++#[cfg(not(testlib))]
+ #[panic_handler]
+ fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+     pr_emerg!("{}\n", info);
+
+base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+-- 
+2.50.1
+
