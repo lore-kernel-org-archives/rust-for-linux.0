@@ -1,59 +1,59 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED6119307F
-	for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 16:15:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6538D1E8328
+	for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 16:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753546527; cv=none; b=G9yZx9ItM1hbANr7eMrVK31uHEM2SdkhrdUR48jktxQ5G5c7LXprJIHAYTZtmnV8SnwB4VGfbMFL6/wBxwP+eeo5DsXIVgVSfnmc8yYWTlGFK/ZPb+5LOifRATbQ701CbuICQcY1ZhL72lxa8i43F9HIWSIk2IXxUoe1WADk74o=
+	t=1753546699; cv=none; b=nrWQ9lROplN6ob7Pg9jffb3G2bx5OiE200ktbEBLd/KOj4qTwKduPrTYfjheXkUBRXi1gTomZ/ctddxT4ZAz2ZhdL9Shgc00zOjW/Jg2yJrTPsnFKgNRAVqjOi7PKFj0KfLvRnO9tak7CinNXad1L+c/OBQ6VmHa+wI3RkY555Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753546527; c=relaxed/simple;
-	bh=/jh2NetYJEcS7y9hKl9u6ZhaS1tzUUoKm/tRaaJp65g=;
+	s=arc-20240116; t=1753546699; c=relaxed/simple;
+	bh=ic2Zk6+bWwOnrKpYxsTey5iqwLnd+WrItLsmAfsWNFE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=paE0exJDw3bTOPJh122bAGIcLSlq7yONDx/jj8iSSXBi02gRHQyjZyauuljClGwTgglXUnQyunBp/87cRweK/nBxr6CGEP30/gUYdHysma23v+RO6kOCVG4OkKBDy+jEibrFoqxrMR4EyaCQNyUrTO4L79AsF0LfLXgVNBkSzC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wPqGTQ45; arc=none smtp.client-ip=209.85.128.50
+	 To:Cc:Content-Type; b=s+KkwZOgCMryXFCqhnKRiKsF4I41etOR+FixKJuW/dEo6iBmi+DNnJDqI4nh4+PLbwvbKRN5PA6Tg9K6/0M2Y+H1eg7OCTaVjlJouV0Or5kj93el8jTcHmTYPQa0KrorO8+BEROMPQuGr2fE1//PMatE7Ye0PSGzVJvGd/SJLWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RLHRa732; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wPqGTQ45"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-451d6ade159so22036195e9.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 09:15:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RLHRa732"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3b77673fd78so1165874f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 09:18:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753546524; x=1754151324; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1753546695; x=1754151495; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KjXI2/7oThbWzLYU7IbCDr+QFqFWddGsPEoOiITUQfo=;
-        b=wPqGTQ45BzFbcz5Ts5xKX6X++SaO6E7Wqt6mKbjbPRLWC9N003UVHG5zi7fSIIzKyM
-         yyv3bwV+2ST8X0cVZrbk4M7OWr0DrnpAULHKDcshfdDdGWB0W8HBGMu8Manv/lAVx0W7
-         WJmqaVJhigeTmCDR8jxxu02PSch2cQnqVm8h/nqtzCWt69djHo6UX5oD9oFwbTvyf94S
-         PpiPbHsWZxIsYNrepz2SdTR7k1btee3gRaHgxFyE2zZy9mIzaf9EW9K70PEi0RKp2J7n
-         D6mvLRi2fWaUt0+CkBXaFT9cMIzVXw9mESS6zbZ332ueSzulGAA+gKi0ypdGwxJyEbFI
-         q2Qg==
+        bh=RiLS2MBgpKK7dn/WFA7kJ/QtNdTGL5/cM0Nxh/9FxvY=;
+        b=RLHRa732AeQleH53Uf0y2llmWBDjfspw95D0LJ3rMAXA3m1no+9MwXo5XDOh40uuNB
+         lU4jW32oiIqfn/0JOMPdYFyQOJ7hmhLMMH9em803urGJU5n7paoXXFRnXwu0jsvRRBrK
+         UNMNAgN7r8M8+GsfluZSXUxXcyVgC4amPJYl7UhtzTLKwIoS4ApJ3BhKX6w/+MLuySSY
+         9XnF/wPAFzxvJqMDDXx0ZuzemW/FTHu+0NXzwCXJ67MRnn5ACdOkPsHS/2ktoo4CqNcr
+         fktcMaHNzMGrP4Ipuq0x6wEKvqNX8UpaFL8c5CJJ8sNfqs/HBll8r9UmortiAisJzBbR
+         xXeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753546524; x=1754151324;
+        d=1e100.net; s=20230601; t=1753546695; x=1754151495;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KjXI2/7oThbWzLYU7IbCDr+QFqFWddGsPEoOiITUQfo=;
-        b=cbNFaOK1sE14uTEuX/Z2c+IvTyuL3SX0aT/HhpQWGBtckE42Kmw395MtqygUtdssMP
-         iSsG1iOscLB0lACsYpN9u8tNXb5LGdxrn7tXL9qrkrWTrzYrEEbwzvNR0SdtU9y5y2nl
-         nMYB58ectMmyQISJHx6LnUIwqAHPUsaXa11J7y5bZeMKSfdcmmEvlpPamtY59UVW/ZGu
-         FeYApPy2G6fiSg9V5lOYHEgJmp+b+UwjLMkVQLXIpEQLa9+VdoZoS0YeALWycUHtcQpp
-         E3myLBbqVYuGimFaOm3foMRIVvPVV3ZhoiU6TyJjccJOjxBLWCcvejruBO24wH+Ssb+T
-         jAkw==
-X-Forwarded-Encrypted: i=1; AJvYcCVO5NMYxszfrZnTTNDxSpSNJ+Zjv3esYime8rp1YAvr3MQqlyc6PEf7KgUIQzfSQ6GSZsuM6q1X6+CTYByrKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu1h9x0g8A6NSHZA58f2OkZLKTFH99q6MYVS9EYvkjsD3aAiT1
-	jyXIdjy5t3zMXg1qj5h+kRk7/gmyp+hfgZ1sZqvzN9Olf06B9L944zo/16ggSycfTwZyqbnpfkt
-	Ry+m5p9TK5XsqpESs35rn8YsIq0NamvqJGjqJBj3k
-X-Gm-Gg: ASbGncuUJqJib2wULPKW4BT037gPbkLKySWsMH5xet1coguRZKkCithHMHWPtozZ7Al
-	jaHrWxpE7guY3gOD0XpHbUAtPp015U5EEajeMzq7BUJuOtmQ8vSKjncpas5bH3BY+b6jNKF6lpS
-	0GYyNuM5B81i6JGR+r9fDDUvTCuTP8aPbe++KyUgj4VJNfniGS9mvxKc7JwdAdizaF6nM0Zn01+
-	UdeyjUi
-X-Google-Smtp-Source: AGHT+IGq6r0MeHgvQseFz5cMv43K6MbZdaH5JloddQpsWGT5eYrYGrycXYiguGwgXRqrUoDt0sDmanBfxCMNYLu8MmY=
-X-Received: by 2002:a5d:438a:0:b0:3b7:8154:aa36 with SMTP id
- ffacd0b85a97d-3b78154e3camr932195f8f.7.1753546524220; Sat, 26 Jul 2025
- 09:15:24 -0700 (PDT)
+        bh=RiLS2MBgpKK7dn/WFA7kJ/QtNdTGL5/cM0Nxh/9FxvY=;
+        b=VpEjwcuXvfmEI5W1D1n0qU+Q/QocoHYHFlH1WCZ7pXTIi9KPD2mUfOsdpr5+wd5x5/
+         CR+6awuZf0cdQmRl3hXxrYSjo4Z6zqwUndI2SVHZ5Mt0G70j/7EF74p49ZcA+ncWrz8B
+         c+HdRZ60ma6lwSLR3U69NYwpVg3P31QCfvlTCeUchxKm5sNgW8bOXzbWCgbSuGFKtFSf
+         UonbA+maxBN/aQs1PUxiPAI7KHz4ChUJs5nA4moQ1jQjAs79IWB/29lZSmpnuvUsGESE
+         JtOsHsuLl+nLNpuP0rngjUP0vERQeKJRt1nm20D2DP5UMlWyCjc8z4IlmIcwH8Hz38R0
+         nPcg==
+X-Forwarded-Encrypted: i=1; AJvYcCVwfrxU8w8jzFTcj2YVo/6dCTM2eVMDkSFtAzZrM1vO37/2wwAlSG0SJ66rjiEFoLk/MXTam2HJqeT+kzbfcw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOROx5mtfC9M2Nv07nbgnVlEuovWQPkfU0WODX+9N00XNKHmwT
+	Z79GzGMHZVoY6iQF+9Mz+lJwJMlkE2aL/04WF7rvA7ZhEcfUvBmgWu95nlGSedwF4zn5xt2MpXY
+	pTVA9TyXea+nxp77TF76ZYSCedMmh3VzIYQZIDoy8
+X-Gm-Gg: ASbGncvsgYIP7QNhNlsvt6lTAOst3RKsfyDKOhvQmlm6N6VEeSUJyf184HuqGXuhWd+
+	Aw9zJq4t6PR/wODcAGBerIZJltjQhdgrCR3fOH90MEY1Tq5FkIPrSbGPiZm4s4MsxI/L1RphtAI
+	tdmTgIql35rS0YYxe15q4HNT34MDuixErmE4YSWkDnkzpekpEqVHRENEwLj0LMdfZkDiiolOjnx
+	MhfJiAQ
+X-Google-Smtp-Source: AGHT+IE4T2Sn+YCnW4UddIk8IedAnI3g7v/KjWu/nPuK/MNxlZtY8DLAjeFjfi7qmMPpMkzy+RMzIlyv7WFJGSZZYKQ=
+X-Received: by 2002:a05:6000:1886:b0:3b5:d726:b7c with SMTP id
+ ffacd0b85a97d-3b7766641a0mr4429309f8f.40.1753546694652; Sat, 26 Jul 2025
+ 09:18:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -62,11 +62,12 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
  <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com> <20250726165020.46880c31.gary@garyguo.net>
-In-Reply-To: <20250726165020.46880c31.gary@garyguo.net>
+ <CAH5fLgi-3oT8+5Krzrg5JeagJMm6-8FNVr5G-UAszuhi0qZ1xA@mail.gmail.com>
+In-Reply-To: <CAH5fLgi-3oT8+5Krzrg5JeagJMm6-8FNVr5G-UAszuhi0qZ1xA@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 26 Jul 2025 18:15:11 +0200
-X-Gm-Features: Ac12FXzISFN9wsDXMX_LgKfYNxwErnQbej7ZyIa_oJ8UfCOGwdNe7zdwJtk0UtI
-Message-ID: <CAH5fLgi-3oT8+5Krzrg5JeagJMm6-8FNVr5G-UAszuhi0qZ1xA@mail.gmail.com>
+Date: Sat, 26 Jul 2025 18:18:02 +0200
+X-Gm-Features: Ac12FXz05m1OoGuwnB7bHkQoMy2rtk_a0qxycMPIapq4u8Ue_k0Q0z6l5hoUYyU
+Message-ID: <CAH5fLgjB7-xJ2OjVa6nxnUPk-1+wyxPMWQ15-Vc3mUp36+_Rhg@mail.gmail.com>
 Subject: Re: [PATCH 2/3] rust: maple_tree: add MapleTree::lock() and load()
 To: Gary Guo <gary@garyguo.net>
 Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
@@ -80,59 +81,65 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@o
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 26, 2025 at 5:50=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Sat, Jul 26, 2025 at 6:15=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> On Sat, 26 Jul 2025 13:23:23 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
->
-> > To load a value, one must be careful to hold the lock while accessing
-> > it. To enable this, we add a lock() method so that you can perform
-> > operations on the value before the spinlock is released.
+> On Sat, Jul 26, 2025 at 5:50=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
+:
 > >
-> > Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
-> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/maple_tree.rs | 94 +++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  1 file changed, 94 insertions(+)
+> > On Sat, 26 Jul 2025 13:23:23 +0000
+> > Alice Ryhl <aliceryhl@google.com> wrote:
 > >
-> > diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> > index 0f26c173eedc7c79bb8e2b56fe85e8a266b3ae0c..c7ef504a9c78065b3d5752b=
-4f5337fb6277182d1 100644
-> > --- a/rust/kernel/maple_tree.rs
-> > +++ b/rust/kernel/maple_tree.rs
-> > @@ -206,6 +206,23 @@ pub fn erase(&self, index: usize) -> Option<T> {
-> >          unsafe { T::try_from_foreign(ret) }
-> >      }
+> > > To load a value, one must be careful to hold the lock while accessing
+> > > it. To enable this, we add a lock() method so that you can perform
+> > > operations on the value before the spinlock is released.
+> > >
+> > > Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
+> > > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > ---
+> > >  rust/kernel/maple_tree.rs | 94 +++++++++++++++++++++++++++++++++++++=
+++++++++++
+> > >  1 file changed, 94 insertions(+)
+> > >
+> > > diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+> > > index 0f26c173eedc7c79bb8e2b56fe85e8a266b3ae0c..c7ef504a9c78065b3d575=
+2b4f5337fb6277182d1 100644
+> > > --- a/rust/kernel/maple_tree.rs
+> > > +++ b/rust/kernel/maple_tree.rs
+> > > @@ -206,6 +206,23 @@ pub fn erase(&self, index: usize) -> Option<T> {
+> > >          unsafe { T::try_from_foreign(ret) }
+> > >      }
+> > >
+> > > +    /// Lock the internal spinlock.
+> > > +    #[inline]
+> > > +    pub fn lock(&self) -> MapleLock<'_, T> {
+> > > +        // SAFETY: It's safe to lock the spinlock in a maple tree.
+> > > +        unsafe { bindings::spin_lock(self.ma_lock()) };
+> > > +
+> > > +        // INVARIANT: We just took the spinlock.
+> > > +        MapleLock(self)
+> > > +    }
+> > > +
+> > > +    #[inline]
+> > > +    fn ma_lock(&self) -> *mut bindings::spinlock_t {
+> > > +        // SAFETY: This pointer offset operation stays in-bounds.
+> > > +        let lock =3D unsafe { &raw mut (*self.tree.get()).__bindgen_=
+anon_1.ma_lock };
+> > > +        lock.cast()
+> > > +    }
 > >
-> > +    /// Lock the internal spinlock.
-> > +    #[inline]
-> > +    pub fn lock(&self) -> MapleLock<'_, T> {
-> > +        // SAFETY: It's safe to lock the spinlock in a maple tree.
-> > +        unsafe { bindings::spin_lock(self.ma_lock()) };
-> > +
-> > +        // INVARIANT: We just took the spinlock.
-> > +        MapleLock(self)
-> > +    }
-> > +
-> > +    #[inline]
-> > +    fn ma_lock(&self) -> *mut bindings::spinlock_t {
-> > +        // SAFETY: This pointer offset operation stays in-bounds.
-> > +        let lock =3D unsafe { &raw mut (*self.tree.get()).__bindgen_an=
-on_1.ma_lock };
-> > +        lock.cast()
-> > +    }
+> > Could this return `&SpinLock<()>` using `Lock::from_raw`?
+> >
+> > I guess it has the drawback of having `MapleLock` needing to store
+> > `ma_lock` pointer but the guard is usually just all on stack and
+> > inlined so it probably won't make a difference?
+> >
+> > This way you remove `unsafe` from `lock` and gets a free `drop`.
 >
-> Could this return `&SpinLock<()>` using `Lock::from_raw`?
->
-> I guess it has the drawback of having `MapleLock` needing to store
-> `ma_lock` pointer but the guard is usually just all on stack and
-> inlined so it probably won't make a difference?
->
-> This way you remove `unsafe` from `lock` and gets a free `drop`.
+> I ended up going this way to avoid the extra field in MapleLock, like
+> you mention.
 
-I ended up going this way to avoid the extra field in MapleLock, like
-you mention.
+Oh, and it also avoids assuming anything about the layout of SpinLock<()>
 
 Alice
