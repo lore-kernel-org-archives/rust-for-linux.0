@@ -1,133 +1,129 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4342D41A8F;
-	Sat, 26 Jul 2025 08:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD9424500A
+	for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 13:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753519759; cv=none; b=NSz05SUS0+xcksGYnoQ2Ft61IaWIzrvN8Vns6TuLrNm0bw2s+LBdCgFnGlIn+QWtntFv5nPRmlO0HR0eNeH15A00tFMclS8x6emN8JWoquhLRR0wDm2HllLE1sV0OTulVJIseOA/PsfvYuImvOD0l71CekUPpnRBkt2jgdL6u9U=
+	t=1753536220; cv=none; b=IT3swgkX0faBnn8ewllixkRkMMDEzstclhufhgGU0TW6cnEKWRhz6vCAHFHNRtmq5TUzlScAUHuOh7CjNG0mhjngJH5yjnX1X7pV4ZtOegO+iVyBNtj49FFW9UFuu6VOplDwmmpX/GRciinoVqkamRVGkwS7NDOSjwYg2sbLC4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753519759; c=relaxed/simple;
-	bh=hKrUWNearcp4ZIDYya1VMgL+4p01kQmkj7tuzh5MZKE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=ojmQObBPZMaDz2OY6kUfA1LccvoTdk2fWAtkfqmyPeIgQooV8HmwHD1uPOTWR0zabNpZKRkXlbvU/Idrntguoy3EOYjbpzbU5aK5bcz4hc9H9m74DQiHMy919FRbi7WyMnQAz4h1PqZ+OcCkcFo1vet4ui4gPwwJN75vDe5hzCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0H05aPm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753536220; c=relaxed/simple;
+	bh=KeWfTnh8Chuw1TOz3MzZf+vZMoN7xHrcY5K2UXkz3KM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FkSmQeEMG9+XZMjQWuXTNrzsdHIbA2v1/MWjKeD/cpdlJbHHPaqZqWX0ZIgUxm8bStePPjKNEdhtxwAWx7dANcEmCvHbHVziDYZX+EafXgZADzYX3iihh+1gBafva6dJ8Sa1n5KKj96rfDdseGMqp5lE3ieStlPI9kP2PQLw/W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1alVtXGx; arc=none smtp.client-ip=209.85.208.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0H05aPm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B890FC4CEED;
-	Sat, 26 Jul 2025 08:49:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753519757;
-	bh=hKrUWNearcp4ZIDYya1VMgL+4p01kQmkj7tuzh5MZKE=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=G0H05aPmgiV0g//LKUm9nDS3UJ1BUdM6ovhr3DV9Xlakw290JXIbr0WqtAqPFdSNu
-	 ighP4H12T1UT4QmCgVk1ZS5MxYQifn1Ob7UObk7M3sUTL87ho2IzatTUrP5FQm5cqH
-	 ibl00gxX4PLhq+t1c7M4mFReErnkl56F1Ic9QW6O4aWxypLFKUhhNpuG9fFB+B/gcn
-	 Htjn3vy+A+7gIBGIUA7zhU6Z/50dTbRGRUwfTcl2Rzj+biwPK4oQvLOGBgmpz/n4hD
-	 VOu7+V044k8oIpxMnuruiHtsMbzpLzFE0qqDUwjenpdC53odJ0E2nBU96o7K71Yq9i
-	 gYEO7J8ObHfCg==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1alVtXGx"
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-613559d197dso2550576a12.2
+        for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 06:23:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753536217; x=1754141017; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=v6pXmOOa+uL3izdLaylEgPW09ZR5nRV/PajHQlIRQ8c=;
+        b=1alVtXGxF0n69rg/1ECorCgnwsw+3q3FYAO/bTZRKNGUzcpfmv1LAseIQxns5RpaVQ
+         Ju/2jtiIbj6Cu6Fop2gz4hrhFyXNBozCf8Z6zxOxJYgKk9SCjYoNQBVeyVKx6fkOdUYa
+         j8oz2wyZ3hBXOitzbgejwFgUdbVrlKGqkFcNV22wdD4lAdms9sMxqJSRZ0W+FwdEAelv
+         8HUZTezOzn0tdBYX4o+e4wNE9AVDCeHHJPtyff2ag1n9zQdzb0SfDwSn/KAX+cwWuci2
+         VsDyucG0rOyOZg8I8jaI6YjpTsi/pzX45Nyv0dnTlegTE0I3vhVaNYh83V/KuEvEOXX5
+         mtzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753536217; x=1754141017;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v6pXmOOa+uL3izdLaylEgPW09ZR5nRV/PajHQlIRQ8c=;
+        b=CNp/oQ4iwWLm+jHeVD1TYK3GQrkql+/WzgnoMKred9BcZSDKn+P2FsenB16R0VYIYl
+         grEVtRT6igg8id1VQ8nXYnJWTWFVVywDI7Sby6vzE3f9IS5k4prNyCnOa6iF0OXKcov/
+         pPF42d3E8Enb3H10YRjvfeK4/NU8LDWwx6mxn8GgW0CpHDevczjFRctc2E9QlAJWZdwb
+         n3UcVItSOHS4byg2/zgnMntBcb3HQm0J1fDNMdvK8Mv3h00E5xrf3E12JTjn+QBzmwoP
+         6KRGtLdAWYyAmJV3gDbULBztTZfT7DMgKk/mfAefatULaNDf+12VbLDMsjQj/VdmWkp+
+         nyvw==
+X-Forwarded-Encrypted: i=1; AJvYcCUne5MhjWnKTRZVAV6z48wsDWCISNd1mWYpjWhEbYLgmwgqZfl2RJ/3F1LbZiI/MHdTqhfNKerKheneSJoS1w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8Wq42Z10I8W8xNfH2pi7GOSwYpBiwoShMNgsqJ97TQVJzmU6t
+	QLdmJyVOboPCZ7o0BKiLIM1plTCJ1XvG0cfKK8sw9L4IkLWdnD1HnkhHd3TYZyFxfXGyCtsL2u8
+	NhIc2VGK+dTZSwf/yuA==
+X-Google-Smtp-Source: AGHT+IHWglauExVkBXOOx026pljplAP08f0yD9Cr0BMTM6PlulvfQerRxLC1kYo6rMFl/9nKW2LJ3nTgSyP3ULs=
+X-Received: from eddt16.prod.google.com ([2002:a05:6402:5250:b0:608:8531:cfba])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:524d:b0:612:d8b3:a9e7 with SMTP id 4fb4d7f45d1cf-614f1bbc851mr4834520a12.5.1753536217105;
+ Sat, 26 Jul 2025 06:23:37 -0700 (PDT)
+Date: Sat, 26 Jul 2025 13:23:21 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 26 Jul 2025 10:49:12 +0200
-Message-Id: <DBLUVHKRGVCO.19XQMAX6S1M7W@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Robin Murphy"
- <robin.murphy@arm.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
-Cc: "Christian S. Lima" <christiansantoslima21@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: transmute: add `as_bytes` method for `AsBytes`
- trait
-From: "Benno Lossin" <lossin@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
-In-Reply-To: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAMnWhGgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDcyMz3dzEgpxU3ZKi1FRdw8Q0AwsD48RkUyMTJaCGgqLUtMwKsGHRsbW 1AB9VRGxcAAAA
+X-Change-Id: 20250726-maple-tree-1af0803ac524
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1557; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=KeWfTnh8Chuw1TOz3MzZf+vZMoN7xHrcY5K2UXkz3KM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBohNbXAjFmBxetcuSVDw1fq5oeIc4vZTOdh9fV6
+ pR1wDXyJSyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaITW1wAKCRAEWL7uWMY5
+ Rg90D/9MO7luxZ4q8pRG7c8lGm0BaifeTGvGJCGM841tyFan5WL37r/Iesg7FptBXwuiXNXSdcs
+ G8nh8mXNuzffIdonqNmWS8p0kFbPb4R4tYz0TcsNf4guIAHVj+1zz+yawKWmrcfiX2k0SA1oOCs
+ e6jxY4NZg7lMNniPmQmqsiWtNdV0apTwYVKKvoD/wHNr7ilTjYTLq2Rzuk1o1suKfTX5m9sGXbU
+ 40CytLKtb5J4vhq/7gs8ci1ijB8Hj+FMTWk5X8L4VvU5Erp/o/3RC0yfV/3sBLfSpMgeUcDMcZS
+ co/TC3M429/qn/fR230bgWSiqe7tkrliKGGDukX7rn7HdZxJGhujuoNBlPjwJMwofRW667TS1S5
+ brMHJKqYwHc/sxBNyOhXIhYYneB33oNA8aEC2yqksPyJTA3Vi1s6pefIxk7xGP1wu63WuvUAeZr
+ 6iQVwI5l/+MEyPDWI7eXplqTEgi3pJA1RFEOtpQm7Y3cZ8tZ7nbemXyfTmYNrTeHO405lqBsAyj
+ ACVmdUoSWjrD11WuGRytpYHdrTZ4fMrp1Tu6GUwHcjiW3/c4Z7WvWfQX1d3Z6gZewsDKwTn+kE8
+ GR+IWzTB5AFYLBXITIIggQSxm9DvK1XDDBwJ5KSVo3WKPnLhFqo3dXToMyYRTYWH59M8VhrBnUx wriUrTX8Leu4axA==
+X-Mailer: b4 0.14.2
+Message-ID: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
+Subject: [PATCH 0/3] Add Rust abstraction for Maple Trees
+From: Alice Ryhl <aliceryhl@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Sat Jul 26, 2025 at 4:47 AM CEST, Alexandre Courbot wrote:
-> Every type that implements `AsBytes` should be able to provide its byte
-> representation. Introduce the `as_bytes` method that returns the
-> implementer as a stream of bytes, and provide a default implementation
-> that should be suitable for any type that satisfies `AsBytes`'s safety
-> requirements.
->
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+This will be used in the Tyr driver [1] to allocate from the GPU's VA
+space that is not owned by userspace, but by the kernel, for kernel GPU
+mappings.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+Danilo tells me that in nouveau, the maple tree is used for keeping
+track of "VM regions" on top of GPUVM, and that he will most likely end
+up doing the same in the Rust Nova driver as well.
 
-> ---
-> This is the sister patch of [1], providing an `as_bytes` method for
-> `AsBytes`.
->
-> It is going to be used in Nova, but should also be universally useful -
-> if anything, it felt a bit strange that `AsBytes` did not provide this
-> method so far.
->
-> [1] https://lore.kernel.org/rust-for-linux/20250624042802.105623-1-christ=
-iansantoslima21@gmail.com/
-> ---
-> Changes in v3:
-> - Use `ptr::from_ref` instead of `as *const T`.
-> - Link to v2: https://lore.kernel.org/r/20250725-as_bytes-v2-1-c6584c211a=
-6c@nvidia.com
->
-> Changes in v2:
-> - Use `size_of_val` to provide a default implementation for both `Sized`
->   and non-`Sized` types, and remove `AsBytesSized`. (thanks Alice!)
-> - Link to v1: https://lore.kernel.org/r/20250725-as_bytes-v1-1-6f06a3744f=
-69@nvidia.com
-> ---
->  rust/kernel/transmute.rs | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-> index 1c7d43771a37b90150de86699f114a2ffb84db91..69c46c19a89191d8a2abc5801=
-564cacda232218c 100644
-> --- a/rust/kernel/transmute.rs
-> +++ b/rust/kernel/transmute.rs
-> @@ -47,7 +47,16 @@ macro_rules! impl_frombytes {
->  ///
->  /// Values of this type may not contain any uninitialized bytes. This ty=
-pe must not have interior
->  /// mutability.
-> -pub unsafe trait AsBytes {}
-> +pub unsafe trait AsBytes {
-> +    /// Returns `self` as a slice of bytes.
-> +    fn as_bytes(&self) -> &[u8] {
-> +        let data =3D core::ptr::from_ref(self).cast::<u8>();
-> +        let len =3D size_of_val(self);
-> +
-> +        // SAFETY: `data` is non-null and valid for `len * sizeof::<u8>(=
-)` bytes.
-> +        unsafe { core::slice::from_raw_parts(data, len) }
-> +    }
-> +}
-> =20
->  macro_rules! impl_asbytes {
->      ($($({$($generics:tt)*})? $t:ty, )*) =3D> {
->
-> ---
-> base-commit: 14ae91a81ec8fa0bc23170d4aa16dd2a20d54105
+These abstractions intentionally do not expose any way to make use of
+external locking. You are required to use the internal spinlock. For
+now, we do not support loads that only utilize rcu for protection.
 
-Normally I'd expect this to be `rust-next` or an `-rc` tag... I did find
-this in one of the trees that I fetch, so no worries, but maybe in the
-future use one of those? Thanks!
+This contains some parts taken from Andrew Ballance's RFC [2] from
+April. However, it has also been reworked significantly compared to that
+RFC taking the use-cases in Tyr into account.
 
+[1]: https://lore.kernel.org/r/20250627-tyr-v1-1-cb5f4c6ced46@collabora.com
+[2]: https://lore.kernel.org/r/20250405060154.1550858-1-andrewjballance@gmail.com
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Cheers,
-Benno
+Alice Ryhl (3):
+      rust: maple_tree: add MapleTree
+      rust: maple_tree: add MapleTree::lock() and load()
+      rust: maple_tree: add MapleTreeAlloc
 
-> change-id: 20250725-as_bytes-6cbc11f2e8c3
->
-> Best regards,
+ MAINTAINERS               |   2 +
+ rust/helpers/helpers.c    |   1 +
+ rust/helpers/maple_tree.c |  14 ++
+ rust/kernel/lib.rs        |   1 +
+ rust/kernel/maple_tree.rs | 538 ++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 556 insertions(+)
+---
+base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+change-id: 20250726-maple-tree-1af0803ac524
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
