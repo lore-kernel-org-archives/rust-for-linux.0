@@ -1,78 +1,70 @@
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2060.outbound.protection.outlook.com [40.107.95.60])
+Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020097.outbound.protection.outlook.com [52.101.196.97])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203621FDA;
-	Sat, 26 Jul 2025 14:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515082E36F6;
+	Sat, 26 Jul 2025 15:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.97
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753539038; cv=fail; b=lXsyBUp95Al0SvWJXUtwOa5ipVAh8HKBGOQSc/DEw+tmi1LUQligcqgrKPs0KwsGsco9cEF6o60Dst1HLzrAQ56czkKfWZpdlPy1HA+6TkNQc/qFLb5PFwWfAJzAclt48cPC2xKEO38mHuh6sQtxUbdxoI6b3u7qMUHinCdwXfA=
+	t=1753544741; cv=fail; b=t1COSaE0Fw/wFabWui/hi3iHBz3WdqdNbwzUGz/C00u+DY17h9QtoZRGMmPZ5Vvxo6wBF9n04Fb1wdPE/YzM45ondYCLqKcqhXeFuVxpr0Z+j0ZcWSZ0pEN+IM++/a93yt0GJBwQVG/HJ/PxdU56O65KqG1bl0lVY3E/e9p90Vc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753539038; c=relaxed/simple;
-	bh=3sgrVhmArvVLzgtvN4qiHrEQQ6ZAFofqxhxH/HS2aDI=;
-	h=Content-Type:Date:Message-Id:To:Cc:Subject:From:References:
-	 In-Reply-To:MIME-Version; b=TUMjG5coextBVqR/dm+jmD1mP+tviwd7t3wx2aG6KdbugjltF1WGXfrpzbEUuvH9icDrrGVRBHbrylJpoQlv2NBVTDgWUrT6GMULtesIKJuB1lhVPTg5xSAs1lbNqZupimNj+rtJvM4YrnEqhybT6UY+VWnUT7sRoYR4LNWsgO8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NyLMuQ29; arc=fail smtp.client-ip=40.107.95.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1753544741; c=relaxed/simple;
+	bh=87Svxsme++PiGpT94YbPPzxjP/08P+6qnvI1QcdpNT8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LMlcRieJ3zAPrFoENHqLGHhzMbz1YrD+aNHI5Fne8LMCSWwJ8+5WN1TsNXk2DKfGBHq1aqtSDVYBMnxnKXXmQB5R7Mq5Tq77x7J10mt1QlqGx4oTBfog4fKgOKGV6UC/ulTMZqxuAQXMna9ASdRwB5gGwR5KEaVe7qjR/Hbbw/o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=bfpmKY9q; arc=fail smtp.client-ip=52.101.196.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NyLMuQ29"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="bfpmKY9q"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FUUAZYuRvMywxYGNtXpHUWPaBq7g9gOGibpprAu82HNKXrtT2WAkbBUFDEVoZbIn38vuQvrg6FWy2eOYuR5EsCEKevdoMmHYOuSXIqU5XjFrt1H897YQgDEz5TNSPfnIgrOeThcKYhHKEZ4JKCJ8YHl2lIk8FnkZdySkBrsbVHievvtHvRQxMhE50aXOGlNL9w+u1Gxjs1qj6YVLf7u4k1/YV+7gd5s+9bPNTVDCavMQ09hyCXO1kePmhIn4kCe724IF6o247L2wJXLIJppjEgANY4FVX3hE4PzVtwnhsfQjZJsPL6jNHa4NLaGj2nFJ9ezSnFBn7QJJoPiesE0Sug==
+ b=dJvRgJhYGzleeFL17xEdY/eatW4xVwsNAloVathmVArn6Ct3HJK9BjrIrgT0b87jMveiGIa5PJyuA6pxcSC7dxiZ9LFQRCPyrQQ5ZEHX4zM4IBaMWTSx09bCNN92n3/pAxnQbYrvMbUwWJDuRtv79xHnRIDNvUTisW93MMefdvrGJbYASurE1unF8nC4M9x4ZgEFlq9ivy/8PKwXtCnzMf9yQDpd5iRTkH+CIP3RMS1NBxs221x2fygvpiah5gWrMa9t3U+zsyVBN2CqiHqOfXuiMOA/zuL/79j08c75i17M7faCIoedZUWHdmgtOAvfm+YuU+qZsZg3pQwlcmLDOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WJBCcnKv5cZnMie8X4T4X+Pp7HqxNyo/ddVLWTWsg2Q=;
- b=y1sQGl/FToi5n0tp1/iim2HVaifjs26Yu0VrrmISzqeZzRUfNMLts52TF5BMgVJJAZBEygV7+EgNkmxBDtZqFCleag9ApFhOcPuPahSEqsyXgWRU2uuZaqrkSAUmJiOK9hRjh8SaFB8vOXuHs/ixgLrBTwp5iWTPRhGqsHJM8WOl1727HJ8y/Mt2vHt1g0vUZGLtKwK2mLRyJbYBFuWp9bJEITkEKLReYzzRcs94K5DHUMTH/QZnJs4in4BxBsBMNC/Wt0rvhrJp5OeOz9ZNRnRP7730FimQ61PT8wd7eSX4h6RKNY/1Ep5k0nQ0iG0DNB5cGMmHtBrJC6HMuButtg==
+ bh=PDEGCCCCBJE2s8yP2zc6L/zS4GI1kcCtV6PZudRt3FI=;
+ b=MOdx6+tyOFqKneclLgR2OUJXv2dLzyDV7JaVzxYdMGLA2W/hxTw8qOv3ku3tovvd5CAd+CgfGsAHQCFtJNoIRLUGhgtjfKZghaYqRnCu3Pr7nZVfAzgRekaDyQP95F/bxC6pQ2pnB+tApn2ra+DoO+Dk1Fdo1lkSmcldUMZ4VVIXJ1kgqIvPXjj0SjBmZu5jBp1lSRk22yz0dIpxPDn3feuhK4jtsqvS2+nLe+RFH0ZVXJP2o3u7uSCZA0Oe+zeTdiidGnKTvip8wVP4c5ijHQmcFM5xbtmZvbZjYFm7OiuHSlqXXZKBhvsj7/tCca6U44+bkKGsuJoqcWdKLfVavA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WJBCcnKv5cZnMie8X4T4X+Pp7HqxNyo/ddVLWTWsg2Q=;
- b=NyLMuQ29mmUCxb5pYGgJ64uUEX1WhjSstxJq84untBUysQhDQUzTr5JIO0FuEODlIAdv0ESJ5K5zsZFeOpECI2e3LEl0OSWHyJ+KoRur7pcyHryZzEFIZt5H5OxOR3cybrGi7N6t7ZHRCdGIb5xxop5gxenUcnZkXiKaaVCFPa2BXuYX8nD4LnKpbAU7u+zl8usnF4GW9c7P7A+jD6Aj5BMLbxFzn47ooyF6ggGb0XblhObJRCBBvpqxkVKjg32GJ7T5TijGxLowidyl4584dfLxbrFFHDE0ONy/VDXOe1GtOC3+OogOUMOdaWCu7Fn6J9+lF6UjWT4oK3t7Zb4VCQ==
+ bh=PDEGCCCCBJE2s8yP2zc6L/zS4GI1kcCtV6PZudRt3FI=;
+ b=bfpmKY9qQh390XdtBkhkoNN9ryR9EpQ7N4QO77ToCVneVlPkjIjNrk9lxdaslx1g1rcuvbJU1jeymn8aOSDkukdcJqW7F0cWW7yYwfYAttHwaQzJQf9FvvS347PnI3wuTZL0biUDskY4vu4kKqXSlLpdZmyjv9j6uZiCFaVdqgw=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by PH7PR12MB6860.namprd12.prod.outlook.com (2603:10b6:510:1b6::19) with
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO3P265MB2041.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:bd::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.29; Sat, 26 Jul
- 2025 14:10:32 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8964.019; Sat, 26 Jul 2025
- 14:10:32 +0000
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 26 Jul 2025 23:10:26 +0900
-Message-Id: <DBM1PG1UD7WP.7BNZGU3B7YMH@nvidia.com>
-To: "Lyude Paul" <lyude@redhat.com>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, <dakr@kernel.org>, <jgg@ziepe.ca>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Tamir Duberstein" <tamird@gmail.com>,
- "FUJITA Tomonori" <fujita.tomonori@gmail.com>, "open list"
- <linux-kernel@vger.kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Randy Dunlap" <rdunlap@infradead.org>,
- "Herbert Xu" <herbert@gondor.apana.org.au>, "Caleb Sander Mateos"
- <csander@purestorage.com>, "Petr Tesarik" <petr@tesarici.cz>, "Sui
- Jingfeng" <sui.jingfeng@linux.dev>, "Marek Szyprowski"
- <m.szyprowski@samsung.com>, "Robin Murphy" <robin.murphy@arm.com>,
- <airlied@redhat.com>, "open list:DMA MAPPING HELPERS"
- <iommu@lists.linux.dev>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v3 1/2] rust: add initial scatterlist abstraction
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250718103359.1026240-1-abdiel.janulgue@gmail.com>
- <20250718103359.1026240-2-abdiel.janulgue@gmail.com>
- <d0b11f8578d4b39f4eb5c1de8f17afb382429192.camel@redhat.com>
-In-Reply-To: <d0b11f8578d4b39f4eb5c1de8f17afb382429192.camel@redhat.com>
-X-ClientProxiedBy: TYWPR01CA0026.jpnprd01.prod.outlook.com
- (2603:1096:400:aa::13) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.25; Sat, 26 Jul
+ 2025 15:45:34 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.8964.024; Sat, 26 Jul 2025
+ 15:45:33 +0000
+Date: Sat, 26 Jul 2025 16:45:27 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Andrew Ballance
+ <andrewjballance@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, "
+ =?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
+ <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/3] rust: maple_tree: add MapleTree
+Message-ID: <20250726164527.6133cff6.gary@garyguo.net>
+In-Reply-To: <20250726-maple-tree-v1-1-27a3da7cb8e5@google.com>
+References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
+	<20250726-maple-tree-v1-1-27a3da7cb8e5@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO6P123CA0002.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:338::6) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,224 +72,480 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|PH7PR12MB6860:EE_
-X-MS-Office365-Filtering-Correlation-Id: 69384914-c4cb-403c-4a6c-08ddcc4e2d85
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB2041:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21b60c32-0174-4f3b-ef86-08ddcc5b752b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|366016;
+	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?amVwb3NENUNscHZpSXZxcmtlbU05d0tMV2dOMFZYanpsS0hBb3hJcG9BR0h5?=
- =?utf-8?B?b3dUOE1XWnpWT1p4N0ViOUZLdVZrN0ZVODVPVzluRVRveEVka2k2Q09Uay9R?=
- =?utf-8?B?RlBHeG9wWWRjMDdlSzVYQ05EMGwycXFMbGpuZkc2NTVTSWJBRnRxMWJtSU1D?=
- =?utf-8?B?TTArSVViVzFnOTZ1K1lNRFo4dEN6a1ZlcHpqVjhveExGSVhZZXVkL2VyNk5B?=
- =?utf-8?B?dE9XdjlWMFpidmFoekN1a01idEhUbzdveU0rMmpPd3NCK28xT05Ddmk4ZGJi?=
- =?utf-8?B?TFk0eFJkUHJHVDFKaFNUK2JZYXduK0JDQXNLT3pRYTRFaSsyWHJGa2RqMWtW?=
- =?utf-8?B?dVBRRE1ETVhlQzdVK3NDTEROZ01YMjc3QkM5Yi9QL1JqVTl0dlp6T01YdjFy?=
- =?utf-8?B?SC95NjFIQjRZTkFYVmw2TkQ5aGw1UkdWQVpLdnczVGdnUW0ycnJlV0gwdWhy?=
- =?utf-8?B?eldYbjNhUlRUMzJwQU1Xcm0rMGtjbzNGaXJwNHNzMjFGL01jRTkrQWIvSjdG?=
- =?utf-8?B?bEduNTUrUlk5M3lVSnl5dlBVelVYWTlFVTQ1bXhJQWp5bXpKcTk0TVVVZDNP?=
- =?utf-8?B?alpSSCtHclQ4ejNvelVkKzR6TVBrcEs0ZXR0OElURm5iM1I5WFVxQkVMUzRX?=
- =?utf-8?B?SmRTNmV4alpJd0ZPYTM3Q1JrQW1xbFMzTXAydDVPWTNZWEdsT1RXa1V0UGU3?=
- =?utf-8?B?azRNekE5aFczNmh1cXFQT3BMWVpNNGY2eVlISXZJTnN5MXFPU0FHSHYzblRK?=
- =?utf-8?B?R3dHd2FuTnFueTNNMForK0ZFdmt4K01ZVnNmYzZtSm5UZ2lWL2x1QVo2Nkh5?=
- =?utf-8?B?STlIY2p4bkg3YitSU3poQXB4bE9FaXNJUTVYTm5EU2wyV1pCVVJxbHMvMVhS?=
- =?utf-8?B?eFYveEQ1NDVPNkVQa1ZCWjdaZmVyMHhDdzVuNWdQK3A0cTFEMDZsYUpGTUJN?=
- =?utf-8?B?MC9UdE96eFRyQ2lpMUpDMHBCZVdpUWtWQ0lGUFRsVUhLempNQ1Q3RS9qVmFj?=
- =?utf-8?B?dFZEbk5zVjFDNnVFRjNwcmhIVzZDOFV4aUJId3ZHMjVyWnJvYXRxWmxYZGhh?=
- =?utf-8?B?MUY0WVh3YlpQbFR1NE5OSFJYeUt1R2JlM2JkdDFucnp4ZlE5VThJRUFRcE1V?=
- =?utf-8?B?OUcxcllFTUswNUQyZGdoMFF4QTlUbklSZXJ3ZHlaQ2huUmRlckhvVFFsd2lJ?=
- =?utf-8?B?ZzRiRmxIanhOK1NZa2hXbjQ2akR2TzRPSjQraTkyM1pHQWNVQlduOENQMUpt?=
- =?utf-8?B?aFRzem5WK1B4V1MwWktpbi9hOTJHSktQa2VTTHl1MzJDcXkzekVHRGF5RGU5?=
- =?utf-8?B?RE5Sd2NBbjdlMSt3WEU1WG1RT2ZaV0FZRVRtWjFxVjNCVEIxK04yQnluNUht?=
- =?utf-8?B?RG9OaStEUkJGcWlHZDA0MXpaNWtLdm1vSHBibkRuRGdxc2RoQURUSWJGRGxU?=
- =?utf-8?B?WjNuRlIyc2xNZlZENGhjTkZJcXZxczE3blNERU0xdGd6MGVxRFdJOVhzQXRj?=
- =?utf-8?B?clRhL204TVJNZmMxL2JSdmE2VXdRd21YK1NvV0JNb2R5RE41eEw4VHlLQmhW?=
- =?utf-8?B?cVFQa0lidzlyQnBBbitRU084cEIrUWF0SFdpK1N1c09iMzRWSlNnVUtIenQr?=
- =?utf-8?B?RXJ0dzVTNGFPR0FWbU9rSExvMW9BbDB0czFWbFhUc2JvSEhxL2dhUnhBcHFn?=
- =?utf-8?B?SWpDczFmSGN2U20veUZuMnRqOTJuUnRYUWhRWlVqbGxvUkIrK2FYQk1VN3Zh?=
- =?utf-8?B?cGR2NmJzRG1qRE1QQVNGcDZKc0RkaEVYK0c3bjI0SnlGbGF6WVhseDZ5Sk8z?=
- =?utf-8?B?WXJnUjFCeEpJNThzTWxnNmpJSEdXbjdDZzlMTmk4cGJndWJ5Vmh3UnVlRVZG?=
- =?utf-8?B?dWtFbXZkSHZIQXdTUmkwbnVzSjJ6eWxwaFhZMndnK0lyRFdlbWQwUFA2T3p4?=
- =?utf-8?Q?YOtZ4Nm/L1w=3D?=
+	=?us-ascii?Q?KG3QzarCO625MRobT9ZMXNVa5slW9DH9Fgr/W/LH+J8uMwwN0Tqm51/yA5cg?=
+ =?us-ascii?Q?MLsNFwzvRmPxPjRIEwoBYYckgqcQ0D2gZ9HLpjwAe1o2QwZoZvkEJujStFrE?=
+ =?us-ascii?Q?qMGyLeCW8Ev4ORHhyNHDJ8j9SBAEP7QKvzZ6OMPPRmoHuUJNlMJF91Ig4slq?=
+ =?us-ascii?Q?A0Fs04jY+wpwh+STKD7w3EMwh8u3UV5dE6rthjPMApGxMmsnJn3IGZ8bCkPG?=
+ =?us-ascii?Q?TY32AYI7b4qfq7vtFzaFW5XofEbxKVWMKBUF+KqhZ2NZOrAjXG3ugSdtnuB0?=
+ =?us-ascii?Q?upIRknCK5BFZfMrVwlM2hcravmGkPtzWEhw+de7o/bod1ySnY83balefCcib?=
+ =?us-ascii?Q?Sb5IdlmlSfbPA4qqotFsSMMeJY/cKEUw3snFxct48Btt08lKVoF6NJs45pYf?=
+ =?us-ascii?Q?vMlj3Pt/31SeKEIErTA4hDbPqPge4xRbg2OeLRfnd8zEjQrGjc4Kn9Ny4c/Y?=
+ =?us-ascii?Q?U3FZFZkcYZ3mui/UvbK/g9tJrU7pkhFv1eDl+fyJWV4t3TTdWZCSG1O5U0xn?=
+ =?us-ascii?Q?GUMjKma75OsHcziN1InY6TISvu3vHKbZ1hHQJJz12YF0/ulaitdqjMsejtwp?=
+ =?us-ascii?Q?USyeerFUESQaYsQKsXBWhS7PT+1Fjae/+3TqYxsNhOfhNT9TaFZjPZURkxfM?=
+ =?us-ascii?Q?lFkkS65vIBO8YTvh1ecSmmRy64hkL5jNR0pHCbqcXKJ9M5EywYz7Kw1LoDdM?=
+ =?us-ascii?Q?UbX5eMlqwYCJdpRFeerpPL6Chhc3BT4JupUrjpipWIxtZWH1fYKgomg3qBgT?=
+ =?us-ascii?Q?WWDZoQhpbWgFeQJPfi4vfwroDL8J9uFwIfDqFW1B3J7CDgbZBGiORbfGY1Ah?=
+ =?us-ascii?Q?hAqA2R00bvCBdXsEHOEcBsHE8QnmumU8qj9Cv8/qNHjo6QS6S7PwTW5FYnea?=
+ =?us-ascii?Q?D5sgvRGcrWyOQZxqwUwPnstHPHbHunLq6PI+o5VCUqxu5I4G97DkF9vKG/Hs?=
+ =?us-ascii?Q?70yMxFJS79r2rB7OmEXn3CpgAyTU5GpO66mwH3oK1IikwwSQ+7UrKUmysMAf?=
+ =?us-ascii?Q?O+m+2SeYlkfKAadX/5LHZ64h6mxbi6x211i7g5REiqQekdtcqJVt4Kfc4rWY?=
+ =?us-ascii?Q?Tx3GlF3ORxAb1YlZILDm56vc2IvQ+hJyu4f7TPf/fWmEc2+9WinzyRpAfH2X?=
+ =?us-ascii?Q?pFCXVdqI6X6DrqV6fAH6jxm7gqakUpvGAhoY2henjnqnYucbEm/d3I29m+k8?=
+ =?us-ascii?Q?P+2raax+K2y/hpT+SMetA/ZoBjaf/LCK1UF+TS9pEAEkBm1y/R3ozJxyWeBW?=
+ =?us-ascii?Q?7iTaxmZPdeSm2Dnqlqcib+8zkP6i94gUF0vahp5/L4TN+K9s4AxxrYNen1Mh?=
+ =?us-ascii?Q?abp600QaM2+XdRBdQw/aXEHXZv1WJTU9jJWd8sNEJRXdh1mP8XlJDdLxxpBH?=
+ =?us-ascii?Q?uSzk3zY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016)(7053199007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0J5d1l5RXE0eGZFallnODNYYmtNYVlNdE9RcEVVVDIzT0gzUjBVT2Jld29J?=
- =?utf-8?B?U0VVNThmck1kZUlqd0dCU3QzZWxnNngxanRtek1YM3ZHTEwzazBaQXl3SnlX?=
- =?utf-8?B?NTk0TmY4TDJGMlRmNXJsM1ZWakk4U0xBMUppQ3hMTkI0d0ZscHRGQndRdlBK?=
- =?utf-8?B?SnFXUmx0bXA3RkNDRWFjR1B5TkROeUpKNjBHNUpVbi9STUhWR3IwcGlrcFkx?=
- =?utf-8?B?QmtSM3BFallQWnNWcllUaHNOdEFnekZTR3lXcU04NDNJd2V6bWZOL0lvN2NY?=
- =?utf-8?B?UzhjbVQxRmtYZjZpVURwOWJXM21Uck1icEFNRUJuWU1yZUU0cE1uT3E1dSth?=
- =?utf-8?B?RkwrWkZySGdqSnhTNkF5YVJydVJIOW01ejl1eVZwVE5DUGJ1aWU4UzdoakQ2?=
- =?utf-8?B?aEMzYUEvMlg5ejRLU1BQclIzcm92RzMxcysrMEx2cjBVL2kwUSt6RmNFN3Bs?=
- =?utf-8?B?V3VhZ3k0L2ZSV3J1cS9kZ1dySDROak82dmo2OUQ4Tkc4T1lreTdXb0I2Vm9S?=
- =?utf-8?B?MW9aV2FuQWJzUnhmN2kvaE9sbFF4cEp2SmpXd2FuQVRQTVFuY3ZhMHFoMVlo?=
- =?utf-8?B?b3dtM1RkcVhwenhRN1hTbkp0MFFHWmRuemhUZmxwc2pTOU85THZQdDVRbURJ?=
- =?utf-8?B?bjdnV21HT3FYTkJLb3lmTVBPYjdkZlRBU21OVjZHOThDMFo3K0I3eDB5U3pr?=
- =?utf-8?B?NjZrTUhsbHpTUXZHTVNpVXVRd2c4QjJvblNYcnhXU1hzRHUrWFNIV1VGam5i?=
- =?utf-8?B?eWNHZ0ZlQmJsSzFKZnIzaDdlSnYrTGhmVTk1VlJpMkhUZzNZWlVzaTk5RVdG?=
- =?utf-8?B?eEExcHpJWUFBRGY4cDJlUll4bnNQNS9JMGR2OU9ReE9GaEJrZlllQVdkMlEv?=
- =?utf-8?B?NVRqdityUnBUdkxOeGx3dlZJYkJ5TFU0azVubkdqMEFDTnJHTi9FbXJkTTN6?=
- =?utf-8?B?ZXhvWHVBTHJUUEdnSkZIY21Tb2EwYVVWL1FqelVIa3FxQzNoQXhuay9ha2JW?=
- =?utf-8?B?TzlpVmNOOFVNMWtwT2tsQy9RWG40QkJtWjZBOFUveGFPM0d6NXhMcmVBNGZB?=
- =?utf-8?B?Mmd2WGpFYTJySHY2cXFLWDJGaGtLM0ZVMjRUQXMyaTZLY3JoMEFNWGZocXRw?=
- =?utf-8?B?cXRwUkZlbGcyUWFFT0pUbjZLOGk5L1dMVm5nc0xWVkRuZGRIcllEckFIUC9D?=
- =?utf-8?B?V1liaG5nN3ExZWhCWklpRG5oYThpWUd4a3dDQzVDRzFjWHhoeHdSVTlkUVpw?=
- =?utf-8?B?OEtXOXJwUVFpdWF1K3pLZDZjQWw2L0FYNWpwTW9VbWdmMGd2d1d0Z1NENGRI?=
- =?utf-8?B?bjI0WUpqang4aG9TWksrUzA4RU9GU3BxVTBFczIrcDJENkVlUmkwV2NVekhq?=
- =?utf-8?B?aFJWMmdQTHZObWF0UVdEZVBUWEpyd0xhS2UrcmE5N2FaeGRaclJUNkVzZ3BL?=
- =?utf-8?B?S0VCNU5kNVJibHVkbUpzYnpGS0sxVGRKKzNrTnRZc3I1LzJPTTcxaDZ6bGZ0?=
- =?utf-8?B?TitjL1o5VWd3QWVvYWtFUW81UVduWGpuM2gvSG9MZlRvVlhQLzJZbW9tVUtm?=
- =?utf-8?B?VFVMb1hzZGQ5UFM3ZTRsa0tyNG85YWxnNFBUSHFSK09lZTR5NUMwS2RSelBP?=
- =?utf-8?B?QUdxUnJldUE3UTh5VnZWdmVvUCtQUHY5OEpWTUEzcVlzaGJsblFXaEp5UWlR?=
- =?utf-8?B?Z2VyRDBLRUgraDhYMHNGVjU1aUVVMzgxVndiK1A4TmdwTm12R1lDQ0prclZJ?=
- =?utf-8?B?N3JQNHM5VWpPR2dWVjEvaXJpRittNEcvRUhTVHdDNkdFWkw1VytyTGRPRERB?=
- =?utf-8?B?TjdUVStBc29sd2kyMkFNMzBCQ2t4TUJRNVlIZUZnT1JvMU0zWmtuVVB4Y3h2?=
- =?utf-8?B?a1RwQ2NvSUNBbEQzMkFZdDE5b1FLRFczRGdRZ1NuL0loRHd2L1BVSmRLZ0lN?=
- =?utf-8?B?bW5kMDJrSTFpcHFPdlp4aEY3QmVrT3NQSytOb2hORGs5Vzk3UWdGUjhoTTZ0?=
- =?utf-8?B?cGlid1hKaXJyaFNObytRajVaRVc1UlkvcGVEOXg0NGVHRmY3NXZrcjRkb2tK?=
- =?utf-8?B?eVI4L1RaSmQxNHRxcno2ZjhubUU1dUNZQ1BNTnpJTGt3ZHQySkUwUENmUHh6?=
- =?utf-8?B?M3RCY2NSd0p1aGxBd1dXcE5LTkJVVmtpMTBtZDhLNTlrNHFSaVp2MUo3eERz?=
- =?utf-8?Q?QxmEqRXNA7+kpX3Ldo7TlVJ0QnKoT8A7gpknNIfMAXig?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69384914-c4cb-403c-4a6c-08ddcc4e2d85
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
+	=?us-ascii?Q?ezdphamgcmLYaCCjp1Dz1P22N8XuzE0egHsqznapSsKVJerWHVWJG7G65fRF?=
+ =?us-ascii?Q?gB6qBThxgnzfm1if43DYv9rasYOgU38DwyJsEaCawIGLweq6/w7YTqgkXeuz?=
+ =?us-ascii?Q?tlch2Luf3Bfye2AYvJNMUumy25LhqTHsgIfzxHeyzRlASTxctgggHwuoRD2t?=
+ =?us-ascii?Q?PyjU+f6VzX2oMeiDzxGnTqqufkOh46fOdlnh2VCzM7I04+xfgrPdOD/q7Q4K?=
+ =?us-ascii?Q?3J4fk7I/A7rSOkQe3PLLyWRIJTqAQ/P2Ag8nAUGstXidc3V6eNigzUx5YnFd?=
+ =?us-ascii?Q?NVnr31JjaU1IBHsDTqDr6wG7pphpIUOwj8lLCPhbusB3zIPgl2z2GdhxlmAs?=
+ =?us-ascii?Q?aXkob/9rupx+ZJVjgYPv0DnpGOqc0IHZOwnzSHvWdwTsv8ispNx4tkVF+B4S?=
+ =?us-ascii?Q?As8OA6DS+zCxOTECIANidNGAUWtGbEytWO8QJ3ukojCjt6OViFgjXCXXrFbS?=
+ =?us-ascii?Q?3tGUKXqoccMQ3sqXWit/xG+qyS3HgyILK2kzR25h/fNPP4xQdSp6Mt+Rw6ip?=
+ =?us-ascii?Q?UHicWE/wPfYZFwTYfnLol55xpDSzn7WUb2Y2FmW6lhXRVl/PHr1MeJRyNG/+?=
+ =?us-ascii?Q?kdjYbrxG2dtOu3VqOzZbHljNQwM6wUPQH10NNwv4JaIEuOVAhC6pw1i11BIR?=
+ =?us-ascii?Q?juR2wkAE1L0FsSFbwVWW+5oaL/ReQ/5sTeX8Ltiwod7Vk4/Qc8Yw9r51IhLh?=
+ =?us-ascii?Q?VVAWNMG3UjoQ4POAZ7Zt4v+eMAlofQineMS4Opj7XH1iotY1Rx3QqzaZCUvs?=
+ =?us-ascii?Q?bFooig7tI4sL6nyqAuMdG31sJJ9V0ZYsMtmz+o65sSpciVSOid0UjVRIvpVc?=
+ =?us-ascii?Q?MZzRV7Izxmf0SvGcqTZCsffJz3ve4kDi2GyAlikavGTpuu9C9MFNVTCQd+QT?=
+ =?us-ascii?Q?Sx44EKopeEJdk8+Yb/gEBtsmmpWFHst6KX4GwuFKp9P7hyqn0miZpkBWkb6+?=
+ =?us-ascii?Q?owVPd4hRciZn4IwcmRU/jxajkEJwqQpOimRZe9Alw9L0U3ORL2Ol0f68FmtM?=
+ =?us-ascii?Q?g8WBc9GSXkWVG1Vs3HUYbyx55T/7r9sr7l7G/GTpWSC0JAb6DKG9hyuhiZKD?=
+ =?us-ascii?Q?0Q5pryQYtHDGQSMNqPOeHxcjoPpx8mMlHKG2ZuKtKknw94A8+DzyX3d1ETba?=
+ =?us-ascii?Q?PDdVBt/s7+kYtRiNjcdDqaGnLpa8s04YLNqO9pf/2vtK4ou92XVfHB2dKywy?=
+ =?us-ascii?Q?23wF81GPzw+aO4E+5/WE8TPZYz3RpFNWLkRJ/SoxqFuFUS4Oqc4xEgX8XhOt?=
+ =?us-ascii?Q?0R8+UmLAy+SCuONUw9+C0sEm8P+BQA71kXd0D6KSTkc34+TyZ1f7dwRhbMzj?=
+ =?us-ascii?Q?T2Quz3R0MBrbiyjnvIjr1RHq0luYdq0cXbeKsxZET6yvpPss4UCDEZiQv/Sk?=
+ =?us-ascii?Q?YmT9k7N1b/AEokLq79dIbfnHbYLbppmiVYI18nlNU4AvW7tsNjmP5PUYR4wd?=
+ =?us-ascii?Q?m4gZJWuLFhW/0mJHSoe93e2JceiT+rRTCFR1LNmoy9BHUhL7mYu9F/3UycMP?=
+ =?us-ascii?Q?uLEJjItJ4FQ+59EcdvCQizVMAlV8nQa1Gx9Q0+SAqr/XVJEaZ1OpCkn9bn2U?=
+ =?us-ascii?Q?i+4yqOuOhid8FZyCteNK+6q6+f0P+V997rkOpZv4SXTQjaeRlaM3wFqyP6tj?=
+ =?us-ascii?Q?Nw=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21b60c32-0174-4f3b-ef86-08ddcc5b752b
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2025 14:10:32.1793
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jul 2025 15:45:33.8358
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wOwsWyml73/HSdXpHwiYFBF4jEyxcWel5qvTTBRht8Yq6DAdgtaxAgfLSfzrNFjPYgMh7/OQBOPqZ1RqeDJSLw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6860
+X-MS-Exchange-CrossTenant-UserPrincipalName: xPhVuMR1SIN7y2P6hlKNpnoJle7/oCpSKeUR8yTAhZqdCN4EWJzrO8ZBLyI8dru64gHkqbeavK2njdXLms4N3A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB2041
 
-Hi Lyude,
+On Sat, 26 Jul 2025 13:23:22 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-On Fri Jul 25, 2025 at 5:19 AM JST, Lyude Paul wrote:
-<snip>
->> +/// Trait implemented by all mapping states.
->> +pub trait MappingState {}
->
-> We should make sure this is Sealed so that crates don't try to add
-> MappingStates that we're not expecting
+> The maple tree will be used in the Tyr driver to allocate and keep track
+> of GPU allocations created internally (i.e. not by userspace). It will
+> likely also be used in the Nova driver eventually.
+> 
+> This adds the simplest methods for additional and removal that do not
+> require any special care with respect to concurrency.
+> 
+> This implementation is based on the RFC by Andrew but with significant
+> changes to simplify the implementation.
+> 
+> Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
+> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Agreed.
+Overall looks good to me, some nits and thoughts about the error type
+below.
 
-<snip>
->> +
->> +/// A scatter-gather table of DMA address spans.
->> +///
->> +/// This structure represents the Rust abstraction for a C `struct sg_t=
-able`. This implementation
->> +/// abstracts the usage of an already existing C `struct sg_table` with=
-in Rust code that we get
->> +/// passed from the C side.
->> +pub struct SGTable<T: Borrow<bindings::sg_table>, M: MappingState> {
->> +    /// Mapping state of the underlying `struct sg_table`.
->> +    ///
->> +    /// This defines which methods of `SGTable` are available.
->> +    ///
->> +    /// Declared first so it is dropped before `table`, so we remove th=
-e mapping before freeing the
->> +    /// SG table if the latter is owned.
->> +    _mapping: M,
->> +
->> +    /// Something that can borrow the underlying `struct sg_table`.
->> +    table: T,
->> +}
->
-> So - I notice that instead of having `SGTable` just hold the `struct sg_t=
-able`
-> as an Opaque<> we're now relying on wrapping the SGTable around another o=
-bject
-> that defines it's own way of returning an sg_table.
->
-> Are we sure we want this? There's a few issues I see here, the first bein=
-g
-> that we're now providing the ability to acquire an immutable reference to=
- a C
-> struct to all users (including ones outside of kernel crates) of SGTable.
+Best,
+GAry
 
-Note that the Rust `SGTable` itself does not provide access to the
-underlying `sg_table` - only the `T` parameter, for internal use - it
-isn't exposed to clients of this API.
+> ---
+>  MAINTAINERS               |   2 +
+>  rust/helpers/helpers.c    |   1 +
+>  rust/helpers/maple_tree.c |  14 +++
+>  rust/kernel/lib.rs        |   1 +
+>  rust/kernel/maple_tree.rs | 286 ++++++++++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 304 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index dd810da5261b5d664ef9750f66ec022412e8014b..b7e7308ce07c050239c14c4f3a0fd89bdd8e8796 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15956,7 +15956,9 @@ L:	rust-for-linux@vger.kernel.org
+>  S:	Maintained
+>  W:	http://www.linux-mm.org
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> +F:	rust/helpers/maple_tree.c
+>  F:	rust/helpers/mm.c
+> +F:	rust/kernel/maple_tree.rs
+>  F:	rust/kernel/mm.rs
+>  F:	rust/kernel/mm/
+>  
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 0683fffdbde25b89d285e3b0d8e6d8f7f5fd7474..ed7888a2661ad91f0fb78023311b3a266d30615c 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -26,6 +26,7 @@
+>  #include "io.c"
+>  #include "jump_label.c"
+>  #include "kunit.c"
+> +#include "maple_tree.c"
+>  #include "mm.c"
+>  #include "mutex.c"
+>  #include "page.c"
+> diff --git a/rust/helpers/maple_tree.c b/rust/helpers/maple_tree.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..119665846e8e8b018f8dc791a22fe20ace8e9c2c
+> --- /dev/null
+> +++ b/rust/helpers/maple_tree.c
+> @@ -0,0 +1,14 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/maple_tree.h>
+> +
+> +void rust_helper_mt_init_flags(struct maple_tree *mt, unsigned int flags)
+> +{
+> +	mt_init_flags(mt, flags);
+> +}
+> +
+> +struct ma_state rust_helper_MA_STATE(struct maple_tree *mt, unsigned long start, unsigned long end)
+> +{
+> +	MA_STATE(mas, mt, start, end);
+> +	return mas;
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 11a6461e98daab597e1eb2b513c5123686a1bb73..6cc152090a2f1986781800897ad48947c2d02e40 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -88,6 +88,7 @@
+>  #[cfg(CONFIG_KUNIT)]
+>  pub mod kunit;
+>  pub mod list;
+> +pub mod maple_tree;
+>  pub mod miscdevice;
+>  pub mod mm;
+>  #[cfg(CONFIG_NET)]
+> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..0f26c173eedc7c79bb8e2b56fe85e8a266b3ae0c
+> --- /dev/null
+> +++ b/rust/kernel/maple_tree.rs
+> @@ -0,0 +1,286 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Maple trees.
+> +//!
+> +//! C header: [`include/linux/maple_tree.h`](srctree/include/linux/maple_tree.h)
+> +//!
+> +//! Reference: <https://docs.kernel.org/core-api/maple_tree.html>
+> +
+> +use core::{
+> +    marker::PhantomData,
+> +    ops::{Bound, RangeBounds},
+> +};
+> +
+> +use kernel::{
+> +    alloc::Flags,
+> +    error::code::{EEXIST, ENOMEM},
+> +    error::to_result,
+> +    prelude::*,
+> +    types::{ForeignOwnable, Opaque},
+> +};
+> +
+> +/// A maple tree optimized for storing non-overlapping ranges.
+> +///
+> +/// # Invariants
+> +///
+> +/// Each range in the maple tree owns an instance of `T`.
+> +#[pin_data(PinnedDrop)]
+> +#[repr(transparent)]
+> +pub struct MapleTree<T: ForeignOwnable> {
+> +    #[pin]
+> +    tree: Opaque<bindings::maple_tree>,
+> +    _p: PhantomData<T>,
+> +}
+> +
+> +#[inline]
+> +fn to_maple_range(range: impl RangeBounds<usize>) -> Option<(usize, usize)> {
+> +    let first = match range.start_bound() {
+> +        Bound::Included(start) => *start,
+> +        Bound::Excluded(start) => start.checked_add(1)?,
+> +        Bound::Unbounded => 0,
+> +    };
+> +
+> +    let last = match range.end_bound() {
+> +        Bound::Included(end) => *end,
+> +        Bound::Excluded(end) => end.checked_sub(1)?,
+> +        Bound::Unbounded => usize::MAX,
+> +    };
+> +
+> +    if last < first {
+> +        return None;
+> +    }
+> +
+> +    Some((first, last))
+> +}
+> +
+> +impl<T: ForeignOwnable> MapleTree<T> {
+> +    /// Create a new maple tree.
+> +    ///
+> +    /// The tree will use the regular implementation with a higher branching factor.
+> +    #[inline]
+> +    pub fn new() -> impl PinInit<Self> {
+> +        pin_init!(MapleTree {
+> +            // SAFETY: This initializes a maple tree into a pinned slot. The maple tree will be
+> +            // destroyed in Drop before the memory location becomes invalid.
+> +            tree <- Opaque::ffi_init(|slot| unsafe { bindings::mt_init_flags(slot, 0) }),
+> +            _p: PhantomData,
+> +        })
+> +    }
+> +
+> +    /// Insert the value at the given index.
+> +    ///
+> +    /// If the maple tree already contains a range using the given index, then this call will fail.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+> +    ///
+> +    /// let tree = KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_KERNEL)?;
+> +    ///
+> +    /// let ten = KBox::new(10, GFP_KERNEL)?;
+> +    /// let twenty = KBox::new(20, GFP_KERNEL)?;
+> +    /// let the_answer = KBox::new(42, GFP_KERNEL)?;
+> +    ///
+> +    /// // These calls will succeed.
+> +    /// tree.insert(100, ten, GFP_KERNEL)?;
+> +    /// tree.insert(101, twenty, GFP_KERNEL)?;
+> +    ///
+> +    /// // This will fail because the index is already in use.
+> +    /// assert_eq!(
+> +    ///     tree.insert(100, the_answer, GFP_KERNEL).unwrap_err().cause,
+> +    ///     InsertErrorKind::Occupied,
+> +    /// );
+> +    /// # Ok::<_, Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn insert(&self, index: usize, value: T, gfp: Flags) -> Result<(), InsertError<T>> {
+> +        self.insert_range(index..=index, value, gfp)
+> +    }
+> +
+> +    /// Insert a value to the specified range, failing on overlap.
+> +    ///
+> +    /// This accepts the usual types of Rust ranges using the `..` and `..=` syntax for exclusive
+> +    /// and inclusive ranges respectively. The range must not be empty, and must not overlap with
+> +    /// any existing range.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+> +    ///
+> +    /// let tree = KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_KERNEL)?;
+> +    ///
+> +    /// let ten = KBox::new(10, GFP_KERNEL)?;
+> +    /// let twenty = KBox::new(20, GFP_KERNEL)?;
+> +    /// let the_answer = KBox::new(42, GFP_KERNEL)?;
+> +    /// let hundred = KBox::new(100, GFP_KERNEL)?;
+> +    ///
+> +    /// // Insert the value 10 at the indices 100 to 499.
+> +    /// tree.insert_range(100..500, ten, GFP_KERNEL)?;
+> +    ///
+> +    /// // Insert the value 20 at the indices 500 to 1000.
+> +    /// tree.insert_range(500..=1000, twenty, GFP_KERNEL)?;
+> +    ///
+> +    /// // This will fail due to overlap with the previous range on index 1000.
+> +    /// assert_eq!(
+> +    ///     tree.insert_range(1000..1200, the_answer, GFP_KERNEL).unwrap_err().cause,
+> +    ///     InsertErrorKind::Occupied,
+> +    /// );
+> +    ///
+> +    /// // When using .. to specify the range, you must be careful to ensure that the range is
+> +    /// // non-empty.
+> +    /// assert_eq!(
+> +    ///     tree.insert_range(72..72, hundred, GFP_KERNEL).unwrap_err().cause,
+> +    ///     InsertErrorKind::InvalidRequest,
+> +    /// );
+> +    /// # Ok::<_, Error>(())
+> +    /// ```
+> +    pub fn insert_range<R>(&self, range: R, value: T, gfp: Flags) -> Result<(), InsertError<T>>
+> +    where
+> +        R: RangeBounds<usize>,
+> +    {
+> +        let Some((first, last)) = to_maple_range(range) else {
+> +            return Err(InsertError {
+> +                value,
+> +                cause: InsertErrorKind::InvalidRequest,
+> +            });
+> +        };
+> +
+> +        let ptr = T::into_foreign(value);
+> +
+> +        // SAFETY: The tree is valid, and we are passing a pointer to an owned instance of `T`.
+> +        let res = to_result(unsafe {
+> +            bindings::mtree_insert_range(self.tree.get(), first, last, ptr, gfp.as_raw())
+> +        });
+> +
+> +        if let Err(err) = res {
+> +            // SAFETY: As `mtree_insert_range` failed, it is safe to take back ownership.
+> +            let value = unsafe { T::from_foreign(ptr) };
+> +
+> +            let cause = if err == ENOMEM {
+> +                InsertErrorKind::Nomem
+> +            } else if err == EEXIST {
+> +                InsertErrorKind::Occupied
+> +            } else {
+> +                InsertErrorKind::InvalidRequest
+> +            };
+> +            Err(InsertError { value, cause })
+> +        } else {
+> +            Ok(())
+> +        }
+> +    }
+> +
+> +    /// Erase the range containing the given index.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
+> +    ///
+> +    /// let tree = KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_KERNEL)?;
+> +    ///
+> +    /// let ten = KBox::new(10, GFP_KERNEL)?;
+> +    /// let twenty = KBox::new(20, GFP_KERNEL)?;
+> +    ///
+> +    /// tree.insert_range(100..500, ten, GFP_KERNEL)?;
+> +    /// tree.insert(67, twenty, GFP_KERNEL)?;
+> +    ///
+> +    /// let twenty = tree.erase(67).unwrap();
+> +    /// assert_eq!(*twenty, 20);
+> +    ///
+> +    /// let ten = tree.erase(275).unwrap();
+> +    /// assert_eq!(*ten, 10);
+> +    ///
+> +    /// // The previous call erased the entire range, not just index 275.
+> +    /// assert!(tree.erase(127).is_none());
+> +    /// # Ok::<_, Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn erase(&self, index: usize) -> Option<T> {
+> +        // SAFETY: `self.tree` contains a valid maple tree.
+> +        let ret = unsafe { bindings::mtree_erase(self.tree.get(), index) };
+> +
+> +        // SAFETY: If the pointer is not null, then we took ownership of a valid instance of `T`
+> +        // from the tree.
+> +        unsafe { T::try_from_foreign(ret) }
+> +    }
+> +
+> +    /// Free all `T` instances in this tree.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This frees Rust data referenced by the maple tree without removing it from the maple tree.
+> +    /// The caller must ensure that no reference that remains in the maple tree is used incorrectly
+> +    /// after this call.
+> +    unsafe fn free_all_entries(self: Pin<&mut Self>) {
+> +        // SAFETY: The pointer references a valid maple tree.
+> +        let ma_state = unsafe { Opaque::new(bindings::MA_STATE(self.tree.get(), 0, usize::MAX)) };
+> +
+> +        loop {
+> +            // SAFETY: The maple tree is valid. This call to `free_all_entries` has exclusive
+> +            // access to the maple tree, so no further synchronization is required.
+> +            let ptr = unsafe { bindings::mas_find(ma_state.get(), usize::MAX) };
+> +            if ptr.is_null() {
+> +                break;
+> +            }
+> +            // SAFETY: By the type invariants, this pointer references a valid value of type `T`.
+> +            // By the safety requirements, it is okay to free it without removing it from the maple
+> +            // tree.
+> +            unsafe { drop(T::from_foreign(ptr)) };
+> +        }
+> +    }
+> +}
+> +
+> +#[pinned_drop]
+> +impl<T: ForeignOwnable> PinnedDrop for MapleTree<T> {
+> +    #[inline]
+> +    fn drop(mut self: Pin<&mut Self>) {
+> +        // We only iterate the tree if the Rust value have a destructor.
+> +        if core::mem::needs_drop::<T>() {
+> +            // SAFETY: The tree is valid, and other than the below `mtree_destroy` call, it will
+> +            // not be accessed after this call.
+> +            unsafe { self.as_mut().free_all_entries() };
+> +        }
+> +
+> +        // SAFETY: The tree is valid, and will not be accessed after this call.
+> +        unsafe { bindings::mtree_destroy(self.tree.get()) };
+> +    }
+> +}
+> +
+> +/// Error type for failure to insert a new value.
+> +pub struct InsertError<T> {
+> +    /// The value that could not be inserted.
+> +    pub value: T,
+> +    /// The reason for the failure to insert.
+> +    pub cause: InsertErrorKind,
+> +}
 
-> Maybe this isn't that bad, but IMO I've always tried to avoid ever exposi=
-ng
-> anything from bindings outside of kernel crates - with the exception of t=
-ypes
-> like c_uint and such. My reason has generally keeping things separate, bu=
-t
-> also making sure people don't default to trying to use these structs dire=
-ctly
-> in driver code for functionality that they may just want to add into the =
-rust
-> bindings.
+Hmm, we've already have quite a few errors that look like this, e.g.
+`StoreError`. I wonder if we should just have a generic
 
-Hopefully that's not the case, but please feel free to elaborate if I
-missed your point. Or maybe the problem is with the fact that
-`bindings::sg_table` bleeds into the public type of `SGTable`?
+    struct ErrroWithData<T, E> {
+       pub value: T,
+       pub cause: E,
+    }
 
->
-> The second being it just feels a bit backwards to me - I'd intuitively ex=
-pect
-> an object to embed an SGTable if it's adding additional functionality on =
-top
-> of it, rather than the SGTable embedding the object. Especially consideri=
-ng
-> that not all users concerned with SGTables that they get from C code will=
- even
-> want their own wrapper type and may just want to return a plain &SGTable.
+> +
+> +/// The reason for the failure to insert.
+> +#[derive(PartialEq, Eq, Copy, Clone)]
+> +pub enum InsertErrorKind {
+> +    /// There is already a value in the requested range.
+> +    Occupied,
+> +    /// Failure to allocate memory.
+> +    Nomem,
 
-Mmm I have to admit I am a bit lost here. But FWIW, you can get close to
-a plain `&SGTable` by creating a `SGTable<&bindings::sg_table>` - since
-`&bindings::sg_table` implements `Borrow<bindings::sg_table>`, this
-works as one would expect.
+Given that we already have an error type for allocation failure, how
+about
 
-Layout-wise it should even come down to the same, as then the `SGTable`
-is just made of a reference to the `sg_table`, the `MappingState` being
-a ZST for these cases - so even if you cannot simply cast a pointer to
-this type, at the end of the day the result should be identical.
+    AllocError(crate::alloc::AllocError)
 
->
-> However - if we're expecting implementors of `Borrow<bindings::sg_table>`=
- to
-> potentially need to grab locks or such whenever they need to access the
-> sg_table, then I suppose Borrow<> makes a lot more sense here and this de=
-sign
-> is probably fine without being inverted.
+? I know we're getting ENOMEM from C, but this would match what the
+error type would be if it were from pure Rust code.
 
-TBH that's not what I had in mind - I wanted to make sure we can support
-both the owned and borrowed scenarios with the same base type.
 
->
-> Also BTW: I assume this might be clear to you already but in case it isn'=
-t,
-> with the design I suggested above you'd still be able to safely cast from
-> `*mut/*const bindings::sg_table` to `&mut/& SGTable<M: MappingState>` sin=
-ce
-
-Is there a benefit to being able to do a cast vs. the construct I
-described above?
-
-> MappingState is a ZST. As long as you can guarantee the struct is the sam=
-e
-> size as the one on the C side, you should be good. You might want to add =
-a
-> #[repr(transparent)] and a type invariant in the comments mentioning that
-> `SGTable` has an identical data layout to `bindings::sg_table` due to
-> repr(transparent), but that's really the only downside.
-
-MappingState is a ZST only for borrowed mappings, i.e. mappings that
-come from borrowed sg_tables. In case we want to own the SG table, we
-also need to be able to unmap it on drop - and this requires some extra
-data which we store into `ManagedMapping` mapping state (which is not a
-ZST anymore).
-
-Now I think I am lacking a good understanding of the model you have in
-mind - could you share a few data structures of what you are thinking
-about? I do understand the SGTable simply embedding an
-`Opaque<sg_table>`, but that's about it. :)
+> +    /// The insertion request was invalid.
+> +    InvalidRequest,
+> +}
+> +
+> +impl From<InsertErrorKind> for Error {
+> +    #[inline]
+> +    fn from(kind: InsertErrorKind) -> Error {
+> +        match kind {
+> +            InsertErrorKind::Occupied => EEXIST,
+> +            InsertErrorKind::Nomem => ENOMEM,
+> +            InsertErrorKind::InvalidRequest => EINVAL,
+> +        }
+> +    }
+> +}
+> +
+> +impl<T> From<InsertError<T>> for Error {
+> +    #[inline]
+> +    fn from(insert_err: InsertError<T>) -> Error {
+> +        Error::from(insert_err.cause)
+> +    }
+> +}
+> 
 
