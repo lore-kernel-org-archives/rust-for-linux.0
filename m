@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D300CBA3F
-	for <rust-for-linux@vger.kernel.org>; Sun, 27 Jul 2025 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E6D217648;
+	Sun, 27 Jul 2025 17:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753636876; cv=none; b=ZYSoFgEniwdl8jQUIa8M6ZSj3ZpzZFSpTmPlhvzWUtz9OM5bGciZTaygUIegVJbqo/6i10T0PBo94Lv9SRQtfDlXd1+LJbiauRNMiar02NnFptCGUdF4ogCGyi/5SMvRUhfqbWyzik9r1ejHzBXrMX3RGKZJYhaPsUH+jKAI7cI=
+	t=1753637300; cv=none; b=j5znXmzhW0vfZiGcPupei/GmGxw+EnWoALoA2F/+PAWTKeeOUJvxlZopalKB59Qkbb2Z/NOmIl1yGacM1n0xF3exPlHIdl97g3k9N+G1hzwn//ulV4oxYjg7v1n31wf0hK4BUXJdXKCr/OAvWKc+vL6WsvssVGmXhrkW1SPsBq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753636876; c=relaxed/simple;
-	bh=uqLgQODfDzkKvbd0MQqGvbu+UCnIXPd3dl/6Batc6x4=;
+	s=arc-20240116; t=1753637300; c=relaxed/simple;
+	bh=aB7rmwPoHrrWa208LBL4TWr5fe10pGe+mhEMwuzwbgQ=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Aryiu17ai3xurJYXipOOqH7MnEijWnWWxuAgZwBIfcXxPWePsAGAlcIH2k7K3grH5S3IEmnklJ+/kRPoVFAL6ky4r0QbJhO7wiLX+Rkk6Aiqo+26l6Cfzmrk/DCFs+h9uszJMi733jGa5ZSBad4JXbU8rg4ufTrOxWQp15XmQzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jS7DjpH+; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=GZIAKcPulcsQuUbe8mPQ6qcgfoz4E/NeXGv8E2DAb5gMpa6LUrLSylfA9Q5ivmPe56C+tjVrI+s9xu0wu1MpZqqtvU2dStJdyEBAbhTwDBjIEXaq1r0MN43BQXILfPVRDpykWKLMzERao4ZcDimb7A2Z3ou5BMvSNYuTFGv3TSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pvt90VGp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jS7DjpH+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27897C4CEEB;
-	Sun, 27 Jul 2025 17:21:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pvt90VGp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9C0C4CEEB;
+	Sun, 27 Jul 2025 17:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753636876;
-	bh=uqLgQODfDzkKvbd0MQqGvbu+UCnIXPd3dl/6Batc6x4=;
+	s=k20201202; t=1753637300;
+	bh=aB7rmwPoHrrWa208LBL4TWr5fe10pGe+mhEMwuzwbgQ=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=jS7DjpH+Qyna2YzqMvoxhn+XpPAtTsWBfwRjDGL7JdLJM/UfH3zfynVStuPcgcI/X
-	 cpRiItYv+BFCZHsyg4K6DtfaswpqwlA3sSP2e5GHrFBu9IHktYADABq5+36IMkJdpi
-	 sIKwBlTu/4l0tFNit6MEzscPHVNisWgX48Ax9jG022s4nBnUigNK+b6hORR+0WvFJB
-	 PzXGl58yKt+BzdKtRwFd17AkrD5XkPrDiRH/CVucJmhn9uN52ji3smWgiNoFsJqPSi
-	 gFUGla7PIUK0QDZxtS1fNTW9t4I7RVi8nTWW3VJdUpTy1Dh4jE5m3kX2oZQGS/ZiF4
-	 HtOGBg8u3DGKw==
+	b=Pvt90VGpytP/iKvFGkQcwdqN5I3a9hsKYCoT5BEpqvD8f1Q3NamBPLj5B6DIFxtGR
+	 AM9n9V9P7PXse6VVGSofoBXaFvG28jdhZ5JNIqK9gGiJNfDA7pLw+vU+m1ZPqLZdSl
+	 O9gNjSJ0kCdC8oVIPoiljkfFTKEy+yjH4KQuWBC4HV+y6JUetdwAwMUcNJmBGO1DUX
+	 OIRCKyPtPdwklIDwUM7GHq2mBZqXKFl7BEws0mPJtCNg+CVstz1tSTRE5B6EU5hg+f
+	 Ez9KGlY3H42mtVwcaF+r2/MGtTB1orYC3BndStL1F5OzKgxhON+3xWyUyBqudupDjt
+	 3yEnqjJJix+2g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,106 +34,117 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 27 Jul 2025 19:21:12 +0200
-Message-Id: <DBN0E1JW5JHS.2RU9ZWYJ7TBVM@kernel.org>
-Cc: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH v2 00/13] `Zeroable` improvements & bindings integration
+Date: Sun, 27 Jul 2025 19:28:15 +0200
+Message-Id: <DBN0JG0QP7TU.PZSZ8NZL5LD6@kernel.org>
+Cc: <skhan@linuxfoundation.org>, <linux-kernel-mentees@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] rust/pin-init: remove workaround for type inference
+ cycle
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
+To: "Suchit Karunakaran" <suchitkarunakaran@gmail.com>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
+ <me@kloenk.dev>, <chrisi.schrefl@gmail.com>,
+ <rust-for-linux@vger.kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250523145125.523275-1-lossin@kernel.org>
- <DAI9KRPT45EH.RD7AB7OI1RTR@kernel.org>
-In-Reply-To: <DAI9KRPT45EH.RD7AB7OI1RTR@kernel.org>
+References: <20250727170217.206794-1-suchitkarunakaran@gmail.com>
+In-Reply-To: <20250727170217.206794-1-suchitkarunakaran@gmail.com>
 
-On Mon Jun 9, 2025 at 9:53 PM CEST, Benno Lossin wrote:
-> On Fri May 23, 2025 at 4:50 PM CEST, Benno Lossin wrote:
->> Depends on the pin-init test & CI fixes sync [1].
->>
->> This came from a discussion at [2]. And I added some more useful parts
->> to the original idea.
->>
->> I'm not sure on the impact of build times and rust-analyzer. We're
->> adding a derive macro to every struct and union emitted by bindgen.
->> Building using my test-config took 27.7s before and 28.2s after this
->> change, but those are only two runs on my machine with a very reduced
->> config (that enables all Rust code that we have at the moment).
->>
->> Maybe we have to reevaluate this when more C code is scanned by bindgen.
->>
->> [1]: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/to=
-pic/Zeroable.20trait.20for.20C.20structs/with/509711564
->> [2]: https://lore.kernel.org/all/20250523125424.192843-1-lossin@kernel.o=
-rg
->>
->> Changelog
->> =3D=3D=3D=3D=3D=3D=3D=3D=3D
->> * v2:
->>   - added patches with more extensive pin-init changes to `Zeroable` &
->>     related methods. for the upstream PR, see
->>     https://github.com/Rust-for-Linux/pin-init/pull/56
->>   - added patches replacing usage of `mem::zeroed` and
->>     `MaybeUninit::zeroed().assume_init()` with the new
->>     `pin_init::zeroed`
->>   - fix rust-analyzer support=20
->>   - use import in `{uapi,bindings}/lib.rs` to avoid the `pin_init::`
->>     prefix
->> * v1: https://lore.kernel.org/all/20250520192307.259142-1-lossin@kernel.=
-org
->>
->> Benno Lossin (13):
->>   rust: pin-init: rename `zeroed` to `init_zeroed`
->>   rust: pin-init: add `Zeroable::init_zeroed`
->>   rust: pin-init: add `zeroed()` & `Zeroable::zeroed()` functions
->>   rust: pin-init: implement `ZeroableOption` for `&T` and `&mut T`
->>   rust: pin-init: change `impl Zeroable for Option<NonNull<T>>` to
->>     `ZeroableOption for NonNull<T>`
->>   rust: pin-init: implement `ZeroableOption` for function pointers with
->>     up to 20 arguments
->>   rust: add `pin-init` as a dependency to `bindings` and `uapi`
->>   rust: derive `Zeroable` for all structs & unions generated by bindgen
->>     where possible
->>   rust: miscdevice: replace `MaybeUninit::zeroed().assume_init` with
->>     `pin_init::zeroed`
->>   rust: phy: replace `MaybeUninit::zeroed().assume_init` with
->>     `pin_init::zeroed`
->>   rust: block: replace `core::mem::zeroed` with `pin_init::zeroed`
->>   rust: of: replace `core::mem::zeroed` with `pin_init::zeroed`
->>   rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
->>
->>  rust/Makefile                                 |   6 +-
->>  rust/bindgen_parameters                       |   4 +
->>  rust/bindings/lib.rs                          |   8 ++
->>  rust/kernel/block/mq/gen_disk.rs              |   3 +-
->>  rust/kernel/block/mq/tag_set.rs               |   4 +-
->>  rust/kernel/init.rs                           |   8 +-
->>  rust/kernel/miscdevice.rs                     |   8 +-
->>  rust/kernel/net/phy.rs                        |   4 +-
->>  rust/kernel/of.rs                             |   4 +-
->>  rust/kernel/security.rs                       |   3 +-
->>  rust/pin-init/README.md                       |   2 +-
->>  rust/pin-init/examples/big_struct_in_place.rs |   4 +-
->>  rust/pin-init/src/lib.rs                      | 120 +++++++++++++++---
->>  rust/pin-init/src/macros.rs                   |  16 +--
->>  rust/uapi/lib.rs                              |   2 +
->>  scripts/generate_rust_analyzer.py             |   4 +-
->>  16 files changed, 147 insertions(+), 53 deletions(-)
->>
->>
->> base-commit: ae8b3a83fb9de394f609035041cd7a668fda2ab3
->> prerequisite-patch-id: 8d7ade67c2e5189bf8a2c91253d925e25744cba5
->> prerequisite-patch-id: 0ebbd4a86bebeff23257870db92a1b0fe017c481
->> prerequisite-patch-id: 1437fc7adeff6e13abd433594da923272b9388bf
+On Sun Jul 27, 2025 at 7:02 PM CEST, Suchit Karunakaran wrote:
+> The `cast_pin_init` and `cast_init` functions previously used an
+> intermediate `let` binding before returning the result expression to work
+> around a Rust compiler issue causing type inference cycles. With the
+> minimum Rust compiler version for the kernel now at 1.78.0, where this
+> issue is fixed, the workaround is no longer needed. This patch removes th=
+e
+> unnecessary `let` variables and returns the expressions directly.
 >
-> Applied the first 6 patches to pin-init-next -- thanks everyone!
+> Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
 
-@Miguel, I guess this flew under the radar for v6.17, or did you have a
-reason to not pick it?
+I still encounter the cycle when compiling with 1.78.0, which version
+did you test this with?
+
+One of The errors I see after applying the patch on top of
+`pin-init-next`:
+
+    error[E0391]: cycle detected when computing type of opaque `cast_pin_in=
+it::{opaque#0}`
+        --> rust/pin-init/src/lib.rs:1278:73
+         |
+    1278 | pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T,=
+ E>) -> impl PinInit<U, E> {
+         |                                                                 =
+        ^^^^^^^^^^^^^^^^^^
+         |
+    note: ...which requires borrow-checking `cast_pin_init`...
+        --> rust/pin-init/src/lib.rs:1278:1
+         |
+    1278 | pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T,=
+ E>) -> impl PinInit<U, E> {
+         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+    note: ...which requires promoting constants in MIR for `cast_pin_init`.=
+..
+        --> rust/pin-init/src/lib.rs:1278:1
+         |
+    1278 | pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T,=
+ E>) -> impl PinInit<U, E> {
+         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+    note: ...which requires const checking `cast_pin_init`...
+        --> rust/pin-init/src/lib.rs:1278:1
+         |
+    1278 | pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T,=
+ E>) -> impl PinInit<U, E> {
+         | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+         =3D note: ...which requires computing whether `cast_pin_init::{opa=
+que#0}` is freeze...
+         =3D note: ...which requires evaluating trait selection obligation =
+`cast_pin_init::{opaque#0}: core::marker::Freeze`...
+         =3D note: ...which again requires computing type of opaque `cast_p=
+in_init::{opaque#0}`, completing the cycle
+    note: cycle used when computing type of `cast_pin_init::{opaque#0}`
+        --> rust/pin-init/src/lib.rs:1278:73
+         |
+    1278 | pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T,=
+ E>) -> impl PinInit<U, E> {
+         |                                                                 =
+        ^^^^^^^^^^^^^^^^^^
+         =3D note: see https://rustc-dev-guide.rust-lang.org/overview.html#=
+queries and https://rustc-dev-guide.rust-lang.org/query.html for more infor=
+mation
+
+> ---
+>  rust/pin-init/src/lib.rs | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+>
+> diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
+> index 62e013a5cc20..cc244eeb19cd 100644
+> --- a/rust/pin-init/src/lib.rs
+> +++ b/rust/pin-init/src/lib.rs
+> @@ -1278,10 +1278,7 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Res=
+ult<(), E> {
+>  pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> =
+impl PinInit<U, E> {
+>      // SAFETY: initialization delegated to a valid initializer. Cast is =
+valid by function safety
+>      // requirements.
+> -    let res =3D unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinn=
+ed_init(ptr.cast::<T>())) };
+> -    // FIXME: remove the let statement once the nightly-MSRV allows it (=
+1.78 otherwise encounters a
+
+Do note the comment mentioning that it is needed for version 1.78 here,
+so I think this patch still needs to wait until we bump the minimum.
 
 ---
 Cheers,
 Benno
+
+> -    // cycle when computing the type returned by this function)
+> -    res
+> +    unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.=
+cast::<T>())) }
+>  }
