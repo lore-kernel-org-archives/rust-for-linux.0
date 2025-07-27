@@ -1,192 +1,96 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E63171C9;
-	Sun, 27 Jul 2025 09:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8289C1FBC8C;
+	Sun, 27 Jul 2025 09:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753609876; cv=none; b=Pog4ZgKOf/bLSvFUlZ/CYhFTHqPxO66nzl/C+vu0ZKa+loHjSqpJhhKM+9xxlZNinIjuZBkaq8f0JnU00FA0V2tIt8sr6LQF29DjjU9ty8JuSynXTTBzPm+DWnKCbVLsU2StmtsiQ0l/AAr4G1RKp3iFSyzSEFzyf9jMiTp6H6U=
+	t=1753609877; cv=none; b=o/oTn63mabdfSF7JlfsWnG9amLuhxzpgt9U1PjhYPsDP+kxLcgN1Dyr+4YSxKqSj0G8vj13/FSBwc7C7XnKIbDSTt6sY3CuWsN2zXNbGKJ9XtZCyiljqtLjquf0rsl32cesZh0Q5O2WzNnLiueanpSK9H9qdv0ezaWzW8j/8GFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753609876; c=relaxed/simple;
-	bh=xKwJvXxWrDpppiWK/6VTWyH419R6C+6Ux5gNQMAFS8E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UhHl7Ymhbgsi0EuE4qU2t2JbPY4zY13NRoEpdiVW6/8W+IT1RIshJFsF2jb9L4+LpOY3mv8Xh9YMfVuWdygQ9n3MoN2qEGtcsUSZ0NaByXmM5PuLvxzGnnirMYokNG5pQNLelAwglgD9ajbl2bEQmR17fCfg8wZrhxV491GCXV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7mqAuv/; arc=none smtp.client-ip=209.85.215.180
+	s=arc-20240116; t=1753609877; c=relaxed/simple;
+	bh=hw3lK2Gtil8LoYjc67bdQYFl55Gch/gUtLQ2ogjs37I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NMVcVPamdLL6sGZIzerG/fewzbCv1b+oaH/zE9byjZt4ysPORDmR8DkCzR9HW7wiK60EmkzEm/A0HCr03TzsxXeA8EYFfeUoO38nA/WItzongGcTh+YBRXp2m+2kyBz+LgkU78KPBPJAAmNtLxbrVxPk+aS8xiJSY6zN/g12eGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KM1NHfHU; arc=none smtp.client-ip=209.85.161.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7mqAuv/"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b34a6d0c9a3so4378650a12.3;
-        Sun, 27 Jul 2025 02:51:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KM1NHfHU"
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-615df2e8c27so2031132eaf.2;
+        Sun, 27 Jul 2025 02:51:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1753609874; x=1754214674; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=t1kXiH/iOIPgD/M4/LDkpVx0cWkoY7aI0S+hOevU85Y=;
-        b=b7mqAuv/Ry15MhAgUCU29NACg6GfuIgh9Jz7gFBzKOT7l8d4CSmqSaL0wreS3jgFBP
-         p8OVTHqvsmMbyZjVwlP/A4b0QTu3y5zZb0IghLuG8HPLWk4GYLx8WFEtpT/cRigk35Xo
-         cxY+ndM7NwNHdEz0YqjT9tUnP6LYz/MO0Gs32PRyxBs2Ey8PNlpPdiCfOetbcx728J4e
-         533su3jjpk+2cDpekmvfgeHsVVn5msqVwva4A2fukeDf5Z68TI6nQ9zygnBg1f098MCt
-         DINt3263HHUkfUZeuINZZRTLVGc4mtXrarWJ6F29aok62N059jQ8kNdSaoYYL0QpGe3/
-         tOlA==
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nFeZkLi3dXMjYKmhsyulgqSrNnECKk/svpVxCMAGOH4=;
+        b=KM1NHfHUrUEuAdVvCMLaDesPHoqLCJGjCuyMcl17rpGEUxWadj1Le5GbRf93Yxa+Sh
+         U4EI9PZXBhHgepIQhwl7i8550lgEC2joqgaqDCeeC2bSk7qR6/2Dwe6A6kbogfSf6Wwp
+         G7jZfuRKkLi7TnkdtejqJeNfxUasY+z3t4lifSIctDFa22SozDr5me6H2Un4QI6dOiaW
+         4Dp2fWXKLR/3US4FxjhOSmpUsRtCnv5U+HqLEA41o91QB+XC+0hTCKD6/m1ZkENtm2As
+         mZcpsh+6xeN/fd/zPu9vPJ2FzVJR8miflzzpgt+Qj/zfb6ejs4WrwjIdP+5OFAhbbk3s
+         +FXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1753609874; x=1754214674;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t1kXiH/iOIPgD/M4/LDkpVx0cWkoY7aI0S+hOevU85Y=;
-        b=NDBdNLUezDGYzUmAcwY4mLZytoKi+CAvCF8gr1vLQKIIG2zDr0VfpOMydHl8PemZLo
-         HQjnyzelzFur39IBKPpmySkRNn9bQD4+jqHSadbo+C6RxtEuvptBs+5GEF1Lw0jpiCYW
-         j5nXdWcYj6Yq20O//y+MJhE7osUz9NtN9jX8HGpDeE8Kk5HcGO7i+kALAiOgNn1Rk/fo
-         M94/3DTgaG/dtnlZFl03hneBMekK6/XtJy/24cfSPfOUOW7xfcDDzdqcy7IeKlYVR/Px
-         XqgvExTEhoXcxXQk2Zwdbc7o9gqQujNiwiqQIeoGXmavuGSgmvGfR23Tn8bfnB6bRlmh
-         kq0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWaleWS236hXg1L6VlFY3By2vV0HgOwZYjC2ew/Tcr+6vt11pM52D2hWzeudB+yGDwWCwHm0XvvEWax0QOQkIk=@vger.kernel.org, AJvYcCXBEVQIgs8wftMIa7eK6ziU+AzE6LmnXA6uxlYgOoF6LDqEI6rZRuCXBUh2gMc+iKdj6sCHvlkmHgOuphk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUvZ/xz7o0H6/Cubdoa/4c8v1a2A5Ao+ZgxGyE0k90KQYWKO/m
-	62Pi2tLVOj/x/6tZ99ze2HVHGXG3v1SsM4uKHf0/TyhIKEIDDEpCXkHq
-X-Gm-Gg: ASbGncs24eZgNFq8AbWqitn93GriN6KeqUiZCgc0BJ+dOqrULuOznaoPc3K1FYCsYAp
-	glge8a9x6ZB98D+T8bkYR0DAMISgrS5jfTloI2/YDrGkFW/fRjOa856NsngMx7tSufwkgYwcYt0
-	SxYAMHfUq3uqlBHRXTYQ/jX/5yzzFZPNZCtI9quMtOEdpyP4D4kNh/YE8HgBh/7+2Dm1r8l3FcK
-	dbWMVjcPD4ekg56uo6Ed86uRCyCKzrcTOyWDbse9c892C0Igumhi+zmwljaz7RM3O4xu1gxFc1E
-	kvaAMf+BE+jOrrl/U8/PjJY2+nKNR/RLcBV3HYI7vGzp3x1Yq/J4DbQqDAIjMnTxJdpb6EEQsTl
-	HxOy3HMBCsvd82XXV7qXqT4wi
-X-Google-Smtp-Source: AGHT+IHAGa1LiA4U0ZjULerVSzNUQ9qnTdRAU1E1dly2dZnZK61QY6vXTJDFJnRt1D8ULLgYMQEINA==
-X-Received: by 2002:a17:90b:224d:b0:31c:c085:fde6 with SMTP id 98e67ed59e1d1-31e77636196mr14021956a91.0.1753609873917;
-        Sun, 27 Jul 2025 02:51:13 -0700 (PDT)
-Received: from quat-desktop ([2001:569:514a:9100:3f23:7b0f:f6a2:1ebd])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31ea8c1770dsm2012652a91.36.2025.07.27.02.51.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Jul 2025 02:51:13 -0700 (PDT)
-From: Rhys Lloyd <krakow20@gmail.com>
-To: acourbot@nvidia.com,
-	dakr@kernel.org
-Cc: Rhys Lloyd <krakow20@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] gpu: nova-core: vbios: split out PmuLookupTableHeader from PmuLookupTable
-Date: Sun, 27 Jul 2025 02:48:59 -0700
-Message-ID: <20250727094903.20483-1-krakow20@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nFeZkLi3dXMjYKmhsyulgqSrNnECKk/svpVxCMAGOH4=;
+        b=rbs1zSBk1Io7nGuQlfmS++OHwJ8hjbhxY3ITTbWcZBwJ702t+bjqcHoMsrrjpaVm2G
+         hu77Mm4XnhbTqMzSfcm5mY3kGTTAqZYZ+Hkn7x71lL2NGJiSi8n1sADCLwlIi7k3C2ha
+         FFWUoCxMNdLtwifTPq/hL5jnzkjG81wB9y3HBucJ1h0F6lM//E7qSnQxXU7Iz1HiqDHn
+         XfFr9KaNKZoT4Cr3oCx5vV1DPSySaw22Pf6AkcMEwskirO8enBOymCoVhjAej0/Ldzyd
+         sf/gp21EE2ajhXQ25a1hiTUN4UByh1R4XUkeSWP+Tzhb6PevNWsmz/41nrZ49o9A2FcZ
+         uwcA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWZ/ReRj52olguVCvtFVfTVie7fmqUZX335GPJhsv36u8pY7omL6ouIqxHLEXkZlrpWCgnEBNxbsg3rsQ=@vger.kernel.org, AJvYcCV8dLgjS+5QWGDEL5I7/DZk0je6W9ktyRpvqcCwzscQEcq0jZgIxo1ObIvSQDSy5db4rhPU+RBqcOtQd9WPDIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBAogJcYOdfvgAvMTOMiXG5btiuHOMlIIJmfzqw3QScVXe72b2
+	LZhZVCFLdA84nZmi7kMDN1DK3/Iu0RSGNc2aJw6HhlIo+XPu/wBwd2IaFwS0FRIbtPMFEhhp4pC
+	Y79VqiGo6Zg8A1MTqsMK300+/veJccqA=
+X-Gm-Gg: ASbGncv8d6SBQmQTDM+tdN+cSf0csjEfWKYvB3LblyVpVR9K3B2Hf0UmNIvQ1I3kovQ
+	G7MoaT/wVxAAaHEWdfkOuKJxFFL0h8XwNyLpnRkX2WwPrnXd/D1MQj59Ck8ZPJ+jInqIcvMO/tE
+	QWPRwEPV0czfxXTh37bjKOZ9McdmaVZApTsza/fCamCsMuVeglSOHjgQziiKBrF/yg1ZDXZbmbx
+	cx6t/wYuPbXkvUFJP0M+3N47cvI4jVAMysi6K1W
+X-Google-Smtp-Source: AGHT+IFrYgebhq8gmtJdDuLT1R1NJegqag8vHwHBlQ7UiW0xS1gBt/xj3wz+uraz0qf/jzt5q2P6fPA8Y+A+zhmLNyg=
+X-Received: by 2002:a4a:ee0f:0:b0:609:dd17:795 with SMTP id
+ 006d021491bc7-6190c9b2767mr4863242eaf.6.1753609874595; Sun, 27 Jul 2025
+ 02:51:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250718073633.194032-1-krakow20@gmail.com> <DBL6BUAHZ250.3UCFP2OB3UEIY@nvidia.com>
+ <ab63103c-3b21-451e-b450-a1755b452d77@kernel.org>
+In-Reply-To: <ab63103c-3b21-451e-b450-a1755b452d77@kernel.org>
+From: Rhys Lloyd <krakow20@gmail.com>
+Date: Sun, 27 Jul 2025 02:51:03 -0700
+X-Gm-Features: Ac12FXz6IRrbu5D8lGdf-x7j5aaSoITICjmtxz8OWjJATTXn2XMK8AX82FcIyc8
+Message-ID: <CAH7AjUzfc3+SFNKWDerOY62M3OU8=wX8Qs=Bj_S-uKo6w0nuYQ@mail.gmail.com>
+Subject: Re: [PATCH] gpu: nova-core: vbios: use offset_of in PmuLookupTableHeader::new
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>, rust-for-linux@vger.kernel.org, airlied@gmail.com, 
+	simona@ffwll.ch, nouveau@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Separating the header allows the use of `size_of::<PmuLookupTableHeader>()`
-instead of the magic number 4.
+On Fri, Jul 25, 2025 at 7:04=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On 7/25/25 3:35 PM, Alexandre Courbot wrote:
+> > This chunk does not apply - on nova-next PmuLookupTableHeader does not
+> > seem to exist. I think I remember you split PmuLookupTableHeader in
+> > another patch, so can you send all the relevant patches as a series tha=
+t
+> > applies cleanly on top of nova-next?
+>
+> If otherwise the series is ready, please wait for -rc1 to be out, and reb=
+ase on
+> -rc1.
+>
+> Thanks,
+> Danilo
 
-Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
----
- drivers/gpu/nova-core/vbios.rs | 56 +++++++++++++++++++++-------------
- 1 file changed, 35 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index 5b5d9f38cbb3..a77d7a4c8595 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -889,6 +889,32 @@ fn try_from(base: BiosImageBase) -> Result<Self> {
-     }
- }
- 
-+/// The [`PmuLookupTableHeader`] structure is header information for [`PmuLookupTable`].
-+///
-+/// See the [`PmuLookupTable`] description for more information.
-+#[expect(dead_code)]
-+struct PmuLookupTableHeader {
-+    version: u8,
-+    header_len: u8,
-+    entry_len: u8,
-+    entry_count: u8,
-+}
-+
-+impl PmuLookupTableHeader {
-+    fn new(data: &[u8]) -> Result<Self> {
-+        if data.len() < core::mem::size_of::<Self>() {
-+            return Err(EINVAL);
-+        }
-+
-+        Ok(PmuLookupTableHeader {
-+            version: data[0],
-+            header_len: data[1],
-+            entry_len: data[2],
-+            entry_count: data[3],
-+        })
-+    }
-+}
-+
- /// The [`PmuLookupTableEntry`] structure is a single entry in the [`PmuLookupTable`].
- ///
- /// See the [`PmuLookupTable`] description for more information.
-@@ -918,24 +944,18 @@ fn new(data: &[u8]) -> Result<Self> {
- ///
- /// The table of entries is pointed to by the falcon data pointer in the BIT table, and is used to
- /// locate the Falcon Ucode.
--#[expect(dead_code)]
- struct PmuLookupTable {
--    version: u8,
--    header_len: u8,
--    entry_len: u8,
--    entry_count: u8,
-+    header: PmuLookupTableHeader,
-     table_data: KVec<u8>,
- }
- 
- impl PmuLookupTable {
-     fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
--        if data.len() < 4 {
--            return Err(EINVAL);
--        }
-+        let header = PmuLookupTableHeader::new(data)?;
- 
--        let header_len = data[1] as usize;
--        let entry_len = data[2] as usize;
--        let entry_count = data[3] as usize;
-+        let header_len = header.header_len as usize;
-+        let entry_len = header.entry_len as usize;
-+        let entry_count = header.entry_count as usize;
- 
-         let required_bytes = header_len + (entry_count * entry_len);
- 
-@@ -963,27 +983,21 @@ fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
-             );
-         }
- 
--        Ok(PmuLookupTable {
--            version: data[0],
--            header_len: header_len as u8,
--            entry_len: entry_len as u8,
--            entry_count: entry_count as u8,
--            table_data,
--        })
-+        Ok(PmuLookupTable { header, table_data })
-     }
- 
-     fn lookup_index(&self, idx: u8) -> Result<PmuLookupTableEntry> {
--        if idx >= self.entry_count {
-+        if idx >= self.header.entry_count {
-             return Err(EINVAL);
-         }
- 
--        let index = (idx as usize) * self.entry_len as usize;
-+        let index = (idx as usize) * self.header.entry_len as usize;
-         PmuLookupTableEntry::new(&self.table_data[index..])
-     }
- 
-     // find entry by type value
-     fn find_entry_by_type(&self, entry_type: u8) -> Result<PmuLookupTableEntry> {
--        for i in 0..self.entry_count {
-+        for i in 0..self.header.entry_count {
-             let entry = self.lookup_index(i)?;
-             if entry.application_id == entry_type {
-                 return Ok(entry);
-
-base-commit: 14ae91a81ec8fa0bc23170d4aa16dd2a20d54105
--- 
-2.50.1
-
+Strange that it does not apply.  I'll figure out how to send a patch
+series and resend it without any changes.
