@@ -1,110 +1,97 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8815E610D;
-	Sun, 27 Jul 2025 18:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B95A2A1D1
+	for <rust-for-linux@vger.kernel.org>; Sun, 27 Jul 2025 18:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753639571; cv=none; b=NhXe3J1zojilii1wRZDbd4+EDR7o2n3H/ffr7u3EaB/V7Po3PesIPDCMs+afYAymceaWVdMFJUBTOjF/V0yFxLpr+z+CTnHS0uuNl8sctN021Rr6pgq4xVr2BCQoUeWbl0GErEwIYUIEsq+ruzP4XZXtEqgtDIutQcL6YjPjnx0=
+	t=1753640265; cv=none; b=k7oZh6jAGX4l39uObV7uTOkxZdhLdim86JVSA4lB+BWgTcTNK6ZA/1ThBnOwA0lYKbbBf3+Duru7Gab3LpVnko8lgRFEXny+CQbyQcuDd3WL0eNGLcCslQW0OvfZuvpX1ndkM8n0TLxjjiS2heoEgbHR84XyH+wr+fKcSJZWwF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753639571; c=relaxed/simple;
-	bh=bZ/JXJc19nkrcW+WON5HjOh7f+Qm4DzRNAzejFL1y2k=;
+	s=arc-20240116; t=1753640265; c=relaxed/simple;
+	bh=XqPXra3Sg49xsVOULVqLEdPHa3FrIz90CUdmdwsQGLk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qit1TXq3idqVdU8XRRVS4FrKa4/NKxBA/6XJTcQrp/hHMbWU6CvL9li5mwpe2AMeiu5l+fZm2/+MLzsSlum0ln4c+cXbCLI/h1AxGqJJvJ+fMDVMksrojxWZxVfc67e0cVwymXcnTeAO0M5hASOXL+c70cWSAPrSSWAj2mBDE0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IAXxqUtW; arc=none smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=DwPTuUek6yQTtYe8S3c65u9cCEGOBzG860WpAOwRaE9DAQ4Lv4uO8Svzm1y2XMPsClD7SgXFDBckLF3j1IYNITPVbrU0W6p45sIsPXiLdq5ar1pg03BJTZXyQRWHxRO9BrB1HkvG2WshQlyMu7i5keZkEduGI9K4PmNGS6v9mrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kOj5JHGr; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IAXxqUtW"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-31ef3e9f0adso39340a91.1;
-        Sun, 27 Jul 2025 11:06:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kOj5JHGr"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-31306794b30so660605a91.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 27 Jul 2025 11:17:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753639570; x=1754244370; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753640264; x=1754245064; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bZ/JXJc19nkrcW+WON5HjOh7f+Qm4DzRNAzejFL1y2k=;
-        b=IAXxqUtWh+IkO7rWe2A9ueqmoKXk8MuRh3sWjHmpNIrmJTDiCtl+qYYe/SoTGVq3Cz
-         MiNhfeBNTGOaRGu5pH35q63gzzvY3pR4U4+u6ZLC0SmMCoOND0AIck1gaGwIxlbKozRj
-         XPlE9C9XfZi1AENu9W4eL3r7YRm84dslCz49WyzsY5+q5Fvm8k8TXywdF+o5aRaXRbwa
-         Sfw3xKUBLKJSYAa69aEsG0XHFI3dZesgtzpTzzf2MTVdYN+LPaCcSIIeK1HluPr8/EVr
-         qmeo/Z1Qez7qSg4+p5K2LhWp07sVAxXDVBF9/Sbve1w0f+3w4mV98eVoIXvyOd6fVMmT
-         qJug==
+        bh=XqPXra3Sg49xsVOULVqLEdPHa3FrIz90CUdmdwsQGLk=;
+        b=kOj5JHGr9pemn/PdjJUzo9SwdjiabXaaEMNgwcrIwLhiPOn9nBhqHYZvLewCLz2g08
+         UBEiVnpbpl/SF1Q/pry317AMAb6tURtnCaMegk2Lf9O30Bn5+b1DDSlGEFpkiNXoOats
+         AwRSb0NlwPxdtDa9nqK364Ae1JSl9zlEP4oO9ASCbXyZx9xlACocuInSrXH+ly0gYeRb
+         CnAcBr+I/IYM4DbkFSE09GzQ3qfIqKCGaO9as/6gVorEmCfnoE7CmtMLuV0hHHPUEr2/
+         fNfW/OmYApyAOow9w/UeCnT5wxOl6qlCQydJaLErfiezxq6WFBqKPMEtTIVC9xsftCUb
+         qXsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753639570; x=1754244370;
+        d=1e100.net; s=20230601; t=1753640264; x=1754245064;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bZ/JXJc19nkrcW+WON5HjOh7f+Qm4DzRNAzejFL1y2k=;
-        b=EmXolphLO9yxj8b7RC2qU4GUkRHl/nsuFemh5tqnsB2KUmEib6Av0nerTOiraWZ52u
-         ZKSYoQB/qRwUjlqllEn8UepDxg/i+x+f+eCNaZ4MMrulvOKKo0ItzQhcAN4pdKf9hyX+
-         svBjwAiMjyaD2DpLJBop3V0OAPOgbRAEzPnIKgT6aaparZ6ANrzZmL7uvP1B7HESwVa5
-         UY1xI3tBeF2/KQusVzUstkdoBR7G4BCEm1LCDDO66cuYvy7Mi8PTlB42yR2cUkMqFAPE
-         KR9EogXOevXAII9jO1XvJFTdUFhqgF9RS6bN7QNYNJNNMVlZ579hesCoUSweuDmW0syK
-         yKfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOBJhulIPXAXMPprvVRXWEyVdurjyFaEsdq2DwOOhlyj68MI5he593B/oKNuwQXMIl/Az3y+fdJV52Bp4=@vger.kernel.org, AJvYcCWa3GQUt1H0C8VqlGbLzGKj6UtiGg89GWj4tenANBhfhoEOiqMQd0sdabAlYyFwwGP7XTU4BuTGBtJ1jWzHj9A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZFCHfHRS5Mu4yWUAGThDuHtifFcCtXJxUG304vbY/jyXzF38K
-	8b359BoodgQaege6eos0beFce1iozL4O5w0OtbNpycRHcvhgOYtJHHMRVRibUQUjlh+t68Klp/G
-	VEAWIWWcHiHodsflK6Fcj7IJ07HLpcFc=
-X-Gm-Gg: ASbGncvrmN7XFr38iBH+5bY8XZpbG01oSu4VE0poNLXo86+9WkAQlxu2O84YIx1LMvu
-	vsk6+8pDQ5nlBWyx8iMvbVNqH5bG+Hjed3QEkZRo0qWsmfgTC2mkSAi83SBTWI4iJ1qRfPRT8SV
-	yk+I5YxVnHk17HefeBBz4am4EKMp/cQs4Dvp1k6l5Z94wyb0uUALkoeFGElSzpo25m4CEU4kd/V
-	pai6kG0
-X-Google-Smtp-Source: AGHT+IFc1oDi3ttzKyiq8xCPzeqbI2VYL6bu7FlM3gZWatkcZqVsTgMusJlK5RfvMADLXbz5b1obFkorHk7kDIOn744=
-X-Received: by 2002:a05:6a20:431a:b0:21f:5430:8fb7 with SMTP id
- adf61e73a8af0-23d704bb173mr6115388637.10.1753639569850; Sun, 27 Jul 2025
- 11:06:09 -0700 (PDT)
+        bh=XqPXra3Sg49xsVOULVqLEdPHa3FrIz90CUdmdwsQGLk=;
+        b=lHkpQ89EvDQ0M2PC4BmZpZkb/NwzE36s3IRw6NyCOJ+1THovOsgO7/4Oq4B4OqNJRy
+         Q7WvgqkGjgQAY5YR3Ai2ZDYk7N+U21IC5pqlSJbqlnliVdRfpynNvgNck6gH2NcZ3s0o
+         xghON2FXhJeC669MmnimNP82QhLXvO4HMEewfiRhFa2ibeD4rCHCUtaL8uFp71QfdCwI
+         yKlMisqGJY4dLn9kh0Qo3dNi1blWrQgPT3xdEs9Lr6DtcD/Gn2WdsjGiSltcQY6smMxP
+         tPCNmFpUN0VAOtkICbBmJMuKXboH4rMTXMqZ91xK6SdHX4cZrVXTNHMSat7UfPRGI2Ts
+         r4EA==
+X-Forwarded-Encrypted: i=1; AJvYcCWcurqSPhNCW3OHAlxouZzbD7Yz2PsFZoIYfnKZMI0jmq77fzuuflMQJ8Un8zru+Y4iIuZ1dGITefhqq9l0tQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3MBQz+QprGd+hNGp/vwHtV65YfEtvDkOQgTDkkYc8WwXAhIJh
+	ITKpyWziNuHXtpIaCMsavhxt4eSWvaEhnWStYdwU2uoOSdkY6k+G9hru9Nxejc757N4WnzmJfhK
+	LpEwRoS7Nbrmpgbv4MWF4NRKioFCQEwk=
+X-Gm-Gg: ASbGnctul/hxVHoSz9HfRIM8Qp5dEDkWhOfQ48zQ1/TdgDOeY2RArG81P2UnK5b+7IP
+	vPfVm7IbmGbQ5d9rKJYzeS8qD4hh/hPPMP0H30gdZggo6QiApDrVaQ4tLc4O5xcDjTQtqXU5ppp
+	x6I0qyZcUG4PB1LnBwJb6SUs75+6GuDjiFw4ATHhpB+Wh3BMBwet/BbjbblOOd95ZX7Jt4RL1uZ
+	OP/AtxX
+X-Google-Smtp-Source: AGHT+IHmT1Ld74eSexitWjE7SjQKrOcsL0r3kEXQ18S3Y2CVeMqUKcXf1MH1WCaMZ7RPAb//Lv4VN+8WY9hoD/eARkY=
+X-Received: by 2002:a17:90b:4acc:b0:310:8d79:dfe4 with SMTP id
+ 98e67ed59e1d1-31e77aa16ccmr6298496a91.4.1753640263896; Sun, 27 Jul 2025
+ 11:17:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250717073450.15090-1-shankari.ak0208@gmail.com>
- <CAPRMd3nhDKApttF_wBU01es76NG=qAyZMAer_gjbbtTSH_FmSA@mail.gmail.com>
- <CANiq72=uDrg9HBVM97dgJGaC946Or964-2aF6OJVV0ih_vWuRA@mail.gmail.com>
- <CAPRMd3kXUJC6rC_X4i41dWNpS2tx4aEXFmBuEwncXmdJewinDA@mail.gmail.com>
- <CANiq72kw-OiU6YO8TKMVMdtJF+j7r9nBDsAa9Q2tdBzM=DyxDg@mail.gmail.com>
- <DBMUCVDVWM77.2M60X06IBGVA5@kernel.org> <CANiq72nBHtbZqt8R0dMSK6iWY7Z3vKLbeP_2dN2NaLOxRfOvCA@mail.gmail.com>
- <DBN0D5J10BH9.3I1FHJC1KZ79A@kernel.org>
-In-Reply-To: <DBN0D5J10BH9.3I1FHJC1KZ79A@kernel.org>
+References: <20250523145125.523275-1-lossin@kernel.org> <DAI9KRPT45EH.RD7AB7OI1RTR@kernel.org>
+ <DBN0E1JW5JHS.2RU9ZWYJ7TBVM@kernel.org>
+In-Reply-To: <DBN0E1JW5JHS.2RU9ZWYJ7TBVM@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 27 Jul 2025 20:05:57 +0200
-X-Gm-Features: Ac12FXyKqx2O59Ph-48CSD2k8mkM4uvBPoNaAGIqepjHuYbNY2Y06KFqgdFsr2s
-Message-ID: <CANiq72=qbAwqcH0+ogH=STMC2UF4pV5St=gPrg6VmymvZkh6tg@mail.gmail.com>
-Subject: Re: [PATCH 7/7] rust: kernel: update ARef and AlwaysRefCounted
- imports from sync::aref
+Date: Sun, 27 Jul 2025 20:17:31 +0200
+X-Gm-Features: Ac12FXwcBxJCL6UEg-PozGZ95CELyiPbO7saXJurLAMEhzIzF-dr5evUXC9Yw7A
+Message-ID: <CANiq72nzG98-5qtmnf6t6bKctUTnu4tbAwM-_EmZmrZ=-NeUPA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/13] `Zeroable` improvements & bindings integration
 To: Benno Lossin <lossin@kernel.org>
-Cc: Shankari Anand <shankari.ak0208@gmail.com>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Lyude Paul <lyude@redhat.com>, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jul 27, 2025 at 7:20=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+On Sun, Jul 27, 2025 at 7:21=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
 ote:
 >
-> AFAIK maintainers can pick different parts of a series', right?
+> @Miguel, I guess this flew under the radar for v6.17, or did you have a
+> reason to not pick it?
 
-It depends -- some may not be able to be picked independently by
-different trees because it would break the build.
+I had it marked as applied in the spreadsheet -- I didn't notice you
+expected them to be picked as-is next cycle, sorry.
 
-Even for those series where there are subsets that can be picked
-separately, typically in a normal series if I get Cc'd in a single
-patch, then I would assume I am supposed to give my Acked-by so that
-it gets picked elsewhere. So unless the cover letter says otherwise, I
-would expect a series to be applied as a series.
+Since there were no other comments nor Acked-bys, I guess it flew
+under the radar for others too. So I would suggest re-submitting the
+remaining ones rebased as soon as -rc1 is out, and we go from there.
 
-At the end of the day, it is about coordinating and case-by-case.
+Thanks for the ping!
 
 Cheers,
 Miguel
