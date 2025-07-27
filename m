@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63C08633F;
-	Sun, 27 Jul 2025 17:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D300CBA3F
+	for <rust-for-linux@vger.kernel.org>; Sun, 27 Jul 2025 17:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753636809; cv=none; b=Gjxgsja0ZWdJQQolud2ZTnYW4NsNcbQ5PHry9Rt2unYSiGp0RfIy6iP3TLlbIwT7NJDxUXJ/Jg7Cj4SWId6GPWjFiK76ADjiE/YkrVoafkwaaXqG3FZ52rySrhX9Gqb+M5wfFy/EykbFtHCB4yoDf8IpP+LVui0wZgsRaxEmT7Y=
+	t=1753636876; cv=none; b=ZYSoFgEniwdl8jQUIa8M6ZSj3ZpzZFSpTmPlhvzWUtz9OM5bGciZTaygUIegVJbqo/6i10T0PBo94Lv9SRQtfDlXd1+LJbiauRNMiar02NnFptCGUdF4ogCGyi/5SMvRUhfqbWyzik9r1ejHzBXrMX3RGKZJYhaPsUH+jKAI7cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753636809; c=relaxed/simple;
-	bh=8meqovJT8X8IsHJZ0ka65U80kD2cfJ3BG1KmS6GR52Q=;
+	s=arc-20240116; t=1753636876; c=relaxed/simple;
+	bh=uqLgQODfDzkKvbd0MQqGvbu+UCnIXPd3dl/6Batc6x4=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=DM/hFSQZLm09wLyd/OtvKcyby+F/pots+gvN6ocYv0GEzASQU3qufOOs2SlIIjqQuriNCutfFy8YcvI40Azo5QkB82CINzVW1Lkp+dY43XayS6CbQz730kejHesexBPJXQvqEE69qPl+vJnTH43ir3btPiJzyXGGtsuJ3b3WD/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QVNgKwgV; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=Aryiu17ai3xurJYXipOOqH7MnEijWnWWxuAgZwBIfcXxPWePsAGAlcIH2k7K3grH5S3IEmnklJ+/kRPoVFAL6ky4r0QbJhO7wiLX+Rkk6Aiqo+26l6Cfzmrk/DCFs+h9uszJMi733jGa5ZSBad4JXbU8rg4ufTrOxWQp15XmQzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jS7DjpH+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QVNgKwgV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69022C4CEEB;
-	Sun, 27 Jul 2025 17:20:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jS7DjpH+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27897C4CEEB;
+	Sun, 27 Jul 2025 17:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753636809;
-	bh=8meqovJT8X8IsHJZ0ka65U80kD2cfJ3BG1KmS6GR52Q=;
+	s=k20201202; t=1753636876;
+	bh=uqLgQODfDzkKvbd0MQqGvbu+UCnIXPd3dl/6Batc6x4=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=QVNgKwgVRUvkUD9CIxsUe03vVCjwI/p8yyiMkKTPZHtcbGwyjUlrKwI820y0w33s8
-	 3Dt7pziFRvGM1WHwyUZEJTvKr6MHNil9ukzYFhcCWwKuI7jBNwNHoWicX5O4Gj+wbp
-	 GpWDg32KEx7leMhF3hIqdrjwTkqwD/DZEVGAzv0gj565r2J3yJdpfzHGrlbJ0VWz3Y
-	 ZPMw1cahkJjQavEswjLBBx1vLFr7v9P4wqNoSDG+f8yH52S1GeGPpo7XDpRp50LV6u
-	 O6sOMzKwUhWbalBXsnPYklcKHewz8g445bgLdw/xxwGRA70nX2xzRsnTI+0oeNNzxH
-	 k3R8jrh8a052A==
+	b=jS7DjpH+Qyna2YzqMvoxhn+XpPAtTsWBfwRjDGL7JdLJM/UfH3zfynVStuPcgcI/X
+	 cpRiItYv+BFCZHsyg4K6DtfaswpqwlA3sSP2e5GHrFBu9IHktYADABq5+36IMkJdpi
+	 sIKwBlTu/4l0tFNit6MEzscPHVNisWgX48Ax9jG022s4nBnUigNK+b6hORR+0WvFJB
+	 PzXGl58yKt+BzdKtRwFd17AkrD5XkPrDiRH/CVucJmhn9uN52ji3smWgiNoFsJqPSi
+	 gFUGla7PIUK0QDZxtS1fNTW9t4I7RVi8nTWW3VJdUpTy1Dh4jE5m3kX2oZQGS/ZiF4
+	 HtOGBg8u3DGKw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,82 +34,106 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 27 Jul 2025 19:20:02 +0200
-Message-Id: <DBN0D5J10BH9.3I1FHJC1KZ79A@kernel.org>
-Cc: "Shankari Anand" <shankari.ak0208@gmail.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Rafael J . Wysocki"
- <rafael@kernel.org>, "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Robin Murphy"
- <robin.murphy@arm.com>, "Viresh Kumar" <vireshk@kernel.org>, "Nishanth
- Menon" <nm@ti.com>, "Stephen Boyd" <sboyd@kernel.org>, "Bjorn Helgaas"
- <bhelgaas@google.com>, =?utf-8?q?Krzysztof_Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>
-Subject: Re: [PATCH 7/7] rust: kernel: update ARef and AlwaysRefCounted
- imports from sync::aref
+Date: Sun, 27 Jul 2025 19:21:12 +0200
+Message-Id: <DBN0E1JW5JHS.2RU9ZWYJ7TBVM@kernel.org>
+Cc: "Lyude Paul" <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH v2 00/13] `Zeroable` improvements & bindings integration
 From: "Benno Lossin" <lossin@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250717073450.15090-1-shankari.ak0208@gmail.com>
- <CAPRMd3nhDKApttF_wBU01es76NG=qAyZMAer_gjbbtTSH_FmSA@mail.gmail.com>
- <CANiq72=uDrg9HBVM97dgJGaC946Or964-2aF6OJVV0ih_vWuRA@mail.gmail.com>
- <CAPRMd3kXUJC6rC_X4i41dWNpS2tx4aEXFmBuEwncXmdJewinDA@mail.gmail.com>
- <CANiq72kw-OiU6YO8TKMVMdtJF+j7r9nBDsAa9Q2tdBzM=DyxDg@mail.gmail.com>
- <DBMUCVDVWM77.2M60X06IBGVA5@kernel.org>
- <CANiq72nBHtbZqt8R0dMSK6iWY7Z3vKLbeP_2dN2NaLOxRfOvCA@mail.gmail.com>
-In-Reply-To: <CANiq72nBHtbZqt8R0dMSK6iWY7Z3vKLbeP_2dN2NaLOxRfOvCA@mail.gmail.com>
+References: <20250523145125.523275-1-lossin@kernel.org>
+ <DAI9KRPT45EH.RD7AB7OI1RTR@kernel.org>
+In-Reply-To: <DAI9KRPT45EH.RD7AB7OI1RTR@kernel.org>
 
-On Sun Jul 27, 2025 at 4:26 PM CEST, Miguel Ojeda wrote:
-> On Sun, Jul 27, 2025 at 2:37=E2=80=AFPM Benno Lossin <lossin@kernel.org> =
-wrote:
+On Mon Jun 9, 2025 at 9:53 PM CEST, Benno Lossin wrote:
+> On Fri May 23, 2025 at 4:50 PM CEST, Benno Lossin wrote:
+>> Depends on the pin-init test & CI fixes sync [1].
 >>
->> That's good advice. I want to add that in this case, I think a series is
->> better sending 7 independent patches. Using a series allows people to
->> see if it is complete (ie there might be places that are missed). It
->> also allows someone to send a single mail reviewing all patches & giving
->> general comments about all patches in the series.
+>> This came from a discussion at [2]. And I added some more useful parts
+>> to the original idea.
+>>
+>> I'm not sure on the impact of build times and rust-analyzer. We're
+>> adding a derive macro to every struct and union emitted by bindgen.
+>> Building using my test-config took 27.7s before and 28.2s after this
+>> change, but those are only two runs on my machine with a very reduced
+>> config (that enables all Rust code that we have at the moment).
+>>
+>> Maybe we have to reevaluate this when more C code is scanned by bindgen.
+>>
+>> [1]: https://rust-for-linux.zulipchat.com/#narrow/channel/291565-Help/to=
+pic/Zeroable.20trait.20for.20C.20structs/with/509711564
+>> [2]: https://lore.kernel.org/all/20250523125424.192843-1-lossin@kernel.o=
+rg
+>>
+>> Changelog
+>> =3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> * v2:
+>>   - added patches with more extensive pin-init changes to `Zeroable` &
+>>     related methods. for the upstream PR, see
+>>     https://github.com/Rust-for-Linux/pin-init/pull/56
+>>   - added patches replacing usage of `mem::zeroed` and
+>>     `MaybeUninit::zeroed().assume_init()` with the new
+>>     `pin_init::zeroed`
+>>   - fix rust-analyzer support=20
+>>   - use import in `{uapi,bindings}/lib.rs` to avoid the `pin_init::`
+>>     prefix
+>> * v1: https://lore.kernel.org/all/20250520192307.259142-1-lossin@kernel.=
+org
+>>
+>> Benno Lossin (13):
+>>   rust: pin-init: rename `zeroed` to `init_zeroed`
+>>   rust: pin-init: add `Zeroable::init_zeroed`
+>>   rust: pin-init: add `zeroed()` & `Zeroable::zeroed()` functions
+>>   rust: pin-init: implement `ZeroableOption` for `&T` and `&mut T`
+>>   rust: pin-init: change `impl Zeroable for Option<NonNull<T>>` to
+>>     `ZeroableOption for NonNull<T>`
+>>   rust: pin-init: implement `ZeroableOption` for function pointers with
+>>     up to 20 arguments
+>>   rust: add `pin-init` as a dependency to `bindings` and `uapi`
+>>   rust: derive `Zeroable` for all structs & unions generated by bindgen
+>>     where possible
+>>   rust: miscdevice: replace `MaybeUninit::zeroed().assume_init` with
+>>     `pin_init::zeroed`
+>>   rust: phy: replace `MaybeUninit::zeroed().assume_init` with
+>>     `pin_init::zeroed`
+>>   rust: block: replace `core::mem::zeroed` with `pin_init::zeroed`
+>>   rust: of: replace `core::mem::zeroed` with `pin_init::zeroed`
+>>   rust: security: replace `core::mem::zeroed` with `pin_init::zeroed`
+>>
+>>  rust/Makefile                                 |   6 +-
+>>  rust/bindgen_parameters                       |   4 +
+>>  rust/bindings/lib.rs                          |   8 ++
+>>  rust/kernel/block/mq/gen_disk.rs              |   3 +-
+>>  rust/kernel/block/mq/tag_set.rs               |   4 +-
+>>  rust/kernel/init.rs                           |   8 +-
+>>  rust/kernel/miscdevice.rs                     |   8 +-
+>>  rust/kernel/net/phy.rs                        |   4 +-
+>>  rust/kernel/of.rs                             |   4 +-
+>>  rust/kernel/security.rs                       |   3 +-
+>>  rust/pin-init/README.md                       |   2 +-
+>>  rust/pin-init/examples/big_struct_in_place.rs |   4 +-
+>>  rust/pin-init/src/lib.rs                      | 120 +++++++++++++++---
+>>  rust/pin-init/src/macros.rs                   |  16 +--
+>>  rust/uapi/lib.rs                              |   2 +
+>>  scripts/generate_rust_analyzer.py             |   4 +-
+>>  16 files changed, 147 insertions(+), 53 deletions(-)
+>>
+>>
+>> base-commit: ae8b3a83fb9de394f609035041cd7a668fda2ab3
+>> prerequisite-patch-id: 8d7ade67c2e5189bf8a2c91253d925e25744cba5
+>> prerequisite-patch-id: 0ebbd4a86bebeff23257870db92a1b0fe017c481
+>> prerequisite-patch-id: 1437fc7adeff6e13abd433594da923272b9388bf
 >
-> It is fine if places are missed, since in this case they are not meant
-> to be applied at once -- maintainers may think they are supposed to
-> give Acked-bys instead of applying them, and here the idea was to try
-> to see if we could get a migration like this via different trees
-> slowly, rather than the way we did the others.
+> Applied the first 6 patches to pin-init-next -- thanks everyone!
 
-AFAIK maintainers can pick different parts of a series', right?
-
-> For the "final series" that removes the re-export, it should
-> definitely be a series, because in such a case the idea is to apply
-> them all and remove the re-export at the end of it.
->
-> I guess it depends a bit on what maintainers want to do and the case
-> (e.g. if it is a tricky change, it may be best to have a series).
-> Sometimes same people may do it differently, e.g. [1][2].
->
-> But I agree that many independent patches are painful too, including
-> in Lore; and that it is always nice to have an "index" of all the
-> patches for those that want to see it as you say -- perhaps providing
-> a link to a Lore search, or having them all in the same thread can
-> help (though that can be confusing on its own), or having a first RFC
-> version as a series that can be linked later before splitting.
-
-This is the main benefit in this case I'd say.
+@Miguel, I guess this flew under the radar for v6.17, or did you have a
+reason to not pick it?
 
 ---
 Cheers,
 Benno
-
->
-> Cheers,
-> Miguel
->
-> [1] https://lore.kernel.org/all/20241127091036.444330-2-u.kleine-koenig@b=
-aylibre.com/
-> [2] https://lore.kernel.org/lkml/20221118224540.619276-1-uwe@kleine-koeni=
-g.org/
