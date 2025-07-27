@@ -1,99 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBF11C8604;
-	Sun, 27 Jul 2025 12:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AF0126BF1;
+	Sun, 27 Jul 2025 14:26:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753619984; cv=none; b=nqJmtakez7rphHp2DZLhqWG8BBNfaqinFF33G+xypd3m3qlvtFQrPf+sa261hM7t7i1f5FYohiGvX8/Kt+bKya5KsEWx0PfBQpATv41thlZ+SMN/HvFMOpCH8YnvHeDYyHdZ+5a39BNm+EwKujAzWYjvEDnI3nazeq67QQgreyI=
+	t=1753626401; cv=none; b=YZWPRVHhlsAFqa+AcQh4c3rIQ9CO1iMbTJAhL+zXzk422pcNc2ahJEhi1Ph9PVs7uGJG7VcwgIpvAbfle93Dyg+nrGaZudY9iCqDxYkZlM8cf3UIM3dvnzu8iJyFWK51ZzWuH3lWTESmFkV794YQNHG8FUxP27i0Nn2qAVUs8K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753619984; c=relaxed/simple;
-	bh=fIXQgL9YEiRqNQxiYSID7ZjBcy7GeSQhzu+5YaUrg7k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=oprDB4CGhlZqVcAdWLOfYc10ea6M/SOHI6nTn18AnMu5s6ubL5e4zNVCt5ycRhAfhmX2nW+TLpUdQLzIi+ye/ZBj+rl1JRZ/NZuS7y0YEckyH2HbsmV9HLO/kfv1OexdT5YpbY7OfSXTzKZEnDOXhWKEHlk3barYOxbYPExxTxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rv5+0JLf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753626401; c=relaxed/simple;
+	bh=mZp1PU9fmN+OYBLE87U2j834maP1HDJ1iVSdhmTIa+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b6jo/T+87UkQDZ/zMoD2H4jESnX2OvJMjVEQqt5e5966LeCEqfADsJc023ubsJELCEWfo0twWdHR5XsxvcoIqs2Ou3gXMiYHpSBHE427+LxbwSkrwNuj+Rc+1cYNbtqWayxva45swJCtEnbYM/pORWxM2LsEEDOw5hSp1dbGPeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bo0YOAnm; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rv5+0JLf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F47AC4CEEB;
-	Sun, 27 Jul 2025 12:39:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753619984;
-	bh=fIXQgL9YEiRqNQxiYSID7ZjBcy7GeSQhzu+5YaUrg7k=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=rv5+0JLf03BsZyyLJ4SqD+8fQmTbff6WjrWDLgui+5tTMtEUh1+ZAO4E6B5O5QEl7
-	 InAR8jpKa/1vowj+PtEBGZTTYRBnhNiUubAAlbmlsBqQrOvXxwlNHVLVMxZqsfpeg3
-	 /pZKe3ssPKCGJH9cZNnHtbmkSxIFrD79/vtK99lUAL/J/qYfXl9RlgR4i1sTNaLhfN
-	 u1wV97EdaiAYKgoE/11lgpl+xH9OvwWW2PcNfIGLtlrePtA4QqjUpFfijIhjCm68fp
-	 1eyNY2v7HcDAE608nli7ceE3hUkTObOGpeK8LFhWorPZk83xtUT2l7rk90JgC71tGf
-	 DamYTvpVaB9hg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bo0YOAnm"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-748e60725fcso342282b3a.3;
+        Sun, 27 Jul 2025 07:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753626399; x=1754231199; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mZp1PU9fmN+OYBLE87U2j834maP1HDJ1iVSdhmTIa+Y=;
+        b=Bo0YOAnmENnekSNFS/rhpcnqNbi2T3FUpdDZJ/MZDalX0l6/NJWppIGI0eVbnh4Lzv
+         sQuGtrCNRtFLhBRMWBqcc0dzrzJvzMyhiQ+jhCSaFMWSO588Y6K8dn1IynTRxtdBpHFm
+         51NrWwgxwZK+5qNvU2Xqq2gqzW05E3zuqOlA5pQxZTtTvPm+aYiuS4Tfd8UmODW9Bz6X
+         jlDJufTqedNYehzT9IDKvKq/nTLAqvKPa+JR2xslqKJq4LxgoH7Wn3IClyc95uinrGqn
+         n/Uux+a+eRg9gHCOk/vo2SAMGcGix2Kqt4mgVCCx4vIpX/nY4MJ6tjoRCHI/M7rfZeRC
+         /+Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753626399; x=1754231199;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mZp1PU9fmN+OYBLE87U2j834maP1HDJ1iVSdhmTIa+Y=;
+        b=wSBv6HpIoBFz8N5oIIQ35xOjycS8hovJBCGHQw5kGkldx6RV/lwafHBz/v2nUf+ZHs
+         3RehY6zkngVN06QMyPYfMjj1zFYjjKUsjKkHs9IkdULUuv/QmAEQrPTv7zrz4+SrC3N9
+         xZi9kgy3yw+My5JtfIjyXbkfzqSYjbOx47bSCwhN/CeKDfgsPGYuWJSiRjRSDvdbSl+V
+         2ScEnHpKt+fKrPS3fY8o2tTuOfMbxRzfh/g23RVbQz5x/30zZjvASGOoXV41jI+Cn59j
+         JAE45R7ECGiSn9iLbnFIbGOgn8idXy0HUy5gIQypc0EG9JKWO+cyEtQDa2a+cTQyKbCM
+         +/8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWrgKhHs3z5m+4bR+XoYFFDiBIK5C+F70WEBhOOALrjqUuHLaBAdbMO+9j52oAqaqTkhRenLzJEpPdY6rc6+HU=@vger.kernel.org, AJvYcCWzEFaEVNzvvujlMPDrJJ0qAtqC7KbKayaMjKHKZfZuYUY9id/dewTChI5H9nufViE3aswDsFdW158ywNg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUgKD4T2JxCUtfi1kGHg1rM6QygejKGXd4niSCmIJH13gWaMEn
+	V+4U2+z1erTyRvJNGhD0yXNmRTajmhZoq7oDYBHfPZlVQ1ctkBcj1SX3Ddrcw60TH1FZM/u0Bso
+	8gZscO9Jika/91gOGCvQY2eMXpQK+IJs=
+X-Gm-Gg: ASbGncv8YYYhGhP3ilINgR8TvZ2Sp9HaaJrva4aIS4GcQGZc8N91s7sgZAYqNl6lA1q
+	cj7QMzMOiBDHkfsAFkWYIiemjyDz7oQ1mm4YDsR+7tM1/y16RTEUx4UecjR57efsKax54whOmHr
+	7HwTmLo8i/5FvV4YYsXCl6XIFYZYkjf14M4ZeD9SLGkQCw1/jYegCiKjYEen1UQIwVPbkdsPSQA
+	/k/XukW
+X-Google-Smtp-Source: AGHT+IEPqK9/b/GzYd7MTTPdSgKjVVUt/7rPLfRW6QkOmmzvFF+PDtVQ/0dflAuvIiwxbtK1iF9Ffbiym06PMjDEw1M=
+X-Received: by 2002:a17:90b:4a47:b0:31e:f50d:89ac with SMTP id
+ 98e67ed59e1d1-31ef50d8dbcmr86820a91.7.1753626399225; Sun, 27 Jul 2025
+ 07:26:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250717073450.15090-1-shankari.ak0208@gmail.com>
+ <CAPRMd3nhDKApttF_wBU01es76NG=qAyZMAer_gjbbtTSH_FmSA@mail.gmail.com>
+ <CANiq72=uDrg9HBVM97dgJGaC946Or964-2aF6OJVV0ih_vWuRA@mail.gmail.com>
+ <CAPRMd3kXUJC6rC_X4i41dWNpS2tx4aEXFmBuEwncXmdJewinDA@mail.gmail.com>
+ <CANiq72kw-OiU6YO8TKMVMdtJF+j7r9nBDsAa9Q2tdBzM=DyxDg@mail.gmail.com> <DBMUCVDVWM77.2M60X06IBGVA5@kernel.org>
+In-Reply-To: <DBMUCVDVWM77.2M60X06IBGVA5@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 27 Jul 2025 16:26:26 +0200
+X-Gm-Features: Ac12FXw5utZrKsaYiKjsWjvVQHV_Iv6UNoJWGch6_SHp3Q8oUQsUiOuZ6s50zvw
+Message-ID: <CANiq72nBHtbZqt8R0dMSK6iWY7Z3vKLbeP_2dN2NaLOxRfOvCA@mail.gmail.com>
+Subject: Re: [PATCH 7/7] rust: kernel: update ARef and AlwaysRefCounted
+ imports from sync::aref
+To: Benno Lossin <lossin@kernel.org>
+Cc: Shankari Anand <shankari.ak0208@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 27 Jul 2025 14:39:39 +0200
-Message-Id: <DBMUEH5MYR2L.CXM12OIUH7TZ@kernel.org>
-Subject: Re: [PATCH v3] rust: transmute: add `as_bytes` method for `AsBytes`
- trait
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alice Ryhl" <aliceryhl@google.com>, "Alexandre Courbot"
- <acourbot@nvidia.com>
-Cc: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Robin
- Murphy" <robin.murphy@arm.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Christian S. Lima" <christiansantoslima21@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
- <CAH5fLghNDDo0HKupPXe8G6z2TP4TJE881Bd76k0LDjSm75KcEQ@mail.gmail.com>
- <aIX-JDehurnGYppE@google.com>
-In-Reply-To: <aIX-JDehurnGYppE@google.com>
 
-On Sun Jul 27, 2025 at 12:23 PM CEST, Alice Ryhl wrote:
-> On Sun, Jul 27, 2025 at 08:52:00AM +0200, Alice Ryhl wrote:
->> On Sat, Jul 26, 2025 at 4:47=E2=80=AFAM Alexandre Courbot <acourbot@nvid=
-ia.com> wrote:
->> > diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
->> > index 1c7d43771a37b90150de86699f114a2ffb84db91..69c46c19a89191d8a2abc5=
-801564cacda232218c 100644
->> > --- a/rust/kernel/transmute.rs
->> > +++ b/rust/kernel/transmute.rs
->> > @@ -47,7 +47,16 @@ macro_rules! impl_frombytes {
->> >  ///
->> >  /// Values of this type may not contain any uninitialized bytes. This=
- type must not have interior
->> >  /// mutability.
->> > -pub unsafe trait AsBytes {}
->> > +pub unsafe trait AsBytes {
->> > +    /// Returns `self` as a slice of bytes.
->> > +    fn as_bytes(&self) -> &[u8] {
->> > +        let data =3D core::ptr::from_ref(self).cast::<u8>();
->> > +        let len =3D size_of_val(self);
->> > +
->> > +        // SAFETY: `data` is non-null and valid for `len * sizeof::<u=
-8>()` bytes.
->> > +        unsafe { core::slice::from_raw_parts(data, len) }
->> > +    }
->> > +}
->>=20
->> Let's also have an as_bytes_mut() method. I would require the type to
->> also implement FromBytes as it lets you replace the value with another
->> set of bytes.
+On Sun, Jul 27, 2025 at 2:37=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
 >
-> s/I would/It would/
->
-> FromBytes is needed only for as_bytes_mut(), not for the existing
-> method.
+> That's good advice. I want to add that in this case, I think a series is
+> better sending 7 independent patches. Using a series allows people to
+> see if it is complete (ie there might be places that are missed). It
+> also allows someone to send a single mail reviewing all patches & giving
+> general comments about all patches in the series.
 
-I agree with your suggestion, but it can be an independent patch and
-doesn't need to go in via this one, right?
+It is fine if places are missed, since in this case they are not meant
+to be applied at once -- maintainers may think they are supposed to
+give Acked-bys instead of applying them, and here the idea was to try
+to see if we could get a migration like this via different trees
+slowly, rather than the way we did the others.
 
----
+For the "final series" that removes the re-export, it should
+definitely be a series, because in such a case the idea is to apply
+them all and remove the re-export at the end of it.
+
+I guess it depends a bit on what maintainers want to do and the case
+(e.g. if it is a tricky change, it may be best to have a series).
+Sometimes same people may do it differently, e.g. [1][2].
+
+But I agree that many independent patches are painful too, including
+in Lore; and that it is always nice to have an "index" of all the
+patches for those that want to see it as you say -- perhaps providing
+a link to a Lore search, or having them all in the same thread can
+help (though that can be confusing on its own), or having a first RFC
+version as a series that can be linked later before splitting.
+
 Cheers,
-Benno
+Miguel
+
+[1] https://lore.kernel.org/all/20241127091036.444330-2-u.kleine-koenig@bay=
+libre.com/
+[2] https://lore.kernel.org/lkml/20221118224540.619276-1-uwe@kleine-koenig.=
+org/
