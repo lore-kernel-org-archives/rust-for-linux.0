@@ -1,128 +1,145 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8D3CA5A;
-	Sun, 27 Jul 2025 01:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5EF86338
+	for <rust-for-linux@vger.kernel.org>; Sun, 27 Jul 2025 06:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753580232; cv=none; b=B4hFaOXwphKHYedhY2ouaUeuOC7lTpewAGMTGBf03rs97gcXIsF7zcOyriJ1Lg2AOO9DOsAjL8uXyLvCe7/oy9cH2iqyTOsNu9uQ3DMbAWDni4pllyqK3yNs0OdkxiJ1pIjc3qVViJVexADYlfKexNOT+oXStj1pqccORKctrU4=
+	t=1753599137; cv=none; b=KTNSniMx63xvc8uap756CdunimrUl2Ry1Pr1m7eBC3IRDzhDGVJsPj8UUUCiMggcqYrz2EKxly7aayPqPZ5XwUh674gY0FCechrO01riRnFZlB7JwFcnyOmQvq4op1P0WAanHnE/wLRk4uGVz3H/BaCgtOlanZTJkhgDs/Cb9Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753580232; c=relaxed/simple;
-	bh=GARqaKeGqvKORdT1s71kP1FtI2F5yaeP8069Adu8HmM=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yb9FfEYAdEsNKYw2fug59H0r2F+W4skcx5+Rz+ecSOgsM9386EVmh6FXlwWY2PYC709xX/FQN34Yxg+a/G+WTsvVALsLeHy5TUyaW7zW3Sr5X9Ygozy7QXmyeDIPvz/oMR2rCwofcVG+Tg5/ItU1OJTDh0namD9bdgyo2ymTRWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fwKkZSQo; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753599137; c=relaxed/simple;
+	bh=9PpkV4enf5TEkS23PH/SR14tNUZPKHoOap+G+AMjY34=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K08mtidSt8JbOF72Dbq8c02lt2TBeSOZz2RuMcqUI2JsmT06HtTon3w2ZNtERyrsY6tm7wLBn/ux1AfPUCasQr7rMNMuvB3RJT2JjlciIJuK7Z2fJUvbpng1YodvALe7fhW0huvdtQMcRTAHf6O9ODXGe4zkRaJq2ue8NisHoJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IS75fva5; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fwKkZSQo"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3b783ea5014so86705f8f.0;
-        Sat, 26 Jul 2025 18:37:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IS75fva5"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3a575a988f9so1917803f8f.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 26 Jul 2025 23:52:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753580229; x=1754185029; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fz5CvwFTaUWZf7FF2jNo/Q6Lw3+xJs22d4zTmd4NkJg=;
-        b=fwKkZSQozO3hX6V41FqvZchVtUA3BOKgvJz7CU9YKjIUmxFvCIqMDTQmoWUJY+XcNp
-         GBziQcE2aYc9Ik2QM+NuECjS0zpD+gEZzuv6t51S2bTnVn9YgTPDq/esaz28p05wmfko
-         k9tCpKApGP0qj+R9KCvP0MPNoi+iZnPoCzyVYcOwJyIAMxADZKlNEyeUyZxmYFC5eg1H
-         d/HpQX3WXPI2jz3jxxQBuMyrrnzeZ0a2tpMMB4YlBbxfW2zdNFeWCx8Ur0buyaG5aCHu
-         ZCIZx4gJZsgfr+DR+gotfuHQFSMFMveEU27fDJkIWHnuuliwSJXsQpX8zAjx+G3RpEEq
-         hEpg==
+        d=google.com; s=20230601; t=1753599134; x=1754203934; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZHxzh6y8MXrb6J9PTI49jeC2fj1UoRizV4OaU4qLR0w=;
+        b=IS75fva5pJ9zY1jF766/xsKpDpimm76zMHVfNEE30oqRzPmYKkfTy9PQo271fyQfr+
+         WCgZaoDpdVsnMcf4TyPF9vYhaZWPcWtoXTaRAvDlSO53kvuAZ/snOjCVwYypK9gochwy
+         vr1VEcT1OWBNGONyRJjYDvu2rGF7u6LBZQY8W0Ax/AlVqSwMUSEfp54WVXLxSrHn4tN5
+         1sFfvk0o+nFMPyHMKeP5M4BaXMOLVOBPWMyawru1hnKNw8j0wguGQRO0ZGQ0BpOp25Iz
+         2Pg65/PTXeBAeQ35KETxV3lQfb0ZOAng8y/rP8hQsJ5BnDtQLEmEXFEHiCIWQn/9cY9M
+         YWNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753580229; x=1754185029;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fz5CvwFTaUWZf7FF2jNo/Q6Lw3+xJs22d4zTmd4NkJg=;
-        b=d1tpD35LavEpdqkj8H61WFb1BbfBMOMbg+/8cehEjUTd9/g7l9ocQWFH2gQZWpUbuZ
-         K7sZ065O5eJ4I1+SuR5IGXjOnG5qd480vez7IfYJpgQyyvzRv/3y+8/7vQcKctmyVRMp
-         fz/UEkgdGNUUT+g+OUoOWVW8XbBH8kSkinPaCq90xsvWxNtGPUKHcdfOsmJfe4wk/EPP
-         TwuckpdxS+HtA5G3j0DpiabOn5hSWBQxiTJkXSEe9np4OLvG7lXVLU6Zo4pZ9lXtG47r
-         wKuKyso9aUjeiaiCYBdTxsbeCKAIDLQcFzY6MxlwNVmmc4BLubpIRPYtyJkvewnck3HE
-         4ppw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWS91iHV1V9vob3RwOMgGRzPM+b4memKVKrxNQyKHk4D0hdpiYM2GGLhz+T0fnBCqVHj0REBoPls83bbW8mkg=@vger.kernel.org, AJvYcCUfmeyObLk15QDtXRgWH135u6CukDz8ghmTWBVuhS4mqXDPshNu8lJUdK5cWvq3W85EXwTvSPx1zu/1Pz8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcjKn6yya7Nz74zy2Se5Cpxs+eEiwTRu/a/QB0ff2RZPsk6KFM
-	xOQd7cuV0aKmg6Qv535AUeVTjNXxs0sHtXmryiS1WQC9HJ2gcWhKsBtBBY9PnvOLRalCBA5pLCn
-	3UF4jJganypwxcNI0S3WYnPSYT7liVTA=
-X-Gm-Gg: ASbGncsdFhRRM00JlilGM7BScf+RbFjE7YkEawS/XQ/LIVn5I+0g07puTfsT0XoPRSI
-	/it46keFgCdT+EANKW8Q5V2mKUMq2afCnxvSpqRO80qNauVjYbsjrDRoQKzbaNTQKWBgW6e0ppV
-	cc1cTpM9ZGszSpzZq5C+HohpM9TePojyd0h3apAi19GLg+TEUDOtvs5K5wDHS0YgGfj3DNZKWT1
-	oDDuEJONkv80afN9ks9kGLBsmWD1IzCmE1tkBGt
-X-Google-Smtp-Source: AGHT+IHUZvn6xDvv8KTa/ewPnwJQRzeoKj1ww+cScjSufeV4ZPempvFLmMtUJZ7YTtem4IjrG84UqCUrBm82uTibbiE=
-X-Received: by 2002:a5d:5f8d:0:b0:3a4:eda1:6c39 with SMTP id
- ffacd0b85a97d-3b7765ec69amr4545794f8f.13.1753580228772; Sat, 26 Jul 2025
- 18:37:08 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 26 Jul 2025 18:37:08 -0700
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 26 Jul 2025 18:37:08 -0700
-From: Kane York <kanepyork@gmail.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250624042802.105623-1-christiansantoslima21@gmail.com>
-References: <20250624042802.105623-1-christiansantoslima21@gmail.com>
+        d=1e100.net; s=20230601; t=1753599134; x=1754203934;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZHxzh6y8MXrb6J9PTI49jeC2fj1UoRizV4OaU4qLR0w=;
+        b=kKNy01r4w2spwRZMasmvONWtGlJoJOWddPeuxv/tK0s132dt7gfyqZNZmVelm4nxnt
+         LpQ7Sctdr2oXUbGZpOc87CCi0YPli4jsY+6uAUpJ3TRLQDdQT9pSxOSQ7uwB4IZs3Xc3
+         x7so+oygjvj3bNlmxLVf2ji6MCkLHgUS+2nVKmscezoYRU7cBFrcre3uGu/so+spnxVE
+         Rn6eCvyZp9YTkbrer+jzcbxmFE4F0SKxeWO1weTrt218IIvOcVFS/t570G2/MEW1Co3d
+         Hp11HHC3/J39Pt279TLkENH/cxGKWV+CKAXJo07JXTuWm1RtvRW9VRpPe9szrVbY+sWe
+         pGFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXV4/2IY5cXxG6M6wmt9wfw/XHAimVW/Jv5V3/bR9gVe4m45d/nOa6yyFcOxqhm7tzWNEAyijB00NlZoArqKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/qmECMc8YZgE0uXSdbR9v+/PzYASgrDz9xlVIgJbF/71Rb6fy
+	V1ooNTygsou8g+3ZJuz+VD4VRHGpIHzgmSVkC5Qd0gCO4hfRxxlNRZjwdLjaqc3s3441QPKYQMy
+	flbq0hMWi4EaSFpa/i6Ct3mismr2V+VPDSpfM9kDm
+X-Gm-Gg: ASbGncvwD685wmflLctj3gJRWv3aOK9uYVAuFoRcS2dxyWgHsqHAsiHfsUh6nbILzZF
+	1ocASpA8DJYK3DOBknzUaKOlMqQEI8tkyJyl1RqjDFyrXu9pitO4NsfI9wGXRwoi3otHl6hh9ZD
+	OLJnxw6sN3oGmyg7NpcdV8MhAw372FBOHC86Qo9wf6EGzBJpda52am+moAZ/VfxoonLLYple8zl
+	VnZuYDD
+X-Google-Smtp-Source: AGHT+IFzA3zIZL6grZHKyniaHmoKbqlVArhdIEEhaN9YkdDqsWFdOmboHL4q+RLBLQqCi398VjsEH/yX9hwu6iDbSdw=
+X-Received: by 2002:a05:6000:40db:b0:3b7:79a5:3e53 with SMTP id
+ ffacd0b85a97d-3b779a53ee3mr3062052f8f.45.1753599133715; Sat, 26 Jul 2025
+ 23:52:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sat, 26 Jul 2025 18:37:08 -0700
-X-Gm-Features: Ac12FXxsuoJc-fmTEmPFr1-hwmxQeKFX0SZP2JjV51WV_k3pkZTS0X5ALYhYjiQ
-Message-ID: <CABeNrKVYy=9QKvTwnDPfRhXuJLCFgA9bbvd34V-P8jHLEJSGEg@mail.gmail.com>
-Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
-To: christiansantoslima21@gmail.com
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, richard120310@gmail.com, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu, ~lkcamp/patches@lists.sr.ht
+References: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
+In-Reply-To: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sun, 27 Jul 2025 08:52:00 +0200
+X-Gm-Features: Ac12FXzxAKuUJXT8WArPLUiJwTxk1R_0MtQGsAdqJVkVvCI7zkWTYx6de61yRlY
+Message-ID: <CAH5fLghNDDo0HKupPXe8G6z2TP4TJE881Bd76k0LDjSm75KcEQ@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: transmute: add `as_bytes` method for `AsBytes` trait
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	"Christian S. Lima" <christiansantoslima21@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 24 Jun 2025 01:28:02 -0300, Christian S. Lima wrote:
-> +/// let result = u32::from_bytes(&foo)?;
-> +///
-> +/// #[cfg(target_endian = "little")]
-> +/// assert_eq!(*result, 0x4030201);
-> +///
-> +/// #[cfg(target_endian = "big")]
-> +/// assert_eq!(*result, 0x1020304);
-
-I might start using this as a great example of conditional compilation.
-
-> +// SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
-> +// patterns are also acceptable for arrays of that type.
-> +unsafe impl<T: FromBytes> FromBytes for [T] {
-> +    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
-> +        let slice_ptr = bytes.as_ptr().cast::<T>();
-> +        if bytes.len() % ::core::mem::size_of::<T>() == 0 && slice_ptr.is_aligned() {
-> +            // SAFETY: Since the code checks the size and alignment, the slice is valid.
-> +            unsafe { Some(::core::slice::from_raw_parts(slice_ptr, bytes.len())) }
-
-This is incorrect -- the second argument to slice::from_raw_parts is the
-element count, not the byte count.
-
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +
-> +    fn from_mut_bytes(bytes: &mut [u8]) -> Option<&mut Self>
-> +    where
-> +        Self: AsBytes,
-> +    {
-> +        let slice_ptr = bytes.as_mut_ptr().cast::<T>();
-> +        if bytes.len() % ::core::mem::size_of::<T>() == 0 && slice_ptr.is_aligned() {
-> +            // SAFETY: Since the code checks the size and alignment, the slice is valid.
-> +            unsafe { Some(::core::slice::from_raw_parts_mut(slice_ptr, bytes.len())) }
-
-Same here.
-
-> +        } else {
-> +            None
-> +        }
-> +    }
->  }
+On Sat, Jul 26, 2025 at 4:47=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.=
+com> wrote:
 >
->  /// Types that can be viewed as an immutable slice of initialized bytes.
-> --
-> 2.49.0
+> Every type that implements `AsBytes` should be able to provide its byte
+> representation. Introduce the `as_bytes` method that returns the
+> implementer as a stream of bytes, and provide a default implementation
+> that should be suitable for any type that satisfies `AsBytes`'s safety
+> requirements.
+>
+> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> ---
+> This is the sister patch of [1], providing an `as_bytes` method for
+> `AsBytes`.
+>
+> It is going to be used in Nova, but should also be universally useful -
+> if anything, it felt a bit strange that `AsBytes` did not provide this
+> method so far.
+>
+> [1] https://lore.kernel.org/rust-for-linux/20250624042802.105623-1-christ=
+iansantoslima21@gmail.com/
+> ---
+> Changes in v3:
+> - Use `ptr::from_ref` instead of `as *const T`.
+> - Link to v2: https://lore.kernel.org/r/20250725-as_bytes-v2-1-c6584c211a=
+6c@nvidia.com
+>
+> Changes in v2:
+> - Use `size_of_val` to provide a default implementation for both `Sized`
+>   and non-`Sized` types, and remove `AsBytesSized`. (thanks Alice!)
+> - Link to v1: https://lore.kernel.org/r/20250725-as_bytes-v1-1-6f06a3744f=
+69@nvidia.com
+> ---
+>  rust/kernel/transmute.rs | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+> index 1c7d43771a37b90150de86699f114a2ffb84db91..69c46c19a89191d8a2abc5801=
+564cacda232218c 100644
+> --- a/rust/kernel/transmute.rs
+> +++ b/rust/kernel/transmute.rs
+> @@ -47,7 +47,16 @@ macro_rules! impl_frombytes {
+>  ///
+>  /// Values of this type may not contain any uninitialized bytes. This ty=
+pe must not have interior
+>  /// mutability.
+> -pub unsafe trait AsBytes {}
+> +pub unsafe trait AsBytes {
+> +    /// Returns `self` as a slice of bytes.
+> +    fn as_bytes(&self) -> &[u8] {
+> +        let data =3D core::ptr::from_ref(self).cast::<u8>();
+> +        let len =3D size_of_val(self);
+> +
+> +        // SAFETY: `data` is non-null and valid for `len * sizeof::<u8>(=
+)` bytes.
+> +        unsafe { core::slice::from_raw_parts(data, len) }
+> +    }
+> +}
+
+Let's also have an as_bytes_mut() method. I would require the type to
+also implement FromBytes as it lets you replace the value with another
+set of bytes.
+
+Alice
