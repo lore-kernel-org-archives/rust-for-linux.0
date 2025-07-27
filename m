@@ -1,99 +1,192 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C2B9460;
-	Sun, 27 Jul 2025 09:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E63171C9;
+	Sun, 27 Jul 2025 09:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753608708; cv=none; b=MrjZUk6+EvWgEfV594h2T47w8p7om0n9COn4LjgdUtcY59D2XgFdxMEBkZyreagOS13Gvrgt1FOHiFPC/+9pjo5UfaR23RUKPZaM2mi/Kop1/7CJbo0RpYZDFPIOcduG17JTTx/I3ddctvT8WYuib4UG/k+fmPLili3j8j3497Y=
+	t=1753609876; cv=none; b=Pog4ZgKOf/bLSvFUlZ/CYhFTHqPxO66nzl/C+vu0ZKa+loHjSqpJhhKM+9xxlZNinIjuZBkaq8f0JnU00FA0V2tIt8sr6LQF29DjjU9ty8JuSynXTTBzPm+DWnKCbVLsU2StmtsiQ0l/AAr4G1RKp3iFSyzSEFzyf9jMiTp6H6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753608708; c=relaxed/simple;
-	bh=gDbSYc8pmLjUYSA7KcBarXcm5lMdG+b1p6ndEBx0i3w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DvLAxFWKcZn6RS9TQX5iR6f/Q/bOJuWeHKxrHWoiurG8Ky5UED2qA6WUsv5gS1rywTGLv3XJsEVdfrvBD662A9Qe815TBly0mRjL4TA6zqr3gt0434yT1r+UDGs0oyOvnig7qnTLtA8BZAj3tCrwW/HZUEfr9VP8X3lo51iAXec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIEeyAZM; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1753609876; c=relaxed/simple;
+	bh=xKwJvXxWrDpppiWK/6VTWyH419R6C+6Ux5gNQMAFS8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UhHl7Ymhbgsi0EuE4qU2t2JbPY4zY13NRoEpdiVW6/8W+IT1RIshJFsF2jb9L4+LpOY3mv8Xh9YMfVuWdygQ9n3MoN2qEGtcsUSZ0NaByXmM5PuLvxzGnnirMYokNG5pQNLelAwglgD9ajbl2bEQmR17fCfg8wZrhxV491GCXV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b7mqAuv/; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIEeyAZM"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-312a806f002so421750a91.3;
-        Sun, 27 Jul 2025 02:31:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b7mqAuv/"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-b34a6d0c9a3so4378650a12.3;
+        Sun, 27 Jul 2025 02:51:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753608705; x=1754213505; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gDbSYc8pmLjUYSA7KcBarXcm5lMdG+b1p6ndEBx0i3w=;
-        b=hIEeyAZM7QmDwMRCPiKrz0m1kzV1h0tW+6T6blLr6pAksAKtpo9cfUUGmbeyuUZe3C
-         PTMB8LsnKC1eJ321lF7n2xkon2zC3MdXHbPrIOAM8512+C+o+mBeXEfbPOX6ylO2HciI
-         rhyds3kYt6S2I+2nZPQxUoUEfOeoPEzKVLPojf3jnMURLrQoHMrJLsJsMKWPvZ8NjbJA
-         cP74eGDuT4mwhcOl5cIq/j+zP63N7Fhw3m2XYijizVXfvPd71/n4DfaoIJpSNS9DHK9Q
-         IB8M+n8QgG0LKWDJfxo5l8Uli5q3WQaD9rtGYfvcwYrjnIyRBRiFAOW9yO6G0p8dzkRl
-         8B0A==
+        d=gmail.com; s=20230601; t=1753609874; x=1754214674; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t1kXiH/iOIPgD/M4/LDkpVx0cWkoY7aI0S+hOevU85Y=;
+        b=b7mqAuv/Ry15MhAgUCU29NACg6GfuIgh9Jz7gFBzKOT7l8d4CSmqSaL0wreS3jgFBP
+         p8OVTHqvsmMbyZjVwlP/A4b0QTu3y5zZb0IghLuG8HPLWk4GYLx8WFEtpT/cRigk35Xo
+         cxY+ndM7NwNHdEz0YqjT9tUnP6LYz/MO0Gs32PRyxBs2Ey8PNlpPdiCfOetbcx728J4e
+         533su3jjpk+2cDpekmvfgeHsVVn5msqVwva4A2fukeDf5Z68TI6nQ9zygnBg1f098MCt
+         DINt3263HHUkfUZeuINZZRTLVGc4mtXrarWJ6F29aok62N059jQ8kNdSaoYYL0QpGe3/
+         tOlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753608705; x=1754213505;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gDbSYc8pmLjUYSA7KcBarXcm5lMdG+b1p6ndEBx0i3w=;
-        b=IfZZExyRGtDnlLTVcIjYr8TjGoOXwuRGIExtUp6d9mDHc20ppnADkoXZBvGBjxhfKZ
-         Qo8y+owS2MV++EfEqCd51W26bNQjyIdG6UpEF5wqHZXxktTVDk4BJZoUN4ZQtm+TO+sm
-         p9jKfmzjiz8UK98I7zpREV85a9UvXP1iTDMWdDrVCk6uJkiKdj2ZzHbBd7KwMQl71xV6
-         FqjgU4TlPhqNfNWM8E1A0sAFtedDLzadvh7fIu6GagtErlBpFG4I6p2YP7iAED0L6hvV
-         LecWpHoIzwP214P+zuNrwRmjUiC/wgysVE2irnxhCM13TfXtmz51qnYk17JwR2gGTfT3
-         fqCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXYqpyx7rTvAG8+n3WcUdtIAvb01GTDkcDN6+tU5f1YiaNGDCVm8mJ7VD3RO6MkbQZ/dP8uk2cHgs5oSUQZ@vger.kernel.org, AJvYcCXahPtc0HuSOyEwt23t2awyuIzAArx3ToyYOH/P+eYjXFZlrN7SETnOI1mKhAoM2OsMAzFG5YuFo55sAUM=@vger.kernel.org, AJvYcCXrEd7yLVOps3qvsIKERv2gkeHuU3aPsdVy947sMyu7J6KKK3umjqThKkMs64u39j5bVc2/u4yBAZUDN9sAEnM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRxb+dKO/+180jW1VNaMWsHvPrZa7VLbFtiegcft8YnRuHvE66
-	mX98jhnQZnpY87aSR+4oaJt1IEzyhJ4BosD7u5fcWofChGEIih9BQBymdFZKlquiprYg66EiGDv
-	sUbdvzOzqmlZEa7h2MXgCaoWQeuvD/PI=
-X-Gm-Gg: ASbGncty/1WsE8iOL87QlDeMB0E/Neb6rSEEd3wnJ7/zAWvafOfBM6X76GpRQAkrpoQ
-	Hqdpv3Ah1splFEzVY7Nk88/YseX0fFbNu5vgYiJ095K4gq3KBlUmI8+MZd3m3Kj4fWPr3Xs5Nd0
-	hXwfCgTLGow1RlB5qgErKyCVvtR3z9FBepEXVnc57mnpDkDo6bBffVydU8qU+YvpeM06PDXXf8Y
-	PDV3nfp
-X-Google-Smtp-Source: AGHT+IHwyqPcMJ6XaVtzcngEGA52+QC98OcB+ztkimhreGhuBj2aWm4Lacehn7M3roIqN3sGDv+fQ22VOSX40WhoM/g=
-X-Received: by 2002:a17:90b:4a81:b0:31e:cdc1:999e with SMTP id
- 98e67ed59e1d1-31ecdc19b15mr687988a91.1.1753608704960; Sun, 27 Jul 2025
- 02:31:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753609874; x=1754214674;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t1kXiH/iOIPgD/M4/LDkpVx0cWkoY7aI0S+hOevU85Y=;
+        b=NDBdNLUezDGYzUmAcwY4mLZytoKi+CAvCF8gr1vLQKIIG2zDr0VfpOMydHl8PemZLo
+         HQjnyzelzFur39IBKPpmySkRNn9bQD4+jqHSadbo+C6RxtEuvptBs+5GEF1Lw0jpiCYW
+         j5nXdWcYj6Yq20O//y+MJhE7osUz9NtN9jX8HGpDeE8Kk5HcGO7i+kALAiOgNn1Rk/fo
+         M94/3DTgaG/dtnlZFl03hneBMekK6/XtJy/24cfSPfOUOW7xfcDDzdqcy7IeKlYVR/Px
+         XqgvExTEhoXcxXQk2Zwdbc7o9gqQujNiwiqQIeoGXmavuGSgmvGfR23Tn8bfnB6bRlmh
+         kq0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWaleWS236hXg1L6VlFY3By2vV0HgOwZYjC2ew/Tcr+6vt11pM52D2hWzeudB+yGDwWCwHm0XvvEWax0QOQkIk=@vger.kernel.org, AJvYcCXBEVQIgs8wftMIa7eK6ziU+AzE6LmnXA6uxlYgOoF6LDqEI6rZRuCXBUh2gMc+iKdj6sCHvlkmHgOuphk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUvZ/xz7o0H6/Cubdoa/4c8v1a2A5Ao+ZgxGyE0k90KQYWKO/m
+	62Pi2tLVOj/x/6tZ99ze2HVHGXG3v1SsM4uKHf0/TyhIKEIDDEpCXkHq
+X-Gm-Gg: ASbGncs24eZgNFq8AbWqitn93GriN6KeqUiZCgc0BJ+dOqrULuOznaoPc3K1FYCsYAp
+	glge8a9x6ZB98D+T8bkYR0DAMISgrS5jfTloI2/YDrGkFW/fRjOa856NsngMx7tSufwkgYwcYt0
+	SxYAMHfUq3uqlBHRXTYQ/jX/5yzzFZPNZCtI9quMtOEdpyP4D4kNh/YE8HgBh/7+2Dm1r8l3FcK
+	dbWMVjcPD4ekg56uo6Ed86uRCyCKzrcTOyWDbse9c892C0Igumhi+zmwljaz7RM3O4xu1gxFc1E
+	kvaAMf+BE+jOrrl/U8/PjJY2+nKNR/RLcBV3HYI7vGzp3x1Yq/J4DbQqDAIjMnTxJdpb6EEQsTl
+	HxOy3HMBCsvd82XXV7qXqT4wi
+X-Google-Smtp-Source: AGHT+IHAGa1LiA4U0ZjULerVSzNUQ9qnTdRAU1E1dly2dZnZK61QY6vXTJDFJnRt1D8ULLgYMQEINA==
+X-Received: by 2002:a17:90b:224d:b0:31c:c085:fde6 with SMTP id 98e67ed59e1d1-31e77636196mr14021956a91.0.1753609873917;
+        Sun, 27 Jul 2025 02:51:13 -0700 (PDT)
+Received: from quat-desktop ([2001:569:514a:9100:3f23:7b0f:f6a2:1ebd])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31ea8c1770dsm2012652a91.36.2025.07.27.02.51.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Jul 2025 02:51:13 -0700 (PDT)
+From: Rhys Lloyd <krakow20@gmail.com>
+To: acourbot@nvidia.com,
+	dakr@kernel.org
+Cc: Rhys Lloyd <krakow20@gmail.com>,
+	rust-for-linux@vger.kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	nouveau@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] gpu: nova-core: vbios: split out PmuLookupTableHeader from PmuLookupTable
+Date: Sun, 27 Jul 2025 02:48:59 -0700
+Message-ID: <20250727094903.20483-1-krakow20@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250727092317.2930617-1-ojeda@kernel.org>
-In-Reply-To: <20250727092317.2930617-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 27 Jul 2025 11:31:32 +0200
-X-Gm-Features: Ac12FXzSNfd8ysAf4soSdl5HrXnwH9bMPWruUS5fZU1uCrkYeE6TPwm812nNyZg
-Message-ID: <CANiq72=Y3i-WeygLix6j-sPZwE2QTOkaZDQOrED1aCiMoH3Cqw@mail.gmail.com>
-Subject: Re: [PATCH] rust: workaround `rustdoc` target modifiers bug
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jul 27, 2025 at 11:23=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Closes: https://lore.kernel.org/rust-for-linux/36cdc798-524f-4910-8b77-d7=
-b9fac08d77@oss.qualcomm.com/
-> Link: https://github.com/rust-lang/rust/issues/144521 [1]
-> Link: https://github.com/rust-lang/rust/pull/144523 [2]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Separating the header allows the use of `size_of::<PmuLookupTableHeader>()`
+instead of the magic number 4.
 
-And most likely:
+Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
+---
+ drivers/gpu/nova-core/vbios.rs | 56 +++++++++++++++++++++-------------
+ 1 file changed, 35 insertions(+), 21 deletions(-)
 
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is
-pinned in older LTSs).
+diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
+index 5b5d9f38cbb3..a77d7a4c8595 100644
+--- a/drivers/gpu/nova-core/vbios.rs
++++ b/drivers/gpu/nova-core/vbios.rs
+@@ -889,6 +889,32 @@ fn try_from(base: BiosImageBase) -> Result<Self> {
+     }
+ }
+ 
++/// The [`PmuLookupTableHeader`] structure is header information for [`PmuLookupTable`].
++///
++/// See the [`PmuLookupTable`] description for more information.
++#[expect(dead_code)]
++struct PmuLookupTableHeader {
++    version: u8,
++    header_len: u8,
++    entry_len: u8,
++    entry_count: u8,
++}
++
++impl PmuLookupTableHeader {
++    fn new(data: &[u8]) -> Result<Self> {
++        if data.len() < core::mem::size_of::<Self>() {
++            return Err(EINVAL);
++        }
++
++        Ok(PmuLookupTableHeader {
++            version: data[0],
++            header_len: data[1],
++            entry_len: data[2],
++            entry_count: data[3],
++        })
++    }
++}
++
+ /// The [`PmuLookupTableEntry`] structure is a single entry in the [`PmuLookupTable`].
+ ///
+ /// See the [`PmuLookupTable`] description for more information.
+@@ -918,24 +944,18 @@ fn new(data: &[u8]) -> Result<Self> {
+ ///
+ /// The table of entries is pointed to by the falcon data pointer in the BIT table, and is used to
+ /// locate the Falcon Ucode.
+-#[expect(dead_code)]
+ struct PmuLookupTable {
+-    version: u8,
+-    header_len: u8,
+-    entry_len: u8,
+-    entry_count: u8,
++    header: PmuLookupTableHeader,
+     table_data: KVec<u8>,
+ }
+ 
+ impl PmuLookupTable {
+     fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
+-        if data.len() < 4 {
+-            return Err(EINVAL);
+-        }
++        let header = PmuLookupTableHeader::new(data)?;
+ 
+-        let header_len = data[1] as usize;
+-        let entry_len = data[2] as usize;
+-        let entry_count = data[3] as usize;
++        let header_len = header.header_len as usize;
++        let entry_len = header.entry_len as usize;
++        let entry_count = header.entry_count as usize;
+ 
+         let required_bytes = header_len + (entry_count * entry_len);
+ 
+@@ -963,27 +983,21 @@ fn new(pdev: &pci::Device, data: &[u8]) -> Result<Self> {
+             );
+         }
+ 
+-        Ok(PmuLookupTable {
+-            version: data[0],
+-            header_len: header_len as u8,
+-            entry_len: entry_len as u8,
+-            entry_count: entry_count as u8,
+-            table_data,
+-        })
++        Ok(PmuLookupTable { header, table_data })
+     }
+ 
+     fn lookup_index(&self, idx: u8) -> Result<PmuLookupTableEntry> {
+-        if idx >= self.entry_count {
++        if idx >= self.header.entry_count {
+             return Err(EINVAL);
+         }
+ 
+-        let index = (idx as usize) * self.entry_len as usize;
++        let index = (idx as usize) * self.header.entry_len as usize;
+         PmuLookupTableEntry::new(&self.table_data[index..])
+     }
+ 
+     // find entry by type value
+     fn find_entry_by_type(&self, entry_type: u8) -> Result<PmuLookupTableEntry> {
+-        for i in 0..self.entry_count {
++        for i in 0..self.header.entry_count {
+             let entry = self.lookup_index(i)?;
+             if entry.application_id == entry_type {
+                 return Ok(entry);
 
-Cheers,
-Miguel
+base-commit: 14ae91a81ec8fa0bc23170d4aa16dd2a20d54105
+-- 
+2.50.1
+
