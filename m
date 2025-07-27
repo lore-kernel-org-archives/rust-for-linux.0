@@ -1,130 +1,105 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9551A1EA7CB;
-	Sun, 27 Jul 2025 09:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4685586329
+	for <rust-for-linux@vger.kernel.org>; Sun, 27 Jul 2025 10:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753609887; cv=none; b=ne0/axQ3rjsUKpfdwsQpmh9CzZGNMZ39g3uuwrfpQoTT8AB13apCu2GvAwxMnZeVkZCJSnMXib3LsvU/s08HG7X/V28hp6RL+fmWzSmob0g9Z0UkKlteYTCxIts9b8wdHM14nFAS9iTlVM0VaLUu0VOLuWJeX9vpLa3mP2ZyBOk=
+	t=1753611408; cv=none; b=pcg0ZdMzrYkg4gAJI0OdJpGs8tAjPS7oG/exu+bh6uHMsa90UVk+Mcy0pz54ugugF1YOEqfUS8aVDmLGMz+zg3LZEywGvx2/jMZga26g9AmCQe5BLtCrf8A0bAHXPkY4+fFWUU6w6Jkl7TW2/+Kw5ikiDBnTAzqUDfPM0ra3pWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753609887; c=relaxed/simple;
-	bh=ljGQTr4PcCQkzJA5DGok3GYjeKIjHU6qHRRA5/+a8lA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwoEiFj7M8hKbki0Peta4WutxJIIo9a2fa+ccINHN4XZM+a4MYbxlhtq3K32a0Pr7u5a/u69ienUCQ7JyJ9BC9wiu0zI8krBpjbeRymZ0fbplUocpd3eaMcIBom8qBNwke9VrgtE/j9nOs/hlExYUDhy0Wbc//fgz4PaRqf3mvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BUyCRF9X; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753611408; c=relaxed/simple;
+	bh=7gXF/JGd7cdYSztftJD+wHyryWPRVHXOyQ2/0gQV568=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lH0dErPOtGxHvLwQhoOolaxLcwJSWxyaeaPPqw2SDA1EH+MVSqJBMdCCOV1imHopCPZ10MypRpJLYCv4nxyAyyqZnsirHEqmJ35JHay5CzPfCTW26BbIBjFGyydS5y3wiJ+C7Qg8GdG5m6YqZ/RmvHypOSST0nX8QFHGV4YbjhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JuVwO1SC; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BUyCRF9X"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-313910f392dso2570838a91.2;
-        Sun, 27 Jul 2025 02:51:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JuVwO1SC"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3a57c8e247cso3312434f8f.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 27 Jul 2025 03:16:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753609885; x=1754214685; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1753611404; x=1754216204; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q75mBtp8jcS9+B1UD9cGfUNuIFaVl8oU2VgPg7QjKsg=;
-        b=BUyCRF9XDkT9Ga9J88/oZfxbFHpuR6PW4b674LAtpXZBvrRC9Sn8kOzCZe318DhbMf
-         CVMy+P6wwo3/NYpQfBvhEjfJEYRM7X6dueIEVaOhu+950zX4t7jRZFMAoyYxE7gplEdn
-         gdrgNAliCzMbZ0FvzohcMnX85fxQAAd+tvWEv+tZxP8yCJ7NINCeilD19u63DIvk2oDF
-         THzA/N8Pnx1Z4tP6PYBB0YqcjzbIocGE14pJqpVbfCVllaZYQmfcWYdmFl7UUD4SVqHS
-         kp9lp6tzTDzJsy6KwhT34dk9JOoSrj+VZdFSKcW06V7wl55NgzGHWmwgah2aFuHXW+gC
-         TDTg==
+        bh=7gXF/JGd7cdYSztftJD+wHyryWPRVHXOyQ2/0gQV568=;
+        b=JuVwO1SCQq61r9WlCtKr4htyBKucXYq2rE1R5v5HBd8C2m29pgAj+vA60Z5E1f9Of8
+         nS0g/FucqYB05zvhGKDsRZsI6WXgvK0fPA1ZJ5MwMwEnTR+6zJzDUaZpXSjTKaiBAJde
+         gO5HESaWYe/QiUa7nX8hLKfFjK40NxdhAbD5HeO3IIySM8j8UQ2FkDA5YnSH30/MQJ5O
+         Hk94ihTYuIWVUxYQO41VhTH1XOZT+XPrRs/iS2NCV87amZjNpgCOmpWzNtoO5s/IuxQr
+         YM6ErlDzTW9AR9lQZPQ7qMQNziQkmEpaB2C7PU+ISqryagz6D1348YzTBO1vknNVsFub
+         OFkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753609885; x=1754214685;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1753611404; x=1754216204;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Q75mBtp8jcS9+B1UD9cGfUNuIFaVl8oU2VgPg7QjKsg=;
-        b=pAHrlf8oaiKjyR01fpIznISKxmeBgzZ+RLEwu4vETGzx7ficWsEMKTGm8n7x5zAwzF
-         la5DJX/2A53xYYEPPFimnZoYVIoXknYFBd+qSos1OOIExBHWh6cErbYFrB1j5dYUcgwb
-         OgzcjsXT/XaWa22bqtHr8Htu03+S9tGlWMtETsNXb8QLbymIl83sTGbWhx6mQA8aMfwH
-         rYQk0fIH5SnvUyUpKwEcvcg771M2lQV//Ts0Rtf8G3Q8OcZzzEIhaWr5Ohx6M8X/B6Ot
-         ZPthwBWzYPYFdOk3cKQkOasWHvRWUn0kZY2JxcGmJ2yNANbTweVW789zukMXj4E4FVAp
-         iGtg==
-X-Forwarded-Encrypted: i=1; AJvYcCUfVZsvrVjqb3R58ta7uZrG16tblcUfhEV+9/ToDFvq5O6WZCZOhHE2qUSmX2zXnalsVK9SEONk4iQrvKM2S6c=@vger.kernel.org, AJvYcCWN9jPK1PsqGiJFzlDDyvq3gHPuleqc2faKGnMvX3K58QXRhEglZyx5+6FCYvmjzXbZ3vcFCIybu40RYcU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQcKs1cFptDJ8ZbTH8ksXTMABjljHQfsEbRDTGSCkF/Ks5a5W/
-	KsP2vGO1otLNIhrzem1KRi/KLCHuPheOE6wOjS0erPxakpxqw4EV1s1n
-X-Gm-Gg: ASbGncswdXYqsdDajZSMbdx1YhA2aBjZ7GWQeJ7jTWwzT14G1RfGRmaifF0fP5Te2Cf
-	BXhbRqaCjCYjNED1OLIWoQ7skkdciOkUbefdpYxSToTDbR7fst7+XeqSb7Y/PTIPE5/CWYAipgz
-	+RRKMeIlRZBaVGawsQ7obBvM7J2H/ZklxJlwWu1oxdAQsrZEtxKn4qafZX91x/g6taANId+Y2do
-	qh3nCdWk83DNtl7Ww0+LYLrTbEcGDWZ7R9u6sjem8FCXkrR55fBzHXRMwQqxOcZ7FLu2V6hgEI4
-	/MpvryWbrb2elFThqHx0EHHsDelMl0/fdssaxpwpRQlDo949ORg3zItieVEZ9PSGV0CufLTKSoV
-	W7NZ4Ze0Zzrbppf7egBwBgtQc
-X-Google-Smtp-Source: AGHT+IFphsUeaQG/0HS39YHZVYaXChSqW9BbhaZJq4ICXtoyWmtTBglaeojibI0sGzaXO/VryFY/5A==
-X-Received: by 2002:a17:90b:58b0:b0:31e:e3e1:3686 with SMTP id 98e67ed59e1d1-31ee3e137eamr293498a91.19.1753609884768;
-        Sun, 27 Jul 2025 02:51:24 -0700 (PDT)
-Received: from quat-desktop ([2001:569:514a:9100:3f23:7b0f:f6a2:1ebd])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31ea8c1770dsm2012652a91.36.2025.07.27.02.51.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Jul 2025 02:51:24 -0700 (PDT)
-From: Rhys Lloyd <krakow20@gmail.com>
-To: acourbot@nvidia.com,
-	dakr@kernel.org
-Cc: Rhys Lloyd <krakow20@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] gpu: nova-core: vbios: use offset_of in PmuLookupTableHeader::new
-Date: Sun, 27 Jul 2025 02:49:00 -0700
-Message-ID: <20250727094903.20483-2-krakow20@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250727094903.20483-1-krakow20@gmail.com>
-References: <20250727094903.20483-1-krakow20@gmail.com>
+        bh=7gXF/JGd7cdYSztftJD+wHyryWPRVHXOyQ2/0gQV568=;
+        b=Pvxzys8Fp/jLqmCYN20NI/TGlDskfbT5O30G8h+FFsMdZpxt901PwhzP0q2Ld7i3Fs
+         ps/ZcaQab74netYcbsrkTZDqRlmjlGcOOIoEDPWI1MdRwY+rJrVGaWToVRjdvbugfpmy
+         HFmUtbVGgSjr7g6Ts0nl2xGK03PQxr5B+42I1aVcIEZ6RI93wBg8Ifv274sF6hYe2e1Y
+         Rfhzz5usnercC2Hrugv7CrqhsNN40q5MW7QA3JIgID0K6JIEKbWHnD4sQPsRDBEzHH+l
+         W/8wtkWUVK5nJgCYepdVSgsc8cbOewUsPE7Fa4HtB0Lw9Ff/LnNAweR0gCsps27WZVXM
+         fD0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWl4r38pVDPdHgXLKJRSMW0n33Sug2L0rvz7lbEkiTuaDGoRT9yn8ah1qdjD2zNm9aJ3dLST4z0f41cbwYyUg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4Gqx6D86glgz6C6x0hlGhuf2L0eanu9IBzJiDe+OWREkXqH2M
+	tn9P5l7mRSzfEXZgIYwCrkSvo08NxG/h6dBtvjn+t8y4tlwwhDkQ9aMkhRoanxBB+Vb90iBrQr7
+	QiQqqiBKllpAizT35WLQnrpJUN8wx8utbwbiy2SyH
+X-Gm-Gg: ASbGncstihXa2yQ3cuqZTYmYSLX6HgrtXXTC1WYofS9JbHs0Q2/8J+mF0NdSAis/AiJ
+	iDQ7NkC2g7KdnoSpL+10QhF41yvxtx0U0nkZwJdxtM3zksNNDohwY74VfruLaUG4a8Dx7RS96cO
+	ZIs2/xhGP9L8VuPX/ZbE0TqTyEHXryI31Kha5SvgCMNwvCCQAjyz/+DRDb1NPk/2LKDwBPu+aZs
+	WxDQVDs
+X-Google-Smtp-Source: AGHT+IFyrg1ejKvUxd9ZtQSI9909R3ixl5LPHcy5aVZC0U4Sj9RIX4I7zArgs9AtLDU/QcoqDxdQPatS2VjlhudegxI=
+X-Received: by 2002:a05:6000:22ca:b0:3b7:791b:649b with SMTP id
+ ffacd0b85a97d-3b7791b67d5mr4008222f8f.11.1753611404412; Sun, 27 Jul 2025
+ 03:16:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250727092317.2930617-1-ojeda@kernel.org> <CANiq72=Y3i-WeygLix6j-sPZwE2QTOkaZDQOrED1aCiMoH3Cqw@mail.gmail.com>
+In-Reply-To: <CANiq72=Y3i-WeygLix6j-sPZwE2QTOkaZDQOrED1aCiMoH3Cqw@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sun, 27 Jul 2025 12:16:32 +0200
+X-Gm-Features: Ac12FXzQd6Ubqwcqmg__eYKdobRTIYZ7Qw-ApZU0mG8XcaNSXbzlilcOMmffJUM
+Message-ID: <CAH5fLggeVq83ZPWPE5Thv8LUNrp6pX6sifGBFFbe20W1neWJ=w@mail.gmail.com>
+Subject: Re: [PATCH] rust: workaround `rustdoc` target modifiers bug
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use the offset_of macro for each struct field, annotate the
-`PmuLookupTableHeader` struct with `#[repr(C)]` attribute,
-and add a TODO message to use FromBytes when available.
+On Sun, Jul 27, 2025 at 11:31=E2=80=AFAM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Sun, Jul 27, 2025 at 11:23=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> =
+wrote:
+> >
+> > Reported-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> > Closes: https://lore.kernel.org/rust-for-linux/36cdc798-524f-4910-8b77-=
+d7b9fac08d77@oss.qualcomm.com/
+> > Link: https://github.com/rust-lang/rust/issues/144521 [1]
+> > Link: https://github.com/rust-lang/rust/pull/144523 [2]
+> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
----
- drivers/gpu/nova-core/vbios.rs | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios.rs
-index a77d7a4c8595..cedfcf3476bb 100644
---- a/drivers/gpu/nova-core/vbios.rs
-+++ b/drivers/gpu/nova-core/vbios.rs
-@@ -893,6 +893,7 @@ fn try_from(base: BiosImageBase) -> Result<Self> {
- ///
- /// See the [`PmuLookupTable`] description for more information.
- #[expect(dead_code)]
-+#[repr(C)]
- struct PmuLookupTableHeader {
-     version: u8,
-     header_len: u8,
-@@ -901,16 +902,17 @@ struct PmuLookupTableHeader {
- }
- 
- impl PmuLookupTableHeader {
-+    // TODO[TRSM]: use FromBytes::from_bytes when it becomes available.
-     fn new(data: &[u8]) -> Result<Self> {
-         if data.len() < core::mem::size_of::<Self>() {
-             return Err(EINVAL);
-         }
- 
-         Ok(PmuLookupTableHeader {
--            version: data[0],
--            header_len: data[1],
--            entry_len: data[2],
--            entry_count: data[3],
-+            version: data[const { core::mem::offset_of!(PmuLookupTableHeader, version) }],
-+            header_len: data[const { core::mem::offset_of!(PmuLookupTableHeader, header_len) }],
-+            entry_len: data[const { core::mem::offset_of!(PmuLookupTableHeader, entry_len) }],
-+            entry_count: data[const { core::mem::offset_of!(PmuLookupTableHeader, entry_count) }],
-         })
-     }
- }
--- 
-2.50.1
+> And most likely:
+>
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is
+> pinned in older LTSs).
 
+We also do not even set -Zfixed-x18 prior to v6.12, so there are other
+reasons to not backport it further.
+
+Alice
