@@ -1,93 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAC71DC1AB;
-	Sun, 27 Jul 2025 17:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8815E610D;
+	Sun, 27 Jul 2025 18:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753639116; cv=none; b=nsl+KoSZLT7Okv5SbOTjRAIeVlOJg5s7XRUiZ8zQwn1rjVR0yewPPuoFFP0v1J8Na7YCl70qaPqIQvtykdsJZXt5uf0WvkLPMXZYE8T206hlU7s6D+f1mdgLkBTqcbCF+xiOXhY8gAv9hgnVVVAoHZGzwlK29vogHQqM0sAX9YQ=
+	t=1753639571; cv=none; b=NhXe3J1zojilii1wRZDbd4+EDR7o2n3H/ffr7u3EaB/V7Po3PesIPDCMs+afYAymceaWVdMFJUBTOjF/V0yFxLpr+z+CTnHS0uuNl8sctN021Rr6pgq4xVr2BCQoUeWbl0GErEwIYUIEsq+ruzP4XZXtEqgtDIutQcL6YjPjnx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753639116; c=relaxed/simple;
-	bh=Iwn3XPBdN9lZzu6LYqj2ZmytSx/X7jvM81u539xI4GQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JLkAf/J4c4dyZJbxd1AOhiQATUB09HxbpBKhTUd5U/sJiCf6r1z6qndJBQVW4/B9XZCAowu8peIsrUMAjPy03Hh7yeiQWPHhwIfliqB/xawha+Ll6L8quu7lDTWuvtJw03Nd20+66EHBjqDnrsCQ1RP7gpNWhW1Vx3e9DrvG0JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ho6iF6+D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753639571; c=relaxed/simple;
+	bh=bZ/JXJc19nkrcW+WON5HjOh7f+Qm4DzRNAzejFL1y2k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qit1TXq3idqVdU8XRRVS4FrKa4/NKxBA/6XJTcQrp/hHMbWU6CvL9li5mwpe2AMeiu5l+fZm2/+MLzsSlum0ln4c+cXbCLI/h1AxGqJJvJ+fMDVMksrojxWZxVfc67e0cVwymXcnTeAO0M5hASOXL+c70cWSAPrSSWAj2mBDE0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IAXxqUtW; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ho6iF6+D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6821AC4CEEB;
-	Sun, 27 Jul 2025 17:58:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753639115;
-	bh=Iwn3XPBdN9lZzu6LYqj2ZmytSx/X7jvM81u539xI4GQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ho6iF6+DDRD5xSDzfJPRAJmU315Gm4C8R0k1cec+bE6OCydzkXQ5jvEX6jEiUXXOJ
-	 G2lAeIMojvUU2OPEe6oXKkBdYMiWKjfRbKv0bfUf3+fi/+GNd6Q6m2yIt/fNXCv3/p
-	 takoTjhPnVbo3gUQW7AA/YVJE8VSgKgWkIrQg6PXvtMnj25fm96xXj5VSilwV99xBx
-	 vkoCKT9VmWA1S5E1gGIs6beF6/pPpAs4qsun6HlLj6UjSfAT3JzdaSh1/C/lmofsBA
-	 EstBFHDbsOxyySrhMNp04GuZnfqr5F4qJvC29l7mP3KgL7IG5ImywQ0k6wDj9svhWZ
-	 O1uaBDGWVv4rg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IAXxqUtW"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-31ef3e9f0adso39340a91.1;
+        Sun, 27 Jul 2025 11:06:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753639570; x=1754244370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bZ/JXJc19nkrcW+WON5HjOh7f+Qm4DzRNAzejFL1y2k=;
+        b=IAXxqUtWh+IkO7rWe2A9ueqmoKXk8MuRh3sWjHmpNIrmJTDiCtl+qYYe/SoTGVq3Cz
+         MiNhfeBNTGOaRGu5pH35q63gzzvY3pR4U4+u6ZLC0SmMCoOND0AIck1gaGwIxlbKozRj
+         XPlE9C9XfZi1AENu9W4eL3r7YRm84dslCz49WyzsY5+q5Fvm8k8TXywdF+o5aRaXRbwa
+         Sfw3xKUBLKJSYAa69aEsG0XHFI3dZesgtzpTzzf2MTVdYN+LPaCcSIIeK1HluPr8/EVr
+         qmeo/Z1Qez7qSg4+p5K2LhWp07sVAxXDVBF9/Sbve1w0f+3w4mV98eVoIXvyOd6fVMmT
+         qJug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753639570; x=1754244370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bZ/JXJc19nkrcW+WON5HjOh7f+Qm4DzRNAzejFL1y2k=;
+        b=EmXolphLO9yxj8b7RC2qU4GUkRHl/nsuFemh5tqnsB2KUmEib6Av0nerTOiraWZ52u
+         ZKSYoQB/qRwUjlqllEn8UepDxg/i+x+f+eCNaZ4MMrulvOKKo0ItzQhcAN4pdKf9hyX+
+         svBjwAiMjyaD2DpLJBop3V0OAPOgbRAEzPnIKgT6aaparZ6ANrzZmL7uvP1B7HESwVa5
+         UY1xI3tBeF2/KQusVzUstkdoBR7G4BCEm1LCDDO66cuYvy7Mi8PTlB42yR2cUkMqFAPE
+         KR9EogXOevXAII9jO1XvJFTdUFhqgF9RS6bN7QNYNJNNMVlZ579hesCoUSweuDmW0syK
+         yKfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWOBJhulIPXAXMPprvVRXWEyVdurjyFaEsdq2DwOOhlyj68MI5he593B/oKNuwQXMIl/Az3y+fdJV52Bp4=@vger.kernel.org, AJvYcCWa3GQUt1H0C8VqlGbLzGKj6UtiGg89GWj4tenANBhfhoEOiqMQd0sdabAlYyFwwGP7XTU4BuTGBtJ1jWzHj9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZFCHfHRS5Mu4yWUAGThDuHtifFcCtXJxUG304vbY/jyXzF38K
+	8b359BoodgQaege6eos0beFce1iozL4O5w0OtbNpycRHcvhgOYtJHHMRVRibUQUjlh+t68Klp/G
+	VEAWIWWcHiHodsflK6Fcj7IJ07HLpcFc=
+X-Gm-Gg: ASbGncvrmN7XFr38iBH+5bY8XZpbG01oSu4VE0poNLXo86+9WkAQlxu2O84YIx1LMvu
+	vsk6+8pDQ5nlBWyx8iMvbVNqH5bG+Hjed3QEkZRo0qWsmfgTC2mkSAi83SBTWI4iJ1qRfPRT8SV
+	yk+I5YxVnHk17HefeBBz4am4EKMp/cQs4Dvp1k6l5Z94wyb0uUALkoeFGElSzpo25m4CEU4kd/V
+	pai6kG0
+X-Google-Smtp-Source: AGHT+IFc1oDi3ttzKyiq8xCPzeqbI2VYL6bu7FlM3gZWatkcZqVsTgMusJlK5RfvMADLXbz5b1obFkorHk7kDIOn744=
+X-Received: by 2002:a05:6a20:431a:b0:21f:5430:8fb7 with SMTP id
+ adf61e73a8af0-23d704bb173mr6115388637.10.1753639569850; Sun, 27 Jul 2025
+ 11:06:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250717073450.15090-1-shankari.ak0208@gmail.com>
+ <CAPRMd3nhDKApttF_wBU01es76NG=qAyZMAer_gjbbtTSH_FmSA@mail.gmail.com>
+ <CANiq72=uDrg9HBVM97dgJGaC946Or964-2aF6OJVV0ih_vWuRA@mail.gmail.com>
+ <CAPRMd3kXUJC6rC_X4i41dWNpS2tx4aEXFmBuEwncXmdJewinDA@mail.gmail.com>
+ <CANiq72kw-OiU6YO8TKMVMdtJF+j7r9nBDsAa9Q2tdBzM=DyxDg@mail.gmail.com>
+ <DBMUCVDVWM77.2M60X06IBGVA5@kernel.org> <CANiq72nBHtbZqt8R0dMSK6iWY7Z3vKLbeP_2dN2NaLOxRfOvCA@mail.gmail.com>
+ <DBN0D5J10BH9.3I1FHJC1KZ79A@kernel.org>
+In-Reply-To: <DBN0D5J10BH9.3I1FHJC1KZ79A@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 27 Jul 2025 20:05:57 +0200
+X-Gm-Features: Ac12FXyKqx2O59Ph-48CSD2k8mkM4uvBPoNaAGIqepjHuYbNY2Y06KFqgdFsr2s
+Message-ID: <CANiq72=qbAwqcH0+ogH=STMC2UF4pV5St=gPrg6VmymvZkh6tg@mail.gmail.com>
+Subject: Re: [PATCH 7/7] rust: kernel: update ARef and AlwaysRefCounted
+ imports from sync::aref
+To: Benno Lossin <lossin@kernel.org>
+Cc: Shankari Anand <shankari.ak0208@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
+	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
+	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 27 Jul 2025 19:58:30 +0200
-Message-Id: <DBN16LSXVANU.1LMW8POGVF2CJ@kernel.org>
-Cc: <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>, <dakr@kernel.org>,
- <me@kloenk.dev>, <chrisi.schrefl@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <skhan@linuxfoundation.org>,
- <linux-kernel-mentees@lists.linux.dev>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] rust/pin-init: remove workaround for type inference
- cycle
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Suchit K" <suchitkarunakaran@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250727170217.206794-1-suchitkarunakaran@gmail.com>
- <DBN0JG0QP7TU.PZSZ8NZL5LD6@kernel.org>
- <CAO9wTFisWa5qY2qQE+BEdD40vacGwtzw=2xxPnV0V_w=Gt4jwg@mail.gmail.com>
-In-Reply-To: <CAO9wTFisWa5qY2qQE+BEdD40vacGwtzw=2xxPnV0V_w=Gt4jwg@mail.gmail.com>
 
-On Sun Jul 27, 2025 at 7:44 PM CEST, Suchit K wrote:
-> On Sun, 27 Jul 2025 at 22:58, Benno Lossin <lossin@kernel.org> wrote:
->> On Sun Jul 27, 2025 at 7:02 PM CEST, Suchit Karunakaran wrote:
->> > The `cast_pin_init` and `cast_init` functions previously used an
->> > intermediate `let` binding before returning the result expression to w=
-ork
->> > around a Rust compiler issue causing type inference cycles. With the
->> > minimum Rust compiler version for the kernel now at 1.78.0, where this
->> > issue is fixed, the workaround is no longer needed. This patch removes=
- the
->> > unnecessary `let` variables and returns the expressions directly.
->> >
->> > Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
->>
->> I still encounter the cycle when compiling with 1.78.0, which version
->> did you test this with?
->>
+On Sun, Jul 27, 2025 at 7:20=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
 >
-> Oops, I just realised that I compiled it locally and forgot that I had
-> installed version 1.78.0 on my VM and not on my local system. I
-> actually compiled it with version 1.88.0. Sorry for the inconvenience.
+> AFAIK maintainers can pick different parts of a series', right?
 
-No worries.
+It depends -- some may not be able to be picked independently by
+different trees because it would break the build.
 
->> Do note the comment mentioning that it is needed for version 1.78 here,
->> so I think this patch still needs to wait until we bump the minimum.
->>
->
-> Yup got it. I'll send the patch after the minimum version is
-> increased. Thanks for reviewing.
+Even for those series where there are subsets that can be picked
+separately, typically in a normal series if I get Cc'd in a single
+patch, then I would assume I am supposed to give my Acked-by so that
+it gets picked elsewhere. So unless the cover letter says otherwise, I
+would expect a series to be applied as a series.
 
-If you do, then please send the patch upstream at [1], that makes things
-easier for me, thanks!
+At the end of the day, it is about coordinating and case-by-case.
 
-[1]: https://github.com/rust-for-linux/pin-init
-
----
 Cheers,
-Benno
+Miguel
