@@ -1,131 +1,128 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34070610D;
-	Sun, 27 Jul 2025 17:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753635763; cv=none; b=R81/tuaeTRvcpktzrI0B6CKdRtZ18IukQexYxeC1+NlrnzCfpMeWLhvTMJgqX9nqi0hBWQgumo9+I6Kog6Pe0VDX8ZXSd36bFU6uu8ihCta8umUU7VlpuEU4OxaR39H45ijaQiuH8g6hnF0h2ki46/EUcY4+p9I1T4811+8h2vA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753635763; c=relaxed/simple;
-	bh=MGwnuNgMnpCB3HFgNR9y1CpU+sPZS9r4J955g8FJYbI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KW2SEb7MUvi5jz8LAT967GoZvkvVlrRi0r8vUJcqxDrG37Xm48vVMUe32DV8p9FDb/zVKohVLqlUR5k0fQdBYs1OShj/zJgKtGV6eLMU8mRTsja37EVk2OfpSQlw/6AvNtdxJN/ba1HttYwABV7qNh2U+MJSkpKc5rSkffN/JMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nsjEv1a2; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02EE81724;
+	Sun, 27 Jul 2025 17:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753636670; cv=pass; b=YNOF4pgkK20SS62tD+OwDKHEBwnPonjfQ3+ftxRtLBepKiB+eLh2T38oRwRsD52xkYVGJBf6m6XovROSUMJf+3KRYqOs/elI/jl8R5jWJUApeoGnebj+2BwhelVB1p64aynQb+CCCRAd3b1183aGa7KIZZ+/vf6VkffnXoRaJSQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753636670; c=relaxed/simple;
+	bh=vaZVi9JGzmaEuqLuOHnGEW875OUE5MDTLAfJ99AXyC8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NNkl0C4MQUjVh7SHDv9cCpfiY2yPhEcCGJ9k7+rGvO2rSX0zQbpyLVoHrFJi8MJxcMgkiHIOD0rIb+OPeuCevkd2SOG4PQei9hFomZm/3dOI1vLVBteF62x3vgofxsmVHumF6ssFksM+x4NlTUYFOKDpVFntV06f95ZCkmuUwXU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Weriryb1; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nsjEv1a2"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24022261323so2169145ad.1;
-        Sun, 27 Jul 2025 10:02:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753635761; x=1754240561; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FdX52KrqVBqheUlpk3q0tshHfWjwkzxFRFnw+JbO75w=;
-        b=nsjEv1a2hz4L3ZTvJ+RH1npszeYnPGqIxpNYlqxwiJ10A+//RabEg67EgDDx0+gjgq
-         AZ7pZaH8sKUgL9BgP0dg/p4YlUxHUemnpEVD8GTN6rCTeNOVyj3Aq1aBCQc7/PC+etJc
-         eMmISW9RDr1Xgd1/YiPsYo0vk1VBGMsu32zj5D53xU52u3Q2VAXsJvgCktspt7QubvPa
-         ziRtMZS8vTMdbZe6DguRNHYINvGUhnFrJr4Vhr0c6Oa/cYvB96AHpD/xj442ql3oo5i2
-         qGEdbqUPuR9MIID8PSmu/wXdfxJH0ArdpswwPeMVvJFRKuVzgNn/MuTx9hgUzFe8iZnV
-         mZ+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753635761; x=1754240561;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FdX52KrqVBqheUlpk3q0tshHfWjwkzxFRFnw+JbO75w=;
-        b=aRCm1r2/kF8qFRNCQDB0NR9YKcZXx4ZXV3Ghc2so3j9yp1Jva+iI/ZGFrVg7VTsG2z
-         xRtMSNYVDPkjlM+PN8JvtXDi2s7ZEtKMCral2+BwXsD1jrOCzfCEkuIb+XxxKG6EQOfW
-         roOBLbt1YJU4dgLOHeFAZjEi/s6/Abk4efMpfCnT8YlEEOSNxx73o/yH4vA3R5ITw59C
-         QFDI9jeKZN64tV9uxtwd4tA9UGKAjVoR8wFDyZoJcR5jhJkuLxiZ7J2YwUSg4YkGhsG5
-         89g8A2tcQqu7WhKYE6neea3T4llWvp1dE9EVnj1pQboqQtCunGeYmcyWeFHyeGf9fIKf
-         jFbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5eFYO4f0fPz3dYJl9C/DNbM/kAurjJDmo2mbtAQwzajszrdWdR+wE7SpwYv0hmuy/bww3e57Jq5JLgIy05gE=@vger.kernel.org, AJvYcCW4HxVVztoaGwZfMcW9AXamsB0w320shTZQ0Ou5s99l3H/c9BRWwKFGWetK7vqnmQQyxDNMrpbFRrk3tqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw39P8mE/ZOVuPirptAMPhDlOBPu+ahgd0n7yL9/2Ts4uF1taUA
-	lodAKR4FJw848z1Pt2zdwRHHpS5EoV+4qoiJVWpoZMGyn2LnJ6DcpUmk
-X-Gm-Gg: ASbGncvnMfMbYNC0p85ujMPBpwUnb3a6sAZFVSbfMehfaIMrX5XRjdXXQom1OvK2QlU
-	ThNfbZv3dfNF4xyWPiQG9Jiq8BPCvOa7OGZVL+XjUOXStpPupbmudx10ZfqXvhAxykNM18tC2+m
-	jw9WqrVnFocpsoxy+PnkCAFbgFN7siazVT7qIhAn+Zm73RnHYxEmxbFgKyBzGkNTpZ2hbGxqn6q
-	NIEKYgrpSlT/424adcweFGVqlHyUAL2f4U40P43GHrDYGxGbKXkm9GuJeg2O/BebxEkbiau75YR
-	6B9hhToNKbkFzPXDHh/KDvI05kCmqrkPhLsCaY4Q54MG7aewyvK4sg9FW9QeRZbQNyIXVF+/FLe
-	ixlWKHRxK4wNZKlDgPhHetJclw90s+MY=
-X-Google-Smtp-Source: AGHT+IHqm/J2SvIlgvt1S3np+aih5SP3n/FU/4D4MXeaiLrPLXXJeqOksquY8u12MW43rJxFyGb2cw==
-X-Received: by 2002:a17:902:c950:b0:234:8a4a:ad89 with SMTP id d9443c01a7336-23fb2a7b959mr122833325ad.1.1753635760923;
-        Sun, 27 Jul 2025 10:02:40 -0700 (PDT)
-Received: from archlinux ([205.254.163.108])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23ff1dbec8esm21709945ad.194.2025.07.27.10.02.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Jul 2025 10:02:40 -0700 (PDT)
-From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-To: lossin@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	me@kloenk.dev,
-	chrisi.schrefl@gmail.com,
-	rust-for-linux@vger.kernel.org
-Cc: skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Subject: [PATCH] rust/pin-init: remove workaround for type inference cycle
-Date: Sun, 27 Jul 2025 22:32:17 +0530
-Message-ID: <20250727170217.206794-1-suchitkarunakaran@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Weriryb1"
+ARC-Seal: i=1; a=rsa-sha256; t=1753636655; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=B577dRGqexhbKFmKh+c69nTrdBqUCCXicwKcYtjllSgUPia1A+RpsvEa5dNFH7ub56m5wOK65Wz1xVqWkG3DLUN6QwOwQydpU9weSmRda4GotE4ccPtSziT8vuUXvUHmhEMxvTxnJFqrd8zItRZuIiZU2rGW/BCNxpLehAgLeMw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1753636655; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=okMS3/1S2iNACQoSQsLmd+UrausqQyZ3VLxCRlug4Ms=; 
+	b=NE1vKRizRodnTf1W7Oq3r07FzpGNG9cUdtd1U1S5E7eQVnxzLFbeZ8OF6/GBdqUMX8PRKXxrJuUIg7sBmZolObyKCtyBspNuUI+2BSt/XtGC6PDq/tub/pDTYH45/aQD8A5t6jvMsz6+oMqHrWAbocYJbEODCvjAGJsjtoNVbbA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753636655;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=okMS3/1S2iNACQoSQsLmd+UrausqQyZ3VLxCRlug4Ms=;
+	b=Weriryb14hInS3N7Krl4CI3aHdf5FK6q9ZytzElz+vDWBe7pDHn4dHgHFg/HGagm
+	Eu9ID4K+8gwbV4KbwjvPDU/5mh0V7W+Tcanica7FkNs+0fWj1doJeSOsvY3g5BxFVuY
+	9uE9WsZ0XfE27kbF+V4TG3LdZrYEy1w3waXIWuts=
+Received: by mx.zohomail.com with SMTPS id 1753636652954912.0321119634177;
+	Sun, 27 Jul 2025 10:17:32 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
+Subject: Re: [RFC PATCH v2 0/4] rust: miscdevice: abstraction for uring-cmd
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20250727150329.27433-1-sidong.yang@furiosa.ai>
+Date: Sun, 27 Jul 2025 14:17:05 -0300
+Cc: Caleb Sander Mateos <csander@purestorage.com>,
+ Benno Lossin <lossin@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Jens Axboe <axboe@kernel.dk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ io-uring@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <CACB1415-0535-4A05-B904-5F388A1F7C08@collabora.com>
+References: <20250727150329.27433-1-sidong.yang@furiosa.ai>
+To: Sidong Yang <sidong.yang@furiosa.ai>
+X-Mailer: Apple Mail (2.3826.600.51.1.1)
+X-ZohoMailClient: External
 
-The `cast_pin_init` and `cast_init` functions previously used an
-intermediate `let` binding before returning the result expression to work
-around a Rust compiler issue causing type inference cycles. With the
-minimum Rust compiler version for the kernel now at 1.78.0, where this
-issue is fixed, the workaround is no longer needed. This patch removes the
-unnecessary `let` variables and returns the expressions directly.
+Hi Sidong,
 
-Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
----
- rust/pin-init/src/lib.rs | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+> On 27 Jul 2025, at 12:03, Sidong Yang <sidong.yang@furiosa.ai> wrote:
+>=20
+> This patch series implemens an abstraction for io-uring sqe and cmd =
+and
+> adds uring_cmd callback for miscdevice. Also there is an example that =
+use
+> uring_cmd in rust-miscdevice sample.
+>=20
+> I received a email from kernel bot that `io_tw_state` is not FFI-safe.
+> It seems that the struct has no field how can I fix this?
 
-diff --git a/rust/pin-init/src/lib.rs b/rust/pin-init/src/lib.rs
-index 62e013a5cc20..cc244eeb19cd 100644
---- a/rust/pin-init/src/lib.rs
-+++ b/rust/pin-init/src/lib.rs
-@@ -1278,10 +1278,7 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
- pub const unsafe fn cast_pin_init<T, U, E>(init: impl PinInit<T, E>) -> impl PinInit<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
--    let res = unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) };
--    // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
--    // cycle when computing the type returned by this function)
--    res
-+    unsafe { pin_init_from_closure(|ptr: *mut U| init.__pinned_init(ptr.cast::<T>())) }
- }
- 
- /// Changes the to be initialized type.
-@@ -1294,10 +1291,7 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
- pub const unsafe fn cast_init<T, U, E>(init: impl Init<T, E>) -> impl Init<U, E> {
-     // SAFETY: initialization delegated to a valid initializer. Cast is valid by function safety
-     // requirements.
--    let res = unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) };
--    // FIXME: remove the let statement once the nightly-MSRV allows it (1.78 otherwise encounters a
--    // cycle when computing the type returned by this function)
--    res
-+    unsafe { init_from_closure(|ptr: *mut U| init.__init(ptr.cast::<T>())) }
- }
- 
- /// An initializer that leaves the memory uninitialized.
--- 
-2.50.1
+It=E2=80=99s not something that you introduced. Empty structs are =
+problematic when
+used in FFI, because  ZSTs are not defined in the C standard AFAIK, =
+although
+they are supported in some compilers. For example, this is not illegal =
+nor UB
+in GCC [0]. The docs say:
+
+> The structure has size zero.
+
+This aligns with Rust's treatment of ZSTs, which are also zero-sized, so =
+I
+don't think this will be a problem, but lets wait for others to chime =
+in.
+
+I'll review this tomorrow.
+
+>=20
+> Changelog:
+> v2:
+> * use pinned &mut for IoUringCmd
+> * add missing safety comments
+> * use write_volatile for read uring_cmd in sample
+>=20
+> Sidong Yang (4):
+>  rust: bindings: add io_uring headers in bindings_helper.h
+>  rust: io_uring: introduce rust abstraction for io-uring cmd
+>  rust: miscdevice: add uring_cmd() for MiscDevice trait
+>  samples: rust: rust_misc_device: add uring_cmd example
+>=20
+> rust/bindings/bindings_helper.h  |   2 +
+> rust/kernel/io_uring.rs          | 183 +++++++++++++++++++++++++++++++
+> rust/kernel/lib.rs               |   1 +
+> rust/kernel/miscdevice.rs        |  41 +++++++
+> samples/rust/rust_misc_device.rs |  34 ++++++
+> 5 files changed, 261 insertions(+)
+> create mode 100644 rust/kernel/io_uring.rs
+>=20
+> --=20
+> 2.43.0
+>=20
+>=20
+
+
+=E2=80=94 Daniel
+
+[0]: https://gcc.gnu.org/onlinedocs/gcc/Empty-Structures.html
+
 
