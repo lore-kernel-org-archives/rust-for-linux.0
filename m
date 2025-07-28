@@ -1,228 +1,103 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288B25C81E
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 09:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E965B7483;
+	Mon, 28 Jul 2025 10:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753695790; cv=none; b=IgNO3TFmCRHkfYNkh6yoWMBjCQr3fEwlyzn9ukmuieuUjoX9Mt69Axyljffp5U01+AOXQZNE6ZE87p3PeFFjjLkqtl5JBLwfNv8DG2rl2m1x55hyQW4LymRnJuxDQO9hhTSSvLcljcbBk9LJgjJ3dNMJauO12Tzg+/NlqnP0Egk=
+	t=1753696895; cv=none; b=PXlXGaz1fQGLQjmi+ZMzkk7/rWbi9tcbTg1xpR9g83WeWfqXtbJowQEd2OUjwh4X3upQOS3MEpvEz+H+iueNGPc3q2wTWMh8GV76jE2T65RVRLuss3pFYGZDPpKDEWKcDXC59+s0VYw25+QxGAhhSbacpGQKRS39HCxsbCc0bOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753695790; c=relaxed/simple;
-	bh=np/gcN5m4MW2LLygCOMOx8cuw1o8AFXIBEsbdvS7NOE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jxOui01vG2mxSkdOusTOxDZBYM/eyO9ZFmpHZxWL2Nxpdn6/YerBDtgPfw0k3+Zygzq2wHJAme5hr4LrUNCnP51uXoWY85flLHJF6uDCGZ4frMuraByeKapbczQal7E1QH9evHwY7S7s6QNo/qoukuPDfQBKhrZovjkxX0H8lUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3TBWuZq+; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1753696895; c=relaxed/simple;
+	bh=kTuUkUsd13QnoVQ3yYmQ6WdExLMJS9IjNiFB3TnS/ps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rnXul+8lR7hCgKDRDbH2EUwG6/LJnAaAyfJHS+PdNvgSIueEWcOvQCyV0w0kP1Efrs0klMloKLaR9javZ24MDrU69ynmwlBM2fhU5jXPlgyFHaCAzg/5FhIP2ZBYE7UWwoBhS6qMLdYYTJzmVqtYYP58/mvSenetnoKmN28jxQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/1wItD5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3TBWuZq+"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4561bc2f477so20618595e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 02:43:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753695787; x=1754300587; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f23mdrJtX4cECnR9yhw2cVkgQ/+P2GFW65BzXk2ui44=;
-        b=3TBWuZq+/+3DywuBKk2hX0RLQ8CMgrLdkbZp5UQ2TljlRIuOS95bb6T6gas+ImLFDd
-         CunTUk+6dz8shK8DDOa8YFMJYDCn4CEv+IQPfLe+aP6LdjgYNlRtlvbNkZVVZOf0jVlw
-         k9NpQLMgWj5t8f0hDO9p/jbUJZYJG3HtCrOTI4qNyw85sIRtoL/yIHwssZN3kzS6AoDX
-         k58CQYsOqhNITtoxCzyTkmU61tlQyTvsXIMwjHOYoKEU7+Elg4i9S1940W7vLxV33rDI
-         sMjR4oJV9n20Qr6embBbwl+b17mSygWIG6kM2UbH5XxXPVhrxhgcI6ufENa24cg0wn+q
-         UQcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753695787; x=1754300587;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f23mdrJtX4cECnR9yhw2cVkgQ/+P2GFW65BzXk2ui44=;
-        b=pkQYS4nzqHxIcpgj8uGcAZZ288PPv6d3RuYIpDb3W1XTLGmj26VWWJQWJyoyDqHBfR
-         Bjof04MEcaSkagWzsP5/1dhf7aIEyJiOg3+8LKoGCefx92hJ3Apg6t4Q7wX+jn+ytejc
-         3F9cDWHvVJ30ukfXWVcLDWDcNvL9JoE+oXV9BrassJ/KNr2ERLg0au+4B/kzB5xWM7Gr
-         FUoqcMWTl9mau/GJ7SAVFPbaqBDJV5eKOc+aWQ4VcF2ZM25t5Kaxp2M+p39UnDdRCUM9
-         P9OwyR39Thbw3JVSB1EmizgC9oyGkodT2QgkVCNj9h5Z+pcdcSvjKutYa0Yilyeabcy6
-         Aorw==
-X-Forwarded-Encrypted: i=1; AJvYcCWiO6YZ6h7P7/442JLkUceweCdHf1iUmdChK3WQgSU3UyVKMMigJWSmAbz9DmK6AOGjvy1oSzqFpSh8WlZgGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTA8jfmqyx7wqkCYMQ3wnTnLyuJMRLNlKbCyW5GvnXEAPcYj/W
-	HxJ9//x4wZCfozM1tZb8NMGyQKrbB/odFDGTBRNbfKpPMtmuT49t+DadcnXVslopHIQK1pv+pbD
-	nJilUkQtnojGndgeNDA==
-X-Google-Smtp-Source: AGHT+IGZevCfpzMP0vuNgBaCdLJtz9mM/Oj9S8mRwI1C4qqC98ZGTEX33Mt7j7fTojLZ1GQiUAnGrHbESCLijmg=
-X-Received: from wmbem22.prod.google.com ([2002:a05:600c:8216:b0:458:715c:51a1])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:c173:b0:456:18f3:b951 with SMTP id 5b1f17b1804b1-458788a2116mr89024445e9.15.1753695786877;
- Mon, 28 Jul 2025 02:43:06 -0700 (PDT)
-Date: Mon, 28 Jul 2025 09:42:56 +0000
-In-Reply-To: <20250728-lock-class-key-cleanup-v2-0-ad02b80c69e1@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/1wItD5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C69CC4CEE7;
+	Mon, 28 Jul 2025 10:01:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753696894;
+	bh=kTuUkUsd13QnoVQ3yYmQ6WdExLMJS9IjNiFB3TnS/ps=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=E/1wItD5UfYnN1EeJpWHnZ9oR8Kj71XeQWzlztjb5ngxcGj/qcnwJWZRZ/CFgLlnl
+	 nOP8q8gf1o9IcZVD+t93VWuA4+i7/t9cfDaaE897Ld029eGYnar3/nFH4dS5/GfrPH
+	 elGeECdUymPmEzB18YPEYPQefsGPVW1ReKH9C65FMLqxiW8c8Hs+t3fGKg6HSK6SjB
+	 VPXoVNrCm8MK3jl6ZMU3PCvSPgrdK2QAmNHjiWMC9u9h7JtZnL29i54c2amumauiJ5
+	 a/QzZG5h00z815K1A+mrxf/B/FFt9qea9gLrlGQU/StGxiiMhQZCMY4QKzJUUu8U+F
+	 JF0p3FB1aNx+Q==
+Message-ID: <10506c57-1629-4ca2-9c3f-3e97e68caa7a@kernel.org>
+Date: Mon, 28 Jul 2025 12:01:29 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250728-lock-class-key-cleanup-v2-0-ad02b80c69e1@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5390; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=np/gcN5m4MW2LLygCOMOx8cuw1o8AFXIBEsbdvS7NOE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoh0YnpX9fzxOyP2UjXbBtQu6a8QSJNk3YCJ0Pq
- okx/PVtJ+OJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaIdGJwAKCRAEWL7uWMY5
- Ro5+D/wLdui8frFRBP8zhE1x7IAQORblg1mlbn5H5VbU8M7Bnm7iN2zz7d4JaAhtubobWuvbcHT
- 2jcehaXOPfMRReYhORIiN/Q9B/t2Aq1OxfjaGIIfagMTbPJ9m3DiwNcsBVsF5V4DTdT1sHGPXF1
- qTM1Ul29s8Dk/BPk+1I1NNNIi6NlA03ZGJFV0n0w1bmkFfG4vcRzY+9E3/m+vqdo5wBT/0+cdG1
- 5Y9+C7zWOFDWG2d0elDfrx5OIG687lrbqEWzbyk3kikn9f7oYWenIfSJTZMPC7H0juwXNpFHT48
- 969y7UnCOTw6f4HrVPkmXqxLiSthJm6R+VOzIfp+Ju1HVVMXcrO8jPSQPqu5ejTUgayrcqOEO+R
- Xtow0eBZNovdU7JTXWRr5lV3EbvwCKjg9iO0uOVVzBQ1KNzAdu/9iWpZVBqurQ2X4/1VpHt63hY
- 35owKb2/yRE2wdwm8vlMVWbEtJAlUkN7kzuJ8bjJUq4FNSimQ7+Jaut6ku7drg8q4FlWx3iUljT
- 931Sy9K6Fzxv2lMbsfE8ZwgD3oQOIOzuEWC/A9hQyvCBqtA2/lYYtuGwmvef9Ya4xXyNUlPvlwW
- v/dM7VudMHViSyn/Y+krndHE2kVkBr4M4aNPday+ZybvW2bnltyTvAjDK+5fiAtwwbbiU6O2sOF iGHW76vN7hKsytw==
-X-Mailer: b4 0.14.2
-Message-ID: <20250728-lock-class-key-cleanup-v2-2-ad02b80c69e1@google.com>
-Subject: [PATCH v2 2/2] rust: sync: clean up LockClassKey and its docs
-From: Alice Ryhl <aliceryhl@google.com>
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rust: transmute: add `as_bytes` method for `AsBytes`
+ trait
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>,
+ Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg
+ <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>,
+ "Christian S. Lima" <christiansantoslima21@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
+ <CAH5fLghNDDo0HKupPXe8G6z2TP4TJE881Bd76k0LDjSm75KcEQ@mail.gmail.com>
+ <aIX-JDehurnGYppE@google.com> <DBMUEH5MYR2L.CXM12OIUH7TZ@kernel.org>
+ <DBNDJGIUQC1L.3EYGJ1ROIGMBY@nvidia.com>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <DBNDJGIUQC1L.3EYGJ1ROIGMBY@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Several aspects of the code and documentation for this type is
-incomplete. Also several things are hidden from the docs. Thus, clean it
-up and make it easier to read the rendered html docs.
+On 7/28/25 5:39 AM, Alexandre Courbot wrote:
+> On Sun Jul 27, 2025 at 9:39 PM JST, Benno Lossin wrote:
+>> On Sun Jul 27, 2025 at 12:23 PM CEST, Alice Ryhl wrote:
+>>> On Sun, Jul 27, 2025 at 08:52:00AM +0200, Alice Ryhl wrote:
+>>>> On Sat, Jul 26, 2025 at 4:47 AM Alexandre Courbot <acourbot@nvidia.com> wrote:
+>>>>> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+>>>>> index 1c7d43771a37b90150de86699f114a2ffb84db91..69c46c19a89191d8a2abc5801564cacda232218c 100644
+>>>>> --- a/rust/kernel/transmute.rs
+>>>>> +++ b/rust/kernel/transmute.rs
+>>>>> @@ -47,7 +47,16 @@ macro_rules! impl_frombytes {
+>>>>>   ///
+>>>>>   /// Values of this type may not contain any uninitialized bytes. This type must not have interior
+>>>>>   /// mutability.
+>>>>> -pub unsafe trait AsBytes {}
+>>>>> +pub unsafe trait AsBytes {
+>>>>> +    /// Returns `self` as a slice of bytes.
+>>>>> +    fn as_bytes(&self) -> &[u8] {
+>>>>> +        let data = core::ptr::from_ref(self).cast::<u8>();
+>>>>> +        let len = size_of_val(self);
+>>>>> +
+>>>>> +        // SAFETY: `data` is non-null and valid for `len * sizeof::<u8>()` bytes.
+>>>>> +        unsafe { core::slice::from_raw_parts(data, len) }
+>>>>> +    }
+>>>>> +}
+>>>>
+>>>> Let's also have an as_bytes_mut() method. I would require the type to
+>>>> also implement FromBytes as it lets you replace the value with another
+>>>> set of bytes.
+>>>
+>>> s/I would/It would/
+>>>
+>>> FromBytes is needed only for as_bytes_mut(), not for the existing
+>>> method.
+>>
+>> I agree with your suggestion, but it can be an independent patch and
+>> doesn't need to go in via this one, right?
+> 
+> Given where we are in the merge cycle, it seems like we have a couple of
+> months until that code gets merged anyway, so I don't see any reason to
+> not send a v4 with Alice's suggestion? The only drawback I see is that I
+> would have to reset the Reviewed-by tags.
 
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/sync.rs | 55 ++++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 40 insertions(+), 15 deletions(-)
-
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 2c04a3806ca885637583fde336d054426f569fe5..66d0a3c2f92d76213bc7fdb7b86d54d4835aee79 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -26,7 +26,9 @@
- pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
- pub use locked_by::LockedBy;
- 
--/// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-+/// Represents a lockdep class.
-+///
-+/// Wraps the kernel's `struct lock_class_key`.
- #[repr(transparent)]
- #[pin_data(PinnedDrop)]
- pub struct LockClassKey {
-@@ -34,6 +36,10 @@ pub struct LockClassKey {
-     inner: Opaque<bindings::lock_class_key>,
- }
- 
-+// SAFETY: Unregistering a lock class key from a different thread than where it was registered is
-+// allowed.
-+unsafe impl Send for LockClassKey {}
-+
- // SAFETY: `bindings::lock_class_key` is designed to be used concurrently from multiple threads and
- // provides its own synchronization.
- unsafe impl Sync for LockClassKey {}
-@@ -41,29 +47,31 @@ unsafe impl Sync for LockClassKey {}
- impl LockClassKey {
-     /// Initializes a statically allocated lock class key.
-     ///
--    /// This is usually used indirectly through the [`static_lock_class!`] macro.
-+    /// This is usually used indirectly through the [`static_lock_class!`] macro. See its
-+    /// documentation for more information.
-     ///
-     /// # Safety
-     ///
-     /// * Before using the returned value, it must be pinned in a static memory location.
-     /// * The destructor must never run on the returned `LockClassKey`.
--    #[doc(hidden)]
-     pub const unsafe fn new_static() -> Self {
-         LockClassKey {
-             inner: Opaque::uninit(),
-         }
-     }
- 
--    /// Initializes a dynamically allocated lock class key. In the common case of using a
--    /// statically allocated lock class key, the static_lock_class! macro should be used instead.
-+    /// Initializes a dynamically allocated lock class key.
-+    ///
-+    /// In the common case of using a statically allocated lock class key, the
-+    /// [`static_lock_class!`] macro should be used instead.
-     ///
-     /// # Examples
-+    ///
-     /// ```
--    /// # use kernel::c_str;
--    /// # use kernel::alloc::KBox;
--    /// # use kernel::types::ForeignOwnable;
--    /// # use kernel::sync::{LockClassKey, SpinLock};
--    /// # use pin_init::stack_pin_init;
-+    /// use kernel::c_str;
-+    /// use kernel::types::ForeignOwnable;
-+    /// use kernel::sync::{LockClassKey, SpinLock};
-+    /// use pin_init::stack_pin_init;
-     ///
-     /// let key = KBox::pin_init(LockClassKey::new_dynamic(), GFP_KERNEL)?;
-     /// let key_ptr = key.into_foreign();
-@@ -81,7 +89,6 @@ impl LockClassKey {
-     /// // SAFETY: We dropped `num`, the only use of the key, so the result of the previous
-     /// // `borrow` has also been dropped. Thus, it's safe to use from_foreign.
-     /// unsafe { drop(<Pin<KBox<LockClassKey>> as ForeignOwnable>::from_foreign(key_ptr)) };
--    ///
-     /// # Ok::<(), Error>(())
-     /// ```
-     pub fn new_dynamic() -> impl PinInit<Self> {
-@@ -91,7 +98,10 @@ pub fn new_dynamic() -> impl PinInit<Self> {
-         })
-     }
- 
--    pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-+    /// Returns a raw pointer to the inner C struct.
-+    ///
-+    /// It is up to the caller to use the raw pointer correctly.
-+    pub fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.inner.get()
-     }
- }
-@@ -99,14 +109,28 @@ pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
- #[pinned_drop]
- impl PinnedDrop for LockClassKey {
-     fn drop(self: Pin<&mut Self>) {
--        // SAFETY: self.as_ptr was registered with lockdep and self is pinned, so the address
--        // hasn't changed. Thus, it's safe to pass to unregister.
-+        // SAFETY: `self.as_ptr()` was registered with lockdep and `self` is pinned, so the address
-+        // hasn't changed. Thus, it's safe to pass it to unregister.
-         unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
-     }
- }
- 
- /// Defines a new static lock class and returns a pointer to it.
--#[doc(hidden)]
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::c_str;
-+/// use kernel::sync::{static_lock_class, Arc, SpinLock};
-+///
-+/// fn new_locked_int() -> Result<Arc<SpinLock<u32>>> {
-+///     Arc::pin_init(SpinLock::new(
-+///         42,
-+///         c_str!("new_locked_int"),
-+///         static_lock_class!(),
-+///     ), GFP_KERNEL)
-+/// }
-+/// ```
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
-@@ -118,6 +142,7 @@ macro_rules! static_lock_class {
-         $crate::prelude::Pin::static_ref(&CLASS)
-     }};
- }
-+pub use static_lock_class;
- 
- /// Returns the given string, if one is provided, otherwise generates one based on the source code
- /// location.
-
--- 
-2.50.1.470.g6ba607880d-goog
-
+I'd make it a series and add as_bytes_mut() as a separate patch.
