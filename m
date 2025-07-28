@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9165141C69;
-	Mon, 28 Jul 2025 14:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C073F26E706;
+	Mon, 28 Jul 2025 14:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753713018; cv=none; b=KE0beS9cP3l7ZQmCat22nRLXSlpBPSlgHPuST2NCPixChMghFIKjWhqDE7P48aA20xTs5xN0JqT1PKxQk/4JMj2bV2nPKPZv1zQ/nzaXUEDJB2wZGYI2bom3om/JIBhABm/rlFuiNX5KMxVyBYHzh7yqxjj93eQV0FrCSi05RaU=
+	t=1753714418; cv=none; b=MHnBSQLDwVBA2Aj9XJHn8+LMYlb6UjSA6qilqbABSgBO4LZIwlqPZdzCi59oI4CjNJiwGNt4WTeGdDJ+DDJ928BLCNh809FoWsujf+ytr30+vlCUO3Vvd6LCLinbfFJLOru7ENOY5k03tddK1UxiLLnb+xIJGNUwiiRAcorEETg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753713018; c=relaxed/simple;
-	bh=D1CZYbbPrl92SrG8JBJiCygXJIptUMouA14qNJbAWV4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=dSXFhFV2n01yBy5YIyIzdxc+jKDE8yctEWuYDopUZK9b01O2ex+Jc9l+ySDiw26b5Gf8jsosCj+QhXMcU08v89ooJBbXyyEW1wXhXz9mfugOisY50Zz+WjrL7eKU5k3Cso0lXMYc4lHjF7POvwkLmTr9x0MHENbpgx6PKxa0ARo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c3Dd0k01; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753714418; c=relaxed/simple;
+	bh=ALt65RHbI2Hs6Q+MnK2zsyqhPcAMV5hvtT3x/Gpto9Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=b7EGPqlVxrTs2RlXYXaJ31uXvakR9oJXSLqtXMJk2SUe8JjNg4F7kZvVDVewc2UZfWRBZPKcS/GHwKmphuYt8hS0aWNaTL1HwAyMev+5wflFjzI6cF+D9z6hCNe1aQAHa+oMlaCGW/yzyRn1PDrOVGo5dz+e7VCoOChDfJ2G5wI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LaJ/hOkh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c3Dd0k01"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961D4C4CEE7;
-	Mon, 28 Jul 2025 14:30:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LaJ/hOkh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7DAC4CEE7;
+	Mon, 28 Jul 2025 14:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753713018;
-	bh=D1CZYbbPrl92SrG8JBJiCygXJIptUMouA14qNJbAWV4=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=c3Dd0k012sWwA2o3tU3o5nV9Qm4TyLNmncX+0sGwazIJPRJVmi1Zk75Fcc5P+xGMu
-	 VoVGuDo2ZRgWIAH0tJ3bu8aaAHh0e++NlHuhCYSjjvyGAsC2HxixpIcD9B7zFETPZM
-	 ArzjWAO7mv6a2dfJI3lfR4F+NJYO+q8luRAltXmep11tRDhXlhIxYAyS7v2NkQV5Jh
-	 z4fM+iU3axkY2oXIH5TaP4cneOPwhs9wRvAGhlZ8G0lv7RX/OwHLm6jqx8478M5aFH
-	 O5VZHYRTPHMviVsv0lNDYtkjZOkxV31lDK7uNvjKS1rzomFsTBXNjV7layzuR/j4TK
-	 jFmW3vd1xLIuw==
+	s=k20201202; t=1753714416;
+	bh=ALt65RHbI2Hs6Q+MnK2zsyqhPcAMV5hvtT3x/Gpto9Y=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=LaJ/hOkhhPaIbzRIT/NAk9Msm7vKxIkk5giHK/RYmpaxfG58TzG0S8N8seqBHjH2e
+	 mbKygf3GawaF6BJyQXydFhUsTjyDyD86OV+b3+YlEYHo5vWwevOakrCmZAt+XBQVXz
+	 rA1fYNSTY9MKvrEXc0SZOw1Um1K3jo13bDkjb4r3WqUZelaBa95k7wHqZjioXtYzA2
+	 MxGEiFd/J2BhjMD+CNceqZALJ/SXVf55e6ihtrdz0N2bggGIPgo9QGU5T6JN5tMIdq
+	 l+/vCQ79tP8IQK94bCnyG9sVeHIXiPwnjvjsFQqNS9tQN4ZQyz66luAOBRaa7wFOkR
+	 UpbAPMt256lbA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,56 +34,75 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Jul 2025 16:30:09 +0200
-Message-Id: <DBNRDMPLIAAI.16E3LKVM8VBRO@kernel.org>
-Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
-Cc: "FUJITA Tomonori" <fujita.tomonori@gmail.com>, <kernel@dakr.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <netdev@vger.kernel.org>, <andrew@lunn.ch>, <hkallweit1@gmail.com>,
- <tmgross@umich.edu>, <ojeda@kernel.org>, <alex.gaynor@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
- <a.hindborg@samsung.com>, <aliceryhl@google.com>,
- <anna-maria@linutronix.de>, <frederic@kernel.org>, <tglx@linutronix.de>,
- <arnd@arndb.de>, <jstultz@google.com>, <sboyd@kernel.org>,
- <mingo@redhat.com>, <peterz@infradead.org>, <juri.lelli@redhat.com>,
- <vincent.guittot@linaro.org>, <dietmar.eggemann@arm.com>,
- <rostedt@goodmis.org>, <bsegall@google.com>, <mgorman@suse.de>,
- <vschneid@redhat.com>, <tgunders@redhat.com>, <me@kloenk.dev>,
- <david.laight.linux@gmail.com>, <acourbot@nvidia.com>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <FC2BC3FF-21F2-4166-9ACD-E14FE722793D@collabora.com>
- <20250728.215209.1705204563387737183.fujita.tomonori@gmail.com>
- <6c5b4f8f-c849-47f8-91ce-fc9258b0f239@dakr.org>
- <20250728.220809.2078481261213859858.fujita.tomonori@gmail.com>
- <3C846EE5-6B1F-426C-A18F-88003EA6F9BC@collabora.com>
-In-Reply-To: <3C846EE5-6B1F-426C-A18F-88003EA6F9BC@collabora.com>
+Date: Mon, 28 Jul 2025 16:53:31 +0200
+Message-Id: <DBNRVIEXN4ZR.1VG0GDN6BDXE8@kernel.org>
+Cc: "Christian S. Lima" <christiansantoslima21@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 2/2] rust: transmute: add `as_bytes_mut` method to
+ `AsBytes` trait
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alexandre Courbot" <acourbot@nvidia.com>, "Abdiel Janulgue"
+ <abdiel.janulgue@gmail.com>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
+ Almeida" <daniel.almeida@collabora.com>, "Robin Murphy"
+ <robin.murphy@arm.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
+ Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
+ Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
+X-Mailer: aerc 0.20.1
+References: <20250728-as_bytes-v4-0-b9156af37e33@nvidia.com>
+ <20250728-as_bytes-v4-2-b9156af37e33@nvidia.com>
+In-Reply-To: <20250728-as_bytes-v4-2-b9156af37e33@nvidia.com>
 
-On Mon Jul 28, 2025 at 4:13 PM CEST, Daniel Almeida wrote:
-> Tyr needs read_poll_timeout_atomic() too, but I never really understood
-> if that's not achievable by setting sleep_delta=3D=3D0, which skips the
-> call to fsleep().
+On Mon Jul 28, 2025 at 2:47 PM CEST, Alexandre Courbot wrote:
+> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
+> index d541c9960904d8c7f755351f22d06e4e8dbd546a..000fda2a78f8e6e8378bbe93c=
+ddd8a5008db20cc 100644
+> --- a/rust/kernel/transmute.rs
+> +++ b/rust/kernel/transmute.rs
+> @@ -56,6 +56,19 @@ fn as_bytes(&self) -> &[u8] {
+>          // SAFETY: `data` is non-null and valid for reads over `len * si=
+zeof::<u8>()` bytes.
+>          unsafe { core::slice::from_raw_parts(data, len) }
+>      }
+> +
+> +    /// Returns `self` as a mutable slice of bytes.
+> +    fn as_bytes_mut(&mut self) -> &mut [u8]
+> +    where
+> +        Self: FromBytes,
+> +    {
+> +        let data =3D core::ptr::from_mut(self).cast::<u8>();
 
-read_poll_timeout_atomic() uses udelay() instead of fsleep(), where the lat=
-ter
-may sleep.
+Also add a `CAST` comment above this line:
 
-In [1] I explicitly asked for not having the
+    // CAST: `Self` implements both `AsBytes` and `FromBytes` thus making `=
+Self` bi-directionally
+    // transmutable to `[u8; size_of_val(self)]`.
 
-	if sleep_delta !=3D 0 {
-	   might_sleep();
-	}
+On that note, `FromBytes` probably entails `Sized`, or does someone have
+a use-case in mind? (because then we could replace the
+`size_of_val(self)` above with `size_of::<Self>()` which I think makes
+it simpler to understand)
 
-conditional.
+> +        let len =3D size_of_val(self);
+> +
+> +        // SAFETY: `data` is non-null and valid for read and writes over=
+ `len * sizeof::<u8>()`
 
-It hides bugs and callers should be explicit about what they want. Either t=
-hey
-want something that actually may sleep or they want something that can be u=
-sed
-from atomic context.
+s/over/of/
 
-Even better, in Rust we can use Klint to validate correct usage at compile =
-time
-with this separation.
+> +        // bytes. Since `Self` implements `FromBytes` it can be represen=
+ted by any value.
 
-[1] https://lore.kernel.org/lkml/DBNPR4KQZXY5.279JBMO315A12@kernel.org/
+Don't need the second sentence due to the `CAST` comment above.
+
+---
+Cheers,
+Benno
+
+> +        unsafe { core::slice::from_raw_parts_mut(data, len) }
+> +    }
+>  }
+> =20
+>  macro_rules! impl_asbytes {
+
