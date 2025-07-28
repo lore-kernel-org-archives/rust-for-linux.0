@@ -1,235 +1,135 @@
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413FC38F80;
-	Mon, 28 Jul 2025 11:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927AD22C32D
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 11:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753701069; cv=none; b=k/nxTuBfwhl5Jf2x9hbtRT5J9sVF0FkiiUDcYLouLiAPm8GeqcRdI9ZrvujznH5Hv3xBiWUxoylznjs4mtCz3MT4umCjVrmZjo4Yu7TacqDXgCPozYbAQS+nIBPOwo3Ymyt/S0e9LL6b/gnn8PMg05Ol8dNKjpKscgb6/yMM0UU=
+	t=1753701584; cv=none; b=SrYGIyXGOFvlh4iatBhKJOXpi4NgrfsLy+mbLzlSZvV31gNQ/SgNBRPag4XgcHks5KLAczPdIZO5eadK1PVOOD6UcOiRSGSgfqthRs14+M+o3EyXjjJNiV4ajNvldJ9sBsX4fZ773PW6E79h22mGpFUs1nTPQtABtuIgQG1fdC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753701069; c=relaxed/simple;
-	bh=Yyzz3UdbIQBO7aejzRdazhb9pI+IikjCUT2kiqKxMyw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jw9PWLZJA+Z5KH53A6Xcj2Yt75Mhmc0NovHSQYhhPNY9sW9HrE5hIn9iXs9j9oMP9/ALjZ38DN+9Lx4a5xgjYPyYmgJUBsPYupXnPS8YysOm5O+GzMbgR9ggxz00ED4i9rzZSy8C84C8aR8xXJ7YACzKtssgj30J4etvXx4EqCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MJdPAVXg; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753701584; c=relaxed/simple;
+	bh=fMvFtqY0dZeTgFscTQ6EikQG17iQn9yAO5mQTlzzO6Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=StreHYnId2xI+6ZZv24u4vJcdn13WLWmG8rHGWUhphKAHabIFYMTwN3fBvPwSpWyErByCHkTXWdeK9X7166oPqwDOt0nSfK67Ofq6/yYySGR/7EY8rFTy8vwjZU0Q9rV/iihr+0oiT/tvY7ze0Er56DzdYb4xxvrZeHZLunFo2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pomFTSss; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MJdPAVXg"
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-73e810dc01aso2347675a34.0;
-        Mon, 28 Jul 2025 04:11:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pomFTSss"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4560d176f97so46296945e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 04:19:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753701066; x=1754305866; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YelJq5+KqwjZ5s+zSqyZgpj7s0sgr+POM2J5j33U9x0=;
-        b=MJdPAVXgdwva8zTHYJyGqSIkEQpEXyZHemtmiyvjFnznQawXnCUJbMKBGMPUW/B5WZ
-         CBVxV+PvRaw2HKW5mGZeyVICv5B4z8IpAdfxvez/RbO9rf68iCrumP4snunE4dain0kM
-         P5PX/B6Z3LfPuvMfD/kM3uMMYSSdKklsKTs8QVq0W0OH2NZhy9qLgEaGaRSokvhLzJLw
-         Rnaw5mSML20NJvHRPFcBFxUVZgImzbCJLNu3lomvKCEdFn3J8UmjQCynWWBcSDc4P4iS
-         JM67cMZwj2DHJkuBlWqthP/Jqg2fewgilvFLr40NZxF28srHOUvgjih/TlZKdJaiXNyP
-         IEVA==
+        d=google.com; s=20230601; t=1753701581; x=1754306381; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gbmSA0QipmAIbHbKw8GhXr6SE1pl+CI9qEcVQNYIoK4=;
+        b=pomFTSssg9OZS78aX3B2oQCP66eYFLleaf8LeMbmqb0u9lPSCqOGon0bBkcedsjAIa
+         cv8xrVYcHkkl0CoqxGk5GpCLjDSVDgD6UfNPwD8+sQXUgltn+NGaAYqlSuvA1HRdBLml
+         iePnVcTXn5ldKmJj7sYQDdpiJh/duiq2Wd+ZDl32ooQVTU+mRRQN2MMHTObLLwr+YUsj
+         t3/iRWgOgAaUz8+3l+tgLxqY5fQA0L0sYtXa40qPFvu/yJs9DrHTnTY+eZdyMUer8U8y
+         2CysKo5CIalA4LVATua72YJoLWM372YfV1BYV1jGWRHVKdWO/2U01CcGO6EVuRcot8sj
+         29oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753701066; x=1754305866;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YelJq5+KqwjZ5s+zSqyZgpj7s0sgr+POM2J5j33U9x0=;
-        b=Wf4Orx3oTfCYc3+uyKeoldO+QOVph+nW5ktY4DmY8HWam5WRRtFxmlHuVW98Lnb+xo
-         QLnEFlkwQmiVGNjFGHVNmwlPovDHBGmdReYehWrQ6UT0+36BXEaUvevByhL/cOIbyblu
-         htdxX3zTyuC42P+BT6EViEaxsKNsrdZEmQdwhXp6Be7yfaL5JYFnvp1ONuv/9kCthIM/
-         nZUnNTaT768LxrWA57SRCfpUuMLoALAaKPHImkw2HQbUlU2VQp1DwZiXL2eiC5gHswzZ
-         iY73Ulv/RtRilobii5q/GV9yO/jYte1naqpcRKNVaIhrMWcmpzABarLJXA/4Fv+AeGEr
-         AiMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfcF9V6vKLfBeh2I+H9CeWDGmXR/Er3OiwY0bSAglyY48BmdbiMZMFG3hvMNRXQchNHY+2Bdg04H1YujjV4QM=@vger.kernel.org, AJvYcCXf4c9fCej/lvQRc1sqqLwafazIweWry7ucJhXdxdL3Sg0OUa2QwFvETbA7b1g7xMDmYdW8Mgxiaz5hA88=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRiqbBmxQPSxVeauqiB0G38NVQrApUpWLDP5ofr4axXHTngLqU
-	hZx/PiwIvEcVW1HhlS3vM2MXaIuv3E+0nG50IFr1+XS7AsVksfAf8c8j
-X-Gm-Gg: ASbGncvGA8YAy80EI/0OhnvDY40wta5ddbhwp/vPJmH+1YoKKfIq5D9pG4tF5DeYTZ/
-	dno71GlVtQY+VMYjZIXidnx67PpEma8rIK8WG1kZK1eYjwpQ3c+EYfwmD++GuuJd64sBn6b2jrX
-	1nefPya5/6tlEWxtdYKOWUhpAm8hlgYDBZN1DmqKD44UM3IIXe7xgNJ/5rMZsleFgstec8WcOql
-	yJjoq6JDMMYtjEY00ZgVsa/ZElVTEKjmBhLZw2TlkNBxmks16jRHsbXLsh9Uq4bv0V9nA+ZEI19
-	fXCV8b95UCGbed/HG05Kizd1S6wYSiCA21IwdQIKCSkNoduxNWBNXtFNhmSCo5rq+xIq8iLa9y+
-	iBguztlUxLvJw8ls1gCpPrNIBUtpNB8ZxJbwpOW100iJ5IMRDYSEp6epw2WjWvm4jXpPPtc4ELj
-	5KglRO
-X-Google-Smtp-Source: AGHT+IE0MGdMlJEMmoauyyGL5IGwz1RfJolQSIkKm13B128tgDOr9GHPwxPr5ZGTrFtGLyQRiODJSw==
-X-Received: by 2002:a05:6830:4d92:20b0:72b:8fd3:e2dc with SMTP id 46e09a7af769-7413dcd7b58mr5857781a34.21.1753701065943;
-        Mon, 28 Jul 2025 04:11:05 -0700 (PDT)
-Received: from [192.168.86.39] (c-73-76-29-249.hsd1.tx.comcast.net. [73.76.29.249])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-741481c5c92sm1027355a34.30.2025.07.28.04.11.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Jul 2025 04:11:05 -0700 (PDT)
-Message-ID: <a4b93eb0-9742-4f24-86d9-486ce87fbed8@gmail.com>
-Date: Mon, 28 Jul 2025 06:11:00 -0500
+        d=1e100.net; s=20230601; t=1753701581; x=1754306381;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gbmSA0QipmAIbHbKw8GhXr6SE1pl+CI9qEcVQNYIoK4=;
+        b=ZxWmM0ZBrWX3ZJatOPlct4ICq2ofNz1Wgd3LXzczDEwWvj7hYIGyEOsQsslx7O/45p
+         bfb1r6ou0XIsyT2F7BMFmrzXm3bIYptzJgOF2U3fOXC6aaYu0xLNjVJ4u24O4xUgwAU/
+         vkYK35oSIpm6r9yfLxcorTGZP/s8xbyy3cBXsphJlQcO576sr7b/Ir5G8nYsmxPLyRq3
+         C7LAQIqzGX2s5l6Jq5k7RCx0M6KuBRsso6XCX861iEC1zqI2QmfDBPL1dmQ1OfzSK0Wc
+         7Neo9DIfN7XcvnWAxlyrNwEb7zK/dKqAefvHCD0DYUOJOiA4q7MD5tUwrZ7ry+KNWwo2
+         85Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvdUdZ25K+7Vqc9tue0II0D7Kn+RE2sRI5hs1mYwgf+RaY4AE6dkQoBUZS9mBUVMmJN2G2sHAbyDnC1Nqh1g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwfP8a/OrwubzV7G75fiS244zyUYzAJ1Y/RLrQLFQCNIIM4neH
+	LI9h28dV+rJ7hFGNTzwz4sH2q10nKft5aHpGJxWlfrEh0bZfFsgtPHA7nqzdrBGmtBFM/0cKH2r
+	zK6LExK7NsgYYJ2VU2Tu0peEEvFTnPgeVJBJHx9UZ
+X-Gm-Gg: ASbGnctYRl3+moTcXjf9fj7YqpT91IVzPDjN2MEmJ9ucfYQjrNnU6z/U8rhQOtlJKvt
+	X4p5yufFUL7Cb+JJ6Hd8LsSm6R1ADNOwLWbkObEWQYDhIE15UrEiJPCyOOa2oqDuoit/Zjaq0YZ
+	avXbRKjOuyOim+HhVz4zYOT03VMKdZ8rdZexPzHX9ax1rqytin36pq7Jchiy6LmDy/NwWybCXxC
+	sahu81tBAyeQ0Fr7bmWkP8RqhkfGW2hPHpXXA==
+X-Google-Smtp-Source: AGHT+IH67iNxNSkrojY3fM95xQae5TfwbJj4xs2uDRg40WNQDB01MpvP3CEcQwXZKV/Ly+szDBAKEgcdFxAhv/DfOFQ=
+X-Received: by 2002:a05:6000:290c:b0:3b7:8832:fde5 with SMTP id
+ ffacd0b85a97d-3b78832fff5mr2866538f8f.13.1753701580696; Mon, 28 Jul 2025
+ 04:19:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] rust: maple_tree: add MapleTree::lock() and load()
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org,
- maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org,
- linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>
 References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
- <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com>
-Content-Language: en-US
-From: Andrew Ballance <andrewjballance@gmail.com>
-In-Reply-To: <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com> <a4b93eb0-9742-4f24-86d9-486ce87fbed8@gmail.com>
+In-Reply-To: <a4b93eb0-9742-4f24-86d9-486ce87fbed8@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 28 Jul 2025 13:19:28 +0200
+X-Gm-Features: Ac12FXytrZNUlSdOYgH1ca32A8QXnXdUtZWRs5mU3kT7ILNpSGtpDjWYR9OsYM0
+Message-ID: <CAH5fLghK9RhbEXAW4fYS=61Dps34+jgv1UGAOMf7_LD0DVO6rA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] rust: maple_tree: add MapleTree::lock() and load()
+To: Andrew Ballance <andrewjballance@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/26/25 8:23 AM, Alice Ryhl wrote:
-> To load a value, one must be careful to hold the lock while accessing
-> it. To enable this, we add a lock() method so that you can perform
-> operations on the value before the spinlock is released.
-> 
-> Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
-> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Mon, Jul 28, 2025 at 1:11=E2=80=AFPM Andrew Ballance
+<andrewjballance@gmail.com> wrote:
+>
+> On 7/26/25 8:23 AM, Alice Ryhl wrote:
+> > To load a value, one must be careful to hold the lock while accessing
+> > it. To enable this, we add a lock() method so that you can perform
+> > operations on the value before the spinlock is released.
+> >
+> > Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
+> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> I have a couple of nits, but overall looks good to me.
+>
+> > ---
+> >   rust/kernel/maple_tree.rs | 94 ++++++++++++++++++++++++++++++++++++++=
++++++++++
+> >   1 file changed, 94 insertions(+)
+> >
+> > diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
+> > index 0f26c173eedc7c79bb8e2b56fe85e8a266b3ae0c..c7ef504a9c78065b3d5752b=
+4f5337fb6277182d1 100644
+> > --- a/rust/kernel/maple_tree.rs
+> > +++ b/rust/kernel/maple_tree.rs
+> > @@ -206,6 +206,23 @@ pub fn erase(&self, index: usize) -> Option<T> {
+> >           unsafe { T::try_from_foreign(ret) }
+> >       }
+> >
+> > +    /// Lock the internal spinlock.
+>
+> probably should add #[must_use] here.
+>
+> > +    #[inline]
+> > +    pub fn lock(&self) -> MapleLock<'_, T> {
+> > +        // SAFETY: It's safe to lock the spinlock in a maple tree.
+> > +        unsafe { bindings::spin_lock(self.ma_lock()) };
+> > +
+> > +        // INVARIANT: We just took the spinlock.
+> > +        MapleLock(self)
+> > +    }
+> > +
+> > +    #[inline]
+> > +    fn ma_lock(&self) -> *mut bindings::spinlock_t {
+> > +        // SAFETY: This pointer offset operation stays in-bounds.
+> > +        let lock =3D unsafe { &raw mut (*self.tree.get()).__bindgen_an=
+on_1.ma_lock };
+> > +        lock.cast()
+>
+> This cast seems unneeded. lock should already be a *mut spinlock_t.
 
-I have a couple of nits, but overall looks good to me.
+In some configurations, the type is BindgenUnionField<spinlock_t>.
 
-> ---
->   rust/kernel/maple_tree.rs | 94 +++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 94 insertions(+)
-> 
-> diff --git a/rust/kernel/maple_tree.rs b/rust/kernel/maple_tree.rs
-> index 0f26c173eedc7c79bb8e2b56fe85e8a266b3ae0c..c7ef504a9c78065b3d5752b4f5337fb6277182d1 100644
-> --- a/rust/kernel/maple_tree.rs
-> +++ b/rust/kernel/maple_tree.rs
-> @@ -206,6 +206,23 @@ pub fn erase(&self, index: usize) -> Option<T> {
->           unsafe { T::try_from_foreign(ret) }
->       }
->   
-> +    /// Lock the internal spinlock.
-
-probably should add #[must_use] here.
-
-> +    #[inline]
-> +    pub fn lock(&self) -> MapleLock<'_, T> {
-> +        // SAFETY: It's safe to lock the spinlock in a maple tree.
-> +        unsafe { bindings::spin_lock(self.ma_lock()) };
-> +
-> +        // INVARIANT: We just took the spinlock.
-> +        MapleLock(self)
-> +    }
-> +
-> +    #[inline]
-> +    fn ma_lock(&self) -> *mut bindings::spinlock_t {
-> +        // SAFETY: This pointer offset operation stays in-bounds.
-> +        let lock = unsafe { &raw mut (*self.tree.get()).__bindgen_anon_1.ma_lock };
-> +        lock.cast()
-
-This cast seems unneeded. lock should already be a *mut spinlock_t.
-
-> +    }
-> +
->       /// Free all `T` instances in this tree.
->       ///
->       /// # Safety
-> @@ -248,6 +265,83 @@ fn drop(mut self: Pin<&mut Self>) {
->       }
->   }
->   
-> +/// A reference to a [`MapleTree`] that owns the inner lock.
-> +///
-> +/// # Invariants
-> +///
-> +/// This guard owns the inner spinlock.
-> +pub struct MapleLock<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
-> +
-> +impl<'tree, T: ForeignOwnable> Drop for MapleLock<'tree, T> {
-> +    #[inline]
-> +    fn drop(&mut self) {
-> +        // SAFETY: By the type invariants, we hold this spinlock.
-> +        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
-> +    }
-> +}
-> +
-> +impl<'tree, T: ForeignOwnable> MapleLock<'tree, T> {
-> +    /// Load the value at the given index.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// Read the value while holding the spinlock.
-> +    ///
-> +    /// ```
-> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
-> +    ///
-> +    /// let tree = KBox::pin_init(MapleTree::<KBox<i32>>::new(), GFP_KERNEL)?;
-> +    ///
-> +    /// let ten = KBox::new(10, GFP_KERNEL)?;
-> +    /// let twenty = KBox::new(20, GFP_KERNEL)?;
-> +    /// tree.insert(100, ten, GFP_KERNEL)?;
-> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
-> +    ///
-> +    /// let mut lock = tree.lock();
-> +    /// assert_eq!(lock.load(100), Some(&mut 10));
-> +    /// assert_eq!(lock.load(200), Some(&mut 20));
-> +    /// assert_eq!(lock.load(300), None);
-> +    /// # Ok::<_, Error>(())
-> +    /// ```
-> +    ///
-> +    /// Increment refcount while holding spinlock and read afterwards.
-> +    ///
-> +    /// ```
-> +    /// use kernel::maple_tree::{MapleTree, InsertErrorKind};
-> +    /// use kernel::sync::Arc;
-> +    ///
-> +    /// let tree = KBox::pin_init(MapleTree::<Arc<i32>>::new(), GFP_KERNEL)?;
-> +    ///
-> +    /// let ten = Arc::new(10, GFP_KERNEL)?;
-> +    /// let twenty = Arc::new(20, GFP_KERNEL)?;
-> +    /// tree.insert(100, ten, GFP_KERNEL)?;
-> +    /// tree.insert(200, twenty, GFP_KERNEL)?;
-> +    ///
-> +    /// // Briefly take the lock to increment the refcount.
-> +    /// let value = Arc::from(tree.lock().load(100).unwrap());
-> +    ///
-> +    /// // At this point, another thread might remove the value.
-> +    /// tree.erase(100);
-> +    ///
-> +    /// // But we can still access it because we took a refcount.
-> +    /// assert_eq!(*value, 10);
-> +    /// # Ok::<_, Error>(())
-> +    /// ```
-> +    #[inline]
-> +    pub fn load(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
-> +        // SAFETY: `self.tree` contains a valid maple tree.
-> +        let ret = unsafe { bindings::mtree_load(self.0.tree.get(), index) };
-> +        if ret.is_null() {
-> +            return None;
-> +        }
-> +
-> +        // SAFETY: If the pointer is not null, then it references a valid instance of `T`. It is
-> +        // safe to borrow the instance mutably because the signature of this function enforces that
-> +        // the mutable borrow is not used after the spinlock is dropped.
-> +        Some(unsafe { T::borrow_mut(ret) })
-> +    }
-> +}
-> +
->   /// Error type for failure to insert a new value.
->   pub struct InsertError<T> {
->       /// The value that could not be inserted.
-> 
-
-with or without those fixes, for the entire series,
-Reviewed-by: Andrew Ballance <andrewjballance@gmail.com>
-
-Also, if you need one, I would be happy to be a co-maintainer of the
-rust maple tree bindings.
-
-Best Regards,
-Andrew Ballance
-
-
-
+Alice
