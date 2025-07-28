@@ -1,108 +1,56 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from hs01.dakr.org (hs01.dakr.org [173.249.23.66])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB702505AA
-	for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 12:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95212472B9;
+	Mon, 28 Jul 2025 12:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.249.23.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753707207; cv=none; b=dsNAKcz16AlccgLbKsibh0jng4bdbXsRgyQSpU9BjA3mpITwDVGP7KO2jad3BkG/9mGSV+t+h5bk2a8yJZpF3IUG9QPhMVZL8JdlJdYQMQMwAcnuPI4q7X4/uSGiV1p7mZ4wdIEWy6yzyOW4rYYmLzM7wGPB+Gv113ZMUzsQ0sY=
+	t=1753707449; cv=none; b=G6Im+ptvE2Rg8j5ETf6xyqUwT1KZV5GyXMLNvKTgUywm4nqbb4GP14LNQQT1jriFE9ZPEDhBpQFdUloA+hWtiQPQ8C0D+7cl7uUM+cxMIrncT0rRhH0S90Qvc8g376DX1ESnt2f1kypNzTbsNXaVTgl2nT37UgEkNKZqqOHFBY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753707207; c=relaxed/simple;
-	bh=qMBsJXHYzsr3CVUkyq1ay5nCxvYaIy0ErdvCISz0MaE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WKaBClnAomPGGxyHXsgyARBfozCH9+Fc/K3tGoKG+0R1eztuQlt4YUF3CC8knJLeGBp4C84JlCl8Y3SQGrK8odDmgSQ5TAzLzvJf03L9CWtvzamqG/mQ0wsrWsCxapd4gsR71WsTigpdhguMyYMJ8PXPWPWpymeRO0fJat/lylA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=matGIt+j; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="matGIt+j"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-ae6d660902cso261880466b.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 05:53:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753707204; x=1754312004; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BI1sNBtXSiaperYDJvrUgI2+ExhfP6g0qAUSRJ8H4Ao=;
-        b=matGIt+jv02Au7s8aLMk16x173GhDPhU+1Aq/KOva6mFMcvl2JhPF0MaUU0Sp2CE2V
-         v71TyjdZutro/oa9Zl9d6J7mpbVjUEDlEiQ7NJFZig3lWzR9MD4XW2Nl8imcAKyamqVR
-         KsT7VRCYL+auRXmueYdHcRx4X9QRjjo0uB5TWnoZoEDXzE9ixumJ1fIkCL1RDlfIsmf1
-         q//jtzzfpSnQTqcmE5YddcR4aaFAUkUcvMqjngSYzeKMze9SrjwpFpDmgtA68Xiyetg0
-         4vMCncgG1tGCkNXgrrpGzzwF4zEaRGatDvl+rHzuy6owCKWcoqeSJ2UGsCV8rl891X5f
-         LvtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753707204; x=1754312004;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BI1sNBtXSiaperYDJvrUgI2+ExhfP6g0qAUSRJ8H4Ao=;
-        b=wm4M7j13GkUcOjXMdIxg1q0ZKJP+AXXpwRob457Pct5tTX8yrzZzrl7v+Qp2q18SBm
-         M8NOLlGpWCe4ci3r7SIeMpnYp75xD4VbU4b6W0qn+Bv8VYJfeQClnfBlA1CQ0iZCAfJU
-         ST3RGiutjEV7wLYRqCbE44YMkyNp8fQh6+mqBEwkA/WVcWgqEe5pqye2qSJFNciWB9xs
-         eFdCZ8fAvW4SQocEi2JBE9esSom2mlGyt+qBR/M991MjKeiWJhio+q/Dv24Ctxh1jsIP
-         Gd1nlG9p9wHwfRfEmWhTpxKT3yozHxI5+uRORxOuuuGY83U8c8Yt2LA+9POBlyO/Eivk
-         /9Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp6ho9mXidqLdiFP/OJd6IkHNhFRELRGhhLqGG0nprCSwaMunc1Csot9q/svdSOEBQGmORP+tAgfovhUC6VQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNiSENWYe0xC29sEbuF7QKBLhbAqANReLDjsEr7+z7KrnRYwkS
-	YFhMpeJMH5/TkR+es4mtDm0OWM+JWIK+scObN93dHFrNU6Iejg2YLiYEmcD/eJCLGdT9arLxSyw
-	b17LfhaqtRIr+Z2OyNA==
-X-Google-Smtp-Source: AGHT+IH05/Inz8BQqaQU0vmnc6FItf14b/KKYTp7OfqMnBxS3qWUixTLoETX12WaIgX3B3UIjmlGRuoe3ehDnO0=
-X-Received: from ejcvi13.prod.google.com ([2002:a17:907:d40d:b0:ae0:aaa5:ea47])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:1c08:b0:adb:229f:6b71 with SMTP id a640c23a62f3a-af61b004396mr1107148866b.5.1753707203947;
- Mon, 28 Jul 2025 05:53:23 -0700 (PDT)
-Date: Mon, 28 Jul 2025 12:53:22 +0000
-In-Reply-To: <20250728-as_bytes-v4-0-b9156af37e33@nvidia.com>
+	s=arc-20240116; t=1753707449; c=relaxed/simple;
+	bh=sU4nt/PuuA1YLyMazmNzKpmeb/FFMMIOGhP3Gm9zZ6I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DvqMrz+C1N5g5bpc3HQBYddI9XbKte3PBDglbWhnRMSjHxqBdjWRn+9HoID5RTc2RjK/KRRZPN0FJZv5pZbIig0YTWeguG5ZNRR0+CDKt0SdAlp0P8cHtzU6a3qufcD5EclE+fJhzHPYEQMPln5cyhQ832yc5StZP7NmXymnApg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org; spf=pass smtp.mailfrom=dakr.org; arc=none smtp.client-ip=173.249.23.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dakr.org
+Message-ID: <6c5b4f8f-c849-47f8-91ce-fc9258b0f239@dakr.org>
+Date: Mon, 28 Jul 2025 14:57:16 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250728-as_bytes-v4-0-b9156af37e33@nvidia.com>
-Message-ID: <aIdywtMq_3ycrGNZ@google.com>
-Subject: Re: [PATCH v4 0/2] rust: transmute: add `as_bytes(_mut)` methods for
- `AsBytes` trait
-From: Alice Ryhl <aliceryhl@google.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Christian S. Lima" <christiansantoslima21@gmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: daniel.almeida@collabora.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, andrew@lunn.ch,
+ hkallweit1@gmail.com, tmgross@umich.edu, ojeda@kernel.org,
+ alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+ arnd@arndb.de, jstultz@google.com, sboyd@kernel.org, mingo@redhat.com,
+ peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
+ david.laight.linux@gmail.com, Alexandre Courbot <acourbot@nvidia.com>
+References: <20250220070611.214262-1-fujita.tomonori@gmail.com>
+ <20250220070611.214262-8-fujita.tomonori@gmail.com>
+ <FC2BC3FF-21F2-4166-9ACD-E14FE722793D@collabora.com>
+ <20250728.215209.1705204563387737183.fujita.tomonori@gmail.com>
+From: Danilo Krummrich <kernel@dakr.org>
+Content-Language: en-US
+In-Reply-To: <20250728.215209.1705204563387737183.fujita.tomonori@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 28, 2025 at 09:47:50PM +0900, Alexandre Courbot wrote:
-> This is the sister patch of [1], providing an `as_bytes` method for
-> `AsBytes`, and an `as_bytes_mut` accessor for types also implementing
-> `FromBytes`.
-> 
-> It is going to be used in Nova, but should also be universally useful -
-> if anything, it felt a bit strange that `AsBytes` did not provide this
-> so far.
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20250624042802.105623-1-christiansantoslima21@gmail.com/
-> 
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
-> Changes in v4:
-> - Add the `as_bytes_mut` method for types also implementing `FromBytes`.
->   (thanks Alice!)
-> - Link to v3: https://lore.kernel.org/r/20250726-as_bytes-v3-1-eb7514faab28@nvidia.com
-> 
-> Changes in v3:
-> - Use `ptr::from_ref` instead of `as *const T`.
-> - Link to v2: https://lore.kernel.org/r/20250725-as_bytes-v2-1-c6584c211a6c@nvidia.com
-> 
-> Changes in v2:
-> - Use `size_of_val` to provide a default implementation for both `Sized`
->   and non-`Sized` types, and remove `AsBytesSized`. (thanks Alice!)
-> - Link to v1: https://lore.kernel.org/r/20250725-as_bytes-v1-1-6f06a3744f69@nvidia.com
-> 
-> ---
-> Alexandre Courbot (2):
->       rust: transmute: add `as_bytes` method for `AsBytes` trait
->       rust: transmute: add `as_bytes_mut` method to `AsBytes` trait
+On 7/28/25 2:52 PM, FUJITA Tomonori wrote:
+> All the dependencies for this patch (timer, fsleep, might_sleep, etc)
+> are planned to be merged in 6.17-rc1, and I'll submit the updated
+> version after the rc1 release.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Can you please Cc Alex and me on this?
+
+Thanks,
+Danilo
