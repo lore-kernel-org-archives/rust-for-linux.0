@@ -1,235 +1,94 @@
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2078.outbound.protection.outlook.com [40.107.93.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6484290F;
-	Mon, 28 Jul 2025 05:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753679530; cv=fail; b=pStehlD4r94LXtSecBK0WtcgNePDQGIeWs1lPBzMRplyar0c1lxvEJ2Ogz4/IYg1cMqGGfdwShW5xcw9TirA3yhT8I7KChn937nkFdFkKrAXkgdv0Q2RRrE/rO56paDkO+fhbu0tsXBgpFYjLoSmtO6t+zYg7ktWlzjonX56+Ps=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753679530; c=relaxed/simple;
-	bh=EF3hh61WanwN28Aey+T7XZN8pJhLp77TfEHZjlZIuqY=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=G7tM6f6Ac0afYnCUZu6hcJ/3kwQK7OR286H+eGEfo/zsVl13Dpixd6VWIybMGvwHqFhEjJgk3gSBAwgbU6uelDtgg9ObnLqfthhbT6jvRT5CE4jyrSjkIbWKCw46WgWMvMBiZXSvg8bhb1d6kqFlNBFddIaVP/OjHbDzvrDpVwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=M46I+g+G; arc=fail smtp.client-ip=40.107.93.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2624C21CC44;
+	Mon, 28 Jul 2025 06:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753682813; cv=none; b=DbnxLhduQwmnAz1Lcq5jeqBt0w7jNJ4HPULTsAYc1bGlX4rvW7E6bJdHZ8a5UnP4tG1Y+MXTrQ9ixvj2iyrgA1iHpJDIrvanu/dqd7uMWiuII+C09fKWAuQjqM8kmi8s+mQ7lOmrdsT//Trra52hvXM4Lcacvb/DV4ae9mUcSwo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753682813; c=relaxed/simple;
+	bh=6BuxxmxrMXuD+syryXFAu4e7ozMwiP9HtTVrGgSqrTA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ILKqKQBSmSwsLXLSB0pfNWjjyDgjR0K/nOPT3r0q09l3s5KVABWBRtXmxsg8RQnWN6y671gs2r9kLl3Dm9CJKj3uZUpJECIwyK2LYZrU3N4P3Ik218KttfbIrlbf2/Q0hXB4hNeGUd1jgp3x1o3p0YULtw+1/mxwvdqm5MOTOGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DdWF3yP+; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="M46I+g+G"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EVSTvgBxe+Sk9TKLVRAcA0dIjgKdo45C71rWpFBREXM663x5kWKnyqX/XcWSzYnvRssWP+5Ae7YmDaJ26qOfgmRuBNGYKYkxHBLhV9F9S+tBBC1wEe57rvhIcQRcQ9jkIMmsGTNkC+dy+6jj8Ncm1NGV8OJ667NFAexrdjud/q8s3Ld9cafmEtpIIIGa7H+9Qz/ubrxr3ndtEJFYqit0M60mvOSBfEmXHoabUFJ8JRa5dHwsKbRkl04H7Q7zPu7dzCOBYVqB37wkie8xTK13JLxaZA5Mtq5qmL1/aGlLCRMaMYtgtEiz+NC5DF+qLi942kX6X2oQNNtFh/cztyTM1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wCPkrq53EzNBqZWUWEfIoTjueUFeTp7G0mv7LDBxDgM=;
- b=EzrV2qoX6PGTey6t60/puxmKWvHeGUGOKrvcAHhgwwtnMrHPXcj5hNigvpyc6WxLuYSprb5Oq/jTSzSU3uNiIs69c4vK5P6edTkoGYYfOYW5hDThz1F4RUR5eDlREuC/3mLN9h+Y9hzFmKPSSPPlEk/nuxENEFMQSdHxmyfnqh/vugUQfxLgZ8fbV8EXEbYBDpUxL0cqLcLA2pFuo/MBoSiHsqx1w5tnKNqa2978Du13+R1NMz+SifTWPdjzNLT3ZxE+2THAUF2p6fTI8A88rxlT1WkuMiv+J1g916+tmT6q+t7dCJeMxFRGQl91EAf5DPp9fBkt/KI6DYJiTMAEaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wCPkrq53EzNBqZWUWEfIoTjueUFeTp7G0mv7LDBxDgM=;
- b=M46I+g+Gb/lrP2A3rmrHsIzH4m2XK1Golhf53lPeHw6Q+n94IWFPFh1dPK3LNbpXWZo7+kGk1fP/9wZgTrZYekjKslklE3CxojUfUAf/CJeDhY7FpXsW2KImJNtl66NZmKnhyYCn9fH0Et0TM5OK+iWaV7+UjVgv05hq3QJHXgS9MqEjZK2EHnBWk2kAb7mCSG7Rwds4yk5sTBIdKe79kEHMeXPx8NdHVIp2axxpnoxfd65vTXVypz+/a2AYc+m5CEnJM3Fzf1sDk5jqwTxn28W6iEo8XeVova9ZoQUMxydc5ODLhq3eERO1vdx6X5M8XQ27ao39l7+TKvK3Tu+e5w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SN7PR12MB8789.namprd12.prod.outlook.com (2603:10b6:806:34b::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.25; Mon, 28 Jul
- 2025 05:12:06 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8964.023; Mon, 28 Jul 2025
- 05:12:05 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Jul 2025 14:12:01 +0900
-Message-Id: <DBNFIAFL8LAS.1W647VD2TIFP9@nvidia.com>
-Cc: "Danilo Krummrich" <dakr@kernel.org>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "Beata Michalska"
- <beata.michalska@arm.com>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Nouveau"
- <nouveau-bounces@lists.freedesktop.org>
-Subject: Re: [PATCH v2 17/19] gpu: nova-core: register: add support for
- register arrays
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250718-nova-regs-v2-0-7b6a762aa1cd@nvidia.com>
- <20250718-nova-regs-v2-17-7b6a762aa1cd@nvidia.com>
- <D0DDB132-68E8-43D0-B7EB-AA607C9BB72F@collabora.com>
-In-Reply-To: <D0DDB132-68E8-43D0-B7EB-AA607C9BB72F@collabora.com>
-X-ClientProxiedBy: TYWPR01CA0034.jpnprd01.prod.outlook.com
- (2603:1096:400:aa::21) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DdWF3yP+"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23ffd0ec2afso302355ad.2;
+        Sun, 27 Jul 2025 23:06:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753682811; x=1754287611; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6BuxxmxrMXuD+syryXFAu4e7ozMwiP9HtTVrGgSqrTA=;
+        b=DdWF3yP+AfyehxYZXxodrNtHs8JIwt9LlwqVzjP7rbQ9wikiC7pGY+MQNHCaDIv6Ny
+         RlDIQBRPJO6f3Fsd6ho4Jk7AXEogJdypZIJEW8ATncoKqFtg88NDBeJQC6kC+k1/TS6J
+         6ynUwVbr2rkC/QWhNQfQ50XEC0ps/z+qSABCK4wi1e6taOzv+MIgbQuz55IsZwm7O1nd
+         m7CHU913jmKhitDch0djhoQ2daY3TAI3l36LAieCD44Uca7MC9cz3aowJRJTEErbvq70
+         mSMU4QYjnxQ3pcLnoQTxSnxh25bJWHT04Pb415uq28fRsapRrqfNJX6IEsJUu/KTFXlC
+         lbqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753682811; x=1754287611;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6BuxxmxrMXuD+syryXFAu4e7ozMwiP9HtTVrGgSqrTA=;
+        b=C5h2UmGg3E1c0y6oIfpkS73R979LoxPwbI5zeB2OpwYhs3pbTYQhIyocLBKPuSVpS+
+         HRqIkgjfzrTkFAVniDNLBnYVKt0NpBFnOPviPNZihS6h6YN7k4Rd7XBw/mG1YWhj5wWU
+         /B4vnW2RyQiH0BrdyjaPzQm+i7Sn1328ZL40sFv55oep3CZzwIyQO8mJGez13+iAc6ww
+         TnaDERcvC7marpEXt/jo2zQ1+/qftw3q9+8BcNB5WJi9ZCVEEg1E0N33Kdw0bhKaDT+Y
+         fFi8rSoZuZoXCiXYQYQcIUlDdvPDk04iyglr+wpg00/NhuHNTFg+v6cxQx3mGe9iMehG
+         eTdA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdwNrwKNYjYd0A3LKXkPfNzUUaA6lfPWJ9/BhYIFnbgfQVlCvJQ0TXQExRrNAXHaTVMc2IEzwS99nw/D5j@vger.kernel.org, AJvYcCXWGNpZkezQf5FCtPOnyLblBKxHCFd4qKz+zWdXRmBdTw+fTLHSHHvQZwsDA+EMnqrBjoJKEI8CjglokNM=@vger.kernel.org, AJvYcCXeq3inagD6l2wozqjU+Td6YRWs0lO6ir1cbuPQlIx/n249yNS4qiUYTr3vmzPvU973FCF3c1X60xJ3J79NfJ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi7K1ZqhjMtRFT1whRjp9hrfRYRy84HiGIKkyRq1ap2YSBue7m
+	Wbs5gjTXtbzMNCWPsW3JcMUinjejGLAEalrN/wK0i1nb2NOZeEDQE1sTNNIXNr4m2JXB0joLFI4
+	ATppxPJgs3tfj6fda+uDGEXE+if/LqDE=
+X-Gm-Gg: ASbGncvkIu8z8CVAVKQzeNHjQAUlTAASO1mZG8TifAkQtxNiEaUnDUlazuqJEJ9Tie3
+	w5kIYvmusNwZDLOIrT3m47qi2gTFX4Dm6Z48vd8h1mA2JBOSRyczrgWTZ5RHIc4EGoxdM0QlvR6
+	Lqo1ab/UmyyYBzFOygmDmay041VvucL+dvORoMSpXvmptzGWsrhTfB+l0otAV37u4RS4K6Sye6A
+	FS3x8b8
+X-Google-Smtp-Source: AGHT+IHdhVmKZwChbSTO0ZEh7G/lQCCa1ZWLqXuMsDUl5T7xo9Vns0QP4cG8ipR9HWfcbqvofCO6RnASD0hnrFNm+xE=
+X-Received: by 2002:a17:902:e751:b0:240:cb:97bd with SMTP id
+ d9443c01a7336-24000cb9c7amr23866415ad.7.1753682811331; Sun, 27 Jul 2025
+ 23:06:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SN7PR12MB8789:EE_
-X-MS-Office365-Filtering-Correlation-Id: a48a947b-5e5e-4f9d-e17e-08ddcd954b17
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Ty9vUzBqYTZySzJ0YldTMEsxUnVYYW5mRElzSjI5VlBFODJFVXE4dTRpZHN2?=
- =?utf-8?B?Si9ocnlwTExKUS9Wd3htbVBqdWd3c20ydjVPN2lDaW1TRTIxMTloeXFpdXVa?=
- =?utf-8?B?RVJGanRzMXpvRGV2cmVIbE5VUzlOSHEvWGlrTkxRdngrMEVBcWQrUDJSMkpx?=
- =?utf-8?B?Lzc2WVBvSXU1ZVJXTEh3anZXNHcxOS9GNk9DdnhOQmpzKzVENDZyWlEycEVk?=
- =?utf-8?B?Nk5tdElZUDJlNkgrVk5lV2dkNjFFemRlVWwwd3FYckdNbklYSUhKM2lBK2Nj?=
- =?utf-8?B?Q05tdk5vTjgzR2srMFFEMENROVZINUpNTnAzaTVndVl1Q3VZdlFjdG54V3g0?=
- =?utf-8?B?SlJzMjc3Q0xrbHZyanNWcjlteEQwQ3pIUzEzcktMUWVIQm5nUWVoUFlXcE42?=
- =?utf-8?B?QVZSTGEwRHNxclRPVUVpc1VOZ1UvdXRwOVRnTGVNd2tDWk1iSklDZjB0RjQ3?=
- =?utf-8?B?b0ZCU1JBQVlUTEl1QmVyd2ZDZ1Q5dlltNEg0cjRRMHF1bm9SSyt1d2djWVpM?=
- =?utf-8?B?SFcyalNMUTROYTlSZ1htMHc5RXpkMzFVYWgydndwVk91TjNZWnpzR2NjRFRm?=
- =?utf-8?B?SnUvU1AwTW04cGRxN2NKVkhmY1E2d3lFREJWMzJWZXFjU3Y4RDVka3kwL3dK?=
- =?utf-8?B?Q3dqVlZBUXNLVVgzZGFBM2xjb1JYQU9tNEdTcDVGL0dPNHZIbjhLNDZudWU5?=
- =?utf-8?B?c2tVZWZXUmFuRElyREw2UkNLVGdxNTZOT2p2RThwZHlHSmVLS2EwYkZ0SlJi?=
- =?utf-8?B?V1VaZWN4K2kzS1ZaWXFoQ2RrZkVGWHZ0aFNGK092OEJLWUVlcGttY2RXcVIx?=
- =?utf-8?B?RXpWcEh2UTc5ZnpDVUlwTjY4Y285TEV5d3Yva3dEbW5XQ21SYjJHbjVMZDNU?=
- =?utf-8?B?eGU0N1B4WnhWWjd0UVdrcXpNRXhpc1hFMjJrVzY1eDRvNXlaYks5RDE3NHg0?=
- =?utf-8?B?c3BnQnkxTThZYmVNSkNpclNmd0J0L1phODFscU1Lays2T1NBR05XSFoyeGtU?=
- =?utf-8?B?RFgrYmZYcUVtRGZiZUhjUXNjcVdBV3kwMVA0cUJjL3p0NnRKN0duQmVUMDZn?=
- =?utf-8?B?UERERE9NSitqSTZ1bmsrTnhTaEwvL1V6N0R0WG9EQ3cvWE1PVEYzS2RReGcz?=
- =?utf-8?B?a0lQaldYQkhhZnZsWEdwSWYxbE03MkVPQkpGQWNYNU5KZ052VVMyRnhOL3hr?=
- =?utf-8?B?WW80akRSb2lYOWdvODBKSmV5MEM3Y1BJWGtVZFd3RC9zWjNkWlhTdnVydExC?=
- =?utf-8?B?WnprbVVqWWFHNTN0enRrNThUcko5U3F0NFhzdXlGV3EzV2lhTkU4QkRlSi9K?=
- =?utf-8?B?MU4vUjk5NVh4MjZ1bXlBMXhwdUxtc0xZMVFXaDVGVUp0cFlNSDRWaFJvenpU?=
- =?utf-8?B?RklmY2J6dWpMM1N6MDErQkpNei9idkgyUzVlYlRNa0pSYkVpeE5DY01tYnA1?=
- =?utf-8?B?QkxUVjUrelVvWlNQdEhMVUtQMUowVkhMWE9rM29lV01kWWF1d2RENUY4RC9h?=
- =?utf-8?B?SUl3SngwdDYzc1V2WGlxQ3NmK0IzQUg3VU1ramt0V0sreERXTTNqRWtybWtP?=
- =?utf-8?B?VUszSEx4VGdJSi8yd0NOSXM2bUQ2TElMbGlwVHRtbFNPK0F2VUVobUNDNU8w?=
- =?utf-8?B?WTVYWUQyeDl2V0tmVmhsUFI2UzhTRklncXhKUGlMZnpFVHFOS0tITU5jQ1pQ?=
- =?utf-8?B?WlNtRGlkcXd2ZnV6TXJSRTdjd1JzY0tIMERQVGxJV3NMNVpBK1RDU3liTzg3?=
- =?utf-8?B?dVpIQU5QNkFBZ2tGTUFNeHhDa2pLS0hFVlhFQkJYZkZJMVVUWk9uUjhBN2I5?=
- =?utf-8?B?T3NRaTA0NjVseXhUbVFRc2R3THBFY3E5blkvTlRoczZOK1hGeUo1RlN3YUNh?=
- =?utf-8?B?Y3N1TmJzTHNyYjlzbXAvOU95Nk84azVXU2hqUWxQQXVCVnllMDg5NUpkUjNk?=
- =?utf-8?Q?PyGH0HP8uW4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TW96K1VxS2RWVUpwK2U3dVo4bWZmOUxTdW14eVJPYlQ3eCtNaW1SY2FLVFFB?=
- =?utf-8?B?WGZ0czFSTEZOUWgrNE1ZQ3VOeFVEbzJxaDl2ZUx5akVhK2R4MWtpeUV5ZGtr?=
- =?utf-8?B?dVhYNWY5UFBtS0U3Q1V5SmJaaW0yeTdwM2g5aG94a0IyYjlOSi92MnljT1Yx?=
- =?utf-8?B?Unljek5rT1pzbkF5QnpoSUpCSjVuL2J5L2FyVmNVV0p1Y3RFZTJVSGtWRlNp?=
- =?utf-8?B?SmdTSWZueXlIdi9QNWhvaEFVUnVxUFJwdnR4UjZtZEZ0S0dpaEFUdG1YbjBv?=
- =?utf-8?B?T1VvcmFGNUtqbnVYUmJtL2oyMU9hZTZhdUpybWpqWGlLdVd6RStxVGdjNEg2?=
- =?utf-8?B?M09lUmR6dTlBZXd6Wi9ScUZnQk9JemFxbXNtQ0EvTEUxeStmeEFFY3p3ZitW?=
- =?utf-8?B?RG04NCtpUXY4dHRqMkJJTzdsVVRZRUpaZkticW53YnRJZDBTOEg1T3Y3cmt2?=
- =?utf-8?B?SFRJZEtIekhTVzMrcWszaU1YVE1GdDd2MDRFWVVlTUN1cVVGcTZYZkMvSzBB?=
- =?utf-8?B?MGlRVWZURHFBZXVTWWxROEZMdEN0V0ZNTWhnYkVQNVNabFovR1JJSEFWR1kv?=
- =?utf-8?B?UHRJSXBxZEpQd3l1WVA2NEtvb1BTS25kTW1XRFQ3SGVRU1hJbGZmdVlydENo?=
- =?utf-8?B?eEZyaWJJeWpZSkYwRFR5cWNodEo5M3NxRnVYRGJsWk11dEdKYVl6Y2xEaEhV?=
- =?utf-8?B?KzE2azdhZ2wrZWUwUUtxbEZPbFJka1FmQUtBdnkydlRueW5KSFBURk5xajlJ?=
- =?utf-8?B?Y1c5b20zZjlvUlZQOUY1VlczVUJaQWtONFRFTU1zZHlGZkNqeDk2VTlZR1ZR?=
- =?utf-8?B?RWhUYWxMUURqQUlNSEQrZ3hJVTZYb3p2b3puZ0ZDcXdDcXJsTTJZczlkRDln?=
- =?utf-8?B?enJwN3lZL25BL3JlbTZFaGl4RWFrMWtvUGV5OVBZa01JVHk2VlVvQnZYaU52?=
- =?utf-8?B?NU1aZEJNcG9aRWt2K1BrWlZiR054aUNvQUQ4a2E0VmlocGF6WFdWeDNrRHFZ?=
- =?utf-8?B?YTVjWFVSVi9LYkdSeHkzMGxqZS9ZMFZuQm9SYVE1YURLNHFwMENaRjY4ZzFy?=
- =?utf-8?B?WlJoRFEzRjNZeTFFU3lEUTA5WEFvS0lsZFdQWGo5NlBjSFlsM1JVRzNkUXZM?=
- =?utf-8?B?a3FKQktHZzRPZXFTUlovam40NU5aOUpwMkZEV1FUU3kwOC9vQnJMQkc5M2Y5?=
- =?utf-8?B?ZWVuemtiUlZyV1FiZm5na1dGUWtTcTM5L1o5dG53VXhDR2o0RGIwdG9CRkZn?=
- =?utf-8?B?Rjl2S05WRGxnSy9LeXI0c2VzVlVUcmRQY0F6YjVQNHVLTUg2cFVRR1NDR2Zm?=
- =?utf-8?B?Rm9NaUNPUHR1V0RoVEQxdGxNY043clZYRzVLRUVDTkJGQUhqOGc2S1c4eXVJ?=
- =?utf-8?B?elQ3WmZ0NmxuaHpJT2JPY0xnckJxOTZ0VzhrZGFzYm5zS280SHpRWHYzeTJs?=
- =?utf-8?B?c3VleFNma1Z0OUZTeDZNUTl0b2ptY3RFUDdIcWVhMzhiQ1AyeVhxMGFTQWpj?=
- =?utf-8?B?K0xuTDcvYkpoN25rTEpqa2M2WmxCeW9JaTU3dW9xbmF4YmNUWTJ2dEV4Q2FS?=
- =?utf-8?B?amJDcXpoYUl3NFBrRldaOW1mdy85K1ByMytTUXo2TG1WSTh2L1o3enltWHk2?=
- =?utf-8?B?TTJTSlNISThpbk9QQVp2bVhrRE1NOS9aRk9LZFFHdUhGMU9kanZ2MjRsOWZ1?=
- =?utf-8?B?Q3hFbFdKdisxL0Q1enBEbzluL2NvZnhQS0c0ZHNTSWtseWRmWVd5TU52RGI4?=
- =?utf-8?B?M1BRaHhEb0JOMCtkUG8xTGlra0RUaGFGMWJLazQ1ZFZLQXQrNzNOanFtSjhQ?=
- =?utf-8?B?ZFNMbkJsaTJ0RHdEZ0VKODBtN0RzMXM1TTU5Q1UvRy92ZjNqcWg5MFBBY3Bt?=
- =?utf-8?B?Y25rdUZMVTY2clBmYU1LbVZ2V1k1ZCtlbHlpdkdBNzJEUFA0TDVCRHBPcG5y?=
- =?utf-8?B?MzNJdkM1L3pWUUdlc0RUTk9jVlFZZUJ1YVk0Yi9YSzlaNDNuWkl6UVBpNFJi?=
- =?utf-8?B?UWtnY0JBdG5uV1ZtRWU1ZlBLQUU3MWVPbHJRbTAyY05kQ3dSK1VoTGdlUzA2?=
- =?utf-8?B?aE5qdVlDS25qcUcrWk1nK1Z2SnBOdE1OTWhuVFJRTlp3dUVoN2FTZ1lEZVB6?=
- =?utf-8?B?Mk5vSDFnU2YrTDB4U0x1RmVzbEVjY2JpM3ZVTGhRQXhLTlZpNU0yQldiUWJl?=
- =?utf-8?Q?vs8+9cTacgUqHTjm6SWBM7jZgIvmx/qnWRSfMLdH/8Rj?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a48a947b-5e5e-4f9d-e17e-08ddcd954b17
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2025 05:12:05.3317
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KA2DqNYFcSas0IMpZz0bLHj1yX3DdMIJuwukEzjcofEiqIp+79te0eNU3SOnUMck8kmBz3RPuFiYrW7xKLWi3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8789
+References: <20250727092317.2930617-1-ojeda@kernel.org>
+In-Reply-To: <20250727092317.2930617-1-ojeda@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 28 Jul 2025 08:06:38 +0200
+X-Gm-Features: Ac12FXx2eH1NIUNOlaMWd3xqdYk4d5QjO6acLe_IbBpmXiVXK0DqqgtW8QrHL5k
+Message-ID: <CANiq72kYpHzp8ydtkfdb7FN+YjfFNjpSqtgC0Hm1tSy05p4n4A@mail.gmail.com>
+Subject: Re: [PATCH] rust: workaround `rustdoc` target modifiers bug
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+	Guillaume Gomez <guillaume1.gomez@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat Jul 26, 2025 at 4:12 AM JST, Daniel Almeida wrote:
-<snip>
->> macro_rules! register {
->>     // Creates a register at a fixed offset of the MMIO space.
->>     ($name:ident @ $offset:literal $(, $comment:literal)? { $($fields:tt=
-)* } ) =3D> {
->> @@ -187,6 +238,35 @@ macro_rules! register {
->>         register!(@io_relative $name @ $base [ $alias::OFFSET ]);
->>     };
->>=20
->> +    // Creates an array of registers at a fixed offset of the MMIO spac=
-e.
->> +    (
->> +        $name:ident @ $offset:literal [ $size:expr ; $stride:expr ] $(,=
- $comment:literal)? {
->> +            $($fields:tt)*
->> +        }
->> +    ) =3D> {
->> +        static_assert!(::core::mem::size_of::<u32>() <=3D $stride);
+On Sun, Jul 27, 2025 at 11:23=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
+ote:
 >
-> Perhaps a TODO here would be nice, since you=E2=80=99ll want to change it=
- when/if
-> this macros get to support non-u32 types (which is apparently on the road=
-map
-> IIUC).
+> The issue has been reported upstream [1] and a fix has been submitted
+> [2], including a test similar to the kernel case.
 
-There are many `u32`s sprinkled across that code, it would be a bit
-tedious to have a TODO for each of them. And when we start making them
-generic the code won't compile unless they are all replaced anyway, so I
-think we are safe. :)
+This is now fixed upstream (thanks Guillaume for the quick review), so
+it will be fixed in Rust 1.90.0 (expected 2025-09-18).
 
->
->> +        register!(@core $name $(, $comment)? { $($fields)* } );
->> +        register!(@io_array $name @ $offset [ $size ; $stride ]);
->> +    };
->> +
->> +    // Shortcut for contiguous array of registers (stride =3D=3D size o=
-f element).
->> +    (
->> +        $name:ident @ $offset:literal [ $size:expr ] $(, $comment:liter=
-al)? {
->> +            $($fields:tt)*
->> +        }
->> +    ) =3D> {
->> +        register!($name @ $offset [ $size ; ::core::mem::size_of::<u32>=
-() ] $(, $comment)? {
->
-> Same here.
->
->> +            $($fields)*
->> +        } );
->> +    };
->> +
->> +    // Creates an alias of register `idx` of array of registers `alias`=
- with its own fields.
->> +    ($name:ident =3D> $alias:ident [ $idx:expr ] $(, $comment:literal)?=
- { $($fields:tt)* }) =3D> {
->> +        static_assert!($idx < $alias::SIZE);
->> +        register!(@core $name $(, $comment)? { $($fields)* } );
->> +        register!(@io_fixed $name @ $alias::OFFSET + $idx * $alias::STR=
-IDE );
->
-> Why is this @io_fixed?
-
-Because once you index a register (which the alias does), you obtain
-what is effectively a fixed-address register, so these are the correct
-I/O accessors here.
+Cheers,
+Miguel
