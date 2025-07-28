@@ -1,109 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575C01581EE;
-	Mon, 28 Jul 2025 09:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09104254849
+	for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 09:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753693792; cv=none; b=Iye1zsC4C36SYUPwFYKuibSXuzj907XPfAR/b5aEQ6qtmyggAEqIrh34K2sgEpOdw8hZenjHjA+jS7rg1xkGjc60aROdSl0emaNCV/un+TaL6leUK2JZmjQ6/18k/gFY5usZ5CzNp1eR/bDmxkdNRXqRQqIMoZ4aXld9h9DbSYk=
+	t=1753695787; cv=none; b=anDIp2z25qPGBCDb/7QSvUdL19+CMPdiQwNPyXRxqcSrTquzLjSLgxP2BPMLOMSEe+bGFC+HRxS37cC0WQG2cRNv+KLXdNIBYAchEdzlPf6pF6TyQuiuD6335HWrwihDFxeqmyFckKVzE4/xHMQSZJ5pziyuJM8wWtqQaj6+0Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753693792; c=relaxed/simple;
-	bh=cWgmH3BuawbobjDaa0eE20DMqqT/O99GfvxSOa2Xmio=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=XHmC5UW+Bjxy0h+oSU34QAE7D7mgo4wRX6b6aX4Mawt288kf2zbq3cDAyNiRE8shHmalcXGpO20wiF9OMspwUq6fjhcxkOBKahAK8e/KQ1Iqwr+a6i9iDR42IxEnFBKfi+CHo4jsC4UXAy76FLzjAqWzGUNqXwVdeiTkxoCKhYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQBnyrCG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753695787; c=relaxed/simple;
+	bh=k87RURquiOri9/0sbTJXsUNDC5vJKdjhxEEbKdLvVmE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DyP72b1buSZaUFEoTpvj1qJdB6wnwhVlqMsAYRngncQ4hZSUROwPwOj1292AdHvMciqoBRXcEv6z5GVNEFVKMh4MlUJIHyjs4j1SnWzNnNqkpuhSGYiXHvuReTbcQ/qMFKZlKIhSay/iUSSIHNtuUtBDh5GesYUuKAm5FXUTvDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nTKQj/9c; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQBnyrCG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5F1C4CEE7;
-	Mon, 28 Jul 2025 09:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753693791;
-	bh=cWgmH3BuawbobjDaa0eE20DMqqT/O99GfvxSOa2Xmio=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=PQBnyrCGmT0ahUnvFEEw+PuJBcqltJccjIhBY2CZN4h8Mtm5z3XpHx1N+NxTdgeg3
-	 6uxD71PkzRuBry9a9dB9S4Zm3Xh0cWMmTas/lsT5Ns8VhYg9jKSJOU56FBCy+axkwj
-	 B3RZ2IKx/a7NBAPipE70zlIWyIxp6dE1ZtelJv4zuv0yN3vDN1bBBsUqExeJB9QE58
-	 EzsdoB3UgEUfTCOPPPBhYyKWEmOsG01xJ2C2pSdnadB8me38xE0L8s9HXmT/AtJFPW
-	 iOd/DdG/VAJouzwvxTAJHSknDO/RkVEGHKT77ZrOuBCavXLqj3rfxMd0Uy9kti8JSd
-	 4p6toUSujbIwA==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nTKQj/9c"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4561dfd07bcso21292925e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 02:43:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753695784; x=1754300584; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=H10wQEWO6xBRJKDh5f66SjYHQXXnsmfhqtVgH0o8fj4=;
+        b=nTKQj/9cakBRWVHq+yyH9vbEdWuU2qiUJxmiqgCI9r03bUFl1XeaxSFKiBJIfHYlTg
+         xzby/EymFIUI6XUb82KqpGWUeid3ZqJK6rJ/jHh+brikJe6k/X2DH2lfNRDey7nEdT7H
+         EWSWNUDoaJPwiBzFw6rWg00r8thUEqRXgA0bLWrVw97ANuzcOTPMIxsCkA/Z4dqqc9ox
+         2xJPsrjBYbiV8j9qclIOfnSrziY1A9W/zbdyaUsD0QXnqKvz2lQYPkzEvjZOALx7Q35T
+         al8TsoWM+RXJ4Ir5denU0Iezp+YiQMuyPrctttXJvxCyzLTkzYBoLTtCmaVwJk0ldyHY
+         tqWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753695784; x=1754300584;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=H10wQEWO6xBRJKDh5f66SjYHQXXnsmfhqtVgH0o8fj4=;
+        b=i71IXQVjwgyj/AHduekozfCCq+CK6vM/RyF/S81KhvUyWP5ElCY4AnmZzbBYFFHRsN
+         6Zfp4B+9bNMqlE4PG6iWIeehfh3718LaLrARhbnDeZY3SVaL8hDbPjRhDe9SFn2SrV+m
+         jWJ9+l/g2ESqi13WaeXRtqK2iCm4p9xzlf5buJBbysnV5xdDdPpexqLphwuChcCq9+3V
+         bvQRc8NISjiYXVjYYBP9wiNUsBzBD8O99RpOHzCEcZzukAhT68cTSgrnJFRYWsXfDZg2
+         Oy+dMm7efjuJmsRMc6C/Juor449z9G2Apw0FE/U2T07BdFkwywlwuW/Hb1o9iYavxKfr
+         6Q2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVV/V2N+Rd9YjmsRjXvoCNWHhMzewlDIzAH0lLlSbqYIfMWcAlt3AxMrCt25y3mmFOxdEOUWWMKSBHX6RGRmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YywRXg8NQe7pbEphb3Tlhavs+pdVMjFwUEfBX66/ammF10pOael
+	ZiKWFFMd5FLAIVcOwAPUU6OZXsJx7uZiTsVJIs77KqZOeBG8XC44j4fRGH7Ais7QBY29YdUQ0z7
+	ok9fZ0e9l/tR3NTxwPQ==
+X-Google-Smtp-Source: AGHT+IENIbQcSUfAOPkIUzvekWDVGRNGR1idBrnUb0vjJtx2emNHAhliXi6NdvGM9BHteNk9vtw9tj3PLJXYZ7g=
+X-Received: from wmbeq10.prod.google.com ([2002:a05:600c:848a:b0:456:257a:e323])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8212:b0:43c:f629:66f4 with SMTP id 5b1f17b1804b1-4587c2f0048mr68402695e9.0.1753695784420;
+ Mon, 28 Jul 2025 02:43:04 -0700 (PDT)
+Date: Mon, 28 Jul 2025 09:42:54 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Jul 2025 11:09:46 +0200
-Message-Id: <DBNKKBNVFP9Z.1MO75JXMR2LTZ@kernel.org>
-Cc: "Abdiel Janulgue" <abdiel.janulgue@gmail.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Daniel Almeida" <daniel.almeida@collabora.com>, "Robin
- Murphy" <robin.murphy@arm.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Christian S. Lima" <christiansantoslima21@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] rust: transmute: add `as_bytes` method for `AsBytes`
- trait
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Alice Ryhl"
- <aliceryhl@google.com>
-X-Mailer: aerc 0.20.1
-References: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
- <CAH5fLghNDDo0HKupPXe8G6z2TP4TJE881Bd76k0LDjSm75KcEQ@mail.gmail.com>
- <aIX-JDehurnGYppE@google.com> <DBMUEH5MYR2L.CXM12OIUH7TZ@kernel.org>
- <DBNDJGIUQC1L.3EYGJ1ROIGMBY@nvidia.com>
-In-Reply-To: <DBNDJGIUQC1L.3EYGJ1ROIGMBY@nvidia.com>
+X-B4-Tracking: v=1; b=H4sIAB5Gh2gC/4WNQQ6CMBBFr0Jm7ZjSWiWuvIdhMa3T0oCUtEokh
+ LtbuYC7/37y318hcwqc4VqtkHgOOcSxgDxUYDsaPWN4FAYppBYXqXCItkc7UM7Y81IS0/iekJQ
+ hp5WppSIo4ymxC59dfG8LdyG/Ylr2n7n+tX+Vc40CG+1Ii7NpLJ1uPkY/8NHGJ7Tbtn0BXzX9L b0AAAA=
+X-Change-Id: 20250723-lock-class-key-cleanup-a3baf53b123a
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=968; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=k87RURquiOri9/0sbTJXsUNDC5vJKdjhxEEbKdLvVmE=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBoh0Yhb3xz5bmrU+TLpV4ylhTnBvtHgElx0MPow
+ XVLJtTnszuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaIdGIQAKCRAEWL7uWMY5
+ RsnGEACzrAssBrmRlVYL/hWJL+GJ9k7HJCtSgH0kM1hwT5tzF0TbahvnTROcc5wwgf0BE705uMt
+ 1Pok6yw4ABJHbPLVccQcaf6MOFdpuzpFGTg0Xx5wmE6VVkbgI4Fa3KLG2WrAnhiayhsReqddQV7
+ 4yXwjGP7C4MaHwO6W4Jt1a0bUR8XXJCMSshE0LscACf3A9b4vQ5RSFgEw1t6ApV3YD6n95ZMb6p
+ CrsAL0wRsOiqqgWbDAJXM1oLx9TL2Fx9ZkwbSKiLf35pisIPHAdXjVQYMf+MW7xXlqx4Aibe628
+ Qi5OlAvp45/OVPX53a7EQMwBdyMlxsmAnanLKZXOyEK4qZ488PLsOwnes9eZoDxP9UlhzIRJcCH
+ W2qAMEw1sFlCeLJmjf1GOgMZG1fKSI0lmVgkKPHsRGAnXQdWOmFsVct5QGPkYj8drWeH0XMNapH
+ gubyJ5jpE4zi4C7EAuPadApdW72jOkbaa96m8aXuU7kEgSECHAGHrmdWta0/IgH/80hO05k5rTR
+ MFtgRomY2ATZyoGKV6NSgvtdxtf/X+0svabYit1Wq3fAvd5pIlS1/T+Jo13VJpbquCzQvgLZJLz
+ 05Mnyn1bq0PEh1U957xJDB1isSytKQ0KP5J3vVeRekpqtBK/IwDqhOtokni0dm7Bl6LZQB2657H okSWXdpzGa+0/2g==
+X-Mailer: b4 0.14.2
+Message-ID: <20250728-lock-class-key-cleanup-v2-0-ad02b80c69e1@google.com>
+Subject: [PATCH v2 0/2] Clean up Rust LockClassKey
+From: Alice Ryhl <aliceryhl@google.com>
+To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon Jul 28, 2025 at 5:39 AM CEST, Alexandre Courbot wrote:
-> On Sun Jul 27, 2025 at 9:39 PM JST, Benno Lossin wrote:
->> On Sun Jul 27, 2025 at 12:23 PM CEST, Alice Ryhl wrote:
->>> On Sun, Jul 27, 2025 at 08:52:00AM +0200, Alice Ryhl wrote:
->>>> On Sat, Jul 26, 2025 at 4:47=E2=80=AFAM Alexandre Courbot <acourbot@nv=
-idia.com> wrote:
->>>> > diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
->>>> > index 1c7d43771a37b90150de86699f114a2ffb84db91..69c46c19a89191d8a2ab=
-c5801564cacda232218c 100644
->>>> > --- a/rust/kernel/transmute.rs
->>>> > +++ b/rust/kernel/transmute.rs
->>>> > @@ -47,7 +47,16 @@ macro_rules! impl_frombytes {
->>>> >  ///
->>>> >  /// Values of this type may not contain any uninitialized bytes. Th=
-is type must not have interior
->>>> >  /// mutability.
->>>> > -pub unsafe trait AsBytes {}
->>>> > +pub unsafe trait AsBytes {
->>>> > +    /// Returns `self` as a slice of bytes.
->>>> > +    fn as_bytes(&self) -> &[u8] {
->>>> > +        let data =3D core::ptr::from_ref(self).cast::<u8>();
->>>> > +        let len =3D size_of_val(self);
->>>> > +
->>>> > +        // SAFETY: `data` is non-null and valid for `len * sizeof::=
-<u8>()` bytes.
->>>> > +        unsafe { core::slice::from_raw_parts(data, len) }
->>>> > +    }
->>>> > +}
->>>>=20
->>>> Let's also have an as_bytes_mut() method. I would require the type to
->>>> also implement FromBytes as it lets you replace the value with another
->>>> set of bytes.
->>>
->>> s/I would/It would/
->>>
->>> FromBytes is needed only for as_bytes_mut(), not for the existing
->>> method.
->>
->> I agree with your suggestion, but it can be an independent patch and
->> doesn't need to go in via this one, right?
->
-> Given where we are in the merge cycle, it seems like we have a couple of
-> months until that code gets merged anyway, so I don't see any reason to
-> not send a v4 with Alice's suggestion? The only drawback I see is that I
-> would have to reset the Reviewed-by tags.
+This series applies the suggestion from Benno [1] and various other
+improvements I found when looking over the LockClassKey implementation.
 
-Yeah sounds good.
+Based on rust-next.
+
+[1]: https://lore.kernel.org/all/DBIJLR7XNI6U.21PMPODHE83DZ@kernel.org/
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Change safety comment to require a static object. Adjust commit
+  message accordingly.
+- Add Reviewed-by.
+- Link to v1: https://lore.kernel.org/r/20250723-lock-class-key-cleanup-v1-0-85fa506b8ca4@google.com
 
 ---
-Cheers,
-Benno
+Alice Ryhl (2):
+      rust: sync: refactor static_lock_class!() macro
+      rust: sync: clean up LockClassKey and its docs
+
+ rust/kernel/sync.rs | 78 +++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 58 insertions(+), 20 deletions(-)
+---
+base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+change-id: 20250723-lock-class-key-cleanup-a3baf53b123a
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
