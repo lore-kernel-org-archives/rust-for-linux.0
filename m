@@ -1,103 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E965B7483;
-	Mon, 28 Jul 2025 10:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8942B25B1C5;
+	Mon, 28 Jul 2025 10:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753696895; cv=none; b=PXlXGaz1fQGLQjmi+ZMzkk7/rWbi9tcbTg1xpR9g83WeWfqXtbJowQEd2OUjwh4X3upQOS3MEpvEz+H+iueNGPc3q2wTWMh8GV76jE2T65RVRLuss3pFYGZDPpKDEWKcDXC59+s0VYw25+QxGAhhSbacpGQKRS39HCxsbCc0bOk=
+	t=1753697914; cv=none; b=GxpU5UK4iyji13fRqKMgopaS6kSYKhxvvZcWi8EhmrK9Hw8Wfg4k0tvAnddq5HZ8rfHkBpro12+ZQjMQ52VQPSWGCDp9sbl0hSGxOzJ53e0/XRkI6YBvr0PPeZ47ANZjQ5C538wjJVV0ygqAvB/FvpywUWOjrKjjTt4yijICeRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753696895; c=relaxed/simple;
-	bh=kTuUkUsd13QnoVQ3yYmQ6WdExLMJS9IjNiFB3TnS/ps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rnXul+8lR7hCgKDRDbH2EUwG6/LJnAaAyfJHS+PdNvgSIueEWcOvQCyV0w0kP1Efrs0klMloKLaR9javZ24MDrU69ynmwlBM2fhU5jXPlgyFHaCAzg/5FhIP2ZBYE7UWwoBhS6qMLdYYTJzmVqtYYP58/mvSenetnoKmN28jxQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/1wItD5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753697914; c=relaxed/simple;
+	bh=P5VB9PD0iIZZL9kzIBZpyzOHWM7gFzqaWnjVehBJfXw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=eE8u47MsmR75cmtgkyl7pHr0rv8CNhi4HHHiwveriMvxQt/DBn8+hVHGUADHoNWRqZUpryi8paZBOX1pc25kmk5KW3iW1vrgQMnexd2eaKtOYuvLgEVrZqhG7oht5Ie7E7bgvIXYpC3ib4Pm+M+jAL+jEq1icGiqiZb3x7AdDLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IK4O7RcA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/1wItD5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C69CC4CEE7;
-	Mon, 28 Jul 2025 10:01:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IK4O7RcA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F58C4CEF6;
+	Mon, 28 Jul 2025 10:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753696894;
-	bh=kTuUkUsd13QnoVQ3yYmQ6WdExLMJS9IjNiFB3TnS/ps=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=E/1wItD5UfYnN1EeJpWHnZ9oR8Kj71XeQWzlztjb5ngxcGj/qcnwJWZRZ/CFgLlnl
-	 nOP8q8gf1o9IcZVD+t93VWuA4+i7/t9cfDaaE897Ld029eGYnar3/nFH4dS5/GfrPH
-	 elGeECdUymPmEzB18YPEYPQefsGPVW1ReKH9C65FMLqxiW8c8Hs+t3fGKg6HSK6SjB
-	 VPXoVNrCm8MK3jl6ZMU3PCvSPgrdK2QAmNHjiWMC9u9h7JtZnL29i54c2amumauiJ5
-	 a/QzZG5h00z815K1A+mrxf/B/FFt9qea9gLrlGQU/StGxiiMhQZCMY4QKzJUUu8U+F
-	 JF0p3FB1aNx+Q==
-Message-ID: <10506c57-1629-4ca2-9c3f-3e97e68caa7a@kernel.org>
-Date: Mon, 28 Jul 2025 12:01:29 +0200
+	s=k20201202; t=1753697914;
+	bh=P5VB9PD0iIZZL9kzIBZpyzOHWM7gFzqaWnjVehBJfXw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=IK4O7RcAnvDopGLVqz556LpcWJhLcHW2oh9gVE+q3Nmw/6aKPgXiq+9UxzvOyGgsM
+	 vTvrS81xZA2bgHsVVsH4ZJ9G6LjesbIqG0ChrBIwiBV6hrAWaJVmddP92DJVqfCrlw
+	 0/CcDwWwdY18+8YCfLVmhmwgT3SAQNsyhAEcQsPjBeg3DbFGSopmBBc6rxNnQ8cydt
+	 dt/7spsDLveRnhPoI/svk3RvvITnAANi8X+uGde5mByKejrClbHOZAi4zGQ+Bc6/1i
+	 1o+vF6dBQzGlh/z/7AkkL/R6Daukl92VhEGDcwBmrHrVc6ZDYjbQrvwqVUsHuU3zb8
+	 5UZz2AIprWLyw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] rust: transmute: add `as_bytes` method for `AsBytes`
- trait
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Abdiel Janulgue <abdiel.janulgue@gmail.com>,
- Daniel Almeida <daniel.almeida@collabora.com>,
- Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg
- <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>,
- "Christian S. Lima" <christiansantoslima21@gmail.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250726-as_bytes-v3-1-eb7514faab28@nvidia.com>
- <CAH5fLghNDDo0HKupPXe8G6z2TP4TJE881Bd76k0LDjSm75KcEQ@mail.gmail.com>
- <aIX-JDehurnGYppE@google.com> <DBMUEH5MYR2L.CXM12OIUH7TZ@kernel.org>
- <DBNDJGIUQC1L.3EYGJ1ROIGMBY@nvidia.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <DBNDJGIUQC1L.3EYGJ1ROIGMBY@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Jul 2025 12:18:29 +0200
+Message-Id: <DBNM0XTCESZY.18G1A6U91QNE6@kernel.org>
+Subject: Re: [PATCH v2 1/2] rust: sync: refactor static_lock_class!() macro
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Alice Ryhl" <aliceryhl@google.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>
+Cc: "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
+ "Daniel Almeida" <daniel.almeida@collabora.com>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250728-lock-class-key-cleanup-v2-0-ad02b80c69e1@google.com>
+ <20250728-lock-class-key-cleanup-v2-1-ad02b80c69e1@google.com>
+In-Reply-To: <20250728-lock-class-key-cleanup-v2-1-ad02b80c69e1@google.com>
 
-On 7/28/25 5:39 AM, Alexandre Courbot wrote:
-> On Sun Jul 27, 2025 at 9:39 PM JST, Benno Lossin wrote:
->> On Sun Jul 27, 2025 at 12:23 PM CEST, Alice Ryhl wrote:
->>> On Sun, Jul 27, 2025 at 08:52:00AM +0200, Alice Ryhl wrote:
->>>> On Sat, Jul 26, 2025 at 4:47 AM Alexandre Courbot <acourbot@nvidia.com> wrote:
->>>>> diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
->>>>> index 1c7d43771a37b90150de86699f114a2ffb84db91..69c46c19a89191d8a2abc5801564cacda232218c 100644
->>>>> --- a/rust/kernel/transmute.rs
->>>>> +++ b/rust/kernel/transmute.rs
->>>>> @@ -47,7 +47,16 @@ macro_rules! impl_frombytes {
->>>>>   ///
->>>>>   /// Values of this type may not contain any uninitialized bytes. This type must not have interior
->>>>>   /// mutability.
->>>>> -pub unsafe trait AsBytes {}
->>>>> +pub unsafe trait AsBytes {
->>>>> +    /// Returns `self` as a slice of bytes.
->>>>> +    fn as_bytes(&self) -> &[u8] {
->>>>> +        let data = core::ptr::from_ref(self).cast::<u8>();
->>>>> +        let len = size_of_val(self);
->>>>> +
->>>>> +        // SAFETY: `data` is non-null and valid for `len * sizeof::<u8>()` bytes.
->>>>> +        unsafe { core::slice::from_raw_parts(data, len) }
->>>>> +    }
->>>>> +}
->>>>
->>>> Let's also have an as_bytes_mut() method. I would require the type to
->>>> also implement FromBytes as it lets you replace the value with another
->>>> set of bytes.
->>>
->>> s/I would/It would/
->>>
->>> FromBytes is needed only for as_bytes_mut(), not for the existing
->>> method.
->>
->> I agree with your suggestion, but it can be an independent patch and
->> doesn't need to go in via this one, right?
-> 
-> Given where we are in the merge cycle, it seems like we have a couple of
-> months until that code gets merged anyway, so I don't see any reason to
-> not send a v4 with Alice's suggestion? The only drawback I see is that I
-> would have to reset the Reviewed-by tags.
+On Mon Jul 28, 2025 at 11:42 AM CEST, Alice Ryhl wrote:
+> By introducing a new_static() constructor, the macro does not need to go
+> through MaybeUninit::uninit().assume_init(), which is a pattern that is
+> best avoided when possible.
+>
+> The safety comment requires not only requires that the value is leaked,
 
-I'd make it a series and add as_bytes_mut() as a separate patch.
+"requires" appears twice.
+
+> but also that it is stored in the right portion of memory. This is so
+> that the lockdep static_obj() check will succeed when using this
+> constructor. One could argue that lockdep detects this scenario, so the
+> safety comment isn't needed. However, it simplifies matters to require
+> that static_obj() will succeed and it's not a burdensome requirement on
+> the caller.
+
+I'd argue that's implementation detail and the safety requirement of
+using a lockclass key is that it either is uninit in static memory or it
+was registered. (otherwise we wouldn't be "allowed" to add this as a
+safety requirement)
+
+(just adding this for info, feel free to keep the paragraph above as-is)
+
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+
+> @@ -95,13 +110,11 @@ fn drop(self: Pin<&mut Self>) {
+>  #[macro_export]
+>  macro_rules! static_lock_class {
+>      () =3D> {{
+> -        static CLASS: $crate::sync::LockClassKey =3D
+> -            // Lockdep expects uninitialized memory when it's handed a s=
+tatically allocated `struct
+> -            // lock_class_key`.
+> -            //
+> -            // SAFETY: `LockClassKey` transparently wraps `Opaque` which=
+ permits uninitialized
+> -            // memory.
+> -            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
+> +        // SAFETY: The returned `LockClassKey` is stored in static memor=
+y. Drop never runs on a
+
+You're not mentioning the "pinned in a static memory location" part
+(only the static memory, so missing the pinning). A read-only static
+is implicitly pinned, so we should mention that.
+
+---
+Cheers,
+Benno
+
+> +        // static global.
+> +        static CLASS: $crate::sync::LockClassKey =3D unsafe {
+> +            $crate::sync::LockClassKey::new_static()
+> +        };
+>          $crate::prelude::Pin::static_ref(&CLASS)
+>      }};
+>  }
+
