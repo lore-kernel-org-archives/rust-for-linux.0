@@ -1,94 +1,167 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2624C21CC44;
-	Mon, 28 Jul 2025 06:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9806E221FB1;
+	Mon, 28 Jul 2025 07:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753682813; cv=none; b=DbnxLhduQwmnAz1Lcq5jeqBt0w7jNJ4HPULTsAYc1bGlX4rvW7E6bJdHZ8a5UnP4tG1Y+MXTrQ9ixvj2iyrgA1iHpJDIrvanu/dqd7uMWiuII+C09fKWAuQjqM8kmi8s+mQ7lOmrdsT//Trra52hvXM4Lcacvb/DV4ae9mUcSwo=
+	t=1753689108; cv=none; b=Ty5DQxHzokyH2pBgGeLCkd3jkj/pAiiQen3faxJzAtnK47Fy975IHQ5NtDU6NPxQWeCGP+x61Y++yedBThkGu2SiZGFyZFgpLbGYa/EdwlRvzBO+DqCMih9X0QdEBtxCAsh9VM6nMXQSk3p4BjfCwvJ4KBW6tcL65aaAsABaGd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753682813; c=relaxed/simple;
-	bh=6BuxxmxrMXuD+syryXFAu4e7ozMwiP9HtTVrGgSqrTA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ILKqKQBSmSwsLXLSB0pfNWjjyDgjR0K/nOPT3r0q09l3s5KVABWBRtXmxsg8RQnWN6y671gs2r9kLl3Dm9CJKj3uZUpJECIwyK2LYZrU3N4P3Ik218KttfbIrlbf2/Q0hXB4hNeGUd1jgp3x1o3p0YULtw+1/mxwvdqm5MOTOGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DdWF3yP+; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DdWF3yP+"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23ffd0ec2afso302355ad.2;
-        Sun, 27 Jul 2025 23:06:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753682811; x=1754287611; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6BuxxmxrMXuD+syryXFAu4e7ozMwiP9HtTVrGgSqrTA=;
-        b=DdWF3yP+AfyehxYZXxodrNtHs8JIwt9LlwqVzjP7rbQ9wikiC7pGY+MQNHCaDIv6Ny
-         RlDIQBRPJO6f3Fsd6ho4Jk7AXEogJdypZIJEW8ATncoKqFtg88NDBeJQC6kC+k1/TS6J
-         6ynUwVbr2rkC/QWhNQfQ50XEC0ps/z+qSABCK4wi1e6taOzv+MIgbQuz55IsZwm7O1nd
-         m7CHU913jmKhitDch0djhoQ2daY3TAI3l36LAieCD44Uca7MC9cz3aowJRJTEErbvq70
-         mSMU4QYjnxQ3pcLnoQTxSnxh25bJWHT04Pb415uq28fRsapRrqfNJX6IEsJUu/KTFXlC
-         lbqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753682811; x=1754287611;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6BuxxmxrMXuD+syryXFAu4e7ozMwiP9HtTVrGgSqrTA=;
-        b=C5h2UmGg3E1c0y6oIfpkS73R979LoxPwbI5zeB2OpwYhs3pbTYQhIyocLBKPuSVpS+
-         HRqIkgjfzrTkFAVniDNLBnYVKt0NpBFnOPviPNZihS6h6YN7k4Rd7XBw/mG1YWhj5wWU
-         /B4vnW2RyQiH0BrdyjaPzQm+i7Sn1328ZL40sFv55oep3CZzwIyQO8mJGez13+iAc6ww
-         TnaDERcvC7marpEXt/jo2zQ1+/qftw3q9+8BcNB5WJi9ZCVEEg1E0N33Kdw0bhKaDT+Y
-         fFi8rSoZuZoXCiXYQYQcIUlDdvPDk04iyglr+wpg00/NhuHNTFg+v6cxQx3mGe9iMehG
-         eTdA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdwNrwKNYjYd0A3LKXkPfNzUUaA6lfPWJ9/BhYIFnbgfQVlCvJQ0TXQExRrNAXHaTVMc2IEzwS99nw/D5j@vger.kernel.org, AJvYcCXWGNpZkezQf5FCtPOnyLblBKxHCFd4qKz+zWdXRmBdTw+fTLHSHHvQZwsDA+EMnqrBjoJKEI8CjglokNM=@vger.kernel.org, AJvYcCXeq3inagD6l2wozqjU+Td6YRWs0lO6ir1cbuPQlIx/n249yNS4qiUYTr3vmzPvU973FCF3c1X60xJ3J79NfJ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi7K1ZqhjMtRFT1whRjp9hrfRYRy84HiGIKkyRq1ap2YSBue7m
-	Wbs5gjTXtbzMNCWPsW3JcMUinjejGLAEalrN/wK0i1nb2NOZeEDQE1sTNNIXNr4m2JXB0joLFI4
-	ATppxPJgs3tfj6fda+uDGEXE+if/LqDE=
-X-Gm-Gg: ASbGncvkIu8z8CVAVKQzeNHjQAUlTAASO1mZG8TifAkQtxNiEaUnDUlazuqJEJ9Tie3
-	w5kIYvmusNwZDLOIrT3m47qi2gTFX4Dm6Z48vd8h1mA2JBOSRyczrgWTZ5RHIc4EGoxdM0QlvR6
-	Lqo1ab/UmyyYBzFOygmDmay041VvucL+dvORoMSpXvmptzGWsrhTfB+l0otAV37u4RS4K6Sye6A
-	FS3x8b8
-X-Google-Smtp-Source: AGHT+IHdhVmKZwChbSTO0ZEh7G/lQCCa1ZWLqXuMsDUl5T7xo9Vns0QP4cG8ipR9HWfcbqvofCO6RnASD0hnrFNm+xE=
-X-Received: by 2002:a17:902:e751:b0:240:cb:97bd with SMTP id
- d9443c01a7336-24000cb9c7amr23866415ad.7.1753682811331; Sun, 27 Jul 2025
- 23:06:51 -0700 (PDT)
+	s=arc-20240116; t=1753689108; c=relaxed/simple;
+	bh=PSzDE4EnANpUmLdbzSCZd+h/R7uE6ijqTpScKyAcGEQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pUq7N9gur4gQgSCNNwWzmR+F+EQqyfriU399d01B26a9ssUqypDT/84qHddeRw1nmBnpeaqsIHE8EG0lgE7Cizij240b7Lna5C0c/sxFLdE5jKhrW1rcX22XGv1fI6PtyLSzyC9FKL82/tSeMzf/6e5ypUocevyDW2md/7s8nqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CCD171596;
+	Mon, 28 Jul 2025 00:51:36 -0700 (PDT)
+Received: from [10.57.53.40] (unknown [10.57.53.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D869F3F673;
+	Mon, 28 Jul 2025 00:51:40 -0700 (PDT)
+Message-ID: <d0ffb55b-690a-4a65-98b5-b83adebfd88b@arm.com>
+Date: Mon, 28 Jul 2025 08:51:38 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250727092317.2930617-1-ojeda@kernel.org>
-In-Reply-To: <20250727092317.2930617-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 28 Jul 2025 08:06:38 +0200
-X-Gm-Features: Ac12FXx2eH1NIUNOlaMWd3xqdYk4d5QjO6acLe_IbBpmXiVXK0DqqgtW8QrHL5k
-Message-ID: <CANiq72kYpHzp8ydtkfdb7FN+YjfFNjpSqtgC0Hm1tSy05p4n4A@mail.gmail.com>
-Subject: Re: [PATCH] rust: workaround `rustdoc` target modifiers bug
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
-	Guillaume Gomez <guillaume1.gomez@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/19] gpu: nova-core: register: minor grammar and
+ spelling fixes
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Beata Michalska <beata.michalska@arm.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
+ Nouveau <nouveau-bounces@lists.freedesktop.org>
+References: <20250718-nova-regs-v2-0-7b6a762aa1cd@nvidia.com>
+ <20250718-nova-regs-v2-1-7b6a762aa1cd@nvidia.com>
+ <B1AA6359-7854-4284-B533-F5CA3C18AF34@collabora.com>
+ <DBNF8SZWLI79.1NRX9AMW5QW45@nvidia.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <DBNF8SZWLI79.1NRX9AMW5QW45@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, Jul 27, 2025 at 11:23=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wr=
-ote:
->
-> The issue has been reported upstream [1] and a fix has been submitted
-> [2], including a test similar to the kernel case.
+On 28/07/2025 05:59, Alexandre Courbot wrote:
+> Hi Daniel, thanks for the review!
+> 
+> On Sat Jul 26, 2025 at 1:14 AM JST, Daniel Almeida wrote:
+>> Hi Alex. Thank you and John for working on this in general. It will be useful
+>> for the whole ecosystem! :) 
+>>
+>>> On 18 Jul 2025, at 04:26, Alexandre Courbot <acourbot@nvidia.com> wrote:
+>>>
+>>> From: John Hubbard <jhubbard@nvidia.com>
+>>>
+>>> There is only one top-level macro in this file at the moment, but the
+>>> "macros.rs" file name allows for more. Change the wording so that it
+>>> will remain valid even if additional macros are added to the file.
+>>>
+>>> Fix a couple of spelling errors and grammatical errors, and break up a
+>>> run-on sentence, for clarity.
+>>>
+>>> Cc: Alexandre Courbot <acourbot@nvidia.com>
+>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>> ---
+>>> drivers/gpu/nova-core/regs/macros.rs | 14 +++++++-------
+>>> 1 file changed, 7 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
+>>> index cdf668073480ed703c89ffa8628f5c9de6494687..864d1e83bed2979f5661e038f4c9fd87d33f69a7 100644
+>>> --- a/drivers/gpu/nova-core/regs/macros.rs
+>>> +++ b/drivers/gpu/nova-core/regs/macros.rs
+>>> @@ -1,17 +1,17 @@
+>>> // SPDX-License-Identifier: GPL-2.0
+>>>
+>>> -//! Macro to define register layout and accessors.
+>>> +//! `register!` macro to define register layout and accessors.
+>>
+>> I would have kept this line as-is. Users will most likely know the name of the
+>> macro already. At this point, they will be looking for what it does, so
+>> mentioning "register" here is a bit redundant IMHO.
+>>
+>>> //!
+>>> //! A single register typically includes several fields, which are accessed through a combination
+>>> //! of bit-shift and mask operations that introduce a class of potential mistakes, notably because
+>>> //! not all possible field values are necessarily valid.
+>>> //!
+>>> -//! The macro in this module allow to define, using an intruitive and readable syntax, a dedicated
+>>> -//! type for each register with its own field accessors that can return an error is a field's value
+>>> -//! is invalid.
+>>> +//! The `register!` macro in this module provides an intuitive and readable syntax for defining a
+>>> +//! dedicated type for each register. Each such type comes with its own field accessors that can
+>>> +//! return an error if a field's value is invalid.
+>>>
+>>> -/// Defines a dedicated type for a register with an absolute offset, alongside with getter and
+>>> -/// setter methods for its fields and methods to read and write it from an `Io` region.
+>>> +/// Defines a dedicated type for a register with an absolute offset, including getter and setter
+>>> +/// methods for its fields and methods to read and write it from an `Io` region.
+>>
+>> +cc Steven Price,
+>>
+>> Sorry for hijacking this patch, but I think that we should be more flexible and
+>> allow for non-literal offsets in the macro.
+>>
+>> In Tyr, for example, some of the offsets need to be computed at runtime, i.e.:
+>>
+>> +pub(crate) struct AsRegister(usize);
+>> +
+>> +impl AsRegister {
+>> +    fn new(as_nr: usize, offset: usize) -> Result<Self> {
+>> +        if as_nr >= 32 {
+>> +            Err(EINVAL)
+>> +        } else {
+>> +            Ok(AsRegister(mmu_as(as_nr) + offset))
+>> +        }
+>> +    }
+>>
+>> Or:
+>>
+>> +pub(crate) struct Doorbell(usize);
+>> +
+>> +impl Doorbell {
+>> +    pub(crate) fn new(doorbell_id: usize) -> Self {
+>> +        Doorbell(0x80000 + (doorbell_id * 0x10000))
+>> +    }
+>>
+>> I don't think this will work with the current macro, JFYI.
+> 
+> IIUC from the comments on the next patches, your need is covered with
+> the relative and array registers definitions, is that correct?
 
-This is now fixed upstream (thanks Guillaume for the quick review), so
-it will be fixed in Rust 1.90.0 (expected 2025-09-18).
+My Rust is somewhat shaky, but I believe "non-contiguous register 
+arrays" will do what we want. Although I'll admit it would be neater for 
+the likes of the AS registers if there was a way to define a "block" of 
+registers and then use an array of blocks. Something vaguely like this 
+(excuse the poor Rust):
 
-Cheers,
-Miguel
+register_block!(MMU_AS_CONTROL @ 0x2400[16 ; 64], "MMU Address Space registers" {
+	register!(TRANSTAB @ 0x0000, "Translation table base address" {
+		31:0	base as u32;
+	});
+	register!(MEMATTR @ 0x0008, "Memory attributes" {
+		7:0	attr0 as u8;
+		7:0	attr1 as u8;
+		// ...
+	});
+	// More registers
+});
+
+In particular that would allow a try_() call to access the 'block' 
+followed by normal read()/write() calls for the members in the block.
+
+My Rust is certainly not good enough for me to try prototyping this
+yet though!
+
+Thanks,
+Steve
+
