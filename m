@@ -1,74 +1,74 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2479A26F477;
-	Mon, 28 Jul 2025 14:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A0172621;
+	Mon, 28 Jul 2025 15:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753714755; cv=none; b=B1f0Nr9xqAIDXUGw9a/pQm60d23WTAp+0wA7OQrEULFGYWvSOu9i1s8lsdhCX/l1pOVqnMaHV+Nliejel8rfvm1mG+y3F0xYSxMxJ7kfzENP0WHZabusWk9OBS3EDtsvW2+NtWFjuvJHv0VHWa5bWwaXeUQNly1ex7Xvlq1VYUE=
+	t=1753715971; cv=none; b=XO5MtmJdDX26CBKAJqrlmtA50iuyRB4RePPKnphOapyV/3DWlHkJA3e/U85v+2sMffJfFEwhA8LdVHC6Y3KDfcEWgVOwfxAZ/ej33kNZ4gE2Ww4etxExA6FbXWujyIWlthzR87C7bj0nkw+ySXjAFNMomzcbzhAeoRnDOzwYe/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753714755; c=relaxed/simple;
-	bh=avOOm/XGSGlKBAkk2AukBt0QcjzdFQplikyO6nl7+k4=;
+	s=arc-20240116; t=1753715971; c=relaxed/simple;
+	bh=JrkaAoJ7Tiknbca8UqI58Je2aCyKbjCi2E75WVbKTd0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJYNi/iXn3/Xg60HDNKtK569vOUKQYYPiKU5m1odtq2iA7+4ZuuwozKCeCyEgpUgVjoqMj0YFpuguJ1cBRZN5woCu0Vyoh8xAoRulI5B050/4+ZB623gu6lvAHi2OUgGpyvUWYdrhsnqS2q48+18jq1ll6m0mYHHzJ8airVgp5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nQmUeLv4; arc=none smtp.client-ip=209.85.160.170
+	 Content-Type:Content-Disposition:In-Reply-To; b=A9S8uf0wS7ppL1OBwCLVuDO+0BFUzxx3K5JBHJdoKAXa5VxkdGV3vrQNPTf4YQJN538+cBtxQPiggKmfQvizupNv63X1avf6jdEhQoOZRYVlZrdgRC8h2UZkMgGrJ4eo9wA/jyvaJqEfe0AKPdE6SjKJryQwBNbK/00W4/fHlt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SrjdpAJF; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nQmUeLv4"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ab5953f5dcso43446571cf.0;
-        Mon, 28 Jul 2025 07:59:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SrjdpAJF"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6fadd3ad18eso39016496d6.2;
+        Mon, 28 Jul 2025 08:19:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753714753; x=1754319553; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753715968; x=1754320768; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qW7CBe0k2NxOTfUN9V2nfPb73D8GQ6JvxvjA3Wk6pYo=;
-        b=nQmUeLv4odZPxBDzCfaN/lq2O3w5AvTaNjQ8UavsK5Yux/1VHgLDROGGqpVrT2tgDU
-         xPUWXX2KONWjg7Esi87H0/eT4pVeLX7D/10JDBp+hJ5tX5Bql6zMO2Not6CKn/G9Ic7i
-         3v7GhC8hDKcCBSP3rPgDEiLuGc0r30w9319eQYL7fnrH8YNBJs6L/zfhrZ+Mu9t11GwT
-         KfOGTJgDzIm/fkpH7cgXLipf2QAFViBD2rGpcZjVVCwg/RZF71gCeo/e54m22A+8QN+c
-         6LdpkH6djUBxuMu3slsldpDQ7OcGEKKC333ODJD/FTs+v8OGQItMO8C9JXrdYzpzVkOq
-         mXhw==
+        bh=RLT/rylW6yNv3R9erMx+Eq7H8Q6DuqgDZ8LW1Wt7U98=;
+        b=SrjdpAJFaowmM+2HUMdMNrdN3ixuLbAC4n1DAQG25BAwmk1F2ZAl3MICUVk2eGYOgL
+         7+P+1OC8v0rdZfdNczXv7fwdxcfWza1j9xD3ZedM/8sfjCxx8cwDGaN3KTtBOQUpAxn5
+         zkGAHgK48kyS6eNNXVtF+vKW4UDOBahzfAbxl60Yz3dIgeHbv5mJm8atZRRd82E0iu8V
+         qbswknnIXRBcGr4czW7SVVqRT+Y77uNLDf+CUIHtW9oOiIcDXMEVadC2ulYRVwNqUKdx
+         vy4Gh9quLVD9kpFpqjP4Yuj5UvZUO9VT/rDZ6O7uE6GNKBWd0pcblPFmu66MHB3oD2kD
+         PM6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753714753; x=1754319553;
+        d=1e100.net; s=20230601; t=1753715968; x=1754320768;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qW7CBe0k2NxOTfUN9V2nfPb73D8GQ6JvxvjA3Wk6pYo=;
-        b=nHR/ovW+pZhwOQ4Btqk37i8p/zqETB8OjAuoFVGv0w1zAeHABILM+ai81v1uBmEquZ
-         OnhB+8hJY7W4+qqbEQJm5I88vHcDWKy7f7INR+zKskogAJ7BNWDHLCKTPkr9yk5vAEGW
-         VMjLUIRq3q9OfAWT38BFaT9VG08cbKsVLly295b5uVytwraZbUwWXWlKYNYSyD9AeqXD
-         okyTtSQWNPEmHvkCZVcJv2aNfmyvMC2G5410DI29ecz7TnC9EQXLXYPBtIEvgSUuoZOG
-         vN6gD08LBBk2wL2ea8i3Sc5xhLMZmJ7l10lN1FXjW6s1Q4cVgAnbh0R+nWVFra5BtKfy
-         Rr/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXUNKVn3J9ENxAo5NRar/aKY37JqjfTgwF9/A5qGqTwZsEsCCqElPJKlHBlY8D4tgV2g5p1NxlyIOGx36w=@vger.kernel.org, AJvYcCXzPvKYQ8U8XDfzfGAsdOmm1acQkNYjKCSnR8/XQzumY7LY/NgHqDP0U4Zuf1FJLROPvTT7cd59svTwh4sgFD8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4HIQiVwFLu299fB66XnFYA0gscUcr+A4/AIUAu+0rNE0D6DNc
-	0BC1YXNMHcO4cB7ogaqy5DYNEkNSF54tDsl6RxuJ7sIPrLoJhydZpP+t
-X-Gm-Gg: ASbGncuVSZdROZ+skc6XnfUptELo4UvzJ0gqrm0sGLgY4xVxenfz9YqzpwlVris4YWp
-	cNagodB65DpVGF60GOogHhHMEqpzFpEPfx1Bv48Klkd2iy0gTgc+oe8CSRf/vhieBsSTGFso+mf
-	hMxjWfsXd3VLL2yCbGwisWeGdq2vUKzQQk0l7gXEUTsj5FFgk7aMTTrKaRD8XhiIyb2qcXMkEp6
-	q6iEL/DQWvksLBsnKafUMewHr6YCactLsRyVLY8YEXQuOpX6S5E9nEL1hJJCGO1EH5+vRaPkVlL
-	pqLI1AkHGJFkIMdgMpdpzS4a+k5TX31Tr+pxEb2RbGFLfBe1vQHmVIKZ/ok4pWJTNcD/jE8lREs
-	4Dhm6NfMjftbsKVTJG3LBs8tjX4pHGYQp1fFLolVm3qLwRD/2zPyFSh1OFuYbEpuMfqxEvmat6M
-	h2gEu2XR4Ut83wALrFkoT74po=
-X-Google-Smtp-Source: AGHT+IEilpceb4coQig3helhrha9AS+IXxGPugeVQS2rXS6X0hS+DBimd6oxeTtqbULIABK6rTnUYg==
-X-Received: by 2002:a05:622a:19aa:b0:4ab:5888:38fb with SMTP id d75a77b69052e-4ae8f0b49c6mr162953791cf.32.1753714752741;
-        Mon, 28 Jul 2025 07:59:12 -0700 (PDT)
+        bh=RLT/rylW6yNv3R9erMx+Eq7H8Q6DuqgDZ8LW1Wt7U98=;
+        b=js06bcAiOi92xpWJh54p+OoGn+wBMHQe61MSO29C8RafkIkdk1/qppZPMuO0LnuYHu
+         cI3N48NZpvA9/Hb/ZmkPyPb3kGZigDnqJwxgk7321fpWKA82Yrn6j+G5hXSLx2JNlW5i
+         esmv1ybFCDRAZ13CO41sVHpY8TdxRBfT90FswgBhnhbYOVUr/Yc0m2JJbvFf6RF03MJj
+         b/DmWwneS2Io47io2Lb1EbZcH6ohZQb3q29VXc7+7KpD7A0zmeQ3w/CM3Yvf2kVFk5rt
+         RTPG7o2bHaAAfhxjas4ucNHQOfqAyj1ggFCF9g6AuvuNjLua7wUWD6fgcWy1wt5HiPZm
+         Ylkg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaMAZwoHNmP0FW1DOBpIaKdd3zyKEH0akpdLEPdj+IIv8SBc6j7x4p7Kqzl8YSEJe7hOgl+CHOazXPOAQ=@vger.kernel.org, AJvYcCXh9KXlmxjnypPakaw/7CTFau0PcbLREMciHaa/Gxm9MvHVylPRqYo3QvNx00HLkFZMLOxsveu1vFHAAYQrIeg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxc618z5821kS5ciQkPNZhxC0Qom8yKLIaiRHkU3s61NSN2cbpH
+	KLpiJzA+if9ZSuUyh3YXZ7ZjC0AtaqXCalO73BKk5fE6/yyEfTCqqIC8
+X-Gm-Gg: ASbGncuwenfv62E7w8ungeNdIfx2vaEJWlhAtbifNrkWu7klZDLmrMsUKMA8cUsiZ+y
+	cmwmwwduOrw75he7CBEhdVcVyl27NZgT23Xdrr5RJRQ9d+J3CcPGFgPq1TydJnzxyGN6DDbtqI1
+	ib6ISYCVg53Ykh3KVJ+ES/yBh6ReF9Uur6HhJyVaRchYH/RpI1zT+3oL1E17vANEtehu10E/Qrj
+	2bw7tZurT/jradoDRmoHpjYYxPSDujCWZ6WZOfAes9UnEm8uoni77cIgPkZXHbMCxQ4IcpGtA61
+	IUlgUXQQ4BOgunw4vItdKBS8q3u+mxsBstyNXFE6p0iuO+R3HhR9qYzszByYAQyCoHF4MpqOnR+
+	AIu2ZDcZp1z+1lW4UFBXKmniSgM4BrbZqXRin78F9LpBfz4mnBFzgF281+gnvMOBfw3zHsXtCRs
+	sBuDwJSaI4HH/HuD4zzZVT75o=
+X-Google-Smtp-Source: AGHT+IGlEJGZ736lYuT3B+uy3e0pPQZ8PHcz1E+GfL3FCPBW2RqUS72ySe2W7OLoiC9aSxN8YKFZKg==
+X-Received: by 2002:a05:6214:27c7:b0:704:f4bf:10a7 with SMTP id 6a1803df08f44-70720603914mr182929196d6.45.1753715968021;
+        Mon, 28 Jul 2025 08:19:28 -0700 (PDT)
 Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4ae9969b169sm35100331cf.64.2025.07.28.07.59.11
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7e6438a480asm301681785a.86.2025.07.28.08.19.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Jul 2025 07:59:12 -0700 (PDT)
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9B798F40066;
-	Mon, 28 Jul 2025 10:59:11 -0400 (EDT)
+        Mon, 28 Jul 2025 08:19:27 -0700 (PDT)
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0E887F40066;
+	Mon, 28 Jul 2025 11:19:27 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Mon, 28 Jul 2025 10:59:11 -0400
-X-ME-Sender: <xms:P5CHaH5n19zCNKEyZozQEHQtGxzFvwNvwuzAbLuWj25thyWXXgH22g>
-    <xme:P5CHaIGC2Qq4aCPx8Q87BMZxNYU1FpJilw4j8Y4eOoFCTo5zdmYRYVGmgeEYxGYST
-    JjaCfDCyAUf-T5rag>
-X-ME-Received: <xmr:P5CHaCT1AHMRUqdBuTU-YrQvHKL7kZ4e05stP4T4TvaDK79ScPqX3LEqLFY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelvdegjecutefuodetggdotefrod
+  by phl-compute-09.internal (MEProxy); Mon, 28 Jul 2025 11:19:27 -0400
+X-ME-Sender: <xms:_pSHaIbdbrYl57tQvKWYOj0saP_1jp8hOg5MIVwDdeaJBi6NO-Q20Q>
+    <xme:_pSHaOG7b5JC8MgVxjUC39REkmRzyQK1X19Mv_8DACg9OvDZSW4dd2rXoxWfGnrGq
+    EH3sTlnzXvziasTkQ>
+X-ME-Received: <xmr:_pSHaLruTLuLJa7mISvctoGZKXpGFnFPSX7MkDC38L81e0p6DIH_3xOnlEM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelvdehudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
     hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhnucfh
@@ -78,43 +78,42 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelvdegjecutefuodetgg
     hunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddu
     jeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvg
     drnhgrmhgvpdhnsggprhgtphhtthhopedujedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrtghouhhrsg
-    hothesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprggsughivghlrdhjrghnuhhlghhu
-    vgesghhmrghilhdrtghomhdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepuggrnhhivghlrdgrlhhmvghiuggrsegtohhllhgrsghorhgrrdgtohhm
-    pdhrtghpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthhtoh
-    eprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggr
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrih
-    hlrdgtohhm
-X-ME-Proxy: <xmx:P5CHaCe-g-cOckmeqaHDZdcnu_6Dgiw1RI9QcKR9K4r7JA1WiAey0A>
-    <xmx:P5CHaIjKZLs4fBBb7kqgNJC1JcNSa3dT9SXrLA60e_CGWUCAUivVqg>
-    <xmx:P5CHaFIONrdNBA0VpnLCd-rwkTMqdluNBhBCQtRPLrEk-Fz5vKjF7A>
-    <xmx:P5CHaNGDviu3nFXnKWEIhG0zJNJOAyOdLJRV9s1BJ1zMelYR06kCkw>
-    <xmx:P5CHaD2CGVDqV8TLt4vUYhUGMTHYP9HTdjYUP7U3wxTDfkp_T1-Q17cp>
+    thhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghkph
+    hmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihgrmhdr
+    hhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhorhgvnhiiohdrsh
+    htohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheprghnughrvgifjhgsrghllhgrnhgtvgesghhmrghilh
+    drtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthho
+    pegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehloh
+    hsshhinheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:_pSHaJxjqves7SvCOVB5W0svb2kBRDx4hpkRHAlGKUsSt8VOg0dLcQ>
+    <xmx:_pSHaFNQH-49n3B8FAYoApumrgOka9W_QZQ5YEBsDTWCq4WEBzGukw>
+    <xmx:_pSHaJdh5U712kScNCplLzjihOk5lpkQ-qSBepqxGXdggUDw_rcWPw>
+    <xmx:_pSHaB4QMrmZImaBIdmJmE_aTpAzegTkSAuuWkaLtfG4oaQckOfRMw>
+    <xmx:_5SHaJKDM8G_V5eGDKe16kbM0YYLdIbGCkGvymkagbV2FTuSXTddRCzi>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Jul 2025 10:59:11 -0400 (EDT)
-Date: Mon, 28 Jul 2025 07:59:10 -0700
+ 28 Jul 2025 11:19:26 -0400 (EDT)
+Date: Mon, 28 Jul 2025 08:19:25 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <lossin@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
+	Andrew Ballance <andrewjballance@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	"Christian S. Lima" <christiansantoslima21@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] rust: transmute: add `as_bytes_mut` method to
- `AsBytes` trait
-Message-ID: <aIeQPrGSa2rwckiH@tardis-2.local>
-References: <20250728-as_bytes-v4-0-b9156af37e33@nvidia.com>
- <20250728-as_bytes-v4-2-b9156af37e33@nvidia.com>
- <DBNRVIEXN4ZR.1VG0GDN6BDXE8@kernel.org>
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 2/3] rust: maple_tree: add MapleTree::lock() and load()
+Message-ID: <aIeU_RSpDYr8eYLz@tardis-2.local>
+References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
+ <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -123,41 +122,30 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DBNRVIEXN4ZR.1VG0GDN6BDXE8@kernel.org>
+In-Reply-To: <20250726-maple-tree-v1-2-27a3da7cb8e5@google.com>
 
-On Mon, Jul 28, 2025 at 04:53:31PM +0200, Benno Lossin wrote:
-> On Mon Jul 28, 2025 at 2:47 PM CEST, Alexandre Courbot wrote:
-> > diff --git a/rust/kernel/transmute.rs b/rust/kernel/transmute.rs
-> > index d541c9960904d8c7f755351f22d06e4e8dbd546a..000fda2a78f8e6e8378bbe93cddd8a5008db20cc 100644
-> > --- a/rust/kernel/transmute.rs
-> > +++ b/rust/kernel/transmute.rs
-> > @@ -56,6 +56,19 @@ fn as_bytes(&self) -> &[u8] {
-> >          // SAFETY: `data` is non-null and valid for reads over `len * sizeof::<u8>()` bytes.
-> >          unsafe { core::slice::from_raw_parts(data, len) }
-> >      }
-> > +
-> > +    /// Returns `self` as a mutable slice of bytes.
-> > +    fn as_bytes_mut(&mut self) -> &mut [u8]
-> > +    where
-> > +        Self: FromBytes,
-> > +    {
-> > +        let data = core::ptr::from_mut(self).cast::<u8>();
-> 
-> Also add a `CAST` comment above this line:
-> 
->     // CAST: `Self` implements both `AsBytes` and `FromBytes` thus making `Self` bi-directionally
->     // transmutable to `[u8; size_of_val(self)]`.
-> 
-> On that note, `FromBytes` probably entails `Sized`, or does someone have
-> a use-case in mind? (because then we could replace the
+On Sat, Jul 26, 2025 at 01:23:23PM +0000, Alice Ryhl wrote:
+[...]
+> +/// A reference to a [`MapleTree`] that owns the inner lock.
+> +///
+> +/// # Invariants
+> +///
+> +/// This guard owns the inner spinlock.
+> +pub struct MapleLock<'tree, T: ForeignOwnable>(&'tree MapleTree<T>);
 
-Because if `T` is `FromBytes` then we want `[T]` is `FromBytes` too?
-Also it would be weird if `[u8]` itself doesn't implement `FromBytes`.
+So it's a guard, how about we name it `MapleGuard`, or `MapleLockGuard`,
+or just `Guard`?
 
 Regards,
 Boqun
 
-> `size_of_val(self)` above with `size_of::<Self>()` which I think makes
-> it simpler to understand)
-> 
+> +
+> +impl<'tree, T: ForeignOwnable> Drop for MapleLock<'tree, T> {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: By the type invariants, we hold this spinlock.
+> +        unsafe { bindings::spin_unlock(self.0.ma_lock()) };
+> +    }
+> +}
+> +
 [...]
