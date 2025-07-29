@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2442027A11E;
-	Tue, 29 Jul 2025 08:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59981CA52;
+	Tue, 29 Jul 2025 09:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753777668; cv=none; b=aDez2NhjvIrYlzguh0LyHDDqTg/DfQM6+pT+O21DJWdYkiH4jwyRlvMDiXd5lk7D4M8ZoGq67+u9y0fUWTrXo3bluu7tlnlbemSzCxSJ+pA8yIfYMQqQRg4JQKX2g1UFIDnc+3JKJzGt0oOFXTvLJXvpS/IrDiM6wWOZBGE8k7A=
+	t=1753782337; cv=none; b=YCjYhVGLmMcYlXB6IPcZ+UuaNiZLlgoNm64UC9LwnIdcdaxg7W8ep5vWk1+uSbf1SOQic6wK2iFYU+POF0SNx3Hs3J6+8KXgr4Ch+QKyAVtAfwmFzga61fLymuJVmEqmM3wplU2Ew4fikd5XTsXRF0nSRARnGLs3h06+xwrS83U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753777668; c=relaxed/simple;
-	bh=4HFDpDAKjo6FuyobbreMH/fIg2s9uow5bgfayZ9Nj7g=;
+	s=arc-20240116; t=1753782337; c=relaxed/simple;
+	bh=9ViO2+HRYeOb/MJUgHd97uhWtRPt8a8vyaQZUU2dRl4=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=XH8HBy/rbL2ramwxMqMLMcF98W+GF8lmiN2VTeBYKNOexjxKolmzzqdup40SdNP19cCg72bcHKP+dDnUWH3LUgFXNFDFptw7sshIOOAu6ASWx0KBghOZJD0qkZM5wMX0An65FghXQTqCFgjoOogBi7OnbeHKoXGtkbvlpf3zTiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRK9eF/F; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=qPxrBUG4m/XlrXXkyCRuKQ9249HSDaVCzBIVRrDDy4kCJDVEm99JyuKHDlk1/7xS0rCGMpPo97odr9eC6UZfWMhnHoD/9uzbi7qz6ypyeHccWZwJTsmNjZ9VHg2VCXoPjwHsUO5wy5ZAELDgzy8nrZDWcqEj/jQ5hp+kzw0to+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxaY5tbG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRK9eF/F"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A571DC4CEEF;
-	Tue, 29 Jul 2025 08:27:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxaY5tbG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3D6C4CEEF;
+	Tue, 29 Jul 2025 09:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753777667;
-	bh=4HFDpDAKjo6FuyobbreMH/fIg2s9uow5bgfayZ9Nj7g=;
+	s=k20201202; t=1753782334;
+	bh=9ViO2+HRYeOb/MJUgHd97uhWtRPt8a8vyaQZUU2dRl4=;
 	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=NRK9eF/F05BQxKAd4WhDO21TK1RD5zSVwwud0GYwy9YPGd9MHbAHCycO6dd9y8HBT
-	 5mbRlOzR3tU4bovs0Mbwc7wuZUjFbGrYkgNK1ijS2NyeKuVFm1YjUp52ygcookUOsu
-	 NCxmGDxXoI7fqTMpSthTZ3Q/JJPImTjDIQynpKwdTWP9p+2/4aOyQ3wGICv96O/Y3K
-	 A6lrNRiL89xHvZpRvHVMB2BOg6nLX97QhcZkzHYaqD9mHBaN+YjP1EVXMj+7nK5dMT
-	 7021RzrNNuWgCf29lB10V+bBxbzvrcUKZP8Jqera7lcfbRxXoBezhVW9QDQ4FJacr/
-	 aW/dIPiN5SCfg==
+	b=RxaY5tbG9KGhE1zasC2c0FFJAlSeRp9Dib5H4E0T7ziisaTapLlhPuQC4x+P8cWrJ
+	 Dm/RbmWB9dIKqLcPfMP5lVGVHtad7yjKqNQldJIR6LegGveKVhXQbHh59ThpIXUnQo
+	 8BgTxxHtTC/KA4QfGLCpXPuWDZWNcMUJKe5adteL5PIagCuF3b/6/zNS8UIqys8zjd
+	 nlhasqgI3CTmYOSRaxy9eBu9UkxCHCWZzZUqA8UAuAAdvbd5PtLaIpxbgsy6vaD4Th
+	 uKfu6XcFlj/MkYuibyjnYb3HxfePy8o8W8jSyNZ2Iz5qVKFYqBOV6+6cxATJyEHiLX
+	 VtpmfxvjhwjaQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,46 +34,33 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Jul 2025 10:27:41 +0200
-Message-Id: <DBOEANDMX1OU.2B47D7G6EQ38O@kernel.org>
-Cc: "Alex Gaynor" <alex.gaynor@gmail.com>, "Brendan Higgins"
- <brendan.higgins@linux.dev>, "David Gow" <davidgow@google.com>, "Masahiro
- Yamada" <masahiroy@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>, "Rae
- Moar" <rmoar@google.com>, <linux-kselftest@vger.kernel.org>,
- <kunit-dev@googlegroups.com>, "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <nicolas@fjasle.eu>, <linux-kbuild@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>
-To: "Miguel Ojeda" <ojeda@kernel.org>
+Date: Tue, 29 Jul 2025 11:45:30 +0200
+Message-Id: <DBOFY80IDMWJ.627ZOACP7KK5@kernel.org>
+Cc: <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "herculoxz" <abhinav.ogl@gmail.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH] rust: kernel: remove support for unused host `#[test]`s
-References: <20250726180750.2735836-1-ojeda@kernel.org>
-In-Reply-To: <20250726180750.2735836-1-ojeda@kernel.org>
+Subject: Re: [PATCH] rust: pci: use c_* types via kernel prelude
+References: <20250729002941.7643-1-abhinav.ogl@gmail.com>
+In-Reply-To: <20250729002941.7643-1-abhinav.ogl@gmail.com>
 
-On Sat Jul 26, 2025 at 8:07 PM CEST, Miguel Ojeda wrote:
-> Since commit 028df914e546 ("rust: str: convert `rusttest` tests into
-> KUnit"), we do not have anymore host `#[test]`s that run in the host.
->
-> Moreover, we do not plan to add any new ones -- tests should generally
-> run within KUnit, since there they are built the same way the kernel
-> does. While we may want to have some way to define tests that can also
-> be run outside the kernel, we still want to test within the kernel too
-> [1], and thus would likely use a custom syntax anyway to define them.
->
-> Thus simplify the `rusttest` target by removing support for host
-> `#[test]`s for the `kernel` crate.
->
-> This still maintains the support for the `macros` crate, even though we
-> do not have any such tests there.
->
-> Link: https://lore.kernel.org/rust-for-linux/CABVgOS=3DAKHSfifp0S68K3jgNZ=
-AkALBr=3D7iFb=3DniryG5WDxjSrg@mail.gmail.com/ [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Hi Abhinav,
 
-Nice! This should also allow us to remove the Cmalloc allocator subsequentl=
-y.
+On Tue Jul 29, 2025 at 2:29 AM CEST, herculoxz wrote:
+> From: Abhinav Ananthu <abhinav.ogl@gmail.com>
+>
+>  Update PCI FFI callback signatures to use  from the ,
+>  instead of accessing it via . This aligns with the Rust-for-Linux coding
+>  guidelines and ensures ABI correctness when interfacing with C code.
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Something seems to be odd with the commit message, it seems some parts are
+missing.
+
+Can you please fix this and send a v2? It's enough to send it after -rc1 is=
+ out.
+
+Thanks,
+Danilo
