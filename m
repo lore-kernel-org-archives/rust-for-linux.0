@@ -1,82 +1,96 @@
-Received: from plesk.hostmyservers.fr (plesk.hostmyservers.fr [45.145.164.37])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FEE29B8CC;
-	Tue, 29 Jul 2025 20:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.164.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67733220F32;
+	Tue, 29 Jul 2025 20:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753819454; cv=none; b=PG4G6Ip95yzR/vUAgS/Ksr7Q11hsjqDgzkFXd6hng3rO26Xl2drvZTjSm3/J1T40+PbD0Luzghdpkn2sGh0zaUjZRSSSbS2Wim+hvurRqiG2iZyM02fmukC3vm6H6Z6NuPnmRKxLWOfAY7ryUKQM48Z6SNBNIb3Ntas68FFPZ6I=
+	t=1753820610; cv=none; b=SO/+kBs/I9+E/00EaW1K3NUbcpO6OftEMlRsx3W9ctEQfrgTYMs/KjwO0NZ2I2ML1ccwn9q/b5hDI7X4Wj4PnwEd95IAj+afOtTNSxExh4KjNnClpGBpYy4RFlv8i79r7rLXul/r8cEBbBRnhwIMJiSBLatpn/+toxAuZoNMfXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753819454; c=relaxed/simple;
-	bh=QtkooK38Irpas0y98nQf3r6HgWmVNb6aaP3F6sADO0Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8E+hdXorvIEMK1aVoYF45eMT4a8e68ze2hwoEp1FdwEoo3IW/04ruvANoSZav9Gm9eB26ns2VGllqzP4QswmpdFI+UVdefGIiIz7uXMihjL3WzTLtRfsiKQunClEpWn02wVWhsCdAqE9J2yr4JsKZHRZv/U7c3mI4Yn4bg75Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com; spf=pass smtp.mailfrom=arnaud-lcm.com; arc=none smtp.client-ip=45.145.164.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=arnaud-lcm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arnaud-lcm.com
-Received: from arnaudlcm-X570-UD.. (unknown [IPv6:2a02:8084:255b:aa00:d071:2bab:ab9:4510])
-	by plesk.hostmyservers.fr (Postfix) with ESMTPSA id 13DE6415B4;
-	Tue, 29 Jul 2025 20:04:10 +0000 (UTC)
-Authentication-Results: Plesk;
-	spf=pass (sender IP is 2a02:8084:255b:aa00:d071:2bab:ab9:4510) smtp.mailfrom=contact@arnaud-lcm.com smtp.helo=arnaudlcm-X570-UD..
-Received-SPF: pass (Plesk: connection is authenticated)
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
-To: joe@perches.com
-Cc: a.hindborg@kernel.org,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	apw@canonical.com,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dakr@kernel.org,
-	dwaipayanray1@gmail.com,
-	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	lukas.bulwahn@gmail.com,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu,
-	Arnaud Lecomte <contact@arnaud-lcm.com>
-Subject: [PATCH 3/3] checkpatch.pl: --fix support for `//` comments rust
- private items
-Date: Tue, 29 Jul 2025 21:04:02 +0100
-Message-ID: <20250729200402.35241-1-contact@arnaud-lcm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250729200158.35050-1-contact@arnaud-lcm.com>
-References: <20250729200158.35050-1-contact@arnaud-lcm.com>
+	s=arc-20240116; t=1753820610; c=relaxed/simple;
+	bh=oROE60FTv9CzNmU63wnL0fiWj/I7s4rf/vwjAaVuOuA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qbyUyeXdGxjV6BPMz41J9jacVomv23TjTlJ78pOW+1j1vbwsM4hWaGx6qOzu2bLAKr+8zx1jxGZ92qpzvY8qezVbQepWaoZu87RfGfIG/KFCnRxT03L6W4EkNoRoovzMf46Mo7DdSYbvcDAUnKVqcUhF+luICgevxmJnAv+Iqb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iOfjm+aS; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iOfjm+aS"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-23ff92d05acso3924885ad.0;
+        Tue, 29 Jul 2025 13:23:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753820608; x=1754425408; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oROE60FTv9CzNmU63wnL0fiWj/I7s4rf/vwjAaVuOuA=;
+        b=iOfjm+aSeuNyfn/0ZJXQ/rOiqk4NAkIFFyx2FewYOr05CSP9Il1S6KTKW6feUtR1Gx
+         8OLCzv15CVlOjFVcMZBSMGbkxSuqO0qGnNm+Wib7nxm7j6FCN0WMHVt2gV9t8noRGaVB
+         CPRZnHyP8wDGukUQC8GVgixMV4oe3vj3YSzuL19DtYZKl6pL6aLcgVxL+MvRk+ZjJNjg
+         dNO63TpkDTvdW30Kv2F8RDUwXW7Wr1Blv8+9sDij/AcoTkXi2q0lVrfcW+iyrcu67qKp
+         fFFbG6s+w3+L8j/LApokewFd55E1QvILN+qs5+kOorShG2kCtNNVyJcUyjYlU1MCukU+
+         0rjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753820608; x=1754425408;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oROE60FTv9CzNmU63wnL0fiWj/I7s4rf/vwjAaVuOuA=;
+        b=nvrHZdv0/7HeLXjj5HUyQWpQv/x5Ve02KJ+uGak7CT2VZKnuyZxY7axYntC8THtlUb
+         s6si5/oXXGzJJYr/C9tBw+GVWdO6kBFsfNZ2TExMOOGMyK0uRvrlcIzp9OqzHyO0I4nR
+         UWGexS6fXw5sNdOS2x9JAQMvgT1IdN+Id6/267owNEpNHMJGNEeG4IWbGdFGhj+zPhQM
+         jIKhafSAwDcQHw3Tan+ZFAOoR0+l6+/pdVnB50QkueXvaGRUIO/gnyEu2S9ZNtTzvECz
+         4xivZ0M8JVUlzqna6fEZmQuisMNAwqTBQN4usruLDQ5g+b9Fy2qnzoT9UkUwC7X1WLO+
+         ZrKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWTgrxQmyUUDXfFv3cHbHDXpIJQxFjbiGzVbdJ523QJyzoy/OuPBnwsuGEFIJ+EvPP3BrN/Vv1YTF2cB6U3Nd8=@vger.kernel.org, AJvYcCXlpv2TzXV/7NI3WJWlRGrxPdDij+55R6w3rCa2NHUEJTjwp/fYQley235JC+rt7kpLmpXj0T76PsJPnio=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy61BTKw0A5yGj1SvO1lfrytx4Y1YrdX+z8ZJTIAssv8/0jCwh7
+	mLhUCNJUANasXO5BTgbkhwUiGiaBJcJ+oxENMUZMPyKr6WiI/ir0GlsdNxa7nPEgzF3jym3O8oj
+	jhWFPIMOyVd0DTf/yIAmcoe9tvLvwnFA=
+X-Gm-Gg: ASbGncvFUtYyuPwJz4tSMC9wdkmqhmjHY6+CUH0IOgFXiTL4kk+kY31RG6gLXVeb6Nl
+	L1xHuD3b7A4lkBb0Go1bmtSxWk+RsMrvReUO7pONfgLGQwQHV7+C/GNkWpdbB1yZ6lW6V6o9viF
+	S+/tgZpqUaUX7D/fB1vEoMpEEslYBHTgvx3r6olfnydTKEcsEHfC6WULgfPa6ip4787gewSxwaQ
+	cShUz5f
+X-Google-Smtp-Source: AGHT+IH02al2N3FD8umjHU9Ue4wb8E/QxGcrhRRFHDrzgQhZ7H9tu2I4ulyWOOadbz5Po/Gve9OXcDmvVU+65v4mvvg=
+X-Received: by 2002:a17:903:32d0:b0:240:764e:afab with SMTP id
+ d9443c01a7336-24096a7d038mr4166925ad.6.1753820608447; Tue, 29 Jul 2025
+ 13:23:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <175381945103.14371.5199097567942047642@Plesk>
-X-PPP-Vhost: arnaud-lcm.com
+References: <20250729195615.34707-1-contact@arnaud-lcm.com>
+In-Reply-To: <20250729195615.34707-1-contact@arnaud-lcm.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 29 Jul 2025 22:23:16 +0200
+X-Gm-Features: Ac12FXzvHjL5H5O-hYxy30njasjWFGkIqYPWaIgz9uZRZGCFqhPyYhsP63g2j28
+Message-ID: <CANiq72=8AYUX5Xv-QE5mrPhDLtY2Zg2C2_ah48tJHCbObAg95Q@mail.gmail.com>
+Subject: Re: [PATCH 1/3] checkpatch.pl: Add warning for // comments on private
+ Rust items
+To: Arnaud Lecomte <contact@arnaud-lcm.com>
+Cc: joe@perches.com, apw@canonical.com, dwaipayanray1@gmail.com, 
+	lukas.bulwahn@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Extend the Rust private item documentation checker (added in the previous
-patch) to support automatic fixes when the `--fix` option is enabled.
+On Tue, Jul 29, 2025 at 9:56=E2=80=AFPM Arnaud Lecomte <contact@arnaud-lcm.=
+com> wrote:
+>
+> Background
 
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
----
- scripts/checkpatch.pl | 3 +++
- 1 file changed, 3 insertions(+)
+I think you meant to send a cover letter here (i.e. patch zero, rather
+than 1) -- you can generate one e.g. with `git format-patch
+--cover-letter`.
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index ac403d270eb4..d01d993d8a9f 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3069,6 +3069,9 @@ sub process {
-             	for (my $i = $start_l; $i <= $end_l; $i++) {
-                 	next unless $rawlines[$i - 1] =~ m@^\+//([^/].*)$@;
-                 	push @comment_lines, $rawlines[$i - 1];
-+					if($fix) {
-+						$fixed[$i - 1] =~ s/^\+(\/\/)/+$1\//;
-+					}
- 				}
- 				my $formatted_comments = join("", map {
- 					s/\n$//;
--- 
-2.43.0
+(No need to resend just for this -- I would wait for some reviews or
+comments from maintainers)
 
+Thanks!
+
+Cheers,
+Miguel
