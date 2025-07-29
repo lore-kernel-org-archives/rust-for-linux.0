@@ -1,95 +1,110 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D5227EA8;
-	Tue, 29 Jul 2025 10:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF78E2853F1
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Jul 2025 12:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753786382; cv=none; b=czqUTkbq5BAMYlDOgUFRCapXulgXDvIoaXGdDfH//3puf/9kAAtkeulLWRv6rqXH9svN0ApCmVydoQ376qMrmSARmAzlkhcH4kMMEDt/XEzSSkHY5HKcyhv/hcpUe+jJmPMV31vjXH2ztOn+ESITO0XF1VyHWW0QVbUSu+IpQWQ=
+	t=1753791340; cv=none; b=AFpsgu4zV22Tsoh4q5hwZGMuR7FLO7myEpL9lwjUcFkKDQZYCEtku1hfU5vXRCRu5knkayhPfI84PK9TxYZhQc6LyEXGLqDVRWjw0hkY9OhuOchVZRMVnpd9XfxRChQoJsTTe6W8DXZtfOORHOWWGf/67MynbZExWGTRF6jMDak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753786382; c=relaxed/simple;
-	bh=0jwI4ByPSh17ya/A6DhJ8GdK70BSnqVwxGNcDMcnexM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gfJ1xJ5Z0rEPnMYqBAjhQz0r/KSykVjRz7gD2TSpusvIgUQp7xGO4J58jhmCtVwPpmSCR3qvXIE2dYlOJvIeh1ouSqIdArlEeUb3gMYvTgjcpYRFdafRu3+nShXZ9c9YdT7uICHk70pde59r2xznQyYd/9zGEEj7lKtayRnXH20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CH2QOCrF; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753791340; c=relaxed/simple;
+	bh=pRKWkEQ859AqbMty/6nEBTeAZEv6HUIc36eyCZvgTD4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Une0YDBIh0zm8hCMCkY+1KJjeFmRBT6mGLMvk2aRQDHvApuCchF9Ac3uy9vLGClP3hA7OLzokQnRRq7zOujZ3Hku8BPKq9r+DOrFlNPLU2+wAaj1MvpKKs50PtkrQmxQo5WYGBxT0dqa0sWX9lSr9YJ/tb79hgAPoEZJHdpE+4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SeSZZN/C; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CH2QOCrF"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b3510c22173so364048a12.0;
-        Tue, 29 Jul 2025 03:53:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SeSZZN/C"
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-ae3c8477f1fso581602666b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Jul 2025 05:15:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753786380; x=1754391180; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0jwI4ByPSh17ya/A6DhJ8GdK70BSnqVwxGNcDMcnexM=;
-        b=CH2QOCrF5TrELMbSVza1fvRrN7CEHFd8vX/ZSpvlqS1tdWoNf1zpEsc6uJmhIwgLsP
-         kpd2ksNRkYALxn8R4/1aueBg3ZuNwjEsVzCoJDX8YqOTAYhDkErI3IWhmmeBqLHtOgMi
-         zeQ/mo/QWSxY3TFCEsP/dAuiNjhJoQv+1d+3IeLAAkW9xys0P1YLU9g1mA+MRimPmhEP
-         KkTFgZut3oTDa51pUREUlJWRxlZFtuxJ8nX6kdWK1+vXn2SkJopOEPrtnyic8dGxvaHr
-         2sdrBcwLIVhFCeB+b5CZjBH5bJmAfWA7GTt63gxaXWp9KmLXsumUDJmAsNoXuyNdv6ec
-         WjeQ==
+        d=google.com; s=20230601; t=1753791337; x=1754396137; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lYzZqhjw8TBD0wreOo10dc1gdI2xJtGND/ZcoPMk/NA=;
+        b=SeSZZN/CRYZPX1j9NTP17/DvMhV7whVJV5trQjGoCaOAKFPFESAo4yuTLnjLL3p+yz
+         3PGyoDqMjItRTROJo1uqoDaK9WngSzzu6NN1ls6OSugjaPkwkifzGnsjdw8TW4FunO8Z
+         gajH03n/l9aeKTMFIxsGWnQ7UT20TJcBPro1hAbOlEe3ZJsEvHQEV+KZyZHZfiAz0saP
+         Yrex1jqonuLQzKZFVAwgGxa+N8gKz877EOCuycBiMfsVdi2jIzhb/koSy9uUFdENPEJf
+         xc5r/rB26wSDsICT9eQhZeod3KYr9x7RZ9mrlEgEQtepSYJ5CSWwWz4WgZ4qXk+pQbIl
+         YX7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753786380; x=1754391180;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0jwI4ByPSh17ya/A6DhJ8GdK70BSnqVwxGNcDMcnexM=;
-        b=H2PJzoXMO0AnHnDQCc6fFNBvGG7XduhcEyytZPdC//GJ6Oebj3JujE91XncKb7tXNm
-         5uF6gcGlJRl9IHlhvTklnVC1LFuiD0zTdJuhjINj+F0+Hy3yAxOkYbPq1Vep16/fQ9oI
-         lDdLzVVNLpK38+inWcrVkj/Tr7aUGzaf8R6uVQMO/HKPydFcRdMQebeuIZRS1JOrRGV/
-         XOdxoIIh0jQniUuSVMkL0YtLwnJl5zjwMjHokumRd1Rw0N8hGK8+FjZrcei5pgjPAIgM
-         S7G65kS/b/GQ9OAhk9Zgp6rsC8dfpHt8X7XlR8y+T2RUAHsfxoIzzpKmcQrg1Uku3Tnd
-         OY0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUBFha8AkwVoMAjKyluS6+RSQwtt1CHp3sGbgaPz16WBnI9Y3/+A6fS01YZXCxfT0H2u2OeftonpsYhx7Y3vZQ=@vger.kernel.org, AJvYcCVsWGhZJvPArdICrJQleXi8cZoRW/ct/E0VMFxAYW7OS6G+fyR92AVXvCxp05J1gI6oAfjzK+Qq8nYkuio=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmiVcW34uFHYGSSff8EHKJiGWLcA1oNjEES9dbBfJqT4FsGlTG
-	1zlmCn8suUB1c6UCHnnjaj7qSSUq+h4D+NKMc0xkLI2CrWqDnqtkgRTwTo+2loIsC18bYdXox2m
-	VOkn/w6G6sVR2Ng8GgJtRF5kbV96tl1g=
-X-Gm-Gg: ASbGnctQKSih6hnu2C5l7RGSubqwpeNTC4aErGe6hNP0ixnIaRMBWR2h0Z2AsSdF4F7
-	poH6DrZI5zcaz3l+OckHLF+6kLAnOInYkXckOpxVBDQzYWi0NX+pLYeWYXmTKOwckoulzb7iqyg
-	kJpgvH3toxFiyc+/LmsC1To0Jt/eZ/LL01AiOJ+pwE91YhtJmWqMV8v2SrllCXah5yzI9qb/czo
-	clRqsMV
-X-Google-Smtp-Source: AGHT+IEfjaf1m/ZMQWtF/x4P/O0T08k13vTbYIwHz0IZ4fY/ozodeLiWojLdWd4z7laSinmlyN3duBduURp/W2lne8w=
-X-Received: by 2002:a17:90b:1643:b0:31e:ff94:3fae with SMTP id
- 98e67ed59e1d1-31eff94428emr3596891a91.4.1753786380120; Tue, 29 Jul 2025
- 03:53:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753791337; x=1754396137;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lYzZqhjw8TBD0wreOo10dc1gdI2xJtGND/ZcoPMk/NA=;
+        b=wVHoQ1FWn7cTxjIPGu411rr70Vr6rpVpxPqTlimaeyzUzR82I32e18KKY4rjXhVmDb
+         cMb+mTwksRUVBGJBDNEedq/FCjg5lTlrb9sYjRbK5z/nTtGB2qw/+Dvay0CxqIVvsghu
+         wTLYHyuOznPzGnl/m4FkCctpcUNhPNK0nuJfLzY+YgJ9+x894Bi909NIa2PGSNeXduko
+         GB0wrIbwHqfnazZbd4em7PmCWEp/aU0OzyBB3iredC+PE2tYq6l9lFKK2PN339/l8Bqt
+         MJoXvVTVcWYngc4Hi6/PiyNRNoZQJj01VJgvv3pjnpTarREyP05rOTbm/+0HckyK0ZqM
+         DBfQ==
+X-Gm-Message-State: AOJu0YwisShtm/a8Ly4f025N6t6QXschx1WU6q/iW9gRvQTNq6GuO+e/
+	S030UkITRUyLmZXnTs0fqD38U8HKAD+1BaYzMAkIAqm6cR1Xvr8zWlHFoCMHCGtqQHs8sr+wdtZ
+	G9FhWrfq4WsBIq2QE7A==
+X-Google-Smtp-Source: AGHT+IGSHNfo7Zrf2KfxC7hlR2bqTHQpTRrlnzGDMx0KhUGV2by0O6HJ7+TOJf/JhZjV+hwsM1vj07vYYew4aMM=
+X-Received: from ejbgx7.prod.google.com ([2002:a17:906:f1c7:b0:af8:f1eb:c67])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:9287:b0:ae9:bf58:4190 with SMTP id a640c23a62f3a-af616efc1ddmr1835841566b.4.1753791337106;
+ Tue, 29 Jul 2025 05:15:37 -0700 (PDT)
+Date: Tue, 29 Jul 2025 12:15:35 +0000
+In-Reply-To: <f92b5f82b3ad7bb8d5bf60b272aac8cf1e6ced24.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250729102953.141412-1-abhinav.ogl@gmail.com>
-In-Reply-To: <20250729102953.141412-1-abhinav.ogl@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 29 Jul 2025 12:52:46 +0200
-X-Gm-Features: Ac12FXyLitR_GXACAyRoN1xW0OYYTZ2y3N-eS3Di47C532EEWgv7pHq2BTa1TiA
-Message-ID: <CANiq72kRu5Wd-3Tk7px=2Y5kU5Tq2fQch=+f3ExYSrJa2+tSSg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: pci: Use explicit types in FFI callbacks
-To: herculoxz <abhinav.ogl@gmail.com>
-Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
-	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20250724185700.557505-1-lyude@redhat.com> <20250724185700.557505-3-lyude@redhat.com>
+ <aIXVzIwBDvY1ZVjL@google.com> <f92b5f82b3ad7bb8d5bf60b272aac8cf1e6ced24.camel@redhat.com>
+Message-ID: <aIi7ZycRtmOZNtcf@google.com>
+Subject: Re: [PATCH 2/2] rust: time: Implement basic arithmetic operations for Delta
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, 
+	Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Jul 29, 2025 at 12:30=E2=80=AFPM herculoxz <abhinav.ogl@gmail.com> =
-wrote:
->
-> and improves ABI
-> correctness when interfacing with C code.
+On Mon, Jul 28, 2025 at 02:36:50PM -0400, Lyude Paul wrote:
+> On Sun, 2025-07-27 at 07:31 +0000, Alice Ryhl wrote:
+> > The CONFIG_64BIT restriction seems annoying. Could we not support 32-bit
+> > from the get-go? Where is this going to be used?
+> > 
+> > After all, we have stuff like this:
+> > https://lore.kernel.org/r/20250724165441.2105632-1-ojeda@kernel.org
+> 
+> I'm not really sure how the example is relevant here since we're dealing with
+> a different problem. The issue is that division and remainders for u64s are
+> not implemented natively on many 32 bit architectures. Also for where it's
+> going to be used: currently I'm using it in rvkms for calculating the time of
+> the next vblank when we enable/disable our vblank event timer. We basically
+> use the duration of a single frame and divide the time elapsed since our
+> emulated display was turned on, then use the remainder to figure out how many
+> nanoseconds have passed since the beginning of the current scanout frame -
+> which we then can just use to figure out the time of the next vblank event.
 
-I think this still sounds like it is fixing an ABI issue -- I would
-probably just remove that second sentence.
+The reason I bring up the example is that once you add code using these
+impls, you're going to get kernel build bot errors from your code not
+compiling on 32-bit. And as seen in the linked one, code may be compiled
+for 32-bit when setting CONFIG_COMPILE_TEST even if you don't support it
+for real.
 
-(But no need for a v3 -- I think it can be fixed on apply unless
-Danilo wants it).
+> This being said, the kernel does have a math library that we can call into
+> that emulates operations like this on 32 bit - which I'd be willing to convert
+> these implementations over to using. I just put the CONFIG_64BIT there because
+> if we do use the kernel math library, I just want to make sure I don't end up
+> being the oen who has to figure out how to hook up the kernel math library for
+> 64 bit division outside of simple time value manipulation. I've got enough
+> dependencies on my plate to get upstream as it is :P
 
-Thanks!
+If you just want to call the relevant bindings:: method directly without
+any further logic that seems fine to me.
 
-Cheers,
-Miguel
+Alice
