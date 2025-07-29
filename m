@@ -1,95 +1,95 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F222229993B;
-	Tue, 29 Jul 2025 17:32:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798EB13B298;
+	Tue, 29 Jul 2025 19:35:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753810338; cv=none; b=Em3CpT5NdilkWx4YIofbKsB8TCrqyrf5BzgF1OoWgN7L4uysPTlwbELueVHL6nDIdS4EMnbfOxheRFuQb+BfTjYtdIMmEBljtNL3hStjjyY92CwPaDPHeaDIFRux146KdGGuqBrPyGJYSAEZj/kM3YuNN71CpunI3FWAWTcMWFQ=
+	t=1753817721; cv=none; b=i0pJTL0vNoahfrU0yRwiL2Kaz6euDVDoi5HRTBpzzzYEI0vseeC54tuMHj2kf4LdAEXzEgvxA2Sw5Qp5guwBEqbCilmVBF01waU+l+csPn5ygTS34sIVmS+Xkt+sF8tkjSdedUaE1oIOz7tB8piGEwC6c/m9Vp+vKyFnxz8zWck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753810338; c=relaxed/simple;
-	bh=Ks5rnGdq/WZDwyCCzJeCpscV0ClRUzaNDean8OPtm2Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L2My/yxIBICF94jvk2ypTIoGk1KkGFRzGE+iY0FCjIfpSOnwPfkljxddW5s7aeOdTT9pozVoao3BwjQYdZdF0URV8Tor3nseoF8ZMVTbRQpnI+TgJh0VOoQDXklk2u+WNwIvOP9M3V03bsIyjsjeDZ/0PT7hnFBkeb2QyNoX3Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=VpwDJOAq; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1753817721; c=relaxed/simple;
+	bh=vxbkeRBX+ImlPpBqkPXf62JLUx5qg7K42WUjUczOu+g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tQIUSEmyScByaj8pTaC7yQFlhbu5aroFiLU0Xv7UOqcqtCGbEe/S2x2cOp9RpLIXB9fFPwy+kAB7o82wbxgSWuzlxQhwarTp+cn7ujwYvLu65qx58es2viUKtUUBiK137GL5J1fW29rCgx3zCIODaSXFG9EY5i3OQ7uWaUFTrDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DtcwUy1B; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="VpwDJOAq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1753810335;
-	bh=Ks5rnGdq/WZDwyCCzJeCpscV0ClRUzaNDean8OPtm2Y=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VpwDJOAqkiX3lD4854zEundkEt31YVJkW6keXUt+m6QiuQj24ig6JTrZ+4aRnEB1O
-	 MCrNhy7Lb3gnF6Icre+H/qrPvud9+d1NQgI2IuHlASDE17Ldam3bXc4pFAeasKZ7Dc
-	 VpGcRJr2kOAG5cBYxtCjXqr1ZSlZrxU+hF33zGnEjz0ht2GfBWWZrBpmGpJtStraNI
-	 Jrt8yDjBgQBe6NYGZUNczz1pR8eXFkgvLMtPccSzbbTS/jjD8jPL9HO4XFAjQ5l6Vy
-	 ZqZvcrJ7a9PVJFqjAIbwgWsKbvSkw/WaeTrZQL2u1HrFdrPKgV8KAOMHsqIu4ZsV0n
-	 N+BQZApQGEN1g==
-Received: from [192.168.0.7] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id DFEB217E14DD;
-	Tue, 29 Jul 2025 19:32:12 +0200 (CEST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Tue, 29 Jul 2025 14:31:41 -0300
-Subject: [PATCH 2/2] rust: regulator: implement Send and Sync for
- Regulator<T>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DtcwUy1B"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-24050da1b9eso2773995ad.3;
+        Tue, 29 Jul 2025 12:35:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753817719; x=1754422519; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vxbkeRBX+ImlPpBqkPXf62JLUx5qg7K42WUjUczOu+g=;
+        b=DtcwUy1B7KYACtb+Enzlj7UUAtz/dQY8uDJZ6+y+tLRsQpNhDEUPbk5lEhEVRM2aFy
+         rNLMBEJ/dEkXO4l8TT6fnIMZBjISdyq7TxxM0oSlUJNwBsfxrU+GUEFjfoM8zKmfWcxI
+         3MJImY6eMUtQzqdGyL3l2DJM+/BrHU2HdsPXwF5nEqmAJfFYf+dgnzHZr9sgInuBIdrp
+         c83Yp1JcMD/BCXMxLMJjdY7KcIREs41jArDzb1amK84FpgEZhcohVMh6oUsnbb7UayZf
+         hb42FC12aUlXdgdcyk7cByAzTPVgiOHZLgGnfIGIV3pQseZ6d2LEKAtSYpt2j1p5Pmh7
+         R2Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753817719; x=1754422519;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vxbkeRBX+ImlPpBqkPXf62JLUx5qg7K42WUjUczOu+g=;
+        b=aqo38+FBkheQZsjzWC0D+93pgzQeynTIQrBGLPrQwmi6U2SVKbQb0T9hQ303c6vEun
+         u5Hs/TXWZraP/qyFEVBsjXWtfKIb6VmBeA8PTLgBv7YQAPRIFupKkIEim5N57DvJ2FBp
+         bKVngZ8l6vU/teISTIM49nEvxQcDzzeLU3AxEe5TmENVBvwTIU5D3UPOCjifQYdIhUHt
+         Clkg/LoEKdXTF0+IPe7xyeIynMUg394GPyB7XW7f5MGF+0S4/HFdgYGKEVVt/GQT0wzh
+         mnS/lBNbZJBjcZ1B+dltsW6GBZsgHJQFxwA0AEzDv0ZXUZnGip2RoNaCRxFg6DTHv67/
+         nUtw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmYDlulsI3UfYlt4cednIjTGJl2nnen+QdEoP/KiGrRUgG9kwOkn6MtOByyAjb/ynYP5sTtzyTBejaKj0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx00tRBH11dT/4vjrAQv2QxxGieQbftbfRy5Y7E7d4+gbs42tNp
+	3qK09sSDHS+OptTTKc13VCm/J6OCSDKE20xQ1chnFb5B9rmU5XFPTaeAtKvzIp6UCgbUEcVRk5f
+	XzHwBkAbo4+vtkmm8ObkZMvcDRKiYgCU=
+X-Gm-Gg: ASbGncsK9cpC2jRqOQvpQ3tdS/Yne5f1xd7ftTCj64LhweMkzq6IfaicZQTcicwZ18Q
+	LgsklDD1oe8ZTML3Eu5jfa+6crEUCn5SYTGNU3YxjxslttuEpKex9PS9kSRwKtWRYJVW9w39K+I
+	4oQYtD69IIzxvnXjGx3ZbD2aPFc9l681D/e5vGwzsauynNUUNdC5qZ+R+gSIGN2bgbIfbLwTt3D
+	9s5buNyigHjWapkHjA=
+X-Google-Smtp-Source: AGHT+IEsqf7OwfdvD2m3jUs2IP0Dm+ZPhdFGRYYYRk+2nstuMBM2XQ/ZzLKXv7t+cYSzpVaSafPepxjENgriDB1Apt4=
+X-Received: by 2002:a17:902:e94d:b0:240:71db:fd0 with SMTP id
+ d9443c01a7336-24096adbc8amr3397135ad.8.1753817718702; Tue, 29 Jul 2025
+ 12:35:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250729-regulator-send-sync-v1-2-8bcbd546b940@collabora.com>
-References: <20250729-regulator-send-sync-v1-0-8bcbd546b940@collabora.com>
-In-Reply-To: <20250729-regulator-send-sync-v1-0-8bcbd546b940@collabora.com>
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
+References: <20250729143600.5305-1-work@onurozkan.dev>
+In-Reply-To: <20250729143600.5305-1-work@onurozkan.dev>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 29 Jul 2025 21:35:06 +0200
+X-Gm-Features: Ac12FXxmdasWkDr2HQ-YZk0lBgzoUYfM6aDTQroAJE0v81DfVPJayI4sw9VIeTM
+Message-ID: <CANiq72=L_ov+Dc5S=adPdson9gq6wGp4xp=iCZLBnz+YC1_vgw@mail.gmail.com>
+Subject: Re: [PATCH v1] rust: update `error.rs` documentation
+To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, me@kloenk.dev, felipe_life@live.com, 
+	abdiel.janulgue@gmail.com, dirk.behme@de.bosch.com, daniel@sedlak.dev, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sending a &Regulator<T> to another thread is safe, as the regulator core
-will properly handle the locking for us. Additionally, there are no
-restrictions that prevents sending a Regulator<T> to another thread.
+On Tue, Jul 29, 2025 at 4:36=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.dev=
+> wrote:
+>
+> Replaces the outdated (e.g., `ENOIOCTLCMD` is in the
+> `srctree/include/linux/errno.h` file) and overly specific
+> description referring to a single C header with a more generic
+> one.
 
-Given these two facts, implement Send and Sync.
+Yeah, we should have the other headers there, but I would avoid
+removing the links entirely (the links are meant to be there as a
+reference and get converted to actual links on render).
 
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
- rust/kernel/regulator.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Thanks!
 
-diff --git a/rust/kernel/regulator.rs b/rust/kernel/regulator.rs
-index d56aa229e838c45258a27cea742a693dd71e8e40..704147e18bfc9c993a00f7a187105360ad1d4956 100644
---- a/rust/kernel/regulator.rs
-+++ b/rust/kernel/regulator.rs
-@@ -398,6 +398,14 @@ fn drop(&mut self) {
-     }
- }
- 
-+// SAFETY: It is safe to send a `Regulator<T>` across threads. In particular, a
-+// Regulator<T> can be dropped from any thread.
-+unsafe impl<T: RegulatorState> Send for Regulator<T> {}
-+
-+// SAFETY: It is safe to send a &Regulator<T> across threads because the C side
-+// handles its own locking.
-+unsafe impl<T: RegulatorState> Sync for Regulator<T> {}
-+
- /// A voltage.
- ///
- /// This type represents a voltage value in microvolts.
-
--- 
-2.50.0
-
+Cheers,
+Miguel
