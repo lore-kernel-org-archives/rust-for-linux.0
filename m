@@ -1,125 +1,95 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397D8228C99;
-	Tue, 29 Jul 2025 10:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D5227EA8;
+	Tue, 29 Jul 2025 10:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753785028; cv=none; b=X+Ausyt2XTKijbb6246FRJJsAZUT8Nzqw21JKi0LvWMCnT7zhw51DGxAMMBd+h9kly+398kKLMmEQ/6d6ofzYqrOQiD6Dk5uGQKyD6y9D1NvdI424Q6ozynMKBUZPQTlUQkZS9uD+ksL7pQhg3vsvHIb0W0ONutrfwpPkYK4WAw=
+	t=1753786382; cv=none; b=czqUTkbq5BAMYlDOgUFRCapXulgXDvIoaXGdDfH//3puf/9kAAtkeulLWRv6rqXH9svN0ApCmVydoQ376qMrmSARmAzlkhcH4kMMEDt/XEzSSkHY5HKcyhv/hcpUe+jJmPMV31vjXH2ztOn+ESITO0XF1VyHWW0QVbUSu+IpQWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753785028; c=relaxed/simple;
-	bh=GDS2DivCVTjsuqAbeiYBAP4HfVuf2+VQktNWQjuhZqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LlrWf5obLJg9LcrLpd3WIb2i9Bv6rgXQn+NEO43kuIT67IzRbeNjdE+cT0c3IpH68ietudzTrXB1uMqnos8TQ6OkUjt5TQ+uuYujyOWYAp9HUB1o2XAmL98Y5dX8iqk4/Z0yDfvHYmVg/FE2eyXJLxk53mrzS+Uc/Jgmy7FPe7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dKY4T4MM; arc=none smtp.client-ip=209.85.210.172
+	s=arc-20240116; t=1753786382; c=relaxed/simple;
+	bh=0jwI4ByPSh17ya/A6DhJ8GdK70BSnqVwxGNcDMcnexM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gfJ1xJ5Z0rEPnMYqBAjhQz0r/KSykVjRz7gD2TSpusvIgUQp7xGO4J58jhmCtVwPpmSCR3qvXIE2dYlOJvIeh1ouSqIdArlEeUb3gMYvTgjcpYRFdafRu3+nShXZ9c9YdT7uICHk70pde59r2xznQyYd/9zGEEj7lKtayRnXH20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CH2QOCrF; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dKY4T4MM"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-76a3818eb9bso174417b3a.3;
-        Tue, 29 Jul 2025 03:30:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CH2QOCrF"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b3510c22173so364048a12.0;
+        Tue, 29 Jul 2025 03:53:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753785026; x=1754389826; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=k7VKvcC3HHzJrLAxDozGlxN+FIhSWHQP7yIiLAufEHE=;
-        b=dKY4T4MMIHr4Akv8NQ0ypgkHFnewdRph75FEALs5MsAq7t4FNdbGUJVW4vjB4ha0Go
-         n8OlK+aVLCJTmc224UDpYA1lk6v+6Ush1htZyVV41dRlXBhLKjISFBwD6CKgnI6Bq6YO
-         LrlKHnj6uuRLX7zjzdBh2bGbXTXw4bWbjwkBoMOv2/LCauuP28+xEAlTxqGLlPiHTbun
-         0sK2y7HXfMF/PY8I08enxzf7rZLZhX51zuRHrFBwByFwh+Z/RIJ8/bOe6kQVXooKsRUw
-         SzlN1AMiLPK86p1lb+rS6R6vQ7VC89fFWTbEnYaHKrbbe+H6HPY5xVUcEXEbA2kwVhLb
-         rJSg==
+        d=gmail.com; s=20230601; t=1753786380; x=1754391180; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0jwI4ByPSh17ya/A6DhJ8GdK70BSnqVwxGNcDMcnexM=;
+        b=CH2QOCrF5TrELMbSVza1fvRrN7CEHFd8vX/ZSpvlqS1tdWoNf1zpEsc6uJmhIwgLsP
+         kpd2ksNRkYALxn8R4/1aueBg3ZuNwjEsVzCoJDX8YqOTAYhDkErI3IWhmmeBqLHtOgMi
+         zeQ/mo/QWSxY3TFCEsP/dAuiNjhJoQv+1d+3IeLAAkW9xys0P1YLU9g1mA+MRimPmhEP
+         KkTFgZut3oTDa51pUREUlJWRxlZFtuxJ8nX6kdWK1+vXn2SkJopOEPrtnyic8dGxvaHr
+         2sdrBcwLIVhFCeB+b5CZjBH5bJmAfWA7GTt63gxaXWp9KmLXsumUDJmAsNoXuyNdv6ec
+         WjeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753785026; x=1754389826;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k7VKvcC3HHzJrLAxDozGlxN+FIhSWHQP7yIiLAufEHE=;
-        b=a7nxn1jIhErZDON/E5Vi/0MElPyE+ZCVSs88S1M+M3FMtT0XGXSGlZPU4OPWtlyUAH
-         sOV0B5AKbcWZBtn8pxqdQAztiSK/Ejg+xDfHvg2Tc5rGnVEycR3b5BfzGV81jNNGtNPd
-         J3LddXotnGtFOezhtlWiO/PxblWhgsoJlQg+q31SgeZQePAdHNQU1NW9G2JWAkAYiZYD
-         IeGPpkG2mdGw2Ut1Gr6EMXGv6ra52JSDtNk+5lW6vUg94ulEN8cMfhwdYaQGN0CCGWdP
-         vXsMJfkebqcDxyq8dIUj92gXtXIBVU6nULaHsY5WLvWUTBQIlerLNhMN4NCSs4PCQy71
-         KCfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWTk2pfoTLT+tkcZAejvwgi+NI86cPzHVoXT9yX+qNuBZbDqfWYv1EHcO+PUPscqhw4o1MYv2KiCa7NZfE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHrPzxYN05wvkj7Lx8Kj743XOBwZ0TwPK70U7TU6wk1e8Uq0h6
-	X87A+Cd7pVhhKG4l7rVR2TokpzP9NtLeXg82Ye2YIsJ4xux+aJFIySWnzUmoqUs0
-X-Gm-Gg: ASbGncuuHQahVqBY5fwKO49aUkcOHJC/ECwmihzevRZdLpSk12u1QW+3AtX6tGoy6ld
-	/Jykuy6SZY7PmTBNAEgbeJU2AofY8iAiKw7wDcn7A7GzJa+UhoDe7kGy7G0EgX+AraKN7uIO1SB
-	2AGZw2YJjx8iGuT6LhJCBGQbavhx72lDtalex0pGJocT/MPMZUyJ4dLXk0iFUHsDWFEmcUUDZSn
-	H005nW4hkYaB6ZGwTwVJCUVRPLIBbuN93Boghao1dvwZMp5rjGSDoF7rotdkMQNE4sR6tboBnan
-	CiS7x/TkB/4PwmhwH8fDt0+lKJuM8o7VBAQnpANnPbSfA3XG7i9uhayyKbqnOl7knNPDxmcBaHw
-	ZnqYMpwf8Un35J3f9hTuIUEDb
-X-Google-Smtp-Source: AGHT+IFVd5vS3sqBz9mldXBBud0gro+383l7Zj3chGaPhaiisuezyFdfYPfF5WFWo3rfTZsLqYszCA==
-X-Received: by 2002:a05:6a20:7488:b0:215:eafc:abd9 with SMTP id adf61e73a8af0-23d700e9754mr26792263637.14.1753785026070;
-        Tue, 29 Jul 2025 03:30:26 -0700 (PDT)
-Received: from pop-os.. ([2401:4900:1c96:2e3e:1600:4d4c:911f:a526])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-767979350b3sm4895419b3a.122.2025.07.29.03.30.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Jul 2025 03:30:25 -0700 (PDT)
-From: herculoxz <abhinav.ogl@gmail.com>
-To: linux-pci@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	dakr@kernel.org,
-	bhelgaas@google.com,
-	kwilczynski@kernel.org,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	Abhinav Ananthu <abhinav.ogl@gmail.com>
-Subject: [PATCH v2] rust: pci: Use explicit types in FFI callbacks
-Date: Tue, 29 Jul 2025 15:59:53 +0530
-Message-Id: <20250729102953.141412-1-abhinav.ogl@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1753786380; x=1754391180;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0jwI4ByPSh17ya/A6DhJ8GdK70BSnqVwxGNcDMcnexM=;
+        b=H2PJzoXMO0AnHnDQCc6fFNBvGG7XduhcEyytZPdC//GJ6Oebj3JujE91XncKb7tXNm
+         5uF6gcGlJRl9IHlhvTklnVC1LFuiD0zTdJuhjINj+F0+Hy3yAxOkYbPq1Vep16/fQ9oI
+         lDdLzVVNLpK38+inWcrVkj/Tr7aUGzaf8R6uVQMO/HKPydFcRdMQebeuIZRS1JOrRGV/
+         XOdxoIIh0jQniUuSVMkL0YtLwnJl5zjwMjHokumRd1Rw0N8hGK8+FjZrcei5pgjPAIgM
+         S7G65kS/b/GQ9OAhk9Zgp6rsC8dfpHt8X7XlR8y+T2RUAHsfxoIzzpKmcQrg1Uku3Tnd
+         OY0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUBFha8AkwVoMAjKyluS6+RSQwtt1CHp3sGbgaPz16WBnI9Y3/+A6fS01YZXCxfT0H2u2OeftonpsYhx7Y3vZQ=@vger.kernel.org, AJvYcCVsWGhZJvPArdICrJQleXi8cZoRW/ct/E0VMFxAYW7OS6G+fyR92AVXvCxp05J1gI6oAfjzK+Qq8nYkuio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmiVcW34uFHYGSSff8EHKJiGWLcA1oNjEES9dbBfJqT4FsGlTG
+	1zlmCn8suUB1c6UCHnnjaj7qSSUq+h4D+NKMc0xkLI2CrWqDnqtkgRTwTo+2loIsC18bYdXox2m
+	VOkn/w6G6sVR2Ng8GgJtRF5kbV96tl1g=
+X-Gm-Gg: ASbGnctQKSih6hnu2C5l7RGSubqwpeNTC4aErGe6hNP0ixnIaRMBWR2h0Z2AsSdF4F7
+	poH6DrZI5zcaz3l+OckHLF+6kLAnOInYkXckOpxVBDQzYWi0NX+pLYeWYXmTKOwckoulzb7iqyg
+	kJpgvH3toxFiyc+/LmsC1To0Jt/eZ/LL01AiOJ+pwE91YhtJmWqMV8v2SrllCXah5yzI9qb/czo
+	clRqsMV
+X-Google-Smtp-Source: AGHT+IEfjaf1m/ZMQWtF/x4P/O0T08k13vTbYIwHz0IZ4fY/ozodeLiWojLdWd4z7laSinmlyN3duBduURp/W2lne8w=
+X-Received: by 2002:a17:90b:1643:b0:31e:ff94:3fae with SMTP id
+ 98e67ed59e1d1-31eff94428emr3596891a91.4.1753786380120; Tue, 29 Jul 2025
+ 03:53:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250729102953.141412-1-abhinav.ogl@gmail.com>
+In-Reply-To: <20250729102953.141412-1-abhinav.ogl@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 29 Jul 2025 12:52:46 +0200
+X-Gm-Features: Ac12FXyLitR_GXACAyRoN1xW0OYYTZ2y3N-eS3Di47C532EEWgv7pHq2BTa1TiA
+Message-ID: <CANiq72kRu5Wd-3Tk7px=2Y5kU5Tq2fQch=+f3ExYSrJa2+tSSg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: pci: Use explicit types in FFI callbacks
+To: herculoxz <abhinav.ogl@gmail.com>
+Cc: linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, dakr@kernel.org, bhelgaas@google.com, 
+	kwilczynski@kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Abhinav Ananthu <abhinav.ogl@gmail.com>
+On Tue, Jul 29, 2025 at 12:30=E2=80=AFPM herculoxz <abhinav.ogl@gmail.com> =
+wrote:
+>
+> and improves ABI
+> correctness when interfacing with C code.
 
-Update PCI FFI callback signatures to use `c_int` from the prelude,
-instead of accessing it via `kernel::ffi::c_int`.
+I think this still sounds like it is fixing an ABI issue -- I would
+probably just remove that second sentence.
 
-This follows Rust-for-Linux coding guidelines and improves ABI
-correctness when interfacing with C code.
+(But no need for a v3 -- I think it can be fixed on apply unless
+Danilo wants it).
 
-Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
----
- rust/kernel/pci.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks!
 
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 5ce07999168e..fbeeaec4e044 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -61,7 +61,7 @@ impl<T: Driver + 'static> Adapter<T> {
-     extern "C" fn probe_callback(
-         pdev: *mut bindings::pci_dev,
-         id: *const bindings::pci_device_id,
--    ) -> kernel::ffi::c_int {
-+    ) -> c_int {
-         // SAFETY: The PCI bus only ever calls the probe callback with a valid pointer to a
-         // `struct pci_dev`.
-         //
-@@ -333,7 +333,7 @@ unsafe fn do_release(pdev: &Device, ioptr: usize, num: i32) {
-         // `ioptr` is valid by the safety requirements.
-         // `num` is valid by the safety requirements.
-         unsafe {
--            bindings::pci_iounmap(pdev.as_raw(), ioptr as *mut kernel::ffi::c_void);
-+            bindings::pci_iounmap(pdev.as_raw(), ioptr as *mut c_void);
-             bindings::pci_release_region(pdev.as_raw(), num);
-         }
-     }
--- 
-2.34.1
-
+Cheers,
+Miguel
