@@ -1,118 +1,123 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DC522FE11;
-	Mon, 28 Jul 2025 21:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7869461;
+	Tue, 29 Jul 2025 00:32:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753737700; cv=none; b=OZXyE0jE+fzOvjo8CsryYKSpHCN6g1z7iOIW3fPbOTJfKrX1PQyOeG28CVv9mo+scxZaAvBC6Txo3aEiDoW2jiMEOuFHeofn2L5i6jzsFxphdRDv7+xVW1fjYpKtZIMzgRnSDfJ1g2LiJ41FyeS63u+yEe6l7uMhAdLppUD2BX4=
+	t=1753749121; cv=none; b=X+whZYXENbGzJTmH6SeEbH7viAx3YdPOfKeE5N5ZaB0PmhtmfoSrQXXXt6mUClAAQcmX+WZBrgjAjFaJkMP8ZFH4I8XEX9SSPIVwVDF17V8WbbERHFU3pWZgS2mht8481MOYbCMORFiIyHI2vMdWgu7jE58Sj7sMBHpguBgnq5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753737700; c=relaxed/simple;
-	bh=UA7VN0xSe8Gpf9OvZtxxF3aLnGEtizy76YM22pyqK2U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J0OOXXiqfEt7BZbeehu9my27ZxoPcwR5qVMZSoVASTo92l59iiWWSpxh4T700017ytOmK+gI8aBtaHKAa2ZxZ4sZ/Kv93p0g7//RFxzE+INfKO4DsNxHmXVKNwVsmzcVPdzOGPSREloTuiFSTUwoER5QnhWjG376iIPqXPZvD4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a6A464UQ; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1753749121; c=relaxed/simple;
+	bh=yUtEztOfMVM5dWoR0DRHrEvlYr8ultlYw22nWVaI+og=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NJs/Rh6WTjENt1Z8gTfl4H/Tu3RxO931ETQ/D3lzTR5Tqkyv0MuHOFJNMF3S/ceT+0iG+MT0FK5lGPNxVORfJmlUATeNJAsruPYB/p4Azplj0Ci4NGwplC4oJm9XIH1sqlwxmwu+bxg+P7NV6cO60i2LD0AQAUdEuzraaUwdGtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cc4SyHjM; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a6A464UQ"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3b77b8750acso229001f8f.0;
-        Mon, 28 Jul 2025 14:21:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cc4SyHjM"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7490702fc7cso3166163b3a.1;
+        Mon, 28 Jul 2025 17:32:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753737697; x=1754342497; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RU2bqufwtKQ9dzDchkpeeGiLDTRcO+IVH+BNlkW1gOk=;
-        b=a6A464UQmy1ctOnkG7Sg1tVq/F8Le2klMHhRHQ4O3XNSbr3gy8n5Xuu02LwyuIW3nd
-         gK3jqPzWvnvv17uIqnrw1CzkyfsQZSzNitcO2Oyy2AkszKuRUQ9BP+GnB85fO4saTkHu
-         44CaKzHJdTaSOSicVX2voUGMDMLoZurp3hRvdorhX39Yk7/olZAOb32bux8Opm+/C5/x
-         PKSgTAWqAzYb65VoxYD8FLf4uC8juXb+E9HDEZwew7n200zkhwPOoljZ3PlzynNEdhcA
-         yxXBCi3blPu/Gyo6O4N0dLDSxIte1pBrWiLUcx20wkxo1U+nfJdxjm6HxgTpincgoTjI
-         HwyQ==
+        d=gmail.com; s=20230601; t=1753749119; x=1754353919; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Jz6iF8q/yFJCJ16p/k5WRpifZDd/z8EpWvv3BpRFNk=;
+        b=cc4SyHjMBEN1iRfGVX5I+KOsaeunL2O0ryTAzghx01sbK991AJczSuRWsR1lgCAqW3
+         w6xK/cXlN97ZzGHCGompu6StAGlrc0t6a8zxb6DZkgzuvPzmDLEJAulnKSV6y99k0z3j
+         ImWIKVCryIjCSYKnUlMrs86Nin17hkkfZmi+UkbAJzU/L2H58d8VFmK1xR2qn/HPfRWT
+         NFo/yi8S9/WITnIsrlMFJ19Yqu+44bGFlMj3Sv0w3QCsu6cHBSsc/Xe6HjylSv0mbKP6
+         Bvz6PpB3dBWJ8r7DhJP+FfONlrr3wq0rE4nUvvhP7MjaFxm6JRVWrcRvZVwXfm+XHahc
+         CTgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753737697; x=1754342497;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1753749119; x=1754353919;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RU2bqufwtKQ9dzDchkpeeGiLDTRcO+IVH+BNlkW1gOk=;
-        b=NkBnoSXbyI0GOwLXY6EvJ9fCvEMOkKj9Ejw9nXlBFiQI54f5TJ7ZSNqeAo3R7FGb2V
-         UxzVblO6mwNLTux+EjuTGysIPDCyqISo0GyPCfJpsh54I2r3e7xq1Fehh1Jq/y1/GULZ
-         M313jBKuFHW7adqo+DtiiKkpnEg9d9Sp+/kVKVKV7QIvIPTOSpj8KckOYcY6MgsAG0Lr
-         PjKxQVtHmCcZ8CvrEM2HgpHzLADRV5RSrpSnMm0SJW8OZ7W/YeAvofzjBpjFsKDN4qBu
-         RXBlqtg9SmBNG+HfUzwJXzmWghKvtJMUn9gIBTzTYF+gvROMw9jfdrWw9wB2XI4MyEZr
-         zHeg==
-X-Forwarded-Encrypted: i=1; AJvYcCV3u7T76lZ1UR+EJ66KPhlMrMbVhYbe6dx7st7PI1CewY3DuSWt3Ku6hh5pA/5zJE5sZBX6A8YnEPkEq7FBuJw=@vger.kernel.org, AJvYcCWIJewnm53skPpMKnq/4Jg3q7IyYsWO6lLaTu1Zxr858pSslpsPI41D98QCNmqDQJgPgEMlV9t06oEUHdA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbI7zOgjsYA+XfifBii19jsyxdw4v+VMC4iSfth0PY7LUSFlEX
-	+UtDKJNFSRbgvUCV8gJu0iPcaRGqMDRKfc0z/r3u8fJw8db1k6K829V68vMBemMG/Au8GeKDQQt
-	baCSx8HhF9up2JJRajLvP0UJYJI0DNk0=
-X-Gm-Gg: ASbGncuxh5YX7Oy25BuLvXjYSvIso476HL7DNuLvaScgIQGGuaMkx2Kg58qlK4PnBIh
-	VPe/+UJ9N1QQzgO/0UWlyZHVUY4nNL0RTL7ClehCptkUgzsHLaETgado3Yfds9abwqmWp6XQKdk
-	GgOt1GQDOsIN+3RW2SDehonYbceL2WIsXlgdrSh/X++3Wvgo1a2w2hnobwDv5HMKdugkAqA5vXc
-	3+MOdvJzIeUJAKxItLRtDfB1UpWTK2KfpokEBTd
-X-Google-Smtp-Source: AGHT+IHnq1iQHeWMKuSQugJPOx00XM25zFz3DY6x3bvclf3J79sZ9kAygJiKa532lIGzwPDc6XeY3m1ajK+uFjTTk0k=
-X-Received: by 2002:a5d:64cc:0:b0:3a5:8977:e0f8 with SMTP id
- ffacd0b85a97d-3b78e50f320mr777443f8f.19.1753737697146; Mon, 28 Jul 2025
- 14:21:37 -0700 (PDT)
+        bh=8Jz6iF8q/yFJCJ16p/k5WRpifZDd/z8EpWvv3BpRFNk=;
+        b=Wno0TYDZ3vJMKNc+m7zQGFhw/AtHawYZpIDYePOMnvnGEsp7fnPsMniTUHI33YnlgO
+         Az/dxshjqL27H1Ywtlw7NtjejVigqX0swwhXQXTUal6BEYvbaxPOKyf//6TbsNCR6dCN
+         jUgla4SbDXcYeDAsjH8JwsFaAFTGtRr1BbHmUNxNUsb7OOakc2wCvaLUFLCFo7aGEYrz
+         0dszlnOaaqkUxnVmqnsPBLjPz73BT1AWnz8DYUniqw2AD9jD0CXYxhpctzl1yJr5DVB0
+         dO7adBXmZu9Z1SgBMNqbjRF3f4QqGPNhxP78iNDW2pEDz2nsBIwKh3zyFGKbfpMPmwIC
+         iNPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOWA66/pwpUoQbhNX4nLYVWa17hRNYVUjlpHMMuyhjBqT8EEol5f2Coww3hNhtzWCmJ4uLGYk/Me+UXGy7kgI=@vger.kernel.org, AJvYcCUbsLu63slDfrGqF4sQSkRE8GDdAlRIZC3EnK8UxvXnit9pkk+T7zWxueeqWTwNH2ZNUrg7J4zTaP4LYUU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOEViIpQRmh6emFVBeLqGzgkVAN5r/rncSzRLeB3He76n+n3+G
+	1BdOVfQeSkRqtkk67sSBpesBrslIDGaUYzrTcGQ9vYqrInSFYETZqKTj
+X-Gm-Gg: ASbGncsoMvi9H31olkxhcXJgymvkXCgj9VYxx5m0e9MxiyBUks8+GR2A01ANvoaEZUQ
+	90j5kGSKlkja0ymoYdvhJZygMnIZmmOB5AZR9NBaOFDdOpNqMejrFXwATU0D2qp5EgTFskS8FxZ
+	4s30OB7ElqCkHuusBFTR5x792xbED684TPuPbNMIE+AUQF0LLzsZvt/f9lSbp2kFmbgu3s40Ds5
+	p7MFrRUh7UbwdOwYa27BxZl7nZCAJcCJUWB+LahF+mKYiW4SsHFkXn8lzHxHTUF5lvBe5OVFwkM
+	diiCENv/qkl32FKnzhaESw6LF0lTN+ZeG80/hKev3ymnv4npBZcqAxNVG8rlx1U2fPQJmgVV9TL
+	UfOJmS7YRJOSiqpKKL23ZpaN6b7EUIyJPm/s=
+X-Google-Smtp-Source: AGHT+IGzYlSKiWdEk9YIJwMO1mmDe1SmXkX9wPe/K7B830GQSNHWlQ322spZwyZruRrhP4xlAXckKg==
+X-Received: by 2002:a05:6a20:7f8f:b0:239:c7c:8de8 with SMTP id adf61e73a8af0-23d700245d9mr20512119637.12.1753749119539;
+        Mon, 28 Jul 2025 17:31:59 -0700 (PDT)
+Received: from pop-os.. ([2401:4900:1c96:2e3e:1600:4d4c:911f:a526])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76408c024c1sm6506531b3a.33.2025.07.28.17.31.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Jul 2025 17:31:58 -0700 (PDT)
+From: herculoxz <abhinav.ogl@gmail.com>
+To: dakr@kernel.org,
+	bhelgaas@google.com,
+	kwilczynski@kernel.org,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu
+Cc: linux-pci@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Abhinav Ananthu <abhinav.ogl@gmail.com>
+Subject: [PATCH] rust: pci: use c_* types via kernel prelude
+Date: Tue, 29 Jul 2025 05:59:43 +0530
+Message-Id: <20250729002941.7643-1-abhinav.ogl@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624042802.105623-1-christiansantoslima21@gmail.com>
- <CABeNrKVYy=9QKvTwnDPfRhXuJLCFgA9bbvd34V-P8jHLEJSGEg@mail.gmail.com> <CABm2a9egd7xq5OwEB+pq21wSPJS-89wY5Z3J8Kpay+3EsywDpQ@mail.gmail.com>
-In-Reply-To: <CABm2a9egd7xq5OwEB+pq21wSPJS-89wY5Z3J8Kpay+3EsywDpQ@mail.gmail.com>
-From: "K. York" <kanepyork@gmail.com>
-Date: Mon, 28 Jul 2025 14:21:25 -0700
-X-Gm-Features: Ac12FXwVabOOGIW0xDIGk8GunND1x8zQsSekggC45CLb9CdCsQEdU08M2iRnOlk
-Message-ID: <CABeNrKWn4_qsAE2pqgGwVuspf7wnzT=xe_hZpuy-0HVTLD92DQ@mail.gmail.com>
-Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
-To: Christian <christiansantoslima21@gmail.com>
-Cc: a.hindborg@kernel.org, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dakr@kernel.org, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, richard120310@gmail.com, rust-for-linux@vger.kernel.org, 
-	tmgross@umich.edu, ~lkcamp/patches@lists.sr.ht
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 28, 2025, 12:39 Christian <christiansantoslima21@gmail.com> wrote:
->
-> Hi, Kane.
->
-> > > +// SAFETY: If all bit patterns are acceptable for individual values in an array, then all bit
-> > > +// patterns are also acceptable for arrays of that type.
-> > > +unsafe impl<T: FromBytes> FromBytes for [T] {
-> > > +    fn from_bytes(bytes: &[u8]) -> Option<&Self> {
-> > > +        let slice_ptr = bytes.as_ptr().cast::<T>();
-> > > +        if bytes.len() % ::core::mem::size_of::<T>() == 0 && slice_ptr.is_aligned() {
-> > > +            // SAFETY: Since the code checks the size and alignment, the slice is valid.
-> > > +            unsafe { Some(::core::slice::from_raw_parts(slice_ptr, bytes.len())) }
-> >
-> > This is incorrect -- the second argument to slice::from_raw_parts is the
-> > element count, not the byte count.
->
-> I don't understand, did you mean that the safety comment should be
-> changed or the argument? If you can explain in more detail.
+From: Abhinav Ananthu <abhinav.ogl@gmail.com>
 
-The code is wrong, and the comments should be changed to match.
-The documentation for the function says:
+ Update PCI FFI callback signatures to use  from the ,
+ instead of accessing it via . This aligns with the Rust-for-Linux coding
+ guidelines and ensures ABI correctness when interfacing with C code.
 
-`pub const unsafe fn from_raw_parts<'a, T>(data: *const T, len: usize)
--> &'a [T]`
+Signed-off-by: Abhinav Ananthu <abhinav.ogl@gmail.com>
+---
+ rust/kernel/pci.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> Forms a slice from a pointer and a length.
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 5ce07999168e..fbeeaec4e044 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -61,7 +61,7 @@ impl<T: Driver + 'static> Adapter<T> {
+     extern "C" fn probe_callback(
+         pdev: *mut bindings::pci_dev,
+         id: *const bindings::pci_device_id,
+-    ) -> kernel::ffi::c_int {
++    ) -> c_int {
+         // SAFETY: The PCI bus only ever calls the probe callback with a valid pointer to a
+         // `struct pci_dev`.
+         //
+@@ -333,7 +333,7 @@ unsafe fn do_release(pdev: &Device, ioptr: usize, num: i32) {
+         // `ioptr` is valid by the safety requirements.
+         // `num` is valid by the safety requirements.
+         unsafe {
+-            bindings::pci_iounmap(pdev.as_raw(), ioptr as *mut kernel::ffi::c_void);
++            bindings::pci_iounmap(pdev.as_raw(), ioptr as *mut c_void);
+             bindings::pci_release_region(pdev.as_raw(), num);
+         }
+     }
+-- 
+2.34.1
 
-> The len argument is the number of **elements**, not the number of bytes.
-
-The code is wrong for any type that is not 1 byte in size. The len
-argument should
-be `bytes.len() / ::core::mem::size_of::<T>()`.
-
-The code will also panic the kernel for any type that is 0 bytes in
-size in the % above.
-I'd probably choose a build assert (`const { if size == 0 {
-panic!(...) } }`) for this.
-
->
-> Thanks,
-> Christian
