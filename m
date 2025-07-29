@@ -1,199 +1,315 @@
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2055.outbound.protection.outlook.com [40.107.243.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380F42905;
-	Tue, 29 Jul 2025 04:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753763656; cv=fail; b=p8cdxI5udP2Ni0wmVX/p64RGyTZ4zOhxrCwz6adIfhQVHafv/UFsLpmDBDso0BALUnV5MZezHLMYoIgXqqKj98lCLIKPOULx36/FKeygrGlijcQNZHQkQxy0iaF9iiVzDU+wEQF3Ew2+noLsAp3hOIL00u4ALt+IkP7Z19dt9As=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753763656; c=relaxed/simple;
-	bh=BZzCYDrprLiKv5zkXFm9CgnQdEYCLmbSL4CHLV4+Fmg=;
-	h=Content-Type:Date:Message-Id:Cc:Subject:From:To:References:
-	 In-Reply-To:MIME-Version; b=TJHX2a/zgmZhk4nX812Ede0rJSTZSk1sdgg0XkyOwEWXZjwLJWc0P2mKkfmVB21GuP0QkzhlBQcB/vIsjL6DbZHu+OQ8/SKUbGxd37HkN+tyAlRXL3OJ9luh3Bs51vPw4/plomrpQutpvcSIh+ITB/BAsp8czaPoic7jrgziSy8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iSjTYxcq; arc=fail smtp.client-ip=40.107.243.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B4A256C9B
+	for <rust-for-linux@vger.kernel.org>; Tue, 29 Jul 2025 06:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753770489; cv=none; b=KTRi9addy5nO9cPK91wUXPCOtg70aLq08Ts7XXDdCeA3wl3IiP4wi3I/4gPLisDbjq+L3tXWW2iU7WAd8XT90uNXskf3QM2KQvAs9V+Ff9ub1zRIozl9D/z2Y7K5rA3wdYOQQC9H+0Iou6qkJKBMUngAJf1BHepthZosU8butME=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753770489; c=relaxed/simple;
+	bh=JhYfijgij9BOvgYp6RVljPgqziB2uO/Q0n9GdvTuJmc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Op792z6r+WFMRf2tQOK5SgHkxcTioNoMqjIiR1iNg9+hJs0Tyw5HZjlTtxAHcj9afrcWw6sianzVervZgfA1OoLfDbcPyATOFvhowh6Pi48O4BYd3rhk0sp/aqBI+4KS2PzEVcIFKNCQotlCi+Tj/WRB1JlzVVqckwL9pTrfEbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zvHAy0YM; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iSjTYxcq"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SldWPSECKKQxdlSaIvTEziFUUE/CEXbPZSBZfwn2DUitoNTSFisImbDbNBEH0FWSPgMTtCknJhDsYzP8Y0JaKEYpjjjpiexybCIl8/PypPBtdakGTlB886e7i3/B23HUIcNiPhRtsW6LPr/Eg+hWOl2yvoV14QN9P9BcfAEmzyUYdyKTpPlm7FpZ2FYTnxFbDuqx3qXB5ll+j/ZTFl02L83/DunBiPP7OxbE3Ph5iodn8oonbRUmKmeWjeeLl/Xyhh5RGTjKW0opWnE4qfUyjqxeKmujJt99PsWbo+wqJokWZ1z5yYBbWwVTA2D/O9qkzNMzFPlMWSNber2+WhrgsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nxBhMvqVnLShKpfXaGVQUrI9/L1pfgZ3CxPH0RJvPTU=;
- b=iFGbNngfbUzd6fMgRgPTuF9qwkzEdFunYTQ6oFQWxXzn6X5ZMme1Q6e79hkemJLyJU0CB0xmvz7AjkZagsKTnsO2dr0SnqcHZfae1Dg1EBxPa9qoV3S/Ei7LSj7R8aZTjmkn4oKmjEPCjxTdBq4wrkoIR9BlHySxdF2XwOMRwI4e2B/q2nv1hNP5uwko483tAlfaoE1SbQmj9c9MsiPTuMbGi8K20RJ9t7fBbOkyEpNwxnYl142Av2ezaQpWxk1WQOkcEsTeUmVuqIHTg5RDLTQdETBVMAxUujuel+xRRmMp/aumSnx834jsxAyOo87b2Uouy8I7XeY2iUHk9ou9dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nxBhMvqVnLShKpfXaGVQUrI9/L1pfgZ3CxPH0RJvPTU=;
- b=iSjTYxcqHwiwtoG1GtURzZBvhq8U/KuYmAmjj3EUvoyIg4VwlOTgWjsIsclG92/ubnn4yVrcMaIpldDXk6JplocwtTmzK1Pwk8j+ReC/4p86EyShWd3zrqFG/zZtPbDUNSrPrr8KfD29aw32tBcPizr2EFEDTi82VTSFDaTQibZZXdSDmOvkFnZMmPZ+doYkx1D9FD+gsyJk+xQb/A7F8KOws2zVgtlRdAtmyALyHz+XDeGnSW4SX37Xm04a8DPZV8PXWQaFn1TXteQmN3mG7rAde6hQc8vg/zr8eVSJwL8X+NPV9joE2uGJTz7hyI1EqFpJuAzxE6ns5mPN+MkrsQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com (2603:10b6:610:28::18)
- by SJ2PR12MB7798.namprd12.prod.outlook.com (2603:10b6:a03:4c0::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8964.26; Tue, 29 Jul
- 2025 04:34:12 +0000
-Received: from CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99]) by CH2PR12MB3990.namprd12.prod.outlook.com
- ([fe80::6e37:569f:82ee:3f99%4]) with mapi id 15.20.8964.026; Tue, 29 Jul 2025
- 04:34:11 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Jul 2025 13:34:08 +0900
-Message-Id: <DBO9BTJ5Q8IM.2AY6DJQ9X9EIY@nvidia.com>
-Cc: <rust-for-linux@vger.kernel.org>, <airlied@gmail.com>,
- <simona@ffwll.ch>, <nouveau@lists.freedesktop.org>,
- <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] gpu: nova-core: vbios: split out
- PmuLookupTableHeader from PmuLookupTable
-From: "Alexandre Courbot" <acourbot@nvidia.com>
-To: "Rhys Lloyd" <krakow20@gmail.com>, <dakr@kernel.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a-dirty
-References: <20250727094903.20483-1-krakow20@gmail.com>
-In-Reply-To: <20250727094903.20483-1-krakow20@gmail.com>
-X-ClientProxiedBy: TYCP286CA0008.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:26c::15) To CH2PR12MB3990.namprd12.prod.outlook.com
- (2603:10b6:610:28::18)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zvHAy0YM"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6fafdd322d3so51657166d6.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 28 Jul 2025 23:28:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1753770486; x=1754375286; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=afAsM2tsf70u4KX77ck+sLMDCAxrtX0z0zBp8flCRwE=;
+        b=zvHAy0YMGWNhtG9DLcdfwxeiWZ1qKOLO7PaSOHBBNj3TaghLasq0Oqr0PgWCq0VEnF
+         UrLEJOZR04yJxlc4zW9SJKZ3Ukg+v9AZsFARcwufjG9onOo2bHMOuJnFj+m68WqQXk+4
+         xcWitrppKFcYp6yljelbLBRgzlhUZ647vduKD+GCV6wjRtXdl9lV3e6EOCvze4jCzmSJ
+         thNF9RR6M3kAGEBzEmoQI0LNfPVBfy5PBB8mp58W2EnL3j6O5p3TttLC5GAMeieAspYi
+         rGi/mQXOUK8wfub9JuOYGdwKuM9yw7VdF0DQc6/1aNh583X9+rO8D/R0CFgW86VGEQZ4
+         Yqsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753770486; x=1754375286;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=afAsM2tsf70u4KX77ck+sLMDCAxrtX0z0zBp8flCRwE=;
+        b=XXRjBpwif8/O6PtQ/8Lvlk5XH0uxOAV0zWG2YoW4mcPjEyHRnY5/vIc63bBjjI+FRj
+         W1EFLXXRbWY6hLoPNpAo1mU+40kkqFB+QkGxDtkIXla/3Q2gyCWZbpcKjnu/s2NxAaCt
+         hPhIR6h4NBMSwDTYMbc0iGhr+N6SLHsi+H7uTjHwXuP1XCMPgvX2PIQ4cXuHgikrmyzf
+         1uS+D+SutIMM3tBgos/6izofqqwAxTPWi9WAkO88iJC4ZlVykbej9PlZjkoJRhhV6ft7
+         trkjsV0tgTFFMbhn04PeFA98w6ikd8lQgWOOMmAfmABjtozFZhK6ECOxbcx1tMHnu8MI
+         3UNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWbvUUFXTlvIYlfpKsQP3JlYq1gGbsq6XJI7VKcLvDKvQn5sXwoIi8qar4Bu5OkmyNJLc1odzT5Hyu0cqfGRA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVrhQWtVqLjOFqnvs3/S/VnV12cgLnC0a2MBhPXYj60HOP5uIw
+	/E2Jg7OBTls4fPsDUxgq/S+PsEELH/Uurao3TW4P09YEB0GbrR055lpBUzvDax6fM5IZ9mihdXq
+	ttqGHCylSPEaCJPmJPOP0J2NIQNT84HSG3zkzR57V
+X-Gm-Gg: ASbGncvG7LVZ/36Nu8/992LdynClBEc46KCb1KltKbzJCwnJbqVfCilft5x6d8Wx4B1
+	flZLEVz+5xAs43TWit4qEOWwvqqF/DhAf9aPrLZY1iiQJ0fLHDt3QBMWtn5lw2vd8SgI+pMq7Jx
+	zaQpHZM5dGsQSuDRStIbZmAxG8DXsMiHuwN/vQCPjghRHjt4A2rQpfLerbme2Jd1ApHvY7Tb5uj
+	WtxtDRf
+X-Google-Smtp-Source: AGHT+IHkDhVjlDXkKoJPb/zHwvWemtrgFQf/cvbjZ0Qeqopxn8IxnwgPvo9tYHg/4/LMrdSDc8NIhSduX3ei955YgTQ=
+X-Received: by 2002:a05:6214:3901:b0:707:23ea:2991 with SMTP id
+ 6a1803df08f44-70723ea2b8bmr212058476d6.35.1753770485569; Mon, 28 Jul 2025
+ 23:28:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB3990:EE_|SJ2PR12MB7798:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa0a7905-7464-4424-4bfc-08ddce592a33
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RG80YThvVDNSbWttaTdzelNJYzdoYjdPblFLQnJLOSswRStVL25IUXpSNlNr?=
- =?utf-8?B?WTgwODNzV3NvZzh1ZzM3eXJTdGQxYmtabVY4SVgzVmZjMFdaR1J4ZmJYR3My?=
- =?utf-8?B?UFlqNnI1NnhWR1VIUXN0S3BlTTZCaWUzRzhDVFJ3S0RHVXlrbmdMcnFDRTZx?=
- =?utf-8?B?SGp2cys2RDZIeHZFb004ck5rTGFHTDg0WmhDM3pEdTBwcHdoOWM4LzlETWJ1?=
- =?utf-8?B?TVlTMnhsTnlFM0IwVk51Rm1hYjdDdUNVVTd3c0ZBSGNXN3poWjBIcURUTTVH?=
- =?utf-8?B?YTFpUFlDVFFZQ3dwZ1BFV0U3cjI3bVFWTmFuWlcvY0RSN2JkS1ZnUktaQ3ZY?=
- =?utf-8?B?TEJqRUVsT3B0YUplYlpJcVlUVkdObWJvV2JKRlViSVpQaHFIMGcxcjM4ODYy?=
- =?utf-8?B?dzh6V0txTlloZnZrRUR3aXZJNjdSa0d5eUFvYktWd0pxbVBjOUEwK1dNOGNP?=
- =?utf-8?B?dGxsRUFSODBJcXB2N2ZmVXdtYVd3dVFyTStDb3lNRlE1eEJ1UnMxOWZkdnhW?=
- =?utf-8?B?eGFYY1EydUtMVEc4ZlhncVVYblF3SThiUFA3SE9VYlZsTCtHazA4bVNzY0kv?=
- =?utf-8?B?ZHNQam9LcFBKM09KQm9XeWRqSnNkc0w0R2loTWJEcTRVTHNLV29uM2hxU2ZQ?=
- =?utf-8?B?bUxMYTN0QU5lYWlGUGNKQ1VhSS9rZ0g0RlBCdU52SFJuM2x5WmpZK0R6U1Nm?=
- =?utf-8?B?dHZNV1pQUTNYUUJydXdXSDlSUkRPdU1WZXc0K25NbkUvby93bVcweVFNVWp2?=
- =?utf-8?B?b252cGtVMWhsRUErb0FyK0xId2dSUkVuM1VEZGgyL2Zqc0Nwa3lxNUJjUmpI?=
- =?utf-8?B?TzMxZHpSYlo4VjNzNk1CVGxpbnpZanNvcmg2WmM5bnBSYVhJQXpYL2VLS1VZ?=
- =?utf-8?B?dFQ0L044ODdtUlBUQnJPSlVhS1g5NmtqcnJQdzU3RHJUZ2pFWlRuQmcwU2li?=
- =?utf-8?B?MFkzTEQrWmJpSHpVOVlBTGkvbVR4L2o2dmNEU1UzUDAyQzlEelRvdWJPb3JZ?=
- =?utf-8?B?b2VjTUpKTEhrTkVjaURLRExwakNtc3AwM245ckFYdklUeXc3VDBGcUZQVzJL?=
- =?utf-8?B?VW5YcE5wWFBwVjdzbm5wcG9Ta2VmVzQvZW5DdW94UjdhbTdUZGZtTnROakNj?=
- =?utf-8?B?QmwvbnNoOFFtY2RuZ3hGK20vLzBYa0pvb2FNUmdpVEN3azA3RzNoNjNUTG5j?=
- =?utf-8?B?d3psWWpNV2djeEtUVnZLK3RLSnl3ZmhhRnJHNUNxQlYwQ3VvdnlRcWtzNUto?=
- =?utf-8?B?UzAzSjBwYjVyRTc2YldsTGxlUmVwNVZqYmt0dkliT000Uk5wOS9IOEJOWUxv?=
- =?utf-8?B?V1VFRGY2ZXVZajN1bjBYZEQxUG1iWWJXcXJtWndmMjNwTllaeUJxU2pCZ1ZJ?=
- =?utf-8?B?MjhtY21uNERob2w5cnJnbkJTeDdJbVVLNjE4akZhc05iTENwUHhSamQ1Ykl0?=
- =?utf-8?B?SnZrNFhRMURIYnF1dEhLSXI3UEpkTnZoL3J2eEp3dG9MRXdxL293dGZ2VWEw?=
- =?utf-8?B?VTRjMHcyWDlMTW5RazFPSCtLV3BzUUN0SVlpZGNhRHJQVnVGU3pKSXI5Qkt0?=
- =?utf-8?B?dENsa3FEZ2dEeHA0TllKL0tkdlVxMklJbDMrbGorWTZZZFR5MjNOclNQVEw2?=
- =?utf-8?B?YUpnU2c4NE03ekxhM3d3amRHYkRnT2w4VlJWMFBOS3FSNjc3UGVLRXpiZWx5?=
- =?utf-8?B?R2tlMExZcFZmWjZMMkFtNlNzQ3Zvd2lLeEthdkdaY09EZCsrbG9CbGliVlor?=
- =?utf-8?B?R04vYWxWQ0dicEdHSTVrUGt3MlZIYVI2MHZtaFZqbkhEUHYvbFc1R0ZiSzEr?=
- =?utf-8?B?eVk0OWNhOXBQallnWWhUMVp0UFl5cXk1cjNVNVRyZlYyOVFmMk9DREcvVHNp?=
- =?utf-8?B?UmtjSklUMzFTTmZpWW1FZnhzbHFnRGNQTDBPa0NMbWtHNmc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB3990.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(10070799003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RkhhSjRyOVcvSHEzYjExL2l5enYvQkl1RlowSHM2WGUwcmxkclhqelhoV0U2?=
- =?utf-8?B?OVVmZTFlVFovVzdWR1dNK285d0huM0c4ajk3WWV6dFBXVnpxSUhsa1Z4YXZy?=
- =?utf-8?B?Z3pqTGVYSU9SNm50UkNGVmhIaEZjL1ErU09vUlFkUGdTbVljL3ExZ05RNmV0?=
- =?utf-8?B?Q3F2M3pjbTJFYjBha05yM29wTkdQeXVwaE13eExHNFlFbzhVWjFSMlJ1MnFy?=
- =?utf-8?B?OWdPNGtVd3A4R2YxZXNUUXdmN3A1dkFWeWY5bHVSbVByVnlHRDQzNERTb0Uy?=
- =?utf-8?B?enVNN3h4UUxNcHQwWDFxWVBucWMyTWtzNE5sOGl6YzI4SFhidTdtRXZERGND?=
- =?utf-8?B?d3lVb2g1bUtubDhxaENDSXVLeDRuSEt6SVB5N1RRb1Mxa1RmM2xhZGZjVDJK?=
- =?utf-8?B?S081YUk1WElhdjVzTXVUaFVSRjMwdjlLWU1PQzNGSFo2dGFYMVFYZ2Z4SERj?=
- =?utf-8?B?Q292Q3FBUmUrbk1BYXE5ZlBxa2JUYW1CaEZ0MHVaSFkxSDJvWk5nMWpoMXVs?=
- =?utf-8?B?aUJaVGJFNjBIQ1g4ZmZNQmZ1YUpvb1RhVDgxRG9OZ1BCdzl1RFZNeDZLaDh2?=
- =?utf-8?B?Q29XNjhnelRKcXJoR01kYS9JMENFMktJS09FSFhHdGl1RGMrTEFBS1k3ZkZq?=
- =?utf-8?B?VjExQWQvRW5HSy84VzZUcE9UV2h5NU54dllUY0lob3RSVU5FTXhuUFNiVk1T?=
- =?utf-8?B?eVlHN3pFK1hpK1ZvbDJON0JmTWRFeXVMMS8rSmkwVTB6NWJibGtlNFZIeDF5?=
- =?utf-8?B?dXE4bzNkcHRFNnFyeFNpemZ0MGZGYlZLckxFaXV3b0F1S1Bvczk1WXY2UVJC?=
- =?utf-8?B?d0dXZlN6VTlUSU1UdDBkWmpUU2JwaGhnRXNRdkg5K2xIWEhqbmJ4QTBmTUxz?=
- =?utf-8?B?RVlheEczVGN2RVlFMFJSajNoUVJTVHRqMlNXYTk5VzRkODBtdThjU0ErbXpr?=
- =?utf-8?B?OThUTi9WMjNOZm45S2d5S1o5TFVCL0k0RjV2cnJUdVhidlVGaTIzQjk0SGgw?=
- =?utf-8?B?NXFTOURLUERqcTg2eStQNlVYQ25xSkVtRFEydkNFV0w3WGc3T0lqTGRCTlRM?=
- =?utf-8?B?MmptN1NMZUJOUUpwdEM3eHBEekJNRXU4d1pKSlNEZVNOSlpTWFYxUFBzZTZJ?=
- =?utf-8?B?WVhYN0VDell4aW5YenVyM2lmeC80MjA5bHQvdnBPQTJjd05LMnd4ZmVvZTBq?=
- =?utf-8?B?ZzNGWGFmL1hyeXpiVlVLZTVsL0RkSXByQTFGa1ZHaXliQWNML3JlSUJ5VmtH?=
- =?utf-8?B?b3JVd05vL2pGSlB5ZndCOHVvSTJqNmtwRCs5eGxveEpVRStNUmVneTlKNzBz?=
- =?utf-8?B?S3dvdEI5N1BXdmkzME5KK2xxelhBNExXUFY2NXFOaVdYRjhBTmhHMzc2WDdI?=
- =?utf-8?B?RUNOejcwekJSUXM5bG10a29hQjRJRENjU3BYaWt4SUxPT3EreUNuQ0Erc3Jw?=
- =?utf-8?B?U25WcnU0M1hQVHRtYit2RUZRSG9tbjJudnRVRzV6WE5sTnFmWHVtVXJKOGJV?=
- =?utf-8?B?aTZSbWdkc3QzdUJ1cnlDdS9WeU9lTFdEM2MrQVg5VnhpU29wSEZLWmVGdThW?=
- =?utf-8?B?UzcxRzVUdXhoOGdHOGFKK2tpbkpPR1VQbU1BWCtGRVhWSk50cDFtbmoxM3Zm?=
- =?utf-8?B?ZnNrK0NBRnV1MURjTVJEeXVNL21VenY4eUw1aHZmTXNzeGUyYkU2b1VVRWdp?=
- =?utf-8?B?RFJ2cTlacFZRRHdvcGRpN0doaFBOTWc2bXlxTGRKaHZpZnBPZFhkUFhEMEQv?=
- =?utf-8?B?SXJvb0xwUlZDcWV0Z1FRWU1GYUhZeGNna3ZEN25HM2pmQ1VUV0Jma1VUN2pS?=
- =?utf-8?B?WXVjU0JBeDJJbm9jWjBrK2NQdmN4Z1MrdEhyY2ZZWTRhbTloVjNLaHZ2TXVy?=
- =?utf-8?B?SzZpNWxkbEs3N0F0d1YxU1IxUW5UVFVSSCsxaHhSN3gxZTk2eVltRjZQYVBp?=
- =?utf-8?B?LzNPODRYVUZuTVFRb0lRZ0RORGlzdHgxcVRZdGVQa3RRVmcxemo4b0w1RkZU?=
- =?utf-8?B?Tm9LK2Q1Z1V0QzFxb29BbVgvTkM3SWZBOERLUkpoWkYraERSdWczOVFJLzBw?=
- =?utf-8?B?SEppUk83RWxMbzZuNEtOeFpXN0RKR2djWkthVHZLUmdHOU1JL0NENXF2UFpK?=
- =?utf-8?B?SHh3ajY4YlVXcWtoY2lIaVNsRHJKdnZBaUVYR3RBVlhVZ0RrY0tNd2FIZkpP?=
- =?utf-8?Q?SUFzUSi24SQE1cHUCmtwDwozKcrsrFYHVkBiQbOOt+7f?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa0a7905-7464-4424-4bfc-08ddce592a33
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB3990.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2025 04:34:11.5208
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rHCnm2R0jg+qi7o8Jfds5OuOJKOp9VxUi6MoWmHcKRuud0/Irb7glQKe2qnS+ZZMpNmh1h+mTAJdOU3AbDx6CA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7798
+References: <20250726180750.2735836-1-ojeda@kernel.org>
+In-Reply-To: <20250726180750.2735836-1-ojeda@kernel.org>
+From: David Gow <davidgow@google.com>
+Date: Tue, 29 Jul 2025 14:27:53 +0800
+X-Gm-Features: Ac12FXyeK1EodX0LEMaLg05WtgxULgHDYJkotq5O5IK4MGpaLU1MSLHZ5XzohVI
+Message-ID: <CABVgOS=BPZYrJ8NLbVHj4S5CBpPd3xovBFCn8rhZmSuYq0rWSQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: kernel: remove support for unused host `#[test]`s
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	Rae Moar <rmoar@google.com>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000dbd21a063b0b8254"
 
-On Sun Jul 27, 2025 at 6:48 PM JST, Rhys Lloyd wrote:
-> Separating the header allows the use of `size_of::<PmuLookupTableHeader>(=
-)`
-> instead of the magic number 4.
+--000000000000dbd21a063b0b8254
+Content-Type: text/plain; charset="UTF-8"
+
+On Sun, 27 Jul 2025 at 02:08, Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> Signed-off-by: Rhys Lloyd <krakow20@gmail.com>
+> Since commit 028df914e546 ("rust: str: convert `rusttest` tests into
+> KUnit"), we do not have anymore host `#[test]`s that run in the host.
+>
+> Moreover, we do not plan to add any new ones -- tests should generally
+> run within KUnit, since there they are built the same way the kernel
+> does. While we may want to have some way to define tests that can also
+> be run outside the kernel, we still want to test within the kernel too
+> [1], and thus would likely use a custom syntax anyway to define them.
+>
+> Thus simplify the `rusttest` target by removing support for host
+> `#[test]`s for the `kernel` crate.
+>
+> This still maintains the support for the `macros` crate, even though we
+> do not have any such tests there.
+>
+> Link: https://lore.kernel.org/rust-for-linux/CABVgOS=AKHSfifp0S68K3jgNZAkALBr=7iFb=niryG5WDxjSrg@mail.gmail.com/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 > ---
->  drivers/gpu/nova-core/vbios.rs | 56 +++++++++++++++++++++-------------
->  1 file changed, 35 insertions(+), 21 deletions(-)
+
+With my (biased) KUnit hat on, this looks good to me.
+
+_Maybe_ it's worth updating Documentation/rust/testing.rst, though it
+already says these are "mostly used for testing the macros crate's
+examples".
+
+Reviewed-by: David Gow <davidgow@google.com>
+
+Cheers,
+-- David
+
+>  rust/Makefile        | 9 +--------
+>  rust/kernel/alloc.rs | 6 +++---
+>  rust/kernel/error.rs | 4 ++--
+>  rust/kernel/lib.rs   | 2 +-
+>  4 files changed, 7 insertions(+), 14 deletions(-)
 >
-> diff --git a/drivers/gpu/nova-core/vbios.rs b/drivers/gpu/nova-core/vbios=
-.rs
-> index 5b5d9f38cbb3..a77d7a4c8595 100644
-> --- a/drivers/gpu/nova-core/vbios.rs
-> +++ b/drivers/gpu/nova-core/vbios.rs
-> @@ -889,6 +889,32 @@ fn try_from(base: BiosImageBase) -> Result<Self> {
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 115b63b7d1e3..5290b37868dd 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -235,7 +235,7 @@ quiet_cmd_rustc_test = $(RUSTC_OR_CLIPPY_QUIET) T  $<
+>         $(objtree)/$(obj)/test/$(subst rusttest-,,$@) $(rust_test_quiet) \
+>                 $(rustc_test_run_flags)
+>
+> -rusttest: rusttest-macros rusttest-kernel
+> +rusttest: rusttest-macros
+>
+>  rusttest-macros: private rustc_target_flags = --extern proc_macro \
+>         --extern macros --extern kernel --extern pin_init
+> @@ -245,13 +245,6 @@ rusttest-macros: $(src)/macros/lib.rs \
+>         +$(call if_changed,rustc_test)
+>         +$(call if_changed,rustdoc_test)
+>
+> -rusttest-kernel: private rustc_target_flags = --extern ffi --extern pin_init \
+> -    --extern build_error --extern macros --extern bindings --extern uapi
+> -rusttest-kernel: $(src)/kernel/lib.rs rusttestlib-ffi rusttestlib-kernel \
+> -    rusttestlib-build_error rusttestlib-macros rusttestlib-bindings \
+> -    rusttestlib-uapi rusttestlib-pin_init FORCE
+> -       +$(call if_changed,rustc_test)
+> -
+>  ifdef CONFIG_CC_IS_CLANG
+>  bindgen_c_flags = $(c_flags)
+>  else
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index a2c49e5494d3..335ae3271fa8 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -2,16 +2,16 @@
+>
+>  //! Implementation of the kernel's memory allocation infrastructure.
+>
+> -#[cfg(not(any(test, testlib)))]
+> +#[cfg(not(testlib))]
+>  pub mod allocator;
+>  pub mod kbox;
+>  pub mod kvec;
+>  pub mod layout;
+>
+> -#[cfg(any(test, testlib))]
+> +#[cfg(testlib)]
+>  pub mod allocator_test;
+>
+> -#[cfg(any(test, testlib))]
+> +#[cfg(testlib)]
+>  pub use self::allocator_test as allocator;
+>
+>  pub use self::kbox::Box;
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 3dee3139fcd4..7812aca1b6ef 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -157,7 +157,7 @@ pub fn to_ptr<T>(self) -> *mut T {
+>      }
+>
+>      /// Returns a string representing the error, if one exists.
+> -    #[cfg(not(any(test, testlib)))]
+> +    #[cfg(not(testlib))]
+>      pub fn name(&self) -> Option<&'static CStr> {
+>          // SAFETY: Just an FFI call, there are no extra safety requirements.
+>          let ptr = unsafe { bindings::errname(-self.0.get()) };
+> @@ -174,7 +174,7 @@ pub fn name(&self) -> Option<&'static CStr> {
+>      /// When `testlib` is configured, this always returns `None` to avoid the dependency on a
+>      /// kernel function so that tests that use this (e.g., by calling [`Result::unwrap`]) can still
+>      /// run in userspace.
+> -    #[cfg(any(test, testlib))]
+> +    #[cfg(testlib)]
+>      pub fn name(&self) -> Option<&'static CStr> {
+>          None
+>      }
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index e13d6ed88fa6..8a0153f61732 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -197,7 +197,7 @@ pub const fn as_ptr(&self) -> *mut bindings::module {
 >      }
 >  }
-> =20
-> +/// The [`PmuLookupTableHeader`] structure is header information for [`P=
-muLookupTable`].
-> +///
-> +/// See the [`PmuLookupTable`] description for more information.
-> +#[expect(dead_code)]
-> +struct PmuLookupTableHeader {
-> +    version: u8,
-> +    header_len: u8,
-> +    entry_len: u8,
-> +    entry_count: u8,
-> +}
-> +
-> +impl PmuLookupTableHeader {
-> +    fn new(data: &[u8]) -> Result<Self> {
-> +        if data.len() < core::mem::size_of::<Self>() {
+>
+> -#[cfg(not(any(testlib, test)))]
+> +#[cfg(not(testlib))]
+>  #[panic_handler]
+>  fn panic(info: &core::panic::PanicInfo<'_>) -> ! {
+>      pr_emerg!("{}\n", info);
+>
+> base-commit: 89be9a83ccf1f88522317ce02f854f30d6115c41
+> --
+> 2.50.1
+>
 
-We cannot rely on `size_of::<Self>` to be 4 if `Self` is not
-`#[repr(C)]`. Since this is done in the second patch, I'd merge these
-two into a single one for simplicity.
+--000000000000dbd21a063b0b8254
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
+MIIUnQYJKoZIhvcNAQcCoIIUjjCCFIoCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+jmkLAgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFBp5bTxrTm/d
+WMmRETO8lNkA4c7fMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQBF
+tO3/N2l9hTaij/K0xCpLwIlrqpNo0nMAvvG5LPQQjSeHnTh06tWTgsPCOJ65GX+bqWRDwGTu8WTq
+c5ihCNOikBs25j82yeLkfdbeN/tzRGUb2RD+8n9I3CnyMSG49U2s0ZdncsrIVFh47KW2TpHTF7R8
+N1dri01wPg8hw4u0+XoczR2TiBrBOISKmAlkAi+P9ivT31gSHdbopoL4x0V2Ow9IOp0chrQQUZtP
+KBytLhzUzd9wIsE0QMNDbw6jeG8+a4sd17zpXSbBywIGw7sEvPtnBjMaf5ib3kznlOne6tuDVx4y
+QFExTCSrP3OTMUkNbpIdgzg2CHQ2aB8i8YsTZ8Q8Q8ztPJ+xDNsqBUeYxILLjTjxQQovToqipB3f
+6IMyk+lWCdDS+iCLYZULV1BTHSdwp1NM3t4jZ8TMlV+JzAyRqz4lzSl8ptkFhKBJ7w2tDrZ3BEXB
+8ASUByRxeh+pC1Z5/HhqfiWMVPjaWmlRRJVlRk+ObKIv2CblwxMYlo2Mn8rrbEDyfum1RTMW55Z6
+Vumvw5QTHe29TYxSiusovM6OD5y0I+4zaIaYDx/AtF0mMOFXb1MDyynf1CDxhtkgnrBUseHSOU2e
+MYs7IqzRap5xsgpJS+t7cp/P8fdlCNvsXss9zZa279tKwaxR0U2IzGxRGsWKGxDysn1HT6pqMDGC
+Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAUXA7LnOuRz2DvkWTeMc
+0TANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQg3qTPfxcg0yB9ntH92dWAvRNT4uHM
+wLSwI1soKRthdIMwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+NzI5MDYyODA2WjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
+AQEBBQAEggEAf38aLZVLVJFVzEME1SrJpA+ZsfC3zUZzd9ws/CHRcW+4584m1wP3XUwAtnWqqRKJ
+M1R0yXhN2NuK8aGLc39shI/Ljh3PAo6eGo7cw6WqzJMCAfhZf76xGKHYELrZvj6qYU+pXS19nH4V
+7MEFP3btpW2++W6I1jn63IIKCexYtaFc6ijpnAse+8ZbRurTkFXMnfVUnd+oGLsdV02seI/gNEt6
+vaToxywysGsnVbhmfrMc4BWxFmocOsdwsTNu53j52U4etsmBIp1npO3V7Oy7YiadiulLXrUM/eYa
+hOVOPvwEumWSrxECB0zLJPptFhtQGuWE23jwyGxwf0LzCZtQ/w==
+--000000000000dbd21a063b0b8254--
