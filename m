@@ -1,92 +1,80 @@
-Received: from forward200d.mail.yandex.net (forward200d.mail.yandex.net [178.154.239.221])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4F21C2335;
-	Tue, 29 Jul 2025 14:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717B21E885A;
+	Tue, 29 Jul 2025 14:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753800129; cv=none; b=Z8/WgWWSmbVFTp6YKVCA+VYrXgrmiP2CKy36udfOSiuTzq36NL5WXuTME132XutLc/EY5jNuYfhdcRL5WcK+3HWfHfPFcTPuxpyS7UMuFaN6IXCaCYjSF7YkNkYF96D5v9i+bYpg4FzL15b8ZZZYhr6UFSqFjsFeKL4Z1AcoHFY=
+	t=1753800355; cv=none; b=c+Bwn1Gg5rLcKeFv7qQXWf8aE2K7UkBdS2rbpKlZ2k2MsutFt7oqyaB0YUYD6K7YSWR+BP2MPRPoZhCEiTMvBh9i1oLsVBJ8Y/VcRQ0Cf0zsD3uKgBsfP/0VFmUHAfZto18qvTxKaSzaMNWFrMO+nWPIMDBah88T9ND8PTZ2BR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753800129; c=relaxed/simple;
-	bh=6a8MlQQoUES2/TWgAUrFoTtkHaQpyv4ZuCNEizTErDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tc83IRWhLKwcGjSSM/U/+75hSFbsGUxH9lV+8XLq1oSLgKiuRxUtBXQs4Jd4eYvhiCW/FSpuoGGGaRruHtfFwrQQqOpHTF1CyWwR4A313hSbU3kQTCyiF3Puf6R4jPWWV8JdRLnWIwLf1VTmQsoAZFc5TSS6/HlzUxH2MFdFaVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=iB1+eGY1; arc=none smtp.client-ip=178.154.239.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1753800355; c=relaxed/simple;
+	bh=VRe02SlbUxzFL+D1eWiHYgvNlUzOCAiZ1RiAPc6Icps=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=LxmEs2N9mn1O8YfmuAmHZfpvTg9WSQ5v+830qnUW2S/UGSUDs3tU6G/tO0iwPiKNXeDT5wqOK57zfwakMoYE1ocSygpz+bb9uS2njBcQBmR/N/DRMzgqEdSj+dFki3eGFt9JMPkIPGNnJxchOe2t0UEaQMHmG1J7T45C8uH6q14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hHP7pPCa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="iB1+eGY1"
-Received: from forward102d.mail.yandex.net (forward102d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d102])
-	by forward200d.mail.yandex.net (Yandex) with ESMTPS id D13B582646;
-	Tue, 29 Jul 2025 17:36:25 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:c54a:0:640:9224:0])
-	by forward102d.mail.yandex.net (Yandex) with ESMTPS id D44C0C0051;
-	Tue, 29 Jul 2025 17:36:17 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 2aaRjZIM40U0-UITwGQon;
-	Tue, 29 Jul 2025 17:36:16 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1753799777;
-	bh=IurhWi67dLbKCQlWJ8m2gpuiGyRDlCANiOohk3Vhk0I=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=iB1+eGY1phyrcDbEnn7SQkI71+GzyU8cgFVSmxfcyEXtqC0NgBpmsVxb/F+fdlYHz
-	 WgvSK9FXLjkVNaEJEWdW7AbtaMVefkWfQn6GreGWSY9NsDp9fqksTtcQc7wSs/1lxC
-	 usVSJ6IzpWfGtsQYjASE4RfxtKXGkUcvMXRgHEQY=
-Authentication-Results: mail-nwsmtp-smtp-production-main-72.klg.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	me@kloenk.dev,
-	felipe_life@live.com,
-	abdiel.janulgue@gmail.com,
-	dirk.behme@de.bosch.com,
-	daniel@sedlak.dev,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v1] rust: update `error.rs` documentation
-Date: Tue, 29 Jul 2025 17:36:00 +0300
-Message-ID: <20250729143600.5305-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hHP7pPCa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0E9C4CEF4;
+	Tue, 29 Jul 2025 14:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753800355;
+	bh=VRe02SlbUxzFL+D1eWiHYgvNlUzOCAiZ1RiAPc6Icps=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=hHP7pPCa5zggfP/Ea+wRT/ozNG1fGgcXeXqLCs4RDCT9ktEORmHOSKgGE4PiH6KZ5
+	 gd036sU/rM8UF60RTuQS/L1Qvd3v7rFBxFPoodU30xbsVicWZo/6O1rBrKddGsOHv3
+	 sd4X2MpA5ePhVyO93Pncnz1aZ1cJH8CUfOcJFKrePwbdWG/mAbTFuvyWGtciiABF9w
+	 TL6B4XG85XbZw+vjYlj2ln07rtDxMJXP3oC6nTtDDvIVtCghSwxkfMd+0EaefDMCO3
+	 r6rWJ2Lsl0Gzk07YrTKdnCsWFrSl7MMfBJOUvX6r21MbH95uY67XCYSw26uEwdirxi
+	 NM1lAQFU9hq+A==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 29 Jul 2025 16:45:50 +0200
+Message-Id: <DBOMC68QGS76.2MYEXRE1I34VV@kernel.org>
+Cc: "herculoxz" <abhinav.ogl@gmail.com>, <linux-pci@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <bhelgaas@google.com>, <kwilczynski@kernel.org>, <ojeda@kernel.org>,
+ <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, <lossin@kernel.org>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v2] rust: pci: Use explicit types in FFI callbacks
+References: <20250729102953.141412-1-abhinav.ogl@gmail.com>
+ <CANiq72kRu5Wd-3Tk7px=2Y5kU5Tq2fQch=+f3ExYSrJa2+tSSg@mail.gmail.com>
+In-Reply-To: <CANiq72kRu5Wd-3Tk7px=2Y5kU5Tq2fQch=+f3ExYSrJa2+tSSg@mail.gmail.com>
 
-Replaces the outdated (e.g., `ENOIOCTLCMD` is in the
-`srctree/include/linux/errno.h` file) and overly specific
-description referring to a single C header with a more generic
-one.
+On Tue Jul 29, 2025 at 12:52 PM CEST, Miguel Ojeda wrote:
+> On Tue, Jul 29, 2025 at 12:30=E2=80=AFPM herculoxz <abhinav.ogl@gmail.com=
+> wrote:
+>>
+>> and improves ABI
+>> correctness when interfacing with C code.
+>
+> I think this still sounds like it is fixing an ABI issue -- I would
+> probably just remove that second sentence.
 
-Signed-off-by: Onur Özkan <work@onurozkan.dev>
----
- rust/kernel/error.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I agree, the types exported via prelude are the ones from kernel::ffi.
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 3dee3139fcd4..a98dcf88d63e 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -2,7 +2,7 @@
+> (But no need for a v3 -- I think it can be fixed on apply unless
+> Danilo wants it).
 
- //! Kernel errors.
- //!
--//! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
-+//! Provides Rust representations of kernel error codes derived from `bindgen` bindings.
+Yeah, I can fix it up when applying the patch.
 
- use crate::{
-     alloc::{layout::LayoutError, AllocError},
---
-2.50.0
+I also think the subject from v1, i.e. "use c_* types via kernel prelude", =
+was
+better. This one is a bit misleading, the types in the FFI callbacks are al=
+ready
+explicit.
 
+Unless I hear otherwise, I will also revert the subject to the one of v1 wh=
+en I
+apply the patch.
+
+Thanks,
+Danilo
