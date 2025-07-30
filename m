@@ -1,91 +1,130 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7075817CA17;
-	Wed, 30 Jul 2025 16:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931A82DFA24;
+	Wed, 30 Jul 2025 17:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753893542; cv=none; b=uienYu8PY8L+0IVPUgbnuflNQwrZSCuRRu4SETb1yY9vdPi1r5YpfMbyrPgy10Lsqq9GPqZaFpXg2iJ/lYzIH+dUJE2e2H2eTbsSEml183knQTxE1KLmiCM1i1xslaWISak5Rfk4b4+ijzMnDb40LuH4mUuh3fEoOUffLNb+e6c=
+	t=1753895708; cv=none; b=JVzpAJuTPsgJRb+WjhLnIdpnAk9L3fOdgtEcFxfqQmjrrSDDHZmPYALlFVB7Ms+/M8w7Qg27uVfQsMXdrWX2OOQUmbFJ07TfYWO6V/gVerJWeDkqm8OodBPaS9X2D2Y+FbGkbeXcb518ZGOZ+Cwyh0+w77r1PtYuEgFLmtSDVEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753893542; c=relaxed/simple;
-	bh=RC9xFI8XopPgr8+zR7FWv7fql5HY3Ezhn4V1VGJnTl8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GwuIa26hrJT6r4JrVZii9A45OWsfxsr4zq1ld4o+BB/30mAfdhVD3A9RAmarkwTRI+4ZYs3f9mwgnBbtNVKRfIHkbCCvPXVYItg/8wv+rBZmRbdslTxbosvYxaiD729mDXSjAPNaYu63+6i0qeRvoMnnWP+JOvHLp77en9nMUMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nASWSufm; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753895708; c=relaxed/simple;
+	bh=vF1DNUNq3jV+3EkVfXZWIIzpTAJKBi2uQXnVAWMnJA4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=isoevQJ3OdJsvihRIynAQUgCRmVZIGOCrFYFMY1Iklo9ouUtTTDjA8eSAuVg9QEymH08Z8g2Wd0AIEOVUPJlya10ZefHtEBjQzgWeQABf5nnZUUOs0lbv3Pyd1+PN3jCva1DzEjW0LxVCaLImQAnTjKouNROIqMRaw5dgnIQQQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=mK7n2jUa; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nASWSufm"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-23fd901c4d2so114285ad.0;
-        Wed, 30 Jul 2025 09:39:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753893541; x=1754498341; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RC9xFI8XopPgr8+zR7FWv7fql5HY3Ezhn4V1VGJnTl8=;
-        b=nASWSufmXF2XsPGGSddxyhhGfgBlYLg3uA8BvNcq1rcdrbWE1BMfvirN6mlPzVDoJH
-         giauZQOstwrn6yY0AWbMg3u+p3mWrSvpvCxm80pvOVtFes/lImlixvknB+SYw4juqM6e
-         sB1yWzoeX1AIcR6RAOc4SmR67HkHeZ0w8m7ttLf3ZWa9bUtNwKkr9pRWoCpB3SO+fX2g
-         GtYZdhBS352llVlJyJgHxZ5hUG/P6BVBzVCn7OiFg6cXJ/ESPi3TVRulVTTIMeZEcMng
-         ZqekEdxSCDL+zEweuw59T5CZdMc3EELDwYg/wA/owQC+HmzzIcV69yGqoQrfC+TTYgZd
-         eU2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753893541; x=1754498341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RC9xFI8XopPgr8+zR7FWv7fql5HY3Ezhn4V1VGJnTl8=;
-        b=gY2scnrbVcmBCiJLqC6TO3rlT3u2JKIKXU/cD4/BG7v9zBBXeoS9EhTien9yirhYen
-         p+CZXOZTtjOZ8TgRLkItWfJmyhlzWHeFN7sd8gplTfNblWmfU0Pk5Uyro6ZXCoMraEK+
-         jznE+G6vhEyf+WE2IfVjTxbm/hVafqvKzZhJSfmAv0TCe1Fj6gTiCGzO724tfC8aGzgW
-         6ts/ZfeMBFmvOj067d8a8atKqw2TlGeXXeI6whvNlVG8ry9Hs2YcpCe8a5IIgPmRvWAC
-         lgWm0qtPZbIvVdxfwP/YqOeilkcYKKlIiZ6k/JOGZEPCCCbyKo0fpVpvfmGJcRJuiLp3
-         L9aw==
-X-Forwarded-Encrypted: i=1; AJvYcCX3J9LVowYXAxpAkqQpMS25cIOxzd+3pLhnmdQ/eWtIIkJ1HuB5JNDo4MJfAcg4RB+6kp4W/IcsWvmZpCI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMFvFwJ+PBfMZY2ASSBc8WEDS5cMz1IfoCrogdq9LoisICS6R6
-	1hIYzWfd5NRwd2GS5R/6rJ3I9ttDL8aMidZLQMcplFf4z/wnUm6HhXfVNfANBOCCDjixzNWb7Kn
-	9u87WoadSBQfwhVBYhp1ta5/B2cuplRg=
-X-Gm-Gg: ASbGncvtQMgyOuRSGlVDOW03Im2Ww2UmAxzdfXyWbisTng1BUwtp1xO3GqLUFW5tT7+
-	dlxWm1OYDZjDtIqttkEGpocbswFAMIkkP8ClIfR6YACN9I8tV9I35UNU6ToAzCwku3VNT2FiKJK
-	9dSSNy2eXslNGInG3x8bu6OETTa+yNQsfKbFcsleZnokDbKfZ5JArsy4u03dFc0Eugiph0LhE4T
-	ca6NBPW
-X-Google-Smtp-Source: AGHT+IG+O29qwdh1a5SD7QYz6J9Zm1C/HF6QJcj3Zzc4n0osQsqpemTwgfOKeA19rPcVr+oTkTKYamKH/bXNHF0pm+s=
-X-Received: by 2002:a17:902:9f90:b0:23f:fd0e:e5c0 with SMTP id
- d9443c01a7336-24096b31fbcmr18626705ad.9.1753893540567; Wed, 30 Jul 2025
- 09:39:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="mK7n2jUa"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1753895704;
+	bh=vF1DNUNq3jV+3EkVfXZWIIzpTAJKBi2uQXnVAWMnJA4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=mK7n2jUa21SxcYa9oPrzg28EIipLiBKAmrToqjevnG7+v0vcq2u/BECvqiM16OyjF
+	 InOf1euaYH5hDjN0BnmspvAUIYv5/x+IkOvOOMfp69Qw8VeHWyL7vwazbPGwJnO/mW
+	 1d2BhBRvAMTz5D+L4QKT1VrFT4kj/aiNYZ//0Jutb+kvwdyIjr+sIKazeNWZ9WGhWb
+	 jQfvdO9qbzDD2GNC+qY2DKGx0pJaBTwpqlEKdtIRv74qy9GEY58U9XRzKr73lQIzey
+	 jHtMw2NiTIjMapBk4CaU3bO3Fyx5dK8ajN99pIl+02/4Po7slDrLXEbcXBWMaWs5bL
+	 OGGeQyNhlkBqA==
+Received: from [192.168.0.7] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0280017E129D;
+	Wed, 30 Jul 2025 19:15:01 +0200 (CEST)
+From: Daniel Almeida <daniel.almeida@collabora.com>
+Subject: [PATCH 0/3] Groundwork for Lock<T> when T is pinned
+Date: Wed, 30 Jul 2025 14:14:43 -0300
+Message-Id: <20250730-lock-t-when-t-is-pinned-v1-0-1b97d5f28aa2@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730163439.50753-1-boqun.feng@gmail.com>
-In-Reply-To: <20250730163439.50753-1-boqun.feng@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 30 Jul 2025 18:38:46 +0200
-X-Gm-Features: Ac12FXxPPYGdC01qZY8eirhybN4tcPE72DrHd87TACpl_mHGDNq_8_7DEVzTmH0
-Message-ID: <CANiq72ntUsB-a3Btf+PwmezqN919FmL_P3g589mVJm+-_h2CcA@mail.gmail.com>
-Subject: Re: [RFC PATCH] rust: workqueue: Add an example for try_spawn()
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, Alban Kurti <kurti@invicto.ai>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, "Paul E. McKenney" <paulmck@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAANTimgC/x2MQQ5AMBAAvyJ7tklVpeEr4kAt3ZAlrSARf9c4T
+ eYw80CkwBShyR4IdHLkTZIUeQbO9zIT8pgctNKVsqXCdXMLHnh5kgSOuLMIjahrbayplOndAKn
+ eA018/+e2e98PW/F1V2kAAAA=
+X-Change-ID: 20250730-lock-t-when-t-is-pinned-292474504acb
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Waiman Long <longman@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>
+X-Mailer: b4 0.14.2
 
-On Wed, Jul 30, 2025 at 6:34=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> Miguel, Alice and Tejun, while I'm at it, should we also rename the
-> function to `spawn()` because of the motivation mentioned here [1]?
+It's currently impossible to have a pinned struct within the Lock<T> type.
+This is problematic, because drivers might want to do this for various
+reasons, specially as they grow in complexity.
 
-Sounds good to me.
+A trivial example is:
 
-Cheers,
-Miguel
+struct Foo {
+  #[pin]
+  bar: Mutex<Bar>,
+  #[pin]
+  p: PhantomPinned,
+}
+
+struct Bar {
+  #[pin]
+  baz: Mutex<Baz>,
+  #[pin]
+  p: PhantomPinned,
+}
+
+Note that Bar is pinned, so having it in a Mutex makes it impossible to
+instantiate a Foo that pins the Bar in bar. This is specially undesirable,
+since Foo is already pinned, and thus, it could trivially enforce that its
+bar field is pinned as well.
+
+This can be trivially solved by using Pin<KBox<Bar>> instead of
+structurally pinning, at the cost of an extra (completely unneeded)
+allocation and ugly syntax.
+
+This series lays out the groundwork to make the above possible without any
+extra allocations.
+
+- Patch 1 structurally pins the 'data' field in Lock<T>
+- Patch 2 constrains the DerefMut implementation for safety reasons
+- Patch 3 adds an accessor to retrieve a Pin<&mut T>
+
+Note that this is just the beginning of the work needed to make a Pin<&mut
+T> actually useful due to pin projections being currently unsupported.
+
+In other words, it is currently impossible (even with the current patch) to
+do this:
+
+let mut data: MutexGuard<'_, Data> = mutex.lock();
+let mut data: Pin<&mut Data> = data.as_mut();
+let foo = &mut data.foo; // <- won't compile
+
+The above is something that Benno is working on.
+
+Thanks Boqun, Benno and the rest of the team for brainstorming the issue
+and for and laying out a series of steps to implement a solution.
+
+---
+Daniel Almeida (3):
+      rust: lock: pin the inner data
+      rust: lock: guard: add T: Unpin bound to DerefMut
+      rust: lock: add a Pin<&mut T> accessor
+
+ rust/kernel/sync/lock.rs        | 35 +++++++++++++++++++++++++++++++----
+ rust/kernel/sync/lock/global.rs |  5 ++++-
+ 2 files changed, 35 insertions(+), 5 deletions(-)
+---
+base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+change-id: 20250730-lock-t-when-t-is-pinned-292474504acb
+
+Best regards,
+-- 
+Daniel Almeida <daniel.almeida@collabora.com>
+
