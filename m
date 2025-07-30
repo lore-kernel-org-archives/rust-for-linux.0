@@ -1,239 +1,123 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0C229CEB
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 03:59:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8291DED53
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 06:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753847969; cv=none; b=FRmmGQCZ1e74grWJCLqPWKFNzx+uHg/81a3PYTirb55wx0DKVmo5sEpAD1SIhCIE1kZHYxXWqBFDO1Au6nQHmfqlKCjINwrUvlWFkSWmCzaISNaYzR9ZtT4gQ3Zne6h2cekGALPuOA0L7ZLdEqTUQEtS1clBkEyFFlnhW6jNQ8g=
+	t=1753856642; cv=none; b=aCYlsAedjYtaxo1gse8rExSUZKj4UltSHmcqkh/y2FqtLZG1AcsSGp2k9umczfyiwR23/6FOQGa4GxljeQk9eqS6g84k6/N/xAJQ4APufETiQNmKhibNXSLX98Ud+bBfdfZ0n6JkBQ3/k4MDiGKAygMWGJoJEKTwEq0w7XYxat8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753847969; c=relaxed/simple;
-	bh=2Vx+OVkIDNsjIzjIyltCRx3+scY2So6yx83lQF+SMmM=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=gyt2t+Y3X7iKX/B9eVWRraXYgR91i09RZWAQMMWi26kjrbdaWwpPR5nz5DKWt1cOFjaeeocvHIaqwYTNRs9u9erwviWsgNHpmqcXTOsNfn55OqJ6ydcJhWFFyg2yJi9YmJKAxkd2HZgGtsCAyQM5BE2xJVSIms/69CofnjyaUVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qsHaJBmx; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1753856642; c=relaxed/simple;
+	bh=dGxjiNGntEIpDeEM5UuFmfE0zBkCHQ41vYKGFK5F1UU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dahcMiI+8MNTjUtM7RvmiJmVZV0qZT9LRuVVTqHKja1SJb3OF93rfRYwM343iqmfBdsOw61DgUnUo+avii2qobo7XyqqS+RGNbnGH3Y6TpCDF9lk2niDgN1t3K0oUP5q2J9Dk/i7oOXSI4eXYYOXIb3BUYdJqxKQmKs5CcFaFSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=glC7O/9/; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qsHaJBmx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="glC7O/9/"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-76a3374b143so1654524b3a.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 29 Jul 2025 23:23:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1753856639; x=1754461439; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4CidS/GccUuP6Xpj1XQrTjZ3SEq5HS8jiXMJq8sMBjg=;
+        b=glC7O/9/yWsxnYal0JEbxhj9n1fopOLNO+udRVRQ1C6QtBWifvxAUS2j+EtDpSElG6
+         Mz31rEo1/8Qon7KT4m3PvzRPrOywX5YXSa+RuA7tfv9m502YSWZ0FXiZWlT7/dKOp2gQ
+         /aFabtAw47jpaZdGgILKxrz1TrLE03R7pSAH2JZh7XlcZn6d2SNgalMQFXi0TT9wb6oD
+         Ea0zxP0PO7VzdD04kE+N7Rvidk60MdgiBZBIv+gZPbt15qdgvH8bUtVR6bH8LTPY72Ge
+         2YMrCKtgQzL3ORXxJNaLOMSZdjVMOPkvbfi4e8qnPr7OOK4JMFoDe3V/2Bx61ZvIvkIo
+         tf2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753856639; x=1754461439;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4CidS/GccUuP6Xpj1XQrTjZ3SEq5HS8jiXMJq8sMBjg=;
+        b=kNt/ReICRNS/XGgJHuRqySXiVDoBprDfMHopsbesmLdaIRPlngrQy/2/5g6+5ESJ+p
+         IxnEZiF1C6YAnYAqFKFshAJNEND/fxH0P0dRljU9P74332Es0S9p9Fm3pDTCEvpf3at2
+         T+aAZZVTXTgf2yGlqqV8sVQv4LWATYxMQEPhlZlIQC14WSkxEnFjeEJAGqPWNd1LeXab
+         9n9/0pZ5T2A+1EEr2CDqTIhYNhjQffbjyqZOY70q3B/+t8rWQmzVL0WS7gvRDooaGiMl
+         udhuNVlIQP7dYOXue3yozbU0KzXG74E1JhurNcflEmSPoJt4KXzRheivrgtf3O1y0XZr
+         UUyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXeYynhGi2he7VxwZp0ghLnCZrHmgCv+MZG0jnIkjiaWgtVH8/CMmD+xNqNkIq4h0lqJJ8EtM1kPmEz/gKyzQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJQP/ek5d4CAXKIB562GbzUXjEhmtyC5RgXahAytQc3KM5b4HX
+	ySMwjWVHRnlaYKUpUPIQ+jSB0X0P7My0g1MwpMd7Z9gY0rWT+cqo8KKyYaVfW9vKJLM=
+X-Gm-Gg: ASbGncuh9i+bneBhyHCDjTt+EWS968HbrQnuUcjdbh8v4E8Trp8ElLPZOw1z/wTdisu
+	O59CSkVvSFBjjq0Q8/pvMs6+m5O6FF2B3ots6BwJKQW5fxl7VKvWikhK+qz24Xs9sNJa/gyGNoh
+	gRC3lHn6lStchC8pZmamcuDqLvxRYm+XX41wlKOXgHfV71y23GOr/61xHAaqMNok7LpwZSWjpS8
+	PC7vNkrHAn/FTr0yiFt820kOnaF2uTBUAGGPFK6PuYRLl4rXNG0GPCYGkwc0M1Fh2k0vr0FfNUw
+	M3KwY7Fs/9wBpE9LMbU5fBmcVWLwtbF7gfdJOWh66oefHNd9Ss0HwuxfbCQsW07c3bRadoJN2Fy
+	Yezz5pwc42PXbqMPYRbNlQMk=
+X-Google-Smtp-Source: AGHT+IFRAuObLQYS4Oy55+Xz2guxb/KTSj4E0KIUP/TcZUmzaODEEpLK7Md4GtPX+Txxpk521QOfKQ==
+X-Received: by 2002:a05:6a20:7489:b0:233:bbcf:749e with SMTP id adf61e73a8af0-23dc0d595d3mr3912159637.8.1753856639378;
+        Tue, 29 Jul 2025 23:23:59 -0700 (PDT)
+Received: from localhost ([122.172.85.40])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7640881f595sm9045271b3a.27.2025.07.29.23.23.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Jul 2025 23:23:58 -0700 (PDT)
+Date: Wed, 30 Jul 2025 11:53:55 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>, linux-clk@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH] rust: clk: use the type-state pattern
+Message-ID: <20250730062355.bqifrzvxfmaaugnk@vireshk-i7>
+References: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753847965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dlYZtGZVyCi4PinlFv9/1yDi5aJSz0ey8B3bkRTTyFE=;
-	b=qsHaJBmxhNoF2T/EbYommxMEZ+IY8yJCw8kJsFysiXkkO3j20a7sw4TMtISwGuvcFZD7d0
-	Ebw72OWXpqSTHNgnAagiVcvB/ME2a2qm/+R3vWuEdNHeV8CS8F7kY7zh0V4xJ+/CDY1Q4i
-	vf1D5ZIRZApKPrjt2AD7oNItYUeK2f8=
-Date: Wed, 30 Jul 2025 03:59:21 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Hui Zhu" <hui.zhu@linux.dev>
-Message-ID: <a1c1724a7796be559c89bb32c1e8ab38a37d5c4c@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v5 1/2] rust: allocator: add KUnit tests for alignment
- guarantees
-To: "Danilo Krummrich" <dakr@kernel.org>
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
- <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- "Uladzislau  Rezki" <urezki@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- bjorn3_gh@protonmail.com, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice  Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>, "Geliang
- Tang" <geliang@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>,
- vitaly.wool@konsulko.se
-In-Reply-To: <DBL1T0JY1LUX.1606LM78FACYM@kernel.org>
-References: <cover.1753423953.git.zhuhui@kylinos.cn>
- <da9b2afca02124ec14fc9ac7f2a2a85e5be96bc7.1753423953.git.zhuhui@kylinos.cn>
- <DBL1JZEZB87H.1IMYO79R3H9UM@kernel.org>
- <DBL1T0JY1LUX.1606LM78FACYM@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
 
-2025=E5=B9=B47=E6=9C=8825=E6=97=A5 18:02, "Danilo Krummrich" <dakr@kernel=
-.org mailto:dakr@kernel.org?to=3D%22Danilo%20Krummrich%22%20%3Cdakr%40ker=
-nel.org%3E > =E5=86=99=E5=88=B0:
+On 29-07-25, 18:38, Daniel Almeida wrote:
+> diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
+>      /// A reference-counted clock.
+>      ///
+>      /// Rust abstraction for the C [`struct clk`].
+>      ///
+> +    /// A [`Clk`] instance represents a clock that can be in one of several
+> +    /// states: [`Unprepared`], [`Prepared`], or [`Enabled`].
+> +    ///
+> +    /// No action needs to be taken when a [`Clk`] is dropped. The calls to
+> +    /// `clk_unprepare()` and `clk_disable()` will be placed as applicable.
+> +    ///
+> +    /// An optional [`Clk`] is treated just like a regular [`Clk`], but its
+> +    /// inner `struct clk` pointer is `NULL`. This interfaces correctly with the
+> +    /// C API and also exposes all the methods of a regular [`Clk`] to users.
+> +    ///
+>      /// # Invariants
+>      ///
+>      /// A [`Clk`] instance holds either a pointer to a valid [`struct clk`] created by the C
+> @@ -99,20 +160,39 @@ mod common_clk {
+>      /// Instances of this type are reference-counted. Calling [`Clk::get`] ensures that the
+>      /// allocation remains valid for the lifetime of the [`Clk`].
+>      ///
+> -    /// ## Examples
+> +    /// The [`Prepared`] state is associated with a single count of
+> +    /// `clk_prepare()`, and the [`Enabled`] state is associated with a single
+> +    /// count of `clk_enable()`, and the [`Enabled`] state is associated with a
+> +    /// single count of `clk_prepare` and `clk_enable()`.
 
+You have mentioned the `Enabled` state twice. Also clk_prepare() ?
 
->=20
->=20(Cc: Andrew)
->=20
->=20On Fri Jul 25, 2025 at 11:50 AM CEST, Danilo Krummrich wrote:
->=20
->=20>=20
->=20> On Fri Jul 25, 2025 at 9:02 AM CEST, Hui Zhu wrote:
-> >=20
->=20> >=20
->=20> > From: Hui Zhu <zhuhui@kylinos.cn>
-> > >=20
->=20> >  Add comprehensive tests to verify correct alignment handling in =
-Rust
-> > >  allocator wrappers. The tests validate:
-> > >=20
->=20> >  That kmalloc respects both standard (128-byte) and page-size
-> > >  (8192-byte) alignments when allocating structs with explicit align=
-ment
-> > >  attributes.
-> > >=20
->=20> >  That vmalloc correctly handles standard alignments but intention=
-ally
-> > >  rejects allocations requiring alignments larger than its capabilit=
-ies.
-> > >=20
->=20> >  That kvmalloc mirrors vmalloc's constraints, accepting standard
-> > >  alignments but rejecting excessive alignment requirements.
-> > >=20
->=20> >  The test infrastructure uses specialized aligned structs (Blob a=
-nd
-> > >  LargeAlignBlob) and a test harness (TestAlign) to validate pointer
-> > >  alignment through different allocation paths. This ensures our Rus=
-t
-> > >  allocators correctly propagate kernel allocation constraints.
-> > >=20
->=20> >  Co-developed-by: Geliang Tang <geliang@kernel.org>
-> > >  Signed-off-by: Geliang Tang <geliang@kernel.org>
-> > >  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> > >=20
->=20>  Thanks, this looks good. I think it would be good to rebase onto [=
-1], since it
-> >  will likely land in the same cycle. Additionally, two nits below.
-> >=20
->=20Please also Cc: Andrew for subsequent submissions, since this will, d=
-ue to the
-> interaction with [1] likely go through his tree.
->=20
->=20>=20
->=20> As a follow-up we could also test alignment in the context of
-> >  Allocator::realloc(), i.e. when growing and shrinking buffers or req=
-uesting a
-> >  different NUMA node.
-> >=20
->=20>  [1] https://lore.kernel.org/lkml/20250715135645.2230065-1-vitaly.w=
-ool@konsulko.se/
-> >=20
->=20> >=20
->=20> > ---
-> > >  rust/kernel/alloc/allocator.rs | 58 ++++++++++++++++++++++++++++++=
-++++
-> > >  1 file changed, 58 insertions(+)
-> > >=20
->=20> >  diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/=
-allocator.rs
-> > >  index aa2dfa9dca4c..bcc916240f11 100644
-> > >  --- a/rust/kernel/alloc/allocator.rs
-> > >  +++ b/rust/kernel/alloc/allocator.rs
-> > >  @@ -187,3 +187,61 @@ unsafe fn realloc(
-> > >  unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flag=
-s) }
-> > >  }
-> > >  }
-> > >  +
-> > >  +#[macros::kunit_tests(rust_allocator_kunit)]
-> > >  +mod tests {
-> > >  + use super::*;
-> > >  + use core::mem::MaybeUninit;
-> > >  + use kernel::prelude::*;
-> > >  +
-> > >=20
->=20>  --8<--
-> >=20
->=20> >=20
->=20> > + const TEST_SIZE: usize =3D 1024;
-> > >  + const TEST_LARGE_ALIGN_SIZE: usize =3D kernel::page::PAGE_SIZE *=
- 4;
-> > >  +
-> > >  + // These two structs are used to test allocating aligned memory.
-> > >  + // they don't need to be accessed, so they're marked as dead_cod=
-e.
-> > >  + #[allow(dead_code)]
-> > >=20
->=20>  This should be #[expect(dead_code)].
-> >=20
->=20> >=20
->=20> > + #[repr(align(128))]
-> > >  + struct Blob([u8; TEST_SIZE]);
-> > >  + #[allow(dead_code)]
-> > >  + #[repr(align(8192))]
-> > >  + struct LargeAlignBlob([u8; TEST_LARGE_ALIGN_SIZE]);
-> > >  +
-> > >  + struct TestAlign<T, A: Allocator>(Box<MaybeUninit<T>, A>);
-> > >  + impl<T, A: Allocator> TestAlign<T, A> {
-> > >  + fn new() -> Result<Self> {
-> > >  + Ok(Self(Box::<_, A>::new_uninit(GFP_KERNEL)?))
-> > >  + }
-> > >  +
-> > >  + fn alignment_valid(&self, align: usize) -> bool {
-> > >  + assert!(align.is_power_of_two());
-> > >  +
-> > >  + let addr =3D self.0.as_ptr() as usize;
-> > >  + if addr & (align - 1) !=3D 0 {
-> > >  + false
-> > >  + } else {
-> > >  + true
-> > >  + }
-> > >=20
->=20>  This can just be
-> >=20
->=20>  addr & (align - 1) =3D=3D 0
-> >=20
->=20>  instead of the conditional clause.
-> >=20
->=20> >=20
->=20> > + }
-> > >  + }
-> > >=20
->=20>  We could move all the above into test_alignment() given that it's =
-likely only
-> >  needed from there.
-> >=20
->=20> >=20
+No objections from my side. Thanks.
 
-Hi=20Danilo,
-
-Thanks!
-
-I sent v6 version that rebased on [1].
-
-Best,
-Hui
-
-[1] https://lore.kernel.org/lkml/20250715135645.2230065-1-vitaly.wool@kon=
-sulko.se/
-
-> > > +
-> > >  + #[test]
-> > >  + fn test_alignment() -> Result<()> {
-> > >  + let ta =3D TestAlign::<Blob, Kmalloc>::new()?;
-> > >  + assert!(ta.alignment_valid(128));
-> > >  +
-> > >  + let ta =3D TestAlign::<LargeAlignBlob, Kmalloc>::new()?;
-> > >  + assert!(ta.alignment_valid(8192));
-> > >  +
-> > >  + let ta =3D TestAlign::<Blob, Vmalloc>::new()?;
-> > >  + assert!(ta.alignment_valid(128));
-> > >  +
-> > >  + assert!(TestAlign::<LargeAlignBlob, Vmalloc>::new().is_err());
-> > >  +
-> > >  + let ta =3D TestAlign::<Blob, KVmalloc>::new()?;
-> > >  + assert!(ta.alignment_valid(128));
-> > >  +
-> > >  + assert!(TestAlign::<LargeAlignBlob, KVmalloc>::new().is_err());
-> > >  +
-> > >  + Ok(())
-> > >  + }
-> > >  +}
-> > >  --=20
->=20> >  2.43.0
-> > >
-> >
->
+-- 
+viresh
