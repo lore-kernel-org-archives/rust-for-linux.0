@@ -1,50 +1,50 @@
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11olkn2045.outbound.protection.outlook.com [40.92.19.45])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11olkn2023.outbound.protection.outlook.com [40.92.18.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F5B25A34F;
-	Wed, 30 Jul 2025 08:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.19.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB202512C3;
+	Wed, 30 Jul 2025 08:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.18.23
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753863975; cv=fail; b=twW23EPq2G7HavCNVL9BHTC0vPk6laNk4inYfSv+X5BdRrvU3F7bPNzyGpPvSGqWgnff9tfkW9CzVY7Er2a1Du51DhGmt17lZrANz/U7w1VdVtFJX3JUnJlKkL9uGqGZnRoMmlVSEnJTHTPX2jqPCZKVVKTM7UvaQg17vvBHMRs=
+	t=1753864053; cv=fail; b=MdGB7UPRQF/AGmk3wtOp/48U/FxbfaeHNhY+Uk16azUe766z9uuMeuxV8Be0hxq4TKeFzAgLbs3PUyp+hy4zQI/juDmqaJdiigYT0YZ8RxJNv+KmIOkNizYLVPf4nBWUQfjuKElis1/w5IkFlZLtkbnX+FZDvkfZmbDwoNEJQV0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753863975; c=relaxed/simple;
-	bh=AeMKJsJz1XlVU0gU8kGeYYyaN8OqhT7DZE6qCo2BkL8=;
+	s=arc-20240116; t=1753864053; c=relaxed/simple;
+	bh=QNu2a5K0PM0pdK7V1Wg+dTxobKM+MaEKihYproqMhyY=;
 	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Qy/feqSGfjBV1hoQwiRuPBu1gdMpZTMMs+L9Yq6e9k4AgqEY/ut2EdOp/eUkUV9tbocuo7/oTgHP0QwNqXgjbbfor+kEKP3XYH3NxpUDW6YR3BPZQwt5bOPBoJFdVcL62kc7cq6X/htRzFvD9wPj/Wfqlp7d3PLBn6r4sOPObkI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=QZci9RvH; arc=fail smtp.client-ip=40.92.19.45
+	 Content-Type:MIME-Version; b=Av0DY948YIwTjDjR7vLVOrQOnfNSHqbM+g+YUkVgAKMi44Pv5EGKYczoBFMLvGX8KZ6UgDQDHlFy6TdAxxn03h/Pwko50hI4ked6qgUh1WKcjQAKRgQXLu2RmOT+jualxBRrY9PMi+tSfGnBtu4fy+lgfGIgZ8YEHmDCAeHc4Zw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=eojJ3lsD; arc=fail smtp.client-ip=40.92.18.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="QZci9RvH"
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="eojJ3lsD"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Oyw7tseb4yWvbMfvLcR5se+0wkPwRS4UshQZ1rx+bMs5E9kUv+JNbBrVyw9jTeizuVO+C9GuYfDZwwYyKRwaL90Q4Yh8pUMuB0iya+FW0SUyq5YF+EIz8Ad0aFE2lH4TvpYiEvfOPS1kN21i1wQZKcqqYCE3kvtu2y/8MCuC/BZifgUAaCN46ILwM3ks5zLx1CP+od8CXCKYMDypxWTY6rJtD7ByIOpS78RDTA7a/XwzNg01OniKPL5q00TVP6mMuDvbcZU0SSOLYO+Dqq/uy9VQEp/zs+A3Pj6esea3hy9kcHeL12VDD8hiVOS6nzhn0pXK+bC/FU8q+LM2D8byjw==
+ b=rknv/z3evsHnoKT4w0tsjbDLkst8TZAhh56P/gDtCWzpxKfKsrW+FzT/wqV34Z8z0KLOfkfjnoBcY5f9Dn899W8jCNqkqkUYaEBuNidQmTUJk7Co3mhDTVp5UaM4AXO6fhgC0D7iVTGZbgu/L6Y1nVl62EmC2Qa7pigDqWU2CVmUGICIRnKaE3uNYxyZmpTXksiwuxxezuweVILfVflCLYou5/Uaak7J9CjCa27KfmPX/LB9hvkQfpJUaicK6QanhsNfG3x12oQV84YM3LxHkzCFTlHyfR5WjDurtGEwk1fc8xslYDuhv1oiFX5sl/bC4png/b3os/etUVnL++slww==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9grFlUwGitlzrUt+N1gItpK4rCMiceLXgGcVD4yHWQA=;
- b=el23LvXv6JM40NtgX7ohrnHlmPzI3jjilBzRSAwZefpolNVXNDLuTvchXhmbEbb0KXRRZgSGhjAuVEes4EMheQVtMGLMxpm6X65tnkVMfFiWgPeC9BFEvLb4sLpv6HgZCoJW3Zjke9EOCBJPX7Q//aIAdpjvhVtEld3FQlcrvduYIPep+2Vuh9qffqUHZUt67Qs5EXtDFHAhdX9ZTb83YTS7BerEpATQwxRJK90gi7xBsX9bqcvw+lLC8zPHOJaJxu4ZNoDgoJj4CBljnBroRwXwOGq01IpsEhiMo4UnX2kkd79ZggkTMgi7f8sLTf58gVy1atpS5MnvBvMtxjak0w==
+ bh=j4NwuuZBTMS3h2KHKAZ+OxFBvpLyqV49g3xfQPeRZaM=;
+ b=MZEbld3sTpdwgSiqwna1GNrDhsNL3JSBO1+TOLb22jjqK+gJB01q+OSIz7v27kJxfHBWF7aQ0ioJR/KNTQzCdL/9kJbJ32gEI2082P+KKXGluuHTSWefCGiw3Tyx5VRFfComGEiwrQIRbIdeeGAvzzOyglJWugNSs9ySsiorVaAqpMnqg+nPQdP0vS2RIKvyxpUSKZIpFRAbQEQMf5ocOINSn/jFF8N3zg5uFB055HqK8TnttsclpCVKnkN5nrgw2ao/uhkaqBBJ4v2Ng5Wa3F9o8kScXEdZwgO5y9hFv5QWAUVmud5lGk6P/l7LhqA7F3V93zNWtbdj6Jr4Uu2PIA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9grFlUwGitlzrUt+N1gItpK4rCMiceLXgGcVD4yHWQA=;
- b=QZci9RvHqxLwQWzmkTWI3C3HSryHQ+a6xWVkv2DwoTmEsys6lteFbpEk/5J/pDKJH0oD+MFEJv+5voM2h1bntuOeXnHgwUWgziKAt9eM4E3LwzOtt1Op/nBhoo0q1RfFt+P66+XHq2t51u+b6s/R1TDmxXkrH7AFsvJiQvF2aos4VjBWwoZs1I1XOl3WR0Y+is6xXWpdZu5ZhS9Xtdq8i0wNJUloDiZQVhjk0xWFyFsT+u1F0yW/QYEMzgi5V6FFJ2DOXmFn6icCpVZpzEZc5zCAjIA8nK6hQ3rpKB83h5kiqn0knsiqiUM1t3fApmKaCgyM/kRwBZIMdAb1stv7qA==
+ bh=j4NwuuZBTMS3h2KHKAZ+OxFBvpLyqV49g3xfQPeRZaM=;
+ b=eojJ3lsDvTPjLrb7DbYFl5RhJdIdMHHIOdZULXqCdL9bT3Bw0M4dQRyQXvD5Ho8TVZ26QcNZfbUyzoHjBL6WHqni7m5llvH66/5OLIPynGTO/ONZWVGae2hoMFoeYn+KRm9BQp7fegW71HUKRZr6B5Pv6d/yYjBUUKXarWbNHT4pRNWA5zMDOjQ63PYJDt4iHxBdudRcV8Ed+4Q5yUq4ZKIu18+75w+vffRGF323SdqoZ8uez/TqCJgBaMhgFAaZ5UM85FXGmus8RtKP8IHJ7/0Djk5uDFVqgBVv/gsqMwEC+56vJ32QrbdP6sdq3avQoBhodrVhKAKg4FDhJ5h/jg==
 Received: from CH3PR12MB9079.namprd12.prod.outlook.com (2603:10b6:610:1a1::9)
  by MN0PR12MB5785.namprd12.prod.outlook.com (2603:10b6:208:374::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.12; Wed, 30 Jul
- 2025 08:26:10 +0000
+ 2025 08:27:29 +0000
 Received: from CH3PR12MB9079.namprd12.prod.outlook.com
  ([fe80::8c67:8cec:7c4a:ccaa]) by CH3PR12MB9079.namprd12.prod.outlook.com
  ([fe80::8c67:8cec:7c4a:ccaa%6]) with mapi id 15.20.8964.026; Wed, 30 Jul 2025
- 08:26:10 +0000
+ 08:27:29 +0000
 Message-ID:
- <CH3PR12MB90797F5DFD93753FFDA0312D9724A@CH3PR12MB9079.namprd12.prod.outlook.com>
-Date: Wed, 30 Jul 2025 16:26:00 +0800
+ <CH3PR12MB90797749F5A623D292671E689724A@CH3PR12MB9079.namprd12.prod.outlook.com>
+Date: Wed, 30 Jul 2025 16:27:20 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/2] rust: allocator: add KUnit tests for alignment
- guarantees
+Subject: Re: [PATCH v6 2/2] rust: alloc: kvec: add doc example for as_slice
+ method
 Content-Language: en-US
 To: Hui Zhu <hui.zhu@linux.dev>, Danilo Krummrich <dakr@kernel.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -59,16 +59,16 @@ To: Hui Zhu <hui.zhu@linux.dev>, Danilo Krummrich <dakr@kernel.org>,
  vitaly.wool@konsulko.se
 Cc: Hui Zhu <zhuhui@kylinos.cn>, Geliang Tang <geliang@kernel.org>
 References: <cover.1753841900.git.zhuhui@kylinos.cn>
- <3ad14f15b6d2639d6e998ecd03158313414b69dd.1753841900.git.zhuhui@kylinos.cn>
+ <786e88abea2557080bde65fa9892df3b956731f2.1753841900.git.zhuhui@kylinos.cn>
 From: Kunwu Chan <kunwu.chan@hotmail.com>
-In-Reply-To: <3ad14f15b6d2639d6e998ecd03158313414b69dd.1753841900.git.zhuhui@kylinos.cn>
+In-Reply-To: <786e88abea2557080bde65fa9892df3b956731f2.1753841900.git.zhuhui@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TYAPR01CA0066.jpnprd01.prod.outlook.com
- (2603:1096:404:2b::30) To CH3PR12MB9079.namprd12.prod.outlook.com
+X-ClientProxiedBy: TYAPR01CA0069.jpnprd01.prod.outlook.com
+ (2603:1096:404:2b::33) To CH3PR12MB9079.namprd12.prod.outlook.com
  (2603:10b6:610:1a1::9)
 X-Microsoft-Original-Message-ID:
- <883e55c4-9628-4131-acd6-e495d60ee8c4@hotmail.com>
+ <45b2eb8e-43c4-468b-9c8c-5e37e3191e21@hotmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -78,74 +78,73 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH3PR12MB9079:EE_|MN0PR12MB5785:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13019b18-3b1b-4d1d-0136-08ddcf42bc17
+X-MS-Office365-Filtering-Correlation-Id: edb0a39d-c4c8-47af-c96b-08ddcf42ebf2
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|15080799012|41001999006|19110799012|461199028|5072599009|6090799003|440099028|39105399003|3412199025|40105399003|41105399003;
+	BCL:0;ARA:14566002|8060799015|15080799012|19110799012|461199028|5072599009|6090799003|440099028|3412199025|40105399003;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bmEvQXZJTUxMdnB6a0M4NGtVbjEyZmkwZTdUbStIREJFNDhlOGd6czJJeU9q?=
- =?utf-8?B?Q3dINVNocWZnb0kzZmhnMzdhRzd1YUdkcGhmOXNsWmZ4RUc1UG1ad0xMaUtK?=
- =?utf-8?B?K1NDMURlNFZJNHJZU1JqbXVKamUwMk1HV0JHQi8yQnQ4Ty9MbW5PclViU2dt?=
- =?utf-8?B?Tkc3VzZjRTlWUGtQSWE1ak5MLzFKTUVjekVkZ3NZbUFKRFllSnNxVm5wb2pL?=
- =?utf-8?B?am9FcFRxei90NW4xQmVsdm5kMnYxbHpENVNJNGx6ZmRoa3FERytyRHRWZCtP?=
- =?utf-8?B?ZUVzbm1yVEtNTzdsTFFOZmloZDgveHBhSVc2K2hCL25RdW1vRG5qYVhkTzN3?=
- =?utf-8?B?UXNlczEzbjVyN1JVRGEvU21iSlhIQ2JjUkhOeDJZM2JYRFlvUGM1dHVEdGll?=
- =?utf-8?B?b01xU0FXTmtvU3RYWnFJSWlvZnpIdlBsN25ER093NE9kNUV0c2hiamEvbDk1?=
- =?utf-8?B?UHovaEtTaDVpY05NeEZoalcyWEpMWGlDTXJuNDgrUkI4T0h3dWpGZUo3Q2dE?=
- =?utf-8?B?VEs1dGtXeHVxejF4UXR5RDVMYk5za1F6TGUvd0NEM2RTcnpQV0U2OFhWTHdQ?=
- =?utf-8?B?VDdkRXE0MkRVNmMvQWF2b0dmUVdQWHc5S2RNSlRJNnhZRWZMN0VPSlZSZlYx?=
- =?utf-8?B?VGVYMDJZWGozbUN2UnY3UTh1ZVlzRFFJM1R1dzNrRk5iaVBQbFFOWkk0SEV1?=
- =?utf-8?B?SGdwbEl3Y2VaTUgrWngwMmJCNUlNOGxsNmgzR05wYm1jT0l5TWlXaWtZNlN2?=
- =?utf-8?B?NklpVE5QbkxhRVZIcWNiMzF6TGxJSHpDYXE5OUJtSHVLUmQrSUVubWYyWXNa?=
- =?utf-8?B?ZGVvekJNMHZGNmFzb282V0R2OFNjOW0xZFQvU0s2dWVUcWdESklwWVVpeUVX?=
- =?utf-8?B?YXJCWHQrc0RNQS9FckNUa1NTZEovZW9BSHczK29qck55czU5Q2RDUm5tVEg0?=
- =?utf-8?B?Qk52NVdBSE5WMW5jeVErakhOZU1LV21qWEJpQ3VsaXp4dHMzVUluREE0TEV2?=
- =?utf-8?B?YjlMSHN2dEU5ZWxsSDBSakNWWGxBYnFvMU93bHFyZWZ3OGJVTjZHL2IyQkZY?=
- =?utf-8?B?RDlyd1Zqc1ZoU3lSNzBBU003SHEyTVhoUkdIb1U5YkRBcitnVmJXVmpiMHhN?=
- =?utf-8?B?aFVUdzZFOXZyK1NWWkgraUIrVVBENDYwbS9yYmQ5bmZvWk5BSWFCZG52Zlhv?=
- =?utf-8?B?UW9iYW5uNFlIbjZKTWo1a3h6bncyVUhpN2tqeUcyTXNDeVN0eHpuWEEzb1I2?=
- =?utf-8?B?MUswUG5aWEVUWlBSTFFkMjFuYnF0ckVTMXZISGV0azdqT0lickg3ZEVyQ2pD?=
- =?utf-8?B?bHpleFp4RzgzTGl1SHArN0lUSHdUQXVjQ2pHQ1F5Y0w1UmNZcXZKL2JvbW5y?=
- =?utf-8?B?TWxhU0NGblFpOTlxWWFKenpHd09mT2l5eEd5N3RqODNNV1lWQ3gyb2RLQ3Fr?=
- =?utf-8?B?UERQcTZBWDErdENOYzBOSGJnVEtHVkMrUjEwYW9JUzJxQjFNVUlwZ3Y1aU5P?=
- =?utf-8?B?TmxZeEdzSzBDK0tpZmI5SUNWRDEveGR1bnJHRFQvT29TZmw3MzJZOTFLNng0?=
- =?utf-8?B?bVg4WmtzbStxQWV1alhtZEg2QVk3YnR5YnpuSmFyUmIzS1JVc3RXem9OYzZB?=
- =?utf-8?Q?KcZ3XzJ1MSQ2K7aOn2LXn0ehV0JnvxKTXCZFbKWtcaVs=3D?=
+	=?utf-8?B?dWd5b0srbHVuUThCLzhZQWV6U2padm03U3FFeGwxNjZWN2J6VDBrYUpJaDVF?=
+ =?utf-8?B?akFkY3FEaUd0SUQ3TU1uUWtCcXFUL3RHNEMwd0Q5bFhRdGpyYkVGdXNHRk4r?=
+ =?utf-8?B?UU9KMFNvQWlXcGhXaU91MHVIVFhWVFg0WWNBNnV5cEEvRHdyTU9EMitDUTNK?=
+ =?utf-8?B?ZnhOWHpVbHhOVnFPQ1JUOGNhK0lHOExtTzZEbEVhVFBEM0dHU0dSOHUwMitG?=
+ =?utf-8?B?QnR6QVJWUFR6V1ZLcFBkNWg3NWRNd3YwTEdLZWVmSXNVSlMrUnlTQTJWVkhy?=
+ =?utf-8?B?Uk9IaE1nK0dqTmVoQUExaFl5MUtJenk2bDgvay96d2gxaFNVenlFdnpaNGxx?=
+ =?utf-8?B?TXZxM2lzZ1dQNVFNWkZGYTBvazVoRlRzazNtZWQzdFp1d1NUVktYblQ0blhh?=
+ =?utf-8?B?MVNBUVU2MHN3bFU0MDdsS2N3NkRVcUFkV2h5WXNGcXMyV2lJL0ZPbXR3UDNl?=
+ =?utf-8?B?WmlHdWUzLzB3VHkrNVkvUGx6UFNnUmNUZ0hzV25yRk82MlM5ZEhqLzE0REVu?=
+ =?utf-8?B?Q0cvYWV2a0M1ZFVweldlUTc5WVR5L3ZZWDRWdkp1YVdlNkdoMEd6TUt2V2dl?=
+ =?utf-8?B?Z0NMUTVybHd5S3pWdUlXYUxxUVJuVk1sOUpPTmZ4QWJUVFFSTzg4VG9GKzNq?=
+ =?utf-8?B?TUtRK0xEcVFmbTBZa2Z5OU40d2FVcHhOM1podS9QS2ZMckhkeHdIWWVkdVVO?=
+ =?utf-8?B?RWtpZkp6YURnbTloQ1NieVoyWGU2cnpsMWYyNCtidFZGZ2cxS1pVS3VKdm00?=
+ =?utf-8?B?ZE1COVlZVGJod3R0RTZKSVNmQ2l3dHFzeHFiazFjQWNRQXh4YUE3VXZQU2Vu?=
+ =?utf-8?B?Ykg3TlkxVTZPbDd3QW91ejY0T2FqYUcrMXlkaUo3Y1VSMkFUeE95YVRKRlZw?=
+ =?utf-8?B?b0llYzNRdDZiOTY3aUNIbGZxSlRkUmNhUit5Y2hmeC9lNStqWkJ6WG5LTENo?=
+ =?utf-8?B?cUtRYlpKQnF0TmkyU24vZWoyeVhPYXRidHlyRnJPQitpVmQzOXByZ1M2VG4w?=
+ =?utf-8?B?RGlCT29EYXJSalpKNjdxckhITTdGa0ZkT0lUeWJseWhSUWFtV1NBSlFJanJj?=
+ =?utf-8?B?eFZDWklTNVR1ZEpLdmFlSEJYVkRISzJxNHNQQldkSEh6dkNVejJhMzZUOHlt?=
+ =?utf-8?B?RlI0a3l4V1ROWHFBRHpzOVVjemd4U0F5aVdvVEFBaWNGYmY2VTdEVEhDNE95?=
+ =?utf-8?B?WXBJMEpFYmZTbHlsZk1mWEJHcnQ1OHFwZUpwZnV2WHc0c0tkV1NaWGplZnFr?=
+ =?utf-8?B?NzRXQkMzdUFUWG54T0o0YWNFUjRqSDVsekZBUVA1bXJja21SN29JdzI0VFFv?=
+ =?utf-8?B?OC93cU9Kc1JMUmZyeC9OdFFCbFVlQzFkRlY4SWY0R1VEUW53WGcwTTVkMVJC?=
+ =?utf-8?B?eWhaN0wrelpaOVl5VnpOcURQei92eVI3bmZwZkcyUlVBRnN4SkZTckt6d0pn?=
+ =?utf-8?B?d2FQSGhLVmhsZTRXb09vQWlhVjBJOFRBKy83VG1ncUxjZDdmRFpZYjZ6OUdY?=
+ =?utf-8?B?YW1PZHVnZk1WUFFIOUhZK2dxa3UrUC9tL1JnZjdDakI5S3AxSThyQjJvOUx3?=
+ =?utf-8?B?bXVYZz09?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YWJMTVQyak1uOU1mT2dOWDBmTHJ4aHZ0bUZVb1pSdTV4TFEzU1JQemUvdWUr?=
- =?utf-8?B?SUIzbzZlSXlqNk1SUC9GeU5Db0ZrRS9SL0d4cEZPMk9ReWtSVm5VU0poYXVp?=
- =?utf-8?B?ei9heGxzN0xHZk5ib3lwbU13Y3NrZjEzWEtJMnNzY0JnODZ2S3g4TW1FQnJi?=
- =?utf-8?B?QlV3Zlcrd05leGxVeFNMaEFKL0xOTFpDTjZXKy90WXA3a2kyeUkvRERrTlNP?=
- =?utf-8?B?dEVISUE0Yzg5VmZrZXNjT1R0NEhaVVF2SndvRWROTi81OWhwSXhYdVFqYnQy?=
- =?utf-8?B?MHE1eUJCUzFmVU9ocWo3QjJWZ01LdGl4WTY2T2xXTjNNRmpES3QzM1dRRU1z?=
- =?utf-8?B?Vm4rOEVqcmdWbUZqQnhycHRnSnlNM0p5WjFyL3BRUEVweUUrZWRXMmtYbGpC?=
- =?utf-8?B?eWh1aEsxSlNPUnF6UHQwS3F6MUNoN3FxZVF0dXNTQ0VMaUJyK0hrZVk2UUkv?=
- =?utf-8?B?dU5ZeGpJVXpMM0RWbEttY0dpbFZEbE95NzBEdHBJUEpBY2NUYWtvVHJTOUlj?=
- =?utf-8?B?VDlGWWVUQzNGV3FvQVljWVdISkR1SVlyTFN4Rno1NGhLYVVlajI2WC9pVGk4?=
- =?utf-8?B?YmVBRGxXbjRtQUphVDc2cnN1QVY5MWdIWjFjdEZaRXFxeUJYWG5VK01lN3Av?=
- =?utf-8?B?ZnRMeE1lRTdsOWRRNXV0b2EwTDBNdHpySUJEWGwyMDBza3VxczVsYXJkcEJ4?=
- =?utf-8?B?RW12cVlhNUg3dG9DdU5va1dKejFSTlNSWURueTV3anNobnZ1emRLQytaMXNq?=
- =?utf-8?B?TEEzNU1McFVON0RmcEZwalpqQTdQajYrUlBaMFRSWklsQ2ZBUm5tdnBMOEhh?=
- =?utf-8?B?TUh4cWNTK2FkTm5CaGw2ZzhLZmlOcWVZM2N3QmZud3lvVk5SdGVWK3g3RWhZ?=
- =?utf-8?B?a0RiVU5JQ05LbWxFYld1YXFzTHEwemJ1QWZ0UWkvM25BSWVhV3Y3NkxPYWE1?=
- =?utf-8?B?RG8rRW02aGJ3emkwK3NGbVBudnorYWNSVTBJV3Nvell2T29hNng2ZW8wQVNT?=
- =?utf-8?B?MFB5Mmg5S0d1SkEyWjZSblk2eGlreHRNWEsxaWlGc0VhY2pmMks4U1NEemdL?=
- =?utf-8?B?TDR5RTBQR1FCMCs3enh5NExzSzdBbVBaZytjbDhOVUNDODMyWlU1cjhUZ1VF?=
- =?utf-8?B?ZGRWc1crcStrNDJaY09XMFlBcmRTL1JTRXQwbS94LzJNWVhFRjRUdlBIOE5u?=
- =?utf-8?B?Z1BLNTVxTXZBU2dsejlEZXQyMzFFTlBWM3F6aVZ0SDg2dHBQazdSdFBoUHg4?=
- =?utf-8?B?blBKT0s4RVJyQkt4S051S0tuZ2tnam5vbE5NK0lOcmhlVklpK3ZEL3ppVGFW?=
- =?utf-8?B?MVFuWmY0SDVaK3duSzMvSDdBcGtUMVZEOUE1dWNUQlpneWhjWitUUVdOZFgr?=
- =?utf-8?B?dnJoemlkSEhiWkFrcE8xSkwrQlpOZ1gzWGIzZXNwTUxFTjd2aGwrdDgyT1FD?=
- =?utf-8?B?L0x6RVV5RU41d28rQlRoZzRBd0IrbC8zeTAvcE9MS2haR1BBK3VZakFlRkJW?=
- =?utf-8?B?RUFXTkV5dkRCaXA2a0ZBdU0xUk01T0w1WTVEcEtrcXIxc0k3aDZpR3A0bG1n?=
- =?utf-8?B?MEttNjBJcEh2YmlqRytqRWQ2L3E1NE9ES3VIcmV4bVpaVW5DRTBwOFBhcE8r?=
- =?utf-8?B?SWdxUkNJazVaVElld1ZMQXVrYzBDUFdUWHExYzZkMFF2Q0YyNjFpUktpQkNU?=
- =?utf-8?Q?4O9eM4t0nBpI8kM1tx3G?=
+	=?utf-8?B?ci80dlVoV3dTcWFyeDhSdmRIY21LMCsyUFE0cUYzTktUaFZWTjJCUFBOdTNs?=
+ =?utf-8?B?dXN0QWVxQVRvZWpzL1Z5NS9SUWQzejBmb0F2dXJtZ2pRMTRObFdBRnJzMFVp?=
+ =?utf-8?B?NDE3K1VXeE9SU0thOHlCTWt6NGZFNlorZlA5QmFmTEsyVWMrRVJoeXZzYU42?=
+ =?utf-8?B?SGtIQnZkNnk1RG43cGc1TVNhN2hwNjVoNGxKSFBqaFRuYUlqaXRDNW1IQTJL?=
+ =?utf-8?B?YlZxdCsvR3hFYzZIUDVmVC9qNDE1eUx2OVdYZk5oZmZyalV1QW5IWHFkbU1H?=
+ =?utf-8?B?VEtYT1J1T3JWc3dKeFg3MTJNU1dmRHB1OUlZeVhIZi9BOGVMRksrRlFCanNM?=
+ =?utf-8?B?bDI5VXBmVUY1V2cxVmZwMnFIRHArZHBIeHRYZFVVeFhmNjk5dkJqaGl1c2Z0?=
+ =?utf-8?B?Y1p2dGpLVVhIR1kwQ29zWHFUL1hvOWJLRjQ4eFdaLzZWbmhkbHpiS3p3UkJn?=
+ =?utf-8?B?cDUvOHhwQTBsdUdIbnhBT0F5Um0zTUI5REJhTURGNVpYa0NVR0Rud0RHMytt?=
+ =?utf-8?B?ZzRIcVBCbEtXU3ZxVi9vK3dvcjFTZ2xtKy9LVlgxT3dOTWpZN3ZXVEZ4dnVi?=
+ =?utf-8?B?b3Y5Qk11Q2N0WENTL3dDbGpETVB2OFhKNFk3LzFxbVhSVnZTbDFVSlVPQW8x?=
+ =?utf-8?B?aTVFcG5sbThYZ3RIcnFmUlhub2Y2U2Y0YU5hRithb2lxMHpRZHZDajFVNTQv?=
+ =?utf-8?B?bUVINzR3dllzY3dZZ1owN3cxUVI2UXlTZE1DVGdFU0lJSlRtU0FVQU9reS9T?=
+ =?utf-8?B?b3FqMmxhSzMza2xNcTJGRWtJdGJna0ZERzY2aks4RlVFdEIzVG5PSVFJdkxh?=
+ =?utf-8?B?Y0cyV1hoKzRWTDZZbDFtS3FqK2FwUUZMWHgzaDlzVTA2U0RDTmVocnZCNkNa?=
+ =?utf-8?B?Ui9YRTBYYUd6MGQvSHN2N1V5V3l4NHp3eHZudUU1MmwxTlhOMzRaMkordnJt?=
+ =?utf-8?B?N3VpSXd5VzFBajRBUnZDek9FdjdBVEVnbnRzWHg0RjR0U1RTMjFXa0Y1VEpG?=
+ =?utf-8?B?ZzlPQ3NiT1AwTDY4aUxQN2p4dXVTT3pmTExaWkw5TDczczcvY1BtWTNTK1pz?=
+ =?utf-8?B?M0ozdzRBclBSZS84dkpkSHYwcG9ML3hobjV2Y3MyVHNkc2lWR0RvdXgzSllz?=
+ =?utf-8?B?d3Z3dGJUZmpRV0w3S0cyZ0Q0R09tcFhuMG1FdzEyelo4TklqU1p1WjQ2L1FV?=
+ =?utf-8?B?M0kvUFRsOWgxNi9SYmdUclFCc1VBK0xYZnlxYlhQSTdwb0REUVNiVWh2MjNE?=
+ =?utf-8?B?aWFocXA5OVg0TjN5K3Nzemh5aVp2QTR4RXNiekpBTVlmM2NDVkN1YWRlNWsr?=
+ =?utf-8?B?MHlQREorVGp5QlFtSXE0OUlzeVVXRnBTNEY3a2Yzd2hSNEh3NW16UERtQmNl?=
+ =?utf-8?B?MkJUQVlwVlRBT0lsVUhBelFJUGZ2VS9vSE5ReXlYV1RTWnBkMEppbzZ3QnJt?=
+ =?utf-8?B?a0g0dHhJMFZlMmxueSt1dFV0ekJ4enNEVkRaWDRvSUpqUytIRWRJbllEcVhM?=
+ =?utf-8?B?UFVoeWIrRC9QSFJWU1plQitjaDRhbWJEbWpabGZRNFIzWUtBYzlHYWlacDNS?=
+ =?utf-8?B?VWJKSnM0SGZFSzZwOXgybzZ5bmdvdWlwT0QxMlFGTURlYUFFalFUeFdqc3Ja?=
+ =?utf-8?B?QkZjc29WS2JBOE5xczRXNnhRRVhNd1docmV4OWxiZm1BUFhUYUt6OVBaa0Ir?=
+ =?utf-8?Q?KKBP0SzCO2SP+RUz0Nwk?=
 X-OriginatorOrg: sct-15-20-8534-20-msonline-outlook-ecb43.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13019b18-3b1b-4d1d-0136-08ddcf42bc17
+X-MS-Exchange-CrossTenant-Network-Message-Id: edb0a39d-c4c8-47af-c96b-08ddcf42ebf2
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9079.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 08:26:09.3620
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 08:27:29.3219
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -156,94 +155,42 @@ X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5785
 On 2025/7/30 11:35, Hui Zhu wrote:
 > From: Hui Zhu <zhuhui@kylinos.cn>
 >
-> Add a test module to verify memory alignment guarantees for Rust kernel
-> allocators.
-> The tests cover `Kmalloc`, `Vmalloc` and `KVmalloc` allocators
-> with both standard and large page-aligned allocations.
->
-> Key features of the tests:
-> 1. Creates alignment-constrained types:
->     - 128-byte aligned `Blob`
->     - 8192-byte (4-page) aligned `LargeAlignBlob`
-> 2. Validates allocators using `TestAlign` helper which:
->     - Checks address alignment masks
->     - Supports uninitialized allocations
-> 3. Tests all three allocators with both alignment requirements:
->     - Kmalloc with 128B and 8192B
->     - Vmalloc with 128B and 8192B
->     - KVmalloc with 128B and 8192B
+> Add a practical usage example to the documentation of KVec::as_slice()
+> showing how to:
+> Create a new KVec.
+> Push elements into it.
+> Convert to a slice via as_slice().
 >
 > Co-developed-by: Geliang Tang <geliang@kernel.org>
 > Signed-off-by: Geliang Tang <geliang@kernel.org>
 > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 > ---
->   rust/kernel/alloc/allocator.rs | 56 ++++++++++++++++++++++++++++++++++
->   1 file changed, 56 insertions(+)
+>   rust/kernel/alloc/kvec.rs | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
 >
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> index 63f271624428..1f173038cec9 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -184,3 +184,59 @@ unsafe fn realloc(
->           unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags, nid) }
+> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> index 92d0ed3f302e..f57e08c64929 100644
+> --- a/rust/kernel/alloc/kvec.rs
+> +++ b/rust/kernel/alloc/kvec.rs
+> @@ -224,6 +224,16 @@ unsafe fn dec_len(&mut self, count: usize) -> &mut [T] {
 >       }
->   }
-> +
-> +#[macros::kunit_tests(rust_allocator_kunit)]
-> +mod tests {
-> +    use super::*;
-> +    use core::mem::MaybeUninit;
-> +    use kernel::prelude::*;
-> +
-> +    #[test]
-> +    fn test_alignment() -> Result<()> {
-> +        const TEST_SIZE: usize = 1024;
-> +        const TEST_LARGE_ALIGN_SIZE: usize = kernel::page::PAGE_SIZE * 4;
-> +
-> +        // These two structs are used to test allocating aligned memory.
-> +        // they don't need to be accessed, so they're marked as dead_code.
-> +        #[expect(dead_code)]
-> +        #[repr(align(128))]
-> +        struct Blob([u8; TEST_SIZE]);
-> +        #[expect(dead_code)]
-> +        #[repr(align(8192))]
-> +        struct LargeAlignBlob([u8; TEST_LARGE_ALIGN_SIZE]);
-> +
-> +        struct TestAlign<T, A: Allocator>(Box<MaybeUninit<T>, A>);
-> +        impl<T, A: Allocator> TestAlign<T, A> {
-> +            fn new() -> Result<Self> {
-> +                Ok(Self(Box::<_, A>::new_uninit(GFP_KERNEL)?))
-> +            }
-> +
-> +            fn alignment_valid(&self, align: usize) -> bool {
-> +                assert!(align.is_power_of_two());
-> +
-> +                let addr = self.0.as_ptr() as usize;
-> +                addr & (align - 1) == 0
-> +            }
-> +        }
-> +
-> +        let ta = TestAlign::<Blob, Kmalloc>::new()?;
-> +        assert!(ta.alignment_valid(128));
-> +
-> +        let ta = TestAlign::<LargeAlignBlob, Kmalloc>::new()?;
-> +        assert!(ta.alignment_valid(8192));
-> +
-> +        let ta = TestAlign::<Blob, Vmalloc>::new()?;
-> +        assert!(ta.alignment_valid(128));
-> +
-> +        let ta = TestAlign::<LargeAlignBlob, Vmalloc>::new()?;
-> +        assert!(ta.alignment_valid(8192));
-> +
-> +        let ta = TestAlign::<Blob, KVmalloc>::new()?;
-> +        assert!(ta.alignment_valid(128));
-> +
-> +        let ta = TestAlign::<LargeAlignBlob, KVmalloc>::new()?;
-> +        assert!(ta.alignment_valid(8192));
-> +
-> +        Ok(())
-> +    }
-> +}
+>   
+>       /// Returns a slice of the entire vector.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let mut v = KVec::new();
+> +    /// v.push(1, GFP_KERNEL)?;
+> +    /// v.push(2, GFP_KERNEL)?;
+> +    /// assert_eq!(v.as_slice(), &[1, 2]);
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+>       #[inline]
+>       pub fn as_slice(&self) -> &[T] {
+>           self
+
+LGTM.
 
 Reviewed-by: Kunwu Chan <chentao@kylinos.cn>
 
