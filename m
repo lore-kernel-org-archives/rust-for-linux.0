@@ -1,38 +1,44 @@
-Received: from forward500a.mail.yandex.net (forward500a.mail.yandex.net [178.154.239.80])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649FB1F8725;
-	Wed, 30 Jul 2025 10:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD2C1A83ED;
+	Wed, 30 Jul 2025 10:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753871109; cv=none; b=HAn6nVB71DL38pFmRrpWF8fPhrCCqdAGkM4PAj5FBf8FaAjum5QRm0HUqrPie/M1A3RkqTTWrzBm08zNcxdR12nHWB8jtll4CmNdzXi1UleAv+Vit77YGxLgP7sm+7iumsLFJHlO/yToxaR8mCg/dE0AmlfAnBuLxeWWfB944E8=
+	t=1753872924; cv=none; b=nejg78oo1WpTbcoA/cbm867ZP0GEvUxxXroXM067Kn3h+rKCS4rcz2BoLOgQACM5jq3ebdP1FkRzRy9MFruuoi+M4XIIrYTkTbhYgGykhhgr7rjZLaytIqfXg7ho1olRS51hxy1dX16aSMqe4bi76xndyGOiW15ISr90yqQwmng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753871109; c=relaxed/simple;
-	bh=dQ4UGGq1PKXZBezaixT0KhIN5aCNimml/7A4rt/yP14=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sRjXXIsQxku2gyDUyphfuFPbp96mP0QV8QSS6iNL//ujvVkQL3BaGgC9xxFF5oIFeaE45XR35rbsQlGLrraqeq65n3vU+W9b+4epHQ29gh3/8ZlCBwAyNChLKKTJGROugycIRP4v3nCS3mYzYymjTDb0ir1plcl6TbBsIz1vvGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=o0PEetvg; arc=none smtp.client-ip=178.154.239.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1753872924; c=relaxed/simple;
+	bh=f46/FtSc5yFgABtkdDwRxVIJIxcwDr/wN6veGoVHsqQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=T+00M4Fjkjg+mFFu3OVwIJyEQ0nPPBV2dkwkzSHHy1r36D5y95T0UeS7gspnUpjGl590vWnZzdhPitS1nG9HOJoUkUPFec9PD3OF43eRlz5kqnEhOjG8w4ZjoVcKza6S6knFCjv1qzSMzGG7eGkmj8B/oPSUYAO08aT3rR8y0aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=le7WExzy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="o0PEetvg"
-Received: from mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:2d88:0:640:6173:0])
-	by forward500a.mail.yandex.net (Yandex) with ESMTPS id 58196811B4;
-	Wed, 30 Jul 2025 13:25:03 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wOXme1bLvW20-lp603KDK;
-	Wed, 30 Jul 2025 13:25:02 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1753871102;
-	bh=/X8waQHjR87xGwlgmA1Yc5M6IgxaidwtGSogxh7QaFE=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=o0PEetvgebK7IVNVaI4nLXSIS1E6zf3bt4MwZyhAacgGUsNuW3xm8FdeExuXBoPq/
-	 whWe8rag4scgDsz9FM2Aesbv0aper2iQFMw0fCHKkLKih2bKxOaE1x/2cCJF44lM2B
-	 KXDUGjML55KWQxH+lcjKAd7SDI/f1Atoz7l8hzmE=
-Authentication-Results: mail-nwsmtp-smtp-production-main-94.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 30 Jul 2025 13:24:57 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: "Benno Lossin" <lossin@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="le7WExzy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA55C4CEE7;
+	Wed, 30 Jul 2025 10:55:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753872924;
+	bh=f46/FtSc5yFgABtkdDwRxVIJIxcwDr/wN6veGoVHsqQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=le7WExzyw4HMM/44Oqi9NsnWYWcKKuJliDpg6j2UDRwhP6Xxw8s2BBHaEBiT4T0y1
+	 EmbFIJuy5LxJx2mM49o2EfUXUzlQsD/GYt+78IxFi7Y7DeuI+iFDPdSezSKGebMidB
+	 i99kOsLysQRrHEpytqIWy9ylN5zq94SyvJZ3Fzzb0ugtzqRfXUjcG/RZoGJZrHsxFc
+	 2JzZZ4seaQgcoVLaG0LRiYH90GE0Yxn88bOOkci1FssPNvLohbOjOOiGOKqcp+VGRZ
+	 RA8zAWPpeHdWY5nnf7FeNrUqG/3XGR84m7PCSwSm2PEGBQGVmXmutCF834R0YPy+le
+	 27ZmJKfLOlOPQ==
+Precedence: bulk
+X-Mailing-List: rust-for-linux@vger.kernel.org
+List-Id: <rust-for-linux.vger.kernel.org>
+List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Jul 2025 12:55:18 +0200
+Message-Id: <DBPC27REX4N1.3JA4SSHDYXAHJ@kernel.org>
+Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
+From: "Benno Lossin" <lossin@kernel.org>
+To: =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
  <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
  <gary@garyguo.net>, <a.hindborg@kernel.org>, <aliceryhl@google.com>,
@@ -40,82 +46,90 @@ Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
  <mingo@redhat.com>, <will@kernel.org>, <longman@redhat.com>,
  <felipe_life@live.com>, <daniel@sedlak.dev>, <bjorn3_gh@protonmail.com>,
  "Lyude" <thatslyude@gmail.com>
-Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
-Message-ID: <20250730132457.20a13d71@nimda.home>
-In-Reply-To: <DBOPIJHY9NZ7.2CU5XP7UY7ES3@kernel.org>
+X-Mailer: aerc 0.20.1
 References: <20250621184454.8354-1-work@onurozkan.dev>
-	<20250724165351.509cff53@nimda.home>
-	<DBOPIJHY9NZ7.2CU5XP7UY7ES3@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
-Precedence: bulk
-X-Mailing-List: rust-for-linux@vger.kernel.org
-List-Id: <rust-for-linux.vger.kernel.org>
-List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ <20250724165351.509cff53@nimda.home>
+ <DBOPIJHY9NZ7.2CU5XP7UY7ES3@kernel.org>
+ <20250730132457.20a13d71@nimda.home>
+In-Reply-To: <20250730132457.20a13d71@nimda.home>
 
-On Tue, 29 Jul 2025 19:15:12 +0200
-"Benno Lossin" <lossin@kernel.org> wrote:
+On Wed Jul 30, 2025 at 12:24 PM CEST, Onur =C3=96zkan wrote:
+> On Tue, 29 Jul 2025 19:15:12 +0200
+> "Benno Lossin" <lossin@kernel.org> wrote:
+>
+>> > - The second note is about how EDEADLK is handled. On the C side, it
+>> > looks like some code paths may not release all the previously locked
+>> > mutexes or have a special/custom logic when locking returns EDEADLK
+>> > (see [3]). So, handling EDEADLK automatically (pointed
+>> > in [1]) can be quite useful for most cases, but that could also be a
+>> > limitation in certain scenarios.
+>> >
+>> >  I was thinking we could provide an alternative version of each
+>> > `lock*` function that accepts a closure which is called on the
+>> > EDEADLK error. This way, we can support both auto-release locks and
+>> > custom logic for handling EDEADLK scenarios.
+>> >
+>> >  Something like this (just a dummy code for demonstration):
+>> >
+>> >     ctx.lock_and_handle_edeadlk(|active_locks| {
+>> >         // user-defined handling here
+>> >     });
+>>=20
+>> But this function wouldn't be locking any additional locks, right?
+>>=20
+>> I think the closure makes sense to give as a way to allow custom code.
+>> But we definitely should try to get the common use-cases closure-free
+>> (except of course they run completely custom code to their specific
+>> use-case).
+>>=20
+>> We can also try to invent a custom return type that is used instead of
+>> `Result`. So for example:
+>>=20
+>>     let a: WwMutex<'_, A>;
+>>     let b: WwMutex<'_, B>;
+>>     let ctx: WwAcquireCtx<'_>;
+>>=20
+>>     ctx.enter()             // EnteredContext<'_, ()>
+>>         .lock(a)            // LockAttempt<'_, A, ()>
+>>         .or_err(a)?         // EnteredContext<'_, (A,)>
+>>         .lock(b)            // LockAttempt<'_, B, (A,)>
+>>         .or_lock_slow(a, b) // Result<EnteredContext<'_, (A, B,)>>
+>>         ?.finish()          // (WwMutexGuard<'_, A>, WwMutexGuard<'_,
+>> B>)
+>>=20
+>> But no idea if this is actually useful...
+>
+> That wouldn't work if the user wants to lock `a` and `b` in separate
+> calls, right? If user wants to lock `a` right away and lock `b` later
+> under certain conditions (still in the same context as `a`), then to
+> automatically release `a`, we have to keep the locked mutexes in some
+> dynamic list inside `EnteredContext` so we can access all the locked
+> mutexes when we want to unlock them on EDEADLK.
 
-> > - The second note is about how EDEADLK is handled. On the C side, it
-> > looks like some code paths may not release all the previously locked
-> > mutexes or have a special/custom logic when locking returns EDEADLK
-> > (see [3]). So, handling EDEADLK automatically (pointed
-> > in [1]) can be quite useful for most cases, but that could also be a
-> > limitation in certain scenarios.
-> >
-> >  I was thinking we could provide an alternative version of each
-> > `lock*` function that accepts a closure which is called on the
-> > EDEADLK error. This way, we can support both auto-release locks and
-> > custom logic for handling EDEADLK scenarios.
-> >
-> >  Something like this (just a dummy code for demonstration):
-> >
-> >     ctx.lock_and_handle_edeadlk(|active_locks| {
-> >         // user-defined handling here
-> >     });
-> 
-> But this function wouldn't be locking any additional locks, right?
-> 
-> I think the closure makes sense to give as a way to allow custom code.
-> But we definitely should try to get the common use-cases closure-free
-> (except of course they run completely custom code to their specific
-> use-case).
-> 
-> We can also try to invent a custom return type that is used instead of
-> `Result`. So for example:
-> 
->     let a: WwMutex<'_, A>;
->     let b: WwMutex<'_, B>;
->     let ctx: WwAcquireCtx<'_>;
-> 
->     ctx.enter()             // EnteredContext<'_, ()>
->         .lock(a)            // LockAttempt<'_, A, ()>
->         .or_err(a)?         // EnteredContext<'_, (A,)>
->         .lock(b)            // LockAttempt<'_, B, (A,)>
->         .or_lock_slow(a, b) // Result<EnteredContext<'_, (A, B,)>>
->         ?.finish()          // (WwMutexGuard<'_, A>, WwMutexGuard<'_,
-> B>)
-> 
-> But no idea if this is actually useful...
+Not sure I understand, you can write:
 
-That wouldn't work if the user wants to lock `a` and `b` in separate
-calls, right? If user wants to lock `a` right away and lock `b` later
-under certain conditions (still in the same context as `a`), then to
-automatically release `a`, we have to keep the locked mutexes in some
-dynamic list inside `EnteredContext` so we can access all the locked
-mutexes when we want to unlock them on EDEADLK.
+    let a: WwMutex<'_, A>;
+    let b: WwMutex<'_, B>;
+    let ctx: WwAcquireCtx<'_>;
 
-> 
-> 
-> What I think would be a good way forward would be to convert some
-> existing C uses of `WwMutex` to the intended Rust API and see how it
-> looks. Best to cover several different kinds of uses.
+    let lock_ctx =3D ctx.enter()
+        .lock(a)
+        .or_err(a)?;
+    if !cond() {
+        return ...;
+    }
+    lock_ctx.lock(b)
+        .or_lock_slow(a, b)?
+        .finish()
 
-Good idea. I will try find sometime to do that during next week.
+>> What I think would be a good way forward would be to convert some
+>> existing C uses of `WwMutex` to the intended Rust API and see how it
+>> looks. Best to cover several different kinds of uses.
+>
+> Good idea. I will try find sometime to do that during next week.
 
+Thanks!
 
-Regards,
-Onur
+---
+Cheers,
+Benno
