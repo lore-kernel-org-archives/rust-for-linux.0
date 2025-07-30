@@ -1,169 +1,107 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627AC287513
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 07:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C79B290D9C
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 07:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753860571; cv=none; b=hOzJUzk7oeHzGRTDtlhTU0T9xu/OFPbmKNKBB8zpURLJOHCw0/FHWK3knAwc7NfGhEWHLhrq/EWYdauSesJq1kFC/sRtHoXDLGmI6ryo2pwtnkn1O9WdbDvfger/JBWYpOJg4mJS4kwr4WVegGWc5vGbRmpOmOSJHzPw9xrCIZk=
+	t=1753862214; cv=none; b=pdc5yB6xTFGtibXcK8jdbMfVRgOGRFcXEDAhOw6S5+nxEM/xXG+ZSOnNZyyog5hIfR2lftUkOpkdNTnVOS6jaNW+PWeUHXLNnr4eWI7WVgG899P20BCrr+xkxlrHRmmirp5nk/dNno0Ea4x+3vsca4AOXPvUYSzhPQjO+hY1iHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753860571; c=relaxed/simple;
-	bh=FqJ/O1UbZAXmNa+fmKfqPN5k81phRkofhogPxnTCOus=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jgBWsFT9cpSIl/cxHJJooPnbHPHrK26oOA26FuXj/OiI6OOLSLqbHeF1+uX+PEV1x4VJQj1U0xUcZ9b7IeABtvp+A3boVBC0rMaEISNDIUQFMbUdw7h6eEti8BHWI++g8gKymKECYa3uhH5Psn00OnVsDE8A9FmeVM8aNZT5Fbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=k0SofNqq; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
+	s=arc-20240116; t=1753862214; c=relaxed/simple;
+	bh=GLaeAIqc00e+USukSnbAVMe5TgFLMlpYRPa2jWKuX/g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=f+M+ub72Yw3esG0H9VBfFbkGR6WWsXYXy/2CVIQUmR/NFqWS9A3kE943fuOkO6nDV475ZWvwToAdbhvTZioklgm5eq/E6O7n4zgOiuhbABsTOrYDnRnXuYmOcI4wZ1oF7qkq4dJzMOco8ic3hWCZaDllr93wOTxevGA6B1b6QG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EJjjYj2u; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="k0SofNqq"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ae0a0cd709bso131013066b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 00:29:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EJjjYj2u"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4586cc8f9f2so10734095e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 00:56:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1753860567; x=1754465367; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YfSyL1J/1nGbrIfH2f1hr6gi59w/PAjg9s3k0fTksYk=;
-        b=k0SofNqqbErflSZx+iv4t4+Vhtd4hhhJQ+i2cVmnf6HNf5GviDEDcm4RYOhuIJhYOg
-         IfXTH8sam+8850EIO8t7GlBxPdwlH698oVSFn0wpd7DxExAKFMDyZXK6wnoPz8vtlCvf
-         X2NaqpFErt3WGSTSLt9cXwA1GzXhIRjkRzyduBnPRc/xPbGpP2dgxcHU3aWREtkDWeLU
-         fj8AZTYx3xafg/X4f4rJn1EQspegneJAFISxeUZuSb4i/aNk6z703Qk1FjgSehT4HRNQ
-         +Dao4VyJrDEc0WuQ47GOwWA9dkrPBWdpJsjW2Z7fwrW9kVVPA/ACKP0dl4UtZk2z9Ktd
-         iXLg==
+        d=google.com; s=20230601; t=1753862211; x=1754467011; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GLaeAIqc00e+USukSnbAVMe5TgFLMlpYRPa2jWKuX/g=;
+        b=EJjjYj2u10QgmPAXA/Al+RTNAf9Au5dPvN1pG/QbHUjPAuiHejzV+XDfYSxlFi+kUU
+         8SdLROlzM4rBZnCm4oIHeJeWR9neEqA+QhFIk5CjiKAS2Iy3j52QaGdp9M3jjODLU7H0
+         8mxdPDEKCgMyp0cUfGOewwfidJQaqe968tsEcL10zA9k9bhPgpTmmGj3HYj7UapUmGQw
+         WYUnFjd9bxRV3neQdcSy2EfHDlkCaXz1RlnNRZxrknYQxh32biIjLItVkxQDQEU8/Wav
+         5A5+LLFzb17JuU8yWQC1YPI2nURj+XLMW7zhoQsYbDnqTpSWbH2A8TnKZTzNpFxU+xCl
+         mwVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753860567; x=1754465367;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YfSyL1J/1nGbrIfH2f1hr6gi59w/PAjg9s3k0fTksYk=;
-        b=m/jkx7DuJRwa4DMIE/VCpH5ocSnZ/2T8LG1TrI8vPckAALBAIXklDZQ89exj4R8Po9
-         6YA6h8MmCOAu8exkiwPKaxS6Dkk1vb2HG/Nq7Lj37ntH20D3EKJJwTr5Jxw/jYSWoAwc
-         hQzop5kDTDikWWc9gvVPeC2EUbu9m0kq94voFXcvtgtW7G4mJOcDznR9BbhifnS7Fh41
-         9B/2qp0lxeQ8jdit/5W6tY+HeKtZDadw9XgluPJjureLuOoL5/IqLZtR7xbZemMuLlYG
-         3t+R5cFvKmDmNtT/NkUrQJZKNRbat1uubO0T5feZ6KmFtOzPTIdQTvLvi8l60WOd2YJd
-         fgww==
-X-Forwarded-Encrypted: i=1; AJvYcCXnpm5p3oIMe0bnGMqqZD/drm4+gyDoijtgTdRu/TzfzGZHr+3nvzxGYp5C77CsbhfB5dlXg7YHXRsa/5q79Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJ05eebSC3EeWIATJ0kIQgzm5JBOGaQvJL9F/giYSogKALJyo8
-	lfkJ9JlA5qyGqdWLX7ETJANjPbNlWq23lukj5WpMm8oIhWSYQZ6uZZRLPluhxjLxi5k=
-X-Gm-Gg: ASbGncv5CIREus1LyDfY87y+hZwX5tdDAwrsup43eRVYVSAjg/dK+K5Box8zKgq+KFo
-	aL2l+Ie+Fc9pr+IVJYti0iZcEOLteR1wf+5pVcZBUs2DOdF51HwEwH6X3TbhRwqvbNs8ZLZQY02
-	8oK7hTla4xGdqjd3V0E8Ld1Q3q65b5OnGC7grQsGZmMlaf44xiOJMOaWzfJvt4jJxf6WYHVLhW1
-	NyqUwkC52bE7Ec11SMhrNqxa5M+BtNHmFjg/klt1sO0sFpdn87iL9npy/botmdRngP+TUhyOYOY
-	KhcyhS8vNC++PiGtvK4MvN0nmdI4qOKHFInH/Ix7HuaixjYGv6SzvREJzT4YXJ37BujBE4v42BC
-	lzK9aHwr/uyAzGAGsqm6GwZG+WmELe6a3fALQFcXtWmrBmOVgtVLEH8xbflCRZw==
-X-Google-Smtp-Source: AGHT+IFArK5yJ0y1FvOGBm8xzNPjYC+xuZmYpGZnVw+SljX1j9nVPSGdupVHpYG06Yu+78RjXTjllg==
-X-Received: by 2002:a17:907:9406:b0:ae3:ee3a:56ee with SMTP id a640c23a62f3a-af8fcea9917mr340301266b.3.1753860567359;
-        Wed, 30 Jul 2025 00:29:27 -0700 (PDT)
-Received: from ?IPV6:2a01:6400:11a:26:d163:a794:aa16:5e2d? ([2a01:6400:11a:26:d163:a794:aa16:5e2d])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635a610e2sm699912466b.68.2025.07.30.00.29.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Jul 2025 00:29:26 -0700 (PDT)
-Message-ID: <fc26c393-5c4b-48a8-a7ac-12558f79b140@sedlak.dev>
-Date: Wed, 30 Jul 2025 09:29:25 +0200
+        d=1e100.net; s=20230601; t=1753862211; x=1754467011;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GLaeAIqc00e+USukSnbAVMe5TgFLMlpYRPa2jWKuX/g=;
+        b=E7Og/fXFE0J4svu9BeFSxNEZksyZqNhePRa3W+EqLS5PQyV+1e0m2E7kqzEjO3DI4L
+         r3o4CxUNDYiMUuq9Yw0iUK2FzdJtSyywujtrWMx3Yt8T20PRPmZSDTJ4c9gDwkSPp/Ui
+         srHV24heYQLCBG/1nOgo9rUCXyy3+zxqDsS8Nli9w1N83B5tNPRl/NwzFM0Ss7YLo8zg
+         qIoF7OO9V8wiDGrES+M9vGeg1sro//fTDJYipaNowl91Xx7Jxm6l2RVPsoA9WoczC8dk
+         Z1WkLneFF1qlEsxe2PKaWmAZkBtsy6Bl4YtJPSENhgMtsKsHUJtE7goFkeE1T2ixcpiI
+         vbvA==
+X-Forwarded-Encrypted: i=1; AJvYcCW8zZw1Ccb0MhLhsWnevnMBrFeUiJ33zURWuBP+P7JzqkP6Jon8+yWhp6yCCEtV+7o/PES4BQuqVcwXIq4oHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwPLLF1n4PCdMCd/zMNGDTL1prXeyoaPQvk2RLWXaRKWngg8m9
+	/4Vg9SatuotrFG38fhEUJwzUDYdrieyBL2+FSucJKRfSqK3lJzWl/Tcc2wrwdUUL5ndpZHjxqbv
+	c5jozvcdzFZby7B7Fhw==
+X-Google-Smtp-Source: AGHT+IGDvFaMLBXu0klWBt4C95avW2dNPswDP4VOmyuf+KsNi7Hgiwedn0E92QWyR5XhNzUkZu0QiLLjbVDSw60=
+X-Received: from wmrn20.prod.google.com ([2002:a05:600c:5014:b0:458:709b:28a0])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8706:b0:456:1e4a:bb5b with SMTP id 5b1f17b1804b1-45892cea07fmr18028965e9.32.1753862210888;
+ Wed, 30 Jul 2025 00:56:50 -0700 (PDT)
+Date: Wed, 30 Jul 2025 07:56:50 +0000
+In-Reply-To: <DBOMC68QGS76.2MYEXRE1I34VV@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: clk: use the type-state pattern
-To: Daniel Almeida <daniel.almeida@collabora.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
-References: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
-Content-Language: en-US
-From: Daniel Sedlak <daniel@sedlak.dev>
-In-Reply-To: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20250729102953.141412-1-abhinav.ogl@gmail.com>
+ <CANiq72kRu5Wd-3Tk7px=2Y5kU5Tq2fQch=+f3ExYSrJa2+tSSg@mail.gmail.com> <DBOMC68QGS76.2MYEXRE1I34VV@kernel.org>
+Message-ID: <aInQQqmDUZy40t3E@google.com>
+Subject: Re: [PATCH v2] rust: pci: Use explicit types in FFI callbacks
+From: Alice Ryhl <aliceryhl@google.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, herculoxz <abhinav.ogl@gmail.com>, 
+	linux-pci@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, bhelgaas@google.com, kwilczynski@kernel.org, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, tmgross@umich.edu
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Daniel,
+On Tue, Jul 29, 2025 at 04:45:50PM +0200, Danilo Krummrich wrote:
+> On Tue Jul 29, 2025 at 12:52 PM CEST, Miguel Ojeda wrote:
+> > On Tue, Jul 29, 2025 at 12:30=E2=80=AFPM herculoxz <abhinav.ogl@gmail.c=
+om> wrote:
+> >>
+> >> and improves ABI
+> >> correctness when interfacing with C code.
+> >
+> > I think this still sounds like it is fixing an ABI issue -- I would
+> > probably just remove that second sentence.
+>=20
+> I agree, the types exported via prelude are the ones from kernel::ffi.
+>=20
+> > (But no need for a v3 -- I think it can be fixed on apply unless
+> > Danilo wants it).
+>=20
+> Yeah, I can fix it up when applying the patch.
+>=20
+> I also think the subject from v1, i.e. "use c_* types via kernel prelude"=
+, was
+> better. This one is a bit misleading, the types in the FFI callbacks are =
+already
+> explicit.
+>=20
+> Unless I hear otherwise, I will also revert the subject to the one of v1 =
+when I
+> apply the patch.
 
-On 7/29/25 11:38 PM, Daniel Almeida wrote:
-> +    mod private {
-> +        pub trait Sealed {}
-> +
-> +        impl Sealed for super::Unprepared {}
-> +        impl Sealed for super::Prepared {}
-> +        impl Sealed for super::Enabled {}
-> +    }
+With the above changes:
 
-I just noticed we have plenty of Sealed traits scattered across rust/ 
-folder. Do you think we would benefit from unifying it to a single 
-location to prevent duplication?
-
-> +
-> +    /// A trait representing the different states that a [`Clk`] can be in.
-> +    pub trait ClkState: private::Sealed {
-> +        /// Whether the clock should be disabled when dropped.
-> +        const DISABLE_ON_DROP: bool;
-> +
-> +        /// Whether the clock should be unprepared when dropped.
-> +        const UNPREPARE_ON_DROP: bool;
-> +    }
-> +
-> +    /// A state where the [`Clk`] is not prepared and not enabled.
-> +    pub struct Unprepared;
-> +
-> +    /// A state where the [`Clk`] is prepared but not enabled.
-> +    pub struct Prepared;
-> +
-> +    /// A state where the [`Clk`] is both prepared and enabled.
-> +    pub struct Enabled;
-
-I would put a private member into the structs so the user of this API 
-cannot construct it themself without using your abstractions.
-
-	pub struct Unprepared(());
-	pub struct Prepared(());
-	pub struct Enabled(());
-
-> +
-> +    impl ClkState for Unprepared {
-> +        const DISABLE_ON_DROP: bool = false;
-> +        const UNPREPARE_ON_DROP: bool = false;
-> +    }
-> +
-> +    impl ClkState for Prepared {
-> +        const DISABLE_ON_DROP: bool = false;
-> +        const UNPREPARE_ON_DROP: bool = true;
-> +    }
-> +
-> +    impl ClkState for Enabled {
-> +        const DISABLE_ON_DROP: bool = true;
-> +        const UNPREPARE_ON_DROP: bool = true;
-> +    }
-> +
-> +    /// An error that can occur when trying to convert a [`Clk`] between states.
-> +    pub struct Error<State: ClkState> {
-
-Nit: IMO we mostly use the `where` variant instead of the colon.
-
-	pub struct Error<State>
-	where State: ClkState
-
-But does it make sense to put the bounds on the structs? Shouldn't be 
-enough but but the bounds on the impl block?
-
-> +        /// The error that occurred.
-> +        pub error: kernel::error::Error,
-> +
-> +        /// The [`Clk`] that caused the error, so that the operation may be
-> +        /// retried.
-> +        pub clk: Clk<State>,
-> +    }
->   
-
-Thanks!
-Daniel
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
