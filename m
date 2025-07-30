@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1410D2D97A8;
-	Wed, 30 Jul 2025 13:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E742D97AA;
+	Wed, 30 Jul 2025 13:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753883617; cv=pass; b=toZJHqXNjkVtBrc4wzZVKtbujyoP3n/P2buTth07DbwkPnZyVxR+l/Tx2bvYCAFq36T6u1454+ANyI41tdFzdhFDZhYHWrx+geKbu26rwsPIoh0f7e/gwBQwa9cljFkr3CO0aPRcUjmWU4W+8OUD1AXzhGCLPAibYSPj4wzR/ek=
+	t=1753883847; cv=pass; b=WKSN4RMZnTyuxqFUks6MWtoa2zqSxM4dC6z+gYpkFQfBVtNN/+hOm6kqavc5SXZilAOUszRwQC5J9rLOaW+DwKpwWchMxsz5vB+io16y5ouPSznxyhHdqdNz5LcSO+vjaIDvGoBu8OdbFZAAX3SZJxaG3hctM/FUA9zJwSezzHE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753883617; c=relaxed/simple;
-	bh=Jx1Dkak9qnVIvoXGG0Fyb1u3c00AFlts7wrW5uDa+Hc=;
+	s=arc-20240116; t=1753883847; c=relaxed/simple;
+	bh=/1Z0B86lIfaqQpoJGmWBnivyAyNad2J3d1f8p5NY6ew=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=YY7jq9fJjd/pfM4GaOy3zotYLuJ8tVepibQCJKeUHLpRmuNUDhsyAos+ufAMocie7gKZRkDby1suR/kwcuVI7LuqmcMyYSCjIW4ENm6F8mvjIIASXGpGkkcElYxfXoWnYmh0Cr9nzImIDl+Xix1/WgVbZT+K5xxK2aA4yWbtmDY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=E9hdR0Qi; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=g1TIPc2H1dYJPTC6w5N6t8E4pzrhfakYUIpuDeYQ1m850muuLwAnVFEhItV9VDgf4nFUjiEhoSc90umo5a5RPwNiqjUIvLqF6a3NQf0ypUyCKbeGOKkiAD0JujE8fsaZtR0mTZ9SGj+POJHY7ALCq2wDqeuD1LU1OG0ir1jmpLY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=YnR/a8gj; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="E9hdR0Qi"
-ARC-Seal: i=1; a=rsa-sha256; t=1753883595; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="YnR/a8gj"
+ARC-Seal: i=1; a=rsa-sha256; t=1753883815; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=mv2jCEPms2pSZJRfqTnkUNFI2eX/giXyFEi5WWe4va2FykTEwZX/9r2XLO8CmKGTmhAvElh2HIOLRgnj7c49DLubRv5jEPjysh/KqmSioFVF3uUt2wWmxRE347l+shEY1DWcB3NU0nbRcd0WyG5XHZyeyk72GdMElKmRZSK5JU4=
+	b=ZLiYjS3NO9RNSSID4MHQqwWKu2i6um9uJemRNiKCozfx5bbBiyCIun+qKGlUKR6x/pWVWHRyq0MjLPFO1IShS9K1IhmBOTY6xrt0USzf8JJM7W5ZlphCdNqpf33NL2oKq8jELpjnKGyTMRWV5yh0eNO6zgDWZ1ZU2531EyXYih4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1753883595; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=FRDg6VhwDKyAPe3WRc3tkSs9KfKtj9WJq1E9k2oIvow=; 
-	b=kPPp+B7wAn8By9QuWOUNYDiOK6Olq1ERtMjf8KQm93/0lH5zHJCkIygr6dmwwCpkh+dVlgRHIDVig66Qh5luLHiS5K2isDY5nDIVrrfk3r8ihS4alYKzws6KZhLg4KbRhPp3dmLHIQEYJZRBD52bsV73/e3cpySKzNW7Ty8rAUY=
+	t=1753883815; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/1Z0B86lIfaqQpoJGmWBnivyAyNad2J3d1f8p5NY6ew=; 
+	b=lNTecuHWedTV0yOHGAOceTbaCly4NHPWnJs34+FgqVdPuuRx7hqPkmzbaL3QQQuQAc1hEy95MyphSUbceK5kixqPKiOaBn5GbaUSfIMwvsQ1Igx8dLtI7etytgr+WAVLo3HD6nA9oVAvfTKODdEiXDXJe+uKGouova2YoLHkxrY=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753883595;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1753883815;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=FRDg6VhwDKyAPe3WRc3tkSs9KfKtj9WJq1E9k2oIvow=;
-	b=E9hdR0QiA/QoiQuQx/wi4ft63vU1OT7wmus5I6T87oZReJgY2ukfUChWDUwm4O8i
-	bHQoLn+H2fd+ba4SPlDSkf/AHEezILA8An/PkxY22Y2R7rTz+fSCXyXoe904ELGBBSG
-	jePzVHwtwcIdB367tMx96Im2VaqhUIQSYD5DVoaU=
-Received: by mx.zohomail.com with SMTPS id 1753883592221643.0644285011297;
-	Wed, 30 Jul 2025 06:53:12 -0700 (PDT)
+	bh=/1Z0B86lIfaqQpoJGmWBnivyAyNad2J3d1f8p5NY6ew=;
+	b=YnR/a8gjq+Hjp5hCY2bMW0gHUEkleJZxXu6ELOJgXVQT0ivi5HCV0wjKM0Cfl7/Q
+	VykfymdVr56cCibViUsCi8NVVaeNUW35TXWRqtaW2CVPiZgrE7PguGeiX4OXh9wPz5k
+	BBz+w15lXqrVc1/HAnXAT5YyXJ3rRDtJ6Y3jPZcQ=
+Received: by mx.zohomail.com with SMTPS id 1753883811262351.39162426409564;
+	Wed, 30 Jul 2025 06:56:51 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,83 +44,77 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH] rust: clk: use the type-state pattern
+Subject: Re: [PATCH v2] rust: update error.rs documentation
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
-Date: Wed, 30 Jul 2025 10:52:55 -0300
-Cc: Alexandre Courbot <acourbot@nvidia.com>,
- linux-clk@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org
+In-Reply-To: <20250730120459.15607-1-work@onurozkan.dev>
+Date: Wed, 30 Jul 2025 10:56:35 -0300
+Cc: rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ boqun.feng@gmail.com,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ lossin@kernel.org,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ me@kloenk.dev,
+ felipe_life@live.com,
+ abdiel.janulgue@gmail.com,
+ dirk.behme@de.bosch.com,
+ daniel@sedlak.dev,
+ linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6EDE1C11-8654-404D-98AC-0D102090C15F@collabora.com>
-References: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
-To: Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <69315F62-A882-4622-B967-CCE206013C41@collabora.com>
+References: <20250730120459.15607-1-work@onurozkan.dev>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
+Hi Onur,
 
-[=E2=80=A6]
-
->         }
+> On 30 Jul 2025, at 09:04, Onur =C3=96zkan <work@onurozkan.dev> wrote:
 >=20
-> -        /// Enable the clock.
-> +        /// Attempts to convert the [`Clk`] to a [`Prepared`] state.
->         ///
-> -        /// Equivalent to the kernel's [`clk_enable`] API.
-> +        /// Equivalent to the kernel's [`clk_prepare`] API.
->         ///
-> -        /// [`clk_enable`]: =
-https://docs.kernel.org/core-api/kernel-api.html#c.clk_enable
-> +        /// [`clk_prepare`]: =
-https://docs.kernel.org/core-api/kernel-api.html#c.clk_prepare
->         #[inline]
-> -        pub fn enable(&self) -> Result {
-> -            // SAFETY: By the type invariants, self.as_raw() is a =
-valid argument for
-> -            // [`clk_enable`].
-> -            to_result(unsafe { bindings::clk_enable(self.as_raw()) })
-> +        pub fn prepare(self) -> Result<Clk<Prepared>, =
-Error<Unprepared>> {
-> +            // We will be transferring the ownership of our =
-`clk_get()` count to
-> +            // `Clk<Prepared>`.
-> +            let clk =3D ManuallyDrop::new(self);
-> +
-> +            // SAFETY: By the type invariants, self.0 is a valid =
-argument for [`clk_prepare`].
+> Adds missing header links.
+>=20
+> Signed-off-by: Onur =C3=96zkan <work@onurozkan.dev>
 
-I just noticed that some comments still refer to the old =E2=80=9Cself.0=E2=
-=80=9D field, but that doesn=E2=80=99t exist anymore.
+This is a v2 but there is no changelog.
 
-I=E2=80=99ll fix that in v2.
+Could you let us know what changed in future iterations, if any?
 
-> +            to_result(unsafe { bindings::clk_prepare(clk.as_raw()) })
-> +                .map(|()| Clk {
-> +                    inner: clk.inner,
-> +                    _phantom: PhantomData,
-> +                })
-> +                .map_err(|error| Error {
-> +                    error,
-> +                    clk: ManuallyDrop::into_inner(clk),
-> +                })
->         }
-> +    }
+> ---
+> rust/kernel/error.rs | 2 ++
+> 1 file changed, 2 insertions(+)
+>=20
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 3dee3139fcd4..dd3e4224218d 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -2,6 +2,8 @@
+>=20
+> //! Kernel errors.
+> //!
+> +//! C header: =
+[`arch/mips/include/uapi/asm/errno.h`](srctree/arch/mips/include/uapi/asm/=
+errno.h)
+
+Why is this mips file being referenced here? :)
+
+> +//! C header: =
+[`include/linux/errno.h`](srctree/include/linux/errno.h)
+> //! C header: =
+[`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic=
+/errno-base.h)
+>=20
+> use crate::{
+> --
+> 2.50.0
+>=20
 >=20
 
 =E2=80=94 Daniel
+
+
 
