@@ -1,187 +1,91 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132CC2DC333;
-	Wed, 30 Jul 2025 16:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7075817CA17;
+	Wed, 30 Jul 2025 16:39:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753893287; cv=none; b=GtwURUtkNfcUXO+00OpswgzdVYAVJPj4fzKgjB8yT5UzKp3cLQT4U9Jr0cQaFlPPa71Jw+3mzSfTxQw9pch2pDnYkFJXDeX8UT5yjAB2l5AF5c0nzDlbHbRSbTUh1dh1Gnvb+LuNMQnUUGv7vBnrMA7mRzeEyPljycHLFAaI9Hk=
+	t=1753893542; cv=none; b=uienYu8PY8L+0IVPUgbnuflNQwrZSCuRRu4SETb1yY9vdPi1r5YpfMbyrPgy10Lsqq9GPqZaFpXg2iJ/lYzIH+dUJE2e2H2eTbsSEml183knQTxE1KLmiCM1i1xslaWISak5Rfk4b4+ijzMnDb40LuH4mUuh3fEoOUffLNb+e6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753893287; c=relaxed/simple;
-	bh=Pww2+2RTccweOOaSg3HQAH4+iNqxrYV0nPHxTr9SSxU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f352EgVjsHdOTTG55xNtEZh2AwrPCO1AWmUD9aQmhlemoB7c/9cg27D5kfSREWHpHcStEpDwFh5sVQMcEjRS5vccjHe8w8dhKLH57WCHyeah8JudSNTGAdMCBrnhQiaU13o2MxSw9KKsAE+rxuBpP9n+JULpDubWMkNlYXQtMVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TUgZZgED; arc=none smtp.client-ip=209.85.219.53
+	s=arc-20240116; t=1753893542; c=relaxed/simple;
+	bh=RC9xFI8XopPgr8+zR7FWv7fql5HY3Ezhn4V1VGJnTl8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GwuIa26hrJT6r4JrVZii9A45OWsfxsr4zq1ld4o+BB/30mAfdhVD3A9RAmarkwTRI+4ZYs3f9mwgnBbtNVKRfIHkbCCvPXVYItg/8wv+rBZmRbdslTxbosvYxaiD729mDXSjAPNaYu63+6i0qeRvoMnnWP+JOvHLp77en9nMUMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nASWSufm; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TUgZZgED"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6f8aa9e6ffdso13521196d6.3;
-        Wed, 30 Jul 2025 09:34:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nASWSufm"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-23fd901c4d2so114285ad.0;
+        Wed, 30 Jul 2025 09:39:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753893285; x=1754498085; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=85jI46TT0GPR4edF9l8eb8Q9ABq24Mufxzr5iKnRg+w=;
-        b=TUgZZgEDhBCBX0VM5FrP7Si9TO0rKLUWQm8Bb4WO/v+1pfiP7Cay3dFd1W8+ZMcsSH
-         67ppBpN0uQ4udZ9JoExUuEo1eTJzOITyeybQSK8IRhrVJ2XZ+gF4K0ds4dNUlTAFZqX0
-         pex6isIGMzwRtUCDcq7tgCp8C2K7bZ91nNmm0zOdaVaajm08X/HOutT8sA3ZREfR5CVg
-         FRAq1pSaf1PxqAHphWWEt/Y0R3jXjSYvhmITbJGQhIri556fqh6t75tkr6IswtB9mFVC
-         RlAnEQsfs6JB0VLfaj5p2Z8fD99FJ+QtP3qrVXMKWCoA6F6NYIHAJcWtWAKIC5Yv0Ga0
-         ynGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753893285; x=1754498085;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1753893541; x=1754498341; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=85jI46TT0GPR4edF9l8eb8Q9ABq24Mufxzr5iKnRg+w=;
-        b=pB/u4vCWRgZGHfQClYs/3yu4A35vmJOGVrfJmFu1K0QuKJMjUpPJXmSrnBooQI5KUz
-         jI+cdSL9dd14NWRS9DsvkWZkpIN1mLkyQdZ6KU1GneqK8ijgOfZIY5dFSJ4zqGVEiYcw
-         ddr1ZO+VmMEmCDkys/gdccBqr6M0REmKahFDgv+5G4LHyhTKdi5sPcMtbeCwUaFYKP3q
-         AtuGZMdm3qd/u6ckJxLMZXxzbNSMJfdc3W4MHbGjHQ4ZuDZrmVqw81q39nS1b6wmQbnm
-         MLz9gnhD8WZ0WFM91UBJtmxwtOOdgwCFTZlMIAZbvxmAmChQSSGXrfZp8IKe2TJ85ser
-         zKSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUhfjs7k7Ivh+XX2cYfkr5RWLovavWUSyk6ax2OEOnw7pRx5zgiJZ8n9jHR3cg3JLq+sLXU7V8dVwIWQFM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDpyCSQesKu+LIaU9iDx09574GlneFYJWh4DBREDqe3UYkYxfC
-	gU2dcSRYKiK7IqLV9QtJcIgWQJp1qwSYAG1ntnzVz7iI1T+tkk16DOUZ
-X-Gm-Gg: ASbGncvsXvnnkiNqf+/+uhZ+b9KkcaO7QZQA7//A6ehOwBwIPcfCu2wJZzwUCdlbrT8
-	OZg9oaBt/FTHIp0L1NzFfrnqxJxh/AQm6/3ZBwEpiN0oCiNLedMqiBG36dd80rdpThx+Z4X8/Zd
-	Ge0Rh+3ldBVhzpjWPkDdMRjho25zuFu87oQ8ZwMh4BDq3DDRRgaKKgMEGoHNSiijmOHxIULZ0J/
-	/ETgoQVH4PKtUe1/ETMSk3eH1WlXDS/pGsaINVC8zUnJbROVPJbZ/9xedEdVgMmQ3biwg0eSXRR
-	vZYh9JthUNtpYZyaQK9ydvPe8iWp99Jbk8F7EC3hWwmtPA9izmMGNCw5Jrur0Iv0cSLUsZmUkAI
-	Dd6EBALNpDq+I2n+s/HVHRraVcIs/O73d9lE/EKIDg9ueK2NkK62s+npc8S0t616EE02dEI4Sid
-	0vh4BhCLfA9y2lKhMbydWvtd0=
-X-Google-Smtp-Source: AGHT+IF87ui693FlfdtuZYq18YJCUZIqze6brhe0sL3caoDTaXoMwcznuI3n0atOElTBV/8/25J8kQ==
-X-Received: by 2002:ad4:5746:0:b0:704:f7d8:edfd with SMTP id 6a1803df08f44-70767451bf6mr76938236d6.50.1753893284628;
-        Wed, 30 Jul 2025 09:34:44 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-707299ff177sm63327516d6.8.2025.07.30.09.34.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 09:34:44 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7EAE1F40068;
-	Wed, 30 Jul 2025 12:34:43 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Wed, 30 Jul 2025 12:34:43 -0400
-X-ME-Sender: <xms:o0mKaMvQSaY3pq2y5J3XEilPCMQhD5pyhOKP_P913VJt2DqopwiZJQ>
-    <xme:o0mKaDv757AaFzyvru0zyKvQBuFFK0J4D2KFO0Nu5QT0g1tlpCwBtm4rkt3Ey0adC
-    PZNvBCWbMIogQLVFg>
-X-ME-Received: <xmr:o0mKaNOVCSBPUK8zEW5vpfg6TgHmmcgAlk6vz6oDjy7J8VxEvGS4urNEeg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelkeegvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfhvghn
-    ghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnh
-    epgeetleffkeevffdugedvtdffvdeitdejieffgeehhfdtueeijeejuedtffdufedunecu
-    ffhomhgrihhnpeiiuhhlihhptghhrghtrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgv
-    rhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfh
-    gvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthho
-    pedukedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhushhtqdhfohhrqdhlih
-    hnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
-    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdr
-    tghomhdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtph
-    htthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegp
-    ghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhr
-    gh
-X-ME-Proxy: <xmx:o0mKaFd806N46DtNrkDEhKXB3fr39RNmxl2hjpFZjVMnVYJdJ16GMg>
-    <xmx:o0mKaEmyEDeebftcbJDTLHAFth9pe4pk6pDwDinJIkRmW82xolcr5g>
-    <xmx:o0mKaHw-TLdEskvbx4yL9i7T9dV3p8jY3RTpu5xvjforyyo70VusQQ>
-    <xmx:o0mKaHO54LEc_4cQNBb_DhkcMz4-LqZ0Y5lqNC2ovCyWDgFU_BUy2Q>
-    <xmx:o0mKaIhR9mhx0fKDUk1dxnFyttWa4t04NTexgnaOKngxRsivcsEtnKwR>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Jul 2025 12:34:42 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Alban Kurti <kurti@invicto.ai>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: [RFC PATCH] rust: workqueue: Add an example for try_spawn()
-Date: Wed, 30 Jul 2025 09:34:39 -0700
-Message-Id: <20250730163439.50753-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        bh=RC9xFI8XopPgr8+zR7FWv7fql5HY3Ezhn4V1VGJnTl8=;
+        b=nASWSufmXF2XsPGGSddxyhhGfgBlYLg3uA8BvNcq1rcdrbWE1BMfvirN6mlPzVDoJH
+         giauZQOstwrn6yY0AWbMg3u+p3mWrSvpvCxm80pvOVtFes/lImlixvknB+SYw4juqM6e
+         sB1yWzoeX1AIcR6RAOc4SmR67HkHeZ0w8m7ttLf3ZWa9bUtNwKkr9pRWoCpB3SO+fX2g
+         GtYZdhBS352llVlJyJgHxZ5hUG/P6BVBzVCn7OiFg6cXJ/ESPi3TVRulVTTIMeZEcMng
+         ZqekEdxSCDL+zEweuw59T5CZdMc3EELDwYg/wA/owQC+HmzzIcV69yGqoQrfC+TTYgZd
+         eU2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753893541; x=1754498341;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RC9xFI8XopPgr8+zR7FWv7fql5HY3Ezhn4V1VGJnTl8=;
+        b=gY2scnrbVcmBCiJLqC6TO3rlT3u2JKIKXU/cD4/BG7v9zBBXeoS9EhTien9yirhYen
+         p+CZXOZTtjOZ8TgRLkItWfJmyhlzWHeFN7sd8gplTfNblWmfU0Pk5Uyro6ZXCoMraEK+
+         jznE+G6vhEyf+WE2IfVjTxbm/hVafqvKzZhJSfmAv0TCe1Fj6gTiCGzO724tfC8aGzgW
+         6ts/ZfeMBFmvOj067d8a8atKqw2TlGeXXeI6whvNlVG8ry9Hs2YcpCe8a5IIgPmRvWAC
+         lgWm0qtPZbIvVdxfwP/YqOeilkcYKKlIiZ6k/JOGZEPCCCbyKo0fpVpvfmGJcRJuiLp3
+         L9aw==
+X-Forwarded-Encrypted: i=1; AJvYcCX3J9LVowYXAxpAkqQpMS25cIOxzd+3pLhnmdQ/eWtIIkJ1HuB5JNDo4MJfAcg4RB+6kp4W/IcsWvmZpCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMFvFwJ+PBfMZY2ASSBc8WEDS5cMz1IfoCrogdq9LoisICS6R6
+	1hIYzWfd5NRwd2GS5R/6rJ3I9ttDL8aMidZLQMcplFf4z/wnUm6HhXfVNfANBOCCDjixzNWb7Kn
+	9u87WoadSBQfwhVBYhp1ta5/B2cuplRg=
+X-Gm-Gg: ASbGncvtQMgyOuRSGlVDOW03Im2Ww2UmAxzdfXyWbisTng1BUwtp1xO3GqLUFW5tT7+
+	dlxWm1OYDZjDtIqttkEGpocbswFAMIkkP8ClIfR6YACN9I8tV9I35UNU6ToAzCwku3VNT2FiKJK
+	9dSSNy2eXslNGInG3x8bu6OETTa+yNQsfKbFcsleZnokDbKfZ5JArsy4u03dFc0Eugiph0LhE4T
+	ca6NBPW
+X-Google-Smtp-Source: AGHT+IG+O29qwdh1a5SD7QYz6J9Zm1C/HF6QJcj3Zzc4n0osQsqpemTwgfOKeA19rPcVr+oTkTKYamKH/bXNHF0pm+s=
+X-Received: by 2002:a17:902:9f90:b0:23f:fd0e:e5c0 with SMTP id
+ d9443c01a7336-24096b31fbcmr18626705ad.9.1753893540567; Wed, 30 Jul 2025
+ 09:39:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250730163439.50753-1-boqun.feng@gmail.com>
+In-Reply-To: <20250730163439.50753-1-boqun.feng@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 30 Jul 2025 18:38:46 +0200
+X-Gm-Features: Ac12FXxPPYGdC01qZY8eirhybN4tcPE72DrHd87TACpl_mHGDNq_8_7DEVzTmH0
+Message-ID: <CANiq72ntUsB-a3Btf+PwmezqN919FmL_P3g589mVJm+-_h2CcA@mail.gmail.com>
+Subject: Re: [RFC PATCH] rust: workqueue: Add an example for try_spawn()
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>, Alban Kurti <kurti@invicto.ai>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, "Paul E. McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-`try_spawn()` could use an example to demonstrate the usage, and
-arguably it's the most simple usage of workqueue in case someone needs a
-deferred work, so add it.
+On Wed, Jul 30, 2025 at 6:34=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> Miguel, Alice and Tejun, while I'm at it, should we also rename the
+> function to `spawn()` because of the motivation mentioned here [1]?
 
-Cc: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
-Miguel, Alice and Tejun, while I'm at it, should we also rename the
-function to `spawn()` because of the motivation mentioned here [1]?
+Sounds good to me.
 
-[1]: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/topic/.60new.60.20or.20.60try_new.60.3F/near/529533317
-
-Also I find the `{ <clone> || { } }` is really good if I only need to
-clone the Arc for passing to a callback closure, but I'm not sure how
-people feel about it, so criticism is welcome ;-)
-
- rust/kernel/workqueue.rs | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
-
-diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-index b9343d5bc00f..59c1a5e14d12 100644
---- a/rust/kernel/workqueue.rs
-+++ b/rust/kernel/workqueue.rs
-@@ -331,6 +331,33 @@ pub fn enqueue_delayed<W, const ID: u64>(&self, w: W, delay: Jiffies) -> W::Enqu
-     /// Tries to spawn the given function or closure as a work item.
-     ///
-     /// This method can fail because it allocates memory to store the work item.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::{alloc::flags, sync::{Arc, Completion, new_spinlock}, workqueue};
-+    ///
-+    /// let work_done = Arc::pin_init(Completion::new(), flags::GFP_KERNEL)?;
-+    /// let data = Arc::pin_init(new_spinlock!(0), flags::GFP_KERNEL)?;
-+    ///
-+    /// workqueue::system().try_spawn(
-+    ///     flags::GFP_KERNEL,
-+    ///     {
-+    ///         let work_done = work_done.clone();
-+    ///         let data = data.clone();
-+    ///         move || {
-+    ///             *data.lock() = 42;
-+    ///             work_done.complete_all();
-+    ///         }
-+    ///     }
-+    /// )?;
-+    ///
-+    /// work_done.wait_for_completion();
-+    ///
-+    /// // `work_done` being completed implies the observation of the write of `data` in the work.
-+    /// assert_eq!(*data.lock(), 42);
-+    /// # Ok::<(), Error>(())
-+    /// ```
-     pub fn try_spawn<T: 'static + Send + FnOnce()>(
-         &self,
-         flags: Flags,
--- 
-2.39.5 (Apple Git-154)
-
+Cheers,
+Miguel
