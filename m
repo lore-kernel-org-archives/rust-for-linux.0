@@ -1,107 +1,293 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA5B19BBC;
-	Wed, 30 Jul 2025 09:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD5E273D95;
+	Wed, 30 Jul 2025 09:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753867035; cv=none; b=ocGrNXiZNv9bwybcuxY8fnotjd0Er2Y7npf72mnZcgGTb31PhHtNSlWJ/bWvz28vJrP08txIFMfjov4KWOhGQ1bGtYR78FsfDQOGz45GDUSjSadtnWsEC3s987oqBn6q6pHELxuxctpu1MpVHR8KWfnckHDIHuW/RroF7ZPFH88=
+	t=1753867643; cv=none; b=O4uLUZ8O4REW0v27pz3cq7jzcD99+QNyRbFVLBuWR+aX+5FhonYhkPdqsX/Ffy/BjqsB9t3VmEkl2AXusI/JCzUlf5GBZx5nSA3b9f4SLe2QKv/24dQICMRBX5p5YdE0iAl5A/q3XMlgBUxdl+yJWq8n5gYxQKFvHKWYcRqeyv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753867035; c=relaxed/simple;
-	bh=oyoz4k4QYMtoaz2JEU06qpYJL2BGR3kKis3s0TF7D1Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vE+klDgd9dZXxfrRbj2RIPMHfVyerTIjf6udGWvAXbSEvPoYDZNF8rwSxvBHCXXk8IYGovZbyTeo4oJP5NJvdXBOLFx8KPi3Z4RQT9ZrF8gGP+1Z8VsOM7KG0lCnpPH4ZwcTKVi/HRhza8pQEgv3yR7pYHX+QCwXVbqTb948iiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zj0o4ghB; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zj0o4ghB"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-240240f1478so3909415ad.1;
-        Wed, 30 Jul 2025 02:17:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753867033; x=1754471833; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4cvx3jlCW1kUJS1UO86lbagV2SGRq3t/wFGliVna4Zs=;
-        b=Zj0o4ghB3lrG7R6InXG+wIatNS9c/9frGAxc72gTcqAHRfPEy3Hko7Tek0pOuFh64/
-         H6UZL8IGoFdm8wa7YSjxkHr0E3v2SWox/B9IuR4IcR4JTO1S/73D0ljbLF5uRfIO/BNw
-         xbPGv6gxZUCeLn5AQQrbVNOCpJyTZxLVcziMekCIvlOZmJ0W9b9pYWqgwRELA0pYqSoj
-         iyZ/fDu19461v7XGcJWFYJzmmaLsVtPXMagxcJpIREpSU1AUTXGerajSGt25u62Hh34g
-         VlHiwB9VerTVcMpdMgDUfnl54r64cfu3ZGo9cit4kszhMSx+eQiCNpHz/ZqYwBmpsYAH
-         71rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753867033; x=1754471833;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4cvx3jlCW1kUJS1UO86lbagV2SGRq3t/wFGliVna4Zs=;
-        b=d3vSc4TiXJDEnbEDkawcilUKPa+JMYE7QQIkK7H1ZS4oK7M4i68Ve90FpdJtlJgbc5
-         xIyKKLHIotUW0eBd3nHpf6Qzy57bBfe6MlWsw592uJxFhpV83PwzZIKR42wI2gcWkgjJ
-         xyPdEU13dkBBDOnXC+d7AqfDLd0b/Y5dRqlO9tmlur7VpF1pN7MpvkGZmIhctiThJMms
-         dyPE7cuskh2bcw7lZBmotRrh2p9/1+6d96Vv9xEMaHUac0X4uATqrobOR00R4DguGfUi
-         KlcSs+4Oge1lRFvHEue/bIgb6xaPyFaLXw0Kj7mMlvezL+RXsFKC4ey4K8R+jywMY5iK
-         Ai5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWSeGj//hgYf1wA0aJwElg63AdIySP/L1jO4Wv7JhXjRQZGs4gcRMaLQxk5rSH16N0KG7+9Oaf+Kxi335qKBJE=@vger.kernel.org, AJvYcCWiV0kDcjpHvpmkRyZJKlEit947RysBGhnNVRC4x3RIgy6/IHK3kEAhE85ez26R9k0unI2nmV+s0VVDHXE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtpNEAUdHZ4zwS3n8CDnUsFcZZDZ25OQQs62UJsyvWJlU+FW7I
-	zagj3+Sqd/pf6FR1hs08J0eSFLOOgO/yy6Kl+93t0RzNHzYiAjp+W9Cd81CUYxSxtpryQ6P1ZCf
-	WqOZ5Mhx0zaqOh/ynUM763pQVyoovwHs=
-X-Gm-Gg: ASbGncvMvgdzqmMTwsj47k7fHq/pWUOjx9mWkl/Wb3WLzjI1Fl7+36ILTcsK19G7kUh
-	qObaCN6Lj7FKunPLi8o6rE3AlFLiZm/xj0rTSWq9ffR8D2iYlM9GNg9noeirpnNAge/FhvTFpt7
-	YudmkvYIo1Lp7SHwpPkDmvmQ36GYNRgndGDJZc4TiimZsHdwa0Fp3XVa7Xz3xqN8+BQi2kEi0ps
-	sCqrna2
-X-Google-Smtp-Source: AGHT+IFviiFpY5qURxAmF3cs+hlFE9oNjWne7PmU5uhh8IL6DjReVabkfDO1rSN8HCo6zGiWEaC1cgW28Uq4mulUdIs=
-X-Received: by 2002:a17:903:22d0:b0:240:79df:48b0 with SMTP id
- d9443c01a7336-240969a3ce2mr17124625ad.0.1753867032977; Wed, 30 Jul 2025
- 02:17:12 -0700 (PDT)
+	s=arc-20240116; t=1753867643; c=relaxed/simple;
+	bh=zuiV1cxR5uExtihQ5cI8ozAiLB5dB5qNXy8q7LYFY7g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i7KEg2/NXN4RPNDKGr8JVjCjdbnBao88Haat+Sr7LvwxNIw6MjKW8ICuCZ0W2H1ZR37NhljNeoPzaqnQJ626l7HwADdC2ElOoSMNWG2d0NWI+Nq93wBZd4K2WjpxiR/k2p+6qeb7b2PoARlMKmKwgTa0Ynl2xVpyY+nFtV9a530=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F6A71BC0;
+	Wed, 30 Jul 2025 02:27:12 -0700 (PDT)
+Received: from [10.57.55.51] (unknown [10.57.55.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 855CC3F66E;
+	Wed, 30 Jul 2025 02:27:16 -0700 (PDT)
+Message-ID: <b1289f95-616f-4bb8-b408-222ce6925e21@arm.com>
+Date: Wed, 30 Jul 2025 10:27:14 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1753841900.git.zhuhui@kylinos.cn> <3ad14f15b6d2639d6e998ecd03158313414b69dd.1753841900.git.zhuhui@kylinos.cn>
-In-Reply-To: <3ad14f15b6d2639d6e998ecd03158313414b69dd.1753841900.git.zhuhui@kylinos.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 30 Jul 2025 11:16:58 +0200
-X-Gm-Features: Ac12FXwFTq20Np7yHTit391o2Sr0cqxsPUwzM11RptHMvEB2b-XUHfvEScx2lv4
-Message-ID: <CANiq72n_RnW=zma48X-txV-4AUDU9j0YGmYNBFYQ1CG3oxROJQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/2] rust: allocator: add KUnit tests for alignment guarantees
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
-	vitaly.wool@konsulko.se, Hui Zhu <zhuhui@kylinos.cn>, 
-	Geliang Tang <geliang@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/19] gpu: nova-core: register: minor grammar and
+ spelling fixes
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Beata Michalska <beata.michalska@arm.com>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, John Hubbard <jhubbard@nvidia.com>,
+ Nouveau <nouveau-bounces@lists.freedesktop.org>
+References: <20250718-nova-regs-v2-0-7b6a762aa1cd@nvidia.com>
+ <20250718-nova-regs-v2-1-7b6a762aa1cd@nvidia.com>
+ <B1AA6359-7854-4284-B533-F5CA3C18AF34@collabora.com>
+ <DBNF8SZWLI79.1NRX9AMW5QW45@nvidia.com>
+ <d0ffb55b-690a-4a65-98b5-b83adebfd88b@arm.com>
+ <DBNNTU14VH90.25AZCJSVT4JDR@nvidia.com>
+ <ce8b4bd9-5122-4b85-b605-a1bf10556208@arm.com>
+ <DBOL3HSE1OUW.22PGYP5T6164C@nvidia.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <DBOL3HSE1OUW.22PGYP5T6164C@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jul 30, 2025 at 5:37=E2=80=AFAM Hui Zhu <hui.zhu@linux.dev> wrote:
->
-> +#[macros::kunit_tests(rust_allocator_kunit)]
+On 29/07/2025 14:47, Alexandre Courbot wrote:
+> On Mon Jul 28, 2025 at 10:25 PM JST, Steven Price wrote:
+>> On 28/07/2025 12:43, Alexandre Courbot wrote:
+>>> On Mon Jul 28, 2025 at 4:51 PM JST, Steven Price wrote:
+>>>> On 28/07/2025 05:59, Alexandre Courbot wrote:
+>>>>> Hi Daniel, thanks for the review!
+>>>>>
+>>>>> On Sat Jul 26, 2025 at 1:14 AM JST, Daniel Almeida wrote:
+>>>>>> Hi Alex. Thank you and John for working on this in general. It will be useful
+>>>>>> for the whole ecosystem! :) 
+>>>>>>
+>>>>>>> On 18 Jul 2025, at 04:26, Alexandre Courbot <acourbot@nvidia.com> wrote:
+>>>>>>>
+>>>>>>> From: John Hubbard <jhubbard@nvidia.com>
+>>>>>>>
+>>>>>>> There is only one top-level macro in this file at the moment, but the
+>>>>>>> "macros.rs" file name allows for more. Change the wording so that it
+>>>>>>> will remain valid even if additional macros are added to the file.
+>>>>>>>
+>>>>>>> Fix a couple of spelling errors and grammatical errors, and break up a
+>>>>>>> run-on sentence, for clarity.
+>>>>>>>
+>>>>>>> Cc: Alexandre Courbot <acourbot@nvidia.com>
+>>>>>>> Cc: Danilo Krummrich <dakr@kernel.org>
+>>>>>>> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+>>>>>>> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+>>>>>>> ---
+>>>>>>> drivers/gpu/nova-core/regs/macros.rs | 14 +++++++-------
+>>>>>>> 1 file changed, 7 insertions(+), 7 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/gpu/nova-core/regs/macros.rs b/drivers/gpu/nova-core/regs/macros.rs
+>>>>>>> index cdf668073480ed703c89ffa8628f5c9de6494687..864d1e83bed2979f5661e038f4c9fd87d33f69a7 100644
+>>>>>>> --- a/drivers/gpu/nova-core/regs/macros.rs
+>>>>>>> +++ b/drivers/gpu/nova-core/regs/macros.rs
+>>>>>>> @@ -1,17 +1,17 @@
+>>>>>>> // SPDX-License-Identifier: GPL-2.0
+>>>>>>>
+>>>>>>> -//! Macro to define register layout and accessors.
+>>>>>>> +//! `register!` macro to define register layout and accessors.
+>>>>>>
+>>>>>> I would have kept this line as-is. Users will most likely know the name of the
+>>>>>> macro already. At this point, they will be looking for what it does, so
+>>>>>> mentioning "register" here is a bit redundant IMHO.
+>>>>>>
+>>>>>>> //!
+>>>>>>> //! A single register typically includes several fields, which are accessed through a combination
+>>>>>>> //! of bit-shift and mask operations that introduce a class of potential mistakes, notably because
+>>>>>>> //! not all possible field values are necessarily valid.
+>>>>>>> //!
+>>>>>>> -//! The macro in this module allow to define, using an intruitive and readable syntax, a dedicated
+>>>>>>> -//! type for each register with its own field accessors that can return an error is a field's value
+>>>>>>> -//! is invalid.
+>>>>>>> +//! The `register!` macro in this module provides an intuitive and readable syntax for defining a
+>>>>>>> +//! dedicated type for each register. Each such type comes with its own field accessors that can
+>>>>>>> +//! return an error if a field's value is invalid.
+>>>>>>>
+>>>>>>> -/// Defines a dedicated type for a register with an absolute offset, alongside with getter and
+>>>>>>> -/// setter methods for its fields and methods to read and write it from an `Io` region.
+>>>>>>> +/// Defines a dedicated type for a register with an absolute offset, including getter and setter
+>>>>>>> +/// methods for its fields and methods to read and write it from an `Io` region.
+>>>>>>
+>>>>>> +cc Steven Price,
+>>>>>>
+>>>>>> Sorry for hijacking this patch, but I think that we should be more flexible and
+>>>>>> allow for non-literal offsets in the macro.
+>>>>>>
+>>>>>> In Tyr, for example, some of the offsets need to be computed at runtime, i.e.:
+>>>>>>
+>>>>>> +pub(crate) struct AsRegister(usize);
+>>>>>> +
+>>>>>> +impl AsRegister {
+>>>>>> +    fn new(as_nr: usize, offset: usize) -> Result<Self> {
+>>>>>> +        if as_nr >= 32 {
+>>>>>> +            Err(EINVAL)
+>>>>>> +        } else {
+>>>>>> +            Ok(AsRegister(mmu_as(as_nr) + offset))
+>>>>>> +        }
+>>>>>> +    }
+>>>>>>
+>>>>>> Or:
+>>>>>>
+>>>>>> +pub(crate) struct Doorbell(usize);
+>>>>>> +
+>>>>>> +impl Doorbell {
+>>>>>> +    pub(crate) fn new(doorbell_id: usize) -> Self {
+>>>>>> +        Doorbell(0x80000 + (doorbell_id * 0x10000))
+>>>>>> +    }
+>>>>>>
+>>>>>> I don't think this will work with the current macro, JFYI.
+>>>>>
+>>>>> IIUC from the comments on the next patches, your need is covered with
+>>>>> the relative and array registers definitions, is that correct?
+>>>>
+>>>> My Rust is somewhat shaky, but I believe "non-contiguous register 
+>>>> arrays" will do what we want. Although I'll admit it would be neater for 
+>>>> the likes of the AS registers if there was a way to define a "block" of 
+>>>> registers and then use an array of blocks. Something vaguely like this 
+>>>> (excuse the poor Rust):
+>>>>
+>>>> register_block!(MMU_AS_CONTROL @ 0x2400[16 ; 64], "MMU Address Space registers" {
+>>>> 	register!(TRANSTAB @ 0x0000, "Translation table base address" {
+>>>> 		31:0	base as u32;
+>>>> 	});
+>>>> 	register!(MEMATTR @ 0x0008, "Memory attributes" {
+>>>> 		7:0	attr0 as u8;
+>>>> 		7:0	attr1 as u8;
+>>>> 		// ...
+>>>> 	});
+>>>> 	// More registers
+>>>> });
+>>>
+>>> I can think of two ways to achieve something similar using the current
+>>> patchset:
+>>>
+>>> - As you mentioned, a set of non-contiguous register arrays. This should
+>>>   work rather well, as you could just do
+>>>   `MMU_AS_CONTROL_MEMATTR::read(bar, 4)` to read the `MMU_AS_CONTROL_MEMATTR`
+>>>   register of the 5th instance, with compile-time bound validation. It's
+>>>   not what register arrays are for originally, but it does the job.
+>>
+>> Sadly we generally don't want a compile time index - the whole point is
+>> that each address space is functionally the same, so the index (address
+>> space ID) is going to be dynamic in the code. The disadvantage here is
+>> that every register access will involve a bounds check - the compiler
+>> might be able to optimise but the code will still have to deal with a
+>> potential error from every access.
+> 
+> If you can somehow constrain the index to the range that is declared for
+> the register (by checking the bounds beforehand), then the compiler
+> should be able to work with the non-try accessors. Actually that's what
+> [1] does: `ucode_idx` is checked for being in the
+> `1..=NV_FUSE_OPT_FPF_SIZE` range, which allows us to use the
+> compile-time validated `read` method.
+> 
+> [1] https://lore.kernel.org/rust-for-linux/20250718-nova-regs-v2-18-7b6a762aa1cd@nvidia.com/
 
-Is there any reason for the `_kunit` suffix? If not, then we should
-avoid suffixing `_kunit` to every suite name.
+Ah, cool. If the Rust compiler is clever enough to track the bounds like
+that then as you say it shouldn't be a problem. I'd been under the
+impression that the ::read() method wouldn't be available because the
+index could be out of range. I really need to find some time to learn
+more Rust ;)
 
-I see we already have `rust_kernel_kunit`, but that one is because it
-is the KUnit file itself.
+>>
+>>> - As a set of relative offset registers sharing the same group. This is
+>>>   more in line with the idea of a register block, but it also means that
+>>>   each instance needs to have its own type declared, which is a bit
+>>>   cumbersome but can be mitigated with a macro. More inconvenient if the
+>>>   fact that you cannot address using a simple number anymore...
+>>
+>> Yeah this does sound cumbersome. Would you end up with a macro
+>> duplicating the code 16 times (once for each type of the 16 register
+>> blocks) and hoping the compiler can optimise it all back together?
+> 
+> Yeah, this relying on the type system I don't expect the compiler to be
+> able to optimize this away, so that's probably not the best idea for
+> your use-case.
+> 
+>>
+>>> The idea of register blocks is interesting. I wonder how that would
+>>> translate in terms of access to invididual registers, i.e. does the
+>>> block end up just being a prefix into the full register name, or is it
+>>> something else? From your example declaration I picture that accesses
+>>> would look something like `MMU_AS_CONTROL[4]::MEMATTR::read(bar)`, which
+>>> ngl looks great, but I also cannot think of a construct that would allow
+>>> such a syntax... Happy to think more about it though.
+>>
+>> Yes, that is the sort of syntax I was imagining, although I was hoping
+>> you could do something like:
+>>
+>>   let as = MMU_AS_CONTROL[as_id]::try_get(&bar)?;
+>>
+>>   let memattr = as.MEMATTR.read(&bar);
+>>   memattr.set_attr0(3).write(&bar);
+>>   as.TRANSTAB.write(&bar, 0x1000);
+>>
+>> Which I'm sure shows how little Rust I've written, but hopefully you get
+>> the idea - only the first line is a try_xxx which can fail and takes the
+>> address space ID from a variable and bounds checks it. The other
+>> accesses we already know the bounds so there's no need to deal with
+>> failure, and we don't have to consider the situation where MEMATTR is
+>> written but the TRANSTAB write fails (which couldn't actually happen
+>> with non-contiguous register arrays but the compiler wouldn't be able to
+>> tell).
+> 
+> That for sure looks elegant. Now the question is how can we implement
+> something similar using only ZSTs? `MMU_AS_CONTROL` would have to be a
+> static array. Then `as` needs to be some sort of struct?
+> 
+> The way this works looks very similar to what I suggested above with
+> register arrays and validating once that a given index is valid for the
+> register array accesses. Then the non-try accessors can be used, knowing
+> that the compiler will be able to infer that the index is valid. The
+> only drawback being that each `read` and `write` will have to carry the
+> `as_id`.
 
-There is also `rust_kvec_kunit`, but we should clean that one up.
+Presumably it should be possible to implement with 'as' being a type
+which actually contains 'as_id' (as opposed to an actual ZST) so you
+don't need to explicitly pass that in. Otherwise there's a possibility
+of passing the wrong as_id in and so the compiler won't be able to infer
+that it must be valid.
 
-> +    fn test_alignment() -> Result<()> {
+> This would work, but if someone wants to experiment to try and implement
+> something closer to the interface you proposed, I'm very open to the
+> idea. I wonder if we could do this without any runtime overhead...
 
-`-> Result` since the prelude is available.
+Since my Rust knowledge is very limited there might be a better way of
+doing this, but that this seemed like the most natural interface to me.
+I can see how a similar approach could be used in C with minimal/no
+overhead so I would have thought this is possible in Rust.
 
-> +            fn alignment_valid(&self, align: usize) -> bool {
+>>
+>> [And of course having written the above I realise that MEMATTR being
+>> split up as separate named fields is also broken - we want to generate
+>> it by looping over the fields.]
+> 
+> I don't understand what this means. :)
 
-We typically prefix these with `is_`.
+Sorry, I was just realising that when I wrote the above example of the
+Mali registers I started writing out the MEMATTR register as:
 
-I would also call it `is_aligned_to`, to match the upstream Rust one,
-which we could perhaps use if it becomes stable.
+ 	register!(MEMATTR @ 0x0008, "Memory attributes" {
+ 		7:0	attr0 as u8;
+ 		7:0	attr1 as u8;
 
-Cheers,
-Miguel
+There's two big mistakes there:
+
+ * attr1 has the wrong bit numbers (copy/paste error)
+
+ * It's not actually useful to name the fields attr0, attr1, attr2 etc.
+   They should either be an array (attr[n]), or just define it as a u32
+   and build the value manually (as the current C code does).
+
+Clearly whoever ends up writing the definitions for Mali needs to put a
+bit more thought in than I did for this example ;)
+
+Thanks,
+Steve
+
