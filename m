@@ -1,119 +1,145 @@
-Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BAD265CAB;
-	Wed, 30 Jul 2025 13:21:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB15E299AB1
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 13:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753881681; cv=none; b=Mre/iE9duLe3v3Qr305PKM4ptyAYdfXXhla6Hutc9WqT7NKTh+wo8YrwAPdmtHeV9di65cX0sLTYSiB+zYbBxRZY4/xOyli6ThFtk7G5yEQ0sJuoj4ooZajp6eK7/Xo7ySJIh+0sZsTj10bsf4PizijF1KOdy4NsPGU1voQjV2s=
+	t=1753882071; cv=none; b=ELCQiGkkNr/6LEgjiL4grIRTFgMjU+qk3lHo12BZwW55Q8m4LUMJCqL4241+jaaeUyxPbKvs5YWf0c5nhTy+Zk3RG7Pan33bXa76M7HuTmkpVkod6tdyp1UR5pQ7L6TOkF1/p9K9+45FM448aLjhmTDrfraMUeUaiiad9IiE5jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753881681; c=relaxed/simple;
-	bh=fxUh3dEZumi0cHiW6QpFsdbaoORLlmi8xlQ3Jppnza4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XtWSfwIFYqVy+hRkLNBBqK86dfFUXMEd78O3i4b+JyupFzNNttio7mQxkItPupYwkKFtY5O/jmsxExoHnUFAsYJ4y1ziKM1N/Nq8fGJZ2/GMfjFKWzTFB095jGqCn64jo7OfhF781FecrPiqAiEkTeh7TIzkxZ60kREjfIm2dKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=CBtfodzL; arc=none smtp.client-ip=178.154.239.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1753882071; c=relaxed/simple;
+	bh=3KhlsfxD1afiXVUFTv0MDo+p5dzoiP4SrD8Q5oUNi40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mroM8NWvVmZv2zW8tXPOsk+T2H80BULk3f5FmyEfAdZ7TRyEeFKBO8JiKwEslX/thlh9CCBsZv05cHVm8y1/zXT0iWVRcXEQMX7AwGD9gZ1p4wHaeJEmlpBKyl9MBaNOKwwEnS7eBK3jXRFqlDgwkomRHET1Mt1hx9twX9v5fh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev; spf=none smtp.mailfrom=sedlak.dev; dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b=KpHOo62P; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sedlak.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sedlak.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="CBtfodzL"
-Received: from mail-nwsmtp-smtp-production-main-74.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-74.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:515:0:640:ed11:0])
-	by forward501a.mail.yandex.net (Yandex) with ESMTPS id BAA55890DB;
-	Wed, 30 Jul 2025 16:13:23 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-74.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id HDa5Jx4MmuQ0-xh2DFQNF;
-	Wed, 30 Jul 2025 16:13:22 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1753881202;
-	bh=8z4SLApFyWRAw7OvW1QUAJYsAMQ8uODmFgZDAW4+n+8=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=CBtfodzLXuMQ1iE/wsmVgHKHCGhM5lKI7kTA0WejqL/SdLSQbiZUs1wHZUwqpdFRj
-	 AII25WPIzloHL+fN+fo/buDX8g6W85n66v90wd7K3cvK/yId+vscFchrBiZeTtdymC
-	 KLSd7b8ZYUPbjDqpZx+7ZZB8UfVEOqg0SKQvuAAQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-74.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Wed, 30 Jul 2025 16:13:16 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Andreas Hindborg
- <a.hindborg@kernel.org>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 3/3] rust: warn if `srctree/` links do not exist
-Message-ID: <20250730161316.57bd7745@nimda.home>
-In-Reply-To: <20250730130716.3278285-4-ojeda@kernel.org>
-References: <20250730130716.3278285-1-ojeda@kernel.org>
-	<20250730130716.3278285-4-ojeda@kernel.org>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (2048-bit key) header.d=sedlak-dev.20230601.gappssmtp.com header.i=@sedlak-dev.20230601.gappssmtp.com header.b="KpHOo62P"
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ae36e88a5daso1412696466b.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 06:27:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sedlak-dev.20230601.gappssmtp.com; s=20230601; t=1753882068; x=1754486868; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=75YOp4HxyEEORrkg+J0iH+aQiJlUPUOSbZs0eZIgZFI=;
+        b=KpHOo62PCC2rNJXNQJNxRK6voenzjlPx4XXUxi62BXzAVuincYa3c2Wwofe2WciXrO
+         AjlPvA068vIU5mH2deS3dBwN4ZKeOnjrDkDUPwB2hdOrv4nqeYFi/8u8YkmC+VMfEw5i
+         kBQR+DdqUpKX/lFZc5wfcbhgtGMm316eiyw5b1/B3gE9rpDTJ2j3vBx6GhOhq+ltcMr1
+         0UXxp1gewF3iKUpmhhmP+1ebb1pmxMPUckwwWZoFkFc0wmls3b8kONMjcyuHB04s7wxD
+         nygtGvpgaOlFFNnMAQAamq2iZh5+b+FpfRHVK85weXlleWoouAo6l/G6f9EYHyHxnlvl
+         lalA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753882068; x=1754486868;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=75YOp4HxyEEORrkg+J0iH+aQiJlUPUOSbZs0eZIgZFI=;
+        b=gBM/hVOf2DOZEkh4TaTL+nPUlMK0KkQRK+PZC9QOM0VQwRtGHbCMPWYG+kIP5pG2sO
+         cXWijNc1s7T5vHvehFU5xinGbpWsk8t+dvr0HNsvqsT95UTyeV2ThyEXzP6w1lpfucIV
+         FIh69KAiB48UFZoBxDCV1MuswBlOdvLz75ULyPy9ff/onQzaguiEyuQPCziIyBY2E8Mz
+         R97VFUzavPGZZ99lTILIr1K1jDQszC1HPSMolexFk+Ynz7j/95V1cVC/Jg8LI88lcDnW
+         j46oCSVi2lElvhE2WyZwfmZIK33Xk5DYxkx1c7Qj4L5psjSevq14PzS+FuEvS97xUgLL
+         hENw==
+X-Forwarded-Encrypted: i=1; AJvYcCUfPH1wC2LZq1xN0E/wmRShi/Q7p7GyAEOQlHOULS7g6iY2cOxF7qwNVZJFG04lhj6e+T7zk+ABtzIFgufYmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzni8elwKYDVOp/ix//3cUcDUABx/YGuwJgn5n9rhJ4alcOp+0O
+	niT+AyFW7UdtCFENZUjSckO4vJxLj4sXHqSQvWuUxi8r66uXjkuCZw0t/8L2okKhoxg=
+X-Gm-Gg: ASbGncuNP3GK2+to8iBVPIrTkCcxqD/wdenPYRj0/td+RNLeyzyrJW8ArW38mcMTlsk
+	9vIp6G/c5jjqfkZbf4S11szQArm9YD/IYTjQA5Fi49/jSpKnEAeHsvoNdrfmKoDtTSf1DeCY6/J
+	PPGtxvrC90yMbcHXgUHyKhgRcfqeKKXikGDIscFau9EZqUVeMdOUuII+iu9C6grOGkMjuadxTHF
+	KxVYr+/OunHXAdJo5QfOdpk+HpP8SQOKmroykJvXc1Vorpc0t/lqCnTNbrAqN0RY9zOkt8da514
+	LVpydNhhODGUF1CbA9Wqhq0pLTTlgH7hB/xOKSDNCwinxp6tqZWCEopQizCRhPN9jdXWyN8N2UQ
+	VyL/Qz2khDx7vy1NZAIT57IeJYXGdmhlvF97YvWvB4tr2gILsUj5+CyUpNHjwsrmnwGMAcmx1
+X-Google-Smtp-Source: AGHT+IHyHy7GapLEq74VfzWCjhi43qnvQ0e9vbEsRdz+rw2buMQvVQfT6+EDh1DMqSayb4erGZDneQ==
+X-Received: by 2002:a17:907:e98b:b0:ae9:c86f:c778 with SMTP id a640c23a62f3a-af8fd96e1c9mr429180766b.30.1753882067956;
+        Wed, 30 Jul 2025 06:27:47 -0700 (PDT)
+Received: from ?IPV6:2a01:6400:11a:26:d163:a794:aa16:5e2d? ([2a01:6400:11a:26:d163:a794:aa16:5e2d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af6358a2743sm752906766b.48.2025.07.30.06.27.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Jul 2025 06:27:47 -0700 (PDT)
+Message-ID: <20cc8581-0af2-47b3-9fdd-584ff0ef36ab@sedlak.dev>
+Date: Wed, 30 Jul 2025 15:27:46 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, 30 Jul 2025 15:07:16 +0200
-Miguel Ojeda <ojeda@kernel.org> wrote:
-
-> `srctree/` links may point to nonexistent files, e.g. due to renames
-> that missed to update the files or simply because of typos.
->=20
-> Since they can be easily checked for validity, do so and print a
-> warning in the file does not exist.
->=20
-> This found the following cases already in-tree:
->=20
->     warning: srctree/ link to include/linux/blk_mq.h does not exist
->     warning: srctree/ link to include/linux/drm/drm_gem.h does not
-> exist warning: srctree/ link to include/linux/drm/drm_drv.h does not
-> exist warning: srctree/ link to include/linux/drm/drm_ioctl.h does
-> not exist warning: srctree/ link to include/linux/drm/drm_file.h does
-> not exist warning: srctree/ link to include/linux/drm/drm_device.h
-> does not exist
->=20
-> Inspired-by: "Onur =C3=96zkan" <work@onurozkan.dev>
-> Link:
-> https://lore.kernel.org/rust-for-linux/CANiq72=3DxCYA7z7_rxpzzKkkhJs6m7L_=
-xEaLMuArVn3ZAcyeHdA@mail.gmail.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org> ---
->  rust/Makefile | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 4e675d210dd8..a27503028216 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -93,6 +93,12 @@ quiet_cmd_rustdoc =3D RUSTDOC $(if
-> $(rustdoc_host),H, ) $< # and then retouch the generated files.
->  rustdoc: rustdoc-core rustdoc-macros rustdoc-compiler_builtins \
->      rustdoc-kernel rustdoc-pin_init
-> +	$(Q)grep -Ehro '<a href=3D"srctree/([^"]+)"' $(rustdoc_output)
-> | \
-> +		cut -d'"' -f2 | cut -d/ -f2- | while read f; do \
-> +			if [ ! -e "$(srctree)/$$f" ]; then \
-> +				echo "warning: srctree/ link to $$f
-> does not exist"; \
-> +			fi \
-> +		done
->  	$(Q)cp $(srctree)/Documentation/images/logo.svg
-> $(rustdoc_output)/static.files/ $(Q)cp
-> $(srctree)/Documentation/images/COPYING-logo
-> $(rustdoc_output)/static.files/ $(Q)find $(rustdoc_output) -name
-> '*.html' -type f -print0 | xargs -0 sed -Ei \
-
-That's awesome! This would help a lot. :)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: clk: use the type-state pattern
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+ Benno Lossin <lossin@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>,
+ Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ Alexandre Courbot <acourbot@nvidia.com>, linux-clk@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org
+References: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
+ <fc26c393-5c4b-48a8-a7ac-12558f79b140@sedlak.dev>
+ <DBP8RFDV59PF.1OV46P0UYKOGM@kernel.org>
+ <07575756-58EA-4245-B837-AEC4DDCD0DB5@collabora.com>
+Content-Language: en-US
+From: Daniel Sedlak <daniel@sedlak.dev>
+In-Reply-To: <07575756-58EA-4245-B837-AEC4DDCD0DB5@collabora.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-Reviewed-by: Onur =C3=96zkan <work@onurozkan.dev>
+On 7/30/25 2:59 PM, Daniel Almeida wrote:
+> […]
+> 
+>> We essentially would like to have a `#[sealed]` attribute that we can
+>> put on a trait to avoid the `mod private { pub trait Sealed }` dance.
+>> (so a trait that cannot be implemented outside of the module declaring
+>> it)
+>>
+>> ---
+>> Cheers,
+>> Benno
+> 
+> This is not exactly what you said, but how about a declarative macro? e.g.:
+> 
+> macro_rules! sealed {
+>      ($($ty:ident),* $(,)?) => {
+>          mod private {
+>              pub trait Sealed {}
+>              $(impl Sealed for super::$ty {})*
+>          }
+>          use private::Sealed;
+>      };
+> }
+> 
+> sealed!(Unprepared, Prepared, Enabled)
+> 
+> Note that I am just brainstorming the general idea here, I did not test it yet.
 
---
+I think that API-wise it would be better to have a proc-macro #[sealed], 
+something similar to [1], as it may provide better error messages, when 
+used incorrectly. So the outcome could look like.
 
-Regards,
-Onur
+	#[sealed]
+	pub trait ClkState {
+	…
+	}
+
+And then
+
+	#[sealed]
+	impl ClkState for XXX {
+	…
+	}
+
+If you are interested, I can try to look into that.
+
+Link: https://crates.io/crates/sealed [1]
+
+Thanks!
+Daniel
+
