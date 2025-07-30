@@ -1,96 +1,89 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward205b.mail.yandex.net (forward205b.mail.yandex.net [178.154.239.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3633A208CA;
-	Wed, 30 Jul 2025 11:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCCE292B5E;
+	Wed, 30 Jul 2025 12:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753873314; cv=none; b=gTjnZleLsNFOvzuMumbP4e2ENzv0WLPL03sUtsx2kZEjBSzGTLXV598/quTOBBLbNWvkuyxumSruTzeDbfgs5RyjhsTRnrbrZsdrOaODJO1ScnV1fErY/g0nmJAoQgQgAAEXNc81mYOu+9IwEZdzZqlilmx4Vb3rZ/Mk29UWncY=
+	t=1753877533; cv=none; b=GG6uW7ZH4uvHPej048GQWUlEXVhyY0QLHjecR8Tx1Cx4FfqNmqT18lc0nhXRtiQBDvhckGhLb1Zju65Q91iw5VCb2bYqj4yZ5NN3WRQ/fXAE3T1iOPaDMi0fCGDFlK94NuApiWZ71bSItHEZ0sw5q/QPc3sSQc4t/z5sy7LeHuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753873314; c=relaxed/simple;
-	bh=AswIdtvJxUluZ7da+hgSOdHCTLNeM79Q45Q6XlIz4QU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SK2qWvltuvWbfhBrIMOQe+RU4laoKyiz3WPOEVCvcfT2GInWToiaEpOsdMpWeu2HdlK5XhHC6MNX/q6nVrdEbphWofxJqtN6rHBR/Y1sla8mQGvMC7kUPR64do01B7axxYVCXWZl6ROPH+t5fdcytllBLTFiITYNxWgzQmiwNlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jBIxWF2e; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753877533; c=relaxed/simple;
+	bh=hnwFMGVddiaj4FGSNZe0IX1pB7gFBavSOPqdW3Q/Gms=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sm2RijxnXXAWemyqmm7j/Haip56m4+A+iNjjwa5w7HgkQT/0NzWZLwvkO/yrtldg2tc0n22zuXKJgLAtLZg2lvQ/GJtB1qZH9C1yY2xm2q3nSlnGqtX2A7tlJkMnCPB+LvjqO2vc0GhWTw/qnm84rZz7wgD1jwbZxv3Y1Z2YjcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=c3p9Mwqh; arc=none smtp.client-ip=178.154.239.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jBIxWF2e"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2400b3008e8so3870425ad.3;
-        Wed, 30 Jul 2025 04:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753873312; x=1754478112; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AswIdtvJxUluZ7da+hgSOdHCTLNeM79Q45Q6XlIz4QU=;
-        b=jBIxWF2ezA7/XOYvYhx2FR+2xUTxnf5v65i1TjCXv5lam0N2hlh7Qru6MaH0h8p631
-         NjeQFHmRIpLA2jsMHB6G9JBqwpecGYBwVAECEZ9JzkjpQCEIdq4kuqzncml00HFvEp60
-         em6H4mZyoyfegn09BEZkjesaky1wTNpNfaqDnlx2NDWf+LsBRFHSV2bMzFROKzfXiE3d
-         b3gamVPqxltkKEIatCkemgwQJoOxbRELwG0PFKE+FWgmsY6COcBNoE90Zuoqu4wcIDna
-         aBRhRxr4sH7QNLrcsbyaacabLKU1NLFCEm3rS0kuNX3IgU4YHl5NcSQ/qCvwthwE1YnA
-         GTow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753873312; x=1754478112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AswIdtvJxUluZ7da+hgSOdHCTLNeM79Q45Q6XlIz4QU=;
-        b=onqx9PMraHvXwAIwg0QwopwWNUaYVfB5JqraC3GK2hu+fwaZlqFNbvotUB1CQtowG7
-         CUsujmLz2jC701Y3ykjLrY5v5QGch9/aPjBmp7x8NHyqUhW4U96eZaoJ3tLu4hzVSdH3
-         x8+V8Oz1I++Ec6VOxAfssPfaoIKBurX/wNua5OKJdYTgaAgNb1mWvLIW/ZzeNeGL2gm0
-         bUFBRnc81IHaXH6dSlPHKwih+0tgPExiGHuLrrNujvPznAhOd5SfLYF6u/mLPkjcPT1y
-         rZmSsdtwOEGt9KK84kg+XMWJ2GJcCxfYgkuz/4Kh0seSRYW0CC9uXlCn8evDRRkL9+3s
-         4HiA==
-X-Forwarded-Encrypted: i=1; AJvYcCXY+9F2/jUFcNR4/j1i0LGQ+nyvawUaXfD2gayvNK5QsbbEVFM/Dte4wWkUOwIak4Gx/IdQymvO8YukWiw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVzehYXNxS3OUAmgxk/qk3ziTH6OhpJA0MSdHVio52w1r3vy/p
-	UO33tQQdRh4nN3rByWB5vUgcAxHnUy9LqhUTU27jIVUrhm9zfoTC5Pg1067rJA4kh4VrVvhJKRC
-	z5RG3Tit16CxUZikvH/ODHB7ijuu+lcc=
-X-Gm-Gg: ASbGncsMXy/fwulr5S9BS5L1KbNXYuJY01cotO6Jw5IVU7LwL+yb1drrGydRLByAGK4
-	IqXIZ6iBiUffa3PLzhYz0U8WjlkXT9YyQrO/ariNZ6Cvh1OUmNBCUKLuroYS9XhHF/HXHaZty8U
-	JiR61QHqw5FAQRfVSPirKiekV4rFCYb2kW9ZMqLCj3eoSchYGX4F/VN7cwCqimOyK9V42ePBU0Z
-	wgcyd9E
-X-Google-Smtp-Source: AGHT+IFcXkHZcOOJk+vlHnVT6J0/9laJ0SyHq/VnDphD/gEXxFATsIM0KCrAn8izb6DdrUnY4kzwFlHrmaJr7alDUE0=
-X-Received: by 2002:a17:902:ab8f:b0:240:711f:2068 with SMTP id
- d9443c01a7336-24096b0c975mr13303255ad.7.1753873312332; Wed, 30 Jul 2025
- 04:01:52 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="c3p9Mwqh"
+Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d102])
+	by forward205b.mail.yandex.net (Yandex) with ESMTPS id EDCF78308C;
+	Wed, 30 Jul 2025 15:05:24 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:1ca9:0:640:4823:0])
+	by forward102b.mail.yandex.net (Yandex) with ESMTPS id A31B5C0181;
+	Wed, 30 Jul 2025 15:05:16 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 15ZEvq3MbmI0-eAmi243C;
+	Wed, 30 Jul 2025 15:05:15 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1753877116;
+	bh=hnwFMGVddiaj4FGSNZe0IX1pB7gFBavSOPqdW3Q/Gms=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=c3p9MwqhYA8lkHiikloNnoOfl2J8ouJPdaYIpWbRcfIn31Ao/OOvtYPr5tP07AC+H
+	 vrcM6WI5xfy45zl06+zQugybBRulxse+jfX1hBBCObP8PtIKSS5TgUHRtn2mr5FGTw
+	 u/38SN/CYON4c5cvlIiTAMtP8sEugIkpyK4XWoOM=
+Authentication-Results: mail-nwsmtp-smtp-production-main-91.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	dakr@kernel.org,
+	me@kloenk.dev,
+	felipe_life@live.com,
+	abdiel.janulgue@gmail.com,
+	dirk.behme@de.bosch.com,
+	daniel@sedlak.dev,
+	linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
+Subject: [PATCH v2] rust: update error.rs documentation
+Date: Wed, 30 Jul 2025 15:04:59 +0300
+Message-ID: <20250730120459.15607-1-work@onurozkan.dev>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250729143600.5305-1-work@onurozkan.dev> <CANiq72=L_ov+Dc5S=adPdson9gq6wGp4xp=iCZLBnz+YC1_vgw@mail.gmail.com>
- <20250730130030.12d03ca6@nimda.home>
-In-Reply-To: <20250730130030.12d03ca6@nimda.home>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 30 Jul 2025 13:01:40 +0200
-X-Gm-Features: Ac12FXxEHE3aLm23pbqneQjcrKIrfKzuo0xdHTtigtpN1HeEtXGB-YGeMohuWi4
-Message-ID: <CANiq72=xCYA7z7_rxpzzKkkhJs6m7L_xEaLMuArVn3ZAcyeHdA@mail.gmail.com>
-Subject: Re: [PATCH v1] rust: update `error.rs` documentation
-To: =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com, 
-	tmgross@umich.edu, dakr@kernel.org, me@kloenk.dev, felipe_life@live.com, 
-	abdiel.janulgue@gmail.com, dirk.behme@de.bosch.com, daniel@sedlak.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 30, 2025 at 12:00=E2=80=AFPM Onur =C3=96zkan <work@onurozkan.de=
-v> wrote:
->
-> I thought with that approach the documentation can become outdated
-> again at some point, but I can still do it and send over v2 if you
-> would prefer.
+Adds missing header links.
 
-That is fine -- documentation is never perfect, but it is all about
-the chance of being outdated/wrong vs. the benefits.
+Signed-off-by: Onur Özkan <work@onurozkan.dev>
+---
+ rust/kernel/error.rs | 2 ++
+ 1 file changed, 2 insertions(+)
 
-In this case, I think the files getting renamed and this line not
-getting updated is low (and it would be still clear), and we can
-eventually check if the files exist on generation.
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 3dee3139fcd4..dd3e4224218d 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -2,6 +2,8 @@
 
-Cheers,
-Miguel
+ //! Kernel errors.
+ //!
++//! C header: [`arch/mips/include/uapi/asm/errno.h`](srctree/arch/mips/include/uapi/asm/errno.h)
++//! C header: [`include/linux/errno.h`](srctree/include/linux/errno.h)
+ //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
+
+ use crate::{
+--
+2.50.0
+
