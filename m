@@ -1,145 +1,146 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC322D9EC4;
-	Wed, 30 Jul 2025 18:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775281624C5
+	for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 19:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753901333; cv=none; b=TU3eqTl4enN0p+Hq93ZE/0IGbvUFA3zfaO/Du19yUnArH5GpNhNHwosQpQuW5JoKs3SYPkGvkp/ObYOumPxfz+orgoqF526tWEiVgdhgC0dVMZiRuTqArLIOj21FWdwXoqL8dS8il5Vvg2fN6xAigif1LSi+Tq+iJSXWcQp/Ntg=
+	t=1753903176; cv=none; b=qj9xK297e4vsaYl4c6dp/c7ug2HSUAfWuoGZGM9tcLsYdPUyClwZWBjy/LTsVHN8TTJAV3Y/GN7PfuQSd7TECaeR6bggZX617peR4dA30vC62Gp6cocYIxw9Alx9ayItGmeAobo6JlFU+LdjwAdz4Qps4KmqfFfLUxHl4LjjzvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753901333; c=relaxed/simple;
-	bh=7m/Bqt+oHgaR0fkwoXK55FLTHZDtyBRWVCK3oOO33a8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UmpMPbkoR/PRsIxwdI5f5CvlDBduLW0W8qmJfMCcOv9VPkPrFv7wOoalKdHAYXvPOEut10EVuGNAkATyKSrV8SfSunwYFS5AQTwh2Ke/2/JUgGFY3y00COmNMsYjGHpCXGQoKtlDte54hlkn0C5uX6IJR4vmSTh5dAKEyPAHFZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G57wyzPj; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1753903176; c=relaxed/simple;
+	bh=bqHrYkDZXe0uA+hcCyctVCBg+AK99DMSQV4HhWKLw4Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oHl35Uz0IavO4a9zPl+QiNB5xuMJ0JKNFsdYvHXhMBApznn8K0urzE9GU6DhvWYSxUR/sNw2/V0LgP3zDsi0paantxYhcPeDjwyF0mFbqi9Wx8w3Lr2pCTopZs3DwakX0+tYUu4KRHbHsJ+EqmiiIw21OjfalS2xP5D8VZQaLFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=S6px7Vmo; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=9Rruzgnb; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G57wyzPj"
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-704c5464aecso1362466d6.0;
-        Wed, 30 Jul 2025 11:48:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753901331; x=1754506131; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=O2BOzUYIo1IzA/cmXpLCnED0v1ZYamC5Ieg3goXexMM=;
-        b=G57wyzPjToLGPolzT6vkmj5+++9LTYPeMJZ1jjmjAjt6n1o/XYp835X7YNNhFfYtUT
-         LAtFfR+FtAmoOzzmPDIT/f7U1y1NuW4GCxvZ3gxJc73Rx91as92csgvKSibu49yggi2D
-         0/nIrRjQs83JZj+/NyOIyLbw7WZN4QYiKd+GSPG/FtxuH5PGBUWxvoUPATXrck2GgjGk
-         51S/Wu6wJH8FvzfrB/sqmCrLZx5abYE5TgMccCu796IWw4ovy84g/fakHlE80/8Zntei
-         jUGjXg8W6Vd6jYcd7R0o4AL4pDyh4Hx3LIvVV96e4ih5LmsHYyySRpde+oHgZflaVdOK
-         tVag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753901331; x=1754506131;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=O2BOzUYIo1IzA/cmXpLCnED0v1ZYamC5Ieg3goXexMM=;
-        b=cfbzb+0DX+mQpmfmMY3clnFhCt7Ttyx8P64JlGksQK+TeM6mEukKgusKQpzrJKKTek
-         AeAiFfRl2dGmx9jzbOI1FM0DHcfWPdotB0pNt7kV9pMjOdnCSPvtCdJRRHPhTdZa09BA
-         w35hXQwc4JtQfgQfuqqmMMt977lFN6rwu2Rf1Q9+NI4ZVUdi7aCrVKtukWv6xYyA6hPZ
-         6EjkkOkLE27nY4Y3IN9x/awUKqVcuPO59CZW4SiPbUHEDkLnTkPZiwRYOq05P0ZueoJh
-         QRfKJ++px4zInoPOYUbwUlhhk4yiafDbzdd82bDa7G1PkCbeHyKyiKNwqxZZNxVXBlGe
-         OgAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXI5CjW5UB6SzyDUTGvlaAbTAiELb2KxGZJwAR3JNd8okE+uCWXhj+pUYoOZh4PXCnunuoRLhMVrt3eCFU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq3hJFHSpslRL4aRqJhILtGixslHEISwHBRpyNu6xDfpVHstRH
-	RifQU7XxVOPoU0vrITjbyeEh+VmcwoLvmxtgHrFuZUM8TnYhsSvgfsjOS6meGg==
-X-Gm-Gg: ASbGnctcyiJgiZ5wP7SfVtk2bgaq07payiRv72YzXsQheTEfOJHGuH3PHkkUkb9O6qa
-	irH/xdvjPe19Rc360gllvN4KLkMEm3i4R2cndnNE6Eqn8T8kdWhpOo9iqQz5EK6qOwsTWz+2nZd
-	vFsMhsgpVh0nw9t6iLU88cglqkJwVnB6SVka5taCXDcA7ai+uly2THvpYJ42LrIVkUS2woP3529
-	ly9yXbEuj9IToAsevWZgXoU01Ysdgxw9+4/IhOzdnBRLQljYjxGPfzEniuYr8aO5pW9a37qatL1
-	b7Ej36ijo+7GeHCTT8HCTPdwglu+Wo37MMwyhL5ve3ZN7FO6VNzaWeE12dtP9/Lyb2LSAD6m12Y
-	D3acVw3NjLrFHlW0uxw/bZTSbiU54Rkdph5KSoJNeAwwVH965C9uy7Vvf5lB8i0e4Z1tIcVicUL
-	xYiorKAbvw3yBWdq/DJ7NIMlE=
-X-Google-Smtp-Source: AGHT+IHD2zVccNyjufMlU99/OpGzaxEFiT5Rv4t1UzfzI92q29xmwunZ/msP2RqjPIBRiNcXuDliww==
-X-Received: by 2002:ad4:5aaf:0:b0:707:45dc:c36 with SMTP id 6a1803df08f44-7076710ffadmr52145906d6.29.1753901330977;
-        Wed, 30 Jul 2025 11:48:50 -0700 (PDT)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-7074a1ef567sm44392846d6.7.2025.07.30.11.48.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 11:48:50 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B96B6F40068;
-	Wed, 30 Jul 2025 14:48:49 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Wed, 30 Jul 2025 14:48:49 -0400
-X-ME-Sender: <xms:EWmKaIPKlHjGfO6IYQxyggJAwhkoajr90q5wGOWnfol39CvJEff1NQ>
-    <xme:EWmKaFj1tWX_aL1676dtEKfdsxw6pqQpOyRq6iOLpAC_6egG4Dhwlsdy6Z5GD7EcU
-    PltNI4gYHBl6Ognwg>
-X-ME-Received: <xmr:EWmKaA_k6Vo-bEFdJDCqM7OqHyynQwLht8v1WCChbfc6Gc1pbFJVM_IDXQo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdelkeeilecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
-    gvrhhnpeevgffhueevkedutefgveduuedujeefledthffgheegkeekiefgudekhffggeel
-    feenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
-    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
-    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
-    gvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhmohguvgepshhmthhpohhuthdprhgt
-    phhtthhopehmihhguhgvlhdrohhjvggurgdrshgrnhguohhnihhssehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    oheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhi
-    esghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothho
-    nhhmrghilhdrtghomhdprhgtphhtthhopehlohhsshhinheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheprgdrhhhinhgusghorhhgsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:EWmKaKLmPspQz78WgHQwhoFzN_Oiy9s4b5-ht2pL9z-19W6fMrjGBg>
-    <xmx:EWmKaBb3C974GqzdFSHD48PX4rBNIqKsr8oXaTF2Mh5DguPDZLuG-A>
-    <xmx:EWmKaNjsvEHvX70mrNZ9kpmvHmtuxOX9v-o3TbddnEQ9JLZwUAG67g>
-    <xmx:EWmKaG6_LN5xrcSMA8ZBqMR-0VLbQBiaFoRxqetvQwi06CcLmvSRqg>
-    <xmx:EWmKaFqevt2SWaIsuioVPv3IgEbMPqil1t8qxD1GOIbkdmLZ5AVkOJp5>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 30 Jul 2025 14:48:49 -0400 (EDT)
-Date: Wed, 30 Jul 2025 11:48:48 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Alban Kurti <kurti@invicto.ai>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [RFC PATCH] rust: workqueue: Add an example for try_spawn()
-Message-ID: <aIppECd4QJIz3wbE@tardis-2.local>
-References: <20250730163439.50753-1-boqun.feng@gmail.com>
- <CANiq72ntUsB-a3Btf+PwmezqN919FmL_P3g589mVJm+-_h2CcA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="S6px7Vmo";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="9Rruzgnb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1753903170; x=1754507970;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=QmEEM2pn7Tus3BjInJV0eWX/l4iVKVBIqgB63o1NBvg=;
+	b=S6px7Vmo1VB8ZlA7+0wJXegbsPHY+z4XjjHyKTMbPRjXtLETGlaMl/mQ6C0xVVFvqcuuKWTRlnND/
+	 30e7qqyYxtMS4O4ZeF0xbpIDPMp+rpcfb1wRycvzTpPI9p1TtJvCp4wK69fddukMhk9maAFOJ63YkK
+	 cQm9qvsMm4mJPBHO43wX3hhl+rb0XJI76vDFIptpnad4T5O2alVi49jc1PF+qN19/tSVO6EadaElBK
+	 48SKqlA0aKZwMP5+reLBJeAIOL1hYCGkkxUsgpnZWW0AfVMUJotfC2dbMo7OkVHFIMnZDaANqcK1hM
+	 hkgzMY2/2H1J5uSu4cL7P5tTirjTOrA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1753903170; x=1754507970;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=QmEEM2pn7Tus3BjInJV0eWX/l4iVKVBIqgB63o1NBvg=;
+	b=9RruzgnbAMugNfJmZEDTAoSVd5s12KCa3JKJ6AJiUKzoFR2TUrGXIM3x3cKEBHcJoy8l/dXCpFDLV
+	 jTnVBjuAA==
+X-HalOne-ID: 1c955182-6d7a-11f0-aff3-632fe8569f3f
+Received: from slottsdator.home (host-90-238-19-233.mobileonline.telia.com [90.238.19.233])
+	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 1c955182-6d7a-11f0-aff3-632fe8569f3f;
+	Wed, 30 Jul 2025 19:19:30 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	rust-for-linux@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	linux-bcachefs@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v14 0/4] support large align and nid in Rust allocators
+Date: Wed, 30 Jul 2025 21:19:21 +0200
+Message-Id: <20250730191921.352591-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72ntUsB-a3Btf+PwmezqN919FmL_P3g589mVJm+-_h2CcA@mail.gmail.com>
 
-On Wed, Jul 30, 2025 at 06:38:46PM +0200, Miguel Ojeda wrote:
-> On Wed, Jul 30, 2025 at 6:34 PM Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > Miguel, Alice and Tejun, while I'm at it, should we also rename the
-> > function to `spawn()` because of the motivation mentioned here [1]?
-> 
-> Sounds good to me.
-> 
+The coming patches provide the ability for Rust allocators to set
+NUMA node and large alignment.
 
-Thanks, I will add it in v2 (probably as a separate patch) if no one
-shows any objection.
+Changelog:
+v2 -> v3:
+* fixed the build breakage for non-MMU configs
+v3 -> v4:
+* added NUMA node support for k[v]realloc (patch #2)
+* removed extra logic in Rust helpers
+* patch for Rust allocators split into 2 (align: patch #3 and
+  NUMA ids: patch #4)
+v4 -> v5:
+* reworked NUMA node support for k[v]realloc for all 3 <alloc>_node
+  functions to have the same signature
+* all 3 <alloc>_node slab/vmalloc functions now support alignment
+  specification
+* Rust helpers are extended with new functions, the old ones are left
+  intact
+* Rust support for NUMA nodes comes first now (as patch #3)
+v5 -> v6:
+* added <alloc>_node_align functions to keep the existing interfaces
+  intact
+* clearer separation for Rust support of MUNA ids and large alignments
+v6 -> v7:
+* NUMA identifier as a new Rust type (NumaNode)
+* better documentation for changed and new functions and constants
+v7 -> v8:
+* removed NumaError
+* small cleanups per reviewers' comments
+v8 -> v9:
+* realloc functions can now reallocate memory for a different NUMA
+  node
+* better comments/explanations in the Rust part
+v9 -> v10:
+* refined behavior when memory is being reallocated for a different
+  NUMA node, comments added
+* cleanups in the Rust part, rustfmt ran
+* typos corrected
+v10 -> v11:
+* added documentation for the NO_NODE constant
+* added node parameter to Allocator's alloc/realloc instead of adding
+  separate alloc_node resp. realloc_node functions, modified users of
+  alloc/realloc in accordance with that
+v11 -> v12:
+* some redundant _noprof functions removed in patch 2/4
+* c'n'p error fixed in patch 2/4 (vmalloc_to_page -> virt_to_page)
+* some typo corrections and documentation updates, primarily in patch
+  3/4
+v12 -> v13:
+* fixed wording in comments (patches 1, 3)
+* fixed bigger alignment handling in krealloc (patch 2)
+* removed pr_warn import (patch 4)
+v13 -> v14:
+* addressed Vlastimil's comments for the slub allocator's alignment
+  handling
+* added cnages to allocator_test.rs to match the new API
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+--
+ fs/bcachefs/darray.c                |    2 -
+ fs/bcachefs/util.h                  |    2 -
+ include/linux/bpfptr.h              |    2 -
+ include/linux/slab.h                |   39 +++++++++++++++++++++++--------------
+ include/linux/vmalloc.h             |   12 ++++++++---
+ lib/rhashtable.c                    |    4 +--
+ mm/nommu.c                          |    3 +-
+ mm/slub.c                           |   59 +++++++++++++++++++++++++++++++++++++++++++--------------
+ mm/vmalloc.c                        |   29 +++++++++++++++++++++++-----
+ rust/helpers/slab.c                 |   10 +++++----
+ rust/helpers/vmalloc.c              |    5 ++--
+ rust/kernel/alloc.rs                |   54 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ rust/kernel/alloc/allocator.rs      |   49 ++++++++++++++++++++++-------------------------
+ rust/kernel/alloc/allocator_test.rs |    1 
+ rust/kernel/alloc/kbox.rs           |    4 +--
+ rust/kernel/alloc/kvec.rs           |   11 ++++++++--
+ 16 files changed, 202 insertions(+), 84 deletions(-)
 
-Regards,
-Boqun
-
-> Cheers,
-> Miguel
