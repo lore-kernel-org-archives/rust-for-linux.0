@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B5B2D613;
-	Wed, 30 Jul 2025 19:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6969435966;
+	Wed, 30 Jul 2025 19:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753903691; cv=none; b=MBM1T3bG6TprmTOGxgJFKBQFt8QD+M/m3XnkP9hwqbT9Gt2hmp4O1m6I21/HST9DSGanHVj6mD33kRBvEOCacbkLwjEuvi3fjqgua53DXQFw0Dojs2ZP07DOBURIxgiDpOAFP0tMFRy7tVFJVikmq/107tvvCWVyDGhLglio0I8=
+	t=1753903972; cv=none; b=ukA/Y48pmQacWx4O7W2ljwlD9PWzw8Zcpohi1RWa4F2h1siCeG8saBmlp0k4o6Gf4lh1xheGsykWOk4vV680oUTttNfj9fY3pcEYnQwBxEr3DuSXBaM/BItj9MayqyzetFiI6rWQTKBfEKcBXB3IKCwUFRJFoC9f2SDdjCLo7XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753903691; c=relaxed/simple;
-	bh=TYlUKBz/U7F0smL1Nhou3hsVgjS5e6LWsWxW8aR82m0=;
+	s=arc-20240116; t=1753903972; c=relaxed/simple;
+	bh=VZuBMUhxavRTOAdc00scJOJZUN8xp2kBBj89ZXK3x8c=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=SbUsLILDGZEG7Ad71Q76gSD4OYp4Rj67voRYTC8zauVwoU7qwQFYwVyfj+/eIXUyYQH9qTrXDg6JTxW8kIFlM5mUtCh46AZtD/oxATfKw0cjN8urSMT4XEWbbV0idci+kMZZkDDNJ1n47iTfGdGj4KiICTlMsZtnI7wCdXZqLjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+OhMKTI; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=WcZIHho/g0t65E2uyzcM81AjQGR7Md0VMBiusEehAfMbISU76BRPzDYpoUeesVoZvwfUY5IXqEmFk6q5IYP76KoW3mWJsJOA0WtYVmGLD+rxhnLS3I7P13VU1UOfP/Gc/7W/AbumXe/igrLOHgaaFS1j7bp5sthWP9PJEafIBx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZT4EqD0p; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+OhMKTI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B71C4CEF9;
-	Wed, 30 Jul 2025 19:28:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZT4EqD0p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDD8C4CEE3;
+	Wed, 30 Jul 2025 19:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753903691;
-	bh=TYlUKBz/U7F0smL1Nhou3hsVgjS5e6LWsWxW8aR82m0=;
+	s=k20201202; t=1753903971;
+	bh=VZuBMUhxavRTOAdc00scJOJZUN8xp2kBBj89ZXK3x8c=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=j+OhMKTIJ6Y5pGIQhJUpxf1Pl4DL2XEAUniK6mcu6bzioxJLspM3djWIs0B7iHx5r
-	 +lW7tLk4Ra7aVO6yhaSTZ/1fAgVm5s153/+2zJOACLcp1MUdUKZDcGG6poJuo5TVT3
-	 VnU1W7n7a+DxvJ72BbYXFoxJCDNYFMdfhfoD/ivhXvxysR7vXgKJ3lti4rq6YfGNv9
-	 0IG0dnLdim8YOc5fsU1pLvdsOc0XC4MEi98T+uPqfbGhUmDcOPm9+WFiH7G6m2RdYg
-	 m764rjhin+PMdgBOKcEt3Xm2IZjcZtITQrjPH80WTztPLALdRGFdy0hLoy+hlLlwoO
-	 y/cxztbeUHEtQ==
+	b=ZT4EqD0pa5Td7/DD1/iq79wsF7sZwU2+HIof+pMRo4UTMNo5NQy2JdO/7rLoUl2ge
+	 DqVj0DntlGLe8UNoq73L8l8CqE4+7UCI1UqlNWDQpLs3mANfXo4aey+2khO7JFWgoM
+	 HrChQnLYECcY716sCOox/21cjDD5J3PEo6j6Pn2LqZ19S49YeVLaKiUkMDvypghruw
+	 mmOLRwHttKU+rJpoynPoclm9dFbXagOAjhmusQKUVYueP48e7i4grK6F5Qad3m87L7
+	 CyP7JGq4XDU7cKbrVDuG6dJj8c1gItUntwpJQjTAV8A1CXYJVuaTS9xcMVxeiUAxep
+	 b1YR7gt3HOVug==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,109 +34,47 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 30 Jul 2025 21:28:05 +0200
-Message-Id: <DBPMYTZSIEQ5.3NPJM1CYVO3CK@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+Date: Wed, 30 Jul 2025 21:32:47 +0200
+Message-Id: <DBPN2F7UQDOI.2B1O18IF9CBSD@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
+Subject: Re: [PATCH 2/3] rust: lock: guard: add T: Unpin bound to DerefMut
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
+ <will@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Waiman Long"
+ <longman@redhat.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
  Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>,
- "Tejun Heo" <tj@kernel.org>, "Tamir Duberstein" <tamird@gmail.com>, "Hamza
- Mahfooz" <hamzamahfooz@linux.microsoft.com>, "Alban Kurti"
- <kurti@invicto.ai>, "Joel Fernandes" <joelagnelf@nvidia.com>, "Paul E.
- McKenney" <paulmck@kernel.org>
-Subject: Re: [RFC PATCH] rust: workqueue: Add an example for try_spawn()
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
+ "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
 X-Mailer: aerc 0.20.1
-References: <20250730163439.50753-1-boqun.feng@gmail.com>
-In-Reply-To: <20250730163439.50753-1-boqun.feng@gmail.com>
+References: <20250730-lock-t-when-t-is-pinned-v1-0-1b97d5f28aa2@collabora.com> <20250730-lock-t-when-t-is-pinned-v1-2-1b97d5f28aa2@collabora.com>
+In-Reply-To: <20250730-lock-t-when-t-is-pinned-v1-2-1b97d5f28aa2@collabora.com>
 
-On Wed Jul 30, 2025 at 6:34 PM CEST, Boqun Feng wrote:
-> `try_spawn()` could use an example to demonstrate the usage, and
-> arguably it's the most simple usage of workqueue in case someone needs a
-> deferred work, so add it.
+On Wed Jul 30, 2025 at 7:14 PM CEST, Daniel Almeida wrote:
+> A core property of pinned types is not handing a mutable reference to the
+> inner data in safe code, as this trivially allows that data to be moved.
 >
-> Cc: Joel Fernandes <joelagnelf@nvidia.com>
-> Cc: "Paul E. McKenney" <paulmck@kernel.org>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
-> Miguel, Alice and Tejun, while I'm at it, should we also rename the
-> function to `spawn()` because of the motivation mentioned here [1]?
->
-> [1]: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/=
-topic/.60new.60.20or.20.60try_new.60.3F/near/529533317
->
-> Also I find the `{ <clone> || { } }` is really good if I only need to
-> clone the Arc for passing to a callback closure, but I'm not sure how
-> people feel about it, so criticism is welcome ;-)
+> Enforce this condition by adding a bound on lock::Guard's DerefMut
+> implementation, so that it's only implemented for pinning-agnostic types.
 
-I'm not so sure, see below :)
+This patch should probably be the first one in this series, as only
+applying patch 1, but not this one is unsound...
 
->  rust/kernel/workqueue.rs | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
->
-> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
-> index b9343d5bc00f..59c1a5e14d12 100644
-> --- a/rust/kernel/workqueue.rs
-> +++ b/rust/kernel/workqueue.rs
-> @@ -331,6 +331,33 @@ pub fn enqueue_delayed<W, const ID: u64>(&self, w: W=
-, delay: Jiffies) -> W::Enqu
->      /// Tries to spawn the given function or closure as a work item.
->      ///
->      /// This method can fail because it allocates memory to store the wo=
-rk item.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::{alloc::flags, sync::{Arc, Completion, new_spinlock}=
-, workqueue};
-> +    ///
-> +    /// let work_done =3D Arc::pin_init(Completion::new(), flags::GFP_KE=
-RNEL)?;
-> +    /// let data =3D Arc::pin_init(new_spinlock!(0), flags::GFP_KERNEL)?=
-;
-> +    ///
-> +    /// workqueue::system().try_spawn(
-> +    ///     flags::GFP_KERNEL,
-> +    ///     {
-> +    ///         let work_done =3D work_done.clone();
-> +    ///         let data =3D data.clone();
-> +    ///         move || {
-> +    ///             *data.lock() =3D 42;
-> +    ///             work_done.complete_all();
-> +    ///         }
-> +    ///     }
-> +    /// )?;
+> Link: https://github.com/Rust-for-Linux/linux/issues/1181
+> Suggested-by: Benno Lossin <lossin@kernel.org>
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
 
-Not doing your pattern and instead adding a `2` postfix we get:
+With this moved:
 
-    let work_done2 =3D work_done.clone();
-    let data2 =3D data.clone();
-
-    workqueue::system().try_spawn(flags::GFP_KERNEL, move || {
-        *data2.lock() =3D 42;
-        work_done2.complete_all();
-    })?;
-
-There are some discussions of introducing some better syntax for (cheap)
-cloning, so maybe we can use that in the future.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
 ---
 Cheers,
 Benno
 
-> +    ///
-> +    /// work_done.wait_for_completion();
-> +    ///
-> +    /// // `work_done` being completed implies the observation of the wr=
-ite of `data` in the work.
-> +    /// assert_eq!(*data.lock(), 42);
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
->      pub fn try_spawn<T: 'static + Send + FnOnce()>(
->          &self,
->          flags: Flags,
-
+> ---
+>  rust/kernel/sync/lock.rs        | 5 ++++-
+>  rust/kernel/sync/lock/global.rs | 5 ++++-
+>  2 files changed, 8 insertions(+), 2 deletions(-)
