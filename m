@@ -1,631 +1,231 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2060.outbound.protection.outlook.com [40.107.243.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E64D22539D;
-	Tue, 29 Jul 2025 21:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753825124; cv=none; b=qYjUgzTzqfvnB/bIHVETYHFxObCJc7eNZA/iSt3FE5WKL801C63KtzMIeTM8Gey3b3CQRbZuDMtjHVl0OJrMCBsRkWYlQq39UY6TTu4rTpWVEhMfkhsiAsxgNSih+IydUZD3rgjXO9xit8RqvzMr7OffUr/bvpSsCxnYTKmbIds=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753825124; c=relaxed/simple;
-	bh=hkgFerIj31qu/oTbEuKkpneIl53TRD91N1DIuth7LfQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=IQCMXjOT5PSEqYq8MOoan2GM4McLmLsZQIJBdsM9RzVfTLrc1wQHb6ir+ofTmT5F3HK0SCApr5tACr52oGFDau3wqQkeHvTCC2JpIS3b+hX2sfckJD7g+GlKKcmXOMIMmgBcTAar8xN79B4iltG9XvghyMoSWWM/MEDtei1rpuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bgHAhUcT; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1751F1531C1;
+	Wed, 30 Jul 2025 01:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1753839269; cv=fail; b=MoofZhCuOeVzV+evFa0GZUec7v2iQvCXJN2a/DPmrslpdXdW0apTTSBTi8iFLwNOn05URYXmOuwlFuF/7kCX9hsv6XWUErPCc8VFzlXpinSbBJHfd2EbONEqBxSh7s+vWErny8TVWXhXAJXRhavBRL0j4Ys0bgfqIdeIf4sLIAU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1753839269; c=relaxed/simple;
+	bh=+i09OvXg7VeRkoKNWD4EpgXgj5tk974QBzaVwz1EDTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=R49vPuzSKkI0s1OpXG6Vo7eyce5677AU6fIrjz/9pvrwSxv8higV57/NpoV1Jf9wquRrqaK1shVneVcBS2ouxGfx9jcdp9ghagojUgAivCfBQYt2ZcrMEJalWi4fANimc84PZJlva9E9bY15P7QEOvgeE1JrTZ1qh74Ofz2qdBQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ouWggF4p; arc=fail smtp.client-ip=40.107.243.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bgHAhUcT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1753825119;
-	bh=hkgFerIj31qu/oTbEuKkpneIl53TRD91N1DIuth7LfQ=;
-	h=From:Date:Subject:To:Cc:From;
-	b=bgHAhUcTAvTZWkevTN0KbvPNXTdDke32ZKNwOI9Vxi6zBxhYRCGY416BhH3JDRBlg
-	 vFb0hxv3f/MXZszjRpHrOKi8p8jDJJJbUaYtObIhde4b75M2E8Dq/lLGj4Js2XYdS1
-	 bwW0tHtgzvOxSPSCBKnUsiQfP+ZeujydeX4YYfXStUgzsX2RIl4dTMws0+y4guJ9Kj
-	 g3+eBu8k/Ph+ecE9gvi24epqOmY8Q8paLpRdMyCWKCxNM6Rgvcl7ohoTwDeyFTe9jE
-	 AQvavjiAU65RX9Z14Wv5NjMhgTgF/lbystF/5+7Jw6T98ZOU2ceQJx5NcDScKwkhuE
-	 I3pO7JAn+U0dg==
-Received: from [192.168.0.7] (unknown [IPv6:2804:14d:72b4:82f6:67c:16ff:fe57:b5a3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0A85817E0F66;
-	Tue, 29 Jul 2025 23:38:35 +0200 (CEST)
-From: Daniel Almeida <daniel.almeida@collabora.com>
-Date: Tue, 29 Jul 2025 18:38:19 -0300
-Subject: [PATCH] rust: clk: use the type-state pattern
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ouWggF4p"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jbE21Gy/Wj2W3xPTgIIqfXfaKX4Y2jJFKxhbh5QfyQZIXeSHNtLLDE4tN+0vEzXUznT1ogP3ctuNOycGWM1GaVx6Sq6x9Z7J2az3xxSIbx768KAb/MEi0oB667rQFpLksUcmBZ+kzvInksrR4g6DDuVwhZnkl4uX+FoDUqp4+Su/T8gsqvl0r0HJG2YcjRg2DRztP1X0JibFH3kKriw7vH0r4XncpB7L/a2Z9EczllGavwn9Zzat71LtwpM5O4KT7Ou9bZusgYoLFwnh6m0RCHiC944MAoxMeQY1k6tAtXlEPtsTU1VkO2Mw1lyoaPVmp3P9EG7ddi1TLhT6sSgSFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1SpLPFftw4E+/cYoQGFHO92l9ig01PgBuSnuWgJ9XpI=;
+ b=NxlBtbNwCBnwzCX1LnVJuYktCnllxHOST/R48vgmEkftXZ2w9k9TmYVotH2fe4C+Dv6ADIWReuoNVn71z3cZe2KJctwVNhuRgYq0r41Ksg9zv0u6V/q91tomz6SxJB9hdngdDgSMkUNdBtYcPyEuXDydX7bjkP6wl8j0FehGl3y7J8ql0g2rty8q3NngIqou979h8XIkS+C3H0mVUTl6xW11cFeDV9NBxP73ciO7XRkkFCYZjk3DDiavp/o5um9BVPB/FXmV+O09UDflyTrnykm3vlKEp5aY6WKH2UuesAL8MZNAJRY7n9EOimYCByC47W8nvUqWdJes5PXriKyyog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1SpLPFftw4E+/cYoQGFHO92l9ig01PgBuSnuWgJ9XpI=;
+ b=ouWggF4pq4bJSce4IqENoJJ3iiMku9Y3q7EioAhE2yQ52rBwKWfoCEXy+bAweX+0U3y1MsAZy08zdoL+DXbpM86vD4cM/40Yc+gk2iOQgz6d/yomgAOC+eLEb1JSh9j2cWbhPNQ6P1SWdSGg0qNbWYimxJ/smnOaJAiRbwDRFTsWsWSK967QTrU9bLzmhBQpEzzyeIcsfRnWbeyLdA0Rnt5jGaUEm4el6Y8+YgG6QkYESLufq6iO7cV06xRuFOra9kaITn0Q8PqLLO6qOAOOLeycCE7LGDdmiH+26l1YjhY0cDH7fQHhHMjGSm/56/mFyz8sTH1okn9mpIkw4+HpOA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SN7PR12MB8147.namprd12.prod.outlook.com (2603:10b6:806:32e::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8989.11; Wed, 30 Jul 2025 01:34:25 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%3]) with mapi id 15.20.8964.024; Wed, 30 Jul 2025
+ 01:34:25 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] rust: Update PCI binding safety comments and add inline compiler hint
+Date: Wed, 30 Jul 2025 11:34:16 +1000
+Message-ID: <20250730013417.640593-1-apopple@nvidia.com>
+X-Mailer: git-send-email 2.47.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MEWPR01CA0243.ausprd01.prod.outlook.com
+ (2603:10c6:220:1ef::9) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
-X-B4-Tracking: v=1; b=H4sIAEo/iWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDcyNL3eScbN2SyoJU3eKSxJJUXcM0SwuL1GRjCxPjRCWgpoKi1LTMCrC
- B0bG1tQDNIwwRYAAAAA==
-X-Change-ID: 20250729-clk-type-state-1f988ec3843a
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
- Danilo Krummrich <dakr@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>, linux-clk@vger.kernel.org, 
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-pm@vger.kernel.org, Daniel Almeida <daniel.almeida@collabora.com>
-X-Mailer: b4 0.14.2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SN7PR12MB8147:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67d820cd-d752-4fce-3c3d-08ddcf09379d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YmhqREhscHRmT0NvV1ZxSk1xdTVoOFJucVNCM0czSlVyMHlVSXhZMmtvYU1h?=
+ =?utf-8?B?a1BxYmMyQjhUU3BHOTlueDJCTVgxQXltd0syZFZQNSt4alZMaU5HMUdsMUhB?=
+ =?utf-8?B?aWtmdjYxVExYSjVZQ0V2bThUQm0xSHl1NVdtN2ozb3EvenBiUjk0aTlKMlZa?=
+ =?utf-8?B?bkd2SHM3UjB2T1R6ZjNEY3dhUUQ2U0NsVUdBQ056d3JFZzdoZEFQUWpLZkp6?=
+ =?utf-8?B?cHpiamVYSktrbVFYcGVNcUlaN2g0ZTAvZTFZYXhxWEZhYThtK0N4cjlnL0w5?=
+ =?utf-8?B?VDMva0NmK3d6ak4raStTMmMrWWVFZVg0eS9Ja3FoZHBEMkFDYnBxYjgzMHIw?=
+ =?utf-8?B?dmgzMjA5NzdzMElqNjVDbkhtRkswRUxlWEhiR1p5bXRwVytTc2xiaVk5aU42?=
+ =?utf-8?B?eFdENnNrZ1h6OTVVMGp2MWlKTFNmbjY4cFhMRERqREtYeEZUS2pLbkRFZ1h0?=
+ =?utf-8?B?aHNBTXE1dk84NzN3NkNkQkZrVWZKdlUyMngrWVpLSitoajdzZzFyekxQckF4?=
+ =?utf-8?B?R1pBdG9yVzJYRWxnM0ZGeklXVmJZWkZscHBiODRLSktBS04zRlU0QkpSbjJz?=
+ =?utf-8?B?ZWkzanlnSjk1MzlveU5SbjdkbWVFVFE4anY5U3YwcXo2ZE4wZ2g4aTFZWDRI?=
+ =?utf-8?B?NXREUXFqYmZVck5Ocnd1WFRidVJVdWtUUUtoN3J1RE9LVGtMMCs2YWtMM2tk?=
+ =?utf-8?B?QnJ2Q0tCRTJVNUxjYUlPeUpGNnpkL2lTL2FSakE5SjZDaG01cXNqQ0RvSW41?=
+ =?utf-8?B?QVJTZTBHV01ITjFIOVNsZGI2eFNEVFlNSFNUSjRDdXZvVzJCbTVCNTA5TDRY?=
+ =?utf-8?B?RXFHelZBN3Uya0hWOWxRYUJpVjdpZWtBUkJuZ25LWnlCNVpSME1pOTNyZWh0?=
+ =?utf-8?B?WVg4TkdUOFMvQ3RWNDg5RzlacE5BcFdwVW1YbUE3ZXpvV0pGODJRSzF6Q3JO?=
+ =?utf-8?B?bG5ENStnR0ptNDJCbWdrbDJyaitLbWswaGtnN2R2SXZrYWFBUTJ5ejNBV3B3?=
+ =?utf-8?B?bjhKRGo3Mm5oTUlVbVI0M0hNTVpzblYyOFYybFFXN2FCRGdHbDIzMU5UWmpN?=
+ =?utf-8?B?aDZic21YbkovczVkNHFyMmtzRlFuUVdPL3JmN1NXSzhhOE44KzZHdWZYTGdh?=
+ =?utf-8?B?aDMvKzRvQTVYL1lFRnhSdHcxd1pQWU5iWVJhSHlwbk5sekVkYmVaWk13akFo?=
+ =?utf-8?B?QzloL0hDbU8yVW41Ui9ha1Y5OEd4eHZ3Ri91Qk9RbWg0SmxFTjhGbEhSYmdh?=
+ =?utf-8?B?bkJLeEV5U085MG9oUnluRysySjdxTUJQeFcwM3hUbDZDdHloVlpaOW9vTTd3?=
+ =?utf-8?B?T0NwUWVvK0VKQldsbERFaENGOHl0M2RGRHJHWDVsZVI3R3d5b2pyVUMxREhM?=
+ =?utf-8?B?VzllSUw3ejh4STZscUErdWRYNmsxdENRMFpSZE9lVVJQbnQ4OWtaVU9ISG1K?=
+ =?utf-8?B?UUR1R0VnRDRCZWNTc0ExMU0rR0JSclJka3lIWjk1M0dMcWpYeHoyVmxVa0h3?=
+ =?utf-8?B?a3l0S1RVMGliTXM5emhpSmhma0xLY24rMjIwRmx1Vlk1ejNNU1lsalQzbWhT?=
+ =?utf-8?B?L2lMNG9Pc2FHOWJHeThrTkg3eU5pMnBNUHJIVDdUS09TR1VFK3NLNVhTVlRO?=
+ =?utf-8?B?ZUpaZm5rSkRubjBxNnZ4S25kTStDbXhJeVVYakVmNlgwRjZoMzZTejZ0VWxO?=
+ =?utf-8?B?VVlTbXBHd3ZmSlBKZVR6OG43cmF0MEMzQUxHOWpzTTVNQWhqUFlYbWdEMkp5?=
+ =?utf-8?B?QlRsU3pZWGI3dW91RXUwY1U0ZmphZi9SK0tLMEhxY0VyVkYvb09uQnc2dUp6?=
+ =?utf-8?B?SWhwN1BYSlFaRlk0NEloZDUyczZsSWluYmJxYVBHem1wVzA4Y3o1UGNGbjRX?=
+ =?utf-8?B?ZG45a1NwazZPQmJBd2kva3RMTkswNUFJWnZxVUhRUTNhYldUNHBCWWFZajVV?=
+ =?utf-8?Q?PXgbXm4/3kY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?REd4aENueS8wN3djSEpRTTFlOHdtV25RdDdsR1p0Rkd2ZU9jcHFHYW10c3k1?=
+ =?utf-8?B?anhjT1pHZDdXS0RlL3hWTGNwY1ZWSTcxSnN3b2NQR1RMZUFHZ01BK1E2VWww?=
+ =?utf-8?B?NWFyQitYaFQ4OGcyNm1tR3d2L3BaUzJadWljTVNHMmpyQ0l0RldjdXVJN3FK?=
+ =?utf-8?B?eVU3dFk2VldaMDhKWXMyNWkvZ1E5eVBJanllWDBFUU1mbTFZRTNQVWpQUFFJ?=
+ =?utf-8?B?WktZS0tuN00zVnR1ek5JdmYxT1h0VkkvRTNwUGllLzAxbk4rVmEwSEhISzZq?=
+ =?utf-8?B?UHgweG51eS9yUERkTjBDYmorMGRqRzU2VGwybGpnQzRIZXNPZWc2cVo2K2x1?=
+ =?utf-8?B?OHdhRzZmZTJBRndiVHVNcUxHZmdQejI2MmhtYjNvWFQwYmlReHhsRDNDTXQ1?=
+ =?utf-8?B?SHhlRWs3MXFNc3NQWUpPRkxLNnBKam12cm8wVTZJL1FqMG9CTHhTWFZrMDRa?=
+ =?utf-8?B?ZTR3bnFPWWc2TjR0TDRZMHBZK1RLVTdBNDNPTmVYOEpqb1FiSitsYmV5QmVp?=
+ =?utf-8?B?dmcrQjVwU01CdWptbmlaTVhjaTlVQkxkc0ZoUzNwQ211U1g5bEhTQVR5cmtY?=
+ =?utf-8?B?VzF2cXlpTmJ0Qy9OMG9RUnlwK2lRcXcrcUdPUjRxeE9jSXU1YlVlUE12U3FM?=
+ =?utf-8?B?bWhIWnM2ZzZsdnZ1NXdlQlhCam1aNElCZzRzQTRCTVlwWXN6ZnptL3pzVGxH?=
+ =?utf-8?B?cCtETHBUWkp2RGhsNlJ3REprN09LMnBycE1WLzg5cVFPTFFEZkdGR2F5Lys2?=
+ =?utf-8?B?WGtoWWJVRVhkUEFha0RUMXp2U25zeFRYT0ErQ2libDdqWXBYbGJZbkN6NzlR?=
+ =?utf-8?B?OHZScmVIeHFHSW5GMVk4ek1TVkVrVjI3NG9OKzFOQ0ErcUZmVEhVMml4RS9S?=
+ =?utf-8?B?U3RhRk96YkpwV3FnU1ZZa3VBRzFnVTlGYXhlTmlRYWdicVpFMUVrVlBDZ0NV?=
+ =?utf-8?B?TkhhMHRJbDhoaXl6TUZzRlhjT0MybEp5VDM1Zyt4L2NCdnBERG92UURuM1Fo?=
+ =?utf-8?B?ZDQ3bFBjdHFkN3ZaMGFUS1FMUSt4VlF2bkNYWmNCQVpaTnFjOHNKNWRrMi9R?=
+ =?utf-8?B?YzJxK2luWUozdksveUE2Mk5KQ1ZNdUhhRXZjYjNmYVVOMzIzaVF6T2NVQ0Qw?=
+ =?utf-8?B?Zk5Hb0xjU1REMk1rNDdqeWtVRDkyNUdqd2ZTOGNTVVV3RkFPd2JqMmdXcUdq?=
+ =?utf-8?B?eHAyK0RYdW54UEJ5bTJaM0VBZFZXWXZtT01yZG5JTWpnaEdlWkZQQjlJV1Iv?=
+ =?utf-8?B?bFA0ZEFuY0Z0bU5FZExPaGFFVXlpUm9iS0hNbHpBSkVaMWlxRk5sNmE4T09P?=
+ =?utf-8?B?M3RWb3dtSVFPcFoxby9lSlgwNzFqb3FzcGNqdWc3cFMvR2hNMkJ3bldNbG1k?=
+ =?utf-8?B?citkeEpmOFJ3Q2IyZ0c1R0NmRUlpQkZHRStyV2d0dnJnSERGdnRaTTB3MzUz?=
+ =?utf-8?B?emkrb3JJL3IvUnU1WjV0OCtTTjNNWG83VWlwN2l5dHZ4c0d6MWN1dXRwS1M1?=
+ =?utf-8?B?YXhueVBnRHhua2cxd1VuaEdmUS9CcjYzOEFUKzE5TXFZa2t3UVlXUm9pTXQz?=
+ =?utf-8?B?NnJTd05ZTURYUFQvLzZQMkF5NXZVSDdvNkJZMjlITk5yQmpFUFdEbmFhR2RI?=
+ =?utf-8?B?bTJxOFlsN0MxWVR2aVJDREpiVHhqN2xSdFgzMm1WaDNzRjcrZVJtWU1XTlRF?=
+ =?utf-8?B?STBZVTlrNm5CL3NZMzF6bktvNHIzdkVJMTM4L0VydmJZOTA3UEhrQTM1ZTEy?=
+ =?utf-8?B?SHN2dm0rMVpKdExCZEFHZmM2N3BTTU4xNDdicVNWVlJXcmg2SWtkM0t6d3JO?=
+ =?utf-8?B?dzNLZUR2Rm5SU0M2V2ZleituMjNKVTJpbUh1UUxTUXpvN0d3S095NHVhNWdl?=
+ =?utf-8?B?OXY0M3FUaWZQdzNtcHZLRWdlMDMvRnRmTkppa2lqZ3FtVVZaWUNNUlVuMVVN?=
+ =?utf-8?B?MjJrN0hYNzNMV1NPZ25nN2xqK1FCVUtBM1ZHbzlEb1hrSklJQlR4TFBzSlJi?=
+ =?utf-8?B?VXVHSHpFdHBISGx1ZG5meC9LUVNYY1kyYUlhZGVBVWFLVzJpb2Z3WHdHMS8z?=
+ =?utf-8?B?c2ljUVI5V245RGZ0Qnl0T0NFUnhKVTQwTGZvSU8vNXVBWnp4bHBUd08vQlpO?=
+ =?utf-8?Q?rHy8YNR9W1gUAizAzrw/Y0xgQ?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67d820cd-d752-4fce-3c3d-08ddcf09379d
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2025 01:34:25.2550
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8/MRFFTkYgHFhikDxe58jF8iMjHqCkrRgm8R1hlcRLgEGaIdKZ8FxEI0gxhSbSaZlZAyw6euRMfhZgk3vkJO+w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8147
 
-The current Clk abstraction can still be improved on the following issues:
+Update the safety comments to be consistent with other safety comments
+in the PCI bindings. Also add an inline compiler hint.
 
-a) It only keeps track of a count to clk_get(), which means that users have
-to manually call disable() and unprepare(), or a variation of those, like
-disable_unprepare().
-
-b) It allows repeated calls to prepare() or enable(), but it keeps no track
-of how often these were called, i.e., it's currently legal to write the
-following:
-
-clk.prepare();
-clk.prepare();
-clk.enable();
-clk.enable();
-
-And nothing gets undone on drop().
-
-c) It adds a OptionalClk type that is probably not needed. There is no
-"struct optional_clk" in C and we should probably not add one.
-
-d) It does not let a user express the state of the clk through the
-type system. For example, there is currently no way to encode that a Clk is
-enabled via the type system alone.
-
-In light of the Regulator abstraction that was recently merged, switch this
-abstraction to use the type-state pattern instead. It solves both a) and b)
-by establishing a number of states and the valid ways to transition between
-them. It also automatically undoes any call to clk_get(), clk_prepare() and
-clk_enable() as applicable on drop(), so users do not have to do anything
-special before Clk goes out of scope.
-
-It solves c) by removing the OptionalClk type, which is now simply encoded
-as a Clk whose inner pointer is NULL.
-
-It solves d) by directly encoding the state of the Clk into the type, e.g.:
-Clk<Enabled> is now known to be a Clk that is enabled.
-
-The INVARIANTS section for Clk is expanded to highlight the relationship
-between the states and the respective reference counts that are owned by
-each of them.
-
-The examples are expanded to highlight how a user can transition between
-states, as well as highlight some of the shortcuts built into the API.
-
-The current implementation is also more flexible, in the sense that it
-allows for more states to be added in the future. This lets us implement
-different strategies for handling clocks, including one that mimics the
-current API, allowing for multiple calls to prepare() and enable().
-
-The users (cpufreq.rs/ rcpufreq_dt.rs) were updated by this patch (and not
-a separate one) to reflect the new changes. This is needed, because
-otherwise this patch would break the build.
-
-Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
----
-Hi Michael, Stephen, Viresh and others. I believe that we should get this
-change in before more drivers start depending on clocks. It uses the same
-rationale as Regulator<T>, and that was the result of some extensive
-discussion, so I really believe that it is a good fit for clocks as well,
-in the sense that it correctly tracks all refcounts, decrement them on drop
-as needed and also provides a guarantee on the underlying state of the
-clock via the type system. For instance, it is now possible to express via
-the type system that a Clk is enabled, i.e.: Clk<Enabled>.
-
-On top of that, it can constrain operations to a given state. For instance,
-the current patch only offers get_rate() and set_rate() for the
-Clk<Enabled> state. We can also offer it to all states, or a subset of
-states as appropriate.
----
- drivers/cpufreq/rcpufreq_dt.rs |   2 +-
- rust/kernel/clk.rs             | 358 ++++++++++++++++++++++++++---------------
- rust/kernel/cpufreq.rs         |   8 +-
- 3 files changed, 232 insertions(+), 136 deletions(-)
-
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-index 94ed81644fe1c3f8a0240dede2299102a2118e73..f5dee7aba95c5c150fe75d6e2ffc2adf61c41c60 100644
---- a/drivers/cpufreq/rcpufreq_dt.rs
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -45,7 +45,7 @@ struct CPUFreqDTDevice {
-     freq_table: opp::FreqTable,
-     _mask: CpumaskVar,
-     _token: Option<opp::ConfigToken>,
--    _clk: Clk,
-+    _clk: Clk<kernel::clk::Unprepared>,
- }
- 
- #[derive(Default)]
-diff --git a/rust/kernel/clk.rs b/rust/kernel/clk.rs
-index fbcea31dbccadc29ae1db12cd77beda67a5665ee..6c8edb665c608386a36f28a2c9ec39604b5bc20d 100644
---- a/rust/kernel/clk.rs
-+++ b/rust/kernel/clk.rs
-@@ -85,12 +85,73 @@ mod common_clk {
-         prelude::*,
-     };
- 
--    use core::{ops::Deref, ptr};
-+    use core::{marker::PhantomData, mem::ManuallyDrop, ptr};
-+
-+    mod private {
-+        pub trait Sealed {}
-+
-+        impl Sealed for super::Unprepared {}
-+        impl Sealed for super::Prepared {}
-+        impl Sealed for super::Enabled {}
-+    }
-+
-+    /// A trait representing the different states that a [`Clk`] can be in.
-+    pub trait ClkState: private::Sealed {
-+        /// Whether the clock should be disabled when dropped.
-+        const DISABLE_ON_DROP: bool;
-+
-+        /// Whether the clock should be unprepared when dropped.
-+        const UNPREPARE_ON_DROP: bool;
-+    }
-+
-+    /// A state where the [`Clk`] is not prepared and not enabled.
-+    pub struct Unprepared;
-+
-+    /// A state where the [`Clk`] is prepared but not enabled.
-+    pub struct Prepared;
-+
-+    /// A state where the [`Clk`] is both prepared and enabled.
-+    pub struct Enabled;
-+
-+    impl ClkState for Unprepared {
-+        const DISABLE_ON_DROP: bool = false;
-+        const UNPREPARE_ON_DROP: bool = false;
-+    }
-+
-+    impl ClkState for Prepared {
-+        const DISABLE_ON_DROP: bool = false;
-+        const UNPREPARE_ON_DROP: bool = true;
-+    }
-+
-+    impl ClkState for Enabled {
-+        const DISABLE_ON_DROP: bool = true;
-+        const UNPREPARE_ON_DROP: bool = true;
-+    }
-+
-+    /// An error that can occur when trying to convert a [`Clk`] between states.
-+    pub struct Error<State: ClkState> {
-+        /// The error that occurred.
-+        pub error: kernel::error::Error,
-+
-+        /// The [`Clk`] that caused the error, so that the operation may be
-+        /// retried.
-+        pub clk: Clk<State>,
-+    }
- 
-     /// A reference-counted clock.
-     ///
-     /// Rust abstraction for the C [`struct clk`].
-     ///
-+    /// A [`Clk`] instance represents a clock that can be in one of several
-+    /// states: [`Unprepared`], [`Prepared`], or [`Enabled`].
-+    ///
-+    /// No action needs to be taken when a [`Clk`] is dropped. The calls to
-+    /// `clk_unprepare()` and `clk_disable()` will be placed as applicable.
-+    ///
-+    /// An optional [`Clk`] is treated just like a regular [`Clk`], but its
-+    /// inner `struct clk` pointer is `NULL`. This interfaces correctly with the
-+    /// C API and also exposes all the methods of a regular [`Clk`] to users.
-+    ///
-     /// # Invariants
-     ///
-     /// A [`Clk`] instance holds either a pointer to a valid [`struct clk`] created by the C
-@@ -99,20 +160,39 @@ mod common_clk {
-     /// Instances of this type are reference-counted. Calling [`Clk::get`] ensures that the
-     /// allocation remains valid for the lifetime of the [`Clk`].
-     ///
--    /// ## Examples
-+    /// The [`Prepared`] state is associated with a single count of
-+    /// `clk_prepare()`, and the [`Enabled`] state is associated with a single
-+    /// count of `clk_enable()`, and the [`Enabled`] state is associated with a
-+    /// single count of `clk_prepare` and `clk_enable()`.
-+    ///
-+    /// All states are associated with a single count of `clk_get()`.
-+    ///
-+    /// # Examples
-     ///
-     /// The following example demonstrates how to obtain and configure a clock for a device.
-     ///
-     /// ```
-     /// use kernel::c_str;
--    /// use kernel::clk::{Clk, Hertz};
-+    /// use kernel::clk::{Clk, Enabled, Hertz, Unprepared, Prepared};
-     /// use kernel::device::Device;
-     /// use kernel::error::Result;
-     ///
-     /// fn configure_clk(dev: &Device) -> Result {
--    ///     let clk = Clk::get(dev, Some(c_str!("apb_clk")))?;
-+    ///     // The fastest way is to use a version of `Clk::get` for the desired
-+    ///     // state, i.e.:
-+    ///     let clk: Clk<Enabled> = Clk::<Enabled>::get(dev, Some(c_str!("apb_clk")))?;
-     ///
--    ///     clk.prepare_enable()?;
-+    ///     // Any other state is also possible, e.g.:
-+    ///     let clk: Clk<Prepared> = Clk::<Prepared>::get(dev, Some(c_str!("apb_clk")))?;
-+    ///
-+    ///     // Later:
-+    ///     let clk: Clk<Enabled> = clk.enable().map_err(|error| {
-+    ///         error.error
-+    ///     })?;
-+    ///
-+    ///     // Note that error.clk is the original `clk` if the operation
-+    ///     // failed. It is provided as a convenience so that the operation may be
-+    ///     // retried in case of errors.
-     ///
-     ///     let expected_rate = Hertz::from_ghz(1);
-     ///
-@@ -120,104 +200,172 @@ mod common_clk {
-     ///         clk.set_rate(expected_rate)?;
-     ///     }
-     ///
--    ///     clk.disable_unprepare();
-+    ///     // Nothing is needed here. The drop implementation will undo any
-+    ///     // operations as appropriate.
-+    ///     Ok(())
-+    /// }
-+    ///
-+    /// fn shutdown(dev: &Device, clk: Clk<Enabled>) -> Result {
-+    ///     // The states can be traversed "in the reverse order" as well:
-+    ///     let clk: Clk<Prepared> = clk.disable().map_err(|error| {
-+    ///         error.error
-+    ///     })?;
-+    ///
-+    ///     let clk: Clk<Unprepared> = clk.unprepare();
-+    ///
-     ///     Ok(())
-     /// }
-     /// ```
-     ///
-     /// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
-     #[repr(transparent)]
--    pub struct Clk(*mut bindings::clk);
-+    pub struct Clk<T: ClkState> {
-+        inner: *mut bindings::clk,
-+        _phantom: core::marker::PhantomData<T>,
-+    }
- 
--    impl Clk {
-+    impl Clk<Unprepared> {
-         /// Gets [`Clk`] corresponding to a [`Device`] and a connection id.
-         ///
-         /// Equivalent to the kernel's [`clk_get`] API.
-         ///
-         /// [`clk_get`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_get
--        pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
-+        #[inline]
-+        pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Clk<Unprepared>> {
-             let con_id = name.map_or(ptr::null(), |n| n.as_ptr());
- 
-             // SAFETY: It is safe to call [`clk_get`] for a valid device pointer.
--            //
-+            let inner = from_err_ptr(unsafe { bindings::clk_get(dev.as_raw(), con_id) })?;
-+
-             // INVARIANT: The reference-count is decremented when [`Clk`] goes out of scope.
--            Ok(Self(from_err_ptr(unsafe {
--                bindings::clk_get(dev.as_raw(), con_id)
--            })?))
-+            Ok(Self {
-+                inner,
-+                _phantom: PhantomData,
-+            })
-         }
- 
--        /// Obtain the raw [`struct clk`] pointer.
-+        /// Behaves the same as [`Self::get`], except when there is no clock
-+        /// producer. In this case, instead of returning [`ENOENT`], it returns
-+        /// a dummy [`Clk`].
-         #[inline]
--        pub fn as_raw(&self) -> *mut bindings::clk {
--            self.0
-+        pub fn get_optional(dev: &Device, name: Option<&CStr>) -> Result<Clk<Unprepared>> {
-+            let con_id = name.map_or(ptr::null(), |n| n.as_ptr());
-+
-+            // SAFETY: It is safe to call [`clk_get`] for a valid device pointer.
-+            let inner = from_err_ptr(unsafe { bindings::clk_get_optional(dev.as_raw(), con_id) })?;
-+
-+            // INVARIANT: The reference-count is decremented when [`Clk`] goes out of scope.
-+            Ok(Self {
-+                inner,
-+                _phantom: PhantomData,
-+            })
-         }
- 
--        /// Enable the clock.
-+        /// Attempts to convert the [`Clk`] to a [`Prepared`] state.
-         ///
--        /// Equivalent to the kernel's [`clk_enable`] API.
-+        /// Equivalent to the kernel's [`clk_prepare`] API.
-         ///
--        /// [`clk_enable`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_enable
-+        /// [`clk_prepare`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_prepare
-         #[inline]
--        pub fn enable(&self) -> Result {
--            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
--            // [`clk_enable`].
--            to_result(unsafe { bindings::clk_enable(self.as_raw()) })
-+        pub fn prepare(self) -> Result<Clk<Prepared>, Error<Unprepared>> {
-+            // We will be transferring the ownership of our `clk_get()` count to
-+            // `Clk<Prepared>`.
-+            let clk = ManuallyDrop::new(self);
-+
-+            // SAFETY: By the type invariants, self.0 is a valid argument for [`clk_prepare`].
-+            to_result(unsafe { bindings::clk_prepare(clk.as_raw()) })
-+                .map(|()| Clk {
-+                    inner: clk.inner,
-+                    _phantom: PhantomData,
-+                })
-+                .map_err(|error| Error {
-+                    error,
-+                    clk: ManuallyDrop::into_inner(clk),
-+                })
-         }
-+    }
- 
--        /// Disable the clock.
--        ///
--        /// Equivalent to the kernel's [`clk_disable`] API.
-+    impl Clk<Prepared> {
-+        /// Obtains a [`Clk`] from a [`Device`] and a connection id and prepares it.
-         ///
--        /// [`clk_disable`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_disable
-+        /// Equivalent to calling [`Clk::get`], followed by [`Clk::prepare`],
-         #[inline]
--        pub fn disable(&self) {
--            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
--            // [`clk_disable`].
--            unsafe { bindings::clk_disable(self.as_raw()) };
-+        pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Clk<Prepared>> {
-+            Clk::<Unprepared>::get(dev, name)?
-+                .prepare()
-+                .map_err(|error| error.error)
-         }
- 
--        /// Prepare the clock.
-+        /// Attempts to convert the [`Clk`] to an [`Unprepared`] state.
-         ///
--        /// Equivalent to the kernel's [`clk_prepare`] API.
--        ///
--        /// [`clk_prepare`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_prepare
-+        /// Equivalent to the kernel's [`clk_unprepare`] API.
-         #[inline]
--        pub fn prepare(&self) -> Result {
--            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
--            // [`clk_prepare`].
--            to_result(unsafe { bindings::clk_prepare(self.as_raw()) })
-+        pub fn unprepare(self) -> Clk<Unprepared> {
-+            // We will be transferring the ownership of our `clk_get()` count to
-+            // `Clk<Unprepared>`.
-+            let clk = ManuallyDrop::new(self);
-+
-+            // SAFETY: By the type invariants, self.0 is a valid argument for [`clk_unprepare`].
-+            unsafe { bindings::clk_unprepare(clk.as_raw()) }
-+
-+            Clk {
-+                inner: clk.inner,
-+                _phantom: PhantomData,
-+            }
-         }
- 
--        /// Unprepare the clock.
-+        /// Attempts to convert the [`Clk`] to an [`Enabled`] state.
-         ///
--        /// Equivalent to the kernel's [`clk_unprepare`] API.
-+        /// Equivalent to the kernel's [`clk_enable`] API.
-         ///
--        /// [`clk_unprepare`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_unprepare
-+        /// [`clk_enable`]: https://docs.kernel.org/core-api/kernel-api.html#c.clk_enable
-         #[inline]
--        pub fn unprepare(&self) {
--            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
--            // [`clk_unprepare`].
--            unsafe { bindings::clk_unprepare(self.as_raw()) };
-+        pub fn enable(self) -> Result<Clk<Enabled>, Error<Prepared>> {
-+            // We will be transferring the ownership of our `clk_get()` and
-+            // `clk_prepare()` counts to `Clk<Enabled>`.
-+            let clk = ManuallyDrop::new(self);
-+
-+            // SAFETY: By the type invariants, self.0 is a valid argument for [`clk_enable`].
-+            to_result(unsafe { bindings::clk_enable(clk.as_raw()) })
-+                .map(|()| Clk {
-+                    inner: clk.inner,
-+                    _phantom: PhantomData,
-+                })
-+                .map_err(|error| Error {
-+                    error,
-+                    clk: ManuallyDrop::into_inner(clk),
-+                })
-         }
-+    }
- 
--        /// Prepare and enable the clock.
-+    impl Clk<Enabled> {
-+        /// Gets [`Clk`] corresponding to a [`Device`] and a connection id and
-+        /// then prepares and enables it.
-         ///
--        /// Equivalent to calling [`Clk::prepare`] followed by [`Clk::enable`].
-+        /// Equivalent to calling [`Clk::get`], followed by [`Clk::prepare`],
-+        /// followed by [`Clk::enable`].
-         #[inline]
--        pub fn prepare_enable(&self) -> Result {
--            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
--            // [`clk_prepare_enable`].
--            to_result(unsafe { bindings::clk_prepare_enable(self.as_raw()) })
-+        pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Clk<Enabled>> {
-+            Clk::<Prepared>::get(dev, name)?
-+                .enable()
-+                .map_err(|error| error.error)
-         }
- 
--        /// Disable and unprepare the clock.
--        ///
--        /// Equivalent to calling [`Clk::disable`] followed by [`Clk::unprepare`].
-         #[inline]
--        pub fn disable_unprepare(&self) {
--            // SAFETY: By the type invariants, self.as_raw() is a valid argument for
--            // [`clk_disable_unprepare`].
--            unsafe { bindings::clk_disable_unprepare(self.as_raw()) };
-+        /// Attempts to disable the [`Clk`] and convert it to the [`Prepared`]
-+        /// state.
-+        pub fn disable(self) -> Result<Clk<Prepared>, Error<Enabled>> {
-+            // We will be transferring the ownership of our `clk_get()` and
-+            // `clk_enable()` counts to `Clk<Prepared>`.
-+            let clk = ManuallyDrop::new(self);
-+
-+            // SAFETY: By the type invariants, self.0 is a valid argument for [`clk_disable`].
-+            unsafe { bindings::clk_disable(clk.as_raw()) };
-+
-+            Ok(Clk {
-+                inner: clk.inner,
-+                _phantom: PhantomData,
-+            })
-         }
- 
-         /// Get clock's rate.
-@@ -245,83 +393,27 @@ pub fn set_rate(&self, rate: Hertz) -> Result {
-         }
-     }
- 
--    impl Drop for Clk {
--        fn drop(&mut self) {
--            // SAFETY: By the type invariants, self.as_raw() is a valid argument for [`clk_put`].
--            unsafe { bindings::clk_put(self.as_raw()) };
--        }
--    }
--
--    /// A reference-counted optional clock.
--    ///
--    /// A lightweight wrapper around an optional [`Clk`]. An [`OptionalClk`] represents a [`Clk`]
--    /// that a driver can function without but may improve performance or enable additional
--    /// features when available.
--    ///
--    /// # Invariants
--    ///
--    /// An [`OptionalClk`] instance encapsulates a [`Clk`] with either a valid [`struct clk`] or
--    /// `NULL` pointer.
--    ///
--    /// Instances of this type are reference-counted. Calling [`OptionalClk::get`] ensures that the
--    /// allocation remains valid for the lifetime of the [`OptionalClk`].
--    ///
--    /// ## Examples
--    ///
--    /// The following example demonstrates how to obtain and configure an optional clock for a
--    /// device. The code functions correctly whether or not the clock is available.
--    ///
--    /// ```
--    /// use kernel::c_str;
--    /// use kernel::clk::{OptionalClk, Hertz};
--    /// use kernel::device::Device;
--    /// use kernel::error::Result;
--    ///
--    /// fn configure_clk(dev: &Device) -> Result {
--    ///     let clk = OptionalClk::get(dev, Some(c_str!("apb_clk")))?;
--    ///
--    ///     clk.prepare_enable()?;
--    ///
--    ///     let expected_rate = Hertz::from_ghz(1);
--    ///
--    ///     if clk.rate() != expected_rate {
--    ///         clk.set_rate(expected_rate)?;
--    ///     }
--    ///
--    ///     clk.disable_unprepare();
--    ///     Ok(())
--    /// }
--    /// ```
--    ///
--    /// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
--    pub struct OptionalClk(Clk);
--
--    impl OptionalClk {
--        /// Gets [`OptionalClk`] corresponding to a [`Device`] and a connection id.
--        ///
--        /// Equivalent to the kernel's [`clk_get_optional`] API.
--        ///
--        /// [`clk_get_optional`]:
--        /// https://docs.kernel.org/core-api/kernel-api.html#c.clk_get_optional
--        pub fn get(dev: &Device, name: Option<&CStr>) -> Result<Self> {
--            let con_id = name.map_or(ptr::null(), |n| n.as_ptr());
--
--            // SAFETY: It is safe to call [`clk_get_optional`] for a valid device pointer.
--            //
--            // INVARIANT: The reference-count is decremented when [`OptionalClk`] goes out of
--            // scope.
--            Ok(Self(Clk(from_err_ptr(unsafe {
--                bindings::clk_get_optional(dev.as_raw(), con_id)
--            })?)))
-+    impl<T: ClkState> Clk<T> {
-+        /// Obtain the raw [`struct clk`] pointer.
-+        #[inline]
-+        pub fn as_raw(&self) -> *mut bindings::clk {
-+            self.inner
-         }
-     }
- 
--    // Make [`OptionalClk`] behave like [`Clk`].
--    impl Deref for OptionalClk {
--        type Target = Clk;
--
--        fn deref(&self) -> &Clk {
--            &self.0
-+    impl<T: ClkState> Drop for Clk<T> {
-+        fn drop(&mut self) {
-+            if T::DISABLE_ON_DROP {
-+                // SAFETY: By the type invariants, self.as_raw() is a valid argument for
-+                // [`clk_disable`].
-+                unsafe { bindings::clk_disable(self.as_raw()) };
-+            }
-+
-+            if T::UNPREPARE_ON_DROP {
-+                // SAFETY: By the type invariants, self.as_raw() is a valid argument for
-+                // [`clk_unprepare`].
-+                unsafe { bindings::clk_unprepare(self.as_raw()) };
-+            }
-         }
-     }
- }
-diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
-index b0a9c6182aec6027f85d65a492595e8f815ae6b9..8eef0ffeb60276951737726af3c43c04d7f8dff3 100644
---- a/rust/kernel/cpufreq.rs
-+++ b/rust/kernel/cpufreq.rs
-@@ -551,8 +551,12 @@ pub fn cpus(&mut self) -> &mut cpumask::Cpumask {
-     /// The caller must guarantee that the returned [`Clk`] is not dropped while it is getting used
-     /// by the C code.
-     #[cfg(CONFIG_COMMON_CLK)]
--    pub unsafe fn set_clk(&mut self, dev: &Device, name: Option<&CStr>) -> Result<Clk> {
--        let clk = Clk::get(dev, name)?;
-+    pub unsafe fn set_clk(
-+        &mut self,
-+        dev: &Device,
-+        name: Option<&CStr>,
-+    ) -> Result<Clk<crate::clk::Unprepared>> {
-+        let clk = Clk::<crate::clk::Unprepared>::get(dev, name)?;
-         self.as_mut_ref().clk = clk.as_raw();
-         Ok(clk)
-     }
+Suggested-by: Danilo Krummrich <dakr@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Cc: Benno Lossin <lossin@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Trevor Gross <tmgross@umich.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rafael J. Wysocki <rafael@kernel.org>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Cc: linux-pci@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
 ---
-base-commit: bc27a30feb4932493af841a14fe80d752e049f95
-change-id: 20250729-clk-type-state-1f988ec3843a
 
-Best regards,
+Changes for v3:
+
+ - Updated capitalisation of SAFETY comments
+---
+ rust/kernel/pci.rs | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+index 8435f8132e381..7da1712398938 100644
+--- a/rust/kernel/pci.rs
++++ b/rust/kernel/pci.rs
+@@ -371,14 +371,18 @@ fn as_raw(&self) -> *mut bindings::pci_dev {
+ 
+ impl Device {
+     /// Returns the PCI vendor ID.
++    #[inline]
+     pub fn vendor_id(&self) -> u16 {
+-        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
+         unsafe { (*self.as_raw()).vendor }
+     }
+ 
+     /// Returns the PCI device ID.
++    #[inline]
+     pub fn device_id(&self) -> u16 {
+-        // SAFETY: `self.as_raw` is a valid pointer to a `struct pci_dev`.
++        // SAFETY: By its type invariant `self.as_raw` is always a valid pointer to a
++        // `struct pci_dev`.
+         unsafe { (*self.as_raw()).device }
+     }
+ 
 -- 
-Daniel Almeida <daniel.almeida@collabora.com>
+2.47.2
 
