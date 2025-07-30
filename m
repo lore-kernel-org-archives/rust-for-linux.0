@@ -1,96 +1,220 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC4A18BC0C
-	for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 08:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F6F1D54F7;
+	Wed, 30 Jul 2025 08:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753862584; cv=none; b=hFg1qen+832decg8KbVNKkgoj5m2nzBb4sjseWjpvBexasoKjk9N6N90sacpxZOdvlv8JHjN2r1zj+gFqpqBp7caIQV/7AvLoC+DPZq1BScvqPjZ060TqRjVLxPEhqCN7ssHwLVt6qu1RHSngQfFZwyFfcq4RRDEYivJvPwxbQM=
+	t=1753862634; cv=none; b=YUDRISL9fPcbH+C7bqee4cOmNnYNBYjEt7xfg1iysThMJnioXrTkEJUEGgwOKr54J/nOB71HTMna58+BCspdXFHKV0hizA0ZJa/v8bJgHraSve1d5rqqk0Q/EMtGJhFy3gLoWG+d6u52T9hJXP57+eEsYxRXV/RYAh/q+wo8QkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753862584; c=relaxed/simple;
-	bh=/MyQIhv+oxPmyUOEjR2JSMI/ss3MtMNPBs6GFmylKCI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gfC3XEe34M7jdTUExq0HXsD/g01VMA/KhR+CpuM80xgvyM/Bryi+I2inTlstvpkY/Pn3rc++3tM60hbNPOKuw+V5aYadk8w8mVpRGy4S3dmHmuouV7VlZBVDfe9kklmNO4NdYmjh61vSy2Wm6ts7pdPcTgc8wZDzZfI8IVGqgzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SbQOqfqC; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1753862634; c=relaxed/simple;
+	bh=zMori7sX/UDbxCNR2EI8mynJoVEW1MfajN3fR3vL3RM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=pEvazfwPOHK6m8LwRyq1q0dSgDD9Rze1P+L3zJOx4F5xHf5OVQEpuWEF0gMkp3QkaVQY1OxnljLofNgnpJuLnzqe/y4AS2CsiZUH9mCHnYevizwg+uEcl2sQmq53y1xLIXfszIJqc1/08DvPsHOX7eZebjI0OxEssE3cbaO9Ifs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GHSwnj7F; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SbQOqfqC"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3b604541741so3949028f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 30 Jul 2025 01:03:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1753862581; x=1754467381; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hvkA2k7IhdKqaN2G4otDNr6r/3eIO7r80AxoAqkt6Zc=;
-        b=SbQOqfqCGTnp8x6oja4VPOoz5apwWkqHRYNNoaUEJtQlgNd203GnBZ6zJd3xIHwoTO
-         iC6+GLm/Mp0GKKPUlhIglFZ2fV/3gEXbx6U2as0hXrwpTaqaociN/boognIJjA3LXV5w
-         Ih2KctKNYjZO4L9lAdFv4anDhgr4fPO+uyELMa/Eu7JFrCSorjTswmxp4R4xoKFOO/k2
-         AfBYpjSllPj+uDEVzg8IFC429w6FrTv7/Y4wqB1FeciQyUA2xbKiNdVv0No1Kz7sabee
-         S4ftby+qxTX2BcKe59j/5FGdMJqRW7lGefSyqAatB/QTW+199n0hlYz1ZwWPLyfFmZIN
-         dTCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753862581; x=1754467381;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hvkA2k7IhdKqaN2G4otDNr6r/3eIO7r80AxoAqkt6Zc=;
-        b=eiwjziadfl3m0//o41KB6Hlmod//whBSY8z5b/4/2o8payKm7TgyeV366HJHQ1SpuG
-         AZeH5SztHj9BPQhgz3PnJd+CXgdzs1Vyr5EJJd559aKqXzu3Y9fv6CJWIdfw92S9Z0E0
-         MXMp7FHCla0fQNN6Z7EPwYf4V1jUkm7gnQDyyyCr5mx/mhV04NtVbqCMs1j955HlJytD
-         Zsn1G11EiysnzFvEGq5Fwsnz6kGJzUBjxmSfGUhs60CqQ0pHCdfPRpVUfV/RziNiOgRS
-         UdjhkSWqHyJvtpzeSUU8kzO3lS2uPX5Y6dCUfbzCw+dLzl7c7IxSLxjLsXzw2nUyoifu
-         sTeg==
-X-Forwarded-Encrypted: i=1; AJvYcCVH1TK+xa1TDADbhh1JPh0hD6zM4sfdDC1N74vvNWMZtaiVKwfRT1ObUSfh442cbsDFDnh+ZPxqzgrxKh5iVQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMwUsxJ5F4aQf+CP9s9vDPFJUdRvnssBPTAwB3Fu5jxrg7AW4e
-	K6OFsHRee6jvWrSR+MW9ZGNmfcIy9PBWXhuKq4qLlHTue9UxOCbUV5QPxRs27g8/kgrOHL6Fe2G
-	F0oPn8jH9EEiyanXHIg==
-X-Google-Smtp-Source: AGHT+IEidSsYhJJCRxV8YYcCIYNFt7Gb9o74E15I/wFzPhPbknnSTFyghHsxc1psxDPaRTI0N/KtvprllEAM84w=
-X-Received: from wrs14.prod.google.com ([2002:a05:6000:64e:b0:3a5:2a0b:d7a3])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:4408:b0:3b7:9546:a0e8 with SMTP id ffacd0b85a97d-3b79546a3a1mr1061367f8f.41.1753862581345;
- Wed, 30 Jul 2025 01:03:01 -0700 (PDT)
-Date: Wed, 30 Jul 2025 08:03:00 +0000
-In-Reply-To: <786e88abea2557080bde65fa9892df3b956731f2.1753841900.git.zhuhui@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GHSwnj7F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D1DC4CEE7;
+	Wed, 30 Jul 2025 08:03:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753862634;
+	bh=zMori7sX/UDbxCNR2EI8mynJoVEW1MfajN3fR3vL3RM=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=GHSwnj7Fd1tMRkr9dNuz2ToiGvIRTK09AjT0F/4PshJ0Gm38xxbS+csJgHvu+5IVA
+	 8gML/P1FOqVOjqDj1D2nJwUd4FCQjdeVanj9S1lWFQBbvIl4vsXteeuS8r8lRVSalW
+	 LeTIiQ7YFMnmA+Y3fFFo3prUSPBJl/bmyA7sWEovGhNAMWjkStZFH3AbLY2nMHCqR9
+	 AyZyBdGYR1yDv5b4NCnNysZJ86s2/Fac502hh+Mvjb2JODbv1JOTm5U+h5lw3nrKUO
+	 5NEwA2gM4nbhR4AlRjLocgj24tNc/DdKcwSWH9Jr1mKKLS2XLIz3LFEmTEKR8ztxlf
+	 eyqBm0VyYGdJA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1753841900.git.zhuhui@kylinos.cn> <786e88abea2557080bde65fa9892df3b956731f2.1753841900.git.zhuhui@kylinos.cn>
-Message-ID: <aInRtC5CRxyDTy5B@google.com>
-Subject: Re: [PATCH v6 2/2] rust: alloc: kvec: add doc example for as_slice method
-From: Alice Ryhl <aliceryhl@google.com>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
-	vitaly.wool@konsulko.se, Hui Zhu <zhuhui@kylinos.cn>, 
-	Geliang Tang <geliang@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 30 Jul 2025 10:03:48 +0200
+Message-Id: <DBP8EWLCAE4B.34Y4FBSH5BTB6@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: clk: use the type-state pattern
+Cc: "Michael Turquette" <mturquette@baylibre.com>, "Stephen Boyd"
+ <sboyd@kernel.org>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Viresh Kumar" <viresh.kumar@linaro.org>, "Alexandre
+ Courbot" <acourbot@nvidia.com>, <linux-clk@vger.kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pm@vger.kernel.org>
+References: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
+In-Reply-To: <20250729-clk-type-state-v1-1-896b53816f7b@collabora.com>
 
-On Wed, Jul 30, 2025 at 11:35:22AM +0800, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> Add a practical usage example to the documentation of KVec::as_slice()
-> showing how to:
-> Create a new KVec.
-> Push elements into it.
-> Convert to a slice via as_slice().
-> 
-> Co-developed-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Geliang Tang <geliang@kernel.org>
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+On Tue Jul 29, 2025 at 11:38 PM CEST, Daniel Almeida wrote:
+> In light of the Regulator abstraction that was recently merged, switch th=
+is
+> abstraction to use the type-state pattern instead. It solves both a) and =
+b)
+> by establishing a number of states and the valid ways to transition betwe=
+en
+> them. It also automatically undoes any call to clk_get(), clk_prepare() a=
+nd
+> clk_enable() as applicable on drop(), so users do not have to do anything
+> special before Clk goes out of scope.
 
-It looks like this did not change since v5 where I gave my
+That's a great improvement, thanks! Some questions / comments below.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>      /// A reference-counted clock.
+>      ///
+>      /// Rust abstraction for the C [`struct clk`].
+>      ///
+> +    /// A [`Clk`] instance represents a clock that can be in one of seve=
+ral
+> +    /// states: [`Unprepared`], [`Prepared`], or [`Enabled`].
+> +    ///
+> +    /// No action needs to be taken when a [`Clk`] is dropped. The calls=
+ to
+> +    /// `clk_unprepare()` and `clk_disable()` will be placed as applicab=
+le.
+> +    ///
+> +    /// An optional [`Clk`] is treated just like a regular [`Clk`], but =
+its
+> +    /// inner `struct clk` pointer is `NULL`. This interfaces correctly =
+with the
+> +    /// C API and also exposes all the methods of a regular [`Clk`] to u=
+sers.
+> +    ///
+>      /// # Invariants
+>      ///
+>      /// A [`Clk`] instance holds either a pointer to a valid [`struct cl=
+k`] created by the C
+> @@ -99,20 +160,39 @@ mod common_clk {
+>      /// Instances of this type are reference-counted. Calling [`Clk::get=
+`] ensures that the
+>      /// allocation remains valid for the lifetime of the [`Clk`].
+>      ///
+> -    /// ## Examples
+> +    /// The [`Prepared`] state is associated with a single count of
+> +    /// `clk_prepare()`, and the [`Enabled`] state is associated with a =
+single
+> +    /// count of `clk_enable()`, and the [`Enabled`] state is associated=
+ with a
+> +    /// single count of `clk_prepare` and `clk_enable()`.
+> +    ///
+> +    /// All states are associated with a single count of `clk_get()`.
+> +    ///
+> +    /// # Examples
+>      ///
+>      /// The following example demonstrates how to obtain and configure a=
+ clock for a device.
+>      ///
+>      /// ```
+>      /// use kernel::c_str;
+> -    /// use kernel::clk::{Clk, Hertz};
+> +    /// use kernel::clk::{Clk, Enabled, Hertz, Unprepared, Prepared};
+>      /// use kernel::device::Device;
+>      /// use kernel::error::Result;
+>      ///
+>      /// fn configure_clk(dev: &Device) -> Result {
+> -    ///     let clk =3D Clk::get(dev, Some(c_str!("apb_clk")))?;
+> +    ///     // The fastest way is to use a version of `Clk::get` for the=
+ desired
+> +    ///     // state, i.e.:
+> +    ///     let clk: Clk<Enabled> =3D Clk::<Enabled>::get(dev, Some(c_st=
+r!("apb_clk")))?;
 
-tag. Please make sure to include the tag in future versions if you have
-not made any changes.
+Given that this is a driver API, why do we allow obtaining and configuring
+clocks of any device, i.e. also unbound devices?
 
-Alice
+I think Clk::<T>::get() should take a &Device<Bound> instead.
+
+> -    ///     clk.prepare_enable()?;
+> +    ///     // Any other state is also possible, e.g.:
+> +    ///     let clk: Clk<Prepared> =3D Clk::<Prepared>::get(dev, Some(c_=
+str!("apb_clk")))?;
+> +    ///
+> +    ///     // Later:
+> +    ///     let clk: Clk<Enabled> =3D clk.enable().map_err(|error| {
+> +    ///         error.error
+> +    ///     })?;
+> +    ///
+> +    ///     // Note that error.clk is the original `clk` if the operatio=
+n
+> +    ///     // failed. It is provided as a convenience so that the opera=
+tion may be
+> +    ///     // retried in case of errors.
+>      ///
+>      ///     let expected_rate =3D Hertz::from_ghz(1);
+>      ///
+> @@ -120,104 +200,172 @@ mod common_clk {
+>      ///         clk.set_rate(expected_rate)?;
+>      ///     }
+>      ///
+> -    ///     clk.disable_unprepare();
+> +    ///     // Nothing is needed here. The drop implementation will undo=
+ any
+> +    ///     // operations as appropriate.
+> +    ///     Ok(())
+> +    /// }
+> +    ///
+> +    /// fn shutdown(dev: &Device, clk: Clk<Enabled>) -> Result {
+
+You don't need the dev argument here.
+
+> +    ///     // The states can be traversed "in the reverse order" as wel=
+l:
+> +    ///     let clk: Clk<Prepared> =3D clk.disable().map_err(|error| {
+> +    ///         error.error
+> +    ///     })?;
+> +    ///
+> +    ///     let clk: Clk<Unprepared> =3D clk.unprepare();
+
+I know you want to showcase the type state, yet I don't know if we should
+explicitly declare the type if not necessary. People will likely just copy
+things. Maybe a comment is better to emphasize it?
+
+> +    ///
+>      ///     Ok(())
+>      /// }
+>      /// ```
+>      ///
+>      /// [`struct clk`]: https://docs.kernel.org/driver-api/clk.html
+>      #[repr(transparent)]
+> -    pub struct Clk(*mut bindings::clk);
+> +    pub struct Clk<T: ClkState> {
+> +        inner: *mut bindings::clk,
+> +        _phantom: core::marker::PhantomData<T>,
+> +    }
+
+<snip>
+
+> +    impl<T: ClkState> Drop for Clk<T> {
+> +        fn drop(&mut self) {
+> +            if T::DISABLE_ON_DROP {
+> +                // SAFETY: By the type invariants, self.as_raw() is a va=
+lid argument for
+> +                // [`clk_disable`].
+> +                unsafe { bindings::clk_disable(self.as_raw()) };
+> +            }
+> +
+> +            if T::UNPREPARE_ON_DROP {
+> +                // SAFETY: By the type invariants, self.as_raw() is a va=
+lid argument for
+> +                // [`clk_unprepare`].
+> +                unsafe { bindings::clk_unprepare(self.as_raw()) };
+> +            }
+
+Nice! I like this cleanup. However, don't you still need to call clk_put() =
+to
+drop the reference count?
+
+Also, given that this is a device resource, don't we want to take it away f=
+rom
+drivers once the corresponding device has been unbound, i.e. use Devres?
+
+>          }
+>      }
+>  }
