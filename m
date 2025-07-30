@@ -1,100 +1,107 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B5D224FA;
-	Wed, 30 Jul 2025 09:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA5B19BBC;
+	Wed, 30 Jul 2025 09:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753866331; cv=none; b=cWjeqQuhqBEItW1lQlTuvFkclEDDBeN47UNW1YOPCYr1fvXQ1biL8cBMzxcQv4bzSa1ksnTwMqzF8iwDuI6M+g+smyM2UawetfzXULs9MsTFMN/pkVz+q5WjXsHp8HSoSmn67NPVLrA+nQM7YAeJnJUQook/6nxy0KNkC1SAWAY=
+	t=1753867035; cv=none; b=ocGrNXiZNv9bwybcuxY8fnotjd0Er2Y7npf72mnZcgGTb31PhHtNSlWJ/bWvz28vJrP08txIFMfjov4KWOhGQ1bGtYR78FsfDQOGz45GDUSjSadtnWsEC3s987oqBn6q6pHELxuxctpu1MpVHR8KWfnckHDIHuW/RroF7ZPFH88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753866331; c=relaxed/simple;
-	bh=/EsMy17JElruVccra2rJNhXuxYY654TvWWIqnzkBzaM=;
+	s=arc-20240116; t=1753867035; c=relaxed/simple;
+	bh=oyoz4k4QYMtoaz2JEU06qpYJL2BGR3kKis3s0TF7D1Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QZeGHQdnwkNmmguGPW9HDx5GGFV0mF4zsVHZYYvZN36dePM++VWtmSWUISNlU8xyA3zeqy7pEGL9N/z8iry51WPRiw8nvjWVEkRoEL4dHVeyV2nv0vR5OWp2iP0EGz/0w3Dl42NeIFIlQDIq21T1HhgZ7wfarH7zjAN+byC0dYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Js3erVtJ; arc=none smtp.client-ip=209.85.214.178
+	 To:Cc:Content-Type; b=vE+klDgd9dZXxfrRbj2RIPMHfVyerTIjf6udGWvAXbSEvPoYDZNF8rwSxvBHCXXk8IYGovZbyTeo4oJP5NJvdXBOLFx8KPi3Z4RQT9ZrF8gGP+1Z8VsOM7KG0lCnpPH4ZwcTKVi/HRhza8pQEgv3yR7pYHX+QCwXVbqTb948iiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zj0o4ghB; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Js3erVtJ"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2400b3008e8so3704125ad.3;
-        Wed, 30 Jul 2025 02:05:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zj0o4ghB"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-240240f1478so3909415ad.1;
+        Wed, 30 Jul 2025 02:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753866329; x=1754471129; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1753867033; x=1754471833; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/EsMy17JElruVccra2rJNhXuxYY654TvWWIqnzkBzaM=;
-        b=Js3erVtJzMWenl7RkMfEez/mJAlc710TMaO6Tp8FVMyaskKb+HQ8NUQIsbRQwjbZGu
-         nVt/vWVBIQSA1LbCm3p+vfenj40mR+kXbnGwtEwMpNbcoS8w4RAitsJdD5MS8rVRYV17
-         fyGsGZ0w8Xm03vyPF7oijm3Ru6JuPSY9QAuLf/+yNVhgXGKnGCec2zaIyTTpABePo/mb
-         hnJEqQYFhA5W3CBRdEB+HSwYxZ3ua8MA4jgrZ/IOeJ5NzDqkTVvhWY0b4o52YbvhiRyL
-         vB60o7o3xOT8LahsheDYFmg2ke7kWyja2ikWq7Zclfe0fs4lXvd4bov/BvlOSUE/Z+NI
-         MONw==
+        bh=4cvx3jlCW1kUJS1UO86lbagV2SGRq3t/wFGliVna4Zs=;
+        b=Zj0o4ghB3lrG7R6InXG+wIatNS9c/9frGAxc72gTcqAHRfPEy3Hko7Tek0pOuFh64/
+         H6UZL8IGoFdm8wa7YSjxkHr0E3v2SWox/B9IuR4IcR4JTO1S/73D0ljbLF5uRfIO/BNw
+         xbPGv6gxZUCeLn5AQQrbVNOCpJyTZxLVcziMekCIvlOZmJ0W9b9pYWqgwRELA0pYqSoj
+         iyZ/fDu19461v7XGcJWFYJzmmaLsVtPXMagxcJpIREpSU1AUTXGerajSGt25u62Hh34g
+         VlHiwB9VerTVcMpdMgDUfnl54r64cfu3ZGo9cit4kszhMSx+eQiCNpHz/ZqYwBmpsYAH
+         71rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753866329; x=1754471129;
+        d=1e100.net; s=20230601; t=1753867033; x=1754471833;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/EsMy17JElruVccra2rJNhXuxYY654TvWWIqnzkBzaM=;
-        b=O/mF1Fjn6AZFFdHZGeEdPXmnYoadE/bEpNb9s5fFeVF/darVFkZLsiwX8pIPdIhNIW
-         MW7kATxOZBWMJKlsmmzxhuDgn3jOoanIK34LWhm5aY6VapskSBad+djrLgQIws50Q4HZ
-         WMjUoR4RdetJrgMbuiKaAfZcutVcUg1R6+zxOKHOhFSRwjntdW84xvfSMC3/DE//sRfI
-         dQ2Z+qmyfTlk5yxglzwwWNUCnXjI6tNjBvvAQjgvvoK6QwK7kZ7LCPoWg08qicAk+rVp
-         DJzlcYlhdI9XCpHbBs3cT3QeJgtQCqkj+1cExkVqimOBg+E9CBwz7fqqMbBOqJWXLjhj
-         o3wA==
-X-Forwarded-Encrypted: i=1; AJvYcCVNK1p4hRqOrf4gqUYLCQwjI31dCp+Tr5qiejH6xmIx70wvux7lceZVYPfm2UNEzxRIj4X9odiVIeIMtiQ=@vger.kernel.org, AJvYcCXy5z2IzB2Sl5ZvA46gqkQB1oacrfGhaVeBHvwdQGt6qZ/I6OWKZCeAdZ70BbD/ahur1NfWYncT211s@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUjbHNV8OY3KtZy6/f1ZnMKWjKy9Emu40Hk3XywKPYAPiOZQXr
-	N1Ikk2JhbKzDgV+/+sFvFkcnf++GYo0FsBIwCxnHX2JQxE8+7fpi9z8N+UJIG5hX3p/95oCa556
-	iqWBNxWRkgL4ZXjy8RaGA6Kqyoae8uyxTK+cm
-X-Gm-Gg: ASbGnctMGWFeHptNS+G6gEMI8M5Y6pfwng2Pz3+aewNexm+XeWillL4celFyKulsOQO
-	VQxPx4bQliqBc+mK5VDc7uJiN6AKN5UJczci+aDZNQxls6nsiCj77+D2VPSJ26L2iNRFxCM80RF
-	PrdEdl+HPVna4EWsbs8R4qnw9hEpMMCLV3AULpHN2xqROFFIzlp1/72L092Q6GYLZJn3jvZpYYh
-	Pikbgdx
-X-Google-Smtp-Source: AGHT+IGySRAOV+djesXDaPR4TJ3aHBZNppgospN11oNLqL5TYtRHOtJyQQTzANoECnSbt+2wN+anMAN9utsfht0XdN0=
-X-Received: by 2002:a17:902:d50d:b0:22e:62c3:8c5d with SMTP id
- d9443c01a7336-24096b0c531mr19943065ad.8.1753866328704; Wed, 30 Jul 2025
- 02:05:28 -0700 (PDT)
+        bh=4cvx3jlCW1kUJS1UO86lbagV2SGRq3t/wFGliVna4Zs=;
+        b=d3vSc4TiXJDEnbEDkawcilUKPa+JMYE7QQIkK7H1ZS4oK7M4i68Ve90FpdJtlJgbc5
+         xIyKKLHIotUW0eBd3nHpf6Qzy57bBfe6MlWsw592uJxFhpV83PwzZIKR42wI2gcWkgjJ
+         xyPdEU13dkBBDOnXC+d7AqfDLd0b/Y5dRqlO9tmlur7VpF1pN7MpvkGZmIhctiThJMms
+         dyPE7cuskh2bcw7lZBmotRrh2p9/1+6d96Vv9xEMaHUac0X4uATqrobOR00R4DguGfUi
+         KlcSs+4Oge1lRFvHEue/bIgb6xaPyFaLXw0Kj7mMlvezL+RXsFKC4ey4K8R+jywMY5iK
+         Ai5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWSeGj//hgYf1wA0aJwElg63AdIySP/L1jO4Wv7JhXjRQZGs4gcRMaLQxk5rSH16N0KG7+9Oaf+Kxi335qKBJE=@vger.kernel.org, AJvYcCWiV0kDcjpHvpmkRyZJKlEit947RysBGhnNVRC4x3RIgy6/IHK3kEAhE85ez26R9k0unI2nmV+s0VVDHXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtpNEAUdHZ4zwS3n8CDnUsFcZZDZ25OQQs62UJsyvWJlU+FW7I
+	zagj3+Sqd/pf6FR1hs08J0eSFLOOgO/yy6Kl+93t0RzNHzYiAjp+W9Cd81CUYxSxtpryQ6P1ZCf
+	WqOZ5Mhx0zaqOh/ynUM763pQVyoovwHs=
+X-Gm-Gg: ASbGncvMvgdzqmMTwsj47k7fHq/pWUOjx9mWkl/Wb3WLzjI1Fl7+36ILTcsK19G7kUh
+	qObaCN6Lj7FKunPLi8o6rE3AlFLiZm/xj0rTSWq9ffR8D2iYlM9GNg9noeirpnNAge/FhvTFpt7
+	YudmkvYIo1Lp7SHwpPkDmvmQ36GYNRgndGDJZc4TiimZsHdwa0Fp3XVa7Xz3xqN8+BQi2kEi0ps
+	sCqrna2
+X-Google-Smtp-Source: AGHT+IFviiFpY5qURxAmF3cs+hlFE9oNjWne7PmU5uhh8IL6DjReVabkfDO1rSN8HCo6zGiWEaC1cgW28Uq4mulUdIs=
+X-Received: by 2002:a17:903:22d0:b0:240:79df:48b0 with SMTP id
+ d9443c01a7336-240969a3ce2mr17124625ad.0.1753867032977; Wed, 30 Jul 2025
+ 02:17:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250730013417.640593-1-apopple@nvidia.com>
-In-Reply-To: <20250730013417.640593-1-apopple@nvidia.com>
+References: <cover.1753841900.git.zhuhui@kylinos.cn> <3ad14f15b6d2639d6e998ecd03158313414b69dd.1753841900.git.zhuhui@kylinos.cn>
+In-Reply-To: <3ad14f15b6d2639d6e998ecd03158313414b69dd.1753841900.git.zhuhui@kylinos.cn>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 30 Jul 2025 11:05:15 +0200
-X-Gm-Features: Ac12FXwbXvIMu5qIoQekmsCAUtlTUoCMVOFLDM1LV1SLDgQ3ZVljXgRFPwoAfMA
-Message-ID: <CANiq72mt3xaDCiGs30XG6VkEJrEj8KnHfjDFdhrj5qgW-dTgdw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] rust: Update PCI binding safety comments and add
- inline compiler hint
-To: Alistair Popple <apopple@nvidia.com>
-Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+Date: Wed, 30 Jul 2025 11:16:58 +0200
+X-Gm-Features: Ac12FXwFTq20Np7yHTit391o2Sr0cqxsPUwzM11RptHMvEB2b-XUHfvEScx2lv4
+Message-ID: <CANiq72n_RnW=zma48X-txV-4AUDU9j0YGmYNBFYQ1CG3oxROJQ@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] rust: allocator: add KUnit tests for alignment guarantees
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Alexandre Courbot <acourbot@nvidia.com>, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
+	vitaly.wool@konsulko.se, Hui Zhu <zhuhui@kylinos.cn>, 
+	Geliang Tang <geliang@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 30, 2025 at 3:34=E2=80=AFAM Alistair Popple <apopple@nvidia.com=
-> wrote:
+On Wed, Jul 30, 2025 at 5:37=E2=80=AFAM Hui Zhu <hui.zhu@linux.dev> wrote:
 >
-> Cc: linux-kernel@vger.kernel.org
+> +#[macros::kunit_tests(rust_allocator_kunit)]
 
-I think this list of Ccs is automated, given even the LKML is
-included, but the Cc: tag inside the commit message is not meant to be
-used to mention every maintainer/reviewer, i.e. it is normally used
-when you want to document that someone was contacted (i.e. for a
-particular reason, not in general).
+Is there any reason for the `_kunit` suffix? If not, then we should
+avoid suffixing `_kunit` to every suite name.
 
-Otherwise, all commits would have very long lists of Ccs and the value
-of the tag is diminished.
+I see we already have `rust_kernel_kunit`, but that one is because it
+is the KUnit file itself.
+
+There is also `rust_kvec_kunit`, but we should clean that one up.
+
+> +    fn test_alignment() -> Result<()> {
+
+`-> Result` since the prelude is available.
+
+> +            fn alignment_valid(&self, align: usize) -> bool {
+
+We typically prefix these with `is_`.
+
+I would also call it `is_aligned_to`, to match the upstream Rust one,
+which we could perhaps use if it becomes stable.
 
 Cheers,
 Miguel
