@@ -1,186 +1,102 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700CE2BE638;
-	Thu, 31 Jul 2025 11:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7632288F9;
+	Thu, 31 Jul 2025 11:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753960362; cv=none; b=M6zAHiZKUkQfZZ9yRBcwwg6pMMo/iPW2cQy+wLDMLZeShmpE9eB45vgTg2wrLWdEqou3vqP9sYVH29V8EgtF8BTvFFRzNUA08pBQNcbsY8PoLUYzhysPIbCkYDlChMF8d3ndEC3JLi5msRdBKGlaU//uWBEpkThzWrWItk+HXEg=
+	t=1753962179; cv=none; b=L15W4cNCpQLeXv9lXZ8xQA1De6ZQoMbxfJot2B7v8nzE1yzsC9Ke4LfM8OIZHnouk3R+67sd5Hzl5oN1t3oGuNsGpTKkGvsoRa4ZVdVPQ4pgE1JcMaJctx5cb3zgh1wCx28NY1EAsKAhJxBniOWrLCu39IsXRIEdaO/9P4lLQAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753960362; c=relaxed/simple;
-	bh=VdHDVkzkyvAlURKaNUeBWQWHCvk7GbPXWJGCxEX6Jzc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sSFG3quqIFiMMGZIkiyCVQ5vM3ByS6nPTPojx0omHI1L9EFCxgCzU86u29OGKExJfn16fSI7adSOeyxYeAoJPEk3tO6XEJ1/Qd5+/MerGGiRJZgfnVc5CdlTSwj8HRkLNjkDLxvzeaDUh6bqStsnBKI/PuNXplGG4a7hOvoLtjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THaiFsDq; arc=none smtp.client-ip=209.85.210.170
+	s=arc-20240116; t=1753962179; c=relaxed/simple;
+	bh=uJcxgHp4I/KSbQ5ImVQRvUoAo9jt4x8yg7evAxKAYNo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aa3Q61FEa3VjQQHjBBCpNbEWZyXf0IskoR2lYX68GVAOuF3ApEKji9hsL4DWREri7omX+H4DM7vtJcj5IoVMqIcdhQma2FUBRzxXOVSkn1vWZRL7u6KR9sLPh+ePeOfx7BEt+kmfT9COFZc00ZBQSM/otTyLFfxE7waOxOQnaPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QRBZu7aZ; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THaiFsDq"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76b36e6b9ddso623699b3a.1;
-        Thu, 31 Jul 2025 04:12:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRBZu7aZ"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-b3f2ea2f96fso100663a12.0;
+        Thu, 31 Jul 2025 04:42:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753960360; x=1754565160; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4IwWy97OvGZq36Ea/vv8rtgmVuJu0EXO1lQWwmwlguo=;
-        b=THaiFsDqqOfs40mr5nZH+YUaOvCb5QYTVbrJsBJhu+ye/tul11Jzhu31Sm+NFdWyAp
-         Cbq0l6K4u/MvZiVgUFWybm/skkn3u/Ea4Nfdl69dS0vzgQ5akrdUxFrjO3J0+ceUE7xr
-         LZzbMGdl0z5j4gjolkzlrWvktcvsOowll+br/6LzJp2iUQ7wrTSVVbt5Rm42v0QVbbOh
-         qyv3v2AIUMaqcaqnHF4Z1eXISH1OhIMNJiaXpRIGGqQMa6Q3xI4h7Xs28VZnT4VSzezh
-         3g/WBFHGTj93f7inOO8KSVl2O6MpfM1sGIAsq+cEeIQ6ESuPa2SowliJ1heHxtuGTf1k
-         bHOg==
+        d=gmail.com; s=20230601; t=1753962177; x=1754566977; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uJcxgHp4I/KSbQ5ImVQRvUoAo9jt4x8yg7evAxKAYNo=;
+        b=QRBZu7aZvMl4NtIuTgPS5wV56+VreTpPQD/pl9bsLWVVZvImo7s2qo8jBfETkf8CLE
+         F6EQP8FmgqWHsqXZ/ELAdW9dfelFlA2tlp0ZHz6RywFzd447ZdpTfs4YZvzbhAfvPJNx
+         wX5r37fKX4LxoJi1NP1/U0WZNa+55a5/bHggbmk9t8/oVlS5eaUN/1FlRgEL4LZ/bR24
+         HovJB727qGzqqBEir6MIbbh/3UPKzxE1SHy5UnfkdL4Na+x5tbMoQz+8wAQIBzWaxMLT
+         fOXKGNB7C1XPVrfb7PbyKnNGXvDtJS+LIi6aFsUxA3BMuuDcfZ6Nn/sWDJ6SLyTHJadi
+         WMrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753960360; x=1754565160;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4IwWy97OvGZq36Ea/vv8rtgmVuJu0EXO1lQWwmwlguo=;
-        b=cWlXRqj2KJCmiziT+6p1h9jaNVIoXueqlBw0lCiS629fvmLourer0GqH3Eo028z9wg
-         r/pN8+LgvCBne3MJ57wKJrjVt0QD9ngx+bt49+nCAoHi5REE6aT8wWasgHGuxG/uB8k5
-         hBSdeaG+kVMRALNAYobFqGZulqVe2oHsHG8mOICPqBiThAMkigJ0mgS92nINkZG3e2BK
-         NeoJ+zmI+gCAJ3S43seaHescdKnsygC5DDERruHSlqjb6Jdu+wG9wJBMG0eIMiLJbj9P
-         kDlENxkhEZ6YI53h77vQGWK78Fu+YD1k+M+iZVObtfg/F2GvLMc9VUr09U+fmJRqi/Q6
-         O3Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlGEod4/xnVCmK7qFZ6AvCfyJdTs1JKFr/C0Qd32zwwvnf6/oPv0mn9uU5BdvTe3G6RmVzvMeDk4bntBQ=@vger.kernel.org, AJvYcCXu7MgwtRHyXiOSPuvFdKLNOXHtK85Q01gbEk2f/jXwj5Aw/g/QfXPxbwa9J7zHdEewPG+iNeYSlFCjEaeTksE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy26VIJI172dTqttI1KEEMsfVepbEGZS5H0HXgI/ByYeCC+yjNo
-	lTRxSsDPDWj8y5KzLxa+N0fN/ivnqiQGIQ/VzvYptOzrE8GQi75kKQQD
-X-Gm-Gg: ASbGncvJeaW5zB5/vCrfu/s7yCOOzOqYJnk/5Bs1e2+lpD7rBLznxIYUiZQnNVWuwsV
-	6gqrGDj+SclBpftxmEgA2iSluP3fwy7qA5kvS0ukqJuXoGjyz7iiP9jfi7zjjrTpX3s5SIU6yUL
-	hWKwxKtPL3nzZHfeG/zh1pE7EiL2qFnJh0ZmD+H4nTEW20d7sOYrBSBVPojWuY3L0T9fQ5ME/jL
-	jlmw+iamiHg+ORdk0W3t2m6M5h/pgKYtGFqt6pUuchz8GJsX6KBeFx2oHM/IMF5k25OpeN9fXpR
-	D9VgQFlbgj3XKmFQ1PFtATOXa3cVHEoe22B3D3mPRGbvRb8wS+fuI54siapjFWKgO3Hw2FbJge/
-	UVWcjqXxAJa5t6B3BiZ9jbxZ5sXkiakyv+uE=
-X-Google-Smtp-Source: AGHT+IHpa5118bbeNQZJpwNTbeJvJk7dBt/E3hcVWLfRp4iNi1DcMHaGI9lQ6q+fMkIiF3e3eua8FA==
-X-Received: by 2002:a05:6a20:939f:b0:233:b51a:8597 with SMTP id adf61e73a8af0-23dc0ea7837mr11587999637.35.1753960359597;
-        Thu, 31 Jul 2025 04:12:39 -0700 (PDT)
-Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce8b5basm1327250b3a.41.2025.07.31.04.12.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Jul 2025 04:12:38 -0700 (PDT)
-From: Ritvik Gupta <ritvikfoss@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Cc: skhan@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3] rust: kernel: introduce `unsafe_precondition_assert!` macro
-Date: Thu, 31 Jul 2025 16:42:28 +0530
-Message-ID: <20250731111234.28602-1-ritvikfoss@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        d=1e100.net; s=20230601; t=1753962177; x=1754566977;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uJcxgHp4I/KSbQ5ImVQRvUoAo9jt4x8yg7evAxKAYNo=;
+        b=qvwsxCOs/rtRGcFPPRy5MeDNbzO801qEiNjpvqBOmFJK/AWGGDmHOUBJZ8yfb11FIJ
+         Bx0IgT7TzENhBx2zkX3enHEBjWKr99F/91Gm2oDgog5Tjkw0vwq8L5HOcxlziDi1QReR
+         yh7pGv3/ca6YfakcxZGgEo5sKEX8pYMjMjJQCo5bebRiyXSA3Tuk8Ty25NSmgHATQ5W1
+         7osyKEpnrcuScRsL+8waUlhvG/X4HwbxuUcnM5SAlfrDd6jsYj0rm2SmAbBKdMPMEZVW
+         7tPEMBQy4/TJlwN7DLMzMZCogtpdiwJs9KORbG6v2kpGP0g1RIoWZflz996q02jNsCiB
+         TKyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcKd15hW7gE0dgCNLtgfqyyLZXVZzS5iCZn5r+J14WdwObtZoVKYJyu+DmeahbhCgG0XdrdfkgdYxvKyg=@vger.kernel.org, AJvYcCVpSGjOlPd3ffI/bBW3cBo9n6khDKj76YiXgkulMH/h88eedXbsVGIrrZaKA5txs7u+qy5QvHYJEBMWtwp/YY4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAkd9pQnn7fvs77h98sXx6DrZc7UvHrmC+ClzsQ+0WHHyOd9eY
+	GO8f+2WFeyn2ZV8HQwnFkjhtnpY7HfJpbrChNVFRy9woYaByCXU4cF0zDVEL41ZWTX+eR0e/O6q
+	MxIt3wrIc74iqUTR8fKIU2pjm2IoN7DA=
+X-Gm-Gg: ASbGncuGfxVsJyo5AaFkZ5u7jTBfFrBaWVETozeqrEMmLcgHRtmfEF6CZ8HnvCkYl66
+	vO0kgdCBxNYq2GmQREF1gE5UE9RY2fJRIxld/YDEZ+ZyawTRmofFSb6nJHAzRwNR7CGBGdukG7c
+	iAIUiurhfgGnXClbM/YCxfH56oYE0L+u3WXrQ6DwKE8X8G2nVqD9rS3kvL+vJghGNt6S9AjQQPM
+	Cl4TJGaF718H/nRDIQ=
+X-Google-Smtp-Source: AGHT+IHEhL8joW012BHO7UBetDbUpSR/OY0S6s97KX3tyJ2K+h9TLb6vbFDNYa0BuFGuutfhOB+IhHAL4tZzfbpoWFw=
+X-Received: by 2002:a17:90b:3b46:b0:312:e9d:3fff with SMTP id
+ 98e67ed59e1d1-31f5ddb2067mr425912a91.1.1753962177205; Thu, 31 Jul 2025
+ 04:42:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250731111234.28602-1-ritvikfoss@gmail.com>
+In-Reply-To: <20250731111234.28602-1-ritvikfoss@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 31 Jul 2025 13:42:42 +0200
+X-Gm-Features: Ac12FXyp9Hf-Bk1fW4nSupn8K17tKgnpR0B4rmx-XGmWJe5oOjZh7XdhBOINriY
+Message-ID: <CANiq72nDY_ZOk7=1MX3RQqzscaXayAm2XkaeQ0UTke-kdy1fnA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: kernel: introduce `unsafe_precondition_assert!` macro
+To: Ritvik Gupta <ritvikfoss@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, skhan@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Introduce a new `safety` module containing `unsafe_precondition_assert!`
-macro. It is a wrapper around `debug_assert!`, intended for validating
-pre-conditions of unsafe function.
+On Thu, Jul 31, 2025 at 1:12=E2=80=AFPM Ritvik Gupta <ritvikfoss@gmail.com>=
+ wrote:
+>
+> +/// /// - `buf` must be non-null.
+> +/// /// - `buf` must be 16-byte aligned.
 
-When `CONFIG_RUST_DEBUG_ASSERTIONS` flag is enabled, this macro performs
-runtime checks to ensure that the preconditions for unsafe function hold.
-Otherwise, the macro is a no-op.
+We don't know since the full body is not shown, but it is likely this
+would need to also be a valid pointer, i.e. it may be an uncommon
+example.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1162
-Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/topic/.60unsafe_precondition_assert.60.20macro/with/528457452
-Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
----
+Perhaps we could show one of the conditional cases, i.e. the "if `buf`
+is non-null, then it must be valid." cases. That could also be a nice
+excuse to also introduce an `implies()` function if an example allows
+for it. But we can do that later on, no worries.
 
-Changes in v3:
- - Change doc example
- - Link to v2: https://lore.kernel.org/all/20250730181420.6979b4f1@eugeo/T/#m9cd35a8fc02a18bd03934c7ecdcffe8667b5fbbd
+More importantly, could we have a user of the macro introduced in a
+second patch so that it gets already used?
 
-Changes in v2:
- - Wrap `debug_assert!` internally instead of using `pr_err!` with `assert!` + `cfg!(debug_assertions)
- - Print “unsafe precondition(s) violated” only on assertion failure (no longer always printed)
- - Use `# Safety` section instead of comment in the example
- - Rename module-level doc
- - Link to v1: https://lore.kernel.org/rust-for-linux/20250716045957.39732-1-ritvikfoss@gmail.com/
+Thanks for the patch!
 
----
- rust/kernel/lib.rs    |  1 +
- rust/kernel/safety.rs | 47 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
- create mode 100644 rust/kernel/safety.rs
-
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 11a6461e98da..7aab607dd879 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -104,6 +104,7 @@
- pub mod print;
- pub mod rbtree;
- pub mod revocable;
-+pub mod safety;
- pub mod security;
- pub mod seq_file;
- pub mod sizes;
-diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
-new file mode 100644
-index 000000000000..f591eed6da77
---- /dev/null
-+++ b/rust/kernel/safety.rs
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Safety related APIs.
-+
-+/// Checks that preconditions of an unsafe function are followed.
-+///
-+/// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DEBUG_ASSERTIONS`)
-+/// are enabled. Otherwise, this macro is no-op.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// /// # Safety
-+/// ///
-+/// /// - `buf` must be non-null.
-+/// /// - `buf` must be 16-byte aligned.
-+/// /// - `len` must be multiple of [`PAGE_SIZE`].
-+/// unsafe fn foo(buf: *const u8, len: usize) {
-+///     unsafe_precondition_assert!(!buf.is_null(), "buf must not be null");
-+///     unsafe_precondition_assert!((buf as usize) % 16 == 0, "buf must be 16-byte aligned");
-+///     unsafe_precondition_assert!(
-+///         len % PAGE_SIZE == 0,
-+///         "len ({}) must be multiple of PAGE_SIZE ({})",
-+///         len,
-+///         PAGE_SIZE
-+///     );
-+///     // ...
-+/// }
-+/// ```
-+///
-+/// # Panics
-+///
-+/// Panics if the expression is evaluated to `false` at runtime.
-+///
-+#[macro_export]
-+macro_rules! unsafe_precondition_assert {
-+    ($cond:expr $(,)?) => {
-+        $crate::unsafe_precondition_assert!(@inner $cond, ::core::stringify!($cond))
-+    };
-+
-+    ($cond:expr, $($arg:tt)+) => {
-+        $crate::unsafe_precondition_assert!(@inner $cond, ::core::format_args!($($arg)+))
-+    };
-+
-+    (@inner $cond:expr, $msg:expr) => {
-+        ::core::debug_assert!($cond, "unsafe precondition(s) violated: {}", $msg) };
-+}
-
-base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
--- 
-2.50.1
-
+Cheers,
+Miguel
