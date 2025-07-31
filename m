@@ -1,108 +1,97 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738932BD587
-	for <rust-for-linux@vger.kernel.org>; Thu, 31 Jul 2025 08:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FF721FF4C;
+	Thu, 31 Jul 2025 08:58:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753951471; cv=none; b=BpDEgreV2uWL5PU+lsaCnjiGQi9Vo6KfnRZglvo7EwHV/3jrXy9UqcQJdNXbAJPq9QddLKAgUEyXiuC1JVMemJtPysrtB86VD2OLh3NhOjkC+NCGFvK57GOPUtwiZldlG/yBnGPM9cvUNJ8IslOTQ/hlz5SB+0v13EYSGFDEXQA=
+	t=1753952311; cv=none; b=eT1zKCCN3TUC0LfpZYLtJqZ1QiSAdGlrwX+qi2lroutwcejRLYcWO0+htJ6z15L2KHu3a7zE8zo+Cp5nF/1oTMM5isPy9BJyeF/zFAetxpczqYuZKr9DAXHk8J0h/8kTIutK8qJOVx1DbJBVsXR6al0MATmFLjb3BXFl+IH1+3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753951471; c=relaxed/simple;
-	bh=stX/5xrE5fpgRIYjEH7KhBEXQWewp8OJcVtghk/99SA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSbndzyckripkAYBgqsQ7769I5saEG0olyU9++TnDQvLP3Jp+DSDum42xW8BQR8cfVaz3iOrsSkkEedMV6r3gi7MHtDKYvtRvOdfs9TZIa/sKHJ4omFcUVsDk5LKRKJvO5X2WGhcBUE5L44TidpUhe2wlh426xAxVjZoL3DUiZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZJ8y8uny; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1753952311; c=relaxed/simple;
+	bh=qeojfxxmvccb8pcM2MlJHVnLYHKrVRTET31iGr7Az2s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=sfBIxcPteb8EQ1QW3FitmyVWnX5WNmmXIHy2MfJNJjTgelPi8T68Slw7QqKK0TRgZlzkBovlGvrrUOT2jQzTQqmQrNbTOPd0MpvS3Kucjh88g0g8Ff5s/Widt4Oyn8H+6cSE7609VN+1wFhZYh6Qzt/Cxw7bZMHhTS21ZwozuAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gh/LSoBf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZJ8y8uny"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753951468;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9YWPCu2PJvY7QNysJhJawZ8Dkj2Bs7vci47IYemb9sk=;
-	b=ZJ8y8unyrObkzY0ZIzhs3/YRbeOBArp6/dXH3CybbqGuTgtM6o3KBM3LWBbq/iS/ZJG3Cj
-	NVMGPmR+Q9dLlAlpBXpzawhgmMSnBNyV3l9//L6NtPvptVUkeYLFHwVwzhVIUCGwu46jCb
-	4KJZxncb964oEQlV9HC/8GeQZV3Clzk=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	vitaly.wool@konsulko.se
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	Geliang Tang <geliang@kernel.org>,
-	Kunwu Chan <chentao@kylinos.cn>,
-	David Gow <davidgow@google.com>
-Subject: [PATCH v8 2/2] rust: alloc: kvec: add doc example for as_slice method
-Date: Thu, 31 Jul 2025 16:42:38 +0800
-Message-ID: <e31c55f62eef5ae729849f17ec4a434970ca37ee.1753950392.git.zhuhui@kylinos.cn>
-In-Reply-To: <cover.1753950392.git.zhuhui@kylinos.cn>
-References: <cover.1753950392.git.zhuhui@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gh/LSoBf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA20C4CEEF;
+	Thu, 31 Jul 2025 08:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753952310;
+	bh=qeojfxxmvccb8pcM2MlJHVnLYHKrVRTET31iGr7Az2s=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=gh/LSoBfN/GBT7+81naGv3phw0mqi1vcV3yniK5LJHnepstSOcLXhaBAutaJJMeIc
+	 aV/8TlM4r+Tm+TDm6UufXuFl9VHxoAibrLvvTjAx9TQvUZMDM9ylMFDxpFMDbCPTvo
+	 NO+tB6CaGkyrbj3m8RWrklsiquXhE48BQ3snGtgS0U42vrQULzWsVHVvYAuX6SZcqr
+	 /RwWOlqqR6nghwSe3WCp7hFdQDv2LTuve/PXOVPE9d303bTpkXXvCQ5XbTMjycwYyd
+	 snlAKCWs2o9z9a+vtK2CkJNXcY2P9qd5YIcuZE6r6dosmdtkX8qIjPrCzoDSmMfOUP
+	 4AksBl09Q96dw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 31 Jul 2025 10:58:24 +0200
+Message-Id: <DBQ4795SDGV1.3N78SF2Q0VC1P@kernel.org>
+To: "Hui Zhu" <hui.zhu@linux.dev>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v8 1/2] rust: alloc: add alignment tests for allocators
+Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
+ <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
+ Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <akpm@linux-foundation.org>, <vitaly.wool@konsulko.se>, "Hui Zhu"
+ <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>, "Kunwu Chan"
+ <chentao@kylinos.cn>, "David Gow" <davidgow@google.com>
+References: <cover.1753950392.git.zhuhui@kylinos.cn>
+ <420a72447bf1947a3d0f2622fe6e22fe2fd0c776.1753950392.git.zhuhui@kylinos.cn>
+In-Reply-To: <420a72447bf1947a3d0f2622fe6e22fe2fd0c776.1753950392.git.zhuhui@kylinos.cn>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Thu Jul 31, 2025 at 10:42 AM CEST, Hui Zhu wrote:
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
+.rs
+> index 63f271624428..a20111b40529 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -184,3 +184,59 @@ unsafe fn realloc(
+>          unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, fl=
+ags, nid) }
+>      }
+>  }
+> +
+> +#[macros::kunit_tests(rust_allocator)]
+> +mod tests {
+> +    use super::*;
+> +    use core::mem::MaybeUninit;
+> +    use kernel::prelude::*;
+> +
 
-Add a practical usage example to the documentation of KVec::as_slice()
-showing how to:
-Create a new KVec.
-Push elements into it.
-Convert to a slice via as_slice().
+<snip>
 
-Co-developed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Kunwu Chan <chentao@kylinos.cn>
-Reviewed-by: David Gow <davidgow@google.com>
----
- rust/kernel/alloc/kvec.rs | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+> -#[macros::kunit_tests(rust_kvec_kunit)]
+> +#[macros::kunit_tests(rust_kvec)]
+>  mod tests {
+>      use super::*;
+>      use crate::prelude::*;
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index f912a9642969..d71f6a1513e2 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -224,6 +224,16 @@ unsafe fn dec_len(&mut self, count: usize) -> &mut [T] {
-     }
- 
-     /// Returns a slice of the entire vector.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// let mut v = KVec::new();
-+    /// v.push(1, GFP_KERNEL)?;
-+    /// v.push(2, GFP_KERNEL)?;
-+    /// assert_eq!(v.as_slice(), &[1, 2]);
-+    /// # Ok::<(), Error>(())
-+    /// ```
-     #[inline]
-     pub fn as_slice(&self) -> &[T] {
-         self
--- 
-2.43.0
+I think v7 was fine. David probably confused "rust_allocator" with "rust_kv=
+ec".
+Renaming the kvec kunit tests should, as you correctly did in v7, indeed be=
+ a
+separate patch.
 
+No need to resend now, I think we can just pick v7.
+
+In general, please send new version a little bit less frequent to leave som=
+e
+time for people to comment.
+
+Thanks,
+Danilo
