@@ -1,81 +1,102 @@
-Received: from forward201b.mail.yandex.net (forward201b.mail.yandex.net [178.154.239.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665971D52B;
-	Thu, 31 Jul 2025 20:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C7113DBA0;
+	Thu, 31 Jul 2025 21:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753994927; cv=none; b=racbATkQMxcfUxVEPrNuGkQ2IrrjtIJrmccQP4pUxZ7wJpTbqO9RrDh7Ey6irhhMhhOCppjbpUZZsnJchC6s/SgErMGqpptLsAfnIfrdJR7W2SsljIDEfac0xm1KE2pQV+fiJhdkrA6a/W7nVDO8qQBLrjiHLxLzqKxE1ls6IY0=
+	t=1753996355; cv=none; b=RPQ9F3nzXwSlf7kWCOu9cMmDc6G8Xqcwz/ZA9M1U6sifurz6C0KtgPSy6oiiY7byNBFp0YHKFXjuXFjAeUe3xql77CFrdkieJ/3vWIofkGFWiSyuNojJwhNq5SQ1VBnCXYGPCBIiJc82PbD48er9NT8VEpvuUbXEnUXA7EACVTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753994927; c=relaxed/simple;
-	bh=zu89rWD18maT5mlPGkcNnKZRmtKYYkp3le2g40M7lHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RKbZyH2BKa5bXxJab2cMuJ4rHBJ41ldZ8Wtm80By82L1EXNz0TjDLqx4patNzmd+mgaIXZrGmrEKq4kzJPwlpTcjAErM7h92SIllKD3TgEB/aBnImMCKnB1+epMt3LuUjH1tPVwMUrMSCw+av8mLiJbPreWHnkn9dt2ZIR6obT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=ZFMaBrHd; arc=none smtp.client-ip=178.154.239.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1753996355; c=relaxed/simple;
+	bh=7zOQ73lGD3r2DctJnYtsm4yLzBnd93klxhREuCXh1hs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YQ6TaRfyqBMQT26bx/HCRr/XUQJ4S6Kv0itBqBbplkqQxEAN39bTmnLEazfFPIxcvTUzPmI2PctNtYmBIe9BnBKKfwScQS1WIu8NsCB/5KYwYuBqjzmFI/WL7c3LelMfzuHgvYeblWw4qC8vCDOIr31ydFteyDoyNpoAgmm0SwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hplrprN4; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="ZFMaBrHd"
-Received: from forward100b.mail.yandex.net (forward100b.mail.yandex.net [IPv6:2a02:6b8:c02:900:1:45:d181:d100])
-	by forward201b.mail.yandex.net (Yandex) with ESMTPS id 72D9DC2D32;
-	Thu, 31 Jul 2025 23:41:37 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:4419:0:640:5be6:0])
-	by forward100b.mail.yandex.net (Yandex) with ESMTPS id 43FAD8061A;
-	Thu, 31 Jul 2025 23:41:29 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id GfiURY3MWmI0-iWtruDbZ;
-	Thu, 31 Jul 2025 23:41:28 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1753994488;
-	bh=XYcp1T4gKc6+rSZ7apzntYtjpDeYNFP4mcB4aJYJo1M=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=ZFMaBrHdTSBk29zsIAPIvIvUFk2WJvnxohwNn0TeQbDaYq/JNRC5iBIfjI9rbQQ0z
-	 rO9TSPtHyYY8ndW8IfDXjgP5MrO8NYTgUuDQSROqij9kO4qW/C1i/LY4nErmNfMUG1
-	 0L/ZPjhV0e72kEsOdMJ2nlBJ5BHvnTtgr31pJMD4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-60.sas.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-From: =?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	dakr@kernel.org,
-	me@kloenk.dev,
-	felipe_life@live.com,
-	abdiel.janulgue@gmail.com,
-	dirk.behme@de.bosch.com,
-	daniel@sedlak.dev,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Onur=20=C3=96zkan?= <work@onurozkan.dev>
-Subject: [PATCH v3 0/1] rust: update error.rs documentation
-Date: Thu, 31 Jul 2025 23:41:14 +0300
-Message-ID: <20250731204115.13669-1-work@onurozkan.dev>
-X-Mailer: git-send-email 2.50.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hplrprN4"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2400a0c3cf7so2406535ad.0;
+        Thu, 31 Jul 2025 14:12:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753996353; x=1754601153; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7zOQ73lGD3r2DctJnYtsm4yLzBnd93klxhREuCXh1hs=;
+        b=hplrprN4EfAKj51vGuvk3Vb1hBTuhdkeIs5hpSn2xAf/BK2GDIfWPEzgovuqITYDmX
+         ns0Rnio5ptfajPUCAR6JQJPp5kPpJjQ3npZGSlTTxF38vcswL4B3oEBsI9+nEthV2nCz
+         w+ctMZwnPXbU2E+/mwqwHXYB2GIvLnZZtmZy5r0mx3KWJpONc+AUYdgh1/yIwMDx4Vnf
+         SVjmpxfwydDRoh2ZygimeuDliw9CWYxdKuZAGedYM6YMDYY25Xb8iHLdTWgP1mgAiFNM
+         7eHnIPbMTHqTauY2IoM2vIboptlB5a05afUutpL5MG+nxak05Hl3DgAnejMive/S18el
+         Kr1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753996353; x=1754601153;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7zOQ73lGD3r2DctJnYtsm4yLzBnd93klxhREuCXh1hs=;
+        b=e+2gc5GAZjn1hCLInrK+Jh69Ny7GwscO0l8WRcvl5WZ4FxM4akeRFLKfu5CYrqFGc3
+         7eSi13DSvQj48FeN8aI3FyPA7BYRZu8EH+MYtt81z2wP0xl0IRo7IHNitgDVwFlnGR/p
+         TJO7q6xdQUjQa7XY+rtUubwrmfhXePRCNvgKdOk+LcuDF8oQT6D1tgR1dIiI8oiIXWQs
+         TX/jA+YuIfoG6Njw+OgHwG0f1C7c45VW/FrsvQZKSWoO1GA3hJ7VdkGF3sffI+FMkfJf
+         n6r++OleYidxh6HZUNiwZk2U0xwCcnP+9WOeqSqMAfC5i3/FuyoYVtXsgm3+CGqCjOWy
+         pLSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUfAGxK96/eisTyGSq/Y+kxdlE2UKBLPS0cxUfqJHZyAyLI+HoP05vREQffxzUZcHrJWCApGznQ0YpUG1o=@vger.kernel.org, AJvYcCVOh5sZVSRFXkH2iSJcFAd6G38zmcdzd3XILREIOPuw+QBBhj4EqejonRLGUM4XTIR20UQK5fZq0wgvceqZdno=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysQZpv33WvXjnO173a/juQib/Nyge2VjUtPicC8rx2BTRA3B2r
+	xPh8tBMFNFmAgCrwsI1551oI9lsUYbNty9zQS/EnC4/I15QYadt14e1sxTPiFb/hvCK7rOHkjJS
+	+cWXzkTblggoJXihRi+VpEqKKN8MAYfU=
+X-Gm-Gg: ASbGnctU5Vh043oOuPY2LTxDlZzzd7AlytRY6h0G89bNhl8PB4LMgwWE+E0yJ3I+XNM
+	1kQnPN+43qS205KrPDBXnjsbYVQYyUoTQByCSSO7JOQF14TG6DzYGotU9AYUeUHGYzyQGtIbtZe
+	OgNNcjWou40krBWtuZVuTO0M7tugJgC3hr7i9Pc60SwfxSKg6mUNe9HVKw+fzbwpAjJePyNz6JQ
+	SDyjRkz
+X-Google-Smtp-Source: AGHT+IFD0ndUn7SQ7ptwWXChuUa9WfO4EGQJram6R5x2DK0GyiQaaAfe5Cmbwo8R00FznA7ZqRl3T2VMTHDhftH0baU=
+X-Received: by 2002:a17:90b:3ecd:b0:31f:3d6:6d98 with SMTP id
+ 98e67ed59e1d1-31f5dfad39amr5839526a91.5.1753996353130; Thu, 31 Jul 2025
+ 14:12:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250724185700.557505-1-lyude@redhat.com> <20250724185700.557505-3-lyude@redhat.com>
+ <aIXVzIwBDvY1ZVjL@google.com> <f92b5f82b3ad7bb8d5bf60b272aac8cf1e6ced24.camel@redhat.com>
+ <aIi7ZycRtmOZNtcf@google.com> <ddea64af3b845d2c32d807c5aab6146a9ce3c2bf.camel@redhat.com>
+In-Reply-To: <ddea64af3b845d2c32d807c5aab6146a9ce3c2bf.camel@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 31 Jul 2025 23:12:20 +0200
+X-Gm-Features: Ac12FXzIVGgNmeyHw_nmbRnUyJUFR8tt6n3aZ0qpRd8k2GirdGYqI2FwpgK8sus
+Message-ID: <CANiq72kL_4=5LwGtJ-67djXzOyjn7VsZsvStUky=JAv4sdS-uw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: time: Implement basic arithmetic operations for Delta
+To: Lyude Paul <lyude@redhat.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Changelog:
-  v1: Removed header link to keep the doc more generic.
-  v2: Reverted v1 and added missing header links.
-  v3: Replaced `arch/mips/include/uapi/asm/errno.h` with
-    `nclude/uapi/asm-generic/errno.h` header link.
+On Thu, Jul 31, 2025 at 10:47=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrot=
+e:
+>
+> Gotcha, I will do that. Ideally I would at least like to have us only cal=
+l the
+> bindings:: method so long as we're on a config where we really need it. W=
+hich
+> brings me to ask - do we actually have a way of checking BITS_PER_LONG in
+> #[cfg()]? I would have assumed it'd be simple but I don't actually seem t=
+o be
+> able to reference BITS_PER_LONG.
 
-Onur Özkan (1):
-  rust: update error.rs documentation
+It is not in the config, so we don't have it. We could add it if you
+think it is really useful, but it is based on `CONFIG_64BIT` anyway,
+no?
 
- rust/kernel/error.rs | 2 ++
- 1 file changed, 2 insertions(+)
-
---
-2.50.0
-
+Cheers,
+Miguel
