@@ -1,21 +1,21 @@
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6284E8F5E
-	for <rust-for-linux@vger.kernel.org>; Thu, 31 Jul 2025 02:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434562192FC
+	for <rust-for-linux@vger.kernel.org>; Thu, 31 Jul 2025 02:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753930400; cv=none; b=tXIuQ7wlFX6EQFLAZpXDq8E5n6Fn2omitoxSRxtwC/qvCnYYhFf/hTIBOfmb02ess+iTpSFEdiV8UPYFuBbKsCh3gUlAOXrgZfHF+nnoZh7k5j49Vqyg0qIT2G1YluUohyE81vOXau80H2u3UnMDcPqmP8G0QzGojNA/yYjcr3Y=
+	t=1753930454; cv=none; b=PlX8ZyyIgYiYfpY127j+CrUXsPEXeVHmdnvsFqW/Z94bvwUFGBiEmJomKdvQJa8xn6gQ9kvpQNQZjD3vLWnqMfT5/EGKwKunqAr4bJl3gTeumirRwhmigibYHcvpS1J8w6jKW+mOZZ2WhlWcfjox3Sf15kwTXRMHtrJOiC3pUWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753930400; c=relaxed/simple;
-	bh=3e7o79Fpm9ojzWbREEqJErFCPDye4agxdfHKY+I5s04=;
+	s=arc-20240116; t=1753930454; c=relaxed/simple;
+	bh=sYf7h63UXU5Ll7rDbTQJurmKzl8F/uHFnaMNebLZmZk=;
 	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=uX6zUuEe+3vYMasi0uJ2joLrmEKSxHxh4GWQvJl3U577YJCmwOUxICTRrTJThctNHVIcDss4cmHMmW61z/pBjPtq9BVB+G140V2lem8j2W60obz9N+AUoharVgTpMpChrcFn69s9eCmD+3LwcNeuHf1ZE0OY1clIYrY0t2k+k3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O0M6sFdQ; arc=none smtp.client-ip=95.215.58.183
+	 In-Reply-To:References; b=getz5p+qDsx1Ggyr3+w+gACZDPLV0pDApLaL2apXRsS6iBCRaRS4/kvJvokMycapdyUPnqzHDkR8LNMEj/FbNkqGEFT3QKZr+dJ+Ldqv86T1Aa1m+uAhznotoczefM3+jmkHRapSrV/7V97XMTPxGlSf7chu2N2CYNEX3pc9Dh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=A9/kpAki; arc=none smtp.client-ip=95.215.58.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O0M6sFdQ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="A9/kpAki"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -23,78 +23,82 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753930396;
+	t=1753930450;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u9sPE4WJWqKMr+7/29xfbY0+Xa2H/DJawk+nioYYxrs=;
-	b=O0M6sFdQgH9jBtgnC5B7qP0304QV+RApJ9MxCUUlBriwSrd4GQ4bXpKx1seZmoUTP89X43
-	rTL5Ze0QDPY9SI0aadBkkc3/RzvyP4ab2j95fGtaS2HRvFzvhr6mpkuzJ0ANEaaYUaKqsw
-	OAYJc6E/JWAtW4Jyg6tlcocbEG5e9SI=
-Date: Thu, 31 Jul 2025 02:53:13 +0000
+	bh=sYf7h63UXU5Ll7rDbTQJurmKzl8F/uHFnaMNebLZmZk=;
+	b=A9/kpAkiwVAdckfymzW69ghz3lI9VqPxdLor7pldQ/lUlwUEfoAk3GSblaChyfScDaqRrM
+	WnSBGhzNcwAgTyv8PEDSx1nHuNUyyBUYzdQXcaWLXekeW9aLQxGkqTyopjK4kcYvlJ6VZ4
+	K+VjvPE2DRJMF0VqDrq4u8M9+IxcpQo=
+Date: Thu, 31 Jul 2025 02:54:06 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Hui Zhu" <hui.zhu@linux.dev>
-Message-ID: <21002139ec43d04f9fc6f58ce9250c7e8a4998e4@linux.dev>
+Message-ID: <95a767bbc1b136b1f3770965577a1072d75b8c68@linux.dev>
 TLS-Required: No
-Subject: Re: [PATCH v6 2/2] rust: alloc: kvec: add doc example for as_slice
- method
-To: "Alice Ryhl" <aliceryhl@google.com>
+Subject: Re: [PATCH v6 1/2] rust: allocator: add KUnit tests for alignment
+ guarantees
+To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
 Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
  <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R
  . Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki"
  <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
  <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
  <gary@garyguo.net>, bjorn3_gh@protonmail.com, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
- Gross" <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- vitaly.wool@konsulko.se, "Hui Zhu" <zhuhui@kylinos.cn>, "Geliang Tang"
- <geliang@kernel.org>
-In-Reply-To: <aInRtC5CRxyDTy5B@google.com>
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ akpm@linux-foundation.org, vitaly.wool@konsulko.se, "Hui Zhu"
+ <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>
+In-Reply-To: <CANiq72n_RnW=zma48X-txV-4AUDU9j0YGmYNBFYQ1CG3oxROJQ@mail.gmail.com>
 References: <cover.1753841900.git.zhuhui@kylinos.cn>
- <786e88abea2557080bde65fa9892df3b956731f2.1753841900.git.zhuhui@kylinos.cn>
- <aInRtC5CRxyDTy5B@google.com>
+ <3ad14f15b6d2639d6e998ecd03158313414b69dd.1753841900.git.zhuhui@kylinos.cn>
+ <CANiq72n_RnW=zma48X-txV-4AUDU9j0YGmYNBFYQ1CG3oxROJQ@mail.gmail.com>
 X-Migadu-Flow: FLOW_OUT
 
-2025=E5=B9=B47=E6=9C=8830=E6=97=A5 16:03, "Alice Ryhl" <aliceryhl@google.=
-com mailto:aliceryhl@google.com?to=3D%22Alice%20Ryhl%22%20%3Caliceryhl%40=
-google.com%3E > =E5=86=99=E5=88=B0:
+2025=E5=B9=B47=E6=9C=8830=E6=97=A5 17:16, "Miguel Ojeda" <miguel.ojeda.sa=
+ndonis@gmail.com mailto:miguel.ojeda.sandonis@gmail.com?to=3D%22Miguel%20=
+Ojeda%22%20%3Cmiguel.ojeda.sandonis%40gmail.com%3E > =E5=86=99=E5=88=B0:
 
 
 >=20
->=20On Wed, Jul 30, 2025 at 11:35:22AM +0800, Hui Zhu wrote:
+>=20On Wed, Jul 30, 2025 at 5:37 AM Hui Zhu <hui.zhu@linux.dev> wrote:
 >=20
 >=20>=20
->=20> From: Hui Zhu <zhuhui@kylinos.cn>
-> >=20=20
->=20>  Add a practical usage example to the documentation of KVec::as_sli=
-ce()
-> >  showing how to:
-> >  Create a new KVec.
-> >  Push elements into it.
-> >  Convert to a slice via as_slice().
-> >=20=20
->=20>  Co-developed-by: Geliang Tang <geliang@kernel.org>
-> >  Signed-off-by: Geliang Tang <geliang@kernel.org>
-> >  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+>=20> +#[macros::kunit_tests(rust_allocator_kunit)]
 > >=20
->=20It looks like this did not change since v5 where I gave my
+>=20Is there any reason for the `_kunit` suffix? If not, then we should
+> avoid suffixing `_kunit` to every suite name.
 >=20
->=20Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>=20I see we already have `rust_kernel_kunit`, but that one is because it
+> is the KUnit file itself.
 >=20
->=20tag. Please make sure to include the tag in future versions if you ha=
-ve
-> not made any changes.
+>=20There is also `rust_kvec_kunit`, but we should clean that one up.
+>=20
+>=20>=20
+>=20> + fn test_alignment() -> Result<()> {
+> >=20
+>=20`-> Result` since the prelude is available.
+>=20
+>=20>=20
+>=20> + fn alignment_valid(&self, align: usize) -> bool {
+> >=20
+>=20We typically prefix these with `is_`.
+>=20
+>=20I would also call it `is_aligned_to`, to match the upstream Rust one,
+> which we could perhaps use if it becomes stable.
+>=20
 
-Oops!
-Sorry for that.  Fixed in the v7 version.
+Hi=20Miguel,
 
-Best,
+I sent the v7 version according to your comments.
+
+Thanks,
 Hui
 
->=20
->=20Alice
+> Cheers,
+> Miguel
 >
