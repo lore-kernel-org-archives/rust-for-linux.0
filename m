@@ -1,74 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BB618E25;
-	Thu, 31 Jul 2025 14:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6259317A2E6;
+	Thu, 31 Jul 2025 15:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753973679; cv=none; b=dErcpp9GGGVrz8paAUeK8BzgtHBtYaN+0EK+8ftAoXBhomUkz+xqMWMWW7nuoZRwFiNoc4MeDtVz9msRj7Gao5/BF9Rl9b19aReQhAy95OG0S49R/4yn1SnJmuXC9A0tiV+IikpoC2aUahHEWrtEs4cwHKbFsHz7Zasjl8M+s20=
+	t=1753976972; cv=none; b=lS2hTbFad3pPaiDh33Vl0z9/6BuY2keJBoFDsmhYi2qHcUZ2rKbJ5UHJfo27up5nM8rOflWRF58270bWU6Ka+VYlLKQgwyUw8gHiaXQYp4wgtfL79s5TfLZoXN6cGR8hZRcgsnvgGsG7gszwIe8kUKLk8Vu29yjhwqkbDmH4YaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753973679; c=relaxed/simple;
-	bh=eqSCt1jtGu1voQQ+SQgsEsj/JuSUD4O5lgrTXjb4B5k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=SUw8EXf6gVRiYCyqV/w4FhRrFd9/GfCUvp0srCBLOwTuauamaQ2QVH+10YadeP1lZt239HwIWCJKkkQIEQe5QtdG1eLA6qZ50IKGPUAS+f2MPoBskk0hYxDEG+cUseIOpuyf305c8Kx6U5KgRnx930Q6iu6TiFC6rzYYjpXEPXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcK0zyWN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753976972; c=relaxed/simple;
+	bh=EPnS+85CCZB3YSSlWabEu+epgy+Y4fGVAt01JDMlEv0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L5f4hVMcz7VQGvTgMVfS7RV8BvP/daYbyKnpbukPyRDbLTVhdnTq+Njyvo/m30KQ3AKliWgjpKUc3D6nkHHbtP+L7F5pb7QZxL5OfWzc5+z9BDd7jpbmBoilByEHIK5gGHxo7iBQmOo4alwe9CVdIYX5leADmR/WysyC4lP8pIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c+4g5dFa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcK0zyWN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B0CC4CEEF;
-	Thu, 31 Jul 2025 14:54:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c+4g5dFa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD85C4CEEF;
+	Thu, 31 Jul 2025 15:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753973679;
-	bh=eqSCt1jtGu1voQQ+SQgsEsj/JuSUD4O5lgrTXjb4B5k=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=HcK0zyWNbuhEa+CeQcoEy4BM/jkZTyJ3tjKU+5oNJz57OJf9UA6iFTk3i2qXk2/yO
-	 yHL2Hnjb1C8Aw8nKz9zivZVnsgFe3bkM8H4ky8qeElehA77rKfT37usl1sJhs1t+am
-	 yl4N7I24MEbUe8vN92j3R1pVkWBes/G2mVIbHj2DFpf8t3RISFwcqA2hXAz9gocOPj
-	 E7fpYGBtiAIKvJY8jZngQhcfIwzEpKSlMk4oj3/NOqU3n85Vtvv/fscYWyz/GFNYI1
-	 2gVFxfNsvb/depZAKRsBTXy9HMdnLxtQ73P1H2ULyhyGEVr+AVzgLQDHVmL3SwWyR+
-	 3q0vqMVNUh8ZA==
+	s=k20201202; t=1753976971;
+	bh=EPnS+85CCZB3YSSlWabEu+epgy+Y4fGVAt01JDMlEv0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=c+4g5dFaReZzRCC9XACkiV5iNmmll02yrMuGGFUYQuPCcV0sS7pZUXpJiXDN6S+CW
+	 cuIxLT/kFWJqKbW1QiL3cTnyqGP76pU4quzXb1UzPiPhfIHo56Au61R3fa58/wKloz
+	 h2FsqjHjQ7oRc/7DUezSMCA9vi37xGkB9d8HglbRAhsi1ygk33gqjeqffUHexMU221
+	 uZIetj/SQCfl5epNmmcGwE+BgU7mwPMYFf/LfmkmImPD3gmhCxFwQUA0KJ6HIMspNi
+	 azHCDjCG5dTOuwLnxFD7m00N4uvmg2iu46SGH3yFBSKIbAGLTeljQqRoX/SfyZHc4B
+	 c0xERPu52GP7A==
+From: Danilo Krummrich <dakr@kernel.org>
+To: lorenzo.stoakes@oracle.com,
+	vbabka@suse.cz,
+	Liam.Howlett@oracle.com,
+	urezki@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/4] Alloc and drm::Device fixes
+Date: Thu, 31 Jul 2025 17:48:05 +0200
+Message-ID: <20250731154919.4132-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.50.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Jul 2025 16:54:34 +0200
-Message-Id: <DBQBRYBV9YVN.35REJ1DIA06L7@kernel.org>
-Subject: Re: [PATCH 2/7] rust: gpu: update ARef and AlwaysRefCounted imports
- from sync::aref
-Cc: "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
- <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
- Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
-To: "Shankari Anand" <shankari.ak0208@gmail.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20250716090941.811418-1-shankari.ak0208@gmail.com>
- <CAPRMd3n-1nx6BnL=OtrrJqS1gCxYAw2wSaHUQ19174Y=ShqO6g@mail.gmail.com>
- <f958ac81-c092-4958-a61a-d30c8389f431@kernel.org>
- <CAPRMd3kvemvtEM4976+MGRbLJV+4X8Hwvodc0q8+0jtgT_V3Rg@mail.gmail.com>
-In-Reply-To: <CAPRMd3kvemvtEM4976+MGRbLJV+4X8Hwvodc0q8+0jtgT_V3Rg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu Jul 31, 2025 at 3:59 PM CEST, Shankari Anand wrote:
->> Where is the rest of the series?
-> So actually it's spread across various subsystems. I had given the
-> notation (2/7) to have a count of the patches under the same effort.
-> Apologies for the misinterpretation.
-> But yes, recently Miguel suggested discontinuing using the notation
-> but as I had sent the patch long back, I didn't resend it.
->
-> If it is confusing, then I'll resend it without the series notation.
-> But, this is basically a standalone patch.
+This patch series replaces aligned_size() with Kmalloc::aligned_layout(), which
+is subsequently used to obtain a kmalloc() compatible Layout for
+__drm_dev_alloc() in drm::Device::new().
 
-Ok, did you send the other ones already? I don't see them anywhere.
+It also contains two additional drm::Device fixes; the commits are based on
+next-20250731.
 
-NIT: Please don't top post. [1]
+Danilo Krummrich (4):
+  rust: alloc: replace aligned_size() with Kmalloc::aligned_layout()
+  rust: drm: ensure kmalloc() compatible Layout
+  rust: drm: remove pin annotations from drm::Device
+  rust: drm: don't pass the address of drm::Device to drm_dev_put()
 
-[1] https://docs.kernel.org/process/submitting-patches.html#use-trimmed-int=
-erleaved-replies-in-email-discussions
+ rust/kernel/alloc/allocator.rs | 30 ++++++++++++++++++------------
+ rust/kernel/drm/device.rs      | 32 +++++++++++++++++++++++++-------
+ 2 files changed, 43 insertions(+), 19 deletions(-)
+
+
+base-commit: 84b92a499e7eca54ba1df6f6c6e01766025943f1
+-- 
+2.50.0
+
