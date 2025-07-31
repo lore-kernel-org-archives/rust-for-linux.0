@@ -1,114 +1,186 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E712C1F416C;
-	Thu, 31 Jul 2025 09:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700CE2BE638;
+	Thu, 31 Jul 2025 11:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753954217; cv=none; b=tc5l9Sp2ZDHfmIvsuwR3K8P9z+TCcl4ot0sBNB+qUtfknOfStDpywzrGSoRLYOuMZpf9NzBoSc95jTssCjBNEgQh1xjdPPjTcjoFOp6UjnXgNjX4CGzrbgXZS0LanovhcyoIrBTPt+3G1aa+fDwMeVl2Yk/Qk+1zF+XTDFtKcnc=
+	t=1753960362; cv=none; b=M6zAHiZKUkQfZZ9yRBcwwg6pMMo/iPW2cQy+wLDMLZeShmpE9eB45vgTg2wrLWdEqou3vqP9sYVH29V8EgtF8BTvFFRzNUA08pBQNcbsY8PoLUYzhysPIbCkYDlChMF8d3ndEC3JLi5msRdBKGlaU//uWBEpkThzWrWItk+HXEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753954217; c=relaxed/simple;
-	bh=CSKmpC5R75X4DpsV8ACQNwycon3SpNR9tiOPDQqekSE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=B5VmHH5UVM/UtMnC1+KZWlSHf1Lajh5W9v7M8ymlt71Xqp9IfmTlhwjNG90w27G/uIcdH87EefRy0FySpeLh/Tn8P+n11SC8GRS5jIRqMDVg50xn95OX3481jiZbR+554Msekq++aIXiaCMHyNBTSR4I9vy4EQVieX8E2PXR26Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bW0WYbjZ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753960362; c=relaxed/simple;
+	bh=VdHDVkzkyvAlURKaNUeBWQWHCvk7GbPXWJGCxEX6Jzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sSFG3quqIFiMMGZIkiyCVQ5vM3ByS6nPTPojx0omHI1L9EFCxgCzU86u29OGKExJfn16fSI7adSOeyxYeAoJPEk3tO6XEJ1/Qd5+/MerGGiRJZgfnVc5CdlTSwj8HRkLNjkDLxvzeaDUh6bqStsnBKI/PuNXplGG4a7hOvoLtjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=THaiFsDq; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bW0WYbjZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFB9C4CEEF;
-	Thu, 31 Jul 2025 09:30:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753954216;
-	bh=CSKmpC5R75X4DpsV8ACQNwycon3SpNR9tiOPDQqekSE=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=bW0WYbjZJLWz7g/bBKEBegX0gwdAwcPGMl1YqT5Kmhe59WBkZT4+X5JqotKVr2HeG
-	 Gi7exYY/3TCsYEHcHtUOir7az/wpNOrTUatE5mQFp3ZRci1VZSj3GNHQPQSBU/Tc+/
-	 g8Uwp8cX4+K7XVU7Q9A7B/ZLli2Z72dvs7lr1XLDSv248RsnL6IQ9OiL8zmjVf2keI
-	 iCTZgeKKR1gsDQJun/IvbmPk+DknF7HagOhNYAVKwKyJsKXVpzKlYaKgDb0ddDYo/z
-	 sV9D81EAlh3MMEs+Y2xE/rHREYcjPNdKyo2bTo2o6aCIGQ2Mgd9IWzJffCLAnyVsmz
-	 621e61O4IJv1g==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="THaiFsDq"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76b36e6b9ddso623699b3a.1;
+        Thu, 31 Jul 2025 04:12:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753960360; x=1754565160; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4IwWy97OvGZq36Ea/vv8rtgmVuJu0EXO1lQWwmwlguo=;
+        b=THaiFsDqqOfs40mr5nZH+YUaOvCb5QYTVbrJsBJhu+ye/tul11Jzhu31Sm+NFdWyAp
+         Cbq0l6K4u/MvZiVgUFWybm/skkn3u/Ea4Nfdl69dS0vzgQ5akrdUxFrjO3J0+ceUE7xr
+         LZzbMGdl0z5j4gjolkzlrWvktcvsOowll+br/6LzJp2iUQ7wrTSVVbt5Rm42v0QVbbOh
+         qyv3v2AIUMaqcaqnHF4Z1eXISH1OhIMNJiaXpRIGGqQMa6Q3xI4h7Xs28VZnT4VSzezh
+         3g/WBFHGTj93f7inOO8KSVl2O6MpfM1sGIAsq+cEeIQ6ESuPa2SowliJ1heHxtuGTf1k
+         bHOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753960360; x=1754565160;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4IwWy97OvGZq36Ea/vv8rtgmVuJu0EXO1lQWwmwlguo=;
+        b=cWlXRqj2KJCmiziT+6p1h9jaNVIoXueqlBw0lCiS629fvmLourer0GqH3Eo028z9wg
+         r/pN8+LgvCBne3MJ57wKJrjVt0QD9ngx+bt49+nCAoHi5REE6aT8wWasgHGuxG/uB8k5
+         hBSdeaG+kVMRALNAYobFqGZulqVe2oHsHG8mOICPqBiThAMkigJ0mgS92nINkZG3e2BK
+         NeoJ+zmI+gCAJ3S43seaHescdKnsygC5DDERruHSlqjb6Jdu+wG9wJBMG0eIMiLJbj9P
+         kDlENxkhEZ6YI53h77vQGWK78Fu+YD1k+M+iZVObtfg/F2GvLMc9VUr09U+fmJRqi/Q6
+         O3Fw==
+X-Forwarded-Encrypted: i=1; AJvYcCVlGEod4/xnVCmK7qFZ6AvCfyJdTs1JKFr/C0Qd32zwwvnf6/oPv0mn9uU5BdvTe3G6RmVzvMeDk4bntBQ=@vger.kernel.org, AJvYcCXu7MgwtRHyXiOSPuvFdKLNOXHtK85Q01gbEk2f/jXwj5Aw/g/QfXPxbwa9J7zHdEewPG+iNeYSlFCjEaeTksE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy26VIJI172dTqttI1KEEMsfVepbEGZS5H0HXgI/ByYeCC+yjNo
+	lTRxSsDPDWj8y5KzLxa+N0fN/ivnqiQGIQ/VzvYptOzrE8GQi75kKQQD
+X-Gm-Gg: ASbGncvJeaW5zB5/vCrfu/s7yCOOzOqYJnk/5Bs1e2+lpD7rBLznxIYUiZQnNVWuwsV
+	6gqrGDj+SclBpftxmEgA2iSluP3fwy7qA5kvS0ukqJuXoGjyz7iiP9jfi7zjjrTpX3s5SIU6yUL
+	hWKwxKtPL3nzZHfeG/zh1pE7EiL2qFnJh0ZmD+H4nTEW20d7sOYrBSBVPojWuY3L0T9fQ5ME/jL
+	jlmw+iamiHg+ORdk0W3t2m6M5h/pgKYtGFqt6pUuchz8GJsX6KBeFx2oHM/IMF5k25OpeN9fXpR
+	D9VgQFlbgj3XKmFQ1PFtATOXa3cVHEoe22B3D3mPRGbvRb8wS+fuI54siapjFWKgO3Hw2FbJge/
+	UVWcjqXxAJa5t6B3BiZ9jbxZ5sXkiakyv+uE=
+X-Google-Smtp-Source: AGHT+IHpa5118bbeNQZJpwNTbeJvJk7dBt/E3hcVWLfRp4iNi1DcMHaGI9lQ6q+fMkIiF3e3eua8FA==
+X-Received: by 2002:a05:6a20:939f:b0:233:b51a:8597 with SMTP id adf61e73a8af0-23dc0ea7837mr11587999637.35.1753960359597;
+        Thu, 31 Jul 2025 04:12:39 -0700 (PDT)
+Received: from fedora ([2405:201:5501:4085:eece:e0ff:6b68:de2e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bcce8b5basm1327250b3a.41.2025.07.31.04.12.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Jul 2025 04:12:38 -0700 (PDT)
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: skhan@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3] rust: kernel: introduce `unsafe_precondition_assert!` macro
+Date: Thu, 31 Jul 2025 16:42:28 +0530
+Message-ID: <20250731111234.28602-1-ritvikfoss@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Jul 2025 11:30:10 +0200
-Message-Id: <DBQ4VKUDJOF4.1JVIM88YK8V59@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Andreas Hindborg" <a.hindborg@kernel.org>,
- "Alice Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- "Danilo Krummrich" <dakr@kernel.org>, "Tejun Heo" <tj@kernel.org>, "Tamir
- Duberstein" <tamird@gmail.com>, "Hamza Mahfooz"
- <hamzamahfooz@linux.microsoft.com>, "Alban Kurti" <kurti@invicto.ai>, "Joel
- Fernandes" <joelagnelf@nvidia.com>, "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [RFC PATCH] rust: workqueue: Add an example for try_spawn()
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Boqun Feng" <boqun.feng@gmail.com>
-X-Mailer: aerc 0.20.1
-References: <20250730163439.50753-1-boqun.feng@gmail.com>
- <DBPMYTZSIEQ5.3NPJM1CYVO3CK@kernel.org> <aIp0uo5y9O551HW9@tardis-2.local>
-In-Reply-To: <aIp0uo5y9O551HW9@tardis-2.local>
+Content-Transfer-Encoding: 8bit
 
-On Wed Jul 30, 2025 at 9:38 PM CEST, Boqun Feng wrote:
-> On Wed, Jul 30, 2025 at 09:28:05PM +0200, Benno Lossin wrote:
->> On Wed Jul 30, 2025 at 6:34 PM CEST, Boqun Feng wrote:
->> > +    /// workqueue::system().try_spawn(
->> > +    ///     flags::GFP_KERNEL,
->> > +    ///     {
->> > +    ///         let work_done =3D work_done.clone();
->> > +    ///         let data =3D data.clone();
->> > +    ///         move || {
->> > +    ///             *data.lock() =3D 42;
->> > +    ///             work_done.complete_all();
->> > +    ///         }
->> > +    ///     }
->> > +    /// )?;
->>=20
->> Not doing your pattern and instead adding a `2` postfix we get:
->>=20
->>     let work_done2 =3D work_done.clone();
->>     let data2 =3D data.clone();
->>=20
->
-> Yeah, the thing I want to achieve with my pattern is: make it clear that
-> the work and the task that queues the work are sharing the same
-> `work_done` and `data` (well, no the same `Arc` exactly, but the `Arc`s
-> that are pointing to the same object). This pattern here doesn't show
-> that clearly imo.
+Introduce a new `safety` module containing `unsafe_precondition_assert!`
+macro. It is a wrapper around `debug_assert!`, intended for validating
+pre-conditions of unsafe function.
 
-I think it's fine, that pattern is often used for that. Not heavily
-opposed to doing it your way, but I feel like the code looks a bit weird
-& my instinct is to move the let bindings out (which would produce code
-that doesn't compile).
+When `CONFIG_RUST_DEBUG_ASSERTIONS` flag is enabled, this macro performs
+runtime checks to ensure that the preconditions for unsafe function hold.
+Otherwise, the macro is a no-op.
 
-> That said, I'm not really against using `work_done2` and `data2`, just
-> I'm afraid that may be more confusing.
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1162
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/topic/.60unsafe_precondition_assert.60.20macro/with/528457452
+Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
+---
 
-I don't think that's a problem.
+Changes in v3:
+ - Change doc example
+ - Link to v2: https://lore.kernel.org/all/20250730181420.6979b4f1@eugeo/T/#m9cd35a8fc02a18bd03934c7ecdcffe8667b5fbbd
 
->>     workqueue::system().try_spawn(flags::GFP_KERNEL, move || {
->>         *data2.lock() =3D 42;
->>         work_done2.complete_all();
->>     })?;
->>=20
->> There are some discussions of introducing some better syntax for (cheap)
->> cloning, so maybe we can use that in the future.
->
-> Do you have links to these discussions.
-
-It's an RFC:
-
-    https://github.com/rust-lang/rfcs/pull/368
-
-There probably are more discussions on zulip, but I haven't read those.
-The RFC also has a project goal:
-
-    https://rust-lang.github.io/rust-project-goals/2025h2/ergonomic-rc.html
+Changes in v2:
+ - Wrap `debug_assert!` internally instead of using `pr_err!` with `assert!` + `cfg!(debug_assertions)
+ - Print “unsafe precondition(s) violated” only on assertion failure (no longer always printed)
+ - Use `# Safety` section instead of comment in the example
+ - Rename module-level doc
+ - Link to v1: https://lore.kernel.org/rust-for-linux/20250716045957.39732-1-ritvikfoss@gmail.com/
 
 ---
-Cheers,
-Benno
+ rust/kernel/lib.rs    |  1 +
+ rust/kernel/safety.rs | 47 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
+ create mode 100644 rust/kernel/safety.rs
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 11a6461e98da..7aab607dd879 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -104,6 +104,7 @@
+ pub mod print;
+ pub mod rbtree;
+ pub mod revocable;
++pub mod safety;
+ pub mod security;
+ pub mod seq_file;
+ pub mod sizes;
+diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
+new file mode 100644
+index 000000000000..f591eed6da77
+--- /dev/null
++++ b/rust/kernel/safety.rs
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Safety related APIs.
++
++/// Checks that preconditions of an unsafe function are followed.
++///
++/// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DEBUG_ASSERTIONS`)
++/// are enabled. Otherwise, this macro is no-op.
++///
++/// # Examples
++///
++/// ```
++/// /// # Safety
++/// ///
++/// /// - `buf` must be non-null.
++/// /// - `buf` must be 16-byte aligned.
++/// /// - `len` must be multiple of [`PAGE_SIZE`].
++/// unsafe fn foo(buf: *const u8, len: usize) {
++///     unsafe_precondition_assert!(!buf.is_null(), "buf must not be null");
++///     unsafe_precondition_assert!((buf as usize) % 16 == 0, "buf must be 16-byte aligned");
++///     unsafe_precondition_assert!(
++///         len % PAGE_SIZE == 0,
++///         "len ({}) must be multiple of PAGE_SIZE ({})",
++///         len,
++///         PAGE_SIZE
++///     );
++///     // ...
++/// }
++/// ```
++///
++/// # Panics
++///
++/// Panics if the expression is evaluated to `false` at runtime.
++///
++#[macro_export]
++macro_rules! unsafe_precondition_assert {
++    ($cond:expr $(,)?) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, ::core::stringify!($cond))
++    };
++
++    ($cond:expr, $($arg:tt)+) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, ::core::format_args!($($arg)+))
++    };
++
++    (@inner $cond:expr, $msg:expr) => {
++        ::core::debug_assert!($cond, "unsafe precondition(s) violated: {}", $msg) };
++}
+
+base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+-- 
+2.50.1
+
