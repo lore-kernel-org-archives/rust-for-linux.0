@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BBA195B1A;
-	Thu, 31 Jul 2025 18:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C4420CCE3;
+	Thu, 31 Jul 2025 18:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753987982; cv=none; b=DOdsm0HhkfLfGayloMk/sNruVvKwdnkuDnG54HkMuolWb4peY0Z5e4HHhlZDX7kslu0dug6MiqrvWGqcD93kYhVuUu8DTc8QVOr6Gva2UqRDd8AM+Mo+cYLmDwKmOTW3JJNSyxGk5cfR/k6/nQl6tJJGOQT6rDGt2cFxcjhZvtE=
+	t=1753988104; cv=none; b=PY9x3JUMHMYyHCOH71X+XgEvTk23Yq2ODNZ6sTaPSnlNwi/6uKxAstNvJ7Un3zj19SDDJM5VMyRK2+dFODoRl0lyNIj5EhZqnmaJhMRygwXOrwUlEtMbyKF2mNPrbLVwmQndiK9FSJYXfq0ivE9v+AHvasvcYoCvzydjSfjZZwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753987982; c=relaxed/simple;
-	bh=3bGvNdloMZXweX7qeoxxVDPdsQDj9y0BrPcnclvVAG8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=JiFXqudHcAO4S1q9iNzBDkjQdw3E42GSPd+z1Ccn3Vs1SEhCMHj++oR8mvft3euilTkXDlU/OT+30GKqh+iGOACPug/H6bzuWlE9BUdbSVSnYwr9pYac5EJh16mBuaBBdD1vW+tu6L1hsIUgvNmNsUWz/oI81hBD7PH2XOs8O4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rEEFQxqK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753988104; c=relaxed/simple;
+	bh=vC0up9mvz0CmJrrIDWMSSAZYXkJKsZyV1kdx/W9KPl0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=ZCYpoADiQyPbE3+v1GNVGIBspRjE70LDcM226bJhT83UuEZ2fiPGfFe0f8VTLV+NLnhQMUKKqCn5+fx7NOiqHTFhfKpcGa5NmgRt9LCzL5ikB+/qNSsND8Ne3wtVDspBZ731Ti/vxZ2mid3SLUKYeZXjrEN0675MAiFnN5r/8cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7owTnz7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rEEFQxqK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4264FC4CEEF;
-	Thu, 31 Jul 2025 18:52:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7owTnz7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DC9C4CEEF;
+	Thu, 31 Jul 2025 18:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753987981;
-	bh=3bGvNdloMZXweX7qeoxxVDPdsQDj9y0BrPcnclvVAG8=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=rEEFQxqKqRzdgYivXTv1QYmxttZCKOy1jGMwGuUDO26sEzKLbtNFgryw1Z1Jhdw3d
-	 eWjryuvfVnbT6yYNRTmivW15o3bCAvWDsFzfkuG1YQSqZMpVSSXt0x5VGWvB3JJWcK
-	 +rJ2bn8FY2rwfi+BZhPGy1fb8J4xHkPaVybd1zxTpPTMUAO1N33NYcIvD+15duhSwU
-	 PJcL1f6hYv+IBbzH6CcddNf6qbvL5wNtt+KErvnK+iSyKkR72YuWvJncz40BdhVEZR
-	 sMCv861a3w7n7IGyNucIQPhS0zgIbJWJIYazMFRObjTHzHQZA4gjHxbwqZVZpn2p3L
-	 Ga7F3YGkizNgw==
+	s=k20201202; t=1753988104;
+	bh=vC0up9mvz0CmJrrIDWMSSAZYXkJKsZyV1kdx/W9KPl0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=k7owTnz75QduSHc122BpHqgkZ6NhAz/LIbitVyMTJs/uCDk5a4DsvewuJAgai6fSH
+	 3pOhA6v5OYoiT832vSh0Z6IiTBtsv+fOLtIfXJv+isBCh5nN8DdcLlGSyDea1i4DHo
+	 tOQISqmfqqLormBxCXV7IYtz6Qehd4pX8ADZLAKUT8ibvQpEijPBE4aOQHkMhhSh1O
+	 hF0oK2GMf5vErKcFducOA0QslSKlFYf7xsdRahkH/nXkkvW7o2QHwUQwicV+ajzqzD
+	 ZvXRCULca4u87GlxxoAJUhtbg8X9/CnqVnergAeExj4d+YZj0KnHDcCrZJ7U8ytHR6
+	 971xau/s0ViMw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,92 +34,62 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Jul 2025 20:52:56 +0200
-Message-Id: <DBQGUGG933BD.3VRM2CTO2WL3Z@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>, "Peter Zijlstra"
- <peterz@infradead.org>, "Ingo Molnar" <mingo@redhat.com>, "Will Deacon"
- <will@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>, "Waiman Long"
- <longman@redhat.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, "Danilo Krummrich" <dakr@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>
-Subject: Re: [PATCH 3/3] rust: lock: add a Pin<&mut T> accessor
+Date: Thu, 31 Jul 2025 20:54:58 +0200
+Message-Id: <DBQGW0NIQJRX.MU0QD5GMFJYM@kernel.org>
+Cc: <rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 3/4] rust: drm: remove pin annotations from drm::Device
 From: "Benno Lossin" <lossin@kernel.org>
+To: "Danilo Krummrich" <dakr@kernel.org>, <lorenzo.stoakes@oracle.com>,
+ <vbabka@suse.cz>, <Liam.Howlett@oracle.com>, <urezki@gmail.com>,
+ <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
+ <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+ <tzimmermann@suse.de>, <airlied@gmail.com>, <simona@ffwll.ch>
 X-Mailer: aerc 0.20.1
-References: <20250730-lock-t-when-t-is-pinned-v1-0-1b97d5f28aa2@collabora.com> <20250730-lock-t-when-t-is-pinned-v1-3-1b97d5f28aa2@collabora.com>
-In-Reply-To: <20250730-lock-t-when-t-is-pinned-v1-3-1b97d5f28aa2@collabora.com>
+References: <20250731154919.4132-1-dakr@kernel.org>
+ <20250731154919.4132-4-dakr@kernel.org>
+In-Reply-To: <20250731154919.4132-4-dakr@kernel.org>
 
-On Wed Jul 30, 2025 at 7:14 PM CEST, Daniel Almeida wrote:
-> In order for callers to be able to access the inner T safely if T: !Unpin=
-,
-> there needs to be a way to get a Pin<&mut T>. Add this accessor and a
-> corresponding example to tell users how it works.
->
-> This is not useful on its own for now, because we do not support pin
-> projections yet. This means that the following is not going to compile:
->
->     let mut data: MutexGuard<'_, Data> =3D mutex.lock();
->     let mut data: Pin<&mut Data> =3D data.as_mut();
->     let foo =3D &mut data.foo;
->
-> A future patch can enable the behavior above by implementing support for
-> pin projections.
+On Thu Jul 31, 2025 at 5:48 PM CEST, Danilo Krummrich wrote:
+> The #[pin_data] and #[pin] annotations are not necessary for
+> drm::Device, since we don't use any pin-init macros, but only
+> __pinned_init() on the impl PinInit<T::Data, Error> argument of
+> drm::Device::new().
 
-I am currently working on a patch that adds pin projections to
-`#[pin_data]`. It will most likely land in v6.18.
+But you're still pinning `Device`, right?
 
-> Link: https://github.com/Rust-for-Linux/linux/issues/1181
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Daniel Almeida <daniel.almeida@collabora.com>
+> Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
->  rust/kernel/sync/lock.rs | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+>  rust/kernel/drm/device.rs | 2 --
+>  1 file changed, 2 deletions(-)
 >
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index 087bc0391f92a73b9af18ca31461b513bb5a9bcd..27857659a7f1ba4a8b844bb18=
-d009d037e0c5b03 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -243,6 +243,25 @@ pub(crate) fn do_unlocked<U>(&mut self, cb: impl FnO=
-nce() -> U) -> U {
-> =20
->          cb()
->      }
-> +
-> +    /// Returns a pinned mutable reference to the protected data.
-> +    ///
+> diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
+> index d19410deaf6c..d0a9528121f1 100644
+> --- a/rust/kernel/drm/device.rs
+> +++ b/rust/kernel/drm/device.rs
+> @@ -54,10 +54,8 @@ macro_rules! drm_legacy_fields {
+>  ///
+>  /// `self.dev` is a valid instance of a `struct device`.
+>  #[repr(C)]
+> -#[pin_data]
+>  pub struct Device<T: drm::Driver> {
+>      dev: Opaque<bindings::drm_device>,
+> -    #[pin]
+>      data: T::Data,
 
-I would mention that the guard implements `DerefMut` when `T: Unpin`, so
-in that case it is probably easier to use that instead of calling this
-function.
+Looking at this code again, I also noticed that it was wrong before this
+patch: `Device<T>` implemented `Unpin` if `T::Data` did which is most
+likely wrong (or is `drm_device` not address sensitive?).
 
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    ///     # use kernel::sync::{Mutex, MutexGuard};
-> +    ///     # use core::pin::Pin;
-> +    ///     struct Data;
-> +    ///
-> +    ///     fn example(mutex: &Mutex<Data>) {
-> +    ///         let mut data: MutexGuard<'_, Data> =3D mutex.lock();
-> +    ///         let mut data: Pin<&mut Data> =3D data.as_mut();
-> +    ///     }
-
-No need to indent the code in the example.
+So good to see that fixed, thanks!
 
 ---
 Cheers,
 Benno
 
-> +    /// ```
-> +    pub fn as_mut(&mut self) -> Pin<&mut T> {
-> +        // SAFETY: `self.lock.data` is structurally pinned.
-> +        unsafe { Pin::new_unchecked(&mut *self.lock.data.get()) }
-> +    }
 >  }
 > =20
->  impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'_, T, B> {
 
