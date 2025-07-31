@@ -1,32 +1,30 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8960123ABAE
-	for <rust-for-linux@vger.kernel.org>; Thu, 31 Jul 2025 02:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E956E23B61E
+	for <rust-for-linux@vger.kernel.org>; Thu, 31 Jul 2025 02:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753930296; cv=none; b=kZ34gZadpXtUzHCggaOb1GCwKPLFDe5l+gWFwJVz/QOkCmToqkaRFachAxErYTsL7l/GoC2Qf30t6xyOlttsOD5NqyC/PxSEm0FMq0uIMEtjHSDwUsrZjNOB7Fntn3AYlA7IPsLutHV4vPX5suxmUG9jLDeBt4Vz/OvwALQsuHE=
+	t=1753930299; cv=none; b=UtcVgVGvrPaxJQkKViHKCez4jbrEBVcZv8e7J0AC/5Rueqv20pk401tbjvu2kfmNHc7uoJOPwlxx/fKhoBWAe6rrIs7dROIHqAyGizCUzHu6jB6T6+3EhgOdJrohZ6L9n0J0dQiR2T25qv+HpG4EKNHQHuSmtu88Crs3GkNYzQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753930296; c=relaxed/simple;
-	bh=tuB64WSJSxd3SoYzAXwpJOXZrEA5aGaZSyxobv6TQ6U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L3nZZx1q8i/QL1n37LXEw4E5KQfVWzP8xKew2KkFdgBcETXFB1UsraUmJnV4/6pEG4mpia1HgZjl3/0hkWeasTh7bnvLy6RdKlq7YBgFm7Bl6NfUtmcuZPA2C5LPDofG+cQw7WcHt8P9MQR3JMtXTgKtbI30kzlPmbfQfYz1rkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jWjMllAb; arc=none smtp.client-ip=95.215.58.187
+	s=arc-20240116; t=1753930299; c=relaxed/simple;
+	bh=xDLkbDwwbWCUE8AL1uiSSnBvGrDGAEXunwx84niv4/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YKEXcMRWTxLv1TxaflrRtdMScKNHCkipVGrcXAZcI4vFT8XBtZAzbrIMalPj/Dee2ZrC5575TV8n+oXbs/+WuTGQJC5tAsoA3CqlrE56UwtUARzTqTT+HHe7lH+PZIs3THdY1lRaXxd414opd6IuUgzu8/0ixzNr4Ybjn0iwrjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dBlg3Dvc; arc=none smtp.client-ip=95.215.58.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jWjMllAb"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dBlg3Dvc"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753930292;
+	t=1753930284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LyliLTKWJv/QG6ipWMrGFKIDAc0QyAuX9yHSs/YpZrg=;
-	b=jWjMllAbk4GmKmIGYPgVBkP7grbepAVPB1mfAC1n0KOKwsG4KkYw96Yw+cubebJJVoopSy
-	oar97MhYxl2dhLdPWwKHthAkt/ZqTRJqNWw/Igi0v9Siqrndv+NQhiZDGXj1DOOFb8hW5k
-	LlzXdgUrIKoJ48lFUjMzW5lqTwVKg68=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XBg0b1G1HE6+LGXvHBLHUETYlC3Adb8PV4IOVr0IO+M=;
+	b=dBlg3Dvchlfqxynrgw04DJoeIF5JJy3GTFQOZ77ehxG/7DrmTZo9XjznGGNu720gca9sZW
+	BV4sKxpCAcl7FsD9w++qU2mCXfFJI355Ig+GDZxwsQVWqHRRrga/ziIp5GBE1wUsf564gH
+	LlplbhUs9mHVN0ZMsRaUr4t7UOrsOAw=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Danilo Krummrich <dakr@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -46,14 +44,10 @@ To: Danilo Krummrich <dakr@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
 	vitaly.wool@konsulko.se
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	Geliang Tang <geliang@kernel.org>,
-	Kunwu Chan <chentao@kylinos.cn>
-Subject: [PATCH v7 1/3] rust: allocator: add KUnit tests for alignment guarantees
-Date: Thu, 31 Jul 2025 10:50:05 +0800
-Message-ID: <d2e3d6454c1435713be0fe3c0dc444d2c60bba51.1753929369.git.zhuhui@kylinos.cn>
-In-Reply-To: <cover.1753929369.git.zhuhui@kylinos.cn>
-References: <cover.1753929369.git.zhuhui@kylinos.cn>
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH v7 0/3] Rust allocator and kvec improvements
+Date: Thu, 31 Jul 2025 10:50:04 +0800
+Message-ID: <cover.1753929369.git.zhuhui@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,95 +59,41 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-Add a test module to verify memory alignment guarantees for Rust kernel
-allocators.
-The tests cover `Kmalloc`, `Vmalloc` and `KVmalloc` allocators
-with both standard and large page-aligned allocations.
+This series adds tests and docs for Rust kernel components:
+Patch 1 adds KUnit tests for allocator alignment guarantees.
+Patch 2 documents KVec::as_slice with a usage example.
+Patch 3 simplifies KVec test module naming convention.
 
-Key features of the tests:
-1. Creates alignment-constrained types:
-   - 128-byte aligned `Blob`
-   - 8192-byte (4-page) aligned `LargeAlignBlob`
-2. Validates allocators using `TestAlign` helper which:
-   - Checks address alignment masks
-   - Supports uninitialized allocations
-3. Tests all three allocators with both alignment requirements:
-   - Kmalloc with 128B and 8192B
-   - Vmalloc with 128B and 8192B
-   - KVmalloc with 128B and 8192B
+Both patches are co-developed with Geliang Tang. Based on [1].
+Tested on x86_64 using KUnit.
 
-Co-developed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-Reviewed-by: Kunwu Chan <chentao@kylinos.cn>
----
+Changelog:
+v7:
+Updated according to the comments of Miguel.
+v6:
+According to the comments of Danilo, updated test for allocator.rs
+and allocator rebase onto [1].
+v5:
+According to the comments of Danilo, change to use generic struct and
+allocator Generics in allocator.rs.
+v4:
+According to the comments of, add the error check for push.
+v3:
+According to the comments of Danilo and Boqun, move KVec test to doc
+example and move VBox to allocator unit tests.
+v2:
+According to the comments of Danilo, updated the commit to samples the
+usage of VBox and KVec.
+
+Hui Zhu (3):
+  rust: allocator: add KUnit tests for alignment guarantees
+  rust: alloc: kvec: add doc example for as_slice method
+  rust: alloc: kvec: simplify KUnit test module name to "rust_kvec"
+
  rust/kernel/alloc/allocator.rs | 56 ++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ rust/kernel/alloc/kvec.rs      | 12 +++++++-
+ 2 files changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 63f271624428..a20111b40529 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -184,3 +184,59 @@ unsafe fn realloc(
-         unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags, nid) }
-     }
- }
-+
-+#[macros::kunit_tests(rust_allocator)]
-+mod tests {
-+    use super::*;
-+    use core::mem::MaybeUninit;
-+    use kernel::prelude::*;
-+
-+    #[test]
-+    fn test_alignment() -> Result {
-+        const TEST_SIZE: usize = 1024;
-+        const TEST_LARGE_ALIGN_SIZE: usize = kernel::page::PAGE_SIZE * 4;
-+
-+        // These two structs are used to test allocating aligned memory.
-+        // they don't need to be accessed, so they're marked as dead_code.
-+        #[expect(dead_code)]
-+        #[repr(align(128))]
-+        struct Blob([u8; TEST_SIZE]);
-+        #[expect(dead_code)]
-+        #[repr(align(8192))]
-+        struct LargeAlignBlob([u8; TEST_LARGE_ALIGN_SIZE]);
-+
-+        struct TestAlign<T, A: Allocator>(Box<MaybeUninit<T>, A>);
-+        impl<T, A: Allocator> TestAlign<T, A> {
-+            fn new() -> Result<Self> {
-+                Ok(Self(Box::<_, A>::new_uninit(GFP_KERNEL)?))
-+            }
-+
-+            fn is_aligned_to(&self, align: usize) -> bool {
-+                assert!(align.is_power_of_two());
-+
-+                let addr = self.0.as_ptr() as usize;
-+                addr & (align - 1) == 0
-+            }
-+        }
-+
-+        let ta = TestAlign::<Blob, Kmalloc>::new()?;
-+        assert!(ta.is_aligned_to(128));
-+
-+        let ta = TestAlign::<LargeAlignBlob, Kmalloc>::new()?;
-+        assert!(ta.is_aligned_to(8192));
-+
-+        let ta = TestAlign::<Blob, Vmalloc>::new()?;
-+        assert!(ta.is_aligned_to(128));
-+
-+        let ta = TestAlign::<LargeAlignBlob, Vmalloc>::new()?;
-+        assert!(ta.is_aligned_to(8192));
-+
-+        let ta = TestAlign::<Blob, KVmalloc>::new()?;
-+        assert!(ta.is_aligned_to(128));
-+
-+        let ta = TestAlign::<LargeAlignBlob, KVmalloc>::new()?;
-+        assert!(ta.is_aligned_to(8192));
-+
-+        Ok(())
-+    }
-+}
 -- 
 2.43.0
 
