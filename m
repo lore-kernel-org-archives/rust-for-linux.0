@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FF721FF4C;
-	Thu, 31 Jul 2025 08:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DF626E71A;
+	Thu, 31 Jul 2025 09:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753952311; cv=none; b=eT1zKCCN3TUC0LfpZYLtJqZ1QiSAdGlrwX+qi2lroutwcejRLYcWO0+htJ6z15L2KHu3a7zE8zo+Cp5nF/1oTMM5isPy9BJyeF/zFAetxpczqYuZKr9DAXHk8J0h/8kTIutK8qJOVx1DbJBVsXR6al0MATmFLjb3BXFl+IH1+3A=
+	t=1753952468; cv=none; b=tq3UlMvvc+RToChwFYRUq4hEmQkrBKYWS9AIuN7/iDdOrFpR2vRsOUxbMhIoUlSq4IsBg1qUJKdw8d9Kj5e6Gi+NX7/1+6ZpjfCS377c3XMAWviaL12i9Oulhh5Q4Su3i4JDNdV2c1OMirUTizs+9Clj4ZB1jbpZvTbz5wFK0bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753952311; c=relaxed/simple;
-	bh=qeojfxxmvccb8pcM2MlJHVnLYHKrVRTET31iGr7Az2s=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=sfBIxcPteb8EQ1QW3FitmyVWnX5WNmmXIHy2MfJNJjTgelPi8T68Slw7QqKK0TRgZlzkBovlGvrrUOT2jQzTQqmQrNbTOPd0MpvS3Kucjh88g0g8Ff5s/Widt4Oyn8H+6cSE7609VN+1wFhZYh6Qzt/Cxw7bZMHhTS21ZwozuAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gh/LSoBf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1753952468; c=relaxed/simple;
+	bh=OzBf+6tjHlFFol6frCSMTO760o8bn44Yd0IKA9X+/nk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=s7Yns0aQz5edHBru5vBoYLCi7VwMWz5E7omuPV8FxUKTalbInE+X+fHxaWe3X8XJxBbTJBOebL179SQsZQM1xiNt/6Ph/Nd2ENupFtUaaYdk6oAwK1LXvUc1r+j/SltdGQpfryb8YlXS1foTHc4Na/jGtHkMoDi0nqn2PxQIf1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mOxFGn9h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gh/LSoBf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA20C4CEEF;
-	Thu, 31 Jul 2025 08:58:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mOxFGn9h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60C5C4CEEF;
+	Thu, 31 Jul 2025 09:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753952310;
-	bh=qeojfxxmvccb8pcM2MlJHVnLYHKrVRTET31iGr7Az2s=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=gh/LSoBfN/GBT7+81naGv3phw0mqi1vcV3yniK5LJHnepstSOcLXhaBAutaJJMeIc
-	 aV/8TlM4r+Tm+TDm6UufXuFl9VHxoAibrLvvTjAx9TQvUZMDM9ylMFDxpFMDbCPTvo
-	 NO+tB6CaGkyrbj3m8RWrklsiquXhE48BQ3snGtgS0U42vrQULzWsVHVvYAuX6SZcqr
-	 /RwWOlqqR6nghwSe3WCp7hFdQDv2LTuve/PXOVPE9d303bTpkXXvCQ5XbTMjycwYyd
-	 snlAKCWs2o9z9a+vtK2CkJNXcY2P9qd5YIcuZE6r6dosmdtkX8qIjPrCzoDSmMfOUP
-	 4AksBl09Q96dw==
+	s=k20201202; t=1753952467;
+	bh=OzBf+6tjHlFFol6frCSMTO760o8bn44Yd0IKA9X+/nk=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=mOxFGn9hqOiv/tnVRGVPcphy6xctJwyi/J2LY3mLXgfLe+hbzf98qlXSBnhkR2So+
+	 LqaUu9qCD4VLgaX7Q9kPSN2oF6V0x4nBQa3rIJS66/l1Ws+Y/yWeCsg3zaGIHcOPU1
+	 A4kVkp4pPozbuUKlzH/mivCm1a8Xwtl0AlADW8UDysrADnzQjVsNkWHCnWthiglCUG
+	 zA4Y991iImlKb7/W34/VYPszyl5v8O5wHbIn8EQNLujg+YkoqSW9o/zcaxlnKN+spK
+	 pFGqE5KmD0thkTBf9PDCB0VcrITCn8MReg1YukXl9tNVUP7NT/u6yvaqpMCO8+SYEL
+	 8npo99YuNK6VA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,64 +34,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Jul 2025 10:58:24 +0200
-Message-Id: <DBQ4795SDGV1.3N78SF2Q0VC1P@kernel.org>
-To: "Hui Zhu" <hui.zhu@linux.dev>
+Date: Thu, 31 Jul 2025 11:01:02 +0200
+Message-Id: <DBQ499KC66B1.2YNYBXUG343HK@kernel.org>
+Subject: Re: [PATCH v7 0/3] Rust allocator and kvec improvements
+Cc: "Hui Zhu" <hui.zhu@linux.dev>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R .
+ Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki" <urezki@gmail.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
+ <vitaly.wool@konsulko.se>, "Hui Zhu" <zhuhui@kylinos.cn>
+To: "David Gow" <davidgow@google.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v8 1/2] rust: alloc: add alignment tests for allocators
-Cc: "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>, "Vlastimil Babka"
- <vbabka@suse.cz>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, "Uladzislau
- Rezki" <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <akpm@linux-foundation.org>, <vitaly.wool@konsulko.se>, "Hui Zhu"
- <zhuhui@kylinos.cn>, "Geliang Tang" <geliang@kernel.org>, "Kunwu Chan"
- <chentao@kylinos.cn>, "David Gow" <davidgow@google.com>
-References: <cover.1753950392.git.zhuhui@kylinos.cn>
- <420a72447bf1947a3d0f2622fe6e22fe2fd0c776.1753950392.git.zhuhui@kylinos.cn>
-In-Reply-To: <420a72447bf1947a3d0f2622fe6e22fe2fd0c776.1753950392.git.zhuhui@kylinos.cn>
+References: <cover.1753929369.git.zhuhui@kylinos.cn>
+ <CABVgOSkphk7X8nKGePTf88RzW91Pb8NPAbryVvL=zQ370o62RQ@mail.gmail.com>
+In-Reply-To: <CABVgOSkphk7X8nKGePTf88RzW91Pb8NPAbryVvL=zQ370o62RQ@mail.gmail.com>
 
-On Thu Jul 31, 2025 at 10:42 AM CEST, Hui Zhu wrote:
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
-.rs
-> index 63f271624428..a20111b40529 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -184,3 +184,59 @@ unsafe fn realloc(
->          unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, fl=
-ags, nid) }
->      }
->  }
-> +
-> +#[macros::kunit_tests(rust_allocator)]
-> +mod tests {
-> +    use super::*;
-> +    use core::mem::MaybeUninit;
-> +    use kernel::prelude::*;
-> +
+On Thu Jul 31, 2025 at 6:14 AM CEST, David Gow wrote:
+> On Thu, 31 Jul 2025 at 10:51, Hui Zhu <hui.zhu@linux.dev> wrote:
+>>
+>> From: Hui Zhu <zhuhui@kylinos.cn>
+>>
+>> This series adds tests and docs for Rust kernel components:
+>> Patch 1 adds KUnit tests for allocator alignment guarantees.
+>> Patch 2 documents KVec::as_slice with a usage example.
+>> Patch 3 simplifies KVec test module naming convention.
+>>
+>> Both patches are co-developed with Geliang Tang. Based on [1].
+>> Tested on x86_64 using KUnit.
+>>
+>
+> This series looks good to me from a KUnit perspective. I've also
+> tested it out across a bunch of architectures (UML, x86_64, arm,
+> arm64) with no problems.
+>
+> A few minor notes:
+> - You should squash patch 3 into patch 1: there's no need to introduce
+> the test with one name only to rename it in a later patch.
 
-<snip>
-
-> -#[macros::kunit_tests(rust_kvec_kunit)]
-> +#[macros::kunit_tests(rust_kvec)]
->  mod tests {
->      use super::*;
->      use crate::prelude::*;
-
-I think v7 was fine. David probably confused "rust_allocator" with "rust_kv=
-ec".
-Renaming the kvec kunit tests should, as you correctly did in v7, indeed be=
- a
-separate patch.
-
-No need to resend now, I think we can just pick v7.
-
-In general, please send new version a little bit less frequent to leave som=
-e
-time for people to comment.
-
-Thanks,
-Danilo
+The test introduced in patch 1 is not the one renamed in patch 3. :)
