@@ -1,95 +1,100 @@
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF54B23B61E
-	for <rust-for-linux@vger.kernel.org>; Thu, 31 Jul 2025 02:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6284E8F5E
+	for <rust-for-linux@vger.kernel.org>; Thu, 31 Jul 2025 02:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753930307; cv=none; b=ASA1RnCTi8hLt9jFqdEfBAyKVzitbNt2r5DmBbtp9EuiUC9byfa7wiV6ANcfkO8d+s6msSME9OwvwhQz0Sd9THDdUWBT5Bbv6gd0+ypeip8Pi7tmh1mJS4iLE2SmRzzjAh5WpTC26I7Es3hlya4eKa4Pa+7+9Hn3s83mY3Fu+tE=
+	t=1753930400; cv=none; b=tXIuQ7wlFX6EQFLAZpXDq8E5n6Fn2omitoxSRxtwC/qvCnYYhFf/hTIBOfmb02ess+iTpSFEdiV8UPYFuBbKsCh3gUlAOXrgZfHF+nnoZh7k5j49Vqyg0qIT2G1YluUohyE81vOXau80H2u3UnMDcPqmP8G0QzGojNA/yYjcr3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753930307; c=relaxed/simple;
-	bh=RDlfNfQEHhiICjk1uvGjpCw6/n4I2MukkpEFDaUNPdM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G83vV69E0YCTqqEuOlZTVudNKX28p1L7hwYYPMYRmH52+m7Pzi+F9j7pG3wOHuTBhWx8bx4dbzeFnqgNk84fsnEmvxCQT5aNvc2YiHuQEipfO9pITsYCD1D86Kxc9ta5VXf9xlvpcusYfECz1IrVe6n3xjNG1yrQRtbpKuHRhZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SoQOXwF5; arc=none smtp.client-ip=95.215.58.178
+	s=arc-20240116; t=1753930400; c=relaxed/simple;
+	bh=3e7o79Fpm9ojzWbREEqJErFCPDye4agxdfHKY+I5s04=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=uX6zUuEe+3vYMasi0uJ2joLrmEKSxHxh4GWQvJl3U577YJCmwOUxICTRrTJThctNHVIcDss4cmHMmW61z/pBjPtq9BVB+G140V2lem8j2W60obz9N+AUoharVgTpMpChrcFn69s9eCmD+3LwcNeuHf1ZE0OY1clIYrY0t2k+k3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O0M6sFdQ; arc=none smtp.client-ip=95.215.58.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SoQOXwF5"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1753930303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vWVEKjQhtRSvkjvWgOZqR1GFKXNm3YpoxK5+J0Ifg7w=;
-	b=SoQOXwF5nEytYZZuLlDZQn3YAZXDsEjvEtKLZ/R87bb3J5OP1zpN3c9h5mbVLemitBTyl+
-	iw8Dm/HGe0dfravTXtAlMSnF/gfZ/eLewnKktx31XPqxdckK6F0vVAYZAM/Eja0RhxyvYi
-	kAYnNr0Fkfp/hcitcbrAZRnj3vVrb3E=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	bjorn3_gh@protonmail.com,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org,
-	vitaly.wool@konsulko.se
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	Geliang Tang <geliang@kernel.org>
-Subject: [PATCH v7 3/3] rust: alloc: kvec: simplify KUnit test module name to "rust_kvec"
-Date: Thu, 31 Jul 2025 10:50:07 +0800
-Message-ID: <4eb554c3bf03dd4f9e6dea659497938baab61dba.1753929369.git.zhuhui@kylinos.cn>
-In-Reply-To: <cover.1753929369.git.zhuhui@kylinos.cn>
-References: <cover.1753929369.git.zhuhui@kylinos.cn>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O0M6sFdQ"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1753930396;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=u9sPE4WJWqKMr+7/29xfbY0+Xa2H/DJawk+nioYYxrs=;
+	b=O0M6sFdQgH9jBtgnC5B7qP0304QV+RApJ9MxCUUlBriwSrd4GQ4bXpKx1seZmoUTP89X43
+	rTL5Ze0QDPY9SI0aadBkkc3/RzvyP4ab2j95fGtaS2HRvFzvhr6mpkuzJ0ANEaaYUaKqsw
+	OAYJc6E/JWAtW4Jyg6tlcocbEG5e9SI=
+Date: Thu, 31 Jul 2025 02:53:13 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Hui Zhu" <hui.zhu@linux.dev>
+Message-ID: <21002139ec43d04f9fc6f58ce9250c7e8a4998e4@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v6 2/2] rust: alloc: kvec: add doc example for as_slice
+ method
+To: "Alice Ryhl" <aliceryhl@google.com>
+Cc: "Danilo Krummrich" <dakr@kernel.org>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Vlastimil Babka" <vbabka@suse.cz>, "Liam R
+ . Howlett" <Liam.Howlett@oracle.com>, "Uladzislau Rezki"
+ <urezki@gmail.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
+ <gary@garyguo.net>, bjorn3_gh@protonmail.com, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor
+ Gross" <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ vitaly.wool@konsulko.se, "Hui Zhu" <zhuhui@kylinos.cn>, "Geliang Tang"
+ <geliang@kernel.org>
+In-Reply-To: <aInRtC5CRxyDTy5B@google.com>
+References: <cover.1753841900.git.zhuhui@kylinos.cn>
+ <786e88abea2557080bde65fa9892df3b956731f2.1753841900.git.zhuhui@kylinos.cn>
+ <aInRtC5CRxyDTy5B@google.com>
 X-Migadu-Flow: FLOW_OUT
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+2025=E5=B9=B47=E6=9C=8830=E6=97=A5 16:03, "Alice Ryhl" <aliceryhl@google.=
+com mailto:aliceryhl@google.com?to=3D%22Alice%20Ryhl%22%20%3Caliceryhl%40=
+google.com%3E > =E5=86=99=E5=88=B0:
 
-Remove redundant "_kunit" suffix from test module name.
 
-The naming is now consistent with other Rust components as the test
-context is already implied by the #[kunit_tests] macro and test module
-location.
+>=20
+>=20On Wed, Jul 30, 2025 at 11:35:22AM +0800, Hui Zhu wrote:
+>=20
+>=20>=20
+>=20> From: Hui Zhu <zhuhui@kylinos.cn>
+> >=20=20
+>=20>  Add a practical usage example to the documentation of KVec::as_sli=
+ce()
+> >  showing how to:
+> >  Create a new KVec.
+> >  Push elements into it.
+> >  Convert to a slice via as_slice().
+> >=20=20
+>=20>  Co-developed-by: Geliang Tang <geliang@kernel.org>
+> >  Signed-off-by: Geliang Tang <geliang@kernel.org>
+> >  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> >=20
+>=20It looks like this did not change since v5 where I gave my
+>=20
+>=20Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>=20
+>=20tag. Please make sure to include the tag in future versions if you ha=
+ve
+> not made any changes.
 
-Co-developed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- rust/kernel/alloc/kvec.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Oops!
+Sorry for that.  Fixed in the v7 version.
 
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index f57e08c64929..d71f6a1513e2 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -1311,7 +1311,7 @@ fn drop(&mut self) {
-     }
- }
- 
--#[macros::kunit_tests(rust_kvec_kunit)]
-+#[macros::kunit_tests(rust_kvec)]
- mod tests {
-     use super::*;
-     use crate::prelude::*;
--- 
-2.43.0
+Best,
+Hui
 
+>=20
+>=20Alice
+>
