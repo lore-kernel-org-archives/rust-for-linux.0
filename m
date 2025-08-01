@@ -1,109 +1,94 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2EF26A1D9;
-	Fri,  1 Aug 2025 14:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754057639; cv=pass; b=AAWgbXdFXSwzarutRus7n6HppY7y+LDAemtY8a9ptTnodif84cqecWrTUIIKQQoGW+c6d/UDSniHzJ+guOk0ayTLoJrL25/Sxf+HUHrSscCkcT8h9ZQZSmC6gBxL5Iij89+im1CA6X8tzwXcRU7S9rwaCOSG+Uv7H0Q3zHGc7a8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754057639; c=relaxed/simple;
-	bh=0sBN0Z0qD11Bdce2GGUn1pqzfIW4G+IxYD+sS5xgTik=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=nabTJGy6gVtYkYEZepzwGUARCEX4emhL/JVJHtiJg3Shn6+l4A6NFWMhQzgaNAkJslbzOPiyCXuUuKyKDidDwv1a6TZOb74CbrS/LwW0XiIAXieVl0rZ9Qj0AxNp8+MaQ6h3AbL8cRK7RGjp1zKFCJ/HSVp2fZ8MEjj8CKAX5kE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=W+07vl/q; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A1726CE06;
+	Fri,  1 Aug 2025 15:36:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754062572; cv=none; b=FxItkQ6hl4xSU0nU/Uujec9tD+o9Jrftdz6oYDyYJ/ihMvOa5+ab0jOhuN/mNvV3gJcjGfIIgcuY5uIGgR5tEP/Ih7BLi5ytmzA6Jrz9J7Xq0YpwJ+zLVBQBmMvyMgx2F1IirecXM74k5YYj6V14snp6UMtP6rWjaXSbBPdBQlw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754062572; c=relaxed/simple;
+	bh=aZQwspZkYDsMYZ9F9Yy7SFi+A0vpDpdUoNJSp+qMEdY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ixYEcATAdqPQDjOLIAagCQeV9Lwv4tvmPiX9PK46q25oLSqlsVQp1cVQvOcTomK2Xh0bjGI68v+ct3xv6xGm8Bf4xy4nOwixa9sowmCpGrY6MMaaNoU/zoIE7ly12Ut5/2ftCG2pxsr7VvnWI1C61ACcFH4LrnS5Y3WmJtwt9QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeTbiJYP; arc=none smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="W+07vl/q"
-ARC-Seal: i=1; a=rsa-sha256; t=1754057626; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Ud0DXkeg2wuCidpOgvWrRZC1UvNDt7CxMKVXTJ3b0NUBKqyEmNNQ/QnSzreML4itR8Iwmx89ZQStEa+nVsex1BF9QJp6xBrvIX7mvgYi17t9qf7fd1vSj8ikrJj7e9rSHuLeZvOoH/gzIcsa7dgByVaTDg/BFj/dkM7oF+KHEA8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754057626; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=nTWJeexliBNM0NTPr3zAFL74Ktscf2CHSD4SWIKTA5Y=; 
-	b=YdP3diFmzMp8xs3hmbRpxIS/D5kCYuCzaG0tag5LfdctAQfwMtYHpljWs9mifW+wBYl5V44odVo7I9ACyZbpHszOrwOuB2JLjM7E3l2UNSzCpmMtaxUlDRQ5Nh2vtJ+X/KTbMxjz7rCJYW3NPH2RjQr4fbCZrUmbr+xxZrE1Hks=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754057626;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=nTWJeexliBNM0NTPr3zAFL74Ktscf2CHSD4SWIKTA5Y=;
-	b=W+07vl/qks6/RrWWer7sYitaq4TNzI9OtMojyl3XjiO/uqlpusHvQR4messNwXkQ
-	VhDAZ8Li9qttEonRA33YGaLB6WZXkI7mm82wzc0GSjRQP1cp6Ji24A/9lwE+camFQjQ
-	evYT9RFSUxDjS4c/2hH3fo//aS37OA7fWb8AJ/lo=
-Received: by mx.zohomail.com with SMTPS id 1754057624094370.9083390005841;
-	Fri, 1 Aug 2025 07:13:44 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeTbiJYP"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b38fdac002bso240377a12.0;
+        Fri, 01 Aug 2025 08:36:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754062570; x=1754667370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aZQwspZkYDsMYZ9F9Yy7SFi+A0vpDpdUoNJSp+qMEdY=;
+        b=NeTbiJYPSDkZ0waKeOiBPRkRYys0B/NaBR/nQq7VRtc17Tn40ZCjgDGVmGUvKCnENo
+         +gLJ/05zgC+kFPFP5SMOyGOEW4goNxXImFTUN3X4SKkpcAQcFcg1vlwj4z50eTgoEdDa
+         J7Qzsz/p5kUUaF+beITC+jxoyB1IBUQTVmuYIBtUp7U+Cd0YsaI0owNcyN3FrMmLzW/F
+         agcPEhjxRIpd7xARWUEj4s3y4z9PKO+22F2MEyceQ0Lea3lQepOt+fAe5h4CYO3Xr1pw
+         F01f9RJd+y04Zi7K/mkbxZ2YmADyf2YiMkY92AzK9a1xU+ELd7tM9usQ4enVL9Arz10u
+         kxlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754062570; x=1754667370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aZQwspZkYDsMYZ9F9Yy7SFi+A0vpDpdUoNJSp+qMEdY=;
+        b=lnJ/GFufdOCNAMKoMamXeqRSC4sRQ9YgKhMoVFXDgKlL09Gqzka0GcspfOr/ZJlFqu
+         uMwO4pEiGEyvjMNyAX1OO3hXt/thN82l+vpZL7/cbSbd4waazsRrK3FweGoslbZ31P8p
+         YGSg051E2iE5Jo6VGF/HFs6CuE/5qX/57ENZORLlI+wzSmsyke8TzLRHWNMlz/cVMgcG
+         8YEhjos8xT2mJy9Q1vd5kaOakBSWTrjlrIM7t80wJF9zur3J96kbeepbduZ6SyLHIHSy
+         SyFTH2FDqWQq48OKA7ILbaGY+dxmvWlv70OVqB746OFUSEg37w9FlSkgXJgQvqvsjN8q
+         fwcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV1JiObnBXBIGZN4CfEZ6ck1WaVsxaFxYBXOdeBbxDcR6zvq7z/9H5iZ62veTnViL8pHlH9sa4vJHhwQSz97p0=@vger.kernel.org, AJvYcCWaHehbmeLwbX7QimYvoXeXbC3PWf4GhjJhfTmoqLJPno2S+ttEa/X2dee7RN5sguTApVItVG+fN4JEp/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFs7YZkFlPYCm9Kfp6VjACZkajPmfF3b9zSLTJnzf7fawrDwno
+	31GjEb+saQuGx1aZi+TtK50Ias4rAhdX7672jYA3oqzPK9lT+s0UHvuZw0DOnt8bZ2Fy1lez5Zt
+	3VM8AjAYkTdAd0CwI+IWWup5mYBZgzOg=
+X-Gm-Gg: ASbGnctN1nnWAQk4wwtLRNXmbEWdXd0l9uPJhf+bGh7ST/0wZbU72WS5OTLbx4abwQT
+	D5pVpRFDLK2wpbZt+/q/e7GX2nLNLjO5Rjx582GdIdR0HkWx0S61GMIe2DL6oAFoLm9sFBwOO4/
+	TnXgeSt8yRQuIsls0XsHwEJEgg3s8jRLva9Hg7WjFAnozYuak+kZQXzNR+L5ixyWkenIuTkeNLM
+	+MdhLrN
+X-Google-Smtp-Source: AGHT+IEejn7+Ub0GRMZe2KS2o3Avdid2AwRwDRKfrybwb6UtyYJLJk5yJHEpnyBS4UgGIvTJFtAn9Y3saj4i/iSs81M=
+X-Received: by 2002:a17:90b:1c03:b0:311:a314:c2c9 with SMTP id
+ 98e67ed59e1d1-321161e2197mr137642a91.1.1754062569787; Fri, 01 Aug 2025
+ 08:36:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [RFC PATCH v2 0/4] rust: miscdevice: abstraction for uring-cmd
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250727150329.27433-1-sidong.yang@furiosa.ai>
-Date: Fri, 1 Aug 2025 11:13:29 -0300
-Cc: Caleb Sander Mateos <csander@purestorage.com>,
- Benno Lossin <lossin@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
+MIME-Version: 1.0
+References: <20250624042802.105623-1-christiansantoslima21@gmail.com> <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
+In-Reply-To: <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 1 Aug 2025 17:35:57 +0200
+X-Gm-Features: Ac12FXxC69kafbGgVSNnodv16N9ncoi3UbZB8MkI2F19sB87rpeIcrxjT3vU6sQ
+Message-ID: <CANiq72kOLYR2A95o0ji2mDmEqOKh9e9_60zZKmgF=vZmsW6DRg@mail.gmail.com>
+Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: "Christian S. Lima" <christiansantoslima21@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <60A6421A-813F-4A93-88AF-4AE3027E1FA3@collabora.com>
-References: <20250727150329.27433-1-sidong.yang@furiosa.ai>
-To: Sidong Yang <sidong.yang@furiosa.ai>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
 
-Hi Sidong,
+On Fri, Aug 1, 2025 at 3:22=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
+>
+> Another small nit: this is not a macro, so you don't need to use the
+> `::` prefix here. Actually even `size_of::<T>()` seems to work.
 
-> On 27 Jul 2025, at 12:03, Sidong Yang <sidong.yang@furiosa.ai> wrote:
->=20
-> This patch series implemens an abstraction for io-uring sqe and cmd =
-and
-> adds uring_cmd callback for miscdevice. Also there is an example that =
-use
-> uring_cmd in rust-miscdevice sample.
->=20
-> I received a email from kernel bot that `io_tw_state` is not FFI-safe.
-> It seems that the struct has no field how can I fix this?
->=20
-> Changelog:
-> v2:
-> * use pinned &mut for IoUringCmd
-> * add missing safety comments
-> * use write_volatile for read uring_cmd in sample
+Yeah, it works because Rust 1.80 moved it into the prelude. However,
+we still have to support 1.78.
 
-Why is v2 an RFC when v1 wasn=E2=80=99t? Can you mention it on the =
-changelog?
+What we can do is adding it into our prelude meanwhile.
 
->=20
-> Sidong Yang (4):
->  rust: bindings: add io_uring headers in bindings_helper.h
->  rust: io_uring: introduce rust abstraction for io-uring cmd
->  rust: miscdevice: add uring_cmd() for MiscDevice trait
->  samples: rust: rust_misc_device: add uring_cmd example
->=20
-> rust/bindings/bindings_helper.h  |   2 +
-> rust/kernel/io_uring.rs          | 183 +++++++++++++++++++++++++++++++
-> rust/kernel/lib.rs               |   1 +
-> rust/kernel/miscdevice.rs        |  41 +++++++
-> samples/rust/rust_misc_device.rs |  34 ++++++
-> 5 files changed, 261 insertions(+)
-> create mode 100644 rust/kernel/io_uring.rs
->=20
-> --=20
-> 2.43.0
->=20
->=20
-
-=E2=80=94 Daniel=
+Cheers,
+Miguel
