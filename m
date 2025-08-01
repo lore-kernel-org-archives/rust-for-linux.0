@@ -1,90 +1,127 @@
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF101AAA1B;
-	Fri,  1 Aug 2025 17:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1891DF749
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Aug 2025 17:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754070487; cv=none; b=NYdaALR49BI6wg8E1ERPbdOJm0fFriU0JLqlsLIN/rKmKSEDp9dC2E+bIvQnwVkrMjUQRM4m1sjiizxKWb2b9o5wQ5cEcwdPuoh2Th06Bi2kUbKX4oJscbPlQzkLe/SOzad3f3dtav7x5DmJWSZi+zXaOoImifzxqFcCbp79bfQ=
+	t=1754070974; cv=none; b=EwLcEwsDSo1pr0chgGdChF9BiYcTOl3swhKL2YTQaMAY9P4aegHWhQItfWxRMBKzpbVtCrag50sVkOlD9uoJfH7d5DcQkkOAWBJCxfJjbgFJRJK2zVW+HStOFPVddpBYMvRKWFB2eQ8PD9+rwtQ0JFsHM/FLh7yJWtVZWL6sYFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754070487; c=relaxed/simple;
-	bh=L01UpakPWB7W7eF8bPP27h39LE33E/0r7RFySxIL7/U=;
+	s=arc-20240116; t=1754070974; c=relaxed/simple;
+	bh=0M/tJPfKsbYH+xw3E6m9VJlr0c68OrqSrrrzuvjYw3Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dV6rnyo95v+dkwq1WMHAS5fTtqY9nTbOshnpCH2d6p+HoKwAGr+rqFAmEgg53EsGbD0rpyeJUcT1Bk7pZzt3Xez0wCbLP+LX3Wvc013qgTipPHILVXmw9WopniJLGRWue+1FDWhy+xkdsv9oZ9L5CePj6o5JncuGvj7THmpRvtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LHQbacqd; arc=none smtp.client-ip=209.85.217.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=f817jgqgwbkHpiB0wJ9oWYcgv0UbbfxJUsb7LXpUdAWTB3xv+89z9TZroF2YvlT35OIycXTOUhZvBX9uKmyMuhSj1VdGuFvRjQFJxsntkmmmK+hk8yxH4zIif7EhxUyraqaIA7NujTJjv3SjM6KRnwMaES//0lALkpsXNeEEvJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0QKJ9d/D; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LHQbacqd"
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4f13dbfb221so105031137.0;
-        Fri, 01 Aug 2025 10:48:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0QKJ9d/D"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4538bc52a8dso14151135e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Aug 2025 10:56:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754070484; x=1754675284; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=f0MRjFCqM4TrxxgK8fACJJHf6TvlgNz6tRrWpYNeTO8=;
-        b=LHQbacqdzVgJ8txDskZAC7zvWYRdzart15Ft1mxuKwFWyZHURubK9NeCpCAT1/ljsq
-         UIzPvCpM8xO5qB1lYrf8ubpAnSj7ctRugmxujgonQicZTelOFOy9Z4URHban6z6zxwjJ
-         KrSD7APy7pF9rQR5YLo7upvufLK8OeFWzO+k8g4ZYheDfSnQBDQSWxzBphyr/BnIwMct
-         fihwLmlo1XjbUms+s0Mep7RwPSBkhZx+0xTksbASiC0zblkVwvilnBJJHICgMKaG/xX0
-         Ri64FEb9CVEEL16vb8P3nUPaWjUpqCBX8QNnXooK5+zwxEvVpWVihChlg3Z+0e8ubR0b
-         q0pg==
+        d=google.com; s=20230601; t=1754070971; x=1754675771; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zfAsYAfR+/YK9jsRvUDbKg5u2kXyF1RTviQ65IrOhxo=;
+        b=0QKJ9d/DOYaLUpsRI8McY6kaeO7KPaDWxo9DfDxkS7eSiSHA82KMy2Jglc8lRKzAp8
+         /Kz+r4yquRNhpJ/x1/gs+EuxkfDMSfzn9P3zxtcz+LRuT2Mf5D68BJUSHVDQU+FXi899
+         zoxWORNcgUIKcuErQv5j175alfk01uyN6x45TXeVkAqDQTlrzQLLK0DChqEurGciN1Ab
+         ecMJ8dEjZRVhhJ4Rrsj2KfbcVcNcRy/Lv6cm0n7stY+aTvGfgpigrlM24IQBL9MNYxAS
+         /cgpIjxZCiCBYVPVNIwgOyw7ljsfS/6hdIfjVjQ7UzvcT91FToGFe3mg9OjL2p5nKj2Y
+         qSbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754070484; x=1754675284;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f0MRjFCqM4TrxxgK8fACJJHf6TvlgNz6tRrWpYNeTO8=;
-        b=GB9UGltcwlhxmYRS+8o8SoeEP0DBF0bigrApjoahWJ9aZLj/f3rVT8YVFBwpxx8bKe
-         rpVhiOs8hwLNGAbOZ5LLm4zwC4UQHwlkQE6HCXgX0oA3oQvLEygZAGLBzNj/0dT7AKBp
-         0Jo29lBz04C8I2ICEu1RzxzRAFhcYjndX5mcEqhNgOwgRPMYbybqkOXfY83NqJfn6H2/
-         yRshhnz1/IlFlX5c6ofgBkWBNudGc0TEeUmlmppvj3Ix3RecFGex9q4AwIqcCTmRfmP2
-         6DkPXmEWlDJxQHo2oPohBItDvLswTz34nAm0pyQH2mziPYbj9hpfh2FkVlX3GcN/ObCG
-         Tltw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWATgiJHXArtwIGz+rkMasItn3AIQZwLFDh5puFfJfsLoUrpD3U5f5qbv6dqrzZPfxUt8ec9+05IIjeyE=@vger.kernel.org, AJvYcCWv34ynImIc+7y+EROYUg2Rsde37i1r2OA8DQerEcLD0tHx3fi+POIFi0Z3skIZOynYNjpUqsgdLNL+qZ7PNxA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjMJ/4K51vyGvGtrJi2rIhvDnTDjw4nboryMbzSqrSm2p9+Jbs
-	HWyIPSMbxefVoijJ20AMFmLOkaIjR8F54BW1EUDOXjQwNS2rGAXqwOJx+HH/u3QjzpuVcPpmTPC
-	jKP5u+ANOk1PnxgkMVjJFWHofcAwgBvI=
-X-Gm-Gg: ASbGncsAOZ2VM61bvwaXIN1WXuVzsAXMCCxiBKaPT5B2zBPrKNycxHGlo84JFCI74GY
-	wTk+Odr1CRmX7awkaCyZ286OV0tfPup5uKP2lkkmJtw/a9zCZqWH8U2bHvNwvV6eoBMXUCKl1hZ
-	SC6IdAdu/7gvocxwSnaKXiykmWkif7U/mWDo9Gj5i9M09Pf6cImhm9cb0WM03KUc8j0b5JFlt+q
-	VBQUWw8
-X-Google-Smtp-Source: AGHT+IFRXd0XceRHT3M4dfEbxWDM9aiQwR9V8aa36tguoPA1FbEVb4pkr+s1pGHduJbHvva81GT+kdg5Fk+PVmsvB3k=
-X-Received: by 2002:a05:6102:5ccb:b0:4ec:c4fa:c23a with SMTP id
- ada2fe7eead31-4fdc1b4e2b8mr39938137.1.1754070484460; Fri, 01 Aug 2025
- 10:48:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754070971; x=1754675771;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zfAsYAfR+/YK9jsRvUDbKg5u2kXyF1RTviQ65IrOhxo=;
+        b=l+pEu2p2ZHFoinTp64KQJp//Oghxofsj9QNxMKOc+ar7IqSy16d7UdX0oQxNQLcXMs
+         e+W80+htloWZIeRnENvztRiNuGvXQuq7P2Xx0Z2FNDpfsacUCl2qzdXnOdDdkI1PvYJF
+         19kNhDWxUbBj1T9eoEqjSbFAyWDhwt/1QBe5tFMCCkwWp/8ZHtGj8KDcY2NRFsGyZWg8
+         s4IUshp923jvpHMXFG6wBNU71r26l6458B+uhSTlW3LJamzg8SQ8KaokLXDv5MD2zzHQ
+         vYzeUHYZKUVP/0TNDF4W+UXuB2alv86tfJkPY/1Vz8WpiYdvvsXHqAPFNSFzx6lvb3c+
+         9pFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJWcyk3XtXUHiyQ/oHW5cPbOImRh9Wf60bZ9eoYjc9VvFX8fY+wt905cfpooZvfB7DKlSZbT4QovIqWuYZrQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyemQirArxTx+v0nvkpICnXMCPwJtRj7bY2MpKHK6qf/BQFxe40
+	xDG2pCenmo9fLPn0JYid8gvY6DDLtAVnnoRiotIOlyAC/Oxh52pCpq50RBu9A7DP9iCzFzXAl8t
+	8G119COSyXS0kaWXuFLzGhg+2rUO9ynY05iIpXWMY
+X-Gm-Gg: ASbGncvxtDjWcOdoRB6lQ9ZjUIVrb/3xJPyQKjGrmL8gAPbV2PwEYgiqaujGqeHu7dR
+	HSjKiKIuoMFc2C1REgUadxS8d82ZbeEh8wO8vwAO+8isH+XdObMmE/L0J0ZERb6cvfyW0x229wL
+	Dqf3jfy4pP/HHs0iGTUkDxd2JTE3ugmDoP8zJUFBWF3vJEKp0g8WI/vbk0hRlaq1NL4jLO7Okv2
+	fDpMmZ/
+X-Google-Smtp-Source: AGHT+IH5iyoraxt1MqhsOV7Wo1Vl0oy/M8gdsqvDQuvj38MG42AcgPxCKrGsYFjRYglZAErHpBINtAm5x8csp6uGERE=
+X-Received: by 2002:a05:6000:401f:b0:3b7:8914:cd94 with SMTP id
+ ffacd0b85a97d-3b8d94c1367mr465035f8f.41.1754070970934; Fri, 01 Aug 2025
+ 10:56:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624042802.105623-1-christiansantoslima21@gmail.com> <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
-In-Reply-To: <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
-From: Christian <christiansantoslima21@gmail.com>
-Date: Fri, 1 Aug 2025 14:47:51 -0300
-X-Gm-Features: Ac12FXzRc0hJeQNV_cJ-PTralj6IbzQlNpNqLwcXyReZXjuJjKDrGwJrhUSzgGg
-Message-ID: <CABm2a9f9mTu-jT9h87dnY0jbjZf_7anbFN3a496e_S4tPeF_yg@mail.gmail.com>
-Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
-	richard120310@gmail.com
+References: <20250801161752.443431-1-ojeda@kernel.org>
+In-Reply-To: <20250801161752.443431-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 1 Aug 2025 19:55:59 +0200
+X-Gm-Features: Ac12FXyPfPflOZinXuov3eku6WJJUyueclLsgVuYKQ--6v94gWhcCn1e-LQsq6c
+Message-ID: <CAH5fLghFKZgW8T82ZKQNAANfhGBEQG2oLE2rmUOAb6N9UDEMhw@mail.gmail.com>
+Subject: Re: [PATCH] rust: prelude: re-export `core::mem::{align,size}_of{,_val}`
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Alexandre Courbot <acourbot@nvidia.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi, Alexandre.
+On Fri, Aug 1, 2025 at 6:18=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
+>
+> Rust 1.80.0 added:
+>
+>     align_of
+>     align_of_val
+>     size_of
+>     size_of_val
+>
+> from `core::mem` to the prelude [1].
+>
+> For similar reasons, and to minimize potential confusion when code may
+> work in later versions but not in our current minimum, add it to our
+> prelude too.
+>
+> Link: https://github.com/rust-lang/rust/pull/123168 [1]
+> Link: https://lore.kernel.org/rust-for-linux/CANiq72kOLYR2A95o0ji2mDmEqOK=
+h9e9_60zZKmgF=3DvZmsW6DRg@mail.gmail.com/ [2]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  rust/kernel/prelude.rs | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index 25fe97aafd02..198d09a31449 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -12,7 +12,10 @@
+>  //! ```
+>
+>  #[doc(no_inline)]
+> -pub use core::pin::Pin;
+> +pub use core::{
+> +    mem::{align_of, align_of_val, size_of, size_of_val},
+> +    pin::Pin,
+> +};
+>
+>  pub use ::ffi::{
+>      c_char, c_int, c_long, c_longlong, c_schar, c_short, c_uchar, c_uint=
+, c_ulong, c_ulonglong,
+>
+> base-commit: dff64b072708ffef23c117fa1ee1ea59eb417807
+> --
+> 2.50.1
+>
 
-> Any plan for a v9 soon? I would like to make sure we secure this into
-> the Nova tree as we are highly dependent on this feature.
-
-Yeah, I'm studying to implement the changes addressed by Kane. [1]
-
-Thanks,
-Christian
-
-[1]  https://lore.kernel.org/rust-for-linux/CABeNrKWn4_qsAE2pqgGwVuspf7wnzT=xe_hZpuy-0HVTLD92DQ@mail.gmail.com
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
