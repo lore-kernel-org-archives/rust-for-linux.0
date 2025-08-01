@@ -1,75 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35E078F4F;
-	Fri,  1 Aug 2025 17:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF101AAA1B;
+	Fri,  1 Aug 2025 17:48:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754068553; cv=none; b=jz2XwcZy0NTlI5z6y9+EZndUw7l1f/eTjFhM0FAZj71CPiv3dyWUcFp8GjiZJ40TMq393hls2OQJ7y01iPIqx3VQlo9djF30pqDHK/mTl+SI/h7IDQx91uTwr9kHUkyN3PBnihTyiyY03tdTILFepkN/aVj3pB0ZYDsJLwyQBPI=
+	t=1754070487; cv=none; b=NYdaALR49BI6wg8E1ERPbdOJm0fFriU0JLqlsLIN/rKmKSEDp9dC2E+bIvQnwVkrMjUQRM4m1sjiizxKWb2b9o5wQ5cEcwdPuoh2Th06Bi2kUbKX4oJscbPlQzkLe/SOzad3f3dtav7x5DmJWSZi+zXaOoImifzxqFcCbp79bfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754068553; c=relaxed/simple;
-	bh=nelnHZ4XghqoyKBiCkcP1EfH78iEZSZS5aFwfrsjXBQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=tPJ92Iyx2+pTp3PWKOLtTO6dJo73y1aQrzQFXuk+Anb2dYiw9CLKCJEqbRyjRaqt4YPV+AjTbw6aCESDmzyDwprewLf8pVbn+7+5b05FQqUwjLwwBLs585OBnRKq3eG8ejHwTtuMEYj5oRkhH1ifJdXn+fDNOCcKTGhdjRcB5Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2Y0WSYG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754070487; c=relaxed/simple;
+	bh=L01UpakPWB7W7eF8bPP27h39LE33E/0r7RFySxIL7/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dV6rnyo95v+dkwq1WMHAS5fTtqY9nTbOshnpCH2d6p+HoKwAGr+rqFAmEgg53EsGbD0rpyeJUcT1Bk7pZzt3Xez0wCbLP+LX3Wvc013qgTipPHILVXmw9WopniJLGRWue+1FDWhy+xkdsv9oZ9L5CePj6o5JncuGvj7THmpRvtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LHQbacqd; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2Y0WSYG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF98C4CEE7;
-	Fri,  1 Aug 2025 17:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754068553;
-	bh=nelnHZ4XghqoyKBiCkcP1EfH78iEZSZS5aFwfrsjXBQ=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=c2Y0WSYG1k9X2hd10j7Lfm5ejhIp8hQ+BsppUZEWD8Bbm7p1gIZNaIrbUl9WnhpmV
-	 CQwwjgA7UO8/45F1p1FiNSGMrBxkGL8vt8AYVYme26HvIx5F1j/4ZBOIyd+ra1uSy4
-	 GmSNAhXmG5iM9beRvSddm9VZ7XuDn78NorHFx/noKYgTiRs7C/j3IWoj8/+gn1QlxD
-	 7+NANU415f2ctLQ2hQFFVK88jX1auv1KqLNaWnO7ikXTudYuC5aMUDC6CK3VBtbsbV
-	 HW1x0HYdVrxs2nSGNlC5cxMdOCSTCyh3AkcINGqCAefmyZlgpm23crvQFsOu64Xo9u
-	 FYX0k+kv6Sw1Q==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LHQbacqd"
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4f13dbfb221so105031137.0;
+        Fri, 01 Aug 2025 10:48:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754070484; x=1754675284; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=f0MRjFCqM4TrxxgK8fACJJHf6TvlgNz6tRrWpYNeTO8=;
+        b=LHQbacqdzVgJ8txDskZAC7zvWYRdzart15Ft1mxuKwFWyZHURubK9NeCpCAT1/ljsq
+         UIzPvCpM8xO5qB1lYrf8ubpAnSj7ctRugmxujgonQicZTelOFOy9Z4URHban6z6zxwjJ
+         KrSD7APy7pF9rQR5YLo7upvufLK8OeFWzO+k8g4ZYheDfSnQBDQSWxzBphyr/BnIwMct
+         fihwLmlo1XjbUms+s0Mep7RwPSBkhZx+0xTksbASiC0zblkVwvilnBJJHICgMKaG/xX0
+         Ri64FEb9CVEEL16vb8P3nUPaWjUpqCBX8QNnXooK5+zwxEvVpWVihChlg3Z+0e8ubR0b
+         q0pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754070484; x=1754675284;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f0MRjFCqM4TrxxgK8fACJJHf6TvlgNz6tRrWpYNeTO8=;
+        b=GB9UGltcwlhxmYRS+8o8SoeEP0DBF0bigrApjoahWJ9aZLj/f3rVT8YVFBwpxx8bKe
+         rpVhiOs8hwLNGAbOZ5LLm4zwC4UQHwlkQE6HCXgX0oA3oQvLEygZAGLBzNj/0dT7AKBp
+         0Jo29lBz04C8I2ICEu1RzxzRAFhcYjndX5mcEqhNgOwgRPMYbybqkOXfY83NqJfn6H2/
+         yRshhnz1/IlFlX5c6ofgBkWBNudGc0TEeUmlmppvj3Ix3RecFGex9q4AwIqcCTmRfmP2
+         6DkPXmEWlDJxQHo2oPohBItDvLswTz34nAm0pyQH2mziPYbj9hpfh2FkVlX3GcN/ObCG
+         Tltw==
+X-Forwarded-Encrypted: i=1; AJvYcCVWATgiJHXArtwIGz+rkMasItn3AIQZwLFDh5puFfJfsLoUrpD3U5f5qbv6dqrzZPfxUt8ec9+05IIjeyE=@vger.kernel.org, AJvYcCWv34ynImIc+7y+EROYUg2Rsde37i1r2OA8DQerEcLD0tHx3fi+POIFi0Z3skIZOynYNjpUqsgdLNL+qZ7PNxA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjMJ/4K51vyGvGtrJi2rIhvDnTDjw4nboryMbzSqrSm2p9+Jbs
+	HWyIPSMbxefVoijJ20AMFmLOkaIjR8F54BW1EUDOXjQwNS2rGAXqwOJx+HH/u3QjzpuVcPpmTPC
+	jKP5u+ANOk1PnxgkMVjJFWHofcAwgBvI=
+X-Gm-Gg: ASbGncsAOZ2VM61bvwaXIN1WXuVzsAXMCCxiBKaPT5B2zBPrKNycxHGlo84JFCI74GY
+	wTk+Odr1CRmX7awkaCyZ286OV0tfPup5uKP2lkkmJtw/a9zCZqWH8U2bHvNwvV6eoBMXUCKl1hZ
+	SC6IdAdu/7gvocxwSnaKXiykmWkif7U/mWDo9Gj5i9M09Pf6cImhm9cb0WM03KUc8j0b5JFlt+q
+	VBQUWw8
+X-Google-Smtp-Source: AGHT+IFRXd0XceRHT3M4dfEbxWDM9aiQwR9V8aa36tguoPA1FbEVb4pkr+s1pGHduJbHvva81GT+kdg5Fk+PVmsvB3k=
+X-Received: by 2002:a05:6102:5ccb:b0:4ec:c4fa:c23a with SMTP id
+ ada2fe7eead31-4fdc1b4e2b8mr39938137.1.1754070484460; Fri, 01 Aug 2025
+ 10:48:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 01 Aug 2025 19:15:48 +0200
-Message-Id: <DBR9EMTZ8VTR.5G3CLY5N2IFV@kernel.org>
-Subject: Re: [PATCH v5 2/2] rust: transmute: add `as_bytes_mut` method to
- `AsBytes` trait
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>, "Abdiel Janulgue"
- <abdiel.janulgue@gmail.com>, "Danilo Krummrich" <dakr@kernel.org>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Robin Murphy"
- <robin.murphy@arm.com>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Miguel
- Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
- <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>
-Cc: "Christian S. Lima" <christiansantoslima21@gmail.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250801-as_bytes-v5-0-975f87d5dc85@nvidia.com>
- <20250801-as_bytes-v5-2-975f87d5dc85@nvidia.com>
-In-Reply-To: <20250801-as_bytes-v5-2-975f87d5dc85@nvidia.com>
+MIME-Version: 1.0
+References: <20250624042802.105623-1-christiansantoslima21@gmail.com> <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
+In-Reply-To: <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
+From: Christian <christiansantoslima21@gmail.com>
+Date: Fri, 1 Aug 2025 14:47:51 -0300
+X-Gm-Features: Ac12FXzRc0hJeQNV_cJ-PTralj6IbzQlNpNqLwcXyReZXjuJjKDrGwJrhUSzgGg
+Message-ID: <CABm2a9f9mTu-jT9h87dnY0jbjZf_7anbFN3a496e_S4tPeF_yg@mail.gmail.com>
+Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
+	richard120310@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri Aug 1, 2025 at 3:24 PM CEST, Alexandre Courbot wrote:
-> Types that implement both `AsBytes` and `FromBytes` can be safely
-> modified as a slice of bytes. Add a `as_bytes_mut` method for that
-> purpose.
->
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Hi, Alexandre.
 
-Reviewed-by: Benno Lossin <lossin@kernel.org>
+> Any plan for a v9 soon? I would like to make sure we secure this into
+> the Nova tree as we are highly dependent on this feature.
 
----
-Cheers,
-Benno
+Yeah, I'm studying to implement the changes addressed by Kane. [1]
 
-> ---
->  rust/kernel/transmute.rs | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+Thanks,
+Christian
+
+[1]  https://lore.kernel.org/rust-for-linux/CABeNrKWn4_qsAE2pqgGwVuspf7wnzT=xe_hZpuy-0HVTLD92DQ@mail.gmail.com
