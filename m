@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596BB1A0BFD
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 Aug 2025 17:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70BC27C15A
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Aug 2025 18:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754071194; cv=pass; b=B3ECbJXf4zfNlDBHOgDprc0oL7kGNWRggLwa+dtur5M5+/maKIRwOvgOsbxtN+U/iIuMyFYYIrj5rRXOIfG1DFm6o8k6YJMl2bKxajg1Ifl1Pqac4p9pEwq7KIuDLJ5fgtrrjtm8cMsVzRGYV8ZL5tlV4etfm53Ax7EELMX2mPo=
+	t=1754071823; cv=pass; b=obBWGhY6bWo/CXCUFaEwesfjksh1fQJns2lleDA3GO1o0jfC65etlVOw4WVzMQ4Pn9nVB4vwpL2p6lhKq2vW2RFiTlk6Ema1Tq2yco5qaE43mZ2KT6eB6+El/kXTZP+C8whl091h3jUhCSkKanNujyXw8zyOCw01YJSzdrokD1k=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754071194; c=relaxed/simple;
-	bh=khtb7rwC0+4HZrCKdp3xDTEIu2L+dZkYB9LLvsUNT+0=;
+	s=arc-20240116; t=1754071823; c=relaxed/simple;
+	bh=E1VbaAhSYK7f6KfGJYDdphsK1efv9/ql4jpMZ7oIxrw=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=DLTnIfw16h0O+l0PmPg61MrLxxtvHnHXNC99mCFn6vnbaUe4VqVJ5iyHHN4kaTrlw4Ph8rPeQbRlEojjChXHEMW0uUDBThBrSRfvkryId98RsXk2QGwpgeYVB81yAyQdkLLBRKKnoBZ8LNvbVcGMpJBeDWTs/KScYrPVh7gUZlQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=cHwC3szg; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=eQfGApQsLKbU8n04oSRFETg03V/tqMPKePQ0VdqeB22OxsqJiHacyQEUYyJmlMagjIjOwD8iO3A5vDg8t/EjSvv2ve1U2eF7ryL0JfRX3assgSCr/pmq0Ar3Im07soQszAb1ALtHVCP1lNLamcdHj4ZLBYas1rPdi+7Fmaigu8U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=MIi4GCXm; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="cHwC3szg"
-ARC-Seal: i=1; a=rsa-sha256; t=1754071178; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="MIi4GCXm"
+ARC-Seal: i=1; a=rsa-sha256; t=1754071807; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=nWEaJictGbdXRslC89ia0L8HG8Umr8IhYeX7Oidmr1w908zq7fn4sySe9MbId9UzzFBrIpmt4w9+RuWaWz//Rc+XFt0IeVCJQIB6yorWv9wtu6rHkMQPVsukbLyEFLsih979Y2r3xM0/9lanG8pRxwO7WswV1z9yawFBMEHRV6s=
+	b=iXWa6x6MAalPA2g8WOWRRTR4qZGDo10XzHoz5lhXuqeLY6vyVof0Gudz3ks2kAJ++dMCWBFKrPyi6GR4maA36EoynExr/8WpOZTnKoBBPa7wkVLdoFZRWQi/SKpUgk3XhZqmnc2DAS8HnJKZhABndr8DWF0DvqdNBTdIYH17P+I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754071178; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=GUKKJYqT+hjyXfnMHC3N3ZaDSWTN2cn6Ni+REED0K0k=; 
-	b=NeM6y93txa0pZEhnhR+cLnE8IE+5VNGLNOAU8326wDAciig7MYQfg5SBV3ioi9r5xv0mtvtxRZU8Xx6f9oRa7KwWz5F1S6NAXfNcnTXqN2eJTlQ1D/IAlEIzWq+TwJoAjK41jxsR3iQe5h+JUq5N4RM6RJcxPy9BJK0WN0Werls=
+	t=1754071807; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=RzDqSDbakAWfWC+6MAmcIc6WoEP3KQYsxgW5b3ozb/4=; 
+	b=jxy+TgRScsq120Tlad/XeqW7MRqgoYf8xHkelRG/wLt6tk4NsogzAfm18z6cM2iaSblU5KVn8f6pvo7kvWEa0BnlT6omb/fzrqnIeAxyW4y53P4QG7qyHX6r88DhooletiUrimPzT/DRK/aNQkfWCDIhQdJWQWVMTgR3Rem75gk=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754071177;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754071807;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=GUKKJYqT+hjyXfnMHC3N3ZaDSWTN2cn6Ni+REED0K0k=;
-	b=cHwC3szghwfgTWFpKikzuz5iS8tEIGr7R4xUr0QPqRwwKtgtDaYLdNXQpZedTkmw
-	FcQuq/zIE/bO4gWnOuswoAt1ne8JDCIx/KwoiCb2zMYlUEVekkQFKlTG7p/4ic499s8
-	wdxmrPdwFUBYHX8p5R2z5jcix6Phi3ZnafPSSLIE=
-Received: by mx.zohomail.com with SMTPS id 175407117466773.72300403914551;
-	Fri, 1 Aug 2025 10:59:34 -0700 (PDT)
+	bh=RzDqSDbakAWfWC+6MAmcIc6WoEP3KQYsxgW5b3ozb/4=;
+	b=MIi4GCXm1fTS3cNCjyb9iFCr/lO0+hqxiBU1ZA0teXfsAWBDMksPuHoKpedez/7E
+	g4dRmoUs6jeK0hxE13ZXZ27OQlAZaF+KxpUf+tP+ibG8hO/BYBL1V1J8QmJZL50urGV
+	jTE4U6UQPolTzrFdpl/RYoH6UUtdgRqyHqK5GXqA=
+Received: by mx.zohomail.com with SMTPS id 1754071804992971.1307039889136;
+	Fri, 1 Aug 2025 11:10:04 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,11 +44,10 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v3 2/3] rust: i2c: add manual I2C device creation
- abstractions
+Subject: Re: [PATCH v3 3/3] samples: rust: add Rust I2C sample driver
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250801154438.14759-1-igor.korotin.linux@gmail.com>
-Date: Fri, 1 Aug 2025 14:59:19 -0300
+In-Reply-To: <20250801154506.14810-1-igor.korotin.linux@gmail.com>
+Date: Fri, 1 Aug 2025 15:09:50 -0300
 Cc: Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>,
@@ -61,228 +60,235 @@ Cc: Miguel Ojeda <ojeda@kernel.org>,
  Danilo Krummrich <dakr@kernel.org>,
  rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <A5DDD914-C07D-41C6-83C4-5ED9730D8A5B@collabora.com>
+Message-Id: <8291F536-BAAD-4F45-9072-8876CA44922B@collabora.com>
 References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154438.14759-1-igor.korotin.linux@gmail.com>
+ <20250801154506.14810-1-igor.korotin.linux@gmail.com>
 To: Igor Korotin <igor.korotin.linux@gmail.com>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
 Hi Igor,
 
-> On 1 Aug 2025, at 12:44, Igor Korotin <igor.korotin.linux@gmail.com> =
+Overall looks good, some minor comments below.
+
+> On 1 Aug 2025, at 12:45, Igor Korotin <igor.korotin.linux@gmail.com> =
 wrote:
 >=20
-> In addition to the basic I2C device support, added rust abstractions
-> upon `i2c_new_client_device`/`i2c_unregister_device` C functions.
->=20
-> Implement the core abstractions needed for manual creation/deletion
-> of I2C devices, including:
->=20
-> * `i2c::Registration` =E2=80=94 a NonNull pointer created by the =
-function
->                          `i2c_new_client_device`
->=20
-> * `i2c::I2cAdapterRef` =E2=80=94 a safe reference around `struct =
-i2c_adapter`
->=20
-> * `i2c::I2cBoardInfo` =E2=80=94 a safe wrapper around `struct =
-i2c_board_info`
+> Add a new `rust_driver_i2c` sample, showing how to create a new
+> i2c client using `i2c::Registration` and bind a driver to it
+> via legacy I2C-ID table.
 >=20
 > Signed-off-by: Igor Korotin <igor.korotin.linux@gmail.com>
 > ---
-> rust/kernel/i2c.rs | 111 ++++++++++++++++++++++++++++++++++++++++++++-
-> 1 file changed, 109 insertions(+), 2 deletions(-)
+> MAINTAINERS                     |   1 +
+> samples/rust/Kconfig            |  11 ++++
+> samples/rust/Makefile           |   1 +
+> samples/rust/rust_driver_i2c.rs | 106 ++++++++++++++++++++++++++++++++
+> 4 files changed, 119 insertions(+)
+> create mode 100644 samples/rust/rust_driver_i2c.rs
 >=20
-> diff --git a/rust/kernel/i2c.rs b/rust/kernel/i2c.rs
-> index fafcae92cfdb..bbdc41124fd8 100644
-> --- a/rust/kernel/i2c.rs
-> +++ b/rust/kernel/i2c.rs
-> @@ -139,7 +139,6 @@ extern "C" fn probe_callback(pdev: *mut =
-bindings::i2c_client) -> kernel::ffi::c_
->         let info =3D
->             Self::i2c_id_info(pdev).or_else(|| <Self as =
-driver::Adapter>::id_info(pdev.as_ref()));
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 767beaa0f7c2..69312298ea01 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11520,6 +11520,7 @@ R: Danilo Krummrich <dakr@kernel.org>
+> L: rust-for-linux@vger.kernel.org
+> S: Maintained
+> F: rust/kernel/i2c.rs
+> +F: samples/rust/rust_driver_i2c.rs
 >=20
-> -
-
-Unrelated change?
-
->         from_result(|| {
->             let data =3D T::probe(pdev, info)?;
+> I2C SUBSYSTEM HOST DRIVERS
+> M: Andi Shyti <andi.shyti@kernel.org>
+> diff --git a/samples/rust/Kconfig b/samples/rust/Kconfig
+> index 7f7371a004ee..28dae070b365 100644
+> --- a/samples/rust/Kconfig
+> +++ b/samples/rust/Kconfig
+> @@ -62,6 +62,17 @@ config SAMPLE_RUST_DMA
 >=20
-> @@ -312,6 +311,77 @@ fn shutdown(dev: &Device<device::Core>) {
->     }
-> }
+>  If unsure, say N.
 >=20
-> +/// The i2c adapter reference
-> +///
-> +/// This represents the Rust abstraction for a reference to an =
-existing
-> +/// C `struct i2c_adapter`.
-> +///
-> +/// # Invariants
-> +///
-> +/// A [`I2cAdapterRef`] instance represents a valid `struct =
-i2c_adapter` created by the C portion of
-> +/// the kernel.
-> +#[repr(transparent)]
-> +pub struct I2cAdapterRef(NonNull<bindings::i2c_adapter>);
-
-Is there a plan for an owned version? Otherwise I=E2=80=99d personally =
-drop the
-=E2=80=9CRef=E2=80=9D nomenclature.
-
+> +config SAMPLE_RUST_DRIVER_I2C
+> + tristate "I2C Driver"
+> + depends on I2C=3Dy
+> + help
+> +  This option builds the Rust I2C driver sample.
 > +
-> +impl I2cAdapterRef {
-> +    fn as_raw(&self) -> *mut bindings::i2c_adapter {
-> +        self.0.as_ptr()
-> +    }
+> +  To compile this as a module, choose M here:
+> +  the module will be called rust_driver_i2c.
 > +
-> +    /// Gets pointer to an `i2c_adapter` by index.
-> +    pub fn get(index: i32) -> Option<Self> {
-> +        // SAFETY: `index` must refer to a valid I2C adapter; the =
-kernel
-> +        // guarantees that `i2c_get_adapter(index)` returns either a =
-valid
-> +        // pointer or NULL. `NonNull::new` guarantees the correct =
-check.
-> +        let adapter =3D NonNull::new(unsafe { =
-bindings::i2c_get_adapter(index) })?;
-> +        Some(Self(adapter))
-> +    }
+> +  If unsure, say N.
+> +
+> config SAMPLE_RUST_DRIVER_PCI
+> tristate "PCI Driver"
+> depends on PCI
+> diff --git a/samples/rust/Makefile b/samples/rust/Makefile
+> index bd2faad63b4f..141d8f078248 100644
+> --- a/samples/rust/Makefile
+> +++ b/samples/rust/Makefile
+> @@ -5,6 +5,7 @@ obj-$(CONFIG_SAMPLE_RUST_MINIMAL) +=3D rust_minimal.o
+> obj-$(CONFIG_SAMPLE_RUST_MISC_DEVICE) +=3D rust_misc_device.o
+> obj-$(CONFIG_SAMPLE_RUST_PRINT) +=3D rust_print.o
+> obj-$(CONFIG_SAMPLE_RUST_DMA) +=3D rust_dma.o
+> +obj-$(CONFIG_SAMPLE_RUST_DRIVER_I2C) +=3D rust_driver_i2c.o
+> obj-$(CONFIG_SAMPLE_RUST_DRIVER_PCI) +=3D rust_driver_pci.o
+> obj-$(CONFIG_SAMPLE_RUST_DRIVER_PLATFORM) +=3D rust_driver_platform.o
+> obj-$(CONFIG_SAMPLE_RUST_DRIVER_FAUX) +=3D rust_driver_faux.o
+> diff --git a/samples/rust/rust_driver_i2c.rs =
+b/samples/rust/rust_driver_i2c.rs
+> new file mode 100644
+> index 000000000000..20815efc933e
+> --- /dev/null
+> +++ b/samples/rust/rust_driver_i2c.rs
+> @@ -0,0 +1,106 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Rust I2C driver sample.
+> +//!
+> +//! This module shows how to:
+
+Blank line here?
+
+> +//! 1. Manually create an `i2c_client` at address =
+`SAMPLE_I2C_CLIENT_ADDR`
+> +//!    on the adapter with index `SAMPLE_I2C_ADAPTER_INDEX`.
+> +//! 2. Register a matching Rust-based I2C driver for that client.
+> +//!
+> +//! # Requirements
+
+Blank line here?
+
+> +//! - The target system must expose an I2C adapter at index
+> +//!   `SAMPLE_I2C_ADAPTER_INDEX`.
+> +//! - To emulate an adapter for testing, you can load the
+> +//!   `i2c-stub` kernel module.
+
+Anything else needs to be done?
+
+> +//!
+> +
+> +use kernel::{acpi, c_str, device::Core, i2c, of, prelude::*, =
+types::ARef};
+> +
+> +const SAMPLE_I2C_CLIENT_ADDR: u16 =3D 0x30;
+> +const SAMPLE_I2C_ADAPTER_INDEX: i32 =3D 0;
+> +const BOARD_INFO: i2c::I2cBoardInfo =3D
+> +    i2c::I2cBoardInfo::new(c_str!("rust_driver_i2c"), =
+SAMPLE_I2C_CLIENT_ADDR);
+> +
+> +struct SampleDriver {
+> +    pdev: ARef<i2c::Device>,
 > +}
 > +
-> +impl Drop for I2cAdapterRef {
-> +    fn drop(&mut self) {
-> +        // SAFETY: This `I2cAdapterRef` was obtained from =
-`i2c_get_adapter`,
-> +        // and calling `i2c_put_adapter` exactly once will correctly =
-release
-> +        // the reference count in the I2C core. It is safe to call =
-from any context
-> +        unsafe { bindings::i2c_put_adapter(self.as_raw()) }
-
-Should this implement AlwasyRefCounted?
-
-> +    }
+> +kernel::acpi_device_table! {
+> +    ACPI_TABLE,
+> +    MODULE_ACPI_TABLE,
+> +    <SampleDriver as i2c::Driver>::IdInfo,
+> +    [(acpi::DeviceId::new(c_str!("LNUXBEEF")), 0)]
 > +}
 > +
-> +/// The i2c board info representation
-> +///
-> +/// This structure represents the Rust abstraction for a C `struct =
-i2c_board_info` structure,
-> +/// which is used for manual I2C client creation.
-> +#[repr(transparent)]
-> +pub struct I2cBoardInfo(bindings::i2c_board_info);
+> +kernel::i2c_device_table! {
+> +    I2C_TABLE,
+> +    MODULE_I2C_TABLE,
+> +    <SampleDriver as i2c::Driver>::IdInfo,
+> +    [(i2c::DeviceId::new(c_str!("rust_driver_i2c")), 0)]
+> +}
 > +
-> +impl I2cBoardInfo {
-> +    const I2C_TYPE_SIZE: usize =3D 20;
-> +    /// Create a new board=E2=80=90info for a kernel driver.
-> +    #[inline(always)]
-> +    pub const fn new(type_: &'static CStr, addr: u16) -> Self {
-> +        build_assert!(
-> +            type_.len_with_nul() <=3D Self::I2C_TYPE_SIZE,
-> +            "Type exceeds 20 bytes"
-> +        );
-> +        let src =3D type_.as_bytes_with_nul();
-> +        // Replace with `bindings::acpi_device_id::default()` once =
-stabilized for `const`.
-> +        // SAFETY: FFI type is valid to be zero-initialized.
-> +        let mut i2c_board_info: bindings::i2c_board_info =3D unsafe { =
-core::mem::zeroed() };
-> +        let mut i: usize =3D 0;
-> +        while i < src.len() {
-> +            i2c_board_info.type_[i] =3D src[i];
-> +            i +=3D 1;
+> +kernel::of_device_table! {
+> +    OF_TABLE,
+> +    MODULE_OF_TABLE,
+> +    <SampleDriver as i2c::Driver>::IdInfo,
+> +    [(of::DeviceId::new(c_str!("test,rust_driver_i2c")), 0)]
+> +}
+> +
+> +impl i2c::Driver for SampleDriver {
+> +    type IdInfo =3D u32;
+> +
+> +    const ACPI_ID_TABLE: Option<acpi::IdTable<Self::IdInfo>> =3D =
+Some(&ACPI_TABLE);
+> +    const I2C_ID_TABLE: Option<i2c::IdTable<Self::IdInfo>> =3D =
+Some(&I2C_TABLE);
+> +    const OF_ID_TABLE: Option<of::IdTable<Self::IdInfo>> =3D =
+Some(&OF_TABLE);
+> +
+> +    fn probe(pdev: &i2c::Device<Core>, info: Option<&Self::IdInfo>) =
+-> Result<Pin<KBox<Self>>> {
+> +        let dev =3D pdev.as_ref();
+> +
+> +        dev_dbg!(dev, "Probe Rust I2C driver sample.\n");
+> +
+> +        if let Some(info) =3D info {
+> +            dev_info!(dev, "Probed with info: '{}'.\n", info);
 > +        }
-
-Same comment as the last patch.
-
 > +
-> +        i2c_board_info.addr =3D addr;
-> +        Self(i2c_board_info)
+> +        let drvdata =3D KBox::new(Self { pdev: pdev.into() }, =
+GFP_KERNEL)?;
+> +
+> +        Ok(drvdata.into())
 > +    }
-> +
-> +    fn as_raw(&self) -> *const bindings::i2c_board_info {
-> +        &self.0 as *const _
+
+Blank line here.
+
+> +    fn shutdown(pdev: &i2c::Device<Core>) {
+> +        dev_dbg!(pdev.as_ref(), "Shutdown Rust I2C driver =
+sample.\n");
 > +    }
 > +}
 > +
-> /// The i2c client representation.
-> ///
-> /// This structure represents the Rust abstraction for a C `struct =
-i2c_client`. The
-> @@ -340,7 +410,7 @@ fn as_raw(&self) -> *mut bindings::i2c_client {
-> kernel::impl_device_context_into_aref!(Device);
->=20
-> // SAFETY: Instances of `Device` are always reference-counted.
-> -unsafe impl crate::types::AlwaysRefCounted for Device {
-> +unsafe impl<Ctx: device::DeviceContext> =
-crate::types::AlwaysRefCounted for Device<Ctx> {
->     fn inc_ref(&self) {
->         // SAFETY: The existence of a shared reference guarantees that =
-the refcount is non-zero.
->         unsafe { bindings::get_device(self.as_ref().as_raw()) };
-> @@ -389,3 +459,40 @@ unsafe impl Send for Device {}
-> // SAFETY: `Device` can be shared among threads because all methods of =
-`Device`
-> // (i.e. `Device<Normal>) are thread safe.
-> unsafe impl Sync for Device {}
-> +
-> +/// The registration of an i2c client device.
-> +///
-> +/// This type represents the registration of a [`struct i2c_client`]. =
-When an instance of this
-> +/// type is dropped, its respective i2c client device will be =
-unregistered from the system.
-> +///
-> +/// # Invariants
-> +///
-> +/// `self.0` always holds a valid pointer to an initialized and =
-registered
-> +/// [`struct i2c_client`].
-> +#[repr(transparent)]
-> +pub struct Registration(NonNull<bindings::i2c_client>);
-> +
-> +impl Registration {
-> +    /// The C `i2c_new_client_device` function wrapper for manual I2C =
-client creation.
-> +    pub fn new(i2c_adapter: &I2cAdapterRef, i2c_board_info: =
-&I2cBoardInfo) -> Result<Self> {
-> +        // SAFETY: the kernel guarantees that =
-`i2c_new_client_device()` returns either a valid
-> +        // pointer or NULL. `NonNull::new` guarantees the correct =
-check.
-> +        let raw_dev =3D from_err_ptr(unsafe {
-> +            bindings::i2c_new_client_device(i2c_adapter.as_raw(), =
-i2c_board_info.as_raw())
-> +        })?;
-> +
-> +        Ok(Self(NonNull::new(raw_dev).unwrap()))
-> +    }
-> +}
-> +
-> +impl Drop for Registration {
+> +impl Drop for SampleDriver {
 > +    fn drop(&mut self) {
-> +        unsafe { bindings::i2c_unregister_device(self.0.as_ptr()) }
+> +        dev_dbg!(self.pdev.as_ref(), "Remove Rust I2C driver =
+sample.\n");
 > +    }
 > +}
 > +
-> +// SAFETY: A `Device` is always reference-counted and can be released =
-from any thread.
-> +unsafe impl Send for Registration {}
+> +// NOTE: The code below is expanded macro module_i2c_driver. It is =
+not used here
+> +//       because we need to manually create an I2C client in =
+`init()`. The macro
+> +//       hides `init()`, so to demo client creation on adapter =
+SAMPLE_I2C_ADAPTER_INDEX
+> +//       we expand it by hand.
+> +type Ops<T> =3D kernel::i2c::Adapter<T>;
+
+Blank here.
+
+Also, just =E2=80=9Cpin_data=E2=80=9D ?
+
+> +#[kernel::prelude::pin_data]
+> +struct DriverModule {
+> +    #[pin]
+> +    _driver: kernel::driver::Registration<Ops<SampleDriver>>,
+> +    _reg: i2c::Registration,
+> +}
 > +
-> +// SAFETY: A `Device` is always reference-counted and can be released =
-from any thread.
-> +unsafe impl Sync for Registration {}
+> +impl kernel::InPlaceModule for DriverModule {
+> +    fn init(
+> +        module: &'static kernel::ThisModule,
+> +    ) -> impl ::pin_init::PinInit<Self, kernel::error::Error> {
+> +        let adapter =3D =
+i2c::I2cAdapterRef::get(SAMPLE_I2C_ADAPTER_INDEX);
+> +
+> +        kernel::try_pin_init!(Self {
+> +            _reg <- i2c::Registration::new(&adapter.unwrap(), =
+&BOARD_INFO),
+> +            _driver<-kernel::driver::Registration::new(<Self as =
+kernel::ModuleMetadata>::NAME,module,),
 
-A `Device` ?
+Missing space in =E2=80=9C<-=E2=80=9C
 
+> +        })
+> +    }
+> +}
+> +kernel::prelude::module! {
+> +    type:DriverModule,name:"rust_driver_i2c",authors:["Igor =
+Korotin"],description:"Rust I2C driver",license:"GPL v2",
+> +}
 > --=20
 > 2.43.0
 >=20
 >=20
+
+This is usually broken into multiple lines?
 
 =E2=80=94 Daniel
 
