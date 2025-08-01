@@ -1,94 +1,170 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A1726CE06;
-	Fri,  1 Aug 2025 15:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537D114B96E
+	for <rust-for-linux@vger.kernel.org>; Fri,  1 Aug 2025 15:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754062572; cv=none; b=FxItkQ6hl4xSU0nU/Uujec9tD+o9Jrftdz6oYDyYJ/ihMvOa5+ab0jOhuN/mNvV3gJcjGfIIgcuY5uIGgR5tEP/Ih7BLi5ytmzA6Jrz9J7Xq0YpwJ+zLVBQBmMvyMgx2F1IirecXM74k5YYj6V14snp6UMtP6rWjaXSbBPdBQlw=
+	t=1754062794; cv=none; b=jwxd8V20ICajAe2E5qPg4HpAHgd/D743W7GB0OhYl7tJIFH7yIbTvn6wD+uBSOlQ6srtyXe1rXXCCGpTnc7S4r6U2uijjd/JoNHPRHREB4nw6WMlt5vYc3whwkxwhP/K/TqA8apH2PLYxCF/903I/HfrnhQKR9ikvKWgur7fqmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754062572; c=relaxed/simple;
-	bh=aZQwspZkYDsMYZ9F9Yy7SFi+A0vpDpdUoNJSp+qMEdY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ixYEcATAdqPQDjOLIAagCQeV9Lwv4tvmPiX9PK46q25oLSqlsVQp1cVQvOcTomK2Xh0bjGI68v+ct3xv6xGm8Bf4xy4nOwixa9sowmCpGrY6MMaaNoU/zoIE7ly12Ut5/2ftCG2pxsr7VvnWI1C61ACcFH4LrnS5Y3WmJtwt9QA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeTbiJYP; arc=none smtp.client-ip=209.85.215.170
+	s=arc-20240116; t=1754062794; c=relaxed/simple;
+	bh=sYeu/tBV5GaOJV8ryVW+sfPBvv5PtI/DIvPueccfvio=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OS0YijI6SElyxd2KepU8EQG52jxB6Ekr0eqJW+I8Eq9bxhc6xLXBGbe3cPfKTS/SVWJ81Znwc1TjOl///aNxSj1/ewkoJtwU0BpFrY212ckpzph1wBG6MwMjKoZP8hS071SoNgoVBZX3oBkHS9aKOJwWIdkGXNnM3rbnx+J4jTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GuCK5YyG; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeTbiJYP"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-b38fdac002bso240377a12.0;
-        Fri, 01 Aug 2025 08:36:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GuCK5YyG"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-455b00283a5so9824375e9.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 01 Aug 2025 08:39:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754062570; x=1754667370; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aZQwspZkYDsMYZ9F9Yy7SFi+A0vpDpdUoNJSp+qMEdY=;
-        b=NeTbiJYPSDkZ0waKeOiBPRkRYys0B/NaBR/nQq7VRtc17Tn40ZCjgDGVmGUvKCnENo
-         +gLJ/05zgC+kFPFP5SMOyGOEW4goNxXImFTUN3X4SKkpcAQcFcg1vlwj4z50eTgoEdDa
-         J7Qzsz/p5kUUaF+beITC+jxoyB1IBUQTVmuYIBtUp7U+Cd0YsaI0owNcyN3FrMmLzW/F
-         agcPEhjxRIpd7xARWUEj4s3y4z9PKO+22F2MEyceQ0Lea3lQepOt+fAe5h4CYO3Xr1pw
-         F01f9RJd+y04Zi7K/mkbxZ2YmADyf2YiMkY92AzK9a1xU+ELd7tM9usQ4enVL9Arz10u
-         kxlw==
+        d=gmail.com; s=20230601; t=1754062791; x=1754667591; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZZy8Czd+7kBkPdimWl/WOTxDZ+LedUn/uN4ZUK9f4hY=;
+        b=GuCK5YyGwcSp2S5nfNcfJvqMVkbp4iFjyVOf16wsGG7Cs6WqH0nFvve0SypJQtNGSv
+         eAtUGRBPhzwpCSIR4MOTBGjsSaWBVb6C+F7XxFVg6Ej+GZctewRPPfziSQRieyXiq9ne
+         CrdhOm9xNiqpI08P+AAVYowL8eKooWZQ2qCDdFtbFRgdJ04gOTrakBHeP7GzZ1COLbrY
+         6trIS0vLg1bVRicaiKbl2RXNj0P6KtBDYJYMlDP1fnCgCiQjgC5YOPT4x2lFKtNCKHsF
+         s9jGhAS06sRrdqrzgZndgBwFAFhxItvIUvT0bvnsl6zYqMvikQch2VqMoO08gYVqwgvb
+         KTEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754062570; x=1754667370;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aZQwspZkYDsMYZ9F9Yy7SFi+A0vpDpdUoNJSp+qMEdY=;
-        b=lnJ/GFufdOCNAMKoMamXeqRSC4sRQ9YgKhMoVFXDgKlL09Gqzka0GcspfOr/ZJlFqu
-         uMwO4pEiGEyvjMNyAX1OO3hXt/thN82l+vpZL7/cbSbd4waazsRrK3FweGoslbZ31P8p
-         YGSg051E2iE5Jo6VGF/HFs6CuE/5qX/57ENZORLlI+wzSmsyke8TzLRHWNMlz/cVMgcG
-         8YEhjos8xT2mJy9Q1vd5kaOakBSWTrjlrIM7t80wJF9zur3J96kbeepbduZ6SyLHIHSy
-         SyFTH2FDqWQq48OKA7ILbaGY+dxmvWlv70OVqB746OFUSEg37w9FlSkgXJgQvqvsjN8q
-         fwcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1JiObnBXBIGZN4CfEZ6ck1WaVsxaFxYBXOdeBbxDcR6zvq7z/9H5iZ62veTnViL8pHlH9sa4vJHhwQSz97p0=@vger.kernel.org, AJvYcCWaHehbmeLwbX7QimYvoXeXbC3PWf4GhjJhfTmoqLJPno2S+ttEa/X2dee7RN5sguTApVItVG+fN4JEp/g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFs7YZkFlPYCm9Kfp6VjACZkajPmfF3b9zSLTJnzf7fawrDwno
-	31GjEb+saQuGx1aZi+TtK50Ias4rAhdX7672jYA3oqzPK9lT+s0UHvuZw0DOnt8bZ2Fy1lez5Zt
-	3VM8AjAYkTdAd0CwI+IWWup5mYBZgzOg=
-X-Gm-Gg: ASbGnctN1nnWAQk4wwtLRNXmbEWdXd0l9uPJhf+bGh7ST/0wZbU72WS5OTLbx4abwQT
-	D5pVpRFDLK2wpbZt+/q/e7GX2nLNLjO5Rjx582GdIdR0HkWx0S61GMIe2DL6oAFoLm9sFBwOO4/
-	TnXgeSt8yRQuIsls0XsHwEJEgg3s8jRLva9Hg7WjFAnozYuak+kZQXzNR+L5ixyWkenIuTkeNLM
-	+MdhLrN
-X-Google-Smtp-Source: AGHT+IEejn7+Ub0GRMZe2KS2o3Avdid2AwRwDRKfrybwb6UtyYJLJk5yJHEpnyBS4UgGIvTJFtAn9Y3saj4i/iSs81M=
-X-Received: by 2002:a17:90b:1c03:b0:311:a314:c2c9 with SMTP id
- 98e67ed59e1d1-321161e2197mr137642a91.1.1754062569787; Fri, 01 Aug 2025
- 08:36:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1754062791; x=1754667591;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZZy8Czd+7kBkPdimWl/WOTxDZ+LedUn/uN4ZUK9f4hY=;
+        b=GQgVKR+JCWAemM1IuP+iE3HNjFIIbyx8913ORIUv5gHQbri4pX95ahNQkg6Uk7XpoO
+         SmKBa164qEd+Fw51MfRjVKc3yzGNmyv1W1MxA7gC2kGSNmdOmY62YytKbpIZPyYDGeQr
+         iqYeDxdQUDAKQfdGGGnoTuEX/QkfQNRT9yZcQh9lXwZyahZ0/W2K6pgxThn49fId51EO
+         qCN7i8K1vSNCGledemYB2h8XUGDJNDHNVryK6vaolo5Fudsr0z2YRKP1usKgwzqX9Fzf
+         Hn0+bEzEG06pbWItCC9gKO2uw8CktPEvo/uO5F/S5IPwj8gUSE/Nxbhim+fktyN6UOZA
+         7dvA==
+X-Forwarded-Encrypted: i=1; AJvYcCW5MYEBPx2a0IVr3x/aS70Zz+IZnxSd/mpBreMlV7a5gigHqQ3KGgnGI9WImsz3wtiIToXpXtJ3I2BZPvj7aQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlnRZXFm/HPlfyKGqVFOPi4ctsmVOCzGV8L+j2pmZN4xLIPl+l
+	9uSbo9keGnH44OTP0GmrNatepWj6tpU1/mEbk8+oeiFZ4n62dGPSmXgo
+X-Gm-Gg: ASbGncs/LPIghFbWnopCfKfvGiesyWcSAFkSU/llgF2ZN+rsYAlpd0fzPCc15qVmjCW
+	BZQ6mhN5a/A795lqa1lAqzqlbJKgBrIi1wCP6WXKOI7wtmbJDSiOZ5qPBszqDx0HaXU+3jxG5lQ
+	PGAprRIh67gNaFL1H1I0RqiDS2pirCXolQ9+EfeqvT0GDdAgXaaRQrarYYhodRF+7mGFQZTcVmo
+	Awbomem6YSHEtwa1aXFDkmwdehZWqjCiOiLFY+0/R1d28gma3MkzaNaD/hivypeKVxWGcEdLx8M
+	yL4SiuEgkxI4ymiFNFEh3UhoH6YFsWfeekD+KtjbkA2Fv0XjKPhn3YedhIgAkyb6M7lYvXfMjKx
+	vlhI/WxcYPwaYm0WmaxPQ/fKhVZjQj4h4HumDwKMu+H/FeYCD4RN7lYMQjDD2bk0OFRoAhq26
+X-Google-Smtp-Source: AGHT+IENrmA+Nij+klm5GxN1/eTA/qbaRJeYpBdPt1Zi1ExKIIY9cbANmFfIEoZa4HaaEfznzX43qg==
+X-Received: by 2002:a05:600c:37cf:b0:458:a829:aa93 with SMTP id 5b1f17b1804b1-458a829ab98mr53229045e9.16.1754062790272;
+        Fri, 01 Aug 2025 08:39:50 -0700 (PDT)
+Received: from igor-korotin-Precision-Tower-3620.airspan.com ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953eba17sm105769175e9.24.2025.08.01.08.39.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Aug 2025 08:39:49 -0700 (PDT)
+Sender: Igor Korotin <igorkor.3vium@gmail.com>
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v3 0/3] rust: i2c: Add basic I2C driver abstractions
+Date: Fri,  1 Aug 2025 16:37:42 +0100
+Message-ID: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250624042802.105623-1-christiansantoslima21@gmail.com> <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
-In-Reply-To: <DBR3913BFPSK.18K4JBYOPQVRG@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 1 Aug 2025 17:35:57 +0200
-X-Gm-Features: Ac12FXxC69kafbGgVSNnodv16N9ncoi3UbZB8MkI2F19sB87rpeIcrxjT3vU6sQ
-Message-ID: <CANiq72kOLYR2A95o0ji2mDmEqOKh9e9_60zZKmgF=vZmsW6DRg@mail.gmail.com>
-Subject: Re: [PATCH v8] rust: transmute: Add methods for FromBytes trait
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: "Christian S. Lima" <christiansantoslima21@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, ~lkcamp/patches@lists.sr.ht, 
-	richard120310@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 1, 2025 at 3:22=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
-om> wrote:
->
-> Another small nit: this is not a macro, so you don't need to use the
-> `::` prefix here. Actually even `size_of::<T>()` seems to work.
+This patch series lays the groundwork for writing Linux I2C drivers in 
+Rust by:
 
-Yeah, it works because Rust 1.80 moved it into the prelude. However,
-we still have to support 1.78.
+ 1. Core abstractions 
+    Introduce `i2c::Device`, `i2c::Driver` and `i2c::Adapter` built on 
+    the existing `struct i2c_client` and `struct i2c_driver`, with safe 
+    Rust wrappers around probe, transfer, and teardown logic.
 
-What we can do is adding it into our prelude meanwhile.
+ 2. Manual device creation  
+    Provide an API to register an I2C device at runtime from Rust using
+    `I2cBoardInfo`, including automatic cleanup when the driver unloads.
 
-Cheers,
-Miguel
+ 3. Sample driver (legacy table, OF & ACPI)  
+    Add `rust_driver_i2c`, a sample that:
+      - creates an I2C client device using `i2c::Registration::new()`
+      - binds to an I2C client via: 
+        - legacy I2C-ID table, 
+        - Open Firmware (device-tree) compatible strings, or
+        - ACPI IDs.
+      - destroyes the I2C client device on exit.
+
+Together, these three patches:
+
+- Establish the essential Rust traits and types for I2C drivers.
+- Enable driver binding via legacy ID table, device-tree (OF), or ACPI
+- Enable manual device creation at runtime.
+- Ship a samples showing typical usage 
+
+Igor Korotin (3):
+  rust: i2c: add basic I2C device and driver abstractions
+  rust: i2c: add manual I2C device creation abstractions
+  samples: rust: add Rust I2C sample driver
+
+Changelog
+---------
+v3: 
+ - removed unnecessary i2c_get_clientdata and i2c_set_clientdata rust 
+   helpers. Using generic accessors implemented in [1] instead.
+ - Reimplemented i2c::DeviceId based on changes in [2].
+ - Using from_result in i2c::Adapter::probe_callback
+ - Using explicit drop() for i2c client private data in 
+   `i2c::Adapter::remove_callback`
+ - replaced device::Device::as_ref() with device::Device::from_raw in 
+   `i2c::Device::as_ref()`. It is renamed in device::Device.
+ - Build Rust I2C only if I2C is built-in
+ - Reimplement overcomplicated trait i2c::DeviceOwned the same way it is 
+   implemented in auxiliary [3].
+ - Merge rust_device_i2c and rust_driver_i2c samples. Resulting 
+   rust_driver_i2c creates pined i2c_client using i2c::Registration::new 
+   and probes newly created i2c_client.
+ - Created a new entry in MAINTAINERS file containing i2c.rs and 
+   rust_driver_i2c.rs in it.
+ - Link to v2: [4] 
+
+ [1] https://lore.kernel.org/lkml/20250621195118.124245-3-dakr@kernel.org/
+ [2] https://lore.kernel.org/rust-for-linux/20250711040947.1252162-1-fujita.tomonori@gmail.com/
+ [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/rust/kernel/auxiliary.rs?h=v6.16-rc4#n299
+ [4] https://lore.kernel.org/rust-for-linux/20250704153332.1193214-1-igor.korotin.linux@gmail.com/ 
+
+v2:
+ - Merged separated ACPI support patches since ACPI-table support is 
+   merged into driver-core-next.
+ - Added I2cAdapterRef and I2cBoardInfo abstractions 
+ - Added DeviceState generic parameter which is used for `i2c::Device`
+   as a sign if the device is created manually
+ - Added `DeviceOwned` abstraction which is a safe reference to a 
+   manually created `i2c::Device<Ctx, state::Owned>`. 
+ - Added Rust manual I2C device creation sample
+ - Link to v1: https://lore.kernel.org/rust-for-linux/20250626174623.904917-1-igor.korotin.linux@gmail.com/
+
+ MAINTAINERS                     |   8 +
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/i2c.rs              | 498 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ samples/rust/Kconfig            |  11 +
+ samples/rust/Makefile           |   1 +
+ samples/rust/rust_driver_i2c.rs | 106 +++++++
+ 7 files changed, 627 insertions(+)
+ create mode 100644 rust/kernel/i2c.rs
+ create mode 100644 samples/rust/rust_driver_i2c.rs
+
+
+base-commit: 260f6f4fda93c8485c8037865c941b42b9cba5d2
+-- 
+2.43.0
+
