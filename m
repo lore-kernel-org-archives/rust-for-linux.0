@@ -1,185 +1,98 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EDF20E030
-	for <rust-for-linux@vger.kernel.org>; Fri,  1 Aug 2025 10:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC79246765;
+	Fri,  1 Aug 2025 12:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754043783; cv=none; b=GHNXnV+w30Z24iYEfmVJDTY5YybeJFPH01p9q73No7HhyhsLbCelZHTKDp8MAcSq259CD6qF6P8NNvDmLq0+JVcutrOBvobWE8oOw9uxecXZp7mhLND78BneIKSzjU9Zh6WYFMAG3ZM8iL8H6fNxGOSaI3QSk31ZNFo3Of3k0Zg=
+	t=1754050784; cv=none; b=tuGiPNT9MHl2dRaJaPndM+h9qp+a7nJJ/0bXmef68wvM98p6yAfl/EjfY6YAwHnYRdAItw1+4bCE1wd83qbK91j3Bo1g9fvZuzuMWFUN7ss5tgToYAxCl+QNUkNGqJv5eH3+xMqd+FfIxQg40SjIjRZ2KmW37xQYrpU6Tl2V/7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754043783; c=relaxed/simple;
-	bh=OEqrd3nqn73dO3z+fwKOQtj+zLAqehKTh/nXqYF4YNE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RczREnXpHbaMajHTKF9joY/SjUJKL0TMNDKyZ6XeEcv9QhN/rRCfahCeFcR+4mg34D/HfZ7HCmiQ9FVNsDbkLC+k8Ak33moJPdalpYj0oiNGkShZEWixHyCV6tVT8HlQCdwQF9YeviuxmvGKt4PnvJ2TCiLb56sEDACI0sa5nqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=LcUzxOaV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=x7xLNPL5; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=rkmvhwXa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=nylRbN6I; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1754050784; c=relaxed/simple;
+	bh=E5ucJWZK26CYGuCx0hTvlSgmID8FvE4hHQtohgaxYrQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sFsql7JxL28p+bGT/MLWUX057feuBib8YbJ33h9JZ0B4hXnsbN3W/1fEdZILUrfIRCZllwVZ0547NuUgV1bSgX1DVPlt1Z/RTjGhHhtMt9ox0QZKKrUhl0EEvRKhnictgS9HbJyJyroCn8FnbymBU5KNlgo/CbBzSjvy0O/3OAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LlUh9G0A; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="LcUzxOaV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="x7xLNPL5";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="rkmvhwXa";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="nylRbN6I"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 5A95121B74;
-	Fri,  1 Aug 2025 10:22:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754043778; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=LcUzxOaV8EBJnI7oUHzumPHmHutfKhkZaUGXorFJkoODeP+xVa9NdkgvoFfrZUNsFPCeE7
-	RK7wzshg8CzfDA9B7vxtz8Y6ss1ovQKeId63Jnd2c/VPVZg8nbTXYQQgDJuXnZ80Z6mJTO
-	CnsT6iZvbyb76HsvyAPGmT44z+M3DOE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754043778;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=x7xLNPL5asUcyzJ59bjPh2dWcv1o3ap96slV9iiO01QIybF67aI3i6MLKYJLm7/jMFxTku
-	MiVgHWr5a/ljAHCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1754043777; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=rkmvhwXaoem0d+wKEQ/0i/ZrLlmcmJN/WcUvOiWX09qsq65UU1IJOjAcN4100Fw7hD+gof
-	nAzVC8Jv3URrGRLTOf8WvOHMQt0s1An4S+6y7coCzTxwd9dvqQkfMWCHvYstwPX7pD4Ioz
-	WhCVLFbhnw8sF4Ci7J3vQeu0f3IQ8zc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1754043777;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+/mttwEsHX709YDwlVU+ZGi3l/yWMWZKQA9ZzFewbak=;
-	b=nylRbN6I6rpif8yaqi3lMlabl//ni7rvPavKKEuw2Zl8t2DUhQ1wf+qxCIIYCZzn1vL/N0
-	H2sGYS0zAWCNDhBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 32127138A5;
-	Fri,  1 Aug 2025 10:22:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KPu6CoGVjGhRSwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 01 Aug 2025 10:22:57 +0000
-Message-ID: <759cbc9a-bf34-4acc-87cf-6f1f708d985c@suse.cz>
-Date: Fri, 1 Aug 2025 12:22:56 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LlUh9G0A"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-240240f1478so3766365ad.1;
+        Fri, 01 Aug 2025 05:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754050781; x=1754655581; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E5ucJWZK26CYGuCx0hTvlSgmID8FvE4hHQtohgaxYrQ=;
+        b=LlUh9G0AV3/740S+vnAhskzAtaorbAPZvH1PusLlzKXt21Teetj7plcqe2U9m0zUd2
+         aYwsUP6On8Txlj7pQ0+jWuscZlfPY3LWu4qC7Cs4gr5vPP7z0C+GZHBY0xFZL11yhwkX
+         YAenG6QC1+uH1pyprsHw6GrzXU/JW69Nz+bE103+VkmtY6q/WuxqiC+A07rT+5IIpXQe
+         nVyqDvwOyCpTO53Pi5kuiwhx0gPFe2/a9pS01JRdB1np2KxcC0U4sRWcMIkqU+tiQldY
+         DjcZbk8/lIyrDPQ1qGJuCFsd6AYNmfANKrq1gx7WJRIvu5NmfVJgwQEznLj+gaKTWxRk
+         llmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754050781; x=1754655581;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E5ucJWZK26CYGuCx0hTvlSgmID8FvE4hHQtohgaxYrQ=;
+        b=chFWKkLY4Dg8TWS303jTBqwXx0dcOP8LazgBWrytxYxD+qMX1Hqk6Kv+QgP+1fxrRC
+         0wuSdWwX8nYbVD7fHMXVPtqTrVXWqV6ViRuBBgpmP9kcKc3sHIr8jX8rF+9rKWrarWey
+         gZzB0Xb9qKpAG1nuoQfPvURJSsTD3KfJDgG3mTrH0oooQVqWDHt+7t0b9nfAL6lF2w4H
+         p3csQ3MwDq40tWsuq9qRkmPJcCFWJronhuGXuQ0d1HzHI20QRZbVV+ffweHyICMEtMKq
+         4zAMK4DyP+4jVt5cgwvhPCom6EjpaOdnyV9iqOpZTHxZrreA4nqZ14zNF/GkMj/ucWcd
+         jx4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVTN+/6iYcHjMD+COTfVqfAJb737uJpCvYajUVPBkVAnnnPpWSq12eypROXUde2iB40X7H5vavMRV+jQv20SK8=@vger.kernel.org, AJvYcCX6e8ia0xP3CMNtj5rYpFNqf/s69L+8Z8WABKq+qG/TTXaeLOsbFOzKttT3+cn1ZUHwmhc3WimpBrssQBI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypTXeKf8frd/dTG9NOMfK6amiyCBRhrcToSDTLI20fkJNI+5ne
+	jzi6+1i8AjA+9o/ltQ3Qxa99L4OxqsxSxz8jZQJON0oHmKLmgJjP+vJlMDDzIb3+6G8scR3Oz8k
+	Pc9bECVRgiVs8vifyf0oYvA3VrzHkuko=
+X-Gm-Gg: ASbGnctPt0mqZOpzSjoqAThqe6rPbQILfCvFbf4abAu8EY6wgS5xWeeBkCgV8x3WMaL
+	fKmQ050Zk7tmJW9ZaYo2aOXJqvXBWjgblh624eimiWm7pRqSblPmLISvM9FKB/HctjCFQcwpwiM
+	Dbi+xg/N29ves+mYlH1EH3S5yHtUDXWwcck2qxyGq+CIC6k1LNBWI/eoiTFo/bwUM0NvNg300Cu
+	O/YAwrs9iaEFDYpEuI=
+X-Google-Smtp-Source: AGHT+IGSkEGAh8RQHooFN4XMx9mIZkhD9qsm/F7EHJWiI3Ihlyq0RCC6ip9r+ksfPtD9bqL/B/S4sPujooHDkDeGaj0=
+X-Received: by 2002:a17:903:3b46:b0:234:df51:d190 with SMTP id
+ d9443c01a7336-24096a5d1fbmr46397345ad.4.1754050780912; Fri, 01 Aug 2025
+ 05:19:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v14 2/4] mm/slub: allow to set node and align in
- k[v]realloc
-To: Vitaly Wool <vitaly.wool@konsulko.se>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
- Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Kent Overstreet <kent.overstreet@linux.dev>, linux-bcachefs@vger.kernel.org,
- bpf@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
-References: <20250730191921.352591-1-vitaly.wool@konsulko.se>
- <20250730192017.356410-1-vitaly.wool@konsulko.se>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20250730192017.356410-1-vitaly.wool@konsulko.se>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,vger.kernel.org,gmail.com,kernel.org,google.com,oracle.com,linux.dev,gondor.apana.org.au,suse.de];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[konsulko.se:email,suse.cz:email,suse.cz:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
+References: <20250724185700.557505-1-lyude@redhat.com> <20250724185700.557505-3-lyude@redhat.com>
+ <aIXVzIwBDvY1ZVjL@google.com> <f92b5f82b3ad7bb8d5bf60b272aac8cf1e6ced24.camel@redhat.com>
+ <aIi7ZycRtmOZNtcf@google.com> <ddea64af3b845d2c32d807c5aab6146a9ce3c2bf.camel@redhat.com>
+ <CAH5fLgi63Avw2VYvaOEdZhw93Qb+1isuW-CsyaD-_ask62_tcA@mail.gmail.com>
+In-Reply-To: <CAH5fLgi63Avw2VYvaOEdZhw93Qb+1isuW-CsyaD-_ask62_tcA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 1 Aug 2025 14:19:28 +0200
+X-Gm-Features: Ac12FXyppiVOSM9kAdVVdNa7pzMQtgTjeEzv-BNsRkeIv9E1KjQqT9KtDUbHK8I
+Message-ID: <CANiq72=P0zXVOBgfWU7cec4wDiXoV_jUtVR8vANT0M5=pcaYRg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: time: Implement basic arithmetic operations for Delta
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@kernel.org>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 7/30/25 21:20, Vitaly Wool wrote:
-> Reimplement k[v]realloc_node() to be able to set node and
-> alignment should a user need to do so. In order to do that while
-> retaining the maximal backward compatibility, add
-> k[v]realloc_node_align() functions and redefine the rest of API
-> using these new ones.
-> 
-> While doing that, we also keep the number of  _noprof variants to a
-> minimum, which implies some changes to the existing users of older
-> _noprof functions, that basically being bcachefs.
-> 
-> With that change we also provide the ability for the Rust part of
-> the kernel to set node and alignment in its K[v]xxx
-> [re]allocations.
-> 
-> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+On Fri, Aug 1, 2025 at 12:10=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> #[cfg(target_pointer_width =3D "32")]
+> or
+> #[cfg(target_pointer_width =3D "64")]
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+These are in other proposed series, and in-tree we also have a couple
+`target_arch`s, but I keep wondering about the familiarity of using
+these vs. `CONFIG_*`s. I guess it is fine.
 
+Cheers,
+Miguel
