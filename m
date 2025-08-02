@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D502AD5A
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 00:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1865D3207
+	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 00:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754094152; cv=none; b=KTACDVvp7Ysriz9bj3gusDqPzce/dG5ztH6wIcquyKLxDpf5patQ70C+LidV5XzUNE+uQpCwHD48hY45OKk3uxhI++bo8BN/Y55xKs8N9Tnxo1vrfHzwJIF2Df/u+hYFI+OAhNuFYoz+SGTsRppscVzN9VwjdM6aO0mKEzYPf2w=
+	t=1754094407; cv=none; b=o9KCQXQuFTe+u9MlbJWl23923uSXT2xZkOdBn25EhU6vw1PwTfyXhNyEjzakjZooU1fTl1BrQIFI2VC2kin8xlqzMcbxXQIDDt+UwwFW80hLx4HM5V2mihZrCP1Z9a+HjR+CDcsHIHEo0mlNTJgF8JSUuvFaHaivOGDs/lK7sls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754094152; c=relaxed/simple;
-	bh=uTJTfhWAzVCMobZHksvu2Q80RgsB7v6JtR7CKXzTaeo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=S6U/bRkHRbrJGgsy2e9/QNWhdiy1qbfoQBvFyEI302egns2eHPEy6uARFBixXkJ6/tNDdjrFTVKSfvPfRCwY50TwOLWx3vgB6aaqY5pQphVoClaMyyYZYiygJsgijrEEBPqLjQ5eQcd5SLHlumt40VOB81BXaj45XsCyPMKVdaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ini2WPGt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754094407; c=relaxed/simple;
+	bh=FUFUg6+K4AaBxpnH8mZ2GCZ+QRVs+eZyJQkleUKtraU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=EkaTRUvJHNd2h9OaAGLVsMD2D8uSZQ6xCoko4tU5ZBaaA/5QE9y3RqTGrc62SbfOB/pC3d7sefe8a+TpgjBIIqWmAYKS9jnW7Zz3jV7HjQ8PsITcckE8cwMu5AoZlFHgJ95ftnzsFZzM1QldMlWcM9+oyYDmIYh3MSdy0VKa0pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQd7csJw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ini2WPGt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA21C4CEE7;
-	Sat,  2 Aug 2025 00:22:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQd7csJw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFD8C4CEE7;
+	Sat,  2 Aug 2025 00:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754094151;
-	bh=uTJTfhWAzVCMobZHksvu2Q80RgsB7v6JtR7CKXzTaeo=;
-	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
-	b=Ini2WPGtrLX11aQdlFkTVvqGOx2+7nHixz5thib/PsXovgW+xH+7a3/vT0Br5romn
-	 ddsiIW1jvW4p5mjhOMkH9/lzJ2cJsJgizcy881Q75gwBPXgBT2EMueMXnNz+UIibM1
-	 Y5IK4mejZ2BSfmoL/PpknlF3g0YbMDE7eUGUSTBEDxaVJRzUrxjGYJA0CmRtlwPPES
-	 imWzqzj1WhwbQC1Abmxt59zsPmyyU/6Z/Bu6FK5nmxksgDgtE7ySjVdgVT94f3EUUD
-	 NoqmzGgrF5eOefIRKpGP/EjTd+mljJqdolJc7uC7yeYNXBYyKQ2pVSm9PTLUdpU7rT
-	 0Pasvbv8QtJug==
+	s=k20201202; t=1754094406;
+	bh=FUFUg6+K4AaBxpnH8mZ2GCZ+QRVs+eZyJQkleUKtraU=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=XQd7csJwE+BwQHiGmcce0FO/keLr7EECe+HfonUffWsxIi+ssiIMFY6bUnZFvTMrO
+	 Yeoi1oYP6+RJX2ru4cTo0gQ8hGNqJHM1DoAkAk2SOxd7owqAyGhsV/PNNAgFBMwn97
+	 zDCpLFbxAKihyIlKX3eJD9TWUb6k0wjXoGTkAjW7QKKUcrw65+p1DF/86EL55VBigy
+	 13gRQxuTjw1Zh+SIrIQfv1v2gHSeZOYeZRCqK6EMONOUgixVg564bLxA2yPcF7wkKN
+	 EJyEcGvmr7M64ZAlP/InwL+fljlXf2/r7/1p1H9SAbE0nP95whGh23T6oLSviS4zSZ
+	 ARfH4Qc8CMdoQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,12 +34,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 02 Aug 2025 02:22:27 +0200
-Message-Id: <DBRIHAWZYNIC.14XQR6E6VLQ8Y@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
+Date: Sat, 02 Aug 2025 02:26:42 +0200
+Message-Id: <DBRIKK3NT7EK.IIK91AWAOHDP@kernel.org>
 Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Miguel Ojeda"
  <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
  <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
@@ -47,71 +43,104 @@ Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Miguel Ojeda"
  <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
  Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
  <rust-for-linux@vger.kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 2/3] rust: i2c: add manual I2C device creation
+ abstractions
 References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <F8F4578D-9095-48D4-BC21-67177F2DDD6F@collabora.com>
-In-Reply-To: <F8F4578D-9095-48D4-BC21-67177F2DDD6F@collabora.com>
+ <20250801154438.14759-1-igor.korotin.linux@gmail.com>
+ <A5DDD914-C07D-41C6-83C4-5ED9730D8A5B@collabora.com>
+In-Reply-To: <A5DDD914-C07D-41C6-83C4-5ED9730D8A5B@collabora.com>
 
-On Fri Aug 1, 2025 at 7:14 PM CEST, Daniel Almeida wrote:
->> +impl DeviceId {
->> +    const I2C_NAME_SIZE: usize =3D 20;
+On Fri Aug 1, 2025 at 7:59 PM CEST, Daniel Almeida wrote:
+>> +/// The i2c adapter reference
+>> +///
+>> +/// This represents the Rust abstraction for a reference to an existing
+>> +/// C `struct i2c_adapter`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// A [`I2cAdapterRef`] instance represents a valid `struct i2c_adapter=
+` created by the C portion of
+>> +/// the kernel.
+>> +#[repr(transparent)]
+>> +pub struct I2cAdapterRef(NonNull<bindings::i2c_adapter>);
+>
+> Is there a plan for an owned version? Otherwise I=E2=80=99d personally dr=
+op the
+> =E2=80=9CRef=E2=80=9D nomenclature.
+>
 >> +
->> +    /// Create a new device id from an I2C 'id' string.
->> +    #[inline(always)]
->> +    pub const fn new(id: &'static CStr) -> Self {
->> +        build_assert!(
->> +            id.len_with_nul() <=3D Self::I2C_NAME_SIZE,
->> +            "ID exceeds 20 bytes"
->> +        );
->> +        let src =3D id.as_bytes_with_nul();
->> +        // Replace with `bindings::acpi_device_id::default()` once stab=
-ilized for `const`.
->> +        // SAFETY: FFI type is valid to be zero-initialized.
->> +        let mut i2c: bindings::i2c_device_id =3D unsafe { core::mem::ze=
-roed() };
->> +        let mut i =3D 0;
->> +        while i < src.len() {
->> +            i2c.name[i] =3D src[i];
->> +            i +=3D 1;
->> +        }
->
-> Nit:=20
->
-> for i in 0..src.len() {
->
-> }
->
-> Saves you from manually keeping track of the loop variable.
-
-That would be nice, but we can't do this in cost context. :(
-
->> +// SAFETY: Instances of `Device` are always reference-counted.
->> +unsafe impl crate::types::AlwaysRefCounted for Device {
->> +    fn inc_ref(&self) {
->> +        // SAFETY: The existence of a shared reference guarantees that =
-the refcount is non-zero.
->> +        unsafe { bindings::get_device(self.as_ref().as_raw()) };
+>> +impl I2cAdapterRef {
+>> +    fn as_raw(&self) -> *mut bindings::i2c_adapter {
+>> +        self.0.as_ptr()
 >> +    }
 >> +
->> +    unsafe fn dec_ref(obj: NonNull<Self>) {
->> +        // SAFETY: The safety requirements guarantee that the refcount =
-is non-zero.
->> +        unsafe { bindings::put_device(addr_of_mut!((*obj.as_ref().as_ra=
-w()).dev)) }
+>> +    /// Gets pointer to an `i2c_adapter` by index.
+>> +    pub fn get(index: i32) -> Option<Self> {
+>> +        // SAFETY: `index` must refer to a valid I2C adapter; the kerne=
+l
+>> +        // guarantees that `i2c_get_adapter(index)` returns either a va=
+lid
+>> +        // pointer or NULL. `NonNull::new` guarantees the correct check=
+.
+>> +        let adapter =3D NonNull::new(unsafe { bindings::i2c_get_adapter=
+(index) })?;
+>> +        Some(Self(adapter))
 >> +    }
 >> +}
 >> +
->> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<=
-Ctx> {
->> +    fn as_ref(&self) -> &device::Device<Ctx> {
->> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is =
-a pointer to a valid
->> +        // `struct i2c_client`.
->> +        let dev =3D unsafe { addr_of_mut!((*self.as_raw()).dev) };
+>> +impl Drop for I2cAdapterRef {
+>> +    fn drop(&mut self) {
+>> +        // SAFETY: This `I2cAdapterRef` was obtained from `i2c_get_adap=
+ter`,
+>> +        // and calling `i2c_put_adapter` exactly once will correctly re=
+lease
+>> +        // the reference count in the I2C core. It is safe to call from=
+ any context
+>> +        unsafe { bindings::i2c_put_adapter(self.as_raw()) }
 >
-> &raw mut
->
-> I also wonder whether this unsafe block can be made shorter, as only the
-> dereference is unsafe.
+> Should this implement AlwasyRefCounted?
 
-No, this would create a temporary value.
+I don't think it's necessary given the context this is used in, but it's al=
+so
+not much more code to do so, and ARef<I2cAdapter> turns out much cleaner I
+think.
+
+So, yes I agree this should implement AlwasyRefCounted.
+
+>> +    }
+>> +}
+>> +
+>> +/// The i2c board info representation
+>> +///
+>> +/// This structure represents the Rust abstraction for a C `struct i2c_=
+board_info` structure,
+>> +/// which is used for manual I2C client creation.
+>> +#[repr(transparent)]
+>> +pub struct I2cBoardInfo(bindings::i2c_board_info);
+>> +
+>> +impl I2cBoardInfo {
+>> +    const I2C_TYPE_SIZE: usize =3D 20;
+>> +    /// Create a new board=E2=80=90info for a kernel driver.
+>> +    #[inline(always)]
+>> +    pub const fn new(type_: &'static CStr, addr: u16) -> Self {
+>> +        build_assert!(
+>> +            type_.len_with_nul() <=3D Self::I2C_TYPE_SIZE,
+>> +            "Type exceeds 20 bytes"
+>> +        );
+>> +        let src =3D type_.as_bytes_with_nul();
+>> +        // Replace with `bindings::acpi_device_id::default()` once stab=
+ilized for `const`.
+>> +        // SAFETY: FFI type is valid to be zero-initialized.
+>> +        let mut i2c_board_info: bindings::i2c_board_info =3D unsafe { c=
+ore::mem::zeroed() };
+>> +        let mut i: usize =3D 0;
+>> +        while i < src.len() {
+>> +            i2c_board_info.type_[i] =3D src[i];
+>> +            i +=3D 1;
+>> +        }
+>
+> Same comment as the last patch.
+
+Still not possible unfortunately. :(
