@@ -1,127 +1,94 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF83214F70
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 12:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBF722FAF4
+	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 12:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754136865; cv=none; b=bCvtIHRogfs2VCfbd+DJhvdkSZqkYKyuCVP0Qy2uOeClNXaxs1QvkR53SKsiAl/fMoNtfI3S08T78rNjmn1hGWVkvmagGxb3CRnMUVH06H/EaNqvN81p1sASw+beY5QaOBX86PPc/M+jDONf6z6Y3ZEND4MNu/BRy30SmQG237w=
+	t=1754138485; cv=none; b=JanGtuCLvOtN3iEKMPrfASE7QhNsyrm27Q1uLMuNJlIphYVbeCspg5DDW4fcJQBqNIfhisF47iA4EMWgUx8ZMTeVcWp8VJ96MsZYlDKue3S8x8xjSMGCJ6ozTCNo6ukraz0pl5gyFveRFL4ClI4oNGS4crQd2M/yFJ8UEMZinss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754136865; c=relaxed/simple;
-	bh=70juT2PR9xXSMLORjtozow2bn7IP3spK8Qsbl9bn9xE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mdClVU7eEPQj2h11Dq9G637EHB3Tb2os9l/FHVyI8HRK8j88IQuXtCu/+3AhfRx2IUAErNnXrPf8lQshxYZaekn0NLvtnnENux6q5zV+vgs7Qwz4YvzjjX6/v5SCIj42YVBcZTsvBfbzonMWNSn66mxSlg90nBVZANIo/ckjmvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=F0L2d49G; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1754138485; c=relaxed/simple;
+	bh=njFkkdbJCIjEVeO4UHTSZh6rdIl/cjkkreNVktsE26I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=cO1rg8W79peXsmhr/f/RxdilLZNVE8woM/mhf7ghISDY7EL6nTOj33ENp7RsuBvJSKX0gOASi4cJaTZ93zOpd93Ft7vZGJ84n8OxJnch2XFew8UQhGJwuilZ0GBwW+5C5UNT4fvkcgyArbq+O9MK7719mF8XdZoeI+J/f92jGZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usO/ZdHr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="F0L2d49G"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=XVxu
-	kVTDxiH/oST5FdjzaVqC7LnKA+guXeqr2Lg+IM4=; b=F0L2d49GA/YlmdREnNfA
-	jfo/BwLRqBDKnKFzmdntuSvQGOcil7VNg2ik/xFFc0j4hJUlCNy6L+HbE79kcSQG
-	Tb4sQAVmPDGVfX8bVG1dHBzftdNmDQ1bZRVGnnr3ibJs8mgf02cZO1Fcq0LMauVE
-	lt6iOYAtVlPhoCM1MVBvVY63vw0XgDlsvHf4RIfSfMENNKvj3nAtJ+fIQUnh6ver
-	FbJ1VQGWvqC3wDJqA/3Z0vlK6DqV2R1Clec2YOLsMGs8iPH3SsI3FEub3Rrnp4Zz
-	APIhQTZhhVFRlbsvvNkYl0IfaDVYQVvLjJ/ZHBbh76UOBwObmDt8UsWvk5DVOF6w
-	sA==
-Received: (qmail 1189697 invoked from network); 2 Aug 2025 14:14:16 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 2 Aug 2025 14:14:16 +0200
-X-UD-Smtp-Session: l3s3148p1@Jd8z0GA75rsujns9
-Date: Sat, 2 Aug 2025 14:14:15 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Igor Korotin <igor.korotin.linux@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-Message-ID: <aI4BF1u5J1cTugEJ@shikoro>
-References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
- <aI3VN8WxZeu_DN9Q@shikoro>
- <DBRVV7MYEJD8.2LNT14LTDOXSE@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usO/ZdHr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363D8C4CEEF;
+	Sat,  2 Aug 2025 12:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754138484;
+	bh=njFkkdbJCIjEVeO4UHTSZh6rdIl/cjkkreNVktsE26I=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=usO/ZdHrpF9Bk8Yz24T8AlfhmJ0l3MokZaBu9CshgwrNxivNM9lb0SfyycgwIpUR+
+	 J4d1jYzGEvhJzElzsQJQd1HbCHt29dB6g7J/K5QquHjb5LQjiFfUU6ZJvc6hzW//t4
+	 Eu1A3Cpj/swdt4etbsitUPF71W9UUxY0X2SFw/RpeeulYR7VGqV65VhFuV7jwivIRZ
+	 XSHWpGUalN0JggljSsHz/QogNySxh3AUp2lU63u5XNckpjYgTaRN7IEH+wTokZNgEv
+	 asbvMjZYnqoaX1mhFmEvORLuLU3snnYUi4W/uqjzDjCAGTsBKuaoxqRFJ7XZPM1PE4
+	 8WzzoPXOPTRag==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0ZDdSurpyWCnk74H"
-Content-Disposition: inline
-In-Reply-To: <DBRVV7MYEJD8.2LNT14LTDOXSE@kernel.org>
-
-
---0ZDdSurpyWCnk74H
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 02 Aug 2025 14:41:20 +0200
+Message-Id: <DBRY71EJZU9K.1V5FGUA4IFDCA@kernel.org>
+Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>
+To: "Wolfram Sang" <wsa+renesas@sang-engineering.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
+ abstractions
+References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
+ <20250801154042.14327-1-igor.korotin.linux@gmail.com>
+ <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org> <aI3VN8WxZeu_DN9Q@shikoro>
+ <DBRVV7MYEJD8.2LNT14LTDOXSE@kernel.org> <aI4BF1u5J1cTugEJ@shikoro>
+In-Reply-To: <aI4BF1u5J1cTugEJ@shikoro>
 
-Hi,
+On Sat Aug 2, 2025 at 2:14 PM CEST, Wolfram Sang wrote:
+> Hi,
+>
+>> Maybe it would also be a good option to take PRs from Igor? I think it c=
+ould be
+>> a great way to get in touch with some of the Rust work over time without=
+ having
+>> to commit to maintaining it. (Of course, this is entirely up to you thou=
+gh.)
+>
+> Makes sense...
 
-> Maybe it would also be a good option to take PRs from Igor? I think it co=
-uld be
-> a great way to get in touch with some of the Rust work over time without =
-having
-> to commit to maintaining it. (Of course, this is entirely up to you thoug=
-h.)
+Great!
 
-Makes sense...
+>> While I encourage the above, one fallback alternative could be to take p=
+atches
+>> through the driver-core tree -- at least for now. Given that this is a b=
+us
+>> abstraction and hence most infrastructure used is generic device / drive=
+r
+>> infrastructure, there's some synergy.
+>
+> ... especially if the alternative is "only" the driver core tree. My
+> tree makes more sense then. I thought there might be a more fitting
+> "Rust" tree. If that's not the case, I can pull from Igor, no problem.
+> We will see how this goes dependency-wise.
 
-> While I encourage the above, one fallback alternative could be to take pa=
-tches
-> through the driver-core tree -- at least for now. Given that this is a bus
-> abstraction and hence most infrastructure used is generic device / driver
-> infrastructure, there's some synergy.
+There's of course also Miguel's Rust tree, but this is more for "core Rust
+infrastructure".
 
-=2E.. especially if the alternative is "only" the driver core tree. My
-tree makes more sense then. I thought there might be a more fitting
-"Rust" tree. If that's not the case, I can pull from Igor, no problem.
-We will see how this goes dependency-wise.
+Citing Miguel [1]:
 
-> >> > +L:	rust-for-linux@vger.kernel.org
-> >
-> > I think it is worth adding the Linux I2C list here as well. Other people
-> > there do speak Rust.
->=20
-> Agreed, maybe it'd also be good for you to be listed as reviewer?
+"We try to reserve the global Rust tree fallback for cases where there
+is really no other way, e.g. when a key subsystem doesn't want
+anything to do with Rust at all and thus would block many others
+otherwise."
 
-Please no. I really can't review these patches. I will have a short look
-at them when I pull from Igor. If you need my experience while
-developing, just CC me in those (probably few) cases.
-
-Have a nice weekend,
-
-   Wolfram
-
-
---0ZDdSurpyWCnk74H
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmiOARQACgkQFA3kzBSg
-KbbBghAAsbE5n2OodulYBmSO3aAZejsvvW8UdYvfnvUgvHiQGxhLiJBSlD3Sukvw
-UTiGadY3iH4DxTAcl+x85yHzC4Qnj0uU093RN57MX47h92cftpklNNrh9ozpAeUT
-x/iv0WYGeCjCunFSrnl0sG8iptjgJlZ/Vsy/hq41aTbumCj8XmmFxmnolhJUAZA6
-ab+W1zsp5VTszdNlINKTeodx65UgHjyJMeJU+bp99DeDp1PPgMskVWxQFAXrVudX
-KeM60vGK/oHTN8RaKJ+r8pK3As0A9d7zd9buFX9ICDKtHP1CIEtj2KMtdNCe73Ft
-KNSvdi92ZUvy0LYbttF2e0hQdDDejacRTGNVPkiszE2lEjygHZtE/1qS5lPgdykf
-46yt3Gvu1hqBhjbdBVtyzjOd+ZLLQwxkw6rhipFPuJtcWH42f4yHgpVbnthUrZL8
-ZvxKgwpp7UCmB5QQ0IOgc0OeXurM9yGzEGHS+O/zb56RXIxppbQvE5TJ0UKQ8yQ9
-OH7MMn8MibahQscFJy1LiKQ0f0DlSli2yKNt0FuS6/pYknPT+HEHJEbQ8+vpPHEB
-W7djVnuVJcLvN03izETNRQrNfQdPI8ZRELhTaT2MXPva7XkhEWvKU/rdBGegdYqV
-8prCtqqgv7NKhlX3LQWV8gz8LiwKgOqUi++E4U3pWQmnO6zXb/U=
-=fYOJ
------END PGP SIGNATURE-----
-
---0ZDdSurpyWCnk74H--
+[1] https://lore.kernel.org/all/CANiq72=3D+UUFVemSGHvzkX5FoOv-U5YRDKQkbKjYw=
+qEfex-ey6w@mail.gmail.com/
