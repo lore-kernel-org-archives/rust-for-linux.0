@@ -1,94 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBF722FAF4
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 12:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D95149C41;
+	Sat,  2 Aug 2025 13:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754138485; cv=none; b=JanGtuCLvOtN3iEKMPrfASE7QhNsyrm27Q1uLMuNJlIphYVbeCspg5DDW4fcJQBqNIfhisF47iA4EMWgUx8ZMTeVcWp8VJ96MsZYlDKue3S8x8xjSMGCJ6ozTCNo6ukraz0pl5gyFveRFL4ClI4oNGS4crQd2M/yFJ8UEMZinss=
+	t=1754142101; cv=none; b=S7jA7E6DEDBcfvpm4cNYPQduAjXxI7LZtdiU5zKJ0WBjrx8b3SoScxl1xBaNnlo5PF855nXYxhteBbqEtEwqkya3ismCLPGxDoKbqXS5pk5v9Sr89k3hpu4VswbCuCOa6gg5EQbWObhpOSwnDJ4mKtykZNrTODN4EgvhMXsk7LE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754138485; c=relaxed/simple;
-	bh=njFkkdbJCIjEVeO4UHTSZh6rdIl/cjkkreNVktsE26I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=cO1rg8W79peXsmhr/f/RxdilLZNVE8woM/mhf7ghISDY7EL6nTOj33ENp7RsuBvJSKX0gOASi4cJaTZ93zOpd93Ft7vZGJ84n8OxJnch2XFew8UQhGJwuilZ0GBwW+5C5UNT4fvkcgyArbq+O9MK7719mF8XdZoeI+J/f92jGZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usO/ZdHr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754142101; c=relaxed/simple;
+	bh=s5Adrm0DQ9KzMRIFpXc+ajYpj+gHS/XMsPLGkglG/wk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jADZVvZrsWgh4MRRPDLqxNF8kGYqKJCIp2B4JUXhWPcpePSOaVtPMGa0GXQrC57hZa697RYZ9hMdYSsncXFOCXpj0mhwwuJv1Q9trmESB7t+1H2W52wEna7IPjwHWaalgBErtayTwUU51PUbRat7JGy8hcV2Cvwp6YL+ZOJNT90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HO7Zk3A3; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usO/ZdHr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363D8C4CEEF;
-	Sat,  2 Aug 2025 12:41:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754138484;
-	bh=njFkkdbJCIjEVeO4UHTSZh6rdIl/cjkkreNVktsE26I=;
-	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
-	b=usO/ZdHrpF9Bk8Yz24T8AlfhmJ0l3MokZaBu9CshgwrNxivNM9lb0SfyycgwIpUR+
-	 J4d1jYzGEvhJzElzsQJQd1HbCHt29dB6g7J/K5QquHjb5LQjiFfUU6ZJvc6hzW//t4
-	 Eu1A3Cpj/swdt4etbsitUPF71W9UUxY0X2SFw/RpeeulYR7VGqV65VhFuV7jwivIRZ
-	 XSHWpGUalN0JggljSsHz/QogNySxh3AUp2lU63u5XNckpjYgTaRN7IEH+wTokZNgEv
-	 asbvMjZYnqoaX1mhFmEvORLuLU3snnYUi4W/uqjzDjCAGTsBKuaoxqRFJ7XZPM1PE4
-	 8WzzoPXOPTRag==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HO7Zk3A3"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-32127d5f63eso1951a91.0;
+        Sat, 02 Aug 2025 06:41:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754142100; x=1754746900; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PsxZESSbpSCiPFgh1RAgcx6H+uTAf/oM/QPaKZ2GOQk=;
+        b=HO7Zk3A3akRT83tLzvZwMxQBDJnDyrAejFkdapsG4KNVTRbGLsChJGEfwacY14L1lw
+         ab5/kxSg2WlmRAb1rZcxm48apKeCwlngnAxZN8knevMq7FBNSLiH/gMln2b4+uOY2e5T
+         4yb6j+PbfaHbp4Mr/zit7d9V4H1djjuRBJzsh/V06uNtgYO/ccrh+IbjmRvL5426kQ8l
+         LgIjkUMShhn9loGVEfBcEhczDXoI15phNqfZE+Ut2uLtvS6naVuW2MS+ezFx2qBLHf2S
+         YBR/rgIskjZuOW4zIrkDkciCcNU+iPyhW0CpXvSYZ4DmkXoWLF37aG21CS3NKZI0YLo+
+         Yu0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754142100; x=1754746900;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PsxZESSbpSCiPFgh1RAgcx6H+uTAf/oM/QPaKZ2GOQk=;
+        b=FL1G+HqpA59lu2pX2SIWM733jWujWSYp93r2OnMp2sEv60kFaukTInujF0xdm3/WLV
+         DcEKxGQPDvBwXOkoGDXtgaNbWChmjz/oFKf/Hen8gBgsjb0wT4I0mvBXIyjO769PgYWe
+         hd26fUUMS4hWYLexTUAMpjL3mIUxNV8UsIe2C6gOeO/Yo1YwlV04C+rj11TVVIRIqd3w
+         jYuSQwBK+RRhq1xH9YyR3uGkUtkJLIo7czLqYHoV5VrRTxCf/AyQIRl165wRI2wUTKu8
+         JGAzCeYPY7lsLziB4fY624/H/tVFkQ0+3walxGg6BKfnQdwVszI7lA7Kw1dk8O2Lennl
+         htvw==
+X-Forwarded-Encrypted: i=1; AJvYcCVgQd25T15ucHbtNnFXn41+nzRcHfFDg9Qb3/RkZBw8ajZNLoCDKeVNqdq7PtMUkSgYXiMklq9XzJFBpe0=@vger.kernel.org, AJvYcCWgIi96zcjRzBBND1iFsEjNvkn6KDpYlxIzeBg+ZvoPTfXaKkd+iTO7AEFOJVn6OtyCxVNb5eeGqMvJpZY7T5Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8FzE5Wl1oX5BHhSYFgBI47AlsERsJdcyOMLimsPW5B3kA05ln
+	jYttwFeFvkNQC7ytdiqS8aFlVfl20oXedS2Ersdp4pNv4UA5N4vcCJLhJ0+AKPHpH8HUFXmah9I
+	T5c1r99sJSmny3QLj5J+A4u1xrHZ7T/w=
+X-Gm-Gg: ASbGnctUXJRCkqrswBCLIHq84YP/eA5uBDFGNTr2IDOZPaX6wFdhpcewpz0JbJOrCKb
+	9JLFdJTaeNTB3z7dJvDT+b+m+7stToLM5ep47T7U5vOiVB5PiELBwWjCOl1P8quPRxhhVrQnb6p
+	BtdOd1y40+nruJt5aXr+t3vQKPWM7pxOsV4g1BaUyMAh6FZJYk70BUZfAwzDCQMfp5fbb+Vq01x
+	vglpQx8FC7ODXxhZlI=
+X-Google-Smtp-Source: AGHT+IErFqc55TWByZ9qMI1Pagy8hH9TWRfQtk4fjo7jHF/OVaGon2/ksIFACwkNiYTtohBJgqVt73r2/Zl//XdGZrw=
+X-Received: by 2002:a17:90b:33d2:b0:31e:ec03:7fe4 with SMTP id
+ 98e67ed59e1d1-321162e4270mr1647853a91.8.1754142099761; Sat, 02 Aug 2025
+ 06:41:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20250621184454.8354-1-work@onurozkan.dev> <20250621184454.8354-3-work@onurozkan.dev>
+ <DASY7BECFRCT.332X5ZHZMV2W@kernel.org> <aFlQ7K_mYYbrG8Cl@Mac.home>
+ <DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org> <aFlpFQ4ivKw81d-y@Mac.home>
+ <DAU0ELV91E2Q.35FZOII18W44J@kernel.org> <20250707163913.5ffc046d@nimda.home>
+ <DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org> <20250707210613.2fd5bb55@nimda.home>
+ <DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org> <FF481535-86EF-41EB-830A-1DA2434AAEA0@collabora.com>
+ <DBRVNP4MM5KO.3IXLMXKGK4XTS@kernel.org>
+In-Reply-To: <DBRVNP4MM5KO.3IXLMXKGK4XTS@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 2 Aug 2025 15:41:28 +0200
+X-Gm-Features: Ac12FXxWIkPx3j64iIsxdsItUTgUAWyOwNJACurA9ndJljWW9o6QHgtjb8ehGfg
+Message-ID: <CANiq72=owOmGLi3Zh+7o5CRKU1_tNU-OsKskj35GXwkDCchwKQ@mail.gmail.com>
+Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
+To: Benno Lossin <lossin@kernel.org>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Onur <work@onurozkan.dev>, 
+	Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	gary@garyguo.net, a.hindborg@kernel.org, aliceryhl@google.com, 
+	tmgross@umich.edu, dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, 
+	will@kernel.org, longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev, 
+	bjorn3_gh@protonmail.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 02 Aug 2025 14:41:20 +0200
-Message-Id: <DBRY71EJZU9K.1V5FGUA4IFDCA@kernel.org>
-Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Miguel Ojeda"
- <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
- <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- <rust-for-linux@vger.kernel.org>
-To: "Wolfram Sang" <wsa+renesas@sang-engineering.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org> <aI3VN8WxZeu_DN9Q@shikoro>
- <DBRVV7MYEJD8.2LNT14LTDOXSE@kernel.org> <aI4BF1u5J1cTugEJ@shikoro>
-In-Reply-To: <aI4BF1u5J1cTugEJ@shikoro>
 
-On Sat Aug 2, 2025 at 2:14 PM CEST, Wolfram Sang wrote:
-> Hi,
+On Sat, Aug 2, 2025 at 12:42=E2=80=AFPM Benno Lossin <lossin@kernel.org> wr=
+ote:
 >
->> Maybe it would also be a good option to take PRs from Igor? I think it c=
-ould be
->> a great way to get in touch with some of the Rust work over time without=
- having
->> to commit to maintaining it. (Of course, this is entirely up to you thou=
-gh.)
->
-> Makes sense...
+> My understanding of C preprocessor macros is not good enough to parse or
+> understand this :( What is that `__PASTE` thing?
 
-Great!
+It allows you to paste the expansion of other macros, e.g. compare `A` and =
+`B`:
 
->> While I encourage the above, one fallback alternative could be to take p=
-atches
->> through the driver-core tree -- at least for now. Given that this is a b=
-us
->> abstraction and hence most infrastructure used is generic device / drive=
-r
->> infrastructure, there's some synergy.
->
-> ... especially if the alternative is "only" the driver core tree. My
-> tree makes more sense then. I thought there might be a more fitting
-> "Rust" tree. If that's not the case, I can pull from Igor, no problem.
-> We will see how this goes dependency-wise.
+    #define A(a,b) a##b
+    #define B(a,b) __PASTE(a,b)
 
-There's of course also Miguel's Rust tree, but this is more for "core Rust
-infrastructure".
+    #define C 43
 
-Citing Miguel [1]:
+    A(42, C)
+    B(42, C)
 
-"We try to reserve the global Rust tree fallback for cases where there
-is really no other way, e.g. when a key subsystem doesn't want
-anything to do with Rust at all and thus would block many others
-otherwise."
+would give:
 
-[1] https://lore.kernel.org/all/CANiq72=3D+UUFVemSGHvzkX5FoOv-U5YRDKQkbKjYw=
-qEfex-ey6w@mail.gmail.com/
+    42C
+    4243
+
+https://godbolt.org/z/Ms18oed1b
+
+Cheers,
+Miguel
