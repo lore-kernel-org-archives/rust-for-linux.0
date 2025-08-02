@@ -1,178 +1,90 @@
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7C4200BAE
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 21:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9ACB1E89C;
+	Sat,  2 Aug 2025 21:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754169593; cv=none; b=UYDgaS9XjNuTF+qgkIRbZF2NH9aY0IRKc6j9Tis5bhoowLb4HB1TGPX1sxpvusPjvUWmh4CKytgrMLWq5qfmU2zNLrNaEnqtv9EeS8jOKWfp7wK38fd6A8e+cA2hpuJRmxXU8RzJZumJzS1B+S/5eVijmVP9Wtu31bQpK8JHuC4=
+	t=1754170284; cv=none; b=I9jJ5ZBMFttAmTxczGUgPFVbQGWbGL6N3QSeEePw8ML2XabHXm6T3HDYtqyHAHvi2yLhg3X8/zp5g19MkGeK7+6ULkkwRniC3h3wKhcoVARB2BZmnGRGSEi+EfHOIBlqnQP55tqmlm8Gu3QtECH7+wRh4GzpSxeHn/9bQBbaZ6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754169593; c=relaxed/simple;
-	bh=vSlkJ+vsxjOY9oI9RrIgABm9WROts/lXyLnQDsNHTsQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=ru9SRllLWFqRbzFm0TMEw9GYxKprLAI/lc0+2nBDjI12idrXWlc1gw/42z2bMKIyjAtEvaE4HHA+T2s92xmxn91dj+GaQDzWRQA0C5SVWfZrwBFPZoqVQ2SS8BlWUL/s+bEudwBZ2kXZ6EA7vwKIVVBc9VLPMttErw/yRfxAawo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=EpFRIQZ8; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1754170284; c=relaxed/simple;
+	bh=qf487f41K14igRdmD9PUV4gDp8XiRSpyoTZp9VXkb+M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JSiFRcvhaEDagM5CrVJpK52S3S2e6TdazYcFIwOp1vT8msCZ8602NU6PD1raQRzioeSjx5c8yQpgFh8fhoa9wCn5sjvfXk6yNB6mLi1AC3y2tjsT5TyiziE7v0t5l5K5sfZFTS5bj1a2JbmCJhICki/KXGb0ybelwFjEREzeVgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CDHYqf3A; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="EpFRIQZ8"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250802211942euoutp021c2104ee608650bcc4075aaa105541f2~YD-ETXJxy1202312023euoutp02Y
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 21:19:42 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250802211942euoutp021c2104ee608650bcc4075aaa105541f2~YD-ETXJxy1202312023euoutp02Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1754169582;
-	bh=I/2dlcrRSy99Csm9t0csY8wO5EgDCaan9WuLdFU4wKo=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=EpFRIQZ8LLOuFWzKbRFsRkWiNGnIpvgnSv4CkeDD+Z0507Bl1e6tIAl/BavHUXJY5
-	 AR03YHTD4/seVr+AgVgSqZJYRK0knahEZDpsHvspK+0d5tJNfK2/rf5Pt8aaZFpbB2
-	 wDUBQdKT5Iti9RhtLhv4vsEczunEWp82ckPG67c0=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250802211941eucas1p1872fbfcbece711926d059e0e5d14df1d~YD-DYQxnX2180321803eucas1p1j;
-	Sat,  2 Aug 2025 21:19:41 +0000 (GMT)
-Received: from [192.168.1.44] (unknown [106.210.136.40]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250802211940eusmtip18530543824eaf584b29d76a65b2312ae~YD-CRmpZK2541225412eusmtip1h;
-	Sat,  2 Aug 2025 21:19:40 +0000 (GMT)
-Message-ID: <8a99664b-8acb-4ace-9c2a-bdada5cac5cb@samsung.com>
-Date: Sat, 2 Aug 2025 23:19:40 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CDHYqf3A"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2400a0c3cf7so5300415ad.0;
+        Sat, 02 Aug 2025 14:31:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754170282; x=1754775082; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qf487f41K14igRdmD9PUV4gDp8XiRSpyoTZp9VXkb+M=;
+        b=CDHYqf3AQdg0QjQwG3OftGX9jIxk3QVzbQuQLdrw8vCu1mWvo+n+w2OtNGvITVq+PW
+         oHtlxI2v34gs6H3D9wbQ7mCv0mcEdIEJmbiSUBJehJKZMkiauNvHGGjy0P0dJodY88Nm
+         YhAk0UOM4Bhl6PtfIQnMg80bZnqK0mPv1IWJ8QLEikbKF83uhG6HMxLolyf3t6wug/tW
+         EGr/JWde9g4UT45+WTjt5J+wS2YP++cJ08WOt/eTiXlzTZK+TfdG7C3F8kK9pNMoC+I0
+         idWZzCmXkY93wqh/Tw+9ZqW6E/AcCvLdtQpeE+4oo5SddS/FyFtPcKl6GznDLS797EJl
+         ovyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754170282; x=1754775082;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qf487f41K14igRdmD9PUV4gDp8XiRSpyoTZp9VXkb+M=;
+        b=L3jVaHWtF+Wzxp/fSh4WVPOxONrOa8jTobNMY96GMsjD9uBFI1ncbLdFRa19a4HJ5A
+         nPfXMC6dMKxQi2O3JEJC6DdSky3GAWUrHg+1HJ4eA7cP6CVfU1G5U+M0XJ5KELn78+Qd
+         OapQTgobqM1kI73evJc8VHA1Djsp8/NdZYLzLMPEA4+6RvxfCzSn+r+hWYPVki7YfQIZ
+         SbCaZgUTUSYxXTjNgzFvkaZjFsusF0699p4oeMIkuKBwVm1o5mlykcGauregUFgAmgeL
+         nsWiRFEGiHFJgeUA0nuJIMm64+pBLG9W0zvD2i3q8lOxV7jJmPccS3wnWiy/58IB4w0O
+         KIAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV4Y/ZVJeU6qhNM/mfgUVMnyXxOZ2n2DznEYhN/udBuGBZfqoYFh/LSZHcv4fUvdloF060Ha3wBKBjVS0I=@vger.kernel.org, AJvYcCXw20fZLoodCA0VJCj4tN4M8/Pa/PnoQO4wey+rh7+pfhgxP9T05iBYRC7aV77rfwE3Q+nKT9PknvRNNk/qdNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNExoqnLwrmdaksm8YbGWzD2iGOFVm7aM4qni4hfxSMGtaOvhK
+	i4nsAEczovhRJRE4E0HclfBuA/m2wVlYvz8tUJwRq33Fv5kUDFjGgQNEaX4fI3ryxMoG0ycgTg5
+	AHGmnOyJdS+GBRpJy4QEHema92aaD7TeFWEMWFSs=
+X-Gm-Gg: ASbGncu9RB3lfDaw7ArpKiylp5BGElcgdHI9fZd9zFVew+8j818kFSo6lxTrpsjZoIF
+	93b4wikVC+DqpFkPwiA8Z+QHGHf/eaGyZI+B2My1M4d8gOivs+5x876k9yXaOfnfYtsIYiBOmux
+	DuQtZPv6tW/qBLscvt+DFadpbGSLAYzIwY/7apWjM2t2CqgkifH+N4/dJitvPSNkkw8Cw7JLpxB
+	9A7DKqD
+X-Google-Smtp-Source: AGHT+IFXn2kP4l2ORTI1Euj6ulZhyKBWLwQNZ564sSrh9VrlbKvf9dqt1Bsda5RwwC1AgsXqDBIfQ2/SKTZduTA7G64=
+X-Received: by 2002:a17:902:d4c5:b0:240:4b3b:333c with SMTP id
+ d9443c01a7336-24246fe0475mr25643215ad.9.1754170282043; Sat, 02 Aug 2025
+ 14:31:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 2/3] rust: pwm: Add Kconfig and basic data
- structures
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Miguel Ojeda
-	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
-	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas
-	Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
-	Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Drew Fustini
-	<drew@pdp7.com>, Guo Ren <guoren@kernel.org>, Fu Wei <wefu@redhat.com>, Rob
-	Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
-	Dooley <conor+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, Marek Szyprowski
-	<m.szyprowski@samsung.com>, Benno Lossin <lossin@kernel.org>, Michael
-	Turquette <mturquette@baylibre.com>, Drew Fustini <fustini@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org
-Content-Language: en-US
-From: Michal Wilczynski <m.wilczynski@samsung.com>
-In-Reply-To: <437DA583-95FF-4ADF-9947-1F39D242E157@collabora.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250802211941eucas1p1872fbfcbece711926d059e0e5d14df1d
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250717090831eucas1p282ac3df2e2f1fc2a46e12c440abfbba1
-X-EPHeader: CA
-X-CMS-RootMailID: 20250717090831eucas1p282ac3df2e2f1fc2a46e12c440abfbba1
-References: <20250717-rust-next-pwm-working-fan-for-sending-v12-0-40f73defae0c@samsung.com>
-	<CGME20250717090831eucas1p282ac3df2e2f1fc2a46e12c440abfbba1@eucas1p2.samsung.com>
-	<20250717-rust-next-pwm-working-fan-for-sending-v12-2-40f73defae0c@samsung.com>
-	<437DA583-95FF-4ADF-9947-1F39D242E157@collabora.com>
+References: <20250802210001.824022-1-zhiw@nvidia.com>
+In-Reply-To: <20250802210001.824022-1-zhiw@nvidia.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 2 Aug 2025 23:31:10 +0200
+X-Gm-Features: Ac12FXzEUAanBhI1Fc4d0IPTxB76YoAw0tflhyLJZ3EnRtMDDL7cAmnz2ioLrBo
+Message-ID: <CANiq72mT=Eee3NwxxmysBu4iP6LYuHA2NckrKKVY=qQSSK12=A@mail.gmail.com>
+Subject: Re: [PATCH] rust: list: remove nonexistent insert_at() from the comments
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
+	gary@garyguo.net, bjorn3_gh@protonmail.com, lossin@kernel.org, 
+	a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu, 
+	dakr@kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Aug 2, 2025 at 11:00=E2=80=AFPM Zhi Wang <zhiw@nvidia.com> wrote:
+>
+> The insert_at() method was never introduced in the code. Remove it from
+> the comments to avoid confusion.
 
+Hmm... I am not sure what you mean -- `insert_at()` is an example
+function, used in the example itself.
 
-On 7/25/25 17:08, Daniel Almeida wrote:
-> Hi Michal,
-> 
-> 
-> Overall looks good, a few minor comments:
+Why would we remove that one, and not the others in the example, e.g.
+`remove_all`?
 
-Hi,
-Congratulations for getting your IoMem series merged. Thank you for your
-work, as it will allow me to proceed and re-add the driver part for this
-series.
-
-> 
-> […]
-> 
->> +
->> +/// Wrapper for board-dependent PWM arguments [`struct pwm_args`](srctree/include/linux/pwm.h).
->> +#[repr(transparent)]
->> +pub struct Args(Opaque<bindings::pwm_args>);
->> +
->> +impl Args {
->> +    /// Creates an `Args` wrapper from a C struct pointer.
->> +    ///
->> +    /// # Safety
->> +    ///
->> +    /// The caller must ensure that `c_args_ptr` is a valid, non-null pointer
->> +    /// to `bindings::pwm_args` and that the pointed-to data is valid
->> +    /// for the duration of this function call (as data is copied).
->> +    unsafe fn from_c_ptr(c_args_ptr: *const bindings::pwm_args) -> Self {
->> +        // SAFETY: Caller guarantees `c_args_ptr` is valid. We dereference it to copy.
->> +        Args(Opaque::new(unsafe { *c_args_ptr }))
->> +    }
-> 
-> from_raw()
-> 
-> 
->> +
->> +    /// Returns the period of the PWM signal in nanoseconds.
->> +    pub fn period(&self) -> u64 {
->> +        // SAFETY: `self.0.get()` returns a pointer to the `bindings::pwm_args`
->> +        // managed by the `Opaque` wrapper. This pointer is guaranteed to be
->> +        // valid and aligned for the lifetime of `self` because `Opaque` owns a copy.
->> +        unsafe { (*self.0.get()).period }
->> +    }
->> +
->> +    /// Returns the polarity of the PWM signal.
->> +    pub fn polarity(&self) -> Result<Polarity, Error> {
->> +        // SAFETY: `self.0.get()` returns a pointer to the `bindings::pwm_args`
->> +        // managed by the `Opaque` wrapper. This pointer is guaranteed to be
->> +        // valid and aligned for the lifetime of `self`.
->> +        let raw_polarity = unsafe { (*self.0.get()).polarity };
->> +        Polarity::try_from(raw_polarity)
->> +    }
->> +}
->> +
->> +/// Wrapper for PWM state [`struct pwm_state`](srctree/include/linux/pwm.h).
->> +#[repr(transparent)]
->> +pub struct State(bindings::pwm_state);
-> 
-> No Opaque<T>?
-
-Since this is a copy of the state it's fine. The Args above should
-follow similar pattern, the divergence stemmed when iterating with this
-series. So I would rather fix the Args to also not be Opaque as it
-doesn't need to be, since it's also a copy of the original (since it's
-so small and read only).
-
-> 
->> +
->> +impl State {
->> +    /// Creates a `State` wrapper by taking ownership of a C `pwm_state` value.
->> +    pub(crate) fn from_c(c_state: bindings::pwm_state) -> Self {
->> +        State(c_state)
->> +    }
->> +
->> +    /// Returns `true` if the PWM signal is enabled.
->> +    pub fn enabled(&self) -> bool {
->> +        self.0.enabled
->> +    }
->> +}
->>
->> -- 
->> 2.34.1
->>
->>
-> 
-> If the lack of Opaque<T> is not a problem for whatever reason:
-> 
-> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> 
-> — Daniel
-> 
-> 
-
-Best regards,
--- 
-Michal Wilczynski <m.wilczynski@samsung.com>
+Cheers,
+Miguel
