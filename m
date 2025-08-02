@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119DF1FB3
-	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 00:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D502AD5A
+	for <rust-for-linux@vger.kernel.org>; Sat,  2 Aug 2025 00:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754093893; cv=none; b=EaV53Nbx8OM8ymnXrJTudv754arcnzw4a03W40eWGY1CnWMbiDiiX9u43OfH4npO30qZ7YnGIjSawFVydc/ysqwanhk9YH6hwZ7N0g544Zap8eJWESIN3rVo4rZiXYhe2CHKwOD3bKsBfXWKk9UXVAcNJwFzGPdGudw6SHcEsLg=
+	t=1754094152; cv=none; b=KTACDVvp7Ysriz9bj3gusDqPzce/dG5ztH6wIcquyKLxDpf5patQ70C+LidV5XzUNE+uQpCwHD48hY45OKk3uxhI++bo8BN/Y55xKs8N9Tnxo1vrfHzwJIF2Df/u+hYFI+OAhNuFYoz+SGTsRppscVzN9VwjdM6aO0mKEzYPf2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754093893; c=relaxed/simple;
-	bh=bcvIWGj+7Ss2n1eH9RM+tz5jqyhBJdW5RrOPk1kKH8Q=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=AHap/sEt0guGFY2d4py/mgBu1GvbxKaRPIV1p5KZY/f4EwCZ+qbAVdb1mlyeKrF0ulUHfGubQr0AImDtcJXuWmG1HbHPGgHRSJWNZNRqQvhD0JPgOpuog+P0puSUbT38Ikqji027iRWQ9XNysi/VomztaIZu7SMVCI98OK7J2hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tfepLvLK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754094152; c=relaxed/simple;
+	bh=uTJTfhWAzVCMobZHksvu2Q80RgsB7v6JtR7CKXzTaeo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=S6U/bRkHRbrJGgsy2e9/QNWhdiy1qbfoQBvFyEI302egns2eHPEy6uARFBixXkJ6/tNDdjrFTVKSfvPfRCwY50TwOLWx3vgB6aaqY5pQphVoClaMyyYZYiygJsgijrEEBPqLjQ5eQcd5SLHlumt40VOB81BXaj45XsCyPMKVdaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ini2WPGt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tfepLvLK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB2DC4CEE7;
-	Sat,  2 Aug 2025 00:18:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ini2WPGt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA21C4CEE7;
+	Sat,  2 Aug 2025 00:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754093892;
-	bh=bcvIWGj+7Ss2n1eH9RM+tz5jqyhBJdW5RrOPk1kKH8Q=;
-	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
-	b=tfepLvLKAfsBS6hG3VxxAAN2//F/LKkwtxl1g3KUtCLFUIPZUsai5ExUrxdh/E/34
-	 ZLoj0U27GzIBus7agp1j77thPAB9ncfIexiGofgpSrTnrjO6rjtYxT34nZX9AeOI1p
-	 RxOti0+dpSKdDXiW45DebLLY4TYCyqbBi+eZFehXTRziGB0jnhrPMJYYefKA8P8CLH
-	 xa2RCmhKdCw474GoNK9zlannIl9GDl0MuAPoGVDLdjeXg2oRzgMAPz9xE7zFto/97p
-	 IS/pl1qyUvPvSA9F1z8fVFSpnD1kdfESxgAV9lW50AF2SXsm71DZxtSvdoy7MhcrsS
-	 rZi5w3giNjVHA==
+	s=k20201202; t=1754094151;
+	bh=uTJTfhWAzVCMobZHksvu2Q80RgsB7v6JtR7CKXzTaeo=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=Ini2WPGtrLX11aQdlFkTVvqGOx2+7nHixz5thib/PsXovgW+xH+7a3/vT0Br5romn
+	 ddsiIW1jvW4p5mjhOMkH9/lzJ2cJsJgizcy881Q75gwBPXgBT2EMueMXnNz+UIibM1
+	 Y5IK4mejZ2BSfmoL/PpknlF3g0YbMDE7eUGUSTBEDxaVJRzUrxjGYJA0CmRtlwPPES
+	 imWzqzj1WhwbQC1Abmxt59zsPmyyU/6Z/Bu6FK5nmxksgDgtE7ySjVdgVT94f3EUUD
+	 NoqmzGgrF5eOefIRKpGP/EjTd+mljJqdolJc7uC7yeYNXBYyKQ2pVSm9PTLUdpU7rT
+	 0Pasvbv8QtJug==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,87 +34,84 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 02 Aug 2025 02:18:09 +0200
-Message-Id: <DBRIE05O14GW.2ARZUN01717GI@kernel.org>
+Date: Sat, 02 Aug 2025 02:22:27 +0200
+Message-Id: <DBRIHAWZYNIC.14XQR6E6VLQ8Y@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
 From: "Danilo Krummrich" <dakr@kernel.org>
-Subject: Re: [PATCH v3 3/3] samples: rust: add Rust I2C sample driver
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo"
- <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
- "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>
-To: "Igor Korotin" <igor.korotin.linux@gmail.com>
+Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
+ abstractions
+Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>
 References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154506.14810-1-igor.korotin.linux@gmail.com>
-In-Reply-To: <20250801154506.14810-1-igor.korotin.linux@gmail.com>
+ <20250801154042.14327-1-igor.korotin.linux@gmail.com>
+ <F8F4578D-9095-48D4-BC21-67177F2DDD6F@collabora.com>
+In-Reply-To: <F8F4578D-9095-48D4-BC21-67177F2DDD6F@collabora.com>
 
-On Fri Aug 1, 2025 at 5:45 PM CEST, Igor Korotin wrote:
-> +#[kernel::prelude::pin_data]
+On Fri Aug 1, 2025 at 7:14 PM CEST, Daniel Almeida wrote:
+>> +impl DeviceId {
+>> +    const I2C_NAME_SIZE: usize =3D 20;
+>> +
+>> +    /// Create a new device id from an I2C 'id' string.
+>> +    #[inline(always)]
+>> +    pub const fn new(id: &'static CStr) -> Self {
+>> +        build_assert!(
+>> +            id.len_with_nul() <=3D Self::I2C_NAME_SIZE,
+>> +            "ID exceeds 20 bytes"
+>> +        );
+>> +        let src =3D id.as_bytes_with_nul();
+>> +        // Replace with `bindings::acpi_device_id::default()` once stab=
+ilized for `const`.
+>> +        // SAFETY: FFI type is valid to be zero-initialized.
+>> +        let mut i2c: bindings::i2c_device_id =3D unsafe { core::mem::ze=
+roed() };
+>> +        let mut i =3D 0;
+>> +        while i < src.len() {
+>> +            i2c.name[i] =3D src[i];
+>> +            i +=3D 1;
+>> +        }
+>
+> Nit:=20
+>
+> for i in 0..src.len() {
+>
+> }
+>
+> Saves you from manually keeping track of the loop variable.
 
-Can just be #[pin_data].
+That would be nice, but we can't do this in cost context. :(
 
-> +struct DriverModule {
-> +    #[pin]
-> +    _driver: kernel::driver::Registration<Ops<SampleDriver>>,
-> +    _reg: i2c::Registration,
-> +}
-> +
-> +impl kernel::InPlaceModule for DriverModule {
-> +    fn init(
-> +        module: &'static kernel::ThisModule,
-> +    ) -> impl ::pin_init::PinInit<Self, kernel::error::Error> {
-> +        let adapter =3D i2c::I2cAdapterRef::get(SAMPLE_I2C_ADAPTER_INDEX=
-);
-> +
-> +        kernel::try_pin_init!(Self {
-> +            _reg <- i2c::Registration::new(&adapter.unwrap(), &BOARD_INF=
-O),
+>> +// SAFETY: Instances of `Device` are always reference-counted.
+>> +unsafe impl crate::types::AlwaysRefCounted for Device {
+>> +    fn inc_ref(&self) {
+>> +        // SAFETY: The existence of a shared reference guarantees that =
+the refcount is non-zero.
+>> +        unsafe { bindings::get_device(self.as_ref().as_raw()) };
+>> +    }
+>> +
+>> +    unsafe fn dec_ref(obj: NonNull<Self>) {
+>> +        // SAFETY: The safety requirements guarantee that the refcount =
+is non-zero.
+>> +        unsafe { bindings::put_device(addr_of_mut!((*obj.as_ref().as_ra=
+w()).dev)) }
+>> +    }
+>> +}
+>> +
+>> +impl<Ctx: device::DeviceContext> AsRef<device::Device<Ctx>> for Device<=
+Ctx> {
+>> +    fn as_ref(&self) -> &device::Device<Ctx> {
+>> +        // SAFETY: By the type invariant of `Self`, `self.as_raw()` is =
+a pointer to a valid
+>> +        // `struct i2c_client`.
+>> +        let dev =3D unsafe { addr_of_mut!((*self.as_raw()).dev) };
+>
+> &raw mut
+>
+> I also wonder whether this unsafe block can be made shorter, as only the
+> dereference is unsafe.
 
-Please don't use unwrap(), this panics the kernel in case of failure. Pleas=
-e see
-below for a better solution.
-
-> +            _driver<-kernel::driver::Registration::new(<Self as kernel::=
-ModuleMetadata>::NAME,module,),
-> +        })
-> +    }
-> +}
-> +kernel::prelude::module! {
-> +    type:DriverModule,name:"rust_driver_i2c",authors:["Igor Korotin"],de=
-scription:"Rust I2C driver",license:"GPL v2",
-> +}
-
-I suggest to write this like this:
-
-	#[pin_data]
-	struct DriverModule {
-	    #[pin]
-	    _driver: kernel::driver::Registration<Ops<SampleDriver>>,
-	    _reg: i2c::Registration,
-	}
-=09
-	impl kernel::InPlaceModule for DriverModule {
-	    fn init(
-	        module: &'static kernel::ThisModule,
-	    ) -> impl ::pin_init::PinInit<Self, Error> {
-	        try_pin_init!(Self {
-	            _reg <- {
-	                let adapter =3D i2c::I2cAdapterRef::get(SAMPLE_I2C_ADAPTER=
-_INDEX).ok_or(ENOENT)?;
-=09
-	                i2c::Registration::new(&adapter, &BOARD_INFO)
-	            },
-	            _driver <- kernel::driver::Registration::new(<Self as kernel::=
-ModuleMetadata>::NAME, module),
-	        })
-	    }
-	}
-
-	kernel::prelude::module! {
-	    type:DriverModule,
-	    name:"rust_driver_i2c",
-	    authors:["Igor Korotin"],
-	    description:"Rust I2C driver",
-	    license:"GPL v2",
-	}
+No, this would create a temporary value.
