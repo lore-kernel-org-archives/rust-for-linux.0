@@ -1,108 +1,63 @@
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1E31F91D6
-	for <rust-for-linux@vger.kernel.org>; Sun,  3 Aug 2025 20:53:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5D1EEA6;
+	Sun,  3 Aug 2025 21:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754254405; cv=none; b=PZVqp5bTeLLW/ZQy2qjgzNLVQ10XgWHXmlJu4LutWPjJEIvcDrKdiVi6FD0f6tR84xTL1NEv5xjXFaJ0HD2EiI4NZSdxFLkZhs//mg+JRWJ127PDSMBEcZQiXWQrnux08q9FPluezR9NaHR6ajSr8FkeeFGNkcH13/zWoi0TaLE=
+	t=1754255614; cv=none; b=S4ou78/8XNVwCZykQgEGUJPDNSdQ0uQVQ7w67O8n/A04thbMND7G9QzzgwazkLOyqnQM0GD+wYdazDgXocfsflE+yp43A2zHTPH4z6iMQ3VsbCef5L/4iCelbxdZQMv40GGIix8TKLy2LOi+eWegc06kD9YsRVUutzIvsV4YnlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754254405; c=relaxed/simple;
-	bh=JY5x3SgVtiep2jP8UPpmtr06GtJ6WbHgPKYdAee2gXw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ec6/jF8/FBXHkxK7v70tyo87C4CK4sBA4MWMvMjlflvUbwWAafTePOGOhNHQ+CmxXSJWGxPoiyaLyvkDHlSO5ijMBNGWq+FRoSnEuuB3I/4DvcyaVX4Dlu1iI5FFav+LX0aCxYB0RByHIqD2F55UPLBN3r59eOC22Kq0+svY9NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RMCEs8M2; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1754255614; c=relaxed/simple;
+	bh=pYYJW2tHQadIcv13MaCztDyuV+ELxiUl2kdaCxFSDkY=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=cFY/gzIrrpih/qgG8n/sewwutzVOkqTQBY1W36oDiZ3xRDa/REmnYix5vPbbTdK0oAl87pJpNEv3joka41ZuilQYTOQvxWewkPWABfLWQJWVc5TiQwqJvFEVIczzQWzpjKfpiyyfjgj3BMvDEZ6TbJTV6OfR/z7TWvWCCKUVZYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwlmsnID; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RMCEs8M2"
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-60bfcada295so4371425a12.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 03 Aug 2025 13:53:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1754254401; x=1754859201; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9esa6sfZgyweLh1Ljo1EEi6nMuRSy+goaDjQDKyf7I8=;
-        b=RMCEs8M2ik/FjPc1FZdhGmBTbmhSKTpFrV0bTP8NfR1uxl40wReABGXj+39p1yYSYI
-         UzFkkqvujspmi8s0TpXkCLQ8QaNchWVbKdaCKeswF20H2Q7+cKN5C/So1PqRmGY4yLsz
-         DJZWqxWQcE2sIREyzavtLqQYNrzwbfrOwDqlI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754254401; x=1754859201;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9esa6sfZgyweLh1Ljo1EEi6nMuRSy+goaDjQDKyf7I8=;
-        b=LZIpRosFqAaYidHRSsB6+B9s+0eVTh73NmiP4GDlG7OQwmcL0EftRhewbx6PuXvcWq
-         1R4rv4L/Fb7Wvpq501ocvRJyUv+7mwiSvhWmEI5eIrAYLVaVh0G2CnOnKia6L/Ob5np0
-         aGO/WyuROkwp340L00p2Suig/FGDYWoUbOtaDf/3uswBUvOqE7/f+VZlI5HZU8b4Mtm9
-         LqFjzZ8a69IPGebfA473oyscJNWfJNxVEB2aZpgckw3gROiOkVh8iwWcw+S2l4L42JGz
-         T8BkSWvl7+/7GsnR5TcU7NjFTMrYwjSn9gB7AbyEyPhwScQIdKW07ohKzN9eAdEUvGFr
-         xn4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXkSuCjoeQ2QXWitToYy/YWMuTwf/iJQJnEsrVhe/AR9yFQEzx5PW9vV+uUz4KgalniXv/bT/i2W1Y2+3dk0g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yysrc9okzgf5IWYw5PHPpf7l+KIwMrmIRT/pEXHM9qNoi2VgTO7
-	naqUtAnx41OBcK9eHJ6fTj885YpwageVolGG3Gm7spPRSF9F5tJ804JpBoIAzhuJmdqfQ3Eza+E
-	NeKQWvng=
-X-Gm-Gg: ASbGncteD0JrjAhfr86V2LpGD6KkFazMGCIYXCTrE7Rn4mLLDPUqvnKyBSO0Hz2K4SM
-	mRO+qS+RkiZKRlgjiaYnA8bIaSMr5+VhMtOuHzPQEgXWHwKd9oftvhDgtv3Z5RkrrBD7dJsJiTW
-	DIuWcWWJvoaHKmr9FrJcCpp6VuPTnH4xRSBaD12EW/ZeHEvPgOY29Ty5/sDhlCqbbN93+4toOJp
-	XtbxKRg9t6J10r15Bf5vpFiW3cCnMMYkGQc8vP/zkejN5/Su4HuBLQXRhUGfR5PIZE05fpH2Tga
-	62LRnMbYc3xopqLMiMYqnClDnaX7Z0Wl+42hS6gvRjp9o9LaV34YWDd35o1W1PAujq2VAxBHb/Z
-	EJTZw4o+erS++KNm2Utvzm33rNvxBBHLHxOO9W5WywFMD7vq/CG2jSX7XlYqyGV9asBKLQqLx6C
-	VzrexqhsM=
-X-Google-Smtp-Source: AGHT+IH+LeytfBTzr+mGcchVs9NmOo28u7QtFDx/cHmY9T/Lcn+lyQSYs7gBiW9YQYWV0W9L7HSJtQ==
-X-Received: by 2002:a05:6402:4402:b0:607:425c:3c23 with SMTP id 4fb4d7f45d1cf-615e6eeea53mr6181836a12.5.1754254401399;
-        Sun, 03 Aug 2025 13:53:21 -0700 (PDT)
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f00066sm5746772a12.7.2025.08.03.13.53.20
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 03 Aug 2025 13:53:20 -0700 (PDT)
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-61564c06e0dso4896916a12.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 03 Aug 2025 13:53:20 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW3qFeIRsvVhy+sfC2EyFWwtmeS4iC4yfKsrEafYPmemWDSDCWAPirLpPAzCv4nHcQF6s2jEFnuN/P20h8n5A==@vger.kernel.org
-X-Received: by 2002:a05:6402:278d:b0:615:59ea:f218 with SMTP id
- 4fb4d7f45d1cf-615e6f09ef2mr6692426a12.8.1754254399833; Sun, 03 Aug 2025
- 13:53:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwlmsnID"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7470C4CEEB;
+	Sun,  3 Aug 2025 21:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754255613;
+	bh=pYYJW2tHQadIcv13MaCztDyuV+ELxiUl2kdaCxFSDkY=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=LwlmsnIDW1O6Yj2IwCnghfKVkpX9Hay3/+OcaneEMQz/8iGWMA0SePiZM/636CP5P
+	 jeCXCUdq6JZ4ul7VRvaFgmSw/e54CYG2MWNWw7DlolGpOhccJgmpsiiFHMBfquLamV
+	 dpofPkFHpw62/DLphVAbSF/P0uLRPA5U1qJ33cFJQWN6t8IvbvWHqm4SWuJAtpDy87
+	 tjK3GzZaSLSBDbJPEyQ4bLiqtQ2imrtYAoXdedFiIPjyEZK8wVHItguYWXF6RtxK0I
+	 T8+jevaUYzssbtun/jpdNdzPmqhLWWYRAziVWqwq1imjcF1lecYm9bPrFjn8m/ZyMG
+	 YUDUYdSeMyKmA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADFCC383BF56;
+	Sun,  3 Aug 2025 21:13:49 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust for 6.17
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20250802211316.875761-1-ojeda@kernel.org>
+References: <20250802211316.875761-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20250802211316.875761-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git rust-6.17-test-merge
+X-PR-Tracked-Commit-Id: dff64b072708ffef23c117fa1ee1ea59eb417807
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 352af6a011d586ff042db4b2d1f7421875eb8a14
+Message-Id: <175425562826.537064.2790627555650149300.pr-tracker-bot@kernel.org>
+Date: Sun, 03 Aug 2025 21:13:48 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250802211316.875761-1-ojeda@kernel.org>
-In-Reply-To: <20250802211316.875761-1-ojeda@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 3 Aug 2025 13:53:03 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh4SfHyQAunGwspwO5wngSQTHqeNZ7Fo1Wub5BkDso4yA@mail.gmail.com>
-X-Gm-Features: Ac12FXzojhLEsGBw2wB7LU3rM7G257WjVgv2kKvwsEDAfjbTPYGQzu9bOiMxMLw
-Message-ID: <CAHk-=wh4SfHyQAunGwspwO5wngSQTHqeNZ7Fo1Wub5BkDso4yA@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust for 6.17
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 2 Aug 2025 at 14:16, Miguel Ojeda <ojeda@kernel.org> wrote:
->
-> There are a few conflicts, including a semantic one, but are all easy to
-> apply. The resolutions in the latest linux-next are fine -- I also did a
-> test merge with your state from a few hours ago:
+The pull request you sent on Sat,  2 Aug 2025 23:13:15 +0200:
 
-Ok, apart from the semantic one that I entirely missed (until my build
-failed and I checked your test merge), I got the same result as your
-merge.
+> https://git.kernel.org/pub/scm/linux/kernel/git/ojeda/linux.git rust-6.17-test-merge
 
-Well, apart from rust/helpers/helpers.c, in which the conflict was
-from ordering things alphabetically, and then the new 'regulator.c'
-file was out of order anyway, so I fixed that one too.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/352af6a011d586ff042db4b2d1f7421875eb8a14
 
-And I have to say, if this had come in one day later, I might not have
-merged it at all. I'm about to fly away, and this was the kind of
-somewhat complex infrastructure thing that I *really* would want to
-see early, and not in the second week.
+Thank you!
 
-             Linus
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
