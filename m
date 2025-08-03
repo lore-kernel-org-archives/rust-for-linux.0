@@ -1,75 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D14C2C9;
-	Sun,  3 Aug 2025 19:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1E31F91D6
+	for <rust-for-linux@vger.kernel.org>; Sun,  3 Aug 2025 20:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754249840; cv=none; b=ue8fKurXUlHHwpz/KFwL1VUdTUdxk31htz3KJ2LiCdE9KQnWPRK0P2+/Vhwng4sx4Pncd99VtSYcx3DmjP8dzNzTiQIMsr4/WeezipbeIuY8IZZpj0go9bmd0DImeFyMehjnoa0DkSnPtldOBZDftzE/OXOUVDfDG1L9D2DppLg=
+	t=1754254405; cv=none; b=PZVqp5bTeLLW/ZQy2qjgzNLVQ10XgWHXmlJu4LutWPjJEIvcDrKdiVi6FD0f6tR84xTL1NEv5xjXFaJ0HD2EiI4NZSdxFLkZhs//mg+JRWJ127PDSMBEcZQiXWQrnux08q9FPluezR9NaHR6ajSr8FkeeFGNkcH13/zWoi0TaLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754249840; c=relaxed/simple;
-	bh=7Ju8EZEaySWefzeVfXBR25v/1hG4k5/G/1h3M7aC3NU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=CdFLdR/OjBymejy3LkaX6gUnfvbKtuJeoQC7jJlJnbjRw0MGT/AL23bQw12L/7d8Fo6q2sTmmLYdhYtT1jfFAprBBOkw1Njpu3UR4BC/movlniOwFFprEVd0VVkgk8zkvKmqNc8eB/PuG8Mmo3L73xRnPGYQR+yEZv/YPA9y22E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPUk4mjW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754254405; c=relaxed/simple;
+	bh=JY5x3SgVtiep2jP8UPpmtr06GtJ6WbHgPKYdAee2gXw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ec6/jF8/FBXHkxK7v70tyo87C4CK4sBA4MWMvMjlflvUbwWAafTePOGOhNHQ+CmxXSJWGxPoiyaLyvkDHlSO5ijMBNGWq+FRoSnEuuB3I/4DvcyaVX4Dlu1iI5FFav+LX0aCxYB0RByHIqD2F55UPLBN3r59eOC22Kq0+svY9NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RMCEs8M2; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPUk4mjW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51E3C4CEEB;
-	Sun,  3 Aug 2025 19:37:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754249838;
-	bh=7Ju8EZEaySWefzeVfXBR25v/1hG4k5/G/1h3M7aC3NU=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=oPUk4mjWAaAX3gV1CfTtH3KYYOXZZISE/uw1PR9veTKk80Pg1RmvWCwn1Ex2Absvc
-	 jaisBysJTnE+IrHUswvr3hh4M7HHzaAO8yniXOVVAWS0VSNfghA67xS1lRDe1MCA8y
-	 VJKrAr5K+uqTsavrIeerxaHeAYsKUERgdxfBr5gHw3dnhpynlUMAZgZ/K5WHden5Ud
-	 VQcKL03ZR7+KCar8n0a0yp2ZkSfmOSgZaXULk7+BMJ2tJ7jRPKp4hLhOieMcIcS9aa
-	 vOw+0nX9+BdCJM5Rxg7gmEoF5YibNqLQQye1xe543Ee1cE9hmUQwDdRnUxC3JykfZf
-	 TCBhqkThubHSQ==
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RMCEs8M2"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-60bfcada295so4371425a12.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 03 Aug 2025 13:53:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1754254401; x=1754859201; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9esa6sfZgyweLh1Ljo1EEi6nMuRSy+goaDjQDKyf7I8=;
+        b=RMCEs8M2ik/FjPc1FZdhGmBTbmhSKTpFrV0bTP8NfR1uxl40wReABGXj+39p1yYSYI
+         UzFkkqvujspmi8s0TpXkCLQ8QaNchWVbKdaCKeswF20H2Q7+cKN5C/So1PqRmGY4yLsz
+         DJZWqxWQcE2sIREyzavtLqQYNrzwbfrOwDqlI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754254401; x=1754859201;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9esa6sfZgyweLh1Ljo1EEi6nMuRSy+goaDjQDKyf7I8=;
+        b=LZIpRosFqAaYidHRSsB6+B9s+0eVTh73NmiP4GDlG7OQwmcL0EftRhewbx6PuXvcWq
+         1R4rv4L/Fb7Wvpq501ocvRJyUv+7mwiSvhWmEI5eIrAYLVaVh0G2CnOnKia6L/Ob5np0
+         aGO/WyuROkwp340L00p2Suig/FGDYWoUbOtaDf/3uswBUvOqE7/f+VZlI5HZU8b4Mtm9
+         LqFjzZ8a69IPGebfA473oyscJNWfJNxVEB2aZpgckw3gROiOkVh8iwWcw+S2l4L42JGz
+         T8BkSWvl7+/7GsnR5TcU7NjFTMrYwjSn9gB7AbyEyPhwScQIdKW07ohKzN9eAdEUvGFr
+         xn4w==
+X-Forwarded-Encrypted: i=1; AJvYcCXkSuCjoeQ2QXWitToYy/YWMuTwf/iJQJnEsrVhe/AR9yFQEzx5PW9vV+uUz4KgalniXv/bT/i2W1Y2+3dk0g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yysrc9okzgf5IWYw5PHPpf7l+KIwMrmIRT/pEXHM9qNoi2VgTO7
+	naqUtAnx41OBcK9eHJ6fTj885YpwageVolGG3Gm7spPRSF9F5tJ804JpBoIAzhuJmdqfQ3Eza+E
+	NeKQWvng=
+X-Gm-Gg: ASbGncteD0JrjAhfr86V2LpGD6KkFazMGCIYXCTrE7Rn4mLLDPUqvnKyBSO0Hz2K4SM
+	mRO+qS+RkiZKRlgjiaYnA8bIaSMr5+VhMtOuHzPQEgXWHwKd9oftvhDgtv3Z5RkrrBD7dJsJiTW
+	DIuWcWWJvoaHKmr9FrJcCpp6VuPTnH4xRSBaD12EW/ZeHEvPgOY29Ty5/sDhlCqbbN93+4toOJp
+	XtbxKRg9t6J10r15Bf5vpFiW3cCnMMYkGQc8vP/zkejN5/Su4HuBLQXRhUGfR5PIZE05fpH2Tga
+	62LRnMbYc3xopqLMiMYqnClDnaX7Z0Wl+42hS6gvRjp9o9LaV34YWDd35o1W1PAujq2VAxBHb/Z
+	EJTZw4o+erS++KNm2Utvzm33rNvxBBHLHxOO9W5WywFMD7vq/CG2jSX7XlYqyGV9asBKLQqLx6C
+	VzrexqhsM=
+X-Google-Smtp-Source: AGHT+IH+LeytfBTzr+mGcchVs9NmOo28u7QtFDx/cHmY9T/Lcn+lyQSYs7gBiW9YQYWV0W9L7HSJtQ==
+X-Received: by 2002:a05:6402:4402:b0:607:425c:3c23 with SMTP id 4fb4d7f45d1cf-615e6eeea53mr6181836a12.5.1754254401399;
+        Sun, 03 Aug 2025 13:53:21 -0700 (PDT)
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com. [209.85.208.42])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-615a8f00066sm5746772a12.7.2025.08.03.13.53.20
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 Aug 2025 13:53:20 -0700 (PDT)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-61564c06e0dso4896916a12.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 03 Aug 2025 13:53:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW3qFeIRsvVhy+sfC2EyFWwtmeS4iC4yfKsrEafYPmemWDSDCWAPirLpPAzCv4nHcQF6s2jEFnuN/P20h8n5A==@vger.kernel.org
+X-Received: by 2002:a05:6402:278d:b0:615:59ea:f218 with SMTP id
+ 4fb4d7f45d1cf-615e6f09ef2mr6692426a12.8.1754254399833; Sun, 03 Aug 2025
+ 13:53:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 03 Aug 2025 21:37:14 +0200
-Message-Id: <DBT1O0IBXKYN.39J9Z1PHMT9GA@kernel.org>
-Subject: Re: [PATCH] rust: kernel: add missing safety comments
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Jinheng LI" <ahengljh@gmail.com>, <ojeda@kernel.org>,
- <rust-for-linux@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <alex.gaynor@gmail.com>,
- <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <a.hindborg@kernel.org>,
- <aliceryhl@google.com>, <tmgross@umich.edu>
-X-Mailer: aerc 0.20.1
-References: <CA+TpbOLLATyTRtNxVEJ9Dz6=YSZHAyYOrt20TR8AAEfP+qm1Qw@mail.gmail.com>
-In-Reply-To: <CA+TpbOLLATyTRtNxVEJ9Dz6=YSZHAyYOrt20TR8AAEfP+qm1Qw@mail.gmail.com>
+MIME-Version: 1.0
+References: <20250802211316.875761-1-ojeda@kernel.org>
+In-Reply-To: <20250802211316.875761-1-ojeda@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 3 Aug 2025 13:53:03 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wh4SfHyQAunGwspwO5wngSQTHqeNZ7Fo1Wub5BkDso4yA@mail.gmail.com>
+X-Gm-Features: Ac12FXzojhLEsGBw2wB7LU3rM7G257WjVgv2kKvwsEDAfjbTPYGQzu9bOiMxMLw
+Message-ID: <CAHk-=wh4SfHyQAunGwspwO5wngSQTHqeNZ7Fo1Wub5BkDso4yA@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust for 6.17
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun Aug 3, 2025 at 7:10 PM CEST, Jinheng LI wrote:
-> diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-> index c391c30b80f8..b9dbb73a7ebe 100644
-> --- a/rust/kernel/list.rs
-> +++ b/rust/kernel/list.rs
-> @@ -456,7 +456,10 @@ pub fn pop_front(&mut self) -> Option<ListArc<T, ID>=
-> {
->   ///
->   /// `item` must not be in a different linked list (with the same id).
->   pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> {
-> -        // SAFETY: TODO.
-> +        // SAFETY: The caller guarantees that `item` is not in a
-> different linked list with the
+On Sat, 2 Aug 2025 at 14:16, Miguel Ojeda <ojeda@kernel.org> wrote:
+>
+> There are a few conflicts, including a semantic one, but are all easy to
+> apply. The resolutions in the latest linux-next are fine -- I also did a
+> test merge with your state from a few hours ago:
 
-This looks like your email client wrapped the diff, please take a look
-at [1] and perform the necessary steps for your email client. Otherwise
-it won't be easy to apply your patch.
+Ok, apart from the semantic one that I entirely missed (until my build
+failed and I checked your test merge), I got the same result as your
+merge.
 
-[1]: https://docs.kernel.org/process/email-clients.html
+Well, apart from rust/helpers/helpers.c, in which the conflict was
+from ordering things alphabetically, and then the new 'regulator.c'
+file was out of order anyway, so I fixed that one too.
 
----
-Cheers,
-Benno
+And I have to say, if this had come in one day later, I might not have
+merged it at all. I'm about to fly away, and this was the kind of
+somewhat complex infrastructure thing that I *really* would want to
+see early, and not in the second week.
 
-> +        // same ID. Since we have a mutable reference to the list, we
-> have exclusive access to all
+             Linus
