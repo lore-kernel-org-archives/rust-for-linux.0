@@ -1,187 +1,95 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA5021421D
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 19:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160C516F8E9;
+	Mon,  4 Aug 2025 20:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754337034; cv=none; b=gSg85XxLgKf81Hd9RNCy8e6P4J+zhQlHfj6Tnbu0EAtnqMb2kKBGdxvruRPiDfrkUHKukfmuCYKWAgUnMQwpXzyHFe8YGttHSRFVBaAluFSTmvrdYePkB7AguCiayv6DjtUovZFlixHK3FJl2WjPk1+2OdGZMhzWLYlKVhQ48LI=
+	t=1754337692; cv=none; b=A2XiLboV7WdGZY0NcnHPLTMg2EAsAFaTyK1fB49/dHKt+LMbCIgdLfxhbJYSPh+F+KtlTvJZBxJDr1lxFLibztI5aZEH5yKMtb+/HErhwZ1FcHJVgWDcZxpbyNNpLbFJ0SFylocffAq47nzZAhd6nkcj32nW/bwbD+DPwVosZwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754337034; c=relaxed/simple;
-	bh=+GhNTDOtfjRd/w7zVDrBtz1xxs3iwcW/7Kw2M1X107E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xt1aY864WLOEgYKKR9AiGodYYCjGNNEKRISKMxy7Tdvvls9KkUS57F1CTIlJ7DZDStHMrR1mVFrPtxae1lI1h3hBOiol4Ayhfm6RaSmfZqvGpuVlYRmcyhFqwvoOGs91uaSQ3NzCMDx7W1yspFSVRPqCX5ZUf9K69OKvV7DYM1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iA3TiXnQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754337692; c=relaxed/simple;
+	bh=3wXg1isZ6lxHlpd3i0U0vaueMgZ8obo0IlMsyyDjL6k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=SXXFAAaWYUpYxjhGg9jGhhdfh+GDaSol6abzRaNYV8QB/EuRGNQAxcbkWVS5oEoUVqt1v2UP24vDRxW7eWHggIN8MbZVExulLcBmioMm1f2XM9ON+lM1UkmN5hn71+26JRe3fFnsUaLLbkvpnoclfpZfFykkiOYSvkivQE/RZ3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hXb93zCf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iA3TiXnQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207F6C4CEE7;
-	Mon,  4 Aug 2025 19:50:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hXb93zCf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B124DC4CEE7;
+	Mon,  4 Aug 2025 20:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754337033;
-	bh=+GhNTDOtfjRd/w7zVDrBtz1xxs3iwcW/7Kw2M1X107E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iA3TiXnQaVhqpSU/wFgJUlEW8WUNeFy98Twr9Vebx8LD31NydEYVwRioF61UYkNwX
-	 2Blt8L1lSHfgUQ1h2/vS0YbfGdXXyJclUg4F0zibbD7f5vDpRYWlstNDVwcKjP5q1r
-	 5gdvkZSoDJ8xSzEhDB664wvtegeQsgY3683EVNtA2ASr/x4ZymWe7YMSPL/3v0AVgB
-	 edtkdZTNTFYn48LsqklnsUjUpBQrnQ13JrAwW3eoq9Fz+Q7FuiSOyH/NrrI943Tmks
-	 nBL80Dy/6dW2hTXcCgzynlF4z8nu4zj0MgmtzNvJlG4zsZ1oxYpjln97IVy7P6kHnG
-	 NwgKo2+nr90TA==
-From: Danilo Krummrich <dakr@kernel.org>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	abdiel.janulgue@gmail.com,
-	acourbot@nvidia.com
-Cc: rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH] rust: page: implement BorrowedPage
-Date: Mon,  4 Aug 2025 21:50:16 +0200
-Message-ID: <20250804195023.150399-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.50.1
+	s=k20201202; t=1754337691;
+	bh=3wXg1isZ6lxHlpd3i0U0vaueMgZ8obo0IlMsyyDjL6k=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=hXb93zCflF2GraAtcpywerQpJVKt14hK5ryzD100/1mxQvw+Pbr2FmtKsn9RkkY/e
+	 PNtHy9eFStE6q8rFTOMa0hM95AQgWbheFZHIzhHpxyXPKxdcjK5qsL/m6Pfbp4rhba
+	 FxGffF4b0RqK0QUu5t2xoMckV4MJ8ZsVNQAkPz9qgIbnJ6ycl/B5gjpjGD5rEMT+Dn
+	 93sofNEa9xeKH2jfWI9FHR5PNh9DPGb//g82L1pyaU947HyhIrZiJpZH2k8pu2ITYE
+	 nUm1VA/kUnNAa1rq1SbXb9o+mLmoIZYxMVimr78sQPtYa78XoXuPVYIQof+pqfg1XZ
+	 UzVsJyJXoK7+g==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 04 Aug 2025 22:01:26 +0200
+Message-Id: <DBTWT3AYHLLR.2NC0F6MRMZPCY@kernel.org>
+Subject: Re: [PATCH] rust: faux: fix C header link
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Miguel Ojeda" <ojeda@kernel.org>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Danilo Krummrich" <dakr@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
+Cc: "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Andreas
+ Hindborg" <a.hindborg@kernel.org>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Trevor Gross" <tmgross@umich.edu>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <patches@lists.linux.dev>,
+ <stable@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250804171311.1186538-1-ojeda@kernel.org>
+In-Reply-To: <20250804171311.1186538-1-ojeda@kernel.org>
 
-Currently, a Page always owns the underlying struct page.
+On Mon Aug 4, 2025 at 7:13 PM CEST, Miguel Ojeda wrote:
+> Starting with Rust 1.91.0 (expected 2025-10-30), `rustdoc` has improved
+> some false negatives around intra-doc links [1], and it found a broken
+> intra-doc link we currently have:
+>
+>     error: unresolved link to `include/linux/device/faux.h`
+>      --> rust/kernel/faux.rs:7:17
+>       |
+>     7 | //! C header: [`include/linux/device/faux.h`]
+>       |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `includ=
+e/linux/device/faux.h` in scope
+>       |
+>       =3D help: to escape `[` and `]` characters, add '\' before them lik=
+e `\[` or `\]`
+>       =3D note: `-D rustdoc::broken-intra-doc-links` implied by `-D warni=
+ngs`
+>       =3D help: to override `-D warnings` add `#[allow(rustdoc::broken_in=
+tra_doc_links)]`
+>
+> Our `srctree/` C header links are not intra-doc links, thus they need
+> the link destination.
+>
+> Thus fix it.
+>
+> Cc: stable@vger.kernel.org
+> Link: https://github.com/rust-lang/rust/pull/132748 [1]
+> Fixes: 78418f300d39 ("rust/kernel: Add faux device bindings")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-However, sometimes a struct page may be owned by some other entity, e.g.
-a vmalloc allocation.
+Reviewed-by: Benno Lossin <lossin@kernel.org>
 
-Hence, introduce BorrowedPage to support such cases, until the Ownable
-solution lands.
-
-This is required by the scatterlist abstractions.
-
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/page.rs             | 83 ++++++++++++++++++++++++++++++++-
- 2 files changed, 83 insertions(+), 1 deletion(-)
+Cheers,
+Benno
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 84d60635e8a9..0e140e07758b 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -57,6 +57,7 @@
- #include <linux/jiffies.h>
- #include <linux/jump_label.h>
- #include <linux/mdio.h>
-+#include <linux/mm.h>
- #include <linux/miscdevice.h>
- #include <linux/of_device.h>
- #include <linux/pci.h>
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 7c1b17246ed5..bea7f0ab91f4 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -9,7 +9,12 @@
-     error::Result,
-     uaccess::UserSliceReader,
- };
--use core::ptr::{self, NonNull};
-+use core::{
-+    marker::PhantomData,
-+    mem::ManuallyDrop,
-+    ops::Deref,
-+    ptr::{self, NonNull},
-+};
- 
- /// A bitwise shift for the page size.
- pub const PAGE_SHIFT: usize = bindings::PAGE_SHIFT as usize;
-@@ -30,6 +35,82 @@ pub const fn page_align(addr: usize) -> usize {
-     (addr + (PAGE_SIZE - 1)) & PAGE_MASK
- }
- 
-+/// Representation of a non-owning reference to a [`Page`].
-+///
-+/// This type provides a borrowed version of a [`Page`] that is owned by some other entity, e.g. a
-+/// [`Vmalloc`] allocation such as [`VBox`].
-+///
-+/// # Example
-+///
-+/// ```
-+/// # use kernel::{bindings, prelude::*};
-+/// use kernel::page::{BorrowedPage, Page, PAGE_SIZE};
-+/// # use core::ptr;
-+/// # use core::ptr::NonNull;
-+///
-+/// trait PageOwner {
-+///     fn borrow_page<'a>(&'a mut self) -> BorrowedPage<'a>;
-+/// }
-+///
-+/// impl<T> PageOwner for VBox<T> {
-+///     // Borrow the first page of a `VBox`.
-+///     fn borrow_page<'a>(&'a mut self) -> BorrowedPage<'a> {
-+///         let ptr = ptr::from_ref(&**self);
-+///
-+///         // SAFETY: `ptr` is a valid pointer to `Vmalloc` memory.
-+///         let page = unsafe { bindings::vmalloc_to_page(ptr.cast()) };
-+///
-+///         // SAFETY: `vmalloc_to_page` returns a valid pointer to a `struct page` for a valid
-+///         // pointer to `Vmalloc` memory.
-+///         let page = unsafe { NonNull::new_unchecked(page) };
-+///
-+///         // SAFETY:
-+///         // - `self.0` is a valid pointer to a `struct page`.
-+///         // - `self.0` is valid for the entire lifetime of `self`.
-+///         unsafe { BorrowedPage::from_raw(page) }
-+///     }
-+/// }
-+///
-+/// let mut vbox = VBox::<[u8; PAGE_SIZE]>::new_uninit(GFP_KERNEL)?;
-+/// let page = vbox.borrow_page();
-+///
-+/// // SAFETY: There is no concurrent read or write to the same page.
-+/// unsafe { page.fill_zero_raw(0, PAGE_SIZE)? };
-+/// # Ok::<(), Error>(())
-+/// ```
-+///
-+/// # Invariants
-+///
-+/// The borrowed underlying pointer to a `struct page` is valid for the entire lifetime `'a`.
-+///
-+/// [`VBox`]: kernel::alloc::VBox
-+/// [`Vmalloc`]: kernel::alloc::allocator::Vmalloc
-+pub struct BorrowedPage<'a>(ManuallyDrop<Page>, PhantomData<&'a Page>);
-+
-+impl<'a> BorrowedPage<'a> {
-+    /// Constructs a [`BorrowedPage`] from a raw pointer to a `struct page`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// - `ptr` must point to a valid `bindings::page`.
-+    /// - `ptr` must remain valid for the entire lifetime `'a`.
-+    pub unsafe fn from_raw(ptr: NonNull<bindings::page>) -> Self {
-+        let page = Page { page: ptr };
-+
-+        // INVARIANT: The safety requirements guarantee that `ptr` is valid for the entire lifetime
-+        // `'a`.
-+        Self(ManuallyDrop::new(page), PhantomData)
-+    }
-+}
-+
-+impl<'a> Deref for BorrowedPage<'a> {
-+    type Target = Page;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.0
-+    }
-+}
-+
- /// A pointer to a page that owns the page allocation.
- ///
- /// # Invariants
-
-base-commit: d2eedaa3909be9102d648a4a0a50ccf64f96c54f
--- 
-2.50.1
-
+> ---
+> It may have been in 1.90, but the beta branch does not have it, and the
+> rollup PR says 1.91, unlike the PR itself, so I picked 1.91. It happened
+> just after the version bump to 1.91, so it may have to do with that.
+>
+>  rust/kernel/faux.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
