@@ -1,59 +1,59 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9029F1E231E
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 13:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4E3175A5
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 14:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754315119; cv=none; b=S1pKqT7b0aDgNkSP+T9/WI24vjMUKi4ZifZlJ09uASznLtPzsI7Vsa5xILnwlm0veHmXWpSLWegPDIk4Bb//n87lYt9C8hTrdquG8ZTE5uuF7NOEM/EU2h/w+TeapUELxYp1VaqGMG5qpZ0PGO0LSTIocnxKn8ACJusCeTCiEGk=
+	t=1754316064; cv=none; b=Aedx7pnWO1YpTBrKfExpzEjz7CP4yvBeB7bCeCXwTVYDa8w/rHv1aU1yZ940NmH/e+w8AQLI8yWkMswR0Fix5jfaMAFEhVuaWOS2zhgdD0NRXorlsQiBD5T8FC65Aq2rlO8m5qhqrO/L7wmECq4JCAhW2gPxs+xRgs8zD0ts7NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754315119; c=relaxed/simple;
-	bh=1jH5khfvRzgjhCuPquHsfZtTT8xyalgl+ik0yhOuA/w=;
+	s=arc-20240116; t=1754316064; c=relaxed/simple;
+	bh=xj50R8mQAnC3oGaChPzaF3Zvfpm/dUSewHJdzEkPpkU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SsKVc+qIcN7Xe7V622EPof9HUcLLel2yOP2yW7vhH3StFhXmC8mDNMi8OGn5GpNJPe7KvqrPItt1Mzo2g511CDS+caKKNR3cW0R3ZzfciIIE3yU6ztasPdbk76fjHble+AYeBSbpep5K/nPAjbPuT0P/YeDebG6bwh5dtdJuu6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cv5YlAha; arc=none smtp.client-ip=209.85.128.52
+	 To:Cc:Content-Type; b=Oo+n1FSTdu2ngg6zsZMJhNPYBWW2zqzvHTtz834VeTv0pmP/nHr3FYvrrDMf2qkatDVBNqpcD2wK1wFlP0K/Hlu/B1sOJF74LFUMwWz6NnQz4Kn/0akKhN/0AIn0fmYSEzL0bq6FM6co3Z/WoOmmpuwOl83eDbMd2TysFD0g5o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sPccDVhW; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cv5YlAha"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4561607166aso31309445e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 Aug 2025 06:45:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sPccDVhW"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b8d0f1fb49so2216117f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Aug 2025 07:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754315115; x=1754919915; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1754316061; x=1754920861; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lVxfLjqZpUxA7k2P1DVAmCagXBwL2u2PCEjKY9dcPbA=;
-        b=cv5YlAhablHCtX/qr2i86/WWkxQRjwknqyG+u0FgOGCvdCEoDBrpo9XPt9cm/HLJZX
-         Obkw9E6tjY2KOJMEau33wv2H2xQH7UW8sZEmpqell3KFW+dLK21fZ5px3Nd22Y/gXhTm
-         WRnE8GSi90aehZiuQ2kTy4htHGnUJzK53B/BJ3dPLHlpB4TZr6RxEU+QEO2F6bNLonFJ
-         g7UTRNrqnInEx57j7EabRWc9M9VmvHuYmCe8WsCG+dx0MYqmHPkFKMF10bBjaGghZ0ez
-         EnUiFUZIxZqhctr9lBdpKnssTpbtDC3OSukMRY4pbon9DnXn9WSDrNPmnEbTH5z3nfAi
-         euVw==
+        bh=CHAJM8FSmnytalA1wMLubAZ/HMmqzJD/2hbTKluoKzQ=;
+        b=sPccDVhW6QEy9awym2yIacqxD012cjYckZGwqm++41pMKdopp9Kw0KRZ49zh+Ut3rz
+         qU+s1bgtX7YqYE+EowW/cd6JP0JTYrQT9w4SgtPobxZPo0z2WmUWE0E4F/1fHId4O8Pb
+         EqNVtXoJW318Drb6pMGhCcBnfWVWtpkgGCItkesLpkfPoQBCxhO16jO52J3NbhqK1SOU
+         fubmFj3G91IzH9w9r5ATw3XO4cnYOi1dMt040KTkOKoo9jsl80rm4dnVUH3THHLXQqC2
+         kwAYsTrotvmj+gDk+3+OJaHBCTd3OS+6aX7QSsRCVX1ceUTab5jfOOYUEB06K5hfdvit
+         8M2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754315115; x=1754919915;
+        d=1e100.net; s=20230601; t=1754316061; x=1754920861;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lVxfLjqZpUxA7k2P1DVAmCagXBwL2u2PCEjKY9dcPbA=;
-        b=XR3DHDfyGLnVLIimNuF1eXEJHbDJubj65quga+1Jn0rzcu5h610F/+9LPZtVNM6jLz
-         ZQPYjiq8x1QA0EtHTe0uz3qS+Rwv2Y+Zw3evinkT8hEQOqcCF7n92bJ798XwuzwDXJR3
-         UeTKs17qJS5BUnjdKT9b3n1oJgCgk/E5/33ZfvDEpcSVF0sGgTUV/L+S+5WbT8XgshRG
-         rwkFxdLU+LJ9Kk/qXvAxrb4YtUmIheUuqbZ2XUWiAvTO4AN97PHo0TaBq3GVHPKe5TSm
-         7uGZ0CVaE2pfOq5zCiEkr7aB/1dIdJTFIcUo/0pJYpUB5jIcHr1uxe/SM3ZHxfayQs9E
-         fBvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWwTXEMrq8YxmKDA2geGJmpfcwBXgQbhkJNHyv2YTPrBN+9HaCH8SQAClaM7eCxJjo+gIQ7wP3BJTOcsMmbAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkWBSfSyM0pr71tSNyDSCpJbChMpMX3tIrvCEUK60WsDTNXqOf
-	ztvxvFIBvHmsgurDrIgQRSQbE4qhlkCH9R/KOmYCT3hZZ8Goq+pIJivPJ3a08ATZj5zAL5kElBt
-	BjCxtS/uV1xN5SXa+d5owKfdEJ1t4dmW0gWXOwFFG
-X-Gm-Gg: ASbGncvVKf6vCtUvo/gChhLb6+Bu/yJWw5ETfcx4sgO2EBkj/g3nExOUFq7Vq89RSeo
-	c8agcafS4jLAsDYty2aquiu/bqt86M9IAGbngl7ietWpOC6RBm3ojPfWYEmtH1E1BoZDtZE51Tx
-	+45Y8ZQbbEvCtfOpoHeNiAfLX7F87lByckv3PeRt02tmV1ZR6lVfLnbIZ1qtxXv9Qx9iLOeShaS
-	zPDVCOoa/N/atcTn5sXAlI2lg03aJP4cVfySyOAYS3bR5U=
-X-Google-Smtp-Source: AGHT+IFaotM+JyQ2Vpzm4IHwFj1sDugJTvhpJmHMDtD0C27FQSVnxByFTiRHFKX89CZ7UXKQfqoZ8hHgvXXbgq0byS8=
-X-Received: by 2002:a05:600c:4692:b0:456:1a69:94fa with SMTP id
- 5b1f17b1804b1-458b69dd831mr67244495e9.13.1754315114601; Mon, 04 Aug 2025
- 06:45:14 -0700 (PDT)
+        bh=CHAJM8FSmnytalA1wMLubAZ/HMmqzJD/2hbTKluoKzQ=;
+        b=JlwsuID/Cs55cI0++m8l4N/bxPh6Eue+Wluu3NAkhyghhUGp2W3xd6n+rCSWNWdbk+
+         EMM/dIXTd6MsFJGjf7D9ezZgjAhdU4ocORJqBcp6Ww7gmxg97LMgN9ZI3Xxb9xq6JW3/
+         tsu8yGfNKnxn1jmVRlIoQf89KoWAUSzRk5viTjvvBf0RAzMMT8dLPqCOSEB99xhLm/zw
+         XXbnNeIAVIzfmkN304SyG3LDDJqQd7jTD0XDvyiUvxfjRN0Z7qd7V67ay53zJskV+GzQ
+         TcHBJKQCM86Lpb271/R48fqkMdTomKf+wHfIJcw2LS6nk1K9gXlJpnWM8q05484dMFGX
+         YZ+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXR6T9I7U94srcFTDTqIyfZsfqB2LDW1YPcQU/vlvgfryD7Yowrt4doWQ7vwaCHA5QMyGKRB+mtgkKxuVoC7g==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb0ffXl2AZNKXHPxDVyB58GrJ/OyrjjCmH0z3EaV/OBtN5wDAQ
+	P23TQzttUTTINUiFzpG21P1VcEvA4KEbOzOZYQ/aUPDUonidyvRnFgpBRX2Nt69M6kTSe0PnCLo
+	S8Uz8ryvpGEVgkgSpKpCf8kOGVl+x3A/iirHS86Es
+X-Gm-Gg: ASbGnctDe/vECJiUMbTvc6duYkr9rRrVTKVlUTLUmVvpPwWCifrBImbQH+HSmxAEgCN
+	0vSksY0XJ11/vEK5Rg03z58jM0/XnVXqHcnIONsNHFVnNE8nNImw8vhhtc8EakviCrN6yMAFQto
+	MmX4GymJd2cwlTh5+Fw09yRRKIVrJvGKukmclMltsyVyutj8lT1FofYEURE8Y1Iu8oTaJ0RROFl
+	xYVFn2y7Wp+7bWALJwmqgMOqsQxefRnUEUS
+X-Google-Smtp-Source: AGHT+IFUU2uJR3FAMs1rzBe7h/KQbUHKICBqcp27KBBBta/zTdWvcJkLu5KQlclilix6YlZPh1K/rMJS83c3Dckdneg=
+X-Received: by 2002:a05:6000:4305:b0:3b8:12a6:36b8 with SMTP id
+ ffacd0b85a97d-3b8d94c1dc1mr7155506f8f.46.1754316060342; Mon, 04 Aug 2025
+ 07:01:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,12 +61,11 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20250731154919.4132-1-dakr@kernel.org> <20250731154919.4132-3-dakr@kernel.org>
- <aIyGdr8vKV4XE6Io@google.com> <DBQZHIS4VQBN.WSKBML2WYQE@kernel.org>
-In-Reply-To: <DBQZHIS4VQBN.WSKBML2WYQE@kernel.org>
+In-Reply-To: <20250731154919.4132-3-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 4 Aug 2025 15:44:59 +0200
-X-Gm-Features: Ac12FXwUx656MFEW5kmkNucJ1NlP5WVIBqML9iOkHHqR2MZNAaCDmASPCCRrZcU
-Message-ID: <CAH5fLgi6W0g1mp6EyR16ayk_JT8pYJUUZbWXc-hyNxSxU_VeNQ@mail.gmail.com>
+Date: Mon, 4 Aug 2025 16:00:48 +0200
+X-Gm-Features: Ac12FXwPaFFtfKIfOtRFAm4bgGywLjC6Y0YkcsOWje9_NdO2yRdOYYS_hnAnRbE
+Message-ID: <CAH5fLgh6x9FYdURedJJSB1nm9n7=HA7aK3Y741P=1g7cLKEQOg@mail.gmail.com>
 Subject: Re: [PATCH 2/4] rust: drm: ensure kmalloc() compatible Layout
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
@@ -79,42 +78,27 @@ Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 1, 2025 at 11:29=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+On Thu, Jul 31, 2025 at 5:49=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
 wrote:
 >
-> On Fri Aug 1, 2025 at 11:18 AM CEST, Alice Ryhl wrote:
-> > On Thu, Jul 31, 2025 at 05:48:07PM +0200, Danilo Krummrich wrote:
-> >> drm::Device is allocated through __drm_dev_alloc() (which uses
-> >> kmalloc()) and the driver private data, <T as drm::Driver>::Data, is
-> >> initialized in-place.
-> >>
-> >> Due to the order of fields in drm::Device
-> >>
-> >>   pub struct Device<T: drm::Driver> {
-> >>      dev: Opaque<bindings::drm_device>,
-> >>      data: T::Data,
-> >>   }
-> >
-> > I'm not convinced this patch is right.
-> >
-> > Imagine this scenario: T::Data has size and alignment both equal to 16,
-> > and lets say that drm_device has a size that is a multiple of 8 but not
-> > 16 such as 72. In that case, you will allocate 72+16=3D88 bytes for
-> > Device, but actually the size of Device is 96 because there is 8 bytes
-> > of padding between dev and data.
+> drm::Device is allocated through __drm_dev_alloc() (which uses
+> kmalloc()) and the driver private data, <T as drm::Driver>::Data, is
+> initialized in-place.
 >
-> Are you saying that there is an issue with
+> Due to the order of fields in drm::Device
 >
->   (1) the existing implementation with uses mem::size_of::<Self>() or
+>   pub struct Device<T: drm::Driver> {
+>      dev: Opaque<bindings::drm_device>,
+>      data: T::Data,
+>   }
 >
->   (2) the proper one that uses Kmalloc::aligned_layout(Layout::new::<Self=
->())?
+> even with an arbitrary large alignment requirement of T::Data it can't
+> happen that the size of Device is smaller than its alignment requirement.
 >
-> I think neither has, because we're not allocating
-> size_of::<Opaque<bindings::drm_device>>() + size_of::<T::Data>() as you s=
-eem to
-> assume above, but size_of::<Device<T>>().
+> However, let's not rely on this subtle circumstance and create a proper
+> kmalloc() compatible Layout.
+>
+> Fixes: 1e4b8896c0f3 ("rust: drm: add device abstraction")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-Yes, you're right. I misunderstood how __drm_dev_alloc works.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
