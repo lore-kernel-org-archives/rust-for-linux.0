@@ -1,107 +1,113 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8593F1C5489
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 17:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCB51CDFAC
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 17:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754328539; cv=none; b=BxTm4XEJJoukVvkZoDUZR+8TFvbRgMHp5VRYrG8V5vD9SE8zVL9IUW2KeosCcwCjrbK8q0guJao1EiRAuGytoXdHmIaCelSnx2z/IjAQx3wnWiuXGRAFF2zKX6911Kf11uzmSBio1mNGWHhWAso/FpmWd1q+r48iBJNzTs4imx4=
+	t=1754329617; cv=none; b=Wg9JdEZdWvxkB/j8sxZomI9xwOguWTgmPhCDRyeLUduGYaXI95E2zq/G0dg2EvA6gX35jzoB7FzzeuPRlHfr721X0BD66sneQjG9RWCEVv67dZJfc4jNLL70isAjdmzWnady3MiR2splyBmOu1cjbM5TTZVdtdikReQKbGf6iZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754328539; c=relaxed/simple;
-	bh=uMAUmffTPUG7bFQVBUpQTG/xk0fu2i4jSlJrqNu0usU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ffiz9WKbo9S8XNQmdrl5tT+FHNnaGk9Uay5Ekq5wN+kFQnmF1XZ3UJ2/j8iHdob3wszKycdbAz3nHZasZQHbokcozZ3G9MZNVYR6ToQNUKnXtEwUnnJsctgJEHSFImbeUAnpGNt2gONlofNnZuu8Qz9SD7AweTdihKRvSyi8mHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+v+wRBI; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1754329617; c=relaxed/simple;
+	bh=zwrf+vy6Y7t48AARVBHOaA441xt+E/SPZ6c1gn5VaMI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RzjM972k74mD1h9V7+VMQrtRB5sM0nqRGbuVIU1JIs46rpgFoAEscYPcKKD4A5A7NWfd0MVTg/p3r5Y8MAAPOMEi2fLNeQ8rEG5Kw+sItrZ8ycfnZBgLwjqSkaDG11S9YJZdWP/y4nO5OKkSLkjbRalvqgPf8gddya3oUzXVgbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ij/Mxtb0; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+v+wRBI"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-23fd3fe0d81so42950505ad.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 04 Aug 2025 10:28:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ij/Mxtb0"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-76c1008fd60so59914b3a.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Aug 2025 10:46:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754328538; x=1754933338; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uMAUmffTPUG7bFQVBUpQTG/xk0fu2i4jSlJrqNu0usU=;
-        b=X+v+wRBIWbEw88cLZY+oIH9kmpqqDX6S35zjdRH2Vb3kd8E1H4UUaOGMGj/ALIO+B0
-         pk2E/1/NhrUYVuB73GQzb1h81Z7jBwCD4scuyp5G5K1glnq63qeyYMMKET4aRoqreuya
-         3+UD+A7tFKk6wEC29rIEkPfCaxrKH/TK5Z1Oa10nacvsAAQE/h7WOBpE9I+42dmMDna0
-         q/LFGjjaoLBe6sswpWRgulgXTtNdw7q47nAszzWLYNyCTlB4y3yyXu3JndAezAYWeQsg
-         rDz2p/Fry2iOa2/HNEm8FHjVCu6h7auWLfnkWYhKA6TSk+PQm0EvmAzWaDSHvjPnITQb
-         kwfg==
+        d=gmail.com; s=20230601; t=1754329615; x=1754934415; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zwrf+vy6Y7t48AARVBHOaA441xt+E/SPZ6c1gn5VaMI=;
+        b=ij/Mxtb0U0YR4BFkU5Cvj45sawG8OzMad5CKRrrzhO97wzw6lDhbGlLhyLlT2F0X8m
+         CwhlDdboKU96xU64xSDthgrIMRj/a00UXsm15BSUW1wqGexur3xKx6R3thjpMro6TdQB
+         lCvEYDimEgKU2BqnGjN0FJcy4z+FmHqZRF2GK6xlvFmCyuvVAqFNbzDC0fnJ1JqC6e8O
+         kNC5PERCIqY4pOPlqopnO2yLAfKXHr+3q5bNayFaLK7d67wudRfLXraudd8lou3pGYIo
+         cFgp3PIBNDywLXhPd77o479ICJa4dYep8w01QprU/fwgViCoX0i5dCcHpV2hJfrJZMym
+         Wn+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754328538; x=1754933338;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uMAUmffTPUG7bFQVBUpQTG/xk0fu2i4jSlJrqNu0usU=;
-        b=ZXpIE7fHSEnVVq56zGsPuyfHwuvmss6YcWcyPrSsr2c37tNrXdsnGaSi9LYVvpUFhM
-         ihYXrYq/DjOSeXhqggNLsfEMujEanWTR9wkvoGfJk0JNpqlZOWN4rMCCZrAv6+/h6R//
-         VfK8H2P2QGVNxJ3462rWVo1OQpj7qNJz/AeLu7GbFQXyU/QnUE5AWSTMIU8C25tnWqtK
-         zVUUdM65LeprGn67qDDirjaC+3KJpVsTlXzeZ0uKPwyXNeVysdnFK0mcL6vAhdaRaomd
-         lpbfy2nIKW+2GUi5wRHoOrenvE0lt1EgoFbiF3EyC9owdzYfJBkkYfkQ9eBDmXkTLf/x
-         jJRw==
-X-Forwarded-Encrypted: i=1; AJvYcCXOtHsenwdNwz68x7yzTx3ysazEZrXVVzG8TjjFn+mmgmjmZETL1VDEnzbCcsSXXnLWdqQdTRJq9Xg4XKR8sg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTsXWhx6uGLMUPoPKVz6ara9h5YvoMhPFxoknEzACV2q5alv7I
-	T2auKDImoAW7VYYTE5+EBDl13W1CRd4hr3w0LQkkzR06UPDnWAFJmS01
-X-Gm-Gg: ASbGncuwVkDCtPXPOjlBlZ0r1EpuMGNB/CdrUs0MHyr+3o0CMuOgisinBXQDAbWi9K4
-	hk7sjQxDnAxsohlW1BO1jDfpVq2GV+tcSTVd7b0b8eYzk9f1T4fOQd6+9RXnoFDBvy//yJ3xS/y
-	8yCfVGQvXX5/e2T03hexXtis5G1GKnCCN+E8ibr4E2dMHoUjOav7tbircrsI2yXiUTKr7z6pkV8
-	M22MJRVVHkF6qZBDmmJcNA1m4ki9lHJaWC2YHKI3eQz9GUSNuCHUgG/rHIIcg7pXYIpwTHd/zf/
-	RBnDHUF+bcCU+qdrcsKKyYGRIm0YqGOHq5hx1N79PofP/ZzrZjU8PxNuopFg6TqQ/hobI0kIUhm
-	WadF9ivyIMGq4OjlrawA+n83uYVu7QHunIt0O6zZ77Q==
-X-Google-Smtp-Source: AGHT+IHipnf/cuL0DU41NAA6dkElQZeXYjJhwiWUp5O791c4aU0qnEdHXpKmJ8HSfaE1yRLYbERmOg==
-X-Received: by 2002:a17:903:32c7:b0:23f:e2e0:f89b with SMTP id d9443c01a7336-24246f56383mr125378575ad.3.1754328537585;
-        Mon, 04 Aug 2025 10:28:57 -0700 (PDT)
-Received: from [10.38.1.85] ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aabda2sm115159925ad.163.2025.08.04.10.28.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Aug 2025 10:28:57 -0700 (PDT)
-Message-ID: <663019c6-af05-44bb-ad9e-3b88cbc399a8@gmail.com>
-Date: Mon, 4 Aug 2025 18:26:33 +0100
+        d=1e100.net; s=20230601; t=1754329615; x=1754934415;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zwrf+vy6Y7t48AARVBHOaA441xt+E/SPZ6c1gn5VaMI=;
+        b=tmZXaUgoeZKwP3DzcKt4PrZFDrAJji/jPbA5W3g76Wj6JJj6vDu3vDtWDXyjNYZx3E
+         S9PasRwVRJIlC+yMa7VCB2YS+w3kgMAN+YD1z4BBFsiIQGYkoINq+IB+x23Rw0x0/78O
+         tLRykN4+darnrVixdMLMANCKikpQ16PyfnFoQiik+YmkliJXU86dVb3BHGTf2bABeJ7U
+         Pobt9bP7/OP9FDcSdW7A6Rvk0fen24FNgtT29DOu5HOsaWNpV7b1g8IGkxd9K1aPFBX1
+         /RD38/xPKjhwstK/LIlQhlYqmRxkjP/eV4NM1a3N9gP1UCTJfUElUDD04p0iAvCOHoco
+         prlA==
+X-Forwarded-Encrypted: i=1; AJvYcCXq4Wb5fbKpSA8v1AM++1SC373Osf3VxnW93lY3hCBYaAss0AfnPOizKp5O0FbhzJbqSOUBB9kC1yuyqZx+Jg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmSSgtsBhxj+OZYHl86dSaObO4k4KCTxkL8tCOmVTIenP2P7gM
+	CUGE8ElFDKu8hb4lFnS6vRF6jW4BtusXeVY7M94PkPvQq8A2Ii13lCpwhY6SmS60ixjEafx6dZm
+	+Wqk1h29Gwk59hT/aofXfF1VCP/KyT88=
+X-Gm-Gg: ASbGncutn1IDO5uDoDCoTio2niXrqTp2FCFXO0YZjIhCA2w4mSUsZjgJbltjD7Y4wOI
+	KEZQ4Niyx6B44cLrc83hnL0xwNgH3AaQ9q/6keh8JmdL97n0NNldfVauqkkYETdA/4X7N+n54t3
+	S7yqGijIINicVK3sug72woU0F52rD93MmBWtk2Ib818dJDD6xvOFz20uYArLI5KHtrv4hQswFFy
+	nBZEaE=
+X-Google-Smtp-Source: AGHT+IEvkY1bqcBl7HK6wkH86vrUFWcPXkpBkTGH1UdVX9+KTwETzsIADvqC8A/9HXtZ7TCylEMmb9IaA5NwWSWMTIY=
+X-Received: by 2002:a05:6a20:9f86:b0:1ee:d621:3c3f with SMTP id
+ adf61e73a8af0-23df8d6cec9mr7450184637.0.1754329615260; Mon, 04 Aug 2025
+ 10:46:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
 References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
- <08e89f95-6c95-4998-988c-e25f3cbfb389@gmail.com>
- <DBTQRIGWJDYB.2VNIOFWLKZFG3@kernel.org>
- <3e53e2c8-4988-448e-b2ac-6eaf6d62e050@gmail.com> <aJDbmFx3QAm-TY4L@shikoro>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <aJDbmFx3QAm-TY4L@shikoro>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ <20250801154042.14327-1-igor.korotin.linux@gmail.com> <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
+ <08e89f95-6c95-4998-988c-e25f3cbfb389@gmail.com> <DBTQRIGWJDYB.2VNIOFWLKZFG3@kernel.org>
+ <3e53e2c8-4988-448e-b2ac-6eaf6d62e050@gmail.com> <aJDbmFx3QAm-TY4L@shikoro> <663019c6-af05-44bb-ad9e-3b88cbc399a8@gmail.com>
+In-Reply-To: <663019c6-af05-44bb-ad9e-3b88cbc399a8@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 4 Aug 2025 19:46:43 +0200
+X-Gm-Features: Ac12FXwFOrfC1YH9RfWxIB9CEgCf25SXE0QG1FyFlRtJBGXQr70RlotvjT-JmbM
+Message-ID: <CANiq72mej61wXGuoGS2pDo=jTf5T7W_kRS+JqqMLSQWEKuq3+A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver abstractions
+To: Igor Korotin <igor.korotin.linux@gmail.com>
+Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>, Danilo Krummrich <dakr@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Wolfram
+On Mon, Aug 4, 2025 at 7:28=E2=80=AFPM Igor Korotin
+<igor.korotin.linux@gmail.com> wrote:
+>
+> Can't say for sure. I don=E2=80=99t expect much from my side, but from ti=
+me to
+> time there are Rust commits that change multiple subsystems at once =E2=
+=80=94
+> kind of like a wildcard hit.
 
-On 8/4/25 17:11, Wolfram Sang wrote:
-> So, for starters, we can use my tree in the seperate I2C RUST entry. We
-> did a similar thing with the I2C MUX subsubsystem. By the time, we can
-> move to a dedicated tree, if there is a need. Thinking about it, there
-> will not be a lot of patches for I2C Rust, or?
+Yeah, I think that should be fine, e.g. those would be expected from
+time to time in C too. In Rust we may have a few more since things are
+still evolving and we try to enable useful lints if possible (since
+the early we do it the easier it is).
 
-Can't say for sure. I don’t expect much from my side, but from time to
-time there are Rust commits that change multiple subsystems at once —
-kind of like a wildcard hit.
+In some cases, we try to take those "global" cleanups through the Rust
+tree with Acked-bys etc. to reduce churn, but it depends on the
+particular change.
 
-Anyway, as far as I see, we can always adjust the workflow later if
-needed. For now, we just need to start somewhere.
+> Anyway, as far as I see, we can always adjust the workflow later if
+> needed. For now, we just need to start somewhere.
 
-Thanks,
-Igor
+Yeah, Wolfram's approach is also a good opportunity to learn on your
+side with low stress, i.e. I would usually suggest that when he picks
+a patch, then you can try to understand what he did and why, and
+whether you can replicate the commit locally as if it were you picking
+it up etc.
+
+Thanks!
+
+Cheers,
+Miguel
