@@ -1,103 +1,92 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67FB3AC1C;
-	Mon,  4 Aug 2025 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3D328642C
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 17:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754327614; cv=none; b=Alr+3PROaLGUzpEWtTlCXceadFt8jHKUDnTg0ccvEJ0J83bSO0K1yNBgH8HnEksIrKYCh6bsN6iy81OuFAxkDgsps6oH83zPhdrWdlzR2pGlqedVfUM5mBmpCbD/pYX9Q5325CDx/mqKjqblX1LoA2X8dtwUM/oLs0qz2WtFNmg=
+	t=1754327763; cv=none; b=ifvtMkURalahUuV1rV1oiFhLyXNy7fxfkcrMDPZuWnUdjWYXyR9f3VpWqPM7OIyvb97fQ2tn7GnSTekAu8Kj4vtzHTHSVNVWrXs6msTHgzsQAgsSNE1kM3VOaueDR3Slee4Ha/4ecmBp6keqyRr/dvYCtzfu4u2QvjxBzjkwDXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754327614; c=relaxed/simple;
-	bh=7E1lY8jxWW3f7BiTEDhPp5QNAEv+WgKZsbaaNANDdAg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BLktqUFmirsFQyFY1zFXN+NSAj/00OF/gX6vU53QVNPmKhuWbDdhvi5acsLDJ/Td4TKNmXe53uOQNxO60IzPZ4KNYpzNYn2XK678pO7qOcBccTDObOCJNJ0gSEXWyzs2D7QNUV/iI1vUjyAAnQRcmOTQ0xqFgPoV0fynzwHwWhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2PxFW+J; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754327763; c=relaxed/simple;
+	bh=M9q1fgaURt58Aeodev2QZtum4Mu9RH6lDLkRVQTR3eU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=q5WOz7RA4spclzhQasErIQ/DQJ89aKfZ3YFhLSVu2B0Opd5f3Ddlf0/CA4BY0A2/EWtEmrAqREbvUalMh0fnLTLHaX0XScHw2KiJP0H7MBB8OlBvcJ4g72O9kKv+acv9xsiUOrC3aAiY9VBACM6ZNpihpT1RcRTI/mQEVHM/FgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rhOMiSKg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2PxFW+J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E75C4CEE7;
-	Mon,  4 Aug 2025 17:13:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rhOMiSKg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A9AC4CEE7;
+	Mon,  4 Aug 2025 17:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754327614;
-	bh=7E1lY8jxWW3f7BiTEDhPp5QNAEv+WgKZsbaaNANDdAg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=f2PxFW+JAlum/Xf0ViNxMPvlP0p1YuzO0nTd7i4M5MvIfwW40L0Y6ijajAYSl0o3n
-	 8ukO1tV77iIcaowbl9YckrKEKdPVoVj3xRO2kcTDH+pTVdbP/uCjjoxLW7YZIlfwkA
-	 cfsEbSavtVnMez51N1b6TKaS9EGdq3dv9ttgW0u/6e5MEy9uKotaYYhg30TBP++Z/1
-	 6NohQhYSusxq8xWUL1himR5i65OB17jw7I7osjco2vNmsw1WMzzQAW9Y06/aQ0xSQt
-	 ZrDfLpvgbsLZbxXXegmusihRR3ipmGlwCKOHUc4u+CAv5pDpy3WtfSAjPIu4CwZOQw
-	 IiYYAbsUYvZjA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] rust: faux: fix C header link
-Date: Mon,  4 Aug 2025 19:13:11 +0200
-Message-ID: <20250804171311.1186538-1-ojeda@kernel.org>
+	s=k20201202; t=1754327762;
+	bh=M9q1fgaURt58Aeodev2QZtum4Mu9RH6lDLkRVQTR3eU=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=rhOMiSKgXVYhPBPU4v4Ype8uhdPsb5BpY42kXXdhWB22X+uMSC8z74nYwfTyq04zz
+	 ySxabEj1PaxfvpTcqcjCbPDLa3jXkvdMET5lwjK5p6S5Yssw5xnisVmzzW18G06LVp
+	 sj4/Kp+1xGA3IKGJ88vzpDabcmiVRZHPe/wpM9q8DEaD+Y97DBqmOkVw/D62Up6Jf1
+	 lHfiumSq8IsEv4zFaJgHf6lXTTlkJvOKe0+UD8DkHlpt2xxGPZnm4wWpVHO4wQKt3Q
+	 3eVTOTETUkuhTM/VqTCxdJ35wgdv3gVgwUqroPX0fBBwb/NLnyTMp/EY94Hyjwokv1
+	 oIqm/satoCyHA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 04 Aug 2025 19:15:58 +0200
+Message-Id: <DBTTAEC8HLGA.QYJ0UZOIDYEZ@kernel.org>
+Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
+ abstractions
+Cc: "Igor Korotin" <igor.korotin.linux@gmail.com>, "Miguel Ojeda"
+ <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng"
+ <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>,
+ <rust-for-linux@vger.kernel.org>
+To: "Wolfram Sang" <wsa+renesas@sang-engineering.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
+ <20250801154042.14327-1-igor.korotin.linux@gmail.com>
+ <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
+ <08e89f95-6c95-4998-988c-e25f3cbfb389@gmail.com>
+ <DBTQRIGWJDYB.2VNIOFWLKZFG3@kernel.org>
+ <3e53e2c8-4988-448e-b2ac-6eaf6d62e050@gmail.com> <aJDbmFx3QAm-TY4L@shikoro>
+In-Reply-To: <aJDbmFx3QAm-TY4L@shikoro>
 
-Starting with Rust 1.91.0 (expected 2025-10-30), `rustdoc` has improved
-some false negatives around intra-doc links [1], and it found a broken
-intra-doc link we currently have:
+On Mon Aug 4, 2025 at 6:11 PM CEST, Wolfram Sang wrote:
+> Thinking about it, there will not be a lot of patches for I2C Rust, or?
 
-    error: unresolved link to `include/linux/device/faux.h`
-     --> rust/kernel/faux.rs:7:17
-      |
-    7 | //! C header: [`include/linux/device/faux.h`]
-      |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `include/linux/device/faux.h` in scope
-      |
-      = help: to escape `[` and `]` characters, add '\' before them like `\[` or `\]`
-      = note: `-D rustdoc::broken-intra-doc-links` implied by `-D warnings`
-      = help: to override `-D warnings` add `#[allow(rustdoc::broken_intra_doc_links)]`
+I think the changes to expect are mostly in three categories.
 
-Our `srctree/` C header links are not intra-doc links, thus they need
-the link destination.
+  (1) I2C infrastructure changes. For instance, this series contains the bu=
+s
+      abstractions to probe an I2C (client) driver. So, I assume subsequent=
+ work
+      may contain infrastructure for I2C regmap, adapter drivers, xfer
+      algorithms, etc.
 
-Thus fix it.
+  (2) driver-core infrastructure changes related to the device / driver
+      lifecycle.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/rust-lang/rust/pull/132748 [1]
-Fixes: 78418f300d39 ("rust/kernel: Add faux device bindings")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-It may have been in 1.90, but the beta branch does not have it, and the
-rollup PR says 1.91, unlike the PR itself, so I picked 1.91. It happened
-just after the version bump to 1.91, so it may have to do with that.
+  (3) Common Rust infrastructure changes.
 
- rust/kernel/faux.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+(2) and (3) may also go through the driver-core and Rust trees, the frequen=
+cy is
+not too high, but I'd expect a few patches every cycle.
 
-diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
-index 7a906099993f..7fe2dd197e37 100644
---- a/rust/kernel/faux.rs
-+++ b/rust/kernel/faux.rs
-@@ -4,7 +4,7 @@
- //!
- //! This module provides bindings for working with faux devices in kernel modules.
- //!
--//! C header: [`include/linux/device/faux.h`]
-+//! C header: [`include/linux/device/faux.h`](srctree/include/linux/device/faux.h)
+As for (1) I know of at least two Rust I2C drivers people are working on,
+DS90UB954 (FDP-Link deserializer) and NCV6336, which I think is a buck
+converter.
 
- use crate::{bindings, device, error::code::*, prelude::*};
- use core::ptr::{addr_of_mut, null, null_mut, NonNull};
+Depending on what Igor works on (I thought I read it somewhere, but do not
+remember), we probably get away without adapter drivers and stuff for now.
 
-base-commit: d2eedaa3909be9102d648a4a0a50ccf64f96c54f
---
-2.50.1
+Besides the I2C infrastructure they require (which doesn't seem too much at=
+ a
+first glance), I think we also have to consider how drivers should be route=
+d
+eventually.
+
+- Danilo
