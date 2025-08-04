@@ -1,110 +1,103 @@
-Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8688B1F1527
-	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 16:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67FB3AC1C;
+	Mon,  4 Aug 2025 17:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754323871; cv=none; b=CwXEcgokugwq4y8yeHECu20yhPB9zT3FOjFUtNyX6UcMpVgOcy0LcNrPQ79nkGT7Iyex+D1pGmt7QoRXYizTFcsCG7C/xaWo4rbvOIBHSf2qm23VfyMuhhYZJv+8DZVXONAF1QnIE0hoDVtxxGrl8/BCq4j+IRpoZ72G/PbCkwI=
+	t=1754327614; cv=none; b=Alr+3PROaLGUzpEWtTlCXceadFt8jHKUDnTg0ccvEJ0J83bSO0K1yNBgH8HnEksIrKYCh6bsN6iy81OuFAxkDgsps6oH83zPhdrWdlzR2pGlqedVfUM5mBmpCbD/pYX9Q5325CDx/mqKjqblX1LoA2X8dtwUM/oLs0qz2WtFNmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754323871; c=relaxed/simple;
-	bh=4P3uqKrz75ngOrJjvr4Hoarkt3AuGy4nwung5e4uNXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JEECF7xzw63JTlF+7T5ZkQZFBZNtV1ib0d7Xs/EhHQ8saqYlyjSocBGkFWBO/+FN0D3j8RFjQHE3h0NKaFH81DqBWQzKcuMjxfOL+lLPUZCVQcAp2zt7J0JhjjsSfyp7+QE0MQzyCH1Pgsh4K7Inq6u+h3vvaz0vlX9En/UUk2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=jSMGrxau; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+	s=arc-20240116; t=1754327614; c=relaxed/simple;
+	bh=7E1lY8jxWW3f7BiTEDhPp5QNAEv+WgKZsbaaNANDdAg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BLktqUFmirsFQyFY1zFXN+NSAj/00OF/gX6vU53QVNPmKhuWbDdhvi5acsLDJ/Td4TKNmXe53uOQNxO60IzPZ4KNYpzNYn2XK678pO7qOcBccTDObOCJNJ0gSEXWyzs2D7QNUV/iI1vUjyAAnQRcmOTQ0xqFgPoV0fynzwHwWhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2PxFW+J; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="jSMGrxau"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=4P3u
-	qKrz75ngOrJjvr4Hoarkt3AuGy4nwung5e4uNXI=; b=jSMGrxauisB7EUyfw0hp
-	8HhjGG5Wxjf29LxAIer8rn4Ld3ro60PCb51CBHIqcfPIyyS3yN5FnJ7wFPXGTIjl
-	oV8a6oCZV5q+B8X92zkzrzvc9qjypPwow/qpi2erOpEa4Ra3VpOOK0vDXQZTh8UP
-	T6yC2PTs+ofQivqU5DGfl4C/IoJoNYzPPdOyJbvV2MxB2VyMlw8jNkwA1z+9ByAt
-	uVtnqIFj7T/LUXbPTmbJhSQNU6xVQEfo2Sr1+1Ep55hf/6F+Ettl+KHeHbhq1XqB
-	gQbxa68JQIZgKgekvQD+lVNvg0RUs6BKlPMGEPZLbNvEUrdHrMSI/rj7GmCDJ2dS
-	dQ==
-Received: (qmail 2016372 invoked from network); 4 Aug 2025 18:11:04 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 4 Aug 2025 18:11:04 +0200
-X-UD-Smtp-Session: l3s3148p1@aMK/Wow7AtAujnuw
-Date: Mon, 4 Aug 2025 18:11:04 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Igor Korotin <igor.korotin.linux@gmail.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2PxFW+J"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E75C4CEE7;
+	Mon,  4 Aug 2025 17:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754327614;
+	bh=7E1lY8jxWW3f7BiTEDhPp5QNAEv+WgKZsbaaNANDdAg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f2PxFW+JAlum/Xf0ViNxMPvlP0p1YuzO0nTd7i4M5MvIfwW40L0Y6ijajAYSl0o3n
+	 8ukO1tV77iIcaowbl9YckrKEKdPVoVj3xRO2kcTDH+pTVdbP/uCjjoxLW7YZIlfwkA
+	 cfsEbSavtVnMez51N1b6TKaS9EGdq3dv9ttgW0u/6e5MEy9uKotaYYhg30TBP++Z/1
+	 6NohQhYSusxq8xWUL1himR5i65OB17jw7I7osjco2vNmsw1WMzzQAW9Y06/aQ0xSQt
+	 ZrDfLpvgbsLZbxXXegmusihRR3ipmGlwCKOHUc4u+CAv5pDpy3WtfSAjPIu4CwZOQw
+	 IiYYAbsUYvZjA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <lossin@kernel.org>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-Message-ID: <aJDbmFx3QAm-TY4L@shikoro>
-References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
- <08e89f95-6c95-4998-988c-e25f3cbfb389@gmail.com>
- <DBTQRIGWJDYB.2VNIOFWLKZFG3@kernel.org>
- <3e53e2c8-4988-448e-b2ac-6eaf6d62e050@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] rust: faux: fix C header link
+Date: Mon,  4 Aug 2025 19:13:11 +0200
+Message-ID: <20250804171311.1186538-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="4+PJZAIH7dAYl7WH"
-Content-Disposition: inline
-In-Reply-To: <3e53e2c8-4988-448e-b2ac-6eaf6d62e050@gmail.com>
+Content-Transfer-Encoding: 8bit
 
+Starting with Rust 1.91.0 (expected 2025-10-30), `rustdoc` has improved
+some false negatives around intra-doc links [1], and it found a broken
+intra-doc link we currently have:
 
---4+PJZAIH7dAYl7WH
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+    error: unresolved link to `include/linux/device/faux.h`
+     --> rust/kernel/faux.rs:7:17
+      |
+    7 | //! C header: [`include/linux/device/faux.h`]
+      |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `include/linux/device/faux.h` in scope
+      |
+      = help: to escape `[` and `]` characters, add '\' before them like `\[` or `\]`
+      = note: `-D rustdoc::broken-intra-doc-links` implied by `-D warnings`
+      = help: to override `-D warnings` add `#[allow(rustdoc::broken_intra_doc_links)]`
 
+Our `srctree/` C header links are not intra-doc links, thus they need
+the link destination.
 
-> Wow, that=E2=80=99s a lot to take in =E2=80=94 but thanks a lot for the d=
-etailed
-> explanation.
->=20
-> I=E2=80=99m a bit worried about it, to be honest, but I=E2=80=99ll give i=
-t a try at least.
+Thus fix it.
 
-Then, we can also start simple.
+Cc: stable@vger.kernel.org
+Link: https://github.com/rust-lang/rust/pull/132748 [1]
+Fixes: 78418f300d39 ("rust/kernel: Add faux device bindings")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+It may have been in 1.90, but the beta branch does not have it, and the
+rollup PR says 1.91, unlike the PR itself, so I picked 1.91. It happened
+just after the version bump to 1.91, so it may have to do with that.
 
-If there is a Rust related patch on the i2c-list, I will not do anything
-with it unless it got a Reviewed-by from Igor. If it got one, I will
-apply it to my tree. If there any dependencies, it would be helpful if
-this will be mentioned.
+ rust/kernel/faux.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So, for starters, we can use my tree in the seperate I2C RUST entry. We
-did a similar thing with the I2C MUX subsubsystem. By the time, we can
-move to a dedicated tree, if there is a need. Thinking about it, there
-will not be a lot of patches for I2C Rust, or?
+diff --git a/rust/kernel/faux.rs b/rust/kernel/faux.rs
+index 7a906099993f..7fe2dd197e37 100644
+--- a/rust/kernel/faux.rs
++++ b/rust/kernel/faux.rs
+@@ -4,7 +4,7 @@
+ //!
+ //! This module provides bindings for working with faux devices in kernel modules.
+ //!
+-//! C header: [`include/linux/device/faux.h`]
++//! C header: [`include/linux/device/faux.h`](srctree/include/linux/device/faux.h)
 
+ use crate::{bindings, device, error::code::*, prelude::*};
+ use core::ptr::{addr_of_mut, null, null_mut, NonNull};
 
---4+PJZAIH7dAYl7WH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmiQ25QACgkQFA3kzBSg
-KbZePA//QLULYHHuVi6xtcAnpZU6CjxOHIJ6fRFtDoOi7Idut3qJ/MIhDVJhK4gB
-c3MP0shKvyFcd60ITTIgXmdImcEstxAnVh0Jr7BQ8aEksQb3NE5uGOuxjzxznfK6
-e/jxt0y2E9NyWIDpjsyG94nsR+ZkbLbyl5FDD1AahpMCRLtFLWNigy0B49Q0SidM
-xoKHRg/jrUdc0oLn6/70OjE/8b5oL+aAua1ACvOw/rM2eGu7/b+n8G/spqfDLjFD
-I15kG10Ylq2cZbhDf7DvwO8FheQbBAkgwt0D5lO486efT3dCU2u0GUpWuZ5Yw70w
-L89xHztx7DU++ZTMjkQIyXf/OkjqlrclAFf5nz4ncp7EqFgJOWBIheCIjhUH9pLh
-pcdE2w3KmuV6m2MQxLGlMR4CKt6A+4b2sVhfvsROvGYjVgLnMzx/cnDOisxiBSYR
-c8/jy3SWCDDHA4dl/tbJ/rQ1xjWrG4hHt+Kp1ILv5LTE2wBwP+rk9W/R/se4zEGi
-Is2iEglYfJIK+ozA5eWXbaq2zsW947d9F1t3sGtpEqFH3Zh/5kYjtIVFKfR++vGq
-dVKeNBQjOLq1HbCWdAAYqeCTtRSDAdMrVMHLAvgmUQ4/Lkcizdm2/mgI1eHjG9g0
-ZmUez9oK1LPtbAwIWdffGW8JoHjYOv19TEs1RWGjTD2LQKi4KTw=
-=dWRU
------END PGP SIGNATURE-----
-
---4+PJZAIH7dAYl7WH--
+base-commit: d2eedaa3909be9102d648a4a0a50ccf64f96c54f
+--
+2.50.1
