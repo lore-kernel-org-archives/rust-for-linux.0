@@ -1,167 +1,120 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35D626C3B0;
-	Mon,  4 Aug 2025 14:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754318313; cv=pass; b=FEgGeAaT/SlxnkXRgzt02f6n+OcaOFzJ3I27TByGDqdxrRyrQ4A3Nrho3b2nhZe9cIyhhFe1u3Z2ZSHeiKCeOucS4qdLRy4B1/soGH8lk/pDlKYUMXa74T0TXQf9paXLDNapB8apbmDPc1FbVoqdbIFtuoAQQLR19KaGgX1/zzg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754318313; c=relaxed/simple;
-	bh=/D+KAc68aoO/lUs5uBLreMtILrEVchg8zOSm6bz6/SE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=bqHR0Pv/1ZLa2JIEqYMIn3KPbmhMsTNj4FxWdLKIs+JDQoXzhbj3WYTnwR32S6pX65iZ3vYIPXNmiHOWaB10GBL0j0J7smXHHbc9Eo8gvjqO9WWik/m+8fNdO09vxwGqPySDDu++0Oz3wlEKi5pHohdKyxNXOwrybDApQ9DPWbM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=kmiyfYLX; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B851F7586
+	for <rust-for-linux@vger.kernel.org>; Mon,  4 Aug 2025 14:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754318457; cv=none; b=UbJharpp73zGuRJaZq+ibLA7kbImFhclKDZFuAbO6jYjoKeJb+xznEyOHXgCXwz/+Dy8j+FeR6ye5i1FyqxNVbPeZKDGBHh1RwhuRHuRIDmT07+S2F2MXcTFLYCiNzAQwKfKkqE+vlCV4UTy59GQQ3wQMb/hNt3HTGaIn2wlDgw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754318457; c=relaxed/simple;
+	bh=2OEpEKlpsQ+cAJMDuC8Unwl/9A6P7J5/25Dfs+DJHy0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N7+XJK3cgfXRaJH3DlMnqXgZbJaReYM4nWPCCIHemh1O7azxHFAtzOdpJKjGORC00671rFzOQ2/0oiXapN0n9CTQDK551gfx9BLX6cAFhiKbMXIQ8uSMqpSE9wPME3xdChroSoOVHVeQ5f9ZVGK2hhFR0/IaEDAonB8nXlniL3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UBRfxWhf; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="kmiyfYLX"
-ARC-Seal: i=1; a=rsa-sha256; t=1754318287; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=MChT8eugj/vXVr7hgb4vUki4BVaLr0BKJwiy/4RxMVkDyMn9H4HiVnCUZCTxg086wA2TUKajCI8RCk/GwAfUurHj2+KQdUkqJmFH0lMDt76Xfrwry6oVqoSnSq9HjcSZ+CwGb+Sg97D8uw32SadJDivlj55PRpUfaySX+Jad6cE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754318287; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=0XApXGx2KEQYIXsjvjwQn4arPiKU6uUs8Fhf8riawBs=; 
-	b=mGOiycIquMlRZRkFqr5B4a/L+T6Ng+UZUMXRVCioC7DvakJVANWlSfSzD/bwpi5CzZ9Dxzy/iHCCKds0tQlTbaQqjSm88W39NtMXZtua7OnF9Q/hKd0MAcFHPZoPV6Tvyw3Vn6euhmhsZZMvM2z8gs6mv3ATaKVGYRV56vBsrdM=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754318287;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=0XApXGx2KEQYIXsjvjwQn4arPiKU6uUs8Fhf8riawBs=;
-	b=kmiyfYLXCYzQMlBvkmtKGmqJwJQ1xvcxhjkSW1drHlKxCzQMSw0+fR7Yd/dXInph
-	YqMewre6sfMAOI/g24DPChQn3oF7tIEU97zzk5bIeRUAOPRPBxD++r8XO1LxsSsYsHj
-	g0lTY+q9pRcJttfJr7YoEL/Tv6n1Uu5CaZTWuNyU=
-Received: by mx.zohomail.com with SMTPS id 1754318283378211.50192314921037;
-	Mon, 4 Aug 2025 07:38:03 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UBRfxWhf"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3b786421e36so2578727f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 04 Aug 2025 07:40:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754318453; x=1754923253; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lDFt6Q1UpmhX6GNWIASj7ymBR/pi9xVucELf+Yk+0qE=;
+        b=UBRfxWhf0K31cGE19i+C+F7PpQ3LPTjhSiKuS/Zv+y9xYSfZgRZoq46DkaPTWjdhMn
+         5/tieLtzaWSEERYMg9oNgvzmmIFBTMpAtvh7HqCaV9zyxDQEul+3/Mq+qUMvdM9FDCOF
+         bQD2xejfoUVSl3zTx2t9CDylCnviiz0mWF0bfKwInivxCvhVSZXzGV/56wYFcO8+oXcF
+         5HvZy1+FYFba7qAArl6FT0F1ndGH2sYMn2stPI81M++ZJKym3TUOevWZ4TxajQQ7Ue/F
+         iFVI1kox4fsqYMAGWV5CWlXmNDskFSnDi61zMrF47O865VHvKiCwCctxv6sktEKSIJ7k
+         ZOtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754318453; x=1754923253;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lDFt6Q1UpmhX6GNWIASj7ymBR/pi9xVucELf+Yk+0qE=;
+        b=Ia2qxx5WZ7LkKZ7mM8ZoApfxKpeq+jmmz/e9r4uh9HVziP9zyv4CNzoIpw77fE3R9w
+         /HFdg8pOulyapPcAzFb/GMSaq5LgmZQVFlhI8K5XEXct4eoE18+zRHAr+V0IOpKiXi9G
+         DeQV/oV4pFL70FUBaxCWK+r2uhPluVLXOTq18MNIG+kIbNFe1IdzQiFny8gYvKs+w4Rl
+         eQ2iogliL3TISpoV55CzVwRAvO0eNABpmuispT4kzgSlyC2ywqLEOmcCtzjEaTeUk8G0
+         0joi7u7Gkci7RyckFCVL2BSpDp8/EqgmKpD8DbkV8kM6HFOmCwprdE0Q99HOlUuuVgoO
+         sxwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUSaZkfkgZFFx3NFh4oT+K2rk4SwJ6bbxKHmFeG8SoAnhzQPNRen3hphCXiOf8dcZBuTuRGo16K+40qu2rX1g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwjilMdLphRnn20XYxbcbliYS4kDVnv9Qt1W1QhN8jKmRvIh7x
+	AXamueeFFjVv/NBupzAZS19ShcvWnaq/++V0/UV4XgXyl0zr6LwsUeXs
+X-Gm-Gg: ASbGnctzenOSO/4i5UgJOXoC529//QozJcCXRTkN1hRrI95lvuM9Nvye3lih5Hi/k11
+	b8NIh3nJHfwl5xdlDQIh4OUx/7aEWfRfLW931jeddVtdN8zHO6R/XR/m3+nnUL7dB8W6Qm5FIGW
+	UVrLiGnaRMTAE9qqc7fI3iLu8QueX7Pt9IRoZ9BBXKUvB3mVrnCNObD51CXtLcx6gW7q/S2G/eS
+	MdJdD00iNpc2uzjMbshiYddfzubVrNKmtF11JCo9RvCs53x2Sd1033NGZiuq1+ttWqLHC8WSyZs
+	OcKoWQZr2Pwonb9v7XBHlsHyCTUryXi+QgmYr5pzkF4fTdNHtYNQXyE4fpqhPGbNGrPavTsoWFJ
+	dsiNvx0jIuZD125R1AQ6cKxE0CwXtXQy92ggUac7PCQ==
+X-Google-Smtp-Source: AGHT+IHMVXHMevXWXCOu4AqzglBf6LHbTyarfAO588QlQaTHzPbG2miVPV9SyrtBNeyI7HhTdoXkrg==
+X-Received: by 2002:a05:6000:144d:b0:3a5:8cdd:c174 with SMTP id ffacd0b85a97d-3b8d9485977mr6675497f8f.26.1754318453144;
+        Mon, 04 Aug 2025 07:40:53 -0700 (PDT)
+Received: from [10.38.1.85] ([188.39.32.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-458953f886dsm222030935e9.30.2025.08.04.07.40.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Aug 2025 07:40:52 -0700 (PDT)
+Message-ID: <1652bde1-a06d-42f2-aba1-c852e2961e5e@gmail.com>
+Date: Mon, 4 Aug 2025 15:38:36 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v2 1/4] rust: add `CheckedAdd` trait
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250804-num-v2-1-a96b9ca6eb02@nvidia.com>
-Date: Mon, 4 Aug 2025 11:37:47 -0300
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- nouveau@lists.freedesktop.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <395DD2D6-CCCE-47C6-B195-20091382195C@collabora.com>
-References: <20250804-num-v2-0-a96b9ca6eb02@nvidia.com>
- <20250804-num-v2-1-a96b9ca6eb02@nvidia.com>
-To: Alexandre Courbot <acourbot@nvidia.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] rust: i2c: add manual I2C device creation
+ abstractions
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org
+References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
+ <20250801154438.14759-1-igor.korotin.linux@gmail.com>
+ <A5DDD914-C07D-41C6-83C4-5ED9730D8A5B@collabora.com>
+Content-Language: en-US
+From: Igor Korotin <igor.korotin.linux@gmail.com>
+In-Reply-To: <A5DDD914-C07D-41C6-83C4-5ED9730D8A5B@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Alex,
+Hello Daniel
 
-> On 4 Aug 2025, at 08:45, Alexandre Courbot <acourbot@nvidia.com> =
-wrote:
->=20
-> Rust provides traits for standard arithmetic and logic operations, but
-> in the context of the kernel we often need to consider overflows. The
-> checked Rust arithmetic methods are unfortunately not behind a trait,
-> which makes them unavailable to generic code.
->=20
-> As a start, add the `CheckedAdd` trait providing the `checked_add`
-> operation and implement it for all integer types. Its name and =
-location
-> are inspired by the user-space `num` crate.
->=20
-> This trait is to be first used by the `Alignment` type.
->=20
-> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-> ---
-> rust/kernel/lib.rs |  1 +
-> rust/kernel/num.rs | 28 ++++++++++++++++++++++++++++
-> 2 files changed, 29 insertions(+)
->=20
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index =
-6b4774b2b1c37f4da1866e993be6230bc6715841..2955f65da1278dd4cba1e4272ff178b8=
-211a892c 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -89,6 +89,7 @@
-> pub mod mm;
-> #[cfg(CONFIG_NET)]
-> pub mod net;
-> +pub mod num;
-> pub mod of;
-> #[cfg(CONFIG_PM_OPP)]
-> pub mod opp;
-> diff --git a/rust/kernel/num.rs b/rust/kernel/num.rs
-> new file mode 100644
-> index =
-0000000000000000000000000000000000000000..c81bb046078b70c321dd52aa9c2b5518=
-be49d249
-> --- /dev/null
-> +++ b/rust/kernel/num.rs
-> @@ -0,0 +1,28 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Numerical and binary utilities for primitive types.
-> +
-> +use core::ops::Add;
-> +
-> +/// Trait for performing a checked addition that returns `None` if =
-the operation would overflow.
+On 8/1/25 18:59, Daniel Almeida wrote:
+>>         from_result(|| {
+>>             let data = T::probe(pdev, info)?;
+>>
+>> @@ -312,6 +311,77 @@ fn shutdown(dev: &Device<device::Core>) {
+>>     }
+>> }
+>>
+>> +/// The i2c adapter reference
+>> +///
+>> +/// This represents the Rust abstraction for a reference to an existing
+>> +/// C `struct i2c_adapter`.
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// A [`I2cAdapterRef`] instance represents a valid `struct i2c_adapter` created by the C portion of
+>> +/// the kernel.
+>> +#[repr(transparent)]
+>> +pub struct I2cAdapterRef(NonNull<bindings::i2c_adapter>);
+> 
+> Is there a plan for an owned version? Otherwise I’d personally drop the
+> “Ref” nomenclature.
+> 
 
-nit: this can be [`None`] instead, which will let users click on it in =
-the docs.
+Not at the moment at least. I'll remove this Ref nomenclature in the
+next drop
 
-This is of course pretty frivolous.
+Thank you for the review!
 
-> +///
-> +/// This trait exists in order to represent scalar types already =
-having a `checked_add` method in
-> +/// generic code.
-
-Maybe =E2=80=9Cscalar types that already have a `checked_add` method?
-
-But overall I feel like the whole sentence is a bit hard to parse, JFYI.
-
-> +pub trait CheckedAdd: Sized + Add<Self, Output =3D Self> {
-> +    /// Computes `self + rhs`, returning `None` if an overflow would =
-occur.
-> +    fn checked_add(self, rhs: Self) -> Option<Self>;
-> +}
-> +
-> +macro_rules! impl_checked_add {
-> +    ($($t:ty),*) =3D> {
-> +        $(
-> +        impl CheckedAdd for $t {
-> +            fn checked_add(self, rhs: Self) -> Option<Self> {
-> +                self.checked_add(rhs)
-> +            }
-> +        }
-> +        )*
-> +    };
-> +}
-> +
-> +impl_checked_add!(u8, u16, u32, u64, usize, i8, i16, i32, i64, =
-isize);
->=20
-> --=20
-> 2.50.1
->=20
->=20
-
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+Best Regards
+Igor
