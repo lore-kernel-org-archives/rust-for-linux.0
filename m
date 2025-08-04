@@ -1,72 +1,72 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E3B26E142;
-	Mon,  4 Aug 2025 14:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC47B1DED4A;
+	Mon,  4 Aug 2025 14:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754316999; cv=none; b=X8vJg80jd67ZBWgDB6m7AOpZ4N3XpDXnYoyajVi31y74Pj/RcxeXjl+IxMLtoZT6MI6KSqRzpo+JTjqy4Leg8rDhbj683ch1uLMrDcxaGGee3LFP53Xy0+ldkbT9gPCNrfIPwCKxv3Oy8o0yGsadvXLeOrcIUNSdfQDZ3gCIlR4=
+	t=1754317060; cv=none; b=o/ptU3rW4gHk+WVuOb2aMkrIiXtefeAxPtVSlKAGAQpZVeboEvND8JE+V7kHGiYxdwywNeRilMOGfAbOFk0k2fcuNlbwJ6ic0DyB2WllIABODeEg5te+HuIevHmQVxiuNg29tSwjAcML8ustcF23eIGXCN+TdaNmGjQbmr31+QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754316999; c=relaxed/simple;
-	bh=13nQXf2MXFWJJ9YxsnwMAzwpgTMydQn5q144rXppyeU=;
+	s=arc-20240116; t=1754317060; c=relaxed/simple;
+	bh=MFgHgyF0Iz4E4+42hQmWTTsQavQBJ5x9rIcuMVZaCCg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OUN1ErZ60bMacVMaNC8dSCS2go1fvhKv4BhUfad8XkdwgaAx6BXNraJGrcw+HwSHST6fLC2WuBg1SNeVh73LceeyNaK7juF0YbdkN5SliW/Yih7K65UAyIGQSMg+e/+u676xC24BiJSMLebBwSqSCiSLh02y22Iq15/D7gr+3ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ReC32taa; arc=none smtp.client-ip=209.85.210.170
+	 To:Cc:Content-Type; b=QjswB/nyzW3FblnlCMW2tQkF/6lwoQQt4EffxyZ/2hZiuWMdBXpiqf2RYM3N8C2KGfUBgp05XoZX1uBjRoRT6OAm1svjiJNcDV/4kP+4AXfydTFUYds1vuOAbtArKrvrIMRa9vlFCd5lxLyExae0t4zRCfYQxJb6rWEtkmeGSVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KHCnwl9t; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ReC32taa"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-76b81161f45so252495b3a.3;
-        Mon, 04 Aug 2025 07:16:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KHCnwl9t"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-23ffa774f00so5659465ad.1;
+        Mon, 04 Aug 2025 07:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754316997; x=1754921797; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1754317058; x=1754921858; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JgDAHWFhVwGpRNKhb0AEdmDTrFYe+pHDBd5Ka/1/dW4=;
-        b=ReC32taaEKRuZUtGFr6I1/zLvCjjSZgFne4nNGxEpyM5YUm+dmvmxwsSFmiXc5PC8g
-         hjNxgxXGUDJ56AAAyDi/I3B8Pxmm1RYAiBR8KM4BgC7/uUsAWytdWI0wtpig/DZbvl1e
-         ITLnQt+0AjAwkLXOltLYxYXhIYqr9Kn43iZM1hyHRObg7sGxCo7WkKrB3dG/k4gSMLT1
-         JeaM2PZPSpvfroR5aLHU0DStyE/12Gyyc4a7Whcz7ExUGs6SSxJuQ9gWSJqqfbZWb527
-         ksb7VbhOFfOksAUzqxIYkayoa59iCzMKKrQUhIK/+ye+oIeqtpiuhbpz8qDKfUVaH/VD
-         UERg==
+        bh=cj5LMXFCZ1M7KQUj/Qw+ZYW8TP1RxMgPY8c23lvf4BM=;
+        b=KHCnwl9tCu51MEdrXudkiwjnFptZt+pJqxf6eKUl2MWxCe6wMxTMjITUOPqW220f0y
+         mk537WWX4qIGM0lfYCkSk4tOhnIcmQ6b95FbudUJ+lBtV+aoE1J+lruuQnk7gzcOKvGM
+         b0TKRE1mu0B2/nZCzB6+jzFJ+QGKiO7DuKxiYlheC87HYw90usdbRM7bsYGxZaQkW3yc
+         DevUu86pc+1P7YcJ/Nf9SeuGUXgXnCoQP56yjJWD7CrwcE8G1bDvFTaHRUgayRRq4RiJ
+         X8qL+uj0l4748W2A3Eg6+/PvdljbnXTI/L9jCEi6WY1tGL5h/KoKVaiQ8o5Nsj59PU2k
+         tYZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754316997; x=1754921797;
+        d=1e100.net; s=20230601; t=1754317058; x=1754921858;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JgDAHWFhVwGpRNKhb0AEdmDTrFYe+pHDBd5Ka/1/dW4=;
-        b=rIL7vH/tphoARvLRiCKTmf486zWIyWHHVlJSWZ8H7/q/MLAIyDzbwDelBHWpnz8XoV
-         DKs1dHVEV41qKHVrFM7cooJsD+qtVSQszU6IRRboPvjv3S7XLxfGzDGsv35hlnogYpJp
-         K+WMnHImGMneWaj4eDi/Wwef+SX52oWu5LemAI+3/xEMNCI16mmf775smkidwyFNc6lJ
-         jJyCyzTbwr+jSUHUuk58mZOlB7JK46qIJw5AOpyTgp8HqylDdnmHKimd6DdUL3B3X33q
-         WRxXB+Ihlc+YtOBHfF5kZUGAcdHpPWvMUkvZqH2CQb9eTwW96egq9/n/bMT3ZUMDkjm1
-         otGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlAsJ2OM7MQtJXVGXVN6NnMlA+CUpB6oodpaLZM8gDEq8j7saYgUqtl2zUyL9sHdn5s8fCfoMqguYgNAOQSSg=@vger.kernel.org, AJvYcCXTmPzWhYmKMyxbwcsesawZ6MLAWf9oHccsh8JBCf+q56SAbKRexBo7wYLHnxT5ZWzmoWvOiotfmJYvJG0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGNfQHIR1BQyot6ZTZmIBvtpaO5xPm6IsKM9s9Whl1/t5Y00Pl
-	cqG5NV/qchSX1qWHwdUfdFmCuRrarnUEibigXVoDdlyOFggprvEGT8PvV43I99vhurH3L92Z8ig
-	rYtoOLQOsiX39ISXJxSk32iVy7PyiFSA=
-X-Gm-Gg: ASbGncsUFbHiJ5Klg67ncyzlh2puMdK4p/jPIlvKgmqTDZ3gEsbLI9vNGFQ0GEFNA+n
-	dcnjbP4leOAKUe5HRE6bAgV5NELr51q51kRLHRarlUgPNYNzIKtEBB+5LdzisqSZIrCEYLEywGQ
-	9o85J8EJ/gI/keaDVzKXaWbqh9vkMEHNM3MDKsHaHSwXyZJwyyXFUG8uxR5HzOK4/N18T2lLzBW
-	U8LbX73IPf9mhaq1Gs=
-X-Google-Smtp-Source: AGHT+IHHggR0XTFbQEEybwLhQWYFEh3VycMYEY6HgdFW8J7vPcer8wJi9FGlCMFZ72vcVudiPgvVRU7PL/+X8CjpuXU=
-X-Received: by 2002:a05:6a20:c6c1:b0:240:17b3:3851 with SMTP id
- adf61e73a8af0-24017b33c2dmr1069613637.1.1754316997374; Mon, 04 Aug 2025
- 07:16:37 -0700 (PDT)
+        bh=cj5LMXFCZ1M7KQUj/Qw+ZYW8TP1RxMgPY8c23lvf4BM=;
+        b=efbWmOOoD5Y5gSWqpoDLjbrj67kRUeaRiFN2WYs4HCXJRthLqeKRwLMHsrxBWkTM2z
+         IR22dhNIZ/Gzxjqpe+FlYJNQMbsTOG3L53ULqUm1rPv72Ojvq5O7RNrSc+her+94KSze
+         Pk9oHKMGAcF0kdNRL2NAfBQFuE8YVQTR0/yaQe8tJYvGkGqd6M/P+FOFPviwyyuFUA/9
+         SZiTn3dop+YwdAijJqRrmweekIjMl5Jzw7r/Drs64Fuj1spAvoS9qy8lYCufDjkn27mh
+         3uO20Ii4JyF+mkWlD59yG+hD9K0vGP93k+wda2ycNxvIHf/03bMvk4p7Qi5Hz6qJ2dpV
+         62GA==
+X-Forwarded-Encrypted: i=1; AJvYcCU72XiqPyAGyg2ytUuRKjUl5zxyXuBbqTJ+CO0wLQ0gqBdwdTqGRi9vG5woVh1Um2u5PHR/Dy67h9h2kG4=@vger.kernel.org, AJvYcCWRewBVm7hOarXt+hJBeCqFGYhPQvSw09KMd92IyvdmVl4aWbroDqdbe9mZyUy8HWOLzl6Nk8lkkijRLoFLNeE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPAi0JkeaGOiqP9YCSnbiJRILJI6/RjB5LuqBnfQAGFhyu0Mjt
+	loIzKbTXq2t/I66pCr7RPiDPBpTpc14U+Jbc+SlyLuctifDeXwqYU7PfJHGiNpfIpuN+MdSQU4u
+	x6UAI8C8ihdLlV+3fFbjK0RDvW2k95MM0YXr8oKU=
+X-Gm-Gg: ASbGncs0LOHQE/LvgEi2Zljq/pAdVDgiB4FEwkgRyxYWMQ2P1qhgQ6lTCxIhsnoyGnB
+	SeXkciuge5TbYI9BNh+j2VuJdX/RKMZ6Eldb03gg7wN2jG10wg9spNL79z92jd1uTx7M9OAJjYf
+	3RPdveeTPoNAJxRSeAtxRv5OSxDpL7HU/QSRVM6ACnmeh9iYR1fiApojYX/HtLnQk/iRHfsL3bn
+	vLlAS9M
+X-Google-Smtp-Source: AGHT+IHoIKRTao7XkfgA4kePRWm3e59NNTaknJ0r8ZXP5Lhp3Ma7eKeiuMTWnPj5rGZqOm7Zr5ROoZlk5pWcnXNkUMQ=
+X-Received: by 2002:a17:902:e743:b0:240:71db:fd0 with SMTP id
+ d9443c01a7336-24246fcb42emr54973825ad.8.1754317057946; Mon, 04 Aug 2025
+ 07:17:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250804-num-v2-0-a96b9ca6eb02@nvidia.com>
-In-Reply-To: <20250804-num-v2-0-a96b9ca6eb02@nvidia.com>
+References: <20250804-num-v2-0-a96b9ca6eb02@nvidia.com> <20250804-num-v2-2-a96b9ca6eb02@nvidia.com>
+In-Reply-To: <20250804-num-v2-2-a96b9ca6eb02@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 4 Aug 2025 16:16:25 +0200
-X-Gm-Features: Ac12FXzU7NmSVNVwYMFLEOWr49mfh3wxZZCCON1MnCd2t8fHQm-Ufjf7MXkUMZ0
-Message-ID: <CANiq72mEDhT_OvSo1b=z4Z4VhND8+DFzeGBY_NNfXhq9jy5GhA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] rust: add `Alignment` type
+Date: Mon, 4 Aug 2025 16:17:26 +0200
+X-Gm-Features: Ac12FXzf9euOeG2E0bVmnruyqbjbiK7AJnC-T013YUx-5fpBzzCknyhtAiw29Y8
+Message-ID: <CANiq72miQSuEEzKZsOhHKDah1kP+8PYcmODGqwtcaRwAggF-+g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] rust: add `Alignment` type
 To: Alexandre Courbot <acourbot@nvidia.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -81,47 +81,49 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Aug 4, 2025 at 1:45=E2=80=AFPM Alexandre Courbot <acourbot@nvidia.c=
 om> wrote:
 >
-> - The `last_set_bit` function is dropped, with the recommendation to use
->   the standard library's `checked_ilog2` which does essentially the same
->   thing.
+> +/// align down/up operations. The alignment operations are done using th=
+e [`align_up!`] and
+> +/// [`align_down!`] macros.
 
-Yeah, let's see what people think about this one on the kernel side.
+These intra-doc links don't work (they are not macros in this version at le=
+ast).
 
-I don't mind either way, i.e. to have a few wrappers with slightly
-different semantics if that is more common/understandable.
+> +    /// Returns the alignment of `T`.
+> +    #[inline(always)]
+> +    pub const fn of<T>() -> Self {
+> +        // INVARIANT: `align_of` always returns a power of 2.
+> +        Self(unsafe { NonZero::new_unchecked(align_of::<T>()) })
 
-> The upstream `Alignment` is more constrained than the `PowerOfTwo` of
-> the last revision: it uses `usize` internally instead of a generic
-> value, and does not provide `align_down` or `align_up` methods.
+Missing safety comment (`CLIPPY=3D1` spots it).
 
-`PowerOfTwo` seemed fine to me as well (or even implementing one in
-terms of the other).
+Also, cannot we use `new()` here? i.e. the value will be known at compile-t=
+ime.
 
-> These two shortcomings come together very nicely to gift us with a nice
-> headache: we need to align values potentially larger than `usize`, thus
-> need to make `align_down` and `align_up` generic. The generic parameter
-> needs to be constrained on the operations used to perform the alignment
-> (e.g. `BitAnd`, `Not`, etc) and there is one essential operation for
-> which no trait exists in the standard library: `checked_add`. Thus the
-> first patch of this series introduces a trait for it in the `num` module
-> and implements it for all integer types. I suspect we will need
-> something alongside these lines for other purposes anyway, and probably
-> other traits too.
+> +        if !self.0.is_power_of_two() {
+> +            // SAFETY: per the invariants, `self.0` is always a power of=
+ two so this block will
+> +            // never be reached.
+> +            unsafe { core::hint::unreachable_unchecked() }
+> +        }
 
-This part could be avoided implementing them the other way around,
-right? i.e. as an extension trait on the other side.
+I guess this one is here to help optimize users after they inline the
+cal? Is there a particular case you noticed? i.e. it may be worth
+mentioning it.
 
-It may also be also a bit easier to understand on the call site, too,
-since value would be first.
+> +    pub const fn mask(self) -> usize {
+> +        // INVARIANT: `self.as_usize()` is guaranteed to be a power of t=
+wo (i.e. non-zero), thus
+> +        // `1` can safely be substracted from it.
+> +        self.as_usize() - 1
+> +    }
 
-> This generic nature also restricts these methods to being non-const,
-> unfortunately. I have tried to implement them as macros instead, but
-> quickly hit a wall due to the inability to convert `Alignment`'s `usize`
-> into the type of the value to align.
+I am not sure why there is `// INVARIANT` here, since we are not
+creating a new `Self`.
 
-I guess we could also just have one per type like for other ones to
-have them `const`, like we do for other similar things like
-`bit`/`genmask`.
+I guess by "safely" you are trying to say there is no overflow risk --
+I would be explicit and avoid "safe", since it is safe to overflow.
+
+Typo: subtracted
 
 Cheers,
 Miguel
