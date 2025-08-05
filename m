@@ -1,116 +1,70 @@
-Received: from forward500b.mail.yandex.net (forward500b.mail.yandex.net [178.154.239.144])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3662701D6;
-	Tue,  5 Aug 2025 13:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC80F26D4E7;
+	Tue,  5 Aug 2025 13:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754401834; cv=none; b=uKsSnJHyDlLh17tO1eYSgDyAcKT7vbCyJ/4fejGk0rEbxokpSDndWF+FYXRj+h7Z/x+M2C21A3hN0cROAIY5fO/x5EdFOcYClb9ZYj/yF2poWMgPxi7BE1YJdN3Y7aff1qfEerOVe0m7VW/rybmEp2OwABeQjHFC6WKn+9STlVY=
+	t=1754402002; cv=none; b=d44GcWXjg+orvl7d1uyxaRWhfwrIJLCWxhAGto8mmM/XPBgLBLXI144zRkd84/qrj4sO/56cRV2j9e7jS1yxKRtY6hihy24h2s8ByviZD6L95qIUVH5Bs1fYR9a5aGvkEi5BUoX9xrmihNvbD1N1DtOXs7shRaeYIEBRlb54N48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754401834; c=relaxed/simple;
-	bh=q0+nYeuyQ+6AoyDKNBeY3RHlTqfS9TyWMrZyoB3tSIg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Te8Jraqdr9dGuUSwh5dVfDgS87JgfTAVynT6/tLtugtP3k5zD4HHU5aGdM106gEtj39f4avicVTO/qYTaKdNPq2d7YbxLHrbp1IgMJ9uLIiP8olInD5wldHhEZDdk9NlUZeHWqwTBeKvbTc2yVovHiXvpxH4qVxBZEnSNQtRnks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=icFgHUxt; arc=none smtp.client-ip=178.154.239.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
+	s=arc-20240116; t=1754402002; c=relaxed/simple;
+	bh=Dh1xulLmFa+Wbzh9QK7AAeJG7aeMiW7pTBbi/2NP52Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sojvsi+qTnCIoKmAKXFC4vvrjLaxWukCzbHke/q+CzTbghzszua2wd3jMJEnM8sFpsXqk5ti+S18Sad2W1h+Qp98P3UZxOpsUUwuFOnyEamSlSzpZb0FApeLrSoae9hdw0TJ8Eua001NABWdFoRjVKZy6nbP2Nn/aAmVqzHk8sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Cp9dWz+5; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="icFgHUxt"
-Received: from mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:4d88:0:640:1229:0])
-	by forward500b.mail.yandex.net (Yandex) with ESMTPS id BDEEBC1362;
-	Tue, 05 Aug 2025 16:50:22 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id Gog2NwfMuGk0-QN8z0oWJ;
-	Tue, 05 Aug 2025 16:50:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
-	s=mail; t=1754401821;
-	bh=q0+nYeuyQ+6AoyDKNBeY3RHlTqfS9TyWMrZyoB3tSIg=;
-	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
-	b=icFgHUxth2kAC0N2wx+IIUyxCIr15Pbuum+xoMEySyFqdQ/8iSfnphu6OLPHIrcy3
-	 dJ2WyaJ8oNEAViHpsJ34pbTIAlb50MXDP5OtWl4XyfuXm31DtRm49CP0i704rcmmhD
-	 2MIsNGYVe8VtvN00gt5dS+fdORzfnb59zGbw9NtM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-77.iva.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
-Date: Tue, 5 Aug 2025 16:50:14 +0300
-From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
- a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
- dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
- longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
- bjorn3_gh@protonmail.com, dri-devel <dri-devel@lists.freedesktop.org>
-Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
-Message-ID: <20250805165014.1766f8dd@nimda.home>
-In-Reply-To: <8FA1F09F-CDD0-4A95-8E9E-49A3326613A2@collabora.com>
-References: <20250621184454.8354-1-work@onurozkan.dev>
-	<20250621184454.8354-3-work@onurozkan.dev>
-	<DASY7BECFRCT.332X5ZHZMV2W@kernel.org>
-	<aFlQ7K_mYYbrG8Cl@Mac.home>
-	<DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org>
-	<aFlpFQ4ivKw81d-y@Mac.home>
-	<DAU0ELV91E2Q.35FZOII18W44J@kernel.org>
-	<20250707163913.5ffc046d@nimda.home>
-	<DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org>
-	<20250707210613.2fd5bb55@nimda.home>
-	<DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org>
-	<FF481535-86EF-41EB-830A-1DA2434AAEA0@collabora.com>
-	<DBRVNP4MM5KO.3IXLMXKGK4XTS@kernel.org>
-	<E997DCAF-552F-4EF2-BF94-1385ECADF543@collabora.com>
-	<20250805120813.1f8714f5@nimda.home>
-	<8FA1F09F-CDD0-4A95-8E9E-49A3326613A2@collabora.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Cp9dWz+5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ksnOyjjUC1i9o9VD4SN5otzjLK43Pwz1EMeS7uC7dJY=; b=Cp9dWz+5OtIoSh/PAWzDNv8C2z
+	ceHKoU/gRLtX3IqQp8xWz5AbGF2gst5fuTDh1iubCGr0lI2JTiITIERXu9jVrKsU4HXxT6rqwBO4M
+	ps6ZC7/jKQQRke0yT7hIv4D+bok4oCkjZuWDim/2rJLg5MrlyET288dXjLUU3pegLYaE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1ujI6I-003nJH-2M; Tue, 05 Aug 2025 15:53:10 +0200
+Date: Tue, 5 Aug 2025 15:53:10 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: dakr@kernel.org, linux-kernel@vger.kernel.org,
+	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+	netdev@vger.kernel.org, hkallweit1@gmail.com, tmgross@umich.edu,
+	ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	anna-maria@linutronix.de, frederic@kernel.org, tglx@linutronix.de,
+	arnd@arndb.de, jstultz@google.com, sboyd@kernel.org,
+	mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+	vschneid@redhat.com, tgunders@redhat.com, me@kloenk.dev,
+	david.laight.linux@gmail.com
+Subject: Re: [PATCH v11 7/8] rust: Add read_poll_timeout functions
+Message-ID: <a843788e-80f4-49d3-96f1-1da092ee318c@lunn.ch>
+References: <DBNPR4KQZXY5.279JBMO315A12@kernel.org>
+ <20250802.104249.1482605492526656971.fujita.tomonori@gmail.com>
+ <DBRW63AMB4D8.2HXGYM6FZRX3Z@kernel.org>
+ <20250805.223721.524503114987740782.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250805.223721.524503114987740782.fujita.tomonori@gmail.com>
 
-On Tue, 5 Aug 2025 09:41:43 -0300
-Daniel Almeida <daniel.almeida@collabora.com> wrote:
+> I also prefer the example that can be compiled however I can't think
+> of a compilable example that is similar to actual use cases (for
+> example, waiting for some hardware condition). Do you have any ideas?
 
-> Hi Onur,
->=20
-> > On 5 Aug 2025, at 06:08, Onur =C3=96zkan <work@onurozkan.dev> wrote:
-> >=20
-> > On Sat, 2 Aug 2025 11:15:07 -0300
-> > Daniel Almeida <daniel.almeida@collabora.com> wrote:
-> >=20
-> >> Btw, I can also try to implement a proof of concept, so long as
-> >> people agree that this approach makes sense.
-> >=20
-> > It's not necessary to provide a full P.o.C but a small
-> > demonstration of the kind of ww_mutex API you would prefer would be
-> > helpful. Seeing a few sample Rust use-cases (especially in
-> > comparison to existing C implementations) would give a clearer
-> > picture for me.
-> >=20
-> > At the moment, the implementation is just a wrapper ([1]) around
-> > the C ww_mutex with no additional functionality, mostly because we
-> > don't have a solid consensus on the API design yet (we had some
-> > ideas about Tuple based approach, but seems like that isn't going
-> > to be useful for most of the ww_mutex users).
-> >=20
-> > [1]: https://github.com/onur-ozkan/linux/commits/673e01a9c309c
-> >=20
-> >> By the way, dri-devel seems to not be on cc? Added them now.
-> >=20
-> > Thanks!
-> >=20
-> > --
-> >=20
-> > Regards,
-> > Onur
-> >=20
->=20
-> This topic is on my TODO for this week.
->=20
-> =E2=80=94 Daniel
+Does it have to be successfully runnable? Just read from address
+0x42. If it actually gets run, it will trigger an Opps, but it should
+be obvious why.
 
-Awesome, thank you for doing it. :)
-
-Regards,
-Onur
+	Andrew
