@@ -1,41 +1,41 @@
 Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A10A17BA9
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 Aug 2025 12:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7B3212B1E;
+	Tue,  5 Aug 2025 12:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754397692; cv=pass; b=f4UzfPEyVfngiSmNxaUr1K/pdjJfiteNkzu9xXUI+FxRJ9CexxpimL4m2YXFOaXwNILU5LniHYoIspFGXZXDVFFOsWkxnzosFUpUHe9hrNuyiPWjftzKOSKCcBB9GBcQPo13Yzwo0sek4NJOnihYaQBuMpgo30XNBa/9QIpp85k=
+	t=1754397762; cv=pass; b=R++Zdo8oHFF0MLnMe3dPrL5HHGMfFJBTdd2TeUZ+gD7OVdI/lUyHvb68aCzjilobCkViCHa900V1/ay0J5FPXZzAOmx+yzSu+IGeGh21WoELtbjtqR6Yv9vx2O5Pxoy6i5FSf/EGlec4gqjWpiKKW3MDSIrLgOLsJwKNj7vdUPU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754397692; c=relaxed/simple;
-	bh=OZ2QD4pf5RfkFEuQHHjFA6EdgMUrAu5dozosIz6RYzI=;
+	s=arc-20240116; t=1754397762; c=relaxed/simple;
+	bh=wzqHFt2lJOBN3obRMiws9twHVlcCWkgkdwKk6A+VdZI=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=VXKZ/0xrdRPSL1xhNx+ldy9pYXZeEAUTYCXgilfznnYx9tXTdIAnZZ+nQT7IuTSZU6l9SAM1oAFP7un823zzl9Tv091mT1ulot3eBmX7HOA8ZlDd/fotrlMTFSC62NymCvKjSj8Se9FkNisdJpVyPt7irzfWkNtU7yoT+JyoXq0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Fhw/qGj1; arc=pass smtp.client-ip=136.143.188.112
+	 Message-Id:References:To; b=A2qUP2mWQsKOc3CMJEQLiPqeDNHbWv4S5g5gTREnh+mGxw5WczSEIzBrYbgOyqMRIzrWPMFE4GQgICwK9/bDBK5sQNfSHaMFnQG4fjKXpt4Qp3Z74ru41fSd2qwmzzoTr0sPgnSqo0g5KdXTu15YCAzMFQEVprcUKI0qOleiPow=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fc1kDs9z; arc=pass smtp.client-ip=136.143.188.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Fhw/qGj1"
-ARC-Seal: i=1; a=rsa-sha256; t=1754397664; cv=none; 
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fc1kDs9z"
+ARC-Seal: i=1; a=rsa-sha256; t=1754397720; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=lFXg2PA+w+rTG/0qzAQ4GroRS7aoXhSYX1cXlZbISrGSeDjhp01juy69wnD0q1LqiAjzq43PBYaQd3YyFYnEPk5zKIo9PUUBgu260SY2tlep8RiVcjX8CL/+MRQhzC4Xgg5iysiiFZBG3epN9D/7E35aU2w3iS+Yh8jx2xsboH8=
+	b=Wx4m7as+nKB7jA3b5+YRisCwBHdKIdNNO2e90MFj5uGnJWX6bQ+XED8f4jNfukn0zv7bob5AvaD5JqIlX9I0pzNUZ6QKIbdQA5/fpFkdKaDr3WxRk3WqOpUN5Ily8iIGiM5kMoXOxEPInKU9DPEeiy6EzDL6RRMWQMUz0B/dPhs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754397664; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=OZ2QD4pf5RfkFEuQHHjFA6EdgMUrAu5dozosIz6RYzI=; 
-	b=Dn8oMZdny+0Pdzq8L97z6PSXaXVg6aByFBWqDiwG8vwbgBg/iRdVpvYhFLbB98yEILYFz1CSTymvLz3mcWm3eAsRHj6agIPOxjmKC75oL2tIHDwriRsni8DBzDxoKhe/o7sj6AYFdNBR92cUu/E0Cx6vQKEnhFNyQKfLVbtcrvk=
+	t=1754397720; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=wzqHFt2lJOBN3obRMiws9twHVlcCWkgkdwKk6A+VdZI=; 
+	b=Rq+rvyFSr7jN6OdrzKqqaIAq8TkJJtFYGkeXkFdFVX9cNWmmwYtfZLS9o8OQmmLE9bLF3GqNxTgvzuyI4SlVJ8QV8ppGcYiShSBLwZGwDaNxU1A1/h50uIqruuKyavZjSmJQDGVPhZU8JdXJjjB9s5M02W+r8+u1Fl7mW0+kb3g=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=collabora.com;
 	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
 	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754397663;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754397720;
 	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
 	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=OZ2QD4pf5RfkFEuQHHjFA6EdgMUrAu5dozosIz6RYzI=;
-	b=Fhw/qGj1dlwPicmCKI4z0bJQtsoIh7P3RXXQXo0daMAwUPSJNgL91jsbbN18rWfy
-	hfeeTfEKxILJ9YEY6/pFsRh75naA3lrWDGwJhWukudWY2j0MW6OdxpyFkf66ejuFKFc
-	CCKs/NPCuBUHdtF/v3o8q8+X9wlQxvcWPgFZKamI=
-Received: by mx.zohomail.com with SMTPS id 1754397661946623.038837070221;
-	Tue, 5 Aug 2025 05:41:01 -0700 (PDT)
+	bh=wzqHFt2lJOBN3obRMiws9twHVlcCWkgkdwKk6A+VdZI=;
+	b=fc1kDs9zdrOXsykMZgh0mDDPrmIw+dwvEsDHmfocbHFIAiXm3Z+kouRCpLCZEBpu
+	9xNS2Ffah22lrFtsCA2fDt3OKmsvJCsB238ADf/1nb05NBXntHeu2HVmMb6PTEuZbQ4
+	zzzhvf5foM4VlEwz1yAzYqFPUe0VLOtEf2h0uEYQ=
+Received: by mx.zohomail.com with SMTPS id 1754397717740746.1533480220385;
+	Tue, 5 Aug 2025 05:41:57 -0700 (PDT)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -44,68 +44,82 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
+Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
 From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <aJEtrI6RlU1tiflq@shikoro>
-Date: Tue, 5 Aug 2025 09:40:47 -0300
-Cc: Danilo Krummrich <dakr@kernel.org>,
- Igor Korotin <igor.korotin.linux@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
+In-Reply-To: <20250805120813.1f8714f5@nimda.home>
+Date: Tue, 5 Aug 2025 09:41:43 -0300
+Cc: Benno Lossin <lossin@kernel.org>,
  Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ gary@garyguo.net,
+ a.hindborg@kernel.org,
+ aliceryhl@google.com,
+ tmgross@umich.edu,
+ dakr@kernel.org,
+ peterz@infradead.org,
+ mingo@redhat.com,
+ will@kernel.org,
+ longman@redhat.com,
+ felipe_life@live.com,
+ daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com,
+ dri-devel <dri-devel@lists.freedesktop.org>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <6FDFFFAB-12CF-40D7-8FCF-5F3E8CED8F90@collabora.com>
-References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
- <08e89f95-6c95-4998-988c-e25f3cbfb389@gmail.com>
- <DBTQRIGWJDYB.2VNIOFWLKZFG3@kernel.org>
- <3e53e2c8-4988-448e-b2ac-6eaf6d62e050@gmail.com> <aJDbmFx3QAm-TY4L@shikoro>
- <DBTTAEC8HLGA.QYJ0UZOIDYEZ@kernel.org> <aJEtrI6RlU1tiflq@shikoro>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Message-Id: <8FA1F09F-CDD0-4A95-8E9E-49A3326613A2@collabora.com>
+References: <20250621184454.8354-1-work@onurozkan.dev>
+ <20250621184454.8354-3-work@onurozkan.dev>
+ <DASY7BECFRCT.332X5ZHZMV2W@kernel.org> <aFlQ7K_mYYbrG8Cl@Mac.home>
+ <DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org> <aFlpFQ4ivKw81d-y@Mac.home>
+ <DAU0ELV91E2Q.35FZOII18W44J@kernel.org> <20250707163913.5ffc046d@nimda.home>
+ <DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org> <20250707210613.2fd5bb55@nimda.home>
+ <DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org>
+ <FF481535-86EF-41EB-830A-1DA2434AAEA0@collabora.com>
+ <DBRVNP4MM5KO.3IXLMXKGK4XTS@kernel.org>
+ <E997DCAF-552F-4EF2-BF94-1385ECADF543@collabora.com>
+ <20250805120813.1f8714f5@nimda.home>
+To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
 X-Mailer: Apple Mail (2.3826.600.51.1.1)
 X-ZohoMailClient: External
 
-Hi,
+Hi Onur,
 
-> On 4 Aug 2025, at 19:01, Wolfram Sang =
-<wsa+renesas@sang-engineering.com> wrote:
+> On 5 Aug 2025, at 06:08, Onur =C3=96zkan <work@onurozkan.dev> wrote:
 >=20
+> On Sat, 2 Aug 2025 11:15:07 -0300
+> Daniel Almeida <daniel.almeida@collabora.com> wrote:
 >=20
->> Besides the I2C infrastructure they require (which doesn't seem too =
-much at a
->> first glance), I think we also have to consider how drivers should be =
-routed
->> eventually.
+>> Btw, I can also try to implement a proof of concept, so long as
+>> people agree that this approach makes sense.
 >=20
-> Well, I2C client drivers go to their specific subsystem, of course. =
-I2C
-> controller drivers will go to I2C. But as I can't review them, I need =
-a
-> maintainer for them. Is Igor willing to do this? Review I2C controller
-> drivers written in Rust? Or is he only interested in the Rust I2C
-> bindings? Anything is fine with me, we should only make sure that the
-> MAINTATINERS file describes this correctly.
+> It's not necessary to provide a full P.o.C but a small demonstration =
+of
+> the kind of ww_mutex API you would prefer would be helpful. Seeing a =
+few
+> sample Rust use-cases (especially in comparison to existing C
+> implementations) would give a clearer picture for me.
+>=20
+> At the moment, the implementation is just a wrapper ([1]) around the C
+> ww_mutex with no additional functionality, mostly because we don't =
+have
+> a solid consensus on the API design yet (we had some ideas about Tuple
+> based approach, but seems like that isn't going to be useful for most
+> of the ww_mutex users).
+>=20
+> [1]: https://github.com/onur-ozkan/linux/commits/673e01a9c309c
+>=20
+>> By the way, dri-devel seems to not be on cc? Added them now.
+>=20
+> Thanks!
+>=20
+> --
+>=20
+> Regards,
+> Onur
 >=20
 
-FWIW, I can help Igor and Danilo as a reviewer here, if needed.
-
-I never wrote a I2C controller driver before, but as most things, it can =
-be
-learned. And the review part can fit into the overall bandwidth I have =
-to
-review Rust patches in general.
-
-I guess it will make Igor more comfortable by having yet another person =
-to rely
-on.
+This topic is on my TODO for this week.
 
 =E2=80=94 Daniel=
