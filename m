@@ -1,192 +1,187 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2051.outbound.protection.outlook.com [40.107.93.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451632AD00;
-	Tue,  5 Aug 2025 17:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7632721FF2E;
+	Tue,  5 Aug 2025 19:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754416633; cv=pass; b=VAOUlRWS0SCT+hrOjw38azTfzPrU1+7XlTqpr8aHBeHju7Zomqhn6mKf1POBkN2tNzZP58XNPOBfxqXGWMuRdrd2wxQjIfWT+uc19V7Ulo+aeWkxGN3N9zdRJ8NfhAJKTIgNCXkLIYCeNcKnf8OVljdwDdCsOjr61X5OJqNZ/BU=
+	t=1754421994; cv=fail; b=sw/Rcjt6DCnCzz5yV7iFyskCMhZq/5izm7L40ErPQUPIkv1RlzPs7UYytLmV0cOH85QZ+3VK2/uyZKVYA+VvuxDv44Wsh+5woVdFibR+I6pgOqciDhteMx8m8SfbgNBdrpQOV0pqCiXpObZotEst6WqNycoP8RRvCYGvEw67mWY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754416633; c=relaxed/simple;
-	bh=f4qUwwmTjP8z24cY61CQx/WPsrh41HP5fDyt9wMVSxM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=SkxnfXB+tYSx9yL9M+MHzzlkNbpsxSyulsNwmu8iz+6DKb/w1sA+bjpwIwQrkc2jFmc+927tUGtUJ6e1Phx7KiRZODn4jl1ayN0Uj2feye8IMV26MisipcMhdSknE3GtJIPKFmTLyO5uhGHC5VyyLo0/uGdHY6SWcUKLI8N/iqo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Mqdj0Coy; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1754421994; c=relaxed/simple;
+	bh=/lDrWCf8R9Yg/7En4qEMZBa/3JevfGBBsg+8Hp4fA1w=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HIC//thckQxsdayXlf0wVsS4/RuXWdLyajsgNEezGqN8eYrb3fs4zI7B/SIrmpjuNP5j8YhMswygSur2uDhZfTJfUlAlYR04wKwVWxLln1SWkmHXcKCcR9O7/Kix5KQXcRk5QuFOHyhF84oXL9A7AqrCRsPbC7mrGltd73sI+ng=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MEjU8bHU; arc=fail smtp.client-ip=40.107.93.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Mqdj0Coy"
-ARC-Seal: i=1; a=rsa-sha256; t=1754416604; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=dASTlVU2m+CEfC74ZZH1XGJb1qJGHaPLvLTxulAM79ecn8t06CULnxdix7D8I34OMg0iPg/VQL5QTLZoUMkcFiQ51ZQwq3LpKUSvd6jVCA8EHcI3kdn2RyOl3qwbzq5K8qsLVOaltzG2jfgLlk9usrZ0AGDaYetwJcwjiVJTxAE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754416604; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=f4qUwwmTjP8z24cY61CQx/WPsrh41HP5fDyt9wMVSxM=; 
-	b=Q7vyK4m4Wv7DADx6mBK23ejP9mKktj2Q36R9dvucVCffON/EAaT2hPBIgrjcrh5AVR2tXjXXMj9r7Ah+iBHjwbrwvMMillA+QzDRoN9zL0KbW5n4aPdxj6dlaquTtuSZlmgaLG1Nrii915X7U7gmEWxKmi3+hsD8nhRiLMtf7B8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754416604;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=f4qUwwmTjP8z24cY61CQx/WPsrh41HP5fDyt9wMVSxM=;
-	b=Mqdj0CoydzQvumUfHTqZ3KECVA+ltrcUkUYCG5Fb/zRYtA74m0JNbrlSMetOLKUY
-	pfGE5KpyW5fKCTp16gQxlZKjYduHChDxPnX1YxeFSk++EB45+f+6LHKK+1Q25ceAdF7
-	npkCL7YNaxSQG+WBuI/bvlz2ZDST0nGo3hJ8kw80=
-Received: by mx.zohomail.com with SMTPS id 1754416601399165.46384762186733;
-	Tue, 5 Aug 2025 10:56:41 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MEjU8bHU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xyn8vCHethTPC8MQUJ6J52JU8f870tcSuKSOu/DZ9sARHQrJAE+ZQi5gvaPb5Hb/+JQ8x4rwqhceqArGHNiSSZX2yzUPvAqbkFaXgGXeiorvfnEyACRJQdIs0VNkzk6Gno76udeINLwhlLeEcBiW6cH8E+hYSzWEqutBKkBEQ1JoXPJIhOACcJgSIPfwaafFFzRVFTnJqd8f+PI6wW4fxk7o35jPthTDQ6EV185SzA84oKqnLGcITVCiOK10pD0CcBV6M9Pgcp3v0Te0SblVNTJbUnoCCD3s/XgQIxaSJ+fNYHcnhPoMpstg7dHKZvnVtz5YeoNIdN4DchS4fs8PRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SR38dvRgd6Vktt+8SgJkWG7CWj9TG7KlP9aRuxV255Q=;
+ b=jyWaD4cqkdNkWjdBOGEwPZfZbja9DxqtfTIt9iOAbJ3pITJTkffbMMwNznGzqf1gpBdrIxye81ILnEIzml6aDEgXA75SwEuPQIH/XoBUmHaQR5bEcOe/UNJSABTx8oFIQbNnAIyWKWtRHN9tJpEwy2JDoI7/q05FKDxsfc145IJU1uY8g0mDqe0r1ytoZ8ncWNkoeQ7t6dcX5TxPeK0A27vNBS/Rw6T1M8Pun09cDXm81oESQYSDIDaZXyjhxSYJQ+HJRdE6Jm/Q9I7pbXdHJJ8szB9yEggctwZxZz8d6CFQUfZzYm+pVhHk7wOv1PV61hVwlmIPdMt00BkDSsEXxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SR38dvRgd6Vktt+8SgJkWG7CWj9TG7KlP9aRuxV255Q=;
+ b=MEjU8bHU2nx6pMx2Uw4DwVBCzJyoUXyrl/xlGxr5SRNi8TZTWE0iRUXur/F91G9u8s0LJOzceL8wOIuKmT7J6EyrJGO2xxsdwVJZfG8JwAx9Uiny/gDEyuVrDo1wkbJKmx3KdZXjDCqGzMx5XwJjerU7yaXC3mBGtaOo4Rg6SPjjxXrJY9XSmoUPa4WMg3P0bhHmYkiLpVIYGXAmlGpVqhi7wiC97rvw8m9NPOLVTNgUz8t1ZbaHuTMpuL8QoYL5WkOmIOEjIAGEyJRqxgjKKtyLhCd77yY2/1sF9Hde7pP8MbjV0eesOFdlcvgJQT2urTbj6k4n8HPFZR3J0bjXGA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com (2603:10b6:408:14f::7)
+ by MN0PR12MB6271.namprd12.prod.outlook.com (2603:10b6:208:3c1::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8989.20; Tue, 5 Aug
+ 2025 19:26:30 +0000
+Received: from LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4]) by LV2PR12MB5968.namprd12.prod.outlook.com
+ ([fe80::e6dd:1206:6677:f9c4%7]) with mapi id 15.20.8989.018; Tue, 5 Aug 2025
+ 19:26:30 +0000
+Message-ID: <cac21970-e2aa-49a8-ba25-7b41ffbc05f9@nvidia.com>
+Date: Tue, 5 Aug 2025 12:26:27 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/4] rust: add `Alignment` type
+To: Alexandre Courbot <acourbot@nvidia.com>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, nouveau@lists.freedesktop.org
+References: <20250804-num-v2-0-a96b9ca6eb02@nvidia.com>
+ <CANiq72mEDhT_OvSo1b=z4Z4VhND8+DFzeGBY_NNfXhq9jy5GhA@mail.gmail.com>
+ <DBUJ19RTU4F8.2XAILWW3HMAWQ@nvidia.com>
+Content-Language: en-US
+From: John Hubbard <jhubbard@nvidia.com>
+In-Reply-To: <DBUJ19RTU4F8.2XAILWW3HMAWQ@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR13CA0025.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::30) To LV2PR12MB5968.namprd12.prod.outlook.com
+ (2603:10b6:408:14f::7)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v5 0/3] rust: add `ww_mutex` support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <ec32fc5f5a8658c084f96540bd41f5462fa5c182.camel@gmail.com>
-Date: Tue, 5 Aug 2025 14:56:24 -0300
-Cc: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- boqun.feng@gmail.com,
- gary@garyguo.net,
- lossin@kernel.org,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <89BB40E5-24CA-44E8-AE67-3E58A118A5A8@collabora.com>
-References: <20250621184454.8354-1-work@onurozkan.dev>
- <20250724165351.509cff53@nimda.home>
- <ec32fc5f5a8658c084f96540bd41f5462fa5c182.camel@gmail.com>
-To: Lyude Paul <thatslyude@gmail.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV2PR12MB5968:EE_|MN0PR12MB6271:EE_
+X-MS-Office365-Filtering-Correlation-Id: bed83b5b-25b0-4e0a-3154-08ddd455faa8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cXQyQUUrTjFqVzlGQUsyT0dIWVFlZDE0ZTkxTkkrZlJ2RzZqdWhzd3UvRUY5?=
+ =?utf-8?B?L01oclYvOUNvOHhYTnVCMysrR2FIWW8ra3RZTS9uMWpyWmVySUE0OE5BV2R1?=
+ =?utf-8?B?RFYwcUs4RDB0bHVvMHJpQnltN1poTEswUHVKZUlOSElWTW1HcmRnQ1FCM3Zl?=
+ =?utf-8?B?U1JLVWFrb1VyWjRyc2xWK1pOU2FGdTkvNEl6ZFlDYk5zdURKUUVBMExzL1Uv?=
+ =?utf-8?B?NXBMTmh5bUhEVUJRL3JyTEIvT1BrVG8ybWV0SHkyMjFPcjNQdnhKZGJPdllV?=
+ =?utf-8?B?ZUs3Q0RFb2s1Zk11VlE3UDl1WU10VVAxbWtjZzA0Vk5Ga2UrczNGL2Y4cDZD?=
+ =?utf-8?B?UzV5Sm44TUdwYnF5TDhKb1d5MUJwbjFhOHpQOTdKQzdGbG02UCt5RzFOMGk0?=
+ =?utf-8?B?ZmloRVhZengwemlpaml0V2hWWk0rMGNrWmcvUEVyeFlBekcrNXlSNjQ1VkR6?=
+ =?utf-8?B?bmM3NGVqdjhpd1p1NUVBTEFMaDJvL2FucVpBekNLVGxqRzZhQWFydWZlYXpG?=
+ =?utf-8?B?OUhBR1VMUktjVXFWY1VrN05Zbm1jbVJhNmk1QjhCcDhEakZwZ0Z2aVY1YXAr?=
+ =?utf-8?B?T01vb01Na0w1eHFvbi9sNmNjY2Y4Rk5XZWk1ZldpTlF0eDFwRklqR3M4bGls?=
+ =?utf-8?B?NE9UVHNmMFZMZ1dScGprZ1VLdUJBWHFVeVQrSjRJbjVYdTdyZ2VYdWpvZXFM?=
+ =?utf-8?B?ZjFadGpUc0VzZUJMRWV2cFJ6VHY2b2xRbzE1SmZsTElmNFgyalg3TERyME5Q?=
+ =?utf-8?B?eFV4RjF6RklVM2JoL2VyeEVXZjcvQ0E0UTUySkNHRmlYbG9uZUZYdHB4WVRv?=
+ =?utf-8?B?aStSc2xWL3FSUnN5Z0NxRVNlSVUwRFY1QmRjMW1VSHp1R0RsZld3VklSdU1E?=
+ =?utf-8?B?eTlFOVdqK1hFSFFRT21DajEyVHFFbVhjcm5xVVlFeUROczRjbkhUcWF2TkJG?=
+ =?utf-8?B?aWZHNkM4ZldlZmlYUTg0RWdaa2pRTXYva1RLMXFQMnB4ZVVwZTl1Tm0wb2Fl?=
+ =?utf-8?B?OXNSTnczNGdma1BXNHZaRzkrT2lQU21FbzBxRE1Gc29VcEFSMDJpM1BIc3Rv?=
+ =?utf-8?B?QUtaUVhsWDlHWFd5UDNmUm9NUkRhSWV4M3JQcExkZU9Wc21BNmFwMzZuM0tl?=
+ =?utf-8?B?MFQ4c1lqeC9GSnpOVTlqWUQxZEU5M0lmd2VINHQ5TzZGZEYwalRhd3RPTGtE?=
+ =?utf-8?B?dEh1SEN5aVc1cXVhd1hWR0tZZmo2ZnJsMFFLdUdYWE9zbDZ5TGcwNmZITnNm?=
+ =?utf-8?B?OEFRK0ZHMXdRYm05N1EyemVSSlNpeWpqcUZOejR4OU1lNEF0aDI3aVlGREtl?=
+ =?utf-8?B?aHFJK2dZOVl6My9vWXVKdGt5QVNOSzNhNXc0MGZLTXQ0WGYvL1lQSjVjVFBO?=
+ =?utf-8?B?RU9BS2dqMmNod1A1WERYSmszenI5UitLaXQ1OEZvVjdRZExMTTc2UnhVWWJa?=
+ =?utf-8?B?emdXY05wTkdZR0xkWG5ZVnJHcnVRcFVTdEM0KzJkNjREUmozZWFySkFnbzJi?=
+ =?utf-8?B?b042K003MkdRTFM0Z3JhZmN2YVM0c1oyQ05VU0FxSUR2RytGMU1LNno2Uk00?=
+ =?utf-8?B?VGRQSzRTV2JyOTJwRGIvWW91eU5ZZzhDeXZZME1nZjYwUDl2OVVDM2NjTExw?=
+ =?utf-8?B?cFdDQXRTOG03bjJ5K3diTzYyU2MzUDlra0JtbnpJUEp1NFlEOUxCVndLaXZi?=
+ =?utf-8?B?TDNBQTYycUthZ3ZKQmIzV3hCV25UUmlpTEhFVVQ5am5ZVk45MVFYcS80SG9L?=
+ =?utf-8?B?WWdjekZlazk2dXh2UHhOWUpQaFNJVUZjMTVSUlFlWEpFRHU4aG96N1g4MFpD?=
+ =?utf-8?B?VHl6QVFlL1VWcjNDL21xa2VtWkxmUXQrKytqak1RdXhPTTdTYmlzMThrRDhs?=
+ =?utf-8?B?V3g1ZWMrVmpESXV3YnoyQUV4UVVSUjJLcXZMOCtKM0c4NUFOejV4aW9GbkxI?=
+ =?utf-8?Q?0qaFtqkhSH8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV2PR12MB5968.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bVgzR2dBamx1UysxOVk5SENWYkI0VzNCWDFhTEpoYzYxVVJoSkkwWFB6WUJ4?=
+ =?utf-8?B?S3VPc1VWRGlJaVZ5MlVHd3U2U2RMOXlZcVhmbStORkNIR0tFUy9xdXl0aGI3?=
+ =?utf-8?B?ZU9vSk4xcnllcDBPR3UrRk9kQmRoeUlCOWNOUlFsaDh4T3JOazUxOUp1NU41?=
+ =?utf-8?B?eE9jSHFITHJOSmIwWUxpallhUDFlK0hWZmVxNXJocXA0cmh2cE0zaVlIb3Bl?=
+ =?utf-8?B?OXFFRlUrTnFLYVI1MHhhaDdhTkRaa0l1Vks0UUxsQk1NVVZveUluS05mZGpX?=
+ =?utf-8?B?MlN2WHFwMms4aHl4Wk56OUtkUHV1N3dHN1l1U0U4ZkJMckU0cTNTN3ZnQWdN?=
+ =?utf-8?B?RnRITkVjYnhCMUVENkJXNTZmWkJaZ1YvRUdUK1R5K0c0dm4vcWU4QVQzMjIy?=
+ =?utf-8?B?S0pSeVpQTVM2cktBcDM0RjdsSlQ4dEtDTGF5d3N1b1lNcGRYZWI1MzdjNFpD?=
+ =?utf-8?B?andMVHBPbVBGZDlBTm1ROVMzdU8rYVR5NytTak5sRjFNWnpTTmJqTnhWM0x6?=
+ =?utf-8?B?Wm9iL2VUdldVTW53eTFkdi9KcWJYUWtidXBPTnFxbUVDSEVTUVFndXNZWkxh?=
+ =?utf-8?B?SFRDMU9jRVJmQVBJZWNZdSt4eGJHdkxYSTQ3VCtVd3ZuWlRLaGkwOUVOblE0?=
+ =?utf-8?B?ZW5od2xkMzFPUm1IeTdSZ1hOSTdXdGp3TUt2aXFhYXo0NW5KZ3orVXpYUjFC?=
+ =?utf-8?B?bGI4dGNwUDR1Vy93VlJtWnR4S0huaHRYWWVmMURQTHQvZXI4eG40OWYrdTFo?=
+ =?utf-8?B?d0JMdWM5Qyt6a1RlallNWmIwaXVPbWVKS0tWeFVSOVV3VURSeWxkNEhFR0tC?=
+ =?utf-8?B?VEgvSDZoUktML2JhMndDa0dSZzE0cXpzK2dPREt1QWNGcnM3d0pMcFFHb3hi?=
+ =?utf-8?B?bGx6ZmJycjNSTmthcVRzQmxGL09JN3MxNUV5UldzZURPN1crWEMzK1Y3K3Fm?=
+ =?utf-8?B?c3ZSY2RLQ2tLdUI3RHo2Sy9HVXBPRWhHQXUvQUFVeTV5VVhsRTlSb0YzdmNB?=
+ =?utf-8?B?dnRUNEcwazRQL0JUdCtzdTNRZkJaMGs2cEpzYkxhRGlCSjhRdkN3ald5RWtm?=
+ =?utf-8?B?OGdKci9TUmVOUllFMkRHRGRUMVdjVFR5dVBhWlcrV3hnZWVEK2hDQXZnTTVP?=
+ =?utf-8?B?RWJ6b1VIdUNDQTJkOVVPdU0yeXF1RmlXRTJZcFppYjFiaEtLbktRWXIrL0ZV?=
+ =?utf-8?B?NmZOYXltazdpMVFBVysvMDRFMGlOVjl6cUVMdUZPa1FVNkJrMjBSZERUb1hP?=
+ =?utf-8?B?VHkzVEhOOTdUWXdFNlZ5VkczdE9CSkhLUXhTK1hhQTlPOG1DMUFoMDNRM1VU?=
+ =?utf-8?B?WC9sbFFOWWJwYXp6SDNFWXZmcWVERjVRbHVIVXl1NzdMZG1YSkIrRVRpZGNG?=
+ =?utf-8?B?R2VUSFBXSi9UaldPaTBZL3hXZWd1Vi85MHNoRzR4anhyR2s2bnBrUEsrVGt4?=
+ =?utf-8?B?WVdSa1E3NG1wQm9NNDdFbHVJWDJaK3dIUGlibjRkQnhXblhLcTExK09hZHVP?=
+ =?utf-8?B?UUIwajBRMkdOYy9Vei83RjlMakdGeFVIbzZGVU44Nm83a1JSc2xEa1lZbUc1?=
+ =?utf-8?B?RkpFYlJPVDZaWVZVbUF1U2Nrd3R4aGpqUGM4QXdicHhFUjNlUjFoUjVEVC9n?=
+ =?utf-8?B?SnlDdHQ2ZGhXRW05TDZidlZSMnc3UUs5RWpmVjczckxDaHNiSlRsVGVWVkha?=
+ =?utf-8?B?WWVlM2x2U3ZRQWduZ3pkamUxZnIwSTNBbXF4RHBKMWRhajRVMnd1Q2YxeGJq?=
+ =?utf-8?B?WCttdUx0OVJQQkJSZVo3c1RLUjMzZmp6WU5wZjZKWFNhVy8zdnk4TkUzYmx6?=
+ =?utf-8?B?ZW9KWXZwRENSTFdDdVhVZW5UZ0tDRTI0K1ZhdTFwMnkvZThtV1VKRVZMVjd1?=
+ =?utf-8?B?cVE0cDVnZHAyUHkyc3JwcVQxWG80U0w4QkdoVW5IbmlDNUFlUVpCS1BZd0hR?=
+ =?utf-8?B?ZDJqa2pNRDVTdm44RFFyN09VSTh3WlVkazJOTjBPZG5MRXFwdjlFd0w2NzVj?=
+ =?utf-8?B?Y0Z4c3ZadExuMmxNUjF6WVU4TGdPeG14WndSTGRIblVFR053RWJYMlRVSkF4?=
+ =?utf-8?B?SzhXK1ZzN3ZobFkxT2lHbW0vT2pVV0EzSzhBV0U4cU5jd1FLWVpQWWticVJD?=
+ =?utf-8?Q?oMiQapRlOut3BJV0HNQCR/vJS?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bed83b5b-25b0-4e0a-3154-08ddd455faa8
+X-MS-Exchange-CrossTenant-AuthSource: LV2PR12MB5968.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2025 19:26:30.1484
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tA+70kwjXw73u5kxaadIDhf1oyIW97BQe6YlUVRyBdVrf9d/w4m8ceisBN2+Cl6DAojQB7+rkybHjAxdbqpy8w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6271
+
+On 8/5/25 6:26 AM, Alexandre Courbot wrote:
+...
+> This leaves us with two viable solutions: `Alignable` extension trait
+> with `align_up` and `align_down` operations that take an `Alignment` as
+> parameter (with the caveat that they could not be const for now), or a
+
+From a readability point of view, this first option sounds nice. It's
+clear, concise, and doesn't involve macros.
+
+thanks,
+-- 
+John Hubbard
+
+> set of per-type functions defined using a macro, similar to bit/genmask.
+> I am fine with both but don't know which one would be preferred, can the
+> R4L leadership provide some guidance? :)
+> 
 
 
 
-> On 5 Aug 2025, at 13:22, Lyude Paul <thatslyude@gmail.com> wrote:
->=20
-> Hey! Onur, if you could make sure that future emails get sent to
->=20
-> lyude at redhat dot com
->=20
-> That would be appreciated! I usually am paying much closer attention =
-to that
-> email address. That being said, some comments down below:
->=20
-> On Thu, 2025-07-24 at 16:53 +0300, Onur =C3=96zkan wrote:
->> Hi again,
->>=20
->> Just finished going over the C-side use of `ww_mutex` today and I
->> wanted to share some notes and thoughts based on that.
->>=20
->> To get the full context, you might want to take a look at this thread
->> [1].
->>=20
->> - The first note I took is that we shouldn't allow locking without
->> `WwAcquireCtx` (which is currently possible in v5). As explained in
->> ww_mutex documentation [2], this basically turns it into a regular
->> mutex and you don't get benefits of `ww_mutex`.
->=20
-> I disagree about this conclusion actually, occasionally you do just =
-need to
-> acquire a single mutex and not multiple. Actually - we even have a
-> drm_modeset_lock_single_*() set of functions in KMS specifically for =
-this
-> purpose.=20
->=20
-> Here's an example where we use it in nouveau for inspecting the atomic =
-display
-> state of a specific crtc:
->=20
-> =
-https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/nouveau/disp=
-nv50/crc.c#L682
->=20
-> This isn't actually too unusual of a usecase tbh, especially =
-considering that
-> the real reason we have ww_mutexes in KMS is to deal with the atomic
-> transaction model that's used for modesetting in the kernel.
->=20
-> A good example, which also doubles as a ww_mutex example you likely =
-missed on
-> your first skim since all of it is done through the drm_modeset_lock =
-API and
-> not ww_mutex directly:
->=20
-> =
-https://github.com/torvalds/linux/blob/master/drivers/gpu/drm/nouveau/disp=
-nv50/crc.c#L544
->=20
-> drm_modeset_acquire_init() is a wrapper around ww_mutex_init() which =
-actually
-> does pretty much exactly what Daniel is describing lower in the =
-thread:
-> keeping track of a list of each acquired lock so that they can be =
-dropped once
-> the context is released.
->=20
-> drm_atomic_get_crtc_state() grabs the CRTC context and ensures that =
-the crtc's
-> modeset lock (e.g. a ww_mutex) is actually acquired
->=20
-> drm_atomic_commit() performs the checking of the atomic modeset =
-transaction,
-> e.g. going through the requested display settings and ensuring that =
-the
-> display hardware is actually capable of supporting it before allowing =
-the
-> modeset to continue. Often times for GPU drivers this process can =
-involve not
-> just checking limitations on the modesetting object in question, but
-> potentially adding other modesetting objects into the transaction that =
-the
-> driver needs to also inspect the state of. Adding any of these =
-modesetting
-> objects potentially means having to acquire their modeset locks using =
-the same
-> context, and we can't and don't really want to force users to have an =
-idea of
-> exactly how many locks can ever be acquired. Display hardware is =
-wonderful at
-> coming up with very wacky limitations we can't really know ahead of =
-time
-> because they can even depend on the global display state.
->=20
-> So tracking locks is definitely the way to go, but we should keep in =
-mind
-> there's already infrastructure in the kernel doing this that we want =
-to be
-> able to handle with these APIs as well.
->=20
-
-Well, the API I proposed would be implemented as a separate type, so the =
-whole
-thing would be opt-in anyways. There=E2=80=99s nothing stopping us from =
-providing
-abstractions for the current infrastructure as well and both things =
-should
-co-exist fine, at least that=E2=80=99s my understanding at this point.
-
-IOW: there is nothing stopping us from implementing say, a drm_exec =
-abstraction
-(or whatever else, really) if needed for whatever reason. But the =
-proposed API
-should be much more idiomatic for Rust code.
-
-=E2=80=94 Daniel
 
