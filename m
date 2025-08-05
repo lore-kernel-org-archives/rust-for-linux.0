@@ -1,112 +1,96 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward502a.mail.yandex.net (forward502a.mail.yandex.net [178.154.239.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7532494C2
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 Aug 2025 08:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C985D257AEC;
+	Tue,  5 Aug 2025 09:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754383374; cv=none; b=uGCvJv7u66UZmBWLbQ4PuoRT6PClWnwMfeiwrMSWnAFgBk4MzWcI4qwxBtOu9c0kEk6lBGwy9DXec4tYDDAYrL5dmUHgPFtxMwei3AXJrqd/6huDmeOhFa5RolXUxkYUN3FYvEROhYGhloKesHMKwW0YGIbTwTQsfGd3RiPt2jM=
+	t=1754385349; cv=none; b=KVU5v439gG3ul7Te3PuB+sDax143tyLXejCFgU0ZWvBH4sIR/UOoCFnEU8DMEHDdYJVN7uDeh9D88ILL0PB4GXuq5kKrzDwRUkqZm5oGzRd4eKiTNJo+pOHHXlc/LEXMpHPTuTVL1aNFtHujJ1JNBsQTwaSks3sXw/BeslItigI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754383374; c=relaxed/simple;
-	bh=LVuuvIOXyaDckGRowOdAF0iCB3B9x3e7m6JtLCAG7og=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CKMjsl669ND2yE+m4jzx+U+FDJufJFxwJUKu4SNCWL2IVYYOCuxhV+jy0HacYewoI0s/QdeG92prBP5zOZgn9+vWKF56PKpXRpdVRpoOOVtjUuF2MUUrwCla+Kc20i8PReFmOqzySbpJ9SlEWhYKXHkirYnHTAQJoiMQXlvi9Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=peaxE33M; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1754385349; c=relaxed/simple;
+	bh=aGAWGoCnlSgQmOwSeGPfLuL4gjBegI5e67jfq5U8ylc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WeXj27ZKmLh7u5Sc47BGOr5bvlJeVTjSUdwI02aJ8NHukN8qa2/E3rscR9iQrbXpU9ZK7wGvNGhuoj0eBycfOaNOW0NDyrNZpBfGDD5zJ/YoKygmqAkRvNDhy03kPhJ5EVcxOdjvaajyTJv8vwyxEF7mKEYsZ7bJ0CPStBiVxCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev; spf=pass smtp.mailfrom=onurozkan.dev; dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b=mHJbf5RA; arc=none smtp.client-ip=178.154.239.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=onurozkan.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=onurozkan.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="peaxE33M"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b8db5e9b35so1999324f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 05 Aug 2025 01:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754383371; x=1754988171; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EC3P05sIQH2f4RvTxjQQwotKae6prFyn6jtQODb9ESI=;
-        b=peaxE33MPTJN+Jls3NUjEorS+6iiGcvqpYpOaieZG34JycAEjy2Po6hg6w/rI2HN1D
-         VoYMsKK/6uA3SAd8QR4dP0egxuzCETB4+WjPCx+bLQRa4a8bALtSZ896er/vbtcZuLZW
-         GnYZ8sh4maJVXLsMfDrgGMWISLPS/pb2md4NrHF9UtVm7/+Hh1D23I+QOoHptojdgt/t
-         wGjsZEg05AWgG76/urNl9Mdrkj+HUApCnlhUvGH6mHWglqTr2Bfv/ZMx3k4tJMe+b7Yf
-         j4pvhBlOzwGZ4MQMcpUEOr4y5KhzxcGTYlT30gvmRcnC0rZC5QtlzA8Zx9Nh2XLrK69t
-         uCTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754383371; x=1754988171;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EC3P05sIQH2f4RvTxjQQwotKae6prFyn6jtQODb9ESI=;
-        b=nymLc8FN4xQZL70VxgnnkJB8+NICoiMDt5y6ZquiqoVTB9pys48tRnDSeOGepPPcl8
-         6Z/P49z4CjoNClhXBM1bVXPgZb5qSTB4tsXIhMqiK/AK76tqqkITLDtZlldBQLZTYQGe
-         UYWBKLHQRQY6QnSOKnGubJUR/j4UvjiuyU6sx6nes2RgGfnhj9mIWyMvy/7RDSsweoN1
-         XlD/bQyDuaw1SDfdNgmleWKpkIVBiIG3qUAG6hd1A/NKNUywE1XLPzCk/49ui1TUZK/o
-         3oSxi9htrjQjHZNWqM6v8DHTyiTd4Y35m8B8fdFZ+rVzWD+pcur4rFpWKF17d03B5o4a
-         XwMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWqBmwz4A4c08dJHripaP/qK68rk0s7VbXyqIQ3p+4U7h+YnZU5DckgYZSXM+XhLAEghe07m1t7eaCA0VsMJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1jZmSREHs3WllbsaOGSLqirpkmqSSReIh3qd2QJkdJgW8gz08
-	RSsafO2fpqLFRkOmuvcfR2Sdvv7nwTs32NA2Zv4b03bPUgbhd7rknfjcXC4dj96Z3Jxp3excmzS
-	lP+wn/QX6IDSZzLJu9a0ONgGDCRghBctqDNH6vFcb
-X-Gm-Gg: ASbGncuwbtAXekmRWU46TJuJy7EeIGE47zduApvF4LkHqynVTdU6rBcbto6yhh4YULY
-	Scbz3UQtj+1T+Vq0OLGgwjFUFfXm8dAgmguN67fn5YOuv387W5cFj4b0RMa1nifnGkHGmZKcn+I
-	HBQ1Y59yB7BIdC/QdgWtplwcdpPwo+WToZQBx5dBPZEXn4X/0SnYMXM/irQVi60DES9c9XnhH8W
-	/PqdA7H5oIHCywoOkQBEEluEPSy32Vlvsa3flbyjITH5Mv/
-X-Google-Smtp-Source: AGHT+IGtAV56xPSuv3qJG0TJb6qDD4qvA7fD8oX2CreP4OCwWwwKK5eD+igWG1oRFqoLugM9orOt5fMF8aMdW05tgpQ=
-X-Received: by 2002:a05:6000:2289:b0:3a5:52b2:fa65 with SMTP id
- ffacd0b85a97d-3b8d946a541mr9866566f8f.5.1754383371062; Tue, 05 Aug 2025
- 01:42:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=onurozkan.dev header.i=@onurozkan.dev header.b="mHJbf5RA"
+Received: from mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:e8d:0:640:bba7:0])
+	by forward502a.mail.yandex.net (Yandex) with ESMTPS id 4B88081A59;
+	Tue, 05 Aug 2025 12:08:21 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id F8c5BVUpU8c0-GO7I7gnR;
+	Tue, 05 Aug 2025 12:08:20 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=onurozkan.dev;
+	s=mail; t=1754384900;
+	bh=PPtHV1CcZHiPaeg/tV5PXIHzxoWkTlwtb+No67Nl1YI=;
+	h=Cc:Message-ID:Subject:Date:References:To:From:In-Reply-To;
+	b=mHJbf5RATew33cYKT4274q6R9/CCdg5u/Kih/XYV+UPnNEKJ13tmaUdip3q5s/H7H
+	 t2ECpm9kRWNaOB23S/HVObYWcT+ULrXQls+Aw5aV0QPpF/+dMD0Z34ZnH3s0q9rpbA
+	 9TnIQlxFV7JSmOSaVU1+GUPg7LuEfkvuy8Q4ftXA=
+Authentication-Results: mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net; dkim=pass header.i=@onurozkan.dev
+Date: Tue, 5 Aug 2025 12:08:13 +0300
+From: Onur =?UTF-8?B?w5Z6a2Fu?= <work@onurozkan.dev>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ ojeda@kernel.org, alex.gaynor@gmail.com, gary@garyguo.net,
+ a.hindborg@kernel.org, aliceryhl@google.com, tmgross@umich.edu,
+ dakr@kernel.org, peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+ longman@redhat.com, felipe_life@live.com, daniel@sedlak.dev,
+ bjorn3_gh@protonmail.com, dri-devel <dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
+Message-ID: <20250805120813.1f8714f5@nimda.home>
+In-Reply-To: <E997DCAF-552F-4EF2-BF94-1385ECADF543@collabora.com>
+References: <20250621184454.8354-1-work@onurozkan.dev>
+	<20250621184454.8354-3-work@onurozkan.dev>
+	<DASY7BECFRCT.332X5ZHZMV2W@kernel.org>
+	<aFlQ7K_mYYbrG8Cl@Mac.home>
+	<DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org>
+	<aFlpFQ4ivKw81d-y@Mac.home>
+	<DAU0ELV91E2Q.35FZOII18W44J@kernel.org>
+	<20250707163913.5ffc046d@nimda.home>
+	<DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org>
+	<20250707210613.2fd5bb55@nimda.home>
+	<DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org>
+	<FF481535-86EF-41EB-830A-1DA2434AAEA0@collabora.com>
+	<DBRVNP4MM5KO.3IXLMXKGK4XTS@kernel.org>
+	<E997DCAF-552F-4EF2-BF94-1385ECADF543@collabora.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-unknown-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250804171311.1186538-1-ojeda@kernel.org>
-In-Reply-To: <20250804171311.1186538-1-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 5 Aug 2025 10:42:38 +0200
-X-Gm-Features: Ac12FXx19FT9ynQWIxH_U--Fjwzz6tXLnl6QKMiOty5H-9vNPyzv9MLJrTEPKps
-Message-ID: <CAH5fLgiERU2Q0+BAR2P5vb-mTeNe=wbS-b_38bjhc+WOD+bXyw@mail.gmail.com>
-Subject: Re: [PATCH] rust: faux: fix C header link
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 4, 2025 at 7:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
->
-> Starting with Rust 1.91.0 (expected 2025-10-30), `rustdoc` has improved
-> some false negatives around intra-doc links [1], and it found a broken
-> intra-doc link we currently have:
->
->     error: unresolved link to `include/linux/device/faux.h`
->      --> rust/kernel/faux.rs:7:17
->       |
->     7 | //! C header: [`include/linux/device/faux.h`]
->       |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `includ=
-e/linux/device/faux.h` in scope
->       |
->       =3D help: to escape `[` and `]` characters, add '\' before them lik=
-e `\[` or `\]`
->       =3D note: `-D rustdoc::broken-intra-doc-links` implied by `-D warni=
-ngs`
->       =3D help: to override `-D warnings` add `#[allow(rustdoc::broken_in=
-tra_doc_links)]`
->
-> Our `srctree/` C header links are not intra-doc links, thus they need
-> the link destination.
->
-> Thus fix it.
->
-> Cc: stable@vger.kernel.org
-> Link: https://github.com/rust-lang/rust/pull/132748 [1]
-> Fixes: 78418f300d39 ("rust/kernel: Add faux device bindings")
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On Sat, 2 Aug 2025 11:15:07 -0300
+Daniel Almeida <daniel.almeida@collabora.com> wrote:
+ 
+> Btw, I can also try to implement a proof of concept, so long as
+> people agree that this approach makes sense.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+It's not necessary to provide a full P.o.C but a small demonstration of
+the kind of ww_mutex API you would prefer would be helpful. Seeing a few
+sample Rust use-cases (especially in comparison to existing C
+implementations) would give a clearer picture for me.
+
+At the moment, the implementation is just a wrapper ([1]) around the C
+ww_mutex with no additional functionality, mostly because we don't have
+a solid consensus on the API design yet (we had some ideas about Tuple
+based approach, but seems like that isn't going to be useful for most
+of the ww_mutex users).
+
+[1]: https://github.com/onur-ozkan/linux/commits/673e01a9c309c
+
+> By the way, dri-devel seems to not be on cc? Added them now.
+
+Thanks!
+
+--
+
+Regards,
+Onur
