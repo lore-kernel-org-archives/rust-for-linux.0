@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3000B1D7E5B;
-	Tue,  5 Aug 2025 11:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E57F199252;
+	Tue,  5 Aug 2025 11:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754392690; cv=none; b=i73wz+O2sUP0ifz2TLXUD/pSp7iVtogyt7gK3RLIrQVlFpams1C/Aq0r9PGI8f5TKQFEzJ8XlRRMH8dTQ5yV6OTY2dU/yRpAjcYK7r2SFJIhySTyVci+Y5L9CEWqQ9k81bT1FiJ7NWR4FoIv+ZLjN2bFLu/Jw0jMJbmZ0JyLsCU=
+	t=1754393490; cv=none; b=uokMqPSrTgTS8YbcXn7xN3I1p2pdQxJo/mrorqA7tC+u8TK3UmC24CyfGH6n0EZzcz2Rsn2irT7KHQwXKoyadJprmc+8KcZekm6w1ThsPM99G01ZW+wcfvA5GUE6LoQWOJcPTD9s9iMGK1WD+GGVjYImSiymGMCx1JUyFVDlTUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754392690; c=relaxed/simple;
-	bh=xvDDh6gLJbQlXLbG0l9A91FOiX1KeXuPAWb5BgdpKv8=;
+	s=arc-20240116; t=1754393490; c=relaxed/simple;
+	bh=vcEdqIGDti60wtwS8tB1w3lsuctZKyPsi2kttMPEE+c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=VKVsXpAPAPvgwKkOtNUtPNjpBOZOe39xO1JFBV3ecyPoNCZpua0uLG+BxyolQtXwYHUxnM2D/7gh1iPE7OzAZhExxzpK/buL78+qFINZegx5JoBE01U2dUGxlvzcjZZlV0BPHcKkur1y+CwDVej6rbyHbtb8Ywi2ZGmznQgpQLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQDpU2e9; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=aAY/IPxoExomjtWT3zhOIbWlzpB/h3FJtijs99wK32tvUTo85of/RvNKLy5LqNe1gnFvSmeFG9y00PAj3yvxt1n5/iykHgEXu1kZasehG3PnGI+AqdtOvqqKY3lSmIqw+zFXKJK9ftFJViW9okh0xFLQFdhvmIOODphYUFQQinI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lcXOefw5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQDpU2e9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DB4C4CEF0;
-	Tue,  5 Aug 2025 11:18:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lcXOefw5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55F1C4CEF4;
+	Tue,  5 Aug 2025 11:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754392689;
-	bh=xvDDh6gLJbQlXLbG0l9A91FOiX1KeXuPAWb5BgdpKv8=;
+	s=k20201202; t=1754393490;
+	bh=vcEdqIGDti60wtwS8tB1w3lsuctZKyPsi2kttMPEE+c=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=tQDpU2e9dyJ0Y0eo/K6rBrM9cRpIq6uWRFS+9PJRr5rNS93vHBoBW2AlujTez0uBa
-	 7VDkhp22hATZxeej3I4zI2uIm6caqGQ98Q6L2pmwNu/wAcIrnjFwzv38JDc9coa2gO
-	 yFgs9/nmNA/9zkZ+BqxYOevMpKJL6w1qfV2EGM8ECdjEWUV2uHHXKXXzG+OdHMKK/P
-	 HTIhCSvsRgwP6kp+5miv7AykyR0Dph0OFMQ5Wd72nvXF/DT1Whsl2XZAq8+tEN0TFk
-	 cmvq3AcUwiUm9a4hZ42Ny+sdolKuKR0U8h2Fs9q0Uze1RHt+cRazv0b/x96rxOoQUQ
-	 5pLE2krAf0qOw==
+	b=lcXOefw5+1osb9agbetY2MO4OhJIvLTmy7UCqupsGbfhBmtAkMNj0hCwpjCQnFJrV
+	 hSj1mM2OaIuLeiFsLi4q7vEpL+rXDrBt3sTBXOisG2akOza4LcHZAolX1cykhrgxrd
+	 L2tw4K6XwCFMB9UVB56B2fQEFRaulKyUbYP9kWh9U/lcW1Boep0amIiMt3kQOF0aoS
+	 QgUfFdIQBc1Si+HC+ZxfGg2dFtPzY5SMAimFW/h6rXiIaIwkBxgVXau1mqq95EhVYe
+	 tRjzeuwhT8A+tr4oi/sET2L1vXn/jrASUALvA+UVXpRGRnpou+VmxH8kYCbTc4kHoz
+	 JmY6r/cHNr6mQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman
  <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -37,27 +37,27 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
  Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, Alice
  Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>
-Subject: Re: [PATCH v3 1/4] rust: iov: add iov_iter abstractions for
- ITER_SOURCE
-In-Reply-To: <20250722-iov-iter-v3-1-3efc9c2c2893@google.com>
+Subject: Re: [PATCH v3 2/4] rust: iov: add iov_iter abstractions for ITER_DEST
+In-Reply-To: <20250722-iov-iter-v3-2-3efc9c2c2893@google.com>
 References: <20250722-iov-iter-v3-0-3efc9c2c2893@google.com>
- <IMil7T48wWl_KirFiwKV5bNm7TuVsFNPEX3_6CJWEzwQ6n4jaVn943ujBotHAettCFL5Slnb0v_3Cz50enMdqw==@protonmail.internalid>
- <20250722-iov-iter-v3-1-3efc9c2c2893@google.com>
-Date: Tue, 05 Aug 2025 13:17:57 +0200
-Message-ID: <871ppq9fve.fsf@kernel.org>
+ <hpbmPd1Q-NkvYKLgqaQjVLXCh6FOGHnM7qKDqY2kMnrK27N9UT2w1xvS6x4c7aO9_lQNI_G83Jh_usDUF-BPEQ==@protonmail.internalid>
+ <20250722-iov-iter-v3-2-3efc9c2c2893@google.com>
+Date: Tue, 05 Aug 2025 13:31:16 +0200
+Message-ID: <87y0ry80or.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
 "Alice Ryhl" <aliceryhl@google.com> writes:
 
 > This adds abstractions for the iov_iter type in the case where
-> data_source is ITER_SOURCE. This will make Rust implementations of
-> fops->write_iter possible.
+> data_source is ITER_DEST. This will make Rust implementations of
+> fops->read_iter possible.
 >
 > This series only has support for using existing IO vectors created by C
 > code. Additional abstractions will be needed to support the creation of
@@ -67,45 +67,21 @@ Content-Type: text/plain
 > have internal self-references, which implies that it is valid to move it
 > between different local variables.
 >
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
+> This patch adds an IovIterDest struct that is very similar to the
+> IovIterSource from the previous patch. However, as the methods on the
+> two structs have very little overlap (just getting the length and
+> advance/revert), I do not think it is worth it to try and deduplicate
+> this logic.
 
-..
-
-> +
-> +    /// Advance this IO vector backwards by `bytes` bytes.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The IO vector must not be reverted to before its beginning.
-> +    #[inline]
-> +    pub unsafe fn revert(&mut self, bytes: usize) {
-> +        // SAFETY: By the struct invariants, `self.iov` is a valid IO vector, and `bytes` is in
-> +        // bounds.
-
-"... and by method safety requirements `bytes` is in bounds", right?
-
-> +        unsafe { bindings::iov_iter_revert(self.as_raw(), bytes) };
-> +    }
-> +
-> +    /// Read data from this IO vector.
-> +    ///
-> +    /// Returns the number of bytes that have been copied.
-> +    #[inline]
-> +    pub fn copy_from_iter(&mut self, out: &mut [u8]) -> usize {
-> +        // SAFETY: `Self::copy_from_iter_raw` guarantees that it will not deinitialize any bytes in
-> +        // the provided buffer, so `out` is still a valid `u8` slice after this call.
-
-I am curious if there is a particular reason you chose "deinitialize"
-over "write uninitialized" for the wording throughout this patch? It's
-an unfamiliar phrasing to me.
-
+Is it not like 50% duplication? `as_raw`, `len`, `is_empty`, `advance`,
+`revert`. It looks like it makes sense to me, but =F0=9F=A4=B7 We can alway=
+s do it
+later.
 
 Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
 
 
 Best regards,
 Andreas Hindborg
-
 
 
