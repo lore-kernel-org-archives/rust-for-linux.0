@@ -1,109 +1,112 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91D0253F15
-	for <rust-for-linux@vger.kernel.org>; Tue,  5 Aug 2025 08:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7532494C2
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 Aug 2025 08:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754383214; cv=none; b=TEFQdsu+2KxwgVd0hHoCYL4ltOab+pqFepz/j4TIHH8UvLBChgWLWSAyzir2TzascjgTFpziRPU6VAz5xX5lLBp9GLJ2QfKWt/+KDmjS9TE6PXhiwAZWQHjaGATQ9TyD5yH6fMGDQg1BfPifNmD18A0bfvpBbnbCAIDmTSLuXPs=
+	t=1754383374; cv=none; b=uGCvJv7u66UZmBWLbQ4PuoRT6PClWnwMfeiwrMSWnAFgBk4MzWcI4qwxBtOu9c0kEk6lBGwy9DXec4tYDDAYrL5dmUHgPFtxMwei3AXJrqd/6huDmeOhFa5RolXUxkYUN3FYvEROhYGhloKesHMKwW0YGIbTwTQsfGd3RiPt2jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754383214; c=relaxed/simple;
-	bh=u/L3FSLmLLu8EgDxW4Os3t5TJG/ay/xJ5HeKC+3ZVLQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qsNI8oBG/SP1R0QaD9Lr/D2Re8kp32u/tKllBvvD863v0ZkaVk5R7GQt52D+tD2p3YvN4zyV6o40Z5ZvGCg9YsxTAu/Luoe5JkdISWx0juiNNppxKNBJDjPoqVhBiHANCJ+gvNyov56UXrtpwN5HmYwUjMRANd6OhpC7N2nw2SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kz1BxzW6; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1754383374; c=relaxed/simple;
+	bh=LVuuvIOXyaDckGRowOdAF0iCB3B9x3e7m6JtLCAG7og=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CKMjsl669ND2yE+m4jzx+U+FDJufJFxwJUKu4SNCWL2IVYYOCuxhV+jy0HacYewoI0s/QdeG92prBP5zOZgn9+vWKF56PKpXRpdVRpoOOVtjUuF2MUUrwCla+Kc20i8PReFmOqzySbpJ9SlEWhYKXHkirYnHTAQJoiMQXlvi9Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=peaxE33M; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kz1BxzW6"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-459e210bd2dso1250025e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 05 Aug 2025 01:40:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="peaxE33M"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3b8db5e9b35so1999324f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 05 Aug 2025 01:42:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754383211; x=1754988011; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PMVgRA+Kcuh0SOjheC54pEp/bs5a6C4GRIfNZChw31g=;
-        b=kz1BxzW6dbdazu1IcAkE2hWUrEs2EYkJOAYxlAeIPBSUzsZyOi9ORmcBqi8Gup4SNc
-         otBmvQYCF4nz+OczVMJa/WQWxnBLDi6VEaxbynw90kT6YPOR3xgTAH3thFQuTUhL+qzE
-         ZDicg6eYmGPA54I6/yfxf747zsoLR+OZuumXvxdVXuBiYUrP284tjnNyzaSrZhJTwvRg
-         OrhtTYbCuh/vJCiV2iujhwlKmD9h+y3CuQbK6PbcoGOZDaZzVEchIEwKCeorZML5T7sL
-         Yajjm+m0xPAJhy7hnq4qDWXOhjcmlJEzaeYeTYfvMktxhjQoujJke2ZXWFRqg1rJOX6m
-         hXTA==
+        d=google.com; s=20230601; t=1754383371; x=1754988171; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EC3P05sIQH2f4RvTxjQQwotKae6prFyn6jtQODb9ESI=;
+        b=peaxE33MPTJN+Jls3NUjEorS+6iiGcvqpYpOaieZG34JycAEjy2Po6hg6w/rI2HN1D
+         VoYMsKK/6uA3SAd8QR4dP0egxuzCETB4+WjPCx+bLQRa4a8bALtSZ896er/vbtcZuLZW
+         GnYZ8sh4maJVXLsMfDrgGMWISLPS/pb2md4NrHF9UtVm7/+Hh1D23I+QOoHptojdgt/t
+         wGjsZEg05AWgG76/urNl9Mdrkj+HUApCnlhUvGH6mHWglqTr2Bfv/ZMx3k4tJMe+b7Yf
+         j4pvhBlOzwGZ4MQMcpUEOr4y5KhzxcGTYlT30gvmRcnC0rZC5QtlzA8Zx9Nh2XLrK69t
+         uCTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754383211; x=1754988011;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PMVgRA+Kcuh0SOjheC54pEp/bs5a6C4GRIfNZChw31g=;
-        b=dLUoysTYkBs4yJh6ebWwSf1xcjbeJXrCAHdoVnaBLtXIRPpu/y+za1lb0xnu0mfuvc
-         F7Rc8cRw4w8n96nRgrbbVAULO3jx4hlaNBu7qIiT+BGRk3j98IgXy+HwNxv9sGUuYF05
-         2YAsM467HgLIOHrmAN20N+kpFZ6pQ8hS2nXvdR/rYDg8dZx7hCSlZZ2/WMy5KzeHlICd
-         zlmB8NFJEYMYW+TOk+5h6jfUI5ftE7QFvWlmgsM9J74gfbVfG1QzyN+TPGUCOyxRs4Wm
-         bDcjPBuw3AJ17WIx8GyGNlnn8Xl72LswdGJlxXipilH5r3r8bDxercZfN9xiwt44v5P6
-         cSyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUENs5AY1AkzbARY3kU4QgZFHHgcIRbD3nRgzehsDqWHzrSl3S83cUMhpd5S7greOtRgj1Ogg5Zht2hDuaJtg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxx6iLtzyy+3bDnhTlyZtjr244XFM+zo8OtghaVIJGb8wiSF5f8
-	knJMr4B/BNrs0QUb3n94293kh7k+sTZ/Sf3icw5DyQD2703reFXsi2hu
-X-Gm-Gg: ASbGncukR+ySUvnkExyDzl2t3oQhrQ6TFyGk5cxHxw3tf40kas0o6+VyU96YRsjv01k
-	3z+IGTEM5A2YlFg2fcDoDi2ooNRG5PxxXrmnoSNPYOv0xnoF26diWml7XxNLkj/rFNipVArHVbo
-	K5q3efhnDfzl+7J3AFtHkF6z2khrfHRPSUWmOUvqsAKsKpyNAF6fPuVd3cDEmNt0G01Tjt+fWKk
-	z7KyzSA0TVUJjHqEOKCW+nmpbV/aJDyEiEPMBIs+M9aA+xkEu26uKXQ+wFVqTlVcbwDgyP/hgOB
-	pB79GGB2/YHW5aSNZ6q7J96HhwU/eaCDZG3pKftkSGeJXstuAkwjIRZJAzdqcMabY5cmPbWK7kG
-	BUIkks102rN1Pusbk4qAEopMYMTZyx19340Wnw24=
-X-Google-Smtp-Source: AGHT+IGd4FYBbjRyMreXl3FgzERQtyJnzjqWtj1utyiFFwDdYXuGi58TilLQfFQP5EgAjgBzrdql5g==
-X-Received: by 2002:a05:6000:220f:b0:3a5:8934:4959 with SMTP id ffacd0b85a97d-3b8ebeddef6mr1970177f8f.27.1754383210919;
-        Tue, 05 Aug 2025 01:40:10 -0700 (PDT)
-Received: from [10.38.1.85] ([188.39.32.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b79c470102sm18155465f8f.53.2025.08.05.01.40.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 01:40:10 -0700 (PDT)
-Message-ID: <166cf13c-7bec-40cb-8d33-1c36c7927aff@gmail.com>
-Date: Tue, 5 Aug 2025 09:37:54 +0100
+        d=1e100.net; s=20230601; t=1754383371; x=1754988171;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EC3P05sIQH2f4RvTxjQQwotKae6prFyn6jtQODb9ESI=;
+        b=nymLc8FN4xQZL70VxgnnkJB8+NICoiMDt5y6ZquiqoVTB9pys48tRnDSeOGepPPcl8
+         6Z/P49z4CjoNClhXBM1bVXPgZb5qSTB4tsXIhMqiK/AK76tqqkITLDtZlldBQLZTYQGe
+         UYWBKLHQRQY6QnSOKnGubJUR/j4UvjiuyU6sx6nes2RgGfnhj9mIWyMvy/7RDSsweoN1
+         XlD/bQyDuaw1SDfdNgmleWKpkIVBiIG3qUAG6hd1A/NKNUywE1XLPzCk/49ui1TUZK/o
+         3oSxi9htrjQjHZNWqM6v8DHTyiTd4Y35m8B8fdFZ+rVzWD+pcur4rFpWKF17d03B5o4a
+         XwMA==
+X-Forwarded-Encrypted: i=1; AJvYcCWqBmwz4A4c08dJHripaP/qK68rk0s7VbXyqIQ3p+4U7h+YnZU5DckgYZSXM+XhLAEghe07m1t7eaCA0VsMJA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1jZmSREHs3WllbsaOGSLqirpkmqSSReIh3qd2QJkdJgW8gz08
+	RSsafO2fpqLFRkOmuvcfR2Sdvv7nwTs32NA2Zv4b03bPUgbhd7rknfjcXC4dj96Z3Jxp3excmzS
+	lP+wn/QX6IDSZzLJu9a0ONgGDCRghBctqDNH6vFcb
+X-Gm-Gg: ASbGncuwbtAXekmRWU46TJuJy7EeIGE47zduApvF4LkHqynVTdU6rBcbto6yhh4YULY
+	Scbz3UQtj+1T+Vq0OLGgwjFUFfXm8dAgmguN67fn5YOuv387W5cFj4b0RMa1nifnGkHGmZKcn+I
+	HBQ1Y59yB7BIdC/QdgWtplwcdpPwo+WToZQBx5dBPZEXn4X/0SnYMXM/irQVi60DES9c9XnhH8W
+	/PqdA7H5oIHCywoOkQBEEluEPSy32Vlvsa3flbyjITH5Mv/
+X-Google-Smtp-Source: AGHT+IGtAV56xPSuv3qJG0TJb6qDD4qvA7fD8oX2CreP4OCwWwwKK5eD+igWG1oRFqoLugM9orOt5fMF8aMdW05tgpQ=
+X-Received: by 2002:a05:6000:2289:b0:3a5:52b2:fa65 with SMTP id
+ ffacd0b85a97d-3b8d946a541mr9866566f8f.5.1754383371062; Tue, 05 Aug 2025
+ 01:42:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] rust: i2c: add basic I2C device and driver
- abstractions
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Danilo Krummrich <dakr@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- rust-for-linux@vger.kernel.org
-References: <20250801153742.13472-1-igor.korotin.linux@gmail.com>
- <20250801154042.14327-1-igor.korotin.linux@gmail.com>
- <DBRI0B7BXRS4.3RUOC5ARVETE1@kernel.org>
- <08e89f95-6c95-4998-988c-e25f3cbfb389@gmail.com>
- <DBTQRIGWJDYB.2VNIOFWLKZFG3@kernel.org>
- <3e53e2c8-4988-448e-b2ac-6eaf6d62e050@gmail.com> <aJDbmFx3QAm-TY4L@shikoro>
- <DBTTAEC8HLGA.QYJ0UZOIDYEZ@kernel.org> <aJEtrI6RlU1tiflq@shikoro>
-Content-Language: en-US
-From: Igor Korotin <igor.korotin.linux@gmail.com>
-In-Reply-To: <aJEtrI6RlU1tiflq@shikoro>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250804171311.1186538-1-ojeda@kernel.org>
+In-Reply-To: <20250804171311.1186538-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 5 Aug 2025 10:42:38 +0200
+X-Gm-Features: Ac12FXx19FT9ynQWIxH_U--Fjwzz6tXLnl6QKMiOty5H-9vNPyzv9MLJrTEPKps
+Message-ID: <CAH5fLgiERU2Q0+BAR2P5vb-mTeNe=wbS-b_38bjhc+WOD+bXyw@mail.gmail.com>
+Subject: Re: [PATCH] rust: faux: fix C header link
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Wolfram
+On Mon, Aug 4, 2025 at 7:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
+>
+> Starting with Rust 1.91.0 (expected 2025-10-30), `rustdoc` has improved
+> some false negatives around intra-doc links [1], and it found a broken
+> intra-doc link we currently have:
+>
+>     error: unresolved link to `include/linux/device/faux.h`
+>      --> rust/kernel/faux.rs:7:17
+>       |
+>     7 | //! C header: [`include/linux/device/faux.h`]
+>       |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^ no item named `includ=
+e/linux/device/faux.h` in scope
+>       |
+>       =3D help: to escape `[` and `]` characters, add '\' before them lik=
+e `\[` or `\]`
+>       =3D note: `-D rustdoc::broken-intra-doc-links` implied by `-D warni=
+ngs`
+>       =3D help: to override `-D warnings` add `#[allow(rustdoc::broken_in=
+tra_doc_links)]`
+>
+> Our `srctree/` C header links are not intra-doc links, thus they need
+> the link destination.
+>
+> Thus fix it.
+>
+> Cc: stable@vger.kernel.org
+> Link: https://github.com/rust-lang/rust/pull/132748 [1]
+> Fixes: 78418f300d39 ("rust/kernel: Add faux device bindings")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-On 8/4/25 23:01, Wolfram Sang wrote:
-> 
-> Well, I2C client drivers go to their specific subsystem, of course. I2C
-> controller drivers will go to I2C. But as I can't review them, I need a
-> maintainer for them. Is Igor willing to do this? Review I2C controller
-> drivers written in Rust? Or is he only interested in the Rust I2C
-> bindings? Anything is fine with me, we should only make sure that the
-> MAINTATINERS file describes this correctly.
-
-I'm definitely interested, but going through a tough period right now,
-so I’m not sure I can commit fully just yet. Happy to stay involved and
-ramp up over time.
-
-Thanks
-Igor
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
