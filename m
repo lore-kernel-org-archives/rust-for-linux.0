@@ -1,125 +1,143 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7B3212B1E;
-	Tue,  5 Aug 2025 12:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754397762; cv=pass; b=R++Zdo8oHFF0MLnMe3dPrL5HHGMfFJBTdd2TeUZ+gD7OVdI/lUyHvb68aCzjilobCkViCHa900V1/ay0J5FPXZzAOmx+yzSu+IGeGh21WoELtbjtqR6Yv9vx2O5Pxoy6i5FSf/EGlec4gqjWpiKKW3MDSIrLgOLsJwKNj7vdUPU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754397762; c=relaxed/simple;
-	bh=wzqHFt2lJOBN3obRMiws9twHVlcCWkgkdwKk6A+VdZI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=A2qUP2mWQsKOc3CMJEQLiPqeDNHbWv4S5g5gTREnh+mGxw5WczSEIzBrYbgOyqMRIzrWPMFE4GQgICwK9/bDBK5sQNfSHaMFnQG4fjKXpt4Qp3Z74ru41fSd2qwmzzoTr0sPgnSqo0g5KdXTu15YCAzMFQEVprcUKI0qOleiPow=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=fc1kDs9z; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9B92264DB
+	for <rust-for-linux@vger.kernel.org>; Tue,  5 Aug 2025 12:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754398411; cv=none; b=GfM6+1q9SdO3ymmCzDiVpTcguvjneZIm3YcGbE+/Z0vTvHJ5qGPpuVSs3kaIqLLvCF6i9HzTAS/DcO8pwbPZBPd4VGxKODGwOFiDSesxViKEziWnj/baHNhJfLpRxDft+Dm8BEQN+UI9TIz8yLRvaXEJfP/cWnosykqc9uV44xo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754398411; c=relaxed/simple;
+	bh=osgzXzz6RaoaU/kvCWUo2vwYN3DpfVNQphG23h7p0zk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=A7PU1uqOt44IPkJQfSKYNizAIcbubHH/o2p+38pAu7T1mJ7nO3vOuEi0KsFQjwg+7+PUmh9YNMb1/kcMI7ap6I+XKudoUVHw9jt7o+phuXLCeMFpkwVrlZwi3pTc15HHeQSjji/HE9DWrGgOEhI5qRkytmgAjxtKfsfOUavm7ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXh2Kkrx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="fc1kDs9z"
-ARC-Seal: i=1; a=rsa-sha256; t=1754397720; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Wx4m7as+nKB7jA3b5+YRisCwBHdKIdNNO2e90MFj5uGnJWX6bQ+XED8f4jNfukn0zv7bob5AvaD5JqIlX9I0pzNUZ6QKIbdQA5/fpFkdKaDr3WxRk3WqOpUN5Ily8iIGiM5kMoXOxEPInKU9DPEeiy6EzDL6RRMWQMUz0B/dPhs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754397720; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=wzqHFt2lJOBN3obRMiws9twHVlcCWkgkdwKk6A+VdZI=; 
-	b=Rq+rvyFSr7jN6OdrzKqqaIAq8TkJJtFYGkeXkFdFVX9cNWmmwYtfZLS9o8OQmmLE9bLF3GqNxTgvzuyI4SlVJ8QV8ppGcYiShSBLwZGwDaNxU1A1/h50uIqruuKyavZjSmJQDGVPhZU8JdXJjjB9s5M02W+r8+u1Fl7mW0+kb3g=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754397720;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=wzqHFt2lJOBN3obRMiws9twHVlcCWkgkdwKk6A+VdZI=;
-	b=fc1kDs9zdrOXsykMZgh0mDDPrmIw+dwvEsDHmfocbHFIAiXm3Z+kouRCpLCZEBpu
-	9xNS2Ffah22lrFtsCA2fDt3OKmsvJCsB238ADf/1nb05NBXntHeu2HVmMb6PTEuZbQ4
-	zzzhvf5foM4VlEwz1yAzYqFPUe0VLOtEf2h0uEYQ=
-Received: by mx.zohomail.com with SMTPS id 1754397717740746.1533480220385;
-	Tue, 5 Aug 2025 05:41:57 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXh2Kkrx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B62BC4CEF0;
+	Tue,  5 Aug 2025 12:53:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754398410;
+	bh=osgzXzz6RaoaU/kvCWUo2vwYN3DpfVNQphG23h7p0zk=;
+	h=Date:Cc:To:From:Subject:References:In-Reply-To:From;
+	b=AXh2KkrxuJ2q8aEVS6sVBCtTFJpFFPln3CUbMSLUtjza6dG3q3JRSzlET7dp4zjHw
+	 5J90RiD//gFzqP06skxcAwEoqiJjsWuK+dkfXccNazS+x6B+xaOvvZe6D5XTsxcLHp
+	 ogLwL+JlY0GW/Nr767BR1+ViBZuvS5Hbv1VUDSToBSLzIMMKa1dLL/QGQixeUceyaT
+	 8eDNhqABke0Nw7MCjLJ8zhxU79LLTx43f2HN65ezw3CcKySlTk/ev6AXUe+uETndcO
+	 iHyE/U8hcwSRqGLEr1ceU+1JQBO9WhfEhZLYpbLjFG+sA19eWI6W0E4tdb4++f8hff
+	 OzoOfOQWILbxg==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v5 2/3] implement ww_mutex abstraction for the Rust tree
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250805120813.1f8714f5@nimda.home>
-Date: Tue, 5 Aug 2025 09:41:43 -0300
-Cc: Benno Lossin <lossin@kernel.org>,
- Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- ojeda@kernel.org,
- alex.gaynor@gmail.com,
- gary@garyguo.net,
- a.hindborg@kernel.org,
- aliceryhl@google.com,
- tmgross@umich.edu,
- dakr@kernel.org,
- peterz@infradead.org,
- mingo@redhat.com,
- will@kernel.org,
- longman@redhat.com,
- felipe_life@live.com,
- daniel@sedlak.dev,
- bjorn3_gh@protonmail.com,
- dri-devel <dri-devel@lists.freedesktop.org>
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <8FA1F09F-CDD0-4A95-8E9E-49A3326613A2@collabora.com>
-References: <20250621184454.8354-1-work@onurozkan.dev>
- <20250621184454.8354-3-work@onurozkan.dev>
- <DASY7BECFRCT.332X5ZHZMV2W@kernel.org> <aFlQ7K_mYYbrG8Cl@Mac.home>
- <DATYHYJVPL3L.3NLMH7PPHYU9@kernel.org> <aFlpFQ4ivKw81d-y@Mac.home>
- <DAU0ELV91E2Q.35FZOII18W44J@kernel.org> <20250707163913.5ffc046d@nimda.home>
- <DB5XIWGZ8U36.1VB58YBJFL7OT@kernel.org> <20250707210613.2fd5bb55@nimda.home>
- <DB62ZN1LTO31.1HVWDLAWJWVM8@kernel.org>
- <FF481535-86EF-41EB-830A-1DA2434AAEA0@collabora.com>
- <DBRVNP4MM5KO.3IXLMXKGK4XTS@kernel.org>
- <E997DCAF-552F-4EF2-BF94-1385ECADF543@collabora.com>
- <20250805120813.1f8714f5@nimda.home>
-To: =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 05 Aug 2025 14:53:26 +0200
+Message-Id: <DBUIBXEOODEH.R2NYIGUDBZC7@kernel.org>
+Cc: <ojeda@kernel.org>, <alex.gaynor@gmail.com>, <boqun.feng@gmail.com>,
+ <gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <lossin@kernel.org>,
+ <a.hindborg@kernel.org>, <aliceryhl@google.com>, <tmgross@umich.edu>,
+ <abdiel.janulgue@gmail.com>, <acourbot@nvidia.com>,
+ <rust-for-linux@vger.kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] rust: page: implement BorrowedPage
+References: <20250804195023.150399-1-dakr@kernel.org>
+ <731A34A7-92AD-47EA-A17A-C25FA94A5144@collabora.com>
+In-Reply-To: <731A34A7-92AD-47EA-A17A-C25FA94A5144@collabora.com>
 
-Hi Onur,
+On Tue Aug 5, 2025 at 2:30 PM CEST, Daniel Almeida wrote:
+> Hi Danilo,
+>
+>> On 4 Aug 2025, at 16:50, Danilo Krummrich <dakr@kernel.org> wrote:
+>>=20
+>> Currently, a Page always owns the underlying struct page.
+>>=20
+>> However, sometimes a struct page may be owned by some other entity, e.g.
+>> a vmalloc allocation.
+>>=20
+>> Hence, introduce BorrowedPage to support such cases, until the Ownable
+>> solution lands.
+>
+> I guess it=E2=80=99s a good idea to expand this part somewhat. Taken as i=
+t is,
+> there is no way to know what =E2=80=9Cthe Ownable solution=E2=80=9D is.
 
-> On 5 Aug 2025, at 06:08, Onur =C3=96zkan <work@onurozkan.dev> wrote:
->=20
-> On Sat, 2 Aug 2025 11:15:07 -0300
-> Daniel Almeida <daniel.almeida@collabora.com> wrote:
->=20
->> Btw, I can also try to implement a proof of concept, so long as
->> people agree that this approach makes sense.
->=20
-> It's not necessary to provide a full P.o.C but a small demonstration =
-of
-> the kind of ww_mutex API you would prefer would be helpful. Seeing a =
-few
-> sample Rust use-cases (especially in comparison to existing C
-> implementations) would give a clearer picture for me.
->=20
-> At the moment, the implementation is just a wrapper ([1]) around the C
-> ww_mutex with no additional functionality, mostly because we don't =
-have
-> a solid consensus on the API design yet (we had some ideas about Tuple
-> based approach, but seems like that isn't going to be useful for most
-> of the ww_mutex users).
->=20
-> [1]: https://github.com/onur-ozkan/linux/commits/673e01a9c309c
->=20
->> By the way, dri-devel seems to not be on cc? Added them now.
->=20
-> Thanks!
->=20
-> --
->=20
-> Regards,
-> Onur
->=20
+What do you suggest?
 
-This topic is on my TODO for this week.
+I can link where the type has been proposed by Boqun [1].
 
-=E2=80=94 Daniel=
+[1] https://lore.kernel.org/rust-for-linux/ZnCzLIly3DRK2eab@boqun-archlinux=
+/
+
+>> This is required by the scatterlist abstractions.
+>>=20
+>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>> ---
+>> rust/bindings/bindings_helper.h |  1 +
+>> rust/kernel/page.rs             | 83 ++++++++++++++++++++++++++++++++-
+>> 2 files changed, 83 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_he=
+lper.h
+>> index 84d60635e8a9..0e140e07758b 100644
+>> --- a/rust/bindings/bindings_helper.h
+>> +++ b/rust/bindings/bindings_helper.h
+>> @@ -57,6 +57,7 @@
+>> #include <linux/jiffies.h>
+>> #include <linux/jump_label.h>
+>> #include <linux/mdio.h>
+>> +#include <linux/mm.h>
+>> #include <linux/miscdevice.h>
+>> #include <linux/of_device.h>
+>> #include <linux/pci.h>
+>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+>> index 7c1b17246ed5..bea7f0ab91f4 100644
+>> --- a/rust/kernel/page.rs
+>> +++ b/rust/kernel/page.rs
+>> @@ -9,7 +9,12 @@
+>>     error::Result,
+>>     uaccess::UserSliceReader,
+>> };
+>> -use core::ptr::{self, NonNull};
+>> +use core::{
+>> +    marker::PhantomData,
+>> +    mem::ManuallyDrop,
+>> +    ops::Deref,
+>> +    ptr::{self, NonNull},
+>> +};
+>>=20
+>> /// A bitwise shift for the page size.
+>> pub const PAGE_SHIFT: usize =3D bindings::PAGE_SHIFT as usize;
+>> @@ -30,6 +35,82 @@ pub const fn page_align(addr: usize) -> usize {
+>>     (addr + (PAGE_SIZE - 1)) & PAGE_MASK
+>> }
+>>=20
+>> +/// Representation of a non-owning reference to a [`Page`].
+>> +///
+>> +/// This type provides a borrowed version of a [`Page`] that is owned b=
+y some other entity, e.g. a
+>> +/// [`Vmalloc`] allocation such as [`VBox`].
+>> +///
+>> +/// # Example
+>> +///
+>> +/// ```
+>> +/// # use kernel::{bindings, prelude::*};
+>> +/// use kernel::page::{BorrowedPage, Page, PAGE_SIZE};
+>> +/// # use core::ptr;
+>> +/// # use core::ptr::NonNull;
+>> +///
+>> +/// trait PageOwner {
+>
+> What is this trait for? Perhaps this assumes some previous discussion tha=
+t is
+> not in the patch itself?
+
+It's just example code to show how a BorrowedPage may be obtained from some=
+thing
+that owns a page, i.e. a PageOwner.
+
+However, I'm actually working on a trait similar to this example one as wel=
+l.
