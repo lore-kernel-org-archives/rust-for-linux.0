@@ -1,98 +1,168 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8891FCFF8;
-	Wed,  6 Aug 2025 13:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5199219E992;
+	Wed,  6 Aug 2025 15:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754487508; cv=none; b=ds/omHcPJzlent23/MErtkEB8pXzyaBblDggX+9+2EKA5sOn/sLrOdw0aNZgu5CuYH8ZI5VwaVckXnfcZ2FLMFNya/Kpld37zyJh50aF93sgc4AgReG4N+hHP+zFGxlHOHuF2I5XRqQKh0OGiQxmhRdkbbX5nJLzRhPWQt9zsXY=
+	t=1754492468; cv=none; b=OutgPYXNiXV1HNp+Y5JR2qmG4ZAiQNQ6G3Ghen11/yltm44qP4xY4CP7hcK3OusnDEbfetZXKAAwFFyrVgqjxwOBwvUfp+ua7yC+ylllB/+c41/BvWTWrDfBN1gkH7hcixoM7z10d3megx8A6B/s30q5ogpjt87Nq9bVvrbeU/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754487508; c=relaxed/simple;
-	bh=EXeJdlV2l9siHlCdzxLcpO0/EEIT41rvnXKkPC75PL4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JuLAF4WQ6sdcn/1I0d6uIPEBIeTf2zGtgRJV6PbeGjbUExJ8MukGB8vcBrpwllFuYoaVMFbPyFWElb7xjFKSWEWyd+2Qa2JT49+eGhLWQJYlfw4t+5orEAg9JKwuMm9dSP0WeGn65MbCU1uRa0YymnYb0pvMWLGf11TlrjymRAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWfsYmeR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754492468; c=relaxed/simple;
+	bh=3x0pztg71wW5Mr4XvTcNhb8qStOVBIxyYbdDxuoOqdA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AdcFlly45RZ6DJYU1tHXQqDc2HzLOhmf7tK1fE2kIFsGflyQMLPz5I3FwpjHiKUSj4AKiNNON9DaX7AyUMNAPoIhLvJEN8AbDhVmbPx2Y4/FyLencMm7BH6JoRxUGegIhpNeO8OeAtUczo6ekrVqnraBFSvY4t9pERgUURSoGCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGLtct4l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWfsYmeR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BF6C4CEE7;
-	Wed,  6 Aug 2025 13:38:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGLtct4l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D93C4CEE7;
+	Wed,  6 Aug 2025 15:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754487508;
-	bh=EXeJdlV2l9siHlCdzxLcpO0/EEIT41rvnXKkPC75PL4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=pWfsYmeRTznjmgArL1NsO2hc+MId0hZuVHfbE2pF4bs6gHPm5QDi/ZvxFZI8n1jwb
-	 SrmwVe39Pp89NRON+Cc61hENmdSRXtXPHD0dtFWpkTySNboj9sKEY1e7LJlLdAvsmR
-	 IMkZnRnlPhZ6hMdvuzecEUawEOpbQhu1zCoTll4GFYAOq+5lxmSEKfRLDt/rz6cXDU
-	 XwaBsR4oUFS/kVRqn8vygNgICPRGduT8HH6ueM69wCdSAJEZdQempfGFE2H+TWxlKU
-	 SDK1AWVYtoPaYoNJk3Hpg2GpDXjrUs1DDPrS2MubLOw3jfI/EHVa0pfUy1nDdyTNex
-	 3C/PsAZYIrXgw==
+	s=k20201202; t=1754492465;
+	bh=3x0pztg71wW5Mr4XvTcNhb8qStOVBIxyYbdDxuoOqdA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CGLtct4lBBnUfvqSGuKmUT8uwlZj4rZu5XQSIYTLZRA+F5wYWgcylm6T8RoQrgyjK
+	 usMzmbMgl2Hf41kAFRjPe2inkaBqBKJZ9wO3uH5O19vr/Wwc9Xma+ngfrEbqAfCcOZ
+	 bXJQUXNGc2kgRUSRcsRhd5lR73seKt9PzCmkFgnKwUYd4F9oL7MdiF92jbYVDjyPun
+	 1VCXGM/sEf6//Kfx/2UBaa6XymVS31Ky7J5mUNyknM+N9iSRutULL2WxycR9rAMpqu
+	 /R7y3f/v2CPn+NRd5zmcAxWI2zLqeQoUhWpEBkX0sPc3HyAIgqfdJ0F4cZtXRlXJWx
+	 4c8L22IumBcrQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 05/16] rust: str: introduce `NullTerminatedFormatter`
+In-Reply-To: <D9A4DD7C-D9C2-4D91-B6C3-684BA1C100C0@collabora.com>
+References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org>
+ <20250711-rnull-up-v6-16-v3-5-3a262b4e2921@kernel.org>
+ <VdhW0gqIRZ7RLuzmrs6QN5FS-l4_hHLuKA1jb2U9YJT7z4GUb8ZxtGoBirJGZdUeD8Qdxz9nP3NobQ1EZU-MEw==@protonmail.internalid>
+ <D9A4DD7C-D9C2-4D91-B6C3-684BA1C100C0@collabora.com>
+Date: Wed, 06 Aug 2025 16:47:42 +0200
+Message-ID: <87a54c8q29.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 06 Aug 2025 15:38:24 +0200
-Message-Id: <DBVDWWHX8UY7.TG5OHXBZM2OX@kernel.org>
-Cc: "Sidong Yang" <sidong.yang@furiosa.ai>, "Caleb Sander Mateos"
- <csander@purestorage.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Arnd
- Bergmann" <arnd@arndb.de>, "Jens Axboe" <axboe@kernel.dk>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <io-uring@vger.kernel.org>
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
- for io-uring cmd
-From: "Benno Lossin" <lossin@kernel.org>
-To: "Daniel Almeida" <daniel.almeida@collabora.com>
-X-Mailer: aerc 0.20.1
-References: <20250727150329.27433-1-sidong.yang@furiosa.ai>
- <20250727150329.27433-3-sidong.yang@furiosa.ai>
- <D6CDE1A5-879F-49B1-9E10-2998D04B678F@collabora.com>
- <DBRVVTJ5LDV2.2NHTJ4S490N8@kernel.org>
- <949A27C5-1535-48D1-BE7E-F7E366A49A52@collabora.com>
-In-Reply-To: <949A27C5-1535-48D1-BE7E-F7E366A49A52@collabora.com>
 
-On Wed Aug 6, 2025 at 2:38 PM CEST, Daniel Almeida wrote:
-> Hi Benno,
->
->> On 2 Aug 2025, at 07:52, Benno Lossin <lossin@kernel.org> wrote:
->>=20
->> On Fri Aug 1, 2025 at 3:48 PM CEST, Daniel Almeida wrote:
->>>> On 27 Jul 2025, at 12:03, Sidong Yang <sidong.yang@furiosa.ai> wrote:
->>>> +    #[inline]
->>>> +    pub fn pdu(&mut self) -> &mut MaybeUninit<[u8; 32]> {
->>>=20
->>> Why MaybeUninit? Also, this is a question for others, but I don=E2=80=
-=99t think
->>> that `u8`s can ever be uninitialized as all byte values are valid for `=
-u8`.
->>=20
->> `u8` can be uninitialized. Uninitialized doesn't just mean "can take any
->> bit pattern", but also "is known to the compiler as being
->> uninitialized". The docs of `MaybeUninit` explain it like this:
->>=20
->>    Moreover, uninitialized memory is special in that it does not have a
->>    fixed value (=E2=80=9Cfixed=E2=80=9D meaning =E2=80=9Cit won=E2=80=99=
-t change without being written
->>    to=E2=80=9D). Reading the same uninitialized byte multiple times can =
-give
->>    different results.
->>=20
->> But the return type probably should be `&mut [MaybeUninit<u8>; 32]`
->> instead.
->
->
-> Right, but I guess the question then is why would we ever need to use
-> MaybeUninit here anyways.
->
-> It's a reference to a C array. Just treat that as initialized.
+"Daniel Almeida" <daniel.almeida@collabora.com> writes:
 
-AFAIK C uninitialized memory also is considered uninitialized in Rust.
-So if this array is not properly initialized on the C side, this would
-be the correct type. If it is initialized, then just use `&mut [u8; 32]`.
+>> On 11 Jul 2025, at 08:43, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>> Add `NullTerminatedFormatter`, a formatter that writes a null terminated
+>> string to an array or slice buffer. Because this type needs to manage the
+>> trailing null marker, the existing formatters cannot be used to implement
+>> this type.
+>>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>> rust/kernel/str.rs | 50 ++++++++++++++++++++++++++++++++++++++++++++++++=
+++
+>> 1 file changed, 50 insertions(+)
+>>
+>> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+>> index b1bc584803b0..c58925438c6e 100644
+>> --- a/rust/kernel/str.rs
+>> +++ b/rust/kernel/str.rs
+>> @@ -838,6 +838,56 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
+>>     }
+>> }
+>>
+>> +/// A mutable reference to a byte buffer where a string can be written =
+into.
+>> +///
+>> +/// The buffer will be automatically null terminated after the last wri=
+tten character.
+>
+> Hmm, I suppose you want this to be the only null? See below.
 
----
-Cheers,
-Benno
+This code went through some iteration. In the original code, I kept a
+pointer to the beginning of the buffer and an offset. It made sense to
+require the buffer to be null terminated.
+
+In this iteration, I let go of the pointer to the beginning of the
+buffer and point to the next writable byte. If this byte is zero, the
+original buffer is null terminated. Alice suggested rephrase, and I put
+this for the next spin:
+
+
+  /// # Invariants
+  ///
+  /// * The first byte of `buffer` is always zero.
+
+At any rate, the final string is allowed to have multiple null
+characters in it.
+
+>
+>> +///
+>> +/// # Invariants
+>> +///
+>> +/// `buffer` is always null terminated.
+>> +pub(crate) struct NullTerminatedFormatter<'a> {
+>> +    buffer: &'a mut [u8],
+>> +}
+>> +
+>> +impl<'a> NullTerminatedFormatter<'a> {
+>> +    /// Create a new [`Self`] instance.
+>> +    pub(crate) fn new(buffer: &'a mut [u8]) -> Option<NullTerminatedFor=
+matter<'a>> {
+>> +        *(buffer.first_mut()?) =3D 0;
+>> +
+>> +        // INVARIANT: We null terminated the buffer above.
+>> +        Some(Self { buffer })
+>> +    }
+>> +
+>> +    #[expect(dead_code)]
+>> +    pub(crate) fn from_array<const N: usize>(
+>> +        buffer: &'a mut [crate::ffi::c_char; N],
+>> +    ) -> Option<NullTerminatedFormatter<'a>> {
+>> +        Self::new(buffer)
+>> +    }
+>> +}
+>> +
+>> +impl Write for NullTerminatedFormatter<'_> {
+>> +    fn write_str(&mut self, s: &str) -> fmt::Result {
+>> +        let bytes =3D s.as_bytes();
+>> +        let len =3D bytes.len();
+>> +
+>> +        // We want space for a null terminator. Buffer length is always=
+ at least 1, so no overflow.
+>
+> Perhaps this should be a type invariant? I know this is a logical conclus=
+ion
+> from saying =E2=80=9Cbuffer is always NULL terminated=E2=80=9D, but it=E2=
+=80=99s always
+> nice to be even more explicit.
+
+I can add a minimum size 1 byte requirement =F0=9F=91=8D
+
+>
+>> +        if len > self.buffer.len() - 1 {
+>> +            return Err(fmt::Error);
+>> +        }
+>> +
+>> +        let buffer =3D core::mem::take(&mut self.buffer);
+>> +        // We break the null termination invariant for a short while.
+>> +        buffer[..len].copy_from_slice(bytes);
+>> +        self.buffer =3D &mut buffer[len..];
+>
+> As I said in my first comment, if you want this to be the only null, I
+> don=E2=80=99t think the copy above enforces it?
+
+It does not need to be the only one, as long as there is a null at the
+end of the final string, we are good.
+
+
+Best regards,
+Andreas Hindborg
+
+
+
