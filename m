@@ -1,171 +1,98 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFA938FB9;
-	Wed,  6 Aug 2025 13:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754486736; cv=pass; b=Ya8JWlblSe61hGpskKgL6VFjNCY3DhF9YJyPjBMMeK1jSrB1xJnwO4MDsygridfxEVdgEaGVjeh35HOnVQ/T4XQKyDtLj4/bg3vEcOcsh6n+jmpPAxG2mKiahLJ6aVmhPG9/+kz6WyTl31teS9E4QM36szCZ5Vl+2p6xJ35ZBgI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754486736; c=relaxed/simple;
-	bh=vAeKaPEXvcDqf61rNHSQ9ZM38yO9ECSL+nekoCHhAJc=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=VNUcBoT9Yx3/EJ3ROAF12+1v7XiffUwaT/DJ4JBPxb1UkAV2INfxB8/CCQbgDJqlwEe/osQVG2MUkOPoM58jHGZO01dDg+/IZ7h3WszI8DHSSg0LlP/CtMXS2Qt1uRhllps/sulL4n7YUIm0vP97P1DEWuG6+mZZjr+IB53MyzQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=SOqopnT8; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8891FCFF8;
+	Wed,  6 Aug 2025 13:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754487508; cv=none; b=ds/omHcPJzlent23/MErtkEB8pXzyaBblDggX+9+2EKA5sOn/sLrOdw0aNZgu5CuYH8ZI5VwaVckXnfcZ2FLMFNya/Kpld37zyJh50aF93sgc4AgReG4N+hHP+zFGxlHOHuF2I5XRqQKh0OGiQxmhRdkbbX5nJLzRhPWQt9zsXY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754487508; c=relaxed/simple;
+	bh=EXeJdlV2l9siHlCdzxLcpO0/EEIT41rvnXKkPC75PL4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=JuLAF4WQ6sdcn/1I0d6uIPEBIeTf2zGtgRJV6PbeGjbUExJ8MukGB8vcBrpwllFuYoaVMFbPyFWElb7xjFKSWEWyd+2Qa2JT49+eGhLWQJYlfw4t+5orEAg9JKwuMm9dSP0WeGn65MbCU1uRa0YymnYb0pvMWLGf11TlrjymRAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWfsYmeR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="SOqopnT8"
-ARC-Seal: i=1; a=rsa-sha256; t=1754486719; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZQuDF8px7NB9KWIOu2w3QFGEImOYx5uhTyG7uuoz2ziZTu4XRsi8i/H9iwJeUrrIJodfl7PY8tgvPAEpmRzbuzVRCW9D/o2F+WccMuc5QoRW49UhbuEc8sGWeY1RJtLryXj3c728KY432grJNNI41s56F1cSmahrZ/EH/qvtLY8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754486719; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=rbN3opuwJukBcj9/ZRoP78wqC7nPDjMjgfVcpb6PIks=; 
-	b=Ye4dUbKXnReLecbyEGdmo6hOcXEBNMWFWUgRNmba1fCoLeF1aa45bQVghf42yfqEMyqQNrC++i/BUpYqf2lD0213Uz4Oqv/jePhPeyMu5n/a50CZ3SJDGjTjcqaFzGvHKO6IwpiJ70YsyPE2A0fv5bshCWgSvTR9bKCXmfAGHac=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754486719;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=rbN3opuwJukBcj9/ZRoP78wqC7nPDjMjgfVcpb6PIks=;
-	b=SOqopnT88cA0ZrEL+ICf8s/fVe9wQ/b3uKK74662FAEG+2Bs+J+W+6E/UoA7hb12
-	w/yuUvv6X2IGFrFpMq2yEGgW1F2UcAHyScbnMHvGsT5cAdn/AgXMD8s+8sGl3QLIG9J
-	JPgpge0zOYlq4Ovz+Xn3/ED99mhUFo4msYzdquhI=
-Received: by mx.zohomail.com with SMTPS id 1754486716196557.3989243653147;
-	Wed, 6 Aug 2025 06:25:16 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWfsYmeR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BF6C4CEE7;
+	Wed,  6 Aug 2025 13:38:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754487508;
+	bh=EXeJdlV2l9siHlCdzxLcpO0/EEIT41rvnXKkPC75PL4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=pWfsYmeRTznjmgArL1NsO2hc+MId0hZuVHfbE2pF4bs6gHPm5QDi/ZvxFZI8n1jwb
+	 SrmwVe39Pp89NRON+Cc61hENmdSRXtXPHD0dtFWpkTySNboj9sKEY1e7LJlLdAvsmR
+	 IMkZnRnlPhZ6hMdvuzecEUawEOpbQhu1zCoTll4GFYAOq+5lxmSEKfRLDt/rz6cXDU
+	 XwaBsR4oUFS/kVRqn8vygNgICPRGduT8HH6ueM69wCdSAJEZdQempfGFE2H+TWxlKU
+	 SDK1AWVYtoPaYoNJk3Hpg2GpDXjrUs1DDPrS2MubLOw3jfI/EHVa0pfUy1nDdyTNex
+	 3C/PsAZYIrXgw==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v3 08/16] rust: block: remove `RawWriter`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <20250711-rnull-up-v6-16-v3-8-3a262b4e2921@kernel.org>
-Date: Wed, 6 Aug 2025 10:25:02 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Jens Axboe <axboe@kernel.dk>,
- linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <844D39CF-647A-45BA-A940-072DAEB911E0@collabora.com>
-References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org>
- <20250711-rnull-up-v6-16-v3-8-3a262b4e2921@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 06 Aug 2025 15:38:24 +0200
+Message-Id: <DBVDWWHX8UY7.TG5OHXBZM2OX@kernel.org>
+Cc: "Sidong Yang" <sidong.yang@furiosa.ai>, "Caleb Sander Mateos"
+ <csander@purestorage.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Jens Axboe" <axboe@kernel.dk>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <io-uring@vger.kernel.org>
+Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
+ for io-uring cmd
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Daniel Almeida" <daniel.almeida@collabora.com>
+X-Mailer: aerc 0.20.1
+References: <20250727150329.27433-1-sidong.yang@furiosa.ai>
+ <20250727150329.27433-3-sidong.yang@furiosa.ai>
+ <D6CDE1A5-879F-49B1-9E10-2998D04B678F@collabora.com>
+ <DBRVVTJ5LDV2.2NHTJ4S490N8@kernel.org>
+ <949A27C5-1535-48D1-BE7E-F7E366A49A52@collabora.com>
+In-Reply-To: <949A27C5-1535-48D1-BE7E-F7E366A49A52@collabora.com>
 
+On Wed Aug 6, 2025 at 2:38 PM CEST, Daniel Almeida wrote:
+> Hi Benno,
+>
+>> On 2 Aug 2025, at 07:52, Benno Lossin <lossin@kernel.org> wrote:
+>>=20
+>> On Fri Aug 1, 2025 at 3:48 PM CEST, Daniel Almeida wrote:
+>>>> On 27 Jul 2025, at 12:03, Sidong Yang <sidong.yang@furiosa.ai> wrote:
+>>>> +    #[inline]
+>>>> +    pub fn pdu(&mut self) -> &mut MaybeUninit<[u8; 32]> {
+>>>=20
+>>> Why MaybeUninit? Also, this is a question for others, but I don=E2=80=
+=99t think
+>>> that `u8`s can ever be uninitialized as all byte values are valid for `=
+u8`.
+>>=20
+>> `u8` can be uninitialized. Uninitialized doesn't just mean "can take any
+>> bit pattern", but also "is known to the compiler as being
+>> uninitialized". The docs of `MaybeUninit` explain it like this:
+>>=20
+>>    Moreover, uninitialized memory is special in that it does not have a
+>>    fixed value (=E2=80=9Cfixed=E2=80=9D meaning =E2=80=9Cit won=E2=80=99=
+t change without being written
+>>    to=E2=80=9D). Reading the same uninitialized byte multiple times can =
+give
+>>    different results.
+>>=20
+>> But the return type probably should be `&mut [MaybeUninit<u8>; 32]`
+>> instead.
+>
+>
+> Right, but I guess the question then is why would we ever need to use
+> MaybeUninit here anyways.
+>
+> It's a reference to a C array. Just treat that as initialized.
 
+AFAIK C uninitialized memory also is considered uninitialized in Rust.
+So if this array is not properly initialized on the C side, this would
+be the correct type. If it is initialized, then just use `&mut [u8; 32]`.
 
-> On 11 Jul 2025, at 08:43, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->=20
-> `RawWriter` is now dead code, so remove it.
->=20
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
-> rust/kernel/block/mq.rs            |  1 -
-> rust/kernel/block/mq/raw_writer.rs | 56 =
---------------------------------------
-> 2 files changed, 57 deletions(-)
->=20
-> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-> index fb0f393c1cea..faa3ccb5a49a 100644
-> --- a/rust/kernel/block/mq.rs
-> +++ b/rust/kernel/block/mq.rs
-> @@ -89,7 +89,6 @@
->=20
-> pub mod gen_disk;
-> mod operations;
-> -mod raw_writer;
-> mod request;
-> mod tag_set;
->=20
-> diff --git a/rust/kernel/block/mq/raw_writer.rs =
-b/rust/kernel/block/mq/raw_writer.rs
-> deleted file mode 100644
-> index 0aef55703e71..000000000000
-> --- a/rust/kernel/block/mq/raw_writer.rs
-> +++ /dev/null
-> @@ -1,56 +0,0 @@
-> -// SPDX-License-Identifier: GPL-2.0
-> -
-> -use core::fmt::{self, Write};
-> -
-> -use crate::error::Result;
-> -use crate::prelude::EINVAL;
-> -
-> -/// A mutable reference to a byte buffer where a string can be =
-written into.
-> -///
-> -/// # Invariants
-> -///
-> -/// `buffer` is always null terminated.
-> -pub(crate) struct RawWriter<'a> {
-> -    buffer: &'a mut [u8],
-> -    pos: usize,
-> -}
-> -
-> -impl<'a> RawWriter<'a> {
-> -    /// Create a new `RawWriter` instance.
-> -    fn new(buffer: &'a mut [u8]) -> Result<RawWriter<'a>> {
-> -        *(buffer.last_mut().ok_or(EINVAL)?) =3D 0;
-> -
-> -        // INVARIANT: We null terminated the buffer above.
-> -        Ok(Self { buffer, pos: 0 })
-> -    }
-> -
-> -    #[expect(dead_code)]
-> -    pub(crate) fn from_array<const N: usize>(
-> -        a: &'a mut [crate::ffi::c_char; N],
-> -    ) -> Result<RawWriter<'a>> {
-> -        Self::new(
-> -            // SAFETY: the buffer of `a` is valid for read and write =
-as `u8` for
-> -            // at least `N` bytes.
-> -            unsafe { =
-core::slice::from_raw_parts_mut(a.as_mut_ptr().cast::<u8>(), N) },
-> -        )
-> -    }
-> -}
-> -
-> -impl Write for RawWriter<'_> {
-> -    fn write_str(&mut self, s: &str) -> fmt::Result {
-> -        let bytes =3D s.as_bytes();
-> -        let len =3D bytes.len();
-> -
-> -        // We do not want to overwrite our null terminator
-> -        if self.pos + len > self.buffer.len() - 1 {
-> -            return Err(fmt::Error);
-> -        }
-> -
-> -        // INVARIANT: We are not overwriting the last byte
-> -        self.buffer[self.pos..self.pos + len].copy_from_slice(bytes);
-> -
-> -        self.pos +=3D len;
-> -
-> -        Ok(())
-> -    }
-> -}
->=20
-> --=20
-> 2.47.2
->=20
->=20
->=20
-
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>=
+---
+Cheers,
+Benno
