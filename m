@@ -1,108 +1,148 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197D1274FFE;
-	Wed,  6 Aug 2025 12:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754483938; cv=pass; b=OErruVie09mVe+uKFKlNMJMxrHkwaNaDEydPE9acbPPsOdtACm6rP1t/O32BVIblW6az+Xuogxgtm25aj7uNxYFFCo+6tKPTOBtLc0INy6KmANk6Le8wwvr1pC1uZJ17ESgewAOEm0SR/Qiced4Ms+Qdmgz6eivCOcULCdOldPQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754483938; c=relaxed/simple;
-	bh=ul4jt73laQuUUeS57wBdx0u9qiIGtkm72JDJIULLJ5o=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=r1fmBfyEJ3tfuJikEM9gaEv0IC8UDSSs6Y+jPs2opmY1jrsqw8yCQ5MOfjr3KAMBXkitC+UUDayLYWXvciRVrPqDSTgLtxOSGG0jvKZlqrl+sChJH65ietTufwfbo5Ljb/12jTJbpJ5WUzamfFBCVZm6Pj4KLlk4Q2ES4iJQXrs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LiNE6aQT; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BCA276049
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Aug 2025 12:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754484050; cv=none; b=mFY6KS+6WY2LYg/2p3eziubwdysio6O2K1MdkE5IUPGF8KhqnqK/qpn6hEVZntNDexWgSKQP+a/RvG7M7l+ezdL+K8sZcwmGQ/tGCERDt5Iw+f2gDluqAALiy8cf58aemjfoydZHf2TuxpinvaeAwYJfQrC2ozZziPu3R/shYaM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754484050; c=relaxed/simple;
+	bh=TOpPlTtS9gCy1fQQ1FgNK/Z+oOAScsjKFxLBYZ+wx5Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NUuRpnXDD4MiZlntcCaKeaQKKQS2ubaKQssexDghVy4xD/kUUm7k7/0Bpz+209ANU78usx+KiDzuA/JiviAP0vUmHwDtWVL22DyCDe+BU1+5SiTqxIihfwKtbriUNx++MvhSLyDBrhGRWqXr8KRaJN6uSCWyPZqiArdgePM4tR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=pQ8Xqu4v; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=i5l+IAAh; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LiNE6aQT"
-ARC-Seal: i=1; a=rsa-sha256; t=1754483923; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Ygvyy5nOVvE+lE9Gom1RsNmzjqUlaxHap58D8rp81Dbs7QMSZ8PJDJb9mckH8Xq7riuw+eaUWrHwIT24z8pOHs+C8NiHE7goCtF9aNKEWhi7q8V7QAsqIRPqqXB3z7GPr5HfHqadfq1rzHNvBosxl5gPEXBuLnPvDXtIBriWBn0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754483923; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=o2qE/1romGU48U4T9i8557cOr/JyU6sS9Hngmv6iYfE=; 
-	b=KgkjNG/m0oAPX/wmuaPwAhLxf8xiEnMmsFIwR/xYE9B8/jlfKXco1jfykG6pNC/G7FDquicca2mC0R2Xx8oGf3uFC4KL4XDI330ibL9EzIroycsR28WYyiYqHwuB+MN0ytEdb/eW7vWdC75tyqLFuZ++gg8qO0IdXGlk34VrfFY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754483923;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=o2qE/1romGU48U4T9i8557cOr/JyU6sS9Hngmv6iYfE=;
-	b=LiNE6aQTVfiw6tWqjJ4e+l5oKkQ2u8rE7LiRqM+83Ux+KNJe79EIEUk6SY3S3IUh
-	0adGcefu1t9GstHHFblk+ey5f0QO4a/GqM5JodRSAKNKPKm24DJFeI/cV1dq0M46SNB
-	N7PEh2oSELyqc6vjjxkQ5sB5h6Wj+n3EzDLOXg7A=
-Received: by mx.zohomail.com with SMTPS id 1754483919865747.4839862466861;
-	Wed, 6 Aug 2025 05:38:39 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="pQ8Xqu4v";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="i5l+IAAh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754484040; x=1755088840;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=6NZAtsRQPRLEOnALjiUrPTbK1Ko1TPX/qvuOItNudmY=;
+	b=pQ8Xqu4vQVoFuzRNfkx8tDpO9pXYsqUSAgtU/nEVx76yuwztxDEQDHPe7PTlK3eczmunaTtBIgpb2
+	 pnRpl2zV8im/earTDa/GqC0MFxxTPCWVKCJMWjhquroMMjyVWq7KRFmkHc2YdAce3WQbHnnnBHNnYG
+	 Nx8LNmBp36TG7IMkzvfiPeL+6Bmaw0ql+FvaGgxQ2ajlNDeR5NYLuE1/2k2KkJA717U0yExEP9D3j3
+	 9PPtJX67h2Tx9r1TZyh6A7pcU6/qmqauLjoKt23Lw3pimQfEwyr0uchl4Gjd2+LdWKsBURXlduGEmJ
+	 mpA6bgGdm3WIBXQQuuI0G9YKpU3tdRg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754484040; x=1755088840;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=6NZAtsRQPRLEOnALjiUrPTbK1Ko1TPX/qvuOItNudmY=;
+	b=i5l+IAAhCBevKEaEodC3AD/f5I2d0OS/oDuz/impr33Mg4QpfgQxw4yjoWNf7OQ+owvdOld3NLwVb
+	 QBDDwOLCw==
+X-HalOne-ID: 8e99376d-72c2-11f0-ab00-85eb291bc831
+Received: from localhost.localdomain (c188-150-224-8.bredband.tele2.se [188.150.224.8])
+	by mailrelay5.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id 8e99376d-72c2-11f0-ab00-85eb291bc831;
+	Wed, 06 Aug 2025 12:40:39 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	rust-for-linux@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	linux-bcachefs@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v15 0/4] support large align and nid in Rust allocators
+Date: Wed,  6 Aug 2025 14:40:34 +0200
+Message-Id: <20250806124034.1724515-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction for
- io-uring cmd
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <DBRVVTJ5LDV2.2NHTJ4S490N8@kernel.org>
-Date: Wed, 6 Aug 2025 09:38:25 -0300
-Cc: Sidong Yang <sidong.yang@furiosa.ai>,
- Caleb Sander Mateos <csander@purestorage.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- io-uring@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <949A27C5-1535-48D1-BE7E-F7E366A49A52@collabora.com>
-References: <20250727150329.27433-1-sidong.yang@furiosa.ai>
- <20250727150329.27433-3-sidong.yang@furiosa.ai>
- <D6CDE1A5-879F-49B1-9E10-2998D04B678F@collabora.com>
- <DBRVVTJ5LDV2.2NHTJ4S490N8@kernel.org>
-To: Benno Lossin <lossin@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Benno,
+The coming patches provide the ability for Rust allocators to set
+NUMA node and large alignment.
 
-> On 2 Aug 2025, at 07:52, Benno Lossin <lossin@kernel.org> wrote:
->=20
-> On Fri Aug 1, 2025 at 3:48 PM CEST, Daniel Almeida wrote:
->>> On 27 Jul 2025, at 12:03, Sidong Yang <sidong.yang@furiosa.ai> =
-wrote:
->>> +    #[inline]
->>> +    pub fn pdu(&mut self) -> &mut MaybeUninit<[u8; 32]> {
->>=20
->> Why MaybeUninit? Also, this is a question for others, but I don=E2=80=99=
-t think
->> that `u8`s can ever be uninitialized as all byte values are valid for =
-`u8`.
->=20
-> `u8` can be uninitialized. Uninitialized doesn't just mean "can take =
-any
-> bit pattern", but also "is known to the compiler as being
-> uninitialized". The docs of `MaybeUninit` explain it like this:
->=20
->    Moreover, uninitialized memory is special in that it does not have =
-a
->    fixed value (=E2=80=9Cfixed=E2=80=9D meaning =E2=80=9Cit won=E2=80=99=
-t change without being written
->    to=E2=80=9D). Reading the same uninitialized byte multiple times =
-can give
->    different results.
->=20
-> But the return type probably should be `&mut [MaybeUninit<u8>; 32]`
-> instead.
+Changelog:
+v2 -> v3:
+* fixed the build breakage for non-MMU configs
+v3 -> v4:
+* added NUMA node support for k[v]realloc (patch #2)
+* removed extra logic in Rust helpers
+* patch for Rust allocators split into 2 (align: patch #3 and
+  NUMA ids: patch #4)
+v4 -> v5:
+* reworked NUMA node support for k[v]realloc for all 3 <alloc>_node
+  functions to have the same signature
+* all 3 <alloc>_node slab/vmalloc functions now support alignment
+  specification
+* Rust helpers are extended with new functions, the old ones are left
+  intact
+* Rust support for NUMA nodes comes first now (as patch #3)
+v5 -> v6:
+* added <alloc>_node_align functions to keep the existing interfaces
+  intact
+* clearer separation for Rust support of MUNA ids and large alignments
+v6 -> v7:
+* NUMA identifier as a new Rust type (NumaNode)
+* better documentation for changed and new functions and constants
+v7 -> v8:
+* removed NumaError
+* small cleanups per reviewers' comments
+v8 -> v9:
+* realloc functions can now reallocate memory for a different NUMA
+  node
+* better comments/explanations in the Rust part
+v9 -> v10:
+* refined behavior when memory is being reallocated for a different
+  NUMA node, comments added
+* cleanups in the Rust part, rustfmt ran
+* typos corrected
+v10 -> v11:
+* added documentation for the NO_NODE constant
+* added node parameter to Allocator's alloc/realloc instead of adding
+  separate alloc_node resp. realloc_node functions, modified users of
+  alloc/realloc in accordance with that
+v11 -> v12:
+* some redundant _noprof functions removed in patch 2/4
+* c'n'p error fixed in patch 2/4 (vmalloc_to_page -> virt_to_page)
+* some typo corrections and documentation updates, primarily in patch
+  3/4
+v12 -> v13:
+* fixed wording in comments (patches 1, 3)
+* fixed bigger alignment handling in krealloc (patch 2)
+* removed pr_warn import (patch 4)
+v13 -> v14:
+* addressed Vlastimil's comments for the slub allocator's alignment
+  handling
+* added cnages to allocator_test.rs to match the new API
+v14 -> v15:
+* fixed allocator_test.rs changes added at the previous iteration
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+--
+ fs/bcachefs/darray.c                |    2 -
+ fs/bcachefs/util.h                  |    2 -
+ include/linux/bpfptr.h              |    2 -
+ include/linux/slab.h                |   39 +++++++++++++++++++++++--------------
+ include/linux/vmalloc.h             |   12 ++++++++---
+ lib/rhashtable.c                    |    4 +--
+ mm/nommu.c                          |    3 +-
+ mm/slub.c                           |   59 +++++++++++++++++++++++++++++++++++++++++++--------------
+ mm/vmalloc.c                        |   29 +++++++++++++++++++++++-----
+ rust/helpers/slab.c                 |   10 +++++----
+ rust/helpers/vmalloc.c              |    5 ++--
+ rust/kernel/alloc.rs                |   54 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ rust/kernel/alloc/allocator.rs      |   49 ++++++++++++++++++++++-------------------------
+ rust/kernel/alloc/allocator_test.rs |    1 
+ rust/kernel/alloc/kbox.rs           |    4 +--
+ rust/kernel/alloc/kvec.rs           |   11 ++++++++--
+ 16 files changed, 202 insertions(+), 84 deletions(-)
 
-
-Right, but I guess the question then is why would we ever need to use
-MaybeUninit here anyways.
-
-It's a reference to a C array. Just treat that as initialized.
-
-=E2=80=94 Daniel=
