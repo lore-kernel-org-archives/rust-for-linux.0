@@ -1,241 +1,419 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mailrelay-egress16.pub.mailoutpod3-cph3.one.com (mailrelay-egress16.pub.mailoutpod3-cph3.one.com [46.30.212.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC86E18035;
-	Wed,  6 Aug 2025 12:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754484613; cv=pass; b=Wr+ejYL/9fEI5mqDTy62oYPF1nfsGk5J2ZN0j2jae0SvFFuuKB+4PowspZPxVTn8LLouWV8gUSyV7Hg/8Qc7i8JonkWJ66IkA27uzzp4as4wEkgj/V5RBGwroFkv26s1kJLqqvKNtjijlpMPHAJfpPVy25QxCySE3MH+T3oFSMI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754484613; c=relaxed/simple;
-	bh=qsNPYd7JE3LVhYFm81593Z/HO+ZNsVr6ff5n10xfmqM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=kHUqBgj7NVtZm6naATX3ibp6PrmeaHvgvlKOVVaFWXFAVqQyrk4gNz/INlD0vtzWe9dgbfUJh4TwtxzP8LmMH6Y8kzt2NQEkj+VB0s6cZ101gNtnUS72K1f82uGH3BEF1Hbi4jUUDW3mGKhOEPYRNfguGBerIopJ4c1y94dVF14=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=NNL+i1UD; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE75274FE5
+	for <rust-for-linux@vger.kernel.org>; Wed,  6 Aug 2025 12:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.30.212.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754484931; cv=none; b=gIWsfQkT76uDThw85FxNNynw5dqscoENTWGm4nDJyvgnxQIXeUHqZwUrvsSlrU5qzBnhMG4l3JksrRXUP0V7nxpa9lUTBp06/6AOuK7/kKasFZfGPvO8ynvDExwQj0VWY16mSmTkdop5RjA/keoou0QzivFY6GrGb1Z0oaLBaz4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754484931; c=relaxed/simple;
+	bh=eD23kIKiZIVibNzjp5ze8NG8QLQ8zxV57jPnetI+wuo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TaIwxamdVvIXNN+EVrZJjBlHmdqKk+Bj+be2+989GAY8Xj18XExBMonPUOvxvBFx614OCTMzpasZOfJcZeyTZJW7JsNgi25sfeEYx7TsZjtaoB6g7pbsLMxuqcIdOcElriiqqDzwbOo6JNW1TUHHi8x/mU0zd7DhUVW/8PS9c5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se; spf=none smtp.mailfrom=konsulko.se; dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=bM2Mix7j; dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b=QrLaB633; arc=none smtp.client-ip=46.30.212.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=konsulko.se
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=konsulko.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="NNL+i1UD"
-ARC-Seal: i=1; a=rsa-sha256; t=1754484581; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=TdIYSsrpWIPTG1jidR1iuSPofUBS7dA1PyO7N+53KeFo91HY/CU5M81cEjLj16G20LoN18ziCK0qtw6J1NHw2pVD75q/+GLYYuZzypgX+9TdwWw8lXNHt4nJqF06vQHPz0WXyLukwUtQQDKfOlCtfCU7rJGGgmMXGdPOvcJNHlI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754484581; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=bJtLcKeKURRlW9n36AmDiYBFj9adzcRfgds4/JvblNc=; 
-	b=U9H9GMvUxhBuK2Fauj81NTtTMjiLs9x7S+F3+4VNd1oEVb6kQys0eDwnvDdydOfq5MjdMvyIzqRuPgpbRRx4ALN2XrZzR3N+P4j0f5BB/tbPQ5u11QhAvo9I83maLxs3NkfEZmgElVvDMdKzG5FpP89LttIhYub1J1lrjvhevFs=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754484581;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=bJtLcKeKURRlW9n36AmDiYBFj9adzcRfgds4/JvblNc=;
-	b=NNL+i1UDcH2FhizRgwdMRIzcKnkcnBXUCwN39+K/lO4hsc994E/1kkmEwesytZN8
-	DtWMIlr1wF20rszBl9U0PkJ/A1ZYewGvBJ0thoKP0WmDTKVI3QRzxC1JmQ5iedm3NSL
-	GQj1AMDpR2e96zpfTyfo6e09f7gWBsinvEBk9Kv0=
-Received: by mx.zohomail.com with SMTPS id 1754484579257241.02773267205032;
-	Wed, 6 Aug 2025 05:49:39 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="bM2Mix7j";
+	dkim=permerror (0-bit key) header.d=konsulko.se header.i=@konsulko.se header.b="QrLaB633"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754484926; x=1755089726;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=2EpY0iZjaJvwwklHeHLkr7Po0NT5Jxje1Dm2vCoM5Mw=;
+	b=bM2Mix7j8hTPXUDnW4X6OqzeQ8JMIjZwwisIJTsx72xmMgSfz7BeOlYxyqNrm6uKVJogNxl3itiSn
+	 1dz+ETRJOluRfpQdPOo3Kyr5auUpajjm4ZNoKWO4+tqkRpAK+Q+mW5AJbrSa7cELxmVGA8gXBoBDn2
+	 7C+nAsSZg1jhcVHlKU2PnYTI27Cg1VMNPJID5vGdfnqwIx+n43lGQwSKSsvvct1bkoQ0VxFgpjo1Fp
+	 UtjqA6EPdk+qIREk8+b4RR8Zz/iEG4BZQdl/zy1adozDB8W4BhYqUD95kjEmp4+YiLYQD4W58wqlWx
+	 N0lbDW3T3s+OmH0okqd02dsFlGYQryQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754484926; x=1755089726;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+	 subject:cc:to:from:from;
+	bh=2EpY0iZjaJvwwklHeHLkr7Po0NT5Jxje1Dm2vCoM5Mw=;
+	b=QrLaB633JmLmW+gulWPCBUbLUwHVFFLdvXKmQYr4zMgpb5ewhvPZjDn/vdsbTRFNA/Vul3OcaTvML
+	 dzqf32sBg==
+X-HalOne-ID: 9e338ad1-72c4-11f0-aa1a-632fe8569f3f
+Received: from localhost.localdomain (host-95-203-16-218.mobileonline.telia.com [95.203.16.218])
+	by mailrelay2.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
+	id 9e338ad1-72c4-11f0-aa1a-632fe8569f3f;
+	Wed, 06 Aug 2025 12:55:25 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	rust-for-linux@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	linux-bcachefs@vger.kernel.org,
+	bpf@vger.kernel.org,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Vitaly Wool <vitaly.wool@konsulko.se>
+Subject: [PATCH v15 3/4] rust: add support for NUMA ids in allocations
+Date: Wed,  6 Aug 2025 14:55:22 +0200
+Message-Id: <20250806125522.1726992-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20250806124034.1724515-1-vitaly.wool@konsulko.se>
+References: <20250806124034.1724515-1-vitaly.wool@konsulko.se>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v12 3/3] rust: pwm: Add complete abstraction layer
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <8ad10cc3-6e7d-4a8b-b6f6-9568403ee2b3@samsung.com>
-Date: Wed, 6 Aug 2025 09:49:21 -0300
-Cc: =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Drew Fustini <drew@pdp7.com>,
- Guo Ren <guoren@kernel.org>,
- Fu Wei <wefu@redhat.com>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Benno Lossin <lossin@kernel.org>,
- Michael Turquette <mturquette@baylibre.com>,
- Drew Fustini <fustini@kernel.org>,
- linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-riscv@lists.infradead.org,
- devicetree@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8C20C615-DBF2-4DF9-9AB3-E78C4B1E7493@collabora.com>
-References: <20250717-rust-next-pwm-working-fan-for-sending-v12-0-40f73defae0c@samsung.com>
- <CGME20250717090833eucas1p16c916450b59a77d81bd013527755cb21@eucas1p1.samsung.com>
- <20250717-rust-next-pwm-working-fan-for-sending-v12-3-40f73defae0c@samsung.com>
- <42C9DF97-2E0F-453B-800A-1DA49BF8F29F@collabora.com>
- <8ad10cc3-6e7d-4a8b-b6f6-9568403ee2b3@samsung.com>
-To: Michal Wilczynski <m.wilczynski@samsung.com>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Michal,
+Add a new type to support specifying NUMA identifiers in Rust
+allocators and extend the allocators to have NUMA id as a
+parameter. Thus, modify ReallocFunc to use the new extended realloc
+primitives from the C side of the kernel (i. e.
+k[v]realloc_node_align/vrealloc_node_align) and add the new function
+alloc_node to the Allocator trait while keeping the existing one
+(alloc) for backward compatibility.
 
-> On 4 Aug 2025, at 19:29, Michal Wilczynski <m.wilczynski@samsung.com> =
-wrote:
->=20
->=20
-> On 7/25/25 17:56, Daniel Almeida wrote:
->>> +
->>> +    /// Gets the label for this PWM device, if any.
->>> +    pub fn label(&self) -> Option<&CStr> {
->>> +        // SAFETY: self.as_raw() provides a valid pointer.
->>> +        let label_ptr =3D unsafe { (*self.as_raw()).label };
->>> +        if label_ptr.is_null() {
->>> +            None
->>> +        } else {
->>> +            // SAFETY: label_ptr is non-null and points to a C =
-string
->>> +            // managed by the kernel, valid for the lifetime of the =
-PWM device.
->>> +            Some(unsafe { CStr::from_char_ptr(label_ptr) })
->>> +        }
->>> +    }
->>=20
->> nit: this can be written more concisely, but I personally don=E2=80=99t=
- mind.
->=20
-> Do you have something specific in mind ? I think the alternative way =
-of
-> expressing this would use NonNull, but somehow this feels less =
-readable
-> for me.
+This will allow to specify node to use for allocation of e. g.
+{KV}Box, as well as for future NUMA aware users of the API.
 
-Yes, an early return, i.e.:
+Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+Acked-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/helpers/slab.c                 |  8 ++---
+ rust/helpers/vmalloc.c              |  4 +--
+ rust/kernel/alloc.rs                | 54 ++++++++++++++++++++++++++---
+ rust/kernel/alloc/allocator.rs      | 35 ++++++++++++-------
+ rust/kernel/alloc/allocator_test.rs |  1 +
+ rust/kernel/alloc/kbox.rs           |  4 +--
+ rust/kernel/alloc/kvec.rs           | 11 ++++--
+ 7 files changed, 89 insertions(+), 28 deletions(-)
 
-if label_ptr.is_null() {
-  return None
-}
-
-It saves you one level of indentation by removing the else branch.
-
->=20
->=20
->>> +
->>> +/// Trait defining the operations for a PWM driver.
->>> +pub trait PwmOps: 'static + Sized {
->>> +    /// The driver-specific hardware representation of a waveform.
->>> +    ///
->>> +    /// This type must be [`Copy`], [`Default`], and fit within =
-`PWM_WFHWSIZE`.
->>> +    type WfHw: Copy + Default;
->>=20
->> Can=E2=80=99t you use a build_assert!() here? i.e.:
->>=20
->>    #[doc(hidden)]
->>    const _CHECK_SZ: () =3D {
->>        build_assert!(core::mem::size_of::<Self::WfHw>() <=3D =
-bindings::PWM_WFHWSIZE as usize);
->>    };
->=20
-> This doesn't work i.e the driver using oversized WfHw compiles
-> correctly, but putting the assert inside the serialize did work, =
-please
-> see below.
-
-Can you show how it looks like with the build_assert included? Just as a =
-sanity check.
-
->=20
->=20
->>=20
->>> +        Err(ENOTSUPP)
->>> +    }
->>> +
->>> +    /// Convert a hardware-specific representation back to a =
-generic waveform.
->>> +    /// This is typically a pure calculation and does not perform =
-I/O.
->>> +    fn round_waveform_fromhw(
->>> +        _chip: &Chip<Self>,
->>> +        _pwm: &Device,
->>> +        _wfhw: &Self::WfHw,
->>> +        _wf: &mut Waveform,
->>> +    ) -> Result<c_int> {
->>> +        Err(ENOTSUPP)
->>> +    }
->>=20
->> Please include at least a description of what this returns.
->=20
-> Instead I think it should just return Result, reviewed the code and =
-it's
-> fine.
->=20
-
-Ack.
-
->>=20
->>> +/// Bridges Rust `PwmOps` to the C `pwm_ops` vtable.
->>> +struct Adapter<T: PwmOps> {
->>> +    _p: PhantomData<T>,
->>> +}
->>> +
->>> +impl<T: PwmOps> Adapter<T> {
->>> +    const VTABLE: PwmOpsVTable =3D create_pwm_ops::<T>();
->>> +
->>> +    /// # Safety
->>> +    ///
->>> +    /// `wfhw_ptr` must be valid for writes of =
-`size_of::<T::WfHw>()` bytes.
->>> +    unsafe fn serialize_wfhw(wfhw: &T::WfHw, wfhw_ptr: *mut c_void) =
--> Result {
->>> +        let size =3D core::mem::size_of::<T::WfHw>();
->>> +        if size > bindings::PWM_WFHWSIZE as usize {
->>> +            return Err(EINVAL);
->>> +        }
->>=20
->> See my previous comment on using build_assert if possible.
->=20
-> So I did try this and it does work, however it results in a cryptic
-> linker error:
-> ld.lld: error: undefined symbol: rust_build_error
->>>> referenced by pwm_th1520.2c2c3938312114c-cgu.0
->>>>              =
-drivers/pwm/pwm_th1520.o:(<kernel::pwm::Adapter<pwm_th1520::Th1520PwmDrive=
-rData>>::read_waveform_callback) in archive vmlinux.a
->>>> referenced by pwm_th1520.2c2c3938312114c-cgu.0
->>>>              =
-drivers/pwm/pwm_th1520.o:(<kernel::pwm::Adapter<pwm_th1520::Th1520PwmDrive=
-rData>>::round_waveform_tohw_callback) in archive vmlinux.a
-> make[2]: *** [scripts/Makefile.vmlinux:91: vmlinux] Error 1
->=20
-> I assume this could be fixed at some point to better explain what
-> failed? I think putting the assert in serialize functions is fine and
-> the proposed _CHECK_SZ isn't really required.
->=20
-> I would love to do some debugging and find out why that is myself if
-> time allows :-)
-
-There is nothing wrong here. A canonical Rust-for-Linux experience is =
-stumbling
-upon the error generated by build_assert and being rightly confused. =
-People ask
-about this every few months :)
-
-This just means that the build_assert triggered and the build failed as =
-a
-result. IOW, it means that your build_assert is working properly to =
-catch
-errors.
-
-=E2=80=94 Daniel
+diff --git a/rust/helpers/slab.c b/rust/helpers/slab.c
+index a842bfbddcba..8472370a4338 100644
+--- a/rust/helpers/slab.c
++++ b/rust/helpers/slab.c
+@@ -3,13 +3,13 @@
+ #include <linux/slab.h>
+ 
+ void * __must_check __realloc_size(2)
+-rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
++rust_helper_krealloc_node(const void *objp, size_t new_size, gfp_t flags, int node)
+ {
+-	return krealloc(objp, new_size, flags);
++	return krealloc_node(objp, new_size, flags, node);
+ }
+ 
+ void * __must_check __realloc_size(2)
+-rust_helper_kvrealloc(const void *p, size_t size, gfp_t flags)
++rust_helper_kvrealloc_node(const void *p, size_t size, gfp_t flags, int node)
+ {
+-	return kvrealloc(p, size, flags);
++	return kvrealloc_node(p, size, flags, node);
+ }
+diff --git a/rust/helpers/vmalloc.c b/rust/helpers/vmalloc.c
+index 80d34501bbc0..62d30db9a1a6 100644
+--- a/rust/helpers/vmalloc.c
++++ b/rust/helpers/vmalloc.c
+@@ -3,7 +3,7 @@
+ #include <linux/vmalloc.h>
+ 
+ void * __must_check __realloc_size(2)
+-rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
++rust_helper_vrealloc_node(const void *p, size_t size, gfp_t flags, int node)
+ {
+-	return vrealloc(p, size, flags);
++	return vrealloc_node(p, size, flags, node);
+ }
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index a2c49e5494d3..b39c279236f5 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -28,6 +28,8 @@
+ /// Indicates an allocation error.
+ #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+ pub struct AllocError;
++
++use crate::error::{code::EINVAL, Result};
+ use core::{alloc::Layout, ptr::NonNull};
+ 
+ /// Flags to be used when allocating memory.
+@@ -115,6 +117,31 @@ pub mod flags {
+     pub const __GFP_NOWARN: Flags = Flags(bindings::__GFP_NOWARN);
+ }
+ 
++/// Non Uniform Memory Access (NUMA) node identifier.
++#[derive(Clone, Copy, PartialEq)]
++pub struct NumaNode(i32);
++
++impl NumaNode {
++    /// Create a new NUMA node identifier (non-negative integer).
++    ///
++    /// Returns [`EINVAL`] if a negative id or an id exceeding [`bindings::MAX_NUMNODES`] is
++    /// specified.
++    pub fn new(node: i32) -> Result<Self> {
++        // MAX_NUMNODES never exceeds 2**10 because NODES_SHIFT is 0..10.
++        if node < 0 || node >= bindings::MAX_NUMNODES as i32 {
++            return Err(EINVAL);
++        }
++        Ok(Self(node))
++    }
++}
++
++/// Specify necessary constant to pass the information to Allocator that the caller doesn't care
++/// about the NUMA node to allocate memory from.
++impl NumaNode {
++    /// No node preference.
++    pub const NO_NODE: NumaNode = NumaNode(bindings::NUMA_NO_NODE);
++}
++
+ /// The kernel's [`Allocator`] trait.
+ ///
+ /// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffers described
+@@ -137,7 +164,7 @@ pub mod flags {
+ /// - Implementers must ensure that all trait functions abide by the guarantees documented in the
+ ///   `# Guarantees` sections.
+ pub unsafe trait Allocator {
+-    /// Allocate memory based on `layout` and `flags`.
++    /// Allocate memory based on `layout`, `flags` and `nid`.
+     ///
+     /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
+     /// constraints (i.e. minimum size and alignment as specified by `layout`).
+@@ -153,13 +180,21 @@ pub unsafe trait Allocator {
+     ///
+     /// Additionally, `Flags` are honored as documented in
+     /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
+-    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
++    fn alloc(layout: Layout, flags: Flags, nid: NumaNode) -> Result<NonNull<[u8]>, AllocError> {
+         // SAFETY: Passing `None` to `realloc` is valid by its safety requirements and asks for a
+         // new memory allocation.
+-        unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags) }
++        unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags, nid) }
+     }
+ 
+-    /// Re-allocate an existing memory allocation to satisfy the requested `layout`.
++    /// Re-allocate an existing memory allocation to satisfy the requested `layout` and
++    /// a specific NUMA node request to allocate the memory for.
++    ///
++    /// Systems employing a Non Uniform Memory Access (NUMA) architecture contain collections of
++    /// hardware resources including processors, memory, and I/O buses, that comprise what is
++    /// commonly known as a NUMA node.
++    ///
++    /// `nid` stands for NUMA id, i. e. NUMA node identifier, which is a non-negative integer
++    /// if a node needs to be specified, or [`NumaNode::NO_NODE`] if the caller doesn't care.
+     ///
+     /// If the requested size is zero, `realloc` behaves equivalent to `free`.
+     ///
+@@ -196,6 +231,7 @@ unsafe fn realloc(
+         layout: Layout,
+         old_layout: Layout,
+         flags: Flags,
++        nid: NumaNode,
+     ) -> Result<NonNull<[u8]>, AllocError>;
+ 
+     /// Free an existing memory allocation.
+@@ -211,7 +247,15 @@ unsafe fn free(ptr: NonNull<u8>, layout: Layout) {
+         // SAFETY: The caller guarantees that `ptr` points at a valid allocation created by this
+         // allocator. We are passing a `Layout` with the smallest possible alignment, so it is
+         // smaller than or equal to the alignment previously used with this allocation.
+-        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), layout, Flags(0)) };
++        let _ = unsafe {
++            Self::realloc(
++                Some(ptr),
++                Layout::new::<()>(),
++                layout,
++                Flags(0),
++                NumaNode::NO_NODE,
++            )
++        };
+     }
+ }
+ 
+diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+index aa2dfa9dca4c..8af7e04e3cc6 100644
+--- a/rust/kernel/alloc/allocator.rs
++++ b/rust/kernel/alloc/allocator.rs
+@@ -13,7 +13,7 @@
+ use core::ptr;
+ use core::ptr::NonNull;
+ 
+-use crate::alloc::{AllocError, Allocator};
++use crate::alloc::{AllocError, Allocator, NumaNode};
+ use crate::bindings;
+ use crate::pr_warn;
+ 
+@@ -56,20 +56,25 @@ fn aligned_size(new_layout: Layout) -> usize {
+ 
+ /// # Invariants
+ ///
+-/// One of the following: `krealloc`, `vrealloc`, `kvrealloc`.
++/// One of the following: `krealloc_node`, `vrealloc_node`, `kvrealloc_node`.
+ struct ReallocFunc(
+-    unsafe extern "C" fn(*const crate::ffi::c_void, usize, u32) -> *mut crate::ffi::c_void,
++    unsafe extern "C" fn(
++        *const crate::ffi::c_void,
++        usize,
++        u32,
++        crate::ffi::c_int,
++    ) -> *mut crate::ffi::c_void,
+ );
+ 
+ impl ReallocFunc {
+-    // INVARIANT: `krealloc` satisfies the type invariants.
+-    const KREALLOC: Self = Self(bindings::krealloc);
++    // INVARIANT: `krealloc_node` satisfies the type invariants.
++    const KREALLOC: Self = Self(bindings::krealloc_node);
+ 
+-    // INVARIANT: `vrealloc` satisfies the type invariants.
+-    const VREALLOC: Self = Self(bindings::vrealloc);
++    // INVARIANT: `vrealloc_node` satisfies the type invariants.
++    const VREALLOC: Self = Self(bindings::vrealloc_node);
+ 
+-    // INVARIANT: `kvrealloc` satisfies the type invariants.
+-    const KVREALLOC: Self = Self(bindings::kvrealloc);
++    // INVARIANT: `kvrealloc_node` satisfies the type invariants.
++    const KVREALLOC: Self = Self(bindings::kvrealloc_node);
+ 
+     /// # Safety
+     ///
+@@ -87,6 +92,7 @@ unsafe fn call(
+         layout: Layout,
+         old_layout: Layout,
+         flags: Flags,
++        nid: NumaNode,
+     ) -> Result<NonNull<[u8]>, AllocError> {
+         let size = aligned_size(layout);
+         let ptr = match ptr {
+@@ -110,7 +116,7 @@ unsafe fn call(
+         // - Those functions provide the guarantees of this function.
+         let raw_ptr = unsafe {
+             // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
+-            self.0(ptr.cast(), size, flags.0).cast()
++            self.0(ptr.cast(), size, flags.0, nid.0).cast()
+         };
+ 
+         let ptr = if size == 0 {
+@@ -134,9 +140,10 @@ unsafe fn realloc(
+         layout: Layout,
+         old_layout: Layout,
+         flags: Flags,
++        nid: NumaNode,
+     ) -> Result<NonNull<[u8]>, AllocError> {
+         // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
+-        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, old_layout, flags) }
++        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, old_layout, flags, nid) }
+     }
+ }
+ 
+@@ -151,6 +158,7 @@ unsafe fn realloc(
+         layout: Layout,
+         old_layout: Layout,
+         flags: Flags,
++        nid: NumaNode,
+     ) -> Result<NonNull<[u8]>, AllocError> {
+         // TODO: Support alignments larger than PAGE_SIZE.
+         if layout.align() > bindings::PAGE_SIZE {
+@@ -160,7 +168,7 @@ unsafe fn realloc(
+ 
+         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
+         // allocated with this `Allocator`.
+-        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, flags) }
++        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, flags, nid) }
+     }
+ }
+ 
+@@ -175,6 +183,7 @@ unsafe fn realloc(
+         layout: Layout,
+         old_layout: Layout,
+         flags: Flags,
++        nid: NumaNode,
+     ) -> Result<NonNull<[u8]>, AllocError> {
+         // TODO: Support alignments larger than PAGE_SIZE.
+         if layout.align() > bindings::PAGE_SIZE {
+@@ -184,6 +193,6 @@ unsafe fn realloc(
+ 
+         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
+         // allocated with this `Allocator`.
+-        unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags) }
++        unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags, nid) }
+     }
+ }
+diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+index d19c06ef0498..955f8b8286fe 100644
+--- a/rust/kernel/alloc/allocator_test.rs
++++ b/rust/kernel/alloc/allocator_test.rs
+@@ -40,6 +40,7 @@ unsafe fn realloc(
+         layout: Layout,
+         old_layout: Layout,
+         flags: Flags,
++        _nid: NumaNode,
+     ) -> Result<NonNull<[u8]>, AllocError> {
+         let src = match ptr {
+             Some(src) => {
+diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+index c386ff771d50..5c0b020fb2a4 100644
+--- a/rust/kernel/alloc/kbox.rs
++++ b/rust/kernel/alloc/kbox.rs
+@@ -4,7 +4,7 @@
+ 
+ #[allow(unused_imports)] // Used in doc comments.
+ use super::allocator::{KVmalloc, Kmalloc, Vmalloc};
+-use super::{AllocError, Allocator, Flags};
++use super::{AllocError, Allocator, Flags, NumaNode};
+ use core::alloc::Layout;
+ use core::fmt;
+ use core::marker::PhantomData;
+@@ -271,7 +271,7 @@ pub fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
+     /// ```
+     pub fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>, A>, AllocError> {
+         let layout = Layout::new::<MaybeUninit<T>>();
+-        let ptr = A::alloc(layout, flags)?;
++        let ptr = A::alloc(layout, flags, NumaNode::NO_NODE)?;
+ 
+         // INVARIANT: `ptr` is either a dangling pointer or points to memory allocated with `A`,
+         // which is sufficient in size and alignment for storing a `T`.
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index 1a0dd852a468..aa5d27176d9c 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -5,7 +5,7 @@
+ use super::{
+     allocator::{KVmalloc, Kmalloc, Vmalloc},
+     layout::ArrayLayout,
+-    AllocError, Allocator, Box, Flags,
++    AllocError, Allocator, Box, Flags, NumaNode,
+ };
+ use core::{
+     fmt,
+@@ -633,6 +633,7 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
+                 layout.into(),
+                 self.layout.into(),
+                 flags,
++                NumaNode::NO_NODE,
+             )?
+         };
+ 
+@@ -1058,7 +1059,13 @@ pub fn collect(self, flags: Flags) -> Vec<T, A> {
+             // the type invariant to be smaller than `cap`. Depending on `realloc` this operation
+             // may shrink the buffer or leave it as it is.
+             ptr = match unsafe {
+-                A::realloc(Some(buf.cast()), layout.into(), old_layout.into(), flags)
++                A::realloc(
++                    Some(buf.cast()),
++                    layout.into(),
++                    old_layout.into(),
++                    flags,
++                    NumaNode::NO_NODE,
++                )
+             } {
+                 // If we fail to shrink, which likely can't even happen, continue with the existing
+                 // buffer.
+-- 
+2.39.2
 
