@@ -1,160 +1,148 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A96291C02;
-	Wed,  6 Aug 2025 15:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754494341; cv=pass; b=HJNp/84EMGK9w8lvrll45Q9XyD4YL4hBKa/t7akSFg31h0T70xBZEC09iZATcmQYknqXNdvyQcbrcjLkDej1sfEIqVJz7scsQGwCWwGBwdkBwhny/Hf+MuTosnvP4uDUz54CLB1IpCpZEMlq2MVVg9/pku7UEwVVI0+Ffr4tkzU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754494341; c=relaxed/simple;
-	bh=Zmwv4vh3Fx0bxFxRlXfARN3k9faUJVlnf8ZTxt8rEjI=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Fr5gO7PXtNIFDnWiL6dlrAJ/7r3sq+MkW2hhqUuPNDxb6gA0fz5a5hxFM/E6D3F00GO/A4ipriHKVMpO4ZSHRwhR7dSp9SFaMVDmPRzMhh9yGLQQ0o5Vm3JHn0dyWAc1f0siMWXqK6ck4FPX9fJc3Xfy4oLj0BLYTgMWH4v+bNQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=LjPqLBSg; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF40C29C321;
+	Wed,  6 Aug 2025 17:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1754500524; cv=none; b=J61ChRkXRSQLJrm2zywyN6Zuo9gEQSJtGc89u706MDVJ+iUv9Dtf99QYu4EYYS4BHODtYxImqTubuGW/9xg3bSArQo1jV7I1Y17hxhsc8iBORkFXMf5fbYhfBK1LthVaU2fQ8kN3/BJjIVGSXhbhzyVKLQeUtl9cWlL1wiGoaWg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1754500524; c=relaxed/simple;
+	bh=iP1Vp96AUt0/1/dByJQwxu90FSDRv7L6wCxaXLDltks=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Km4K+n98kPI++SjVqFSc6V3nvBj+ezUZqd+cbVCPoP+DLXVJPcn6eBCAOWI16pucOCIBIry0KlH9aDEHNn2s5jLXbnleUUnC0+IYX0PytqZs7Tz7v+KvRwdVQglxeR+gMBETeYTbHv9iPpb3P8Oep6fwYdmnk1KKrZFvWnlTJSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vw1aN0hN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="LjPqLBSg"
-ARC-Seal: i=1; a=rsa-sha256; t=1754494322; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=EvOxFINf6Q6TJgBgY9eusaVIUI7WQx4ErTpp8xqCj3msXCOyIl29M5MEpEX8T0IUExzELan5X7d9lZ+qavstYEMBoOhD9JCKJr3nnyAmaCNi97tSklILMeD3wWDi9RsAx//vSjbYIIwi0UUXWveb+hIRgFcXYw4HAeMVBvdZ1/4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1754494322; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=zVx/BBwBcVenmzScNrfKqLq/SI6/4vzW+8q9NLGYSVw=; 
-	b=drSSVxdylxxzpYsIkVa+wYn+FqE2poR63zDv2unDMC4vq4KHR8ICdxEnUhYHsqKrA4FO5o4aOhI4ftUJhPP0R3kgIYjxODiG01kDUrRp9+QOCo9Z4OlJoigzVrI11nBiQdOJ3ULku01d5mxXrGIHZJlOOClai/IvekowxwAkZ8A=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1754494322;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=zVx/BBwBcVenmzScNrfKqLq/SI6/4vzW+8q9NLGYSVw=;
-	b=LjPqLBSglAaBV3N8yv9Je0baMe4xWUM2MEzU5pStsjaCkQSF8n9y2Y5Gbf9If96s
-	GgIneJ94i9zggEodhYP6pBT+7BftYkR7E8AvGCuJBZJ/f2omxMdaR9fVDz348EjuoB6
-	YVfrHQ2Q7hJr4aMZGVyR1WeLZBxFuUU/jtUdDkzc=
-Received: by mx.zohomail.com with SMTPS id 1754494320728780.5263856446262;
-	Wed, 6 Aug 2025 08:32:00 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vw1aN0hN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D63C4CEED;
+	Wed,  6 Aug 2025 17:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754500524;
+	bh=iP1Vp96AUt0/1/dByJQwxu90FSDRv7L6wCxaXLDltks=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Vw1aN0hNtZowJgcCAWQjQrvy1CggQwRgv1AmfnF9BoNdbhKbl20bmLNFFEinlAXHV
+	 +w4BhSV/iS5VpXCOXMfVC2oib1f4+cK4iU7lMkZEEuSYSsXQwhmIdfXIRMLMtdLxW6
+	 1KnFFSB4y9bLqDKwrY6nypuQDbyPsoApw+aSreNqSOIMJO1YmARi/cvjsO8onAay8V
+	 3XHxzDEvk/SD9mXgpLU2s2lQtZBsUaTRQ3dxYTNcVGbq6wDyDapPIA5HrbwYZl6fkH
+	 NAa/SFX/I0dxSzNBYT1szqKceE/kuRjMhUic9aZIibRYVGurAM2E1C6y9jEaDfnJUq
+	 YZcwSJ3tFPqFQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C94383BF63;
+	Wed,  6 Aug 2025 17:15:39 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.600.51.1.1\))
-Subject: Re: [PATCH v3 06/16] rust: block: normalize imports for `gen_disk.rs`
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <877bzg8pvp.fsf@kernel.org>
-Date: Wed, 6 Aug 2025 12:31:45 -0300
-Cc: Boqun Feng <boqun.feng@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>,
- Jens Axboe <axboe@kernel.dk>,
- linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DC4C6260-9D2E-40B7-9A0F-F629EB831F5F@collabora.com>
-References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org>
- <20250711-rnull-up-v6-16-v3-6-3a262b4e2921@kernel.org>
- <1YjnBHBMF7DAKjkQrfW9goplGCUynLmjrUnLo3PrN5qMYx6uUcolbOtjWPNyVQEwyehPW8Xk7B1oeBAffoYr9A==@protonmail.internalid>
- <F5A3232C-50E8-4615-929A-80F3ED4EFEBA@collabora.com>
- <877bzg8pvp.fsf@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: Apple Mail (2.3826.600.51.1.1)
-X-ZohoMailClient: External
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
+Date: Wed, 06 Aug 2025 17:15:37 +0000
+References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+In-Reply-To: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: linux-riscv@lists.infradead.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, conor@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ arnd@arndb.de, brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
+ ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net, shuah@kernel.org,
+ jannh@google.com, conor+dt@kernel.org, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, a.hindborg@kernel.org, aliceryhl@google.com,
+ tmgross@umich.edu, lossin@kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com,
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org,
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+ zong.li@sifive.com, david@redhat.com
 
+Hello:
 
+This series was applied to riscv/linux.git (for-next)
+by Alexandre Ghiti <alexghiti@rivosinc.com>:
 
-> On 6 Aug 2025, at 11:51, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->=20
-> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
->=20
->>> On 11 Jul 2025, at 08:43, Andreas Hindborg <a.hindborg@kernel.org> =
-wrote:
->>>=20
->>> Clean up the import statements in `gen_disk.rs` to make the code =
-easier to
->>> maintain.
->>>=20
->>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>> rust/kernel/block/mq/gen_disk.rs | 10 +++++++---
->>> 1 file changed, 7 insertions(+), 3 deletions(-)
->>>=20
->>> diff --git a/rust/kernel/block/mq/gen_disk.rs =
-b/rust/kernel/block/mq/gen_disk.rs
->>> index cd54cd64ea88..679ee1bb2195 100644
->>> --- a/rust/kernel/block/mq/gen_disk.rs
->>> +++ b/rust/kernel/block/mq/gen_disk.rs
->>> @@ -5,9 +5,13 @@
->>> //! C header: =
-[`include/linux/blkdev.h`](srctree/include/linux/blkdev.h)
->>> //! C header: =
-[`include/linux/blk_mq.h`](srctree/include/linux/blk_mq.h)
->>>=20
->>> -use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
->>> -use crate::{bindings, error::from_err_ptr, error::Result, =
-sync::Arc};
->>> -use crate::{error, static_lock_class};
->>> +use crate::{
->>> +    bindings,
->>> +    block::mq::{raw_writer::RawWriter, Operations, TagSet},
->>> +    error::{self, from_err_ptr, Result},
->>> +    static_lock_class,
->>> +    sync::Arc,
->>> +};
->>> use core::fmt::{self, Write};
->>>=20
->>> /// A builder for [`GenDisk`].
->>>=20
->>> --
->>> 2.47.2
->>>=20
->>>=20
->>>=20
->>=20
->> Same comment as the preceding =E2=80=9Cimport=E2=80=9D patch: this is =
-syntax is problematic.
->=20
-> I used to share your viewpoint, but I changed my opinion and now =
-prefer
-> "normalized" imports (the combined form).
->=20
-> Now I can just blindly merge all the imports, remove duplicates and =
-then
-> ask rust-analyzer to normalize imports again, and then format with
-> rustfmt. I find that this workflow is very low overhead.
->=20
->=20
-> Best regards,
-> Andreas Hindborg
+On Thu, 31 Jul 2025 16:19:10 -0700 you wrote:
+> Basics and overview
+> ===================
+> 
+> Software with larger attack surfaces (e.g. network facing apps like databases,
+> browsers or apps relying on browser runtimes) suffer from memory corruption
+> issues which can be utilized by attackers to bend control flow of the program
+> to eventually gain control (by making their payload executable). Attackers are
+> able to perform such attacks by leveraging call-sites which rely on indirect
+> calls or return sites which rely on obtaining return address from stack memory.
+> 
+> [...]
 
-That=E2=80=99s because you have a separate commit where you do this =
-before applying
-your work on top. If you=E2=80=99re rebasing on top of someone else's =
-work, then a
-lot of conflicts will pop up. And unlike the saner approach where each =
-import
-is in its own line, it=E2=80=99s now absolutely not clear how the =
-conflicts should
-be resolved.
+Here is the summary with links:
+  - [v19,01/27] mm: VM_SHADOW_STACK definition for riscv
+    https://git.kernel.org/riscv/c/cbac1921f599
+  - [v19,02/27] dt-bindings: riscv: zicfilp and zicfiss in dt-bindings (extensions.yaml)
+    https://git.kernel.org/riscv/c/529ea23b9724
+  - [v19,03/27] riscv: zicfiss / zicfilp enumeration
+    https://git.kernel.org/riscv/c/2672fcca7d45
+  - [v19,04/27] riscv: zicfiss / zicfilp extension csr and bit definitions
+    https://git.kernel.org/riscv/c/9c6a894fd8b3
+  - [v19,05/27] riscv: usercfi state for task and save/restore of CSR_SSP on trap entry/exit
+    https://git.kernel.org/riscv/c/b01f6537153c
+  - [v19,06/27] riscv/mm : ensure PROT_WRITE leads to VM_READ | VM_WRITE
+    https://git.kernel.org/riscv/c/c13b2d7c1365
+  - [v19,07/27] riscv/mm: manufacture shadow stack pte
+    https://git.kernel.org/riscv/c/68cd7334a8d2
+  - [v19,08/27] riscv/mm: teach pte_mkwrite to manufacture shadow stack PTEs
+    https://git.kernel.org/riscv/c/50c9b9607c89
+  - [v19,09/27] riscv/mm: write protect and shadow stack
+    https://git.kernel.org/riscv/c/cbcccac1eddc
+  - [v19,10/27] riscv/mm: Implement map_shadow_stack() syscall
+    https://git.kernel.org/riscv/c/26e35e774a64
+  - [v19,11/27] riscv/shstk: If needed allocate a new shadow stack on clone
+    https://git.kernel.org/riscv/c/9c72a71321a6
+  - [v19,12/27] riscv: Implements arch agnostic shadow stack prctls
+    https://git.kernel.org/riscv/c/52eff0ab5f8e
+  - [v19,13/27] prctl: arch-agnostic prctl for indirect branch tracking
+    https://git.kernel.org/riscv/c/157690650241
+  - [v19,14/27] riscv: Implements arch agnostic indirect branch tracking prctls
+    https://git.kernel.org/riscv/c/e97ca201e919
+  - [v19,15/27] riscv/traps: Introduce software check exception and uprobe handling
+    https://git.kernel.org/riscv/c/d88b76756b34
+  - [v19,16/27] riscv: signal: abstract header saving for setup_sigcontext
+    https://git.kernel.org/riscv/c/63e713f29efe
+  - [v19,17/27] riscv/signal: save and restore of shadow stack for signal
+    https://git.kernel.org/riscv/c/5b04bbd448a5
+  - [v19,18/27] riscv/kernel: update __show_regs to print shadow stack register
+    https://git.kernel.org/riscv/c/1400341403b3
+  - [v19,19/27] riscv/ptrace: riscv cfi status and state via ptrace and in core files
+    https://git.kernel.org/riscv/c/982c862820b8
+  - [v19,20/27] riscv/hwprobe: zicfilp / zicfiss enumeration in hwprobe
+    https://git.kernel.org/riscv/c/07b1d75233e4
+  - [v19,21/27] riscv: kernel command line option to opt out of user cfi
+    https://git.kernel.org/riscv/c/2c268d3d21f9
+  - [v19,22/27] riscv: enable kernel access to shadow stack memory via FWFT sbi call
+    https://git.kernel.org/riscv/c/4ff7e8937f22
+  - [v19,23/27] arch/riscv: compile vdso with landing pad and shadow stack note
+    https://git.kernel.org/riscv/c/a82422297e63
+  - [v19,24/27] riscv: create a config for shadow stack and landing pad instr support
+    https://git.kernel.org/riscv/c/5bb36633ee56
+  - [v19,25/27] riscv: Documentation for landing pad / indirect branch tracking
+    https://git.kernel.org/riscv/c/9868b87525d9
+  - [v19,26/27] riscv: Documentation for shadow stack on riscv
+    https://git.kernel.org/riscv/c/a56a53730eb6
+  - [v19,27/27] kselftest/riscv: kselftest for user mode cfi
+    https://git.kernel.org/riscv/c/fd40e4a14f45
 
-The only thing that can be done then is to accept whatever the current =
-change
-is, and ask rust-analyzer to reimport everything and reformat.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-IMHO, this is not great.
-
-=E2=80=94 Daniel
 
