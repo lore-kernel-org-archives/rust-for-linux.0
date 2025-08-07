@@ -1,106 +1,108 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400CD24293B;
-	Thu,  7 Aug 2025 12:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E2E1E48A;
+	Thu,  7 Aug 2025 12:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754569730; cv=none; b=bB/NEk5V23zU3lu/IwaSSzshEjPrbLEDur6uZbAfqDT/dSjUgRLCnPzcA3Yj1W7VFvx+Pk5btca8C2o+kvAhCP1fjNY1qKpKsZ/5KjiH33njnidTNouqoe7stg5yuiDlO4ZA32F8ZiqyVgVk1hFm5/y+bq02eSDQFZlTS9qo/14=
+	t=1754570667; cv=none; b=VnRtmSsQSeF+TubhjnvFMV1pilEQ75u4kHBeX1DtfugQ4GunvuA3j/kN4HF847OLWxNlq8V7q5nOiI+dNhG3stXgk+ObGfvAa4qijuL1DghZZMXh6pPvF6ZCUFbnqSLVdncx14dd/BDYihMkS9uFMEox7w8Rodt3QetGbQ+EZ2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754569730; c=relaxed/simple;
-	bh=kUH5cN8R6K2VxLTJzE/eGBwS7eFdgy3gZa8/khg7FMc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L9e3kBsv5TqLG0d8glRcEl3eesOLWooNxQDuUaw6gAd0Tlqu+7kdnPmnghmn5NHgJ8WyT9r+UbpCzrMr/Sr4YVIxtDK7JSod0dxUmejzAeerUQIc9+xIYj0Ti5U0CbJVxSpONGN6bcIqgBSzWEWQAYwv9UEzShLT1qDgFZLpcf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfRz8/lo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754570667; c=relaxed/simple;
+	bh=WMsVnSXX7wd5ayJeziJSnbluq2OE3O0GYuxrdGD9xPc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=F47ubRaNG33eSZvUPT+KDBQul6w3LVNtEWQWzXxzfo5qWGkJvIT3iAbRDSdN+m+/NupeqDr78HQoEU+Ud82cI21/Dwk+Rz1JUSZHKDIE35yo3vVR1Mvsj95CmMj39Qk6pL66YQslO1kcAZhabyDGBNv57638CmVOLWUzRXn20Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+hj8c+T; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfRz8/lo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB578C4CEEB;
-	Thu,  7 Aug 2025 12:28:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+hj8c+T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52853C4CEEB;
+	Thu,  7 Aug 2025 12:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754569729;
-	bh=kUH5cN8R6K2VxLTJzE/eGBwS7eFdgy3gZa8/khg7FMc=;
-	h=Date:From:List-Id:To:Cc:Subject:References:In-Reply-To:From;
-	b=QfRz8/lokPQVbrBLQdFUg7Zb/pO83LwtQj6QWEu50ZIIRiNZFCedBiyH1vPKdZCmn
-	 sd6EpNnPi3l2PXkuxCii2LHjBXBHhb8dMe7F02R3uXDPg+W0NEArdn2LzuNZWk4n4C
-	 /Sx0iu7o5KWBtcGI3LpmP5Ug+gPg6/SSSMluaZMDVq7o8iEupbbo1t+inLw6H7xOEs
-	 jqbuylhW2q93qMf3JwvCe+wxRi2FEEeMt64N6gLqFXR4huwOVfenuJMDp6TjvScCLC
-	 7UWGcPsoYmI5swp1B3/noAXrQ9FI+wP3dI6JCb6TOGkWKhf2Oy8Cic2ZCTYFeNZEkL
-	 7GwpI5SHcfNkg==
-Date: Thu, 7 Aug 2025 13:28:36 +0100
-From: Mark Brown <broonie@kernel.org>
-To: patchwork-bot+linux-riscv@kernel.org
-Cc: Deepak Gupta <debug@rivosinc.com>, linux-riscv@lists.infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, conor@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, arnd@arndb.de,
-	brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
-	ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net,
-	shuah@kernel.org, jannh@google.com, conor+dt@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, lossin@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
-	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
-	alexghiti@rivosinc.com, samitolvanen@google.com,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	zong.li@sifive.com, david@redhat.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
-References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
- <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
+	s=k20201202; t=1754570666;
+	bh=WMsVnSXX7wd5ayJeziJSnbluq2OE3O0GYuxrdGD9xPc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=C+hj8c+TN+8FP10aYaWDW92qIeSUM4B/T49pou8Q+zdbIDd22Jjtz+LBGwd8bb1u6
+	 u2bxV/bB5QgwP0SVzb4qze6vPobbCp1yB7262yOenuZxt1cV+GCyqSArLSwTuJn8t1
+	 IhRAWoPyNBB8KHOpX1PQy3olugL5k9VWhSqUY/BCIzv9AGu3NI/1RGBkfq/RFP8G99
+	 b25yGoa2qxqEhi8Y+J2Uh0xDNxsZpt40+/iX/rvTGKFqb/TuEI3VAlwEZM4hL1z962
+	 bg7vLZTa8VgbyVLkew1JAO7ES6K5jul9X+znnp076ZY5m+7g99/GJ0oWujtoQOo/WC
+	 9w0+UVDtJIkgw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Lyude Paul <lyude@redhat.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+ Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, FUJITA
+ Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker
+ <frederic@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, John
+ Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH 2/2] rust: time: Implement basic arithmetic operations
+ for Delta
+In-Reply-To: <ddea64af3b845d2c32d807c5aab6146a9ce3c2bf.camel@redhat.com>
+References: <20250724185700.557505-1-lyude@redhat.com>
+ <20250724185700.557505-3-lyude@redhat.com> <aIXVzIwBDvY1ZVjL@google.com>
+ <f92b5f82b3ad7bb8d5bf60b272aac8cf1e6ced24.camel@redhat.com>
+ <aIi7ZycRtmOZNtcf@google.com>
+ <HOO5JYIxZKoD8xW4fQHGxeBnL_P4Np3fmfvoUV7ESg_DEoS-c3QfTMooZrAhXsJ5nTf8DWNKoEnr4pQN9IYpPQ==@protonmail.internalid>
+ <ddea64af3b845d2c32d807c5aab6146a9ce3c2bf.camel@redhat.com>
+Date: Thu, 07 Aug 2025 14:44:16 +0200
+Message-ID: <87ms8b713z.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8Jovl+rM+g+rY2Z6"
-Content-Disposition: inline
-In-Reply-To: <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
-X-Cookie: Real Users hate Real Programmers.
+Content-Type: text/plain
+
+"Lyude Paul" <lyude@redhat.com> writes:
+
+> On Tue, 2025-07-29 at 12:15 +0000, Alice Ryhl wrote:
+>>
+>>
+>> The reason I bring up the example is that once you add code using these
+>> impls, you're going to get kernel build bot errors from your code not
+>> compiling on 32-bit. And as seen in the linked one, code may be compiled
+>> for 32-bit when setting CONFIG_COMPILE_TEST even if you don't support it
+>> for real.
+>>
+>> > This being said, the kernel does have a math library that we can call into
+>> > that emulates operations like this on 32 bit - which I'd be willing to convert
+>> > these implementations over to using. I just put the CONFIG_64BIT there because
+>> > if we do use the kernel math library, I just want to make sure I don't end up
+>> > being the oen who has to figure out how to hook up the kernel math library for
+>> > 64 bit division outside of simple time value manipulation. I've got enough
+>> > dependencies on my plate to get upstream as it is :P
+>>
+>> If you just want to call the relevant bindings:: method directly without
+>> any further logic that seems fine to me.
+>
+> Gotcha, I will do that. Ideally I would at least like to have us only call the
+> bindings:: method so long as we're on a config where we really need
+> it.
+
+We took a similar approach in `Delta::as_micros_ceil`:
+
+    /// Return the smallest number of microseconds greater than or equal
+    /// to the value in the [`Delta`].
+    #[inline]
+    pub fn as_micros_ceil(self) -> i64 {
+        #[cfg(CONFIG_64BIT)]
+        {
+            self.as_nanos().saturating_add(NSEC_PER_USEC - 1) / NSEC_PER_USEC
+        }
+
+        #[cfg(not(CONFIG_64BIT))]
+        // SAFETY: It is always safe to call `ktime_to_us()` with any value.
+        unsafe {
+            bindings::ktime_to_us(self.as_nanos().saturating_add(NSEC_PER_USEC - 1))
+        }
+    }
 
 
---8Jovl+rM+g+rY2Z6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Best regards,
+Andreas Hindborg
 
-On Wed, Aug 06, 2025 at 05:15:37PM +0000, patchwork-bot+linux-riscv@kernel.org wrote:
 
-> This series was applied to riscv/linux.git (for-next)
-> by Alexandre Ghiti <alexghiti@rivosinc.com>:
-
->   - [v19,11/27] riscv/shstk: If needed allocate a new shadow stack on clone
->     https://git.kernel.org/riscv/c/9c72a71321a6
->   - [v19,12/27] riscv: Implements arch agnostic shadow stack prctls
->     https://git.kernel.org/riscv/c/52eff0ab5f8e
-
-Congratulations Deepak!  Do you have an update for my clone3() shadow
-stack series that I could roll in for when I repost that after the merge
-window, and/or instructions for how to run this stuff for RISC-V on some
-emulated platform?
-
---8Jovl+rM+g+rY2Z6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiUm/QACgkQJNaLcl1U
-h9BDYgf/Ty4Hzzi0OZOuIjqMAO+hAw56Z5Cp+NT+3TWGYWAJtxuukMORT3mrkWI4
-+lKrRIDqhecWHSZ3jeKvFjPvxTcPu/kwjG7GsseqGj7HJGoOufVlruKUj79xtdKS
-4V/WwyvqakZ4h3F0zy+bCyIrkBkQNbC3TTJVey1+4t0WNSj2uK4ZXespwXt+omY7
-MOsfSOj3AY1ueunPYkofK1g6VWYe4HSldfLRvwJMeUadPJ49XFhfpi41NsqdfhBB
-I8rdBWPSCS47tFoalL0R2oB+Dp78k8LmZhqKIRpPwAhMHIg3sI/kBMK4neka58L2
-d0MPk00RRPiLdsDKGHuaAWzwtLHXaA==
-=viF/
------END PGP SIGNATURE-----
-
---8Jovl+rM+g+rY2Z6--
