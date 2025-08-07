@@ -1,33 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E2E1E48A;
-	Thu,  7 Aug 2025 12:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6982516F8E9;
+	Thu,  7 Aug 2025 13:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754570667; cv=none; b=VnRtmSsQSeF+TubhjnvFMV1pilEQ75u4kHBeX1DtfugQ4GunvuA3j/kN4HF847OLWxNlq8V7q5nOiI+dNhG3stXgk+ObGfvAa4qijuL1DghZZMXh6pPvF6ZCUFbnqSLVdncx14dd/BDYihMkS9uFMEox7w8Rodt3QetGbQ+EZ2A=
+	t=1754571684; cv=none; b=dAFcLWsw/RdrtvP6nseKtfuaj6pc9OduBOV8OIphQ8no4IS1Co8BTEmTpJEy3uCz7dt3X67eeBvyOe7m9RFM7mVzA+RHtj3cF5rSaBpOWeY6VCxboIIKZUgSVjNqmV5cCANblH4GSlHleZaprT093htHR/ND22HXEKJ2nGTtabg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754570667; c=relaxed/simple;
-	bh=WMsVnSXX7wd5ayJeziJSnbluq2OE3O0GYuxrdGD9xPc=;
+	s=arc-20240116; t=1754571684; c=relaxed/simple;
+	bh=1zr6+DjuR7FSKkZ5IlMn3ByBcRGIQ5WJgEoFapMeqsY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=F47ubRaNG33eSZvUPT+KDBQul6w3LVNtEWQWzXxzfo5qWGkJvIT3iAbRDSdN+m+/NupeqDr78HQoEU+Ud82cI21/Dwk+Rz1JUSZHKDIE35yo3vVR1Mvsj95CmMj39Qk6pL66YQslO1kcAZhabyDGBNv57638CmVOLWUzRXn20Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C+hj8c+T; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=H+oEQUrxH3Dv947VLrVfB17eyNERsIDXdlb8wANRWkyRg+Sm4OjU7jTrIL4A8VpKblInXkcJtIEYhnTOuU2AE/9KmUVZn49nR6N3DV+12br7u3H5p5rjyPE1dumhyHYq5uAGtaHtlVUwPTzaljxukJ1heuXqPsqIUFG3npMgB58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rbh2ca7X; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C+hj8c+T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52853C4CEEB;
-	Thu,  7 Aug 2025 12:44:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rbh2ca7X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4610AC4CEEB;
+	Thu,  7 Aug 2025 13:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754570666;
-	bh=WMsVnSXX7wd5ayJeziJSnbluq2OE3O0GYuxrdGD9xPc=;
+	s=k20201202; t=1754571683;
+	bh=1zr6+DjuR7FSKkZ5IlMn3ByBcRGIQ5WJgEoFapMeqsY=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=C+hj8c+TN+8FP10aYaWDW92qIeSUM4B/T49pou8Q+zdbIDd22Jjtz+LBGwd8bb1u6
-	 u2bxV/bB5QgwP0SVzb4qze6vPobbCp1yB7262yOenuZxt1cV+GCyqSArLSwTuJn8t1
-	 IhRAWoPyNBB8KHOpX1PQy3olugL5k9VWhSqUY/BCIzv9AGu3NI/1RGBkfq/RFP8G99
-	 b25yGoa2qxqEhi8Y+J2Uh0xDNxsZpt40+/iX/rvTGKFqb/TuEI3VAlwEZM4hL1z962
-	 bg7vLZTa8VgbyVLkew1JAO7ES6K5jul9X+znnp076ZY5m+7g99/GJ0oWujtoQOo/WC
-	 9w0+UVDtJIkgw==
+	b=rbh2ca7XfjERVFFQEjZrZF4ZXzkZvt/NDnPvz+cjh8Y11erlpKfjniP5Nrf9ysUpm
+	 YGg+HDMs7z1mL1ZCzBdFzEHXi8BAS8Vci1C084TjRSg4CBerw0XiL4cKFfYRo0dUu6
+	 YB2pDM9zOmsGd+LlrjN3GOC8rZGiErr5mvRTtSE8A2qwJ0GeZOYTn17REVK51XbZF4
+	 IW3Ujbcefu6m3QAIzz0Q0YIdzKbxqdJUynlqtJ1XJMRUBsW5+rVFbhth7X5kRBpJ9D
+	 aEQxEc9gx3AHU1ehmGckNniBWiztQGXRC0CYPF3p6PsALVrTo7PXmqFmdAXEavODY3
+	 QBgZPEKnJtMvw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>, Alice Ryhl <aliceryhl@google.com>
+To: Daniel Almeida <daniel.almeida@collabora.com>, Lyude Paul
+ <lyude@redhat.com>
 Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
  Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org, FUJITA
  Tomonori <fujita.tomonori@gmail.com>, Frederic Weisbecker
@@ -36,70 +37,64 @@ Cc: rust-for-linux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
  <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo
  <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor
- Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Subject: Re: [PATCH 2/2] rust: time: Implement basic arithmetic operations
- for Delta
-In-Reply-To: <ddea64af3b845d2c32d807c5aab6146a9ce3c2bf.camel@redhat.com>
-References: <20250724185700.557505-1-lyude@redhat.com>
- <20250724185700.557505-3-lyude@redhat.com> <aIXVzIwBDvY1ZVjL@google.com>
- <f92b5f82b3ad7bb8d5bf60b272aac8cf1e6ced24.camel@redhat.com>
- <aIi7ZycRtmOZNtcf@google.com>
- <HOO5JYIxZKoD8xW4fQHGxeBnL_P4Np3fmfvoUV7ESg_DEoS-c3QfTMooZrAhXsJ5nTf8DWNKoEnr4pQN9IYpPQ==@protonmail.internalid>
- <ddea64af3b845d2c32d807c5aab6146a9ce3c2bf.camel@redhat.com>
-Date: Thu, 07 Aug 2025 14:44:16 +0200
-Message-ID: <87ms8b713z.fsf@kernel.org>
+ Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v6 3/7] rust: hrtimer: Add HrTimer::raw_forward() and
+ forward()
+In-Reply-To: <4A89EA6C-7683-42CB-BA0E-0ED538480991@collabora.com>
+References: <20250724185236.556482-1-lyude@redhat.com>
+ <20250724185236.556482-4-lyude@redhat.com>
+ <XtI68GvjNcx7s5O1wLlv81A-ruocqtapNPqRuyT38M9zQNeeg9pnjdoZ6X93-nqy-R4h3b2AW99YcAhVc-ap2Q==@protonmail.internalid>
+ <4A89EA6C-7683-42CB-BA0E-0ED538480991@collabora.com>
+Date: Thu, 07 Aug 2025 15:01:13 +0200
+Message-ID: <87jz3f70bq.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-"Lyude Paul" <lyude@redhat.com> writes:
+"Daniel Almeida" <daniel.almeida@collabora.com> writes:
 
-> On Tue, 2025-07-29 at 12:15 +0000, Alice Ryhl wrote:
->>
->>
->> The reason I bring up the example is that once you add code using these
->> impls, you're going to get kernel build bot errors from your code not
->> compiling on 32-bit. And as seen in the linked one, code may be compiled
->> for 32-bit when setting CONFIG_COMPILE_TEST even if you don't support it
->> for real.
->>
->> > This being said, the kernel does have a math library that we can call into
->> > that emulates operations like this on 32 bit - which I'd be willing to convert
->> > these implementations over to using. I just put the CONFIG_64BIT there because
->> > if we do use the kernel math library, I just want to make sure I don't end up
->> > being the oen who has to figure out how to hook up the kernel math library for
->> > 64 bit division outside of simple time value manipulation. I've got enough
->> > dependencies on my plate to get upstream as it is :P
->>
->> If you just want to call the relevant bindings:: method directly without
->> any further logic that seems fine to me.
+> [=E2=80=A6]
 >
-> Gotcha, I will do that. Ideally I would at least like to have us only call the
-> bindings:: method so long as we're on a config where we really need
-> it.
+>
+>> +
+>> +    /// Conditionally forward the timer.
+>> +    ///
+>> +    /// If the timer expires after `now`, this function does nothing an=
+d returns 0. If the timer
+>> +    /// expired at or before `now`, this function forwards the timer by=
+ `interval` until the timer
+>> +    /// expires after `now` and then returns the number of times the ti=
+mer was forwarded by
+>> +    /// `interval`.
+>> +    ///
+>> +    /// Returns the number of overruns that occurred as a result of the=
+ timer expiry change.
+>> +    pub fn forward(self: Pin<&mut Self>, now: HrTimerInstant<T>, interv=
+al: Delta) -> u64
+>> +    where
+>> +        T: HasHrTimer<T>,
+>> +    {
+>> +        // SAFETY:
+>> +        // - `raw_forward` does not move `self`.
+>> +        // - Self is a mutable reference and thus always points to a va=
+lid `HrTimer`
+>
+> I get what you're trying to say, but IMHO using the word "mutable" here is
+> confusing. Mutability has nothing to do on whether something is valid. Th=
+is
+> should be rephrased, IMHO.
 
-We took a similar approach in `Delta::as_micros_ceil`:
+Having a reference to something implies validity. We could do:
 
-    /// Return the smallest number of microseconds greater than or equal
-    /// to the value in the [`Delta`].
-    #[inline]
-    pub fn as_micros_ceil(self) -> i64 {
-        #[cfg(CONFIG_64BIT)]
-        {
-            self.as_nanos().saturating_add(NSEC_PER_USEC - 1) / NSEC_PER_USEC
-        }
-
-        #[cfg(not(CONFIG_64BIT))]
-        // SAFETY: It is always safe to call `ktime_to_us()` with any value.
-        unsafe {
-            bindings::ktime_to_us(self.as_nanos().saturating_add(NSEC_PER_USEC - 1))
-        }
-    }
+  The coertion of `&mut Self` to `*mut Self` results in a pointer to a
+  valid `Self`.
 
 
 Best regards,
