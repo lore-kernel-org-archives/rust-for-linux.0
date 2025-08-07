@@ -1,275 +1,147 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F031FBEB6
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Aug 2025 07:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CFC4A02;
+	Thu,  7 Aug 2025 08:03:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754552804; cv=none; b=pg1sybCFN3+dJf2WItq4yJTHrObGJxZdReTMPlCl+ZoJfUYSx2Tu0BQ1aP2BXCAfrfbIB/Nxxn3Cl9K5p/0rLD4KsPzE685fjnRbmHxXC9Im0hdftuCNC8p0XnZ/iygeTm8fLpqFgewJ8gR8ztG9NcRR0sqTSUlhv+Oh8er6TeM=
+	t=1754553828; cv=none; b=V82e8GoJXtDu/m24DZGg3D+EL7MVGGmNLQXF2rpIPxTRF6MWV7v0Y6Xa4wP1ZhtUWvrbQuchyXBfWWsx3eALJNASbJXzJejE+U2mroPscfzCYHXfVvoUyv1QHkFcwjG+zmloVK3FkLMtijiVnB1icsvfwlxf1iBceDdCPbLdtJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754552804; c=relaxed/simple;
-	bh=rFB1wig4ecHf0PRR92x6pcq2Sf2DAobCtEQ8ikk0LR8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KtJJaDBZRPmsT78IY91mIKxmTO6mwmqadt1FnZsrxKqFnLT1C93tGi9FzAxKNZ5eeNLn0fY7F83Vim7ycwArCmn5XonPQG703+jd9d967yoGo5mfb7ySjrO3GBzZwF/YtH9rGuKeP7pODeySOAFwrmJVSeuBmkv6oWkb2qCDnZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai; spf=none smtp.mailfrom=furiosa.ai; dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b=MSOoUILZ; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=furiosa.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=furiosa.ai
+	s=arc-20240116; t=1754553828; c=relaxed/simple;
+	bh=wWVot/bRWGefR1FSnJlUkmpVMwrgagTyfs8qSQV0z0I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AF+78no4mKf9AyFyIBXNhA9b0LS6FIVdeczzk8//yonQ0qK5O8RiDo8/f6gekhybHDefzFDlGNiEzldjkxAAICriNU3wtVsO5rr3mCRjR5Omcr/GtKaLCnV9u+0aIriZWOXn1BVofdbpAD0mw2FSIz5h85MmSHDL+npTJgXycck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8j5Yebc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=furiosa.ai header.i=@furiosa.ai header.b="MSOoUILZ"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7698e914cd2so1072688b3a.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 07 Aug 2025 00:46:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=furiosa.ai; s=google; t=1754552802; x=1755157602; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HF9umwp9Y28asf6+OPLYyndmZD30y/3WqPWlvcSTu1s=;
-        b=MSOoUILZN2s5oYOl9Vohe/Aw09jw2OrAuB7zNXawHdUKzkifR6RbgRQDkgG0ZSlWNC
-         BvQWiH5MoRCV0rRIj7EF1WwVB3jR77kOJlwVOzJyih+vdsd9XiuVPQpYpy6wvzKMG5kX
-         qrw8R8E+MIsqUD4jHSsWbtRVThYnqumabe/Uc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754552802; x=1755157602;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HF9umwp9Y28asf6+OPLYyndmZD30y/3WqPWlvcSTu1s=;
-        b=pnO/omIw2XbaBBDixQs/w0YZhgJDaTfNxXeRMQHW4dHiFwyNRccMK0QnXDS4qzxUpJ
-         FniKzF7bEkaS/a0XmOUxfJBKPNSZJKAsx1wrqqgvKWfTckRnmK8EroZ4QXiErMjri8Lh
-         bx73HfKEi4DyWdAdyz1dDsWFx5rvCNIqnZQ1c0Bsfr2xNOzcnnqRGhJ3IhNgmJ+pkTxI
-         9Aa7JWCS4YGoaHqg7gCxiH1K2HmYJdS/kO84GV5j3OqbtozEZ0PoMkZysjRm1C8P69/I
-         IGJ8vIthbR0pjjDEsHOae/unTPpuYegdSso+OJckwJQZQXpF1taaVnUY1ykrKHLtyxdL
-         ndgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVXjbkOVHWgd/K24z15RhvNIR85W9IjgVQfdh19YsFZmQAd6ZBxh9HxhYU/jhkPeafGRcRj3Esq8ME2O2aM2A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YydvPCx5bd3V74jaOombMy94fwiEcgfdPntQxtGOoA1dvK+T1ub
-	xcTqMW8aJ/cL/0WiHcboX7D4QDsyiMgRurFoDuL0wHpknlOZYKnfwuKoXAUYPNo85jM=
-X-Gm-Gg: ASbGnctzii2excYdmtaudHdjJ9kgjZvbXmw58i8WTqN6kKre2rDk+XvBCF+aanHZyyr
-	vfg8Z45zMMv5EGnDzazzjAtMlHUrnUbc3IwO9nYYF6zpDZtRyYSIcpvQWfQHsdvMu5CjNFhWDwt
-	UwIc3jAfYwT4XI20Pb/uB0h6Pg/NseYp2oLHgXdUpaEZi7oT1sjCMCpn9mJP10TbSyuJrCx9gmu
-	9z74zmukAIHEvFF6QHyZvQmJLMR9PYQPbWKkowUrVakSzVLEmxj5Gdryx2z3XUqDLE3jjrHCQ5M
-	a/0EXZojWKH1hlaOBX/AdTAs2NnEhr8Hx+Ka8c7h0Ue9BrqQozunB91X8dQ/arsqMPew5tnKJci
-	IpquZMgppQKSUIpkr/xZX1iT14q2OFg7WBBa6Xv8TbP79MJerZbHWC4rQ5iS6sw==
-X-Google-Smtp-Source: AGHT+IHrl0OYwhOOLM+IkPxGunWxJPMNM0YaWGeu7A++wfheky0kC3Rbf02TFHu0ZTweWVVGWP3MeQ==
-X-Received: by 2002:a05:6a21:33a1:b0:23d:d9dd:8e4f with SMTP id adf61e73a8af0-240313b0efdmr8733231637.28.1754552801756;
-        Thu, 07 Aug 2025 00:46:41 -0700 (PDT)
-Received: from sidongui-MacBookPro.local ([175.195.128.78])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bccfbd174sm17344464b3a.63.2025.08.07.00.46.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Aug 2025 00:46:41 -0700 (PDT)
-Date: Thu, 7 Aug 2025 16:46:36 +0900
-From: Sidong Yang <sidong.yang@furiosa.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8j5Yebc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC53C4CEEB;
+	Thu,  7 Aug 2025 08:03:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754553828;
+	bh=wWVot/bRWGefR1FSnJlUkmpVMwrgagTyfs8qSQV0z0I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=g8j5Yebc4fzVLrcVIS0VhO5MpBkiyRMGTrWemsVmy4KlsEjMNFKQAo419SUlGGbtc
+	 hLzX4FOkYqR2Y8kPirYFfvn9M4pyYtO/+J+g+sZNaa4fCHq1CSESOee+DjdTwgg8I4
+	 2YUp/cNRmmJA1Hox308xGkVQRtW8hRZese9DNmb74hVNdyYKDBrL1kFsodjCl73a7B
+	 dKOjDFC9cD596KccbohBZIvchwzXZIFaJggeL+jV9PSVPAiOmXRcUXKieG59f0Clx4
+	 9aaxUXHLNheZI+2QyhSwpg2MVeGGHzH09Amm8zu84WSp83Axbb1Fz8E2J5UckpgdMy
+	 ok4DRQpUnQApA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Caleb Sander Mateos <csander@purestorage.com>,
-	Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	io-uring@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/4] rust: miscdevice: add uring_cmd() for
- MiscDevice trait
-Message-ID: <aJRZ3NUm2xp2H4iX@sidongui-MacBookPro.local>
-References: <20250727150329.27433-1-sidong.yang@furiosa.ai>
- <20250727150329.27433-4-sidong.yang@furiosa.ai>
- <BC40C40D-D835-4B5E-927C-A55939110114@collabora.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj?=
+ =?utf-8?Q?=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 06/16] rust: block: normalize imports for `gen_disk.rs`
+In-Reply-To: <DC4C6260-9D2E-40B7-9A0F-F629EB831F5F@collabora.com>
+References: <20250711-rnull-up-v6-16-v3-0-3a262b4e2921@kernel.org>
+ <20250711-rnull-up-v6-16-v3-6-3a262b4e2921@kernel.org>
+ <1YjnBHBMF7DAKjkQrfW9goplGCUynLmjrUnLo3PrN5qMYx6uUcolbOtjWPNyVQEwyehPW8Xk7B1oeBAffoYr9A==@protonmail.internalid>
+ <F5A3232C-50E8-4615-929A-80F3ED4EFEBA@collabora.com>
+ <877bzg8pvp.fsf@kernel.org>
+ <BPuVBI3Fi8DRIKGqquXjiih_dy_E_FMoZoJXUr644LzQLlW5GV2OFFRvzrFIWb7AswQo-zXkAp-QoF3xdT6Bcg==@protonmail.internalid>
+ <DC4C6260-9D2E-40B7-9A0F-F629EB831F5F@collabora.com>
+Date: Thu, 07 Aug 2025 09:12:49 +0200
+Message-ID: <871ppn8v0u.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <BC40C40D-D835-4B5E-927C-A55939110114@collabora.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 01, 2025 at 11:04:36AM -0300, Daniel Almeida wrote:
-> Hi Sidong,
-> 
-> > On 27 Jul 2025, at 12:03, Sidong Yang <sidong.yang@furiosa.ai> wrote:
-> > 
-> > This patch adds uring_cmd() function for MiscDevice trait and its
-> > callback implementation. It uses IoUringCmd that io_uring_cmd rust
-> > abstraction.
-> 
-> I can´t parse this.
+"Daniel Almeida" <daniel.almeida@collabora.com> writes:
 
-Okay, I'll fix this.
+>> On 6 Aug 2025, at 11:51, Andreas Hindborg <a.hindborg@kernel.org> wrote:
+>>
+>> "Daniel Almeida" <daniel.almeida@collabora.com> writes:
+>>
+>>>> On 11 Jul 2025, at 08:43, Andreas Hindborg <a.hindborg@kernel.org> wro=
+te:
+>>>>
+>>>> Clean up the import statements in `gen_disk.rs` to make the code easie=
+r to
+>>>> maintain.
+>>>>
+>>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>>> ---
+>>>> rust/kernel/block/mq/gen_disk.rs | 10 +++++++---
+>>>> 1 file changed, 7 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/g=
+en_disk.rs
+>>>> index cd54cd64ea88..679ee1bb2195 100644
+>>>> --- a/rust/kernel/block/mq/gen_disk.rs
+>>>> +++ b/rust/kernel/block/mq/gen_disk.rs
+>>>> @@ -5,9 +5,13 @@
+>>>> //! C header: [`include/linux/blkdev.h`](srctree/include/linux/blkdev.=
+h)
+>>>> //! C header: [`include/linux/blk_mq.h`](srctree/include/linux/blk_mq.=
+h)
+>>>>
+>>>> -use crate::block::mq::{raw_writer::RawWriter, Operations, TagSet};
+>>>> -use crate::{bindings, error::from_err_ptr, error::Result, sync::Arc};
+>>>> -use crate::{error, static_lock_class};
+>>>> +use crate::{
+>>>> +    bindings,
+>>>> +    block::mq::{raw_writer::RawWriter, Operations, TagSet},
+>>>> +    error::{self, from_err_ptr, Result},
+>>>> +    static_lock_class,
+>>>> +    sync::Arc,
+>>>> +};
+>>>> use core::fmt::{self, Write};
+>>>>
+>>>> /// A builder for [`GenDisk`].
+>>>>
+>>>> --
+>>>> 2.47.2
+>>>>
+>>>>
+>>>>
+>>>
+>>> Same comment as the preceding =E2=80=9Cimport=E2=80=9D patch: this is s=
+yntax is problematic.
+>>
+>> I used to share your viewpoint, but I changed my opinion and now prefer
+>> "normalized" imports (the combined form).
+>>
+>> Now I can just blindly merge all the imports, remove duplicates and then
+>> ask rust-analyzer to normalize imports again, and then format with
+>> rustfmt. I find that this workflow is very low overhead.
+>>
+>>
+>> Best regards,
+>> Andreas Hindborg
+>
+> That=E2=80=99s because you have a separate commit where you do this befor=
+e applying
+> your work on top. If you=E2=80=99re rebasing on top of someone else's wor=
+k, then a
+> lot of conflicts will pop up. And unlike the saner approach where each im=
+port
+> is in its own line, it=E2=80=99s now absolutely not clear how the conflic=
+ts should
+> be resolved.
+>
+> The only thing that can be done then is to accept whatever the current ch=
+ange
+> is, and ask rust-analyzer to reimport everything and reformat.
+>
+> IMHO, this is not great.
 
-> 
-> > 
-> > Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
-> > ---
-> > rust/kernel/miscdevice.rs | 41 +++++++++++++++++++++++++++++++++++++++
-> > 1 file changed, 41 insertions(+)
-> > 
-> > diff --git a/rust/kernel/miscdevice.rs b/rust/kernel/miscdevice.rs
-> > index 288f40e79906..54be866ea7ff 100644
-> > --- a/rust/kernel/miscdevice.rs
-> > +++ b/rust/kernel/miscdevice.rs
-> > @@ -14,6 +14,7 @@
-> >     error::{to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-> >     ffi::{c_int, c_long, c_uint, c_ulong},
-> >     fs::File,
-> > +    io_uring::IoUringCmd,
-> >     mm::virt::VmaNew,
-> >     prelude::*,
-> >     seq_file::SeqFile,
-> > @@ -175,6 +176,19 @@ fn show_fdinfo(
-> >     ) {
-> >         build_error!(VTABLE_DEFAULT_ERROR)
-> >     }
-> > +
-> > +    /// Handler for uring_cmd.
-> > +    ///
-> > +    /// This function is invoked when userspace process submits the uring_cmd op
-> > +    /// on io_uring submission queue. The `io_uring_cmd` would be used for get
-> > +    /// arguments cmd_op, sqe, cmd_data.
-> 
-> Please improve this. I don´t think that anyone reading this can really get
-> a good grasp on what this function does.
-> 
-> What does `issue_flags` do?
-> 
-
-Agreed, Let me revise this comments to make them easier to understand.
-
-issue_flags includes flags options for io_uring. it's defined as `io_uring_cmd_flags`
-in "include/linux/io_uring_types.h".
-
-> > +    fn uring_cmd(
-> > +        _device: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-> > +        _io_uring_cmd: Pin<&mut IoUringCmd>,
-> > +        _issue_flags: u32,
-> > +    ) -> Result<i32> {
-> > +        build_error!(VTABLE_DEFAULT_ERROR)
-> > +    }
-> > }
-> > 
-> > /// A vtable for the file operations of a Rust miscdevice.
-> > @@ -332,6 +346,28 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-> >         T::show_fdinfo(device, m, file);
-> >     }
-> > 
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ioucmd` is not null and points to a valid `bindings::io_uring_cmd`.
-> 
-> Please rewrite this as "the caller must ensure that  `ioucmd` points to a
-> valid `bindings::io_uring_cmd`" or some variation thereof.
-
-Okay, Thanks.
-> 
-> > +    unsafe extern "C" fn uring_cmd(
-> > +        ioucmd: *mut bindings::io_uring_cmd,
-> > +        issue_flags: ffi::c_uint,
-> > +    ) -> ffi::c_int {
-> > +        // SAFETY: The file is valid for the duration of this call.
-> > +        let ioucmd = unsafe { IoUringCmd::from_raw(ioucmd) };
-> 
-> What file?
-> 
-> Also, this is what you wrote for IoUringCmd::from_raw:
-
-Sorry, it's typo. It should be rewritted.
-
-> 
-> +
-> + /// Constructs a new `IoUringCmd` from a raw `io_uring_cmd`
-> + ///
-> + /// # Safety
-> + ///
-> + /// The caller must guarantee that:
-> + /// - The pointer `ptr` is not null and points to a valid `bindings::io_uring_cmd`.
-> + /// - The memory pointed to by `ptr` remains valid for the duration of the returned reference's lifetime `'a`.
-> + /// - The memory will not be moved or freed while the returned `Pin<&mut IoUringCmd>` is alive.
-> + #[inline]
-> + pub unsafe fn from_raw<'a>(ptr: *mut bindings::io_uring_cmd) -> Pin<&'a mut IoUringCmd> {
-> 
-> Here, you have to mention how the safety requirements above are fulfilled in this call site.
-
-Okay, Actually, I'm little confused because it seems that the unsafe code deleted in email.
-Anyway I would mention it in next.
-
-> 
-> > +        let file = ioucmd.file();
-> > +
-> > +        // SAFETY: The file is valid for the duration of this call.
-> 
-> Same here.
-
-Thanks.
-> 
-> > +        let private = unsafe { (*file.as_ptr()).private_data }.cast();
-> 
-> Perhaps this can be hidden away in an accessor?
-
-It seems that there is no accessor for private_data in File. 
-
-> 
-> > +        // SAFETY: uring_cmd calls can borrow the private data of the file.
-> > +        let device = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-> 
-> This is ForeignOwnable::borrow():
-> 
->     /// Borrows a foreign-owned object immutably.
->     ///
->     /// This method provides a way to access a foreign-owned value from Rust immutably. It provides
->     /// you with exactly the same abilities as an `&Self` when the value is Rust-owned.
->     ///
->     /// # Safety
->     ///
->     /// The provided pointer must have been returned by a previous call to [`into_foreign`], and if
->     /// the pointer is ever passed to [`from_foreign`], then that call must happen after the end of
->     /// the lifetime `'a`.
->     ///
->     /// [`into_foreign`]: Self::into_foreign
->     /// [`from_foreign`]: Self::from_foreign
->     unsafe fn borrow<'a>(ptr: *mut Self::PointedTo) -> Self::Borrowed<'a>;
-> 
-> You must say how the safety requirements above are fulfilled in this call site
-> as well. In particular, are you sure that this is true? i.e.:
-> 
-> > The provided pointer must have been returned by a previous call to
-> > [`into_foreign`],
-
-Okay, I would mention that the this call fulfilled the requirements.
-> 
-> 
-> > +
-> > +        match T::uring_cmd(device, ioucmd, issue_flags) {
-> > +            Ok(ret) => ret as ffi::c_int,
-> > +            Err(err) => err.to_errno() as ffi::c_int,
-> 
-> c_int is in the prelude. Also, please have a look at error::from_result().
-
-Thanks.
+If we apply the normalized format everywhere, this will not be an issue.
+Merging of imports can be almost automated. Just merge with strategy
+keep all, and then normalize and remove duplicates.
 
 
-Thank you for detailed Review.
-Sidong
+Best regards,
+Andreas Hindborg
 
-> 
-> > +        }
-> > +    }
-> > +
-> >     const VTABLE: bindings::file_operations = bindings::file_operations {
-> >         open: Some(Self::open),
-> >         release: Some(Self::release),
-> > @@ -354,6 +390,11 @@ impl<T: MiscDevice> MiscdeviceVTable<T> {
-> >         } else {
-> >             None
-> >         },
-> > +        uring_cmd: if T::HAS_URING_CMD {
-> > +            Some(Self::uring_cmd)
-> > +        } else {
-> > +            None
-> > +        },
-> >         // SAFETY: All zeros is a valid value for `bindings::file_operations`.
-> >         ..unsafe { MaybeUninit::zeroed().assume_init() }
-> >     };
-> > -- 
-> > 2.43.0
-> > 
-> > 
-> 
-> - Daniel
-> 
+
