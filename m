@@ -1,228 +1,201 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C05221FD0
-	for <rust-for-linux@vger.kernel.org>; Thu,  7 Aug 2025 19:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004D8155A4D;
+	Thu,  7 Aug 2025 19:56:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754593629; cv=none; b=XVvUR3wMsVGKVrlEzg2u3DVSpgzaxQTNRk+aJJ9oXQnL1sNNR6HWvB2iPILSkOxT/NjXWsh0I6y28a8uLsWpfQSjutnHbjQFTyhSiSiZDAmMqNXmMIEHbWPf0CdqxkRYAAZisXCwDT/lmEzaO/siy7VGXu4UUMHNFk1FEBJPiKY=
+	t=1754596575; cv=none; b=diToRt61KkjHYQeCQeL2Yhi5NOuqk2QnsLvnOTlPk0NS6F+XgWQuk8eOb9PYeTBYU9LnvSy/48JoyAeiSb54dhEya2x5ov/NIpIJdPzK2MWiqKUEdAGDWARCnQ7W+YK1aIziO6O6FsT2VAOVwH0apfXlFgWxxvhokwCJEeJACuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754593629; c=relaxed/simple;
-	bh=IZ5iA6JYGuoHNF4GuuPrYx3oQWMdRk2C9aHIR53EzqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pql0fg2BJfFNA95eRRcB+KvtwRNQeh0EIXAbqIemWu9WpkKfRJCn6CWxc8MjiHvUaucBvStkzd+/P6MDdfdH0JN0E3wERMv86P4kW2UD1oA2woGL5vO0a1VFIiSWfrP3CZ+SfPbwhM4bLOMz94g0fA5zsCmlsj10aZ8F0ieLCsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JckKM6ZZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1754596575; c=relaxed/simple;
+	bh=dQWwsOSz3EF+Bq+pmAV7M8Dln126TtoeU0kQQCKdnKU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Bfe3xWB3DRZ9hF8uEl7fTNv9nSBOm5hYfVCAEF3EToY5KE5V2v8nu8qVCGyvgemPHjIyprYkXnoKNZe0Hlw9ppIJStd4axbfBopQS97C/sMFvloGuwJO3ZlmFJcdcWfomShHEYrRxht6VCjqFwrarEQEk1exlcuHMzVJWUtyxKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IAW1OGMo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JckKM6ZZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754593627;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5kEVj7Z1DAt91MAc0QaZChc9CtmatHbPk+BvSKORivE=;
-	b=JckKM6ZZjZYZRWqCozKtOveZdxUu3iijPVyEzGbfnUUesaHsk53ewa9Z83k0Sn0c3iZmNf
-	9UUUmaYD2pZL+kiDWeoDqhaJS4KroRHxz4ws6Sje0uCd+JSYQGBBlQX1XvGLFjw2u4sm5u
-	d9M4cUSnMv6+OBZN94GjHu0E/zOjGrc=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-fkUdhNY1OFa4mfnDQsgSaQ-1; Thu,
- 07 Aug 2025 15:07:01 -0400
-X-MC-Unique: fkUdhNY1OFa4mfnDQsgSaQ-1
-X-Mimecast-MFC-AGG-ID: fkUdhNY1OFa4mfnDQsgSaQ_1754593619
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5073C195609E;
-	Thu,  7 Aug 2025 19:06:59 +0000 (UTC)
-Received: from chopper.redhat.com (unknown [10.22.65.111])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 63CF219560AD;
-	Thu,  7 Aug 2025 19:06:55 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Andreas Hindborg <a.hindborg@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	John Stultz <jstultz@google.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v2 2/2] rust: time: Implement basic arithmetic operations for Delta
-Date: Thu,  7 Aug 2025 15:06:36 -0400
-Message-ID: <20250807190649.3078875-2-lyude@redhat.com>
-In-Reply-To: <20250807190649.3078875-1-lyude@redhat.com>
-References: <20250807190649.3078875-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IAW1OGMo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20767C4CEEB;
+	Thu,  7 Aug 2025 19:56:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754596574;
+	bh=dQWwsOSz3EF+Bq+pmAV7M8Dln126TtoeU0kQQCKdnKU=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=IAW1OGMoLwWV0xP35CAp1Ux6gdKKUnZf1hUbsc8W2WO1aRQ5P6YOF9NWbjCLFWUIE
+	 2E9uzPxGXVGX2R4v4y6Qy55nvwidaxbv0dkRR5zuxBZmvrl5B/ZCSGSiqvDBy/ol4v
+	 7PtMJJh5JkTRHTUycn5ATO+bVvf52Mii/whZFYcy8h0p34XLsFpJbm19nNpI5MlgOt
+	 fcsEYvtdSsHp70IOzCv52GuzbJ1dRwOVghKEGmtQ0OKN1dD6jvlNQfZfA8HCpibhV5
+	 C9vjDCStxv2VlG+pRgKXJe1328Q01cPw8Nvwk3B93HEWNnR3YyYtXGj9/5geN2lNEg
+	 dAhLR/IksO/cA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 07 Aug 2025 21:56:09 +0200
+Message-Id: <DBWGKO6W6BK3.1ZTUQ8EI9LFJ7@kernel.org>
+Subject: Re: [PATCH] rust: extend kbox with a new constructor
+Cc: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Uladzislau Rezki" <urezki@gmail.com>, "Alice Ryhl" <aliceryhl@google.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>, "Bjorn
+ Roy Baron" <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>,
+ "Andreas Hindborg" <a.hindborg@kernel.org>, "Trevor Gross"
+ <tmgross@umich.edu>
+To: "Vitaly Wool" <vitaly.wool@konsulko.se>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20250807121011.2317762-1-vitaly.wool@konsulko.se>
+In-Reply-To: <20250807121011.2317762-1-vitaly.wool@konsulko.se>
 
-While rvkms is only going to be using a few of these, since Deltas are
-basically the same as i64 it's easy enough to just implement all of the
-basic arithmetic operations for Delta types.
+On Thu Aug 7, 2025 at 2:10 PM CEST, Vitaly Wool wrote:
 
-Keep in mind there's one quirk here - the kernel has no support for
-i64 % i64 on 32 bit platforms, the closest we have is i64 % i32 through
-div_s64_rem(). So, instead of implementing ops::Rem or ops::RemAssign we
-simply provide Delta::rem_nanos().
+Please start the patch subject with "rust: alloc:" and make the subject mor=
+e
+concrete, i.e. name the constructor you add, e.g. "rust: alloc: implement
+Box::pin_slice()".
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+This makes things much more obvious when using 'git log --oneline'.
 
----
-V2:
-* Don't forget to make sure that we inline all of these
-* Drop ops::Rem and ops::RemAssign implementations for Delta, replace with
-  Delta::rem_nanos() instead. It turns out that there's actually no way to
-  perform i64 % i64 on 32 bit platforms in the kernel at the moment, the
-  closest that we have is div_s64_rem() which only allows a 32 bit divisor.
-* Actually use the kernel arithmetic helpers for division/remainders so
----
- rust/kernel/time.rs | 109 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 109 insertions(+)
+> From: Alice Ryhl <aliceryhl@google.com>
+>
+> Add a new constructor to KBox to facilitate KBox creation from a
 
-diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
-index 4bd7a8a009f3e..ddc4cf0d51dc9 100644
---- a/rust/kernel/time.rs
-+++ b/rust/kernel/time.rs
-@@ -265,6 +265,89 @@ pub struct Delta {
-     nanos: i64,
- }
- 
-+impl ops::Add for Delta {
-+    type Output = Self;
-+
-+    #[inline]
-+    fn add(self, rhs: Self) -> Self {
-+        Self {
-+            nanos: self.nanos + rhs.nanos,
-+        }
-+    }
-+}
-+
-+impl ops::AddAssign for Delta {
-+    #[inline]
-+    fn add_assign(&mut self, rhs: Self) {
-+        self.nanos += rhs.nanos;
-+    }
-+}
-+
-+impl ops::Sub for Delta {
-+    type Output = Self;
-+
-+    #[inline]
-+    fn sub(self, rhs: Self) -> Self::Output {
-+        Self {
-+            nanos: self.nanos - rhs.nanos,
-+        }
-+    }
-+}
-+
-+impl ops::SubAssign for Delta {
-+    #[inline]
-+    fn sub_assign(&mut self, rhs: Self) {
-+        self.nanos -= rhs.nanos;
-+    }
-+}
-+
-+impl ops::Mul for Delta {
-+    type Output = Self;
-+
-+    #[inline]
-+    fn mul(self, rhs: Self) -> Self::Output {
-+        Self {
-+            nanos: self.nanos * rhs.nanos,
-+        }
-+    }
-+}
-+
-+impl ops::MulAssign for Delta {
-+    #[inline]
-+    fn mul_assign(&mut self, rhs: Self) {
-+        self.nanos *= rhs.nanos;
-+    }
-+}
-+
-+impl ops::Div for Delta {
-+    type Output = Self;
-+
-+    #[inline]
-+    fn div(self, rhs: Self) -> Self::Output {
-+        #[cfg(CONFIG_64BIT)]
-+        {
-+            Self {
-+                nanos: self.nanos / rhs.nanos,
-+            }
-+        }
-+
-+        #[cfg(not(CONFIG_64BIT))]
-+        {
-+            Self {
-+                // SAFETY: This function is always safe to call regardless of the input values
-+                nanos: unsafe { bindings::div64_s64(self.nanos, rhs.nanos) },
-+            }
-+        }
-+    }
-+}
-+
-+impl ops::DivAssign for Delta {
-+    #[inline]
-+    fn div_assign(&mut self, rhs: Self) {
-+        self.nanos = self.nanos / rhs.nanos
-+    }
-+}
-+
- impl Delta {
-     /// A span of time equal to zero.
-     pub const ZERO: Self = Self { nanos: 0 };
-@@ -353,4 +436,30 @@ pub fn as_millis(self) -> i64 {
-             bindings::ktime_to_ms(self.as_nanos())
-         }
-     }
-+
-+    /// Return `self % dividend` where `dividend` is in nanoseconds.
-+    ///
-+    /// The kernel doesn't have any emulation for `s64 % s64` on 32 bit platforms, so this is
-+    /// limited to 32 bit dividends.
-+    #[inline]
-+    pub fn rem_nanos(self, ns: i32) -> Self {
-+        #[cfg(CONFIG_64BIT)]
-+        {
-+            Self {
-+                nanos: self.as_nanos() % i64::from(ns),
-+            }
-+        }
-+
-+        #[cfg(not(CONFIG_64BIT))]
-+        {
-+            let mut rem = 0;
-+
-+            // SAFETY: `rem` is in the stack, so we can always provide a valid pointer to it.
-+            unsafe { bindings::div_s64_rem(self.as_nanos(), ns, &mut rem) };
-+
-+            Self {
-+                nanos: i64::from(rem),
-+            }
-+        }
-+    }
- }
--- 
-2.50.0
+NIT: You're adding it for all allorcators, hence "Box".
+
+> pinned slice of elements. This allows to efficiently allocate memory for
+> e.g. arrays of structrures containing spinlocks or mutexes.
+
+Sounds reasonable, can you please mention where this will be used?
+
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Vitaly Wool <vitaly.wool@konsulko.se>
+> ---
+>  rust/kernel/alloc/kbox.rs | 51 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 51 insertions(+)
+>
+> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> index 1fef9beb57c8..74877afab0a3 100644
+> --- a/rust/kernel/alloc/kbox.rs
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -290,6 +290,57 @@ pub fn pin(x: T, flags: Flags) -> Result<Pin<Box<T, =
+A>>, AllocError>
+>          Ok(Self::new(x, flags)?.into())
+>      }
+> =20
+> +    /// Construct a pinned slice of elements `Pin<Box<[T], A>>`. This is=
+ a convenient means for
+> +    /// creation of e.g. arrays of structrures containing spinlocks or m=
+utexes.
+
+Please add an empty line after the first sentence.
+
+NIT: "slices of structures"
+
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// #[pin_data]
+> +    /// struct Example {
+> +    ///     c: u32,
+> +    ///     #[pin]
+> +    ///     d: SpinLock<Inner>,
+> +    /// }
+> +    ///
+> +    /// impl Example {
+> +    ///     fn new() -> impl PinInit<Self> {
+> +    ///         pin_init!(Self {
+> +    ///             c: 10,
+> +    ///             d <- new_spinlock!(Inner { a: 20, b: 30 }),
+> +    ///         })
+> +    ///     }
+> +    /// }
+> +    /// // Allocate a boxed slice of 10 `Example`s.
+> +    /// let s =3D KBox::pin_slice(
+> +    ///     | _i | Example::new(),
+> +    ///     10,
+> +    ///     GFP_KERNEL
+> +    /// )?;
+
+How would a more complex example look like where the slice items are not
+identical, i.e. the impl PinInit<T, E> objects returned by the FnMut?
+
+Do we need a temporary Vec for this? If so, it would probably make more sen=
+se to
+have the following signature.
+
+	pub fn pin_slice<F, I, E, Arg>(mut init: F, &[Arg], flags: Flags) -> Resul=
+t<Pin<Box<[T], A>>, E>
+	where
+	   F: FnMut(&Arg) -> I,
+	   I: PinInit<T, E>,
+	   E: From<AllocError>,
+
+
+Where Arg is some generic type containing the arguments passed to the closu=
+re
+to create the impl PinInit<T, E>. For the example above Args could just be =
+().
+
+> +    /// assert_eq!(s[5].c, 10);
+> +    /// assert_eq!(s[3].d.lock().a, 20),
+> +    /// ```
+> +    pub fn pin_slice<F, I, E>(mut init: F, len: usize, flags: Flags) -> =
+Result<Pin<Box<[T], A>>, E>
+
+That's a lot of generics, we should probably consider longer names, e.g.
+<Fn, Item, E>, where E is probably obvious enough.
+
+> +    where
+> +        F: FnMut(usize) -> I,
+> +        I: PinInit<T, E>,
+> +        E: From<AllocError>,
+> +    {
+> +        let mut buffer =3D super::Vec::<T, A>::with_capacity(len, flags)=
+?;
+> +        for i in 0..len {
+> +            let ptr =3D buffer.spare_capacity_mut().as_mut_ptr().cast();
+> +            // SAFETY: This address is available to be initialized, and =
+it will either be dropped
+> +            // on a future error or returned as a pinned location.
+
+I think this should be a bit closer to
+
+    // - `ptr` is a valid pointer to uninitialized memory.
+    // - `ptr` is not used if an error is returned.
+    // - `ptr` won't be moved until it is dropped, i.e. it is pinned.
+
+> +            unsafe { init(i).__pinned_init(ptr)? };
+> +            // SAFETY: We initialized one more value.
+
+The safety requirement says:
+
+    /// - `additional` must be less than or equal to `self.capacity - self.=
+len`.
+    /// - All elements within the interval [`self.len`,`self.len + addition=
+al`) must be initialized.
+
+Please explain that the first is covered by with_capacity(len, ...) while t=
+o
+loop iterator only goes to len - 1 and the second by explaining that the lo=
+op
+initializes items in ascending order.
+
+> +            unsafe { buffer.inc_len(1) };
+> +        }
+> +        let (ptr, _, _) =3D buffer.into_raw_parts();
+> +        let slice =3D core::ptr::slice_from_raw_parts_mut(ptr, len);
+> +        // SAFETY: This memory holds a valid [T] allocated with the righ=
+t allocator.
+
+What's the right allocator? I think you want to say the same allocates as u=
+sed
+for the Vec::with_capacity() call.
+
+> +        Ok(Pin::from(unsafe { Box::from_raw(slice) }))
+> +    }
 
