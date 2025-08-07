@@ -1,148 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE1E258A;
-	Thu,  7 Aug 2025 18:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439EF221D92
+	for <rust-for-linux@vger.kernel.org>; Thu,  7 Aug 2025 19:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754591980; cv=none; b=ls9imY+9eudde7aYM2MuK5jb+60Pv+QXXR0Frq+ojc+teYc93oTXjNHrimkZ8utHRqVLE+0QKpTlGnc2vJS3YN6tQkvhshKSFwkHEIfoHaEN3auCglykSwPeFit+1LTuZV5EWw085Vdy4sNU+CFHJN3Fh1M/BSrHwtcvluRCvhg=
+	t=1754593623; cv=none; b=nsPdBGbttq+6XK/sB5CF4+vRKnEIOkv+pTHcDHwjQg/mmTHxKBJ3JKjZ9zETmEMg9ha7n1oSQLROKVRHhgEz+jCXu4XD7MkBgsibFrWGEFvnMufe9knN8lIE2GrsKAyT5yP1uDAu5ds1Fq8x13S+dAEOivHu/e/DZb3qkhJ0bcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754591980; c=relaxed/simple;
-	bh=bPCKJRjhjh4Dtw4/JoSSK+9T9FOVH22EqlYJPCnTKv4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Cl30xOI/98GLURHOmE4ueS7FQfJXooh0pU/UiLS0/s/XR8A0xa7LXtJ7PwDk/qKHx8VKATnPmGOKFx9JLS58BJ9xbrDHOxHPeL3ukyixH96+ywsBVRNUC7O3e7t3dZ3Vfmr0VzzRtKVB9cJrBItfEqyiBPg9yMbixTLYNRJ4jX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=noJAjtUv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754593623; c=relaxed/simple;
+	bh=JRv4nrgdGhLehuyjTHexjywD6f3lkiNksui03JJIEOU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ah4yHUsFBF1v02lbO/Ad9IKRSMOGazziz9p1jYe0uxOrqRbhNQuhPZehfUJIwRNOjlXxfiruHy7Vbhrtux4YQH+a9q1gHlwArO04bYgW8z5okztlSmPQXKs3w9kxNHrW0iW10DRVV+KG2OXlvrrpHZksuyQ6p+ky5xSKelXyzr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fm5mthug; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="noJAjtUv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C427C4CEEB;
-	Thu,  7 Aug 2025 18:39:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754591980;
-	bh=bPCKJRjhjh4Dtw4/JoSSK+9T9FOVH22EqlYJPCnTKv4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=noJAjtUvVZB919riuFxsSkOJAi4dvtPKlq/vkaKLFDaJVHd44HD/mie4Ab5cpYHgm
-	 HGgdyQtXskNkcyihqE4pG4R0uiGi/VAcXb+QA1zr2we7XmtJSmp8doQSZj6hMZLCsF
-	 m77ogBhBUsyQS/pYtQeevn6y0UTPCCLhfYZYd1amMwvqG2cvwZZlVznIvBiuRS0lhK
-	 X8jHQZ4+rjlUFnOtKpQRBG+XWWeCtwlRNkzC+b2VBXeTNlXgXlvgmM30BDlUN1RJQr
-	 BfhOLI5+pPtUw7oZ2HgUCysg+YdcA++rNvE9AVWfaQ6LrnK6a+Ks67NQ6XKywx6eYN
-	 KrrDLiIynukrg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Thomas
- Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, Stephen
- Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>
-Subject: Re: [PATCH v6 3/7] rust: hrtimer: Add HrTimer::raw_forward() and
- forward()
-In-Reply-To: <20250724185236.556482-4-lyude@redhat.com>
-References: <20250724185236.556482-1-lyude@redhat.com>
- <ei8aqAnSlMI4QZKI6lsAsRHQwSfnrFDKH4qKKWq1fp0F6AwT66hF8tpIhRRyk3Vg6W4Ewpib1NZB9JPI1g1B9A==@protonmail.internalid>
- <20250724185236.556482-4-lyude@redhat.com>
-Date: Thu, 07 Aug 2025 20:39:29 +0200
-Message-ID: <87h5yj6kny.fsf@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fm5mthug"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754593621;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=udS+b8WaaKH5KyymGeMqR5JdvGQCZoEkiopIPJzS+2Y=;
+	b=fm5mthugjEBAT/XreTpDwd+xSPuLqJL3jZqtUbtzDe4KQp8Unmnb1cxDgEunUVw6IOesRb
+	pjkpQu4ayoLmluanNv42P050STlke9ZqNNkirQEJ0pl9DlYlM00x0SBTMbFv3shwp4swqp
+	QQxQBZPOVO94Wh6LItxMdcrhCR2j78g=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-146-VtzuOwOmNaOOVLXvzHL4oQ-1; Thu,
+ 07 Aug 2025 15:06:57 -0400
+X-MC-Unique: VtzuOwOmNaOOVLXvzHL4oQ-1
+X-Mimecast-MFC-AGG-ID: VtzuOwOmNaOOVLXvzHL4oQ_1754593615
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DFDD1195608A;
+	Thu,  7 Aug 2025 19:06:54 +0000 (UTC)
+Received: from chopper.redhat.com (unknown [10.22.65.111])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2D54119560AD;
+	Thu,  7 Aug 2025 19:06:51 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	John Stultz <jstultz@google.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 1/2] rust: time: Implement Add<Delta>/Sub<Delta> for Instant
+Date: Thu,  7 Aug 2025 15:06:35 -0400
+Message-ID: <20250807190649.3078875-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-"Lyude Paul" <lyude@redhat.com> writes:
+In order to maintain the invariants of Instant, we use saturating
+addition/subtraction that is clamped to the valid value range for a
+non-negative Ktime.
 
-> Within the hrtimer API there are quite a number of functions that can only
-> be safely called from one of two contexts:
->
-> * When we have exclusive access to the hrtimer and the timer is not active.
-> * When we're within the hrtimer's callback context as it is being executed.
->
-> This commit adds bindings for hrtimer_forward() for the first such context,
-> along with HrTimer::raw_forward() for later use in implementing the
-> hrtimer_forward() in the latter context.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
->
-> ---
-> V4:
-> * Fix the safety contract for raw_forward()
-> * Require Pin<&mut Self>, not &mut self
-> * Drop incorrect UniquePin example
-> * Rewrite documentation a bit (re: Andreas)
-> V6:
-> * Remove the reference to HrTimerCallbackContext::forward() until this
->   function gets added.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  rust/kernel/time/hrtimer.rs | 40 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 40 insertions(+)
->
-> diff --git a/rust/kernel/time/hrtimer.rs b/rust/kernel/time/hrtimer.rs
-> index be1bad4aacaad..5ccdd1b0b8021 100644
-> --- a/rust/kernel/time/hrtimer.rs
-> +++ b/rust/kernel/time/hrtimer.rs
-> @@ -168,6 +168,46 @@ pub(crate) unsafe fn raw_cancel(this: *const Self) -> bool {
->          // handled on the C side.
->          unsafe { bindings::hrtimer_cancel(c_timer_ptr) != 0 }
->      }
-> +
-> +    /// Forward the timer expiry for a given timer pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `self_ptr` must point to a valid `Self`.
-> +    /// - The caller must either have exclusive access to the data pointed at by `self_ptr`, or be
-> +    ///   within the context of the timer callback.
-> +    #[inline]
-> +    unsafe fn raw_forward(self_ptr: *mut Self, now: HrTimerInstant<T>, interval: Delta) -> u64
-> +    where
-> +        T: HasHrTimer<T>,
-> +    {
-> +        // SAFETY:
-> +        // * The C API requirements for this function are fulfilled by our safety contract.
-> +        // * `self_ptr` is guaranteed to point to a valid `Self` via our safety contract
-> +        unsafe {
-> +            bindings::hrtimer_forward(Self::raw_get(self_ptr), now.as_nanos(), interval.as_nanos())
-> +        }
-> +    }
-> +
-> +    /// Conditionally forward the timer.
-> +    ///
-> +    /// If the timer expires after `now`, this function does nothing and returns 0. If the timer
-> +    /// expired at or before `now`, this function forwards the timer by `interval` until the timer
-> +    /// expires after `now` and then returns the number of times the timer was forwarded by
-> +    /// `interval`.
-> +    ///
-> +    /// Returns the number of overruns that occurred as a result of the timer expiry change.
-> +    pub fn forward(self: Pin<&mut Self>, now: HrTimerInstant<T>, interval: Delta) -> u64
-> +    where
-> +        T: HasHrTimer<T>,
-> +    {
-> +        // SAFETY:
-> +        // - `raw_forward` does not move `self`.
-> +        // - Self is a mutable reference and thus always points to a valid `HrTimer`
-> +        // - The only way that we could hold a mutable reference to `HrTimer<T>` is if we have
-> +        //   exclusive access to it - fulfilling the requirements of the C API.
+Signed-off-by: Lyude Paul <lyude@redhat.com>
 
-C API requirements are not relevant for this call. Maybe you can replace
-the last two lines by:
+---
+V2:
+* Change behavior in ops::{Add,Sub}<Delta> so that we panic on overflows
+  under the same conditions that arithmetic operations in rust would panic
+  by default.
+---
+ rust/kernel/time.rs | 43 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
 
-  By existence of `Pin<&mut Self>`, the pointer passed to `raw_forward`
-  points to a valid `Self` that we have exclusive access to.
+diff --git a/rust/kernel/time.rs b/rust/kernel/time.rs
+index 64c8dcf548d63..4bd7a8a009f3e 100644
+--- a/rust/kernel/time.rs
++++ b/rust/kernel/time.rs
+@@ -25,6 +25,7 @@
+ //! C header: [`include/linux/ktime.h`](srctree/include/linux/ktime.h).
+ 
+ use core::marker::PhantomData;
++use core::ops;
+ 
+ pub mod delay;
+ pub mod hrtimer;
+@@ -202,7 +203,7 @@ pub(crate) fn as_nanos(&self) -> i64 {
+     }
+ }
+ 
+-impl<C: ClockSource> core::ops::Sub for Instant<C> {
++impl<C: ClockSource> ops::Sub for Instant<C> {
+     type Output = Delta;
+ 
+     // By the type invariant, it never overflows.
+@@ -214,6 +215,46 @@ fn sub(self, other: Instant<C>) -> Delta {
+     }
+ }
+ 
++impl<T: ClockSource> ops::Add<Delta> for Instant<T> {
++    type Output = Self;
++
++    #[inline]
++    fn add(self, rhs: Delta) -> Self::Output {
++        // INVARIANT: With arithmetic over/underflow checks enabled, this will panic if we overflow
++        // (e.g. go above `KTIME_MAX`)
++        let res = self.inner + rhs.nanos;
++
++        // INVARIANT: With overflow checks enabled, we verify here that the value is >= 0
++        #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
++        assert!(res >= 0);
++
++        Self {
++            inner: res,
++            _c: PhantomData,
++        }
++    }
++}
++
++impl<T: ClockSource> ops::Sub<Delta> for Instant<T> {
++    type Output = Self;
++
++    #[inline]
++    fn sub(self, rhs: Delta) -> Self::Output {
++        // INVARIANT: With arithmetic over/underflow checks enabled, this will panic if we overflow
++        // (e.g. go above `KTIME_MAX`)
++        let res = self.inner - rhs.nanos;
++
++        // INVARIANT: With overflow checks enabled, we verify here that the value is >= 0
++        #[cfg(CONFIG_RUST_OVERFLOW_CHECKS)]
++        assert!(res >= 0);
++
++        Self {
++            inner: res,
++            _c: PhantomData,
++        }
++    }
++}
++
+ /// A span of time.
+ ///
+ /// This struct represents a span of time, with its value stored as nanoseconds.
 
-It is slightly obscure because we coerce `self.get_unchecked_mut() ->
-&mut Self` to `*mut Self` in one go. Perhaps split it up:
-
-  let self_ptr: *mut Self = self.get_unchecked_mut();
-  // SAFETY: ...
-  unsafe { Self::raw_forward(self_ptr, now, interval) }
-
-Best regards,
-Andreas Hindborg
+base-commit: 479058002c32b77acac43e883b92174e22c4be2d
+-- 
+2.50.0
 
