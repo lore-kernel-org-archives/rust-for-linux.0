@@ -1,74 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184171A2381;
-	Fri,  8 Aug 2025 09:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E27125C827;
+	Fri,  8 Aug 2025 11:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754646789; cv=none; b=E/8Ad44BPQaKqSXGZqARFlj2db2kNTpyg6GIVrdArS11XLCi30RiW9m3DliRhjp6eup03MqaifJNXJM8MOOUu6cUjVl4Xm9K4fMx9zX4Lz/l1SR0wguVGiumRCaSIXvkh9tdn//xXiVHzY3ALNrtbacAeNE7eZVL8A55jVjX89U=
+	t=1754653725; cv=none; b=rb2vZ8Qjl9+1/jnZNdtdPz/xxc8R5nM0ulPP6lHHfXIa5rdKJImSQAvTEmPPzEWYXcbi7XXfxmsmUJFvkiCFpA8XiDuW/ohp5PBN1ADC/RyHp0vk0HGZBOGmIladYIpl3k4vz2gVjgSPHnzBdxpuaiIM1emfVc6KkcEgz52lEYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754646789; c=relaxed/simple;
-	bh=yFosrKiB0Ggl9SeGRAA4tB3TRCyF7iVganwUh+tAw6s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iYI1lUVvyS3l/N1RSPDqExwubeFDonj/CmQt8Tc5o63b0cH3NpXnSHJsf6eIUwYs/qYDyzwO2nbmf13u3zYokkxchAP3axS4WYnFH5hRfEag9d0iBzcKEA7zx9OIJVqEUuLo+HCboRd+2hNjOerjfa6Pt7MC8RS1xvnKUJPHCvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rA5VZvP4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754653725; c=relaxed/simple;
+	bh=FUx4gUgdyZ2ZZBXuzAMKD50bvkFnEcWtdMYMuJy1cVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HGwE/Z/fk7JD4UrBrzwpoch3JP8/PAbCDAJNWqm/HCmCeLY0Oos1nEKnmv69TNbH4yZVMTLWjbHRdmSea5O33HuOI4nO4xjqC992KoaNFgeaW+taVbZNcomiYrVMFTMsCsFEfdvQJx2fPAXxUt8kKE1XKBxpsHnWw0AhqS415OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KlH2z2/S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rA5VZvP4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB736C4CEED;
-	Fri,  8 Aug 2025 09:53:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KlH2z2/S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFFEC4CEF1;
+	Fri,  8 Aug 2025 11:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754646788;
-	bh=yFosrKiB0Ggl9SeGRAA4tB3TRCyF7iVganwUh+tAw6s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rA5VZvP4xUl4hsOhDnyn3wZhBLG1E6euyWLD9AHobBOij13EUhVfU0ILTXPdcgNBH
-	 UW+1hKLegM7mTmVxAQpeAfGO3WbmSdr7/4lI1vvBahsBVYefb2ESDug+hCQbTse226
-	 YhYTK5k78V2jgFDR5T1g6QqgH6+O2tLxo1bJ3LsIUne4Fd6pg1LqZ05kePl7neYKPd
-	 jbgkgRVd5SOyjiWb2fuK6P1Y6vhAWvOBPLYaws4CrbVTQKxqrFlJqgPt4GUpLmOPQ1
-	 TbpgspnH/UGcApCNBwXZg+8zlhKPEpSWXvF2pd/8MTCfTF0oW/Blm19cJ62pJUYwO+
-	 kBLHR2ye1bh5g==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Shankari Anand <shankari.ak0208@gmail.com>, Jens Axboe
- <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, linux-block@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Shankari Anand
- <shankari.ak0208@gmail.com>
-Subject: Re: [PATCH 1/7] rust: block: update ARef and AlwaysRefCounted
- imports from sync::aref
-In-Reply-To: <20250716090712.809750-1-shankari.ak0208@gmail.com>
-References: <KnSfzGK6OiA0mL5BZ32IZgEYWCuETu6ggzSHiqnzsYBLsUHWR5GcVRzt-FSa8sCXmYXz_jOKWGZ6B_QyeTZS2w==@protonmail.internalid>
- <20250716090712.809750-1-shankari.ak0208@gmail.com>
-Date: Fri, 08 Aug 2025 11:53:00 +0200
-Message-ID: <87cy965edf.fsf@kernel.org>
+	s=k20201202; t=1754653724;
+	bh=FUx4gUgdyZ2ZZBXuzAMKD50bvkFnEcWtdMYMuJy1cVM=;
+	h=Date:From:To:List-Id:Cc:Subject:References:In-Reply-To:From;
+	b=KlH2z2/SRGW4K4fN/lCfwfHAWCLsioLuNXYi0U8bGmXfTGaqjSCRwOhCs4s6TOA0J
+	 7X5PzrzWTGmySfiKXxgGxB0TXo1/sEh2IwxOimdqCIM5itio7QuZye5qUFhTiowsro
+	 g9QGixSNwxKrLcq5ITi3jqk67TuJhrezSoeLBNFz3QMy7WAmsXR3PnPszSWAp/YNRf
+	 EpX42Uy/odYqRyAa1Gq9Pu3xMZtrRg9Wroqn8PxqGIn7GoY01TQOQU0yKZO8i1uzel
+	 dv/TdTFEOVjWt68sUn36VVGp+5yBeS/m5Bp5b7ElzfFVkSOFUCDepl9vRLQpiKGtKo
+	 ASrYLKLOSRMsg==
+Date: Fri, 8 Aug 2025 12:48:31 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Deepak Gupta <debug@rivosinc.com>
+Cc: patchwork-bot+linux-riscv@kernel.org, linux-riscv@lists.infradead.org,
+	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, conor@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, arnd@arndb.de,
+	brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
+	ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net,
+	shuah@kernel.org, jannh@google.com, conor+dt@kernel.org,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu, lossin@kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, devicetree@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
+	richard.henderson@linaro.org, jim.shu@sifive.com,
+	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
+	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
+	alexghiti@rivosinc.com, samitolvanen@google.com,
+	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
+	zong.li@sifive.com, david@redhat.com
+Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
+Message-ID: <09081487-89ac-4f8d-b9fc-e563f09726d2@sirena.org.uk>
+References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
+ <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
+ <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
+ <aJWz82F21pVTSVJi@debug.ba.rivosinc.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-
-"Shankari Anand" <shankari.ak0208@gmail.com> writes:
-
-> Update call sites in the block subsystem to import `ARef` and
-> `AlwaysRefCounted` from `sync::aref` instead of `types`.
->
-> This aligns with the ongoing effort to move `ARef` and
-> `AlwaysRefCounted` to sync.
->
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1173
-> Signed-off-by: Shankari Anand <shankari.ak0208@gmail.com>
-
-Acked-by: Andreas Hindborg <a.hindborg@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="D45dRbRxMwDeSA/W"
+Content-Disposition: inline
+In-Reply-To: <aJWz82F21pVTSVJi@debug.ba.rivosinc.com>
+X-Cookie: What an artist dies with me!
 
 
-Best regards,
-Andreas Hindborg
+--D45dRbRxMwDeSA/W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
+On Fri, Aug 08, 2025 at 01:23:15AM -0700, Deepak Gupta wrote:
+> On Thu, Aug 07, 2025 at 01:28:36PM +0100, Mark Brown wrote:
 
+> > Do you have an update for my clone3() shadow
 
+> No I don't.
+
+> > stack series that I could roll in for when I repost that after the merge
+> > window, and/or instructions for how to run this stuff for RISC-V on some
+> > emulated platform?
+
+> I would want to write-up instructions. But I don't want you to go through
+> a lot of hassle of building toolchain and bunch of other stuff.
+> Let me see how I can make it easy for you. Will report back.
+
+Thanks.  FWIW I should already be sorted for the kernel build, unless
+there's a super new or specialist toolchain required for this feature
+(I'd guess I should be fine for the shadow stacks bit?) - it's userspace
+and emulation for the extension I'm missing.
+
+--D45dRbRxMwDeSA/W
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiV5A4ACgkQJNaLcl1U
+h9BR4gf/Yvc9us1uldFqSA9g7p+0bzU3IY/RfdDdME4qVGVWWXybW7b1P+6OdvKr
+lRLLeAJQkpEzhtLNeXXTVgRijmaDgccqM2d2Vkehw9qrW1+pwA56PX8PQPBtJsGL
+riODDRX0jZSrSVAPE/mwrQRc97vY83Tme2w2Psah2FzICcRcLdsC9vz3BIsquWgp
+5LbvWFyIS7PraLBoSkO76qBYDtRwjw3LzoANXm5rYo9QKsT48UPgjfvmzxLqTSxT
+oDMob4PjC2+1FU6Q1yzo5CUyK+aX58BM0OGwWEq4DDOCu5kd0ltVJen8HWszpfVz
+YgUpgySyAiGsfZTi1JBRv158syBsdQ==
+=5/MC
+-----END PGP SIGNATURE-----
+
+--D45dRbRxMwDeSA/W--
