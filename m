@@ -1,119 +1,129 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEDF4A06
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 08:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028EE254845
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 08:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754642228; cv=none; b=h9l3RVoTiooYpU39hc6hNTl2mZ8f2uVyT2nu7UJkUpd9Gwy5+3ctDFj1XblS8QzBlSJgdL46TDkLN5GHIN/2EGwkjJW44T4s711C8vXlXfMgsY10KvcQ71HpdwKp2kL4ogymEJS+QDglnfiyLpLAaynGRv6+ZgueC3D5xwHu8Uc=
+	t=1754642471; cv=none; b=pRG+cCKkCV8K3KdzGQcBLkMex8ZE+ZtM/kK1fp+zZ1nIdHyUa8WjPyZ3r8gNhhJlWSh/hUfDeYeslaxLN3ZQ6cSA7GTqQcNKyXTxCK6bxt+U6tStuEkG2jYksgFHjYxa5uCY1bFyHhhLaYFJVPTApc5jajm1ggSkkUAU4jNgVJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754642228; c=relaxed/simple;
-	bh=Fiip62CnTAuOuy/j+2e5UX+Bak/iiPX2VoqRyst4gY8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=Zb8ERKdQ5TjFK6mnvLmyMGDOI844ZJ3YejcxzrV5QA1vGEHffNXBpZeZ0QuDTp6P1/VVU54ecnm4PNr+37z1/POG+D5XY0NsD1/i0EMa6vpyw1WYNQnM+Oy+ZmaZ9J2tyc/H45KDqBuERTq1b5JOSfqSfuyC/AhCQlc1IsHB5MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Eneu5Yj6; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1754642471; c=relaxed/simple;
+	bh=vt8EUd+EOlN6ZKFBGPVsQIVl4bHNmkBKxtFtIqjbdN8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M/ZGRVrj8OY88kCBnw/FMGDJ2awjmR7PKvxaKRj0gXDcJ1YQ1I7Jf+9PUtQbRgvkDYOTIR8B6dWPs+yWzE02D2eTTgER0nVh5SQSF/NAOtF8J1MVtpsavx6Qgybh6gci5oUftJY+0/AxUIBwhdVaCwAREzwRzACcxZoUG+vKn9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DCj6OIFR; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Eneu5Yj6"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3b785aee904so757575f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Aug 2025 01:37:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DCj6OIFR"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-332590cc87fso16350671fa.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 Aug 2025 01:41:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754642225; x=1755247025; darn=vger.kernel.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+        d=gmail.com; s=20230601; t=1754642468; x=1755247268; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=QWf5Rs52y8GbqmsWSRM2y/wPZrw81H/2+73aRTZVaPQ=;
-        b=Eneu5Yj6TTToXqmgLwRNdddIX44LiNDWQA2jMY8RKbbP5mwUJJY2+PY6C/Wp3o8OIi
-         cJXFhgV4poQokAPgi5s5loyAuvMGm886iAszNnA3+o4XAn3gzTXzQ9ZKCLAupwa+N9Us
-         AUWwEQiXfzrQli1DGiwe+cVw+OGeapQO81JSOJute7fWh/OTLD08ahT13Gj9V+5POX2x
-         yoatgTyJ1vl0RJFTRh5eIbeWltDb29FkUvpBw/aD0yJ0JF05e799hnIpxTBosW8Ft0dC
-         Tijzy8psrJFmx/mmbkOa6K7oZ9RXoBNwNCqTAAJyoD5YNRS/HusmVsk1znfUvQ00N6hr
-         1BpA==
+        bh=DGxwxM3dy+kkGLFyOoV+L9iNKJd24ds4MA+wOJV8RTQ=;
+        b=DCj6OIFRmZkeme/4upC7XsI1jh0C7JZkCDIgQaTkwD2pKOasEsmx5PURHCTkMysKOG
+         XgTIveS0kS3EzfD+wj3UZEsuxPQ03uRQ/wkGk80lbeGPg8OnRYg73pjZpS/3R/8HxxE1
+         CJIGSmBNDoGU4ovSM+XnHoK++NT5b5pBMkIEU7iT6b19m3LUVo3WEQMBtfVWDjgfYGJ3
+         BsYhW1swaCTgxbQwdaoMjcHM/uqubIrmI9xF/4vYCbg0mod5/9thM1bOgaevye8qYDvI
+         WNIhoiYhvTy/8AXhDa/J05519PXBMjkG81NsDTE/BHCDjJ4E/tiu7tl5lk7d7DE7pyww
+         Rf5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754642225; x=1755247025;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20230601; t=1754642468; x=1755247268;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QWf5Rs52y8GbqmsWSRM2y/wPZrw81H/2+73aRTZVaPQ=;
-        b=aN7GIuFUpLFxlzS+pzPHeOmpoydEsxxLpyyX/qw6VE+jfCy7nodk4WedLqzU+ndnZ/
-         yihMPKHJKBTywTUiEya51ZeL/t1P3YcR4PMT3EwaSMDdT+FIdyeEXXVMKQ7qi4MPAo6O
-         r2QripEi4RJSbCfs5bzltXZgHpHZtzt68HaYHdLFWKjQs2ZtaIp6Da6+tLBJVUs30MqM
-         2NsYBJqR+L/lYlPki5HlZLmnMzgJBf8QcxPJtSMHNqXNX4kqtlD6kM+/VUEeEiI+ZE/r
-         GvjY2R9KFmFL0iubHHgrMI34XiofYCPLf/ilZk0ArmOr4mwF7Xwsy9aa06ECnBJ/v/jz
-         pL/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXAn1OiqXDP7mUZ5LU6r7Iwo4zM2XHbCZlBR+n95NWzRrAfS2/Nto9fSvBCaNBZQLl/Gw5JfO9PcI2Wz5K9Ew==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yycy2EEegGd8fFt6NWtsOsUN/8YSQWkMcInNRTgVf1MwP1jrmob
-	TdcT905YRsoj7VCoWYr0VcLlet243ub2UN2AgLYH8y6eh6Sw21+iogTAWe4iCF5EcqcUdIfSZ4u
-	kMQrub1yqcU13UlNCbQ==
-X-Google-Smtp-Source: AGHT+IHeQjxsRMOFdPNpW8//eVd1Z083P34hPSyuC17y0Mc2IqIpwxhiZDy/PEnJRm6n62VtLAtwv9yuCnyvOmU=
-X-Received: from wmsd10.prod.google.com ([2002:a05:600c:3aca:b0:459:da33:b20c])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:584c:0:b0:3a5:8cdd:c174 with SMTP id ffacd0b85a97d-3b900b36f82mr1932975f8f.26.1754642225158;
- Fri, 08 Aug 2025 01:37:05 -0700 (PDT)
-Date: Fri, 8 Aug 2025 08:37:03 +0000
-In-Reply-To: <t6lhpij2tv2y3cbps6g3mu6boiic2amy3xx6ppkksrb2625odo@6plivbxstgkm>
+        bh=DGxwxM3dy+kkGLFyOoV+L9iNKJd24ds4MA+wOJV8RTQ=;
+        b=vsQLE/F/tKTg/a5hGsEI7ihwcsjCg2cZ0/RMLyacd4a8TLBhd1Csf/aefI2LFwMlNk
+         LmbMHlxS7wlEDMBjVMYwCmtqdbai6qm13EcwZR/ftfnGsKh6mTbUO+PsjSsTw00L8ZaP
+         v4zZQGXmju/yDFiedMIDqx9uA76gFsr3UiZPTCgW6tsIQxYJkSV+7ffyc5fVOo67PSg0
+         lAPasln5m7OgRWieLpGSCZdgFKOxmhSLkb/jXVZhE9Xrg5k+wNThPea1g3gpAV05M0TD
+         LjbkHJDckr91wHdY6ZE6u0te7JXeMRfV0l1EobPNop4D0vPs1mHPmwwjs1kipUGzfuv9
+         i4gA==
+X-Gm-Message-State: AOJu0Yww6oYxOgeEgOFuEjkCQ2Dd901a6uwd1CZqH7owzyQolFouN24X
+	Xc1ogWQRYq2ddTPdrQ3VsEZE2ykXvANybEn1nlvzCLRGsNlMXXn85A6d
+X-Gm-Gg: ASbGnctmgECwkroXaIawq2PLLNIQw7vUMpQyoDV6mnkW5PkIbj+vfyTOvxJmPkY7+3g
+	w7agLxCLhKIM5CXqK9joDafwR7B9v+81CyxHueyFDbXoldZL6FLFIczj7L8WTXbWT7mLQ+ZzmNz
+	gKSctneWb5+AaSjMx9C3xJU/5CUZmi0v6Nmb1f8mX/PgmaVlT4P24vtqIWuOoTeGN01GXkWXbXv
+	Ic2igVsU6zFxEld9PiGmlnc2CsRvdnK/GAjiu8/FzIP8GHp0RoIM/z2ZvLFg6G0eiut7F3RqrwE
+	Bra3PyTPEK+4Molm7NdEMcLD1GP1E2+QxKqsvZmX4Zt0fjM4UrLsBaQmwIeZQoK6FgYzV/x7ddy
+	oqPMMeHvogPUGiGxhr3lTy2d1YcKIRV2bwjPtgjEwLezeCXT+6gjyK70Vgh43Uw3bu+/lH1Axx1
+	4=
+X-Google-Smtp-Source: AGHT+IGQrr45mdUxPt8Y98JuOHuwco3zjkaR93W2VxAen8YF6WPFBe1au/ikkVKZSmFFPok96tmY4A==
+X-Received: by 2002:a2e:712:0:b0:32a:604c:504e with SMTP id 38308e7fff4ca-333a226897dmr3697761fa.38.1754642467839;
+        Fri, 08 Aug 2025 01:41:07 -0700 (PDT)
+Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-332388d5e1asm28596481fa.51.2025.08.08.01.41.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 Aug 2025 01:41:07 -0700 (PDT)
+Message-ID: <67c53d7d-591a-4d17-873e-eb516c202a24@gmail.com>
+Date: Fri, 8 Aug 2025 11:41:06 +0300
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
- <20250726-maple-tree-v1-1-27a3da7cb8e5@google.com> <t6lhpij2tv2y3cbps6g3mu6boiic2amy3xx6ppkksrb2625odo@6plivbxstgkm>
-Message-ID: <aJW3L3SEVUl_AVvN@google.com>
-Subject: Re: [PATCH 1/3] rust: maple_tree: add MapleTree
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
-	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] BorrowedPage and PageOwner
+To: Danilo Krummrich <dakr@kernel.org>, lorenzo.stoakes@oracle.com,
+ vbabka@suse.cz, Liam.Howlett@oracle.com, urezki@gmail.com, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+ aliceryhl@google.com, tmgross@umich.edu, acourbot@nvidia.com
+Cc: rust-for-linux@vger.kernel.org
+References: <20250806205044.85085-1-dakr@kernel.org>
+Content-Language: en-US
+From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+In-Reply-To: <20250806205044.85085-1-dakr@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 07, 2025 at 12:12:47PM -0400, Liam R. Howlett wrote:
-> * Alice Ryhl <aliceryhl@google.com> [250726 09:23]:
-> > The maple tree will be used in the Tyr driver to allocate and keep track
-> > of GPU allocations created internally (i.e. not by userspace). It will
-> > likely also be used in the Nova driver eventually.
-> > 
-> > This adds the simplest methods for additional and removal that do not
-> > require any special care with respect to concurrency.
-> > 
-> > This implementation is based on the RFC by Andrew but with significant
-> > changes to simplify the implementation.
-> > 
-> > Co-developed-by: Andrew Ballance <andrewjballance@gmail.com>
-> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  MAINTAINERS               |   2 +
-> >  rust/helpers/helpers.c    |   1 +
-> >  rust/helpers/maple_tree.c |  14 +++
-> >  rust/kernel/lib.rs        |   1 +
-> >  rust/kernel/maple_tree.rs | 286 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  5 files changed, 304 insertions(+)
-> > 
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index dd810da5261b5d664ef9750f66ec022412e8014b..b7e7308ce07c050239c14c4f3a0fd89bdd8e8796 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -15956,7 +15956,9 @@ L:	rust-for-linux@vger.kernel.org
-> >  S:	Maintained
-> >  W:	http://www.linux-mm.org
-> >  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-> > +F:	rust/helpers/maple_tree.c
-> >  F:	rust/helpers/mm.c
-> > +F:	rust/kernel/maple_tree.rs
-> >  F:	rust/kernel/mm.rs
-> >  F:	rust/kernel/mm/
+Just shaped up the 4th revision of scatterlist on top of these patches 
+and works great. I can confirm that it is now able to directly work with 
+a VVec buffer, eliminating the need for a custom vmalloc_to_page() glue. 
+Will send the next revision soon after some minor clean-ups.
+
+Tested-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+
+On 06/08/2025 23:50, Danilo Krummrich wrote:
+> This patch series implements the BorrowedPage type and the PageOwner trait.
 > 
-> We should have another section for the maple tree, since it's not just
-> used for mm.  Your stated plan is to use it for GPU allocations and the
-> code doesn't live in mm/, wdyt?
+> The latter can be implemented by any entity that potentially owns one or
+> multiple pages and allow users to borrow them.
+> 
+> For instance, this is useful to access and borrow the backing pages of
+> allocation primitives, such as Box and Vec, backing a scatterlist.
+> 
+> Hence, implement PageOwner for VBox and VVec.
+> 
+> Additionally, implement Vmalloc::to_page() and ArrayLayout::size(), which are
+> dependencies of the above.
+> 
+> Changes in v2:
+>    - BorrowedPage
+>      - Add link to Ownable
+>      - Use borrow_page() in the example
+>    - Add PageOwner, Vmalloc::to_page(), ArrayLayout, VBox, VVec patches.
+> 
+> Danilo Krummrich (6):
+>    rust: page: implement BorrowedPage
+>    rust: page: define PageOwner trait
+>    rust: alloc: vmalloc: implement Vmalloc::to_page()
+>    rust: alloc: layout: implement ArrayLayout::size()
+>    rust: alloc: kbox: implement PageOwner for VBox
+>    rust: alloc: kvec: implement PageOwner for VVec
+> 
+>   rust/bindings/bindings_helper.h |  1 +
+>   rust/kernel/alloc/allocator.rs  | 49 +++++++++++++++++++
+>   rust/kernel/alloc/kbox.rs       | 42 ++++++++++++++++
+>   rust/kernel/alloc/kvec.rs       | 40 +++++++++++++++
+>   rust/kernel/alloc/layout.rs     |  5 ++
+>   rust/kernel/page.rs             | 87 ++++++++++++++++++++++++++++++++-
+>   6 files changed, 223 insertions(+), 1 deletion(-)
+> 
+> 
+> base-commit: d2eedaa3909be9102d648a4a0a50ccf64f96c54f
 
-Sure, I can add a new section if you prefer that.
-
-Alice
