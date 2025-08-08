@@ -1,134 +1,103 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF48118871F
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 17:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B6D1DA3D
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 18:12:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754673624; cv=none; b=jrsqW0ziqxqPPvEpzRSN8dWrPW7lQg5egijCjW/Uk17lrbTctM1FTQGqGor2z3B47KxGQTmeAA0CYZXC+1Gcsv8fys7tXkbmZnwnaHOA7kj4MZjurrdsEt7voX/Yn+VlLcOgtfxulCEVJ/GwvCkC2s6c/9ANPXwix+yzpoiFHO4=
+	t=1754676727; cv=none; b=OPom9R2pj6tkKuLnnkhPesmLR2SvptO+PVNjbZ9nvcf3HJ3btljkOz9tyiKbc+Yd/3CnP7AMQwNtuHdWPv3Ci194GWsbuBaoUDCtfvKBeMHr/VWLTuezVnyPQzTuBFPsWuL7qmxTKZCk/sUV3xYnfXTx7ALqIED9Zi+zmIghEa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754673624; c=relaxed/simple;
-	bh=RqNZJ9llYxg5119nPvsoAte+UupsM8m84wjkhwHB7S4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=akQopT3CYypvUdr6fx45yPHla2Tz0LBpbnBjXuTp0/PX8jYuGRMMaWXGtHit7GSfIjjGIC1p7Y1oE8mXzGlSYCE2TjryIob7Lwp76EdlVx8GNzA8veN3Fdb2ryiEd6lYsoqM0LtlCpsceneEu7OWVU7FIRxdYC+sK3Bm/j2FttU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b=a8M63Uui; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+	s=arc-20240116; t=1754676727; c=relaxed/simple;
+	bh=47UYXif7DU1n0/l8NHmB4V8pM3TczVqprUchbcRqd4k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s+YslPf8Jjt/5fFyWdnzJ2iWHQDS80HAYOET+up8ZEKEialD2X1rXStmhp12G5JO5KiWmWez3CzJhVACnV7Lwfp2uG32ZNuCWF3lWUbfwQmnYkIhqkRteeT8UWenoW4IPOQuRcuUc8glpAWPqg+mhHXHsg0Ke43l1iUJTEkGqyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVR7a/Cy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc.com header.i=@rivosinc.com header.b="a8M63Uui"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-23ffdea3575so16664235ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Aug 2025 10:20:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc.com; s=google; t=1754673622; x=1755278422; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=e5KtmNZscqY46KvhQCHs24ev6RrXWd+1XTPfyk6qu6o=;
-        b=a8M63UuieKcX26TzVIbNSA88Yn2tSAaxOYC3qXip6DTpLgrn22RYAPzvTl7GC4X9n7
-         z/MTSt5RmjktrSErLR5LGgZ5yeeSVtDdy7r2tM2Vu46CreMC2xvBV/xJ4kk/9gTLtBME
-         XD6iQ6/bTVbnM06BTpJ3Wqoamucgcv6vA+OIF0+0vPh9mB6sBnKW8qCfSS5KlftSo3az
-         WCQrHVGt76H8CJWQDS7PnRtch2s5ptTFKFYwdOWhLRTPtvqtNEO2M2/DWyUucdKdhrXG
-         PfX0jt+/QtWvkyBjDFhL2MK1WtIdbK19Ej4ghyPEM4jpSiVz2OOVtdPLEqDkQS/C0a4r
-         xzhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754673622; x=1755278422;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e5KtmNZscqY46KvhQCHs24ev6RrXWd+1XTPfyk6qu6o=;
-        b=SH7/UdDpNi+fbETZ6iZtu3xn92M3VD4nTBWeDkJ3kkg3QpubP06LdljQ+bPdOowl0q
-         kG1DqlyviKK/iEg8UWKXX78gyu0gLnHp8iImigY//fdd/a9eqpVsYQC0vUwvSpieQ42b
-         tGoT5yX9bE4enk6/ZyVxFdiLlwsvLgt+XSzWpgNfGKr1POUZ6apRX7Sz3yNDpcmXMOPZ
-         KfwedS1KmAaK/wHnWj9fOjt8PQKyLLom5LC1+zFeJUYtDyrLgodQldwFfmxCFE4fCJJc
-         1EMH4yX5NIOs/E1INuBcDFQ86GjMPmc3xX06eAg9aw+e5Ii7Q6gSg1WtorRscSP8u41W
-         8l1g==
-X-Forwarded-Encrypted: i=1; AJvYcCXWuYrf6aXBji8ub5/S0gUqHgpEinwkGVQ/AICHJ/g1wSTLkIlC6UH4bFyCpAq4CsqXp89OXvpDK7aTwL7jhw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPWirptLYIiMpzFbZ2QbtRfdigx5fZ4uCXqdJtgA9OyArONVX1
-	zESVlRH5t5QoVWoMeShcaSrrVY3gOnyjldaD9woIcytOFgoJ/ijgKy5RNnZCj/C2wus=
-X-Gm-Gg: ASbGncvn0CrY+igUR17gFVbBFXvJ0fFNUv5M+GxKG06BKHn3xY7N7Am2td9ZS4v85py
-	OM+gm+gRtnuv+bD2yUaTDPTiAGMu/TktNG+c5Yk8sSwHPNfFHtxktcWKf0W7y7uaXU2X1DD19P4
-	cHc0fp1AZAVyjeShS9hUVcx2Oa4Msucxi0SKIGfoCvSNtg+hQXOjb0A3qLTMsvfze8sJRvgHC8Q
-	/hwfnTVsqwQvMRwbrqwqLURwjgOYT2+56INVmCnuPRIMvcjiZWAUONsGsws70r68xpGd/jzj2qi
-	PBfM6V726RswWBUoPK91GiCnAENbCpn7OnwZ2u2og0rr1acO8JxvX2hcf0viLv3Xi0WlBnNtNbT
-	nvn4t7Kj27AYrjoa619wtfXd5Xn6ThFqumdRjR9g8rD0=
-X-Google-Smtp-Source: AGHT+IEbXOfCcMMF+EKLeMi8xU3SNI8Lg4qkWBu83GI5zB4sNqf//XXj2WJssysLa22zlDPxSEkl6g==
-X-Received: by 2002:a17:902:da82:b0:240:c678:c1ee with SMTP id d9443c01a7336-242c1ffb211mr57743355ad.11.1754673622272;
-        Fri, 08 Aug 2025 10:20:22 -0700 (PDT)
-Received: from debug.ba.rivosinc.com ([64.71.180.162])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-241e8aafa77sm213263625ad.174.2025.08.08.10.20.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Aug 2025 10:20:21 -0700 (PDT)
-Date: Fri, 8 Aug 2025 10:20:17 -0700
-From: Deepak Gupta <debug@rivosinc.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: patchwork-bot+linux-riscv@kernel.org, linux-riscv@lists.infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, conor@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, arnd@arndb.de,
-	brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
-	ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net,
-	shuah@kernel.org, jannh@google.com, conor+dt@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, lossin@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
-	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
-	alexghiti@rivosinc.com, samitolvanen@google.com,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	zong.li@sifive.com, david@redhat.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <aJYx0Yi3rQcdY6se@debug.ba.rivosinc.com>
-References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
- <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
- <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
- <aJWz82F21pVTSVJi@debug.ba.rivosinc.com>
- <09081487-89ac-4f8d-b9fc-e563f09726d2@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVR7a/Cy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E875BC4CEED;
+	Fri,  8 Aug 2025 18:12:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754676727;
+	bh=47UYXif7DU1n0/l8NHmB4V8pM3TczVqprUchbcRqd4k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HVR7a/CyaK6k1ucqFNxJGamNBLphoG0ss7DqCu7pabCkDzUa4MoWxz7TyPYoTYmOX
+	 rKuUn2UaxnKJZ/qlonrzkkRV++W2uWJNoxnZqVKgkgUkpo9UgTqVCQJxAcrUGZtc+t
+	 Kdmk7FMXjhm7eSC0OMzDbEaHEwyCg7NFylvVodekyvbX7oWY0p14RdFiqeRggmUQGH
+	 nPak/o/mRqwDYfe55pwGzTs7SigYyP2GkZ5AE7hiJbDQxeGvxL68+cTneBXCmF7oOu
+	 qXVcKc35N4VU/eICh9UnLEl0roRfUwPQrwtFycEhIQxFrWJNkcMZkiG2GT7e4ykTHk
+	 2kVayXU9xb4cQ==
+From: Danilo Krummrich <dakr@kernel.org>
+To: lorenzo.stoakes@oracle.com,
+	vbabka@suse.cz,
+	Liam.Howlett@oracle.com,
+	urezki@gmail.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	lossin@kernel.org,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	tmgross@umich.edu,
+	abdiel.janulgue@gmail.com,
+	acourbot@nvidia.com
+Cc: rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v3 0/7] BorrowedPage, IntoPageIter and VmallocPageIter
+Date: Fri,  8 Aug 2025 20:10:14 +0200
+Message-ID: <20250808181155.223504-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <09081487-89ac-4f8d-b9fc-e563f09726d2@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 08, 2025 at 12:48:31PM +0100, Mark Brown wrote:
->On Fri, Aug 08, 2025 at 01:23:15AM -0700, Deepak Gupta wrote:
->> On Thu, Aug 07, 2025 at 01:28:36PM +0100, Mark Brown wrote:
->
->> > Do you have an update for my clone3() shadow
->
->> No I don't.
->
->> > stack series that I could roll in for when I repost that after the merge
->> > window, and/or instructions for how to run this stuff for RISC-V on some
->> > emulated platform?
->
->> I would want to write-up instructions. But I don't want you to go through
->> a lot of hassle of building toolchain and bunch of other stuff.
->> Let me see how I can make it easy for you. Will report back.
->
->Thanks.  FWIW I should already be sorted for the kernel build, unless
->there's a super new or specialist toolchain required for this feature
+This patch series implements the BorrowedPage type, the IntoPageIter trait and
+VmallocPageIter type.
 
-Unlike x86 shadow stack and arm's GCS, push on RISC-V shadow stack is done
-using dedicated `sspush` instruction and pop is done using instruction
-`sspopchk`. RISC-V vDSO has certain `C` files and they would need shadow stack
-push and pop (along with landing pad on them). So that's why kernel compile
-would require the toolchain. I'll point you to it.
+IntoPageIter can be implemented by any type that owns pages to allow users to
+borrow them through a generic interface.
 
->(I'd guess I should be fine for the shadow stacks bit?) - it's userspace
->and emulation for the extension I'm missing.
+For instance, this is useful to access and borrow the backing pages of
+allocation primitives, such as Box and Vec, backing a scatterlist.
 
-Qemu changes are upstream. I'll provide the command line option.
-On userspace, I'll point you to something pre-compiled rootfs.
+Hence, implement IntoPageIter for VBox and VVec.
 
+Additionally, implement Vmalloc::to_page() and ArrayLayout::size(), which are
+dependencies of the above.
+
+Changes in v3:
+  - Generalize the previous PageOwner impl of VBox and VVec in VmallocPageIter.
+  - Correspondingly, replace PageOwner with IntoPageIter.
+
+Changes in v2:
+  - BorrowedPage
+    - Add link to Ownable
+    - Use borrow_page() in the example
+  - Add PageOwner, Vmalloc::to_page(), ArrayLayout, VBox, VVec patches.
+
+Danilo Krummrich (7):
+  rust: page: implement BorrowedPage
+  rust: alloc: vmalloc: implement Vmalloc::to_page()
+  rust: alloc: implement VmallocPageIter
+  rust: page: define trait IntoPageIter
+  rust: alloc: kbox: implement IntoPageIter for VBox
+  rust: alloc: layout: implement ArrayLayout::size()
+  rust: alloc: kvec: implement IntoPageIter for VVec
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/alloc/allocator.rs  | 141 ++++++++++++++++++++++++++++++++
+ rust/kernel/alloc/kbox.rs       |  37 ++++++++-
+ rust/kernel/alloc/kvec.rs       |  37 ++++++++-
+ rust/kernel/alloc/layout.rs     |   5 ++
+ rust/kernel/page.rs             |  85 ++++++++++++++++++-
+ 6 files changed, 303 insertions(+), 3 deletions(-)
+
+
+base-commit: d2eedaa3909be9102d648a4a0a50ccf64f96c54f
+-- 
+2.50.1
 
