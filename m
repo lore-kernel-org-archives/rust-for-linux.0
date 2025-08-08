@@ -1,93 +1,114 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213111853
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 08:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D0E1BC5C;
+	Fri,  8 Aug 2025 08:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754642740; cv=none; b=boXMtv2VLeJgmp/A3xqSr+R3+tv49EzKOoEaH9fhYL8GAvZLEihr9rVtN8yzoQo6YMKn/6AvDoxZMPiJGx2tshXjOF0/cmUAXxLdYp0AulZ4nDN8ge6pSZnpwJ+dvVExmKbIEQooHOui7LJEtd2QARNYC1VRb3Ute2Q35uJin74=
+	t=1754642957; cv=none; b=LaQiL1+hG/G1go7mAx4CMLBK4LoXNdQufyDizS+akyvOxy99uKBIxtrCeD2fTueYX6E5CtxOHZ3euz6XA+bIrNocRu5HVzK4NXbFHrvJId8UrwCy31he/Eeu5n0WGnZiDFzp7fJOjRB/pdNFH/sBnybwPcv14mC33AMmctgiDtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754642740; c=relaxed/simple;
-	bh=Qs6Yrbo7/sOegCiHEm4WkS4yj5ksV9PEmyFu6BMMGeA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GGhib8JTPO3BcPbHb9QrfDdNmWJtalrOcva02QWEAIJ+Sy2hrxy3lkbJ+uFf8O1pJtDmoZcjB6db83Zt9L0H5AbfCVs8CaTsCPKbfVVukUB2mTDkJArIN6NlO4w2C2RbAHVoNx7UoFH7i8PzuEohHOJlQzkEtuVwIQFi/6CLqIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lW8cS1Tu; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1754642957; c=relaxed/simple;
+	bh=eLQfRVKg5seqR9xZt6I+jvxaFNgVZxZH7nAhxSwK5+k=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=cqGHJgZGkXl5IwXUlHJZYuRQObzJhHh3niuBG/SwI+b4E8chJdD6k8nbxcyuWYY6Pkk99aM0d/go3iIrNfZj7h0o2dtYTJlL/DfoQz1PDt+sGp5EJX5VWdQAysoZBTabkZz6H7tmU4kA4A6plDRSIpd61dpZ3HZPyUFZFjAoWSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tXqaUEzE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lW8cS1Tu"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-55b9a3e69d3so1752706e87.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Aug 2025 01:45:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754642736; x=1755247536; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HmA5+6XIRdwaBO7ANrwg4D8NeerfTjTtRKeIO4Topo8=;
-        b=lW8cS1TuizGItmCdZqDsgTijxsABmnuky1O23D5OThvMoznx/WRUi9wNjTGd1v7iEn
-         EosHdT8XvBnULkPHKJG2J4TabeBxcefhAS+WT8wU9Zvfwa1Ze2dO1pLnbTfQNNxA2JH2
-         AHFwQ3nz82UQX/luORD5gvtwYvWQwji8GdDcrQadpclo3xNpKGb4IZcUwPujGtHYhmEA
-         zLJMI6gVAKgnfSZRmHhL/WHKJp5oP6b/i8K2UjHVv5lkJej7XHltZQgUecXePATEuldc
-         APFOq83f4Gdr3JsIGmxeppJy9aoi5Dpp534wBNjhX84O+hOD5f57dbNFCDzivA0+nzdz
-         GSuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754642736; x=1755247536;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HmA5+6XIRdwaBO7ANrwg4D8NeerfTjTtRKeIO4Topo8=;
-        b=YFEMFMcj6Ibxv+UjucFUoYibz5nxdelbkmOdS4qzYAznCGkdfk5e8GNto5MMzLciS+
-         Y5jBZquyGzewzoJK7JTEa1VWC9V2gJZWEgGAelOlFThx4jUn3wEXNC//AhXcD+AwkL1F
-         V3GrHN2zC93wI+PfrZhjvXeIB1SjtM7l71zCXh9MkDxYzd5XD1+YDLIQSVgoPw2R2e58
-         Q809o2iEcJ8K7/4xTLBZC9Pswu38vW3V92CkWf/DhLDHPJy530cjzoCZHzN88/pdJe3U
-         Mkmhgk6MuECF7WIYmeYPduM1Nho13NAT0Ld0Ac5QAj6wfjTaIplxVOViNlucVOzpC2Wy
-         Dy+Q==
-X-Gm-Message-State: AOJu0YxUOxJ+NTu8XxNCF4/nx+3gV3l/KAqCZJKZqjj1TOtFFI4GtfWF
-	Q43apNzoHP6iY7hDsaszMahUXqP+ua7EwICcV9ERVQ3b6dzojYhA6C37
-X-Gm-Gg: ASbGnctZH3mqyfA8tert8GAmWbvAL5LW2UzqqApm6Wr0dtwt+zGypDpnTSwh4ojHW1H
-	SwBr4SvrENUD2bA2/BLPu9HuOJheCN6kWofCvK2IcqeGBTNnnHwtZ7ooWE2JSefBk7wZrmuUSp0
-	e5zn5SY9FIwRMtD/Sg/L6gYCL1SH1hOx5dcGsHseKgJCluu2slplWow3V8V0NJs/dhbfsQ9Nzlv
-	MG91PXeJqoTZPfJTq0DaUBEF8c2m0D8k/twk1x/6HU25MSlYHh6U/pqvVQOqu2aEZmZqyzvahg5
-	NsvWA2v+skSEoJBDiyKFvWUN5B57INt4j6NaloQwBzfcOxQhmpCSfPYVH4RGDKN2LDJXgm/WGOM
-	lKKKiw2HX8NoazNpU9YQizjuDNBr6vX/208k66I5a5FpLJ/ULgJ+N8gw7njysgTyW1tpW/1hLX9
-	8=
-X-Google-Smtp-Source: AGHT+IFV8AtUkS7GBHERxsC9I+LAqnG9a7dr1OiiqYL/LOEOT/2kEPkqW5c6g5FaLkliiMwFRXksdg==
-X-Received: by 2002:a05:6512:12ce:b0:553:a9af:9e43 with SMTP id 2adb3069b0e04-55cc013480amr433691e87.53.1754642735957;
-        Fri, 08 Aug 2025 01:45:35 -0700 (PDT)
-Received: from [192.168.1.146] (dsl-hkibng22-54f8dc-251.dhcp.inet.fi. [84.248.220.251])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55cae34ca16sm908637e87.119.2025.08.08.01.45.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 Aug 2025 01:45:35 -0700 (PDT)
-Message-ID: <bd35325d-5613-4adf-b6d8-648ac0942648@gmail.com>
-Date: Fri, 8 Aug 2025 11:45:35 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tXqaUEzE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800F0C4CEED;
+	Fri,  8 Aug 2025 08:49:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754642957;
+	bh=eLQfRVKg5seqR9xZt6I+jvxaFNgVZxZH7nAhxSwK5+k=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=tXqaUEzEEoOW33P+l5GqaAIG/jRdBdurHU7hcVueCFOIPOnRZrQjJbmu8oj85R4Ju
+	 0Nsy8mKv2UUMipDbNPfrrQTxL+fGAlXwJyXQYWG1eHIs0nYNZv/1L/OgsnYH/Xq8gX
+	 iVBoWaVZ6NkQqfnDoxVosy3PMKOTRNIIj3yXmDro+O+ViQ8PNfRSRu6s/0qGxCrYKq
+	 ko9J0Fuo7dyPJaM1KG3WZoC+ENljjU90zMPS6o2Aj1BE1Od6Zyer/YgenSFkLowu+h
+	 +sZDx2fZwY2FqkCGqYPrlxu5Hum6lxsE1XqR/Z6ThAnyb0FmLoQk9Ge6EZLfVjrn3z
+	 RWZEgnOJNNFYA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/6] rust: alloc: layout: implement ArrayLayout::size()
-To: Danilo Krummrich <dakr@kernel.org>, lorenzo.stoakes@oracle.com,
- vbabka@suse.cz, Liam.Howlett@oracle.com, urezki@gmail.com, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
- aliceryhl@google.com, tmgross@umich.edu, acourbot@nvidia.com
-Cc: rust-for-linux@vger.kernel.org
-References: <20250806205044.85085-1-dakr@kernel.org>
- <20250806205044.85085-5-dakr@kernel.org>
-Content-Language: en-US
-From: Abdiel Janulgue <abdiel.janulgue@gmail.com>
-In-Reply-To: <20250806205044.85085-5-dakr@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 08 Aug 2025 10:49:14 +0200
+Message-Id: <DBWX0L4LIOF6.1AVJJV0SMDQ3P@kernel.org>
+Subject: Re: [RFC PATCH v2 2/4] rust: io_uring: introduce rust abstraction
+ for io-uring cmd
+From: "Benno Lossin" <lossin@kernel.org>
+To: "Sidong Yang" <sidong.yang@furiosa.ai>
+Cc: "Daniel Almeida" <daniel.almeida@collabora.com>, "Caleb Sander Mateos"
+ <csander@purestorage.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Jens Axboe" <axboe@kernel.dk>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <io-uring@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <20250727150329.27433-1-sidong.yang@furiosa.ai>
+ <20250727150329.27433-3-sidong.yang@furiosa.ai>
+ <D6CDE1A5-879F-49B1-9E10-2998D04B678F@collabora.com>
+ <DBRVVTJ5LDV2.2NHTJ4S490N8@kernel.org>
+ <949A27C5-1535-48D1-BE7E-F7E366A49A52@collabora.com>
+ <DBVDWWHX8UY7.TG5OHXBZM2OX@kernel.org>
+ <aJWfl87T3wehIviV@sidongui-MacBookPro.local>
+In-Reply-To: <aJWfl87T3wehIviV@sidongui-MacBookPro.local>
 
+On Fri Aug 8, 2025 at 8:56 AM CEST, Sidong Yang wrote:
+> On Wed, Aug 06, 2025 at 03:38:24PM +0200, Benno Lossin wrote:
+>> On Wed Aug 6, 2025 at 2:38 PM CEST, Daniel Almeida wrote:
+>> > Hi Benno,
+>> >
+>> >> On 2 Aug 2025, at 07:52, Benno Lossin <lossin@kernel.org> wrote:
+>> >>=20
+>> >> On Fri Aug 1, 2025 at 3:48 PM CEST, Daniel Almeida wrote:
+>> >>>> On 27 Jul 2025, at 12:03, Sidong Yang <sidong.yang@furiosa.ai> wrot=
+e:
+>> >>>> +    #[inline]
+>> >>>> +    pub fn pdu(&mut self) -> &mut MaybeUninit<[u8; 32]> {
+>> >>>=20
+>> >>> Why MaybeUninit? Also, this is a question for others, but I don=C2=
+=B4t think
+>> >>> that `u8`s can ever be uninitialized as all byte values are valid fo=
+r `u8`.
+>> >>=20
+>> >> `u8` can be uninitialized. Uninitialized doesn't just mean "can take =
+any
+>> >> bit pattern", but also "is known to the compiler as being
+>> >> uninitialized". The docs of `MaybeUninit` explain it like this:
+>> >>=20
+>> >>    Moreover, uninitialized memory is special in that it does not have=
+ a
+>> >>    fixed value ("fixed" meaning "it won=C2=B4t change without being w=
+ritten
+>> >>    to"). Reading the same uninitialized byte multiple times can give
+>> >>    different results.
+>> >>=20
+>> >> But the return type probably should be `&mut [MaybeUninit<u8>; 32]`
+>> >> instead.
+>> >
+>> >
+>> > Right, but I guess the question then is why would we ever need to use
+>> > MaybeUninit here anyways.
+>> >
+>> > It's a reference to a C array. Just treat that as initialized.
+>>=20
+>> AFAIK C uninitialized memory also is considered uninitialized in Rust.
+>> So if this array is not properly initialized on the C side, this would
+>> be the correct type. If it is initialized, then just use `&mut [u8; 32]`=
+.
+>
+> pdu field is memory chunk for driver can use it freely. The driver usuall=
+y
+> saves a private data and read or modify it on the other context. using
+> just `&mut [u8;32]` would be simple and easy to use.
 
+Private data is usually handled using `ForeignOwnable` in Rust. What
+kind of data would be stored there? If it's a pointer, then `&mut [u8;
+32]` would not be the correct choice.
 
-On 06/08/2025 23:50, Danilo Krummrich wrote:
-> Provide a convenience method for ArrayLayout to calculate the size of
-> the ArrayLayout in bytes.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-Reviewed-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+---
+Cheers,
+Benno
