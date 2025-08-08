@@ -1,187 +1,191 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79821F1317;
-	Fri,  8 Aug 2025 18:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0210A78F20;
+	Fri,  8 Aug 2025 19:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754679083; cv=none; b=jOkNpt7YkQ1LVc6nvp/gie3qsf3niB45UqJh3O6LN4Mnv2/ZWMjkJWhN1VEoojye9wka8sOu99hOdBhPeYp2ZmTEg3JH51k3iXYTnrXj4lqoo8YghUvPZDq93fKY7IJWA77q2U9ptBNME6BSSlhuIhtPeZ9P8DuUOAe0q1aqmIA=
+	t=1754680805; cv=none; b=AeARn3qO6csJ70iKR5nqlrolYKqvcsrU1o89HlwYA5O/6wSsM1DoacPK+KiA3oHjc3aQ5vTbCZhU/Qv/3WaCb+kE7Q9wvEfH00ckG3QXYVHpRaTO+DTb3PyRI2Q3Jue1hFqarHnUn4QJ7wv8sYnM1ar3XehNUEUgVxXfLS7NhWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754679083; c=relaxed/simple;
-	bh=Xw71vlQN+dR5IVF6R7vT9L4ieXN7VDvTeRfHYilMwow=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=kwZjMcScv69vNjmMKZ9MF/xbtWBSFFQqvprobV6pXrcwv3W+n4ELgnuSV9v+Ngfp9/zabAvUuiljDbiguIcJJCmmxHTO+5ECUNBh/x78SA3zTjn3hkKpC/hCLlv6aVCjJwO6gt2O6/RYeP0yJVxcjvdJ4sKkHQ9QHuz2+s9n97U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=WGyqUFMD; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1754680805; c=relaxed/simple;
+	bh=rEXSqhIYJL8RL0GStTLtjvpF5obfmNTaeHoupqhYEkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QMZll3FlCgTXx7ZhJYWh4tFG1VpV5ABwx8HsJBdYTDSg4mkrJ/W1j/rVVxJ6r/HyT1WV7PEk2eCyc/GxDuzWOEUySSXADEop3Ye5NhiVdSrc6USmsWg7YVgiumNfxm3aIFDgc6BLXRGiK/ckQrCBzT/4Bur4mJqK5JEEbfedAp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X818RuSs; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="WGyqUFMD"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250808185114euoutp0162c911292defe8bfee54f2309b1e8171~Z31I7WGpl0720707207euoutp01Y;
-	Fri,  8 Aug 2025 18:51:14 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250808185114euoutp0162c911292defe8bfee54f2309b1e8171~Z31I7WGpl0720707207euoutp01Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1754679074;
-	bh=eZMpLLPpWLfEcYOqjTqa6+eB/bqRZJ+BbYqsgnnPbkY=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=WGyqUFMDFBBsAtsI8xiD1Ayr7WYuZYdyBJMCoPCRGfrVxwAdMcl3GCV7Qwkcc4nI/
-	 gnDfUeRP8iiJIUgEStFM4TfVVnoq/LDogKUpBA2D+NmwrtJRryBOG1ru2ITf74oehS
-	 IO287BU42jFk8ZARXzvIDO/cRSfPjtUJVNlWylGo=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250808185112eucas1p285bfbeb3352a16df0b5c8f262fadbf2f~Z31Hzuzfc1555715557eucas1p2H;
-	Fri,  8 Aug 2025 18:51:12 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250808185109eusmtip1cf791168d581e5b5b824a27d8cdd9069~Z31ElK-rK1126511265eusmtip1F;
-	Fri,  8 Aug 2025 18:51:09 +0000 (GMT)
-Message-ID: <a154e058-c0e6-4208-9f52-57cec22eaf7d@samsung.com>
-Date: Fri, 8 Aug 2025 20:51:08 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X818RuSs"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-76bd6e84eddso3331936b3a.0;
+        Fri, 08 Aug 2025 12:20:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754680803; x=1755285603; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkk0FV59gE6/32qGCCqmE3gD2QpzFpo2afaJLYq6+rU=;
+        b=X818RuSsETot88DWKj8sq2HkF8b/9tWHsJFMJmhUEOjHU1X16BAKbgBgnGrQn7ewCy
+         DK4CIcRse/55nn0M7ItRp9ikHkGcCYrpt0Tc3p4vUNfxCn+f18987enEXxHe3S6t+tyN
+         ZEAuWVnKVeaTo4VPmTvkEdqWIM52y0tDNzo76XXvJY8qTeQzjAIs872uCUBe0Zku5Msp
+         XcvzeTWLfxxP0lRBGwwjCbdDWAV5t3vhegkvp6I93dOHbS3QNzS9vWJQ9zi3tFzuFuyJ
+         TlSyaMVG+tGEqy72zRmL1hm6stQp1pJR/tfBBCwY83tdRkJ8L4W+Pjur3jYLZH9nGLAM
+         9DXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754680803; x=1755285603;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rkk0FV59gE6/32qGCCqmE3gD2QpzFpo2afaJLYq6+rU=;
+        b=JjI2Xq2bdP/N4/URu3RPgoaAzryUiJNemgvq3clSREoVAoL03+anGVxCE4oqLwkyb7
+         jxdQywEkfhhMLI95zw/r2xXHUyNKU8CjsBFIlY4Wi+MAz8zlw50c9SXPiMsg9oN+f2HR
+         zmdvADFeTQ4bQf61J9b6/3R8KhlcY8FFFsR/FyoAnH+jfFmqpJz4MUiUOPC1pK6AsSy1
+         0d0syLPcwFvXG5A0xyKYcZAElvaXAt0RRhEfXxIveLgAhEwuhZh0JmwFtQNaFIq2or31
+         tEvbQneS1e4E1EXY1iaFoP4eQXER28ZT6hZvQs4/XUqNf3IxGEECIydwveKgw9Dyvloi
+         nXXw==
+X-Forwarded-Encrypted: i=1; AJvYcCViDwucxIaMTR9Jhe6/sHj0Zy4HbCNYCKbKyZQaL3qdyJxLr1bgd8GgKerWo3EWSD1fUNKNkCny/pAUpA4k4A==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yybm6BfYrTJ5/vCeq3JJL2jpgL/SiorD/i4Q1XwI51A3erm2s70
+	cVghpUS9jh51LoBYxg2AKWkT++ce8jEvOoXSmu4Lht219DssUZk1Dc99
+X-Gm-Gg: ASbGncv6yulhv6Yc3bkY+20/I1uyCl7xEImNwiCjj9y6hCSTRB23DVD0kXYfcfRt61K
+	uqCgAmhHmq2EBDtUDpJThRYAi+XV+nl9fz0W9RNEk3ltWcwiMSk7Bq8uagmBZ+xdAbtj/MpWz58
+	68u5/CRfMoLuHtTUu0ilPdo4jd0b3tmB3atYftaH/OlQQa6kJzmz3yGDe3jIoAkzu7w1rPzHO0a
+	RbbuZLGaLi8H2f/NyGlbGOs3x6dIx483RJyh7Y9xioLJXX2O4Dp9j0cxs+ZcUdHql1+NanUz3IU
+	5zvZcGmxAHa2ItNj/oJQ0ceRfVNt9ntxS9V6yYyxdAXue4xI3FRlB362OZYEqcOM8xIDuO29tOS
+	dQh6Fm3YGSCO6o1s=
+X-Google-Smtp-Source: AGHT+IFWT1quZkc+Wym8Obb3ixgTPzjdxARDcTVN3LXG3Jsel/sTqKb74sGawQGdtqMXqIvwa+bwYA==
+X-Received: by 2002:a05:6a20:4304:b0:231:acae:1983 with SMTP id adf61e73a8af0-2405501a3cdmr6537222637.3.1754680803161;
+        Fri, 08 Aug 2025 12:20:03 -0700 (PDT)
+Received: from fedora ([49.36.193.217])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b422b7d9e30sm18144995a12.25.2025.08.08.12.19.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Aug 2025 12:20:02 -0700 (PDT)
+From: Ritvik Gupta <ritvikfoss@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: [PATCH v4] rust: kernel: introduce `unsafe_precondition_assert!` macro
+Date: Sat,  9 Aug 2025 00:47:49 +0530
+Message-ID: <20250808192005.209188-1-ritvikfoss@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v1 00/16] dma-mapping: migrate to physical address-based
- API
-To: Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leon@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Danilo
-	Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, Jason Wang
-	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
-	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
-	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
-	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
-	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
-	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
-	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
-	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20250807141929.GN184255@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250808185112eucas1p285bfbeb3352a16df0b5c8f262fadbf2f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1
-X-EPHeader: CA
-X-CMS-RootMailID: 20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1
-References: <cover.1754292567.git.leon@kernel.org>
-	<CGME20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1@eucas1p2.samsung.com>
-	<20250807141929.GN184255@nvidia.com>
 
-On 07.08.2025 16:19, Jason Gunthorpe wrote:
-> On Mon, Aug 04, 2025 at 03:42:34PM +0300, Leon Romanovsky wrote:
->> Changelog:
->> v1:
->>   * Added new DMA_ATTR_MMIO attribute to indicate
->>     PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
->>   * Rewrote dma_map_* functions to use thus new attribute
->> v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
->> ------------------------------------------------------------------------
->>
->> This series refactors the DMA mapping to use physical addresses
->> as the primary interface instead of page+offset parameters. This
->> change aligns the DMA API with the underlying hardware reality where
->> DMA operations work with physical addresses, not page structures.
-> Lets elaborate this as Robin asked:
->
-> This series refactors the DMA mapping API to provide a phys_addr_t
-> based, and struct-page free, external API that can handle all the
-> mapping cases we want in modern systems:
->
->   - struct page based cachable DRAM
->   - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cachable MMIO
->   - struct page-less PCI peer to peer non-cachable MMIO
->   - struct page-less "resource" MMIO
->
-> Overall this gets much closer to Matthew's long term wish for
-> struct-pageless IO to cachable DRAM. The remaining primary work would
-> be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
-> phys_addr_t without a struct page.
->
-> The general design is to remove struct page usage entirely from the
-> DMA API inner layers. For flows that need to have a KVA for the
-> physical address they can use kmap_local_pfn() or phys_to_virt(). This
-> isolates the struct page requirements to MM code only. Long term all
-> removals of struct page usage are supporting Matthew's memdesc
-> project which seeks to substantially transform how struct page works.
->
-> Instead make the DMA API internals work on phys_addr_t. Internally
-> there are still dedicated 'page' and 'resource' flows, except they are
-> now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
-> flows use the same phys_addr_t.
->
-> When DMA_ATTR_MMIO is specified things work similar to the existing
-> 'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
-> pfn_valid(), etc are never called on the phys_addr_t. This requires
-> rejecting any configuration that would need swiotlb. CPU cache
-> flushing is not required, and avoided, as ATTR_MMIO also indicates the
-> address have no cachable mappings. This effectively removes any
-> DMA API side requirement to have struct page when DMA_ATTR_MMIO is
-> used.
->
-> In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
-> except on the common path of no cache flush, no swiotlb it never
-> touches a struct page. When cache flushing or swiotlb copying
-> kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
-> usage. This was already the case on the unmap side, now the map side
-> is symmetric.
->
-> Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
-> must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
-> path must also set it. This corrects some existing bugs where iommu
-> mappings for P2P MMIO were improperly marked IOMMU_CACHE.
->
-> Since ATTR_MMIO is made to work with all the existing DMA map entry
-> points, particularly dma_iova_link(), this finally allows a way to use
-> the new DMA API to map PCI P2P MMIO without creating struct page. The
-> VFIO DMABUF series demonstrates how this works. This is intended to
-> replace the incorrect driver use of dma_map_resource() on PCI BAR
-> addresses.
->
-> This series does the core code and modern flows. A followup series
-> will give the same treatement to the legacy dma_ops implementation.
+Introduce a new `safety` module containing `unsafe_precondition_assert!`
+macro. It is a wrapper around `debug_assert!`, intended for validating
+pre-conditions of unsafe function.
 
-Thanks for the elaborate description, that's something that was missing 
-in the previous attempt. I read again all the previous discussion and 
-this explanation and there are still two things that imho needs more 
-clarification.
+When `CONFIG_RUST_DEBUG_ASSERTIONS` flag is enabled, this macro performs
+runtime checks to ensure that the preconditions for unsafe function hold.
+Otherwise, the macro is a no-op.
 
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1162
+Link: https://rust-for-linux.zulipchat.com/#narrow/channel/291566-Library/topic/.60unsafe_precondition_assert.60.20macro/with/528457452
+Signed-off-by: Ritvik Gupta <ritvikfoss@gmail.com>
+---
 
-First - basing the API on the phys_addr_t.
+Changes in v4:
+ - Change doc example
+ - Add `no_run` attribute to the doc example
+ - Link to v3: https://lore.kernel.org/rust-for-linux/20250731111234.28602-1-ritvikfoss@gmail.com/
 
-Page based API had the advantage that it was really hard to abuse it and 
-call for something that is not 'a normal RAM'. I initially though that 
-phys_addr_t based API will somehow simplify arch specific 
-implementation, as some of them indeed rely on phys_addr_t internally, 
-but I missed other things pointed by Robin. Do we have here any 
-alternative?
+Changes in v3:
+ - Change doc example
+ - Link to v2: https://lore.kernel.org/all/20250730181420.6979b4f1@eugeo/T/#m9cd35a8fc02a18bd03934c7ecdcffe8667b5fbbd
 
+Changes in v2:
+ - Wrap `debug_assert!` internally instead of using `pr_err!` with `assert!` + `cfg!(debug_assertions)
+ - Print “unsafe precondition(s) violated” only on assertion failure (no longer always printed)
+ - Use `# Safety` section instead of comment in the example
+ - Rename module-level doc
+ - Link to v1: https://lore.kernel.org/rust-for-linux/20250716045957.39732-1-ritvikfoss@gmail.com/
 
-Second - making dma_map_phys() a single API to handle all cases.
+---
+ rust/kernel/lib.rs    |  1 +
+ rust/kernel/safety.rs | 48 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
+ create mode 100644 rust/kernel/safety.rs
 
-Do we really need such single function to handle all cases? To handle 
-P2P case, the caller already must pass DMA_ATTR_MMIO, so it must somehow 
-keep such information internally. Cannot it just call existing 
-dma_map_resource(), so there will be clear distinction between these 2 
-cases (DMA to RAM and P2P DMA)? Do we need additional check for 
-DMA_ATTR_MMIO for every typical DMA user? I know that branching is 
-cheap, but this will probably increase code size for most of the typical 
-users for no reason.
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index ed53169e795c..5eb301685ce8 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -113,6 +113,7 @@
+ pub mod rbtree;
+ pub mod regulator;
+ pub mod revocable;
++pub mod safety;
+ pub mod security;
+ pub mod seq_file;
+ pub mod sizes;
+diff --git a/rust/kernel/safety.rs b/rust/kernel/safety.rs
+new file mode 100644
+index 000000000000..880307a5fbf4
+--- /dev/null
++++ b/rust/kernel/safety.rs
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Safety related APIs.
++
++/// Checks that preconditions of an unsafe function are followed.
++///
++/// The check is enabled at runtime if debug assertions (`CONFIG_RUST_DEBUG_ASSERTIONS`)
++/// are enabled. Otherwise, this macro is no-op.
++///
++/// # Examples
++///
++/// ```no_run
++/// # use kernel::unsafe_precondition_assert;
++/// # use kernel::cpu::{nr_cpu_ids, CpuId};
++/// /// Creates a [`CpuId`] from the given `id` without bound checks.
++/// ///
++/// /// # Safety
++/// ///
++/// /// The caller must ensure that `id` is a valid CPU ID (i.e, `0 <= id < nr_cpu_ids()`).
++/// unsafe fn new_cpu_id_unchecked(id: i32) -> CpuId {
++///     let max_cpus = nr_cpu_ids();
++///
++///     unsafe_precondition_assert!(id >= 0, "id ({}) must be positive", id);
++///
++///     unsafe_precondition_assert!(
++///         id < max_cpus, "id ({}) must be less than total CPUs ({})", id, max_cpus
++///     );
++///
++///     CpuId(id)
++/// }
++/// ```
++///
++/// # Panics
++///
++/// Panics if the expression is evaluated to `false` at runtime.
++#[macro_export]
++macro_rules! unsafe_precondition_assert {
++    ($cond:expr $(,)?) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, ::core::stringify!($cond))
++    };
++
++    ($cond:expr, $($arg:tt)+) => {
++        $crate::unsafe_precondition_assert!(@inner $cond, ::core::format_args!($($arg)+))
++    };
++
++    (@inner $cond:expr, $msg:expr) => {
++        ::core::debug_assert!($cond, "unsafe precondition(s) violated: {}", $msg) };
++}
 
-
-Best regards
+base-commit: 37816488247ddddbc3de113c78c83572274b1e2e
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+2.50.1
 
