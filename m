@@ -1,113 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E27125C827;
-	Fri,  8 Aug 2025 11:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D30B2686A0;
+	Fri,  8 Aug 2025 12:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754653725; cv=none; b=rb2vZ8Qjl9+1/jnZNdtdPz/xxc8R5nM0ulPP6lHHfXIa5rdKJImSQAvTEmPPzEWYXcbi7XXfxmsmUJFvkiCFpA8XiDuW/ohp5PBN1ADC/RyHp0vk0HGZBOGmIladYIpl3k4vz2gVjgSPHnzBdxpuaiIM1emfVc6KkcEgz52lEYw=
+	t=1754655530; cv=none; b=M2SIfIx3Wi5BaBXyZbSUSktNhKoEn+3sFBfgusMOd66W3k8b5Ag7POs69F5gRE2SdX7h7vzEebtC/BHOJxkEjtLg1xu17jq5zL9mKksh23CVfxV5GGHBQMOIK4V3cr7tVN9aJ6kfcRalwPdGW+TBH51SB3cB16y9/1dCEH3fXCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754653725; c=relaxed/simple;
-	bh=FUx4gUgdyZ2ZZBXuzAMKD50bvkFnEcWtdMYMuJy1cVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HGwE/Z/fk7JD4UrBrzwpoch3JP8/PAbCDAJNWqm/HCmCeLY0Oos1nEKnmv69TNbH4yZVMTLWjbHRdmSea5O33HuOI4nO4xjqC992KoaNFgeaW+taVbZNcomiYrVMFTMsCsFEfdvQJx2fPAXxUt8kKE1XKBxpsHnWw0AhqS415OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KlH2z2/S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754655530; c=relaxed/simple;
+	bh=F7tb5lTFFPLSB0Eciw8hAvvjQDFPIiUrB4o3KSIztZo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Jb/ydgPBfK/fbmhoStcR9PbigvhmqKbChUT7V+fXChqgpt8HnTFxL821OR6gjrNH1v/27uWO3oseGjkDs4BmLHiqwe6SBJ4nfRJZFd04nPu6ZOiLhgsgDVh8ZukriH10BudLgIkW4CmG8u/VzM7i42Jm+bm4pCSDM55siduVKP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOJMvRiT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KlH2z2/S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFFEC4CEF1;
-	Fri,  8 Aug 2025 11:48:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOJMvRiT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF17C4CEED;
+	Fri,  8 Aug 2025 12:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754653724;
-	bh=FUx4gUgdyZ2ZZBXuzAMKD50bvkFnEcWtdMYMuJy1cVM=;
-	h=Date:From:To:List-Id:Cc:Subject:References:In-Reply-To:From;
-	b=KlH2z2/SRGW4K4fN/lCfwfHAWCLsioLuNXYi0U8bGmXfTGaqjSCRwOhCs4s6TOA0J
-	 7X5PzrzWTGmySfiKXxgGxB0TXo1/sEh2IwxOimdqCIM5itio7QuZye5qUFhTiowsro
-	 g9QGixSNwxKrLcq5ITi3jqk67TuJhrezSoeLBNFz3QMy7WAmsXR3PnPszSWAp/YNRf
-	 EpX42Uy/odYqRyAa1Gq9Pu3xMZtrRg9Wroqn8PxqGIn7GoY01TQOQU0yKZO8i1uzel
-	 dv/TdTFEOVjWt68sUn36VVGp+5yBeS/m5Bp5b7ElzfFVkSOFUCDepl9vRLQpiKGtKo
-	 ASrYLKLOSRMsg==
-Date: Fri, 8 Aug 2025 12:48:31 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Deepak Gupta <debug@rivosinc.com>
-Cc: patchwork-bot+linux-riscv@kernel.org, linux-riscv@lists.infradead.org,
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	akpm@linux-foundation.org, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	lorenzo.stoakes@oracle.com, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, conor@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, arnd@arndb.de,
-	brauner@kernel.org, peterz@infradead.org, oleg@redhat.com,
-	ebiederm@xmission.com, kees@kernel.org, corbet@lwn.net,
-	shuah@kernel.org, jannh@google.com, conor+dt@kernel.org,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@kernel.org,
-	aliceryhl@google.com, tmgross@umich.edu, lossin@kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, devicetree@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, alistair.francis@wdc.com,
-	richard.henderson@linaro.org, jim.shu@sifive.com,
-	andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com,
-	atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com,
-	alexghiti@rivosinc.com, samitolvanen@google.com,
-	rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org,
-	zong.li@sifive.com, david@redhat.com
-Subject: Re: [PATCH v19 00/27] riscv control-flow integrity for usermode
-Message-ID: <09081487-89ac-4f8d-b9fc-e563f09726d2@sirena.org.uk>
-References: <20250731-v5_user_cfi_series-v19-0-09b468d7beab@rivosinc.com>
- <175450053775.2863135.11568399057706626223.git-patchwork-notify@kernel.org>
- <db4eb976-693c-426c-a867-66cadd3dd7d8@sirena.org.uk>
- <aJWz82F21pVTSVJi@debug.ba.rivosinc.com>
+	s=k20201202; t=1754655529;
+	bh=F7tb5lTFFPLSB0Eciw8hAvvjQDFPIiUrB4o3KSIztZo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MOJMvRiTkoCjCsZDaDiLgFP/fMhKxU7zGC3lkncZ2fP/t3d9G+9z0vfYRr6ckRHkx
+	 29jKmjJ4DmXVYPIFVZQa9UbAm+3pLE0eSroF23aqMx8IJcT2gUQ7slW+Dkm3QwHkOo
+	 Yk3sG3x/kPtk2X/l+MCCGtYGFexCtLFjgRGph3DYWAUuTApmspkzmxZ+T+gU/NCSpF
+	 9D/Hq7jbVS4PWg8TdifZFNeHoGgkXoVkf0/KsJRmOwpJ3mWMbSfnGlooey7UtjkTMJ
+	 kc8vtFIMw2nLXuvNh2mIyImqpyHNTX5h2QIj/SOLQk3liDh7tRprdKpUWyBbOz8JL7
+	 TyDSPxxEha9xw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Abdiel Janulgue <abdiel.janulgue@gmail.com>, acourbot@nvidia.com,
+ dakr@kernel.org, jgg@ziepe.ca, lyude@redhat.com
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn?= Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
+ Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Tamir
+ Duberstein <tamird@gmail.com>, FUJITA Tomonori
+ <fujita.tomonori@gmail.com>, linux-kernel@vger.kernel.org, Andrew Morton
+ <akpm@linux-foundation.org>, Randy Dunlap <rdunlap@infradead.org>, Herbert
+ Xu <herbert@gondor.apana.org.au>, Caleb Sander Mateos
+ <csander@purestorage.com>, Petr Tesarik <petr@tesarici.cz>, Sui
+ Jingfeng <sui.jingfeng@linux.dev>, Marek Szyprowski
+ <m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>,
+ airlied@redhat.com, iommu@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ Abdiel Janulgue <abdiel.janulgue@gmail.com>
+Subject: Re: [PATCH v3 2/2] samples: rust: add sample code for scatterlist
+ abstraction
+In-Reply-To: <20250718103359.1026240-3-abdiel.janulgue@gmail.com>
+References: <20250718103359.1026240-1-abdiel.janulgue@gmail.com>
+ <vdYZDYMXRnQEadlW9C4I5MvuQi9SnRXgNF-ACtJ9C3Xh1pq6Ajc673GIIOtqJ4VZ13FzSeH_iAvA9vVKQii4DA==@protonmail.internalid>
+ <20250718103359.1026240-3-abdiel.janulgue@gmail.com>
+Date: Fri, 08 Aug 2025 14:18:36 +0200
+Message-ID: <87a54a57mr.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="D45dRbRxMwDeSA/W"
-Content-Disposition: inline
-In-Reply-To: <aJWz82F21pVTSVJi@debug.ba.rivosinc.com>
-X-Cookie: What an artist dies with me!
+Content-Type: text/plain
 
+"Abdiel Janulgue" <abdiel.janulgue@gmail.com> writes:
 
---D45dRbRxMwDeSA/W
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Add simple excercises to test the scatterlist abstraction.
+>
+> Co-developed-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+> Signed-off-by: Abdiel Janulgue <abdiel.janulgue@gmail.com>
+> ---
+>  samples/rust/rust_dma.rs | 49 +++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 48 insertions(+), 1 deletion(-)
+>
+> diff --git a/samples/rust/rust_dma.rs b/samples/rust/rust_dma.rs
+> index 9e05d5c0cdae..1fa278e8e29a 100644
+> --- a/samples/rust/rust_dma.rs
+> +++ b/samples/rust/rust_dma.rs
+> @@ -4,11 +4,33 @@
+>  //!
+>  //! To make this driver probe, QEMU must be run with `-device pci-testdev`.
+>
+> -use kernel::{bindings, device::Core, dma::CoherentAllocation, pci, prelude::*, types::ARef};
+> +use kernel::{
+> +    bindings, device::Core, dma::CoherentAllocation, page::*, pci, prelude::*, scatterlist::*,
+> +    sync::Arc, types::ARef,
+> +};
+>
+>  struct DmaSampleDriver {
+>      pdev: ARef<pci::Device>,
+>      ca: CoherentAllocation<MyStruct>,
+> +    _sgt: SGTable<OwnedSgt<PagesArray>, ManagedMapping>,
+> +}
+> +
+> +struct PagesArray(KVec<Page>);
+> +impl SGTablePages for PagesArray {
+> +    fn iter<'a>(&'a self) -> impl Iterator<Item = (&'a Page, usize, usize)> {
+> +        self.0.iter().map(|page| (page, kernel::page::PAGE_SIZE, 0))
+> +    }
+> +
+> +    fn entries(&self) -> usize {
+> +        self.0.len()
+> +    }
+> +}
+> +
+> +struct WrappedArc(Arc<kernel::bindings::sg_table>);
+> +impl core::borrow::Borrow<kernel::bindings::sg_table> for WrappedArc {
+> +    fn borrow(&self) -> &kernel::bindings::sg_table {
+> +        &self.0
+> +    }
+>  }
+>
+>  const TEST_VALUES: [(u32, u32); 5] = [
+> @@ -58,10 +80,35 @@ fn probe(pdev: &pci::Device<Core>, _info: &Self::IdInfo) -> Result<Pin<KBox<Self
+>              kernel::dma_write!(ca[i] = MyStruct::new(value.0, value.1))?;
+>          }
+>
+> +        let mut pages = KVec::new();
+> +        for _ in TEST_VALUES.into_iter() {
+> +            let _ = pages.push(Page::alloc_page(GFP_KERNEL)?, GFP_KERNEL);
+> +        }
+> +
+> +        // Let's pretend this is valid...
+> +        // SAFETY: `sg_table` is not a reference.
+> +        let sg_table: bindings::sg_table = unsafe { core::mem::zeroed() };
 
-On Fri, Aug 08, 2025 at 01:23:15AM -0700, Deepak Gupta wrote:
-> On Thu, Aug 07, 2025 at 01:28:36PM +0100, Mark Brown wrote:
+I think this initialization can be safe with recent pin-init patches
+[0]. Perhaps rebase on that, or add a todo?
 
-> > Do you have an update for my clone3() shadow
+Best regards,
+Andreas Hindborg
 
-> No I don't.
+[0] https://lore.kernel.org/r/20250523145125.523275-1-lossin@kernel.org
 
-> > stack series that I could roll in for when I repost that after the merge
-> > window, and/or instructions for how to run this stuff for RISC-V on some
-> > emulated platform?
-
-> I would want to write-up instructions. But I don't want you to go through
-> a lot of hassle of building toolchain and bunch of other stuff.
-> Let me see how I can make it easy for you. Will report back.
-
-Thanks.  FWIW I should already be sorted for the kernel build, unless
-there's a super new or specialist toolchain required for this feature
-(I'd guess I should be fine for the shadow stacks bit?) - it's userspace
-and emulation for the extension I'm missing.
-
---D45dRbRxMwDeSA/W
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmiV5A4ACgkQJNaLcl1U
-h9BR4gf/Yvc9us1uldFqSA9g7p+0bzU3IY/RfdDdME4qVGVWWXybW7b1P+6OdvKr
-lRLLeAJQkpEzhtLNeXXTVgRijmaDgccqM2d2Vkehw9qrW1+pwA56PX8PQPBtJsGL
-riODDRX0jZSrSVAPE/mwrQRc97vY83Tme2w2Psah2FzICcRcLdsC9vz3BIsquWgp
-5LbvWFyIS7PraLBoSkO76qBYDtRwjw3LzoANXm5rYo9QKsT48UPgjfvmzxLqTSxT
-oDMob4PjC2+1FU6Q1yzo5CUyK+aX58BM0OGwWEq4DDOCu5kd0ltVJen8HWszpfVz
-YgUpgySyAiGsfZTi1JBRv158syBsdQ==
-=5/MC
------END PGP SIGNATURE-----
-
---D45dRbRxMwDeSA/W--
