@@ -1,69 +1,96 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3DC4A11;
-	Fri,  8 Aug 2025 08:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B54421FF41
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 08:35:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754641629; cv=none; b=FanS2BeBu4QYZeQCm6SHdnZ9KN6WKo82wQIiDQpHYCt6530CGzcFiJiz1Cmep+xJtcVexbWq9YbkyWr9/Alh5moLr+fOJt+gA2AGGjEeOeOq/QOBh3DcXKFJu1dB2GTAxPB2VaT3VKeAzNK49PAeMr/KcIVUIbO/tn5zKgId1Qo=
+	t=1754642140; cv=none; b=Bqu6wp7dsOXcBc1xt/2omeSDRmHfdTP9ffXy8pEaC6VVRHvDS/itx9MzVXxzIPGYeCTDyE995EWUql2WHKxmwrlDFE5Dt6MaCSNcqpa/rOq3D+PgpXVbnP6j/yXSsKIrxjkVs18xB9pCo9dJADH6jSP+oAThs4+mqOEbwqxkm7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754641629; c=relaxed/simple;
-	bh=R61IV7cr8iemY0WmVZFNaI72L7yRCaCDEndX4PJJX4o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lbvKOZeXiX0rcdOUChJC4tD+s2wB29aqxoq6+0qyoIU85yU8WU/MBeyFTxu6tKehcUBkzspczYp7QAT5yN0GXK5diDgULKYLwx/xQ8o/QmNp5FdQIX2gYE4Vu9QqhP8zn20uu0Yns0WnHZG5bZEeIz3tLZ/oaJIuQDJHnpYZs74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bW+F9GPs; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1754642140; c=relaxed/simple;
+	bh=vKceCiGfd3IVcIs98f/Qu+5VwMWaT6kmEXI0d+RFbZU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Content-Type; b=OZPgbMVFA7BLO1eMKHFJFRcN7CmeG7B7apgu23db9Eco0qqBeZjpuIH9cg5HJhbp03NYe1xNfeKHogSkgaaW5PD16teHBd5fcQzPyht8tB5tHXjeyatTfoh5AfyDEnigX5Q37f06FSfAoRasfib9OX3X+7gSCMcuZL7salN7CHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TJDjVg4a; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bW+F9GPs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5B6C4CEED;
-	Fri,  8 Aug 2025 08:27:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754641628;
-	bh=R61IV7cr8iemY0WmVZFNaI72L7yRCaCDEndX4PJJX4o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=bW+F9GPsCwvzvnk5yzzAKBc8HUDaa7PtC1gHHOAe/Xl8E5laCX99cluS7WdK/+SdA
-	 cKP5HgglIZO9PRfS2pM+uvJJo26z72lZDu0G9Gqzyu4FbV6SVJEUr8qep6rjGXmXdP
-	 RWgsie4oow2hzwIWpvevV2d5geWR05iybXzYB2guDTmPXAfq75UQPFHD+zVN+G8bpf
-	 +w2D2NQo2yGz6+Z57ncv9NNxKAmVQJYyru093crEmckfttxLV3y+D6nQHH6rtCPeRI
-	 bZ7+/CpVbeKT/kJvmv2QQ+m1e5Q022JCe6dTIW4dOWyjz7pUTVkgt3+LErcn6+/l9y
-	 Zpqh3JdsKeIGA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, Thomas
- Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
- linux-kernel@vger.kernel.org, FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: Frederic Weisbecker <frederic@kernel.org>, Anna-Maria Behnsen
- <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, Stephen
- Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6r?=
- =?utf-8?Q?n?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl
- <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich
- <dakr@kernel.org>
-Subject: Re: [PATCH v6 6/7] rust: time: Add Instant::from_nanos()
-In-Reply-To: <20250724185236.556482-7-lyude@redhat.com>
-References: <20250724185236.556482-1-lyude@redhat.com>
- <LY2kmMXxEF1D0iSiWPZ3CYRDUHMmMhqr8W0WbZKqvobIYNcU3cntVHAVGbX6mozRNJXB3KF4Sp8ByD3SytwcnA==@protonmail.internalid>
- <20250724185236.556482-7-lyude@redhat.com>
-Date: Fri, 08 Aug 2025 10:19:02 +0200
-Message-ID: <875xey6xah.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TJDjVg4a"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-459d6c83e2eso10681485e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 Aug 2025 01:35:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1754642137; x=1755246937; darn=vger.kernel.org;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/R1bV19pK3qvSZa+wMMUXQzKmczCiuKCY7TytXZ0iqc=;
+        b=TJDjVg4a7jrT7nl1J8B1Cwf8ffS9fYli8bbs3gXlxulTNUdvfWoWEin55TCTlpi/M8
+         MzqfPiLKQy6ydMx4fxk2WnAaanhnLl2kUVLDvKOKOzruYgEW89U73KkAUAFAj6st9+HH
+         zevjLYWfd/rXDwiX3eaLIAtM0Oj4JbtSPb3qaEn9r0J59p9xB5JEDeisWUqiuuCURNzT
+         RPJkDy3zf1D0Rj9sYacVDXoRO8fxenbET98/s62X8n1dfaQkaYeFyy/sfCe1JRE7tKfD
+         P1sR9ENr3XC1+WUtTms9m0hUGqa6GsHiK8l0gXVtVcaKBb0tGpZWVkX6bCn9BrQWR2ut
+         QU3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754642137; x=1755246937;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/R1bV19pK3qvSZa+wMMUXQzKmczCiuKCY7TytXZ0iqc=;
+        b=JVKY8I8QUcnkqearPtB4ZdgTqJ1saXcPMhONQ1OBXyinSfPqh3r4IO8jFNEMdQE5mU
+         COsLbV04pDjHmA0wSCI3M7h6wLXTHPWhjnDVcC1ephKndGKzPc9R3LMLR1tr6CUtrHwd
+         uHCgpT9rdFVH016YoxufFFrU4l5OGj0geBh48pzvIAa0l4Vg4jLDp7cngNcCfSvI32cI
+         /T/uxfbD+vmf1j/6f2ZBYlU2SyMgDsyqQgo4c9aSdvfi/WXTsdlEVjxZ1JFLluuOsFh1
+         57PlwFnSxYMWXOP72gnTqt06dXM+muNkWOIcbUz/Tl2jj1cV9aJ6dYSZT9MSY8SQtaXb
+         VQJg==
+X-Forwarded-Encrypted: i=1; AJvYcCXWScPMSQS2nC8/1rPT5CJNa0y8qmV+jJNypFiQaUgsUjM0QVRZw+0HBhyA0Htq4CA7xpIR2U9JIVOor03PHg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmHRnLeIUWU0rFQ/V+6dLaVWJbfPBEOOoAFNrYWkL3f6o/PDY6
+	EOuGdf69N+yucssM6Nm8J2IHqOrnkM5Mf5rO1JCStMj17xeATYSPIFiNFD9V4VaXp8soBx1kmt8
+	Ptyn6KztccKjZBMCLHg==
+X-Google-Smtp-Source: AGHT+IGKioo4/mPR0GvMMcSDoArJNfBPaVCcGranqSUlVsAF0ZD3fGdgTPzyNQOZ/mXV9Qs7yu/HmncxP2+dbew=
+X-Received: from wmjq13.prod.google.com ([2002:a7b:ce8d:0:b0:459:dcca:571e])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:19cb:b0:459:d3d0:6507 with SMTP id 5b1f17b1804b1-459f4f519ebmr16137435e9.32.1754642136722;
+ Fri, 08 Aug 2025 01:35:36 -0700 (PDT)
+Date: Fri, 8 Aug 2025 08:35:34 +0000
+In-Reply-To: <jfqpnx7iatu5q3tnzwhuv6cav5y2444jyyjxnia3py6bqfb3bl@ijqc35utzpwk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+References: <20250726-maple-tree-v1-0-27a3da7cb8e5@google.com>
+ <20250726-maple-tree-v1-3-27a3da7cb8e5@google.com> <jfqpnx7iatu5q3tnzwhuv6cav5y2444jyyjxnia3py6bqfb3bl@ijqc35utzpwk>
+Message-ID: <aJW21gy6HH0qUcAp@google.com>
+Subject: Re: [PATCH 3/3] rust: maple_tree: add MapleTreeAlloc
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, 
+	maple-tree@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
 
-"Lyude Paul" <lyude@redhat.com> writes:
+On Thu, Aug 07, 2025 at 12:29:19PM -0400, Liam R. Howlett wrote:
+> * Alice Ryhl <aliceryhl@google.com> [250726 09:23]:
+> > To support allocation trees, we introduce a new type MapleTreeAlloc for
+> > the case where the tree is created using MT_FLAGS_ALLOC_RANGE. To ensure
+> > that you can only call mtree_alloc_range on an allocation tree, we
+> > restrict thta method to the new MapleTreeAlloc type. However, all
+> Typo here  ^
+> 
+> > methods on MapleTree remain accessible to MapleTreeAlloc as allocation
+> > trees can use the other methods without issues.
+> 
+> I guess this is for some rust side error translation because the C side
+> already returns the error?
 
-> For implementing Rust bindings which can return a point in time.
->
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
+Already returns what error?
 
-Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+The API here makes it so that it fails to compile when you call
+alloc_range on a tree that isn't an allocation tree. That's why there is
+a separate type.
 
-
-Best regards,
-Andreas Hindborg
-
-
-
+Alice
