@@ -1,112 +1,119 @@
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B0C270ED4
-	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 08:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D62F26A1A8
+	for <rust-for-linux@vger.kernel.org>; Fri,  8 Aug 2025 08:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754643296; cv=none; b=Pfk6tp/HxZulTM86RY3kxkbTmHiZB8xutoDOMHYS+VS6/GfOFr3gnpqpvcmnqjRtH9gUo61+/5B5+J6Yf6vkHX2SmqEXMvID9y9iW1L+5GUhWUZUhcl4AMeke+hqCkVj6yxale4H/p9VnYFK6cDzunQ1SDfHOi068G96Qmv7NFc=
+	t=1754643416; cv=none; b=PShUsnFijwxKL6CXVnZwZjuiHrg9HF2pTqIoM1VIWKB22xNQd2o+uuOuGKZRkOZZRCSAkldnTFaTg/8vFJbuYhBVwvgXrL+slWkP4tatmosWUUii41ezcPho0vz2MqOuUhZAiXR597xpJDq0ZIIfgNcZEqHc1EEW3P7xReVMDdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754643296; c=relaxed/simple;
-	bh=Nm8RGG6vEF7rPz50tGhY4843QLfesojZsNTfc0rfN4U=;
+	s=arc-20240116; t=1754643416; c=relaxed/simple;
+	bh=AvUJvGV6k1Y0yxMfq2do+BEGAQPPDxM3RqtsjtneEv0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nFU+xgUKKkEd61Etxs/dJiFQQMaJS8A3kuy5Okn2RHREP9i/0At/uCNgSJN5rC736a7Fg59mgfXIixcyxQk4rUFzDp0izbOXvHgvRlAoeDuhu6v+EBaKVC1CV5eBlAFJJW2ud2BrLvS09OXwH31gkJIgjvMNjMZXpn64b9y+4Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o5xXrIKO; arc=none smtp.client-ip=209.85.208.73
+	 To:Cc:Content-Type; b=IKYhiqz+2v/MuZHFeSF3fv6EEnp0T8MYPltwudAXInzNLC4lZwFL4opZoc0ZpXdmT3DGnuxWXR4Pl4LcRUy2iGPixAJ9n/+LSEK6sknaP1IIioyuGJw+XTD1+LA0vG1Zg5+BH4AoinkNDsG0DhFXkJqKgycMXZHfgPKKQ73P6DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vz4EJl6N; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o5xXrIKO"
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-6155a2c8365so1393483a12.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 08 Aug 2025 01:54:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vz4EJl6N"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-458bb0e68c6so10605215e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 08 Aug 2025 01:56:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1754643293; x=1755248093; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1754643412; x=1755248212; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K0x4n6wfKgmCfOFcD5pYK3yPLxC4SGB7PVAHJXN4fck=;
-        b=o5xXrIKOjirivwp9MQjZ5acGw+Q4aAsAQKyTwwM5MgxbcHWOX1VrcR3sCHdvNPAVa7
-         vVSsq5bVKi2DtTmYW5ocNpCMZREFDTOi/YIF3A0EVuzzVomglQ0FFkQIjiVJNBD8Dsnl
-         bIPiIFaHVhS4aJQ6XZHArIRajVLo0PRgzPnn/dXPDYk1dqLA1Oj35O3zI3LYWURioEp6
-         hkouiWmJkVeUnf6qBg1e7E0OgrnUnkisM6cu7EHSQTGdb2kf9Py3f21u7y1/jeKN63vE
-         U/YNvi42cEF0TjvqIznCV5t2D3/T5uuKnhQiUss5rzO6aVMDY6EM0qzVVbbU6yI0n52H
-         lu2g==
+        bh=8ueZ2gWJlbQvRxrR+aVYA4nsQ6QTJQxWiKvR+t21yTQ=;
+        b=vz4EJl6Nc3EwTzbWFsqerOEjnto1aROuWw/VyfGx5hoJ9q7ncF1veSsAdgGCW0n5Zv
+         uMsTVnJrxGkxlAyCSSncc/fQquaFcfzdk2lsALcgY43YIYP3nN0F8TZKxB9z3RJq8QZC
+         o0X12ybOEHhKEsox9BcUjZKZMZ2y6zoFBxbHHa+tlop3XCb1baZaFrBO1f59zH52jPL3
+         P0ADbvahaIBQuBnNeuEZbsW62FQbhxxLD0I1nhizdBKuFunRzF8lRDt6qCSZwJJ+dfAa
+         5/5RuBxq597Pv1G0g0WUnCkLCLmpJ+6kavoHPSEsgFfTVEgW3qSLwH+wM9y8qFQ9jcoG
+         zpUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754643293; x=1755248093;
+        d=1e100.net; s=20230601; t=1754643412; x=1755248212;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K0x4n6wfKgmCfOFcD5pYK3yPLxC4SGB7PVAHJXN4fck=;
-        b=OYG4erIxcXIyzXOfSfzi5SNR1fyENBwaSinllaeRXu9VhIvEhUa65W+haevOV0YnTa
-         OuPH4fmWpW7xK0tihOU6/LnM3Wzc5AtqjPEmH7K5QgQZhkJq3LprVI3g9qFqm/yK126n
-         axlfhM3G5vRIE+h9rIBE+3wWKxYPJhiFzuLkJ2DY06X6yOfAFHR7pXkWAciMxbQERwwX
-         YoAdvn5rXyU08hoZOzNjNacMemLBdedJDu7IC8FIKVC1BkWhftivMlviPXRqcFiiTLhR
-         zL4plEAh8oypLu9E8BGvE5T3A+/gJnknXTgIiPOJz0NVe2krFBCEinatwzny3t8dwdgK
-         uG5g==
-X-Forwarded-Encrypted: i=1; AJvYcCXYSgWbBQ/rJ19DhbhsUUdR0Y1Oqx1vLmlJZGjQwpsG6n1xa2qbvY3xqOuAQRaUey/8Q7chjHvCMc1K4nNSRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0/JvIWWsJVyMKqy6BOdcBnktue2NHRLzQOB3udLiYq9uTBcrV
-	cBqFEExGuiybADEAz3qSCkF/GJvF75teA9KRPDpFfke+9oIejxsKxxYYGV4gg412CKMjQk+7tJk
-	t8Ar9MGBJ3vOahdHaHA==
-X-Google-Smtp-Source: AGHT+IFd4zmufkZHmjVxCGPaQAG8oFzFLm1MCZcKqQDwOoXCdIrGvoHD1yutNBxTlT0+pGYLMr2Qjj4MsQqGpkY=
-X-Received: from edtt17.prod.google.com ([2002:a50:8d51:0:b0:612:9323:1cb1])
+        bh=8ueZ2gWJlbQvRxrR+aVYA4nsQ6QTJQxWiKvR+t21yTQ=;
+        b=h9slLR0gSgmnoM4BFE0BmKXjcAixZxcP9n+5V7PvI02OWWPxlsi45i5WP2WUnPXDww
+         eC7YGtg9wBHlVhO/4Mm3YF4R9i0po9RcuPzEaY64hCQHSUuO7SBm+dwL/HoEE80OdnYs
+         fhnjosaa7tV2lGjyz/PrkfWGM11x6mDEH6/zmjGjR/MazQIQdKdXc9zLb3WBJk3gbnt+
+         iPdiFuYTuGClLDvB3z/2MqVY7ADPQ20JeDtPvYVHLK0vgGq9MwnHqULMbU6i7/v2RVgF
+         sutnxLpGhncxheLcC3m2Cs/p8M0923vCvCQyzvmatO+CLyXpSeekV33BbkgI8sT9U7gF
+         0j9g==
+X-Forwarded-Encrypted: i=1; AJvYcCX131WJgkkO7UjDTjiZZaMqoPrpjkkgNMr6ONEfy8aLUAbo+1tvxZSAybXd/FF/AR7nK8DhrmXJ1o6fQI0DhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOSE8k8wjetouZs069gJzunSvn/CuCm1wtjrhG6g42jK7kBCuT
+	m0ZQmXCuDv3AnUuNdO6sMZRfMWKFfea1fXjcgSoPU6Vm4vtAJ5WSBXTq/ku8HhxHajT9WmYjl7k
+	iyjZ/td9OaWiz+Bz2bg==
+X-Google-Smtp-Source: AGHT+IET1DdJb5Jz5G6vVLd0YVDZI+QgAZD0cOx2t4RsN8WWzMVeQsfkD8X4H0cSdsj0IbkyiAcmX8uUm/kCnxw=
+X-Received: from wmsr17.prod.google.com ([2002:a05:600c:8b11:b0:458:715c:51a1])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a50:fb08:0:b0:612:b150:75f3 with SMTP id 4fb4d7f45d1cf-617e2c27eddmr1208791a12.8.1754643292758;
- Fri, 08 Aug 2025 01:54:52 -0700 (PDT)
-Date: Fri, 8 Aug 2025 08:54:50 +0000
-In-Reply-To: <20250806205044.85085-3-dakr@kernel.org>
+ 2002:a05:600c:3103:b0:456:28f4:a576 with SMTP id 5b1f17b1804b1-459f4f2badbmr17332435e9.27.1754643411897;
+ Fri, 08 Aug 2025 01:56:51 -0700 (PDT)
+Date: Fri, 8 Aug 2025 08:56:50 +0000
+In-Reply-To: <DBWUBK3RSCMB.F1FJ5V6NCOJU@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20250806205044.85085-1-dakr@kernel.org> <20250806205044.85085-3-dakr@kernel.org>
-Message-ID: <aJW7WnWWfCDbGsWp@google.com>
-Subject: Re: [PATCH v2 2/6] rust: page: define PageOwner trait
+References: <20250807190649.3078875-1-lyude@redhat.com> <20250807190649.3078875-2-lyude@redhat.com>
+ <DBWUBK3RSCMB.F1FJ5V6NCOJU@kernel.org>
+Message-ID: <aJW70pW5zVTPSrdj@google.com>
+Subject: Re: [PATCH v2 2/2] rust: time: Implement basic arithmetic operations
+ for Delta
 From: Alice Ryhl <aliceryhl@google.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: lorenzo.stoakes@oracle.com, vbabka@suse.cz, Liam.Howlett@oracle.com, 
-	urezki@gmail.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, a.hindborg@kernel.org, tmgross@umich.edu, 
-	abdiel.janulgue@gmail.com, acourbot@nvidia.com, 
-	rust-for-linux@vger.kernel.org
+To: Benno Lossin <lossin@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, John Stultz <jstultz@google.com>, 
+	Stephen Boyd <sboyd@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, Aug 06, 2025 at 10:50:11PM +0200, Danilo Krummrich wrote:
-> Introduce the PageOwner trait, which can be implemented by any entity
-> that potentially owns one or multiple pages and allow users to borrow
-> them.
+On Fri, Aug 08, 2025 at 08:42:30AM +0200, Benno Lossin wrote:
+> On Thu Aug 7, 2025 at 9:06 PM CEST, Lyude Paul wrote:
+> > While rvkms is only going to be using a few of these, since Deltas are
+> > basically the same as i64 it's easy enough to just implement all of the
+> > basic arithmetic operations for Delta types.
+> >
+> > Keep in mind there's one quirk here - the kernel has no support for
+> > i64 % i64 on 32 bit platforms, the closest we have is i64 % i32 through
+> > div_s64_rem(). So, instead of implementing ops::Rem or ops::RemAssign we
+> > simply provide Delta::rem_nanos().
 > 
-> For instance, this is useful to access and borrow the backing pages of
-> allocation primitives, such as Box and Vec, backing a scatterlist.
+> We could still provide the trait implementations on CONFIG_64BIT? WDYT?
 > 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/page.rs | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> > +impl ops::Div for Delta {
+> > +    type Output = Self;
+> > +
+> > +    #[inline]
+> > +    fn div(self, rhs: Self) -> Self::Output {
+> > +        #[cfg(CONFIG_64BIT)]
+> > +        {
 > 
-> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-> index 631718a6ad7d..93ce4956f782 100644
-> --- a/rust/kernel/page.rs
-> +++ b/rust/kernel/page.rs
-> @@ -103,6 +103,18 @@ fn deref(&self) -> &Self::Target {
->      }
->  }
->  
-> +/// Represents a potential owner of one or multiple [`Page`]s.
-> +///
-> +/// This trait may be implemented by types that potentially hold ownership of memory pages. It
-> +/// allows users to iterate over those pages and borrow them as [`BorrowedPage`].
-> +pub trait PageOwner {
-> +    /// Returns an [`Iterator`] of [`BorrowedPage`] items over all pages owned by `self`.
-> +    fn page_iter<'a>(&'a mut self) -> impl Iterator<Item = BorrowedPage<'a>>;
-> +
-> +    /// Returns the number of pages currently owned by `self`.
-> +    fn page_count(&self) -> usize;
-> +}
+> This pattern seems to be rather common in this patchset & in general I
+> think I've also seen it elsewhere. We should think about adding a
+> `if_cfg!` macro:
+> 
+>     Self {
+>         nanos: if_cfg! {
+>             if CONFIG_64BIT {
+>                 self.nanos / rhs.nanos
+>             } else {
+>                 unsafe { ... }
+>             }
+>         },
+>     }
+> 
+> But we can do that later. I'll file a good-first-issue.
 
-Honestly, I don't entirely love this trait on its own merits. But I'd
-need to know more about how it will be used to give a clearer opinion.
-
-Either way, I think the implementation of VBox and VVec could be merged
-to some shared VmallocPageIter that iterates a region of pages.
+This kind of macro breaks rustfmt, so I wouldn't recommend it. I would
+suggest just using the native Rust pattern rather than introduce even
+more macros.
 
 Alice
